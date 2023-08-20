@@ -17,30 +17,18 @@
 "d" = (
 /turf/open/floor/plating,
 /area/centcom/mafia)
-"e" = (
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
-/area/centcom/mafia)
 "f" = (
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "g" = (
 /obj/mafia_game_board,
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "h" = (
 /obj/structure/grille/indestructable,
 /turf/open/floor/plating,
-/area/centcom/mafia)
-"i" = (
-/turf/open/floor/plating{
-	icon_state = "platingdmg1"
-	},
 /area/centcom/mafia)
 "j" = (
 /obj/machinery/door/airlock/maintenance_hatch{
@@ -124,9 +112,8 @@
 /area/centcom/mafia)
 "v" = (
 /obj/mafia_game_board,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "w" = (
 /turf/closed/indestructible/syndicate,
@@ -260,6 +247,10 @@
 /obj/effect/landmark/mafia,
 /turf/open/floor/iron/dark,
 /area/centcom/mafia)
+"J" = (
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
+/area/centcom/mafia)
 
 (1,1,1) = {"
 a
@@ -348,7 +339,7 @@ d
 d
 d
 d
-e
+J
 d
 d
 d
@@ -369,7 +360,7 @@ c
 h
 d
 d
-e
+J
 w
 w
 j
@@ -379,7 +370,7 @@ w
 w
 d
 d
-i
+J
 h
 c
 w
@@ -391,7 +382,7 @@ a
 w
 w
 c
-i
+J
 w
 w
 j
@@ -531,7 +522,7 @@ o
 o
 H
 j
-e
+J
 c
 w
 a
@@ -540,7 +531,7 @@ a
 a
 w
 c
-e
+J
 w
 w
 p
@@ -606,7 +597,7 @@ w
 p
 b
 w
-i
+J
 c
 w
 a
@@ -717,7 +708,7 @@ w
 w
 c
 h
-i
+J
 d
 d
 w
@@ -728,7 +719,7 @@ j
 w
 w
 d
-e
+J
 d
 h
 c
@@ -745,7 +736,7 @@ k
 h
 d
 d
-e
+J
 d
 d
 d

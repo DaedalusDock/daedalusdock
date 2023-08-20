@@ -37,7 +37,7 @@
 	if(!do_after(user, target, 1.5 SECONDS))
 		balloon_alert(user, "interrupted!")
 		return
-	if(!implant.implant(target, user))
+	if(!implant.implant(target, user, deprecise_zone(user.zone_selected)))
 		balloon_alert(user, "can't implant!")
 		return
 	if(target == user)
@@ -66,6 +66,8 @@
 	name = "MOD pathfinder implant"
 	desc = "Lets you recall a MODsuit to you at any time."
 	actions_types = list(/datum/action/item_action/mod_recall)
+	implant_flags = IMPLANT_KNOWN
+
 	/// The pathfinder module we are linked to.
 	var/obj/item/mod/module/pathfinder/module
 	/// The jet icon we apply to the MOD.
@@ -117,7 +119,7 @@
 	ADD_TRAIT(module.mod, TRAIT_MOVE_FLYING, MOD_TRAIT)
 	animate(module.mod, 0.2 SECONDS, pixel_x = base_pixel_y, pixel_y = base_pixel_y)
 	module.mod.add_overlay(jet_icon)
-	RegisterSignal(module.mod, COMSIG_MOVABLE_MOVED, .proc/on_move)
+	RegisterSignal(module.mod, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	balloon_alert(imp_in, "suit recalled")
 	return TRUE
 

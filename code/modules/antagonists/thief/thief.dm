@@ -69,15 +69,12 @@
 		/area/station/maintenance/department/crew_quarters/bar,
 	)
 	//remove every hideout location that isn't on this map
-	possible_hideout_locations = special_list_filter(possible_hideout_locations, CALLBACK(src, .proc/filter_nonexistent_areas))
+	possible_hideout_locations = special_list_filter(possible_hideout_locations, CALLBACK(src, PROC_REF(filter_nonexistent_areas)))
 	//for custom maps without any abandoned locations
 	if(!possible_hideout_locations.len)
 		return
 	var/chosen_type = pick(possible_hideout_locations)
 	hideout = GLOB.areas_by_type[chosen_type]
-	hideout.mood_trait = TRAIT_VAL_CORRIN_MEMBER
-	hideout.mood_bonus = 5
-	hideout.mood_message = "Feels good, having Val Corrin connections."
 
 ///checks if an area exists in the global areas, obviously comes up null (falsey) if say, abandoned cabin is checked on metastation.
 /datum/antagonist/thief/proc/filter_nonexistent_areas(area_type)

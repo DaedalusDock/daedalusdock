@@ -46,18 +46,15 @@
 		butcher_results = list(/obj/item/food/nugget = 5)
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	add_cell_sample()
 
 /mob/living/simple_animal/hostile/retaliate/frog/proc/on_entered(datum/source, AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!stat && isliving(AM))
 		var/mob/living/L = AM
 		if(L.mob_size > MOB_SIZE_TINY)
 			playsound(src, stepped_sound, 50, TRUE)
-
-/mob/living/simple_animal/hostile/retaliate/frog/add_cell_sample()
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_FROG, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)

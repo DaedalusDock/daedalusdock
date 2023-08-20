@@ -17,6 +17,15 @@
 #define MC_AVG_FAST_UP_SLOW_DOWN(average, current) (average > current ? MC_AVERAGE_SLOW(average, current) : MC_AVERAGE_FAST(average, current))
 #define MC_AVG_SLOW_UP_FAST_DOWN(average, current) (average < current ? MC_AVERAGE_SLOW(average, current) : MC_AVERAGE_FAST(average, current))
 
+///creates a running average of "things elapsed" per time period when you need to count via a smaller time period.
+///eg you want an average number of things happening per second but you measure the event every tick (50 milliseconds).
+///make sure both time intervals are in the same units. doesnt work if current_duration > total_duration or if total_duration == 0
+#define MC_AVG_OVER_TIME(average, current, total_duration, current_duration) ((((total_duration) - (current_duration)) / (total_duration)) * (average) + (current))
+
+#define MC_AVG_MINUTES(average, current, current_duration) (MC_AVG_OVER_TIME(average, current, 1 MINUTES, current_duration))
+
+#define MC_AVG_SECONDS(average, current, current_duration) (MC_AVG_OVER_TIME(average, current, 1 SECONDS, current_duration))
+
 #define NEW_SS_GLOBAL(varname) if(varname != src){if(istype(varname)){Recover();qdel(varname);}varname = src;}
 
 #define START_PROCESSING(Processor, Datum) if (!(Datum.datum_flags & DF_ISPROCESSING)) {Datum.datum_flags |= DF_ISPROCESSING;Processor.processing += Datum}
@@ -58,6 +67,11 @@
 /// (IE: if a 5ds wait SS takes 2ds to run, its next fire should be 5ds away, not 3ds like it normally would be)
 /// This flag overrides SS_KEEP_TIMING
 #define SS_POST_FIRE_TIMING 32
+
+/** This subsystem should not be queued if it has no work */
+/// Populate the [hibernate_checks] list with the names of vars to check before a subsystem is queued.
+///If the length() of each var is 0, it will not be queued
+#define SS_HIBERNATE 64
 
 //! SUBSYSTEM STATES
 #define SS_IDLE 0 /// ain't doing shit.
@@ -102,3 +116,11 @@
 }\
 /datum/controller/subsystem/processing/##X/fire() {..() /*just so it shows up on the profiler*/} \
 /datum/controller/subsystem/processing/##X
+
+#define VERB_MANAGER_SUBSYSTEM_DEF(X) GLOBAL_REAL(SS##X, /datum/controller/subsystem/verb_manager/##X);\
+/datum/controller/subsystem/verb_manager/##X/New(){\
+	NEW_SS_GLOBAL(SS##X);\
+	PreInit();\
+}\
+/datum/controller/subsystem/verb_manager/##X/fire() {..() /*just so it shows up on the profiler*/} \
+/datum/controller/subsystem/verb_manager/##X

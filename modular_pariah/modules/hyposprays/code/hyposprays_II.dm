@@ -68,6 +68,8 @@
 		vial = new start_vial
 		update_appearance()
 
+	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
+
 /obj/item/hypospray/mkii/update_overlays()
 	. = ..()
 	if(!vial)
@@ -82,10 +84,6 @@
 	var/mutable_appearance/chem_loaded = mutable_appearance('modular_pariah/modules/hyposprays/icons/hyposprays.dmi', vial_spritetype)
 	chem_loaded.color = vial.chem_color
 	. += chem_loaded
-
-/obj/item/hypospray/mkii/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/hypospray/mkii/update_icon_state()
 	. = ..()
@@ -217,7 +215,7 @@
 	if(injectee != user)
 		injectee.visible_message(span_danger("[user] is trying to [fp_verb] [injectee] with [src]!"), \
 						span_userdanger("[user] is trying to [fp_verb] you with [src]!"))
-	if(!do_after(user, injectee, inject_wait, extra_checks = CALLBACK(injectee, /mob/living/proc/can_inject, user, user.zone_selected, penetrates)))
+	if(!do_after(user, injectee, inject_wait, extra_checks = CALLBACK(injectee, TYPE_PROC_REF(/mob/living, can_inject), user, user.zone_selected, penetrates)))
 		return
 	if(!vial.reagents.total_volume)
 		return

@@ -12,8 +12,6 @@
 	throw_range = 2 //No head bowling
 	px_x = 0
 	px_y = -8
-	stam_damage_coeff = 1
-	max_stamina_damage = 100
 	wound_resistance = 5
 	disabled_wound_penalty = 25
 	grind_results = null
@@ -29,13 +27,22 @@
 
 	bodypart_flags = STOCK_BP_FLAGS_HEAD
 
+	amputation_point = "neck"
+	encased = "skull"
+	artery_name = "carotid artery"
+	cavity_name = "cranial"
+
+	minimum_break_damage = 30
+
 	var/mob/living/brain/brainmob //The current occupant.
-	var/obj/item/organ/internal/brain/brain //The brain organ
-	var/obj/item/organ/internal/eyes/eyes
-	var/obj/item/organ/internal/ears/ears
-	var/obj/item/organ/internal/tongue/tongue
+	var/obj/item/organ/brain/brain //The brain organ
+	var/obj/item/organ/eyes/eyes
+	var/obj/item/organ/ears/ears
+	var/obj/item/organ/tongue/tongue
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
+	///Render sclera for this species?
+	var/eye_sclera = FALSE
 
 	/// Do we show the information about missing organs upon being examined? Defaults to TRUE, useful for Dullahan heads.
 	var/show_organs_on_examine = TRUE
@@ -69,8 +76,6 @@
 	var/facial_hair_hidden
 	///Draw this head as "debrained"
 	VAR_PROTECTED/show_debrained = FALSE
-
-
 
 	var/lip_style
 	var/lip_color = "white"
@@ -150,32 +155,24 @@
 		return FALSE
 	return ..()
 
-/obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/head/drop_contents(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
 	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
+			var/obj/item/organ/brain/old_brain = brain // I am so scared of order of operations weirdness with brains, so this is how things are being done.
+			remove_organ(brain)
 			if(user)
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
-			if(brainmob)
-				brainmob.container = null
-				brainmob.forceMove(brain)
-				brain.brainmob = brainmob
-				brainmob = null
 			if(violent_removal && prob(rand(80, 100))) //ghetto surgery can damage the brain.
 				to_chat(user, span_warning("[brain] was damaged in the process!"))
-				brain.setOrganDamage(brain.maxHealth)
-			brain.forceMove(head_turf)
-			brain = null
+				old_brain.setOrganDamage(brain.maxHealth)
+			old_brain.forceMove(head_turf)
 			update_icon_dropped()
 		else
 			if(istype(head_item, /obj/item/reagent_containers/pill))
 				for(var/datum/action/item_action/hands_free/activate_pill/pill_action in head_item.actions)
 					qdel(pill_action)
-			else if(istype(head_item, /obj/item/organ))
-				var/obj/item/organ/organ = head_item
-				if(organ.organ_flags & ORGAN_UNREMOVABLE)
-					continue
-			head_item.forceMove(head_turf)
+
 	eyes = null
 	ears = null
 	tongue = null
@@ -228,7 +225,7 @@
 				. += debrain_overlay
 			else
 				var/datum/sprite_accessory/sprite2 = GLOB.hairstyles_list[hair_style]
-				if(sprite2 && (HAIR in species_flags_list))
+				if(sprite2 && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 					var/image/hair_overlay = image(sprite2.icon, "[sprite2.icon_state]", -HAIR_LAYER, SOUTH)
 					hair_overlay.color = hair_color
 					hair_overlay.alpha = hair_alpha
@@ -252,6 +249,11 @@
 					eye_right.color = eyes.eye_color_right
 				. += eye_left
 				. += eye_right
+				if(eye_sclera)
+					var/image/sclera = image(eyes_icon_file, "eyes_sclera", -BODY_LAYER)
+					sclera.color = eyes.sclera_color
+					. += sclera
+
 			else
 				. += image(eyes_icon_file, "eyes_missing_both", -BODY_LAYER, SOUTH)
 	else
@@ -264,7 +266,7 @@
 		if(show_debrained)
 			. += mutable_appearance('icons/mob/human_face.dmi', "debrained", HAIR_LAYER)
 
-		else if(!hair_hidden && hair_overlay && (HAIR in species_flags_list))
+		else if(!hair_hidden && hair_overlay && ((HAIR in species_flags_list) || (NONHUMANHAIR in species_flags_list)))
 			hair_overlay.alpha = hair_alpha
 			. += hair_overlay
 			if(hair_gradient_overlay)
@@ -319,7 +321,7 @@
 	limb_id = SPECIES_MONKEY
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	is_dimorphic = FALSE
 
 /obj/item/bodypart/head/alien

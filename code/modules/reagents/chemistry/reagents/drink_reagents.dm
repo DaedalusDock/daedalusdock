@@ -142,7 +142,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/banana/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	var/obj/item/organ/internal/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
 	if((liver && HAS_TRAIT(liver, TRAIT_COMEDY_METABOLISM)) || ismonkey(M))
 		M.heal_bodypart_damage(1 * REM * delta_time, 1 * REM * delta_time, 0)
 		. = TRUE
@@ -175,7 +175,6 @@
 
 /datum/reagent/consumable/laughter/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	M.emote("laugh")
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "chemical_laughter", /datum/mood_event/chemical_laughter)
 	..()
 
 /datum/reagent/consumable/superlaughter
@@ -190,7 +189,6 @@
 	if(DT_PROB(16, delta_time))
 		M.visible_message(span_danger("[M] bursts out into a fit of uncontrollable laughter!"), span_userdanger("You burst out in a fit of uncontrollable laughter!"))
 		M.Stun(5)
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "chemical_laughter", /datum/mood_event/chemical_superlaughter)
 	..()
 
 /datum/reagent/consumable/potato_juice
@@ -494,7 +492,7 @@
 	REMOVE_TRAIT(L, TRAIT_DOUBLE_TAP, type)
 	if(current_cycle > 10)
 		to_chat(L, span_warning("You feel kinda tired as your sugar rush wears off..."))
-		L.adjustStaminaLoss(min(80, current_cycle * 3))
+		L.stamina.adjust(-1 * min(80, current_cycle * 3))
 		L.adjust_drowsyness(current_cycle)
 	..()
 
@@ -677,7 +675,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/tonic/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjust_timed_status_effect(10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
+	M.adjust_timed_status_effect(-10 SECONDS * REM * delta_time, /datum/status_effect/dizziness)
 	M.adjust_drowsyness(-3 * REM * delta_time)
 	M.AdjustSleeping(-40 * REM * delta_time)
 	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
@@ -795,7 +793,7 @@
 	M.adjustToxLoss(-0.5 * REM * delta_time, 0)
 	M.adjustOxyLoss(-0.5 * REM * delta_time, 0)
 	if(M.nutrition && (M.nutrition - 2 > 0))
-		var/obj/item/organ/internal/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
+		var/obj/item/organ/liver/liver = M.getorganslot(ORGAN_SLOT_LIVER)
 		if(!(HAS_TRAIT(liver, TRAIT_MEDICAL_METABOLISM)))
 			// Drains the nutrition of the holder. Not medical doctors though, since it's the Doctor's Delight!
 			M.adjust_nutrition(-2 * REM * delta_time)

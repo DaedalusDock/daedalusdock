@@ -1,3 +1,46 @@
+GLOBAL_LIST_INIT(job_display_order, list(
+	/datum/job/captain,
+	/datum/job/head_of_personnel,
+	/datum/job/head_of_security,
+	/datum/job/warden,
+	/datum/job/security_officer,
+	/datum/job/detective,
+	/datum/job/prisoner,
+	// Engineeering
+	/datum/job/chief_engineer,
+	/datum/job/station_engineer,
+	/datum/job/atmospheric_technician,
+	// Medical
+	/datum/job/chief_medical_officer,
+	/datum/job/doctor,
+	/datum/job/paramedic,
+	/datum/job/chemist,
+	/datum/job/virologist,
+	/datum/job/psychologist,
+	// Science
+	/datum/job/research_director,
+	/datum/job/scientist,
+	/datum/job/roboticist,
+	/datum/job/geneticist,
+	// Supply
+	/datum/job/quartermaster,
+	/datum/job/cargo_technician,
+	/datum/job/shaft_miner,
+	// Other
+	/datum/job/bartender,
+	/datum/job/botanist,
+	/datum/job/cook,
+	/datum/job/chaplain,
+	/datum/job/curator,
+	/datum/job/janitor,
+	/datum/job/lawyer,
+	/datum/job/clown,
+	/datum/job/mime,
+	/datum/job/assistant,
+	/datum/job/ai,
+	/datum/job/cyborg
+))
+
 /datum/job
 	/// The name of the job , used for preferences, bans and more. Make sure you know what you're doing before changing this.
 	var/title = "NOPE"
@@ -36,7 +79,7 @@
 	var/supervisors = ""
 
 	/// Selection screen color
-	var/selection_color = "#ffffff"
+	var/selection_color = "#515151"
 
 	/// What kind of mob type joining players with this job as their assigned role are spawned as.
 	var/spawn_type = /mob/living/carbon/human
@@ -71,8 +114,6 @@
 
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
-
-	var/display_order = JOB_DISPLAY_ORDER_DEFAULT
 
 	var/bounty_types = CIV_JOB_BASIC
 
@@ -124,6 +165,9 @@
 	///RPG job names, for the memes
 	var/rpg_title
 
+	/// What company can employ this job? First index is default
+	var/list/employers = list()
+
 
 /datum/job/New()
 	. = ..()
@@ -159,7 +203,7 @@
 	for(var/trait in mind_traits)
 		ADD_TRAIT(spawned.mind, trait, JOB_TRAIT)
 
-	var/obj/item/organ/internal/liver/liver = spawned.getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = spawned.getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		for(var/trait in liver_traits)
 			ADD_TRAIT(liver, trait, JOB_TRAIT)
@@ -195,24 +239,21 @@
 /mob/living/proc/on_job_equipping(datum/job/equipping)
 	return
 
-/mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref) //PARIAH EDIT CHANGE
+/mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref)
 	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
 	bank_account.payday(STARTING_PAYCHECKS, TRUE)
 	account_id = bank_account.account_id
-
-	dress_up_as_job(equipping, FALSE, used_pref) //PARIAH EDIT CHANGE
-
 	bank_account.replaceable = FALSE
-	dress_up_as_job(equipping)
 
+	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
 
-/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref) //PARIAH EDIT CHANGE
+/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref, use_loadout = FALSE)
 	//Find job title in the first list, then pick the outfit based on species.
 	if(!equipping.outfits)
-		dna.species.pre_equip_species_outfit(equipping, src, visual_only)
+		dna.species.pre_equip_species_outfit(null, src, visual_only)
 		return//for jobs that don't come with any equipment or load outfits differently
 
 	var/species2try = dna.species.job_outfit_type || dna.species.id //Uses the job_outfit_type of the species, if possible.
@@ -223,14 +264,18 @@
 		outfit2wear = /datum/outfit/job//Emergency fallback that equips the generic "job outfit". This shouldn't happen unless something is wrong.
 		stack_trace("[equipping] has no valid outfits in its list.")
 
-	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
-	equip_outfit_and_loadout(outfit2wear, used_pref, visual_only, equipping) //PARIAH EDIT CHANGE
+	outfit2wear = new outfit2wear()
+	dna.species.pre_equip_species_outfit(outfit2wear, src, visual_only)
+	if(use_loadout)
+		equip_outfit_and_loadout(outfit2wear, used_pref, visual_only, equipping)
+	else
+		equipOutfit(outfit2wear, visual_only)
 
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
 	if(H && GLOB.announcement_systems.len)
 		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/_addtimer, CALLBACK(pick(GLOB.announcement_systems), /obj/machinery/announcement_system/proc/announce, "NEWHEAD", H.real_name, H.job, channels), 1))
+		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
@@ -381,8 +426,6 @@
 /// Returns an atom where the mob should spawn in.
 /datum/job/proc/get_roundstart_spawn_point()
 	if(random_spawns_possible)
-		if(HAS_TRAIT(SSstation, STATION_TRAIT_LATE_ARRIVALS))
-			return get_latejoin_spawn_point()
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_RANDOM_ARRIVALS))
 			return get_safe_random_station_turf(typesof(/area/station/hallway)) || get_latejoin_spawn_point()
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
@@ -396,10 +439,8 @@
 			return hangover_spawn_point || get_latejoin_spawn_point()
 	if(length(GLOB.jobspawn_overrides[title]))
 		return pick(GLOB.jobspawn_overrides[title])
-	var/obj/effect/landmark/start/spawn_point = get_default_roundstart_spawn_point()
-	if(!spawn_point) //if there isn't a spawnpoint send them to latejoin, if there's no latejoin go yell at your mapper
-		return get_latejoin_spawn_point()
-	return spawn_point
+
+	return get_latejoin_spawn_point()
 
 
 /// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.
@@ -446,7 +487,7 @@
 
 
 /mob/living/carbon/human/apply_prefs_job(client/player_client, datum/job/job)
-	var/fully_randomize = GLOB.current_anonymous_theme || player_client.prefs.should_be_random_hardcore(job, player_client.mob.mind) || is_banned_from(player_client.ckey, "Appearance")
+	var/fully_randomize = GLOB.current_anonymous_theme || is_banned_from(player_client.ckey, "Appearance")
 	if(!player_client)
 		return // Disconnected while checking for the appearance ban.
 
@@ -470,8 +511,6 @@
 			fully_replace_character_name(null, GLOB.current_anonymous_theme.anonymous_name(src))
 	else
 		var/is_antag = (player_client.mob.mind in GLOB.pre_setup_antags)
-		if(require_human)
-			player_client.prefs.randomise["species"] = FALSE
 		player_client.prefs.safe_transfer_prefs_to(src, TRUE, is_antag)
 		if(require_human && !ishumanbasic(src))
 			set_species(/datum/species/human)
@@ -499,7 +538,7 @@
 		var/organic_name
 		if(GLOB.current_anonymous_theme)
 			organic_name = GLOB.current_anonymous_theme.anonymous_name(src)
-		else if(player_client.prefs.read_preference(/datum/preference/choiced/random_name) == RANDOM_ENABLED || CONFIG_GET(flag/force_random_names) || is_banned_from(player_client.ckey, "Appearance"))
+		else if(CONFIG_GET(flag/force_random_names) || is_banned_from(player_client.ckey, "Appearance"))
 			if(!player_client)
 				return // Disconnected while checking the appearance ban.
 

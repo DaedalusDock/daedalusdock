@@ -156,7 +156,7 @@
 	projectile.preparePixelProjectile(target, mod.wearer)
 	projectile.firer = mod.wearer
 	playsound(src, 'sound/mecha/hydraulic.ogg', 25, TRUE)
-	INVOKE_ASYNC(projectile, /obj/projectile.proc/fire)
+	INVOKE_ASYNC(projectile, TYPE_PROC_REF(/obj/projectile, fire))
 	drain_power(use_power_cost)
 
 /obj/projectile/organ
@@ -186,26 +186,16 @@
 		organ = null
 		return
 	var/mob/living/carbon/human/organ_receiver = target
-	var/succeed = FALSE
-	if(organ_receiver.surgeries.len)
-		for(var/datum/surgery/procedure as anything in organ_receiver.surgeries)
-			if(procedure.location != organ.zone)
-				continue
-			if(!istype(procedure, /datum/surgery/organ_manipulation))
-				continue
-			var/datum/surgery_step/surgery_step = procedure.get_surgery_step()
-			if(!istype(surgery_step, /datum/surgery_step/manipulate_organs))
-				continue
-			succeed = TRUE
-			break
-	if(succeed)
-		var/list/organs_to_boot_out = organ_receiver.getorganslot(organ.slot)
-		for(var/obj/item/organ/organ_evacced as anything in organs_to_boot_out)
-			if(organ_evacced.organ_flags & ORGAN_UNREMOVABLE)
-				continue
-			organ_evacced.Remove(target)
-			organ_evacced.forceMove(get_turf(target))
-		organ.Insert(target)
+	var/obj/item/bodypart/BP = organ_receiver.get_bodypart(organ.zone)
+	if(!BP)
+		organ.forceMove(drop_location())
+		organ = null
+		return
+
+	if(BP.cavity)
+		forceMove(BP)
+		BP.add_cavity_item(organ)
 	else
 		organ.forceMove(drop_location())
+
 	organ = null

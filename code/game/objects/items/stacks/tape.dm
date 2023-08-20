@@ -12,7 +12,7 @@
 	max_amount = 5
 	resistance_flags = FLAMMABLE
 	grind_results = list(/datum/reagent/cellulose = 5)
-	splint_factor = 0.65
+	splint_slowdown = 4
 	merge_type = /obj/item/stack/sticky_tape
 	usesound = 'sound/items/duct_tape_rip.ogg'
 	var/list/conferred_embed = EMBED_HARMLESS
@@ -79,7 +79,7 @@
 		return
 	user.visible_message(span_notice("[user] begins wrapping [target] with [src]."), span_notice("You begin wrapping [target] with [src]."))
 	playsound(user, usesound, 50, TRUE)
-	if(do_after(user, target, 3 SECONDS))
+	if(do_after(user, target, 3 SECONDS, DO_PUBLIC, display = src))
 		use(1)
 		if(istype(target, /obj/item/clothing/gloves/fingerless))
 			var/obj/item/clothing/gloves/tackler/offbrand/O = new /obj/item/clothing/gloves/tackler/offbrand
@@ -105,7 +105,7 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to cover [victim]s mouth with [src]!"), \
 						span_userdanger("[user] is trying to cover your mouth with [src]!"))
-	if(do_after(user, victim, muzzle_delay))
+	if(do_after(user, victim, muzzle_delay, DO_PUBLIC, display = src))
 		if(!victim.wear_mask)
 			use(1)
 			victim.equip_to_slot_or_del(new tape_gag(victim), ITEM_SLOT_MASK)
@@ -121,7 +121,7 @@
 	playsound(loc, usesound, 30, TRUE, -2)
 	victim.visible_message(span_danger("[user] is trying to restrain [victim] with [src]!"), \
 							span_userdanger("[user] begins wrapping [src] around your wrists!"))
-	if(do_after(user, victim, handcuff_delay))
+	if(do_after(user, victim, handcuff_delay, DO_PUBLIC, display = src))
 		if(!victim.handcuffed)
 			use(1)
 			victim.set_handcuffed(new /obj/item/restraints/handcuffs/tape(victim))
@@ -141,7 +141,7 @@
 	icon_state = "tape_y"
 	prefix = "super sticky"
 	conferred_embed = EMBED_HARMLESS_SUPERIOR
-	splint_factor = 0.4
+	splint_slowdown = 6
 	merge_type = /obj/item/stack/sticky_tape/super
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/super
 
@@ -172,7 +172,7 @@
 	icon_state = "tape_w"
 	prefix = "surgical"
 	conferred_embed = list("embed_chance" = 30, "pain_mult" = 0, "jostle_pain_mult" = 0, "ignore_throwspeed_threshold" = TRUE)
-	splint_factor = 0.5
+	splint_slowdown = 3
 	custom_price = PAYCHECK_MEDIUM
 	merge_type = /obj/item/stack/sticky_tape/surgical
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical

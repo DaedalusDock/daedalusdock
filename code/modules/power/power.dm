@@ -10,7 +10,7 @@
 	name = null
 	icon = 'icons/obj/power.dmi'
 	anchored = TRUE
-	obj_flags = CAN_BE_HIT | ON_BLUEPRINTS
+	obj_flags = CAN_BE_HIT
 	var/datum/powernet/powernet = null
 	use_power = NO_POWER_USE
 	idle_power_usage = 0
@@ -27,9 +27,15 @@
 	///cable layer to which the machine is connected
 	var/machinery_layer = MACHINERY_LAYER_1
 
+/obj/machinery/power/Initialize(mapload)
+	. = ..()
+	if(isturf(loc))
+		var/turf/turf_loc = loc
+		turf_loc.add_blueprints_preround(src)
+
 /obj/machinery/power/Destroy()
 	disconnect_from_network()
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/update_cable_icons_on_turf, get_turf(src)), 3) //lol redstone wires
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(update_cable_icons_on_turf), get_turf(src)), 3) //lol redstone wires
 	return ..()
 
 ///////////////////////////////

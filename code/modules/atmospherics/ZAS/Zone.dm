@@ -89,7 +89,7 @@ Class Procs:
 		SSzas.active_fire_zones |= src
 		if(fuel)
 			fuel_objs += fuel
-			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, .proc/handle_fuel_del)
+			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, PROC_REF(handle_fuel_del))
 	T.update_graphic(air.graphic)
 
 	if(T.atmos_sensitive_contents)
@@ -168,7 +168,7 @@ Class Procs:
 	atmos_sensitive_contents = null
 	#ifdef ZASDBG
 	for(var/turf/T as anything in contents)
-		if(!T.simulated)
+		if(T.simulated)
 			T.dbg(zasdbgovl_invalid_zone)
 	#endif
 
@@ -183,13 +183,15 @@ Class Procs:
 	for(var/turf/T as anything in contents)
 		if(!T.simulated)
 			continue
-		T.update_graphic(graphic_remove = air.graphic) //we need to remove the overlays so they're not doubled when the zone is rebuilt
-		#ifdef ZASDBG
-		//T.dbg(invalid_zone)
-		#endif
+		remove_turf(T)
+		CHECK_TICK
+
+	for(var/turf/T as anything in contents)
+		if(!T.simulated)
+			continue
+
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
 		SSzas.mark_for_update(T)
-
 		CHECK_TICK
 
 ///Assumes a given gas mixture, dividing it amongst the zone.

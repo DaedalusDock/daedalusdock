@@ -12,6 +12,8 @@
 	armor = list(MELEE = 50, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	max_integrity = 200
 	integrity_failure = 0.25
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	///Reference to the currently logged in user.
 	var/datum/bank_account/current_user
 	///How much paper is contained within the newscaster?
@@ -596,7 +598,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			playsound(loc, 'sound/machines/twobeep_high.ogg', 75, TRUE)
 		alert = TRUE
 		update_appearance()
-		addtimer(CALLBACK(src, .proc/remove_alert), ALERT_DELAY, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, PROC_REF(remove_alert)), ALERT_DELAY, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	else if(!channel && update_alert)
 		say("Attention! Wanted issue distributed!")

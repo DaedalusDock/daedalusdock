@@ -192,29 +192,34 @@
 			O.emp_act(severity)
 
 /obj/item/gun/afterattack_secondary(mob/living/victim, mob/living/user, params)
-	if(!isliving(victim) || !IN_GIVEN_RANGE(user, victim, GUNPOINT_SHOOTER_STRAY_RANGE))
-		return ..() //if they're out of range, just shootem.
+	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(!isliving(victim))
+		return
 	if(!can_hold_up)
-		return ..()
-	var/datum/component/gunpoint/gunpoint_component = user.GetComponent(/datum/component/gunpoint)
-	if (gunpoint_component)
-		if(gunpoint_component.target == victim)
-			return ..() //we're already holding them up, shoot that mans instead of complaining
-		to_chat(user, span_warning("You are already holding someone up!"))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
+
+	if(user.gunpoint)
+		if(user.gunpoint.target == victim)
+			return
+		user.gunpoint.register_to_target(victim)
+		return
+
 	if (user == victim)
 		to_chat(user,span_warning("You can't hold yourself up!"))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
 
-	user.AddComponent(/datum/component/gunpoint, victim, src)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	user.gunpoint = new(null, user, victim, src)
+	return
 
 /obj/item/gun/afterattack(atom/target, mob/living/user, flag, params)
 	..()
+	if(user.use_gunpoint)
+		afterattack_secondary(target, user, params)
+		return TRUE //Cancel the shot!
 	return fire_gun(target, user, flag, params)
 
 /obj/item/gun/proc/fire_gun(atom/target, mob/living/user, flag, params)
-	if(QDELETED(target))
+	if(QDELETED(target) || !target.x) //deleted or not on the map
 		return
 	if(firing_burst)
 		return

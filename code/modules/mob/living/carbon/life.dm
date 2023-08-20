@@ -7,14 +7,11 @@
 		damageoverlaytemp = 0
 		update_damage_hud()
 
-	if(IS_IN_STASIS(src))
-		. = ..()
-		reagents.handle_stasis_chems(src, delta_time, times_fired)
-	else
-		//Reagent processing needs to come before breathing, to prevent edge cases.
+	. = ..()
+	chem_effects.Cut()
+	if(!IS_IN_STASIS(src))
 		handle_organs(delta_time, times_fired)
 
-		. = ..()
 		if(QDELETED(src))
 			return
 
@@ -27,9 +24,7 @@
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
 	else
-		var/bprv = handle_bodyparts(delta_time, times_fired)
-		if(bprv & BODYPART_LIFE_UPDATE_HEALTH)
-			update_stamina() //needs to go before updatehealth to remove stamcrit
+		if(handle_bodyparts(delta_time, times_fired))
 			updatehealth()
 
 	check_cremation(delta_time, times_fired)
@@ -48,8 +43,8 @@
 //Start of a breath chain, calls breathe()
 /mob/living/carbon/handle_breathing(delta_time, times_fired)
 	var/next_breath = 4
-	var/obj/item/organ/internal/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
-	var/obj/item/organ/internal/heart/H = getorganslot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
 	if(L)
 		if(L.damage > L.high_threshold)
 			next_breath--
@@ -59,10 +54,6 @@
 
 	if((times_fired % next_breath) == 0 || failed_last_breath)
 		breathe(delta_time, times_fired) //Breathe per 4 ticks if healthy, down to 2 if our lungs or heart are damaged, unless suffocating
-		if(failed_last_breath)
-			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "suffocation", /datum/mood_event/suffocation)
-		else
-			SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "suffocation")
 	else
 		if(istype(loc, /obj/))
 			var/obj/location_as_object = loc
@@ -70,8 +61,8 @@
 
 //Second link in a breath chain, calls check_breath()
 /mob/living/carbon/proc/breathe(delta_time, times_fired)
-	var/obj/item/organ/internal/lungs = getorganslot(ORGAN_SLOT_LUNGS)
-	if(reagents.has_reagent(/datum/reagent/toxin/lexorin, needs_metabolizing = TRUE))
+	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
+	if(CHEM_EFFECT_MAGNITUDE(src, CE_RESPIRATORY_FAILURE)) //TODO: Replace with bay's proper CE_BREATHLOSS
 		return
 
 	SEND_SIGNAL(src, COMSIG_CARBON_PRE_BREATHE)
@@ -83,7 +74,7 @@
 	var/datum/gas_mixture/breath
 
 	if(!getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-		if(health <= HEALTH_THRESHOLD_FULLCRIT || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_FAILING))
+		if(health <= crit_threshold || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_FAILING))
 			losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
 		else if(health <= crit_threshold)
@@ -155,15 +146,15 @@
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
 
-	var/obj/item/organ/internal/lungs = getorganslot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
 	if(!lungs)
-		adjustOxyLoss(2)
+		adjustOxyLoss(4)
 
 	//CRIT
 	if(!breath || (breath.total_moles == 0) || !lungs)
 		if(reagents.has_reagent(/datum/reagent/medicine/epinephrine, needs_metabolizing = TRUE) && lungs)
 			return FALSE
-		adjustOxyLoss(1)
+		adjustOxyLoss(2)
 
 		failed_last_breath = TRUE
 		throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
@@ -185,8 +176,6 @@
 
 	//OXYGEN
 	if(O2_partialpressure < safe_oxy_min) //Not enough oxygen
-		if(prob(20))
-			emote("gasp")
 		if(O2_partialpressure > 0)
 			var/ratio = 1 - O2_partialpressure/safe_oxy_min
 			adjustOxyLoss(min(5*ratio, 3))
@@ -235,7 +224,6 @@
 		var/SA_partialpressure = (breath_gases[GAS_N2O]/breath.total_moles)*breath_pressure
 		if(SA_partialpressure > SA_para_min)
 			throw_alert(ALERT_TOO_MUCH_N2O, /atom/movable/screen/alert/too_much_n2o)
-			SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 			Unconscious(60)
 			if(SA_partialpressure > SA_sleep_min)
 				Sleeping(max(AmountSleeping() + 40, 200))
@@ -243,79 +231,11 @@
 			clear_alert(ALERT_TOO_MUCH_N2O)
 			if(prob(20))
 				emote(pick("giggle","laugh"))
-			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "chemical_euphoria", /datum/mood_event/chemical_euphoria)
 		else
-			SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 			clear_alert(ALERT_TOO_MUCH_N2O)
 	else
-		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "chemical_euphoria")
 		clear_alert(ALERT_TOO_MUCH_N2O)
 
-	//BZ (Facepunch port of their Agent B)
-	/*
-	if(breath_gases[/datum/gas/bz])
-		var/bz_partialpressure = (breath_gases[/datum/gas/bz][MOLES]/breath.get_moles())*breath_pressure
-		if(bz_partialpressure > 1)
-			hallucination += 10
-		else if(bz_partialpressure > 0.01)
-			hallucination += 5
-	*/
-	//NITRIUM
-	/*
-	if(breath_gases[/datum/gas/nitrium])
-		var/nitrium_partialpressure = (breath_gases[/datum/gas/nitrium][MOLES]/breath.get_moles())*breath_pressure
-		if(nitrium_partialpressure > 0.5)
-			adjustFireLoss(nitrium_partialpressure * 0.15)
-		if(nitrium_partialpressure > 5)
-			adjustToxLoss(nitrium_partialpressure * 0.05)
-
-	//FREON
-	if(breath_gases[/datum/gas/freon])
-		var/freon_partialpressure = (breath_gases[/datum/gas/freon][MOLES]/breath.get_moles())*breath_pressure
-		adjustFireLoss(freon_partialpressure * 0.25)
-
-	//MIASMA
-	if(breath_gases[/datum/gas/miasma])
-		var/miasma_partialpressure = (breath_gases[/datum/gas/miasma][MOLES]/breath.get_moles())*breath_pressure
-
-		if(prob(1 * miasma_partialpressure))
-			var/datum/disease/advance/miasma_disease = new /datum/disease/advance/random(2,3)
-			miasma_disease.name = "Unknown"
-			ForceContractDisease(miasma_disease, TRUE, TRUE)
-
-		//Miasma side effects
-		switch(miasma_partialpressure)
-			if(0.25 to 5)
-				// At lower pp, give out a little warning
-				SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "smell")
-				if(prob(5))
-					to_chat(src, span_notice("There is an unpleasant smell in the air."))
-			if(5 to 20)
-				//At somewhat higher pp, warning becomes more obvious
-				if(prob(15))
-					to_chat(src, span_warning("You smell something horribly decayed inside this room."))
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "smell", /datum/mood_event/disgust/bad_smell)
-			if(15 to 30)
-				//Small chance to vomit. By now, people have internals on anyway
-				if(prob(5))
-					to_chat(src, span_warning("The stench of rotting carcasses is unbearable!"))
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "smell", /datum/mood_event/disgust/nauseating_stench)
-					vomit()
-			if(30 to INFINITY)
-				//Higher chance to vomit. Let the horror start
-				if(prob(25))
-					to_chat(src, span_warning("The stench of rotting carcasses is unbearable!"))
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "smell", /datum/mood_event/disgust/nauseating_stench)
-					vomit()
-			else
-				SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "smell")
-
-	//Clear all moods if no miasma at all
-	else
-		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "smell")
-
-	breath.garbage_collect()
-	*/
 	//BREATH TEMPERATURE
 	handle_breath_temperature(breath)
 
@@ -341,25 +261,19 @@
 	return
 
 /mob/living/carbon/proc/handle_bodyparts(delta_time, times_fired)
-	if(stam_regen_start_time <= world.time)
-		if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
-			. |= BODYPART_LIFE_UPDATE_HEALTH //make sure we remove the stamcrit
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
 		. |= limb.on_life(delta_time, times_fired)
 
 /mob/living/carbon/proc/handle_organs(delta_time, times_fired)
 	if(stat == DEAD)
-		if(reagents.has_reagent(/datum/reagent/toxin/formaldehyde, 1) || reagents.has_reagent(/datum/reagent/cryostylane)) // No organ decay if the body contains formaldehyde.
+		if(CHEM_EFFECT_MAGNITUDE(src, CE_ORGAN_PRESERVATION)) // No organ decay if the body contains formaldehyde.
 			return
-		for(var/obj/item/organ/internal/organ as anything in internal_organs)
+		for(var/obj/item/organ/organ as anything in processing_organs)
 			organ.on_death(delta_time, times_fired) //Needed so organs decay while inside the body.
 		return
 
-	// NOTE: internal_organs_slot is sorted by GLOB.organ_process_order on insertion
-	for(var/slot in internal_organs_slot)
-		// We don't use getorganslot here because we know we have the organ we want, since we're iterating the list containing em already
-		// This code is hot enough that it's just not worth the time
-		var/obj/item/organ/internal/organ = internal_organs_slot[slot]
+	// NOTE: processing_organs is sorted by GLOB.organ_process_order on insertion
+	for(var/obj/item/organ/organ as anything in processing_organs)
 		if(organ?.owner) // This exist mostly because reagent metabolization can cause organ reshuffling
 			organ.on_life(delta_time, times_fired)
 
@@ -434,19 +348,28 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /mob/living/carbon/handle_status_effects(delta_time, times_fired)
 	..()
 
-	var/restingpwr = 0.5 + 2 * resting
+	var/restingpwr = 1 + 2 * resting
 
-	if(drowsyness)
-		adjust_drowsyness(-1 * restingpwr * delta_time)
-		blur_eyes(1 * delta_time)
-		if(DT_PROB(2.5, delta_time))
-			AdjustSleeping(10 SECONDS)
+	if (drowsyness > 0)
+		adjust_drowsyness(-1 * restingpwr)
+		blur_eyes(1)
+		if(drowsyness > 10)
+			var/zzzchance = min(5, 5*drowsyness/30)
+			if((prob(zzzchance) || drowsyness >= 60))
+				if(stat == CONSCIOUS)
+					to_chat(src, span_notice("You are about to fall asleep..."))
+				Sleeping(5 SECONDS)
 
 	if(silent)
 		silent = max(silent - (0.5 * delta_time), 0)
 
 	if(hallucination)
 		handle_hallucinations(delta_time, times_fired)
+
+	if(stasis_level > 1 && drowsyness < stasis_level * 4)
+		drowsyness += min(stasis_level, 3)
+		if(stat < UNCONSCIOUS && prob(1))
+			to_chat(src, span_notice("You feel slow and sluggish..."))
 
 /// Base carbon environment handler, adds natural stabilization
 /mob/living/carbon/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)
@@ -587,7 +510,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /mob/living/carbon/get_fullness()
 	var/fullness = nutrition
 
-	var/obj/item/organ/internal/stomach/belly = getorganslot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = getorganslot(ORGAN_SLOT_STOMACH)
 	if(!belly) //nothing to see here if we do not have a stomach
 		return fullness
 
@@ -605,7 +528,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	. = ..()
 	if(.)
 		return
-	var/obj/item/organ/internal/stomach/belly = getorganslot(ORGAN_SLOT_STOMACH)
+	var/obj/item/organ/stomach/belly = getorganslot(ORGAN_SLOT_STOMACH)
 	if(!belly)
 		return FALSE
 	return belly.reagents.has_reagent(reagent, amount, needs_metabolizing)
@@ -620,7 +543,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(!dna)
 		return
 
-	var/obj/item/organ/internal/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		return
 
@@ -634,7 +557,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	adjustOrganLoss(pick(ORGAN_SLOT_HEART, ORGAN_SLOT_LUNGS, ORGAN_SLOT_STOMACH, ORGAN_SLOT_EYES, ORGAN_SLOT_EARS), 0.5* delta_time)
 
 /mob/living/carbon/proc/undergoing_liver_failure()
-	var/obj/item/organ/internal/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
+	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if(liver?.organ_flags & ORGAN_FAILING)
 		return TRUE
 
@@ -709,7 +632,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /mob/living/carbon/proc/can_heartattack()
 	if(!needs_heart())
 		return FALSE
-	var/obj/item/organ/internal/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(!heart || (heart.organ_flags & ORGAN_SYNTHETIC))
 		return FALSE
 	return TRUE
@@ -729,7 +652,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
  * related situations (i.e not just cardiac arrest)
  */
 /mob/living/carbon/proc/undergoing_cardiac_arrest()
-	var/obj/item/organ/internal/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(istype(heart) && heart.beating)
 		return FALSE
 	else if(!needs_heart())
@@ -740,7 +663,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(!can_heartattack())
 		return FALSE
 
-	var/obj/item/organ/internal/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(!istype(heart))
 		return
 

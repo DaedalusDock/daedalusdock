@@ -46,6 +46,10 @@
 		mind.set_current(null)
 	return ..()
 
+/mob/New()
+	// This needs to happen IMMEDIATELY. I'm sorry :(
+	GenerateTag()
+	return ..()
 
 /**
  * Intialize a mob
@@ -81,6 +85,10 @@
 		AA.onNewMob(src)
 	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
 	. = ..()
+
+	if(ispath(ai_controller))
+		ai_controller = new ai_controller(src)
+
 	update_config_movespeed()
 	initialize_actionspeed()
 	update_movespeed(TRUE)
@@ -93,6 +101,7 @@
  * This is simply "mob_"+ a global incrementing counter that goes up for every mob
  */
 /mob/GenerateTag()
+	. = ..()
 	tag = "mob_[next_mob_id++]"
 
 /**
@@ -122,7 +131,7 @@
 /**
  * Show a message to this mob (visual or audible)
  */
-/mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+/mob/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	if(!client)
 		return
 
@@ -177,6 +186,13 @@
 	if(!islist(ignored_mobs))
 		ignored_mobs = list(ignored_mobs)
 	var/list/hearers = get_hearers_in_view(vision_distance, src) //caches the hearers and then removes ignored mobs.
+
+	#ifdef ZMIMIC_MULTIZ_SPEECH
+	if(blind_message && ismovable(src) && src:bound_overlay)
+		hearers += get_hearers_in_view(vision_distance, src:bound_overlay)
+		hearers -= src:bound_overlay
+	#endif
+
 	hearers -= ignored_mobs
 
 	if(self_message)
@@ -232,15 +248,27 @@
  */
 /atom/proc/audible_message(message, deaf_message, hearing_distance = DEFAULT_MESSAGE_RANGE, self_message, audible_message_flags = NONE, separation = " ") //PARIAH EDIT ADDITION - Better emotes
 	var/list/hearers = get_hearers_in_view(hearing_distance, src)
+
+	#ifdef ZMIMIC_MULTIZ_SPEECH
+	if(ismovable(src) && src:bound_overlay)
+		hearers += get_hearers_in_view(hearing_distance, src:bound_overlay)
+		hearers -= src:bound_overlay
+	#endif
+
 	if(self_message)
 		hearers -= src
+
 	var/raw_msg = message
 	if(audible_message_flags & EMOTE_MESSAGE)
 		message = "<span class='emote'><b>[src]</b>[separation][message]</span>" //PARIAH EDIT - Better emotes
-	for(var/mob/M in hearers)
-		if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
-			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)
-		M.show_message(message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
+	for(var/atom/movable/AM as anything in hearers)
+		if(istype(AM, /obj))
+			continue
+		if(ismob(AM))
+			var/mob/M = AM
+			if(audible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, audible_message_flags) && M.can_hear())
+				M.create_chat_message(src, raw_message = raw_msg, runechat_flags = audible_message_flags)
+		AM.show_message(message, MSG_AUDIBLE, deaf_message, MSG_VISUAL)
 
 /**
  * Show a message to all mobs in earshot of this one
@@ -439,6 +467,10 @@
 	set name = "Examine"
 	set category = "IC"
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(run_examinate), examinify))
+
+/mob/proc/run_examinate(atom/examinify)
+
 	if(isturf(examinify) && !(sight & SEE_TURFS) && !(examinify in view(client ? client.view : world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
 		return
@@ -459,16 +491,16 @@
 		else
 			result = examinify.examine(src)
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
-			addtimer(CALLBACK(src, .proc/clear_from_recent_examines, ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
+			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
 
-			if(!isobserver(usr) && !(usr == examinify))
+			if(!isdead(usr) && !(usr == examinify))
 				var/list/can_see_target = viewers(usr)
 				for(var/mob/M as anything in viewers(4, usr))
 					if(!M.client)
 						continue
 					if(M in can_see_target)
-						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]"))
+						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]."))
 					else
 						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else
@@ -534,7 +566,7 @@
 	/// our current intent, so we can go back to it after touching
 	var/previous_combat_mode = combat_mode
 	set_combat_mode(FALSE)
-	INVOKE_ASYNC(examined_thing, /atom/proc/attack_hand, src)
+	INVOKE_ASYNC(examined_thing, TYPE_PROC_REF(/atom, attack_hand), src)
 	set_combat_mode(previous_combat_mode)
 	return TRUE
 
@@ -573,11 +605,11 @@
 	// check to see if their face is blocked or, if not, a signal blocks it
 	if(examined_mob.is_face_visible() && SEND_SIGNAL(src, COMSIG_MOB_EYECONTACT, examined_mob, TRUE) != COMSIG_BLOCK_EYECONTACT)
 		var/msg = span_smallnotice("You make eye contact with [examined_mob].")
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, src, msg), 3) // so the examine signal has time to fire and this will print after
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), src, msg), 3) // so the examine signal has time to fire and this will print after
 
 	if(!imagined_eye_contact && is_face_visible() && SEND_SIGNAL(examined_mob, COMSIG_MOB_EYECONTACT, src, FALSE) != COMSIG_BLOCK_EYECONTACT)
 		var/msg = span_smallnotice("[src] makes eye contact with you.")
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, examined_mob, msg), 3)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), examined_mob, msg), 3)
 
 /**
  * Point at an atom
@@ -596,16 +628,21 @@
 	set name = "Point To"
 	set category = "Object"
 
-	if(client && !(A in view(client.view, src)))
-		return FALSE
 	if(istype(A, /obj/effect/temp_visual/point))
 		return FALSE
 
-	point_at(A)
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(_pointed), A))
 
-	SEND_SIGNAL(src, COMSIG_MOB_POINTED, A)
+/// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
+/// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
+/mob/proc/_pointed(atom/pointing_at)
+	if(client && !(pointing_at in view(client.view, src)))
+		return FALSE
+
+	point_at(pointing_at)
+
+	SEND_SIGNAL(src, COMSIG_MOB_POINTED, pointing_at)
 	return TRUE
-
 /**
  * Called by using Activate Held Object with an empty hand/limb
  *
@@ -661,6 +698,10 @@
 	set category = "Object"
 	set src = usr
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_mode)))
+
+///proc version to finish /mob/verb/mode() execution. used in case the proc needs to be queued for the tick after its first called
+/mob/proc/execute_mode()
 	if(ismecha(loc))
 		return
 
@@ -745,7 +786,7 @@
  */
 /mob/Topic(href, href_list)
 	if(href_list["mach_close"])
-		var/t1 = text("window=[href_list["mach_close"]]")
+		var/t1 = "window=[href_list["mach_close"]]"
 		unset_machine()
 		src << browse(null, t1)
 
@@ -823,6 +864,8 @@
 	if(notransform)
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
+		return FALSE
+	if(HAS_TRAIT(src, TRAIT_CANNOTFACE))
 		return FALSE
 	return TRUE
 
@@ -1146,7 +1189,8 @@
 /mob/proc/update_mouse_pointer()
 	if(!client)
 		return
-	client.mouse_pointer_icon = initial(client.mouse_pointer_icon)
+	if(client.mouse_pointer_icon != initial(client.mouse_pointer_icon))//only send changes to the client if theyre needed
+		client.mouse_pointer_icon = initial(client.mouse_pointer_icon)
 	if(examine_cursor_icon && client.keys_held["Shift"]) //mouse shit is hardcoded, make this non hard-coded once we make mouse modifiers bindable
 		client.mouse_pointer_icon = examine_cursor_icon
 	if(istype(loc, /obj/vehicle/sealed))
@@ -1359,7 +1403,7 @@
 		UnregisterSignal(active_storage, COMSIG_PARENT_QDELETING)
 	active_storage = new_active_storage
 	if(active_storage)
-		RegisterSignal(active_storage, COMSIG_PARENT_QDELETING, .proc/active_storage_deleted)
+		RegisterSignal(active_storage, COMSIG_PARENT_QDELETING, PROC_REF(active_storage_deleted))
 
 /mob/proc/active_storage_deleted(datum/source)
 	SIGNAL_HANDLER

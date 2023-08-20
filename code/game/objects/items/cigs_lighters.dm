@@ -235,7 +235,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	lit = TRUE
 
-	if(!(flags_1 & INITIALIZED_1))
+	if(!initialized)
 		update_icon()
 		return
 
@@ -304,7 +304,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 
 	reagents.expose(smoker, INGEST, min(to_smoke / reagents.total_volume, 1))
-	var/obj/item/organ/internal/lungs/lungs = smoker.getorganslot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/lungs/lungs = smoker.getorganslot(ORGAN_SLOT_LUNGS)
 	if(lungs && !(lungs.organ_flags & ORGAN_SYNTHETIC))
 		var/smoker_resistance = HAS_TRAIT(smoker, TRAIT_SMOKER) ? 0.5 : 1
 		smoker.adjustOrganLoss(ORGAN_SLOT_LUNGS, lung_harm*smoker_resistance)
@@ -804,8 +804,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		span_warning("After a few attempts, [user] manages to light [src] - however, [user.p_they()] burn [user.p_their()] finger in the process."),
 		span_warning("You burn yourself while lighting the lighter!")
 	)
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "burnt_thumb", /datum/mood_event/burnt_thumb)
-
 
 /obj/item/lighter/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(lit && M.ignite_mob())

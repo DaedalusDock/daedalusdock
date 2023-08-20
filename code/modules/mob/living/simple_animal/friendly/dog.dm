@@ -29,7 +29,6 @@
 /mob/living/simple_animal/pet/dog/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "woofs happily!")
-	add_cell_sample()
 
 //Corgis and pugs are now under one dog subtype
 
@@ -51,9 +50,6 @@
 	var/shaved = FALSE
 	var/nofur = FALSE //Corgis that have risen past the material plane of existence.
 
-/mob/living/simple_animal/pet/dog/corgi/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CORGI, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /mob/living/simple_animal/pet/dog/corgi/Destroy()
 	QDEL_NULL(inventory_head)
 	QDEL_NULL(inventory_back)
@@ -70,10 +66,10 @@
 
 /mob/living/simple_animal/pet/dog/corgi/deadchat_plays(mode = ANARCHY_MODE, cooldown = 12 SECONDS)
 	. = AddComponent(/datum/component/deadchat_control/cardinal_movement, mode, list(
-		"speak" = CALLBACK(src, .proc/handle_automated_speech, TRUE),
-		"wear_hat" = CALLBACK(src, .proc/find_new_hat),
-		"drop_hat" = CALLBACK(src, .proc/drop_hat),
-		"spin" = CALLBACK(src, /mob.proc/emote, "spin")), cooldown, CALLBACK(src, .proc/stop_deadchat_plays))
+		"speak" = CALLBACK(src, PROC_REF(handle_automated_speech), TRUE),
+		"wear_hat" = CALLBACK(src, PROC_REF(find_new_hat)),
+		"drop_hat" = CALLBACK(src, PROC_REF(drop_hat)),
+		"spin" = CALLBACK(src, TYPE_PROC_REF(/mob, emote), "spin")), cooldown, CALLBACK(src, PROC_REF(stop_deadchat_plays)))
 
 	if(. == COMPONENT_INCOMPATIBLE)
 		return
@@ -134,9 +130,6 @@
 	collar_type = "pug"
 	held_state = "pug"
 
-/mob/living/simple_animal/pet/dog/pug/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_PUG, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /mob/living/simple_animal/pet/dog/pug/mcgriff
 	name = "McGriff"
 	desc = "This dog can tell something smells around here, and that something is CRIME!"
@@ -176,7 +169,7 @@
 /mob/living/simple_animal/pet/dog/corgi/Initialize(mapload)
 	. = ..()
 	regenerate_icons()
-	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items, /mob/living/.proc/should_strip)
+	AddElement(/datum/element/strippable, GLOB.strippable_corgi_items, TYPE_PROC_REF(/mob/living, should_strip))
 
 /mob/living/simple_animal/pet/dog/corgi/exoticcorgi/Initialize(mapload)
 		. = ..()
@@ -351,16 +344,16 @@ GLOBAL_LIST_INIT(strippable_corgi_items, create_strippable_list(list(
 	if(def_zone)
 		if(def_zone == BODY_ZONE_HEAD)
 			if(inventory_head)
-				armorval = inventory_head.armor.getRating(type)
+				armorval = inventory_head.returnArmor().getRating(type)
 		else
 			if(inventory_back)
-				armorval = inventory_back.armor.getRating(type)
+				armorval = inventory_back.returnArmor().getRating(type)
 		return armorval
 	else
 		if(inventory_head)
-			armorval += inventory_head.armor.getRating(type)
+			armorval += inventory_head.returnArmor().getRating(type)
 		if(inventory_back)
-			armorval += inventory_back.armor.getRating(type)
+			armorval += inventory_back.returnArmor().getRating(type)
 	return armorval*0.5
 
 /mob/living/simple_animal/pet/dog/corgi/attackby(obj/item/O, mob/user, params)
@@ -398,9 +391,6 @@ GLOBAL_LIST_INIT(strippable_corgi_items, create_strippable_list(list(
 		return
 	if(!item_to_add)
 		user.visible_message(span_notice("[user] pets [src]."), span_notice("You rest your hand on [src]'s head for a moment."))
-		if(flags_1 & HOLOGRAM_1)
-			return
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, src, /datum/mood_event/pet_animal, src)
 		return
 
 	if(user && !user.temporarilyRemoveItemFromInventory(item_to_add))

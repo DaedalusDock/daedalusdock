@@ -283,9 +283,6 @@
 	},
 /area/template_noop)
 "pY" = (
-/obj/machinery/computer/operating{
-	dir = 8
-	},
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -453,18 +450,6 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/turf/open/floor/holofloor{
-	icon_state = "white"
-	},
-/area/template_noop)
-"An" = (
-/obj/machinery/computer/operating{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/red,
-/obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
 /turf/open/floor/holofloor{
@@ -710,7 +695,7 @@
 /area/template_noop)
 "Qu" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/cautery,
 /obj/effect/turf_decal/tile/red{
 	dir = 1
@@ -855,7 +840,6 @@
 /area/template_noop)
 "Zq" = (
 /obj/structure/table/glass,
-/obj/item/surgical_drapes,
 /obj/item/razor,
 /obj/item/hemostat,
 /obj/effect/turf_decal/tile/red{
@@ -908,7 +892,7 @@ Ig
 (4,1,1) = {"
 gr
 tI
-An
+pY
 hQ
 jr
 NV

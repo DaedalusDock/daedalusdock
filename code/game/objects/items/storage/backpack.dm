@@ -14,6 +14,10 @@
 	desc = "You wear this on your back and put items into it."
 	icon_state = "backpack"
 	inhand_icon_state = "backpack"
+
+	stamina_damage = 0
+	stamina_cost = 0
+
 	lefthand_file = 'icons/mob/inhands/equipment/backpack_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/backpack_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
@@ -91,7 +95,7 @@
 	return (OXYLOSS)
 
 /obj/item/storage/backpack/santabag/proc/regenerate_presents()
-	addtimer(CALLBACK(src, .proc/regenerate_presents), 30 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(regenerate_presents)), 30 SECONDS)
 
 	var/mob/user = get(loc, /mob)
 	if(!istype(user))
@@ -441,10 +445,10 @@
 	new /obj/item/surgicaldrill(src)
 	new /obj/item/cautery(src)
 	new /obj/item/bonesetter(src)
-	new /obj/item/surgical_drapes(src)
 	new /obj/item/clothing/mask/surgical(src)
 	new /obj/item/razor(src)
 	new /obj/item/blood_filter(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/sec
 	name = "security duffel bag"
@@ -465,9 +469,9 @@
 	new /obj/item/bonesetter(src)
 	new /obj/item/surgicaldrill(src)
 	new /obj/item/cautery(src)
-	new /obj/item/surgical_drapes(src)
 	new /obj/item/clothing/mask/surgical(src)
 	new /obj/item/blood_filter(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/engineering
 	name = "industrial duffel bag"
@@ -555,12 +559,13 @@
 	new /obj/item/bonesetter(src)
 	new /obj/item/surgicaldrill(src)
 	new /obj/item/cautery(src)
-	new /obj/item/surgical_drapes(src)
 	new /obj/item/clothing/suit/straight_jacket(src)
 	new /obj/item/clothing/mask/muzzle(src)
 	new /obj/item/mmi/syndie(src)
 	new /obj/item/blood_filter(src)
 	new /obj/item/stack/medical/bone_gel(src)
+	new /obj/item/healthanalyzer/advanced(src)
+	new /obj/item/fixovein(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/ammo
 	name = "ammunition duffel bag"

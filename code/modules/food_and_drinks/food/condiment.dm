@@ -55,7 +55,7 @@
 	else
 		M.visible_message(span_warning("[user] attempts to feed [M] from [src]."), \
 			span_warning("[user] attempts to feed you from [src]."))
-		if(!do_after(user, M))
+		if(!do_after(user, M, 3 SECONDS))
 			return
 		if(!reagents || !reagents.total_volume)
 			return // The condiment might be empty after the delay.
@@ -315,8 +315,8 @@
 
 /obj/item/reagent_containers/food/condiment/pack/create_reagents(max_vol, flags)
 	. = ..()
-	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_REM_REAGENT), .proc/on_reagent_add, TRUE)
-	RegisterSignal(reagents, COMSIG_REAGENTS_DEL_REAGENT, .proc/on_reagent_del, TRUE)
+	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_add), TRUE)
+	RegisterSignal(reagents, COMSIG_REAGENTS_DEL_REAGENT, PROC_REF(on_reagent_del), TRUE)
 
 /obj/item/reagent_containers/food/condiment/pack/update_icon()
 	SHOULD_CALL_PARENT(FALSE)

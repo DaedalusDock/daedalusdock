@@ -141,7 +141,7 @@
 	name = "synthesized banana peel"
 	desc = "A synthetic banana peel."
 
-/obj/item/grown/bananapeel/specialpeel/ComponentInitialize()
+/obj/item/grown/bananapeel/specialpeel/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/slippery, 40)
 
@@ -164,7 +164,7 @@
 
 	animate(src, time = 1, pixel_z = 12, easing = ELASTIC_EASING)
 	animate(time = 1, pixel_z = 0, easing = BOUNCE_EASING)
-	addtimer(CALLBACK(src, .proc/explosive_ripening), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(explosive_ripening)), 3 SECONDS)
 	for(var/i in 1 to 32)
 		animate(color = (i % 2) ? "#ffffff": "#ff6739", time = 1, easing = QUAD_EASING)
 

@@ -54,7 +54,7 @@
 	random_color = FALSE
 
 
-/obj/item/screwdriver/drone/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file)
+/obj/item/screwdriver/drone/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, icon_file)
 	. = ..()
 	if(!isinhands)
 		return

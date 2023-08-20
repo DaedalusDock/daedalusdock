@@ -32,13 +32,13 @@
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT - 32 // 35°C max
 	bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT - 30 // -33°C min
 
-	external_organs = list(
-		/obj/item/organ/external/teshari_feathers = "Plain",
-		/obj/item/organ/external/teshari_ears = "None",
-		/obj/item/organ/external/teshari_body_feathers = "Plain",
-		/obj/item/organ/external/tail/teshari = "Default"
+	cosmetic_organs = list(
+		/obj/item/organ/teshari_feathers = "Plain",
+		/obj/item/organ/teshari_ears = "None",
+		/obj/item/organ/teshari_body_feathers = "Plain",
+		/obj/item/organ/tail/teshari = "Default"
 	)
-	mutantlungs = /obj/item/organ/internal/lungs/teshari
+	mutantlungs = /obj/item/organ/lungs/teshari
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/teshari,
@@ -47,6 +47,13 @@
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/teshari,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/teshari,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/teshari,
+	)
+
+	robotic_bodyparts = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/robot/surplus/teshari,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/robot/surplus/teshari,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/surplus/teshari,
+		BODY_ZONE_R_LEG= /obj/item/bodypart/leg/right/robot/surplus/teshari,
 	)
 
 #define TESH_BODY_COLOR "#DEB887" // Also in code\modules\client\preferences\species_features\teshari.dm

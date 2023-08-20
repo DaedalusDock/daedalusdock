@@ -11,7 +11,7 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_TOXINLOVER,
 	)
-	mutantlungs = /obj/item/organ/internal/lungs/slime
+	mutantlungs = /obj/item/organ/lungs/slime
 	meat = /obj/item/food/meat/slab/human/mutant/slime
 	exotic_blood = /datum/reagent/toxin/slimejelly
 	var/datum/action/innate/regenerate_limbs/regenerate_limbs
@@ -284,7 +284,7 @@
 	var/datum/species/jelly/slime/spare_datum = spare.dna.species
 	spare_datum.bodies = origin_datum.bodies
 
-	H.transfer_trait_datums(spare)
+	H.transfer_quirk_datums(spare)
 	H.mind.transfer_to(spare)
 	spare.visible_message("<span class='warning'>[H] distorts as a new body \
 		\"steps out\" of [H.p_them()].</span>",
@@ -429,7 +429,7 @@
 			span_notice("You stop moving this body..."))
 	else
 		to_chat(M.current, span_notice("You abandon this body..."))
-	M.current.transfer_trait_datums(dupe)
+	M.current.transfer_quirk_datums(dupe)
 	M.transfer_to(dupe)
 	dupe.visible_message("<span class='notice'>[dupe] blinks and looks \
 		around.</span>",
@@ -748,7 +748,7 @@
 	to_chat(living_target, span_warning("You feel a foreign presence within your mind..."))
 	currently_linking = TRUE
 
-	if(!do_after(owner, living_target, 6 SECONDS, extra_checks = CALLBACK(src, .proc/while_link_callback, living_target)))
+	if(!do_after(owner, living_target, 6 SECONDS, extra_checks = CALLBACK(src, PROC_REF(while_link_callback), living_target)))
 		to_chat(owner, span_warning("You can't seem to link [living_target]'s mind."))
 		to_chat(living_target, span_warning("The foreign presence leaves your mind."))
 		currently_linking = FALSE

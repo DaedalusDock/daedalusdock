@@ -958,7 +958,7 @@
 
 /obj/item/storage/box/papersack/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/pen))
-		var/choice = show_radial_menu(user, src , papersack_designs, custom_check = CALLBACK(src, .proc/check_menu, user, W), radius = 36, require_near = TRUE)
+		var/choice = show_radial_menu(user, src , papersack_designs, custom_check = CALLBACK(src, PROC_REF(check_menu), user, W), radius = 36, require_near = TRUE)
 		if(!choice)
 			return FALSE
 		if(icon_state == "paperbag_[choice]")
@@ -980,7 +980,7 @@
 		icon_state = "paperbag_[choice]"
 		inhand_icon_state = "paperbag_[choice]"
 		return FALSE
-	else if(W.get_sharpness())
+	else if(W.sharpness)
 		if(!contents.len)
 			if(inhand_icon_state == "paperbag_None")
 				user.show_message(span_notice("You cut eyeholes into [src]."), MSG_VISUAL)
@@ -1035,10 +1035,9 @@
 	illustration = "scicircuit"
 
 /obj/item/storage/box/rndboards/PopulateContents()
-	new /obj/item/circuitboard/machine/protolathe/offstation(src)
+	new /obj/item/circuitboard/machine/fabricator/offstation(src)
 	new /obj/item/circuitboard/machine/destructive_analyzer(src)
 	new /obj/item/circuitboard/machine/circuit_imprinter/offstation(src)
-	new /obj/item/circuitboard/computer/rdconsole(src)
 
 /obj/item/storage/box/silver_sulf
 	name = "box of silver sulfadiazine patches"
@@ -1066,7 +1065,7 @@
 	for(var/i in 1 to 7)
 		new/obj/item/grenade/chem_grenade/holy(src)
 
-/obj/item/storage/box/stockparts/basic //for ruins where it's a bad idea to give access to an autolathe/protolathe, but still want to make stock parts accessible
+/obj/item/storage/box/stockparts/basic //for ruins where it's a bad idea to give access to a fabricator, but still want to make stock parts accessible
 	name = "box of stock parts"
 	desc = "Contains a variety of basic stock parts."
 
@@ -1158,7 +1157,6 @@
 		/obj/item/card/emag=1,\
 		/obj/item/stack/spacecash/c1000=50,\
 		/obj/item/healthanalyzer/advanced=1,\
-		/obj/item/disk/tech_disk/debug=1,\
 		/obj/item/uplink/debug=1,\
 		/obj/item/uplink/nuclear/debug=1,\
 		/obj/item/storage/box/beakers/bluespace=1,\
@@ -1310,36 +1308,6 @@
 /obj/item/storage/box/skillchips/engineering/PopulateContents()
 	new/obj/item/skillchip/job/engineer(src)
 	new/obj/item/skillchip/job/engineer(src)
-
-/obj/item/storage/box/swab
-	name = "box of microbiological swabs"
-	desc = "Contains a number of sterile swabs for collecting microbiological samples."
-	illustration = "swab"
-
-/obj/item/storage/box/swab/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/swab(src)
-
-/obj/item/storage/box/petridish
-	name = "box of petridishes"
-	desc = "This box purports to contain a number of high rim petridishes."
-	illustration = "petridish"
-
-/obj/item/storage/box/petridish/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/petri_dish(src)
-
-/obj/item/storage/box/plumbing
-	name = "box of plumbing supplies"
-	desc = "Contains a small supply of pipes, water recyclers, and iron to connect to the rest of the station."
-
-/obj/item/storage/box/plumbing/PopulateContents()
-	var/list/items_inside = list(
-		/obj/item/stock_parts/water_recycler = 2,
-		/obj/item/stack/ducts/fifty = 1,
-		/obj/item/stack/sheet/iron/ten = 1,
-		)
-	generate_items_inside(items_inside, src)
 
 /obj/item/storage/box/tail_pin
 	name = "pin the tail on the corgi supplies"

@@ -63,7 +63,7 @@
 					/obj/item/clothing/under/rank/medical/scrubs/blue = 4,
 					/obj/item/clothing/under/rank/medical/scrubs/green = 4,
 					/obj/item/clothing/under/rank/medical/scrubs/purple = 4,
-					/obj/item/clothing/suit/toggle/labcoat = 4,
+					/obj/item/clothing/suit/toggle/labcoat/md = 4,
 					/obj/item/clothing/suit/toggle/labcoat/paramedic = 4,
 					/obj/item/clothing/shoes/sneakers/white = 4,
 					/obj/item/clothing/head/beret/medical/paramedic = 4,
@@ -183,7 +183,7 @@
 					/obj/item/clothing/mask/bandana/skull/black = 2)
 	contraband = list(/obj/item/clothing/suit/hooded/techpriest = 2,
 					  /obj/item/clothing/under/costume/mech_suit = 2,
-					  /obj/item/organ/internal/tongue/robot = 2)
+					  /obj/item/organ/tongue/robot = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/robo_wardrobe
 	extra_price = PAYCHECK_HARD * 1.2
 	payment_department = ACCOUNT_SCI

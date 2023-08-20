@@ -2,10 +2,10 @@
 	name = "\improper Ethereal"
 	id = SPECIES_ETHEREAL
 	meat = /obj/item/food/meat/slab/human/mutant/ethereal
-	mutantlungs = /obj/item/organ/internal/lungs/ethereal
-	mutantstomach = /obj/item/organ/internal/stomach/ethereal
-	mutanttongue = /obj/item/organ/internal/tongue/ethereal
-	mutantheart = /obj/item/organ/internal/heart/ethereal
+	mutantlungs = /obj/item/organ/lungs/ethereal
+	mutantstomach = /obj/item/organ/stomach/ethereal
+	mutanttongue = /obj/item/organ/tongue/ethereal
+	mutantheart = /obj/item/organ/heart/ethereal
 	exotic_blood = /datum/reagent/consumable/liquidelectricity //Liquid Electricity. fuck you think of something better gamer
 	siemens_coeff = 0.5 //They thrive on energy
 	brutemod = 1.25 //They're weak to punches
@@ -62,14 +62,14 @@
 	r1 = GETREDPART(default_color)
 	g1 = GETGREENPART(default_color)
 	b1 = GETBLUEPART(default_color)
-	RegisterSignal(ethereal, COMSIG_ATOM_EMAG_ACT, .proc/on_emag_act)
-	RegisterSignal(ethereal, COMSIG_ATOM_EMP_ACT, .proc/on_emp_act)
-	RegisterSignal(ethereal, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	RegisterSignal(ethereal, COMSIG_ATOM_EMAG_ACT, PROC_REF(on_emag_act))
+	RegisterSignal(ethereal, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp_act))
+	RegisterSignal(ethereal, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
 	ethereal_light = ethereal.mob_light()
 	spec_updatehealth(ethereal)
 	C.set_safe_hunger_level()
 
-	var/obj/item/organ/internal/heart/ethereal/ethereal_heart = C.getorganslot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/ethereal/ethereal_heart = C.getorganslot(ORGAN_SLOT_HEART)
 	ethereal_heart.ethereal_color = default_color
 
 	//The following code is literally only to make admin-spawned ethereals not be black.
@@ -122,9 +122,9 @@
 	to_chat(H, span_notice("You feel the light of your body leave you."))
 	switch(severity)
 		if(EMP_LIGHT)
-			addtimer(CALLBACK(src, .proc/stop_emp, H), 10 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE) //We're out for 10 seconds
+			addtimer(CALLBACK(src, PROC_REF(stop_emp), H), 10 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE) //We're out for 10 seconds
 		if(EMP_HEAVY)
-			addtimer(CALLBACK(src, .proc/stop_emp, H), 20 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE) //We're out for 20 seconds
+			addtimer(CALLBACK(src, PROC_REF(stop_emp), H), 20 SECONDS, TIMER_UNIQUE|TIMER_OVERRIDE) //We're out for 20 seconds
 
 /datum/species/ethereal/proc/on_emag_act(mob/living/carbon/human/H, mob/user)
 	SIGNAL_HANDLER
@@ -135,7 +135,7 @@
 		to_chat(user, span_notice("You tap [H] on the back with your card."))
 	H.visible_message(span_danger("[H] starts flickering in an array of colors!"))
 	handle_emag(H)
-	addtimer(CALLBACK(src, .proc/stop_emag, H), 2 MINUTES) //Disco mode for 2 minutes! This doesn't affect the ethereal at all besides either annoying some players, or making someone look badass.
+	addtimer(CALLBACK(src, PROC_REF(stop_emag), H), 2 MINUTES) //Disco mode for 2 minutes! This doesn't affect the ethereal at all besides either annoying some players, or making someone look badass.
 
 /// Special handling for getting hit with a light eater
 /datum/species/ethereal/proc/on_light_eater(mob/living/carbon/human/source, datum/light_eater)
@@ -154,19 +154,16 @@
 		return
 	current_color = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)]
 	spec_updatehealth(H)
-	addtimer(CALLBACK(src, .proc/handle_emag, H), 5) //Call ourselves every 0.5 seconds to change color
+	addtimer(CALLBACK(src, PROC_REF(handle_emag), H), 5) //Call ourselves every 0.5 seconds to change color
 
 /datum/species/ethereal/proc/stop_emag(mob/living/carbon/human/H)
 	emageffect = FALSE
 	spec_updatehealth(H)
 	H.visible_message(span_danger("[H] stops flickering and goes back to their normal state!"))
 
-/datum/species/ethereal/get_features()
-	var/list/features = ..()
-
-	features += "feature_ethcolor"
-
-	return features
+/datum/species/ethereal/populate_features()
+	. = ..()
+	.["feature_ethcolor"] = GLOB.preference_entries_by_key["feature_ethcolor"]
 
 /datum/species/ethereal/get_scream_sound(mob/living/carbon/human/ethereal)
 	return pick(

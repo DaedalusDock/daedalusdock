@@ -1,4 +1,4 @@
-/obj/item/organ/internal/heart/gland/mindshock
+/obj/item/organ/heart/gland/mindshock
 	abductor_hint = "neural crosstalk uninhibitor. The abductee emits a disrupting psychic wave every so often. This will either stun, cause hallucinations or deal random brain damage to people nearby."
 	cooldown_low = 400
 	cooldown_high = 700
@@ -8,7 +8,7 @@
 	mind_control_duration = 6000
 	var/list/mob/living/carbon/human/broadcasted_mobs = list()
 
-/obj/item/organ/internal/heart/gland/mindshock/activate()
+/obj/item/organ/heart/gland/mindshock/activate()
 	to_chat(owner, span_notice("You get a headache."))
 
 	var/turf/T = get_turf(owner)
@@ -26,7 +26,7 @@
 			if(3)
 				H.hallucination += 60
 
-/obj/item/organ/internal/heart/gland/mindshock/mind_control(command, mob/living/user)
+/obj/item/organ/heart/gland/mindshock/mind_control(command, mob/living/user)
 	if(!ownerCheck() || !mind_control_uses || active_mind_control)
 		return FALSE
 	mind_control_uses--
@@ -49,12 +49,12 @@
 
 	if(LAZYLEN(broadcasted_mobs))
 		active_mind_control = TRUE
-		addtimer(CALLBACK(src, .proc/clear_mind_control), mind_control_duration)
+		addtimer(CALLBACK(src, PROC_REF(clear_mind_control)), mind_control_duration)
 
 	update_gland_hud()
 	return TRUE
 
-/obj/item/organ/internal/heart/gland/mindshock/clear_mind_control()
+/obj/item/organ/heart/gland/mindshock/clear_mind_control()
 	if(!active_mind_control || !LAZYLEN(broadcasted_mobs))
 		return FALSE
 	for(var/M in broadcasted_mobs)

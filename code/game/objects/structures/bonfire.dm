@@ -34,7 +34,7 @@
 /obj/structure/bonfire/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -120,6 +120,9 @@
 
 /obj/structure/bonfire/proc/on_entered(datum/source, atom/movable/entered)
 	SIGNAL_HANDLER
+	if(entered == src)
+		return
+
 	if(burning)
 		if(!grill)
 			bonfire_burn()

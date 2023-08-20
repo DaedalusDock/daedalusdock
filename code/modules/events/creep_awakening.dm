@@ -9,7 +9,10 @@
 
 /datum/round_event/obsessed/start()
 	for(var/mob/living/carbon/human/H in shuffle(GLOB.player_list))
-		if(!H.client || !(ROLE_OBSESSED in H.client.prefs.be_special))
+		if(!H.client)
+			continue
+		var/list/client_antags = H.client.prefs.read_preference(/datum/preference/blob/antagonists)
+		if(!client_antags[ROLE_OBSESSED])
 			continue
 		if(H.stat == DEAD)
 			continue
@@ -17,7 +20,7 @@
 			continue
 		if(H.mind.has_antag_datum(/datum/antagonist/obsessed))
 			continue
-		if(!H.getorgan(/obj/item/organ/internal/brain))
+		if(!H.getorgan(/obj/item/organ/brain))
 			continue
 		H.gain_trauma(/datum/brain_trauma/special/obsessed)
 		announce_to_ghosts(H)

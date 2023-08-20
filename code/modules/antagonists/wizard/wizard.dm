@@ -7,7 +7,6 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	antagpanel_category = "Wizard"
 	job_rank = ROLE_WIZARD
 	antag_hud_name = "wizard"
-	antag_moodlet = /datum/mood_event/focused
 	hijack_speed = 0.5
 	ui_name = "AntagInfoWizard"
 	suicide_cry = "FOR THE FEDERATION!!"
@@ -202,7 +201,7 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 
 /datum/antagonist/wizard/get_admin_commands()
 	. = ..()
-	.["Send to Lair"] = CALLBACK(src,.proc/admin_send_to_lair)
+	.["Send to Lair"] = CALLBACK(src,PROC_REF(admin_send_to_lair))
 
 /datum/antagonist/wizard/proc/admin_send_to_lair(mob/admin)
 	owner.current.forceMove(pick(GLOB.wizardstart))
@@ -341,7 +340,7 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	fireball.Grant(living_current)
 
 	var/obj/item/implant/exile/exiled = new /obj/item/implant/exile(living_current)
-	exiled.implant(living_current)
+	exiled.implant(living_current, body_zone = BODY_ZONE_CHEST)
 
 /datum/antagonist/wizard/academy/create_objectives()
 	var/datum/objective/new_objective = new("Protect Wizard Academy from the intruders")

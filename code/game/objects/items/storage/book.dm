@@ -69,7 +69,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		var/image/bible_image = image(icon = 'icons/obj/storage.dmi', icon_state = GLOB.biblestates[i])
 		skins += list("[GLOB.biblenames[i]]" = bible_image)
 
-	var/choice = show_radial_menu(user, src, skins, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 40, require_near = TRUE)
+	var/choice = show_radial_menu(user, src, skins, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 40, require_near = TRUE)
 	if(!choice)
 		return FALSE
 	var/bible_index = GLOB.biblenames.Find(choice)
@@ -137,17 +137,16 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			return 0
 
 	var/heal_amt = 10
-	var/list/hurt_limbs = H.get_damaged_bodyparts(1, 1, null, BODYTYPE_ORGANIC)
+	var/list/hurt_limbs = H.get_damaged_bodyparts(1, 1, BODYTYPE_ORGANIC)
 
 	if(hurt_limbs.len)
 		for(var/X in hurt_limbs)
 			var/obj/item/bodypart/affecting = X
-			if(affecting.heal_damage(heal_amt, heal_amt, null, BODYTYPE_ORGANIC))
-				H.update_damage_overlays()
+			affecting.heal_damage(heal_amt, heal_amt, BODYTYPE_ORGANIC)
+
 		H.visible_message(span_notice("[user] heals [H] with the power of [deity_name]!"))
 		to_chat(H, span_boldnotice("May the power of [deity_name] compel you to be healed!"))
 		playsound(src.loc, SFX_PUNCH, 25, TRUE, -1)
-		SEND_SIGNAL(H, COMSIG_ADD_MOOD_EVENT, "blessing", /datum/mood_event/blessing)
 	return TRUE
 
 /obj/item/storage/book/bible/attack(mob/living/M, mob/living/carbon/human/user, heal_mode = TRUE)

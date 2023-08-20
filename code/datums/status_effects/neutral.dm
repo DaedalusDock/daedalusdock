@@ -127,14 +127,6 @@
 	desc = "Making any sudden moves would probably be a bad idea!"
 	icon_state = "aimed"
 
-/datum/status_effect/grouped/heldup/on_apply()
-	owner.apply_status_effect(/datum/status_effect/grouped/surrender, REF(src))
-	return ..()
-
-/datum/status_effect/grouped/heldup/on_remove()
-	owner.remove_status_effect(/datum/status_effect/grouped/surrender, REF(src))
-	return ..()
-
 // holdup is for the person aiming
 /datum/status_effect/holdup
 	id = "holdup"
@@ -147,6 +139,11 @@
 	name = "Holding Up"
 	desc = "You're currently pointing a gun at someone."
 	icon_state = "aimed"
+
+/atom/movable/screen/alert/status_effect/holdup/Click(location, control, params)
+	. = ..()
+	var/mob/living/L = usr
+	qdel(L.gunpoint)
 
 // this status effect is used to negotiate the high-fiving capabilities of all concerned parties
 /datum/status_effect/offering
@@ -182,9 +179,9 @@
 		qdel(src)
 		return
 
-	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, .proc/check_owner_in_range)
-	RegisterSignal(offered_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), .proc/dropped_item)
-	//RegisterSignal(owner, COMSIG_PARENT_EXAMINE_MORE, .proc/check_fake_out)
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_owner_in_range))
+	RegisterSignal(offered_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(dropped_item))
+	//RegisterSignal(owner, COMSIG_PARENT_EXAMINE_MORE, PROC_REF(check_fake_out))
 
 /datum/status_effect/offering/Destroy()
 	for(var/i in possible_takers)
@@ -199,7 +196,7 @@
 	if(!G)
 		return
 	LAZYADD(possible_takers, possible_candidate)
-	RegisterSignal(possible_candidate, COMSIG_MOVABLE_MOVED, .proc/check_taker_in_range)
+	RegisterSignal(possible_candidate, COMSIG_MOVABLE_MOVED, PROC_REF(check_taker_in_range))
 	G.setup(possible_candidate, owner, offered_item)
 
 /// Remove the alert and signals for the specified carbon mob. Automatically removes the status effect when we lost the last taker
@@ -236,26 +233,6 @@
 /datum/status_effect/offering/secret_handshake
 	id = "secret_handshake"
 	give_alert_type = /atom/movable/screen/alert/give/secret_handshake
-
-//this effect gives the user an alert they can use to surrender quickly
-/datum/status_effect/grouped/surrender
-	id = "surrender"
-	duration = -1
-	tick_interval = -1
-	status_type = STATUS_EFFECT_UNIQUE
-	alert_type = /atom/movable/screen/alert/status_effect/surrender
-
-/atom/movable/screen/alert/status_effect/surrender
-	name = "Surrender"
-	desc = "Looks like you're in trouble now, bud. Click here to surrender. (Warning: You will be incapacitated.)"
-	icon_state = "surrender"
-
-/atom/movable/screen/alert/status_effect/surrender/Click(location, control, params)
-	. = ..()
-	if(!.)
-		return
-
-	owner.emote("surrender")
 
 /*
  * A status effect used for preventing caltrop message spam
@@ -383,7 +360,7 @@
 					alt_clone = new typepath(owner.loc)
 					alt_clone.appearance = owner.appearance
 					alt_clone.real_name = owner.real_name
-					RegisterSignal(alt_clone, COMSIG_PARENT_QDELETING, .proc/remove_clone_from_var)
+					RegisterSignal(alt_clone, COMSIG_PARENT_QDELETING, PROC_REF(remove_clone_from_var))
 					owner.visible_message("[owner] splits into seemingly two versions of themselves!")
 					do_teleport(alt_clone, get_turf(alt_clone), 2, no_effects=TRUE) //teleports clone so it's hard to find the real one!
 					do_sparks(5,FALSE,alt_clone)
@@ -447,14 +424,11 @@
 			//new you new stuff
 			SSquirks.randomise_quirks(owner)
 			owner.reagents.remove_all(1000)
-			var/datum/component/mood/mood = owner.GetComponent(/datum/component/mood)
-			mood.remove_temp_moods() //New you, new moods.
 			var/mob/living/carbon/human/human_mob = owner
-			SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "Eigentrip", /datum/mood_event/eigentrip)
 			if(QDELETED(human_mob))
 				return
 			if(prob(1))//low chance of the alternative reality returning to monkey
-				var/obj/item/organ/external/tail/monkey/monkey_tail = new ()
+				var/obj/item/organ/tail/monkey/monkey_tail = new ()
 				monkey_tail.Insert(human_mob, drop_if_replaced = FALSE)
 			var/datum/species/human_species = human_mob.dna?.species
 			if(human_species)

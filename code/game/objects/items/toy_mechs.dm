@@ -179,7 +179,7 @@
 		to_chat(user, span_notice("You offer battle to [target.name]!"))
 		to_chat(target, span_notice("<b>[user.name] wants to battle with [user.p_their()] [name]!</b> <i>Attack them with a toy mech to initiate combat.</i>"))
 		wants_to_battle = TRUE
-		addtimer(CALLBACK(src, .proc/withdraw_offer, user), 6 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(withdraw_offer), user), 6 SECONDS)
 		return
 
 	..()
@@ -225,14 +225,14 @@
 				SpinAnimation(5, 0)
 				playsound(src, 'sound/mecha/mechstep.ogg', 30, TRUE)
 				user.adjustBruteLoss(25)
-				user.adjustStaminaLoss(50)
+				user.stamina.adjust(-50)
 			if(2)
 				user.SpinAnimation(5, 0)
 				playsound(user, 'sound/weapons/smash.ogg', 20, TRUE)
 				combat_health-- //we scratched it!
 			if(4)
 				say(special_attack_cry + "!!")
-				user.adjustStaminaLoss(25)
+				user.stamina.adjust(-25)
 
 		if(!combat_sleep(1 SECONDS, null, user))
 			say("PATHETIC.")

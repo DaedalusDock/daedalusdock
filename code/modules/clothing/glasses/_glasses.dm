@@ -59,7 +59,7 @@
 /obj/item/clothing/glasses/proc/thermal_overload()
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
-		var/obj/item/organ/internal/eyes/eyes = H.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = H.getorganslot(ORGAN_SLOT_EYES)
 		if(!H.is_blind())
 			if(H.glasses == src)
 				to_chat(H, span_danger("[src] overloads and blinds you!"))
@@ -241,15 +241,17 @@
 
 /obj/item/clothing/glasses/regular/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/knockoff,25,list(BODY_ZONE_PRECISE_EYES),list(ITEM_SLOT_EYES))
+	AddComponent(/datum/component/knockoff, 25, list(BODY_ZONE_PRECISE_EYES), slot_flags)
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 
 /obj/item/clothing/glasses/regular/proc/on_entered(datum/source, atom/movable/movable)
 	SIGNAL_HANDLER
+	if(movable == src)
+		return
 	if(damaged_clothes == CLOTHING_SHREDDED)
 		return
 	if(item_flags & IN_INVENTORY)
@@ -435,7 +437,7 @@
 		add_atom_colour(user.eye_color_left, FIXED_COLOUR_PRIORITY) // I want this to be an average of the colors of both eyes, but that can be done later
 		colored_before = TRUE
 
-/obj/item/clothing/glasses/blindfold/white/worn_overlays(mutable_appearance/standing, isinhands = FALSE, file2use)
+/obj/item/clothing/glasses/blindfold/white/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, file2use)
 	. = ..()
 	if(isinhands || !ishuman(loc) || colored_before)
 		return
@@ -638,33 +640,6 @@
 	desc = "A pair of glasses with uniquely colored lenses. The frame is inscribed with 'Best Salesman 1997'."
 	icon_state = "salesman"
 	inhand_icon_state = "salesman"
-	///Tells us who the current wearer([BIGSHOT]) is.
-	var/mob/living/carbon/human/bigshot
-
-/obj/item/clothing/glasses/salesman/equipped(mob/living/carbon/human/user, slot)
-	..()
-	if(slot != ITEM_SLOT_EYES)
-		return
-	bigshot = user
-	RegisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE, .proc/moodshift)
-
-/obj/item/clothing/glasses/salesman/dropped(mob/living/carbon/human/user)
-	..()
-	UnregisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE)
-	bigshot = initial(bigshot)
-	icon_state = initial(icon_state)
-	desc = initial(desc)
-
-/obj/item/clothing/glasses/salesman/proc/moodshift(atom/movable/source, amount)
-	SIGNAL_HANDLER
-	if(amount < SANITY_UNSTABLE)
-		icon_state = "salesman_fzz"
-		desc = "A pair of glasses, the lenses are full of TV static. They've certainly seen better days..."
-		bigshot.update_worn_glasses()
-	else
-		icon_state = initial(icon_state)
-		desc = initial(desc)
-		bigshot.update_worn_glasses()
 
 /obj/item/clothing/glasses/nightmare_vision
 	name = "nightmare vision goggles"

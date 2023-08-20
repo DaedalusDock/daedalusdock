@@ -226,7 +226,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	if(!istype(TS))
 		return
 
-	var/list/affected_z = SSmapping.get_zstack(TS.z)
+	var/list/affected_z = SSmapping.get_zstack(TS.z, TRUE)
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	SSweather.run_weather(/datum/weather/rad_storm, affected_z, FALSE)
@@ -413,7 +413,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 		env.merge(removed)
 
 	for(var/mob/living/carbon/human/subject in view(src, min(7, round(sqrt(power/6)))))
-		var/obj/item/organ/internal/eyes/eyes = subject.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/eyes/eyes = subject.getorganslot(ORGAN_SLOT_EYES)
 		if (!eyes)
 			continue
 		if (eyes.organ_flags & ORGAN_SYNTHETIC)
@@ -665,10 +665,10 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 
 /obj/machinery/rotating_alarm/supermatter/Initialize()
 	. = ..()
-	GLOB.supermatter_status.register_global(src, .proc/check_supermatter)
+	GLOB.supermatter_status.register_global(src, PROC_REF(check_supermatter))
 
 /obj/machinery/rotating_alarm/supermatter/Destroy()
-	GLOB.supermatter_status.unregister_global(src, .proc/check_supermatter)
+	GLOB.supermatter_status.unregister_global(src, PROC_REF(check_supermatter))
 	. = ..()
 
 /obj/machinery/rotating_alarm/supermatter/proc/check_supermatter(obj/machinery/power/supermatter/SM, danger)

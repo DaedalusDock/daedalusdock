@@ -31,10 +31,12 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/suture = 2,
+		/obj/item/stack/gauze = 1,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/mesh = 2,
-		/obj/item/reagent_containers/hypospray/medipen = 1)
+		/obj/item/reagent_containers/hypospray/medipen = 1,
+		/obj/item/stack/splint = 1
+		)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/emergency
@@ -47,11 +49,13 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer/wound = 1,
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/suture/emergency = 1,
+		/obj/item/stack/gauze = 1,
+		/obj/item/stack/medical/suture = 1,
 		/obj/item/stack/medical/ointment = 1,
 		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
-		/obj/item/storage/pill_bottle/iron = 1)
+		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/stack/splint = 1,
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/surgery
@@ -90,7 +94,6 @@
 		/obj/item/clothing/mask/surgical,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/breath/medical,
-		/obj/item/surgical_drapes, //for true paramedics
 		/obj/item/scalpel,
 		/obj/item/circular_saw,
 		/obj/item/bonesetter,
@@ -99,6 +102,7 @@
 		/obj/item/cautery,
 		/obj/item/hemostat,
 		/obj/item/blood_filter,
+		/obj/item/fixovein,
 		/obj/item/shears,
 		/obj/item/geiger_counter,
 		/obj/item/clothing/neck/stethoscope,
@@ -122,14 +126,15 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer = 1,
-		/obj/item/stack/medical/gauze/twelve = 1,
-		/obj/item/stack/medical/suture = 2,
+		/obj/item/stack/gauze/twelve = 1,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
-		/obj/item/surgical_drapes = 1,
 		/obj/item/scalpel = 1,
 		/obj/item/hemostat = 1,
-		/obj/item/cautery = 1)
+		/obj/item/cautery = 1,
+		/obj/item/fixovein = 1
+		)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/ancient
@@ -140,7 +145,7 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/gauze = 1,
 		/obj/item/stack/medical/bruise_pack = 3,
 		/obj/item/stack/medical/ointment= 3)
 	generate_items_inside(items_inside,src)
@@ -229,9 +234,11 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/libital = 3,
-		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/gauze = 1,
 		/obj/item/storage/pill_bottle/probital = 1,
-		/obj/item/reagent_containers/hypospray/medipen/salacid = 1)
+		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
+		/obj/item/stack/splint = 1
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/advanced
@@ -248,8 +255,10 @@
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/synthflesh = 3,
 		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/storage/pill_bottle/penacid = 1)
+		/obj/item/stack/gauze = 1,
+		/obj/item/storage/pill_bottle/penacid = 1,
+		/obj/item/stack/splint = 1
+		)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/tactical
@@ -265,7 +274,8 @@
 /obj/item/storage/medkit/tactical/PopulateContents()
 	if(empty)
 		return
-	new /obj/item/stack/medical/gauze(src)
+	new /obj/item/stack/gauze(src)
+	new /obj/item/stack/splint/two(src)
 	new /obj/item/defibrillator/compact/combat/loaded(src)
 	new /obj/item/reagent_containers/hypospray/combat(src)
 	new /obj/item/reagent_containers/pill/patch/libital(src)
@@ -569,24 +579,24 @@
 /obj/item/storage/organbox/proc/freeze_contents(datum/source, obj/item/I)
 	SIGNAL_HANDLER
 	if(isinternalorgan(I))
-		var/obj/item/organ/internal/int_organ = I
+		var/obj/item/organ/int_organ = I
 		int_organ.organ_flags |= ORGAN_FROZEN
 		return
 	if(istype(I, /obj/item/bodypart))
 		var/obj/item/bodypart/B = I
-		for(var/obj/item/organ/internal/int_organ in B.contents)
+		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags |= ORGAN_FROZEN
 
 ///unfreezes the organ and loops bodyparts like heads
 /obj/item/storage/organbox/proc/unfreeze_contents(datum/source, obj/item/I)
 	SIGNAL_HANDLER
 	if(isinternalorgan(I))
-		var/obj/item/organ/internal/int_organ = I
+		var/obj/item/organ/int_organ = I
 		int_organ.organ_flags &= ~ORGAN_FROZEN
 		return
 	if(istype(I, /obj/item/bodypart))
 		var/obj/item/bodypart/B = I
-		for(var/obj/item/organ/internal/int_organ in B.contents)
+		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags &= ~ORGAN_FROZEN
 
 /obj/item/storage/organbox/attackby(obj/item/I, mob/user, params)

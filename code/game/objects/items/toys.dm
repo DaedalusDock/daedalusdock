@@ -46,9 +46,6 @@
 /obj/item/toy/waterballoon/Initialize(mapload)
 	. = ..()
 	create_reagents(10)
-
-/obj/item/toy/waterballoon/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 
 /obj/item/toy/waterballoon/attack(mob/living/carbon/human/M, mob/user)
@@ -82,7 +79,7 @@
 				to_chat(user, span_notice("You fill the balloon with the contents of [I]."))
 				I.reagents.trans_to(src, 10, transfered_by = user)
 				update_appearance()
-	else if(I.get_sharpness())
+	else if(I.sharpness)
 		balloon_burst()
 	else
 		return ..()
@@ -177,22 +174,6 @@
 	inhand_icon_state = "syndballoon"
 	random_color = FALSE
 
-/obj/item/toy/balloon/syndicate/pickup(mob/user)
-	. = ..()
-	if(user && user.mind && user.mind.has_antag_datum(/datum/antagonist, TRUE))
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "badass_antag", /datum/mood_event/badass_antag)
-
-/obj/item/toy/balloon/syndicate/dropped(mob/user)
-	if(user)
-		SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, "badass_antag", /datum/mood_event/badass_antag)
-	. = ..()
-
-/obj/item/toy/balloon/syndicate/Destroy()
-	if(ismob(loc))
-		var/mob/M = loc
-		SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "badass_antag", /datum/mood_event/badass_antag)
-	. = ..()
-
 /obj/item/toy/balloon/arrest
 	name = "arreyst balloon"
 	desc = "A half inflated balloon about a boyband named Arreyst that was popular about ten years ago, famous for making fun of red jumpsuits as unfashionable."
@@ -262,7 +243,7 @@
 	user.visible_message(span_suicide("[user] consumes [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(user, 'sound/items/eatfood.ogg', 50, TRUE)
 	user.adjust_nutrition(50) // mmmm delicious
-	addtimer(CALLBACK(src, .proc/manual_suicide, user), (3SECONDS))
+	addtimer(CALLBACK(src, PROC_REF(manual_suicide), user), (3SECONDS))
 	return MANUAL_SUICIDE
 
 /**
@@ -284,15 +265,16 @@
 		user.ghostize(FALSE) // get the fuck out of our body
 		return
 	var/obj/item/bodypart/chest/CH = user.get_bodypart(BODY_ZONE_CHEST)
-	if(CH.cavity_item) // if he's (un)bright enough to have a round and full belly...
+	if(length(CH.cavity_items)) // if he's (un)bright enough to have a round and full belly...
 		user.visible_message(span_danger("[user] regurgitates [src]!")) // I swear i dont have a fetish
 		user.vomit(100, TRUE, distance = 0)
 		user.adjustOxyLoss(120)
 		user.dropItemToGround(src) // incase the crit state doesn't drop the singulo to the floor
 		user.set_suicide(FALSE)
 		return
-	user.transferItemToLoc(src, user, TRUE)
-	CH.cavity_item = src // The mother came inside and found Andy, dead with a HUGE belly full of toys
+
+	user.transferItemToLoc(src, CH, TRUE, TRUE)
+	CH.add_cavity_item(src) // The mother came inside and found Andy, dead with a HUGE belly full of toys
 	user.adjustOxyLoss(200) // You know how most small toys in the EU have that 3+ onion head icon and a warning that says "Unsuitable for children under 3 years of age due to small parts - choking hazard"? This is why.
 	user.death(FALSE)
 	user.ghostize(FALSE)
@@ -402,7 +384,7 @@
 		throw_speed_on = throw_speed, \
 		hitsound_on = hitsound, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -497,7 +479,7 @@
 		update_appearance()
 		playsound(src, 'sound/effects/pope_entry.ogg', 100)
 		Rumble()
-		addtimer(CALLBACK(src, .proc/stopRumble), 600)
+		addtimer(CALLBACK(src, PROC_REF(stopRumble)), 600)
 	else
 		to_chat(user, span_warning("[src] is already active!"))
 
@@ -547,7 +529,7 @@
 
 /obj/item/dualsaber/toy/impale(mob/living/user)//Stops Toy Dualsabers from injuring clowns
 	to_chat(user, span_warning("You twirl around a bit before losing your balance and impaling yourself on [src]."))
-	user.adjustStaminaLoss(25)
+	user.stamina.adjust(-25)
 
 /obj/item/toy/katana
 	name = "replica katana"
@@ -598,12 +580,14 @@
 /obj/item/toy/snappop/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/toy/snappop/proc/on_entered(datum/source, H as mob|obj)
 	SIGNAL_HANDLER
+	if(H == src)
+		return
 	if(ishuman(H) || issilicon(H)) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
 		if(issilicon(H) || M.m_intent == MOVE_INTENT_RUN)
@@ -620,7 +604,7 @@
 
 /obj/effect/decal/cleanable/ash/snappop_phoenix/Initialize(mapload)
 	. = ..()
-	addtimer(CALLBACK(src, .proc/respawn), respawn_time)
+	addtimer(CALLBACK(src, PROC_REF(respawn)), respawn_time)
 
 /obj/effect/decal/cleanable/ash/snappop_phoenix/proc/respawn()
 	new /obj/item/toy/snappop/phoenix(get_turf(src))
@@ -649,7 +633,7 @@
 		activation_message(user)
 		playsound(loc, 'sound/machines/click.ogg', 20, TRUE)
 
-		INVOKE_ASYNC(src, .proc/do_toy_talk, user)
+		INVOKE_ASYNC(src, PROC_REF(do_toy_talk), user)
 
 		cooldown = TRUE
 		addtimer(VARSET_CALLBACK(src, cooldown, FALSE), recharge_time)
@@ -813,7 +797,7 @@
 			if(!M.stat && !isAI(M)) // Checks to make sure whoever's getting shaken is alive/not the AI
 				// Short delay to match up with the explosion sound
 				// Shakes player camera 2 squares for 1 second.
-				addtimer(CALLBACK(GLOBAL_PROC, .proc/shake_camera, M, 2, 1), 0.8 SECONDS)
+				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(shake_camera), M, 2, 1), 0.8 SECONDS)
 
 	else
 		to_chat(user, span_alert("Nothing happens."))
@@ -1208,7 +1192,7 @@
 	if(cooldown <= world.time)
 		cooldown = (world.time + 300)
 		user.visible_message(span_notice("[user] adjusts the dial on [src]."))
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/playsound, src, 'sound/items/radiostatic.ogg', 50, FALSE), 0.5 SECONDS)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, 'sound/items/radiostatic.ogg', 50, FALSE), 0.5 SECONDS)
 	else
 		to_chat(user, span_warning("The dial on [src] jams up"))
 		return
@@ -1223,7 +1207,7 @@
 /obj/item/toy/braintoy/attack_self(mob/user)
 	if(cooldown <= world.time)
 		cooldown = (world.time + 10)
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/playsound, src, 'sound/effects/blobattack.ogg', 50, FALSE), 0.5 SECONDS)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, 'sound/effects/blobattack.ogg', 50, FALSE), 0.5 SECONDS)
 
 /*
  * Eldritch Toys
@@ -1478,7 +1462,6 @@ GLOBAL_LIST_EMPTY(intento_players)
 	switch(intent)
 		if(HELP)
 			to_chat(victim, span_danger("[src] hugs you to make you feel better!"))
-			SEND_SIGNAL(victim, COMSIG_ADD_MOOD_EVENT, "hug", /datum/mood_event/hug)
 		if(DISARM)
 			to_chat(victim, span_danger("You're knocked down from a shove by [src]!"))
 			victim.Knockdown(2 SECONDS)
@@ -1537,6 +1520,9 @@ GLOBAL_LIST_EMPTY(intento_players)
 /*
  * Groan Tube (thing that goes UUAAAA AAAUUU)
  */
+
+#define GROAN_AAAU 1
+#define GROAN_UUUA 2
 /obj/item/toy/groan_tube
 	name = "groan tube"
 	desc = "UUAAAA...   AAAUUUU"
@@ -1546,16 +1532,17 @@ GLOBAL_LIST_EMPTY(intento_players)
 	COOLDOWN_DECLARE(groan_cooldown)
 	var/flipped = FALSE
 	var/cooldown_time = 20
+	var/list/groan_sounds = list('sound/items/aaau.ogg', 'sound/items/uuua.ogg')
 
 /obj/item/toy/groan_tube/attack_self(mob/user)
 	if(COOLDOWN_FINISHED(src, groan_cooldown))
 		to_chat(user, span_notice("You flip \the [src]."))
 		flick("groan_tube_flip", src)
 		if(flipped)
-			playsound(loc, 'sound/items/aaau.ogg', 50, FALSE, 3)
+			playsound(loc, groan_sounds[GROAN_AAAU], 50, FALSE, 3)
 			say("AAAUUU")
 		else
-			playsound(loc, 'sound/items/uuua.ogg', 50, FALSE, 3)
+			playsound(loc, groan_sounds[GROAN_UUUA], 50, FALSE, 3)
 			say("UUAAAA")
 
 		flipped = !flipped
@@ -1563,3 +1550,5 @@ GLOBAL_LIST_EMPTY(intento_players)
 		return
 	..()
 
+#undef GROAN_AAAU
+#undef GROAN_UUUA

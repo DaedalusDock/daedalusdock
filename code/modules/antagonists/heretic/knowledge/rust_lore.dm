@@ -54,8 +54,8 @@
 	route = PATH_RUST
 
 /datum/heretic_knowledge/rust_fist/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, .proc/on_secondary_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY, PROC_REF(on_secondary_mansus_grasp))
 
 /datum/heretic_knowledge/rust_fist/on_lose(mob/user)
 	UnregisterSignal(user, list(COMSIG_HERETIC_MANSUS_GRASP_ATTACK, COMSIG_HERETIC_MANSUS_GRASP_ATTACK_SECONDARY))
@@ -88,8 +88,8 @@
 	route = PATH_RUST
 
 /datum/heretic_knowledge/rust_regen/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/on_move)
-	RegisterSignal(user, COMSIG_LIVING_LIFE, .proc/on_life)
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 /datum/heretic_knowledge/rust_regen/on_lose(mob/user)
 	UnregisterSignal(user, list(COMSIG_MOVABLE_MOVED, COMSIG_LIVING_LIFE))
@@ -126,7 +126,7 @@
 	source.adjustFireLoss(-2, FALSE)
 	source.adjustToxLoss(-2, FALSE, forced = TRUE)
 	source.adjustOxyLoss(-0.5, FALSE)
-	source.adjustStaminaLoss(-2)
+	source.stamina.adjust(2)
 	source.AdjustAllImmobility(-5)
 
 /datum/heretic_knowledge/mark/rust_mark
@@ -205,7 +205,7 @@
 		TRAIT_SLEEPIMMUNE,
 		TRAIT_PUSHIMMUNE,
 		TRAIT_SHOCKIMMUNE,
-		TRAIT_NOSLIPALL,
+		TRAIT_NO_SLIP_ALL,
 		TRAIT_RADIMMUNE,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
@@ -236,8 +236,8 @@
 	. = ..()
 	priority_announce("[generate_heretic_text()] Fear the decay, for the Rustbringer, [user.real_name] has ascended! None shall escape the corrosion! [generate_heretic_text()]","[generate_heretic_text()]", sound_type = ANNOUNCER_SPANOMALIES)
 	new /datum/rust_spread(loc)
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/on_move)
-	RegisterSignal(user, COMSIG_LIVING_LIFE, .proc/on_life)
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 	user.client?.give_award(/datum/award/achievement/misc/rust_ascension, user)
 
 /**
@@ -279,7 +279,7 @@
 	source.adjustFireLoss(-4, FALSE)
 	source.adjustToxLoss(-4, FALSE, forced = TRUE)
 	source.adjustOxyLoss(-4, FALSE)
-	source.adjustStaminaLoss(-20)
+	source.stamina.adjust(20)
 
 /**
  * #Rust spread datum

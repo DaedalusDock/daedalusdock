@@ -20,8 +20,6 @@
 	create_reagents(100, TRANSPARENT)
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		reagents.maximum_volume += 100 * B.rating
-	AddComponent(/datum/component/plumbing/simple_demand)
-
 
 /obj/machinery/medipen_refiller/RefreshParts()
 	. = ..()
@@ -58,7 +56,7 @@
 		if(reagents.has_reagent(allowed[P.type], 10))
 			busy = TRUE
 			add_overlay("active")
-			addtimer(CALLBACK(src, .proc/refill, P, user), 20)
+			addtimer(CALLBACK(src, PROC_REF(refill), P, user), 20)
 			qdel(P)
 			return
 		to_chat(user, span_danger("There aren't enough reagents to finish this operation."))

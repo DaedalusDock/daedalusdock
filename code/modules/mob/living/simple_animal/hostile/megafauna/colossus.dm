@@ -76,8 +76,8 @@
 	random_shots.Grant(src)
 	shotgun_blast.Grant(src)
 	dir_shots.Grant(src)
-	RegisterSignal(src, COMSIG_MOB_ABILITY_STARTED, .proc/start_attack)
-	RegisterSignal(src, COMSIG_MOB_ABILITY_FINISHED, .proc/finished_attack)
+	RegisterSignal(src, COMSIG_MOB_ABILITY_STARTED, PROC_REF(start_attack))
+	RegisterSignal(src, COMSIG_MOB_ABILITY_FINISHED, PROC_REF(finished_attack))
 	AddElement(/datum/element/projectile_shield)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/Destroy()
@@ -145,8 +145,8 @@
 			. = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/colossus/devour(mob/living/L)
-	visible_message(span_colossus("[src] disintegrates [L]!"))
-	L.dust()
+	visible_message(span_colossus("[src] crushes [L]!"))
+	L.apply_damage(300, BRUTE, spread_damage = TRUE)
 
 /obj/effect/temp_visual/at_shield
 	name = "anti-toolbox field"
@@ -162,7 +162,7 @@
 /obj/effect/temp_visual/at_shield/Initialize(mapload, new_target)
 	. = ..()
 	target = new_target
-	INVOKE_ASYNC(src, /atom/movable.proc/orbit, target, 0, FALSE, 0, 0, FALSE, TRUE)
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, orbit), target, 0, FALSE, 0, 0, FALSE, TRUE)
 
 /obj/projectile/colossus
 	name = "death bolt"
@@ -565,6 +565,7 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
 	if(isliving(arrived) && holder_animal)
 		var/mob/living/L = arrived
 		L.notransform = 1

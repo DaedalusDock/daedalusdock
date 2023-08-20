@@ -5,8 +5,8 @@ SUBSYSTEM_DEF(explosions)
 	name = "Explosions"
 	init_order = INIT_ORDER_EXPLOSIONS
 	priority = FIRE_PRIORITY_EXPLOSIONS
-	wait = 1
-	flags = SS_TICKER|SS_NO_INIT
+	wait = 0
+	flags = SS_HIBERNATE | SS_NO_INIT
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
 	var/cost_lowturf = 0
@@ -36,6 +36,18 @@ SUBSYSTEM_DEF(explosions)
 
 	var/currentpart = SSEXPLOSIONS_MOVABLES
 
+/datum/controller/subsystem/explosions/PreInit(start_timeofday)
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, lowturf),
+		NAMEOF(src, medturf),
+		NAMEOF(src, highturf),
+		NAMEOF(src, flameturf),
+		NAMEOF(src, throwturf),
+		NAMEOF(src, low_mov_atom),
+		NAMEOF(src, med_mov_atom),
+		NAMEOF(src, high_mov_atom)
+	)
 
 /datum/controller/subsystem/explosions/stat_entry(msg)
 	msg += "C:{"
@@ -146,7 +158,7 @@ SUBSYSTEM_DEF(explosions)
 		else
 			continue
 
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/wipe_color_and_text, wipe_colours), 100)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(wipe_color_and_text), wipe_colours), 100)
 
 /proc/wipe_color_and_text(list/atom/wiping)
 	for(var/i in wiping)
@@ -557,7 +569,7 @@ SUBSYSTEM_DEF(explosions)
 			listener.playsound_local(epicenter, null, echo_volume, TRUE, frequency, sound_to_use = echo_sound, distance_multiplier = 0)
 
 		if(creaking) // 5 seconds after the bang, the station begins to creak
-			addtimer(CALLBACK(listener, /mob/proc/playsound_local, epicenter, null, rand(FREQ_LOWER, FREQ_UPPER), TRUE, frequency, null, null, FALSE, hull_creaking_sound, 0), CREAK_DELAY)
+			addtimer(CALLBACK(listener, TYPE_PROC_REF(/mob, playsound_local), epicenter, null, rand(FREQ_LOWER, FREQ_UPPER), TRUE, frequency, null, null, FALSE, hull_creaking_sound, 0), CREAK_DELAY)
 
 #undef CREAK_DELAY
 #undef QUAKE_CREAK_PROB

@@ -18,7 +18,7 @@
 	// and the process of activating destroys the body, so let the other
 	// signal handlers at least finish. Also, the "delayed explosion"
 	// uses sleeps, which is bad for signal handlers to do.
-	INVOKE_ASYNC(src, .proc/activate, "death")
+	INVOKE_ASYNC(src, PROC_REF(activate), "death")
 
 /obj/item/implant/explosive/get_data()
 	var/dat = {"<b>Implant Specifications:</b><BR>
@@ -60,7 +60,7 @@
 		return
 	timed_explosion()
 
-/obj/item/implant/explosive/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/explosive/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	for(var/X in target.implants)
 		if(istype(X, /obj/item/implant/explosive)) //we don't use our own type here, because macrobombs inherit this proc and need to be able to upgrade microbombs
 			var/obj/item/implant/explosive/imp_e = X
@@ -73,7 +73,7 @@
 
 	. = ..()
 	if(.)
-		RegisterSignal(target, COMSIG_LIVING_DEATH, .proc/on_death)
+		RegisterSignal(target, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /obj/item/implant/explosive/removed(mob/target, silent = FALSE, special = FALSE)
 	. = ..()

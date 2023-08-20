@@ -26,7 +26,7 @@
 	spark_system.attach(src)
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered)
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -122,6 +122,8 @@
 	return ..()
 
 /obj/structure/trap/stun/hunter/on_entered(datum/source, atom/movable/AM)
+	if(AM == src)
+		return
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!L.mind?.has_antag_datum(/datum/antagonist/fugitive))
@@ -132,7 +134,7 @@
 /obj/structure/trap/stun/hunter/flare()
 	..()
 	var/turf/our_turf = get_turf(src)
-	if(!our_turf)
+	if(!our_turf || !stored_item)
 		return
 	stored_item.forceMove(get_turf(src))
 	forceMove(stored_item)

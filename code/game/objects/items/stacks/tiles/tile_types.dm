@@ -376,7 +376,7 @@
 	. += neon_overlay
 	. += emissive_appearance(neon_icon || icon, neon_icon_state || icon_state, alpha = emissive_alpha)
 
-/obj/item/stack/tile/carpet/neon/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/carpet/neon/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands || !neon_inhand_icon_state)
 		return
@@ -1146,7 +1146,7 @@
 	. = ..()
 	. += emissive_appearance(icon, icon_state, alpha = alpha)
 
-/obj/item/stack/tile/emissive_test/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/emissive_test/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	. += emissive_appearance(standing.icon, standing.icon_state, alpha = standing.alpha)
 

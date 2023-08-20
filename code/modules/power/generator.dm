@@ -7,9 +7,10 @@
 	use_power = NO_POWER_USE
 	obj_flags = USES_TGUI
 	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
+	zmm_flags = ZMM_MANGLE_PLANES
 
-	var/obj/machinery/atmospherics/components/binary/circulator/cold_circ
-	var/obj/machinery/atmospherics/components/binary/circulator/hot_circ
+	var/obj/machinery/atmospherics/components/binary/circulator/circ1
+	var/obj/machinery/atmospherics/components/binary/circulator/circ2
 
 
 	var/max_power = 500000
@@ -55,7 +56,7 @@
 	if(L != 0)
 		. += mutable_appearance(icon, "teg-op[L]")
 		. += emissive_appearance(icon, "teg-op[L]")
-	if(hot_circ && cold_circ)
+	if(circ1 && circ2)
 		. += mutable_appearance(icon, "teg-oc[lastcirc]")
 		. += emissive_appearance(icon, "teg-oc[lastcirc]")
 
@@ -64,12 +65,12 @@
 
 /obj/machinery/power/generator/process_atmos()
 
-	if(!cold_circ || !hot_circ)
+	if(!circ1 || !circ2)
 		return
 
 	if(powernet)
-		var/datum/gas_mixture/cold_air = cold_circ.return_transfer_air()
-		var/datum/gas_mixture/hot_air = hot_circ.return_transfer_air()
+		var/datum/gas_mixture/air1 = circ1.return_transfer_air()
+		var/datum/gas_mixture/air2 = circ2.return_transfer_air()
 
 		lastgen2 = lastgen1
 		lastgen1 = 0
@@ -77,40 +78,43 @@
 		last_circ1_gen = 0
 		last_circ2_gen = 0
 
-		if(cold_air && hot_air)
+		if(air1 && air2)
 
-			var/cold_air_heat_capacity = cold_air.getHeatCapacity()
-			var/hot_air_heat_capacity = hot_air.getHeatCapacity()
+			var/air1_heat_capacity = air1.getHeatCapacity()
+			var/air2_heat_capacity = air2.getHeatCapacity()
 
-			var/delta_temperature = hot_air.temperature - cold_air.temperature
+			var/delta_temperature = abs(air2.temperature - air1.temperature)
 
 
-			if(delta_temperature > 0 && cold_air_heat_capacity > 0 && hot_air_heat_capacity > 0)
-				var/energy_transfer = delta_temperature*hot_air_heat_capacity*cold_air_heat_capacity/(hot_air_heat_capacity+cold_air_heat_capacity)
-
+			if(delta_temperature > 0 && air1_heat_capacity > 0 && air2_heat_capacity > 0)
+				var/energy_transfer = delta_temperature*air2_heat_capacity*air1_heat_capacity/(air2_heat_capacity+air1_heat_capacity)
 				var/heat = energy_transfer*(1-thermal_efficiency)
 				last_thermal_gen = energy_transfer*thermal_efficiency
 
-				hot_air.temperature = hot_air.temperature - energy_transfer/hot_air_heat_capacity
-				cold_air.temperature = cold_air.temperature + heat/cold_air_heat_capacity
+				if(air2.temperature > air1.temperature)
+					air2.temperature = air2.temperature - energy_transfer/air2_heat_capacity
+					air1.temperature = air1.temperature + heat/air1_heat_capacity
+				else
+					air2.temperature = air2.temperature + heat/air2_heat_capacity
+					air1.temperature = air1.temperature - energy_transfer/air1_heat_capacity
 
 				soundloop.start()
 			else
 				soundloop.stop()
 
-		if(hot_air)
-			var/datum/gas_mixture/hot_circ_air1 = hot_circ.airs[1]
-			hot_circ_air1.merge(hot_air)
-			hot_circ.update_parents()
+		if(air1)
+			var/datum/gas_mixture/circ_1_out = circ1.airs[1]
+			circ_1_out.merge(air1)
+			circ1.update_parents()
 
-		if(cold_air)
-			var/datum/gas_mixture/cold_circ_air1 = cold_circ.airs[1]
-			cold_circ_air1.merge(cold_air)
-			cold_circ.update_parents()
+		if(air2)
+			var/datum/gas_mixture/circ_2_out = circ2.airs[1]
+			circ_2_out.merge(air2)
+			circ2.update_parents()
 
 		update_appearance()
 
-	var/circ = "[cold_circ?.last_pressure_delta > 0 ? "1" : "0"][hot_circ?.last_pressure_delta > 0 ? "1" : "0"]"
+	var/circ = "[circ1?.last_pressure_delta > 0 ? "1" : "0"][circ2?.last_pressure_delta > 0 ? "1" : "0"]"
 	if(circ != lastcirc)
 		lastcirc = circ
 		update_appearance()
@@ -118,8 +122,8 @@
 	src.updateDialog()
 
 	//Power
-	last_circ1_gen = cold_circ.return_stored_energy()
-	last_circ2_gen = hot_circ.return_stored_energy()
+	last_circ1_gen = circ1.return_stored_energy()
+	last_circ2_gen = circ2.return_stored_energy()
 	stored_energy += last_thermal_gen + last_circ1_gen + last_circ2_gen
 	lastgen1 = stored_energy*0.4 //smoothened power generation to prevent slingshotting as pressure is equalized, then restored by pumps
 	stored_energy -= lastgen1
@@ -142,14 +146,14 @@
 		ui.open()
 
 /obj/machinery/power/generator/ui_data(mob/user)
-	var/datum/gas_mixture/cold_circ_air1 = cold_circ.airs[1]
-	var/datum/gas_mixture/cold_circ_air2 = cold_circ.airs[2]
-	var/datum/gas_mixture/hot_circ_air1 = hot_circ.airs[1]
-	var/datum/gas_mixture/hot_circ_air2 = hot_circ.airs[2]
+	var/datum/gas_mixture/cold_circ_air1 = circ1.airs[1]
+	var/datum/gas_mixture/cold_circ_air2 = circ1.airs[2]
+	var/datum/gas_mixture/hot_circ_air1 = circ2.airs[1]
+	var/datum/gas_mixture/hot_circ_air2 = circ2.airs[2]
 
 	var/list/data = list()
-	data["has_hot_circ"] = hot_circ
-	data["has_cold_circ"] = cold_circ
+	data["has_hot_circ"] = circ2
+	data["has_cold_circ"] = circ1
 	data["has_powernet"] = powernet
 	data["power_output"] = display_power(lastgen1)
 	data["cold_temp_in"] = round(cold_circ_air2.temperature, 0.1)
@@ -176,11 +180,11 @@
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 		return
 	find_circs()
-	if(!hot_circ)
+	if(!circ2)
 		to_chat(user, span_notice("Could not find hot circulator!"))
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 		return
-	if(!cold_circ)
+	if(!circ1)
 		to_chat(user, span_notice("Could not find cold circulator!"))
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
 		return
@@ -211,11 +215,11 @@
 
 	if(circs.len)
 		for(C in circs)
-			if(C.mode == CIRCULATOR_COLD && !cold_circ)
-				cold_circ = C
+			if(C.mode == CIRCULATOR_COLD && !circ1)
+				circ1 = C
 				C.generator = src
-			else if(C.mode == CIRCULATOR_HOT && !hot_circ)
-				hot_circ = C
+			else if(C.mode == CIRCULATOR_HOT && !circ2)
+				circ2 = C
 				C.generator = src
 
 /obj/machinery/power/generator/attack_hand(mob/user, list/modifiers)
@@ -253,12 +257,12 @@
 	return TRUE
 
 /obj/machinery/power/generator/proc/kill_circs()
-	if(hot_circ)
-		hot_circ.generator = null
-		hot_circ = null
-	if(cold_circ)
-		cold_circ.generator = null
-		cold_circ = null
+	if(circ1)
+		circ1.generator = null
+		circ1 = null
+	if(circ2)
+		circ2.generator = null
+		circ2 = null
 
 /obj/machinery/power/generator/examine(mob/user)
 	. = ..()

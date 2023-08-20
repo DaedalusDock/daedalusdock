@@ -10,12 +10,13 @@
 	material_modifier = 0.5
 	material_flags = MATERIAL_EFFECTS | MATERIAL_AFFECT_STATISTICS
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
+	abstract_type = /obj/structure/statue
 	/// Beauty component mood modifier
 	var/impressiveness = 15
 	/// Art component subtype added to this statue
 	var/art_type = /datum/element/art
-	/// Abstract root type
-	var/abstract_type = /obj/structure/statue
+	/// Can this statue be created by hand?
+	var/can_be_carved = TRUE
 
 /obj/structure/statue/Initialize(mapload)
 	. = ..()
@@ -246,7 +247,7 @@
 	custom_materials = list(/datum/material/metalhydrogen = MINERAL_MATERIAL_AMOUNT*10)
 	max_integrity = 1000
 	impressiveness = 100
-	abstract_type = /obj/structure/statue/elder_atmosian //This one is uncarvable
+	can_be_carved = FALSE //Created by a crafting recipe instead of the standard system.
 
 /obj/item/chisel
 	name = "chisel"
@@ -348,7 +349,7 @@ Moving interrupts
 /obj/item/chisel/proc/set_block(obj/structure/carving_block/B,mob/living/user)
 	prepared_block = B
 	tracked_user = user
-	RegisterSignal(tracked_user,COMSIG_MOVABLE_MOVED,.proc/break_sculpting)
+	RegisterSignal(tracked_user,COMSIG_MOVABLE_MOVED,PROC_REF(break_sculpting))
 	to_chat(user,span_notice("You prepare to work on [B]."),type=MESSAGE_TYPE_INFO)
 
 /obj/item/chisel/dropped(mob/user, silent)
@@ -496,9 +497,11 @@ Moving interrupts
 
 /obj/structure/carving_block/proc/build_statue_cost_table()
 	. = list()
-	for(var/statue_type in subtypesof(/obj/structure/statue) - /obj/structure/statue/custom)
+	for(var/obj/structure/statue/statue_type as anything in subtypesof(/obj/structure/statue) - /obj/structure/statue/custom)
+		if(isabstract(statue_type))
+			continue
 		var/obj/structure/statue/S = new statue_type()
-		if(!S.icon_state || S.abstract_type == S.type || !S.custom_materials)
+		if(!S.icon_state || !S.can_be_carved || !S.custom_materials)
 			continue
 		.[S.type] = S.custom_materials
 		qdel(S)

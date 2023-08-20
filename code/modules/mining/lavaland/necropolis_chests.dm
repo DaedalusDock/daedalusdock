@@ -15,7 +15,7 @@
 
 /obj/structure/closet/crate/necropolis/tendril/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_PARENT_ATTACKBY, .proc/try_spawn_loot)
+	RegisterSignal(src, COMSIG_PARENT_ATTACKBY, PROC_REF(try_spawn_loot))
 
 /obj/structure/closet/crate/necropolis/tendril/proc/try_spawn_loot(datum/source, obj/item/item, mob/user, params) ///proc that handles key checking and generating loot
 	SIGNAL_HANDLER
@@ -29,7 +29,7 @@
 		if(2)
 			new /obj/item/soulstone/anybody/mining(src)
 		if(3)
-			new /obj/item/organ/internal/cyberimp/arm/katana(src)
+			new /obj/item/organ/cyberimp/arm/katana(src)
 		if(4)
 			new /obj/item/clothing/glasses/godeye(src)
 		if(5)
@@ -40,17 +40,17 @@
 			var/mod = rand(1,4)
 			switch(mod)
 				if(1)
-					new /obj/item/disk/design_disk/modkit_disc/resonator_blast(src)
+					new /obj/item/disk/data/modkit_disc/resonator_blast(src)
 				if(2)
-					new /obj/item/disk/design_disk/modkit_disc/rapid_repeater(src)
+					new /obj/item/disk/data/modkit_disc/rapid_repeater(src)
 				if(3)
-					new /obj/item/disk/design_disk/modkit_disc/mob_and_turf_aoe(src)
+					new /obj/item/disk/data/modkit_disc/mob_and_turf_aoe(src)
 				if(4)
-					new /obj/item/disk/design_disk/modkit_disc/bounty(src)
+					new /obj/item/disk/data/modkit_disc/bounty(src)
 		if(8)
 			new /obj/item/rod_of_asclepius(src)
 		if(9)
-			new /obj/item/organ/internal/heart/cursed/wizard(src)
+			new /obj/item/organ/heart/cursed/wizard(src)
 		if(10)
 			new /obj/item/ship_in_a_bottle(src)
 		if(11)
@@ -139,7 +139,7 @@
 	var/list/choices = subtypesof(/obj/machinery/anomalous_crystal)
 	var/random_crystal = pick(choices)
 	new random_crystal(src)
-	new /obj/item/organ/internal/vocal_cords/colossus(src)
+	new /obj/item/organ/vocal_cords/colossus(src)
 
 /obj/structure/closet/crate/necropolis/colossus/crusher
 	name = "angelic colossus chest"

@@ -61,7 +61,7 @@
 
 /datum/chemical_reaction/New()
 	. = ..()
-	SSticker.OnRoundstart(CALLBACK(src,.proc/update_info))
+	SSticker.OnRoundstart(CALLBACK(src,PROC_REF(update_info)))
 
 /**
  * Updates information during the roundstart
@@ -267,10 +267,10 @@
 		else
 			if(setting_type)
 				if(step_away(X, T) && moving_power > 1) //Can happen twice at most. So this is fine.
-					addtimer(CALLBACK(GLOBAL_PROC, .proc/_step_away, X, T), 2)
+					addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step_away), X, T), 2)
 			else
 				if(step_towards(X, T) && moving_power > 1)
-					addtimer(CALLBACK(GLOBAL_PROC, .proc/_step_towards, X, T), 2)
+					addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_step_towards), X, T), 2)
 
 //////////////////Generic explosions/failures////////////////////
 // It is HIGHLY, HIGHLY recomended that you consume all/a good volume of the reagents/products in an explosion - because it will just keep going forever until the reaction stops
@@ -300,9 +300,7 @@
 		if(lastkey)
 			var/mob/toucher = get_mob_by_key(lastkey)
 			touch_msg = "[ADMIN_LOOKUPFLW(toucher)]"
-		if(!istype(holder.my_atom, /obj/machinery/plumbing)) //excludes standard plumbing equipment from spamming admins with this shit
-			message_admins("Reagent explosion reaction occurred at [ADMIN_VERBOSEJMP(T)][inside_msg]. Last Fingerprint: [touch_msg].")
-		log_game("Reagent explosion reaction occurred at [AREACOORD(T)]. Last Fingerprint: [lastkey ? lastkey : "N/A"]." )
+		log_game("Reagent explosion reaction occurred at [AREACOORD(T)][inside_msg]. Last Fingerprint: [lastkey ? lastkey : "N/A"][touch_msg]." )
 		var/datum/effect_system/reagents_explosion/e = new()
 		e.set_up(power , T, 0, 0)
 		e.start(holder.my_atom)

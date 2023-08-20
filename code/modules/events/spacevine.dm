@@ -342,7 +342,7 @@
 	holder.modify_max_integrity(100)
 
 /datum/spacevine_mutation/woodening/on_hit(obj/structure/spacevine/holder, mob/living/hitter, obj/item/item, expected_damage)
-	if(item?.get_sharpness())
+	if(item?.sharpness & SHARP_EDGED)
 		. = expected_damage * 0.5
 	else
 		. = expected_damage
@@ -385,7 +385,7 @@
 	. = ..()
 	add_atom_colour("#ffffff", FIXED_COLOUR_PRIORITY)
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	become_atmos_sensitive()
@@ -432,7 +432,7 @@
 
 /obj/structure/spacevine/attacked_by(obj/item/item, mob/living/user)
 	var/damage_dealt = item.force
-	if(item.get_sharpness())
+	if(item.sharpness & SHARP_EDGED)
 		damage_dealt *= 4
 	if(item.damtype == BURN)
 		damage_dealt *= 4
@@ -453,6 +453,8 @@
 
 /obj/structure/spacevine/proc/on_entered(datum/source, atom/movable/movable)
 	SIGNAL_HANDLER
+	if(movable == src)
+		return
 	if(!isliving(movable))
 		return
 	for(var/datum/spacevine_mutation/mutation in mutations)

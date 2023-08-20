@@ -467,9 +467,6 @@
 /area/station/commons/lounge
 	name = "\improper Bar Lounge"
 	icon_state = "lounge"
-	mood_bonus = 5
-	mood_message = "I love being in the bar!"
-	mood_trait = TRAIT_EXTROVERT
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 /area/station/commons/fitness
@@ -567,9 +564,6 @@
 /area/station/service/bar
 	name = "\improper Bar"
 	icon_state = "bar"
-	mood_bonus = 5
-	mood_message = "I love being in the bar!"
-	mood_trait = TRAIT_EXTROVERT
 	airlock_wires = /datum/wires/airlock/service
 	sound_environment = SOUND_AREA_WOODFLOOR
 
@@ -606,9 +600,6 @@
 /area/station/service/library
 	name = "\improper Library"
 	icon_state = "library"
-	mood_bonus = 5
-	mood_message = "I love being in the library!"
-	mood_trait = TRAIT_INTROVERT
 	area_flags = CULT_PERMITTED | BLOBS_ALLOWED | UNIQUE_AREA
 	sound_environment = SOUND_AREA_LARGE_SOFTFLOOR
 
@@ -640,9 +631,6 @@
 /area/station/service/chapel
 	name = "\improper Chapel"
 	icon_state = "chapel"
-	mood_bonus = 5
-	mood_message = "Being in the chapel brings me peace."
-	mood_trait = TRAIT_SPIRITUAL
 	ambience_index = AMBIENCE_HOLY
 	flags_1 = NONE
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
@@ -818,6 +806,10 @@
 	icon_state = "tcom_storage"
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
 
+/area/station/engineering/storage/mech
+	name = "Mechanical Storage"
+	icon_state = "mech_storage"
+
 //Engineering - Construction
 
 /area/station/construction
@@ -974,6 +966,13 @@
 	name = "\improper Medical Cold Room"
 	icon_state = "kitchen_cold"
 
+/area/station/medical/coldroom/port
+	name = "\improper Port Medical Cold Room "
+
+
+/area/station/medical/coldroom/starboard
+	name = "\improper Starboard Medical Cold "
+
 /area/station/medical/patients_rooms
 	name = "\improper Patients' Rooms"
 	icon_state = "patients"
@@ -981,11 +980,16 @@
 
 /area/station/medical/patients_rooms/room_a
 	name = "Patient Room A"
-	icon_state = "patients"
+
 
 /area/station/medical/patients_rooms/room_b
 	name = "Patient Room B"
-	icon_state = "patients"
+
+/area/station/medical/patients_rooms/room_c
+	name = "Patient Room C"
+
+/area/station/medical/patients_rooms/room_d
+	name = "Patient Room D"
 
 /area/station/medical/virology
 	name = "Virology"
@@ -996,6 +1000,7 @@
 	icon_state = "morgue"
 	ambience_index = AMBIENCE_SPOOKY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+	lightswitch = FALSE
 
 /area/station/medical/chemistry
 	name = "Chemistry"
@@ -1010,6 +1015,10 @@
 	icon_state = "surgery"
 	ambience_index = AMBIENCE_VIROLOGY
 
+/area/station/medical/surgery/prep
+	name = "\improper Pre-Op Prep"
+	icon_state = "surgeryprep"
+
 /area/station/medical/surgery/fore
 	name = "\improper Fore Operating Room"
 	icon_state = "foresurgery"
@@ -1017,6 +1026,14 @@
 /area/station/medical/surgery/aft
 	name = "\improper Aft Operating Room"
 	icon_state = "aftsurgery"
+
+/area/station/medical/surgery/port
+	name = "\improper Port Operating Room"
+	icon_state = "portsurgery"
+
+/area/station/medical/surgery/starboard
+	name = "\improper Starboard Operating Room"
+	icon_state = "starboardsurgery"
 
 /area/station/medical/surgery/theatre
 	name = "\improper Grand Surgery Theatre"
@@ -1036,8 +1053,6 @@
 /area/station/medical/psychology
 	name = "\improper Psychology Office"
 	icon_state = "psychology"
-	mood_bonus = 3
-	mood_message = "I feel at ease here."
 	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
 
 //Security
@@ -1380,7 +1395,6 @@
 	ambientsounds = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg', 'sound/ambience/ambitech.ogg',\
 											'sound/ambience/ambitech2.ogg', 'sound/ambience/ambitech3.ogg', 'sound/ambience/ambimystery.ogg')
 	airlock_wires = /datum/wires/airlock/engineering
-	network_root_id = STATION_NETWORK_ROOT // They should of unpluged the router before they left
 
 /area/station/tcommsat/computer
 	name = "\improper Telecomms Control Room"

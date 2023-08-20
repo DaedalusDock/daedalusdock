@@ -199,11 +199,12 @@
 /datum/holiday/april_fools/celebrate()
 	. = ..()
 	SSjob.set_overflow_role(/datum/job/clown)
-	SSticker.set_login_music(list(
-		"name" = "Clown.ogg",
-		"author" = "giizismukwa2",
-		"file" = "sound/ambience/clown.ogg"
-	))
+	var/datum/media/clowntrack = new(
+		name = "Clown.ogg",
+		author = "giizismukwa2",
+		path = "sound/ambience/clown.ogg"
+	)
+	SSticker.set_login_music(clowntrack)
 
 /datum/holiday/spess
 	name = "Cosmonautics Day"
@@ -730,7 +731,7 @@
 
 /datum/holiday/xmas/celebrate()
 	. = ..()
-	SSticker.OnRoundstart(CALLBACK(src, .proc/roundstart_celebrate))
+	SSticker.OnRoundstart(CALLBACK(src, PROC_REF(roundstart_celebrate)))
 	GLOB.maintenance_loot += list(
 		list(
 			/obj/item/toy/xmas_cracker = 3,

@@ -87,7 +87,7 @@
 
 /datum/reagent/toxin/plasma/on_new(data)
 	. = ..()
-	RegisterSignal(holder, COMSIG_REAGENTS_TEMP_CHANGE, .proc/on_temp_change)
+	RegisterSignal(holder, COMSIG_REAGENTS_TEMP_CHANGE, PROC_REF(on_temp_change))
 
 /datum/reagent/toxin/plasma/Destroy()
 	UnregisterSignal(holder, COMSIG_REAGENTS_TEMP_CHANGE)
@@ -168,6 +168,7 @@
 		. = FALSE
 
 	if(.)
+		APPLY_CHEM_EFFECT(C, CE_RESPIRATORY_FAILURE, 1)
 		C.adjustOxyLoss(5 * REM * normalise_creation_purity() * delta_time, 0)
 		C.losebreath += 2 * REM * normalise_creation_purity() * delta_time
 		if(DT_PROB(10, delta_time))
@@ -260,7 +261,7 @@
 			M.adjust_drowsyness(1 * REM * delta_time)
 			M.adjust_timed_status_effect(6 SECONDS * REM * delta_time, /datum/status_effect/speech/slurring/drunk)
 		if(5 to 8)
-			M.adjustStaminaLoss(40 * REM * delta_time, 0)
+			M.stamina.adjust(40 * REM * delta_time)
 		if(9 to INFINITY)
 			M.fakedeath(type)
 
@@ -534,7 +535,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/toxin/staminatoxin/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjustStaminaLoss(data * REM * delta_time, 0)
+	M.stamina.adjust(data * REM * delta_time)
 	data = max(data - 1, 3)
 	..()
 	. = TRUE
@@ -661,8 +662,6 @@
 	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * REM * normalise_creation_purity() * delta_time, 150)
 	if(M.toxloss <= 60)
 		M.adjustToxLoss(1 * REM * normalise_creation_purity() * delta_time, 0)
-	if(current_cycle >= 4)
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "smacked out", /datum/mood_event/narcotic_heavy, name)
 	if(current_cycle >= 18)
 		M.Sleeping(40 * REM * normalise_creation_purity() * delta_time)
 	..()
@@ -756,7 +755,7 @@
 			if(3)
 				if(!C.undergoing_cardiac_arrest() && C.can_heartattack())
 					C.set_heartattack(TRUE)
-					if(C.stat == CONSCIOUS)
+					if(C.stat <= SOFT_CRIT)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest as if [C.p_their()] heart stopped!"))
 				else
 					C.losebreath += 10
@@ -804,7 +803,7 @@
 /datum/reagent/toxin/sodium_thiopental/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	if(current_cycle >= 10)
 		M.Sleeping(40 * REM * delta_time)
-	M.adjustStaminaLoss(10 * REM * delta_time, 0)
+	M.stamina.adjust(-10 * REM * delta_time)
 	..()
 	return TRUE
 
@@ -1142,7 +1141,7 @@
 	return ..()
 
 /datum/reagent/toxin/bonehurtingjuice/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjustStaminaLoss(7.5 * REM * delta_time, 0)
+	M.stamina.adjust(-7.5 * REM * delta_time)
 	if(DT_PROB(10, delta_time))
 		switch(rand(1, 3))
 			if(1)

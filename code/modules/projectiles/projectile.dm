@@ -175,6 +175,14 @@
 	/// Slurring applied on projectile hit
 	var/slur = 0 SECONDS
 
+	// Disorient vars
+	/// Duration of disorient status effect
+	var/disorient_length = 0 SECONDS
+	/// Stamina damage applied
+	var/disorient_damage = 0
+	/// Paralyze duration if target is exhausted
+	var/disorient_status_length = 0 SECONDS
+
 	var/dismemberment = 0 //The higher the number, the greater the bonus to dismembering. 0 will not dismember at all.
 	var/impact_effect_type //what type of impact effect to show when hitting something
 	var/log_override = FALSE //is this type spammed enough to not log? (KAs)
@@ -592,6 +600,8 @@
  */
 /obj/projectile/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	scan_crossed_hit(AM)
 
 /**
@@ -1031,7 +1041,7 @@
 		matrix.Turn(original_angle)
 		thing.transform = matrix
 		thing.color = color
-		thing.set_light(muzzle_flash_range, muzzle_flash_intensity, muzzle_flash_color_override? muzzle_flash_color_override : color)
+		thing.set_light(l_inner_range = muzzle_flash_range, l_outer_range = muzzle_flash_range, l_power = muzzle_flash_intensity, l_color = muzzle_flash_color_override || color)
 		QDEL_IN(thing, duration)
 	if(impacting && impact_type && duration > 0)
 		var/datum/point/p = beam_segments[beam_segments[beam_segments.len]]
@@ -1041,7 +1051,7 @@
 		matrix.Turn(Angle)
 		thing.transform = matrix
 		thing.color = color
-		thing.set_light(impact_light_range, impact_light_intensity, impact_light_color_override? impact_light_color_override : color)
+		thing.set_light(l_inner_range = impact_light_range, l_outer_range = impact_light_range, l_power = impact_light_intensity, l_color = impact_light_color_override || color)
 		QDEL_IN(thing, duration)
 	if(cleanup)
 		cleanup_beam_segments()

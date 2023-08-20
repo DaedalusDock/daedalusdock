@@ -72,7 +72,7 @@
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 	//var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure())
+	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure(), parents[2]?.combined_volume || 0)
 	var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
 	if(draw > -1)
 		update_parents()
@@ -233,10 +233,10 @@
 	var/obj/machinery/atmospherics/components/binary/pump/connected_pump
 
 /obj/item/circuit_component/atmos_pump/populate_ports()
-	pressure_value = add_input_port("New Pressure", PORT_TYPE_NUMBER, trigger = .proc/set_pump_pressure)
-	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = .proc/set_pump_on)
-	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = .proc/set_pump_off)
-	request_data = add_input_port("Request Port Data", PORT_TYPE_SIGNAL, trigger = .proc/request_pump_data)
+	pressure_value = add_input_port("New Pressure", PORT_TYPE_NUMBER, trigger = PROC_REF(set_pump_pressure))
+	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_on))
+	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_off))
+	request_data = add_input_port("Request Port Data", PORT_TYPE_SIGNAL, trigger = PROC_REF(request_pump_data))
 
 	input_pressure = add_output_port("Input Pressure", PORT_TYPE_NUMBER)
 	output_pressure = add_output_port("Output Pressure", PORT_TYPE_NUMBER)
@@ -251,7 +251,7 @@
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/pump))
 		connected_pump = shell
-		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, .proc/handle_pump_activation)
+		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, PROC_REF(handle_pump_activation))
 
 /obj/item/circuit_component/atmos_pump/unregister_usb_parent(atom/movable/shell)
 	UnregisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON)

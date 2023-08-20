@@ -25,16 +25,16 @@
 	var/datum/lighting_corner/L
 	L = lighting_corner_NE
 	if (L)
-		totallums += L.lum_r + L.lum_b + L.lum_g
+		totallums += L.sum_r + L.sum_b + L.sum_g
 	L = lighting_corner_SE
 	if (L)
-		totallums += L.lum_r + L.lum_b + L.lum_g
+		totallums += L.sum_r + L.sum_b + L.sum_g
 	L = lighting_corner_SW
 	if (L)
-		totallums += L.lum_r + L.lum_b + L.lum_g
+		totallums += L.sum_r + L.sum_b + L.sum_g
 	L = lighting_corner_NW
 	if (L)
-		totallums += L.lum_r + L.lum_b + L.lum_g
+		totallums += L.sum_r + L.sum_b + L.sum_g
 
 
 	totallums /= 12 // 4 corners, each with 3 channels, get the average.
@@ -99,11 +99,6 @@
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()
-	//Inherit overlay of new area
-	if(old_area.lighting_effect)
-		cut_overlay(old_area.lighting_effect)
-	if(new_area.lighting_effect)
-		add_overlay(new_area.lighting_effect)
 
 /turf/proc/generate_missing_corners()
 	if (!lighting_corner_NE)

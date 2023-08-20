@@ -13365,7 +13365,7 @@
 /area/hallway/secondary/entry)
 "fze" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 1
 	},
 /obj/item/stack/medical/mesh,
@@ -24362,7 +24362,7 @@
 /turf/closed/wall,
 /area/medical/medbay/lobby)
 "kLk" = (
-/obj/machinery/rnd/production/protolathe/department/engineering,
+/obj/machinery/rnd/production/fabricator/department/engineering,
 /obj/machinery/airalarm/directional/east,
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark,
@@ -38568,7 +38568,7 @@
 /area/engineering/supermatter/room)
 "rVk" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 2
 	},
 /obj/item/stack/medical/mesh,
@@ -39193,7 +39193,7 @@
 /area/engineering/supermatter/room)
 "ska" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = -2;
 	pixel_y = 8
 	},
@@ -43689,7 +43689,7 @@
 /turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
 "usC" = (
-/obj/machinery/rnd/production/protolathe/department/science,
+/obj/machinery/rnd/production/fabricator/department/science,
 /turf/open/floor/iron/checker,
 /area/science/lab)
 "usH" = (

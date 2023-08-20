@@ -24,7 +24,7 @@
 		if(M != user)
 			M.visible_message(span_danger("[user] attempts to feed [M] something from [src]."), \
 						span_userdanger("[user] attempts to feed you something from [src]."))
-			if(!do_after(user, M))
+			if(!do_after(user, M, 3 SECONDS))
 				return
 			if(!reagents || !reagents.total_volume)
 				return // The drink might be empty after the delay, such as by spam-feeding
@@ -34,7 +34,7 @@
 		else
 			to_chat(user, span_notice("You swallow a gulp of [src]."))
 		SEND_SIGNAL(src, COMSIG_GLASS_DRANK, M, user)
-		addtimer(CALLBACK(reagents, /datum/reagents.proc/trans_to, M, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
+		addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), M, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
 		playsound(M.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
 		if(iscarbon(M))
 			var/mob/living/carbon/carbon_drinker = M
@@ -352,12 +352,12 @@
 	..()
 	if(istype(I,/obj/item/pestle))
 		if(grinded)
-			if(user.getStaminaLoss() > 50)
+			if(HAS_TRAIT(user, TRAIT_EXHAUSTED))
 				to_chat(user, span_warning("You are too tired to work!"))
 				return
 			to_chat(user, span_notice("You start grinding..."))
 			if((do_after(user, src, 25)) && grinded)
-				user.adjustStaminaLoss(40)
+				user.stamina.adjust(-40)
 				if(grinded.juice_results) //prioritize juicing
 					grinded.on_juice()
 					reagents.add_reagent_list(grinded.juice_results)

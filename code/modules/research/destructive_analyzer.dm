@@ -11,14 +11,6 @@ Note: Must be placed within 3 tiles of the R&D Console
 	icon_state = "d_analyzer"
 	base_icon_state = "d_analyzer"
 	circuit = /obj/item/circuitboard/machine/destructive_analyzer
-	var/decon_mod = 0
-
-/obj/machinery/rnd/destructive_analyzer/RefreshParts()
-	. = ..()
-	var/T = 0
-	for(var/obj/item/stock_parts/S in component_parts)
-		T += S.rating
-	decon_mod = T
 
 /obj/machinery/rnd/destructive_analyzer/proc/ConvertReqString2List(list/source_list)
 	var/list/temp_list = params2list(source_list)
@@ -28,17 +20,17 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 /obj/machinery/rnd/destructive_analyzer/Insert_Item(obj/item/O, mob/living/user)
 	if(!user.combat_mode)
-		. = 1
 		if(!is_insertion_ready(user))
 			return
 		if(!user.transferItemToLoc(O, src))
 			to_chat(user, span_warning("\The [O] is stuck to your hand, you cannot put it in the [src.name]!"))
 			return
+		. = TRUE
 		busy = TRUE
 		loaded_item = O
 		to_chat(user, span_notice("You add the [O.name] to the [src.name]!"))
 		flick("d_analyzer_la", src)
-		addtimer(CALLBACK(src, .proc/finish_loading), 10)
+		addtimer(CALLBACK(src, PROC_REF(finish_loading)), 10)
 		updateUsrDialog()
 
 /obj/machinery/rnd/destructive_analyzer/proc/finish_loading()
@@ -52,10 +44,15 @@ Note: Must be placed within 3 tiles of the R&D Console
 /obj/machinery/rnd/destructive_analyzer/proc/destroy_item(obj/item/thing, innermode = FALSE)
 	if(QDELETED(thing) || QDELETED(src))
 		return FALSE
+
+	if(!inserted_disk.check_memory())
+		return FALSE
+
+	var/datum/design/D = SStech.designs_by_product[loaded_item.type]
 	if(!innermode)
 		flick("d_analyzer_process", src)
 		busy = TRUE
-		addtimer(CALLBACK(src, .proc/reset_busy), 24)
+		addtimer(CALLBACK(src, PROC_REF(reset_busy)), 24)
 		use_power(250)
 		if(thing == loaded_item)
 			loaded_item = null
@@ -67,51 +64,23 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 	qdel(thing)
 	loaded_item = null
+	inserted_disk.write(DATA_IDX_DESIGNS, D, TRUE)
 	if (!innermode)
 		update_appearance()
 	return TRUE
 
-/obj/machinery/rnd/destructive_analyzer/proc/user_try_decon_id(id, mob/user)
+/obj/machinery/rnd/destructive_analyzer/proc/user_try_decon(mob/user)
 	if(!istype(loaded_item))
 		return FALSE
+	var/choice = tgui_alert(usr, "Are you sure you want to destroy [loaded_item]?",, list("Proceed", "Cancel"))
+	if(choice == "Cancel")
+		return FALSE
+	if(QDELETED(loaded_item) || QDELETED(src))
+		return FALSE
+	if(!destroy_item(loaded_item))
+		return FALSE
+	updateUsrDialog()
 
-	if (id && id != RESEARCH_MATERIAL_DESTROY_ID)
-		var/datum/techweb_node/TN = SSresearch.techweb_node_by_id(id)
-		if(!istype(TN))
-			return FALSE
-		var/dpath = loaded_item.type
-		var/list/worths = TN.boost_item_paths[dpath]
-		var/list/differences = list()
-		var/list/already_boosted = stored_research.boosted_nodes[TN.id]
-		for(var/i in worths)
-			var/used = already_boosted? already_boosted[i] : 0
-			var/value = min(worths[i], TN.research_costs[i]) - used
-			if(value > 0)
-				differences[i] = value
-		if(length(worths) && !length(differences))
-			return FALSE
-		var/choice = tgui_alert(user, "Are you sure you want to destroy [loaded_item] to [!length(worths) ? "reveal [TN.display_name]" : "boost [TN.display_name] by [json_encode(differences)] point\s"]?", "Destructive Analyzer", list("Proceed", "Cancel"))
-		if(choice != "Proceed")
-			return FALSE
-		if(QDELETED(loaded_item) || QDELETED(src))
-			return FALSE
-		SSblackbox.record_feedback("nested tally", "item_deconstructed", 1, list("[TN.id]", "[loaded_item.type]"))
-		if(destroy_item(loaded_item))
-			stored_research.boost_with_item(SSresearch.techweb_node_by_id(TN.id), dpath)
-
-	else
-		var/list/point_value = techweb_item_point_check(loaded_item)
-		if(stored_research.deconstructed_items[loaded_item.type])
-			point_value = list()
-		var/user_mode_string = ""
-		if(length(point_value))
-			user_mode_string = " for [json_encode(point_value)] points"
-		var/choice = tgui_alert(usr, "Are you sure you want to destroy [loaded_item][user_mode_string]?",, list("Proceed", "Cancel"))
-		if(choice == "Cancel")
-			return FALSE
-		if(QDELETED(loaded_item) || QDELETED(src))
-			return FALSE
-		destroy_item(loaded_item)
 	return TRUE
 
 /obj/machinery/rnd/destructive_analyzer/proc/unload_item()
@@ -124,80 +93,53 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 /obj/machinery/rnd/destructive_analyzer/ui_interact(mob/user)
 	. = ..()
-	var/datum/browser/popup = new(user, "destructive_analyzer", name, 900, 600)
-	popup.set_content(ui_deconstruct())
+	var/datum/browser/popup = new(user, "destructive_analyzer", name, 460, 550)
+	popup.set_content(ui_content())
 	popup.open()
 
-/obj/machinery/rnd/destructive_analyzer/proc/ui_deconstruct() //Legacy code
+/obj/machinery/rnd/destructive_analyzer/proc/ui_content()
 	var/list/l = list()
-	if(!loaded_item)
-		l += "<div class='statusDisplay'>No item loaded. Standing-by...</div>"
+	l += "<fieldset class='computerPaneSimple'>[RDSCREEN_NOBREAK]"
+	if(!inserted_disk)
+		l += "<legend class='computerLegend'><b>No disk inserted!</b></legend>[RDSCREEN_NOBREAK]"
 	else
-		l += "<div class='statusDisplay'>[RDSCREEN_NOBREAK]"
-		l += "<table><tr><td>[icon2html(loaded_item, usr)]</td><td><b>[loaded_item.name]</b> <A href='?src=[REF(src)];eject_item=1'>Eject</A></td></tr></table>[RDSCREEN_NOBREAK]"
-		l += "Select a node to boost by deconstructing this item. This item can boost:"
+		l += "<legend class='computerLegend'><table><tr><td>[icon2html(inserted_disk, usr)]</td><td><b>Data Disk</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
+		l += "<A href='?src=[REF(src)];eject_disk=1'>Eject</A>[RDSCREEN_NOBREAK]"
+	l += "</fieldset>[RDSCREEN_NOBREAK]"
 
-		var/anything = FALSE
-		var/list/boostable_nodes = techweb_item_boost_check(loaded_item)
-		for(var/id in boostable_nodes)
-			anything = TRUE
-			var/list/worth = boostable_nodes[id]
-			var/datum/techweb_node/N = SSresearch.techweb_node_by_id(id)
-
-			l += "<div class='statusDisplay'>[RDSCREEN_NOBREAK]"
-			if (stored_research.researched_nodes[N.id])  // already researched
-				l += "<span class='linkOff'>[N.display_name]</span>"
-				l += "This node has already been researched."
-			else if(!length(worth))  // reveal only
-				if (stored_research.hidden_nodes[N.id])
-					l += "<A href='?src=[REF(src)];deconstruct=[N.id]'>[N.display_name]</A>"
-					l += "This node will be revealed."
-				else
-					l += "<span class='linkOff'>[N.display_name]</span>"
-					l += "This node has already been revealed."
-			else  // boost by the difference
-				var/list/differences = list()
-				var/list/already_boosted = stored_research.boosted_nodes[N.id]
-				for(var/i in worth)
-					var/already_boosted_amount = already_boosted? stored_research.boosted_nodes[N.id][i] : 0
-					var/amt = min(worth[i], N.research_costs[i]) - already_boosted_amount
-					if(amt > 0)
-						differences[i] = amt
-				if (length(differences))
-					l += "<A href='?src=[REF(src)];deconstruct=[N.id]'>[N.display_name]</A>"
-					l += "This node will be boosted with the following:<BR>[techweb_point_display_generic(differences)]"
-				else
-					l += "<span class='linkOff'>[N.display_name]</span>"
-					l += "This node has already been boosted.</span>"
-			l += "</div>[RDSCREEN_NOBREAK]"
-
-		var/list/point_values = techweb_item_point_check(loaded_item)
-		if(point_values)
-			anything = TRUE
-			l += "<div class='statusDisplay'>[RDSCREEN_NOBREAK]"
-			if (stored_research.deconstructed_items[loaded_item.type])
-				l += "<span class='linkOff'>Point Deconstruction</span>"
-				l += "This item's points have already been claimed."
-			else
-				l += "<A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>Point Deconstruction</A>"
-				l += "This item is worth: <BR>[techweb_point_display_generic(point_values)]!"
-			l += "</div>[RDSCREEN_NOBREAK]"
-
-		if(!(loaded_item.resistance_flags & INDESTRUCTIBLE))
-			l += "<div class='statusDisplay'><A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>Destroy Item</A>"
-			l += "</div>[RDSCREEN_NOBREAK]"
-			anything = TRUE
-
-		if (!anything)
-			l += "Nothing!"
-
-		l += "</div>"
-
+	l += ui_deconstruct()
 	for(var/i in 1 to length(l))
 		if(!findtextEx(l[i], RDSCREEN_NOBREAK))
 			l[i] += "<br>"
 	. = l.Join("")
 	return replacetextEx(., RDSCREEN_NOBREAK, "")
+
+/obj/machinery/rnd/destructive_analyzer/proc/ui_deconstruct()
+	var/list/l = list()
+	if(!loaded_item)
+		l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>No item loaded!</b></legend></fieldset>"
+	else
+		var/analyze_ok
+		var/destroy_link
+		var/datum/design/D = SStech.designs_by_product[loaded_item.type]
+		if(D)
+			analyze_ok = TRUE
+		if(!(loaded_item.resistance_flags & INDESTRUCTIBLE))
+			if(!inserted_disk)
+				destroy_link = "<span class='linkOff'>[analyze_ok ? "Analyze" : "Destroy"]</span>"
+			else
+				destroy_link = "<A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>[analyze_ok ? "Analyze" : "Destroy"]</A>"
+		else
+			destroy_link = "<span class='linkOff'>Destroy</span>"
+
+		l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><table><tr><td>[icon2html(loaded_item, usr)]</td><td><b>[loaded_item.name]</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
+		l += "<A href='?src=[REF(src)];eject_item=1'>Eject</A>"
+		l += "[destroy_link]"
+		if(analyze_ok)
+			l += "This item can be blueprinted![RDSCREEN_NOBREAK]"
+
+		l += "</fieldset>[RDSCREEN_NOBREAK]"
+	return l
 
 /obj/machinery/rnd/destructive_analyzer/Topic(raw, ls)
 	. = ..()
@@ -214,8 +156,11 @@ Note: Must be placed within 3 tiles of the R&D Console
 		if(loaded_item)
 			unload_item()
 	if(ls["deconstruct"])
-		if(!user_try_decon_id(ls["deconstruct"], usr))
+		if(!user_try_decon(ls["deconstruct"], usr))
 			say("Destructive analysis failed!")
+
+	if(ls["eject_disk"])
+		eject_disk(usr)
 
 	updateUsrDialog()
 

@@ -98,10 +98,8 @@
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
-	for(var/obj/item/I in held_items)
-		if(istype(I, typepath))
-			return I
-	return FALSE
+	return locate(typepath) in held_items
+
 
 //Checks if we're holding a tool that has given quality
 //Returns the tool that has the best version of this quality
@@ -445,6 +443,10 @@
 	set name = "quick-equip"
 	set hidden = TRUE
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_quick_equip)))
+
+///proc extender of [/mob/verb/quick_equip] used to make the verb queuable if the server is overloaded
+/mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
 		to_chat(src, span_warning("You are not holding anything to equip!"))

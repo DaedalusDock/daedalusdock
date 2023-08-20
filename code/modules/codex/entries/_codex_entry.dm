@@ -19,8 +19,8 @@
 	var/disambiguator
 	var/list/categories
 
-	///Allows you to mark a type as "abstract" and to not generate it.
-	var/abstract_type
+	//Codex entries support abstract_type.
+	//Since the basetype is used for dynamically generated entries, it is not abstract.
 
 /datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator)
 
@@ -68,7 +68,7 @@
 		else
 			CRASH("Attempted to instantiate unnamed codex entry with no associated strings!")
 
-	LAZYDISTINCTADD(associated_strings, codex_sanitize(name))
+	LAZYDISTINCTADD(associated_strings, "[codex_sanitize(name)]" )
 	for(var/associated_string in associated_strings)
 		var/clean_string = codex_sanitize(associated_string)
 		if(!clean_string)

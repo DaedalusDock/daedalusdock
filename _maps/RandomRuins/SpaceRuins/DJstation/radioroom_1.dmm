@@ -2,10 +2,6 @@
 "a" = (
 /turf/closed/wall,
 /area/ruin/space/djstation)
-"b" = (
-/obj/machinery/duct,
-/turf/open/floor/iron,
-/area/ruin/space/djstation)
 "g" = (
 /obj/modular_map_root/djstation{
 	key = "kitchen"
@@ -20,7 +16,6 @@
 /turf/open/floor/plating,
 /area/ruin/space/djstation)
 "i" = (
-/obj/machinery/duct,
 /turf/open/floor/plating,
 /area/ruin/space/djstation)
 "k" = (
@@ -49,7 +44,6 @@
 	pixel_y = 4
 	},
 /obj/machinery/light/small/directional/east,
-/obj/machinery/duct,
 /turf/open/floor/plating,
 /area/ruin/space/djstation)
 "v" = (
@@ -111,7 +105,6 @@
 /turf/open/floor/iron/vaporwave,
 /area/ruin/space/djstation)
 "U" = (
-/obj/machinery/duct,
 /obj/modular_map_root/djstation{
 	key = "quarters"
 	},
@@ -173,7 +166,7 @@ Y
 a
 k
 M
-b
+w
 r
 "}
 (6,1,1) = {"
@@ -182,7 +175,7 @@ Y
 Y
 q
 w
-b
+w
 i
 a
 "}

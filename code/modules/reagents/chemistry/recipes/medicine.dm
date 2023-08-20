@@ -351,7 +351,7 @@
 /datum/chemical_reaction/medicine/medsuture/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
-		new /obj/item/stack/medical/suture/medicated(location)
+		new /obj/item/stack/medical/bruise_pack(location)
 
 /datum/chemical_reaction/medicine/medmesh
 	required_reagents = list(/datum/reagent/cellulose = 20, /datum/reagent/consumable/aloejuice = 20, /datum/reagent/space_cleaner/sterilizine = 10)

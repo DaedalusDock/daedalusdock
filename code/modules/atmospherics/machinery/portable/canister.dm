@@ -38,6 +38,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	integrity_failure = 0.4
 	//pressure_resistance = 7 * ONE_ATMOSPHERE
 	req_access = list()
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/icon/canister_overlay_file = 'icons/obj/atmospherics/canisters.dmi'
 
@@ -195,6 +196,11 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	gas_type = GAS_OXYGEN
 	greyscale_config = /datum/greyscale_config/canister/stripe
 	greyscale_colors = "#2786e5#e8fefe"
+
+/obj/machinery/portable_atmospherics/canister/oxygen/cryo
+	name = "cryogenic canister"
+	starter_temp = 80
+	filled = 0.2
 
 /obj/machinery/portable_atmospherics/canister/boron
 	name = "boron canister"

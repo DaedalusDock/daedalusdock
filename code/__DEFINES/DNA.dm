@@ -55,17 +55,16 @@
 #define DNA_MUSHROOM_CAPS_BLOCK 14
 #define DNA_MONKEY_TAIL_BLOCK 15
 #define DNA_POD_HAIR_BLOCK 16
-#define DNA_HEADTAILS_BLOCK 17
-#define DNA_MUTANT_COLOR_BLOCK_2 18
-#define DNA_MUTANT_COLOR_BLOCK_3 19
-#define DNA_TESHARI_FEATHERS_BLOCK 20
-#define DNA_TESHARI_EARS_BLOCK 21
-#define DNA_TESHARI_BODY_FEATHERS_BLOCK 22
-#define DNA_TESHARI_TAIL_BLOCK 23
-#define DNA_VOX_HAIR_BLOCK 24
-#define DNA_VOX_FACIAL_HAIR_BLOCK 25
-#define DNA_VOX_TAIL_BLOCK 26
-#define DNA_VOX_SNOUT_BLOCK 27
+#define DNA_MUTANT_COLOR_BLOCK_2 17
+#define DNA_MUTANT_COLOR_BLOCK_3 18
+#define DNA_TESHARI_FEATHERS_BLOCK 19
+#define DNA_TESHARI_EARS_BLOCK 20
+#define DNA_TESHARI_BODY_FEATHERS_BLOCK 21
+#define DNA_TESHARI_TAIL_BLOCK 22
+#define DNA_VOX_HAIR_BLOCK 23
+#define DNA_VOX_FACIAL_HAIR_BLOCK 24
+#define DNA_VOX_TAIL_BLOCK 25
+#define DNA_VOX_SNOUT_BLOCK 26
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -104,12 +103,14 @@
 #define BLOOD_CLANS 21
 /// Can this species use the 'Body size' preference
 #define BODY_RESIZABLE 22
-
 #define MUTCOLORS2 23
 #define MUTCOLORS3 24
-
+///Haircolor
 #define HAIRCOLOR 25
 #define FACEHAIRCOLOR 26
+#define SCLERA 27
+///Has non-human hair. Used by pref code to hide standard hair options.
+#define NONHUMANHAIR 28
 
 //organ slots
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
@@ -147,7 +148,6 @@
 #define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
 #define ORGAN_SLOT_EXTERNAL_VOX_HAIR "vox_hair"
 #define ORGAN_SLOT_EXTERNAL_VOX_FACIAL_HAIR "vox_facial_hair"
-#define ORGAN_SLOT_EXTERNAL_HEADTAILS "headtails"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS "teshari_feathers"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_EARS "teshari_ears"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS "teshari_body_feathers"
@@ -176,7 +176,7 @@
 #define G_FEMALE 2
 #define G_PLURAL 3
 
-/// Defines how a mob's internal_organs_slot is ordered
+/// Defines how a mob's processing_organs is ordered
 /// Exists so Life()'s organ process order is consistent
 GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_BRAIN,

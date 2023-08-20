@@ -13,7 +13,7 @@
 	desc = "Has a valve and pump attached to it."
 
 	use_power = IDLE_POWER_USE
-	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.15
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 	can_unwrench = TRUE
 	welded = FALSE
 	layer = GAS_SCRUBBER_LAYER
@@ -49,7 +49,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/New()
 	if(!id_tag)
-		id_tag = SSnetworks.assign_random_name()
+		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Destroy()
@@ -122,24 +122,25 @@
 		if(pump_direction & RELEASING) //internal -> external
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
 			var/draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
-			if(draw == -1)
-				if(can_hibernate)
-					COOLDOWN_START(src, hibernating, 15 SECONDS)
-			ATMOS_USE_POWER(draw)
-			update_parents()
+			if(draw > -1)
+				ATMOS_USE_POWER(draw)
+				update_parents()
+			else if(can_hibernate)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
 
 		else //external -> internal
-			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta)
+			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta, parents[1]?.combined_volume || 0)
 
 			//limit flow rate from turfs
 			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 			var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
-			if(draw == -1)
-				if(can_hibernate)
-					COOLDOWN_START(src, hibernating, 15 SECONDS)
-			ATMOS_USE_POWER(draw)
+			if(draw > -1)
+				ATMOS_USE_POWER(draw)
+				update_parents()
+			else if(can_hibernate)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
 
-			update_parents()
+
 
 	else
 		if(pump_direction && (pressure_checks&EXT_BOUND) && can_hibernate)

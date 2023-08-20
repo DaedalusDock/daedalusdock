@@ -1,0 +1,2 @@
+#define DECAL_NORMAL_LAYER -10
+#define DECAL_HIGH_LAYER -9

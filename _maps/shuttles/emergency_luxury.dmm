@@ -717,10 +717,10 @@
 /obj/structure/closet/crate/freezer,
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/bot_assembly/medbot,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/reagent_containers/food/drinks/bottle/whiskey,
 /obj/item/reagent_containers/glass/bottle/ethanol,
-/obj/item/organ/internal/stomach,
+/obj/item/organ/stomach,
 /obj/item/clothing/mask/surgical,
 /turf/open/floor/iron,
 /area/shuttle/escape/luxury)
@@ -849,7 +849,6 @@
 "cH" = (
 /obj/machinery/light/directional/south,
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /turf/open/floor/carpet/cyan,
 /area/shuttle/escape/luxury)
 "cI" = (

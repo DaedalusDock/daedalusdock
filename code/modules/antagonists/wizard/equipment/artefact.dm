@@ -139,14 +139,10 @@
 		return
 	. = COMPONENT_CANCEL_ATTACK_CHAIN
 	var/mob/living/carbon/jedi = user
-	var/datum/component/mood/insaneinthemembrane = jedi.GetComponent(/datum/component/mood)
-	if(insaneinthemembrane.sanity < 15)
-		return //they've already seen it and are about to die, or are just too insane to care
 	to_chat(jedi, span_userdanger("OH GOD! NONE OF IT IS REAL! NONE OF IT IS REEEEEEEEEEEEEEEEEEEEEEEEAL!"))
-	insaneinthemembrane.sanity = 0
 	for(var/lore in typesof(/datum/brain_trauma/severe))
 		jedi.gain_trauma(lore)
-	addtimer(CALLBACK(src, .proc/deranged, jedi), 10 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(deranged), jedi), 10 SECONDS)
 
 /obj/tear_in_reality/proc/deranged(mob/living/carbon/C)
 	if(!C || C.stat == DEAD)
@@ -293,7 +289,7 @@
 	H.equip_to_slot_or_del(new /obj/item/spear(H), ITEM_SLOT_BACK)
 
 //Provides a decent heal, need to pump every 6 seconds
-/obj/item/organ/internal/heart/cursed/wizard
+/obj/item/organ/heart/cursed/wizard
 	pump_delay = 60
 	heal_brute = 25
 	heal_burn = 25

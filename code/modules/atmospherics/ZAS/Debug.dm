@@ -31,6 +31,7 @@ GLOBAL_REAL_VAR(list/zasdbgovl_dirzoneblock) = list(
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = FLY_LAYER
 	vis_flags = NONE
+	appearance_flags = RESET_COLOR | RESET_TRANSFORM | RESET_ALPHA | KEEP_APART
 
 /obj/effect/zasdbg/assigned
 	icon_state = "assigned"

@@ -184,7 +184,15 @@ All ShuttleMove procs go here
 	for(var/obj/machinery/door/airlock/other_airlock in range(2, src))  // includes src, extended because some escape pods have 1 plating turf exposed to space
 		other_airlock.shuttledocked = FALSE
 		other_airlock.air_tight = TRUE
-		INVOKE_ASYNC(other_airlock, /obj/machinery/door/.proc/close, FALSE, TRUE) // force crush
+		spawn(-1)
+			if((other_airlock.close(FALSE, TRUE) || other_airlock.density) && other_airlock == src && moving_dock.bolt_doors) // force crush
+				if(locate(/turf/open/space) in orange(1, other_airlock))
+					other_airlock.bolt()
+
+/obj/machinery/door/airlock/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
+	. = ..()
+	if(istype(old_dock, /obj/docking_port/stationary/transit) && locked && moving_dock.bolt_doors)
+		unbolt()
 
 /obj/machinery/door/airlock/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()
@@ -218,17 +226,6 @@ All ShuttleMove procs go here
 	. = ..()
 	if(is_mining_level(z)) //Avoids double logging and landing on other Z-levels due to badminnery
 		SSblackbox.record_feedback("associative", "colonies_dropped", 1, list("x" = x, "y" = y, "z" = z))
-
-/obj/machinery/gravity_generator/main/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
-	. = ..()
-	on = FALSE
-	update_list()
-
-/obj/machinery/gravity_generator/main/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
-	. = ..()
-	if(charge_count != 0 && charging_state != POWER_UP)
-		on = TRUE
-	update_list()
 
 /obj/machinery/atmospherics/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()

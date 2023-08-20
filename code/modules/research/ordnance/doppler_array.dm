@@ -14,8 +14,8 @@
 	var/record_number = 1
 	/// List of all explosion records in the form of /datum/data/tachyon_record
 	var/list/records = list()
-	/// Reference to a disk we are going to print to.
-	var/obj/item/computer_hardware/hard_drive/portable/inserted_disk
+	/// Reference to a drive we are going to print to.
+	var/obj/item/computer_hardware/hard_drive/portable/inserted_drive
 
 	// Lighting system to better communicate the directions.
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
@@ -25,9 +25,9 @@
 
 /obj/machinery/doppler_array/Initialize(mapload)
 	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_EXPLOSION, .proc/sense_explosion)
-	RegisterSignal(src, COMSIG_MACHINERY_POWER_LOST, .proc/update_doppler_light)
-	RegisterSignal(src, COMSIG_MACHINERY_POWER_RESTORED, .proc/update_doppler_light)
+	RegisterSignal(SSdcs, COMSIG_GLOB_EXPLOSION, PROC_REF(sense_explosion))
+	RegisterSignal(src, COMSIG_MACHINERY_POWER_LOST, PROC_REF(update_doppler_light))
+	RegisterSignal(src, COMSIG_MACHINERY_POWER_RESTORED, PROC_REF(update_doppler_light))
 	update_doppler_light()
 
 	// Rotation determines the detectable direction.
@@ -51,9 +51,9 @@
 /obj/machinery/doppler_array/attackby(obj/item/item, mob/user, params)
 	if(istype(item, /obj/item/computer_hardware/hard_drive/portable))
 		var/obj/item/computer_hardware/hard_drive/portable/disk = item
-		eject_disk(user)
+		eject_drive(user)
 		if(user.transferItemToLoc(disk, src))
-			inserted_disk = disk
+			inserted_drive = disk
 			return
 		else
 			balloon_alert(user, span_warning("[disk] is stuck to your hand."))
@@ -78,77 +78,17 @@
 
 /// Printing of a record into a disk.
 /obj/machinery/doppler_array/proc/print(mob/user, datum/data/tachyon_record/record)
-	if(!record || !inserted_disk)
+	if(!record || !inserted_drive)
 		return
 
 	var/datum/computer_file/data/ordnance/explosive/record_data = new
 	record_data.filename = "Doppler Array " + record.name //Doppler Array Log Recording #x
 	record_data.explosion_record = record
-	record_data.possible_experiments = apply_experiments(record)
 
-	if(inserted_disk.store_file(record_data))
+	if(inserted_drive.store_file(record_data))
 		playsound(src, 'sound/machines/ping.ogg', 25)
 	else
 		playsound(src, 'sound/machines/terminal_error.ogg', 25)
-
-/**
- * Checks a specified tachyon record for fitting reactions, then returns a list with
- * the experiment typepath as key and score as value.
- * The score is the same for all explosive experiments (light radius).
- */
-/obj/machinery/doppler_array/proc/apply_experiments(datum/data/tachyon_record/record)
-	var/list/passed_experiments = list()
-	var/list/record_reactions = record.reaction_results
-
-	var/list/radius_used = length(record.theory_radius) ? record.theory_radius : record.factual_radius
-	var/explosion_score = radius_used["shockwave_radius"]
-	if(!explosion_score) // Dont even bother.
-		return passed_experiments
-
-	/// Early return for explosions without proper reaction_results. We will append experiments that are always fair game.
-	if(!record_reactions.len)
-		for (var/datum/experiment/ordnance/explosive/experiment in SSresearch.ordnance_experiments)
-			if(experiment.allow_any_source)
-				passed_experiments += list(experiment.type = explosion_score)
-		return passed_experiments
-
-	for (var/datum/experiment/ordnance/explosive/experiment in SSresearch.ordnance_experiments)
-		var/list/experiment_reactions = experiment.required_reactions
-		/// The reactions in record.reaction_results that corresponds to the required_reactions list.
-		var/list/fitting_reactions = list()
-		/// The reactions in required_reactions list that are missing in record.reaction_results.
-		var/list/missing_reactions = list()
-		/// The reactions in record.reaction_results that are not present in required_reactions list.
-		var/list/extra_reactions = list()
-
-		for(var/reaction in experiment_reactions)
-			if(reaction in record_reactions[TANK_RESULTS_REACTION])
-				fitting_reactions += reaction
-			else
-				missing_reactions += reaction
-
-		for(var/reaction in record_reactions[TANK_RESULTS_REACTION])
-			if(!(reaction in fitting_reactions))
-				extra_reactions += reaction
-
-		// Check for extra reactions.
-		if(experiment.sanitized_reactions && extra_reactions.len)
-			continue
-		// Check for misc properties
-		if(experiment.sanitized_misc && length(record_reactions[TANK_RESULTS_MISC]))
-			continue
-		// Check for missing reactions for those who require all.
-		if(experiment.require_all && missing_reactions.len)
-			continue
-		// For those who only need one, check if there is actually one.
-		if(!experiment.require_all && experiment_reactions.len)
-			if(!fitting_reactions.len)
-				continue
-
-		// Suceeded all check, append to the returned list.
-		passed_experiments += list(experiment.type = explosion_score)
-
-	return passed_experiments
 
 /// Sensing, recording, and broadcasting of explosion
 /obj/machinery/doppler_array/proc/sense_explosion(datum/source, turf/epicenter, devastation_range, heavy_impact_range, light_impact_range,
@@ -204,20 +144,20 @@
 
 	return TRUE
 
-/obj/machinery/doppler_array/proc/eject_disk(mob/user)
-	if(!inserted_disk)
+/obj/machinery/doppler_array/proc/eject_drive(mob/user)
+	if(!inserted_drive)
 		return FALSE
 	if(user)
-		user.put_in_hands(inserted_disk)
+		user.put_in_hands(inserted_drive)
 	else
-		inserted_disk.forceMove(drop_location())
+		inserted_drive.forceMove(drop_location())
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
 	return TRUE
 
 /// We rely on exited to clear references.
 /obj/machinery/doppler_array/Exited(atom/movable/gone, direction)
-	if(gone == inserted_disk)
-		inserted_disk = null
+	if(gone == inserted_drive)
+		inserted_drive = null
 	. = ..()
 
 /obj/machinery/doppler_array/powered()
@@ -238,11 +178,11 @@
 		. += mutable_appearance(icon, "[base_icon_state]_screen-off")
 
 /obj/machinery/doppler_array/on_deconstruction()
-	eject_disk()
+	eject_drive()
 	. = ..()
 
 /obj/machinery/doppler_array/Destroy()
-	inserted_disk = null
+	inserted_drive = null
 	QDEL_NULL(records) //We only want the list nuked, not the contents.
 	. = ..()
 
@@ -262,8 +202,8 @@
 /obj/machinery/doppler_array/ui_data(mob/user)
 	var/list/data = list()
 	data["records"] = list()
-	data["disk"] = inserted_disk?.name
-	data["storage"] = "[inserted_disk?.used_capacity] / [inserted_disk?.max_capacity] GQ"
+	data["disk"] = inserted_drive?.name
+	data["storage"] = "[inserted_drive?.used_capacity] / [inserted_drive?.max_capacity] GQ"
 	for(var/datum/data/tachyon_record/singular_record in records)
 		var/list/record_data = list(
 			"name" = singular_record.name,
@@ -311,4 +251,4 @@
 			print(usr, record)
 			return TRUE
 		if("eject_disk")
-			eject_disk(usr)
+			eject_drive(usr)

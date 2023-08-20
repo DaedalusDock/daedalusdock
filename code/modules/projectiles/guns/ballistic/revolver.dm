@@ -100,7 +100,7 @@
 	name = "\improper Colt Detective Special"
 	desc = "A classic, if not outdated, law enforcement firearm. Uses .38 Special rounds. \nSome spread rumors that if you loosen the barrel with a wrench, you can \"improve\" it."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
-	icon_state = "c38"
+	icon_state = "detective"
 	fire_sound = 'sound/weapons/gun/revolver/shot.ogg'
 	can_modify_ammo = TRUE
 	initial_caliber = CALIBER_38
@@ -110,19 +110,6 @@
 	alternative_ammo_misfires = TRUE
 	misfire_probability = 0
 	misfire_percentage_increment = 25 //about 1 in 4 rounds, which increases rapidly every shot
-
-	obj_flags = UNIQUE_RENAME
-	unique_reskin = list(
-		"Default" = "c38",
-		"Fitz Special" = "c38_fitz",
-		"Police Positive Special" = "c38_police",
-		"Blued Steel" = "c38_blued",
-		"Stainless Steel" = "c38_stainless",
-		"Gold Trim" = "c38_trim",
-		"Golden" = "c38_gold",
-		"The Peacemaker" = "c38_peacemaker",
-		"Black Panther" = "c38_panther"
-	)
 
 /obj/item/gun/ballistic/revolver/syndicate
 	name = "\improper Syndicate Revolver"

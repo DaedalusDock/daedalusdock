@@ -132,3 +132,10 @@
 			new /obj/item/food/breadslice/moldy/bacteria(src)
 	else if(prob(30))
 		new /obj/item/food/syndicake(src)
+
+/obj/structure/closet/mini_fridge/clean
+	name = "mini-fridge"
+	desc = "A small contraption designed to imbue a few drinks with a pleasant chill."
+
+
+/obj/structure/closet/mini_fridge/clean/PopulateContents()

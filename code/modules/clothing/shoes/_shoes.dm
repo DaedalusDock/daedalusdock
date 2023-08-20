@@ -43,7 +43,7 @@
 			playsound(user, 'sound/weapons/genhit2.ogg', 50, TRUE)
 		return(BRUTELOSS)
 
-/obj/item/clothing/shoes/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/shoes/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -51,10 +51,16 @@
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedshoe")
 	if(HAS_BLOOD_DNA(src))
-		if(clothing_flags & LARGE_WORN_ICON)
-			. += mutable_appearance('icons/effects/64x64.dmi', "shoeblood_large")
+		if(istype(wearer))
+			var/obj/item/bodypart/leg = wearer.get_bodypart(BODY_ZONE_R_LEG) || wearer.get_bodypart(BODY_ZONE_L_LEG)
+			if(!leg?.icon_bloodycover)
+				return
+			. += image(leg.icon_bloodycover, "shoeblood")
 		else
-			. += mutable_appearance('icons/effects/blood.dmi', "shoeblood")
+			if(clothing_flags & LARGE_WORN_ICON)
+				. += mutable_appearance('icons/effects/64x64.dmi', "shoeblood_large")
+			else
+				. += image('icons/effects/blood.dmi', "shoeblood")
 
 /obj/item/clothing/shoes/examine(mob/user)
 	. = ..()
@@ -78,7 +84,7 @@
 	. = ..()
 	if(can_be_tied && tied == SHOES_UNTIED)
 		our_alert_ref = WEAKREF(user.throw_alert(ALERT_SHOES_KNOT, /atom/movable/screen/alert/shoes/untied))
-		RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, .proc/check_trip, override=TRUE)
+		RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, PROC_REF(check_trip), override=TRUE)
 
 /obj/item/clothing/shoes/proc/restore_offsets(mob/user)
 	equipped_before_drop = FALSE
@@ -127,7 +133,7 @@
 	else
 		if(tied == SHOES_UNTIED && our_guy && user == our_guy)
 			our_alert_ref = WEAKREF(our_guy.throw_alert(ALERT_SHOES_KNOT, /atom/movable/screen/alert/shoes/untied)) // if we're the ones unknotting our own laces, of course we know they're untied
-		RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, .proc/check_trip, override=TRUE)
+		RegisterSignal(src, COMSIG_SHOES_STEP_ACTION, PROC_REF(check_trip), override=TRUE)
 
 /**
  * handle_tying deals with all the actual tying/untying/knotting, inferring your intent from who you are in relation to the state of the laces
@@ -161,7 +167,7 @@
 			return
 		user.visible_message(span_notice("[user] begins [tied ? "unknotting" : "tying"] the laces of [user.p_their()] [src.name]."), span_notice("You begin [tied ? "unknotting" : "tying"] the laces of your [src.name]..."))
 
-		if(do_after(user, our_guy, lace_time, extra_checks = CALLBACK(src, .proc/still_shoed, our_guy)))
+		if(do_after(user, our_guy, lace_time, extra_checks = CALLBACK(src, PROC_REF(still_shoed), our_guy)))
 			to_chat(user, span_notice("You [tied ? "unknot" : "tie"] the laces of your [src.name]."))
 			if(tied == SHOES_UNTIED)
 				adjust_laces(SHOES_TIED, user)
@@ -185,7 +191,7 @@
 		if(HAS_TRAIT(user, TRAIT_CLUMSY)) // based clowns trained their whole lives for this
 			mod_time *= 0.75
 
-		if(do_after(user, our_guy, mod_time, extra_checks = CALLBACK(src, .proc/still_shoed, our_guy)))
+		if(do_after(user, our_guy, mod_time, extra_checks = CALLBACK(src, PROC_REF(still_shoed), our_guy)))
 			to_chat(user, span_notice("You [tied ? "untie" : "knot"] the laces on [loc]'s [src.name]."))
 			if(tied == SHOES_UNTIED)
 				adjust_laces(SHOES_KNOTTED, user)
@@ -198,7 +204,8 @@
 			if(istype(L))
 				var/obj/item/bodypart/ouchie = L.get_bodypart(pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
 				if(ouchie)
-					ouchie.receive_damage(brute = 10, stamina = 40)
+					ouchie.receive_damage(brute = 10)
+					L.stamina.adjust(-40)
 				L.Paralyze(10)
 
 ///checking to make sure we're still on the person we're supposed to be, for lacing do_after's
@@ -216,7 +223,6 @@
 		our_guy.Paralyze(5)
 		our_guy.Knockdown(10)
 		our_guy.visible_message(span_danger("[our_guy] trips on [our_guy.p_their()] knotted shoelaces and falls! What a klutz!"), span_userdanger("You trip on your knotted shoelaces and fall over!"))
-		SEND_SIGNAL(our_guy, COMSIG_ADD_MOOD_EVENT, "trip", /datum/mood_event/tripped) // well we realized they're knotted now!
 		our_alert_ref = WEAKREF(our_guy.throw_alert(ALERT_SHOES_KNOT, /atom/movable/screen/alert/shoes/knotted))
 
 	else if(tied == SHOES_UNTIED)
@@ -225,7 +231,6 @@
 			if(1) // .1% chance to trip and fall over (note these are per step while our laces are undone)
 				our_guy.Paralyze(5)
 				our_guy.Knockdown(10)
-				SEND_SIGNAL(our_guy, COMSIG_ADD_MOOD_EVENT, "trip", /datum/mood_event/tripped) // well we realized they're knotted now!
 				our_guy.visible_message(span_danger("[our_guy] trips on [our_guy.p_their()] untied shoelaces and falls! What a klutz!"), span_userdanger("You trip on your untied shoelaces and fall over!"))
 
 			if(2 to 5) // .4% chance to stumble and lurch forward
@@ -243,12 +248,11 @@
 				to_chat(our_guy, span_danger("You stumble a bit on your untied shoelaces!"))
 				if(!our_guy.has_movespeed_modifier(/datum/movespeed_modifier/shove))
 					our_guy.add_movespeed_modifier(/datum/movespeed_modifier/shove)
-					addtimer(CALLBACK(our_guy, /mob/living/carbon/proc/clear_shove_slowdown), SHOVE_SLOWDOWN_LENGTH)
+					addtimer(CALLBACK(our_guy, TYPE_PROC_REF(/mob/living/carbon, clear_shove_slowdown)), SHOVE_SLOWDOWN_LENGTH)
 
 			if(26 to 1000)
 				wiser = FALSE
 		if(wiser)
-			SEND_SIGNAL(our_guy, COMSIG_ADD_MOOD_EVENT, "untied", /datum/mood_event/untied) // well we realized they're untied now!
 			our_alert_ref = WEAKREF(our_guy.throw_alert(ALERT_SHOES_KNOT, /atom/movable/screen/alert/shoes/untied))
 
 
@@ -272,6 +276,6 @@
 
 	to_chat(user, span_notice("You begin [tied ? "untying" : "tying"] the laces on [src]..."))
 
-	if(do_after(user, src, lace_time,extra_checks = CALLBACK(src, .proc/still_shoed, user)))
+	if(do_after(user, src, lace_time,extra_checks = CALLBACK(src, PROC_REF(still_shoed), user)))
 		to_chat(user, span_notice("You [tied ? "untie" : "tie"] the laces on [src]."))
 		adjust_laces(tied ? SHOES_UNTIED : SHOES_TIED, user)

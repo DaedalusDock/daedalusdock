@@ -8,7 +8,7 @@
 	shoes = /obj/item/clothing/shoes/sneakers/black
 
 /datum/outfit/vr/pre_equip(mob/living/carbon/human/H)
-	H.dna.species.pre_equip_species_outfit(null, H)
+	H.dna.species.pre_equip_species_outfit(src, H)
 
 /datum/outfit/vr/syndicate
 	name = "Syndicate VR Operative - Basic"
@@ -31,9 +31,9 @@
 	var/obj/item/uplink/U = new /obj/item/uplink/nuclear_restricted(H, H.key, 80)
 	H.equip_to_slot_or_del(U, ITEM_SLOT_BACKPACK)
 	var/obj/item/implant/weapons_auth/W = new/obj/item/implant/weapons_auth(H)
-	W.implant(H)
+	W.implant(H, body_zone = BODY_ZONE_CHEST)
 	var/obj/item/implant/explosive/E = new/obj/item/implant/explosive(H)
-	E.implant(H)
+	E.implant(H, body_zone = BODY_ZONE_CHEST)
 	H.faction |= ROLE_SYNDICATE
 	H.update_icons()
 

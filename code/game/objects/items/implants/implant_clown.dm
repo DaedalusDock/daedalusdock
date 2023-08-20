@@ -10,10 +10,10 @@
 				"}
 	return dat
 
-/obj/item/implant/sad_trombone/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/sad_trombone/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	. = ..()
 	if(.)
-		RegisterSignal(target, COMSIG_MOB_EMOTED("deathgasp"), .proc/on_deathgasp)
+		RegisterSignal(target, COMSIG_MOB_EMOTED("deathgasp"), PROC_REF(on_deathgasp))
 
 /obj/item/implant/sad_trombone/removed(mob/target, silent = FALSE, special = FALSE)
 	. = ..()

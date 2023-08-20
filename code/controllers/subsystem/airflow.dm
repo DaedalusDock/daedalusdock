@@ -1,13 +1,20 @@
 SUBSYSTEM_DEF(airflow)
 	name = "Air (Airflow)"
-	wait = 1
-	flags = SS_NO_INIT|SS_TICKER
+	wait = 0
+	flags = SS_NO_INIT | SS_HIBERNATE
 	priority = FIRE_PRIORITY_AIRFLOW
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 
 	var/static/tmp/list/processing = list()
 	var/static/tmp/list/current = list()
 
+
+/datum/controller/subsystem/airflow/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, processing),
+		NAMEOF(src, current)
+	)
 
 /datum/controller/subsystem/airflow/Recover()
 	current.Cut()
@@ -91,7 +98,7 @@ SUBSYSTEM_DEF(airflow)
 	if(!can_fire)
 		return
 	processing += to_add
-	RegisterSignal(to_add, COMSIG_PARENT_QDELETING, .proc/HandleDel)
+	RegisterSignal(to_add, COMSIG_PARENT_QDELETING, PROC_REF(HandleDel))
 
 /datum/controller/subsystem/airflow/proc/Dequeue(atom/movable/to_remove)
 	processing -= to_remove

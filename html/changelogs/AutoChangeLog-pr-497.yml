@@ -1,0 +1,8 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscdel: IDs are no longer named after the owner.
+  - rscadd: IDs can now be examined to see lots of information about the registered
+      employee.
+  - rscadd: Chameleon IDs now have an "Impersonate Crew" button, to clone the target's
+      ID.

@@ -1,9 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - balance: Damaging a bodypart with a broken bone has a chance to deal damage to
-      an organ inside.
-  - balance: Damage that ignores armor (such as pressure damage) can no longer break
-      bones or jostle bones.
-  - balance: Tweaked the dismemberment formula for the 8th time
-  - code_imp: Removed organ/var/status

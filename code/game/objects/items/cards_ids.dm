@@ -417,11 +417,8 @@
 		wildcard_access_list |= new_access
 
 /obj/item/card/id/attack_self(mob/user)
-	if(Adjacent(user))
-		var/minor
-		if(registered_name && registered_age && registered_age < AGE_MINOR)
-			minor = " <b>(MINOR)</b>"
-		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [src.name][minor]."), span_notice("You show \the [src.name][minor]."))
+	user.visible_message("<b>[user]</b> holds up [src]. <a href='?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>", null, vision_distance = 1)
+	show(user)
 	add_fingerprint(user)
 
 /obj/item/card/id/afterattack_secondary(atom/target, mob/user, proximity_flag, click_parameters)
@@ -757,16 +754,35 @@
 
 	label = "[name_string], [assignment_string]"
 
-/obj/item/card/id/proc/datacore_ready(datum/datacore/datacore)
+/obj/item/card/id/proc/set_data_by_record(datum/data/record/R, set_access, visual)
+	registered_name = R.fields["name"]
+	registered_age = R.fields["age"] || "UNSET"
+	dna_hash = R.fields["identity"] || "UNSET"
+	fingerprint = md5(R.fields["identity"]) || "UNSET"
+	blood_type = R.fields["blood_type"] || "UNSET"
+	assignment = R.fields["trim"] || "UNSET"
+	for(var/datum/id_trim/trim as anything in SSid_access.trim_singletons_by_path)
+		trim = SSid_access.trim_singletons_by_path[trim]
+		if(trim.assignment == R.fields["trim"])
+			if(visual)
+				SSid_access.apply_trim_to_chameleon_card(src, trim.type)
+			else
+				SSid_access.apply_trim_to_card(src, trim.type, set_access)
+	update_label()
+	update_icon()
+
+/obj/item/card/id/proc/datacore_ready(datum/source, datum/datacore/datacore)
 	SIGNAL_HANDLER
-	set_icon()
+	set_icon(find_record("name", registered_name, GLOB.data_core.locked))
 	UnregisterSignal(src, COMSIG_GLOB_DATACORE_READY)
 
 /// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
-/obj/item/card/id/proc/set_icon()
+/obj/item/card/id/proc/set_icon(datum/data/record/R, mutable_appearance/mob_appearance)
 	set waitfor = FALSE
+	if(ismob(mob_appearance))
+		mob_appearance = new(mob_appearance)
+
 	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
-	var/datum/data/record/R = find_record("name", registered_name, GLOB.data_core.general)
 	if(R)
 		var/obj/item/photo/side = R.get_side_photo()
 		CHECK_TICK
@@ -775,14 +791,16 @@
 		side_image = side.picture.picture_image
 		front_image = front.picture.picture_image
 	else
-		var/mob/M = src
-		while(M && !ismob(M))
-			M = M.loc
-		if(!M)
-			return
-		front_image = getFlatIcon(mutable_appearance(M), WEST)
+		if(!mob_appearance)
+			var/mob/M = src
+			while(M && !ismob(M))
+				M = M.loc
+			if(!M)
+				return
+			mob_appearance = new(M)
+		front_image = getFlatIcon(mob_appearance, WEST)
 		CHECK_TICK
-		side_image = getFlatIcon(mutable_appearance(M), SOUTH)
+		side_image = getFlatIcon(mob_appearance, SOUTH)
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()
@@ -1268,8 +1286,6 @@
 	wildcard_slots = WILDCARD_LIMIT_ADMIN
 
 /obj/item/card/id/advanced/chameleon
-	name = "agent card"
-	desc = "A highly advanced chameleon ID card. Touch this card on another ID card or player to choose which accesses to copy. Has special magnetic properties which force it to the front of wallets."
 	trim = /datum/id_trim/chameleon
 	wildcard_slots = WILDCARD_LIMIT_CHAMELEON
 
@@ -1282,7 +1298,6 @@
 
 /obj/item/card/id/advanced/chameleon/Initialize(mapload)
 	. = ..()
-
 	var/datum/action/item_action/chameleon/change/id/chameleon_card_action = new(src)
 	chameleon_card_action.chameleon_type = /obj/item/card/id/advanced
 	chameleon_card_action.chameleon_name = "ID Card"
@@ -1466,91 +1481,122 @@
 
 /obj/item/card/id/advanced/chameleon/attack_self(mob/user)
 	if(isliving(user) && user.mind)
-		var/popup_input = tgui_input_list(user, "Choose Action", "Agent ID", list("Show", "Forge/Reset", "Change Account ID"))
+		var/popup_input = tgui_input_list(user, "Choose Action", "Agent ID", list("Show", "Forge/Reset", "Impersonate Crew", "Change Account ID", "Update Photo"))
 		if(user.incapacitated())
 			return
 		if(!user.is_holding(src))
 			return
-		if(popup_input == "Forge/Reset")
-			if(!forged)
-				var/input_name = tgui_input_text(user, "What name would you like to put on this card? Leave blank to randomise.", "Agent card name", registered_name ? registered_name : (ishuman(user) ? user.real_name : user.name), MAX_NAME_LEN)
-				input_name = sanitize_name(input_name)
-				if(!input_name)
-					// Invalid/blank names give a randomly generated one.
-					if(user.gender == MALE)
-						input_name = "[pick(GLOB.first_names_male)] [pick(GLOB.last_names)]"
-					else if(user.gender == FEMALE)
-						input_name = "[pick(GLOB.first_names_female)] [pick(GLOB.last_names)]"
-					else
-						input_name = "[pick(GLOB.first_names)] [pick(GLOB.last_names)]"
+		switch(popup_input)
+			if("Show")
+				return ..()
+			if("Forge/Reset")
+				if(!forged)
+					var/input_name = tgui_input_text(user, "What name would you like to put on this card? Leave blank to randomise.", "Agent card name", registered_name ? registered_name : (ishuman(user) ? user.real_name : user.name), MAX_NAME_LEN)
+					input_name = sanitize_name(input_name)
+					if(!input_name)
+						// Invalid/blank names give a randomly generated one.
+						if(user.gender == MALE)
+							input_name = "[pick(GLOB.first_names_male)] [pick(GLOB.last_names)]"
+						else if(user.gender == FEMALE)
+							input_name = "[pick(GLOB.first_names_female)] [pick(GLOB.last_names)]"
+						else
+							input_name = "[pick(GLOB.first_names)] [pick(GLOB.last_names)]"
 
-				registered_name = input_name
+					registered_name = input_name
 
-				var/change_trim = tgui_alert(user, "Adjust the appearance of your card's trim?", "Modify Trim", list("Yes", "No"))
-				if(change_trim == "Yes")
-					var/list/blacklist = typecacheof(list(
-						type,
-						/obj/item/card/id/advanced/simple_bot,
-					))
-					var/list/trim_list = list()
-					for(var/trim_path in typesof(/datum/id_trim))
-						if(blacklist[trim_path])
-							continue
+					var/change_trim = tgui_alert(user, "Adjust the appearance of your card's trim?", "Modify Trim", list("Yes", "No"))
+					if(change_trim == "Yes")
+						var/list/blacklist = typecacheof(list(
+							type,
+							/obj/item/card/id/advanced/simple_bot,
+						))
+						var/list/trim_list = list()
+						for(var/trim_path in typesof(/datum/id_trim))
+							if(blacklist[trim_path])
+								continue
 
-						var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
+							var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[trim_path]
 
-						if(trim && trim.trim_state && trim.assignment)
-							var/fake_trim_name = "[trim.assignment] ([trim.trim_state])"
-							trim_list[fake_trim_name] = trim_path
+							if(trim && trim.trim_state && trim.assignment)
+								var/fake_trim_name = "[trim.assignment] ([trim.trim_state])"
+								trim_list[fake_trim_name] = trim_path
 
-					var/selected_trim_path = tgui_input_list(user, "Select trim to apply to your card.\nNote: This will not grant any trim accesses.", "Forge Trim", sort_list(trim_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
-					if(selected_trim_path)
-						SSid_access.apply_trim_to_chameleon_card(src, trim_list[selected_trim_path])
+						var/selected_trim_path = tgui_input_list(user, "Select trim to apply to your card.\nNote: This will not grant any trim accesses.", "Forge Trim", sort_list(trim_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
+						if(selected_trim_path)
+							SSid_access.apply_trim_to_chameleon_card(src, trim_list[selected_trim_path])
 
-				var/target_occupation = tgui_input_text(user, "What occupation would you like to put on this card?\nNote: This will not grant any access levels.", "Agent card job assignment", assignment ? assignment : "Assistant")
-				if(target_occupation)
-					assignment = target_occupation
+					var/target_occupation = tgui_input_text(user, "What occupation would you like to put on this card?\nNote: This will not grant any access levels.", "Agent card job assignment", assignment ? assignment : "Assistant")
+					if(target_occupation)
+						assignment = target_occupation
 
-				var/new_age = tgui_input_number(user, "Choose the ID's age", "Agent card age", AGE_MIN, AGE_MAX, AGE_MIN)
-				if(QDELETED(user) || QDELETED(src) || !user.canUseTopic(user, BE_CLOSE, NO_DEXTERITY, NO_TK))
+					var/new_age = tgui_input_number(user, "Choose the ID's age", "Agent card age", AGE_MIN, AGE_MAX, AGE_MIN)
+					if(QDELETED(user) || QDELETED(src) || !user.canUseTopic(user, BE_CLOSE, NO_DEXTERITY, NO_TK))
+						return
+					if(new_age)
+						registered_age = new_age
+
+					if(tgui_alert(user, "Activate wallet ID spoofing, allowing this card to force itself to occupy the visible ID slot in wallets?", "Wallet ID Spoofing", list("Yes", "No")) == "Yes")
+						ADD_TRAIT(src, TRAIT_MAGNETIC_ID_CARD, CHAMELEON_ITEM_TRAIT)
+
+					if(tgui_alert(user, "Create new DNA, Fingerprints, and Blood Type?", "DNA Spoofing", list("Yes", "No")) == "Yes")
+						dna_hash = md5(rand(1,999))
+						fingerprint = md5(rand(1, 999))
+						blood_type = random_blood_type()
+
+					else if(tgui_alert(user, "Use real fingerprint?", "Forge ID", list("Yes", "No")) == "Yes")
+						var/mob/living/carbon/human/H = user
+						if(istype(H))
+							fingerprint = md5(H.dna.unique_identity)
+
+
+					update_label()
+					update_icon()
+					forged = TRUE
+					to_chat(user, span_notice("You successfully forge the ID card."))
+					log_game("[key_name(user)] has forged \the [initial(name)] with name \"[registered_name]\", occupation \"[assignment]\" and trim \"[trim?.assignment]\".")
+
+					if(!registered_account)
+						if(ishuman(user))
+							var/mob/living/carbon/human/accountowner = user
+
+							var/datum/bank_account/account = SSeconomy.bank_accounts_by_id["[accountowner.account_id]"]
+							if(account)
+								account.bank_cards += src
+								registered_account = account
+								to_chat(user, span_notice("Your account number has been automatically assigned."))
 					return
-				if(new_age)
-					registered_age = new_age
 
-				if(tgui_alert(user, "Activate wallet ID spoofing, allowing this card to force itself to occupy the visible ID slot in wallets?", "Wallet ID Spoofing", list("Yes", "No")) == "Yes")
-					ADD_TRAIT(src, TRAIT_MAGNETIC_ID_CARD, CHAMELEON_ITEM_TRAIT)
+				if(forged)
+					registered_name = initial(registered_name)
+					assignment = initial(assignment)
+					SSid_access.remove_trim_from_chameleon_card(src)
+					REMOVE_TRAIT(src, TRAIT_MAGNETIC_ID_CARD, CHAMELEON_ITEM_TRAIT)
+					log_game("[key_name(user)] has reset \the [initial(name)] named \"[src]\" to default.")
+					update_label()
+					update_icon()
+					forged = FALSE
+					to_chat(user, span_notice("You successfully reset the ID card."))
+					return
 
-				update_label()
-				update_icon()
-				forged = TRUE
-				to_chat(user, span_notice("You successfully forge the ID card."))
-				log_game("[key_name(user)] has forged \the [initial(name)] with name \"[registered_name]\", occupation \"[assignment]\" and trim \"[trim?.assignment]\".")
-
-				if(!registered_account)
-					if(ishuman(user))
-						var/mob/living/carbon/human/accountowner = user
-
-						var/datum/bank_account/account = SSeconomy.bank_accounts_by_id["[accountowner.account_id]"]
-						if(account)
-							account.bank_cards += src
-							registered_account = account
-							to_chat(user, span_notice("Your account number has been automatically assigned."))
+			if ("Change Account ID")
+				set_new_account(user)
 				return
-			if(forged)
-				registered_name = initial(registered_name)
-				assignment = initial(assignment)
-				SSid_access.remove_trim_from_chameleon_card(src)
-				REMOVE_TRAIT(src, TRAIT_MAGNETIC_ID_CARD, CHAMELEON_ITEM_TRAIT)
-				log_game("[key_name(user)] has reset \the [initial(name)] named \"[src]\" to default.")
-				update_label()
-				update_icon()
-				forged = FALSE
-				to_chat(user, span_notice("You successfully reset the ID card."))
+
+			if("Impersonate Crew")
+				var/list/options = list()
+				for(var/datum/data/record/R as anything in GLOB.data_core.general)
+					options += R.fields["name"]
+				var/choice = tgui_input_list(user, "Select a crew member", "Impersonate Crew", options)
+				if(!choice)
+					return
+				var/datum/data/record/R = find_record("name", choice, GLOB.data_core.locked)
+				set_data_by_record(R, visual = TRUE)
+				set_icon(R)
 				return
-		if (popup_input == "Change Account ID")
-			set_new_account(user)
-			return
-	return ..()
+
+			if("Update Photo")
+				set_icon(null, user)
+				return
 
 /// A special variant of the classic chameleon ID card which accepts all access.
 /obj/item/card/id/advanced/chameleon/black

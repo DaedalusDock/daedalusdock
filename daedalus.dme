@@ -1572,6 +1572,7 @@
 #include "code\game\objects\items\trash.dm"
 #include "code\game\objects\items\vending_items.dm"
 #include "code\game\objects\items\virgin_mary.dm"
+#include "code\game\objects\items\voice_changer.dm"
 #include "code\game\objects\items\wall_mounted.dm"
 #include "code\game\objects\items\weaponry.dm"
 #include "code\game\objects\items\circuitboards\circuitboard.dm"

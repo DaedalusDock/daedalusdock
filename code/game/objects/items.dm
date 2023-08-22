@@ -283,8 +283,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			id.show(usr)
 		else if(usr.canUseTopic(src, TRUE, TRUE, TRUE, FALSE, TRUE))
 			id.show(usr)
-
-
+		return TRUE
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)

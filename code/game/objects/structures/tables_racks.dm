@@ -117,6 +117,8 @@
 	. = ..()
 	if(.)
 		return
+	if(isprojectile(mover))
+		return check_cover(mover, get_turf(mover))
 	if(mover.throwing)
 		return TRUE
 	if(locate(/obj/structure/table) in get_turf(mover))
@@ -126,6 +128,35 @@
 	. = !density
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE)
+
+//checks if projectile 'P' from turf 'from' can hit whatever is behind the table. Returns 1 if it can, 0 if bullet stops.
+/obj/structure/table/proc/check_cover(obj/projectile/P, turf/from)
+	var/turf/cover
+	var/flipped = FALSE
+	if(flipped)
+		cover = get_turf(src)
+	else
+		cover = get_step(loc, get_dir(from, loc))
+	if(!cover)
+		return TRUE
+	if (get_dist(P.starting, loc) <= 1) //Tables won't help you if people are THIS close
+		return TRUE
+
+	var/chance = 0
+	if(ismob(P.original) && get_turf(P.original) == cover)
+		var/mob/living/L = P.original
+		if (L.body_position == LYING_DOWN)
+			chance += 40 //Lying down lets you catch less bullets
+
+	if(flipped)
+		if(get_dir(loc, from) == dir) //Flipped tables catch mroe bullets
+			chance += 40
+		else
+			return TRUE //But only from one side
+
+	if(prob(chance))
+		return FALSE //blocked
+	return TRUE
 
 /obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user)
 	if(!Adjacent(user) || !user.pulling)

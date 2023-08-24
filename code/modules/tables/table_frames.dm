@@ -21,7 +21,6 @@
 	var/framestack = /obj/item/stack/rods
 	var/framestackamount = 2
 
-
 /obj/structure/table_frame/wrench_act(mob/living/user, obj/item/I)
 	to_chat(user, span_notice("You start disassembling [src]..."))
 	I.play_tool_sound(src)

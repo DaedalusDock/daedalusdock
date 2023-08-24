@@ -258,7 +258,10 @@
 
 	var/hitx
 	var/hity
-	if(target == original)
+	if(target.flags_1 & ON_BORDER_1)
+		hitx = p_x
+		hity = p_y
+	else if(target == original)
 		hitx = target.pixel_x + p_x - 16
 		hity = target.pixel_y + p_y - 16
 	else
@@ -491,7 +494,7 @@
  */
 /obj/projectile/proc/select_target(turf/our_turf, atom/target, atom/bumped)
 	// 1. special bumped border object check
-	if((bumped?.flags_1 & ON_BORDER_1) && can_hit_target(bumped, original == bumped, FALSE, TRUE))
+	if((bumped?.flags_1 & (ON_BORDER_1|BUMP_PRIORITY_1)) && can_hit_target(bumped, original == bumped, TRUE, TRUE))
 		return bumped
 	// 2. original
 	if(can_hit_target(original, TRUE, FALSE, original == bumped))

@@ -26,6 +26,12 @@
 	if(climbable)
 		AddElement(/datum/element/climbable)
 
+	if(density && flags_1 & ON_BORDER_1) // blocks normal movement from and to the direction it's facing.
+		var/static/list/loc_connections = list(
+			COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+		)
+		AddElement(/datum/element/connect_loc, loc_connections)
+
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM)
 
 /obj/structure/railing/attackby(obj/item/I, mob/living/user, params)
@@ -84,8 +90,12 @@
 		return TRUE
 	return ..()
 
-/obj/structure/railing/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/structure/railing/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
+
+	if(leaving == src)
+		return // Let's not block ourselves.
+
 	if(!(direction & dir))
 		return
 
@@ -102,7 +112,7 @@
 		return
 
 	leaving.Bump(src)
-	return FALSE
+	return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/railing/proc/check_anchored(checked_anchored)
 	if(anchored == checked_anchored)

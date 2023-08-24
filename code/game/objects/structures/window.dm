@@ -55,28 +55,45 @@
 		else
 			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
 
-
+GLOBAL_REAL_VAR(windowcost) = list()
+GLOBAL_REAL_VAR(windowcount) = list()
 /obj/structure/window/Initialize(mapload, direct)
+	INIT_COST_GLOBAL(global.windowcost, global.windowcount)
 	. = ..()
+	SET_COST("parent")
 	if(direct)
 		setDir(direct)
+	SET_COST("direction")
 
 	if(reinf && anchored)
 		state = WINDOW_SCREWED_TO_FRAME
+	SET_COST("set state")
 
 	zas_update_loc()
 
+	SET_COST("zas loc")
 
 	if(fulltile)
 		setDir()
+	SET_COST("fulltile dir")
 
 	//windows only block while reinforced and fulltile, so we'll use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
+	SET_COST("explosions block")
 
 	flags_1 |= ALLOW_DARK_PAINTS_1
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, PROC_REF(on_painted))
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM, AfterRotation = CALLBACK(src,PROC_REF(AfterRotation)))
+
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+	)
+
+	if (flags_1 & ON_BORDER_1)
+		AddElement(/datum/element/connect_loc, loc_connections)
+	SET_COST("add connect loc")
+	EXPORT_STATS_TO_CSV_LATER("cost_windows.csv", global.windowcost, global.windowcount)
 
 /obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)
@@ -122,13 +139,14 @@
 
 	return TRUE
 
-/obj/structure/window/Exit(atom/movable/leaving, direction)
-	. = ..()
-	if(direction != dir || !density)
-		return
+/obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
 
 	if(leaving.movement_type & PHASING)
 		return
+
+	if(leaving == src)
+		return // Let's not block ourselves.
 
 	if (leaving.pass_flags & pass_flags_self)
 		return
@@ -136,8 +154,9 @@
 	if (fulltile)
 		return
 
-	leaving.Bump(src)
-	return FALSE
+	if(direction == dir && density)
+		leaving.Bump(src)
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/window/attack_tk(mob/user)
 	user.changeNext_move(CLICK_CD_MELEE)

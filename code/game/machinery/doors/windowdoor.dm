@@ -53,6 +53,12 @@
 	src.unres_sides = unres_sides
 	update_appearance(UPDATE_ICON)
 
+
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+	)
+
+	AddElement(/datum/element/connect_loc, loc_connections)
 	zas_update_loc()
 	become_atmos_sensitive()
 
@@ -174,14 +180,8 @@
 /obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
 	return !density || (dir != to_dir) || (check_access(ID) && hasPower() && !no_id)
 
-/obj/machinery/door/window/Exit(atom/movable/leaving, direction)
-	. = ..()
-	if(!density)
-		return
-
-	if(!(direction == dir))
-		return
-
+/obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
 	if(leaving.movement_type & PHASING)
 		return
 
@@ -191,8 +191,9 @@
 	if((pass_flags_self & leaving.pass_flags) || ((pass_flags_self & LETPASSTHROW) && leaving.throwing))
 		return
 
-	leaving.Bump(src)
-	return FALSE
+	if(direction == dir && density)
+		leaving.Bump(src)
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/machinery/door/window/open(forced=FALSE)
 	if (operating) //doors can still open when emag-disabled

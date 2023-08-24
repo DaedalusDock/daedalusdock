@@ -276,14 +276,18 @@
 	var/obj/item/item_A = get_item_for_held_index(index_A)
 	var/obj/item/item_B = get_item_for_held_index(index_B)
 
+	var/failed_uh_oh_abort = FALSE
 	if(!(item_A || item_B))
 		return
 	if(item_A && !temporarilyRemoveItemFromInventory(item_A))
-		return
+		failed_uh_oh_abort = TRUE
 	if(item_B && !temporarilyRemoveItemFromInventory(item_B))
-		return
+		failed_uh_oh_abort = TRUE
 
 	if((item_A && !put_in_hand(item_A, index_B)) || (item_B && !put_in_hand(item_B, index_A)))
+		failed_uh_oh_abort = TRUE
+
+	if(failed_uh_oh_abort)
 		if(item_A)
 			temporarilyRemoveItemFromInventory(item_A)
 		if(item_B)

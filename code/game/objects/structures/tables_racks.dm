@@ -436,6 +436,7 @@
 	max_integrity = 70
 	resistance_flags = ACID_PROOF
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
+	cross_flags = CROSSED
 	var/list/debris = list()
 
 /obj/structure/table/glass/Initialize(mapload)
@@ -445,28 +446,21 @@
 		debris += new /obj/item/shard/plasma
 	else
 		debris += new /obj/item/shard
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/table/glass/Destroy()
 	QDEL_LIST(debris)
 	. = ..()
 
-/obj/structure/table/glass/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(AM == src)
-		return
+/obj/structure/table/glass/Crossed(atom/movable/crossed_by, oldloc)
 	if(flags_1 & NODECONSTRUCT_1)
 		return
-	if(!isliving(AM))
+	if(!isliving(crossed_by))
 		return
 	// Don't break if they're just flying past
-	if(AM.throwing)
-		addtimer(CALLBACK(src, PROC_REF(throw_check), AM), 5)
+	if(crossed_by.throwing)
+		addtimer(CALLBACK(src, PROC_REF(throw_check), crossed_by), 5)
 	else
-		check_break(AM)
+		check_break(crossed_by)
 
 /obj/structure/table/glass/proc/throw_check(mob/living/M)
 	if(M.loc == get_turf(src))

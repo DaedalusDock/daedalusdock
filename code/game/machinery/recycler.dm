@@ -8,6 +8,8 @@
 	layer = ABOVE_ALL_MOB_LAYER // Overhead
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/recycler
+	cross_flags = CROSSED
+
 	var/safety_mode = FALSE // Temporarily stops machine if it detects a mob
 	var/icon_name = "grinder-o"
 	var/bloody = FALSE
@@ -40,10 +42,6 @@
 	. = ..()
 	update_appearance(UPDATE_ICON)
 	req_one_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION, REGION_CENTCOM))
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/recycler/RefreshParts()
 	. = ..()
@@ -108,11 +106,8 @@
 	if(border_dir == eat_dir)
 		return TRUE
 
-/obj/machinery/recycler/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(AM == src)
-		return
-	INVOKE_ASYNC(src, PROC_REF(eat), AM)
+/obj/machinery/recycler/Crossed(atom/movable/crossed_by, oldloc)
+	INVOKE_ASYNC(src, PROC_REF(eat), crossed_by)
 
 /obj/machinery/recycler/proc/eat(atom/movable/AM0, sound=TRUE)
 	if(machine_stat & (BROKEN|NOPOWER))

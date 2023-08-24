@@ -958,9 +958,8 @@
 	return CanPass(crosser, get_dir(src, crosser))
 
 ///default byond proc that is deprecated for us in lieu of signals. do not call
-/atom/movable/Crossed(atom/movable/crossed_by, oldloc)
-	SHOULD_NOT_OVERRIDE(TRUE)
-	CRASH("atom/movable/Crossed() was called!")
+/atom/movable/Crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+	CRASH("Bad Crossed() call.")
 
 /**
  * `Uncross()` is a default BYOND proc that is called when something is *going*
@@ -986,15 +985,8 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 	CRASH("Uncross() should not be being called, please read the doc-comment for it for why.")
 
-/**
- * default byond proc that is normally called on everything inside the previous turf
- * a movable was in after moving to its current turf
- * this is wasteful since the vast majority of objects do not use Uncrossed
- * use connect_loc to register to COMSIG_ATOM_EXITED instead
- */
-/atom/movable/Uncrossed(atom/movable/uncrossed_atom)
-	SHOULD_NOT_OVERRIDE(TRUE)
-	CRASH("/atom/movable/Uncrossed() was called")
+/atom/movable/Uncrossed(atom/movable/gone, direction)
+	CRASH("Bad Uncrossed() call.")
 
 /atom/movable/Bump(atom/bumped_atom)
 	if(!bumped_atom)

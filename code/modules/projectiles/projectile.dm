@@ -14,6 +14,7 @@
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
 	simulated = FALSE
+	cross_flags = CROSSED
 
 	//The sound this plays on impact.
 	var/hitsound = 'sound/weapons/pierce.ogg'
@@ -201,9 +202,6 @@
 	var/wound_falloff_tile
 	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
 	var/embed_falloff_tile
-	var/static/list/projectile_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
 	/// If true directly targeted turfs can be hit
 	var/can_hit_turfs = FALSE
 
@@ -212,7 +210,6 @@
 	decayedRange = range
 	if(embedding)
 		updateEmbedding()
-	AddElement(/datum/element/connect_loc, projectile_connections)
 
 /obj/projectile/proc/Range()
 	range--
@@ -598,11 +595,8 @@
 /**
  * Projectile crossed: When something enters a projectile's tile, make sure the projectile hits it if it should be hitting it.
  */
-/obj/projectile/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(AM == src)
-		return
-	scan_crossed_hit(AM)
+/obj/projectile/Crossed(atom/movable/crossed_by, oldloc)
+	scan_crossed_hit(crossed_by)
 
 /**
  * Projectile can pass through

@@ -6,11 +6,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 	luminosity = 1
 
-	///Atoms in our contents that want Crossed() called.
-	var/list/crossers
-	///Atoms in our contents that want Uncrossed() called.
-	var/list/uncrossers
-
 	/// Turf bitflags, see code/__DEFINES/flags.dm
 	var/turf_flags = NONE
 
@@ -401,16 +396,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 				SSzas.zones_with_sensitive_contents += zone
 			LAZYDISTINCTADD(zone.atmos_sensitive_contents, arrived)
 
-	if(LAZYLEN(crossers))
-		for(var/atom/movable/crossed as anything in crossers)
-			if(!QDELING(crossed))
-				crossed.Crossed(arrived, old_loc, old_locs)
-
-	if(arrived.cross_flags & CROSSED)
-		LAZYADD(crossers, arrived)
-	if(arrived.cross_flags & UNCROSSED)
-		LAZYADD(uncrossers, arrived)
-
 	if (!arrived.bound_overlay && !(arrived.zmm_flags & ZMM_IGNORE) && arrived.invisibility != INVISIBILITY_ABSTRACT && TURF_IS_MIMICKING(above))
 		above.update_mimic()
 
@@ -425,16 +410,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			LAZYREMOVE(zone.atmos_sensitive_contents, gone)
 			if(isnull(zone.atmos_sensitive_contents))
 				SSzas.zones_with_sensitive_contents -= zone
-
-	if(gone.cross_flags & CROSSED)
-		LAZYREMOVE(crossers, gone)
-	if(gone.cross_flags & UNCROSSED)
-		LAZYREMOVE(uncrossers, gone)
-
-	if(LAZYLEN(uncrossers))
-		for(var/atom/movable/uncrossed as anything in uncrossers)
-			if(!QDELING(uncrossed))
-				uncrossed.Uncrossed(gone, direction)
 
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
 /turf/proc/assemble_baseturfs(turf/fake_baseturf_type)

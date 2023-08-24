@@ -10,7 +10,7 @@
 	can_buckle = FALSE
 	resistance_flags = INDESTRUCTIBLE // Just to be safe.
 	use_power = NO_POWER_USE
-	cross_flags = CROSSED
+	loc_procs = CROSSED
 	///Are non-humans allowed to use this?
 	var/humans_only = FALSE
 	///What color is your mob set to when crossed?

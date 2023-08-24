@@ -16,7 +16,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	desc = "A conveyor belt."
 	layer = BELOW_OPEN_DOOR_LAYER
 	processing_flags = NONE
-	cross_flags = UNCROSSED|CROSSED
+	loc_procs = UNCROSSED|CROSSED
 
 	/// The current state of the switch.
 	var/operating = CONVEYOR_OFF

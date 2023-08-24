@@ -124,7 +124,7 @@
 
 /obj/effect/particle_effect/smoke/bad
 	lifetime = 8
-	cross_flags = CROSSED
+	loc_procs = CROSSED
 
 /obj/effect/particle_effect/smoke/bad/smoke_mob(mob/living/carbon/M)
 	. = ..()

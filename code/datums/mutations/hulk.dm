@@ -182,9 +182,8 @@
 	var/turf/current_spin_turf = yeeted_person.loc
 	var/turf/intermediate_spin_turf = get_step(yeeted_person, the_hulk.dir) // the diagonal
 	var/turf/next_spin_turf = get_step(the_hulk, the_hulk.dir)
-	var/direction = get_dir(current_spin_turf, intermediate_spin_turf)
 
-	if((isturf(current_spin_turf) && current_spin_turf.Exit(yeeted_person, direction)) && (isturf(next_spin_turf) && next_spin_turf.Enter(yeeted_person)))
+	if(yeeted_person.can_step_into(next_spin_turf))
 		yeeted_person.forceMove(next_spin_turf)
 		yeeted_person.face_atom(the_hulk)
 

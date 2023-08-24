@@ -3,7 +3,7 @@
 	desc = "A gate able to perform mid-depth scans on any organisms who pass under it."
 	icon = 'icons/obj/machines/scangate.dmi'
 	icon_state = "scangate_black"
-	cross_flags = CROSSED
+	loc_procs = CROSSED
 
 	var/locked = FALSE
 

@@ -716,9 +716,21 @@
 		for(var/atom/exiting_loc as anything in old_locs)
 			if(!exiting_loc.Exit(src, direction))
 				return
+			if(LAZYLEN(exiting_loc.check_exit))
+				for(var/atom/movable/blocker as anything in exiting_loc.check_exit)
+					if(blocker == src)
+						continue
+					if(!blocker.Exit(src, direction))
+						return
 	else
 		if(!loc.Exit(src, direction))
 			return
+		if(LAZYLEN(loc.check_exit))
+			for(var/atom/movable/blocker as anything in loc.check_exit)
+				if(blocker == src)
+					continue
+				if(!blocker.Exit(src, direction))
+					return
 
 	var/list/new_locs
 	if(is_multi_tile_object && isturf(newloc))

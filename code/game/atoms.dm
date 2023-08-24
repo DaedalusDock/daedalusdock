@@ -16,11 +16,13 @@
 	var/pass_flags_self = NONE
 
 	/// Informs our loc if we need Crossed and/or Uncrossed() called
-	var/cross_flags = NONE
+	var/loc_procs = NONE
 	///Atoms in our contents that want Crossed() called.
 	var/list/crossers
 	///Atoms in our contents that want Uncrossed() called.
 	var/list/uncrossers
+	///Atoms in our contents that want Exit() called.
+	var/list/check_exit
 
 	///If non-null, overrides a/an/some in all cases
 	var/article
@@ -1401,10 +1403,12 @@
 			if(!QDELING(crossed))
 				crossed.Crossed(arrived, old_loc, old_locs)
 
-	if(arrived.cross_flags & CROSSED)
+	if(arrived.loc_procs & CROSSED)
 		LAZYADD(crossers, arrived)
-	if(arrived.cross_flags & UNCROSSED)
+	if(arrived.loc_procs & UNCROSSED)
 		LAZYADD(uncrossers, arrived)
+	if(arrived.loc_procs & EXIT)
+		LAZYADD(check_exit, arrived)
 
 /**
  * An atom is attempting to exit this atom's contents
@@ -1418,9 +1422,6 @@
 	// See the doc comment on `Uncross()` to learn why this is bad.
 	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 
-	if(SEND_SIGNAL(src, COMSIG_ATOM_EXIT, leaving, direction) & COMPONENT_ATOM_BLOCK_EXIT)
-		return FALSE
-
 
 /**
  * An atom has exited this atom's contents
@@ -1433,10 +1434,12 @@
 	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
 
-	if(gone.cross_flags & CROSSED)
+	if(gone.loc_procs & CROSSED)
 		LAZYREMOVE(crossers, gone)
-	if(gone.cross_flags & UNCROSSED)
+	if(gone.loc_procs & UNCROSSED)
 		LAZYREMOVE(uncrossers, gone)
+	if(gone.loc_procs & EXIT)
+		LAZYREMOVE(check_exit, gone)
 
 	if(LAZYLEN(uncrossers))
 		for(var/atom/movable/uncrossed as anything in uncrossers)

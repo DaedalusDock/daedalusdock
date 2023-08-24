@@ -14,7 +14,7 @@
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
 	simulated = FALSE
-	cross_flags = CROSSED
+	loc_procs = CROSSED
 
 	//The sound this plays on impact.
 	var/hitsound = 'sound/weapons/pierce.ogg'

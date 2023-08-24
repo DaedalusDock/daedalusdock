@@ -334,3 +334,5 @@ GLOBAL_LIST_INIT(z_defines, list(
 #define CROSSED (1<<0)
 /// Atom wants Uncrossed() called
 #define UNCROSSED (1<<1)
+/// Atom wants Exit() called.
+#define EXIT (1<<2)

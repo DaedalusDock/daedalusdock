@@ -111,7 +111,7 @@
 	icon_state = "shield2"
 	density = FALSE
 	aSignal = /obj/item/assembly/signaler/anomaly/grav
-	cross_flags = CROSSED
+	loc_procs = CROSSED
 	var/boing = 0
 	///Warp effect holder for displacement filter to "pulse" the anomaly
 	var/atom/movable/warp_effect/warp
@@ -190,7 +190,7 @@
 	density = TRUE
 	aSignal = /obj/item/assembly/signaler/anomaly/flux
 	zmm_flags = ZMM_MANGLE_PLANES
-	cross_flags = CROSSED
+	loc_procs = CROSSED
 	var/canshock = FALSE
 	var/shockdamage = 20
 	var/explosive = TRUE

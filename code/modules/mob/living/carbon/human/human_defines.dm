@@ -13,7 +13,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	can_be_shoved_into = TRUE
 	held_w_class = WEIGHT_CLASS_BULKY
-	cross_flags = CROSSED
+	loc_procs = CROSSED
 
 	//Hair colour and style
 	var/hair_color = "#000000"

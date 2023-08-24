@@ -684,8 +684,11 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	resolve_parent.add_fingerprint(user)
 
 	if(istype(over_object, /atom/movable/screen/inventory/hand))
+		var/mob/M = resolve_parent
+		while(!ismob(M) && !isnull(M))
+			M = M.loc
 
-		if(resolve_parent.loc != user)
+		if(!M?.CanReach(resolve_location))
 			return
 
 		var/atom/movable/screen/inventory/hand/hand = over_object

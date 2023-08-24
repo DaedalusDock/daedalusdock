@@ -12,7 +12,7 @@
 		return
 	if(over == src)
 		return usr.client.Click(src, src_location, src_control, params)
-	if(!Adjacent(usr) || !over.Adjacent(usr))
+	if((!Adjacent(usr) || !over.Adjacent(usr)) && !istype(over, /atom/movable/screen))
 		return // should stop you from dragging through windows
 
 	over.MouseDrop_T(src,usr, params)

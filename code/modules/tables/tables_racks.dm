@@ -103,6 +103,26 @@
 /obj/structure/table/attack_tk(mob/user)
 	return
 
+/obj/structure/table/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
+	. = ..()
+	var/mob/living/L = usr
+	if(!istype(L))
+		return
+	if(!L.combat_mode)
+		return
+	if(!can_interact(L))
+		return
+	if(!over.Adjacent(src))
+		return
+
+	if(flipped)
+		if(get_turf(over) == loc)
+			unflip(L)
+			return
+	else
+		flip(L, get_cardinal_dir(src, over))
+		return
+
 /obj/structure/table/MouseDrop_T(atom/dropping, mob/living/user)
 	. = ..()
 	if(ishuman(dropping))

@@ -411,10 +411,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(arrived.cross_flags & UNCROSSED)
 		LAZYADD(uncrossers, arrived)
 
-	if (thing.bound_overlay || (thing.zmm_flags & ZMM_IGNORE) || thing.invisibility == INVISIBILITY_ABSTRACT || !TURF_IS_MIMICKING(above))
-		return
-
-	above.update_mimic()
+	if (!arrived.bound_overlay && !(arrived.zmm_flags & ZMM_IGNORE) && arrived.invisibility != INVISIBILITY_ABSTRACT && TURF_IS_MIMICKING(above))
+		above.update_mimic()
 
 
 /turf/Exited(atom/movable/gone, direction)

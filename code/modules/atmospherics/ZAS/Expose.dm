@@ -20,7 +20,8 @@
 
 	if(LAZYLEN(crossers))
 		for(var/atom/movable/crossed as anything in crossers)
-			crossed.Crossed(arrived, old_loc, old_locs)
+			if(!QDELETED(crossed))
+				crossed.Crossed(arrived, old_loc, old_locs)
 
 	if(arrived.cross_flags & CROSSED)
 		LAZYADD(crossers, arrived)
@@ -45,7 +46,8 @@
 
 	if(LAZYLEN(uncrossers))
 		for(var/atom/movable/uncrossed as anything in uncrossers)
-			uncrossed.Uncrossed(gone, direction)
+			if(!QDELETED(uncrossed))
+				uncrossed.Uncrossed(gone, direction)
 
 
 ///allows this movable to know when it's container's temperature has changed

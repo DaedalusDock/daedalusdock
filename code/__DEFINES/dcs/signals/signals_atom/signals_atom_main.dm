@@ -54,7 +54,7 @@
 #define COMSIG_ATOM_EXITED "atom_exited"
 ///from base of atom/movable/Moved(): (atom/movable/gone, direction)
 #define COMSIG_ATOM_ABSTRACT_EXITED "atom_abstract_exited"
-///from base of atom/Bumped(): (/atom/movable)
+///from base of atom/BumpedBy(): (/atom/movable)
 #define COMSIG_ATOM_BUMPED "atom_bumped"
 ///from base of atom/handle_atom_del(): (atom/deleted)
 #define COMSIG_ATOM_CONTENTS_DEL "atom_contents_del"

@@ -93,7 +93,7 @@
 		if(PushAM(AM, move_force))
 			return
 
-/mob/living/Bumped(atom/movable/AM)
+/mob/living/BumpedBy(atom/movable/AM)
 	..()
 	last_bumped = world.time
 

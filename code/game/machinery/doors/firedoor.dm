@@ -180,7 +180,7 @@
 	obj_flags |= EMAGGED
 	INVOKE_ASYNC(src, PROC_REF(open))
 
-/obj/machinery/door/firedoor/Bumped(atom/movable/AM)
+/obj/machinery/door/firedoor/BumpedBy(atom/movable/AM)
 	if(panel_open || operating)
 		return
 	if(!density)

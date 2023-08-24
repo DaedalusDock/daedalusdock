@@ -118,7 +118,7 @@
 	if(!density && autoclose) //did someone change state while we slept?
 		close()
 
-/obj/machinery/door/window/Bumped(atom/movable/AM)
+/obj/machinery/door/window/BumpedBy(atom/movable/AM)
 	if(operating || !density)
 		return
 	if(!ismob(AM))

@@ -97,7 +97,7 @@
 	return INITIALIZE_HINT_NORMAL
 
 // Inlined version of the bump click element. way faster this way, the element's nice but it's too much overhead
-/turf/closed/mineral/Bumped(atom/movable/bumped_atom)
+/turf/closed/mineral/BumpedBy(atom/movable/bumped_atom)
 	. = ..()
 	if(!isliving(bumped_atom))
 		return

@@ -380,6 +380,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * If the area has ambience, then it plays some ambience music to the ambience channel
  */
 /area/Entered(atom/movable/arrived, area/old_area)
+	SHOULD_CALL_PARENT(FALSE)
 	set waitfor = FALSE
 	SEND_SIGNAL(src, COMSIG_AREA_ENTERED, arrived, old_area)
 
@@ -427,6 +428,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * Sends signals COMSIG_AREA_EXITED and COMSIG_EXIT_AREA (to a list of atoms)
  */
 /area/Exited(atom/movable/gone, direction)
+	SHOULD_CALL_PARENT(FALSE)
 	SEND_SIGNAL(src, COMSIG_AREA_EXITED, gone, direction)
 
 	if(!gone.important_recursive_contents?[RECURSIVE_CONTENTS_AREA_SENSITIVE])

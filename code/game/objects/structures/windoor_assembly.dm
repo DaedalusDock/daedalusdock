@@ -35,11 +35,6 @@
 		setDir(set_dir)
 	zas_update_loc()
 
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
-	)
-
-	AddElement(/datum/element/connect_loc, loc_connections)
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM)
 
 /obj/structure/windoor_assembly/Destroy()
@@ -76,21 +71,19 @@
 	else
 		return ZONE_BLOCKED
 
-/obj/structure/windoor_assembly/proc/on_exit(datum/source, atom/movable/leaving, direction)
-	SIGNAL_HANDLER
+/obj/structure/windoor_assembly/Exit(atom/movable/leaving, direction)
+	. = ..()
+	if (direction != dir || !density)
+		return
 
 	if(leaving.movement_type & PHASING)
 		return
 
-	if(leaving == src)
-		return // Let's not block ourselves.
-
 	if (leaving.pass_flags & pass_flags_self)
 		return
 
-	if (direction == dir && density)
-		leaving.Bump(src)
-		return COMPONENT_ATOM_BLOCK_EXIT
+	leaving.Bump(src)
+	return FALSE
 
 /obj/structure/windoor_assembly/attackby(obj/item/W, mob/user, params)
 	//I really should have spread this out across more states but thin little windoors are hard to sprite.

@@ -30,12 +30,6 @@
 	GLOB.stairs += src
 	update_surrounding()
 
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
-	)
-
-	AddElement(/datum/element/connect_loc, loc_connections)
-
 	return ..()
 
 /obj/structure/stairs/Destroy()
@@ -55,17 +49,13 @@
 		if(S)
 			S.update_appearance()
 
-/obj/structure/stairs/proc/on_exit(datum/source, atom/movable/leaving, direction)
-	SIGNAL_HANDLER
-
-	if(leaving == src)
-		return //Let's not block ourselves.
-
+/obj/structure/stairs/Exit(atom/movable/leaving, direction)
+	. = ..()
 	if(!isobserver(leaving) && isTerminator() && direction == dir)
 		leaving.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
 		INVOKE_ASYNC(src, PROC_REF(stair_ascend), leaving)
 		leaving.Bump(src)
-		return COMPONENT_ATOM_BLOCK_EXIT
+		return FALSE
 
 /obj/structure/stairs/Cross(atom/movable/AM)
 	if(isTerminator() && (get_dir(src, AM) == dir))

@@ -312,6 +312,9 @@
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
 
+	crossers = null
+	uncrossers = null
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	LAZYCLEARLIST(overlays)

@@ -315,6 +315,7 @@
 
 	crossers = null
 	uncrossers = null
+	check_exit = null
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	LAZYCLEARLIST(overlays)

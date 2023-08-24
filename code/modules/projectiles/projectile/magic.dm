@@ -252,7 +252,7 @@
 	cross_flags &= ~CROSSED //We do this manually so the forcemoves don't "hit" us. This behavior is kinda dumb, someone refactor this
 	for(var/atom/movable/AM in contents)
 		AM.forceMove(get_turf(src))
-	. = ..()
+	return ..()
 
 /obj/structure/closet/decay
 	breakout_time = 600

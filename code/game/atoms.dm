@@ -15,11 +15,6 @@
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
 
-	//Cross/Uncrossed related flags
-	///Atoms in our contents that want Crossed() called.
-	var/list/crossers
-	///Atoms in our contents that want Uncrossed() called.
-	var/list/uncrossers
 	/// Informs our loc if we need Crossed and/or Uncrossed() called
 	var/cross_flags = NONE
 
@@ -311,9 +306,6 @@
 
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
-
-	crossers = null
-	uncrossers = null
 
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
@@ -1398,15 +1390,6 @@
 	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, arrived, old_loc, old_locs)
 	SEND_SIGNAL(arrived, COMSIG_ATOM_ENTERING, src, old_loc, old_locs)
 
-	if(LAZYLEN(crossers))
-		for(var/atom/movable/crossed as anything in crossers)
-			crossed.Crossed(arrived, old_loc, old_locs)
-
-	if(arrived.cross_flags & CROSSED)
-		LAZYADD(crossers, arrived)
-	if(arrived.cross_flags & UNCROSSED)
-		LAZYADD(uncrossers, arrived)
-
 /**
  * An atom is attempting to exit this atom's contents
  *
@@ -1433,15 +1416,6 @@
 
 	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
-
-	if(LAZYLEN(uncrossers))
-		for(var/atom/movable/uncrossed as anything in uncrossers)
-			uncrossed.Uncrossed(gone, direction)
-
-	if(gone.cross_flags & CROSSED)
-		LAZYREMOVE(crossers, gone)
-	if(gone.cross_flags & UNCROSSED)
-		LAZYREMOVE(uncrossers, gone)
 
 ///Return atom temperature
 /atom/proc/return_temperature()

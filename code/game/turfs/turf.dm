@@ -6,6 +6,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 	luminosity = 1
 
+	///Atoms in our contents that want Crossed() called.
+	var/list/crossers
+	///Atoms in our contents that want Uncrossed() called.
+	var/list/uncrossers
+
 	/// Turf bitflags, see code/__DEFINES/flags.dm
 	var/turf_flags = NONE
 

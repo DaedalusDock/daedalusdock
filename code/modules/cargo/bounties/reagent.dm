@@ -39,7 +39,6 @@
 		/datum/reagent/consumable/ethanol/bilk,\
 		/datum/reagent/consumable/ethanol/black_russian,\
 		/datum/reagent/consumable/ethanol/bloody_mary,\
-		/datum/reagent/consumable/ethanol/brave_bull,\
 		/datum/reagent/consumable/ethanol/martini,\
 		/datum/reagent/consumable/ethanol/cuba_libre,\
 		/datum/reagent/consumable/ethanol/eggnog,\
@@ -62,7 +61,6 @@
 		/datum/reagent/consumable/ethanol/syndicatebomb,\
 		/datum/reagent/consumable/ethanol/tequila_sunrise,\
 		/datum/reagent/consumable/ethanol/manly_dorf,\
-		/datum/reagent/consumable/ethanol/thirteenloko,\
 		/datum/reagent/consumable/triple_citrus,\
 		/datum/reagent/consumable/ethanol/vodkamartini,\
 		/datum/reagent/consumable/ethanol/whiskeysoda,\
@@ -87,7 +85,6 @@
 	var/static/list/possible_reagents = list(\
 		/datum/reagent/consumable/ethanol/atomicbomb,\
 		/datum/reagent/consumable/ethanol/bacchus_blessing,\
-		/datum/reagent/consumable/ethanol/bastion_bourbon,\
 		/datum/reagent/consumable/ethanol/booger,\
 		/datum/reagent/consumable/ethanol/hippies_delight,\
 		/datum/reagent/consumable/ethanol/drunkenblumpkin,\
@@ -121,27 +118,23 @@
 	var/static/list/possible_reagents = list(\
 		/datum/reagent/medicine/leporazine,\
 		/datum/reagent/medicine/clonexadone,\
-		/datum/reagent/medicine/mine_salve,\
-		/datum/reagent/medicine/c2/convermol,\
 		/datum/reagent/medicine/ephedrine,\
-		/datum/reagent/medicine/diphenhydramine,\
-		/datum/reagent/drug/space_drugs,\
-		/datum/reagent/drug/blastoff,\
-		/datum/reagent/gunpowder,\
-		/datum/reagent/napalm,\
-		/datum/reagent/firefighting_foam,\
-		/datum/reagent/consumable/mayonnaise,\
-		/datum/reagent/toxin/itching_powder,\
-		/datum/reagent/toxin/cyanide,\
-		/datum/reagent/toxin/heparin,\
-		/datum/reagent/medicine/pen_acid,\
-		/datum/reagent/medicine/atropine,\
-		/datum/reagent/drug/aranesp,\
-		/datum/reagent/drug/krokodil,\
-		/datum/reagent/drug/methamphetamine,\
-		/datum/reagent/teslium,\
-		/datum/reagent/toxin/anacea,\
-		/datum/reagent/pax)
+		/datum/reagent/medicine/diphenhydramine,
+		/datum/reagent/drug/space_drugs,
+		/datum/reagent/drug/blastoff,
+		/datum/reagent/gunpowder,
+		/datum/reagent/napalm,
+		/datum/reagent/firefighting_foam,
+		/datum/reagent/consumable/mayonnaise,
+		/datum/reagent/toxin/itching_powder,
+		/datum/reagent/toxin/cyanide,
+		/datum/reagent/toxin/heparin,
+		/datum/reagent/medicine/atropine,
+		/datum/reagent/drug/aranesp,
+		/datum/reagent/drug/krokodil,
+		/datum/reagent/drug/methamphetamine,
+		/datum/reagent/toxin/anacea,
+	)
 
 	var/reagent_type = pick(possible_reagents)
 	wanted_reagent = new reagent_type
@@ -157,22 +150,20 @@
 /datum/bounty/reagent/chemical_complex/New()
 	// Reagents that require interaction with multiple departments or are a pain to mix. Lower required_volume since acquiring 30u of some is unrealistic
 	var/static/list/possible_reagents = list(\
-		/datum/reagent/medicine/pyroxadone,\
-		/datum/reagent/medicine/rezadone,\
-		/datum/reagent/medicine/regen_jelly,\
-		/datum/reagent/drug/bath_salts,\
-		/datum/reagent/hair_dye,\
-		/datum/reagent/consumable/honey,\
-		/datum/reagent/consumable/frostoil,\
-		/datum/reagent/toxin/slimejelly,\
-		/datum/reagent/teslium/energized_jelly,\
-		/datum/reagent/toxin/mimesbane,\
-		/datum/reagent/medicine/strange_reagent,\
-		/datum/reagent/nitroglycerin,\
-		/datum/reagent/medicine/rezadone,\
-		/datum/reagent/toxin/zombiepowder,\
-		/datum/reagent/toxin/ghoulpowder,\
-		/datum/reagent/mulligan)
+		/datum/reagent/medicine/cryoxadone,
+		/datum/reagent/medicine/regen_jelly,
+		/datum/reagent/drug/bath_salts,
+		/datum/reagent/hair_dye,
+		/datum/reagent/consumable/honey,
+		/datum/reagent/consumable/frostoil,
+		/datum/reagent/toxin/slimejelly,
+		/datum/reagent/toxin/mimesbane,
+		/datum/reagent/medicine/strange_reagent,
+		/datum/reagent/nitroglycerin,
+		/datum/reagent/toxin/zombiepowder,
+		/datum/reagent/toxin/ghoulpowder,
+		/datum/reagent/mulligan
+	)
 
 	var/reagent_type = pick(possible_reagents)
 	wanted_reagent = new reagent_type
@@ -213,22 +204,22 @@
 
 /datum/bounty/pill/simple_pill/New()
 	//reagent that are possible to be chem factory'd
-	var/static/list/possible_reagents = list(\
-		/datum/reagent/medicine/spaceacillin,\
-		/datum/reagent/medicine/c2/synthflesh,\
-		/datum/reagent/medicine/pen_acid,\
-		/datum/reagent/medicine/atropine,\
-		/datum/reagent/medicine/cryoxadone,\
-		/datum/reagent/medicine/salbutamol,\
-		/datum/reagent/medicine/c2/hercuri,\
-		/datum/reagent/medicine/c2/probital,\
-		/datum/reagent/drug/methamphetamine,\
-		/datum/reagent/nitrous_oxide,\
-		/datum/reagent/barbers_aid,\
-		/datum/reagent/pax,\
-		/datum/reagent/flash_powder,\
-		/datum/reagent/phlogiston,\
-		/datum/reagent/firefighting_foam)
+	var/static/list/possible_reagents = list(
+		/datum/reagent/medicine/spaceacillin,
+		/datum/reagent/medicine/synthflesh,
+		/datum/reagent/medicine/dexalin,
+		/datum/reagent/medicine/atropine,
+		/datum/reagent/medicine/cryoxadone,
+		/datum/reagent/medicine/dexalin,
+		/datum/reagent/medicine/dermaline,
+		/datum/reagent/medicine/meralyne,
+		/datum/reagent/drug/methamphetamine,
+		/datum/reagent/nitrous_oxide,
+		/datum/reagent/barbers_aid,
+		/datum/reagent/flash_powder,
+		/datum/reagent/phlogiston,
+		/datum/reagent/firefighting_foam
+	)
 
 	var/datum/reagent/reagent_type = pick(possible_reagents)
 	wanted_reagent = new reagent_type

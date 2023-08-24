@@ -20,7 +20,7 @@
 	var/operated = FALSE //whether we can still have our damages fixed through surgery
 
 
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/salbutamol = 5)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/dexalin = 5)
 
 	//Breath damage
 	//These thresholds are checked against what amounts to total_mix_pressure * (gas_type_mols/total_mols)
@@ -82,19 +82,21 @@
 	var/heat_level_3_damage = HEAT_GAS_DAMAGE_LEVEL_3
 	var/heat_damage_type = BURN
 
-	var/crit_stabilizing_reagent = /datum/reagent/medicine/epinephrine
-
-/obj/item/organ/lungs/proc/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather)
+/obj/item/organ/lungs/proc/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/breather, forced = FALSE)
 	if(breather.status_flags & GODMODE)
 		breather.failed_last_breath = FALSE //clear oxy issues
 		breather.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
-		return
+		return BREATH_OKAY
+
 	if(HAS_TRAIT(breather, TRAIT_NOBREATH))
-		return
+		return BREATH_OKAY
+
+	. = BREATH_OKAY
 
 	if(!breath || (breath.total_moles == 0))
-		if(breather.reagents.has_reagent(crit_stabilizing_reagent, needs_metabolizing = TRUE))
-			return
+		if(CHEM_EFFECT_MAGNITUDE(breather, CE_STABLE))
+			return BREATH_OKAY
+
 		if(breather.health >= breather.crit_threshold)
 			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 		else if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
@@ -109,7 +111,7 @@
 			breather.throw_alert(ALERT_NOT_ENOUGH_CO2, /atom/movable/screen/alert/not_enough_co2)
 		else if(safe_nitro_min)
 			breather.throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
-		return FALSE
+		return BREATH_FAILED
 
 	if(istype(breather.wear_mask) && (breather.wear_mask.clothing_flags & GAS_FILTERING) && breather.wear_mask.has_filter)
 		breath = breather.wear_mask.consume_filter(breath)
@@ -139,9 +141,12 @@
 	//Too much oxygen! //Yes, some species may not like it.
 	if(safe_oxygen_max)
 		if(O2_pp > safe_oxygen_max)
-			var/ratio = (O2_moles/safe_oxygen_max) * 10
-			breather.apply_damage_type(clamp(ratio, oxy_breath_dam_min, oxy_breath_dam_max), oxy_damage_type)
+			if(!forced)
+				var/ratio = (O2_moles/safe_oxygen_max) * 10
+				breather.apply_damage_type(clamp(ratio, oxy_breath_dam_min, oxy_breath_dam_max), oxy_damage_type)
 			breather.throw_alert(ALERT_TOO_MUCH_OXYGEN, /atom/movable/screen/alert/too_much_oxy)
+			. = BREATH_DAMAGING
+
 		else
 			breather.clear_alert(ALERT_TOO_MUCH_OXYGEN)
 
@@ -150,6 +155,7 @@
 		if(O2_pp < safe_oxygen_min)
 			gas_breathed = handle_too_little_breath(breather, O2_pp, safe_oxygen_min, O2_moles)
 			breather.throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
+			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
 			if(breather.health >= breather.crit_threshold)
@@ -167,9 +173,11 @@
 	//Too much nitrogen!
 	if(safe_nitro_max)
 		if(N2_pp > safe_nitro_max)
-			var/ratio = (N2_moles/safe_nitro_max) * 10
-			breather.apply_damage_type(clamp(ratio, nitro_breath_dam_min, nitro_breath_dam_max), nitro_damage_type)
+			if(!forced)
+				var/ratio = (N2_moles/safe_nitro_max) * 10
+				breather.apply_damage_type(clamp(ratio, nitro_breath_dam_min, nitro_breath_dam_max), nitro_damage_type)
 			breather.throw_alert(ALERT_TOO_MUCH_NITRO, /atom/movable/screen/alert/too_much_nitro)
+			. = BREATH_DAMAGING
 		else
 			breather.clear_alert(ALERT_TOO_MUCH_NITRO)
 
@@ -178,6 +186,7 @@
 		if(N2_pp < safe_nitro_min)
 			gas_breathed = handle_too_little_breath(breather, N2_pp, safe_nitro_min, N2_moles)
 			breather.throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
+			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
 			if(breather.health >= breather.crit_threshold)
@@ -203,8 +212,7 @@
 				if(world.time - breather.co2overloadtime > 300) // They've been in here 30s now, lets start to kill them for their own good!
 					breather.apply_damage_type(8, co2_damage_type)
 				breather.throw_alert(ALERT_TOO_MUCH_CO2, /atom/movable/screen/alert/too_much_co2)
-			if(prob(20)) // Lets give them some chance to know somethings not right though I guess.
-				breather.emote("cough")
+			. = BREATH_DAMAGING
 
 		else
 			breather.co2overloadtime = 0
@@ -215,6 +223,7 @@
 		if(CO2_pp < safe_co2_min)
 			gas_breathed = handle_too_little_breath(breather, CO2_pp, safe_co2_min, CO2_moles)
 			breather.throw_alert(ALERT_NOT_ENOUGH_CO2, /atom/movable/screen/alert/not_enough_co2)
+			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
 			if(breather.health >= breather.crit_threshold)
@@ -233,9 +242,11 @@
 	//Too much plasma!
 	if(safe_plasma_max)
 		if(Plasma_pp > safe_plasma_max)
-			var/ratio = (plasma_moles/safe_plasma_max) * 10
-			breather.apply_damage_type(clamp(ratio, plas_breath_dam_min, plas_breath_dam_max), plas_damage_type)
+			if(!forced)
+				var/ratio = (plasma_moles/safe_plasma_max) * 10
+				breather.apply_damage_type(clamp(ratio, plas_breath_dam_min, plas_breath_dam_max), plas_damage_type)
 			breather.throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
+			. = BREATH_DAMAGING
 		else
 			breather.clear_alert(ALERT_TOO_MUCH_PLASMA)
 
@@ -245,6 +256,7 @@
 		if(Plasma_pp < safe_plasma_min)
 			gas_breathed = handle_too_little_breath(breather, Plasma_pp, safe_plasma_min, plasma_moles)
 			breather.throw_alert(ALERT_NOT_ENOUGH_PLASMA, /atom/movable/screen/alert/not_enough_plas)
+			. = BREATH_DAMAGING
 		else
 			breather.failed_last_breath = FALSE
 			if(breather.health >= breather.crit_threshold)
@@ -268,6 +280,7 @@
 			breather.Unconscious(60) // 60 gives them one second to wake up and run away a bit!
 			if(SA_pp > SA_sleep_min) // Enough to make us sleep as well
 				breather.Sleeping(min(breather.AmountSleeping() + 100, 200))
+
 		else if(SA_pp > 0.01) // There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 			if(prob(20))
@@ -279,7 +292,7 @@
 
 		handle_breath_temperature(breath, breather)
 
-	return TRUE
+	return .
 
 ///override this for breath handling unique to lung subtypes, breath_gas is the list of gas in the breath while gas breathed is just what is being added or removed from that list, just as they are when this is called in check_breath()
 /obj/item/organ/lungs/proc/handle_gas_override(mob/living/carbon/human/breather, datum/gas_mixture/breath, gas_breathed)
@@ -500,5 +513,3 @@
 	cold_level_1_threshold = 0 // Vox should be able to breathe in cold gas without issues?
 	cold_level_2_threshold = 0
 	cold_level_3_threshold = 0
-	status = ORGAN_ROBOTIC
-	organ_flags = ORGAN_SYNTHETIC

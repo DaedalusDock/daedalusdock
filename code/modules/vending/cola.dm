@@ -12,14 +12,12 @@
 		/obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb = 10,
 		/obj/item/reagent_containers/food/drinks/soda_cans/starkist = 10,
 		/obj/item/reagent_containers/food/drinks/soda_cans/space_up = 10,
-		/obj/item/reagent_containers/food/drinks/soda_cans/pwr_game = 10,
 		/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime = 10,
 		/obj/item/reagent_containers/food/drinks/soda_cans/sol_dry = 10,
 		/obj/item/reagent_containers/food/drinks/waterbottle = 10,
 		/obj/item/reagent_containers/food/drinks/bottle/mushi_kombucha = 3
 	)
 	contraband = list(
-		/obj/item/reagent_containers/food/drinks/soda_cans/thirteenloko = 6,
 		/obj/item/reagent_containers/food/drinks/soda_cans/shamblers = 6
 	)
 	premium = list(
@@ -96,7 +94,6 @@
 					/obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/starkist = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/space_up = 10,
-					/obj/item/reagent_containers/food/drinks/soda_cans/pwr_game = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/sol_dry = 10,
 					/obj/item/reagent_containers/food/drinks/soda_cans/shamblers = 10)

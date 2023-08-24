@@ -26,7 +26,7 @@
 	ninja.SetParalyzed(0)
 	ninja.stamina.adjust(200)
 	ninja.remove_status_effect(/datum/status_effect/speech/stutter)
-	ninja.reagents.add_reagent(/datum/reagent/medicine/stimulants, 5)
+	ninja.reagents.add_reagent(/datum/reagent/stimulants, 5)
 	ninja.say(pick("A CORNERED FOX IS MORE DANGEROUS THAN A JACKAL!","HURT ME MOOORRREEE!","IMPRESSIVE!"), forced = "ninjaboost")
 	a_boost = FALSE
 	to_chat(ninja, span_notice("You have used the adrenaline boost."))

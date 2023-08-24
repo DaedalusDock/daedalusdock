@@ -481,8 +481,8 @@
 	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/atropine) < 5)
 		inhabitant.reagents.add_reagent(/datum/reagent/medicine/atropine, 0.5)
 
-	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/salglu_solution) < 15)
-		inhabitant.reagents.add_reagent(/datum/reagent/medicine/salglu_solution, 1.5)
+	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/saline_glucose) < 15)
+		inhabitant.reagents.add_reagent(/datum/reagent/medicine/saline_glucose, 1.5)
 
 	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/consumable/milk) < 20)
 		inhabitant.reagents.add_reagent(/datum/reagent/consumable/milk, 2)

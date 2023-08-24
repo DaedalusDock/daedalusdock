@@ -101,3 +101,40 @@
 2023-08-15:
   Kapu1178:
   - qol: Changed station lighting.
+2023-08-20:
+  Kapu1178:
+  - bugfix: Doors of all kinds will no longer "trap" dangerous gas inside when closing.
+  francinum:
+  - bugfix: Non-human living mobs can now look up
+  - rscdel: Snob and Unstable quirk has been removed, as it no longer worked.
+  - bugfix: Security Helmet flashlight behaviour is now a lot more reliable
+2023-08-21:
+  Francinum, Chinsky:
+  - rscadd: Some documents now come in sealed, tamper-evident folders. This is mostly
+      a flavor thing.
+  Kapu1178:
+  - balance: Damaging a bodypart with a broken bone has a chance to deal damage to
+      an organ inside.
+  - balance: Damage that ignores armor (such as pressure damage) can no longer break
+      bones or jostle bones.
+  - balance: Tweaked the dismemberment formula for the 8th time
+  - code_imp: Removed organ/var/status
+  - bugfix: Sleeping heals instead of dealing damage.
+  - qol: Chem splashing can now be done with combat mode instead of right click.
+  - refactor: Regeants.
+  - rscdel: Reagent purity and pH
+  - rscadd: Digest vs Bloodstream vs Touching metabolisms.
+  - rscadd: You can wash off reagents on your skin using a shower or splashing water.
+  - refactor: Acid now takes into account the permeability of worn clothing.
+  - rscdel: Most Fermichem and Cobbychem medicines.
+  - rscadd: Trekchem and Goonchem reagents.
+  francinum:
+  - qol: The Report Issues Button no longer sends you to github, but instead sends
+      the issue report itself.
+2023-08-22:
+  Kapu1178:
+  - rscdel: IDs are no longer named after the owner.
+  - rscadd: IDs can now be examined to see lots of information about the registered
+      employee.
+  - rscadd: Chameleon IDs now have an "Impersonate Crew" button, to clone the target's
+      ID.

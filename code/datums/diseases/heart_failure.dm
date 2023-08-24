@@ -64,7 +64,6 @@
 					span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
 			affected_mob.stamina.adjust(-60)
 			affected_mob.set_heartattack(TRUE)
-			affected_mob.reagents.add_reagent(/datum/reagent/medicine/c2/penthrite, 3) // To give the victim a final chance to shock their heart before losing consciousness
 			cure()
 			SSblackbox.record_feedback("amount", "heartattacks", 1)
 			return FALSE

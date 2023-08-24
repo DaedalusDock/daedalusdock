@@ -530,146 +530,160 @@
 		if(!IS_ORGANIC_LIMB(L))
 			L.emp_act()
 
-/mob/living/carbon/human/acid_act(acidpwr, acid_volume, bodyzone_hit) //todo: update this to utilize check_obscured_slots() //and make sure it's check_obscured_slots(TRUE) to stop aciding through visors etc
+/mob/living/carbon/human/acid_act(acidpwr, acid_volume, bodyzone_hit, affect_clothing = TRUE, affect_body = TRUE) //todo: update this to utilize check_obscured_slots() //and make sure it's check_obscured_slots(TRUE) to stop aciding through visors etc
 	var/list/damaged = list()
 	var/list/inventory_items_to_kill = list()
-	var/acidity = acidpwr * min(acid_volume*0.005, 0.1)
-	//HEAD//
-	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_HEAD) //only if we didn't specify a zone or if that zone is the head.
-		var/obj/item/clothing/head_clothes = null
-		if(glasses)
-			head_clothes = glasses
-		if(wear_mask)
-			head_clothes = wear_mask
-		if(wear_neck)
-			head_clothes = wear_neck
-		if(head)
-			head_clothes = head
-		if(head_clothes)
-			if(!(head_clothes.resistance_flags & UNACIDABLE))
-				head_clothes.acid_act(acidpwr, acid_volume)
-				update_worn_glasses()
-				update_worn_mask()
-				update_worn_neck()
-				update_worn_head()
+	var/bodypart
+	if(affect_clothing)
+		//HEAD//
+		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_HEAD) //only if we didn't specify a zone or if that zone is the head.
+			var/obj/item/clothing/head_clothes = null
+			if(glasses)
+				head_clothes = glasses
+			if(wear_mask)
+				head_clothes = wear_mask
+			if(wear_neck)
+				head_clothes = wear_neck
+			if(head)
+				head_clothes = head
+			if(head_clothes)
+				if(!(head_clothes.resistance_flags & UNACIDABLE))
+					head_clothes.acid_act(acidpwr, acid_volume)
+					update_worn_glasses()
+					update_worn_mask()
+					update_worn_neck()
+					update_worn_head()
+				else
+					to_chat(src, span_notice("Your [head_clothes.name] protects your head and face from the acid!"))
 			else
-				to_chat(src, span_notice("Your [head_clothes.name] protects your head and face from the acid!"))
-		else
-			. = get_bodypart(BODY_ZONE_HEAD)
-			if(.)
-				damaged += .
-			if(ears)
-				inventory_items_to_kill += ears
+				bodypart = get_bodypart(BODY_ZONE_HEAD)
+				if(bodypart)
+					damaged += bodypart
+				if(ears)
+					inventory_items_to_kill += ears
 
-	//CHEST//
-	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_CHEST)
-		var/obj/item/clothing/chest_clothes = null
-		if(w_uniform)
-			chest_clothes = w_uniform
-		if(wear_suit)
-			chest_clothes = wear_suit
-		if(chest_clothes)
-			if(!(chest_clothes.resistance_flags & UNACIDABLE))
-				chest_clothes.acid_act(acidpwr, acid_volume)
-				update_worn_undersuit()
-				update_worn_oversuit()
+		//CHEST//
+		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_CHEST)
+			var/obj/item/clothing/chest_clothes = null
+			if(w_uniform)
+				chest_clothes = w_uniform
+			if(wear_suit)
+				chest_clothes = wear_suit
+			if(chest_clothes)
+				if(!(chest_clothes.resistance_flags & UNACIDABLE))
+					chest_clothes.acid_act(acidpwr, acid_volume)
+					update_worn_undersuit()
+					update_worn_oversuit()
+				else
+					to_chat(src, span_notice("Your [chest_clothes.name] protects your body from the acid!"))
 			else
-				to_chat(src, span_notice("Your [chest_clothes.name] protects your body from the acid!"))
-		else
-			. = get_bodypart(BODY_ZONE_CHEST)
-			if(.)
-				damaged += .
-			if(wear_id)
-				inventory_items_to_kill += wear_id
-			if(r_store)
-				inventory_items_to_kill += r_store
-			if(l_store)
-				inventory_items_to_kill += l_store
-			if(s_store)
-				inventory_items_to_kill += s_store
+				bodypart = get_bodypart(BODY_ZONE_CHEST)
+				if(bodypart)
+					damaged += bodypart
+				if(wear_id)
+					inventory_items_to_kill += wear_id
+				if(r_store)
+					inventory_items_to_kill += r_store
+				if(l_store)
+					inventory_items_to_kill += l_store
+				if(s_store)
+					inventory_items_to_kill += s_store
 
 
-	//ARMS & HANDS//
-	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_ARM || bodyzone_hit == BODY_ZONE_R_ARM)
-		var/obj/item/clothing/arm_clothes = null
-		if(gloves)
-			arm_clothes = gloves
-		if(w_uniform && ((w_uniform.body_parts_covered & HANDS) || (w_uniform.body_parts_covered & ARMS)))
-			arm_clothes = w_uniform
-		if(wear_suit && ((wear_suit.body_parts_covered & HANDS) || (wear_suit.body_parts_covered & ARMS)))
-			arm_clothes = wear_suit
+		//ARMS & HANDS//
+		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_ARM || bodyzone_hit == BODY_ZONE_R_ARM)
+			var/obj/item/clothing/arm_clothes = null
+			if(gloves)
+				arm_clothes = gloves
+			if(w_uniform && ((w_uniform.body_parts_covered & HANDS) || (w_uniform.body_parts_covered & ARMS)))
+				arm_clothes = w_uniform
+			if(wear_suit && ((wear_suit.body_parts_covered & HANDS) || (wear_suit.body_parts_covered & ARMS)))
+				arm_clothes = wear_suit
 
-		if(arm_clothes)
-			if(!(arm_clothes.resistance_flags & UNACIDABLE))
-				arm_clothes.acid_act(acidpwr, acid_volume)
-				update_worn_gloves()
-				update_worn_undersuit()
-				update_worn_oversuit()
+			if(arm_clothes)
+				if(!(arm_clothes.resistance_flags & UNACIDABLE))
+					arm_clothes.acid_act(acidpwr, acid_volume)
+					update_worn_gloves()
+					update_worn_undersuit()
+					update_worn_oversuit()
+				else
+					to_chat(src, span_notice("Your [arm_clothes.name] protects your arms and hands from the acid!"))
 			else
-				to_chat(src, span_notice("Your [arm_clothes.name] protects your arms and hands from the acid!"))
-		else
-			. = get_bodypart(BODY_ZONE_R_ARM)
-			if(.)
-				damaged += .
-			. = get_bodypart(BODY_ZONE_L_ARM)
-			if(.)
-				damaged += .
+				bodypart = get_bodypart(BODY_ZONE_R_ARM)
+				if(bodypart)
+					damaged += bodypart
+				bodypart = get_bodypart(BODY_ZONE_L_ARM)
+				if(.)
+					damaged += bodypart
 
 
-	//LEGS & FEET//
-	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_LEG || bodyzone_hit == BODY_ZONE_R_LEG || bodyzone_hit == "feet")
-		var/obj/item/clothing/leg_clothes = null
-		if(shoes)
-			leg_clothes = shoes
-		if(w_uniform && ((w_uniform.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (w_uniform.body_parts_covered & LEGS))))
-			leg_clothes = w_uniform
-		if(wear_suit && ((wear_suit.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (wear_suit.body_parts_covered & LEGS))))
-			leg_clothes = wear_suit
-		if(leg_clothes)
-			if(!(leg_clothes.resistance_flags & UNACIDABLE))
-				leg_clothes.acid_act(acidpwr, acid_volume)
-				update_worn_shoes()
-				update_worn_undersuit()
-				update_worn_oversuit()
+		//LEGS & FEET//
+		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_LEG || bodyzone_hit == BODY_ZONE_R_LEG || bodyzone_hit == "feet")
+			var/obj/item/clothing/leg_clothes = null
+			if(shoes)
+				leg_clothes = shoes
+			if(w_uniform && ((w_uniform.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (w_uniform.body_parts_covered & LEGS))))
+				leg_clothes = w_uniform
+			if(wear_suit && ((wear_suit.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (wear_suit.body_parts_covered & LEGS))))
+				leg_clothes = wear_suit
+			if(leg_clothes)
+				if(!(leg_clothes.resistance_flags & UNACIDABLE))
+					leg_clothes.acid_act(acidpwr, acid_volume)
+					update_worn_shoes()
+					update_worn_undersuit()
+					update_worn_oversuit()
+				else
+					to_chat(src, span_notice("Your [leg_clothes.name] protects your legs and feet from the acid!"))
 			else
-				to_chat(src, span_notice("Your [leg_clothes.name] protects your legs and feet from the acid!"))
-		else
-			. = get_bodypart(BODY_ZONE_R_LEG)
-			if(.)
-				damaged += .
-			. = get_bodypart(BODY_ZONE_L_LEG)
-			if(.)
-				damaged += .
-
+				bodypart = get_bodypart(BODY_ZONE_R_LEG)
+				if(bodypart)
+					damaged += bodypart
+				bodypart = get_bodypart(BODY_ZONE_L_LEG)
+				if(bodypart)
+					damaged += bodypart
 
 	//DAMAGE//
-	for(var/obj/item/bodypart/affecting in damaged)
-		affecting.receive_damage(acidity, 2*acidity, updating_health = FALSE)
-
-		if(affecting.name == BODY_ZONE_HEAD)
-			if(prob(min(acidpwr*acid_volume/10, 90))) //Applies disfigurement
-				affecting.receive_damage(acidity, 2*acidity)
+	if(affect_body)
+		var/screamed
+		var/affected_skin = FALSE
+		var/exposure_coeff = (bodyzone_hit ? 1 : BODYPARTS_DEFAULT_MAXIMUM)
+		var/damage = acidpwr * acid_volume / exposure_coeff
+		for(var/obj/item/bodypart/affecting in damaged)
+			damage *= (1 - get_permeability_protection(body_zone2cover_flags(affecting.body_zone)))
+			if(!damage)
+				continue
+			affecting.receive_damage(damage, damage * 2, updating_health = FALSE, breaks_bones = FALSE)
+			affected_skin = TRUE
+			if(prob(round(10 / exposure_coeff, 1)) && !screamed)
 				emote("scream")
-				facial_hairstyle = "Shaved"
-				hairstyle = "Bald"
-				update_body_parts()
-				ADD_TRAIT(src, TRAIT_DISFIGURED, TRAIT_GENERIC)
+				screamed = TRUE
 
-	updatehealth()
-	update_damage_overlays()
+			if(affecting.name == BODY_ZONE_HEAD && !HAS_TRAIT(src, TRAIT_DISFIGURED))
+				if(prob(min(acidpwr*acid_volume, 90))) //Applies disfigurement
+					emote("scream")
+					facial_hairstyle = "Shaved"
+					hairstyle = "Bald"
+					update_body_parts()
+					ADD_TRAIT(src, TRAIT_DISFIGURED, TRAIT_GENERIC)
 
-	//MELTING INVENTORY ITEMS//
-	//these items are all outside of armour visually, so melt regardless.
-	if(!bodyzone_hit)
-		if(back)
-			inventory_items_to_kill += back
-		if(belt)
-			inventory_items_to_kill += belt
+		updatehealth()
+		update_damage_overlays()
+		if(affected_skin)
+			to_chat(src, span_danger("The acid on your skin eats away at your flesh!"))
 
-		inventory_items_to_kill += held_items
+	if(affect_clothing)
+		//MELTING INVENTORY ITEMS//
+		//these items are all outside of armour visually, so melt regardless.
+		if(!bodyzone_hit)
+			if(back)
+				inventory_items_to_kill += back
+			if(belt)
+				inventory_items_to_kill += belt
 
-	for(var/obj/item/inventory_item in inventory_items_to_kill)
-		inventory_item.acid_act(acidpwr, acid_volume)
+			inventory_items_to_kill += held_items
+
+		for(var/obj/item/inventory_item in inventory_items_to_kill)
+			inventory_item.acid_act(acidpwr, acid_volume)
 	return TRUE
 
 ///Overrides the point value that the mob is worth

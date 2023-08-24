@@ -27,11 +27,11 @@
 #define BLOOD_REGEN_FACTOR 0.25
 
 //Sizes of mobs, used by mob/living/var/mob_size
-#define MOB_SIZE_TINY 0
-#define MOB_SIZE_SMALL 1
-#define MOB_SIZE_HUMAN 2
-#define MOB_SIZE_LARGE 3
-#define MOB_SIZE_HUGE 4 // Use this for things you don't want bluespace body-bagged
+#define MOB_SIZE_TINY 1
+#define MOB_SIZE_SMALL 5
+#define MOB_SIZE_HUMAN 10
+#define MOB_SIZE_LARGE 20
+#define MOB_SIZE_HUGE 40 // Use this for things you don't want bluespace body-bagged
 
 //Ventcrawling defines
 #define VENTCRAWLER_NONE   0
@@ -50,11 +50,6 @@
 #define MOB_REPTILE (1 << 8)
 #define MOB_SPIRIT (1 << 9)
 #define MOB_PLANT (1 << 10)
-
-
-//Organ defines for carbon mobs
-#define ORGAN_ORGANIC 1
-#define ORGAN_ROBOTIC 2
 
 #define DEFAULT_BODYPART_ICON_ORGANIC 'icons/mob/human_parts_greyscale.dmi'
 #define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
@@ -407,12 +402,18 @@
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
-#define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
-
 /// Applies a Chemical Effect with the given magnitude to the mob
 #define APPLY_CHEM_EFFECT(mob, effect, magnitude) \
 	if(effect in mob.chem_effects) { \
 		mob.chem_effects[effect] += magnitude; \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+#define SET_CHEM_EFFECT_IF_LOWER(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] = max(magnitude , mob.chem_effects[effect]); \
 	} \
 	else { \
 		mob.chem_effects[effect] = magnitude; \
@@ -426,8 +427,39 @@
 #define CE_CRYO "cryo"
 /// Organ preservation effects like formaldehyde. Boolean.
 #define CE_ORGAN_PRESERVATION "formaldehyde"
-/// Mob cannot breathe. Boolean.
-#define CE_RESPIRATORY_FAILURE "cantbreathe"
+/// Inaprovaline
+#define CE_STABLE "stable"
+/// Breathing depression, makes you need more air
+#define CE_BREATHLOSS "breathloss"
+/// Spaceacilin
+#define CE_ANTIBIOTIC "antibiotic"
+/// Iron/nutriment
+#define CE_BLOODRESTORE "bloodrestore"
+#define CE_PAINKILLER "painkiller"
+/// Liver filtering
+#define CE_ALCOHOL       "alcohol"
+/// Liver damage
+#define CE_ALCOHOL_TOXIC "alcotoxic"
+/// Increases or decreases heart rate
+#define CE_PULSE "xcardic"
+/// Stops heartbeat
+#define CE_NOPULSE "heartstop"
+/// Reduces incoming toxin damage and helps with liver filtering
+#define CE_ANTITOX "antitox"
+/// Dexalin.
+#define CE_OXYGENATED "oxygen"
+/// Anti-virus effect.
+#define CE_ANTIVIRAL "antiviral"
+// Generic toxins, stops autoheal.
+#define CE_TOXIN "toxins"
+/// Gets in the way of blood circulation, higher the worse
+#define CE_BLOCKAGE "blockage"
+/// Lowers the subject's voice to a whisper
+#define	CE_VOICELOSS "whispers"
+/// Makes it harder to disarm someone
+#define CE_STIMULANT "stimulants"
+/// Multiplier for bloodloss
+#define CE_ANTICOAGULANT "anticoagulant"
 
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"
@@ -730,3 +762,12 @@ GLOBAL_REAL_VAR(list/voice_type2sound) = list(
 
 ///Managed global that is a reference to the real global
 GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
+
+/// Breath succeeded completely
+#define BREATH_OKAY 1
+/// Breath caused damage, but should not be obvious
+#define BREATH_SILENT_DAMAGING 0
+/// Breath succeeded but is damaging.
+#define BREATH_DAMAGING -1
+/// Breath completely failed. chokies!!
+#define BREATH_FAILED -2

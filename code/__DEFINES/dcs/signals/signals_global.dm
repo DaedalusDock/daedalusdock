@@ -71,3 +71,6 @@
 
 ///Global signal sent when SSticker enters Runlevel Game
 #define COMSIG_GLOB_GAME_START "!game_started"
+
+///Global signal sent when the Datacore's initial manifest is complete
+#define COMSIG_GLOB_DATACORE_READY "!datacore_ready"

@@ -3,8 +3,8 @@
 	max_stages = 4
 	spread_text = "On contact"
 	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
-	cure_text = "Mutadone"
-	cures = list(/datum/reagent/medicine/mutadone)
+	cure_text = "Ryetalyn"
+	cures = list(/datum/reagent/medicine/ryetalyn)
 	disease_flags = CAN_CARRY|CAN_RESIST|CURABLE
 	agent = "S4E1 retrovirus"
 	viable_mobtypes = list(/mob/living/carbon/human)

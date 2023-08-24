@@ -8,8 +8,8 @@
 	caliber = CALIBER_308_DART
 
 
-/obj/item/ammo_box/magazine/tranq_rifle/mutadone
-	name = ".308 mutadone magazine"
-	desc = "A magazine of tranquilizer darts filled with mutadone."
-	ammo_type = /obj/item/ammo_casing/caseless/safari_dart/mutadone
+/obj/item/ammo_box/magazine/tranq_rifle/ryetalyn
+	name = ".308 ryetalyn magazine"
+	desc = "A magazine of tranquilizer darts filled with ryetalyn."
+	ammo_type = /obj/item/ammo_casing/caseless/safari_dart/ryetalyn
 	max_ammo = 5

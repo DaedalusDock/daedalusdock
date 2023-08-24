@@ -6,7 +6,6 @@
 	throwforce = 0
 	///The mob that owns this organ.
 	var/mob/living/carbon/owner = null
-	var/status = ORGAN_ORGANIC
 	///The body zone this organ is supposed to inhabit.
 	var/zone = BODY_ZONE_CHEST
 	///The organ slot this organ is supposed to inhabit. This should be unique by type. (Lungs, Appendix, Stomach, etc)
@@ -20,8 +19,8 @@
 	///Healing factor and decay factor function on % of maxhealth, and do not work by applying a static number per tick
 	var/healing_factor = 0 //fraction of maxhealth healed per on_life(), set to 0 for generic organs
 	var/decay_factor = 0 //same as above but when without a living owner, set to 0 for generic organs
-	var/high_threshold = STANDARD_ORGAN_THRESHOLD * 0.45 //when severe organ damage occurs
-	var/low_threshold = STANDARD_ORGAN_THRESHOLD * 0.1 //when minor organ damage occurs
+	var/high_threshold = STANDARD_ORGAN_THRESHOLD * 0.7 //when severe organ damage occurs
+	var/low_threshold = STANDARD_ORGAN_THRESHOLD * 0.3 //when minor organ damage occurs
 	var/severe_cooldown //cooldown for severe effects, used for synthetic organ emp effects.
 	///Organ variables for determining what we alert the owner with when they pass/clear the damage thresholds
 	var/prev_damage = 0
@@ -271,7 +270,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	. += span_notice("It should be inserted in the [parse_zone(zone)].")
 
 	if(organ_flags & ORGAN_FAILING)
-		if(status == ORGAN_ROBOTIC)
+		if(organ_flags & ORGAN_SYNTHETIC)
 			. += span_warning("[src] seems to be broken.")
 			return
 		. += span_warning("[src] has decayed for too long, and has turned a sickly color. It probably won't work without repairs.")
@@ -306,7 +305,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	var/mess = check_damage_thresholds(owner)
 	check_failing_thresholds()
 	prev_damage = damage
-	if(mess && owner && owner.stat <= SOFT_CRIT)
+	if(owner && owner.stat <= SOFT_CRIT && !(organ_flags & ORGAN_SYNTHETIC) && damage_amount > 0 && (damage_amount > 5 || prob(10)))
+		if(!mess)
+			var/obj/item/bodypart/BP = loc
+			if(!BP)
+				return
+			var/degree = ""
+			if(damage > high_threshold)
+				degree = " a lot"
+			else if(damage < low_threshold)
+				degree = " a bit"
+			mess = span_warning("Something inside your [BP.plaintext_zone] hurts[degree].")
 		to_chat(owner, mess)
 
 ///SETS an organ's damage to the amount "damage_amount", and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken
@@ -341,9 +350,21 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag
 /obj/item/organ/proc/check_failing_thresholds()
 	if(damage >= maxHealth)
+		set_organ_failing(TRUE)
+	else if(damage < maxHealth)
+		set_organ_failing(FALSE)
+
+/// Set or unset the organ as failing. Returns TRUE on success.
+/obj/item/organ/proc/set_organ_failing(failing)
+	if(failing)
+		if(organ_flags & ORGAN_FAILING)
+			return FALSE
 		organ_flags |= ORGAN_FAILING
-	if(damage < maxHealth)
-		organ_flags &= ~ORGAN_FAILING
+		return TRUE
+	else
+		if(organ_flags & ORGAN_FAILING)
+			organ_flags &= ~ORGAN_FAILING
+			return TRUE
 
 //Looking for brains?
 //Try code/modules/mob/living/carbon/brain/brain_item.dm
@@ -427,11 +448,11 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_FAILING)
 		. += tag ?"<span style='font-weight: bold; color:#cc3333'>Non-Functional</span>" : "Non-Functional"
 
-	if(owner.has_reagent(/datum/reagent/inverse/technetium))
+	if(owner.has_reagent(/datum/reagent/technetium))
 		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
 	else if(damage > high_threshold)
 		. +=  tag ?"<span style='font-weight: bold; color:#ff9933'>Severely Damaged</span>" : "Severely Damaged"
 	else if (damage > low_threshold)
 		. += tag ?"<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
-	return status
+	return

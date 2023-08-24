@@ -8,7 +8,6 @@
 		update_damage_hud()
 
 	. = ..()
-	chem_effects.Cut()
 	if(!IS_IN_STASIS(src))
 		handle_organs(delta_time, times_fired)
 
@@ -41,7 +40,7 @@
 ///////////////
 
 //Start of a breath chain, calls breathe()
-/mob/living/carbon/handle_breathing(delta_time, times_fired)
+/mob/living/carbon/handle_breathing(times_fired)
 	var/next_breath = 4
 	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
 	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
@@ -53,17 +52,15 @@
 			next_breath--
 
 	if((times_fired % next_breath) == 0 || failed_last_breath)
-		breathe(delta_time, times_fired) //Breathe per 4 ticks if healthy, down to 2 if our lungs or heart are damaged, unless suffocating
+		breathe() //Breathe per 4 ticks if healthy, down to 2 if our lungs or heart are damaged, unless suffocating
 	else
 		if(istype(loc, /obj/))
 			var/obj/location_as_object = loc
 			location_as_object.handle_internal_lifeform(src,0)
 
 //Second link in a breath chain, calls check_breath()
-/mob/living/carbon/proc/breathe(delta_time, times_fired)
+/mob/living/carbon/proc/breathe(forced)
 	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
-	if(CHEM_EFFECT_MAGNITUDE(src, CE_RESPIRATORY_FAILURE)) //TODO: Replace with bay's proper CE_BREATHLOSS
-		return
 
 	SEND_SIGNAL(src, COMSIG_CARBON_PRE_BREATHE)
 
@@ -73,19 +70,21 @@
 
 	var/datum/gas_mixture/breath
 
-	if(!getorganslot(ORGAN_SLOT_BREATHING_TUBE))
+	if(!forced && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
 		if(health <= crit_threshold || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_FAILING))
 			losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
 		else if(health <= crit_threshold)
 			losebreath += 0.25 //You're having trouble breathing in soft crit, so you'll miss a breath one in four times
 
-	//Suffocate
-	if(losebreath >= 1) //You've missed a breath, take oxy damage
+	// Recover from breath loss
+	if(losebreath >= 1)
 		losebreath--
 		if(prob(10))
-			emote("gasp")
-		if(istype(loc, /obj/))
+			spawn(-1)
+				emote("gasp")
+
+		if(istype(loc, /obj))
 			var/obj/loc_as_obj = loc
 			loc_as_obj.handle_internal_lifeform(src,0)
 	else
@@ -126,7 +125,7 @@
 					reagents.add_reagent(breathed_product, reagent_amount)
 					breath.adjustGas(gasname, -breath.gas[gasname], update = 0) //update after
 
-	check_breath(breath)
+	. = check_breath(breath, forced)
 	if(breath?.total_moles)
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
@@ -138,27 +137,26 @@
 
 
 //Third link in a breath chain, calls handle_breath_temperature()
-/mob/living/carbon/proc/check_breath(datum/gas_mixture/breath)
+/mob/living/carbon/proc/check_breath(datum/gas_mixture/breath, forced = FALSE)
 	if(status_flags & GODMODE)
 		failed_last_breath = FALSE
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		return FALSE
+
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return FALSE
 
 	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
-	if(!lungs)
-		adjustOxyLoss(4)
 
 	//CRIT
-	if(!breath || (breath.total_moles == 0) || !lungs)
-		if(reagents.has_reagent(/datum/reagent/medicine/epinephrine, needs_metabolizing = TRUE) && lungs)
-			return FALSE
-		adjustOxyLoss(2)
+	if(!forced)
+		if(!breath || (breath.total_moles == 0) || !lungs)
+			if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
+				adjustOxyLoss(2)
 
-		failed_last_breath = TRUE
-		throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
-		return FALSE
+			failed_last_breath = TRUE
+			throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
+			return FALSE
 
 	var/list/breath_gases = breath.gas
 	var/safe_oxy_min = 16
@@ -168,6 +166,9 @@
 	var/SA_sleep_min = 5
 	var/oxygen_used = 0
 	var/breath_pressure = (breath.total_moles*R_IDEAL_GAS_EQUATION*breath.temperature)/BREATH_VOLUME
+
+	if(CHEM_EFFECT_MAGNITUDE(src, CE_BREATHLOSS) && !HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
+		safe_oxy_min *= 1 + rand(1, 4) * CHEM_EFFECT_MAGNITUDE(src, CE_BREATHLOSS)
 
 	var/O2_partialpressure = (breath_gases[GAS_OXYGEN]/breath.total_moles)*breath_pressure
 	var/Plasma_partialpressure = (breath_gases[GAS_PLASMA]/breath.total_moles)*breath_pressure
@@ -324,6 +325,26 @@
 		if(HM?.timeout)
 			dna.remove_mutation(HM.type)
 
+/mob/living/carbon/handle_chemicals()
+	chem_effects.Cut()
+
+	if(status_flags & GODMODE)
+		return
+
+	if(touching)
+		. += touching.metabolize(src, can_overdose = FALSE, updatehealth = FALSE)
+
+	if(stat != DEAD)
+		var/obj/item/organ/stomach/S = organs_by_slot[ORGAN_SLOT_STOMACH]
+		if(S?.reagents && !(S.organ_flags & ORGAN_FAILING))
+			. += S.reagents.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
+		if(bloodstream)
+			. += bloodstream.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
+
+	if(.)
+		updatehealth()
+
+
 /*
 Alcohol Poisoning Chart
 Note that all higher effects of alcohol poisoning will inherit effects for smaller amounts (i.e. light poisoning inherts from slight poisoning)
@@ -352,10 +373,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	if (drowsyness > 0)
 		adjust_drowsyness(-1 * restingpwr)
-		blur_eyes(1)
+		blur_eyes(2)
 		if(drowsyness > 10)
 			var/zzzchance = min(5, 5*drowsyness/30)
-			if((prob(zzzchance) || drowsyness >= 60))
+			if((prob(zzzchance) || drowsyness >= 60) || ( drowsyness >= 20 && IsSleeping()))
 				if(stat == CONSCIOUS)
 					to_chat(src, span_notice("You are about to fall asleep..."))
 				Sleeping(5 SECONDS)
@@ -529,9 +550,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(.)
 		return
 	var/obj/item/organ/stomach/belly = getorganslot(ORGAN_SLOT_STOMACH)
-	if(!belly)
-		return FALSE
-	return belly.reagents.has_reagent(reagent, amount, needs_metabolizing)
+	if(belly)
+		. = belly.reagents.has_reagent(reagent, amount, needs_metabolizing)
+
+	. ||= touching.has_reagent(reagent, amount, needs_metabolizing)
+
 
 /////////
 //LIVER//
@@ -547,8 +570,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(liver)
 		return
 
-	reagents.end_metabolization(src, keep_liverless = TRUE) //Stops trait-based effects on reagents, to prevent permanent buffs
-	reagents.metabolize(src, delta_time, times_fired, can_overdose=FALSE, liverless = TRUE)
+	reagents.end_metabolization(src) //Stops trait-based effects on reagents, to prevent permanent buffs
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))
 		return

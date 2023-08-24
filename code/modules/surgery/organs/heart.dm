@@ -255,8 +255,8 @@
 		COOLDOWN_START(src, adrenaline_cooldown, rand(25 SECONDS, 1 MINUTES))
 		to_chat(owner, span_userdanger("You feel yourself dying, but you refuse to give up!"))
 		owner.heal_overall_damage(15, 15, BODYTYPE_ORGANIC)
-		if(owner.reagents.get_reagent_amount(/datum/reagent/medicine/ephedrine) < 20)
-			owner.reagents.add_reagent(/datum/reagent/medicine/ephedrine, 10)
+		if(owner.reagents.get_reagent_amount(/datum/reagent/medicine/epinephrine) < 20)
+			owner.reagents.add_reagent(/datum/reagent/medicine/epinephrine, 10)
 
 /obj/item/organ/heart/ethereal
 	name = "crystal core"

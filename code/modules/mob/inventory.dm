@@ -269,6 +269,32 @@
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
 	return TRUE
 
+/// Switches the items inside of two hand indexes.
+/mob/proc/swapHeldIndexes(index_A, index_B)
+	if(index_A == index_B)
+		return
+	var/obj/item/item_A = get_item_for_held_index(index_A)
+	var/obj/item/item_B = get_item_for_held_index(index_B)
+
+	if(!(item_A || item_B))
+		return
+	if(item_A && !temporarilyRemoveItemFromInventory(item_A))
+		return
+	if(item_B && !temporarilyRemoveItemFromInventory(item_B))
+		return
+
+	if((item_A && !put_in_hand(item_A, index_B)) || (item_B && !put_in_hand(item_B, index_A)))
+		if(item_A)
+			temporarilyRemoveItemFromInventory(item_A)
+		if(item_B)
+			temporarilyRemoveItemFromInventory(item_B)
+		if(item_A)
+			put_in_hand(item_A, index_A)
+		if(item_B)
+			put_in_hand(item_B, index_B)
+		return FALSE
+	return TRUE
+
 //The following functions are the same save for one small difference
 
 /**

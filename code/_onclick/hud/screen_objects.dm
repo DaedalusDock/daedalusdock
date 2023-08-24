@@ -280,7 +280,11 @@
 	if(!(user.is_holding(I) || (I.item_flags & IN_STORAGE)))
 		return TRUE
 
-	user.putItemFromInventoryInHandIfPossible(dropping, held_index)
+	var/item_index = user.get_held_index_of_item(I)
+	if(item_index)
+		user.swapHeldIndexes(item_index, held_index)
+	else
+		user.putItemFromInventoryInHandIfPossible(dropping, held_index)
 	return TRUE
 
 /atom/movable/screen/close

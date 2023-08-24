@@ -391,6 +391,53 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return (mover.movement_type & PHASING)
 	return TRUE
 
+/turf/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+
+	if(arrived.flags_2 & ATMOS_SENSITIVE_2)
+		LAZYDISTINCTADD(atmos_sensitive_contents, arrived)
+		if(TURF_HAS_VALID_ZONE(src))
+			if(isnull(zone.atmos_sensitive_contents))
+				SSzas.zones_with_sensitive_contents += zone
+			LAZYDISTINCTADD(zone.atmos_sensitive_contents, arrived)
+
+	if(LAZYLEN(crossers))
+		for(var/atom/movable/crossed as anything in crossers)
+			if(!QDELING(crossed))
+				crossed.Crossed(arrived, old_loc, old_locs)
+
+	if(arrived.cross_flags & CROSSED)
+		LAZYADD(crossers, arrived)
+	if(arrived.cross_flags & UNCROSSED)
+		LAZYADD(uncrossers, arrived)
+
+	if (thing.bound_overlay || (thing.zmm_flags & ZMM_IGNORE) || thing.invisibility == INVISIBILITY_ABSTRACT || !TURF_IS_MIMICKING(above))
+		return
+
+	above.update_mimic()
+
+
+/turf/Exited(atom/movable/gone, direction)
+	. = ..()
+
+	if(gone.flags_2 & ATMOS_SENSITIVE_2)
+		if(!isnull(atmos_sensitive_contents))
+			LAZYREMOVE(atmos_sensitive_contents, gone)
+		if(TURF_HAS_VALID_ZONE(src))
+			LAZYREMOVE(zone.atmos_sensitive_contents, gone)
+			if(isnull(zone.atmos_sensitive_contents))
+				SSzas.zones_with_sensitive_contents -= zone
+
+	if(gone.cross_flags & CROSSED)
+		LAZYREMOVE(crossers, gone)
+	if(gone.cross_flags & UNCROSSED)
+		LAZYREMOVE(uncrossers, gone)
+
+	if(LAZYLEN(uncrossers))
+		for(var/atom/movable/uncrossed as anything in uncrossers)
+			if(!QDELING(uncrossed))
+				uncrossed.Uncrossed(gone, direction)
+
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
 /turf/proc/assemble_baseturfs(turf/fake_baseturf_type)
 	var/static/list/created_baseturf_lists = list()

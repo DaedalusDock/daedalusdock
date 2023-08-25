@@ -3,7 +3,7 @@
 	SIGNAL_HANDLER
 
 	for(var/atom/thing_to_consume as anything in tram_contents)
-		Bumped(thing_to_consume)
+		BumpedBy(thing_to_consume)
 
 /obj/machinery/power/supermatter/bullet_act(obj/projectile/projectile)
 	var/turf/local_turf = loc
@@ -236,7 +236,7 @@
 		default_unfasten_wrench(user, tool)
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/power/supermatter/Bumped(atom/movable/hit_object)
+/obj/machinery/power/supermatter/BumpedBy(atom/movable/hit_object)
 	if(isliving(hit_object))
 		hit_object.visible_message(
 			span_danger("[hit_object] slams into [src] inducing a resonance... [hit_object.p_their()] body starts to glow and burst into flames before flashing into dust!"),
@@ -301,7 +301,7 @@
 /obj/machinery/power/supermatter/intercept_zImpact(list/falling_movables, levels)
 	. = ..()
 	for(var/atom/movable/hit_object as anything in falling_movables)
-		Bumped(hit_object)
+		BumpedBy(hit_object)
 	. |= FALL_STOP_INTERCEPTING | FALL_INTERCEPTED
 
 /obj/machinery/power/supermatter/proc/Consume(atom/movable/consumed_object)

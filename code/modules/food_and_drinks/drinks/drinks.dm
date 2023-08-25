@@ -152,7 +152,7 @@
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target)
 	qdel(src)
-	target.Bumped(B)
+	target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/bullet_act(obj/projectile/P)
 	. = ..()
@@ -539,7 +539,7 @@
 	var/obj/item/broken_bottle/B = new (loc)
 	B.mimic_broken(src, target)
 	qdel(src)
-	target.Bumped(B)
+	target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/colocup
 	name = "colo cup"

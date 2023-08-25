@@ -49,7 +49,7 @@
 	var/open_message = "The door beeps, and slides opens."
 
 //Standard Expressions to make keycard doors basically un-cheeseable
-/obj/machinery/door/puzzle/Bumped(atom/movable/AM)
+/obj/machinery/door/puzzle/BumpedBy(atom/movable/AM)
 	return !density && ..()
 
 /obj/machinery/door/puzzle/emp_act(severity)
@@ -157,13 +157,13 @@
 	icon_state = "lasergrid_full"
 	claimed = TRUE
 
-/obj/item/pressure_plate/hologrid/on_entered(datum/source, atom/movable/AM)
+/obj/item/pressure_plate/hologrid/Crossed(atom/movable/crossed_by, oldloc)
 	. = ..()
-	if(trigger_item && istype(AM, specific_item) && !claimed)
-		AM.set_anchored(TRUE)
-		flick("laserbox_burn", AM)
+	if(trigger_item && istype(crossed_by, specific_item) && !claimed)
+		crossed_by.set_anchored(TRUE)
+		flick("laserbox_burn", crossed_by)
 		trigger()
-		QDEL_IN(AM, 15)
+		QDEL_IN(crossed_by, 15)
 
 //Light puzzle
 /obj/structure/light_puzzle

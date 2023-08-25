@@ -667,6 +667,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// trait denoting someone will sometimes recover out of crit
 #define TRAIT_UNBREAKABLE "unbreakable"
 
+/// trait denoting something is being risen up by a table
+#define TRAIT_TABLE_RISEN "table_risen"
+
 // common trait sources
 #define TRAIT_GENERIC "generic"
 #define UNCONSCIOUS_TRAIT "unconscious"

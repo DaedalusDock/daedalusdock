@@ -180,7 +180,7 @@
 	obj_flags |= EMAGGED
 	INVOKE_ASYNC(src, PROC_REF(open))
 
-/obj/machinery/door/firedoor/Bumped(atom/movable/AM)
+/obj/machinery/door/firedoor/BumpedBy(atom/movable/AM)
 	if(panel_open || operating)
 		return
 	if(!density)
@@ -366,6 +366,7 @@
 	flags_1 = ON_BORDER_1
 	can_atmos_pass = CANPASS_PROC
 	auto_dir_align = FALSE
+	loc_procs = EXIT
 
 /obj/machinery/door/firedoor/border_only/closed
 	icon_state = "door_closed"
@@ -402,16 +403,14 @@
 /obj/machinery/door/firedoor/border_only/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
 	return !density || (dir != to_dir)
 
-/obj/machinery/door/firedoor/border_only/proc/on_exit(datum/source, atom/movable/leaving, direction)
-	SIGNAL_HANDLER
+/obj/machinery/door/firedoor/border_only/Exit(atom/movable/leaving, direction)
+	. = ..()
 	if(leaving.movement_type & PHASING)
 		return
-	if(leaving == src)
-		return // Let's not block ourselves.
 
 	if(direction == dir && density)
 		leaving.Bump(src)
-		return COMPONENT_ATOM_BLOCK_EXIT
+		return FALSE
 
 /obj/machinery/door/firedoor/border_only/zas_canpass(turf/T)
 	if(QDELETED(src))

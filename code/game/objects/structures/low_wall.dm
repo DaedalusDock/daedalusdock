@@ -96,13 +96,16 @@
 
 	return ..()
 
-/obj/structure/low_wall/CanAllowThrough(atom/movable/mover, turf/target)
+/obj/structure/low_wall/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
 	if(.)
 		return
 	if(mover.throwing)
 		return TRUE
 	if(locate(/obj/structure/low_wall) in get_turf(mover))
+		return TRUE
+	var/obj/structure/table/T = locate() in get_turf(mover)
+	if(T && T.flipped != TRUE)
 		return TRUE
 
 /obj/structure/low_wall/IsObscured()

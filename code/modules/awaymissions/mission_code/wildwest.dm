@@ -137,9 +137,9 @@
 	SIGNAL_HANDLER
 	if(AM == src)
 		return
-	Bumped(AM)
+	BumpedBy(AM)
 
-/obj/effect/meatgrinder/Bumped(atom/movable/AM)
+/obj/effect/meatgrinder/BumpedBy(atom/movable/AM)
 
 	if(triggered)
 		return

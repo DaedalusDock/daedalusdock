@@ -156,7 +156,7 @@
 		return CheckHuman(mover)
 	return TRUE
 
-/obj/structure/holosign/barrier/medical/Bumped(atom/movable/AM)
+/obj/structure/holosign/barrier/medical/BumpedBy(atom/movable/AM)
 	. = ..()
 	icon_state = "holo_medical"
 	if(ishuman(AM) && !CheckHuman(AM))
@@ -202,7 +202,7 @@
 			shockcd = TRUE
 			addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)
 
-/obj/structure/holosign/barrier/cyborg/hacked/Bumped(atom/movable/AM)
+/obj/structure/holosign/barrier/cyborg/hacked/BumpedBy(atom/movable/AM)
 	if(shockcd)
 		return
 

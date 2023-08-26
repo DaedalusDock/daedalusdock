@@ -147,16 +147,16 @@
 		return //Makes no sense.
 	switch(handset_state)
 		if(HANDSET_ONHOOK)//We're taking the phone.
-			icon_state = "phone_answered"
 			playsound(src, 'goon/sounds/phone/pick_up.ogg', 50, extrarange=MEDIUM_RANGE_SOUND_EXTRARANGE)
 			if(state == STATE_ANSWER)// Do we have a call waiting?
 				accept_call()
 			handset_state = HANDSET_OFFHOOK
+			update_icon()
 
 		if(HANDSET_OFFHOOK)//Returning the phone
-			icon_state = "phone"
 			playsound(src, 'goon/sounds/phone/hang_up.ogg', 50, extrarange=MEDIUM_RANGE_SOUND_EXTRARANGE)
 			handset_state = HANDSET_ONHOOK
+			update_icon()
 			if(state == STATE_WAITING)//We aren't doing anything more.
 				return
 			if(active_caller)// Do we have an active call? Ringing or not. If so, drop it.
@@ -164,6 +164,7 @@
 				return
 			//else (We are in hangup/farbusy, We need to clean up)
 			cleanup_residual_call()
+
 
 
 /obj/machinery/telephone/multitool_act(mob/living/user, obj/item/tool)

@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - imageadd: MD Jobstart icon appears properly in editor (Not that we use them anyways...)

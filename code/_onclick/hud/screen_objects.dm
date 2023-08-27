@@ -277,7 +277,7 @@
 		return TRUE
 
 	var/obj/item/I = dropping
-	if(!(user.is_holding(I) || (I.item_flags & IN_STORAGE)))
+	if(!(user.is_holding(I) || (I.item_flags & (IN_STORAGE|IN_INVENTORY))))
 		return TRUE
 
 	var/item_index = user.get_held_index_of_item(I)

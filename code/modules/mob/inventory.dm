@@ -264,7 +264,7 @@
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
 		return FALSE
 	I.remove_item_from_storage(src)
-	if(!put_in_hand(I, hand_index))
+	if(!put_in_hand(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
 	return TRUE
@@ -377,8 +377,10 @@
  * Argument(s):
  * * Optional - include_pockets (TRUE/FALSE), whether or not to include the pockets and suit storage in the returned list
  */
+/mob/proc/get_equipped_items(include_pockets = FALSE)
+	return
 
-/mob/living/proc/get_equipped_items(include_pockets = FALSE)
+/mob/living/get_equipped_items(include_pockets = FALSE)
 	var/list/items = list()
 	for(var/obj/item/item_contents in contents)
 		if(item_contents.item_flags & IN_INVENTORY)

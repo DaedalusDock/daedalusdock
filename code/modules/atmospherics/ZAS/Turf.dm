@@ -91,7 +91,7 @@
 */
 ///Simple heuristic for determining if removing the turf from it's zone will not partition the zone (A very bad thing).
 /turf/proc/can_safely_remove_from_zone()
-	if(isnull(zone) || zone.invalid)
+	if(isnull(zone))
 		return TRUE
 
 	var/check_dirs

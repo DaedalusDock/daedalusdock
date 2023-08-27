@@ -1,7 +1,7 @@
 /datum/gas_mixture
 	//Associative list of gas moles.
 	//Gases with 0 moles are not tracked and are pruned by updateValues()
-	var/list/gas
+	var/list/gas = list()
 	//Temperature in Kelvin of this gas mix.
 	var/temperature = 0
 
@@ -13,7 +13,7 @@
 	var/group_multiplier = 1
 
 	//List of active tile overlays for this gas_mixture.  Updated by checkTileGraphic()
-	var/list/graphic
+	var/list/graphic = list()
 	//Cache of gas overlay objects
 	var/list/tile_overlay_cache
 
@@ -21,8 +21,6 @@
 	volume = _volume
 	temperature = _temperature
 	group_multiplier = _group_multiplier
-	gas = list()
-	graphic = list()
 
 ///Returns the volume of a specific gas within the entire zone.
 /datum/gas_mixture/proc/getGroupGas(gasid)
@@ -33,12 +31,6 @@
 ///Returns the volume of the entire zone's gas contents.
 /datum/gas_mixture/proc/getGroupMoles()
 	return total_moles * group_multiplier
-
-/datum/gas_mixture/proc/zero()
-	gas.Cut()
-	temperature = T0C
-	group_multiplier = 1
-	total_moles = 0
 
 ///Takes a gas string and the amount of moles to adjust by. Calls updateValues() if update isn't 0.
 /datum/gas_mixture/proc/adjustGas(gasid, moles, update = TRUE)

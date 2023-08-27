@@ -37,7 +37,7 @@ PROCESSING_SUBSYSTEM_DEF(instruments)
 	for(var/datum/instrument/I as anything in subtypesof(/datum/instrument))
 		if(isabstract(I))
 			continue
-		I = new
+		I = new I()
 		I.Initialize()
 		if(!I.id)
 			qdel(I)

@@ -34,7 +34,7 @@ PROCESSING_SUBSYSTEM_DEF(instruments)
 	songs -= S
 
 /datum/controller/subsystem/processing/instruments/proc/initialize_instrument_data()
-	for(var/datum/instrument/I in subtypesof(/datum/instrument))
+	for(var/datum/instrument/I as anything in subtypesof(/datum/instrument))
 		if(isabstract(I))
 			continue
 		I = new

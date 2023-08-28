@@ -75,7 +75,7 @@
 
 /datum/reagent/iron/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	C.blood_volume = max(C.blood_volume + (2 * removed), BLOOD_VOLUME_MAX_LETHAL)
+	C.blood_volume = min(C.blood_volume + (2 * removed), BLOOD_VOLUME_MAX_LETHAL)
 
 /datum/reagent/lithium
 	name = "Lithium"

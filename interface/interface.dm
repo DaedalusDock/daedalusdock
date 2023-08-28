@@ -66,14 +66,11 @@
 	if(restricted_mode || is_banned_from(ckey, "Bug Report"))
 		to_chat(src, span_warning("You are not currently allowed to make a bug report through this system."))
 		return
-	var/message = "This will start reporting an issue, gathering some information from the server and your client, before submitting it to github."
-	if(GLOB.revdata.testmerge.len)
-		message += "<br>The following experimental changes are active and may be the cause of any new or sudden issues:<br>"
-		message += GLOB.revdata.GetTestMergeInfo(FALSE)
-	// We still use tgalert here because some people were concerned that if someone wanted to report that tgui wasn't working
-	// then the report issue button being tgui-based would be problematic.
-	if(tgalert(src, message, "Report Issue","Yes","No")!="Yes")
+	if(tgui_alert(src, "This will start reporting an issue, gathering some information from the server and your client, before submitting it to github.", "Report Issue","Continue","Abort")!="Continue")
 		return
+	if(GLOB.revdata.testmerge.len || GLOB.Debug2)
+		if(tgalert(src, "Experimental code is enabled on the server, Please check <code>Show-Server-Revision</code> for more information.", "Report Issue","Continue","Abort")!="Continue")
+			return
 
 	// Keep a static version of the template to avoid reading file
 	var/static/issue_template = file2text(".github/ISSUE_TEMPLATE/bug_report.md")
@@ -115,7 +112,7 @@
 	Key:[ckey]\n\
 	\
 	"
-	var/issue_body = "Reporting client info: [client_info]\n\n[local_template]"
+	var/issue_body = "```\nReporting client info:\n[client_info]\n\n[local_template]```"
 	var/list/body_structure = list(
 		"title" = issue_title,
 		"body" = issue_body

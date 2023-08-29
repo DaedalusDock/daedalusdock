@@ -26,6 +26,10 @@
 		if(handle_bodyparts(delta_time, times_fired))
 			updatehealth()
 
+	if(stat != DEAD && !(IS_IN_STASIS(src)))
+		handle_shock()
+		handle_pain()
+
 	check_cremation(delta_time, times_fired)
 
 	if(. && mind) //. == not dead
@@ -71,7 +75,7 @@
 	var/datum/gas_mixture/breath
 
 	if(!forced && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-		if(health <= crit_threshold || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_FAILING))
+		if(health <= crit_threshold || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_DEAD))
 			losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
 		else if(health <= crit_threshold)
@@ -336,7 +340,7 @@
 
 	if(stat != DEAD)
 		var/obj/item/organ/stomach/S = organs_by_slot[ORGAN_SLOT_STOMACH]
-		if(S?.reagents && !(S.organ_flags & ORGAN_FAILING))
+		if(S?.reagents && !(S.organ_flags & ORGAN_DEAD))
 			. += S.reagents.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
 		if(bloodstream)
 			. += bloodstream.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
@@ -580,7 +584,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /mob/living/carbon/proc/undergoing_liver_failure()
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
-	if(liver?.organ_flags & ORGAN_FAILING)
+	if(liver?.organ_flags & ORGAN_DEAD)
 		return TRUE
 
 /////////////

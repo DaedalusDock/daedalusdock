@@ -850,7 +850,7 @@
 	var/damaged_plural
 	//Sets organs into their proper list
 	for(var/obj/item/organ/organ as anything in processing_organs)
-		if(organ.organ_flags & ORGAN_FAILING)
+		if(organ.organ_flags & ORGAN_DEAD)
 			if(broken.len)
 				broken += ", "
 			broken += organ.name

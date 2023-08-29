@@ -79,7 +79,7 @@
 
 	if(!istype(liver_owner))
 		return
-	if(organ_flags & ORGAN_FAILING || HAS_TRAIT(liver_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
+	if(organ_flags & ORGAN_DEAD || HAS_TRAIT(liver_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
 		return
 
 	//Detox can heal small amounts of damage
@@ -173,7 +173,7 @@
 				owner.emote("drool")
 
 /obj/item/organ/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
-	if(!ishuman(owner) || !(organ_flags & ORGAN_FAILING))
+	if(!ishuman(owner) || !(organ_flags & ORGAN_DEAD))
 		return
 
 	var/mob/living/carbon/human/humie_owner = owner

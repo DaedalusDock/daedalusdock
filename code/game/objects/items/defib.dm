@@ -659,7 +659,7 @@
 				playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
 			else if(H.undergoing_cardiac_arrest())
 				playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
-				if(!(heart.organ_flags & ORGAN_FAILING))
+				if(!(heart.organ_flags & ORGAN_DEAD))
 					H.set_heartattack(FALSE)
 					user.visible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Patient's heart is now beating again."))
 				else

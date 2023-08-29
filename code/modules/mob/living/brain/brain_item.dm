@@ -132,7 +132,7 @@
 			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
 			return
 
-		if(organ_flags & ORGAN_FAILING)
+		if(organ_flags & ORGAN_DEAD)
 			if(!O.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
 				to_chat(user, span_warning("There's not enough alkysine in [O] to restore [src]!"))
 				return
@@ -142,7 +142,7 @@
 			to_chat(user, span_warning("You failed to pour [O] onto [src]!"))
 			return
 
-		if(organ_flags & ORGAN_FAILING)
+		if(organ_flags & ORGAN_DEAD)
 			user.visible_message(span_notice("[user] pours the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."), span_notice("You pour the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."))
 		else
 			user.visible_message(span_notice("[user] pours the contents of [O] onto [src]."))
@@ -192,7 +192,7 @@
 		. += span_info("It's started turning slightly grey. They must not have been able to handle the stress of it all.")
 		return
 	if((brainmob && (brainmob.client || brainmob.get_ghost())) || decoy_override)
-		if(organ_flags & ORGAN_FAILING)
+		if(organ_flags & ORGAN_DEAD)
 			. += span_info("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>alkysine</b>.")
 		else if(damage >= BRAIN_DAMAGE_DEATH*0.5)
 			. += span_info("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>alkysine</b>.")

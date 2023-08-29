@@ -439,8 +439,8 @@
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
+	pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
 	. |= wound_life()
-	return
 
 /obj/item/bodypart/proc/wound_life()
 	if(!LAZYLEN(wounds))
@@ -559,6 +559,9 @@
 	if(burn)
 		create_wound(WOUND_BURN, burn, update_damage = FALSE)
 
+	//Initial pain spike
+	owner.apply_pain(0.6*burn + 0.4*brute, body_zone, updating_health = FALSE)
+
 	//Disturb treated burns
 	if(brute > 5)
 		var/disturbed = 0
@@ -569,6 +572,7 @@
 				disturbed += W.damage
 		if(disturbed)
 			to_chat(owner, span_warning("Ow! Your burns were disturbed."))
+			owner.apply_pain(0.5*burn, body_zone, updating_health = FALSE)
 
 	/*
 	// END WOUND HANDLING

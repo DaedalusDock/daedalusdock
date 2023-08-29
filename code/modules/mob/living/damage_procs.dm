@@ -317,10 +317,9 @@
  * * def_zone - Body zone to adjust the pain of. If null, will be divided amongst all bodyparts
  * * message - A to_chat() to play if the target hasn't had one in a while.
  * * ignore_cd - Ignores the message cooldown.
- * * fake - Doesn't actually apply damage, but causes the message and stuff.
  * * updating_health - Should this proc call updatehealth()?
  *
  * * Returns TRUE if pain changed.
  */
-/mob/living/proc/apply_pain(amount, def_zone, message, ignore_cd, fake, updating_health = TRUE)
+/mob/living/proc/apply_pain(amount, def_zone, message, ignore_cd, updating_health = TRUE)
 	return adjustPain(amount, updating_health)

@@ -350,14 +350,14 @@
 
 /obj/item/organ/lungs/on_life(delta_time, times_fired)
 	. = ..()
-	if(failed && !(organ_flags & ORGAN_FAILING))
+	if(failed && !(organ_flags & ORGAN_DEAD))
 		failed = FALSE
 		return
 	if(damage >= low_threshold)
 		var/do_i_cough = DT_PROB((damage < high_threshold) ? 2.5 : 5, delta_time) // between : past high
 		if(do_i_cough)
 			owner.emote("cough")
-	if(organ_flags & ORGAN_FAILING && owner.stat == CONSCIOUS)
+	if(organ_flags & ORGAN_DEAD && owner.stat == CONSCIOUS)
 		owner.visible_message(span_danger("[owner] grabs [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe!"))
 		failed = TRUE
 

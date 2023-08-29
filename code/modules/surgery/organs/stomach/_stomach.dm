@@ -53,11 +53,11 @@
 		human_owner.clear_alert(ALERT_NUTRITION)
 	return ..()
 
-/obj/item/organ/stomach/set_organ_failing(failing)
+/obj/item/organ/stomach/set_ORGAN_DEAD(failing)
 	if(!.)
 		return
 
-	if(organ_flags & ORGAN_FAILING && owner)
+	if(organ_flags & ORGAN_DEAD && owner)
 		reagents.end_metabolization(owner)
 
 /obj/item/organ/stomach/on_life(delta_time, times_fired)
@@ -66,7 +66,7 @@
 	//Manage species digestion
 	if(istype(owner, /mob/living/carbon/human))
 		var/mob/living/carbon/human/humi = owner
-		if(!(organ_flags & ORGAN_FAILING))
+		if(!(organ_flags & ORGAN_DEAD))
 			handle_hunger(humi, delta_time, times_fired)
 
 	var/mob/living/carbon/body = owner

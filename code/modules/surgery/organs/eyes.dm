@@ -155,7 +155,7 @@
 	//various degrees of "oh fuck my eyes", from "point a laser at your eye" to "staring at the Sun" intensities
 	if(damage > 20)
 		damaged = TRUE
-		if((organ_flags & ORGAN_FAILING))
+		if((organ_flags & ORGAN_DEAD))
 			eye_owner.become_blind(EYE_DAMAGE)
 			return
 

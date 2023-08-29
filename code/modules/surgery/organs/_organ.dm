@@ -244,7 +244,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(cosmetic_only)
 		CRASH("Cosmetic organ processing!")
 
-	if(organ_flags & ORGAN_FAILING)
+	if(organ_flags & ORGAN_DEAD)
 		handle_failing_organs(delta_time)
 		return
 
@@ -269,7 +269,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	. += span_notice("It should be inserted in the [parse_zone(zone)].")
 
-	if(organ_flags & ORGAN_FAILING)
+	if(organ_flags & ORGAN_DEAD)
 		if(organ_flags & ORGAN_SYNTHETIC)
 			. += span_warning("[src] seems to be broken.")
 			return
@@ -350,20 +350,20 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag
 /obj/item/organ/proc/check_failing_thresholds()
 	if(damage >= maxHealth)
-		set_organ_failing(TRUE)
+		set_ORGAN_DEAD(TRUE)
 	else if(damage < maxHealth)
-		set_organ_failing(FALSE)
+		set_ORGAN_DEAD(FALSE)
 
 /// Set or unset the organ as failing. Returns TRUE on success.
-/obj/item/organ/proc/set_organ_failing(failing)
+/obj/item/organ/proc/set_ORGAN_DEAD(failing)
 	if(failing)
-		if(organ_flags & ORGAN_FAILING)
+		if(organ_flags & ORGAN_DEAD)
 			return FALSE
-		organ_flags |= ORGAN_FAILING
+		organ_flags |= ORGAN_DEAD
 		return TRUE
 	else
-		if(organ_flags & ORGAN_FAILING)
-			organ_flags &= ~ORGAN_FAILING
+		if(organ_flags & ORGAN_DEAD)
+			organ_flags &= ~ORGAN_DEAD
 			return TRUE
 
 //Looking for brains?
@@ -445,7 +445,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 
-	if(organ_flags & ORGAN_FAILING)
+	if(organ_flags & ORGAN_DEAD)
 		. += tag ?"<span style='font-weight: bold; color:#cc3333'>Non-Functional</span>" : "Non-Functional"
 
 	if(owner.has_reagent(/datum/reagent/technetium))

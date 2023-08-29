@@ -38,7 +38,7 @@
 	if(HAS_TRAIT_NOT_FROM(owner, TRAIT_DEAF, EAR_DAMAGE))
 		return
 
-	if((organ_flags & ORGAN_FAILING))
+	if((organ_flags & ORGAN_DEAD))
 		deaf = max(deaf, 1) // if we're failing we always have at least 1 deaf stack (and thus deafness)
 	else // only clear deaf stacks if we're not failing
 		deaf = max(deaf - (0.5 * delta_time), 0)

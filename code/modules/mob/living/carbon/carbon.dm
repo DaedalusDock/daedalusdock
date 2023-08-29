@@ -897,7 +897,7 @@
 		if (!heart)
 			return DEFIB_FAIL_NO_HEART
 
-		if (heart.organ_flags & ORGAN_FAILING)
+		if (heart.organ_flags & ORGAN_DEAD)
 			return DEFIB_FAIL_FAILING_HEART
 
 	var/obj/item/organ/brain/current_brain = getorgan(/obj/item/organ/brain)
@@ -905,7 +905,7 @@
 	if (QDELETED(current_brain))
 		return DEFIB_FAIL_NO_BRAIN
 
-	if (current_brain.organ_flags & ORGAN_FAILING)
+	if (current_brain.organ_flags & ORGAN_DEAD)
 		return DEFIB_FAIL_FAILING_BRAIN
 
 	if (current_brain.suicided || current_brain.brainmob?.suiciding)

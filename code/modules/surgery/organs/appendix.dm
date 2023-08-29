@@ -33,7 +33,7 @@
 	if(!organ_owner)
 		return
 
-	if(organ_flags & ORGAN_FAILING)
+	if(organ_flags & ORGAN_DEAD)
 		// forced to ensure people don't use it to gain tox as slime person
 		organ_owner.adjustToxLoss(2 * delta_time, updating_health = TRUE, forced = TRUE)
 	else if(inflamation_stage)
@@ -88,7 +88,7 @@
 
 /obj/item/organ/appendix/get_scan_results(tag)
 	. = ..()
-	if((!(organ_flags & ORGAN_FAILING)) && inflamation_stage)
+	if((!(organ_flags & ORGAN_DEAD)) && inflamation_stage)
 		. += tag ? "<span style='font-weight: bold; color:#ff9933'>Inflamed</span>" : "Inflamed"
 
 #undef APPENDICITIS_PROB

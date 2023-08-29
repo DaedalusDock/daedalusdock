@@ -12,7 +12,6 @@
 	if(!ishuman(target))
 		return COMPONENT_INCOMPATIBLE
 
-	var/mob/living/carbon/human/valid_target = target
 	if(HAS_TRAIT(target, TRAIT_SOFT_CRITICAL_CONDITION))
 		on_softcrit_gain(target)
 

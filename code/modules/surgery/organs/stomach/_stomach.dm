@@ -52,7 +52,7 @@
 		human_owner.clear_alert(ALERT_NUTRITION)
 	return ..()
 
-/obj/item/organ/stomach/set_ORGAN_DEAD(failing)
+/obj/item/organ/stomach/set_organ_dead(failing)
 	if(!.)
 		return
 
@@ -101,7 +101,7 @@
 		return
 
 	// the change of vomit is now high
-	if(damage > high_threshold && DT_PROB(0.05 * damage * nutri_vol * nutri_vol, delta_time))
+	if(damage > (high_threshold * maxHealth) && DT_PROB(0.05 * damage * nutri_vol * nutri_vol, delta_time))
 		body.vomit(damage)
 		to_chat(body, span_warning("Your stomach reels in pain as you're incapable of holding down all that food!"))
 
@@ -267,14 +267,13 @@
 	icon_state = "stomach-c"
 	desc = "A basic device designed to mimic the functions of a human stomach"
 	organ_flags = ORGAN_SYNTHETIC
-	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.5
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/stomach/cybernetic/tier2
 	name = "cybernetic stomach"
 	icon_state = "stomach-c-u"
 	desc = "An electronic device designed to mimic the functions of a human stomach. Handles disgusting food a bit better."
-	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 45
 	disgust_metabolism = 2
 	emp_vulnerability = 40
 
@@ -282,7 +281,7 @@
 	name = "upgraded cybernetic stomach"
 	icon_state = "stomach-c-u2"
 	desc = "An upgraded version of the cybernetic stomach, designed to improve further upon organic stomachs. Handles disgusting food very well."
-	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 60
 	disgust_metabolism = 3
 	emp_vulnerability = 20
 

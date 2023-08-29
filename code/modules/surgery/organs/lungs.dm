@@ -7,6 +7,10 @@
 	gender = PLURAL
 	w_class = WEIGHT_CLASS_SMALL
 
+	maxHealth = 70
+	high_threshold = 0.5
+	low_threshold = 0.35
+
 	decay_factor = STANDARD_ORGAN_DECAY * 0.9 // fails around 16.5 minutes, lungs are one of the last organs to die (of the ones we have)
 
 	low_threshold_passed = "<span class='warning'>You feel short of breath.</span>"
@@ -353,7 +357,7 @@
 		failed = FALSE
 		return
 	if(damage >= low_threshold)
-		var/do_i_cough = DT_PROB((damage < high_threshold) ? 2.5 : 5, delta_time) // between : past high
+		var/do_i_cough = DT_PROB((damage < (high_threshold * maxHealth)) ? 2.5 : 5, delta_time) // between : past high
 		if(do_i_cough)
 			owner.emote("cough")
 	if(organ_flags & ORGAN_DEAD && owner.stat == CONSCIOUS)
@@ -397,7 +401,6 @@
 	desc = "A basic cybernetic version of the lungs found in traditional humanoid entities."
 	icon_state = "lungs-c"
 	organ_flags = ORGAN_SYNTHETIC
-	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.5
 
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
@@ -405,7 +408,7 @@
 	name = "cybernetic lungs"
 	desc = "A cybernetic version of the lungs found in traditional humanoid entities. Allows for greater intakes of oxygen than organic lungs, requiring slightly less pressure."
 	icon_state = "lungs-c-u"
-	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 100
 	safe_oxygen_min = 13
 	emp_vulnerability = 40
 
@@ -415,7 +418,7 @@
 	icon_state = "lungs-c-u2"
 	safe_plasma_max = 20
 	safe_co2_max = 20
-	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 140
 	safe_oxygen_min = 13
 	emp_vulnerability = 20
 

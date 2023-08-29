@@ -161,7 +161,6 @@
 #define ORGAN_SLOT_XENO_RESINSPINNER "resin_spinner"
 
 //organ defines
-#define STANDARD_ORGAN_THRESHOLD 100
 /// designed to fail organs when left to decay for ~15 minutes
 #define STANDARD_ORGAN_DECAY 111 / 100000
 

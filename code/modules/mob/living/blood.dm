@@ -32,16 +32,6 @@
 		adjust_nutrition(-nutrition_ratio * HUNGER_DECAY * delta_time)
 		blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * nutrition_ratio * delta_time), BLOOD_VOLUME_NORMAL)
 
-	//Effects of bloodloss
-	switch(blood_volume)
-		if(BLOOD_VOLUME_EXCESS to BLOOD_VOLUME_MAX_LETHAL)
-			if(DT_PROB(7.5, delta_time))
-				to_chat(src, span_userdanger("Blood starts to tear your skin apart. You're going to burst!"))
-				inflate_gib()
-		if(BLOOD_VOLUME_MAXIMUM to BLOOD_VOLUME_EXCESS)
-			if(DT_PROB(5, delta_time))
-				to_chat(src, span_warning("You feel terribly bloated."))
-
 	var/temp_bleed = 0
 
 	//Bleeding out

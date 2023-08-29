@@ -10,19 +10,14 @@
 	slot = ORGAN_SLOT_LIVER
 	desc = "Pairing suggestion: chianti and fava beans."
 
-	maxHealth = STANDARD_ORGAN_THRESHOLD
+	maxHealth = 70
+	low_threshold = 0.22
+	high_threshold = 0.5
 
 	decay_factor = STANDARD_ORGAN_DECAY // smack in the middle of decay times
 
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/iron = 5)
 	grind_results = list(/datum/reagent/consumable/nutriment/peptides = 5)
-
-	var/alcohol_tolerance = ALCOHOL_RATE//affects how much damage the liver takes from alcohol
-	/// The maximum volume of toxins the liver will quickly purge
-	var/toxTolerance = LIVER_DEFAULT_TOX_TOLERANCE
-	/// Scaling factor for how much damage toxins deal to the liver
-	var/toxLethality = LIVER_DEFAULT_TOX_LETHALITY
-	var/filterToxins = TRUE //whether to filter toxins
 
 /obj/item/organ/liver/Initialize(mapload)
 	. = ..()
@@ -88,9 +83,9 @@
 
 	// Get the effectiveness of the liver.
 	var/filter_effect = 3
-	if(damage > low_threshold)
+	if(damage > (low_threshold * maxHealth))
 		filter_effect -= 1
-	if(damage > high_threshold)
+	if(damage > (high_threshold * maxHealth))
 		filter_effect -= 2
 	// Robotic organs filter better but don't get benefits from dylovene for filtering.
 	if(organ_flags & ORGAN_SYNTHETIC)
@@ -208,42 +203,30 @@
 	name = "alien liver" // doesnt matter for actual aliens because they dont take toxin damage
 	icon_state = "liver-x" // Same sprite as fly-person liver.
 	desc = "A liver that used to belong to a killer alien, who knows what it used to eat."
-	toxLethality = 2.5 * LIVER_DEFAULT_TOX_LETHALITY // rejects its owner early after too much punishment
-	toxTolerance = 15 // complete toxin immunity like xenos have would be too powerful
 
 /obj/item/organ/liver/vox
 	name = "vox liver"
 	icon_state = "vox-liver"
-	alcohol_tolerance = 0.008 // 60% more toxic
 
 /obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"
 	icon_state = "liver-c"
 	desc = "A very basic device designed to mimic the functions of a human liver. Handles toxins slightly worse than an organic liver."
 	organ_flags = ORGAN_SYNTHETIC
-	toxTolerance = 2
-	toxLethality = 1.1 * LIVER_DEFAULT_TOX_LETHALITY
-	maxHealth = STANDARD_ORGAN_THRESHOLD*0.5
-
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/liver/cybernetic/tier2
 	name = "cybernetic liver"
 	icon_state = "liver-c-u"
 	desc = "An electronic device designed to mimic the functions of a human liver. Handles toxins slightly better than an organic liver."
-	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
-	toxTolerance = 5 //can shrug off up to 5u of toxins
-	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
+	maxHealth = 100
 	emp_vulnerability = 40
 
 /obj/item/organ/liver/cybernetic/tier3
 	name = "upgraded cybernetic liver"
 	icon_state = "liver-c-u2"
 	desc = "An upgraded version of the cybernetic liver, designed to improve further upon organic livers. It is resistant to alcohol poisoning and is very robust at filtering toxins."
-	alcohol_tolerance = 0.001
-	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
-	toxTolerance = 10 //can shrug off up to 10u of toxins
-	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
+	maxHealth = 140
 	emp_vulnerability = 20
 
 /obj/item/organ/liver/cybernetic/emp_act(severity)

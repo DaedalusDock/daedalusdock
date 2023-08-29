@@ -9,6 +9,10 @@
 
 	decay_factor = 2.5 * STANDARD_ORGAN_DECAY //designed to fail around 6 minutes after death
 
+	maxHealth = 45
+	high_threshold = 0.66
+	low_threshold = 0.15
+
 	low_threshold_passed = "<span class='info'>Prickles of pain appear then die out from within your chest...</span>"
 	high_threshold_passed = "<span class='warning'>Something inside your chest hurts, and the pain isn't subsiding. You notice yourself breathing far faster than before.</span>"
 	now_fixed = "<span class='info'>Your heart begins to beat again.</span>"
@@ -242,7 +246,6 @@
 	desc = "A basic electronic device designed to mimic the functions of an organic human heart."
 	icon_state = "heart-c"
 	organ_flags = ORGAN_SYNTHETIC
-	maxHealth = STANDARD_ORGAN_THRESHOLD*0.75 //This also hits defib timer, so a bit higher than its less important counterparts
 
 	var/dose_available = FALSE
 	var/rid = /datum/reagent/medicine/epinephrine
@@ -253,7 +256,7 @@
 	name = "cybernetic heart"
 	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma."
 	icon_state = "heart-c-u"
-	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 60
 	dose_available = TRUE
 	emp_vulnerability = 40
 
@@ -261,7 +264,7 @@
 	name = "upgraded cybernetic heart"
 	desc = "An electronic device designed to mimic the functions of an organic human heart. Also holds an emergency dose of epinephrine, used automatically after facing severe trauma. This upgraded model can regenerate its dose after use."
 	icon_state = "heart-c-u2"
-	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 90
 	dose_available = TRUE
 	emp_vulnerability = 20
 

@@ -49,10 +49,10 @@
 	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
 	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
 	if(L)
-		if(L.damage > L.high_threshold)
+		if(L.damage > (L.high_threshold * L.maxHealth))
 			next_breath--
 	if(H)
-		if(H.damage > H.high_threshold)
+		if(H.damage > (H.high_threshold * L.maxHealth))
 			next_breath--
 
 	if((times_fired % next_breath) == 0 || failed_last_breath)

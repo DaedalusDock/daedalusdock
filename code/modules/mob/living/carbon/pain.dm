@@ -210,7 +210,7 @@
 			if(I.damage > I.low_threshold)
 				pain = 25
 				message = "You feel a pain in your [parent.plaintext_zone]"
-			if(I.damage > I.high_threshold)
+			if(I.damage > (I.high_threshold * I.maxHealth))
 				pain = 50
 				message = "You feel a sharp pain in your [parent.plaintext_zone]"
 			pain_message(message, pain)

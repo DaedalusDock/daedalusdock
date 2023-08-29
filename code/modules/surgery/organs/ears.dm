@@ -29,7 +29,7 @@
 
 /obj/item/organ/ears/on_life(delta_time, times_fired)
 	// only inform when things got worse, needs to happen before we heal
-	if((damage > low_threshold && prev_damage < low_threshold) || (damage > high_threshold && prev_damage < high_threshold))
+	if((damage > (low_threshold * maxHealth) && prev_damage < (low_threshold * maxHealth)) || (damage > (high_threshold * maxHealth) && prev_damage < (high_threshold * maxHealth)))
 		to_chat(owner, span_warning("The ringing in your ears grows louder, blocking out any external noises for a moment."))
 
 	. = ..()

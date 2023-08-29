@@ -12,13 +12,14 @@
 	var/slot
 	// DO NOT add slots with matching names to different zones - it will break organs_by_slot list!
 	var/organ_flags = ORGAN_EDIBLE
-	var/maxHealth = STANDARD_ORGAN_THRESHOLD
+	var/maxHealth = 30
 	/// Total damage this organ has sustained
 	/// Should only ever be modified by applyOrganDamage
 	var/damage = 0
 	var/decay_factor = 0 //same as above but when without a living owner, set to 0 for generic organs
-	var/high_threshold = STANDARD_ORGAN_THRESHOLD * 0.7 //when severe organ damage occurs
-	var/low_threshold = STANDARD_ORGAN_THRESHOLD * 0.3 //when minor organ damage occurs
+	var/high_threshold = 0.66
+	var/low_threshold = 0.33 //when minor organ damage occurs
+
 	var/severe_cooldown //cooldown for severe effects, used for synthetic organ emp effects.
 	///Organ variables for determining what we alert the owner with when they pass/clear the damage thresholds
 	var/prev_damage = 0
@@ -272,12 +273,11 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(organ_flags & ORGAN_DEAD)
 		if(organ_flags & ORGAN_SYNTHETIC)
-			. += span_warning("[src] seems to be broken.")
-			return
-		. += span_warning("[src] has decayed for too long, and has turned a sickly color. It probably won't work without repairs.")
-		return
+			to_chat(user, span_warning("\The [src] looks completely spent."))
+		else
+			to_chat(user, span_warning("The decay has set into \the [src]."))
 
-	if(damage > high_threshold)
+	if(damage > high_threshold * maxHealth)
 		. += span_warning("[src] is starting to look discolored.")
 
 ///Used as callbacks by object pooling
@@ -296,13 +296,20 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/item_action_slot_check(slot,mob/user)
 	return //so we don't grant the organ's action to mobs who pick up the organ.
 
+/obj/item/organ/proc/set_max_health(new_max)
+	maxHealth = FLOOR(new_max, 1)
+	damage = min(damage, maxHealth)
+
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage
 /obj/item/organ/proc/applyOrganDamage(damage_amount, maximum = maxHealth) //use for damaging effects
 	if(!damage_amount || cosmetic_only) //Micro-optimization.
 		return
 	if(maximum < damage)
 		return
-	damage = clamp(damage + damage_amount, 0, maximum)
+	var/old_damage = damage
+	damage = min(clamp(damage + damage_amount, 0, maximum), maxHealth)
+	. = damage - old_damage
+
 	var/mess = check_damage_thresholds(owner)
 	check_failing_thresholds()
 	prev_damage = damage
@@ -336,14 +343,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(delta > 0)
 		if(damage >= maxHealth)
 			return now_failing
-		if(damage > high_threshold && prev_damage <= high_threshold)
+		if(damage > (high_threshold * maxHealth) && prev_damage <= (high_threshold * maxHealth))
 			return high_threshold_passed
-		if(damage > low_threshold && prev_damage <= low_threshold)
+		if(damage > (low_threshold * maxHealth) && prev_damage <= (low_threshold * maxHealth))
 			return low_threshold_passed
 	else
-		if(prev_damage > low_threshold && damage <= low_threshold)
+		if(prev_damage > (low_threshold * maxHealth)  && damage <= (low_threshold * maxHealth))
 			return low_threshold_cleared
-		if(prev_damage > high_threshold && damage <= high_threshold)
+		if(prev_damage > (high_threshold * maxHealth) && damage <= (high_threshold * maxHealth))
 			return high_threshold_cleared
 		if(prev_damage == maxHealth)
 			return now_fixed
@@ -351,12 +358,12 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag
 /obj/item/organ/proc/check_failing_thresholds()
 	if(damage >= maxHealth)
-		set_ORGAN_DEAD(TRUE)
+		set_organ_dead(TRUE)
 	else if(damage < maxHealth)
-		set_ORGAN_DEAD(FALSE)
+		set_organ_dead(FALSE)
 
 /// Set or unset the organ as failing. Returns TRUE on success.
-/obj/item/organ/proc/set_ORGAN_DEAD(failing)
+/obj/item/organ/proc/set_organ_dead(failing)
 	if(failing)
 		if(organ_flags & ORGAN_DEAD)
 			return FALSE

@@ -26,7 +26,7 @@
 // Blood circulation levels
 #define BLOOD_CIRC_FULL 100
 #define BLOOD_CIRC_SAFE 85
-#define BLOOD_CIRCE_OKAY 70
+#define BLOOD_CIRC_OKAY 70
 #define BLOOD_CIRC_BAD 60
 #define BLOOD_CIRC_SURVIVE 30
 
@@ -180,6 +180,7 @@
 //Brain Damage defines
 #define BRAIN_DAMAGE_MILD 20
 #define BRAIN_DAMAGE_SEVERE 100
+#define BRAIN_DAMAGE_CRITICAL 150
 #define BRAIN_DAMAGE_DEATH 200
 
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild

@@ -118,7 +118,6 @@
 
 /obj/item/organ/liver/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
-	alcohol_tolerance = 0.007 //flies eat vomit, so a lower alcohol tolerance is perfect!
 
 /obj/item/organ/liver/fly/Initialize(mapload)
 	. = ..()

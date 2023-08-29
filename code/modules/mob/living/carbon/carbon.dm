@@ -507,7 +507,7 @@
 	if((stam < max * STAMINA_EXHAUSTION_THRESHOLD_MODIFIER) && !is_exhausted)
 		ADD_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
 		ADD_TRAIT(src, TRAIT_NO_SPRINT, STAMINA)
-	if((stam < max * STAMINA_STUN_THRESHOLD_MODIFIER) && !is_stam_stunned && stat <= SOFT_CRIT)
+	if((stam < max * STAMINA_STUN_THRESHOLD_MODIFIER) && !is_stam_stunned && stat == CONSCIOUS)
 		stamina_stun()
 	if(is_exhausted && (stam > max * STAMINA_EXHAUSTION_RECOVERY_THRESHOLD_MODIFIER))
 		REMOVE_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
@@ -775,11 +775,11 @@
 
 /mob/living/carbon/set_health(new_value)
 	. = ..()
-	if(. > hardcrit_threshold)
-		if(health <= hardcrit_threshold && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
-			ADD_TRAIT(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
-	else if(health > hardcrit_threshold)
-		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
+	if(. > crit_threshold)
+		ADD_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
+	else
+		REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
+
 	if(CONFIG_GET(flag/near_death_experience))
 		if(. > HEALTH_THRESHOLD_NEARDEATH)
 			if(health <= HEALTH_THRESHOLD_NEARDEATH && !HAS_TRAIT(src, TRAIT_NODEATH))
@@ -799,8 +799,6 @@
 			set_stat(HARD_CRIT)
 		else if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 			set_stat(UNCONSCIOUS)
-		else if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
-			set_stat(SOFT_CRIT)
 		else
 			set_stat(CONSCIOUS)
 

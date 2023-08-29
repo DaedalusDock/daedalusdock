@@ -728,7 +728,7 @@
 				. = TRUE
 			if(3)
 				if(C.set_heartattack(TRUE))
-					if(C.stat <= SOFT_CRIT)
+					if(C.stat < UNCONSCIOUS)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest!"))
 				else
 					C.losebreath += 10

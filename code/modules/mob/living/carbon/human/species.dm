@@ -1253,7 +1253,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(!I.sharpness && armor_block < 50)
 					if(prob(I.force))
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 20)
-						if(H.stat <= SOFT_CRIT)
+						if(H.stat != CONSCIOUS)
 							H.visible_message(span_danger("[H] is knocked senseless!"), \
 											span_userdanger("You're knocked senseless!"))
 							H.set_timed_status_effect(20 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
@@ -1263,7 +1263,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					else
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, I.force * 0.2)
 
-					if(H.mind && H.stat <= SOFT_CRIT && H != user && prob(I.force + ((100 - H.health) * 0.5))) // rev deconversion through blunt trauma.
+					if(H.mind && H.stat != CONSCIOUS && H != user && prob(I.force + ((100 - H.health) * 0.5))) // rev deconversion through blunt trauma.
 						var/datum/antagonist/rev/rev = H.mind.has_antag_datum(/datum/antagonist/rev)
 						if(rev)
 							rev.remove_revolutionary(FALSE, user)

@@ -40,7 +40,7 @@
 /// proc that adds and removes blindness overlays when necessary
 /mob/proc/update_blindness()
 	switch(stat)
-		if(CONSCIOUS, SOFT_CRIT)
+		if(CONSCIOUS)
 			if(HAS_TRAIT(src, TRAIT_BLIND) || eye_blind)
 				throw_alert(ALERT_BLIND, /atom/movable/screen/alert/blind)
 				do_set_blindness(TRUE)

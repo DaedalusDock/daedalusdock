@@ -1068,7 +1068,7 @@
 /datum/status_effect/ants/tick()
 	var/mob/living/carbon/human/victim = owner
 	victim.adjustBruteLoss(max(0.1, round((ants_remaining * 0.004),0.1))) //Scales with # of ants (lowers with time). Roughly 10 brute over 50 seconds.
-	if(victim.stat <= SOFT_CRIT) //Makes sure people don't scratch at themselves while they're in a critical condition
+	if(victim.stat != CONSCIOUS && !HAS_TRAIT(victim, TRAIT_SOFT_CRITICAL_CONDITION)) //Makes sure people don't scratch at themselves while they're in a critical condition
 		if(prob(15))
 			switch(rand(1,2))
 				if(1)

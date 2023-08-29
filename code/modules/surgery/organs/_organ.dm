@@ -313,7 +313,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	var/mess = check_damage_thresholds(owner)
 	check_failing_thresholds()
 	prev_damage = damage
-	if(owner && owner.stat <= SOFT_CRIT && !(organ_flags & ORGAN_SYNTHETIC) && damage_amount > 0 && (damage_amount > 5 || prob(10)))
+	if(owner && owner.stat < UNCONSCIOUS && !(organ_flags & ORGAN_SYNTHETIC) && damage_amount > 0 && (damage_amount > 5 || prob(10)))
 		if(!mess)
 			var/obj/item/bodypart/BP = loc
 			if(!BP)

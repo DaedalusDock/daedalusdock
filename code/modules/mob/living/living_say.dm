@@ -159,13 +159,17 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		SEND_SIGNAL(src, COMSIG_LIVING_USE_RADIO)
 
 	switch(stat)
-		if(SOFT_CRIT)
-			message_mods[WHISPER_MODE] = MODE_WHISPER
+		if(CONSCIOUS)
+			if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
+				message_mods[WHISPER_MODE] = MODE_WHISPER
+
 		if(UNCONSCIOUS)
 			return
+
 		if(HARD_CRIT)
 			if(!message_mods[WHISPER_MODE])
 				return
+
 		if(DEAD)
 			say_dead(original_message)
 			return

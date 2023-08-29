@@ -2187,5 +2187,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	for(var/list/L as anything in pain_emotes)
 		if(amount >= pain_emotes[L])
 			chosen = L
+		else
+			break
 
 	return pick_weight(chosen)

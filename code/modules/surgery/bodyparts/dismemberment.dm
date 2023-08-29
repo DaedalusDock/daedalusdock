@@ -194,6 +194,7 @@
 /obj/item/bodypart/proc/add_organ(obj/item/organ/O)
 	O.ownerlimb = src
 	contained_organs |= O
+
 	if(O.visual)
 		if(owner && O.external_bodytypes)
 			synchronize_bodytypes(owner)

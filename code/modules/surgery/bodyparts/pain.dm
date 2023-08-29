@@ -25,6 +25,6 @@
 		if(O.cosmetic_only || istype(O, /obj/item/organ/brain))
 			continue
 
-		organ_dam += O.damage
+		organ_dam += min(O.damage, O.maxHealth)
 
 	return pain + lasting_pain + (0.7 * brute_dam) + (0.8 * burn_dam) + (0.3 * organ_dam)

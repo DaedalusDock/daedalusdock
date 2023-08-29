@@ -775,7 +775,7 @@
 
 /mob/living/carbon/set_health(new_value)
 	. = ..()
-	if(. > crit_threshold)
+	if(. < crit_threshold)
 		ADD_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
 	else
 		REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)

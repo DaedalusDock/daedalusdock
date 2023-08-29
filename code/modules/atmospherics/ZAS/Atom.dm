@@ -4,8 +4,6 @@
 
 ///Tells ZAS to mark the tile the atom is in to update.
 /atom/proc/zas_update_loc()
-	if(!SSzas.initialized)
-		return FALSE
 	var/turf/T = get_turf(src)
 	if(T?.simulated)
 		SSzas.mark_for_update(T)

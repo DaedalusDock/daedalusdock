@@ -54,12 +54,18 @@
 			return
 		. = BP.adjustPain(amount)
 
+
 	if((amount > 0))
+		flash_pain(min(round(8*amount)+55, 255))
 		pain_message(message, amount, ignore_cd)
 
 	if(updating_health && .)
 		updatehealth()
 
+/mob/proc/flash_pain(target)
+	if(hud_used?.pain)
+		animate(hud_used.pain, alpha = target, time = 15, easing = ELASTIC_EASING)
+		animate(hud_used.pain = 0, time = 20)
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE

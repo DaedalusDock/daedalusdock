@@ -1,4 +1,0 @@
-author: FunnyLegJiggle
-delete-after: true
-changes:
-  - bugfix: Ingesting iron no longer marks you for blood-gib.

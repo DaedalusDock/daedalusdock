@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Issue reporter flow no longer overflows

@@ -144,3 +144,8 @@
   - bugfix: Added Ammonia to the chem dispenser
   francinum:
   - imageadd: MD Jobstart icon appears properly in editor (Not that we use them anyways...)
+2023-08-29:
+  FunnyLegJiggle:
+  - bugfix: Ingesting iron no longer marks you for blood-gib.
+  francinum:
+  - bugfix: Issue reporter flow no longer overflows

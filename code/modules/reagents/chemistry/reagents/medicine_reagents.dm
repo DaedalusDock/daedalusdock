@@ -139,6 +139,7 @@
 	value = 4.9
 
 /datum/reagent/medicine/bicaridine/affect_blood(mob/living/carbon/C, removed)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
 	C.adjustBruteLoss(-3 * removed, updating_health = FALSE)
 	return TRUE
 

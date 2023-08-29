@@ -69,10 +69,13 @@
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE
+	if(!amount)
+		return FALSE
 
 	. = COOLDOWN_FINISHED(src, pain_cd)
 	if(!ignore_cd && !.)
 		return FALSE
+
 	if(message)
 		switch(amount)
 			if(70 to INFINITY)
@@ -85,7 +88,7 @@
 				to_chat(src, span_warning(message))
 
 	if(.)
-		COOLDOWN_START(src, pain_cd, 100 - amount)
+		COOLDOWN_START(src, pain_cd, 15 SECONDS - amount)
 
 	return TRUE
 
@@ -133,7 +136,7 @@
 		return
 
 	if(shock_stage == SHOCK_TIER_1)
-		pain_message(PAIN_STRING, 10)
+		pain_message(PAIN_STRING, 10 - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 
 	if(shock_stage >= SHOCK_TIER_2)
 		if(shock_stage == SHOCK_TIER_2 && organs_by_slot[ORGAN_SLOT_EYES])
@@ -143,19 +146,19 @@
 			set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
 	if(shock_stage == SHOCK_TIER_3)
-		pain_message(PAIN_STRING, shock_stage)
+		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 
 	if(shock_stage >= SHOCK_TIER_4 && prob(2))
-		pain_message(PAIN_STRING, shock_stage)
+		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 		Knockdown(2 SECONDS)
 
 	if(shock_stage >= SHOCK_TIER_5 && prob(5))
-		pain_message(PAIN_STRING, shock_stage)
+		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 		Knockdown(2 SECONDS)
 
 	if(shock_stage >= SHOCK_TIER_6)
 		if (prob(2))
-			pain_message(pick("You black out!", "You feel like you could die any moment now!", "You're about to lose consciousness!"), shock_stage)
+			pain_message(pick("You black out!", "You feel like you could die any moment now!", "You're about to lose consciousness!"), shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 			Sleeping(10 SECONDS)
 
 	if(shock_stage >= SHOCK_TIER_7)
@@ -168,7 +171,7 @@
 /mob/living/carbon/proc/handle_pain()
 	if(stat)
 		return
-	if(!COOLDOWN_FINISHED(src, pain_cd) && !prob(10))
+	if(!COOLDOWN_FINISHED(src, pain_cd) && !prob(5))
 		return
 
 	var/highest_damage
@@ -191,9 +194,9 @@
 		var/burning = damaged_part.burn_dam > damaged_part.brute_dam
 		var/msg
 		switch(highest_damage)
-			if(1 to 10)
+			if(1 to 25)
 				msg =  "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"]."
-			if(10 to 90)
+			if(25 to 90)
 				msg = "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"] badly!"
 			if(90 to INFINITY)
 				msg = "OH GOD! Your [damaged_part.plaintext_zone] is [burning ? "on fire" : "hurting terribly"]!"

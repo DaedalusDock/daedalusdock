@@ -75,8 +75,8 @@
 	body_damage_coeff = 0.75
 	can_be_disabled = TRUE
 	unarmed_attack_verb = "punch" /// The classic punch, wonderfully classic and completely random
-	unarmed_damage_low = 1
-	unarmed_damage_high = 10
+	unarmed_damage_low = 5
+	unarmed_damage_high = 7
 	unarmed_stun_threshold = 10
 	body_zone = BODY_ZONE_L_ARM
 
@@ -267,8 +267,8 @@
 	unarmed_attack_effect = ATTACK_EFFECT_KICK
 	body_zone = BODY_ZONE_L_LEG
 	unarmed_attack_verb = "kick" // The lovely kick, typically only accessable by attacking a grouded foe. 1.5 times better than the punch.
-	unarmed_damage_low = 2
-	unarmed_damage_high = 15
+	unarmed_damage_low = 5
+	unarmed_damage_high = 12
 	unarmed_stun_threshold = 10
 
 	bodypart_flags = STOCK_BP_FLAGS_LEGS

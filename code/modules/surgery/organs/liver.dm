@@ -111,6 +111,11 @@
 	if(damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
 
+	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
+		if(!HAS_TRAIT(owner, TRAIT_NOHUNGER))
+			owner.adjust_nutrition(-0.1 * HUNGER_DECAY)
+		owner.blood_volume = min(owner.blood_volume + 0.1, BLOOD_VOLUME_NORMAL)
+
 //We got it covered in on_life() with more detailed thing
 /obj/item/organ/liver/handle_regeneration()
 	return

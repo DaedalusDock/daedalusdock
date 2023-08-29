@@ -99,8 +99,7 @@
 	O.applyOrganDamage(rand(3,5))
 
 	if(owner)
-		to_chat(owner, span_warning("You feel something moving in your [plaintext_zone]!"))
-
+		owner.apply_pain(50, body_zone, "You feel something moving in your [plaintext_zone]!")
 
 /// Updates the interaction speed modifier of this limb, used by Limping and similar to determine delay.
 /obj/item/bodypart/proc/update_interaction_speed()

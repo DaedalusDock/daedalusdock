@@ -319,6 +319,61 @@
 					</td>
 				</tr>
 	"}
+	var/pulse_string
+	if(scan["pulse"] == -1)
+		pulse_string = "[span_average("ERROR - Nonstandard biology")]"
+	else if(scan["pulse"] == -2)
+		pulse_string = "N/A"
+	else if(scan["pulse"] == -3)
+		pulse_string = "[span_bad("250+bpm")]"
+	else if(scan["pulse"] == 0)
+		pulse_string = "[span_bad("[scan["pulse"]]bpm")]"
+	else if(scan["pulse"] >= 140)
+		pulse_string = "[span_bad("[scan["pulse"]]bpm")]"
+	else if(scan["pulse"] >= 120)
+		pulse_string = "[span_average("[scan["pulse"]]bpm")]"
+	else
+		pulse_string = "[scan["pulse"]]bpm"
+
+	. += {"
+				<tr>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						<strong>Pulse Rate:</strong>
+					</td>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						[pulse_string]
+					</td>
+				</tr>
+	"}
+	var/pressure_string
+	var/ratio = scan["blood_volume"]/scan["blood_volume_max"]
+	if(scan["blood_o2"] <= 70)
+		pressure_string = "([span_bad("[scan["blood_o2"]]% blood oxygenation")])"
+	else if(scan["blood_o2"] <= 85)
+		pressure_string = "([span_average("[scan["blood_o2"]]% blood oxygenation")])</td></tr>"
+	else if(scan["blood_o2"] <= 90)
+		pressure_string = "(["<span style='color:[COLOR_MEDICAL_OXYLOSS]'>[scan["blood_o2"]]% blood oxygenation</span>"])</td></tr>"
+	else
+		pressure_string = "([scan["blood_o2"]]% blood oxygenation)</td></tr>"
+
+	. += {"
+				<tr>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						<strong>Blood Pressure:</strong>
+					</td>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						[pressure_string]
+					</td>
+				</tr>
+	"}
+	if(ratio <= 0.7)
+		. += {"
+				<tr>
+					<td colspan = '2'>
+						[span_bad("Patient is in hypovolemic shock. Transfusion highly recommended.")]
+					</td>
+				</tr>
+		"}
 
 	. += {"
 				<tr>

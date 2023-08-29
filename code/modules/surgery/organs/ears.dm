@@ -7,7 +7,6 @@
 	visual = FALSE
 	gender = PLURAL
 
-	healing_factor = STANDARD_ORGAN_HEALING
 	decay_factor = STANDARD_ORGAN_DECAY
 
 	low_threshold_passed = "<span class='info'>Your ears begin to resonate with an internal ring.</span>"

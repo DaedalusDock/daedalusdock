@@ -16,8 +16,6 @@
 	/// Total damage this organ has sustained
 	/// Should only ever be modified by applyOrganDamage
 	var/damage = 0
-	///Healing factor and decay factor function on % of maxhealth, and do not work by applying a static number per tick
-	var/healing_factor = 0 //fraction of maxhealth healed per on_life(), set to 0 for generic organs
 	var/decay_factor = 0 //same as above but when without a living owner, set to 0 for generic organs
 	var/high_threshold = STANDARD_ORGAN_THRESHOLD * 0.7 //when severe organ damage occurs
 	var/low_threshold = STANDARD_ORGAN_THRESHOLD * 0.3 //when minor organ damage occurs
@@ -258,11 +256,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(!damage) // No sense healing if you're not even hurt bro
 		return
 
-	///Damage decrements by a percent of its maxhealth
-	var/healing_amount = healing_factor
-	///Damage decrements again by a percent of its maxhealth, up to a total of 4 extra times depending on the owner's health
-	healing_amount += (owner.satiety > 0) ? (4 * healing_factor * owner.satiety / MAX_SATIETY) : 0
-	applyOrganDamage(-healing_amount * maxHealth * delta_time, damage) // pass curent damage incase we are over cap
+	handle_regeneration()
+
+/obj/item/organ/proc/handle_regeneration()
+	if((organ_flags & ORGAN_SYNTHETIC) || CHEM_EFFECT_MAGNITUDE(owner, CE_TOXIN) || owner.undergoing_cardiac_arrest())
+		return
+
+	if(damage < maxHealth * 0.1)
+		applyOrganDamage(-0.1)
 
 /obj/item/organ/examine(mob/user)
 	. = ..()

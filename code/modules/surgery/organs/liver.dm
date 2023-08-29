@@ -11,7 +11,7 @@
 	desc = "Pairing suggestion: chianti and fava beans."
 
 	maxHealth = STANDARD_ORGAN_THRESHOLD
-	healing_factor = STANDARD_ORGAN_HEALING
+
 	decay_factor = STANDARD_ORGAN_DECAY // smack in the middle of decay times
 
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/iron = 5)
@@ -115,6 +115,10 @@
 
 	if(damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
+
+//We got it covered in on_life() with more detailed thing
+/obj/item/organ/liver/handle_regeneration()
+	return
 
 /obj/item/organ/liver/handle_failing_organs(delta_time)
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))

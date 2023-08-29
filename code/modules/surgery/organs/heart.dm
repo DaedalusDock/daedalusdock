@@ -7,7 +7,6 @@
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_HEART
 
-	healing_factor = STANDARD_ORGAN_HEALING
 	decay_factor = 2.5 * STANDARD_ORGAN_DECAY //designed to fail around 6 minutes after death
 
 	low_threshold_passed = "<span class='info'>Prickles of pain appear then die out from within your chest...</span>"
@@ -16,15 +15,19 @@
 	high_threshold_cleared = "<span class='info'>The pain in your chest has died down, and your breathing becomes more relaxed.</span>"
 
 	// Heart attack code is in code/modules/mob/living/carbon/human/life.dm
-	var/beating = TRUE
+
 	attack_verb_continuous = list("beats", "thumps")
 	attack_verb_simple = list("beat", "thump")
+
 	var/beat = BEAT_NONE//is this mob having a heatbeat sound played? if so, which?
 	var/failed = FALSE //to prevent constantly running failing code
-	var/operated = FALSE //whether the heart's been operated on to fix some of its damages
+
+	var/blockage = FALSE
+	/// How fast is our heart pumping blood
+	var/pulse = PULSE_NORM
 
 /obj/item/organ/heart/update_icon_state()
-	icon_state = "[base_icon_state]-[beating ? "on" : "off"]"
+	icon_state = "[base_icon_state]-[pulse ? "on" : "off"]"
 	return ..()
 
 /obj/item/organ/heart/Remove(mob/living/carbon/heartless, special = 0)
@@ -32,68 +35,121 @@
 	if(!special)
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 120)
 
+/obj/item/organ/heart/proc/Restart()
+	pulse = PULSE_NORM
+	update_appearance(UPDATE_ICON_STATE)
+
+/obj/item/organ/heart/proc/Stop()
+	pulse = PULSE_NONE
+	update_appearance(UPDATE_ICON_STATE)
+
 /obj/item/organ/heart/proc/stop_if_unowned()
 	if(!owner)
 		Stop()
 
-/obj/item/organ/heart/attack_self(mob/user)
-	..()
-	if(!beating)
-		user.visible_message("<span class='notice'>[user] squeezes [src] to \
-			make it beat again!</span>",span_notice("You squeeze [src] to make it beat again!"))
-		Restart()
-		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 80)
-
-/obj/item/organ/heart/proc/Stop()
-	beating = FALSE
-	update_appearance()
-	return TRUE
-
-/obj/item/organ/heart/proc/Restart()
-	beating = TRUE
-	update_appearance()
-	return TRUE
-
 /obj/item/organ/heart/OnEatFrom(eater, feeder)
 	. = ..()
-	beating = FALSE
-	update_appearance()
+	Stop()
+
+/obj/item/organ/heart/proc/is_working()
+	if(organ_flags & ORGAN_DEAD)
+		return FALSE
+	return pulse > PULSE_NONE || (organ_flags & ORGAN_SYNTHETIC)
 
 /obj/item/organ/heart/on_life(delta_time, times_fired)
 	..()
-
+	handle_pulse()
 	// If the owner doesn't need a heart, we don't need to do anything with it.
 	if(!owner.needs_heart())
 		return
+	if(pulse)
+		handle_heartbeat()
+		if(pulse == PULSE_2FAST && prob(1))
+			applyOrganDamage(0.5)
+		if(pulse == PULSE_THREADY && prob(5))
+			applyOrganDamage(0.5)
 
-	if(owner.client && beating)
-		failed = FALSE
-		var/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
-		var/sound/fastbeat = sound('sound/health/fastbeat.ogg', repeat = TRUE)
+/obj/item/organ/heart/proc/handle_pulse()
+	if(organ_flags & ORGAN_SYNTHETIC)
+		if(pulse != PULSE_NONE)
+			Stop()	//that's it, you're dead (or your metal heart is), nothing can influence your pulse
+		return
 
-		if(owner.health <= owner.crit_threshold && beat != BEAT_SLOW)
-			beat = BEAT_SLOW
-			owner.playsound_local(get_turf(owner), slowbeat, 40, 0, channel = CHANNEL_HEARTBEAT, use_reverb = FALSE)
-			to_chat(owner, span_notice("You feel your heart slow down..."))
-		if(beat == BEAT_SLOW && owner.health > owner.crit_threshold)
-			owner.stop_sound_channel(CHANNEL_HEARTBEAT)
-			beat = BEAT_NONE
+	// pulse mod starts out as just the chemical effect amount
+	var/pulse_mod = CHEM_EFFECT_MAGNITUDE(owner, CE_PULSE)
+	var/is_stable = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE)
 
-		if(owner.has_status_effect(/datum/status_effect/jitter))
-			if(owner.health > HEALTH_THRESHOLD_FULLCRIT && (!beat || beat == BEAT_SLOW))
-				owner.playsound_local(get_turf(owner), fastbeat, 40, 0, channel = CHANNEL_HEARTBEAT, use_reverb = FALSE)
-				beat = BEAT_FAST
+	// If you have enough heart chemicals to be over 2, you're likely to take extra damage.
+	if(pulse_mod > 2 && !is_stable)
+		var/damage_chance = (pulse_mod - 2) ** 2
+		if(prob(damage_chance))
+			applyOrganDamage(0.5)
 
-		else if(beat == BEAT_FAST)
-			owner.stop_sound_channel(CHANNEL_HEARTBEAT)
-			beat = BEAT_NONE
+	// Now pulse mod is impacted by shock stage and other things too
+	if(owner.shock_stage > 30)
+		pulse_mod++
+	if(owner.shock_stage > 80)
+		pulse_mod++
 
-	if(organ_flags & ORGAN_DEAD && owner.can_heartattack() && !(HAS_TRAIT(src, TRAIT_STABLEHEART))) //heart broke, stopped beating, death imminent... unless you have veins that pump blood without a heart
-		if(owner.stat <= SOFT_CRIT)
-			owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"), \
-				span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
-		owner.set_heartattack(TRUE)
-		failed = TRUE
+	var/oxy = owner.get_blood_oxygenation()
+	if(oxy < BLOOD_CIRC_BAD + 10) //brain wants us to get MOAR OXY
+		pulse_mod++
+	if(oxy < BLOOD_CIRC_BAD) //MOAR
+		pulse_mod++
+
+	if(HAS_TRAIT(owner, TRAIT_FAKEDEATH) || CHEM_EFFECT_MAGNITUDE(owner, CE_NOPULSE))
+		if(pulse != NONE)
+			Stop()
+		return
+
+	//If heart is stopped, it isn't going to restart itself randomly.
+	if(pulse == PULSE_NONE)
+		return
+	else //and if it's beating, let's see if it should
+		var/should_stop = prob(80) && owner.get_blood_circulation() < BLOOD_CIRC_SURVIVE //cardiovascular shock, not enough liquid to pump
+		should_stop ||= prob(max(0, owner.getBrainLoss() - owner.maxHealth * 0.75)) //brain failing to work heart properly
+		should_stop ||= (prob(5) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
+		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
+			to_chat(owner, span_danger("Your heart has stopped!"))
+			if(pulse != NONE)
+				Stop()
+			return
+
+	// Pulse normally shouldn't go above PULSE_2FAST, unless extreme amounts of bad stuff in blood
+	if (pulse_mod < 6)
+		pulse = clamp(PULSE_NORM + pulse_mod, PULSE_SLOW, PULSE_2FAST)
+	else
+		pulse = clamp(PULSE_NORM + pulse_mod, PULSE_SLOW, PULSE_THREADY)
+
+	// If fibrillation, then it can be PULSE_THREADY
+	var/fibrillation = oxy <= BLOOD_CIRC_SURVIVE || (prob(30) && owner.shock_stage > 120)
+
+	if(pulse && fibrillation)	//I SAID MOAR OXYGEN
+		pulse = PULSE_THREADY
+
+	// Stablising chemicals pull the heartbeat towards the center
+	if(pulse != PULSE_NORM && is_stable)
+		if(pulse > PULSE_NORM)
+			pulse--
+		else
+			pulse++
+
+/obj/item/organ/heart/proc/handle_heartbeat()
+	var/can_hear_heart = owner.shock_stage >= SHOCK_TIER_1 || get_step(owner, 0)?.is_below_sound_pressure() || owner.has_status_effect(owner.has_status_effect(/datum/status_effect/jitter))
+
+	var/static/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
+	var/static/sound/fastbeat = sound('sound/health/fastbeat.ogg', repeat = TRUE)
+	if(!can_hear_heart)
+		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+		beat = BEAT_NONE
+		return
+
+	if(pulse >= PULSE_2FAST && beat != BEAT_FAST)
+		owner.playsound_local(owner, fastbeat, 40, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
+		beat = BEAT_FAST
+	else if(beat != BEAT_SLOW)
+		owner.playsound_local(owner, slowbeat, 40, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
+		beat = BEAT_SLOW
 
 /obj/item/organ/heart/get_availability(datum/species/owner_species)
 	return !(NOBLOOD in owner_species.species_traits)

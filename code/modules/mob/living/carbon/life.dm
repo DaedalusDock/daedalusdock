@@ -73,18 +73,19 @@
 		environment = loc.return_air()
 
 	var/datum/gas_mixture/breath
+	var/asystole = undergoing_cardiac_arrest()
+	if(!forced)
+		if(asystole && !CHEM_EFFECT_MAGNITUDE(src, CE_STABLE))
+			losebreath = max(2, losebreath + 1)
 
-	if(!forced && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-		if(health <= crit_threshold || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_DEAD))
-			losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
-
-		else if(health <= crit_threshold)
-			losebreath += 0.25 //You're having trouble breathing in soft crit, so you'll miss a breath one in four times
+		else if(!getorganslot(ORGAN_SLOT_BREATHING_TUBE))
+			if((pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_DEAD))
+				losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
 	// Recover from breath loss
 	if(losebreath >= 1)
 		losebreath--
-		if(prob(10))
+		if(!forced && !asystole && prob(10))
 			spawn(-1)
 				emote("gasp")
 
@@ -134,6 +135,10 @@
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
 
+	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 80)
+	if(!forced && . && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE)
+		src << breathing
+
 /mob/living/carbon/proc/has_smoke_protection()
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return TRUE
@@ -152,7 +157,7 @@
 
 	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
 
-	//CRIT
+
 	if(!forced)
 		if(!breath || (breath.total_moles == 0) || !lungs)
 			if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
@@ -659,7 +664,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	if(!needs_heart())
 		return FALSE
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-	if(!heart || (heart.organ_flags & ORGAN_SYNTHETIC))
+	if(!heart || (heart.organ_flags & ORGAN_DEAD))
 		return FALSE
 	return TRUE
 
@@ -679,18 +684,23 @@ All effects don't start immediately, but rather get worse over time; the rate is
  */
 /mob/living/carbon/proc/undergoing_cardiac_arrest()
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-	if(istype(heart) && heart.beating)
+	if(istype(heart) && heart.is_working())
 		return FALSE
 	else if(!needs_heart())
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/proc/set_heartattack(status)
-	if(!can_heartattack())
-		return FALSE
-
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(!istype(heart))
 		return
+	if(heart.organ_flags & ORGAN_SYNTHETIC)
+		return
 
-	heart.beating = !status
+	if(status)
+		if(heart.pulse)
+			heart.Stop()
+			return TRUE
+	else if(!heart.pulse)
+		heart.pulse = PULSE_NORM
+		return TRUE

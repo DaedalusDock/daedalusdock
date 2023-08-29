@@ -133,6 +133,10 @@
 	if(O)
 		return O.damage
 
+/mob/living/carbon/getBrainLoss()
+	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
+	return B?.damage
+
 ////////////////////////////////////////////
 
 ///Returns a list of damaged bodyparts

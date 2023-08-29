@@ -23,6 +23,14 @@
 #define BLOOD_VOLUME_BAD 224
 #define BLOOD_VOLUME_SURVIVE 122
 
+// Blood circulation levels
+#define BLOOD_CIRC_FULL 100
+#define BLOOD_CIRC_SAFE 85
+#define BLOOD_CIRCE_OKAY 70
+#define BLOOD_CIRC_BAD 60
+#define BLOOD_CIRC_SURVIVE 30
+
+
 /// How efficiently humans regenerate blood.
 #define BLOOD_REGEN_FACTOR 0.25
 
@@ -461,8 +469,20 @@
 /// Multiplier for bloodloss
 #define CE_ANTICOAGULANT "anticoagulant"
 
+// Pulse levels, very simplified.
+#define PULSE_NONE 0 // So !M.pulse checks would be possible.
+#define PULSE_SLOW 1 // <60 bpm
+#define PULSE_NORM 2 //  60-90 bpm
+#define PULSE_FAST 3 //  90-120 bpm
+#define PULSE_2FAST 4 // >120 bpm
+#define PULSE_THREADY 5 // Occurs during hypovolemic shock
+#define GETPULSE_HAND 0 // Less accurate. (hand)
+#define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
+#define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
+
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"
+
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
 #define FLASH_PROTECTION_NONE 0

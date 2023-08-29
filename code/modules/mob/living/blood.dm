@@ -33,7 +33,6 @@
 		blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * nutrition_ratio * delta_time), BLOOD_VOLUME_NORMAL)
 
 	//Effects of bloodloss
-	var/word = pick("dizzy","woozy","faint")
 	switch(blood_volume)
 		if(BLOOD_VOLUME_EXCESS to BLOOD_VOLUME_MAX_LETHAL)
 			if(DT_PROB(7.5, delta_time))
@@ -42,23 +41,6 @@
 		if(BLOOD_VOLUME_MAXIMUM to BLOOD_VOLUME_EXCESS)
 			if(DT_PROB(5, delta_time))
 				to_chat(src, span_warning("You feel terribly bloated."))
-		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
-			if(DT_PROB(2.5, delta_time))
-				to_chat(src, span_warning("You feel [word]."))
-			adjustOxyLoss(round(0.005 * (BLOOD_VOLUME_NORMAL - blood_volume) * delta_time, 1))
-		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-			adjustOxyLoss(round(0.01 * (BLOOD_VOLUME_NORMAL - blood_volume) * delta_time, 1))
-			if(DT_PROB(2.5, delta_time))
-				blur_eyes(6)
-				to_chat(src, span_warning("You feel very [word]."))
-		if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
-			adjustOxyLoss(2.5 * delta_time)
-			if(DT_PROB(7.5, delta_time))
-				Unconscious(rand(20,60))
-				to_chat(src, span_warning("You feel extremely [word]."))
-		if(-INFINITY to BLOOD_VOLUME_SURVIVE)
-			if(!HAS_TRAIT(src, TRAIT_NODEATH))
-				death()
 
 	var/temp_bleed = 0
 
@@ -367,3 +349,57 @@
 	var/obj/effect/decal/cleanable/oil/B = locate() in T.contents
 	if(!B)
 		B = new(T)
+
+//Percentage of maximum blood volume, affected by the condition of circulation organs
+/mob/living/carbon/proc/get_blood_circulation()
+	var/blood_volume_percent = min(blood_volume / BLOOD_VOLUME_NORMAL, 1) * 100
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	if(!heart)
+		return 0.25 * blood_volume_percent
+	var/pulse_mod = 1
+	if((HAS_TRAIT(src, TRAIT_FAKEDEATH)) || (heart.organ_flags & ORGAN_SYNTHETIC))
+		pulse_mod = 1
+	else
+		switch(heart.pulse)
+			if(PULSE_NONE)
+				pulse_mod *= 0.25
+			if(PULSE_SLOW)
+				pulse_mod *= 0.9
+			if(PULSE_FAST)
+				pulse_mod *= 1.1
+			if(PULSE_2FAST, PULSE_THREADY)
+				pulse_mod *= 1.25
+
+	blood_volume_percent *= pulse_mod
+
+	blood_volume_percent *= max(0.3, (1-(heart.damage / heart.maxHealth)))
+
+	var/blockage = CHEM_EFFECT_MAGNITUDE(src, CE_BLOCKAGE)
+	if(blockage)
+		blood_volume_percent *= max(0, 1-blockage)
+
+	return min(blood_volume_percent, 100)
+
+//Percentage of maximum blood volume, affected by the condition of circulation organs, affected by the oxygen loss. What ultimately matters for brain
+/mob/living/carbon/proc/get_blood_oxygenation()
+	var/blood_volume_percent = get_blood_circulation()
+	if(!(NOBLOOD in dna.species.species_traits))
+		if(undergoing_cardiac_arrest()) // Heart is missing or isn't beating and we're not breathing (hardcrit)
+			return min(blood_volume_percent, BLOOD_CIRC_SURVIVE)
+
+		if(!HAS_TRAIT(src, TRAIT_NOBREATH))
+			return blood_volume_percent
+	else
+		blood_volume_percent = 100
+
+	var/blood_volume_mod = max(0, 1 - getOxyLoss()/(maxHealth/2))
+	var/oxygenated_mult = 0
+	if(chem_effects[CE_OXYGENATED] == 1) // Dexalin.
+		oxygenated_mult = 0.5
+
+	else if(chem_effects[CE_OXYGENATED] >= 2) // Dexplus.
+		oxygenated_mult = 0.8
+
+	blood_volume_mod = blood_volume_mod + oxygenated_mult - (blood_volume_mod * oxygenated_mult)
+	blood_volume_percent *= blood_volume_mod
+	return min(blood_volume_percent, 100)

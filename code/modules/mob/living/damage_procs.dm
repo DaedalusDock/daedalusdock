@@ -252,6 +252,9 @@
 /mob/living/proc/getOrganLoss(slot)
 	return
 
+/mob/living/proc/getBrainLoss()
+	return
+
 /mob/living/proc/setStaminaLoss(amount, updating_health = TRUE, forced = FALSE)
 	return
 

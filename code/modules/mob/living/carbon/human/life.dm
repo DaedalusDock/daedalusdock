@@ -37,7 +37,6 @@
 
 		if(stat != DEAD)
 			//heart attack stuff
-			handle_heart(delta_time, times_fired)
 			handle_liver(delta_time, times_fired)
 
 		dna.species.spec_life(src, delta_time, times_fired) // for mutantraces
@@ -304,18 +303,6 @@
 		if(CH.clothing_flags & BLOCK_GAS_SMOKE_EFFECT)
 			return TRUE
 	return ..()
-
-/mob/living/carbon/human/proc/handle_heart(delta_time, times_fired)
-	var/we_breath = !HAS_TRAIT_FROM(src, TRAIT_NOBREATH, SPECIES_TRAIT)
-
-	if(!undergoing_cardiac_arrest())
-		return
-
-	if(we_breath)
-		adjustOxyLoss(4 * delta_time)
-		Unconscious(80)
-	// Tissues die without blood circulation
-	adjustBruteLoss(1 * delta_time)
 
 #undef THERMAL_PROTECTION_HEAD
 #undef THERMAL_PROTECTION_CHEST

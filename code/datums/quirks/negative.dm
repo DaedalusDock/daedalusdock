@@ -484,7 +484,6 @@
 	var/obj/item/organ/lungs/smoker_lungs = quirk_holder.getorganslot(ORGAN_SLOT_LUNGS)
 	if (smoker_lungs && !(smoker_lungs.organ_flags & ORGAN_SYNTHETIC)) // robotic lungs aren't affected
 		smoker_lungs.maxHealth = smoker_lungs.maxHealth * 0.75
-		smoker_lungs.healing_factor = smoker_lungs.healing_factor * 0.75
 
 /datum/quirk/item_quirk/allergic
 	name = "Extreme Medicine Allergy"

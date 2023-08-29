@@ -223,6 +223,7 @@
 	value = 2.4
 
 /datum/reagent/medicine/dexalin/affect_blood(mob/living/carbon/C, removed)
+	APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 1)
 	C.adjustOxyLoss(-10 * removed, FALSE)
 	holder.remove_reagent(/datum/reagent/toxin/lexorin, 2 * removed)
 	return TRUE

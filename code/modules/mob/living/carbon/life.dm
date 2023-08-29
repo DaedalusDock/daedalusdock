@@ -159,7 +159,7 @@
 
 
 	if(!forced)
-		if(!breath || (breath.total_moles == 0) || !lungs)
+		if(!breath || (breath.total_moles == 0) || !lungs || nervous_system_failure())
 			if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
 				adjustOxyLoss(2)
 

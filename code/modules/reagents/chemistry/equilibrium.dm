@@ -118,7 +118,7 @@
 	//If the product/reactants are able to occur
 	for(var/datum/reagent/reagent as anything in holder.reagent_list)
 		//this is done this way to reduce processing compared to holder.has_reagent(P)
-		if(reagent in reaction.required_catalysts)
+		if(reagent.type in reaction.required_catalysts)
 			total_matching_catalysts++
 
 	if(!(total_matching_catalysts == reaction.required_catalysts.len))

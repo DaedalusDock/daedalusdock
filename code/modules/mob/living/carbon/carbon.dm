@@ -792,12 +792,7 @@
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
-		if(health <= HEALTH_THRESHOLD_DEAD && !HAS_TRAIT(src, TRAIT_NODEATH))
-			death()
-			return
-		if(health <= hardcrit_threshold && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
-			set_stat(HARD_CRIT)
-		else if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
+		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 			set_stat(UNCONSCIOUS)
 		else
 			set_stat(CONSCIOUS)
@@ -1445,3 +1440,27 @@
 		return "[FLOOR(120+rand(-5,5), 1)*0.25]/[FLOOR(80+rand(-5,5)*0.25, 1)]"
 	var/blood_result = get_blood_circulation()
 	return "[FLOOR((120+rand(-5,5))*(blood_result/100), 1)]/[FLOOR((80+rand(-5,5))*(blood_result/100), 1)]"
+
+/mob/living/carbon/proc/resuscitate()
+	if(!undergoing_cardiac_arrest())
+		return
+
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	if(istype(heart) && !(heart.organ_flags & ORGAN_DEAD))
+		var/active_breaths = 0
+		if(!nervous_system_failure())
+			visible_message("\The [src] jerks and gasps for breath!")
+		else
+			visible_message("\The [src] twitches a bit as \his heart restarts!")
+
+		shock_stage = min(shock_stage, 100) // 120 is the point at which the heart stops.
+
+		if(getOxyLoss() >= 75)
+			setOxyLoss(75)
+
+		heart.Restart()
+		heart.handle_pulse()
+		return TRUE
+
+/mob/living/carbon/proc/nervous_system_failure()
+	return getBrainLoss() >= maxHealth * 0.75

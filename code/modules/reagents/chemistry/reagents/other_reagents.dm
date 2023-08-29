@@ -195,7 +195,7 @@
 	name = "Blood"
 	description = "A suspension of organic cells necessary for the transport of oxygen. Keep inside at all times."
 	color = "#C80000" // rgb: 200, 0, 0
-	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
+	metabolization_rate = 5 //fast rate so it disappears fast.
 	taste_description = "iron"
 	taste_mult = 1.3
 	glass_icon_state = "glass_red"
@@ -232,11 +232,11 @@
 
 			C.ForceContractDisease(strain)
 
-	if(C.get_blood_id() == /datum/reagent/blood && C.dna && C.dna.species && (DRINKSBLOOD in C.dna.species.species_traits))
+	if(C.get_blood_id() == /datum/reagent/blood)
 		if(!data || !(data["blood_type"] in get_safe_blood(C.dna.blood_type)))
 			C.reagents.add_reagent(/datum/reagent/toxin, removed)
 		else
-			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAXIMUM)
+			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
 	if(data?["viruses"])

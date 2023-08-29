@@ -768,6 +768,7 @@
 		if(admin_revive)
 			get_up(TRUE)
 		update_sight()
+		update_eye_blur()
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		reload_fullscreen()
 		. = TRUE

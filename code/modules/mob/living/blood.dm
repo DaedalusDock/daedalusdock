@@ -327,13 +327,18 @@
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(!heart)
 		return 0.25 * blood_volume_percent
+
+	var/recent_pump = LAZYACCESS(heart.external_pump, 1) > world.time - (20 SECONDS)
 	var/pulse_mod = 1
 	if((HAS_TRAIT(src, TRAIT_FAKEDEATH)) || (heart.organ_flags & ORGAN_SYNTHETIC))
 		pulse_mod = 1
 	else
 		switch(heart.pulse)
 			if(PULSE_NONE)
-				pulse_mod *= 0.25
+				if(recent_pump)
+					pulse_mod = LAZYACCESS(heart.external_pump, 2)
+				else
+					pulse_mod *= 0.25
 			if(PULSE_SLOW)
 				pulse_mod *= 0.9
 			if(PULSE_FAST)
@@ -343,7 +348,8 @@
 
 	blood_volume_percent *= pulse_mod
 
-	blood_volume_percent *= max(0.3, (1-(heart.damage / heart.maxHealth)))
+	var/min_efficiency = recent_pump ? 0.5 : 0.3
+	blood_volume_percent *= max(min_efficiency, (1-(heart.damage / heart.maxHealth)))
 
 	var/blockage = CHEM_EFFECT_MAGNITUDE(src, CE_BLOCKAGE)
 	if(blockage)

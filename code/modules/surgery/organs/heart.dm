@@ -29,6 +29,8 @@
 	var/blockage = FALSE
 	/// How fast is our heart pumping blood
 	var/pulse = PULSE_NORM
+	/// Data containing information about a pump that just occured.
+	var/list/external_pump
 
 /obj/item/organ/heart/update_icon_state()
 	icon_state = "[base_icon_state]-[pulse ? "on" : "off"]"

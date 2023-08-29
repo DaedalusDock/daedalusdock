@@ -521,6 +521,18 @@
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs. It feels good."))
 			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
 
+		if(target.undergoing_cardiac_arrest())
+			if(prob(10))
+				var/obj/item/bodypart/BP = target.get_bodypart(BODY_ZONE_CHEST)
+				BP.break_bones()
+
+			var/obj/item/organ/heart/heart = target.getorganslot(ORGAN_SLOT_HEART)
+			if(heart)
+				heart.external_pump = list(world.time, 0.7 + rand(-0.1,0.1))
+
+			if(target.stat != DEAD && prob(6))
+				target.resuscitate()
+
 		if (target.health <= target.crit_threshold)
 			if (!panicking)
 				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
@@ -538,26 +550,6 @@
 	if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
 		if(!silent)
 			to_chat(src, span_warning("[target.name] is dead!"))
-		return FALSE
-
-	if (is_mouth_covered())
-		if(!silent)
-			to_chat(src, span_warning("Remove your mask first!"))
-		return FALSE
-
-	if (target.is_mouth_covered())
-		if(!silent)
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-		return FALSE
-
-	if (!getorganslot(ORGAN_SLOT_LUNGS))
-		if(!silent)
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-		return FALSE
-
-	if (HAS_TRAIT(src, TRAIT_NOBREATH))
-		if(!silent)
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
 		return FALSE
 
 	return TRUE

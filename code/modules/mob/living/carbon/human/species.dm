@@ -245,12 +245,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		list(
 			"grunt" = 1,
 			"groan" = 1,
-			"moan" = 2,
 		) = 40,
 
 		list(
 			"scream" = 1,
-			"moan" = 1,
 			"whimper" = 1,
 			"cry" = 1,
 		) = 70,

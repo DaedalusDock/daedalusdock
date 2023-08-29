@@ -238,4 +238,3 @@
 		updatehealth()
 	if(update)
 		update_damage_overlays()
-

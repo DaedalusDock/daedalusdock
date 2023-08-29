@@ -37,6 +37,8 @@
 #define BP_IS_MOVEMENT_LIMB (1<<9)
 /// Limb is not connected to the nervous system and is not usable.
 #define BP_CUT_AWAY (1<<10)
+/// Limb cannot feel pain
+#define BP_NO_PAIN (1<<11)
 
 #define HATCH_CLOSED 1
 #define HATCH_UNSCREWED 2

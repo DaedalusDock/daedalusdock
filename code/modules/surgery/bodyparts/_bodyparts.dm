@@ -93,6 +93,8 @@
 	var/brute_ratio = 0
 	///The % of current_damage that is burn
 	var/burn_ratio = 0
+	/// How much pain this limb is applying.
+	VAR_PRIVATE/pain = 0
 	///The minimum damage a part must have before it's bones may break. Defaults to max_damage * BODYPART_MINIMUM_BREAK_MOD
 	var/minimum_break_damage = 0
 	/// Bleed multiplier

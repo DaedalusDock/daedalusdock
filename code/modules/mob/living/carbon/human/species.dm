@@ -235,6 +235,27 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/properly_gained = FALSE
 
+	/// A list of weighted lists to pain emotes. The list with the LOWEST damage requirement needs to be first.
+	var/list/pain_emotes = list(
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+		) = 10,
+
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+			"moan" = 2,
+		) = 40,
+
+		list(
+			"scream" = 1,
+			"moan" = 1,
+			"whimper" = 1,
+			"cry" = 1,
+		) = 70,
+	)
+
 ///////////
 // PROCS //
 ///////////
@@ -2158,3 +2179,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		. = min(., 20)
 
 	return (round(.))
+
+
+/datum/species/proc/get_pain_emote(amount)
+	var/chosen
+
+	for(var/list/L as anything in pain_emotes)
+		if(amount >= pain_emotes[L])
+			chosen = L
+
+	return pick_weight(chosen)

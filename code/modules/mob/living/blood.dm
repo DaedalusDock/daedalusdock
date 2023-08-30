@@ -13,12 +13,25 @@
 	if(bodytemperature < TCRYO || (HAS_TRAIT(src, TRAIT_HUSK))) //cryosleep or husked people do not pump the blood.
 		return
 
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	if(!heart || heart.pulse == PULSE_NONE)
+		return
+
+	var/pulse_mod = 1
+	switch(heart.pulse)
+		if(PULSE_SLOW)
+			pulse_mod *= 0.8
+		if(PULSE_FAST)
+			pulse_mod *= 1.25
+		if(PULSE_2FAST, PULSE_THREADY)
+			pulse_mod *= 1.5
+
 	var/temp_bleed = 0
 
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		var/needs_bleed_update = FALSE
-		var/iter_bleed_rate = iter_part.get_modified_bleed_rate()
+		var/iter_bleed_rate = iter_part.get_modified_bleed_rate() * pulse_mod
 		var/bleed_amt = iter_part.bandage?.absorb_blood(iter_bleed_rate, src)
 		if(isnull(bleed_amt))
 			bleed_amt = iter_bleed_rate
@@ -32,6 +45,7 @@
 
 		if(needs_bleed_update)
 			iter_part.refresh_bleed_rate()
+			needs_bleed_update = FALSE
 
 		if(!bleed_amt)
 			continue

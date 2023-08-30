@@ -218,36 +218,21 @@
 		update_damage_overlays()
 
 /// damage MANY bodyparts, in random order
-/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status, can_break_bones = TRUE)
+/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status, sharpness, can_break_bones = TRUE)
 	if(status_flags & GODMODE)
 		return //godmode
+
 	var/list/obj/item/bodypart/not_full = get_damageable_bodyparts(required_status)
-	var/list/parts = not_full.Copy()
 	var/update = 0
-	while(length(not_full) && (brute > 0 || burn > 0))
-		if(!length(parts))
-			parts += not_full
 
-		var/brute_per_part = round(brute/parts.len, DAMAGE_PRECISION)
-		var/burn_per_part = round(burn/parts.len, DAMAGE_PRECISION)
+	// Receive_damage() rounds to damage precision, dont bother doing it here.
+	brute /= length(not_full)
+	burn /= length(not_full)
 
-		var/obj/item/bodypart/picked = pick(parts)
-		parts -= picked
+	for(var/obj/item/bodypart/bp as anything in not_full)
+		update |= bp.receive_damage(brute, burn, 0, FALSE, required_status, sharpness, breaks_bones)
 
-		var/brute_was = picked.brute_dam
-		var/burn_was = picked.burn_dam
-
-
-		update |= picked.receive_damage(brute_per_part, burn_per_part, 0, FALSE, required_status, breaks_bones = can_break_bones)
-		brute = round(brute - (picked.brute_dam - brute_was), DAMAGE_PRECISION)
-		burn = round(burn - (picked.burn_dam - burn_was), DAMAGE_PRECISION)
-
-		if(picked.burn_dam == burn_was && picked.brute_dam == brute_was) // Dismembered or full on damage
-			not_full -= picked
-
-		parts -= picked
-
-	if(updating_health)
+	if(updating_health && (update & BODYPART_LIFE_UPDATE_HEALTH))
 		updatehealth()
 	if(update & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
 		update_damage_overlays()

@@ -640,7 +640,7 @@
 		C.set_timed_status_effect(5 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 
 	holder.remove_reagent(/datum/reagent/toxin/histamine, 10 * removed)
-	if(volume >= 4 && C.undergoing_cardiac_arrest())
+	if(volume >= 4 && C.undergoing_cardiac_arrest() && !(current_cycle % 10))
 		holder.remove_reagent(type, 4)
 		if(C.set_heartattack(FALSE))
 			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)

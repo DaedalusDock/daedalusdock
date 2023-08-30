@@ -702,5 +702,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			heart.Stop()
 			return TRUE
 	else if(!heart.pulse)
-		heart.pulse = PULSE_NORM
+		heart.Restart()
+		heart.handle_pulse()
 		return TRUE

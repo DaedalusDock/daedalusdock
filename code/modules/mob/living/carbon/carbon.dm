@@ -488,8 +488,8 @@
 	var/total_brute = 0
 	var/total_pain = 0
 	for(var/obj/item/bodypart/BP as anything in bodyparts) //hardcoded to streamline things a bit
-		total_brute += (BP.brute_dam * BP.body_damage_coeff)
-		total_burn += (BP.burn_dam * BP.body_damage_coeff)
+		total_brute += (BP.brute_dam)
+		total_burn += (BP.burn_dam)
 		total_pain += BP.getPain()
 
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - getCloneLoss() - total_burn - total_brute - total_pain, DAMAGE_PRECISION))
@@ -775,7 +775,7 @@
 
 /mob/living/carbon/set_health(new_value)
 	. = ..()
-	if(. < crit_threshold)
+	if(. < crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
 		ADD_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
 	else
 		REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)

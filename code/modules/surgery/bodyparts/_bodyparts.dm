@@ -76,8 +76,6 @@
 	/// The interaction speed modifier when this limb is used to interact with the world. ONLY WORKS FOR ARMS
 	var/interaction_speed_modifier = 1
 
-	///Multiplier of the limb's damage that gets applied to the mob
-	var/body_damage_coeff = 1
 	var/brutestate = 0
 	var/burnstate = 0
 

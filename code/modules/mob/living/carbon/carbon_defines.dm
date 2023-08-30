@@ -1,4 +1,5 @@
 /mob/living/carbon
+	maxHealth = 200
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	//pressure_resistance = 15

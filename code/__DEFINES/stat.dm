@@ -9,9 +9,9 @@
 #define DEAD 3
 
 //Health Defines
-#define HEALTH_THRESHOLD_CRIT 0 //! Soft crit
-#define HEALTH_THRESHOLD_FULLCRIT -100 //! Hard crit
-#define HEALTH_THRESHOLD_DEAD -200
+#define HEALTH_THRESHOLD_CRIT 100 //! Soft crit
+#define HEALTH_THRESHOLD_FULLCRIT 0 //! Hard crit
+#define HEALTH_THRESHOLD_DEAD -100
 
 /// The amount of damage a mob can take past that which would kill it, per damage type.
 #define HEALTH_OVERKILL_DAMAGE_PER_TYPE 0

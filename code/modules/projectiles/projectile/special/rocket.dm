@@ -26,7 +26,7 @@
 /obj/projectile/bullet/a84mm/on_hit(atom/target, blocked = FALSE)
 	if(isliving(target) && prob(1))
 		var/mob/living/gibbed_dude = target
-		if(gibbed_dude.stat < HARD_CRIT)
+		if(gibbed_dude.stat == CONSCIOUS)
 			gibbed_dude.say("Is that a fucking ro-", forced = "hit by rocket")
 	..()
 

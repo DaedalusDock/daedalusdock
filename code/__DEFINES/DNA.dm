@@ -177,7 +177,6 @@
 /// Defines how a mob's processing_organs is ordered
 /// Exists so Life()'s organ process order is consistent
 GLOBAL_LIST_INIT(organ_process_order, list(
-	ORGAN_SLOT_BRAIN,
 	ORGAN_SLOT_APPENDIX,
 	ORGAN_SLOT_RIGHT_ARM_AUG,
 	ORGAN_SLOT_LEFT_ARM_AUG,
@@ -205,7 +204,8 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_XENO_RESINSPINNER,
 	ORGAN_SLOT_XENO_ACIDGLAND,
 	ORGAN_SLOT_XENO_NEUROTOXINGLAND,
-	ORGAN_SLOT_XENO_EGGSAC,))
+	ORGAN_SLOT_XENO_EGGSAC,
+	ORGAN_SLOT_BRAIN))
 
 //Defines for Golem Species IDs
 #define SPECIES_GOLEM "golem"

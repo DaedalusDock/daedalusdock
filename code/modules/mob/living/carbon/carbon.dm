@@ -1447,7 +1447,6 @@
 
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(istype(heart) && !(heart.organ_flags & ORGAN_DEAD))
-		var/active_breaths = 0
 		if(!nervous_system_failure())
 			visible_message("\The [src] jerks and gasps for breath!")
 		else

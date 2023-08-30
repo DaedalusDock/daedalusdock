@@ -152,7 +152,7 @@
 	if(!M.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		return FALSE
 	to_chat(user, span_warning("You stab [M] with the pen."))
-	to_chat(M, span_danger("You feel a tiny prick!"))
+	M.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
 	log_combat(user, M, "stabbed", src)
 	return TRUE
 

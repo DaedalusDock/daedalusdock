@@ -39,7 +39,7 @@
 	log_combat(user, affected_mob, "attempted to inject", src, "([contained])")
 
 	if(reagents.total_volume && (ignore_flags || affected_mob.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))) // Ignore flag should be checked first or there will be an error message.
-		to_chat(affected_mob, span_warning("You feel a tiny prick!"))
+		affected_mob.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
 		to_chat(user, span_notice("You inject [affected_mob] with [src]."))
 		var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
 

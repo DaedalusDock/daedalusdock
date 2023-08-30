@@ -136,13 +136,15 @@
 			return FALSE
 		if(!H.Enter(get_turf(src), TRUE))
 			return
-		H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
+		H.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
+		H.apply_pain(80, BODY_ZONE_HEAD, "Your head screams with pain!")
 		H.Paralyze(1 SECOND)
 		playsound(H, 'sound/items/trayhit1.ogg', 50, 1)
 		H.visible_message(
 			span_danger("[H] bangs [H.p_their()] head on [src]."),
 			span_danger("You bang your head on [src]."),
 			span_hear("You hear a metallic clang.")
+
 		)
 		return
 

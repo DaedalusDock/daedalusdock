@@ -171,6 +171,18 @@
 /mob/living/carbon/proc/handle_pain()
 	if(stat)
 		return
+
+	if(!(life_ticks % 5) && getPain() >= maxHealth)
+		if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
+			return
+		else
+			visible_message(
+				"<b>[src]</b> slumps over, too weak to continue fighting...",
+				span_warning("The pain is too severe for you to keep going...")
+			)
+		Sleeping(10 SECONDS)
+		return
+
 	if(!COOLDOWN_FINISHED(src, pain_cd) && !prob(5))
 		return
 

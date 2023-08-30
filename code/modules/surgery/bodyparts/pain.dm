@@ -21,7 +21,7 @@
 	*/
 
 	var/organ_dam = 0
-	for(var/obj/item/organ/O in contained_organs)
+	for(var/obj/item/organ/O as anything in contained_organs)
 		if(O.cosmetic_only || istype(O, /obj/item/organ/brain))
 			continue
 

@@ -179,6 +179,9 @@
 /mob/living/proc/adjustOxyLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && (status_flags & GODMODE))
 		return
+	if(amount < 0 && oxyloss == 0) //Micro optimize the life loop primarily. Dont call updatehealth if we didnt do shit.
+		return
+
 	. = oxyloss
 	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, HEALTH_LOSS_PER_TYPE_CAP(src))
 	if(updating_health)

@@ -241,7 +241,8 @@
 		update |= picked.receive_damage(brute_per_part, burn_per_part, 0, FALSE, required_status, breaks_bones = can_break_bones)
 		brute = round(brute - (picked.brute_dam - brute_was), DAMAGE_PRECISION)
 		burn = round(burn - (picked.burn_dam - burn_was), DAMAGE_PRECISION)
-		if(brute_was == burn_was && burn_was == brute_was)
+
+		if(picked.burn_dam == burn_was && picked.brute_dam == brute_was) // Dismembered or full on damage
 			not_full -= picked
 
 		parts -= picked

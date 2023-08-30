@@ -151,10 +151,10 @@
 		return
 
 	if(pulse >= PULSE_2FAST && beat != BEAT_FAST)
-		owner.playsound_local(owner, fastbeat, 40, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
+		owner.playsound_local(owner, fastbeat, 55, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
 		beat = BEAT_FAST
 	else if(beat != BEAT_SLOW)
-		owner.playsound_local(owner, slowbeat, 40, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
+		owner.playsound_local(owner, slowbeat, 55, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
 		beat = BEAT_SLOW
 
 /obj/item/organ/heart/get_availability(datum/species/owner_species)

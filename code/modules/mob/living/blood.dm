@@ -364,7 +364,7 @@
 		if(undergoing_cardiac_arrest()) // Heart is missing or isn't beating and we're not breathing (hardcrit)
 			return min(blood_volume_percent, BLOOD_CIRC_SURVIVE)
 
-		if(!HAS_TRAIT(src, TRAIT_NOBREATH))
+		if(HAS_TRAIT(src, TRAIT_NOBREATH))
 			return blood_volume_percent
 	else
 		blood_volume_percent = 100

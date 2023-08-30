@@ -100,13 +100,11 @@
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
 		ADD_TRAIT(C, TRAIT_STABLEHEART, type)
-		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,type)
 
 /datum/reagent/medicine/inaprovaline/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
 		REMOVE_TRAIT(C, TRAIT_STABLEHEART, type)
-		REMOVE_TRAIT(C, TRAIT_NOSOFTCRIT, type)
 
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
@@ -618,10 +616,12 @@
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
+		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
+		REMOVE_TRAIT(C, TRAIT_NOSOFTCRIT,CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/medicine/epinephrine/affect_blood(mob/living/carbon/C, removed)
 	if(volume < 0.2)	//not that effective after initial rush

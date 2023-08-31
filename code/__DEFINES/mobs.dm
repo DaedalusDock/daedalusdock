@@ -447,8 +447,6 @@
 #define CE_ALCOHOL_TOXIC "alcotoxic"
 /// Increases or decreases heart rate
 #define CE_PULSE "xcardic"
-/// Stops heartbeat
-#define CE_NOPULSE "heartstop"
 /// Reduces incoming toxin damage and helps with liver filtering
 #define CE_ANTITOX "antitox"
 /// Dexalin.

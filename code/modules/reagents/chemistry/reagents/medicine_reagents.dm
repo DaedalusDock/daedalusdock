@@ -605,13 +605,18 @@
 
 /datum/reagent/medicine/epinephrine
 	name = "Epinephrine"
-	description = "Adrenaline is a hormone used as a drug to treat cardiac arrest and other cardiac dysrhythmias resulting in diminished or absent cardiac output."
+	description = "Adrenaline is a hormone used as a drug to treat cardiac arrest, and as a performance enhancer."
 	taste_description = "rush"
 	reagent_state = LIQUID
 	color = "#c8a5dc"
 	overdose_threshold = 20
 	metabolization_rate = 0.1
 	value = 2
+
+/datum/reagent/medicine/epinephrine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
+	. = ..()
+	if(reac_volume >= 5 && methods == INJECT)
+		exposed_mob.set_heartattack(FALSE)
 
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
@@ -638,13 +643,6 @@
 
 	if(volume > 10)
 		C.set_timed_status_effect(5 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
-
-	holder.remove_reagent(/datum/reagent/toxin/histamine, 10 * removed)
-	if(volume >= 4 && C.undergoing_cardiac_arrest() && !(current_cycle % 10))
-		holder.remove_reagent(type, 4)
-		if(C.set_heartattack(FALSE))
-			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
-			heart.applyOrganDamage(heart.maxHealth * 0.075)
 
 	C.AdjustAllImmobility(-2 * removed)
 

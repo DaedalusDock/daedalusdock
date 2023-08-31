@@ -661,7 +661,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /////////////////////////////////////
 
 /mob/living/carbon/proc/can_heartattack()
-	if(!needs_heart())
+	if(!needs_heart() || HAS_TRAIT(src, TRAIT_STABLEHEART))
 		return FALSE
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(!heart || (heart.organ_flags & ORGAN_DEAD))
@@ -669,8 +669,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return TRUE
 
 /mob/living/carbon/proc/needs_heart()
-	if(HAS_TRAIT(src, TRAIT_STABLEHEART))
-		return FALSE
 	if(dna && dna.species && (NOBLOOD in dna.species.species_traits)) //not all carbons have species!
 		return FALSE
 	return TRUE

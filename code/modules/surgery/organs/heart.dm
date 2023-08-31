@@ -85,6 +85,8 @@
 	var/pulse_mod = CHEM_EFFECT_MAGNITUDE(owner, CE_PULSE)
 	var/is_stable = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE)
 
+	var/can_heartattack = owner.can_heartattack()
+
 	// If you have enough heart chemicals to be over 2, you're likely to take extra damage.
 	if(pulse_mod > 2 && !is_stable)
 		var/damage_chance = (pulse_mod - 2) ** 2
@@ -103,23 +105,18 @@
 	if(oxy < BLOOD_CIRC_BAD) //MOAR
 		pulse_mod++
 
-	if(HAS_TRAIT(owner, TRAIT_FAKEDEATH) || CHEM_EFFECT_MAGNITUDE(owner, CE_NOPULSE))
-		if(pulse != NONE)
-			Stop()
-		return
-
 	//If heart is stopped, it isn't going to restart itself randomly.
 	if(pulse == PULSE_NONE)
 		return
-	else //and if it's beating, let's see if it should
+
+	else if(can_heartattack)//and if it's beating, let's see if it should
 		var/should_stop = prob(80) && owner.get_blood_circulation() < BLOOD_CIRC_SURVIVE //cardiovascular shock, not enough liquid to pump
 		should_stop ||= prob(max(0, owner.getBrainLoss() - owner.maxHealth * 0.75)) //brain failing to work heart properly
 		should_stop ||= (prob(5) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
 		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
 			to_chat(owner, span_danger("Your heart has stopped!"))
-			if(pulse != NONE)
-				Stop()
-			return
+			if(pulse != NONE && Stop())
+				return
 
 	// Pulse normally shouldn't go above PULSE_2FAST, unless extreme amounts of bad stuff in blood
 	if (pulse_mod < 6)

@@ -551,7 +551,8 @@
 		if(!silent)
 			to_chat(src, span_warning("[target.name] is dead!"))
 		return FALSE
-
+	if(!target.undergoing_cardiac_arrest() && !target.getOxyLoss())
+		return FALSE
 	return TRUE
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)

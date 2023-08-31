@@ -108,6 +108,7 @@
 	if((!gc_destroyed || (owner && !owner.gc_destroyed)) && !no_id_transfer)
 		transfer_identity(C)
 	C.update_body_parts()
+	REMOVE_TRAIT(C, TRAIT_KNOCKEDOUT, BRAIN_TRAIT)
 
 /obj/item/organ/brain/proc/transfer_identity(mob/living/L)
 	name = "[L.name]'s brain"
@@ -283,7 +284,9 @@
 		oxygen_reserve = min(initial(oxygen_reserve), oxygen_reserve+1)
 
 	if(!oxygen_reserve) //(hardcrit)
-		owner.Paralyze(3 SECONDS)
+		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, BRAIN_TRAIT)
+	else
+		REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, BRAIN_TRAIT)
 
 	var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
 	var/damprob

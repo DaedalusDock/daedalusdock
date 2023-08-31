@@ -223,6 +223,9 @@
 		return //godmode
 
 	var/list/obj/item/bodypart/not_full = get_damageable_bodyparts(required_status)
+	if(!length(not_full))
+		return
+
 	var/update = 0
 
 	// Receive_damage() rounds to damage precision, dont bother doing it here.

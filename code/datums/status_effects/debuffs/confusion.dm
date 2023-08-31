@@ -32,8 +32,7 @@
 /datum/status_effect/confusion/proc/on_move(datum/source, list/move_args)
 	SIGNAL_HANDLER
 
-	var/client/C = source
-	var/mob/living/L = C.mob
+	var/mob/living/L = source
 	if(L.body_position == LYING_DOWN)
 		return
 

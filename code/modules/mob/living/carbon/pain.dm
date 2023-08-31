@@ -199,6 +199,7 @@
 
 	if(damaged_part && CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER) < highest_damage)
 		if(highest_damage > PAIN_THRESHOLD_REDUCE_PARALYSIS)
+			AdjustSleeping(-(highest_damage / 5))
 			AdjustParalyzed(-(highest_damage / 5))
 		if(highest_damage > PAIN_THRESHOLD_DROP_ITEM && prob(highest_damage / 5))
 			dropItemToGround(get_active_held_item())

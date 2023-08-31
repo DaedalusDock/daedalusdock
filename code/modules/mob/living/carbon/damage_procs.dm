@@ -239,3 +239,9 @@
 		updatehealth()
 	if(update & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
 		update_damage_overlays()
+
+/mob/living/carbon/getOxyLoss()
+	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
+	if(!L || (L.organ_flags & ORGAN_DEAD))
+		return 100
+	return ..()

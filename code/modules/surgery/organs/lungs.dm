@@ -360,7 +360,7 @@
 
 /obj/item/organ/lungs/check_damage_thresholds(mob/organ_owner)
 	. = ..()
-	if(. == high_threshold_passed)
+	if(. == high_threshold_passed && owner)
 		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
 
 /obj/item/organ/lungs/get_availability(datum/species/owner_species)

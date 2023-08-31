@@ -495,18 +495,20 @@
 	taste_description = "bitterness"
 	reagent_state = LIQUID
 	color = "#ffff66"
+	metabolization_rate = 0.05
 	overdose_threshold = 30
 	value = 5.9
 
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed)
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		H.adjust_confusion(2 SECONDS)
 		H.drowsyness++
 
-	if(prob(15))
+	if(prob(10))
 		C.cure_trauma_type(resilience = TRAUMA_RESILIENCE_BASIC)
 
 /datum/reagent/medicine/imidazoline

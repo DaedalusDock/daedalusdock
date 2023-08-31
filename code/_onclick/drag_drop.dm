@@ -16,7 +16,7 @@
 		return // should stop you from dragging through windows
 
 	over.MouseDrop_T(src,usr, params)
-	return
+	return TRUE
 
 // receive a mousedrop
 /atom/proc/MouseDrop_T(atom/dropping, mob/user, params)

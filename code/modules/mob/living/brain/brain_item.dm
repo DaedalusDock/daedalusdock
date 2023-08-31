@@ -288,7 +288,7 @@
 	else
 		REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, BRAIN_TRAIT)
 
-	var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
+	var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || CHEM_EFFECT_MAGNITUDE(owner, CE_BRAIN_REGEN) || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
 	var/damprob
 	//Effects of bloodloss
 	switch(blood_percent)

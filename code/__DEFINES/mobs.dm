@@ -463,6 +463,8 @@
 #define CE_STIMULANT "stimulants"
 /// Multiplier for bloodloss
 #define CE_ANTICOAGULANT "anticoagulant"
+/// Enables brain regeneration even in poor circumstances
+#define CE_BRAIN_REGEN "brainregen"
 
 // Pulse levels, very simplified.
 #define PULSE_NONE 0 // So !M.pulse checks would be possible.

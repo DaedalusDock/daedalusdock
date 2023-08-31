@@ -1393,7 +1393,7 @@
 	return getorganslot(ORGAN_SLOT_STOMACH)?.reagents
 
 ///generates realistic-ish pulse output based on preset levels as text
-/mob/living/carbon/human/proc/get_pulse(method)	//method 0 is for hands, 1 is for machines, more accurate
+/mob/living/carbon/proc/get_pulse(method)	//method 0 is for hands, 1 is for machines, more accurate
 	var/obj/item/organ/heart/heart_organ = getorganslot(ORGAN_SLOT_HEART)
 	if(!heart_organ)
 		// No heart, no pulse

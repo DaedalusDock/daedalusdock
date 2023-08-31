@@ -14,8 +14,8 @@
 /// an attack must do this much damage after armor in order to be eliigible to dismember a suitably mushed bodypart
 #define DROPLIMB_MINIMUM_DAMAGE 10
 
-#define DROPLIMB_THRESHOLD_EDGE 0.35
-#define DROPLIMB_THRESHOLD_TEAROFF 0.66
+#define DROPLIMB_THRESHOLD_EDGE 0.2
+#define DROPLIMB_THRESHOLD_TEAROFF 0.5
 #define DROPLIMB_THRESHOLD_DESTROY 1
 
 //Bodypart flags

@@ -520,9 +520,9 @@
 	// DISMEMBERMENT - Doesn't happen during unit tests due to fucking up damage.
 	*/
 	if(owner)
-		var/total_damage = brute_dam + burn_dam + burn + brute
+		var/total_damage = brute_dam + burn_dam + burn + brute + spillover
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
-			if(attempt_dismemberment(brute, burn, sharpness))
+			if(attempt_dismemberment(pure_brute, burn, sharpness))
 				return update_damage() || .
 	#endif
 

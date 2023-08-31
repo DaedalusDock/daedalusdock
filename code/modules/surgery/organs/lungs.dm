@@ -20,7 +20,6 @@
 	low_threshold_cleared = "<span class='info'>You can breathe normally again.</span>"
 	high_threshold_cleared = "<span class='info'>The constriction around your chest loosens as your breathing calms down.</span>"
 
-	var/failed = FALSE
 	var/operated = FALSE //whether we can still have our damages fixed through surgery
 
 
@@ -349,16 +348,20 @@
 
 /obj/item/organ/lungs/on_life(delta_time, times_fired)
 	. = ..()
-	if(failed && !(organ_flags & ORGAN_DEAD))
-		failed = FALSE
-		return
 	if(damage >= low_threshold)
-		var/do_i_cough = DT_PROB((damage < (high_threshold * maxHealth)) ? 2.5 : 5, delta_time) // between : past high
-		if(do_i_cough)
-			owner.emote("cough")
-	if(organ_flags & ORGAN_DEAD && owner.stat == CONSCIOUS)
-		owner.visible_message(span_danger("[owner] grabs [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe!"))
-		failed = TRUE
+		if(prob(2) && owner.blood_volume)
+			owner.visible_message("[owner] coughs up blood!", span_warning("You cough up blood."), span_hear("You hear someone coughing."))
+			owner.bleed(1)
+
+		else if(prob(4))
+			spawn(-1)
+				owner.emote("gasp")
+			owner.losebreath = max(round(damage/2), owner.losebreath)
+
+/obj/item/organ/lungs/check_damage_thresholds(mob/organ_owner)
+	. = ..()
+	if(. == high_threshold_passed)
+		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
 
 /obj/item/organ/lungs/get_availability(datum/species/owner_species)
 	return !(TRAIT_NOBREATH in owner_species.inherent_traits)

@@ -310,7 +310,7 @@
 				applyOrganDamage(1)
 
 			if(prob(10))
-				owner.Sleeping(rand(1,3) SECONDS)
+				owner.Unconscious(rand(1,3) SECONDS)
 				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
 
 		if(BLOOD_CIRC_SURVIVE to BLOOD_CIRC_BAD)
@@ -320,7 +320,7 @@
 				applyOrganDamage(1)
 
 			if(prob(15))
-				owner.Sleeping(rand(3,5) SECONDS)
+				owner.Unconscious(rand(3,5) SECONDS)
 				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
 
 		if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
@@ -389,7 +389,7 @@
 	if(damage >= (maxHealth * high_threshold))
 		if(owner.body_position == STANDING_UP)
 			to_chat(owner, span_danger("You black out!"))
-		owner.Sleeping(5 SECOND)
+		owner.Unconscious(5 SECOND)
 
 /obj/item/organ/brain/applyOrganDamage(damage_amount, maximum)
 	. = ..()
@@ -399,7 +399,7 @@
 			owner.flash_act(visual = TRUE)
 			owner.blur_eyes(. SECONDS)
 			owner.adjust_confusion(. SECONDS)
-			owner.Sleeping(damage_secondary SECONDS)
+			owner.Unconscious(damage_secondary SECONDS)
 
 /obj/item/organ/brain/set_organ_dead(failing)
 	. = ..()

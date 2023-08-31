@@ -159,7 +159,7 @@
 	if(shock_stage >= SHOCK_TIER_6)
 		if (prob(2))
 			pain_message(pick("You black out!", "You feel like you could die any moment now!", "You're about to lose consciousness!"), shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
-			Sleeping(10 SECONDS)
+			Unconscious(10 SECONDS)
 
 	if(shock_stage >= SHOCK_TIER_7)
 		if(shock_stage == SHOCK_TIER_7)

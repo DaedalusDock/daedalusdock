@@ -117,7 +117,8 @@
 		should_stop ||= (prob(5) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
 		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
 			to_chat(owner, span_danger("Your heart has stopped!"))
-			if(pulse != NONE && Stop())
+			if(pulse != NONE)
+				Stop()
 				return
 
 	// Pulse normally shouldn't go above PULSE_2FAST, unless extreme amounts of bad stuff in blood

@@ -190,11 +190,6 @@
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return
 
-	if(!force)
-		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-	else if(hitsound)
-		playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
-
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 
@@ -204,9 +199,16 @@
 	user.stamina_swing(src.stamina_cost)
 
 	user.do_attack_animation(M)
-	M.attacked_by(src, user)
+	var/hit = M.attacked_by(src, user)
+	if(hit)
+		if(!force)
+			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
+		else if(hitsound)
+			playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+	else
+		playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)])")
+	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [hit ? "NO" : "YES"])")
 	add_fingerprint(user)
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking

@@ -7,7 +7,7 @@
 			var/obj/item/bodypart/bp = def_zone
 			if(bp)
 				return checkarmor(def_zone, type)
-		var/obj/item/bodypart/affecting = get_bodypart(check_zone(def_zone))
+		var/obj/item/bodypart/affecting = get_bodypart(deprecise_zone(def_zone))
 		if(affecting)
 			return checkarmor(affecting, type)
 		//If a specific bodypart is targetted, check how that bodypart is protected and return the value.
@@ -173,15 +173,22 @@
 	if(!I || !user)
 		return FALSE
 
-	var/obj/item/bodypart/affecting
+	var/target_area = parse_zone(deprecise_zone(user.zone_selected)) //our intended target
+
+	var/obj/item/bodypart/affecting = get_bodypart(deprecise_zone(user.zone_selected))
+	if (!affecting || affecting.is_stump)
+		to_chat(user, span_danger("They are missing that limb!"))
+		return FALSE
+
 	if(user == src)
-		affecting = get_bodypart(check_zone(user.zone_selected)) //stabbing yourself always hits the right target
+		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //stabbing yourself always hits the right target
 	else
-		var/zone_hit_chance = 80
-		if(body_position == LYING_DOWN) // half as likely to hit a different zone if they're on the ground
-			zone_hit_chance += 10
-		affecting = get_bodypart(ran_zone(user.zone_selected, zone_hit_chance))
-	var/target_area = parse_zone(check_zone(user.zone_selected)) //our intended target
+		var/accuracy_penalty = user.get_melee_inaccuracy()
+		var/hit_zone = get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty)
+		if(!hit_zone)
+			visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
+			return FALSE
+		affecting = get_bodypart(hit_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
 

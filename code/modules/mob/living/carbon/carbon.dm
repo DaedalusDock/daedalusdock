@@ -1463,3 +1463,13 @@
 
 /mob/living/carbon/proc/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
+
+/mob/living/carbon/get_melee_inaccuracy()
+	. = ..()
+	if(getPain() > 100)
+		. += 10
+
+	if(shock_stage > 30)
+		. += 30
+	else if(shock_stage > 10)
+		. += 10

@@ -1059,7 +1059,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		target.grabbedby(user)
 		return TRUE
 
-///This proc handles punching damage. IMPORTANT: Our owner is the TARGET and not the USER in this proc. For whatever reason...
+///This proc handles punching damage.
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm [target]!"))
@@ -1071,73 +1071,88 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return FALSE
 	if(attacker_style?.harm_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return ATTACK_HANDLED
-	else
 
-		var/obj/item/organ/brain/brain = user.getorganslot(ORGAN_SLOT_BRAIN)
-		var/obj/item/bodypart/attacking_bodypart
-		if(brain)
-			attacking_bodypart = brain.get_attacking_limb(target)
-		if(!attacking_bodypart)
-			attacking_bodypart = user.get_active_hand()
-		var/atk_verb = attacking_bodypart.unarmed_attack_verb
-		var/atk_effect = attacking_bodypart.unarmed_attack_effect
+	var/obj/item/organ/brain/brain = user.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/bodypart/attacking_bodypart
+	if(brain)
+		attacking_bodypart = brain.get_attacking_limb(target)
 
-		if(atk_effect == ATTACK_EFFECT_BITE)
-			if(user.is_mouth_covered(mask_only = TRUE))
-				to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
-				return FALSE
-		user.do_attack_animation(target, atk_effect)
+	if(!attacking_bodypart)
+		attacking_bodypart = user.get_active_hand()
 
-		var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
+	var/atk_verb = attacking_bodypart.unarmed_attack_verb
+	var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
-		var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
-
-		var/miss_chance = 100//calculate the odds that a punch misses entirely. considers stamina and brute damage of the puncher. punches miss by default to prevent weird cases
-		if(attacking_bodypart.unarmed_damage_low)
-			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER)) //kicks never miss (provided your species deals more than 0 damage)
-				miss_chance = 0
-			else
-				miss_chance = min((attacking_bodypart.unarmed_damage_high/attacking_bodypart.unarmed_damage_low) + (user.getBruteLoss()*0.5), 100) //old base chance for a miss + various damage. capped at 100 to prevent weirdness in prob()
-
-		if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
-			playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
-			target.visible_message(span_danger("[user]'s [atk_verb] misses [target]!"), \
-							span_danger("You avoid [user]'s [atk_verb]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
-			log_combat(user, target, "attempted to punch")
+	if(atk_effect == ATTACK_EFFECT_BITE)
+		if(user.is_mouth_covered(mask_only = TRUE))
+			to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
 			return FALSE
 
-		var/armor_block = target.run_armor_check(affecting, MELEE)
+	user.do_attack_animation(target, atk_effect)
 
-		playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
+	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
 
-		user.visible_message(
-			span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
-			null,
-			span_hear("You hear a sickening sound of flesh hitting flesh!"),
-			COMBAT_MESSAGE_RANGE
+	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
+
+	var/miss_chance = 100
+	if(attacking_bodypart.unarmed_damage_low)
+		if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER)) //kicks never miss (provided your species deals more than 0 damage)
+			miss_chance = 0
+		else
+			miss_chance = user.get_melee_inaccuracy()
+
+
+	if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
+		var/rolled = target.body_position == LYING_DOWN && !target.incapacitated()
+		playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
+
+		target.visible_message(
+			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]!"), \
+			span_danger("You avoid [user]'s [atk_verb]!"),
+			span_hear("You hear a swoosh!"),
+			COMBAT_MESSAGE_RANGE,
+			user
 		)
+		if(rolled)
+			target.setDir(pick(GLOB.cardinals))
 
-		target.lastattacker = user.real_name
-		target.lastattackerckey = user.ckey
-		user.dna.species.spec_unarmedattacked(user, target)
+		to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
+		log_combat(user, target, "attempted to punch")
+		return FALSE
 
-		if(user.limb_destroyer)
-			target.dismembering_strike(user, affecting.body_zone)
+	var/armor_block = target.run_armor_check(affecting, MELEE)
 
-		var/attack_direction = get_dir(user, target)
-		var/attack_type = attacking_bodypart.attack_type
-		if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
-			log_combat(user, target, "kicked")
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*3)) //Kicks do alot of stamina damage
-		else//other attacks deal full raw damage + 1.5x in stamina damage
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
-			log_combat(user, target, "punched")
-			. |= ATTACK_CONSUME_STAMINA
+	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
-		return ATTACK_CONTINUE | .
+	user.visible_message(
+		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
+		null,
+		span_hear("You hear a sickening sound of flesh hitting flesh!"),
+		COMBAT_MESSAGE_RANGE
+	)
+
+	target.lastattacker = user.real_name
+	target.lastattackerckey = user.ckey
+	user.dna.species.spec_unarmedattacked(user, target)
+
+	if(user.limb_destroyer)
+		target.dismembering_strike(user, affecting.body_zone)
+
+	var/attack_direction = get_dir(user, target)
+	var/attack_type = attacking_bodypart.attack_type
+	if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
+		log_combat(user, target, "kicked")
+		target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+		target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*3)) //Kicks do alot of stamina damage
+
+	else//other attacks deal full raw damage + 1.5x in stamina damage
+
+		target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+		target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
+		log_combat(user, target, "punched")
+		. |= ATTACK_CONSUME_STAMINA
+
+	return ATTACK_CONTINUE | .
 
 /datum/species/proc/spec_unarmedattacked(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	return
@@ -1205,6 +1220,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(user != H)
 		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armour_penetration))
 			return FALSE
+
 	if(H.check_block())
 		H.visible_message(span_warning("[H] blocks [I]!"), \
 						span_userdanger("You block [I]!"))
@@ -1236,11 +1252,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/bloody = FALSE
 	if(((I.damtype == BRUTE) && I.force && prob(25 + (I.force * 2))))
+
 		if(IS_ORGANIC_LIMB(affecting))
 			I.add_mob_blood(H) //Make the weapon bloody, not the person.
+
 			if(prob(I.force * 2)) //blood spatter!
 				bloody = TRUE
 				var/turf/location = H.loc
+
 				if(istype(location))
 					H.add_splatter_floor(location)
 				if(get_dist(user, H) <= 1) //people with TK won't get smeared with blood
@@ -1251,13 +1270,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(!I.sharpness && armor_block < 50)
 					if(prob(I.force))
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 20)
+
 						if(H.stat != CONSCIOUS)
 							H.visible_message(span_danger("[H] is knocked senseless!"), \
 											span_userdanger("You're knocked senseless!"))
 							H.set_timed_status_effect(20 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
 							H.adjust_blurriness(10)
+
 						if(prob(10))
 							H.gain_trauma(/datum/brain_trauma/mild/concussion)
+
 					else
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, I.force * 0.2)
 
@@ -1270,9 +1292,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					if(H.wear_mask)
 						H.wear_mask.add_mob_blood(H)
 						H.update_worn_mask()
+
 					if(H.head)
 						H.head.add_mob_blood(H)
 						H.update_worn_head()
+
 					if(H.glasses && prob(33))
 						H.glasses.add_mob_blood(H)
 						H.update_worn_glasses()
@@ -1288,6 +1312,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					if(H.wear_suit)
 						H.wear_suit.add_mob_blood(H)
 						H.update_worn_oversuit()
+
 					if(H.w_uniform)
 						H.w_uniform.add_mob_blood(H)
 						H.update_worn_undersuit()
@@ -1308,7 +1333,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		else
 			if(!def_zone)
 				def_zone = ran_zone(def_zone)
-			BP = H.get_bodypart(check_zone(def_zone))
+			BP = H.get_bodypart(deprecise_zone(def_zone))
 			if(!BP)
 				BP = H.bodyparts[1]
 

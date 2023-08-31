@@ -54,7 +54,7 @@
 	if(!target_zone)
 		target_zone = pick(head_ch;BODY_ZONE_HEAD,body_ch;BODY_ZONE_CHEST,hands_ch;BODY_ZONE_L_ARM,feet_ch;BODY_ZONE_L_LEG)
 	else
-		target_zone = check_zone(target_zone)
+		target_zone = deprecise_zone(target_zone)
 
 
 

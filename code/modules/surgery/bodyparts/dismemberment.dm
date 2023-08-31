@@ -91,7 +91,7 @@
 	playsound(get_turf(chest_owner), 'sound/misc/splort.ogg', 80, TRUE)
 
 	for(var/obj/item/organ/organ as anything in chest_owner.processing_organs)
-		var/org_zone = check_zone(organ.zone)
+		var/org_zone = deprecise_zone(organ.zone)
 		if(org_zone != BODY_ZONE_CHEST)
 			continue
 		organ.Remove(chest_owner)

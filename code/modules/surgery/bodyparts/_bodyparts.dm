@@ -528,7 +528,7 @@
 	//blunt damage is gud at fracturing
 	if(breaks_bones && brute)
 		if(LAZYLEN(contained_organs))
-			brute -= damage_internal_organs(brute, sharpness) // Absorb some brute damage
+			brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), sharpness) // Absorb some brute damage
 
 		if(bodypart_flags & BP_BROKEN_BONES)
 			jostle_bones(brute)
@@ -596,7 +596,7 @@
 	if(!LAZYLEN(contained_organs) || !brute)
 		return FALSE
 
-	var/organ_damage_threshold = 10
+	var/organ_damage_threshold = 5
 	if(sharpness & SHARP_POINTY)
 		organ_damage_threshold *= 0.5
 

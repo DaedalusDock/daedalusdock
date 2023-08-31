@@ -45,7 +45,6 @@
 
 		if(needs_bleed_update)
 			iter_part.refresh_bleed_rate()
-			needs_bleed_update = FALSE
 
 		if(!bleed_amt)
 			continue

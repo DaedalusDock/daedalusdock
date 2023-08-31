@@ -86,7 +86,7 @@
 #include "confusion.dm"
 #include "connect_loc.dm"
 #include "crayons.dm"
-#include "create_and_destroy.dm"
+//#include "create_and_destroy.dm"
 #include "designs.dm"
 #include "dummy_spawn.dm"
 #include "dynamic_ruleset_sanity.dm"

@@ -51,6 +51,7 @@
 	T.AddElement(/datum/element/decal, icon, icon_state, dir, null, decal_layer, alpha, color, null, FALSE, null)
 	return INITIALIZE_HINT_QDEL
 
+GLOBAL_VAR_INIT(running_create_and_destroy, 0)
 // If we don't do this, turf decals will end up stacking up on a tile, and break the overlay limit
 // I hate it too bestie
 /obj/effect/turf_decal/Destroy()

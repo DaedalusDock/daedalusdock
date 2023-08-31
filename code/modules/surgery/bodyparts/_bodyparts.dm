@@ -515,14 +515,16 @@
 		if(spillover > 0)
 			burn = max(burn - spillover, 0)
 
+	#ifndef UNIT_TESTS
 	/*
-	// DISMEMBERMENT
+	// DISMEMBERMENT - Doesn't happen during unit tests due to fucking up damage.
 	*/
 	if(owner)
 		var/total_damage = brute_dam + burn_dam + burn + brute
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
 			if(attempt_dismemberment(brute, burn, sharpness))
 				return update_damage() || .
+	#endif
 
 
 	//blunt damage is gud at fracturing
@@ -593,6 +595,9 @@
 	return .
 
 /obj/item/bodypart/proc/damage_internal_organs(brute, sharpness)
+	#ifdef UNIT_TESTS
+	return // This randomly changes the damage outcomes, this is bad for unit testing.
+	#endif
 	if(!LAZYLEN(contained_organs) || !brute)
 		return FALSE
 

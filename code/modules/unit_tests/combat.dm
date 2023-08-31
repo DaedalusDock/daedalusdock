@@ -72,7 +72,5 @@
 /datum/unit_test/non_standard_damage/Run()
 	var/mob/living/carbon/human/man = allocate(/mob/living/carbon/human)
 
-	var/old_dam
 	man.adjustOrganLoss(ORGAN_SLOT_BRAIN, 200)
-	old_dam = man.getBrainLoss()
 	TEST_ASSERT(man.stat == DEAD, "Victim did not die when taking 200 brain damage.")

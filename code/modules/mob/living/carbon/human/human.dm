@@ -854,12 +854,6 @@
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
 
-/mob/living/carbon/human/limb_attack_self()
-	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
-	if(arm)
-		arm.attack_self(src)
-	return ..()
-
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
 	if(pulling != M || grab_state != GRAB_AGGRESSIVE || stat != CONSCIOUS)
 		return FALSE

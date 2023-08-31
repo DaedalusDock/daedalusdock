@@ -7879,13 +7879,9 @@
 /area/station/hallway/primary/central/fore)
 "cdO" = (
 /obj/structure/table/glass,
-/obj/structure/cable,
 /obj/machinery/power/data_terminal,
-/obj/machinery/telephone/service{
-	friendly_name = "Chemistry";
-	placard_name = "Medical PBX"
-	},
 /obj/machinery/newscaster/directional/west,
+/obj/machinery/reagentgrinder,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "cdR" = (
@@ -31984,6 +31980,7 @@
 /obj/structure/cable/layer1,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "kIb" = (
@@ -35606,11 +35603,15 @@
 "lYN" = (
 /obj/machinery/light/cold/directional/east,
 /obj/structure/table/glass,
-/obj/item/paper_bin,
-/obj/item/pen,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
+/obj/structure/cable,
+/obj/machinery/telephone/service{
+	friendly_name = "Chemistry";
+	placard_name = "Medical PBX"
+	},
+/obj/machinery/power/data_terminal,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "lZd" = (
@@ -38535,6 +38536,7 @@
 /area/station/medical/cryo)
 "mUN" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "mUO" = (

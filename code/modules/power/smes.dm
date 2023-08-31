@@ -22,7 +22,7 @@
 	use_power = NO_POWER_USE
 	circuit = /obj/item/circuitboard/machine/smes
 
-	var/capacity = 5e6 // maximum charge
+	var/capacity = 10e6 // maximum charge
 	var/charge = 0 // actual charge
 
 	var/input_attempt = TRUE // TRUE = attempting to charge, FALSE = not attempting to charge
@@ -409,8 +409,8 @@
 
 /obj/machinery/power/smes/engineering
 	input_attempt = FALSE //Don't drain the private loop by default
-	charge = 5e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.
-	output_level = 90000
+	charge = 10e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.
+	output_level = 180000
 
 /obj/machinery/power/smes/magical
 	name = "magical power storage unit"

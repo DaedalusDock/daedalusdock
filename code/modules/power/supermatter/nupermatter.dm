@@ -320,7 +320,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				if((is_station_level(M.z)))
-					M.playsound_local(get_turf(M), 'sound/ambience/matteralarm.ogg')
+					M.playsound_local(get_turf(M), 'sound/ambience/matteralarm.ogg', 100, FALSE)
 
 		else if(safe_warned && public_alert)
 			priority_announce(alert_msg, "Station Announcement","Supermatter Monitor", ANNOUNCER_ATTENTION)

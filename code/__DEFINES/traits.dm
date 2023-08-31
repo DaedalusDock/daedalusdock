@@ -726,6 +726,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define RESTING_TRAIT "resting"
 /// trait associated to a stat value or range of
 #define STAT_TRAIT "stat"
+/// Trait from the BRAIN
+#define BRAIN_TRAIT
 #define STATION_TRAIT "station-trait"
 /// obtained from mapping helper
 #define MAPPING_HELPER_TRAIT "mapping-helper"

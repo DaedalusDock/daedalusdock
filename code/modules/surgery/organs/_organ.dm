@@ -233,7 +233,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/on_death(delta_time, times_fired)
 	if(organ_flags & (ORGAN_SYNTHETIC | ORGAN_FROZEN))
 		return
-	applyOrganDamage(decay_factor * maxHealth * delta_time)
+	applyOrganDamage(rand(1,3)/2 * delta_time)
 
 /// Called once every life tick on every organ in a carbon's body
 /// NOTE: THIS IS VERY HOT. Be careful what you put in here

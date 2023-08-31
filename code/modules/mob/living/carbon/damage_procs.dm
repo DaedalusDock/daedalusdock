@@ -230,7 +230,7 @@
 	burn /= length(not_full)
 
 	for(var/obj/item/bodypart/bp as anything in not_full)
-		update |= bp.receive_damage(brute, burn, 0, FALSE, required_status, sharpness, breaks_bones)
+		update |= bp.receive_damage(brute, burn, 0, FALSE, required_status, sharpness, can_break_bones)
 
 	if(updating_health && (update & BODYPART_LIFE_UPDATE_HEALTH))
 		updatehealth()

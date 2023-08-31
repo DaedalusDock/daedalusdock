@@ -97,12 +97,7 @@
 	. = BREATH_OKAY
 
 	if(!breath || (breath.total_moles == 0))
-		if(CHEM_EFFECT_MAGNITUDE(breather, CE_STABLE))
-			return BREATH_OKAY
-
-		if(breather.health >= breather.crit_threshold)
-			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
-		else if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
+		if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
 			breather.adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		breather.failed_last_breath = TRUE

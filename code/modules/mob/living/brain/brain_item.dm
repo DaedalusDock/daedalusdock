@@ -269,60 +269,63 @@
 	handle_damage_effects()
 
 	// Brain damage from low oxygenation or lack of blood.
-	if(owner.needs_heart())
+	if(!owner.needs_heart())
+		return ..()
 
-		// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
-		var/blood_percent = owner.get_blood_oxygenation()
-		if(blood_percent < BLOOD_CIRC_SURVIVE)
-			if(!CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) || prob(60))
-				oxygen_reserve = max(0, oxygen_reserve-1)
-		else
-			oxygen_reserve = min(initial(oxygen_reserve), oxygen_reserve+1)
-		if(!oxygen_reserve) //(hardcrit)
-			owner.Paralyze(3 SECONDS)
+	// Brain damage from low oxygenation or lack of blood.
+	// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
+	var/blood_percent = owner.get_blood_oxygenation()
+	if(blood_percent < BLOOD_CIRC_SURVIVE)
+		if(!CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) || prob(60))
+			oxygen_reserve = max(0, oxygen_reserve-1)
+	else
+		oxygen_reserve = min(initial(oxygen_reserve), oxygen_reserve+1)
 
-		var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
-		var/damprob
-		//Effects of bloodloss
-		switch(blood_percent)
-			if(BLOOD_CIRC_SAFE to INFINITY)
-				if(can_heal)
-					applyOrganDamage(-1)
+	if(!oxygen_reserve) //(hardcrit)
+		owner.Paralyze(3 SECONDS)
 
-			if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
-				if(prob(1))
-					to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
-				damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
-				if(!past_damage_threshold(2) && prob(damprob))
-					applyOrganDamage(1)
+	var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
+	var/damprob
+	//Effects of bloodloss
+	switch(blood_percent)
+		if(BLOOD_CIRC_SAFE to INFINITY)
+			if(can_heal)
+				applyOrganDamage(-1)
 
-			if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
-				owner.eye_blurry = max(owner.eye_blurry,6)
-				damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
-				if(!past_damage_threshold(4) && prob(damprob))
-					applyOrganDamage(1)
+		if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
+			if(prob(1))
+				to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
+			if(!past_damage_threshold(2) && prob(damprob))
+				applyOrganDamage(1)
 
-				if(prob(10))
-					owner.Paralyze(rand(1,3) SECONDS)
-					to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
+		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
+			owner.eye_blurry = max(owner.eye_blurry,6)
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
+			if(!past_damage_threshold(4) && prob(damprob))
+				applyOrganDamage(1)
 
-			if(BLOOD_CIRC_SURVIVE to BLOOD_CIRC_BAD)
-				owner.blur_eyes(6)
-				damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
-				if(!past_damage_threshold(6) && prob(damprob))
-					applyOrganDamage(1)
+			if(prob(10))
+				owner.Paralyze(rand(1,3) SECONDS)
+				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
 
-				if(prob(15))
-					owner.Paralyze(rand(3,5) SECONDS)
-					to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
+		if(BLOOD_CIRC_SURVIVE to BLOOD_CIRC_BAD)
+			owner.blur_eyes(6)
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
+			if(!past_damage_threshold(6) && prob(damprob))
+				applyOrganDamage(1)
 
-			if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
-				owner.blur_eyes(6)
-				damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
-				if(prob(damprob))
-					applyOrganDamage(1)
-				if(prob(damprob))
-					applyOrganDamage(1)
+			if(prob(15))
+				owner.Paralyze(rand(3,5) SECONDS)
+				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
+
+		if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
+			owner.blur_eyes(6)
+			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
+			if(prob(damprob))
+				applyOrganDamage(1)
+			if(prob(damprob))
+				applyOrganDamage(1)
 	..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)

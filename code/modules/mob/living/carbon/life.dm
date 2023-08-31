@@ -161,7 +161,7 @@
 	if(!forced)
 		if(!breath || (breath.total_moles == 0) || !lungs || nervous_system_failure())
 			if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
-				adjustOxyLoss(2)
+				adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 
 			failed_last_breath = TRUE
 			throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)

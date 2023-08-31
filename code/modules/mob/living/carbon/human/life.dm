@@ -76,9 +76,7 @@
 	var/L = getorganslot(ORGAN_SLOT_LUNGS)
 
 	if(!L)
-		if(health >= crit_threshold)
-			adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS + 1)
-		else if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
+		if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
 			adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		failed_last_breath = TRUE

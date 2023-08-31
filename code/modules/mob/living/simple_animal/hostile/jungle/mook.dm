@@ -26,7 +26,7 @@
 	ranged_cooldown_time = 10
 	pass_flags_self = LETPASSTHROW
 	robust_searching = TRUE
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	attack_sound = 'sound/weapons/rapierhit.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
 	deathsound = 'sound/voice/mook_death.ogg'

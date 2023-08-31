@@ -25,7 +25,7 @@
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
 
 /obj/item/bodypart/chest/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT || !length(contained_organs))
+	if(owner.getBruteLoss() < owner.maxHealth * 2 || !length(contained_organs))
 		return FALSE
 	return ..()
 

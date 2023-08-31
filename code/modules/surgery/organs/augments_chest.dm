@@ -57,23 +57,21 @@
 
 /obj/item/organ/cyberimp/chest/reviver/on_life(delta_time, times_fired)
 	if(reviving)
-		switch(owner.stat)
-			if(UNCONSCIOUS, HARD_CRIT)
-				addtimer(CALLBACK(src, PROC_REF(heal)), 3 SECONDS)
-			else
-				COOLDOWN_START(src, reviver_cooldown, revive_cost)
-				reviving = FALSE
-				to_chat(owner, span_notice("Your reviver implant shuts down and starts recharging. It will be ready again in [DisplayTimeText(revive_cost)]."))
+		if(owner.stat == UNCONSCIOUS)
+			addtimer(CALLBACK(src, PROC_REF(heal)), 3 SECONDS)
+		else
+			COOLDOWN_START(src, reviver_cooldown, revive_cost)
+			reviving = FALSE
+			to_chat(owner, span_notice("Your reviver implant shuts down and starts recharging. It will be ready again in [DisplayTimeText(revive_cost)]."))
 		return
 
 	if(!COOLDOWN_FINISHED(src, reviver_cooldown) || owner.suiciding)
 		return
 
-	switch(owner.stat)
-		if(UNCONSCIOUS, HARD_CRIT)
-			revive_cost = 0
-			reviving = TRUE
-			to_chat(owner, span_notice("You feel a faint buzzing as your reviver implant starts patching your wounds..."))
+	if(owner.stat == UNCONSCIOUS)
+		revive_cost = 0
+		reviving = TRUE
+		to_chat(owner, span_notice("You feel a faint buzzing as your reviver implant starts patching your wounds..."))
 
 
 /obj/item/organ/cyberimp/chest/reviver/proc/heal()

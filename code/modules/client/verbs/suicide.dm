@@ -231,7 +231,7 @@
 	switch(stat)
 		if(CONSCIOUS)
 			return TRUE
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			to_chat(src, span_warning("You need to be conscious to commit suicide!"))
 		if(DEAD)
 			to_chat(src, span_warning("You're already dead!"))

@@ -31,7 +31,7 @@
 // Unlike most of the simple animals, slimes support UNCONSCIOUS. This is an ugly hack.
 /mob/living/simple_animal/slime/update_stat()
 	switch(stat)
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			if(health > 0)
 				return
 	return ..()

@@ -149,12 +149,6 @@
 		if(!tongue)
 			. += span_info("[real_name]'s tongue has been removed.")
 
-
-/obj/item/bodypart/head/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT)
-		return FALSE
-	return ..()
-
 /obj/item/bodypart/head/drop_contents(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
 	for(var/obj/item/head_item in src.contents)

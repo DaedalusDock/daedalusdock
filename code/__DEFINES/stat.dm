@@ -5,8 +5,7 @@
 //mob/var/stat things
 #define CONSCIOUS 0
 #define UNCONSCIOUS 1
-#define HARD_CRIT 2
-#define DEAD 3
+#define DEAD 2
 
 //Health Defines
 #define HEALTH_THRESHOLD_CRIT 100 //! Soft crit

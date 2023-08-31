@@ -36,14 +36,6 @@
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_EXHAUSTED), PROC_REF(on_exhausted_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_EXHAUSTED), PROC_REF(on_exhausted_trait_loss))
 
-	RegisterSignal(src, list(
-		SIGNAL_ADDTRAIT(TRAIT_CRITICAL_CONDITION),
-		SIGNAL_REMOVETRAIT(TRAIT_CRITICAL_CONDITION),
-
-		SIGNAL_ADDTRAIT(TRAIT_NODEATH),
-		SIGNAL_REMOVETRAIT(TRAIT_NODEATH),
-	), PROC_REF(update_succumb_action))
-
 	RegisterSignal(src, COMSIG_MOVETYPE_FLAG_ENABLED, PROC_REF(on_movement_type_flag_enabled))
 	RegisterSignal(src, COMSIG_MOVETYPE_FLAG_DISABLED, PROC_REF(on_movement_type_flag_disabled))
 
@@ -195,19 +187,6 @@
 /mob/living/proc/on_restrained_trait_loss(datum/source)
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, TRAIT_RESTRAINED)
-
-
-/**
- * Called when traits that alter succumbing are added/removed.
- *
- * Will show or hide the succumb alert prompt.
- */
-/mob/living/proc/update_succumb_action()
-	SIGNAL_HANDLER
-	if (CAN_SUCCUMB(src))
-		throw_alert(ALERT_SUCCUMB, /atom/movable/screen/alert/succumb)
-	else
-		clear_alert(ALERT_SUCCUMB)
 
 ///From [element/movetype_handler/on_movement_type_trait_gain()]
 /mob/living/proc/on_movement_type_flag_enabled(datum/source, flag, old_movement_type)

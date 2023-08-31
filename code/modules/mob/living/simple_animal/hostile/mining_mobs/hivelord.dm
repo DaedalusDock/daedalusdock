@@ -125,7 +125,7 @@
 	loot = list(/obj/item/organ/regenerative_core/legion)
 	brood_type = /mob/living/simple_animal/hostile/asteroid/hivelordbrood/legion
 	del_on_death = 1
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	has_clickbox = FALSE
 	var/dwarf_mob = FALSE
@@ -193,7 +193,7 @@
 	attack_sound = 'sound/weapons/pierce.ogg'
 	throw_message = "is shrugged off by"
 	del_on_death = TRUE
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	clickbox_state = "sphere"
 	clickbox_max_scale = 2
@@ -205,7 +205,7 @@
 		return
 	for(var/mob/living/carbon/human/victim in range(src, 1)) //Only for corpse right next to/on same tile
 		switch(victim.stat)
-			if(UNCONSCIOUS, HARD_CRIT)
+			if(UNCONSCIOUS)
 				infest(victim)
 				return //This will qdelete the legion.
 			if(DEAD)

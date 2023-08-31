@@ -34,7 +34,7 @@
 	held_items = list(null, null)
 	faction = list("jungle")
 	robust_searching = TRUE
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	minbodytemp = 270
 	maxbodytemp = 350
 	unique_name = TRUE

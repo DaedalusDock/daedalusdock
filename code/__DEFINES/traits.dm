@@ -153,8 +153,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NO_SPRINT "no_sprint"
 /// In softcrit.
 #define TRAIT_SOFT_CRITICAL_CONDITION "soft-critical-condition"
-/// In hardcrit. Is able to succumb.
-#define TRAIT_CRITICAL_CONDITION "critical-condition"
 /// Whitelist for mobs that can read or write
 #define TRAIT_LITERATE "literate"
 /// Blacklist for mobs that can't read or write

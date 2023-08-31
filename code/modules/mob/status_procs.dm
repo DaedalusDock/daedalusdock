@@ -46,7 +46,7 @@
 				do_set_blindness(TRUE)
 			else
 				do_set_blindness(FALSE)
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			do_set_blindness(TRUE)
 		if(DEAD)
 			do_set_blindness(FALSE)

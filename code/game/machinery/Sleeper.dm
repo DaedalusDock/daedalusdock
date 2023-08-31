@@ -185,7 +185,7 @@
 				else
 					data["occupant"]["stat"] = "Conscious"
 					data["occupant"]["statstate"] = "average"
-			if(UNCONSCIOUS, HARD_CRIT)
+			if(UNCONSCIOUS)
 				data["occupant"]["stat"] = "Unconscious"
 				data["occupant"]["statstate"] = "average"
 			if(DEAD)

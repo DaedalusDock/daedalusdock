@@ -154,7 +154,7 @@
 				if(type & MSG_VISUAL && is_blind())
 					return
 	// voice muffling
-	if(stat == UNCONSCIOUS || stat == HARD_CRIT)
+	if(stat == UNCONSCIOUS)
 		if(type & MSG_AUDIBLE) //audio
 			to_chat(src, "<I>... You can almost hear something ...</I>")
 		return

@@ -280,7 +280,7 @@
 				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
 
 		switch(stat)
-			if(UNCONSCIOUS, HARD_CRIT)
+			if(UNCONSCIOUS)
 				msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))

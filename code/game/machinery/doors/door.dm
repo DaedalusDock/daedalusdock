@@ -179,26 +179,6 @@
 		spark_system = null
 	return ..()
 
-/obj/machinery/door/zas_update_loc()
-	. = ..()
-	if(!.)
-		return
-
-	var/turf/T = get_turf(src)
-
-	if(density)
-		if(!T.zone || T.zone.invalid)
-			return
-		var/zone/old_zone = T.zone
-		old_zone.remove_turf(T)
-
-		var/datum/gas_mixture/GM = unsafe_return_air()
-		old_zone.air.merge(GM)
-		GM.zero()
-
-	else
-		T.update_air_properties()
-
 /obj/machinery/door/zas_canpass(turf/other)
 	if(QDELETED(src))
 		return AIR_ALLOWED
@@ -267,6 +247,14 @@
 		else
 			do_animate("deny")
 		return
+
+/obj/machinery/door/Move()
+	var/turf/T = loc
+	. = ..()
+	if(.)
+		T.zas_update_loc()
+		zas_update_loc()
+
 
 /obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()

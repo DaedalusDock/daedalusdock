@@ -142,7 +142,7 @@
 		if(shock_stage == SHOCK_TIER_2 && organs_by_slot[ORGAN_SLOT_EYES])
 			visible_message("<b>[src]</b> is having trouble keeping [p_their()] eyes open.")
 		if(prob(30))
-			blur_eyes(2)
+			blur_eyes(3)
 			set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
 	if(shock_stage == SHOCK_TIER_3)

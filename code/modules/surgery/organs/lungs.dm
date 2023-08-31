@@ -10,6 +10,7 @@
 	maxHealth = 70
 	high_threshold = 0.5
 	low_threshold = 0.35
+	relative_size = 60
 
 	decay_factor = STANDARD_ORGAN_DECAY * 0.9 // fails around 16.5 minutes, lungs are one of the last organs to die (of the ones we have)
 

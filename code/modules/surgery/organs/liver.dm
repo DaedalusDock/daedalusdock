@@ -13,6 +13,7 @@
 	maxHealth = 70
 	low_threshold = 0.22
 	high_threshold = 0.5
+	relative_size = 60
 
 	decay_factor = STANDARD_ORGAN_DECAY // smack in the middle of decay times
 

@@ -615,8 +615,11 @@
 
 /datum/reagent/medicine/epinephrine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
 	. = ..()
+	if(!iscarbon(exposed_mob))
+		return
+	var/mob/living/carbon/C = exposed_mob
 	if(reac_volume >= 5 && methods == INJECT)
-		exposed_mob.set_heartattack(FALSE)
+		C.set_heartattack(FALSE)
 
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)

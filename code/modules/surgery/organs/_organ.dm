@@ -20,7 +20,14 @@
 	var/high_threshold = 0.66
 	var/low_threshold = 0.33 //when minor organ damage occurs
 
-	var/severe_cooldown //cooldown for severe effects, used for synthetic organ emp effects.
+	/// The relative size of this organ, used for probability to hit.
+	var/relative_size = 25
+	/// Amount of damage to take when taking damage from an external source
+	var/external_damage_modifier = 0.5
+
+	///cooldown for severe effects, used for synthetic organ emp effects.
+	var/severe_cooldown
+
 	///Organ variables for determining what we alert the owner with when they pass/clear the damage thresholds
 	var/prev_damage = 0
 	var/low_threshold_passed

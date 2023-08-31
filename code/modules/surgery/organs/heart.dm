@@ -12,6 +12,8 @@
 	maxHealth = 45
 	high_threshold = 0.66
 	low_threshold = 0.15
+	relative_size = 5
+	external_damage_modifier = 0.7
 
 	low_threshold_passed = "<span class='info'>Prickles of pain appear then die out from within your chest...</span>"
 	high_threshold_passed = "<span class='warning'>Something inside your chest hurts, and the pain isn't subsiding. You notice yourself breathing far faster than before.</span>"

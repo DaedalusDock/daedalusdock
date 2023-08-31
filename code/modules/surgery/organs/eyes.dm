@@ -9,6 +9,7 @@
 
 	decay_factor = STANDARD_ORGAN_DECAY
 	maxHealth = 45
+	relative_size = 5
 
 	low_threshold_passed = "<span class='info'>Distant objects become somewhat less tangible.</span>"
 	high_threshold_passed = "<span class='info'>Everything starts to look a lot less clear.</span>"

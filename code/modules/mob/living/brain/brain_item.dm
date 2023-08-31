@@ -22,6 +22,7 @@
 	maxHealth = BRAIN_DAMAGE_DEATH
 	low_threshold = 0.5
 	high_threshold = 0.75
+	external_damage_modifier = 1 // Takes 100% damage.
 
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
 

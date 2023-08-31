@@ -527,6 +527,9 @@
 
 	//blunt damage is gud at fracturing
 	if(breaks_bones && brute)
+		if(LAZYLEN(contained_organs))
+			brute -= damage_internal_organs(brute, sharpness) // Absorb some brute damage
+
 		if(bodypart_flags & BP_BROKEN_BONES)
 			jostle_bones(brute)
 		else if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
@@ -588,6 +591,39 @@
 			if(. & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
 				owner.update_damage_overlays()
 	return .
+
+/obj/item/bodypart/proc/damage_internal_organs(brute, sharpness)
+	if(!LAZYLEN(contained_organs) || !brute)
+		return FALSE
+
+	var/organ_damage_threshold = 10
+	if(sharpness & SHARP_POINTY)
+		organ_damage_threshold *= 0.5
+
+	if(!(brute_dam + brute >= max_damage) && !(brute >= organ_damage_threshold))
+		return FALSE
+
+	var/list/victims = list()
+	var/organ_hit_chance = 0
+	for(var/obj/item/organ/I as anything in contained_organs)
+		if(!I.cosmetic_only && I.damage < I.maxHealth)
+			victims[I] = I.relative_size
+			organ_hit_chance += I.relative_size
+
+	//No damageable organs
+	if(!length(victims))
+		return FALSE
+
+	organ_hit_chance += 5 * brute/organ_damage_threshold
+
+	if(encased && !(bodypart_flags & BP_BROKEN_BONES)) //ribs protect
+		organ_hit_chance *= 0.6
+
+	organ_hit_chance = min(organ_hit_chance, 100)
+	if(prob(organ_hit_chance))
+		var/obj/item/organ/victim = pick_weight(victims)
+		brute *= victim.external_damage_modifier
+		return victim.applyOrganDamage(brute)
 
 //Heals brute and burn damage for the organ. Returns 1 if the damage-icon states changed at all.
 //Damage cannot go below zero.

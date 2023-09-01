@@ -102,7 +102,10 @@ GLOBAL_VAR(testing_last_internet_stderr)
 
 			var/shell_scrubbed_input = shell_url_scrub(web_sound_input)
 			var/list/output = world.shelleo("[ytdl] --geo-bypass --format \"bestaudio\[ext=mp3]/best\[ext=mp4]\[height<=360]/bestaudio\[ext=m4a]/bestaudio\[ext=aac]\" --dump-single-json --no-playlist -- \"[shell_scrubbed_input]\"")
-			testing("PIS:SHELL RAN: ["[ytdl] --geo-bypass --format \"bestaudio\[ext=mp3]/best\[ext=mp4]\[height<=360]/bestaudio\[ext=m4a]/bestaudio\[ext=aac]\" --dump-single-json --no-playlist -- \"[shell_scrubbed_input]\""]")
+			testing("PIS:Dumping Shell")
+			#ifdef TESTING
+			to_chat(world, "[ytdl] --geo-bypass --format \"bestaudio\[ext=mp3]/best\[ext=mp4]\[height<=360]/bestaudio\[ext=m4a]/bestaudio\[ext=aac]\" --dump-single-json --no-playlist -- \"[shell_scrubbed_input]\"")
+			#endif //This is stupid, but the standard testing define doesn't work.
 			var/errorlevel = output[SHELLEO_ERRORLEVEL]
 			testing("PIS: ERRL: [errorlevel]")
 			var/stdout = output[SHELLEO_STDOUT]

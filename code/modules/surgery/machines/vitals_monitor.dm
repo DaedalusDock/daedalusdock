@@ -84,7 +84,7 @@
 		return
 
 	if (connected_optable.patient)
-		update_icon()
+		update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/vitals_monitor/proc/handle_pulse(list/overlays)
 	. = overlays

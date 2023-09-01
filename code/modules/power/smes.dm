@@ -72,9 +72,9 @@
 	for(var/obj/item/stock_parts/cell/PC in component_parts)
 		MC += PC.maxcharge
 		C += PC.charge
-	capacity = MC / (10000) * 1e6
+	capacity = MC * 100 // 1 Kilowatt to 0.1 megawatts
 	if(!initial(charge) && !charge)
-		charge = C / 10000 * 1e6
+		charge = C * 100 // 1 Kilowatt to 0.1 megawatts
 
 /obj/machinery/power/smes/should_have_node()
 	return TRUE

@@ -20,11 +20,12 @@
 	affecting.receive_damage(clamp(brute_dam/2, 15, 50), clamp(burn_dam/2, 0, 50)) //Damage the chest based on limb's existing damage
 	if(!silent)
 		var/list/messages = violent_dismember_messages(dismember_type, clean)
-		owner.visible_message(
-			span_danger("[messages[1]]"),
-			span_userdanger("[messages[2]]"),
-			span_hear("[messages[3]]")
-		)
+		if(length(messages))
+			owner.visible_message(
+				span_danger("[messages[1]]"),
+				span_userdanger("[messages[2]]"),
+				span_hear("[messages[3]]")
+			)
 
 	if(!clean)
 		playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)

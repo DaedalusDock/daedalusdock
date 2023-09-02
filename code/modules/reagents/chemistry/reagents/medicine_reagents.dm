@@ -197,19 +197,6 @@
 	C.adjustFireLoss(-12 * removed, updating_health = FALSE)
 	return TRUE
 
-/datum/reagent/medicine/dylovene
-	name = "Dylovene"
-	description = "Dylovene is a broad-spectrum antitoxin used to neutralize poisons before they can do significant harm."
-	taste_description = "a roll of gauze"
-	reagent_state = LIQUID
-	color = "#00a000"
-	value = 2.1
-
-/datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_ANTITOX, 1)
-	C.adjustToxLoss(-6 * removed, FALSE)
-	return TRUE
-
 /datum/reagent/medicine/dexalin
 	name = "Dexalin"
 	description = "Dexalin is used in the treatment of oxygen deprivation."
@@ -459,33 +446,27 @@
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
 
-/datum/reagent/medicine/venaxilin
-	name = "Venaxilin"
-	description = "Venixalin is a strong, specialised antivenom for dealing with advanced toxins and venoms."
-	taste_description = "overpowering sweetness"
+/datum/reagent/medicine/dylovene
+	name = "Dylovene"
+	description = "Dylovene is a broad-spectrum antitoxin used to neutralize poisons before they can do significant harm."
+	taste_description = "a roll of gauze"
 	color = "#dadd98"
 	metabolization_rate = 0.4
 
-	var/remove_generic = 1
-	var/list/remove_toxins = list(
-		/datum/reagent/toxin/venom,
-		/datum/reagent/toxin/carpotoxin,
-	)
-
-/datum/reagent/medicine/venaxilin/affect_blood(mob/living/carbon/C, removed)
-	if(remove_generic)
-		C.drowsyness = max(0, C.drowsyness - 6 * removed)
-		//C.adjust_hallucination(-9 * removed)
-		SET_CHEM_EFFECT_IF_LOWER(C, CE_ANTITOX, 1)
+/datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
+	C.adjust_drowsyness(-6 * removed)
+	SET_CHEM_EFFECT_IF_LOWER(C, CE_ANTITOX, 1)
 
 	var/removing = (4 * removed)
 	var/datum/reagents/ingested = C.get_ingested_reagents()
+
 	for(var/datum/reagent/R in ingested.reagent_list)
-		if((remove_generic && istype(R, /datum/reagent/toxin)) || (R.type in remove_toxins))
+		if(istype(R, /datum/reagent/toxin))
 			ingested.remove_reagent(R.type, removing)
 			return
+
 	for(var/datum/reagent/R in C.reagents.reagent_list)
-		if((remove_generic && istype(R, /datum/reagent/toxin)) || (R.type in remove_toxins))
+		if(istype(R, /datum/reagent/toxin))
 			C.reagents.remove_reagent(R.type, removing)
 			return
 
@@ -543,7 +524,7 @@
 		return
 
 	var/mob/living/carbon/human/H = C
-	for(var/obj/item/organ/I in H.processing_organs)
+	for(var/obj/item/organ/I as anything in H.processing_organs)
 		if(!(I.organ_flags & ORGAN_SYNTHETIC))
 			if(istype(I, /obj/item/organ/brain))
 				// if we have located an organic brain, apply side effects
@@ -552,7 +533,8 @@
 				// peridaxon only heals minor brain damage
 				if(I.damage >= I.maxHealth * 0.75)
 					continue
-			I.applyOrganDamage(-3 * removed)
+			I.applyOrganDamage(-3 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/medicine/hyperzine
 	name = "Hyperzine"
@@ -978,7 +960,7 @@
 
 /datum/reagent/medicine/activated_charcoal
 	name = "Activated Charcoal"
-	description = "Helps the body filter out toxins from the blood."
+	description = "Helps the body purge reagents."
 	reagent_state = SOLID
 	color = "#252525"
 	metabolization_rate = 1
@@ -987,4 +969,7 @@
 	for(var/datum/reagent/R in holder.reagent_list)
 		if(R.type == type)
 			continue
-		holder.remove_reagent(R.type, 2.5 * removed)
+		holder.remove_reagent(R.type, 8 * removed)
+
+	if(prob(3))
+		C.vomit(50, FALSE, FALSE, 1, purge_ratio = 0.2)

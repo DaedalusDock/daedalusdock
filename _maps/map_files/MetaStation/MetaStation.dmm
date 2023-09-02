@@ -39460,8 +39460,36 @@
 "nle" = (
 /obj/structure/window/reinforced/spawner/west,
 /obj/structure/rack,
-/obj/item/storage/medkit/regular,
-/obj/item/storage/medkit/regular,
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = -4;
+	pixel_y = 12
+	},
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = -4;
+	pixel_y = 8
+	},
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = -4;
+	pixel_y = 4
+	},
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = -4
+	},
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = 8;
+	pixel_y = 12
+	},
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = 8;
+	pixel_y = 8
+	},
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = 8;
+	pixel_y = 4
+	},
+/obj/item/stack/medical/bruise_pack{
+	pixel_x = 8
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "nlm" = (
@@ -45564,6 +45592,7 @@
 	network = list("ss13","medbay")
 	},
 /obj/item/fixovein,
+/obj/item/bonesetter,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/starboard)
 "pxh" = (
@@ -66756,6 +66785,7 @@
 	},
 /obj/item/hemostat,
 /obj/effect/turf_decal/tile/blue,
+/obj/item/bonesetter,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/port)
 "xqO" = (

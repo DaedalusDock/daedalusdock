@@ -88,7 +88,7 @@
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/sensor_device,
 		/obj/item/radio,
-		/obj/item/clothing/gloves/,
+		/obj/item/clothing/gloves,
 		/obj/item/lazarus_injector,
 		/obj/item/bikehorn/rubberducky,
 		/obj/item/clothing/mask/surgical,
@@ -127,7 +127,7 @@
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer = 1,
 		/obj/item/stack/gauze/twelve = 1,
-		/obj/item/stack/medical/bruise_pack = 2,
+		/obj/item/stack/medical/bruise_pack = 3,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/scalpel = 1,

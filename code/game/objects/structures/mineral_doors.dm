@@ -39,7 +39,7 @@
 	. = ..()
 	zas_update_loc()
 
-/obj/structure/mineral_door/Bumped(atom/movable/AM)
+/obj/structure/mineral_door/BumpedBy(atom/movable/AM)
 	..()
 	if(!door_opened)
 		return TryToSwitchState(AM)

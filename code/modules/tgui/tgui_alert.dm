@@ -21,10 +21,15 @@
 			return
 	// Client does NOT have tgui_input on: Returns regular input
 	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
-		if(length(buttons) == 2)
-			return alert(user, message, title, buttons[1], buttons[2])
-		if(length(buttons) == 3)
-			return alert(user, message, title, buttons[1], buttons[2], buttons[3])
+		switch(length(buttons))
+			if(1)
+				return alert(user, message, title, buttons[1])
+			if(2)
+				return alert(user, message, title, buttons[1], buttons[2])
+			if(3)
+				return alert(user, message, title, buttons[1], buttons[2], buttons[3])
+			/*else
+				fall back and show them a TGUI one, whether they want it or not.*/
 	var/datum/tgui_modal/alert = new(user, message, title, buttons, timeout, autofocus)
 	alert.ui_interact(user)
 	alert.wait()

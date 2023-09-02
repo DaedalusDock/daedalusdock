@@ -147,16 +147,16 @@
 		return //Makes no sense.
 	switch(handset_state)
 		if(HANDSET_ONHOOK)//We're taking the phone.
-			icon_state = "phone_answered"
 			playsound(src, 'goon/sounds/phone/pick_up.ogg', 50, extrarange=MEDIUM_RANGE_SOUND_EXTRARANGE)
 			if(state == STATE_ANSWER)// Do we have a call waiting?
 				accept_call()
 			handset_state = HANDSET_OFFHOOK
+			update_icon()
 
 		if(HANDSET_OFFHOOK)//Returning the phone
-			icon_state = "phone"
 			playsound(src, 'goon/sounds/phone/hang_up.ogg', 50, extrarange=MEDIUM_RANGE_SOUND_EXTRARANGE)
 			handset_state = HANDSET_ONHOOK
+			update_icon()
 			if(state == STATE_WAITING)//We aren't doing anything more.
 				return
 			if(active_caller)// Do we have an active call? Ringing or not. If so, drop it.
@@ -164,6 +164,7 @@
 				return
 			//else (We are in hangup/farbusy, We need to clean up)
 			cleanup_residual_call()
+
 
 
 /obj/machinery/telephone/multitool_act(mob/living/user, obj/item/tool)
@@ -213,7 +214,7 @@
 	if(!COOLDOWN_FINISHED(src,scan_cooldown))
 		return //Chill out, bro.
 	discovered_phones = list() //Trash the existing list.
-	post_signal(create_signal("ping", list("filter"=net_class)))
+	post_signal(create_signal(NET_ADDRESS_PING, list("filter"=net_class)))
 	COOLDOWN_START(src,scan_cooldown,10 SECONDS)
 	sleep(2 SECONDS)
 	updateUsrDialog()
@@ -223,27 +224,27 @@
 	if(. == RECEIVE_SIGNAL_FINISHED)//Handled by default.
 		return
 	//Ping response handled in parent.
-	switch(signal.data["command"])
-		if("ping_reply")//Add new phone to database
+	switch(signal.data[PACKET_CMD])
+		if(NET_COMMAND_PING_REPLY)//Add new phone to database
 			if(signal.data["netclass"] == NETCLASS_P2P_PHONE) //Another phone!
-				discovered_phones[signal.data["s_addr"]]=signal.data["user_id"]
+				discovered_phones[signal.data[PACKET_SOURCE_ADDRESS]]=signal.data["user_id"]
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
-				post_signal(create_signal(signal.data["s_addr"],list("command"="tel_busy"))) //Busy signal, Reject call.
+				post_signal(create_signal(signal.data[PACKET_SOURCE_ADDRESS],list(PACKET_CMD="tel_busy"))) //Busy signal, Reject call.
 				return RECEIVE_SIGNAL_FINISHED
-			receive_call(list(signal.data["s_addr"],signal.data["caller_id"]))
+			receive_call(list(signal.data[PACKET_SOURCE_ADDRESS],signal.data["caller_id"]))
 			return RECEIVE_SIGNAL_FINISHED
 		if("tel_ready")//Remote side pickup
-			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				call_connected()
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_busy")//Answering station busy
-			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				fuck_off_im_busy()
 				return RECEIVE_SIGNAL_FINISHED
 		if("tel_hup")//Remote side hangup
-			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				switch(state)
 					if(STATE_ANSWER)
 						drop_call()// Call never connected, just reset.
@@ -588,8 +589,8 @@
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
 	v_signal.has_magic_data = TRUE //We're sending a virtual speaker. This packet MUST be discarded.
-	v_signal.data["s_addr"] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
-	v_signal.data["d_addr"] = callstation.active_caller[CALLER_NETID]
+	v_signal.data[PACKET_SOURCE_ADDRESS] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
+	v_signal.data[PACKET_DESTINATION_ADDRESS] = callstation.active_caller[CALLER_NETID]
 	v_signal.data["command"] = "tel_voicedata"
 	v_signal.data["virtualspeaker"] = v_speaker //This is a REAL REFERENCE. Packet MUST be discarded.
 	v_signal.data["message"] = message

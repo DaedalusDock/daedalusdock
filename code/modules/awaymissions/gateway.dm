@@ -132,7 +132,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	density = TRUE
 	invisibility = INVISIBILITY_ABSTRACT
 
-/obj/effect/gateway_portal_bumper/Bumped(atom/movable/AM)
+/obj/effect/gateway_portal_bumper/BumpedBy(atom/movable/AM)
 	if(get_dir(src,AM) == SOUTH)
 		gateway.Transfer(AM)
 

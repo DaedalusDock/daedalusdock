@@ -1539,8 +1539,8 @@
 						ADD_TRAIT(src, TRAIT_MAGNETIC_ID_CARD, CHAMELEON_ITEM_TRAIT)
 
 					if(tgui_alert(user, "Create new DNA, Fingerprints, and Blood Type?", "DNA Spoofing", list("Yes", "No")) == "Yes")
-						dna_hash = md5(rand(1,999))
-						fingerprint = md5(rand(1, 999))
+						dna_hash = md5("[rand(1,999)]")
+						fingerprint = md5("[rand(1,999)]")
 						blood_type = random_blood_type()
 
 					else if(tgui_alert(user, "Use real fingerprint?", "Forge ID", list("Yes", "No")) == "Yes")

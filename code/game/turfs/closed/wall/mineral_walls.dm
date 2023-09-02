@@ -77,7 +77,7 @@
 	radiate()
 	..()
 
-/turf/closed/wall/mineral/uranium/Bumped(atom/movable/AM)
+/turf/closed/wall/mineral/uranium/BumpedBy(atom/movable/AM)
 	radiate()
 	..()
 

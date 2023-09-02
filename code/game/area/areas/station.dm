@@ -291,6 +291,14 @@
 	name = "\improper Aft Central Primary Hallway"
 	icon_state = "hallCA"
 
+/area/station/hallway/primary/central/port
+	name = "\improper Port Central Primary Hallway"
+	icon_state = "hallCP"
+
+/area/station/hallway/primary/central/starboard
+	name = "\improper Starboard Central Primary Hallway"
+	icon_state = "hallCS"
+
 /area/station/hallway/primary/upper
 	name = "\improper Upper Central Primary Hallway"
 	icon_state = "centralhall"

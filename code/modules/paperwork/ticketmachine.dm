@@ -133,7 +133,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 		if(100)
 			maptext_x = 8
 	maptext = MAPTEXT(current_number) //Finally, apply the maptext
-	update_appearance()
 
 /obj/machinery/ticket_machine/attackby(obj/item/I, mob/user, params)
 	..()

@@ -36,6 +36,7 @@
 	name = "\improper Secret Base"
 	ambience_index = AMBIENCE_DANGER
 	ambient_buzz = 'sound/ambience/magma.ogg'
+	ambient_buzz_vol = 35
 
 /area/ruin/unpowered/cultaltar
 	name = "\improper Cult Altar"
@@ -86,11 +87,14 @@
 	power_equip = FALSE
 	power_light = FALSE
 	ambient_buzz = 'sound/ambience/magma.ogg'
+	ambient_buzz_vol = 35
 
 //ash walker nest
 /area/ruin/unpowered/ash_walkers
 	ambient_buzz = 'sound/ambience/magma.ogg'
+	ambient_buzz_vol = 35
 
 /area/ruin/unpowered/ratvar
 	outdoors = TRUE
 	ambient_buzz = 'sound/ambience/magma.ogg'
+	ambient_buzz_vol = 35

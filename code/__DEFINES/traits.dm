@@ -585,6 +585,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_KEEP_DIRECTION_WHILE_PULLING "keep_direction_while_pulling"
 // Prevents this item from entering closets/crates entirely via insertion_allowed()
 #define TRAIT_REJECT_INSERTION "reject_insertion"
+/// Wearing this item in the mask slot will make your voice Unknown
+#define TRAIT_HIDES_VOICE "hides_voice"
+/// Wearing this item in the mask slot will make your voice your current ID, or unknown
+#define TRAIT_REPLACES_VOICE "replaces_voice"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"

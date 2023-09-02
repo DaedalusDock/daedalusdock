@@ -600,7 +600,7 @@
 	for(var/datum/reagent/current_reagent as anything in reagents)
 		. |= current_reagent.expose_atom(src, reagents[current_reagent], exposed_temperature)
 
-/// Are you allowed to drop this atom
+/// Are you allowed to drop items into this atom's contents
 /atom/proc/AllowDrop()
 	return FALSE
 

@@ -6,6 +6,7 @@
 	strip_delay = 40
 	equip_delay_other = 40
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_VOX_VARIATION
+
 	var/modifies_speech = FALSE
 	var/mask_adjusted = FALSE
 	var/adjusted_flags = null
@@ -17,6 +18,21 @@
 		clothing_flags ^= (VOICEBOX_DISABLED)
 		var/status = !(clothing_flags & VOICEBOX_DISABLED)
 		to_chat(user, span_notice("You turn the voice box in [src] [status ? "on" : "off"]."))
+
+/obj/item/clothing/mask/attackby(obj/item/W, mob/user, params)
+	. = ..()
+	if(istype(W, /obj/item/voice_changer))
+		if(!(flags_inv & HIDEFACE))
+			to_chat(user, span_warning("[src] is not compatible with [W]."))
+			return TRUE
+		if(!user.is_holding(src))
+			to_chat(user, span_warning("You must be holding [src] to do that."))
+			return TRUE
+		if(!do_after(user, src, 5 SECONDS, DO_PUBLIC, display = W))
+			return TRUE
+		AddComponent(/datum/component/voice_changer, W)
+		to_chat(user, span_notice("You insert [W] into [src]."))
+		return TRUE
 
 /obj/item/clothing/mask/equipped(mob/M, slot)
 	. = ..()

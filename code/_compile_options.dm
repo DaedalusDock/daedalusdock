@@ -219,6 +219,11 @@
 #define DATUMVAR_DEBUGGING_MODE
 #endif
 
+#ifdef GC_FAILURE_HARD_LOOKUP
+// Don't stop when searching, go till you're totally done
+#define FIND_REF_NO_CHECK_TICK
+#endif
+
 #ifdef REFERENCE_DOING_IT_LIVE
 // compile the backend
 #define REFERENCE_TRACKING
@@ -226,7 +231,3 @@
 #define GC_FAILURE_HARD_LOOKUP
 #endif
 
-#ifdef GC_FAILURE_HARD_LOOKUP
-// Don't stop when searching, go till you're totally done
-#define FIND_REF_NO_CHECK_TICK
-#endif

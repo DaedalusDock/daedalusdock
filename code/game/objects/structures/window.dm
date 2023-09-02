@@ -65,7 +65,6 @@
 
 	zas_update_loc()
 
-
 	if(fulltile)
 		setDir()
 

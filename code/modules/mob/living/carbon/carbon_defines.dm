@@ -122,3 +122,4 @@
 
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+	COOLDOWN_DECLARE(blood_spray_cd)

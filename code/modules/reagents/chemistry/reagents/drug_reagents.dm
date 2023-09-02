@@ -74,6 +74,9 @@
 		mytray.adjust_pestlevel(-rand(1,2))
 
 /datum/reagent/drug/nicotine/affect_blood(mob/living/carbon/C, removed)
+	if(prob(volume * 20))
+		APPLY_CHEM_EFFECT(C, CE_PULSE, 1)
+
 	if(prob(0.5))
 		var/smoke_message = pick("You feel relaxed.", "You feel calmed.","You feel alert.","You feel rugged.")
 		to_chat(C, span_notice("[smoke_message]"))
@@ -87,9 +90,8 @@
 	. = TRUE
 
 /datum/reagent/drug/nicotine/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(0.1, 0)
-	C.adjustOxyLoss(1.1, 0)
-	. = TRUE
+	. = ..()
+	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 
 /datum/reagent/drug/krokodil
 	name = "Krokodil"

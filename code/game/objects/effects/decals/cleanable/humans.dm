@@ -225,7 +225,7 @@
 	desc = "It's red."
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
-	bloodiness = 0
+	bloodiness = 10
 	var/drips = 1
 	dryname = "drips of blood"
 	drydesc = "It's red."

@@ -69,7 +69,7 @@
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(0, amount, updating_health, required_status)
+		take_overall_damage(0, amount, updating_health, required_status, can_break_bones = FALSE)
 	else
 		heal_overall_damage(0, abs(amount), required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
@@ -157,7 +157,7 @@
 		var/obj/item/bodypart/BP = X
 		if(status && !(BP.bodytype & status))
 			continue
-		if(BP.brute_dam + BP.burn_dam < BP.max_damage)
+		if(BP.is_damageable())
 			parts += BP
 	return parts
 

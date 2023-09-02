@@ -31,7 +31,7 @@
 	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
 
 	var/obj/item/bodypart/BP = patient.get_bodypart(BODY_ZONE_R_ARM)
-	BP.dismember(clean = TRUE)
+	BP.dismember(silent = TRUE, clean = TRUE)
 	TEST_ASSERT(!patient.get_bodypart(BODY_ZONE_R_ARM), "Patient did not lose limb to dismember()")
 	TEST_ASSERT((BP.bodypart_flags & BP_CUT_AWAY), "Arm did not gain CUT_AWAY flag after dismemberment")
 

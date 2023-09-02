@@ -14,7 +14,7 @@
 		return
 
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-	if(!heart || heart.pulse == PULSE_NONE)
+	if(!heart || (heart.pulse == PULSE_NONE && !(heart.organ_flags & ORGAN_SYNTHETIC)))
 		return
 
 	var/pulse_mod = 1
@@ -28,6 +28,7 @@
 
 	var/temp_bleed = 0
 
+	var/list/obj/item/bodypart/spray_candidates
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		var/needs_bleed_update = FALSE
@@ -37,6 +38,9 @@
 			bleed_amt = iter_bleed_rate
 
 		if(iter_part.bodypart_flags & BP_HAS_BLOOD)
+			if(bleed_amt > 3 && (iter_part.bodypart_flags & BP_ARTERY_CUT))
+				LAZYADD(spray_candidates, iter_part)
+
 			for(var/datum/wound/W as anything in iter_part.wounds)
 				if(W.bleeding() && W.bleed_timer > 0)
 					W.bleed_timer--
@@ -54,9 +58,19 @@
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
 			iter_part.adjustBleedStacks(-1, 0)
 
+	var/bled
 	if(temp_bleed)
-		bleed(temp_bleed)
+		bled = bleed(temp_bleed)
 		bleed_warn(temp_bleed)
+
+	if(bled && COOLDOWN_FINISHED(src, blood_spray_cd) && LAZYLEN(spray_candidates))
+		var/obj/item/bodypart/spray_part = pick(spray_candidates)
+		spray_blood(pick(GLOB.alldirs))
+		visible_message(
+			span_danger("Blood sprays out from \the [src]'s [spray_part.plaintext_zone]!"),
+			span_userdanger("Blood sprays out from your [spray_part.plaintext_zone]!"),
+		)
+		COOLDOWN_START(src, blood_spray_cd, 8 SECONDS)
 
 
 /// Has each bodypart update its bleed/wound overlay icon states
@@ -74,10 +88,13 @@
 	if(isturf(loc) && prob(sqrt(amt)*BLOOD_DRIP_RATE_MOD))
 		add_splatter_floor(loc, (amt <= 10))
 
+	return TRUE
+
 /mob/living/carbon/human/bleed(amt)
+	if(NOBLOOD in dna.species.species_traits)
+		return
 	amt *= physiology.bleed_mod
-	if(!(NOBLOOD in dna.species.species_traits))
-		..()
+	. = ..()
 
 /// A helper to see how much blood we're losing per tick
 /mob/living/carbon/proc/get_bleed_rate()

@@ -433,6 +433,10 @@
 				remove_organ(O)
 
 		item_in_bodypart.forceMove(bodypart_turf)
+		if(!violent_removal)
+			continue
+		item_in_bodypart.throw_at(get_edge_target_turf(item_in_bodypart, pick(GLOB.alldirs)), rand(1,3), 5)
+
 
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
@@ -478,6 +482,9 @@
 	// sync the bodypart's damage with its wounds
 	return update_damage()
 
+/obj/item/bodypart/proc/is_damageable(added_damage)
+	return !IS_ORGANIC_LIMB(src) || ((brute_dam + burn_dam + added_damage) < max_damage * 4)
+
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
@@ -504,25 +511,26 @@
 		burn *= 2
 
 	var/spillover = 0
-	var/pure_brute = brute + brute_dam
-	var/damagable = ((brute_dam + burn_dam) < max_damage)
+	var/pure_brute = brute
+	var/damagable = is_damageable()
 
-	spillover = brute_dam + burn_dam + brute - max_damage
-	if(spillover > 0)
-		brute = max(brute - spillover, 0)
-	else
-		spillover = brute_dam + burn_dam + brute + burn - max_damage
+	if(!is_damageable())
+		spillover =  brute_dam + burn_dam + brute - max_damage
 		if(spillover > 0)
-			burn = max(burn - spillover, 0)
+			brute = max(brute - spillover, 0)
+		else
+			spillover = brute_dam + burn_dam + brute + burn - max_damage
+			if(spillover > 0)
+				burn = max(burn - spillover, 0)
 
 	#ifndef UNIT_TESTS
 	/*
 	// DISMEMBERMENT - Doesn't happen during unit tests due to fucking up damage.
 	*/
-	if(owner)
+	if(owner && breaks_bones)
 		var/total_damage = brute_dam + burn_dam + burn + brute + spillover
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
-			if(attempt_dismemberment(pure_brute, burn, sharpness))
+			if(attempt_dismemberment(pure_brute, burn, sharpness, total_damage > max_damage * LIMB_AUTODISMEMBER_PERCENT))
 				return update_damage() || .
 	#endif
 
@@ -712,8 +720,8 @@
 	brute_ratio = brute_dam / (limb_loss_threshold * 2)
 	burn_ratio = burn_dam / (limb_loss_threshold * 2)
 
-	var/tbrute = round( (brute_dam/max_damage)*3, 1 )
-	var/tburn = round( (burn_dam/max_damage)*3, 1 )
+	var/tbrute = min(round( (brute_dam/max_damage)*3, 1 ), 3)
+	var/tburn = min(round( (burn_dam/max_damage)*3, 1 ), 3)
 	if((tbrute != brutestate) || (tburn != burnstate))
 		brutestate = tbrute
 		burnstate = tburn

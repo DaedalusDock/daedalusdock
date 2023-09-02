@@ -4,7 +4,7 @@
 		return TRUE
 
 ///Remove target limb from it's owner, with side effects.
-/obj/item/bodypart/proc/dismember(dismember_type = DROPLIMB_EDGE, silent=TRUE, clean = FALSE)
+/obj/item/bodypart/proc/dismember(dismember_type = DROPLIMB_EDGE, silent=FALSE, clean = FALSE)
 	if(!owner || !dismemberable)
 		return FALSE
 
@@ -19,16 +19,25 @@
 
 	affecting.receive_damage(clamp(brute_dam/2, 15, 50), clamp(burn_dam/2, 0, 50)) //Damage the chest based on limb's existing damage
 	if(!silent)
-		limb_owner.visible_message(span_danger("<B>[limb_owner]'s [name] is violently dismembered!</B>"))
+		var/list/messages = violent_dismember_messages(dismember_type, clean)
+		owner.visible_message(
+			span_danger(messages[1]),
+			span_userdanger(messages[2]),
+			span_hear(messages[3])
+		)
 
-	INVOKE_ASYNC(limb_owner, TYPE_PROC_REF(/mob, emote), "scream")
-	playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
+	if(!clean)
+		playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
+		limb_owner.shock_stage += minimum_break_damage
+		if(bodypart_flags & BP_HAS_BLOOD)
+			limb_owner.bleed(rand(20, 40))
 
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
 
 	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
 	var/obj/item/bodypart/stump = create_stump()
 	drop_limb()
+	adjustPain(60)
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
 	var/turf/owner_location = limb_owner.loc
@@ -41,6 +50,9 @@
 		var/datum/wound/lost_limb/W = new(stump, dismember_type, clean)
 		LAZYADD(stump.wounds, W)
 		stump.attach_limb(limb_owner)
+		stump.adjustPain(max_damage)
+		if(!clean && dismember_type != BURN)
+			stump.set_sever_artery(TRUE)
 
 	if(QDELETED(src)) //Could have dropped into lava/explosion/chasm/whatever
 		return TRUE
@@ -50,10 +62,10 @@
 		return TRUE
 
 	add_mob_blood(limb_owner)
-	limb_owner.bleed(rand(20, 40))
-	var/direction = pick(GLOB.cardinals)
 
-	if(!clean)
+	var/direction = pick(GLOB.alldirs)
+
+	if(dismember_type == DROPLIMB_EDGE && !clean)
 		var/t_range = rand(2,max(throw_range/2, 2))
 		var/turf/target_turf = get_turf(src)
 		for(var/i in 1 to t_range-1)
@@ -65,8 +77,17 @@
 				break
 		throw_at(target_turf, throw_range, throw_speed)
 
-		if(dismember_type == DROPLIMB_BLUNT)
-			limb_owner.spray_blood(direction, 2)
+	if(dismember_type == DROPLIMB_BLUNT)
+		limb_owner.spray_blood(direction, 2)
+		var/obj/effect/decal/cleanable/gore
+		if(IS_ORGANIC_LIMB(src))
+			gore = new /obj/effect/decal/cleanable/blood/gibs(get_turf(limb_owner))
+		else
+			gore = new /obj/effect/decal/cleanable/robot_debris(get_turf(limb_owner))
+
+		gore.throw_at(get_edge_target_turf(src, direction), rand(1,3), 5)
+		drop_contents()
+		qdel(src)
 
 	return TRUE
 

@@ -121,6 +121,14 @@
 	for(var/atom/movable/AM in range(radius_range, a))
 		if((AM.flags_1 & HOLOGRAM_1) || (blacklist && (AM.type in blacklist)))
 			continue
+		if(istype(AM, /obj/item/bodypart))
+			var/obj/item/bodypart/BP = AM
+			if(BP.owner)
+				continue
+		if(istype(AM, /obj/item/organ))
+			var/obj/item/organ/O = AM
+			if(O.owner)
+				continue
 		. += AM
 
 
@@ -160,6 +168,14 @@
 	var/list/present_qualities = list()
 
 	for(var/obj/item/contained_item in source.contents)
+		if(istype(contained_item, /obj/item/bodypart))
+			var/obj/item/bodypart/BP = contained_item
+			if(BP.owner)
+				continue
+		if(istype(contained_item, /obj/item/organ))
+			var/obj/item/organ/O = contained_item
+			if(O.owner)
+				continue
 		if(contained_item.atom_storage)
 			for(var/obj/item/subcontained_item in contained_item.contents)
 				available_tools[subcontained_item.type] = TRUE

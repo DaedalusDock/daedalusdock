@@ -585,6 +585,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_KEEP_DIRECTION_WHILE_PULLING "keep_direction_while_pulling"
 // Prevents this item from entering closets/crates entirely via insertion_allowed()
 #define TRAIT_REJECT_INSERTION "reject_insertion"
+/// Wearing this item in the mask slot will make your voice Unknown
+#define TRAIT_HIDES_VOICE "hides_voice"
+/// Wearing this item in the mask slot will make your voice your current ID, or unknown
+#define TRAIT_REPLACES_VOICE "replaces_voice"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"
@@ -666,6 +670,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// trait denoting someone will sometimes recover out of crit
 #define TRAIT_UNBREAKABLE "unbreakable"
+
+/// trait denoting something is being risen up by a table
+#define TRAIT_TABLE_RISEN "table_risen"
 
 // common trait sources
 #define TRAIT_GENERIC "generic"

@@ -162,6 +162,8 @@ GLOBAL_VAR(restart_counter)
 
 	GLOB.demo_log = "[GLOB.log_directory]/demo.log"
 
+	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
+
 #ifdef UNIT_TESTS
 	GLOB.test_log = "[GLOB.log_directory]/tests.log"
 	start_log(GLOB.test_log)
@@ -190,6 +192,7 @@ GLOBAL_VAR(restart_counter)
 	if(fexists(GLOB.config_error_log))
 		fcopy(GLOB.config_error_log, "[GLOB.log_directory]/config_error.log")
 		fdel(GLOB.config_error_log)
+
 
 	if(GLOB.round_id)
 		log_game("Round ID: [GLOB.round_id]")

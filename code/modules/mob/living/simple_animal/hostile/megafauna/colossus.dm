@@ -296,7 +296,7 @@
 	set_anchored(FALSE)
 	return TRUE
 
-/obj/machinery/anomalous_crystal/Bumped(atom/movable/AM)
+/obj/machinery/anomalous_crystal/BumpedBy(atom/movable/AM)
 	..()
 	if(ismob(AM))
 		ActivationReaction(AM, ACTIVATE_MOB_BUMP)

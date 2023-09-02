@@ -53,7 +53,7 @@
 		if(A.idSelf == idSelf)
 			controller = A
 			break
-	for(var/obj/machinery/door/airlock/I in GLOB.machines)
+	for(var/obj/machinery/door/airlock/I in GLOB.airlocks)
 		if(I.id_tag == idDoor)
 			door = I
 			break
@@ -240,7 +240,7 @@
 			lostPower = FALSE
 
 /obj/machinery/door_buttons/airlock_controller/findObjsByTag()
-	for(var/obj/machinery/door/airlock/A in GLOB.machines)
+	for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
 		if(A.id_tag == idInterior)
 			interiorAirlock = A
 		else if(A.id_tag == idExterior)

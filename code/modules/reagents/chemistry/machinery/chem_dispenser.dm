@@ -38,13 +38,13 @@
 	var/obj/item/reagent_containers/beaker = null
 	var/list/dispensable_reagents = list(
 		/datum/reagent/aluminium,
+		/datum/reagent/ammonia,
 		/datum/reagent/carbon,
 		/datum/reagent/calcium,
 		/datum/reagent/chlorine,
 		/datum/reagent/copper,
 		/datum/reagent/consumable/ethanol,
 		/datum/reagent/fluorine,
-		/datum/reagent/helium,
 		/datum/reagent/hydrogen,
 		/datum/reagent/iodine,
 		/datum/reagent/iron,

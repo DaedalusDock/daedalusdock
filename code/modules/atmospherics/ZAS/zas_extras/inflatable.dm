@@ -230,26 +230,6 @@
 		return
 	return TryToSwitchState(user)
 
-/obj/machinery/inflatable/door/zas_update_loc()
-	. = ..()
-	if(!.)
-		return
-
-	var/turf/T = get_turf(src)
-
-	if(density)
-		if(!T.zone || T.zone.invalid)
-			return
-		var/zone/old_zone = T.zone
-		old_zone.remove_turf(T)
-
-		var/datum/gas_mixture/GM = unsafe_return_air()
-		old_zone.air.merge(GM)
-		GM.zero()
-
-	else
-		T.update_air_properties()
-
 /obj/structure/inflatable/door/proc/TryToSwitchState(atom/user)
 	if(isSwitchingStates) return
 	if(ismob(user))
@@ -389,7 +369,7 @@
 	user.forceMove(src)
 	update_icon()
 	user.visible_message(span_notice("[user] enters \the [src]."), span_notice("You enter \the [src]."))
-	RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/remove_vis)
+	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(remove_vis))
 
 /obj/structure/inflatable/shelter/proc/remove_vis(mob/user, force)
 	vis_contents.Remove(user)

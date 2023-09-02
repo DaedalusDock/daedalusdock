@@ -100,9 +100,8 @@
 
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]."
+		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]. <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>"
 
-		. += wear_id.get_id_examine_strings(user)
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()

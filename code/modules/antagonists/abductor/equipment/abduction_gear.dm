@@ -817,20 +817,11 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 	var/static/list/injected_reagents = list(/datum/reagent/cordiolis_hepatico)
 
-/obj/structure/table/optable/abductor/Initialize(mapload)
+/obj/structure/table/optable/abductor/Crossed(atom/movable/crossed_by, oldloc)
 	. = ..()
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
-
-/obj/structure/table/optable/abductor/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(AM == src)
-		return
-	if(iscarbon(AM))
+	if(iscarbon(crossed_by))
 		START_PROCESSING(SSobj, src)
-		to_chat(AM, span_danger("You feel a series of tiny pricks!"))
+		to_chat(crossed_by, span_danger("You feel a series of tiny pricks!"))
 
 /obj/structure/table/optable/abductor/process(delta_time)
 	. = PROCESS_KILL

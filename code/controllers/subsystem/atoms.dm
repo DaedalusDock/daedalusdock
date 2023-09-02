@@ -164,7 +164,7 @@ SUBSYSTEM_DEF(atoms)
 	else if(!(A.initialized))
 		BadInitializeCalls[the_type] |= BAD_INIT_DIDNT_INIT
 	else
-		if(ismovable(A))
+		if(ismovable(A) && !qdeleted)
 			A.loc?.Entered(A)
 		SEND_SIGNAL(A,COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZE)
 		if(created_atoms && from_template && ispath(the_type, /atom/movable))//we only want to populate the list with movables

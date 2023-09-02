@@ -41,7 +41,7 @@
 	B.mimic_broken(src, target)
 
 	qdel(src)
-	target.Bumped(B)
+	target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/bottle/attack_secondary(atom/target, mob/living/user, params)
 
@@ -146,7 +146,7 @@
 	if(to_mimic.isGlass)
 		if(prob(33))
 			var/obj/item/shard/stab_with = new(to_mimic.drop_location())
-			target.Bumped(stab_with)
+			target.BumpedBy(stab_with)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	else
 		force = 0

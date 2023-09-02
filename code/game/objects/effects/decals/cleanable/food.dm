@@ -37,17 +37,17 @@
 	if(is_species(mover, /datum/species/snail))
 		return FALSE
 
-/obj/effect/decal/cleanable/food/salt/Bumped(atom/movable/AM)
+/obj/effect/decal/cleanable/food/salt/BumpedBy(atom/movable/AM)
 	. = ..()
 	if(is_species(AM, /datum/species/snail))
 		to_chat(AM, span_danger("Your path is obstructed by [span_phobia("salt")]."))
 
-/obj/effect/decal/cleanable/food/salt/on_entered(datum/source, atom/movable/AM)
+/obj/effect/decal/cleanable/food/salt/Crossed(atom/movable/crossed_by, oldloc)
 	. = ..()
-	if(!isliving(AM))
+	if(!isliving(crossed_by))
 		return
-	if(iscarbon(AM))
-		var/mob/living/carbon/C = AM
+	if(iscarbon(crossed_by))
+		var/mob/living/carbon/C = crossed_by
 		if(C.m_intent == MOVE_INTENT_WALK)
 			return
 	safepasses--

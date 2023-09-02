@@ -249,7 +249,7 @@
 	for(var/obj/effect/landmark/shuttle_arena_safe/exit in GLOB.landmarks_list)
 		warp_points += exit
 
-/obj/effect/forcefield/arena_shuttle/Bumped(atom/movable/AM)
+/obj/effect/forcefield/arena_shuttle/BumpedBy(atom/movable/AM)
 	if(!isliving(AM))
 		return
 
@@ -281,7 +281,7 @@
 	initial_duration = 0
 	var/list/warp_points = list()
 
-/obj/effect/forcefield/arena_shuttle_entrance/Bumped(atom/movable/AM)
+/obj/effect/forcefield/arena_shuttle_entrance/BumpedBy(atom/movable/AM)
 	if(!isliving(AM))
 		return
 

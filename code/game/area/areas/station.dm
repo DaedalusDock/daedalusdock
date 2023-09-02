@@ -15,7 +15,7 @@
 	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
 	forced_ambience = TRUE
 	ambient_buzz = 'sound/ambience/source_corridor2.ogg'
-	ambient_buzz_vol = 20
+	ambient_buzz_vol = 30
 
 //Maintenance - Departmental
 
@@ -290,6 +290,14 @@
 /area/station/hallway/primary/central/aft
 	name = "\improper Aft Central Primary Hallway"
 	icon_state = "hallCA"
+
+/area/station/hallway/primary/central/port
+	name = "\improper Port Central Primary Hallway"
+	icon_state = "hallCP"
+
+/area/station/hallway/primary/central/starboard
+	name = "\improper Starboard Central Primary Hallway"
+	icon_state = "hallCS"
 
 /area/station/hallway/primary/upper
 	name = "\improper Upper Central Primary Hallway"

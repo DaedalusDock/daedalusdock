@@ -31,6 +31,7 @@
 	held_w_class = WEIGHT_CLASS_TINY
 	held_state = "mouse_gray"
 	faction = list("rat")
+	loc_procs = CROSSED
 
 /mob/living/simple_animal/mouse/Initialize(mapload)
 	. = ..()
@@ -40,10 +41,6 @@
 	AddComponent(/datum/component/squeak, list('sound/effects/mousesqueek.ogg' = 1), 100, extrarange = SHORT_RANGE_SOUND_EXTRARANGE) //as quiet as a mouse or whatever
 
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /mob/living/simple_animal/mouse/proc/splat()
 	src.health = 0
@@ -74,17 +71,14 @@
 	if(.)
 		SSmobs.cheeserats += src
 
-/mob/living/simple_animal/mouse/proc/on_entered(datum/source, AM as mob|obj)
-	SIGNAL_HANDLER
-	if(AM == src)
-		return
-	if(ishuman(AM))
+/mob/living/simple_animal/mouse/Crossed(atom/movable/crossed_by, oldloc)
+	if(ishuman(crossed_by))
 		if(!stat)
-			var/mob/M = AM
+			var/mob/M = crossed_by
 			to_chat(M, span_notice("[icon2html(src, M)] Squeak!"))
-	if(istype(AM, /obj/item/food/cheese/royal))
+	if(istype(crossed_by, /obj/item/food/cheese/royal))
 		evolve()
-		qdel(AM)
+		qdel(crossed_by)
 
 /mob/living/simple_animal/mouse/handle_automated_action()
 	if(prob(chew_probability))

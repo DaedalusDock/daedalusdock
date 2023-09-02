@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - qol: The Report Issues Button no longer sends you to github, but instead sends
-      the issue report itself.

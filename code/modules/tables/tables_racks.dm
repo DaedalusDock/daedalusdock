@@ -22,6 +22,15 @@
 	anchored = TRUE
 	pass_flags_self = PASSTABLE | LETPASSTHROW
 	layer = TABLE_LAYER
+	custom_materials = list(/datum/material/iron = 2000)
+	max_integrity = 100
+	integrity_failure = 0.33
+	smoothing_flags = SMOOTH_BITMASK
+	smoothing_groups = SMOOTH_GROUP_TABLES
+	canSmoothWith = SMOOTH_GROUP_TABLES
+	loc_procs = CROSSED|UNCROSSED|EXIT
+	flags_1 = BUMP_PRIORITY_1
+
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods
 	var/buildstack = /obj/item/stack/sheet/iron
@@ -29,12 +38,8 @@
 	var/buildstackamount = 1
 	var/framestackamount = 2
 	var/deconstruction_ready = 1
-	custom_materials = list(/datum/material/iron = 2000)
-	max_integrity = 100
-	integrity_failure = 0.33
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = SMOOTH_GROUP_TABLES
-	canSmoothWith = SMOOTH_GROUP_TABLES
+	/// Are we flipped over? -1 is unflippable
+	var/flipped = FALSE
 
 /obj/structure/table/Initialize(mapload, _buildstack)
 	. = ..()
@@ -71,9 +76,17 @@
 
 /obj/structure/table/update_icon(updates=ALL)
 	. = ..()
+
+	if(flipped == TRUE)
+		icon = 'icons/obj/flipped_tables.dmi'
+		icon_state = base_icon_state
+	else
+		icon = initial(icon)
+
 	if((updates & UPDATE_SMOOTHING))
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
+
 
 /obj/structure/table/narsie_act()
 	var/atom/A = loc
@@ -89,6 +102,26 @@
 
 /obj/structure/table/attack_tk(mob/user)
 	return
+
+/obj/structure/table/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
+	. = ..()
+	var/mob/living/L = usr
+	if(!istype(L))
+		return
+	if(!L.combat_mode)
+		return
+	if(!can_interact(L))
+		return
+	if(!over.Adjacent(src))
+		return
+
+	if(flipped)
+		if(get_turf(over) == loc)
+			unflip(L)
+			return
+	else
+		flip(L, get_cardinal_dir(src, over))
+		return
 
 /obj/structure/table/MouseDrop_T(atom/dropping, mob/living/user)
 	. = ..()
@@ -117,15 +150,87 @@
 	. = ..()
 	if(.)
 		return
+	if(isprojectile(mover))
+		return check_cover(mover, get_turf(mover))
+
 	if(mover.throwing)
 		return TRUE
-	if(locate(/obj/structure/table) in get_turf(mover))
+
+	var/obj/structure/table/T = locate() in get_turf(mover)
+	if(T && T.flipped != TRUE)
+		return TRUE
+	var/obj/structure/low_wall/L = locate() in get_turf(mover)
+	if(L)
+		return TRUE
+
+	if(flipped == TRUE && !(border_dir & dir))
 		return TRUE
 
 /obj/structure/table/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	. = !density
 	if(caller)
-		. = . || (caller.pass_flags & PASSTABLE)
+		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
+
+/obj/structure/table/Exit(atom/movable/leaving, direction)
+	. = ..()
+	if(!density)
+		return
+
+	if(isprojectile(leaving) && !check_cover(leaving, get_turf(leaving)))
+		leaving.Bump(src)
+		return FALSE
+
+	if(flipped == TRUE && (direction & dir))
+		return FALSE
+
+//checks if projectile 'P' from turf 'from' can hit whatever is behind the table. Returns 1 if it can, 0 if bullet stops.
+/obj/structure/table/proc/check_cover(obj/projectile/P, turf/from)
+	var/turf/cover
+	if(flipped == TRUE)
+		cover = get_turf(src)
+	else
+		cover = get_step(loc, get_dir(from, loc))
+	if(!cover)
+		return TRUE
+	if (get_dist(P.starting, loc) <= 1) //Tables won't help you if people are THIS close
+		return TRUE
+
+	var/chance = 0
+	if(ismob(P.original) && get_turf(P.original) == cover)
+		var/mob/living/L = P.original
+		if (L.body_position == LYING_DOWN)
+			chance += 40 //Lying down lets you catch less bullets
+
+	if(flipped == TRUE)
+		if(get_dir(loc, from) == dir || get_dir(loc, from) == turn(dir, 180)) //Flipped tables catch more bullets
+			chance += 30
+
+	if(prob(chance))
+		return FALSE //blocked
+	return TRUE
+
+/obj/structure/table/Crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+	if(!isliving(crossed_by))
+		return
+
+	if(!istype(src, /obj/structure/table/optable))
+		if(!HAS_TRAIT(crossed_by, TRAIT_TABLE_RISEN))
+			ADD_TRAIT(crossed_by, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
+
+/obj/structure/table/Uncrossed(atom/movable/gone, direction)
+	if(!isliving(gone))
+		return
+
+	if(!istype(src, /obj/structure/table/optable))
+		if(HAS_TRAIT(gone, TRAIT_TABLE_RISEN))
+			REMOVE_TRAIT(gone, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
+
+/obj/structure/table/setDir(ndir)
+	. = ..()
+	if(dir != NORTH && dir != 0)
+		layer = ABOVE_MOB_LAYER
+	else
+		layer = TABLE_LAYER
 
 /obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user)
 	if(!Adjacent(user) || !user.pulling)
@@ -225,6 +330,8 @@
 
 /obj/structure/table/attackby(obj/item/I, mob/living/user, params)
 	var/list/modifiers = params2list(params)
+	if(flipped == TRUE)
+		return ..()
 
 	if(istype(I, /obj/item/storage/bag/tray))
 		var/obj/item/storage/bag/tray/T = I
@@ -279,8 +386,8 @@
 			I.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
 			AfterPutItemOnTable(I, user)
 			return TRUE
-	else
-		return ..()
+
+	return ..()
 
 /obj/structure/table/attackby_secondary(obj/item/weapon, mob/user, params)
 	if(istype(weapon, /obj/item/toy/cards/deck))
@@ -405,37 +512,33 @@
 	max_integrity = 70
 	resistance_flags = ACID_PROOF
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
-	var/list/debris = list()
+	var/glass_shard_type = /obj/item/shard
 
-/obj/structure/table/glass/Initialize(mapload)
+/obj/structure/table/glass/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
-	debris += new frame
-	if(buildstack == /obj/item/stack/sheet/plasmaglass)
-		debris += new /obj/item/shard/plasma
-	else
-		debris += new /obj/item/shard
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
-
-/obj/structure/table/glass/Destroy()
-	QDEL_LIST(debris)
-	. = ..()
-
-/obj/structure/table/glass/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(AM == src)
+	if(. || !flipped)
 		return
+	if(mover.pass_flags & PASSGLASS)
+		return TRUE
+
+/obj/structure/table/glass/Exit(atom/movable/leaving, direction)
+	. = ..()
+	if(. || !flipped)
+		return
+	if(leaving.pass_flags & PASSGLASS)
+		return TRUE
+
+/obj/structure/table/glass/Crossed(atom/movable/crossed_by, oldloc)
+	. = ..()
 	if(flags_1 & NODECONSTRUCT_1)
 		return
-	if(!isliving(AM))
+	if(!isliving(crossed_by))
 		return
 	// Don't break if they're just flying past
-	if(AM.throwing)
-		addtimer(CALLBACK(src, PROC_REF(throw_check), AM), 5)
+	if(crossed_by.throwing)
+		addtimer(CALLBACK(src, PROC_REF(throw_check), crossed_by), 5)
 	else
-		check_break(AM)
+		check_break(crossed_by)
 
 /obj/structure/table/glass/proc/throw_check(mob/living/M)
 	if(M.loc == get_turf(src))
@@ -445,18 +548,18 @@
 	if(M.has_gravity() && M.mob_size > MOB_SIZE_SMALL && !(M.movement_type & FLYING))
 		table_shatter(M)
 
-/obj/structure/table/glass/proc/table_shatter(mob/living/L)
+/obj/structure/table/glass/proc/table_shatter(mob/living/victim)
 	visible_message(span_warning("[src] breaks!"),
 		span_danger("You hear breaking glass."))
-	var/turf/T = get_turf(src)
-	playsound(T, SFX_SHATTER, 50, TRUE)
-	for(var/I in debris)
-		var/atom/movable/AM = I
-		AM.forceMove(T)
-		debris -= AM
-		if(istype(AM, /obj/item/shard))
-			AM.throw_impact(L)
-	L.Paralyze(100)
+
+	playsound(loc, SFX_SHATTER, 50, TRUE)
+
+	new frame(loc)
+
+	var/obj/item/shard/shard = new glass_shard_type(loc)
+	shard.throw_impact(victim)
+
+	victim.Paralyze(100)
 	qdel(src)
 
 /obj/structure/table/glass/deconstruct(disassembled = TRUE, wrench_disassembly = 0)
@@ -467,16 +570,13 @@
 		else
 			var/turf/T = get_turf(src)
 			playsound(T, SFX_SHATTER, 50, TRUE)
-			for(var/X in debris)
-				var/atom/movable/AM = X
-				AM.forceMove(T)
-				debris -= AM
+			new frame(loc)
+			var/obj/item/shard = new glass_shard_type(loc)
+			shard.color = color
 	qdel(src)
 
 /obj/structure/table/glass/narsie_act()
 	color = NARSIE_WINDOW_COLOUR
-	for(var/obj/item/shard/S in debris)
-		S.color = NARSIE_WINDOW_COLOUR
 
 /obj/structure/table/glass/plasmaglass
 	name = "plasma glass table"
@@ -487,6 +587,7 @@
 	custom_materials = list(/datum/material/alloy/plasmaglass = 2000)
 	buildstack = /obj/item/stack/sheet/plasmaglass
 	max_integrity = 100
+	glass_shard_type = /obj/item/shard/plasma
 
 /*
  * Wooden tables
@@ -610,6 +711,7 @@
 	max_integrity = 200
 	integrity_failure = 0.25
 	armor = list(MELEE = 10, BULLET = 30, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
+	flipped = -1
 
 /obj/structure/table/reinforced/deconstruction_hints(mob/user)
 	if(deconstruction_ready)

@@ -75,21 +75,49 @@
 	return amount
 
 /mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+	if(!amount)
+		return
+	var/heal = amount < 0
 	if(!forced && HAS_TRAIT(src, TRAIT_TOXINLOVER)) //damage becomes healing and healing becomes damage
 		amount = -amount
 		if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
 			amount = min(amount, 0)
-		if(amount > 0)
+		if(!heal)
 			blood_volume = max(blood_volume - (5*amount), 0)
 		else
 			blood_volume = max(blood_volume - amount, 0)
 	else if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
 		amount = min(amount, 0)
 
-	if(amount > 0) //Not a toxin lover
+	if(!heal) //Not a toxin lover
 		amount *= (1 - (CHEM_EFFECT_MAGNITUDE(src, CE_ANTITOX) * 0.25)) || 1
 
-	return ..()
+	var/list/pick_organs = shuffle(processing_organs)
+	// Prioritize damaging our filtration organs first.
+	var/obj/item/organ/liver/liver = organs_by_slot[ORGAN_SLOT_LIVER]
+	if(liver)
+		pick_organs -= liver
+		pick_organs.Insert(1, liver)
+
+	// Move the brain to the very end since damage to it is vastly more dangerous
+	// (and isn't technically counted as toxloss) than general organ damage.
+	var/obj/item/organ/brain/brain = organs_by_slot[ORGAN_SLOT_BRAIN]
+	if(brain)
+		pick_organs -= brain
+		pick_organs += brain
+
+	for(var/obj/item/organ/O as anything in pick_organs)
+		if(amount <= 0)
+			break
+
+		amount -= O.applyOrganDamage(amount, silent = TRUE, updating_health = FALSE)
+
+	if(updating_health)
+		updatehealth()
+
+/mob/living/carbon/getToxLoss()
+	for(var/obj/item/organ/O as anything in processing_organs)
+		. += O.getToxLoss()
 
 /mob/living/carbon/pre_stamina_change(diff as num, forced)
 	if(!forced && (status_flags & GODMODE))
@@ -104,10 +132,10 @@
  * * amount - damage to be done
  * * maximum - currently an arbitrarily large number, can be set so as to limit damage
  */
-/mob/living/carbon/adjustOrganLoss(slot, amount, maximum)
+/mob/living/carbon/adjustOrganLoss(slot, amount, maximum, updating_health)
 	var/obj/item/organ/O = getorganslot(slot)
 	if(O && !(status_flags & GODMODE))
-		O.applyOrganDamage(amount, maximum)
+		O.applyOrganDamage(amount, maximum, updating_health = updating_health)
 
 /**
  * If an organ exists in the slot requested, and we are capable of taking damage (we don't have [GODMODE] on), call the set damage proc on that organ, which can
@@ -129,13 +157,16 @@
  * * slot - organ slot, like [ORGAN_SLOT_HEART]
  */
 /mob/living/carbon/getOrganLoss(slot)
+	if(slot == ORGAN_SLOT_BRAIN)
+		return getBrainLoss()
+
 	var/obj/item/organ/O = getorganslot(slot)
 	if(O)
 		return O.damage
 
 /mob/living/carbon/getBrainLoss()
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
-	return B?.damage
+	return B ? B.damage : maxHealth
 
 ////////////////////////////////////////////
 

@@ -28,16 +28,18 @@
 	return ..()
 
 /obj/item/organ/appendix/on_life(delta_time, times_fired)
-	..()
+	. = ..()
 	var/mob/living/carbon/organ_owner = owner
 	if(!organ_owner)
 		return
 
 	if(organ_flags & ORGAN_DEAD)
 		// forced to ensure people don't use it to gain tox as slime person
-		organ_owner.adjustToxLoss(2 * delta_time, updating_health = TRUE, forced = TRUE)
+		organ_owner.adjustToxLoss(2 * delta_time, updating_health = FALSE, forced = TRUE)
+		return TRUE
 	else if(inflamation_stage)
-		inflamation(delta_time)
+		return inflamation(delta_time)
+
 	else if(DT_PROB(APPENDICITIS_PROB, delta_time))
 		become_inflamed()
 
@@ -62,11 +64,13 @@
 				to_chat(organ_owner, span_warning("You feel a stabbing pain in your abdomen!"))
 				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 5)
 				organ_owner.Stun(rand(40, 60))
-				organ_owner.adjustToxLoss(1, updating_health = TRUE, forced = TRUE)
+				organ_owner.adjustToxLoss(1, updating_health = FALSE, forced = TRUE)
+				. = TRUE
 		if(3)
 			if(DT_PROB(0.5, delta_time))
 				organ_owner.vomit(95)
-				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 15)
+				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 15, updating_health = FALSE)
+				. = TRUE
 
 
 /obj/item/organ/appendix/get_availability(datum/species/owner_species)

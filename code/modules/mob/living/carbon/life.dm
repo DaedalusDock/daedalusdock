@@ -285,7 +285,8 @@
 	// NOTE: processing_organs is sorted by GLOB.organ_process_order on insertion
 	for(var/obj/item/organ/organ as anything in processing_organs)
 		if(organ?.owner) // This exist mostly because reagent metabolization can cause organ reshuffling
-			organ.on_life(delta_time, times_fired)
+			if(organ.on_life(delta_time, times_fired))
+				updatehealth()
 
 
 /mob/living/carbon/handle_diseases(delta_time, times_fired)
@@ -585,7 +586,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		return
 
 	adjustToxLoss(0.6 * delta_time, TRUE,  TRUE)
-	adjustOrganLoss(pick(ORGAN_SLOT_HEART, ORGAN_SLOT_LUNGS, ORGAN_SLOT_STOMACH, ORGAN_SLOT_EYES, ORGAN_SLOT_EARS), 0.5* delta_time)
+	if(DT_PROB(2, delta_time))
+		vomit(50, TRUE, FALSE, 1, TRUE, harm = FALSE, purge_ratio = 1)
 
 /mob/living/carbon/proc/undergoing_liver_failure()
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)

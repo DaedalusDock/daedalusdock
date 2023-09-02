@@ -119,7 +119,7 @@
 			return TRUE
 
 /datum/reagent/drug/krokodil/overdose_process(mob/living/carbon/C)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25, updating_health = FALSE)
 	C.adjustToxLoss(0.25, 0)
 	. = TRUE
 
@@ -155,7 +155,7 @@
 	C.AdjustImmobilized(-40 * removed)
 	C.stamina.adjust(20 * removed)
 	C.set_jitter_if_lower(10 SECONDS)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 4) * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 4) * removed, updating_health = FALSE)
 	if(prob(5))
 		spawn(-1)
 			C.emote(pick("twitch", "shiver"))
@@ -174,7 +174,7 @@
 		C.drop_all_held_items()
 
 	C.adjustToxLoss(1, 0)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, (rand(5, 10) / 10))
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, (rand(5, 10) / 10), updating_health = FALSE)
 	. = TRUE
 
 /datum/reagent/drug/bath_salts
@@ -211,7 +211,7 @@
 		to_chat(C, span_notice("[high_message]"))
 
 	C.stamina.adjust(5 * removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 4 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 4 * removed, updating_health = FALSE)
 	C.hallucination += 5 * removed
 	if(!HAS_TRAIT(C, TRAIT_IMMOBILIZED) && !ismovable(C.loc))
 		step(C, pick(GLOB.cardinals))
@@ -315,19 +315,21 @@
 	addiction_types = list(/datum/addiction/maintenance_drugs = 14)
 
 /datum/reagent/drug/maint/powder/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * removed, updating_health = FALSE)
 
 	// 5x if you want to OD, you can potentially go higher, but good luck managing the brain damage.
 	var/amt = max(round(volume/3, 0.1), 1)
 	C?.mind?.experience_multiplier_reasons |= type
 	C?.mind?.experience_multiplier_reasons[type] = amt
+	return TRUE
 
 /datum/reagent/drug/maint/powder/on_mob_end_metabolize(mob/living/carbon/C)
 	C?.mind?.experience_multiplier_reasons[type] = null
 	C?.mind?.experience_multiplier_reasons -= type
 
 /datum/reagent/drug/maint/powder/overdose_process(mob/living/carbon/C)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 6)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 6, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/drug/maint/sludge
 	name = "Maintenance Sludge"
@@ -376,11 +378,12 @@
 	C.AdjustUnconscious(-10 * removed)
 	C.AdjustParalyzed(-10 * removed)
 	C.AdjustImmobilized(-10 * removed)
-	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 1.5 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 1.5 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/drug/maint/tar/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(5)
-	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 3)
+	C.adjustToxLoss(5, FALSE)
+	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 3, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/drug/mushroomhallucinogen
@@ -508,19 +511,21 @@
 	dancer.sound_environment_override = NONE
 
 /datum/reagent/drug/blastoff/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3 * removed, updating_health = FALSE)
 	C.AdjustKnockdown(-20 * removed)
 
 	if(prob(BLASTOFF_DANCE_MOVE_CHANCE_PER_UNIT * volume))
 		spawn(-1)
 			C.emote("flip")
+	return TRUE
 
 /datum/reagent/drug/blastoff/overdose_process(mob/living/carbon/C)
-	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3)
+	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3, updating_health = FALSE)
 
 	if(prob(BLASTOFF_DANCE_MOVE_CHANCE_PER_UNIT * volume))
 		spawn(-1)
 			C.emote("spin")
+	return TRUE
 
 ///This proc listens to the flip signal and throws the mob every third flip
 /datum/reagent/drug/blastoff/proc/on_flip()
@@ -578,7 +583,8 @@
 	addiction_types = list(/datum/addiction/maintenance_drugs = 20)
 
 /datum/reagent/drug/saturnx/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/drug/saturnx/on_mob_metabolize(mob/living/invisible_man, class)
 	if(class != CHEM_BLOOD)
@@ -666,4 +672,5 @@
 	if(prob(10))
 		spawn(-1)
 			invisible_man.emote("laugh")
-	invisible_man.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.4)
+	invisible_man.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.4, updating_health = FALSE)
+	return TRUE

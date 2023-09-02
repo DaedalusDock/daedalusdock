@@ -80,7 +80,8 @@
 
 	//Detox can heal small amounts of damage
 	if (damage < maxHealth && !owner.chem_effects[CE_TOXIN])
-		applyOrganDamage(-0.2 * owner.chem_effects[CE_ANTITOX])
+		applyOrganDamage(-0.2 * owner.chem_effects[CE_ANTITOX], updating_health = FALSE)
+		. = TRUE
 
 	// Get the effectiveness of the liver.
 	var/filter_effect = 3
@@ -104,10 +105,12 @@
 
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
 	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !HAS_TRAIT(owner, TRAIT_IRRADIATED) && damage > 0)
-		if(damage < low_threshold)
-			applyOrganDamage(-0.2)
-		if(damage < high_threshold)
-			applyOrganDamage(-0.3)
+		if(damage < low_threshold * maxHealth)
+			applyOrganDamage(-0.3, updating_health = FALSE)
+			. = TRUE
+		else if(damage < high_threshold * maxHealth)
+			applyOrganDamage(-0.2, updating_health = FALSE)
+			. = TRUE
 
 	if(damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))

@@ -619,11 +619,12 @@
 	var/lums = owner_turf.get_lumcount()
 	if(lums > 0.5) //we allow a little more than usual so we can produce light from the adapted eyes
 		to_chat(owner, span_danger("Your eyes! They burn in the light!"))
-		applyOrganDamage(10) //blind quickly
+		applyOrganDamage(10, updating_health = FALSE) //blind quickly
 		playsound(owner, 'sound/machines/grill/grillsizzle.ogg', 50)
 	else
-		applyOrganDamage(-10) //heal quickly
-	. = ..()
+		applyOrganDamage(-10, updating_health = FALSE) //heal quickly
+		. = TRUE
+	return ..() || .
 
 /obj/item/organ/eyes/night_vision/maintenance_adapted/Remove(mob/living/carbon/unadapted, special = FALSE)
 	//remove lighting

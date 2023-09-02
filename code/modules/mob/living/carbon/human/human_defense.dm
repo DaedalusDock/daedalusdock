@@ -819,6 +819,7 @@
 		else
 			combined_msg += span_info("You feel fatigued.")
 	if(HAS_TRAIT(src, TRAIT_SELF_AWARE))
+		var/toxloss = getToxLoss()
 		if(toxloss)
 			if(toxloss > 10)
 				combined_msg += span_danger("You feel sick.")

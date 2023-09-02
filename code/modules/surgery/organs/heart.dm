@@ -65,7 +65,7 @@
 	return pulse > PULSE_NONE || (organ_flags & ORGAN_SYNTHETIC)
 
 /obj/item/organ/heart/on_life(delta_time, times_fired)
-	..()
+	. = ..()
 	handle_pulse()
 	// If the owner doesn't need a heart, we don't need to do anything with it.
 	if(!owner.needs_heart())
@@ -73,9 +73,11 @@
 	if(pulse)
 		handle_heartbeat()
 		if(pulse == PULSE_2FAST && prob(1))
-			applyOrganDamage(0.5)
+			applyOrganDamage(0.5, updating_health = FALSE)
+			. = TRUE
 		if(pulse == PULSE_THREADY && prob(5))
-			applyOrganDamage(0.5)
+			applyOrganDamage(0.5, updating_health = FALSE)
+			. = TRUE
 
 /obj/item/organ/heart/proc/handle_pulse()
 	if(organ_flags & ORGAN_SYNTHETIC)
@@ -93,7 +95,8 @@
 	if(pulse_mod > 2 && !is_stable)
 		var/damage_chance = (pulse_mod - 2) ** 2
 		if(prob(damage_chance))
-			applyOrganDamage(0.5)
+			applyOrganDamage(0.5, updating_health = FALSE)
+			. = TRUE
 
 	// Now pulse mod is impacted by shock stage and other things too
 	if(owner.shock_stage > 30)
@@ -159,85 +162,6 @@
 
 /obj/item/organ/heart/get_availability(datum/species/owner_species)
 	return !(NOBLOOD in owner_species.species_traits)
-
-/obj/item/organ/heart/cursed
-	name = "cursed heart"
-	desc = "A heart that, when inserted, will force you to pump it manually."
-	icon_state = "cursedheart-off"
-	base_icon_state = "cursedheart"
-	decay_factor = 0
-	actions_types = list(/datum/action/item_action/organ_action/cursed_heart)
-	var/last_pump = 0
-	var/add_colour = TRUE //So we're not constantly recreating colour datums
-	var/pump_delay = 30 //you can pump 1 second early, for lag, but no more (otherwise you could spam heal)
-	var/blood_loss = 100 //600 blood is human default, so 5 failures (below 122 blood is where humans die because reasons?)
-
-	//How much to heal per pump, negative numbers would HURT the player
-	var/heal_brute = 0
-	var/heal_burn = 0
-	var/heal_oxy = 0
-
-
-/obj/item/organ/heart/cursed/attack(mob/living/carbon/human/accursed, mob/living/carbon/human/user, obj/target)
-	if(accursed == user && istype(accursed))
-		playsound(user,'sound/effects/singlebeat.ogg',40,TRUE)
-		user.temporarilyRemoveItemFromInventory(src, TRUE)
-		Insert(user)
-	else
-		return ..()
-
-/obj/item/organ/heart/cursed/on_life(delta_time, times_fired)
-	if(world.time > (last_pump + pump_delay))
-		if(ishuman(owner) && owner.client) //While this entire item exists to make people suffer, they can't control disconnects.
-			var/mob/living/carbon/human/accursed_human = owner
-			if(accursed_human.dna && !(NOBLOOD in accursed_human.dna.species.species_traits))
-				accursed_human.blood_volume = max(accursed_human.blood_volume - blood_loss, 0)
-				to_chat(accursed_human, span_userdanger("You have to keep pumping your blood!"))
-				if(add_colour)
-					accursed_human.add_client_colour(/datum/client_colour/cursed_heart_blood) //bloody screen so real
-					add_colour = FALSE
-		else
-			last_pump = world.time //lets be extra fair *sigh*
-
-/obj/item/organ/heart/cursed/Insert(mob/living/carbon/accursed, special = 0)
-	. = ..()
-	if(!.)
-		return
-
-	if(owner)
-		to_chat(owner, span_userdanger("Your heart has been replaced with a cursed one, you have to pump this one manually otherwise you'll die!"))
-
-/obj/item/organ/heart/cursed/Remove(mob/living/carbon/accursed, special = 0)
-	..()
-	accursed.remove_client_colour(/datum/client_colour/cursed_heart_blood)
-
-/datum/action/item_action/organ_action/cursed_heart
-	name = "Pump your blood"
-
-//You are now brea- pumping blood manually
-/datum/action/item_action/organ_action/cursed_heart/Trigger(trigger_flags)
-	. = ..()
-	if(. && istype(target, /obj/item/organ/heart/cursed))
-		var/obj/item/organ/heart/cursed/cursed_heart = target
-
-		if(world.time < (cursed_heart.last_pump + (cursed_heart.pump_delay-10))) //no spam
-			to_chat(owner, span_userdanger("Too soon!"))
-			return
-
-		cursed_heart.last_pump = world.time
-		playsound(owner,'sound/effects/singlebeat.ogg',40,TRUE)
-		to_chat(owner, span_notice("Your heart beats."))
-
-		var/mob/living/carbon/human/accursed = owner
-		if(istype(accursed))
-			if(accursed.dna && !(NOBLOOD in accursed.dna.species.species_traits))
-				accursed.blood_volume = min(accursed.blood_volume + cursed_heart.blood_loss*0.5, BLOOD_VOLUME_MAXIMUM)
-				accursed.remove_client_colour(/datum/client_colour/cursed_heart_blood)
-				cursed_heart.add_colour = TRUE
-				accursed.adjustBruteLoss(-cursed_heart.heal_brute)
-				accursed.adjustFireLoss(-cursed_heart.heal_burn)
-				accursed.adjustOxyLoss(-cursed_heart.heal_oxy)
-
 
 /datum/client_colour/cursed_heart_blood
 	priority = 100 //it's an indicator you're dying, so it's very high priority

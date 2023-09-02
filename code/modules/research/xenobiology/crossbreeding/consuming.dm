@@ -120,12 +120,13 @@ Consuming extracts:
 	taste = "fruit jam and cough medicine"
 
 /obj/item/slime_cookie/purple/do_effect(mob/living/M, mob/user)
-	M.adjustBruteLoss(-5)
-	M.adjustFireLoss(-5)
-	M.adjustToxLoss(-5, forced=1) //To heal slimepeople.
-	M.adjustOxyLoss(-5)
-	M.adjustCloneLoss(-5)
-	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, -5)
+	M.adjustBruteLoss(-5, FALSE)
+	M.adjustFireLoss(-5, FALSE)
+	M.adjustToxLoss(-5, FALSE, forced=1) //To heal slimepeople.
+	M.adjustOxyLoss(-5, FALSE)
+	M.adjustCloneLoss(-5, FALSE)
+	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, -5, updating_health = FALSE)
+	M.updatehealth()
 
 /obj/item/slimecross/consuming/blue
 	colour = "blue"

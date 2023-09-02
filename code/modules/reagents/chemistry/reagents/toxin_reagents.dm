@@ -622,7 +622,7 @@
 	addiction_types = list(/datum/addiction/opiods = 25)
 
 /datum/reagent/toxin/fentanyl/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 	if(C.getToxLoss() <= 60)
 		C.adjustToxLoss(1 * removed, 0)
 	if(current_cycle >= 18)
@@ -1038,7 +1038,7 @@
 
 /datum/reagent/toxin/bungotoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	C.adjustOrganLoss(ORGAN_SLOT_HEART, 3 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_HEART, 3 * removed, updating_health = FALSE)
 
 	// If our mob's currently dizzy from anything else, we will also gain confusion
 	var/mob_dizziness = C.get_timed_status_effect_duration(/datum/status_effect/confusion)
@@ -1049,6 +1049,8 @@
 	if(current_cycle >= 12 && prob(8))
 		var/tox_message = pick("You feel your heart spasm in your chest.", "You feel faint.","You feel you need to catch your breath.","You feel a prickle of pain in your chest.")
 		to_chat(C, span_warning("[tox_message]"))
+
+	return TRUE
 /datum/reagent/toxin/leadacetate
 	name = "Lead Acetate"
 	description = "Used hundreds of years ago as a sweetener, before it was realized that it's incredibly poisonous."
@@ -1060,9 +1062,9 @@
 
 
 /datum/reagent/toxin/leadacetate/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_EARS, 1 * removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_EARS, 1 * removed, updating_health = FALSE)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed, updating_health = FALSE)
 	if(prob(1))
 		to_chat(C, span_notice("What was that? Did I hear something?"))
 		C.adjust_timed_status_effect(5 SECONDS, /datum/status_effect/confusion)
-	return ..()
+	return ..() || TRUE

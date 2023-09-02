@@ -502,7 +502,7 @@
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
 	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed, updating_health = FALSE)
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		H.adjust_confusion(2 SECONDS)
@@ -510,6 +510,7 @@
 
 	if(prob(10))
 		C.cure_trauma_type(resilience = TRAUMA_RESILIENCE_BASIC)
+	return TRUE
 
 /datum/reagent/medicine/imidazoline
 	name = "Imidazoline"
@@ -524,7 +525,8 @@
 /datum/reagent/medicine/imidazoline/affect_blood(mob/living/carbon/C, removed)
 	C.eye_blurry = max(C.eye_blurry - 5, 0)
 	C.eye_blind = max(C.eye_blind - 5, 0)
-	C.adjustOrganLoss(ORGAN_SLOT_EYES, -5 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_EYES, -5 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/medicine/peridaxon
 	name = "Peridaxon"
@@ -735,7 +737,7 @@
 		C.hallucination -= 5 * removed
 
 	if(prob(20))
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, 50)
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, 50, updating_health = FALSE)
 
 	if(prob(10))
 		spawn(-1)

@@ -294,7 +294,7 @@
 	switch(blood_percent)
 		if(BLOOD_CIRC_SAFE to INFINITY)
 			if(can_heal)
-				applyOrganDamage(-1)
+				. = applyOrganDamage(-1)
 
 		if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
 			if(prob(1))
@@ -391,7 +391,8 @@
 			to_chat(owner, span_danger("You black out!"))
 		owner.Unconscious(5 SECOND)
 
-/obj/item/organ/brain/applyOrganDamage(damage_amount, maximum)
+/obj/item/organ/brain/applyOrganDamage(damage_amount, maximum, silent, updating_health = TRUE)
+	updating_health = FALSE // Brainloss isn't apart of tox loss, so never update health here.
 	. = ..()
 	if(. >= 20 && damage >= (maxHealth * 0.5)) //This probably won't be triggered by oxyloss or mercury. Probably.
 		var/damage_secondary = . * 0.2
@@ -400,6 +401,9 @@
 			owner.blur_eyes(.)
 			owner.adjust_confusion(. SECONDS)
 			owner.Unconscious(damage_secondary SECONDS)
+
+/obj/item/organ/brain/getToxLoss()
+	return 0
 
 /obj/item/organ/brain/set_organ_dead(failing)
 	. = ..()
@@ -412,9 +416,7 @@
 			brainmob.death()
 		return
 	else
-		if(owner)
-			owner.revive()
-		else if(brainmob)
+		if(brainmob)
 			brainmob.revive()
 		return
 

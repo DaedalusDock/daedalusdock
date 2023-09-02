@@ -745,15 +745,21 @@
 //Proc used to resuscitate a mob, for full_heal see fully_heal()
 /mob/living/proc/revive(full_heal = FALSE, admin_revive = FALSE, excess_healing = 0)
 	if(excess_healing)
-		if(iscarbon(src) && excess_healing)
-			var/mob/living/carbon/C = src
-			if(!(C.dna?.species && (NOBLOOD in C.dna.species.species_traits)))
-				C.blood_volume += (excess_healing*2)//1 excess = 10 blood
+		if(iscarbon(src))
+			var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
+			if(!B)
+				return
+			B.applyOrganDamage(-100)
+			B.set_organ_dead(FALSE)
+			if(excess_healing)
+				var/mob/living/carbon/C = src
+				if(!(C.dna?.species && (NOBLOOD in C.dna.species.species_traits)))
+					C.blood_volume += (excess_healing*2)//1 excess = 10 blood
 
-			for(var/obj/item/organ/organ as anything in C.processing_organs)
-				if(organ.organ_flags & ORGAN_SYNTHETIC)
-					continue
-				organ.applyOrganDamage(excess_healing * -1)//1 excess = 5 organ damage healed
+				for(var/obj/item/organ/organ as anything in C.processing_organs)
+					if(organ.organ_flags & ORGAN_SYNTHETIC)
+						continue
+					organ.applyOrganDamage(excess_healing * -1)//1 excess = 5 organ damage healed
 
 		adjustOxyLoss(-20, TRUE)
 		adjustToxLoss(-20, TRUE, TRUE) //slime friendly

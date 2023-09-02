@@ -648,7 +648,7 @@
 		if(drinker.blood_volume < BLOOD_VOLUME_NORMAL)
 			drinker.blood_volume += 3 * removed
 	else
-		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 		drinker.adjustToxLoss(2 * removed, FALSE)
 		drinker.adjustFireLoss(2 * removed, FALSE)
 		drinker.adjustOxyLoss(2 * removed, FALSE)
@@ -733,7 +733,7 @@
 		if(ishuman(C) && C.blood_volume < BLOOD_VOLUME_NORMAL)
 			C.blood_volume += 3 * removed
 	else  // Will deal about 90 damage when 50 units are thrown
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 		C.adjustToxLoss(1 * removed, 0)
 		C.adjustFireLoss(1 * removed, 0)
 		C.adjustOxyLoss(1 * removed, 0)
@@ -934,9 +934,10 @@
 	var/obj/item/organ/brain/B = C.getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		if (B.damage < 60)
-			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 14 * removed)
+			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 14 * removed, updating_health = FALSE)
 		else
-			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 7 * removed)
+			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 7 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))

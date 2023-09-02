@@ -27,10 +27,11 @@
 		return FALSE
 
 	//Body temperature stability and damage
-	dna.species.handle_body_temperature(src, delta_time, times_fired)
+	if(dna.species.handle_body_temperature(src, delta_time, times_fired))
+		updatehealth()
 
 	if(!IS_IN_STASIS(src))
-		if(.) //not dead
+		if(stat != DEAD) //not dead
 
 			for(var/datum/mutation/human/HM in dna.mutations) // Handle active genes
 				HM.on_life(delta_time, times_fired)
@@ -112,7 +113,7 @@
 
 /// Environment handlers for species
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)
-	dna.species.handle_environment(src, environment, delta_time, times_fired)
+	return dna.species.handle_environment(src, environment, delta_time, times_fired)
 
 /**
  * Adjust the core temperature of a mob

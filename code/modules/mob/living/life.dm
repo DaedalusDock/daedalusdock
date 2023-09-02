@@ -65,7 +65,8 @@
 		//Handle temperature/pressure differences between body and environment
 		var/datum/gas_mixture/environment = loc.return_air()
 		if(environment)
-			handle_environment(environment, delta_time, times_fired)
+			if(handle_environment(environment, delta_time, times_fired))
+				updatehealth()
 
 		if(stat != DEAD)
 			handle_traits(delta_time, times_fired) // eye, ear, brain damages

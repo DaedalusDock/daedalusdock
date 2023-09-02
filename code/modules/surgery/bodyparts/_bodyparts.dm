@@ -602,6 +602,7 @@
 				owner.update_damage_overlays()
 	return .
 
+/// Damages internal organs. Does not call updatehealth(), be mindful.
 /obj/item/bodypart/proc/damage_internal_organs(brute, sharpness)
 	#ifdef UNIT_TESTS
 	return // This randomly changes the damage outcomes, this is bad for unit testing.
@@ -636,7 +637,7 @@
 	if(prob(organ_hit_chance))
 		var/obj/item/organ/victim = pick_weight(victims)
 		brute *= victim.external_damage_modifier
-		return victim.applyOrganDamage(brute)
+		return victim.applyOrganDamage(brute, updating_health = FALSE)
 
 //Heals brute and burn damage for the organ. Returns 1 if the damage-icon states changed at all.
 //Damage cannot go below zero.

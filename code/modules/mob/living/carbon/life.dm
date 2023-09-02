@@ -275,19 +275,21 @@
 		. |= limb.on_life(delta_time, times_fired)
 
 /mob/living/carbon/proc/handle_organs(delta_time, times_fired)
+	var/update
 	if(stat == DEAD)
 		if(CHEM_EFFECT_MAGNITUDE(src, CE_ORGAN_PRESERVATION)) // No organ decay if the body contains formaldehyde.
 			return
 		for(var/obj/item/organ/organ as anything in processing_organs)
-			organ.on_death(delta_time, times_fired) //Needed so organs decay while inside the body.
+			update += organ.on_death(delta_time, times_fired) //Needed so organs decay while inside the body.
 		return
 
 	// NOTE: processing_organs is sorted by GLOB.organ_process_order on insertion
 	for(var/obj/item/organ/organ as anything in processing_organs)
 		if(organ?.owner) // This exist mostly because reagent metabolization can cause organ reshuffling
-			if(organ.on_life(delta_time, times_fired))
-				updatehealth()
+			update += organ.on_life(delta_time, times_fired)
 
+	if(update)
+		updatehealth()
 
 /mob/living/carbon/handle_diseases(delta_time, times_fired)
 	for(var/thing in diseases)

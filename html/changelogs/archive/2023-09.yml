@@ -2,3 +2,7 @@
   bluezorua:
   - qol: Large metastation hallways (Central and Aft) have been split into smaller
       hallways to make atmos management easier.
+2023-09-02:
+  francinum:
+  - balance: Crab-17 Phones can no longer go on discount.
+  - bugfix: Ingame Issue Reporter works now.

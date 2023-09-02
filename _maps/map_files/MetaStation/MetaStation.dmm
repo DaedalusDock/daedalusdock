@@ -28704,8 +28704,10 @@
 /area/station/engineering/atmospherics_engine)
 "jwv" = (
 /obj/structure/table/glass,
-/obj/item/storage/box/beakers,
-/obj/item/reagent_containers/spray/cleaner,
+/obj/machinery/reagentgrinder{
+	pixel_y = 4
+	},
+/obj/item/stack/sheet/mineral/plasma/five,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "jwJ" = (
@@ -43615,6 +43617,8 @@
 /area/station/security/detectives_office)
 "oNl" = (
 /obj/structure/closet/secure_closet/chemical,
+/obj/item/storage/box/beakers,
+/obj/item/reagent_containers/spray/cleaner,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "oNq" = (

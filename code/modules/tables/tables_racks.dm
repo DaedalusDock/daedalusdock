@@ -874,8 +874,8 @@
 		REMOVE_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		UnregisterSignal(patient, COMSIG_PARENT_QDELETING)
 	patient = new_patient
-	ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 	if(patient)
+		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		patient.set_lying_angle(90)
 		patient.setDir(SOUTH)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))

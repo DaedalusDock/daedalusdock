@@ -304,7 +304,7 @@
 				applyOrganDamage(1)
 
 		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
-			owner.eye_blurry = max(owner.eye_blurry,6)
+			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
 			if(!past_damage_threshold(4) && prob(damprob))
 				applyOrganDamage(1)
@@ -397,7 +397,7 @@
 		var/damage_secondary = . * 0.2
 		if (owner)
 			owner.flash_act(visual = TRUE)
-			owner.blur_eyes(. SECONDS)
+			owner.blur_eyes(.)
 			owner.adjust_confusion(. SECONDS)
 			owner.Unconscious(damage_secondary SECONDS)
 

@@ -138,7 +138,7 @@
 
 /datum/reagent/medicine/bicaridine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	C.adjustBruteLoss(-3 * removed, updating_health = FALSE)
+	C.adjustBruteLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/bicaridine/overdose_process(mob/living/M)
@@ -158,7 +158,7 @@
 	overdose_threshold = 20
 
 /datum/reagent/medicine/meralyne/affect_blood(mob/living/carbon/C, removed)
-	C.adjustBruteLoss(-6 * removed, updating_health = FALSE)
+	C.adjustBruteLoss(-12 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/meralyne/overdose_process(mob/living/carbon/C)
@@ -180,7 +180,7 @@
 	value = 2.9
 
 /datum/reagent/medicine/kelotane/affect_blood(mob/living/carbon/C, removed)
-	C.adjustFireLoss(3 * removed, updating_health = FALSE)
+	C.adjustFireLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/dermaline
@@ -194,7 +194,7 @@
 	value = 3.9
 
 /datum/reagent/medicine/dermaline/affect_blood(mob/living/carbon/C, removed)
-	C.adjustFireLoss(-6 * removed, updating_health = FALSE)
+	C.adjustFireLoss(-12 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/dylovene
@@ -207,7 +207,7 @@
 
 /datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_ANTITOX, 1)
-	C.adjustToxLoss(-1.5 * removed, FALSE)
+	C.adjustToxLoss(-6 * removed, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/dexalin

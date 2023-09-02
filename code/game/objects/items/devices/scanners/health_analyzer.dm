@@ -142,7 +142,7 @@
 
 		// Brain
 		var/obj/item/organ/brain/brain = carbon_target.getorganslot(ORGAN_SLOT_BRAIN)
-		var/brain_activity = brain ? ((brain.damage) / brain.maxHealth * 100) : -1
+		var/brain_activity = brain ? ((brain.maxHealth - brain.damage) / brain.maxHealth * 100) : -1
 		switch(brain_activity)
 			if(-1)
 				brain_activity = span_bad("brain not found")

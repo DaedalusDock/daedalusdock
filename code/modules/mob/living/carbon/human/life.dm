@@ -97,12 +97,14 @@
 		if(istype(L, /obj/item/organ/lungs))
 			var/obj/item/organ/lungs/lun = L
 			. = lun.check_breath(breath, src, forced)
-
+			if(. == BREATH_OKAY)
+				adjustOxyLoss(-5)
+				return
 			if(. >= BREATH_SILENT_DAMAGING) // Breath succeeded
 				return
 
 			// Failed a breath for one reason or another.
-			set_blurriness(max(3, eye_blurry))
+			blur_eyes(3)
 			if(prob(20))
 				spawn(-1)
 					emote("gasp")

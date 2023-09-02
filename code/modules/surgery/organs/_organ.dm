@@ -329,7 +329,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			if(damage < low_threshold)
 				degree = " a lot"
 			else if(damage_amount < 5)
-				degree = "a bit"
+				degree = " a bit"
 
 			owner.apply_pain(damage_amount, ownerlimb.body_zone, "Something inside your [BP.plaintext_zone] hurts[degree].", updating_health = FALSE)
 

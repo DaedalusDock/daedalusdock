@@ -125,7 +125,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	return ..()
 
 /obj/machinery/ticket_machine/proc/handle_maptext()
-	switch(ticket_number) //This is here to handle maptext offsets so that the numbers align.
+	switch(current_number) //This is here to handle maptext offsets so that the numbers align.
 		if(0 to 9)
 			maptext_x = 13
 		if(10 to 99)
@@ -133,6 +133,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 		if(100)
 			maptext_x = 8
 	maptext = MAPTEXT(current_number) //Finally, apply the maptext
+	update_appearance()
 
 /obj/machinery/ticket_machine/attackby(obj/item/I, mob/user, params)
 	..()

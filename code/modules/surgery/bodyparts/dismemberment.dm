@@ -21,9 +21,9 @@
 	if(!silent)
 		var/list/messages = violent_dismember_messages(dismember_type, clean)
 		owner.visible_message(
-			span_danger(messages[1]),
-			span_userdanger(messages[2]),
-			span_hear(messages[3])
+			span_danger("[messages[1]]"),
+			span_userdanger("[messages[2]]"),
+			span_hear("[messages[3]]")
 		)
 
 	if(!clean)

@@ -5,6 +5,7 @@
 	icon_state = "body_scanner_open"
 	dir = EAST
 	density = TRUE
+	var/mob/living/carbon/carbon_occupant
 
 	var/obj/machinery/bodyscanner_console/linked_console
 
@@ -23,8 +24,19 @@
 
 /obj/machinery/bodyscanner/update_icon_state()
 	. = ..()
-	if(occupant)
-		icon_state = "body_scanner_closed"
+	if(machine_stat & (BROKEN|NOPOWER))
+		icon_state = "body_scanner_off"
+		return
+	if(carbon_occupant)
+		switch(carbon_occupant.health)
+			if(50 to INFINITY)
+				icon_state = "body_scanner_green"
+			if(0 to 50)
+				icon_state = "body_scanner_yellow"
+			if(-99 to 0)
+				icon_state = "body_scanner_red"
+		if(carbon_occupant.stat == DEAD)
+			icon_state = "body_scanner_death"
 	else
 		icon_state = "body_scanner_open"
 
@@ -50,6 +62,7 @@
 
 /obj/machinery/bodyscanner/set_occupant(atom/movable/new_occupant)
 	. = ..()
+	carbon_occupant = occupant
 	update_icon_state()
 
 /obj/machinery/bodyscanner/deconstruct(disassembled)
@@ -113,7 +126,6 @@
 			span_notice("[occupant] climbs out of [src]"),
 			blind_message = span_hear("You hear a pressurized hiss, then a sound like glass creaking.")
 		)
-
 	occupant.forceMove(get_turf(src))
 	set_occupant(null)
 
@@ -193,6 +205,7 @@
 	var/mob/living/carbon/human/H = linked_scanner.occupant
 	scan = H.get_bodyscanner_data()
 	playsound(linked_scanner, 'sound/machines/medbayscanner.ogg', 50)
+	linked_scanner.update_icon_state()
 	updateUsrDialog()
 
 /obj/machinery/bodyscanner_console/proc/clear_scan()
@@ -326,7 +339,7 @@
 						<strong>Blood Volume:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[scan["blood_volume"]]u/[scan["blood_volume_max"]]u
+						[scan["blood_volume"]]u/[scan["blood_volume_max"]]u Type: [scan["blood_type"]]
 					</td>
 				</tr>
 	"}
@@ -338,6 +351,17 @@
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
 						[scan["temperature"]-T0C]&deg;C ([FAHRENHEIT(scan["temperature"])]&deg;F)
+					</td>
+				</tr>
+	"}
+
+	. += {"
+				<tr>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						<strong>DNA:</strong>
+					</td>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						[scan["dna"]]
 					</td>
 				</tr>
 	"}
@@ -397,11 +421,31 @@
 				</tr>
 	"}
 
+	if(scan["cardiac_arrest"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("<strong>Patient suffering from cardiac arrest: Apply defibrillation or other electric shock immediately!</strong>")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
+
+	if(scan["dna_ruined"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("<strong>ERROR: patient's DNA sequence is unreadable.</strong>")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
+
 	if(scan["radiation"])
 		. += {"
 					<tr>
 						<td colspan = '2' style='text-align:center'>
-							<span style='color: [COLOR_MEDICAL_RADIATION]'>Irradiated</span>
+							<span style='color: [COLOR_MEDICAL_RADIATION]'>Patient is irradiated.</span>
 						</td>
 					</tr>
 					<tr><td colspan='2'></td></tr>
@@ -417,6 +461,15 @@
 					<tr><td colspan='2'></td></tr>
 		"}
 
+	if(scan["husked"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("Husked cadaver detected: Replacement tissue required.")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
 
 	if(length(scan["reagents"]))
 		. += {"

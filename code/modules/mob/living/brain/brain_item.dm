@@ -40,6 +40,25 @@
 	/// Maximum skillchip slots available. Do not reference this var directly and instead call get_max_skillchip_slots()
 	var/max_skillchip_slots = 5
 
+/obj/item/organ/brain/get_scan_results(tag)
+	. = ..()
+	if(LAZYLEN(owner.get_traumas()))
+		var/list/trauma_text = list()
+		for(var/datum/brain_trauma/trauma in owner.get_traumas())
+			var/trauma_desc = ""
+			switch(trauma.resilience)
+				if(TRAUMA_RESILIENCE_SURGERY)
+					trauma_desc += "severe "
+				if(TRAUMA_RESILIENCE_LOBOTOMY)
+					trauma_desc += "deep-rooted "
+				if(TRAUMA_RESILIENCE_WOUND)
+					trauma_desc += "fracture-derived "
+				if(TRAUMA_RESILIENCE_MAGIC, TRAUMA_RESILIENCE_ABSOLUTE)
+					trauma_desc += "permanent "
+			trauma_desc += trauma.scan_desc
+			trauma_text += trauma_desc
+		. += "<span style='font-weight: bold; color:#ff9933'>Cerebral traumas detected: [english_list(trauma_text)]</span>"
+
 /obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0,no_id_transfer = FALSE)
 	. = ..()
 	if(!.)

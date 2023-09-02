@@ -138,7 +138,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	..()
 	if(istype(I, /obj/item/hand_labeler_refill))
 		if(!(ticket_number >= max_number))
-			if(alert(user, "[src] still has [max_number-ticket_number] ticket[max_number-ticket_number==1 ? null : "s"] left, are you sure you want to refill it?", "Tactical Refill", "Refill", "Cancel") != "Refill")
+			if(tgui_alert(user, "[src] still has [max_number-ticket_number] ticket[max_number-ticket_number==1 ? null : "s"] left, are you sure you want to refill it?", "Tactical Refill", list("Refill", "Cancel")) != "Refill")
 				return //If the user still wants to refill it...
 		to_chat(user, span_notice("You start to refill [src]'s ticket holder."))
 		if(do_after(user, src, 30))

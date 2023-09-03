@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - server: Config Error can now receive new entries post-super-early init.
-  - server: rustg 2.1.0

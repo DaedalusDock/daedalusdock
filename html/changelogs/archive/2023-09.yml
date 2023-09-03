@@ -6,3 +6,26 @@
   francinum:
   - balance: Crab-17 Phones can no longer go on discount.
   - bugfix: Ingame Issue Reporter works now.
+2023-09-03:
+  Kapu1178:
+  - bugfix: You can't make a headpike out of your own head anymore.
+  - rscadd: Being in a low or high pressure environment now damages your eyes and
+      ears.
+  - qol: Click-Drag can now be used to move items around inventories, including swapping
+      which hand an item is holding.
+  - bugfix: Ambience automatically plays again.
+  - tweak: Increased the volume of ambience (except lavaland)
+  - bugfix: Supermatter delamination properly triggers a radiation storm.
+  Kapu1178, Goonstation Spriters:
+  - balance: Agent ID now costs 1 TC
+  - balance: The chameleon mask now shows your voice as Unknown if you are not wearing
+      an ID.
+  - rscadd: The Voice Changer, can be inserted into most masks to obscure your voice
+      like a chameleon mask.
+  francinum:
+  - bugfix: Phones should more accurately reflect their state visually.
+  - server: Config Error can now receive new entries post-super-early init.
+  - server: rustg 2.1.0
+  yyzsong:
+  - rscadd: Chemistry gets a grinder and plasma by default
+  - qol: updates beaker transfer amounts for the multiple-of-sixtyening.

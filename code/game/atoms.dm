@@ -318,7 +318,9 @@
 	check_exit = null
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
-	LAZYCLEARLIST(overlays)
+	if(length(overlays))
+		overlays.Cut()
+
 	LAZYNULL(managed_overlays)
 
 	QDEL_NULL(light)
@@ -600,7 +602,7 @@
 	for(var/datum/reagent/current_reagent as anything in reagents)
 		. |= current_reagent.expose_atom(src, reagents[current_reagent], exposed_temperature)
 
-/// Are you allowed to drop this atom
+/// Are you allowed to drop items into this atom's contents
 /atom/proc/AllowDrop()
 	return FALSE
 

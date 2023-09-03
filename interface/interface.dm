@@ -66,7 +66,7 @@
 	if(restricted_mode || is_banned_from(ckey, "Bug Report"))
 		to_chat(src, span_warning("You are not currently allowed to make a bug report through this system."))
 		return
-	if(tgui_alert(src, "This will start reporting an issue, gathering some information from the server and your client, before submitting it to github.", "Report Issue","Continue","Abort")!="Continue")
+	if(tgui_alert(src, "This will start reporting an issue, gathering some information from the server and your client, before submitting it to github.", "Report Issue",list("Continue","Abort"))!="Continue")
 		return
 	if(GLOB.revdata.testmerge.len || GLOB.Debug2)
 		if(tgalert(src, "Experimental code is enabled on the server, Please check <code>Show-Server-Revision</code> for more information.", "Report Issue","Continue","Abort")!="Continue")

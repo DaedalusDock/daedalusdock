@@ -67,7 +67,7 @@
 	///The background droning loop that plays 24/7
 	var/ambient_buzz = 'sound/ambience/shipambience.ogg'
 	///The volume of the ambient buzz
-	var/ambient_buzz_vol = 35
+	var/ambient_buzz_vol = 50
 	///Used to decide what the minimum time between ambience is
 	var/min_ambience_cooldown = 30 SECONDS
 	///Used to decide what the maximum time between ambience is
@@ -398,27 +398,32 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	if(old_area)
 		L.UnregisterSignal(old_area, COMSIG_AREA_POWER_CHANGE)
-	L.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, TYPE_PROC_REF(/mob, refresh_looping_ambience))
+	L.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, TYPE_PROC_REF(/mob, refresh_looping_ambience), TRUE)
 
-	if(ambient_buzz != old_area.ambient_buzz)
+	if(L.playing_ambience != ambient_buzz)
 		L.refresh_looping_ambience()
 
 ///Tries to play looping ambience to the mobs.
 /mob/proc/refresh_looping_ambience()
 	SIGNAL_HANDLER
+	if(!client)
+		return
 
 	var/area/my_area = get_area(src)
 
 	if(!(client?.prefs.toggles & SOUND_SHIP_AMBIENCE) || !my_area.ambient_buzz)
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
+		playing_ambience = null
 		return
 
 	//Station ambience is dependant on a functioning and charged APC. (Lavaland always has it's ambience.)
 	if(!is_mining_level(my_area.z) && ((!my_area.apc || !my_area.apc.operating || !my_area.apc.cell?.charge && my_area.requires_power)))
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
+		playing_ambience = null
 		return
 
 	else
+		playing_ambience = my_area.ambient_buzz
 		SEND_SOUND(src, sound(my_area.ambient_buzz, repeat = 1, wait = 0, volume = my_area.ambient_buzz_vol, channel = CHANNEL_BUZZ))
 
 

@@ -200,11 +200,10 @@ Medical HUD! Basic mode needs suit sensors on.
 	holder.pixel_y = I.Height() - world.icon_size
 	if(HAS_TRAIT(src, TRAIT_XENO_HOST))
 		holder.icon_state = "hudxeno"
+	if(undergoing_cardiac_arrest() && stat == UNCONSCIOUS)
+		holder.icon_state = "huddefib"
 	else if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
-		if((key || get_ghost(FALSE, TRUE)) && (can_defib() & DEFIB_REVIVABLE_STATES))
-			holder.icon_state = "huddefib"
-		else
-			holder.icon_state = "huddead"
+		holder.icon_state = "huddead"
 	else
 		switch(virus_threat)
 			if(DISEASE_SEVERITY_BIOHAZARD)

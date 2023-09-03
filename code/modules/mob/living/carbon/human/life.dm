@@ -77,7 +77,7 @@
 
 	if(!L)
 		if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
-			adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
+			adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 
 		failed_last_breath = TRUE
 

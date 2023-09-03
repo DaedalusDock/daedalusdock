@@ -840,8 +840,11 @@
 	if(mind)
 		for(var/addiction_type in subtypesof(/datum/addiction))
 			mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
+
 	for(var/obj/item/organ/organ as anything in processing_organs)
 		organ.setOrganDamage(0)
+		organ.set_organ_dead(FALSE)
+
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
 		if(D.severity != DISEASE_SEVERITY_POSITIVE)
@@ -865,47 +868,6 @@
 	. = ..()
 	if(!getorgan(/obj/item/organ/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)) || HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
-
-/mob/living/carbon/proc/can_defib()
-
-
-	if (suiciding)
-		return DEFIB_FAIL_SUICIDE
-
-	if (HAS_TRAIT(src, TRAIT_HUSK))
-		return DEFIB_FAIL_HUSK
-
-	if (HAS_TRAIT(src, TRAIT_DEFIB_BLACKLISTED))
-		return DEFIB_FAIL_BLACKLISTED
-
-	if ((getBruteLoss() >= MAX_REVIVE_BRUTE_DAMAGE) || (getFireLoss() >= MAX_REVIVE_FIRE_DAMAGE))
-		return DEFIB_FAIL_TISSUE_DAMAGE
-
-	// Only check for a heart if they actually need a heart. Who would've thunk
-	if (needs_heart())
-		var/obj/item/organ/heart = getorgan(/obj/item/organ/heart)
-
-		if (!heart)
-			return DEFIB_FAIL_NO_HEART
-
-		if (heart.organ_flags & ORGAN_DEAD)
-			return DEFIB_FAIL_FAILING_HEART
-
-	var/obj/item/organ/brain/current_brain = getorgan(/obj/item/organ/brain)
-
-	if (QDELETED(current_brain))
-		return DEFIB_FAIL_NO_BRAIN
-
-	if (current_brain.organ_flags & ORGAN_DEAD)
-		return DEFIB_FAIL_FAILING_BRAIN
-
-	if (current_brain.suicided || current_brain.brainmob?.suiciding)
-		return DEFIB_FAIL_NO_INTELLIGENCE
-
-	if(key && key[1] == "@") // Adminghosts
-		return DEFIB_NOGRAB_AGHOST
-
-	return DEFIB_POSSIBLE
 
 /mob/living/carbon/harvest(mob/living/user)
 	if(QDELETED(src))

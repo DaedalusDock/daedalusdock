@@ -98,7 +98,7 @@
 
 	if(!breath || (breath.total_moles == 0))
 		if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
-			breather.adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
+			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 
 		breather.failed_last_breath = TRUE
 		if(safe_oxygen_min)

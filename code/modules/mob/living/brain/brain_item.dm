@@ -394,7 +394,7 @@
 /obj/item/organ/brain/applyOrganDamage(damage_amount, maximum, silent, updating_health = TRUE)
 	updating_health = FALSE // Brainloss isn't apart of tox loss, so never update health here.
 	. = ..()
-	if(. >= 20 && damage >= (maxHealth * 0.5)) //This probably won't be triggered by oxyloss or mercury. Probably.
+	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
 		var/damage_secondary = . * 0.2
 		if (owner)
 			owner.flash_act(visual = TRUE)

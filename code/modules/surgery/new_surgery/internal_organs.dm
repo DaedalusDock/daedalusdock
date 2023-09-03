@@ -41,7 +41,7 @@
 		if(!(I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
 			organs[I.name] = I.slot
 
-	var/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in organs
+	var/organ_to_replace = input(user, "Which organ do you want to repair?") as null|anything in organs
 	if(organ_to_replace)
 		return list(organ_to_replace, organs[organ_to_replace])
 
@@ -98,6 +98,8 @@
 	var/list/attached_organs = list()
 
 	for(var/obj/item/organ/I in affected.contained_organs)
+		if(I.organ_flags & ORGAN_UNREMOVABLE)
+			continue
 		attached_organs[I.name] = I.slot
 
 	if(!length(attached_organs))

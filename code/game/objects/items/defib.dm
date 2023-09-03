@@ -624,6 +624,7 @@
 	shock_pulling(30, H)
 	H.apply_damage(5, BURN, BODY_ZONE_CHEST)
 	do_success() //Deduct charge
+	H.Knockdown(15 SECONDS)
 
 	// Braindead
 	if(H.stat == DEAD)

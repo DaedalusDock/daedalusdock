@@ -25,11 +25,6 @@
 	if(absorb_stun(1))
 		return
 
-	visible_message(
-		span_danger("[src] slumps over, too weak to continue fighting..."),
-		span_userdanger("You're too exhausted to continue fighting..."),
-		span_hear("You hear something hit the floor.")
-	)
 	ADD_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
 	ADD_TRAIT(src, TRAIT_FLOORED, STAMINA)

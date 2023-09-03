@@ -14,6 +14,8 @@
 	now_fixed = "<span class='info'>Noise slowly begins filling your ears once more.</span>"
 	low_threshold_cleared = "<span class='info'>The ringing in your ears has died down.</span>"
 
+	relative_size = 5
+
 	// `deaf` measures "ticks" of deafness. While > 0, the person is unable
 	// to hear anything.
 	var/deaf = 0

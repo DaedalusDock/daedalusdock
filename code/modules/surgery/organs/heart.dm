@@ -144,7 +144,7 @@
 			pulse++
 
 /obj/item/organ/heart/proc/handle_heartbeat()
-	var/can_hear_heart = owner.shock_stage >= SHOCK_TIER_1 || get_step(owner, 0)?.is_below_sound_pressure() || owner.has_status_effect(owner.has_status_effect(/datum/status_effect/jitter))
+	var/can_hear_heart = owner.shock_stage >= SHOCK_TIER_3 || get_step(owner, 0)?.is_below_sound_pressure() || owner.has_status_effect(owner.has_status_effect(/datum/status_effect/jitter))
 
 	var/static/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
 	var/static/sound/fastbeat = sound('sound/health/fastbeat.ogg', repeat = TRUE)

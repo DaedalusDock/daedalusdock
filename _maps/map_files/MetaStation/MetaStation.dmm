@@ -1200,7 +1200,7 @@
 /obj/structure/table/glass,
 /obj/machinery/power/data_terminal,
 /obj/machinery/newscaster/directional/west,
-/obj/machinery/reagentgrinder,
+/obj/item/storage/box/beakers,
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
 "aov" = (

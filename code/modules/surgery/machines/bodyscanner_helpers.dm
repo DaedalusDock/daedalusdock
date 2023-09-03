@@ -35,13 +35,20 @@
 	.["blood_o2"] = get_blood_oxygenation()
 	.["blood_volume"] = blood_volume
 	.["blood_volume_max"] = BLOOD_VOLUME_NORMAL
+	.["blood_type"] = dna.blood_type
+
 	.["temperature"] = round(bodytemperature, 0.1)
+	.["dna"] = dna.unique_enzymes
+
 	.["brute"] = getBruteLoss()
 	.["burn"] = getFireLoss()
 	.["toxin"] = getToxLoss()
 	.["oxygen"] = getOxyLoss()
 	.["genetic"] = getCloneLoss()
+
 	.["radiation"] = HAS_TRAIT(src, TRAIT_IRRADIATED)
+	.["husked"]  = HAS_TRAIT(src, TRAIT_HUSK)
+	.["dna_ruined"] = HAS_TRAIT(src, TRAIT_BADDNA)
 
 	.["reagents"] = list()
 	if(reagents.total_volume)

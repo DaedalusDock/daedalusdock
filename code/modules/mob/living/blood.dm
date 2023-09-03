@@ -385,7 +385,7 @@
 	if(blockage)
 		blood_volume_percent *= max(0, 1-blockage)
 
-	return min(blood_volume_percent, 100)
+	return round(min(blood_volume_percent, 100), 0.01)
 
 //Percentage of maximum blood volume, affected by the condition of circulation organs, affected by the oxygen loss. What ultimately matters for brain
 /mob/living/carbon/proc/get_blood_oxygenation()
@@ -409,4 +409,4 @@
 
 	blood_volume_mod = blood_volume_mod + oxygenated_mult - (blood_volume_mod * oxygenated_mult)
 	blood_volume_percent *= blood_volume_mod
-	return min(blood_volume_percent, 100)
+	return round(min(blood_volume_percent, 100), 0.01)

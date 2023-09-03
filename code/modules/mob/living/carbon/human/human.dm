@@ -1150,3 +1150,39 @@
 
 /mob/living/carbon/human/species/vox
 	race = /datum/species/vox
+
+/mob/living/carbon/human/verb/checkpulse()
+	set name = "Check Pulse"
+	set category = "IC"
+	set desc = "Approximately count somebody's pulse. Requires you to stand still at least 6 seconds."
+	set src in view(1)
+
+	if(!isliving(src) || usr.stat || usr.incapacitated())
+		return
+
+	var/self = FALSE
+	if(usr == src)
+		self = TRUE
+
+	if(!self)
+		usr.visible_message(
+			span_notice("[usr] kneels down, puts \his hand on [src]'s wrist and begins counting their pulse."),
+			span_notice("You begin counting [src]'s pulse")
+		)
+	else
+		usr.visible_message(
+			span_notice("[usr] begins counting their pulse."),
+			span_notice("You begin counting your pulse.")
+		)
+
+
+	if (!pulse() || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		to_chat(usr, span_danger("[src] has no pulse!"))
+		return
+	else
+		to_chat(usr, span_notice("[self ? "You have a" : "[src] has a"] pulse. Counting..."))
+
+	to_chat(usr, span_notice("You must[self ? "" : " both"] remain still until counting is finished."))
+
+	if(do_after(usr, src, 6 SECONDS, DO_PUBLIC))
+		to_chat(usr, span_notice("[self ? "Your" : "[src]'s"] pulse is [src.get_pulse(GETPULSE_HAND)]."))

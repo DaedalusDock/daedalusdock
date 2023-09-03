@@ -163,6 +163,11 @@
 /obj/item/organ/heart/get_availability(datum/species/owner_species)
 	return !(NOBLOOD in owner_species.species_traits)
 
+/obj/item/organ/heart/get_scan_results(tag)
+	. = ..()
+	if(pulse == PULSE_NONE)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Asystole</span>" : "Asystole"
+
 /datum/client_colour/cursed_heart_blood
 	priority = 100 //it's an indicator you're dying, so it's very high priority
 	colour = "red"

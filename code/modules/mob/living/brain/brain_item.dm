@@ -613,3 +613,26 @@
 		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
 		return found_bodypart || active_hand
 	return active_hand
+
+/obj/item/organ/brain/get_scan_results(tag)
+	. = ..()
+	var/list/traumas = owner.get_traumas()
+	if(!length(traumas))
+		return
+
+	var/list/trauma_text = list()
+
+	for(var/datum/brain_trauma/trauma in traumas)
+		var/trauma_desc = ""
+		switch(trauma.resilience)
+			if(TRAUMA_RESILIENCE_SURGERY)
+				trauma_desc += "severe "
+			if(TRAUMA_RESILIENCE_LOBOTOMY)
+				trauma_desc += "deep-rooted "
+			if(TRAUMA_RESILIENCE_WOUND)
+				trauma_desc += "fracture-derived "
+			if(TRAUMA_RESILIENCE_MAGIC, TRAUMA_RESILIENCE_ABSOLUTE)
+				trauma_desc += "permanent "
+		trauma_desc += trauma.scan_desc
+		trauma_text += trauma_desc
+	. += tag ? "<span style='font-weight: bold; color:#ff9933'>Cerebral traumas detected: [english_list(trauma_text)]</span>" : "Cerebral traumas detected: [english_list(trauma_text)]"

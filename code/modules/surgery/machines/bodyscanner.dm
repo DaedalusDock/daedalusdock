@@ -381,7 +381,7 @@
 						<strong>Blood Volume:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[scan["blood_volume"]]u/[scan["blood_volume_max"]]u
+						[scan["blood_volume"]]u/[scan["blood_volume_max"]]u ([scan["blood_type"]])
 					</td>
 				</tr>
 	"}
@@ -393,6 +393,17 @@
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
 						[scan["temperature"]-T0C]&deg;C ([FAHRENHEIT(scan["temperature"])]&deg;F)
+					</td>
+				</tr>
+	"}
+
+	. += {"
+				<tr>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						<strong>DNA:</strong>
+					</td>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						[scan["dna"]]
 					</td>
 				</tr>
 	"}
@@ -452,6 +463,25 @@
 				</tr>
 	"}
 
+	if(scan["dna_ruined"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("<strong>ERROR: patient's DNA sequence is unreadable.</strong>")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
+
+	if(scan["husked"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("Husked cadaver detected: Replacement tissue required.")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
 	if(scan["radiation"])
 		. += {"
 					<tr>

@@ -609,7 +609,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 
 	if(iscarbon(user))
 		var/brainloss = user.getBrainLoss()
-		if(brainloss > 55)
+		if(brainloss > 120)
 			visible_message(span_warning("\The [user] stares cluelessly at \the [src]."))
 			return TRUE
 		if(prob(min(brainloss, 30)))

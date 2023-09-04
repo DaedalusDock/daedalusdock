@@ -1619,8 +1619,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				H.clear_alert(ALERT_PRESSURE)
 			else
 				H.adjustBruteLoss(LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod * delta_time, FALSE)
-				H.adjustOrganLoss(ORGAN_SLOT_EARS, LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod * delta_time)
-				H.adjustOrganLoss(ORGAN_SLOT_EYES, LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod * delta_time)
+				H.adjustOrganLoss(ORGAN_SLOT_EARS, (LOW_PRESSURE_DAMAGE * 0.1) * H.physiology.pressure_mod * delta_time)
+				H.adjustOrganLoss(ORGAN_SLOT_EYES, (LOW_PRESSURE_DAMAGE * 0.1) * H.physiology.pressure_mod * delta_time)
 				. = TRUE
 				H.throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/lowpressure, 2)
 

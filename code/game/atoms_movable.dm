@@ -688,6 +688,9 @@
  * most of the time you want forceMove()FALS
  */
 /atom/movable/proc/abstract_move(atom/new_loc)
+	if(QDELING(src))
+		return
+
 	var/atom/old_loc = loc
 	var/direction = get_dir(old_loc, new_loc)
 	loc = new_loc
@@ -784,6 +787,9 @@
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
+	if(QDELING(src))
+		return
+
 	var/atom/movable/pullee = pulling
 	var/turf/current_turf = loc
 	if(!moving_from_pull)
@@ -1189,6 +1195,9 @@
 	return currently_z_moving > old_z_moving_value
 
 /atom/movable/proc/forceMove(atom/destination)
+	if(QDELING(src))
+		return
+
 	. = FALSE
 	if(destination)
 		. = doMove(destination)

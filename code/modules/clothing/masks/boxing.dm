@@ -23,8 +23,6 @@
 	armor = list(MELEE = 10, BULLET = 5, LASER = 5,ENERGY = 5, BOMB = 0, BIO = 0, FIRE = 100, ACID = 40)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
-	var/voice_unknown = FALSE ///This makes it so that your name shows up as unknown when wearing the mask.
-
 /obj/item/clothing/mask/infiltrator/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if(slot != ITEM_SLOT_MASK)
@@ -33,14 +31,14 @@
 	ADD_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, MASK_TRAIT)
 	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_DIAGNOSTIC_BASIC]
 	H.add_hud_to(user)
-	voice_unknown = TRUE
+	ADD_TRAIT(src, TRAIT_HIDES_VOICE, REF(src))
 
 /obj/item/clothing/mask/infiltrator/dropped(mob/living/carbon/human/user)
 	to_chat(user, "You pull off the balaclava, and the mask's internal hud system switches off quietly.")
+	REMOVE_TRAIT(src, TRAIT_HIDES_VOICE, REF(src))
 	REMOVE_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, MASK_TRAIT)
 	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_DIAGNOSTIC_BASIC]
 	H.remove_hud_from(user)
-	voice_unknown = FALSE
 	return ..()
 
 /obj/item/clothing/mask/luchador

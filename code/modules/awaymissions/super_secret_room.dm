@@ -5,7 +5,6 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "speaking_tile"
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 	resistance_flags = INDESTRUCTIBLE
 	var/speaking = FALSE
 	var/times_spoken_to = 0
@@ -124,21 +123,17 @@
 	icon_state = "rupee"
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/glass = 500)
+	loc_procs = CROSSED
 
 /obj/item/rupee/Initialize(mapload)
 	. = ..()
 	var/newcolor = pick(10;COLOR_GREEN, 5;COLOR_BLUE, 3;COLOR_RED, 1;COLOR_PURPLE)
 	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/item/rupee/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(!ismob(AM))
+/obj/item/rupee/Crossed(atom/movable/crossed_by, oldloc)
+	if(!ismob(crossed_by))
 		return
-	INVOKE_ASYNC(src, .proc/put_in_crossers_hands, AM)
+	INVOKE_ASYNC(src, PROC_REF(put_in_crossers_hands), crossed_by)
 
 /obj/item/rupee/proc/put_in_crossers_hands(mob/crosser)
 	if(crosser.put_in_hands(src))

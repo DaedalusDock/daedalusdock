@@ -7,7 +7,7 @@
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
-		TRAIT_NOSLIPALL,
+		TRAIT_NO_SLIP_ALL,
 	)
 
 	say_mod = "slurs"
@@ -18,8 +18,8 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | RACE_SWAP
 	sexes = FALSE //snails are hermaphrodites
 
-	mutanteyes = /obj/item/organ/internal/eyes/snail
-	mutanttongue = /obj/item/organ/internal/tongue/snail
+	mutanteyes = /obj/item/organ/eyes/snail
+	mutanttongue = /obj/item/organ/tongue/snail
 	exotic_blood = /datum/reagent/lube
 
 	bodypart_overrides = list(
@@ -30,13 +30,6 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/snail,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/snail
 	)
-
-/datum/species/snail/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
-	if(istype(chem,/datum/reagent/consumable/salt))
-		H.adjustFireLoss(2 * REAGENTS_EFFECT_MULTIPLIER * delta_time)
-		playsound(H, 'sound/weapons/sear.ogg', 30, TRUE)
-		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
-		return TRUE
 
 /datum/species/snail/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()

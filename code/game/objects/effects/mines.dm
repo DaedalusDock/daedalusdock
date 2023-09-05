@@ -5,6 +5,8 @@
 	anchored = TRUE
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "uglymine"
+	loc_procs = CROSSED
+
 	/// We manually check to see if we've been triggered in case multiple atoms cross us in the time between the mine being triggered and it actually deleting, to avoid a race condition with multiple detonations
 	var/triggered = FALSE
 	/// Can be set to FALSE if we want a short 'coming online' delay, then set to TRUE. Can still be set off by damage
@@ -17,11 +19,7 @@
 	if(arm_delay)
 		armed = FALSE
 		icon_state = "uglymine-inactive"
-		addtimer(CALLBACK(src, .proc/now_armed), arm_delay)
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
+		addtimer(CALLBACK(src, PROC_REF(now_armed)), arm_delay)
 
 /obj/effect/mine/examine(mob/user)
 	. = ..()
@@ -39,16 +37,14 @@
 	playsound(src, 'sound/machines/nuke/angry_beep.ogg', 40, FALSE, -2)
 	visible_message(span_danger("\The [src] beeps softly, indicating it is now active."), vision_distance = COMBAT_MESSAGE_RANGE)
 
-/obj/effect/mine/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-
+/obj/effect/mine/Crossed(atom/movable/crossed_by, oldloc)
 	if(triggered || !isturf(loc) || !armed)
 		return
 
-	if(AM.movement_type & FLYING)
+	if(crossed_by.movement_type & FLYING)
 		return
 
-	triggermine(AM)
+	triggermine(crossed_by)
 
 /obj/effect/mine/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir)
 	. = ..()
@@ -199,7 +195,7 @@
 	playsound(src, 'sound/weapons/armbomb.ogg', 70, TRUE)
 	to_chat(user, span_warning("You arm \the [src], causing it to shake! It will deploy in 3 seconds."))
 	active = TRUE
-	addtimer(CALLBACK(src, .proc/deploy_mine), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(deploy_mine)), 3 SECONDS)
 
 /// Deploys the mine and deletes itself
 /obj/item/minespawner/proc/deploy_mine()

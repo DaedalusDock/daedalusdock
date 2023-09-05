@@ -21,10 +21,8 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	var/war_cry = "AAAAARGH!!!"
 	var/icon_prefix = "spearglass"
-	wound_bonus = -15
-	bare_wound_bonus = 15
 
-/obj/item/spear/ComponentInitialize()
+/obj/item/spear/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/butchering, 100, 70) //decent in a pinch, but pretty bad.
 	AddComponent(/datum/component/jousting)
@@ -43,9 +41,24 @@
 	var/obj/item/shard/tip = locate() in parts_list
 	if(tip)
 		if (istype(tip, /obj/item/shard/plasma))
+			force = 11
 			throwforce = 21
 			icon_prefix = "spearplasma"
 			AddComponent(/datum/component/two_handed, force_unwielded=11, force_wielded=19, icon_wielded="[icon_prefix]1")
+		else if (istype(tip, /obj/item/shard/titanium))
+			force = 13
+			throwforce = 21
+			throw_range = 8
+			throw_speed = 5
+			icon_prefix = "speartitanium"
+			AddComponent(/datum/component/two_handed, force_unwielded=13, force_wielded=18, icon_wielded="[icon_prefix]1")
+		else if (istype(tip, /obj/item/shard/plastitanium))
+			force = 13
+			throwforce = 22
+			throw_range = 9
+			throw_speed = 5
+			icon_prefix = "spearplastitanium"
+			AddComponent(/datum/component/two_handed, force_unwielded=13, force_wielded=20, icon_wielded="[icon_prefix]1")
 		update_appearance()
 		parts_list -= tip
 		qdel(tip)
@@ -61,12 +74,9 @@
 
 /obj/item/spear/explosive/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, .proc/on_wield)
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, .proc/on_unwield)
+	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
+	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	set_explosive(new /obj/item/grenade/iedcasing/spawned()) //For admin-spawned explosive lances
-
-/obj/item/spear/explosive/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=18, icon_wielded="[icon_prefix]1")
 
 /// triggered on wield of two handed item
@@ -151,7 +161,7 @@
 	attack_verb_simple = list("gore")
 	force=15
 
-/obj/item/spear/grey_tide/ComponentInitialize()
+/obj/item/spear/grey_tide/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=15, force_wielded=25, icon_wielded="[icon_prefix]1")
 
@@ -183,7 +193,7 @@
 	throwforce = 22
 	armour_penetration = 15 //Enhanced armor piercing
 
-/obj/item/spear/bonespear/ComponentInitialize()
+/obj/item/spear/bonespear/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=12, force_wielded=20, icon_wielded="[icon_prefix]1")
 
@@ -198,6 +208,6 @@
 	desc = "A haphazardly-constructed bamboo stick with a sharpened tip, ready to poke holes into unsuspecting people."
 	throwforce = 22	//Better to throw
 
-/obj/item/spear/bamboospear/ComponentInitialize()
+/obj/item/spear/bamboospear/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=18, icon_wielded="[icon_prefix]1")

@@ -70,12 +70,21 @@
 
 /obj/machinery/suit_storage_unit/engine
 	mask_type = /obj/item/clothing/mask/breath
-	mod_type = /obj/item/mod/control/pre_equipped/engineering
+	suit_type = /obj/item/clothing/suit/space/hardsuit/engine
+	storage_type = /obj/item/clothing/shoes/magboots
+
+/obj/machinery/suit_storage_unit/engine/mod
+	suit_type = /obj/item/mod/control/pre_equipped/engineering
+	storage_type = null
 
 /obj/machinery/suit_storage_unit/atmos
 	mask_type = /obj/item/clothing/mask/gas/atmos
-	storage_type = /obj/item/watertank/atmos
+	suit_type = /obj/item/clothing/suit/space/hardsuit/atmos
+	storage_type = /obj/item/clothing/shoes/magboots
+
+/obj/machinery/suit_storage_unit/atmos/mod
 	mod_type = /obj/item/mod/control/pre_equipped/atmospheric
+	storage_type = /obj/item/watertank/atmos
 
 /obj/machinery/suit_storage_unit/ce
 	mask_type = /obj/item/clothing/mask/breath
@@ -84,7 +93,7 @@
 
 /obj/machinery/suit_storage_unit/security
 	mask_type = /obj/item/clothing/mask/gas/sechailer
-	mod_type = /obj/item/mod/control/pre_equipped/security
+	suit_type = /obj/item/clothing/suit/space/hardsuit/security
 
 /obj/machinery/suit_storage_unit/hos
 	mask_type = /obj/item/clothing/mask/gas/sechailer
@@ -103,7 +112,7 @@
 /obj/machinery/suit_storage_unit/medical
 	mask_type = /obj/item/clothing/mask/breath/medical
 	storage_type = /obj/item/tank/internals/oxygen
-	mod_type = /obj/item/mod/control/pre_equipped/medical
+	suit_type = /obj/item/clothing/suit/space/hardsuit/medical
 
 /obj/machinery/suit_storage_unit/cmo
 	mask_type = /obj/item/clothing/mask/breath/medical
@@ -113,6 +122,11 @@
 /obj/machinery/suit_storage_unit/rd
 	mask_type = /obj/item/clothing/mask/breath
 	mod_type = /obj/item/mod/control/pre_equipped/research
+
+/obj/machinery/suit_storage_unit/toxins
+	mask_type = /obj/item/clothing/mask/breath
+	suit_type = /obj/item/clothing/suit/space/hardsuit/toxins
+	storage_type = /obj/item/tank/internals/oxygen
 
 /obj/machinery/suit_storage_unit/syndicate
 	mask_type = /obj/item/clothing/mask/gas/syndicate
@@ -260,7 +274,7 @@
 		user,
 		src,
 		choices,
-		custom_check = CALLBACK(src, .proc/check_interactable, user),
+		custom_check = CALLBACK(src, PROC_REF(check_interactable), user),
 		require_near = !issilicon(user),
 	)
 
@@ -347,7 +361,7 @@
 	else
 		target.visible_message(span_warning("[user] starts shoving [target] into [src]!"), span_userdanger("[user] starts shoving you into [src]!"))
 
-	if(do_mob(user, target, 30))
+	if(do_after(user, target, 3 SECONDS))
 		if(occupant || helmet || suit || storage)
 			return
 		if(target == user)
@@ -380,7 +394,7 @@
 			if(iscarbon(mob_occupant) && mob_occupant.stat < UNCONSCIOUS)
 				//Awake, organic and screaming
 				mob_occupant.emote("scream")
-		addtimer(CALLBACK(src, .proc/cook), 50)
+		addtimer(CALLBACK(src, PROC_REF(cook)), 50)
 	else
 		uv_cycles = initial(uv_cycles)
 		uv = FALSE
@@ -471,7 +485,7 @@
 	user.visible_message(span_notice("You see [user] kicking against the doors of [src]!"), \
 		span_notice("You start kicking against the doors... (this will take about [DisplayTimeText(breakout_time)].)"), \
 		span_hear("You hear a thump from [src]."))
-	if(do_after(user,(breakout_time), target = src))
+	if(do_after(user, src, breakout_time))
 		if(!user || user.stat != CONSCIOUS || user.loc != src )
 			return
 		user.visible_message(span_warning("[user] successfully broke out of [src]!"), \
@@ -483,7 +497,7 @@
 	if(locked)
 		visible_message(span_notice("You see [user] kicking against the doors of [src]!"), \
 			span_notice("You start kicking against the doors..."))
-		addtimer(CALLBACK(src, .proc/resist_open, user), 300)
+		addtimer(CALLBACK(src, PROC_REF(resist_open), user), 300)
 	else
 		open_machine()
 		dump_inventory_contents()

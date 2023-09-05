@@ -8,7 +8,6 @@
 	flags_1 = CONDUCT_1
 	sharpness = SHARP_EDGED
 	w_class = WEIGHT_CLASS_SMALL
-	wound_bonus = 20
 	force = 10
 	throwforce = 20
 	hitsound = 'sound/weapons/bladeslice.ogg'
@@ -59,7 +58,7 @@
 	if(is_type_in_typecache(target, blacklisted_turfs))
 		return
 
-	INVOKE_ASYNC(src, .proc/try_carve_rune, target, user)
+	INVOKE_ASYNC(src, PROC_REF(try_carve_rune), target, user)
 
 /*
  * Begin trying to carve a rune. Go through a few checks, then call do_carve_rune if successful.
@@ -115,7 +114,7 @@
 
 	target_turf.balloon_alert(user, "carving [picked_choice]...")
 	user.playsound_local(target_turf, 'sound/items/sheath.ogg', 50, TRUE)
-	if(!do_after(user, 5 SECONDS, target = target_turf))
+	if(!do_after(user, target_turf, 5 SECONDS))
 		target_turf.balloon_alert(user, "interrupted!")
 		return
 
@@ -128,7 +127,7 @@
 	desc = "Destroys all runes carved by this blade."
 	background_icon_state = "bg_ecult"
 	button_icon_state = "rune_break"
-	icon_icon = 'icons/mob/actions/actions_ecult.dmi'
+	button_icon = 'icons/mob/actions/actions_ecult.dmi'
 
 /datum/action/item_action/rune_shatter/New(Target)
 	. = ..()
@@ -142,7 +141,7 @@
 
 	return ..()
 
-/datum/action/item_action/rune_shatter/IsAvailable()
+/datum/action/item_action/rune_shatter/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return
@@ -178,10 +177,10 @@
 	if(new_owner)
 		owner = WEAKREF(new_owner)
 
-/obj/structure/trap/eldritch/on_entered(datum/source, atom/movable/entering_atom)
-	if(!isliving(entering_atom))
+/obj/structure/trap/eldritch/Crossed(atom/movable/crossed_by, oldloc)
+	if(!isliving(crossed_by))
 		return ..()
-	var/mob/living/living_mob = entering_atom
+	var/mob/living/living_mob = crossed_by
 	if(WEAKREF(living_mob) == owner)
 		return
 	if(IS_HERETIC_OR_MONSTER(living_mob))
@@ -237,12 +236,11 @@
 	if(!iscarbon(victim))
 		return
 	var/mob/living/carbon/carbon_victim = victim
-	carbon_victim.adjustStaminaLoss(80)
+	carbon_victim.stamina.adjust(-80)
 	carbon_victim.silent += 10
 	carbon_victim.adjust_timed_status_effect(1 MINUTES, /datum/status_effect/speech/stutter)
 	carbon_victim.adjust_timed_status_effect(5 SECONDS, /datum/status_effect/confusion)
 	carbon_victim.set_timed_status_effect(20 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	carbon_victim.set_timed_status_effect(40 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	carbon_victim.blind_eyes(2)
-	SEND_SIGNAL(carbon_victim, COMSIG_ADD_MOOD_EVENT, "gates_of_mansus", /datum/mood_event/gates_of_mansus)
 	playsound(src, 'sound/magic/blind.ogg', 75, TRUE)

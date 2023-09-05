@@ -12,6 +12,7 @@
 	armor = list(MELEE = 20, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSSTRUCTURE|LETPASSCLICKS
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	/// The overlay for the closet's door
 	var/obj/effect/overlay/closet_door/door_obj
@@ -70,17 +71,22 @@
 	var/can_install_electronics = TRUE
 
 /obj/structure/closet/Initialize(mapload)
-	if(mapload && !opened) // if closed, any item at the crate's loc is put in the contents
-		addtimer(CALLBACK(src, .proc/take_contents, TRUE), 0)
 	. = ..()
 	update_appearance()
 	PopulateContents()
 	if(QDELETED(src)) //It turns out populate contents has a 1 in 100 chance of qdeling src on /obj/structure/closet/emcloset
 		return //Why
 	var/static/list/loc_connections = list(
-		COMSIG_CARBON_DISARM_COLLIDE = .proc/locker_carbon,
+		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(locker_carbon),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+
+	if(mapload && !opened)
+		return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/closet/LateInitialize()
+	. = ..()
+	take_contents()
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
@@ -165,7 +171,7 @@
 			animate(door_obj, transform = door_transform, icon_state = door_state, layer = door_layer, time = world.tick_lag, flags = ANIMATION_END_NOW)
 		else
 			animate(transform = door_transform, icon_state = door_state, layer = door_layer, time = world.tick_lag)
-	addtimer(CALLBACK(src, .proc/end_door_animation), door_anim_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_CLIENT_TIME)
+	addtimer(CALLBACK(src, PROC_REF(end_door_animation)), door_anim_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_CLIENT_TIME)
 
 /// Ends the door animation and removes the animated overlay
 /obj/structure/closet/proc/end_door_animation()
@@ -241,14 +247,13 @@
 	var/atom/location = drop_location()
 	if(!location)
 		return
-	for(var/atom/movable/AM in location)
+	for(var/atom/movable/AM as anything in location)
 		if(AM != src && insert(AM, mapload) == LOCKER_FULL) // limit reached
 			if(mapload) // Yea, it's a mapping issue. Blame mappers.
 				log_mapping("Closet storage capacity of [type] exceeded on mapload at [AREACOORD(src)]")
 			break
-	for(var/i in reverse_range(location.get_all_contents()))
-		var/atom/movable/thing = i
-		SEND_SIGNAL(thing, COMSIG_TRY_STORAGE_HIDE_ALL)
+	for(var/atom/movable/thing as anything in reverse_range(location.get_all_contents()))
+		thing.atom_storage?.close_all()
 
 /obj/structure/closet/proc/open(mob/living/user, force = FALSE)
 	if(!can_open(user, force))
@@ -314,6 +319,8 @@
 		else if(isitem(AM) && !HAS_TRAIT(AM, TRAIT_NODROP))
 			return TRUE
 		else if(!allow_objects && !istype(AM, /obj/effect/dummy/chameleon))
+			return FALSE
+		else if(HAS_TRAIT(AM, TRAIT_REJECT_INSERTION))
 			return FALSE
 	else
 		return FALSE
@@ -414,7 +421,7 @@
 			&& !secure && !electronics && !locked && (welded || !can_weld_shut) && !broken)
 		user.visible_message(span_notice("[user] installs the electronics into the [src]."),\
 			span_notice("You start to install electronics into the [src]..."))
-		if (!do_after(user, 4 SECONDS, target = src))
+		if (!do_after(user, src, 4 SECONDS))
 			return FALSE
 		if (electronics || secure)
 			return FALSE
@@ -435,7 +442,7 @@
 			span_notice("You begin to remove the electronics from the [src]..."))
 		var/had_electronics = !!electronics
 		var/was_secure = secure
-		if (!do_after(user, 4 SECONDS, target = src))
+		if (!do_after(user, src, 4 SECONDS))
 			return FALSE
 		if ((had_electronics && !electronics) || (was_secure && !secure))
 			return FALSE
@@ -577,10 +584,15 @@
 // and due to an oversight in turf/Enter() were going through walls.  That
 // should be independently resolved, but this is also an interesting twist.
 /obj/structure/closet/Exit(atom/movable/leaving, direction)
+	. = ..()
+	return FALSE
+
+/obj/structure/closet/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(QDELETED(gone)) //If an object in our contents was qdeleted, don't open as a result of moveToNullspace()
+		return
+
 	open()
-	if(leaving.loc == src)
-		return FALSE
-	return TRUE
 
 /obj/structure/closet/container_resist_act(mob/living/user)
 	if(isstructure(loc))
@@ -643,6 +655,7 @@
 			locked = !locked
 			user.visible_message(span_notice("[user] [locked ? null : "un"]locks [src]."),
 							span_notice("You [locked ? null : "un"]lock [src]."))
+			playsound(src, 'sound/machines/click.ogg', 15, 1, -3)
 			update_appearance()
 		else if(!silent)
 			to_chat(user, span_alert("Access Denied."))

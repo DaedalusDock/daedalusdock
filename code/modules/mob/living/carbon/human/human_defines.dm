@@ -13,6 +13,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	can_be_shoved_into = TRUE
 	held_w_class = WEIGHT_CLASS_BULKY
+	loc_procs = CROSSED
 
 	//Hair colour and style
 	var/hair_color = "#000000"
@@ -32,6 +33,7 @@
 	var/eye_color_right = "#000000"
 	/// Var used to keep track of a human mob having a heterochromatic right eye. To ensure prefs don't overwrite shit
 	var/eye_color_heterochromatic = FALSE
+	var/sclera_color = ""
 
 	var/skin_tone = "caucasian1" //Skin tone
 
@@ -79,9 +81,6 @@
 
 	/// The core temperature of the human compaired to the skin temp of the body
 	var/coretemperature = BODYTEMP_NORMAL
-
-	///Exposure to damaging heat levels increases stacks, stacks clean over time when temperatures are lower. Stack is consumed to add a wound.
-	var/heat_exposure_stacks = 0
 
 	///human specific screwyhuds from hallucinations (define key (bodypart) to int value (severity)) - see /datum/hallucination/fake_health_doll
 	var/hal_screwydoll

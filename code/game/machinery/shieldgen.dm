@@ -16,13 +16,10 @@
 	setDir(pick(GLOB.cardinals))
 	zas_update_loc()
 
-/obj/structure/emergency_shield/Destroy()
-	zas_update_loc()
-	. = ..()
-
 /obj/structure/emergency_shield/Move()
 	. = ..()
-	zas_update_loc()
+	if(.)
+		zas_update_loc()
 
 /obj/structure/emergency_shield/emp_act(severity)
 	. = ..()
@@ -68,7 +65,6 @@
 	max_integrity = 20
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 
 /obj/structure/emergency_shield/cult/barrier
 	density = FALSE //toggled on right away by the parent rune
@@ -218,7 +214,7 @@
 			to_chat(user, span_warning("You need one length of cable to repair [src]!"))
 			return
 		to_chat(user, span_notice("You begin to replace the wires..."))
-		if(do_after(user, 30, target = src))
+		if(do_after(user, src, 3 SECONDS))
 			if(coil.get_amount() < 1)
 				return
 			coil.use(1)
@@ -289,7 +285,7 @@
 	. = ..()
 	if(anchored)
 		connect_to_network()
-	RegisterSignal(src, COMSIG_ATOM_SINGULARITY_TRY_MOVE, .proc/block_singularity_if_active)
+	RegisterSignal(src, COMSIG_ATOM_SINGULARITY_TRY_MOVE, PROC_REF(block_singularity_if_active))
 
 /obj/machinery/power/shieldwallgen/Destroy()
 	for(var/d in GLOB.cardinals)
@@ -473,7 +469,7 @@
 	for(var/mob/living/L in get_turf(src))
 		visible_message(span_danger("\The [src] is suddenly occupying the same space as \the [L]!"))
 		L.gib()
-	RegisterSignal(src, COMSIG_ATOM_SINGULARITY_TRY_MOVE, .proc/block_singularity)
+	RegisterSignal(src, COMSIG_ATOM_SINGULARITY_TRY_MOVE, PROC_REF(block_singularity))
 
 /obj/machinery/shieldwall/Destroy()
 	gen_primary = null

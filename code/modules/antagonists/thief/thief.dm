@@ -55,29 +55,26 @@
 
 /datum/antagonist/thief/proc/create_hideout()
 	var/list/possible_hideout_locations = list(
-		/area/maintenance/space_hut/cabin,
-		/area/maintenance/space_hut/observatory,
-		/area/service/kitchen/abandoned,
-		/area/service/electronic_marketing_den,
-		/area/service/abandoned_gambling_den,
-		/area/service/abandoned_gambling_den/gaming,
-		/area/service/theater/abandoned,
-		/area/service/library/abandoned,
-		/area/service/hydroponics/garden/abandoned,
-		/area/medical/abandoned,
-		/area/science/research/abandoned,
-		/area/maintenance/department/crew_quarters/bar,
+		/area/station/maintenance/space_hut/cabin,
+		/area/station/maintenance/space_hut/observatory,
+		/area/station/service/kitchen/abandoned,
+		/area/station/service/electronic_marketing_den,
+		/area/station/service/abandoned_gambling_den,
+		/area/station/service/abandoned_gambling_den/gaming,
+		/area/station/service/theater/abandoned,
+		/area/station/service/library/abandoned,
+		/area/station/service/hydroponics/garden/abandoned,
+		/area/station/medical/abandoned,
+		/area/station/science/research/abandoned,
+		/area/station/maintenance/department/crew_quarters/bar,
 	)
 	//remove every hideout location that isn't on this map
-	possible_hideout_locations = special_list_filter(possible_hideout_locations, CALLBACK(src, .proc/filter_nonexistent_areas))
+	possible_hideout_locations = special_list_filter(possible_hideout_locations, CALLBACK(src, PROC_REF(filter_nonexistent_areas)))
 	//for custom maps without any abandoned locations
 	if(!possible_hideout_locations.len)
 		return
 	var/chosen_type = pick(possible_hideout_locations)
 	hideout = GLOB.areas_by_type[chosen_type]
-	hideout.mood_trait = TRAIT_VAL_CORRIN_MEMBER
-	hideout.mood_bonus = 5
-	hideout.mood_message = "Feels good, having Val Corrin connections."
 
 ///checks if an area exists in the global areas, obviously comes up null (falsey) if say, abandoned cabin is checked on metastation.
 /datum/antagonist/thief/proc/filter_nonexistent_areas(area_type)

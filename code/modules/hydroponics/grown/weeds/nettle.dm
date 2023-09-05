@@ -61,5 +61,4 @@
 	icon_state = "deathnettle"
 	bite_consumption_mod = 4 // I guess if you really wanted to
 	force = 30
-	wound_bonus = CANT_WOUND
 	throwforce = 15

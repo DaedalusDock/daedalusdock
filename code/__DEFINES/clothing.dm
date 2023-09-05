@@ -11,10 +11,8 @@
 #define SENSOR_OFF 0
 /// Suit sensor displays the mob as alive or dead
 #define SENSOR_LIVING 1
-/// Suit sensor displays the mob damage values
-#define SENSOR_VITALS 2
-/// Suit sensor displays the mob damage values and exact location
-#define SENSOR_COORDS 3
+/// Suit sensor displays the mob's health status and rough
+#define SENSOR_COORDS 2
 
 //suit sensors: has_sensor defines
 /// Suit sensor has been EMP'd and cannot display any information (can be fixed)
@@ -25,3 +23,8 @@
 #define HAS_SENSORS 1
 /// Suit sensor is present and is forced to display information (used on prisoner jumpsuits)
 #define LOCKED_SENSORS 2
+
+/// Wrapper for adding clothing based traits
+#define ADD_CLOTHING_TRAIT(mob, trait) ADD_TRAIT(mob, trait, "[CLOTHING_TRAIT]_[REF(src)]")
+/// Wrapper for removing clothing based traits
+#define REMOVE_CLOTHING_TRAIT(mob, trait) REMOVE_TRAIT(mob, trait, "[CLOTHING_TRAIT]_[REF(src)]")

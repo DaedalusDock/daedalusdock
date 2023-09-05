@@ -27,10 +27,11 @@
 		return FALSE
 
 	//Body temperature stability and damage
-	dna.species.handle_body_temperature(src, delta_time, times_fired)
+	if(dna.species.handle_body_temperature(src, delta_time, times_fired))
+		updatehealth()
 
 	if(!IS_IN_STASIS(src))
-		if(.) //not dead
+		if(stat != DEAD) //not dead
 
 			for(var/datum/mutation/human/HM in dna.mutations) // Handle active genes
 				HM.on_life(delta_time, times_fired)
@@ -41,10 +42,6 @@
 			handle_liver(delta_time, times_fired)
 
 		dna.species.spec_life(src, delta_time, times_fired) // for mutantraces
-	else
-		for(var/i in all_wounds)
-			var/datum/wound/iter_wound = i
-			iter_wound.on_stasis(delta_time, times_fired)
 
 	//Update our name based on whether our face is obscured/disfigured
 	name = get_visible_name()
@@ -70,27 +67,21 @@
 		return (occupied_space.contents_pressure_protection * ONE_ATMOSPHERE + (1 - occupied_space.contents_pressure_protection) * pressure)
 	return pressure
 
+/mob/living/carbon/human/breathe(forced)
+	if(HAS_TRAIT(src, TRAIT_NOBREATH))
+		return FALSE
 
-/mob/living/carbon/human/handle_traits(delta_time, times_fired)
-	if (getOrganLoss(ORGAN_SLOT_BRAIN) >= 60)
-		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "brain_damage", /datum/mood_event/brain_damage)
-	else
-		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "brain_damage")
 	return ..()
 
-/mob/living/carbon/human/breathe()
-	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
-		return ..()
-
-/mob/living/carbon/human/check_breath(datum/gas_mixture/breath)
+/mob/living/carbon/human/check_breath(datum/gas_mixture/breath, forced = FALSE)
 
 	var/L = getorganslot(ORGAN_SLOT_LUNGS)
 
 	if(!L)
 		if(health >= crit_threshold)
-			adjustOxyLoss(HUMAN_MAX_OXYLOSS + 1)
+			adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS + 1)
 		else if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
-			adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
+			adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		failed_last_breath = TRUE
 
@@ -107,17 +98,22 @@
 
 		return FALSE
 	else
-		if(istype(L, /obj/item/organ/internal/lungs))
-			var/obj/item/organ/internal/lungs/lun = L
-			lun.check_breath(breath,src)
+		if(istype(L, /obj/item/organ/lungs))
+			var/obj/item/organ/lungs/lun = L
+			. = lun.check_breath(breath, src, forced)
+
+			if(. >= BREATH_SILENT_DAMAGING) // Breath succeeded
+				return
+
+			// Failed a breath for one reason or another.
+			set_blurriness(max(3, eye_blurry))
+			if(prob(20))
+				spawn(-1)
+					emote("gasp")
 
 /// Environment handlers for species
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)
-	// If we are in a cryo bed do not process life functions
-	if(istype(loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
-		return
-
-	dna.species.handle_environment(src, environment, delta_time, times_fired)
+	return dna.species.handle_environment(src, environment, delta_time, times_fired)
 
 /**
  * Adjust the core temperature of a mob

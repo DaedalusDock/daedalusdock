@@ -52,12 +52,20 @@
 	left = C.get_bodypart(BODY_ZONE_L_LEG)
 	right = C.get_bodypart(BODY_ZONE_R_LEG)
 	update_limp()
-	RegisterSignal(C, COMSIG_MOVABLE_MOVED, .proc/check_step)
-	RegisterSignal(C, list(COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB), .proc/update_limp)
+	RegisterSignal(C, COMSIG_MOVABLE_MOVED, PROC_REF(check_step))
+	RegisterSignal(C, list(COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVED_LIMB), PROC_REF(update_limp))
+	if(left)
+		RegisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_limp))
+	if(right)
+		RegisterSignal(right, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_limp))
 	return TRUE
 
 /datum/status_effect/limp/on_remove()
-	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB))
+	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVED_LIMB))
+	if(left)
+		UnregisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED)
+	if(right)
+		UnregisterSignal(right, COMSIG_LIMB_UPDATE_INTERACTION_SPEED)
 
 /atom/movable/screen/alert/status_effect/limp
 	name = "Limping"
@@ -85,36 +93,149 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/C = owner
-	left = C.get_bodypart(BODY_ZONE_L_LEG)
-	right = C.get_bodypart(BODY_ZONE_R_LEG)
+	var/new_left = C.get_bodypart(BODY_ZONE_L_LEG)
+	var/new_right = C.get_bodypart(BODY_ZONE_R_LEG)
+	if(new_left != left)
+		if(left)
+			UnregisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED)
+		left = null
+		if(new_left)
+			left = new_left
+			RegisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_limp))
+	if(new_right != right)
+		if(right)
+			UnregisterSignal(right, COMSIG_LIMB_UPDATE_INTERACTION_SPEED)
+		right = null
+		if(new_right)
+			right = new_right
+			RegisterSignal(right, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_limp))
 
 	if(!left && !right)
 		C.remove_status_effect(src)
 		return
 
-	slowdown_left = 0
-	slowdown_right = 0
+	slowdown_left = 1
+	slowdown_right = 1
 	limp_chance_left = 0
 	limp_chance_right = 0
 
-	// technically you can have multiple wounds causing limps on the same limb, even if practically only bone wounds cause it in normal gameplay
 	if(left)
-		for(var/thing in left.wounds)
-			var/datum/wound/W = thing
-			slowdown_left += W.limp_slowdown
-			limp_chance_left = max(limp_chance_left, W.limp_chance)
+		slowdown_left = left.interaction_speed_modifier
+		limp_chance_left = 100
 
 	if(right)
-		for(var/thing in right.wounds)
-			var/datum/wound/W = thing
-			slowdown_right += W.limp_slowdown
-			limp_chance_right = max(limp_chance_right, W.limp_chance)
+		slowdown_right = right.interaction_speed_modifier
+		limp_chance_right = 100
 
 	// this handles losing your leg with the limp and the other one being in good shape as well
-	if(!slowdown_left && !slowdown_right)
+	if(slowdown_left + slowdown_right == 2)
 		C.remove_status_effect(src)
 		return
 
+
+/atom/movable/screen/alert/status_effect/broken_arm
+	name = "Restricted Arm"
+	desc = "One or more of your arms is restricted or broken, it is difficult to use!"
+
+/datum/status_effect/arm_slowdown
+	id = "arm_broke"
+	status_type = STATUS_EFFECT_UNIQUE
+	tick_interval = 0
+	alert_type = /atom/movable/screen/alert/status_effect/broken_arm
+
+	/// The left leg of the limping person
+	var/obj/item/bodypart/arm/left
+	var/obj/item/bodypart/arm/right
+
+	var/speed_left
+	var/speed_right
+
+/datum/status_effect/arm_slowdown/on_remove()
+	. = ..()
+	var/mob/living/carbon/C = owner
+	C.remove_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm)
+
+/datum/status_effect/arm_slowdown/on_apply()
+	if(!iscarbon(owner))
+		return FALSE
+
+	var/mob/living/carbon/C = owner
+	left = C.get_bodypart(BODY_ZONE_L_ARM)
+	right = C.get_bodypart(BODY_ZONE_R_ARM)
+
+	RegisterSignal(owner, COMSIG_MOB_SWAP_HANDS, PROC_REF(on_hand_swap))
+	RegisterSignal(owner, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_CARBON_ATTACH_LIMB), PROC_REF(update_slow))
+	if(left)
+		speed_left = left.interaction_speed_modifier
+		RegisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_slow))
+	if(right)
+		speed_right = right.interaction_speed_modifier
+		RegisterSignal(right, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_slow))
+
+	apply_to_mob()
+	return TRUE
+
+/datum/status_effect/arm_slowdown/proc/update_slow()
+	SIGNAL_HANDLER
+
+	var/mob/living/carbon/C = owner
+	var/new_left = C.get_bodypart(BODY_ZONE_L_ARM)
+	var/new_right = C.get_bodypart(BODY_ZONE_R_ARM)
+	if(new_left != left)
+		if(left)
+			UnregisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED)
+		left = null
+		if(new_left)
+			left = new_left
+			RegisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_slow))
+	if(new_right != right)
+		if(right)
+			UnregisterSignal(right, COMSIG_LIMB_UPDATE_INTERACTION_SPEED)
+		right = null
+		if(new_right)
+			right = new_right
+			RegisterSignal(right, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_slow))
+
+	speed_left = left?.interaction_speed_modifier || 1
+	speed_right = right?.interaction_speed_modifier || 1
+
+	if((speed_left + speed_left) == 2) // 1 + 1 = 2
+		C.remove_status_effect(src)
+		return
+
+	apply_to_mob()
+
+/datum/status_effect/arm_slowdown/proc/apply_to_mob()
+	SIGNAL_HANDLER
+	var/mob/living/carbon/C = owner
+	var/hand = C.get_active_hand()?.body_zone
+
+	if(hand == BODY_ZONE_R_ARM)
+		if(speed_right == 1)
+			C.remove_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm)
+		else
+			C.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm, multiplicative_slowdown = speed_right)
+	else if(hand == BODY_ZONE_L_ARM)
+		if(speed_left == 1)
+			C.remove_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm)
+		else
+			C.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm, multiplicative_slowdown = speed_left)
+
+/datum/status_effect/arm_slowdown/proc/on_hand_swap()
+	SIGNAL_HANDLER
+	spawn(0) // The SWAP_HANDS comsig fires before we actually change our active hand.
+		apply_to_mob()
+
+/datum/status_effect/arm_slowdown/nextmove_modifier()
+	var/mob/living/carbon/C = owner
+
+	var/hand = C.get_active_hand().body_zone
+	if(hand)
+		if(hand == BODY_ZONE_R_ARM)
+			return speed_right
+		else
+			return speed_left
+	return 1
 
 /////////////////////////
 //////// WOUNDS /////////
@@ -133,94 +254,3 @@
 	var/mob/living/carbon/carbon_owner = owner
 	carbon_owner.check_self_for_injuries()
 
-// wound status effect base
-/datum/status_effect/wound
-	id = "wound"
-	status_type = STATUS_EFFECT_MULTIPLE
-	var/obj/item/bodypart/linked_limb
-	var/datum/wound/linked_wound
-	alert_type = NONE
-
-/datum/status_effect/wound/on_creation(mob/living/new_owner, incoming_wound)
-	. = ..()
-	linked_wound = incoming_wound
-	linked_limb = linked_wound.limb
-
-/datum/status_effect/wound/on_remove()
-	linked_wound = null
-	linked_limb = null
-	UnregisterSignal(owner, COMSIG_CARBON_LOSE_WOUND)
-
-/datum/status_effect/wound/on_apply()
-	if(!iscarbon(owner))
-		return FALSE
-	RegisterSignal(owner, COMSIG_CARBON_LOSE_WOUND, .proc/check_remove)
-	return TRUE
-
-/// check if the wound getting removed is the wound we're tied to
-/datum/status_effect/wound/proc/check_remove(mob/living/L, datum/wound/W)
-	SIGNAL_HANDLER
-
-	if(W == linked_wound)
-		qdel(src)
-
-
-// bones
-/datum/status_effect/wound/blunt
-
-/datum/status_effect/wound/blunt/on_apply()
-	. = ..()
-	RegisterSignal(owner, COMSIG_MOB_SWAP_HANDS, .proc/on_swap_hands)
-	on_swap_hands()
-
-/datum/status_effect/wound/blunt/on_remove()
-	. = ..()
-	UnregisterSignal(owner, COMSIG_MOB_SWAP_HANDS)
-	var/mob/living/carbon/wound_owner = owner
-	wound_owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/blunt_wound)
-
-/datum/status_effect/wound/blunt/proc/on_swap_hands()
-	SIGNAL_HANDLER
-
-	var/mob/living/carbon/wound_owner = owner
-	if(wound_owner.get_active_hand() == linked_limb)
-		wound_owner.add_actionspeed_modifier(/datum/actionspeed_modifier/blunt_wound, (linked_wound.interaction_efficiency_penalty - 1))
-	else
-		wound_owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/blunt_wound)
-
-/datum/status_effect/wound/blunt/nextmove_modifier()
-	var/mob/living/carbon/C = owner
-
-	if(C.get_active_hand() == linked_limb)
-		return linked_wound.interaction_efficiency_penalty
-
-	return 1
-
-// blunt
-/datum/status_effect/wound/blunt/moderate
-	id = "disjoint"
-/datum/status_effect/wound/blunt/severe
-	id = "hairline"
-/datum/status_effect/wound/blunt/critical
-	id = "compound"
-// slash
-/datum/status_effect/wound/slash/moderate
-	id = "abrasion"
-/datum/status_effect/wound/slash/severe
-	id = "laceration"
-/datum/status_effect/wound/slash/critical
-	id = "avulsion"
-// pierce
-/datum/status_effect/wound/pierce/moderate
-	id = "breakage"
-/datum/status_effect/wound/pierce/severe
-	id = "puncture"
-/datum/status_effect/wound/pierce/critical
-	id = "rupture"
-// burns
-/datum/status_effect/wound/burn/moderate
-	id = "seconddeg"
-/datum/status_effect/wound/burn/severe
-	id = "thirddeg"
-/datum/status_effect/wound/burn/critical
-	id = "fourthdeg"

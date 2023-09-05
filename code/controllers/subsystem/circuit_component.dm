@@ -2,6 +2,7 @@ SUBSYSTEM_DEF(circuit_component)
 	name = "Circuit Components"
 	wait = 0.1 SECONDS
 	priority = FIRE_PRIORITY_DEFAULT
+	flags = SS_HIBERNATE
 
 	var/list/callbacks_to_invoke = list()
 	var/list/currentrun = list()
@@ -12,6 +13,13 @@ SUBSYSTEM_DEF(circuit_component)
 	var/instant_run_start_cpu_usage = 0
 	var/instant_run_max_cpu_usage = 10
 	var/list/instant_run_callbacks_to_run = list()
+
+/datum/controller/subsystem/circuit_component/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, callbacks_to_invoke),
+		NAMEOF(src, currentrun)
+	)
 
 /datum/controller/subsystem/circuit_component/fire(resumed)
 	if(!resumed)
@@ -27,7 +35,6 @@ SUBSYSTEM_DEF(circuit_component)
 
 		to_call.user = null
 		to_call.InvokeAsync()
-		qdel(to_call)
 
 
 		if(MC_TICK_CHECK)
@@ -75,7 +82,6 @@ SUBSYSTEM_DEF(circuit_component)
 			instant_run_currentrun.Cut(1,2)
 			to_call.user = null
 			to_call.InvokeAsync(received_inputs)
-			qdel(to_call)
 
 	if(length(instant_run_stack))
 		instant_run_callbacks_to_run = pop(instant_run_stack)

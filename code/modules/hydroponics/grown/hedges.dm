@@ -25,7 +25,7 @@
 	if(player_turf?.is_blocked_turf(TRUE))
 		return FALSE
 	user.visible_message(span_danger("[user] begins to plant \the [src]..."))
-	if(do_after(user, 8 SECONDS, target = user.drop_location(), progress = TRUE))
+	if(do_after(user, user.drop_location(), 8 SECONDS, progress = TRUE))
 		new /obj/structure/hedge/opaque(user.drop_location())
 		to_chat(user, span_notice("You plant \the [src]."))
 		qdel(src)
@@ -38,17 +38,17 @@
 	icon_state = "hedge-0"
 	base_icon_state = "hedge"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_HEDGE_FLUFF)
-	canSmoothWith = list(SMOOTH_GROUP_HEDGE_FLUFF)
+	smoothing_groups = SMOOTH_GROUP_HEDGE_FLUFF
+	canSmoothWith = SMOOTH_GROUP_HEDGE_FLUFF
 	density = TRUE
 	anchored = TRUE
 	opacity = FALSE
 	max_integrity = 80
 
 /obj/structure/hedge/attacked_by(obj/item/I, mob/living/user)
-	if(opacity && HAS_TRAIT(user, TRAIT_BONSAI) && I.get_sharpness())
+	if(opacity && HAS_TRAIT(user, TRAIT_BONSAI) && (I.sharpness & SHARP_EDGED))
 		to_chat(user,span_notice("You start trimming \the [src]."))
-		if(do_after(user, 3 SECONDS,target=src))
+		if(do_after(user, src, 3 SECONDS))
 			to_chat(user,span_notice("You finish trimming \the [src]."))
 			opacity = FALSE
 	else

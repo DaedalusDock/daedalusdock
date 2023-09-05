@@ -12,9 +12,14 @@
 
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
+
 	force = 6
 	throw_speed = 3
 	throw_range = 7
+	stamina_damage = 15
+	stamina_cost = 10
+	stamina_critical_chance = 30
+
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=80)
 	attack_verb_continuous = list("pinches", "nips")
@@ -46,7 +51,8 @@
 	return ..()
 
 /obj/item/wirecutters/attack(mob/living/carbon/attacked_carbon, mob/user)
-	if(istype(attacked_carbon) && attacked_carbon.handcuffed && istype(attacked_carbon.handcuffed, /obj/item/restraints/handcuffs/cable))
+	if(istype(attacked_carbon) && attacked_carbon.handcuffed \
+	&& istype(attacked_carbon.handcuffed, /obj/item/restraints/handcuffs/cable) | istype(attacked_carbon.handcuffed, /obj/item/restraints/handcuffs/tape))
 		user.visible_message(span_notice("[user] cuts [attacked_carbon]'s restraints with [src]!"))
 		qdel(attacked_carbon.handcuffed)
 		return

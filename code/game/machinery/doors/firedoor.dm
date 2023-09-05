@@ -40,13 +40,13 @@
 	///Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.
 	var/alert_type = FIRE_CLEAR
 
-	var/knock_sound = 'sound/effects/glassknock.ogg'
+	knock_sound = 'sound/effects/glassknock.ogg'
 	var/bash_sound = 'sound/effects/glassbash.ogg'
 
 
 /obj/machinery/door/firedoor/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door/firedoor/LateInitialize()
@@ -166,9 +166,9 @@
 	alert_type = code
 
 	if(code == FIRE_CLEAR)
-		INVOKE_ASYNC(src, .proc/open)
+		INVOKE_ASYNC(src, PROC_REF(open))
 	else
-		INVOKE_ASYNC(src, .proc/close)
+		INVOKE_ASYNC(src, PROC_REF(close))
 
 /obj/machinery/door/firedoor/emag_act(mob/user, obj/item/card/emag/doorjack/digital_crowbar)
 	if(obj_flags & EMAGGED)
@@ -178,9 +178,9 @@
 			return
 		digital_crowbar.use_charge(user)
 	obj_flags |= EMAGGED
-	INVOKE_ASYNC(src, .proc/open)
+	INVOKE_ASYNC(src, PROC_REF(open))
 
-/obj/machinery/door/firedoor/Bumped(atom/movable/AM)
+/obj/machinery/door/firedoor/BumpedBy(atom/movable/AM)
 	if(panel_open || operating)
 		return
 	if(!density)
@@ -202,14 +202,14 @@
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 
-	if(!user.combat_mode)
-		user.visible_message(span_notice("[user] knocks on [src]."), \
-			span_notice("You knock on [src]."))
-		playsound(src, knock_sound, 50, TRUE)
+	if(!user.combat_mode || modifiers[RIGHT_CLICK])
+		knock_on(user)
+		return TRUE
 	else
 		user.visible_message(span_warning("[user] bashes [src]!"), \
 			span_warning("You bash [src]!"))
 		playsound(src, bash_sound, 100, TRUE)
+		return TRUE
 
 /obj/machinery/door/firedoor/wrench_act(mob/living/user, obj/item/tool)
 	add_fingerprint(user)
@@ -263,7 +263,7 @@
 			span_notice("You press your crowbar between the door and begin to pry it open..."),
 			span_hear("You hear a metal clang, followed by metallic groans.")
 		)
-		if(!do_after(user, 3 SECONDS, src))
+		if(!do_after(user, src, 3 SECONDS))
 			return
 		user.visible_message(
 			span_danger("[user] forces [src] open with a crowbar!"),
@@ -364,8 +364,9 @@
 	icon = 'icons/obj/doors/edge_Doorfire.dmi'
 	can_crush = FALSE
 	flags_1 = ON_BORDER_1
-	can_atmos_pass = ATMOS_PASS_PROC
+	can_atmos_pass = CANPASS_PROC
 	auto_dir_align = FALSE
+	loc_procs = EXIT
 
 /obj/machinery/door/firedoor/border_only/closed
 	icon_state = "door_closed"
@@ -399,19 +400,17 @@
 	if(!(border_dir == dir)) //Make sure looking at appropriate border
 		return TRUE
 
-/obj/machinery/door/firedoor/border_only/CanAStarPass(obj/item/card/id/ID, to_dir)
+/obj/machinery/door/firedoor/border_only/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
 	return !density || (dir != to_dir)
 
-/obj/machinery/door/firedoor/border_only/proc/on_exit(datum/source, atom/movable/leaving, direction)
-	SIGNAL_HANDLER
+/obj/machinery/door/firedoor/border_only/Exit(atom/movable/leaving, direction)
+	. = ..()
 	if(leaving.movement_type & PHASING)
 		return
-	if(leaving == src)
-		return // Let's not block ourselves.
 
 	if(direction == dir && density)
 		leaving.Bump(src)
-		return COMPONENT_ATOM_BLOCK_EXIT
+		return FALSE
 
 /obj/machinery/door/firedoor/border_only/zas_canpass(turf/T)
 	if(QDELETED(src))
@@ -509,7 +508,7 @@
 				user.visible_message(span_notice("[user] begins reinforcing [src]..."), \
 					span_notice("You begin reinforcing [src]..."))
 				playsound(get_turf(src), 'sound/items/deconstruct.ogg', 50, TRUE)
-				if(do_after(user, DEFAULT_STEP_TIME, target = src))
+				if(do_after(user, src, DEFAULT_STEP_TIME))
 					if(constructionStep != CONSTRUCTION_PANEL_OPEN || reinforced || plasteel_sheet.get_amount() < 2 || !plasteel_sheet)
 						return
 					user.visible_message(span_notice("[user] reinforces [src]."), \
@@ -523,7 +522,7 @@
 				user.visible_message(span_notice("[user] starts adding [attacking_object] to [src]..."), \
 					span_notice("You begin adding a circuit board to [src]..."))
 				playsound(get_turf(src), 'sound/items/deconstruct.ogg', 50, TRUE)
-				if(!do_after(user, DEFAULT_STEP_TIME, target = src))
+				if(!do_after(user, src, DEFAULT_STEP_TIME))
 					return
 				if(constructionStep != CONSTRUCTION_NO_CIRCUIT)
 					return

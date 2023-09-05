@@ -351,6 +351,10 @@
 
 
 	if (ringer_status)
+		if(!holder.holder)
+			return //We aren't actually in a computer, SSpackets might have gotten severely gummed up or smth.
+		//otherwise, fix the computer var and run.
+		computer = holder.holder
 		computer.ring(ringtone)
 
 /datum/computer_file/program/messenger/Topic(href, href_list)

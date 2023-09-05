@@ -15,3 +15,5 @@
 
 /// This cycle, a round event was hijacked when the next midround event is too soon.
 #define HIJACKED_TOO_SOON "HIJACKED_TOO_SOON"
+
+#define IS_DYNAMIC_GAME_MODE (istype(SSticker.mode, /datum/game_mode/dynamic))

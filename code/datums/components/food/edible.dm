@@ -64,35 +64,35 @@ Behavior that's still missing from this component that original food items had t
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/examine)
-	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ANIMAL, .proc/UseByAnimal)
-	RegisterSignal(parent, COMSIG_ATOM_CHECKPARTS, .proc/OnCraft)
-	RegisterSignal(parent, COMSIG_ATOM_CREATEDBY_PROCESSING, .proc/OnProcessed)
-	RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_COOKED, .proc/OnMicrowaveCooked)
-	RegisterSignal(parent, COMSIG_EDIBLE_INGREDIENT_ADDED, .proc/edible_ingredient_added)
-	RegisterSignal(parent, COMSIG_OOZE_EAT_ATOM, .proc/on_ooze_eat)
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(examine))
+	RegisterSignal(parent, COMSIG_ATOM_ATTACK_ANIMAL, PROC_REF(UseByAnimal))
+	RegisterSignal(parent, COMSIG_ATOM_CHECKPARTS, PROC_REF(OnCraft))
+	RegisterSignal(parent, COMSIG_ATOM_CREATEDBY_PROCESSING, PROC_REF(OnProcessed))
+	RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_COOKED, PROC_REF(OnMicrowaveCooked))
+	RegisterSignal(parent, COMSIG_EDIBLE_INGREDIENT_ADDED, PROC_REF(edible_ingredient_added))
+	RegisterSignal(parent, COMSIG_OOZE_EAT_ATOM, PROC_REF(on_ooze_eat))
 
 	if(!isturf(parent))
 		var/static/list/loc_connections = list(
-			COMSIG_ATOM_ENTERED = .proc/on_entered,
+			COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 		)
 		AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)
 	else
-		RegisterSignal(parent, COMSIG_ATOM_ENTERED, .proc/on_entered)
+		RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
 
 	if(isitem(parent))
-		RegisterSignal(parent, COMSIG_ITEM_ATTACK, .proc/UseFromHand)
-		RegisterSignal(parent, COMSIG_ITEM_FRIED, .proc/OnFried)
-		RegisterSignal(parent, COMSIG_GRILL_FOOD, .proc/GrillFood)
-		RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_ACT, .proc/OnMicrowaved)
-		RegisterSignal(parent, COMSIG_ITEM_USED_AS_INGREDIENT, .proc/used_to_customize)
+		RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(UseFromHand))
+		RegisterSignal(parent, COMSIG_ITEM_FRIED, PROC_REF(OnFried))
+		RegisterSignal(parent, COMSIG_GRILL_FOOD, PROC_REF(GrillFood))
+		RegisterSignal(parent, COMSIG_ITEM_MICROWAVE_ACT, PROC_REF(OnMicrowaved))
+		RegisterSignal(parent, COMSIG_ITEM_USED_AS_INGREDIENT, PROC_REF(used_to_customize))
 
 		var/obj/item/item = parent
 		if (!item.grind_results)
 			item.grind_results = list() //If this doesn't already exist, add it as an empty list. This is needed for the grinder to accept it.
 
 	else if(isturf(parent) || isstructure(parent))
-		RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, .proc/TryToEatIt)
+		RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(TryToEatIt))
 
 	src.bite_consumption = bite_consumption
 	src.food_flags = food_flags
@@ -114,9 +114,9 @@ Behavior that's still missing from this component that original food items had t
 	for(var/rid in initial_reagents)
 		var/amount = initial_reagents[rid]
 		if(length(tastes) && (rid == /datum/reagent/consumable/nutriment || rid == /datum/reagent/consumable/nutriment/vitamin))
-			owner.reagents.add_reagent(rid, amount, tastes.Copy())
+			owner.reagents.add_reagent(rid, amount, tastes.Copy(), no_react = TRUE)
 		else
-			owner.reagents.add_reagent(rid, amount)
+			owner.reagents.add_reagent(rid, amount, no_react = TRUE)
 
 /datum/component/edible/InheritComponent(
 	datum/component/C,
@@ -146,8 +146,8 @@ Behavior that's still missing from this component that original food items had t
 	src.on_consume = on_consume
 
 /datum/component/edible/Destroy(force, silent)
-	QDEL_NULL(after_eat)
-	QDEL_NULL(on_consume)
+	after_eat = null
+	on_consume = null
 	return ..()
 
 /datum/component/edible/proc/examine(datum/source, mob/user, list/examine_list)
@@ -308,7 +308,7 @@ Behavior that's still missing from this component that original food items had t
 	var/fullness = eater.get_fullness() + 10 //The theoretical fullness of the person eating if they were to eat this
 
 	if(eater == feeder)//If you're eating it yourself.
-		if(eat_time && !do_mob(feeder, eater, eat_time, timed_action_flags = food_flags & FOOD_FINGER_FOOD ? IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE : NONE)) //Gotta pass the minimal eat time
+		if(eat_time && !do_after(feeder, eater, eat_time, timed_action_flags = food_flags & FOOD_FINGER_FOOD ? IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE : NONE)) //Gotta pass the minimal eat time
 			return
 		if(IsFoodGone(owner, feeder))
 			return
@@ -362,7 +362,7 @@ Behavior that's still missing from this component that original food items had t
 				span_userdanger("[feeder] cannot force any more of [parent] down your [eater.get_bodypart(BODY_ZONE_HEAD) ? "throat!" : "throat hole! Eugh."]")
 			)
 			return
-		if(!do_mob(feeder, eater)) //Wait 3 seconds before you can feed
+		if(!do_after(feeder, eater, 3 SECONDS)) //Wait 3 seconds before you can feed
 			return
 		if(IsFoodGone(owner, feeder))
 			return
@@ -376,7 +376,7 @@ Behavior that's still missing from this component that original food items had t
 
 	//If we're not force-feeding and there's an eat delay, try take another bite
 	if(eater == feeder && eat_time)
-		INVOKE_ASYNC(src, .proc/TryToEat, eater, feeder)
+		INVOKE_ASYNC(src, PROC_REF(TryToEat), eater, feeder)
 
 
 ///This function lets the eater take a bite and transfers the reagents to the eater.
@@ -429,9 +429,6 @@ Behavior that's still missing from this component that original food items had t
 		return FALSE
 	var/mob/living/carbon/human/H = M
 
-	//Bruh this breakfast thing is cringe and shouldve been handled separately from food-types, remove this in the future (Actually, just kill foodtypes in general)
-	if((foodtypes & BREAKFAST) && world.time - SSticker.round_start_time < STOP_SERVING_BREAKFAST)
-		SEND_SIGNAL(H, COMSIG_ADD_MOOD_EVENT, "breakfast", /datum/mood_event/breakfast)
 	last_check_time = world.time
 
 	if(HAS_TRAIT(H, TRAIT_AGEUSIA))
@@ -457,15 +454,12 @@ Behavior that's still missing from this component that original food items had t
 		if(FOOD_TOXIC)
 			to_chat(H,span_warning("What the hell was that thing?!"))
 			H.adjust_disgust(25 + 30 * fraction)
-			SEND_SIGNAL(H, COMSIG_ADD_MOOD_EVENT, "toxic_food", /datum/mood_event/disgusting_food)
 		if(FOOD_DISLIKED)
 			to_chat(H,span_notice("That didn't taste very good..."))
 			H.adjust_disgust(11 + 15 * fraction)
-			SEND_SIGNAL(H, COMSIG_ADD_MOOD_EVENT, "gross_food", /datum/mood_event/gross_food)
 		if(FOOD_LIKED)
 			to_chat(H,span_notice("I love this taste!"))
 			H.adjust_disgust(-5 + -2.5 * fraction)
-			SEND_SIGNAL(H, COMSIG_ADD_MOOD_EVENT, "fav_food", /datum/mood_event/favorite_food)
 			if(istype(parent, /obj/item/food))
 				var/obj/item/food/memorable_food = parent
 				if(memorable_food.venue_value >= FOOD_PRICE_EXOTIC)
@@ -509,6 +503,8 @@ Behavior that's still missing from this component that original food items had t
 ///Ability to feed food to puppers
 /datum/component/edible/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	SEND_SIGNAL(parent, COMSIG_FOOD_CROSSED, arrived, bitecount)
 
 ///Response to being used to customize something

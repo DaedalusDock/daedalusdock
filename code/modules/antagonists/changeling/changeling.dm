@@ -11,7 +11,6 @@
 	roundend_category = "changelings"
 	antagpanel_category = "Changeling"
 	job_rank = ROLE_CHANGELING
-	antag_moodlet = /datum/mood_event/focused
 	antag_hud_name = "changeling"
 	hijack_speed = 0.5
 	ui_name = "AntagInfoChangeling"
@@ -128,9 +127,9 @@
 
 	var/mob/living/living_mob = mob_to_tweak
 	handle_clown_mutation(living_mob, "You have evolved beyond your clownish nature, allowing you to wield weapons without harming yourself.")
-	RegisterSignal(living_mob, COMSIG_MOB_LOGIN, .proc/on_login)
-	RegisterSignal(living_mob, COMSIG_LIVING_LIFE, .proc/on_life)
-	RegisterSignal(living_mob, list(COMSIG_MOB_MIDDLECLICKON, COMSIG_MOB_ALTCLICKON), .proc/on_click_sting)
+	RegisterSignal(living_mob, COMSIG_MOB_LOGIN, PROC_REF(on_login))
+	RegisterSignal(living_mob, COMSIG_LIVING_LIFE, PROC_REF(on_life))
+	RegisterSignal(living_mob, list(COMSIG_MOB_MIDDLECLICKON, COMSIG_MOB_ALTCLICKON), PROC_REF(on_click_sting))
 
 	if(living_mob.hud_used)
 		var/datum/hud/hud_used = living_mob.hud_used
@@ -145,10 +144,10 @@
 
 		hud_used.show_hud(hud_used.hud_version)
 	else
-		RegisterSignal(living_mob, COMSIG_MOB_HUD_CREATED, .proc/on_hud_created)
+		RegisterSignal(living_mob, COMSIG_MOB_HUD_CREATED, PROC_REF(on_hud_created))
 
 	// Brains are optional for lings.
-	var/obj/item/organ/internal/brain/our_ling_brain = living_mob.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/our_ling_brain = living_mob.getorganslot(ORGAN_SLOT_BRAIN)
 	if(our_ling_brain)
 		our_ling_brain.organ_flags &= ~ORGAN_VITAL
 		our_ling_brain.decoy_override = TRUE
@@ -186,7 +185,7 @@
 	if(!iscarbon(owner.current))
 		return
 	var/mob/living/carbon/carbon_owner = owner.current
-	var/obj/item/organ/internal/brain/not_ling_brain = carbon_owner.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/not_ling_brain = carbon_owner.getorganslot(ORGAN_SLOT_BRAIN)
 	if(not_ling_brain && (not_ling_brain.decoy_override != initial(not_ling_brain.decoy_override)))
 		not_ling_brain.organ_flags |= ORGAN_VITAL
 		not_ling_brain.decoy_override = FALSE
@@ -256,7 +255,7 @@
 	if(!chosen_sting || clicked == ling || !istype(ling) || ling.stat != CONSCIOUS)
 		return
 
-	INVOKE_ASYNC(chosen_sting, /datum/action/changeling/sting.proc/try_to_sting, ling, clicked)
+	INVOKE_ASYNC(chosen_sting, TYPE_PROC_REF(/datum/action/changeling/sting, try_to_sting), ling, clicked)
 
 	return COMSIG_MOB_CANCEL_CLICKON
 
@@ -465,10 +464,6 @@
 	// Grab skillchips they have
 	new_profile.skillchips = target.clone_skillchip_list(TRUE)
 
-	// Get any scars they may have
-	for(var/datum/scar/target_scar as anything in target.all_scars)
-		LAZYADD(new_profile.stored_scars, target_scar.format())
-
 	// Make an icon snapshot of what they currently look like
 	var/datum/icon_snapshot/entry = new()
 	entry.name = target.name
@@ -640,7 +635,7 @@
 /datum/antagonist/changeling/get_admin_commands()
 	. = ..()
 	if(stored_profiles.len && (owner.current.real_name != first_profile.name))
-		.["Transform to initial appearance."] = CALLBACK(src,.proc/admin_restore_appearance)
+		.["Transform to initial appearance."] = CALLBACK(src,PROC_REF(admin_restore_appearance))
 
 /*
  * Restores the appearance of the changeling to the original DNA.
@@ -690,12 +685,6 @@
 
 	user.updateappearance(mutcolor_update = TRUE)
 	user.domutcheck()
-
-	// Get rid of any scars from previous Changeling-ing
-	for(var/datum/scar/old_scar as anything in user.all_scars)
-		if(old_scar.fake)
-			user.all_scars -= old_scar
-			qdel(old_scar)
 
 	// Now, we do skillchip stuff, AFTER DNA code.
 	// (There's a mutation that increases max chip complexity available, even though we force-implant skillchips.)
@@ -770,11 +759,6 @@
 			if(!QDELETED(new_flesh_item))
 				ADD_TRAIT(new_flesh_item, TRAIT_NODROP, CHANGELING_TRAIT)
 
-	for(var/stored_scar_line in chosen_profile.stored_scars)
-		var/datum/scar/attempted_fake_scar = user.load_scar(stored_scar_line)
-		if(attempted_fake_scar)
-			attempted_fake_scar.fake = TRUE
-
 	user.regenerate_icons()
 
 // Changeling profile themselves. Store a data to store what every DNA instance looked like.
@@ -811,8 +795,6 @@
 	var/socks
 	/// A list of paths for any skill chips the profile source had installed
 	var/list/skillchips = list()
-	/// What scars the profile sorce had, in string form (like persistent scars)
-	var/list/stored_scars
 	/// Icon snapshot of the profile
 	var/datum/icon_snapshot/profile_snapshot
 	/// ID HUD icon associated with the profile
@@ -820,7 +802,6 @@
 
 /datum/changeling_profile/Destroy()
 	qdel(dna)
-	LAZYCLEARLIST(stored_scars)
 	return ..()
 
 /*
@@ -845,7 +826,6 @@
 	new_profile.worn_icon_list = worn_icon_list.Copy()
 	new_profile.worn_icon_state_list = worn_icon_state_list.Copy()
 	new_profile.skillchips = skillchips.Copy()
-	new_profile.stored_scars = stored_scars.Copy()
 	new_profile.profile_snapshot = profile_snapshot
 	new_profile.id_icon = id_icon
 

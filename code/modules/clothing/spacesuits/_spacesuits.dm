@@ -74,24 +74,23 @@
 
 // Space Suit temperature regulation and power usage
 /obj/item/clothing/suit/space/process(delta_time)
-	var/mob/living/carbon/human/user = src.loc
-	if(!user || !ishuman(user) || !(user.wear_suit == src))
+	var/mob/living/carbon/human/user = loc
+	if(!user || !ishuman(user) || user.wear_suit != src)
 		return
 
 	// Do nothing if thermal regulators are off
 	if(!thermal_on)
 		return
 
-	// If we got here, thermal regulators are on. If there's no cell, turn them
-	// off
+	// If we got here, thermal regulators are on. If there's no cell, turn them off
 	if(!cell)
-		toggle_spacesuit()
+		toggle_spacesuit(user)
 		update_hud_icon(user)
 		return
 
 	// cell.use will return FALSE if charge is lower than THERMAL_REGULATOR_COST
 	if(!cell.use(THERMAL_REGULATOR_COST))
-		toggle_spacesuit()
+		toggle_spacesuit(user)
 		update_hud_icon(user)
 		to_chat(user, span_warning("The thermal regulator cuts off as [cell] runs out of charge."))
 		return
@@ -127,7 +126,7 @@
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
 		. += "The thermal regulator is [thermal_on ? "on" : "off"] and the temperature is set to \
-			[round(temperature_setting-T0C,0.1)] &deg;C ([round(temperature_setting*1.8-459.67,0.1)] &deg;F)"
+			[round(temperature_setting-T0C,0.1)] &deg;C ([round(FAHRENHEIT(temperature_setting), 0.1)] &deg;F)"
 		. += "The power meter shows [cell ? "[round(cell.percent(), 0.1)]%" : "!invalid!"] charge remaining."
 		if(cell_cover_open)
 			. += "The cell cover is open exposing the cell and setting knobs."
@@ -141,6 +140,11 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/item/clothing/suit/space/screwdriver_act(mob/living/user, obj/item/tool)
+	if(cell_cover_open)
+		if(cell)
+			remove_cell(user)
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
 	var/range_low = 20 // Default min temp c
 	var/range_high = 45 // default max temp c
 	if(obj_flags & EMAGGED)
@@ -166,31 +170,14 @@
 		to_chat(user, span_notice("You successfully install \the [cell] into [src]."))
 		return
 
-/// Open the cell cover when ALT+Click on the suit
-/obj/item/clothing/suit/space/AltClick(mob/living/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		return ..()
-	toggle_spacesuit_cell(user)
-
-/// Remove the cell whent he cover is open on CTRL+Click
-/obj/item/clothing/suit/space/CtrlClick(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		if(cell_cover_open && cell)
-			remove_cell(user)
-			return
-	return ..()
-
-// Remove the cell when using the suit on its self
-/obj/item/clothing/suit/space/attack_self(mob/user)
-	remove_cell(user)
-
 /// Remove the cell from the suit if the cell cover is open
 /obj/item/clothing/suit/space/proc/remove_cell(mob/user)
 	if(cell_cover_open && cell)
 		user.visible_message(span_notice("[user] removes \the [cell] from [src]!"), \
-			span_notice("You remove [cell]."))
+			span_notice("You remove [cell] from [src]."))
 		cell.add_fingerprint(user)
-		user.put_in_hands(cell)
+		if(!user.put_in_hands(cell))
+			cell.forceMove(user.drop_location())
 		cell = null
 
 /// Toggle the space suit's cell cover
@@ -199,20 +186,24 @@
 	to_chat(user, span_notice("You [cell_cover_open ? "open" : "close"] the cell cover on \the [src]."))
 
 /// Toggle the space suit's thermal regulator status
-/obj/item/clothing/suit/space/proc/toggle_spacesuit()
+/obj/item/clothing/suit/space/proc/toggle_spacesuit(mob/toggler)
 	// If we're turning thermal protection on, check for valid cell and for enough
 	// charge that cell. If it's too low, we shouldn't bother with setting the
 	// thermal protection value and should just return out early.
-	var/mob/living/carbon/human/user = src.loc
-	if(!thermal_on && !(cell && cell.charge >= THERMAL_REGULATOR_COST))
-		to_chat(user, span_warning("The thermal regulator on \the [src] has no charge."))
+	if(!thermal_on && (!cell || cell.charge < THERMAL_REGULATOR_COST))
+		if(toggler)
+			to_chat(toggler, span_warning("The thermal regulator on [src] has no charge."))
 		return
 
 	thermal_on = !thermal_on
 	min_cold_protection_temperature = thermal_on ? SPACE_SUIT_MIN_TEMP_PROTECT : SPACE_SUIT_MIN_TEMP_PROTECT_OFF
-	if(user)
-		to_chat(user, span_notice("You turn [thermal_on ? "on" : "off"] \the [src]'s thermal regulator."))
-	SEND_SIGNAL(src, COMSIG_SUIT_SPACE_TOGGLE)
+	if(toggler)
+		to_chat(toggler, span_notice("You turn [thermal_on ? "on" : "off"] [src]'s thermal regulator."))
+
+	update_action_buttons()
+
+/obj/item/clothing/suit/space/ui_action_click(mob/user, actiontype)
+	toggle_spacesuit(user)
 
 // let emags override the temperature settings
 /obj/item/clothing/suit/space/emag_act(mob/user)
@@ -260,8 +251,8 @@
 		cell.emp_act(severity)
 
 /obj/item/clothing/head/helmet/space/suicide_act(mob/living/carbon/user)
-	var/datum/gas_mixture/environment = user.loc.return_air()
-	if(HAS_TRAIT(user, TRAIT_RESISTCOLD) || !environment || environment.get_temperature() >= user.get_body_temp_cold_damage_limit())
+	var/datum/gas_mixture/environment = user.loc.unsafe_return_air()
+	if(HAS_TRAIT(user, TRAIT_RESISTCOLD) || !environment || environment.temperature >= user.get_body_temp_cold_damage_limit())
 		user.visible_message(span_suicide("[user] is beating [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 		return BRUTELOSS
 	user.say("You want proof? I'll give you proof! Here's proof of what'll happen to you if you stay here with your stuff!", forced = "space helmet suicide")

@@ -35,33 +35,31 @@
 		is_shifted = FALSE
 		pixel_x = body_position_pixel_x_offset + base_pixel_x
 		pixel_y = body_position_pixel_y_offset + base_pixel_y
+		UPDATE_OO_IF_PRESENT
 
 /mob/proc/pixel_shift(direction)
 	return
 
 /mob/living/pixel_shift(direction)
+	if(!canface())
+		return FALSE
+
 	switch(direction)
 		if(NORTH)
-			if(!canface())
-				return FALSE
 			if(pixel_y <= 16 + base_pixel_y)
 				pixel_y++
 				is_shifted = TRUE
 		if(EAST)
-			if(!canface())
-				return FALSE
 			if(pixel_x <= 16 + base_pixel_x)
 				pixel_x++
 				is_shifted = TRUE
 		if(SOUTH)
-			if(!canface())
-				return FALSE
 			if(pixel_y >= -16 + base_pixel_y)
 				pixel_y--
 				is_shifted = TRUE
 		if(WEST)
-			if(!canface())
-				return FALSE
 			if(pixel_x >= -16 + base_pixel_x)
 				pixel_x--
 				is_shifted = TRUE
+
+	UPDATE_OO_IF_PRESENT

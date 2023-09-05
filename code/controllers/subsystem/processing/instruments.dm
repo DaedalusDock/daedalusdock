@@ -2,7 +2,7 @@ PROCESSING_SUBSYSTEM_DEF(instruments)
 	name = "Instruments"
 	wait = 0.5
 	init_order = INIT_ORDER_INSTRUMENTS
-	flags = SS_KEEP_TIMING
+	flags = SS_KEEP_TIMING | SS_HIBERNATE
 	priority = FIRE_PRIORITY_INSTRUMENTS
 	/// List of all instrument data, associative id = datum
 	var/static/list/datum/instrument/instrument_data = list()
@@ -34,11 +34,10 @@ PROCESSING_SUBSYSTEM_DEF(instruments)
 	songs -= S
 
 /datum/controller/subsystem/processing/instruments/proc/initialize_instrument_data()
-	for(var/path in subtypesof(/datum/instrument))
-		var/datum/instrument/I = path
-		if(initial(I.abstract_type) == path)
+	for(var/datum/instrument/I as anything in subtypesof(/datum/instrument))
+		if(isabstract(I))
 			continue
-		I = new path
+		I = new I()
 		I.Initialize()
 		if(!I.id)
 			qdel(I)

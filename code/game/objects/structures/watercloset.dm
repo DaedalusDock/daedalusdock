@@ -41,7 +41,7 @@
 					GM.visible_message(span_danger("[user] starts to give [GM] a swirlie!"), span_userdanger("[user] starts to give you a swirlie..."))
 					swirlie = GM
 					var/was_alive = (swirlie.stat != DEAD)
-					if(do_after(user, 3 SECONDS, target = src, timed_action_flags = IGNORE_HELD_ITEM))
+					if(do_after(user, src, 3 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
 						GM.visible_message(span_danger("[user] gives [GM] a swirlie!"), span_userdanger("[user] gives you a swirlie!"), span_hear("You hear a toilet flushing."))
 						if(iscarbon(GM))
 							var/mob/living/carbon/C = GM
@@ -258,7 +258,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	anchored = TRUE
 	///Something's being washed at the moment
 	var/busy = FALSE
-	///What kind of reagent is produced by this sink by default? (We now have actual plumbing, Arcane, August 2020)
+	///What kind of reagent is produced by this sink by default?
 	var/dispensedreagent = /datum/reagent/water
 	///Material to drop when broken or deconstructed.
 	var/buildstacktype = /obj/item/stack/sheet/iron
@@ -276,7 +276,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	if(has_water_reclaimer)
 		create_reagents(100, NO_REACT)
 		reagents.add_reagent(dispensedreagent, 100)
-	AddComponent(/datum/component/plumbing/simple_demand, bolt)
 
 /obj/structure/sink/examine(mob/user)
 	. = ..()
@@ -306,7 +305,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 						span_notice("You start washing your [washing_face ? "face" : "hands"]..."))
 	busy = TRUE
 
-	if(!do_after(user, 40, target = src))
+	if(!do_after(user, src, 40))
 		busy = FALSE
 		return
 
@@ -374,12 +373,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 		deconstruct()
 		return
 
-	if(istype(O, /obj/item/stack/medical/gauze))
-		var/obj/item/stack/medical/gauze/G = O
-		new /obj/item/reagent_containers/glass/rag(src.loc)
-		to_chat(user, span_notice("You tear off a strip of gauze and make a rag."))
-		G.use(1)
-		return
+	if(istype(O, /obj/item/stack))
+		var/obj/item/stack/S = O
+		if(initial(S.absorption_capacity) && S.absorption_capacity < initial(S.absorption_capacity))
+			if(do_after(user, src, 3 SECONDS, DO_PUBLIC, display = S))
+				user.visible_message(span_notice("[user] washes and wrings out [S] in [src]."), blind_message = span_hear("You hear water running."))
+				add_blood_DNA(S.return_blood_DNA())
+				S.absorption_capacity = initial(S.absorption_capacity)
+				var/forensics = S.GetComponent(/datum/component/forensics)
+				if(forensics)
+					qdel(forensics)
+				return
 
 	if(istype(O, /obj/item/stack/sheet/cloth))
 		var/obj/item/stack/sheet/cloth/cloth = O
@@ -402,7 +406,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	if(!user.combat_mode)
 		to_chat(user, span_notice("You start washing [O]..."))
 		busy = TRUE
-		if(!do_after(user, 40, target = src))
+		if(!do_after(user, src, 40))
 			busy = FALSE
 			return 1
 		busy = FALSE
@@ -437,7 +441,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 /obj/structure/sink/proc/begin_reclamation()
 	if(!reclaiming)
 		reclaiming = TRUE
-		START_PROCESSING(SSfluids, src)
+		START_PROCESSING(SSobj, src)
 
 /obj/structure/sink/kitchen
 	name = "kitchen sink"
@@ -517,7 +521,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 						span_notice("You start washing your [washing_face ? "face" : "hands"]..."))
 	busy = TRUE
 
-	if(!do_after(user, 4 SECONDS, target = src))
+	if(!do_after(user, src, 4 SECONDS))
 		busy = FALSE
 		return
 
@@ -570,8 +574,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 		playsound(loc, 'sound/effects/slosh.ogg', 25, TRUE)
 		return
 
-	if(istype(O, /obj/item/stack/medical/gauze))
-		var/obj/item/stack/medical/gauze/G = O
+	if(istype(O, /obj/item/stack/gauze))
+		var/obj/item/stack/gauze/G = O
 		new /obj/item/reagent_containers/glass/rag(loc)
 		to_chat(user, span_notice("You tear off a strip of gauze and make a rag."))
 		G.use(1)
@@ -596,7 +600,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	if(!user.combat_mode)
 		to_chat(user, span_notice("You start washing [O]..."))
 		busy = TRUE
-		if(!do_after(user, 4 SECONDS, target = src))
+		if(!do_after(user, src, 4 SECONDS))
 			busy = FALSE
 			return TRUE
 		busy = FALSE
@@ -655,12 +659,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	open = !open
 	if(open)
 		layer = SIGN_LAYER
-		plane = GAME_PLANE
 		set_density(FALSE)
 		set_opacity(FALSE)
 	else
 		layer = WALL_OBJ_LAYER
-		plane = GAME_PLANE_UPPER
 		set_density(TRUE)
 		if(opaque_closed)
 			set_opacity(TRUE)
@@ -757,7 +759,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 /obj/structure/curtain/cloth/fancy/mechanical/proc/open()
 	icon_state = "[icon_type]-open"
 	layer = SIGN_LAYER
-	plane = GAME_PLANE
 	set_density(FALSE)
 	open = TRUE
 	set_opacity(FALSE)
@@ -765,7 +766,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 /obj/structure/curtain/cloth/fancy/mechanical/proc/close()
 	icon_state = "[icon_type]-closed"
 	layer = WALL_OBJ_LAYER
-	plane = GAME_PLANE_UPPER
 	set_density(TRUE)
 	open = FALSE
 	if(opaque_closed)

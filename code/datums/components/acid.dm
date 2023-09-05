@@ -12,8 +12,6 @@
 	var/acid_volume
 	/// The maximum volume of acid on the parent [/atom].
 	var/max_volume = INFINITY
-	/// The ambiant sound of acid eating away at the parent [/atom].
-	var/datum/looping_sound/acid/sizzle
 	/// Used exclusively for melting turfs. TODO: Move integrity to the atom level so that this can be dealt with there.
 	var/parent_integrity = 30
 	/// How far the acid melting of turfs has progressed
@@ -36,28 +34,25 @@
 			return COMPONENT_INCOMPATIBLE
 
 		max_volume = OBJ_ACID_VOLUME_MAX
-		process_effect = CALLBACK(src, .proc/process_obj, parent)
+		process_effect = CALLBACK(src, PROC_REF(process_obj), parent)
 	else if(isliving(parent))
 		max_volume = MOB_ACID_VOLUME_MAX
-		process_effect = CALLBACK(src, .proc/process_mob, parent)
+		process_effect = CALLBACK(src, PROC_REF(process_mob), parent)
 	else if(isturf(parent))
 		max_volume = TURF_ACID_VOLUME_MAX
-		process_effect = CALLBACK(src, .proc/process_turf, parent)
+		process_effect = CALLBACK(src, PROC_REF(process_turf), parent)
 
 	acid_power = _acid_power
 	set_volume(_acid_volume)
 
 	var/atom/parent_atom = parent
-	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_update_overlays)
+	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
 	parent_atom.update_appearance()
-	sizzle = new(parent, TRUE)
 	START_PROCESSING(SSacid, src)
 
 /datum/component/acid/Destroy(force, silent)
 	STOP_PROCESSING(SSacid, src)
-	QDEL_NULL(sizzle)
-	if(process_effect)
-		QDEL_NULL(process_effect)
+	process_effect = null
 	UnregisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS)
 	if(parent && !QDELING(parent))
 		var/atom/parent_atom = parent
@@ -65,12 +60,12 @@
 	return ..()
 
 /datum/component/acid/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
-	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, .proc/on_clean)
-	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, .proc/on_attack_hand)
-	RegisterSignal(parent, COMSIG_ATOM_EXPOSE_REAGENT, .proc/on_expose_reagent)
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
+	RegisterSignal(parent, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_attack_hand))
+	RegisterSignal(parent, COMSIG_ATOM_EXPOSE_REAGENT, PROC_REF(on_expose_reagent))
 	if(isturf(parent))
-		RegisterSignal(parent, COMSIG_ATOM_ENTERED, .proc/on_entered)
+		RegisterSignal(parent, COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
 
 /datum/component/acid/UnregisterFromParent()
 	UnregisterSignal(parent, list(
@@ -196,7 +191,6 @@
 
 	to_chat(user, span_warning("The acid on \the [parent_atom] burns your hand!"))
 	playsound(parent_atom, 'sound/weapons/sear.ogg', 50, TRUE)
-	user.update_damage_overlays()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 

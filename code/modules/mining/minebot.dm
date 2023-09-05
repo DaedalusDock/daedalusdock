@@ -56,7 +56,7 @@
 	var/datum/action/innate/minedrone/dump_ore/dump_ore_action = new()
 	dump_ore_action.Grant(src)
 	var/obj/item/implant/radio/mining/imp = new(src)
-	imp.implant(src)
+	imp.implant(src, body_zone = BODY_ZONE_CHEST)
 
 	access_card = new /obj/item/card/id/advanced/gold(src)
 	SSid_access.apply_trim_to_card(access_card, /datum/id_trim/job/shaft_miner)
@@ -228,7 +228,7 @@
 
 /datum/action/innate/minedrone
 	check_flags = AB_CHECK_CONSCIOUS
-	icon_icon = 'icons/mob/actions/actions_mecha.dmi'
+	button_icon = 'icons/mob/actions/actions_mecha.dmi'
 	background_icon_state = "bg_default"
 
 /datum/action/innate/minedrone/toggle_light

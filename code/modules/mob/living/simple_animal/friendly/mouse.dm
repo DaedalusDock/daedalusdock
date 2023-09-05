@@ -31,6 +31,7 @@
 	held_w_class = WEIGHT_CLASS_TINY
 	held_state = "mouse_gray"
 	faction = list("rat")
+	loc_procs = CROSSED
 
 /mob/living/simple_animal/mouse/Initialize(mapload)
 	. = ..()
@@ -38,16 +39,8 @@
 		body_color = pick("brown","gray","white")
 	AddElement(/datum/element/animal_variety, "mouse", body_color, FALSE)
 	AddComponent(/datum/component/squeak, list('sound/effects/mousesqueek.ogg' = 1), 100, extrarange = SHORT_RANGE_SOUND_EXTRARANGE) //as quiet as a mouse or whatever
-	add_cell_sample()
 
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
-
-/mob/living/simple_animal/mouse/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOUSE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 10)
 
 /mob/living/simple_animal/mouse/proc/splat()
 	src.health = 0
@@ -78,15 +71,14 @@
 	if(.)
 		SSmobs.cheeserats += src
 
-/mob/living/simple_animal/mouse/proc/on_entered(datum/source, AM as mob|obj)
-	SIGNAL_HANDLER
-	if(ishuman(AM))
+/mob/living/simple_animal/mouse/Crossed(atom/movable/crossed_by, oldloc)
+	if(ishuman(crossed_by))
 		if(!stat)
-			var/mob/M = AM
+			var/mob/M = crossed_by
 			to_chat(M, span_notice("[icon2html(src, M)] Squeak!"))
-	if(istype(AM, /obj/item/food/cheese/royal))
+	if(istype(crossed_by, /obj/item/food/cheese/royal))
 		evolve()
-		qdel(AM)
+		qdel(crossed_by)
 
 /mob/living/simple_animal/mouse/handle_automated_action()
 	if(prob(chew_probability))
@@ -147,7 +139,7 @@
 /mob/living/simple_animal/mouse/proc/evolve()
 	var/mob/living/simple_animal/hostile/regalrat/regalrat = new /mob/living/simple_animal/hostile/regalrat/controlled(loc)
 	visible_message(span_warning("[src] devours the cheese! They morph into something... greater!"))
-	INVOKE_ASYNC(regalrat, /atom/movable/proc/say, "RISE, MY SUBJECTS! SCREEEEEEE!")
+	INVOKE_ASYNC(regalrat, TYPE_PROC_REF(/atom/movable, say), "RISE, MY SUBJECTS! SCREEEEEEE!")
 	if(mind)
 		mind.transfer_to(regalrat)
 	qdel(src)
@@ -206,17 +198,13 @@
 	ant_attracting = FALSE
 	decomp_type = /obj/item/food/deadmouse/moldy
 
-/obj/item/food/deadmouse/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOUSE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 10)
-
 /obj/item/food/deadmouse/examine(mob/user)
 	. = ..()
 	if (reagents?.has_reagent(/datum/reagent/yuck) || reagents?.has_reagent(/datum/reagent/fuel))
 		. += span_warning("They're dripping with fuel and smells terrible.")
 
 /obj/item/food/deadmouse/attackby(obj/item/I, mob/living/user, params)
-	if(I.get_sharpness() && user.combat_mode)
+	if((I.sharpness & SHARP_EDGED) && user.combat_mode)
 		if(isturf(loc))
 			new /obj/item/food/meat/slab/mouse(loc)
 			to_chat(user, span_notice("You butcher [src]."))

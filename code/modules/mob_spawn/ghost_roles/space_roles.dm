@@ -60,6 +60,8 @@
 	back = /obj/item/mod/control/pre_equipped/prototype
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null
 
 /obj/effect/mob_spawn/ghost_role/human/oldsci
 	name = "old cryogenics pod"
@@ -179,7 +181,7 @@
 		if(battlecruiser_team.nuke)
 			var/obj/machinery/nuclearbomb/nuke = battlecruiser_team.nuke
 			antag_memory += "<B>[nuke] Code</B>: [nuke.r_code]<br>"
-			owner.add_memory(MEMORY_NUKECODE, list(DETAIL_NUKE_CODE = nuke.r_code, DETAIL_PROTAGONIST = owner.current), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_FLAG_NOLOCATION | MEMORY_FLAG_NOMOOD | MEMORY_FLAG_NOPERSISTENCE)
+			owner.add_memory(MEMORY_NUKECODE, list(DETAIL_NUKE_CODE = nuke.r_code, DETAIL_PROTAGONIST = owner.current), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_FLAG_NOLOCATION | MEMORY_FLAG_NOPERSISTENCE)
 			to_chat(owner, "The nuclear authorization code is: <B>[nuke.r_code]</B>")
 	return ..()
 

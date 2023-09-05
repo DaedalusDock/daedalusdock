@@ -58,6 +58,26 @@
 			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
 			inv.update_appearance()
 
+	gun_setting_icon = new /atom/movable/screen/gun_mode()
+	gun_setting_icon.icon = ui_style
+	gun_setting_icon.hud = src
+
+	var/atom/movable/screen/gun_option = new /atom/movable/screen/gun_radio()
+	gun_option.icon = ui_style
+	gun_option.hud = src
+	gunpoint_options += gun_option
+
+	gun_option = new /atom/movable/screen/gun_item()
+	gun_option.icon = ui_style
+	gun_option.hud = src
+	gunpoint_options += gun_option
+
+	gun_option = new /atom/movable/screen/gun_move()
+	gun_option.icon = ui_style
+	gun_option.hud = src
+	gunpoint_options += gun_option
+
+
 /datum/hud/dextrous/persistent_inventory_update()
 	if(!mymob)
 		return

@@ -24,9 +24,13 @@
 /mob/living/carbon/human/species/monkey/angry/Initialize(mapload)
 	. = ..()
 	if(prob(10))
-		var/obj/item/clothing/head/helmet/justice/escape/helmet = new(src)
-		equip_to_slot_or_del(helmet,ITEM_SLOT_HEAD)
-		helmet.attack_self(src) // todo encapsulate toggle
+		INVOKE_ASYNC(src, PROC_REF(give_ape_escape_helmet))
+
+/// Gives our funny monkey an Ape Escape hat reference
+/mob/living/carbon/human/species/monkey/angry/proc/give_ape_escape_helmet()
+	var/obj/item/clothing/head/helmet/justice/escape/helmet = new(src)
+	equip_to_slot_or_del(helmet, ITEM_SLOT_HEAD)
+	helmet.attack_self(src) // todo encapsulate toggle
 
 
 /mob/living/carbon/human/species/monkey/punpun //except for a few special persistence features, pun pun is just a normal monkey
@@ -61,8 +65,6 @@
 	//These have to be after the parent new to ensure that the monkey
 	//bodyparts are actually created before we try to equip things to
 	//those slots
-	if(ancestor_chain > 1)
-		generate_fake_scars(rand(ancestor_chain, ancestor_chain * 4))
 	if(relic_hat)
 		equip_to_slot_or_del(new relic_hat, ITEM_SLOT_HEAD)
 	if(relic_mask)

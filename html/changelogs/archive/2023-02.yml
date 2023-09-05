@@ -1,0 +1,203 @@
+2023-02-01:
+  Funny Leg Jiggle, Soul of Springs:
+  - rscadd: Adds trolleys to Cargo! These can be loaded with upto 3 crates or ridden
+      by 1 person. Additional Trolleys can be purchased by Cargo. Sprites contributed
+      by @Soul_of_Springs on Twitter.
+  - rscadd: Janicarts, roller beds and trolleys will now no longer make you face backwards
+      while pulling them.
+  Kapu1178:
+  - bugfix: Ghost transform is reset properly.
+  - rscdel: tg's shit economy
+  - bugfix: Removed Nullium
+  francinum:
+  - rscadd: Powernet packet transport.
+  - rscadd: Voice Phone system.
+  - bugfix: Abstract items can no longer exist in a state of flux where they are in
+      2 superpositions at once.
+2023-02-02:
+  Cenrus:
+  - bugfix: Interaction hand icon will no longer be visible in the right click menu
+  Kapu1178:
+  - bugfix: Aurora C is no longer absurdly powerful :)
+  - bugfix: Chemicals that were not adding gas to the atmosphere properly, now do
+      so.
+  Melbert, LemonInTheDark:
+  - rscadd: The Mjolnir wizard loadout no longer scams you. It now also grants 1 level
+      of Tesla Blast!
+  - bugfix: Spells show up in the stat panel again
+  - bugfix: Fixes runtime errors that can occur if a wizard spellbook randomizes into
+      unpurchasable spells.
+  - bugfix: Genetics powers now have their own background, which apparently they have
+      always meant to have.
+  - bugfix: Fixes some cases where chaplains are unable to cast their own spells.
+  - bugfix: Fixes some granters being infinite when they should've been limited (Maint
+      loot books).
+  - bugfix: Wizard's roundend report is now more accurate in what spells they purchased.
+  - qol: Some more spells and actions now use balloon alerts.
+  - qol: Many actions will now more accurately have their icon redded out if you can't
+      use them at the moment.
+  - qol: Genetics mindread is now a pointed ability.
+  - qol: The mimery book now grants you a vow of silence action, like the guide to
+      advanced mimery.
+  - qol: Xenomorph's corrosive acid ability is now a click-to-work action, so you
+      click on what you want to acid.
+  - qol: Also, xenomorph larva now use a radial when choosing an evolution type.
+  - qol: Summon Item now takes a few seconds to remove the mark from an item, so you
+      no longer accidentally remove it.
+  - balance: The mindswap book now gives a slight message warning it's changed on
+      read.
+  - balance: Sacred Flame now lets people around them know they're actually being
+      made super flammable.
+  - balance: Olfaction can't be cast if you have no nose (you're headless).
+  - balance: Being Emotemute now prevents you from invoking spells which require emotes
+      (mime spells).
+  - balance: All wizard spells except Mindswap can't be cast if the wizard is just
+      a brain. Most spells didn't work, anyways.
+  - balance: PAIs and carded AIs can no longer cast spells. Most spells didn't work,
+      anyways.
+  - balance: You can't mindswap into PAIs and brains(?).
+  - admin: Admins can now add spells by name or typepath.
+  - admin: Spell requirements are bitflags now, so you can modify them with the bit-field
+      VV ui. Pretty neat.
+  - code_imp: proc_holders have been removed from existence.
+  - refactor: Wizard, Heretic, Revenant, and Genetics spells are now all action datums.
+  - refactor: Xenomorph, Spider, and Cytology monster abilities are now all action
+      datums.
+  - refactor: Some malf AI and cult abilities are now fully action datums instead
+      of an unholy mix of proc holder and action.
+  - refactor: Refactored how cult's blood target is set.
+  - refactor: Bloodcrawling and jaunting have been completely refactored. Blood crawling
+      has been exorcised from the living level of mobs, and the consumption part of
+      (s)laughter demons is now handled by the action itself.
+  - refactor: The wizard's teleport scroll now actually holds and casts a version
+      of the "teleport" spell, instead of fake casting it.
+  - refactor: Refactored the wizard spellbook a bit.
+  - refactor: Refactored how all item actions are applied and handled.
+  - rscdel: SDQL spells have been removed.
+  - bugfix: The alt click tab (obj tab?) will no longer cause massive clientside lag
+      (unless you alt click that 2000 obj large tofu pile)
+  - bugfix: The alt click menu is snappier now, try usin it and let me know if anything
+      blows up yeah?
+  RimiNosha:
+  - rscdel: Deputy armbands have been removed in accordance with policy.
+  - imagedel: Deputy armband sprites are gone.
+2023-02-03:
+  Spyroshark:
+  - rscadd: Manual and digital valves have a slightly more visible on/off sprite and
+      make sound when used.
+  - rscdel: Removed passive gates from pipe dispensers/RPDs, since they are identical
+      to pressure valves.
+  - rscadd: Pressure valves can change which side they regulate in their UI
+  - balance: Volume pumps and filters now use power when dealing with entropy, and
+      the overclocking mechanic is removed
+  - qol: Pump UI now has a power meter
+2023-02-06:
+  JohnFulpWillard, out_of_phaze, Kapu1178:
+  - code_imp: Changed every single do_after() call. Bug Kapu if something isn't working
+  Kapu1178:
+  - bugfix: The "Rest" and "Pull" HUD icons no longer lie to users if they logged
+      in after the mob starting resting or pulling.
+  - bugfix: SSwardrobe will now delete held items it fails to equip.
+  - bugfix: Vox no longer have a permanent N2 tank embedded inside them.
+  - bugfix: Character Creator icons will not longer appear invisible during some rounds.
+  - bugfix: Dualport ventpumps no longer get "stuck" siphoning.
+  - bugfix: Pipes no longer have between 2-3x more volume than intended
+  - bugfix: Airalarm mode changing works again
+  - qol: Reduced delay between air alarm UI interactions.
+  - bugfix: Internals action icon isn't an error anymore
+  - rscadd: Runechat messages are now bumped up by adjacent messages.
+  - bugfix: Observers no longer get runechat for the radio of their orbit target
+  - bugfix: Various mech interactions now work again
+  - rscdel: Removed the ability to have impure or failed chems
+  - balance: A number of impurities in chemicals are now inverses
+  - bugfix: Mannitol now has a working inverse
+  - bugfix: Gravity pulses have had their distortion effect restored.
+2023-02-09:
+  Spyroshark:
+  - rscadd: The Thermoelectric Generator is back! Now featuring a new UI. The parts
+      for it can be bought from cargo.
+2023-02-10:
+  Kapu1178:
+  - bugfix: You can enter vehicles again.
+  - bugfix: Heretics can draw their rune again
+  Spyroshark:
+  - rscadd: Groan tubes! Find them in the gaming vendor or win them from an arcade
+      machine.
+2023-02-11:
+  Ebb-Real, Cenrus:
+  - rscadd: Tape can be used as makeshift handcuffs/muzzle when used on people
+  - soundadd: Tape sound
+  - rscadd: handcuffed type is now shown on examine
+2023-02-12:
+  Kapu1178:
+  - bugfix: The Bar APC is now wired roundstart.
+2023-02-13:
+  Kapu1178, Nebula Coders:
+  - rscadd: Station Time now shows the station's canonical date.
+  - rscadd: Station name, date, and time, are displayed in a sick cool epic way on
+      round join.
+  - rscadd: The station's time is now randomly offset between 0 and 23 hours.
+  - bugfix: A ton of timezone related garbage. Nightshift should notably work properly.
+  - rscdel: The splashscreen fade was removed because it causes a bug that makes planes
+      freak out.
+2023-02-14:
+  Kapu1178:
+  - bugfix: Kidnapped Vox and Plasmamen spawn with their proper equipment
+  - bugfix: Tongueless players
+  - bugfix: Oculine's explosion thingy happens properly.
+  - bugfix: Ghosts look correct.
+  - bugfix: The aurora event is no longer kills the lighting subsystem.
+  - bugfix: The plasmaman helmet "Toggle Welding Screen" button works.
+  TGStation:
+  - refactor: Storage has been completely rewritten.
+  Tastyfish, ChungusGamer666:
+  - bugfix: Flashlights and similar directional light items no longer make you glow
+      forever under certain circumstances.
+  - rscadd: The all-access indicator is now glow in the dark.
+  - bugfix: Some lights that would fail to follow the light source have been fixed.
+2023-02-15:
+  Kapu1178:
+  - bugfix: Emissives and Movable Lights no longer "poke holes" in Bloom.
+2023-02-17:
+  MrStonedOne:
+  - code_imp: The mc now keeps track of how many times a subsystem has slept in fire()
+  ShizCalev:
+  - bugfix: Explosions don't cause runtimes anymore. Atleast not as many. I'd insert
+      a trolleybus emote here but the emoji stripper will remove it.
+  francinum:
+  - qol: Developers can bypass observer checks to watch map generation
+2023-02-18:
+  Kapu1178:
+  - rscadd: Baystation wounds
+  - rscadd: Bone resetting surgery
+  - rscdel: TG wounds
+  - rscdel: scars
+2023-02-19:
+  DTraitor:
+  - code_imp: swapped chest and head order in bodyparts list
+  Kapu1178:
+  - rscdel: Gasmasks no longer inhibit vision.
+2023-02-22:
+  Kapu1178:
+  - bugfix: Revenant can drain souls again.
+  - bugfix: You will no longer scream repeatedly when taking many small ticks of damage.
+  - rscadd: ZAS is faster. We take those.
+  francinum:
+  - imageadd: TGUI's base theme has been significantly brightened
+2023-02-23:
+  francinum:
+  - bugfix: Autoname cameras can now be selected properly
+  - config: Server owners can now staple text to the new round notice
+  - rscdel: This removes an already unused config entry that was intended to serve
+      the same purpose, CHAT_NEW_GAME_NOTIFICATIONS
+2023-02-25:
+  san7890:
+  - bugfix: If you ever chance upon Multi-Z Debug Station, rest assured that it now
+      uses the right kind of space.
+  - imageadd: On the mapping end, we've removed some duplicate names for different
+      icons.
+  - bugfix: If you haven't been able to see any working space ruins lately, that's
+      our bad. Should be fixed now.
+2023-02-28:
+  Kapu1178:
+  - balance: Hunger decreases 5x slower.

@@ -63,17 +63,19 @@ SUBSYSTEM_DEF(zas)
 	name = "Air Core"
 	priority = FIRE_PRIORITY_AIR
 	init_order = INIT_ORDER_AIR
-	flags = SS_POST_FIRE_TIMING
+	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 	wait = 2 SECONDS
 
 	var/cached_cost = 0
 	var/cost_tiles = 0
 	var/cost_deferred_tiles = 0
+	var/cost_check_edges = 0
 	var/cost_edges = 0
 	var/cost_fires = 0
 	var/cost_hotspots = 0
 	var/cost_zones = 0
+	var/cost_exposure = 0
 
 	//The variable setting controller
 	var/datum/zas_controller/settings
@@ -96,12 +98,14 @@ SUBSYSTEM_DEF(zas)
 	var/list/active_fire_zones = list()
 	var/list/active_hotspots = list()
 	var/list/active_edges = list()
+	var/list/zones_with_sensitive_contents = list()
 
 	var/tmp/list/deferred = list()
 	var/tmp/list/processing_edges
 	var/tmp/list/processing_fires
 	var/tmp/list/processing_hotspots
 	var/tmp/list/processing_zones
+	var/tmp/list/processing_exposure
 
 	#ifdef ZASDBG
 	/// Profile data for zone.tick(), in milliseconds
@@ -175,7 +179,7 @@ SUBSYSTEM_DEF(zas)
 
 	var/simulated_turf_count = 0
 
-	for(var/turf/S)
+	for(var/turf/S as turf in world)
 		if(!S.simulated)
 			continue
 
@@ -207,6 +211,7 @@ SUBSYSTEM_DEF(zas)
 		processing_edges = active_edges.Copy()
 		processing_fires = active_fire_zones.Copy()
 		processing_hotspots = active_hotspots.Copy()
+		processing_exposure = zones_with_sensitive_contents.Copy()
 
 	var/list/curr_tiles = tiles_to_update
 	var/list/curr_defer = deferred
@@ -214,6 +219,8 @@ SUBSYSTEM_DEF(zas)
 	var/list/curr_fire = processing_fires
 	var/list/curr_hotspot = processing_hotspots
 	var/list/curr_zones = zones_to_update
+	var/list/curr_zones_again = zones_to_update.Copy()
+	var/list/curr_sensitive_zones = processing_exposure
 
 	last_process = "TILES"
 
@@ -281,6 +288,28 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_deferred_tiles = MC_AVERAGE(cost_deferred_tiles, TICK_DELTA_TO_MS(cached_cost))
 
+//////////CHECK_EDGES/////////
+	last_process = "CHECK EDGES"
+	timer = TICK_USAGE_REAL
+	cached_cost = 0
+	while (curr_zones_again.len)
+		var/zone/Z = curr_zones_again[curr_zones_again.len]
+		curr_zones_again.len--
+
+		var/list/cache_for_speed = Z.edges
+		for(var/edge_source in Z.edges)
+			var/connection_edge/E = cache_for_speed[edge_source]
+			if(!E.excited)
+				E.recheck()
+
+		if (no_mc_tick)
+			CHECK_TICK
+		else if (MC_TICK_CHECK)
+			return
+
+	cached_cost += TICK_USAGE_REAL - timer
+	cost_check_edges = MC_AVERAGE(cost_check_edges, TICK_DELTA_TO_MS(cached_cost))
+
 //////////EDGES//////////
 	last_process = "EDGES"
 	timer = TICK_USAGE_REAL
@@ -338,6 +367,7 @@ SUBSYSTEM_DEF(zas)
 			CHECK_TICK
 		else if (MC_TICK_CHECK)
 			return
+
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_hotspots = MC_AVERAGE(cost_hotspots, TICK_DELTA_TO_MS(cached_cost))
 
@@ -360,6 +390,28 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_zones = MC_AVERAGE(cost_zones, TICK_DELTA_TO_MS(cached_cost))
 
+	if(no_mc_tick) //Initialization doesn't need to process exposure, waste of time
+		return
+
+/////////ATMOS EXPOSE//////
+
+	last_process = "ATMOS EXPOSE"
+	timer = TICK_USAGE_REAL
+	cached_cost = 0
+	while(curr_sensitive_zones.len)
+		var/zone/Z = curr_sensitive_zones[curr_sensitive_zones.len]
+		curr_sensitive_zones.len--
+
+		for(var/atom/sensitive as area|turf|obj|mob in Z.atmos_sensitive_contents)
+			sensitive.atmos_expose(Z.air, Z.air.temperature)
+
+		if(MC_TICK_CHECK)
+			return
+
+	cached_cost += TICK_USAGE_REAL - timer
+	cost_exposure = MC_AVERAGE(cost_exposure, TICK_DELTA_TO_MS(cached_cost))
+
+
 ///Adds a zone to the subsystem, gives it's identifer, and marks it for update.
 /datum/controller/subsystem/zas/proc/add_zone(zone/z)
 	zones += z
@@ -370,6 +422,7 @@ SUBSYSTEM_DEF(zas)
 /datum/controller/subsystem/zas/proc/remove_zone(zone/z)
 	zones -= z
 	zones_to_update -= z
+	zones_with_sensitive_contents -= z
 	if (processing_zones)
 		processing_zones -= z
 
@@ -428,7 +481,7 @@ SUBSYSTEM_DEF(zas)
 		if((times_fired && min(length(A.zone.contents), length(B.zone.contents)) < ZONE_MIN_SIZE) || (direct && A.zone.air.compare(B.zone.air)))
 			merge(A.zone,B.zone)
 			return TRUE
-	else if(!B.air)
+	else if(isnull(B.air))
 		/// The logic around get_edge() requires air to exist at this point, which it probably should.
 		B.make_air()
 
@@ -502,15 +555,15 @@ SUBSYSTEM_DEF(zas)
 	E.excited = TRUE
 
 ///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information
-/datum/controller/subsystem/zas/proc/get_edge(zone/A, datum/B)
+/datum/controller/subsystem/zas/proc/get_edge(zone/A, zone/B) //Note: B can also be a turf.
 	var/connection_edge/edge
 
-	if(B.type == /zone) //Zone-to-zone connection
-		edge = A.edges[B]
-	else //Zone-to-turf connection
+	if(isturf(B)) //Zone-to-turf connection.
 		for(var/turf/T in A.edges)
-			if(B:air ~= T.air) //Operator overloading :)
+			if(B.air.isEqual(T.air)) //Operator overloading :)
 				return A.edges[T]
+	else
+		edge = A.edges[B] //Zone-to-zone connection
 
 	edge ||= create_edge(A,B)
 
@@ -557,8 +610,16 @@ SUBSYSTEM_DEF(zas)
 		chosen_gases += pick_n_take(viable_gases)
 
 	mix_real.gas = chosen_gases
+
+	//Add a spice of Radon
 	for(var/gas in mix_real.gas)
 		mix_real.gas[gas] = 1 //So update values doesn't cull it
+
+	//Radon  sci
+	if(!(GAS_RADON in chosen_gases))
+		chosen_gases += GAS_RADON
+	mix_real.gas[GAS_RADON] = 5
+	num_gases++
 
 	mix_real.temperature = temp
 
@@ -586,9 +647,13 @@ SUBSYSTEM_DEF(zas)
 		mix_list[gas_id] = mix_real.gas[gas_id]
 
 	var/list/lavaland_z_levels = SSmapping.levels_by_trait(ZTRAIT_MINING) //God I hope this is never more than one
+	var/list/lavaland_areas = typecacheof(list(/area/lavaland, /area/icemoon))
+	lavaland_areas[/area/mine] = TRUE
+	lavaland_areas[/area/mine/explored] = TRUE
+
 	for(var/zlev in lavaland_z_levels)
 		for(var/turf/T as anything in block(locate(1,1,zlev), locate(world.maxx, world.maxy, zlev)))
-			if(!T.simulated)
+			if(!T.simulated && lavaland_areas[T.loc])
 				T.initial_gas = mix_list
 				T.temperature = mix_real.temperature
 				T.make_air()

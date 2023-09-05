@@ -12,8 +12,6 @@
 
 	///Defines how fast the basic mob can move. This is a multiplier
 	var/speed = 1
-	///How much stamina the mob recovers per second
-	var/stamina_recovery = 5
 
 	///how much damage this basic mob does to objects, if any.
 	var/obj_damage = 0
@@ -21,10 +19,6 @@
 	var/armour_penetration = 0
 	///Damage type of a simple mob's melee attack, should it do damage.
 	var/melee_damage_type = BRUTE
-	///How much wounding power it has
-	var/wound_bonus = CANT_WOUND
-	///How much bare wounding power it has
-	var/bare_wound_bonus = 0
 	///If the attacks from this are sharp
 	var/sharpness = NONE
 
@@ -99,12 +93,6 @@
 
 	if(speak_emote)
 		speak_emote = string_list(speak_emote)
-
-/mob/living/basic/Life(delta_time = SSMOBS_DT, times_fired)
-	. = ..()
-	///Automatic stamina re-gain
-	if(staminaloss > 0)
-		adjustStaminaLoss(-stamina_recovery * delta_time, FALSE, TRUE)
 
 /mob/living/basic/say_mod(input, list/message_mods = list())
 	if(length(speak_emote))

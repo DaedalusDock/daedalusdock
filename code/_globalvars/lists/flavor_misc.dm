@@ -46,7 +46,6 @@ GLOBAL_LIST_EMPTY(moth_antennae_list)
 GLOBAL_LIST_EMPTY(moth_markings_list)
 GLOBAL_LIST_EMPTY(caps_list)
 GLOBAL_LIST_EMPTY(pod_hair_list)
-GLOBAL_LIST_EMPTY(headtails_list)
 GLOBAL_LIST_EMPTY(teshari_feathers_list)
 GLOBAL_LIST_EMPTY(teshari_ears_list)
 GLOBAL_LIST_EMPTY(teshari_body_feathers_list)
@@ -87,38 +86,6 @@ GLOBAL_LIST_INIT(color_list_ethereal, list(
 	"Seafoam Green" = "#00fa9a",
 	"White" = "#f2f2f2",
 ))
-
-GLOBAL_LIST_INIT(ghost_forms_with_directions_list, list(
-	"catghost",
-	"ghost_black",
-	"ghost_blazeit",
-	"ghost_blue",
-	"ghost_camo",
-	"ghost_cyan",
-	"ghost_dblue",
-	"ghost_dcyan",
-	"ghost_dgreen",
-	"ghost_dpink",
-	"ghost_dred",
-	"ghost_dyellow",
-	"ghost_fire",
-	"ghost_funkypurp",
-	"ghost_green",
-	"ghost_grey",
-	"ghost_mellow",
-	"ghost_pink",
-	"ghost_pinksherbert",
-	"ghost_purpleswirl",
-	"ghost_rainbow",
-	"ghost_red",
-	"ghost_yellow",
-	"ghost",
-	"ghostian",
-	"ghostian2",
-	"ghostking",
-	"skeleghost",
-))
-//stores the ghost forms that support directional sprites
 
 GLOBAL_LIST_INIT(ghost_forms_with_accessories_list, list(
 	"ghost_black",
@@ -316,14 +283,37 @@ GLOBAL_LIST_INIT(scarySounds, list(
 //If you don't want to fuck up disposals, add to this list, and don't change the order.
 //If you insist on changing the order, you'll have to change every sort junction to reflect the new order. --Pete
 
-GLOBAL_LIST_INIT(TAGGERLOCATIONS, list("Disposals",
-	"Cargo Bay", "QM Office", "Engineering", "CE Office",
-	"Atmospherics", "Security", "HoS Office", "Medbay",
-	"CMO Office", "Chemistry", "Research", "RD Office",
-	"Robotics", "HoP Office", "Library", "Chapel", "Theatre",
-	"Bar", "Kitchen", "Hydroponics", "Janitor Closet","Genetics",
-	"Experimentor Lab", "Ordnance", "Dormitories", "Virology",
-	"Xenobiology", "Law Office","Detective's Office"))
+GLOBAL_LIST_INIT(TAGGERLOCATIONS, list(
+	/* 1*/"Disposals",
+	/* 2*/"Cargo Bay",
+	/* 3*/"QM Office",
+	/* 4*/"Engineering",
+	/* 5*/"CE Office",
+	/* 6*/"Atmospherics",
+	/* 7*/"Security",
+	/* 8*/"HoS Office",
+	/* 9*/"Medbay",
+	/*10*/"CMO Office",
+	/*11*/"Chemistry",
+	/*12*/"Research",
+	/*13*/"RD Office",
+	/*14*/"Robotics",
+	/*15*/"HoP Office",
+	/*16*/"Library",
+	/*17*/"Chapel",
+	/*18*/"Theatre",
+	/*19*/"Bar",
+	/*20*/"Kitchen",
+	/*21*/"Hydroponics",
+	/*22*/"Janitor Closet",
+	/*23*/"Genetics",
+	/*24*/"Experimentor Lab",
+	/*25*/"Ordnance",
+	/*26*/"Dormitories",
+	/*27*/"Virology",
+	/*28*/"Xenobiology",
+	/*29*/"Law Office",
+	/*30*/"Detective's Office"))
 
 GLOBAL_LIST_INIT(station_prefixes, world.file2list("strings/station_prefixes.txt"))
 

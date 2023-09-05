@@ -112,7 +112,7 @@
 	if(anchored)
 		ADD_TRAIT(M, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
 	if(!length(buckled_mobs))
-		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, .proc/on_set_anchored)
+		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_set_anchored))
 	M.set_buckled(src)
 	buckled_mobs |= M
 	M.throw_alert(ALERT_BUCKLED, /atom/movable/screen/alert/buckled)
@@ -161,15 +161,13 @@
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UNBUCKLE, buckled_mob, force)
 
 	if(can_fall)
-		var/turf/location = buckled_mob.loc
-		if(istype(location) && !buckled_mob.currently_z_moving)
-			location.zFall(buckled_mob)
+		if(!buckled_mob.currently_z_moving)
+			buckled_mob.zFall()
 
 	post_unbuckle_mob(.)
 
 	if(!QDELETED(buckled_mob) && !buckled_mob.currently_z_moving && isturf(buckled_mob.loc)) // In the case they unbuckled to a flying movable midflight.
-		var/turf/pitfall = buckled_mob.loc
-		pitfall?.zFall(buckled_mob)
+		buckled_mob.zFall()
 
 /atom/movable/proc/on_set_anchored(atom/movable/source, anchorvalue)
 	SIGNAL_HANDLER
@@ -307,7 +305,7 @@
 		M.visible_message(span_warning("[user] starts buckling [M] to [src]!"),\
 			span_userdanger("[user] starts buckling you to [src]!"),\
 			span_hear("You hear metal clanking."))
-		if(!do_after(user, 2 SECONDS, M))
+		if(!do_after(user, M, 2 SECONDS))
 			return FALSE
 
 		// Sanity check before we attempt to buckle. Is everything still in a kosher state for buckling after the 3 seconds have elapsed?

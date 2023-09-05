@@ -158,6 +158,11 @@ GLOBAL_LIST_INIT(xeno_recipes, list ( \
 	. = ..()
 	AddElement(/datum/element/dryable, /obj/item/stack/sheet/leather)
 	AddComponent(/datum/component/grillable, /obj/item/stack/sheet/leather, rand(1 SECONDS, 3 SECONDS), TRUE)
+	become_atmos_sensitive()
+
+/obj/item/stack/sheet/wethide/Destroy(force)
+	lose_atmos_sensitivity()
+	return ..()
 
 /obj/item/stack/sheet/wethide/burn()
 	visible_message(span_notice("[src] burns up, leaving a sheet of leather behind!"))
@@ -264,10 +269,10 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 //Step one - dehairing.
 
 /obj/item/stack/sheet/animalhide/attackby(obj/item/W, mob/user, params)
-	if(W.get_sharpness())
+	if(W.sharpness & SHARP_EDGED)
 		playsound(loc, 'sound/weapons/slice.ogg', 50, TRUE, -1)
 		user.visible_message(span_notice("[user] starts cutting hair off \the [src]."), span_notice("You start cutting the hair off \the [src]..."), span_hear("You hear the sound of a knife rubbing against flesh."))
-		if(do_after(user, 50, target = src))
+		if(do_after(user, src, 5 SECONDS))
 			to_chat(user, span_notice("You cut the hair from this [src.singular_name]."))
 			new /obj/item/stack/sheet/hairlesshide(user.drop_location(), 1)
 			use(1)

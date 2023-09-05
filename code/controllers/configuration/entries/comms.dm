@@ -1,6 +1,14 @@
 /datum/config_entry/string/comms_key
 	protection = CONFIG_ENTRY_HIDDEN
 
+//API key for Github Issues.
+/datum/config_entry/string/issue_key
+	protection = CONFIG_ENTRY_HIDDEN
+
+//Endpoint for Github Issues, the `owner/repo` part.
+/datum/config_entry/string/issue_slug
+	protection = CONFIG_ENTRY_LOCKED
+
 /datum/config_entry/string/comms_key/ValidateAndSet(str_val)
 	return str_val != "default_pwd" && length(str_val) > 6 && ..()
 

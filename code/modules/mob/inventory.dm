@@ -98,10 +98,8 @@
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
-	for(var/obj/item/I in held_items)
-		if(istype(I, typepath))
-			return I
-	return FALSE
+	return locate(typepath) in held_items
+
 
 //Checks if we're holding a tool that has given quality
 //Returns the tool that has the best version of this quality
@@ -266,9 +264,39 @@
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
 		return FALSE
 	I.remove_item_from_storage(src)
-	if(!put_in_hand(I, hand_index))
+	if(!put_in_hand(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
+	return TRUE
+
+/// Switches the items inside of two hand indexes.
+/mob/proc/swapHeldIndexes(index_A, index_B)
+	if(index_A == index_B)
+		return
+	var/obj/item/item_A = get_item_for_held_index(index_A)
+	var/obj/item/item_B = get_item_for_held_index(index_B)
+
+	var/failed_uh_oh_abort = FALSE
+	if(!(item_A || item_B))
+		return
+	if(item_A && !temporarilyRemoveItemFromInventory(item_A))
+		failed_uh_oh_abort = TRUE
+	if(item_B && !temporarilyRemoveItemFromInventory(item_B))
+		failed_uh_oh_abort = TRUE
+
+	if((item_A && !put_in_hand(item_A, index_B)) || (item_B && !put_in_hand(item_B, index_A)))
+		failed_uh_oh_abort = TRUE
+
+	if(failed_uh_oh_abort)
+		if(item_A)
+			temporarilyRemoveItemFromInventory(item_A)
+		if(item_B)
+			temporarilyRemoveItemFromInventory(item_B)
+		if(item_A)
+			put_in_hand(item_A, index_A)
+		if(item_B)
+			put_in_hand(item_B, index_B)
+		return FALSE
 	return TRUE
 
 //The following functions are the same save for one small difference
@@ -303,6 +331,8 @@
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
 /mob/proc/temporarilyRemoveItemFromInventory(obj/item/I, force = FALSE, idrop = TRUE)
+	if(I.item_flags & ABSTRACT)
+		return //Do nothing. Abstract items shouldn't end up in inventories and doing this triggers various odd side effects.
 	return doUnEquip(I, force, null, TRUE, idrop, silent = TRUE)
 
 //DO NOT CALL THIS PROC
@@ -347,8 +377,10 @@
  * Argument(s):
  * * Optional - include_pockets (TRUE/FALSE), whether or not to include the pockets and suit storage in the returned list
  */
+/mob/proc/get_equipped_items(include_pockets = FALSE)
+	return
 
-/mob/living/proc/get_equipped_items(include_pockets = FALSE)
+/mob/living/get_equipped_items(include_pockets = FALSE)
 	var/list/items = list()
 	for(var/obj/item/item_contents in contents)
 		if(item_contents.item_flags & IN_INVENTORY)
@@ -416,7 +448,6 @@
 
 	return obscured
 
-
 /obj/item/proc/equip_to_best_slot(mob/M)
 	if(M.equip_to_appropriate_slot(src))
 		M.update_held_items()
@@ -425,7 +456,7 @@
 		if(equip_delay_self)
 			return
 
-	if(M.active_storage && M.active_storage.parent && SEND_SIGNAL(M.active_storage.parent, COMSIG_TRY_STORAGE_INSERT, src,M))
+	if(M.active_storage?.attempt_insert(src, M))
 		return TRUE
 
 	var/list/obj/item/possible = list(M.get_inactive_held_item(), M.get_item_by_slot(ITEM_SLOT_BELT), M.get_item_by_slot(ITEM_SLOT_DEX_STORAGE), M.get_item_by_slot(ITEM_SLOT_BACK))
@@ -433,7 +464,7 @@
 		if(!i)
 			continue
 		var/obj/item/I = i
-		if(SEND_SIGNAL(I, COMSIG_TRY_STORAGE_INSERT, src, M))
+		if(I.atom_storage?.attempt_insert(src, M))
 			return TRUE
 
 	to_chat(M, span_warning("You are unable to equip that!"))
@@ -444,6 +475,10 @@
 	set name = "quick-equip"
 	set hidden = TRUE
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_quick_equip)))
+
+///proc extender of [/mob/verb/quick_equip] used to make the verb queuable if the server is overloaded
+/mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
 		to_chat(src, span_warning("You are not holding anything to equip!"))
@@ -508,8 +543,8 @@
 	var/i = 0
 	while(i < length(processing_list) )
 		var/atom/A = processing_list[++i]
-		if(SEND_SIGNAL(A, COMSIG_CONTAINS_STORAGE))
+		if(A.atom_storage)
 			var/list/item_stuff = list()
-			SEND_SIGNAL(A, COMSIG_TRY_STORAGE_RETURN_INVENTORY, item_stuff)
+			A.atom_storage.return_inv(item_stuff)
 			processing_list += item_stuff
 	return processing_list

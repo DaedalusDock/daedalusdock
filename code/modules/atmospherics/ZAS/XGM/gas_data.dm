@@ -47,7 +47,7 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 	var/overlay_limit = null
 
 	var/flags = 0
-	var/burn_product = GAS_CO2
+	var/burn_product = null
 	var/breathed_product
 	var/condensation_point = INFINITY
 	var/condensation_product
@@ -88,12 +88,6 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 		base_value[gas.id] = gas.base_value
 		purchaseable[gas.id] = gas.purchaseable
 
-		if(flags & XGM_GAS_COMMON)
-			GLOB.common_gases += p
-
-		if(flags & XGM_GAS_NOBLE)
-			GLOB.noble_gases += p
-
 	return 1
 
 /obj/effect/gas_overlay
@@ -102,7 +96,6 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 	icon = 'modular_pariah/master_files/icons/effects/gas_overlays.dmi'
 	icon_state = "generic"
 	layer = GAS_LAYER
-	plane = ABOVE_GAME_PLANE
 	appearance_flags = RESET_COLOR|PIXEL_SCALE|TILE_BOUND
 	mouse_opacity = 0
 	vis_flags = NONE

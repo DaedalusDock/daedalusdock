@@ -98,7 +98,7 @@
 	visible_message(span_notice("The [name] begins warming up!"))
 	say("Initializing harvest protocol.")
 	update_appearance()
-	addtimer(CALLBACK(src, .proc/harvest), interval)
+	addtimer(CALLBACK(src, PROC_REF(harvest)), interval)
 
 /obj/machinery/harvester/proc/harvest()
 	warming_up = FALSE
@@ -126,14 +126,14 @@
 		C.emote("scream")
 		if(BP.body_zone != "chest")
 			BP.forceMove(target)    //Move the limbs right next to it, except chest, that's a weird one
-			BP.drop_organs()
+			BP.drop_contents()
 		else
 			for(var/obj/item/organ/O in BP.dismember())
 				O.forceMove(target) //Some organs, like chest ones, are different so we need to manually move them
 		operation_order.Remove(BP)
 		break
 	use_power(active_power_usage)
-	addtimer(CALLBACK(src, .proc/harvest), interval)
+	addtimer(CALLBACK(src, PROC_REF(harvest)), interval)
 
 /obj/machinery/harvester/proc/end_harvesting()
 	warming_up = FALSE
@@ -185,6 +185,7 @@
 		to_chat(user,span_warning("[src] is active and can't be opened!")) //rip
 
 /obj/machinery/harvester/Exited(atom/movable/gone, direction)
+	. = ..()
 	if (!state_open && gone == occupant)
 		container_resist_act(gone)
 

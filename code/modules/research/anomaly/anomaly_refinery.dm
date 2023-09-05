@@ -40,7 +40,7 @@
 
 /obj/machinery/research/anomaly_refinery/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, .proc/check_test)
+	RegisterSignal(src, COMSIG_ATOM_INTERNAL_EXPLOSION, PROC_REF(check_test))
 
 /obj/machinery/research/anomaly_refinery/examine_more(mob/user)
 	. = ..()
@@ -60,15 +60,11 @@
  * * anomaly_type - anomaly type define
  */
 /obj/machinery/research/anomaly_refinery/proc/get_required_radius(anomaly_type)
-	var/already_made = SSresearch.created_anomaly_types[anomaly_type]
-	var/hard_limit = SSresearch.anomaly_hard_limit_by_type[anomaly_type]
-	if(already_made >= hard_limit)
-		return //return null
 	// my crappy autoscale formula
 	// linear scaling.
 	var/radius_span = MAX_RADIUS_REQUIRED - MIN_RADIUS_REQUIRED
-	var/radius_increase_per_core = radius_span / hard_limit
-	var/radius = clamp(round(MIN_RADIUS_REQUIRED + radius_increase_per_core * already_made, 1), MIN_RADIUS_REQUIRED, MAX_RADIUS_REQUIRED)
+	var/radius_increase_per_core = radius_span
+	var/radius = clamp(round(MIN_RADIUS_REQUIRED + radius_increase_per_core, 1), MIN_RADIUS_REQUIRED, MAX_RADIUS_REQUIRED)
 	return radius
 
 /obj/machinery/research/anomaly_refinery/attackby(obj/item/tool, mob/living/user, params)
@@ -156,11 +152,11 @@
 	if (obj_flags & EMAGGED)
 		say("ERROR: An firmware issue was detected while starting a process. Running autopatcher.")
 		playsound(src, 'sound/machines/ding.ogg', 50, vary = TRUE)
-		addtimer(CALLBACK(src, .proc/error_test), 2 SECONDS, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_NO_HASH_WAIT) // Synced with the sound.
+		addtimer(CALLBACK(src, PROC_REF(error_test)), 2 SECONDS, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_NO_HASH_WAIT) // Synced with the sound.
 		return
 
 	inserted_bomb.toggle_valve(tank_to_target)
-	timeout_timer = addtimer(CALLBACK(src, .proc/timeout_test), COMPRESSION_TEST_TIME, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
+	timeout_timer = addtimer(CALLBACK(src, PROC_REF(timeout_test)), COMPRESSION_TEST_TIME, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
 	return
 
 /**
@@ -175,7 +171,7 @@
 	say("Issue resolved. Have a nice day!")
 	inserted_bomb.toggle_valve(tank_to_target)
 	eject_bomb(force = TRUE)
-	timeout_timer = addtimer(CALLBACK(src, .proc/timeout_test), COMPRESSION_TEST_TIME, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_NO_HASH_WAIT) // Actually start the test so they can't just put the bomb back in.
+	timeout_timer = addtimer(CALLBACK(src, PROC_REF(timeout_test)), COMPRESSION_TEST_TIME, TIMER_STOPPABLE | TIMER_UNIQUE | TIMER_NO_HASH_WAIT) // Actually start the test so they can't just put the bomb back in.
 
 /**
  * Ends a compression test.

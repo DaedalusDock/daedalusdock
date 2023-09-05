@@ -9,7 +9,13 @@
 	plating_material = /datum/material/alloy/plasteel
 	explosion_block = 2
 	rad_insulation = RAD_HEAVY_INSULATION
-	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall. also indicates the temperature at wich the wall will melt (currently only able to melt with H/E pipes)
+
+// DMEd Specific Simplified wall icons
+#if defined(SIMPLE_MAPHELPERS)
+/turf/closed/wall/r_wall
+	icon='icons/effects/simplified_wall_helpers.dmi'
+	icon_state="r_generic"
+#endif
 
 /turf/closed/wall/r_wall/syndicate
 	name = "hull"

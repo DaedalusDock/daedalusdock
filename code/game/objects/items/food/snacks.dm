@@ -25,7 +25,7 @@
 	bite_consumption = 10
 	tastes = list("candy" = 5, "weight loss" = 4, "insect larva" = 1)
 	foodtypes = JUNKFOOD | RAW | GROSS
-	custom_price = PAYCHECK_ASSISTANT * 1.6 //Joke adjusted for inflation
+	custom_price = PAYCHECK_ASSISTANT * 1.6
 	w_class = WEIGHT_CLASS_TINY
 	var/revelation = FALSE
 
@@ -41,7 +41,7 @@
 				bite_consumption = bite_consumption,\
 				microwaved_type = microwaved_type,\
 				junkiness = junkiness,\
-				after_eat = CALLBACK(src, .proc/after_eat))
+				after_eat = CALLBACK(src, PROC_REF(after_eat)))
 
 /obj/item/food/candy/bronx/proc/after_eat(mob/living/eater)
 	if(ishuman(eater))

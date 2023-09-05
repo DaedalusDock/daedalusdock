@@ -6,26 +6,20 @@
 	var/mobs_only = FALSE
 	invisibility = INVISIBILITY_ABSTRACT // nope cant see this shit
 	anchored = TRUE
+	loc_procs = CROSSED
 
-/obj/effect/step_trigger/Initialize(mapload)
-	. = ..()
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/step_trigger/proc/Trigger(atom/movable/A)
 	return 0
 
-/obj/effect/step_trigger/proc/on_entered(datum/source, H as mob|obj)
-	SIGNAL_HANDLER
-	if(!H)
+/obj/effect/step_trigger/Crossed(atom/movable/crossed_by, oldloc)
+	if(!crossed_by)
 		return
-	if(isobserver(H) && !affect_ghosts)
+	if(isobserver(crossed_by) && !affect_ghosts)
 		return
-	if(!ismob(H) && mobs_only)
+	if(!ismob(crossed_by) && mobs_only)
 		return
-	INVOKE_ASYNC(src, .proc/Trigger, H)
+	INVOKE_ASYNC(src, PROC_REF(Trigger), crossed_by)
 
 
 /obj/effect/step_trigger/singularity_act()
@@ -71,9 +65,9 @@
 
 	affecting[AM] = AM.dir
 	var/datum/move_loop/loop = SSmove_manager.move(AM, direction, speed, tiles ? tiles * speed : INFINITY)
-	RegisterSignal(loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, .proc/pre_move)
-	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, .proc/post_move)
-	RegisterSignal(loop, COMSIG_PARENT_QDELETING, .proc/set_to_normal)
+	RegisterSignal(loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move))
+	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_move))
+	RegisterSignal(loop, COMSIG_PARENT_QDELETING, PROC_REF(set_to_normal))
 
 /obj/effect/step_trigger/thrower/proc/pre_move(datum/move_loop/source)
 	SIGNAL_HANDLER

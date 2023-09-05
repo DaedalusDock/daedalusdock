@@ -10,10 +10,20 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	w_class = WEIGHT_CLASS_HUGE
-	component_type = /datum/component/storage/concrete/rped
 	var/works_from_distance = FALSE
 	var/pshoom_or_beepboopblorpzingshadashwoosh = 'sound/items/rped.ogg'
 	var/alt_sound = null
+
+/obj/item/storage/part_replacer/Initialize()
+	. = ..()
+
+	atom_storage.allow_quick_empty = TRUE
+	atom_storage.allow_quick_gather = TRUE
+	atom_storage.max_slots = 50
+	atom_storage.max_total_storage = 100
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.numerical_stacking = TRUE
+	atom_storage.set_holdable(list(/obj/item/stock_parts), null)
 
 /obj/item/storage/part_replacer/pre_attack(obj/attacked_object, mob/living/user, params)
 	if(!istype(attacked_object, /obj/machinery) && !istype(attacked_object, /obj/structure/frame/machine))
@@ -87,13 +97,13 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	works_from_distance = TRUE
 	pshoom_or_beepboopblorpzingshadashwoosh = 'sound/items/pshoom.ogg'
 	alt_sound = 'sound/items/pshoom_2.ogg'
-	component_type = /datum/component/storage/concrete/bluespace/rped
 
 /obj/item/storage/part_replacer/bluespace/Initialize(mapload)
 	. = ..()
 
-	RegisterSignal(src, COMSIG_ATOM_ENTERED, .proc/on_part_entered)
-	RegisterSignal(src, COMSIG_ATOM_EXITED, .proc/on_part_exited)
+	atom_storage.max_slots = 400
+	atom_storage.max_total_storage = 800
+	atom_storage.max_specific_storage = WEIGHT_CLASS_GIGANTIC
 
 /**
  * Signal handler for when a part has been inserted into the BRPED.
@@ -104,19 +114,19 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
  * reagents being added and registers clean up signals on inserted item's removal from
  * the BRPED.
  */
-/obj/item/storage/part_replacer/bluespace/proc/on_part_entered(datum/source, obj/item/inserted_component)
-	SIGNAL_HANDLER
-	if(inserted_component.reagents)
-		if(length(inserted_component.reagents.reagent_list))
-			inserted_component.reagents.clear_reagents()
-			to_chat(usr, span_notice("[src] churns as [inserted_component] has its reagents emptied into bluespace."))
-		RegisterSignal(inserted_component.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT, .proc/on_insered_component_reagent_pre_add)
+/obj/item/storage/part_replacer/bluespace/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	if(arrived.reagents)
+		if(length(arrived.reagents.reagent_list))
+			arrived.reagents.clear_reagents()
+			to_chat(usr, span_notice("[src] churns as [arrived] has its reagents emptied into bluespace."))
+		RegisterSignal(arrived.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT, PROC_REF(on_insered_component_reagent_pre_add))
 
 
-	if(!istype(inserted_component, /obj/item/stock_parts/cell))
+	if(!istype(arrived, /obj/item/stock_parts/cell))
 		return
 
-	var/obj/item/stock_parts/cell/inserted_cell = inserted_component
+	var/obj/item/stock_parts/cell/inserted_cell = arrived
 
 	if(inserted_cell.rigged || inserted_cell.corrupted)
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has inserted rigged/corrupted [inserted_cell] into [src].")
@@ -142,12 +152,10 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
  *
  * Does signal registration cleanup on its reagents, if it has any.
  */
-/obj/item/storage/part_replacer/bluespace/proc/on_part_exited(datum/source, obj/item/removed_component)
-	SIGNAL_HANDLER
-
-	if(removed_component.reagents)
-		UnregisterSignal(removed_component.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT)
-
+/obj/item/storage/part_replacer/bluespace/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(gone.reagents)
+		UnregisterSignal(gone.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT)
 
 /obj/item/storage/part_replacer/bluespace/tier1
 
@@ -347,48 +355,6 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	icon_state = "super_matter_bin"
 	rating = 3
 	energy_rating = 5
-	custom_materials = list(/datum/material/iron=80)
-
-//Rating 4
-
-/obj/item/stock_parts/capacitor/quadratic
-	name = "quadratic capacitor"
-	desc = "A capacity capacitor used in the construction of a variety of devices."
-	icon_state = "quadratic_capacitor"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=50)
-
-/obj/item/stock_parts/scanning_module/triphasic
-	name = "triphasic scanning module"
-	desc = "A compact, ultra resolution triphasic scanning module used in the construction of certain devices."
-	icon_state = "triphasic_scan_module"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
-
-/obj/item/stock_parts/manipulator/femto
-	name = "femto-manipulator"
-	desc = "A tiny little manipulator used in the construction of certain devices."
-	icon_state = "femto_mani"
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=30)
-
-/obj/item/stock_parts/micro_laser/quadultra
-	name = "quad-ultra micro-laser"
-	icon_state = "quadultra_micro_laser"
-	desc = "A tiny laser used in certain devices."
-	rating = 4
-	energy_rating = 10
-	custom_materials = list(/datum/material/iron=10, /datum/material/glass=20)
-
-/obj/item/stock_parts/matter_bin/bluespace
-	name = "bluespace matter bin"
-	desc = "A container designed to hold compressed matter awaiting reconstruction."
-	icon_state = "bluespace_matter_bin"
-	rating = 4
-	energy_rating = 10
 	custom_materials = list(/datum/material/iron=80)
 
 // Subspace stock parts

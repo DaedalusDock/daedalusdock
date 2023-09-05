@@ -31,10 +31,12 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/suture = 2,
+		/obj/item/stack/gauze = 1,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/mesh = 2,
-		/obj/item/reagent_containers/hypospray/medipen = 1)
+		/obj/item/reagent_containers/hypospray/medipen = 1,
+		/obj/item/stack/splint = 1
+		)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/emergency
@@ -47,11 +49,13 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer/wound = 1,
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/stack/medical/suture/emergency = 1,
+		/obj/item/stack/gauze = 1,
+		/obj/item/stack/medical/suture = 1,
 		/obj/item/stack/medical/ointment = 1,
 		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
-		/obj/item/storage/pill_bottle/iron = 1)
+		/obj/item/storage/pill_bottle/iron = 1,
+		/obj/item/stack/splint = 1,
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/surgery
@@ -60,13 +64,12 @@
 	inhand_icon_state = "medkit"
 	desc = "A high capacity aid kit for doctors, full of medical supplies and basic surgical equipment"
 
-/obj/item/storage/medkit/surgery/ComponentInitialize()
+/obj/item/storage/medkit/surgery/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_w_class = WEIGHT_CLASS_NORMAL //holds the same equipment as a medibelt
-	STR.max_items = 12
-	STR.max_combined_w_class = 24
-	STR.set_holdable(list(
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL //holds the same equipment as a medibelt
+	atom_storage.max_slots = 12
+	atom_storage.max_total_storage = 24
+	atom_storage.set_holdable(list(
 		/obj/item/healthanalyzer,
 		/obj/item/dnainjector,
 		/obj/item/reagent_containers/dropper,
@@ -91,7 +94,6 @@
 		/obj/item/clothing/mask/surgical,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/breath/medical,
-		/obj/item/surgical_drapes, //for true paramedics
 		/obj/item/scalpel,
 		/obj/item/circular_saw,
 		/obj/item/bonesetter,
@@ -100,6 +102,7 @@
 		/obj/item/cautery,
 		/obj/item/hemostat,
 		/obj/item/blood_filter,
+		/obj/item/fixovein,
 		/obj/item/shears,
 		/obj/item/geiger_counter,
 		/obj/item/clothing/neck/stethoscope,
@@ -123,14 +126,15 @@
 		return
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer = 1,
-		/obj/item/stack/medical/gauze/twelve = 1,
-		/obj/item/stack/medical/suture = 2,
+		/obj/item/stack/gauze/twelve = 1,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
-		/obj/item/surgical_drapes = 1,
 		/obj/item/scalpel = 1,
 		/obj/item/hemostat = 1,
-		/obj/item/cautery = 1)
+		/obj/item/cautery = 1,
+		/obj/item/fixovein = 1
+		)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/ancient
@@ -141,7 +145,7 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/gauze = 1,
 		/obj/item/stack/medical/bruise_pack = 3,
 		/obj/item/stack/medical/ointment= 3)
 	generate_items_inside(items_inside,src)
@@ -165,9 +169,9 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/reagent_containers/pill/patch/aiuri = 3,
-		/obj/item/reagent_containers/spray/hercuri = 1,
-		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 1,
+		/obj/item/reagent_containers/pill/kelotane = 3,
+		/obj/item/storage/pill_bottle/dermaline = 1,
+		/obj/item/reagent_containers/hypospray/medipen/dermaline = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1)
 	generate_items_inside(items_inside,src)
 
@@ -187,10 +191,10 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-	    /obj/item/storage/pill_bottle/multiver/less = 1,
-		/obj/item/reagent_containers/syringe/syriniver = 3,
+		/obj/item/storage/pill_bottle/dylovene/less = 1,
+		/obj/item/reagent_containers/syringe/dylovene = 3,
 		/obj/item/storage/pill_bottle/potassiodide = 1,
-		/obj/item/reagent_containers/hypospray/medipen/penacid = 1)
+		/obj/item/reagent_containers/hypospray/medipen/dylovene = 1)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/o2
@@ -208,8 +212,7 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/reagent_containers/syringe/convermol = 3,
-		/obj/item/reagent_containers/hypospray/medipen/salbutamol = 1,
+		/obj/item/reagent_containers/hypospray/medipen/dexalin = 1,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/storage/pill_bottle/iron = 1)
 	generate_items_inside(items_inside,src)
@@ -229,10 +232,12 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/reagent_containers/pill/patch/libital = 3,
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/storage/pill_bottle/probital = 1,
-		/obj/item/reagent_containers/hypospray/medipen/salacid = 1)
+		/obj/item/reagent_containers/pill/bicaridine = 3,
+		/obj/item/stack/gauze = 1,
+		/obj/item/storage/pill_bottle/meralyne = 1,
+		/obj/item/reagent_containers/hypospray/medipen/meralyne = 1,
+		/obj/item/stack/splint = 1
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/advanced
@@ -249,8 +254,10 @@
 	var/static/items_inside = list(
 		/obj/item/reagent_containers/pill/patch/synthflesh = 3,
 		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
-		/obj/item/stack/medical/gauze = 1,
-		/obj/item/storage/pill_bottle/penacid = 1)
+		/obj/item/stack/gauze = 1,
+		/obj/item/storage/pill_bottle/dylovene = 1,
+		/obj/item/stack/splint = 1
+		)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/tactical
@@ -259,21 +266,21 @@
 	icon_state = "medkit_tactical"
 	damagetype_healed = "all"
 
-/obj/item/storage/medkit/tactical/ComponentInitialize()
+/obj/item/storage/medkit/tactical/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_w_class = WEIGHT_CLASS_NORMAL
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/medkit/tactical/PopulateContents()
 	if(empty)
 		return
-	new /obj/item/stack/medical/gauze(src)
+	new /obj/item/stack/gauze(src)
+	new /obj/item/stack/splint/two(src)
 	new /obj/item/defibrillator/compact/combat/loaded(src)
 	new /obj/item/reagent_containers/hypospray/combat(src)
-	new /obj/item/reagent_containers/pill/patch/libital(src)
-	new /obj/item/reagent_containers/pill/patch/libital(src)
-	new /obj/item/reagent_containers/pill/patch/aiuri(src)
-	new /obj/item/reagent_containers/pill/patch/aiuri(src)
+	new /obj/item/reagent_containers/pill/bicaridine(src)
+	new /obj/item/reagent_containers/pill/bicaridine(src)
+	new /obj/item/reagent_containers/pill/kelotane(src)
+	new /obj/item/reagent_containers/pill/kelotane(src)
 	new /obj/item/clothing/glasses/hud/health/night(src)
 
 //medibot assembly
@@ -318,30 +325,28 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 
-/obj/item/storage/pill_bottle/ComponentInitialize()
+/obj/item/storage/pill_bottle/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.allow_quick_gather = TRUE
-	STR.click_gather = TRUE
-	STR.set_holdable(list(/obj/item/reagent_containers/pill))
+	atom_storage.allow_quick_gather = TRUE
+	atom_storage.set_holdable(list(/obj/item/reagent_containers/pill))
 
 /obj/item/storage/pill_bottle/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is trying to get the cap off [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (TOXLOSS)
 
-/obj/item/storage/pill_bottle/multiver
-	name = "bottle of multiver pills"
+/obj/item/storage/pill_bottle/dylovene
+	name = "bottle of dylovene pills"
 	desc = "Contains pills used to counter toxins."
 
-/obj/item/storage/pill_bottle/multiver/PopulateContents()
+/obj/item/storage/pill_bottle/dylovene/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/multiver(src)
+		new /obj/item/reagent_containers/pill/dylovene(src)
 
-/obj/item/storage/pill_bottle/multiver/less
+/obj/item/storage/pill_bottle/dylovene/less
 
-/obj/item/storage/pill_bottle/multiver/less/PopulateContents()
+/obj/item/storage/pill_bottle/dylovene/less/PopulateContents()
 	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/multiver(src)
+		new /obj/item/reagent_containers/pill/dylovene(src)
 
 /obj/item/storage/pill_bottle/epinephrine
 	name = "bottle of epinephrine pills"
@@ -351,13 +356,13 @@
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/epinephrine(src)
 
-/obj/item/storage/pill_bottle/mutadone
-	name = "bottle of mutadone pills"
+/obj/item/storage/pill_bottle/ryetalyn
+	name = "bottle of ryetalyn pills"
 	desc = "Contains pills used to treat genetic abnormalities."
 
-/obj/item/storage/pill_bottle/mutadone/PopulateContents()
+/obj/item/storage/pill_bottle/ryetalyn/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/mutadone(src)
+		new /obj/item/reagent_containers/pill/ryetalyn(src)
 
 /obj/item/storage/pill_bottle/potassiodide
 	name = "bottle of potassium iodide pills"
@@ -367,13 +372,29 @@
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/potassiodide(src)
 
-/obj/item/storage/pill_bottle/probital
-	name = "bottle of probital pills"
-	desc = "Contains pills used to treat brute damage.The tag in the bottle states 'Eat before ingesting, may cause fatigue'."
+/obj/item/storage/pill_bottle/bicaridine
+	name = "bottle of bicaridine pills"
+	desc = "Contains pills used to treat brute damage."
 
-/obj/item/storage/pill_bottle/probital/PopulateContents()
+/obj/item/storage/pill_bottle/bicaridine/PopulateContents()
 	for(var/i in 1 to 4)
-		new /obj/item/reagent_containers/pill/probital(src)
+		new /obj/item/reagent_containers/pill/bicaridine(src)
+
+/obj/item/storage/pill_bottle/meralyne
+	name = "bottle of meralyne pills"
+	desc = "Contains pills used to treat brute damage."
+
+/obj/item/storage/pill_bottle/meralyne/PopulateContents()
+	for(var/i in 1 to 4)
+		new /obj/item/reagent_containers/pill/meralyne(src)
+
+/obj/item/storage/pill_bottle/dermaline
+	name = "bottle of dermaline pills"
+	desc = "Used to treat second and third degree burns."
+
+/obj/item/storage/pill_bottle/meralyne/PopulateContents()
+	for(var/i in 1 to 4)
+		new /obj/item/reagent_containers/pill/dermaline(src)
 
 /obj/item/storage/pill_bottle/iron
 	name = "bottle of iron pills"
@@ -383,21 +404,21 @@
 	for(var/i in 1 to 4)
 		new /obj/item/reagent_containers/pill/iron(src)
 
-/obj/item/storage/pill_bottle/mannitol
-	name = "bottle of mannitol pills"
+/obj/item/storage/pill_bottle/alkysine
+	name = "bottle of alkysine pills"
 	desc = "Contains pills used to treat brain damage."
 
-/obj/item/storage/pill_bottle/mannitol/PopulateContents()
+/obj/item/storage/pill_bottle/alkysine/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/mannitol(src)
+		new /obj/item/reagent_containers/pill/alkysine(src)
 
 //Contains 4 pills instead of 7, and 5u pills instead of 50u (50u pills heal 250 brain damage, 5u pills heal 25)
-/obj/item/storage/pill_bottle/mannitol/braintumor
+/obj/item/storage/pill_bottle/alkysine/braintumor
 	desc = "Contains diluted pills used to treat brain tumor symptoms. Take one when feeling lightheaded."
 
-/obj/item/storage/pill_bottle/mannitol/braintumor/PopulateContents()
+/obj/item/storage/pill_bottle/alkysine/braintumor/PopulateContents()
 	for(var/i in 1 to 4)
-		new /obj/item/reagent_containers/pill/mannitol/braintumor(src)
+		new /obj/item/reagent_containers/pill/alkysine/braintumor(src)
 
 /obj/item/storage/pill_bottle/stimulant
 	name = "bottle of stimulant pills"
@@ -412,9 +433,10 @@
 	desc = "Contains patches used to treat brute and burn damage."
 
 /obj/item/storage/pill_bottle/mining/PopulateContents()
-	new /obj/item/reagent_containers/pill/patch/aiuri(src)
 	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/patch/libital(src)
+		new /obj/item/reagent_containers/pill/kelotane(src)
+	for(var/i in 1 to 3)
+		new /obj/item/reagent_containers/pill/bicaridine(src)
 
 /obj/item/storage/pill_bottle/zoom
 	name = "suspicious pill bottle"
@@ -448,30 +470,13 @@
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/pill/aranesp(src)
 
-/obj/item/storage/pill_bottle/psicodine
-	name = "bottle of psicodine pills"
+/obj/item/storage/pill_bottle/alkysine
+	name = "bottle of alkysine pills"
 	desc = "Contains pills used to treat mental distress and traumas."
 
-/obj/item/storage/pill_bottle/psicodine/PopulateContents()
+/obj/item/storage/pill_bottle/alkysine/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/pill/psicodine(src)
-
-/obj/item/storage/pill_bottle/penacid
-	name = "bottle of pentetic acid pills"
-	desc = "Contains pills to expunge radiation and toxins."
-
-/obj/item/storage/pill_bottle/penacid/PopulateContents()
-	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/penacid(src)
-
-
-/obj/item/storage/pill_bottle/neurine
-	name = "bottle of neurine pills"
-	desc = "Contains pills to treat non-severe mental traumas."
-
-/obj/item/storage/pill_bottle/neurine/PopulateContents()
-	for(var/i in 1 to 5)
-		new /obj/item/reagent_containers/pill/neurine(src)
+		new /obj/item/reagent_containers/pill/alkysine(src)
 
 /obj/item/storage/pill_bottle/maintenance_pill
 	name = "bottle of maintenance pills"
@@ -491,14 +496,6 @@
 		new /obj/item/reagent_containers/pill/maintenance(src)
 
 ///////////////////////////////////////// Psychologist inventory pillbottles
-/obj/item/storage/pill_bottle/happinesspsych
-	name = "happiness pills"
-	desc = "Contains pills used as a last resort means to temporarily stabilize depression and anxiety. WARNING: side effects may include slurred speech, drooling, and severe addiction."
-
-/obj/item/storage/pill_bottle/happinesspsych/PopulateContents()
-	for(var/i in 1 to 5)
-		new /obj/item/reagent_containers/pill/happinesspsych(src)
-
 /obj/item/storage/pill_bottle/lsdpsych
 	name = "mindbreaker toxin pills"
 	desc = "!FOR THERAPEUTIC USE ONLY! Contains pills used to alleviate the symptoms of Reality Dissociation Syndrome."
@@ -515,6 +512,14 @@
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/pill/paxpsych(src)
 
+/obj/item/storage/pill_bottle/haloperidol
+	name = "haloperidol pill bottle"
+	desc = "Contains pills of a sedative that treats hallucinations and flushes narcotics from the system."
+
+/obj/item/storage/pill_bottle/haloperidol/PopulateContents()
+	for(var/i in 1 to 5)
+		new /obj/item/reagent_containers/pill/haloperidol(src)
+
 /obj/item/storage/organbox
 	name = "organ transport box"
 	desc = "An advanced box with an cooling mechanism that uses cryostylane or other cold reagents to keep the organs or bodyparts inside preserved."
@@ -528,90 +533,41 @@
 	/// var to prevent it freezing the same things over and over
 	var/cooling = FALSE
 
-/obj/item/storage/organbox/ComponentInitialize()
+/obj/item/storage/organbox/Initialize(mapload)
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_w_class = WEIGHT_CLASS_BULKY /// you have to remove it from your bag before opening it but I think that's fine
-	STR.max_combined_w_class = 21
-	STR.set_holdable(list(
+
+	create_storage(type = /datum/storage/organ_box, max_specific_storage = WEIGHT_CLASS_BULKY, max_total_storage = 21)
+	atom_storage.set_holdable(list(
 		/obj/item/organ,
 		/obj/item/bodypart,
 		/obj/item/food/icecream
 		))
 
-/obj/item/storage/organbox/Initialize(mapload)
-	. = ..()
-	create_reagents(100, TRANSPARENT)
-	RegisterSignal(src, COMSIG_ATOM_ENTERED, .proc/freeze)
-	RegisterSignal(src, COMSIG_TRY_STORAGE_TAKE, .proc/unfreeze)
-	START_PROCESSING(SSobj, src)
-
-/obj/item/storage/organbox/process(delta_time)
-	///if there is enough coolant var
-	var/cool = FALSE
-	var/amount = min(reagents.get_reagent_amount(/datum/reagent/cryostylane), 0.05 * delta_time)
-	if(amount > 0)
-		reagents.remove_reagent(/datum/reagent/cryostylane, amount)
-		cool = TRUE
-	else
-		amount = min(reagents.get_reagent_amount(/datum/reagent/consumable/ice), 0.1 * delta_time)
-		if(amount > 0)
-			reagents.remove_reagent(/datum/reagent/consumable/ice, amount)
-			cool = TRUE
-	if(!cooling && cool)
-		cooling = TRUE
-		update_appearance()
-		for(var/C in contents)
-			freeze_contents(C)
-		return
-	if(cooling && !cool)
-		cooling = FALSE
-		update_appearance()
-		for(var/C in contents)
-			unfreeze_contents(C)
-
 /obj/item/storage/organbox/update_icon_state()
 	icon_state = "[base_icon_state][cooling ? "-working" : null]"
 	return ..()
 
-///freezes the organ and loops bodyparts like heads
-/obj/item/storage/organbox/proc/freeze_contents(datum/source, obj/item/I)
-	SIGNAL_HANDLER
-	if(isinternalorgan(I))
-		var/obj/item/organ/internal/int_organ = I
+/obj/item/storage/organbox/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	if(isinternalorgan(arrived))
+		var/obj/item/organ/int_organ = arrived
 		int_organ.organ_flags |= ORGAN_FROZEN
 		return
-	if(istype(I, /obj/item/bodypart))
-		var/obj/item/bodypart/B = I
-		for(var/obj/item/organ/internal/int_organ in B.contents)
+	if(istype(arrived, /obj/item/bodypart))
+		var/obj/item/bodypart/B = arrived
+		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags |= ORGAN_FROZEN
 
-///unfreezes the organ and loops bodyparts like heads
-/obj/item/storage/organbox/proc/unfreeze_contents(datum/source, obj/item/I)
-	SIGNAL_HANDLER
-	if(isinternalorgan(I))
-		var/obj/item/organ/internal/int_organ = I
+/obj/item/storage/organbox/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(isinternalorgan(gone))
+		var/obj/item/organ/int_organ = gone
 		int_organ.organ_flags &= ~ORGAN_FROZEN
 		return
-	if(istype(I, /obj/item/bodypart))
-		var/obj/item/bodypart/B = I
-		for(var/obj/item/organ/internal/int_organ in B.contents)
+	if(istype(gone, /obj/item/bodypart))
+		var/obj/item/bodypart/B = gone
+		for(var/obj/item/organ/int_organ in B.contents)
 			int_organ.organ_flags &= ~ORGAN_FROZEN
-
-/obj/item/storage/organbox/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/reagent_containers) && I.is_open_container())
-		var/obj/item/reagent_containers/RC = I
-		var/units = RC.reagents.trans_to(src, RC.amount_per_transfer_from_this, transfered_by = user)
-		if(units)
-			to_chat(user, span_notice("You transfer [units] units of the solution to [src]."))
-			return
-	if(istype(I, /obj/item/plunger))
-		to_chat(user, span_notice("You start furiously plunging [name]."))
-		if(do_after(user, 10, target = src))
-			to_chat(user, span_notice("You finish plunging the [name]."))
-			reagents.clear_reagents()
-		return
-	return ..()
 
 /obj/item/storage/organbox/suicide_act(mob/living/carbon/user)
 	if(HAS_TRAIT(user, TRAIT_RESISTCOLD)) //if they're immune to cold, just do the box suicide

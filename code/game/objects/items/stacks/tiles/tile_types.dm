@@ -1,6 +1,6 @@
 /**
  * TILE STACKS
- * 
+ *
  * Allows us to place a turf on a plating.
  */
 /obj/item/stack/tile
@@ -65,7 +65,7 @@
 
 /**
  * Place our tile on a plating, or replace it.
- * 
+ *
  * Arguments:
  * * target_plating - Instance of the plating we want to place on. Replaced during sucessful executions.
  * * user - The mob doing the placing.
@@ -90,7 +90,7 @@
 		to_chat(user, span_notice("You cannot place this tile here directly!"))
 		return
 	to_chat(user, span_notice("You begin replacing the floor with the tile..."))
-	if(!do_after(user, 3 SECONDS, target_plating))
+	if(!do_after(user, target_plating, 3 SECONDS))
 		return
 	if(!istype(target_plating))
 		return
@@ -376,7 +376,7 @@
 	. += neon_overlay
 	. += emissive_appearance(neon_icon || icon, neon_icon_state || icon_state, alpha = emissive_alpha)
 
-/obj/item/stack/tile/carpet/neon/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/carpet/neon/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands || !neon_inhand_icon_state)
 		return
@@ -1146,7 +1146,7 @@
 	. = ..()
 	. += emissive_appearance(icon, icon_state, alpha = alpha)
 
-/obj/item/stack/tile/emissive_test/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/emissive_test/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	. += emissive_appearance(standing.icon, standing.icon_state, alpha = standing.alpha)
 

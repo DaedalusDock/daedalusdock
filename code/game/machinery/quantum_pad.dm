@@ -88,7 +88,7 @@
 			interact(user, K.qpad)
 		else
 			to_chat(user, span_notice("You insert [K] into [src]'s card slot, initiating the link procedure."))
-			if(do_after(user, 40, target = src))
+			if(do_after(user, src, 4 SECONDS))
 				to_chat(user, span_notice("You complete the link between [K] and [src]."))
 				K.qpad = src
 
@@ -141,7 +141,7 @@
 	playsound(get_turf(src), 'sound/weapons/flash.ogg', 25, TRUE)
 	teleporting = TRUE
 
-	addtimer(CALLBACK(src, .proc/teleport_contents, user, target_pad), teleport_speed)
+	addtimer(CALLBACK(src, PROC_REF(teleport_contents), user, target_pad), teleport_speed)
 
 /obj/machinery/quantumpad/proc/teleport_contents(mob/user, obj/machinery/quantumpad/target_pad)
 	teleporting = FALSE

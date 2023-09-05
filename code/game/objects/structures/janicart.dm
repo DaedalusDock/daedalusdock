@@ -18,6 +18,7 @@
 
 /obj/structure/janitorialcart/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_KEEP_DIRECTION_WHILE_PULLING, INNATE_TRAIT)
 	create_reagents(100, OPENCONTAINER)
 	GLOB.janitor_devices += src
 
@@ -169,7 +170,7 @@
 	var/pick = items[1]
 	if(length(items) > 1)
 		items = sort_list(items)
-		pick = show_radial_menu(user, src, items, custom_check = CALLBACK(src, .proc/check_menu, user), radius = 38, require_near = TRUE)
+		pick = show_radial_menu(user, src, items, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 38, require_near = TRUE)
 
 	if(!pick)
 		return

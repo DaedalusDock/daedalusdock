@@ -59,7 +59,7 @@ GLOBAL_DATUM(rpgloot_controller, /datum/rpgloot_controller)
 /datum/rpgloot_controller/New()
 	. = ..()
 	//second operation takes MUCH longer, so lets set up signals first.
-	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, .proc/on_new_item_in_existence)
+	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, PROC_REF(on_new_item_in_existence))
 	handle_current_items()
 
 ///signal sent by a new item being created.
@@ -79,17 +79,17 @@ GLOBAL_DATUM(rpgloot_controller, /datum/rpgloot_controller)
 	for(var/obj/item/fantasy_item in world)
 		CHECK_TICK
 
-		if(!(fantasy_item.flags_1 & INITIALIZED_1) || QDELETED(fantasy_item))
+		if(!fantasy_item.initialized || QDELETED(fantasy_item))
 			continue
 
 		fantasy_item.AddComponent(/datum/component/fantasy)
 
 		if(istype(fantasy_item, /obj/item/storage))
 			var/obj/item/storage/storage_item = fantasy_item
-			var/datum/component/storage/storage_component = storage_item.GetComponent(/datum/component/storage)
-			if(prob(upgrade_scroll_chance) && storage_item.contents.len < storage_component.max_items && !storage_item.invisibility)
+			var/datum/storage/storage_component = storage_item.atom_storage
+			if(prob(upgrade_scroll_chance) && storage_item.contents.len < storage_component.max_slots && !storage_item.invisibility)
 				var/obj/item/upgradescroll/scroll = new(get_turf(storage_item))
-				SEND_SIGNAL(storage_item, COMSIG_TRY_STORAGE_INSERT, scroll, null, TRUE, TRUE)
+				storage_item.atom_storage?.attempt_insert(scroll, override = TRUE)
 				upgrade_scroll_chance = max(0,upgrade_scroll_chance-100)
 				if(isturf(scroll.loc))
 					qdel(scroll)

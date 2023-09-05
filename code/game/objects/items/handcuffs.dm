@@ -65,7 +65,7 @@
 				to_chat(C, span_userdanger("You feel someone grab your wrists, the cold metal of [name] starting to dig into your skin!"))
 			playsound(loc, cuffsound, 30, TRUE, -2)
 			log_combat(user, C, "attempted to handcuff")
-			if(do_mob(user, C, 30, timed_action_flags = IGNORE_SLOWDOWNS) && C.canBeHandcuffed())
+			if(do_after(user, C, 30, timed_action_flags = IGNORE_SLOWDOWNS|DO_PUBLIC, display = src) && C.canBeHandcuffed())
 				if(iscyborg(user))
 					apply_cuffs(C, user, TRUE)
 				else
@@ -241,7 +241,7 @@
 			to_chat(user, span_warning("You need at least six iron sheets to make good enough weights!"))
 			return
 		to_chat(user, span_notice("You begin to apply [I] to [src]..."))
-		if(do_after(user, 35, target = src))
+		if(do_after(user, src, 3.5 SECONDS, DO_PUBLIC, display = src))
 			if(M.get_amount() < 6 || !M)
 				return
 			var/obj/item/restraints/legcuffs/bola/S = new /obj/item/restraints/legcuffs/bola
@@ -298,6 +298,18 @@
 	inhand_icon_state = "cuff"
 
 /**
+ * # Tape handcuffs
+ *
+ * Handcuffs applied when restraining someone with tape, easier to escape from than zipties and single use.
+ */
+/obj/item/restraints/handcuffs/tape
+	name = "length of tape"
+	desc = "Seems you are in a sticky situation."
+	icon_state = "handcuffTape"
+	breakouttime = 15 SECONDS
+	item_flags = DROPDEL
+
+/**
  * # Generic leg cuffs
  *
  * Parent class for everything that can legcuff carbons. Can't legcuff anything itself.
@@ -326,6 +338,7 @@
 	throw_range = 1
 	icon_state = "beartrap"
 	desc = "A trap used to catch bears and other legged creatures."
+	loc_procs = CROSSED
 	///If true, the trap is "open" and can trigger.
 	var/armed = FALSE
 	///How much damage the trap deals when triggered.
@@ -334,10 +347,6 @@
 /obj/item/restraints/legcuffs/beartrap/Initialize(mapload)
 	. = ..()
 	update_appearance()
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/spring_trap,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/restraints/legcuffs/beartrap/update_icon_state()
 	icon_state = "[initial(icon_state)][armed]"
@@ -367,8 +376,13 @@
 	update_appearance()
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 
+/obj/item/restraints/legcuffs/beartrap/Crossed(atom/movable/crossed_by, oldloc)
+	spring_trap(null, crossed_by, FALSE)
+
 /obj/item/restraints/legcuffs/beartrap/proc/spring_trap(datum/source, atom/movable/AM, thrown_at = FALSE)
-	SIGNAL_HANDLER
+	SHOULD_NOT_SLEEP(TRUE)
+	if(AM == src)
+		return
 	if(!armed || !isturf(loc) || !isliving(AM))
 		return
 	var/mob/living/L = AM
@@ -388,7 +402,7 @@
 		if(C.body_position == STANDING_UP)
 			def_zone = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 			if(!C.legcuffed && C.num_legs >= 2) //beartrap can't cuff your leg if there's already a beartrap or legcuffs, or you don't have two legs.
-				INVOKE_ASYNC(C, /mob/living/carbon.proc/equip_to_slot, src, ITEM_SLOT_LEGCUFFED)
+				INVOKE_ASYNC(C, TYPE_PROC_REF(/mob/living/carbon, equip_to_slot), src, ITEM_SLOT_LEGCUFFED)
 				SSblackbox.record_feedback("tally", "handcuffs", 1, type)
 	else if(snap && isanimal(L))
 		var/mob/living/simple_animal/SA = L
@@ -422,7 +436,7 @@
 
 /obj/item/restraints/legcuffs/beartrap/energy/Initialize(mapload)
 	. = ..()
-	addtimer(CALLBACK(src, .proc/dissipate), 100)
+	addtimer(CALLBACK(src, PROC_REF(dissipate)), 100)
 
 /**
  * Handles energy snares disappearing

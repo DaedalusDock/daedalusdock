@@ -35,7 +35,7 @@
 
 /obj/item/organ/regenerative_core/Initialize(mapload)
 	. = ..()
-	addtimer(CALLBACK(src, .proc/inert_check), 2400)
+	addtimer(CALLBACK(src, PROC_REF(inert_check)), 2400)
 
 /obj/item/organ/regenerative_core/proc/inert_check()
 	if(!preserved)
@@ -70,7 +70,7 @@
 	if(owner.health <= owner.crit_threshold)
 		ui_action_click()
 
-///Handles applying the core, logging and status/mood events.
+///Handles applying the core, logging and status effects.
 /obj/item/organ/regenerative_core/proc/applyto(atom/target, mob/user)
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
@@ -88,7 +88,6 @@
 				to_chat(user, span_notice("You start to smear [src] on yourself. Disgusting tendrils hold you together and allow you to keep moving, but for how long?"))
 				SSblackbox.record_feedback("nested tally", "hivelord_core", 1, list("[type]", "used", "self"))
 			H.apply_status_effect(/datum/status_effect/regenerative_core)
-			SEND_SIGNAL(H, COMSIG_ADD_MOOD_EVENT, "core", /datum/mood_event/healsbadman) //Now THIS is a miner buff (fixed - nerf)
 			qdel(src)
 
 /obj/item/organ/regenerative_core/afterattack(atom/target, mob/user, proximity_flag)
@@ -102,6 +101,9 @@
 
 /obj/item/organ/regenerative_core/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE)
 	. = ..()
+	if(!.)
+		return
+
 	if(!preserved && !inert)
 		preserved(TRUE)
 		owner.visible_message(span_notice("[src] stabilizes as it's inserted."))

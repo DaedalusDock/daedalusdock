@@ -1,6 +1,7 @@
 /obj/effect/decal/cleanable
 	gender = PLURAL
 	layer = ABOVE_NORMAL_TURF_LAYER
+	loc_procs = CROSSED
 	var/list/random_icon_states = null
 	///I'm sorry but cleanable/blood code is ass, and so is blood_DNA
 	var/blood_state = ""
@@ -43,10 +44,6 @@
 	var/turf/T = get_turf(src)
 	if(T && is_station_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_created", 1, name)
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/decal/cleanable/Destroy()
 	var/turf/T = get_turf(src)
@@ -91,10 +88,9 @@
 
 //Add "bloodiness" of this blood's type, to the human's shoes
 //This is on /cleanable because fuck this ancient mess
-/obj/effect/decal/cleanable/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(iscarbon(AM) && blood_state && bloodiness >= 40)
-		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
+/obj/effect/decal/cleanable/Crossed(atom/movable/crossed_by, oldloc)
+	if(iscarbon(crossed_by) && blood_state && bloodiness >= 40)
+		SEND_SIGNAL(crossed_by, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 
 /obj/effect/decal/cleanable/wash(clean_types)
@@ -104,14 +100,32 @@
 		return TRUE
 	return .
 
+/**
+ * Checks if this decal is a valid decal that can be blood crawled in.
+ */
 /obj/effect/decal/cleanable/proc/can_bloodcrawl_in()
 	if((blood_state != BLOOD_STATE_OIL) && (blood_state != BLOOD_STATE_NOT_BLOODY))
 		return bloodiness
-	else
-		return 0
+
+	return FALSE
+
+/**
+ * Gets the color associated with the any blood present on this decal. If there is no blood, returns null.
+ */
+/obj/effect/decal/cleanable/proc/get_blood_color()
+	switch(blood_state)
+		if(BLOOD_STATE_HUMAN)
+			return rgb(149, 10, 10)
+		if(BLOOD_STATE_XENO)
+			return rgb(43, 186, 0)
+		if(BLOOD_STATE_OIL)
+			return rgb(22, 22, 22)
+
+	return null
 
 /obj/effect/decal/cleanable/proc/handle_merge_decal(obj/effect/decal/cleanable/merger)
 	if(!merger)
 		return
 	if(merger.reagents && reagents)
 		reagents.trans_to(merger, reagents.total_volume)
+

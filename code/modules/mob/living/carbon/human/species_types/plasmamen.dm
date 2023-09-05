@@ -18,10 +18,10 @@
 	)
 
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
-	mutantlungs = /obj/item/organ/internal/lungs/plasmaman
-	mutanttongue = /obj/item/organ/internal/tongue/bone/plasmaman
-	mutantliver = /obj/item/organ/internal/liver/plasmaman
-	mutantstomach = /obj/item/organ/internal/stomach/bone/plasmaman
+	mutantlungs = /obj/item/organ/lungs/plasmaman
+	mutanttongue = /obj/item/organ/tongue/bone/plasmaman
+	mutantliver = /obj/item/organ/liver/plasmaman
+	mutantstomach = /obj/item/organ/stomach/bone/plasmaman
 	burnmod = 1.5
 	heatmod = 1.5
 	brutemod = 1.5
@@ -72,7 +72,7 @@
 		return
 	if(!atmos_sealed && (!istype(H.w_uniform, /obj/item/clothing/under/plasmaman) || !istype(H.head, /obj/item/clothing/head/helmet/space/plasmaman) || !istype(H.gloves, /obj/item/clothing/gloves)))
 		var/datum/gas_mixture/environment = H.loc.return_air()
-		if(environment?.get_moles())
+		if(environment?.total_moles)
 			/*if(environment.gases[/datum/gas/hypernoblium] && (environment.gases[/datum/gas/hypernoblium][MOLES]) >= 5)
 				if(H.on_fire && H.fire_stacks > 0)
 					H.adjust_fire_stacks(-10 * delta_time)*/
@@ -97,10 +97,43 @@
 		no_protection = TRUE
 	. = ..()
 
-/datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
-	equipping.internal = equipping.get_item_for_held_index(2)
-	equipping.update_internals_hud_icon(1)
+/datum/species/plasmaman/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only = FALSE)
+	if(!O)
+		give_important_for_life(equipping)
+		return
 
+	var/obj/item/clothing/mask = O.mask
+	if(!(mask && (initial(mask.clothing_flags) & MASKINTERNALS)))
+		equipping.equip_to_slot(new /obj/item/clothing/mask/breath, ITEM_SLOT_MASK, TRUE, FALSE)
+
+	if(!ispath(O.uniform, /obj/item/clothing/under/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/under/plasmaman, ITEM_SLOT_ICLOTHING, TRUE, FALSE)
+
+	if(!ispath(O.head, /obj/item/clothing/head/helmet/space/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/head/helmet/space/plasmaman, ITEM_SLOT_HEAD, TRUE, FALSE)
+
+	if(!ispath(O.gloves, /obj/item/clothing/gloves/color/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/gloves/color/plasmaman, ITEM_SLOT_GLOVES, TRUE, FALSE)
+
+	if(!ispath(O.r_hand, /obj/item/tank/internals/plasmaman) && !ispath(ispath(O.l_hand, /obj/item/tank/internals/plasmaman)))
+		var/obj/item/tank/internals/plasmaman/belt/full/tank = new
+		if(!O.r_hand)
+			equipping.put_in_r_hand(tank)
+		else if(!O.l_hand)
+			equipping.put_in_l_hand(tank)
+		else
+			equipping.put_in_r_hand(tank)
+		equipping.internal = tank
+
+/datum/species/plasmaman/give_important_for_life(mob/living/carbon/human/human_to_equip)
+	. = ..()
+	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
+	if(!human_to_equip.internal)
+		var/obj/item/tank/internals/plasmaman/belt/new_tank = new(null)
+		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
+			human_to_equip.internal = human_to_equip.belt
+		else
+			stack_trace("Plasmaman going without internals. Uhoh.")
 
 /datum/species/plasmaman/random_name(gender,unique,lastname)
 	if(unique)
@@ -112,40 +145,6 @@
 		randname += " [lastname]"
 
 	return randname
-
-/datum/species/plasmaman/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
-	. = ..()
-	if(istype(chem, /datum/reagent/toxin/plasma))
-		H.reagents.remove_reagent(chem.type, chem.metabolization_rate * delta_time)
-		for(var/i in H.all_wounds)
-			var/datum/wound/iter_wound = i
-			iter_wound.on_xadone(4 * REAGENTS_EFFECT_MULTIPLIER * delta_time) // plasmamen use plasma to reform their bones or whatever
-		return TRUE
-	if(istype(chem, /datum/reagent/toxin/bonehurtingjuice))
-		H.adjustStaminaLoss(7.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
-		H.adjustBruteLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
-		if(DT_PROB(10, delta_time))
-			switch(rand(1, 3))
-				if(1)
-					H.say(pick("oof.", "ouch.", "my bones.", "oof ouch.", "oof ouch my bones."), forced = /datum/reagent/toxin/bonehurtingjuice)
-				if(2)
-					H.manual_emote(pick("oofs silently.", "looks like [H.p_their()] bones hurt.", "grimaces, as though [H.p_their()] bones hurt."))
-				if(3)
-					to_chat(H, span_warning("Your bones hurt!"))
-		if(chem.overdosed)
-			if(DT_PROB(2, delta_time) && iscarbon(H)) //big oof
-				var/selected_part = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG) //God help you if the same limb gets picked twice quickly.
-				var/obj/item/bodypart/bp = H.get_bodypart(selected_part) //We're so sorry skeletons, you're so misunderstood
-				if(bp)
-					playsound(H, get_sfx(SFX_DESECRATION), 50, TRUE, -1) //You just want to socialize
-					H.visible_message(span_warning("[H] rattles loudly and flails around!!"), span_danger("Your bones hurt so much that your missing muscles spasm!!"))
-					H.say("OOF!!", forced=/datum/reagent/toxin/bonehurtingjuice)
-					bp.receive_damage(200, 0, 0) //But I don't think we should
-				else
-					to_chat(H, span_warning("Your missing arm aches from wherever you left it."))
-					H.emote("sigh")
-		H.reagents.remove_reagent(chem.type, chem.metabolization_rate * delta_time)
-		return TRUE
 
 /datum/species/plasmaman/get_species_description()
 	return "Found on the Icemoon of Freyja, plasmamen consist of colonial \

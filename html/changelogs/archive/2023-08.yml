@@ -1,0 +1,151 @@
+2023-08-01:
+  Kapu1178:
+  - rscadd: The metabolism rate of mobs now slows down as their body chills. At maximum
+      effect (most obvious in the Cryogenics Toob), one life tick will occur every
+      40 seconds.
+  - rscadd: All health analyzers have a Surgerical mode.
+  - rscadd: Cryogenics now has a pump to regulate pressure.
+  - qol: The cryogenics O2 canister starts pre-chilled.
+  - balance: Arterial bleeding rate slowed by 20%
+  - bugfix: Epinephrine no longer heals brute or burn damage.
+  - bugfix: Body scanners now show embedded objects as foreign bodies.
+  - bugfix: Teshari now have their own damage sprites instead of using the human ones.
+  - bugfix: Teshari now have their own bloody clothing sprites instead of using the
+      human ones.
+  francinum:
+  - code_imp: Abstractness changes
+2023-08-02:
+  Kapu1178:
+  - qol: Removed the "syndicate" prefix from some items.
+  francinum:
+  - config: A few config entries with no effect have been removed
+  - server: "Jobs.txt is no longer supported. If you need to change job numbers like\
+      \ that, fork (\u0360\u035C\u0296\u0360)"
+2023-08-03:
+  Kapu1178:
+  - code_imp: Daedalus now supports the Byond-Tracy profiler.
+  - bugfix: Fixed a serious bug with bodypart damage.
+  - balance: Vent Pumps and Vent Scrubbers use 33% less power while idling.
+  - balance: Thermomachine volume from 70 to 400 + (bin_rating * 200)
+2023-08-04:
+  Kapu1178:
+  - bugfix: Specific chemical effects no longer last forever
+  - bugfix: ZMimic failing to recognize new atoms
+  MrMelbert:
+  - bugfix: Items getting knocked off (glasses and cigars), bad omens, and spaghetti
+      falling from pockets should trigger on most knockdowns again like they used
+      to.
+  - code_imp: Cleaned up the knockoff component a bit. Also unit tests it.
+  - bugfix: Frozen stuff is now properly actually recognized as frozen and won't re-freeze.
+  - bugfix: Tonic Water heals dizziness instead of causing it
+  - bugfix: Fixes stuttered words with anxiety being capitalized
+  - rscadd: When you are drunk, the strength of your slurring now varies based on
+      how drunk you are. Being "a little drunk" only rarely slurs your words, being
+      average drunk is the same as the old effect, while being very drunk now slurs
+      your words even more.
+  - rscadd: Some non-alcohol sources of slurring, such as concussions, now give "generic
+      slurring" rather than "drunk slurring", which less resemble being drunk (ie,
+      no burping).
+  - rscadd: 'Mind restoration now heals ALL slurring, rather than only drunk slurring
+      (which includes cult / heretic slurring). /:cl:'
+2023-08-05:
+  Kapu1178:
+  - tweak: Player darksight is now DRASTICALLY weaker.
+  - bugfix: Limping no longer gets stuck on your character after your legs are fixed.
+  francinum:
+  - rscdel: door remotes
+  - qol: removes ntnet
+  - bugfix: Silicon 'PDAs' will now properly ring.
+  - rscadd: Medibelts can store Gauze now
+2023-08-06:
+  Kapu1178:
+  - bugfix: In some cases organs would be unable to be coupled to a mob, these have
+      been fixed.
+  - balance: Addiction phases changed to 10/20/40 minutes from 1/2/3 minutes.
+  SmoSmoSmoSmok:
+  - bugfix: mulebots can be turned on/off
+  francinum:
+  - code_imp: TESTING mode works again.
+  - config: Credits music, Lobby tracks, and Jukebox media organization has changed
+      massively. Check the repo for more information.
+  - rscdel: Disco Inferno has been made far less disco.
+2023-08-08:
+  Kapu1178:
+  - rscadd: Added a chance for Runtime to spawn with a different name.
+2023-08-12:
+  Gonenoculer5:
+  - bugfix: Modifies EXAMPLE.json to contain correct comment text relating to durations
+      of music files.
+  Kapu1178:
+  - rscdel: Mood has been removed. Not like Production ever had it turned on...
+  - bugfix: Fixed objects that render out of their tile rendering over blackness,
+      when logically they should be invisible.
+  francinum:
+  - admin: DSAY now autocompletes again.
+2023-08-14:
+  Cenrus:
+  - bugfix: fixed disposals in the new MetaStation medbay
+  - bugfix: added the chemdrobe back to MetaStation
+  - bugfix: fixed the virology airlock controls not functioning
+  Kapu1178:
+  - bugfix: Fixed a bug that might(?) have existed that caused wounds to not stop
+      bleeding when they should.
+  - bugfix: Damage overlays should now always be in the correct state. Cannot say
+      the same for bleeding overlays, but, cope.
+  - bugfix: Tendon repair surgery works.
+  francinum:
+  - rscadd: You can now view a map of the station with the 'Webmap' button in the
+      top right cluster
+  - code_imp: Map JSONS must set the 'webmap_id' key for this to work.
+  - rscadd: You can now open the codex with the 'Codex' button, In the same place.
+2023-08-15:
+  Kapu1178:
+  - qol: Changed station lighting.
+2023-08-20:
+  Kapu1178:
+  - bugfix: Doors of all kinds will no longer "trap" dangerous gas inside when closing.
+  francinum:
+  - bugfix: Non-human living mobs can now look up
+  - rscdel: Snob and Unstable quirk has been removed, as it no longer worked.
+  - bugfix: Security Helmet flashlight behaviour is now a lot more reliable
+2023-08-21:
+  Francinum, Chinsky:
+  - rscadd: Some documents now come in sealed, tamper-evident folders. This is mostly
+      a flavor thing.
+  Kapu1178:
+  - balance: Damaging a bodypart with a broken bone has a chance to deal damage to
+      an organ inside.
+  - balance: Damage that ignores armor (such as pressure damage) can no longer break
+      bones or jostle bones.
+  - balance: Tweaked the dismemberment formula for the 8th time
+  - code_imp: Removed organ/var/status
+  - bugfix: Sleeping heals instead of dealing damage.
+  - qol: Chem splashing can now be done with combat mode instead of right click.
+  - refactor: Regeants.
+  - rscdel: Reagent purity and pH
+  - rscadd: Digest vs Bloodstream vs Touching metabolisms.
+  - rscadd: You can wash off reagents on your skin using a shower or splashing water.
+  - refactor: Acid now takes into account the permeability of worn clothing.
+  - rscdel: Most Fermichem and Cobbychem medicines.
+  - rscadd: Trekchem and Goonchem reagents.
+  francinum:
+  - qol: The Report Issues Button no longer sends you to github, but instead sends
+      the issue report itself.
+2023-08-22:
+  Kapu1178:
+  - rscdel: IDs are no longer named after the owner.
+  - rscadd: IDs can now be examined to see lots of information about the registered
+      employee.
+  - rscadd: Chameleon IDs now have an "Impersonate Crew" button, to clone the target's
+      ID.
+2023-08-28:
+  Kapu1178:
+  - bugfix: Instruments work again
+  - bugfix: Added Ammonia to the chem dispenser
+  francinum:
+  - imageadd: MD Jobstart icon appears properly in editor (Not that we use them anyways...)
+2023-08-29:
+  FunnyLegJiggle:
+  - bugfix: Ingesting iron no longer marks you for blood-gib.
+  francinum:
+  - bugfix: Issue reporter flow no longer overflows

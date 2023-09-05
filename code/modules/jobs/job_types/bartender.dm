@@ -6,8 +6,12 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/priapus
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -17,12 +21,11 @@
 	)
 
 	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_SRV
-	display_order = JOB_DISPLAY_ORDER_BARTENDER
+	paycheck_department = ACCOUNT_STATION_MASTER
 	bounty_types = CIV_JOB_DRINK
 	departments_list = list(
 		/datum/job_department/service,
-		)
+	)
 
 	family_heirlooms = list(/obj/item/reagent_containers/glass/rag, /obj/item/clothing/head/that, /obj/item/reagent_containers/food/drinks/shaker)
 

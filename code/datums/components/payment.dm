@@ -21,12 +21,12 @@
 /datum/component/payment/Initialize(_cost, _target, _style)
 	target_acc = _target
 	if(!target_acc)
-		target_acc = SSeconomy.get_dep_account(ACCOUNT_CIV)
+		target_acc = SSeconomy.station_master
 
 	cost = _cost
 	transaction_style = _style
-	RegisterSignal(parent, COMSIG_OBJ_ATTEMPT_CHARGE, .proc/attempt_charge)
-	RegisterSignal(parent, COMSIG_OBJ_ATTEMPT_CHARGE_CHANGE, .proc/change_cost)
+	RegisterSignal(parent, COMSIG_OBJ_ATTEMPT_CHARGE, PROC_REF(attempt_charge))
+	RegisterSignal(parent, COMSIG_OBJ_ATTEMPT_CHARGE_CHANGE, PROC_REF(change_cost))
 
 /datum/component/payment/proc/attempt_charge(datum/source, atom/movable/target, extra_fees = 0)
 	SIGNAL_HANDLER

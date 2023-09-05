@@ -3,13 +3,13 @@
 	max_stages = 4
 	spread_text = "On contact"
 	spread_flags = DISEASE_SPREAD_BLOOD | DISEASE_SPREAD_CONTACT_SKIN | DISEASE_SPREAD_CONTACT_FLUIDS
-	cure_text = "Mannitol"
-	cures = list(/datum/reagent/medicine/mannitol)
+	cure_text = "Alkysine"
+	cures = list(/datum/reagent/medicine/alkysine)
 	agent = "Cryptococcus Cosmosis"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	cure_chance = 7.5 //higher chance to cure, since two reagents are required
 	desc = "This disease destroys the braincells, causing brain fever, brain necrosis and general intoxication."
-	required_organs = list(/obj/item/organ/internal/brain)
+	required_organs = list(/obj/item/organ/brain)
 	severity = DISEASE_SEVERITY_HARMFUL
 
 

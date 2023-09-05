@@ -3,7 +3,7 @@
 		return
 
 	var/obj/item/implant/mindshield/L = new/obj/item/implant/mindshield(H)//hmm lets have centcom officials become revs
-	L.implant(H, null, 1)
+	L.implant(H, null, BODY_ZONE_CHEST, TRUE)
 
 /datum/outfit/centcom/ert
 	name = "ERT Common"
@@ -352,7 +352,7 @@
 	ADD_TRAIT(H, TRAIT_NAIVE, INNATE_TRAIT)
 	H.dna.add_mutation(/datum/mutation/human/clumsy)
 	for(var/datum/mutation/human/clumsy/M in H.dna.mutations)
-		M.mutadone_proof = TRUE
+		M.ryetalyn_proof = TRUE
 
 /datum/outfit/centcom/centcom_intern
 	name = "CentCom Intern"

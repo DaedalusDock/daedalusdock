@@ -19,7 +19,7 @@
 /// height off the ground of light sources on the pseudo-z-axis, you should probably leave this alone
 #define LIGHTING_HEIGHT         1
 /// Value used to round lumcounts, values smaller than 1/129 don't matter (if they do, thanks sinking points), greater values will make lighting less precise, but in turn increase performance, VERY SLIGHTLY.
-#define LIGHTING_ROUND_VALUE    (1 / 64)
+#define LIGHTING_ROUND_VALUE    (1 / 128)
 
 /// icon used for lighting shading effects
 #define LIGHTING_ICON 'icons/effects/lighting_object.dmi'
@@ -85,10 +85,10 @@ GLOBAL_LIST_INIT(em_mask_matrix, EM_MASK_MATRIX)
 #define PARSE_LIGHT_COLOR(source) \
 do { \
 	if (source.light_color != COLOR_WHITE) { \
-		var/__light_color = source.light_color; \
-		source.lum_r = GETREDPART(__light_color) / 255; \
-		source.lum_g = GETGREENPART(__light_color) / 255; \
-		source.lum_b = GETBLUEPART(__light_color) / 255; \
+		var/list/color_map = rgb2num(source.light_color); \
+		source.lum_r = color_map[1] / 255; \
+		source.lum_g = color_map[2] / 255; \
+		source.lum_b = color_map[3] / 255; \
 	} else { \
 		source.lum_r = 1; \
 		source.lum_g = 1; \
@@ -97,4 +97,9 @@ do { \
 } while (FALSE)
 
 /// The default falloff curve for all atoms. It's a magic number you should adjust until it looks good.
-#define LIGHTING_DEFAULT_FALLOFF_CURVE 3
+#define LIGHTING_DEFAULT_FALLOFF_CURVE 2.36
+
+/// Include this to have lights randomly break on initialize.
+#define LIGHTS_RANDOMLY_BROKEN
+
+#define TURF_IS_DYNAMICALLY_LIT(T) (!(T.always_lit || T.loc:area_has_base_lighting))

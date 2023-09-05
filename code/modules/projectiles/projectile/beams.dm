@@ -16,21 +16,16 @@
 	ricochets_max = 50 //Honk!
 	ricochet_chance = 80
 	reflectable = REFLECT_NORMAL
-	wound_bonus = -20
-	bare_wound_bonus = 10
 
 
 /obj/projectile/beam/laser
 	tracer_type = /obj/effect/projectile/tracer/laser
 	muzzle_type = /obj/effect/projectile/muzzle/laser
 	impact_type = /obj/effect/projectile/impact/laser
-	wound_bonus = -30
-	bare_wound_bonus = 40
 
 //overclocked laser, does a bit more damage but has much higher wound power (-0 vs -20)
 /obj/projectile/beam/laser/hellfire
 	name = "hellfire laser"
-	wound_bonus = 0
 	damage = 25
 	speed = 0.6 // higher power = faster, that's how light works right
 
@@ -85,15 +80,22 @@
 	impact_type = /obj/effect/projectile/impact/xray
 
 /obj/projectile/beam/disabler
-	name = "disabler beam"
-	icon_state = "omnilaser"
-	damage = 30
+	name = "disabler bolt"
+	icon = 'goon/icons/obj/projectiles.dmi'
+	icon_state = "taser_projectile"
+	speed = 0.7
+	damage = 0
 	damage_type = STAMINA
 	armor_flag = ENERGY
-	hitsound = 'sound/weapons/tap.ogg'
+
+	disorient_length = 2 SECONDS
+	disorient_damage = 50
+	disorient_status_length = 4 SECONDS
+
+	hitsound = 'goon/sounds/weapons/sparks6.ogg'
 	eyeblur = 0
-	impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser
-	light_color = LIGHT_COLOR_BLUE
+	impact_effect_type = /obj/effect/temp_visual/impact_effect/yellow_laser
+	light_color = LIGHT_COLOR_DIM_YELLOW
 	tracer_type = /obj/effect/projectile/tracer/disabler
 	muzzle_type = /obj/effect/projectile/muzzle/disabler
 	impact_type = /obj/effect/projectile/impact/disabler
@@ -107,7 +109,6 @@
 	tracer_type = /obj/effect/projectile/tracer/pulse
 	muzzle_type = /obj/effect/projectile/muzzle/pulse
 	impact_type = /obj/effect/projectile/impact/pulse
-	wound_bonus = 10
 
 /obj/projectile/beam/pulse/on_hit(atom/target, blocked = FALSE)
 	. = ..()
@@ -138,8 +139,6 @@
 	damage = 30
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser
 	light_color = LIGHT_COLOR_GREEN
-	wound_bonus = -40
-	bare_wound_bonus = 70
 
 /obj/projectile/beam/emitter/singularity_pull()
 	return //don't want the emitters to miss
@@ -154,10 +153,10 @@
 	hitscan_light_range = 0.75
 	hitscan_light_color_override = COLOR_LIME
 	muzzle_flash_intensity = 6
-	muzzle_flash_range = 2
+	muzzle_flash_range = 3
 	muzzle_flash_color_override = COLOR_LIME
 	impact_light_intensity = 7
-	impact_light_range = 2.5
+	impact_light_range = 3
 	impact_light_color_override = COLOR_LIME
 
 /obj/projectile/beam/lasertag
@@ -176,7 +175,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit))
 			if(M.wear_suit.type in suit_types)
-				M.adjustStaminaLoss(34)
+				M.stamina.adjust(-34)
 
 /obj/projectile/beam/lasertag/redtag
 	icon_state = "laser"

@@ -175,8 +175,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Geneticist"
 
 /obj/effect/landmark/start/chief_medical_officer
-	name = "Chief Medical Officer"
-	icon_state = "Chief Medical Officer"
+	name = "Medical Director"
+	icon_state = "Medical Director"
 
 /obj/effect/landmark/start/virologist
 	name = "Virologist"
@@ -300,6 +300,12 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 /obj/effect/landmark/carpspawn
 	name = "carpspawn"
 	icon_state = "carp_spawn"
+
+//spawn for mice and other maint pests
+/obj/effect/landmark/pestspawn
+	name = "pestspawn"
+	icon_state = "pest_spawn"
+	layer = MOB_LAYER //needs to display above catwalks
 
 //observer start
 /obj/effect/landmark/observer_start

@@ -7,7 +7,7 @@
  * just having the variables, behavior, and procs be standardized is still a big improvement.
  */
 /datum/element/ridable
-	element_flags = ELEMENT_BESPOKE
+	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH
 	id_arg_index = 2
 
 	/// The specific riding component subtype we're loading our instructions from, don't leave this as default please!
@@ -27,9 +27,9 @@
 	riding_component_type = component_type
 	potion_boosted = potion_boost
 
-	RegisterSignal(target, COMSIG_MOVABLE_PREBUCKLE, .proc/check_mounting)
+	RegisterSignal(target, COMSIG_MOVABLE_PREBUCKLE, PROC_REF(check_mounting))
 	if(isvehicle(target))
-		RegisterSignal(target, COMSIG_SPEED_POTION_APPLIED, .proc/check_potion)
+		RegisterSignal(target, COMSIG_SPEED_POTION_APPLIED, PROC_REF(check_potion))
 
 /datum/element/ridable/Detach(datum/target)
 	UnregisterSignal(target, list(COMSIG_MOVABLE_PREBUCKLE, COMSIG_SPEED_POTION_APPLIED))
@@ -83,7 +83,7 @@
 			inhand.rider = riding_target_override
 		inhand.parent = AM
 		for(var/obj/item/I in user.held_items) // delete any hand items like slappers that could still totally be used to grab on
-			if((I.obj_flags & HAND_ITEM))
+			if((I.item_flags & HAND_ITEM))
 				qdel(I)
 
 		// this would be put_in_hands() if it didn't have the chance to sleep, since this proc gets called from a signal handler that relies on what this returns

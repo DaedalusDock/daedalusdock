@@ -1304,11 +1304,6 @@
 /area/shuttle/abandoned/bridge)
 "IC" = (
 /obj/structure/cable,
-/obj/item/reagent_containers/pill/psicodine{
-	pixel_x = 17;
-	pixel_y = 4
-	},
-/obj/item/food/drug/moon_rock,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},

@@ -34,7 +34,6 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "anom"
 	layer = RIPPLE_LAYER
-	plane = ABOVE_GAME_PLANE
 	mech_sized = TRUE
 	teleport_channel = TELEPORT_CHANNEL_WORMHOLE
 
@@ -58,7 +57,7 @@
 	if(HAS_TRAIT(mover, TRAIT_NO_TELEPORT) && !force_teleport)
 		return TRUE
 
-/obj/effect/portal/Bumped(atom/movable/bumper)
+/obj/effect/portal/BumpedBy(atom/movable/bumper)
 	teleport(bumper)
 
 /obj/effect/portal/attack_hand(mob/user, list/modifiers)

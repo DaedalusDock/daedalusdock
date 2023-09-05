@@ -1,5 +1,5 @@
 /// How many seconds between each fuel depletion tick ("use" proc)
-#define WELDER_FUEL_BURN_INTERVAL 26
+#define WELDER_FUEL_BURN_INTERVAL 9
 /obj/item/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by Nanotrasen."
@@ -30,8 +30,6 @@
 	heat = 3800
 	tool_behaviour = TOOL_WELDER
 	toolspeed = 1
-	wound_bonus = 10
-	bare_wound_bonus = 15
 	custom_materials = list(/datum/material/iron=70, /datum/material/glass=30)
 	///Whether the welding tool is on or off.
 	var/welding = FALSE
@@ -48,11 +46,8 @@
 	create_reagents(max_fuel)
 	reagents.add_reagent(/datum/reagent/fuel, max_fuel)
 	update_appearance()
-
-/obj/item/weldingtool/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
-	AddElement(/datum/element/tool_flash, light_outer_range)
+	AddElement(/datum/element/tool_flash, 2)
 
 /obj/item/weldingtool/update_icon_state()
 	if(welding)
@@ -130,7 +125,7 @@
 			if(user == attacked_humanoid)
 				user.visible_message(span_notice("[user] starts to fix some of the dents on [attacked_humanoid]'s [affecting.name]."),
 					span_notice("You start fixing some of the dents on [attacked_humanoid == user ? "your" : "[attacked_humanoid]'s"] [affecting.name]."))
-				if(!do_mob(user, attacked_humanoid, 50))
+				if(!do_after(user, attacked_humanoid, 5 SECONDS, DO_PUBLIC, display = src))
 					return
 			item_heal_robotic(attacked_humanoid, user, 15, 0)
 	else

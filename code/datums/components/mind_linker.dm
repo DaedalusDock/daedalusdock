@@ -80,12 +80,12 @@
 	linked_mobs.Cut()
 	QDEL_NULL(linker_action)
 	QDEL_NULL(master_speech)
-	QDEL_NULL(post_unlink_callback)
+	post_unlink_callback = null
 	return ..()
 
 /datum/component/mind_linker/RegisterWithParent()
 	if(signals_which_destroy_us)
-		RegisterSignal(parent, signals_which_destroy_us, .proc/destroy_link)
+		RegisterSignal(parent, signals_which_destroy_us, PROC_REF(destroy_link))
 
 /datum/component/mind_linker/UnregisterFromParent()
 	if(signals_which_destroy_us)
@@ -120,7 +120,7 @@
 	new_link.Grant(to_link)
 
 	linked_mobs[to_link] = new_link
-	RegisterSignal(to_link, list(COMSIG_LIVING_DEATH, COMSIG_PARENT_QDELETING, COMSIG_MINDSHIELD_IMPLANTED), .proc/unlink_mob)
+	RegisterSignal(to_link, list(COMSIG_LIVING_DEATH, COMSIG_PARENT_QDELETING, COMSIG_MINDSHIELD_IMPLANTED), PROC_REF(unlink_mob))
 
 	return TRUE
 
@@ -168,7 +168,7 @@
 	name = "Mind Link Speech"
 	desc = "Send a psychic message to everyone connected to your Link."
 	button_icon_state = "link_speech"
-	icon_icon = 'icons/mob/actions/actions_slime.dmi'
+	button_icon = 'icons/mob/actions/actions_slime.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/linked_speech/New(Target)
@@ -181,11 +181,11 @@
 	var/datum/component/mind_linker/linker = Target
 	name = "[linker.network_name] Speech"
 	desc = "Send a psychic message to everyone connected to your [linker.network_name]."
-	icon_icon = linker.speech_action_icon
+	button_icon = linker.speech_action_icon
 	button_icon_state = linker.speech_action_icon_state
 	background_icon_state = linker.speech_action_background_icon_state
 
-/datum/action/innate/linked_speech/IsAvailable()
+/datum/action/innate/linked_speech/IsAvailable(feedback = FALSE)
 	return ..() && (owner.stat != DEAD)
 
 /datum/action/innate/linked_speech/Activate()

@@ -7,6 +7,7 @@
 	light_mask = "tool-light-mask"
 	products = list(
 		/obj/item/stack/cable_coil = 10,
+		/obj/item/stack/sticky_tape = 3,
 		/obj/item/crowbar = 5,
 		/obj/item/weldingtool = 3,
 		/obj/item/wirecutters = 5,
@@ -18,7 +19,7 @@
 		/obj/item/flashlight/glowstick/red = 3,
 		/obj/item/flashlight = 5,
 		/obj/item/clothing/ears/earmuffs = 1,
-		/obj/item/paint/anycolor = 5
+		/obj/item/paint_sprayer = 2,
 	)
 	contraband = list(
 		/obj/item/clothing/gloves/color/fyellow = 2
@@ -34,6 +35,8 @@
 	default_price = PAYCHECK_ASSISTANT
 	extra_price = PAYCHECK_COMMAND * 1.5
 	payment_department = ACCOUNT_ENG
+
+	discount_access = ACCESS_ENGINE
 
 /obj/item/vending_refill/youtool
 	machine_name = "YouTool"

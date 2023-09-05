@@ -58,9 +58,11 @@
 	integrity_failure = 0.33
 	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5
 	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	/// Is the machine active (No sales pitches if off)!
 	var/active = 1
 	///Are we ready to vend?? Is it time??
@@ -156,6 +158,8 @@
 	///ID's that can load this vending machine wtih refills
 	var/list/canload_access_list
 
+	///Access that gets the non-premium content for free
+	var/list/discount_access = null
 
 	var/list/vending_machine_input = list()
 	///Display header on the input view
@@ -213,7 +217,7 @@
 	else if(circuit && (circuit.onstation != onstation)) //check if they're not the same to minimize the amount of edited values.
 		onstation = circuit.onstation //if it was constructed outside mapload, sync the vendor up with the circuit's var so you can't bypass price requirements by moving / reconstructing it off station.
 	Radio = new /obj/item/radio(src)
-	Radio.set_listening(FALSE)
+	Radio.set_listening(FALSE, TRUE)
 
 /obj/machinery/vending/Destroy()
 	QDEL_NULL(wires)
@@ -317,8 +321,6 @@ GLOBAL_LIST_EMPTY(vending_products)
  * * startempty - should we set vending_product record amount from the product list (so it's prefilled at roundstart)
  */
 /obj/machinery/vending/proc/build_inventory(list/productlist, list/recordlist, start_empty = FALSE)
-	default_price = round(initial(default_price) * SSeconomy.inflation_value())
-	extra_price = round(initial(extra_price) * SSeconomy.inflation_value())
 	for(var/typepath in productlist)
 		var/amount = productlist[typepath]
 		if(isnull(amount))
@@ -333,36 +335,36 @@ GLOBAL_LIST_EMPTY(vending_products)
 			R.amount = amount
 		R.max_amount = amount
 		///Prices of vending machines are all increased uniformly.
-		R.custom_price = round(initial(temp.custom_price) * SSeconomy.inflation_value())
-		R.custom_premium_price = round(initial(temp.custom_premium_price) * SSeconomy.inflation_value())
+		R.custom_price = round(initial(temp.custom_price))
+		R.custom_premium_price = round(initial(temp.custom_premium_price))
 		R.age_restricted = initial(temp.age_restricted)
 		R.colorable = !!(initial(temp.greyscale_config) && initial(temp.greyscale_colors) && (initial(temp.flags_1) & IS_PLAYER_COLORABLE_1))
 		recordlist += R
 
 /**
- * Reassign the prices of the vending machine as a result of the inflation value, as provided by SSeconomy
+ * Reassign the prices of the vending machine using the multiplier argument
  *
  * This rebuilds both /datum/data/vending_products lists for premium and standard products based on their most relevant pricing values.
  * Arguments:
  * * recordlist - the list of standard product datums in the vendor to refresh their prices.
  * * premiumlist - the list of premium product datums in the vendor to refresh their prices.
  */
-/obj/machinery/vending/proc/reset_prices(list/recordlist, list/premiumlist)
-	default_price = round(initial(default_price) * SSeconomy.inflation_value())
-	extra_price = round(initial(extra_price) * SSeconomy.inflation_value())
+/obj/machinery/vending/proc/reset_prices(list/recordlist, list/premiumlist, multiplier)
+	default_price = round(initial(default_price) * multiplier)
+	extra_price = round(initial(extra_price) * multiplier)
 	for(var/R in recordlist)
 		var/datum/data/vending_product/record = R
 		var/obj/item/potential_product = record.product_path
-		record.custom_price = round(initial(potential_product.custom_price) * SSeconomy.inflation_value())
+		record.custom_price = round(initial(potential_product.custom_price) * multiplier)
 	for(var/R in premiumlist)
 		var/datum/data/vending_product/record = R
 		var/obj/item/potential_product = record.product_path
 		var/premium_sanity = round(initial(potential_product.custom_premium_price))
 		if(premium_sanity)
-			record.custom_premium_price = round(premium_sanity * SSeconomy.inflation_value())
+			record.custom_premium_price = round(premium_sanity * multiplier)
 			continue
 		//For some ungodly reason, some premium only items only have a custom_price
-		record.custom_premium_price = round(extra_price + (initial(potential_product.custom_price) * (SSeconomy.inflation_value() - 1)))
+		record.custom_premium_price = round(extra_price + (initial(potential_product.custom_price) * (multiplier)))
 
 /**
  * Refill a vending machine from a refill canister
@@ -486,7 +488,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 					to_chat(user, span_warning("[src]'s compartment is full."))
 					break
 				if(canLoadItem(the_item) && loadingAttempt(the_item,user))
-					SEND_SIGNAL(T, COMSIG_TRY_STORAGE_TAKE, the_item, src, TRUE)
+					T.atom_storage?.attempt_remove(the_item, src)
 					loaded++
 				else
 					denied_items++
@@ -539,7 +541,6 @@ GLOBAL_LIST_EMPTY(vending_products)
 	visible_message(span_danger("[src] tips over!"))
 	tilted = TRUE
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 
 	var/crit_case
 	if(crit)
@@ -597,13 +598,8 @@ GLOBAL_LIST_EMPTY(vending_products)
 						visible_message(span_danger("[C]'s spinal cord is obliterated with a sickening crunch!"), ignored_mobs = list(C))
 						C.gain_trauma(/datum/brain_trauma/severe/paralysis/paraplegic)
 					if(5) // limb squish!
-						for(var/i in C.bodyparts)
-							var/obj/item/bodypart/squish_part = i
-							if(IS_ORGANIC_LIMB(squish_part))
-								var/type_wound = pick(list(/datum/wound/blunt/critical, /datum/wound/blunt/severe, /datum/wound/blunt/moderate))
-								squish_part.force_wound_upwards(type_wound)
-							else
-								squish_part.receive_damage(brute=30)
+						for(var/obj/item/bodypart/squish_part as anything in C.bodyparts)
+							squish_part.receive_damage(brute=40)
 						C.visible_message(span_danger("[C]'s body is maimed underneath the mass of [src]!"), \
 							span_userdanger("Your body is maimed underneath the mass of [src]!"))
 					if(6) // skull squish!
@@ -612,15 +608,15 @@ GLOBAL_LIST_EMPTY(vending_products)
 							C.visible_message(span_danger("[O] explodes in a shower of gore beneath [src]!"), \
 								span_userdanger("Oh f-"))
 							O.dismember()
-							O.drop_organs()
+							O.drop_contents()
 							qdel(O)
 							new /obj/effect/gibspawner/human/bodypartless(get_turf(C))
 
 				if(prob(30))
 					C.apply_damage(max(0, squish_damage - crit_rebate), forced=TRUE, spread_damage=TRUE) // the 30% chance to spread the damage means you escape breaking any bones
 				else
-					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5, wound_bonus = 5) // otherwise, deal it to 2 random limbs (or the same one) which will likely shatter something
-					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5, wound_bonus = 5)
+					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5) // otherwise, deal it to 2 random limbs (or the same one) which will likely shatter something
+					C.take_bodypart_damage((squish_damage - crit_rebate)*0.5)
 				C.AddElement(/datum/element/squish, 80 SECONDS)
 			else
 				L.visible_message(span_danger("[L] is crushed by [src]!"), \
@@ -654,7 +650,6 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 	tilted = FALSE
 	layer = initial(layer)
-	plane = initial(plane)
 
 	var/matrix/M = matrix()
 	M.Turn(0)
@@ -748,7 +743,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 	if(tilted && !user.buckled && !isAI(user))
 		to_chat(user, span_notice("You begin righting [src]."))
-		if(do_after(user, 50, target=src))
+		if(do_after(user, src, 50))
 			untilt(user)
 		return
 
@@ -824,6 +819,10 @@ GLOBAL_LIST_EMPTY(vending_products)
 		else
 			.["user"]["job"] = "No Job"
 			.["user"]["department"] = "No Department"
+
+	if(discount_access && (discount_access in C?.access))
+		.["access"] = TRUE
+
 	.["stock"] = list()
 	for (var/datum/data/vending_product/R in product_records + coin_records + hidden_records)
 		var/list/product_data = list(
@@ -875,7 +874,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			allowed_configs += "[initial(item.greyscale_config_inhand_right)]"
 
 	var/datum/greyscale_modify_menu/menu = new(
-		src, usr, allowed_configs, CALLBACK(src, .proc/vend_greyscale, params),
+		src, usr, allowed_configs, CALLBACK(src, PROC_REF(vend_greyscale), params),
 		starting_icon_state=initial(fake_atom.icon_state),
 		starting_config=initial(fake_atom.greyscale_config),
 		starting_colors=initial(fake_atom.greyscale_colors)
@@ -946,19 +945,25 @@ GLOBAL_LIST_EMPTY(vending_products)
 			flick(icon_deny,src)
 			vend_ready = TRUE
 			return
+
 		var/datum/bank_account/account = C.registered_account
-		if(account.account_job && account.account_job.paycheck_department == payment_department)
-			price_to_use = max(round(price_to_use * VENDING_DISCOUNT), 1) //No longer free, but signifigantly cheaper.
+		if((length(C.access&req_access) || (discount_access in C.access)) && !(R in premium))
+			price_to_use = round(price_to_use * VENDING_DISCOUNT)
+
 		if(coin_records.Find(R) || hidden_records.Find(R))
 			price_to_use = R.custom_premium_price ? R.custom_premium_price : extra_price
+
 		if(LAZYLEN(R.returned_products))
 			price_to_use = 0 //returned items are free
+
 		if(price_to_use && !account.adjust_money(-price_to_use))
 			say("You do not possess the funds to purchase [R.name].")
 			flick(icon_deny,src)
 			vend_ready = TRUE
 			return
-		var/datum/bank_account/D = SSeconomy.get_dep_account(payment_department)
+
+		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[payment_department]
+
 		if(D)
 			D.adjust_money(price_to_use)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)

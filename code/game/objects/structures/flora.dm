@@ -26,7 +26,6 @@
 	density = TRUE
 	pixel_x = -16
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 	var/log_amount = 10
 	herbage = TRUE
 	wood = TRUE
@@ -34,13 +33,13 @@
 /obj/structure/flora/tree/attackby(obj/item/attacking_item, mob/user, params)
 	if(!log_amount || flags_1 & NODECONSTRUCT_1)
 		return ..()
-	if(!attacking_item.get_sharpness() || attacking_item.force <= 0)
+	if(!(attacking_item.sharpness & SHARP_EDGED) || attacking_item.force <= 0)
 		return ..()
 	var/my_turf = get_turf(src)
 	if(attacking_item.hitsound)
 		playsound(my_turf, attacking_item.hitsound, 100, FALSE, FALSE)
 	user.visible_message(span_notice("[user] begins to cut down [src] with [attacking_item]."),span_notice("You begin to cut down [src] with [attacking_item]."), span_hear("You hear sawing."))
-	if(!do_after(user, 1000/attacking_item.force, target = src)) //5 seconds with 20 force, 8 seconds with a hatchet, 20 seconds with a shard.
+	if(!do_after(user, src, 1000/attacking_item.force)) //5 seconds with 20 force, 8 seconds with a hatchet, 20 seconds with a shard.
 		return
 	user.visible_message(span_notice("[user] fells [src] with [attacking_item]."),span_notice("You fell [src] with [attacking_item]."), span_hear("You hear the sound of a tree falling."))
 	playsound(my_turf, 'sound/effects/meteorimpact.ogg', 100 , FALSE, FALSE)
@@ -332,7 +331,6 @@
 	icon_state = "plant-01"
 	desc = "A little bit of nature contained in a pot."
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	w_class = WEIGHT_CLASS_HUGE
 	force = 10
 	throwforce = 13
@@ -344,7 +342,7 @@
 	var/trimmable = TRUE
 	var/list/static/random_plant_states
 
-/obj/item/kirbyplants/ComponentInitialize()
+/obj/item/kirbyplants/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/tactical)
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE, force_unwielded=10, force_wielded=10)
@@ -352,9 +350,9 @@
 
 /obj/item/kirbyplants/attackby(obj/item/I, mob/living/user, params)
 	. = ..()
-	if(trimmable && HAS_TRAIT(user,TRAIT_BONSAI) && isturf(loc) && I.get_sharpness())
+	if(trimmable && HAS_TRAIT(user,TRAIT_BONSAI) && isturf(loc) && (I.sharpness & SHARP_EDGED))
 		to_chat(user,span_notice("You start trimming [src]."))
-		if(do_after(user,3 SECONDS,target=src))
+		if(do_after(user, src, 3 SECONDS))
 			to_chat(user,span_notice("You finish trimming [src]."))
 			change_visual()
 
@@ -424,10 +422,6 @@
 	desc = "An old botanical research sample collected on a long forgotten jungle planet."
 	icon_state = "fern"
 	trimmable = FALSE
-
-/obj/item/kirbyplants/fern/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_ALGAE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 5)
 
 //a rock is flora according to where the icon file is
 //and now these defines
@@ -520,7 +514,6 @@
 	pixel_x = -16
 	pixel_y = -12
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 
 /obj/structure/flora/rock/pile/largejungle
 	name = "rocks"

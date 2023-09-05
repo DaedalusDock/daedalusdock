@@ -17,10 +17,6 @@
 	},
 /turf/closed/wall/r_wall/syndicate/nodiagonal,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
-"ad" = (
-/obj/machinery/computer/operating,
-/turf/open/floor/plastic,
-/area/ruin/space/has_grav/syndicate_forgotten_ship)
 "ae" = (
 /obj/structure/fans/tiny,
 /obj/machinery/door/airlock/external/ruin{
@@ -335,13 +331,12 @@
 	req_one_access_txt = "150"
 	},
 /obj/item/circuitboard/machine/circuit_imprinter/offstation,
-/obj/item/circuitboard/machine/protolathe/offstation,
+/obj/item/circuitboard/machine/fabricator/offstation,
 /obj/item/stack/sheet/iron/twenty,
 /obj/item/stack/sheet/glass{
 	amount = 10
 	},
 /obj/item/stack/cable_coil,
-/obj/item/circuitboard/computer/rdconsole,
 /obj/item/storage/box/stockparts/deluxe,
 /obj/item/storage/box/stockparts/deluxe,
 /obj/item/storage/box/beakers,
@@ -506,7 +501,7 @@
 /obj/item/stack/medical/ointment{
 	amount = 12
 	},
-/obj/item/healthanalyzer/advanced,
+/obj/item/healthanalyzer,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/syndicate_forgotten_cargopod)
 "bD" = (
@@ -1140,7 +1135,6 @@
 /obj/structure/closet/crate/secure/gear{
 	req_one_access_txt = "150"
 	},
-/obj/item/disk/surgery/forgottenship,
 /turf/open/floor/pod/dark,
 /area/ruin/space/has_grav/powered/syndicate_forgotten_vault)
 "dj" = (
@@ -2199,7 +2193,7 @@ aa
 aa
 aa
 bZ
-ad
+am
 am
 am
 ct

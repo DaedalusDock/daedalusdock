@@ -3,15 +3,18 @@
 	description = "Distribute supplies to the departments that ordered them, \
 		collect empty crates, load and unload the supply shuttle, \
 		ship bounty cubes."
-	// department_head = list(JOB_HEAD_OF_PERSONNEL) //ORIGINAL
-	department_head = list(JOB_QUARTERMASTER) //PARIAH EDIT
+	department_head = list(JOB_HEAD_OF_PERSONNEL) //ORIGINAL
 	faction = FACTION_STATION
 	total_positions = 3
 	spawn_positions = 2
-	// supervisors = "the quartermaster" //ORIGINAL
-	supervisors = "the quartermaster" //PARIAH EDIT
-	selection_color = "#dcba97"
+	supervisors = "the quartermaster" //ORIGINAL
+	selection_color = "#15381b"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/contractor,
+		/datum/employer/hermes
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -21,8 +24,7 @@
 	)
 
 	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_CAR
-	display_order = JOB_DISPLAY_ORDER_CARGO_TECHNICIAN
+	paycheck_department = ACCOUNT_STATION_MASTER
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,

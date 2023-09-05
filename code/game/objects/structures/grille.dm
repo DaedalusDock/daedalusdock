@@ -18,14 +18,19 @@
 	max_integrity = 50
 	integrity_failure = 0.4
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_GRILLE)
-	canSmoothWith = list(SMOOTH_GROUP_GRILLE)
+	smoothing_groups = SMOOTH_GROUP_GRILLE
+	canSmoothWith = SMOOTH_GROUP_GRILLE
 	var/rods_type = /obj/item/stack/rods
 	var/rods_amount = 2
 	var/rods_broken = TRUE
 
+/obj/structure/grille/Initialize(mapload)
+	. = ..()
+	become_atmos_sensitive()
+
 /obj/structure/grille/Destroy()
 	update_cable_icons_on_turf(get_turf(src))
+	lose_atmos_sensitivity()
 	return ..()
 
 /obj/structure/grille/update_appearance(updates)
@@ -93,7 +98,7 @@
 			return TRUE
 	return FALSE
 
-/obj/structure/grille/Bumped(atom/movable/AM)
+/obj/structure/grille/BumpedBy(atom/movable/AM)
 	if(!ismob(AM))
 		return
 	var/mob/M = AM
@@ -140,7 +145,7 @@
 	if(!. && istype(mover, /obj/projectile))
 		return prob(30)
 
-/obj/structure/grille/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/obj/structure/grille/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	. = !density
 	if(caller)
 		. = . || (caller.pass_flags & PASSGRILLE)

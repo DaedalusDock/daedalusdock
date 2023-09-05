@@ -1,9 +1,9 @@
 //States for airlock_control
-#define AIRLOCK_STATE_INOPEN "inopen"
-#define AIRLOCK_STATE_PRESSURIZE "pressurize"
-#define AIRLOCK_STATE_CLOSED "closed"
-#define AIRLOCK_STATE_DEPRESSURIZE "depressurize"
-#define AIRLOCK_STATE_OUTOPEN "outopen"
+#define AIRLOCK_STATE_INOPEN -2
+#define AIRLOCK_STATE_PRESSURIZE -1
+#define AIRLOCK_STATE_CLOSED 0
+#define AIRLOCK_STATE_DEPRESSURIZE 1
+#define AIRLOCK_STATE_OUTOPEN 2
 
 /datum/computer/file/embedded_program/airlock_controller
 	var/id_tag
@@ -48,11 +48,11 @@
 
 /datum/computer/file/embedded_program/airlock_controller/receive_user_command(command)
 	switch(command)
-		if("cycleClosed")
+		if("cycle_closed")
 			target_state = AIRLOCK_STATE_CLOSED
-		if("cycleExterior")
+		if("cycle_exterior")
 			target_state = AIRLOCK_STATE_OUTOPEN
-		if("cycleInterior")
+		if("cycle_interior")
 			target_state = AIRLOCK_STATE_INOPEN
 		if("abort")
 			target_state = AIRLOCK_STATE_CLOSED
@@ -68,13 +68,13 @@
 						state = AIRLOCK_STATE_CLOSED
 						process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = interior_door_tag,
 							"command" = "secure_close"
 						)))
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = airpump_tag,
 							"power" = 0,
 							"sigtype" = "command"
@@ -87,12 +87,12 @@
 							state = AIRLOCK_STATE_INOPEN
 							process_again = 1
 						else
-							post_signal(new /datum/signal(list(
+							post_signal(new /datum/signal(src, list(
 								"tag" = interior_door_tag,
 								"command" = "secure_open"
 							)))
 					else
-						var/datum/signal/signal = new(list(
+						var/datum/signal/signal = new(src, list(
 							"tag" = airpump_tag,
 							"sigtype" = "command"
 						))
@@ -111,7 +111,7 @@
 						state = AIRLOCK_STATE_DEPRESSURIZE
 						process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = interior_door_tag,
 							"command" = "secure_close"
 						)))
@@ -120,14 +120,14 @@
 						state = AIRLOCK_STATE_PRESSURIZE
 						process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = exterior_door_tag,
 							"command" = "secure_close"
 						)))
 
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = airpump_tag,
 							"power" = 0,
 							"sigtype" = "command"
@@ -143,7 +143,7 @@
 						if(memory["exterior_status"] == "open")
 							state = AIRLOCK_STATE_OUTOPEN
 						else
-							post_signal(new /datum/signal(list(
+							post_signal(new /datum/signal(src, list(
 								"tag" = exterior_door_tag,
 								"command" = "secure_open"
 							)))
@@ -154,7 +154,7 @@
 					state = AIRLOCK_STATE_CLOSED
 					process_again = 1
 				else
-					var/datum/signal/signal = new(list(
+					var/datum/signal/signal = new(src, list(
 						"tag" = airpump_tag,
 						"sigtype" = "command"
 					))
@@ -174,13 +174,13 @@
 							state = AIRLOCK_STATE_CLOSED
 							process_again = 1
 					else
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = exterior_door_tag,
 							"command" = "secure_close"
 						)))
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(list(
+						post_signal(new /datum/signal(src, list(
 							"tag" = airpump_tag,
 							"power" = 0,
 							"sigtype" = "command"
@@ -211,37 +211,6 @@
 	var/sensor_tag
 	var/sanitize_external
 
-/obj/machinery/embedded_controller/radio/airlock_controller/Topic(href, href_list) // needed to override obj/machinery/embedded_controller/Topic, dont think its actually used in game other than here but the code is still here
-
-/obj/machinery/embedded_controller/radio/airlock_controller/ui_interact(mob/user, datum/tgui/ui)
-	ui = SStgui.try_update_ui(user, src, ui)
-	if(!ui)
-		ui = new(user, src, "AirlockController", src)
-		ui.open()
-
-/obj/machinery/embedded_controller/radio/airlock_controller/process(delta_time)
-	if(program)
-		program.process(delta_time)
-
-	update_appearance()
-	SStgui.update_uis(src)
-
-/obj/machinery/embedded_controller/radio/airlock_controller/ui_data(mob/user)
-	var/list/data = list()
-	data["airlockState"] = program.state
-	data["sensorPressure"] = program.memory["sensor_pressure"] ? program.memory["sensor_pressure"] : "----"
-	data["exteriorStatus"] = program.memory["exterior_status"] ? program.memory["exterior_status"] : "----"
-	data["interiorStatus"] = program.memory["interior_status"] ? program.memory["interior_status"] : "----"
-	data["pumpStatus"] = program.memory["pump_status"] ? program.memory["pump_status"] : "----"
-	return data
-
-/obj/machinery/embedded_controller/radio/airlock_controller/ui_act(action, params)
-	. = ..()
-	if(.)
-		return
-	// no need for sanitisation, command just changes target_state and can't do anything else
-	process_command(action)
-	return TRUE
 
 /obj/machinery/embedded_controller/radio/airlock_controller/incinerator_ordmix
 	name = "Incinerator Access Console"
@@ -293,3 +262,58 @@
 		return ..()
 	icon_state = "[base_icon_state]_off"
 	return ..()
+
+/obj/machinery/embedded_controller/radio/airlock_controller/return_text()
+	var/state_options = null
+
+	var/state = 0
+	var/sensor_pressure = "----"
+	var/exterior_status = "----"
+	var/interior_status = "----"
+	var/pump_status = "----"
+	var/current_status = "Inactive<BR>&nbsp;"
+	if(program)
+		state = program.state
+		sensor_pressure = program.memory["sensor_pressure"] ? program.memory["sensor_pressure"] : "----"
+		exterior_status = program.memory["exterior_status"] ? program.memory["exterior_status"] : "----"
+		interior_status = program.memory["interior_status"] ? program.memory["interior_status"] : "----"
+		pump_status = program.memory["pump_status"] ? program.memory["pump_status"] : "----"
+
+	switch(state)
+		if(AIRLOCK_STATE_INOPEN)
+			state_options = {"<A href='?src=[REF(src)];command=cycle_closed'>Close Interior Airlock</A><BR>
+<A href='?src=[REF(src)];command=cycle_exterior'>Cycle to Exterior Airlock</A><BR>"}
+			current_status = "Interior Airlock Open<BR><span class='good'>Chamber Pressurized</span>"
+		if(AIRLOCK_STATE_PRESSURIZE)
+			state_options = "<A href='?src=[REF(src)];command=abort'>Abort Cycling</A><BR>"
+			current_status = "Cycling to Interior Airlock<BR><span class='average'>Chamber Pressurizing</span>"
+		if(AIRLOCK_STATE_CLOSED)
+			state_options = {"<A href='?src=[REF(src)];command=cycle_interior'>Open Interior Airlock</A><BR>
+<A href='?src=[REF(src)];command=cycle_exterior'>Open Exterior Airlock</A><BR>"}
+		if(AIRLOCK_STATE_DEPRESSURIZE)
+			state_options = "<A href='?src=[REF(src)];command=abort'>Abort Cycling</A><BR>"
+			current_status = "Cycling to Exterior Airlock<BR><span class='average'>Chamber Depressurizing</span>"
+		if(AIRLOCK_STATE_OUTOPEN)
+			state_options = {"<A href='?src=[REF(src)];command=cycle_interior'>Cycle to Interior Airlock</A><BR>
+<A href='?src=[REF(src)];command=cycle_closed'>Close Exterior Airlock</A><BR>"}
+			current_status = "Exterior Airlock Open<BR><span class='bad'>Chamber Depressurized</span>"
+
+	var/output = {"<h3>Airlock Status</h3>
+<div class='statusDisplay'>
+<div class='line'><div class='statusLabel'>Current Status:</div><div class='statusValue'>[current_status]</div></div>
+<div class='line'>&nbsp;</div>
+<div class='line'><div class='statusLabel'>\> Chamber Pressure:</div><div class='statusValue'>[sensor_pressure] kPa</div></div>
+<div class='line'><div class='statusLabel'>\> Control Pump:</div><div class='statusValue'>[pump_status]</div></div>
+<div class='line'><div class='statusLabel'>\> Interior Door:</div><div class='statusValue'>[interior_status]</div></div>
+<div class='line'><div class='statusLabel'>\> Exterior Door:</div><div class='statusValue'>[exterior_status]</div></div>
+<div class='clearBoth'></div>
+</div>
+[state_options]"}
+
+	return output
+
+#undef AIRLOCK_STATE_INOPEN
+#undef AIRLOCK_STATE_PRESSURIZE
+#undef AIRLOCK_STATE_CLOSED
+#undef AIRLOCK_STATE_DEPRESSURIZE
+#undef AIRLOCK_STATE_OUTOPEN

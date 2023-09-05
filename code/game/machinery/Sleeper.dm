@@ -20,12 +20,12 @@
 	var/list/available_chems
 	var/controls_inside = FALSE
 	var/list/possible_chems = list(
-		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/morphine, /datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/c2/libital, /datum/reagent/medicine/c2/aiuri),
-		list(/datum/reagent/medicine/oculine,/datum/reagent/medicine/inacusiate),
-		list(/datum/reagent/medicine/c2/multiver, /datum/reagent/medicine/mutadone, /datum/reagent/medicine/mannitol, /datum/reagent/medicine/salbutamol, /datum/reagent/medicine/pen_acid),
-		list(/datum/reagent/medicine/omnizine)
+		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/morphine, /datum/reagent/medicine/bicaridine, /datum/reagent/medicine/kelotane),
+		list(/datum/reagent/medicine/imidazoline,/datum/reagent/medicine/inacusiate),
+		list(/datum/reagent/medicine/dylovene, /datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/alkysine, /datum/reagent/medicine/dexalin),
+		list(/datum/reagent/medicine/tricordrazine)
 	)
-	var/list/chem_buttons //Used when emagged to scramble which chem is used, eg: mutadone -> morphine
+	var/list/chem_buttons //Used when emagged to scramble which chem is used, eg: ryetalyn -> morphine
 	var/scrambled_chems = FALSE //Are chem buttons scrambled? used as a warning
 	var/enter_message = "<span class='notice'><b>You feel cool air surround you. You go numb as your senses turn inward.</b></span>"
 	payment_department = ACCOUNT_MED
@@ -161,11 +161,7 @@
 
 /obj/machinery/sleeper/process()
 	..()
-	check_nap_violations()
 	use_power(active_power_usage)
-
-/obj/machinery/sleeper/nap_violation(mob/violator)
-	open_machine()
 
 /obj/machinery/sleeper/ui_data()
 	var/list/data = list()
@@ -217,7 +213,6 @@
 		return
 
 	var/mob/living/mob_occupant = occupant
-	check_nap_violations()
 	switch(action)
 		if("door")
 			if(state_open)
@@ -291,12 +286,12 @@
 	controls_inside = TRUE
 	possible_chems = list(
 		list(/datum/reagent/consumable/ethanol/beer, /datum/reagent/consumable/laughter),
-		list(/datum/reagent/spraytan,/datum/reagent/barbers_aid),
+		list(/datum/reagent/barbers_aid),
 		list(/datum/reagent/colorful_reagent,/datum/reagent/hair_dye),
-		list(/datum/reagent/drug/space_drugs,/datum/reagent/baldium)
+		list(/datum/reagent/drug/space_drugs)
 	)//Exclusively uses non-lethal, "fun" chems. At an obvious downside.
 	var/spray_chems = list(
-		/datum/reagent/spraytan, /datum/reagent/hair_dye, /datum/reagent/baldium, /datum/reagent/barbers_aid
+		/datum/reagent/hair_dye, /datum/reagent/barbers_aid
 	)//Chemicals that need to have a touch or vapor reaction to be applied, not the standard chamber reaction.
 	enter_message = "<span class='notice'><b>You're surrounded by some funky music inside the chamber. You zone out as you feel waves of krunk vibe within you.</b></span>"
 

@@ -37,14 +37,14 @@
 		if(DT_PROB(1.5 * stage, delta_time))
 			to_chat(affected_mob, span_revennotice("You suddenly feel [pick("sick and tired", "disoriented", "tired and confused", "nauseated", "faint", "dizzy")]..."))
 			affected_mob.adjust_timed_status_effect(8 SECONDS, /datum/status_effect/confusion)
-			affected_mob.adjustStaminaLoss(20, FALSE)
+			affected_mob.stamina.adjust(-20)
 			new /obj/effect/temp_visual/revenant(affected_mob.loc)
 		if(stagedamage < stage)
 			stagedamage++
 			affected_mob.adjustToxLoss(1 * stage * delta_time, FALSE) //should, normally, do about 30 toxin damage.
 			new /obj/effect/temp_visual/revenant(affected_mob.loc)
 		if(DT_PROB(25, delta_time))
-			affected_mob.adjustStaminaLoss(stage, FALSE)
+			affected_mob.stamina.adjust(-stage)
 
 	switch(stage)
 		if(2)
@@ -60,11 +60,11 @@
 			if(!finalstage)
 				finalstage = TRUE
 				to_chat(affected_mob, span_revenbignotice("You feel like [pick("nothing's worth it anymore", "nobody ever needed your help", "nothing you did mattered", "everything you tried to do was worthless")]."))
-				affected_mob.adjustStaminaLoss(22.5 * delta_time, FALSE)
+				affected_mob.stamina.adjust(-22.5 * delta_time)
 				new /obj/effect/temp_visual/revenant(affected_mob.loc)
 				if(affected_mob.dna && affected_mob.dna.species)
 					affected_mob.dna.species.handle_mutant_bodyparts(affected_mob,"#1d2953")
 					affected_mob.set_haircolor("#1d2953", override = TRUE)
 				affected_mob.visible_message(span_warning("[affected_mob] looks terrifyingly gaunt..."), span_revennotice("You suddenly feel like your skin is <i>wrong</i>..."))
 				affected_mob.add_atom_colour("#1d2953", TEMPORARY_COLOUR_PRIORITY)
-				addtimer(CALLBACK(src, .proc/cure), 10 SECONDS)
+				addtimer(CALLBACK(src, PROC_REF(cure)), 10 SECONDS)

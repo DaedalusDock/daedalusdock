@@ -21,6 +21,19 @@
 /obj/effect/spawner
 	name = "object spawner"
 
+/obj/effect/spawner/Initialize(mapload)
+	SHOULD_CALL_PARENT(FALSE)
+	if(initialized)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	initialized = TRUE
+
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/spawner/Destroy(force)
+	SHOULD_CALL_PARENT(FALSE)
+	loc = null
+	return QDEL_HINT_QUEUE
+
 /obj/effect/list_container
 	name = "list container"
 
@@ -39,7 +52,6 @@
 	opacity = TRUE
 	density = TRUE
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 
 //Makes a tile fully lit no matter what
 /obj/effect/fullbright
@@ -55,7 +67,6 @@
 	anchored = TRUE
 	icon_state = "wave3"
 	layer = RIPPLE_LAYER
-	plane = ABOVE_GAME_PLANE
 
 /obj/effect/abstract/marker/Initialize(mapload)
 	. = ..()

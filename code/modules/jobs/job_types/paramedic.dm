@@ -6,9 +6,14 @@
 	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 2
-	supervisors = "the chief medical officer"
-	selection_color = "#ffeef0"
+	supervisors = "the medical director"
+	selection_color = "#013d3b"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/aether,
+		/datum/employer/contractor
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -18,11 +23,10 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_MED
+	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_PARAMEDIC
 	bounty_types = CIV_JOB_MED
 	departments_list = list(
 		/datum/job_department/medical,
@@ -32,10 +36,10 @@
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/hypospray/medipen = 20,
-		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 10,
-		/obj/item/reagent_containers/hypospray/medipen/salacid = 10,
-		/obj/item/reagent_containers/hypospray/medipen/salbutamol = 10,
-		/obj/item/reagent_containers/hypospray/medipen/penacid = 10,
+		/obj/item/reagent_containers/hypospray/medipen/dermaline = 10,
+		/obj/item/reagent_containers/hypospray/medipen/meralyne = 10,
+		/obj/item/reagent_containers/hypospray/medipen/dexalin = 10,
+		/obj/item/reagent_containers/hypospray/medipen/dylovene = 10,
 		/obj/item/reagent_containers/hypospray/medipen/survival/luxury = 5
 	)
 	rpg_title = "Corpse Runner"

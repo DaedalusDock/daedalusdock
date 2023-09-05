@@ -11,19 +11,6 @@
 	. = ..()
 	QDEL_IN(src, 70)
 
-/obj/effect/particle_effect/water/Move(turf/newloc)
-	//WOW. OKAY. THIS IS REALLY HACKY. THIS NEEDS TO BE STANDARDIZED.
-	var/datum/gas_mixture/env = get_step(src, 0)?.return_air()
-	var/diff_temp = (temperature - env.temperature) / env.group_multiplier / 2 //MAGIC NUMBER ALERT!!!!!!!
-	if(abs(diff_temp) >= ATOM_TEMPERATURE_EQUILIBRIUM_THRESHOLD)
-		var/altered_temp = max(env.temperature + (ATOM_TEMPERATURE_EQUILIBRIUM_CONSTANT * diff_temp), 0)
-		env.temperature = (diff_temp > 0) ? min(temperature, altered_temp) : max(temperature, altered_temp)
-
-	if (--src.life < 1)
-		qdel(src)
-		return FALSE
-	return ..()
-
 /obj/effect/particle_effect/water/Bump(atom/A)
 	if(reagents)
 		reagents.expose(A)
@@ -33,11 +20,6 @@
 
 ///Extinguisher snowflake
 /obj/effect/particle_effect/water/extinguisher
-
-/obj/effect/particle_effect/water/extinguisher/Initialize(mapload)
-	. = ..()
-	if(reagents)
-		temperature = reagents.chem_temp
 
 /obj/effect/particle_effect/water/extinguisher/Move()
 	. = ..()
@@ -51,8 +33,8 @@
 /// Returns the created loop
 /obj/effect/particle_effect/water/extinguisher/proc/move_at(atom/target, delay, lifetime)
 	var/datum/move_loop/loop = SSmove_manager.move_towards_legacy(src, target, delay, timeout = delay * lifetime, flags = MOVEMENT_LOOP_START_FAST, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
-	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, .proc/post_forcemove)
-	RegisterSignal(loop, COMSIG_PARENT_QDELETING, .proc/movement_stopped)
+	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_forcemove))
+	RegisterSignal(loop, COMSIG_PARENT_QDELETING, PROC_REF(movement_stopped))
 	return loop
 
 /obj/effect/particle_effect/water/extinguisher/proc/post_forcemove(datum/move_loop/source, success)

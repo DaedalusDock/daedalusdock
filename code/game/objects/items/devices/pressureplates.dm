@@ -5,6 +5,8 @@
 	inhand_icon_state = "flash"
 	icon_state = "pressureplate"
 	layer = LOW_OBJ_LAYER
+	loc_procs = CROSSED
+
 	var/trigger_mob = TRUE
 	var/trigger_item = FALSE
 	var/specific_item = null
@@ -33,25 +35,20 @@
 
 	if(undertile_pressureplate)
 		AddElement(/datum/element/undertile, tile_overlay = tile_overlay, use_anchor = TRUE)
-	RegisterSignal(src, COMSIG_OBJ_HIDE, .proc/ToggleActive)
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
+	RegisterSignal(src, COMSIG_OBJ_HIDE, PROC_REF(ToggleActive))
 
-/obj/item/pressure_plate/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
+/obj/item/pressure_plate/Crossed(atom/movable/crossed_by, oldloc)
 	if(!can_trigger || !active)
 		return
-	if(trigger_item && !istype(AM, specific_item))
+	if(trigger_item && !istype(crossed_by, specific_item))
 		return
-	if(trigger_mob && isliving(AM))
-		var/mob/living/L = AM
+	if(trigger_mob && isliving(crossed_by))
+		var/mob/living/L = crossed_by
 		to_chat(L, span_warning("You feel something click beneath you!"))
 	else if(!trigger_item)
 		return
 	can_trigger = FALSE
-	addtimer(CALLBACK(src, .proc/trigger), trigger_delay)
+	addtimer(CALLBACK(src, PROC_REF(trigger)), trigger_delay)
 
 /obj/item/pressure_plate/proc/trigger()
 	can_trigger = TRUE

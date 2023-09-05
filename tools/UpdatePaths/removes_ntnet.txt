@@ -1,0 +1,2 @@
+/obj/item/door_remote : @DELETE
+/obj/item/door_remote/@SUBTYPES : @DELETE

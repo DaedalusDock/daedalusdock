@@ -55,7 +55,7 @@ GLOBAL_PROTECT(exp_specialmap)
 
 	job = lowertext(job)
 	job = cap_expand.Replace(job, "captain")
-	job = cmo_expand.Replace(job, "chief medical officer")
+	job = cmo_expand.Replace(job, "medical director")
 	job = hos_expand.Replace(job, "head of security")
 	job = hop_expand.Replace(job, "head of personnel")
 	job = rd_expand.Replace(job, "research director")

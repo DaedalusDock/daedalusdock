@@ -13,7 +13,7 @@
 	desc = "Has a valve and pump attached to it."
 
 	use_power = IDLE_POWER_USE
-	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.15
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 	can_unwrench = TRUE
 	welded = FALSE
 	layer = GAS_SCRUBBER_LAYER
@@ -47,9 +47,9 @@
 
 	var/can_hibernate = TRUE
 
-/obj/machinery/atmospherics/components/unary/vent_pump/New()
+/obj/machinery/atmospherics/components/unary/vent_pump/Initialize()
 	if(!id_tag)
-		id_tag = SSnetworks.assign_random_name()
+		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Destroy()
@@ -58,7 +58,7 @@
 		vent_area.air_vent_info -= id_tag
 		GLOB.air_vent_names -= id_tag
 
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	radio_connection = null
 	return ..()
 
@@ -115,30 +115,32 @@
 		return
 
 	var/datum/gas_mixture/air_contents = airs[1]
-	var/datum/gas_mixture/environment = us.return_air()
+	var/datum/gas_mixture/environment = us.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 	var/pressure_delta = get_pressure_delta(environment)
 	if((environment.temperature || air_contents.temperature) && pressure_delta > 0.5)
+		SAFE_ZAS_UPDATE(us)
 		if(pump_direction & RELEASING) //internal -> external
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
 			var/draw = pump_gas(air_contents, environment, transfer_moles, power_rating)
-			if(draw == -1)
-				if(can_hibernate)
-					COOLDOWN_START(src, hibernating, 15 SECONDS)
-			ATMOS_USE_POWER(draw)
-			update_parents()
+			if(draw > -1)
+				ATMOS_USE_POWER(draw)
+				update_parents()
+			else if(can_hibernate)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
 
 		else //external -> internal
-			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta)
+			var/transfer_moles = calculate_transfer_moles(environment, air_contents, pressure_delta, parents[1]?.combined_volume || 0)
 
 			//limit flow rate from turfs
 			transfer_moles = min(transfer_moles, environment.total_moles*air_contents.volume/environment.volume)	//group_multiplier gets divided out here
 			var/draw = pump_gas(environment, air_contents, transfer_moles, power_rating)
-			if(draw == -1)
-				if(can_hibernate)
-					COOLDOWN_START(src, hibernating, 15 SECONDS)
-			ATMOS_USE_POWER(draw)
+			if(draw > -1)
+				ATMOS_USE_POWER(draw)
+				update_parents()
+			else if(can_hibernate)
+				COOLDOWN_START(src, hibernating, 15 SECONDS)
 
-			update_parents()
+
 
 	else
 		if(pump_direction && (pressure_checks&EXT_BOUND) && can_hibernate)
@@ -166,16 +168,16 @@
 //Radio remote control
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
+		radio_connection = SSpackets.add_object(src, frequency, radio_filter_in)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/broadcast_status()
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id_tag,
 		"frequency" = frequency,
 		"device" = "VP",
@@ -197,7 +199,7 @@
 
 	vent_area.air_vent_info[id_tag] = signal.data
 
-	radio_connection.post_signal(src, signal, radio_filter_out)
+	radio_connection.post_signal(signal, radio_filter_out)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_name()
 	. = ..()
@@ -326,7 +328,7 @@
 	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/attack_alien(mob/user, list/modifiers)
-	if(!welded || !(do_after(user, 20, target = src)))
+	if(!welded || !(do_after(user, src, 20)))
 		return
 	user.visible_message(span_warning("[user] furiously claws at [src]!"), span_notice("You manage to clear away the stuff blocking the vent."), span_hear("You hear loud scraping noises."))
 	welded = FALSE
@@ -339,8 +341,8 @@
 	name = "large air vent"
 	power_channel = AREA_USAGE_EQUIP
 
-/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/New()
-	..()
+/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/Initialize()
+	. = ..()
 	var/datum/gas_mixture/air_contents = airs[1]
 	air_contents.volume = 1000
 

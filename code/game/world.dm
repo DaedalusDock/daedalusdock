@@ -34,6 +34,10 @@ GLOBAL_VAR(restart_counter)
  * All atoms in both compiled and uncompiled maps are initialized()
  */
 /world/New()
+#ifdef USE_BYOND_TRACY
+	#warn USE_BYOND_TRACY is enabled
+	init_byond_tracy()
+#endif
 
 	log_world("World loaded at [time_stamp()]!")
 
@@ -100,11 +104,11 @@ GLOBAL_VAR(restart_counter)
 	CONFIG_SET(number/round_end_countdown, 0)
 	var/datum/callback/cb
 #ifdef UNIT_TESTS
-	cb = CALLBACK(GLOBAL_PROC, /proc/RunUnitTests)
+	cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(RunUnitTests))
 #else
 	cb = VARSET_CALLBACK(SSticker, force_ending, TRUE)
 #endif
-	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, /proc/_addtimer, cb, 10 SECONDS))
+	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), cb, 10 SECONDS))
 
 
 /world/proc/SetupLogs()
@@ -158,6 +162,8 @@ GLOBAL_VAR(restart_counter)
 
 	GLOB.demo_log = "[GLOB.log_directory]/demo.log"
 
+	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
+
 #ifdef UNIT_TESTS
 	GLOB.test_log = "[GLOB.log_directory]/tests.log"
 	start_log(GLOB.test_log)
@@ -186,6 +192,7 @@ GLOBAL_VAR(restart_counter)
 	if(fexists(GLOB.config_error_log))
 		fcopy(GLOB.config_error_log, "[GLOB.log_directory]/config_error.log")
 		fdel(GLOB.config_error_log)
+
 
 	if(GLOB.round_id)
 		log_game("Round ID: [GLOB.round_id]")
@@ -308,16 +315,17 @@ GLOBAL_VAR(restart_counter)
 	var/new_status = ""
 	if(config)
 		var/server_name = CONFIG_GET(string/servername)
-		var/website_url = CONFIG_GET(string/forumurl)
+		var/hub_subtitle = CONFIG_GET(string/hub_subtitle)
 		if(server_name)
-			new_status += "<b>[website_url ? server_name : "<a href=\"[website_url]\">[server_name]</a>"]</b>]"
-			new_status += " — (<a href=\"https://discord.daedalus13.net\">Discord</a>|<a href =\"https://github.com/DaedalusDock/Gameserver\">Code</a>)"
+			new_status += "<b>[server_name]\]</b>"
+			new_status += " — (<a href=\"https://discord.daedalus13.net\">Discord</a>)<br>"
+		if(hub_subtitle)
+			new_status += "<i>[hub_subtitle]</i><br>"
+
 
 	var/players = GLOB.clients.len
 
 	game_state = (CONFIG_GET(number/extreme_popcap) && players >= CONFIG_GET(number/extreme_popcap)) //tells the hub if we are full
-
-	new_status += "<br><i>Running custom code!</i><br>"
 	if(SSmapping.config)
 		new_status += "<br>Map: <b>[SSmapping.config.map_path == CUSTOM_MAP_PATH ? "Uncharted Territory" : SSmapping.config.map_name]</b>"
 
@@ -331,6 +339,7 @@ GLOBAL_VAR(restart_counter)
 	status = new_status
 	///The usage of "\[" without also using "\]" makes the bracket pair colorizer break, so this is here to make the rest of the file easier to read.
 	var/static/vs_appeaser = "\]\]"
+	return status
 
 /world/proc/update_hub_visibility(new_visibility)
 	if(new_visibility == GLOB.hub_visibility)
@@ -369,6 +378,22 @@ GLOBAL_VAR(restart_counter)
 
 /world/proc/on_tickrate_change()
 	SStimer?.reset_buckets()
+
+/world/proc/init_byond_tracy()
+	var/library
+
+	switch (system_type)
+		if (MS_WINDOWS)
+			library = "prof.dll"
+		if (UNIX)
+			library = "libprof.so"
+		else
+			CRASH("Unsupported platform: [system_type]")
+
+	var/init_result = call(library, "init")()
+	if (init_result != "0")
+		CRASH("Error initializing byond-tracy: [init_result]")
+
 
 /world/Profile(command, type, format)
 	if((command & PROFILE_STOP) || !global.config?.loaded || !CONFIG_GET(flag/forbid_all_profiling))

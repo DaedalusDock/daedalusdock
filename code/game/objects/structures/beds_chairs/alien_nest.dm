@@ -9,8 +9,8 @@
 	max_integrity = 120
 	can_be_unanchored = FALSE
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_ALIEN_NEST)
-	canSmoothWith = list(SMOOTH_GROUP_ALIEN_NEST)
+	smoothing_groups = SMOOTH_GROUP_ALIEN_NEST
+	canSmoothWith = SMOOTH_GROUP_ALIEN_NEST
 	buildstacktype = null
 	flags_1 = NODECONSTRUCT_1
 	bolts = FALSE
@@ -21,7 +21,7 @@
 		for(var/buck in buckled_mobs) //breaking a nest releases all the buckled mobs, because the nest isn't holding them down anymore
 			var/mob/living/M = buck
 
-			if(user.getorgan(/obj/item/organ/internal/alien/plasmavessel))
+			if(user.getorgan(/obj/item/organ/alien/plasmavessel))
 				unbuckle_mob(M)
 				add_fingerprint(user)
 				return
@@ -34,7 +34,7 @@
 				M.visible_message(span_warning("[M.name] struggles to break free from the gelatinous resin!"),\
 					span_notice("You struggle to break free from the gelatinous resin... (Stay still for two minutes.)"),\
 					span_hear("You hear squelching..."))
-				if(!do_after(M, 1200, target = src))
+				if(!do_after(M, src, 1200))
 					if(M?.buckled)
 						to_chat(M, span_warning("You fail to unbuckle yourself!"))
 					return
@@ -51,9 +51,9 @@
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.incapacitated() || M.buckled )
 		return
 
-	if(M.getorgan(/obj/item/organ/internal/alien/plasmavessel))
+	if(M.getorgan(/obj/item/organ/alien/plasmavessel))
 		return
-	if(!user.getorgan(/obj/item/organ/internal/alien/plasmavessel))
+	if(!user.getorgan(/obj/item/organ/alien/plasmavessel))
 		return
 
 	if(has_buckled_mobs())

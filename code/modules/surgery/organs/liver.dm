@@ -1,7 +1,7 @@
 #define LIVER_DEFAULT_TOX_TOLERANCE 3 //amount of toxins the liver can filter out
 #define LIVER_DEFAULT_TOX_LETHALITY 0.005 //lower values lower how harmful toxins are to the liver
 #define LIVER_FAILURE_STAGE_SECONDS 60 //amount of seconds before liver failure reaches a new stage
-/obj/item/organ/internal/liver
+/obj/item/organ/liver
 	name = "liver"
 	icon_state = "liver"
 	visual = FALSE
@@ -24,11 +24,11 @@
 	var/toxLethality = LIVER_DEFAULT_TOX_LETHALITY
 	var/filterToxins = TRUE //whether to filter toxins
 
-/obj/item/organ/internal/liver/Initialize(mapload)
+/obj/item/organ/liver/Initialize(mapload)
 	. = ..()
 	// If the liver handles foods like a clown, it honks like a bike horn
 	// Don't think about it too much.
-	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_COMEDY_METABOLISM), .proc/on_add_comedy_metabolism)
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_COMEDY_METABOLISM), PROC_REF(on_add_comedy_metabolism))
 
 /* Signal handler for the liver gaining the TRAIT_COMEDY_METABOLISM trait
  *
@@ -39,14 +39,14 @@
  * The removal of the component, if this liver loses that trait, is handled
  * by the component itself.
  */
-/obj/item/organ/internal/liver/proc/on_add_comedy_metabolism()
+/obj/item/organ/liver/proc/on_add_comedy_metabolism()
 	SIGNAL_HANDLER
 
 	// Are clown "bike" horns made from the livers of ex-clowns?
 	// Would that make the clown more or less likely to honk it
 	AddComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg'=1), 50, falloff_exponent = 20)
 
-/obj/item/organ/internal/liver/examine(mob/user)
+/obj/item/organ/liver/examine(mob/user)
 	. = ..()
 
 	if(HAS_TRAIT(user, TRAIT_ENTRAILS_READER) || (user.mind && HAS_TRAIT(user.mind, TRAIT_ENTRAILS_READER)) || isobserver(user))
@@ -73,7 +73,7 @@
 #define HAS_NO_TOXIN 1
 #define HAS_PAINFUL_TOXIN 2
 
-/obj/item/organ/internal/liver/on_life(delta_time, times_fired)
+/obj/item/organ/liver/on_life(delta_time, times_fired)
 	var/mob/living/carbon/liver_owner = owner
 	. = ..() //perform general on_life()
 
@@ -82,40 +82,46 @@
 	if(organ_flags & ORGAN_FAILING || HAS_TRAIT(liver_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
 		return
 
-	// How much damage to inflict on our liver
-	var/damange_to_deal = 0
+	//Detox can heal small amounts of damage
+	if (damage < maxHealth && !owner.chem_effects[CE_TOXIN])
+		applyOrganDamage(-0.2 * owner.chem_effects[CE_ANTITOX])
 
-	var/provide_pain_message = HAS_NO_TOXIN
-	var/obj/belly = liver_owner.getorganslot(ORGAN_SLOT_STOMACH)
-	if(filterToxins && !HAS_TRAIT(owner, TRAIT_TOXINLOVER))
-		//handle liver toxin filtration
-		for(var/datum/reagent/toxin/toxin in liver_owner.reagents.reagent_list)
-			var/thisamount = liver_owner.reagents.get_reagent_amount(toxin.type)
-			if(belly)
-				thisamount += belly.reagents.get_reagent_amount(toxin.type)
-			if (thisamount && thisamount <= toxTolerance * (maxHealth - damage) / maxHealth ) //toxTolerance is effectively multiplied by the % that your liver's health is at
-				liver_owner.reagents.remove_reagent(toxin.type, 0.5 * delta_time)
-			else
-				damange_to_deal += (thisamount * toxLethality * delta_time)
-				if(provide_pain_message != HAS_PAINFUL_TOXIN)
-					provide_pain_message = toxin.silent_toxin ? HAS_SILENT_TOXIN : HAS_PAINFUL_TOXIN
+	// Get the effectiveness of the liver.
+	var/filter_effect = 3
+	if(damage > low_threshold)
+		filter_effect -= 1
+	if(damage > high_threshold)
+		filter_effect -= 2
+	// Robotic organs filter better but don't get benefits from dylovene for filtering.
+	if(organ_flags & ORGAN_SYNTHETIC)
+		filter_effect += 1
+	else if(owner.chem_effects[CE_ANTITOX])
+		filter_effect += 1
 
-	//metabolize reagents
-	liver_owner.reagents.metabolize(liver_owner, delta_time, times_fired, can_overdose=TRUE)
+	// If you're not filtering well, you're in trouble. Ammonia buildup to toxic levels and damage from alcohol
+	if(filter_effect < 2)
+		if(owner.chem_effects[CE_ALCOHOL])
+			owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]))
 
-	if(damange_to_deal)
-		applyOrganDamage(damange_to_deal)
+	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
+		applyOrganDamage(owner.chem_effects[CE_ALCOHOL_TOXIC])
 
-	if(provide_pain_message && damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
+	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
+	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !HAS_TRAIT(owner, TRAIT_IRRADIATED) && damage > 0)
+		if(damage < low_threshold)
+			applyOrganDamage(-0.2)
+		if(damage < high_threshold)
+			applyOrganDamage(-0.3)
+
+	if(damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
 
-
-/obj/item/organ/internal/liver/handle_failing_organs(delta_time)
+/obj/item/organ/liver/handle_failing_organs(delta_time)
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))
 		return
 	return ..()
 
-/obj/item/organ/internal/liver/organ_failure(delta_time)
+/obj/item/organ/liver/organ_failure(delta_time)
 
 	switch(failure_time/LIVER_FAILURE_STAGE_SECONDS)
 		if(1)
@@ -166,7 +172,7 @@
 			if(DT_PROB(3, delta_time))
 				owner.emote("drool")
 
-/obj/item/organ/internal/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
+/obj/item/organ/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
 	if(!ishuman(owner) || !(organ_flags & ORGAN_FAILING))
 		return
 
@@ -181,53 +187,32 @@
 		if(4 * LIVER_FAILURE_STAGE_SECONDS to INFINITY)
 			examine_list += span_danger("[owner]'s eyes are completely yellow and swelling with pus. [owner.p_they()] don't look like they will be alive for much longer.")
 
-/obj/item/organ/internal/liver/on_death(delta_time, times_fired)
-	. = ..()
-	var/mob/living/carbon/carbon_owner = owner
-	if(!owner)//If we're outside of a mob
-		return
-	if(!iscarbon(carbon_owner))
-		CRASH("on_death() called for [src] ([type]) with invalid owner ([isnull(owner) ? "null" : owner.type])")
-	if(carbon_owner.stat != DEAD)
-		CRASH("on_death() called for [src] ([type]) with not-dead owner ([owner])")
-	if((organ_flags & ORGAN_FAILING) && HAS_TRAIT(carbon_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
-		return
-	for(var/datum/reagent/chem as anything in carbon_owner.reagents.reagent_list)
-		chem.on_mob_dead(carbon_owner, delta_time)
-
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN
 #undef HAS_PAINFUL_TOXIN
 #undef LIVER_FAILURE_STAGE_SECONDS
 
-/obj/item/organ/internal/liver/get_availability(datum/species/species)
+/obj/item/organ/liver/get_availability(datum/species/species)
 	return !(TRAIT_NOMETABOLISM in species.inherent_traits)
 
-/obj/item/organ/internal/liver/plasmaman
+/obj/item/organ/liver/plasmaman
 	name = "reagent processing crystal"
 	icon_state = "liver-p"
 	desc = "A large crystal that is somehow capable of metabolizing chemicals, these are found in plasmamen."
 
-/obj/item/organ/internal/liver/alien
+/obj/item/organ/liver/alien
 	name = "alien liver" // doesnt matter for actual aliens because they dont take toxin damage
 	icon_state = "liver-x" // Same sprite as fly-person liver.
 	desc = "A liver that used to belong to a killer alien, who knows what it used to eat."
 	toxLethality = 2.5 * LIVER_DEFAULT_TOX_LETHALITY // rejects its owner early after too much punishment
 	toxTolerance = 15 // complete toxin immunity like xenos have would be too powerful
 
-/obj/item/organ/internal/liver/vox
+/obj/item/organ/liver/vox
 	name = "vox liver"
 	icon_state = "vox-liver"
 	alcohol_tolerance = 0.008 // 60% more toxic
 
-/obj/item/organ/internal/liver/skrell
-	name = "skrell liver"
-	icon_state = "liver-skrell"
-	alcohol_tolerance = 5
-	toxTolerance = 10 //can shrug off up to 10u of toxins.
-	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
-
-/obj/item/organ/internal/liver/cybernetic
+/obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"
 	icon_state = "liver-c"
 	desc = "A very basic device designed to mimic the functions of a human liver. Handles toxins slightly worse than an organic liver."
@@ -238,7 +223,7 @@
 
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
-/obj/item/organ/internal/liver/cybernetic/tier2
+/obj/item/organ/liver/cybernetic/tier2
 	name = "cybernetic liver"
 	icon_state = "liver-c-u"
 	desc = "An electronic device designed to mimic the functions of a human liver. Handles toxins slightly better than an organic liver."
@@ -247,7 +232,7 @@
 	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
 	emp_vulnerability = 40
 
-/obj/item/organ/internal/liver/cybernetic/tier3
+/obj/item/organ/liver/cybernetic/tier3
 	name = "upgraded cybernetic liver"
 	icon_state = "liver-c-u2"
 	desc = "An upgraded version of the cybernetic liver, designed to improve further upon organic livers. It is resistant to alcohol poisoning and is very robust at filtering toxins."
@@ -257,7 +242,7 @@
 	toxLethality = 0.8 * LIVER_DEFAULT_TOX_LETHALITY //20% less damage than a normal liver
 	emp_vulnerability = 20
 
-/obj/item/organ/internal/liver/cybernetic/emp_act(severity)
+/obj/item/organ/liver/cybernetic/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return

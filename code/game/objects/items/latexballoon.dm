@@ -13,6 +13,12 @@
 
 /obj/item/latexballon/Initialize(mapload)
 	. = ..()
+	become_atmos_sensitive()
+
+/obj/item/latexballon/Destroy(force)
+	lose_atmos_sensitivity()
+	return ..()
+
 
 /obj/item/latexballon/proc/blow(obj/item/tank/tank, mob/user)
 	if (icon_state == "latexballon_bursted")
@@ -57,5 +63,5 @@
 		var/obj/item/tank/T = W
 		blow(T, user)
 		return
-	if (W.get_sharpness() || W.get_temperature())
+	if (W.sharpness || W.get_temperature())
 		burst()

@@ -21,8 +21,10 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	inhand_icon_state = "headset"
 	worn_icon_state = null // So that each subtype uses their own icon state
 	custom_materials = list(/datum/material/iron=75)
+
 	subspace_transmission = TRUE
 	canhear_range = 0 // can't hear headsets from very far away
+	should_be_listening = TRUE
 
 	slot_flags = ITEM_SLOT_EARS
 	dog_fashion = null
@@ -56,7 +58,6 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 
 /obj/item/radio/headset/Initialize(mapload)
 	. = ..()
-	set_listening(TRUE)
 	recalculateChannels()
 	possibly_deactivate_in_loc()
 
@@ -92,7 +93,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	icon_state = "syndie_headset"
 	inhand_icon_state = "syndie_headset"
 
-/obj/item/radio/headset/syndicate/alt/ComponentInitialize()
+/obj/item/radio/headset/syndicate/alt/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
@@ -123,7 +124,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	icon_state = "sec_headset_alt"
 	inhand_icon_state = "sec_headset_alt"
 
-/obj/item/radio/headset/headset_sec/alt/ComponentInitialize()
+/obj/item/radio/headset/headset_sec/alt/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
@@ -190,7 +191,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	icon_state = "com_headset_alt"
 	inhand_icon_state = "com_headset_alt"
 
-/obj/item/radio/headset/heads/captain/alt/ComponentInitialize()
+/obj/item/radio/headset/heads/captain/alt/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
@@ -212,7 +213,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	icon_state = "com_headset_alt"
 	inhand_icon_state = "com_headset_alt"
 
-/obj/item/radio/headset/heads/hos/alt/ComponentInitialize()
+/obj/item/radio/headset/heads/hos/alt/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
@@ -223,7 +224,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	keyslot = new /obj/item/encryptionkey/heads/ce
 
 /obj/item/radio/headset/heads/cmo
-	name = "\proper the chief medical officer's headset"
+	name = "\proper the medical director's headset"
 	desc = "The headset of the highly trained medical chief."
 	icon_state = "com_headset"
 	keyslot = new /obj/item/encryptionkey/heads/cmo
@@ -273,7 +274,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	inhand_icon_state = "cent_headset_alt"
 	keyslot = null
 
-/obj/item/radio/headset/headset_cent/alt/ComponentInitialize()
+/obj/item/radio/headset/headset_cent/alt/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
 
@@ -291,7 +292,7 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	user.set_machine(src)
 	if(keyslot || keyslot2)
 		for(var/ch_name in channels)
-			SSradio.remove_object(src, GLOB.radiochannels[ch_name])
+			SSpackets.remove_object(src, GLOB.radiochannels[ch_name])
 			secure_radio_connections[ch_name] = null
 
 		if(keyslot)

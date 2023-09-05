@@ -1,7 +1,7 @@
 /obj/item/implant/mindshield
 	name = "mindshield implant"
 	desc = "Protects against brainwashing."
-	activated = FALSE
+	actions_types = null
 
 /obj/item/implant/mindshield/get_data()
 	var/dat = {"<b>Implant Specifications:</b><BR>
@@ -16,7 +16,7 @@
 	return dat
 
 
-/obj/item/implant/mindshield/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/mindshield/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	. = ..()
 	if(!.)
 		return FALSE

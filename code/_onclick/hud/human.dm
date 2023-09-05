@@ -82,7 +82,7 @@
 
 	using = new /atom/movable/screen/mov_intent
 	using.icon = ui_style
-	using.icon_state = (mymob.m_intent == MOVE_INTENT_RUN ? "running" : "walking")
+	using.icon_state = (mymob.m_intent == MOVE_INTENT_WALK ? "walking" : "running")
 	using.screen_loc = ui_movi
 	using.hud = src
 	static_inventory += using
@@ -273,11 +273,8 @@
 	rest_icon.icon = ui_style
 	rest_icon.screen_loc = ui_above_movement
 	rest_icon.hud = src
+	rest_icon.update_appearance()
 	static_inventory += rest_icon
-
-	internals = new /atom/movable/screen/internals()
-	internals.hud = src
-	infodisplay += internals
 
 	spacesuit = new /atom/movable/screen/spacesuit
 	spacesuit.hud = src
@@ -297,9 +294,9 @@
 
 	pull_icon = new /atom/movable/screen/pull()
 	pull_icon.icon = ui_style
-	pull_icon.update_appearance()
 	pull_icon.screen_loc = ui_above_intent
 	pull_icon.hud = src
+	pull_icon.update_appearance()
 	static_inventory += pull_icon
 
 	zone_select = new /atom/movable/screen/zone_sel()
@@ -310,6 +307,25 @@
 
 	combo_display = new /atom/movable/screen/combo()
 	infodisplay += combo_display
+
+	gun_setting_icon = new /atom/movable/screen/gun_mode()
+	gun_setting_icon.icon = ui_style
+	gun_setting_icon.hud = src
+
+	var/atom/movable/screen/gun_option = new /atom/movable/screen/gun_radio()
+	gun_option.icon = ui_style
+	gun_option.hud = src
+	gunpoint_options += gun_option
+
+	gun_option = new /atom/movable/screen/gun_item()
+	gun_option.icon = ui_style
+	gun_option.hud = src
+	gunpoint_options += gun_option
+
+	gun_option = new /atom/movable/screen/gun_move()
+	gun_option.icon = ui_style
+	gun_option.hud = src
+	gunpoint_options += gun_option
 
 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
 		if(inv.slot_id)

@@ -43,7 +43,7 @@
 /obj/item/greentext/Initialize(mapload)
 	. = ..()
 	SSpoints_of_interest.make_point_of_interest(src)
-	roundend_callback = CALLBACK(src, .proc/check_winner)
+	roundend_callback = CALLBACK(src, PROC_REF(check_winner))
 	SSticker.OnRoundend(roundend_callback)
 
 /obj/item/greentext/equipped(mob/user, slot, initial = FALSE)
@@ -77,7 +77,7 @@
 
 /obj/item/greentext/Destroy(force)
 	LAZYREMOVE(SSticker.round_end_events, roundend_callback)
-	QDEL_NULL(roundend_callback) //This ought to free the callback datum, and prevent us from harddeling
+	roundend_callback = null
 	for(var/mob/all_player_mobs as anything in GLOB.player_list)
 		var/message = "<span class='warning'>A dark temptation has passed from this world"
 		if(all_player_mobs in color_altered_mobs)

@@ -40,13 +40,15 @@
 	sheet_type = /obj/item/stack/sheet/plasteel
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/iron=1, /datum/material/plasma=1)
-	reinforced_wall_greyscale_config = /datum/greyscale_config/reinforced_solid_wall
+	reinforced_wall_icon = 'icons/turf/walls/solid_wall_reinforced.dmi'
 	//This creates legacy r_walls so that I don't have to recode a shitload of stuff
 	wall_type = /turf/closed/wall/r_wall
 	false_wall_type = /obj/structure/falsewall/reinforced
 	wall_name = "bulkhead"
 	wall_color = "#57575c"
 	hard_wall_decon = TRUE
+
+	wall_shine = WALL_SHINE_BOTH
 
 /datum/material/alloy/plasteel/on_applied_obj(obj/item/target_item, amount, material_flags)
 	. = ..()
@@ -80,12 +82,14 @@
 	sheet_type = /obj/item/stack/sheet/mineral/plastitanium
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/titanium=1, /datum/material/plasma=1)
-	wall_greyscale_config = /datum/greyscale_config/metal_wall
-	reinforced_wall_greyscale_config = /datum/greyscale_config/reinforced_solid_wall
+	wall_icon = 'icons/turf/walls/metal_wall.dmi'
+	reinforced_wall_icon = 'icons/turf/walls/solid_wall_reinforced.dmi'
 	wall_type = /turf/closed/wall/mineral/plastitanium
 	false_wall_type = /obj/structure/falsewall/plastitanium
 	hard_wall_decon = TRUE
 	wall_color = "#423b3b"
+
+	wall_shine = WALL_SHINE_REINFORCED
 
 /** Plasmaglass
  *
@@ -120,7 +124,7 @@
 	init_flags = MATERIAL_INIT_MAPLOAD
 	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 0.8, ENERGY = 0.8, BOMB = 0.5, BIO = 1.2, FIRE = 0.8, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/titaniumglass
-	shard_type = /obj/item/shard
+	shard_type = /obj/item/shard/titanium
 	value_per_unit = 0.04
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/glass=1, /datum/material/titanium=0.5)
@@ -140,7 +144,7 @@
 	integrity_modifier = 1.1
 	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 1.2, ENERGY = 1.2, BOMB = 0.5, BIO = 1.2, FIRE = 2, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/plastitaniumglass
-	shard_type = /obj/item/shard/plasma
+	shard_type = /obj/item/shard/plastitanium
 	value_per_unit = 0.125
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/glass=1, /datum/material/alloy/plastitanium=0.5)
@@ -164,9 +168,11 @@
 	value_per_unit = 0.4
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/iron=2, /datum/material/plasma=2)
-	reinforced_wall_greyscale_config = /datum/greyscale_config/reinforced_solid_wall
+	reinforced_wall_icon = 'icons/turf/walls/solid_wall_reinforced.dmi'
 	wall_name = "hull"
 	hard_wall_decon = TRUE
+
+	wall_shine = WALL_SHINE_BOTH
 
 /datum/material/alloy/alien/on_applied_obj(obj/item/target_item, amount, material_flags)
 	. = ..()

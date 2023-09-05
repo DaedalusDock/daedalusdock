@@ -14,7 +14,7 @@
 	var/obj/effect/temp_visual/cult/rune_spawn/rune_center_type
 	var/rune_color
 
-/datum/action/innate/cult/create_rune/IsAvailable()
+/datum/action/innate/cult/create_rune/IsAvailable(feedback = FALSE)
 	if(!rune_type || cooldown > world.time)
 		return FALSE
 	return ..()
@@ -56,8 +56,8 @@
 			R4 = new rune_center_type(T, scribe_time, rune_color)
 
 		cooldown = base_cooldown + world.time
-		owner.update_action_buttons_icon()
-		addtimer(CALLBACK(owner, /mob.proc/update_action_buttons_icon), base_cooldown)
+		owner?.update_mob_action_buttons()
+		addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob, update_mob_action_buttons)), base_cooldown)
 		var/list/health
 		if(damage_interrupt && isliving(owner))
 			var/mob/living/L = owner
@@ -66,7 +66,7 @@
 		if(istype(T, /turf/open/floor/engine/cult))
 			scribe_mod *= 0.5
 		playsound(T, 'sound/magic/enter_blood.ogg', 100, FALSE)
-		if(do_after(owner, scribe_mod, target = owner, extra_checks = CALLBACK(owner, /mob.proc/break_do_after_checks, health, action_interrupt)))
+		if(do_after(owner, owner, scribe_mod, extra_checks = CALLBACK(owner, TYPE_PROC_REF(/mob, break_do_after_checks), health, action_interrupt)))
 			new rune_type(owner.loc, chosen_keyword)
 		else
 			qdel(R1)
@@ -77,7 +77,7 @@
 			if(R4)
 				qdel(R4)
 			cooldown = 0
-			owner.update_action_buttons_icon()
+			owner?.update_mob_action_buttons()
 
 //teleport rune
 /datum/action/innate/cult/create_rune/tele

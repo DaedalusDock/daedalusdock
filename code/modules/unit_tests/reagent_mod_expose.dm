@@ -2,13 +2,14 @@
 
 /datum/reagent/method_patch_test
 	name = "method patch test"
+	description = "Exposure Method Test Reagent"
 
-/datum/reagent/method_patch_test/expose_mob(mob/living/target, methods = PATCH, reac_volume, show_message = TRUE)
+/datum/reagent/method_patch_test/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
 	. = ..()
-	if(methods & PATCH)
-		target.health = 90
-	if(methods & INJECT)
-		target.health = 80
+	if(methods == TOUCH)
+		exposed_mob.health = 90
+	else if(methods == INJECT)
+		exposed_mob.health = 80
 
 /datum/unit_test/reagent_mob_expose/Run()
 	// Life() is handled just by tests
@@ -29,9 +30,9 @@
 	TEST_ASSERT(human.fire_stacks > 1, "Human fire stacks did not increase after life tick")
 
 	// TOUCH
-	dropper.reagents.add_reagent(/datum/reagent/water, 1)
+	dropper.reagents.add_reagent(/datum/reagent/water, 5)
 	dropper.afterattack(human, human, TRUE)
-	TEST_ASSERT_EQUAL(human.fire_stacks, 0, "Human still has fire stacks after touching water")
+	TEST_ASSERT(human.fire_stacks < 0, "Human still has fire stacks after touching water")
 
 	// VAPOR
 	TEST_ASSERT_EQUAL(human.drowsyness, 0, "Human is drowsy at the start of testing")

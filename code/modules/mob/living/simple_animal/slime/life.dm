@@ -141,27 +141,7 @@
 				adjustBruteLoss(round(sqrt(bodytemperature)) * delta_time)
 	else
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
-	/*
-	if(stat != DEAD)
-		var/bz_percentage =0
-		if(environment.gases[/datum/gas/bz])
-			bz_percentage = environment.gases[/datum/gas/bz][MOLES] / environment.get_moles()
-		var/stasis = (bz_percentage >= 0.05 && bodytemperature < (T0C + 100)) || force_stasis
 
-		switch(stat)
-			if(CONSCIOUS)
-				if(stasis)
-					to_chat(src, span_danger("Nerve gas in the air has put you in stasis!"))
-					set_stat(UNCONSCIOUS)
-					powerlevel = 0
-					rabid = FALSE
-					regenerate_icons()
-			if(UNCONSCIOUS, HARD_CRIT)
-				if(!stasis)
-					to_chat(src, span_notice("You wake up from the stasis."))
-					set_stat(CONSCIOUS)
-					regenerate_icons()
-	*/
 	updatehealth()
 
 
@@ -246,7 +226,7 @@
 	else if (nutrition >= get_grow_nutrition() && amount_grown < SLIME_EVOLUTION_THRESHOLD)
 		adjust_nutrition(-10 * delta_time)
 		amount_grown++
-		update_action_buttons_icon()
+		update_mob_action_buttons()
 
 	if(amount_grown >= SLIME_EVOLUTION_THRESHOLD && !buckled && !Target && !ckey)
 		if(is_adult && loc.AllowDrop())
@@ -382,7 +362,7 @@
 				else if(!HAS_TRAIT(src, TRAIT_IMMOBILIZED) && isturf(loc) && prob(33))
 					step(src, pick(GLOB.cardinals))
 		else if(!AIproc)
-			INVOKE_ASYNC(src, .proc/AIprocess)
+			INVOKE_ASYNC(src, PROC_REF(AIprocess))
 
 /mob/living/simple_animal/slime/handle_automated_movement()
 	return //slime random movement is currently handled in handle_targets()

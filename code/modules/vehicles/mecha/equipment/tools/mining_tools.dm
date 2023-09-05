@@ -126,7 +126,7 @@
 	target.visible_message(span_danger("[chassis] is drilling [target] with [src]!"), \
 						span_userdanger("[chassis] is drilling you with [src]!"))
 	log_combat(user, target, "drilled", "[name]", "Combat mode: [user.combat_mode ? "On" : "Off"])(DAMTYPE: [uppertext(damtype)])")
-	if(target.stat == DEAD && target.getBruteLoss() >= (target.maxHealth * 2))
+	if(target.stat == DEAD && target.getBruteLoss() >= HEALTH_LOSS_PER_TYPE_CAP(target))
 		log_combat(user, target, "gibbed", name)
 		if(LAZYLEN(target.butcher_results) || LAZYLEN(target.guaranteed_butcher_results))
 			var/datum/component/butchering/butchering = src.GetComponent(/datum/component/butchering)
@@ -147,7 +147,7 @@
 
 		//organs go everywhere
 		if(target_part && prob(10 * drill_level))
-			target_part.dismember(BRUTE)
+			target_part.dismember(DROPLIMB_BLUNT)
 
 /obj/item/mecha_parts/mecha_equipment/drill/diamonddrill
 	name = "diamond-tipped exosuit drill"

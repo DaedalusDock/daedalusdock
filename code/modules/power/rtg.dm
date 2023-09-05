@@ -72,7 +72,7 @@
 		span_hear("You hear a loud electrical crack!"))
 	playsound(src.loc, 'sound/magic/lightningshock.ogg', 100, TRUE, extrarange = 5)
 	tesla_zap(src, 5, power_gen * 0.05)
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/explosion, src, 2, 3, 4, null, 8), 10 SECONDS) // Not a normal explosion.
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(explosion), src, 2, 3, 4, null, 8), 10 SECONDS) // Not a normal explosion.
 
 /obj/machinery/power/rtg/abductor/bullet_act(obj/projectile/Proj)
 	. = ..()
@@ -161,7 +161,7 @@
 
 /obj/machinery/power/rtg/old_station/default_deconstruction_crowbar(obj/item/crowbar, ignore_panel, custom_deconstruct, mob/user)
 	to_chat(user,span_warning("It's starting to fall off!"))
-	if(!do_after(user, 3 SECONDS, src))
+	if(!do_after(user, src, 3 SECONDS))
 		return TRUE
 	to_chat(user,span_notice("You feel like you made a mistake"))
 	new /obj/effect/decal/cleanable/ash/large(loc)

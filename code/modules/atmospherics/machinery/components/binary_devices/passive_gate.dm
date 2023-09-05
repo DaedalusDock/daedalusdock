@@ -35,14 +35,14 @@ Passive gate is similar to the regular pump except:
 
 /obj/machinery/atmospherics/components/binary/passive_gate/AltClick(mob/user)
 	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
+		target_pressure = MAX_PUMP_PRESSURE
 		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "pressure output set to [target_pressure] kPa")
 		update_appearance()
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/Destroy()
-	SSradio.remove_object(src,frequency)
+	SSpackets.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/update_icon_nopipes()
@@ -62,8 +62,8 @@ Passive gate is similar to the regular pump except:
 	var/pressure_delta = input_starting_pressure - target_pressure
 
 	var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-	transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta))
-	if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)//pump_gas() will return a negative number if no flow occurred
+	transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta, parents[2]?.combined_volume || 0))
+	if(pump_gas_passive(air1, air2, transfer_moles) >= 0)//pump_gas() will return a negative number if no flow occurred
 		update_parents()
 
 //Radio remote control
@@ -74,10 +74,10 @@ Passive gate is similar to the regular pump except:
  * * -new_frequency: the frequency that should be used for the radio to attach to the component, use 0 to remove the radio
  */
 /obj/machinery/atmospherics/components/binary/passive_gate/proc/set_frequency(new_frequency)
-	SSradio.remove_object(src, frequency)
+	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSpackets.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /**
  * Called in atmos_init(), send the component status to the radio device connected
@@ -86,14 +86,14 @@ Passive gate is similar to the regular pump except:
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(list(
+	var/datum/signal/signal = new(src, list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = on,
 		"target_output" = target_pressure,
 		"sigtype" = "status"
 	))
-	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/passive_gate/relaymove(mob/living/user, direction)
 	if(!on || direction != dir)
@@ -110,7 +110,7 @@ Passive gate is similar to the regular pump except:
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
+	data["max_pressure"] = round(MAX_PUMP_PRESSURE)
 	return data
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_act(action, params)
@@ -125,7 +125,7 @@ Passive gate is similar to the regular pump except:
 		if("pressure")
 			var/pressure = params["pressure"]
 			if(pressure == "max")
-				pressure = MAX_OUTPUT_PRESSURE
+				pressure = MAX_PUMP_PRESSURE
 				. = TRUE
 			else if(text2num(pressure) != null)
 				pressure = text2num(pressure)

@@ -3,7 +3,7 @@
 	name = "Status Readout"
 	desc = "Gives a detailed readout about your current status."
 	button_icon_state = "health"
-	icon_icon = 'icons/obj/device.dmi'
+	button_icon = 'icons/obj/device.dmi'
 
 /**
  * Proc called to put a status readout to the ninja in chat.
@@ -17,7 +17,7 @@
 	var/mob/living/carbon/human/ninja = affecting
 	var/list/info_list = list()
 	info_list += "[span_info("SpiderOS Status: [s_initialized ? "Initialized" : "Disabled"]")]\n"
-	info_list += "[span_info("Current Time: [station_time_timestamp()]")]\n"
+	info_list += "[span_info("Current Time: [stationtime2text()]")]\n"
 	//Ninja status
 	info_list += "[span_info("Fingerprints: [md5(ninja.dna.unique_identity)]")]\n"
 	info_list += "[span_info("Unique Identity: [ninja.dna.unique_enzymes]")]\n"
@@ -27,7 +27,7 @@
 	info_list += "[span_info("Toxin Levels: [ninja.getToxLoss()]")]\n"
 	info_list += "[span_info("Burn Severity: [ninja.getFireLoss()]")]\n"
 	info_list += "[span_info("Brute Trauma: [ninja.getBruteLoss()]")]\n"
-	info_list += "[span_info("Body Temperature: [ninja.bodytemperature-T0C] degrees C ([ninja.bodytemperature*1.8-459.67] degrees F)")]\n"
+	info_list += "[span_info("Body Temperature: [ninja.bodytemperature-T0C] degrees C ([FAHRENHEIT(ninja.bodytemperature)] degrees F)")]\n"
 
 	//Diseases
 	if(length(ninja.diseases))

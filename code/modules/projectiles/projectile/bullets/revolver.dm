@@ -19,8 +19,6 @@
 	ricochet_chance = 50
 	ricochet_auto_aim_angle = 10
 	ricochet_auto_aim_range = 3
-	wound_bonus = -20
-	bare_wound_bonus = 10
 	embedding = list(embed_chance=25, fall_chance=2, jostle_chance=2, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=3, jostle_pain_mult=5, rip_time=1 SECONDS)
 	embed_falloff_tile = -4
 
@@ -54,10 +52,7 @@
 	weak_against_armour = TRUE
 	ricochets_max = 0
 	sharpness = SHARP_EDGED
-	wound_bonus = 20
-	bare_wound_bonus = 20
 	embedding = list(embed_chance=75, fall_chance=3, jostle_chance=4, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=5, jostle_pain_mult=6, rip_time=1 SECONDS)
-	wound_falloff_tile = -5
 	embed_falloff_tile = -15
 
 /obj/projectile/bullet/c38/trac
@@ -76,7 +71,7 @@
 		return
 	if(!imp)
 		imp = new /obj/item/implant/tracking/c38(M)
-		imp.implant(M)
+		imp.implant(M, body_zone = BODY_ZONE_CHEST)
 
 /obj/projectile/bullet/c38/hotshot //similar to incendiary bullets, but do not leave a flaming trail
 	name = ".38 Hot Shot bullet"
@@ -93,7 +88,7 @@
 /obj/projectile/bullet/c38/iceblox //see /obj/projectile/temp for the original code
 	name = ".38 Iceblox bullet"
 	damage = 20
-	temperature = 100
+	var/temperature = 100
 	ricochets_max = 0
 
 /obj/projectile/bullet/c38/iceblox/on_hit(atom/target, blocked = FALSE)
@@ -107,7 +102,6 @@
 /obj/projectile/bullet/a357
 	name = ".357 bullet"
 	damage = 60
-	wound_bonus = -30
 
 // admin only really, for ocelot memes
 /obj/projectile/bullet/a357/match

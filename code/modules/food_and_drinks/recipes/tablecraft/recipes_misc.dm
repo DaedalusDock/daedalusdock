@@ -162,12 +162,11 @@
 /datum/crafting_recipe/food/butterbear //ITS ALIVEEEEEE!
 	name = "Living bear/butter hybrid"
 	reqs = list(
-		/obj/item/organ/internal/brain = 1,
-		/obj/item/organ/internal/heart = 1,
+		/obj/item/organ/brain = 1,
+		/obj/item/organ/heart = 1,
 		/obj/item/food/butter = 10,
 		/obj/item/food/meat/slab = 5,
 		/datum/reagent/blood = 50,
-		/datum/reagent/teslium = 1 //To shock the whole thing into life
 	)
 	result = /mob/living/simple_animal/hostile/bear/butter
 	subcategory = CAT_MISCFOOD

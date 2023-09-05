@@ -33,17 +33,13 @@
 	var/obj/item/stack/initialized_mineral = new sheetType // Okay this kinda sucks.
 	set_custom_materials(initialized_mineral.mats_per_unit, sheetAmount)
 	qdel(initialized_mineral)
-	//air_update_turf(TRUE, TRUE)
-
-/obj/structure/mineral_door/Destroy()
-	. = ..()
 	zas_update_loc()
 
 /obj/structure/mineral_door/Move()
 	. = ..()
 	zas_update_loc()
 
-/obj/structure/mineral_door/Bumped(atom/movable/AM)
+/obj/structure/mineral_door/BumpedBy(atom/movable/AM)
 	..()
 	if(!door_opened)
 		return TryToSwitchState(AM)
@@ -106,7 +102,7 @@
 	isSwitchingStates = FALSE
 
 	if(close_delay != -1)
-		addtimer(CALLBACK(src, .proc/Close), close_delay)
+		addtimer(CALLBACK(src, PROC_REF(Close)), close_delay)
 
 /obj/structure/mineral_door/proc/Close()
 	if(isSwitchingStates || !door_opened)
@@ -230,9 +226,6 @@
 	max_integrity = 300
 	light_outer_range = 2
 
-/obj/structure/mineral_door/uranium/ComponentInitialize()
-	return
-
 /obj/structure/mineral_door/sandstone
 	name = "sandstone door"
 	icon_state = "sandstone"
@@ -297,8 +290,7 @@
 
 /obj/structure/mineral_door/paperframe/Initialize(mapload)
 	. = ..()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/structure/mineral_door/paperframe/examine(mob/user)
 	. = ..()
@@ -321,7 +313,7 @@
 
 	if((!user.combat_mode) && istype(I, /obj/item/paper) && (atom_integrity < max_integrity))
 		user.visible_message(span_notice("[user] starts to patch the holes in [src]."), span_notice("You start patching some of the holes in [src]!"))
-		if(do_after(user, 2 SECONDS, src))
+		if(do_after(user, src, 2 SECONDS))
 			atom_integrity = min(atom_integrity+4,max_integrity)
 			qdel(I)
 			user.visible_message(span_notice("[user] patches some of the holes in [src]."), span_notice("You patch some of the holes in [src]!"))
@@ -329,10 +321,6 @@
 
 	return ..()
 
-/obj/structure/mineral_door/paperframe/ComponentInitialize()
-	return
-
 /obj/structure/mineral_door/paperframe/Destroy()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()

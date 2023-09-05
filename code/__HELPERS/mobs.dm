@@ -60,9 +60,9 @@
 
 /proc/random_features()
 	if(!GLOB.tails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/, GLOB.tails_list,  add_blank = TRUE)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list,  add_blank = TRUE)
 	if(!GLOB.tails_list_human.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human,  add_blank = TRUE)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human)
 	if(!GLOB.tails_list_lizard.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
 	if(!GLOB.snouts_list.len)
@@ -70,7 +70,7 @@
 	if(!GLOB.horns_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/horns, GLOB.horns_list)
 	if(!GLOB.ears_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.horns_list)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
 	if(!GLOB.frills_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
 	if(!GLOB.spines_list.len)
@@ -87,8 +87,6 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	if(!GLOB.pod_hair_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
-	if(!GLOB.headtails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/headtails, GLOB.headtails_list)
 	if(!GLOB.teshari_feathers_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
 	if(!GLOB.teshari_ears_list.len)
@@ -125,7 +123,6 @@
 		"moth_markings" = pick(GLOB.moth_markings_list),
 		"tail_monkey" = "None",
 		"pod_hair" = pick(GLOB.pod_hair_list),
-		"headtails" = (pick(GLOB.headtails_list)),
 		"vox_snout" = pick(GLOB.vox_snouts_list),
 		"tail_vox" = pick(GLOB.tails_list_vox),
 		"vox_hair" = pick(GLOB.vox_hair_list),
@@ -274,69 +271,6 @@ GLOBAL_LIST_EMPTY(species_list)
 		else
 			return "unknown"
 
-
-///Timed action involving two mobs, the user and the target. interaction_key is the assoc key under which the do_after is capped under, and the max interaction count is how many of this interaction you can do at once.
-/proc/do_mob(mob/user, mob/target, time = 3 SECONDS, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1)
-	if(!user || !target)
-		return FALSE
-	var/user_loc = user.loc
-
-	var/drifting = FALSE
-	if(SSmove_manager.processing_on(user, SSspacedrift))
-		drifting = TRUE
-
-	var/target_loc = target.loc
-
-	if(!interaction_key && target)
-		interaction_key = target //Use the direct ref to the target
-	if(interaction_key) //Do we have a interaction_key now?
-		var/current_interaction_count = LAZYACCESS(user.do_afters, interaction_key) || 0
-		if(current_interaction_count >= max_interact_count) //We are at our peak
-			return
-		LAZYSET(user.do_afters, interaction_key, current_interaction_count + 1)
-
-	var/holding = user.get_active_held_item()
-	var/datum/progressbar/progbar
-	if (progress)
-		progbar = new(user, time, target)
-	if(target.pixel_x != 0) //shifts the progress bar if target has an offset sprite
-		progbar.bar.pixel_x -= target.pixel_x
-
-	if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-		time *= user.cached_multiplicative_actions_slowdown
-
-	var/endtime = world.time+time
-	var/starttime = world.time
-	. = TRUE
-
-	while (world.time < endtime)
-		stoplag(1)
-
-		if(!QDELETED(progbar))
-			progbar.update(world.time - starttime)
-
-		if(drifting && !SSmove_manager.processing_on(user, SSspacedrift))
-			drifting = FALSE
-			user_loc = user.loc
-
-		if(
-			QDELETED(user) || QDELETED(target) \
-			|| (!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user.loc != user_loc) \
-			|| (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && target.loc != target_loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
-			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
-			|| (extra_checks && !extra_checks.Invoke()) \
-			)
-			. = FALSE
-			break
-
-	if(!QDELETED(progbar))
-		progbar.end_progress()
-
-	if(interaction_key)
-		LAZYREMOVE(user.do_afters, interaction_key)
-
-
 //some additional checks as a callback for for do_afters that want to break on losing health or on the mob taking action
 /mob/proc/break_do_after_checks(list/checked_health, check_clicks)
 	if(check_clicks && next_move > world.time)
@@ -353,20 +287,24 @@ GLOBAL_LIST_EMPTY(species_list)
 
 
 /**
- * Timed action involving one mob user. Target is optional.
+ * Timed action involving one mob user. Target is optional, defaulting to user.
  *
  * Checks that `user` does not move, change hands, get stunned, etc. for the
- * given `delay`. Returns `TRUE` on success or `FALSE` on failure.
+ * given `time`. Returns `TRUE` on success or `FALSE` on failure.
  * Interaction_key is the assoc key under which the do_after is capped, with max_interact_count being the cap. Interaction key will default to target if not set.
  */
-/proc/do_after(mob/user, delay, atom/target, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1)
+/proc/do_after(atom/movable/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
 	if(!user)
 		return FALSE
-	var/atom/target_loc = null
-	if(target && !isturf(target))
-		target_loc = target.loc
 
-	if(!interaction_key && target)
+	if(!target)
+		target = user
+	if(isnum(target))
+		CRASH("a do_after created by [user] had a target set as [target]- probably intended to be the time instead.")
+	if(isatom(time))
+		CRASH("a do_after created by [user] had a timer of [time]- probably intended to be the target instead.")
+
+	if(!interaction_key)
 		interaction_key = target //Use the direct ref to the target
 	if(interaction_key) //Do we have a interaction_key now?
 		var/current_interaction_count = LAZYACCESS(user.do_afters, interaction_key) || 0
@@ -375,21 +313,29 @@ GLOBAL_LIST_EMPTY(species_list)
 		LAZYSET(user.do_afters, interaction_key, current_interaction_count + 1)
 
 	var/atom/user_loc = user.loc
+	var/atom/target_loc = target.loc
 
 	var/drifting = FALSE
 	if(SSmove_manager.processing_on(user, SSspacedrift))
 		drifting = TRUE
 
-	var/holding = user.get_active_held_item()
-
-	if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-		delay *= user.cached_multiplicative_actions_slowdown
+	var/holding
+	if(ismob(user))
+		var/mob/mobuser = user
+		holding = mobuser.get_active_held_item()
+		if(!(timed_action_flags & IGNORE_SLOWDOWNS))
+			time *= mobuser.cached_multiplicative_actions_slowdown
+	else
+		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS|DO_PUBLIC
 
 	var/datum/progressbar/progbar
 	if(progress)
-		progbar = new(user, delay, target || user)
+		if(timed_action_flags & DO_PUBLIC)
+			progbar = new /datum/world_progressbar(user, time, display)
+		else
+			progbar = new(user, time, target || user)
 
-	var/endtime = world.time + delay
+	var/endtime = world.time + time
 	var/starttime = world.time
 	. = TRUE
 	while (world.time < endtime)
@@ -405,20 +351,15 @@ GLOBAL_LIST_EMPTY(species_list)
 		if(
 			QDELETED(user) \
 			|| (!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user.loc != user_loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
+			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user:get_active_held_item() != holding) \
 			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
 			|| (extra_checks && !extra_checks.Invoke()) \
 		)
 			. = FALSE
 			break
 
-		if(
-			!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) \
-			&& !drifting \
-			&& !QDELETED(target_loc) \
-			&& (QDELETED(target) || target_loc != target.loc) \
-			&& ((user_loc != target_loc || target_loc != user)) \
-			)
+		if(user != target && \
+			(QDELETED(target) || (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && target.loc != target_loc)))
 			. = FALSE
 			break
 
@@ -426,6 +367,10 @@ GLOBAL_LIST_EMPTY(species_list)
 		progbar.end_progress()
 
 	if(interaction_key)
+		var/reduced_interaction_count = (LAZYACCESS(user.do_afters, interaction_key)) - 1
+		if(reduced_interaction_count > 0) // Not done yet!
+			LAZYSET(user.do_afters, interaction_key, reduced_interaction_count)
+			return
 		LAZYREMOVE(user.do_afters, interaction_key)
 
 
@@ -489,8 +434,7 @@ GLOBAL_LIST_EMPTY(species_list)
 			. = FALSE
 			break
 
-		for(var/t in targets)
-			var/atom/target = t
+		for(var/atom/target as anything in targets)
 			if(
 				(QDELETED(target)) \
 				|| (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && originalloc[target] != target.loc) \
@@ -505,7 +449,18 @@ GLOBAL_LIST_EMPTY(species_list)
 		progbar.end_progress()
 
 	if(interaction_key)
+		var/reduced_interaction_count = (LAZYACCESS(user.do_afters, interaction_key)) - 1
+		if(reduced_interaction_count > 0) // Not done yet!
+			LAZYSET(user.do_afters, interaction_key, reduced_interaction_count)
+			return
 		LAZYREMOVE(user.do_afters, interaction_key)
+
+/// Returns the total amount of do_afters this mob is taking part in
+/mob/proc/do_after_count()
+	var/count = 0
+	for(var/key in do_afters)
+		count += do_afters[key]
+	return count
 
 /proc/is_species(A, species_datum)
 	. = FALSE
@@ -764,7 +719,21 @@ GLOBAL_LIST_EMPTY(species_list)
 
 #define ISADVANCEDTOOLUSER(mob) (HAS_TRAIT(mob, TRAIT_ADVANCEDTOOLUSER) && !HAS_TRAIT(mob, TRAIT_DISCOORDINATED_TOOL_USER))
 
-#define IS_IN_STASIS(mob) (mob.has_status_effect(/datum/status_effect/grouped/stasis))
+/// If a mob is in hard or soft stasis
+#define IS_IN_STASIS(mob) ((mob.stasis_level && (mob.life_ticks % mob.stasis_level)) || mob.has_status_effect(/datum/status_effect/grouped/hard_stasis))
+
+/// If a mob is in hard stasis
+#define IS_IN_HARD_STASIS(mob) (mob.has_status_effect(/datum/status_effect/grouped/hard_stasis))
+
+/// Set a stasis level for a specific source.
+#define SET_STASIS_LEVEL(mob, source, level) \
+	mob.stasis_level -= mob.stasis_sources[source]; \
+	mob.stasis_level += level;\
+	mob.stasis_sources[source] = level
+
+#define UNSET_STASIS_LEVEL(mob, source) \
+	mob.stasis_level -= mob.stasis_sources[source];\
+	mob.stasis_sources -= source
 
 /// Gets the client of the mob, allowing for mocking of the client.
 /// You only need to use this if you know you're going to be mocking clients somewhere else.
@@ -847,6 +816,8 @@ GLOBAL_LIST_EMPTY(species_list)
 			return BODY_ZONE_CHEST
 		if(BODY_ZONE_PRECISE_EYES)
 			return BODY_ZONE_HEAD
+		if(BODY_ZONE_PRECISE_MOUTH)
+			return BODY_ZONE_HEAD
 		if(BODY_ZONE_PRECISE_R_HAND)
 			return BODY_ZONE_R_ARM
 		if(BODY_ZONE_PRECISE_L_HAND)
@@ -886,7 +857,7 @@ GLOBAL_LIST_EMPTY(species_list)
 		mob_occupant = head.brainmob
 
 	else if(isorgan(occupant))
-		var/obj/item/organ/internal/brain/brain = occupant
+		var/obj/item/organ/brain/brain = occupant
 		mob_occupant = brain.brainmob
 
 	return mob_occupant
@@ -956,9 +927,9 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 /mob/dview/Initialize(mapload) //Properly prevents this mob from gaining huds or joining any global lists
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 	return INITIALIZE_HINT_NORMAL
 
 /mob/dview/Destroy(force = FALSE)

@@ -29,7 +29,7 @@
 	var/obj/effect/ctf/flag_reset/reset
 	var/reset_path = /obj/effect/ctf/flag_reset
 	/// Which area we announce updates on the flag to. Should just generally be the area of the arena.
-	var/game_area = /area/ctf
+	var/game_area = /area/centcom/ctf
 
 /obj/item/ctf/Destroy()
 	QDEL_NULL(reset)
@@ -40,7 +40,7 @@
 	if(!reset)
 		reset = new reset_path(get_turf(src))
 		reset.flag = src
-	RegisterSignal(src, COMSIG_PARENT_PREQDELETED, .proc/reset_flag) //just in case CTF has some map hazards (read: chasms).
+	RegisterSignal(src, COMSIG_PARENT_PREQDELETED, PROC_REF(reset_flag)) //just in case CTF has some map hazards (read: chasms).
 
 /obj/item/ctf/process()
 	if(is_ctf_target(loc)) //pickup code calls temporary drops to test things out, we need to make sure the flag doesn't reset from
@@ -174,7 +174,28 @@
 	desc = "This is where a yellow banner used to play capture the flag \
 		would go."
 
+#define CTF_LOADING_UNLOADED 0
+#define CTF_LOADING_LOADING 1
+#define CTF_LOADING_LOADED 2
+
 /proc/toggle_id_ctf(user, activated_id, automated = FALSE)
+	var/static/loading = CTF_LOADING_UNLOADED
+	switch (loading)
+		if (CTF_LOADING_UNLOADED)
+			if (isnull(GLOB.ctf_spawner))
+				to_chat(user, span_boldwarning("Couldn't find a CTF spawner. Call a maintainer!"))
+				return
+
+			to_chat(user, span_notice("Loading CTF..."))
+
+			loading = CTF_LOADING_LOADING
+			GLOB.ctf_spawner.load_map()
+			loading = CTF_LOADING_LOADED
+		if (CTF_LOADING_LOADING)
+			to_chat(user, span_warning("CTF is loading!"))
+
+			return
+
 	var/ctf_enabled = FALSE
 	var/area/A
 	for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
@@ -194,13 +215,17 @@
 	if(!automated)
 		notify_ghosts("CTF has been [ctf_enabled? "enabled" : "disabled"] in [A]!",'sound/effects/ghost2.ogg')
 
+#undef CTF_LOADING_UNLOADED
+#undef CTF_LOADING_LOADING
+#undef CTF_LOADING_LOADED
+
 /obj/machinery/capture_the_flag
 	name = "CTF Controller"
 	desc = "Used for running friendly games of capture the flag."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "syndbeacon"
 	resistance_flags = INDESTRUCTIBLE
-	var/game_id = "centcom"
+	var/game_id = CTF_GHOST_CTF_GAME_ID
 
 	var/victory_rejoin_text = "<span class='userdanger'>Teams have been cleared. Click on the machines to vote to begin another round.</span>"
 	var/team = WHITE_TEAM
@@ -227,8 +252,7 @@
 	var/list/dead_barricades = list()
 
 	var/static/arena_reset = FALSE
-	var/static/list/people_who_want_to_play = list()
-	var/game_area = /area/ctf
+	var/game_area = /area/centcom/ctf
 
 	/// This variable is needed because of ctf shitcode + we need to make sure we're deleting the current ctf landmark that spawned us in and not a new one.
 	var/obj/effect/landmark/ctf/ctf_landmark
@@ -306,15 +330,7 @@
 			if(CTF.game_id != game_id && CTF.ctf_enabled)
 				to_chat(user, span_warning("There is already an ongoing game in the [get_area(CTF)]!"))
 				return
-		people_who_want_to_play |= user.ckey
-		var/num = people_who_want_to_play.len
-		var/remaining = CTF_REQUIRED_PLAYERS - num
-		if(remaining <= 0)
-			people_who_want_to_play.Cut()
-			toggle_id_ctf(null, game_id)
-		else
-			to_chat(user, span_notice("CTF has been requested. [num]/[CTF_REQUIRED_PLAYERS] have readied up."))
-
+		get_ctf_voting_controller(game_id).vote(user)
 		return
 
 	if(!SSticker.HasRoundStarted())
@@ -358,7 +374,7 @@
 
 	recently_dead_ckeys += body.ckey
 	spawned_mobs -= body
-	addtimer(CALLBACK(src, .proc/clear_cooldown, body.ckey), respawn_cooldown, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, PROC_REF(clear_cooldown), body.ckey), respawn_cooldown, TIMER_UNIQUE)
 
 /obj/machinery/capture_the_flag/proc/clear_cooldown(ckey)
 	recently_dead_ckeys -= ckey
@@ -394,7 +410,7 @@
 	M.key = new_team_member.key
 	M.faction += team
 	M.equipOutfit(chosen_class)
-	RegisterSignal(M, COMSIG_PARENT_QDELETING, .proc/ctf_qdelled_player) //just in case CTF has some map hazards (read: chasms). bit shorter than dust
+	RegisterSignal(M, COMSIG_PARENT_QDELETING, PROC_REF(ctf_qdelled_player)) //just in case CTF has some map hazards (read: chasms). bit shorter than dust
 	for(var/trait in player_traits)
 		ADD_TRAIT(M, trait, CAPTURE_THE_FLAG_TRAIT)
 	spawned_mobs[M] = chosen_class
@@ -591,7 +607,7 @@
 	var/team = "none"
 	///This is how many points are gained a second while controlling this point
 	var/point_rate = 1
-	var/game_area = /area/ctf
+	var/game_area = /area/centcom/ctf
 
 /obj/machinery/control_point/process(delta_time)
 	if(controlling)
@@ -609,7 +625,7 @@
 	capture(user)
 
 /obj/machinery/control_point/proc/capture(mob/user)
-	if(do_after(user, 30, target = src))
+	if(do_after(user, src, 30))
 		for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
 			if(CTF.ctf_enabled && (user.ckey in CTF.team_members))
 				controlling = CTF

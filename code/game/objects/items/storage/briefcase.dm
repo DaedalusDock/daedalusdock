@@ -5,10 +5,15 @@
 	lefthand_file = 'icons/mob/inhands/equipment/briefcase_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/briefcase_righthand.dmi'
 	flags_1 = CONDUCT_1
-	force = 8
+
 	hitsound = SFX_SWING_HIT
 	throw_speed = 2
 	throw_range = 4
+	force = 8
+	stamina_cost = 17
+	stamina_critical_chance = 10
+	stamina_damage = 40
+
 	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
@@ -16,11 +21,10 @@
 	max_integrity = 150
 	var/folder_path = /obj/item/folder //this is the path of the folder that gets spawned in New()
 
-/obj/item/storage/briefcase/ComponentInitialize()
+/obj/item/storage/briefcase/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_w_class = WEIGHT_CLASS_NORMAL
-	STR.max_combined_w_class = 21
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.max_total_storage = 21
 
 /obj/item/storage/briefcase/PopulateContents()
 	new /obj/item/pen(src)

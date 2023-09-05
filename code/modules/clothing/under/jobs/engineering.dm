@@ -72,7 +72,7 @@
 	desc = "It's an orange high visibility jumpsuit worn by engineers specialized in maintaining engines. Made from fire resistant materials."
 	icon_state = "enginetech"
 	inhand_icon_state = "engi_suit"
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION | CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/engineering/engineer/enginetech/skirt
 	name = "engine technician's jumpskirt"
@@ -86,7 +86,7 @@
 	desc = "It's an orange high visibility jumpsuit worn by electricians. Made from fire resistant materials."
 	icon_state = "electrician"
 	inhand_icon_state = "engi_suit"
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION | CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/engineering/engineer/electrician/skirt
 	name = "electrician's jumpskirt"

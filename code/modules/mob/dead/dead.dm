@@ -9,9 +9,9 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 
 /mob/dead/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 	tag = "mob_[next_mob_id++]"
 	add_to_mob_list()
 
@@ -81,11 +81,6 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 
 	var/client/C = client
 	to_chat(C, span_notice("Sending you to [pick]."))
-	new /atom/movable/screen/splash(null, C)
-
-	notransform = TRUE
-	sleep(29) //let the animation play
-	notransform = FALSE
 
 	if(!C)
 		return

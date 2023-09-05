@@ -84,7 +84,7 @@
 		hitsound_on = hitsound, \
 		w_class_on = w_class, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -121,8 +121,6 @@
 	tool_behaviour = TOOL_DRILL
 	toolspeed = 1
 	sharpness = SHARP_POINTY
-	wound_bonus = 10
-	bare_wound_bonus = 10
 
 /obj/item/surgicaldrill/Initialize(mapload)
 	. = ..()
@@ -130,7 +128,7 @@
 
 /obj/item/surgicaldrill/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] rams [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
-	addtimer(CALLBACK(user, /mob/living/carbon.proc/gib, null, null, TRUE, TRUE), 25)
+	addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, gib), null, null, TRUE, TRUE), 25)
 	user.SpinAnimation(3, 10)
 	playsound(user, 'sound/machines/juicer.ogg', 20, TRUE)
 	return (MANUAL_SUICIDE)
@@ -152,11 +150,16 @@
 	inhand_icon_state = "scalpel"
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
-	force = 10
 	w_class = WEIGHT_CLASS_TINY
+
+	force = 10
 	throwforce = 5
 	throw_speed = 3
 	throw_range = 5
+	stamina_damage = 5
+	stamina_cost = 5
+	stamina_critical_chance = 35
+
 	custom_materials = list(/datum/material/iron=4000, /datum/material/glass=1000)
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
@@ -164,8 +167,6 @@
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SCALPEL
 	toolspeed = 1
-	wound_bonus = 10
-	bare_wound_bonus = 15
 
 /obj/item/scalpel/Initialize(mapload)
 	. = ..()
@@ -192,19 +193,22 @@
 	mob_throw_hit_sound = 'sound/weapons/pierce.ogg'
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
+
 	force = 15
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 9
 	throw_speed = 2
 	throw_range = 5
+	stamina_damage = 5
+	stamina_cost = 5
+	stamina_critical_chance = 35
+
 	custom_materials = list(/datum/material/iron=1000)
 	attack_verb_continuous = list("attacks", "slashes", "saws", "cuts")
 	attack_verb_simple = list("attack", "slash", "saw", "cut")
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1
-	wound_bonus = 15
-	bare_wound_bonus = 10
 
 /obj/item/circular_saw/Initialize(mapload)
 	. = ..()
@@ -214,50 +218,6 @@
 	desc = "A small but very fast spinning saw. It rips and tears until it is done."
 	w_class = WEIGHT_CLASS_SMALL
 	toolspeed = 0.5
-
-
-/obj/item/surgical_drapes
-	name = "surgical drapes"
-	desc = "Nanotrasen brand surgical drapes provide optimal safety and infection control."
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "surgical_drapes"
-	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	inhand_icon_state = "drapes"
-	w_class = WEIGHT_CLASS_TINY
-	attack_verb_continuous = list("slaps")
-	attack_verb_simple = list("slap")
-
-/obj/item/surgical_drapes/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/surgery_initiator)
-
-
-/obj/item/surgical_processor //allows medical cyborgs to scan and initiate advanced surgeries
-	name = "\improper Surgical Processor"
-	desc = "A device for scanning and initiating surgeries from a disk or operating computer."
-	icon = 'icons/obj/device.dmi'
-	icon_state = "spectrometer"
-	item_flags = NOBLUDGEON
-	var/list/advanced_surgeries = list()
-
-/obj/item/surgical_processor/afterattack(obj/item/design_holder, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(istype(design_holder, /obj/item/disk/surgery))
-		to_chat(user, span_notice("You load the surgery protocol from [design_holder] into [src]."))
-		var/obj/item/disk/surgery/surgery_disk = design_holder
-		if(do_after(user, 10, target = design_holder))
-			advanced_surgeries |= surgery_disk.surgeries
-		return TRUE
-	if(istype(design_holder, /obj/machinery/computer/operating))
-		to_chat(user, span_notice("You copy surgery protocols from [design_holder] into [src]."))
-		var/obj/machinery/computer/operating/OC = design_holder
-		if(do_after(user, 10, target = design_holder))
-			advanced_surgeries |= OC.advanced_surgeries
-		return TRUE
-	return
 
 /obj/item/scalpel/advanced
 	name = "laser scalpel"
@@ -283,7 +243,7 @@
 		hitsound_on = hitsound, \
 		w_class_on = w_class, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -324,7 +284,7 @@
 		hitsound_on = hitsound, \
 		w_class_on = w_class, \
 		clumsy_check = FALSE)
-	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, .proc/on_transform)
+	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -376,7 +336,7 @@
 		return
 
 	var/candidate_name
-	var/obj/item/organ/external/tail_snip_candidate
+	var/obj/item/organ/tail_snip_candidate
 	var/obj/item/bodypart/limb_snip_candidate
 
 	if(user.zone_selected == BODY_ZONE_PRECISE_GROIN)
@@ -402,7 +362,7 @@
 	if(patient.stat != DEAD && patient.has_status_effect(/datum/status_effect/jitter)) //jittering will make it harder to secure the shears, even if you can't otherwise move
 		amputation_speed_mod *= 1.5 //15*0.5*1.5=11.25, so staminacritting someone who's jittering (from, say, a stun baton) won't give you enough time to snip their head off, but staminacritting someone who isn't jittering will
 
-	if(do_after(user,  toolspeed * 15 SECONDS * amputation_speed_mod, target = patient))
+	if(do_after(user, patient, toolspeed * 15 SECONDS * amputation_speed_mod))
 		playsound(get_turf(patient), 'sound/weapons/bladeslice.ogg', 250, TRUE)
 		if(user.zone_selected == BODY_ZONE_PRECISE_GROIN) //OwO
 			tail_snip_candidate.Remove(patient)
@@ -417,8 +377,8 @@
 	for(var/obj/item/bodypart/thing in user.bodyparts)
 		if(thing.body_part == CHEST)
 			continue
-		addtimer(CALLBACK(thing, /obj/item/bodypart/.proc/dismember), timer)
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/playsound, user, 'sound/weapons/bladeslice.ogg', 70), timer)
+		addtimer(CALLBACK(thing, TYPE_PROC_REF(/obj/item/bodypart, dismember)), timer)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), user, 'sound/weapons/bladeslice.ogg', 70), timer)
 		timer += 1 SECONDS
 	sleep(timer)
 	return BRUTELOSS
@@ -490,3 +450,12 @@
 			var/chem_name = params["reagent"]
 			var/chem_id = get_chem_id(chem_name)
 			whitelist -= chem_id
+
+/obj/item/fixovein
+	name = "vascular recoupler"
+	desc = "Derived from a Vey-Med design, this miniature 3D printer is used to quickly synthetize and thread new organic tissue during surgical procedures."
+	icon = 'icons/obj/surgery.dmi'
+	icon_state = "fixovein"
+	force = 0
+	throwforce = 1.0
+	w_class = WEIGHT_CLASS_SMALL

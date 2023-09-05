@@ -8,7 +8,6 @@
 	can_elimination_hijack = ELIMINATION_PREVENT
 	show_in_antagpanel = FALSE
 	show_to_ghosts = TRUE
-	antag_moodlet = /datum/mood_event/focused
 	suicide_cry = "FOR NANOTRASEN!!"
 	var/datum/team/ert/ert_team
 	var/leader = FALSE
@@ -232,7 +231,6 @@
 	if(isplasmaman(H))
 		H.equipOutfit(plasmaman_outfit)
 		H.internal = H.get_item_for_held_index(2)
-		H.update_internals_hud_icon(1)
 	H.equipOutfit(outfit)
 
 

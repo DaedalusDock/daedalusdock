@@ -15,9 +15,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//game-preferences
 	var/lastchangelog = "" //Saved changlog filesize to detect if there was a change
 
-	//Antag preferences
-	var/list/be_special = list() //Special role selection
-
 	/// Custom keybindings. Map of keybind names to keyboard inputs.
 	/// For example, by default would have "swap_hands" -> list("X")
 	var/list/key_bindings = list()
@@ -31,19 +28,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
 	var/ghost_form = "ghost"
 
-	//character preferences
-	var/slot_randomized //keeps track of round-to-round randomization of the character slot, prevents overwriting
-
-	var/list/randomise = list()
-
-	//Quirk list
-	var/list/all_quirks = list()
-
-	//Job preferences 2.0 - indexed by job title , no key or value implies never
-	var/list/job_preferences = list()
-
 	/// The current window, PREFERENCE_TAB_* in [`code/__DEFINES/preferences.dm`]
-	var/current_window = PREFERENCE_TAB_CHARACTER_PREFERENCES
+	var/current_window = PREFERENCE_TAB_GAME_PREFERENCES
 
 	var/unlock_content = 0
 
@@ -82,6 +68,20 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// If set to TRUE, will update character_profiles on the next ui_data tick.
 	var/tainted_character_profiles = FALSE
 
+	/// Preference of how the preview should show the character.
+	var/tmp/preview_pref = PREVIEW_PREF_JOB
+
+	///Alternative job titles stored in preferences. Assoc list, ie. alt_job_titles["Scientist"] = "Cytologist"
+	var/list/alt_job_titles = list()
+
+	/// Stores the instance of the category we are viewing. (CHARACTER CREATOR)
+	var/tmp/datum/preference_group/category/selected_category
+
+	/// Used by the loadout UI
+	var/tmp/loadout_show_equipped = FALSE
+	var/tmp/loadout_category = LOADOUT_CATEGORY_BACKPACK
+	var/tmp/loadout_subcategory = LOADOUT_SUBCATEGORY_MISC
+
 /datum/preferences/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_LIST(middleware)
@@ -94,6 +94,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	for (var/middleware_type in subtypesof(/datum/preference_middleware))
 		middleware += new middleware_type(src)
 
+	selected_category = locate(/datum/preference_group/category/general) in GLOB.all_pref_groups
+
 	if(istype(C))
 		if(!is_guest_key(C.key))
 			load_path(C.ckey)
@@ -104,7 +106,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	// give them default keybinds and update their movement keys
 	key_bindings = deep_copy_list(GLOB.default_hotkeys)
 	key_bindings_by_key = get_key_bindings_by_key(key_bindings)
-	randomise = get_default_randomization()
 
 	var/loaded_preferences_successfully = load_preferences()
 	if(loaded_preferences_successfully)
@@ -133,7 +134,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 		// HACK: Without this the character starts out really tiny because of some BYOND bug.
 		// You can fix it by changing a preference, so let's just forcably update the body to emulate this.
-		addtimer(CALLBACK(character_preview_view, /atom/movable/screen/character_preview_view/proc/update_body), 1 SECONDS)
+		addtimer(CALLBACK(character_preview_view, TYPE_PROC_REF(/atom/movable/screen/character_preview_view, update_body)), 1 SECONDS)
 
 /datum/preferences/ui_state(mob/user)
 	return GLOB.always_state
@@ -142,7 +143,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 // they had the ref to Topic to.
 /datum/preferences/ui_status(mob/user, datum/ui_state/state)
 	return user.client == parent ? UI_INTERACTIVE : UI_CLOSE
-
 /datum/preferences/ui_data(mob/user)
 	var/list/data = list()
 
@@ -158,7 +158,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		tainted_character_profiles = FALSE
 
 	//PARIAH EDIT BEGIN
-	data["preview_options"] = list(PREVIEW_PREF_JOB, PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)
+	data["preview_options"] = list(PREVIEW_PREF_JOB,PREVIEW_PREF_LOADOUT, PREVIEW_PREF_UNDERWEAR)
 	data["preview_selection"] = preview_pref
 	//PARIAH EDIT END
 
@@ -272,21 +272,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			return TRUE
 
-		//PARIAH EDIT ADDITION
-		if("update_preview")
-			preview_pref = params["updated_preview"]
-			character_preview_view.update_body()
-			return TRUE
-
-		if ("open_loadout")
-			if(parent.open_loadout_ui)
-				parent.open_loadout_ui.ui_interact(usr)
-			else
-				var/datum/loadout_manager/tgui = new(usr)
-				tgui.ui_interact(usr)
-			return TRUE
-		//PARIAH EDIT END
-
 		if ("set_tricolor_preference")
 			var/requested_preference_key = params["preference"]
 			var/index_key = params["value"]
@@ -321,110 +306,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			return TRUE
 
-		if("appearance_mods")
-			var/datum/preference/requested_preference = GLOB.preference_entries_by_key["appearance_mods"]
-			if (isnull(requested_preference))
-				return FALSE
-
-			var/list/prefs = read_preference(/datum/preference/appearance_mods):Copy()
-			var/species_type = read_preference(/datum/preference/choiced/species)
-			var/list/existing_mods = list()
-			//All of pref code is written with the assumption that pref values about to be saved are serialized
-			prefs = requested_preference.serialize(prefs)
-
-			for(var/_type in prefs)
-				var/datum/appearance_modifier/path = prefs[_type]["path"]
-				path = text2path(path)
-				existing_mods[initial(path.name)] = _type
-
-			var/list/options = list("Add", "Remove")
-			if(length(prefs))
-				options += "Modify"
-
-			var/input = input(usr, "Select an action", "Appearance Mods", "Add...") as null|anything in options
-			if(!input)
-				return FALSE
-
-			switch(input)
-				if("Add")
-					var/list/add_new = global.ModManager.modnames_by_species[species_type] ^ existing_mods
-					var/choice = tgui_input_list(usr, "Add Appearance Mod", "Appearance Mods", add_new)
-					if(!choice)
-						return FALSE
-
-					var/datum/appearance_modifier/mod = global.ModManager.mods_by_name[choice]
-					var/list/new_mod_data = list(
-						"path" = "[mod.type]",
-						"color" = "#FFFFFF",
-						"priority" = 0,
-						"color_blend" = "[mod.color_blend_func]",
-					)
-
-					if(mod.colorable)
-						var/color = input(usr, "Appearance Mod Color", "Appearance Mods", COLOR_WHITE) as null|color
-						if(!color)
-							return FALSE
-						new_mod_data["color"] = color
-
-					var/priority = input(usr, "Appearance Mod Priority", "Appearance Mods", 0) as null|num
-					if(isnull(priority))
-						return
-
-					new_mod_data["priority"] = "[priority]"
-
-					if(!global.ModManager.ValidateSerializedList(new_mod_data))
-						return FALSE
-
-					prefs[mod.type] = new_mod_data
-
-					if(!update_preference(requested_preference, prefs))
-						return FALSE
-
-					return TRUE
-
-				if("Remove")
-					var/name2remove = tgui_input_list(usr, "Remove Appearance Mod", "Appearance Mods", existing_mods)
-					if(!name2remove)
-						return FALSE
-
-					prefs -= existing_mods[name2remove]
-					if(!update_preference(requested_preference, prefs))
-						return FALSE
-					return TRUE
-
-				if("Modify")
-					var/type2modify = tgui_input_list(usr, "Modify Appearance Mod", "Appearance Mods", existing_mods)
-					if(!type2modify)
-						return FALSE
-
-					var/static/list/modifiable_values = list("priority")
-					var/datum/appearance_modifier/type2check = text2path(existing_mods[type2modify])
-					if(initial(type2check.colorable))
-						modifiable_values += "color"
-
-					var/value2modify = tgui_input_list(usr, "Select Var to Modify", "Appearance Mods", modifiable_values)
-					if(!value2modify)
-						return FALSE
-
-					switch(value2modify)
-						if("color")
-							var/color = input(usr, "Appearance Mod Color", "Appearance Mods", COLOR_WHITE) as null|color
-							if(!color)
-								return FALSE
-
-							prefs[existing_mods[type2modify]]["color"] = color
-
-						if("priority")
-							var/priority = input(usr, "Appearance Mod Priority", "Appearance Mods", 0) as null|num
-							if(isnull(priority))
-								return
-							prefs[existing_mods[type2modify]]["priority"] = "[priority]"
-
-					if(!update_preference(requested_preference, prefs))
-						return FALSE
-					return TRUE
-
-
 	for (var/datum/preference_middleware/preference_middleware as anything in middleware)
 		var/delegation = preference_middleware.action_delegations[action]
 		if (!isnull(delegation))
@@ -442,11 +323,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if (.)
 		return
 
+	if(parent != usr.client && !check_rights(show_msg = FALSE))
+		CRASH("Unable to edit prefs that don't belong to you, [usr.key]! (pref owner: [parent?.key || "NULL"])")
+
 	if (href_list["open_keybindings"])
 		current_window = PREFERENCE_TAB_KEYBINDINGS
 		update_static_data(usr)
 		ui_interact(usr)
 		return TRUE
+
+	return html_topic(href, href_list)
 
 /datum/preferences/proc/create_character_preview_view(mob/user)
 	character_preview_view = new(null, src, user.client)
@@ -513,16 +399,18 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 	/// The client that is watching this view
 	var/client/client
 
+	var/list/atom/movable/screen/subscreens = list()
+
 /atom/movable/screen/character_preview_view/Initialize(mapload, datum/preferences/preferences, client/client)
 	. = ..()
 
-	assigned_map = "character_preview_[REF(src)]"
-	set_position(1, 1)
+	assigned_map = "character_preview_map"
 
 	src.preferences = preferences
 
 /atom/movable/screen/character_preview_view/Destroy()
 	QDEL_NULL(body)
+	QDEL_LIST_ASSOC_VAL(subscreens)
 
 	for (var/plane_master in plane_masters)
 		client?.screen -= plane_master
@@ -544,7 +432,12 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 		create_body()
 	else
 		body.wipe_state()
-	appearance = preferences.render_new_preview_appearance(body)
+	preferences.render_new_preview_appearance(body)
+	for(var/index in subscreens)
+		var/atom/movable/screen/subscreen = subscreens[index]
+		var/cache_dir = subscreen.dir
+		subscreen.appearance = body.appearance
+		subscreen.dir = cache_dir
 
 /atom/movable/screen/character_preview_view/proc/create_body()
 	QDEL_NULL(body)
@@ -565,12 +458,30 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 
 	for (var/plane_master_type in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/blackness)
 		var/atom/movable/screen/plane_master/plane_master = new plane_master_type()
-		plane_master.screen_loc = "[assigned_map]:CENTER"
+		plane_master.screen_loc = "[assigned_map]:0,CENTER"
 		client?.screen |= plane_master
 
 		plane_masters += plane_master
 
+	var/pos
+	for(var/dir in GLOB.cardinals)
+		pos++
+		var/atom/movable/screen/subscreen/preview = subscreens["preview-[dir]"]
+		if(!preview)
+			preview = new
+			subscreens["preview-[dir]"] = preview
+			client?.register_map_obj(preview)
+		preview.appearance = body.appearance
+		preview.dir = dir
+		preview.set_position(0, pos)
+
+
 	client?.register_map_obj(src)
+
+INITIALIZE_IMMEDIATE(/atom/movable/screen/subscreen)
+/atom/movable/screen/subscreen
+	name = "preview_subscreen"
+	assigned_map = "character_preview_map"
 
 /datum/preferences/proc/create_character_profiles()
 	var/list/profiles = list()
@@ -595,52 +506,12 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 
 	return profiles
 
-/datum/preferences/proc/set_job_preference_level(datum/job/job, level)
-	if (!job)
-		return FALSE
-
-	if (level == JP_HIGH)
-		var/datum/job/overflow_role = SSjob.overflow_role
-		var/overflow_role_title = initial(overflow_role.title)
-
-		for(var/other_job in job_preferences)
-			if(job_preferences[other_job] == JP_HIGH)
-				// Overflow role needs to go to NEVER, not medium!
-				if(other_job == overflow_role_title)
-					job_preferences[other_job] = null
-				else
-					job_preferences[other_job] = JP_MEDIUM
-
-	job_preferences[job.title] = level
-
-	return TRUE
-
-/datum/preferences/proc/GetQuirkBalance()
-	var/bal = 0
-	for(var/V in all_quirks)
-		var/datum/quirk/T = SSquirks.quirks[V]
-		bal -= initial(T.value)
-	return bal
-
-/datum/preferences/proc/GetPositiveQuirkCount()
-	. = 0
-	for(var/q in all_quirks)
-		if(SSquirks.quirk_points[q] > 0)
-			.++
-
-/datum/preferences/proc/validate_quirks()
-	if(GetQuirkBalance() < 0)
-		all_quirks = list()
-
 /// Sanitizes the preferences, applies the randomization prefs, and then applies the preference to the human mob.
 /datum/preferences/proc/safe_transfer_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE, is_antag = FALSE)
-	apply_character_randomization_prefs(is_antag)
 	apply_prefs_to(character, icon_updates)
 
 /// Applies the given preferences to a human mob.
 /datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
-	//character.dna.features = list()
-
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
@@ -654,18 +525,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 		character.icon_render_keys = list()
 		character.update_body(is_creating = TRUE)
 
-
-/// Returns whether the parent mob should have the random hardcore settings enabled. Assumes it has a mind.
-/datum/preferences/proc/should_be_random_hardcore(datum/job/job, datum/mind/mind)
-	if(!read_preference(/datum/preference/toggle/random_hardcore))
-		return FALSE
-	if(job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND) //No command staff
-		return FALSE
-	for(var/datum/antagonist/antag as anything in mind.antag_datums)
-		if(antag.get_team()) //No team antags
-			return FALSE
-	return TRUE
-
 /// Inverts the key_bindings list such that it can be used for key_bindings_by_key
 /datum/preferences/proc/get_key_bindings_by_key(list/key_bindings)
 	var/list/output = list()
@@ -675,14 +534,3 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/character_preview_view)
 			LAZYADD(output[key], action)
 
 	return output
-
-/// Returns the default `randomise` variable ouptut
-/datum/preferences/proc/get_default_randomization()
-	var/list/default_randomization = list()
-
-	for (var/preference_key in GLOB.preference_entries_by_key)
-		var/datum/preference/preference = GLOB.preference_entries_by_key[preference_key]
-		if (preference.is_randomizable() && preference.randomize_by_default)
-			default_randomization[preference_key] = RANDOM_ENABLED
-
-	return default_randomization

@@ -50,17 +50,17 @@
 #define TEST_DEFAULT 1
 #define TEST_DEL_WORLD INFINITY
 
-/// Change color to red on ANSI terminal output, if enabled with -DANSICOLORS.
 #ifdef ANSICOLORS
+/// Change color to red on ANSI terminal output, if enabled with -DANSICOLORS.
 #define TEST_OUTPUT_RED(text) "\x1B\x5B1;31m[text]\x1B\x5B0m"
+/// Change color to green on ANSI terminal output, if enabled with -DANSICOLORS.
+#define TEST_OUTPUT_GREEN(text) "\x1B\x5B1;32m[text]\x1B\x5B0m"
+/// Change color to yellow on ANSI terminal output, if enabled with -DANSICOLORS.
+#define TEST_OUTPUT_YELLOW(text) "\x1B\x5B1;33m[text]\x1B\x5B0m"
 #else
 #define TEST_OUTPUT_RED(text) (text)
-#endif
-/// Change color to green on ANSI terminal output, if enabled with -DANSICOLORS.
-#ifdef ANSICOLORS
-#define TEST_OUTPUT_GREEN(text) "\x1B\x5B1;32m[text]\x1B\x5B0m"
-#else
 #define TEST_OUTPUT_GREEN(text) (text)
+#define TEST_OUTPUT_YELLOW(text) (text)
 #endif
 
 /// A trait source when adding traits through unit tests
@@ -80,12 +80,14 @@
 #include "chat_filter.dm"
 #include "circuit_component_category.dm"
 #include "closets.dm"
+#include "codex.dm"
 #include "combat.dm"
 #include "component_tests.dm"
 #include "confusion.dm"
 #include "connect_loc.dm"
 #include "crayons.dm"
 #include "create_and_destroy.dm"
+#include "dcs_get_id_from_elements.dm"
 #include "designs.dm"
 #include "dummy_spawn.dm"
 #include "dynamic_ruleset_sanity.dm"
@@ -93,24 +95,27 @@
 #include "emoting.dm"
 #include "food_edibility_check.dm"
 #include "gas_transfer.dm"
+#include "gas_validation.dm"
 #include "get_turf_pixel.dm"
 #include "greyscale_config.dm"
 #include "heretic_knowledge.dm"
 #include "heretic_rituals.dm"
 #include "holidays.dm"
+#include "hydroponics_extractor_storage.dm"
 #include "hydroponics_harvest.dm"
 #include "hydroponics_self_mutations.dm"
 #include "keybinding_init.dm"
+#include "knockoff_component.dm"
 #include "load_map_security.dm"
 #include "machine_disassembly.dm"
 #include "mapping.dm"
-#include "medical_wounds.dm"
 #include "merge_type.dm"
 #include "metabolizing.dm"
+#include "mindbound_actions.dm"
 #include "mob_spawn.dm"
 #include "modsuit.dm"
 #include "modular_map_loader.dm"
-#include "ntnetwork_tests.dm"
+#include "novaflower_burn.dm"
 #include "objectives.dm"
 #include "outfit_sanity.dm"
 #include "paintings.dm"
@@ -121,6 +126,7 @@
 #include "projectiles.dm"
 #include "quirks.dm"
 #include "rcd.dm"
+#include "reagent_descriptions.dm"
 #include "reagent_id_typos.dm"
 #include "reagent_mod_expose.dm"
 #include "reagent_mod_procs.dm"
@@ -139,6 +145,10 @@
 #include "species_config_sanity.dm"
 #include "species_unique_id.dm"
 #include "species_whitelists.dm"
+#include "spell_invocations.dm"
+#include "spell_mindswap.dm"
+#include "spell_names.dm"
+#include "spell_shapeshift.dm"
 #include "stack_singular_name.dm"
 #include "stomach.dm"
 #include "strippable.dm"
@@ -149,7 +159,8 @@
 #include "timer_sanity.dm"
 #include "traitor.dm"
 #include "unit_test.dm"
-#include "wizard.dm"
+#include "wizard_loadout.dm"
+#include "wounds.dm"
 #ifdef REFERENCE_TRACKING_DEBUG //Don't try and parse this file if ref tracking isn't turned on. IE: don't parse ref tracking please mr linter
 #include "find_reference_sanity.dm"
 #endif

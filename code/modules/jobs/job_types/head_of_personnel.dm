@@ -5,19 +5,22 @@
 		protect Ian, run the station when the captain dies." //PARIAH EDIT
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
-	// head_announce = list(RADIO_CHANNEL_SUPPLY, RADIO_CHANNEL_SERVICE) //ORIGINAL
-	head_announce = list(RADIO_CHANNEL_SERVICE) //PARIAH EDIT CHANGE
+	head_announce = list(RADIO_CHANNEL_SUPPLY, RADIO_CHANNEL_SERVICE)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the captain"
-	selection_color = "#ddddff"
+	selection_color = "#1d1d4f"
 	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SERVICE
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/daedalus
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -32,12 +35,10 @@
 		)
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_SRV
+	paycheck_department = ACCOUNT_STATION_MASTER
 	bounty_types = CIV_JOB_RANDOM
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
-
-	display_order = JOB_DISPLAY_ORDER_HEAD_OF_PERSONNEL
 
 	mail_goodies = list(
 		/obj/item/card/id/advanced/silver = 10,
@@ -63,9 +64,9 @@
 	id_trim = /datum/id_trim/job/head_of_personnel
 	uniform = /obj/item/clothing/under/rank/civilian/head_of_personnel
 	backpack_contents = list(
-		/obj/item/melee/baton/telescopic = 1,
 		/obj/item/storage/box/ids = 1,
-		)
+		/obj/item/assembly/flash/handheld
+	)
 	belt = /obj/item/modular_computer/tablet/pda/heads/hop
 	ears = /obj/item/radio/headset/heads/hop
 	head = /obj/item/clothing/head/hopcap

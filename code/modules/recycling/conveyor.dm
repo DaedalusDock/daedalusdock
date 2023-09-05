@@ -16,6 +16,8 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	desc = "A conveyor belt."
 	layer = BELOW_OPEN_DOOR_LAYER
 	processing_flags = NONE
+	loc_procs = UNCROSSED|CROSSED
+
 	/// The current state of the switch.
 	var/operating = CONVEYOR_OFF
 	/// This is the default (forward) direction, set by the map dir.
@@ -79,14 +81,6 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	if(new_id)
 		id = new_id
 	neighbors = list()
-	///Leaving onto conveyor detection won't work at this point, but that's alright since it's an optimization anyway
-	///Should be fine without it
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXITED = .proc/conveyable_exit,
-		COMSIG_ATOM_ENTERED = .proc/conveyable_enter,
-		COMSIG_ATOM_INITIALIZED_ON = .proc/conveyable_enter
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 	update_move_direction()
 	LAZYADD(GLOB.conveyors_by_id[id], src)
 	return INITIALIZE_HINT_LATELOAD
@@ -131,10 +125,10 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 			continue
 		neighbors["[direction]"] = TRUE
 		valid.neighbors["[DIRFLIP(direction)]"] = TRUE
-		RegisterSignal(valid, COMSIG_MOVABLE_MOVED, .proc/nearby_belt_changed, override=TRUE)
-		RegisterSignal(valid, COMSIG_PARENT_QDELETING, .proc/nearby_belt_changed, override=TRUE)
-		valid.RegisterSignal(src, COMSIG_MOVABLE_MOVED, .proc/nearby_belt_changed, override=TRUE)
-		valid.RegisterSignal(src, COMSIG_PARENT_QDELETING, .proc/nearby_belt_changed, override=TRUE)
+		RegisterSignal(valid, COMSIG_MOVABLE_MOVED, PROC_REF(nearby_belt_changed), override=TRUE)
+		RegisterSignal(valid, COMSIG_PARENT_QDELETING, PROC_REF(nearby_belt_changed), override=TRUE)
+		valid.RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(nearby_belt_changed), override=TRUE)
+		valid.RegisterSignal(src, COMSIG_PARENT_QDELETING, PROC_REF(nearby_belt_changed), override=TRUE)
 
 /obj/machinery/conveyor/proc/nearby_belt_changed(datum/source)
 	SIGNAL_HANDLER
@@ -200,43 +194,46 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	operating = new_value
 	update_appearance()
 	update_move_direction()
-	if(!operating) //If we ever turn off, disable moveloops
+	//If we ever turn off, disable moveloops
+	if(operating == CONVEYOR_OFF)
 		for(var/atom/movable/movable in get_turf(src))
 			stop_conveying(movable)
 
 /obj/machinery/conveyor/proc/update()
-	. = TRUE
 	if(machine_stat & NOPOWER)
 		set_operating(FALSE)
 		return FALSE
-	if(!operating) //If we're on, start conveying so moveloops on our tile can be refreshed if they stopped for some reason
-		return
-	for(var/atom/movable/movable in get_turf(src))
-		start_conveying(movable)
 
-/obj/machinery/conveyor/proc/conveyable_enter(datum/source, atom/convayable)
-	SIGNAL_HANDLER
+	// If we're on, start conveying so moveloops on our tile can be refreshed if they stopped for some reason
+	if(operating != CONVEYOR_OFF)
+		for(var/atom/movable/movable in get_turf(src))
+			start_conveying(movable)
+	return TRUE
+
+/obj/machinery/conveyor/Crossed(atom/movable/crossed_by, oldloc)
 	if(operating == CONVEYOR_OFF)
-		SSmove_manager.stop_looping(convayable, SSconveyors)
+		SSmove_manager.stop_looping(crossed_by, SSconveyors)
 		return
-	var/datum/move_loop/move/moving_loop = SSmove_manager.processing_on(convayable, SSconveyors)
-	if(moving_loop)
-		moving_loop.direction = movedir
-		moving_loop.delay = speed SECONDS
-		return
-	start_conveying(convayable)
+	start_conveying(crossed_by)
 
-/obj/machinery/conveyor/proc/conveyable_exit(datum/source, atom/convayable, direction)
-	SIGNAL_HANDLER
+/obj/machinery/conveyor/Uncrossed(atom/movable/uncrossed_atom, direction)
 	var/has_conveyor = neighbors["[direction]"]
-	if(!has_conveyor || !isturf(convayable.loc)) //If you've entered something on us, stop moving
-		SSmove_manager.stop_looping(convayable, SSconveyors)
+	if(!has_conveyor || !isturf(uncrossed_atom.loc)) //If you've entered something on us, stop moving
+		SSmove_manager.stop_looping(uncrossed_atom, SSconveyors)
 
 /obj/machinery/conveyor/proc/start_conveying(atom/movable/moving)
+	if(QDELETED(moving))
+		return
+	var/datum/move_loop/move/moving_loop = SSmove_manager.processing_on(moving, SSconveyors)
+	if(moving_loop)
+		moving_loop.direction = movedir
+		moving_loop.delay = speed * 1 SECONDS
+		return
+
 	var/static/list/unconveyables = typecacheof(list(/obj/effect, /mob/dead))
 	if(!istype(moving) || is_type_in_typecache(moving, unconveyables) || moving == src)
 		return
-	moving.AddComponent(/datum/component/convey, movedir, speed SECONDS)
+	moving.AddComponent(/datum/component/convey, movedir, speed * 1 SECONDS)
 
 /obj/machinery/conveyor/proc/stop_conveying(atom/movable/thing)
 	if(!ismovable(thing))
@@ -284,7 +281,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 	else if(!user.combat_mode)
 		user.transferItemToLoc(attacking_item, drop_location())
-	
+
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 
@@ -566,7 +563,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	if(!attached_switch)
 		return
 
-	INVOKE_ASYNC(src, .proc/update_conveyers, port)
+	INVOKE_ASYNC(src, PROC_REF(update_conveyers), port)
 
 /obj/item/circuit_component/conveyor_switch/proc/update_conveyers(datum/port/input/port)
 	if(!attached_switch)

@@ -5,7 +5,6 @@
 	max_integrity = 120
 	impressiveness = 18 // Carved from the bones of a massive creature, it's going to be a specticle to say the least
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = ABOVE_GAME_PLANE
 	custom_materials = list(/datum/material/bone=MINERAL_MATERIAL_AMOUNT*5)
 	abstract_type = /obj/structure/statue/bone
 
@@ -58,7 +57,7 @@
 	color = "#B5651D"
 	turf_type = /turf/open/misc/asteroid/basalt/wasteland
 	baseturfs = /turf/open/misc/asteroid/basalt/wasteland
-	smooth_icon = 'icons/turf/walls/legacy/rock_wall.dmi'
+	icon = 'icons/turf/walls/legacy/rock_wall.dmi'
 	base_icon_state = "rock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 
@@ -178,12 +177,11 @@
 		if(!opened)
 			if(istype(S,cutting_tool) && S.tool_behaviour == TOOL_SHOVEL)
 				to_chat(user, span_notice("You start start to dig open \the [src]  with \the [S]..."))
-				if (do_after(user,20, target = src))
+				if (do_after(user, src, 20))
 					opened = TRUE
 					locked = TRUE
 					dump_contents()
 					update_appearance()
-					SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "graverobbing", /datum/mood_event/graverobbing)
 					if(lead_tomb == TRUE && first_open == TRUE)
 						user.gain_trauma(/datum/brain_trauma/magic/stalker)
 						to_chat(user, span_boldwarning("Oh no, no no no, THEY'RE EVERYWHERE! EVERY ONE OF THEM IS EVERYWHERE!"))
@@ -200,9 +198,8 @@
 	else if((user.combat_mode) && opened) //checks to attempt to remove the grave entirely.
 		if(istype(S,cutting_tool) && S.tool_behaviour == TOOL_SHOVEL)
 			to_chat(user, span_notice("You start to remove \the [src]  with \the [S]."))
-			if (do_after(user,15, target = src))
+			if (do_after(user, src, 15))
 				to_chat(user, span_notice("You remove \the [src]  completely."))
-				SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "graverobbing", /datum/mood_event/graverobbing)
 				deconstruct(TRUE)
 				return 1
 	return
@@ -229,16 +226,6 @@
 
 /obj/effect/decal/remains/human/grave
 	turf_loc_check = FALSE
-
-/obj/item/book/granter/crafting_recipe/boneyard_notes
-	name = "The Complete Works of Lavaland Bone Architecture"
-	desc = "Pried from the lead Archaeologist's cold, dead hands, this seems to explain how ancient bone architecture was erected long ago."
-	crafting_recipe_types = list(/datum/crafting_recipe/rib, /datum/crafting_recipe/boneshovel, /datum/crafting_recipe/halfskull, /datum/crafting_recipe/skull)
-	icon = 'icons/obj/library.dmi'
-	icon_state = "boneworking_learing"
-	oneuse = FALSE
-	remarks = list("Who knew you could bend bones that far back?", "I guess that was much easier before the planet heated up...", "So that's how they made those ruins survive the ashstorms. Neat!", "The page is just filled with insane ramblings about some 'legion' thing.", "But why would they need vinegar to polish the bones? And rags too?", "You spend a few moments cleaning dirt and blood off of the page, yeesh.")
-
 
 //***Fluff items for lore/intrigue
 /obj/item/paper/crumpled/muddy/fluff/elephant_graveyard

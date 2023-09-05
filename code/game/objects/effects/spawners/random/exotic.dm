@@ -6,9 +6,8 @@
 	name = "technology spawner"
 	icon_state = "disk"
 	spawn_loot_count = 2
-	loot = list( // Space loot spawner. Couple of random bits of technology-adjacent stuff including anomaly cores and BEPIS techs.
+	loot = list( // Space loot spawner. Couple of random bits of technology-adjacent stuff including anomaly cores..
 		/obj/item/raw_anomaly_core/random,
-		/obj/item/disk/tech_disk/spaceloot,
 		/obj/item/camera_bug,
 	)
 
@@ -53,8 +52,8 @@
 		/obj/item/storage/toolbox/syndicate = 12,
 		/obj/item/melee/baton/telescopic = 12,
 		/obj/item/melee/baton = 11,
-		/obj/item/book/granter/spell/smoke = 10,
-		/obj/item/book/granter/spell/blind = 10,
+		/obj/item/book/granter/action/spell/smoke = 10,
+		/obj/item/book/granter/action/spell/blind = 10,
 		/obj/item/clothing/shoes/chameleon/noslip = 10,
 		/obj/item/grenade/c4 = 7,
 		/obj/item/borg/upgrade/ddrill = 3,

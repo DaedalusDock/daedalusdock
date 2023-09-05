@@ -1,12 +1,13 @@
-/obj/item/organ/internal/brain
+/obj/item/organ/brain
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
 	icon_state = "brain"
 	visual = TRUE
+	color_source = ORGAN_COLOR_STATIC
+	draw_color = null
 	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_BRAIN
 	organ_flags = ORGAN_VITAL
@@ -19,6 +20,8 @@
 	maxHealth = BRAIN_DAMAGE_DEATH
 	low_threshold = 45
 	high_threshold = 120
+
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
 
 	var/suicided = FALSE
 	var/mob/living/brain/brainmob = null
@@ -37,8 +40,10 @@
 	/// Maximum skillchip slots available. Do not reference this var directly and instead call get_max_skillchip_slots()
 	var/max_skillchip_slots = 5
 
-/obj/item/organ/internal/brain/Insert(mob/living/carbon/C, special = 0,no_id_transfer = FALSE)
+/obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0,no_id_transfer = FALSE)
 	. = ..()
+	if(!.)
+		return
 
 	name = "brain"
 
@@ -73,7 +78,7 @@
 	//Update the body's icon so it doesnt appear debrained anymore
 	C.update_body_parts()
 
-/obj/item/organ/internal/brain/Remove(mob/living/carbon/C, special = 0, no_id_transfer = FALSE)
+/obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0, no_id_transfer = FALSE)
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
 	if(!QDELETED(C) && length(skillchips))
 		to_chat(C, span_notice("You feel your skillchips enable emergency power saving mode, deactivating as your brain leaves your body..."))
@@ -93,7 +98,7 @@
 		transfer_identity(C)
 	C.update_body_parts()
 
-/obj/item/organ/internal/brain/proc/transfer_identity(mob/living/L)
+/obj/item/organ/brain/proc/transfer_identity(mob/living/L)
 	name = "[L.name]'s brain"
 	if(brainmob || decoy_override)
 		return
@@ -115,37 +120,41 @@
 		L.mind.transfer_to(brainmob)
 	to_chat(brainmob, span_notice("You feel slightly disoriented. That's normal when you're just a brain."))
 
-/obj/item/organ/internal/brain/attackby(obj/item/O, mob/user, params)
+/obj/item/organ/brain/attackby(obj/item/O, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
 
 	if(istype(O, /obj/item/borg/apparatus/organ_storage))
 		return //Borg organ bags shouldn't be killing brains
 
-	if((organ_flags & ORGAN_FAILING) && O.is_drainable() && O.reagents.has_reagent(/datum/reagent/medicine/mannitol)) //attempt to heal the brain
+	if(damage > 0 && O.is_drainable() && O.reagents.has_reagent(/datum/reagent/medicine/alkysine)) //attempt to heal the brain
 		. = TRUE //don't do attack animation.
 		if(brainmob?.health <= HEALTH_THRESHOLD_DEAD) //if the brain is fucked anyway, do nothing
 			to_chat(user, span_warning("[src] is far too damaged, there's nothing else we can do for it!"))
 			return
 
-		if(!O.reagents.has_reagent(/datum/reagent/medicine/mannitol, 10))
-			to_chat(user, span_warning("There's not enough mannitol in [O] to restore [src]!"))
-			return
+		if(organ_flags & ORGAN_FAILING)
+			if(!O.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
+				to_chat(user, span_warning("There's not enough alkysine in [O] to restore [src]!"))
+				return
 
 		user.visible_message(span_notice("[user] starts to pour the contents of [O] onto [src]."), span_notice("You start to slowly pour the contents of [O] onto [src]."))
-		if(!do_after(user, 6 SECONDS, src))
+		if(!do_after(user, src, 6 SECONDS))
 			to_chat(user, span_warning("You failed to pour [O] onto [src]!"))
 			return
 
-		user.visible_message(span_notice("[user] pours the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."), span_notice("You pour the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."))
-		var/healby = O.reagents.get_reagent_amount(/datum/reagent/medicine/mannitol)
-		setOrganDamage(damage - healby*2) //heals 2 damage per unit of mannitol, and by using "setorgandamage", we clear the failing variable if that was up
+		if(organ_flags & ORGAN_FAILING)
+			user.visible_message(span_notice("[user] pours the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."), span_notice("You pour the contents of [O] onto [src], causing it to reform its original shape and turn a slightly brighter shade of pink."))
+		else
+			user.visible_message(span_notice("[user] pours the contents of [O] onto [src]."))
+		var/healby = O.reagents.get_reagent_amount(/datum/reagent/medicine/alkysine)
+		setOrganDamage(damage - healby*2) //heals 2 damage per unit of alkysine, and by using "setorgandamage", we clear the failing variable if that was up
 		O.reagents.clear_reagents()
 		return
 
 	// Cutting out skill chips.
-	if(length(skillchips) && O.get_sharpness() == SHARP_EDGED)
+	if(length(skillchips) && (O.sharpness & SHARP_EDGED))
 		to_chat(user,span_notice("You begin to excise skillchips from [src]."))
-		if(do_after(user, 15 SECONDS, target = src))
+		if(do_after(user, src, 15 SECONDS))
 			for(var/chip in skillchips)
 				var/obj/item/skillchip/skillchip = chip
 
@@ -175,7 +184,7 @@
 		visible_message(span_danger("[user] hits [src] with [O]!"))
 		to_chat(user, span_danger("You hit [src] with [O]!"))
 
-/obj/item/organ/internal/brain/examine(mob/user)
+/obj/item/organ/brain/examine(mob/user)
 	. = ..()
 	if(length(skillchips))
 		. += span_info("It has a skillchip embedded in it.")
@@ -184,15 +193,15 @@
 		return
 	if((brainmob && (brainmob.client || brainmob.get_ghost())) || decoy_override)
 		if(organ_flags & ORGAN_FAILING)
-			. += span_info("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>mannitol</b>.")
+			. += span_info("It seems to still have a bit of energy within it, but it's rather damaged... You may be able to restore it with some <b>alkysine</b>.")
 		else if(damage >= BRAIN_DAMAGE_DEATH*0.5)
-			. += span_info("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>mannitol</b>.")
+			. += span_info("You can feel the small spark of life still left in this one, but it's got some bruises. You may be able to restore it with some <b>alkysine</b>.")
 		else
 			. += span_info("You can feel the small spark of life still left in this one.")
 	else
 		. += span_info("This one is completely devoid of life.")
 
-/obj/item/organ/internal/brain/attack(mob/living/carbon/C, mob/user)
+/obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
 	if(!istype(C))
 		return ..()
 
@@ -201,7 +210,7 @@
 	if(user.zone_selected != BODY_ZONE_HEAD)
 		return ..()
 
-	var/target_has_brain = C.getorgan(/obj/item/organ/internal/brain)
+	var/target_has_brain = C.getorgan(/obj/item/organ/brain)
 
 	if(!target_has_brain && C.is_eyes_covered())
 		to_chat(user, span_warning("You're going to need to remove [C.p_their()] head cover first!"))
@@ -229,7 +238,7 @@
 	else
 		..()
 
-/obj/item/organ/internal/brain/Destroy() //copypasted from MMIs.
+/obj/item/organ/brain/Destroy() //copypasted from MMIs.
 	if(brainmob)
 		QDEL_NULL(brainmob)
 	QDEL_LIST(traumas)
@@ -239,12 +248,12 @@
 		owner.mind.set_current(null)
 	return ..()
 
-/obj/item/organ/internal/brain/on_life(delta_time, times_fired)
+/obj/item/organ/brain/on_life(delta_time, times_fired)
 	if(damage >= BRAIN_DAMAGE_DEATH) //rip
 		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
 		owner.death()
 
-/obj/item/organ/internal/brain/check_damage_thresholds(mob/M)
+/obj/item/organ/brain/check_damage_thresholds(mob/M)
 	. = ..()
 	//if we're not more injured than before, return without gambling for a trauma
 	if(damage <= prev_damage)
@@ -277,9 +286,9 @@
 			else
 				return brain_message
 
-/obj/item/organ/internal/brain/before_organ_replacement(obj/item/organ/replacement)
+/obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)
 	. = ..()
-	var/obj/item/organ/internal/brain/replacement_brain = replacement
+	var/obj/item/organ/brain/replacement_brain = replacement
 	if(!istype(replacement_brain))
 		return
 
@@ -309,7 +318,7 @@
 	// Any skillchips has been transferred over, time to empty the list.
 	LAZYCLEARLIST(skillchips)
 
-/obj/item/organ/internal/brain/machine_wash(obj/machinery/washing_machine/brainwasher)
+/obj/item/organ/brain/machine_wash(obj/machinery/washing_machine/brainwasher)
 	. = ..()
 	if(HAS_TRAIT(brainwasher, TRAIT_BRAINWASHING))
 		setOrganDamage(0)
@@ -317,19 +326,18 @@
 	else
 		setOrganDamage(BRAIN_DAMAGE_DEATH)
 
-/obj/item/organ/internal/brain/alien
+/obj/item/organ/brain/alien
 	name = "alien brain"
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
 	icon_state = "brain-x"
 
-/obj/item/organ/internal/brain/vox
+/obj/item/organ/brain/vox
 	name = "cortical stack"
 	desc = "A peculiarly advanced bio-electronic device that seems to hold the memories and identity of a Vox."
 	icon_state = "cortical-stack"
-	status = ORGAN_ROBOTIC
 	organ_flags = ORGAN_SYNTHETIC
 
-/obj/item/organ/internal/brain/vox/emp_act(severity)
+/obj/item/organ/brain/vox/emp_act(severity)
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -349,27 +357,23 @@
 			owner.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter)
 			owner.adjust_timed_status_effect(3 SECONDS, /datum/status_effect/confusion)
 
-/obj/item/organ/internal/brain/skrell
-	name = "spongy brain"
-	icon_state = "skrell-brain"
-
 
 ////////////////////////////////////TRAUMAS////////////////////////////////////////
 
-/obj/item/organ/internal/brain/proc/has_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
+/obj/item/organ/brain/proc/has_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
 		if(istype(BT, brain_trauma_type) && (BT.resilience <= resilience))
 			return BT
 
-/obj/item/organ/internal/brain/proc/get_traumas_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
+/obj/item/organ/brain/proc/get_traumas_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
 	. = list()
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
 		if(istype(BT, brain_trauma_type) && (BT.resilience <= resilience))
 			. += BT
 
-/obj/item/organ/internal/brain/proc/can_gain_trauma(datum/brain_trauma/trauma, resilience, natural_gain = FALSE)
+/obj/item/organ/brain/proc/can_gain_trauma(datum/brain_trauma/trauma, resilience, natural_gain = FALSE)
 	if(!ispath(trauma))
 		trauma = trauma.type
 	if(!initial(trauma.can_gain))
@@ -405,14 +409,14 @@
 	return TRUE
 
 //Proc to use when directly adding a trauma to the brain, so extra args can be given
-/obj/item/organ/internal/brain/proc/gain_trauma(datum/brain_trauma/trauma, resilience, ...)
+/obj/item/organ/brain/proc/gain_trauma(datum/brain_trauma/trauma, resilience, ...)
 	var/list/arguments = list()
 	if(args.len > 2)
 		arguments = args.Copy(3)
 	. = brain_gain_trauma(trauma, resilience, arguments)
 
 //Direct trauma gaining proc. Necessary to assign a trauma to its brain. Avoid using directly.
-/obj/item/organ/internal/brain/proc/brain_gain_trauma(datum/brain_trauma/trauma, resilience, list/arguments)
+/obj/item/organ/brain/proc/brain_gain_trauma(datum/brain_trauma/trauma, resilience, list/arguments)
 	if(!can_gain_trauma(trauma, resilience))
 		return FALSE
 
@@ -441,7 +445,7 @@
 	return actual_trauma
 
 //Add a random trauma of a certain subtype
-/obj/item/organ/internal/brain/proc/gain_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience, natural_gain = FALSE)
+/obj/item/organ/brain/proc/gain_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience, natural_gain = FALSE)
 	var/list/datum/brain_trauma/possible_traumas = list()
 	for(var/T in subtypesof(brain_trauma_type))
 		var/datum/brain_trauma/BT = T
@@ -455,12 +459,12 @@
 	return gain_trauma(trauma_type, resilience)
 
 //Cure a random trauma of a certain resilience level
-/obj/item/organ/internal/brain/proc/cure_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_BASIC)
+/obj/item/organ/brain/proc/cure_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_BASIC)
 	var/list/traumas = get_traumas_type(brain_trauma_type, resilience)
 	if(LAZYLEN(traumas))
 		qdel(pick(traumas))
 
-/obj/item/organ/internal/brain/proc/cure_all_traumas(resilience = TRAUMA_RESILIENCE_BASIC)
+/obj/item/organ/brain/proc/cure_all_traumas(resilience = TRAUMA_RESILIENCE_BASIC)
 	var/amount_cured = 0
 	var/list/traumas = get_traumas_type(resilience = resilience)
 	for(var/X in traumas)
@@ -469,7 +473,7 @@
 	return amount_cured
 
 /// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
-/obj/item/organ/internal/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
+/obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
 	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
 	if(target.body_position == LYING_DOWN && owner.usable_legs)
 		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)

@@ -30,12 +30,12 @@
 		target.visible_message(span_warning("[user] is attempting to implant [target]."))
 
 	var/turf/target_on = get_turf(target)
-	if(!(target_on && (target == user || do_mob(user, target, 5 SECONDS))))
+	if(!(target_on && (target == user || do_after(user, target, 5 SECONDS))))
 		return
 	if(!(src && imp))
 		return
 
-	if(imp.implant(target, user))
+	if(imp.implant(target, user, deprecise_zone(user.zone_selected)))
 		if (target == user)
 			to_chat(user, span_notice("You implant yourself."))
 		else

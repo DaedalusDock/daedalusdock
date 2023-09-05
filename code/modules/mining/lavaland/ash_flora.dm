@@ -50,7 +50,7 @@
 	name = harvested_name
 	desc = harvested_desc
 	harvested = TRUE
-	addtimer(CALLBACK(src, .proc/regrow), rand(regrowth_time_low, regrowth_time_high))
+	addtimer(CALLBACK(src, PROC_REF(regrow)), rand(regrowth_time_low, regrowth_time_high))
 	return TRUE
 
 /obj/structure/flora/ash/proc/regrow()
@@ -60,9 +60,9 @@
 	harvested = FALSE
 
 /obj/structure/flora/ash/attackby(obj/item/W, mob/user, params)
-	if(!harvested && needs_sharp_harvest && W.get_sharpness())
+	if(!harvested && needs_sharp_harvest && W.sharpness)
 		user.visible_message(span_notice("[user] starts to harvest from [src] with [W]."),span_notice("You begin to harvest from [src] with [W]."))
-		if(do_after(user, harvest_time, target = src))
+		if(do_after(user, src, harvest_time))
 			harvest(user)
 	else
 		return ..()
@@ -73,7 +73,7 @@
 		return
 	if(!harvested && !needs_sharp_harvest)
 		user.visible_message(span_notice("[user] starts to harvest from [src]."),span_notice("You begin to harvest from [src]."))
-		if(do_after(user, harvest_time, target = src))
+		if(do_after(user, src, harvest_time))
 			harvest(user)
 
 /obj/structure/flora/ash/tall_shroom //exists only so that the spawning check doesn't allow these spawning near other things
@@ -286,7 +286,7 @@
 	genes = list(/datum/plant_gene/trait/sticky, /datum/plant_gene/trait/stinging)
 	graft_gene = /datum/plant_gene/trait/sticky
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
-	reagents_add = list(/datum/reagent/water = 0.08, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/c2/helbital = 0.05)
+	reagents_add = list(/datum/reagent/water = 0.08, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/meralyne = 0.05)
 
 ///Star Cactus Plants.
 /obj/item/food/grown/star_cactus
@@ -352,7 +352,7 @@
 	product = /obj/item/food/grown/ash_flora/seraka
 	genes = list(/datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/trait/fire_resistance)
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
-	reagents_add = list(/datum/reagent/toxin/mushroom_powder = 0.1, /datum/reagent/medicine/coagulant/seraka_extract = 0.02)
+	reagents_add = list(/datum/reagent/toxin/mushroom_powder = 0.1, /datum/reagent/medicine/coagulant = 0.02)
 
 //CRAFTING
 

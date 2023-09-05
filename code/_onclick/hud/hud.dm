@@ -40,6 +40,10 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/throw_icon
 	var/atom/movable/screen/module_store_icon
 
+	// On my way to double the amount of non-inventory hud elements for gunpoint-ing.
+	var/atom/movable/screen/gun_setting_icon
+	var/list/atom/movable/screen/gunpoint_options = list()
+
 	var/list/static_inventory = list() //the screen objects which are static
 	var/list/toggleable_inventory = list() //the screen objects which can be hidden
 	var/list/atom/movable/screen/hotkeybuttons = list() //the buttons that can be used via hotkeys
@@ -78,7 +82,6 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/healths
 	var/atom/movable/screen/stamina
 	var/atom/movable/screen/healthdoll
-	var/atom/movable/screen/internals
 	var/atom/movable/screen/wanted/wanted_lvl
 	var/atom/movable/screen/spacesuit
 	// subtypes can override this to force a specific UI style
@@ -131,10 +134,14 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	QDEL_NULL(module_store_icon)
 	QDEL_LIST(static_inventory)
 
+	QDEL_NULL(gun_setting_icon)
+	QDEL_LIST(gunpoint_options)
+
 	inv_slots.Cut()
 	action_intent = null
 	zone_select = null
 	pull_icon = null
+	gun_setting_icon = null
 
 	QDEL_LIST(toggleable_inventory)
 	QDEL_LIST(hotkeybuttons)
@@ -145,7 +152,6 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	stamina = null
 	healthdoll = null
 	wanted_lvl = null
-	internals = null
 	spacesuit = null
 	blobpwrdisplay = null
 	alien_plasma_display = null
@@ -240,6 +246,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 				screenmob.client.screen -= infodisplay
 
 	hud_version = display_hud_version
+	update_gunpoint(screenmob)
 	persistent_inventory_update(screenmob)
 	screenmob.update_action_buttons(1)
 	reorganize_alerts(screenmob)
@@ -283,12 +290,28 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	if(!mymob)
 		return
 
+/datum/hud/proc/update_gunpoint(mob/living/screenmob)
+	if(!istype(screenmob))
+		return
+	if(!screenmob.hud_used.gun_setting_icon)
+		return
+
+	screenmob.client.screen -= gun_setting_icon
+	screenmob.client.screen -= gunpoint_options
+	if(hud_version != HUD_STYLE_STANDARD)
+		return
+
+	screenmob.client.screen += gun_setting_icon
+	if(screenmob.use_gunpoint)
+		screenmob.client.screen += gunpoint_options
+
+
 /datum/hud/proc/update_ui_style(new_ui_style)
 	// do nothing if overridden by a subtype or already on that style
 	if (initial(ui_style) || ui_style == new_ui_style)
 		return
 
-	for(var/atom/item in static_inventory + toggleable_inventory + hotkeybuttons + infodisplay + screenoverlays + inv_slots)
+	for(var/atom/item in static_inventory + toggleable_inventory + hotkeybuttons + infodisplay + screenoverlays + inv_slots + gunpoint_options + gun_setting_icon)
 		if (item.icon == ui_style)
 			item.icon = new_ui_style
 
@@ -343,6 +366,11 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	return
 
 /datum/hud/proc/position_action(atom/movable/screen/movable/action_button/button, position)
+	// This is kinda a hack, I'm sorry.
+	// Basically, FLOATING is never a valid position to pass into this proc. It exists as a generic marker for manually positioned buttons
+	// Not as a position to target
+	if(position == SCRN_OBJ_FLOATING)
+		return
 	if(button.location != SCRN_OBJ_DEFAULT)
 		hide_action(button)
 	switch(position)
@@ -354,6 +382,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 			listed_actions.insert_action(button)
 		if(SCRN_OBJ_IN_PALETTE)
 			palette_actions.insert_action(button)
+		if(SCRN_OBJ_INSERT_FIRST)
+			listed_actions.insert_action(button, index = 1)
+			position = SCRN_OBJ_IN_LIST
 		else // If we don't have it as a define, this is a screen_loc, and we should be floating
 			floating_actions += button
 			button.screen_loc = position

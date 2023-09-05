@@ -41,7 +41,7 @@
 	B.mimic_broken(src, target)
 
 	qdel(src)
-	target.Bumped(B)
+	target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/bottle/attack_secondary(atom/target, mob/living/user, params)
 
@@ -70,7 +70,7 @@
 
 		//If they have a hat/helmet and the user is targeting their head.
 		if(istype(H.head, /obj/item/clothing/head) && affecting == BODY_ZONE_HEAD)
-			headarmor = H.head.armor.melee
+			headarmor = H.head.returnArmor().melee
 		else
 			headarmor = 0
 
@@ -146,7 +146,7 @@
 	if(to_mimic.isGlass)
 		if(prob(33))
 			var/obj/item/shard/stab_with = new(to_mimic.drop_location())
-			target.Bumped(stab_with)
+			target.BumpedBy(stab_with)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	else
 		force = 0
@@ -264,10 +264,6 @@
 	icon_state = "holyflask"
 	list_reagents = list(/datum/reagent/water/holywater = 100)
 	foodtype = NONE
-
-/obj/item/reagent_containers/food/drinks/bottle/holywater/hell
-	desc = "A flask of holy water...it's been sitting in the Necropolis a while though."
-	list_reagents = list(/datum/reagent/hellwater = 100)
 
 /obj/item/reagent_containers/food/drinks/bottle/vermouth
 	name = "Goldeneye vermouth"
@@ -555,7 +551,7 @@
 	if(spillable)
 		return ..()
 	balloon_alert(user, "fiddling with cork...")
-	if(do_after(user, 1 SECONDS, src))
+	if(do_after(user, src, 1 SECONDS))
 		return pop_cork(user)
 
 /obj/item/reagent_containers/food/drinks/bottle/champagne/update_icon_state()
@@ -638,7 +634,7 @@
 	icon_state = "vodkabottle"
 	list_reagents = list()
 	var/list/accelerants = list( /datum/reagent/consumable/ethanol, /datum/reagent/fuel, /datum/reagent/clf3, /datum/reagent/phlogiston,
-							/datum/reagent/napalm, /datum/reagent/hellwater, /datum/reagent/toxin/plasma, /datum/reagent/toxin/spore_burning)
+							/datum/reagent/napalm, /datum/reagent/toxin/plasma, /datum/reagent/toxin/spore_burning)
 	var/active = FALSE
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/CheckParts(list/parts_list)
@@ -674,7 +670,7 @@
 		to_chat(user, span_info("You light [src] on fire."))
 		add_overlay(custom_fire_overlay ? custom_fire_overlay : GLOB.fire_overlay)
 		if(!isGlass)
-			addtimer(CALLBACK(src, .proc/explode), 5 SECONDS)
+			addtimer(CALLBACK(src, PROC_REF(explode)), 5 SECONDS)
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/proc/explode()
 	if(!active)
@@ -711,7 +707,7 @@
 
 /obj/item/reagent_containers/food/drinks/bottle/pruno/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_MOVABLE_MOVED, .proc/check_fermentation)
+	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(check_fermentation))
 
 /obj/item/reagent_containers/food/drinks/bottle/pruno/Destroy()
 	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
@@ -732,7 +728,7 @@
 		return
 	if(!fermentation_time_remaining)
 		fermentation_time_remaining = fermentation_time
-	fermentation_timer = addtimer(CALLBACK(src, .proc/do_fermentation), fermentation_time_remaining, TIMER_UNIQUE|TIMER_STOPPABLE)
+	fermentation_timer = addtimer(CALLBACK(src, PROC_REF(do_fermentation)), fermentation_time_remaining, TIMER_UNIQUE|TIMER_STOPPABLE)
 	fermentation_time_remaining = null
 
 // actually ferment

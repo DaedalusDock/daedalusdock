@@ -12,8 +12,8 @@
 	to_chat(user, span_notice("We cleanse impurities from our form."))
 	..()
 	var/list/bad_organs = list(
-		user.getorgan(/obj/item/organ/internal/body_egg),
-		user.getorgan(/obj/item/organ/internal/zombie_infection))
+		user.getorgan(/obj/item/organ/body_egg),
+		user.getorgan(/obj/item/organ/zombie_infection))
 
 	for(var/o in bad_organs)
 		var/obj/item/organ/O = o
@@ -26,10 +26,10 @@
 			C.vomit(0)
 		O.forceMove(get_turf(user))
 
-	user.reagents.add_reagent(/datum/reagent/medicine/mutadone, 10)
-	user.reagents.add_reagent(/datum/reagent/medicine/pen_acid, 20)
+	user.reagents.add_reagent(/datum/reagent/medicine/ryetalyn, 10)
+	user.reagents.add_reagent(/datum/reagent/medicine/dexalin, 20)
 	user.reagents.add_reagent(/datum/reagent/medicine/antihol, 10)
-	user.reagents.add_reagent(/datum/reagent/medicine/mannitol, 25)
+	user.reagents.add_reagent(/datum/reagent/medicine/alkysine, 25)
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user

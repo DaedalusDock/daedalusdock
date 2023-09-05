@@ -1,7 +1,7 @@
 /datum/action/innate/dash
 	name = "Dash"
 	desc = "Teleport to the targeted location."
-	icon_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon = 'icons/mob/actions/actions_items.dmi'
 	button_icon_state = "jetboot"
 	var/current_charges = 1
 	var/max_charges = 1
@@ -21,7 +21,7 @@
 	dashing_item = null
 	return ..()
 
-/datum/action/innate/dash/IsAvailable()
+/datum/action/innate/dash/IsAvailable(feedback = FALSE)
 	if(current_charges > 0)
 		return TRUE
 	else
@@ -46,8 +46,8 @@
 		var/obj/spot2 = new phasein(get_turf(user), user.dir)
 		spot1.Beam(spot2,beam_effect,time=2 SECONDS)
 		current_charges--
-		owner.update_action_buttons_icon()
-		addtimer(CALLBACK(src, .proc/charge), charge_rate)
+		owner?.update_mob_action_buttons()
+		addtimer(CALLBACK(src, PROC_REF(charge)), charge_rate)
 		return TRUE
 
 	return FALSE
@@ -59,5 +59,5 @@
 
 	if(!owner)
 		return
-	owner.update_action_buttons_icon()
+	owner?.update_mob_action_buttons()
 	dashing_item.balloon_alert(owner, "[current_charges]/[max_charges] dash charges")

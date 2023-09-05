@@ -20,6 +20,8 @@
 	var/species_text
 	if(dna.species && !skipface)
 		species_text = ", \a [dna.species.name]"
+		if(SScodex.get_codex_entry(get_codex_value(user)))
+			species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]")
 
 	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text]!</EM><hr>")
 
@@ -63,8 +65,10 @@
 	if(handcuffed)
 		if(istype(handcuffed, /obj/item/restraints/handcuffs/cable))
 			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] restrained with cable!")
+		else if(istype(handcuffed, /obj/item/restraints/handcuffs/tape))
+			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] bound by tape!")
 		else
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!")
+			. += span_warning("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed]!")
 
 	//belt
 	if(belt && !(belt.item_flags & EXAMINE_SKIP))
@@ -96,9 +100,8 @@
 
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]."
+		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]. <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>"
 
-		. += wear_id.get_id_examine_strings(user)
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()
@@ -123,34 +126,43 @@
 
 			. += generate_death_examine_text()
 
-	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/internal/brain))
+	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
 	var/list/msg = list()
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/body_part = X
+	var/list/body_zones_covered = get_covered_body_zones(TRUE) //This is a bitfield of the body_zones_covered. Not parts. Yeah. Sucks.
+	var/list/bodyparts = sort_list(src.bodyparts, GLOBAL_PROC_REF(cmp_bodyparts_display_order))
+	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
-		for(var/obj/item/I in body_part.embedded_objects)
-			if(I.isEmbedHarmless())
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [body_part.name]!</B>\n"
-			else
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
 
-		for(var/i in body_part.wounds)
-			var/datum/wound/iter_wound = i
-			msg += "[iter_wound.get_examine_description(user)]\n"
+		if(is_bodypart_visibly_covered(body_part, body_zones_covered))
+			var/is_bloody
+			for(var/datum/wound/W as anything in body_part.wounds)
+				if(W.bleeding())
+					msg += span_warning("Blood soaks through [t_his] [body_part.plaintext_zone] covering.\n")
+					is_bloody = TRUE
+					break
+			if(!is_bloody)
+				msg += span_notice("[t_His] [body_part.plaintext_zone] is covered.\n")
+			for(var/string in body_part.mob_examine(hal_screwyhud, TRUE))
+				msg += "[string]</br>"
+
+			continue
+		else
+			for(var/string in body_part.mob_examine(hal_screwyhud, FALSE))
+				msg += "[string]</br>"
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X
 		var/damage_text
 		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
 			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
-		if(!(body_part.get_damage(include_stamina = FALSE) >= body_part.max_damage)) //we don't care if it's stamcritted
+		if(!(body_part.get_damage() >= body_part.max_damage)) //we don't care if it's stamcritted
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (body_part.brute_dam >= body_part.burn_dam) ? body_part.heavy_brute_msg : body_part.heavy_burn_msg
@@ -177,42 +189,22 @@
 	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
 		msg += "[t_He] [p_do()]n't seem all there.\n"
 
-	if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY)) //fake healthy
-		var/temp
-		if(user == src && src.hal_screwyhud == SCREWYHUD_CRIT)//fake damage
-			temp = 50
+	var/temp
+	temp = getCloneLoss()
+	if(temp)
+		if(temp < 25)
+			msg += "[t_He] [t_has] minor cellular damage.\n"
+		else if(temp < 50)
+			msg += "[t_He] [t_has] <b>moderate</b> cellular damage!\n"
 		else
-			temp = getBruteLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_has] minor bruising.\n"
-			else if(temp < 50)
-				msg += "[t_He] [t_has] <b>moderate</b> bruising!\n"
-			else
-				msg += "<B>[t_He] [t_has] severe bruising!</B>\n"
-
-		temp = getFireLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_has] minor burns.\n"
-			else if (temp < 50)
-				msg += "[t_He] [t_has] <b>moderate</b> burns!\n"
-			else
-				msg += "<B>[t_He] [t_has] severe burns!</B>\n"
-
-		temp = getCloneLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_has] minor cellular damage.\n"
-			else if(temp < 50)
-				msg += "[t_He] [t_has] <b>moderate</b> cellular damage!\n"
-			else
-				msg += "<b>[t_He] [t_has] severe cellular damage!</b>\n"
+			msg += "<b>[t_He] [t_has] severe cellular damage!</b>\n"
 
 
 	if(has_status_effect(/datum/status_effect/fire_handler/fire_stacks))
 		msg += "[t_He] [t_is] covered in something flammable.\n"
-	if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks))
+	if(locate(/datum/reagent/toxin/acid) in touching?.reagent_list)
+		msg += span_warning("[t_He] is covered in burning acid! \n")
+	else if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks) || length(touching?.reagent_list))
 		msg += "[t_He] look[p_s()] a little soaked.\n"
 
 
@@ -246,48 +238,15 @@
 			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
 
 	if(is_bleeding())
-		var/list/obj/item/bodypart/bleeding_limbs = list()
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
 		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(body_part.get_modified_bleed_rate())
-				bleeding_limbs += body_part
 			if(body_part.grasped_by)
 				grasped_limbs += body_part
 
-		var/num_bleeds = LAZYLEN(bleeding_limbs)
-
-		var/list/bleed_text
-		if(appears_dead)
-			bleed_text = list("<span class='deadsay'><B>Blood is visible in [t_his] open")
-		else
-			bleed_text = list("<B>[t_He] [t_is] bleeding from [t_his]")
-
-		switch(num_bleeds)
-			if(1 to 2)
-				bleed_text += " [bleeding_limbs[1].name][num_bleeds == 2 ? " and [bleeding_limbs[2].name]" : ""]"
-			if(3 to INFINITY)
-				for(var/i in 1 to (num_bleeds - 1))
-					var/obj/item/bodypart/body_part = bleeding_limbs[i]
-					bleed_text += " [body_part.name],"
-				bleed_text += " and [bleeding_limbs[num_bleeds].name]"
-
-		if(appears_dead)
-			bleed_text += ", but it has pooled and is not flowing.</span></B>\n"
-		else
-			if(reagents.has_reagent(/datum/reagent/toxin/heparin, needs_metabolizing = TRUE))
-				bleed_text += " incredibly quickly"
-
-			bleed_text += "!</B>\n"
-
 		for(var/i in grasped_limbs)
 			var/obj/item/bodypart/grasped_part = i
-			bleed_text += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
-
-		msg += bleed_text.Join()
-
-	if(reagents.has_reagent(/datum/reagent/teslium, needs_metabolizing = TRUE))
-		msg += "[t_He] [t_is] emitting a gentle blue glow!\n"
+			msg += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
 
 	if(islist(stun_absorption))
 		for(var/i in stun_absorption)
@@ -319,7 +278,6 @@
 
 			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
 				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
-				SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "religious_comfort", /datum/mood_event/religiously_comforted)
 
 		switch(stat)
 			if(UNCONSCIOUS, HARD_CRIT)
@@ -329,30 +287,13 @@
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
-		if(getorgan(/obj/item/organ/internal/brain))
+		if(getorgan(/obj/item/organ/brain))
 			if(ai_controller?.ai_status == AI_STATUS_ON)
 				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
 			else if(!key)
 				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 			else if(!client)
 				msg += "[t_He] [t_has] a blank, absent-minded stare and appears completely unresponsive to anything. [t_He] may snap out of it soon.\n"
-
-	var/scar_severity = 0
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			scar_severity += S.severity
-
-	switch(scar_severity)
-		if(1 to 4)
-			msg += "[span_tinynoticeital("[t_He] [t_has] visible scarring, you can look again to take a closer look...")]\n"
-		if(5 to 8)
-			msg += "[span_smallnoticeital("[t_He] [t_has] several bad scars, you can look again to take a closer look...")]\n"
-		if(9 to 11)
-			msg += "[span_notice("<i>[t_He] [t_has] significantly disfiguring scarring, you can look again to take a closer look...</i>")]\n"
-		if(12 to INFINITY)
-			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
-
 
 	if (length(msg))
 		. += span_warning("[msg.Join("")]")
@@ -368,8 +309,8 @@
 			. += "<span class='deptradio'>Rank:</span> [R.fields["rank"]]\n<a href='?src=[REF(src)];hud=1;photo_front=1'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1'>\[Side photo\]</a>"
 		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD))
 			var/cyberimp_detect
-			for(var/obj/item/organ/internal/cyberimp/CI in internal_organs)
-				if(CI.status == ORGAN_ROBOTIC && !CI.syndicate_implant)
+			for(var/obj/item/organ/cyberimp/CI in processing_organs)
+				if((CI.organ_flags & ORGAN_SYNTHETIC) && !CI.syndicate_implant)
 					cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
 			if(cyberimp_detect)
 				. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"
@@ -401,21 +342,6 @@
 					"<a href='?src=[REF(src)];hud=s;add_comment=1'>\[Add comment\]</a>"), "")
 	else if(isobserver(user))
 		. += span_info("<b>Traits:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
-	//. += "*---------*</span>" PARIAH EDIT REMOVAL
-
-	//PARIAH EDIT ADDITION
-	var/flavor_text_link
-	/// The first 1-FLAVOR_PREVIEW_LIMIT characters in the mob's "flavor_text" DNA feature. FLAVOR_PREVIEW_LIMIT is defined in flavor_defines.dm.
-	var/preview_text = copytext_char((dna.features["flavor_text"]), 1, FLAVOR_PREVIEW_LIMIT)
-	// What examine_tgui.dm uses to determine if flavor text appears as "Obscured".
-	var/face_obscured = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
-
-	if (!(face_obscured))
-		flavor_text_link = span_notice("[preview_text]... <a href='?src=[REF(src)];lookup_info=open_examine_panel'>Look closer?</a>")
-	else
-		flavor_text_link = span_notice("<a href='?src=[REF(src)];lookup_info=open_examine_panel'>Examine closely...</a>")
-	if (flavor_text_link)
-		. += flavor_text_link
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
@@ -456,3 +382,10 @@
 		if(101 to INFINITY)
 			age_text = "withering away"
 	. += list(span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text]."))
+
+///This proc expects to be passed a list of covered zones, for optimization in loops. Use get_covered_body_zones(exact_only = TRUE) for that..
+/mob/living/carbon/proc/is_bodypart_visibly_covered(obj/item/bodypart/BP, covered_zones)
+	var/zone = BP.body_zone
+	if(zone == BODY_ZONE_HEAD)
+		return (head && ((head.flags_inv & HIDEMASK) || (head.flags_inv & HIDEFACE)))
+	return zone in covered_zones

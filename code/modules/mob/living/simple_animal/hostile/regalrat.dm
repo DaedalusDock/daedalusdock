@@ -118,7 +118,7 @@
 	. = ..()
 	if(stat == DEAD || !environment || !environment.getGroupGas(GAS_METHANE))
 		return
-	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.get_moles()
+	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.total_moles
 	if(miasma_percentage>=0.25)
 		heal_bodypart_damage(1)
 
@@ -134,7 +134,7 @@
 
 	if (target.reagents && target.is_injectable(src, allowmobs = TRUE) && !istype(target, /obj/item/food/cheese))
 		src.visible_message(span_warning("[src] starts licking [target] passionately!"),span_notice("You start licking [target]..."))
-		if (do_mob(src, target, 2 SECONDS, interaction_key = REGALRAT_INTERACTION))
+		if (do_after(src, target, 2 SECONDS, interaction_key = REGALRAT_INTERACTION))
 			target.reagents.add_reagent(/datum/reagent/rat_spit,rand(1,3),no_react = TRUE)
 			to_chat(src, span_notice("You finish licking [target]."))
 	else
@@ -192,7 +192,7 @@
 
 /mob/living/simple_animal/hostile/regalrat/controlled/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/get_player)
+	INVOKE_ASYNC(src, PROC_REF(get_player))
 	var/kingdom = pick("Plague","Miasma","Maintenance","Trash","Garbage","Rat","Vermin","Cheese")
 	var/title = pick("King","Lord","Prince","Emperor","Supreme","Overlord","Master","Shogun","Bojar","Tsar")
 	name = "[kingdom] [title]"
@@ -207,13 +207,13 @@
 	desc = "Corrupts this area to be more suitable for your rat army."
 	check_flags = AB_CHECK_CONSCIOUS
 	cooldown_time = 6 SECONDS
-	icon_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
 	background_icon_state = "bg_clock"
 	button_icon_state = "coffer"
 
 /datum/action/cooldown/domain/proc/domain()
 	var/turf/T = get_turf(owner)
-	T.atmos_spawn_air("miasma=4;TEMP=[T20C]")
+	T.atmos_spawn_air(GAS_AMMONIA, 4, T20C)
 	switch (rand(1,10))
 		if (8)
 			new /obj/effect/decal/cleanable/vomit(T)
@@ -238,7 +238,7 @@
 	name = "Raise Army"
 	desc = "Raise an army out of the hordes of mice and pests crawling around the maintenance shafts."
 	check_flags = AB_CHECK_CONSCIOUS
-	icon_icon = 'icons/mob/actions/actions_animal.dmi'
+	button_icon = 'icons/mob/actions/actions_animal.dmi'
 	button_icon_state = "riot"
 	background_icon_state = "bg_clock"
 	cooldown_time = 8 SECONDS
@@ -398,11 +398,12 @@
 	taste_description = "something funny"
 	overdose_threshold = 20
 
-/datum/reagent/rat_spit/on_mob_metabolize(mob/living/L)
-	..()
-	if(HAS_TRAIT(L, TRAIT_AGEUSIA))
+/datum/reagent/rat_spit/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
 		return
-	to_chat(L, span_notice("This food has a funny taste!"))
+	if(HAS_TRAIT(C, TRAIT_AGEUSIA))
+		return
+	to_chat(C, span_notice("This food has a funny taste!"))
 
 /datum/reagent/rat_spit/overdose_start(mob/living/M)
 	..()
@@ -411,15 +412,14 @@
 		to_chat(victim, span_userdanger("With this last sip, you feel your body convulsing horribly from the contents you've ingested. As you contemplate your actions, you sense an awakened kinship with rat-kind and their newly risen leader!"))
 		victim.faction |= "rat"
 		victim.vomit()
-	metabolization_rate = 10 * REAGENTS_METABOLISM
+	metabolization_rate = 10 * initial(metabolization_rate)
 
-/datum/reagent/rat_spit/on_mob_life(mob/living/carbon/C)
+/datum/reagent/rat_spit/affect_blood(mob/living/carbon/C, removed)
 	if(prob(15))
 		to_chat(C, span_notice("You feel queasy!"))
-		C.adjust_disgust(3)
+		C.adjust_disgust(3 * removed)
 	else if(prob(10))
 		to_chat(C, span_warning("That food does not sit up well!"))
-		C.adjust_disgust(5)
+		C.adjust_disgust(5 * removed)
 	else if(prob(5))
 		C.vomit()
-	..()

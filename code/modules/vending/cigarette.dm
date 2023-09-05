@@ -32,7 +32,7 @@
 	refill_canister = /obj/item/vending_refill/cigarette
 	default_price = PAYCHECK_ASSISTANT
 	extra_price = PAYCHECK_HARD
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "cigs-light-mask"
 
 /obj/machinery/vending/cigarette/syndicate
@@ -65,7 +65,6 @@
 		/obj/item/storage/fancy/rollingpapers = 5
 	)
 	premium = list(
-		/obj/item/storage/fancy/cigarettes/cigpack_mindbreaker = 5,
 		/obj/item/clothing/mask/vape = 5,
 		/obj/item/lighter = 3
 	)

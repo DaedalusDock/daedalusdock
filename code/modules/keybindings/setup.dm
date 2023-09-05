@@ -62,8 +62,15 @@
 			var/command = hk_macro_set[key]
 			winset(src, "hotkey_only-[REF(key)]", "parent=default;name=[key];command=[command]")
 	else //Otherwise, we can't.
+		/// Install the shared set, so that we force capture all macro keys
+		var/list/c_macro_set = SSinput.classic_only_set
+		for(var/k in 1 to length(c_macro_set))
+			var/key = c_macro_set[k]
+			var/command = c_macro_set[key]
+			winset(src, "classic_only-[REF(key)]", "parent=default;name=[key];command=[command]")
 		printables = list()
-		//Now the stuff we do.
+		//This is to save time muching down this massive list, it might result in holes, it may be better to simply hardcode all these into the skin.
+		//I might try that one day, but that day is not today.
 		for(var/keycode in personal_macro_set) //We don't care about the bound key, just the key itself
 			if(!hotkeys && !SSinput.unprintables_cache[keycode]) //Track printable hotkeys and skip them.
 				printables += keycode

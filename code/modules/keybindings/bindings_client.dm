@@ -36,10 +36,14 @@
 		qdel(src)
 		return
 
-	//Focus Chat failsafe. Overrides movement checks to prevent WASD.
-	if(!hotkeys && length(_key) == 1 && _key != "Alt" && _key != "Ctrl" && _key != "Shift")
-		winset(src, null, "input.focus=true ; input.text=[url_encode(_key)]")
-		return
+	if(keys_held[_key])
+		return //Key is already held, prevent double-strike.
+
+	// Should no longer be necessary, I'm leaving this here until it's ready to merge. Scream at me then, not before.
+	// //Focus Chat failsafe. Overrides movement checks to prevent WASD.
+	// if(!hotkeys && length(_key) == 1 && _key != "Alt" && _key != "Ctrl" && _key != "Shift")
+	// 	winset(src, null, "input.focus=true ; input.text=[url_encode(_key)]")
+	// 	return
 
 	if(length(keys_held) >= HELD_KEY_BUFFER_LENGTH && !keys_held[_key])
 		keyUp(keys_held[1]) //We are going over the number of possible held keys, so let's remove the first one.

@@ -12,6 +12,8 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	var/list/macro_set
 	/// Macros applied only to hotkey users
 	var/list/hotkey_only_set
+	/// Macros applied onlt to classic users
+	var/list/classic_only_set
 	/// Typecache of all unprintable keys that are safe for classic to bind
 	var/list/unprintables_cache
 	/// Macro IDs we shouldn't clear during client.clear_macros()
@@ -41,13 +43,6 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 // This is for when macro sets are eventualy datumized
 /datum/controller/subsystem/verb_manager/input/proc/setup_default_macro_sets()
 	macro_set = list(
-		//We need to force these to capture them for macro modifiers.
-		//Did I mention I fucking despise the way this system works at a base, almost reptilian-barely-understands-consciousness level?
-		//Because I do.
-		"Alt" = "\"KeyDown Alt\"",
-		"Alt+UP" = "\"KeyUp Alt\"",
-		"Ctrl" = "\"KeyDown Ctrl\"",
-		"Ctrl+UP" = "\"KeyUp Ctrl\"",
 		// These could probably just be put in the skin. I actually don't understand WHY they aren't just in the skin. Besides the use of defines for Tab.
 		"Back" = "\".winset \\\"input.text=\\\"\\\"\\\"\"",
 		"Tab" = "\".winset \\\"input.focus=true?map.focus=true input.background-color=[COLOR_INPUT_DISABLED]:input.focus=true input.background-color=[COLOR_INPUT_ENABLED]\\\"\"",
@@ -56,6 +51,15 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	hotkey_only_set = list(
 		"Any" = "\"KeyDown \[\[*\]\]\"",
 		"Any+UP" = "\"KeyUp \[\[*\]\]\"",
+	)
+	classic_only_set = list(
+		//We need to force these to capture them for macro modifiers.
+		//Did I mention I fucking despise the way this system works at a base, almost reptilian-barely-understands-consciousness level?
+		//Because I do.
+		"Alt" = "\"KeyDown Alt\"",
+		"Alt+UP" = "\"KeyUp Alt\"",
+		"Ctrl" = "\"KeyDown Ctrl\"",
+		"Ctrl+UP" = "\"KeyUp Ctrl\"",
 	)
 	// This list may be out of date, and may include keys not actually legal to bind? The only full list is from 2008. http://www.byond.com/docs/notes/macro.html
 	unprintables_cache = list(

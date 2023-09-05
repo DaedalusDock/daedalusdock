@@ -599,18 +599,11 @@
 	metabolization_rate = 0.1
 	value = 2
 
-/datum/reagent/medicine/epinephrine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
-	. = ..()
-	if(!iscarbon(exposed_mob))
-		return
-	var/mob/living/carbon/C = exposed_mob
-	if(reac_volume >= 5 && methods == INJECT)
-		C.set_heartattack(FALSE)
-
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
 		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,CHEM_TRAIT_SOURCE(class))
+		to_chat(C, span_danger("Energy rushes through your veins!"))
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
@@ -629,6 +622,13 @@
 	if(C.has_reagent(/datum/reagent/medicine/inaprovaline))
 		C.set_heartattack(TRUE)
 		return
+
+	if(volume >= 4 && C.undergoing_cardiac_arrest())
+		holder.remove_reagent(src, 4)
+		if(C.resuscitate())
+			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
+			heart.applyOrganDamage(heart.maxHealth * 0.075)
+			to_chat(C, span_userdanger("Adrenaline rushes through your body, you refuse to give up!"))
 
 	if(volume > 10)
 		C.set_timed_status_effect(5 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)

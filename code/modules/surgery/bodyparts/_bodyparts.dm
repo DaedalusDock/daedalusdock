@@ -513,6 +513,7 @@
 	var/spillover = 0
 	var/pure_brute = brute
 	var/damagable = is_damageable()
+	var/total = brute + burn
 
 	if(!is_damageable())
 		spillover =  brute_dam + burn_dam + brute - max_damage
@@ -568,7 +569,10 @@
 		create_wound(WOUND_BURN, burn, update_damage = FALSE)
 
 	//Initial pain spike
-	owner.apply_pain(0.6*burn + 0.4*brute, body_zone, updating_health = FALSE)
+	owner?.apply_pain(0.6*burn + 0.4*brute, body_zone, updating_health = FALSE)
+
+	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
+		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))
 
 	//Disturb treated burns
 	if(brute > 5)

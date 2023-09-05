@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Atmospherics has a SMES unit to prop up it's exceptional power load.

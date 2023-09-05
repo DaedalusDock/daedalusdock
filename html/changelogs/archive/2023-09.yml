@@ -32,3 +32,6 @@
 2023-09-04:
   Kapu1178:
   - qol: Updated the changelog to include Daedalus contributors.
+2023-09-05:
+  francinum:
+  - bugfix: Atmospherics has a SMES unit to prop up it's exceptional power load.

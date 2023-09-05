@@ -57,6 +57,8 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 /proc/ran_zone(zone, probability = 80)
 	if(zone)
 		zone = deprecise_zone(zone)
+		if(prob(probability))
+			return zone
 
 	zone = pick_weight(GLOB.bodyzone_accuracy_weights)
 	return zone

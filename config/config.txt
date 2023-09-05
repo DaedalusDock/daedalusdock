@@ -24,6 +24,9 @@ SERVERSQLNAME daedalusdock
 ## Station name: The name of the station as it is referred to in-game. If commented out, the game will generate a random name instead.
 STATIONNAME Daedalus Outpost
 
+## Community slug for AffectedArc's Web Map
+#WEBMAP_COMMUNITY DaedalusDock
+
 ## Hub subtitle: A line of text inserted under the server name. Should be no greater than 40 characters.
 HUB_SUBTITLE Now with custom lighting!
 
@@ -624,3 +627,7 @@ PR_ANNOUNCEMENTS_PER_ROUND 5
 
 ## Uncomment to block granting profiling privileges to users with R_DEBUG, for performance purposes
 #FORBID_ADMIN_PROFILING
+
+#Included last to allow developers have stable test configs
+#this file is gitignored.
+$include _config_nogit.txt

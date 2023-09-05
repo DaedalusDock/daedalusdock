@@ -24,8 +24,6 @@
 	INVOKE_ASYNC(limb_owner, TYPE_PROC_REF(/mob, emote), "scream")
 	playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
 
-	SEND_SIGNAL(limb_owner, COMSIG_ADD_MOOD_EVENT, "dismembered", /datum/mood_event/dismembered)
-
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
 
 	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
@@ -140,7 +138,6 @@
 
 	if(!phantom_owner.has_embedded_objects())
 		phantom_owner.clear_alert(ALERT_EMBEDDED_OBJECT)
-		SEND_SIGNAL(phantom_owner, COMSIG_CLEAR_MOOD_EVENT, "embedded")
 
 	// * Unregister wounds from parent * //
 	for(var/datum/wound/W as anything in wounds)
@@ -251,7 +248,6 @@
 		return ..()
 
 /obj/item/bodypart/arm/drop_limb(special)
-	. = ..()
 
 	var/mob/living/carbon/arm_owner = owner
 	if(arm_owner && !special)
@@ -267,6 +263,7 @@
 		if(arm_owner.gloves)
 			arm_owner.dropItemToGround(arm_owner.gloves, TRUE)
 		arm_owner.update_worn_gloves() //to remove the bloody hands overlay
+	return ..()
 
 /obj/item/bodypart/leg/drop_limb(special)
 	if(owner && !special)
@@ -377,8 +374,6 @@
 		new_limb_owner.apply_status_effect(/datum/status_effect/limp)
 
 	update_interaction_speed()
-
-	update_bodypart_damage_state()
 
 	update_disabled()
 

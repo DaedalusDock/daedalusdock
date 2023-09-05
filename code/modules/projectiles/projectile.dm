@@ -14,6 +14,7 @@
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
 	simulated = FALSE
+	loc_procs = CROSSED
 
 	//The sound this plays on impact.
 	var/hitsound = 'sound/weapons/pierce.ogg'
@@ -59,7 +60,7 @@
 	  * If you so badly need to make one go through *everything*, override check_pierce() for your projectile to always return PROJECTILE_PIERCE_PHASE/HIT.
 	  */
 	/// The "usual" flags of pass_flags is used in that can_hit_target ignores these unless they're specifically targeted/clicked on. This behavior entirely bypasses process_hit if triggered, rather than phasing which uses prehit_pierce() to check.
-	pass_flags = PASSTABLE
+	pass_flags = NONE
 	/// If FALSE, allow us to hit something directly targeted/clicked/whatnot even if we're able to phase through it
 	var/phasing_ignore_direct_target = FALSE
 	/// Bitflag for things the projectile should just phase through entirely - No hitting unless direct target and [phasing_ignore_direct_target] is FALSE. Uses pass_flags flags.
@@ -201,9 +202,6 @@
 	var/wound_falloff_tile
 	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
 	var/embed_falloff_tile
-	var/static/list/projectile_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
 	/// If true directly targeted turfs can be hit
 	var/can_hit_turfs = FALSE
 
@@ -212,7 +210,6 @@
 	decayedRange = range
 	if(embedding)
 		updateEmbedding()
-	AddElement(/datum/element/connect_loc, projectile_connections)
 
 /obj/projectile/proc/Range()
 	range--
@@ -261,7 +258,10 @@
 
 	var/hitx
 	var/hity
-	if(target == original)
+	if(target.flags_1 & ON_BORDER_1)
+		hitx = p_x
+		hity = p_y
+	else if(target == original)
 		hitx = target.pixel_x + p_x - 16
 		hity = target.pixel_y + p_y - 16
 	else
@@ -494,7 +494,7 @@
  */
 /obj/projectile/proc/select_target(turf/our_turf, atom/target, atom/bumped)
 	// 1. special bumped border object check
-	if((bumped?.flags_1 & ON_BORDER_1) && can_hit_target(bumped, original == bumped, FALSE, TRUE))
+	if((bumped?.flags_1 & (ON_BORDER_1|BUMP_PRIORITY_1)) && can_hit_target(bumped, original == bumped, TRUE, TRUE))
 		return bumped
 	// 2. original
 	if(can_hit_target(original, TRUE, FALSE, original == bumped))
@@ -598,11 +598,8 @@
 /**
  * Projectile crossed: When something enters a projectile's tile, make sure the projectile hits it if it should be hitting it.
  */
-/obj/projectile/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
-	if(AM == src)
-		return
-	scan_crossed_hit(AM)
+/obj/projectile/Crossed(atom/movable/crossed_by, oldloc)
+	scan_crossed_hit(crossed_by)
 
 /**
  * Projectile can pass through

@@ -41,7 +41,7 @@
 	name = "Tea Astra tips"
 	icon_state = "tea_astra_leaves"
 	bite_consumption_mod = 2
-	grind_results = list(/datum/reagent/toxin/teapowder = 0, /datum/reagent/medicine/salglu_solution = 0)
+	grind_results = list(/datum/reagent/toxin/teapowder = 0, /datum/reagent/medicine/saline_glucose = 0)
 
 
 // Coffee

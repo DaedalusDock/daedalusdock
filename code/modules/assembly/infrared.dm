@@ -223,23 +223,14 @@
 	density = FALSE
 	pass_flags = PASSTABLE|PASSGLASS|PASSGRILLE
 	pass_flags_self = LETPASSTHROW
+	loc_procs = CROSSED
 	var/obj/item/assembly/infra/master
 
-/obj/effect/beam/i_beam/Initialize(mapload)
-	. = ..()
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
-
-/obj/effect/beam/i_beam/proc/on_entered(datum/source, atom/movable/AM as mob|obj)
-	SIGNAL_HANDLER
-	if(AM == src)
+/obj/effect/beam/i_beam/Crossed(atom/movable/crossed_by, oldloc)
+	if(istype(crossed_by, /obj/effect/beam))
 		return
-	if(istype(AM, /obj/effect/beam))
-		return
-	if (isitem(AM))
-		var/obj/item/I = AM
+	if (isitem(crossed_by))
+		var/obj/item/I = crossed_by
 		if (I.item_flags & ABSTRACT)
 			return
-	INVOKE_ASYNC(master, TYPE_PROC_REF(/obj/item/assembly/infra, trigger_beam), AM, get_turf(src))
+	INVOKE_ASYNC(master, TYPE_PROC_REF(/obj/item/assembly/infra, trigger_beam), crossed_by, get_turf(src))

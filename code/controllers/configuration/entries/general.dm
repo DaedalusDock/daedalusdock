@@ -662,3 +662,7 @@
 	protection = CONFIG_ENTRY_LOCKED
 
 /datum/config_entry/flag/show_job_estimation
+
+/// Unique slug for the webmap
+/datum/config_entry/string/webmap_community
+	default = "DaedalusDock"

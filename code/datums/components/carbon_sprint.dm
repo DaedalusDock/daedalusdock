@@ -30,41 +30,42 @@
 		if(sprinting)
 			stopSprint()
 		return
+	if(!sprint_key_down || HAS_TRAIT(carbon_parent, TRAIT_NO_SPRINT))
+		if(sprinting)
+			stopSprint()
+		return
+
 	var/turf/T = move_args[MOVE_ARG_NEW_LOC]
 	if(!isturf(T))
 		return
-	if(!T.Enter(parent, TRUE))
+	if(!carbon_parent.can_step_into(T))
 		return
 
-	if(sprint_key_down && !HAS_TRAIT(carbon_parent, TRAIT_NO_SPRINT))
-		var/_step_size = (direct & (direct-1)) ? 1.4 : 1 //If we're moving diagonally, we're taking roughly 1.4x step size
-		if(!sprinting)
-			sprinting = TRUE
-			carbon_parent.set_move_intent(MOVE_INTENT_SPRINT)
-			dust.appear("sprint_cloud", direct, get_turf(carbon_parent), 0.6 SECONDS)
-			last_dust = world.time
+	var/_step_size = (direct & (direct-1)) ? 1.4 : 1 //If we're moving diagonally, we're taking roughly 1.4x step size
+	if(!sprinting)
+		sprinting = TRUE
+		carbon_parent.set_move_intent(MOVE_INTENT_SPRINT)
+		dust.appear("sprint_cloud", direct, get_turf(carbon_parent), 0.6 SECONDS)
+		last_dust = world.time
+		sustained_moves += _step_size
+
+	else if(world.time > last_dust + STAMINA_SUSTAINED_RUN_GRACE)
+		if(direct & carbon_parent.last_move)
+			if((sustained_moves < STAMINA_SUSTAINED_SPRINT_THRESHOLD) && ((sustained_moves + _step_size) >= STAMINA_SUSTAINED_SPRINT_THRESHOLD))
+				dust.appear("sprint_cloud_small", direct, get_turf(carbon_parent), 0.4 SECONDS)
+				last_dust = world.time
 			sustained_moves += _step_size
 
-		else if(world.time > last_dust + STAMINA_SUSTAINED_RUN_GRACE)
-			if(direct & carbon_parent.last_move)
-				if((sustained_moves < STAMINA_SUSTAINED_SPRINT_THRESHOLD) && ((sustained_moves + _step_size) >= STAMINA_SUSTAINED_SPRINT_THRESHOLD))
-					dust.appear("sprint_cloud_small", direct, get_turf(carbon_parent), 0.4 SECONDS)
-					last_dust = world.time
-				sustained_moves += _step_size
+		else
+			if(sustained_moves >= STAMINA_SUSTAINED_SPRINT_THRESHOLD)
+				dust.appear("sprint_cloud_small", direct, get_turf(carbon_parent), 0.4 SECONDS)
+				last_dust = world.time
+			if(direct & turn(carbon_parent.last_move, 180))
+				dust.appear("sprint_cloud_tiny", direct, get_turf(carbon_parent), 0.3 SECONDS)
+				last_dust = world.time
+			sustained_moves = 0
 
-			else
-				if(sustained_moves >= STAMINA_SUSTAINED_SPRINT_THRESHOLD)
-					dust.appear("sprint_cloud_small", direct, get_turf(carbon_parent), 0.4 SECONDS)
-					last_dust = world.time
-				if(direct & turn(carbon_parent.last_move, 180))
-					dust.appear("sprint_cloud_tiny", direct, get_turf(carbon_parent), 0.3 SECONDS)
-					last_dust = world.time
-				sustained_moves = 0
-
-		carbon_parent.stamina.adjust(-STAMINA_SPRINT_COST)
-
-	else if(sprinting)
-		stopSprint()
+	carbon_parent.stamina.adjust(-STAMINA_SPRINT_COST)
 
 /datum/component/carbon_sprint/proc/keyDown()
 	sprint_key_down = TRUE

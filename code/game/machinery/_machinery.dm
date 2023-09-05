@@ -201,7 +201,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	}
 
 	if(network_flags & NETWORK_FLAG_GEN_ID)
-		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+		net_id = SSpackets.generate_net_id(src)
 
 	return INITIALIZE_HINT_LATELOAD
 

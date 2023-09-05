@@ -370,7 +370,6 @@
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "yy" = (
-/obj/item/storage/fancy/cigarettes/cigpack_mindbreaker,
 /obj/structure/closet/crate/grave/filled,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)

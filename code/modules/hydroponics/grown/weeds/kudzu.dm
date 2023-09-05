@@ -15,7 +15,7 @@
 	growthstages = 4
 	rarity = 30
 	var/list/mutations = list()
-	reagents_add = list(/datum/reagent/medicine/c2/multiver = 0.04, /datum/reagent/consumable/nutriment = 0.02)
+	reagents_add = list(/datum/reagent/medicine/dylovene = 0.04, /datum/reagent/consumable/nutriment = 0.02)
 	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
 
 /obj/item/seeds/kudzu/Copy()
@@ -60,7 +60,7 @@
 /obj/item/seeds/kudzu/on_chem_reaction(datum/reagents/reagents)
 	var/list/temp_mut_list = list()
 
-	if(reagents.has_reagent(/datum/reagent/space_cleaner/sterilizine, 5))
+	if(reagents.has_reagent(/datum/reagent/space_cleaner, 5))
 		for(var/datum/spacevine_mutation/SM in mutations)
 			if(SM.quality == NEGATIVE)
 				temp_mut_list += SM
@@ -71,14 +71,6 @@
 	if(reagents.has_reagent(/datum/reagent/fuel, 5))
 		for(var/datum/spacevine_mutation/SM in mutations)
 			if(SM.quality == POSITIVE)
-				temp_mut_list += SM
-		if(prob(20) && temp_mut_list.len)
-			mutations.Remove(pick(temp_mut_list))
-		temp_mut_list.Cut()
-
-	if(reagents.has_reagent(/datum/reagent/phenol, 5))
-		for(var/datum/spacevine_mutation/SM in mutations)
-			if(SM.quality == MINOR_NEGATIVE)
 				temp_mut_list += SM
 		if(prob(20) && temp_mut_list.len)
 			mutations.Remove(pick(temp_mut_list))

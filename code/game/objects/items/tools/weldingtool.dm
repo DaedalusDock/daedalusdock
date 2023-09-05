@@ -1,5 +1,5 @@
 /// How many seconds between each fuel depletion tick ("use" proc)
-#define WELDER_FUEL_BURN_INTERVAL 26
+#define WELDER_FUEL_BURN_INTERVAL 9
 /obj/item/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by Nanotrasen."
@@ -47,7 +47,7 @@
 	reagents.add_reagent(/datum/reagent/fuel, max_fuel)
 	update_appearance()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
-	AddElement(/datum/element/tool_flash, light_outer_range)
+	AddElement(/datum/element/tool_flash, 2)
 
 /obj/item/weldingtool/update_icon_state()
 	if(welding)

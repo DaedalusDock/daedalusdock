@@ -311,7 +311,7 @@ rough example of the "cone" made by the 3 dirs checked
 			return TRUE
 
 ///A do nothing proc
-/proc/pass(...)
+/proc/noop(...)
 	return
 
 ///Returns a list of the parents of all storage components that contain the target item
@@ -322,4 +322,6 @@ rough example of the "cone" made by the 3 dirs checked
 	var/datum/storage/storage_datum = target.loc.atom_storage
 	if(!storage_datum)
 		return
-	. += storage_datum.parent
+	var/parent = storage_datum.parent?.resolve()
+	if(parent)
+		. += parent

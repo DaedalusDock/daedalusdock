@@ -111,6 +111,8 @@
 		icon_state = "original"
 		icon_living = "original"
 		icon_dead = "original_dead"
+	if(prob(33))
+		name = "Athena"
 	Read_Memory()
 	. = ..()
 

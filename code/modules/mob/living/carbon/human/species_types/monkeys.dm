@@ -158,8 +158,8 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "capsules",
-			SPECIES_PERK_NAME = "Mutadone Averse",
-			SPECIES_PERK_DESC = "Monkeys are reverted into normal humans upon being exposed to Mutadone.",
+			SPECIES_PERK_NAME = "Ryetalyn Averse",
+			SPECIES_PERK_DESC = "Monkeys are reverted into normal humans upon being exposed to Ryetalyn.",
 		),
 	)
 

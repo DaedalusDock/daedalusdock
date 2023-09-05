@@ -467,7 +467,7 @@
 /obj/machinery/camera/directional/north,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
-/obj/machinery/chem_heater/debug,
+/obj/machinery/chem_heater,
 /turf/open/floor/iron/dark,
 /area/station/medical/chemistry)
 "bS" = (
@@ -2009,11 +2009,6 @@
 /obj/machinery/rnd/production/fabricator/omni,
 /turf/open/floor/iron,
 /area/station/science)
-"mE" = (
-/obj/structure/cable,
-/obj/machinery/chem_mass_spec,
-/turf/open/floor/iron,
-/area/station/medical/chemistry)
 "nn" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -7476,7 +7471,7 @@ aj
 bP
 Ce
 JF
-mE
+cj
 oV
 bE
 bE

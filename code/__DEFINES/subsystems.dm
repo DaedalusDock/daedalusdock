@@ -133,6 +133,7 @@
 #define INIT_ORDER_IDACCESS 66
 #define INIT_ORDER_JOBS 65 // Must init before atoms, to set up properly the dynamic job lists.
 #define INIT_ORDER_AI_MOVEMENT 56 //We need the movement setup
+#define INIT_ORDER_MEDIA 56 //Needs to init before ticker to generate the login music pool
 #define INIT_ORDER_AI_CONTROLLERS 55 //So the controller can get the ref
 #define INIT_ORDER_TICKER 55
 #define INIT_ORDER_TCG 55
@@ -214,6 +215,7 @@
 #define FIRE_PRIORITY_PATHFINDING 37
 #define FIRE_PRIOTITY_SMOOTHING 35
 #define FIRE_PRIORITY_REAGENTS 30
+#define FIRE_PRIORITY_ACID 27
 #define FIRE_PRIORITY_WET_FLOORS 25
 #define FIRE_PRIORITY_VIS 20
 #define FIRE_PRIORITY_RESEARCH 15
@@ -223,7 +225,6 @@
 /*	Background bucket	*/
 #define FIRE_PRIORITY_PARALLAX 65
 //DEFAULT WOULD BE HERE
-#define FIRE_PRIORITY_ACID 40
 #define FIRE_PRIOTITY_BURNING 40
 #define FIRE_PRIORITY_PROCESS 30
 #define FIRE_PRIORITY_NPC_ACTIONS 25

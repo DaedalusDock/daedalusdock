@@ -238,26 +238,19 @@
 	inhand_icon_state = "glasses"
 	vision_correction = TRUE //corrects nearsightedness
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+	loc_procs = CROSSED
 
 /obj/item/clothing/glasses/regular/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/knockoff,25,list(BODY_ZONE_PRECISE_EYES),list(ITEM_SLOT_EYES))
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/knockoff, 25, list(BODY_ZONE_PRECISE_EYES), slot_flags)
 
-
-/obj/item/clothing/glasses/regular/proc/on_entered(datum/source, atom/movable/movable)
-	SIGNAL_HANDLER
-	if(movable == src)
-		return
+/obj/item/clothing/glasses/regular/Crossed(atom/movable/crossed_by, oldloc)
 	if(damaged_clothes == CLOTHING_SHREDDED)
 		return
 	if(item_flags & IN_INVENTORY)
 		return
-	if(isliving(movable))
-		var/mob/living/crusher = movable
+	if(isliving(crossed_by))
+		var/mob/living/crusher = crossed_by
 		if(crusher.m_intent != MOVE_INTENT_WALK && (!(crusher.movement_type & (FLYING|FLOATING)) || crusher.buckled))
 			playsound(src, 'sound/effects/glass_step.ogg', 30, TRUE)
 			visible_message(span_warning("[crusher] steps on [src], damaging it!"))
@@ -640,33 +633,6 @@
 	desc = "A pair of glasses with uniquely colored lenses. The frame is inscribed with 'Best Salesman 1997'."
 	icon_state = "salesman"
 	inhand_icon_state = "salesman"
-	///Tells us who the current wearer([BIGSHOT]) is.
-	var/mob/living/carbon/human/bigshot
-
-/obj/item/clothing/glasses/salesman/equipped(mob/living/carbon/human/user, slot)
-	..()
-	if(slot != ITEM_SLOT_EYES)
-		return
-	bigshot = user
-	RegisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE, PROC_REF(moodshift))
-
-/obj/item/clothing/glasses/salesman/dropped(mob/living/carbon/human/user)
-	..()
-	UnregisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE)
-	bigshot = initial(bigshot)
-	icon_state = initial(icon_state)
-	desc = initial(desc)
-
-/obj/item/clothing/glasses/salesman/proc/moodshift(atom/movable/source, amount)
-	SIGNAL_HANDLER
-	if(amount < SANITY_UNSTABLE)
-		icon_state = "salesman_fzz"
-		desc = "A pair of glasses, the lenses are full of TV static. They've certainly seen better days..."
-		bigshot.update_worn_glasses()
-	else
-		icon_state = initial(icon_state)
-		desc = initial(desc)
-		bigshot.update_worn_glasses()
 
 /obj/item/clothing/glasses/nightmare_vision
 	name = "nightmare vision goggles"

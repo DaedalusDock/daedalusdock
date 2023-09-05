@@ -31,6 +31,7 @@
 			reagent["name"] = R.name
 			reagent["quantity"] = round(R.volume, 1)
 			reagent["visible"] = !(R.chemical_flags & REAGENT_INVISIBLE)
+			reagent["overdosed"] = R.overdosed
 			.["reagents"] += list(reagent)
 
 	.["bodyparts"] = list()
@@ -53,7 +54,7 @@
 	for(var/obj/item/organ/O as anything in processing_organs)
 		var/list/org = list()
 		org["name"] = O.name
-		org["damaged_percent"] = O.damage / O.maxHealth * 100
+		org["damage_percent"] = O.damage / O.maxHealth * 100
 		org["scan_results"] = O.get_scan_results(TRUE)
 
 		.["organs"] += list(org)

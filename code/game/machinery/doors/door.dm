@@ -217,7 +217,7 @@
 /obj/machinery/door/proc/try_remove_seal(mob/user)
 	return
 
-/obj/machinery/door/Bumped(atom/movable/AM)
+/obj/machinery/door/BumpedBy(atom/movable/AM)
 	. = ..()
 	if(operating || (obj_flags & EMAGGED) || (!can_open_with_hands && density))
 		return

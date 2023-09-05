@@ -114,6 +114,9 @@
 #define HAS_TRAIT_FROM_ONLY(target, trait, source) (target.status_traits?[trait] && (source in target.status_traits[trait]) && (length(target.status_traits[trait]) == 1))
 #define HAS_TRAIT_NOT_FROM(target, trait, source) (target.status_traits?[trait] && (length(target.status_traits[trait] - source) > 0))
 
+/// For use in start/stop metabolize. Since we don't want touch metabolism ending to interrupt bloodstream chems of the same type, etc.
+#define CHEM_TRAIT_SOURCE(class) "[type]_[class]"
+
 /*
 Remember to update _globalvars/traits.dm if you're adding/removing/renaming traits.
 */
@@ -311,7 +314,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// We can handle 'dangerous' plants in botany safely
 #define TRAIT_PLANT_SAFE "plant_safe"
 #define TRAIT_UNINTELLIGIBLE_SPEECH "unintelligible-speech"
-#define TRAIT_UNSTABLE "unstable"
 #define TRAIT_OIL_FRIED "oil_fried"
 #define TRAIT_MEDICAL_HUD "med_hud"
 #define TRAIT_SECURITY_HUD "sec_hud"
@@ -583,6 +585,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_KEEP_DIRECTION_WHILE_PULLING "keep_direction_while_pulling"
 // Prevents this item from entering closets/crates entirely via insertion_allowed()
 #define TRAIT_REJECT_INSERTION "reject_insertion"
+/// Wearing this item in the mask slot will make your voice Unknown
+#define TRAIT_HIDES_VOICE "hides_voice"
+/// Wearing this item in the mask slot will make your voice your current ID, or unknown
+#define TRAIT_REPLACES_VOICE "replaces_voice"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"
@@ -606,7 +612,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EMPATH "empath"
 #define TRAIT_FRIENDLY "friendly"
 #define TRAIT_GRABWEAKNESS "grab_weakness"
-#define TRAIT_SNOB "snob"
 #define TRAIT_BALD "bald"
 #define TRAIT_BADTOUCH "bad_touch"
 #define TRAIT_EXTROVERT "extrovert"
@@ -616,9 +621,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_SMOKER "smoker"
 /// Gives you the Shifty Eyes quirk, rarely making people who examine you think you examined them back even when you didn't
 #define TRAIT_SHIFTY_EYES "shifty_eyes"
-
-///Trait for the gamer quirk.
-#define TRAIT_GAMER "gamer"
 
 ///Trait for dryable items
 #define TRAIT_DRYABLE "trait_dryable"
@@ -668,6 +670,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// trait denoting someone will sometimes recover out of crit
 #define TRAIT_UNBREAKABLE "unbreakable"
+
+/// trait denoting something is being risen up by a table
+#define TRAIT_TABLE_RISEN "table_risen"
 
 // common trait sources
 #define TRAIT_GENERIC "generic"
@@ -749,9 +754,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 ///generic atom traits
 /// Trait from [/datum/element/rust]. Its rusty and should be applying a special overlay to denote this.
 #define TRAIT_RUSTY "rust_trait"
-///stops someone from splashing their reagent_container on an object with this trait
-#define DO_NOT_SPLASH "do_not_splash"
-
 // unique trait sources, still defines
 #define CLONING_POD_TRAIT "cloning-pod"
 #define STATUE_MUTE "statue"
@@ -764,7 +766,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define EYES_COVERED "eyes_covered"
 #define HYPNOCHAIR_TRAIT "hypnochair"
 #define FLASHLIGHT_EYES "flashlight_eyes"
-#define IMPURE_OCULINE "impure_oculine"
 #define BLINDFOLD_TRAIT "blindfolded"
 #define TRAIT_SANTA "santa"
 #define SCRYING_ORB "scrying-orb"
@@ -955,3 +956,12 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define RIGHT_LEG_TRAIT "right_leg"
 #define LEFT_LEG_TRAIT "left_leg"
 
+// Reagent traits
+#define TRAIT_ZOMBIEPOWDER "zombiepowder"
+#define TRAIT_ROTATIUM "rotatedidiot"
+#define TRAIT_VENOMSIZE "venomsize"
+#define TRAIT_HYPERZINE "zoomzoomzoom"
+#define TRAIT_EPHEDRINE "ephedrine"
+#define TRAIT_HALOPERIDOL "haloperidol"
+#define TRAIT_STIMULANTS "stimulants"
+#define TRAIT_IMPEDREZENE "impedrezene"

@@ -100,9 +100,8 @@
 
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]."
+		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]. <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>"
 
-		. += wear_id.get_id_examine_strings(user)
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()
@@ -203,7 +202,9 @@
 
 	if(has_status_effect(/datum/status_effect/fire_handler/fire_stacks))
 		msg += "[t_He] [t_is] covered in something flammable.\n"
-	if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks))
+	if(locate(/datum/reagent/toxin/acid) in touching?.reagent_list)
+		msg += span_warning("[t_He] is covered in burning acid! \n")
+	else if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks) || length(touching?.reagent_list))
 		msg += "[t_He] look[p_s()] a little soaked.\n"
 
 
@@ -247,9 +248,6 @@
 			var/obj/item/bodypart/grasped_part = i
 			msg += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
 
-	if(reagents.has_reagent(/datum/reagent/teslium, needs_metabolizing = TRUE))
-		msg += "[t_He] [t_is] emitting a gentle blue glow!\n"
-
 	if(islist(stun_absorption))
 		for(var/i in stun_absorption)
 			if(stun_absorption[i]["end_time"] > world.time && stun_absorption[i]["examine_message"])
@@ -280,7 +278,6 @@
 
 			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
 				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
-				SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "religious_comfort", /datum/mood_event/religiously_comforted)
 
 		switch(stat)
 			if(UNCONSCIOUS, HARD_CRIT)
@@ -313,7 +310,7 @@
 		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD))
 			var/cyberimp_detect
 			for(var/obj/item/organ/cyberimp/CI in processing_organs)
-				if(CI.status == ORGAN_ROBOTIC && !CI.syndicate_implant)
+				if((CI.organ_flags & ORGAN_SYNTHETIC) && !CI.syndicate_implant)
 					cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
 			if(cyberimp_detect)
 				. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"

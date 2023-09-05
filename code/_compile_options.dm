@@ -77,6 +77,9 @@
 ///NEVER run this on live, it's for simulating highpop only
 // #define VERB_STRESS_TEST
 
+// If this is uncommented, will attempt to load and initialize prof.dll/libprof.so.
+// We do not ship byond-tracy. Build it yourself here: https://github.com/mafemergency/byond-tracy/
+// #define USE_BYOND_TRACY
 
 ///Uncomment this to force all verbs to run into overtime all of the time
 ///Essentially negating the reserve 2%
@@ -193,6 +196,8 @@
 #warn Building with Dream Maker is no longer supported and will result in errors.
 #warn In order to build, run BUILD.bat in the root directory.
 #warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
+//Hi, Hijacking this to do DMEd-Specific Icon Overrides
+#define SIMPLE_MAPHELPERS
 #endif
 
 #ifdef ZASDBG
@@ -217,6 +222,11 @@
 #define DATUMVAR_DEBUGGING_MODE
 #endif
 
+#ifdef GC_FAILURE_HARD_LOOKUP
+// Don't stop when searching, go till you're totally done
+#define FIND_REF_NO_CHECK_TICK
+#endif
+
 #ifdef REFERENCE_DOING_IT_LIVE
 // compile the backend
 #define REFERENCE_TRACKING
@@ -224,7 +234,3 @@
 #define GC_FAILURE_HARD_LOOKUP
 #endif
 
-#ifdef GC_FAILURE_HARD_LOOKUP
-// Don't stop when searching, go till you're totally done
-#define FIND_REF_NO_CHECK_TICK
-#endif

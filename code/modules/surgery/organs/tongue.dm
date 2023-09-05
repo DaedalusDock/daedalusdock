@@ -373,8 +373,7 @@
 /obj/item/organ/tongue/robot
 	name = "robotic voicebox"
 	desc = "A voice synthesizer that can interface with organic lifeforms."
-	status = ORGAN_ROBOTIC
-	organ_flags = NONE
+	organ_flags = ORGAN_SYNTHETIC
 	icon_state = "tonguerobot"
 	say_mod = "states"
 	attack_verb_continuous = list("beeps", "boops")

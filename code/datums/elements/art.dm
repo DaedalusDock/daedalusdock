@@ -1,5 +1,5 @@
 /datum/element/art
-	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
+	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH // Detach for turfs
 	id_arg_index = 2
 	var/impressiveness = 0
 
@@ -20,16 +20,12 @@
 	var/msg
 	switch(impress)
 		if(GREAT_ART to INFINITY)
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artgreat", /datum/mood_event/artgreat)
 			msg = "What \a [pick("masterpiece", "chef-d'oeuvre")]. So [pick("trascended", "awe-inspiring", "bewitching", "impeccable")]!"
 		if (GOOD_ART to GREAT_ART)
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artgood", /datum/mood_event/artgood)
 			msg = "[source.p_theyre(TRUE)] a [pick("respectable", "commendable", "laudable")] art piece, easy on the keen eye."
 		if (BAD_ART to GOOD_ART)
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artok", /datum/mood_event/artok)
 			msg = "[source.p_theyre(TRUE)] fair to middling, enough to be called an \"art object\"."
 		if (0 to BAD_ART)
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artbad", /datum/mood_event/artbad)
 			msg = "Wow, [source.p_they()] sucks."
 
 	user.visible_message(span_notice("[user] stops and looks intently at [source]."), \
@@ -57,10 +53,8 @@
 /datum/element/art/rev/apply_moodlet(atom/source, mob/user, impress)
 	var/msg
 	if(user.mind?.has_antag_datum(/datum/antagonist/rev))
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artgreat", /datum/mood_event/artgreat)
 		msg = "What \a [pick("masterpiece", "chef-d'oeuvre")] [source.p_theyre()]. So [pick("subversive", "revolutionary", "unitizing", "egalitarian")]!"
 	else
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artbad", /datum/mood_event/artbad)
 		msg = "Wow, [source.p_they()] sucks."
 
 	user.visible_message(span_notice("[user] stops to inspect [source]."), \
@@ -79,10 +73,8 @@
 	haters += fucking_quartermaster.title
 
 	if(!(user.mind.assigned_role.title in haters))
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artgreat", /datum/mood_event/artgreat)
 		msg = "What \a [pick("masterpiece", "chef-d'oeuvre")] [source.p_theyre()]. So [pick("relatable", "down to earth", "true", "real")]!"
 	else
-		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "artbad", /datum/mood_event/artbad)
 		msg = "Wow, [source.p_they()] sucks."
 
 	user.visible_message(span_notice("[user] stops to inspect [source]."), \

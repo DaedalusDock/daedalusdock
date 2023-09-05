@@ -135,9 +135,10 @@
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
 
-	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 110)
-	if(!forced && . && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE)
+	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 80)
+	if(!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE)
 		src << breathing
+		COOLDOWN_START(src, breath_sound_cd, 3.5 SECONDS)
 
 /mob/living/carbon/proc/has_smoke_protection()
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))

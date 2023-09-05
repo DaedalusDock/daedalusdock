@@ -91,7 +91,7 @@
 	if(!istype(O))
 		return
 
-	if(!IS_ORGANIC_LIMB(O))
+	if(O.bodypart_flags & BP_NO_PAIN)
 		return
 
 	if (!(flags & CALTROP_BYPASS_SHOES))

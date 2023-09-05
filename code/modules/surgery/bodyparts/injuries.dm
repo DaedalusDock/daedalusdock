@@ -37,7 +37,8 @@
 		)
 
 		jostle_bones()
-		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+		if(!(bodypart_flags & BP_NO_PAIN))
+			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
 
 	playsound(loc, SFX_BREAK_BONE, 100, FALSE, -2)
 

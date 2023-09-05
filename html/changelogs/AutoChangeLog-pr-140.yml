@@ -1,0 +1,4 @@
+author: Cenrus
+delete-after: true
+changes:
+  - tweak: Pixelshift default hotkey is now J instead of B

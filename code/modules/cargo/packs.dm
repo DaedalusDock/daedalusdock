@@ -1341,6 +1341,20 @@
 	contains = list(/obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck,
 					/obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck/skirt)
 
+/datum/supply_pack/medical/medical/atk
+	name = "Triage - Advanced trauma supplies"
+	desc = "It's a bunch of bruise packs in a trenchcoat."
+	cost = CARGO_CRATE_VALUE * 3
+	crate_name = "advanced trauma crate"
+	contains = list(
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack
+		)
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Science /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////

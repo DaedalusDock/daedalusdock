@@ -782,7 +782,7 @@
 	if(oldarea != newarea)
 		newarea.Entered(src, oldarea)
 
-	if(loc != newloc)
+	if(loc != newloc) // Something moved us out of where we just moved to, Abort!!!
 		return
 
 	Moved(oldloc, direction, FALSE, old_locs)

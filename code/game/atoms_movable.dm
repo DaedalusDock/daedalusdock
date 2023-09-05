@@ -782,7 +782,7 @@
 	if(oldarea != newarea)
 		newarea.Entered(src, oldarea)
 
-	if(QDELING(src))
+	if(loc != newloc)
 		return
 
 	Moved(oldloc, direction, FALSE, old_locs)

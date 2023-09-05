@@ -1219,12 +1219,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Allows you to put in item-specific reactions based on species
 	if(user != H)
 		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armour_penetration))
-			return FALSE
+			return MOB_ATTACKEDBY_NO_DAMAGE
 
 	if(H.check_block())
 		H.visible_message(span_warning("[H] blocks [I]!"), \
 						span_userdanger("You block [I]!"))
-		return FALSE
+		return MOB_ATTACKEDBY_NO_DAMAGE
 
 	var/hit_area
 	if(!affecting) //Something went wrong. Maybe the limb is missing?
@@ -1248,7 +1248,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		H.stamina.adjust(-I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1))
 
 	if(!I.force)
-		return FALSE //item force is zero
+		return MOB_ATTACKEDBY_NO_DAMAGE //item force is zero
 
 	var/bloody = FALSE
 	if(((I.damtype == BRUTE) && I.force && prob(25 + (I.force * 2))))
@@ -1317,7 +1317,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 						H.w_uniform.add_mob_blood(H)
 						H.update_worn_undersuit()
 
-	return TRUE
+	return MOB_ATTACKEDBY_SUCCESS
 
 /datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null, cap_loss_at = 0)
 	SEND_SIGNAL(H, COMSIG_MOB_APPLY_DAMAGE, damage, damagetype, def_zone, sharpness, attack_direction)

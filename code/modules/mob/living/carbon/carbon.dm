@@ -1361,8 +1361,6 @@
 	if(!heart_organ)
 		// No heart, no pulse
 		return "0"
-	if(!method)
-		return "muddled and unclear; you can't seem to find a vein"
 
 	var/bpm = get_pulse_as_number()
 	if(bpm >= PULSE_MAX_BPM)

@@ -171,14 +171,14 @@
 
 /mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user)
 	if(!I || !user)
-		return FALSE
+		return MOB_ATTACKEDBY_FAIL
 
 	var/target_area = parse_zone(deprecise_zone(user.zone_selected)) //our intended target
 
 	var/obj/item/bodypart/affecting = get_bodypart(deprecise_zone(user.zone_selected))
 	if (!affecting || affecting.is_stump)
 		to_chat(user, span_danger("They are missing that limb!"))
-		return FALSE
+		return MOB_ATTACKEDBY_FAIL
 
 	if(user == src)
 		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //stabbing yourself always hits the right target
@@ -187,7 +187,7 @@
 		var/hit_zone = get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty)
 		if(!hit_zone)
 			visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
-			return FALSE
+			return MOB_ATTACKEDBY_MISS
 		affecting = get_bodypart(hit_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)

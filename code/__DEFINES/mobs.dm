@@ -784,3 +784,10 @@ GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
 #define BREATH_DAMAGING -1
 /// Breath completely failed. chokies!!
 #define BREATH_FAILED -2
+
+/// Attack missed.
+#define MOB_ATTACKEDBY_MISS 3
+/// Attack completely failed (missing user, etc)
+#define MOB_ATTACKEDBY_FAIL 0
+#define MOB_ATTACKEDBY_SUCCESS 1
+#define MOB_ATTACKEDBY_NO_DAMAGE 2

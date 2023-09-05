@@ -689,7 +689,7 @@
  */
 /atom/movable/proc/abstract_move(atom/new_loc)
 	if(QDELING(src))
-		return
+		CRASH("Illegal abstract_move() on [type]!")
 
 	var/atom/old_loc = loc
 	var/direction = get_dir(old_loc, new_loc)
@@ -788,7 +788,7 @@
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
 	if(QDELING(src))
-		return
+		CRASH("Illegal Move()! on [type]")
 
 	var/atom/movable/pullee = pulling
 	var/turf/current_turf = loc
@@ -1196,7 +1196,7 @@
 
 /atom/movable/proc/forceMove(atom/destination)
 	if(QDELING(src))
-		return
+		CRASH("Illegal forceMove() on [type]!")
 
 	. = FALSE
 	if(destination)
@@ -1305,6 +1305,9 @@
  * * continuous_move - If this check is coming from something in the context of already drifting
  */
 /atom/movable/proc/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	if(anchored)
+		return TRUE
+
 	if(has_gravity())
 		return TRUE
 

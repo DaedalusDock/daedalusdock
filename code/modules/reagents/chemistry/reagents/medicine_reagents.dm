@@ -590,7 +590,7 @@
 				W.bleed_timer = 0
 				W.clamp_wound()
 
-/datum/reagent/medicine/coagulan/overdose_process(mob/living/carbon/C)
+/datum/reagent/medicine/coagulant/overdose_process(mob/living/carbon/C)
 	APPLY_CHEM_EFFECT(C, CE_BLOCKAGE, 1)
 
 /datum/reagent/medicine/epinephrine

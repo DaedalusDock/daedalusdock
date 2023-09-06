@@ -451,7 +451,7 @@
 	description = "Dylovene is a broad-spectrum antitoxin used to neutralize poisons before they can do significant harm."
 	taste_description = "a roll of gauze"
 	color = "#dadd98"
-	metabolization_rate = 0.4
+	metabolization_rate = 0.2
 
 /datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
 	C.adjust_drowsyness(-6 * removed)
@@ -588,6 +588,9 @@
 			if(W.bleeding() && prob(10))
 				W.bleed_timer = 0
 				W.clamp_wound()
+
+/datum/reagent/medicine/coagulan/overdose_process(mob/living/carbon/C)
+	APPLY_CHEM_EFFECT(C, CE_BLOCKAGE, 1)
 
 /datum/reagent/medicine/epinephrine
 	name = "Epinephrine"
@@ -937,7 +940,6 @@
 	reagent_state = LIQUID
 	color = "#FFFFF0"
 	metabolization_rate = 0.1
-
 
 /datum/reagent/medicine/insulin/affect_blood(mob/living/carbon/C, removed)
 	holder.remove_reagent(/datum/reagent/consumable/sugar, 3 * removed)

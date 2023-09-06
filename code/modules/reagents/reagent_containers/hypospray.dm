@@ -53,6 +53,7 @@
 				trans = reagents.copy_to(affected_mob, amount_per_transfer_from_this)
 			to_chat(user, span_notice("[trans] unit\s injected. [reagents.total_volume] unit\s remaining in [src]."))
 			log_combat(user, affected_mob, "injected", src, "([contained])")
+			playsound(src, 'sound/effects/autoinjector.ogg', 25)
 		return TRUE
 	return FALSE
 
@@ -100,8 +101,8 @@
 //MediPens
 
 /obj/item/reagent_containers/hypospray/medipen
-	name = "epinephrine medipen"
-	desc = "A rapid and safe way to stabilize patients in critical condition for personnel without advanced medical knowledge. Contains a powerful preservative that can delay decomposition when applied to a dead body, and stop the production of histamine during an allergic reaction."
+	name = "emergency medipen"
+	desc = "A rapid and safe way to stabilize patients in critical condition for personnel without advanced medical knowledge."
 	icon_state = "medipen"
 	inhand_icon_state = "medipen"
 	worn_icon_state = "medipen"
@@ -113,7 +114,7 @@
 	ignore_flags = 1 //so you can medipen through spacesuits
 	reagent_flags = DRAWABLE
 	flags_1 = null
-	list_reagents = list(/datum/reagent/medicine/epinephrine = 10, /datum/reagent/toxin/formaldehyde = 3, /datum/reagent/medicine/coagulant = 2)
+	list_reagents = list(/datum/reagent/medicine/inaprovaline = 10, /datum/reagent/medicine/peridaxon = 10, /datum/reagent/medicine/coagulant = 5)
 	custom_price = PAYCHECK_MEDIUM
 	custom_premium_price = PAYCHECK_HARD
 

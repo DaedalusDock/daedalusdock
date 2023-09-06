@@ -373,9 +373,10 @@
 	description = "An effective and very addictive painkiller. Don't mix with alcohol."
 	taste_description = "bitterness"
 	color = "#800080"
-	overdose_threshold =20
+	overdose_threshold = 20
 	pain_power = 200
 	effective_cycle = 2
+	addiction_types = list(/datum/addiction/opiods = 10)
 
 /datum/reagent/medicine/morphine
 	name = "Morphine"

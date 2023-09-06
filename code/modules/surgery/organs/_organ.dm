@@ -340,6 +340,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 ///SETS an organ's damage to the amount "damage_amount", and in doing so clears or sets the failing flag, good for when you have an effect that should fix an organ if broken
 /obj/item/organ/proc/setOrganDamage(damage_amount) //use mostly for admin heals
 	applyOrganDamage(damage_amount - damage)
+	check_failing_thresholds(TRUE)
 
 /obj/item/organ/proc/getToxLoss()
 	return organ_flags & ORGAN_SYNTHETIC ? damage * 0.5 : damage
@@ -370,9 +371,11 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			return now_fixed
 
 ///Checks if an organ should/shouldn't be failing and gives the appropriate organ flag
-/obj/item/organ/proc/check_failing_thresholds()
+/obj/item/organ/proc/check_failing_thresholds(revivable)
 	if(damage >= maxHealth)
 		set_organ_dead(TRUE)
+	else if(revivable)
+		set_organ_dead(FALSE)
 
 /// Set or unset the organ as failing. Returns TRUE on success.
 /obj/item/organ/proc/set_organ_dead(failing)
@@ -476,3 +479,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		. += tag ? "<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
 	return
+
+/// Used for the fix_organ surgery, lops off some of the maxHealth if the organ was very damaged.
+/obj/item/organ/proc/surgically_fix(mob/user)
+	if(damage > maxHealth * low_threshold)
+		var/scarring = damage/max_damage
+		scarring = 1 - 0.3 * scarring ** 2 // Between ~15 and 30 percent loss
+		var/new_max_dam = floor(scarring * max_damage)
+		if(new_max_dam < max_damage)
+			to_chat(user, span_warning("Not every part of [src] could be saved, some dead tissue had to be removed, making it more suspectable to damage in the future."))
+			set_max_damage(new_max_dam)
+	applyOrganDamage(-damage)

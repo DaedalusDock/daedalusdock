@@ -107,7 +107,10 @@
 		pick_organs += brain
 
 	for(var/obj/item/organ/O as anything in pick_organs)
-		if(amount <= 0)
+		if(heal)
+			if(amount >= 0)
+				break
+		else if(amount <= 0)
 			break
 
 		amount -= O.applyOrganDamage(amount, silent = TRUE, updating_health = FALSE)

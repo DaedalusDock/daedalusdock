@@ -416,7 +416,9 @@
 			brainmob.death()
 		return
 	else
-		if(brainmob)
+		if(owner)
+			owner.revive()
+		else if(brainmob)
 			brainmob.revive()
 		return
 

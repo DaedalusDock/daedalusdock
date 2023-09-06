@@ -31,7 +31,7 @@
 	for(var/obj/item/organ/I in affected.contained_organs)
 		if(istype(I, /obj/item/organ/brain))
 			continue
-		if(!(I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
+		if(!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 0)
 			return TRUE
 
 /datum/surgery_step/internal/fix_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -61,7 +61,7 @@
 	var/obj/item/organ/O = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
 	if(!O)
 		return
-	O.applyOrganDamage(-O.damage)
+	O.surgically_fix(user)
 	user.visible_message(span_notice("[user] finishes treating damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool_name]."))
 	..()
 
@@ -307,4 +307,57 @@
 /datum/surgery_step/internal/attach_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_warning("[user]'s hand slips, damaging the flesh in [target]'s [affected.plaintext_zone] with [tool]!"))
+	..()
+
+/datum/surgery_step/internal/brain_revival
+	name = "Brain revival"
+	desc = "Utilizes the incredible power of Alkysine to restore the spark of life."
+	allowed_tools = list(
+		/obj/item/reagent_containers/glass/beaker = 100,
+	)
+	min_duration = 100
+	max_duration = 150
+	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+
+/datum/surgery_step/internal/brain_revival/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/BP = ..()
+	if(target_zone != BODY_ZONE_HEAD)
+		return
+	var/obj/item/organ/brain/B = locate() in BP.contained_organs
+	if(!(B?.organ_flags & ORGAN_DEAD))
+		return
+
+	return TRUE
+
+/datum/surgery_step/internal/brain_revival/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	. = FALSE
+	var/obj/item/reagent_containers/glass/beaker/S = tool
+	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
+		to_chat(user, span_warning("\The [S] doesn't contain enough alkysine!"))
+		return
+
+	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
+	if(!locate(/obj/item/organ/brain) in head)
+		to_chat(user, span_warning("\The [S] doesn't contain a brain to repair!"))
+		return
+
+	return TRUE
+
+/datum/surgery_step/internal/brain_revival/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	user.visible_message(span_warning("[user] begins pouring [tool] into [target]'s [affected]..."))
+	..()
+
+/datum/surgery_step/internal/brain_revival/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/reagent_containers/glass/beaker/S = tool
+	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
+		return
+
+	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
+	var/obj/item/organ/brain/brain = locate() in head?.contained_organs
+	if(!head || !brain)
+		return
+
+	S.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 10)
+	brain.setOrganDamage(0)
 	..()

@@ -474,3 +474,17 @@
 	build_path = /obj/item/plate/oven_tray
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE
+
+/////////////////////////////////////////
+////////////////Data Terminal////////////
+/////////////////////////////////////////
+
+/datum/design/data_terminal
+	name = "Data Terminal"
+	desc = "A floor-mountable data terminal for powerline networks."
+	id = "data_terminal"
+	build_type = FABRICATOR
+	materials = list(/datum/material/iron = 500)
+	build_path = /obj/item/data_terminal_construct
+	category = list(DCAT_ASSEMBLY, DCAT_RADIO)
+	mapload_design_flags = DESIGN_FAB_ENGINEERING

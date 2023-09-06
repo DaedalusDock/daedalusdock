@@ -1,0 +1,9 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - rscadd: Maint Slugs! They leave behind a slippery trail and can be "milked" if
+      so desired. Cargo starts with a unique one.
+  - rscadd: Feral Hogs! Technically a neutral animal, they become aggressive if you
+      get too close. Security has a private hog.
+  - rscdel: Sgt. Araneus and Paperwork have been sent off to kindly old spaceman's
+      farm, where they will happily live out the rest of their natural lives.

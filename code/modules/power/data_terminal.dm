@@ -32,7 +32,7 @@
 		"You start unscrewing [src] from \the [src.loc]",
 		"You hear quiet metal scraping.")
 	tool.play_tool_sound(src, 50)
-	if(!do_after_mob(user, src, 10 SECONDS, DO_PUBLIC))
+	if(!do_after(user, src, 10 SECONDS, DO_PUBLIC))
 		to_chat(user, span_warning("You need to stand still to unscrew [src]!"))
 		return TOOL_ACT_TOOLTYPE_SUCCESS
 	playsound(src.loc, 'sound/machines/click.ogg', 75, TRUE)
@@ -121,7 +121,7 @@
 		"You start screwing [src] into \the [T]",
 		"You hear quiet metal scraping.")
 	tool.play_tool_sound(src, 50)
-	if(!do_after_mob(user, src, 10 SECONDS, DO_PUBLIC))
+	if(!do_after(user, src, 10 SECONDS, DO_PUBLIC))
 		to_chat(user, span_warning("You need to stand still to install [src]!"))
 		return TOOL_ACT_TOOLTYPE_SUCCESS
 	playsound(src.loc, 'sound/machines/click.ogg', 75, TRUE)

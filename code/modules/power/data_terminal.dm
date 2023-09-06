@@ -29,7 +29,7 @@
 		return TOOL_ACT_TOOLTYPE_SUCCESS
 	user.visible_message(
 		"[user] starts unscrewing [src] from \the [src.loc].",
-		"you start unscrewing [src] from \the [src.loc]",
+		"You start unscrewing [src] from \the [src.loc]",
 		"You hear quiet metal scraping.")
 	tool.play_tool_sound(src, 50)
 	if(!do_after_mob(user, src, 10 SECONDS, DO_PUBLIC))
@@ -118,14 +118,14 @@
 		return TOOL_ACT_TOOLTYPE_SUCCESS
 	user.visible_message(
 		"[user] starts screwing [src] into \the [T].",
-		"you start screwing [src] into \the [T]",
+		"You start screwing [src] into \the [T]",
 		"You hear quiet metal scraping.")
 	tool.play_tool_sound(src, 50)
 	if(!do_after_mob(user, src, 10 SECONDS, DO_PUBLIC))
 		to_chat(user, span_warning("You need to stand still to install [src]!"))
 		return TOOL_ACT_TOOLTYPE_SUCCESS
 	playsound(src.loc, 'sound/machines/click.ogg', 75, TRUE)
-	user.visible_message("[user] installed \the [src] to \the [T]", "You installed \the [src] to \the [T]")
+	user.visible_message("[user] installed \the [src] on \the [T]", "You installed \the [src] on \the [T]")
 	new /obj/machinery/power/data_terminal(T)
 	qdel(src)
 	return TOOL_ACT_TOOLTYPE_SUCCESS

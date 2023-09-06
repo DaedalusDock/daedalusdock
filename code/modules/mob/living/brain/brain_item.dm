@@ -301,13 +301,13 @@
 				to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
 			if(!past_damage_threshold(2) && prob(damprob))
-				applyOrganDamage(1)
+				applyOrganDamage(BRAIN_DECAY_RATE)
 
 		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
 			if(!past_damage_threshold(4) && prob(damprob))
-				applyOrganDamage(1)
+				applyOrganDamage(BRAIN_DECAY_RATE)
 
 			if(prob(10))
 				owner.Unconscious(rand(1,3) SECONDS)
@@ -317,7 +317,7 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
 			if(!past_damage_threshold(6) && prob(damprob))
-				applyOrganDamage(1)
+				applyOrganDamage(BRAIN_DECAY_RATE)
 
 			if(prob(15))
 				owner.Unconscious(rand(3,5) SECONDS)
@@ -327,9 +327,9 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
 			if(prob(damprob))
-				applyOrganDamage(1)
+				applyOrganDamage(BRAIN_DECAY_RATE)
 			if(prob(damprob))
-				applyOrganDamage(1)
+				applyOrganDamage(BRAIN_DECAY_RATE)
 	..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)

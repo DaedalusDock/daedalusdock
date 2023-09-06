@@ -210,7 +210,7 @@
 /datum/reagent/medicine/dexalin/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 1)
 	C.adjustOxyLoss(-10 * removed, FALSE)
-	holder.remove_reagent(/datum/reagent/toxin/lexorin, 2 * removed)
+	holder.remove_reagent(/datum/reagent/toxin/lexorin, 10 * removed)
 	return TRUE
 
 /datum/reagent/medicine/tricordrazine
@@ -246,8 +246,8 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/omnizine/affect_blood(mob/living/carbon/C, removed)
-	C.heal_overall_damage(0.5 * removed, 0.5 * removed, updating_health = FALSE)
-	C.adjustToxLoss(-0.5 * removed, FALSE)
+	C.heal_overall_damage(12 * removed, 12 * removed, updating_health = FALSE)
+	C.adjustToxLoss(-12 * removed, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/cryoxadone

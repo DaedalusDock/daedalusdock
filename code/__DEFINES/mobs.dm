@@ -178,6 +178,9 @@
 #define BRAIN_DAMAGE_CRITICAL 150
 #define BRAIN_DAMAGE_DEATH 200
 
+#define BRAIN_DECAY_RATE 0.5
+#define ORGAN_DECAY_RATE 0.002
+
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild
 #define BRAIN_TRAUMA_SEVERE /datum/brain_trauma/severe
 #define BRAIN_TRAUMA_SPECIAL /datum/brain_trauma/special

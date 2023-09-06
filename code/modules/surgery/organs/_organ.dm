@@ -485,7 +485,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(damage > maxHealth * low_threshold)
 		var/scarring = damage/maxHealth
 		scarring = 1 - 0.3 * scarring ** 2 // Between ~15 and 30 percent loss
-		var/new_max_dam = FLOOR(scarring * maxHealth)
+		var/new_max_dam = FLOOR(scarring * maxHealth, 1)
 		if(new_max_dam < maxHealth)
 			to_chat(user, span_warning("Not every part of [src] could be saved, some dead tissue had to be removed, making it more suspectable to damage in the future."))
 			set_max_health(new_max_dam)

@@ -64,6 +64,11 @@
 		return FALSE
 	return pulse > PULSE_NONE || (organ_flags & ORGAN_SYNTHETIC)
 
+/obj/item/organ/heart/on_death(delta_time, times_fired)
+	. = ..()
+	if(pulse)
+		Stop()
+
 /obj/item/organ/heart/on_life(delta_time, times_fired)
 	. = ..()
 	handle_pulse()
@@ -119,7 +124,8 @@
 		should_stop ||= prob(max(0, owner.getBrainLoss() - owner.maxHealth * 0.75)) //brain failing to work heart properly
 		should_stop ||= (prob(5) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
 		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
-			to_chat(owner, span_danger("Your heart has stopped!"))
+			if(owner.stat != DEAD)
+				to_chat(owner, span_danger("Your heart has stopped!"))
 			if(pulse != NONE)
 				Stop()
 				return

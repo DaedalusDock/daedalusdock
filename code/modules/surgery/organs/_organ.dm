@@ -483,10 +483,10 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /// Used for the fix_organ surgery, lops off some of the maxHealth if the organ was very damaged.
 /obj/item/organ/proc/surgically_fix(mob/user)
 	if(damage > maxHealth * low_threshold)
-		var/scarring = damage/max_damage
+		var/scarring = damage/maxHealth
 		scarring = 1 - 0.3 * scarring ** 2 // Between ~15 and 30 percent loss
-		var/new_max_dam = floor(scarring * max_damage)
-		if(new_max_dam < max_damage)
+		var/new_max_dam = floor(scarring * maxHealth)
+		if(new_max_dam < maxHealth)
 			to_chat(user, span_warning("Not every part of [src] could be saved, some dead tissue had to be removed, making it more suspectable to damage in the future."))
-			set_max_damage(new_max_dam)
+			set_max_health(new_max_dam)
 	applyOrganDamage(-damage)

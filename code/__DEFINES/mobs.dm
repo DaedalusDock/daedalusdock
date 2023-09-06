@@ -435,7 +435,7 @@
 #define CE_STABLE "stable"
 /// Breathing depression, makes you need more air
 #define CE_BREATHLOSS "breathloss"
-/// Spaceacilin
+/// Fights off necrosis in bodyparts and organs
 #define CE_ANTIBIOTIC "antibiotic"
 /// Iron/nutriment
 #define CE_BLOODRESTORE "bloodrestore"

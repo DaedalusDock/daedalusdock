@@ -261,7 +261,7 @@
 
 /datum/reagent/medicine/cryoxadone/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_CRYO, 1)
-	if(!(C.bodytemperature < 170))
+	if(!(C.bodytemperature < TCRYO))
 		return
 
 	C.adjustCloneLoss(-100 * removed, FALSE)
@@ -689,6 +689,9 @@
 	description = "Spaceacillin will prevent a patient from conventionally spreading any diseases they are currently infected with. Also reduces infection in serious burns."
 	color = "#E1F2E6"
 	metabolization_rate = 0.02
+
+/datum/reagent/medicine/spaceacillin/affect_blood(mob/living/carbon/C, removed)
+	APPLY_CHEM_EFFECT(C, CE_ANTIBIOTIC, 1)
 
 /datum/reagent/medicine/haloperidol
 	name = "Haloperidol"

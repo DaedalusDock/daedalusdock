@@ -283,11 +283,11 @@
 		for(var/obj/item/organ/organ as anything in processing_organs)
 			update += organ.on_death(delta_time, times_fired) //Needed so organs decay while inside the body.
 		return
-
-	// NOTE: processing_organs is sorted by GLOB.organ_process_order on insertion
-	for(var/obj/item/organ/organ as anything in processing_organs)
-		if(organ?.owner) // This exist mostly because reagent metabolization can cause organ reshuffling
-			update += organ.on_life(delta_time, times_fired)
+	else
+		// NOTE: processing_organs is sorted by GLOB.organ_process_order on insertion
+		for(var/obj/item/organ/organ as anything in processing_organs)
+			if(organ?.owner) // This exist mostly because reagent metabolization can cause organ reshuffling
+				update += organ.on_life(delta_time, times_fired)
 
 	if(update)
 		updatehealth()

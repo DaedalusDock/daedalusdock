@@ -232,3 +232,4 @@
 		beings. They can, however, still struggle after an initial burst of inertia."
 	complexity = 0
 	prebuilt = TRUE
+	stat_required = CONSCIOUS

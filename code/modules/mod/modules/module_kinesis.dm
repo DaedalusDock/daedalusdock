@@ -188,7 +188,9 @@
 	if(isliving(grabbed_atom))
 		REMOVE_TRAIT(grabbed_atom, TRAIT_IMMOBILIZED, REF(src))
 		REMOVE_TRAIT(grabbed_atom, TRAIT_HANDS_BLOCKED, REF(src))
+		UnregisterSignal(grabbed_atom, COMSIG_MOB_STATCHANGE)
 	REMOVE_TRAIT(grabbed_atom, TRAIT_NO_FLOATING_ANIM, REF(src))
+	UnregisterSignal(grabbed_atom, COMSIG_MOVABLE_SET_ANCHORED)
 	if(!isitem(grabbed_atom))
 		animate(grabbed_atom, 0.2 SECONDS, pixel_x = grabbed_atom.base_pixel_x, pixel_y = grabbed_atom.base_pixel_y)
 	grabbed_atom = null

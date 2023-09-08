@@ -96,8 +96,12 @@
 /obj/vehicle/ridden/trolley/proc/load_cargo(obj/structure/closet/crate/cargo)
 	cargo.close()
 	cargo.forceMove(src)
+	vis_contents += cargo
+	cargo.layer = VEHICLE_RIDING_LAYER
+	cargo.pixel_y = 4
+	if(amount_of_cargo)
+		cargo.pixel_y += 12 * amount_of_cargo
 	amount_of_cargo++
-	icon_state = "trolley_[amount_of_cargo]"
 
 /obj/vehicle/ridden/trolley/proc/unload_cargo(mob/living/user)
 	if(!amount_of_cargo)
@@ -111,6 +115,9 @@
 		to_chat(user, span_warning("There's no space to unload from [src]!"))
 		return
 
+	cargo.pixel_y = initial(pixel_y)
+	cargo.layer = initial(layer)
+	vis_contents -= cargo
 	cargo.forceMove(deposit_turf)
 	user.visible_message(
 		span_notice("[user] unloads [cargo] from [src]."),

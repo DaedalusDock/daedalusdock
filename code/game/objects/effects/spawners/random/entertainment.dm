@@ -226,5 +226,4 @@
 
 /obj/effect/spawner/random/entertainment/toy/Initialize(mapload)
 	loot += GLOB.arcade_prize_pool
-	. = ..()
-	return INITIALIZE_HINT_QDEL
+	return ..()

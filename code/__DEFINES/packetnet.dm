@@ -22,6 +22,7 @@
 #define NETCLASS_P2P_PHONE "PNET_VCSTATION"
 #define NETCLASS_APC "PNET_AREAPOWER"
 #define NETCLASS_TERMINAL "PNET_STERM"
+#define NETCLASS_GRPS_CARD "NET_GPRS"
 
 // Packet fields
 // not honestly thrilled with having these be defines but kapu wants it that way
@@ -42,6 +43,8 @@
 // Standard Commands
 #define NET_COMMAND_PING_REPLY "ping_reply"
 
+// PDA Text Message
+#define NETCMD_PDAMESSAGE "pda_message"
 
 // Dataterminal connection/disconnect return values
 
@@ -61,3 +64,14 @@
 /// Packet needs additional handling
 #define RECEIVE_SIGNAL_CONTINUE FALSE
 
+// -----
+// Inviolability flags
+
+/// Packet contains volatile data that prevents it from being safely stored.
+#define MAGIC_DATA_MUST_DISCARD (1<<0)
+
+/// Packet contains data that players should never be able to see.
+#define MAGIC_DATA_MUST_OBFUSCATE (1<<1)
+
+/// All magic data protection flags at once.
+#define MAGIC_DATA_INVIOLABLE ALL

@@ -162,7 +162,7 @@
 
 	/// Linked Network Terminal
 	var/obj/machinery/power/data_terminal/netjack
-	/// Network ID, automatically generated when `generate_netid` is true on definition.
+	/// Network ID, see network_flags for autopopulation info.
 	var/net_id
 	/// General purpose 'master' ID for slave machines.
 	var/master_id

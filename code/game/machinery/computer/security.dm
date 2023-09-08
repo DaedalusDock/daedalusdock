@@ -880,18 +880,9 @@ Age: [active1.fields["age"]]<BR>"}
 							if (!fine || QDELETED(usr) || QDELETED(src) || !canUseSecurityRecordsConsole(usr, t1, null, a2))
 								return
 							var/datum/data/crime/crime = GLOB.data_core.createCrimeEntry(t1, "", authenticated, stationtime2text(), fine)
-							for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
-								if(tablet.saved_identification == active1.fields["name"])
-									var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
-									var/datum/signal/subspace/messaging/tablet_msg/signal = new(src, list(
-										"name" = "Security Citation",
-										"job" = "Citation Server",
-										"message" = message,
-										"targets" = list(tablet),
-										"automated" = TRUE
-									))
-									signal.send_to_receivers()
-									usr.log_message("(PDA: Citation Server) sent \"[message]\" to [signal.format_target()]", LOG_PDA)
+							var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+							if(announcer)
+								announcer.notify_citation(active1.fields["name"], t1, fine)
 							GLOB.data_core.addCitation(active1.fields["id"], crime)
 							investigate_log("New Citation: <strong>[t1]</strong> Fine: [fine] | Added to [active1.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
 							SSblackbox.ReportCitation(crime.dataId, usr.ckey, usr.real_name, active1.fields["name"], t1, fine)

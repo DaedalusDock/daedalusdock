@@ -56,10 +56,10 @@
 	. += "\t[span_info("GPRS ADDR: [span_robot(hardware_id)]")]"
 
 /obj/item/computer_hardware/network_card/packetnet/receive_signal(datum/signal/signal)
-	if(!holder || !signal.data) //Basic checks
+	if(!holder || !signal.data || signal.data["s_addr"] == hardware_id) //Basic checks
 		return
 	if(signal.transmission_method != TRANSMISSION_RADIO)
-		CRASH("[src] Received non-radio packet, transmission method ID [signal.transmission_method], Expected [TRANSMISSION_RADIO]")
+		CRASH("[src] received non-radio packet, transmission method ID [signal.transmission_method], Expected [TRANSMISSION_RADIO]")
 	var/list/signal_data = signal.data //medium velocity silver hedgehog
 	var/signal_d_addr = signal_data["d_addr"]
 	if(signal_d_addr == NET_ADDRESS_PING) //Ping.

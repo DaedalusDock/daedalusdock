@@ -267,7 +267,7 @@
 			"message" = html_decode(message),
 			PACKET_DESTINATION_ADDRESS = target_address
 		),
-		user
+		logging_data = user
 	)
 	netcard_cache.post_signal(pda_message)
 	// Log it in our logs

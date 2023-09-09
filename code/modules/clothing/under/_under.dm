@@ -283,7 +283,7 @@
 	if(.)
 		return
 
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	if(attached_accessory)
 		remove_accessory(user)

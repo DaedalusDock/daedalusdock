@@ -4,7 +4,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!usr.canUseTopic(src, TRUE, FALSE, FALSE, TRUE, FALSE))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
 		return
 
 	flip(usr, get_cardinal_dir(usr, src))
@@ -15,7 +15,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!usr.canUseTopic(src, TRUE, FALSE, FALSE, TRUE, FALSE))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
 		return
 
 	unflip(usr)

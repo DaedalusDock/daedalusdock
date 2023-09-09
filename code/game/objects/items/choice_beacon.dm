@@ -14,7 +14,7 @@
 	return list()
 
 /obj/item/choice_beacon/proc/canUseBeacon(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return TRUE
 	else
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 40, TRUE)
@@ -29,7 +29,7 @@
 		return
 	if(isnull(display_names[choice]))
 		return
-	if(!M.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!M.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 
 	spawn_option(display_names[choice],M)

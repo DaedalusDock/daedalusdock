@@ -111,7 +111,7 @@
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		return
 	. = ..()
-	if(istype(A, /obj/item/food/cheese) && canUseTopic(A, BE_CLOSE, NO_DEXTERITY))
+	if(istype(A, /obj/item/food/cheese) && canUseTopic(A, USE_CLOSE|USE_DEXTERITY))
 		if(health == maxHealth)
 			to_chat(src,span_warning("You don't need to eat or heal."))
 			return

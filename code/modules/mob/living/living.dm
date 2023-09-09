@@ -1186,23 +1186,42 @@
 /mob/living/can_hold_items(obj/item/I)
 	return usable_hands && ..()
 
-/mob/living/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
-	if(!(mobility_flags & MOBILITY_UI) && !floor_okay)
+/mob/living/canUseTopic(atom/movable/target, flags)
+
+	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
+	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
+	// Also if it is not set, the mob could be incapcitated, knocked out, unconscious, asleep, EMP'd, etc.
+	if(!(mobility_flags & MOBILITY_UI) && !(flags & USE_RESTING))
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
-	if(be_close && !Adjacent(M) && (M.loc != src))
-		if(no_tk)
-			to_chat(src, span_warning("You are too far away!"))
-			return FALSE
-		var/datum/dna/D = has_dna()
-		if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, M))
-			to_chat(src, span_warning("You are too far away!"))
-			return FALSE
-	if(need_hands && !can_hold_items(isitem(M) ? M : null)) //almost redundant if it weren't for mobs,
+
+	// NEED_HANDS is already checked by MOBILITY_UI for humans so this is for silicons
+	if((flags & USE_NEED_HANDS) && !can_hold_items(isitem(target) ? target : null)) //almost redundant if it weren't for mobs,
 		to_chat(src, span_warning("You don't have the physical ability to do this!"))
 		return FALSE
-	if(!no_dexterity && !ISADVANCEDTOOLUSER(src))
+
+	if((flags & USE_CLOSE) && !Adjacent(target) && (target.loc != src))
+		if(issilicon(src) && !ispAI(src))
+			if(!(flags & USE_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
+				to_chat(src, span_warning("You are too far away!"))
+				return FALSE
+
+		else if(flags & USE_IGNORE_TK)
+			to_chat(src, span_warning("You are too far away!"))
+			return FALSE
+
+		else
+			var/datum/dna/D = has_dna()
+			if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, target))
+				to_chat(src, span_warning("You are too far away!"))
+				return FALSE
+
+	if((flags & USE_DEXTERITY) && !ISADVANCEDTOOLUSER(src))
 		to_chat(src, span_warning("You don't have the dexterity to do this!"))
+		return FALSE
+
+	if((flags & USE_LITERACY) && !is_literate())
+		to_chat(src, span_warning("You can't comprehend any of this!"))
 		return FALSE
 	return TRUE
 

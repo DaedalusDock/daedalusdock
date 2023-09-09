@@ -597,7 +597,7 @@ Important Notes:<BR>
 
 /obj/machinery/computer/med_data/proc/canUseMedicalRecordsConsole(mob/user, message = 1, record1, record2)
 	if(user && message && authenticated)
-		if(user.canUseTopic(src, !issilicon(user)))
+		if(user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 			if(!record1 || record1 == active1)
 				if(!record2 || record2 == active2)
 					return TRUE

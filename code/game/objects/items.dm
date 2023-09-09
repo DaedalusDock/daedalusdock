@@ -281,7 +281,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 		var/obj/item/card/id/id = GetID()
 		if(isdead(usr))
 			id.show(usr)
-		else if(usr.canUseTopic(src, TRUE, TRUE, TRUE, FALSE, TRUE))
+		else if(usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_IGNORE_TK|USE_RESTING))
 			id.show(usr)
 		return TRUE
 

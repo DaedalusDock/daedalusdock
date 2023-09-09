@@ -96,7 +96,7 @@
 		applyto(target, user)
 
 /obj/item/organ/regenerative_core/attack_self(mob/user)
-	if(user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		applyto(user, user)
 
 /obj/item/organ/regenerative_core/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE)

@@ -1171,3 +1171,17 @@
 	if(prob(20))
 		C.losebreath += 2
 		C.adjust_timed_status_effect(2 SECONDS, /datum/status_effect/confusion, max_duration = 5 SECONDS)
+
+/datum/reagent/slug_slime
+	name = "Antibiotic Slime"
+	description = "Cleansing slime extracted from a slug. Great for cleaning surfaces, or sterilization before surgery."
+	reagent_state = LIQUID
+	color = "#c4dfa1"
+	taste_description = "sticky mouthwash"
+
+/datum/reagent/slug_slime/expose_turf(turf/open/exposed_turf, reac_volume)
+	. = ..()
+	if(!istype(exposed_turf))
+		return
+	if(reac_volume >= 1)
+		exposed_turf.MakeSlippery(TURF_WET_WATER, 15 SECONDS, min(reac_volume * 1 SECONDS, 40 SECONDS))

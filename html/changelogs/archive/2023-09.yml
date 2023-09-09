@@ -29,3 +29,23 @@
   yyzsong:
   - rscadd: Chemistry gets a grinder and plasma by default
   - qol: updates beaker transfer amounts for the multiple-of-sixtyening.
+2023-09-04:
+  Kapu1178:
+  - qol: Updated the changelog to include Daedalus contributors.
+2023-09-05:
+  francinum:
+  - bugfix: Atmospherics has a SMES unit to prop up it's exceptional power load.
+2023-09-06:
+  Cenrus:
+  - tweak: Pixelshift default hotkey is now J instead of B
+2023-09-07:
+  Spyroshark:
+  - rscadd: Maint Slugs! They leave behind a slippery trail and can be "milked" if
+      so desired. Cargo starts with a unique one.
+  - rscadd: Feral Hogs! Technically a neutral animal, they become aggressive if you
+      get too close. Security has a private hog.
+  - rscdel: Sgt. Araneus and Paperwork have been sent off to kindly old spaceman's
+      farm, where they will happily live out the rest of their natural lives.
+2023-09-09:
+  Kapu1178:
+  - bugfix: Dermaline and Meralyne pill bottles have the correct pills.

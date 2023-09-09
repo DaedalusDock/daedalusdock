@@ -23,8 +23,6 @@
 	var/last_text
 	/// even more wisdom from PDA.dm - "no everyone spamming" (prevents people from spamming the same message over and over)
 	var/last_text_everyone
-	/// Whether or not we allow emojis to be sent by the user.
-	var/allow_emojis = FALSE
 	/// Whether or not we're currently looking at the message list.
 	var/viewing_messages = FALSE
 	// Whether or not we're sorting by job.
@@ -120,19 +118,19 @@
 				addtimer(TRAIT_CALLBACK_REMOVE(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key), 10 SECONDS)
 			//Intentional fallthrough.
 	if(signal_command == NETCMD_PDAMESSAGE)
-		var/list/message_data = list(
-			"name" = signal_data["name"] || "#UNK",
-			"job" = signal_data["job"] || "#UNK",
-			"contents" = html_decode("\"[signal_data["message"]]\"") || "#ERROR_MISSING_FIELD",
-			"outgoing" = FALSE,
-			"automated" = signal_data["automated"] || FALSE,
-			"target_addr" = signal_data["s_addr"] || null
-		)
+		log_message(
+			signal_data["name"] || "#UNK",
+			signal_data["job"] || "#UNK",
+			html_decode("\"[signal_data["message"]]\"") || "#ERROR_MISSING_FIELD",
+			FALSE,
+			signal_data["automated"] || FALSE,
+			signal_data["s_addr"] || null
+			)
 		if(computer.hardware_flag == PROGRAM_TABLET) //We need to render the extraneous bullshit to chat.
 			show_in_chat(signal_data, rigged)
 		if(ringer_status)
 			computer.ring(ringtone)
-		messages += list(message_data) //Needs to be wrapped for engine reasons.
+
 		return
 
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.clownvirus_magic_packet)
@@ -199,8 +197,7 @@
 
 
 		var/inbound_message = "\"[signal_data["message"]]\""
-		if(signal_data["emojis"] == TRUE)//so will not parse emojis as such from pdas that don't send emojis
-			inbound_message = emoji_parse(inbound_message)
+		inbound_message = emoji_parse(inbound_message)
 
 		if(ringer_status)
 			to_chat(L, "<span class='infoplain'>[icon2html(src)] <b>PDA message from [hrefstart][signal_data["name"]] ([signal_data["job"]])[hrefend], </b>[inbound_message] [reply]</span>")
@@ -232,7 +229,7 @@
 		return
 	return sanitize(text_message)
 
-/datum/computer_file/program/messenger/proc/send_message(mob/living/user, target_address, everyone = FALSE)
+/datum/computer_file/program/messenger/proc/send_message(mob/living/user, target_address, everyone = FALSE, staple = null, fake_name = null, fake_job = null)
 	var/message = msg_input(user)
 	if(!message)
 		return
@@ -240,7 +237,7 @@
 		to_chat(usr, span_notice("ERROR: GPRS Modem Disabled."))
 		return
 	if((last_text && world.time < last_text + 10) || (everyone && last_text_everyone && world.time < last_text_everyone + 2 MINUTES))
-		return false
+		return FALSE
 
 	var/turf/position = get_turf(computer)
 	for(var/obj/item/jammer/jammer as anything in GLOB.active_jammers)
@@ -261,7 +258,33 @@
 		log_admin_private("[key_name(usr)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term in PDA messages. Message: \"[message]\"")
 
 	// Send the signal
-	var/datum/signal/pda_message
+	var/datum/signal/pda_message = new(
+		src,
+		list(
+			PACKET_CMD = NETCMD_PDAMESSAGE,
+			"name" = fake_name || computer.saved_identification,
+			"job" = fake_job || computer.saved_job,
+			"message" = html_decode(message),
+			PACKET_DESTINATION_ADDRESS = target_address
+		),
+		user
+	)
+	netcard_cache.post_signal(pda_message)
+	// Log it in our logs
+	log_message(fake_name || computer.saved_identification,fake_job || computer.saved_job,html_decode(message),TRUE,FALSE,target_address)
+
+/datum/computer_file/program/messenger/proc/log_message(name, job, message, outgoing, automated, reply_addr)
+	var/list/message_data = list(
+		"name" = name,
+		"job" = job,
+		"contents" = job,
+		"outgoing" = outgoing,
+		//If there's no reply address, pretend it's automated so we don't give them a null link
+		"automated" = !!reply_addr || automated,
+		"target_addr" = reply_addr,
+	)
+
+	messages += list(message_data) //Needs to be wrapped for engine reasons.
 
 /datum/computer_file/program/messenger/ui_act(action, list/params, datum/tgui/ui)
 	. = ..()

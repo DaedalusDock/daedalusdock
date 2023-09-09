@@ -67,11 +67,16 @@
 // -----
 // Inviolability flags
 
-/// Packet contains volatile data that prevents it from being safely stored.
+/// Packet contains volatile data where storing it may cause GC issues.
+/// This means references to atoms, non-trivial datums like virtualspeakers, etc.
 #define MAGIC_DATA_MUST_DISCARD (1<<0)
 
-/// Packet contains data that players should never be able to see.
+/// Packet contains data that players should never be able to see *DIRECTLY*.
+/// Re-Interpretation is allowed, This is specifically for arbitrary packet capture applications where raw fields are accessible.
+/// For example, voice signal packets, or stuff that wouldn't make sense to be parsable as raw text.
 #define MAGIC_DATA_MUST_OBFUSCATE (1<<1)
 
-/// All magic data protection flags at once.
+/// All protection flags at once.
 #define MAGIC_DATA_INVIOLABLE ALL
+
+#define PACKET_STRING_FILE "packetnet.json"

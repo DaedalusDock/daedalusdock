@@ -43,7 +43,6 @@ export const NtosMessenger = (props, context) => {
     sortByJob,
     canSpam,
     isSilicon,
-    photo,
     virus_attach,
     sending_virus,
   } = data;
@@ -74,7 +73,10 @@ export const NtosMessenger = (props, context) => {
                       "(INCOMING)"
                     )}
                   </Box>
-                  {message.outgoing ? (
+                  {/* Automated or outgoing, don't give a reply link, as
+                    * the reply address may not actually be valid.
+                    */}
+                  {message.outgoing || message.automated ? (
                     <Box bold>
                       {message.name + " (" + message.job + ")"}
                     </Box>
@@ -84,7 +86,7 @@ export const NtosMessenger = (props, context) => {
                       onClick={() => act('PDA_sendMessage', {
                         name: message.name,
                         job: message.job,
-                        ref: message.ref,
+                        target_addr: message.target_addr,
                       })}
                     />
                   )}
@@ -93,12 +95,6 @@ export const NtosMessenger = (props, context) => {
                   <Box italic>
                     {message.contents}
                   </Box>
-                  {!!message.photo && (
-                    <Box
-                      as="img"
-                      src={message.photo}
-                    />
-                  )}
                 </Section>
               </Stack>
             ))}
@@ -149,6 +145,11 @@ export const NtosMessenger = (props, context) => {
                 content={`Sort by: ${sortByJob ? "Job" : "Name"}`}
                 onClick={() => act('PDA_changeSortStyle')}
               />
+              <Button
+                icon="wifi"
+                content={`Scan for PDAs`}
+                onClick={() => act('PDA_scanForPDAs')}
+              />
               {!!virus_attach && (
                 <Button
                   icon="bug"
@@ -160,25 +161,6 @@ export const NtosMessenger = (props, context) => {
             </Box>
           </Section>
         </Stack>
-        {!!photo && (
-          <Stack vertical mt={1}>
-            <Section fill textAlign="center">
-              <Icon name="camera" mr={1} />
-              Current Photo
-            </Section>
-            <Section align="center">
-              <Button
-                onClick={() => act('PDA_clearPhoto')}
-              >
-                <Box
-                  mt={1}
-                  as="img"
-                  src={photo ? photo : null}
-                />
-              </Button>
-            </Section>
-          </Stack>
-        )}
         <Stack vertical mt={1}>
           <Section fill textAlign="center">
             <Icon name="address-card" mr={1} />
@@ -190,12 +172,12 @@ export const NtosMessenger = (props, context) => {
             <Stack vertical>
               {messengers.map(messenger => (
                 <Button
-                  key={messenger.ref}
+                  key={messenger.target_addr}
                   fluid
                   onClick={() => act('PDA_sendMessage', {
                     name: messenger.name,
                     job: messenger.job,
-                    ref: messenger.ref,
+                    target_addr: messenger.target_addr,
                   })}>
                   {messenger.name} ({messenger.job})
                 </Button>

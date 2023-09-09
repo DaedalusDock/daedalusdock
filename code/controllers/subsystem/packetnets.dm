@@ -12,8 +12,6 @@ SUBSYSTEM_DEF(packets)
 	var/list/datum/powernet/queued_networks = list()
 	///Radio packets to process
 	var/list/queued_radio_packets = list()
-	///Tablet messages to process
-	var/list/queued_tablet_messages = list()
 	///Subspace/vocal packets to process
 	var/list/queued_subspace_vocals = list()
 
@@ -27,7 +25,6 @@ SUBSYSTEM_DEF(packets)
 	///The current processing lists
 	var/list/current_networks = list()
 	var/list/current_radio_packets = list()
-	var/list/current_tablet_messages = list()
 	var/list/current_subspace_vocals = list()
 
 	///Tick usage
@@ -39,6 +36,23 @@ SUBSYSTEM_DEF(packets)
 
 	///What processing stage we're at
 	var/stage = SSPACKETS_POWERNETS
+
+	//Storage Data Vars
+	// -Because bloating GLOB is a crime.
+
+	/// Fancy field name to use for virus packets. Randomly picked for flavor and obscurity.
+	var/pda_exploitable_register
+	/// Magic command sent by the Detomatix to cause PDAs to explode
+	var/detomatix_magic_packet
+	/// Magic command sent by the Clown Virus to honkify PDAs
+	var/clownvirus_magic_packet
+	/// Magic command sent by the Mime virus to mute PDAs
+	var/mimevirus_magic_packet
+	/// Magic command sent by the FRAME virus to install an uplink.
+	/// Mostly a formality as this packet MUST be obfuscated.
+	var/framevirus_magic_packet
+	/// @everyone broadcast key
+	var/gprs_broadcast_packet
 
 /// Generates a unique (at time of read) ID for an atom, It just plays silly with the ref.
 /// Pass the target atom in as arg[1]
@@ -52,11 +66,9 @@ SUBSYSTEM_DEF(packets)
 	hibernate_checks = list(
 		NAMEOF(src, queued_networks),
 		NAMEOF(src, queued_radio_packets),
-		NAMEOF(src, queued_tablet_messages),
 		NAMEOF(src, queued_subspace_vocals),
 		NAMEOF(src, current_networks),
 		NAMEOF(src, current_radio_packets),
-		NAMEOF(src, current_tablet_messages),
 		NAMEOF(src, current_subspace_vocals)
 	)
 
@@ -65,9 +77,32 @@ SUBSYSTEM_DEF(packets)
 		saymodes[SM.key] = SM
 	return ..()
 
+/datum/controller/subsystem/packets/Initialize(start_timeofday)
+	. = ..()
+	detomatix_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	clownvirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	mimevirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	framevirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	gprs_broadcast_packet = random_string(rand(16,32), GLOB.hex_characters)
+	pda_exploitable_register = pick_list(PACKET_STRING_FILE, "packet_field_names")
+
+/datum/controller/subsystem/packets/Recover()
+	. = ..()
+	//Functional vars first
+	frequencies = SSpackets.frequencies
+	queued_radio_packets = SSpackets.queued_radio_packets
+	queued_subspace_vocals = SSpackets.queued_subspace_vocals
+	//Data vars
+	pda_exploitable_register = SSpackets.pda_exploitable_register
+	detomatix_magic_packet = SSpackets.detomatix_magic_packet
+	clownvirus_magic_packet = SSpackets.clownvirus_magic_packet
+	mimevirus_magic_packet = SSpackets.mimevirus_magic_packet
+	framevirus_magic_packet = SSpackets.framevirus_magic_packet
+	gprs_broadcast_packet = SSpackets.gprs_broadcast_packet
+
 /datum/controller/subsystem/packets/stat_entry(msg)
 	msg += "RP: [length(queued_radio_packets)]{[last_processed_radio_packets]}|"
-	msg += "TM: [length(queued_tablet_messages)]{[last_processed_tablet_message_packets]}|"
+	// msg += "TM: [length(queued_tablet_messages)]{[last_processed_tablet_message_packets]}|"
 	msg += "SSV: [length(queued_subspace_vocals)]{[last_processed_ssv_packets]}|"
 	msg += "C:{"
 	msg += "CN:[round(cost_networks, 1)]|"
@@ -81,7 +116,7 @@ SUBSYSTEM_DEF(packets)
 	if(!resumed)
 		current_networks = queued_networks.Copy()
 		current_radio_packets = queued_radio_packets.Copy()
-		current_tablet_messages = queued_tablet_messages.Copy()
+		// current_tablet_messages = queued_tablet_messages.Copy()
 		current_subspace_vocals = queued_subspace_vocals.Copy()
 
 	var/timer = TICK_USAGE_REAL

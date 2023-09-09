@@ -15,29 +15,31 @@
 	VAR_PRIVATE/list/datum/signal/packet_queue
 	/// Maximum amount of messages held by [packet_queue]
 	var/queue_max = 5
-	var/radio_state = GPRS_ENABLED
-
+	/// Hardware PDA discovery
+	/// TGUI display format, list(list("target_addr"="addr","name"="name","job"="job"),...)
+	var/list/known_pdas
+	var/radio_state = GPRS_DISABLED
 /obj/item/computer_hardware/network_card/packetnet/Initialize(mapload)
 	. = ..()
 	packet_queue = list()
+	known_pdas = list()
 
 /obj/item/computer_hardware/network_card/packetnet/on_install(obj/item/modular_computer/install_into, mob/living/user)
 	. = ..()
-	radio_connection = SSpackets.add_object(src, gprs_frequency, RADIO_PDAMESSAGE) //We only get packets if we're connected to a host.
+	enable_changed(install_into.enabled)
+
 
 /obj/item/computer_hardware/network_card/packetnet/on_remove(obj/item/modular_computer/remove_from, mob/living/user)
 	. = ..()
-	SSpackets.remove_object(src, gprs_frequency)
-	radio_connection = null
+	enable_changed(FALSE)
 	packet_queue.Cut() // Volatile memory~
-	radio_state = GPRS_ENABLED // Default to back on to prevent frustration.
-
+	known_pdas.Cut()
 
 /obj/item/computer_hardware/network_card/packetnet/Destroy()
-	. = ..()
 	SSpackets.remove_object(src, gprs_frequency, RADIO_PDAMESSAGE)
 	radio_connection = null
 	packet_queue.Cut()
+	. = ..()
 
 /obj/item/computer_hardware/network_card/packetnet/diagnostics(mob/user)
 	..()
@@ -51,7 +53,7 @@
 		return
 	. += span_info("The silkscreen reads...")
 	. += "\t[span_info("GPRS FREQ: [span_robot(format_frequency(gprs_frequency))]")]"
-	. += "\t[span_info("GPRS DMEI: [span_robot(hardware_id)]")]"
+	. += "\t[span_info("GPRS ADDR: [span_robot(hardware_id)]")]"
 
 /obj/item/computer_hardware/network_card/packetnet/receive_signal(datum/signal/signal)
 	if(!holder || !signal.data) //Basic checks
@@ -79,13 +81,24 @@
 		post_signal(outgoing)
 	//Either it's broadcast or directed to us.
 	if(isnull(signal_d_addr) || signal_d_addr == hardware_id)
+		// If it's a ping reply, check for a PDA.
+		if(signal.data[PACKET_CMD] == NET_COMMAND_PING_REPLY)
+			if(signal.data[PACKET_NETCLASS] == NETCLASS_GRPS_CARD)
+				var/list/new_pda_info = list(
+					"target_addr" = signal.data[PACKET_SOURCE_ADDRESS],
+					"name" = signal.data["reg_name"] || "#UNK",
+					"job" = signal.data["reg_job"] || "#UNK"
+				)
+				known_pdas += list(new_pda_info)
+			return
 		//We don't really care what it is, just store it.
-		push_signal(signal)
+		append_signal(signal)
 
 
 /obj/item/computer_hardware/network_card/packetnet/proc/post_signal(datum/signal/signal)
 	if(!radio_connection || !signal)
 		return FALSE // Something went wrong.
+	signal.data[PACKET_SOURCE_ADDRESS] = hardware_id //Readdress outgoing packets.
 	radio_connection.post_signal(signal, RADIO_PDAMESSAGE)
 	return TRUE //We at least tried.
 
@@ -98,7 +111,7 @@
 	return popped
 
 /// Push a signal onto the queue, Drop a packet if we're over the limit.
-/obj/item/computer_hardware/network_card/packetnet/proc/push_signal(datum/signal/signal)
+/obj/item/computer_hardware/network_card/packetnet/proc/append_signal(datum/signal/signal)
 	PRIVATE_PROC(TRUE)
 	if(signal.has_magic_data & MAGIC_DATA_MUST_DISCARD)
 		return //We can't hold volatile signals.
@@ -116,10 +129,14 @@
 		return
 	radio_state = new_state
 	if(radio_state)
-		SSpackets.add_object(src, gprs_frequency, RADIO_PDAMESSAGE)
+		radio_connection = SSpackets.add_object(src, gprs_frequency, RADIO_PDAMESSAGE)
 	else
 		SSpackets.remove_object(src, gprs_frequency)
+		radio_connection = null
 
+/obj/item/computer_hardware/network_card/packetnet/enable_changed(new_state)
+	set_radio_state(new_state)
+	..()
 
 
 #undef GPRS_ENABLED

@@ -217,6 +217,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 	for(var/next_addr in targets)
 		var/datum/signal/outgoing = create_signal(next_addr, list(
+			PACKET_CMD = NETCMD_PDAMESSAGE,
 			"name" = "Security Department Update",
 			"job" = "Automated Announcement System",
 			"message" = "Officer [officer.real_name] has been assigned to your department, [department].",
@@ -235,6 +236,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 				break //No RF card to send to.
 			var/message = "You have been fined [fine_amount] credits for '[cite_message]'. Fines may be paid at security."
 			var/datum/signal/outgoing = create_signal(rfcard.hardware_id, list(
+				PACKET_CMD = NETCMD_PDAMESSAGE,
 				"name" = "Security Citation",
 				"job" = "Citation Server",
 				"message" = message,

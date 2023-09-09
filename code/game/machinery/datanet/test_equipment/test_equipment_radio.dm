@@ -9,6 +9,10 @@
 	var/list/current_data
 	var/send_range = 0
 
+/obj/machinery/test_equipment/radio/say_emphasis(input)
+	//Fuck off and don't decorate debug text
+	return input
+
 /obj/machinery/test_equipment/radio/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
 	var/datum/browser/popup = new(usr, "dte_radio", "Radio Test Equipment", 400, 600)

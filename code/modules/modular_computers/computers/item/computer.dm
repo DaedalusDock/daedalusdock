@@ -357,8 +357,10 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 	// If we have a recharger, enable it automatically. Lets computer without a battery work.
 	var/obj/item/computer_hardware/recharger/recharger = all_components[MC_CHARGE]
-	if(recharger)
-		recharger.enabled = 1
+	// Wake up the network card so it can start accepting packets.
+	var/obj/item/computer_hardware/network_card = all_components[MC_NET]
+	recharger?.enable_changed(TRUE)
+	network_card?.enable_changed(TRUE)
 
 	if(use_power()) // use_power() checks if the PC is powered
 		if(issynth)
@@ -367,7 +369,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 			to_chat(user, span_notice("You press the power button and start up \the [src]."))
 		if(looping_sound)
 			soundloop.start()
-		enabled = 1
+		enabled = TRUE
 		update_appearance()
 		if(user)
 			ui_interact(user)
@@ -544,6 +546,9 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 /obj/item/modular_computer/proc/shutdown_computer(loud = 1)
 	kill_program(forced = TRUE)
+	// shut down the network card so it doesn't accepting packets while the machine is off.
+	var/obj/item/computer_hardware/network_card = all_components[MC_NET]
+	network_card?.enable_changed(FALSE)
 	for(var/datum/computer_file/program/P in idle_threads)
 		P.kill_program(forced = TRUE)
 		idle_threads.Remove(P)
@@ -551,7 +556,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		soundloop.stop()
 	if(loud)
 		physical.visible_message(span_notice("\The [src] shuts down."))
-	enabled = 0
+	enabled = FALSE
 	update_appearance()
 
 /obj/item/modular_computer/ui_action_click(mob/user, actiontype)
@@ -636,15 +641,6 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		to_chat(user, span_notice("You slot \the [attacking_item] into [src]."))
 		return
 
-	// Scan a photo.
-	if(istype(attacking_item, /obj/item/photo))
-		var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
-		var/obj/item/photo/pic = attacking_item
-		if(hdd)
-			for(var/datum/computer_file/program/messenger/messenger in hdd.stored_files)
-				saved_image = pic.picture
-				messenger.ProcessPhoto()
-		return
 
 	// Insert items into the components
 	for(var/h in all_components)

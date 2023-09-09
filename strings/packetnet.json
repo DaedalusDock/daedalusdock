@@ -1,0 +1,11 @@
+{
+	"packet_field_names":[
+		"adj_bat",
+		"tftp_file",
+		"clown_show_bullshit",
+		"tr069_data",
+		"gprs_admin",
+		"net_use",
+		"spline_transpose"
+	]
+}

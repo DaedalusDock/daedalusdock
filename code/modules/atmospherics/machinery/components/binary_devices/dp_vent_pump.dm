@@ -155,7 +155,7 @@
 		return
 
 	if(("status" in signal.data)) //Send stauts and early return, I'm cargoculting the timer here.
-		addtimer(CALLBACK(src, PROC_REF(broadcast_status)), 2)
+		broadcast_status()
 		return
 
 	if("power" in signal.data)

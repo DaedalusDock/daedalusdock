@@ -46,7 +46,7 @@
 #endif
 
 /// Gets the version of rust_g
-/proc/rustg_get_version() return RUSTG_CALL(RUST_G, "get_version")()
+/proc/rustg_get_version() return rustg_pass()
 
 
 /**
@@ -58,7 +58,7 @@
  * * patterns - A non-associative list of strings to search for
  * * replacements - Default replacements for this automaton, used with rustg_acreplace
  */
-#define rustg_setup_acreplace(key, patterns, replacements) RUSTG_CALL(RUST_G, "setup_acreplace")(key, json_encode(patterns), json_encode(replacements))
+#define rustg_setup_acreplace(key, patterns, replacements) rustg_pass()
 
 /**
  * Sets up the Aho-Corasick automaton using supplied options.
@@ -70,7 +70,7 @@
  * * patterns - A non-associative list of strings to search for
  * * replacements - Default replacements for this automaton, used with rustg_acreplace
  */
-#define rustg_setup_acreplace_with_options(key, options, patterns, replacements) RUSTG_CALL(RUST_G, "setup_acreplace")(key, json_encode(options), json_encode(patterns), json_encode(replacements))
+#define rustg_setup_acreplace_with_options(key, options, patterns, replacements) rustg_pass()
 
 /**
  * Run the specified replacement engine with the provided haystack text to replace, returning replaced text.
@@ -79,7 +79,7 @@
  * * key - The key for the automaton
  * * text - Text to run replacements on
  */
-#define rustg_acreplace(key, text) RUSTG_CALL(RUST_G, "acreplace")(key, text)
+#define rustg_acreplace(key, text) rustg_pass()
 
 /**
  * Run the specified replacement engine with the provided haystack text to replace, returning replaced text.
@@ -89,7 +89,7 @@
  * * text - Text to run replacements on
  * * replacements - Replacements for this call. Must be the same length as the set-up patterns
  */
-#define rustg_acreplace_with_replacements(key, text, replacements) RUSTG_CALL(RUST_G, "acreplace_with_replacements")(key, text, json_encode(replacements))
+#define rustg_acreplace_with_replacements(key, text, replacements) rustg_pass()
 
 /**
  * This proc generates a cellular automata noise grid which can be used in procedural generation methods.
@@ -107,30 +107,24 @@
 #define rustg_cnoise_generate(percentage, smoothing_iterations, birth_limit, death_limit, width, height) \
 	RUSTG_CALL(RUST_G, "cnoise_generate")(percentage, smoothing_iterations, birth_limit, death_limit, width, height)
 
-#define rustg_dmi_strip_metadata(fname) RUSTG_CALL(RUST_G, "dmi_strip_metadata")(fname)
-#define rustg_dmi_create_png(path, width, height, data) RUSTG_CALL(RUST_G, "dmi_create_png")(path, width, height, data)
-#define rustg_dmi_resize_png(path, width, height, resizetype) RUSTG_CALL(RUST_G, "dmi_resize_png")(path, width, height, resizetype)
 /**
  * input: must be a path, not an /icon; you have to do your own handling if it is one, as icon objects can't be directly passed to rustg.
  *
  * output: json_encode'd list. json_decode to get a flat list with icon states in the order they're in inside the .dmi
  */
-#define rustg_dmi_icon_states(fname) RUSTG_CALL(RUST_G, "dmi_icon_states")(fname)
+#define rustg_dmi_icon_states(fname) icon_states(fname)
 
-#define rustg_file_read(fname) RUSTG_CALL(RUST_G, "file_read")(fname)
-#define rustg_file_exists(fname) RUSTG_CALL(RUST_G, "file_exists")(fname)
-#define rustg_file_write(text, fname) RUSTG_CALL(RUST_G, "file_write")(text, fname)
-#define rustg_file_append(text, fname) RUSTG_CALL(RUST_G, "file_append")(text, fname)
-#define rustg_file_get_line_count(fname) text2num(RUSTG_CALL(RUST_G, "file_get_line_count")(fname))
-#define rustg_file_seek_line(fname, line) RUSTG_CALL(RUST_G, "file_seek_line")(fname, "[line]")
+#define rustg_file_read(fname) file2text(fname)
+#define rustg_file_exists(fname) fexists(fname)
+#define rustg_file_append(text, fname) text2file(text, fname)
 
 #ifdef RUSTG_OVERRIDE_BUILTINS
 	#define file2text(fname) rustg_file_read("[fname]")
 	#define text2file(text, fname) rustg_file_append(text, "[fname]")
 #endif
 
-#define rustg_git_revparse(rev) RUSTG_CALL(RUST_G, "rg_git_revparse")(rev)
-#define rustg_git_commit_date(rev) RUSTG_CALL(RUST_G, "rg_git_commit_date")(rev)
+#define rustg_git_revparse(rev) "..."
+#define rustg_git_commit_date(rev) "..."
 
 #define RUSTG_HTTP_METHOD_GET "get"
 #define RUSTG_HTTP_METHOD_PUT "put"
@@ -138,9 +132,9 @@
 #define RUSTG_HTTP_METHOD_PATCH "patch"
 #define RUSTG_HTTP_METHOD_HEAD "head"
 #define RUSTG_HTTP_METHOD_POST "post"
-#define rustg_http_request_blocking(method, url, body, headers, options) RUSTG_CALL(RUST_G, "http_request_blocking")(method, url, body, headers, options)
-#define rustg_http_request_async(method, url, body, headers, options) RUSTG_CALL(RUST_G, "http_request_async")(method, url, body, headers, options)
-#define rustg_http_check_request(req_id) RUSTG_CALL(RUST_G, "http_check_request")(req_id)
+#define rustg_http_request_blocking(method, url, body, headers, options) rustg_pass()
+#define rustg_http_request_async(method, url, body, headers, options) rustg_pass()
+#define rustg_http_check_request(req_id) rustg_pass()
 
 #define RUSTG_JOB_NO_RESULTS_YET "NO RESULTS YET"
 #define RUSTG_JOB_NO_SUCH_JOB "NO SUCH JOB"
@@ -148,21 +142,24 @@
 
 #define rustg_json_is_valid(text) (RUSTG_CALL(RUST_G, "json_is_valid")(text) == "true")
 
-#define rustg_log_write(fname, text, format) RUSTG_CALL(RUST_G, "log_write")(fname, text, format)
-/proc/rustg_log_close_all() return RUSTG_CALL(RUST_G, "log_close_all")()
+#define rustg_log_write(fname, text, format)  rustg_pass()
+/proc/rustg_log_close_all() return rustg_pass()
 
 #define rustg_noise_get_at_coordinates(seed, x, y) RUSTG_CALL(RUST_G, "noise_get_at_coordinates")(seed, x, y)
 
-#define rustg_sql_connect_pool(options) RUSTG_CALL(RUST_G, "sql_connect_pool")(options)
-#define rustg_sql_query_async(handle, query, params) RUSTG_CALL(RUST_G, "sql_query_async")(handle, query, params)
-#define rustg_sql_query_blocking(handle, query, params) RUSTG_CALL(RUST_G, "sql_query_blocking")(handle, query, params)
-#define rustg_sql_connected(handle) RUSTG_CALL(RUST_G, "sql_connected")(handle)
-#define rustg_sql_disconnect_pool(handle) RUSTG_CALL(RUST_G, "sql_disconnect_pool")(handle)
-#define rustg_sql_check_query(job_id) RUSTG_CALL(RUST_G, "sql_check_query")("[job_id]")
+#define rustg_sql_connect_pool(options) rustg_pass()
+#define rustg_sql_query_async(handle, query, params) rustg_pass()
+#define rustg_sql_query_blocking(handle, query, params) rustg_pass()
+#define rustg_sql_connected(handle) rustg_pass()
+#define rustg_sql_disconnect_pool(handle) rustg_pass()
+#define rustg_sql_check_query(job_id) rustg_pass()
 
-#define rustg_time_microseconds(id) text2num(RUSTG_CALL(RUST_G, "time_microseconds")(id))
-#define rustg_time_milliseconds(id) text2num(RUSTG_CALL(RUST_G, "time_milliseconds")(id))
-#define rustg_time_reset(id) RUSTG_CALL(RUST_G, "time_reset")(id)
+#define rustg_time_microseconds(id) rustg_pass()
+#define rustg_time_milliseconds(id) rustg_pass()
+#define rustg_time_reset(id) rustg_pass()
+
+/proc/rustg_pass()
+	return
 
 /// Returns the timestamp as a string
 /proc/rustg_unix_timestamp()

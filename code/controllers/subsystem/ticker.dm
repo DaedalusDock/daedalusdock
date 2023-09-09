@@ -737,7 +737,7 @@ SUBSYSTEM_DEF(ticker)
 		login_music = new(name = split_path[length(split_path)], path = music)
 
 	//Write the last round file to our current choice
-	rustg_file_write(login_music.path, "data/last_round_lobby_music.txt")
+	//rustg_file_write(login_music.path, "data/last_round_lobby_music.txt")
 
 /datum/controller/subsystem/ticker/proc/pick_credits_music()
 	var/list/music_data = SSmedia.get_track_pool(MEDIA_TAG_ROUNDEND_COMMON)

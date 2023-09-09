@@ -22,4 +22,4 @@
 	for (var/key in costs)
 		output += "[replacetext(key, ",", "")], [costs[key]], [counts[key]]"
 
-	rustg_file_write(output.Join("\n"), "[GLOB.log_directory]/[filename]")
+	//rustg_file_write(output.Join("\n"), "[GLOB.log_directory]/[filename]")

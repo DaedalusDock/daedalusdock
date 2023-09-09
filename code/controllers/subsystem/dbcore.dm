@@ -202,47 +202,7 @@ SUBSYSTEM_DEF(dbcore)
 	return ..()
 
 /datum/controller/subsystem/dbcore/proc/Connect()
-	if(IsConnected())
-		return TRUE
-
-	if(failed_connection_timeout <= world.time) //it's been more than 5 seconds since we failed to connect, reset the counter
-		failed_connections = 0
-
-	if(failed_connections > 5) //If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect for 5 seconds.
-		failed_connection_timeout = world.time + 50
-		return FALSE
-
-	if(!CONFIG_GET(flag/sql_enabled))
-		return FALSE
-
-	var/user = CONFIG_GET(string/feedback_login)
-	var/pass = CONFIG_GET(string/feedback_password)
-	var/db = CONFIG_GET(string/feedback_database)
-	var/address = CONFIG_GET(string/address)
-	var/port = CONFIG_GET(number/port)
-	var/timeout = max(CONFIG_GET(number/async_query_timeout), CONFIG_GET(number/blocking_query_timeout))
-	var/thread_limit = CONFIG_GET(number/bsql_thread_limit)
-
-	max_concurrent_queries = CONFIG_GET(number/max_concurrent_queries)
-
-	var/result = json_decode(rustg_sql_connect_pool(json_encode(list(
-		"host" = address,
-		"port" = port,
-		"user" = user,
-		"pass" = pass,
-		"db_name" = db,
-		"read_timeout" = timeout,
-		"write_timeout" = timeout,
-		"max_threads" = thread_limit,
-	))))
-	. = (result["status"] == "ok")
-	if (.)
-		connection = result["handle"]
-	else
-		connection = null
-		last_error = result["data"]
-		log_sql("Connect() failed | [last_error]")
-		++failed_connections
+	return FALSE
 
 /datum/controller/subsystem/dbcore/proc/CheckSchemaVersion()
 	if(CONFIG_GET(flag/sql_enabled))

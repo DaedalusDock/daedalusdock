@@ -61,7 +61,7 @@
 	if(signal.transmission_method != TRANSMISSION_RADIO)
 		CRASH("[src] received non-radio packet, transmission method ID [signal.transmission_method], Expected [TRANSMISSION_RADIO]")
 	var/list/signal_data = signal.data //medium velocity silver hedgehog
-	var/signal_d_addr = signal_data["d_addr"]
+	var/signal_d_addr = signal_data[PACKET_DESTINATION_ADDRESS]
 	if(signal_d_addr == NET_ADDRESS_PING) //Ping.
 		var/datum/signal/outgoing = new(
 			src,
@@ -83,6 +83,7 @@
 	if(isnull(signal_d_addr) || signal_d_addr == hardware_id)
 		// If it's a ping reply, check for a PDA.
 		if(signal.data[PACKET_CMD] == NET_COMMAND_PING_REPLY)
+			//If it's from a GPRS card, respond, otherwise, who cares.
 			if(signal.data[PACKET_NETCLASS] == NETCLASS_GRPS_CARD)
 				var/list/new_pda_info = list(
 					"target_addr" = signal.data[PACKET_SOURCE_ADDRESS],
@@ -90,6 +91,7 @@
 					"job" = signal.data["reg_job"] || "#UNK"
 				)
 				known_pdas += list(new_pda_info)
+			// Trash other ping reply packets, they'll just clog the buffer.
 			return
 		//We don't really care what it is, just store it.
 		append_signal(signal)

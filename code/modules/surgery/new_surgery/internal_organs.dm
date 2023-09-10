@@ -321,6 +321,8 @@
 
 /datum/surgery_step/internal/brain_revival/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = ..()
+	if(!BP)
+		return
 	if(target_zone != BODY_ZONE_HEAD)
 		return
 	var/obj/item/organ/brain/B = locate() in BP.contained_organs

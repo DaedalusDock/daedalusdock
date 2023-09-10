@@ -49,3 +49,15 @@
 2023-09-09:
   Kapu1178:
   - bugfix: Dermaline and Meralyne pill bottles have the correct pills.
+2023-09-10:
+  Kapu1178:
+  - rscadd: Traitor's primary objectives are now Gimmicks.
+  - rscadd: The Announce Objectives button on the administration Antag Panel now shows
+      a pop-up to the target.
+  - rscadd: Gimmick objective type.
+  - rscdel: Removed all of TG's Syndicate/Nanotrasen employers.
+  - rscdel: 'Removed the following objective types: Martyr, Protect (replaced by Jailbreak),
+      Survive (Non-AI), Maroon, Escape, Block, Purge, Robot Army.'
+  - qol: Hijack is no longer a rollable objective.
+  - rscdel: Removed Thief antagonist.
+  - rscdel: Removed Valentine's Day event and antagonist.

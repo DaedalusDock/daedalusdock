@@ -21,6 +21,7 @@
 	// And give them the plant safe trait so we don't have to worry about attacks being cancelled
 	ADD_TRAIT(botanist, TRAIT_PLANT_SAFE, "unit_test")
 
+	botanist.set_combat_mode(TRUE)
 	// Now, let's get a smack with the novaflower and see what happens.
 	weapon.melee_attack_chain(botanist, victim)
 
@@ -31,7 +32,6 @@
 	TEST_ASSERT(victim.on_fire, "[weapon] didn't set the target on fire after an attack.")
 
 	// Lastly we should check that degredation to zero works.
-	botanist.set_combat_mode(TRUE)
 	weapon.force = 0
 	weapon.melee_attack_chain(botanist, victim)
 

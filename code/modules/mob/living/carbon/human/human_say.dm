@@ -10,7 +10,7 @@
 	return ..()
 
 /mob/living/carbon/human/GetVoice()
-	if(wear_mask && !wear_mask.up)
+	if(istype(wear_mask) && !wear_mask.up)
 		if(HAS_TRAIT(wear_mask, TRAIT_REPLACES_VOICE))
 			if(wear_id)
 				var/obj/item/card/id/idcard = wear_id.GetID()

@@ -102,6 +102,10 @@
 		if(check_obscured_slots(TRUE) & slot)
 			to_chat(usr, span_warning("You can't reach that! Something is covering it."))
 			return
+	if(href_list["open_examine_panel"])
+		var/content = dna.features["flavor_text"]
+		usr << browse("<HTML><HEAD><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><TITLE>[name]</TITLE></HEAD><BODY><TT>[replacetext(content, "\n", "<BR>")]</TT></BODY></HTML>", "window=[name];size=500x200")
+		onclose(usr, "[name]")
 
 ///////HUDs///////
 	if(href_list["hud"])

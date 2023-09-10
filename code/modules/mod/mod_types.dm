@@ -314,6 +314,7 @@
 		/obj/item/mod/module/timestopper,
 		/obj/item/mod/module/rewinder,
 		/obj/item/mod/module/tem,
+		/obj/item/mod/module/anomaly_locked/kinesis/plus,
 	)
 
 /obj/item/mod/control/pre_equipped/debug
@@ -339,6 +340,7 @@
 		/obj/item/mod/module/quick_carry/advanced,
 		/obj/item/mod/module/magboot/advanced,
 		/obj/item/mod/module/jetpack,
+		/obj/item/mod/module/anomaly_locked/kinesis/admin,
 	)
 
 //these exist for the prefs menu

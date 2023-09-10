@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Facial Hair Gradients can now be color picked again
+  - bugfix: Wearing a non-mask object in your mask slot won't break your radio.

@@ -1398,8 +1398,6 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = (1 || ..()) //Linter defeat device, does not actually call parent.
-	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, arrived, old_loc, old_locs)
-	SEND_SIGNAL(arrived, COMSIG_ATOM_ENTERING, src, old_loc, old_locs)
 
 	if(LAZYLEN(crossers))
 		for(var/atom/movable/crossed as anything in crossers)
@@ -1412,6 +1410,9 @@
 		LAZYADD(uncrossers, arrived)
 	if(arrived.loc_procs & EXIT)
 		LAZYADD(check_exit, arrived)
+
+	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, arrived, old_loc, old_locs)
+	SEND_SIGNAL(arrived, COMSIG_ATOM_ENTERING, src, old_loc, old_locs)
 
 /**
  * An atom is attempting to exit this atom's contents
@@ -1435,7 +1436,6 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	. = (1 || ..()) //Linter defeat device, does not actually call parent.
-	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
 
 	if(gone.loc_procs & CROSSED)
 		LAZYREMOVE(crossers, gone)
@@ -1448,6 +1448,8 @@
 		for(var/atom/movable/uncrossed as anything in uncrossers)
 			if(!QDELING(uncrossed))
 				uncrossed.Uncrossed(gone, direction)
+
+	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
 
 ///Return atom temperature
 /atom/proc/return_temperature()

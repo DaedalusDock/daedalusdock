@@ -97,17 +97,6 @@
 	update_weight()
 	update_appearance()
 
-/obj/item/stack/Destroy(force)
-	var/atom/oldloc = loc
-	. = ..()
-	if(!oldloc)
-		return
-
-	#warn im going postal
-	spawn(world.tick_lag)
-		if(src in oldloc.crossers)
-			stack_trace("WHAT???")
-
 /** Sets the amount of materials per unit for this stack.
  *
  * Arguments:

@@ -104,8 +104,9 @@
 			return
 	if(href_list["open_examine_panel"])
 		var/content = dna.features["flavor_text"]
-		usr << browse("<HTML><HEAD><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><TITLE>[name]</TITLE></HEAD><BODY><TT>[replacetext(content, "\n", "<BR>")]</TT></BODY></HTML>", "window=[name];size=500x200")
-		onclose(usr, "[name]")
+		var/datum/browser/popup = new(usr, "examine-[REF(src)]", name, 500, 200)
+		popup.set_content(content)
+		popup.open(usr)
 
 ///////HUDs///////
 	if(href_list["hud"])

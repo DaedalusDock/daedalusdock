@@ -46,6 +46,18 @@
 			playsound(src, pick('sound/effects/wounds/crack1.ogg', 'sound/effects/wounds/crack2.ogg'), 40)
 			animate(src, pixel_y = -4, time = 0.5 SECONDS, easing = SINE_EASING)
 			animate(occupants[1], pixel_y = 4, time = 0.5 SECONDS, easing = SINE_EASING)
+	if(amount_of_cargo)
+		handle_transform()
+
+/obj/vehicle/ridden/trolley/proc/handle_transform(var/unloading)
+	var/matrix/new_transform = matrix()
+	if(dir == WEST)
+		new_transform.Scale(-1,1)
+	else
+		new_transform.Scale(1,1)
+	for(var/obj/structure/closet/crate/cargo in contents)
+		cargo.transform = new_transform
+
 
 /obj/vehicle/ridden/trolley/examine(mob/user)
 	. = ..()
@@ -102,6 +114,7 @@
 	if(amount_of_cargo)
 		cargo.pixel_y += 12 * amount_of_cargo
 	amount_of_cargo++
+	handle_transform()
 
 /obj/vehicle/ridden/trolley/proc/unload_cargo(mob/living/user)
 	if(!amount_of_cargo)
@@ -115,6 +128,7 @@
 		to_chat(user, span_warning("There's no space to unload from [src]!"))
 		return
 
+	handle_transform(TRUE)
 	cargo.pixel_y = initial(pixel_y)
 	cargo.layer = initial(layer)
 	vis_contents -= cargo

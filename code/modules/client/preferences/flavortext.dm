@@ -8,7 +8,7 @@
 	return button_element(prefs, "Set Examine Text", "pref_act=[type]")
 
 /datum/preference/text/flavor_text/user_edit(mob/user, datum/preferences/prefs)
-	var/input = tgui_input_text(user, "Describe your character in greater detail.",, serialize(prefs.read_preference(type)), MAX_FLAVOR_LEN)
+	var/input = tgui_input_text(user, "Describe your character in greater detail.",, serialize(prefs.read_preference(type)), MAX_FLAVOR_LEN, TRUE)
 	if(!input)
 		return
 	. = prefs.update_preference(src, input)

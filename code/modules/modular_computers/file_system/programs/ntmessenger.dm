@@ -90,7 +90,7 @@
 	var/list/signal_data = signal.data
 	if(!signal_data)
 		return
-	var/signal_command = signal_data["command"]
+	var/signal_command = signal_data[PACKET_CMD]
 	//Network ID verification is "hardware accelerated" (AKA: Done for us by the card)
 
 	var/rigged = FALSE//are we going to explode?
@@ -102,7 +102,7 @@
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.detomatix_magic_packet)
 		//This one falls through to standard PDA behaviour, so we need to be checked first.
 		signal_command = NETCMD_PDAMESSAGE //Lie about it.
-		if(signal_data["s_addr"] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
+		if(signal_data[PACKET_SOURCE_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
 			//Calculate our "difficulty"
 			var/difficulty
 			var/obj/item/computer_hardware/hard_drive/role/our_jobdisk = computer.all_components[MC_HDD_JOB]
@@ -112,7 +112,7 @@
 					difficulty++ //if cartridge has manifest access it has extra snowflake difficulty
 			if(!(SEND_SIGNAL(computer, COMSIG_TABLET_CHECK_DETONATE) & COMPONENT_TABLET_NO_DETONATE || prob(difficulty * 15)))
 				rigged = TRUE //Cool, we're allowed to blow up. Really glad this whole check wasn't for nothing.
-				var/trait_timer_key = signal_data["s_addr"]
+				var/trait_timer_key = signal_data[PACKET_SOURCE_ADDRESS]
 				ADD_TRAIT(computer, TRAIT_PDA_CAN_EXPLODE, trait_timer_key)
 				ADD_TRAIT(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key)
 				addtimer(TRAIT_CALLBACK_REMOVE(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key), 10 SECONDS)
@@ -124,7 +124,7 @@
 			html_decode("\"[signal_data["message"]]\"") || "#ERROR_MISSING_FIELD",
 			FALSE,
 			signal_data["automated"] || FALSE,
-			signal_data["s_addr"] || null
+			signal_data[PACKET_SOURCE_ADDRESS] || null
 			)
 		if(computer.hardware_flag == PROGRAM_TABLET) //We need to render the extraneous bullshit to chat.
 			show_in_chat(signal_data, rigged)
@@ -182,14 +182,14 @@
 		L = get(holder.holder, /mob/living/silicon)
 
 	if(L && (L.stat == CONSCIOUS || L.stat == SOFT_CRIT))
-		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data["s_addr"]]'>Reply</a>)"
+		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PACKET_SOURCE_ADDRESS]]'>Reply</a>)"
 		var/hrefstart
 		var/hrefend
 		if (isAI(L))
 			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
 			hrefend = "</a>"
 
-		if(signal_data["s_addr"] == null)
+		if(signal_data[PACKET_SOURCE_ADDRESS] == null)
 			reply = "\[#ERRNOADDR\]"
 
 		if(signal_data["automated"])
@@ -208,7 +208,7 @@
 	if(!href_list["close"] && usr.canUseTopic(computer, BE_CLOSE, FALSE, NO_TK))
 		switch(href_list["choice"])
 			if("Message")
-				send_message(usr, href_list["s_addr"])
+				send_message(usr, href_list["target"])
 			if("Mess_us_up")
 				if(!HAS_TRAIT(src, TRAIT_PDA_CAN_EXPLODE))
 					var/obj/item/modular_computer/tablet/comp = computer

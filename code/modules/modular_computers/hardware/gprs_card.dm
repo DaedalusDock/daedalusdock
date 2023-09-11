@@ -66,9 +66,9 @@
 		var/datum/signal/outgoing = new(
 			src,
 			list(
-				"d_addr" = signal_data["s_addr"],
-				"command" = NET_COMMAND_PING_REPLY,
-				"netclass" = NETCLASS_GRPS_CARD,
+				PACKET_DESTINATION_ADDRESS = signal_data[PACKET_SOURCE_ADDRESS],
+				PACKET_CMD = NET_COMMAND_PING_REPLY,
+				PACKET_NETCLASS = NETCLASS_GRPS_CARD,
 				"netaddr" = hardware_id
 			)
 		)

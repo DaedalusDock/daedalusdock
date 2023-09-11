@@ -61,3 +61,14 @@
   - qol: Hijack is no longer a rollable objective.
   - rscdel: Removed Thief antagonist.
   - rscdel: Removed Valentine's Day event and antagonist.
+2023-09-11:
+  Kapu1178:
+  - bugfix: Facial Hair Gradients can now be color picked again
+  - bugfix: Wearing a non-mask object in your mask slot won't break your radio.
+  - bugfix: You will properly receive your Loadout Uniform as an Assistant
+  githubuser4141:
+  - balance: you can print mecha designs that were printable pre-update now. Namely
+      the mech laser, heavy mech laser and mech armours. You can now print the Gygax
+      targ board.
+  yyzsong:
+  - qol: chemmaster can now make twice the amount of things at once

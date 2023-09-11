@@ -23,6 +23,7 @@
 #define NETCLASS_APC "PNET_AREAPOWER"
 #define NETCLASS_TERMINAL "PNET_STERM"
 #define NETCLASS_GRPS_CARD "NET_GPRS"
+#define NETCLASS_MESSAGE_SERVER "NET_MSGSRV"
 
 // Packet fields
 // not honestly thrilled with having these be defines but kapu wants it that way

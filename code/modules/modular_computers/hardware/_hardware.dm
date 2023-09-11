@@ -129,3 +129,6 @@
 /obj/item/computer_hardware/proc/enable_changed(new_state)
 	SHOULD_CALL_PARENT(TRUE)
 	enabled = new_state
+
+/obj/item/computer_hardware/proc/is_enabled()
+	return enabled

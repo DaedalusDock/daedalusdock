@@ -56,7 +56,7 @@
 	. += "\t[span_info("GPRS ADDR: [span_robot(hardware_id)]")]"
 
 /obj/item/computer_hardware/network_card/packetnet/receive_signal(datum/signal/signal)
-	if(!holder || !signal.data || signal.data["s_addr"] == hardware_id) //Basic checks
+	if(!holder || !signal.data) //Basic checks
 		return
 	if(signal.transmission_method != TRANSMISSION_RADIO)
 		CRASH("[src] received non-radio packet, transmission method ID [signal.transmission_method], Expected [TRANSMISSION_RADIO]")
@@ -101,6 +101,7 @@
 	if(!radio_connection || !signal)
 		return FALSE // Something went wrong.
 	signal.data[PACKET_SOURCE_ADDRESS] = hardware_id //Readdress outgoing packets.
+	signal.author = WEAKREF(src)
 	radio_connection.post_signal(signal, RADIO_PDAMESSAGE)
 	return TRUE //We at least tried.
 

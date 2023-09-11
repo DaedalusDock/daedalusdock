@@ -268,9 +268,8 @@ SUBSYSTEM_DEF(packets)
 			return
 		//Spatial Grids don't like being asked for negative ranges. -1 is valid and doesn't care about range anyways.
 		if(packet.frequency == FREQ_ATMOS_CONTROL && packet.range > 0)
-			_irps_spatialgrid(packet,source,start_point) //heehoo big list.
+			_irps_spatialgrid_atmos(packet,source,start_point) //heehoo big list.
 			return
-
 	var/datum/radio_frequency/freq = packet.frequency_datum
 	//Send the data
 	for(var/current_filter in packet.filter_list)
@@ -289,15 +288,38 @@ SUBSYSTEM_DEF(packets)
 					continue
 			device.receive_signal(packet)
 
-
-
-/datum/controller/subsystem/packets/proc/_irps_spatialgrid(datum/signal/packet, datum/source, turf/start_point)
+/// Do Spatial Grid handling for IRPS, Atmos Radio group.
+/// These are separate to save just that little bit more overhead.
+/datum/controller/subsystem/packets/proc/_irps_spatialgrid_atmos(datum/signal/packet, datum/source, turf/start_point)
 	PRIVATE_PROC(TRUE) //Touch this and I eat your legs.
 
 	var/datum/radio_frequency/freq = packet.frequency_datum
 	//Send the data
 
 	var/list/spatial_grid_results = SSspatial_grid.orthogonal_range_search(start_point, SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS, packet.range)
+
+	for(var/obj/listener as anything in spatial_grid_results - source)
+		var/found = FALSE
+		for(var/filter in packet.filter_list)
+		//This is safe because to be in a radio list, an object MUST already have a weakref.
+			if(listener.weak_reference in freq.devices[filter])
+				found = TRUE
+				break
+		if(!found)
+			continue
+		if((get_dist(start_point, listener) > packet.range))
+			continue
+		listener.receive_signal(packet)
+
+/// Do Spatial Grid handling for IRPS, Non-Atmos Radio group.
+/// These are separate to save just that little bit more overhead.
+/datum/controller/subsystem/packets/proc/_irps_spatialgrid_everyone_else(datum/signal/packet, datum/source, turf/start_point)
+	PRIVATE_PROC(TRUE) //Touch this and I eat your arms.
+
+	var/datum/radio_frequency/freq = packet.frequency_datum
+	//Send the data
+
+	var/list/spatial_grid_results = SSspatial_grid.orthogonal_range_search(start_point, SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS, packet.range)
 
 	for(var/obj/listener as anything in spatial_grid_results - source)
 		var/found = FALSE

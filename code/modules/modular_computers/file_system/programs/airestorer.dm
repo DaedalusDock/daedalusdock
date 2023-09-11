@@ -24,7 +24,7 @@
 	if(computer && ai_slot?.check_functionality())
 		if(cardcheck == 1)
 			return ai_slot
-		if(ai_slot.enabled && ai_slot.stored_card)
+		if(ai_slot.is_enabled() && ai_slot.stored_card)
 			if(cardcheck == 2)
 				return ai_slot.stored_card
 			if(ai_slot.stored_card.AI)

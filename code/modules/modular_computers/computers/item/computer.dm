@@ -483,7 +483,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		data["PC_batterypercent"] = "N/C"
 		data["PC_showbatteryicon"] = battery_module ? 1 : 0
 
-	if(recharger && recharger.enabled && recharger.check_functionality() && recharger.use_power(0))
+	// We don't need to check for enablement as check_functionality does that for us.
+	if(recharger && recharger.check_functionality() && recharger.use_power(0))
 		data["PC_apclinkicon"] = "charging.gif"
 
 	switch(get_ntnet_status())

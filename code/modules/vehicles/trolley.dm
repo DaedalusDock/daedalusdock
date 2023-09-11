@@ -51,13 +51,10 @@
 
 /obj/vehicle/ridden/trolley/proc/handle_transform(var/unloading)
 	var/matrix/new_transform = matrix()
-	if(dir == WEST)
+	if(dir == WEST && !unloading)
 		new_transform.Scale(-1,1)
-	else if(unloading || dir != WEST)
-		new_transform.Scale(1,1)
 	for(var/obj/structure/closet/crate/cargo in contents)
 		cargo.transform = new_transform
-		return
 
 /obj/vehicle/ridden/trolley/examine(mob/user)
 	. = ..()

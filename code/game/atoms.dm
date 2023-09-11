@@ -250,11 +250,11 @@
 
 	initialized = TRUE
 
-	if(!isnull(greyscale_config) && !isnull(greyscale_colors))
+	if(isnull(greyscale_config) || isnull(greyscale_colors))
 		update_greyscale()
 
 	//atom color stuff
-	if(!isnull(color))
+	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))

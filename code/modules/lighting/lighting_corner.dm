@@ -129,10 +129,10 @@
 
 	// Client-shredding, does not cull any additive overlays.
 	//applying_additive = add_r || add_g || add_b
-	// Cull additive overlays that would be below 0.09 alpha in any color.
-	applying_additive = max(add_r, add_g, add_b) > 0.09
-	// Cull additive overlays whose color alpha sum is lower than 0.09
-	//applying_additive = (add_r + add_g + add_b) > 0.09
+	// Cull additive overlays that would be below 0.03 alpha in any color.
+	applying_additive = max(add_r, add_g, add_b) > 0.03
+	// Cull additive overlays whose color alpha sum is lower than 0.03
+	//applying_additive = (add_r + add_g + add_b) > 0.03
 
 	#ifdef ZMIMIC_LIGHT_BLEED
 	var/turf/T

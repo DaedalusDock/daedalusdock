@@ -86,14 +86,14 @@
 
 ///Apply the blurry overlays to a mobs clients screen
 /mob/proc/update_eye_blur()
-	if(!client)
-		return
-	var/atom/movable/plane_master_controller/game_plane_master_controller = hud_used.plane_master_controllers[PLANE_MASTERS_GAME]
+	var/atom/movable/plane_master_controller/game_plane_master_controller = hud_used?.plane_master_controllers[PLANE_MASTERS_GAME]
 	if(eye_blurry)
-		game_plane_master_controller.add_filter("eye_blur", 1, gauss_blur_filter(clamp(eye_blurry * 0.1, 0.6, 3)))
+		if(game_plane_master_controller)
+			game_plane_master_controller.add_filter("eye_blur", 1, gauss_blur_filter(clamp(eye_blurry * 0.1, 0.6, 3)))
 		overlay_fullscreen("dither", /atom/movable/screen/fullscreen/dither)
 	else
-		game_plane_master_controller.remove_filter("eye_blur")
+		if(game_plane_master_controller)
+			game_plane_master_controller.remove_filter("eye_blur")
 		clear_fullscreen("dither")
 
 ///Adjust the disgust level of a mob

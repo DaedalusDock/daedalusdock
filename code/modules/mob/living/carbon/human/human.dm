@@ -769,6 +769,11 @@
 		regenerate_organs()
 
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		BP.adjustPain(-INFINITY)
+
+	shock_stage = 0
+
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		BP.set_sever_artery(FALSE)
 		BP.set_sever_tendon(FALSE)
 		BP.heal_bones()

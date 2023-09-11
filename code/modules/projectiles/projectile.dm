@@ -21,7 +21,11 @@
 	var/hitsound_wall = ""
 
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-	var/def_zone = "" //Aiming at
+	/// The body_zone the firer aimed at. May be overriden by some casings using zone_override
+	var/aimed_def_zone = BODY_ZONE_CHEST
+	/// The body_zone the projectile is about to hit, taking into account randomness. Don't set directly, will not do anything.
+	var/def_zone = ""
+
 	var/atom/movable/firer = null//Who shot it
 	var/datum/fired_from = null // the thing that the projectile was fired from (gun, turret, spell)
 	var/suppressed = FALSE //Attack message
@@ -249,8 +253,8 @@
 	var/obj/item/bodypart/hit_limb
 	if(isliving(target))
 		var/mob/living/L = target
-		hit_limb = L.check_limb_hit(def_zone)
-	SEND_SIGNAL(src, COMSIG_PROJECTILE_SELF_ON_HIT, firer, target, Angle, hit_limb)
+		hit_limb = L.get_bodypart(def_zone)
+	SEND_SIGNAL(src, COMSIG_PROJECTILE_SELF_ON_HIT, firer, target, Angle, def_zone)
 
 	if(QDELETED(src)) // in case one of the above signals deleted the projectile for whatever reason
 		return
@@ -290,7 +294,7 @@
 	var/mob/living/L = target
 
 	if(blocked != 100) // not completely blocked
-		if(damage && L.blood_volume && damage_type == BRUTE)
+		if(damage && L.blood_volume && damage_type == BRUTE && (!hit_limb || (hit_limb.bodypart_flags & BP_HAS_BLOOD)))
 			var/splatter_dir = dir
 			if(starting)
 				splatter_dir = get_dir(starting, target_loca)
@@ -304,14 +308,16 @@
 			new impact_effect_type(target_loca, hitx, hity)
 
 		var/organ_hit_text = ""
-		var/limb_hit = hit_limb
-		if(limb_hit)
-			organ_hit_text = " in \the [parse_zone(limb_hit)]"
+		if(hit_limb)
+			organ_hit_text = " in \the [hit_limb.plaintext_zone]"
+
 		if(suppressed == SUPPRESSED_VERY)
 			playsound(loc, hitsound, 5, TRUE, -1)
+
 		else if(suppressed)
 			playsound(loc, hitsound, 5, TRUE, -1)
 			to_chat(L, span_userdanger("You're shot by \a [src][organ_hit_text]!"))
+
 		else
 			if(hitsound)
 				var/volume = vol_by_damage()
@@ -414,9 +420,19 @@
 			return TRUE
 
 	var/distance = get_dist(T, starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
-	def_zone = ran_zone(def_zone, max(100-(7*distance), 5)) //Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
+	var/target = select_target(T, A, A)
+	if(iscarbon(target))
+		var/distance_mult = 7
+		if(istype(fired_from, /obj/item/gun))
+			var/obj/item/gun/G = fired_from
+			distance_mult = G.accuracy_falloff
 
-	return process_hit(T, select_target(T, A, A), A) // SELECT TARGET FIRST!
+		def_zone = get_zone_with_miss_chance(aimed_def_zone, target, clamp(distance * distance_mult, 0, 100), TRUE)
+
+	else
+		def_zone = aimed_def_zone
+
+	return process_hit(T, target, A) // SELECT TARGET FIRST!
 
 /**
  * The primary workhorse proc of projectile impacts.

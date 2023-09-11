@@ -46,6 +46,9 @@
 	///Can we hold up our target with this? Default to yes
 	var/can_hold_up = TRUE
 
+	/// For every turf a fired projectile travels, increase the target bodyzone inaccuracy by this much.
+	var/accuracy_falloff = 3
+
 	/// Just 'slightly' snowflakey way to modify projectile damage for projectiles fired from this gun.
 	var/projectile_damage_multiplier = 1
 

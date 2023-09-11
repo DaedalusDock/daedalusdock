@@ -54,36 +54,41 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
  * Do not use this if someone is intentionally trying to hit a specific body part.
  * Use get_zone_with_miss_chance() for that.
  */
-/proc/ran_zone(zone, probability = 80)
+/proc/ran_zone(zone, probability = 80, list/weighted_list)
 	if(zone)
 		zone = deprecise_zone(zone)
 		if(prob(probability))
 			return zone
 
-	zone = pick_weight(GLOB.bodyzone_accuracy_weights)
+	if(weighted_list)
+		zone = pick_weight(weighted_list)
+	else
+		zone = pick_weight(GLOB.bodyzone_accuracy_weights)
 	return zone
 
 // Emulates targetting a specific body part, and miss chances
 // May return null if missed
 // miss_chance_mod may be negative.
-/proc/get_zone_with_miss_chance(zone, mob/living/target, miss_chance_mod = 0)
+/proc/get_zone_with_miss_chance(zone, mob/living/carbon/target, miss_chance_mod = 0, ranged_attack)
 	zone = deprecise_zone(zone)
 
-	// target isn't trying to fight
-	if(!target.combat_mode)
-		return zone
-	// you cannot miss if your target is prone or restrained
-	if(target.buckled || target.body_position == LYING_DOWN)
-		return zone
-	// if your target is being grabbed aggressively by someone you cannot miss either
-	if(target.pulledby)
-		return zone
+	if(!ranged_attack)
+		// target isn't trying to fight
+		if(!target.combat_mode)
+			return zone
+		// you cannot miss if your target is prone or restrained
+		if(target.buckled || target.body_position == LYING_DOWN)
+			return zone
+		// if your target is being grabbed aggressively by someone you cannot miss either
+		if(target.pulledby)
+			return zone
+
 
 	var/miss_chance = GLOB.bodyzone_miss_chance[zone]
 	miss_chance = max(miss_chance + miss_chance_mod, 0)
 	if(prob(miss_chance))
-		if (prob(miss_chance))
-			return (target.get_random_valid_zone())
+		if(ranged_attack || prob(miss_chance)) // Ranged attacks cannot ever fully miss.
+			return target.get_random_valid_zone()
 		return null
 	else
 		return zone

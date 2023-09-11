@@ -1,5 +1,4 @@
 GLOBAL_LIST_EMPTY(antagonists)
-
 /datum/antagonist
 	///Public name for this antagonist. Appears for player prompts and round-end reports.
 	var/name = "\improper Antagonist"

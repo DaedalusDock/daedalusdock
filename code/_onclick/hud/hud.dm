@@ -120,6 +120,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	owner.overlay_fullscreen("see_through_darkness", /atom/movable/screen/fullscreen/see_through_darkness)
 
+	RegisterSignal(mymob, COMSIG_VIEWDATA_UPDATE, PROC_REF(on_viewdata_update))
+
+
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
 		mymob.hud_used = null
@@ -166,6 +169,11 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	QDEL_NULL(screentip_text)
 
 	return ..()
+
+/datum/hud/proc/on_viewdata_update(datum/source, view)
+	SIGNAL_HANDLER
+
+	view_audit_buttons()
 
 /mob/proc/create_mob_hud()
 	if(!client || hud_used)

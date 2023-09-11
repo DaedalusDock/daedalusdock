@@ -158,7 +158,7 @@
 	var/list/sig_data = signal.data //cachemere sweater
 	switch(signal.data[PACKET_CMD])
 		if(NETCMD_PDAMESSAGE)
-			var/datum/data_pda_message/log_unit = new(signal.data[PACKET_DESTINATION_ADDRESS], signal.data[PACKET_SOURCE_ADDRESS], signal.data["message"])
+			var/datum/data_pda_message/log_unit = new(sig_data[PACKET_DESTINATION_ADDRESS], sig_data[PACKET_SOURCE_ADDRESS], sig_data["message"])
 			pda_msgs += log_unit
 			return RECEIVE_SIGNAL_FINISHED
 		else

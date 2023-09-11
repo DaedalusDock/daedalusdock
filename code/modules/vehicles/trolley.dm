@@ -53,11 +53,11 @@
 	var/matrix/new_transform = matrix()
 	if(dir == WEST)
 		new_transform.Scale(-1,1)
-	else
+	else if(unloading || dir != WEST)
 		new_transform.Scale(1,1)
 	for(var/obj/structure/closet/crate/cargo in contents)
 		cargo.transform = new_transform
-
+		return
 
 /obj/vehicle/ridden/trolley/examine(mob/user)
 	. = ..()

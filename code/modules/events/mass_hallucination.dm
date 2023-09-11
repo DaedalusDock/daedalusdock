@@ -10,7 +10,7 @@
 	fakeable = FALSE
 
 	/// 'normal' sound keys, index by them to get the friendly name.
-	var/static/list/sound_pool = list(
+	var/list/sound_pool = list(
 		"airlock" = "Door",
 		"airlock_pry" = "Door Prying",
 		"console" = "Computer",
@@ -25,7 +25,7 @@
 		"tesla" = "Tesla Ball"
 		)
 	/// 'Weird' sound keys, index by them to get the friendly name.
-	var/static/list/rare_sound_pool = list(
+	var/list/rare_sound_pool = list(
 		"phone" = "Phone",
 		"hallelujah" = "Holy",
 		"highlander" = "Scottish Pride",
@@ -35,7 +35,7 @@
 		"tesla" = "Tesla Ball" //No, I don't know why this is duplicated.
 		)
 	/// Fake 'Station Message' keys, index by them to get the friendly name.
-	var/static/list/stationmessage_pool = list(
+	var/list/stationmessage_pool = list(
 		"ratvar" = "Ratvar Summoning",
 		"shuttle_dock" = "Emergency Shuttle Dock Announcement",
 		"blob_alert" = "Level 5 Biohazard Announcement",
@@ -44,7 +44,7 @@
 		"supermatter" = "Supermatter Delamination Sensation"
 	)
 	/// Pool for generic hallucinations. Types can't key lists, so we need to invert the accesses.
-	var/static/list/generic_pool = list(
+	var/list/generic_pool = list(
 		"Fake bolted airlocks" = /datum/hallucination/bolts,
 		"Imagined messages" = /datum/hallucination/chat,
 		"Fake minor message" = /datum/hallucination/message,

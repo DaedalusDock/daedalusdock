@@ -250,7 +250,7 @@
 
 	initialized = TRUE
 
-	if(isnull(greyscale_config) || isnull(greyscale_colors))
+	if(greyscale_config && greyscale_colors)
 		update_greyscale()
 
 	//atom color stuff

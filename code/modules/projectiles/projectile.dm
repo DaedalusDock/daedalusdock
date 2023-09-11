@@ -422,18 +422,7 @@
 				store_hitscan_collision(point_cache)
 			return TRUE
 
-	var/distance = get_dist(T, starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
 	var/target = select_target(T, A, A)
-	if(iscarbon(target))
-		var/distance_mult = 7
-		if(istype(fired_from, /obj/item/gun))
-			var/obj/item/gun/G = fired_from
-			distance_mult = G.accuracy_falloff
-
-		def_zone = can_miss_zone ? get_zone_with_miss_chance(aimed_def_zone, target, clamp(distance * distance_mult, 0, 100), TRUE) : aimed_def_zone
-
-	else
-		def_zone = aimed_def_zone
 
 	return process_hit(T, target, A) // SELECT TARGET FIRST!
 
@@ -464,30 +453,49 @@
 	// 1.
 	if(QDELETED(src) || !T || !target)
 		return
+
 	// 2.
 	impacted[target] = TRUE //hash lookup > in for performance in hit-checking
+
 	// 3.
 	var/mode = prehit_pierce(target)
 	if(mode == PROJECTILE_DELETE_WITHOUT_HITTING)
 		qdel(src)
 		return hit_something
+
 	else if(mode == PROJECTILE_PIERCE_PHASE)
 		if(!(movement_type & PHASING))
 			temporary_unstoppable_movement = TRUE
 			movement_type |= PHASING
+
 		return process_hit(T, select_target(T, target, bumped), bumped, hit_something) // try to hit something else
+
 	// at this point we are going to hit the thing
 	// in which case send signal to it
+	var/distance = get_dist(T, starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
+	if(iscarbon(target))
+		var/distance_mult = 7
+		if(istype(fired_from, /obj/item/gun))
+			var/obj/item/gun/G = fired_from
+			distance_mult = G.accuracy_falloff
+
+		def_zone = can_miss_zone ? get_zone_with_miss_chance(aimed_def_zone, target, clamp(distance * distance_mult, 0, 100), TRUE) : aimed_def_zone
+	else
+		def_zone = aimed_def_zone
+
 	SEND_SIGNAL(target, COMSIG_PROJECTILE_PREHIT, args)
 	if(mode == PROJECTILE_PIERCE_HIT)
 		++pierces
+
 	hit_something = TRUE
+
 	var/result = target.bullet_act(src, def_zone, mode == PROJECTILE_PIERCE_HIT)
 	if((result == BULLET_ACT_FORCE_PIERCE) || (mode == PROJECTILE_PIERCE_HIT))
 		if(!(movement_type & PHASING))
 			temporary_unstoppable_movement = TRUE
 			movement_type |= PHASING
 		return process_hit(T, select_target(T, target, bumped), bumped, TRUE)
+
 	qdel(src)
 	return hit_something
 

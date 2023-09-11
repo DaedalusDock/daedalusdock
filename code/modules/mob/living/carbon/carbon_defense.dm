@@ -608,10 +608,10 @@
 /mob/living/carbon/proc/check_passout(oxyloss)
 	if(!isnum(oxyloss))
 		return
-	if(oxyloss <= 100)
-		if(getOxyLoss() > 100)
+	if(oxyloss < 100) // If old oxyloss is less than 100...
+		if(getOxyLoss() >= 100) // And new oxyloss is 100....
 			ADD_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
-	else if(getOxyLoss() <= 100)
+	else if(getOxyLoss() < 100) // If old oxyloss is 100 or greater, and current oxyloss is less than 100
 		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
 
 /mob/living/carbon/get_organic_health()

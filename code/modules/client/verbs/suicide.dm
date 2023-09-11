@@ -142,7 +142,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(HEALTH_LOSS_PER_TYPE_CAP(src) - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(maxHealth - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 
@@ -161,7 +161,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(HEALTH_LOSS_PER_TYPE_CAP(src) - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(maxHealth - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 

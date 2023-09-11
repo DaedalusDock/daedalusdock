@@ -26,6 +26,9 @@
 	/// The body_zone the projectile is about to hit, taking into account randomness. Don't set directly, will not do anything.
 	var/def_zone = ""
 
+	/// Can this projectile miss it's def_zone?
+	var/can_miss_zone = TRUE
+
 	var/atom/movable/firer = null//Who shot it
 	var/datum/fired_from = null // the thing that the projectile was fired from (gun, turret, spell)
 	var/suppressed = FALSE //Attack message
@@ -427,7 +430,7 @@
 			var/obj/item/gun/G = fired_from
 			distance_mult = G.accuracy_falloff
 
-		def_zone = get_zone_with_miss_chance(aimed_def_zone, target, clamp(distance * distance_mult, 0, 100), TRUE)
+		def_zone = can_miss_zone ? get_zone_with_miss_chance(aimed_def_zone, target, clamp(distance * distance_mult, 0, 100), TRUE) : aimed_def_zone
 
 	else
 		def_zone = aimed_def_zone

@@ -49,7 +49,7 @@
 	if(amount_of_cargo)
 		handle_transform()
 
-/obj/vehicle/ridden/trolley/proc/handle_transform(var/unloading)
+/obj/vehicle/ridden/trolley/proc/handle_transform(unloading)
 	var/matrix/new_transform = matrix()
 	if(dir == WEST && !unloading)
 		new_transform.Scale(-1,1)

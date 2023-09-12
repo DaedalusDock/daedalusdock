@@ -36,6 +36,7 @@
 	icon = 'icons/turf/decals.dmi'
 	icon_state = "warningline"
 	layer = TURF_DECAL_LAYER
+	anchored = TRUE
 	/// The layer to generate the decal. Should be some kind of float layer
 	var/decal_layer = DECAL_NORMAL_LAYER
 

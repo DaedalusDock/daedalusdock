@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - refactor: Credits should now consistently reach the bottom of the screen. Even
+      if a bit.... choppily.

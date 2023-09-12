@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - rscdel: Ticket machine tickets no longer magically vanish upon deletion, and the
+      entire logic chain is generally much simpler.

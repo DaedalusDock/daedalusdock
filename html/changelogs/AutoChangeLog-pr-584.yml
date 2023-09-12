@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - rscadd: Ghosts will now be told what the crew has collectively hallucinated.

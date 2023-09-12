@@ -72,3 +72,8 @@
       targ board.
   yyzsong:
   - qol: chemmaster can now make twice the amount of things at once
+2023-09-12:
+  Kapu1178:
+  - bugfix: Fixed an issue where rarely fires could burn forever.
+  francinum:
+  - rscadd: Ghosts will now be told what the crew has collectively hallucinated.

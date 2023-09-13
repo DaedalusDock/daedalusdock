@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: maint loot spawners should work again.

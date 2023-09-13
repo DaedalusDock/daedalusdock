@@ -107,7 +107,7 @@
 
 /datum/component/dejavu/proc/rewind_animal()
 	var/mob/living/simple_animal/master = parent
-	master.setBruteLoss(bruteloss)
+	UNLINT(master.bruteloss = brute_loss) //Why is there no setter for this? Whatever.
 	master.updatehealth()
 	rewind_living()
 

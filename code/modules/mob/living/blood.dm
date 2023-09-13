@@ -28,21 +28,12 @@
 
 	var/temp_bleed = 0
 
-	#warn DNM Bleed debugging
 	var/list/obj/item/bodypart/spray_candidates
 	//Bleeding out
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		var/needs_bleed_update = FALSE
 		var/iter_bleed_rate = iter_part.get_modified_bleed_rate() * pulse_mod
-		if(iter_bleed_rate < 0)
-			iter_bleed_rate = 0
-			stack_trace("Negative bleed, reeeeeee")
-
 		var/bleed_amt = iter_part.bandage?.absorb_blood(iter_bleed_rate, src)
-
-		if(bleed_amt < 0)
-			bleed_amt = 0
-			stack_trace("Negative bleed, reeeeeee")
 
 		if(isnull(bleed_amt))
 			bleed_amt = iter_bleed_rate
@@ -67,10 +58,6 @@
 
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
 			iter_part.adjustBleedStacks(-1, 0)
-
-	if(temp_bleed < 0)
-		temp_bleed = 0
-		stack_trace("Negative bleed, reeeeeee")
 
 	var/bled
 	if(temp_bleed)

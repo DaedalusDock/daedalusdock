@@ -539,7 +539,9 @@
 	//blunt damage is gud at fracturing
 	if(breaks_bones && brute)
 		if(LAZYLEN(contained_organs))
-			brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), sharpness) // Absorb some brute damage
+			brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), null, sharpness) // Absorb some brute damage
+			if(!IS_ORGANIC_LIMB(src))
+				burn -= damage_internal_organs(null, round(burn/2, DAMAGE_PRECISION))
 
 		if(bodypart_flags & BP_BROKEN_BONES)
 			jostle_bones(brute)
@@ -607,19 +609,26 @@
 	return .
 
 /// Damages internal organs. Does not call updatehealth(), be mindful.
-/obj/item/bodypart/proc/damage_internal_organs(brute, sharpness)
+/obj/item/bodypart/proc/damage_internal_organs(brute, burn, sharpness)
 	#ifdef UNIT_TESTS
 	return // This randomly changes the damage outcomes, this is bad for unit testing.
 	#endif
-	if(!LAZYLEN(contained_organs) || !brute)
+	if(!LAZYLEN(contained_organs) || !(brute || burn))
 		return FALSE
 
 	var/organ_damage_threshold = 5
 	if(sharpness & SHARP_POINTY)
 		organ_damage_threshold *= 0.5
 
-	if(!(brute_dam + brute >= max_damage) && !(brute >= organ_damage_threshold))
-		return FALSE
+	var/damage
+	if(brute)
+		if(!(brute_dam + brute >= max_damage) && !(brute >= organ_damage_threshold))
+			return FALSE
+		damage = brute
+	else
+		if(!(burn_dam + burn >= max_damage) && !(burn >= organ_damage_threshold))
+			return FALSE
+		damage = burn
 
 	var/list/victims = list()
 	var/organ_hit_chance = 0
@@ -632,7 +641,7 @@
 	if(!length(victims))
 		return FALSE
 
-	organ_hit_chance += 5 * brute/organ_damage_threshold
+	organ_hit_chance += 5 * damage/organ_damage_threshold
 
 	if(encased && !(bodypart_flags & BP_BROKEN_BONES)) //ribs protect
 		organ_hit_chance *= 0.6
@@ -640,8 +649,8 @@
 	organ_hit_chance = min(organ_hit_chance, 100)
 	if(prob(organ_hit_chance))
 		var/obj/item/organ/victim = pick_weight(victims)
-		brute *= victim.external_damage_modifier
-		return victim.applyOrganDamage(brute, updating_health = FALSE)
+		damage *= victim.external_damage_modifier
+		return victim.applyOrganDamage(damage, updating_health = FALSE)
 
 //Heals brute and burn damage for the organ. Returns 1 if the damage-icon states changed at all.
 //Damage cannot go below zero.

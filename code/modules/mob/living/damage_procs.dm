@@ -183,7 +183,7 @@
 		return
 
 	. = oxyloss
-	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, 100)
+	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth/2)
 	if(updating_health)
 		updatehealth()
 
@@ -191,7 +191,7 @@
 	if(!forced && status_flags & GODMODE)
 		return
 	. = oxyloss
-	oxyloss = min(amount, 100)
+	oxyloss = clamp(amount, 0, maxHealth/2)
 	if(updating_health)
 		updatehealth()
 

@@ -343,6 +343,17 @@
 	else if(isobserver(user))
 		. += span_info("<b>Traits:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
 
+	var/flavor_text_link
+	/// The first 1-FLAVOR_PREVIEW_LIMIT characters in the mob's "flavor_text" DNA feature. FLAVOR_PREVIEW_LIMIT is defined in flavor_defines.dm.
+	var/preview_text = trim(copytext_char((examine_text), 1, FLAVOR_PREVIEW_LIMIT))
+	if(preview_text)
+		if (!(skipface))
+			flavor_text_link = span_notice("[preview_text]...[button_element(src, "Look Closer?", "open_examine_panel=1")]")
+		else
+			flavor_text_link = span_notice("...?")
+		if (flavor_text_link)
+			. += flavor_text_link
+
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
 /**

@@ -118,6 +118,7 @@
 	var/sprinting = FALSE
 	///How many tiles we have continuously moved in the same direction
 	var/sustained_moves = 0
-
+	//stores flavor text here.
+	var/examine_text = ""
 
 	COOLDOWN_DECLARE(bleeding_message_cd)

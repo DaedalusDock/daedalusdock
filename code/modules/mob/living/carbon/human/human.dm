@@ -102,6 +102,10 @@
 		if(check_obscured_slots(TRUE) & slot)
 			to_chat(usr, span_warning("You can't reach that! Something is covering it."))
 			return
+	if(href_list["open_examine_panel"])
+		var/datum/browser/popup = new(usr, "examine-[REF(src)]", name, 500, 200)
+		popup.set_content(examine_text)
+		popup.open(usr)
 
 ///////HUDs///////
 	if(href_list["hud"])

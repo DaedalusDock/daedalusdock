@@ -155,7 +155,7 @@
 	icon_state = "acid"
 	zone = BODY_ZONE_PRECISE_MOUTH
 	slot = ORGAN_SLOT_XENO_ACIDGLAND
-	actions_types =list(/datum/action/cooldown/alien/acid)
+	actions_types =list(/datum/action/cooldown/alien/acid/corrosion)
 
 
 /obj/item/organ/alien/neurotoxin

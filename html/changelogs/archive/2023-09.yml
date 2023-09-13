@@ -77,3 +77,15 @@
   - bugfix: Fixed an issue where rarely fires could burn forever.
   francinum:
   - rscadd: Ghosts will now be told what the crew has collectively hallucinated.
+2023-09-13:
+  Kapu1178:
+  - refactor: Credits should now consistently reach the bottom of the screen. Even
+      if a bit.... choppily.
+  LemonInTheDark:
+  - rscadd: Adds a grace period for hit detection, between clicking ON someone, and
+      then moving your mouse off before releasing the click. It's short, hopefully
+      it helps with stupid
+  francinum:
+  - rscdel: Ticket machine tickets no longer magically vanish upon deletion, and the
+      entire logic chain is generally much simpler.
+  - bugfix: Turf Decals are now anchored.

@@ -709,3 +709,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/TakeTemperature(temp)
 	temperature += temp
+
+/turf/proc/is_below_sound_pressure()
+	var/datum/gas_mixture/GM = unsafe_return_air()
+	if(isnull(GM) || GM.returnPressure() < SOUND_MINIMUM_PRESSURE)
+		return TRUE

@@ -11,8 +11,8 @@
 	righthand_file = 'icons/mob/inhands/misc/tiles_righthand.dmi'
 	icon = 'icons/obj/tiles.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
-	force = 1
-	throwforce = 1
+	force = 6
+	throwforce = 15
 	throw_speed = 3
 	throw_range = 7
 	max_amount = 60

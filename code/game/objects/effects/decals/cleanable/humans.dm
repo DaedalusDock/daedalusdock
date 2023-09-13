@@ -55,6 +55,8 @@
 		return TRUE
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
+	if(!mergeable_decal)
+		return FALSE
 	C.add_blood_DNA(return_blood_DNA())
 	if (bloodiness)
 		C.bloodiness = min((C.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
@@ -225,11 +227,12 @@
 	desc = "It's red."
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
-	bloodiness = 0
+	bloodiness = 10
 	var/drips = 1
 	dryname = "drips of blood"
 	drydesc = "It's red."
 	smell_type = /datum/component/smell/subtle
+	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/blood/drip/can_bloodcrawl_in()
 	return TRUE

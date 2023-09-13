@@ -7,6 +7,9 @@
 	slot = ORGAN_SLOT_TONGUE
 	attack_verb_continuous = list("licks", "slobbers", "slaps", "frenches", "tongues")
 	attack_verb_simple = list("lick", "slobber", "slap", "french", "tongue")
+
+	relative_size = 5
+
 	var/list/languages_possible
 	var/list/languages_native //human mobs can speak with this languages without the accent (letters replaces)
 	var/say_mod = null

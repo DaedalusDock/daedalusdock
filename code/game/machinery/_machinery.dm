@@ -607,6 +607,15 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 			)
 		return TRUE
 
+	if(iscarbon(user))
+		var/brainloss = user.getBrainLoss()
+		if(brainloss > 120)
+			visible_message(span_warning("\The [user] stares cluelessly at \the [src]."))
+			return TRUE
+		if(prob(min(brainloss, 30)))
+			to_chat(user, span_warning("You momentarily forget how to use \the [src]."))
+			return TRUE
+
 //Return a non FALSE value to interrupt attack_hand propagation to subtypes.
 /obj/machinery/interact(mob/user, special_state)
 	if(interaction_flags_machine & INTERACT_MACHINE_SET_MACHINE)

@@ -1,4 +1,5 @@
 /mob/living/carbon
+	maxHealth = 200
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	//pressure_resistance = 15
@@ -122,3 +123,5 @@
 	var/examine_text = ""
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+	COOLDOWN_DECLARE(blood_spray_cd)
+	COOLDOWN_DECLARE(breath_sound_cd)

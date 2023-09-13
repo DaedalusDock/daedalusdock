@@ -45,12 +45,12 @@
 		/datum/reagent/copper,
 		/datum/reagent/consumable/ethanol,
 		/datum/reagent/fluorine,
+		/datum/reagent/fuel,
 		/datum/reagent/hydrogen,
 		/datum/reagent/iodine,
 		/datum/reagent/iron,
 		/datum/reagent/lithium,
 		/datum/reagent/mercury,
-		/datum/reagent/nickel,
 		/datum/reagent/nitrogen,
 		/datum/reagent/oxygen,
 		/datum/reagent/phosphorus,
@@ -58,9 +58,9 @@
 		/datum/reagent/silicon,
 		/datum/reagent/sodium,
 		/datum/reagent/consumable/sugar,
+		/datum/reagent/uranium/radium,
 		/datum/reagent/sulfur,
 		/datum/reagent/water,
-		/datum/reagent/fuel
 	)
 
 	var/list/emagged_reagents = list(

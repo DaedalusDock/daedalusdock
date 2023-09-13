@@ -32,6 +32,10 @@
 /datum/status_effect/confusion/proc/on_move(datum/source, list/move_args)
 	SIGNAL_HANDLER
 
+	var/mob/living/L = source
+	if(L.body_position == LYING_DOWN)
+		return
+
 	// How much time is left in the duration, in seconds.
 	var/time_left = (duration - world.time) / 10
 	var/direction = move_args[MOVE_ARG_DIRECTION]

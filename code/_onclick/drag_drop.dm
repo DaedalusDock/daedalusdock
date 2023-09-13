@@ -18,7 +18,7 @@
 		return // should stop you from dragging through windows
 
 	over.MouseDrop_T(src,usr, params)
-	return
+	return TRUE
 
 /// Handles treating drags as clicks if they're within some conditions
 /// Does some other stuff adjacent to trying to figure out what the user actually "wanted" to click

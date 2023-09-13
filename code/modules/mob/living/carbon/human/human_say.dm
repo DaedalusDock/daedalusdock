@@ -47,7 +47,7 @@
 	return
 
 /mob/living/carbon/human/binarycheck()
-	if(stat >= SOFT_CRIT || !ears)
+	if(stat != CONSCIOUS || !ears)
 		return FALSE
 	var/obj/item/radio/headset/dongle = ears
 	if(!istype(dongle))

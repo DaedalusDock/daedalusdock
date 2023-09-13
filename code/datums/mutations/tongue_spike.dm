@@ -179,7 +179,7 @@
 	if(!ishuman(transfered))
 		return FALSE
 
-	to_chat(transfered, span_warning("You feel a tiny prick!"))
+	transfered.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
 	transferer.reagents.trans_to(transfered, transferer.reagents.total_volume, 1, 1, 0, transfered_by = transferer)
 
 	var/obj/item/hardened_spike/chem/chem_spike = target

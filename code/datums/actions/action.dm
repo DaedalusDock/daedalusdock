@@ -163,7 +163,7 @@
 			if (feedback)
 				to_chat(owner, span_warning("You cannot use [name] while lying down!"))
 			return FALSE
-	if((check_flags & AB_CHECK_CONSCIOUS) && owner.stat > SOFT_CRIT)
+	if((check_flags & AB_CHECK_CONSCIOUS) && owner.stat != CONSCIOUS)
 		if (feedback)
 			to_chat(owner, span_warning("You cannot use [name] while unconscious!"))
 		return FALSE

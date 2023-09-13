@@ -263,9 +263,10 @@
 			if(!intentional)
 				return FALSE
 			switch(user.stat)
-				if(SOFT_CRIT)
-					to_chat(user, span_warning("You cannot [key] while in a critical condition!"))
-				if(UNCONSCIOUS, HARD_CRIT)
+				if(CONSCIOUS)
+					if(HAS_TRAIT(user, TRAIT_SOFT_CRITICAL_CONDITION))
+						to_chat(user, span_warning("You cannot [key] while in a critical condition!"))
+				if(UNCONSCIOUS)
 					to_chat(user, span_warning("You cannot [key] while unconscious!"))
 				if(DEAD)
 					to_chat(user, span_warning("You cannot [key] while dead!"))

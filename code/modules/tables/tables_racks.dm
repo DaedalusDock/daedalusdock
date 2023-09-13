@@ -136,13 +136,15 @@
 			return FALSE
 		if(!H.Enter(get_turf(src), TRUE))
 			return
-		H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
+		H.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
+		H.apply_pain(80, BODY_ZONE_HEAD, "Your head screams with pain!")
 		H.Paralyze(1 SECOND)
 		playsound(H, 'sound/items/trayhit1.ogg', 50, 1)
 		H.visible_message(
 			span_danger("[H] bangs [H.p_their()] head on [src]."),
 			span_danger("You bang your head on [src]."),
 			span_hear("You hear a metallic clang.")
+
 		)
 		return
 
@@ -808,12 +810,32 @@
 	buckle_lying = NO_BUCKLE_LYING
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
+	loc_procs = UNCROSSED
+
+	var/obj/machinery/vitals_monitor/connected_monitor
 	var/mob/living/carbon/human/patient = null
 
 /obj/structure/table/optable/Destroy()
 	if(patient)
 		set_patient(null)
+	if(connected_monitor)
+		connected_monitor.set_optable(null)
+		connected_monitor = null
 	return ..()
+
+/obj/structure/table/optable/MouseDrop_T(atom/dropping, mob/living/user)
+	if(!iscarbon(dropping))
+		return ..()
+
+	if(dropping.loc == loc)
+		set_patient(dropping)
+	else
+		return ..()
+
+/obj/structure/table/optable/Uncrossed(atom/movable/gone, direction)
+	. = ..()
+	if(gone == patient)
+		set_patient(null)
 
 /obj/structure/table/optable/tableplace(mob/living/user, mob/living/pushed_mob)
 	. = ..()
@@ -838,11 +860,14 @@
 		REMOVE_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		UnregisterSignal(patient, COMSIG_PARENT_QDELETING)
 	patient = new_patient
-	patient.set_lying_angle(90)
-	patient.setDir(SOUTH)
-	ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 	if(patient)
+		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
+		patient.set_lying_angle(90)
+		patient.setDir(SOUTH)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
+
+	if(connected_monitor)
+		connected_monitor.update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/table/optable/proc/patient_deleted(datum/source)
 	SIGNAL_HANDLER

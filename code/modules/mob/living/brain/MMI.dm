@@ -74,9 +74,9 @@
 		brainmob.forceMove(src)
 		brainmob.container = src
 		var/fubar_brain = newbrain.suicided || brainmob.suiciding //brain is from a suicider
-		if(!fubar_brain && !(newbrain.organ_flags & ORGAN_FAILING)) // the brain organ hasn't been beaten to death, nor was from a suicider.
+		if(!fubar_brain && !(newbrain.organ_flags & ORGAN_DEAD)) // the brain organ hasn't been beaten to death, nor was from a suicider.
 			brainmob.set_stat(CONSCIOUS) //we manually revive the brain mob
-		else if(!fubar_brain && newbrain.organ_flags & ORGAN_FAILING) // the brain is damaged, but not from a suicider
+		else if(!fubar_brain && newbrain.organ_flags & ORGAN_DEAD) // the brain is damaged, but not from a suicider
 			to_chat(user, span_warning("[src]'s indicator light turns yellow and its brain integrity alarm beeps softly. Perhaps you should check [newbrain] for damage."))
 			playsound(src, 'sound/machines/synth_no.ogg', 5, TRUE)
 		else
@@ -271,7 +271,7 @@
 		if(user)
 			to_chat(user, span_warning("\The [src] indicates that the brain is dead!"))
 		return FALSE
-	if(brain?.organ_flags & ORGAN_FAILING)
+	if(brain?.organ_flags & ORGAN_DEAD)
 		if(user)
 			to_chat(user, span_warning("\The [src] indicates that the brain is damaged!"))
 		return FALSE

@@ -53,6 +53,26 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
 
+	pain_emotes = list(
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+			"hiss" = 1
+		) = 20,
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+			"wheeze" = 1,
+			"hiss" = 1,
+		) = 50,
+		list(
+			"wheeze" = 1,
+			"scream" = 1,
+			"bellow" = 1,
+			"howl" = 1
+		) = 80
+	)
+
 /// Lizards are cold blooded and do not stabilize body temperature naturally
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, delta_time, times_fired)
 	return

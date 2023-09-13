@@ -72,16 +72,5 @@
 /datum/unit_test/non_standard_damage/Run()
 	var/mob/living/carbon/human/man = allocate(/mob/living/carbon/human)
 
-	var/old_dam
-	man.adjustOxyLoss(HEALTH_LOSS_PER_TYPE_CAP(man))
-	old_dam = man.getOxyLoss()
-	TEST_ASSERT(man.stat == DEAD, "Victim did not die when taking [HEALTH_LOSS_PER_TYPE_CAP(man)] oxygen damage.")
-	man.adjustOxyLoss(1)
-	TEST_ASSERT(man.getOxyLoss() == old_dam, "Victim took oxygen damage past the cap.")
-	man.revive(TRUE, TRUE)
-
-	man.adjustToxLoss(HEALTH_LOSS_PER_TYPE_CAP(man))
-	old_dam = man.getOxyLoss()
-	TEST_ASSERT(man.stat == DEAD, "Victim did not die when taking [HEALTH_LOSS_PER_TYPE_CAP(man)] toxin damage.")
-	man.adjustToxLoss(1)
-	TEST_ASSERT(man.getOxyLoss() == old_dam, "Victim took toxin damage past the cap.")
+	man.adjustOrganLoss(ORGAN_SLOT_BRAIN, 200)
+	TEST_ASSERT(man.stat == DEAD, "Victim did not die when taking 200 brain damage.")

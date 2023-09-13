@@ -65,7 +65,7 @@
 	// Let's remove any humans in our atoms list that aren't a sac target
 	for(var/mob/living/carbon/human/sacrifice in atoms)
 		// If the mob's not in soft crit or worse, or isn't one of the sacrifices, remove it from the list
-		if(sacrifice.stat < SOFT_CRIT || !(sacrifice in heretic_datum.sac_targets))
+		if(sacrifice.stat == CONSCIOUS || !(sacrifice in heretic_datum.sac_targets))
 			atoms -= sacrifice
 
 	// Finally, return TRUE if we have a target in the list

@@ -84,6 +84,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/healthdoll
 	var/atom/movable/screen/wanted/wanted_lvl
 	var/atom/movable/screen/spacesuit
+
+	var/atom/movable/screen/fullscreen/pain
 	// subtypes can override this to force a specific UI style
 	var/ui_style
 
@@ -167,6 +169,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	mymob = null
 
 	QDEL_NULL(screentip_text)
+	QDEL_NULL(pain)
 
 	return ..()
 

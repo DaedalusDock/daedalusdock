@@ -1,0 +1,4 @@
+author: Cenrus
+delete-after: true
+changes:
+  - rscadd: Crates loaded on a trolley are now visible

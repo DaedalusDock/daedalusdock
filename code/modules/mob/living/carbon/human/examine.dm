@@ -345,7 +345,7 @@
 
 	var/flavor_text_link
 	/// The first 1-FLAVOR_PREVIEW_LIMIT characters in the mob's "flavor_text" DNA feature. FLAVOR_PREVIEW_LIMIT is defined in flavor_defines.dm.
-	var/preview_text = copytext_char((dna.features["flavor_text"]), 1, FLAVOR_PREVIEW_LIMIT)
+	var/preview_text = copytext_char((examine_text), 1, FLAVOR_PREVIEW_LIMIT)
 	if(preview_text)
 		if (!(skipface))
 			flavor_text_link = span_notice("[preview_text]...[button_element(src, "Look Closer?", "open_examine_panel=1")]")

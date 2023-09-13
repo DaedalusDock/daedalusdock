@@ -15,4 +15,4 @@
 	return .
 
 /datum/preference/text/flavor_text/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["flavor_text"] = value
+	target.examine_text = value

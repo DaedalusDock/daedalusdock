@@ -28,35 +28,6 @@
 	owner.visible_message(span_notice("[owner] stops glowing, the rainbow light fading away."),
 		span_warning("You no longer feel protected..."))
 
-/atom/movable/screen/alert/status_effect/slimeskin
-	name = "Adamantine Slimeskin"
-	desc = "You are covered in a thick, non-neutonian gel."
-	icon_state = "slime_stoneskin"
-
-/datum/status_effect/slimeskin
-	id = "slimeskin"
-	duration = 300
-	alert_type = /atom/movable/screen/alert/status_effect/slimeskin
-	var/originalcolor
-
-/datum/status_effect/slimeskin/on_apply()
-	originalcolor = owner.color
-	owner.color = "#3070CC"
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance += 10
-	owner.visible_message(span_warning("[owner] is suddenly covered in a strange, blue-ish gel!"),
-		span_notice("You are covered in a thick, rubbery gel."))
-	return ..()
-
-/datum/status_effect/slimeskin/on_remove()
-	owner.color = originalcolor
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance -= 10
-	owner.visible_message(span_warning("[owner]'s gel coating liquefies and dissolves away."),
-		span_notice("Your gel second-skin dissolves!"))
-
 /datum/status_effect/slimerecall
 	id = "slime_recall"
 	duration = -1 //Will be removed by the extract.

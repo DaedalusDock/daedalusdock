@@ -108,7 +108,6 @@
 #define DOES_NOT_NEED "does_not_need"
 
 //organ slots
-#define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
 #define ORGAN_SLOT_APPENDIX "appendix"
 #define ORGAN_SLOT_BRAIN "brain"
 #define ORGAN_SLOT_BRAIN_ANTIDROP "brain_antidrop"
@@ -188,7 +187,6 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_LIVER,
 	ORGAN_SLOT_TONGUE,
 	ORGAN_SLOT_VOICE,
-	ORGAN_SLOT_ADAMANTINE_RESONATOR,
 	ORGAN_SLOT_HEART_AID,
 	ORGAN_SLOT_BRAIN_ANTIDROP,
 	ORGAN_SLOT_BRAIN_ANTISTUN,
@@ -201,34 +199,6 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_XENO_NEUROTOXINGLAND,
 	ORGAN_SLOT_XENO_EGGSAC,
 	ORGAN_SLOT_BRAIN))
-
-//Defines for Golem Species IDs
-#define SPECIES_GOLEM "golem"
-#define SPECIES_GOLEM_ADAMANTINE "a_golem"
-#define SPECIES_GOLEM_PLASMA "p_golem"
-#define SPECIES_GOLEM_DIAMOND "diamond_golem"
-#define SPECIES_GOLEM_GOLD "gold_golem"
-#define SPECIES_GOLEM_SILVER "silver_golem"
-#define SPECIES_GOLEM_PLASTEEL "plasteel_golem"
-#define SPECIES_GOLEM_TITANIUM "titanium_golem"
-#define SPECIES_GOLEM_PLASTITANIUM "plastitanium_golem"
-#define SPECIES_GOLEM_ALIEN "alloy_golem"
-#define SPECIES_GOLEM_WOOD "wood_golem"
-#define SPECIES_GOLEM_URANIUM "uranium_golem"
-#define SPECIES_GOLEM_SAND "sand_golem"
-#define SPECIES_GOLEM_GLASS "glass_golem"
-#define SPECIES_GOLEM_BLUESPACE "bluespace_golem"
-#define SPECIES_GOLEM_BANANIUM "ba_golem"
-#define SPECIES_GOLEM_CULT "cultgolem"
-#define SPECIES_GOLEM_CLOTH "clothgolem"
-#define SPECIES_GOLEM_PLASTIC "plastic_golem"
-#define SPECIES_GOLEM_BRONZE "bronze_golem"
-#define SPECIES_GOLEM_CARDBOARD "c_golem"
-#define SPECIES_GOLEM_LEATHER "leather_golem"
-#define SPECIES_GOLEM_DURATHREAD "d_golem"
-#define SPECIES_GOLEM_BONE "b_golem"
-#define SPECIES_GOLEM_SNOW "sn_golem"
-#define SPECIES_GOLEM_HYDROGEN "metallic_hydrogen_golem"
 
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.

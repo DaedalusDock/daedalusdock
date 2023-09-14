@@ -2229,22 +2229,6 @@
 	
 	},
 /area/awaymission/caves/bmp_asteroid)
-"Ly" = (
-/obj/structure/closet/crate/miningcar{
-	name = "Mining cart"
-	},
-/obj/item/pickaxe/rusted{
-	pixel_x = 5
-	},
-/obj/item/stack/sheet/mineral/adamantine{
-	amount = 15
-	},
-/turf/open/misc/asteroid/basalt{
-	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
-	temperature = 2.7;
-	
-	},
-/area/awaymission/caves/bmp_asteroid/level_two)
 "Mk" = (
 /obj/machinery/light/small/built/directional/west,
 /turf/open/floor/wood,
@@ -61860,7 +61844,7 @@ bK
 bK
 bK
 bK
-Ly
+DH
 oI
 oI
 oI

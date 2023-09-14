@@ -13,7 +13,6 @@ Mineral Sheets
 		- Titanium
 		- Plastitanium
 	Others:
-		- Adamantine
 		- Mythril
 		- Alien Alloy
 		- Coal

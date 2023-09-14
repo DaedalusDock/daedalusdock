@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Increased fall damage by alot, damage now varies by bodypart, accounting
+      for all armor values.

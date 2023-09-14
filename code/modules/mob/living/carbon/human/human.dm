@@ -53,6 +53,25 @@
 		return
 	return ..()
 
+/mob/living/carbon/human/TakeFallDamage(levels)
+	var/damage = rand(3, 7) * levels
+	apply_damage(damage, BRUTE, BODY_ZONE_HEAD, run_armor_check(BODY_ZONE_HEAD, MELEE, armour_penetration = damage * 0.5))
+
+	damage = rand(3, 7) * levels
+	apply_damage(damage, BRUTE, BODY_ZONE_CHEST, run_armor_check(BODY_ZONE_CHEST, MELEE, armour_penetration = damage * 0.65))
+
+	damage = rand(3, 7) * levels
+	apply_damage(damage, BRUTE, BODY_ZONE_R_ARM, run_armor_check(BODY_ZONE_R_ARM, MELEE, armour_penetration = damage * 0.75))
+
+	damage = rand(3, 7) * levels
+	apply_damage(damage, BRUTE, BODY_ZONE_L_ARM, run_armor_check(BODY_ZONE_L_ARM, MELEE, armour_penetration = damage * 0.75))
+
+	damage = rand(3, 7) * levels
+	apply_damage(damage, BRUTE, BODY_ZONE_L_LEG)
+
+	damage = rand(3, 7) * levels
+	apply_damage(damage, BRUTE, BODY_ZONE_R_LEG)
+
 /mob/living/carbon/human/prepare_data_huds()
 	//Update med hud images...
 	..()

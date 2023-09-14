@@ -69,6 +69,10 @@
 		return
 
 	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
+	TakeFallDamage(levels)
+	return TRUE
+
+/mob/living/proc/TakeFallDamage(levels)
 	adjustBruteLoss((levels * 5) ** 1.5)
 	Knockdown(levels * 5 SECONDS)
 	Stun(levels * 2 SECONDS)

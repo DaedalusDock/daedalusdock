@@ -380,8 +380,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			continue
 
 		var/used_neworgan = FALSE
-		neworgan = SSwardrobe.provide_type(neworgan)
-		var/should_have = organs[slot]
+		var/should_have = !!neworgan
+		if(should_have)
+			neworgan = SSwardrobe.provide_type(neworgan)
 
 		if(oldorgan && (!should_have || replace_current) && !(oldorgan.zone in excluded_zones) && !(oldorgan.organ_flags & ORGAN_UNREMOVABLE))
 			if(slot == ORGAN_SLOT_BRAIN)

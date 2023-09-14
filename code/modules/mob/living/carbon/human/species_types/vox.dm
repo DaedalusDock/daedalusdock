@@ -9,11 +9,7 @@
 	species_eye_path = 'icons/mob/species/vox/eyes.dmi'
 	species_traits = list(
 		MUTCOLORS,
-		MUTCOLORS2,
-		MUTCOLORS3,
 		EYECOLOR,
-		HAS_FLESH,
-		HAS_BONE,
 		HAIRCOLOR,
 		FACEHAIRCOLOR,
 		NO_UNDERWEAR,
@@ -25,11 +21,7 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutantlungs = /obj/item/organ/lungs/vox
-	mutantbrain = /obj/item/organ/brain/vox
-	mutantheart = /obj/item/organ/heart/vox
-	mutanteyes = /obj/item/organ/eyes/vox
-	mutantliver = /obj/item/organ/liver/vox
+
 	breathid = "n2"
 	cosmetic_organs = list(
 		/obj/item/organ/snout/vox = "Vox Snout",
@@ -53,6 +45,18 @@
 	)
 
 	robotic_bodyparts = null
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain/vox,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/vox,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/vox,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes/vox,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/vox,
+	)
 
 #define VOX_BODY_COLOR "#C4DB1A" // Also in code\modules\client\preferences\species_features\vox.dm
 #define VOX_SNOUT_COLOR "#E5C04B"

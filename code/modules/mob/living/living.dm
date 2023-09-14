@@ -2333,3 +2333,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		. += 60
 	if(HAS_TRAIT(src, TRAIT_CLUMSY))
 		. += 25
+
+/mob/living/proc/needs_organ(slot)
+	return FALSE

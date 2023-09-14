@@ -73,10 +73,6 @@
 				organ_owner.adjustOrganLoss(ORGAN_SLOT_APPENDIX, 15, updating_health = FALSE)
 				. = TRUE
 
-
-/obj/item/organ/appendix/get_availability(datum/species/owner_species)
-	return !(TRAIT_NOHUNGER in owner_species.inherent_traits)
-
 /obj/item/organ/appendix/Remove(mob/living/carbon/organ_owner, special = FALSE)
 	REMOVE_TRAIT(organ_owner, TRAIT_DISEASELIKE_SEVERITY_MEDIUM, type)
 	organ_owner.med_hud_set_status()

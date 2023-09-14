@@ -5,7 +5,7 @@
 	say_mod = "rattles"
 	sexes = 0
 	meat = /obj/item/stack/sheet/mineral/plasma
-	species_traits = list(NOBLOOD, NOTRANSSTING, HAS_BONE, BODY_RESIZABLE)
+	species_traits = list(NOBLOOD, NOTRANSSTING, BODY_RESIZABLE)
 	// plasmemes get hard to wound since they only need a severe bone wound to dismember, but unlike skellies, they can't pop their bones back into place
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
@@ -18,13 +18,11 @@
 	)
 
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
-	mutantlungs = /obj/item/organ/lungs/plasmaman
-	mutanttongue = /obj/item/organ/tongue/bone/plasmaman
-	mutantliver = /obj/item/organ/liver/plasmaman
-	mutantstomach = /obj/item/organ/stomach/bone/plasmaman
+
 	burnmod = 1.5
 	heatmod = 1.5
 	brutemod = 1.5
+
 	payday_modifier = 0.75
 	breathid = GAS_PLASMA
 	disliked_food = FRUIT | CLOTH
@@ -41,6 +39,18 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/plasmaman,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/plasmaman,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/plasmaman,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = null,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/plasmaman,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/bone/plasmaman,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/bone/plasmaman,
+		ORGAN_SLOT_APPENDIX = null,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/plasmaman,
 	)
 
 	// Body temperature for Plasmen is much lower human as they can handle colder environments

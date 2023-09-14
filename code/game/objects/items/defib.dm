@@ -601,7 +601,7 @@
 
 	// Check their blood level and report if they need a transfusion.
 	var/obj/item/organ/heart/heart = H.getorganslot(ORGAN_SLOT_HEART)
-	if(H.needs_heart())
+	if(H.needs_organ(ORGAN_SLOT_HEART))
 		if(!heart || H.blood_volume < BLOOD_VOLUME_SURVIVE)
 			user.audible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Warning - Patient is in hypovolemic shock and may require a blood transfusion."))
 

@@ -271,7 +271,7 @@
 	handle_damage_effects()
 
 	// Brain damage from low oxygenation or lack of blood.
-	if(!owner.needs_heart())
+	if(!owner.needs_organ(ORGAN_SLOT_HEART))
 		return ..()
 
 	// Brain damage from low oxygenation or lack of blood.

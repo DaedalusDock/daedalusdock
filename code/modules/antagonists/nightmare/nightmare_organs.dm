@@ -103,10 +103,5 @@
 	playsound(owner, 'sound/hallucinations/far_noise.ogg', 50, TRUE)
 	respawn_progress = 0
 
-/obj/item/organ/heart/nightmare/get_availability(datum/species/S)
-	if(istype(S,/datum/species/shadow/nightmare))
-		return TRUE
-	return ..()
-
 #undef HEART_SPECIAL_SHADOWIFY
 #undef HEART_RESPAWN_THRESHHOLD

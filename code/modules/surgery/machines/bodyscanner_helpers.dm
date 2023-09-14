@@ -15,7 +15,7 @@
 
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	var/pulse_result
-	if(needs_heart())
+	if(needs_organ(ORGAN_SLOT_HEART))
 		if(!heart)
 			pulse_result = 0
 		else if(heart.organ_flags & ORGAN_SYNTHETIC)

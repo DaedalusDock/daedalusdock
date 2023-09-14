@@ -7,7 +7,7 @@
 	say_mod = "moans"
 	sexes = 0
 	meat = /obj/item/food/meat/slab/human/mutant/zombie
-	species_traits = list(NOBLOOD,NOZOMBIE,NOTRANSSTING, HAS_FLESH, HAS_BONE)
+	species_traits = list(NOBLOOD,NOZOMBIE,NOTRANSSTING)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
@@ -27,7 +27,6 @@
 		TRAIT_NOCLONELOSS,
 	)
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
-	mutanttongue = /obj/item/organ/tongue/zombie
 	var/static/list/spooks = list('sound/hallucinations/growl1.ogg','sound/hallucinations/growl2.ogg','sound/hallucinations/growl3.ogg','sound/hallucinations/veryfar_noise.ogg','sound/hallucinations/wail.ogg')
 	disliked_food = NONE
 	liked_food = GROSS | MEAT | RAW
@@ -43,6 +42,18 @@
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/zombie,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
 /// Zombies do not stabilize body temperature they are the walking dead and are cold blooded
@@ -83,12 +94,23 @@
 	mutanthands = /obj/item/zombie_hand
 	armor = 20 // 120 damage to KO a zombie, which kills it
 	speedmod = 1.6
-	mutanteyes = /obj/item/organ/eyes/night_vision/zombie
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 	/// The rate the zombies regenerate at
 	var/heal_rate = 0.5
 	/// The cooldown before the zombie can start regenerating
 	COOLDOWN_DECLARE(regen_cooldown)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes/night_vision/zombie,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/zombie,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+	)
 
 /datum/species/zombie/infectious/check_roundstart_eligible()
 	return FALSE
@@ -135,24 +157,5 @@
 	if(!infection)
 		infection = new()
 		infection.Insert(C)
-
-// Your skin falls off
-/datum/species/human/krokodil_addict
-	name = "\improper Human"
-	id = SPECIES_ZOMBIE_KROKODIL
-	examine_limb_id = SPECIES_HUMAN
-	sexes = 0
-	mutanttongue = /obj/item/organ/tongue/zombie
-	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
-
-	bodypart_overrides = list(
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/zombie,
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/zombie,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/zombie,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/zombie,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/zombie
-	)
-
 
 #undef REGENERATION_DELAY

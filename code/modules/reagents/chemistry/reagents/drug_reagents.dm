@@ -107,17 +107,6 @@
 	if(prob(5))
 		to_chat(C, span_notice("[high_message]"))
 
-	if(current_cycle == 35)
-		if(!istype(C.dna.species, /datum/species/human/krokodil_addict))
-			to_chat(C, span_userdanger("Your skin falls off easily!"))
-			var/mob/living/carbon/human/H = C
-			H.facial_hairstyle = "Shaved"
-			H.hairstyle = "Bald"
-			H.update_body_parts() // makes you loose hair as well
-			C.set_species(/datum/species/human/krokodil_addict)
-			C.adjustBruteLoss(50, 0) // holy shit your skin just FELL THE FUCK OFF
-			return TRUE
-
 /datum/reagent/drug/krokodil/overdose_process(mob/living/carbon/C)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25, updating_health = FALSE)
 	C.adjustToxLoss(0.25, 0)

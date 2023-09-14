@@ -5,15 +5,23 @@
 	icon_state = "mmi_off"
 	base_icon_state = "mmi"
 	w_class = WEIGHT_CLASS_NORMAL
+
 	var/braintype = "Cyborg"
-	var/obj/item/radio/radio = null //Let's give it a radio.
-	var/mob/living/brain/brainmob = null //The current occupant.
-	var/mob/living/silicon/robot = null //Appears unused.
-	var/obj/vehicle/sealed/mecha = null //This does not appear to be used outside of reference in mecha.dm.
+
+	/// Internal radio object so the thing has a radio
+	var/obj/item/radio/radio = null
+	/// The current occupant.
+	var/mob/living/brain/brainmob = null
+	/// Reference to a mecha we may or may not be in. Only used for garbage collection.
+	var/obj/vehicle/sealed/mecha = null
+	/// The actual brain contained in the MMI
 	var/obj/item/organ/brain/brain = null //The actual brain
+
 	var/datum/ai_laws/laws = new()
+
 	var/force_replace_ai_name = FALSE
-	var/overrides_aicore_laws = FALSE // Whether the laws on the MMI, if any, override possible pre-existing laws loaded on the AI core.
+	/// Whether the laws on the MMI, if any, override possible pre-existing laws loaded on the AI core.
+	var/overrides_aicore_laws = FALSE
 
 /obj/item/mmi/Initialize(mapload)
 	. = ..()
@@ -73,6 +81,7 @@
 		newbrain.brainmob = null
 		brainmob.forceMove(src)
 		brainmob.container = src
+
 		var/fubar_brain = newbrain.suicided || brainmob.suiciding //brain is from a suicider
 		if(!fubar_brain && !(newbrain.organ_flags & ORGAN_DEAD)) // the brain organ hasn't been beaten to death, nor was from a suicider.
 			brainmob.set_stat(CONSCIOUS) //we manually revive the brain mob
@@ -126,6 +135,7 @@
 	if(Adjacent(user))
 		user.put_in_hands(brain)
 	brain.organ_flags &= ~ORGAN_FROZEN
+
 	brain = null //No more brain in here
 
 /obj/item/mmi/proc/transfer_identity(mob/living/L) //Same deal as the regular brain proc. Used for human-->robot people.
@@ -133,11 +143,13 @@
 		set_brainmob(new /mob/living/brain(src))
 	brainmob.name = L.real_name
 	brainmob.real_name = L.real_name
+	brainmob.timeofdeath = L.timeofdeath
 	if(L.has_dna())
 		var/mob/living/carbon/C = L
 		if(!brainmob.stored_dna)
 			brainmob.stored_dna = new /datum/dna/stored(brainmob)
 		C.dna.copy_dna(brainmob.stored_dna)
+
 	brainmob.container = src
 
 	if(ishuman(L))
@@ -145,13 +157,16 @@
 		var/obj/item/organ/brain/newbrain = H.getorgan(/obj/item/organ/brain)
 		newbrain.forceMove(src)
 		brain = newbrain
+
 	else if(!brain)
 		brain = new(src)
 		brain.name = "[L.real_name]'s brain"
+
 	brain.organ_flags |= ORGAN_FROZEN
 
 	name = "[initial(name)]: [brainmob.real_name]"
 	update_appearance()
+
 	if(istype(brain, /obj/item/organ/brain/alien))
 		braintype = "Xenoborg" //HISS....Beep.
 	else

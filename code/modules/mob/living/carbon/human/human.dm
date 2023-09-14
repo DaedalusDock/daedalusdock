@@ -1016,9 +1016,6 @@
 /mob/living/carbon/human/species/android
 	race = /datum/species/android
 
-/mob/living/carbon/human/species/dullahan
-	race = /datum/species/dullahan
-
 /mob/living/carbon/human/species/fly
 	race = /datum/species/fly
 
@@ -1124,9 +1121,6 @@
 /mob/living/carbon/human/species/moth
 	race = /datum/species/moth
 
-/mob/living/carbon/human/species/mush
-	race = /datum/species/mush
-
 /mob/living/carbon/human/species/plasma
 	race = /datum/species/plasmaman
 
@@ -1144,9 +1138,6 @@
 
 /mob/living/carbon/human/species/skeleton
 	race = /datum/species/skeleton
-
-/mob/living/carbon/human/species/snail
-	race = /datum/species/snail
 
 /mob/living/carbon/human/species/vampire
 	race = /datum/species/vampire
@@ -1195,3 +1186,18 @@
 
 	if(do_after(usr, src, 6 SECONDS, DO_PUBLIC))
 		to_chat(usr, span_notice("[self ? "Your" : "[src]'s"] pulse is [src.get_pulse(GETPULSE_HAND)]."))
+
+///Accepts an organ slot, returns whether or not the mob needs one to survive (or just should have one for non-vital organs).
+/mob/living/carbon/human/needs_organ(slot)
+	if(!dna || !dna.species)
+		return FALSE
+
+	switch(slot)
+		if(ORGAN_SLOT_STOMACH)
+			if(HAS_TRAIT(src, TRAIT_NOHUNGER))
+				return FALSE
+		if(ORGAN_SLOT_LUNGS)
+			if(HAS_TRAIT(src, TRAIT_NOBREATH))
+				return FALSE
+
+	return dna.species.organs[slot]

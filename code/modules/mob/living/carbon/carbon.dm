@@ -46,7 +46,7 @@
 
 	if(!isnum(held_index))
 		CRASH("You passed [held_index] into swap_hand instead of a number. WTF man")
-		
+
 	var/oindex = active_hand_index
 	active_hand_index = held_index
 	if(hud_used)
@@ -820,7 +820,7 @@
 
 /mob/living/carbon/heal_and_revive(heal_to = 75, revive_message)
 	// We can't heal them if they're missing a heart
-	if(needs_heart() && !getorganslot(ORGAN_SLOT_HEART))
+	if(needs_organ(ORGAN_SLOT_HEART) && !getorganslot(ORGAN_SLOT_HEART))
 		return FALSE
 
 	// We can't heal them if they're missing their lungs

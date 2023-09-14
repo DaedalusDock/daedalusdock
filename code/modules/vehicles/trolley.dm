@@ -7,6 +7,7 @@
 	icon_state = "trolley"
 	max_integrity = 150
 	armor = list(MELEE = 0, BULLET = 0, LASER = 20, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
+	var/cargo_limit = MAX_CARGO_LIMIT
 	var/amount_of_cargo = 0
 
 /obj/vehicle/ridden/trolley/Initialize(mapload)
@@ -17,11 +18,9 @@
 	AddComponent(/datum/component/simple_rotation)
 	update_appearance(UPDATE_OVERLAYS)
 
-
-
 /obj/vehicle/ridden/trolley/update_overlays()
-  . = ..()
-  . += image(icon, "trolley_handlebars", layer = TROLLEY_BARS_LAYER)
+	. = ..()
+	. += image(icon, "trolley_handlebars", layer = TROLLEY_BARS_LAYER)
 
 /obj/vehicle/ridden/trolley/atom_destruction(damage_flag)
 	for(var/obj/structure/closet/crate/cargo in contents)
@@ -64,9 +63,9 @@
 /obj/vehicle/ridden/trolley/examine(mob/user)
 	. = ..()
 	if(amount_of_cargo)
-		. += "There [amount_of_cargo > 1 ? "are [amount_of_cargo] crates" : "is 1 crate" ] currently loaded on it."
+		. += span_notice("There [amount_of_cargo > 1 ? "are [amount_of_cargo] crates" : "is 1 crate" ] currently loaded on it.")
 	else if(LAZYLEN(occupants))
-		. += "[occupants[1]] is riding it."
+		. += span_notice("[occupants[1]] is riding it.")
 
 /obj/vehicle/ridden/trolley/MouseDrop_T(atom/dropped_atom, mob/living/user)
 	if(isliving(dropped_atom))
@@ -79,7 +78,7 @@
 		if(LAZYLEN(occupants))
 			to_chat(user, span_warning("You cannot load [new_cargo] whilst someone is riding [src]!"))
 			return FALSE
-		if(amount_of_cargo >= MAX_CARGO_LIMIT)
+		if(amount_of_cargo >= cargo_limit)
 			to_chat(user, span_warning("[src] is at max capacity!"))
 			return FALSE
 
@@ -90,7 +89,7 @@
 			if(LAZYLEN(occupants))
 				to_chat(user, span_warning("You cannot load [new_cargo] whilst someone is riding [src]!"))
 				return FALSE
-			if(amount_of_cargo >= MAX_CARGO_LIMIT)
+			if(amount_of_cargo >= cargo_limit)
 				to_chat(user, span_warning("[src] is at max capacity!"))
 				return FALSE
 
@@ -110,8 +109,8 @@
 /obj/vehicle/ridden/trolley/proc/load_cargo(obj/structure/closet/crate/cargo)
 	cargo.close()
 	cargo.forceMove(src)
-	cargo.vis_flags = VIS_INHERIT_ID
 	vis_contents += cargo
+	cargo.vis_flags = VIS_INHERIT_ID
 	cargo.layer = ABOVE_MOB_LAYER
 	cargo.pixel_y = 4
 	if(amount_of_cargo)

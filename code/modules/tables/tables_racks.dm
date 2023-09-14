@@ -229,7 +229,7 @@
 
 /obj/structure/table/setDir(ndir)
 	. = ..()
-	if(dir != NORTH && dir != 0)
+	if(dir != NORTH && dir != 0 && (flipped > 0))
 		layer = ABOVE_MOB_LAYER
 	else
 		layer = TABLE_LAYER

@@ -105,6 +105,7 @@
 /obj/vehicle/ridden/trolley/proc/load_cargo(obj/structure/closet/crate/cargo)
 	cargo.close()
 	cargo.forceMove(src)
+	cargo.vis_flags = VIS_INHERIT_ID
 	vis_contents += cargo
 	cargo.layer = VEHICLE_RIDING_LAYER
 	cargo.pixel_y = 4
@@ -128,12 +129,14 @@
 	handle_transform(TRUE)
 	cargo.pixel_y = initial(pixel_y)
 	cargo.layer = initial(layer)
+	cargo.vis_flags &= ~VIS_INHERIT_ID
 	vis_contents -= cargo
 	cargo.forceMove(deposit_turf)
 	user.visible_message(
 		span_notice("[user] unloads [cargo] from [src]."),
 		span_notice("You unload [cargo] from [src]."))
 	amount_of_cargo--
+	handle_transform()
 
 /obj/vehicle/ridden/trolley/attack_hand(mob/living/user, list/modifiers)
 	. = ..()

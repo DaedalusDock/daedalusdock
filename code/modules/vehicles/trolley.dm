@@ -15,8 +15,13 @@
 	ADD_TRAIT(src, TRAIT_REJECT_INSERTION, INNATE_TRAIT)
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/trolley)
 	AddComponent(/datum/component/simple_rotation)
-	var/handlebars = new /image{icon_state = "trolley_handlebars"; layer = MOB_BELOW_PIGGYBACK_LAYER}
-	add_overlay(handlebars)
+	update_appearance(UPDATE_OVERLAYS)
+
+
+
+/obj/vehicle/ridden/trolley/update_overlays()
+  . = ..()
+  . += image(icon, "trolley_handlebars", layer = TROLLEY_BARS_LAYER)
 
 /obj/vehicle/ridden/trolley/atom_destruction(damage_flag)
 	for(var/obj/structure/closet/crate/cargo in contents)
@@ -107,7 +112,7 @@
 	cargo.forceMove(src)
 	cargo.vis_flags = VIS_INHERIT_ID
 	vis_contents += cargo
-	cargo.layer = VEHICLE_RIDING_LAYER
+	cargo.layer = ABOVE_MOB_LAYER
 	cargo.pixel_y = 4
 	if(amount_of_cargo)
 		cargo.pixel_y += 12 * amount_of_cargo

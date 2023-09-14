@@ -84,10 +84,6 @@
 	integer = FALSE
 	min_val = 0
 
-/datum/config_entry/number/traitor_objectives_amount
-	default = 2
-	min_val = 0
-
 /datum/config_entry/number/brother_objectives_amount
 	default = 2
 	min_val = 0

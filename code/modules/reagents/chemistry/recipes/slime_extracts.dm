@@ -423,17 +423,6 @@
 	new /obj/item/slimepotion/slime/renaming(holder.my_atom.drop_location())
 	..()
 
-
-//Adamantine
-/datum/chemical_reaction/slime/adamantine
-	required_reagents = list(/datum/reagent/toxin/plasma = 1)
-	required_container = /obj/item/slime_extract/adamantine
-	required_other = TRUE
-
-/datum/chemical_reaction/slime/adamantine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/stack/sheet/mineral/adamantine(get_turf(holder.my_atom))
-	..()
-
 //Bluespace
 /datum/chemical_reaction/slime/slimefloor2
 	required_reagents = list(/datum/reagent/blood = 1)

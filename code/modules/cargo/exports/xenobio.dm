@@ -33,7 +33,7 @@
 /datum/export/slime/epic //EPIIIIIIC
 	cost = CARGO_CRATE_VALUE * 0.44
 	unit_name = "epic slime core"
-	export_types = list(/obj/item/slime_extract/black,/obj/item/slime_extract/cerulean,/obj/item/slime_extract/oil,/obj/item/slime_extract/sepia,/obj/item/slime_extract/pyrite,/obj/item/slime_extract/adamantine,/obj/item/slime_extract/lightpink,/obj/item/slime_extract/bluespace)
+	export_types = list(/obj/item/slime_extract/black,/obj/item/slime_extract/cerulean,/obj/item/slime_extract/oil,/obj/item/slime_extract/sepia,/obj/item/slime_extract/pyrite,/obj/item/slime_extract/lightpink,/obj/item/slime_extract/bluespace)
 
 /datum/export/slime/rainbow
 	cost = CARGO_CRATE_VALUE

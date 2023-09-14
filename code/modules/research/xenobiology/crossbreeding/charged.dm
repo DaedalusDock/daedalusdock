@@ -258,15 +258,6 @@ Charged extracts:
 	user.visible_message(span_notice("[src] distills into a potion!"))
 	..()
 
-/obj/item/slimecross/charged/adamantine
-	colour = "adamantine"
-	effect_desc = "Creates a completed golem shell."
-
-/obj/item/slimecross/charged/adamantine/do_effect(mob/user)
-	user.visible_message(span_notice("[src] produces a fully formed golem shell!"))
-	new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(src), /datum/species/golem/adamantine, user)
-	..()
-
 /obj/item/slimecross/charged/rainbow
 	colour = "rainbow"
 	effect_desc = "Produces three living slimes of random colors."

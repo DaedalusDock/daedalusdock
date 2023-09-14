@@ -294,21 +294,7 @@ Chilling extracts:
 
 /obj/item/slimecross/chilling/black
 	colour = "black"
-	effect_desc = "Transforms the user into a random type of golem."
-
-/obj/item/slimecross/chilling/black/do_effect(mob/user)
-	if(ishuman(user))
-		user.visible_message(span_notice("[src] crystallizes along [user]'s skin, turning into metallic scales!"))
-		var/mob/living/carbon/human/H = user
-
-		var/static/list/random_golem_types
-		random_golem_types = subtypesof(/datum/species/golem) - type
-
-		for(var/datum/species/golem/golem as anything in random_golem_types)
-			if(!initial(golem.random_eligible))
-				random_golem_types -= golem
-		H.set_species(pick(random_golem_types))
-	..()
+	effect_desc = "Inert. One must wonder what this once did..."
 
 /obj/item/slimecross/chilling/lightpink
 	colour = "light pink"
@@ -317,15 +303,6 @@ Chilling extracts:
 /obj/item/slimecross/chilling/lightpink/do_effect(mob/user)
 	user.visible_message(span_notice("[src] blooms into a beautiful flower!"))
 	new /obj/item/clothing/head/peaceflower(get_turf(user))
-	..()
-
-/obj/item/slimecross/chilling/adamantine
-	colour = "adamantine"
-	effect_desc = "Solidifies into a set of adamantine armor."
-
-/obj/item/slimecross/chilling/adamantine/do_effect(mob/user)
-	user.visible_message(span_notice("[src] creaks and breaks as it shifts into a heavy set of armor!"))
-	new /obj/item/clothing/suit/armor/heavy/adamantine(get_turf(user))
 	..()
 
 /obj/item/slimecross/chilling/rainbow

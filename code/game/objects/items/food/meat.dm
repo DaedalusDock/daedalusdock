@@ -663,11 +663,6 @@
 	foodtypes = MEAT | RAW | GROSS
 	venue_value = FOOD_MEAT_MUTANT_RARE
 
-/obj/item/food/meat/slab/human/mutant/golem/adamantine
-	icon_state = "agolemmeat"
-	desc = "From the slime pen to the rune to the kitchen, science."
-	foodtypes = MEAT | RAW | GROSS
-
 /obj/item/food/meat/slab/human/mutant/lizard
 	icon_state = "lizardmeat"
 	desc = "Delicious dino damage."

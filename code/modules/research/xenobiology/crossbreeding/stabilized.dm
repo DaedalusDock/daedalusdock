@@ -188,10 +188,6 @@ Stabilized extracts:
 	colour = "light pink"
 	effect_desc = "The owner moves at high speeds while holding this extract, also stabilizes anyone in critical condition around you using Epinephrine."
 
-/obj/item/slimecross/stabilized/adamantine
-	colour = "adamantine"
-	effect_desc = "Owner gains a slight boost in damage resistance to all types."
-
 /obj/item/slimecross/stabilized/rainbow
 	colour = "rainbow"
 	effect_desc = "Accepts a regenerative extract and automatically uses it if the owner enters a critical condition."

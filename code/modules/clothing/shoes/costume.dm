@@ -17,7 +17,7 @@
 
 /obj/item/clothing/shoes/griffin/Initialize(mapload)
 	. = ..()
-	
+
 	create_storage(type = /datum/storage/pockets/shoes)
 
 /obj/item/clothing/shoes/singery
@@ -48,7 +48,7 @@
 	name = "grilling sandals"
 	icon_state = "cookflops"
 	can_be_tied = FALSE
-	species_exception = list(/datum/species/golem)
+
 
 /obj/item/clothing/shoes/yakuza
 	name = "tojo clan shoes"

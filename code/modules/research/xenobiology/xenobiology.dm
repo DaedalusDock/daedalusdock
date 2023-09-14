@@ -952,28 +952,6 @@
 
 	qdel(src)
 
-/obj/item/slimepotion/slime/slimeradio
-	name = "bluespace radio potion"
-	desc = "A strange chemical that grants those who ingest it the ability to broadcast and receive subscape radio waves."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "potgrey"
-
-/obj/item/slimepotion/slime/slimeradio/attack(mob/living/M, mob/user)
-	if(!ismob(M))
-		return
-	if(!isanimal(M))
-		to_chat(user, span_warning("[M] is too complex for the potion!"))
-		return
-	if(M.stat)
-		to_chat(user, span_warning("[M] is dead!"))
-		return
-
-	to_chat(user, span_notice("You feed the potion to [M]."))
-	to_chat(M, span_notice("Your mind tingles as you are fed the potion. You can hear radio waves now!"))
-	var/obj/item/implant/radio/slime/imp = new(src)
-	imp.implant(M, user, BODY_ZONE_CHEST)
-	qdel(src)
-
 ///Definitions for slime products that don't have anywhere else to go (Floor tiles, blueprints).
 
 /obj/item/stack/tile/bluespace

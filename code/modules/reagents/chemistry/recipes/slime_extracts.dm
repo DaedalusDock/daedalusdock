@@ -444,15 +444,6 @@
 	BC.visible_message(span_notice("The [BC.name] appears out of thin air!"))
 	..()
 
-/datum/chemical_reaction/slime/slimeradio
-	required_reagents = list(/datum/reagent/water = 1)
-	required_container = /obj/item/slime_extract/bluespace
-	required_other = TRUE
-
-/datum/chemical_reaction/slime/slimeradio/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/slimepotion/slime/slimeradio(get_turf(holder.my_atom))
-	..()
-
 //Cerulean
 /datum/chemical_reaction/slime/slimepsteroid2
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)

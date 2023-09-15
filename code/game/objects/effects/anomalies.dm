@@ -111,13 +111,16 @@
 	icon_state = "shield2"
 	density = FALSE
 	aSignal = /obj/item/assembly/signaler/anomaly/grav
-	loc_procs = CROSSED
 	var/boing = 0
 	///Warp effect holder for displacement filter to "pulse" the anomaly
 	var/atom/movable/warp_effect/warp
 
 /obj/effect/anomaly/grav/Initialize(mapload, new_lifespan, drops_core)
 	. = ..()
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 	warp = new(src)
 	vis_contents += warp
@@ -152,13 +155,16 @@
 	animate(warp, time = delta_time*3, transform = matrix().Scale(0.5,0.5))
 	animate(time = delta_time*7, transform = matrix())
 
-/obj/effect/anomaly/grav/Crossed(atom/movable/crossed_by, oldloc)
-	gravShock(crossed_by)
+/obj/effect/anomaly/grav/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	gravShock(AM)
 
 /obj/effect/anomaly/grav/Bump(atom/A)
 	gravShock(A)
 
-/obj/effect/anomaly/grav/BumpedBy(atom/movable/AM)
+/obj/effect/anomaly/grav/Bumped(atom/movable/AM)
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/proc/gravShock(mob/living/A)
@@ -190,7 +196,6 @@
 	density = TRUE
 	aSignal = /obj/item/assembly/signaler/anomaly/flux
 	zmm_flags = ZMM_MANGLE_PLANES
-	loc_procs = CROSSED
 	var/canshock = FALSE
 	var/shockdamage = 20
 	var/explosive = TRUE
@@ -198,6 +203,10 @@
 /obj/effect/anomaly/flux/Initialize(mapload, new_lifespan, drops_core = TRUE, _explosive = TRUE)
 	. = ..()
 	explosive = _explosive
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/anomaly/flux/anomalyEffect()
 	..()
@@ -209,13 +218,16 @@
 	. = ..()
 	. += emissive_appearance(icon, icon_state, alpha=src.alpha)
 
-/obj/effect/anomaly/flux/Crossed(atom/movable/crossed_by, oldloc)
-	mobShock(crossed_by)
+/obj/effect/anomaly/flux/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	mobShock(AM)
 
 /obj/effect/anomaly/flux/Bump(atom/A)
 	mobShock(A)
 
-/obj/effect/anomaly/flux/BumpedBy(atom/movable/AM)
+/obj/effect/anomaly/flux/Bumped(atom/movable/AM)
 	mobShock(AM)
 
 /obj/effect/anomaly/flux/proc/mobShock(mob/living/M)
@@ -244,7 +256,7 @@
 	for(var/mob/living/M in range(1,src))
 		do_teleport(M, locate(M.x, M.y, M.z), 4, channel = TELEPORT_CHANNEL_BLUESPACE)
 
-/obj/effect/anomaly/bluespace/BumpedBy(atom/movable/AM)
+/obj/effect/anomaly/bluespace/Bumped(atom/movable/AM)
 	if(isliving(AM))
 		do_teleport(AM, locate(AM.x, AM.y, AM.z), 8, channel = TELEPORT_CHANNEL_BLUESPACE)
 

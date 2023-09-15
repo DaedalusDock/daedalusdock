@@ -323,7 +323,6 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
-/obj/item/defibrillator/loaded,
 /turf/open/floor/iron,
 /area/shuttle/syndicate/medical)
 "bu" = (

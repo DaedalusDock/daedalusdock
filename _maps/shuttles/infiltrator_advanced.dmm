@@ -923,7 +923,7 @@
 	pixel_x = 4;
 	pixel_y = 4
 	},
-/obj/item/book/manual/wiki/surgery,
+/obj/item/book/manual/codex/surgery,
 /obj/item/clothing/gloves/color/latex,
 /obj/item/clothing/mask/surgical,
 /obj/item/clothing/suit/apron/surgical,

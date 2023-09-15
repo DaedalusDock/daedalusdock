@@ -98,3 +98,9 @@
   - bugfix: maint loot spawners should work again.
   - bugfix: Wiki Books now render (more) properly
   - bugfix: Space Law book points to Corporate Regulations.
+2023-09-15:
+  Kapu1178:
+  - tweak: Traitor gets 1 gimmick objective, and can roll 1 additional kill or steal
+      objective randomly.
+  - balance: Increased fall damage by alot, damage now varies by bodypart, accounting
+      for all armor values.

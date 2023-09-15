@@ -130,7 +130,7 @@
 		update_appearance()
 
 /obj/item/reagent_containers/hypospray/medipen/attack_self(mob/user)
-	if(user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, FALSE, FLOOR_OKAY))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_RESTING))
 		inject(user, user)
 
 /obj/item/reagent_containers/hypospray/medipen/update_icon_state()

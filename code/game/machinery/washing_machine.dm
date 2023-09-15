@@ -390,7 +390,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(busy)
 		to_chat(user, span_warning("[src] is busy!"))

@@ -88,7 +88,7 @@
 
 /obj/machinery/bodyscanner/AltClick(mob/user)
 	. = ..()
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	eject_occupant(user)
 

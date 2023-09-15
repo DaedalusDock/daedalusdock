@@ -31150,7 +31150,6 @@
 	name = "Firing Range Gear Crate";
 	req_access_txt = "1"
 	},
-/obj/machinery/airalarm/directional/north,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 1
 	},

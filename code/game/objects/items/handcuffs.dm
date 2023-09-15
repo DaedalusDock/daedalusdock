@@ -338,7 +338,6 @@
 	throw_range = 1
 	icon_state = "beartrap"
 	desc = "A trap used to catch bears and other legged creatures."
-	loc_procs = CROSSED
 	///If true, the trap is "open" and can trigger.
 	var/armed = FALSE
 	///How much damage the trap deals when triggered.
@@ -347,6 +346,10 @@
 /obj/item/restraints/legcuffs/beartrap/Initialize(mapload)
 	. = ..()
 	update_appearance()
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(spring_trap),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/item/restraints/legcuffs/beartrap/update_icon_state()
 	icon_state = "[initial(icon_state)][armed]"
@@ -376,11 +379,8 @@
 	update_appearance()
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 
-/obj/item/restraints/legcuffs/beartrap/Crossed(atom/movable/crossed_by, oldloc)
-	spring_trap(null, crossed_by, FALSE)
-
 /obj/item/restraints/legcuffs/beartrap/proc/spring_trap(datum/source, atom/movable/AM, thrown_at = FALSE)
-	SHOULD_NOT_SLEEP(TRUE)
+	SIGNAL_HANDLER
 	if(AM == src)
 		return
 	if(!armed || !isturf(loc) || !isliving(AM))

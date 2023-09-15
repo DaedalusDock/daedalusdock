@@ -65,6 +65,7 @@
 
 	zas_update_loc()
 
+
 	if(fulltile)
 		setDir()
 
@@ -76,8 +77,12 @@
 	RegisterSignal(src, COMSIG_OBJ_PAINTED, PROC_REF(on_painted))
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM, AfterRotation = CALLBACK(src,PROC_REF(AfterRotation)))
 
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+	)
+
 	if (flags_1 & ON_BORDER_1)
-		loc_procs |= EXIT
+		AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)
@@ -123,8 +128,9 @@
 
 	return TRUE
 
-/obj/structure/window/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
+
 	if(leaving.movement_type & PHASING)
 		return
 
@@ -139,7 +145,7 @@
 
 	if(direction == dir && density)
 		leaving.Bump(src)
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/window/attack_tk(mob/user)
 	user.changeNext_move(CLICK_CD_MELEE)

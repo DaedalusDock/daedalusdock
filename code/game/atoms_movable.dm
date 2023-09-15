@@ -1006,7 +1006,7 @@
 		. = TRUE
 		if(QDELETED(bumped_atom))
 			return
-	bumped_atom.Bumped(src)
+	bumped_atom.BumpedBy(src)
 
 /atom/movable/Exited(atom/movable/gone, direction)
 	. = ..()

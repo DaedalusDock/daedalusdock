@@ -542,7 +542,7 @@
 	SIGNAL_HANDLER
 	return
 
-/atom/proc/Bumped(atom/movable/bumped_atom)
+/atom/proc/BumpedBy(atom/movable/bumped_atom)
 	set waitfor = FALSE
 	SEND_SIGNAL(src, COMSIG_ATOM_BUMPED, bumped_atom)
 

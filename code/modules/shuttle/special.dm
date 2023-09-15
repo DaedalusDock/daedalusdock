@@ -196,9 +196,18 @@
 	max_integrity = 1000
 	var/boot_dir = 1
 
-/obj/structure/table/wood/shuttle_bar/Crossed(atom/movable/crossed_by, oldloc)
+/obj/structure/table/wood/shuttle_bar/Initialize(mapload, _buildstack)
 	. = ..()
-	var/mob/living/M = crossed_by
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/structure/table/wood/shuttle_bar/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	var/mob/living/M = AM
 	if(istype(M) && !M.incorporeal_move && !is_barstaff(M))
 		// No climbing on the bar please
 		var/throwtarget = get_edge_target_turf(src, boot_dir)

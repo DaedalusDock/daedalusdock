@@ -55,8 +55,6 @@
 		return TRUE
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
-	if(!mergeable_decal)
-		return FALSE
 	C.add_blood_DNA(return_blood_DNA())
 	if (bloodiness)
 		C.bloodiness = min((C.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
@@ -145,9 +143,9 @@
 /obj/effect/decal/cleanable/blood/gibs/ex_act(severity, target)
 	return FALSE
 
-/obj/effect/decal/cleanable/blood/gibs/Crossed(atom/movable/crossed_by, oldloc)
-	if(isliving(crossed_by) && crossed_by.has_gravity(loc))
-		playsound(loc, 'sound/effects/gib_step.ogg', HAS_TRAIT(crossed_by, TRAIT_LIGHT_STEP) ? 20 : 50, TRUE)
+/obj/effect/decal/cleanable/blood/gibs/on_entered(datum/source, atom/movable/L)
+	if(isliving(L) && has_gravity(loc))
+		playsound(loc, 'sound/effects/gib_step.ogg', HAS_TRAIT(L, TRAIT_LIGHT_STEP) ? 20 : 50, TRUE)
 	. = ..()
 
 /obj/effect/decal/cleanable/blood/gibs/proc/on_pipe_eject(atom/source, direction)
@@ -227,12 +225,11 @@
 	desc = "It's red."
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
-	bloodiness = 10
+	bloodiness = 0
 	var/drips = 1
 	dryname = "drips of blood"
 	drydesc = "It's red."
 	smell_type = /datum/component/smell/subtle
-	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/blood/drip/can_bloodcrawl_in()
 	return TRUE

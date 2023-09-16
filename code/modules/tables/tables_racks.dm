@@ -28,7 +28,6 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = SMOOTH_GROUP_TABLES
 	canSmoothWith = SMOOTH_GROUP_TABLES
-	loc_procs = CROSSED|UNCROSSED|EXIT
 	flags_1 = BUMP_PRIORITY_1
 
 	var/frame = /obj/structure/table_frame
@@ -49,6 +48,9 @@
 
 	var/static/list/loc_connections = list(
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(table_carbon),
+		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
+		COMSIG_ATOM_EXIT = PROC_REF(check_exit),
+		COMSIG_ATOM_EXITTED = PROC_REF(on_uncrossed),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -173,17 +175,17 @@
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
 
-/obj/structure/table/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/structure/table/proc/check_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
 	if(!density)
 		return
 
 	if(isprojectile(leaving) && !check_cover(leaving, get_turf(leaving)))
 		leaving.Bump(src)
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 	if(flipped == TRUE && (direction & dir))
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 //checks if projectile 'P' from turf 'from' can hit whatever is behind the table. Returns 1 if it can, 0 if bullet stops.
 /obj/structure/table/proc/check_cover(obj/projectile/P, turf/from)
@@ -211,7 +213,8 @@
 		return FALSE //blocked
 	return TRUE
 
-/obj/structure/table/Crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+/obj/structure/table/proc/on_crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+	SIGNAL_HANDLER
 	if(!isliving(crossed_by))
 		return
 
@@ -219,7 +222,8 @@
 		if(!HAS_TRAIT(crossed_by, TRAIT_TABLE_RISEN))
 			ADD_TRAIT(crossed_by, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
 
-/obj/structure/table/Uncrossed(atom/movable/gone, direction)
+/obj/structure/table/proc/on_uncrossed(atom/movable/gone, direction)
+	SIGNAL_HANDLER
 	if(!isliving(gone))
 		return
 
@@ -523,14 +527,14 @@
 	if(mover.pass_flags & PASSGLASS)
 		return TRUE
 
-/obj/structure/table/glass/Exit(atom/movable/leaving, direction)
+/obj/structure/table/glass/check_exit(datum/source, atom/movable/leaving, direction)
 	. = ..()
 	if(. || !flipped)
 		return
 	if(leaving.pass_flags & PASSGLASS)
-		return TRUE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
-/obj/structure/table/glass/Crossed(atom/movable/crossed_by, oldloc)
+/obj/structure/table/glass/on_crossed(atom/movable/crossed_by, oldloc)
 	. = ..()
 	if(flags_1 & NODECONSTRUCT_1)
 		return
@@ -801,7 +805,6 @@
 	buckle_lying = NO_BUCKLE_LYING
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
-	loc_procs = UNCROSSED
 
 	var/obj/machinery/vitals_monitor/connected_monitor
 	var/mob/living/carbon/human/patient = null
@@ -823,7 +826,7 @@
 	else
 		return ..()
 
-/obj/structure/table/optable/Uncrossed(atom/movable/gone, direction)
+/obj/structure/table/optable/on_uncrossed(atom/movable/gone, direction)
 	. = ..()
 	if(gone == patient)
 		set_patient(null)

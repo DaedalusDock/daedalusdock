@@ -37,7 +37,7 @@
 		var/t = tgui_input_text(user, "What would you like the label to be?", name, max_length = 53)
 		if(user.get_active_held_item() != interact_tool)
 			return
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if(t)
 			name = "[initial(name)] - [t]"
@@ -273,7 +273,7 @@
 	open()
 
 /obj/structure/closet/body_bag/environmental/prisoner/attack_hand_secondary(mob/user, modifiers)
-	if(!user.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!user.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 	togglelock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN

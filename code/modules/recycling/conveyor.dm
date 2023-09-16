@@ -16,8 +16,6 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	desc = "A conveyor belt."
 	layer = BELOW_OPEN_DOOR_LAYER
 	processing_flags = NONE
-	loc_procs = UNCROSSED|CROSSED
-
 	/// The current state of the switch.
 	var/operating = CONVEYOR_OFF
 	/// This is the default (forward) direction, set by the map dir.
@@ -81,6 +79,13 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	if(new_id)
 		id = new_id
 	neighbors = list()
+	///Leaving onto conveyor detection won't work at this point, but that's alright since it's an optimization anyway
+	///Should be fine without it
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_EXITED = PROC_REF(conveyable_exit),
+		COMSIG_ATOM_ENTERED = PROC_REF(conveyable_enter),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 	update_move_direction()
 	LAZYADD(GLOB.conveyors_by_id[id], src)
 	return INITIALIZE_HINT_LATELOAD
@@ -210,16 +215,20 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 			start_conveying(movable)
 	return TRUE
 
-/obj/machinery/conveyor/Crossed(atom/movable/crossed_by, oldloc)
-	if(operating == CONVEYOR_OFF)
-		SSmove_manager.stop_looping(crossed_by, SSconveyors)
+/obj/machinery/conveyor/proc/conveyable_enter(datum/source, atom/convayable)
+	SIGNAL_HANDLER
+	if(convayable == src)
 		return
-	start_conveying(crossed_by)
+	if(operating == CONVEYOR_OFF)
+		SSmove_manager.stop_looping(convayable, SSconveyors)
+		return
+	start_conveying(convayable)
 
-/obj/machinery/conveyor/Uncrossed(atom/movable/uncrossed_atom, direction)
+/obj/machinery/conveyor/proc/conveyable_exit(datum/source, atom/convayable, direction)
+	SIGNAL_HANDLER
 	var/has_conveyor = neighbors["[direction]"]
-	if(!has_conveyor || !isturf(uncrossed_atom.loc)) //If you've entered something on us, stop moving
-		SSmove_manager.stop_looping(uncrossed_atom, SSconveyors)
+	if(!has_conveyor || !isturf(convayable.loc)) //If you've entered something on us, stop moving
+		SSmove_manager.stop_looping(convayable, SSconveyors)
 
 /obj/machinery/conveyor/proc/start_conveying(atom/movable/moving)
 	if(QDELETED(moving))
@@ -401,7 +410,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 /obj/machinery/conveyor_switch/multitool_act(mob/living/user, obj/item/I)
 	var/input_speed = tgui_input_number(user, "Set the speed of the conveyor belts in seconds", "Speed", conveyor_speed, 20, 0.2)
-	if(!input_speed || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!input_speed || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	conveyor_speed = input_speed
 	to_chat(user, span_notice("You change the time between moves to [input_speed] seconds."))

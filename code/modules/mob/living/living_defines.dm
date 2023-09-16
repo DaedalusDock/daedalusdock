@@ -21,11 +21,11 @@
 	var/datum/stamina_container/stamina
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
-	var/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
-	var/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
-	var/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
-	var/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
-	var/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
+	VAR_PROTECTED/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
+	VAR_PROTECTED/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
+	VAR_PROTECTED/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
+	VAR_PROTECTED/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
+	VAR_PROTECTED/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
 
 	var/crit_threshold = HEALTH_THRESHOLD_CRIT /// when the mob goes from "normal" to crit
 	///When the mob enters hard critical state and is fully incapacitated.

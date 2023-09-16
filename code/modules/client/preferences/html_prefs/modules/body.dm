@@ -6,6 +6,7 @@
 		/datum/preference/choiced/gender,
 		/datum/preference/choiced/body_type = TRUE,
 		/datum/preference/choiced/species,
+		/datum/preference/text/flavor_text,
 	)
 
 	var/list/clothing = list(

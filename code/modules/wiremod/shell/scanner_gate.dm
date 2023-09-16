@@ -3,13 +3,15 @@
 	desc = "A gate able to perform mid-depth scans on any organisms who pass under it."
 	icon = 'icons/obj/machines/scangate.dmi'
 	icon_state = "scangate_black"
-	loc_procs = CROSSED
-
 	var/locked = FALSE
 
 /obj/structure/scanner_gate_shell/Initialize(mapload)
 	. = ..()
 	set_scanline("passive")
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/scanner_gate()
@@ -23,9 +25,12 @@
 	balloon_alert(user, "You [anchored?"secure":"unsecure"] [src].")
 	return TRUE
 
-/obj/structure/scanner_gate_shell/Crossed(atom/movable/crossed_by, oldloc)
+/obj/structure/scanner_gate_shell/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	set_scanline("scanning", 10)
-	SEND_SIGNAL(src, COMSIG_SCANGATE_SHELL_PASS, crossed_by)
+	SEND_SIGNAL(src, COMSIG_SCANGATE_SHELL_PASS, AM)
 
 /obj/structure/scanner_gate_shell/proc/set_scanline(type, duration)
 	cut_overlays()

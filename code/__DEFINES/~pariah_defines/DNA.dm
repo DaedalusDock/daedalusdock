@@ -14,5 +14,3 @@
 
 #define REAGENT_ORGANIC 1
 #define REAGENT_SYNTHETIC 2
-
-#define MANDATORY_FEATURE_LIST list("flavor_text" = "")

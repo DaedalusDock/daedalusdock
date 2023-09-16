@@ -1036,7 +1036,7 @@
 /obj/item/bodypart/arm/right/robot{
 	pixel_x = 3
 	},
-/obj/item/book/manual/wiki/surgery,
+/obj/item/book/manual/codex/surgery,
 /obj/effect/turf_decal/siding/blue{
 	dir = 4
 	},

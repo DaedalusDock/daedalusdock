@@ -217,3 +217,9 @@
 	layer = DITHER_LAYER
 	show_when_dead = TRUE
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
+
+/atom/movable/screen/fullscreen/pain
+	icon_state = "brutedamageoverlay"
+	layer = UI_DAMAGE_LAYER
+	plane = FULLSCREEN_PLANE
+	alpha = 0

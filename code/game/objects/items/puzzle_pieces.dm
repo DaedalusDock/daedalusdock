@@ -157,13 +157,13 @@
 	icon_state = "lasergrid_full"
 	claimed = TRUE
 
-/obj/item/pressure_plate/hologrid/Crossed(atom/movable/crossed_by, oldloc)
+/obj/item/pressure_plate/hologrid/on_entered(datum/source, atom/movable/AM)
 	. = ..()
-	if(trigger_item && istype(crossed_by, specific_item) && !claimed)
-		crossed_by.set_anchored(TRUE)
-		flick("laserbox_burn", crossed_by)
+	if(trigger_item && istype(AM, specific_item) && !claimed)
+		AM.set_anchored(TRUE)
+		flick("laserbox_burn", AM)
 		trigger()
-		QDEL_IN(crossed_by, 15)
+		QDEL_IN(AM, 15)
 
 //Light puzzle
 /obj/structure/light_puzzle

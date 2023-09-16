@@ -98,7 +98,7 @@
 	switch(occupier.stat)
 		if(CONSCIOUS)
 			. += "ai-fixer-full"
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			. += "ai-fixer-404"
 
 /obj/machinery/computer/aifixer/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)

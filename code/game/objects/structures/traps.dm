@@ -6,8 +6,6 @@
 	density = FALSE
 	anchored = TRUE
 	alpha = 30 //initially quite hidden when not "recharging"
-	loc_procs = CROSSED
-
 	var/flare_message = "<span class='warning'>the trap flares brightly!</span>"
 	var/last_trigger = 0
 	var/time_between_triggers = 600 //takes a minute to recharge
@@ -26,6 +24,11 @@
 	spark_system = new
 	spark_system.set_up(4,1,src)
 	spark_system.attach(src)
+
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered)
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 	if(!ignore_typecache)
 		ignore_typecache = typecacheof(list(
@@ -63,14 +66,15 @@
 	else
 		animate(src, alpha = initial(alpha), time = time_between_triggers)
 
-/obj/structure/trap/Crossed(atom/movable/crossed_by, oldloc)
+/obj/structure/trap/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
 	if(last_trigger + time_between_triggers > world.time)
 		return
 	// Don't want the traps triggered by sparks, ghosts or projectiles.
-	if(is_type_in_typecache(crossed_by, ignore_typecache))
+	if(is_type_in_typecache(AM, ignore_typecache))
 		return
-	if(ismob(crossed_by))
-		var/mob/M = crossed_by
+	if(ismob(AM))
+		var/mob/M = AM
 		if(M.mind in immune_minds)
 			return
 		if(M.can_block_magic(antimagic_flags))
@@ -79,8 +83,8 @@
 	if(charges <= 0)
 		return
 	flare()
-	if(isliving(crossed_by))
-		trap_effect(crossed_by)
+	if(isliving(AM))
+		trap_effect(AM)
 
 /obj/structure/trap/proc/trap_effect(mob/living/L)
 	return
@@ -117,9 +121,11 @@
 	stored_item = null
 	return ..()
 
-/obj/structure/trap/stun/hunter/Crossed(atom/movable/crossed_by, oldloc)
-	if(isliving(crossed_by))
-		var/mob/living/L = crossed_by
+/obj/structure/trap/stun/hunter/on_entered(datum/source, atom/movable/AM)
+	if(AM == src)
+		return
+	if(isliving(AM))
+		var/mob/living/L = AM
 		if(!L.mind?.has_antag_datum(/datum/antagonist/fugitive))
 			return
 	caught = TRUE

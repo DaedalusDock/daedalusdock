@@ -121,12 +121,6 @@
 	cost = PAYCHECK_MEDIUM * 3
 	contains = list(/obj/item/storage/toolbox/mechanical)
 
-/datum/supply_pack/goody/valentine
-	name = "Valentine Card"
-	desc = "Make an impression on that special someone! Comes with one valentine card and a free candy heart!"
-	cost = PAYCHECK_ASSISTANT * 2
-	contains = list(/obj/item/valentine, /obj/item/food/candyheart)
-
 /datum/supply_pack/goody/beeplush
 	name = "Bee Plushie"
 	desc = "The most important thing you could possibly spend your hard-earned money on."

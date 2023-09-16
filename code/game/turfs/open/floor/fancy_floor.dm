@@ -784,3 +784,13 @@
 	. = ..()
 	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
 	layer = initial(layer)
+
+/turf/open/floor/mud
+	name = "mud"
+	desc = "A wet, muddy pool of dirt."
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "dirt"
+	footstep = FOOTSTEP_MEAT //this is... probably the closest sounding to mud.
+	barefootstep = FOOTSTEP_MEAT
+	clawfootstep = FOOTSTEP_MEAT
+	heavyfootstep = FOOTSTEP_GENERIC_HEAVY

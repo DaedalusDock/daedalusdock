@@ -342,6 +342,8 @@
 	suppressor_x_offset = 3
 	suppressor_y_offset = 3
 
+	accuracy_falloff = 0
+
 /obj/item/gun/ballistic/automatic/sniper_rifle/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2)

@@ -355,14 +355,14 @@
 	is_dimorphic = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/chest/golem
 	limb_id = SPECIES_GOLEM
 	is_dimorphic = TRUE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/left/golem
 	limb_id = SPECIES_GOLEM
@@ -372,7 +372,7 @@
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/right/golem
 	limb_id = SPECIES_GOLEM
@@ -382,7 +382,7 @@
 	unarmed_damage_high = 14
 	unarmed_stun_threshold = 11
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/left/golem
 	limb_id = SPECIES_GOLEM
@@ -391,7 +391,7 @@
 	unarmed_damage_high = 21
 	unarmed_stun_threshold = 11
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/right/golem
 	limb_id = SPECIES_GOLEM
@@ -400,7 +400,7 @@
 	unarmed_damage_high = 21
 	unarmed_stun_threshold = 11
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 ///
 /obj/item/bodypart/head/golem/cult

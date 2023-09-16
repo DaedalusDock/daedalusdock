@@ -34,7 +34,7 @@
 /obj/item/analyzer/AltClick(mob/user) //Barometer output for measuring when the next storm happens
 	..()
 
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE))
 		if(cooldown)
 			to_chat(user, span_warning("[src]'s barometer function is preparing itself."))
 			return

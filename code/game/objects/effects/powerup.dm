@@ -4,7 +4,6 @@
 	density = FALSE
 	anchored = TRUE
 	resistance_flags = INDESTRUCTIBLE
-	loc_procs = CROSSED
 	/// How long in deciseconds it will take for the powerup to respawn, if no value it won't respawn
 	var/respawn_time
 	/// How long the powerup stays on the ground, if no value it will stay forever
@@ -20,9 +19,16 @@
 	. = ..()
 	if(lifetime)
 		QDEL_IN(src, lifetime)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/effect/powerup/Crossed(atom/movable/crossed_by, oldloc)
-	trigger(crossed_by)
+/obj/effect/powerup/proc/on_entered(datum/source, atom/movable/movable_atom)
+	SIGNAL_HANDLER
+	if(movable_atom == src)
+		return
+	trigger(movable_atom)
 
 /obj/effect/powerup/Bump(atom/bumped_atom)
 	trigger(bumped_atom)

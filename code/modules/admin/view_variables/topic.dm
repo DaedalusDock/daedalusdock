@@ -95,7 +95,7 @@
 					newamt = L.getOxyLoss()
 				if("brain")
 					L.adjustOrganLoss(ORGAN_SLOT_BRAIN, amount)
-					newamt = L.getOrganLoss(ORGAN_SLOT_BRAIN)
+					newamt = L.getBrainLoss()
 				if("clone")
 					L.adjustCloneLoss(amount)
 					newamt = L.getCloneLoss()

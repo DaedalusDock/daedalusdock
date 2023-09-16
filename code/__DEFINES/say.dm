@@ -27,7 +27,6 @@
 
 #define WHISPER_MODE "the type of whisper"
 #define MODE_WHISPER "whisper"
-#define MODE_WHISPER_CRIT "whispercrit"
 
 #define MODE_DEPARTMENT "department"
 #define MODE_KEY_DEPARTMENT "h"

@@ -168,3 +168,25 @@
 		made_something = TRUE
 	if(made_something && on_generate_callback)
 		on_generate_callback.Invoke(reagents.total_volume, reagents.maximum_volume)
+
+/**
+ * Slug "udders". I'm so sorry it has to be this way
+*/
+/obj/item/udder/slug
+	name = "slime gland"
+
+/obj/item/udder/slug/initial_conditions()
+	. = ..()
+	RegisterSignal(udder_mob, COMSIG_MOVABLE_MOVED, .proc/on_slug_move)
+
+/obj/item/udder/slug/proc/on_slug_move()
+	SIGNAL_HANDLER
+
+	if (reagents.total_volume <= 0)
+		return //no slime :(
+	var/turf/slug_turf = get_turf(udder_mob)
+	if(!slug_turf)
+		return
+	slug_turf.wash(CLEAN_SCRUB)
+	reagents.expose(slug_turf, TOUCH, 5)
+	reagents.remove_any(5)

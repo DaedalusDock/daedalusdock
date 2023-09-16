@@ -14,8 +14,6 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	light_outer_range = 8
 	light_color = LIGHT_COLOR_LAVA
-	loc_procs = EXIT
-
 	var/open = FALSE
 	var/changing_openness = FALSE
 	var/locked = FALSE
@@ -48,6 +46,12 @@
 	dais_overlay.layer = CLOSED_TURF_LAYER
 	add_overlay(dais_overlay)
 
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+	)
+
+	AddElement(/datum/element/connect_loc, loc_connections)
+
 /obj/structure/necropolis_gate/Destroy(force)
 	if(force)
 		qdel(sight_blocker, TRUE)
@@ -63,8 +67,9 @@
 	if(border_dir != dir)
 		return TRUE
 
-/obj/structure/necropolis_gate/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/structure/necropolis_gate/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
+
 	if(leaving.movement_type & PHASING)
 		return
 
@@ -73,7 +78,7 @@
 
 	if (direction == dir && density)
 		leaving.Bump(src)
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/opacity_blocker
 	icon = 'icons/effects/96x96.dmi'

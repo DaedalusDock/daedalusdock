@@ -154,7 +154,7 @@
 				if(type & MSG_VISUAL && is_blind())
 					return
 	// voice muffling
-	if(stat == UNCONSCIOUS || stat == HARD_CRIT)
+	if(stat == UNCONSCIOUS)
 		if(type & MSG_AUDIBLE) //audio
 			to_chat(src, "<I>... You can almost hear something ...</I>")
 		return
@@ -643,15 +643,6 @@
 
 	SEND_SIGNAL(src, COMSIG_MOB_POINTED, pointing_at)
 	return TRUE
-/**
- * Called by using Activate Held Object with an empty hand/limb
- *
- * Does nothing by default. The intended use is to allow limbs to call their
- * own attack_self procs. It is up to the individual mob to override this
- * parent and actually use it.
- */
-/mob/proc/limb_attack_self()
-	return
 
 ///Can this mob resist (default FALSE)
 /mob/proc/can_resist()
@@ -702,19 +693,10 @@
 
 ///proc version to finish /mob/verb/mode() execution. used in case the proc needs to be queued for the tick after its first called
 /mob/proc/execute_mode()
-	if(ismecha(loc))
-		return
-
-	if(incapacitated())
-		return
-
 	var/obj/item/I = get_active_held_item()
 	if(I)
-		I.attack_self(src)
-		update_held_items()
+		usr.client?.Click(I, I.loc)
 		return
-
-	limb_attack_self()
 
 /**
  * Allows you to respawn, abandoning your current mob
@@ -1026,7 +1008,7 @@
 	return ISINRANGE(their_turf.x, our_turf.x - interaction_range, our_turf.x + interaction_range) && ISINRANGE(their_turf.y, our_turf.y - interaction_range, our_turf.y + interaction_range)
 
 ///Can the mob use Topic to interact with machines
-/mob/proc/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
+/mob/proc/canUseTopic(atom/movable/target, flags)
 	return
 
 ///Can this mob use storage

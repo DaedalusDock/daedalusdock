@@ -28,7 +28,6 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = SMOOTH_GROUP_TABLES
 	canSmoothWith = SMOOTH_GROUP_TABLES
-	loc_procs = CROSSED|UNCROSSED|EXIT
 	flags_1 = BUMP_PRIORITY_1
 
 	var/frame = /obj/structure/table_frame
@@ -49,6 +48,9 @@
 
 	var/static/list/loc_connections = list(
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(table_carbon),
+		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
+		COMSIG_ATOM_EXIT = PROC_REF(check_exit),
+		COMSIG_ATOM_EXITTED = PROC_REF(on_uncrossed),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -136,13 +138,15 @@
 			return FALSE
 		if(!H.Enter(get_turf(src), TRUE))
 			return
-		H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
+		H.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
+		H.apply_pain(80, BODY_ZONE_HEAD, "Your head screams with pain!")
 		H.Paralyze(1 SECOND)
 		playsound(H, 'sound/items/trayhit1.ogg', 50, 1)
 		H.visible_message(
 			span_danger("[H] bangs [H.p_their()] head on [src]."),
 			span_danger("You bang your head on [src]."),
 			span_hear("You hear a metallic clang.")
+
 		)
 		return
 
@@ -171,17 +175,17 @@
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
 
-/obj/structure/table/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/structure/table/proc/check_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
 	if(!density)
 		return
 
 	if(isprojectile(leaving) && !check_cover(leaving, get_turf(leaving)))
 		leaving.Bump(src)
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 	if(flipped == TRUE && (direction & dir))
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 //checks if projectile 'P' from turf 'from' can hit whatever is behind the table. Returns 1 if it can, 0 if bullet stops.
 /obj/structure/table/proc/check_cover(obj/projectile/P, turf/from)
@@ -209,7 +213,8 @@
 		return FALSE //blocked
 	return TRUE
 
-/obj/structure/table/Crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+/obj/structure/table/proc/on_crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+	SIGNAL_HANDLER
 	if(!isliving(crossed_by))
 		return
 
@@ -217,7 +222,8 @@
 		if(!HAS_TRAIT(crossed_by, TRAIT_TABLE_RISEN))
 			ADD_TRAIT(crossed_by, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
 
-/obj/structure/table/Uncrossed(atom/movable/gone, direction)
+/obj/structure/table/proc/on_uncrossed(atom/movable/gone, direction)
+	SIGNAL_HANDLER
 	if(!isliving(gone))
 		return
 
@@ -227,7 +233,7 @@
 
 /obj/structure/table/setDir(ndir)
 	. = ..()
-	if(dir != NORTH && dir != 0)
+	if(dir != NORTH && dir != 0 && (flipped > 0))
 		layer = ABOVE_MOB_LAYER
 	else
 		layer = TABLE_LAYER
@@ -521,14 +527,14 @@
 	if(mover.pass_flags & PASSGLASS)
 		return TRUE
 
-/obj/structure/table/glass/Exit(atom/movable/leaving, direction)
+/obj/structure/table/glass/check_exit(datum/source, atom/movable/leaving, direction)
 	. = ..()
 	if(. || !flipped)
 		return
 	if(leaving.pass_flags & PASSGLASS)
-		return TRUE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
-/obj/structure/table/glass/Crossed(atom/movable/crossed_by, oldloc)
+/obj/structure/table/glass/on_crossed(atom/movable/crossed_by, oldloc)
 	. = ..()
 	if(flags_1 & NODECONSTRUCT_1)
 		return
@@ -632,70 +638,61 @@
 	framestack = /obj/item/stack/rods
 	buildstack = /obj/item/stack/tile/carpet
 	smoothing_groups = SMOOTH_GROUP_FANCY_WOOD_TABLES //Don't smooth with SMOOTH_GROUP_TABLES or SMOOTH_GROUP_WOOD_TABLES
-	canSmoothWith = SMOOTH_GROUP_FANCY_WOOD_TABLES
-	var/smooth_icon = 'icons/obj/smooth_structures/fancy_table.dmi' // see Initialize()
-
-/obj/structure/table/wood/fancy/Initialize(mapload)
-	. = ..()
-	// Needs to be set dynamically because table smooth sprites are 32x34,
-	// which the editor treats as a two-tile-tall object. The sprites are that
-	// size so that the north/south corners look nice - examine the detail on
-	// the sprites in the editor to see why.
-	icon = smooth_icon
+	canSmoothWith = SMOOTH_GROUP_FANCY_WOOD_TABLES // see Initialize()
 
 /obj/structure/table/wood/fancy/black
-	icon_state = "fancy_table_black"
+	icon_state = "fancy_table_black-0"
 	base_icon_state = "fancy_table_black"
 	buildstack = /obj/item/stack/tile/carpet/black
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_black.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_black.dmi'
 
 /obj/structure/table/wood/fancy/blue
-	icon_state = "fancy_table_blue"
+	icon_state = "fancy_table_blue-0"
 	base_icon_state = "fancy_table_blue"
 	buildstack = /obj/item/stack/tile/carpet/blue
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_blue.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_blue.dmi'
 
 /obj/structure/table/wood/fancy/cyan
-	icon_state = "fancy_table_cyan"
+	icon_state = "fancy_table_cyan-0"
 	base_icon_state = "fancy_table_cyan"
 	buildstack = /obj/item/stack/tile/carpet/cyan
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_cyan.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_cyan.dmi'
 
 /obj/structure/table/wood/fancy/green
-	icon_state = "fancy_table_green"
+	icon_state = "fancy_table_green-0"
 	base_icon_state = "fancy_table_green"
 	buildstack = /obj/item/stack/tile/carpet/green
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_green.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_green.dmi'
 
 /obj/structure/table/wood/fancy/orange
-	icon_state = "fancy_table_orange"
+	icon_state = "fancy_table_orange-0"
 	base_icon_state = "fancy_table_orange"
 	buildstack = /obj/item/stack/tile/carpet/orange
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_orange.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_orange.dmi'
 
 /obj/structure/table/wood/fancy/purple
-	icon_state = "fancy_table_purple"
+	icon_state = "fancy_table_purple-0"
 	base_icon_state = "fancy_table_purple"
 	buildstack = /obj/item/stack/tile/carpet/purple
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_purple.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_purple.dmi'
 
 /obj/structure/table/wood/fancy/red
-	icon_state = "fancy_table_red"
+	icon_state = "fancy_table_red-0"
 	base_icon_state = "fancy_table_red"
 	buildstack = /obj/item/stack/tile/carpet/red
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_red.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_red.dmi'
 
 /obj/structure/table/wood/fancy/royalblack
-	icon_state = "fancy_table_royalblack"
+	icon_state = "fancy_table_royalblack-0"
 	base_icon_state = "fancy_table_royalblack"
 	buildstack = /obj/item/stack/tile/carpet/royalblack
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_royalblack.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_royalblack.dmi'
 
 /obj/structure/table/wood/fancy/royalblue
-	icon_state = "fancy_table_royalblue"
+	icon_state = "fancy_table_royalblue-0"
 	base_icon_state = "fancy_table_royalblue"
 	buildstack = /obj/item/stack/tile/carpet/royalblue
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_royalblue.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_royalblue.dmi'
 
 /*
  * Reinforced tables
@@ -808,12 +805,31 @@
 	buckle_lying = NO_BUCKLE_LYING
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
+
+	var/obj/machinery/vitals_monitor/connected_monitor
 	var/mob/living/carbon/human/patient = null
 
 /obj/structure/table/optable/Destroy()
 	if(patient)
 		set_patient(null)
+	if(connected_monitor)
+		connected_monitor.set_optable(null)
+		connected_monitor = null
 	return ..()
+
+/obj/structure/table/optable/MouseDrop_T(atom/dropping, mob/living/user)
+	if(!iscarbon(dropping))
+		return ..()
+
+	if(dropping.loc == loc)
+		set_patient(dropping)
+	else
+		return ..()
+
+/obj/structure/table/optable/on_uncrossed(atom/movable/gone, direction)
+	. = ..()
+	if(gone == patient)
+		set_patient(null)
 
 /obj/structure/table/optable/tableplace(mob/living/user, mob/living/pushed_mob)
 	. = ..()
@@ -838,11 +854,14 @@
 		REMOVE_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		UnregisterSignal(patient, COMSIG_PARENT_QDELETING)
 	patient = new_patient
-	patient.set_lying_angle(90)
-	patient.setDir(SOUTH)
-	ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 	if(patient)
+		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
+		patient.set_lying_angle(90)
+		patient.setDir(SOUTH)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
+
+	if(connected_monitor)
+		connected_monitor.update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/table/optable/proc/patient_deleted(datum/source)
 	SIGNAL_HANDLER

@@ -9,7 +9,7 @@
 /mob/living/simple_animal/proc/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
 	. = FALSE
 	if(forced || !(status_flags & GODMODE))
-		bruteloss = round(clamp(bruteloss + amount, 0, HEALTH_LOSS_PER_TYPE_CAP(src)), DAMAGE_PRECISION)
+		bruteloss = round(clamp(bruteloss + amount, 0, maxHealth), DAMAGE_PRECISION)
 		if(updating_health)
 			updatehealth()
 		. = amount

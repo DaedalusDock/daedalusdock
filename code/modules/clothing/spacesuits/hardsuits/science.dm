@@ -5,7 +5,7 @@
 	hardsuit_type = "toxins"
 	resistance_flags = ACID_PROOF | FIRE_PROOF
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
-	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30, WOUND = 10)
+	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30)
 	clothing_traits = list(TRAIT_REAGENT_SCANNER, TRAIT_RESEARCH_SCANNER)
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT
 	actions_types = list(/datum/action/item_action/toggle_helmet_light)
@@ -47,6 +47,6 @@
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT //Same as an emergency firesuit. Not ideal for extended exposure.
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/gun/energy/wormhole_projector,
 	/obj/item/hand_tele, /obj/item/aicard)
-	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30, WOUND = 10)
+	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 20, BOMB = 100, BIO = 100, FIRE = 60, ACID = 30)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/toxins
 	cell = /obj/item/stock_parts/cell/super

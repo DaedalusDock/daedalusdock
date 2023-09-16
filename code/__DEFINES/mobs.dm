@@ -23,8 +23,12 @@
 #define BLOOD_VOLUME_BAD 224
 #define BLOOD_VOLUME_SURVIVE 122
 
-/// How efficiently humans regenerate blood.
-#define BLOOD_REGEN_FACTOR 0.25
+// Blood circulation levels
+#define BLOOD_CIRC_FULL 100
+#define BLOOD_CIRC_SAFE 85
+#define BLOOD_CIRC_OKAY 70
+#define BLOOD_CIRC_BAD 60
+#define BLOOD_CIRC_SURVIVE 30
 
 //Sizes of mobs, used by mob/living/var/mob_size
 #define MOB_SIZE_TINY 1
@@ -149,8 +153,7 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
-#define HUMAN_FAILBREATH_OXYLOSS (rand(2,4))
-#define HUMAN_CRIT_FAILBREATH_OXYLOSS (rand(3,6))
+#define HUMAN_FAILBREATH_OXYLOSS 1
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -172,7 +175,11 @@
 //Brain Damage defines
 #define BRAIN_DAMAGE_MILD 20
 #define BRAIN_DAMAGE_SEVERE 100
+#define BRAIN_DAMAGE_CRITICAL 150
 #define BRAIN_DAMAGE_DEATH 200
+
+#define BRAIN_DECAY_RATE 0.5
+#define ORGAN_DECAY_RATE 0.002
 
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild
 #define BRAIN_TRAUMA_SEVERE /datum/brain_trauma/severe
@@ -431,7 +438,7 @@
 #define CE_STABLE "stable"
 /// Breathing depression, makes you need more air
 #define CE_BREATHLOSS "breathloss"
-/// Spaceacilin
+/// Fights off necrosis in bodyparts and organs
 #define CE_ANTIBIOTIC "antibiotic"
 /// Iron/nutriment
 #define CE_BLOODRESTORE "bloodrestore"
@@ -442,8 +449,6 @@
 #define CE_ALCOHOL_TOXIC "alcotoxic"
 /// Increases or decreases heart rate
 #define CE_PULSE "xcardic"
-/// Stops heartbeat
-#define CE_NOPULSE "heartstop"
 /// Reduces incoming toxin damage and helps with liver filtering
 #define CE_ANTITOX "antitox"
 /// Dexalin.
@@ -460,9 +465,23 @@
 #define CE_STIMULANT "stimulants"
 /// Multiplier for bloodloss
 #define CE_ANTICOAGULANT "anticoagulant"
+/// Enables brain regeneration even in poor circumstances
+#define CE_BRAIN_REGEN "brainregen"
+
+// Pulse levels, very simplified.
+#define PULSE_NONE 0 // So !M.pulse checks would be possible.
+#define PULSE_SLOW 1 // <60 bpm
+#define PULSE_NORM 2 //  60-90 bpm
+#define PULSE_FAST 3 //  90-120 bpm
+#define PULSE_2FAST 4 // >120 bpm
+#define PULSE_THREADY 5 // Occurs during hypovolemic shock
+#define GETPULSE_HAND 0 // Less accurate. (hand)
+#define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
+#define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
 
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"
+
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
 #define FLASH_PROTECTION_NONE 0
@@ -554,9 +573,6 @@
 
 
 #define SILENCE_RANGED_MESSAGE (1<<0)
-
-/// Returns whether or not the given mob can succumb
-#define CAN_SUCCUMB(target) (HAS_TRAIT(target, TRAIT_CRITICAL_CONDITION) && !HAS_TRAIT(target, TRAIT_NODEATH))
 
 // Body position defines.
 /// Mob is standing up, usually associated with lying_angle value of 0.
@@ -714,14 +730,21 @@
 #define ABOVE_BODY_FRONT_LAYER (BODY_FRONT_LAYER-1)
 
 //used by canUseTopic()
-/// If silicons need to be next to the atom to use this
-#define BE_CLOSE TRUE
-/// If other mobs (monkeys, aliens, etc) can use this
-#define NO_DEXTERITY TRUE // I had to change 20+ files because some non-dnd-playing fuckchumbis can't spell "dexterity"
-// If telekinesis you can use it from a distance
-#define NO_TK TRUE
-/// If mobs can use this while resting
-#define FLOOR_OKAY TRUE
+/// Needs to be Adjacent() to target.
+#define USE_CLOSE (1<<0)
+/// Needs to be an AdvancedToolUser
+#define USE_DEXTERITY (1<<1)
+// Forbid TK overriding USE_CLOSE
+#define USE_IGNORE_TK (1<<2)
+/// The mob needs to have hands (Does not need EMPTY hands)
+#define USE_NEED_HANDS (1<<3)
+/// Allows the mob to be resting
+#define USE_RESTING (1<<4)
+/// Ignore USE_CLOSE if they have silicon reach
+#define USE_SILICON_REACH (1<<5)
+/// Needs to be literate
+#define USE_LITERACY (1<<6)
+
 
 /// The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)
 #define RESIZE_DEFAULT_SIZE 1
@@ -771,3 +794,10 @@ GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
 #define BREATH_DAMAGING -1
 /// Breath completely failed. chokies!!
 #define BREATH_FAILED -2
+
+/// Attack missed.
+#define MOB_ATTACKEDBY_MISS 3
+/// Attack completely failed (missing user, etc)
+#define MOB_ATTACKEDBY_FAIL 0
+#define MOB_ATTACKEDBY_SUCCESS 1
+#define MOB_ATTACKEDBY_NO_DAMAGE 2

@@ -14,6 +14,7 @@
 			position: relative;
 			width: 100vw;
 			text-align: center;
+			overflow: hidden;
 		}
 		#splash {
 			display: table-cell;
@@ -65,32 +66,36 @@
 	</style>
 </head>
 <body>
-	<table id="container"> <!-- Yes we use a table to center ourselves. StackOverflow says this is not acceptable practice past 2012 but we're operating with 2009 tech so... !-->
-		<tr>
-			<td class="letterboxer"></td>
-			<td id="splash">
-				IF YOU CAN SEE THIS, TELL A CODER WHAT HAPPENED!
-				HELPFUL DETAILS INCLUDE:
-				WAS THE ROUNDEND DELAYED?
-				WAS THE SERVER MANUALLY REBOOTED?
-				DID YOU PLAY MORE THAN ONE ROUND IN A ROW WITHOUT CLOSING THE GAME?
-				DID CREDITS FAIL TO DISPLAY FOR YOU LAST ROUND?
-				DID THE CREDITS AUDIO FAIL TO PLAY FOR YOU?
-				IS YOUR CONNECTION SLOW?
-				DID THIS TEXT DISPLAY FOR ANYONE ELSE?
-				WHAT ARE YOUR CREDITS PREFERENCES SET TO?
-			</td>
-			<td class="letterboxer"></td>
-		</tr>
-		<tr>
-			<td class="letterboxer"></td>
-			<td id="marquee">
-				IF YOU CAN SEE THIS, THE TEXT HAS STARTED SCROLLING,
-				SO REALLY TELL A CODER WHAT HAPPENED!
-			</td>
-			<td class="letterboxer"></td>
-		</tr>
-	</table>
+	<div id="container">
+		<table id="content"> <!-- Yes we use a table to center ourselves. StackOverflow says this is not acceptable practice past 2012 but we're operating with 2009 tech so... !-->
+			<tr>
+				<td class="letterboxer"></td>
+				<td id="splash">
+					IF YOU CAN SEE THIS, TELL A CODER WHAT HAPPENED!
+					HELPFUL DETAILS INCLUDE:
+					WAS THE ROUNDEND DELAYED?
+					WAS THE SERVER MANUALLY REBOOTED?
+					DID YOU PLAY MORE THAN ONE ROUND IN A ROW WITHOUT CLOSING THE GAME?
+					DID CREDITS FAIL TO DISPLAY FOR YOU LAST ROUND?
+					DID THE CREDITS AUDIO FAIL TO PLAY FOR YOU?
+					IS YOUR CONNECTION SLOW?
+					DID THIS TEXT DISPLAY FOR ANYONE ELSE?
+					WHAT ARE YOUR CREDITS PREFERENCES SET TO?
+				</td>
+				<td class="letterboxer"></td>
+			</tr>
+			<tr>
+				<td class="letterboxer"></td>
+				<td id="marquee">
+					IF YOU CAN SEE THIS, THE TEXT HAS STARTED SCROLLING,
+					SO REALLY TELL A CODER WHAT HAPPENED!
+				</td>
+				<td class="letterboxer"></td>
+			</tr>
+		</table>
+		<div style="width:100vw; height:100vh;"></div>
+	</div>
+</body>
 
 	<script type="text/javascript">
 
@@ -101,10 +106,16 @@
 
 	var splashyText = [];
 	var lastinterval; //just for the auto-suicide failsafe
-	var scrollSpeed = 25; //miliseconds between each pixel we go up
+	var pixelsPerSecond = 100;
 	var splashTime = 2000; //in miliseconds
 	var started = 0;
 	var initialized = 0;
+
+	var startTime = 0;
+	var div;
+	var actualContent;
+	var totalMilliseconds = 0;
+	var totalHeight = 0;
 
 	function setScrollingText(text){
 		document.getElementById("marquee").innerHTML = text;
@@ -116,7 +127,7 @@
 
 	function setupCredits(scrollyString, splashyString, theme, newScrollSpeed, newSplashTime){
 		if(newSplashTime !== undefined) {splashTime = parseInt(newSplashTime)}
-		if(newScrollSpeed !== undefined) {scrollSpeed = parseInt(newScrollSpeed)}
+		if(newScrollSpeed !== undefined) {pixelsPerSecond = parseInt(newScrollSpeed)}
 
 		setScrollingText(scrollyString);
 		setSplashyText(splashyString);
@@ -128,9 +139,14 @@
 		if(started == 1 || initialized == 0)
 			return;
 		started = 1;
+		div = document.getElementById("container");
+		actualContent = document.getElementById("content");
+		totalHeight = (div.clientHeight - window.innerHeight)
+		totalMilliseconds = totalHeight / pixelsPerSecond * 1000
+
 		runByond('byond://winset?id=mapwindow.credits;is-visible=true');
 		splashLoop(splashyText, 0, splashTime);
-		setTimeout(rollMarquee, splashyText.length*splashTime, scrollSpeed);
+		setTimeout(doMarquee, splashyText.length*splashTime);
 	}
 
 	function splashLoop(arr, index, time){
@@ -141,18 +157,23 @@
 		setTimeout(splashLoop, time, arr, index+1, time)
 	}
 
-	function rollMarquee(speed){
-		var div = document.getElementById("container");
-		var bottom = 0;
-		lastinterval = setInterval(function () {
-			bottom = bottom + 1;
-			div.style.bottom = bottom + "px";
-			if(!checkVisible(div)){
-				commitSuicide();
-				clearInterval(lastinterval);
-				return;
-			}
-		}, speed);
+	function doMarquee(){
+		then = window.performance.now();
+		startTime = then;
+		rollMarquee();
+	}
+
+	function rollMarquee(newtime){
+		if(checkVisible(actualContent)){
+			requestAnimationFrame(rollMarquee)
+		}
+		else {
+			commitSuicide();
+			return
+		}
+
+
+		window.scrollTo(0, Math.floor((newtime - startTime) / totalMilliseconds * totalHeight), "instant")
 	}
 
 	function applyTheme(theme){
@@ -185,9 +206,8 @@
 	};
 
 	function commitSuicide(){
-		document.documentElement.innerHTML = '';
 		runByond('byond://winset?id=mapwindow.credits;is-visible=false');
+		document.documentElement.innerHTML = '';
 	};
 	</script>
-</body>
 </html>

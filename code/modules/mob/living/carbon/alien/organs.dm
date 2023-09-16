@@ -60,10 +60,11 @@
 			if(!isalien(owner))
 				heal_amt *= 0.2
 			owner.adjustPlasma(0.5 * plasma_rate * delta_time)
-			owner.adjustBruteLoss(-heal_amt * delta_time)
-			owner.adjustFireLoss(-heal_amt * delta_time)
-			owner.adjustOxyLoss(-heal_amt * delta_time)
-			owner.adjustCloneLoss(-heal_amt * delta_time)
+			owner.adjustBruteLoss(-heal_amt * delta_time, FALSE)
+			owner.adjustFireLoss(-heal_amt * delta_time, FALSE)
+			owner.adjustOxyLoss(-heal_amt * delta_time, FALSE)
+			owner.adjustCloneLoss(-heal_amt * delta_time, FALSE)
+			return TRUE
 	else
 		owner.adjustPlasma(0.1 * plasma_rate * delta_time)
 
@@ -155,7 +156,7 @@
 	icon_state = "acid"
 	zone = BODY_ZONE_PRECISE_MOUTH
 	slot = ORGAN_SLOT_XENO_ACIDGLAND
-	actions_types =list(/datum/action/cooldown/alien/acid)
+	actions_types =list(/datum/action/cooldown/alien/acid/corrosion)
 
 
 /obj/item/organ/alien/neurotoxin

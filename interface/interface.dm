@@ -106,13 +106,13 @@
 
 	local_template = replacetext(local_template, "## Reproduction:\n", "## Reproduction:\n[user_description]")
 
-	var/client_info = "\
+	var/client_info = "```\
 	Client Information:\n\
 	BYOND:[byond_version].[byond_build]\n\
 	Key:[ckey]\n\
-	\
+	```\
 	"
-	var/issue_body = "```\nReporting client info:\n[client_info]\n\n[local_template]```"
+	var/issue_body = "\nReporting client info:\n[client_info]\n\n[local_template]"
 	var/list/body_structure = list(
 		"title" = issue_title,
 		"body" = issue_body

@@ -46,6 +46,9 @@
 	///Can we hold up our target with this? Default to yes
 	var/can_hold_up = TRUE
 
+	/// For every turf a fired projectile travels, increase the target bodyzone inaccuracy by this much.
+	var/accuracy_falloff = 3
+
 	/// Just 'slightly' snowflakey way to modify projectile damage for projectiles fired from this gun.
 	var/projectile_damage_multiplier = 1
 
@@ -443,7 +446,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 
 	if(bayonet && can_bayonet) //if it has a bayonet, and the bayonet can be removed
@@ -464,7 +467,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(pin && user.is_holding(src))
 		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
@@ -481,7 +484,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(pin && user.is_holding(src))
 		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),

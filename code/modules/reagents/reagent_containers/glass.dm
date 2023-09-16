@@ -385,8 +385,3 @@
 		grinded = I
 		return
 	to_chat(user, span_warning("You can't grind this!"))
-
-/obj/item/reagent_containers/glass/saline
-	name = "saline canister"
-	volume = 5000
-	list_reagents = list(/datum/reagent/medicine/saline_glucose = 5000)

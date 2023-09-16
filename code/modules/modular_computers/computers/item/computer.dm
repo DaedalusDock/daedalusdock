@@ -362,24 +362,42 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	recharger?.enable_changed(TRUE)
 	network_card?.enable_changed(TRUE)
 
-	if(use_power()) // use_power() checks if the PC is powered
-		if(issynth)
-			to_chat(user, span_notice("You send an activation signal to \the [src], turning it on."))
-		else
-			to_chat(user, span_notice("You press the power button and start up \the [src]."))
-		if(looping_sound)
-			soundloop.start()
-		enabled = TRUE
-		update_appearance()
-		if(user)
-			ui_interact(user)
-		return TRUE
-	else // Unpowered
+	var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
+	var/obj/item/computer_hardware/hard_drive/role/ssd = all_components[MC_HDD_JOB]
+	var/datum/computer_file/data/text/autorun_file = hdd?.find_file_by_name(MC_AUTORUN_FILE)
+	var/autorun_id = autorun_file?.stored_text || null
+
+
+
+
+	// Final check, can we start up?
+	if(!use_power()) // use_power() checks if the PC is powered
 		if(issynth)
 			to_chat(user, span_warning("You send an activation signal to \the [src] but it does not respond."))
 		else
 			to_chat(user, span_warning("You press the power button but \the [src] does not respond."))
 		return FALSE
+
+	if(issynth)
+		to_chat(user, span_notice("You send an activation signal to \the [src], turning it on."))
+	else
+		to_chat(user, span_notice("You press the power button and start up \the [src]."))
+	if(looping_sound)
+		soundloop.start()
+	enabled = TRUE
+
+	//Start the Autorun program before we pass control to the user
+	if(autorun_id)
+		var/datum/computer_file/program/target_program = hdd?.find_file_by_name(autorun_id)
+		if(!target_program && ssd)
+			target_program = ssd.find_file_by_name(autorun_id)
+		if(istype(target_program))
+			try_run_program(target_program, user, FALSE) //Be quiet about it. Just transparently fail if it doesn't work.
+	update_appearance()
+	if(user)
+		ui_interact(user)
+	return TRUE
+
 
 // Process currently calls handle_power(), may be expanded in future if more things are added.
 /obj/item/modular_computer/process(delta_time)
@@ -704,3 +722,33 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 /obj/item/modular_computer/proc/Remove_Messenger()
 	GLOB.TabletMessengers -= src
+
+/obj/item/modular_computer/proc/try_run_program(datum/computer_file/program/runnable, mob/user, loud = TRUE)
+	runnable.computer = src
+
+	if(!runnable.is_supported_by_hardware(hardware_flag, loud, user))
+		return
+
+	// The program is already running. Resume it.
+	if(runnable in idle_threads)
+		runnable.program_state = PROGRAM_STATE_ACTIVE
+		active_program = runnable
+		runnable.alert_pending = FALSE
+		idle_threads.Remove(runnable)
+		update_appearance()
+		return
+
+	if(idle_threads.len > max_idle_programs)
+		if(user)
+			to_chat(user, span_danger("\The [src] displays a \"Maximal CPU load reached. Unable to run another program.\" error."))
+		return
+
+	if(runnable.requires_ntnet && !get_ntnet_status(runnable.requires_ntnet_feature)) // The program requires NTNet connection, but we are not connected to NTNet.
+		if(user)
+			to_chat(user, span_danger("\The [src]'s screen shows \"Unable to connect to NTNet. Please retry. If problem persists contact your system administrator.\" warning."))
+		return
+	if(runnable.run_program(user))
+		active_program = runnable
+		runnable.alert_pending = FALSE
+		update_appearance()
+	return TRUE

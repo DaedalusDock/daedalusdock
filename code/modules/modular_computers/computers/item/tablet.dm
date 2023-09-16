@@ -285,10 +285,17 @@
 
 /obj/item/modular_computer/tablet/pda/Initialize(mapload)
 	. = ..()
-	install_component(new /obj/item/computer_hardware/hard_drive/small)
+	var/obj/item/computer_hardware/hard_drive/small/hdd = new /obj/item/computer_hardware/hard_drive/small
+	install_component(hdd)
 	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))
 	install_component(new /obj/item/computer_hardware/network_card/packetnet)
 	install_component(new /obj/item/computer_hardware/card_slot)
+
+	var/datum/computer_file/data/text/autorun_file = new
+	autorun_file.filename = MC_AUTORUN_FILE
+	autorun_file.stored_text = "nt_messenger"
+	autorun_file.calculate_size()
+	hdd.store_file(autorun_file)
 
 	if(default_disk)
 		var/obj/item/computer_hardware/hard_drive/portable/disk = new default_disk(src)

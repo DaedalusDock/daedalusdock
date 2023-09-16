@@ -69,6 +69,9 @@
 #define MC_CHARGE "CHARGE"
 #define MC_AI "AI"
 
+/// Modular Computer Autorun file
+#define MC_AUTORUN_FILE "autorun"
+
 //NTNet stuff, for modular computers
 									// NTNet module-configuration values. Do not change these. If you need to add another use larger number (5..6..7 etc)
 #define NTNET_SOFTWAREDOWNLOAD 1 // Downloads of software from NTNet

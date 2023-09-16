@@ -23595,6 +23595,7 @@
 	pixel_x = 8;
 	pixel_y = -8
 	},
+/obj/item/book/manual/codex/supermatter,
 /turf/open/floor/iron,
 /area/station/engineering/monitoring)
 "hAj" = (
@@ -49386,8 +49387,8 @@
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "qOP" = (
-/mob/living/simple_animal/hostile/retaliate/hog/security,
 /obj/structure/cable,
+/mob/living/simple_animal/hostile/retaliate/hog/security,
 /turf/open/floor/mud,
 /area/station/security/range)
 "qPc" = (

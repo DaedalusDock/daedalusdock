@@ -365,7 +365,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
 	var/obj/item/computer_hardware/hard_drive/role/ssd = all_components[MC_HDD_JOB]
 	var/datum/computer_file/data/text/autorun_file = hdd?.find_file_by_name(MC_AUTORUN_FILE)
-	var/autorun_id = autorun_file?.stored_text || null
+	var/autorun_id = autorun_file?.stored_text
 
 
 

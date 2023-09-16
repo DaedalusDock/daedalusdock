@@ -68,7 +68,7 @@
 	//This filetype structure makes me want to murder someone.
 	var/datum/computer_file/data/text/autorun = hard_drive?.find_file_by_name(MC_AUTORUN_FILE)
 	// Get the autorun ID to determine which program is autorun.
-	var/autorun_id = autorun?.stored_text || null //Empty text files are zero length strings.
+	var/autorun_id = autorun?.stored_text //Empty text files are zero length strings.
 
 
 	data["cardholder"] = FALSE

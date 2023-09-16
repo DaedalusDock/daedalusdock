@@ -1,9 +1,9 @@
-#define ARMORID "armor-[melee]-[bullet]-[laser]-[energy]-[bomb]-[bio]-[fire]-[acid]-[wound]-[consume]"
+#define ARMORID "armor-[melee]-[bullet]-[laser]-[energy]-[bomb]-[bio]-[fire]-[acid]"
 
-/proc/getArmor(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0, wound = 0, consume = 0)
+/proc/getArmor(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0)
 	. = locate(ARMORID)
 	if (!.)
-		. = new /datum/armor(melee, bullet, laser, energy, bomb, bio, fire, acid, wound, consume)
+		. = new /datum/armor(melee, bullet, laser, energy, bomb, bio, fire, acid)
 
 ///Retreive an atom's armor, creating it if it doesn't exist
 /atom/proc/returnArmor() //This is copypasted to physiology/proc/returnArmor()!!! update it too!!!
@@ -28,10 +28,8 @@
 	var/bio
 	var/fire
 	var/acid
-	var/wound
-	var/consume
 
-/datum/armor/New(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0, wound = 0, consume = 0)
+/datum/armor/New(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0)
 	src.melee = melee
 	src.bullet = bullet
 	src.laser = laser
@@ -40,15 +38,13 @@
 	src.bio = bio
 	src.fire = fire
 	src.acid = acid
-	src.wound = wound
-	src.consume = consume
 	GenerateTag()
 
-/datum/armor/proc/modifyRating(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0, wound = 0, consume = 0)
-	return getArmor(src.melee+melee, src.bullet+bullet, src.laser+laser, src.energy+energy, src.bomb+bomb, src.bio+bio, src.fire+fire, src.acid+acid, src.wound+wound, src.consume+consume)
+/datum/armor/proc/modifyRating(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0)
+	return getArmor(src.melee+melee, src.bullet+bullet, src.laser+laser, src.energy+energy, src.bomb+bomb, src.bio+bio, src.fire+fire, src.acid+acid)
 
 /datum/armor/proc/modifyAllRatings(modifier = 0)
-	return getArmor(melee+modifier, bullet+modifier, laser+modifier, energy+modifier, bomb+modifier, bio+modifier, fire+modifier, acid+modifier, wound+modifier, consume+modifier)
+	return getArmor(melee+modifier, bullet+modifier, laser+modifier, energy+modifier, bomb+modifier, bio+modifier, fire+modifier, acid+modifier)
 
 /datum/armor/proc/setRating(melee, bullet, laser, energy, bomb, bio, fire, acid, wound, consume)
 	return getArmor((isnull(melee) ? src.melee : melee),\
@@ -58,21 +54,19 @@
 					(isnull(bomb) ? src.bomb : bomb),\
 					(isnull(bio) ? src.bio : bio),\
 					(isnull(fire) ? src.fire : fire),\
-					(isnull(acid) ? src.acid : acid),\
-					(isnull(wound) ? src.wound : wound),\
-					(isnull(consume) ? src.consume : consume))
+					(isnull(acid) ? src.acid : acid))
 
 /datum/armor/proc/getRating(rating)
 	return vars[rating]
 
 /datum/armor/proc/getList()
-	return list(MELEE = melee, BULLET = bullet, LASER = laser, ENERGY = energy, BOMB = bomb, BIO = bio, FIRE = fire, ACID = acid, WOUND = wound, CONSUME = consume)
+	return list(MELEE = melee, BULLET = bullet, LASER = laser, ENERGY = energy, BOMB = bomb, BIO = bio, FIRE = fire, ACID = acid)
 
 /datum/armor/proc/attachArmor(datum/armor/AA)
-	return getArmor(melee+AA.melee, bullet+AA.bullet, laser+AA.laser, energy+AA.energy, bomb+AA.bomb, bio+AA.bio, fire+AA.fire, acid+AA.acid, wound+AA.wound, consume+AA.consume)
+	return getArmor(melee+AA.melee, bullet+AA.bullet, laser+AA.laser, energy+AA.energy, bomb+AA.bomb, bio+AA.bio, fire+AA.fire, acid+AA.acid)
 
 /datum/armor/proc/detachArmor(datum/armor/AA)
-	return getArmor(melee-AA.melee, bullet-AA.bullet, laser-AA.laser, energy-AA.energy, bomb-AA.bomb, bio-AA.bio, fire-AA.fire, acid-AA.acid, wound-AA.wound, consume-AA.consume)
+	return getArmor(melee-AA.melee, bullet-AA.bullet, laser-AA.laser, energy-AA.energy, bomb-AA.bomb, bio-AA.bio, fire-AA.fire, acid-AA.acid)
 
 /datum/armor/GenerateTag()
 	. = ..()

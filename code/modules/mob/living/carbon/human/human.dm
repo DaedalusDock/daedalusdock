@@ -25,6 +25,10 @@
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
 	AddElement(/datum/element/strippable, GLOB.strippable_human_items, TYPE_PROC_REF(/mob/living/carbon/human, should_strip))
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 	become_area_sensitive()
 	GLOB.human_list += src
 	become_atmos_sensitive()
@@ -102,10 +106,6 @@
 		if(check_obscured_slots(TRUE) & slot)
 			to_chat(usr, span_warning("You can't reach that! Something is covering it."))
 			return
-	if(href_list["open_examine_panel"])
-		var/datum/browser/popup = new(usr, "examine-[REF(src)]", name, 500, 200)
-		popup.set_content(examine_text)
-		popup.open(usr)
 
 ///////HUDs///////
 	if(href_list["hud"])
@@ -362,8 +362,11 @@
 	..() //end of this massive fucking chain. TODO: make the hud chain not spooky. - Yeah, great job doing that.
 
 //called when something steps onto a human
-/mob/living/carbon/human/Crossed(atom/movable/crossed_by, oldloc)
-	spreadFire(crossed_by)
+/mob/living/carbon/human/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	spreadFire(AM)
 
 /mob/living/carbon/human/proc/canUseHUD()
 	return (mobility_flags & MOBILITY_USE)
@@ -378,9 +381,7 @@
 			. = FALSE
 	else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
 		. = FALSE
-	var/obj/item/bodypart/the_part = get_bodypart(target_zone)
-	if(!the_part)
-		return FALSE
+	var/obj/item/bodypart/the_part = get_bodypart(target_zone) || get_bodypart(BODY_ZONE_CHEST)
 	// Loop through the clothing covering this bodypart and see if there's any thiccmaterials
 	if(!(injection_flags & INJECT_CHECK_PENETRATE_THICK))
 		for(var/obj/item/clothing/iter_clothing in clothingonpart(the_part))
@@ -392,9 +393,6 @@
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
 		var/obj/item/bodypart/the_part = get_bodypart(target_zone || deprecise_zone(user.zone_selected))
-		if(!the_part)
-			to_chat(user, span_alert("There is no bodypart there."))
-			return
 		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.name]."))
 
 /mob/living/carbon/human/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
@@ -530,18 +528,6 @@
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs. It feels good."))
 			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
 
-		if(target.undergoing_cardiac_arrest())
-			if(prob(10))
-				var/obj/item/bodypart/BP = target.get_bodypart(BODY_ZONE_CHEST)
-				BP.break_bones()
-
-			var/obj/item/organ/heart/heart = target.getorganslot(ORGAN_SLOT_HEART)
-			if(heart)
-				heart.external_pump = list(world.time, 0.7 + rand(-0.1,0.1))
-
-			if(target.stat != DEAD && prob(6))
-				target.resuscitate()
-
 		if (target.health <= target.crit_threshold)
 			if (!panicking)
 				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
@@ -560,8 +546,27 @@
 		if(!silent)
 			to_chat(src, span_warning("[target.name] is dead!"))
 		return FALSE
-	if(!target.undergoing_cardiac_arrest() && !target.getOxyLoss())
+
+	if (is_mouth_covered())
+		if(!silent)
+			to_chat(src, span_warning("Remove your mask first!"))
 		return FALSE
+
+	if (target.is_mouth_covered())
+		if(!silent)
+			to_chat(src, span_warning("Remove [p_their()] mask first!"))
+		return FALSE
+
+	if (!getorganslot(ORGAN_SLOT_LUNGS))
+		if(!silent)
+			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
+		return FALSE
+
+	if (HAS_TRAIT(src, TRAIT_NOBREATH))
+		if(!silent)
+			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
+		return FALSE
+
 	return TRUE
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
@@ -771,11 +776,6 @@
 	if(admin_revive)
 		regenerate_limbs()
 		regenerate_organs()
-
-	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		BP.adjustPain(-INFINITY)
-
-	shock_stage = 0
 
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		BP.set_sever_artery(FALSE)

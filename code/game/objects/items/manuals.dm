@@ -393,13 +393,6 @@
 	starting_title = "Medical Space Compendium, Volume 638"
 	page_link = "Guide_to_medicine"
 
-/obj/item/book/manual/wiki/surgery
-	name = "Brain Surgery for Dummies"
-	icon_state = "book4"
-	starting_author = "Dr. F. Fran"
-	starting_title = "Brain Surgery for Dummies"
-	page_link = "Surgery"
-
 /obj/item/book/manual/wiki/grenades
 	name = "DIY Chemical Grenades"
 	icon_state = "book2"
@@ -442,3 +435,46 @@
 	starting_author = "Kryson"
 	starting_title = "Unethically Grown Organics"
 	page_link = "Guide_to_cytology"
+
+/*
+ *
+ * Codex Books
+ *
+ */
+
+/obj/item/book/manual/codex
+	abstract_type = /obj/item/book/manual/codex
+	name = "Abstract Codex Book"
+
+	/// Type or String (Type preferred for compiletime checking, if possible.) of the codex entry to open.
+	var/datum/codex_entry/target_entry
+
+/obj/item/book/manual/codex/on_read(mob/user)
+	//No parent call.
+	if(!istype(target_entry))
+		target_entry = SScodex.get_codex_entry(target_entry)
+		if(!target_entry)
+			to_chat(user, span_warning("\The [src] is blank...?"))
+			return
+	SScodex.present_codex_entry(user, target_entry)
+	return
+
+/obj/item/book/manual/codex/surgery
+	name = "A.P. Surgical Journal, #### Edition"
+	starting_title = "A.P. Surgical Journal, #### Edition"
+	desc = "A reprint of the Aether Pharmaceutical surgical journal, Detailing the latest methods of medicial butchering."
+	icon_state = "bookaether"
+	target_entry = "Guide to Surgery"
+
+/obj/item/book/manual/codex/surgery/Initialize()
+	//Station gets the outdated ones :smug:
+	name = "A.P. Surgical Journal, [CURRENT_STATION_YEAR-rand(1,3)] Edition"
+	starting_title = name
+	. = ..()
+
+/obj/item/book/manual/codex/supermatter
+	name = "DSP 200-234-222: Supermatter Operations"
+	starting_title = "DSP 200-234-222: Supermatter Operations"
+	desc = "An entry of the Daedlus Service Practices, This one concerns the operation of supermatter engines."
+	icon_state = "bookdsp"
+	target_entry = "Guide to The Supermatter"

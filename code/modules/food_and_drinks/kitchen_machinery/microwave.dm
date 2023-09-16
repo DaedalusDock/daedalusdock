@@ -205,14 +205,14 @@
 	..()
 
 /obj/machinery/microwave/attack_hand_secondary(mob/user, list/modifiers)
-	if(user.canUseTopic(src, !issilicon(usr)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		cook()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/microwave/ui_interact(mob/user)
 	. = ..()
 
-	if(operating || panel_open || !anchored || !user.canUseTopic(src, !issilicon(user)))
+	if(operating || panel_open || !anchored || !user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(isAI(user) && (machine_stat & NOPOWER))
 		return
@@ -227,7 +227,7 @@
 	var/choice = show_radial_menu(user, src, isAI(user) ? ai_radial_options : radial_options, require_near = !issilicon(user))
 
 	// post choice verification
-	if(operating || panel_open || !anchored || !user.canUseTopic(src, !issilicon(user)))
+	if(operating || panel_open || !anchored || !user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(isAI(user) && (machine_stat & NOPOWER))
 		return

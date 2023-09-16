@@ -632,7 +632,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	..()
 	if(!can_interact(usr))
 		return TRUE
-	if(!usr.canUseTopic(src))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return TRUE
 	add_fingerprint(usr)
 	update_last_used(usr)

@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Wiki Books now render (more) properly
-  - bugfix: Space Law book points to Corporate Regulations.

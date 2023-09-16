@@ -60,12 +60,9 @@
 	if(prob(PROB_SPECIAL))
 		forge_special_objective()
 
-	var/objective_limit = CONFIG_GET(number/traitor_objectives_amount)
 	var/objective_count = length(objectives)
 
-	// for(in...to) loops iterate inclusively, so to reach objective_limit we need to loop to objective_limit - 1
-	// This does not give them 1 fewer objectives than intended.
-	for(var/i in objective_count to objective_limit - 1)
+	for(var/i in objective_count to 1)
 		var/datum/objective/assassinate/kill_objective = new
 		kill_objective.owner = owner
 		kill_objective.find_target()

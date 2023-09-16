@@ -1008,7 +1008,7 @@
 	return ISINRANGE(their_turf.x, our_turf.x - interaction_range, our_turf.x + interaction_range) && ISINRANGE(their_turf.y, our_turf.y - interaction_range, our_turf.y + interaction_range)
 
 ///Can the mob use Topic to interact with machines
-/mob/proc/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
+/mob/proc/canUseTopic(atom/movable/target, flags)
 	return
 
 ///Can this mob use storage

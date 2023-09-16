@@ -58,6 +58,11 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define HAS_DISASSOCIATED_STORAGE_1 (1<<19)
 // Atom has similar priority to border objects when doing Bump() calculations.
 #define BUMP_PRIORITY_1 (1<<20)
+/// If this atom has experienced a decal element "init finished" sourced appearance update
+/// We use this to ensure stacked decals don't double up appearance updates for no rasin
+/// Flag as an optimization, don't make this a trait without profiling
+/// Yes I know this is a stupid flag, no you can't take him from me ~LemonInTheDark
+#define DECAL_INIT_UPDATE_EXPERIENCED_1 (1<<21)
 
 //OH YEAH BABY FLAGS_2 HERE WE GO
 ///Plasma Contamination
@@ -331,10 +336,3 @@ GLOBAL_LIST_INIT(z_defines, list(
 // This is intended for use on dev-defined openspace turfs, don't put _OVERWRITE in here unless you feel like having people ask why their zturfs are empty
 #define Z_MIMIC_DEFAULTS (Z_MIMIC_BELOW)	//! Common defaults for zturfs.
 #define ZMM_WIDE_LOAD (ZMM_LOOKAHEAD | ZMM_LOOKBESIDE)	//! Atom is big and needs to scan one extra turf in both X and Y. This only extends the range by one turf. Cheap, but not free.
-
-/// Atom wants Crossed() called
-#define CROSSED (1<<0)
-/// Atom wants Uncrossed() called
-#define UNCROSSED (1<<1)
-/// Atom wants Exit() called.
-#define EXIT (1<<2)

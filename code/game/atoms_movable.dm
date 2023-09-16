@@ -128,7 +128,7 @@
 				managed_overlays = flat
 		if(EMISSIVE_BLOCK_UNIQUE)
 			render_target = ref(src)
-			em_block = new(src, render_target)
+			em_block = new(null, src)
 			overlays += em_block
 			if(managed_overlays)
 				if(islist(managed_overlays))
@@ -206,11 +206,10 @@
 /atom/movable/proc/update_emissive_block()
 	if(!blocks_emissive)
 		return
-	else if (blocks_emissive == EMISSIVE_BLOCK_GENERIC)
-		var/mutable_appearance/gen_emissive_blocker = emissive_blocker(icon, icon_state, alpha = src.alpha, appearance_flags = src.appearance_flags)
-		gen_emissive_blocker.dir = dir
-		return gen_emissive_blocker
-	else if(blocks_emissive == EMISSIVE_BLOCK_UNIQUE)
+	if (blocks_emissive == EMISSIVE_BLOCK_GENERIC)
+		return fast_emissive_blocker(src)
+
+	if(blocks_emissive == EMISSIVE_BLOCK_UNIQUE)
 		if(!em_block && !QDELETED(src))
 			render_target = ref(src)
 			em_block = new(src, render_target)
@@ -717,21 +716,9 @@
 		for(var/atom/exiting_loc as anything in old_locs)
 			if(!exiting_loc.Exit(src, direction))
 				return
-			if(LAZYLEN(exiting_loc.check_exit))
-				for(var/atom/movable/blocker as anything in exiting_loc.check_exit)
-					if(blocker == src)
-						continue
-					if(!blocker.Exit(src, direction))
-						return
 	else
 		if(!loc.Exit(src, direction))
 			return
-		if(LAZYLEN(loc.check_exit))
-			for(var/atom/movable/blocker as anything in loc.check_exit)
-				if(blocker == src)
-					continue
-				if(!blocker.Exit(src, direction))
-					return
 
 	var/list/new_locs
 	if(is_multi_tile_object && isturf(newloc))
@@ -971,8 +958,9 @@
 	return CanPass(crosser, get_dir(src, crosser))
 
 ///default byond proc that is deprecated for us in lieu of signals. do not call
-/atom/movable/Crossed(atom/movable/crossed_by, oldloc, list/old_locs)
-	CRASH("Bad Crossed() call.")
+/atom/movable/Crossed(atom/movable/crossed_by, oldloc)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	CRASH("atom/movable/Crossed() was called!")
 
 /**
  * `Uncross()` is a default BYOND proc that is called when something is *going*
@@ -998,8 +986,15 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 	CRASH("Uncross() should not be being called, please read the doc-comment for it for why.")
 
-/atom/movable/Uncrossed(atom/movable/gone, direction)
-	CRASH("Bad Uncrossed() call.")
+/**
+ * default byond proc that is normally called on everything inside the previous turf
+ * a movable was in after moving to its current turf
+ * this is wasteful since the vast majority of objects do not use Uncrossed
+ * use connect_loc to register to COMSIG_ATOM_EXITED instead
+ */
+/atom/movable/Uncrossed(atom/movable/uncrossed_atom)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	CRASH("/atom/movable/Uncrossed() was called")
 
 /atom/movable/Bump(atom/bumped_atom)
 	if(!bumped_atom)

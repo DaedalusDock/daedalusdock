@@ -48,10 +48,10 @@
 		else
 			AM.throw_at(pick(targets), 1, 1)
 
+	flipped = TRUE
 	setDir(direction)
 
 	flags_1 |= ON_BORDER_1
-	flipped = TRUE
 	for(var/D in list(turn(direction, 90), turn(direction, -90)))
 		var/obj/structure/table/neighbor = locate() in get_step(src, D)
 		if(!neighbor)

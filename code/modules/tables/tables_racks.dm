@@ -175,7 +175,7 @@
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
 
-/obj/structure/table/proc/check_exit(atom/movable/leaving, direction)
+/obj/structure/table/proc/check_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
 	if(!density)
 		return
@@ -527,7 +527,7 @@
 	if(mover.pass_flags & PASSGLASS)
 		return TRUE
 
-/obj/structure/table/glass/check_exit(atom/movable/leaving, direction)
+/obj/structure/table/glass/check_exit(datum/source, atom/movable/leaving, direction)
 	. = ..()
 	if(. || !flipped)
 		return

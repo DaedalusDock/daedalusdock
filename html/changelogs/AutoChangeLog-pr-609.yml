@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Having non-living mobs (such as the AI camera) will no longer break the
+      EOR credits roll.

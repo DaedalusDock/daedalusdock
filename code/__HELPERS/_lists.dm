@@ -429,6 +429,43 @@
 
 	return null
 
+/// Takes a weighted list (see above) and expands it into raw entries
+/// This eats more memory, but saves time when actually picking from it
+/proc/expand_weights(list/list_to_pick)
+	if(!length(list_to_pick))
+		return
+
+	var/list/values = list()
+	for(var/item in list_to_pick)
+		var/value = list_to_pick[item]
+		if(!value)
+			continue
+		values += value
+	var/gcf = greatest_common_factor(values)
+
+	var/list/output = list()
+	for(var/item in list_to_pick)
+		var/value = list_to_pick[item]
+		if(!value)
+			continue
+		for(var/i in 1 to value / gcf)
+			output += item
+	return output
+
+/// Takes a list of numbers as input, returns the highest value that is cleanly divides them all
+/// Note: this implementation is expensive as heck for large numbers, I only use it because most of my usecase
+/// Is < 10 ints
+/proc/greatest_common_factor(list/values)
+	var/smallest = min(arglist(values))
+	for(var/i in smallest to 1 step -1)
+		var/safe = TRUE
+		for(var/entry in values)
+			if(entry % i != 0)
+				safe = FALSE
+				break
+		if(safe)
+			return i
+
 /// Pick a random element from the list and remove it from the list.
 /proc/pick_n_take(list/list_to_pick)
 	RETURN_TYPE(list_to_pick[_].type)
@@ -1007,12 +1044,33 @@
 
 /// Runtimes if the passed in list is not sorted
 /proc/assert_sorted(list/list, name, cmp = GLOBAL_PROC_REF(cmp_numeric_asc))
+	var/static/list/thrown_exceptions = list()
 	var/last_value = list[1]
 
 	for (var/index in 2 to list.len)
 		var/value = list[index]
 
 		if (call(cmp)(value, last_value) < 0)
-			stack_trace("[name] is not sorted. value at [index] ([value]) is in the wrong place compared to the previous value of [last_value] (when compared to by [cmp])")
+			if(thrown_exceptions[name])
+				return
+			thrown_exceptions[name] = TRUE
+			throw EXCEPTION("[name] is not sorted. value at [index] ([value]) is in the wrong place compared to the previous value of [last_value] (when compared to by [cmp])")
 
 		last_value = value
+
+/// Turns a color string such as "#FFFFFF#00FFFF" into a list of ("#FFFFFF", #00FFFF)
+/proc/color_string_to_list(color_string)
+	if(!color_string)
+		return null
+	. = list()
+	var/list/split_colors = splittext(color_string, "#")
+	for(var/color in 2 to length(split_colors))
+		. += "#[split_colors[color]]"
+
+/// Turns a list such as ("#FFFFFF", #00FFFF) into a color string of "#FFFFFF#00FFFF"
+/proc/color_list_to_string(list/color_list)
+	if(!islist(color_list))
+		return null
+	. = ""
+	for(var/color in color_list)
+		. += color

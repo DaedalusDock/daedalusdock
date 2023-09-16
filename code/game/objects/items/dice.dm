@@ -53,6 +53,8 @@
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "d6"
 	w_class = WEIGHT_CLASS_TINY
+	/// Does this dice have number overlays?
+	var/has_overlays = TRUE
 	var/sides = 6
 	var/result = null
 	var/list/special_faces = list() //entries should match up to sides var if used
@@ -92,7 +94,7 @@
 /obj/item/dice/d4/Initialize(mapload)
 	. = ..()
 	// 1d4 damage
-	AddComponent(/datum/component/caltrop, min_damage = 1, max_damage = 4)
+	AddComponent(/datum/component/caltrop, min_damage = 1, max_damage = 4, probability = 4)
 
 /obj/item/dice/d6
 	name = "d6"
@@ -156,8 +158,9 @@
 	icon_state = "d100"
 	w_class = WEIGHT_CLASS_SMALL
 	sides = 100
+	has_overlays = FALSE
 
-/obj/item/dice/d100/ComponentInitialize()
+/obj/item/dice/d100/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
@@ -166,9 +169,10 @@
 	desc = "A weird die with raised text printed on the faces. Everything's white on white so reading it is a struggle. What poor design!"
 	icon_state = "8bd20"
 	sides = 20
+	has_overlays = FALSE
 	special_faces = list("It is certain","It is decidedly so","Without a doubt","Yes, definitely","You may rely on it","As I see it, yes","Most likely","Outlook good","Yes","Signs point to yes","Reply hazy try again","Ask again later","Better not tell you now","Cannot predict now","Concentrate and ask again","Don't count on it","My reply is no","My sources say no","Outlook not so good","Very doubtful")
 
-/obj/item/dice/eightbd20/ComponentInitialize()
+/obj/item/dice/eightbd20/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
@@ -177,9 +181,10 @@
 	desc = "A die that exists in four dimensional space. Properly interpreting them can only be done with the help of a mathematician, a physicist, and a priest."
 	icon_state = "4dd6"
 	sides = 48
+	has_overlays = FALSE
 	special_faces = list("Cube-Side: 1-1","Cube-Side: 1-2","Cube-Side: 1-3","Cube-Side: 1-4","Cube-Side: 1-5","Cube-Side: 1-6","Cube-Side: 2-1","Cube-Side: 2-2","Cube-Side: 2-3","Cube-Side: 2-4","Cube-Side: 2-5","Cube-Side: 2-6","Cube-Side: 3-1","Cube-Side: 3-2","Cube-Side: 3-3","Cube-Side: 3-4","Cube-Side: 3-5","Cube-Side: 3-6","Cube-Side: 4-1","Cube-Side: 4-2","Cube-Side: 4-3","Cube-Side: 4-4","Cube-Side: 4-5","Cube-Side: 4-6","Cube-Side: 5-1","Cube-Side: 5-2","Cube-Side: 5-3","Cube-Side: 5-4","Cube-Side: 5-5","Cube-Side: 5-6","Cube-Side: 6-1","Cube-Side: 6-2","Cube-Side: 6-3","Cube-Side: 6-4","Cube-Side: 6-5","Cube-Side: 6-6","Cube-Side: 7-1","Cube-Side: 7-2","Cube-Side: 7-3","Cube-Side: 7-4","Cube-Side: 7-5","Cube-Side: 7-6","Cube-Side: 8-1","Cube-Side: 8-2","Cube-Side: 8-3","Cube-Side: 8-4","Cube-Side: 8-5","Cube-Side: 8-6")
 
-/obj/item/dice/fourdd6/ComponentInitialize()
+/obj/item/dice/fourdd6/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
@@ -222,6 +227,8 @@
 
 /obj/item/dice/update_overlays()
 	. = ..()
+	if(!has_overlays)
+		return
 	. += "[icon_state]-[result]"
 
 /obj/item/dice/microwave_act(obj/machinery/microwave/M)

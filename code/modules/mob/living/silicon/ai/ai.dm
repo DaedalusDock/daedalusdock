@@ -708,10 +708,10 @@
 
 	if (!camera_light_on)
 		to_chat(src, "Camera lights deactivated.")
-
-		for (var/obj/machinery/camera/C in lit_cameras)
-			C.set_light(0)
-			lit_cameras = list()
+		var/list/old_cams = lit_cameras.Copy() //Togglelight will fail if the camera is in a lit_cameras list.
+		lit_cameras.Cut()
+		for (var/obj/machinery/camera/C in old_cams)
+			C.Togglelight(0)
 
 		return
 
@@ -789,11 +789,11 @@
 		to_chat(src, "You have been downloaded to a mobile storage device. Remote device connection severed.")
 		to_chat(user, "[span_boldnotice("Transfer successful")]: [name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
 
-/mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
+/mob/living/silicon/ai/canUseTopic(atom/movable/target, flags)
 	if(control_disabled)
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
-	return can_see(M) && ..() //stop AIs from leaving windows open and using then after they lose vision
+	return can_see(target) && ..() //stop AIs from leaving windows open and using then after they lose vision
 
 /mob/living/silicon/ai/proc/can_see(atom/A)
 	if(isturf(loc)) //AI in core, check if on cameras

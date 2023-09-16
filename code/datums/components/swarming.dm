@@ -28,6 +28,8 @@
 
 /datum/component/swarming/proc/join_swarm(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 
 	var/datum/component/swarming/other_swarm = arrived.GetComponent(/datum/component/swarming)
 	if(!other_swarm)

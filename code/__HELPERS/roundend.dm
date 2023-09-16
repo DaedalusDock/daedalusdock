@@ -707,17 +707,14 @@
 	parts += "</ul>"
 	return parts.Join()
 
-
 /proc/printobjectives(list/objectives)
-	if(!objectives || !objectives.len)
+	if(!length(objectives))
 		return
+
 	var/list/objective_parts = list()
 	var/count = 1
 	for(var/datum/objective/objective in objectives)
-		if(objective.check_completion())
-			objective_parts += "<b>[objective.objective_name] #[count]</b>: [objective.explanation_text] [span_greentext("Success!")]"
-		else
-			objective_parts += "<b>[objective.objective_name] #[count]</b>: [objective.explanation_text] [span_redtext("Fail.")]"
+		objective_parts += "<b>[objective.objective_name] #[count]</b>: [objective.explanation_text] [objective.get_roundend_suffix()]"
 		count++
 	return objective_parts.Join("<br>")
 

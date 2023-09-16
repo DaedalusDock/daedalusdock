@@ -1,4 +1,5 @@
 /mob/living/carbon
+	maxHealth = 200
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	//pressure_resistance = 15
@@ -13,14 +14,19 @@
 	blocks_emissive = NONE
 	zmm_flags = ZMM_MANGLE_PLANES //Emissive eyes :holding_back_tears:
 
-	///List of [/obj/item/organ/internal] in the mob. They don't go in the contents for some reason I don't want to know.
-	var/list/obj/item/organ/internal/internal_organs = list()
-	///Same as [above][/mob/living/carbon/var/internal_organs], but stores "slot ID" - "organ" pairs for easy access.
-	var/list/internal_organs_slot = list()
-	///List of [/obj/item/organ/external] in the mob, similarly used as internal_organs.
-	var/list/obj/item/organ/external/external_organs = list()
-	///Same as [above][/mob/living/carbon/var/external_organs], but stores "ID" = "organ" pairs.
-	var/list/external_organs_slot = list()
+	///List of [/obj/item/organ] in the mob.
+	var/list/obj/item/organ/organs = list()
+	///List of [/obj/item/organ] in the mob.
+	var/list/obj/item/organ/cosmetic_organs = list()
+	///Stores "slot ID" - "organ" pairs for easy access. Contains both functional and cosmetic organs
+	var/list/organs_by_slot = list()
+	///A list of organs that process, used to keep life() fast!
+	var/list/obj/item/organ/processing_organs = list()
+
+	/// Bloodstream reagents
+	var/datum/reagents/bloodstream = null
+	/// Surface level reagents
+	var/datum/reagents/touching = null
 	///Can't talk. Value goes down every life proc. NOTE TO FUTURE CODERS: DO NOT INITIALIZE NUMERICAL VARS AS NULL OR I WILL MURDER YOU.
 	var/silent = 0
 	///How many dream images we have left to send
@@ -91,9 +97,6 @@
 	var/next_hallucination = 0
 	var/damageoverlaytemp = 0
 
-	///used to halt stamina regen temporarily
-	var/stam_regen_start_time = 0
-
 	/// Protection (insulation) from the heat, Value 0-1 corresponding to the percentage of protection
 	var/heat_protection = 0 // No heat protection
 	/// Protection (insulation) from the cold, Value 0-1 corresponding to the percentage of protection
@@ -111,4 +114,14 @@
 	/// Only load in visual organs
 	var/visual_only_organs = FALSE
 
+	///Is this carbon trying to sprint?
+	var/sprint_key_down = FALSE
+	var/sprinting = FALSE
+	///How many tiles we have continuously moved in the same direction
+	var/sustained_moves = 0
+	//stores flavor text here.
+	var/examine_text = ""
+
 	COOLDOWN_DECLARE(bleeding_message_cd)
+	COOLDOWN_DECLARE(blood_spray_cd)
+	COOLDOWN_DECLARE(breath_sound_cd)

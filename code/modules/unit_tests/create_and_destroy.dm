@@ -5,6 +5,7 @@
 
 GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 /datum/unit_test/create_and_destroy/Run()
+	log_test("[TEST_OUTPUT_YELLOW("START")]: [type]")
 	//We'll spawn everything here
 	var/turf/spawn_at = run_loc_floor_bottom_left
 	var/list/ignore = list(

@@ -33,6 +33,9 @@ SUBSYSTEM_DEF(job)
 	/// Lazylist of mob:occupation_string pairs.
 	var/list/dynamic_forced_occupations
 
+	var/list/employers = list()
+	var/list/employers_by_name = list()
+
 	/**
 	 * Keys should be assigned job roles. Values should be >= 1.
 	 * Represents the chain of command on the station. Lower numbers mean higher priority.
@@ -66,11 +69,9 @@ SUBSYSTEM_DEF(job)
 	setup_job_lists()
 	if(!length(all_occupations))
 		SetupOccupations()
-	if(CONFIG_GET(flag/load_jobs_from_txt))
-		LoadJobs()
 	set_overflow_role(CONFIG_GET(string/overflow_job))
+	setup_employers()
 	return ..()
-
 
 /datum/controller/subsystem/job/proc/set_overflow_role(new_overflow_role)
 	var/datum/job/new_overflow = ispath(new_overflow_role) ? GetJobType(new_overflow_role) : GetJob(new_overflow_role)
@@ -161,6 +162,11 @@ SUBSYSTEM_DEF(job)
 
 	return TRUE
 
+/datum/controller/subsystem/job/proc/setup_employers()
+	for(var/datum/employer/E as anything in subtypesof(/datum/employer))
+		E = new E
+		employers += E
+		employers_by_name[E.name] = E
 
 /datum/controller/subsystem/job/proc/GetJob(rank)
 	if(!length(all_occupations))
@@ -177,6 +183,15 @@ SUBSYSTEM_DEF(job)
 	if(!length(all_occupations))
 		SetupOccupations()
 	return joinable_departments_by_type[department_type]
+
+/datum/controller/subsystem/job/proc/GetEmployer(datum/employer/E)
+	RETURN_TYPE(/datum/employer)
+	if(!length(employers))
+		setup_employers()
+
+	if(istext(E))
+		return employers_by_name[E]
+	return locate(E) in employers
 
 /**
  * Assigns the given job role to the player.
@@ -213,7 +228,7 @@ SUBSYSTEM_DEF(job)
 			JobDebug("FOC player client no longer exists, Player: [player]")
 			continue
 		// Initial screening check. Does the player even have the job enabled, if they do - Is it at the correct priority level?
-		var/player_job_level = player.client?.prefs.job_preferences[job.title]
+		var/player_job_level = player.client?.prefs.read_preference(/datum/preference/blob/job_priority)[job.title]
 		if(isnull(player_job_level))
 			JobDebug("FOC player job not enabled, Player: [player]")
 			continue
@@ -435,7 +450,7 @@ SUBSYSTEM_DEF(job)
 					continue
 
 				// Filter any job that doesn't fit the current level.
-				var/player_job_level = player.client?.prefs.job_preferences[job.title]
+				var/player_job_level = player.client?.prefs.read_preference(/datum/preference/blob/job_priority)[job.title]
 				if(isnull(player_job_level))
 					JobDebug("FOC player job not enabled, Player: [player]")
 					continue
@@ -601,18 +616,6 @@ SUBSYSTEM_DEF(job)
 		else //We ran out of spare locker spawns!
 			break
 
-
-/datum/controller/subsystem/job/proc/LoadJobs()
-	var/jobstext = file2text("[global.config.directory]/jobs.txt")
-	for(var/datum/job/job as anything in joinable_occupations)
-		var/regex/jobs = new("[job.title]=(-1|\\d+),(-1|\\d+)")
-		jobs.Find(jobstext)
-		if(length(jobs.group)<2)
-			stack_trace("failed to find a job entry for [job.title] in jobs.txt")
-			continue
-		job.total_positions = text2num(jobs.group[1])
-		job.spawn_positions = text2num(jobs.group[2])
-
 /datum/controller/subsystem/job/proc/HandleFeedbackGathering()
 	for(var/datum/job/job as anything in joinable_occupations)
 		var/high = 0 //high
@@ -634,7 +637,7 @@ SUBSYSTEM_DEF(job)
 			if(job.required_playtime_remaining(player.client))
 				young++
 				continue
-			switch(player.client.prefs.job_preferences[job.title])
+			switch(player.client?.prefs.read_preference(/datum/preference/blob/job_priority)[job.title])
 				if(JP_HIGH)
 					high++
 				if(JP_MEDIUM)
@@ -794,6 +797,7 @@ SUBSYSTEM_DEF(job)
 /// Builds various lists of jobs based on station, centcom and additional jobs with icons associated with them.
 /datum/controller/subsystem/job/proc/setup_job_lists()
 	job_priorities_to_strings = list(
+		"[JP_NEVER]" = "Never",
 		"[JP_LOW]" = "Low Priority",
 		"[JP_MEDIUM]" = "Medium Priority",
 		"[JP_HIGH]" = "High Priority",

@@ -39,7 +39,7 @@
 	if(!inputvalue)
 		return
 
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE))
 		name = "folder[(inputvalue ? " - '[inputvalue]'" : null)]"
 
 /obj/item/folder/proc/remove_item(obj/item/Item, mob/user)
@@ -63,8 +63,9 @@
 /obj/item/folder/attackby(obj/item/weapon, mob/user, params)
 	if(burn_paper_product_attackby_check(weapon, user))
 		return
-	if(istype(weapon, /obj/item/paper) || istype(weapon, /obj/item/photo) || istype(weapon, /obj/item/documents))
-		//Add paper, photo or documents into the folder
+	if(istype(weapon, /obj/item/paper) || istype(weapon, /obj/item/photo) || istype(weapon, /obj/item/documents) || istype(weapon, /obj/item/disk))
+		//If this check gets any longer kill me.
+		//Add paper, photo, documents, or disks into the folder
 		if(!user.transferItemToLoc(weapon, src))
 			return
 		to_chat(user, span_notice("You put [weapon] into [src]."))
@@ -118,3 +119,42 @@
 			if(istype(Item))
 				usr.examinate(Item)
 				. = TRUE
+
+// thanks chinsky
+/obj/item/folder/envelope
+	name = "envelope"
+	desc = "A thick envelope. You can't see what's inside."
+	icon_state = "envelope_sealed"
+	bg_color = "#B5912B"
+	// *_sealed, *0, *1 required.
+	base_icon_state = "envelope"
+	/// Are we still bricked up?
+	var/sealed = TRUE
+
+/obj/item/folder/envelope/update_icon(updates)
+	. = ..()
+	if(sealed)
+		icon_state = "[base_icon_state]_sealed"
+	else
+		icon_state = "[base_icon_state][!!length(contents)]" //heehoo boolean magic
+
+/obj/item/folder/envelope/proc/sealcheck(mob/user)
+	var/ripperoni = alert("Are you sure you want to break the seal on \the [src]?", "Confirmation","Yes", "No")
+	if(ripperoni == "Yes")
+		visible_message("[user] breaks the seal on \the [src], and opens it.")
+		sealed = FALSE
+		update_icon()
+
+/obj/item/folder/envelope/attack_self(mob/user)
+	if(sealed)
+		sealcheck(user)
+		return
+	else
+		. = ..()
+
+/obj/item/folder/envelope/attackby(obj/item/weapon, mob/user, params)
+	if(sealed)
+		sealcheck(user)
+		return
+	else
+		. = ..()

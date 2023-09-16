@@ -19,12 +19,14 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	color = "yellow"
 	layer = WIRE_LAYER //Above hidden pipes, GAS_PIPE_HIDDEN_LAYER
 	anchored = TRUE
-	obj_flags = CAN_BE_HIT | ON_BLUEPRINTS
+	obj_flags = CAN_BE_HIT
 	var/linked_dirs = 0 //bitflag
 	var/node = FALSE //used for sprites display
 	var/cable_layer = CABLE_LAYER_2 //bitflag
 	var/machinery_layer = MACHINERY_LAYER_1 //bitflag
 	var/datum/powernet/powernet
+
+	var/is_fully_initialized = FALSE
 
 /obj/structure/cable/layer1
 	color = "red"
@@ -47,6 +49,15 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	Connect_cable()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
 	RegisterSignal(src, COMSIG_RAT_INTERACT, PROC_REF(on_rat_eat))
+	if(isturf(loc))
+		var/turf/turf_loc = loc
+		turf_loc.add_blueprints_preround(src)
+
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/cable/LateInitialize()
+	update_appearance(UPDATE_ICON)
+	is_fully_initialized = TRUE
 
 /obj/structure/cable/proc/on_rat_eat(datum/source, mob/living/simple_animal/hostile/regalrat/king)
 	SIGNAL_HANDLER
@@ -62,15 +73,13 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	if(clear_before_updating)
 		linked_dirs = 0
 	var/obj/machinery/power/search_parent
-	for(var/obj/machinery/power/P in loc)
-		if(istype(P, /obj/machinery/power/terminal))
-			under_thing = UNDER_TERMINAL
-			search_parent = P
-			break
-		if(istype(P, /obj/machinery/power/smes))
-			under_thing = UNDER_SMES
-			search_parent = P
-			break
+
+	if((search_parent = locate(/obj/machinery/power/terminal) in loc))
+		under_thing = UNDER_TERMINAL
+
+	else if((search_parent = locate(/obj/machinery/power/smes) in loc))
+		under_thing = UNDER_SMES
+
 	for(var/check_dir in GLOB.cardinals)
 		var/TB = get_step(src, check_dir)
 		//don't link from smes to its terminal
@@ -95,9 +104,13 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 			if(C.cable_layer & cable_layer)
 				linked_dirs |= check_dir
 				C.linked_dirs |= inverse
-				C.update_appearance()
+				// We will update on LateInitialize otherwise.
+				if (C.is_fully_initialized)
+					C.update_appearance(UPDATE_ICON)
 
-	update_appearance()
+	if (is_fully_initialized)
+		update_appearance(UPDATE_ICON)
+
 
 ///Clear the linked indicator bitflags
 /obj/structure/cable/proc/Disconnect_cable()
@@ -137,7 +150,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	for(var/check_dir in GLOB.cardinals)
 		if(linked_dirs & check_dir)
 			dir_icon_list += "[check_dir]"
-	var/dir_string = dir_icon_list.Join("-")
+	var/dir_string = jointext(dir_icon_list, "-")
 	if(dir_icon_list.len > 1)
 		for(var/obj/O in loc)
 			if(GLOB.wire_node_generating_types[O.type])
@@ -420,8 +433,13 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	desc = "A coil of insulated power cable."
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
+
 	throw_speed = 3
 	throw_range = 5
+	stamina_damage = 5
+	stamina_cost = 5
+	stamina_critical_chance = 10
+
 	mats_per_unit = list(/datum/material/iron=10, /datum/material/glass=5)
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
@@ -546,7 +564,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	if(!istype(H))
 		return ..()
 
-	var/obj/item/bodypart/affecting = H.get_bodypart(check_zone(user.zone_selected))
+	var/obj/item/bodypart/affecting = H.get_bodypart(deprecise_zone(user.zone_selected))
 	if(affecting && !IS_ORGANIC_LIMB(affecting))
 		if(user == H)
 			user.visible_message(span_notice("[user] starts to fix some of the wires in [H]'s [affecting.name]."), span_notice("You start fixing some of the wires in [H == user ? "your" : "[H]'s"] [affecting.name]."))

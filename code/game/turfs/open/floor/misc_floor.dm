@@ -146,6 +146,9 @@
 	name = "high-traction floor"
 	icon_state = "noslip"
 	floor_tile = /obj/item/stack/tile/noslip
+	damaged_icon = 'icons/turf/floors.dmi'
+	broken_blend = BLEND_DEFAULT
+	burned_blend = BLEND_DEFAULT
 	slowdown = -0.3
 
 /turf/open/floor/noslip/setup_broken_states()
@@ -214,9 +217,6 @@
 	custom_materials = list(/datum/material/plastic=500)
 	floor_tile = /obj/item/stack/tile/plastic
 
-/turf/open/floor/plastic/setup_broken_states()
-	return list("plastic-damaged1","plastic-damaged2")
-
 /turf/open/floor/eighties
 	name = "retro floor"
 	desc = "This one takes you back."
@@ -243,9 +243,6 @@
 /turf/open/floor/plating/rust/Initialize(mapload)
 	. = ..()
 	color = null
-
-/turf/open/floor/plating/rust/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/rust)
 
 /turf/open/floor/plating/plasma

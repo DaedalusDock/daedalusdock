@@ -101,32 +101,6 @@
 		style = customStyle
 	setStyle(style) //Upon initialization, give the supplypod an iconstate, name, and description based on the "style" variable. This system is important for the centcom_podlauncher to function correctly
 
-/obj/structure/closet/supplypod/extractionpod/Initialize(mapload)
-	. = ..()
-	var/turf/picked_turf = pick(GLOB.holdingfacility)
-	reverse_dropoff_coords = list(picked_turf.x, picked_turf.y, picked_turf.z)
-
-/obj/structure/closet/supplypod/extractionpod/Destroy()
-	if(recieving)
-		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
-		if (contract_hub.current_contract == tied_contract)
-			contract_hub.current_contract = null
-		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
-		tied_contract = null
-		contract_hub = null
-	return ..()
-
-/obj/structure/closet/supplypod/extractionpod/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
-	. = ..()
-	if(recieving && (atom_integrity <= 0))
-		to_chat(tied_contract.contract.owner, "<BR>[span_userdanger("Extraction pod destroyed. Contract aborted.")]")
-		if (contract_hub.current_contract == tied_contract)
-			contract_hub.current_contract = null
-		contract_hub.assigned_contracts[tied_contract.id].status = CONTRACT_STATUS_ABORTED
-		tied_contract = null
-		contract_hub = null
-
-
 /obj/structure/closet/supplypod/proc/setStyle(chosenStyle) //Used to give the sprite an icon state, name, and description.
 	style = chosenStyle
 	var/base = GLOB.podstyles[chosenStyle][POD_BASE] //GLOB.podstyles is a 2D array we treat as a dictionary. The style represents the verticle index, with the icon state, name, and desc being stored in the horizontal indexes of the 2D array.
@@ -272,7 +246,7 @@
 							break
 			if (effectOrgans) //effectOrgans means remove every organ in our mob
 				var/mob/living/carbon/carbon_target_mob = target_living
-				for(var/obj/item/organ/organ_to_yeet as anything in carbon_target_mob.internal_organs)
+				for(var/obj/item/organ/organ_to_yeet as anything in carbon_target_mob.processing_organs)
 					var/destination = get_edge_target_turf(turf_underneath, pick(GLOB.alldirs)) //Pick a random direction to toss them in
 					organ_to_yeet.Remove(carbon_target_mob) //Note that this isn't the same proc as for lists
 					organ_to_yeet.forceMove(turf_underneath) //Move the organ outta the body

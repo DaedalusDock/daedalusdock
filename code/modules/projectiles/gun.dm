@@ -46,6 +46,9 @@
 	///Can we hold up our target with this? Default to yes
 	var/can_hold_up = TRUE
 
+	/// For every turf a fired projectile travels, increase the target bodyzone inaccuracy by this much.
+	var/accuracy_falloff = 3
+
 	/// Just 'slightly' snowflakey way to modify projectile damage for projectiles fired from this gun.
 	var/projectile_damage_multiplier = 1
 
@@ -192,29 +195,34 @@
 			O.emp_act(severity)
 
 /obj/item/gun/afterattack_secondary(mob/living/victim, mob/living/user, params)
-	if(!isliving(victim) || !IN_GIVEN_RANGE(user, victim, GUNPOINT_SHOOTER_STRAY_RANGE))
-		return ..() //if they're out of range, just shootem.
+	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(!isliving(victim))
+		return
 	if(!can_hold_up)
-		return ..()
-	var/datum/component/gunpoint/gunpoint_component = user.GetComponent(/datum/component/gunpoint)
-	if (gunpoint_component)
-		if(gunpoint_component.target == victim)
-			return ..() //we're already holding them up, shoot that mans instead of complaining
-		to_chat(user, span_warning("You are already holding someone up!"))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
+
+	if(user.gunpoint)
+		if(user.gunpoint.target == victim)
+			return
+		user.gunpoint.register_to_target(victim)
+		return
+
 	if (user == victim)
 		to_chat(user,span_warning("You can't hold yourself up!"))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return
 
-	user.AddComponent(/datum/component/gunpoint, victim, src)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	user.gunpoint = new(null, user, victim, src)
+	return
 
 /obj/item/gun/afterattack(atom/target, mob/living/user, flag, params)
 	..()
+	if(user.use_gunpoint)
+		afterattack_secondary(target, user, params)
+		return TRUE //Cancel the shot!
 	return fire_gun(target, user, flag, params)
 
 /obj/item/gun/proc/fire_gun(atom/target, mob/living/user, flag, params)
-	if(QDELETED(target))
+	if(QDELETED(target) || !target.x) //deleted or not on the map
 		return
 	if(firing_burst)
 		return
@@ -438,7 +446,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 
 	if(bayonet && can_bayonet) //if it has a bayonet, and the bayonet can be removed
@@ -459,7 +467,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(pin && user.is_holding(src))
 		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
@@ -476,7 +484,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(pin && user.is_holding(src))
 		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
@@ -488,6 +496,21 @@
 								span_warning("You rip [pin] out of [src] with [I], mangling the pin in the process."), null, 3)
 			QDEL_NULL(pin)
 			return TRUE
+
+/obj/item/gun/on_disarm_attempt(mob/living/user, mob/living/attacker)
+	var/list/turfs = list()
+	for(var/turf/T in view())
+		turfs += T
+	if(length(turfs))
+		var/turf/shoot_to = pick(turfs)
+		if(process_fire(shoot_to, user, message = FALSE, bonus_spread = 10))
+			user.visible_message(
+				span_danger("\The [src] goes off during the struggle!"),
+				blind_message = span_hear("You hear a gunshot!")
+			)
+			log_combat(attacker, user, "caused a misfire with a disarm")
+			return TRUE
+		log_combat(attacker, user, "caused a misfire with a disarm, but the gun didn't go off")
 
 /obj/item/gun/proc/remove_bayonet(mob/living/user, obj/item/tool_item)
 	tool_item?.play_tool_sound(src)

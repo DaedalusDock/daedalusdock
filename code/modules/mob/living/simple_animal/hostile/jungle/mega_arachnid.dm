@@ -53,12 +53,7 @@
 
 /mob/living/simple_animal/hostile/jungle/mega_arachnid/Initialize(mapload)
 	. = ..()
-	add_cell_sample()
 	mini_arachnid.Grant(src)
-
-/mob/living/simple_animal/hostile/jungle/mega_arachnid/add_cell_sample()
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MEGA_ARACHNID, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/projectile/mega_arachnid
 	name = "flesh snare"
@@ -82,6 +77,3 @@
 	icon_state = "flesh_snare"
 	armed = TRUE
 
-/obj/item/restraints/legcuffs/beartrap/mega_arachnid/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MEGA_ARACHNID, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)

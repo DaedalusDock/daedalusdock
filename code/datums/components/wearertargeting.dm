@@ -3,7 +3,7 @@
 /datum/component/wearertargeting
 	var/list/valid_slots = list()
 	var/list/signals = list()
-	var/proctype = GLOBAL_PROC_REF(pass)
+	var/proctype = GLOBAL_PROC_REF(noop)
 	var/mobtype = /mob/living
 
 /datum/component/wearertargeting/Initialize()

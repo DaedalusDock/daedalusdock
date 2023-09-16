@@ -54,7 +54,8 @@
 		remove_filter("gravity")
 
 /mob/living/mob_negates_gravity()
-	return HAS_TRAIT_FROM(src, TRAIT_IGNORING_GRAVITY, IGNORING_GRAVITY_NEGATION)
+	if(HAS_TRAIT_FROM(src, TRAIT_IGNORING_GRAVITY, IGNORING_GRAVITY_NEGATION))
+		return TRUE
 
 /mob/living/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
@@ -68,7 +69,7 @@
 		return TRUE
 	return !mover.density || body_position == LYING_DOWN
 
-/mob/living/toggle_move_intent()
+/mob/living/set_move_intent(new_state)
 	. = ..()
 	update_move_intent_slowdown()
 
@@ -77,7 +78,14 @@
 	return ..()
 
 /mob/living/proc/update_move_intent_slowdown()
-	add_movespeed_modifier((m_intent == MOVE_INTENT_WALK)? /datum/movespeed_modifier/config_walk_run/walk : /datum/movespeed_modifier/config_walk_run/run)
+	var/modifier
+	if(m_intent == MOVE_INTENT_WALK)
+		modifier = /datum/movespeed_modifier/config_walk_run/walk
+	else if(m_intent == MOVE_INTENT_RUN)
+		modifier =  /datum/movespeed_modifier/config_walk_run/run
+	else
+		modifier = /datum/movespeed_modifier/config_walk_run/sprint
+	add_movespeed_modifier(modifier)
 
 /mob/living/proc/update_turf_movespeed(turf/open/T)
 	if(isopenturf(T))
@@ -122,32 +130,43 @@
 			buckled.unbuckle_mob(src, force = TRUE, can_fall = FALSE)
 		else
 			if(!target)
-				target = can_z_move(dir, get_turf(src), null, z_move_flags, src)
+				target = can_z_move(dir, get_turf(src), z_move_flags, src)
 				if(!target)
 					return FALSE
 			return buckled.zMove(dir, target, z_move_flags) // Return value is a loc.
 	return ..()
 
-/mob/living/can_z_move(direction, turf/start, turf/destination, z_move_flags = ZMOVE_FLIGHT_FLAGS, mob/living/rider)
-	if(z_move_flags & ZMOVE_INCAPACITATED_CHECKS && incapacitated())
-		if(z_move_flags & ZMOVE_FEEDBACK)
-			to_chat(rider || src, span_warning("[rider ? src : "You"] can't do that right now!"))
-		return FALSE
+/mob/living/can_z_move(direction, turf/start, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK, mob/living/rider)
+	// Check physical climbing ability
+	if((z_move_flags & ZMOVE_INCAPACITATED_CHECKS))
+		if(incapacitated())
+			if(z_move_flags & ZMOVE_FEEDBACK)
+				to_chat(rider || src, span_warning("[rider ? src : "You"] can't do that right now!"))
+			return FALSE
+
+		if(ishuman(src))
+			if(!(has_right_hand() && has_left_hand()))
+				if(z_move_flags & ZMOVE_FEEDBACK)
+					to_chat(rider || src, span_notice("Sorry pal, that just isn't going to work..."))
+				return FALSE
+
 	if(!buckled || !(z_move_flags & ZMOVE_ALLOW_BUCKLED))
 		if(!(z_move_flags & ZMOVE_FALL_CHECKS) && incorporeal_move && (!rider || rider.incorporeal_move))
 			//An incorporeal mob will ignore obstacles unless it's a potential fall (it'd suck hard) or is carrying corporeal mobs.
 			//Coupled with flying/floating, this allows the mob to move up and down freely.
 			//By itself, it only allows the mob to move down.
 			z_move_flags |= ZMOVE_IGNORE_OBSTACLES
+
 		return ..()
-	switch(SEND_SIGNAL(buckled, COMSIG_BUCKLED_CAN_Z_MOVE, direction, start, destination, z_move_flags, src))
+
+	switch(SEND_SIGNAL(buckled, COMSIG_BUCKLED_CAN_Z_MOVE, direction, start, z_move_flags, src))
 		if(COMPONENT_RIDDEN_ALLOW_Z_MOVE) // Can be ridden.
-			return buckled.can_z_move(direction, start, destination, z_move_flags, src)
+			return buckled.can_z_move(direction, start, z_move_flags, src)
 		if(COMPONENT_RIDDEN_STOP_Z_MOVE) // Is a ridable but can't be ridden right now. Feedback messages already done.
 			return FALSE
 		else
 			if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS) && !buckled.anchored)
-				return buckled.can_z_move(direction, start, destination, z_move_flags, src)
+				return buckled.can_z_move(direction, start, z_move_flags, src)
 			if(z_move_flags & ZMOVE_FEEDBACK)
 				to_chat(src, span_warning("Unbuckle from [buckled] first."))
 			return FALSE
@@ -158,6 +177,6 @@
 	return ..()
 
 /mob/living/keybind_face_direction(direction)
-	if(stat > SOFT_CRIT)
+	if(stat != CONSCIOUS)
 		return
 	return ..()

@@ -172,7 +172,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/clothing/head/lizard,
 		/obj/item/clothing/shoes/cowboy/lizard,
 		/obj/item/food/kebab/tail,
-		/obj/item/organ/external/tail/lizard,
+		/obj/item/organ/tail/lizard,
 		/obj/item/reagent_containers/food/drinks/bottle/lizardwine,
 		/obj/item/toy/plush/lizard_plushie,
 	)),
@@ -181,7 +181,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/effect/decal/remains/human,
 		/obj/item/clothing/suit/armor/bone,
 		/obj/item/food/meat/slab/human/mutant/skeleton,
-		/obj/item/organ/internal/tongue/bone,
+		/obj/item/organ/tongue/bone,
 		/obj/item/stack/sheet/bone,
 	)),
 
@@ -255,7 +255,6 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/scalpel,
 		/obj/item/storage/medkit,
 		/obj/item/storage/pill_bottle,
-		/obj/item/surgical_drapes,
 		/obj/item/surgicaldrill,
 		/obj/machinery/atmospherics/components/unary/cryo_cell,
 		/obj/machinery/dna_scannernew,
@@ -278,7 +277,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/clothing/under/rank/rnd/research_director,
 		/obj/item/clothing/under/rank/security/head_of_security,
 		/obj/item/megaphone/command,
-		/obj/item/melee/baton/telescopic,
+		/obj/item/assembly/flash/handheld,
 		/obj/item/stamp/captain,
 		/obj/item/stamp/ce,
 		/obj/item/stamp/centcom,
@@ -344,8 +343,8 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/gun/energy/alien,
 		/obj/item/hemostat/alien,
 		/obj/item/melee/baton/abductor,
-		/obj/item/organ/internal/body_egg/alien_embryo,
-		/obj/item/organ/internal/heart/gland,
+		/obj/item/organ/body_egg/alien_embryo,
+		/obj/item/organ/heart/gland,
 		/obj/item/radio/headset/abductor,
 		/obj/item/retractor/alien,
 		/obj/item/scalpel/alien,
@@ -487,7 +486,6 @@ GLOBAL_LIST_INIT(phobia_species, list(
 		/datum/species/pod,
 		/datum/species/shadow,
 	)),
-	"anime" = typecacheof(list(/datum/species/human/felinid)),
 	"conspiracies" = typecacheof(list(
 		/datum/species/abductor,
 		/datum/species/lizard,
@@ -502,7 +500,6 @@ GLOBAL_LIST_INIT(phobia_species, list(
 		/datum/species/plasmaman,
 		/datum/species/skeleton,
 	)),
-	"the supernatural" = typecacheof(list(/datum/species/golem/runic)),
 ))
 
 /// Creates a regular expression to match against the given phobia

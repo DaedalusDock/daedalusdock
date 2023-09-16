@@ -81,7 +81,7 @@
 	name = "nettle soup"
 	desc = "To think, the botanist would've beat you to death with one of these."
 	icon_state = "nettlesoup"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/water = 5, /datum/reagent/consumable/nutriment/vitamin = 9, /datum/reagent/medicine/omnizine = 5)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/water = 5, /datum/reagent/consumable/nutriment/vitamin = 9, /datum/reagent/medicine/tricordrazine = 5)
 	tastes = list("nettles" = 1)
 	foodtypes = VEGETABLES
 	venue_value = FOOD_PRICE_NORMAL
@@ -102,8 +102,8 @@
 		/datum/reagent/consumable/banana,
 		/datum/reagent/consumable/capsaicin,
 		/datum/reagent/consumable/frostoil,
-		/datum/reagent/medicine/oculine,
-		/datum/reagent/medicine/omnizine,
+		/datum/reagent/medicine/imidazoline,
+		/datum/reagent/medicine/tricordrazine,
 		/datum/reagent/toxin,
 		/datum/reagent/toxin/slimejelly,
 		)
@@ -306,4 +306,4 @@
 	food_reagents = list (/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/consumable/nutriment/protein = 2)
 	tastes = list("creamy vegetables"= 2, "sausage" = 1)
 	foodtypes = VEGETABLES | MEAT | GRAIN | BREAKFAST
-	
+

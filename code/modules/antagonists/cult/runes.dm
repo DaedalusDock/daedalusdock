@@ -853,7 +853,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 		to_chat(new_human, span_cultitalic("<b>You are a servant of the Geometer. You have been made semi-corporeal by the cult of Nar'Sie, and you are to serve them at all costs.</b>"))
 
 		while(!QDELETED(src) && !QDELETED(user) && !QDELETED(new_human) && (user in T))
-			if(user.stat != CONSCIOUS || HAS_TRAIT(new_human, TRAIT_CRITICAL_CONDITION))
+			if(user.stat != CONSCIOUS)
 				break
 			user.apply_damage(0.1, BRUTE)
 			sleep(1)
@@ -903,9 +903,9 @@ structure_check() searches for nearby cultist structures required for the invoca
 	no_brain = TRUE
 	. = ..()
 
-/mob/living/carbon/human/cult_ghost/getorganszone(zone, subzones = 0)
+/mob/living/carbon/human/cult_ghost/getorgansofzone(zone, subzones = 0)
 	. = ..()
-	for(var/obj/item/organ/internal/brain/B in .) //they're not that smart, really
+	for(var/obj/item/organ/brain/B in .) //they're not that smart, really
 		. -= B
 
 
@@ -988,7 +988,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 		switch(outcome)
 			if(1 to 10)
 				var/datum/round_event_control/disease_outbreak/D = new()
-				var/datum/round_event_control/mice_migration/M = new()
+				var/datum/round_event_control/animal_infestation/vermin/M = new()
 				D.runEvent()
 				M.runEvent()
 			if(11 to 20)

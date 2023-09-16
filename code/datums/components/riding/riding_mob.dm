@@ -153,7 +153,7 @@
 			cooldown_action.unset_click_ability(rider, refund_cooldown = TRUE)
 		action.HideFrom(rider)
 
-/datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+/datum/component/riding/creature/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, z_move_flags, mob/living/rider)
 	if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS))
 		return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 	if(!can_be_driven)
@@ -387,3 +387,22 @@
 	set_vehicle_dir_offsets(NORTH, movable_parent.pixel_x, 0)
 	set_vehicle_dir_offsets(EAST, movable_parent.pixel_x, 0)
 	set_vehicle_dir_offsets(WEST, movable_parent.pixel_x, 0)
+
+/datum/component/riding/creature/hog
+	//FUTURE IDEA: carrot on a stick as a key
+
+/datum/component/riding/creature/hog/handle_specials()
+	. = ..()
+	set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(0, 13), TEXT_SOUTH = list(0, 15), TEXT_EAST = list(-2, 12), TEXT_WEST = list(2, 12)))
+	set_vehicle_dir_layer(SOUTH, ABOVE_MOB_LAYER)
+	set_vehicle_dir_layer(NORTH, OBJ_LAYER)
+	set_vehicle_dir_layer(EAST, OBJ_LAYER)
+	set_vehicle_dir_layer(WEST, OBJ_LAYER)
+
+/datum/component/riding/creature/hog/ride_check(mob/living/user, consequences = TRUE)
+	var/mob/living/simple_animal/hostile/retaliate/hog/hog_ridden = parent
+	if(hog_ridden.client)
+		. = ..()
+	if(prob(15))
+		hog_ridden.flingRider(user)
+	. = ..()

@@ -88,7 +88,6 @@
 	// first or not.  Its defined In Initialize yet its run first in templates
 	// BEFORE so... hummm
 	SSmapping.reg_in_areas_in_z(areas)
-	SSnetworks.assign_areas_root_ids(areas, src)
 	if(!SSatoms.initialized)
 		return
 
@@ -122,7 +121,6 @@
 			)
 		)
 	for(var/turf/affected_turf as anything in template_and_bordering_turfs)
-		//affected_turf.air_update_turf(TRUE, TRUE)
 		affected_turf.levelupdate()
 
 /datum/map_template/proc/load_new_z(secret = FALSE)
@@ -139,7 +137,6 @@
 
 	//initialize things that are normally initialized after map load
 	initTemplateBounds(bounds)
-	smooth_zlevel(world.maxz)
 	log_game("Z-level [name] loaded at [x],[y],[world.maxz]")
 
 	return level
@@ -163,6 +160,7 @@
 	var/list/turf_blacklist = list()
 	update_blacklist(T, turf_blacklist)
 
+	UNSETEMPTY(turf_blacklist)
 	parsed.turf_blacklist = turf_blacklist
 	if(!parsed.load(T.x, T.y, T.z, cropMap=TRUE, no_changeturf=(SSatoms.initialized == INITIALIZATION_INSSATOMS), placeOnTop=should_place_on_top))
 		return

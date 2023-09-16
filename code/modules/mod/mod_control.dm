@@ -13,7 +13,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
 	strip_delay = 10 SECONDS
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 0)
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	actions_types = list(
 		/datum/action/item_action/mod/deploy,
 		/datum/action/item_action/mod/activate,
@@ -57,9 +57,9 @@
 	/// Power usage of the MOD.
 	var/charge_drain = DEFAULT_CHARGE_DRAIN
 	/// Slowdown of the MOD when not active.
-	var/slowdown_inactive = 1.25
+	var/slowdown_inactive = 0
 	/// Slowdown of the MOD when active.
-	var/slowdown_active = 0.75
+	var/slowdown_active = 0
 	/// How long this MOD takes each part to seal.
 	var/activation_step_time = MOD_ACTIVATION_STEP_TIME
 	/// Extended description of the theme.
@@ -122,7 +122,7 @@
 	for(var/obj/item/part as anything in all_parts)
 		part.name = "[theme.name] [part.name]"
 		part.desc = "[part.desc] [theme.desc]"
-		part.armor = getArmor(arglist(theme.armor))
+		part.setArmor(getArmor(arglist(theme.armor)))
 		part.resistance_flags = theme.resistance_flags
 		part.flags_1 |= theme.atom_flags //flags like initialization or admin spawning are here, so we cant set, have to add
 		part.heat_protection = NONE
@@ -439,7 +439,7 @@
 		conceal(null, part)
 	return ..()
 
-/obj/item/mod/control/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file)
+/obj/item/mod/control/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, icon_file)
 	. = ..()
 	for(var/obj/item/mod/module/module as anything in modules)
 		var/list/module_icons = module.generate_worn_overlay(standing)

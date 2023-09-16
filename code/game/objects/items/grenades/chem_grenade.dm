@@ -5,7 +5,12 @@
 	base_icon_state = "chemg"
 	inhand_icon_state = "flashbang"
 	w_class = WEIGHT_CLASS_SMALL
+
 	force = 2
+	stamina_damage = 0
+	stamina_cost = 0
+	stamina_critical_chance = 0
+
 	/// Which stage of construction this grenade is currently at.
 	var/stage = GRENADE_EMPTY
 	/// The set of reagent containers that have been added to this grenade casing.
@@ -32,9 +37,6 @@
 	create_reagents(casing_holder_volume)
 	stage_change() // If no argument is set, it will change the stage to the current stage, useful for stock grenades that start READY.
 	wires = new /datum/wires/explosive/chem_grenade(src)
-
-/obj/item/grenade/chem_grenade/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
 
 /obj/item/grenade/chem_grenade/examine(mob/user)
@@ -358,7 +360,7 @@
 	if (active)
 		return
 	var/newspread = tgui_input_number(user, "Please enter a new spread amount", "Grenade Spread", 5, 100, 5)
-	if(!newspread || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!newspread || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	unit_spread = newspread
 	to_chat(user, span_notice("You set the time release to [unit_spread] units per detonation."))
@@ -411,25 +413,6 @@
 
 	beakers += beaker_one
 	beakers += beaker_two
-
-
-/obj/item/grenade/chem_grenade/smart_metal_foam
-	name = "smart metal foam grenade"
-	desc = "Used for emergency sealing of hull breaches, while keeping areas accessible."
-	stage = GRENADE_READY
-
-/obj/item/grenade/chem_grenade/smart_metal_foam/Initialize(mapload)
-	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/large/beaker_one = new(src)
-	var/obj/item/reagent_containers/glass/beaker/beaker_two = new(src)
-
-	beaker_one.reagents.add_reagent(/datum/reagent/aluminium, 75)
-	beaker_two.reagents.add_reagent(/datum/reagent/smart_foaming_agent, 25)
-	beaker_two.reagents.add_reagent(/datum/reagent/toxin/acid/fluacid, 25)
-
-	beakers += beaker_one
-	beakers += beaker_two
-
 
 /obj/item/grenade/chem_grenade/incendiary
 	name = "incendiary grenade"

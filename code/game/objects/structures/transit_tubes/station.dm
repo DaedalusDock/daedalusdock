@@ -32,7 +32,7 @@
 /obj/structure/transit_tube/station/should_stop_pod(pod, from_dir)
 	return TRUE
 
-/obj/structure/transit_tube/station/Bumped(atom/movable/AM)
+/obj/structure/transit_tube/station/BumpedBy(atom/movable/AM)
 	if(!pod_moving && open_status == STATION_TUBE_OPEN && ismob(AM) && AM.dir == boarding_dir)
 		for(var/obj/structure/transit_tube_pod/pod in loc)
 			if(!pod.moving)
@@ -76,7 +76,7 @@
 						if(do_after(user, src, 15))
 							if(open_status == STATION_TUBE_OPEN && GM && user.grab_state >= GRAB_AGGRESSIVE && user.pulling == GM && !GM.buckled && !GM.has_buckled_mobs())
 								GM.Paralyze(100)
-								src.Bumped(GM)
+								src.BumpedBy(GM)
 						break
 		else
 			for(var/obj/structure/transit_tube_pod/pod in loc)
@@ -249,7 +249,7 @@
 	. = ..()
 	. += span_notice("This station will create a pod for you to ride, no need to wait for one.")
 
-/obj/structure/transit_tube/station/dispenser/Bumped(atom/movable/AM)
+/obj/structure/transit_tube/station/dispenser/BumpedBy(atom/movable/AM)
 	if(!(istype(AM) && AM.dir == boarding_dir) || AM.anchored)
 		return
 	var/obj/structure/transit_tube_pod/dispensed/pod = new(loc)

@@ -4,8 +4,8 @@
 SUBSYSTEM_DEF(throwing)
 	name = "Throwing"
 	priority = FIRE_PRIORITY_THROWING
-	wait = 1
-	flags = SS_NO_INIT|SS_KEEP_TIMING|SS_TICKER
+	wait = SS_TICKER
+	flags = SS_NO_INIT
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
 	var/list/currentrun = list()
@@ -112,8 +112,7 @@ SUBSYSTEM_DEF(throwing)
 	thrownthing = null
 	thrower = null
 	initial_target = null
-	if(callback)
-		QDEL_NULL(callback) //It stores a reference to the thrownthing, its source. Let's clean that.
+	callback = null //It stores a reference to the thrownthing, its source. Let's clean that.
 	return ..()
 
 
@@ -217,8 +216,7 @@ SUBSYSTEM_DEF(throwing)
 		callback.Invoke()
 
 	if(!thrownthing.currently_z_moving) // I don't think you can zfall while thrown but hey, just in case.
-		var/turf/T = get_turf(thrownthing)
-		T?.zFall(thrownthing)
+		thrownthing.zFall()
 
 	if(thrownthing)
 		SEND_SIGNAL(thrownthing, COMSIG_MOVABLE_THROW_LANDED, src)

@@ -2,9 +2,23 @@
 	if(damage <= 0)
 		return
 
-	var/static/list/interal_wounds_check = list(WOUND_CUT, WOUND_PIERCE, WOUND_BRUISE)
+	var/static/list/internal_wounds_check = list(WOUND_CUT, WOUND_PIERCE)
 
 	var/static/list/fluid_wounds_check = list(WOUND_BURN, WOUND_LASER)
+
+
+	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
+	//Brute damage can possibly trigger an internal wound, too.
+	var/local_damage = brute_dam + burn_dam + damage
+	if (!surgical && (wound_type in internal_wounds_check) && damage > 15 && local_damage > 30)
+
+		var/internal_damage
+		if(prob(damage) && set_sever_artery(TRUE))
+			internal_damage = TRUE
+		if(prob(Ceil(damage/4)) && set_sever_tendon(TRUE))
+			internal_damage = TRUE
+		if(internal_damage)
+			to_chat(owner, span_danger("You feel something rip in your [plaintext_zone]!"))
 
 	//Burn damage can cause fluid loss due to blistering and cook-off
 	if(owner && !surgical && (damage > FLUIDLOSS_BURN_REQUIRED) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))
@@ -23,23 +37,23 @@
 			//we need to make sure that the wound we are going to worsen is compatible with the type of damage...
 			var/list/compatible_wounds = list()
 			for (var/datum/wound/W as anything in wounds)
-				if (W.can_worsen(type, damage))
+				if (W.can_worsen(wound_type, damage))
 					compatible_wounds += W
 
 			if(length(compatible_wounds))
 				var/datum/wound/W = pick(compatible_wounds)
-				W.open_wound(damage)
+				W.open_wound(damage, update_damage)
 				if(prob(25))
 					if(!IS_ORGANIC_LIMB(src))
 						owner.visible_message(
-							span_danger("The damage to \the [owner]'s [name] worsens."),\
+							span_danger("The damage to \the [owner]'s [plaintext_zone] worsens."),\
 							span_danger("The damage to your [name] worsens."),\
 							span_danger("You hear the screech of abused metal.")
 						)
 					else
 						owner.visible_message(
-							span_danger("The wound on \the [owner]'s [name] widens with a nasty ripping noise."),\
-							span_danger("The wound on your [name] widens with a nasty ripping noise."),\
+							span_danger("The wound on \the [owner]'s [plaintext_zone] widens with a nasty ripping noise."),\
+							span_danger("The wound on your [plaintext_zone] widens with a nasty ripping noise."),\
 							span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
 						)
 				return W

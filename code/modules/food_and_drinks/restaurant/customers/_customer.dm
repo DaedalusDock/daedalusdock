@@ -212,7 +212,6 @@
 			/datum/reagent/consumable/chocolatepudding = 4,
 			/datum/reagent/consumable/tea = 4,
 			/datum/reagent/consumable/cherryshake = 1,
-			/datum/reagent/consumable/ethanol/bastion_bourbon = 1,
 		),
 	)
 
@@ -351,7 +350,6 @@
 			/datum/reagent/consumable/ethanol/tequila_sunrise = 1,
 			/datum/reagent/consumable/ethanol/beer = 15,
 			/datum/reagent/consumable/ethanol/patron = 5,
-			/datum/reagent/consumable/ethanol/brave_bull = 5,
 			/datum/reagent/consumable/ethanol/margarita = 8,
 		),
 	)
@@ -436,12 +434,6 @@
 			/obj/item/toy/crayon/blue = 1,
 			/obj/item/toy/crayon/purple = 1,
 			/obj/item/food/canned/peaches/maint = 6,
-		),
-		VENUE_BAR = list(
-			/datum/reagent/consumable/failed_reaction = 1,
-			/datum/reagent/spraytan = 1,
-			/datum/reagent/reaction_agent/basic_buffer = 1,
-			/datum/reagent/reaction_agent/acidic_buffer = 1,
 		),
 	)
 

@@ -6,7 +6,7 @@
 	total_positions = 3
 	spawn_positions = 2
 	supervisors = "the chief engineer"
-	selection_color = "#fff5cc"
+	selection_color = "#5b4d20"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
@@ -26,20 +26,20 @@
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_ATMOSPHERIC_TECHNICIAN
 	bounty_types = CIV_JOB_ENG
 	departments_list = list(
 		/datum/job_department/engineering,
 		)
 
+	employers = list(
+		/datum/employer/daedalus,
+		/datum/employer/contractor
+	)
+
 	family_heirlooms = list(/obj/item/lighter, /obj/item/lighter/greyscale, /obj/item/storage/box/matches)
 
 	mail_goodies = list(
 		/obj/item/rpd_upgrade/unwrench = 30,
-		/obj/item/grenade/gas_crystal/crystal_foam = 10,
-		/obj/item/grenade/gas_crystal/proto_nitrate_crystal = 10,
-		/obj/item/grenade/gas_crystal/healium_crystal = 10,
-		/obj/item/grenade/gas_crystal/nitrous_oxide_crystal = 5,
 	)
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
@@ -79,3 +79,5 @@
 	back = /obj/item/mod/control/pre_equipped/atmospheric
 	mask = /obj/item/clothing/mask/gas/atmos
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null

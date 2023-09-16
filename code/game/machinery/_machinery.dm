@@ -116,7 +116,6 @@
 		//AREA_USAGE_EQUIP,AREA_USAGE_ENVIRON or AREA_USAGE_LIGHT
 	///A combination of factors such as having power, not being broken and so on. Boolean.
 	var/is_operational = TRUE
-	var/wire_compatible = FALSE
 
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
 
@@ -126,6 +125,8 @@
 	var/obj/item/disk/data/inserted_disk = null
 	/// Used for data management.
 	var/obj/item/disk/data/selected_disk = null
+	/// Can insert a disk into this machine
+	var/has_disk_slot = FALSE
 
 	var/panel_open = FALSE
 	var/state_open = FALSE
@@ -173,10 +174,16 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
+GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/Initialize(mapload)
 	if(!armor)
-		armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+		armor = machinery_default_armor
+
 	. = ..()
+
+	SETUP_SMOOTHING()
+	QUEUE_SMOOTH(src)
+
 	GLOB.machines += src
 
 	if(ispath(circuit, /obj/item/circuitboard))
@@ -194,12 +201,11 @@
 	}
 
 	if(network_flags & NETWORK_FLAG_GEN_ID)
-		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+		net_id = SSpackets.generate_net_id(src)
 
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
-	. = ..()
 	power_change()
 	if(use_power == NO_POWER_USE)
 		return
@@ -585,34 +591,6 @@
 
 	return TRUE // If we passed all of those checks, woohoo! We can interact with this machine.
 
-/obj/machinery/proc/check_nap_violations()
-	if(!SSeconomy.full_ancap)
-		return TRUE
-	if(!occupant || state_open)
-		return TRUE
-	var/mob/living/occupant_mob = occupant
-	var/obj/item/card/id/occupant_id = occupant_mob.get_idcard(TRUE)
-	if(!occupant_id)
-		say("[market_verb] NAP Violation: No ID card found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/insurance = occupant_id.registered_account
-	if(!insurance)
-		say("[market_verb] NAP Violation: No bank account found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	if(!insurance.adjust_money(-fair_market_price))
-		say("[market_verb] NAP Violation: Unable to pay.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/department_account = SSeconomy.department_accounts_by_id[payment_department]
-	if(department_account)
-		department_account.adjust_money(fair_market_price)
-	return TRUE
-
-/obj/machinery/proc/nap_violation(mob/violator)
-	return
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/machinery/attack_hand(mob/living/user, list/modifiers)
@@ -628,6 +606,15 @@
 				span_notice("A floppy disk ejects from [src].")
 			)
 		return TRUE
+
+	if(iscarbon(user))
+		var/brainloss = user.getBrainLoss()
+		if(brainloss > 120)
+			visible_message(span_warning("\The [user] stares cluelessly at \the [src]."))
+			return TRUE
+		if(prob(min(brainloss, 30)))
+			to_chat(user, span_warning("You momentarily forget how to use \the [src]."))
+			return TRUE
 
 //Return a non FALSE value to interrupt attack_hand propagation to subtypes.
 /obj/machinery/interact(mob/user, special_state)
@@ -645,7 +632,7 @@
 	..()
 	if(!can_interact(usr))
 		return TRUE
-	if(!usr.canUseTopic(src))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return TRUE
 	add_fingerprint(usr)
 	update_last_used(usr)
@@ -702,7 +689,7 @@
 	if(.)
 		return
 
-	if(internal_disk && istype(weapon, /obj/item/disk/data))
+	if(has_disk_slot && istype(weapon, /obj/item/disk/data))
 		insert_disk(user, weapon)
 		return TRUE
 

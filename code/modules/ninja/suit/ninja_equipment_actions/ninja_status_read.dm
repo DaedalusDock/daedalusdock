@@ -27,7 +27,7 @@
 	info_list += "[span_info("Toxin Levels: [ninja.getToxLoss()]")]\n"
 	info_list += "[span_info("Burn Severity: [ninja.getFireLoss()]")]\n"
 	info_list += "[span_info("Brute Trauma: [ninja.getBruteLoss()]")]\n"
-	info_list += "[span_info("Body Temperature: [ninja.bodytemperature-T0C] degrees C ([ninja.bodytemperature*1.8-459.67] degrees F)")]\n"
+	info_list += "[span_info("Body Temperature: [ninja.bodytemperature-T0C] degrees C ([FAHRENHEIT(ninja.bodytemperature)] degrees F)")]\n"
 
 	//Diseases
 	if(length(ninja.diseases))

@@ -75,8 +75,7 @@
 					affecting = H.get_bodypart(type)
 					H.Stun(60)
 		if(affecting)
-			if(affecting.receive_damage(1, 0))
-				H.update_damage_overlays()
+			affecting.receive_damage(1, 0)
 	else if(ismouse(target))
 		var/mob/living/simple_animal/mouse/M = target
 		visible_message(span_boldannounce("SPLAT!"))
@@ -128,13 +127,15 @@
 
 /obj/item/assembly/mousetrap/proc/on_entered(datum/source, atom/movable/AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(armed)
 		if(ismob(AM))
 			var/mob/MM = AM
 			if(!(MM.movement_type & FLYING))
 				if(ishuman(AM))
 					var/mob/living/carbon/H = AM
-					if(H.m_intent == MOVE_INTENT_RUN)
+					if(H.m_intent != MOVE_INTENT_WALK)
 						INVOKE_ASYNC(src, PROC_REF(triggered), H)
 						H.visible_message(span_warning("[H] accidentally steps on [src]."), \
 							span_warning("You accidentally step on [src]"))

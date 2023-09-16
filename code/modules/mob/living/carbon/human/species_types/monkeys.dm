@@ -4,15 +4,13 @@
 	say_mod = "chimpers"
 	scream_verb = "screeches"
 	bodytype = BODYTYPE_ORGANIC | BODYTYPE_MONKEY
-	external_organs = list(
-		/obj/item/organ/external/tail/monkey = "Monkey"
+	cosmetic_organs = list(
+		/obj/item/organ/tail/monkey = "Monkey"
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/monkey
 	meat = /obj/item/food/meat/slab/monkey
 	knife_butcher_results = list(/obj/item/food/meat/slab/monkey = 5, /obj/item/stack/sheet/animalhide/monkey = 1)
 	species_traits = list(
-		HAS_FLESH,
-		HAS_BONE,
 		NO_UNDERWEAR,
 		LIPS,
 		NOEYESPRITES,
@@ -158,8 +156,8 @@
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "capsules",
-			SPECIES_PERK_NAME = "Mutadone Averse",
-			SPECIES_PERK_DESC = "Monkeys are reverted into normal humans upon being exposed to Mutadone.",
+			SPECIES_PERK_NAME = "Ryetalyn Averse",
+			SPECIES_PERK_DESC = "Monkeys are reverted into normal humans upon being exposed to Ryetalyn.",
 		),
 	)
 

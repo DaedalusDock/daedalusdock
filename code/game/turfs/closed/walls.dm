@@ -27,8 +27,8 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	flags_ricochet = RICOCHET_HARD
 
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	lighting_uses_jen = TRUE
 
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall
@@ -72,6 +72,13 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	///Appearance cache key. This is very touchy.
 	VAR_PRIVATE/cache_key
 
+// DMEd Specific Simplified wall icons
+#if defined(SIMPLE_MAPHELPERS)
+/turf/closed/wall
+	icon='icons/effects/simplified_wall_helpers.dmi'
+	icon_state="generic"
+#endif
+
 /turf/closed/wall/has_material_type(datum/material/mat_type, exact=FALSE, mat_amount=0)
 	if(plating_material == mat_type)
 		return TRUE
@@ -90,13 +97,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	color = null // Remove the color that was set for mapping clarity
 	. = ..()
 	set_materials(plating_material, reinf_material, FALSE)
-	if(is_station_level(z))
-		GLOB.station_turfs += src
-
-/turf/closed/wall/Destroy()
-	if(is_station_level(z))
-		GLOB.station_turfs -= src
-	return ..()
 
 /turf/closed/wall/copyTurf(turf/T)
 	. = ..()
@@ -113,7 +113,9 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	var/neighbor_stripe = NONE
 	for (var/cardinal = NORTH; cardinal <= WEST; cardinal *= 2) //No list copy please good sir
 		var/turf/step_turf = get_step(src, cardinal)
-		if(!can_area_smooth(step_turf))
+		var/can_area_smooth
+		CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+		if(isnull(can_area_smooth))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
 			if(global.neighbor_typecache[movable_thing.type])

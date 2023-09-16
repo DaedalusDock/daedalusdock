@@ -107,8 +107,8 @@
 	pass_flags_self = LETPASSTHROW
 	bar_material = SAND
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_SANDBAGS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_SECURITY_BARRICADE, SMOOTH_GROUP_SANDBAGS)
+	smoothing_groups = SMOOTH_GROUP_SANDBAGS
+	canSmoothWith = SMOOTH_GROUP_SANDBAGS + SMOOTH_GROUP_SECURITY_BARRICADE + SMOOTH_GROUP_WALLS
 
 /obj/structure/barricade/sandbags/Initialize(mapload)
 	. = ..()
@@ -155,7 +155,7 @@
 	. += span_notice("Alt-click to toggle modes.")
 
 /obj/item/grenade/barrier/AltClick(mob/living/carbon/user)
-	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE))
+	if(!istype(user) || !user.canUseTopic(src, USE_CLOSE))
 		return
 	toggle_mode(user)
 

@@ -21,7 +21,7 @@
 	base_pixel_x = -16
 	layer = LARGE_MOB_LAYER
 	speed = 10
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	var/hopping = FALSE
 	var/hop_cooldown = 0 //Strictly for player controlled leapers
@@ -71,10 +71,6 @@
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "tomato_floor1"
 
-/obj/effect/decal/cleanable/leaper_sludge/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /obj/structure/leaper_bubble
 	name = "leaper bubble"
 	desc = "A floating bubble containing leaper venom. The contents are under a surprising amount of pressure."
@@ -90,10 +86,6 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
-/obj/structure/leaper_bubble/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/movetype_handler)
 	ADD_TRAIT(src, TRAIT_MOVE_FLOATING, LEAPER_BUBBLE_TRAIT)
 
@@ -104,6 +96,8 @@
 
 /obj/structure/leaper_bubble/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!istype(L, /mob/living/simple_animal/hostile/jungle/leaper))
@@ -125,10 +119,11 @@
 	taste_description = "french cuisine"
 	taste_mult = 1.3
 
-/datum/reagent/toxin/leaper_venom/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/toxin/leaper_venom/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
 	if(volume >= 10)
-		M.adjustToxLoss(5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
-	..()
+		C.adjustToxLoss(5 * removed, 0)
+		return TRUE
 
 /obj/effect/temp_visual/leaper_crush
 	name = "grim tidings"
@@ -146,7 +141,6 @@
 /mob/living/simple_animal/hostile/jungle/leaper/Initialize(mapload)
 	. = ..()
 	remove_verb(src, /mob/living/verb/pulled)
-	add_cell_sample()
 
 /mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A)
 	face_atom(A)
@@ -279,9 +273,5 @@
 			icon_state = "leaper_alert"
 			return
 	icon_state = "leaper"
-
-/mob/living/simple_animal/hostile/jungle/leaper/add_cell_sample()
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 #undef PLAYER_HOP_DELAY

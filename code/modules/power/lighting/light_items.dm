@@ -88,6 +88,8 @@
 
 /obj/item/light/proc/on_entered(datum/source, atom/movable/moving_atom)
 	SIGNAL_HANDLER
+	if(moving_atom == src)
+		return
 	if(!isliving(moving_atom))
 		return
 	var/mob/living/moving_mob = moving_atom

@@ -63,7 +63,7 @@
 					/obj/item/clothing/under/rank/medical/scrubs/blue = 4,
 					/obj/item/clothing/under/rank/medical/scrubs/green = 4,
 					/obj/item/clothing/under/rank/medical/scrubs/purple = 4,
-					/obj/item/clothing/suit/toggle/labcoat = 4,
+					/obj/item/clothing/suit/toggle/labcoat/md = 4,
 					/obj/item/clothing/suit/toggle/labcoat/paramedic = 4,
 					/obj/item/clothing/shoes/sneakers/white = 4,
 					/obj/item/clothing/head/beret/medical/paramedic = 4,
@@ -183,7 +183,7 @@
 					/obj/item/clothing/mask/bandana/skull/black = 2)
 	contraband = list(/obj/item/clothing/suit/hooded/techpriest = 2,
 					  /obj/item/clothing/under/costume/mech_suit = 2,
-					  /obj/item/organ/internal/tongue/robot = 2)
+					  /obj/item/organ/tongue/robot = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/robo_wardrobe
 	extra_price = PAYCHECK_HARD * 1.2
 	payment_department = ACCOUNT_SCI
@@ -454,17 +454,18 @@
 	icon_state = "chemdrobe"
 	product_ads = "Our clothes are 0.5% more resistant to acid spills! Get yours now!"
 	vend_reply = "Thank you for using the ChemDrobe!"
-	products = list(/obj/item/clothing/under/rank/medical/chemist = 2,
-					/obj/item/clothing/under/rank/medical/chemist/skirt = 2,
-					/obj/item/clothing/head/beret/medical = 2,
-					/obj/item/clothing/shoes/sneakers/white = 2,
-					/obj/item/clothing/suit/toggle/labcoat/chemist = 2,
-					/obj/item/clothing/suit/hooded/wintercoat/medical/chemistry = 2,
-					/obj/item/storage/backpack/chemistry = 2,
-					/obj/item/storage/backpack/satchel/chem = 2,
-					/obj/item/storage/backpack/duffelbag/chemistry = 2,
-					/obj/item/storage/bag/chemistry = 2,
-					/obj/item/ph_booklet = 3)
+	products = list(
+		/obj/item/clothing/under/rank/medical/chemist = 2,
+		/obj/item/clothing/under/rank/medical/chemist/skirt = 2,
+		/obj/item/clothing/head/beret/medical = 2,
+		/obj/item/clothing/shoes/sneakers/white = 2,
+		/obj/item/clothing/suit/toggle/labcoat/chemist = 2,
+		/obj/item/clothing/suit/hooded/wintercoat/medical/chemistry = 2,
+		/obj/item/storage/backpack/chemistry = 2,
+		/obj/item/storage/backpack/satchel/chem = 2,
+		/obj/item/storage/backpack/duffelbag/chemistry = 2,
+		/obj/item/storage/bag/chemistry = 2,
+	)
 	contraband = list(/obj/item/reagent_containers/spray/syndicate = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/chem_wardrobe
 	payment_department = ACCOUNT_MED

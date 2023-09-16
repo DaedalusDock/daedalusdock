@@ -340,13 +340,6 @@
 	base_icon_state = "midori"
 	spawn_type = /obj/item/clothing/mask/cigarette/rollie/cannabis
 
-/obj/item/storage/fancy/cigarettes/cigpack_mindbreaker
-	name = "\improper Leary's Delight packet"
-	desc = "Banned in over 36 galaxies."
-	icon_state = "shadyjim"
-	base_icon_state = "shadyjim"
-	spawn_type = /obj/item/clothing/mask/cigarette/rollie/mindbreaker
-
 /obj/item/storage/fancy/rollingpapers
 	name = "rolling paper pack"
 	desc = "A pack of Nanotrasen brand rolling papers."

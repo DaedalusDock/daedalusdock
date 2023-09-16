@@ -1,6 +1,5 @@
 /datum/keybinding/living
 	category = CATEGORY_HUMAN
-	weight = WEIGHT_MOB
 
 /datum/keybinding/living/can_use(client/user)
 	return isliving(user.mob)
@@ -32,12 +31,7 @@
 	if(.)
 		return
 	var/mob/living/L = user.mob
-	L.look_up()
-	return TRUE
-
-/datum/keybinding/living/look_up/up(client/user)
-	var/mob/living/L = user.mob
-	L.end_look_up()
+	L.do_look_up()
 	return TRUE
 
 /datum/keybinding/living/look_down
@@ -52,12 +46,7 @@
 	if(.)
 		return
 	var/mob/living/L = user.mob
-	L.look_down()
-	return TRUE
-
-/datum/keybinding/living/look_down/up(client/user)
-	var/mob/living/L = user.mob
-	L.end_look_down()
+	L.do_look_down()
 	return TRUE
 
 /datum/keybinding/living/rest

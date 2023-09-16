@@ -845,7 +845,6 @@
 /obj/structure/table,
 /obj/item/reagent_containers/food/drinks/soda_cans/sodawater,
 /obj/item/reagent_containers/food/drinks/soda_cans/shamblers,
-/obj/item/reagent_containers/food/drinks/soda_cans/pwr_game,
 /obj/item/reagent_containers/food/drinks/soda_cans/air,
 /obj/item/reagent_containers/food/drinks/soda_cans/canned_laughter,
 /obj/item/reagent_containers/food/drinks/soda_cans/tonic,

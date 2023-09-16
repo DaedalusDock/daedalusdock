@@ -1,5 +1,7 @@
 /mob/living/Initialize(mapload)
 	. = ..()
+	stamina = new(src)
+
 	register_init_signals()
 	if(unique_name)
 		set_name()
@@ -11,11 +13,8 @@
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
 	voice_type = pick(voice_type2sound)
-	gravity_setup()
-
-/mob/living/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/movetype_handler)
+	gravity_setup()
 
 /mob/living/prepare_huds()
 	..()
@@ -26,6 +25,8 @@
 	med_hud_set_status()
 
 /mob/living/Destroy()
+	QDEL_NULL(z_eye)
+	qdel(stamina)
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
 		if(effect.on_remove_on_mob_delete)
@@ -41,10 +42,23 @@
 	remove_from_all_data_huds()
 	GLOB.mob_living_list -= src
 	QDEL_LAZYLIST(diseases)
-	QDEL_LIST(surgeries)
 	return ..()
 
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
+	if(m_intent == MOVE_INTENT_WALK && levels <= 1 && !throwing && !incapacitated())
+		visible_message(
+			span_notice("<b>[src]</b> climbs down from the floor above.")
+		)
+		Stun(1 SECOND, TRUE)
+		setDir(global.reverse_dir[dir])
+		var/old_pixel_y = pixel_y
+		var/old_alpha = alpha
+		pixel_y = pixel_y + 32
+		alpha = 90
+		animate(src, time = 1 SECONDS, pixel_y = old_pixel_y)
+		animate(src, time = 1 SECONDS, alpha = old_alpha, flags = ANIMATION_PARALLEL)
+		return
+
 	if(!isgroundlessturf(T))
 		ZImpactDamage(T, levels)
 		message = FALSE
@@ -53,10 +67,16 @@
 /mob/living/proc/ZImpactDamage(turf/T, levels)
 	if(SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, T) & NO_Z_IMPACT_DAMAGE)
 		return
-	visible_message(span_danger("[src] crashes into [T] with a sickening noise!"), \
-					span_userdanger("You crash into [T] with a sickening noise!"))
+
+	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
+	TakeFallDamage(levels)
+	return TRUE
+
+/mob/living/proc/TakeFallDamage(levels)
 	adjustBruteLoss((levels * 5) ** 1.5)
-	Knockdown(levels * 50)
+	Knockdown(levels * 5 SECONDS)
+	Stun(levels * 2 SECONDS)
+	return TRUE
 
 //Generic Bump(). Override MobBump() and ObjBump() instead of this.
 /mob/living/Bump(atom/A)
@@ -77,12 +97,16 @@
 		if(PushAM(AM, move_force))
 			return
 
-/mob/living/Bumped(atom/movable/AM)
+/mob/living/BumpedBy(atom/movable/AM)
 	..()
 	last_bumped = world.time
 
 //Called when we bump onto a mob
 /mob/living/proc/MobBump(mob/M)
+	//No bumping/swapping/pushing others if you are on walk intent
+	if(m_intent == MOVE_INTENT_WALK)
+		return TRUE
+
 	SEND_SIGNAL(src, COMSIG_LIVING_MOB_BUMP, M)
 	//Even if we don't push/swap places, we "touched" them, so spread fire
 	spreadFire(M)
@@ -422,16 +446,18 @@
 /mob/living/pointed(atom/A as mob|obj|turf in view(client.view, src))
 	if(incapacitated())
 		return FALSE
+
+	return ..()
+
+/mob/living/_pointed(atom/pointing_at)
 	if(!..())
 		return FALSE
-	visible_message("<span class='infoplain'>[span_name("[src]")] points at [A].</span>", span_notice("You point at [A]."))
-	log_message("points at [A]", LOG_EMOTE)
-	return TRUE
-
+	log_message("points at [pointing_at]", LOG_EMOTE)
+	visible_message("<span class='infoplain'>[span_name("[src]")] points at [pointing_at].</span>", span_notice("You point at [pointing_at]."))
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
-	if (!CAN_SUCCUMB(src))
+	if (stat == CONSCIOUS)
 		to_chat(src, text="You are unable to succumb to death! This life continues.", type=MESSAGE_TYPE_INFO)
 		return
 	log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", LOG_ATTACK)
@@ -463,7 +489,7 @@
 		return TRUE
 	if(!(flags & IGNORE_GRAB) && pulledby && pulledby.grab_state >= GRAB_AGGRESSIVE)
 		return TRUE
-	if(!(flags & IGNORE_STASIS) && IS_IN_STASIS(src))
+	if(!(flags & IGNORE_STASIS) && IS_IN_HARD_STASIS(src))
 		return TRUE
 	return FALSE
 
@@ -681,7 +707,6 @@
 	if(status_flags & GODMODE)
 		return
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss())
-	staminaloss = getStaminaLoss()
 	update_stat()
 	med_hud_set_health()
 	med_hud_set_status()
@@ -724,12 +749,12 @@
 //Proc used to resuscitate a mob, for full_heal see fully_heal()
 /mob/living/proc/revive(full_heal = FALSE, admin_revive = FALSE, excess_healing = 0)
 	if(excess_healing)
-		if(iscarbon(src) && excess_healing)
+		if(iscarbon(src))
 			var/mob/living/carbon/C = src
 			if(!(C.dna?.species && (NOBLOOD in C.dna.species.species_traits)))
 				C.blood_volume += (excess_healing*2)//1 excess = 10 blood
 
-			for(var/obj/item/organ/organ as anything in C.internal_organs)
+			for(var/obj/item/organ/organ as anything in C.processing_organs)
 				if(organ.organ_flags & ORGAN_SYNTHETIC)
 					continue
 				organ.applyOrganDamage(excess_healing * -1)//1 excess = 5 organ damage healed
@@ -737,7 +762,9 @@
 		adjustOxyLoss(-20, TRUE)
 		adjustToxLoss(-20, TRUE, TRUE) //slime friendly
 		updatehealth()
-		grab_ghost()
+
+	grab_ghost()
+
 	if(full_heal)
 		fully_heal(admin_revive = admin_revive)
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
@@ -747,6 +774,7 @@
 		if(admin_revive)
 			get_up(TRUE)
 		update_sight()
+		update_eye_blur()
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		reload_fullscreen()
 		. = TRUE
@@ -835,7 +863,9 @@
 	cure_blind()
 	cure_husk()
 	hallucination = 0
-	heal_overall_damage(INFINITY, INFINITY, INFINITY, null, TRUE) //heal brute and burn dmg on both organic and robotic limbs, and update health right away.
+	heal_overall_damage(INFINITY, INFINITY, null, TRUE) //heal brute and burn dmg on both organic and robotic limbs, and update health right away.
+	stamina.adjust(INFINITY)
+	exit_stamina_stun()
 	extinguish_mob()
 	set_drowsyness(0)
 	stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -991,6 +1021,10 @@
 	set name = "Resist"
 	set category = "IC"
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_resist)))
+
+///proc extender of [/mob/living/verb/resist] meant to make the process queable if the server is overloaded when the verb is called
+/mob/living/proc/execute_resist()
 	if(!can_resist())
 		return
 	changeNext_move(CLICK_CD_RESIST)
@@ -1016,7 +1050,6 @@
 		else if(last_special <= world.time)
 			resist_restraints() //trying to remove cuffs.
 
-
 /mob/proc/resist_grab(moving_resist)
 	return 1 //returning 0 means we successfully broke free
 
@@ -1036,7 +1069,7 @@
 			pulledby.stop_pulling()
 			return FALSE
 		else
-			adjustStaminaLoss(rand(15,20))//failure to escape still imparts a pretty serious penalty
+			stamina.adjust(-rand(15,20)) //failure to escape still imparts a pretty serious penalty
 			visible_message(span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"), \
 							span_warning("You struggle as you fail to break free of [pulledby]'s grip!"), null, null, pulledby)
 			to_chat(pulledby, span_danger("[src] struggles as they fail to break free of your grip!"))
@@ -1160,23 +1193,42 @@
 /mob/living/can_hold_items(obj/item/I)
 	return usable_hands && ..()
 
-/mob/living/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
-	if(!(mobility_flags & MOBILITY_UI) && !floor_okay)
+/mob/living/canUseTopic(atom/movable/target, flags)
+
+	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
+	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
+	// Also if it is not set, the mob could be incapcitated, knocked out, unconscious, asleep, EMP'd, etc.
+	if(!(mobility_flags & MOBILITY_UI) && !(flags & USE_RESTING))
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
-	if(be_close && !Adjacent(M) && (M.loc != src))
-		if(no_tk)
-			to_chat(src, span_warning("You are too far away!"))
-			return FALSE
-		var/datum/dna/D = has_dna()
-		if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, M))
-			to_chat(src, span_warning("You are too far away!"))
-			return FALSE
-	if(need_hands && !can_hold_items(isitem(M) ? M : null)) //almost redundant if it weren't for mobs,
+
+	// NEED_HANDS is already checked by MOBILITY_UI for humans so this is for silicons
+	if((flags & USE_NEED_HANDS) && !can_hold_items(isitem(target) ? target : null)) //almost redundant if it weren't for mobs,
 		to_chat(src, span_warning("You don't have the physical ability to do this!"))
 		return FALSE
-	if(!no_dexterity && !ISADVANCEDTOOLUSER(src))
+
+	if((flags & USE_CLOSE) && !Adjacent(target) && (target.loc != src))
+		if(issilicon(src) && !ispAI(src))
+			if(!(flags & USE_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
+				to_chat(src, span_warning("You are too far away!"))
+				return FALSE
+
+		else if(flags & USE_IGNORE_TK)
+			to_chat(src, span_warning("You are too far away!"))
+			return FALSE
+
+		else
+			var/datum/dna/D = has_dna()
+			if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, target))
+				to_chat(src, span_warning("You are too far away!"))
+				return FALSE
+
+	if((flags & USE_DEXTERITY) && !ISADVANCEDTOOLUSER(src))
 		to_chat(src, span_warning("You don't have the dexterity to do this!"))
+		return FALSE
+
+	if((flags & USE_LITERACY) && !is_literate())
+		to_chat(src, span_warning("You can't comprehend any of this!"))
 		return FALSE
 	return TRUE
 
@@ -1189,10 +1241,11 @@
 		return FALSE
 	return TRUE
 
-/mob/living/proc/update_stamina()
+///Called by [update()][/datum/stamina_container/proc/update]
+/mob/living/proc/on_stamina_update()
 	return
 
-/mob/living/carbon/alien/update_stamina()
+/mob/living/carbon/alien/on_stamina_update()
 	return
 
 /mob/living/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
@@ -1748,7 +1801,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			OXY:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=oxygen' id='oxygen'>[getOxyLoss()]</a>
 			CLONE:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=clone' id='clone'>[getCloneLoss()]</a>
 			BRAIN:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brain' id='brain'>[getOrganLoss(ORGAN_SLOT_BRAIN)]</a>
-			STAMINA:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=stamina' id='stamina'>[getStaminaLoss()]</a>
+			STAMINA:<font size='1'><a href='?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=stamina' id='stamina'>[stamina.current]</a>
 		</font>
 	"}
 
@@ -1852,110 +1905,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_body_temp_cold_damage_limit()
 	return BODYTEMP_COLD_DAMAGE_LIMIT
 
-///Checks if the user is incapacitated or on cooldown.
-/mob/living/proc/can_look_up()
-	return !(incapacitated(IGNORE_RESTRAINTS))
-
-/**
- * look_up Changes the perspective of the mob to any openspace turf above the mob
- *
- * This also checks if an openspace turf is above the mob before looking up or resets the perspective if already looking up
- *
- */
-/mob/living/proc/look_up()
-	if(client.perspective != MOB_PERSPECTIVE) //We are already looking up.
-		stop_look_up()
-	if(!can_look_up())
-		return
-	changeNext_move(CLICK_CD_LOOK_UP)
-	RegisterSignal(src, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(stop_look_up)) //We stop looking up if we move.
-	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(start_look_up)) //We start looking again after we move.
-	start_look_up()
-
-/mob/living/proc/start_look_up()
-	SIGNAL_HANDLER
-	var/turf/ceiling = GetAbove(src)
-	if(!ceiling) //We are at the highest z-level.
-		if (prob(0.1))
-			to_chat(src, span_warning("You gaze out into the infinite vastness of deep space, for a moment, you have the impulse to continue travelling, out there, out into the deep beyond, before your conciousness reasserts itself and you decide to stay within travelling distance of the station."))
-			return
-		to_chat(src, span_warning("There's nothing interesting up there."))
-		return
-	else if(!istransparentturf(ceiling)) //There is no turf we can look through above us
-		var/turf/front_hole = get_step(ceiling, dir)
-		if(istransparentturf(front_hole))
-			ceiling = front_hole
-		else
-			var/list/checkturfs = block(locate(x-1,y-1,ceiling.z),locate(x+1,y+1,ceiling.z))-ceiling-front_hole //Try find hole near of us
-			for(var/turf/checkhole in checkturfs)
-				if(istransparentturf(checkhole))
-					ceiling = checkhole
-					break
-		if(!istransparentturf(ceiling))
-			to_chat(src, span_warning("You can't see through the floor above you."))
-			return
-
-	reset_perspective(ceiling)
-
-/mob/living/proc/stop_look_up()
-	SIGNAL_HANDLER
-	reset_perspective()
-
-/mob/living/proc/end_look_up()
-	stop_look_up()
-	UnregisterSignal(src, COMSIG_MOVABLE_PRE_MOVE)
-	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
-
-/**
- * look_down Changes the perspective of the mob to any openspace turf below the mob
- *
- * This also checks if an openspace turf is below the mob before looking down or resets the perspective if already looking up
- *
- */
-/mob/living/proc/look_down()
-	if(client.perspective != MOB_PERSPECTIVE) //We are already looking down.
-		stop_look_down()
-	if(!can_look_up()) //if we cant look up, we cant look down.
-		return
-	changeNext_move(CLICK_CD_LOOK_UP)
-	RegisterSignal(src, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(stop_look_down)) //We stop looking down if we move.
-	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(start_look_down)) //We start looking again after we move.
-	start_look_down()
-
-/mob/living/proc/start_look_down()
-	SIGNAL_HANDLER
-	var/turf/floor = get_turf(src)
-	var/turf/lower_level = GetBelow(floor)
-	if(!lower_level) //We are at the lowest z-level.
-		to_chat(src, span_warning("You can't see through the floor below you."))
-		return
-	else if(!istransparentturf(floor)) //There is no turf we can look through below us
-		var/turf/front_hole = get_step(floor, dir)
-		if(istransparentturf(front_hole))
-			floor = front_hole
-			lower_level = GetBelow(front_hole)
-		else
-			var/list/checkturfs = block(locate(x-1,y-1,z),locate(x+1,y+1,z))-floor //Try find hole near of us
-			for(var/turf/checkhole in checkturfs)
-				if(istransparentturf(checkhole))
-					floor = checkhole
-					lower_level = GetBelow(checkhole)
-					break
-		if(!istransparentturf(floor))
-			to_chat(src, span_warning("You can't see through the floor below you."))
-			return
-
-	reset_perspective(lower_level)
-
-/mob/living/proc/stop_look_down()
-	SIGNAL_HANDLER
-	reset_perspective()
-
-/mob/living/proc/end_look_down()
-	stop_look_down()
-	UnregisterSignal(src, COMSIG_MOVABLE_PRE_MOVE)
-	UnregisterSignal(src, COMSIG_MOVABLE_MOVED)
-
 
 /mob/living/set_stat(new_stat)
 	. = ..()
@@ -1966,23 +1915,17 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(CONSCIOUS)
 			if(stat >= UNCONSCIOUS)
 				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
-			ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
-			ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
-		if(SOFT_CRIT)
-			if(stat >= UNCONSCIOUS)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT) //adding trait sources should come before removing to avoid unnecessary updates
-			if(pulledby)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
+				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
+				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
+				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
 		if(UNCONSCIOUS)
-			if(stat != HARD_CRIT)
-				cure_blind(UNCONSCIOUS_TRAIT)
-		if(HARD_CRIT)
-			if(stat != UNCONSCIOUS)
-				cure_blind(UNCONSCIOUS_TRAIT)
+			cure_blind(UNCONSCIOUS_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
 		if(DEAD)
 			remove_from_dead_mob_list()
 			add_to_alive_mob_list()
+
+
 	switch(stat) //Current stat.
 		if(CONSCIOUS)
 			if(. >= UNCONSCIOUS)
@@ -1990,29 +1933,26 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
-			REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-		if(SOFT_CRIT)
-			if(pulledby)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT) //adding trait sources should come before removing to avoid unnecessary updates
-			if(. >= UNCONSCIOUS)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
 		if(UNCONSCIOUS)
-			if(. != HARD_CRIT)
-				become_blind(UNCONSCIOUS_TRAIT)
-			if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
-				ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-			else
-				REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-		if(HARD_CRIT)
-			if(. != UNCONSCIOUS)
-				become_blind(UNCONSCIOUS_TRAIT)
-			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			become_blind(UNCONSCIOUS_TRAIT)
+			ADD_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
 		if(DEAD)
-			REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
+
+/mob/living/carbon/set_stat(new_stat)
+	. = ..()
+	if(isnull(.))
+		return
+
+	switch(stat) //Current stat
+		if(DEAD)
+			bloodstream.end_metabolization(src)
+			var/datum/reagents/R = get_ingested_reagents()
+			if(R)
+				R.end_metabolization(src)
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
@@ -2048,9 +1988,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(. == FALSE) //null is a valid value here, we only want to return if FALSE is explicitly passed.
 		return
 	if(pulledby)
-		if(!. && stat == SOFT_CRIT)
+		if(!. && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 			ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-	else if(. && stat == SOFT_CRIT)
+	else if(. && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
 
 
@@ -2173,6 +2113,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		on_lying_down()
 	else // From lying down to standing up.
 		on_standing_up()
+
+	UPDATE_OO_IF_PRESENT
 
 
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
@@ -2306,3 +2248,116 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 
 	adjust_timed_status_effect(duration SECONDS, impediments[chosen])
+
+///Take away stamina from an attack being thrown.
+/mob/living/proc/stamina_swing(cost as num)
+	if((stamina.current - cost) > STAMINA_MAXIMUM_TO_SWING)
+		stamina.adjust(-cost)
+
+///Called by the stamina holder, passing the change in stamina to modify.
+/mob/living/proc/pre_stamina_change(diff as num, forced)
+	return diff
+
+///Checks if the user is incapacitated or on cooldown.
+/mob/living/proc/can_look_up()
+	return !(incapacitated(IGNORE_RESTRAINTS))
+
+/mob/living/verb/lookup()
+	set name = "Look Upwards"
+	set desc = "If you want to know what's above."
+	set category = "IC"
+
+
+	do_look_up()
+
+/mob/living/verb/lookdown()
+	set name = "Look Downwards"
+	set desc = "If you want to know what's below."
+	set category = "IC"
+
+	do_look_down()
+
+/mob/living/proc/do_look_up()
+	if(z_eye)
+		QDEL_NULL(z_eye)
+		to_chat(src, span_notice("You stop looking up."))
+		return
+
+	if(!can_look_up())
+		to_chat(src, span_notice("You can't look up right now."))
+		return
+
+	var/turf/above = GetAbove(src)
+
+	if(above)
+		to_chat(src, span_notice("You look up."))
+		z_eye = new /mob/camera/z_eye(above, src)
+		return
+
+	to_chat(src, span_notice("You can see \the [above ? above : "ceiling"]."))
+
+/mob/living/proc/do_look_down()
+	if(z_eye)
+		QDEL_NULL(z_eye)
+		to_chat(src, span_notice("You stop looking down."))
+		return
+
+	if(!can_look_up())
+		to_chat(src, span_notice("You can't look up right now."))
+		return
+
+	var/turf/T = get_turf(src)
+
+	if(HasBelow(T.z))
+		z_eye = new /mob/camera/z_eye(GetBelow(T), src)
+		to_chat(src, span_notice("You look down."))
+		return
+
+	to_chat(src, span_notice("You can see \the [T ? T : "floor"]."))
+
+/mob/living/proc/toggle_gunpoint_flag(permission)
+	gunpoint_flags ^= permission
+
+	var/message = "no longer permitted to "
+	var/use_span = "warning"
+	if (gunpoint_flags & permission)
+		message = "now permitted to "
+		use_span = "notice"
+
+	switch(permission)
+		if (TARGET_CAN_MOVE)
+			message += "move"
+		if (TARGET_CAN_INTERACT)
+			message += "use items"
+		if (TARGET_CAN_RADIO)
+			message += "use a radio"
+		if(TARGET_CAN_RUN)
+			message += "run"
+		else
+			return
+
+	to_chat(src, "<span class='[use_span]'>\The [gunpoint?.target || "victim"] is [message].</span>")
+	if(gunpoint?.target)
+		to_chat(gunpoint.target, "<span class='[use_span]'>You are [message].</span>")
+
+/mob/living/proc/get_ingested_reagents()
+	RETURN_TYPE(/datum/reagents)
+	return reagents
+
+/mob/living/proc/get_melee_inaccuracy()
+	. = 0
+	if(incapacitated())
+		. += 100
+	if(get_timed_status_effect_duration(/datum/status_effect/confusion))
+		. += 10
+	if(IsKnockdown())
+		. += 15
+	if(eye_blurry)
+		. += 5
+	if(eye_blind)
+		. += 60
+	if(HAS_TRAIT(src, TRAIT_CLUMSY))
+		. += 25
+
+/mob/living/proc/needs_organ(slot)
+	return FALSE

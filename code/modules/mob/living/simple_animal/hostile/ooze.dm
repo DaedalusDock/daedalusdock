@@ -37,7 +37,6 @@
 /mob/living/simple_animal/hostile/ooze/Initialize(mapload)
 	. = ..()
 	create_reagents(300)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 /mob/living/simple_animal/hostile/ooze/attacked_by(obj/item/I, mob/living/user)
@@ -127,9 +126,6 @@
 	if(!do_after(user, time = 6 SECONDS)) //6 second struggle
 		return FALSE
 	consume.stop_consuming()
-
-/mob/living/simple_animal/hostile/ooze/gelatinous/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GELATINOUS, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 ///This ability lets the gelatinious ooze speed up for a little bit
 /datum/action/cooldown/metabolicboost
@@ -289,9 +285,6 @@
 	var/datum/action/cooldown/gel_cocoon/gel_cocoon = new(src)
 	gel_cocoon.Grant(src)
 
-/mob/living/simple_animal/hostile/ooze/grapes/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_GRAPE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 ///Ability that allows the owner to fire healing globules at mobs, targetting specific limbs.
 /datum/action/cooldown/globules
 	name = "Fire Mending globule"
@@ -352,7 +345,7 @@
 	var/modifiers = params2list(params)
 	var/obj/projectile/globule/globule = new(caller.loc)
 	globule.preparePixelProjectile(target, caller, modifiers)
-	globule.def_zone = caller.zone_selected
+	globule.aimed_def_zone = caller.zone_selected
 	globule.fire()
 
 	return TRUE
@@ -384,7 +377,7 @@
 	. = ..()
 	bodypart = null
 
-/obj/item/mending_globule/embedded(mob/living/carbon/human/embedded_mob, obj/item/bodypart/part)
+/obj/item/mending_globule/embedded(obj/item/bodypart/part)
 	. = ..()
 	if(!istype(part))
 		return
@@ -488,8 +481,8 @@
 	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/atropine) < 5)
 		inhabitant.reagents.add_reagent(/datum/reagent/medicine/atropine, 0.5)
 
-	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/salglu_solution) < 15)
-		inhabitant.reagents.add_reagent(/datum/reagent/medicine/salglu_solution, 1.5)
+	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/medicine/saline_glucose) < 15)
+		inhabitant.reagents.add_reagent(/datum/reagent/medicine/saline_glucose, 1.5)
 
 	if(inhabitant.reagents.get_reagent_amount(/datum/reagent/consumable/milk) < 20)
 		inhabitant.reagents.add_reagent(/datum/reagent/consumable/milk, 2)

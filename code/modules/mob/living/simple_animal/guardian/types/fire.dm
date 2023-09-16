@@ -34,9 +34,11 @@
 
 /mob/living/simple_animal/hostile/guardian/fire/proc/on_entered(datum/source, AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	collision_ignite(AM)
 
-/mob/living/simple_animal/hostile/guardian/fire/Bumped(atom/movable/AM)
+/mob/living/simple_animal/hostile/guardian/fire/BumpedBy(atom/movable/AM)
 	..()
 	collision_ignite(AM)
 

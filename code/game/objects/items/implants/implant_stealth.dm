@@ -40,7 +40,7 @@
 	if(isliving(A))
 		reveal()
 
-/obj/structure/closet/cardboard/agent/Bumped(atom/movable/A)
+/obj/structure/closet/cardboard/agent/BumpedBy(atom/movable/A)
 	. = ..()
 	if(isliving(A))
 		reveal()

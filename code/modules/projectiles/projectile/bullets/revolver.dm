@@ -71,7 +71,7 @@
 		return
 	if(!imp)
 		imp = new /obj/item/implant/tracking/c38(M)
-		imp.implant(M)
+		imp.implant(M, body_zone = BODY_ZONE_CHEST)
 
 /obj/projectile/bullet/c38/hotshot //similar to incendiary bullets, but do not leave a flaming trail
 	name = ".38 Hot Shot bullet"

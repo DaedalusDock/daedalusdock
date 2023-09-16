@@ -41,6 +41,8 @@
 
 /obj/item/pressure_plate/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!can_trigger || !active)
 		return
 	if(trigger_item && !istype(AM, specific_item))

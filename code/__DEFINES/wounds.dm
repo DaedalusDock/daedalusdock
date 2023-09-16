@@ -39,4 +39,6 @@
 #define BLEEDING_MESSAGE_BASE_CD 10 SECONDS
 
 ///The percentage of damage at which a bodypart can start to be dismembered.
-#define LIMB_DISMEMBERMENT_PERCENT 0.6
+#define LIMB_DISMEMBERMENT_PERCENT 0.9
+///The percentage of max_damage that a limb will automatically be dismembered at
+#define LIMB_AUTODISMEMBER_PERCENT 6 // 600%

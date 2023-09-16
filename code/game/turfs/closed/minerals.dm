@@ -1,21 +1,26 @@
 #define MINING_MESSAGE_COOLDOWN 20
-
 /**********************Mineral deposits**************************/
 
 /turf/closed/mineral //wall piece
 	name = "rock"
-	icon = 'icons/turf/mining.dmi'
+	icon = MAP_SWITCH('icons/turf/smoothrocks.dmi', 'icons/turf/mining.dmi')
 	icon_state = "rock"
+
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_MINERAL_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_MINERAL_WALLS)
+	smoothing_groups = SMOOTH_GROUP_CLOSED_TURFS + SMOOTH_GROUP_MINERAL_WALLS
+	canSmoothWith = SMOOTH_GROUP_MINERAL_WALLS
 	baseturfs = /turf/open/misc/asteroid/airless
 	initial_gas = AIRLESS_ATMOS
 	opacity = TRUE
 	density = TRUE
 	base_icon_state = "smoothrocks"
 	temperature = TCMB
-	var/smooth_icon = 'icons/turf/smoothrocks.dmi'
+
+	// This is static
+	// Done like this to avoid needing to make it dynamic and save cpu time
+	// 4 to the left, 4 down
+	transform = MAP_SWITCH(TRANSLATE_MATRIX(-4, -4), matrix())
+
 	var/turf/open/floor/plating/turf_type = /turf/open/misc/asteroid/airless
 	var/obj/item/stack/ore/mineralType = null
 	var/mineralAmt = 3
@@ -28,14 +33,79 @@
 	///How long it takes to mine this turf without tools, if it's weak.
 	var/hand_mine_speed = 15 SECONDS
 
+//We don't call parent for perf reasons. Instead, we copy paste everything. BYOND!
 /turf/closed/mineral/Initialize(mapload)
+	SHOULD_CALL_PARENT(FALSE)
+
+	if(initialized)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+
+	initialized = TRUE
+
+	if(mapload && permit_ao)
+		queue_ao()
+
+	// by default, vis_contents is inherited from the turf that was here before
+	if(length(vis_contents))
+		vis_contents.len = 0
+
+	assemble_baseturfs()
+
+	levelupdate()
+
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
+
+	SETUP_SMOOTHING()
+
+	QUEUE_SMOOTH(src)
+
+	// visibilityChanged() will never hit any path with side effects during mapload
+	if (!mapload)
+		visibilityChanged()
+
+	for(var/atom/movable/content as anything in src)
+		Entered(content, null)
+
+	var/area/our_area = loc
+	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+		add_overlay(global.fullbright_overlay)
+
+	if (light_power && light_outer_range)
+		update_light()
+
+	if (opacity)
+		directional_opacity = ALL_CARDINALS
+
+	// apply materials properly from the default custom_materials value
+	if (!length(custom_materials))
+		set_custom_materials(custom_materials)
+
+	if(uses_integrity)
+		atom_integrity = max_integrity
+
+	return INITIALIZE_HINT_NORMAL
+
+// Inlined version of the bump click element. way faster this way, the element's nice but it's too much overhead
+/turf/closed/mineral/BumpedBy(atom/movable/bumped_atom)
 	. = ..()
-	var/matrix/M = new
-	M.Translate(-4, -4)
-	transform = M
-	icon = smooth_icon
-	var/static/list/behaviors = list(TOOL_MINING)
-	AddElement(/datum/element/bump_click, tool_behaviours = behaviors, allow_unarmed = TRUE)
+	if(!isliving(bumped_atom))
+		return
+
+	var/mob/living/bumping = bumped_atom
+	if(!ISADVANCEDTOOLUSER(bumping)) // Unadvanced tool users can't mine anyway (this is a lie). This just prevents message spam from attackby()
+		return
+
+	var/obj/item/held_item = bumping.get_active_held_item()
+	// !held_item exists to be nice to snow. the other bit is for pickaxes obviously
+	if(!held_item)
+		INVOKE_ASYNC(bumping, TYPE_PROC_REF(/mob, ClickOn), src)
+	else if(held_item.tool_behaviour == TOOL_MINING)
+		attackby(held_item, bumping)
+
+	return INITIALIZE_HINT_NORMAL
 
 /turf/closed/mineral/proc/Spread_Vein()
 	var/spreadChance = initial(mineralType.spreadChance)
@@ -54,14 +124,6 @@
 		var/obj/item/stack/ore/the_ore = ore_type
 		scan_state = initial(the_ore.scan_state) // I SAID. SWITCH. TO. IT.
 		mineralType = ore_type // Everything else assumes that this is typed correctly so don't set it to non-ores thanks.
-
-/turf/closed/mineral/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	if(turf_type)
-		underlay_appearance.icon = initial(turf_type.icon)
-		underlay_appearance.icon_state = initial(turf_type.icon_state)
-		return TRUE
-	return ..()
-
 
 /turf/closed/mineral/attackby(obj/item/I, mob/user, params)
 	if (!ISADVANCEDTOOLUSER(user))
@@ -179,7 +241,6 @@
 	var/list/mineralSpawnChanceList = list(/obj/item/stack/ore/uranium = 5, /obj/item/stack/ore/diamond = 1, /obj/item/stack/ore/gold = 10,
 		/obj/item/stack/ore/silver = 12, /obj/item/stack/ore/plasma = 20, /obj/item/stack/ore/iron = 40, /obj/item/stack/ore/titanium = 11,
 		/turf/closed/mineral/gibtonite = 4, /obj/item/stack/ore/bluespace_crystal = 1)
-		//Currently, Adamantine won't spawn as it has no uses. -Durandan
 	var/mineralChance = 13
 
 /turf/closed/mineral/random/Initialize(mapload)
@@ -257,12 +318,11 @@
 
 /turf/closed/mineral/random/snow
 	name = "snowy mountainside"
-	icon = 'icons/turf/mining.dmi'
-	smooth_icon = 'icons/turf/walls/legacy/mountain_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/mountain_wall.dmi', 'icons/turf/mining.dmi')
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
@@ -272,7 +332,6 @@
 /turf/closed/mineral/random/snow/Change_Ore(ore_type, random = 0)
 	. = ..()
 	if(mineralType)
-		smooth_icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
 		icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
 		icon_state = "icerock_wall-0"
 		base_icon_state = "icerock_wall"
@@ -318,12 +377,11 @@
 // Subtypes for mappers placing ores manually.
 /turf/closed/mineral/random/labormineral/ice
 	name = "snowy mountainside"
-	icon = 'icons/turf/mining.dmi'
-	smooth_icon = 'icons/turf/walls/legacy/mountain_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/mountain_wall.dmi', 'icons/turf/mining.dmi')
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	defer_change = TRUE
 	turf_type = /turf/open/misc/asteroid/snow/icemoon
 	baseturfs = /turf/open/misc/asteroid/snow/icemoon
@@ -337,7 +395,6 @@
 /turf/closed/mineral/random/labormineral/ice/Change_Ore(ore_type, random = 0)
 	. = ..()
 	if(mineralType)
-		smooth_icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
 		icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
 		icon_state = "icerock_wall-0"
 		base_icon_state = "icerock_wall"
@@ -349,7 +406,7 @@
 
 /turf/closed/mineral/iron/ice
 	icon_state = "icerock_iron"
-	smooth_icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/icerock_wall.dmi', 'icons/turf/mining.dmi')
 	base_icon_state = "icerock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
@@ -367,7 +424,7 @@
 
 /turf/closed/mineral/diamond/ice
 	icon_state = "icerock_iron"
-	smooth_icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/icerock_wall.dmi', 'icons/turf/mining.dmi')
 	base_icon_state = "icerock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
@@ -404,7 +461,7 @@
 
 /turf/closed/mineral/plasma/ice
 	icon_state = "icerock_plasma"
-	smooth_icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/icerock_wall.dmi', 'icons/turf/mining.dmi')
 	base_icon_state = "icerock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
@@ -440,12 +497,11 @@
 
 /turf/closed/mineral/ash_rock //wall piece
 	name = "rock"
-	icon = 'icons/turf/mining.dmi'
-	smooth_icon = 'icons/turf/walls/legacy/rock_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/rock_wall.dmi', 'icons/turf/mining.dmi')
 	icon_state = "rock2"
 	base_icon_state = "rock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	baseturfs = /turf/open/misc/ashplanet/wateryrock
 	initial_gas = OPENTURF_LOW_PRESSURE
 	turf_type = /turf/open/misc/ashplanet/rocky
@@ -453,12 +509,11 @@
 
 /turf/closed/mineral/snowmountain
 	name = "snowy mountainside"
-	icon = 'icons/turf/mining.dmi'
-	smooth_icon = 'icons/turf/walls/legacy/mountain_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/mountain_wall.dmi', 'icons/turf/mining.dmi')
 	icon_state = "mountainrock"
 	base_icon_state = "mountain_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	baseturfs = /turf/open/misc/asteroid/snow
 	temperature = 180
 	turf_type = /turf/open/misc/asteroid/snow
@@ -471,8 +526,7 @@
 
 /turf/closed/mineral/snowmountain/cavern
 	name = "ice cavern rock"
-	icon = 'icons/turf/mining.dmi'
-	smooth_icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/icerock_wall.dmi', 'icons/turf/mining.dmi')
 	icon_state = "icerock"
 	base_icon_state = "icerock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
@@ -488,15 +542,13 @@
 
 /turf/closed/mineral/asteroid
 	name = "iron rock"
-	icon = 'icons/turf/mining.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/red_wall.dmi', 'icons/turf/mining.dmi')
 	icon_state = "redrock"
-	smooth_icon = 'icons/turf/walls/legacy/red_wall.dmi'
 	base_icon_state = "red_wall"
 
 /turf/closed/mineral/random/stationside/asteroid
 	name = "iron rock"
-	icon = 'icons/turf/mining.dmi'
-	smooth_icon = 'icons/turf/walls/legacy/red_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/red_wall.dmi', 'icons/turf/mining.dmi')
 	base_icon_state = "red_wall"
 
 /turf/closed/mineral/random/stationside/asteroid/porus
@@ -609,7 +661,7 @@
 
 /turf/closed/mineral/gibtonite/ice
 	icon_state = "icerock_Gibtonite"
-	smooth_icon = 'icons/turf/walls/legacy/icerock_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/icerock_wall.dmi', 'icons/turf/mining.dmi')
 	base_icon_state = "icerock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	turf_type = /turf/open/misc/asteroid/snow/ice
@@ -629,7 +681,7 @@
 	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
 	initial_gas = LAVALAND_DEFAULT_ATMOS
 	defer_change = 1
-	smooth_icon = 'icons/turf/walls/legacy/rock_wall.dmi'
+	icon = MAP_SWITCH('icons/turf/walls/legacy/rock_wall.dmi', 'icons/turf/mining.dmi')
 	base_icon_state = "rock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 
@@ -663,10 +715,7 @@
 	H.mind?.adjust_experience(/datum/skill/mining, 100) //yay!
 
 /turf/closed/mineral/strong/proc/drop_ores()
-	if(prob(10))
-		new /obj/item/stack/sheet/mineral/mythril(src, 5)
-	else
-		new /obj/item/stack/sheet/mineral/adamantine(src, 5)
+	new /obj/item/stack/sheet/mineral/mythril(src, 5)
 
 /turf/closed/mineral/strong/acid_melt()
 	return

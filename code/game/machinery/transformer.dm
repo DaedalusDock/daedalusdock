@@ -42,7 +42,7 @@
 		icon_state = initial(icon_state)
 	return ..()
 
-/obj/machinery/transformer/Bumped(atom/movable/AM)
+/obj/machinery/transformer/BumpedBy(atom/movable/AM)
 	if(cooldown == 1)
 		return
 

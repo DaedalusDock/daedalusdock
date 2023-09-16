@@ -7,7 +7,6 @@
 	body_parts_covered = CHEST|ARMS
 	allowed = list(
 		/obj/item/analyzer,
-		/obj/item/biopsy_tool,
 		/obj/item/dnainjector,
 		/obj/item/flashlight/pen,
 		/obj/item/healthanalyzer,
@@ -24,10 +23,10 @@
 		/obj/item/stack/medical,
 		/obj/item/storage/pill_bottle,
 		/obj/item/tank/internals/emergency_oxygen,
-		/obj/item/tank/internals/plasmaman,
-		)
+		/obj/item/tank/internals/plasmaman
+	)
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 50, ACID = 50)
-	species_exception = list(/datum/species/golem)
+
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/suit/toggle/labcoat/cmo
@@ -35,12 +34,6 @@
 	desc = "Bluer than the standard model."
 	icon_state = "labcoat_cmo"
 	inhand_icon_state = "labcoat_cmo"
-
-/obj/item/clothing/suit/toggle/labcoat/cmo/Initialize(mapload)
-	. = ..()
-	allowed += list(
-		/obj/item/melee/baton/telescopic,
-	)
 
 /obj/item/clothing/suit/toggle/labcoat/paramedic
 	name = "paramedic's jacket"

@@ -27,7 +27,7 @@
 	var/appears_dead = FALSE
 	if (stat == DEAD)
 		appears_dead = TRUE
-		if(getorgan(/obj/item/organ/internal/brain))
+		if(getorgan(/obj/item/organ/brain))
 			. += span_deadsay("[t_He] [t_is] limp and unresponsive, with no signs of life.")
 		else if(get_bodypart(BODY_ZONE_HEAD))
 			. += span_deadsay("It appears that [t_his] brain is missing...")
@@ -49,7 +49,7 @@
 
 	for(var/obj/item/bodypart/BP as anything in disabled)
 		var/damage_text
-		if(!(BP.get_damage(include_stamina = FALSE) >= BP.max_damage)) //Stamina is disabling the limb
+		if(!(BP.get_damage() >= BP.max_damage)) //Stamina is disabling the limb
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (BP.brute_dam >= BP.burn_dam) ? BP.heavy_brute_msg : BP.heavy_burn_msg
@@ -106,32 +106,14 @@
 	. += msg.Join("")
 
 	if(!appears_dead)
-		switch(stat)
-			if(SOFT_CRIT)
-				. += "[t_His] breathing is shallow and labored."
-			if(UNCONSCIOUS, HARD_CRIT)
-				. += "[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep."
+		if(stat != CONSCIOUS)
+			. += "[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep.\n"
+		else if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
+			msg += "[t_He] [t_is] barely conscious.\n"
 
 	var/trait_exam = common_trait_examine()
 	if (!isnull(trait_exam))
 		. += trait_exam
-
-	var/datum/component/mood/mood = src.GetComponent(/datum/component/mood)
-	if(mood)
-		switch(mood.shown_mood)
-			if(-INFINITY to MOOD_LEVEL_SAD4)
-				. += "[t_He] look[p_s()] depressed."
-			if(MOOD_LEVEL_SAD4 to MOOD_LEVEL_SAD3)
-				. += "[t_He] look[p_s()] very sad."
-			if(MOOD_LEVEL_SAD3 to MOOD_LEVEL_SAD2)
-				. += "[t_He] look[p_s()] a bit down."
-			if(MOOD_LEVEL_HAPPY2 to MOOD_LEVEL_HAPPY3)
-				. += "[t_He] look[p_s()] quite happy."
-			if(MOOD_LEVEL_HAPPY3 to MOOD_LEVEL_HAPPY4)
-				. += "[t_He] look[p_s()] very happy."
-			if(MOOD_LEVEL_HAPPY4 to INFINITY)
-				. += "[t_He] look[p_s()] ecstatic."
-	//. += "*---------*</span>" PARIAH EDIT REMOVAL
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 

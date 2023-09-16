@@ -46,7 +46,6 @@
 	desc = "It's an orange high visibility jumpsuit worn by engineers. Made from fire resistant materials."
 	icon_state = "engine"
 	inhand_icon_state = "engi_suit"
-	species_exception = list(/datum/species/golem/uranium)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/engineering/engineer/hazard

@@ -71,8 +71,6 @@
 	var/can_install_electronics = TRUE
 
 /obj/structure/closet/Initialize(mapload)
-	if(mapload && !opened) // if closed, any item at the crate's loc is put in the contents
-		addtimer(CALLBACK(src, PROC_REF(take_contents), TRUE), 0)
 	. = ..()
 	update_appearance()
 	PopulateContents()
@@ -82,6 +80,13 @@
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(locker_carbon),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+
+	if(mapload && !opened)
+		return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/closet/LateInitialize()
+	. = ..()
+	take_contents()
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
@@ -242,13 +247,12 @@
 	var/atom/location = drop_location()
 	if(!location)
 		return
-	for(var/atom/movable/AM in location)
+	for(var/atom/movable/AM as anything in location)
 		if(AM != src && insert(AM, mapload) == LOCKER_FULL) // limit reached
 			if(mapload) // Yea, it's a mapping issue. Blame mappers.
 				log_mapping("Closet storage capacity of [type] exceeded on mapload at [AREACOORD(src)]")
 			break
-	for(var/i in reverse_range(location.get_all_contents()))
-		var/atom/movable/thing = i
+	for(var/atom/movable/thing as anything in reverse_range(location.get_all_contents()))
 		thing.atom_storage?.close_all()
 
 /obj/structure/closet/proc/open(mob/living/user, force = FALSE)
@@ -568,7 +572,7 @@
 	set category = "Object"
 	set name = "Toggle Open"
 
-	if(!usr.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!usr.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(iscarbon(usr) || issilicon(usr) || isdrone(usr))
@@ -631,7 +635,7 @@
 /obj/structure/closet/attack_hand_secondary(mob/user, modifiers)
 	. = ..()
 
-	if(!user.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!user.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(!opened && secure)
@@ -646,6 +650,7 @@
 			locked = !locked
 			user.visible_message(span_notice("[user] [locked ? null : "un"]locks [src]."),
 							span_notice("You [locked ? null : "un"]lock [src]."))
+			playsound(src, 'sound/machines/click.ogg', 15, 1, -3)
 			update_appearance()
 		else if(!silent)
 			to_chat(user, span_alert("Access Denied."))

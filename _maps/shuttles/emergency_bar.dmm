@@ -408,7 +408,6 @@
 /area/shuttle/escape)
 "bw" = (
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)

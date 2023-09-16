@@ -49,7 +49,7 @@
 	var/open_message = "The door beeps, and slides opens."
 
 //Standard Expressions to make keycard doors basically un-cheeseable
-/obj/machinery/door/puzzle/Bumped(atom/movable/AM)
+/obj/machinery/door/puzzle/BumpedBy(atom/movable/AM)
 	return !density && ..()
 
 /obj/machinery/door/puzzle/emp_act(severity)

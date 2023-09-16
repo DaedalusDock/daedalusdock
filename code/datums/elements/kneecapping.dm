@@ -15,7 +15,6 @@
  * Passing all the checks will cancel the entire attack chain.
  */
 /datum/element/kneecapping
-	element_flags = ELEMENT_DETACH
 
 /datum/element/kneecapping/Attach(datum/target)
 	if(!isitem(target))
@@ -83,6 +82,5 @@
 		attacker.visible_message(span_warning("[attacker] swings [attacker.p_their()] [weapon] at [target]'s kneecaps!"), span_danger("You swing \the [weapon] at [target]'s kneecaps!"))
 		leg.create_wound_easy(/datum/wound/puncture/gaping, 30)
 		log_combat(attacker, target, "broke the kneecaps of", weapon)
-		target.update_damage_overlays()
 		attacker.do_attack_animation(target, used_item = weapon)
 		playsound(source = get_turf(weapon), soundin = weapon.hitsound, vol = weapon.get_clamped_volume(), vary = TRUE)

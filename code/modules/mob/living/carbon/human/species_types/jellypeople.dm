@@ -11,7 +11,6 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_TOXINLOVER,
 	)
-	mutantlungs = /obj/item/organ/internal/lungs/slime
 	meat = /obj/item/food/meat/slab/human/mutant/slime
 	exotic_blood = /datum/reagent/toxin/slimejelly
 	var/datum/action/innate/regenerate_limbs/regenerate_limbs
@@ -33,6 +32,18 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/slime,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
 /datum/species/jelly/on_species_loss(mob/living/carbon/old_jellyperson)
@@ -284,7 +295,7 @@
 	var/datum/species/jelly/slime/spare_datum = spare.dna.species
 	spare_datum.bodies = origin_datum.bodies
 
-	H.transfer_trait_datums(spare)
+	H.transfer_quirk_datums(spare)
 	H.mind.transfer_to(spare)
 	spare.visible_message("<span class='warning'>[H] distorts as a new body \
 		\"steps out\" of [H.p_them()].</span>",
@@ -340,7 +351,7 @@
 		switch(body.stat)
 			if(CONSCIOUS)
 				stat = "Conscious"
-			if(SOFT_CRIT to HARD_CRIT) // Also includes UNCONSCIOUS
+			if(UNCONSCIOUS)
 				stat = "Unconscious"
 			if(DEAD)
 				stat = "Dead"
@@ -429,7 +440,7 @@
 			span_notice("You stop moving this body..."))
 	else
 		to_chat(M.current, span_notice("You abandon this body..."))
-	M.current.transfer_trait_datums(dupe)
+	M.current.transfer_quirk_datums(dupe)
 	M.transfer_to(dupe)
 	dupe.visible_message("<span class='notice'>[dupe] blinks and looks \
 		around.</span>",

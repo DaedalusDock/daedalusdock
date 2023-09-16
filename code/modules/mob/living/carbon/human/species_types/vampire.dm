@@ -14,8 +14,6 @@
 		FACEHAIR,
 		LIPS,
 		DRINKSBLOOD,
-		HAS_FLESH,
-		HAS_BONE,
 		BLOOD_CLANS,
 		HAIRCOLOR,
 		FACEHAIRCOLOR,
@@ -31,12 +29,23 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | ERT_SPAWN
 	exotic_bloodtype = "U"
 	use_skintones = TRUE
-	mutantheart = /obj/item/organ/internal/heart/vampire
-	mutanttongue = /obj/item/organ/internal/tongue/vampire
+
 	examine_limb_id = SPECIES_HUMAN
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	///some starter text sent to the vampire initially, because vampires have shit to do to stay alive
 	var/info_text = "You are a <span class='danger'>Vampire</span>. You will slowly but constantly lose blood if outside of a coffin. If inside a coffin, you will slowly heal. You may gain more blood by grabbing a live victim and using your drain ability."
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/vampire,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/vampire,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+	)
 
 /datum/species/vampire/check_roundstart_eligible()
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
@@ -53,7 +62,7 @@
 /datum/species/vampire/spec_life(mob/living/carbon/human/vampire, delta_time, times_fired)
 	. = ..()
 	if(istype(vampire.loc, /obj/structure/closet/crate/coffin))
-		vampire.heal_overall_damage(2 * delta_time, 2 * delta_time, 0, BODYTYPE_ORGANIC)
+		vampire.heal_overall_damage(2 * delta_time, 2 * delta_time, BODYTYPE_ORGANIC)
 		vampire.adjustToxLoss(-2 * delta_time)
 		vampire.adjustOxyLoss(-2 * delta_time)
 		vampire.adjustCloneLoss(-2 * delta_time)
@@ -148,7 +157,7 @@
 
 	return to_add
 
-/obj/item/organ/internal/tongue/vampire
+/obj/item/organ/tongue/vampire
 	name = "vampire tongue"
 	actions_types = list(/datum/action/item_action/organ_action/vampire)
 	color = "#1C1C1C"
@@ -162,7 +171,7 @@
 	. = ..()
 	if(iscarbon(owner))
 		var/mob/living/carbon/H = owner
-		var/obj/item/organ/internal/tongue/vampire/V = target
+		var/obj/item/organ/tongue/vampire/V = target
 		if(!COOLDOWN_FINISHED(V, drain_cooldown))
 			to_chat(H, span_warning("You just drained blood, wait a few seconds!"))
 			return
@@ -198,7 +207,7 @@
 			if(!victim.blood_volume)
 				to_chat(H, span_notice("You finish off [victim]'s blood supply."))
 
-/obj/item/organ/internal/heart/vampire
+/obj/item/organ/heart/vampire
 	name = "vampire heart"
 	color = "#1C1C1C"
 

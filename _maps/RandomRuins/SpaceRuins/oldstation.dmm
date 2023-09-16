@@ -470,9 +470,9 @@
 /area/ruin/space/has_grav/ancientstation/beta/medbay)
 "br" = (
 /obj/effect/spawner/structure/window/hollow/reinforced,
+/obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating{
-	heat_capacity = 1e+006;
-	icon_state = "platingdmg1"
+	heat_capacity = 1e+006
 	},
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "bs" = (
@@ -943,11 +943,6 @@
 "cK" = (
 /turf/closed/mineral/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
-"cL" = (
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
-/area/ruin/space/has_grav/ancientstation/beta/storage)
 "cM" = (
 /obj/effect/spawner/structure/window/hollow/reinforced/end{
 	dir = 4
@@ -1960,9 +1955,8 @@
 /area/ruin/space/has_grav/ancientstation/delta/ai)
 "fA" = (
 /obj/machinery/portable_atmospherics/canister/air,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "fB" = (
 /obj/effect/spawner/structure/window/hollow/reinforced/end{
@@ -2171,9 +2165,8 @@
 /area/ruin/space/has_grav/ancientstation/delta/ai)
 "gf" = (
 /obj/structure/closet/crate/bin,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "gg" = (
 /obj/effect/spawner/structure/window/hollow/reinforced/directional{
@@ -2308,9 +2301,8 @@
 /obj/structure/rack,
 /obj/item/tank/internals/emergency_oxygen,
 /obj/item/tank/internals/emergency_oxygen,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "gv" = (
 /obj/effect/decal/cleanable/dirt,
@@ -2448,7 +2440,6 @@
 /obj/structure/table/optable{
 	name = "Robotics Operating Table"
 	},
-/obj/item/surgical_drapes,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "gR" = (
@@ -2667,9 +2658,8 @@
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "hw" = (
 /obj/structure/grille/broken,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "hx" = (
 /obj/effect/decal/cleanable/dirt,
@@ -2731,9 +2721,6 @@
 /obj/structure/table,
 /obj/item/reagent_containers/glass/bottle/aluminium{
 	pixel_x = 6
-	},
-/obj/item/reagent_containers/glass/bottle/bromine{
-	pixel_x = -6
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/yellow{
@@ -3311,7 +3298,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "iF" = (
-/obj/machinery/chem_heater/withbuffer,
+/obj/machinery/chem_heater,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
@@ -3579,9 +3566,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "jl" = (
 /obj/effect/decal/cleanable/dirt,
@@ -4672,9 +4658,8 @@
 /obj/item/shard{
 	icon_state = "medium"
 	},
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/medbay)
 "lX" = (
 /obj/effect/decal/cleanable/dirt,
@@ -5383,7 +5368,6 @@
 	pixel_y = 12
 	},
 /obj/item/retractor,
-/obj/item/surgical_drapes,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
@@ -5489,12 +5473,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
-"nQ" = (
-/obj/item/stack/rods,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg1"
-	},
-/area/ruin/space/has_grav/ancientstation/beta/hall)
 "nR" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate,
@@ -5945,9 +5923,8 @@
 "oV" = (
 /obj/item/stack/rods,
 /obj/effect/decal/cleanable/glass,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "oW" = (
 /obj/item/shard{
@@ -5958,9 +5935,8 @@
 	dir = 4;
 	pixel_x = 24
 	},
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "oX" = (
 /obj/machinery/airalarm/all_access{
@@ -5972,20 +5948,13 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
-"oY" = (
-/obj/item/stack/rods,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg3"
-	},
-/area/ruin/space/has_grav/ancientstation/beta/hall)
 "oZ" = (
 /obj/item/shard{
 	icon_state = "small"
 	},
 /obj/effect/decal/cleanable/glass,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "pa" = (
 /obj/item/stack/rods,
@@ -6221,9 +6190,8 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "rW" = (
 /obj/effect/spawner/random/maintenance,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "rX" = (
 /obj/structure/closet,
@@ -6310,6 +6278,11 @@
 	},
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
+"uu" = (
+/obj/item/stack/rods,
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
+/area/ruin/space/has_grav/ancientstation/beta/hall)
 "uB" = (
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
@@ -6881,9 +6854,8 @@
 /area/ruin/space/has_grav/ancientstation/delta/proto)
 "KO" = (
 /obj/item/stack/rods,
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "Le" = (
 /obj/machinery/door/airlock/science,
@@ -7440,9 +7412,8 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "YN" = (
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "YZ" = (
 /obj/effect/decal/cleanable/dirt,
@@ -7589,7 +7560,7 @@ ac
 ac
 ac
 me
-nQ
+uu
 gO
 AK
 ow
@@ -7800,7 +7771,7 @@ qA
 oQ
 oS
 oV
-oY
+uu
 BX
 pc
 nx
@@ -7985,7 +7956,7 @@ zJ
 mS
 GU
 eg
-cL
+YN
 oC
 KO
 YN

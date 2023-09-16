@@ -24,12 +24,12 @@
 /obj/machinery/mineral/proc/register_input_turf()
 	input_turf = get_step(src, input_dir)
 	if(input_turf) // make sure there is actually a turf
-		RegisterSignal(input_turf, list(COMSIG_ATOM_INITIALIZED_ON, COMSIG_ATOM_ENTERED), PROC_REF(pickup_item))
+		RegisterSignal(input_turf, COMSIG_ATOM_ENTERED, PROC_REF(pickup_item))
 
 /// Unregisters signals that are registered the machine's input turf, if it has one.
 /obj/machinery/mineral/proc/unregister_input_turf()
 	if(input_turf)
-		UnregisterSignal(input_turf, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_INITIALIZED_ON))
+		UnregisterSignal(input_turf, COMSIG_ATOM_ENTERED)
 
 /obj/machinery/mineral/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
@@ -41,7 +41,7 @@
 /**
 	Base proc for all `/mineral` subtype machines to use. Place your item pickup behavior in this proc when you override it for your specific machine.
 
-	Called when the COMSIG_ATOM_ENTERED and COMSIG_ATOM_INITIALIZED_ON signals are sent.
+	Called when the COMSIG_ATOM_ENTERED signal is sent.
 
 	Arguments:
 	* source - the turf that is listening for the signals.
@@ -124,6 +124,8 @@
 	icon_state = "furnace"
 	density = TRUE
 	needs_item_input = TRUE
+	has_disk_slot = TRUE
+
 	var/obj/machinery/mineral/CONSOLE = null
 	var/on = FALSE
 	var/datum/material/selected_material = null
@@ -176,6 +178,12 @@
 
 /obj/machinery/mineral/processing_unit/proc/get_machine_data()
 	var/dat = "<b>Smelter control console</b><br><br>"
+	//On or off
+	dat += "Machine is currently "
+	if (on)
+		dat += "<A href='?src=[REF(CONSOLE)];set_on=off'>On</A><br> "
+	else
+		dat += "<A href='?src=[REF(CONSOLE)];set_on=on'>Off</A><br> "
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	for(var/datum/material/M in materials.materials)
 		var/amount = materials.materials[M]
@@ -199,12 +207,6 @@
 
 	dat += "<br><br>"
 	//On or off
-	dat += "Machine is currently "
-	if (on)
-		dat += "<A href='?src=[REF(CONSOLE)];set_on=off'>On</A> "
-	else
-		dat += "<A href='?src=[REF(CONSOLE)];set_on=on'>Off</A> "
-
 	return dat
 
 /obj/machinery/mineral/processing_unit/pickup_item(datum/source, atom/movable/target, direction)

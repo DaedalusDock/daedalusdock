@@ -3,10 +3,10 @@
 	desc = "Strange-looking hat-wear that most certainly belongs to a real magic user."
 	icon_state = "wizard"
 	permeability_coefficient = 0.01
-	armor = list(MELEE = 30, BULLET = 20, LASER = 20, ENERGY = 30, BOMB = 20, BIO = 20, FIRE = 100, ACID = 100,  WOUND = 20)
+	armor = list(MELEE = 30, BULLET = 20, LASER = 20, ENERGY = 30, BOMB = 20, BIO = 20, FIRE = 100, ACID = 100)
 	strip_delay = 50
 	equip_delay_other = 50
-	clothing_flags = SNUG_FIT
+	clothing_flags = SNUG_FIT | CASTING_CLOTHES
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -71,11 +71,12 @@
 	inhand_icon_state = "wizrobe"
 	permeability_coefficient = 0.01
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS
-	armor = list(MELEE = 30, BULLET = 20, LASER = 20, ENERGY = 30, BOMB = 20, BIO = 20, FIRE = 100, ACID = 100, WOUND = 20)
+	armor = list(MELEE = 30, BULLET = 20, LASER = 20, ENERGY = 30, BOMB = 20, BIO = 20, FIRE = 100, ACID = 100)
 	allowed = list(/obj/item/teleportation_scroll, /obj/item/highfrequencyblade/wizard)
 	flags_inv = HIDEJUMPSUIT
 	strip_delay = 50
 	equip_delay_other = 50
+	clothing_flags = SNUG_FIT | CASTING_CLOTHES
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/suit/wizrobe/red

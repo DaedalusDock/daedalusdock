@@ -294,7 +294,7 @@ Difficulty: Hard
 	else
 		new /obj/effect/temp_visual/hierophant/telegraph(T, src)
 	playsound(T,'sound/effects/bin_close.ogg', 200, TRUE)
-	SLEEP_CHECK_DEATH(2, src)
+	SLEEP_CHECK_DEATH(4, src)
 	new /obj/effect/temp_visual/hierophant/blast/damaging(T, src, FALSE)
 	for(var/d in directions)
 		INVOKE_ASYNC(src, PROC_REF(blast_wall), T, d)
@@ -390,7 +390,7 @@ Difficulty: Hard
 		var/dist = get_dist(original, T)
 		if(dist > last_dist)
 			last_dist = dist
-			sleep(1 + min(burst_range - last_dist, 12) * spread_speed) //gets faster as it gets further out
+			sleep(2 + min(burst_range - last_dist, 12) * spread_speed) //gets faster as it gets further out
 		new /obj/effect/temp_visual/hierophant/blast/damaging(T, caster, FALSE)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/burst(turf/original, spread_speed)
@@ -436,7 +436,7 @@ Difficulty: Hard
 	visible_message(span_hierophant_warning("\"[pick(kill_phrases)]\""))
 	visible_message(span_hierophant_warning("[src] annihilates [L]!"),span_userdanger("You annihilate [L], restoring your health!"))
 	adjustHealth(-L.maxHealth*0.5)
-	L.dust()
+	L.apply_damage(300, BRUTE, spread_damage = TRUE)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/CanAttack(atom/the_target)
 	. = ..()
@@ -533,20 +533,23 @@ Difficulty: Hard
 	icon_state = "hierophant_wall_temp-0"
 	base_icon_state = "hierophant_wall_temp"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_HIERO_WALL)
-	canSmoothWith = list(SMOOTH_GROUP_HIERO_WALL)
+	smoothing_groups = SMOOTH_GROUP_HIERO_WALL
+	canSmoothWith = SMOOTH_GROUP_HIERO_WALL
 	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 	duration = 100
 
 /obj/effect/temp_visual/hierophant/wall/Initialize(mapload, new_caster)
 	. = ..()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
-		QUEUE_SMOOTH(src)
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
+	SETUP_SMOOTHING()
+	QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH(src)
 
 /obj/effect/temp_visual/hierophant/wall/Destroy()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/effect/temp_visual/hierophant/wall/CanAllowThrough(atom/movable/mover, border_dir)
@@ -688,6 +691,8 @@ Difficulty: Hard
 
 /obj/effect/temp_visual/hierophant/blast/damaging/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(bursting)
 		do_damage(get_turf(src))
 

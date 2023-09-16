@@ -84,13 +84,13 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 		if(!user.is_literate())
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
 			return
-		var/t = tgui_input_text(user, "What would you like the label to be?", text("[]", name), null)
+		var/t = tgui_input_text(user, "What would you like the label to be?", name, null)
 		if (user.get_active_held_item() != P)
 			return
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if (t)
-			name = text("[]- '[]'", initial(name), t)
+			name = "[initial(name)]- '[t]'"
 		else
 			name = initial(name)
 	else
@@ -169,7 +169,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/AltClick(mob/user)
 	..()
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	beeper = !beeper
 	to_chat(user, span_notice("You turn the speaker function [beeper ? "on" : "off"]."))

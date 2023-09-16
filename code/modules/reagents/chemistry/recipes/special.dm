@@ -1,7 +1,7 @@
 GLOBAL_LIST_INIT(food_reagents, build_reagents_to_food()) //reagentid = related food types
 GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 
-#define VALID_RANDOM_RECIPE_REAGENT(chemical_flags) (chemical_flags & REAGENT_CAN_BE_SYNTHESIZED && !(chemical_flags & REAGENT_NO_RANDOM_RECIPE))
+#define VALID_RANDOM_RECIPE_REAGENT(chemical_flags) (!(chemical_flags & REAGENT_SPECIAL) && !(chemical_flags & REAGENT_NO_RANDOM_RECIPE))
 
 /proc/build_reagents_to_food()
 	. = list()
@@ -43,12 +43,7 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 /datum/chemical_reaction/randomized
 
 	//Increase default leniency because these are already hard enough
-	optimal_ph_min = 1
-	optimal_ph_max = 13
 	temp_exponent_factor = 0
-	ph_exponent_factor = 1
-	H_ion_release = 0
-
 	var/persistent = FALSE
 	var/persistence_period = 7 //Will reset every x days
 	var/created //creation timestamp
@@ -115,20 +110,6 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 				overheat_temp = 400
 			if(exo_or_endothermic)
 				thermic_constant = (rand(-200, 200))
-
-	if(randomize_req_ph)
-		optimal_ph_min = min_ph + rand(0, inoptimal_range_ph)
-		optimal_ph_max = max((max_ph + rand(0, inoptimal_range_ph)), (min_ph + 1)) //Always ensure we've a window of 1
-		determin_ph_range = inoptimal_range_ph
-		H_ion_release = (rand(0, 25)/100)// 0 - 0.25
-
-	if(randomize_impurity_minimum)
-		purity_min = (rand(0, 4)/10)
-
-	if(randomize_impurity_reagents)
-		for(var/rid in required_reagents)
-			var/datum/reagent/R = GLOB.chemical_reagents_list[rid]
-			R.inverse_chem = get_random_reagent_id()
 
 	if(randomize_results)
 		results = list()
@@ -207,13 +188,6 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 	overheat_temp = recipe_data["overheat_temp"]
 	thermic_constant = recipe_data["thermic_constant"]
 
-	optimal_ph_min = recipe_data["optimal_ph_min"]
-	optimal_ph_max = recipe_data["optimal_ph_max"]
-	determin_ph_range = recipe_data["determin_ph_range"]
-	H_ion_release = recipe_data["H_ion_release"]
-
-	purity_min = recipe_data["purity_min"]
-
 	var/temp_results = unwrap_reagent_list(recipe_data["results"])
 	if(!temp_results)
 		return FALSE
@@ -243,27 +217,11 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 			return food_reagent_ids
 	return ..()
 
-///Random recipe for meme chem metalgen. Always requires wittel and resets every 3 days
-/datum/chemical_reaction/randomized/metalgen
-	persistent = TRUE
-	persistence_period = 3 //Resets every three days. It's the ultimate meme and is best not worn out
-	randomize_req_temperature = TRUE
-	possible_catalysts = list(/datum/reagent/wittel)
-	min_catalysts = 1
-	max_catalysts = 1
-	results = list(/datum/reagent/metalgen=20)
-
-/datum/chemical_reaction/randomized/metalgen/GetPossibleReagents(kind)
-	switch(kind)
-		if(RNGCHEM_INPUT)
-			return GLOB.medicine_reagents
-	return ..()
-
 /obj/item/paper/secretrecipe
 	name = "old recipe"
 
 	///List of possible recipes we could display
-	var/list/possible_recipes = list(/datum/chemical_reaction/randomized/secret_sauce, /datum/chemical_reaction/randomized/metalgen)
+	var/list/possible_recipes = list(/datum/chemical_reaction/randomized/secret_sauce)
 	///The one we actually end up displaying
 	var/recipe_id = null
 
@@ -319,12 +277,6 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 			dat += "<li> taking care of it's exothermic nature</li>"
 		else if(recipe.thermic_constant < 0)
 			dat += "<li> taking care of it's endothermic nature</li>"
-	var/datum/chemical_reaction/randomized/random_recipe = recipe
-	if(random_recipe)
-		if(random_recipe.randomize_req_ph)
-			dat += "<li> keeping your pH between [recipe.optimal_ph_min] and [recipe.optimal_ph_max]</li>"
-		if(random_recipe.randomize_impurity_minimum)
-			dat += "<li> and your purity above [recipe.purity_min]</li>"
 	dat += "</ul>"
 	dat += "."
 	info = dat.Join("")

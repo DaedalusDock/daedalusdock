@@ -91,6 +91,8 @@
 
 /obj/effect/ebeam/vine/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!isvineimmune(L))
@@ -180,7 +182,7 @@
 			if(O.density)
 				return
 
-	var/datum/beam/newVine = Beam(the_target, icon_state = "vine", maxdistance = vine_grab_distance, beam_type=/obj/effect/ebeam/vine)
+	var/datum/beam/newVine = Beam(the_target, icon_state = "vine", maxdistance = vine_grab_distance, beam_type=/obj/effect/ebeam/vine, emissive = FALSE)
 	RegisterSignal(newVine, COMSIG_PARENT_QDELETING, PROC_REF(remove_vine), newVine)
 	vines += newVine
 	if(isliving(the_target))

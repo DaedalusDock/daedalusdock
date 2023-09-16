@@ -25,12 +25,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isgroundlessturf(A) (is_type_in_typecache(A, GLOB.turfs_without_ground))
 
-GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
-	/turf/open/openspace,
-	/turf/open/space/openspace
-	)))
-
-#define isopenspaceturf(A) (is_type_in_typecache(A, GLOB.turfs_openspace))
+#define isopenspaceturf(A) (istype(A, /turf/open/openspace) || istype(A, /turf/open/space/openspace))
 
 #define isopenturf(A) (istype(A, /turf/open))
 
@@ -70,7 +65,6 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 //Human sub-species
 #define isabductor(A) (is_species(A, /datum/species/abductor))
-#define isgolem(A) (is_species(A, /datum/species/golem))
 #define islizard(A) (is_species(A, /datum/species/lizard))
 #define isplasmaman(A) (is_species(A, /datum/species/plasmaman))
 #define isvox(A) (is_species(A, /datum/species/vox))
@@ -82,13 +76,11 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 #define iszombie(A) (is_species(A, /datum/species/zombie))
 #define isskeleton(A) (is_species(A, /datum/species/skeleton))
 #define ismoth(A) (is_species(A, /datum/species/moth))
-#define isfelinid(A) (is_species(A, /datum/species/human/felinid))
 #define isethereal(A) (is_species(A, /datum/species/ethereal))
 #define isvampire(A) (is_species(A,/datum/species/vampire))
 #define isdullahan(A) (is_species(A, /datum/species/dullahan))
 #define ismonkey(A) (is_species(A, /datum/species/monkey))
 #define isandroid(A) (is_species(A, /datum/species/android))
-#define isskrell(A) (is_species(A, /datum/species/skrell))
 #define isteshari(A) (is_species(A, /datum/species/teshari))
 
 //More carbon mobs
@@ -209,9 +201,9 @@ GLOBAL_LIST_INIT(turfs_openspace, typecacheof(list(
 
 #define isorgan(A) (istype(A, /obj/item/organ))
 
-#define isinternalorgan(A) (istype(A, /obj/item/organ/internal))
+#define isinternalorgan(A) (istype(A, /obj/item/organ))
 
-#define isexternalorgan(A) (istype(A, /obj/item/organ/external))
+#define isexternalorgan(A) (istype(A, /obj/item/organ))
 
 #define isclothing(A) (istype(A, /obj/item/clothing))
 

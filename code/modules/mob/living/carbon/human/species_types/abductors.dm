@@ -12,7 +12,6 @@
 		TRAIT_NOHUNGER,
 		TRAIT_NOBREATH,
 	)
-	mutanttongue = /obj/item/organ/internal/tongue/abductor
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	ass_image = 'icons/ass/assgrey.png'
 
@@ -23,6 +22,18 @@
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/abductor,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/abductor,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/abductor,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = null,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/abductor,
+		ORGAN_SLOT_STOMACH = null,
+		ORGAN_SLOT_APPENDIX = null,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
 /datum/species/abductor/on_species_gain(mob/living/carbon/C, datum/species/old_species)

@@ -37,7 +37,6 @@
 		return FALSE
 	var/max_temp = min(500 + (500 * (0.2 * cell.rating)), 1000) // 373 to 1000
 	reagents.adjust_thermal_energy(0.4 * cell.maxcharge * reagents.total_volume * delta_time, max_temp = max_temp) // 4 kelvin every tick on a basic cell. 160k on bluespace
-	reagents.handle_reactions()
 	update_appearance()
 	if(reagents.chem_temp >= max_temp)
 		change_power_status(FALSE)

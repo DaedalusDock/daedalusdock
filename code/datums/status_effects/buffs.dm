@@ -284,17 +284,17 @@
 			//Because a servant of medicines stops at nothing to help others, lets keep them on their toes and give them an additional boost.
 			if(itemUser.health < itemUser.maxHealth)
 				new /obj/effect/temp_visual/heal(get_turf(itemUser), "#375637")
-			itemUser.adjustBruteLoss(-1.5)
-			itemUser.adjustFireLoss(-1.5)
-			itemUser.adjustToxLoss(-1.5, forced = TRUE) //Because Slime People are people too
-			itemUser.adjustOxyLoss(-1.5)
-			itemUser.adjustStaminaLoss(-1.5)
+			itemUser.adjustBruteLoss(-1.5, FALSE)
+			itemUser.adjustFireLoss(-1.5, FALSE)
+			itemUser.adjustToxLoss(-1.5, FALSE, forced = TRUE) //Because Slime People are people too
+			itemUser.adjustOxyLoss(-1.5, FALSE)
+			itemUser.stamina.adjust(1.5)
 			itemUser.adjustOrganLoss(ORGAN_SLOT_BRAIN, -1.5)
-			itemUser.adjustCloneLoss(-0.5) //Becasue apparently clone damage is the bastion of all health
+			itemUser.adjustCloneLoss(-0.5, FALSE) //Becasue apparently clone damage is the bastion of all health
 
 /datum/status_effect/hippocratic_oath/proc/consume_owner()
 	owner.visible_message(span_notice("[owner]'s soul is absorbed into the rod, relieving the previous snake of its duty."))
-	var/list/chems = list(/datum/reagent/medicine/sal_acid, /datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/oxandrolone)
+	var/list/chems = list(/datum/reagent/medicine/tricordrazine, /datum/reagent/medicine/dexalin, /datum/reagent/medicine/meralyne, /datum/reagent/medicine/dermaline)
 	var/mob/living/simple_animal/hostile/retaliate/snake/healSnake = new(owner.loc, pick(chems))
 	healSnake.name = "Asclepius's Snake"
 	healSnake.real_name = "Asclepius's Snake"
@@ -316,7 +316,6 @@
 		owner.adjust_timed_status_effect(-4 SECONDS, /datum/status_effect/dizziness)
 		owner.adjust_timed_status_effect(-4 SECONDS, /datum/status_effect/jitter)
 		owner.adjust_timed_status_effect(-1 SECONDS, /datum/status_effect/confusion)
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "goodmusic", /datum/mood_event/goodmusic)
 
 /atom/movable/screen/alert/status_effect/regenerative_core
 	name = "Regenerative Core Tendrils"

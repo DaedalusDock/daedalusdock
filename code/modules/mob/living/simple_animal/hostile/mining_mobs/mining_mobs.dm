@@ -33,22 +33,15 @@
 		return
 	icon_state = icon_living
 
-/mob/living/simple_animal/hostile/asteroid/bullet_act(obj/projectile/P)//Reduces damage from most projectiles to curb off-screen kills
+/mob/living/simple_animal/hostile/asteroid/bullet_act(obj/projectile/P)
 	if(!stat)
 		Aggro()
-	if(P.damage < 30 && P.damage_type != BRUTE)
-		P.damage = (P.damage / 3)
-		visible_message(span_danger("[P] has a reduced effect on [src]!"))
 	..()
 
-/mob/living/simple_animal/hostile/asteroid/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum) //No floor tiling them to death, wiseguy
+/mob/living/simple_animal/hostile/asteroid/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(istype(AM, /obj/item))
-		var/obj/item/T = AM
 		if(!stat)
 			Aggro()
-		if(T.throwforce <= 20)
-			visible_message(span_notice("The [T.name] [throw_message] [src.name]!"))
-			return
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/death(gibbed)

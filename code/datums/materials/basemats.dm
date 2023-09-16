@@ -183,11 +183,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.15
 	wall_type = null
 
-/datum/material/bluespace/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.reagents.add_reagent(/datum/reagent/bluespace, rand(5, 8))
-	source_item?.reagents?.add_reagent(/datum/reagent/bluespace, source_item.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Honks and slips
 /datum/material/bananium
 	name = "bananium"
@@ -270,11 +265,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = -0.01
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.1, LASER = 0.3, ENERGY = 0.5, BOMB = 1, BIO = 1, FIRE = 1.1, ACID = 1)
 
-/datum/material/plastic/on_accidental_mat_consumption(mob/living/carbon/eater, obj/item/food)
-	eater.reagents.add_reagent(/datum/reagent/plastic_polymers, rand(6, 8))
-	food?.reagents?.add_reagent(/datum/reagent/plastic_polymers, food.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Force decrease and mushy sound effect. (Not yet implemented)
 /datum/material/biomass
 	name = "biomass"
@@ -320,26 +310,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	victim.reagents.add_reagent(/datum/reagent/cellulose, rand(8, 12))
 	source_item?.reagents?.add_reagent(/datum/reagent/cellulose, source_item.reagents.total_volume*(2/5))
 
-	return TRUE
-
-///Stronk force increase
-/datum/material/adamantine
-	name = "adamantine"
-	desc = "A powerful material made out of magic, I mean science!"
-	color = "#6d7e8e"
-	greyscale_colors = "#6d7e8e"
-	strength_modifier = 1.5
-	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
-	sheet_type = /obj/item/stack/sheet/mineral/adamantine
-	value_per_unit = 0.25
-	beauty_modifier = 0.4
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.3, ENERGY = 1.3, BOMB = 1, BIO = 1, FIRE = 2.5, ACID = 1)
-	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
-
-/datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
 	return TRUE
 
 ///RPG Magic.

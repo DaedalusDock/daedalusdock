@@ -269,7 +269,7 @@
 			owned = FALSE
 			return
 		var/transaction_amount = tgui_input_number(user, "Insert valid deposit amount for gun purchase", "Money Deposit")
-		if(!transaction_amount || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, no_tk = NO_TK))
+		if(!transaction_amount || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 			return
 		pin_owner = id.registered_account
 		owned = TRUE

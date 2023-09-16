@@ -36,7 +36,20 @@
 		return COMPONENT_INCOMPATIBLE
 	holder.forceMove(parent)
 
+INITIALIZE_IMMEDIATE(/obj/effect/abstract/mirage_holder)
 /obj/effect/abstract/mirage_holder
 	name = "Mirage holder"
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
+/obj/effect/abstract/mirage_holder/Initialize(mapload)
+	SHOULD_CALL_PARENT(FALSE)
+	if(initialized)
+		stack_trace("Warning: [src]([type]) initialized multiple times!")
+	initialized = TRUE
+	return INITIALIZE_HINT_NORMAL
+
+/obj/effect/abstract/mirage_holder/Destroy(force)
+	SHOULD_CALL_PARENT(FALSE)
+	loc = null
+	return QDEL_HINT_QUEUE

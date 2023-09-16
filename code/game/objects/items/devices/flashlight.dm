@@ -17,6 +17,7 @@
 	light_outer_range = 4
 	light_power = 0.3
 	light_on = FALSE
+	force = 10
 	var/on = FALSE
 
 
@@ -75,7 +76,7 @@
 					to_chat(user, span_warning("You're going to need to remove that [(M.head && M.head.flags_cover & HEADCOVERSEYES) ? "helmet" : (M.wear_mask && M.wear_mask.flags_cover & MASKCOVERSEYES) ? "mask": "glasses"] first!"))
 					return
 
-				var/obj/item/organ/internal/eyes/E = M.getorganslot(ORGAN_SLOT_EYES)
+				var/obj/item/organ/eyes/E = M.getorganslot(ORGAN_SLOT_EYES)
 				if(!E)
 					to_chat(user, span_warning("[M] doesn't have any eyes!"))
 					return
@@ -104,7 +105,7 @@
 				var/their = M.p_their()
 
 				var/list/mouth_organs = new
-				for(var/obj/item/organ/organ as anything in M.internal_organs)
+				for(var/obj/item/organ/organ as anything in M.organs)
 					if(organ.zone == BODY_ZONE_PRECISE_MOUTH)
 						mouth_organs.Add(organ)
 				var/organ_list = ""
@@ -233,6 +234,7 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	force = 10
 	light_outer_range = 3.5
+	light_power = 0.9
 	light_system = STATIC_LIGHT
 	light_color = LIGHT_COLOR_FAINT_BLUE
 	w_class = WEIGHT_CLASS_BULKY
@@ -461,7 +463,7 @@
 	base_icon_state = "glowstick"
 	inhand_icon_state = "glowstick"
 	worn_icon_state = "lightstick"
-	grind_results = list(/datum/reagent/phenol = 15, /datum/reagent/hydrogen = 10, /datum/reagent/oxygen = 5) //Meth-in-a-stick
+	grind_results = list(/datum/reagent/uranium/radium = 15, /datum/reagent/hydrogen = 10, /datum/reagent/oxygen = 5)
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 
@@ -529,7 +531,7 @@
 	if(!fuel)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but it's empty!"))
 		return SHAME
-	var/obj/item/organ/internal/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		user.visible_message(span_suicide("[user] is trying to squirt [src]'s fluids into [user.p_their()] eyes... but [user.p_they()] don't have any!"))
 		return SHAME

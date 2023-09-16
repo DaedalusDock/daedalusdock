@@ -203,8 +203,19 @@ Temporary Items
 /tools/LinuxOneShot/TGS_Instances
 /tools/LinuxOneShot/TGS_Logs
 
+# byond-tracy, we intentionally do not ship this and do not want to maintain it
+prof.dll
+libprof.so
+
 # JavaScript tools
 **/node_modules
 
 # Screenshot tests
 /artifacts
+
+#Ignore everything but the example config in the media jsons directory, For easy testing.
+/config/media/jsons/*
+!/config/media/jsons/__EXAMPLE.json
+
+#This file contains developer-specific config overrides. These shouldn't be committed.
+config/_config_nogit.txt

@@ -36,11 +36,11 @@
 	SIGNAL_HANDLER
 
 	if(M.stat == DEAD && (M.butcher_results || M.guaranteed_butcher_results)) //can we butcher it?
-		if(butchering_enabled && (can_be_blunt || source.get_sharpness()))
+		if(butchering_enabled && (can_be_blunt || (source.sharpness & SHARP_EDGED)))
 			INVOKE_ASYNC(src, PROC_REF(startButcher), source, M, user)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
-	if(ishuman(M) && source.force && source.get_sharpness())
+	if(ishuman(M) && source.force && (source.sharpness & SHARP_EDGED))
 		var/mob/living/carbon/human/H = M
 		if((user.pulling == H && user.grab_state >= GRAB_AGGRESSIVE) && user.zone_selected == BODY_ZONE_HEAD) // Only aggressive grabbed can be sliced.
 			if(H.has_status_effect(/datum/status_effect/neck_slice))
@@ -150,7 +150,8 @@
 
 /datum/component/butchering/recycler/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
-
+	if(arrived == parent)
+		return
 	if(!isliving(arrived))
 		return
 	var/mob/living/victim = arrived

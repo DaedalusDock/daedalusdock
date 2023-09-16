@@ -30,7 +30,7 @@
 	return ..()
 
 
-/obj/item/clothing/head/wig/worn_overlays(mutable_appearance/standing, isinhands = FALSE, file2use)
+/obj/item/clothing/head/wig/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, file2use)
 	. = ..()
 	if(isinhands)
 		return
@@ -49,7 +49,7 @@
 /obj/item/clothing/head/wig/attack_self(mob/user)
 	var/new_style = tgui_input_list(user, "Select a hairstyle", "Wig Styling", GLOB.hairstyles_list - "Bald")
 	var/newcolor = adjustablecolor ? input(usr,"","Choose Color",color) as color|null : null
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	if(new_style && new_style != hairstyle)
 		hairstyle = new_style

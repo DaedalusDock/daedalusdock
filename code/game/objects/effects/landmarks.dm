@@ -301,6 +301,12 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "carpspawn"
 	icon_state = "carp_spawn"
 
+//spawn for mice and other maint pests
+/obj/effect/landmark/pestspawn
+	name = "pestspawn"
+	icon_state = "pest_spawn"
+	layer = MOB_LAYER //needs to display above catwalks
+
 //observer start
 /obj/effect/landmark/observer_start
 	name = "Observer-Start"

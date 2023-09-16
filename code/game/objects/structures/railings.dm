@@ -64,7 +64,7 @@
 
 /obj/structure/railing/deconstruct(disassembled)
 	if(!(flags_1 & NODECONSTRUCT_1))
-		var/obj/item/stack/rods/rod = new /obj/item/stack/rods(drop_location(), 3)
+		var/obj/item/stack/rods/rod = new /obj/item/stack/rods(drop_location(), 6)
 		transfer_fingerprints_to(rod)
 	return ..()
 
@@ -85,7 +85,7 @@
 		return . || mover.throwing || mover.movement_type & (FLYING | FLOATING)
 	return TRUE
 
-/obj/structure/railing/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/obj/structure/railing/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	if(!(to_dir & dir))
 		return TRUE
 	return ..()

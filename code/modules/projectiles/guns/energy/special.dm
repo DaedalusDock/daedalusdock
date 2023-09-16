@@ -294,6 +294,10 @@
 /obj/item/gun/energy/wormhole_projector/core_inserted
 	firing_core = TRUE
 
+/obj/item/gun/energy/wormhole_projector/suicide_act(mob/living/user)
+	user.visible_message(span_suicide("[user] is looking into the operational end of the device! It looks like [user.p_theyre()] trying to commit suicide!"))
+	return (FIRELOSS)
+
 #undef AMMO_SELECT_BLUE
 #undef AMMO_SELECT_ORANGE
 

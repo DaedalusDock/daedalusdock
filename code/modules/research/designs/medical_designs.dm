@@ -61,15 +61,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
-/datum/design/ph_meter
-	name = "Chemical Analyzer"
-	id = "ph_meter"
-	build_type = FABRICATOR
-	materials = list(/datum/material/glass = 2500, /datum/material/gold = 1000, /datum/material/titanium = 1000)
-	build_path = /obj/item/ph_meter
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 /datum/design/dna_disk
 	name = "Genetic Data Disk"
 	desc = "Produce additional disks for storing genetic data."
@@ -140,16 +131,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
-/datum/design/healthanalyzer_advanced
-	name = "Advanced Health Analyzer"
-	desc = "A hand-held body scanner able to distinguish vital signs of the subject with high accuracy."
-	id = "healthanalyzer_advanced"
-	build_path = /obj/item/healthanalyzer/advanced
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 2500, /datum/material/silver = 2000, /datum/material/gold = 1500)
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 /datum/design/medigel
 	name = "Medical Gel"
 	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap."
@@ -157,15 +138,6 @@
 	build_path = /obj/item/reagent_containers/medigel
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 500)
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
-/datum/design/surgical_drapes
-	name = "Surgical Drapes"
-	id = "surgical_drapes"
-	build_type = FABRICATOR
-	materials = list(/datum/material/plastic = 2000)
-	build_path = /obj/item/surgical_drapes
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -224,9 +196,27 @@
 	desc = "Is used to contain blood used for transfusion. Must be attached to an IV drip."
 	id = "blood_pack"
 	build_type = FABRICATOR
-	mapload_design_flags = DESIGN_FAB_MEDICAL
 	materials = list(/datum/material/plastic = 1000)
 	build_path = /obj/item/reagent_containers/blood
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
+/datum/design/blood_pack
+	name = "Bone Gel"
+	desc = "Used to mend bone fractures."
+	id = "bone_gel"
+	build_type = FABRICATOR
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/medical/bone_gel
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
+/datum/design/sticky_tape/surgical
+	name = "Surgical Tape"
+	id = "surgical_tape"
+	build_type = FABRICATOR
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/sticky_tape/surgical
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -241,7 +231,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 400)
-	build_path = /obj/item/organ/internal/eyes/robotic/shield
+	build_path = /obj/item/organ/eyes/robotic/shield
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_gloweyes
@@ -251,7 +241,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 1000)
-	build_path = /obj/item/organ/internal/eyes/robotic/glow
+	build_path = /obj/item/organ/eyes/robotic/glow
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_breather
@@ -261,7 +251,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 35
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 250)
-	build_path = /obj/item/organ/internal/cyberimp/mouth/breathing_tube
+	build_path = /obj/item/organ/cyberimp/mouth/breathing_tube
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_surgical
@@ -271,7 +261,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	materials = list (/datum/material/iron = 2500, /datum/material/glass = 1500, /datum/material/silver = 1500)
 	construction_time = 200
-	build_path = /obj/item/organ/internal/cyberimp/arm/surgery
+	build_path = /obj/item/organ/cyberimp/arm/surgery
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_toolset
@@ -281,7 +271,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	materials = list (/datum/material/iron = 2500, /datum/material/glass = 1500, /datum/material/silver = 1500)
 	construction_time = 200
-	build_path = /obj/item/organ/internal/cyberimp/arm/toolset
+	build_path = /obj/item/organ/cyberimp/arm/toolset
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_medical_hud
@@ -291,7 +281,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 500)
-	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/medical
+	build_path = /obj/item/organ/cyberimp/eyes/hud/medical
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_security_hud
@@ -301,7 +291,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 750, /datum/material/gold = 750)
-	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/security
+	build_path = /obj/item/organ/cyberimp/eyes/hud/security
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_diagnostic_hud
@@ -311,7 +301,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600)
-	build_path = /obj/item/organ/internal/cyberimp/eyes/hud/diagnostic
+	build_path = /obj/item/organ/cyberimp/eyes/hud/diagnostic
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_xray
@@ -321,7 +311,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/uranium = 1000, /datum/material/diamond = 1000, /datum/material/bluespace = 1000)
-	build_path = /obj/item/organ/internal/eyes/robotic/xray
+	build_path = /obj/item/organ/eyes/robotic/xray
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_thermals
@@ -331,7 +321,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 600, /datum/material/gold = 600, /datum/material/plasma = 1000, /datum/material/diamond = 2000)
-	build_path = /obj/item/organ/internal/eyes/robotic/thermals
+	build_path = /obj/item/organ/eyes/robotic/thermals
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_antistun
@@ -341,7 +331,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/silver = 500, /datum/material/gold = 1000)
-	build_path = /obj/item/organ/internal/cyberimp/brain/anti_stun
+	build_path = /obj/item/organ/cyberimp/brain/anti_stun
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_nutriment
@@ -351,7 +341,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/gold = 500)
-	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment
+	build_path = /obj/item/organ/cyberimp/chest/nutriment
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_nutriment_plus
@@ -361,7 +351,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 50
 	materials = list(/datum/material/iron = 600, /datum/material/glass = 600, /datum/material/gold = 500, /datum/material/uranium = 750)
-	build_path = /obj/item/organ/internal/cyberimp/chest/nutriment/plus
+	build_path = /obj/item/organ/cyberimp/chest/nutriment/plus
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cyberimp_reviver
@@ -371,7 +361,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	construction_time = 60
 	materials = list(/datum/material/iron = 800, /datum/material/glass = 800, /datum/material/gold = 300, /datum/material/uranium = 500)
-	build_path = /obj/item/organ/internal/cyberimp/chest/reviver
+	build_path = /obj/item/organ/cyberimp/chest/reviver
 	category = list(DCAT_AUGMENT)
 
 /////////////////////////////////////////
@@ -435,7 +425,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/liver/cybernetic
+	build_path = /obj/item/organ/liver/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -444,7 +434,7 @@
 	desc = "A cybernetic liver."
 	id = "cybernetic_liver_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/liver/cybernetic/tier2
+	build_path = /obj/item/organ/liver/cybernetic/tier2
 
 /datum/design/cybernetic_liver/tier3
 	name = "Upgraded Cybernetic Liver"
@@ -452,7 +442,7 @@
 	id = "cybernetic_liver_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver=500)
-	build_path = /obj/item/organ/internal/liver/cybernetic/tier3
+	build_path = /obj/item/organ/liver/cybernetic/tier3
 
 /datum/design/cybernetic_heart
 	name = "Basic Cybernetic Heart"
@@ -461,7 +451,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/heart/cybernetic
+	build_path = /obj/item/organ/heart/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -470,7 +460,7 @@
 	desc = "A cybernetic heart."
 	id = "cybernetic_heart_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/heart/cybernetic/tier2
+	build_path = /obj/item/organ/heart/cybernetic/tier2
 
 /datum/design/cybernetic_heart/tier3
 	name = "Upgraded Cybernetic Heart"
@@ -478,7 +468,7 @@
 	id = "cybernetic_heart_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver=500)
-	build_path = /obj/item/organ/internal/heart/cybernetic/tier3
+	build_path = /obj/item/organ/heart/cybernetic/tier3
 
 /datum/design/cybernetic_lungs
 	name = "Basic Cybernetic Lungs"
@@ -487,7 +477,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/lungs/cybernetic
+	build_path = /obj/item/organ/lungs/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -496,7 +486,7 @@
 	desc = "A pair of cybernetic lungs."
 	id = "cybernetic_lungs_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/lungs/cybernetic/tier2
+	build_path = /obj/item/organ/lungs/cybernetic/tier2
 
 /datum/design/cybernetic_lungs/tier3
 	name = "Upgraded Cybernetic Lungs"
@@ -504,7 +494,7 @@
 	id = "cybernetic_lungs_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
-	build_path = /obj/item/organ/internal/lungs/cybernetic/tier3
+	build_path = /obj/item/organ/lungs/cybernetic/tier3
 
 /datum/design/cybernetic_stomach
 	name = "Basic Cybernetic Stomach"
@@ -513,7 +503,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/stomach/cybernetic
+	build_path = /obj/item/organ/stomach/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -522,7 +512,7 @@
 	desc = "A cybernetic stomach."
 	id = "cybernetic_stomach_tier2"
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
-	build_path = /obj/item/organ/internal/stomach/cybernetic/tier2
+	build_path = /obj/item/organ/stomach/cybernetic/tier2
 
 /datum/design/cybernetic_stomach/tier3
 	name = "Upgraded Cybernetic Stomach"
@@ -530,7 +520,7 @@
 	id = "cybernetic_stomach_tier3"
 	construction_time = 50
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
-	build_path = /obj/item/organ/internal/stomach/cybernetic/tier3
+	build_path = /obj/item/organ/stomach/cybernetic/tier3
 
 /datum/design/cybernetic_ears
 	name = "Cybernetic Ears"
@@ -539,7 +529,7 @@
 	build_type = MECHFAB
 	construction_time = 30
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 400)
-	build_path = /obj/item/organ/internal/ears/cybernetic
+	build_path = /obj/item/organ/ears/cybernetic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -550,7 +540,7 @@
 	build_type = MECHFAB
 	construction_time = 40
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500, /datum/material/silver = 500)
-	build_path = /obj/item/organ/internal/ears/cybernetic/upgraded
+	build_path = /obj/item/organ/ears/cybernetic/upgraded
 	category = list(DCAT_AUGMENT)
 
 /datum/design/cybernetic_eyes
@@ -560,7 +550,7 @@
 	build_type = MECHFAB
 	construction_time = 30
 	materials = list(/datum/material/iron = 250, /datum/material/glass = 400)
-	build_path = /obj/item/organ/internal/eyes/robotic/basic
+	build_path = /obj/item/organ/eyes/robotic/basic
 	category = list(DCAT_AUGMENT)
 	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
@@ -568,83 +558,4 @@
 	name = "Cybernetic Eyes"
 	desc = "A pair of cybernetic eyes."
 	id = "cybernetic_eyes_improved"
-	build_path = /obj/item/organ/internal/eyes/robotic
-
-/////////////////////
-///Surgery Designs///
-/////////////////////
-
-/datum/design/surgery
-	name = "Surgery Design"
-	desc = "what"
-	id = "surgery_parent"
-	research_icon = 'icons/obj/surgery.dmi'
-	research_icon_state = "surgery_any"
-	var/surgery
-
-/datum/design/surgery/lobotomy
-	name = "Lobotomy"
-	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas, but might cause another permanent trauma in return."
-	id = "surgery_lobotomy"
-	surgery = /datum/surgery/advanced/lobotomy
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/viral_bonding
-	name = "Viral Bonding"
-	desc = "A surgical procedure that forces a symbiotic relationship between a virus and its host. The patient must be dosed with spaceacillin, virus food, and formaldehyde."
-	id = "surgery_viral_bond"
-	surgery = /datum/surgery/advanced/viral_bonding
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/healing //PLEASE ACCOUNT FOR UNIQUE HEALING BRANCHES IN THE hptech HREF (currently 2 for Brute/Burn; Combo is bonus)
-	name = "Tend Wounds"
-	desc = "An upgraded version of the original surgery."
-	id = "surgery_healing_base" //holder because CI cries otherwise. Not used in techweb unlocks.
-	surgery = /datum/surgery/healing
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/healing/brute_upgrade
-	name = "Tend Wounds (Brute) Upgrade"
-	surgery = /datum/surgery/healing/brute/upgraded
-	id = "surgery_heal_brute_upgrade"
-
-/datum/design/surgery/healing/burn_upgrade
-	name = "Tend Wounds (Burn) Upgrade"
-	surgery = /datum/surgery/healing/burn/upgraded
-	id = "surgery_heal_burn_upgrade"
-
-/datum/design/surgery/healing/combo
-	name = "Tend Wounds (Physical)"
-	desc = "A surgical procedure that repairs both bruises and burns. Repair efficiency is not as high as the individual surgeries but it is faster."
-	surgery = /datum/surgery/healing/combo
-	id = "surgery_heal_combo"
-
-/datum/design/surgery/brainwashing // This is a traitor item
-	name = "Brainwashing"
-	desc = "A surgical procedure which directly implants a directive into the patient's brain, making it their absolute priority. It can be cleared using a mindshield implant."
-	id = "surgery_brainwashing"
-	surgery = /datum/surgery/advanced/brainwashing
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/necrotic_revival // While romerol is a thing, this HAS to exist.
-	name = "Necrotic Revival"
-	desc = "An experimental surgical procedure that stimulates the growth of a Romerol tumor inside the patient's brain. Requires zombie powder or rezadone."
-	id = "surgery_zombie"
-	surgery = /datum/surgery/advanced/necrotic_revival
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/wing_reconstruction
-	name = "Wing Reconstruction"
-	desc = "An experimental surgical procedure that reconstructs the damaged wings of moths. Requires Synthflesh."
-	id = "surgery_wing_reconstruction"
-	surgery = /datum/surgery/advanced/wing_reconstruction
-	research_icon_state = "surgery_chest"
-
-/datum/design/sticky_tape/surgical
-	name = "Surgical Tape"
-	id = "surgical_tape"
-	build_type = FABRICATOR
-	materials = list(/datum/material/plastic = 500)
-	build_path = /obj/item/stack/sticky_tape/surgical
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+	build_path = /obj/item/organ/eyes/robotic

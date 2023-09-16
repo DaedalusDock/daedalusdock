@@ -1,5 +1,3 @@
-#define CONFUSION_STACK_MAX_MULTIPLIER 2
-
 /// No deviation at all. Flashed from the front or front-left/front-right. Alternatively, flashed in direct view.
 #define DEVIATION_NONE 0
 /// Partial deviation. Flashed from the side. Alternatively, flashed out the corner of your eyes.
@@ -162,9 +160,9 @@
 	if(deviation == DEVIATION_FULL && !converter)
 		return
 
+
 	if(targeted)
 		if(flashed.flash_act(1, 1))
-			flashed.set_timed_status_effect(confusion_duration * CONFUSION_STACK_MAX_MULTIPLIER, /datum/status_effect/confusion, only_if_higher = TRUE)
 			// Special check for if we're a revhead. Special cases to attempt conversion.
 			if(converter)
 				// Did we try to flash them from behind?
@@ -176,15 +174,14 @@
 				terrible_conversion_proc(flashed, user)
 				visible_message(span_danger("[user] blinds [flashed] with the flash!"), span_userdanger("[user] blinds you with the flash!"))
 			//easy way to make sure that you can only long stun someone who is facing in your direction
-			flashed.adjustStaminaLoss(rand(80, 120) * (1 - (deviation * 0.5)))
-			flashed.Paralyze(rand(25, 50) * (1 - (deviation * 0.5)))
+			flashed.Disorient((7 SECONDS * (1-(deviation*0.5))), 90 * (1-(deviation*0.5)), paralyze = 4 SECONDS)
 		else if(user)
 			visible_message(span_warning("[user] fails to blind [flashed] with the flash!"), span_danger("[user] fails to blind you with the flash!"))
 		else
 			to_chat(flashed, span_danger("[src] fails to blind you!"))
+
 	else
-		if(flashed.flash_act())
-			flashed.set_timed_status_effect(confusion_duration * CONFUSION_STACK_MAX_MULTIPLIER, /datum/status_effect/confusion, only_if_higher = TRUE)
+		flashed.Disorient(7 SECONDS * (1-(deviation*0.5)), 90 * (1-(deviation*0.5)), paralyze = 4 SECONDS)
 
 /**
  * Handles the directionality of the attack
@@ -249,8 +246,7 @@
 		if(!flashed_borgo.flash_act(affect_silicon = TRUE))
 			user.visible_message(span_warning("[user] fails to blind [flashed_borgo] with the flash!"), span_warning("You fail to blind [flashed_borgo] with the flash!"))
 			return
-		flashed_borgo.Paralyze(rand(80,120))
-		flashed_borgo.set_timed_status_effect(5 SECONDS * CONFUSION_STACK_MAX_MULTIPLIER, /datum/status_effect/confusion, only_if_higher = TRUE)
+		flashed_borgo.Disorient(70, paralyze = rand(80, 120), stack_status = FALSE)
 		user.visible_message(span_warning("[user] overloads [flashed_borgo]'s sensors with the flash!"), span_danger("You overload [flashed_borgo]'s sensors with the flash!"))
 		return
 
@@ -259,8 +255,9 @@
 /obj/item/assembly/flash/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
 	if(holder)
 		return FALSE
-	if(!AOE_flash(user = user))
-		return FALSE
+	if(AOE_flash(user = user))
+		user.changeNext_move(CLICK_CD_MELEE)
+
 
 /obj/item/assembly/flash/emp_act(severity)
 	. = ..()
@@ -392,7 +389,7 @@
 	var/datum/weakref/arm
 
 /obj/item/assembly/flash/armimplant/burn_out()
-	var/obj/item/organ/internal/cyberimp/arm/flash/real_arm = arm.resolve()
+	var/obj/item/organ/cyberimp/arm/flash/real_arm = arm.resolve()
 	if(real_arm?.owner)
 		to_chat(real_arm.owner, span_warning("Your photon projector implant overheats and deactivates!"))
 		real_arm.Retract()
@@ -401,7 +398,7 @@
 
 /obj/item/assembly/flash/armimplant/try_use_flash(mob/user = null)
 	if(overheat)
-		var/obj/item/organ/internal/cyberimp/arm/flash/real_arm = arm.resolve()
+		var/obj/item/organ/cyberimp/arm/flash/real_arm = arm.resolve()
 		if(real_arm?.owner)
 			to_chat(real_arm.owner, span_warning("Your photon projector is running too hot to be used again so quickly!"))
 		return FALSE
@@ -462,7 +459,6 @@
 		M.adjust_drowsyness(min(M.drowsyness+4, 20))
 		M.apply_status_effect(/datum/status_effect/pacify, 40)
 
-#undef CONFUSION_STACK_MAX_MULTIPLIER
 #undef DEVIATION_NONE
 #undef DEVIATION_PARTIAL
 #undef DEVIATION_FULL

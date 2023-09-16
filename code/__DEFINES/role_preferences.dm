@@ -153,6 +153,6 @@ GLOBAL_LIST_INIT(special_roles, list(
 ))
 
 //Job defines for what happens when you fail to qualify for any job during job selection
-#define BEOVERFLOW 1
-#define BERANDOMJOB 2
-#define RETURNTOLOBBY 3
+#define BEOVERFLOW "Join as Assistant"
+#define BERANDOMJOB "Join as Random"
+#define RETURNTOLOBBY "Return to Lobby"

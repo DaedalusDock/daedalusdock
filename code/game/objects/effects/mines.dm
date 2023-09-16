@@ -41,6 +41,8 @@
 
 /obj/effect/mine/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 
 	if(triggered || !isturf(loc) || !armed)
 		return

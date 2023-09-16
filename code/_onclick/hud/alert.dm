@@ -303,6 +303,11 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	var/mob/living/carbon/offerer
 	var/obj/item/receiving
 
+/atom/movable/screen/alert/give/Destroy()
+	offerer = null
+	receiving = null
+	return ..()
+
 /**
  * Handles assigning most of the variables for the alert that pops up when an item is offered
  *
@@ -374,8 +379,6 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	to_chat(rube, span_userdanger("[all_caps_for_emphasis]"))
 	playsound(offerer, 'sound/weapons/thudswoosh.ogg', 100, TRUE, 1)
 	rube.Knockdown(1 SECONDS)
-	SEND_SIGNAL(offerer, COMSIG_ADD_MOOD_EVENT, "high_five", /datum/mood_event/down_low)
-	SEND_SIGNAL(rube, COMSIG_ADD_MOOD_EVENT, "high_five", /datum/mood_event/too_slow)
 	qdel(src)
 
 /// If someone examine_more's the offerer while they're trying to pull a too-slow, it'll tip them off to the offerer's trickster ways
@@ -410,7 +413,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 	var/mob/living/living_owner = owner
 	var/last_whisper = tgui_input_text(usr, "Do you have any last words?", "Final Words")
-	if (!last_whisper || !CAN_SUCCUMB(living_owner))
+	if (!last_whisper)
 		return
 
 	if (length(last_whisper))
@@ -820,6 +823,11 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	carbon_owner.changeNext_move(CLICK_CD_RESIST)
 	carbon_owner.shoes.handle_tying(carbon_owner)
 
+/atom/movable/screen/alert/softcrit
+	name = "Critical Condition"
+	desc = "You are in very bad shape. Max stamina reduced by 100 and stamina regen reduced by 5."
+	icon_state = ALERT_SOFTCRIT
+
 // PRIVATE = only edit, use, or override these if you're editing the system as a whole
 
 // Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there
@@ -871,8 +879,8 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	return TRUE
 
 /atom/movable/screen/alert/Destroy()
-	. = ..()
 	severity = 0
 	master = null
 	owner = null
 	screen_loc = ""
+	return ..()

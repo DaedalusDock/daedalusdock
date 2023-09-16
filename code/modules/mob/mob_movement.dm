@@ -5,7 +5,7 @@
  */
 /client/verb/drop_item()
 	set hidden = TRUE
-	if(!iscyborg(mob) && mob.stat == CONSCIOUS)
+	if(!iscyborg(mob) && mob.stat != CONSCIOUS)
 		mob.dropItemToGround(mob.get_active_held_item())
 	return
 
@@ -113,9 +113,9 @@
 	if(!(L.mobility_flags & MOBILITY_MOVE))
 		return FALSE
 
-	if(isobj(mob.loc) || ismob(mob.loc)) //Inside an object, tell it we moved
-		var/atom/O = mob.loc
-		return O.relaymove(mob, direct)
+	if(ismovable(mob.loc)) //Inside an object, tell it we moved
+		var/atom/loc_atom = mob.loc
+		return loc_atom.relaymove(mob, direct)
 
 	if(!mob.Process_Spacemove(direct))
 		return FALSE
@@ -506,18 +506,19 @@
 	set hidden = TRUE
 	set instant = TRUE
 	if(mob)
-		mob.toggle_move_intent(usr)
+		if(mob.m_intent != MOVE_INTENT_WALK)
+			mob.set_move_intent(MOVE_INTENT_WALK)
+		else
+			mob.set_move_intent(MOVE_INTENT_RUN)
 
 /**
  * Toggle the move intent of the mob
  *
  * triggers an update the move intent hud as well
  */
-/mob/proc/toggle_move_intent(mob/user)
-	if(m_intent == MOVE_INTENT_RUN)
-		m_intent = MOVE_INTENT_WALK
-	else
-		m_intent = MOVE_INTENT_RUN
+/mob/proc/set_move_intent(new_state)
+	m_intent = new_state
+
 	if(hud_used?.static_inventory)
 		for(var/atom/movable/screen/mov_intent/selector in hud_used.static_inventory)
 			selector.update_appearance()
@@ -530,19 +531,15 @@
 	var/turf/current_turf = get_turf(src)
 	var/turf/above_turf = GetAbove(current_turf)
 
-	var/ventcrawling_flag = HAS_TRAIT(src, TRAIT_MOVE_VENTCRAWLING) ? ZMOVE_VENTCRAWLING : 0
 	if(!above_turf)
-		to_chat(src, span_warning("There's nowhere to go in that direction!"))
+		to_chat(src, span_warning("There's nothing of interest in that direction."))
 		return
 
-	if(can_z_move(DOWN, above_turf, current_turf, ZMOVE_FALL_FLAGS|ventcrawling_flag)) //Will we fall down if we go up?
-		if(buckled)
-			to_chat(src, span_warning("[buckled] is is not capable of flight."))
-		else
-			to_chat(src, span_warning("You are not Superman."))
-		return
+	if(ismovable(loc)) //Inside an object, tell it we moved
+		var/atom/loc_atom = loc
+		return loc_atom.relaymove(src, UP)
 
-	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move upwards."))
 
 ///Moves a mob down a z level
@@ -550,8 +547,11 @@
 	set name = "Move Down"
 	set category = "IC"
 
-	var/ventcrawling_flag = HAS_TRAIT(src, TRAIT_MOVE_VENTCRAWLING) ? ZMOVE_VENTCRAWLING : 0
-	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+	if(ismovable(loc)) //Inside an object, tell it we moved
+		var/atom/loc_atom = loc
+		return loc_atom.relaymove(src, DOWN)
+
+	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
 	return FALSE
 

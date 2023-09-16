@@ -479,7 +479,7 @@
 		..()
 		flush()
 
-/obj/machinery/disposal/delivery_chute/Bumped(atom/movable/AM) //Go straight into the chute
+/obj/machinery/disposal/delivery_chute/BumpedBy(atom/movable/AM) //Go straight into the chute
 	if(QDELETED(AM) || !AM.CanEnterDisposals())
 		return
 	switch(dir)

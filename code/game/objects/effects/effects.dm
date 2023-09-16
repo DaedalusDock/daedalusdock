@@ -58,3 +58,8 @@
 
 /obj/effect/dummy/singularity_act()
 	return
+
+/obj/effect/CanZFall(turf/from, direction, anchor_bypass)
+	if(istype(src, /obj/effect/decal/cleanable))
+		return ..()
+	return FALSE

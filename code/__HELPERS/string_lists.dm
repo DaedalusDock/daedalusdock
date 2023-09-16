@@ -4,7 +4,7 @@ GLOBAL_LIST_EMPTY(string_lists)
  * Caches lists with non-numeric stringify-able values (text or typepath).
  */
 /proc/string_list(list/values)
-	var/string_id = values.Join("-")
+	var/string_id = jointext(values, "-")
 
 	. = GLOB.string_lists[string_id]
 

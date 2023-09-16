@@ -100,7 +100,7 @@
 	butcher_results = list(/obj/item/food/meat/slab/goliath = 2, /obj/item/stack/sheet/bone = 2)
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/animalhide/goliath_hide = 1)
 	loot = list()
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 
 	var/can_saddle = FALSE
@@ -165,7 +165,9 @@
 			LAZYCLEARLIST(cached_tentacle_turfs)
 			last_location = loc
 			tentacle_recheck_cooldown = world.time + initial(tentacle_recheck_cooldown)
-			for(var/turf/open/T in orange(4, loc))
+			var/list/nearby_turfs = RANGE_TURFS(4, loc)
+			nearby_turfs -= get_turf(src)
+			for(var/turf/open/T in nearby_turfs)
 				LAZYADD(cached_tentacle_turfs, T)
 		for(var/t in cached_tentacle_turfs)
 			if(isopenturf(t))
@@ -231,7 +233,7 @@
 /obj/effect/temp_visual/goliath_tentacle/proc/retract()
 	icon_state = "Goliath_tentacle_retract"
 	deltimer(timerid)
-	timerid = QDEL_IN(src, 7)
+	timerid = QDEL_IN_STOPPABLE(src, 7)
 
 /obj/item/saddle
 	name = "saddle"

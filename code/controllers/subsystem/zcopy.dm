@@ -11,8 +11,9 @@
 
 SUBSYSTEM_DEF(zcopy)
 	name = "Z-Copy"
-	wait = 1
+	wait = 0
 	init_order = INIT_ORDER_ZMIMIC
+	flags = SS_HIBERNATE
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/queued_turfs = list()
@@ -143,6 +144,11 @@ SUBSYSTEM_DEF(zcopy)
 	return jointext(zmx, ", ")
 
 /datum/controller/subsystem/zcopy/Initialize(timeofday)
+	hibernate_checks = list(
+		NAMEOF(src, queued_turfs),
+		NAMEOF(src, queued_overlays)
+	)
+
 	calculate_zstack_limits()
 	// Flush the queue.
 	fire(FALSE, TRUE)
@@ -330,6 +336,11 @@ SUBSYSTEM_DEF(zcopy)
 			if (!object.bound_overlay)	// Generate a new overlay if the atom doesn't already have one.
 				object.bound_overlay = new(T)
 				object.bound_overlay.associated_atom = object
+				#ifdef ZMIMIC_MULTIZ_SPEECH
+				//This typecheck permits 1 Z-level of hearing
+				if(!istype(object, /atom/movable/openspace/mimic) && HAS_TRAIT(object, TRAIT_HEARING_SENSITIVE))
+					object.bound_overlay.become_hearing_sensitive()
+				#endif
 
 			var/override_depth
 			var/original_type = object.type
@@ -430,7 +441,7 @@ SUBSYSTEM_DEF(zcopy)
 
 		// Actually update the overlay.
 		if (OO.dir != OO.associated_atom.dir)
-			OO.setDir(OO.associated_atom.dir)
+			OO.dir = OO.associated_atom.dir
 
 		if (OO.particles != OO.associated_atom.particles)
 			OO.particles = OO.associated_atom.particles
@@ -440,6 +451,7 @@ SUBSYSTEM_DEF(zcopy)
 		OO.plane = ZMIMIC_MAX_PLANE - OO.depth
 
 		OO.opacity = FALSE
+		OO.glide_size = initial(OO.glide_size)
 		OO.queued = 0
 
 		// If an atom has explicit plane sets on its overlays/underlays, we need to replace the appearance so they can be mangled to work with our planing.
@@ -672,7 +684,7 @@ GLOBAL_REAL_VAR(zmimic_fixed_planes) = list(
 			found_oo += D
 			temp_objects += D
 
-	sortTim(found_oo, /proc/cmp_zm_render_order)
+	sortTim(found_oo, GLOBAL_PROC_REF(cmp_zm_render_order))
 
 	var/list/atoms_list_list = list()
 	for (var/thing in found_oo)

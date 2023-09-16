@@ -6,8 +6,13 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/priapus,
+		/datum/employer/contractor,
+		/datum/employer/none
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -21,7 +26,6 @@
 
 	liver_traits = list(TRAIT_COMEDY_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_CLOWN
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -87,6 +91,8 @@
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/cosmohonk
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null
 
 /datum/outfit/job/clown/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
@@ -107,6 +113,6 @@
 	ADD_TRAIT(H, TRAIT_NAIVE, JOB_TRAIT)
 	H.dna.add_mutation(/datum/mutation/human/clumsy)
 	for(var/datum/mutation/human/clumsy/M in H.dna.mutations)
-		M.mutadone_proof = TRUE
+		M.ryetalyn_proof = TRUE
 	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
 	fan.add_hud_to(H)

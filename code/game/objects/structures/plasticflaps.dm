@@ -8,6 +8,7 @@
 	density = FALSE
 	anchored = TRUE
 	can_atmos_pass = CANPASS_NEVER
+	can_astar_pass = CANASTARPASS_ALWAYS_PROC
 
 /obj/structure/plasticflaps/opaque
 	opacity = TRUE
@@ -62,7 +63,7 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/plasticflaps/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/obj/structure/plasticflaps/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	if(isliving(caller))
 		if(isbot(caller))
 			return TRUE
@@ -73,7 +74,7 @@
 			return FALSE
 
 	if(caller?.pulling)
-		return CanAStarPass(ID, to_dir, caller.pulling)
+		return CanAStarPass(ID, to_dir, caller.pulling, no_id = no_id)
 	return TRUE //diseases, stings, etc can pass
 
 

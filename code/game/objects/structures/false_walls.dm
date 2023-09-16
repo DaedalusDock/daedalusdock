@@ -14,8 +14,8 @@
 	opacity = TRUE
 	max_integrity = 100
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	can_be_unanchored = FALSE
 	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_MEDIUM_INSULATION
@@ -136,7 +136,9 @@
 
 		for(var/cardinal in GLOB.cardinals)
 			var/turf/step_turf = get_step(src, cardinal)
-			if(!can_area_smooth(step_turf))
+			var/can_area_smooth
+			CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+			if(isnull(can_area_smooth))
 				continue
 			for(var/atom/movable/movable_thing as anything in step_turf)
 				if(neighbor_typecache[movable_thing.type])
@@ -388,13 +390,13 @@
 	desc = "A light-weight titanium wall used in shuttles."
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	plating_material = /datum/material/titanium
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = SMOOTH_GROUP_WALLS
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 
 /obj/structure/falsewall/plastitanium
 	name = "wall"
 	desc = "An evil wall of plasma and titanium."
 	icon = 'icons/turf/walls/metal_wall.dmi'
 	plating_material = /datum/material/alloy/plastitanium
-	smoothing_groups = list(SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS, SMOOTH_GROUP_SHUTTLE_PARTS)
+	smoothing_groups = SMOOTH_GROUP_WALLS
+	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS

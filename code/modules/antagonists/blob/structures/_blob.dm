@@ -45,8 +45,6 @@
 		zas_update_loc()
 
 	ConsumeTile()
-	if(!QDELETED(src)) //Consuming our tile can in rare cases cause us to del
-		AddElement(/datum/element/swabable, CELL_LINE_TABLE_BLOB, CELL_VIRUS_TABLE_GENERIC, 2, 2)
 
 /obj/structure/blob/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
@@ -283,7 +281,7 @@
 			return 0
 	var/armor_protection = 0
 	if(damage_flag)
-		armor_protection = armor.getRating(damage_flag)
+		armor_protection = returnArmor().getRating(damage_flag)
 	damage_amount = round(damage_amount * (100 - armor_protection)*0.01, 0.1)
 	if(overmind && damage_flag)
 		damage_amount = overmind.blobstrain.damage_reaction(src, damage_amount, damage_type, damage_flag)

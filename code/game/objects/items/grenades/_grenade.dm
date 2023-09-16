@@ -17,8 +17,13 @@
 	worn_icon_state = "grenade"
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
+
 	throw_speed = 3
 	throw_range = 7
+	stamina_damage = 0
+	stamina_cost = 0
+	stamina_critical_chance = 0
+
 	flags_1 = CONDUCT_1 | PREVENT_CONTENTS_EXPLOSION_1 // We detonate upon being exploded.
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
@@ -181,7 +186,7 @@
 	var/newtime = tgui_input_list(user, "Please enter a new detonation time", "Detonation Timer", list("Instant", 3, 4, 5))
 	if (isnull(newtime))
 		return
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	if(newtime == "Instant" && change_det_time(0))
 		to_chat(user, span_notice("You modify the time delay. It's set to be instantaneous."))

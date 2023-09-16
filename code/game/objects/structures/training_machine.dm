@@ -175,7 +175,7 @@
 
 /obj/structure/training_machine/AltClick(mob/user)
 	. = ..()
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, FLOOR_OKAY))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY|USE_RESTING))
 		return
 	if(has_buckled_mobs())
 		user_unbuckle_mob(buckled_mobs[1], user)

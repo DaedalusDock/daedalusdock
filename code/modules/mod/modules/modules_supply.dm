@@ -234,7 +234,7 @@
 	var/atom/game_renderer = mod.wearer.hud_used.plane_masters["[RENDER_PLANE_GAME]"]
 	var/matrix/render_matrix = matrix(game_renderer.transform)
 	render_matrix.Scale(1.25, 1.25)
-	animate(game_renderer, launch_time, flags = SINE_EASING|EASE_IN, transform = render_matrix)
+	animate(game_renderer, launch_time, transform = render_matrix)
 	var/current_time = world.time
 	mod.wearer.visible_message(span_warning("[mod.wearer] starts whirring!"), \
 		blind_message = span_hear("You hear a whirring sound."))
@@ -415,7 +415,7 @@
 	for(var/armor_type in removed_armor)
 		removed_armor[armor_type] = -removed_armor[armor_type] * traveled_tiles
 	for(var/obj/item/part as anything in parts)
-		part.armor = part.armor.modifyRating(arglist(removed_armor))
+		part.setArmor(part.returnArmor().modifyRating(arglist(removed_armor)))
 	if(traveled_tiles == max_traveled_tiles)
 		mod.slowdown += speed_added
 		mod.wearer.update_equipment_speed_mods()
@@ -436,7 +436,7 @@
 		traveled_tiles++
 		var/list/parts = mod.mod_parts + mod
 		for(var/obj/item/part as anything in parts)
-			part.armor = part.armor.modifyRating(arglist(armor_values))
+			part.setArmor(part.returnArmor().modifyRating(arglist(armor_values)))
 		if(traveled_tiles >= max_traveled_tiles)
 			balloon_alert(mod.wearer, "fully ash covered")
 			mod.wearer.color = list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,3) //make them super light
@@ -458,7 +458,7 @@
 		for(var/armor_type in removed_armor)
 			removed_armor[armor_type] = -removed_armor[armor_type]
 		for(var/obj/item/part as anything in parts)
-			part.armor = part.armor.modifyRating(arglist(removed_armor))
+			part.setArmor(part.returnArmor().modifyRating(arglist(removed_armor)))
 		if(traveled_tiles <= 0)
 			balloon_alert(mod.wearer, "ran out of ash!")
 

@@ -86,13 +86,11 @@
 /datum/martial_art/krav_maga/proc/leg_sweep(mob/living/attacker, mob/living/defender)
 	if(defender.stat || defender.IsParalyzed())
 		return FALSE
-	var/obj/item/bodypart/affecting = defender.get_bodypart(BODY_ZONE_CHEST)
-	var/armor_block = defender.run_armor_check(affecting, MELEE)
 	defender.visible_message(span_warning("[attacker] leg sweeps [defender]!"), \
 					span_userdanger("Your legs are sweeped by [attacker]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, attacker)
 	to_chat(attacker, span_danger("You leg sweep [defender]!"))
 	playsound(get_turf(attacker), 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
-	defender.apply_damage(rand(20, 30), STAMINA, affecting, armor_block)
+	defender.stamina.adjust(-1 * rand(20, 30))
 	defender.Knockdown(60)
 	log_combat(attacker, defender, "leg sweeped")
 	return TRUE
@@ -154,15 +152,13 @@
 /datum/martial_art/krav_maga/disarm_act(mob/living/attacker, mob/living/defender)
 	if(check_streak(attacker, defender))
 		return TRUE
-	var/obj/item/bodypart/affecting = defender.get_bodypart(ran_zone(attacker.zone_selected))
-	var/armor_block = defender.run_armor_check(affecting, MELEE)
 	if(defender.body_position == STANDING_UP)
 		defender.visible_message(span_danger("[attacker] reprimands [defender]!"), \
 					span_userdanger("You're slapped by [attacker]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, attacker)
 		to_chat(attacker, span_danger("You jab [defender]!"))
 		attacker.do_attack_animation(defender, ATTACK_EFFECT_PUNCH)
 		playsound(defender, 'sound/effects/hit_punch.ogg', 50, TRUE, -1)
-		defender.apply_damage(rand(5, 10), STAMINA, affecting, armor_block)
+		defender.stamina.adjust(-1 * rand(5, 10))
 		log_combat(attacker, defender, "punched nonlethally")
 	if(defender.body_position == LYING_DOWN)
 		defender.visible_message(span_danger("[attacker] reprimands [defender]!"), \
@@ -170,9 +166,9 @@
 		to_chat(attacker, span_danger("You stomp [defender]!"))
 		attacker.do_attack_animation(defender, ATTACK_EFFECT_KICK)
 		playsound(defender, 'sound/effects/hit_punch.ogg', 50, TRUE, -1)
-		defender.apply_damage(rand(10, 15), STAMINA, affecting, armor_block)
+		defender.stamina.adjust(-1 * rand(10, 15))
 		log_combat(attacker, defender, "stomped nonlethally")
-	if(prob(defender.getStaminaLoss()) && defender.stat < UNCONSCIOUS)
+	if(prob(defender.stamina.loss_as_percent) && defender.stat < UNCONSCIOUS)
 		defender.visible_message(span_warning("[defender] sputters and recoils in pain!"), span_userdanger("You recoil in pain as you are jabbed in a nerve!"))
 		defender.drop_all_held_items()
 	return TRUE

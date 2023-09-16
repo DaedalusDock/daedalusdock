@@ -2758,7 +2758,7 @@
 	pixel_y = 4
 	},
 /obj/item/bodypart/chest,
-/obj/item/organ/internal/heart,
+/obj/item/organ/heart,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "CN" = (

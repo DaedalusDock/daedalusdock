@@ -32,7 +32,7 @@
 	butcher_results = list(/obj/item/food/meat/slab = 2, /obj/item/stack/sheet/sinew/wolf = 2, /obj/item/stack/sheet/bone = 2)
 	loot = list()
 	crusher_loot = /obj/item/crusher_trophy/wolf_ear
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	/// Message for when the wolf decides to start running away

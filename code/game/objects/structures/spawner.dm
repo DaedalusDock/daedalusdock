@@ -24,7 +24,6 @@
 		return
 	return ..()
 
-
 /obj/structure/spawner/syndicate
 	name = "warp beacon"
 	icon = 'icons/obj/device.dmi'

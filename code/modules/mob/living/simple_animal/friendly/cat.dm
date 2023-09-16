@@ -21,7 +21,7 @@
 	unsuitable_atmos_damage = 0.5
 	animal_species = /mob/living/simple_animal/pet/cat
 	childtype = list(/mob/living/simple_animal/pet/cat/kitten = 1)
-	butcher_results = list(/obj/item/food/meat/slab = 1, /obj/item/organ/internal/ears/cat = 1, /obj/item/organ/external/tail/cat = 1, /obj/item/stack/sheet/animalhide/cat = 1)
+	butcher_results = list(/obj/item/food/meat/slab = 1, /obj/item/organ/ears/cat = 1, /obj/item/organ/tail/cat = 1, /obj/item/stack/sheet/animalhide/cat = 1)
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
 	response_disarm_continuous = "gently pushes aside"
@@ -45,12 +45,7 @@
 	. = ..()
 	AddElement(/datum/element/pet_bonus, "purrs!")
 	add_verb(src, /mob/living/proc/toggle_resting)
-	add_cell_sample()
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-
-/mob/living/simple_animal/pet/cat/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CAT, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 
 /mob/living/simple_animal/pet/cat/space
 	name = "space cat"
@@ -71,10 +66,7 @@
 	icon_dead = "breadcat_dead"
 	collar_type = null
 	held_state = "breadcat"
-	butcher_results = list(/obj/item/food/meat/slab = 2, /obj/item/organ/internal/ears/cat = 1, /obj/item/organ/external/tail/cat = 1, /obj/item/food/breadslice/plain = 1)
-
-/mob/living/simple_animal/pet/cat/breadcat/add_cell_sample()
-	return
+	butcher_results = list(/obj/item/food/meat/slab = 2, /obj/item/organ/ears/cat = 1, /obj/item/organ/tail/cat = 1, /obj/item/food/breadslice/plain = 1)
 
 /mob/living/simple_animal/pet/cat/original
 	name = "Batsy"
@@ -87,8 +79,6 @@
 	unique_pet = TRUE
 	held_state = "original"
 
-/mob/living/simple_animal/pet/cat/original/add_cell_sample()
-	return
 /mob/living/simple_animal/pet/cat/kitten
 	name = "kitten"
 	desc = "D'aaawwww."
@@ -121,6 +111,8 @@
 		icon_state = "original"
 		icon_living = "original"
 		icon_dead = "original_dead"
+	if(prob(33))
+		name = "Athena"
 	Read_Memory()
 	. = ..()
 
@@ -280,7 +272,7 @@
 	maxHealth = 50
 	gender = FEMALE
 	harm_intent_damage = 10
-	butcher_results = list(/obj/item/organ/internal/brain = 1, /obj/item/organ/internal/heart = 1, /obj/item/food/cakeslice/birthday = 3,  \
+	butcher_results = list(/obj/item/organ/brain = 1, /obj/item/organ/heart = 1, /obj/item/food/cakeslice/birthday = 3,  \
 	/obj/item/food/meat/slab = 2)
 	response_harm_continuous = "takes a bite out of"
 	response_harm_simple = "take a bite out of"
@@ -289,12 +281,9 @@
 	deathsound = SFX_BODYFALL
 	held_state = "cak"
 
-/mob/living/simple_animal/pet/cat/cak/add_cell_sample()
-	return
-
 /mob/living/simple_animal/pet/cat/cak/CheckParts(list/parts)
 	..()
-	var/obj/item/organ/internal/brain/B = locate(/obj/item/organ/internal/brain) in contents
+	var/obj/item/organ/brain/B = locate(/obj/item/organ/brain) in contents
 	if(!B || !B.brainmob || !B.brainmob.mind)
 		return
 	B.brainmob.mind.transfer_to(src)

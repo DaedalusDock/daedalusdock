@@ -205,6 +205,8 @@
 
 /obj/structure/table/wood/shuttle_bar/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	var/mob/living/M = AM
 	if(istype(M) && !M.incorporeal_move && !is_barstaff(M))
 		// No climbing on the bar please
@@ -271,7 +273,7 @@
 	return
 
 #define LUXURY_MESSAGE_COOLDOWN 100
-/obj/machinery/scanner_gate/luxury_shuttle/Bumped(atom/movable/AM)
+/obj/machinery/scanner_gate/luxury_shuttle/BumpedBy(atom/movable/AM)
 	///If the atom entering the gate is a vehicle, we store it here to add to the approved list to enter/leave the scanner gate.
 	var/obj/vehicle/vehicle
 	///We store the driver of vehicles separately so that we can add them to the approved list once payment is fully processed.

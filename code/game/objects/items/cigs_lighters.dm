@@ -193,11 +193,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!lighting_text)
 		return ..()
 
-	if(!reagents.has_reagent(/datum/reagent/oxygen)) //cigarettes need oxygen
-		var/datum/gas_mixture/air = return_air()
-		if(!air || !air.hasGas(GAS_OXYGEN, 1)) //or oxygen on a tile to burn
-			to_chat(user, span_notice("Your [name] needs a source of oxygen to burn."))
-			return ..()
+	var/datum/gas_mixture/air = unsafe_return_air()
+	if(!air || !air.hasGas(GAS_OXYGEN, 1)) //or oxygen on a tile to burn
+		to_chat(user, span_notice("\The [src] won't light."))
+		return ..()
 
 	if(smoketime > 0)
 		light(lighting_text)
@@ -235,7 +234,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	lit = TRUE
 
-	if(!(flags_1 & INITIALIZED_1))
+	if(!initialized)
 		update_icon()
 		return
 
@@ -303,12 +302,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		reagents.remove_any(to_smoke)
 		return
 
-	reagents.expose(smoker, INGEST, min(to_smoke / reagents.total_volume, 1))
-	var/obj/item/organ/internal/lungs/lungs = smoker.getorganslot(ORGAN_SLOT_LUNGS)
-	if(lungs && !(lungs.organ_flags & ORGAN_SYNTHETIC))
-		var/smoker_resistance = HAS_TRAIT(smoker, TRAIT_SMOKER) ? 0.5 : 1
-		smoker.adjustOrganLoss(ORGAN_SLOT_LUNGS, lung_harm*smoker_resistance)
-	if(!reagents.trans_to(smoker, to_smoke, methods = INGEST, ignore_stomach = TRUE))
+	reagents.expose(smoker, INJECT, min(to_smoke / reagents.total_volume, 1))
+	if(!reagents.trans_to(smoker, to_smoke, methods = INJECT))
 		reagents.remove_any(to_smoke)
 
 /obj/item/clothing/mask/cigarette/process(delta_time)
@@ -406,7 +401,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	smoketime = 2 MINUTES
 	smoke_all = TRUE
 	lung_harm = 1.5
-	list_reagents = list(/datum/reagent/drug/nicotine = 10, /datum/reagent/medicine/omnizine = 15)
+	list_reagents = list(/datum/reagent/drug/nicotine = 10, /datum/reagent/medicine/tricordrazine = 15)
 
 /obj/item/clothing/mask/cigarette/shadyjims
 	desc = "A Shady Jim's Super Slims cigarette."
@@ -488,9 +483,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/cigarette/rollie/cannabis
 	list_reagents = list(/datum/reagent/drug/cannabis = 15)
-
-/obj/item/clothing/mask/cigarette/rollie/mindbreaker
-	list_reagents = list(/datum/reagent/toxin/mindbreaker = 35, /datum/reagent/toxin/lipolicide = 15)
 
 /obj/item/clothing/mask/cigarette/candy
 	name = "\improper Little Timmy's candy cigarette"
@@ -804,8 +796,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		span_warning("After a few attempts, [user] manages to light [src] - however, [user.p_they()] burn [user.p_their()] finger in the process."),
 		span_warning("You burn yourself while lighting the lighter!")
 	)
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "burnt_thumb", /datum/mood_event/burnt_thumb)
-
 
 /obj/item/lighter/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(lit && M.ignite_mob())
@@ -892,7 +882,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	heat = 3000 //Blue flame!
 	light_color = LIGHT_COLOR_CYAN
 	overlay_state = "slime"
-	grind_results = list(/datum/reagent/iron = 1, /datum/reagent/fuel = 5, /datum/reagent/medicine/pyroxadone = 5)
+	grind_results = list(/datum/reagent/iron = 1, /datum/reagent/fuel = 5)
 
 
 ///////////
@@ -1046,7 +1036,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		e.start(src)
 		qdel(src)
 
-	if(!reagents.trans_to(vaper, REAGENTS_METABOLISM, methods = INGEST, ignore_stomach = TRUE))
+	if(!reagents.trans_to(vaper, REAGENTS_METABOLISM, methods = INJECT)) //Going right into the bloodstream
 		reagents.remove_any(REAGENTS_METABOLISM)
 
 /obj/item/clothing/mask/vape/process(delta_time)

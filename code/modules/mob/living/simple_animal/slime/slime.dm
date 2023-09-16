@@ -104,7 +104,6 @@
 	set_colour(new_colour)
 	. = ..()
 	set_nutrition(700)
-	add_cell_sample()
 
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 	AddElement(/datum/element/soft_landing)
@@ -235,7 +234,7 @@
 			. += "You can evolve!"
 
 	switch(stat)
-		if(HARD_CRIT, UNCONSCIOUS)
+		if(UNCONSCIOUS)
 			. += "You are knocked out by high levels of BZ!"
 		else
 			. += "Power Level: [powerlevel]"
@@ -343,11 +342,6 @@
 
 				discipline_slime(user)
 	else
-		if(stat == DEAD && surgeries.len)
-			if(!user.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK))
-				for(var/datum/surgery/S in surgeries)
-					if(S.next_step(user, modifiers))
-						return 1
 		if(..()) //successful attack
 			attacked += 10
 
@@ -358,12 +352,6 @@
 
 
 /mob/living/simple_animal/slime/attackby(obj/item/W, mob/living/user, params)
-	if(stat == DEAD && surgeries.len)
-		var/list/modifiers = params2list(params)
-		if(!user.combat_mode || (LAZYACCESS(modifiers, RIGHT_CLICK)))
-			for(var/datum/surgery/S in surgeries)
-				if(S.next_step(user, modifiers))
-					return 1
 	if(istype(W, /obj/item/stack/sheet/mineral/plasma) && !stat) //Let's you feed slimes plasma.
 		add_friendship(user, 1)
 		to_chat(user, span_notice("You feed the slime the plasma. It chirps happily."))
@@ -442,7 +430,7 @@
 	if (stat == DEAD)
 		. += span_deadsay("It is limp and unresponsive.")
 	else
-		if (stat == UNCONSCIOUS || stat == HARD_CRIT) // Slime stasis
+		if (stat == UNCONSCIOUS) // Slime stasis
 			. += span_deadsay("It appears to be alive but unresponsive.")
 		if (getBruteLoss())
 			. += "<span class='warning'>"
@@ -505,9 +493,6 @@
 
 /mob/living/simple_animal/slime/random/Initialize(mapload, new_colour, new_is_adult)
 	. = ..(mapload, pick(slime_colours), prob(50))
-
-/mob/living/simple_animal/slime/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLIME, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/slime/proc/set_target(new_target)
 	var/old_target = Target

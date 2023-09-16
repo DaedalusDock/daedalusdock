@@ -62,7 +62,10 @@
 		// on [/atom/proc/bullet_act] where it's just to pass it to the projectile's on_hit().
 		var/armor_check = check_projectile_armor(def_zone, P, is_silent = TRUE)
 		apply_damage(P.damage, P.damage_type, def_zone, armor_check, sharpness = P.sharpness, attack_direction = attack_direction)
-		apply_effects(P.stun, P.knockdown, P.unconscious, P.slur, P.stutter, P.eyeblur, P.drowsy, armor, P.stamina, P.jitter, P.paralyze, P.immobilize)
+		apply_effects(P.stun, P.knockdown, P.unconscious, P.slur, P.stutter, P.eyeblur, P.drowsy, armor_check, P.stamina, P.jitter, P.paralyze, P.immobilize)
+		if(P.disorient_length)
+			var/stamina = P.disorient_damage * ((100-armor_check)/100)
+			Disorient(P.disorient_length, stamina, paralyze = P.disorient_status_length)
 		if(P.dismemberment)
 			check_projectile_dismemberment(P, def_zone)
 	return . ? BULLET_ACT_HIT : BULLET_ACT_BLOCK
@@ -84,8 +87,11 @@
 /mob/living/proc/set_combat_mode(new_mode, silent = TRUE)
 	if(combat_mode == new_mode)
 		return
+
+	SEND_SIGNAL(src, COMSIG_LIVING_TOGGLE_COMBAT_MODE, new_mode)
 	. = combat_mode
 	combat_mode = new_mode
+
 	if(hud_used?.action_intent)
 		hud_used.action_intent.update_appearance()
 	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))
@@ -117,7 +123,7 @@
 		if(!thrown_item.throwforce)
 			return
 		var/armor = run_armor_check(zone, MELEE, "Your armor has protected your [parse_zone(zone)].", "Your armor has softened hit to your [parse_zone(zone)].", thrown_item.armour_penetration, "", FALSE, thrown_item.weak_against_armour)
-		apply_damage(thrown_item.throwforce, thrown_item.damtype, zone, armor, sharpness = thrown_item.get_sharpness())
+		apply_damage(thrown_item.throwforce, thrown_item.damtype, zone, armor, sharpness = thrown_item.sharpness)
 		if(QDELETED(src)) //Damage can delete the mob.
 			return
 		if(body_position == LYING_DOWN) // physics says it's significantly harder to push someone by constantly chucking random furniture at them if they are down on the floor.
@@ -368,7 +374,7 @@
 		return FALSE
 	return ..()
 
-/mob/living/acid_act(acidpwr, acid_volume)
+/mob/living/acid_act(acidpwr, acid_volume, affect_clothing = TRUE, affect_body = TRUE)
 	take_bodypart_damage(acidpwr * min(1, acid_volume * 0.1))
 	return TRUE
 
@@ -385,7 +391,7 @@
 	if(!(flags & SHOCK_ILLUSION))
 		adjustFireLoss(shock_damage)
 	else
-		adjustStaminaLoss(shock_damage)
+		stamina.adjust(-shock_damage)
 	visible_message(
 		span_danger("[src] was shocked by \the [source]!"), \
 		span_userdanger("You feel a powerful shock coursing through your body!"), \
@@ -497,11 +503,13 @@
 	if(. & COMPONENT_NO_EXPOSE_REAGENTS)
 		return
 
+	if(!reagents)
+		return
+
 	if(methods & INGEST)
 		taste(source)
 
 	var/touch_protection = (methods & VAPOR) ? get_permeability_protection() : 0
 	SEND_SIGNAL(source, COMSIG_REAGENTS_EXPOSE_MOB, src, reagents, methods, volume_modifier, show_message, touch_protection)
-	for(var/reagent in reagents)
-		var/datum/reagent/R = reagent
-		. |= R.expose_mob(src, methods, reagents[R], show_message, touch_protection, exposed_temperature)
+	for(var/datum/reagent/R as anything in reagents)
+		. |= R.expose_mob(src, reagents[R], exposed_temperature, source, methods, show_message, touch_protection, source)

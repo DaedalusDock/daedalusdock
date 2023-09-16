@@ -30,7 +30,7 @@
 	guaranteed_butcher_results = list(/obj/item/stack/sheet/animalhide/goliath_hide/polar_bear_hide = 1)
 	loot = list()
 	crusher_loot = /obj/item/crusher_trophy/bear_paw
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	/// Message for when the polar bear starts to attack faster

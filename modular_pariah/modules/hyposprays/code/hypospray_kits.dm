@@ -108,7 +108,7 @@
 	if(empty)
 		return
 	new /obj/item/hypospray/mkii/cmo(src)
-	new /obj/item/reagent_containers/glass/vial/large/multiver(src)
+	new /obj/item/reagent_containers/glass/vial/large/dylovene(src)
 	new /obj/item/reagent_containers/glass/vial/large/salglu(src)
 	new /obj/item/reagent_containers/glass/vial/large/synthflesh(src)
 

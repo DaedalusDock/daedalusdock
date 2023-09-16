@@ -111,19 +111,6 @@
 	misfire_probability = 0
 	misfire_percentage_increment = 25 //about 1 in 4 rounds, which increases rapidly every shot
 
-	obj_flags = UNIQUE_RENAME
-	unique_reskin = list(
-		"Default" = "c38",
-		"Fitz Special" = "c38_fitz",
-		"Police Positive Special" = "c38_police",
-		"Blued Steel" = "c38_blued",
-		"Stainless Steel" = "c38_stainless",
-		"Gold Trim" = "c38_trim",
-		"Golden" = "c38_gold",
-		"The Peacemaker" = "c38_peacemaker",
-		"Black Panther" = "c38_panther"
-	)
-
 /obj/item/gun/ballistic/revolver/syndicate
 	name = "\improper Syndicate Revolver"
 	desc = "A modernized 7 round revolver manufactured by Waffle Co. Uses .357 ammo."
@@ -214,7 +201,7 @@
 
 		spun = FALSE
 
-		var/zone = check_zone(user.zone_selected)
+		var/zone = deprecise_zone(user.zone_selected)
 		var/obj/item/bodypart/affecting = H.get_bodypart(zone)
 		var/is_target_face = zone == BODY_ZONE_HEAD || zone == BODY_ZONE_PRECISE_EYES || zone == BODY_ZONE_PRECISE_MOUTH
 

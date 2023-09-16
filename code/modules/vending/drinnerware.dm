@@ -9,6 +9,7 @@
 		/obj/item/reagent_containers/glass/bowl = 20,
 		/obj/item/kitchen/fork = 6,
 		/obj/item/kitchen/spoon = 6,
+		/obj/item/kitchen/spatula = 2,
 		/obj/item/reagent_containers/food/drinks/drinkingglass = 8,
 		/obj/item/reagent_containers/food/condiment/pack/ketchup = 5,
 		/obj/item/reagent_containers/food/condiment/pack/hotsauce = 5,

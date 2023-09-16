@@ -9,7 +9,7 @@
 	. = ..()
 	RegisterSignal(parent, COMSIG_RIDDEN_DRIVER_MOVE, PROC_REF(driver_move))
 
-/datum/component/riding/vehicle/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, turf/destination, z_move_flags, mob/living/rider)
+/datum/component/riding/vehicle/riding_can_z_move(atom/movable/movable_parent, direction, turf/start, z_move_flags, mob/living/rider)
 	if(!(z_move_flags & ZMOVE_CAN_FLY_CHECKS))
 		return COMPONENT_RIDDEN_ALLOW_Z_MOVE
 

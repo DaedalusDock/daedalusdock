@@ -106,13 +106,13 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 			if(blobstrain.effectdesc)
 				to_chat(src, "The <b><font color=\"[blobstrain.color]\">[blobstrain.name]</b></font> strain [blobstrain.effectdesc]")
 
-/mob/camera/blob/can_z_move(direction, turf/start, turf/destination, z_move_flags = NONE, mob/living/rider)
+/mob/camera/blob/can_z_move(direction, turf/start, z_move_flags = NONE, mob/living/rider)
 	if(placed) // The blob can't expand vertically (yet)
 		return FALSE
 	. = ..()
 	if(!.)
 		return
-	var/turf/target_turf = .
+	var/turf/target_turf = get_step(src, dir)
 	if(!is_valid_turf(target_turf)) // Allows unplaced blobs to travel through station z-levels
 		if(z_move_flags & ZMOVE_FEEDBACK)
 			to_chat(src, "Your destination is invalid. Move somewhere else and try again.")

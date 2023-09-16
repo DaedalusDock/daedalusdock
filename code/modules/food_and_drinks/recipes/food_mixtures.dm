@@ -12,11 +12,8 @@
 /datum/chemical_reaction/food
 	optimal_temp = 400
 	temp_exponent_factor = 1
-	optimal_ph_min = 2
-	optimal_ph_max = 10
 	thermic_constant = 0
-	H_ion_release = 0
-	reaction_tags = REACTION_TAG_FOOD | REACTION_TAG_EASY
+
 
 /datum/chemical_reaction/food/tofu
 	required_reagents = list(/datum/reagent/consumable/soymilk = 10)
@@ -175,35 +172,23 @@
 /datum/chemical_reaction/food/nutriconversion
 	results = list(/datum/reagent/consumable/nutriment/peptides = 0.5)
 	required_reagents = list(/datum/reagent/consumable/nutriment/ = 0.5)
-	required_catalysts = list(/datum/reagent/medicine/metafactor = 0.5)
+	required_catalysts = list(/datum/reagent/metafactor = 0.5)
 
 /datum/chemical_reaction/food/protein_peptide
 	results = list(/datum/reagent/consumable/nutriment/peptides = 0.5)
 	required_reagents = list(/datum/reagent/consumable/nutriment/protein = 0.5)
-	required_catalysts = list(/datum/reagent/medicine/metafactor = 0.5)
-
-/datum/chemical_reaction/food/failed_nutriconversion
-	results = list(/datum/reagent/peptides_failed = 0.5)
-	required_reagents = list(/datum/reagent/consumable/nutriment/ = 0.5)
-	required_catalysts = list(/datum/reagent/impurity/probital_failed = 0.5)
-	thermic_constant = 100 // a tell
-
-/datum/chemical_reaction/food/failed_protein_peptide
-	results = list(/datum/reagent/peptides_failed = 0.5)
-	required_reagents = list(/datum/reagent/consumable/nutriment/protein = 0.5)
-	required_catalysts = list(/datum/reagent/impurity/probital_failed = 0.5)
-	thermic_constant = 100 // a tell
+	required_catalysts = list(/datum/reagent/metafactor = 0.5)
 
 /datum/chemical_reaction/food/bbqsauce
 	results = list(/datum/reagent/consumable/bbqsauce = 5)
-	required_reagents = list(/datum/reagent/ash = 1, /datum/reagent/consumable/tomatojuice = 1, /datum/reagent/medicine/salglu_solution = 3, /datum/reagent/consumable/blackpepper = 1)
+	required_reagents = list(/datum/reagent/ash = 1, /datum/reagent/consumable/tomatojuice = 1, /datum/reagent/medicine/saline_glucose = 3, /datum/reagent/consumable/blackpepper = 1)
 
 /datum/chemical_reaction/food/gravy
 	results = list(/datum/reagent/consumable/gravy = 3)
 	required_reagents = list(/datum/reagent/consumable/milk = 1, /datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/flour = 1)
 
 /datum/chemical_reaction/food/mothic_pizza_dough
-	required_reagents = list(/datum/reagent/consumable/milk = 5, /datum/reagent/consumable/quality_oil = 2, /datum/reagent/medicine/salglu_solution = 5, /datum/reagent/consumable/cornmeal = 10, /datum/reagent/consumable/flour = 5)
+	required_reagents = list(/datum/reagent/consumable/milk = 5, /datum/reagent/consumable/quality_oil = 2, /datum/reagent/medicine/saline_glucose = 5, /datum/reagent/consumable/cornmeal = 10, /datum/reagent/consumable/flour = 5)
 	mix_message = "The ingredients form a pizza dough."
 	reaction_flags = REACTION_INSTANT
 

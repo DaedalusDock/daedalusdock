@@ -24,7 +24,7 @@
 	var/heartbroken = FALSE
 	var/vowbroken = FALSE
 	var/young = FALSE
-///Prevents players from cutting stuffing out of a plushie if true
+	///Prevents players from cutting stuffing out of a plushie if true
 	var/divine = FALSE
 	var/mood_message
 	var/list/love_message
@@ -118,7 +118,7 @@
 		to_chat(user, span_notice("You try to pet [src], but it has no stuffing. Aww..."))
 
 /obj/item/toy/plush/attackby(obj/item/I, mob/living/user, params)
-	if(I.get_sharpness())
+	if(I.sharpness)
 		if(!grenade)
 			if(!stuffed)
 				to_chat(user, span_warning("You already murdered it!"))
@@ -577,7 +577,7 @@
 	icon_state = "plushie_awake"
 	inhand_icon_state = "plushie_awake"
 
-/obj/item/toy/plush/awakenedplushie/ComponentInitialize()
+/obj/item/toy/plush/awakenedplushie/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/edit_complainer)
 

@@ -192,8 +192,8 @@ Works together with spawning an observer, noted above.
 		if(ishuman(usr)) //following code only applies to those capable of having an ethereal heart, ie humans
 			var/mob/living/carbon/human/crystal_fella = usr
 			var/our_heart = crystal_fella.getorganslot(ORGAN_SLOT_HEART)
-			if(istype(our_heart, /obj/item/organ/internal/heart/ethereal)) //so you got the heart?
-				var/obj/item/organ/internal/heart/ethereal/ethereal_heart = our_heart
+			if(istype(our_heart, /obj/item/organ/heart/ethereal)) //so you got the heart?
+				var/obj/item/organ/heart/ethereal/ethereal_heart = our_heart
 				ethereal_heart.stop_crystalization_process(crystal_fella) //stops the crystallization process
 
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
@@ -266,6 +266,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			destination = get_step(destination, WEST)
 
 		abstract_move(destination)//Get out of closets and such as a ghost
+
+	return TRUE
 
 /mob/dead/observer/forceMove(atom/destination)
 	abstract_move(destination) // move like the wind
@@ -553,14 +555,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	target.faction = list("neutral")
 	return TRUE
 
-//this is a mob verb instead of atom for performance reasons
-//see /mob/verb/examinate() in mob.dm for more info
-//overridden here and in /mob/living for different point span classes and sanity checks
-/mob/dead/observer/pointed(atom/A as mob|obj|turf in view(client.view, src))
+/mob/dead/observer/_pointed(atom/pointed_at)
 	if(!..())
 		return FALSE
-	usr.visible_message(span_deadsay("<b>[src]</b> points to [A]."))
-	return TRUE
+
+	usr.visible_message(span_deadsay("<b>[src]</b> points to [pointed_at]."))
 
 /mob/dead/observer/verb/view_manifest()
 	set name = "View Crew Manifest"
@@ -702,7 +701,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		overlays = to_copy.overlays
 		alpha = 127
 
-/mob/dead/observer/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
+/mob/dead/observer/canUseTopic(atom/movable/target, flags)
 	return isAdminGhostAI(usr)
 
 /mob/dead/observer/is_literate()

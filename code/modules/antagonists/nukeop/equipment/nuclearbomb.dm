@@ -692,16 +692,19 @@ This is here to make the tiles around the station mininuke change when it's arme
 	if(!fake)
 		SSpoints_of_interest.make_point_of_interest(src)
 		last_disk_move = world.time
-		START_PROCESSING(SSobj, src)
+		if(CONFIG_GET(flag/lone_op_nag))
+			START_PROCESSING(SSobj, src)
 
-/obj/item/disk/nuclear/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/stationloving, !fake)
 
 /obj/item/disk/nuclear/process()
 	if(fake)
 		STOP_PROCESSING(SSobj, src)
 		CRASH("A fake nuke disk tried to call process(). Who the fuck and how the fuck")
+
+	if(!CONFIG_GET(flag/lone_op_nag))
+		STOP_PROCESSING(SSobj, src)
+		return
 
 	var/turf/new_turf = get_turf(src)
 

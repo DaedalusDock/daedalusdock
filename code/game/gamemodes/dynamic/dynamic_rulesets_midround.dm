@@ -46,7 +46,8 @@
 		if(M.client.get_remaining_days(minimum_required_age) > 0)
 			trimmed_list.Remove(M)
 			continue
-		if (!((antag_preference || antag_flag) in M.client.prefs.be_special))
+		var/list/client_antags = M.client.prefs.read_preference(/datum/preference/blob/antagonists)
+		if (!client_antags[antag_preference || antag_flag])
 			trimmed_list.Remove(M)
 			continue
 		if (is_banned_from(M.ckey, list(antag_flag_override || antag_flag, ROLE_SYNDICATE)))
@@ -944,11 +945,12 @@
 	..()
 	candidates = living_players
 	for(var/mob/living/carbon/human/candidate in candidates)
+		var/list/client_antags = candidate.client?.prefs.read_preference(/datum/preference/blob/antagonists)
 		if( \
-			!candidate.getorgan(/obj/item/organ/internal/brain) \
+			!candidate.getorgan(/obj/item/organ/brain) \
 			|| candidate.mind.has_antag_datum(/datum/antagonist/obsessed) \
 			|| candidate.stat == DEAD \
-			|| !(ROLE_OBSESSED in candidate.client?.prefs?.be_special) \
+			|| !(client_antags?[ROLE_OBSESSED]) \
 			|| !candidate.mind.assigned_role \
 		)
 			candidates -= candidate
@@ -960,58 +962,6 @@
 	obsessed.gain_trauma(/datum/brain_trauma/special/obsessed)
 	message_admins("[ADMIN_LOOKUPFLW(obsessed)] has been made Obsessed by the midround ruleset.")
 	log_game("[key_name(obsessed)] was made Obsessed by the midround ruleset.")
-	return ..()
-
-/// Thief ruleset
-/datum/dynamic_ruleset/midround/opportunist
-	name = "Opportunist"
-	antag_datum = /datum/antagonist/thief
-	antag_flag = ROLE_OPPORTUNIST
-	antag_flag_override = ROLE_THIEF
-	protected_roles = list(
-		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
-		JOB_PRISONER,
-		JOB_SECURITY_OFFICER,
-		JOB_WARDEN,
-	)
-	restricted_roles = list(
-		JOB_AI,
-		JOB_CYBORG,
-		ROLE_POSITRONIC_BRAIN,
-	)
-	required_candidates = 1
-	weight = 0 // Disabled until Dynamic midround rolling handles minor threats better
-	cost = 3 //Worth less than obsessed, but there's more of them.
-	requirements = list(10,10,10,10,10,10,10,10,10,10)
-	repeatable = TRUE
-
-/datum/dynamic_ruleset/midround/opportunist/trim_candidates()
-	..()
-	candidates = living_players
-	for(var/mob/living/carbon/human/candidate in candidates)
-		if( \
-			//no bigger antagonists getting smaller role
-			candidate.mind && (candidate.mind.special_role || candidate.mind.antag_datums?.len > 0) \
-			//no dead people
-			|| candidate.stat == DEAD \
-			//no people who don't want it
-			|| !(ROLE_OPPORTUNIST in candidate.client?.prefs?.be_special) \
-			//no non-station crew
-			|| candidate.mind.assigned_role.faction != FACTION_STATION \
-			//stops thief being added to admins messing around on centcom
-			|| is_centcom_level(candidate.z) \
-		)
-			candidates -= candidate
-
-/datum/dynamic_ruleset/midround/opportunist/execute()
-	if(!candidates || !candidates.len)
-		return FALSE
-	var/mob/living/carbon/human/thief = pick_n_take(candidates)
-	thief.mind.add_antag_datum(antag_datum)
-	message_admins("[ADMIN_LOOKUPFLW(thief)] has been made a Thief by the midround ruleset.")
-	log_game("[key_name(thief)] was made a Thief by the midround ruleset.")
 	return ..()
 
 /// Probability the AI going malf will be accompanied by an ion storm announcement and some ion laws.

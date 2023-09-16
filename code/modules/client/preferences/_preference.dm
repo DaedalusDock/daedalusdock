@@ -1,22 +1,26 @@
 // Priorities must be in order!
 /// The default priority level
 #define PREFERENCE_PRIORITY_DEFAULT 1
+/// The priority level for quirk-based prefs
+#define PREFERENCE_PRIORITY_QUIRKS 2
 /// The priority at which species runs, needed for external organs to apply properly.
-#define PREFERENCE_PRIORITY_SPECIES 2
+#define PREFERENCE_PRIORITY_SPECIES 3
 /// The priority at which gender is determined, needed for proper randomization.
-#define PREFERENCE_PRIORITY_GENDER 3
+#define PREFERENCE_PRIORITY_GENDER 4
 /// The priority at which body type is decided, applied after gender so we can
 /// support the "use gender" option.
-#define PREFERENCE_PRIORITY_BODY_TYPE 4
+#define PREFERENCE_PRIORITY_BODY_TYPE 5
+/// Augments come after species and bodytype.
+#define PREFERENCE_PRIORITY_AUGMENTS 6
 /// The priority hair is applied. We apply human hair first, and moth hair after, only if they are a moth. Sorry.
-#define PREFERENCE_PRIORITY_HUMAN_HAIR 5
+#define PREFERENCE_PRIORITY_HUMAN_HAIR 7
 /// The priority non-human hair is applied (used to apply moth hair after normal hair)
-#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 6
+#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 8
 /// The priority at which names are decided, needed for proper randomization.
-#define PREFERENCE_PRIORITY_NAMES 7
+#define PREFERENCE_PRIORITY_NAMES 9
 /// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
-#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 8
-#define PREFERENCE_PRIORITY_APPEARANCE_MODS 9
+#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 10
+#define PREFERENCE_PRIORITY_APPEARANCE_MODS 11
 
 /// The maximum preference priority, keep this updated, but don't use it for `priority`.
 #define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_APPEARANCE_MODS
@@ -24,20 +28,19 @@
 /// For choiced preferences, this key will be used to set display names in constant data.
 #define CHOICED_PREFERENCE_DISPLAY_NAMES "display_names"
 
-/// For main feature preferences, this key refers to a feature considered supplemental.
-/// For instance, hair color being supplemental to hair.
-#define SUPPLEMENTAL_FEATURE_KEY "supplemental_feature"
-
 /// An assoc list list of types to instantiated `/datum/preference` instances
 GLOBAL_LIST_INIT(preference_entries, init_preference_entries())
 
 /// An assoc list of preference entries by their `savefile_key`
 GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
+/// A list of preference modules.
+GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
+
 /proc/init_preference_entries()
 	var/list/output = list()
 	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
+		if (isabstract(preference_type))
 			continue
 		output[preference_type] = new preference_type
 	return output
@@ -45,10 +48,28 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /proc/init_preference_entries_by_key()
 	var/list/output = list()
 	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
+		if (isabstract(preference_type))
 			continue
 		output[initial(preference_type.savefile_key)] = GLOB.preference_entries[preference_type]
 	return output
+
+/proc/init_all_pref_groups()
+	. = list()
+	for(var/datum/preference_group/module as anything in typesof(/datum/preference_group))
+		if(isabstract(module))
+			continue
+
+		. += new module()
+
+	spawn(0)
+		_setup_cats()
+
+	sortTim(., GLOBAL_PROC_REF(cmp_pref_modules))
+
+/proc/_setup_cats()
+	for(var/datum/preference_group/category/P in GLOB.all_pref_groups)
+		for(var/i in 1 to length(P.modules))
+			P.modules[i] = locate(P.modules[i]) in GLOB.all_pref_groups
 
 /// Returns a flat list of preferences in order of their priority
 /proc/get_preferences_in_priority_order()
@@ -65,6 +86,10 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 /// Represents an individual preference.
 /datum/preference
+	abstract_type = /datum/preference
+	/// The display default name when inserted into the chargen
+	var/explanation = "ERROR"
+
 	/// The key inside the savefile to use.
 	/// This is also sent to the UI.
 	/// Once you pick this, don't change it.
@@ -74,9 +99,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// This isn't used for anything other than as a key for UI data.
 	/// It is up to the PreferencesMenu UI itself to interpret it.
 	var/category = "misc"
-
-	/// Do not instantiate if type matches this.
-	var/abstract_type = /datum/preference
 
 	/// What savefile should this preference be read from?
 	/// Valid values are PREFERENCE_CHARACTER and PREFERENCE_PLAYER.
@@ -91,12 +113,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// is for PREFERENCE_CHARACTER.
 	var/can_randomize = TRUE
 
-	/// If randomizable (PREFERENCE_CHARACTER and can_randomize), whether
-	/// or not to enable randomization by default.
-	/// This doesn't mean it'll always be random, but rather if a player
-	/// DOES have random body on, will this already be randomized?
-	var/randomize_by_default = TRUE
-
 	/// If the selected species has this in its /datum/species/mutant_bodyparts,
 	/// will show the feature as selectable.
 	var/relevant_mutant_bodypart = null
@@ -105,7 +121,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	/// will show the feature as selectable.
 	var/relevant_species_trait = null
 
-	/// If the selected species has this in its /datum/species/var/external_organs,
+	/// If the selected species has this in its /datum/species/var/cosmetic_organs,
 	/// will show the feature as selectable.
 	var/relevant_external_organ = null
 
@@ -114,6 +130,12 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	/// If this preference is not accessible, do not attempt to apply it to mobs.
 	var/requires_accessible = FALSE
+
+	/// A typepath for a sub preference. Ex: Hair Style's sub_preference is /datum/preference/color/hair_color
+	var/sub_preference
+
+	/// Is this type a sub preference?
+	var/is_sub_preference = FALSE
 
 /// Called on the saved input when retrieving.
 /// Also called by the value sent from the user through UI. Do not trust it.
@@ -205,7 +227,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /// Apply this preference onto the given human.
 /// Must be overriden by subtypes.
 /// Called when the savefile_identifier == PREFERENCE_CHARACTER.
-/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value, datum/preferences/preferences) //PARIAH EDIT
+/datum/preference/proc/apply_to_human(mob/living/carbon/human/target, value)
 	SHOULD_NOT_SLEEP(TRUE)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("`apply_to_human()` was not implemented for [type]!")
@@ -256,7 +278,10 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 		CRASH("Preference type `[preference_type]` is invalid! [extra_info]")
 
 	if (preference_type in value_cache)
-		return value_cache[preference_type]
+		. = value_cache[preference_type]
+		if(islist(.))
+			return (.):Copy()
+		return
 
 	var/value = preference_entry.read(get_savefile_for_savefile_identifier(preference_entry.savefile_identifier), src)
 	if (isnull(value))
@@ -265,13 +290,18 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 			return value
 		else
 			CRASH("Couldn't write the default value for [preference_type] (received [value])")
+
 	value_cache[preference_type] = value
+	if(islist(value))
+		return value:Copy()
 	return value
 
 /// Set a /datum/preference entry.
 /// Returns TRUE for a successful preference application.
 /// Returns FALSE if it is invalid.
 /datum/preferences/proc/write_preference(datum/preference/preference, preference_value)
+	if(ispath(preference))
+		preference = GLOB.preference_entries[preference]
 	var/savefile = get_savefile_for_savefile_identifier(preference.savefile_identifier)
 	var/new_value = preference.deserialize(preference_value, src)
 	var/success = preference.write(savefile, new_value)
@@ -286,11 +316,15 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	if (!preference.is_accessible(src))
 		return FALSE
 
+	var/old_value = read_preference(preference.type)
 	var/new_value = preference.deserialize(preference_value, src)
 	var/success = preference.write(null, new_value)
 
 	if (!success)
 		return FALSE
+
+	if(old_value != new_value)
+		preference.value_changed(src, new_value, old_value)
 
 	recently_updated_keys |= preference.type
 	value_cache[preference.type] = new_value
@@ -298,9 +332,14 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	if (preference.savefile_identifier == PREFERENCE_PLAYER)
 		preference.apply_to_client_updated(parent, read_preference(preference.type))
 	else
-		character_preview_view?.update_body()
+		spawn(-1)
+			character_preview_view?.update_body()
 
 	return TRUE
+
+/// Called when a user updates the value of this preference.
+/datum/preference/proc/value_changed(datum/preferences/prefs, new_value, old_value)
+	return
 
 /// Checks that a given value is valid.
 /// Must be overriden by subtypes.
@@ -335,17 +374,18 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 		if (!(savefile_key in species.get_features()))
 			return FALSE
 
-	if (!should_show_on_page(preferences.current_window))
-		return FALSE
-
 	return TRUE
 
-/// Returns whether or not, given the PREFERENCE_TAB_*, this preference should
-/// appear.
-/datum/preference/proc/should_show_on_page(preference_tab)
-	var/is_on_character_page = preference_tab == PREFERENCE_TAB_CHARACTER_PREFERENCES
-	var/is_character_preference = savefile_identifier == PREFERENCE_CHARACTER
-	return is_on_character_page == is_character_preference
+/datum/preference/proc/button_act(mob/user, datum/preferences/prefs, list/params)
+	if(user_edit(user, prefs, params))
+		return TRUE
+	return FALSE
+
+/datum/preference/proc/user_edit(mob/user, datum/preferences/prefs, list/params)
+	CRASH("Unimplimented preference edit!")
+
+/datum/preference/proc/get_button(datum/preferences/prefs)
+	CRASH("Unimplimented button!")
 
 /// A preference that is a choice of one option among a fixed set.
 /// Used for preferences such as clothing.
@@ -357,11 +397,12 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	var/list/cached_values
 
-	/// If the preference is a main feature (PREFERENCE_CATEGORY_FEATURES or PREFERENCE_CATEGORY_CLOTHING)
-	/// this is the name of the feature that will be presented.
-	var/main_feature_name
+	var/list/cached_serialized_values
 
 	abstract_type = /datum/preference/choiced
+
+	///Defines whether get_button() should include cycle arrows
+	var/cyclable = TRUE
 
 /// Returns a list of every possible value.
 /// The first time this is called, will run `init_values()`.
@@ -385,18 +426,18 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/choiced/proc/get_choices_serialized()
 	// Override `init_values()` instead.
 	SHOULD_NOT_OVERRIDE(TRUE)
+	if(isnull(cached_serialized_values))
+		cached_serialized_values = list()
+		var/choices = get_choices()
 
-	var/list/serialized_choices = list()
-	var/choices = get_choices()
+		if (should_generate_icons)
+			for (var/choice in choices)
+				cached_serialized_values[serialize(choice)] = choices[choice]
+		else
+			for (var/choice in choices)
+				cached_serialized_values += serialize(choice)
 
-	if (should_generate_icons)
-		for (var/choice in choices)
-			serialized_choices[serialize(choice)] = choices[choice]
-	else
-		for (var/choice in choices)
-			serialized_choices += serialize(choice)
-
-	return serialized_choices
+	return cached_serialized_values
 
 /// Returns a list of every possible value.
 /// This must be overriden by `/datum/preference/choiced` subtypes.
@@ -434,10 +475,35 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 		data["icons"] = icons
 
-	if (!isnull(main_feature_name))
-		data["name"] = main_feature_name
-
 	return data
+
+/datum/preference/choiced/button_act(mob/user, datum/preferences/prefs, list/params)
+	if(params["cycle"])
+		var/list/choices = get_choices()
+		var/new_index = choices.Find(prefs.read_preference(type)) + (params["cycle"] == "down" ? (-1) : 1)
+		if(new_index == 0)
+			new_index = length(choices)
+		else if(new_index > length(choices))
+			new_index = 1
+
+		return prefs.update_preference(src, serialize(choices[new_index]))
+	return ..()
+
+/datum/preference/choiced/user_edit(mob/user, datum/preferences/prefs)
+	var/input = tgui_input_list(user, "Change [explanation]",, get_choices_serialized(), serialize(prefs.read_preference(type)))
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
+
+/datum/preference/choiced/get_button(datum/preferences/prefs)
+	if(!cyclable)
+		return button_element(prefs, capitalize(serialize(prefs.read_preference(type))), "pref_act=[type]")
+	else
+		return {"
+			[button_element(prefs, "<", "pref_act=[type];cycle=down")]
+			[button_element(prefs, capitalize(serialize(prefs.read_preference(type))), "pref_act=[type]")]
+			[button_element(prefs, ">", "pref_act=[type];cycle=up")]
+		"}
 
 /// A preference that represents an RGB color of something.
 /// Will give the value as 6 hex digits, without a hash.
@@ -456,48 +522,14 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/color/is_valid(value)
 	return findtext(value, GLOB.is_color)
 
-/// Takes an assoc list of names to /datum/sprite_accessory and returns a value
-/// fit for `/datum/preference/init_possible_values()`
-/proc/possible_values_for_sprite_accessory_list(list/datum/sprite_accessory/sprite_accessories)
-	var/list/possible_values = list()
-	for (var/name in sprite_accessories)
-		var/datum/sprite_accessory/sprite_accessory = sprite_accessories[name]
-		if (istype(sprite_accessory))
-			possible_values[name] = icon(sprite_accessory.icon, sprite_accessory.icon_state)
-		else
-			// This means it didn't have an icon state
-			possible_values[name] = icon('icons/mob/landmarks.dmi', "x")
-	return possible_values
+/datum/preference/color/user_edit(mob/user, datum/preferences/prefs, list/params)
+	var/input = input(user, "Change [explanation]",, prefs.read_preference(type)) as null|color
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
 
-/// Takes an assoc list of names to /datum/sprite_accessory and returns a value
-/// fit for `/datum/preference/init_possible_values()`
-/// Different from `possible_values_for_sprite_accessory_list` in that it takes a list of layers
-/// such as BEHIND, FRONT, and ADJ.
-/// It also takes a "body part name", such as body_markings, moth_wings, etc
-/// They are expected to be in order from lowest to top.
-/proc/possible_values_for_sprite_accessory_list_for_body_part(
-	list/datum/sprite_accessory/sprite_accessories,
-	body_part,
-	list/layers,
-)
-	var/list/possible_values = list()
-
-	for (var/name in sprite_accessories)
-		var/datum/sprite_accessory/sprite_accessory = sprite_accessories[name]
-
-		var/icon/final_icon
-
-		for (var/layer in layers)
-			var/icon/icon = icon(sprite_accessory.icon, "m_[body_part]_[sprite_accessory.icon_state]_[layer]")
-
-			if (isnull(final_icon))
-				final_icon = icon
-			else
-				final_icon.Blend(icon, ICON_OVERLAY)
-
-		possible_values[name] = final_icon
-
-	return possible_values
+/datum/preference/color/get_button(datum/preferences/prefs)
+	return color_button_element(prefs, prefs.read_preference(type), "pref_act=[type]")
 
 /// A numeric preference with a minimum and maximum value
 /datum/preference/numeric
@@ -524,7 +556,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 	return rand(minimum, maximum)
 
 /datum/preference/numeric/is_valid(value)
-	return isnum(value) && value >= minimum && value <= maximum
+	return isnum(value) && value >= round(minimum, step) && value <= round(maximum, step)
 
 /datum/preference/numeric/compile_constant_data()
 	return list(
@@ -532,6 +564,15 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 		"maximum" = maximum,
 		"step" = step,
 	)
+
+/datum/preference/numeric/user_edit(mob/user, datum/preferences/prefs)
+	var/input = tgui_input_number(user, "Change [explanation] ([minimum] - [maximum][step != 1 ? "increment [step]" : ""])",, prefs.read_preference(type), maximum, minimum, round_value = step)
+	if(!input)
+		return
+	return prefs.update_preference(src, input)
+
+/datum/preference/numeric/get_button(datum/preferences/prefs)
+	return button_element(prefs, prefs.read_preference(type), "pref_act=[type]")
 
 /// A prefernece whose value is always TRUE or FALSE
 /datum/preference/toggle
@@ -549,8 +590,6 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/toggle/is_valid(value)
 	return value == TRUE || value == FALSE
 
-//PARIAH EDIT ADDITION
-/// A preference for text and text input.
 /datum/preference/text
 	abstract_type = /datum/preference/text
 
@@ -563,4 +602,21 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 /datum/preference/text/is_valid(value)
 	return istext(value)
 
-//PARIAH EDIT END
+///Holds any kind of abstract list data you'd like it to. MUST impliment `is_valid`!
+/datum/preference/blob
+	abstract_type = /datum/preference/blob
+	can_randomize = FALSE
+
+/datum/preference/blob/create_default_value()
+	return list()
+
+/datum/preference/blob/deserialize(input, datum/preferences/preferences)
+	if(!islist(input))
+		return list()
+	return input
+
+/datum/preference/blob/is_valid(value)
+	return islist(value)
+
+/datum/preference/blob/apply_to_human(mob/living/carbon/human/target, value)
+	return

@@ -213,7 +213,7 @@
 
 	if (!t || !sending_and_receiving)
 		return
-	if(!U.canUseTopic(computer, BE_CLOSE))
+	if(!U.canUseTopic(computer, USE_CLOSE))
 		return
 	return sanitize(t)
 
@@ -331,7 +331,7 @@
 	else
 		L = get(holder.holder, /mob/living/silicon)
 
-	if(L && (L.stat == CONSCIOUS || L.stat == SOFT_CRIT))
+	if(L && L.stat < CONSCIOUS)
 		var/reply = "(<a href='byond://?src=[REF(src)];choice=[signal.data["rigged"] ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal.data["ref"]]'>Reply</a>)"
 		var/hrefstart
 		var/hrefend
@@ -351,23 +351,16 @@
 
 
 	if (ringer_status)
-		if(!computer)
-			message_admins("Messenger Program exists with no computer, [ADMIN_VV(src)]");
-			var/message = "Messenger Program with no computer."
-			if(QDELETED(src))
-				message += " \[Messenger is qdeleted!\]"
-			if(QDELETED(holder))
-				if(isnull(holder))
-					message += " \[Messenger is not in a harddrive!\]"
-				else
-					message += " \[Messenger harddrive is qdeleting!\]"
-			CRASH(message)
+		if(!holder.holder)
+			return //We aren't actually in a computer, SSpackets might have gotten severely gummed up or smth.
+		//otherwise, fix the computer var and run.
+		computer = holder.holder
 		computer.ring(ringtone)
 
 /datum/computer_file/program/messenger/Topic(href, href_list)
 	..()
 
-	if(!href_list["close"] && usr.canUseTopic(computer, BE_CLOSE, FALSE, NO_TK))
+	if(!href_list["close"] && usr.canUseTopic(computer, USE_CLOSE|USE_IGNORE_TK))
 		switch(href_list["choice"])
 			if("Message")
 				send_message(usr, list(locate(href_list["target"])))

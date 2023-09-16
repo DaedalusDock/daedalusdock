@@ -5,14 +5,6 @@
 	blocks_air = AIR_BLOCKED
 	rad_insulation = RAD_MEDIUM_INSULATION
 	pass_flags_self = PASSCLOSEDTURF
-/*
-/turf/closed/AfterChange()
-	. = ..()
-	SSair.high_pressure_delta -= src
-*/
-
-/turf/closed/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	return FALSE
 
 /turf/closed/indestructible
 	name = "wall"
@@ -98,14 +90,14 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon_state = "reinforced_wall-0"
 	base_icon_state = "reinforced_wall"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_WALLS
 
 /turf/closed/indestructible/reinforced/centcom
 	icon = 'icons/turf/walls/solid_wall_reinforced.dmi'
 	icon_state = "wall-0"
 	base_icon_state = "wall"
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 	color = "#3a3a4f"
 
 /turf/closed/indestructible/riveted
@@ -113,8 +105,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon_state = "riveted-0"
 	base_icon_state = "riveted"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS)
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	smoothing_groups = SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 
 /turf/closed/indestructible/syndicate
 	icon = 'icons/turf/walls/wood_wall.dmi'
@@ -122,8 +114,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	base_icon_state = "wall"
 	color = "#423b3b"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM + SMOOTH_GROUP_WALLS
 
 /turf/closed/indestructible/riveted/uranium
 	icon = 'icons/turf/walls/cult_wall.dmi'
@@ -131,8 +123,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	base_icon_state = "wall"
 	color = "#174207"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 
 /turf/closed/indestructible/riveted/plastinum
 	name = "plastinum wall"
@@ -147,9 +139,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	base_icon_state = "wall"
 	color = "#93662C"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
-
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 
 /turf/closed/indestructible/alien
 	name = "alien wall"
@@ -157,8 +148,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon = 'icons/turf/walls/legacy/abductor_wall.dmi'
 	icon_state = "abductor_wall-0"
 	base_icon_state = "abductor_wall"
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_WALLS
 
 
 /turf/closed/indestructible/cult
@@ -168,8 +159,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon_state = "cult_wall-0"
 	base_icon_state = "cult_wall"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_WALLS
 
 
 /turf/closed/indestructible/abductor
@@ -187,8 +178,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	color = "#a885b8"
 	opacity = FALSE
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups =SMOOTH_GROUP_WINDOW_FULLTILE
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
 
 /turf/closed/indestructible/fakeglass/Initialize(mapload, inherited_virtual_z)
 	. = ..()
@@ -203,8 +194,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	color = "#a2a2a2"
 	opacity = FALSE
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_SHUTTLE_PARTS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM, SMOOTH_GROUP_LOW_WALL, SMOOTH_GROUP_AIRLOCK, SMOOTH_GROUP_SHUTTERS_BLASTDOORS)
+	smoothing_groups = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM
+	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WINDOW_FULLTILE_PLASTITANIUM + SMOOTH_GROUP_WALLS
 
 /turf/closed/indestructible/opsglass/Initialize(mapload, inherited_virtual_z)
 	. = ..()
@@ -216,7 +207,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	name = "CentCom Access"
 	icon = 'icons/obj/doors/airlocks/centcom/airlock.dmi'
 	icon_state = "fake_door"
-	smoothing_groups = list(SMOOTH_GROUP_AIRLOCK)
+	smoothing_groups = SMOOTH_GROUP_AIRLOCK
 
 /turf/closed/indestructible/rock
 	name = "dense rock"
@@ -243,7 +234,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon_state = "icerock_wall-0"
 	base_icon_state = "icerock_wall"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	canSmoothWith = list(SMOOTH_GROUP_CLOSED_TURFS)
+	canSmoothWith = SMOOTH_GROUP_CLOSED_TURFS
 	pixel_x = -4
 	pixel_y = -4
 
@@ -262,11 +253,6 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	explosion_block = 50
 	baseturfs = /turf/closed/indestructible/necropolis
 
-/turf/closed/indestructible/necropolis/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "necro1"
-	return TRUE
-
 /turf/closed/indestructible/iron
 	name = "impervious iron wall"
 	desc = "A wall with tough iron plating."
@@ -274,8 +260,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon_state = "iron_wall-0"
 	base_icon_state = "iron_wall"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS)
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_WALLS
 	opacity = FALSE
 
 /turf/closed/indestructible/riveted/boss
@@ -285,18 +271,13 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon_state = "boss_wall-0"
 	base_icon_state = "boss_wall"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_BOSS_WALLS)
-	canSmoothWith = list(SMOOTH_GROUP_BOSS_WALLS)
+	smoothing_groups = SMOOTH_GROUP_CLOSED_TURFS + SMOOTH_GROUP_BOSS_WALLS
+	canSmoothWith = SMOOTH_GROUP_BOSS_WALLS
 	explosion_block = 50
 	baseturfs = /turf/closed/indestructible/riveted/boss
 
 /turf/closed/indestructible/riveted/boss/see_through
 	opacity = FALSE
-
-/turf/closed/indestructible/riveted/boss/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	underlay_appearance.icon = 'icons/turf/floors.dmi'
-	underlay_appearance.icon_state = "basalt"
-	return TRUE
 
 /turf/closed/indestructible/riveted/hierophant
 	name = "wall"
@@ -304,5 +285,5 @@ INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
 	icon = 'icons/turf/walls/legacy/hierophant_wall.dmi'
 	icon_state = "wall"
 	smoothing_flags = SMOOTH_CORNERS
-	smoothing_groups = list(SMOOTH_GROUP_HIERO_WALL)
-	canSmoothWith = list(SMOOTH_GROUP_HIERO_WALL)
+	smoothing_groups = SMOOTH_GROUP_HIERO_WALL
+	canSmoothWith = SMOOTH_GROUP_HIERO_WALL

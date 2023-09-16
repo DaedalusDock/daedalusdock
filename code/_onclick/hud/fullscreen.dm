@@ -201,6 +201,7 @@
 	plane = LIGHTING_PLANE
 	blend_mode = BLEND_ADD
 	show_when_dead = TRUE
+	alpha = 64 //Spooky darkness
 
 /atom/movable/screen/fullscreen/bluespace_overlay
 	icon = 'icons/effects/effects.dmi'
@@ -209,3 +210,16 @@
 	alpha = 80
 	color = "#000050"
 	blend_mode = BLEND_ADD
+
+/atom/movable/screen/fullscreen/dither
+	icon = 'goon/icons/hud/dither.dmi'
+	icon_state = "dither"
+	layer = DITHER_LAYER
+	show_when_dead = TRUE
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
+
+/atom/movable/screen/fullscreen/pain
+	icon_state = "brutedamageoverlay"
+	layer = UI_DAMAGE_LAYER
+	plane = FULLSCREEN_PLANE
+	alpha = 0

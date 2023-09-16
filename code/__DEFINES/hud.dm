@@ -204,6 +204,12 @@
 //Families
 #define ui_wanted_lvl "NORTH,11"
 
+//Gun buttons
+#define ui_gun1 "EAST-2:26,SOUTH+2:7"
+#define ui_gun2 "EAST-1:28, SOUTH+3:7"
+#define ui_gun3 "EAST-2:26,SOUTH+3:7"
+#define ui_gun_select "EAST-1:28,SOUTH+2:7"
+
 // Defines relating to action button positions
 
 /// Whatever the base action datum thinks is best

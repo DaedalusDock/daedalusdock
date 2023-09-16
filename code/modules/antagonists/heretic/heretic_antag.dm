@@ -17,7 +17,6 @@
 	roundend_category = "Heretics"
 	antagpanel_category = "Heretic"
 	ui_name = "AntagInfoHeretic"
-	antag_moodlet = /datum/mood_event/heretics
 	job_rank = ROLE_HERETIC
 	antag_hud_name = "heretic"
 	hijack_speed = 0.5
@@ -391,7 +390,7 @@
  */
 /datum/antagonist/heretic/proc/passive_influence_gain()
 	knowledge_points++
-	if(owner.current.stat <= SOFT_CRIT)
+	if(owner.current.stat == CONSCIOUS)
 		to_chat(owner.current, "[span_hear("You hear a whisper...")] [span_hypnophrase(pick(strings(HERETIC_INFLUENCE_FILE, "drain_message")))]")
 	addtimer(CALLBACK(src, PROC_REF(passive_influence_gain)), passive_gain_timer)
 

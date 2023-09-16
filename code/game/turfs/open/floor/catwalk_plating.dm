@@ -21,6 +21,12 @@
 	var/catwalk_type = "maint"
 	var/static/list/catwalk_underlays = list()
 
+#ifdef SIMPLE_MAPHELPERS
+// Set these back to the turf layer so that they don't block underfloor equipment
+/turf/open/floor/catwalk_floor
+	layer = TURF_LAYER
+#endif
+
 /turf/open/floor/catwalk_floor/Initialize(mapload)
 	. = ..()
 	if(!catwalk_underlays[catwalk_type])

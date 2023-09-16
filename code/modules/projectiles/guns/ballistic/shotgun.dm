@@ -114,7 +114,7 @@
 		to_chat(user, span_notice("You switch to tube A."))
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/AltClick(mob/living/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
 		return
 	rack()
 
@@ -270,7 +270,7 @@
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/AltClick(mob/user)
 	. = ..()
-	if(unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
+	if(unique_reskin && !current_skin && user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		reskin_obj(user)
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/sawoff(mob/user)

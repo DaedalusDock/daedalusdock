@@ -54,7 +54,7 @@
 	if(!target_zone)
 		target_zone = pick(head_ch;BODY_ZONE_HEAD,body_ch;BODY_ZONE_CHEST,hands_ch;BODY_ZONE_L_ARM,feet_ch;BODY_ZONE_L_LEG)
 	else
-		target_zone = check_zone(target_zone)
+		target_zone = deprecise_zone(target_zone)
 
 
 
@@ -138,7 +138,7 @@
 			return FALSE
 
 	for(var/thing in D.required_organs)
-		if(!((locate(thing) in bodyparts) || (locate(thing) in internal_organs)))
+		if(!((locate(thing) in bodyparts) || (locate(thing) in organs)))
 			return FALSE
 	return ..()
 
@@ -146,4 +146,14 @@
 	return !is_mouth_covered()
 
 /mob/living/carbon/CanSpreadAirborneDisease()
-	return !((head && (head.flags_cover & HEADCOVERSMOUTH) && (head.armor.getRating(BIO) >= 25)) || (wear_mask && (wear_mask.flags_cover & MASKCOVERSMOUTH) && (wear_mask.armor.getRating(BIO) >= 25)))
+	if(head && (head.flags_cover & HEADCOVERSMOUTH) && head.returnArmor().getRating(BIO) >= 25)
+		return FALSE
+
+	if(wear_mask && (wear_mask.flags_cover & MASKCOVERSMOUTH) && wear_mask.returnArmor().getRating(BIO) >= 25)
+		return FALSE
+
+	var/obj/item/bodypart/head/realhead = get_bodypart(BODY_ZONE_HEAD)
+	if(realhead && realhead.returnArmor().getRating(BIO) >= 100)
+		return FALSE
+
+	return TRUE

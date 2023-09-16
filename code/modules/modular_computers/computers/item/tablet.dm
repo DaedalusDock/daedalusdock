@@ -86,7 +86,7 @@
 
 /obj/item/modular_computer/tablet/proc/remove_pen(mob/user)
 
-	if(issilicon(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK)) //TK doesn't work even with this removed but here for readability
+	if(issilicon(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK)) //TK doesn't work even with this removed but here for readability
 		return
 
 	if(inserted_item)
@@ -125,35 +125,6 @@
 	qdel(src)
 
 // SUBTYPES
-
-/obj/item/modular_computer/tablet/syndicate_contract_uplink
-	name = "contractor tablet"
-	icon = 'icons/obj/contractor_tablet.dmi'
-	icon_state = "tablet"
-	icon_state_unpowered = "tablet"
-	icon_state_powered = "tablet"
-	icon_state_menu = "assign"
-	w_class = WEIGHT_CLASS_SMALL
-	slot_flags = ITEM_SLOT_ID | ITEM_SLOT_BELT
-	comp_light_luminosity = 6.3
-	has_variants = FALSE
-
-/obj/item/modular_computer/tablet/syndicate_contract_uplink/Initialize(mapload)
-	. = ..()
-	var/obj/item/computer_hardware/hard_drive/small/syndicate/hard_drive = new
-	var/datum/computer_file/program/contract_uplink/uplink = new
-
-	active_program = uplink
-	uplink.program_state = PROGRAM_STATE_ACTIVE
-	uplink.computer = src
-
-	hard_drive.store_file(uplink)
-
-	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))
-	install_component(hard_drive)
-	install_component(new /obj/item/computer_hardware/network_card)
-	install_component(new /obj/item/computer_hardware/card_slot)
-	install_component(new /obj/item/computer_hardware/printer/mini)
 
 /// Given to Nuke Ops members.
 /obj/item/modular_computer/tablet/nukeops
@@ -325,3 +296,6 @@
 
 	if(insert_type)
 		inserted_item = new insert_type(src)
+
+	spawn(-1) //Linter doesn't know this doesn't call ui_interact() w/o a user
+		turn_on()

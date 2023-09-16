@@ -110,6 +110,8 @@
 
 /obj/machinery/recycler/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	INVOKE_ASYNC(src, PROC_REF(eat), AM)
 
 /obj/machinery/recycler/proc/eat(atom/movable/AM0, sound=TRUE)
@@ -133,7 +135,7 @@
 		if(istype(AM, /obj/item))
 			var/obj/item/bodypart/head/as_head = AM
 			var/obj/item/mmi/as_mmi = AM
-			if(istype(AM, /obj/item/organ/internal/brain) || (istype(as_head) && as_head.brain) || (istype(as_mmi) && as_mmi.brain) || istype(AM, /obj/item/dullahan_relay))
+			if(istype(AM, /obj/item/organ/brain) || (istype(as_head) && as_head.brain) || (istype(as_mmi) && as_mmi.brain))
 				living_detected = TRUE
 			nom += AM
 		else if(isliving(AM))

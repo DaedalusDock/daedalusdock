@@ -63,7 +63,7 @@
 		span_hear("You hear a dull thud!"))
 	log_combat(owner, owner, "bopped", src.name, "(self)")
 	owner.do_attack_animation(owner)
-	owner.apply_damage(100, STAMINA)
+	owner.stamina.adjust(-100)
 	owner.Knockdown(10)
 	qdel(src)
 
@@ -94,7 +94,7 @@
 		owner.visible_message(span_danger("[owner] bops [sucker] with [owner.p_their()] [src.name] much harder than intended, sending [sucker.p_them()] flying!"), \
 			span_danger("You bop [sucker] with your [src.name] much harder than intended, sending [sucker.p_them()] flying!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), ignored_mobs=list(sucker))
 		to_chat(sucker, span_userdanger("[owner] bops you incredibly hard with [owner.p_their()] [src.name], sending you flying!"))
-		sucker.apply_damage(50, STAMINA)
+		sucker.stamina.adjust(-50)
 		sucker.Knockdown(50)
 		log_combat(owner, sucker, "bopped", src.name, "(setup- Hulk)")
 		var/atom/throw_target = get_edge_target_turf(sucker, owner.dir)
@@ -102,7 +102,7 @@
 	else
 		owner.visible_message(span_danger("[owner] bops [sucker] with [owner.p_their()] [src.name]!"), span_danger("You bop [sucker] with your [src.name]!"), \
 			span_hear("You hear a dull thud!"), ignored_mobs=list(sucker))
-		sucker.apply_damage(15, STAMINA)
+		sucker.stamina.adjust(-15)
 		log_combat(owner, sucker, "bopped", src.name, "(setup)")
 		to_chat(sucker, span_userdanger("[owner] bops you with [owner.p_their()] [src.name]!"))
 	qdel(src)
@@ -123,11 +123,10 @@
 		to_chat(user, span_warning("You can't bring yourself to noogie [target]! You don't want to risk harming anyone..."))
 		return
 
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target || user.grab_state < GRAB_AGGRESSIVE || user.getStaminaLoss() > 80)
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target || user.grab_state < GRAB_AGGRESSIVE || HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		return FALSE
 
 	// [user] gives [target] a [prefix_desc] noogie[affix_desc]!
-	var/brutal_noogie = FALSE // was it an extra hard noogie?
 	var/prefix_desc = "rough"
 	var/affix_desc = ""
 	var/affix_desc_target = ""
@@ -136,10 +135,8 @@
 		prefix_desc = "violent"
 		affix_desc = "on [target.p_their()] sensitive antennae"
 		affix_desc_target = "on your highly sensitive antennae"
-		brutal_noogie = TRUE
 	if(user.dna?.check_mutation(/datum/mutation/human/hulk))
 		prefix_desc = "sickeningly brutal"
-		brutal_noogie = TRUE
 
 	var/message_others = "[prefix_desc] noogie[affix_desc]"
 	var/message_target = "[prefix_desc] noogie[affix_desc_target]"
@@ -152,11 +149,6 @@
 		to_chat(target, span_danger("[user] fails to give you a noogie!"))
 		return
 
-	if(brutal_noogie)
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "noogie_harsh", /datum/mood_event/noogie_harsh)
-	else
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "noogie", /datum/mood_event/noogie)
-
 	noogie_loop(user, target, 0)
 
 /// The actual meat and bones of the noogie'ing
@@ -164,7 +156,7 @@
 	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target)
 		return FALSE
 
-	if(user.getStaminaLoss() > 80)
+	if(HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		to_chat(user, span_warning("You're too tired to continue giving [target] a noogie!"))
 		to_chat(target, span_danger("[user] is too tired to continue giving you a noogie!"))
 		return
@@ -180,7 +172,7 @@
 
 	log_combat(user, target, "given a noogie to", addition = "([damage] brute before armor)")
 	target.apply_damage(damage, BRUTE, BODY_ZONE_HEAD)
-	user.adjustStaminaLoss(iteration + 5)
+	user.stamina.adjust(-iteration + 5)
 	playsound(get_turf(user), pick('sound/effects/rustle1.ogg','sound/effects/rustle2.ogg','sound/effects/rustle3.ogg','sound/effects/rustle4.ogg','sound/effects/rustle5.ogg'), 50)
 
 	if(prob(33))
@@ -210,9 +202,6 @@
 /obj/item/hand_item/slapper/attack(mob/living/slapped, mob/living/carbon/human/user)
 	SEND_SIGNAL(user, COMSIG_LIVING_SLAP_MOB, slapped)
 
-	if(ishuman(slapped))
-		var/mob/living/carbon/human/human_slapped = slapped
-		SEND_SIGNAL(human_slapped, COMSIG_ORGAN_WAG_TAIL, FALSE)
 	user.do_attack_animation(slapped)
 
 	var/slap_volume = 50
@@ -230,7 +219,7 @@
 		shake_camera(slapped, 2, 2)
 		slapped.Paralyze(2.5 SECONDS)
 		slapped.adjust_timed_status_effect(7 SECONDS, /datum/status_effect/confusion)
-		slapped.adjustStaminaLoss(40)
+		slapped.stamina.adjust(-40)
 	else if(user.zone_selected == BODY_ZONE_HEAD || user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		if(user == slapped)
 			user.visible_message(
@@ -316,7 +305,6 @@
 
 	if(!open_hands_taker)
 		to_chat(taker, span_warning("You can't high-five [offerer] with no open hands!"))
-		SEND_SIGNAL(taker, COMSIG_ADD_MOOD_EVENT, "high_five", /datum/mood_event/high_five_full_hand) // not so successful now!
 		return
 
 	for(var/i in offerer.held_items)
@@ -330,16 +318,12 @@
 		playsound(offerer, 'sound/weapons/slap.ogg', 100, TRUE, 1)
 		offerer.mind.add_memory(MEMORY_HIGH_FIVE, list(DETAIL_PROTAGONIST = taker, DETAIL_HIGHFIVE_TYPE = "high ten"), story_value = STORY_VALUE_OKAY)
 		taker.mind.add_memory(MEMORY_HIGH_FIVE, list(DETAIL_PROTAGONIST = offerer, DETAIL_HIGHFIVE_TYPE = "high ten"), story_value = STORY_VALUE_OKAY)
-		SEND_SIGNAL(offerer, COMSIG_ADD_MOOD_EVENT, "high_five", /datum/mood_event/high_ten)
-		SEND_SIGNAL(taker, COMSIG_ADD_MOOD_EVENT, "high_five", /datum/mood_event/high_ten)
 	else
 		offerer.visible_message(span_notice("[taker] high-fives [offerer]!"), span_nicegreen("All right! You're high-fived by [taker]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), ignored_mobs=taker)
 		to_chat(taker, span_nicegreen("You high-five [offerer]!"))
 		playsound(offerer, 'sound/weapons/slap.ogg', 50, TRUE, -1)
 		offerer.mind.add_memory(MEMORY_HIGH_FIVE, list(DETAIL_PROTAGONIST = taker, DETAIL_HIGHFIVE_TYPE = "high five"), story_value = STORY_VALUE_OKAY)
 		taker.mind.add_memory(MEMORY_HIGH_FIVE, list(DETAIL_PROTAGONIST = offerer, DETAIL_HIGHFIVE_TYPE = "high five"), story_value = STORY_VALUE_OKAY)
-		SEND_SIGNAL(offerer, COMSIG_ADD_MOOD_EVENT, "high_five", /datum/mood_event/high_five)
-		SEND_SIGNAL(taker, COMSIG_ADD_MOOD_EVENT, "high_five", /datum/mood_event/high_five)
 	qdel(src)
 
 /// Gangster secret handshakes.
@@ -510,7 +494,6 @@
 		living_target.visible_message(span_danger("[living_target] is hit by \a [src]."), span_userdanger("You're hit by \a [src]!"), vision_distance=COMBAT_MESSAGE_RANGE)
 
 	living_target.mind?.add_memory(MEMORY_KISS, list(DETAIL_PROTAGONIST = living_target, DETAIL_KISSER = firer), story_value = STORY_VALUE_OKAY)
-	SEND_SIGNAL(living_target, COMSIG_ADD_MOOD_EVENT, "kiss", /datum/mood_event/kiss, firer, suppressed)
 	if(isliving(firer))
 		var/mob/living/kisser = firer
 		kisser.mind?.add_memory(MEMORY_KISS, list(DETAIL_PROTAGONIST = living_target, DETAIL_KISSER = firer), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_CHECK_BLINDNESS)
@@ -518,7 +501,7 @@
 
 /obj/projectile/kiss/proc/try_fluster(mob/living/living_target)
 	// people with the social anxiety quirk can get flustered when hit by a kiss
-	if(!HAS_TRAIT(living_target, TRAIT_ANXIOUS) || (living_target.stat > SOFT_CRIT) || living_target.is_blind())
+	if(!HAS_TRAIT(living_target, TRAIT_ANXIOUS) || (living_target.stat != CONSCIOUS) || living_target.is_blind())
 		return
 	if(HAS_TRAIT(living_target, TRAIT_FEARLESS) || prob(50)) // 50% chance for it to apply, also immune while on meds
 		return
@@ -545,10 +528,9 @@
 	living_target.visible_message("<b>[living_target]</b> [other_msg]", span_userdanger("Whoa! [self_msg]"))
 
 /obj/projectile/kiss/on_hit(atom/target, blocked, pierce_hit)
-	def_zone = BODY_ZONE_HEAD // let's keep it PG, people
+	aimed_def_zone = BODY_ZONE_HEAD // let's keep it PG, people
 	. = ..()
 	if(isliving(target))
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "kiss", /datum/mood_event/kiss, firer, suppressed)
 		try_fluster(target)
 
 /obj/projectile/kiss/death
@@ -563,7 +545,7 @@
 	if(!iscarbon(target))
 		return
 	var/mob/living/carbon/heartbreakee = target
-	var/obj/item/organ/internal/heart/dont_go_breakin_my_heart = heartbreakee.getorganslot(ORGAN_SLOT_HEART)
+	var/obj/item/organ/heart/dont_go_breakin_my_heart = heartbreakee.getorganslot(ORGAN_SLOT_HEART)
 	dont_go_breakin_my_heart.applyOrganDamage(999)
 
 

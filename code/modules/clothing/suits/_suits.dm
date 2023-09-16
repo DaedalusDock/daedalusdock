@@ -17,7 +17,7 @@
 	. = ..()
 	setup_shielding()
 
-/obj/item/clothing/suit/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/suit/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -25,7 +25,13 @@
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damaged[blood_overlay_type]")
 	if(HAS_BLOOD_DNA(src))
-		. += mutable_appearance('icons/effects/blood.dmi', "[blood_overlay_type]blood")
+		if(istype(wearer))
+			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
+			if(!chest?.icon_bloodycover)
+				return
+			. += image(chest.icon_bloodycover, "[blood_overlay_type]blood")
+		else
+			. += mutable_appearance('icons/effects/blood.dmi', "[blood_overlay_type]blood")
 
 	var/mob/living/carbon/human/M = loc
 	if(!ishuman(M) || !M.w_uniform)

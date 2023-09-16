@@ -102,7 +102,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 		if("list_bombers")
 			var/dat = "<B>Bombing List</B><HR>"
 			for(var/l in GLOB.bombers)
-				dat += text("[l]<BR>")
+				dat += "[l]<BR>"
 			holder << browse(dat, "window=bombers")
 
 		if("list_signalers")
@@ -512,8 +512,8 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 
 				if(H.dna.species.id == SPECIES_HUMAN)
 					if(H.dna.features["tail_human"] == "None" || H.dna.features["ears"] == "None")
-						var/obj/item/organ/internal/ears/cat/ears = new
-						var/obj/item/organ/external/tail/cat/tail = new
+						var/obj/item/organ/ears/cat/ears = new
+						var/obj/item/organ/tail/cat/tail = new
 						ears.Insert(H, drop_if_replaced=FALSE)
 						tail.Insert(H, drop_if_replaced=FALSE)
 					var/list/honorifics = list("[MALE]" = list("kun"), "[FEMALE]" = list("chan","tan"), "[NEUTER]" = list("san"), "[PLURAL]" = list("san")) //John Robust -> Robust-kun
@@ -533,20 +533,6 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 							ADD_TRAIT(I, TRAIT_NODROP, ADMIN_TRAIT)
 				else
 					to_chat(H, span_warning("You're not kawaii enough for this!"), confidential = TRUE)
-		if("masspurrbation")
-			if(!is_funmin)
-				return
-			mass_purrbation()
-			message_admins("[key_name_admin(holder)] has put everyone on \
-				purrbation!")
-			log_admin("[key_name(holder)] has put everyone on purrbation.")
-		if("massremovepurrbation")
-			if(!is_funmin)
-				return
-			mass_remove_purrbation()
-			message_admins("[key_name_admin(holder)] has removed everyone from \
-				purrbation.")
-			log_admin("[key_name(holder)] has removed everyone from purrbation.")
 		if("massimmerse")
 			if(!is_funmin)
 				return

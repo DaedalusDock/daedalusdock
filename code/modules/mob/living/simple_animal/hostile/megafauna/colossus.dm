@@ -141,12 +141,10 @@
 		if(H.mind)
 			if(istype(H.mind.martial_art, /datum/martial_art/the_sleeping_carp))
 				. = TRUE
-		if (is_species(H, /datum/species/golem/sand))
-			. = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/colossus/devour(mob/living/L)
-	visible_message(span_colossus("[src] disintegrates [L]!"))
-	L.dust()
+	visible_message(span_colossus("[src] crushes [L]!"))
+	L.apply_damage(300, BRUTE, spread_damage = TRUE)
 
 /obj/effect/temp_visual/at_shield
 	name = "anti-toolbox field"
@@ -296,7 +294,7 @@
 	set_anchored(FALSE)
 	return TRUE
 
-/obj/machinery/anomalous_crystal/Bumped(atom/movable/AM)
+/obj/machinery/anomalous_crystal/BumpedBy(atom/movable/AM)
 	..()
 	if(ismob(AM))
 		ActivationReaction(AM, ACTIVATE_MOB_BUMP)
@@ -565,6 +563,7 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
 	if(isliving(arrived) && holder_animal)
 		var/mob/living/L = arrived
 		L.notransform = 1

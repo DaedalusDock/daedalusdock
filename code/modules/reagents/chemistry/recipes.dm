@@ -7,16 +7,17 @@
  */
 /datum/chemical_reaction
 	///Results of the chemical reactions
-	var/list/results = new/list()
+	var/list/results = list()
 	///Required chemicals that are USED in the reaction
-	var/list/required_reagents = new/list()
+	var/list/required_reagents = list()
 	///Required chemicals that must be present in the container but are not USED.
-	var/list/required_catalysts = new/list()
+	var/list/required_catalysts = list()
+	///Reagents that block the reaction from occuring, like an inverse catalyst.
+	var/list/inhibitors = list()
 
-	// Both of these variables are mostly going to be used with slime cores - but if you want to, you can use them for other things
-	/// the exact container path required for the reaction to happen
+	/// the exact container path required for the reaction to happen.
 	var/required_container
-	/// an integer required for the reaction to happen
+	/// Some stupid magic bullshit for slime reactions. Literally what the fuck.
 	var/required_other = 0
 
 	///Determines if a chemical reaction can occur inside a mob
@@ -35,29 +36,17 @@
 	var/optimal_temp = 500
 	/// Temperature at which reaction explodes - If any reaction is this hot, it explodes!
 	var/overheat_temp = 900
-	/// Lowest value of pH determining pH a 1 value for pH based rate reactions (Plateu phase)
-	var/optimal_ph_min = 5
-	/// Higest value for above
-	var/optimal_ph_max = 9
-	/// How far out pH wil react, giving impurity place (Exponential phase)
-	var/determin_ph_range = 4
+
 	/// How sharp the temperature exponential curve is (to the power of value)
 	var/temp_exponent_factor = 2
-	/// How sharp the pH exponential curve is (to the power of value)
-	var/ph_exponent_factor = 2
+
 	/// How much the temperature will change (with no intervention) (i.e. for 30u made the temperature will increase by 100, same with 300u. The final temp will always be start + this value, with the exception con beakers with different specific heats)
 	var/thermic_constant = 50
-	/// pH change per 1u reaction
-	var/H_ion_release = 0.01
 	/// Optimal/max rate possible if all conditions are perfect
 	var/rate_up_lim = 30
-	/// If purity is below 0.15, it calls OverlyImpure() too. Set to 0 to disable this.
-	var/purity_min = 0.15
-	/// bitflags for clear conversions; REACTION_CLEAR_IMPURE, REACTION_CLEAR_INVERSE, REACTION_CLEAR_RETAIN, REACTION_INSTANT
+
+	/// Affects how reactions occur
 	var/reaction_flags = NONE
-	///Tagging vars
-	///A bitflag var for tagging reagents for the reagent loopup functon
-	var/reaction_tags = NONE
 
 /datum/chemical_reaction/New()
 	. = ..()
@@ -114,9 +103,6 @@
  * Stuff that occurs at the end of a reaction. This will proc if the beaker is forced to stop and start again (say for sudden temperature changes).
  * Only procs at the END of reaction
  * If reaction_flags & REACTION_INSTANT then this isn't called
- * if reaction_flags REACTION_CLEAR_IMPURE then the impurity chem is handled here, producing the result in the beaker instead of in a mob
- * Likewise for REACTION_CLEAR_INVERSE the inverse chem is produced at the end of the reaction in the beaker
- * You should be calling ..() if you're writing a child function of this proc otherwise purity methods won't work correctly
  *
  * Proc where the additional magic happens.
  * You dont want to handle mob spawning in this since there is a dedicated proc for that.client
@@ -125,37 +111,7 @@
  * * react_volume - volume created across the whole reaction
  */
 /datum/chemical_reaction/proc/reaction_finish(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
-	//failed_chem handler
-	var/cached_temp = holder.chem_temp
-	for(var/id in results)
-		var/datum/reagent/reagent = holder.has_reagent(id)
-		if(!reagent)
-			continue
-		//Split like this so it's easier for people to edit this function in a child
-		reaction_clear_check(reagent, holder)
-	holder.chem_temp = cached_temp
 
-/**
- * REACTION_CLEAR handler
- * If the reaction has the REACTION_CLEAR flag, then it will split using purity methods in the beaker instead
- *
- * Arguments:
- * * reagent - the target reagent to convert
- */
-/datum/chemical_reaction/proc/reaction_clear_check(datum/reagent/reagent, datum/reagents/holder)
-	if(!reagent)//Failures can delete R
-		return
-	if(reaction_flags & (REACTION_CLEAR_IMPURE | REACTION_CLEAR_INVERSE))
-		if(reagent.purity == 1)
-			return
-
-		var/cached_volume = reagent.volume
-		var/cached_purity = reagent.purity
-		if((reaction_flags & REACTION_CLEAR_INVERSE) && reagent.inverse_chem)
-			if(reagent.inverse_chem_val > reagent.purity)
-				holder.remove_reagent(reagent.type, cached_volume, FALSE)
-				holder.add_reagent(reagent.inverse_chem, cached_volume, FALSE, added_purity = 1-cached_purity)
-				return
 
 /**
  * Occurs when a reation is overheated (i.e. past it's overheatTemp)
@@ -175,26 +131,6 @@
 		if(!reagent)
 			return
 		reagent.volume = round((reagent.volume*0.98), 0.01) //Slowly lower yield per tick
-
-/**
- * Occurs when a reation is too impure (i.e. it's below purity_min)
- * Will be called every tick in the reaction that it is too impure
- * If you want this to be a once only proc (i.e. the reaction is stopped after) set reaction.toDelete = TRUE
- * The above is useful if you're writing an explosion
- * By default the parent proc will reduce the purity of all reagents involved in the reaction in the beaker slightly. If you don't want that don't add ..()
- *
- * Arguments:
- * * holder - the datum that holds this reagent, be it a beaker or anything else
- * * equilibrium - the equilibrium datum that contains the equilibrium reaction properties and methods
- * * step_volume_added - how much product (across all products) was added for this single step
- */
-/datum/chemical_reaction/proc/overly_impure(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
-	var/affected_list = results + required_reagents
-	for(var/_reagent in affected_list)
-		var/datum/reagent/reagent = holder.get_reagent(_reagent)
-		if(!reagent)
-			continue
-		reagent.purity = clamp((reagent.purity-0.01), 0, 1) //slowly reduce purity of reagents
 
 /**
  * Magical mob spawning when chemicals react
@@ -300,9 +236,7 @@
 		if(lastkey)
 			var/mob/toucher = get_mob_by_key(lastkey)
 			touch_msg = "[ADMIN_LOOKUPFLW(toucher)]"
-		if(!istype(holder.my_atom, /obj/machinery/plumbing)) //excludes standard plumbing equipment from spamming admins with this shit
-			message_admins("Reagent explosion reaction occurred at [ADMIN_VERBOSEJMP(T)][inside_msg]. Last Fingerprint: [touch_msg].")
-		log_game("Reagent explosion reaction occurred at [AREACOORD(T)]. Last Fingerprint: [lastkey ? lastkey : "N/A"]." )
+		log_game("Reagent explosion reaction occurred at [AREACOORD(T)][inside_msg]. Last Fingerprint: [lastkey ? lastkey : "N/A"][touch_msg]." )
 		var/datum/effect_system/reagents_explosion/e = new()
 		e.set_up(power , T, 0, 0)
 		e.start(holder.my_atom)
@@ -335,33 +269,6 @@
 	for(var/mob/living/carbon/carbon_mob in get_hearers_in_view(range, location))
 		carbon_mob.soundbang_act(1, stun, power)
 
-//Spews out the inverse of the chems in the beaker of the products/reactants only
-/datum/chemical_reaction/proc/explode_invert_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, force_range = 0, clear_products = TRUE, clear_reactants = TRUE, accept_impure = TRUE)
-	var/datum/reagents/invert_reagents = new (2100, NO_REACT)//I think the biggest size we can get is 2100?
-	var/datum/effect_system/smoke_spread/chem/smoke = new()
-	var/sum_volume = 0
-	invert_reagents.my_atom = holder.my_atom //Give the gas a fingerprint
-	for(var/datum/reagent/reagent as anything in holder.reagent_list) //make gas for reagents, has to be done this way, otherwise it never stops Exploding
-		if(!(reagent.type in required_reagents) || !(reagent.type in results))
-			continue
-		if(reagent.inverse_chem)
-			invert_reagents.add_reagent(reagent.inverse_chem, reagent.volume, no_react = TRUE)
-			holder.remove_reagent(reagent.type, reagent.volume)
-			continue
-		invert_reagents.add_reagent(reagent.type, reagent.volume, added_purity = reagent.purity, no_react = TRUE)
-		sum_volume += reagent.volume
-		holder.remove_reagent(reagent.type, reagent.volume)
-	if(!force_range)
-		force_range = (sum_volume/6) + 3
-	if(invert_reagents.reagent_list)
-		smoke.set_up(invert_reagents, force_range, holder.my_atom)
-		smoke.start()
-	holder.my_atom.audible_message("The [holder.my_atom] suddenly explodes, launching the aerosolized reagents into the air!")
-	if(clear_reactants)
-		clear_reactants(holder)
-	if(clear_products)
-		clear_products(holder)
-
 //Spews out the corrisponding reactions reagents  (products/required) of the beaker in a smokecloud. Doesn't spew catalysts
 /datum/chemical_reaction/proc/explode_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, force_range = 0, clear_products = TRUE, clear_reactants = TRUE)
 	var/datum/reagents/reagents = new/datum/reagents(2100, NO_REACT)//Lets be safe first
@@ -370,7 +277,7 @@
 	var/sum_volume = 0
 	for (var/datum/reagent/reagent as anything in holder.reagent_list)
 		if((reagent.type in required_reagents) || (reagent.type in results))
-			reagents.add_reagent(reagent.type, reagent.volume, added_purity = reagent.purity, no_react = TRUE)
+			reagents.add_reagent(reagent.type, reagent.volume, no_react = TRUE)
 			holder.remove_reagent(reagent.type, reagent.volume)
 	if(!force_range)
 		force_range = (sum_volume/6) + 3
@@ -389,10 +296,9 @@
 	if(sound_and_text)
 		holder.my_atom.audible_message("The [holder.my_atom] suddenly explodes, sending a shockwave rippling through the air!")
 		playsound(this_turf, 'sound/chemistry/shockwave_explosion.ogg', 80, TRUE)
+
 	//Modified goonvortex
-	for(var/atom/movable/movey as anything in orange(range, this_turf))
-		if(!istype(movey, /atom/movable))
-			continue
+	for(var/atom/movable/movey in orange(range, this_turf))
 		if(isliving(movey) && damage)
 			var/mob/living/live = movey
 			live.apply_damage(damage)//Since this can be called multiple times
@@ -535,7 +441,6 @@
 			continue
 		to_chat(target, "The [holder.my_atom.name] launches some of [holder.p_their()] contents at you!")
 		target.reagents.add_reagent(reagent, vol)
-
 
 /*
 * Applys a cooldown to the reaction

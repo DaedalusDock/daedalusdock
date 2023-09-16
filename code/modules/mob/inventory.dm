@@ -98,9 +98,8 @@
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
-	if(locate(typepath) in held_items)
-		return TRUE
-	return FALSE
+	return locate(typepath) in held_items
+
 
 //Checks if we're holding a tool that has given quality
 //Returns the tool that has the best version of this quality
@@ -265,9 +264,39 @@
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
 		return FALSE
 	I.remove_item_from_storage(src)
-	if(!put_in_hand(I, hand_index))
+	if(!put_in_hand(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
+	return TRUE
+
+/// Switches the items inside of two hand indexes.
+/mob/proc/swapHeldIndexes(index_A, index_B)
+	if(index_A == index_B)
+		return
+	var/obj/item/item_A = get_item_for_held_index(index_A)
+	var/obj/item/item_B = get_item_for_held_index(index_B)
+
+	var/failed_uh_oh_abort = FALSE
+	if(!(item_A || item_B))
+		return
+	if(item_A && !temporarilyRemoveItemFromInventory(item_A))
+		failed_uh_oh_abort = TRUE
+	if(item_B && !temporarilyRemoveItemFromInventory(item_B))
+		failed_uh_oh_abort = TRUE
+
+	if((item_A && !put_in_hand(item_A, index_B)) || (item_B && !put_in_hand(item_B, index_A)))
+		failed_uh_oh_abort = TRUE
+
+	if(failed_uh_oh_abort)
+		if(item_A)
+			temporarilyRemoveItemFromInventory(item_A)
+		if(item_B)
+			temporarilyRemoveItemFromInventory(item_B)
+		if(item_A)
+			put_in_hand(item_A, index_A)
+		if(item_B)
+			put_in_hand(item_B, index_B)
+		return FALSE
 	return TRUE
 
 //The following functions are the same save for one small difference
@@ -348,8 +377,10 @@
  * Argument(s):
  * * Optional - include_pockets (TRUE/FALSE), whether or not to include the pockets and suit storage in the returned list
  */
+/mob/proc/get_equipped_items(include_pockets = FALSE)
+	return
 
-/mob/living/proc/get_equipped_items(include_pockets = FALSE)
+/mob/living/get_equipped_items(include_pockets = FALSE)
 	var/list/items = list()
 	for(var/obj/item/item_contents in contents)
 		if(item_contents.item_flags & IN_INVENTORY)
@@ -444,6 +475,10 @@
 	set name = "quick-equip"
 	set hidden = TRUE
 
+	DEFAULT_QUEUE_OR_CALL_VERB(VERB_CALLBACK(src, PROC_REF(execute_quick_equip)))
+
+///proc extender of [/mob/verb/quick_equip] used to make the verb queuable if the server is overloaded
+/mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
 		to_chat(src, span_warning("You are not holding anything to equip!"))

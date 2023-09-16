@@ -8,30 +8,18 @@
 "d" = (
 /turf/open/floor/plating,
 /area/centcom/mafia)
-"e" = (
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
-/area/centcom/mafia)
 "f" = (
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "g" = (
 /obj/mafia_game_board,
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/centcom/mafia)
 "h" = (
 /obj/structure/grille/indestructable,
 /turf/open/floor/plating,
-/area/centcom/mafia)
-"i" = (
-/turf/open/floor/plating{
-	icon_state = "platingdmg1"
-	},
 /area/centcom/mafia)
 "j" = (
 /obj/machinery/door/airlock/maintenance_hatch{
@@ -192,6 +180,10 @@
 "K" = (
 /turf/closed/indestructible/rock/snow,
 /area/centcom/mafia)
+"Q" = (
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
+/area/centcom/mafia)
 
 (1,1,1) = {"
 a
@@ -301,7 +293,7 @@ s
 h
 d
 d
-e
+Q
 s
 s
 j
@@ -323,7 +315,7 @@ a
 b
 b
 s
-i
+Q
 s
 s
 j
@@ -472,7 +464,7 @@ a
 a
 b
 s
-e
+Q
 s
 b
 p
@@ -649,7 +641,7 @@ b
 b
 s
 h
-i
+Q
 d
 d
 s
@@ -677,7 +669,7 @@ k
 h
 d
 d
-e
+Q
 d
 d
 s

@@ -6,8 +6,8 @@
 
 /atom/movable/setDir(ndir)
 	. = ..()
-	if (. && bound_overlay)
-		bound_overlay.setDir(ndir)
+	if (bound_overlay)
+		bound_overlay.setDir(dir)
 
 /atom/movable/update_above()
 	if (!bound_overlay || !isturf(loc))
@@ -17,7 +17,7 @@
 		SSzcopy.queued_overlays += bound_overlay
 		bound_overlay.queued += 1
 	else if (bound_overlay && !bound_overlay.destruction_timer)
-		bound_overlay.destruction_timer = QDEL_IN(bound_overlay, 10 SECONDS)
+		bound_overlay.destruction_timer = QDEL_IN_STOPPABLE(bound_overlay, 10 SECONDS)
 
 // Grabs a list of every openspace mimic that's directly or indirectly copying this object. Returns an empty list if none found.
 /atom/movable/proc/get_associated_mimics()
@@ -62,6 +62,9 @@
 	return
 
 /atom/movable/openspace/has_gravity(turf/T)
+	return FALSE
+
+/atom/movable/openspace/CanZFall(turf/from, direction, anchor_bypass)
 	return FALSE
 
 // -- MULTIPLIER / SHADOWER --
@@ -137,12 +140,14 @@
 	var/have_performed_fixup = FALSE
 
 /atom/movable/openspace/mimic/New()
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 	SSzcopy.openspace_overlays += 1
 
 /atom/movable/openspace/mimic/Destroy()
 	SSzcopy.openspace_overlays -= 1
 	queued = 0
+	if(HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+		lose_hearing_sensitivity()
 
 	if (associated_atom)
 		associated_atom.bound_overlay = null
@@ -172,12 +177,47 @@
 			deltimer(destruction_timer)
 			destruction_timer = null
 	else if (!destruction_timer)
-		destruction_timer = QDEL_IN(src, 10 SECONDS)
+		destruction_timer = QDEL_IN_STOPPABLE(src, 10 SECONDS)
+
+/atom/movable/openspace/mimic/newtonian_move(direction, instant, start_delay) // No.
+	return TRUE
+
+/atom/movable/openspace/mimic/set_glide_size(target)
+	return
+
+/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
+	if(speaker.z != src.z)
+		return
+
+	//Mimics of mimics aren't supposed to become hearing sensitive.
+	associated_atom.Hear(arglist(args))
+
+/atom/movable/openspace/mimic/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)
+	if(ismob(associated_atom))
+		associated_atom:show_message(arglist(args))
+
+/atom/movable/openspace/mimic/proc/get_root()
+	RETURN_TYPE(/atom/movable)
+
+	. = associated_atom
+	while (istype(., /atom/movable/openspace/mimic))
+		. = (.):associated_atom
 
 // Called when the turf we're on is deleted/changed.
 /atom/movable/openspace/mimic/proc/owning_turf_changed()
 	if (!destruction_timer)
-		destruction_timer = QDEL_IN(src, 10 SECONDS)
+		destruction_timer = QDEL_IN_STOPPABLE(src, 10 SECONDS)
+
+/atom/movable/openspace/mimic/proc/z_shift()
+	if (istype(associated_atom, type) && associated_atom:override_depth)
+		depth = associated_atom:override_depth
+	else if (isturf(associated_atom.loc))
+		depth = min(SSzcopy.zlev_maximums[associated_atom.z] - associated_atom.z, ZMIMIC_MAX_DEPTH)
+		override_depth = depth
+
+	plane = ZMIMIC_MAX_PLANE - depth
+
+	bound_overlay?.z_shift()
 
 // -- TURF PROXY --
 

@@ -49,7 +49,6 @@
 	else
 		viewing = FALSE
 	if(viewing)
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "creeping", /datum/mood_event/creeping, obsession.name)
 		total_time_creeping += delta_time SECONDS
 		time_spent_away = 0
 		if(attachedobsessedobj)//if an objective needs to tick down, we can do that since traumas coexist with the antagonist datum
@@ -59,10 +58,6 @@
 
 /datum/brain_trauma/special/obsessed/proc/out_of_view()
 	time_spent_away += 20
-	if(time_spent_away > 1800) //3 minutes
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "creeping", /datum/mood_event/notcreepingsevere, obsession.name)
-	else
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "creeping", /datum/mood_event/notcreeping, obsession.name)
 
 /datum/brain_trauma/special/obsessed/on_lose()
 	..()
@@ -100,7 +95,7 @@
 		if(41 to 80)
 			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "pale")
 			shake_camera(owner, 15, 1)
-			owner.adjustStaminaLoss(70)
+			owner.stamina.adjust(-70)
 			to_chat(owner, span_userdanger("You feel your heart lurching in your chest..."))
 		if(81 to 100)
 			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "cough")

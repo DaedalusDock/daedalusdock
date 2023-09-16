@@ -68,7 +68,7 @@
 
 	var/obj/O = parent
 	amount++
-	O.armor = O.armor.attachArmor(added_armor)
+	O.setArmor(O.returnArmor().attachArmor(added_armor))
 
 	if(ismecha(O))
 		var/obj/vehicle/sealed/mecha/R = O

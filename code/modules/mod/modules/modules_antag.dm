@@ -42,7 +42,7 @@
 	mod.wearer.update_equipment_speed_mods()
 	var/list/parts = mod.mod_parts + mod
 	for(var/obj/item/part as anything in parts)
-		part.armor = part.armor.modifyRating(arglist(armor_values))
+		part.setArmor(part.returnArmor().modifyRating(arglist(armor_values)))
 		if(!remove_pressure_protection || !isclothing(part))
 			continue
 		var/obj/item/clothing/clothing_part = part
@@ -63,7 +63,7 @@
 	for(var/armor_type in removed_armor)
 		removed_armor[armor_type] = -removed_armor[armor_type]
 	for(var/obj/item/part as anything in parts)
-		part.armor = part.armor.modifyRating(arglist(removed_armor))
+		part.setArmor(part.returnArmor().modifyRating(arglist(removed_armor)))
 		if(!remove_pressure_protection || !isclothing(part))
 			continue
 		var/obj/item/clothing/clothing_part = part
@@ -286,47 +286,6 @@
 
 /obj/projectile/bullet/incendiary/backblast/flamethrower
 	range = 6
-
-/// Baton holster - stops contractors from losing their baton when installed
-/obj/item/mod/module/baton_holster
-	name = "MOD baton holster module"
-	desc = "A module installed into the chest of a MODSuit, this allows you \
-		to retrieve an inserted baton from the suit at will. Insert a baton \
-		by hitting the module, while it is removed from the suit, with the baton."
-	icon_state = "holster"
-	module_type = MODULE_ACTIVE
-	complexity = 3
-	active_power_cost = DEFAULT_CHARGE_DRAIN * 0.3
-	device = /obj/item/melee/baton/telescopic/contractor_baton
-	incompatible_modules = list(/obj/item/mod/module/baton_holster)
-	cooldown_time = 0.5 SECONDS
-	allowed_inactive = TRUE
-	/// Have they sacrificed a baton to actually be able to use this?
-	var/eaten_baton = FALSE
-
-/obj/item/mod/module/baton_holster/attackby(obj/item/attacking_item, mob/user, params)
-	. = ..()
-	if(!istype(attacking_item, /obj/item/melee/baton/telescopic/contractor_baton) || eaten_baton)
-		return
-	balloon_alert(user, "[attacking_item] inserted")
-	eaten_baton = TRUE
-	for(var/obj/item/melee/baton/telescopic/contractor_baton/device_baton as anything in src)
-		for(var/obj/item/item_contents as anything in attacking_item)
-			if(istype(item_contents, /obj/item/baton_upgrade))
-				device_baton.add_upgrade(item_contents)
-			else
-				item_contents.forceMove(device_baton)
-	qdel(attacking_item)
-
-/obj/item/mod/module/baton_holster/on_activation()
-	if(!eaten_baton)
-		balloon_alert(mod.wearer, "no baton inserted")
-		return
-	return ..()
-
-/obj/item/mod/module/baton_holster/preloaded
-	eaten_baton = TRUE
-	device = /obj/item/melee/baton/telescopic/contractor_baton/upgraded
 
 /// Chameleon - Allows you to disguise your modsuit as another type
 /obj/item/mod/module/chameleon

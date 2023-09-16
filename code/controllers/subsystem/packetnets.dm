@@ -1,8 +1,8 @@
 SUBSYSTEM_DEF(packets)
 	name = "Packets"
-	wait = 1
+	wait = 0
 	priority = FIRE_PRIORITY_PACKETS
-	flags = SS_NO_INIT|SS_KEEP_TIMING
+	flags = SS_NO_INIT | SS_HIBERNATE
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/saymodes = list()
@@ -40,7 +40,26 @@ SUBSYSTEM_DEF(packets)
 	///What processing stage we're at
 	var/stage = SSPACKETS_POWERNETS
 
+/// Generates a unique (at time of read) ID for an atom, It just plays silly with the ref.
+/// Pass the target atom in as arg[1]
+/datum/controller/subsystem/packets/proc/generate_net_id(caller)
+	if(!caller)
+		CRASH("Attempted to generate netid for null")
+	. = REF(caller)
+	. = "[copytext(.,4,(length(.)))]0"
+
 /datum/controller/subsystem/packets/PreInit(timeofday)
+	hibernate_checks = list(
+		NAMEOF(src, queued_networks),
+		NAMEOF(src, queued_radio_packets),
+		NAMEOF(src, queued_tablet_messages),
+		NAMEOF(src, queued_subspace_vocals),
+		NAMEOF(src, current_networks),
+		NAMEOF(src, current_radio_packets),
+		NAMEOF(src, current_tablet_messages),
+		NAMEOF(src, current_subspace_vocals)
+	)
+
 	for(var/_SM in subtypesof(/datum/saymode))
 		var/datum/saymode/SM = new _SM()
 		saymodes[SM.key] = SM

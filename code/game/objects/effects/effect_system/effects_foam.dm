@@ -93,9 +93,6 @@
 	START_PROCESSING(SSfastprocess, src)
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, TRUE, -3)
 	become_atmos_sensitive()
-
-/obj/effect/particle_effect/foam/ComponentInitialize()
-	. = ..()
 	if(slippery_foam)
 		AddComponent(/datum/component/slippery, 100)
 
@@ -174,7 +171,7 @@
 /obj/effect/particle_effect/foam/proc/spread_foam()
 	var/turf/t_loc = get_turf(src)
 	//This should just be atmos adjacent turfs, come on guys
-	for(var/turf/T in t_loc.reachableAdjacentTurfs())
+	for(var/turf/T in t_loc.reachableAdjacentTurfs(no_id = TRUE))
 		var/obj/effect/particle_effect/foam/foundfoam = locate() in T //Don't spread foam where there's already foam!
 		if(foundfoam)
 			continue

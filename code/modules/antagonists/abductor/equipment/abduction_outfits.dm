@@ -53,7 +53,7 @@
 	..()
 	if(!visualsOnly)
 		var/obj/item/implant/abductor/beamplant = new /obj/item/implant/abductor(H)
-		beamplant.implant(H)
+		beamplant.implant(H, body_zone = BODY_ZONE_CHEST)
 
 /datum/outfit/abductor/scientist/onemanteam
 	name = "Abductor Scientist (w/ agent gear)"

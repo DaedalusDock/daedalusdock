@@ -313,7 +313,7 @@
 
 /obj/projectile/tentacle/fire(setAngle)
 	if(firer)
-		chain = firer.Beam(src, icon_state = "tentacle")
+		chain = firer.Beam(src, icon_state = "tentacle", emissive = FALSE)
 	..()
 
 /obj/projectile/tentacle/proc/reset_throw(mob/living/carbon/human/H)
@@ -332,7 +332,7 @@
 /obj/projectile/tentacle/proc/tentacle_stab(mob/living/carbon/human/H, mob/living/carbon/C)
 	if(H.Adjacent(C))
 		for(var/obj/item/I in H.held_items)
-			if(I.get_sharpness())
+			if(I.sharpness & SHARP_POINTY)
 				C.visible_message(span_danger("[H] impales [C] with [H.p_their()] [I.name]!"), span_userdanger("[H] impales you with [H.p_their()] [I.name]!"))
 				C.apply_damage(I.force, BRUTE, BODY_ZONE_CHEST)
 				H.do_item_attack_animation(C, used_item = I)
@@ -494,7 +494,7 @@
 /obj/item/clothing/suit/space/changeling/process(delta_time)
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		H.reagents.add_reagent(/datum/reagent/medicine/salbutamol, REAGENTS_METABOLISM * (delta_time / SSMOBS_DT))
+		H.reagents.add_reagent(/datum/reagent/medicine/dexalin, 0.2)
 		H.adjust_bodytemperature(temperature_setting - H.bodytemperature) // force changelings to normal temp step mode played badly
 
 /obj/item/clothing/head/helmet/space/changeling

@@ -9,7 +9,7 @@
 		/datum/heretic_knowledge/limited_amount/flesh_ghoul,
 	)
 	required_atoms = list(
-		/obj/item/organ/internal/eyes = 1,
+		/obj/item/organ/eyes = 1,
 		/obj/item/shard = 1,
 		/obj/item/candle = 1,
 	)
@@ -80,5 +80,5 @@
 		CRASH("[type] required a head bodypart, yet did not have one in selected_atoms when it reached cleanup_atoms.")
 
 	// Spill out any brains or stuff before we delete it.
-	ritual_head.drop_organs()
+	ritual_head.drop_contents()
 	return ..()

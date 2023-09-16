@@ -59,6 +59,8 @@
 
 /mob/living/simple_animal/bot/hygienebot/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(washing)
 		do_wash(AM)
 

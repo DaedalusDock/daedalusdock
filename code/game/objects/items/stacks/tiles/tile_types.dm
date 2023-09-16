@@ -11,8 +11,8 @@
 	righthand_file = 'icons/mob/inhands/misc/tiles_righthand.dmi'
 	icon = 'icons/obj/tiles.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
-	force = 1
-	throwforce = 1
+	force = 6
+	throwforce = 15
 	throw_speed = 3
 	throw_range = 7
 	max_amount = 60
@@ -376,7 +376,7 @@
 	. += neon_overlay
 	. += emissive_appearance(neon_icon || icon, neon_icon_state || icon_state, alpha = emissive_alpha)
 
-/obj/item/stack/tile/carpet/neon/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/carpet/neon/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands || !neon_inhand_icon_state)
 		return
@@ -1146,7 +1146,7 @@
 	. = ..()
 	. += emissive_appearance(icon, icon_state, alpha = alpha)
 
-/obj/item/stack/tile/emissive_test/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/emissive_test/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	. += emissive_appearance(standing.icon, standing.icon_state, alpha = standing.alpha)
 

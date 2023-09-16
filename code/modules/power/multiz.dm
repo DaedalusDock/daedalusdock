@@ -17,4 +17,3 @@
 	var/turf/T = get_turf(src)
 	. += span_notice("[locate(/obj/structure/cable/multilayer/multiz) in (GetBelow(T)) ? "Detected" : "Undetected"] hub UP.")
 	. += span_notice("[locate(/obj/structure/cable/multilayer/multiz) in (GetAbove(T)) ? "Detected" : "Undetected"] hub DOWN.")
-

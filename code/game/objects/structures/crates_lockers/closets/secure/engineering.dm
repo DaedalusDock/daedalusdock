@@ -13,7 +13,6 @@
 	new /obj/item/areaeditor/blueprints(src)
 	new /obj/item/storage/briefcase/inflatable(src)
 	new /obj/item/assembly/flash/handheld(src)
-	new /obj/item/door_remote/chief_engineer(src)
 	new /obj/item/pipe_dispenser(src)
 	new /obj/item/circuitboard/machine/fabricator/department/engineering(src)
 	new /obj/item/extinguisher/advanced(src)
@@ -64,6 +63,7 @@
 	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/clothing/glasses/meson/engine(src)
 	new /obj/item/stack/sticky_tape(src)
+	new /obj/item/paint_sprayer(src)
 	new /obj/item/storage/box/emptysandbags(src)
 	new /obj/item/storage/bag/construction(src)
 

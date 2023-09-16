@@ -1,5 +1,4 @@
 GLOBAL_LIST_EMPTY(antagonists)
-
 /datum/antagonist
 	///Public name for this antagonist. Appears for player prompts and round-end reports.
 	var/name = "\improper Antagonist"
@@ -155,7 +154,6 @@ GLOBAL_LIST_EMPTY(antagonists)
 			to_chat(owner.current, span_boldnotice("For more info, read the panel. you can always come back to it using the button in the top left."))
 			info_button.Trigger()
 	apply_innate_effects()
-	give_antag_moodies()
 	RegisterSignal(owner, COMSIG_PRE_MINDSHIELD_IMPLANT, PROC_REF(pre_mindshield))
 	RegisterSignal(owner, COMSIG_MINDSHIELD_IMPLANTED, PROC_REF(on_mindshield))
 	if(is_banned(owner.current) && replace_banned)
@@ -201,7 +199,6 @@ GLOBAL_LIST_EMPTY(antagonists)
 		CRASH("Antag datum with no owner.")
 
 	remove_innate_effects()
-	clear_antag_moodies()
 	LAZYREMOVE(owner.antag_datums, src)
 	if(!LAZYLEN(owner.antag_datums) && !soft_antag)
 		owner.current.remove_from_current_living_antags()
@@ -239,22 +236,6 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist/proc/farewell()
 	if(!silent)
 		to_chat(owner.current, span_userdanger("You are no longer \the [src]!"))
-
-/**
- * Proc that assigns this antagonist's ascribed moodlet to the player.
- */
-/datum/antagonist/proc/give_antag_moodies()
-	if(!antag_moodlet)
-		return
-	SEND_SIGNAL(owner.current, COMSIG_ADD_MOOD_EVENT, "antag_moodlet", antag_moodlet)
-
-/**
- * Proc that removes this antagonist's ascribed moodlet from the player.
- */
-/datum/antagonist/proc/clear_antag_moodies()
-	if(!antag_moodlet)
-		return
-	SEND_SIGNAL(owner.current, COMSIG_CLEAR_MOOD_EVENT, "antag_moodlet")
 
 /**
  * Proc that will return the team this antagonist belongs to, when called. Helpful with antagonists that may belong to multiple potential teams in a single round, like families.
@@ -334,7 +315,10 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /datum/antagonist/proc/enabled_in_preferences(datum/mind/M)
 	if(job_rank)
-		if(M.current && M.current.client && (job_rank in M.current.client.prefs.be_special))
+		var/list/client_antags = M.current?.client?.prefs.read_preference(/datum/preference/blob/antagonists)
+		if(!client_antags)
+			return FALSE
+		if(client_antags[job_rank])
 			return TRUE
 		else
 			return FALSE

@@ -254,9 +254,6 @@
 	parent_atom = parent
 	wielder = parent
 
-	if(!bloody_feet)
-		bloody_feet = mutable_appearance('icons/effects/blood.dmi', "shoeblood", SHOES_LAYER)
-
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
 	RegisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER, PROC_REF(unequip_shoecover))
@@ -267,9 +264,13 @@
 		var/mob/living/carbon/human/human = wielder
 		if(NOBLOODOVERLAY in human.dna.species.species_traits)
 			return
+		var/obj/item/bodypart/leg = human.get_bodypart(BODY_ZONE_R_LEG) || human.get_bodypart(BODY_ZONE_L_LEG)
+		if(!leg?.icon_bloodycover)
+			return
+
 		if(bloody_shoes[BLOOD_STATE_HUMAN] > 0 && !is_obscured())
 			human.remove_overlay(SHOES_LAYER)
-			human.overlays_standing[SHOES_LAYER] = bloody_feet
+			human.overlays_standing[SHOES_LAYER] = image(leg.icon_bloodycover, "shoeblood")
 			human.apply_overlay(SHOES_LAYER)
 		else
 			human.update_worn_shoes()

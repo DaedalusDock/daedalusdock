@@ -273,7 +273,7 @@
 			continue
 		// Anyone in crit, automatically reap
 		var/mob/living/living_participant = i
-		if(HAS_TRAIT(living_participant, TRAIT_CRITICAL_CONDITION) || living_participant.stat == DEAD || !living_participant.client) // If they're critted, dead or no longer in their body, dust them
+		if(living_participant.stat != CONSCIOUS || !living_participant.client) // If they're critted, dead or no longer in their body, dust them
 			ctf_dust_old(living_participant)
 		else
 			// The changes that you've been hit with no shield but not

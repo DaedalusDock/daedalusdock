@@ -16,7 +16,7 @@
 	aggro_vision_range = 18
 	environment_smash = ENVIRONMENT_SMASH_NONE  //This is to prevent elites smashing up the mining station (entirely), we'll make sure they can smash minerals fine below.
 	harm_intent_damage = 0 //Punching elites gets you nowhere
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	layer = LARGE_MOB_LAYER
 	sentience_type = SENTIENCE_BOSS
 	var/chosen_attack = 1
@@ -376,8 +376,8 @@ While using this makes the system rely on OnFire, it still gives options for tim
 	icon_state = "hierophant_wall_temp-0"
 	base_icon_state = "hierophant_wall_temp"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_HIERO_WALL)
-	canSmoothWith = list(SMOOTH_GROUP_HIERO_WALL)
+	smoothing_groups = SMOOTH_GROUP_HIERO_WALL
+	canSmoothWith = SMOOTH_GROUP_HIERO_WALL
 	duration = 50
 	layer = BELOW_MOB_LAYER
 	plane = GAME_PLANE
@@ -389,13 +389,16 @@ While using this makes the system rely on OnFire, it still gives options for tim
 
 /obj/effect/temp_visual/elite_tumor_wall/Initialize(mapload, new_caster)
 	. = ..()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
-		QUEUE_SMOOTH(src)
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
+	SETUP_SMOOTHING()
+	QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH(src)
 
 /obj/effect/temp_visual/elite_tumor_wall/Destroy()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/effect/temp_visual/elite_tumor_wall/CanAllowThrough(atom/movable/mover, border_dir)

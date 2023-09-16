@@ -757,7 +757,7 @@ world
 
 	var/curicon = appearance.icon || deficon
 	var/curstate = appearance.icon_state || defstate
-	var/curdir = (!appearance.dir || appearance.dir == SOUTH) ? defdir : appearance.dir
+	var/curdir = defdir || appearance.dir || SOUTH
 
 	var/render_icon = curicon
 
@@ -1062,8 +1062,10 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		prefs.apply_prefs_to(body, TRUE)
 
 	var/datum/outfit/outfit = outfit_override || job?.outfit
+	outfit = new outfit()
 	if(job)
-		body.dna.species.pre_equip_species_outfit(job, body, TRUE)
+		body.dna.species.pre_equip_species_outfit(outfit, body, TRUE)
+
 	if(outfit)
 		body.equipOutfit(outfit, TRUE)
 
@@ -1377,23 +1379,61 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 
 ///Checks if the given iconstate exists in the given file, caching the result. Setting scream to TRUE will print a stack trace ONCE.
 /proc/icon_exists(file, state, scream)
+	var/static/list/screams = list()
 	var/static/list/icon_states_cache = list()
-	if(icon_states_cache[file]?[state])
-		return TRUE
+	if(isnull(file) || isnull(state))
+		return FALSE //This is common enough that it shouldn't panic, imo.
 
-	if(icon_states_cache[file]?[state] == FALSE)
-		return FALSE
-
-	var/list/states = icon_states(file)
-
-	if(!icon_states_cache[file])
+	if(isnull(icon_states_cache[file]))
 		icon_states_cache[file] = list()
+		for(var/istate in icon_states(file))
+			icon_states_cache[file][istate] = TRUE
 
-	if(state in states)
-		icon_states_cache[file][state] = TRUE
-		return TRUE
-	else
-		icon_states_cache[file][state] = FALSE
-		if(scream)
-			stack_trace("Icon Lookup for state: [state] in file [file] failed.")
+	if(isnull(icon_states_cache[file][state]))
+		if(isnull(screams[file]) && scream)
+			screams[file] = TRUE
+			stack_trace("State [state] in file [file] does not exist.")
 		return FALSE
+	else
+		return TRUE
+
+/atom/proc/save_icon()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = icon(icon, icon_state)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")
+
+/atom/proc/save_icon_hard()
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/icon/local = icon("data/saved_icons.dmi")
+	var/icon/I = getFlatIcon(src)
+	var/icon/temp = new
+	temp.Insert(I, initial(name))
+	temp.Blend(color, ICON_MULTIPLY)
+	local.Insert(temp, initial(name))
+	fcopy(local, "data/saved_icons.dmi")
+
+/// This exists purely to import sprites from a codebase like Citadel RP.
+/proc/pull_apart_damage_states(damage_states_file, species)
+	if(!fexists("data/saved_icons.dmi"))
+		fcopy("", "data/saved_icons.dmi")
+	var/mob/living/carbon/human/human = new()
+	human.set_species(species)
+	var/icon/local = icon("data/saved_icons.dmi")
+	for(var/obj/item/bodypart/BP as anything in human.bodyparts)
+		for(var/state in list("10", "20", "30", "01", "02", "03"))
+			var/icon/masked_icon = icon(damage_states_file, state)
+			var/icon/masker = UNLINT(icon(BP.icon_greyscale, BP.is_dimorphic ? "[BP.limb_id]_[BP.body_zone]_[BP.limb_gender]" : "[BP.limb_id]_[BP.body_zone]"))
+			masker.Blend("#FFFFFF")
+			masker.BecomeAlphaMask()
+			masked_icon.AddAlphaMask(masker)
+			masked_icon.Blend("#950A0A", ICON_MULTIPLY)
+			UNLINT(local.Insert(masked_icon, "[BP.body_zone]_[state]"))
+
+	fcopy(local, "data/saved_icons.dmi")

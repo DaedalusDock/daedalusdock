@@ -1,7 +1,7 @@
 // Macros for all the paint helpers
 
 //Daedalus Industries
-#define PAINT_WALL_DAEDALUS "#e9ca9b"
+#define PAINT_WALL_DAEDALUS "#b4976c"
 #define PAINT_STRIPE_DAEDALUS "#7e5c3a"
 
 //Priapus Recreational Solutions

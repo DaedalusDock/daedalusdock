@@ -7,10 +7,6 @@
 	#define COMPONENT_MOVABLE_BLOCK_PRE_MOVE (1<<0)
 ///from base of atom/movable/Moved(): (atom/old_loc, dir, forced, list/old_locs)
 #define COMSIG_MOVABLE_MOVED "movable_moved"
-///from base of atom/movable/Cross(): (/atom/movable)
-#define COMSIG_MOVABLE_CROSS "movable_cross"
-///from base of atom/movable/Move(): (/atom/movable)
-#define COMSIG_MOVABLE_CROSS_OVER "movable_cross_am"
 ///from base of atom/movable/Bump(): (/atom)
 #define COMSIG_MOVABLE_BUMP "movable_bump"
 ///from base of atom/movable/newtonian_move(): (inertia_direction, start_delay)
@@ -81,8 +77,6 @@
 #define COMSIG_MOVABLE_LIGHT_OVERLAY_TOGGLE_ON "movable_light_overlay_toggle_on"
 ///called when the movable's glide size is updated: (new_glide_size)
 #define COMSIG_MOVABLE_UPDATE_GLIDE_SIZE "movable_glide_size"
-///Called when a movable is hit by a plunger in layer mode, from /obj/item/plunger/attack_atom()
-#define COMSIG_MOVABLE_CHANGE_DUCT_LAYER "movable_change_duct_layer"
 ///Called when a movable is being teleported from `do_teleport()`: (destination, channel)
 #define COMSIG_MOVABLE_TELEPORTED "movable_teleported"
 ///Called after a movable is teleported from `do_teleport()`: ()

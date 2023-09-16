@@ -18,17 +18,6 @@
 	icon_state = "saturnx_glob" //tell kryson to sprite two more variants in the future.
 	food_reagents = list(/datum/reagent/drug/saturnx = 10)
 
-/obj/item/food/drug/moon_rock
-	name = "moon rock"
-	desc = "A small hard lump of kronkaine freebase.\nIt is said the average kronkaine addict causes as much criminal damage as four cat burglars, two arsonists and one rabid pit bull terrier combined."
-	icon_state = "moon_rock1"
-	food_reagents = list(/datum/reagent/drug/kronkaine = 10)
-
-/obj/item/food/drug/moon_rock/Initialize(mapload)
-	. = ..()
-	icon_state = pick("moon_rock1", "moon_rock2", "moon_rock3")
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_MOONICORN, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /obj/item/reagent_containers/glass/blastoff_ampoule
 	name = "bLaSToFF ampoule" //stylized name
 	desc = "A small ampoule. The liquid inside appears to be boiling violently.\nYou suspect it contains bLasSToFF; the drug thought to be the cause of the infamous Luna nightclub mass casualty incident."
@@ -50,7 +39,7 @@
 		icon_state = base_icon_state
 
 /obj/item/reagent_containers/glass/blastoff_ampoule/attack_self(mob/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY) || spillable)
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY) || spillable)
 		return ..()
 	reagent_flags |= OPENCONTAINER
 	spillable = TRUE
@@ -69,4 +58,4 @@
 	spillable = TRUE
 	SplashReagents(hit_atom, TRUE)
 	qdel(src)
-	hit_atom.Bumped(ampoule_shard)
+	hit_atom.BumpedBy(ampoule_shard)

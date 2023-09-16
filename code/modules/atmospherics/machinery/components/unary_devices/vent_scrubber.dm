@@ -6,6 +6,7 @@
 
 	name = "air scrubber"
 	desc = "Has a valve and pump attached to it."
+
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 
@@ -41,9 +42,9 @@
 	///Whether or not this machine can fall asleep. Use a multitool to change.
 	var/can_hibernate = TRUE
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/New()
+/obj/machinery/atmospherics/components/unary/vent_scrubber/Initialize()
 	if(!id_tag)
-		id_tag = SSnetworks.assign_random_name()
+		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
 	for(var/to_filter in filter_types)
 		if(istext(to_filter))
@@ -222,9 +223,6 @@
 		return FALSE
 	var/datum/gas_mixture/environment = tile.unsafe_return_air() // The proc that calls this proc marks the turf for update!
 	var/datum/gas_mixture/air_contents = airs[1]
-
-	if(air_contents.returnPressure() >= 50 * ONE_ATMOSPHERE)
-		return FALSE
 
 	if(scrubbing) // == SCRUBBING
 		if(length(environment.gas & filter_types))

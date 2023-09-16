@@ -64,7 +64,7 @@
 		//MMI stuff. Held togheter by magic. ~Miauw
 		if(!mmi?.brainmob)
 			mmi = new (src)
-			mmi.brain = new /obj/item/organ/internal/brain(mmi)
+			mmi.brain = new /obj/item/organ/brain(mmi)
 			mmi.brain.organ_flags |= ORGAN_FROZEN
 			mmi.brain.name = "[real_name]'s brain"
 			mmi.name = "[initial(mmi.name)]: [real_name]"
@@ -407,6 +407,9 @@
 	set category = "IC"
 	set src = usr
 
+	return ..()
+
+/mob/living/silicon/robot/execute_mode()
 	if(incapacitated())
 		return
 	var/obj/item/W = get_active_held_item()
@@ -563,7 +566,7 @@
 		if(AI_NOTIFICATION_CYBORG_DISCONNECTED) //Tampering with the wires
 			to_chat(connected_ai, "<br><br>[span_notice("NOTICE - Remote telemetry lost with [name].")]<br>")
 
-/mob/living/silicon/robot/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
+/mob/living/silicon/robot/canUseTopic(atom/movable/target, flags)
 	if(lockcharge || low_power_mode)
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
@@ -925,12 +928,11 @@
 	buckle_mob_flags= RIDER_NEEDS_ARM // just in case
 	return ..()
 
-/mob/living/silicon/robot/resist()
+/mob/living/silicon/robot/execute_resist()
 	. = ..()
 	if(!has_buckled_mobs())
 		return
-	for(var/i in buckled_mobs)
-		var/mob/unbuckle_me_now = i
+	for(var/mob/unbuckle_me_now as anything in buckled_mobs)
 		unbuckle_mob(unbuckle_me_now, FALSE)
 
 

@@ -43,9 +43,6 @@
 /obj/item/food/meat/slab/human/mutant/fly{
 	name = "flyman meat"
 	},
-/obj/item/food/meat/slab/human/mutant/golem/adamantine{
-	name = "golem meat"
-	},
 /obj/item/food/meat/slab/human/mutant/lizard{
 	name = "lizard meat"
 	},

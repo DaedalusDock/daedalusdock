@@ -32,8 +32,8 @@
 	. = ..()
 	var/obj/item/grown/bananapeel/peel = .
 	if(istype(peel))
-		peel.grind_results = list(/datum/reagent/medicine/coagulant/banana_peel = peel.seed.potency * 0.2)
-		peel.juice_results = list(/datum/reagent/medicine/coagulant/banana_peel = peel.seed.potency * 0.2)
+		peel.grind_results = list(/datum/reagent/medicine/coagulant = peel.seed.potency * 0.2)
+		peel.juice_results = list(/datum/reagent/medicine/coagulant = peel.seed.potency * 0.2)
 
 /obj/item/food/grown/banana/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is aiming [src] at [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -116,7 +116,7 @@
 	product = /obj/item/food/grown/banana/bluespace
 	mutatelist = null
 	genes = list(/datum/plant_gene/trait/slip, /datum/plant_gene/trait/teleport, /datum/plant_gene/trait/repeated_harvest)
-	reagents_add = list(/datum/reagent/bluespace = 0.2, /datum/reagent/consumable/banana = 0.1, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.02)
+	reagents_add = list(/datum/reagent/consumable/banana = 0.1, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/consumable/nutriment = 0.02)
 	rarity = 30
 	graft_gene = /datum/plant_gene/trait/teleport
 
@@ -141,7 +141,7 @@
 	name = "synthesized banana peel"
 	desc = "A synthetic banana peel."
 
-/obj/item/grown/bananapeel/specialpeel/ComponentInitialize()
+/obj/item/grown/bananapeel/specialpeel/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/slippery, 40)
 

@@ -15,8 +15,10 @@
 		if(HAS_TRAIT(src, TRAIT_NOHUNGER))
 			set_nutrition(NUTRITION_LEVEL_FED - 1) //just less than feeling vigorous
 		else if(nutrition && stat != DEAD)
-			adjust_nutrition(-(m_intent == MOVE_INTENT_WALK ? HUNGER_LOSS_WALK : HUNGER_LOSS_RUN))
-
+			if(m_intent == MOVE_INTENT_WALK)
+				adjust_nutrition(-HUNGER_LOSS_WALK)
+			else
+				adjust_nutrition(-HUNGER_LOSS_RUN)
 
 /mob/living/carbon/set_usable_legs(new_value)
 	. = ..()

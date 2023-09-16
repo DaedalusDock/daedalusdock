@@ -48,7 +48,7 @@
 	///Whether the gun will spawn loaded with a magazine
 	var/spawnwithmagazine = TRUE
 	///Compatible magazines with the gun
-	var/mag_type = /obj/item/ammo_box/magazine/m10mm //Removes the need for max_ammo and caliber info
+	var/obj/item/ammo_box/magazine/mag_type = /obj/item/ammo_box/magazine/m10mm //Removes the need for max_ammo and caliber info
 	///Whether the sprite has a visible magazine or not
 	var/mag_display = TRUE
 	///Whether the sprite has a visible ammo display or not
@@ -145,9 +145,11 @@
 	return ..()
 
 /obj/item/gun/ballistic/fire_sounds()
-	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo())
+	var/max_ammo = magazine?.max_ammo || initial(mag_type.max_ammo)
+	var/current_ammo = get_ammo()
+	var/frequency_to_use = sin((90 / max_ammo) * current_ammo)
 	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
-	var/play_click = round(sqrt(magazine?.max_ammo * 2)) > get_ammo()
+	var/play_click = round(sqrt(max_ammo * 2)) > get_ammo()
 	if(suppressed)
 		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 		if(play_click)
@@ -408,7 +410,7 @@
 	return ..()
 
 /obj/item/gun/ballistic/AltClick(mob/user)
-	if (unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
+	if (unique_reskin && !current_skin && user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		reskin_obj(user)
 		return
 	if(loc == user)
@@ -534,7 +536,7 @@
 #define BRAINS_BLOWN_THROW_SPEED 1
 
 /obj/item/gun/ballistic/suicide_act(mob/living/user)
-	var/obj/item/organ/internal/brain/B = user.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/B = user.getorganslot(ORGAN_SLOT_BRAIN)
 	if (B && chambered && chambered.loaded_projectile && can_trigger_gun(user) && !chambered.loaded_projectile.nodamage)
 		user.visible_message(span_suicide("[user] is putting the barrel of [src] in [user.p_their()] mouth. It looks like [user.p_theyre()] trying to commit suicide!"))
 		sleep(2.5 SECONDS)
@@ -567,7 +569,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 
 ///Handles all the logic of sawing off guns,
 /obj/item/gun/ballistic/proc/sawoff(mob/user, obj/item/saw, handle_modifications = TRUE)
-	if(!saw.get_sharpness() || (!is_type_in_typecache(saw, GLOB.gun_saw_types) && saw.tool_behaviour != TOOL_SAW)) //needs to be sharp. Otherwise turned off eswords can cut this.
+	if(!(saw.sharpness & SHARP_EDGED) || (!is_type_in_typecache(saw, GLOB.gun_saw_types) && saw.tool_behaviour != TOOL_SAW)) //needs to be sharp. Otherwise turned off eswords can cut this.
 		return
 	if(sawn_off)
 		to_chat(user, span_warning("[src] is already shortened!"))

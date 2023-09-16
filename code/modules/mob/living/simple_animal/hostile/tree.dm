@@ -47,10 +47,6 @@
 
 	var/is_tree = TRUE
 
-/mob/living/simple_animal/hostile/tree/Initialize(mapload)
-	. = ..()
-	add_cell_sample()
-
 /mob/living/simple_animal/hostile/tree/Life(delta_time = SSMOBS_DT, times_fired)
 	..()
 	if(!is_tree || !isopenturf(loc))
@@ -74,9 +70,6 @@
 			C.Paralyze(60)
 			C.visible_message(span_danger("\The [src] knocks down \the [C]!"), \
 					span_userdanger("\The [src] knocks you down!"))
-
-/mob/living/simple_animal/hostile/tree/add_cell_sample()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_PINE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /mob/living/simple_animal/hostile/tree/festivus
 	name = "festivus pole"
@@ -109,5 +102,3 @@
 			if(A.cell)
 				A.cell.give(75)
 
-/mob/living/simple_animal/hostile/tree/festivus/add_cell_sample()
-	return

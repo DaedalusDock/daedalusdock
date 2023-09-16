@@ -87,9 +87,9 @@
 
 /datum/component/rot/proc/check_reagent(datum/reagents/source, datum/reagent/modified)
 	SIGNAL_HANDLER
-	if(modified && !istype(modified, /datum/reagent/toxin/formaldehyde) && !istype(modified, /datum/reagent/cryostylane))
+	if(modified && !istype(modified, /datum/reagent/toxin/formaldehyde))
 		return
-	if(source.has_reagent(/datum/reagent/toxin/formaldehyde, 15) || source.has_reagent(/datum/reagent/cryostylane))
+	if(source.has_reagent(/datum/reagent/toxin/formaldehyde, 15))
 		rest(REAGENT_BLOCKER)
 		return
 	start_up(REAGENT_BLOCKER)
@@ -119,6 +119,8 @@
 /// Triggered when something enters the component's parent.
 /datum/component/rot/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 	rot_react(source, arrived)
 
 ///The main bit of logic for the rot component, does a temperature check and has a chance to infect react_to

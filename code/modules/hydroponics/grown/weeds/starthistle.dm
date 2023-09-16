@@ -46,7 +46,7 @@
 //Galaxy Thistle
 /obj/item/seeds/galaxythistle
 	name = "pack of galaxythistle seeds"
-	desc = "An impressive species of weed that is thought to have evolved from the simple milk thistle. Contains flavolignans that can help repair a damaged liver."
+	desc = "An impressive species of weed that is thought to have evolved from the simple milk thistle. Contains flavolignans that can help repair a damaged organs."
 	icon_state = "seed-galaxythistle"
 	species = "galaxythistle"
 	plantname = "Galaxythistle"
@@ -62,7 +62,7 @@
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
 	genes = list(/datum/plant_gene/trait/plant_type/weed_hardy, /datum/plant_gene/trait/invasive/galaxythistle)
 	mutatelist = null
-	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/silibinin = 0.1)
+	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/peridaxon = 0.1)
 	graft_gene = /datum/plant_gene/trait/invasive
 
 /obj/item/food/grown/galaxythistle

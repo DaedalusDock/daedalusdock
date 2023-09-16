@@ -159,7 +159,6 @@
 /obj/item/rcd_ammo/large,
 /obj/item/rcd_ammo/large,
 /obj/item/construction/rcd/combat,
-/obj/item/construction/plumbing,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "aN" = (
@@ -367,10 +366,6 @@
 "bA" = (
 /turf/closed/wall/r_wall,
 /area/station/science)
-"bB" = (
-/obj/machinery/rnd/production/fabricator/department/robotics,
-/turf/open/floor/iron,
-/area/station/science)
 "bC" = (
 /obj/machinery/computer/prisoner/gulag_teleporter_computer{
 	dir = 4
@@ -472,7 +467,7 @@
 /obj/machinery/camera/directional/north,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
-/obj/machinery/chem_heater/debug,
+/obj/machinery/chem_heater,
 /turf/open/floor/iron/dark,
 /area/station/medical/chemistry)
 "bS" = (
@@ -525,7 +520,6 @@
 	},
 /area/station/medical/medbay)
 "bX" = (
-/obj/machinery/sleeper/syndie/fullupgrade,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
@@ -758,12 +752,11 @@
 /turf/open/floor/iron,
 /area/station/security/brig)
 "cJ" = (
-/obj/machinery/computer/operating{
-	dir = 1
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/structure/table/optable,
+/obj/machinery/body_scan_display/directional/south,
 /turf/open/floor/iron/cafeteria,
 /area/station/medical/medbay)
 "cK" = (
@@ -771,24 +764,14 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/table/glass,
-/obj/item/storage/box/monkeycubes{
-	pixel_x = 6;
-	pixel_y = 1
-	},
-/obj/item/storage/box/monkeycubes{
-	pixel_x = -6;
-	pixel_y = 2
-	},
+/obj/machinery/bodyscanner,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "cL" = (
-/obj/item/storage/backpack/duffelbag/syndie/surgery,
-/obj/item/disk/surgery/debug,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/structure/table/glass,
+/obj/machinery/bodyscanner_console,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "cN" = (
@@ -1012,10 +995,6 @@
 /obj/machinery/door/airlock,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
-"dH" = (
-/obj/machinery/door/airlock,
-/turf/open/floor/plating,
-/area/station/maintenance/department/bridge)
 "dI" = (
 /obj/effect/landmark/start,
 /turf/open/floor/iron,
@@ -1199,9 +1178,11 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/dna_scannernew,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
+	},
+/obj/machinery/computer/scan_consolenew{
+	dir = 1
 	},
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
@@ -1947,6 +1928,10 @@
 /obj/item/paper/guides/jobs/security/labor_camp,
 /turf/open/floor/iron,
 /area/station/security/brig)
+"gV" = (
+/obj/machinery/door/airlock,
+/turf/open/floor/plating,
+/area/station/engineering/gravity_generator)
 "gY" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -2020,11 +2005,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
-"mE" = (
-/obj/structure/cable,
-/obj/machinery/chem_mass_spec,
+"ma" = (
+/obj/machinery/rnd/production/fabricator/omni,
 /turf/open/floor/iron,
-/area/station/medical/chemistry)
+/area/station/science)
 "nn" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -2224,6 +2208,14 @@
 "wU" = (
 /turf/closed/wall/r_wall,
 /area/station/science/misc_lab)
+"yw" = (
+/obj/structure/extinguisher_cabinet/directional/north,
+/obj/structure/closet/secure_closet/medical3{
+	locked = 0
+	},
+/obj/item/healthanalyzer/advanced,
+/turf/open/floor/iron,
+/area/station/medical/medbay)
 "yK" = (
 /obj/structure/fans/tiny/invisible,
 /obj/effect/turf_decal/stripes/line{
@@ -2295,13 +2287,17 @@
 /obj/structure/rack,
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
+"DA" = (
+/obj/machinery/light/directional/north,
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/science)
 "DW" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/computer/scan_consolenew{
-	dir = 1
-	},
+/obj/machinery/dna_scannernew,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "EA" = (
@@ -2309,10 +2305,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/construction)
-"EB" = (
-/obj/structure/extinguisher_cabinet/directional/north,
-/turf/open/floor/iron,
-/area/station/medical/medbay)
 "EG" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -2344,10 +2336,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
-"If" = (
-/obj/machinery/rnd/production/fabricator/department,
-/turf/open/floor/iron,
-/area/station/science)
 "Ir" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -2373,6 +2361,18 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
+"Js" = (
+/obj/structure/table/glass,
+/obj/item/storage/box/monkeycubes{
+	pixel_x = 6;
+	pixel_y = 1
+	},
+/obj/item/storage/box/monkeycubes{
+	pixel_x = -6;
+	pixel_y = 2
+	},
+/turf/open/floor/iron,
+/area/station/medical/medbay)
 "JF" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -2410,6 +2410,16 @@
 /obj/machinery/door/airlock/research,
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
+"LJ" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/structure/cable,
+/obj/machinery/sleeper/syndie/fullupgrade,
+/turf/open/floor/iron/white/corner{
+	dir = 1
+	},
+/area/station/medical/medbay)
 "LW" = (
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
@@ -2446,8 +2456,8 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/medical/medbay)
-"NZ" = (
-/obj/machinery/rnd/production/fabricator/omni,
+"Oo" = (
+/obj/machinery/rnd/production/fabricator/department/robotics,
 /turf/open/floor/iron,
 /area/station/science)
 "Ov" = (
@@ -2458,6 +2468,10 @@
 /obj/item/stock_parts/cell/bluespace,
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
+"OD" = (
+/obj/machinery/rnd/production/fabricator/department,
+/turf/open/floor/iron,
+/area/station/science)
 "Qi" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -2472,6 +2486,19 @@
 /obj/machinery/door/airlock/external/glass/ruin,
 /turf/open/floor/plating,
 /area/station/medical/medbay)
+"QY" = (
+/obj/structure/table,
+/obj/item/organ/cyberimp/bci{
+	pixel_y = 5
+	},
+/obj/item/organ/cyberimp/bci{
+	pixel_y = 5
+	},
+/obj/item/organ/cyberimp/bci{
+	pixel_y = 5
+	},
+/turf/open/floor/iron/dark,
+/area/station/science/misc_lab)
 "Rb" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -2492,11 +2519,16 @@
 	},
 /turf/open/floor/iron,
 /area/station/command/bridge)
+"Si" = (
+/obj/machinery/door/airlock,
+/turf/open/floor/plating,
+/area/station/medical/medbay)
 "Sj" = (
-/obj/structure/table/optable,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/structure/table/glass,
+/obj/item/storage/backpack/duffelbag/syndie/surgery,
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "Td" = (
@@ -2518,13 +2550,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/construction)
-"Ut" = (
-/obj/structure/closet/secure_closet/medical3{
-	locked = 0
-	},
-/obj/item/healthanalyzer/advanced,
-/turf/open/floor/iron,
-/area/station/medical/medbay)
 "Vg" = (
 /obj/machinery/light/directional/south,
 /obj/structure/cable,
@@ -2603,19 +2628,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/science)
-"XN" = (
-/obj/structure/table,
-/obj/item/organ/internal/cyberimp/bci{
-	pixel_y = 5
-	},
-/obj/item/organ/internal/cyberimp/bci{
-	pixel_y = 5
-	},
-/obj/item/organ/internal/cyberimp/bci{
-	pixel_y = 5
-	},
-/turf/open/floor/iron/dark,
-/area/station/science/misc_lab)
 "XR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 9
@@ -2642,12 +2654,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
-"Yy" = (
-/obj/machinery/light/directional/north,
-/obj/machinery/power/apc/auto_name/directional/north,
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/station/science)
 "ZD" = (
 /obj/machinery/suit_storage_unit/ce,
 /turf/open/floor/iron,
@@ -5990,9 +5996,9 @@ aw
 Kx
 ah
 bs
-bB
+Oo
 ca
-If
+OD
 bA
 kn
 ES
@@ -6173,7 +6179,7 @@ bb
 bl
 zo
 ah
-Yy
+DA
 bD
 XC
 gY
@@ -6197,7 +6203,7 @@ dL
 cN
 AE
 kp
-XN
+QY
 Ym
 Ir
 aa
@@ -6357,7 +6363,7 @@ aP
 XR
 Xp
 ah
-NZ
+ma
 bD
 XC
 co
@@ -7465,7 +7471,7 @@ aj
 bP
 Ce
 JF
-mE
+cj
 oV
 bE
 bE
@@ -7731,7 +7737,7 @@ aa
 aa
 bY
 af
-ak
+gV
 at
 Wx
 bh
@@ -8016,7 +8022,7 @@ av
 by
 bU
 cl
-cl
+LJ
 cl
 cH
 cu
@@ -8291,10 +8297,10 @@ av
 av
 by
 bX
-cm
 eU
+cm
 cy
-Ut
+cm
 cm
 cK
 by
@@ -8382,12 +8388,12 @@ ak
 ak
 ak
 by
-by
-dH
-by
+Si
+ad
 Qt
 by
-EB
+yw
+cm
 DW
 by
 cS
@@ -8475,10 +8481,10 @@ af
 af
 af
 af
-af
-by
+ad
 cz
 by
+Js
 cm
 es
 by
@@ -8568,8 +8574,8 @@ ad
 ad
 ad
 ad
-by
 pI
+by
 by
 by
 by

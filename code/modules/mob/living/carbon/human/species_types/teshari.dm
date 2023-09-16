@@ -2,7 +2,7 @@
 	name = "\improper Teshari"
 	plural_form = "Teshari"
 	id = SPECIES_TESHARI
-	species_traits = list(MUTCOLORS, MUTCOLORS2, MUTCOLORS3, EYECOLOR, NO_UNDERWEAR, HAS_FLESH, HAS_BONE, HAIRCOLOR, FACEHAIRCOLOR)
+	species_traits = list(MUTCOLORS, EYECOLOR, NO_UNDERWEAR, HAIRCOLOR, FACEHAIRCOLOR)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/teshari
 	species_eye_path = 'icons/mob/species/teshari/eyes.dmi'
@@ -32,13 +32,12 @@
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT - 32 // 35°C max
 	bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT - 30 // -33°C min
 
-	external_organs = list(
-		/obj/item/organ/external/teshari_feathers = "Plain",
-		/obj/item/organ/external/teshari_ears = "None",
-		/obj/item/organ/external/teshari_body_feathers = "Plain",
-		/obj/item/organ/external/tail/teshari = "Default"
+	cosmetic_organs = list(
+		/obj/item/organ/teshari_feathers = "Plain",
+		/obj/item/organ/teshari_ears = "None",
+		/obj/item/organ/teshari_body_feathers = "Plain",
+		/obj/item/organ/tail/teshari = "Default"
 	)
-	mutantlungs = /obj/item/organ/internal/lungs/teshari
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/teshari,
@@ -47,6 +46,25 @@
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/teshari,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/teshari,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/teshari,
+	)
+
+	robotic_bodyparts = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/robot/surplus/teshari,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/robot/surplus/teshari,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/surplus/teshari,
+		BODY_ZONE_R_LEG= /obj/item/bodypart/leg/right/robot/surplus/teshari,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/teshari,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
 #define TESH_BODY_COLOR "#DEB887" // Also in code\modules\client\preferences\species_features\teshari.dm

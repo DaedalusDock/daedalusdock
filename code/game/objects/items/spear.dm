@@ -22,7 +22,7 @@
 	var/war_cry = "AAAAARGH!!!"
 	var/icon_prefix = "spearglass"
 
-/obj/item/spear/ComponentInitialize()
+/obj/item/spear/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/butchering, 100, 70) //decent in a pinch, but pretty bad.
 	AddComponent(/datum/component/jousting)
@@ -77,9 +77,6 @@
 	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
 	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	set_explosive(new /obj/item/grenade/iedcasing/spawned()) //For admin-spawned explosive lances
-
-/obj/item/spear/explosive/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=18, icon_wielded="[icon_prefix]1")
 
 /// triggered on wield of two handed item
@@ -132,7 +129,7 @@
 	. += span_notice("Alt-click to set your war cry.")
 
 /obj/item/spear/explosive/AltClick(mob/user)
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE))
 		..()
 		if(istype(user) && loc == user)
 			var/input = tgui_input_text(user, "What do you want your war cry to be? You will shout it when you hit someone in melee.", "War Cry", max_length = 50)
@@ -164,7 +161,7 @@
 	attack_verb_simple = list("gore")
 	force=15
 
-/obj/item/spear/grey_tide/ComponentInitialize()
+/obj/item/spear/grey_tide/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=15, force_wielded=25, icon_wielded="[icon_prefix]1")
 
@@ -196,7 +193,7 @@
 	throwforce = 22
 	armour_penetration = 15 //Enhanced armor piercing
 
-/obj/item/spear/bonespear/ComponentInitialize()
+/obj/item/spear/bonespear/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=12, force_wielded=20, icon_wielded="[icon_prefix]1")
 
@@ -211,6 +208,6 @@
 	desc = "A haphazardly-constructed bamboo stick with a sharpened tip, ready to poke holes into unsuspecting people."
 	throwforce = 22	//Better to throw
 
-/obj/item/spear/bamboospear/ComponentInitialize()
+/obj/item/spear/bamboospear/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=18, icon_wielded="[icon_prefix]1")

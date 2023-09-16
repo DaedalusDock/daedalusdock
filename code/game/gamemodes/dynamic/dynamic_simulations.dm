@@ -30,9 +30,9 @@
 		var/datum/preferences/prefs = new
 		var/list/be_special = list()
 		for (var/special_role in GLOB.special_roles)
-			be_special += special_role
+			be_special[special_role] = TRUE
 
-		prefs.be_special = be_special
+		prefs.value_cache[/datum/preference/blob/antagonists] = be_special
 		mock_client.prefs = prefs
 
 		mock_new_player.mock_client = mock_client

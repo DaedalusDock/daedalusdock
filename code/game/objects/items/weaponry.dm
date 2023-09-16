@@ -861,9 +861,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
 	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
-
-/obj/item/highfrequencyblade/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/two_handed)
 
 /obj/item/highfrequencyblade/update_icon_state()

@@ -131,8 +131,9 @@
 	// Determine what job is marked as 'High' priority.
 	var/datum/job/appearance_job
 	var/highest_pref = 0
-	for(var/job in appearance_from_prefs.job_preferences)
-		var/this_pref = appearance_from_prefs.job_preferences[job]
+	var/list/job_prefs = appearance_from_prefs.read_preference(/datum/preference/blob/job_priority)
+	for(var/job in job_prefs)
+		var/this_pref = job_prefs[job]
 		if(this_pref > highest_pref)
 			appearance_job = SSjob.GetJob(job)
 			highest_pref = this_pref

@@ -99,7 +99,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 /obj/machinery/rnd/destructive_analyzer/proc/ui_content()
 	var/list/l = list()
-	l += "<fieldset class='computerPane'>[RDSCREEN_NOBREAK]"
+	l += "<fieldset class='computerPaneSimple'>[RDSCREEN_NOBREAK]"
 	if(!inserted_disk)
 		l += "<legend class='computerLegend'><b>No disk inserted!</b></legend>[RDSCREEN_NOBREAK]"
 	else
@@ -117,7 +117,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 /obj/machinery/rnd/destructive_analyzer/proc/ui_deconstruct()
 	var/list/l = list()
 	if(!loaded_item)
-		l += "<fieldset class='computerPane'><legend class='computerLegend'><b>No item loaded!</b></legend></fieldset>"
+		l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>No item loaded!</b></legend></fieldset>"
 	else
 		var/analyze_ok
 		var/destroy_link
@@ -132,7 +132,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 		else
 			destroy_link = "<span class='linkOff'>Destroy</span>"
 
-		l += "<fieldset class='computerPane'><legend class='computerLegend'><table><tr><td>[icon2html(loaded_item, usr)]</td><td><b>[loaded_item.name]</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
+		l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><table><tr><td>[icon2html(loaded_item, usr)]</td><td><b>[loaded_item.name]</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
 		l += "<A href='?src=[REF(src)];eject_item=1'>Eject</A>"
 		l += "[destroy_link]"
 		if(analyze_ok)

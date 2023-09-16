@@ -15,8 +15,8 @@
 		MakeHood()
 
 /obj/item/clothing/suit/hooded/Destroy()
-	. = ..()
 	QDEL_NULL(hood)
+	return ..()
 
 /obj/item/clothing/suit/hooded/proc/MakeHood()
 	if(!hood)
@@ -87,7 +87,10 @@
 
 
 /obj/item/clothing/head/hooded/Destroy()
-	suit = null
+	if(suit)
+		suit.RemoveHood()
+		suit.hood = null
+		suit = null
 	return ..()
 
 /obj/item/clothing/head/hooded/dropped()

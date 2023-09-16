@@ -3,7 +3,7 @@
 
 /// An element that lets you stab people in the eyes when targeting them
 /datum/element/eyestab
-	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH
+	element_flags = ELEMENT_BESPOKE
 	id_arg_index = 2
 
 	/// The amount of damage to do per eyestab
@@ -76,11 +76,9 @@
 	else
 		target.take_bodypart_damage(damage)
 
-	SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "eye_stab", /datum/mood_event/eye_stab)
-
 	log_combat(user, target, "attacked", "[item.name]", "(Combat mode: [user.combat_mode ? "On" : "Off"])")
 
-	var/obj/item/organ/internal/eyes/eyes = target.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/eyes/eyes = target.getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)
 		return
 

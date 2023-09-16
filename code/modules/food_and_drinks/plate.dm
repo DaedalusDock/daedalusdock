@@ -14,12 +14,9 @@
 	var/placement_offset = -15
 
 /obj/item/plate/attackby(obj/item/I, mob/user, params)
-	if(!IS_EDIBLE(I))
-		to_chat(user, span_notice("[src] is made for food, and food alone!"))
+	if(!can_accept_item(I, user))
 		return
-	if(contents.len >= max_items)
-		to_chat(user, span_notice("[src] can't fit more items!"))
-		return
+
 	var/list/modifiers = params2list(params)
 	//Center the icon where the user clicked.
 	if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
@@ -59,6 +56,15 @@
 /obj/item/plate/proc/ItemMoved(obj/item/moved_item, atom/OldLoc, Dir, Forced)
 	SIGNAL_HANDLER
 	ItemRemovedFromPlate(moved_item)
+
+/obj/item/plate/proc/can_accept_item(obj/item/I, mob/user)
+	if(!IS_EDIBLE(I))
+		to_chat(user, span_notice("[src] is made for food, and food alone!"))
+		return FALSE
+	if(contents.len >= max_items)
+		to_chat(user, span_notice("[src] can't fit more items!"))
+		return FALSE
+	return TRUE
 
 #define PLATE_SHARD_PIECES 5
 
@@ -110,4 +116,4 @@
 
 /obj/item/plate_shard/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/caltrop, min_damage = force)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4)

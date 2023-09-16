@@ -15,11 +15,18 @@
 			return ..()
 		else
 			return FALSE
+	if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
+		return FALSE
 	return ..()
 
 /mob/living/carbon/could_speak_language(datum/language/language)
-	var/obj/item/organ/internal/tongue/T = getorganslot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/T = getorganslot(ORGAN_SLOT_TONGUE)
 	if(T)
 		return T.could_speak_language(language)
 	else
 		return initial(language.flags) & TONGUELESS_SPEECH
+
+/mob/living/carbon/get_message_mods(message, list/mods)
+	. = ..()
+	if(CHEM_EFFECT_MAGNITUDE(src, CE_VOICELOSS) && !mods[WHISPER_MODE])
+		mods[WHISPER_MODE] = MODE_WHISPER

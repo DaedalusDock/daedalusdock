@@ -134,6 +134,8 @@
 	cost = CARGO_CRATE_VALUE * 2
 	contains = list(/obj/item/clothing/suit/fire/firefighter,
 					/obj/item/clothing/suit/fire/firefighter,
+					/obj/item/extinguisher/mini,
+					/obj/item/extinguisher/mini,
 					/obj/item/clothing/mask/gas,
 					/obj/item/clothing/mask/gas,
 					/obj/item/flashlight,
@@ -388,13 +390,16 @@
 
 /datum/supply_pack/security/supplies
 	name = "Security Supplies Crate"
-	desc = "Contains seven flashbangs, seven teargas grenades, six flashes, and seven handcuffs. Requires Security access to open."
-	cost = CARGO_CRATE_VALUE * 3.5
+	desc = "Contains seven flashbangs, seven teargas grenades, six flashes, seven handcuffs, and three pepper sprays. Requires Security access to open."
+	cost = CARGO_CRATE_VALUE * 3.8
 	access_view = ACCESS_ARMORY
 	contains = list(/obj/item/storage/box/flashbangs,
 					/obj/item/storage/box/teargas,
 					/obj/item/storage/box/flashes,
-					/obj/item/storage/box/handcuffs)
+					/obj/item/storage/box/handcuffs,
+					/obj/item/reagent_containers/spray/pepper,
+					/obj/item/reagent_containers/spray/pepper,
+					/obj/item/reagent_containers/spray/pepper)
 	crate_name = "security supply crate"
 
 /datum/supply_pack/security/firingpins
@@ -542,6 +547,13 @@
 	crate_name = "incendiary weapons crate"
 	crate_type = /obj/structure/closet/crate/secure/plasma
 	dangerous = TRUE
+
+/datum/supply_pack/security/armory/ion_carbine
+	name = "Ion Carbine Parts Kit"
+	desc = "A suitcase containing the necessary gun parts to transform a standard laser gun into a ion carbine. Perfect against lockers you don't have access to."
+	cost = CARGO_CRATE_VALUE * 9
+	contains = list(/obj/item/weaponcrafting/gunkit/ion)
+	crate_name = "gun parts crate"
 
 /datum/supply_pack/security/armory/mindshield
 	name = "Mindshield Implants Crate"
@@ -1068,6 +1080,16 @@
 	contains = list(/obj/item/stack/sheet/mineral/wood/fifty)
 	crate_name = "wood planks crate"
 
+/datum/supply_pack/materials/rcd_ammo
+	name = "RCD Ammo"
+	desc = "Contains four raw material cartridges that can be used to quickly recharge any RCD."
+	cost = CARGO_CRATE_VALUE * 8.5
+	contains = list(/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo/large,
+					/obj/item/rcd_ammo/large,)
+	crate_name = "rcd ammo crate"
+
 /datum/supply_pack/materials/foamtank
 	name = "Firefighting Foam Tank Crate"
 	desc = "Contains a tank of firefighting foam. Also known as \"plasmaman's bane\"."
@@ -1179,8 +1201,8 @@
 					/obj/item/reagent_containers/blood/o_plus,
 					/obj/item/reagent_containers/blood/o_minus,
 					/obj/item/reagent_containers/blood/lizard,
-					/obj/item/reagent_containers/blood/ethereal,
-					/obj/item/reagent_containers/blood/skrell)
+					/obj/item/reagent_containers/blood/ethereal
+	)
 	crate_name = "blood freezer"
 	crate_type = /obj/structure/closet/crate/freezer
 
@@ -1240,13 +1262,13 @@
 	name = "Medical Supplies Crate"
 	desc = "Contains several medical supplies. German doctor not included."
 	cost = CARGO_CRATE_VALUE * 4
-	contains = list(/obj/item/reagent_containers/glass/bottle/multiver,
+	contains = list(/obj/item/reagent_containers/glass/bottle/dylovene,
 					/obj/item/reagent_containers/glass/bottle/epinephrine,
 					/obj/item/reagent_containers/glass/bottle/morphine,
 					/obj/item/reagent_containers/glass/bottle/toxin,
 					/obj/item/reagent_containers/glass/beaker/large,
 					/obj/item/reagent_containers/pill/insulin,
-					/obj/item/stack/medical/gauze,
+					/obj/item/stack/gauze,
 					/obj/item/storage/box/beakers,
 					/obj/item/storage/box/medigels,
 					/obj/item/storage/box/syringes,
@@ -1259,9 +1281,9 @@
 					/obj/item/defibrillator/loaded,
 					/obj/item/reagent_containers/blood/o_minus,
 					/obj/item/storage/pill_bottle/mining,
-					/obj/item/reagent_containers/pill/neurine,
-					/obj/item/stack/medical/bone_gel/four,
-					/obj/item/stack/medical/bone_gel/four,
+					/obj/item/reagent_containers/pill/alkysine,
+					/obj/item/stack/medical/bone_gel/twelve,
+					/obj/item/stack/medical/bone_gel/twelve,
 					/obj/item/vending_refill/medical,
 					/obj/item/vending_refill/drugs)
 	crate_name = "medical supplies crate"
@@ -1276,7 +1298,6 @@
 	desc = "Do you want to perform surgery, but don't have one of those fancy shmancy degrees? Just get started with this crate containing a medical duffelbag, Sterilizine spray and collapsible roller bed."
 	cost = CARGO_CRATE_VALUE * 6
 	contains = list(/obj/item/storage/backpack/duffelbag/med/surgery,
-					/obj/item/reagent_containers/medigel/sterilizine,
 					/obj/item/roller)
 	crate_name = "surgical supplies crate"
 
@@ -1319,6 +1340,20 @@
 	access = ACCESS_CMO
 	contains = list(/obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck,
 					/obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck/skirt)
+
+/datum/supply_pack/medical/medical/atk
+	name = "Triage - Advanced trauma supplies"
+	desc = "It's a bunch of bruise packs in a trenchcoat."
+	cost = CARGO_CRATE_VALUE * 3
+	crate_name = "advanced trauma crate"
+	contains = list(
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bruise_pack
+		)
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Science /////////////////////////////////////////
@@ -1463,19 +1498,6 @@
 					/obj/item/clothing/head/helmet/monkey_sentience)
 	crate_name = "monkey mind magnification crate"
 
-/datum/supply_pack/science/cytology
-	name = "Cytology supplies crate"
-	desc = "Did out of control specimens pulverize xenobiology? Here is some more supplies for further testing."
-	cost = CARGO_CRATE_VALUE * 3
-	access_view = ACCESS_XENOBIOLOGY
-	contains = list(/obj/structure/microscope,
-					/obj/item/biopsy_tool,
-					/obj/item/storage/box/petridish,
-					/obj/item/storage/box/petridish,
-					/obj/item/storage/box/swab,
-					/obj/item/construction/plumbing/research)
-	crate_name = "cytology supplies crate"
-
 /datum/supply_pack/science/mod_core
 	name = "MOD core Crate"
 	desc = "Three cores, perfect for any MODsuit construction! Naturally harvested™, of course."
@@ -1517,7 +1539,7 @@
 
 /datum/supply_pack/service/janitor
 	name = "Janitorial Supplies Crate"
-	desc = "Fight back against dirt and grime with Priapus' Janitorial Essentials(tm)! Contains three buckets, caution signs, and cleaner grenades. Also has a single mop, broom, spray cleaner, rag, and trash bag."
+	desc = "Fight back against dirt and grime with Priapus' Janitorial Essentials(tm)! Contains three buckets, caution signs, and cleaner grenades. Also has two bear traps, a single mop, broom, spray cleaner, rag, and trash bag."
 	cost = CARGO_CRATE_VALUE * 2
 	access_view = ACCESS_JANITOR
 	contains = list(/obj/item/reagent_containers/glass/bucket,
@@ -1533,7 +1555,9 @@
 					/obj/item/reagent_containers/glass/rag,
 					/obj/item/grenade/chem_grenade/cleaner,
 					/obj/item/grenade/chem_grenade/cleaner,
-					/obj/item/grenade/chem_grenade/cleaner)
+					/obj/item/grenade/chem_grenade/cleaner,
+					/obj/item/restraints/legcuffs/beartrap,
+					/obj/item/restraints/legcuffs/beartrap)
 	crate_name = "janitorial supplies crate"
 
 /datum/supply_pack/service/janitor/janicart
@@ -2295,6 +2319,16 @@
 					/obj/item/ammo_box/magazine/toy/pistol)
 	crate_name = "foam force crate"
 
+/datum/supply_pack/costumes_toys/riot_foam
+	name = "Riot Foam Darts Crate"
+	desc = "Lock and load your foam force arsenal to floor your opponents with 120 of our new and improved high density foam darts! Remember, it's Donk or Die!"
+	contraband = TRUE
+	cost = CARGO_CRATE_VALUE * 4
+	contains = list(/obj/item/ammo_box/foambox/riot,
+					/obj/item/ammo_box/foambox/riot,
+					/obj/item/ammo_box/foambox/riot)
+	crate_name = "riot foam darts crate"
+
 /datum/supply_pack/costumes_toys/formalwear
 	name = "Formalwear Crate"
 	desc = "You're gonna like the way you look, I guaranteed it. Contains an asston of fancy clothing."
@@ -3033,20 +3067,14 @@
 	group = "Data Disks"
 
 /datum/supply_pack/data_disk/preloaded
-	name = "Data Disk"
+	name = "Data Disk (Omnifab)"
 	desc = "Contains an extremely expensive data disk for use in fabricators."
 	cost = CARGO_CRATE_VALUE * 5
-	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/omni)
-	crate_name = "data disk crate"
-	hidden = TRUE
-
-/datum/supply_pack/data_disk/preloaded/omni
-	name = "Data Disk (Omnifab)"
 	access = ACCESS_RESEARCH
 	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/omni)
 	crate_name = "omnifab disk crate"
 
-/datum/supply_pack/data_disk/preloaded
+/datum/supply_pack/data_disk/preloaded/robotics
 	name = "Data Disk (Robofab)"
 	access = ACCESS_MECH_SCIENCE
 	contains = list(/obj/item/disk/data/hyper/preloaded/fabricator/robotics)

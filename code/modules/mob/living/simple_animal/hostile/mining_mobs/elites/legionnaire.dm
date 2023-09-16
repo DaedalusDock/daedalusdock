@@ -288,6 +288,8 @@
 
 /obj/structure/legionnaire_bonfire/proc/on_entered(datum/source, atom/movable/mover)
 	SIGNAL_HANDLER
+	if(mover == src)
+		return
 	if(isobj(mover))
 		var/obj/object = mover
 		object.fire_act(1000, 500)

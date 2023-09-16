@@ -161,9 +161,8 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/station/en
 
 	var/list/turfs = list()
 	if(subtypes)
-		var/list/cache = typecacheof(areatype)
 		for(var/area/area_to_check as anything in GLOB.sortedAreas)
-			if(!cache[area_to_check.type])
+			if(!istype(area_to_check, areatype))
 				continue
 			for(var/turf/turf_in_area in area_to_check)
 				if(target_z == 0 || target_z == turf_in_area.z)

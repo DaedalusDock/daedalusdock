@@ -36,7 +36,8 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define MID_TURF_LAYER 2.02
 #define HIGH_TURF_LAYER 2.03
 #define TURF_PLATING_DECAL_LAYER 2.031
-#define TURF_DECAL_LAYER 2.039 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_LAYER 2.032 //Makes turf decals appear in DM how they will look inworld.
+#define TURF_DECAL_HIGH_LAYER 2.033
 #define ABOVE_OPEN_TURF_LAYER 2.04
 #define AO_LAYER 2.045
 #define CLOSED_TURF_LAYER 2.05
@@ -52,6 +53,7 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define GAS_PIPE_VISIBLE_LAYER 2.47 //layer = initial(layer) + piping_layer / 1000 in atmospherics/update_icon() to determine order of pipe overlap
 #define GAS_FILTER_LAYER 2.48
 #define GAS_PUMP_LAYER 2.49
+#define BOT_PATH_LAYER 2.491
 #define LOW_OBJ_LAYER 2.5
 ///catwalk overlay of /turf/open/floor/plating/catwalk_floor
 #define CATWALK_LAYER 2.51
@@ -98,6 +100,7 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define MOB_UPPER_LAYER 4.07
 #define HITSCAN_PROJECTILE_LAYER 4.09
 #define ABOVE_MOB_LAYER 4.1
+#define TROLLEY_BARS_LAYER 4.2
 #define WALL_OBJ_LAYER 4.25
 #define EDGED_TURF_LAYER 4.3
 #define ON_EDGED_TURF_LAYER 4.35
@@ -167,10 +170,11 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define FULLSCREEN_PLANE 500
 #define FLASH_LAYER 1
 #define FULLSCREEN_LAYER 2
-#define UI_DAMAGE_LAYER 3
-#define BLIND_LAYER 4
-#define CRIT_LAYER 5
-#define CURSE_LAYER 6
+#define DITHER_LAYER 3
+#define UI_DAMAGE_LAYER 4
+#define BLIND_LAYER 5
+#define CRIT_LAYER 6
+#define CURSE_LAYER 7
 #define FOV_EFFECTS_LAYER 10000 //Blindness effects are not layer 4, they lie to you
 
 ///--------------- FULLSCREEN RUNECHAT BUBBLES ------------

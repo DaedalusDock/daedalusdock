@@ -24,7 +24,7 @@
 		if(M != user)
 			M.visible_message(span_danger("[user] attempts to feed [M] something from [src]."), \
 						span_userdanger("[user] attempts to feed you something from [src]."))
-			if(!do_after(user, M))
+			if(!do_after(user, M, 3 SECONDS))
 				return
 			if(!reagents || !reagents.total_volume)
 				return // The drink might be empty after the delay, such as by spam-feeding
@@ -146,13 +146,15 @@
 
 /obj/item/reagent_containers/glass/beaker
 	name = "beaker"
-	desc = "A beaker. It can hold up to 50 units."
+	desc = "A beaker. It can hold up to 60 units."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beaker"
 	inhand_icon_state = "beaker"
 	worn_icon_state = "beaker"
 	custom_materials = list(/datum/material/glass=500)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	possible_transfer_amounts = list(5, 10, 15, 20, 25, 30, 60)
+	volume = 60
 
 /obj/item/reagent_containers/glass/beaker/Initialize(mapload)
 	. = ..()
@@ -169,23 +171,23 @@
 
 /obj/item/reagent_containers/glass/beaker/large
 	name = "large beaker"
-	desc = "A large beaker. Can hold up to 100 units."
+	desc = "A large beaker. Can hold up to 120 units."
 	icon_state = "beakerlarge"
 	custom_materials = list(/datum/material/glass=2500)
-	volume = 100
+	volume = 120
 	amount_per_transfer_from_this = 10
-	possible_transfer_amounts = list(5,10,15,20,25,30,50,100)
+	possible_transfer_amounts = list(5,10,15,20,25,30,40,60,120)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
 /obj/item/reagent_containers/glass/beaker/plastic
 	name = "x-large beaker"
-	desc = "An extra-large beaker. Can hold up to 120 units."
+	desc = "An extra-large beaker. Can hold up to 150 units."
 	icon_state = "beakerwhite"
 	custom_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000)
-	volume = 120
+	volume = 150
 	amount_per_transfer_from_this = 10
-	possible_transfer_amounts = list(5,10,15,20,25,30,60,120)
-	fill_icon_thresholds = list(0, 1, 10, 20, 40, 60, 80, 100)
+	possible_transfer_amounts = list(5,10,15,20,30,50,60,120,150)
+	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
 
 /obj/item/reagent_containers/glass/beaker/meta
 	name = "metamaterial beaker"
@@ -194,7 +196,7 @@
 	custom_materials = list(/datum/material/glass=2500, /datum/material/plastic=3000, /datum/material/gold=1000, /datum/material/titanium=1000)
 	volume = 180
 	amount_per_transfer_from_this = 10
-	possible_transfer_amounts = list(5,10,15,20,25,30,60,120,180)
+	possible_transfer_amounts = list(5,10,15,20,30,40,60,120,180)
 	fill_icon_thresholds = list(0, 1, 10, 25, 35, 50, 60, 80, 100)
 
 /obj/item/reagent_containers/glass/beaker/noreact
@@ -227,24 +229,24 @@
 /obj/item/reagent_containers/glass/beaker/slime
 	list_reagents = list(/datum/reagent/toxin/slimejelly = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/libital
-	name = "libital reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/libital = 10,/datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/bicaridine
+	name = "bicaridine reserve tank"
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/aiuri
-	name = "aiuri reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/aiuri = 10, /datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/kelotane
+	name = "kelotane reserve tank"
+	list_reagents = list(/datum/reagent/medicine/kelotane = 50)
 
-/obj/item/reagent_containers/glass/beaker/large/multiver
-	name = "multiver reserve tank (diluted)"
-	list_reagents = list(/datum/reagent/medicine/c2/multiver = 10, /datum/reagent/medicine/granibitaluri = 40)
+/obj/item/reagent_containers/glass/beaker/large/dylovene
+	name = "dylovene reserve tank"
+	list_reagents = list(/datum/reagent/medicine/dylovene = 50)
 
 /obj/item/reagent_containers/glass/beaker/large/epinephrine
-	name = "epinephrine reserve tank (diluted)"
+	name = "epinephrine reserve tank"
 	list_reagents = list(/datum/reagent/medicine/epinephrine = 50)
 
 /obj/item/reagent_containers/glass/beaker/synthflesh
-	list_reagents = list(/datum/reagent/medicine/c2/synthflesh = 50)
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 50)
 
 /obj/item/reagent_containers/glass/bucket
 	name = "bucket"
@@ -352,12 +354,12 @@
 	..()
 	if(istype(I,/obj/item/pestle))
 		if(grinded)
-			if(user.getStaminaLoss() > 50)
+			if(HAS_TRAIT(user, TRAIT_EXHAUSTED))
 				to_chat(user, span_warning("You are too tired to work!"))
 				return
 			to_chat(user, span_notice("You start grinding..."))
 			if((do_after(user, src, 25)) && grinded)
-				user.adjustStaminaLoss(40)
+				user.stamina.adjust(-40)
 				if(grinded.juice_results) //prioritize juicing
 					grinded.on_juice()
 					reagents.add_reagent_list(grinded.juice_results)
@@ -383,8 +385,3 @@
 		grinded = I
 		return
 	to_chat(user, span_warning("You can't grind this!"))
-
-/obj/item/reagent_containers/glass/saline
-	name = "saline canister"
-	volume = 5000
-	list_reagents = list(/datum/reagent/medicine/salglu_solution = 5000)

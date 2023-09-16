@@ -29,7 +29,7 @@
 		playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, FALSE)
 	var/dat
 	if(temp)
-		dat = text("<TT>[temp]</TT><BR><BR><A href='?src=[REF(src)];temp=1'>Clear Screen</A>")
+		dat ="<TT>[temp]</TT><BR><BR><A href='?src=[REF(src)];temp=1'>Clear Screen</A>"
 	else
 		if(authenticated)
 			switch(screen)
@@ -82,12 +82,13 @@
 							else
 								background = "'background-color:#4F7529;'"
 
-							dat += text("<tr style=[]><td><A href='?src=[REF(src)];d_rec=[]'>[]</a></td>", background, R.fields["id"], R.fields["name"])
-							dat += text("<td>[]</td>", R.fields["id"])
-							dat += text("<td><b>F:</b> []<BR><b>D:</b> []</td>", R.fields["fingerprint"], b_dna)
-							dat += text("<td>[]</td>", blood_type)
-							dat += text("<td>[]</td>", R.fields["p_stat"])
-							dat += text("<td>[]</td></tr>", R.fields["m_stat"])
+							dat += "<tr style=[background]><td><A href='?src=[REF(src)];d_rec=[R.fields["id"]]'>[R.fields["name"]]</a></td>"
+							dat += "<td>[R.fields["id"]]</td>"
+							dat += "<td><b>F:</b> [R.fields["fingerprint"]]<BR><b>D:</b> [b_dna]</td>"
+							dat += "<td>[blood_type]</td>"
+							dat += "<td>[R.fields["p_stat"]]</td>"
+							dat += "<td>[R.fields["m_stat"]]</td></tr>"
+
 					dat += "</table><hr width='75%' />"
 					dat += "<HR><A href='?src=[REF(src)];screen=1'>Back</A>"
 				if(3)
@@ -132,8 +133,8 @@
 
 						dat += "<tr><td><br><b><font size='4'>Comments/Log</font></b></td></tr>"
 						var/counter = 1
-						while(active2.fields[text("com_[]", counter)])
-							dat += "<tr><td>[active2.fields[text("com_[]", counter)]]</td></tr><tr><td><A href='?src=[REF(src)];del_c=[counter]'>Delete Entry</A></td></tr>"
+						while(active2.fields["com_[counter]"])
+							dat += "<tr><td>[active2.fields["com_[counter]"]]</td></tr><tr><td><A href='?src=[REF(src)];del_c=[counter]'>Delete Entry</A></td></tr>"
 							counter++
 						dat += "<tr><td><A href='?src=[REF(src)];add_c=1'>Add Entry</A></td></tr>"
 
@@ -451,9 +452,11 @@
 			else if(href_list["new"])
 				if((istype(active1, /datum/data/record) && !( istype(active2, /datum/data/record) )))
 					var/datum/data/record/R = new /datum/data/record()
-					R.fields["name"] = active1.fields["name"]
+
 					R.fields["id"] = active1.fields["id"]
-					R.name = text("Medical Record #[]", R.fields["id"])
+					R.name = "Medical Record #[R.fields["id"]]"
+
+					R.fields["name"] = active1.fields["name"]
 					R.fields["blood_type"] = "Unknown"
 					R.fields["b_dna"] = "Unknown"
 					R.fields["mi_dis"] = "None"
@@ -477,13 +480,13 @@
 				if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 					return
 				var/counter = 1
-				while(active2.fields[text("com_[]", counter)])
+				while(active2.fields["com_[counter]"])
 					counter++
-				active2.fields[text("com_[]", counter)] = text("Made by [] ([]) on [] [], []<BR>[]", authenticated, rank, stationtime2text(), time2text(world.realtime, "MMM DD"), CURRENT_STATION_YEAR, t1)
+				active2.fields["com_[counter]"] = "Made by [authenticated] ([rank]) on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
 
 			else if(href_list["del_c"])
-				if((istype(active2, /datum/data/record) && active2.fields[text("com_[]", href_list["del_c"])]))
-					active2.fields[text("com_[]", href_list["del_c"])] = "<B>Deleted</B>"
+				if((istype(active2, /datum/data/record) && active2.fields["com_[href_list["del_c"]]"]))
+					active2.fields["com_[href_list["del_c"]]"] = "<B>Deleted</B>"
 
 			else if(href_list["search"])
 				var/t1 = stripped_input(usr, "Search String: (Name, DNA, or ID)", "Med. records")
@@ -498,7 +501,7 @@
 					else
 						//Foreach continue //goto(3229)
 				if(!( active2 ))
-					temp = text("Could not locate record [].", sanitize(t1))
+					temp = "Could not locate record [sanitize(t1)]."
 				else
 					for(var/datum/data/record/E in GLOB.data_core.general)
 						if((E.fields["name"] == active2.fields["name"] || E.fields["id"] == active2.fields["id"]))
@@ -516,21 +519,47 @@
 					var/obj/item/paper/P = new /obj/item/paper( loc )
 					P.info = "<CENTER><B>Medical Record - (MR-[GLOB.data_core.medicalPrintCount])</B></CENTER><BR>"
 					if(active1 in GLOB.data_core.general)
-						P.info += text("Name: [] ID: []<BR>\nGender: []<BR>\nAge: []<BR>", active1.fields["name"], active1.fields["id"], active1.fields["gender"], active1.fields["age"])
-						P.info += "\nSpecies: [active1.fields["species"]]<BR>"
-						P.info += text("\nFingerprint: []<BR>\nPhysical Status: []<BR>\nMental Status: []<BR>", active1.fields["fingerprint"], active1.fields["p_stat"], active1.fields["m_stat"])
+
+						P.info +={"
+Name: [active1.fields["name"]]
+ID: [active1.fields["id"]]<BR>
+Gender: [active1.fields["gender"]]<BR>
+Age: [active1.fields["age"]]<BR>
+Species: [active1.fields["species"]]<BR>
+Fingerprint: [active1.fields["fingerprint"]]<BR>
+Physical Status: [active1.fields["p_stat"]]<BR>
+Mental Status: [active1.fields["m_stat"]]<BR>
+"}
+
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
 					if(active2 in GLOB.data_core.medical)
-						P.info += text("<BR>\n<CENTER><B>Medical Data</B></CENTER><BR>\nBlood Type: []<BR>\nDNA: []<BR>\n<BR>\nMinor Disabilities: []<BR>\nDetails: []<BR>\n<BR>\nMajor Disabilities: []<BR>\nDetails: []<BR>\n<BR>\nAllergies: []<BR>\nDetails: []<BR>\n<BR>\nCurrent Diseases: [] (per disease info placed in log/comment section)<BR>\nDetails: []<BR>\n<BR>\nImportant Notes:<BR>\n\t[]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>", active2.fields["blood_type"], active2.fields["b_dna"], active2.fields["mi_dis"], active2.fields["mi_dis_d"], active2.fields["ma_dis"], active2.fields["ma_dis_d"], active2.fields["alg"], active2.fields["alg_d"], active2.fields["cdi"], active2.fields["cdi_d"], active2.fields["notes"])
+
+						P.info += {"
+<BR><CENTER><B>Medical Data</B></CENTER><BR>
+Blood Type: [active2.fields["blood_type"]]<BR>
+DNA: [active2.fields["b_dna"]]<BR>
+<BR>
+Minor Disabilities: [active2.fields["mi_dis"]]<BR>
+Details: [active2.fields["mi_dis_d"]]<BR><BR>
+Major Disabilities: [active2.fields["ma_dis"]]<BR>
+Details: [active2.fields["ma_dis_d"]]<BR><BR>
+Allergies: [active2.fields["alg"]]<BR>
+Details: [active2.fields["alg_d"]]<BR><BR>
+Current Diseases: [active2.fields["cdi"]] (per disease info placed in log/comment section)<BR>
+Details: [active2.fields["cdi_d"]]<BR><BR>
+Important Notes:<BR>
+\t[active2.fields["notes"]]<BR><BR>
+<CENTER><B>Comments/Log</B></CENTER><BR>"}
+
 						var/counter = 1
-						while(active2.fields[text("com_[]", counter)])
-							P.info += text("[]<BR>", active2.fields[text("com_[]", counter)])
+						while(active2.fields["com_[counter]"])
+							P.info += "[active2.fields["com_[counter]"]]<BR>"
 							counter++
-						P.name = text("MR-[] '[]'", GLOB.data_core.medicalPrintCount, active1.fields["name"])
+						P.name ="MR-[GLOB.data_core.medicalPrintCount] '[active1.fields["name"]]'"
 					else
 						P.info += "<B>Medical Record Lost!</B><BR>"
-						P.name = text("MR-[] '[]'", GLOB.data_core.medicalPrintCount, "Record Lost")
+						P.name = "MR-[GLOB.data_core.medicalPrintCount] 'Record Lost'"
 					P.info += "</TT>"
 					P.update_appearance()
 					printing = null
@@ -568,7 +597,7 @@
 
 /obj/machinery/computer/med_data/proc/canUseMedicalRecordsConsole(mob/user, message = 1, record1, record2)
 	if(user && message && authenticated)
-		if(user.canUseTopic(src, !issilicon(user)))
+		if(user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 			if(!record1 || record1 == active1)
 				if(!record2 || record2 == active2)
 					return TRUE

@@ -156,7 +156,7 @@
 
 	var/obj/item/implant/deathrattle/implant_to_give = new()
 	deathrattle_group.register(implant_to_give)
-	implant_to_give.implant(spawned, spawned, TRUE, TRUE)
+	implant_to_give.implant(spawned, spawned, BODY_ZONE_CHEST, TRUE, TRUE)
 
 
 /datum/station_trait/deathrattle_department/service
@@ -229,7 +229,7 @@
 
 	var/obj/item/implant/deathrattle/implant_to_give = new()
 	deathrattle_group.register(implant_to_give)
-	implant_to_give.implant(spawned, spawned, TRUE, TRUE)
+	implant_to_give.implant(spawned, spawned, BODY_ZONE_CHEST, TRUE, TRUE)
 
 
 /datum/station_trait/wallets

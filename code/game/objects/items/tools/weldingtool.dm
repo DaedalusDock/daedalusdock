@@ -1,5 +1,5 @@
 /// How many seconds between each fuel depletion tick ("use" proc)
-#define WELDER_FUEL_BURN_INTERVAL 26
+#define WELDER_FUEL_BURN_INTERVAL 9
 /obj/item/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by Nanotrasen."
@@ -46,11 +46,8 @@
 	create_reagents(max_fuel)
 	reagents.add_reagent(/datum/reagent/fuel, max_fuel)
 	update_appearance()
-
-/obj/item/weldingtool/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
-	AddElement(/datum/element/tool_flash, light_outer_range)
+	AddElement(/datum/element/tool_flash, 2)
 
 /obj/item/weldingtool/update_icon_state()
 	if(welding)
@@ -121,7 +118,7 @@
 	if(!istype(attacked_humanoid))
 		return ..()
 
-	var/obj/item/bodypart/affecting = attacked_humanoid.get_bodypart(check_zone(user.zone_selected))
+	var/obj/item/bodypart/affecting = attacked_humanoid.get_bodypart(deprecise_zone(user.zone_selected))
 
 	if(affecting && !IS_ORGANIC_LIMB(affecting) && !user.combat_mode)
 		if(src.use_tool(attacked_humanoid, user, 0, volume=50, amount=1))

@@ -23,6 +23,7 @@
 //STUN
 /datum/status_effect/incapacitating/stun
 	id = "stun"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/stun/on_apply()
 	. = ..()
@@ -42,6 +43,7 @@
 //KNOCKDOWN
 /datum/status_effect/incapacitating/knockdown
 	id = "knockdown"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/knockdown/on_apply()
 	. = ..()
@@ -72,6 +74,7 @@
 //PARALYZED
 /datum/status_effect/incapacitating/paralyzed
 	id = "paralyzed"
+	max_duration = 30 SECONDS
 
 /datum/status_effect/incapacitating/paralyzed/on_apply()
 	. = ..()
@@ -123,8 +126,8 @@
 	return ..()
 
 /datum/status_effect/incapacitating/unconscious/tick()
-	if(owner.getStaminaLoss())
-		owner.adjustStaminaLoss(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
+	if(owner.stamina.loss)
+		owner.stamina.adjust(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
 
 
 //SLEEPING
@@ -141,14 +144,17 @@
 	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 		tick_interval = -1
+	ADD_TRAIT(owner, TRAIT_DEAF, TRAIT_STATUS_EFFECT(id))
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(on_owner_insomniac))
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(on_owner_sleepy))
 
 /datum/status_effect/incapacitating/sleeping/on_remove()
+	REMOVE_TRAIT(owner, TRAIT_DEAF, TRAIT_STATUS_EFFECT(id))
 	UnregisterSignal(owner, list(SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE)))
 	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 		tick_interval = initial(tick_interval)
+
 	return ..()
 
 ///If the mob is sleeping and gain the TRAIT_SLEEPIMMUNE we remove the TRAIT_KNOCKEDOUT and stop the tick() from happening
@@ -180,7 +186,7 @@
 			owner.adjustBruteLoss(healing)
 			owner.adjustFireLoss(healing)
 			owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
-		owner.adjustStaminaLoss(healing)
+		owner.stamina.adjust(-healing)
 
 	// Drunkenness gets reduced by 0.3% per tick (6% per 2 seconds)
 	owner.set_drunk_effect(owner.get_drunk_amount() * 0.997)
@@ -198,13 +204,13 @@
 	icon_state = "asleep"
 
 //STASIS
-/datum/status_effect/grouped/stasis
+/datum/status_effect/grouped/hard_stasis
 	id = "stasis"
 	duration = -1
 	alert_type = /atom/movable/screen/alert/status_effect/stasis
 	var/last_dead_time
 
-/datum/status_effect/grouped/stasis/proc/update_time_of_death()
+/datum/status_effect/grouped/hard_stasis/proc/update_time_of_death()
 	if(last_dead_time)
 		var/delta = world.time - last_dead_time
 		var/new_timeofdeath = owner.timeofdeath + delta
@@ -214,13 +220,13 @@
 	if(owner.stat == DEAD)
 		last_dead_time = world.time
 
-/datum/status_effect/grouped/stasis/on_creation(mob/living/new_owner, set_duration)
+/datum/status_effect/grouped/hard_stasis/on_creation(mob/living/new_owner, set_duration)
 	. = ..()
 	if(.)
 		update_time_of_death()
 		owner.reagents?.end_metabolization(owner, FALSE)
 
-/datum/status_effect/grouped/stasis/on_apply()
+/datum/status_effect/grouped/hard_stasis/on_apply()
 	. = ..()
 	if(!.)
 		return
@@ -233,10 +239,10 @@
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.update_bodypart_bleed_overlays()
 
-/datum/status_effect/grouped/stasis/tick()
+/datum/status_effect/grouped/hard_stasis/tick()
 	update_time_of_death()
 
-/datum/status_effect/grouped/stasis/on_remove()
+/datum/status_effect/grouped/hard_stasis/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_HANDS_BLOCKED, TRAIT_STATUS_EFFECT(id))
 	owner.remove_filter("stasis_status_ripple")
@@ -413,7 +419,7 @@
 /datum/status_effect/eldritch/ash/on_effect()
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.adjustStaminaLoss(6 * repetitions) // first one = 30 stam
+		carbon_owner.stamina.adjust(-6 * repetitions) // first one = 30 stam
 		carbon_owner.adjustFireLoss(3 * repetitions) // first one = 15 burn
 		for(var/mob/living/carbon/victim in shuffle(range(1, carbon_owner)))
 			if(IS_HERETIC(victim) || victim == carbon_owner)
@@ -667,13 +673,11 @@
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_PACIFISM, CLOTHING_TRAIT)
 	ADD_TRAIT(owner, TRAIT_MUTE, CLOTHING_TRAIT)
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/gondola)
 	to_chat(owner, span_notice("You suddenly feel at peace and feel no need to make any sudden or rash actions..."))
 
 /datum/status_effect/gonbola_pacify/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, CLOTHING_TRAIT)
 	REMOVE_TRAIT(owner, TRAIT_MUTE, CLOTHING_TRAIT)
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, type)
 	return ..()
 
 /datum/status_effect/trance
@@ -1029,7 +1033,7 @@
 	)
 
 /datum/status_effect/ants/on_creation(mob/living/new_owner, amount_left)
-	if(isnum(amount_left) && new_owner.stat < HARD_CRIT)
+	if(isnum(amount_left) && new_owner.stat < DEAD)
 		if(new_owner.stat < UNCONSCIOUS) // Unconcious people won't get messages
 			to_chat(new_owner, span_userdanger("You're covered in ants!"))
 		ants_remaining += amount_left
@@ -1038,7 +1042,7 @@
 
 /datum/status_effect/ants/refresh(effect, amount_left)
 	var/mob/living/carbon/human/victim = owner
-	if(isnum(amount_left) && ants_remaining >= 1 && victim.stat < HARD_CRIT)
+	if(isnum(amount_left) && ants_remaining >= 1 && victim.stat < DEAD)
 		if(victim.stat < UNCONSCIOUS) // Unconcious people won't get messages
 			if(!prob(1)) // 99%
 				to_chat(victim, span_userdanger("You're covered in MORE ants!"))
@@ -1064,7 +1068,7 @@
 /datum/status_effect/ants/tick()
 	var/mob/living/carbon/human/victim = owner
 	victim.adjustBruteLoss(max(0.1, round((ants_remaining * 0.004),0.1))) //Scales with # of ants (lowers with time). Roughly 10 brute over 50 seconds.
-	if(victim.stat <= SOFT_CRIT) //Makes sure people don't scratch at themselves while they're in a critical condition
+	if(victim.stat != CONSCIOUS && !HAS_TRAIT(victim, TRAIT_SOFT_CRITICAL_CONDITION)) //Makes sure people don't scratch at themselves while they're in a critical condition
 		if(prob(15))
 			switch(rand(1,2))
 				if(1)
@@ -1090,7 +1094,7 @@
 					victim.blur_eyes(3)
 					ants_remaining -= 5 // To balance out the blindness, it'll be a little shorter.
 	ants_remaining--
-	if(ants_remaining <= 0 || victim.stat >= HARD_CRIT)
+	if(ants_remaining <= 0 || victim.stat == DEAD)
 		victim.remove_status_effect(/datum/status_effect/ants) //If this person has no more ants on them or are dead, they are no longer affected.
 
 /atom/movable/screen/alert/status_effect/ants

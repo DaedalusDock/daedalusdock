@@ -228,6 +228,7 @@
 #define DCAT_MISC "Miscellaneous"
 #define DCAT_SILICON "Silicons"
 #define DCAT_MINING "Mining Tools"
+#define DCAT_PAINTER "Painters"
 
 // Design categories for the mechfab
 #define DCAT_CYBORG "Cyborg"

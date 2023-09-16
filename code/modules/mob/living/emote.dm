@@ -112,7 +112,7 @@
 	message_monkey = "lets out a faint chimper as it collapses and stops moving..."
 	message_simple = "stops moving..."
 	cooldown = (15 SECONDS)
-	stat_allowed = HARD_CRIT
+	stat_allowed = UNCONSCIOUS
 
 /datum/emote/living/deathgasp/run_emote(mob/user, params, type_override, intentional)
 	var/mob/living/simple_animal/S = user
@@ -123,7 +123,7 @@
 	if(.)
 		if(isliving(user))
 			var/mob/living/L = user
-			if(!L.can_speak_vocal() || L.oxyloss >= 50)
+			if(!L.can_speak_vocal() || L.getOxyLoss() >= 50)
 				return //stop the sound if oxyloss too high/cant speak
 		if(!user.deathsound)
 			if(!ishuman(user))
@@ -160,14 +160,14 @@
 	if(. && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/open = FALSE
-		var/obj/item/organ/external/wings/functional/wings = H.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
+		var/obj/item/organ/wings/functional/wings = H.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
 		if(istype(wings))
 			if(wings.wings_open)
 				open = TRUE
 				wings.close_wings()
 			else
 				wings.open_wings()
-			addtimer(CALLBACK(wings, open ? TYPE_PROC_REF(/obj/item/organ/external/wings/functional, open_wings) : TYPE_PROC_REF(/obj/item/organ/external/wings/functional, close_wings)), wing_time)
+			addtimer(CALLBACK(wings, open ? TYPE_PROC_REF(/obj/item/organ/wings/functional, open_wings) : TYPE_PROC_REF(/obj/item/organ/wings/functional, close_wings)), wing_time)
 
 /datum/emote/living/flap/aflap
 	key = "aflap"
@@ -192,23 +192,53 @@
 	key_third_person = "gasps"
 	message = "gasps!"
 	emote_type = EMOTE_AUDIBLE
-	stat_allowed = HARD_CRIT
 
-/datum/emote/living/gasp/get_sound(mob/living/user)
-	if(iscarbon(user))
-		if(user.gender == MALE)
+/datum/emote/living/gasp/get_sound(mob/living/user, involuntary)
+	if(!iscarbon(user))
+		return
+
+	if(user.gender == MALE)
+		if(!involuntary)
 			return pick('sound/emotes/male/gasp_m1.ogg',
-						'sound/emotes/male/gasp_m2.ogg',
-						'sound/emotes/male/gasp_m3.ogg',
-						'sound/emotes/male/gasp_m4.ogg',
-						'sound/emotes/male/gasp_m5.ogg',
-						'sound/emotes/male/gasp_m6.ogg')
-		return pick('sound/emotes/female/gasp_f1.ogg',
+					'sound/emotes/male/gasp_m2.ogg',
+					'sound/emotes/male/gasp_m3.ogg',
+					'sound/emotes/male/gasp_m4.ogg',
+					'sound/emotes/male/gasp_m5.ogg',
+					'sound/emotes/male/gasp_m6.ogg',
+					)
+		else return pick('sound/emotes/male/gasp_m1.ogg',
+					'sound/emotes/male/gasp_m2.ogg',
+					'sound/emotes/male/gasp_m3.ogg',
+					'sound/emotes/male/gasp_m4.ogg',
+					'sound/emotes/male/gasp_m5.ogg',
+					'sound/emotes/male/gasp_m6.ogg',
+					'goon/sounds/voice/gasp/male_gasp_1.ogg',
+					'goon/sounds/voice/gasp/male_gasp_2.ogg',
+					'goon/sounds/voice/gasp/male_gasp_3.ogg',
+					'goon/sounds/voice/gasp/male_gasp_4.ogg',
+					'goon/sounds/voice/gasp/male_gasp_5.ogg',
+					)
+	else
+		if(!involuntary)
+			return pick('sound/emotes/female/gasp_f1.ogg',
 					'sound/emotes/female/gasp_f2.ogg',
 					'sound/emotes/female/gasp_f3.ogg',
 					'sound/emotes/female/gasp_f4.ogg',
 					'sound/emotes/female/gasp_f5.ogg',
-					'sound/emotes/female/gasp_f6.ogg')
+					'sound/emotes/female/gasp_f6.ogg',
+					)
+		else return pick('sound/emotes/female/gasp_f1.ogg',
+					'sound/emotes/female/gasp_f2.ogg',
+					'sound/emotes/female/gasp_f3.ogg',
+					'sound/emotes/female/gasp_f4.ogg',
+					'sound/emotes/female/gasp_f5.ogg',
+					'sound/emotes/female/gasp_f6.ogg',
+					'goon/sounds/voice/gasp/female_gasp_1.ogg',
+					'goon/sounds/voice/gasp/female_gasp_2.ogg',
+					'goon/sounds/voice/gasp/female_gasp_3.ogg',
+					'goon/sounds/voice/gasp/female_gasp_4.ogg',
+					'goon/sounds/voice/gasp/female_gasp_5.ogg',
+					)
 
 /datum/emote/living/giggle
 	key = "giggle"
@@ -463,16 +493,11 @@
 	message = "puts their hands on their head and falls to the ground, they surrender%s!"
 	emote_type = EMOTE_AUDIBLE
 
-//PARIAH EDIT - moved combat_indicator.dm in the indicators module
-/*
 /datum/emote/living/surrender/run_emote(mob/user, params, type_override, intentional)
 	. = ..()
 	if(. && isliving(user))
 		var/mob/living/L = user
 		L.Paralyze(200)
-		L.remove_status_effect(/datum/status_effect/grouped/surrender)
-*/
-//PARIAH EDIT END
 
 /datum/emote/living/sway
 	key = "sway"

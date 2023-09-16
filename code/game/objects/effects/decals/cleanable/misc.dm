@@ -66,23 +66,22 @@
 	icon_state = "dirt"
 	base_icon_state = "dirt"
 	smoothing_flags = NONE
-	smoothing_groups = list(SMOOTH_GROUP_CLEANABLE_DIRT)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_CLEANABLE_DIRT)
+	smoothing_groups = SMOOTH_GROUP_CLEANABLE_DIRT
+	canSmoothWith = SMOOTH_GROUP_CLEANABLE_DIRT + SMOOTH_GROUP_WALLS
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	beauty = -75
 
 /obj/effect/decal/cleanable/dirt/Initialize(mapload)
 	. = ..()
+	SETUP_SMOOTHING()
 	var/turf/T = get_turf(src)
 	if(T.tiled_dirt)
 		smoothing_flags = SMOOTH_BITMASK
 		QUEUE_SMOOTH(src)
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
 /obj/effect/decal/cleanable/dirt/Destroy()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/effect/decal/cleanable/dirt/dust
@@ -181,7 +180,6 @@
 /obj/effect/decal/cleanable/vomit/old/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	icon_state += "-old"
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
 
 
 /obj/effect/decal/cleanable/chem_pile
@@ -275,7 +273,6 @@
 
 /obj/effect/decal/cleanable/garbage/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 15)
 
 /obj/effect/decal/cleanable/ants
 	name = "space ants"

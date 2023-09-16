@@ -8,8 +8,13 @@
 	usesound = 'sound/items/crowbar.ogg'
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	force = 5
+
+	force = 14
 	throwforce = 7
+	stamina_damage = 35
+	stamina_cost = 12
+	stamina_critical_chance = 10
+
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=50)
 	drop_sound = 'sound/items/handling/crowbar_drop.ogg'
@@ -30,6 +35,11 @@
 /obj/item/crowbar/red
 	icon_state = "crowbar_red"
 	force = 8
+
+/obj/item/crowbar/red/suicide_act(mob/user)
+	user.visible_message(span_suicide("[user]'s body turns limp and collapses to the ground as [user.p_they()] smashes [user.p_their()] head in with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	playsound(loc, 'sound/health/flatline.ogg', 50, FALSE, -1)
+	return (BRUTELOSS)
 
 /obj/item/crowbar/abductor
 	name = "alien crowbar"
@@ -110,7 +120,6 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/crowbar/power/syndicate
-	name = "Syndicate jaws of life"
 	desc = "A re-engineered copy of Daedalus' standard jaws of life. Can be used to force open airlocks in its crowbar configuration."
 	icon_state = "jaws_syndie"
 	toolspeed = 0.5

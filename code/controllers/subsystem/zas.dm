@@ -63,7 +63,7 @@ SUBSYSTEM_DEF(zas)
 	name = "Air Core"
 	priority = FIRE_PRIORITY_AIR
 	init_order = INIT_ORDER_AIR
-	flags = SS_POST_FIRE_TIMING
+	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 	wait = 2 SECONDS
 
@@ -555,15 +555,15 @@ SUBSYSTEM_DEF(zas)
 	E.excited = TRUE
 
 ///Returns the edge between zones A and B.  If one doesn't exist, it creates one. See header for more information
-/datum/controller/subsystem/zas/proc/get_edge(zone/A, datum/B)
+/datum/controller/subsystem/zas/proc/get_edge(zone/A, zone/B) //Note: B can also be a turf.
 	var/connection_edge/edge
 
-	if(B.type == /zone) //Zone-to-zone connection
-		edge = A.edges[B]
-	else //Zone-to-turf connection
+	if(isturf(B)) //Zone-to-turf connection.
 		for(var/turf/T in A.edges)
-			if(B:air ~= T.air) //Operator overloading :)
+			if(B.air.isEqual(T.air)) //Operator overloading :)
 				return A.edges[T]
+	else
+		edge = A.edges[B] //Zone-to-zone connection
 
 	edge ||= create_edge(A,B)
 

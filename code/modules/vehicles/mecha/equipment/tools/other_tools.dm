@@ -163,13 +163,13 @@
 
 /obj/item/mecha_parts/mecha_equipment/armor/attach(obj/vehicle/sealed/mecha/M, attach_right)
 	. = ..()
-	chassis.armor = chassis.armor.modifyRating(arglist(armor_mod))
+	chassis.setArmor(chassis.returnArmor().modifyRating(arglist(armor_mod)))
 
 /obj/item/mecha_parts/mecha_equipment/armor/detach(atom/moveto)
 	var/list/removed_armor = armor_mod.Copy()
 	for(var/armor_type in removed_armor)
 		removed_armor[armor_type] = -removed_armor[armor_type]
-	chassis.armor = chassis.armor.modifyRating(arglist(removed_armor))
+	chassis.setArmor(chassis.returnArmor().modifyRating(arglist(removed_armor)))
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/armor/anticcw_armor_booster

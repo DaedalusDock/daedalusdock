@@ -11,7 +11,6 @@
 	roundend_category = "changelings"
 	antagpanel_category = "Changeling"
 	job_rank = ROLE_CHANGELING
-	antag_moodlet = /datum/mood_event/focused
 	antag_hud_name = "changeling"
 	hijack_speed = 0.5
 	ui_name = "AntagInfoChangeling"
@@ -148,7 +147,7 @@
 		RegisterSignal(living_mob, COMSIG_MOB_HUD_CREATED, PROC_REF(on_hud_created))
 
 	// Brains are optional for lings.
-	var/obj/item/organ/internal/brain/our_ling_brain = living_mob.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/our_ling_brain = living_mob.getorganslot(ORGAN_SLOT_BRAIN)
 	if(our_ling_brain)
 		our_ling_brain.organ_flags &= ~ORGAN_VITAL
 		our_ling_brain.decoy_override = TRUE
@@ -186,7 +185,7 @@
 	if(!iscarbon(owner.current))
 		return
 	var/mob/living/carbon/carbon_owner = owner.current
-	var/obj/item/organ/internal/brain/not_ling_brain = carbon_owner.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/not_ling_brain = carbon_owner.getorganslot(ORGAN_SLOT_BRAIN)
 	if(not_ling_brain && (not_ling_brain.decoy_override != initial(not_ling_brain.decoy_override)))
 		not_ling_brain.organ_flags |= ORGAN_VITAL
 		not_ling_brain.decoy_override = FALSE
@@ -602,35 +601,16 @@
 		destroy_objective.find_target()
 		objectives += destroy_objective
 	else
-		if(prob(70))
-			var/datum/objective/assassinate/kill_objective = new
-			kill_objective.owner = owner
-			kill_objective.find_target()
-			objectives += kill_objective
-		else
-			var/datum/objective/maroon/maroon_objective = new
-			maroon_objective.owner = owner
-			maroon_objective.find_target()
-			objectives += maroon_objective
-
-			if (!(locate(/datum/objective/escape) in objectives) && escape_objective_possible)
-				var/datum/objective/escape/escape_with_identity/identity_theft = new
-				identity_theft.owner = owner
-				identity_theft.target = maroon_objective.target
-				identity_theft.update_explanation_text()
-				objectives += identity_theft
-				escape_objective_possible = FALSE
+		var/datum/objective/assassinate/kill_objective = new
+		kill_objective.owner = owner
+		kill_objective.find_target()
+		objectives += kill_objective
 
 	if (!(locate(/datum/objective/escape) in objectives) && escape_objective_possible)
-		if(prob(50))
-			var/datum/objective/escape/escape_objective = new
-			escape_objective.owner = owner
-			objectives += escape_objective
-		else
-			var/datum/objective/escape/escape_with_identity/identity_theft = new
-			identity_theft.owner = owner
-			identity_theft.find_target()
-			objectives += identity_theft
+		var/datum/objective/escape/escape_with_identity/identity_theft = new
+		identity_theft.owner = owner
+		identity_theft.find_target()
+		objectives += identity_theft
 		escape_objective_possible = FALSE
 
 /datum/antagonist/changeling/get_admin_commands()

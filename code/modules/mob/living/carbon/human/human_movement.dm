@@ -22,7 +22,8 @@
 	return ..()
 
 /mob/living/carbon/human/mob_negates_gravity()
-	return dna.species.negates_gravity(src) || ..()
+	if(dna.species.negates_gravity(src) || ..())
+		return TRUE
 
 /mob/living/carbon/human/Move(NewLoc, direct)
 	. = ..()

@@ -7,7 +7,7 @@
 PROCESSING_SUBSYSTEM_DEF(quirks)
 	name = "Quirks"
 	init_order = INIT_ORDER_QUIRKS
-	flags = SS_BACKGROUND
+	flags = SS_BACKGROUND | SS_HIBERNATE
 	runlevels = RUNLEVEL_GAME
 	wait = 1 SECONDS
 
@@ -59,19 +59,21 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 			continue
 		hardcore_quirks[quirk_type] += hardcore_value
 
-/datum/controller/subsystem/processing/quirks/proc/AssignQuirks(mob/living/user, client/cli)
+/datum/controller/subsystem/processing/quirks/proc/AssignQuirks(mob/living/user, client/applied_client)
 	var/badquirk = FALSE
-	for(var/quirk_name in cli.prefs.all_quirks)
+	var/datum/preference/P = GLOB.preference_entries[/datum/preference/blob/quirks]
+	var/list/client_quirks = applied_client.prefs.read_preference(P.type)
+	for(var/quirk_name in client_quirks)
 		var/datum/quirk/Q = quirks[quirk_name]
 		if(Q)
-			if(user.add_quirk(Q))
+			if(user.add_quirk(Q, applied_client))
 				SSblackbox.record_feedback("nested tally", "quirks_taken", 1, list("[quirk_name]"))
 		else
-			stack_trace("Invalid quirk \"[quirk_name]\" in client [cli.ckey] preferences")
-			cli.prefs.all_quirks -= quirk_name
+			stack_trace("Invalid quirk \"[quirk_name]\" in client [applied_client.ckey] preferences")
+			applied_client.prefs.update_preference(P, client_quirks - P)
 			badquirk = TRUE
 	if(badquirk)
-		cli.prefs.save_character()
+		applied_client.prefs.save_character()
 
 /*
  *Randomises the quirks for a specified mob
@@ -150,9 +152,6 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 	for (var/quirk_name in quirks)
 		var/datum/quirk/quirk = all_quirks[quirk_name]
 		if (isnull(quirk))
-			continue
-
-		if (initial(quirk.mood_quirk) && CONFIG_GET(flag/disable_human_mood))
 			continue
 
 		var/blacklisted = FALSE

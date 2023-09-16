@@ -173,6 +173,10 @@
 	var/middragtime = 0
 	//Middle-mouse-button clicked object control for aimbot exploit detection. Weakref
 	var/datum/weakref/middle_drag_atom_ref
+	//When we started the currently active drag
+	var/drag_start = 0
+	//The params we were passed at the start of the drag, in list form
+	var/list/drag_details
 
 
 	/// Messages currently seen by this client
@@ -232,6 +236,8 @@
 	/// rate limiting for the crew manifest
 	var/crew_manifest_delay
 
+	/// Semaphore for macro updates, so that they all complete and don't stomp over each other.
+	var/updating_macros = FALSE
 	/// A buffer of currently held keys.
 	var/list/keys_held = list()
 	/// A buffer for combinations such of modifiers + keys (ex: CtrlD, AltE, ShiftT). Format: `"key"` -> `"combo"` (ex: `"D"` -> `"CtrlD"`)

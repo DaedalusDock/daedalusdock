@@ -388,7 +388,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 		if(bubblegum.Adjacent(target) && !charged)
 			charged = TRUE
 			target.Paralyze(80)
-			target.adjustStaminaLoss(40)
+			target.stamina.adjust(-40)
 			step_away(target, bubblegum)
 			shake_camera(target, 4, 3)
 			target.visible_message(span_warning("[target] jumps backwards, falling on the ground!"),span_userdanger("[bubblegum] slams into you!"))
@@ -1359,8 +1359,10 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /obj/effect/hallucination/danger/lava/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(AM == target)
-		target.adjustStaminaLoss(20)
+		target.stamina.adjust(-20)
 		new /datum/hallucination/fire(target)
 
 /obj/effect/hallucination/danger/chasm
@@ -1381,6 +1383,8 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /obj/effect/hallucination/danger/chasm/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(AM == target)
 		if(istype(target, /obj/effect/dummy/phased_mob))
 			return
@@ -1415,6 +1419,8 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /obj/effect/hallucination/danger/anomaly/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(AM == target)
 		new /datum/hallucination/shock(target)
 
@@ -1516,7 +1522,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	else if (times_to_lower_stamina)
 		next_action -= delta_time
 		if (next_action < 0)
-			target.adjustStaminaLoss(15)
+			target.stamina.adjust(-15)
 			next_action += 2
 			times_to_lower_stamina -= 1
 	else
@@ -1563,7 +1569,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 		target.client.images |= electrocution_skeleton_anim
 	addtimer(CALLBACK(src, PROC_REF(reset_shock_animation)), 40)
 	target.playsound_local(get_turf(src), SFX_SPARKS, 100, 1)
-	target.staminaloss += 50
+	target.stamina.adjust(-50)
 	target.Stun(4 SECONDS)
 	target.do_jitter_animation(300) // Maximum jitter
 	target.adjust_timed_status_effect(20 SECONDS, /datum/status_effect/jitter)

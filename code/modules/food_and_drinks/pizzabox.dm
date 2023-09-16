@@ -104,7 +104,7 @@
 		tag_overlay.pixel_y = box_offset
 		. += tag_overlay
 
-/obj/item/pizzabox/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/pizzabox/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	var/current_offset = 2
 	if(!isinhands)
@@ -151,7 +151,7 @@
 				return
 			else
 				bomb_timer = tgui_input_number(user, "Set the bomb timer", "Pizza Bomb", bomb_timer, bomb_timer_max, bomb_timer_min)
-				if(!bomb_timer || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+				if(!bomb_timer || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 					return
 				bomb_defused = FALSE
 				log_bomber(user, "has trapped a", src, "with [bomb] set to [bomb_timer] seconds")
@@ -220,7 +220,7 @@
 				return
 			var/obj/item/pizzabox/box = boxes.len ? boxes[boxes.len] : src
 			box.boxtag += tgui_input_text(user, "Write on [box]'s tag:", box, max_length = 30)
-			if(!user.canUseTopic(src, BE_CLOSE))
+			if(!user.canUseTopic(src, USE_CLOSE))
 				return
 			to_chat(user, span_notice("You write with [I] on [src]."))
 			boxtag_set = TRUE
@@ -263,8 +263,6 @@
 	if(isobserver(user))
 		if(bomb)
 			. += span_deadsay("This pizza box contains [bomb_defused ? "an unarmed bomb" : "an armed bomb"].")
-		if(pizza && istype(pizza, /obj/item/food/pizza/margherita/robo))
-			. += span_deadsay("The pizza in this pizza box contains nanomachines.")
 
 /obj/item/pizzabox/proc/disperse_pizzas()
 	visible_message(span_warning("The pizzas fall everywhere!"))
@@ -308,9 +306,6 @@
 
 /obj/item/pizzabox/margherita
 	pizza = /obj/item/food/pizza/margherita
-
-/obj/item/pizzabox/margherita/robo
-	pizza = /obj/item/food/pizza/margherita/robo
 
 /obj/item/pizzabox/vegetable
 	pizza = /obj/item/food/pizza/vegetable

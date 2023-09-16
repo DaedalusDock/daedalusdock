@@ -2022,7 +2022,7 @@
 /obj/structure/table,
 /obj/machinery/light/small/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "ajI" = (
@@ -6781,12 +6781,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/fore)
-"aNW" = (
-/obj/machinery/rnd/production/fabricator/department/engineering,
-/obj/effect/turf_decal/delivery,
-/obj/effect/turf_decal/stripes/box,
-/turf/open/floor/iron,
-/area/station/engineering/lobby)
 "aOa" = (
 /obj/structure/flora/junglebush/b,
 /turf/open/floor/grass,
@@ -6851,7 +6845,7 @@
 	pixel_x = 10;
 	pixel_y = 10
 	},
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 8
 	},
 /obj/item/stack/medical/mesh{
@@ -7612,7 +7606,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /turf/open/floor/iron/dark,
@@ -8634,39 +8628,6 @@
 	icon_state = "panelscorched"
 	},
 /area/station/maintenance/starboard)
-"aZa" = (
-/obj/structure/table,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/item/folder{
-	pixel_x = -4
-	},
-/obj/item/disk/tech_disk{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/disk/tech_disk{
-	pixel_x = 4;
-	pixel_y = 4
-	},
-/obj/item/disk/data,
-/obj/item/disk/data,
-/obj/item/stock_parts/manipulator,
-/obj/item/stock_parts/manipulator,
-/obj/item/stock_parts/micro_laser,
-/obj/item/stock_parts/micro_laser,
-/obj/item/stock_parts/capacitor{
-	pixel_x = -6;
-	pixel_y = 6
-	},
-/obj/item/stock_parts/capacitor{
-	pixel_x = -6;
-	pixel_y = 6
-	},
-/turf/open/floor/iron/dark,
-/area/station/science/lab)
 "aZc" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -24542,7 +24503,7 @@
 /area/station/engineering/atmos/pumproom)
 "dRQ" = (
 /obj/structure/rack,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/bruise_pack,
 /obj/effect/turf_decal/bot,
 /obj/machinery/light/small/directional/north,
@@ -33559,6 +33520,12 @@
 "gWV" = (
 /turf/open/floor/engine/vacuum,
 /area/station/maintenance/disposal/incinerator)
+"gXa" = (
+/obj/machinery/rnd/production/fabricator/department/engineering,
+/obj/effect/turf_decal/delivery,
+/obj/effect/turf_decal/stripes/box,
+/turf/open/floor/iron,
+/area/station/engineering/lobby)
 "gXf" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
@@ -34056,20 +34023,6 @@
 	icon_state = "panelscorched"
 	},
 /area/station/maintenance/solars/starboard/fore)
-"hfh" = (
-/obj/machinery/rnd/production/fabricator/department/science,
-/obj/effect/turf_decal/bot,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/machinery/camera/directional/east{
-	c_tag = "Research Lab";
-	name = "science camera";
-	network = list("ss13","rd")
-	},
-/obj/machinery/airalarm/directional/east,
-/turf/open/floor/iron/dark,
-/area/station/science/lab)
 "hfi" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
@@ -45932,6 +45885,28 @@
 	icon_state = "platingdmg3"
 	},
 /area/station/maintenance/starboard)
+"kXz" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/delivery,
+/obj/machinery/light/small/directional/east,
+/obj/structure/closet/crate/freezer{
+	name = "organ storage"
+	},
+/obj/item/organ/tail/cat,
+/obj/item/organ/tail/cat,
+/obj/item/organ/ears/cat,
+/obj/item/organ/ears/cat,
+/obj/item/organ/heart,
+/obj/structure/sign/poster/contraband/random/directional/east,
+/turf/open/floor/iron/dark,
+/area/station/maintenance/fore)
 "kXA" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/tile/neutral{
@@ -54957,6 +54932,20 @@
 /obj/machinery/meter,
 /turf/open/floor/iron,
 /area/station/engineering/atmos/pumproom)
+"nXV" = (
+/obj/machinery/rnd/production/fabricator/department/science,
+/obj/effect/turf_decal/bot,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/machinery/camera/directional/east{
+	c_tag = "Research Lab";
+	name = "science camera";
+	network = list("ss13","rd")
+	},
+/obj/machinery/airalarm/directional/east,
+/turf/open/floor/iron/dark,
+/area/station/science/lab)
 "nYc" = (
 /obj/machinery/mass_driver{
 	id = "trash"
@@ -75394,6 +75383,39 @@
 	},
 /turf/open/floor/iron,
 /area/station/command/bridge)
+"uJm" = (
+/obj/structure/table,
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/item/folder{
+	pixel_x = -4
+	},
+/obj/item/disk/tech_disk{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/disk/tech_disk{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/disk/data,
+/obj/item/disk/data,
+/obj/item/stock_parts/manipulator,
+/obj/item/stock_parts/manipulator,
+/obj/item/stock_parts/micro_laser,
+/obj/item/stock_parts/micro_laser,
+/obj/item/stock_parts/capacitor{
+	pixel_x = -6;
+	pixel_y = 6
+	},
+/obj/item/stock_parts/capacitor{
+	pixel_x = -6;
+	pixel_y = 6
+	},
+/turf/open/floor/iron/dark,
+/area/station/science/lab)
 "uJr" = (
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
@@ -86155,28 +86177,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
-"ykx" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/delivery,
-/obj/machinery/light/small/directional/east,
-/obj/structure/closet/crate/freezer{
-	name = "organ storage"
-	},
-/obj/item/organ/external/tail/cat,
-/obj/item/organ/external/tail/cat,
-/obj/item/organ/internal/ears/cat,
-/obj/item/organ/internal/ears/cat,
-/obj/item/organ/internal/heart,
-/obj/structure/sign/poster/contraband/random/directional/east,
-/turf/open/floor/iron/dark,
-/area/station/maintenance/fore)
 "ykB" = (
 /obj/structure/girder,
 /obj/effect/decal/cleanable/dirt,
@@ -117529,7 +117529,7 @@ adH
 adQ
 kHx
 cEL
-ykx
+kXz
 cEV
 baH
 aXW
@@ -121196,7 +121196,7 @@ uYZ
 lUu
 hcV
 chB
-aNW
+gXa
 esY
 orO
 ora
@@ -124748,10 +124748,10 @@ bbl
 wJd
 bgj
 aYe
-aZa
+uJm
 aXY
 aZp
-hfh
+nXV
 dBT
 fCj
 kuB

@@ -20,8 +20,6 @@
 	if(always_noslip)
 		LAZYDISTINCTADD(clothing_traits, TRAIT_NO_SLIP_WATER)
 
-/obj/item/clothing/shoes/clown_shoes/banana_shoes/ComponentInitialize()
-	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_FEET)
 	AddComponent(/datum/component/material_container, list(/datum/material/bananium), 100 * MINERAL_MATERIAL_AMOUNT, MATCONTAINER_EXAMINE|MATCONTAINER_ANY_INTENT|MATCONTAINER_SILENT, allowed_items=/obj/item/stack)

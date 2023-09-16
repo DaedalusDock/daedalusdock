@@ -132,10 +132,10 @@
 	if(!.) //didn't generate
 		return FALSE
 	AddComponent(/datum/component/traitor_objective_register, behead_goal, fail_signals = COMSIG_PARENT_QDELETING)
-	RegisterSignal(kill_target, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(on_target_dismembered))
+	RegisterSignal(kill_target, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(on_target_dismembered))
 
 /datum/traitor_objective/assassinate/behead/ungenerate_objective()
-	UnregisterSignal(kill_target, COMSIG_CARBON_REMOVE_LIMB)
+	UnregisterSignal(kill_target, COMSIG_CARBON_REMOVED_LIMB)
 	. = ..() //this unsets kill_target
 	if(behead_goal)
 		UnregisterSignal(behead_goal, COMSIG_ITEM_PICKUP)

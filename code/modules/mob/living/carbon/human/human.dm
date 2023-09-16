@@ -4,14 +4,14 @@
 
 	icon_state = "" //Remove the inherent human icon that is visible on the map editor. We're rendering ourselves limb by limb, having it still be there results in a bug where the basic human icon appears below as south in all directions and generally looks nasty.
 
-	//initialize limbs first
-	create_bodyparts()
-
+	create_dna()
+	dna.species.create_fresh_body(src)
 	setup_human_dna()
-	prepare_huds() //Prevents a nasty runtime on human init
 
-	if(dna.species)
-		INVOKE_ASYNC(src, PROC_REF(set_species), dna.species.type)
+	create_carbon_reagents() //Humans init this early as species require it
+	set_species(dna.species.type)
+
+	prepare_huds() //Prevents a nasty runtime on human init
 
 	//initialise organs
 	create_internal_organs() //most of it is done in set_species now, this is only for parent call
@@ -21,7 +21,7 @@
 
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
 	AddComponent(/datum/component/personal_crafting)
-	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6)
+	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6, TRUE)
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
 	AddElement(/datum/element/strippable, GLOB.strippable_human_items, TYPE_PROC_REF(/mob/living/carbon/human, should_strip))
@@ -39,11 +39,6 @@
 	randomize_human(src)
 	dna.initialize_dna()
 
-/mob/living/carbon/human/ComponentInitialize()
-	. = ..()
-	if(!CONFIG_GET(flag/disable_human_mood))
-		AddComponent(/datum/component/mood)
-
 /mob/living/carbon/human/Destroy()
 	QDEL_NULL(physiology)
 	QDEL_LIST(bioware)
@@ -54,7 +49,7 @@
 /mob/living/carbon/human/ZImpactDamage(turf/T, levels)
 	if(stat != CONSCIOUS || levels > 1) // you're not The One
 		return ..()
-	var/obj/item/organ/external/wings/gliders = getorgan(/obj/item/organ/external/wings)
+	var/obj/item/organ/wings/gliders = getorgan(/obj/item/organ/wings)
 	if(HAS_TRAIT(src, TRAIT_FREERUNNING) || gliders?.can_soften_fall()) // the power of parkour or wings allows falling short distances unscathed
 		visible_message(span_danger("[src] makes a hard landing on [T] but remains unharmed from the fall."), \
 						span_userdanger("You brace for the fall. You make a hard landing on [T] but remain unharmed."))
@@ -343,8 +338,8 @@
 					return
 				to_chat(usr, "<b>Comments/Log:</b>")
 				var/counter = 1
-				while(R.fields[text("com_[]", counter)])
-					to_chat(usr, R.fields[text("com_[]", counter)])
+				while(R.fields["com_[counter]"])
+					to_chat(usr, R.fields["com_[counter]"])
 					to_chat(usr, "----------")
 					counter++
 				return
@@ -358,9 +353,9 @@
 				if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 					return
 				var/counter = 1
-				while(R.fields[text("com_[]", counter)])
+				while(R.fields["com_[counter]"])
 					counter++
-				R.fields[text("com_[]", counter)] = text("Made by [] on [] [], []<BR>[]", allowed_access, stationtime2text(), time2text(world.realtime, "MMM DD"), CURRENT_STATION_YEAR, t1)
+				R.fields["com_[counter]"] = "Made by [allowed_access] on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
 				to_chat(usr, span_notice("Successfully added comment."))
 				return
 
@@ -369,6 +364,8 @@
 //called when something steps onto a human
 /mob/living/carbon/human/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	spreadFire(AM)
 
 /mob/living/carbon/human/proc/canUseHUD()
@@ -395,7 +392,7 @@
 /mob/living/carbon/human/try_inject(mob/user, target_zone, injection_flags)
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
-		var/obj/item/bodypart/the_part = get_bodypart(target_zone || check_zone(user.zone_selected))
+		var/obj/item/bodypart/the_part = get_bodypart(target_zone || deprecise_zone(user.zone_selected))
 		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.name]."))
 
 /mob/living/carbon/human/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
@@ -525,16 +522,11 @@
 			span_notice("You perform CPR on [target.name].")
 		)
 
-		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "saved_life", /datum/mood_event/saved_life)
 		log_combat(src, target, "CPRed")
 
-		if (HAS_TRAIT(target, TRAIT_NOBREATH))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... which is a sensation you don't recognise..."))
-		else if (!target.getorganslot(ORGAN_SLOT_LUNGS))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
-		else
+		if(target.breathe(TRUE) == BREATH_OKAY)
+			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs. It feels good."))
 			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
 
 		if (target.health <= target.crit_threshold)
 			if (!panicking)
@@ -771,6 +763,7 @@
 						icon_num = 0
 					if(icon_num)
 						hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]"))
+
 				for(var/t in get_missing_limbs()) //Missing limbs
 					hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]6"))
 				for(var/t in get_disabled_limbs()) //Disabled limbs
@@ -783,6 +776,12 @@
 	if(admin_revive)
 		regenerate_limbs()
 		regenerate_organs()
+
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		BP.set_sever_artery(FALSE)
+		BP.set_sever_tendon(FALSE)
+		BP.heal_bones()
+
 	remove_all_embedded_objects()
 	set_heartattack(FALSE)
 	for(var/datum/mutation/human/HM in dna.mutations)
@@ -808,7 +807,6 @@
 	VV_DROPDOWN_OPTION(VV_HK_MOD_MUTATIONS, "Add/Remove Mutation")
 	VV_DROPDOWN_OPTION(VV_HK_MOD_QUIRKS, "Add/Remove Quirks")
 	VV_DROPDOWN_OPTION(VV_HK_SET_SPECIES, "Set Species")
-	VV_DROPDOWN_OPTION(VV_HK_PURRBATION, "Toggle Purrbation")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -869,32 +867,6 @@
 			var/newtype = GLOB.species_list[result]
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
-	if(href_list[VV_HK_PURRBATION])
-		if(!check_rights(R_SPAWN))
-			return
-		if(!ishumanbasic(src))
-			to_chat(usr, "This can only be done to the basic human species at the moment.")
-			return
-		var/success = purrbation_toggle(src)
-		if(success)
-			to_chat(usr, "Put [src] on purrbation.")
-			log_admin("[key_name(usr)] has put [key_name(src)] on purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has put [key_name(src)] on purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
-
-		else
-			to_chat(usr, "Removed [src] from purrbation.")
-			log_admin("[key_name(usr)] has removed [key_name(src)] from purrbation.")
-			var/msg = span_notice("[key_name_admin(usr)] has removed [key_name(src)] from purrbation.")
-			message_admins(msg)
-			admin_ticket_log(src, msg)
-
-/mob/living/carbon/human/limb_attack_self()
-	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
-	if(arm)
-		arm.attack_self(src)
-	return ..()
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
 	if(pulling != M || grab_state != GRAB_AGGRESSIVE || stat != CONSCIOUS)
@@ -977,13 +949,18 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
 		return
-	var/health_deficiency = max((maxHealth - health), staminaloss)
+	var/health_deficiency = maxHealth - health
 	if(health_deficiency >= 40)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 75)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
+
+/mob/living/carbon/human/pre_stamina_change(diff as num, forced)
+	if(diff < 0) //Taking damage, not healing
+		return diff * physiology.stamina_mod
+	return diff
 
 /mob/living/carbon/human/adjust_nutrition(change) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER))
@@ -1023,9 +1000,10 @@
 	var/race = null
 	var/use_random_name = TRUE
 
-/mob/living/carbon/human/species/Initialize(mapload)
-	. = ..()
-	INVOKE_ASYNC(src, PROC_REF(set_species), race)
+/mob/living/carbon/human/species/create_dna()
+	dna = new /datum/dna(src)
+	if (!isnull(race))
+		dna.species = new race
 
 /mob/living/carbon/human/species/set_species(datum/species/mrace, icon_update, pref_load)
 	. = ..()
@@ -1038,89 +1016,8 @@
 /mob/living/carbon/human/species/android
 	race = /datum/species/android
 
-/mob/living/carbon/human/species/dullahan
-	race = /datum/species/dullahan
-
-/mob/living/carbon/human/species/felinid
-	race = /datum/species/human/felinid
-
 /mob/living/carbon/human/species/fly
 	race = /datum/species/fly
-
-/mob/living/carbon/human/species/golem
-	race = /datum/species/golem
-
-/mob/living/carbon/human/species/golem/adamantine
-	race = /datum/species/golem/adamantine
-
-/mob/living/carbon/human/species/golem/plasma
-	race = /datum/species/golem/plasma
-
-/mob/living/carbon/human/species/golem/diamond
-	race = /datum/species/golem/diamond
-
-/mob/living/carbon/human/species/golem/gold
-	race = /datum/species/golem/gold
-
-/mob/living/carbon/human/species/golem/silver
-	race = /datum/species/golem/silver
-
-/mob/living/carbon/human/species/golem/plasteel
-	race = /datum/species/golem/plasteel
-
-/mob/living/carbon/human/species/golem/titanium
-	race = /datum/species/golem/titanium
-
-/mob/living/carbon/human/species/golem/plastitanium
-	race = /datum/species/golem/plastitanium
-
-/mob/living/carbon/human/species/golem/alien_alloy
-	race = /datum/species/golem/alloy
-
-/mob/living/carbon/human/species/golem/wood
-	race = /datum/species/golem/wood
-
-/mob/living/carbon/human/species/golem/uranium
-	race = /datum/species/golem/uranium
-
-/mob/living/carbon/human/species/golem/sand
-	race = /datum/species/golem/sand
-
-/mob/living/carbon/human/species/golem/glass
-	race = /datum/species/golem/glass
-
-/mob/living/carbon/human/species/golem/bluespace
-	race = /datum/species/golem/bluespace
-
-/mob/living/carbon/human/species/golem/bananium
-	race = /datum/species/golem/bananium
-
-/mob/living/carbon/human/species/golem/blood_cult
-	race = /datum/species/golem/runic
-
-/mob/living/carbon/human/species/golem/cloth
-	race = /datum/species/golem/cloth
-
-/mob/living/carbon/human/species/golem/plastic
-	race = /datum/species/golem/plastic
-
-/mob/living/carbon/human/species/golem/bronze
-	race = /datum/species/golem/bronze
-
-/mob/living/carbon/human/species/golem/cardboard
-	race = /datum/species/golem/cardboard
-
-/mob/living/carbon/human/species/golem/leather
-	race = /datum/species/golem/leather
-
-/mob/living/carbon/human/species/golem/bone
-	race = /datum/species/golem/bone
-
-/mob/living/carbon/human/species/golem/durathread
-	race = /datum/species/golem/durathread
-
-/mob/living/carbon/human/species/golem/snow
-	race = /datum/species/golem/snow
 
 /mob/living/carbon/human/species/jelly
 	race = /datum/species/jelly
@@ -1149,9 +1046,6 @@
 /mob/living/carbon/human/species/moth
 	race = /datum/species/moth
 
-/mob/living/carbon/human/species/mush
-	race = /datum/species/mush
-
 /mob/living/carbon/human/species/plasma
 	race = /datum/species/plasmaman
 
@@ -1170,9 +1064,6 @@
 /mob/living/carbon/human/species/skeleton
 	race = /datum/species/skeleton
 
-/mob/living/carbon/human/species/snail
-	race = /datum/species/snail
-
 /mob/living/carbon/human/species/vampire
 	race = /datum/species/vampire
 
@@ -1182,8 +1073,56 @@
 /mob/living/carbon/human/species/zombie/infectious
 	race = /datum/species/zombie/infectious
 
-/mob/living/carbon/human/species/skrell
-	race = /datum/species/skrell
-
 /mob/living/carbon/human/species/vox
 	race = /datum/species/vox
+
+/mob/living/carbon/human/verb/checkpulse()
+	set name = "Check Pulse"
+	set category = "IC"
+	set desc = "Approximately count somebody's pulse. Requires you to stand still at least 6 seconds."
+	set src in view(1)
+
+	if(!isliving(src) || usr.stat || usr.incapacitated())
+		return
+
+	var/self = FALSE
+	if(usr == src)
+		self = TRUE
+
+	if(!self)
+		usr.visible_message(
+			span_notice("[usr] kneels down, puts \his hand on [src]'s wrist and begins counting their pulse."),
+			span_notice("You begin counting [src]'s pulse")
+		)
+	else
+		usr.visible_message(
+			span_notice("[usr] begins counting their pulse."),
+			span_notice("You begin counting your pulse.")
+		)
+
+
+	if (!pulse() || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		to_chat(usr, span_danger("[src] has no pulse!"))
+		return
+	else
+		to_chat(usr, span_notice("[self ? "You have a" : "[src] has a"] pulse. Counting..."))
+
+	to_chat(usr, span_notice("You must[self ? "" : " both"] remain still until counting is finished."))
+
+	if(do_after(usr, src, 6 SECONDS, DO_PUBLIC))
+		to_chat(usr, span_notice("[self ? "Your" : "[src]'s"] pulse is [src.get_pulse(GETPULSE_HAND)]."))
+
+///Accepts an organ slot, returns whether or not the mob needs one to survive (or just should have one for non-vital organs).
+/mob/living/carbon/human/needs_organ(slot)
+	if(!dna || !dna.species)
+		return FALSE
+
+	switch(slot)
+		if(ORGAN_SLOT_STOMACH)
+			if(HAS_TRAIT(src, TRAIT_NOHUNGER))
+				return FALSE
+		if(ORGAN_SLOT_LUNGS)
+			if(HAS_TRAIT(src, TRAIT_NOBREATH))
+				return FALSE
+
+	return dna.species.organs[slot]

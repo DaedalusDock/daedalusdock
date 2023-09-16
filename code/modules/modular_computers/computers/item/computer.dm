@@ -31,6 +31,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	var/datum/looping_sound/computer/soundloop
 	///Whether or not this modular computer uses the looping sound
 	var/looping_sound = TRUE
+	///Last world.time a beep played.
+	var/last_ambient_sound = 0
 
 	var/base_active_power_usage = 50 // Power usage when the computer is open (screen is active) and can be interacted with. Remember hardware can use power too.
 	var/base_idle_power_usage = 5 // Power usage when the computer is idle and screen is off (currently only applies to laptops)
@@ -151,7 +153,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	if(issilicon(user))
 		return
 
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		var/obj/item/computer_hardware/card_slot/card_slot2 = all_components[MC_CARD2]
 		var/obj/item/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 		if(card_slot2?.try_eject(user) || card_slot?.try_eject(user))
@@ -252,7 +254,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 
 /obj/item/modular_computer/MouseDrop(obj/over_object, src_location, over_location)
 	var/mob/M = usr
-	if((!istype(over_object, /atom/movable/screen)) && usr.canUseTopic(src, BE_CLOSE))
+	if((!istype(over_object, /atom/movable/screen)) && usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return attack_self(M)
 	return ..()
 
@@ -367,7 +369,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 			soundloop.start()
 		enabled = 1
 		update_appearance()
-		ui_interact(user)
+		if(user)
+			ui_interact(user)
 		return TRUE
 	else // Unpowered
 		if(issynth)
@@ -410,7 +413,11 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 			idle_threads.Remove(P)
 
 	handle_power(delta_time) // Handles all computer power interaction
-	//check_update_ui_need()
+
+	var/static/list/beepsounds = list('sound/items/compbeep1.ogg','sound/items/compbeep2.ogg','sound/items/compbeep3.ogg','sound/items/compbeep4.ogg','sound/items/compbeep5.ogg')
+	if(world.time > last_ambient_sound + 60 SECONDS && prob(1))
+		last_ambient_sound = world.time
+		playsound(src.loc, pick(beepsounds), 15, TRUE,10)
 
 /**
  * Displays notification text alongside a soundbeep when requested to by a program.
@@ -533,7 +540,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		return FALSE
 	var/obj/item/computer_hardware/network_card/network_card = all_components[MC_NET]
 
-	return SSnetworks.add_log(text, network_card.network_id, network_card.hardware_id)
+	return SSnetworks.add_log(text, network_card.hardware_id)
 
 /obj/item/modular_computer/proc/shutdown_computer(loud = 1)
 	kill_program(forced = TRUE)

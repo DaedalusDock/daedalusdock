@@ -74,5 +74,5 @@
 
 /datum/proximity_monitor/proc/on_entered(atom/source, atom/movable/arrived)
 	SIGNAL_HANDLER
-	if(source != host)
+	if(source != host && arrived != host)
 		hasprox_receiver?.HasProximity(arrived)

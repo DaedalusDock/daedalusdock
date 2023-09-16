@@ -210,7 +210,8 @@
 			candidates.Remove(candidate_player)
 			continue
 
-		if (!((antag_preference || antag_flag) in candidate_client.prefs.be_special))
+		var/list/client_antags = candidate_client.prefs.read_preference(/datum/preference/blob/antagonists)
+		if (!client_antags[antag_preference || antag_flag])
 			candidates.Remove(candidate_player)
 			continue
 
@@ -225,7 +226,7 @@
 			for(var/role in exclusive_roles)
 				var/datum/job/job = SSjob.GetJob(role)
 
-				if((role in candidate_client.prefs.job_preferences) && SSjob.check_job_eligibility(candidate_player, job, "Dynamic Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
+				if((role in candidate_client.prefs.read_preference(/datum/preference/blob/job_priority)) && SSjob.check_job_eligibility(candidate_player, job, "Dynamic Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
 					exclusive_candidate = TRUE
 					break
 

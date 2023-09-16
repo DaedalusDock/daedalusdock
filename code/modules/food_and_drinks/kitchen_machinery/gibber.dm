@@ -229,7 +229,7 @@
 /obj/machinery/gibber/autogibber
 	var/input_dir = NORTH
 
-/obj/machinery/gibber/autogibber/Bumped(atom/movable/AM)
+/obj/machinery/gibber/autogibber/BumpedBy(atom/movable/AM)
 	var/atom/input = get_step(src, input_dir)
 	if(isliving(AM))
 		var/mob/living/victim = AM

@@ -6,7 +6,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "your laws"
-	selection_color = "#ccffcc"
+	selection_color = "#3f823f"
 	spawn_type = /mob/living/silicon/ai
 	req_admin_notify = TRUE
 	minimal_player_age = 30
@@ -14,7 +14,6 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SILICON
 	exp_granted_type = EXP_TYPE_CREW
-	display_order = JOB_DISPLAY_ORDER_AI
 	allow_bureaucratic_error = FALSE
 	departments_list = list(
 		/datum/job_department/silicon,

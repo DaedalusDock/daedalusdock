@@ -77,6 +77,9 @@
 
 /obj/machinery/field/containment/proc/on_entered(datum/source, atom/movable/considered_atom)
 	SIGNAL_HANDLER
+	if(considered_atom == src)
+		return
+
 	if(isliving(considered_atom))
 		var/mob/living/living_moving_through_field = considered_atom
 		if(!living_moving_through_field.incorporeal_move)
@@ -115,7 +118,7 @@
 	///Used to add a delay between shocks. In some cases this used to crash servers by spawning hundreds of sparks every second.
 	var/has_shocked = FALSE
 
-/obj/machinery/field/Bumped(atom/movable/mover)
+/obj/machinery/field/BumpedBy(atom/movable/mover)
 	if(has_shocked)
 		return
 	if(isliving(mover))

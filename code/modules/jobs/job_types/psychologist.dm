@@ -7,8 +7,13 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel and the medical director"
-	selection_color = "#bbe291"
+	selection_color = "#013d3b"
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/aether,
+		/datum/employer/contractor
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -22,7 +27,6 @@
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_PSYCHOLOGIST
 	departments_list = list(
 		/datum/job_department/service,
 		)
@@ -30,7 +34,7 @@
 	family_heirlooms = list(/obj/item/storage/pill_bottle)
 
 	mail_goodies = list(
-		/obj/item/storage/pill_bottle/mannitol = 30,
+		/obj/item/storage/pill_bottle/alkysine = 30,
 		/obj/item/storage/pill_bottle/happy = 5,
 		/obj/item/gun/syringe = 1
 	)
@@ -46,11 +50,10 @@
 	id_trim = /datum/id_trim/job/psychologist
 	uniform = /obj/item/clothing/under/suit/black
 	backpack_contents = list(
-		/obj/item/storage/pill_bottle/happinesspsych,
 		/obj/item/storage/pill_bottle/lsdpsych,
-		/obj/item/storage/pill_bottle/mannitol,
+		/obj/item/storage/pill_bottle/alkysine,
 		/obj/item/storage/pill_bottle/paxpsych,
-		/obj/item/storage/pill_bottle/psicodine,
+		/obj/item/storage/pill_bottle/haloperidol,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/medical
 	ears = /obj/item/radio/headset/headset_srvmed

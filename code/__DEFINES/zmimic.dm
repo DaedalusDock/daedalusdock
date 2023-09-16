@@ -1,6 +1,6 @@
 #define TURF_IS_MIMICKING(T) (isturf(T) && (T:z_flags & Z_MIMIC_BELOW))
 
-#define CHECK_OO_EXISTENCE(OO) if (OO && !MOVABLE_IS_ON_ZTURF(OO) && !OO:destruction_timer) { OO:destruction_timer = QDEL_IN(OO, 10 SECONDS); }
+#define CHECK_OO_EXISTENCE(OO) if (OO && !MOVABLE_IS_ON_ZTURF(OO) && !OO:destruction_timer) { OO:destruction_timer = QDEL_IN_STOPPABLE(OO, 10 SECONDS); }
 #define UPDATE_OO_IF_PRESENT CHECK_OO_EXISTENCE(src:bound_overlay); if (src:bound_overlay) { update_above(); }
 
 // I do not apologize.
@@ -11,15 +11,25 @@
 
 /// Is this movable visible from a turf that is mimicking below? Note: this does not necessarily mean *directly* below.
 #define MOVABLE_IS_BELOW_ZTURF(M) (\
-	isturf(loc) && (TURF_IS_MIMICKING(loc:above) \
+	isturf(M:loc) && (TURF_IS_MIMICKING(M:loc:above) \
 	|| ((M:zmm_flags & ZMM_LOOKAHEAD) && ZM_INTERNAL_SCAN_LOOKAHEAD(M, above?:z_flags, Z_MIMIC_BELOW))  \
 	|| ((M:zmm_flags & ZMM_LOOKBESIDE) && ZM_INTERNAL_SCAN_LOOKBESIDE(M, above?:z_flags, Z_MIMIC_BELOW))) \
 )
 /// Is this movable located on a turf that is mimicking below? Note: this does not necessarily mean *directly* on.
 #define MOVABLE_IS_ON_ZTURF(M) (\
-	isturf(loc) && (TURF_IS_MIMICKING(loc:above) \
+	isturf(M:loc) && (TURF_IS_MIMICKING(M:loc) \
 	|| ((M:zmm_flags & ZMM_LOOKAHEAD) && ZM_INTERNAL_SCAN_LOOKAHEAD(M, z_flags, Z_MIMIC_BELOW)) \
 	|| ((M:zmm_flags & ZMM_LOOKBESIDE) && ZM_INTERNAL_SCAN_LOOKBESIDE(M, z_flags, Z_MIMIC_BELOW))) \
 )
 
-#define FOR_MIMIC_OF(ORIGIN,MVAR) MVAR = ORIGIN; while ((MVAR = MVAR:bound_overlay) && !MVAR:destruction_timer)
+/// This macro currently doesn't work for an unknown reason, probably a byond bug(?)
+#define FOR_MIMIC_OF(ORIGIN,MVAR) MVAR = ORIGIN.bound_overlay; while (MVAR) if(!MVAR.destruction_timer) break;
+/// See above
+#define z_animate(thing, args...) \
+	do { \
+		animate(thing, ##args); \
+		var/atom/movable/openspace/mimic/__mimic; \
+		FOR_MIMIC_OF(thing, __mimic){ \
+			animate(__mimic, ##args); \
+		} \
+	} while(FALSE)

@@ -64,8 +64,7 @@
 		if(EXPLODE_DEVASTATE)
 			if(prob(80))
 				if(!length(baseturfs) || !ispath(baseturfs[baseturfs.len-1], /turf/open/floor))
-					ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-					ReplaceWithLattice()
+					TryScrapeToLattice()
 				else
 					ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
 			else if(prob(50))
@@ -84,7 +83,7 @@
 				new floor_tile(src)
 				make_plating(TRUE)
 		else if(prob(30))
-			ReplaceWithLattice()
+			TryScrapeToLattice()
 
 /turf/open/floor/engine/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)

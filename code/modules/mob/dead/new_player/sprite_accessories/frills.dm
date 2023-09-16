@@ -1,10 +1,6 @@
 /datum/sprite_accessory/frills
 	icon = 'icons/mob/mutant_bodyparts.dmi'
 
-/datum/sprite_accessory/frills/none
-	name = "None"
-	icon_state = "none"
-
 /datum/sprite_accessory/frills/simple
 	name = "Simple"
 	icon_state = "simple"

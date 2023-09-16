@@ -53,7 +53,8 @@
 
 /datum/computer_file/program/messenger/can_run(mob/user, loud, access_to_check, transfer, list/access)
 	. = ..()
-	if(!.) //Already declined for other reason.
+	if(!. || transfer) //Already declined for other reason.
+	//Or We're checking just download access here, not runtime compatibility
 		return .
 	var/obj/item/computer_hardware/network_card/packetnet/pnetcard = computer.all_components[MC_NET]
 	if(!istype(pnetcard))

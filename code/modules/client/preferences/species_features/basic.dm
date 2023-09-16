@@ -67,6 +67,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "facial_hair_gradient"
 	relevant_species_trait = FACEHAIR
+	sub_preference = /datum/preference/color/facial_hair_gradient
 
 /datum/preference/choiced/facial_hair_gradient/init_possible_values()
 	return assoc_to_keys(GLOB.facial_hair_gradients_list)

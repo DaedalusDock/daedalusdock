@@ -690,7 +690,7 @@
 		C.Unconscious(40 * removed, FALSE)
 	if(prob(10))
 		C.losebreath += 4 * removed
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, 150)
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, 150, updating_health = FALSE)
 		C.adjustToxLoss(3 * removed,0)
 		C.stamina.adjust(-10 * removed)
 		C.blur_eyes(5)

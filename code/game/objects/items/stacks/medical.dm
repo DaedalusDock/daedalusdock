@@ -84,7 +84,7 @@
 
 /// The healing effects on a carbon patient. Since we have extra details for dealing with bodyparts, we get our own fancy proc. Still returns TRUE on success and FALSE on fail
 /obj/item/stack/medical/proc/heal_carbon(mob/living/carbon/C, mob/user, brute, burn)
-	var/obj/item/bodypart/affecting = C.get_bodypart(check_zone(user.zone_selected), TRUE)
+	var/obj/item/bodypart/affecting = C.get_bodypart(deprecise_zone(user.zone_selected), TRUE)
 	if(!affecting) //Missing limb?
 		to_chat(user, span_warning("[C] doesn't have \a [parse_zone(user.zone_selected)]!"))
 		return FALSE
@@ -211,7 +211,7 @@
 	merge_type = /obj/item/stack/medical/suture
 
 /obj/item/stack/medical/suture/heal_carbon(mob/living/carbon/C, mob/user, brute, burn)
-	var/obj/item/bodypart/affecting = C.get_bodypart(check_zone(user.zone_selected), TRUE)
+	var/obj/item/bodypart/affecting = C.get_bodypart(deprecise_zone(user.zone_selected), TRUE)
 	if(!affecting) //Missing limb?
 		to_chat(user, span_warning("[C] doesn't have \a [parse_zone(user.zone_selected)]!"))
 		return FALSE

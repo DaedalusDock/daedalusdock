@@ -127,7 +127,12 @@
 	add_g = clamp((self_g - 1.1) * 0.3, 0, 0.22)
 	add_b = clamp((self_b - 1.1) * 0.3, 0, 0.22)
 
-	applying_additive = add_r || add_b || add_g
+	// Client-shredding, does not cull any additive overlays.
+	//applying_additive = add_r || add_g || add_b
+	// Cull additive overlays that would be below 0.03 alpha in any color.
+	applying_additive = max(add_r, add_g, add_b) > 0.03
+	// Cull additive overlays whose color alpha sum is lower than 0.03
+	//applying_additive = (add_r + add_g + add_b) > 0.03
 
 	#ifdef ZMIMIC_LIGHT_BLEED
 	var/turf/T

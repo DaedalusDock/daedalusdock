@@ -241,7 +241,6 @@
 	var/list/mineralSpawnChanceList = list(/obj/item/stack/ore/uranium = 5, /obj/item/stack/ore/diamond = 1, /obj/item/stack/ore/gold = 10,
 		/obj/item/stack/ore/silver = 12, /obj/item/stack/ore/plasma = 20, /obj/item/stack/ore/iron = 40, /obj/item/stack/ore/titanium = 11,
 		/turf/closed/mineral/gibtonite = 4, /obj/item/stack/ore/bluespace_crystal = 1)
-		//Currently, Adamantine won't spawn as it has no uses. -Durandan
 	var/mineralChance = 13
 
 /turf/closed/mineral/random/Initialize(mapload)
@@ -716,10 +715,7 @@
 	H.mind?.adjust_experience(/datum/skill/mining, 100) //yay!
 
 /turf/closed/mineral/strong/proc/drop_ores()
-	if(prob(10))
-		new /obj/item/stack/sheet/mineral/mythril(src, 5)
-	else
-		new /obj/item/stack/sheet/mineral/adamantine(src, 5)
+	new /obj/item/stack/sheet/mineral/mythril(src, 5)
 
 /turf/closed/mineral/strong/acid_melt()
 	return

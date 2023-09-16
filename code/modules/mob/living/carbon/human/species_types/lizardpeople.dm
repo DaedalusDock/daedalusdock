@@ -5,7 +5,7 @@
 	id = SPECIES_LIZARD
 	say_mod = "hisses"
 	default_color = COLOR_VIBRANT_LIME
-	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE, BODY_RESIZABLE, SCLERA)
+	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, BODY_RESIZABLE, SCLERA)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
@@ -20,7 +20,7 @@
 		/obj/item/organ/spines = "None",
 		/obj/item/organ/tail/lizard = "Smooth",
 	)
-	mutanttongue = /obj/item/organ/tongue/lizard
+
 	coldmod = 1.5
 	heatmod = 0.67
 	payday_modifier = 0.75
@@ -51,6 +51,39 @@
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/lizard,
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/lizard,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+	)
+
+
+	pain_emotes = list(
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+			"hiss" = 1
+		) = 20,
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+			"wheeze" = 1,
+			"hiss" = 1,
+		) = 50,
+		list(
+			"wheeze" = 1,
+			"scream" = 1,
+			"bellow" = 1,
+			"howl" = 1
+		) = 80
 	)
 
 /// Lizards are cold blooded and do not stabilize body temperature naturally
@@ -127,8 +160,7 @@ Lizard subspecies: ASHWALKERS
 /datum/species/lizard/ashwalker
 	name = "\improper Ash Walker"
 	id = SPECIES_LIZARD_ASH
-	species_traits = list(MUTCOLORS,EYECOLOR,LIPS,HAS_FLESH,HAS_BONE)
-	mutantlungs = /obj/item/organ/lungs/ashwalker
+	species_traits = list(MUTCOLORS,EYECOLOR,LIPS)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
@@ -146,6 +178,19 @@ Lizard subspecies: ASHWALKERS
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/lizard,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/ashwalker,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/lizard,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+	)
+
 
 /*
 Lizard subspecies: SILVER SCALED
@@ -166,16 +211,30 @@ Lizard subspecies: SILVER SCALED
 		TRAIT_WINE_TASTER,
 	)
 	species_language_holder = /datum/language_holder/lizard/silver
-	mutanttongue = /obj/item/organ/tongue/lizard/silver
+
 	armor = 10 //very light silvery scales soften blows
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	examine_limb_id = SPECIES_LIZARD
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = null,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/lizard/silver,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+	)
+
 	///stored mutcolor for when we turn back off of a silverscale.
 	var/old_mutcolor
 	///stored eye color for when we turn back off of a silverscale.
 	var/old_eye_color_left
 	///See above
 	var/old_eye_color_right
+
 
 /datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/C, datum/species/old_species)
 	var/mob/living/carbon/human/new_silverscale = C

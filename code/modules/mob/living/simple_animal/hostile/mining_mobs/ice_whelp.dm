@@ -35,7 +35,7 @@
 	crusher_loot = /obj/item/crusher_trophy/tail_spike
 	deathmessage = "collapses on its side."
 	deathsound = 'sound/magic/demon_dies.ogg'
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	/// How far the whelps fire can go

@@ -195,7 +195,7 @@
 	name = "Blood"
 	description = "A suspension of organic cells necessary for the transport of oxygen. Keep inside at all times."
 	color = "#C80000" // rgb: 200, 0, 0
-	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
+	metabolization_rate = 5 //fast rate so it disappears fast.
 	taste_description = "iron"
 	taste_mult = 1.3
 	glass_icon_state = "glass_red"
@@ -232,11 +232,11 @@
 
 			C.ForceContractDisease(strain)
 
-	if(C.get_blood_id() == /datum/reagent/blood && C.dna && C.dna.species && (DRINKSBLOOD in C.dna.species.species_traits))
+	if(C.get_blood_id() == /datum/reagent/blood)
 		if(!data || !(data["blood_type"] in get_safe_blood(C.dna.blood_type)))
 			C.reagents.add_reagent(/datum/reagent/toxin, removed)
 		else
-			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAXIMUM)
+			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
 	if(data?["viruses"])
@@ -648,7 +648,7 @@
 		if(drinker.blood_volume < BLOOD_VOLUME_NORMAL)
 			drinker.blood_volume += 3 * removed
 	else
-		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 		drinker.adjustToxLoss(2 * removed, FALSE)
 		drinker.adjustFireLoss(2 * removed, FALSE)
 		drinker.adjustOxyLoss(2 * removed, FALSE)
@@ -733,7 +733,7 @@
 		if(ishuman(C) && C.blood_volume < BLOOD_VOLUME_NORMAL)
 			C.blood_volume += 3 * removed
 	else  // Will deal about 90 damage when 50 units are thrown
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 		C.adjustToxLoss(1 * removed, 0)
 		C.adjustFireLoss(1 * removed, 0)
 		C.adjustOxyLoss(1 * removed, 0)
@@ -934,9 +934,10 @@
 	var/obj/item/organ/brain/B = C.getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		if (B.damage < 60)
-			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 14 * removed)
+			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 14 * removed, updating_health = FALSE)
 		else
-			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 7 * removed)
+			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 7 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))

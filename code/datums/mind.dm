@@ -55,7 +55,7 @@
 	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null //this mind's antag HUD
 	var/holy_role = NONE //is this person a chaplain or admin role allowed to use bibles, Any rank besides 'NONE' allows for this.
 
-	var/mob/living/enslaved_to //If this mind's master is another mob (i.e. adamantine golems)
+	var/mob/living/enslaved_to //If this mind's master is another mob
 	var/datum/language_holder/language_holder
 	var/unconvertable = FALSE
 	var/late_joiner = FALSE
@@ -715,7 +715,7 @@
 					log_admin("[key_name(usr)] gave [current] an uplink.")
 
 	else if (href_list["obj_announce"])
-		announce_objectives()
+		announce_objectives(TRUE)
 
 	//Something in here might have changed your mob
 	if(self_antagging && (!usr || !usr.client) && current.client)
@@ -729,12 +729,26 @@
 		all_objectives |= A.objectives
 	return all_objectives
 
-/datum/mind/proc/announce_objectives()
+/// Prints the objectives to the mind's owner. If loudly is true, instead open a window.
+/datum/mind/proc/announce_objectives(loudly)
 	var/obj_count = 1
-	to_chat(current, span_notice("Your current objectives:"))
-	for(var/datum/objective/objective as anything in get_all_objectives())
-		to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
-		obj_count++
+	if(!loudly)
+		to_chat(current, span_notice("Your current objectives:"))
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
+			obj_count++
+	else
+		var/list/content = list("<div>")
+		content +="<span style='text-align: center;color: red'><h1>Your objectives may have been changed!</h1></span><br><br>"
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			content += "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]<br><br>"
+			obj_count++
+
+		content += "</div>"
+		var/datum/browser/popup = new(current, "Objectives", "Objectives", 700, 300)
+		popup.set_window_options("can_close=1;can_minimize=10;can_maximize=0;can_resize=0;titlebar=1;")
+		popup.set_content(jointext(content, ""))
+		popup.open(current)
 
 /datum/mind/proc/find_syndicate_uplink(check_unlocked)
 	var/list/L = current.get_all_contents()

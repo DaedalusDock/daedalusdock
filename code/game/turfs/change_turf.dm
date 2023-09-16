@@ -88,6 +88,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/old_dynamic_lumcount = dynamic_lumcount
 	var/old_rcd_memory = rcd_memory
 	var/old_above = above
+	var/old_fire = fire
 
 	var/old_bp = blueprint_data
 	blueprint_data = null
@@ -142,6 +143,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	dynamic_lumcount = old_dynamic_lumcount
 
 	above = old_above
+	fire = old_fire
 
 	if(SSlighting.initialized)
 		if(!always_lit)
@@ -164,22 +166,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	return W
 
-/*
-/turf/open/ChangeTurf(path, list/new_baseturfs, flags) //Resist the temptation to make this default to keeping air.
-	if ((flags & CHANGETURF_INHERIT_AIR) && ispath(path, /turf/open))
-		var/datum/gas_mixture/stashed_air = new()
-		stashed_air.copyFrom(air)
-		. = ..() //If path == type this will return us, don't bank on making a new type
-		if (!.) // changeturf failed or didn't do anything
-			return
-		var/turf/open/newTurf = .
-		newTurf.air.copyFrom(stashed_air)
-		SSzas.mark_for_update(newTurf)
-	else
-		if(ispath(path,/turf/closed) || ispath(path,/turf/cordon))
-			flags |= CHANGETURF_RECALC_ADJACENT
-		return ..()
-*/
 /// Take off the top layer turf and replace it with the next baseturf down
 /turf/proc/ScrapeAway(amount=1, flags)
 	if(!amount)

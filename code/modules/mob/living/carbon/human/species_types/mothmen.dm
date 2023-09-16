@@ -5,7 +5,7 @@
 	say_mod = "flutters"
 	scream_verb = "buzzes"
 	default_color = "00FF00"
-	species_traits = list(MUTCOLORS, LIPS, HAS_FLESH, HAS_BONE, HAS_MARKINGS, BODY_RESIZABLE, NONHUMANHAIR)
+	species_traits = list(MUTCOLORS, LIPS, HAS_MARKINGS, BODY_RESIZABLE, NONHUMANHAIR)
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
@@ -20,7 +20,7 @@
 	liked_food = VEGETABLES | DAIRY | CLOTH
 	disliked_food = FRUIT | GROSS
 	toxic_food = MEAT | RAW | SEAFOOD
-	mutanteyes = /obj/item/organ/eyes/moth
+
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/moth
 	wings_icons = list("Megamoth", "Mothra")
@@ -37,6 +37,19 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/moth,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/moth,
 	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes/moth,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+	)
+
 
 /datum/species/moth/regenerate_organs(mob/living/carbon/C, datum/species/old_species, replace_current= TRUE, list/excluded_zones, visual_only)
 	. = ..()

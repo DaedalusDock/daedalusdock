@@ -13,16 +13,42 @@
 	else
 		.["brain_activity"] = (B.maxHealth - B.damage) / B.maxHealth * 100
 
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	var/pulse_result
+	if(needs_organ(ORGAN_SLOT_HEART))
+		if(!heart)
+			pulse_result = 0
+		else if(heart.organ_flags & ORGAN_SYNTHETIC)
+			pulse_result = -2
+		else if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
+			pulse_result = 0
+		else
+			pulse_result = get_pulse(GETPULSE_TOOL)
+	else
+		pulse_result = -1
 
+	if(pulse_result == ">250")
+		pulse_result = -3
+
+	.["pulse"] = text2num(pulse_result)
+	.["blood_pressure"] = get_blood_pressure()
+	.["blood_o2"] = get_blood_oxygenation()
 	.["blood_volume"] = blood_volume
 	.["blood_volume_max"] = BLOOD_VOLUME_NORMAL
+	.["blood_type"] = dna.blood_type
+
 	.["temperature"] = round(bodytemperature, 0.1)
+	.["dna"] = dna.unique_enzymes
+
 	.["brute"] = getBruteLoss()
 	.["burn"] = getFireLoss()
 	.["toxin"] = getToxLoss()
 	.["oxygen"] = getOxyLoss()
 	.["genetic"] = getCloneLoss()
+
 	.["radiation"] = HAS_TRAIT(src, TRAIT_IRRADIATED)
+	.["husked"]  = HAS_TRAIT(src, TRAIT_HUSK)
+	.["dna_ruined"] = HAS_TRAIT(src, TRAIT_BADDNA)
 
 	.["reagents"] = list()
 	if(reagents.total_volume)
@@ -30,7 +56,7 @@
 			var/list/reagent = list()
 			reagent["name"] = R.name
 			reagent["quantity"] = round(R.volume, 1)
-			reagent["visible"] = !(R.chemical_flags & REAGENT_INVISIBLE)
+			reagent["visible"] = !(R.chemical_flags & (REAGENT_SCANNABLE|REAGENT_INVISIBLE))
 			reagent["overdosed"] = R.overdosed
 			.["reagents"] += list(reagent)
 

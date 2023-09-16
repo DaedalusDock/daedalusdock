@@ -246,7 +246,7 @@
 		if(QDELETED(living_target) || (living_target.stat == DEAD && prev_stat != DEAD))
 			total_refund += jaunt.cooldown_time
 		// you knocked them into critical
-		else if(HAS_TRAIT(living_target, TRAIT_CRITICAL_CONDITION) && prev_stat == CONSCIOUS)
+		else if(living_target.stat == UNCONSCIOUS && prev_stat == CONSCIOUS)
 			total_refund += crit_refund
 
 		if(living_target.stat != DEAD && prev_stat != DEAD)

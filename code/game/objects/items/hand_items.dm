@@ -501,7 +501,7 @@
 
 /obj/projectile/kiss/proc/try_fluster(mob/living/living_target)
 	// people with the social anxiety quirk can get flustered when hit by a kiss
-	if(!HAS_TRAIT(living_target, TRAIT_ANXIOUS) || (living_target.stat > SOFT_CRIT) || living_target.is_blind())
+	if(!HAS_TRAIT(living_target, TRAIT_ANXIOUS) || (living_target.stat != CONSCIOUS) || living_target.is_blind())
 		return
 	if(HAS_TRAIT(living_target, TRAIT_FEARLESS) || prob(50)) // 50% chance for it to apply, also immune while on meds
 		return
@@ -528,7 +528,7 @@
 	living_target.visible_message("<b>[living_target]</b> [other_msg]", span_userdanger("Whoa! [self_msg]"))
 
 /obj/projectile/kiss/on_hit(atom/target, blocked, pierce_hit)
-	def_zone = BODY_ZONE_HEAD // let's keep it PG, people
+	aimed_def_zone = BODY_ZONE_HEAD // let's keep it PG, people
 	. = ..()
 	if(isliving(target))
 		try_fluster(target)

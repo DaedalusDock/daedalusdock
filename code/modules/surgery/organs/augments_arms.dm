@@ -170,7 +170,7 @@
 	playsound(get_turf(owner), extend_sound, 50, TRUE)
 
 /obj/item/organ/cyberimp/arm/ui_action_click()
-	if((organ_flags & ORGAN_FAILING) || (!active_item && !contents.len))
+	if((organ_flags & ORGAN_DEAD) || (!active_item && !contents.len))
 		to_chat(owner, span_warning("The implant doesn't respond. It seems to be broken..."))
 		return
 
@@ -198,7 +198,7 @@
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
-	if(prob(30/severity) && owner && !(organ_flags & ORGAN_FAILING))
+	if(prob(30/severity) && owner && !(organ_flags & ORGAN_DEAD))
 		Retract()
 		owner.visible_message(span_danger("A loud bang comes from [owner]\'s [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm!"))
 		playsound(get_turf(owner), 'sound/weapons/flashbang.ogg', 100, TRUE)
@@ -206,7 +206,7 @@
 		owner.adjust_fire_stacks(20)
 		owner.ignite_mob()
 		owner.adjustFireLoss(25)
-		set_organ_failing(TRUE)
+		set_organ_dead(TRUE)
 
 /obj/item/organ/cyberimp/arm/gun/laser
 	name = "arm-mounted laser implant"

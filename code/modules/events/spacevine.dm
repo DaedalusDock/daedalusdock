@@ -374,7 +374,6 @@
 	mouse_opacity = MOUSE_OPACITY_OPAQUE //Clicking anywhere on the turf is good enough
 	pass_flags = PASSTABLE | PASSGRILLE
 	max_integrity = 50
-	loc_procs = CROSSED
 	var/energy = 0
 	var/can_spread = TRUE //Can this kudzu spread?
 	var/datum/spacevine_controller/master = null
@@ -385,6 +384,10 @@
 /obj/structure/spacevine/Initialize(mapload)
 	. = ..()
 	add_atom_colour("#ffffff", FIXED_COLOUR_PRIORITY)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 	become_atmos_sensitive()
 
 /obj/structure/spacevine/examine(mob/user)
@@ -448,11 +451,14 @@
 		if(BURN)
 			playsound(src.loc, 'sound/items/welder.ogg', 100, TRUE)
 
-/obj/structure/spacevine/Crossed(atom/movable/crossed_by, oldloc)
-	if(!isliving(crossed_by))
+/obj/structure/spacevine/proc/on_entered(datum/source, atom/movable/movable)
+	SIGNAL_HANDLER
+	if(movable == src)
+		return
+	if(!isliving(movable))
 		return
 	for(var/datum/spacevine_mutation/mutation in mutations)
-		mutation.on_cross(src, crossed_by)
+		mutation.on_cross(src, movable)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/spacevine/attack_hand(mob/user, list/modifiers)

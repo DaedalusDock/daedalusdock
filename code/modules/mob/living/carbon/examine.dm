@@ -106,11 +106,10 @@
 	. += msg.Join("")
 
 	if(!appears_dead)
-		switch(stat)
-			if(SOFT_CRIT)
-				. += "[t_His] breathing is shallow and labored."
-			if(UNCONSCIOUS, HARD_CRIT)
-				. += "[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep."
+		if(stat != CONSCIOUS)
+			. += "[t_He] [t_is]n't responding to anything around [t_him] and seems to be asleep.\n"
+		else if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
+			msg += "[t_He] [t_is] barely conscious.\n"
 
 	var/trait_exam = common_trait_examine()
 	if (!isnull(trait_exam))

@@ -39,7 +39,7 @@
 	log_combat(user, affected_mob, "attempted to inject", src, "([contained])")
 
 	if(reagents.total_volume && (ignore_flags || affected_mob.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))) // Ignore flag should be checked first or there will be an error message.
-		to_chat(affected_mob, span_warning("You feel a tiny prick!"))
+		affected_mob.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
 		to_chat(user, span_notice("You inject [affected_mob] with [src]."))
 		var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
 
@@ -53,6 +53,7 @@
 				trans = reagents.copy_to(affected_mob, amount_per_transfer_from_this)
 			to_chat(user, span_notice("[trans] unit\s injected. [reagents.total_volume] unit\s remaining in [src]."))
 			log_combat(user, affected_mob, "injected", src, "([contained])")
+			playsound(src, 'sound/effects/autoinjector.ogg', 25)
 		return TRUE
 	return FALSE
 
@@ -100,8 +101,8 @@
 //MediPens
 
 /obj/item/reagent_containers/hypospray/medipen
-	name = "epinephrine medipen"
-	desc = "A rapid and safe way to stabilize patients in critical condition for personnel without advanced medical knowledge. Contains a powerful preservative that can delay decomposition when applied to a dead body, and stop the production of histamine during an allergic reaction."
+	name = "emergency medipen"
+	desc = "A rapid and safe way to stabilize patients in critical condition for personnel without advanced medical knowledge."
 	icon_state = "medipen"
 	inhand_icon_state = "medipen"
 	worn_icon_state = "medipen"
@@ -113,7 +114,7 @@
 	ignore_flags = 1 //so you can medipen through spacesuits
 	reagent_flags = DRAWABLE
 	flags_1 = null
-	list_reagents = list(/datum/reagent/medicine/epinephrine = 10, /datum/reagent/toxin/formaldehyde = 3, /datum/reagent/medicine/coagulant = 2)
+	list_reagents = list(/datum/reagent/medicine/inaprovaline = 10, /datum/reagent/medicine/peridaxon = 10, /datum/reagent/medicine/coagulant = 5)
 	custom_price = PAYCHECK_MEDIUM
 	custom_premium_price = PAYCHECK_HARD
 
@@ -129,7 +130,7 @@
 		update_appearance()
 
 /obj/item/reagent_containers/hypospray/medipen/attack_self(mob/user)
-	if(user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, FALSE, FLOOR_OKAY))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_RESTING))
 		inject(user, user)
 
 /obj/item/reagent_containers/hypospray/medipen/update_icon_state()

@@ -1,4 +1,5 @@
 /mob/living/carbon
+	maxHealth = 200
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	//pressure_resistance = 15
@@ -118,6 +119,9 @@
 	var/sprinting = FALSE
 	///How many tiles we have continuously moved in the same direction
 	var/sustained_moves = 0
-
+	//stores flavor text here.
+	var/examine_text = ""
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+	COOLDOWN_DECLARE(blood_spray_cd)
+	COOLDOWN_DECLARE(breath_sound_cd)

@@ -2,7 +2,7 @@
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."
 	icon_state = "default_human_chest"
-	max_damage = 200
+	max_damage = 100
 	body_zone = BODY_ZONE_CHEST
 	body_part = CHEST
 	plaintext_zone = "chest"
@@ -25,7 +25,7 @@
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
 
 /obj/item/bodypart/chest/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT || !length(contained_organs))
+	if(owner.getBruteLoss() < owner.maxHealth * 2 || !length(contained_organs))
 		return FALSE
 	return ..()
 
@@ -70,13 +70,12 @@
 	desc = "Hey buddy give me a HAND and report this to the github because you shouldn't be seeing this."
 	attack_verb_continuous = list("slaps", "punches")
 	attack_verb_simple = list("slap", "punch")
-	max_damage = 50
+	max_damage = 80
 	aux_layer = BODYPARTS_HIGH_LAYER
-	body_damage_coeff = 0.75
 	can_be_disabled = TRUE
 	unarmed_attack_verb = "punch" /// The classic punch, wonderfully classic and completely random
-	unarmed_damage_low = 1
-	unarmed_damage_high = 10
+	unarmed_damage_low = 5
+	unarmed_damage_high = 7
 	unarmed_stun_threshold = 10
 	body_zone = BODY_ZONE_L_ARM
 
@@ -261,14 +260,13 @@
 	desc = "This item shouldn't exist. Talk about breaking a leg. Badum-Tss!"
 	attack_verb_continuous = list("kicks", "stomps")
 	attack_verb_simple = list("kick", "stomp")
-	max_damage = 50
-	body_damage_coeff = 0.75
+	max_damage = 80
 	can_be_disabled = TRUE
 	unarmed_attack_effect = ATTACK_EFFECT_KICK
 	body_zone = BODY_ZONE_L_LEG
 	unarmed_attack_verb = "kick" // The lovely kick, typically only accessable by attacking a grouded foe. 1.5 times better than the punch.
-	unarmed_damage_low = 2
-	unarmed_damage_high = 15
+	unarmed_damage_low = 5
+	unarmed_damage_high = 12
 	unarmed_stun_threshold = 10
 
 	bodypart_flags = STOCK_BP_FLAGS_LEGS

@@ -201,7 +201,7 @@
 
 		spun = FALSE
 
-		var/zone = check_zone(user.zone_selected)
+		var/zone = deprecise_zone(user.zone_selected)
 		var/obj/item/bodypart/affecting = H.get_bodypart(zone)
 		var/is_target_face = zone == BODY_ZONE_HEAD || zone == BODY_ZONE_PRECISE_EYES || zone == BODY_ZONE_PRECISE_MOUTH
 

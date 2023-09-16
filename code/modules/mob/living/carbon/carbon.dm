@@ -44,6 +44,9 @@
 	if(!held_index)
 		held_index = (active_hand_index % held_items.len)+1
 
+	if(!isnum(held_index))
+		CRASH("You passed [held_index] into swap_hand instead of a number. WTF man")
+
 	var/oindex = active_hand_index
 	active_hand_index = held_index
 	if(hud_used)
@@ -487,8 +490,8 @@
 	var/total_burn = 0
 	var/total_brute = 0
 	for(var/obj/item/bodypart/BP as anything in bodyparts) //hardcoded to streamline things a bit
-		total_brute += (BP.brute_dam * BP.body_damage_coeff)
-		total_burn += (BP.burn_dam * BP.body_damage_coeff)
+		total_brute += (BP.brute_dam)
+		total_burn += (BP.burn_dam)
 
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - getCloneLoss() - total_burn - total_brute, DAMAGE_PRECISION))
 	update_stat()
@@ -505,7 +508,7 @@
 	if((stam < max * STAMINA_EXHAUSTION_THRESHOLD_MODIFIER) && !is_exhausted)
 		ADD_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
 		ADD_TRAIT(src, TRAIT_NO_SPRINT, STAMINA)
-	if((stam < max * STAMINA_STUN_THRESHOLD_MODIFIER) && !is_stam_stunned && stat <= SOFT_CRIT)
+	if((stam < max * STAMINA_STUN_THRESHOLD_MODIFIER) && !is_stam_stunned && stat == CONSCIOUS)
 		stamina_stun()
 	if(is_exhausted && (stam > max * STAMINA_EXHAUSTION_RECOVERY_THRESHOLD_MODIFIER))
 		REMOVE_TRAIT(src, TRAIT_EXHAUSTED, STAMINA)
@@ -628,6 +631,7 @@
 	if(!client)
 		return
 
+	var/health = getBrainLoss()
 	if(health <= crit_threshold)
 		var/severity = 0
 		switch(health)
@@ -773,11 +777,11 @@
 
 /mob/living/carbon/set_health(new_value)
 	. = ..()
-	if(. > hardcrit_threshold)
-		if(health <= hardcrit_threshold && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
-			ADD_TRAIT(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
-	else if(health > hardcrit_threshold)
-		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
+	if(. < crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
+		ADD_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
+	else
+		REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
+
 	if(CONFIG_GET(flag/near_death_experience))
 		if(. > HEALTH_THRESHOLD_NEARDEATH)
 			if(health <= HEALTH_THRESHOLD_NEARDEATH && !HAS_TRAIT(src, TRAIT_NODEATH))
@@ -790,15 +794,8 @@
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
-		if(health <= HEALTH_THRESHOLD_DEAD && !HAS_TRAIT(src, TRAIT_NODEATH))
-			death()
-			return
-		if(health <= hardcrit_threshold && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
-			set_stat(HARD_CRIT)
-		else if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
+		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 			set_stat(UNCONSCIOUS)
-		else if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
-			set_stat(SOFT_CRIT)
 		else
 			set_stat(CONSCIOUS)
 
@@ -823,7 +820,7 @@
 
 /mob/living/carbon/heal_and_revive(heal_to = 75, revive_message)
 	// We can't heal them if they're missing a heart
-	if(needs_heart() && !getorganslot(ORGAN_SLOT_HEART))
+	if(needs_organ(ORGAN_SLOT_HEART) && !getorganslot(ORGAN_SLOT_HEART))
 		return FALSE
 
 	// We can't heal them if they're missing their lungs
@@ -844,11 +841,16 @@
 	if(bloodstream)
 		bloodstream.clear_reagents()
 
+	shock_stage = 0
+
 	if(mind)
 		for(var/addiction_type in subtypesof(/datum/addiction))
 			mind.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS) //Remove the addiction!
+
 	for(var/obj/item/organ/organ as anything in processing_organs)
 		organ.setOrganDamage(0)
+		organ.set_organ_dead(FALSE)
+
 	for(var/thing in diseases)
 		var/datum/disease/D = thing
 		if(D.severity != DISEASE_SEVERITY_POSITIVE)
@@ -872,47 +874,6 @@
 	. = ..()
 	if(!getorgan(/obj/item/organ/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)) || HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
-
-/mob/living/carbon/proc/can_defib()
-
-
-	if (suiciding)
-		return DEFIB_FAIL_SUICIDE
-
-	if (HAS_TRAIT(src, TRAIT_HUSK))
-		return DEFIB_FAIL_HUSK
-
-	if (HAS_TRAIT(src, TRAIT_DEFIB_BLACKLISTED))
-		return DEFIB_FAIL_BLACKLISTED
-
-	if ((getBruteLoss() >= MAX_REVIVE_BRUTE_DAMAGE) || (getFireLoss() >= MAX_REVIVE_FIRE_DAMAGE))
-		return DEFIB_FAIL_TISSUE_DAMAGE
-
-	// Only check for a heart if they actually need a heart. Who would've thunk
-	if (needs_heart())
-		var/obj/item/organ/heart = getorgan(/obj/item/organ/heart)
-
-		if (!heart)
-			return DEFIB_FAIL_NO_HEART
-
-		if (heart.organ_flags & ORGAN_FAILING)
-			return DEFIB_FAIL_FAILING_HEART
-
-	var/obj/item/organ/brain/current_brain = getorgan(/obj/item/organ/brain)
-
-	if (QDELETED(current_brain))
-		return DEFIB_FAIL_NO_BRAIN
-
-	if (current_brain.organ_flags & ORGAN_FAILING)
-		return DEFIB_FAIL_FAILING_BRAIN
-
-	if (current_brain.suicided || current_brain.brainmob?.suiciding)
-		return DEFIB_FAIL_NO_INTELLIGENCE
-
-	if(key && key[1] == "@") // Adminghosts
-		return DEFIB_NOGRAB_AGHOST
-
-	return DEFIB_POSSIBLE
 
 /mob/living/carbon/harvest(mob/living/user)
 	if(QDELETED(src))
@@ -1396,3 +1357,83 @@
 /mob/living/carbon/get_ingested_reagents()
 	RETURN_TYPE(/datum/reagents)
 	return getorganslot(ORGAN_SLOT_STOMACH)?.reagents
+
+///generates realistic-ish pulse output based on preset levels as text
+/mob/living/carbon/proc/get_pulse(method)	//method 0 is for hands, 1 is for machines, more accurate
+	var/obj/item/organ/heart/heart_organ = getorganslot(ORGAN_SLOT_HEART)
+	if(!heart_organ)
+		// No heart, no pulse
+		return "0"
+
+	var/bpm = get_pulse_as_number()
+	if(bpm >= PULSE_MAX_BPM)
+		return method ? ">[PULSE_MAX_BPM]" : "extremely weak and fast, patient's artery feels like a thread"
+
+	return "[method ? bpm : bpm + rand(-10, 10)]"
+// output for machines ^	 ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ output for people
+
+/mob/living/carbon/proc/pulse()
+	if (stat == DEAD)
+		return PULSE_NONE
+	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
+	return H ? H.pulse : PULSE_NONE
+
+/mob/living/carbon/proc/get_pulse_as_number()
+	var/obj/item/organ/heart/heart_organ = getorganslot(ORGAN_SLOT_HEART)
+	if(!heart_organ)
+		return 0
+
+	switch(pulse())
+		if(PULSE_NONE)
+			return 0
+		if(PULSE_SLOW)
+			return rand(40, 60)
+		if(PULSE_NORM)
+			return rand(60, 90)
+		if(PULSE_FAST)
+			return rand(90, 120)
+		if(PULSE_2FAST)
+			return rand(120, 160)
+		if(PULSE_THREADY)
+			return PULSE_MAX_BPM
+	return 0
+
+//Get fluffy numbers
+/mob/living/carbon/proc/get_blood_pressure()
+	if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		return "[FLOOR(120+rand(-5,5), 1)*0.25]/[FLOOR(80+rand(-5,5)*0.25, 1)]"
+	var/blood_result = get_blood_circulation()
+	return "[FLOOR((120+rand(-5,5))*(blood_result/100), 1)]/[FLOOR((80+rand(-5,5))*(blood_result/100), 1)]"
+
+/mob/living/carbon/proc/resuscitate()
+	if(!undergoing_cardiac_arrest())
+		return
+
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	if(istype(heart) && !(heart.organ_flags & ORGAN_DEAD))
+		if(!nervous_system_failure())
+			visible_message("\The [src] jerks and gasps for breath!")
+		else
+			visible_message("\The [src] twitches a bit as \his heart restarts!")
+
+		shock_stage = min(shock_stage, 100) // 120 is the point at which the heart stops.
+
+		if(getOxyLoss() >= 75)
+			setOxyLoss(75)
+
+		heart.Restart()
+		heart.handle_pulse()
+		return TRUE
+
+/mob/living/carbon/proc/nervous_system_failure()
+	return getBrainLoss() >= maxHealth * 0.75
+
+/mob/living/carbon/get_melee_inaccuracy()
+	. = ..()
+	if(getPain() > 100)
+		. += 10
+
+	if(shock_stage > 30)
+		. += 30
+	else if(shock_stage > 10)
+		. += 10

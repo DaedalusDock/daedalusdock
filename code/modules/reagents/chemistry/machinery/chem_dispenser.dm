@@ -45,12 +45,12 @@
 		/datum/reagent/copper,
 		/datum/reagent/consumable/ethanol,
 		/datum/reagent/fluorine,
+		/datum/reagent/fuel,
 		/datum/reagent/hydrogen,
 		/datum/reagent/iodine,
 		/datum/reagent/iron,
 		/datum/reagent/lithium,
 		/datum/reagent/mercury,
-		/datum/reagent/nickel,
 		/datum/reagent/nitrogen,
 		/datum/reagent/oxygen,
 		/datum/reagent/phosphorus,
@@ -58,9 +58,9 @@
 		/datum/reagent/silicon,
 		/datum/reagent/sodium,
 		/datum/reagent/consumable/sugar,
+		/datum/reagent/uranium/radium,
 		/datum/reagent/sulfur,
 		/datum/reagent/water,
-		/datum/reagent/fuel
 	)
 
 	var/list/emagged_reagents = list(
@@ -314,7 +314,7 @@
 			if(!is_operational)
 				return
 			var/name = tgui_input_text(usr, "What do you want to name this recipe?", "Recipe Name", MAX_NAME_LEN)
-			if(!usr.canUseTopic(src, !issilicon(usr)))
+			if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 				return
 			if(saved_recipes[name] && tgui_alert(usr, "\"[name]\" already exists, do you want to overwrite it?",, list("Yes", "No")) == "No")
 				return
@@ -425,7 +425,7 @@
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	if(!can_interact(user) || !user.canUseTopic(src, !issilicon(user), FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH|USE_IGNORE_TK))
 		return
 	replace_beaker(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN

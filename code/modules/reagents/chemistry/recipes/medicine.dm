@@ -82,14 +82,6 @@
 	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/tramadol = 1)
 	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
 
-/datum/chemical_reaction/venaxilin
-	results = list(/datum/reagent/medicine/venaxilin = 1)
-	required_reagents = list(/datum/reagent/medicine/dylovene = 1, /datum/reagent/medicine/spaceacillin = 1, /datum/reagent/toxin/venom = 1)
-	required_temp = 50 CELSIUS
-	optimal_temp = 75 CELSIUS
-	overheat_temp = 100 CELSIUS
-	mix_message = "The solution steams and becomes cloudy."
-
 /datum/chemical_reaction/spaceacillin
 	results = list(/datum/reagent/medicine/spaceacillin = 2)
 	required_reagents = list(/datum/reagent/cryptobiolin = 1, /datum/reagent/medicine/epinephrine = 1)

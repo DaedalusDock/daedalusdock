@@ -51,7 +51,7 @@
 				if(no_brain && istype(organs, /obj/item/organ/brain))
 					qdel(organs) //so the brain isn't transfered to the head when the head drops.
 					continue
-				var/org_zone = check_zone(organs.zone) //both groin and chest organs.
+				var/org_zone = deprecise_zone(organs.zone) //both groin and chest organs.
 				if(org_zone == BODY_ZONE_CHEST)
 					organs.Remove(src)
 					organs.forceMove(Tsec)

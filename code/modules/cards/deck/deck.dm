@@ -146,7 +146,7 @@
 
 
 /obj/item/toy/cards/deck/attack_hand(mob/living/user, list/modifiers, flip_card = FALSE)
-	if(!ishuman(user) || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(!ishuman(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		return
 
 	var/obj/item/toy/singlecard/card = draw(user)
@@ -163,7 +163,7 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/toy/cards/deck/AltClick(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		if(wielded)
 			shuffle_cards(user)
 		else

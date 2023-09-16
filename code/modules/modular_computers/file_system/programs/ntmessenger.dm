@@ -205,7 +205,7 @@
 /datum/computer_file/program/messenger/Topic(href, href_list)
 	..()
 
-	if(!href_list["close"] && usr.canUseTopic(computer, BE_CLOSE, FALSE, NO_TK))
+	if(!href_list["close"] && usr.canUseTopic(computer, USE_CLOSE|USE_IGNORE_TK))
 		switch(href_list["choice"])
 			if("Message")
 				send_message(usr, href_list["target"])
@@ -225,7 +225,7 @@
 
 	if (!text_message || !netcard_cache.radio_state)
 		return
-	if(!U.canUseTopic(computer, BE_CLOSE))
+	if(!U.canUseTopic(computer, USE_CLOSE))
 		return
 	return sanitize(text_message)
 

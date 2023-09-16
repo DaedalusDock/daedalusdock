@@ -120,7 +120,7 @@
 	speak_emote = list("telepathically cries")
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = null // doesn't bite unlike the parent type.
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	crusher_loot = /obj/item/crusher_trophy/watcher_wing
 	gold_core_spawnable = NO_SPAWN

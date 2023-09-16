@@ -46,3 +46,77 @@
       get too close. Security has a private hog.
   - rscdel: Sgt. Araneus and Paperwork have been sent off to kindly old spaceman's
       farm, where they will happily live out the rest of their natural lives.
+2023-09-09:
+  Kapu1178:
+  - bugfix: Dermaline and Meralyne pill bottles have the correct pills.
+2023-09-10:
+  Kapu1178:
+  - rscadd: Traitor's primary objectives are now Gimmicks.
+  - rscadd: The Announce Objectives button on the administration Antag Panel now shows
+      a pop-up to the target.
+  - rscadd: Gimmick objective type.
+  - rscdel: Removed all of TG's Syndicate/Nanotrasen employers.
+  - rscdel: 'Removed the following objective types: Martyr, Protect (replaced by Jailbreak),
+      Survive (Non-AI), Maroon, Escape, Block, Purge, Robot Army.'
+  - qol: Hijack is no longer a rollable objective.
+  - rscdel: Removed Thief antagonist.
+  - rscdel: Removed Valentine's Day event and antagonist.
+2023-09-11:
+  Kapu1178:
+  - bugfix: Facial Hair Gradients can now be color picked again
+  - bugfix: Wearing a non-mask object in your mask slot won't break your radio.
+  - bugfix: You will properly receive your Loadout Uniform as an Assistant
+  githubuser4141:
+  - balance: you can print mecha designs that were printable pre-update now. Namely
+      the mech laser, heavy mech laser and mech armours. You can now print the Gygax
+      targ board.
+  yyzsong:
+  - qol: chemmaster can now make twice the amount of things at once
+2023-09-12:
+  Kapu1178:
+  - bugfix: Fixed an issue where rarely fires could burn forever.
+  francinum:
+  - rscadd: Ghosts will now be told what the crew has collectively hallucinated.
+2023-09-13:
+  Kapu1178:
+  - refactor: Credits should now consistently reach the bottom of the screen. Even
+      if a bit.... choppily.
+  LemonInTheDark:
+  - rscadd: Adds a grace period for hit detection, between clicking ON someone, and
+      then moving your mouse off before releasing the click. It's short, hopefully
+      it helps with stupid
+  francinum:
+  - rscdel: Ticket machine tickets no longer magically vanish upon deletion, and the
+      entire logic chain is generally much simpler.
+  - bugfix: Turf Decals are now anchored.
+2023-09-14:
+  Cenrus:
+  - rscadd: Flavor text reintroduced
+  - bugfix: Fixed aliens being able to hold all items.
+  - rscadd: Crates loaded on a trolley are now visible
+  francinum:
+  - bugfix: maint loot spawners should work again.
+  - bugfix: Wiki Books now render (more) properly
+  - bugfix: Space Law book points to Corporate Regulations.
+2023-09-15:
+  Kapu1178:
+  - tweak: Traitor gets 1 gimmick objective, and can roll 1 additional kill or steal
+      objective randomly.
+  - balance: Increased fall damage by alot, damage now varies by bodypart, accounting
+      for all armor values.
+2023-09-16:
+  Cenrus:
+  - bugfix: Fixed fancy tables having no sprites.
+  Kapu1178:
+  - qol: You can no longer attack mobs without being in Combat Mode.
+  - code_imp: Added a high pass filter to bloom to cull useless overlays, should help
+      performance alot.
+  - refactor: Improved code around species organs to make way for IPCs
+  - rscdel: Golems, Adamantine, and related goodies.
+  - code_imp: Fixed some harddels
+  bluezorua:
+  - rscdel: a floating air alarm in security shooting gallery
+  francinum:
+  - bugfix: Classic input should be a little more functional
+  - rscadd: Some books will now open codex entries.
+  - bugfix: The r4407 changelog link works again.

@@ -89,7 +89,7 @@
 
 	if(carbon_patient.stat != DEAD && !(HAS_TRAIT(carbon_patient, TRAIT_FAKEDEATH)))
 		if(istype(heart))
-			heart_strength = (heart.beating ? "a healthy" : span_danger("an unstable"))
+			heart_strength = (heart.pulse == PULSE_NORM ? "a healthy" : span_danger("an unstable"))
 		if(istype(lungs))
 			lung_strength = ((carbon_patient.failed_last_breath || carbon_patient.losebreath) ? span_danger("strained") : "healthy")
 

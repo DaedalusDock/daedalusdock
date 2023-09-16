@@ -25,6 +25,10 @@
 	AddComponent(/datum/component/bloodysoles/feet)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
 	AddElement(/datum/element/strippable, GLOB.strippable_human_items, TYPE_PROC_REF(/mob/living/carbon/human, should_strip))
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 	become_area_sensitive()
 	GLOB.human_list += src
 	become_atmos_sensitive()
@@ -361,8 +365,11 @@
 	..() //end of this massive fucking chain. TODO: make the hud chain not spooky. - Yeah, great job doing that.
 
 //called when something steps onto a human
-/mob/living/carbon/human/Crossed(atom/movable/crossed_by, oldloc)
-	spreadFire(crossed_by)
+/mob/living/carbon/human/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	spreadFire(AM)
 
 /mob/living/carbon/human/proc/canUseHUD()
 	return (mobility_flags & MOBILITY_USE)
@@ -388,7 +395,7 @@
 /mob/living/carbon/human/try_inject(mob/user, target_zone, injection_flags)
 	. = ..()
 	if(!. && (injection_flags & INJECT_TRY_SHOW_ERROR_MESSAGE) && user)
-		var/obj/item/bodypart/the_part = get_bodypart(target_zone || check_zone(user.zone_selected))
+		var/obj/item/bodypart/the_part = get_bodypart(target_zone || deprecise_zone(user.zone_selected))
 		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.name]."))
 
 /mob/living/carbon/human/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
@@ -864,12 +871,6 @@
 			admin_ticket_log("[key_name_admin(usr)] has modified the bodyparts of [src] to [result]")
 			set_species(newtype)
 
-/mob/living/carbon/human/limb_attack_self()
-	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
-	if(arm)
-		arm.attack_self(src)
-	return ..()
-
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
 	if(pulling != M || grab_state != GRAB_AGGRESSIVE || stat != CONSCIOUS)
 		return FALSE
@@ -1018,86 +1019,8 @@
 /mob/living/carbon/human/species/android
 	race = /datum/species/android
 
-/mob/living/carbon/human/species/dullahan
-	race = /datum/species/dullahan
-
 /mob/living/carbon/human/species/fly
 	race = /datum/species/fly
-
-/mob/living/carbon/human/species/golem
-	race = /datum/species/golem
-
-/mob/living/carbon/human/species/golem/adamantine
-	race = /datum/species/golem/adamantine
-
-/mob/living/carbon/human/species/golem/plasma
-	race = /datum/species/golem/plasma
-
-/mob/living/carbon/human/species/golem/diamond
-	race = /datum/species/golem/diamond
-
-/mob/living/carbon/human/species/golem/gold
-	race = /datum/species/golem/gold
-
-/mob/living/carbon/human/species/golem/silver
-	race = /datum/species/golem/silver
-
-/mob/living/carbon/human/species/golem/plasteel
-	race = /datum/species/golem/plasteel
-
-/mob/living/carbon/human/species/golem/titanium
-	race = /datum/species/golem/titanium
-
-/mob/living/carbon/human/species/golem/plastitanium
-	race = /datum/species/golem/plastitanium
-
-/mob/living/carbon/human/species/golem/alien_alloy
-	race = /datum/species/golem/alloy
-
-/mob/living/carbon/human/species/golem/wood
-	race = /datum/species/golem/wood
-
-/mob/living/carbon/human/species/golem/uranium
-	race = /datum/species/golem/uranium
-
-/mob/living/carbon/human/species/golem/sand
-	race = /datum/species/golem/sand
-
-/mob/living/carbon/human/species/golem/glass
-	race = /datum/species/golem/glass
-
-/mob/living/carbon/human/species/golem/bluespace
-	race = /datum/species/golem/bluespace
-
-/mob/living/carbon/human/species/golem/bananium
-	race = /datum/species/golem/bananium
-
-/mob/living/carbon/human/species/golem/blood_cult
-	race = /datum/species/golem/runic
-
-/mob/living/carbon/human/species/golem/cloth
-	race = /datum/species/golem/cloth
-
-/mob/living/carbon/human/species/golem/plastic
-	race = /datum/species/golem/plastic
-
-/mob/living/carbon/human/species/golem/bronze
-	race = /datum/species/golem/bronze
-
-/mob/living/carbon/human/species/golem/cardboard
-	race = /datum/species/golem/cardboard
-
-/mob/living/carbon/human/species/golem/leather
-	race = /datum/species/golem/leather
-
-/mob/living/carbon/human/species/golem/bone
-	race = /datum/species/golem/bone
-
-/mob/living/carbon/human/species/golem/durathread
-	race = /datum/species/golem/durathread
-
-/mob/living/carbon/human/species/golem/snow
-	race = /datum/species/golem/snow
 
 /mob/living/carbon/human/species/jelly
 	race = /datum/species/jelly
@@ -1126,9 +1049,6 @@
 /mob/living/carbon/human/species/moth
 	race = /datum/species/moth
 
-/mob/living/carbon/human/species/mush
-	race = /datum/species/mush
-
 /mob/living/carbon/human/species/plasma
 	race = /datum/species/plasmaman
 
@@ -1147,9 +1067,6 @@
 /mob/living/carbon/human/species/skeleton
 	race = /datum/species/skeleton
 
-/mob/living/carbon/human/species/snail
-	race = /datum/species/snail
-
 /mob/living/carbon/human/species/vampire
 	race = /datum/species/vampire
 
@@ -1161,3 +1078,54 @@
 
 /mob/living/carbon/human/species/vox
 	race = /datum/species/vox
+
+/mob/living/carbon/human/verb/checkpulse()
+	set name = "Check Pulse"
+	set category = "IC"
+	set desc = "Approximately count somebody's pulse. Requires you to stand still at least 6 seconds."
+	set src in view(1)
+
+	if(!isliving(src) || usr.stat || usr.incapacitated())
+		return
+
+	var/self = FALSE
+	if(usr == src)
+		self = TRUE
+
+	if(!self)
+		usr.visible_message(
+			span_notice("[usr] kneels down, puts \his hand on [src]'s wrist and begins counting their pulse."),
+			span_notice("You begin counting [src]'s pulse")
+		)
+	else
+		usr.visible_message(
+			span_notice("[usr] begins counting their pulse."),
+			span_notice("You begin counting your pulse.")
+		)
+
+
+	if (!pulse() || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		to_chat(usr, span_danger("[src] has no pulse!"))
+		return
+	else
+		to_chat(usr, span_notice("[self ? "You have a" : "[src] has a"] pulse. Counting..."))
+
+	to_chat(usr, span_notice("You must[self ? "" : " both"] remain still until counting is finished."))
+
+	if(do_after(usr, src, 6 SECONDS, DO_PUBLIC))
+		to_chat(usr, span_notice("[self ? "Your" : "[src]'s"] pulse is [src.get_pulse(GETPULSE_HAND)]."))
+
+///Accepts an organ slot, returns whether or not the mob needs one to survive (or just should have one for non-vital organs).
+/mob/living/carbon/human/needs_organ(slot)
+	if(!dna || !dna.species)
+		return FALSE
+
+	switch(slot)
+		if(ORGAN_SLOT_STOMACH)
+			if(HAS_TRAIT(src, TRAIT_NOHUNGER))
+				return FALSE
+		if(ORGAN_SLOT_LUNGS)
+			if(HAS_TRAIT(src, TRAIT_NOBREATH))
+				return FALSE
+
+	return dna.species.organs[slot]

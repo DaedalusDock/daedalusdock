@@ -12,9 +12,9 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 	var/datum/mind/target = null //If they are focused on a particular person.
 	var/target_amount = 0 //If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = FALSE //currently only used for custom objectives.
-	var/martyr_compatible = FALSE //If the objective is compatible with martyr objective, i.e. if you can still do it while dead.
 	/// Typecache of areas to ignore when looking for a potential target.
 	var/list/blacklisted_target_areas
+	var/highlander = TRUE // Can only have one of this type of objective
 
 /datum/objective/New(text)
 	GLOB.objectives += src //PARIAH EDIT
@@ -146,10 +146,12 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 	update_explanation_text()
 	return target
 
-
 /datum/objective/proc/update_explanation_text()
 	if(team_explanation_text && LAZYLEN(get_owners()) > 1)
 		explanation_text = team_explanation_text
+
+/datum/objective/proc/get_roundend_suffix()
+	return check_completion() ? span_greentext("Success!") : span_redtext("Fail.")
 
 /datum/objective/proc/give_special_equipment(special_equipment)
 	var/datum/mind/receiver = pick(get_owners())
@@ -194,8 +196,6 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 /datum/objective/assassinate
 	name = "assasinate"
 	var/target_role_type=FALSE
-	martyr_compatible = TRUE
-
 
 /datum/objective/assassinate/check_completion()
 	return completed || (!considered_alive(target) || considered_afk(target) || considered_exiled(target))
@@ -213,8 +213,6 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 /datum/objective/mutiny
 	name = "mutiny"
 	var/target_role_type=FALSE
-	martyr_compatible = 1
-
 
 /datum/objective/mutiny/check_completion()
 	if(!target || !considered_alive(target) || considered_afk(target) || considered_exiled(target))
@@ -229,93 +227,12 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 	else
 		explanation_text = "Free Objective"
 
-/datum/objective/maroon
-	name = "maroon"
-	var/target_role_type=FALSE
-	martyr_compatible = TRUE
-
-
-/datum/objective/maroon/check_completion()
-	if (!target)
-		return TRUE
-	if (!considered_alive(target))
-		return TRUE
-	if (!target.current.onCentCom() && !target.current.onSyndieBase())
-		return TRUE
-	return FALSE
-
-/datum/objective/maroon/update_explanation_text()
-	if(target?.current)
-		explanation_text = "Prevent [target.name], the [!target_role_type ? target.assigned_role.title : target.special_role], from escaping alive."
-	else
-		explanation_text = "Free Objective"
-
-/datum/objective/maroon/admin_edit(mob/admin)
-	admin_simple_target_pick(admin)
-
-/datum/objective/debrain
-	name = "debrain"
-	var/target_role_type=0
-
-
-/datum/objective/debrain/check_completion()
-	if(!target)//If it's a free objective.
-		return TRUE
-	if(!target.current || !isbrain(target.current))
-		return FALSE
-	var/atom/A = target.current
-	var/list/datum/mind/owners = get_owners()
-
-	while(A.loc) // Check to see if the brainmob is on our person
-		A = A.loc
-		for(var/datum/mind/M in owners)
-			if(M.current && M.current.stat != DEAD && A == M.current)
-				return TRUE
-	return FALSE
-
-/datum/objective/debrain/update_explanation_text()
-	..()
-	if(target?.current)
-		explanation_text = "Steal the brain of [target.name], the [!target_role_type ? target.assigned_role.title : target.special_role]."
-	else
-		explanation_text = "Free Objective"
-
-/datum/objective/debrain/admin_edit(mob/admin)
-	admin_simple_target_pick(admin)
-
-/datum/objective/protect//The opposite of killing a dude.
-	name = "protect"
-	martyr_compatible = TRUE
-	var/target_role_type = FALSE
-	var/human_check = TRUE
-
-
-/datum/objective/protect/check_completion()
-	var/obj/item/organ/brain/brain_target
-	if(human_check)
-		brain_target = target.current?.getorganslot(ORGAN_SLOT_BRAIN)
-	//Protect will always suceed when someone suicides
-	return !target || target.current?.suiciding || considered_alive(target, enforce_human = human_check) || brain_target?.suicided
-
-/datum/objective/protect/update_explanation_text()
-	..()
-	if(target?.current)
-		explanation_text = "Protect [target.name], the [!target_role_type ? target.assigned_role.title : target.special_role]."
-	else
-		explanation_text = "Free Objective"
-
 /datum/objective/protect/admin_edit(mob/admin)
 	admin_simple_target_pick(admin)
 
-/datum/objective/protect/nonhuman
-	name = "protect nonhuman"
-	human_check = FALSE
-
 /datum/objective/jailbreak
 	name = "jailbreak"
-	martyr_compatible = TRUE //why not?
 	var/target_role_type
-
 
 /datum/objective/jailbreak/check_completion()
 	return completed || (considered_escaped(target))
@@ -339,7 +256,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 /datum/objective/jailbreak/detain/update_explanation_text()
 	..()
 	if(target?.current)
-		explanation_text = "Ensure that [target.name], the [!target_role_type ? target.assigned_role.title : target.special_role] is delivered to nanotrasen alive and in custody."
+		explanation_text = "Ensure that [target.name], the [!target_role_type ? target.assigned_role.title : target.special_role] is alive and in custody."
 	else
 		explanation_text = "Free Objective"
 
@@ -347,7 +264,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 	name = "hijack"
 	explanation_text = "Hijack the emergency shuttle by hacking its navigational protocols through the control console (alt click emergency shuttle console)."
 	team_explanation_text = "Hijack the emergency shuttle by hacking its navigational protocols through the control console (alt click emergency shuttle console). Leave no team member behind."
-	martyr_compatible = FALSE //Technically you won't get both anyway.
+
 	/// Overrides the hijack speed of any antagonist datum it is on ONLY, no other datums are impacted.
 	var/hijack_speed_override = 1
 
@@ -364,7 +281,6 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 	name = "elimination"
 	explanation_text = "Slaughter all loyalist crew aboard the shuttle. You, and any likeminded individuals, must be the only remaining people on the shuttle."
 	team_explanation_text = "Slaughter all loyalist crew aboard the shuttle. You, and any likeminded individuals, must be the only remaining people on the shuttle. Leave no team member behind."
-	martyr_compatible = FALSE
 
 /datum/objective/elimination/check_completion()
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
@@ -388,25 +304,6 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 			return FALSE
 	return SSshuttle.emergency.elimination_hijack(filter_by_human = FALSE, solo_hijack = TRUE)
 
-/datum/objective/block
-	name = "no organics on shuttle"
-	explanation_text = "Do not allow any organic lifeforms with sapience to escape on the shuttle alive."
-	martyr_compatible = 1
-
-/datum/objective/block/check_completion()
-	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
-		return TRUE
-	for(var/mob/living/player in GLOB.player_list)
-		if(player.mind && player.stat != DEAD && (player.mob_biotypes & MOB_ORGANIC))
-			if(get_area(player) in SSshuttle.emergency.shuttle_areas)
-				return FALSE
-	return TRUE
-
-/datum/objective/purge
-	name = "no mutants on shuttle"
-	explanation_text = "Ensure no nonhuman humanoid species with sapience are present aboard the escape shuttle."
-	martyr_compatible = TRUE
-
 /datum/objective/purge/check_completion()
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return TRUE
@@ -417,23 +314,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 				return FALSE
 	return TRUE
 
-/datum/objective/robot_army
-	name = "robot army"
-	explanation_text = "Have at least eight active cyborgs synced to you."
-	martyr_compatible = FALSE
-
-/datum/objective/robot_army/check_completion()
-	var/counter = 0
-	var/list/datum/mind/owners = get_owners()
-	for(var/datum/mind/M in owners)
-		if(!M.current || !isAI(M.current))
-			continue
-		var/mob/living/silicon/ai/A = M.current
-		for(var/mob/living/silicon/robot/R in A.connected_robots)
-			if(R.stat != DEAD)
-				counter++
-	return counter >= 8
-
+/// Escape. Should not be given to anyone straight up. Exists for Escape with Identity.
 /datum/objective/escape
 	name = "escape"
 	explanation_text = "Escape on the shuttle or an escape pod alive and without being in custody."
@@ -487,6 +368,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 /datum/objective/escape/escape_with_identity/admin_edit(mob/admin)
 	admin_simple_target_pick(admin)
 
+/// To be used as a template. Do not give directly.
 /datum/objective/survive
 	name = "survive"
 	explanation_text = "Stay alive until the end."
@@ -522,23 +404,9 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 			return FALSE
 	return TRUE
 
-/datum/objective/martyr
-	name = "martyr"
-	explanation_text = "Die a glorious death."
-
-/datum/objective/martyr/check_completion()
-	var/list/datum/mind/owners = get_owners()
-	for(var/datum/mind/M in owners)
-		if(considered_alive(M))
-			return FALSE
-		if(M.current?.suiciding) //killing yourself ISN'T glorious.
-			return FALSE
-	return TRUE
-
 /datum/objective/nuclear
 	name = "nuclear"
 	explanation_text = "Destroy the station with a nuclear device."
-	martyr_compatible = TRUE
 
 /datum/objective/nuclear/check_completion()
 	if(GLOB.station_was_nuked)
@@ -550,7 +418,6 @@ GLOBAL_LIST_EMPTY(possible_items)
 	name = "steal"
 	var/datum/objective_item/targetinfo = null //Save the chosen item datum so we can access it later.
 	var/obj/item/steal_target = null //Needed for custom objectives (they're just items, not datums).
-	martyr_compatible = FALSE
 
 /datum/objective/steal/get_target()
 	return steal_target
@@ -698,24 +565,6 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 		target_amount = count
 	update_explanation_text()
 
-/datum/objective/protect_object
-	name = "protect object"
-	var/obj/protect_target
-
-/datum/objective/protect_object/proc/set_target(obj/O)
-	protect_target = O
-	update_explanation_text()
-
-/datum/objective/protect_object/update_explanation_text()
-	. = ..()
-	if(protect_target)
-		explanation_text = "Protect \the [protect_target] at all costs."
-	else
-		explanation_text = "Free objective."
-
-/datum/objective/protect_object/check_completion()
-	return !QDELETED(protect_target)
-
 //Changeling Objectives
 
 /datum/objective/absorb
@@ -807,7 +656,6 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 /datum/objective/destroy
 	name = "destroy AI"
-	martyr_compatible = TRUE
 
 /datum/objective/destroy/find_target(dupe_search_range)
 	var/list/possible_targets = active_ais(1)
@@ -840,6 +688,7 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 /datum/objective/steal_n_of_type
 	name = "steal five of"
 	explanation_text = "Steal some items!"
+	highlander = FALSE
 	//what types we want to steal
 	var/list/wanted_items = list()
 	//how many we want to steal
@@ -928,7 +777,7 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 				continue
 			//this is an objective item
 			var/obj/item/organ/wanted = stolen
-			if(!(wanted.organ_flags & ORGAN_FAILING) && !(wanted.organ_flags & ORGAN_SYNTHETIC))
+			if(!(wanted.organ_flags & ORGAN_DEAD) && !(wanted.organ_flags & ORGAN_SYNTHETIC))
 				stolen_count++
 	return stolen_count >= amount
 
@@ -947,20 +796,17 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 	var/list/allowed_types = sort_list(list(
 		/datum/objective/assassinate,
-		/datum/objective/maroon,
-		/datum/objective/debrain,
 		/datum/objective/protect,
 		/datum/objective/jailbreak,
 		/datum/objective/jailbreak/detain,
 		/datum/objective/destroy,
-		/datum/objective/hijack,
 		/datum/objective/escape,
 		/datum/objective/survive,
-		/datum/objective/martyr,
 		/datum/objective/steal,
 		/datum/objective/nuclear,
 		/datum/objective/capture,
 		/datum/objective/absorb,
+		/datum/objective/gimmick,
 		/datum/objective/custom
 	),GLOBAL_PROC_REF(cmp_typepaths_asc))
 

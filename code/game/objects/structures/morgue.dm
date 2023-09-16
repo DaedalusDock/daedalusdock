@@ -87,7 +87,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 		var/t = tgui_input_text(user, "What would you like the label to be?", name, null)
 		if (user.get_active_held_item() != P)
 			return
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if (t)
 			name = "[initial(name)]- '[t]'"
@@ -169,7 +169,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/AltClick(mob/user)
 	..()
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	beeper = !beeper
 	to_chat(user, span_notice("You turn the speaker function [beeper ? "on" : "off"]."))

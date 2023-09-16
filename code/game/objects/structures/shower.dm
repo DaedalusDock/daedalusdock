@@ -17,8 +17,6 @@
 	icon_state = "shower"
 	density = FALSE
 	use_power = NO_POWER_USE
-	loc_procs = CROSSED
-
 	///Is the shower on or off?
 	var/on = FALSE
 	///What temperature the shower reagents are set to.
@@ -41,6 +39,10 @@
 	create_reagents(reagent_capacity)
 	reagents.add_reagent(reagent_id, reagent_capacity)
 	soundloop = new(src, FALSE)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/shower/examine(mob/user)
 	. = ..()
@@ -134,11 +136,12 @@
 		qdel(mist)
 
 
-/obj/machinery/shower/Crossed(atom/movable/crossed_by, oldloc)
-	if(isdead(crossed_by))
+/obj/machinery/shower/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
 		return
 	if(on && reagents.total_volume)
-		wash_atom(crossed_by)
+		wash_atom(AM)
 
 /obj/machinery/shower/proc/wash_atom(atom/target)
 	target.wash(CLEAN_RAD | CLEAN_WASH)

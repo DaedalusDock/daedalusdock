@@ -10,7 +10,7 @@
 	/// armor more or less consistent with grille. max_integrity about one time and a half that of a grille.
 	armor = list(MELEE = 50, BULLET = 70, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
 	max_integrity = 75
-	loc_procs = EXIT
+
 	var/climbable = TRUE
 	///Initial direction of the railing.
 	var/ini_dir
@@ -25,6 +25,12 @@
 	ini_dir = dir
 	if(climbable)
 		AddElement(/datum/element/climbable)
+
+	if(density && flags_1 & ON_BORDER_1) // blocks normal movement from and to the direction it's facing.
+		var/static/list/loc_connections = list(
+			COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+		)
+		AddElement(/datum/element/connect_loc, loc_connections)
 
 	AddComponent(/datum/component/simple_rotation, ROTATION_NEEDS_ROOM)
 
@@ -84,8 +90,11 @@
 		return TRUE
 	return ..()
 
-/obj/structure/railing/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/structure/railing/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
+
+	if(leaving == src)
+		return // Let's not block ourselves.
 
 	if(!(direction & dir))
 		return
@@ -103,7 +112,7 @@
 		return
 
 	leaving.Bump(src)
-	return FALSE
+	return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/structure/railing/proc/check_anchored(checked_anchored)
 	if(anchored == checked_anchored)

@@ -17,6 +17,7 @@
 	light_outer_range = 4
 	light_power = 0.3
 	light_on = FALSE
+	force = 10
 	var/on = FALSE
 
 

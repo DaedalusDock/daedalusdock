@@ -107,7 +107,8 @@
 	if(prob(5))
 		spawn(-1)
 			C.emote(pick("twitch", "drool", "moan"))
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.1 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.1 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/phosphorus
 	name = "Phosphorus"

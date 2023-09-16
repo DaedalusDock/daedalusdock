@@ -4,7 +4,7 @@
 	icon_state = "hardsuit0-security"
 	inhand_icon_state = "sec_helm"
 	hardsuit_type = "security"
-	armor = list(MELEE = 35, BULLET = 15, LASER = 30,ENERGY = 40, BOMB = 10, BIO = 100, FIRE = 75, ACID = 75, WOUND = 20)
+	armor = list(MELEE = 35, BULLET = 15, LASER = 30,ENERGY = 40, BOMB = 10, BIO = 100, FIRE = 75, ACID = 75)
 
 
 /obj/item/clothing/suit/space/hardsuit/security
@@ -12,5 +12,5 @@
 	name = "security voidsuit"
 	desc = "A special suit that protects against hazardous, low pressure environments. Has an additional layer of armor."
 	inhand_icon_state = "sec_hardsuit"
-	armor = list(MELEE = 35, BULLET = 15, LASER = 30, ENERGY = 40, BOMB = 10, BIO = 100, FIRE = 75, ACID = 75, WOUND = 20)
+	armor = list(MELEE = 35, BULLET = 15, LASER = 30, ENERGY = 40, BOMB = 10, BIO = 100, FIRE = 75, ACID = 75)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/security

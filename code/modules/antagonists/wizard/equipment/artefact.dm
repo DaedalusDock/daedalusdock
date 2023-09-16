@@ -224,7 +224,7 @@
 	if(!istype(M))
 		return ..()
 
-	if(!istype(user) || !user.canUseTopic(M, BE_CLOSE))
+	if(!istype(user) || !user.canUseTopic(M, USE_CLOSE))
 		return
 
 	if(M.stat != DEAD)
@@ -287,13 +287,6 @@
 	H.put_in_hands(new /obj/item/shield/riot/roman(H), TRUE)
 	H.put_in_hands(new /obj/item/claymore(H), TRUE)
 	H.equip_to_slot_or_del(new /obj/item/spear(H), ITEM_SLOT_BACK)
-
-//Provides a decent heal, need to pump every 6 seconds
-/obj/item/organ/heart/cursed/wizard
-	pump_delay = 60
-	heal_brute = 25
-	heal_burn = 25
-	heal_oxy = 25
 
 //Warp Whistle: Provides uncontrolled long distance teleportation.
 /obj/item/warpwhistle

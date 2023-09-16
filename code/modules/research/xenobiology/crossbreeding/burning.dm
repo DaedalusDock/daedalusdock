@@ -295,15 +295,6 @@ Burning extracts:
 		C.reagents.add_reagent(/datum/reagent/medicine/haloperidol, 10)
 	..()
 
-/obj/item/slimecross/burning/adamantine
-	colour = "adamantine"
-	effect_desc = "Creates a mighty adamantine shield."
-
-/obj/item/slimecross/burning/adamantine/do_effect(mob/user)
-	user.visible_message(span_notice("[src] crystallizes into a large shield!"))
-	new /obj/item/shield/adamantineshield(get_turf(user))
-	..()
-
 /obj/item/slimecross/burning/rainbow
 	colour = "rainbow"
 	effect_desc = "Creates the Rainbow Knife, a kitchen knife that deals random types of damage."

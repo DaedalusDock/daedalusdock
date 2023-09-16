@@ -1054,7 +1054,7 @@ Age: [active1.fields["age"]]<BR>"}
 
 /obj/machinery/computer/secure_data/proc/canUseSecurityRecordsConsole(mob/user, message1 = 0, record1, record2)
 	if(user && authenticated)
-		if(user.canUseTopic(src, !issilicon(user)))
+		if(user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 			if(!trim(message1))
 				return FALSE
 			if(!record1 || record1 == active1)

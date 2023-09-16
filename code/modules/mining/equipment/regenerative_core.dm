@@ -66,7 +66,7 @@
 	qdel(src)
 
 /obj/item/organ/regenerative_core/on_life(delta_time, times_fired)
-	..()
+	. = ..()
 	if(owner.health <= owner.crit_threshold)
 		ui_action_click()
 
@@ -96,7 +96,7 @@
 		applyto(target, user)
 
 /obj/item/organ/regenerative_core/attack_self(mob/user)
-	if(user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		applyto(user, user)
 
 /obj/item/organ/regenerative_core/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE)

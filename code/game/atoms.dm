@@ -15,15 +15,6 @@
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
 
-	/// Informs our loc if we need Crossed and/or Uncrossed() called
-	var/loc_procs = NONE
-	///Atoms in our contents that want Crossed() called.
-	var/list/crossers
-	///Atoms in our contents that want Uncrossed() called.
-	var/list/uncrossers
-	///Atoms in our contents that want Exit() called.
-	var/list/check_exit
-
 	///If non-null, overrides a/an/some in all cases
 	var/article
 
@@ -250,11 +241,11 @@
 
 	initialized = TRUE
 
-	if(!isnull(greyscale_config) && !isnull(greyscale_colors))
+	if(greyscale_config && greyscale_colors)
 		update_greyscale()
 
 	//atom color stuff
-	if(!isnull(color))
+	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
@@ -313,15 +304,10 @@
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
 
-	crossers = null
-	uncrossers = null
-	check_exit = null
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	if(length(overlays))
 		overlays.Cut()
-
-	LAZYNULL(managed_overlays)
 
 	QDEL_NULL(light)
 	QDEL_NULL(ai_controller)
@@ -602,7 +588,7 @@
 	for(var/datum/reagent/current_reagent as anything in reagents)
 		. |= current_reagent.expose_atom(src, reagents[current_reagent], exposed_temperature)
 
-/// Are you allowed to drop items into this atom's contents
+/// Are you allowed to drop this atom
 /atom/proc/AllowDrop()
 	return FALSE
 
@@ -1395,23 +1381,8 @@
  * Default behaviour is to send the [COMSIG_ATOM_ENTERED]
  */
 /atom/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	SHOULD_CALL_PARENT(TRUE)
-
-	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, arrived, old_loc, old_locs)
 	SEND_SIGNAL(arrived, COMSIG_ATOM_ENTERING, src, old_loc, old_locs)
-
-	if(LAZYLEN(crossers))
-		for(var/atom/movable/crossed as anything in crossers)
-			if(!QDELING(crossed))
-				crossed.Crossed(arrived, old_loc, old_locs)
-
-	if(arrived.loc_procs & CROSSED)
-		LAZYADD(crossers, arrived)
-	if(arrived.loc_procs & UNCROSSED)
-		LAZYADD(uncrossers, arrived)
-	if(arrived.loc_procs & EXIT)
-		LAZYADD(check_exit, arrived)
 
 /**
  * An atom is attempting to exit this atom's contents
@@ -1419,12 +1390,13 @@
  * Default behaviour is to send the [COMSIG_ATOM_EXIT]
  */
 /atom/Exit(atom/movable/leaving, direction)
-	SHOULD_CALL_PARENT(TRUE)
-
 	// Don't call `..()` here, otherwise `Uncross()` gets called.
 	// See the doc comment on `Uncross()` to learn why this is bad.
-	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 
+	if(SEND_SIGNAL(src, COMSIG_ATOM_EXIT, leaving, direction) & COMPONENT_ATOM_BLOCK_EXIT)
+		return FALSE
+
+	return TRUE
 
 /**
  * An atom has exited this atom's contents
@@ -1432,22 +1404,7 @@
  * Default behaviour is to send the [COMSIG_ATOM_EXITED]
  */
 /atom/Exited(atom/movable/gone, direction)
-	SHOULD_CALL_PARENT(TRUE)
-
-	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
-
-	if(gone.loc_procs & CROSSED)
-		LAZYREMOVE(crossers, gone)
-	if(gone.loc_procs & UNCROSSED)
-		LAZYREMOVE(uncrossers, gone)
-	if(gone.loc_procs & EXIT)
-		LAZYREMOVE(check_exit, gone)
-
-	if(LAZYLEN(uncrossers))
-		for(var/atom/movable/uncrossed as anything in uncrossers)
-			if(!QDELING(uncrossed))
-				uncrossed.Uncrossed(gone, direction)
 
 ///Return atom temperature
 /atom/proc/return_temperature()

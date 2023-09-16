@@ -234,7 +234,7 @@
 			. += "You can evolve!"
 
 	switch(stat)
-		if(HARD_CRIT, UNCONSCIOUS)
+		if(UNCONSCIOUS)
 			. += "You are knocked out by high levels of BZ!"
 		else
 			. += "Power Level: [powerlevel]"
@@ -430,7 +430,7 @@
 	if (stat == DEAD)
 		. += span_deadsay("It is limp and unresponsive.")
 	else
-		if (stat == UNCONSCIOUS || stat == HARD_CRIT) // Slime stasis
+		if (stat == UNCONSCIOUS) // Slime stasis
 			. += span_deadsay("It appears to be alive but unresponsive.")
 		if (getBruteLoss())
 			. += "<span class='warning'>"

@@ -37,7 +37,7 @@
 			//we need to make sure that the wound we are going to worsen is compatible with the type of damage...
 			var/list/compatible_wounds = list()
 			for (var/datum/wound/W as anything in wounds)
-				if (W.can_worsen(type, damage))
+				if (W.can_worsen(wound_type, damage))
 					compatible_wounds += W
 
 			if(length(compatible_wounds))

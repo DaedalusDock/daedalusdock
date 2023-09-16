@@ -69,6 +69,10 @@
 		return
 
 	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
+	TakeFallDamage(levels)
+	return TRUE
+
+/mob/living/proc/TakeFallDamage(levels)
 	adjustBruteLoss((levels * 5) ** 1.5)
 	Knockdown(levels * 5 SECONDS)
 	Stun(levels * 2 SECONDS)
@@ -453,7 +457,7 @@
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE
-	if (!CAN_SUCCUMB(src))
+	if (stat == CONSCIOUS)
 		to_chat(src, text="You are unable to succumb to death! This life continues.", type=MESSAGE_TYPE_INFO)
 		return
 	log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", LOG_ATTACK)
@@ -745,7 +749,7 @@
 //Proc used to resuscitate a mob, for full_heal see fully_heal()
 /mob/living/proc/revive(full_heal = FALSE, admin_revive = FALSE, excess_healing = 0)
 	if(excess_healing)
-		if(iscarbon(src) && excess_healing)
+		if(iscarbon(src))
 			var/mob/living/carbon/C = src
 			if(!(C.dna?.species && (NOBLOOD in C.dna.species.species_traits)))
 				C.blood_volume += (excess_healing*2)//1 excess = 10 blood
@@ -758,7 +762,9 @@
 		adjustOxyLoss(-20, TRUE)
 		adjustToxLoss(-20, TRUE, TRUE) //slime friendly
 		updatehealth()
-		grab_ghost()
+
+	grab_ghost()
+
 	if(full_heal)
 		fully_heal(admin_revive = admin_revive)
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
@@ -768,6 +774,7 @@
 		if(admin_revive)
 			get_up(TRUE)
 		update_sight()
+		update_eye_blur()
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		reload_fullscreen()
 		. = TRUE
@@ -1186,23 +1193,42 @@
 /mob/living/can_hold_items(obj/item/I)
 	return usable_hands && ..()
 
-/mob/living/canUseTopic(atom/movable/M, be_close=FALSE, no_dexterity=FALSE, no_tk=FALSE, need_hands = FALSE, floor_okay=FALSE)
-	if(!(mobility_flags & MOBILITY_UI) && !floor_okay)
+/mob/living/canUseTopic(atom/movable/target, flags)
+
+	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
+	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
+	// Also if it is not set, the mob could be incapcitated, knocked out, unconscious, asleep, EMP'd, etc.
+	if(!(mobility_flags & MOBILITY_UI) && !(flags & USE_RESTING))
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
-	if(be_close && !Adjacent(M) && (M.loc != src))
-		if(no_tk)
-			to_chat(src, span_warning("You are too far away!"))
-			return FALSE
-		var/datum/dna/D = has_dna()
-		if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, M))
-			to_chat(src, span_warning("You are too far away!"))
-			return FALSE
-	if(need_hands && !can_hold_items(isitem(M) ? M : null)) //almost redundant if it weren't for mobs,
+
+	// NEED_HANDS is already checked by MOBILITY_UI for humans so this is for silicons
+	if((flags & USE_NEED_HANDS) && !can_hold_items(isitem(target) ? target : null)) //almost redundant if it weren't for mobs,
 		to_chat(src, span_warning("You don't have the physical ability to do this!"))
 		return FALSE
-	if(!no_dexterity && !ISADVANCEDTOOLUSER(src))
+
+	if((flags & USE_CLOSE) && !Adjacent(target) && (target.loc != src))
+		if(issilicon(src) && !ispAI(src))
+			if(!(flags & USE_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
+				to_chat(src, span_warning("You are too far away!"))
+				return FALSE
+
+		else if(flags & USE_IGNORE_TK)
+			to_chat(src, span_warning("You are too far away!"))
+			return FALSE
+
+		else
+			var/datum/dna/D = has_dna()
+			if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, target))
+				to_chat(src, span_warning("You are too far away!"))
+				return FALSE
+
+	if((flags & USE_DEXTERITY) && !ISADVANCEDTOOLUSER(src))
 		to_chat(src, span_warning("You don't have the dexterity to do this!"))
+		return FALSE
+
+	if((flags & USE_LITERACY) && !is_literate())
+		to_chat(src, span_warning("You can't comprehend any of this!"))
 		return FALSE
 	return TRUE
 
@@ -1892,21 +1918,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
-		if(SOFT_CRIT)
-			if(stat >= UNCONSCIOUS)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT) //adding trait sources should come before removing to avoid unnecessary updates
-				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
-				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
-				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
-			if(pulledby)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-			REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
 		if(UNCONSCIOUS)
-			if(stat != HARD_CRIT)
-				cure_blind(UNCONSCIOUS_TRAIT)
-		if(HARD_CRIT)
-			if(stat != UNCONSCIOUS)
-				cure_blind(UNCONSCIOUS_TRAIT)
+			cure_blind(UNCONSCIOUS_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
 		if(DEAD)
 			remove_from_dead_mob_list()
 			add_to_alive_mob_list()
@@ -1919,28 +1933,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
-			REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-			REMOVE_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
-		if(SOFT_CRIT)
-			ADD_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION, STAT_TRAIT)
-			if(pulledby)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT) //adding trait sources should come before removing to avoid unnecessary updates
-			if(. >= UNCONSCIOUS)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-				REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
-				REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
-				REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
-				REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
 		if(UNCONSCIOUS)
-			if(. != HARD_CRIT)
-				become_blind(UNCONSCIOUS_TRAIT)
-		if(HARD_CRIT)
-			if(. != UNCONSCIOUS)
-				become_blind(UNCONSCIOUS_TRAIT)
-			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			become_blind(UNCONSCIOUS_TRAIT)
+			ADD_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
 		if(DEAD)
-			REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
@@ -1991,9 +1988,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(. == FALSE) //null is a valid value here, we only want to return if FALSE is explicitly passed.
 		return
 	if(pulledby)
-		if(!. && stat == SOFT_CRIT)
+		if(!. && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 			ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-	else if(. && stat == SOFT_CRIT)
+	else if(. && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
 
 
@@ -2361,3 +2358,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		. += 60
 	if(HAS_TRAIT(src, TRAIT_CLUMSY))
 		. += 25
+
+/mob/living/proc/needs_organ(slot)
+	return FALSE

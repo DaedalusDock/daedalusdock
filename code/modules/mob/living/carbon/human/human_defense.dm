@@ -7,7 +7,7 @@
 			var/obj/item/bodypart/bp = def_zone
 			if(bp)
 				return checkarmor(def_zone, type)
-		var/obj/item/bodypart/affecting = get_bodypart(check_zone(def_zone))
+		var/obj/item/bodypart/affecting = get_bodypart(deprecise_zone(def_zone))
 		if(affecting)
 			return checkarmor(affecting, type)
 		//If a specific bodypart is targetted, check how that bodypart is protected and return the value.
@@ -171,17 +171,24 @@
 
 /mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user)
 	if(!I || !user)
-		return FALSE
+		return MOB_ATTACKEDBY_FAIL
 
-	var/obj/item/bodypart/affecting
+	var/target_area = parse_zone(deprecise_zone(user.zone_selected)) //our intended target
+
+	var/obj/item/bodypart/affecting = get_bodypart(deprecise_zone(user.zone_selected))
+	if (!affecting || affecting.is_stump)
+		to_chat(user, span_danger("They are missing that limb!"))
+		return MOB_ATTACKEDBY_FAIL
+
 	if(user == src)
-		affecting = get_bodypart(check_zone(user.zone_selected)) //stabbing yourself always hits the right target
+		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //stabbing yourself always hits the right target
 	else
-		var/zone_hit_chance = 80
-		if(body_position == LYING_DOWN) // half as likely to hit a different zone if they're on the ground
-			zone_hit_chance += 10
-		affecting = get_bodypart(ran_zone(user.zone_selected, zone_hit_chance))
-	var/target_area = parse_zone(check_zone(user.zone_selected)) //our intended target
+		var/accuracy_penalty = user.get_melee_inaccuracy()
+		var/hit_zone = get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty)
+		if(!hit_zone)
+			visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
+			return MOB_ATTACKEDBY_MISS
+		affecting = get_bodypart(hit_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
 
@@ -431,6 +438,7 @@
 				var/atom/throw_target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
 				throw_at(throw_target, 200, 4)
 				damage_clothes(400 - bomb_armor, BRUTE, BOMB)
+				Unconscious(20) //short amount of time for follow up attacks against elusive enemies like wizards
 
 		if (EXPLODE_HEAVY)
 			brute_loss = 60
@@ -453,7 +461,7 @@
 				ears.adjustEarDamage(15,60)
 			Knockdown(160 - (bomb_armor * 1.6)) //100 bomb armor will prevent knockdown altogether
 
-	take_overall_damage(brute_loss,burn_loss)
+	take_overall_damage(brute_loss,burn_loss, sharpness = SHARP_EDGED|SHARP_POINTY)
 
 	//attempt to dismember bodyparts
 	if(severity >= EXPLODE_HEAVY || !bomb_armor)
@@ -514,10 +522,10 @@
 		return
 	//Note we both check that the user is in cardiac arrest and can actually heartattack
 	//If they can't, they're missing their heart and this would runtime
-	if(undergoing_cardiac_arrest() && can_heartattack() && !(flags & SHOCK_ILLUSION))
+	if(undergoing_cardiac_arrest() && !(flags & SHOCK_ILLUSION))
 		if(shock_damage * siemens_coeff >= 1 && prob(25))
 			var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-			if(heart.Restart() && stat <= SOFT_CRIT)
+			if(heart.Restart() && stat != CONSCIOUS)
 				to_chat(src, span_notice("You feel your heart beating again!"))
 	electrocution_animation(40)
 
@@ -811,6 +819,7 @@
 		else
 			combined_msg += span_info("You feel fatigued.")
 	if(HAS_TRAIT(src, TRAIT_SELF_AWARE))
+		var/toxloss = getToxLoss()
 		if(toxloss)
 			if(toxloss > 10)
 				combined_msg += span_danger("You feel sick.")
@@ -850,7 +859,7 @@
 	var/damaged_plural
 	//Sets organs into their proper list
 	for(var/obj/item/organ/organ as anything in processing_organs)
-		if(organ.organ_flags & ORGAN_FAILING)
+		if(organ.organ_flags & ORGAN_DEAD)
 			if(broken.len)
 				broken += ", "
 			broken += organ.name

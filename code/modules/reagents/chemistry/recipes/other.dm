@@ -718,3 +718,13 @@
 	for(var/i in rand(1, created_volume) to created_volume)
 		new /mob/living/simple_animal/hostile/ant(location)
 	..()
+
+/datum/chemical_reaction/plastic_polymers
+	required_reagents = list(/datum/reagent/fuel/oil = 5, /datum/reagent/toxin/acid = 2, /datum/reagent/ash = 3)
+	required_temp = 374 //lazily consistent with soap & other crafted objects generically created with heat.
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/plastic_polymers/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	var/location = get_turf(holder.my_atom)
+	for(var/i in 1 to created_volume)
+		new /obj/item/stack/sheet/plastic(location)

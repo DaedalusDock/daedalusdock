@@ -238,19 +238,26 @@
 	inhand_icon_state = "glasses"
 	vision_correction = TRUE //corrects nearsightedness
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
-	loc_procs = CROSSED
 
 /obj/item/clothing/glasses/regular/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/knockoff, 25, list(BODY_ZONE_PRECISE_EYES), slot_flags)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/item/clothing/glasses/regular/Crossed(atom/movable/crossed_by, oldloc)
+
+/obj/item/clothing/glasses/regular/proc/on_entered(datum/source, atom/movable/movable)
+	SIGNAL_HANDLER
+	if(movable == src)
+		return
 	if(damaged_clothes == CLOTHING_SHREDDED)
 		return
 	if(item_flags & IN_INVENTORY)
 		return
-	if(isliving(crossed_by))
-		var/mob/living/crusher = crossed_by
+	if(isliving(movable))
+		var/mob/living/crusher = movable
 		if(crusher.m_intent != MOVE_INTENT_WALK && (!(crusher.movement_type & (FLYING|FLOATING)) || crusher.buckled))
 			playsound(src, 'sound/effects/glass_step.ogg', 30, TRUE)
 			visible_message(span_warning("[crusher] steps on [src], damaging it!"))

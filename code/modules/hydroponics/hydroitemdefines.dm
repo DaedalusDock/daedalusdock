@@ -583,7 +583,7 @@
 			to_chat(trimmer, span_warning("[pod] [pod.p_do()]n't have a head!"))
 			return
 		if(location == BODY_ZONE_HEAD && !trimmer.combat_mode)
-			if(!trimmer.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+			if(!trimmer.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 				return
 			var/new_style = tgui_input_list(trimmer, "Select a hairstyle", "Grooming", GLOB.pod_hair_list)
 			if(isnull(new_style))

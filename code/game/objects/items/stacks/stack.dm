@@ -20,7 +20,6 @@
 	gender = PLURAL
 	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
-	loc_procs = CROSSED
 
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
@@ -96,6 +95,10 @@
 					recipes += temp
 	update_weight()
 	update_appearance()
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_movable_entered_occupied_turf),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /** Sets the amount of materials per unit for this stack.
  *
@@ -509,9 +512,15 @@
 	is_zero_amount(delete_if_zero = TRUE)
 
 /// Signal handler for connect_loc element. Called when a movable enters the turf we're currently occupying. Merges if possible.
-/obj/item/stack/Crossed(atom/movable/crossed_by, oldloc)
-	if(!crossed_by.throwing && can_merge(crossed_by))
-		INVOKE_ASYNC(src, PROC_REF(merge), crossed_by)
+/obj/item/stack/proc/on_movable_entered_occupied_turf(datum/source, atom/movable/arrived)
+	SIGNAL_HANDLER
+
+	// Edge case. This signal will also be sent when src has entered the turf. Don't want to merge with ourselves.
+	if(arrived == src)
+		return
+
+	if(!arrived.throwing && can_merge(arrived))
+		INVOKE_ASYNC(src, PROC_REF(merge), arrived)
 
 /obj/item/stack/hitby(atom/movable/hitting, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(can_merge(hitting, inhand = TRUE))
@@ -553,13 +562,13 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 
-	if(is_cyborg || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(is_cyborg || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(is_zero_amount(delete_if_zero = TRUE))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	var/max = get_amount()
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
-	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, !iscyborg(user)))
+	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	split_stack(user, stackmaterial)
 	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))

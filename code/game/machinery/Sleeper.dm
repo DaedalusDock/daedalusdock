@@ -148,7 +148,7 @@
 
 /obj/machinery/sleeper/AltClick(mob/user)
 	. = ..()
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(state_open)
 		close_machine()
@@ -179,12 +179,13 @@
 		data["occupant"]["name"] = mob_occupant.name
 		switch(mob_occupant.stat)
 			if(CONSCIOUS)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "good"
-			if(SOFT_CRIT)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "average"
-			if(UNCONSCIOUS, HARD_CRIT)
+				if(!HAS_TRAIT(mob_occupant, TRAIT_SOFT_CRITICAL_CONDITION))
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "good"
+				else
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "average"
+			if(UNCONSCIOUS)
 				data["occupant"]["stat"] = "Unconscious"
 				data["occupant"]["statstate"] = "average"
 			if(DEAD)
@@ -202,7 +203,7 @@
 		data["occupant"]["reagents"] = list()
 		if(mob_occupant.reagents && mob_occupant.reagents.reagent_list.len)
 			for(var/datum/reagent/R in mob_occupant.reagents.reagent_list)
-				if(R.chemical_flags & REAGENT_INVISIBLE) //Don't show hidden chems
+				if(R.chemical_flags & (REAGENT_SCANNABLE|REAGENT_INVISIBLE)) //Don't show hidden chems
 					continue
 				data["occupant"]["reagents"] += list(list("name" = R.name, "volume" = R.volume))
 	return data

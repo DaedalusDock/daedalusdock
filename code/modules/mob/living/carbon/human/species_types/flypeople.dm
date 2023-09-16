@@ -3,15 +3,16 @@
 	plural_form = "Flypeople"
 	id = SPECIES_FLYPERSON
 	say_mod = "buzzes"
-	species_traits = list(HAS_FLESH, HAS_BONE, TRAIT_ANTENNAE)
+	species_traits = list()
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
 		TRAIT_CAN_USE_FLIGHT_POTION,
+		TRAIT_ANTENNAE,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
 	meat = /obj/item/food/meat/slab/human/mutant/fly
-	mutanteyes = /obj/item/organ/eyes/fly
+
 	liked_food = GROSS
 	disliked_food = NONE
 	toxic_food = NONE
@@ -20,12 +21,6 @@
 	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 
-	mutanttongue = /obj/item/organ/tongue/fly
-	mutantheart = /obj/item/organ/heart/fly
-	mutantlungs = /obj/item/organ/lungs/fly
-	mutantliver = /obj/item/organ/liver/fly
-	mutantstomach = /obj/item/organ/stomach/fly
-	mutantappendix = /obj/item/organ/appendix/fly
 	mutant_organs = list(/obj/item/organ/fly, /obj/item/organ/fly/groin)
 
 	bodypart_overrides = list(
@@ -35,6 +30,18 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/fly,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/fly,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/fly,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/fly,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/fly,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes/fly,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/fly,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/fly,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix/fly,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/fly,
 	)
 
 /datum/species/fly/check_species_weakness(obj/item/weapon, mob/living/attacker)
@@ -118,7 +125,6 @@
 
 /obj/item/organ/liver/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
-	alcohol_tolerance = 0.007 //flies eat vomit, so a lower alcohol tolerance is perfect!
 
 /obj/item/organ/liver/fly/Initialize(mapload)
 	. = ..()

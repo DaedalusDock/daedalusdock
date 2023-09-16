@@ -227,7 +227,7 @@ export class Changelog extends Component {
           Daedalus Dock is thankful to the
           GoonStation 13 Development Team for its work on the game up to the
           {' r4407 release. The changelog for changes up to r4407 can be seen '}
-          <a href="https://wiki.ss13.co/Changelog#April_2010">
+          <a href="https://wiki.ss13.co/Pre-2016_Changelog#April_2010">
             here
           </a>
           .

@@ -333,7 +333,7 @@
 	melee_damage_lower = 20
 	melee_damage_upper = 40
 	armour_penetration = 30
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	attack_verb_continuous = "acts out divine vengeance on"
 	attack_verb_simple = "act out divine vengeance on"
 	obj_damage = 50

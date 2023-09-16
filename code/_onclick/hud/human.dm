@@ -327,6 +327,9 @@
 	gun_option.hud = src
 	gunpoint_options += gun_option
 
+	pain = new
+	pain.hud = src
+
 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
 		if(inv.slot_id)
 			inv.hud = src

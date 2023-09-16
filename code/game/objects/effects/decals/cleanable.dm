@@ -1,7 +1,6 @@
 /obj/effect/decal/cleanable
 	gender = PLURAL
 	layer = ABOVE_NORMAL_TURF_LAYER
-	loc_procs = CROSSED
 	var/list/random_icon_states = null
 	///I'm sorry but cleanable/blood code is ass, and so is blood_DNA
 	var/blood_state = ""
@@ -44,6 +43,10 @@
 	var/turf/T = get_turf(src)
 	if(T && is_station_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_created", 1, name)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/decal/cleanable/Destroy()
 	var/turf/T = get_turf(src)
@@ -88,9 +91,12 @@
 
 //Add "bloodiness" of this blood's type, to the human's shoes
 //This is on /cleanable because fuck this ancient mess
-/obj/effect/decal/cleanable/Crossed(atom/movable/crossed_by, oldloc)
-	if(iscarbon(crossed_by) && blood_state && bloodiness >= 40)
-		SEND_SIGNAL(crossed_by, COMSIG_STEP_ON_BLOOD, src)
+/obj/effect/decal/cleanable/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	if(iscarbon(AM) && blood_state && bloodiness >= 40)
+		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 
 /obj/effect/decal/cleanable/wash(clean_types)

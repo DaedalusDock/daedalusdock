@@ -84,6 +84,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/healthdoll
 	var/atom/movable/screen/wanted/wanted_lvl
 	var/atom/movable/screen/spacesuit
+
+	var/atom/movable/screen/fullscreen/pain
 	// subtypes can override this to force a specific UI style
 	var/ui_style
 
@@ -119,6 +121,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		plane_master_controllers[controller_instance.name] = controller_instance
 
 	owner.overlay_fullscreen("see_through_darkness", /atom/movable/screen/fullscreen/see_through_darkness)
+
+	RegisterSignal(mymob, COMSIG_VIEWDATA_UPDATE, PROC_REF(on_viewdata_update))
+
 
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
@@ -164,8 +169,14 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	mymob = null
 
 	QDEL_NULL(screentip_text)
+	QDEL_NULL(pain)
 
 	return ..()
+
+/datum/hud/proc/on_viewdata_update(datum/source, view)
+	SIGNAL_HANDLER
+
+	view_audit_buttons()
 
 /mob/proc/create_mob_hud()
 	if(!client || hud_used)

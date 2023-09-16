@@ -396,7 +396,7 @@
 
 /obj/machinery/space_heater/improvised_chem_heater/AltClick(mob/living/user)
 	. = ..()
-	if(!can_interact(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	replace_beaker(user)
 

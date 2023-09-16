@@ -345,7 +345,7 @@
 	var/modifiers = params2list(params)
 	var/obj/projectile/globule/globule = new(caller.loc)
 	globule.preparePixelProjectile(target, caller, modifiers)
-	globule.def_zone = caller.zone_selected
+	globule.aimed_def_zone = caller.zone_selected
 	globule.fire()
 
 	return TRUE

@@ -182,32 +182,22 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///What anim to use for gibbing
 	var/gib_anim = "gibbed-h"
 
-
-	//Do NOT remove by setting to null. use OR make a RESPECTIVE TRAIT (removing stomach? add the NOSTOMACH trait to your species)
-	//why does it work this way? because traits also disable the downsides of not having an organ, removing organs but not having the trait will make your species die
-
-	///Replaces default brain with a different organ
-	var/obj/item/organ/brain/mutantbrain = /obj/item/organ/brain
-	///Replaces default heart with a different organ
-	var/obj/item/organ/heart/mutantheart = /obj/item/organ/heart
-	///Replaces default lungs with a different organ
-	var/obj/item/organ/lungs/mutantlungs = /obj/item/organ/lungs
-	///Replaces default eyes with a different organ
-	var/obj/item/organ/eyes/mutanteyes = /obj/item/organ/eyes
-	///Replaces default ears with a different organ
-	var/obj/item/organ/ears/mutantears = /obj/item/organ/ears
-	///Replaces default tongue with a different organ
-	var/obj/item/organ/tongue/mutanttongue = /obj/item/organ/tongue
-	///Replaces default liver with a different organ
-	var/obj/item/organ/liver/mutantliver = /obj/item/organ/liver
-	///Replaces default stomach with a different organ
-	var/obj/item/organ/stomach/mutantstomach = /obj/item/organ/stomach
-	///Replaces default appendix with a different organ.
-	var/obj/item/organ/appendix/mutantappendix = /obj/item/organ/appendix
 	///Forces an item into this species' hands. Only an honorary mutantthing because this is not an organ and not loaded in the same way, you've been warned to do your research.
 	var/obj/item/mutanthands
 
-
+	/// A template for what organs this species should have.
+	/// Assign null to simply exclude spawning with one.
+	var/list/organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+	)
 
 	///Bitflag that controls what in game ways something can select this species as a spawnable source, such as magic mirrors. See [mob defines][code/__DEFINES/mobs.dm] for possible sources.
 	var/changesource_flags = NONE
@@ -234,6 +224,25 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/roundstart_changed = FALSE
 
 	var/properly_gained = FALSE
+
+	/// A list of weighted lists to pain emotes. The list with the LOWEST damage requirement needs to be first.
+	var/list/pain_emotes = list(
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+		) = 10,
+
+		list(
+			"grunt" = 1,
+			"groan" = 1,
+		) = 40,
+
+		list(
+			"scream" = 1,
+			"whimper" = 1,
+			"cry" = 1,
+		) = 70,
+	)
 
 ///////////
 // PROCS //
@@ -363,22 +372,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * * visual_only - boolean, only load organs that change how the species looks. Do not use for normal gameplay stuff
  */
 /datum/species/proc/regenerate_organs(mob/living/carbon/C, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE)
-	//what should be put in if there is no mutantorgan (brains handled separately)
-	var/list/slot_mutantorgans = list(ORGAN_SLOT_BRAIN = mutantbrain, ORGAN_SLOT_HEART = mutantheart, ORGAN_SLOT_LUNGS = mutantlungs, ORGAN_SLOT_APPENDIX = mutantappendix, \
-	ORGAN_SLOT_EYES = mutanteyes, ORGAN_SLOT_EARS = mutantears, ORGAN_SLOT_TONGUE = mutanttongue, ORGAN_SLOT_LIVER = mutantliver, ORGAN_SLOT_STOMACH = mutantstomach)
-
-	for(var/slot in list(ORGAN_SLOT_BRAIN, ORGAN_SLOT_HEART, ORGAN_SLOT_LUNGS, ORGAN_SLOT_APPENDIX, \
-	ORGAN_SLOT_EYES, ORGAN_SLOT_EARS, ORGAN_SLOT_TONGUE, ORGAN_SLOT_LIVER, ORGAN_SLOT_STOMACH))
-
+	for(var/slot in organs)
 		var/obj/item/organ/oldorgan = C.getorganslot(slot) //used in removing
-		var/obj/item/organ/neworgan = slot_mutantorgans[slot] //used in adding
+		var/obj/item/organ/neworgan = organs[slot] //used in adding
 
 		if(visual_only && !initial(neworgan.visual))
 			continue
 
 		var/used_neworgan = FALSE
-		neworgan = SSwardrobe.provide_type(neworgan)
-		var/should_have = neworgan.get_availability(src) //organ proc that points back to a species trait (so if the species is supposed to have this organ)
+		var/should_have = !!neworgan
+		if(should_have)
+			neworgan = SSwardrobe.provide_type(neworgan)
 
 		if(oldorgan && (!should_have || replace_current) && !(oldorgan.zone in excluded_zones) && !(oldorgan.organ_flags & ORGAN_UNREMOVABLE))
 			if(slot == ORGAN_SLOT_BRAIN)
@@ -719,10 +723,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 								accessory_overlay.color = fixed_mut_color
 							else
 								accessory_overlay.color = source.dna.mutant_colors[MUTCOLORS_GENERIC_1]
-						if(MUTCOLORS2)
-							accessory_overlay.color = source.dna.mutant_colors[MUTCOLORS_GENERIC_2]
-						if(MUTCOLORS3)
-							accessory_overlay.color = source.dna.mutant_colors[MUTCOLORS_GENERIC_3]
 						if(HAIR)
 							if(hair_color == "mutcolor")
 								accessory_overlay.color = source.dna.mutant_colors[MUTCOLORS_GENERIC_1]
@@ -1019,7 +1019,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 
 /datum/species/proc/help(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
-	if(target.body_position == STANDING_UP || (target.health >= 0 && !HAS_TRAIT(target, TRAIT_FAKEDEATH)))
+	if(target.body_position == STANDING_UP || (target.health >= 0 && !(HAS_TRAIT(target, TRAIT_FAKEDEATH) || target.undergoing_cardiac_arrest())))
 		target.help_shake_act(user)
 		if(target != user)
 			log_combat(user, target, "shaken")
@@ -1040,7 +1040,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		target.grabbedby(user)
 		return TRUE
 
-///This proc handles punching damage. IMPORTANT: Our owner is the TARGET and not the USER in this proc. For whatever reason...
+///This proc handles punching damage.
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm [target]!"))
@@ -1052,73 +1052,88 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return FALSE
 	if(attacker_style?.harm_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return ATTACK_HANDLED
-	else
 
-		var/obj/item/organ/brain/brain = user.getorganslot(ORGAN_SLOT_BRAIN)
-		var/obj/item/bodypart/attacking_bodypart
-		if(brain)
-			attacking_bodypart = brain.get_attacking_limb(target)
-		if(!attacking_bodypart)
-			attacking_bodypart = user.get_active_hand()
-		var/atk_verb = attacking_bodypart.unarmed_attack_verb
-		var/atk_effect = attacking_bodypart.unarmed_attack_effect
+	var/obj/item/organ/brain/brain = user.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/bodypart/attacking_bodypart
+	if(brain)
+		attacking_bodypart = brain.get_attacking_limb(target)
 
-		if(atk_effect == ATTACK_EFFECT_BITE)
-			if(user.is_mouth_covered(mask_only = TRUE))
-				to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
-				return FALSE
-		user.do_attack_animation(target, atk_effect)
+	if(!attacking_bodypart)
+		attacking_bodypart = user.get_active_hand()
 
-		var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
+	var/atk_verb = attacking_bodypart.unarmed_attack_verb
+	var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
-		var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
-
-		var/miss_chance = 100//calculate the odds that a punch misses entirely. considers stamina and brute damage of the puncher. punches miss by default to prevent weird cases
-		if(attacking_bodypart.unarmed_damage_low)
-			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER)) //kicks never miss (provided your species deals more than 0 damage)
-				miss_chance = 0
-			else
-				miss_chance = min((attacking_bodypart.unarmed_damage_high/attacking_bodypart.unarmed_damage_low) + (user.getBruteLoss()*0.5), 100) //old base chance for a miss + various damage. capped at 100 to prevent weirdness in prob()
-
-		if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
-			playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
-			target.visible_message(span_danger("[user]'s [atk_verb] misses [target]!"), \
-							span_danger("You avoid [user]'s [atk_verb]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
-			log_combat(user, target, "attempted to punch")
+	if(atk_effect == ATTACK_EFFECT_BITE)
+		if(user.is_mouth_covered(mask_only = TRUE))
+			to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
 			return FALSE
 
-		var/armor_block = target.run_armor_check(affecting, MELEE)
+	user.do_attack_animation(target, atk_effect)
 
-		playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
+	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
 
-		user.visible_message(
-			span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
-			null,
-			span_hear("You hear a sickening sound of flesh hitting flesh!"),
-			COMBAT_MESSAGE_RANGE
+	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
+
+	var/miss_chance = 100
+	if(attacking_bodypart.unarmed_damage_low)
+		if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER)) //kicks never miss (provided your species deals more than 0 damage)
+			miss_chance = 0
+		else
+			miss_chance = user.get_melee_inaccuracy()
+
+
+	if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
+		var/rolled = target.body_position == LYING_DOWN && !target.incapacitated()
+		playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
+
+		target.visible_message(
+			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]!"), \
+			span_danger("You avoid [user]'s [atk_verb]!"),
+			span_hear("You hear a swoosh!"),
+			COMBAT_MESSAGE_RANGE,
+			user
 		)
+		if(rolled)
+			target.setDir(pick(GLOB.cardinals))
 
-		target.lastattacker = user.real_name
-		target.lastattackerckey = user.ckey
-		user.dna.species.spec_unarmedattacked(user, target)
+		to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
+		log_combat(user, target, "attempted to punch")
+		return FALSE
 
-		if(user.limb_destroyer)
-			target.dismembering_strike(user, affecting.body_zone)
+	var/armor_block = target.run_armor_check(affecting, MELEE)
 
-		var/attack_direction = get_dir(user, target)
-		var/attack_type = attacking_bodypart.attack_type
-		if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
-			log_combat(user, target, "kicked")
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*3)) //Kicks do alot of stamina damage
-		else//other attacks deal full raw damage + 1.5x in stamina damage
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
-			log_combat(user, target, "punched")
-			. |= ATTACK_CONSUME_STAMINA
+	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
-		return ATTACK_CONTINUE | .
+	user.visible_message(
+		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
+		null,
+		span_hear("You hear a sickening sound of flesh hitting flesh!"),
+		COMBAT_MESSAGE_RANGE
+	)
+
+	target.lastattacker = user.real_name
+	target.lastattackerckey = user.ckey
+	user.dna.species.spec_unarmedattacked(user, target)
+
+	if(user.limb_destroyer)
+		target.dismembering_strike(user, affecting.body_zone)
+
+	var/attack_direction = get_dir(user, target)
+	var/attack_type = attacking_bodypart.attack_type
+	if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
+		log_combat(user, target, "kicked")
+		target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+		target.stamina.adjust(-1 * (STAMINA_DAMAGE_UNARMED*3)) //Kicks do alot of stamina damage
+
+	else//other attacks deal full raw damage + 1.5x in stamina damage
+
+		target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+		target.stamina.adjust(-STAMINA_DAMAGE_UNARMED)
+		log_combat(user, target, "punched")
+		. |= ATTACK_CONSUME_STAMINA
+
+	return ATTACK_CONTINUE | .
 
 /datum/species/proc/spec_unarmedattacked(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	return
@@ -1185,11 +1200,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Allows you to put in item-specific reactions based on species
 	if(user != H)
 		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armour_penetration))
-			return FALSE
+			return MOB_ATTACKEDBY_NO_DAMAGE
+
 	if(H.check_block())
 		H.visible_message(span_warning("[H] blocks [I]!"), \
 						span_userdanger("You block [I]!"))
-		return FALSE
+		return MOB_ATTACKEDBY_NO_DAMAGE
 
 	var/hit_area
 	if(!affecting) //Something went wrong. Maybe the limb is missing?
@@ -1213,15 +1229,18 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		H.stamina.adjust(-I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1))
 
 	if(!I.force)
-		return FALSE //item force is zero
+		return MOB_ATTACKEDBY_NO_DAMAGE //item force is zero
 
 	var/bloody = FALSE
 	if(((I.damtype == BRUTE) && I.force && prob(25 + (I.force * 2))))
+
 		if(IS_ORGANIC_LIMB(affecting))
 			I.add_mob_blood(H) //Make the weapon bloody, not the person.
+
 			if(prob(I.force * 2)) //blood spatter!
 				bloody = TRUE
 				var/turf/location = H.loc
+
 				if(istype(location))
 					H.add_splatter_floor(location)
 				if(get_dist(user, H) <= 1) //people with TK won't get smeared with blood
@@ -1232,17 +1251,20 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(!I.sharpness && armor_block < 50)
 					if(prob(I.force))
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 20)
-						if(H.stat <= SOFT_CRIT)
+
+						if(H.stat != CONSCIOUS)
 							H.visible_message(span_danger("[H] is knocked senseless!"), \
 											span_userdanger("You're knocked senseless!"))
 							H.set_timed_status_effect(20 SECONDS, /datum/status_effect/confusion, only_if_higher = TRUE)
 							H.adjust_blurriness(10)
+
 						if(prob(10))
 							H.gain_trauma(/datum/brain_trauma/mild/concussion)
+
 					else
 						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, I.force * 0.2)
 
-					if(H.mind && H.stat <= SOFT_CRIT && H != user && prob(I.force + ((100 - H.health) * 0.5))) // rev deconversion through blunt trauma.
+					if(H.mind && H.stat != CONSCIOUS && H != user && prob(I.force + ((100 - H.health) * 0.5))) // rev deconversion through blunt trauma.
 						var/datum/antagonist/rev/rev = H.mind.has_antag_datum(/datum/antagonist/rev)
 						if(rev)
 							rev.remove_revolutionary(FALSE, user)
@@ -1251,9 +1273,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					if(H.wear_mask)
 						H.wear_mask.add_mob_blood(H)
 						H.update_worn_mask()
+
 					if(H.head)
 						H.head.add_mob_blood(H)
 						H.update_worn_head()
+
 					if(H.glasses && prob(33))
 						H.glasses.add_mob_blood(H)
 						H.update_worn_glasses()
@@ -1269,11 +1293,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					if(H.wear_suit)
 						H.wear_suit.add_mob_blood(H)
 						H.update_worn_oversuit()
+
 					if(H.w_uniform)
 						H.w_uniform.add_mob_blood(H)
 						H.update_worn_undersuit()
 
-	return TRUE
+	return MOB_ATTACKEDBY_SUCCESS
 
 /datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null, cap_loss_at = 0)
 	SEND_SIGNAL(H, COMSIG_MOB_APPLY_DAMAGE, damage, damagetype, def_zone, sharpness, attack_direction)
@@ -1289,7 +1314,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		else
 			if(!def_zone)
 				def_zone = ran_zone(def_zone)
-			BP = H.get_bodypart(check_zone(def_zone))
+			BP = H.get_bodypart(deprecise_zone(def_zone))
 			if(!BP)
 				BP = H.bodyparts[1]
 
@@ -1575,8 +1600,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				H.clear_alert(ALERT_PRESSURE)
 			else
 				H.adjustBruteLoss(LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod * delta_time, FALSE)
-				H.adjustOrganLoss(ORGAN_SLOT_EARS, LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod * delta_time)
-				H.adjustOrganLoss(ORGAN_SLOT_EYES, LOW_PRESSURE_DAMAGE * H.physiology.pressure_mod * delta_time)
+				H.adjustOrganLoss(ORGAN_SLOT_EARS, (LOW_PRESSURE_DAMAGE * 0.1) * H.physiology.pressure_mod * delta_time)
+				H.adjustOrganLoss(ORGAN_SLOT_EYES, (LOW_PRESSURE_DAMAGE * 0.1) * H.physiology.pressure_mod * delta_time)
 				. = TRUE
 				H.throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/lowpressure, 2)
 
@@ -1721,14 +1746,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_store += horny //Haha get it?
 
 	//Don't preload brains, cause reuse becomes a horrible headache
-	to_store += mutantheart
-	to_store += mutantlungs
-	to_store += mutanteyes
-	to_store += mutantears
-	to_store += mutanttongue
-	to_store += mutantliver
-	to_store += mutantstomach
-	to_store += mutantappendix
+	to_store += organs[ORGAN_SLOT_HEART]
+	to_store += organs[ORGAN_SLOT_LUNGS]
+	to_store += organs[ORGAN_SLOT_EYES]
+	to_store += organs[ORGAN_SLOT_EARS]
+	to_store += organs[ORGAN_SLOT_TONGUE]
+	to_store += organs[ORGAN_SLOT_LIVER]
+	to_store += organs[ORGAN_SLOT_STOMACH]
+	to_store += organs[ORGAN_SLOT_APPENDIX]
+
+	list_clear_nulls(to_store)
 	//We don't cache mutant hands because it's not constrained enough, too high a potential for failure
 	return to_store
 
@@ -2159,3 +2186,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		. = min(., 20)
 
 	return (round(.))
+
+
+/datum/species/proc/get_pain_emote(amount)
+	var/chosen
+
+	for(var/list/L as anything in pain_emotes)
+		if(amount >= pain_emotes[L])
+			chosen = L
+		else
+			break
+
+	return pick_weight(chosen)

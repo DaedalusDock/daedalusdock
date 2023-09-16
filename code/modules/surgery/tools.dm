@@ -347,7 +347,7 @@
 		candidate_name = tail_snip_candidate.name
 
 	else
-		limb_snip_candidate = patient.get_bodypart(check_zone(user.zone_selected))
+		limb_snip_candidate = patient.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!limb_snip_candidate)
 			to_chat(user, span_warning("[patient] is already missing that limb, what more do you want?"))
 			return

@@ -58,6 +58,9 @@
 /// Connection rejected, Not sharing a turf (???)
 #define NETJACK_CONNECT_NOTSAMETURF 2
 
+/// Data Terminal not found.
+#define NETJACK_CONNECT_NOT_FOUND 3
+
 // receive_signal return codes
 
 /// Packet fully handled by parent

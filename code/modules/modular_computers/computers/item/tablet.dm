@@ -86,7 +86,7 @@
 
 /obj/item/modular_computer/tablet/proc/remove_pen(mob/user)
 
-	if(issilicon(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK)) //TK doesn't work even with this removed but here for readability
+	if(issilicon(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK)) //TK doesn't work even with this removed but here for readability
 		return
 
 	if(inserted_item)

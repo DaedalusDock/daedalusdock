@@ -572,7 +572,7 @@
 	set category = "Object"
 	set name = "Toggle Open"
 
-	if(!usr.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!usr.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(iscarbon(usr) || issilicon(usr) || isdrone(usr))
@@ -584,15 +584,10 @@
 // and due to an oversight in turf/Enter() were going through walls.  That
 // should be independently resolved, but this is also an interesting twist.
 /obj/structure/closet/Exit(atom/movable/leaving, direction)
-	. = ..()
-	return FALSE
-
-/obj/structure/closet/Exited(atom/movable/gone, direction)
-	. = ..()
-	if(QDELETED(gone)) //If an object in our contents was qdeleted, don't open as a result of moveToNullspace()
-		return
-
 	open()
+	if(leaving.loc == src)
+		return FALSE
+	return TRUE
 
 /obj/structure/closet/container_resist_act(mob/living/user)
 	if(isstructure(loc))
@@ -640,7 +635,7 @@
 /obj/structure/closet/attack_hand_secondary(mob/user, modifiers)
 	. = ..()
 
-	if(!user.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!user.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(!opened && secure)

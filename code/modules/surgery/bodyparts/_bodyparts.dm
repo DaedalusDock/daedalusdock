@@ -76,8 +76,6 @@
 	/// The interaction speed modifier when this limb is used to interact with the world. ONLY WORKS FOR ARMS
 	var/interaction_speed_modifier = 1
 
-	///Multiplier of the limb's damage that gets applied to the mob
-	var/body_damage_coeff = 1
 	var/brutestate = 0
 	var/burnstate = 0
 
@@ -93,6 +91,8 @@
 	var/brute_ratio = 0
 	///The % of current_damage that is burn
 	var/burn_ratio = 0
+	/// How much pain this limb is applying.
+	VAR_PRIVATE/pain = 0
 	///The minimum damage a part must have before it's bones may break. Defaults to max_damage * BODYPART_MINIMUM_BREAK_MOD
 	var/minimum_break_damage = 0
 	/// Bleed multiplier
@@ -433,12 +433,16 @@
 				remove_organ(O)
 
 		item_in_bodypart.forceMove(bodypart_turf)
+		if(!violent_removal)
+			continue
+		item_in_bodypart.throw_at(get_edge_target_turf(item_in_bodypart, pick(GLOB.alldirs)), rand(1,3), 5)
+
 
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
+	pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
 	. |= wound_life()
-	return
 
 /obj/item/bodypart/proc/wound_life()
 	if(!LAZYLEN(wounds))
@@ -478,6 +482,9 @@
 	// sync the bodypart's damage with its wounds
 	return update_damage()
 
+/obj/item/bodypart/proc/is_damageable(added_damage)
+	return !IS_ORGANIC_LIMB(src) || ((brute_dam + burn_dam + added_damage) < max_damage * 4)
+
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
@@ -504,34 +511,40 @@
 		burn *= 2
 
 	var/spillover = 0
-	var/pure_brute = brute + brute_dam
-	var/damagable = ((brute_dam + burn_dam) < max_damage)
+	var/pure_brute = brute
+	var/damagable = is_damageable()
+	var/total = brute + burn
 
-	spillover = brute_dam + burn_dam + brute - max_damage
-	if(spillover > 0)
-		brute = max(brute - spillover, 0)
-	else
-		spillover = brute_dam + burn_dam + brute + burn - max_damage
+	if(!is_damageable())
+		spillover =  brute_dam + burn_dam + brute - max_damage
 		if(spillover > 0)
-			burn = max(burn - spillover, 0)
+			brute = max(brute - spillover, 0)
+		else
+			spillover = brute_dam + burn_dam + brute + burn - max_damage
+			if(spillover > 0)
+				burn = max(burn - spillover, 0)
 
+	#ifndef UNIT_TESTS
 	/*
-	// DISMEMBERMENT
+	// DISMEMBERMENT - Doesn't happen during unit tests due to fucking up damage.
 	*/
-	if(owner)
-		var/total_damage = brute_dam + burn_dam + burn + brute
+	if(owner && breaks_bones)
+		var/total_damage = brute_dam + burn_dam + burn + brute + spillover
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
-			if(attempt_dismemberment(brute, burn, sharpness))
+			if(attempt_dismemberment(pure_brute, burn, sharpness, total_damage > max_damage * LIMB_AUTODISMEMBER_PERCENT))
 				return update_damage() || .
+	#endif
 
 
 	//blunt damage is gud at fracturing
 	if(breaks_bones && brute)
+		if(LAZYLEN(contained_organs))
+			brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), null, sharpness) // Absorb some brute damage
+			if(!IS_ORGANIC_LIMB(src))
+				burn -= damage_internal_organs(null, round(burn/2, DAMAGE_PRECISION))
+
 		if(bodypart_flags & BP_BROKEN_BONES)
 			jostle_bones(brute)
-			if(prob(20))
-				spawn(-1)
-					owner?.emote("scream")
 		else if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
 			break_bones()
 
@@ -557,6 +570,12 @@
 	if(burn)
 		create_wound(WOUND_BURN, burn, update_damage = FALSE)
 
+	//Initial pain spike
+	owner?.apply_pain(0.6*burn + 0.4*brute, body_zone, updating_health = FALSE)
+
+	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
+		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))
+
 	//Disturb treated burns
 	if(brute > 5)
 		var/disturbed = 0
@@ -567,6 +586,7 @@
 				disturbed += W.damage
 		if(disturbed)
 			to_chat(owner, span_warning("Ow! Your burns were disturbed."))
+			owner.apply_pain(0.5*burn, body_zone, updating_health = FALSE)
 
 	/*
 	// END WOUND HANDLING
@@ -587,6 +607,50 @@
 			if(. & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
 				owner.update_damage_overlays()
 	return .
+
+/// Damages internal organs. Does not call updatehealth(), be mindful.
+/obj/item/bodypart/proc/damage_internal_organs(brute, burn, sharpness)
+	#ifdef UNIT_TESTS
+	return // This randomly changes the damage outcomes, this is bad for unit testing.
+	#endif
+	if(!LAZYLEN(contained_organs) || !(brute || burn))
+		return FALSE
+
+	var/organ_damage_threshold = 5
+	if(sharpness & SHARP_POINTY)
+		organ_damage_threshold *= 0.5
+
+	var/damage
+	if(brute)
+		if(!(brute_dam + brute >= max_damage) && !(brute >= organ_damage_threshold))
+			return FALSE
+		damage = brute
+	else
+		if(!(burn_dam + burn >= max_damage) && !(burn >= organ_damage_threshold))
+			return FALSE
+		damage = burn
+
+	var/list/victims = list()
+	var/organ_hit_chance = 0
+	for(var/obj/item/organ/I as anything in contained_organs)
+		if(!I.cosmetic_only && I.damage < I.maxHealth)
+			victims[I] = I.relative_size
+			organ_hit_chance += I.relative_size
+
+	//No damageable organs
+	if(!length(victims))
+		return FALSE
+
+	organ_hit_chance += 5 * damage/organ_damage_threshold
+
+	if(encased && !(bodypart_flags & BP_BROKEN_BONES)) //ribs protect
+		organ_hit_chance *= 0.6
+
+	organ_hit_chance = min(organ_hit_chance, 100)
+	if(prob(organ_hit_chance))
+		var/obj/item/organ/victim = pick_weight(victims)
+		damage *= victim.external_damage_modifier
+		return victim.applyOrganDamage(damage, updating_health = FALSE)
 
 //Heals brute and burn damage for the organ. Returns 1 if the damage-icon states changed at all.
 //Damage cannot go below zero.
@@ -670,8 +734,8 @@
 	brute_ratio = brute_dam / (limb_loss_threshold * 2)
 	burn_ratio = burn_dam / (limb_loss_threshold * 2)
 
-	var/tbrute = round( (brute_dam/max_damage)*3, 1 )
-	var/tburn = round( (burn_dam/max_damage)*3, 1 )
+	var/tbrute = min(round( (brute_dam/max_damage)*3, 1 ), 3)
+	var/tburn = min(round( (burn_dam/max_damage)*3, 1 ), 3)
 	if((tbrute != brutestate) || (tburn != burnstate))
 		brutestate = tbrute
 		burnstate = tburn

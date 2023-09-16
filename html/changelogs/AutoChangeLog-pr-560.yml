@@ -1,0 +1,6 @@
+author: francinum
+delete-after: true
+changes:
+  - rscadd: Data Terminals are buildable, you can get them from the Engineering Fabricator.
+  - bugfix: phone connection feedback messages no longer error on trying to connect
+      to a terminal it's already connected to.

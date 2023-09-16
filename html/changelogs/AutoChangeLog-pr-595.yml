@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - refactor: Improved code around species organs to make way for IPCs
-  - rscdel: Golems, Adamantine, and related goodies.

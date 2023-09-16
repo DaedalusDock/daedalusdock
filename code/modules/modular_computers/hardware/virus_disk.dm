@@ -53,6 +53,7 @@
 	shuffle_inplace(outgoing.data)
 	pnetcard.post_signal(outgoing)
 	to_chat(user, span_notice("Virus sent."))
+	--charges
 	return
 
 /*
@@ -88,7 +89,7 @@
 
 /obj/item/computer_hardware/hard_drive/role/virus/deto
 	name = "\improper D.E.T.O.M.A.T.I.X. disk"
-	charges = 6
+	charges = 1
 
 /obj/item/computer_hardware/hard_drive/role/virus/deto/user_input(target_addr, mob/living/user)
 	if(!holder) //What?

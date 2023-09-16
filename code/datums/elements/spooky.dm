@@ -37,7 +37,7 @@
 			H.Paralyze(15) //zombies can't resist the doot
 		C.set_timed_status_effect(70 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 		C.set_timed_status_effect(40 SECONDS, /datum/status_effect/speech/stutter)
-		if((!istype(H.dna.species, /datum/species/skeleton)) && (!istype(H.dna.species, /datum/species/golem)) && (!istype(H.dna.species, /datum/species/android)) && (!istype(H.dna.species, /datum/species/jelly)))
+		if((!istype(H.dna.species, /datum/species/skeleton)) && (!istype(H.dna.species, /datum/species/android)) && (!istype(H.dna.species, /datum/species/jelly)))
 			C.stamina.adjust(-25) //boneless humanoids don't lose the will to live
 		to_chat(C, "<font color='red' size='4'><B>DOOT</B></font>")
 		INVOKE_ASYNC(src, PROC_REF(spectral_change), H)
@@ -47,7 +47,7 @@
 		C.set_timed_status_effect(40 SECONDS, /datum/status_effect/speech/stutter)
 
 /datum/element/spooky/proc/spectral_change(mob/living/carbon/human/H, mob/user)
-	if((H.stamina.current < 105) && (!istype(H.dna.species, /datum/species/skeleton)) && (!istype(H.dna.species, /datum/species/golem)) && (!istype(H.dna.species, /datum/species/android)) && (!istype(H.dna.species, /datum/species/jelly)))
+	if((H.stamina.current < 105) && (!istype(H.dna.species, /datum/species/skeleton)) && (!istype(H.dna.species, /datum/species/android)) && (!istype(H.dna.species, /datum/species/jelly)))
 		H.Paralyze(20)
 		H.set_species(/datum/species/skeleton)
 		H.visible_message(span_warning("[H] has given up on life as a mortal."))

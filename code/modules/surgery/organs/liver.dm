@@ -200,9 +200,6 @@
 #undef HAS_PAINFUL_TOXIN
 #undef LIVER_FAILURE_STAGE_SECONDS
 
-/obj/item/organ/liver/get_availability(datum/species/species)
-	return !(TRAIT_NOMETABOLISM in species.inherent_traits)
-
 /obj/item/organ/liver/plasmaman
 	name = "reagent processing crystal"
 	icon_state = "liver-p"

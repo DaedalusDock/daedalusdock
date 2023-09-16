@@ -441,35 +441,6 @@
 				return
 			to_chat(user, span_notice("You stop feeding [src], and the feeling passes."))
 
-/obj/item/slime_extract/adamantine
-	name = "adamantine slime extract"
-	icon_state = "adamantine slime extract"
-	effectmod = "crystalline"
-	activate_reagents = list(/datum/reagent/toxin/plasma)
-
-/obj/item/slime_extract/adamantine/activate(mob/living/carbon/human/user, datum/species/jelly/luminescent/species, activation_type)
-	switch(activation_type)
-		if(SLIME_ACTIVATE_MINOR)
-			if(species.armor > 0)
-				to_chat(user, span_warning("Your skin is already hardened!"))
-				return
-			to_chat(user, span_notice("You feel your skin harden and become more resistant."))
-			species.armor += 25
-			addtimer(CALLBACK(src, PROC_REF(reset_armor), species), 1200)
-			return 450
-
-		if(SLIME_ACTIVATE_MAJOR)
-			to_chat(user, span_warning("You feel your body rapidly crystallizing..."))
-			if(do_after(user, user, 120))
-				to_chat(user, span_warning("You feel solid."))
-				user.set_species(pick(/datum/species/golem/adamantine))
-				return
-			to_chat(user, span_notice("You stop feeding [src], and your body returns to its slimelike state."))
-
-/obj/item/slime_extract/adamantine/proc/reset_armor(datum/species/jelly/luminescent/species)
-	if(istype(species))
-		species.armor -= 25
-
 /obj/item/slime_extract/bluespace
 	name = "bluespace slime extract"
 	icon_state = "bluespace slime extract"
@@ -979,28 +950,6 @@
 	// pass null as first arg to not update records or ID/PDA
 	M.fully_replace_character_name(null, new_name)
 
-	qdel(src)
-
-/obj/item/slimepotion/slime/slimeradio
-	name = "bluespace radio potion"
-	desc = "A strange chemical that grants those who ingest it the ability to broadcast and receive subscape radio waves."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "potgrey"
-
-/obj/item/slimepotion/slime/slimeradio/attack(mob/living/M, mob/user)
-	if(!ismob(M))
-		return
-	if(!isanimal(M))
-		to_chat(user, span_warning("[M] is too complex for the potion!"))
-		return
-	if(M.stat)
-		to_chat(user, span_warning("[M] is dead!"))
-		return
-
-	to_chat(user, span_notice("You feed the potion to [M]."))
-	to_chat(M, span_notice("Your mind tingles as you are fed the potion. You can hear radio waves now!"))
-	var/obj/item/implant/radio/slime/imp = new(src)
-	imp.implant(M, user, BODY_ZONE_CHEST)
 	qdel(src)
 
 ///Definitions for slime products that don't have anywhere else to go (Floor tiles, blueprints).

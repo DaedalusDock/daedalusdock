@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(packets)
 	name = "Packets"
 	wait = 0
 	priority = FIRE_PRIORITY_PACKETS
-	flags = SS_NO_INIT | SS_HIBERNATE
+	flags = SS_HIBERNATE
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/saymodes = list()
@@ -78,13 +78,13 @@ SUBSYSTEM_DEF(packets)
 	return ..()
 
 /datum/controller/subsystem/packets/Initialize(start_timeofday)
-	. = ..()
 	detomatix_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
 	clownvirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
 	mimevirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
 	framevirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
 	gprs_broadcast_packet = random_string(rand(16,32), GLOB.hex_characters)
 	pda_exploitable_register = pick_list(PACKET_STRING_FILE, "packet_field_names")
+	. = ..()
 
 /datum/controller/subsystem/packets/Recover()
 	. = ..()

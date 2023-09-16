@@ -1,3 +1,5 @@
+// PDA Message Nonsense: https://hackmd.io/OajA9tVpS-K7xA68t6gv8Q
+
 /datum/computer_file/program/messenger
 	filename = "nt_messenger"
 	filedesc = "Messenger"
@@ -101,8 +103,7 @@
 	// ESPECIALLY THIS FUCKER RIGHT HERE vvvv
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.detomatix_magic_packet)
 		//This one falls through to standard PDA behaviour, so we need to be checked first.
-		signal_command = NETCMD_PDAMESSAGE //Lie about it.
-		if(signal_data[PACKET_SOURCE_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
+		if(signal_data[PACKET_DESTINATION_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
 			//Calculate our "difficulty"
 			var/difficulty
 			var/obj/item/computer_hardware/hard_drive/role/our_jobdisk = computer.all_components[MC_HDD_JOB]
@@ -144,7 +145,7 @@
 		if(computer.hardware_flag != PROGRAM_TABLET)
 			return //If it's not a PDA, too bad!
 		if(!(signal.has_magic_data & MAGIC_DATA_MUST_OBFUSCATE))
-			return //Must be obfuscated, due to the ability to create PDAs.
+			return //Must be obfuscated, due to the ability to create uplinkss.
 		var/datum/component/uplink/hidden_uplink = computer.GetComponent(/datum/component/uplink)
 		if(!hidden_uplink)
 			var/datum/mind/target_mind
@@ -181,7 +182,7 @@
 	else
 		L = get(holder.holder, /mob/living/silicon)
 
-	if(L && (L.stat == CONSCIOUS || L.stat == SOFT_CRIT))
+	if(L && L.stat == CONSCIOUS)
 		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PACKET_SOURCE_ADDRESS]]'>Reply</a>)"
 		var/hrefstart
 		var/hrefend

@@ -211,14 +211,15 @@
 	/// If true directly targeted turfs can be hit
 	var/can_hit_turfs = FALSE
 
+	var/static/list/projectile_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+
 /obj/projectile/Initialize(mapload)
 	. = ..()
 	decayedRange = range
 	if(embedding)
 		updateEmbedding()
-	var/static/list/projectile_connections = list(
-		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
-	)
 	AddElement(/datum/element/connect_loc, projectile_connections)
 
 /obj/projectile/proc/Range()

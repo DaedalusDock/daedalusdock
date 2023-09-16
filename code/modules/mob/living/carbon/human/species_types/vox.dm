@@ -84,12 +84,14 @@
 	else
 		equipping.put_in_r_hand(tank)
 
-	equipping.internal = tank
+	equipping.open_internals(tank)
 
 /datum/species/vox/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()
-	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
-	if(!human_to_equip.internal)
+	var/obj/item/I = human_to_equip.get_item_for_held_index(2)
+	if(I)
+		human_to_equip.open_internals(I)
+	else
 		var/obj/item/tank/internals/nitrogen/belt/full/new_tank = new(null)
 		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
 			human_to_equip.internal = human_to_equip.belt

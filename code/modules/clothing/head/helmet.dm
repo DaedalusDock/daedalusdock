@@ -45,6 +45,7 @@
 		user.put_in_hands(secbot_frame)
 		qdel(src)
 		return TRUE
+	return ..()
 /obj/item/clothing/head/helmet/alt
 	name = "bulletproof helmet"
 	desc = "A bulletproof combat helmet that excels in protecting the wearer against traditional projectile weaponry and explosives to a minor extent."

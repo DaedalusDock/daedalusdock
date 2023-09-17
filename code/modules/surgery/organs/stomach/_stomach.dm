@@ -190,9 +190,6 @@
 	else
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/hunger)
 
-/obj/item/organ/stomach/get_availability(datum/species/owner_species)
-	return !(NOSTOMACH in owner_species.inherent_traits)
-
 /obj/item/organ/stomach/proc/handle_disgust(mob/living/carbon/human/disgusted, delta_time, times_fired)
 	var/old_disgust = disgusted.old_disgust
 	var/disgust = disgusted.disgust

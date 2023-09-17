@@ -86,7 +86,10 @@
 ///~~Requires VERB_STRESS_TEST to be defined~~
 // #define FORCE_VERB_OVERTIME
 
-
+///Uncomment this to enable a set of debugging verbs for client macros
+///This ability is given to all clients, and I'm not going to bother vetting how safe this is.
+///This will generate a compile warning.
+//#define MACRO_TEST
 
 /////////////////////// REFERENCE TRACKING
 

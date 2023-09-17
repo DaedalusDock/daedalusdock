@@ -2,26 +2,28 @@
 	name = "\improper Ethereal"
 	id = SPECIES_ETHEREAL
 	meat = /obj/item/food/meat/slab/human/mutant/ethereal
-	mutantlungs = /obj/item/organ/lungs/ethereal
-	mutantstomach = /obj/item/organ/stomach/ethereal
-	mutanttongue = /obj/item/organ/tongue/ethereal
-	mutantheart = /obj/item/organ/heart/ethereal
 	exotic_blood = /datum/reagent/consumable/liquidelectricity //Liquid Electricity. fuck you think of something better gamer
+
 	siemens_coeff = 0.5 //They thrive on energy
 	brutemod = 1.25 //They're weak to punches
+
 	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
-	species_traits = list(DYNCOLORS, AGENDER, NO_UNDERWEAR, HAIR, FACEHAIR, HAS_FLESH, HAS_BONE, HAIRCOLOR, FACEHAIRCOLOR) // i mean i guess they have blood so they can have wounds too
+
+	species_traits = list(DYNCOLORS, AGENDER, NO_UNDERWEAR, HAIR, FACEHAIR, HAIRCOLOR, FACEHAIRCOLOR) // i mean i guess they have blood so they can have wounds too
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
+
 	species_cookie = /obj/item/food/energybar
 	species_language_holder = /datum/language_holder/ethereal
 	sexes = FALSE //no fetish content allowed
 	toxic_food = NONE
+
 	// Body temperature for ethereals is much higher then humans as they like hotter environments
 	bodytemp_normal = (BODYTEMP_NORMAL + 50)
 	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD // about 150C
 	// Cold temperatures hurt faster as it is harder to move with out the heat energy
 	bodytemp_cold_damage_limit = (T20C - 10) // about 10c
+
 	hair_color = "fixedmutcolor"
 	hair_alpha = 140
 
@@ -32,6 +34,18 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/ethereal,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/ethereal,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ethereal,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/ethereal,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/ethereal,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/ethereal,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/ethereal,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
 	var/current_color

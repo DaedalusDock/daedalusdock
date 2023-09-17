@@ -363,9 +363,6 @@
 	if(. == high_threshold_passed && owner)
 		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
 
-/obj/item/organ/lungs/get_availability(datum/species/owner_species)
-	return !(TRAIT_NOBREATH in owner_species.inherent_traits)
-
 /obj/item/organ/lungs/plasmaman
 	name = "plasma filter"
 	desc = "A spongy rib-shaped mass for filtering plasma from the air."

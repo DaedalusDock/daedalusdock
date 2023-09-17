@@ -762,7 +762,9 @@
 		adjustOxyLoss(-20, TRUE)
 		adjustToxLoss(-20, TRUE, TRUE) //slime friendly
 		updatehealth()
-		grab_ghost()
+
+	grab_ghost()
+
 	if(full_heal)
 		fully_heal(admin_revive = admin_revive)
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
@@ -2356,3 +2358,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		. += 60
 	if(HAS_TRAIT(src, TRAIT_CLUMSY))
 		. += 25
+
+/mob/living/proc/needs_organ(slot)
+	return FALSE

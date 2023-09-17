@@ -1,6 +1,5 @@
 /datum/keybinding/carbon
 	category = CATEGORY_CARBON
-	weight = WEIGHT_MOB
 
 /datum/keybinding/carbon/can_use(client/user)
 	return iscarbon(user.mob)

@@ -236,6 +236,8 @@
 	/// rate limiting for the crew manifest
 	var/crew_manifest_delay
 
+	/// Semaphore for macro updates, so that they all complete and don't stomp over each other.
+	var/updating_macros = FALSE
 	/// A buffer of currently held keys.
 	var/list/keys_held = list()
 	/// A buffer for combinations such of modifiers + keys (ex: CtrlD, AltE, ShiftT). Format: `"key"` -> `"combo"` (ex: `"D"` -> `"CtrlD"`)

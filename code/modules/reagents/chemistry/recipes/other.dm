@@ -33,6 +33,10 @@
 	required_catalysts = list(/datum/reagent/stabilizing_agent = 1)
 
 
+/datum/chemical_reaction/unstable_mutagen
+	results = list(/datum/reagent/toxin/mutagen)
+	required_reagents = list(/datum/reagent/chlorine = 1, /datum/reagent/toxin/plasma = 1, /datum/reagent/uranium/radium = 1)
+
 /datum/chemical_reaction/plasma_solidification
 	required_reagents = list(/datum/reagent/iron = 5, /datum/reagent/consumable/frostoil = 5, /datum/reagent/toxin/plasma = 20)
 	mob_react = FALSE

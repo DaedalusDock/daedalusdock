@@ -38,7 +38,7 @@
 	toxpwr = 0.5
 	taste_description = "slime"
 	taste_mult = 0.9
-
+	show_in_codex = TRUE
 
 /datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()

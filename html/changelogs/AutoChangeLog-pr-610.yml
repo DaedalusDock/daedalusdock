@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: Security Helmets can now ACTUALLY have flashlights attached again.

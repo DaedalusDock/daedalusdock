@@ -7,7 +7,7 @@
 	equip_delay_other = 50
 	permeability_coefficient = 0.9
 	can_be_tied = FALSE
-	species_exception = list(/datum/species/golem)
+
 
 /obj/item/clothing/shoes/sandal/magic
 	name = "magical sandals"

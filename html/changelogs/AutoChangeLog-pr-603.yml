@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - rscadd: Some books will now open codex entries.
-  - bugfix: The r4407 changelog link works again.

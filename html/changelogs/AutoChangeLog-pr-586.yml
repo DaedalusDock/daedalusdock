@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - code_imp: Added a high pass filter to bloom to cull useless overlays, should help
-      performance alot.

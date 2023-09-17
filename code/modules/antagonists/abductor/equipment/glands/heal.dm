@@ -97,9 +97,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble in your bowels..."))
 
-	var/appendix_type = /obj/item/organ/appendix
-	if(owner?.dna?.species?.mutantappendix)
-		appendix_type = owner.dna.species.mutantappendix
+	var/appendix_type = owner?.dna?.species?.organs[ORGAN_SLOT_APPENDIX]
+	if(!appendix_type)
+		return
+
 	var/obj/item/organ/appendix/new_appendix = new appendix_type()
 	new_appendix.Insert(owner)
 
@@ -112,9 +113,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble in your bowels..."))
 
-	var/liver_type = /obj/item/organ/liver
-	if(owner?.dna?.species?.mutantliver)
-		liver_type = owner.dna.species.mutantliver
+	var/liver_type = owner?.dna?.species?.organs[ORGAN_SLOT_LIVER]
+	if(!liver_type)
+		return
+
 	var/obj/item/organ/liver/new_liver = new liver_type()
 	new_liver.Insert(owner)
 
@@ -127,9 +129,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble inside your chest..."))
 
-	var/lung_type = /obj/item/organ/lungs
-	if(owner.dna.species && owner.dna.species.mutantlungs)
-		lung_type = owner.dna.species.mutantlungs
+	var/lung_type = owner?.dna?.species?.organs[ORGAN_SLOT_LUNGS]
+	if(!lung_type)
+		return
+
 	var/obj/item/organ/lungs/new_lungs = new lung_type()
 	new_lungs.Insert(owner)
 
@@ -142,9 +145,10 @@
 	else
 		to_chat(owner, span_warning("You feel a weird rumble in your bowels..."))
 
-	var/stomach_type = /obj/item/organ/stomach
-	if(owner?.dna?.species?.mutantstomach)
-		stomach_type = owner.dna.species.mutantstomach
+	var/stomach_type = owner?.dna?.species?.organs[ORGAN_SLOT_STOMACH]
+	if(!stomach_type)
+		return
+
 	var/obj/item/organ/stomach/new_stomach = new stomach_type()
 	new_stomach.Insert(owner)
 
@@ -160,9 +164,10 @@
 	addtimer(CALLBACK(src, PROC_REF(finish_replace_eyes)), rand(100, 200))
 
 /obj/item/organ/heart/gland/heal/proc/finish_replace_eyes()
-	var/eye_type = /obj/item/organ/eyes
-	if(owner.dna.species && owner.dna.species.mutanteyes)
-		eye_type = owner.dna.species.mutanteyes
+	var/eye_type = owner?.dna?.species?.organs[ORGAN_SLOT_EYES]
+	if(!eye_type)
+		return
+
 	var/obj/item/organ/eyes/new_eyes = new eye_type()
 	new_eyes.Insert(owner)
 	owner.visible_message(span_warning("A pair of new eyes suddenly inflates into [owner]'s eye sockets!"), span_userdanger("A pair of new eyes suddenly inflates into your eye sockets!"))

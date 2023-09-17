@@ -52,7 +52,7 @@
 		CRASH("Attempted to link to a network jack while in nullspace!")
 	var/obj/machinery/power/data_terminal/new_transmission_terminal = locate() in get_turf(src)
 	if(netjack == new_transmission_terminal)
-		return
+		return NETJACK_CONNECT_SUCCESS //Already connected, pretend it's a success.
 	unlink_from_jack()//If our new jack is null, then we've somehow lost it? Don't care and just go along with it.
 	if(!new_transmission_terminal)
 		return

@@ -312,26 +312,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 
 	return TRUE
 
-///Stronk force increase
-/datum/material/adamantine
-	name = "adamantine"
-	desc = "A powerful material made out of magic, I mean science!"
-	color = "#6d7e8e"
-	greyscale_colors = "#6d7e8e"
-	strength_modifier = 1.5
-	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
-	sheet_type = /obj/item/stack/sheet/mineral/adamantine
-	value_per_unit = 0.25
-	beauty_modifier = 0.4
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.3, ENERGY = 1.3, BOMB = 1, BIO = 1, FIRE = 2.5, ACID = 1)
-	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
-
-/datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
-	return TRUE
-
 ///RPG Magic.
 /datum/material/mythril
 	name = "mythril"

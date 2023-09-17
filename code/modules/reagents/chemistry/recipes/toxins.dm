@@ -20,3 +20,19 @@
 /datum/chemical_reaction/toxin
 	results = list(/datum/reagent/toxin = 2)
 	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/mercury = 1, /datum/reagent/medicine/dylovene = 1)
+
+/datum/chemical_reaction/lipolicide
+	results = list(/datum/reagent/toxin/lipolicide = 2)
+	required_reagents = list(/datum/reagent/medicine/ephedrine = 1, /datum/reagent/diethylamine = 1, /datum/reagent/mercury = 1)
+	mix_message = "A vague smell similar to tofu rises from the mixture."
+
+/datum/chemical_reaction/anacea
+	results = list(/datum/reagent/toxin/anacea = 3)
+	required_reagents = list(/datum/reagent/medicine/haloperidol = 1, /datum/reagent/impedrezene = 1, /datum/reagent/uranium/radium = 1)
+	mix_message = "The mixture turns into a strange green ooze."
+	required_temp = 100
+	optimal_temp = 450
+	overheat_temp = 900
+	temp_exponent_factor = 1.6
+	thermic_constant = 250
+	rate_up_lim = 10

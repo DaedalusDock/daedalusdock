@@ -80,40 +80,34 @@
 #define NOTRANSSTING 7
 #define NOZOMBIE 8
 #define NO_UNDERWEAR 9
-#define NOSTOMACH 10
-#define NO_DNA_COPY 11
-#define DRINKSBLOOD 12
+#define NO_DNA_COPY 10
+#define DRINKSBLOOD 11
 /// Use this if you want to change the race's color without the player being able to pick their own color. AKA special color shifting
-#define DYNCOLORS 13
-#define AGENDER 14
+#define DYNCOLORS 12
+#define AGENDER 13
 /// Do not draw eyes or eyeless overlay
-#define NOEYESPRITES 15
-/// Used for determining which wounds are applicable to this species.
-/// if we have flesh (can suffer slash/piercing/burn wounds, requires they don't have NOBLOOD)
-#define HAS_FLESH 16
-/// if we have bones (can suffer bone wounds)
-#define HAS_BONE 17
+#define NOEYESPRITES 14
 ///If we have a limb-specific overlay sprite
-#define HAS_MARKINGS 18
+#define HAS_MARKINGS 15
 /// Do not draw blood overlay
-#define NOBLOODOVERLAY 19
+#define NOBLOODOVERLAY 17
 ///No augments, for monkeys in specific because they will turn into fucking freakazoids https://cdn.discordapp.com/attachments/326831214667235328/791313258912153640/102707682-fa7cad80-4294-11eb-8f13-8c689468aeb0.png
-#define NOAUGMENTS 20
+#define NOAUGMENTS 18
 ///will be assigned a universal vampire themed last name shared by their department. this is preferenced!
-#define BLOOD_CLANS 21
+#define BLOOD_CLANS 19
 /// Can this species use the 'Body size' preference
-#define BODY_RESIZABLE 22
-#define MUTCOLORS2 23
-#define MUTCOLORS3 24
+#define BODY_RESIZABLE 20
 ///Haircolor
-#define HAIRCOLOR 25
-#define FACEHAIRCOLOR 26
-#define SCLERA 27
+#define HAIRCOLOR 22
+#define FACEHAIRCOLOR 22
+#define SCLERA 23
 ///Has non-human hair. Used by pref code to hide standard hair options.
-#define NONHUMANHAIR 28
+#define NONHUMANHAIR 24
+
+/// For use in /datum/species/var/organs
+#define DOES_NOT_NEED "does_not_need"
 
 //organ slots
-#define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"
 #define ORGAN_SLOT_APPENDIX "appendix"
 #define ORGAN_SLOT_BRAIN "brain"
 #define ORGAN_SLOT_BRAIN_ANTIDROP "brain_antidrop"
@@ -193,7 +187,6 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_LIVER,
 	ORGAN_SLOT_TONGUE,
 	ORGAN_SLOT_VOICE,
-	ORGAN_SLOT_ADAMANTINE_RESONATOR,
 	ORGAN_SLOT_HEART_AID,
 	ORGAN_SLOT_BRAIN_ANTIDROP,
 	ORGAN_SLOT_BRAIN_ANTISTUN,
@@ -206,34 +199,6 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_XENO_NEUROTOXINGLAND,
 	ORGAN_SLOT_XENO_EGGSAC,
 	ORGAN_SLOT_BRAIN))
-
-//Defines for Golem Species IDs
-#define SPECIES_GOLEM "golem"
-#define SPECIES_GOLEM_ADAMANTINE "a_golem"
-#define SPECIES_GOLEM_PLASMA "p_golem"
-#define SPECIES_GOLEM_DIAMOND "diamond_golem"
-#define SPECIES_GOLEM_GOLD "gold_golem"
-#define SPECIES_GOLEM_SILVER "silver_golem"
-#define SPECIES_GOLEM_PLASTEEL "plasteel_golem"
-#define SPECIES_GOLEM_TITANIUM "titanium_golem"
-#define SPECIES_GOLEM_PLASTITANIUM "plastitanium_golem"
-#define SPECIES_GOLEM_ALIEN "alloy_golem"
-#define SPECIES_GOLEM_WOOD "wood_golem"
-#define SPECIES_GOLEM_URANIUM "uranium_golem"
-#define SPECIES_GOLEM_SAND "sand_golem"
-#define SPECIES_GOLEM_GLASS "glass_golem"
-#define SPECIES_GOLEM_BLUESPACE "bluespace_golem"
-#define SPECIES_GOLEM_BANANIUM "ba_golem"
-#define SPECIES_GOLEM_CULT "cultgolem"
-#define SPECIES_GOLEM_CLOTH "clothgolem"
-#define SPECIES_GOLEM_PLASTIC "plastic_golem"
-#define SPECIES_GOLEM_BRONZE "bronze_golem"
-#define SPECIES_GOLEM_CARDBOARD "c_golem"
-#define SPECIES_GOLEM_LEATHER "leather_golem"
-#define SPECIES_GOLEM_DURATHREAD "d_golem"
-#define SPECIES_GOLEM_BONE "b_golem"
-#define SPECIES_GOLEM_SNOW "sn_golem"
-#define SPECIES_GOLEM_HYDROGEN "metallic_hydrogen_golem"
 
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.

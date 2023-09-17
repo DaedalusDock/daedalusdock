@@ -3,6 +3,7 @@
 	description = "Purges alcoholic substance from the patient's body and eliminates its side effects."
 	color = "#00B4C8"
 	taste_description = "raw egg"
+	show_in_codex = TRUE
 
 
 /datum/reagent/medicine/antihol/affect_blood(mob/living/carbon/C, removed)

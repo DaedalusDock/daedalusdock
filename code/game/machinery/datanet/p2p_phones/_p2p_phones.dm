@@ -192,6 +192,8 @@
 					to_chat(user, span_warning("Terminal connection conflict, something is already connected!"))
 				if(NETJACK_CONNECT_NOTSAMETURF)
 					to_chat(user, span_boldwarning("Reconnect failed! Your terminal is somehow not on the same tile??? Call a coder!"))
+				if(NETJACK_CONNECT_NOT_FOUND)
+					to_chat(user, span_warning("No terminal found!"))
 				else
 					to_chat(user, span_boldwarning("Reconnect failed, Invalid error code, call a coder!"))
 

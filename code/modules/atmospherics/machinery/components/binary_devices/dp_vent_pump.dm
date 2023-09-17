@@ -154,6 +154,10 @@
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
+	if(("status" in signal.data)) //Send stauts and early return, I'm cargoculting the timer here.
+		broadcast_status()
+		return
+
 	if("power" in signal.data)
 		on = text2num(signal.data["power"])
 
@@ -184,9 +188,9 @@
 		external_pressure_bound = clamp(text2num(signal.data["set_external_pressure"]),0,MAX_PUMP_PRESSURE)
 
 	addtimer(CALLBACK(src, PROC_REF(broadcast_status)), 2)
+	update_appearance()
 
-	if(!("status" in signal.data)) //do not update_appearance
-		update_appearance()
+
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume
 	name = "large dual-port air vent"

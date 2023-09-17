@@ -34,6 +34,9 @@ GLOBAL_LIST_EMPTY(spines_list_vox)
 GLOBAL_LIST_EMPTY(vox_hair_list)
 GLOBAL_LIST_EMPTY(vox_facial_hair_list)
 
+	//IPC bits
+GLOBAL_LIST_EMPTY(ipc_screens_list)
+
 	//Mutant Human bits
 GLOBAL_LIST_EMPTY(tails_list)
 GLOBAL_LIST_EMPTY(tails_list_human) //Only exists for preference choices. Use "tails_list" otherwise.

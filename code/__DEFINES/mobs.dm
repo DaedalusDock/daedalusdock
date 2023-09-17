@@ -87,6 +87,8 @@
 #define BODYTYPE_VOX_OTHER (1<<8)
 ///The limb is small and feathery
 #define BODYTYPE_TESHARI (1<<9)
+/// IPC heads.
+#define BODYTYPE_BOXHEAD (1<<10)
 
 //Defines for Species IDs
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.

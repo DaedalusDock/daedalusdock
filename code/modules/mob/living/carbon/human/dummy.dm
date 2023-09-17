@@ -103,16 +103,21 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["spines"] = get_consistent_feature_entry(GLOB.spines_list)
 	dna.features["tail_human"] = get_consistent_feature_entry(GLOB.tails_list_human)
 	dna.features["tail_lizard"] = get_consistent_feature_entry(GLOB.tails_list_lizard)
+
 	dna.features["tail_vox"] = get_consistent_feature_entry(GLOB.tails_list_vox)
 	dna.features["vox_hair"] = get_consistent_feature_entry(GLOB.vox_hair_list)
 	dna.features["vox_facial_hair"] = get_consistent_feature_entry(GLOB.vox_facial_hair_list)
 	dna.features["vox_snout"] = get_consistent_feature_entry(GLOB.vox_snouts_list)
+
 	dna.features["tail_cat"] = get_consistent_feature_entry(GLOB.tails_list_human)
 	dna.features["pod_hair"] = get_consistent_feature_entry(GLOB.pod_hair_list)
+
 	dna.features["teshari_feathers"] = get_consistent_feature_entry(GLOB.teshari_feathers_list)
 	dna.features["teshari_body_feathers"] = get_consistent_feature_entry(GLOB.teshari_body_feathers_list)
 	dna.features["teshari_ears"] = get_consistent_feature_entry(GLOB.teshari_ears_list)
 	dna.features["tail_teshari"] = get_consistent_feature_entry(GLOB.teshari_tails_list)
+
+	dna.features["ipc_screen"] = get_consistent_feature_entry(GLOB.ipc_screens_list)
 
 /// Takes in an accessory list and returns the first entry from that list, ensuring that we dont return SPRITE_ACCESSORY_NONE in the process.
 /proc/get_consistent_feature_entry(list/accessory_feature_list)

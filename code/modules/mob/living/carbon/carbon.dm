@@ -495,8 +495,6 @@
 
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - getCloneLoss() - total_burn - total_brute, DAMAGE_PRECISION))
 	update_stat()
-	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD*2) && stat == DEAD )
-		become_husk(BURN)
 	med_hud_set_health()
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 

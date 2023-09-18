@@ -12,8 +12,12 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	layer = ABOVE_MOB_LAYER
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_POSIBRAIN
-	organ_flags = ORGAN_VITAL
+	organ_flags = ORGAN_SYNTHETIC
 
+	maxHealth = 90
+	low_threshold = 0.33
+	high_threshold = 0.66
+	relative_size = 60
 
 	/// The current occupant.
 	var/mob/living/brain/brainmob = null
@@ -55,16 +59,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 
 /obj/item/organ/posibrain/Initialize(mapload)
 	. = ..()
-	set_brainmob(new /mob/living/brain(src))
-	var/new_name
-	if(!LAZYLEN(possible_names))
-		new_name = pick(GLOB.posibrain_names)
-	else
-		new_name = pick(possible_names)
-	brainmob.name = "[new_name]-[rand(100, 999)]"
-	brainmob.real_name = brainmob.name
-	brainmob.forceMove(src)
-	brainmob.container = src
+	create_brainmob()
 	if(autoping)
 		ping_ghosts("created", TRUE)
 
@@ -99,7 +94,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 
 /obj/item/organ/posibrain/Remove(mob/living/carbon/organ_owner, special)
 	. = ..()
-	if((!gc_destroyed || (owner && !owner.gc_destroyed)))
+	if((!QDELING(src) || !QDELETED(owner)))
 		transfer_identity(organ_owner)
 
 ///Notify ghosts that the posibrain is up for grabs
@@ -111,7 +106,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 
 /obj/item/organ/posibrain/attack_self(mob/user)
 	if(!brainmob)
-		set_brainmob(new /mob/living/brain(src))
+		create_brainmob()
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_SILICONS))
 		to_chat(user, span_warning("Central Command has temporarily outlawed posibrain sentience in this sector..."))
 	if(is_occupied())
@@ -183,25 +178,30 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		brainmob.set_suicide(FALSE)
 	transfer_personality(user)
 
-/obj/item/organ/posibrain/proc/transfer_identity(mob/living/carbon/transfered_user)
-	name = "[initial(name)] ([transfered_user])"
+/obj/item/organ/posibrain/proc/transfer_identity(mob/living/L)
+	name = "[initial(name)] ([L])"
+
+	if(brainmob)
+		return
+	if(!L.mind)
+		return
 
 	brainmob = new(src)
-	brainmob.name = transfered_user.real_name
-	brainmob.real_name = transfered_user.real_name
-	if(transfered_user.has_dna())
+	brainmob.name = L.real_name
+	brainmob.real_name = L.real_name
+	brainmob.timeofhostdeath = L.timeofdeath
+	brainmob.suiciding = suicided
+	if(L.has_dna())
+		var/mob/living/carbon/C = L
 		if(!brainmob.stored_dna)
 			brainmob.stored_dna = new /datum/dna/stored(brainmob)
-		transfered_user.dna.copy_dna(brainmob.stored_dna)
-	brainmob.timeofhostdeath = transfered_user.timeofdeath
-	brainmob.set_stat(CONSCIOUS)
-	if(brainmob.mind)
-		brainmob.mind.set_assigned_role(SSjob.GetJobType(posibrain_job_path))
-	if(transfered_user.mind)
-		transfered_user.mind.transfer_to(brainmob)
+		C.dna.copy_dna(brainmob.stored_dna)
+		if(HAS_TRAIT(L, TRAIT_BADDNA))
+			LAZYSET(brainmob.status_traits, TRAIT_BADDNA, L.status_traits[TRAIT_BADDNA])
+	if(L.mind && L.mind.current)
+		L.mind.transfer_to(brainmob)
 
-	brainmob.mind.remove_all_antag_datums()
-	brainmob.mind.wipe_memory()
+
 	update_appearance()
 
 ///Moves the candidate from the ghost to the posibrain
@@ -271,6 +271,20 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		var/mob/living/brain/old_brainmob = .
 		ADD_TRAIT(old_brainmob, TRAIT_IMMOBILIZED, BRAIN_UNAIDED)
 		ADD_TRAIT(old_brainmob, TRAIT_HANDS_BLOCKED, BRAIN_UNAIDED)
+
+/obj/item/organ/posibrain/proc/create_brainmob()
+	var/_brainmob = new /mob/living/brain(src)
+	set_brainmob(_brainmob)
+
+	var/new_name
+	if(!LAZYLEN(possible_names))
+		new_name = pick(GLOB.posibrain_names)
+	else
+		new_name = pick(possible_names)
+	brainmob.name = "[new_name]-[rand(100, 999)]"
+	brainmob.real_name = brainmob.name
+	brainmob.forceMove(src)
+	brainmob.container = src
 
 /obj/item/organ/posibrain/ipc
 	autoping = FALSE

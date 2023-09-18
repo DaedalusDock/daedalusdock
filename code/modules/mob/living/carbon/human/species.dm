@@ -406,7 +406,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				continue
 			var/obj/item/organ/I = C.getorgan(mutantorgan)
 			if(I)
-				I.Remove(C)
+				I.Remove(C, TRUE)
 				qdel(I)
 
 		for(var/mutantorgan in old_species.cosmetic_organs)

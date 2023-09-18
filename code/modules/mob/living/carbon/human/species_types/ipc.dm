@@ -2,7 +2,7 @@
 	name = "Integrated Positronic Chassis"
 	id = SPECIES_IPC
 
-	species_traits = list(NOEYESPRITES, NOBLOOD, NOZOMBIE)
+	species_traits = list(NOEYESPRITES, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER)
 	inherent_traits = list(
 		TRAIT_GENELESS,
 		TRAIT_RADIMMUNE,
@@ -41,7 +41,7 @@
 /datum/species/ipc/saurian
 	name = "Saurian"
 	id = SPECIES_SAURIAN
-	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD, NOZOMBIE)
+	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER)
 	cosmetic_organs = list(
 		/obj/item/organ/saurian_screen = "basic",
 		/obj/item/organ/saurian_tail = "basic"

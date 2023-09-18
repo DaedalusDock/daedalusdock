@@ -2,7 +2,7 @@
 	name = "Integrated Positronic Chassis"
 	id = SPECIES_IPC
 
-	species_traits = list(NOEYESPRITES, NOBLOOD)
+	species_traits = list(NOEYESPRITES, NOBLOOD, NOZOMBIE)
 	inherent_traits = list(
 		TRAIT_GENELESS,
 		TRAIT_RADIMMUNE,
@@ -41,7 +41,7 @@
 /datum/species/ipc/saurian
 	name = "Saurian"
 	id = SPECIES_SAURIAN
-	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD)
+	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD, NOZOMBIE)
 	cosmetic_organs = list(
 		/obj/item/organ/saurian_screen = "basic",
 		/obj/item/organ/saurian_tail = "basic"
@@ -60,7 +60,7 @@
 /datum/species/ipc/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
 	. = ..()
 	if(H.stat == UNCONSCIOUS && prob(2) && H.undergoing_cardiac_arrest())
-		visible_message("<b>[H]</b> [pick("emits low pitched whirr","beeps urgently")]")
+		H.visible_message("<b>[H]</b> [pick("emits low pitched whirr","beeps urgently")]")
 
 /datum/species/ipc/get_cryogenic_factor(bodytemperature)
 	return 0

@@ -200,6 +200,8 @@
 	loc.handle_fall(src)//it's loc so it doesn't call the mob's handle_fall which does nothing
 
 /mob/living/carbon/is_muzzled()
+	if(!has_mouth())
+		return FALSE
 	for (var/obj/item/clothing/clothing in get_equipped_items())
 		if(clothing.clothing_flags & BLOCKS_SPEECH)
 			return TRUE

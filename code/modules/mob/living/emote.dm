@@ -105,7 +105,7 @@
 	key = "deathgasp"
 	key_third_person = "deathgasps"
 	message = "seizes up and falls limp, their eyes dead and lifeless..."
-	message_robot = "shudders violently for a moment before falling still, its eyes slowly darkening."
+	message_robot = "gives one shrill beep before falling lifeless."
 	message_AI = "screeches, its screen flickering as its systems slowly halt."
 	message_alien = "lets out a waning guttural screech, and collapses onto the floor..."
 	message_larva = "lets out a sickly hiss of air and falls limply to the floor..."

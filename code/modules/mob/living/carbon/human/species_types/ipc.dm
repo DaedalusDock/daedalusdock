@@ -57,5 +57,10 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc/saurian,
 	)
 
-/datum/species/ipc/body_temperature_cryostasis()
-	return
+/datum/species/ipc/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
+	. = ..()
+	if(H.stat == UNCONSCIOUS && prob(2) && H.undergoing_cardiac_arrest())
+		visible_message("<b>[H]</b> [pick("emits low pitched whirr","beeps urgently")]")
+
+/datum/species/ipc/get_cryogenic_factor(bodytemperature)
+	return 0

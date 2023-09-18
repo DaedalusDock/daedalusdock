@@ -1300,12 +1300,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	body_temperature_skin(humi, delta_time, times_fired)
 	body_temperature_alerts(humi, delta_time, times_fired)
 
+	SET_STASIS_LEVEL(humi, STASIS_CRYOGENIC_FREEZING, get_cryogenic_factor(humi.coretemperature))
+
 	//Do not cause more damage in statis
 	if(!IS_IN_HARD_STASIS(humi))
 		. = body_temperature_damage(humi, delta_time, times_fired)
-
-/datum/species/proc/body_temperature_cryostasis(mob/living/carbon/human/humi)
-	SET_STASIS_LEVEL(humi, STASIS_CRYOGENIC_FREEZING, get_cryogenic_factor(humi.coretemperature))
 
 /**
  * Used to stabilize the core temperature back to normal on living mobs

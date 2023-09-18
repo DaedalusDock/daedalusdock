@@ -14,6 +14,22 @@
 	name = "Basic"
 	icon_state = "basic"
 
+/datum/sprite_accessory/saurian_screen/long
+	name = "Long"
+	icon_state = "long"
+
+/datum/sprite_accessory/saurian_screen/thick
+	name = "Thick"
+	icon_state = "thick"
+
+/datum/sprite_accessory/saurian_screen/thicklong
+	name = "Thicklong"
+	icon_state = "thicklong"
+
+/datum/sprite_accessory/saurian_screen/barless
+	name = "Barless"
+	icon_state = "barless"
+
 /datum/sprite_accessory/saurian_tail
 	icon = 'icons/mob/species/ipc/saurian/saurian_tails.dmi'
 	gender_specific = FALSE

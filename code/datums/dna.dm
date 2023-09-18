@@ -700,6 +700,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(dna.features["ipc_screen"])
 		dna.features["ipc_screen"] = GLOB.ipc_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_SCREEN_BLOCK), GLOB.ipc_screens_list.len)]
 
+	if(dna.features["saurian_screen"])
+		dna.features["saurian_screen"] = GLOB.saurian_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCREEN_BLOCK), GLOB.saurian_screens_list.len)]
+	if(dna.features["saurian_tail"])
+		dna.features["saurian_tail"] = GLOB.saurian_tails_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_TAIL_BLOCK), GLOB.saurian_tails_list.len)]
+
 	for(var/obj/item/organ/O as anything in cosmetic_organs)
 		O.mutate_feature(features, src)
 

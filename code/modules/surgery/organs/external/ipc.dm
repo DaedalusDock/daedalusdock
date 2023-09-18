@@ -18,3 +18,59 @@
 
 /obj/item/organ/ipc_screen/can_draw_on_bodypart(mob/living/carbon/human/human)
 	return human.is_face_visible()
+
+/obj/item/organ/saurian_screen
+	name = "FUCK FUCK FUCK FUCK"
+	visual = TRUE
+	cosmetic_only = TRUE
+
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_IPC_SCREEN
+	layers = list(BODY_ADJ_LAYER)
+
+	feature_key = "saurian_screen"
+	//preference = "feature_lizard_snout"
+
+	dna_block = DNA_SAURIAN_SCREEN_BLOCK
+	color_source = ORGAN_COLOR_INHERIT_ALL
+	mutcolor_used = MUTCOLORS_KEY_GENERIC
+
+/obj/item/organ/saurian_screen/get_global_feature_list()
+	return GLOB.saurian_screens_list
+
+/obj/item/organ/saurian_screen/build_overlays(physique, image_dir)
+	. = ..()
+
+	for(var/image_layer in layers)
+		var/state2use = build_icon_state(physique, image_layer)
+
+		var/image/secondary = image(sprite_datum.icon, "[state2use]_secondary")
+		secondary.color = mutcolors[MUTCOLORS_GENERIC_2]
+		. += secondary
+
+	if(!ishuman(owner))
+		return
+
+	var/mob/living/carbon/human/H = owner
+
+	var/image/I = image(sprite_datum.icon, "eyes", layer = -EYE_LAYER)
+	I.color = H.eye_color_left
+	. += I
+	. += emissive_appearance(sprite_datum.icon, "eyes", -EYE_LAYER)
+
+/obj/item/organ/saurian_tail
+	name = "tail"
+	desc = "A severed tail. What did you cut this off of?"
+	icon_state = "severedtail"
+	organ_flags = ORGAN_UNREMOVABLE
+	visual = TRUE
+	cosmetic_only = TRUE
+
+	zone = BODY_ZONE_PRECISE_GROIN
+	slot = ORGAN_SLOT_EXTERNAL_TAIL
+	layers = list(BODY_FRONT_LAYER, BODY_BEHIND_LAYER)
+	feature_key = "saurian_tail"
+	dna_block = DNA_SAURIAN_TAIL_BLOCK
+
+/obj/item/organ/saurian_tail/get_global_feature_list()
+	return GLOB.saurian_tails_list

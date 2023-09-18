@@ -2,7 +2,7 @@
 	name = "Integrated Positronic Chassis"
 	id = SPECIES_IPC
 
-	species_traits = list(NOEYESPRITES)
+	species_traits = list(NOEYESPRITES, NOBLOOD)
 	inherent_traits = list(
 		TRAIT_GENELESS,
 		TRAIT_RADIMMUNE,
@@ -10,19 +10,18 @@
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
+		TRAIT_NOBREATH,
+		TRAIT_NOHUNGER,
+		TRAIT_NOEARS,
+		TRAIT_NOMETABOLISM,
 	)
+
 	job_outfit_type = SPECIES_HUMAN
 
 	organs = list(
 		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
-		ORGAN_SLOT_HEART = /obj/item/organ/heart,
-		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs,
 		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
-		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
-		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
-		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
-		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
-		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/robot,
 	)
 
 	cosmetic_organs = list(
@@ -39,11 +38,10 @@
 	)
 
 
-
 /datum/species/ipc/saurian
 	name = "Saurian"
 	id = SPECIES_SAURIAN
-	species_traits = list(NOEYESPRITES, MUTCOLORS)
+	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD)
 	cosmetic_organs = list(
 		/obj/item/organ/saurian_screen = "basic",
 		/obj/item/organ/saurian_tail = "basic"

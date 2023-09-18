@@ -1124,5 +1124,11 @@
 		if(ORGAN_SLOT_LUNGS)
 			if(HAS_TRAIT(src, TRAIT_NOBREATH))
 				return FALSE
+		if(ORGAN_SLOT_LIVER)
+			if(HAS_TRAIT(src, TRAIT_NOMETABOLISM))
+				return FALSE
+		if(ORGAN_SLOT_EARS)
+			if(HAS_TRAIT(src, TRAIT_NOEARS))
+				return FALSE
 
 	return dna.species.organs[slot]

@@ -275,6 +275,8 @@
 		update_damage_overlays()
 
 /mob/living/carbon/getOxyLoss()
+	if(HAS_TRAIT(src, TRAIT_NOBREATH))
+		return 0
 	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
 	if(!L || (L.organ_flags & ORGAN_DEAD))
 		return maxHealth / 2

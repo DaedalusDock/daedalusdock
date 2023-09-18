@@ -585,7 +585,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	reagents.end_metabolization(src) //Stops trait-based effects on reagents, to prevent permanent buffs
 
-	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))
+	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
 		return
 
 	adjustToxLoss(0.6 * delta_time, TRUE,  TRUE)

@@ -417,6 +417,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				I.Remove(C)
 				qdel(I)
 
+		if(replace_current)
+			for(var/slot in old_species.organs)
+				if(!(slot in organs))
+					var/obj/item/organ/O = C.getorganslot(slot)
+					O.Remove(C)
+					qdel(O)
+
 	for(var/organ_path in mutant_organs)
 		var/obj/item/organ/current_organ = C.getorgan(organ_path)
 		if(!current_organ || replace_current)

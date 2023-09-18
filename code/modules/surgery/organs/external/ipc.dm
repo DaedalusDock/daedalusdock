@@ -1,5 +1,5 @@
 /obj/item/organ/ipc_screen
-	name = "FUCK FUCK FUCK FUCK"
+	name = "ipc screen"
 	organ_flags = ORGAN_UNREMOVABLE
 	visual = TRUE
 	cosmetic_only = TRUE
@@ -20,7 +20,7 @@
 	return human.is_face_visible()
 
 /obj/item/organ/saurian_screen
-	name = "FUCK FUCK FUCK FUCK"
+	name = "saurian ipc screen"
 	visual = TRUE
 	cosmetic_only = TRUE
 

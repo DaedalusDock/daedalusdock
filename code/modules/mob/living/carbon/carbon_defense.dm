@@ -586,6 +586,8 @@
 
 /mob/living/carbon/can_hear()
 	. = FALSE
+	if(HAS_TRAIT(src, TRAIT_NOEARS) && !HAS_TRAIT(src, TRAIT_DEAF))
+		return TRUE
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	if(ears && !HAS_TRAIT(src, TRAIT_DEAF))
 		. = TRUE

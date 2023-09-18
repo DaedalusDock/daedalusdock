@@ -1058,6 +1058,13 @@
 /mob/living/carbon/human/species/vox
 	race = /datum/species/vox
 
+/mob/living/carbon/human/species/ipc
+	race = /datum/species/ipc
+
+/mob/living/carbon/human/species/ipc/saurian
+	race = /datum/species/ipc/saurian
+
+
 /mob/living/carbon/human/verb/checkpulse()
 	set name = "Check Pulse"
 	set category = "IC"

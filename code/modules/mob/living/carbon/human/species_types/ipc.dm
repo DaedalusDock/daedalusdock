@@ -19,7 +19,7 @@
 	job_outfit_type = SPECIES_HUMAN
 
 	organs = list(
-		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_POSIBRAIN = /obj/item/organ/posibrain/ipc,
 		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
 		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/robot,
 	)

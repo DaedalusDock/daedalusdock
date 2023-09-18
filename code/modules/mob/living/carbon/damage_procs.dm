@@ -168,6 +168,9 @@
 		return O.damage
 
 /mob/living/carbon/getBrainLoss()
+	if(!needs_organ(ORGAN_SLOT_BRAIN))
+		return 0
+
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	return B ? B.damage : maxHealth
 

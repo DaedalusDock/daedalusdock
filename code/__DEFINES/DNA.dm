@@ -124,6 +124,7 @@
 #define ORGAN_SLOT_LIVER "liver"
 #define ORGAN_SLOT_LUNGS "lungs"
 #define ORGAN_SLOT_PARASITE_EGG "parasite_egg"
+#define ORGAN_SLOT_POSIBRAIN "posibrain"
 #define ORGAN_SLOT_REGENERATIVE_CORE "hivecore"
 #define ORGAN_SLOT_RIGHT_ARM_AUG "r_arm_device"
 #define ORGAN_SLOT_LEFT_ARM_AUG "l_arm_device" //This one ignores alphabetical order cause the arms should be together

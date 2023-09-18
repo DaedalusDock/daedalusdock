@@ -138,8 +138,6 @@ There are several things that need to be remembered:
 		overlays_standing[UNIFORM_LAYER] = uniform_overlay
 		apply_overlay(UNIFORM_LAYER)
 
-	update_mutant_bodyparts()
-
 /mob/living/carbon/human/update_worn_id()
 	remove_overlay(ID_LAYER)
 
@@ -473,7 +471,6 @@ There are several things that need to be remembered:
 			head_overlay.pixel_y += dna.species.offset_features[OFFSET_HEAD][2]
 		overlays_standing[HEAD_LAYER] = head_overlay
 
-	update_mutant_bodyparts()
 	apply_overlay(HEAD_LAYER)
 
 /mob/living/carbon/human/update_worn_belt()
@@ -565,7 +562,6 @@ There are several things that need to be remembered:
 			suit_overlay.pixel_y += dna.species.offset_features[OFFSET_SUIT][2]
 		overlays_standing[SUIT_LAYER] = suit_overlay
 	update_body_parts()
-	update_mutant_bodyparts()
 
 	apply_overlay(SUIT_LAYER)
 
@@ -641,7 +637,7 @@ There are several things that need to be remembered:
 			overlays_standing[FACEMASK_LAYER] = mask_overlay
 
 	apply_overlay(FACEMASK_LAYER)
-	update_mutant_bodyparts() //e.g. upgate needed because mask now hides lizard snout
+	update_body_parts() //Snoots
 
 /mob/living/carbon/human/update_worn_back()
 	remove_overlay(BACK_LAYER)

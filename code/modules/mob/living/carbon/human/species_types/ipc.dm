@@ -23,8 +23,9 @@
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
+	mutant_bodyparts = list("legs" = "Digitigrade Legs")
 	cosmetic_organs = list(
-		/obj/item/organ/ipc_screen = "console"
+		/obj/item/organ/ipc_screen = "console",
 	)
 
 	bodypart_overrides = list(
@@ -35,3 +36,5 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/ipc,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc,
 	)
+
+	//digitigrade_customization = DIGITIGRADE_OPTIONAL

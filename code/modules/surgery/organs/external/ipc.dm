@@ -38,6 +38,11 @@
 /obj/item/organ/saurian_screen/get_global_feature_list()
 	return GLOB.saurian_screens_list
 
+/obj/item/organ/saurian_screen/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
+		return TRUE
+	return FALSE
+
 /obj/item/organ/saurian_screen/build_overlays(physique, image_dir)
 	. = ..()
 

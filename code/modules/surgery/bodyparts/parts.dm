@@ -276,6 +276,11 @@
 
 	minimum_break_damage = 30
 
+	/// Can these legs be digitigrade? See digitigrade.dm
+	var/can_be_digitigrade = FALSE
+	/// Used solely by digitigrade limbs to remember what their old limb ID was.
+	var/old_limb_id
+
 /obj/item/bodypart/leg/left
 	name = "left leg"
 	desc = "Some athletes prefer to tie their left shoelaces first for good \

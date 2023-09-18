@@ -37,4 +37,14 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc,
 	)
 
-	//digitigrade_customization = DIGITIGRADE_OPTIONAL
+
+
+/datum/species/ipc/saurian
+	bodypart_overrides = list(
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/robot/ipc/saurian,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/robot/ipc/saurian,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/robot/ipc/saurian,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/robot/ipc/saurian,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/ipc/saurian,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc/saurian,
+	)

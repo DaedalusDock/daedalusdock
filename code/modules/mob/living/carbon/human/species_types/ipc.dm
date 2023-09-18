@@ -23,7 +23,6 @@
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
-	mutant_bodyparts = list("legs" = "Digitigrade Legs")
 	cosmetic_organs = list(
 		/obj/item/organ/ipc_screen = "console",
 	)
@@ -40,6 +39,7 @@
 
 
 /datum/species/ipc/saurian
+	cosmetic_organs = null
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/robot/ipc/saurian,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/robot/ipc/saurian,

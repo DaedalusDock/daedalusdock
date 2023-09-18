@@ -56,3 +56,6 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/ipc/saurian,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc/saurian,
 	)
+
+/datum/species/ipc/body_temperature_cryostasis()
+	return

@@ -2361,3 +2361,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/needs_organ(slot)
 	return FALSE
+
+/mob/living/proc/has_mouth()
+	return TRUE

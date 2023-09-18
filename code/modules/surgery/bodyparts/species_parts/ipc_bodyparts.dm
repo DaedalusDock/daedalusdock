@@ -2,6 +2,7 @@
 	icon = 'icons/mob/species/ipc/bodyparts.dmi'
 	icon_static = 'icons/mob/species/ipc/bodyparts.dmi'
 	limb_id = SPECIES_IPC
+	can_ingest_reagents = FALSE
 
 /obj/item/bodypart/chest/robot/ipc
 	icon = 'icons/mob/species/ipc/bodyparts.dmi'

@@ -136,6 +136,9 @@
 		return FALSE
 	var/mob/living/carbon/C = eater
 	var/covered = ""
+	if(!C.has_mouth())
+		to_chat(user, span_warning("You don't have a mouth."))
+		return FALSE
 	if(C.is_mouth_covered(head_only = 1))
 		covered = "headgear"
 	else if(C.is_mouth_covered(mask_only = 1))

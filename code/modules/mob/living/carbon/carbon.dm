@@ -1435,3 +1435,9 @@
 		. += 30
 	else if(shock_stage > 10)
 		. += 10
+
+/mob/living/carbon/has_mouth()
+	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)
+	if(!H?.can_ingest_reagents)
+		return FALSE
+	return TRUE

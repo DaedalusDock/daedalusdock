@@ -547,26 +547,6 @@
 			to_chat(src, span_warning("[target.name] is dead!"))
 		return FALSE
 
-	if (is_mouth_covered())
-		if(!silent)
-			to_chat(src, span_warning("Remove your mask first!"))
-		return FALSE
-
-	if (target.is_mouth_covered())
-		if(!silent)
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-		return FALSE
-
-	if (!getorganslot(ORGAN_SLOT_LUNGS))
-		if(!silent)
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-		return FALSE
-
-	if (HAS_TRAIT(src, TRAIT_NOBREATH))
-		if(!silent)
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
-		return FALSE
-
 	return TRUE
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)

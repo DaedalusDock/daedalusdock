@@ -187,7 +187,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		organ_owner.organs_by_slot.Remove(slot)
 
 	if(!cosmetic_only)
-		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
+		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE) && organ_owner.needs_organ(slot))
 			organ_owner.death()
 		organ_owner.processing_organs -= src
 		START_PROCESSING(SSobj, src)
@@ -215,7 +215,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Add a trait to an organ that it will give its owner.
 /obj/item/organ/proc/add_organ_trait(trait)
-	organ_traits += trait
+	organ_traits |= trait
 	update_organ_traits()
 
 /// Removes a trait from an organ, and by extension, its owner.

@@ -23,6 +23,7 @@
 		ORGAN_SLOT_POSIBRAIN = /obj/item/organ/posibrain/ipc,
 		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
 		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/robot,
+		ORGAN_SLOT_CELL = /obj/item/organ/cell,
 	)
 
 	cosmetic_organs = list(

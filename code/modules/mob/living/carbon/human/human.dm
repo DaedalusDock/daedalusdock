@@ -944,7 +944,16 @@
 		return diff * physiology.stamina_mod
 	return diff
 
-/mob/living/carbon/human/adjust_nutrition(change) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
+/mob/living/carbon/human/adjust_nutrition(change)
+	if(isipc(src))
+		var/obj/item/organ/cell/C = getorganslot(ORGAN_SLOT_CELL)
+		if(C)
+			if(change > 0)
+				. = C.give(change)
+			else
+				. = C.use(change, TRUE)
+		return .
+
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER))
 		return FALSE
 	return ..()

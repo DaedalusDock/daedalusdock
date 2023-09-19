@@ -180,7 +180,7 @@ Transfer_mind is there to check if mob is being deleted/not going to have a body
 Works together with spawning an observer, noted above.
 */
 
-/mob/proc/ghostize(can_reenter_corpse = TRUE)
+/mob/proc/ghostize(can_reenter_corpse = TRUE, admin_ghost)
 	if(!key)
 		return
 	if(key[1] == "@") // Skip aghosts.
@@ -205,9 +205,12 @@ Works together with spawning an observer, noted above.
 	if(!can_reenter_corpse)// Disassociates observer mind from the body mind
 		ghost.mind = null
 
+	if(!admin_ghost)
+		ghost.add_client_colour(/datum/client_colour/ghostmono)
+
 	return ghost
 
-/mob/living/ghostize(can_reenter_corpse = TRUE)
+/mob/living/ghostize(can_reenter_corpse = TRUE, admin_ghost)
 	. = ..()
 	if(. && can_reenter_corpse)
 		var/mob/dead/observer/ghost = .

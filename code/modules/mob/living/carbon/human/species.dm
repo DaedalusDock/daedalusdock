@@ -113,7 +113,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	/// Minimum amount of kelvin moved toward normal body temperature per tick.
 	var/bodytemp_autorecovery_min = BODYTEMP_AUTORECOVERY_MINIMUM
-
 	var/list/heat_discomfort_strings = list(
 		"You feel sweat drip down your neck.",
 		"You feel uncomfortably warm.",

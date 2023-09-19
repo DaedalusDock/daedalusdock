@@ -94,6 +94,9 @@
 
 	return to_add
 
+/datum/species/zombie/body_temperature_core()
+	return
+
 /datum/species/zombie/infectious
 	name = "\improper Infectious Zombie"
 	id = SPECIES_ZOMBIE_INFECTIOUS

@@ -97,6 +97,52 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if((!QDELING(src) || !QDELETED(owner)))
 		transfer_identity(organ_owner)
 
+/obj/item/organ/posibrain/on_life()
+	if (!owner || owner.stat)
+		return
+	if (damage < (maxHealth * low_threshold))
+		return
+
+	if (prob(1) && !owner.has_status_effect(/datum/status_effect/confusion))
+		to_chat(owner, span_warning("Your comprehension of spacial positioning goes temporarily awry."))
+		owner.adjust_timed_status_effect(12 SECONDS, /datum/status_effect/confusion)
+
+	if (prob(1) && owner.eye_blurry < 1)
+		to_chat(owner, span_warning("Your optical interpretations become transiently erratic."))
+		owner.adjust_blurriness(6)
+
+	var/obj/item/organ/ears/E = owner.getorganslot(ORGAN_SLOT_EARS)
+	if (E && prob(1) && E.deaf < 1)
+		to_chat(owner, span_warning("Your capacity to differentiate audio signals briefly fails you."))
+		E.deaf += 6
+	if (prob(1) && !owner.has_status_effect(/datum/status_effect/speech/slurring))
+		to_chat(owner, span_warning("Your ability to form coherent speech struggles to keep up."))
+		owner.adjust_timed_status_effect(12 SECONDS, /datum/status_effect/speech/slurring/generic)
+
+	if (damage < (maxHealth * high_threshold))
+		return
+
+	if (prob(2))
+		if (prob(15) && !owner.IsSleeping())
+			owner.visible_message("\The [owner] suddenly halts all activity.")
+			owner.Sleeping(20 SECONDS)
+
+		else if (owner.anchored || isspaceturf(get_turf(owner)))
+			owner.visible_message("<i>\The [owner] seizes and twitches!</i>")
+			owner.Stun(4 SECONDS)
+		else
+			owner.visible_message("<i>\The [owner] seizes and clatters down in a heap!</i>", null, pick("Clang!", "Crash!", "Clunk!"))
+			owner.Knockdown(4 SECONDS)
+
+	if (prob(2))
+		var/obj/item/organ/cell/C = owner.getorganslot(ORGAN_SLOT_CELL)
+		if (C && C.get_charge() > 250)
+			C.use(250)
+			to_chat(owner, span_warning("Your chassis power routine fluctuates wildly."))
+			var/datum/effect_system/spark_spread/S = new
+			S.set_up(2, 0, loc)
+			S.start()
+
 ///Notify ghosts that the posibrain is up for grabs
 /obj/item/organ/posibrain/proc/ping_ghosts(msg, newlymade)
 	if(newlymade || GLOB.posibrain_notify_cooldown <= world.time)

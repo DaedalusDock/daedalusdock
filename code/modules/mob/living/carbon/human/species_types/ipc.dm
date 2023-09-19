@@ -14,6 +14,7 @@
 		TRAIT_NOHUNGER,
 		TRAIT_NOEARS,
 		TRAIT_NOMETABOLISM,
+		TRAIT_RESISTLOWPRESSURE
 	)
 
 	job_outfit_type = SPECIES_HUMAN
@@ -37,6 +38,13 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc,
 	)
 
+	cold_level_1 = 50
+	cold_level_2 = -1
+	cold_level_3 = -1
+
+	heat_level_1 = 500		// Gives them about 25 seconds in space before taking damage
+	heat_level_2 = 1000
+	heat_level_3 = 2000
 
 /datum/species/ipc/saurian
 	name = "Saurian"
@@ -64,3 +72,6 @@
 
 /datum/species/ipc/get_cryogenic_factor(bodytemperature)
 	return 0
+
+/datum/species/ipc/body_temperature_core(mob/living/carbon/human/humi, delta_time, times_fired)
+	humi.adjust_coretemperature(5, 0, 500)

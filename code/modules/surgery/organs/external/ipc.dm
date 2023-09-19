@@ -49,6 +49,8 @@
 	for(var/image_layer in layers)
 		var/state2use = build_icon_state(physique, image_layer)
 
+		if(!icon_exists(sprite_datum.icon, "[state2use]_secondary", FALSE))
+			continue
 		var/image/secondary = image(sprite_datum.icon, "[state2use]_secondary")
 		secondary.color = mutcolors[MUTCOLORS_GENERIC_2]
 		. += secondary

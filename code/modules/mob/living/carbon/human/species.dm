@@ -97,6 +97,35 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout"). Still WIP
 	var/list/cosmetic_organs = list()
 
+	//* BODY TEMPERATURE THINGS *//
+	var/cold_level_3 = 120
+	var/cold_level_2 = 200
+	var/cold_level_1 = BODYTEMP_COLD_DAMAGE_LIMIT
+	var/cold_discomfort_level = 285
+
+	/// The natural body temperature to adjust towards
+	var/bodytemp_normal = BODYTEMP_NORMAL
+
+	var/heat_discomfort_level = 315
+	var/heat_level_1 = BODYTEMP_HEAT_DAMAGE_LIMIT
+	var/heat_level_2 = 400
+	var/heat_level_3 = 1000
+
+	/// Minimum amount of kelvin moved toward normal body temperature per tick.
+	var/bodytemp_autorecovery_min = BODYTEMP_AUTORECOVERY_MINIMUM
+
+	var/list/heat_discomfort_strings = list(
+		"You feel sweat drip down your neck.",
+		"You feel uncomfortably warm.",
+		"Your skin prickles in the heat."
+		)
+	var/list/cold_discomfort_strings = list(
+		"You feel chilly.",
+		"You shiver suddenly.",
+		"Your chilly flesh stands out in goosebumps."
+	)
+
+	//* MODIFIERS *//
 	///Multiplier for the race's speed. Positive numbers make it move slower, negative numbers make it move faster.
 	var/speedmod = 0
 	///Percentage modifier for overall defense of the race, or less defense, if it's negative.
@@ -142,15 +171,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/wings_icons = list("Angel")
 	///Used to determine what description to give when using a potion of flight, if false it will describe them as growing new wings
 	var/has_innate_wings = FALSE
-
-	/// The natural temperature for a body
-	var/bodytemp_normal = BODYTEMP_NORMAL
-	/// Minimum amount of kelvin moved toward normal body temperature per tick.
-	var/bodytemp_autorecovery_min = BODYTEMP_AUTORECOVERY_MINIMUM
-	/// The body temperature limit the body can take before it starts taking damage from heat.
-	var/bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT
-	/// The body temperature limit the body can take before it starts taking damage from cold.
-	var/bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT
 
 	/// The icon_state of the fire overlay added when sufficently ablaze and standing. see onfire.dmi
 	var/fire_overlay = "human_burning"
@@ -1390,29 +1410,29 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/old_bodytemp = humi.old_bodytemperature
 	var/bodytemp = humi.bodytemperature
 	// Body temperature is too hot, and we do not have resist traits
-	if(bodytemp > bodytemp_heat_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
+	if(bodytemp > heat_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
 
 		//Remove any slowdown from the cold.
 		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 		// display alerts based on how hot it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
-		if(bodytemp in bodytemp_heat_damage_limit to BODYTEMP_HEAT_WARNING_2)
+		if(bodytemp in heat_level_1 to heat_level_2)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
-		else if(bodytemp in BODYTEMP_HEAT_WARNING_2 to BODYTEMP_HEAT_WARNING_3)
+		else if(bodytemp in heat_level_2 to heat_level_3)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
 		else
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
 
 	// Body temperature is too cold, and we do not have resist traits
-	else if(bodytemp < bodytemp_cold_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
+	else if(bodytemp < cold_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
 		// clear any hot moods and apply cold mood
 		// Apply cold slow down
-		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((bodytemp_cold_damage_limit - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
+		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((cold_level_1 - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
 		// Display alerts based how cold it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
-		if(bodytemp in BODYTEMP_COLD_WARNING_2 to bodytemp_cold_damage_limit)
+		if(bodytemp in cold_level_1 to cold_level_2)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
-		else if(bodytemp in BODYTEMP_COLD_WARNING_3 to BODYTEMP_COLD_WARNING_2)
+		else if(bodytemp in cold_level_2 to cold_level_3)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
 		else
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
@@ -1420,9 +1440,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// We are not to hot or cold, remove status and moods
 	// Optimization here, we check these things based off the old temperature to avoid unneeded work
 	// We're not perfect about this, because it'd just add more work to the base case, and resistances are rare
-	else if (old_bodytemp > bodytemp_heat_damage_limit || old_bodytemp < bodytemp_cold_damage_limit)
+	else if (old_bodytemp > heat_level_1 || old_bodytemp < cold_level_1)
 		humi.clear_alert(ALERT_TEMPERATURE)
 		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
+
+
+	if(prob(5))
+		if(bodytemp < cold_discomfort_level)
+			to_chat(humi, span_danger(pick(cold_discomfort_strings)))
+		else if(bodytemp > heat_discomfort_level)
+			to_chat(humi, span_danger(pick(heat_discomfort_strings)))
 
 	// Store the old bodytemp for future checking
 	humi.old_bodytemperature = bodytemp
@@ -1435,7 +1462,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/body_temperature_damage(mob/living/carbon/human/humi, delta_time, times_fired)
 	// Body temperature is too hot, and we do not have resist traits
 	// Apply some burn damage to the body
-	if(humi.coretemperature > bodytemp_heat_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
+	if(humi.coretemperature > heat_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
 		var/firemodifier = humi.fire_stacks / 50
 		if (!humi.on_fire) // We are not on fire, reduce the modifier
 			firemodifier = min(firemodifier, 0)
@@ -1453,12 +1480,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// Apply the damage to all body parts
 		humi.adjustFireLoss(burn_damage, FALSE)
 
-	if(humi.coretemperature < bodytemp_cold_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTCOLD) && !CHEM_EFFECT_MAGNITUDE(humi, CE_CRYO))
+	if(humi.coretemperature < cold_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTCOLD) && !CHEM_EFFECT_MAGNITUDE(humi, CE_CRYO))
 		var/damage_mod = coldmod * humi.physiology.cold_mod
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
-		if(humi.coretemperature in 201 to bodytemp_cold_damage_limit)
+		if(humi.coretemperature in cold_level_1 to cold_level_2)
 			humi.adjustFireLoss(COLD_DAMAGE_LEVEL_1 * damage_mod * delta_time, FALSE)
-		else if(humi.coretemperature in 120 to 200)
+		else if(humi.coretemperature in cold_level_2 to cold_level_3)
 			humi.adjustFireLoss(COLD_DAMAGE_LEVEL_2 * damage_mod * delta_time, FALSE)
 		else
 			humi.adjustFireLoss(COLD_DAMAGE_LEVEL_3 * damage_mod * delta_time, FALSE)
@@ -1857,7 +1884,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/to_add = list()
 
 	// Hot temperature tolerance
-	if(heatmod > 1 || bodytemp_heat_damage_limit < BODYTEMP_HEAT_DAMAGE_LIMIT)
+	if(heatmod > 1 || heat_level_1 < BODYTEMP_HEAT_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "temperature-high",
@@ -1865,7 +1892,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to high temperatures.",
 		))
 
-	if(heatmod < 1 || bodytemp_heat_damage_limit > BODYTEMP_HEAT_DAMAGE_LIMIT)
+	if(heatmod < 1 || heat_level_1 > BODYTEMP_HEAT_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
@@ -1874,7 +1901,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		))
 
 	// Cold temperature tolerance
-	if(coldmod > 1 || bodytemp_cold_damage_limit > BODYTEMP_COLD_DAMAGE_LIMIT)
+	if(coldmod > 1 || cold_level_1 > BODYTEMP_COLD_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "temperature-low",
@@ -1882,7 +1909,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to cold temperatures.",
 		))
 
-	if(coldmod < 1 || bodytemp_cold_damage_limit < BODYTEMP_COLD_DAMAGE_LIMIT)
+	if(coldmod < 1 || cold_level_1 < BODYTEMP_COLD_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",

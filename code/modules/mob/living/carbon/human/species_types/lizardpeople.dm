@@ -39,9 +39,27 @@
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
 	// Lizards are coldblooded and can stand a greater temperature range than humans
-	bodytemp_heat_damage_limit = (BODYTEMP_HEAT_DAMAGE_LIMIT + 20) // This puts lizards 10 above lavaland max heat for ash lizards.
-	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 10)
+	cold_level_3 = 130
+	cold_level_2 = 220
+	cold_level_1 = 280
 
+	bodytemp_normal = BODYTEMP_NORMAL - 10
+
+	heat_level_1 = 420
+	heat_level_2 = 480
+	heat_level_3 = 1100
+
+	heat_discomfort_strings = list(
+		"You feel soothingly warm.",
+		"You feel the heat sink into your bones.",
+		"You feel warm enough to take a nap."
+	)
+
+	cold_discomfort_strings = list(
+		"You feel chilly.",
+		"You feel sluggish and cold.",
+		"Your scales bristle against the cold."
+	)
 	ass_image = 'icons/ass/asslizard.png'
 
 	bodypart_overrides = list(

@@ -28,9 +28,30 @@
 	coldmod = 0.67
 	brutemod = 1.5
 	burnmod = 1.5
-	bodytemp_normal = BODYTEMP_NORMAL - 15 // 22°C
-	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT - 32 // 35°C max
-	bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT - 30 // -33°C min
+
+	cold_level_1 = 180
+	cold_level_2 = 130
+	cold_level_3 = 70
+
+	heat_level_1 = 320
+	heat_level_2 = 370
+	heat_level_3 = 600
+
+	heat_discomfort_level = 292
+	heat_discomfort_strings = list(
+		"Your feathers prickle in the heat.",
+		"You feel uncomfortably warm.",
+		"Your hands and feet feel hot as your body tries to regulate heat.",
+	)
+
+	cold_discomfort_level = 180
+	cold_discomfort_strings = list(
+		"You feel a bit chilly.",
+		"You fluff up your feathers against the cold.",
+		"You move your arms closer to your body to shield yourself from the cold.",
+		"You press your ears against your head to conserve heat",
+		"You start to feel the cold on your skin",
+	)
 
 	cosmetic_organs = list(
 		/obj/item/organ/teshari_feathers = "Plain",

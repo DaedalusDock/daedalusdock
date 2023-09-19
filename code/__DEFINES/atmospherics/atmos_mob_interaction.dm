@@ -49,18 +49,10 @@
 #define BODYTEMP_COOLING_MAX -30
 /// The maximum number of degrees that your body can heat up in 1 tick, due to the environment, when in a hot area.
 #define BODYTEMP_HEATING_MAX 30
-/// The body temperature limit the human body can take before it starts taking damage from heat.
-/// This also affects how fast the body normalises it's temperature when hot.
-/// 340k is about 66c, and rather high for a human.
-#define BODYTEMP_HEAT_DAMAGE_LIMIT (BODYTEMP_NORMAL + 30)
-/// The body temperature limit the human body can take before it starts taking damage from cold.
-/// This also affects how fast the body normalises it's temperature when cold.
-/// 270k is about -3c, that is below freezing and would hurt over time.
-#define BODYTEMP_COLD_DAMAGE_LIMIT (BODYTEMP_NORMAL - 40)
-/// The body temperature limit the human body can take before it will take wound damage.
-#define BODYTEMP_HEAT_WOUND_LIMIT (BODYTEMP_NORMAL + 90) // 400.5 k
-/// The modifier on cold damage limit hulks get ontop of their regular limit
-#define BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER 25
+
+#define BODYTEMP_COLD_DAMAGE_LIMIT 243
+#define BODYTEMP_HEAT_DAMAGE_LIMIT 360
+
 /// The modifier on cold damage hulks get.
 #define HULK_COLD_DAMAGE_MOD 2
 

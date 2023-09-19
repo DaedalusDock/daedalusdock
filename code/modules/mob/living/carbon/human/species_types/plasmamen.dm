@@ -53,14 +53,20 @@
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver/plasmaman,
 	)
 
-	// Body temperature for Plasmen is much lower human as they can handle colder environments
-	bodytemp_normal = (BODYTEMP_NORMAL - 40)
+	//* BODY TEMPERATURE THINGS *//
+	cold_level_3 = 80
+	cold_level_2 = 130
+	cold_level_1 = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
+	cold_discomfort_level = 255
+
+	bodytemp_normal = BODYTEMP_NORMAL - 40
 	// The minimum amount they stabilize per tick is reduced making hot areas harder to deal with
 	bodytemp_autorecovery_min = 2
-	// They are hurt at hot temps faster as it is harder to hold their form
-	bodytemp_heat_damage_limit = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
-	// This effects how fast body temp stabilizes, also if cold resit is lost on the mob
-	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
+
+	heat_discomfort_level = 300
+	heat_level_1 = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
+	heat_level_2 = 400
+	heat_level_3 = 1000
 
 	ass_image = 'icons/ass/assplasma.png'
 

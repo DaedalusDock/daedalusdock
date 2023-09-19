@@ -36,6 +36,7 @@ GLOBAL_LIST_EMPTY(vox_facial_hair_list)
 
 	//IPC bits
 GLOBAL_LIST_EMPTY(ipc_screens_list)
+GLOBAL_LIST_EMPTY(ipc_antenna_list)
 	//IPC bits (furry)
 GLOBAL_LIST_EMPTY(saurian_screens_list)
 GLOBAL_LIST_EMPTY(saurian_tails_list)

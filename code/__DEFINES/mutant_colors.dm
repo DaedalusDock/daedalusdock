@@ -14,6 +14,11 @@
 	#define MUTCOLORS_TESHARI_BODY_FEATHERS_2 "teshari_bodyfeathers_2"
 	#define MUTCOLORS_TESHARI_BODY_FEATHERS_3 "teshari_bodyfeathers_3"
 
+#define MUTCOLORS_KEY_IPC_ANTENNA "ipc_antenna"
+	#define MUTCOLORS_KEY_IPC_ANTENNA_1 "ipc_antenna_1"
+	#define MUTCOLORS_KEY_IPC_ANTENNA_2 "ipc_antenna_2"
+	#define MUTCOLORS_KEY_IPC_ANTENNA_3 "ipc_antenna_2"
+
 #define MUTCOLORS_KEY_SAURIAN_SCREEN "saurian_screen"
 	#define MUTCOLORS_KEY_SAURIAN_SCREEN_1 "saurian_screen_1"
 	#define MUTCOLORS_KEY_SAURIAN_SCREEN_2 "saurian_screen_2"

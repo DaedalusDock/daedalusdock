@@ -9,7 +9,7 @@
 	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "ipc_screen"
-	//preference = "feature_lizard_snout"
+	preference = "ipc_screen"
 
 	dna_block = DNA_IPC_SCREEN_BLOCK
 
@@ -18,6 +18,26 @@
 
 /obj/item/organ/ipc_screen/can_draw_on_bodypart(mob/living/carbon/human/human)
 	return human.is_face_visible()
+
+/obj/item/organ/ipc_antenna
+	name = "ipc antenna"
+	organ_flags = ORGAN_UNREMOVABLE
+	visual = TRUE
+	cosmetic_only = TRUE
+
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_IPC_ANTENNA
+	layers = list(BODY_ADJ_LAYER)
+
+	feature_key = "ipc_antenna"
+	preference = "ipc_antenna"
+
+	dna_block = DNA_IPC_ANTENNA_BLOCK
+	color_source = ORGAN_COLOR_INHERIT_ALL
+	mutcolor_used = MUTCOLORS_KEY_IPC_ANTENNA
+
+/obj/item/organ/ipc_antenna/get_global_feature_list()
+	return GLOB.ipc_antenna_list
 
 /obj/item/organ/saurian_screen
 	name = "saurian ipc screen"

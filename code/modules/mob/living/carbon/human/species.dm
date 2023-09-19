@@ -440,6 +440,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			for(var/slot in old_species.organs)
 				if(!(slot in organs))
 					var/obj/item/organ/O = C.getorganslot(slot)
+					if(!O)
+						continue
 					O.Remove(C)
 					qdel(O)
 

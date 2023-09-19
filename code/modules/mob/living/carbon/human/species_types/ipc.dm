@@ -28,6 +28,7 @@
 
 	cosmetic_organs = list(
 		/obj/item/organ/ipc_screen = "console",
+		/obj/item/organ/ipc_antenna = "None",
 	)
 
 	bodypart_overrides = list(

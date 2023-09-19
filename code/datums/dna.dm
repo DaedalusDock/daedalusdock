@@ -246,7 +246,9 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_VOX_SNOUT_BLOCK] = construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len)
 
 	if(features["ipc_screen"])
-		L[DNA_IPC_SCREEN_BLOCK] = construct_block(GLOB.vox_snouts_list.Find(features["ipc_screen"]), GLOB.vox_snouts_list.len)
+		L[DNA_IPC_SCREEN_BLOCK] = construct_block(GLOB.ipc_screens_list.Find(features["ipc_screen"]), GLOB.ipc_screens_list.len)
+	if(features["ipc_antenna"])
+		L[DNA_IPC_ANTENNA_BLOCK] = construct_block(GLOB.ipc_antenna_list.Find(features["DNA_IPC_ANTENNA_BLOCK"]), GLOB.ipc_antenna_list.len)
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -699,6 +701,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 
 	if(dna.features["ipc_screen"])
 		dna.features["ipc_screen"] = GLOB.ipc_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_SCREEN_BLOCK), GLOB.ipc_screens_list.len)]
+	if(dna.features["ipc_antenna"])
+		dna.features["ipc_antenna"] = GLOB.ipc_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_ANTENNA_BLOCK), GLOB.ipc_antenna_list.len)]
 
 	if(dna.features["saurian_screen"])
 		dna.features["saurian_screen"] = GLOB.saurian_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCREEN_BLOCK), GLOB.saurian_screens_list.len)]

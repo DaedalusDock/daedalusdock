@@ -118,6 +118,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["tail_teshari"] = get_consistent_feature_entry(GLOB.teshari_tails_list)
 
 	dna.features["ipc_screen"] = get_consistent_feature_entry(GLOB.ipc_screens_list)
+	dna.features["ipc_antenna"] = get_consistent_feature_entry(GLOB.ipc_antenna_list)
 	dna.features["saurian_screen"] = get_consistent_feature_entry(GLOB.saurian_screens_list)
 	dna.features["saurian_tail"] = get_consistent_feature_entry(GLOB.saurian_tails_list)
 

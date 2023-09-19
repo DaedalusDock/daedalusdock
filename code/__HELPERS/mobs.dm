@@ -132,6 +132,7 @@
 		"teshari_body_feathers" = pick(GLOB.teshari_body_feathers_list),
 		"tail_teshari" = pick(GLOB.teshari_tails_list),
 		"ipc_screen" = pick(GLOB.ipc_screens_list),
+		"ipc_antenna" = pick(GLOB.ipc_antenna_list),
 		"saurian_screen" = pick(GLOB.saurian_screens_list),
 		"saurian_tail" = pick(GLOB.saurian_tails_list),
 	))

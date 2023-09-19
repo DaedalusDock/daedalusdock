@@ -52,6 +52,7 @@
 
 	//IPC
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_screen, GLOB.ipc_screens_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_antenna, GLOB.ipc_antenna_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_screen, GLOB.saurian_screens_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_tail, GLOB.saurian_tails_list)
 

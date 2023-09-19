@@ -37,7 +37,7 @@
 #define DNA_UNI_IDENTITY_BLOCKS 7
 
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 29
+#define DNA_FEATURE_BLOCKS 30
 
 #define DNA_MUTANT_COLOR_BLOCK 1
 #define DNA_ETHEREAL_COLOR_BLOCK 2
@@ -66,8 +66,9 @@
 #define DNA_VOX_TAIL_BLOCK 25
 #define DNA_VOX_SNOUT_BLOCK 26
 #define DNA_IPC_SCREEN_BLOCK 27
-#define DNA_SAURIAN_SCREEN_BLOCK 28
-#define DNA_SAURIAN_TAIL_BLOCK 29
+#define DNA_IPC_ANTENNA_BLOCK 28
+#define DNA_SAURIAN_SCREEN_BLOCK 29
+#define DNA_SAURIAN_TAIL_BLOCK 30
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -151,6 +152,7 @@
 #define ORGAN_SLOT_EXTERNAL_TESHARI_EARS "teshari_ears"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS "teshari_body_feathers"
 #define ORGAN_SLOT_EXTERNAL_IPC_SCREEN "ipc_screen"
+#define ORGAN_SLOT_EXTERNAL_IPC_ANTENNA "ipc_antenna"
 #define ORGAN_SLOT_EXTERNAL_SAURIAN_SCREEN "saurian_screen"
 
 /// Xenomorph organ slots

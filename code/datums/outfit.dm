@@ -257,7 +257,7 @@
 				I.implant(H, null, BODY_ZONE_CHEST, TRUE)
 
 		// Insert the skillchips associated with this outfit into the target.
-		if(skillchips)
+		if(skillchips && H.needs_organ(ORGAN_SLOT_BRAIN))
 			for(var/skillchip_path in skillchips)
 				var/obj/item/skillchip/skillchip_instance = SSwardrobe.provide_type(skillchip_path)
 				var/implant_msg = H.implant_skillchip(skillchip_instance)

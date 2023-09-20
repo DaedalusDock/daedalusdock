@@ -14,7 +14,8 @@
 		TRAIT_NOHUNGER,
 		TRAIT_NOEARS,
 		TRAIT_NOMETABOLISM,
-		TRAIT_RESISTLOWPRESSURE
+		TRAIT_RESISTLOWPRESSURE,
+		TRAIT_NO_PAINSHOCK,
 	)
 
 	job_outfit_type = SPECIES_HUMAN
@@ -47,6 +48,12 @@
 	heat_level_1 = 500		// Gives them about 25 seconds in space before taking damage
 	heat_level_2 = 1000
 	heat_level_3 = 2000
+
+	heat_discomfort_level = 373.15
+	heat_discomfort_strings = list(
+		"Your CPU temperature probes warn you that you are approaching critical heat levels!"
+		)
+
 
 /datum/species/ipc/saurian
 	name = "Saurian"

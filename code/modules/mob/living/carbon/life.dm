@@ -683,7 +683,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /mob/living/carbon/proc/undergoing_cardiac_arrest()
 	if(isipc(src))
 		var/obj/item/organ/cell/C = getorganslot(ORGAN_SLOT_CELL)
-		if(C && (C.organ_flags & ORGAN_DEAD) || !C.get_percent())
+		if(C && ((C.organ_flags & ORGAN_DEAD) || !C.get_percent()))
 			return TRUE
 
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)

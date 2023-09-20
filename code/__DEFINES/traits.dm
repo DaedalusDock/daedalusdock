@@ -244,6 +244,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_DEPRESSION "depression"
 #define TRAIT_JOLLY "jolly"
 #define TRAIT_NOCRITDAMAGE "no_crit"
+/// Cannot experience Shock (pain version, not electrical)
+#define TRAIT_NO_PAINSHOCK "no_painshock"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"

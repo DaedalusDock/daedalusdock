@@ -13,11 +13,39 @@
 
 	dna_block = DNA_IPC_SCREEN_BLOCK
 
+	actions_types = list(/datum/action/innate/ipc_screen_change)
+
 /obj/item/organ/ipc_screen/get_global_feature_list()
 	return GLOB.ipc_screens_list
 
 /obj/item/organ/ipc_screen/can_draw_on_bodypart(mob/living/carbon/human/human)
 	return human.is_face_visible()
+
+/datum/action/innate/ipc_screen_change
+	name = "Change Screen"
+	desc = "Change your display's image."
+	var/obj/item/organ/ipc_screen/screen
+
+/datum/action/innate/ipc_screen_change/New(Target)
+	. = ..()
+	screen = Target
+
+/datum/action/innate/ipc_screen_change/Destroy()
+	screen = null
+	return ..()
+
+/datum/action/innate/ipc_screen_change/Activate()
+	var/mob/living/carbon/C = owner
+	if(C.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
+		to_chat(C, span_warning("You can't do that right now."))
+		return
+	var/input = tgui_input_list(L, "Select Screen", "IPC Screen", screen.get_global_feature_list())
+	if(C.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
+		to_chat(C, span_warning("You can't do that right now."))
+		return
+
+	screen.set_sprite(input)
+	C.update_body_parts()
 
 /obj/item/organ/ipc_antenna
 	name = "ipc antenna"

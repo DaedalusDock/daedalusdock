@@ -38,49 +38,49 @@
 	carbon.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
 
 /obj/item/organ/cell/on_life(delta_time, times_fired)
-	var/last_charge = get_percent()
+	use(get_power_drain(), TRUE)
 
-	if(owner.stat != DEAD)
-		use(get_power_drain(), TRUE)
-
-	handle_charge(owner, last_charge)
-
-/obj/item/organ/cell/proc/give(datum/source, amount, repairs)
+/obj/item/organ/cell/proc/charge(datum/source, amount, repairs)
 	SIGNAL_HANDLER
 	if(!cell)
 		return
-	cell.give(amount)
+	give(amount)
+
+/obj/item/organ/cell/proc/give(amount)
+	var/old = get_percent()
+	. = cell.give(amount)
+	handle_charge(owner, old)
 
 /obj/item/organ/cell/proc/on_electrocute(datum/source, shock_damage, siemens_coeff = 1, flags = NONE)
 	SIGNAL_HANDLER
 	if(flags & SHOCK_ILLUSION)
 		return
-	give(shock_damage * siemens_coeff * 2)
+	give(null, shock_damage * siemens_coeff * 2)
 	to_chat(owner, span_notice("You absorb some of the shock into your body!"))
 
 /obj/item/organ/cell/proc/handle_charge(mob/living/carbon/carbon, last_charge)
 	var/percent = get_percent()
-	switch(percent)
-		if(0)
-			carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/emptycell)
-			carbon.set_stat(DEAD)
+	if(percent == 0)
+		carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/emptycell)
+		carbon.set_stat(DEAD)
+	else
+		switch(percent)
+			if(0 to 25)
+				carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/lowcell, 3)
+				if(last_charge > 25)
+					to_chat(owner, span_warning("Your internal battery beeps an alert code, it is low on charge!"))
 
-		if(0 to 25)
-			carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/lowcell, 3)
-			if(last_charge > 25)
-				to_chat(owner, span_warning("Your internal battery beeps an alert code, it is low on charge!"))
+			if(25 to 50)
+				carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/lowcell, 2)
 
-		if(25 to 50)
-			carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/lowcell, 2)
+			if(50 to 75)
+				carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/lowcell, 1)
 
-		if(50 to 75)
-			carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/lowcell, 1)
+			else
+				carbon.clear_alert(ALERT_CHARGE)
 
-		else
-			carbon.clear_alert(ALERT_CHARGE)
-
-	if(percent > 0 && last_charge == 0)
-		owner.set_stat(CONSCIOUS)
+		if(last_charge == 0)
+			owner.set_stat(CONSCIOUS)
 
 /obj/item/organ/cell/proc/get_percent()
 	if(!cell)
@@ -97,7 +97,11 @@
 /obj/item/organ/cell/use(amount, force)
 	if(organ_flags & ORGAN_DEAD)
 		return FALSE
-	return cell && cell.use(amount, force)
+	if(!cell)
+		return
+	var/old = get_percent()
+	. = cell.use(amount, force)
+	handle_charge(owner, old)
 
 /// Power drain per tick or per step, scales with damage taken.
 /obj/item/organ/cell/proc/get_power_drain()

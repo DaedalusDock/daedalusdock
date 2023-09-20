@@ -107,6 +107,8 @@
 #define SCLERA 23
 ///Has non-human hair. Used by pref code to hide standard hair options.
 #define NONHUMANHAIR 24
+///Snowflake for IPCs, so they can pick prosthetic branding
+#define BRANDEDPROSTHETICS 25
 
 /// For use in /datum/species/var/organs
 #define DOES_NOT_NEED "does_not_need"

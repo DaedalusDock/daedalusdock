@@ -2,7 +2,7 @@
 	name = "Integrated Positronic Chassis"
 	id = SPECIES_IPC
 
-	species_traits = list(NOEYESPRITES, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER)
+	species_traits = list(NOEYESPRITES, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER, BRANDEDPROSTHETICS)
 	inherent_traits = list(
 		TRAIT_GENELESS,
 		TRAIT_RADIMMUNE,
@@ -40,6 +40,8 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/ipc,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc,
 	)
+
+	robotic_bodyparts = null
 
 	cold_level_1 = 50
 	cold_level_2 = -1

@@ -39,7 +39,7 @@
 	if(C.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
 		to_chat(C, span_warning("You can't do that right now."))
 		return
-	var/input = tgui_input_list(L, "Select Screen", "IPC Screen", screen.get_global_feature_list())
+	var/input = tgui_input_list(C, "Select Screen", "IPC Screen", screen.get_global_feature_list())
 	if(C.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
 		to_chat(C, span_warning("You can't do that right now."))
 		return

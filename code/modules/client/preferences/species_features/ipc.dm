@@ -35,3 +35,42 @@
 /datum/preference/color/mutcolor/ipc_antenna/create_default_value()
 	return "#b4b4b4"
 
+/datum/preference/choiced/ipc_brand
+	explanation = "Chassis Brand"
+	savefile_key = "ipc_brand"
+	savefile_identifier = PREFERENCE_CHARACTER
+	relevant_species_trait = BRANDEDPROSTHETICS
+	priority = PREFERENCE_PRIORITY_BRANDED_PROSTHETICS
+
+/datum/preference/choiced/ipc_brand/create_default_value()
+	return "None"
+
+/// Global list of player-friendly name to iconstate prefix.
+GLOBAL_REAL_VAR(ipc_chassis_options) = list(
+	"None" = "None",
+	"Aether Mk.I" = "bsh",
+	"Aether Mk.II" = "bs2",
+	"Dionysus" = "hsi",
+	"Sentinel" = "sgm",
+	"RUST-E" = "xmg",
+	"RUST-G" = "xm2",
+	"Wayfarer Mk.I" = "wtm",
+	"Wayfarer Mk.II" = "mcg",
+	"Gamma (Gen 3)" = "zhp",
+)
+
+/datum/preference/choiced/ipc_brand/init_possible_values()
+	return global.ipc_chassis_options
+
+/datum/preference/choiced/ipc_brand/apply_to_human(mob/living/carbon/human/target, value)
+	var/state = global.ipc_chassis_options[value]
+	state = state == "None" ? "ipc" : "[state]ipc"
+	for(var/obj/item/bodypart/BP as anything in target.bodyparts)
+		if(BP.is_stump || IS_ORGANIC_LIMB(BP))
+			continue
+
+		BP.change_appearance(id = state, update_owner = FALSE)
+
+	target.dna.species.examine_limb_id = state == "ipc" ? SPECIES_IPC : state
+	target.update_body_parts()
+

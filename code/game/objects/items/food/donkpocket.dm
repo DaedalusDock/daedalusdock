@@ -2,7 +2,7 @@
 
 /obj/item/food/donkpocket
 	name = "\improper Donk-pocket"
-	desc = "The food of choice for the seasoned traitor."
+	desc = "The food of choice for the seasoned asshole."
 	icon_state = "donkpocket"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/protein = 2)
 	microwaved_type = /obj/item/food/donkpocket/warm
@@ -17,7 +17,7 @@
 
 /obj/item/food/donkpocket/warm
 	name = "warm Donk-pocket"
-	desc = "The heated food of choice for the seasoned traitor."
+	desc = "The heated food of choice for the seasoned asshole."
 	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/medicine/tricordrazine = 6)
 	microwaved_type = null
 	tastes = list("meat" = 2, "dough" = 2, "laziness" = 1)

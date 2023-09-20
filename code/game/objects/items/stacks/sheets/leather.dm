@@ -88,9 +88,9 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	. += GLOB.monkey_recipes
 
 /obj/item/stack/sheet/animalhide/lizard
-	name = "unathi skin"
+	name = "jinan skin"
 	desc = "Sssssss..."
-	singular_name = "unathi skin piece"
+	singular_name = "jinan skin piece"
 	icon_state = "sheet-lizard"
 	inhand_icon_state = "sheet-lizard"
 	merge_type = /obj/item/stack/sheet/animalhide/lizard

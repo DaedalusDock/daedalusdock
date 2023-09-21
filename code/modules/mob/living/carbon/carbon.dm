@@ -489,13 +489,8 @@
 /mob/living/carbon/updatehealth()
 	if(status_flags & GODMODE)
 		return
-	var/total_burn = 0
-	var/total_brute = 0
-	for(var/obj/item/bodypart/BP as anything in bodyparts) //hardcoded to streamline things a bit
-		total_brute += (BP.brute_dam)
-		total_burn += (BP.burn_dam)
 
-	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - getCloneLoss() - total_burn - total_brute, DAMAGE_PRECISION))
+	set_health(round(maxHealth - getBrainLoss(), DAMAGE_PRECISION))
 	update_stat()
 	med_hud_set_health()
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
@@ -631,71 +626,43 @@
 	if(!client)
 		return
 
-	var/health = getBrainLoss()
-	if(health <= crit_threshold)
+	if(health < maxHealth/2)
 		var/severity = 0
-		switch(health)
-			if(-120 to -110)
-				severity = 1
-			if(-130 to -120)
-				severity = 2
-			if(-140 to -130)
-				severity = 3
-			if(-150 to -140)
-				severity = 4
-			if(-150 to -140)
-				severity = 5
-			if(-160 to -150)
-				severity = 6
-			if(-170 to -160)
-				severity = 7
-			if(-190 to -170)
-				severity = 8
-			if(-195 to -190)
-				severity = 9
-			if(-INFINITY to -195)
-				severity = 10
-		if(stat >= UNCONSCIOUS)
-			var/visionseverity = 4
-			switch(health)
-				if(-115 to -100)
-					visionseverity = 5
-				if(-130 to -115)
-					visionseverity = 6
-				if(-145 to -130)
-					visionseverity = 7
-				if(-160 to -145)
-					visionseverity = 8
-				if(-175 to -160)
-					visionseverity = 9
-				if(-INFINITY to -175)
-					visionseverity = 10
-			overlay_fullscreen("critvision", /atom/movable/screen/fullscreen/crit/vision, visionseverity)
+		switch(health - maxHealth/2)
+			if(-20 to -10)			severity = 1
+			if(-30 to -20)			severity = 2
+			if(-40 to -30)			severity = 3
+			if(-50 to -40)			severity = 4
+			if(-60 to -50)			severity = 5
+			if(-70 to -60)			severity = 6
+			if(-80 to -70)			severity = 7
+			if(-90 to -80)			severity = 8
+			if(-95 to -90)			severity = 9
+			if(-INFINITY to -95)	severity = 10
+
+		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit/vision, vision_severity)
+
+		if(stat == UNCONSCIOUS)
+			overlay_fullscreen("critvision", /atom/movable/screen/fullscreen/crit/vision, vision_severity)
 		else
 			clear_fullscreen("critvision")
-		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit, severity)
+
 	else
 		clear_fullscreen("crit")
 		clear_fullscreen("critvision")
 
+
 	//Oxygen damage overlay
-	if(oxyloss)
+	if(getOxyLoss())
 		var/severity = 0
-		switch(oxyloss)
-			if(10 to 20)
-				severity = 1
-			if(20 to 35)
-				severity = 2
-			if(35 to 50)
-				severity = 3
-			if(50 to 65)
-				severity = 4
-			if(65 to 80)
-				severity = 5
-			if(80 to 90)
-				severity = 6
-			if(90 to INFINITY)
-				severity = 7
+		switch(getOxyLoss())
+			if(10 to 20)		severity = 1
+			if(20 to 25)		severity = 2
+			if(25 to 30)		severity = 3
+			if(30 to 35)		severity = 4
+			if(35 to 40)		severity = 5
+			if(40 to 45)		severity = 6
+			if(45 to INFINITY)	severity = 7
 		overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 	else
 		clear_fullscreen("oxy")

@@ -20,8 +20,14 @@
 		return FALSE
 	return apply_pain(amount, updating_health = updating_health)
 
+/mob/living/proc/flash_pain(severity = PAIN_SMALL)
+	return
+
+/mob/living/carbon/flash_pain(severity = PAIN_SMALL)
+	flick(severity, hud_used?.pain)
+
 /mob/living/carbon/apply_pain(amount, def_zone, message, ignore_cd, updating_health = TRUE)
-	if((status_flags & GODMODE))
+	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))
 		return FALSE
 
 	amount -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3
@@ -47,7 +53,7 @@
 				continue
 
 			amount_remaining -= abs(used)
-			. = TRUE
+		. = amount - amount_remaining
 	else
 		BP = get_bodypart(def_zone, TRUE)
 		if(!BP)
@@ -55,17 +61,19 @@
 		. = BP.adjustPain(amount)
 
 
-	if((amount > 0))
-		flash_pain(min(round(8*amount)+55, 255))
+	if(.)
+		switch(.)
+			if(1 to 20)
+				flash_pain(PAIN_SMALL)
+			if(20 to 40)
+				flash_pain(PAIN_MEDIUM)
+			if(40 to INFINITY)
+				flash_pain(PAIN_LARGE)
+
 		pain_message(message, amount, ignore_cd)
 
 	if(updating_health && .)
 		updatehealth()
-
-/mob/proc/flash_pain(target)
-	if(hud_used?.pain)
-		animate(hud_used.pain, alpha = target, time = 15, easing = ELASTIC_EASING)
-		animate(hud_used.pain = 0, time = 20)
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE

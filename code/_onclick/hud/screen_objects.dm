@@ -889,3 +889,11 @@
 		icon_state = "no_walk1"
 	else
 		icon_state = "no_walk0"
+
+/atom/movable/screen/pain
+	name = "pain overlay"
+	icon_state = ""
+	layer = UI_DAMAGE_LAYER
+	plane = FULLSCREEN_PLANE
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
+

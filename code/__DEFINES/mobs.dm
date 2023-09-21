@@ -30,6 +30,11 @@
 #define BLOOD_CIRC_BAD 60
 #define BLOOD_CIRC_SURVIVE 30
 
+// Values for flash_pain()
+#define PAIN_SMALL "weakest_pain"
+#define PAIN_MEDIUM "weak_pain"
+#define PAIN_LARGE "pain"
+
 //Sizes of mobs, used by mob/living/var/mob_size
 #define MOB_SIZE_TINY 1
 #define MOB_SIZE_SMALL 5

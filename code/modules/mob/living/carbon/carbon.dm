@@ -872,7 +872,13 @@
 
 /mob/living/carbon/can_be_revived()
 	. = ..()
-	if(!getorgan(/obj/item/organ/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)) || HAS_TRAIT(src, TRAIT_HUSK))
+	if(HAS_TRAIT(src, TRAIT_HUSK))
+		return FALSE
+	if(needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)))
+		return FALSE
+	if(needs_organ(ORGAN_SLOT_POSIBRAIN) && !getorganslot(ORGAN_SLOT_POSIBRAIN))
+		return FALSE
+	if(needs_organ(ORGAN_SLOT_CELL) && !getorganslot(ORGAN_SLOT_CELL))
 		return FALSE
 
 /mob/living/carbon/harvest(mob/living/user)

@@ -16,7 +16,10 @@
 		TRAIT_NOMETABOLISM,
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_NO_PAINSHOCK,
+		TRAIT_NOSOFTCRIT,
+		TRAIT_LIMBATTACHMENT,
 	)
+	inherent_biotypes = list(MOB_ROBOTIC, MOB_HUMANOID)
 
 	job_outfit_type = SPECIES_HUMAN
 
@@ -40,6 +43,8 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/robot/ipc,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot/ipc,
 	)
+	meat = /obj/item/stack/sheet/plasteel{amount = 5}
+	skinned_type = /obj/item/stack/sheet/iron{amount = 10}
 
 	robotic_bodyparts = null
 
@@ -56,6 +61,7 @@
 		"Your CPU temperature probes warn you that you are approaching critical heat levels!"
 		)
 
+	special_step_sounds = list('sound/effects/servostep.ogg')
 
 /datum/species/ipc/saurian
 	name = "Saurian"
@@ -86,3 +92,15 @@
 
 /datum/species/ipc/body_temperature_core(mob/living/carbon/human/humi, delta_time, times_fired)
 	humi.adjust_coretemperature(5, 0, 500)
+
+/datum/species/ipc/spec_death(gibbed, mob/living/carbon/human/H)
+	if(gibbed)
+		return
+
+	var/obj/item/organ/ipc_screen/screen = H.getorganslot(ORGAN_SLOT_EXTERNAL_IPC_SCREEN)
+	if(!screen)
+		return
+	screen.set_sprite("None")
+
+/datum/species/ipc/get_deathgasp_sound()
+	return 'sound/voice/borg_deathsound.ogg'

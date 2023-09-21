@@ -33,7 +33,6 @@
 	disliked_food = GRAIN | DAIRY | CLOTH
 	liked_food = GROSS | MEAT | SEAFOOD | NUTS
 	inert_mutation = /datum/mutation/human/firebreath
-	deathsound = 'sound/voice/lizard/deathsound.ogg'
 	wings_icons = list("Dragon")
 	species_language_holder = /datum/language_holder/lizard
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
@@ -103,6 +102,9 @@
 			"howl" = 1
 		) = 80
 	)
+
+/datum/species/lizard/get_deathgasp_sound(mob/living/carbon/human/H)
+	return 'sound/voice/lizard/deathsound.ogg'
 
 /// Lizards are cold blooded and do not stabilize body temperature naturally
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, delta_time, times_fired)

@@ -147,8 +147,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/fixed_mut_color = ""
 	///Special mutation that can be found in the genepool exclusively in this species. Dont leave empty or changing species will be a headache
 	var/inert_mutation = /datum/mutation/human/dwarfism
-	///Used to set the mob's deathsound upon species change
-	var/deathsound
 	///Sounds to override barefeet walking
 	var/list/special_step_sounds
 	///Special sound for grabbing
@@ -2137,3 +2135,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			break
 
 	return pick_weight(chosen)
+
+/datum/species/proc/get_deathgasp_sound(mob/living/carbon/human/H)
+	return pick('goon/sounds/voice/death_1.ogg', 'goon/sounds/voice/death_2.ogg')

@@ -111,6 +111,7 @@
 	message_larva = "lets out a sickly hiss of air and falls limply to the floor..."
 	message_monkey = "lets out a faint chimper as it collapses and stops moving..."
 	message_simple = "stops moving..."
+	message_ipc =  "gives one shrill beep before falling lifeless."
 	cooldown = (15 SECONDS)
 	stat_allowed = UNCONSCIOUS
 
@@ -128,7 +129,9 @@
 		if(!user.deathsound)
 			if(!ishuman(user))
 				return
-			playsound(user, pick('goon/sounds/voice/death_1.ogg', 'goon/sounds/voice/death_2.ogg'), 100, 0)
+			var/mob/living/carbon/human/H = user
+
+			playsound(H, H.dna?.species.get_deathgasp_sound(H), 100, 0)
 			return
 		playsound(user, user.deathsound, 200, TRUE, TRUE)
 

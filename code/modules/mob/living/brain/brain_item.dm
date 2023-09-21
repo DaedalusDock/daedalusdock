@@ -417,8 +417,10 @@
 	else
 		if(owner)
 			owner.revive()
+			owner.grab_ghost()
 		else if(brainmob)
 			brainmob.revive()
+			brainmob.grab_ghost()
 		return
 
 /obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)

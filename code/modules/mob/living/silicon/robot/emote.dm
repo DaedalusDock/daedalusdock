@@ -1,6 +1,7 @@
 /datum/emote/silicon
-	mob_type_allowed_typecache = list(/mob/living/silicon)
+	mob_type_allowed_typecache = list(/mob/living/silicon, /mob/living/carbon/human)
 	emote_type = EMOTE_AUDIBLE
+	species_type_whitelist_typecache = list(/datum/species/ipc)
 
 /datum/emote/silicon/boop
 	key = "boop"

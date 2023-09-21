@@ -31,6 +31,8 @@
 	var/message_AI = ""
 	/// Message displayed if the user is a monkey.
 	var/message_monkey = ""
+	/// Message displayed if the user is an IPC.
+	var/message_ipc = ""
 	/// Message to display if the user is a simple_animal.
 	var/message_simple = ""
 	/// Message with %t at the end to allow adding params to the message, like for mobs doing an emote relatively to something else.
@@ -205,10 +207,10 @@
  *
  * Returns the new message, or msg directly, if no change was needed.
  */
-/datum/emote/proc/select_message_type(mob/user, msg, intentional)
+/datum/emote/proc/select_message_type(mob/living/user, msg, intentional)
 	// Basically, we don't care that the others can use datum variables, because they're never going to change.
 	. = msg
-	if(!muzzle_ignore && user.is_muzzled() && emote_type == EMOTE_AUDIBLE)
+	if(!muzzle_ignore && user.has_mouth() && user.is_muzzled() && emote_type == EMOTE_AUDIBLE)
 		return "makes a [pick("strong ", "weak ", "")]noise."
 	if(user.mind && user.mind.miming && message_mime)
 		. = message_mime
@@ -224,6 +226,8 @@
 		. = message_monkey
 	else if(isanimal(user) && message_simple)
 		. = message_simple
+	else if(isipc(user) && message_ipc)
+		. = message_ipc
 
 /**
  * Replaces the %t in the message in message_param by params.

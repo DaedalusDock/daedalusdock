@@ -548,7 +548,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			new_race = mrace
 		else
 			return
-		deathsound = new_race.deathsound
 
 		if(dna.species.properly_gained)
 			dna.species.on_species_loss(src, new_race, pref_load)

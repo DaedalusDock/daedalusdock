@@ -1,6 +1,6 @@
 /obj/item/organ/cell
-	name = "microcell"
-	desc = "A small, powerful cell for use in fully prosthetic bodies."
+	name = "microbattery"
+	desc = "A housing for a stadndard cell to convert power for use in fully prosthetic bodies."
 	icon_state = "cell"
 
 	organ_flags = ORGAN_SYNTHETIC | ORGAN_VITAL
@@ -19,7 +19,7 @@
 	cell = new cell(src)
 
 /obj/item/organ/cell/Insert(mob/living/carbon/carbon, special = 0)
-	if(!(carbon.get_bodypart(BODY_ZONE_CHEST).bodytype & BODYTYPE_ROBOTIC))
+	if(!(carbon.needs_organ(ORGAN_SLOT_CELL)))
 		return FALSE
 	. = ..()
 	if(!.)
@@ -27,15 +27,16 @@
 
 	RegisterSignal(owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(give))
 	RegisterSignal(owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
-	if(owner.stat == DEAD)
-		owner.set_stat(CONSCIOUS)
+	if(owner.stat == DEAD && get_percent())
+		initiate_reboot(owner)
 
-/obj/item/organ/stomach/ethereal/Remove(mob/living/carbon/carbon, special = 0)
-	UnregisterSignal(owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
-	UnregisterSignal(owner, COMSIG_LIVING_ELECTROCUTE_ACT)
+/obj/item/organ/cell/Remove(mob/living/carbon/carbon, special = 0)
+	UnregisterSignal(carbon, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
+	UnregisterSignal(carbon, COMSIG_LIVING_ELECTROCUTE_ACT)
 
-	carbon.clear_alert(ALERT_ETHEREAL_CHARGE)
-	carbon.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
+	carbon.clear_alert(ALERT_CHARGE)
+	carbon.death()
+	return ..()
 
 /obj/item/organ/cell/on_life(delta_time, times_fired)
 	use(get_power_drain(), TRUE)
@@ -62,7 +63,7 @@
 	var/percent = get_percent()
 	if(percent == 0)
 		carbon.throw_alert(ALERT_CHARGE, /atom/movable/screen/alert/emptycell)
-		carbon.set_stat(DEAD)
+		carbon.death()
 	else
 		switch(percent)
 			if(0 to 25)
@@ -80,7 +81,7 @@
 				carbon.clear_alert(ALERT_CHARGE)
 
 		if(last_charge == 0)
-			owner.set_stat(CONSCIOUS)
+			initiate_reboot(owner)
 
 /obj/item/organ/cell/proc/get_percent()
 	if(!cell)
@@ -107,3 +108,64 @@
 /obj/item/organ/cell/proc/get_power_drain()
 	var/damage_factor = 1 + 10 * damage/maxHealth
 	return servo_cost * damage_factor
+
+#define OWNER_CHECK \
+	if(QDELETED(src) || QDELETED(owner) || owner != ipc || !get_percent()) { \
+		if(!QDELETED(screen)) { \
+			screen.set_sprite("None"); \
+			if(!QDELETED(ipc)) { \
+				ipc.update_body_parts();\
+			} \
+		} \
+		if(!QDELETED(ipc)) { \
+				REMOVE_TRAIT(ipc, TRAIT_INCAPACITATED, ref(src)); \
+				REMOVE_TRAIT(ipc, TRAIT_FLOORED, ref(src)); \
+				REMOVE_TRAIT(ipc, TRAIT_IMMOBILIZED, ref(src)); \
+				REMOVE_TRAIT(ipc, TRAIT_HANDS_BLOCKED, ref(src)); \
+				REMOVE_TRAIT(ipc, TRAIT_NO_VOLUNTARY_SPEECH, ref(src)); \
+				REMOVE_TRAIT(ipc, TRAIT_BLIND, ref(src)); \
+		} \
+		return \
+	}
+
+/obj/item/organ/cell/proc/initiate_reboot(mob/living/carbon/human/ipc)
+	set waitfor = FALSE
+
+	ADD_TRAIT(ipc, TRAIT_INCAPACITATED, ref(src))
+	ADD_TRAIT(ipc, TRAIT_FLOORED, ref(src))
+	ADD_TRAIT(ipc, TRAIT_IMMOBILIZED, ref(src))
+	ADD_TRAIT(ipc, TRAIT_HANDS_BLOCKED, ref(src))
+	ADD_TRAIT(ipc, TRAIT_NO_VOLUNTARY_SPEECH, ref(src))
+	ADD_TRAIT(ipc, TRAIT_BLIND, ref(src))
+
+	ipc.notify_ghost_cloning("Your chassis power has been restored!")
+	ipc.revive()
+	ipc.grab_ghost()
+
+	var/obj/item/organ/ipc_screen/screen = ipc.getorganslot(ORGAN_SLOT_EXTERNAL_IPC_SCREEN)
+	if(screen)
+		screen.set_sprite("BSOD")
+		ipc.update_body_parts()
+	sleep(3 SECONDS)
+	OWNER_CHECK
+
+	ipc.say("Reactivating [pick("core systems", "central subroutines", "key functions")]...", forced = "ipc reboot")
+	sleep(3 SECONDS)
+	OWNER_CHECK
+
+	ipc.say("Initializing motor functionality...", forced = "ipc reboot")
+	sleep(3 SECONDS)
+	OWNER_CHECK
+
+	screen.set_sprite(ipc.dna.features[screen.feature_key])
+	ipc.update_body_parts()
+	ipc.emote("ping")
+
+	REMOVE_TRAIT(ipc, TRAIT_INCAPACITATED, ref(src))
+	REMOVE_TRAIT(ipc, TRAIT_FLOORED, ref(src))
+	REMOVE_TRAIT(ipc, TRAIT_IMMOBILIZED, ref(src))
+	REMOVE_TRAIT(ipc, TRAIT_HANDS_BLOCKED, ref(src))
+	REMOVE_TRAIT(ipc, TRAIT_NO_VOLUNTARY_SPEECH, ref(src))
+	REMOVE_TRAIT(ipc, TRAIT_BLIND, ref(src))
+
+#undef OWNER_CHECK

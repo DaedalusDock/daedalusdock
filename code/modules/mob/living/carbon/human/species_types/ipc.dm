@@ -23,6 +23,8 @@
 
 	job_outfit_type = SPECIES_HUMAN
 
+	species_language_holder = /datum/language_holder/ipc
+
 	organs = list(
 		ORGAN_SLOT_POSIBRAIN = /obj/item/organ/posibrain/ipc,
 		ORGAN_SLOT_EYES = /obj/item/organ/eyes,

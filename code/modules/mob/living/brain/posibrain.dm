@@ -232,7 +232,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if(!L.mind)
 		return
 
-	brainmob = new(src)
+	brainmob = new(src) //We dont use create_brainmob() because thats for ghost spawns
 	brainmob.name = L.real_name
 	brainmob.real_name = L.real_name
 	brainmob.timeofhostdeath = L.timeofdeath
@@ -248,6 +248,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		L.mind.transfer_to(brainmob)
 
 
+	brainmob.grant_language(/datum/language/machine, TRUE, TRUE, LANGUAGE_MMI)
 	update_appearance()
 
 ///Moves the candidate from the ghost to the posibrain
@@ -331,6 +332,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	brainmob.real_name = brainmob.name
 	brainmob.forceMove(src)
 	brainmob.container = src
+	brainmob.grant_language(/datum/language/machine, TRUE, TRUE, LANGUAGE_MMI)
 
 /obj/item/organ/posibrain/ipc
 	autoping = FALSE

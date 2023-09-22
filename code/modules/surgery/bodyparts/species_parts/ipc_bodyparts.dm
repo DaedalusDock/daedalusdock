@@ -41,6 +41,7 @@
 	icon = 'icons/mob/species/ipc/saurian/saurian_bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/ipc/saurian/saurian_bodyparts.dmi'
 	should_draw_greyscale = TRUE
+	is_dimorphic = TRUE
 
 /obj/item/bodypart/arm/left/robot/ipc/saurian
 	icon = 'icons/mob/species/ipc/saurian/saurian_bodyparts.dmi'

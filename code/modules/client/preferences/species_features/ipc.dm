@@ -87,18 +87,6 @@ GLOBAL_REAL_VAR(ipc_chassis_options) = list(
 /datum/preference/choiced/saurian_screen/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["saurian_screen"] = value
 
-/datum/preference/choiced/saurian_scutes
-	explanation = "Scutes"
-	savefile_key = "saurian_scutes"
-	savefile_identifier = PREFERENCE_CHARACTER
-	relevant_external_organ = /obj/item/organ/saurian_scutes
-
-/datum/preference/choiced/saurian_scutes/init_possible_values()
-	return GLOB.saurian_scutes_list
-
-/datum/preference/choiced/saurian_scutes/apply_to_human(mob/living/carbon/human/target, value)
-	target.dna.features["saurian_scutes"] = value
-
 /datum/preference/choiced/saurian_antenna
 	explanation = "Antenna"
 	savefile_key = "saurian_antenna"

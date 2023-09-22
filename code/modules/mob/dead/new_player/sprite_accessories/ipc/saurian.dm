@@ -33,15 +33,11 @@
 
 /datum/sprite_accessory/saurian_scutes
 	icon = 'icons/mob/species/ipc/saurian/saurian_scutes.dmi'
-	gender_specific = FALSE
+	gender_specific = TRUE
 
 /datum/sprite_accessory/saurian_scutes/default
 	name = "Default"
 	icon_state = "default"
-
-/datum/sprite_accessory/saurian_scutes/plates
-	name = "Plates"
-	icon_state = "plates"
 
 /datum/sprite_accessory/saurian_antenna
 	icon = 'icons/mob/species/ipc/saurian/saurian_antennas.dmi'

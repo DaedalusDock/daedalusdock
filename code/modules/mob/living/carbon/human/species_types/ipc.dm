@@ -68,7 +68,7 @@
 /datum/species/ipc/saurian
 	name = "Saurian"
 	id = SPECIES_SAURIAN
-	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER)
+	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER, EYECOLOR)
 	cosmetic_organs = list(
 		/obj/item/organ/saurian_screen = "basic",
 		/obj/item/organ/saurian_tail = "basic",

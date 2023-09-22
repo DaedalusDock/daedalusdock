@@ -135,6 +135,8 @@
 		"ipc_antenna" = pick(GLOB.ipc_antenna_list),
 		"saurian_screen" = pick(GLOB.saurian_screens_list),
 		"saurian_tail" = pick(GLOB.saurian_tails_list),
+		"saurian_scutes" = pick(GLOB.saurian_scutes_list),
+		"saurian_antenna" = pick(GLOB.saurian_antenna_list),
 	))
 
 /proc/random_mutant_colors()

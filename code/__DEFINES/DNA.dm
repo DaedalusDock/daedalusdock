@@ -37,7 +37,7 @@
 #define DNA_UNI_IDENTITY_BLOCKS 7
 
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 30
+#define DNA_FEATURE_BLOCKS 32
 
 #define DNA_MUTANT_COLOR_BLOCK 1
 #define DNA_ETHEREAL_COLOR_BLOCK 2
@@ -69,6 +69,8 @@
 #define DNA_IPC_ANTENNA_BLOCK 28
 #define DNA_SAURIAN_SCREEN_BLOCK 29
 #define DNA_SAURIAN_TAIL_BLOCK 30
+#define DNA_SAURIAN_SCUTES_BLOCK 31
+#define DNA_SAURIAN_ANTENNA_BLOCK 32
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -156,6 +158,7 @@
 #define ORGAN_SLOT_EXTERNAL_IPC_SCREEN "ipc_screen"
 #define ORGAN_SLOT_EXTERNAL_IPC_ANTENNA "ipc_antenna"
 #define ORGAN_SLOT_EXTERNAL_SAURIAN_SCREEN "saurian_screen"
+#define ORGAN_SLOT_EXTERNAL_SAURIAN_SCUTES "saurian_scutes"
 
 /// Xenomorph organ slots
 #define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"

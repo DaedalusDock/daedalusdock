@@ -71,8 +71,11 @@
 	species_traits = list(NOEYESPRITES, MUTCOLORS, NOBLOOD, NOZOMBIE, NO_UNDERWEAR, NO_DNA_COPY, NOTRANSSTING, AGENDER)
 	cosmetic_organs = list(
 		/obj/item/organ/saurian_screen = "basic",
-		/obj/item/organ/saurian_tail = "basic"
+		/obj/item/organ/saurian_tail = "basic",
+		/obj/item/organ/saurian_scutes = "default",
+		/obj/item/organ/saurian_antenna = "default"
 	)
+
 	examine_limb_id = SPECIES_IPC
 
 	bodypart_overrides = list(

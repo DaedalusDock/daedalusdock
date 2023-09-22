@@ -41,6 +41,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	relevant_species_trait = BRANDEDPROSTHETICS
 	priority = PREFERENCE_PRIORITY_BRANDED_PROSTHETICS
+	requires_accessible = TRUE
 
 /datum/preference/choiced/ipc_brand/create_default_value()
 	return "None"
@@ -74,3 +75,48 @@ GLOBAL_REAL_VAR(ipc_chassis_options) = list(
 	target.dna.species.examine_limb_id = state == "ipc" ? SPECIES_IPC : state
 	target.update_body_parts()
 
+/datum/preference/choiced/saurian_screen
+	explanation = "Head"
+	savefile_key = "saurian_screen"
+	savefile_identifier = PREFERENCE_CHARACTER
+	relevant_external_organ = /obj/item/organ/saurian_screen
+
+/datum/preference/choiced/saurian_screen/init_possible_values()
+	return GLOB.saurian_screens_list
+
+/datum/preference/choiced/saurian_screen/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["saurian_screen"] = value
+
+/datum/preference/choiced/saurian_scutes
+	explanation = "Scutes"
+	savefile_key = "saurian_scutes"
+	savefile_identifier = PREFERENCE_CHARACTER
+	relevant_external_organ = /obj/item/organ/saurian_scutes
+
+/datum/preference/choiced/saurian_scutes/init_possible_values()
+	return GLOB.saurian_scutes_list
+
+/datum/preference/choiced/saurian_scutes/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["saurian_scutes"] = value
+
+/datum/preference/choiced/saurian_antenna
+	explanation = "Antenna"
+	savefile_key = "saurian_antenna"
+	savefile_identifier = PREFERENCE_CHARACTER
+	relevant_external_organ = /obj/item/organ/saurian_antenna
+	sub_preference = /datum/preference/tri_color/saurian_antenna_color
+
+/datum/preference/choiced/saurian_antenna/init_possible_values()
+	return GLOB.saurian_antenna_list
+
+/datum/preference/choiced/saurian_antenna/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["saurian_antenna"] = value
+
+/datum/preference/tri_color/saurian_antenna_color
+	explanation = "Antenna Color"
+	savefile_key = "saurian_antenna_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	relevant_external_organ = /obj/item/organ/saurian_antenna
+	is_sub_preference = TRUE
+
+	color_key = MUTCOLORS_KEY_IPC_ANTENNA

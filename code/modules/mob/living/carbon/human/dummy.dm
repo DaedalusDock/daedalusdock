@@ -121,6 +121,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	dna.features["ipc_antenna"] = get_consistent_feature_entry(GLOB.ipc_antenna_list)
 	dna.features["saurian_screen"] = get_consistent_feature_entry(GLOB.saurian_screens_list)
 	dna.features["saurian_tail"] = get_consistent_feature_entry(GLOB.saurian_tails_list)
+	dna.features["saurian_scutes"] = get_consistent_feature_entry(GLOB.saurian_scutes_list)
+	dna.features["saurian_antenna"] = get_consistent_feature_entry(GLOB.saurian_antenna_list)
 
 /// Takes in an accessory list and returns the first entry from that list, ensuring that we dont return SPRITE_ACCESSORY_NONE in the process.
 /proc/get_consistent_feature_entry(list/accessory_feature_list)

@@ -55,6 +55,8 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_antenna, GLOB.ipc_antenna_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_screen, GLOB.saurian_screens_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_tail, GLOB.saurian_tails_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_scutes, GLOB.saurian_scutes_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_antenna, GLOB.saurian_antenna_list, add_blank = TRUE)
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))

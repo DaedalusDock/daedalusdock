@@ -8,6 +8,7 @@
 	icon = 'icons/mob/species/ipc/bodyparts.dmi'
 	icon_static = 'icons/mob/species/ipc/bodyparts.dmi'
 	limb_id = SPECIES_IPC
+	is_dimorphic = FALSE
 
 /obj/item/bodypart/arm/left/robot/ipc
 	icon = 'icons/mob/species/ipc/bodyparts.dmi'
@@ -40,7 +41,6 @@
 	icon = 'icons/mob/species/ipc/saurian/saurian_bodyparts.dmi'
 	icon_greyscale = 'icons/mob/species/ipc/saurian/saurian_bodyparts.dmi'
 	should_draw_greyscale = TRUE
-	is_dimorphic = TRUE
 
 /obj/item/bodypart/arm/left/robot/ipc/saurian
 	icon = 'icons/mob/species/ipc/saurian/saurian_bodyparts.dmi'

@@ -59,7 +59,7 @@
 
 		if(ORGAN_COLOR_INHERIT_ALL)
 			mutcolors = ownerlimb.mutcolors.Copy()
-			draw_color = mutcolors["[mutcolor_used]_1"]
+			draw_color = mutcolors["[mutcolor_used]_[mutcolor_index]"]
 
 	color = draw_color
 	return TRUE

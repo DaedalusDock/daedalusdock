@@ -60,7 +60,8 @@
 	can_be_digitigrade = TRUE
 	digitigrade_id = "digifurry"
 
-/obj/item/bodypart/leg/left/robot/ipc/saurian/Initialize(mapload)
+// This needs to be new() because bodyparts dont immediately initialize, and this needs to render right in prefs
+/obj/item/bodypart/leg/left/robot/ipc/saurian/New(loc, ...)
 	. = ..()
 	set_digitigrade(TRUE)
 
@@ -71,6 +72,7 @@
 	can_be_digitigrade = TRUE
 	digitigrade_id = "digifurry"
 
-/obj/item/bodypart/leg/right/robot/ipc/saurian/Initialize(mapload)
+// This needs to be new() because bodyparts dont immediately initialize, and this needs to render right in prefs
+/obj/item/bodypart/leg/right/robot/ipc/saurian/New(loc, ...)
 	. = ..()
 	set_digitigrade(TRUE)

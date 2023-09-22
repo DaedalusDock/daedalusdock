@@ -105,7 +105,7 @@
 		BT.on_lose(TRUE)
 		BT.owner = null
 
-	if((!gc_destroyed || (owner && !owner.gc_destroyed)) && !no_id_transfer)
+	if((!QDELING(src) || !QDELETED(owner)) && !no_id_transfer && !special)
 		transfer_identity(C)
 	C.update_body_parts()
 

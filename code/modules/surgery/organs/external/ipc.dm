@@ -146,7 +146,6 @@
 	slot = ORGAN_SLOT_EXTERNAL_SAURIAN_SCUTES
 	layers = list(BODY_ADJ_LAYER)
 	feature_key = "saurian_scutes"
-	preference = "saurian_scutes"
 	dna_block = DNA_SAURIAN_SCUTES_BLOCK
 
 	color_source = ORGAN_COLOR_INHERIT_ALL

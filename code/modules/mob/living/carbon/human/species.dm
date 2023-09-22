@@ -398,13 +398,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				var/obj/item/organ/brain/brain = oldorgan
 				if(!brain.decoy_override)//"Just keep it if it's fake" - confucius, probably
 					brain.before_organ_replacement(neworgan)
-					brain.Remove(C,TRUE, TRUE) //brain argument used so it doesn't cause any... sudden death.
+					brain.Remove(C,TRUE, no_id_transfer = TRUE) //brain argument used so it doesn't cause any... sudden death.
 					QDEL_NULL(brain)
 					oldorgan = null //now deleted
 			else
 				oldorgan.before_organ_replacement(neworgan)
 				oldorgan.Remove(C,TRUE)
 				QDEL_NULL(oldorgan) //we cannot just tab this out because we need to skip the deleting if it is a decoy brain.
+				oldorgan = null
 
 		if(oldorgan)
 			oldorgan.setOrganDamage(0)
@@ -440,7 +441,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					var/obj/item/organ/O = C.getorganslot(slot)
 					if(!O)
 						continue
-					O.Remove(C)
+					O.Remove(C, TRUE)
 					qdel(O)
 
 	for(var/organ_path in mutant_organs)
@@ -1630,6 +1631,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		features["skin_tone"] = GLOB.preference_entries[/datum/preference/choiced/skin_tone]
 
 	features += populate_features()
+	#ifdef TESTING
+	for(var/feat in features)
+		if(!features[feat])
+			stack_trace("Feature key [feat] has no associated preference.")
+	#endif
 	sortTim(features, GLOBAL_PROC_REF(cmp_pref_name), associative = TRUE)
 
 	GLOB.features_by_species[type] = features

@@ -59,9 +59,9 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 
 /obj/item/organ/posibrain/Initialize(mapload)
 	. = ..()
-	create_brainmob()
 	if(autoping)
 		ping_ghosts("created", TRUE)
+		create_brainmob()
 
 /obj/item/organ/posibrain/Topic(href, href_list)
 	if(href_list["activate"])
@@ -92,9 +92,9 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	else
 		C.set_suicide(suicided)
 
-/obj/item/organ/posibrain/Remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/posibrain/Remove(mob/living/carbon/organ_owner, special, no_id_transfer)
 	. = ..()
-	if((!QDELING(src) || !QDELETED(owner)))
+	if((!QDELING(src) || !QDELETED(owner)) && !no_id_transfer && !special)
 		transfer_identity(organ_owner)
 
 /obj/item/organ/posibrain/on_life()

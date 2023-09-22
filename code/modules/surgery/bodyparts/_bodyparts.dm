@@ -1241,7 +1241,7 @@
 		brute_damage *= 2
 		burn_damage *= 2
 
-	receive_damage(brute_damage, burn_damage)
+	receive_damage(brute_damage, burn_damage, breaks_bones = FALSE)
 	do_sparks(number = 1, cardinal_only = FALSE, source = owner)
 	ADD_TRAIT(src, TRAIT_PARALYSIS, EMP_TRAIT)
 	addtimer(CALLBACK(src, PROC_REF(un_paralyze)), time_needed)

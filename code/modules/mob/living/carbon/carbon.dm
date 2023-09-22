@@ -640,10 +640,10 @@
 			if(-95 to -90)			severity = 9
 			if(-INFINITY to -95)	severity = 10
 
-		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit/vision, vision_severity)
+		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit/vision, severity)
 
 		if(stat == UNCONSCIOUS)
-			overlay_fullscreen("critvision", /atom/movable/screen/fullscreen/crit/vision, vision_severity)
+			overlay_fullscreen("critvision", /atom/movable/screen/fullscreen/crit/vision, severity)
 		else
 			clear_fullscreen("critvision")
 

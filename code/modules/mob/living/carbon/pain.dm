@@ -67,8 +67,10 @@
 				flash_pain(PAIN_SMALL)
 			if(20 to 40)
 				flash_pain(PAIN_MEDIUM)
+				shake_camera(src, 1, 2)
 			if(40 to INFINITY)
 				flash_pain(PAIN_LARGE)
+				shake_camera(src, 3, 4)
 
 		pain_message(message, amount, ignore_cd)
 

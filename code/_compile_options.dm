@@ -91,6 +91,10 @@
 ///This will generate a compile warning.
 //#define MACRO_TEST
 
+///Uncomment this to wire the ruin budgets to zero. This prevents them spawning.
+///Useful for measuring performance of specific systems with more reliability.
+//#define DISABLE_RUINS
+
 /////////////////////// REFERENCE TRACKING
 
 ///Used to find the sources of harddels, quite laggy, don't be surpised if it freezes your client for a good while
@@ -163,6 +167,10 @@
 
 
 /////////////////////// ~[Additional code for the above flags]~ ///////////////////////
+
+#ifdef DISABLE_RUINS
+#warn DISABLE_RUINS Enabled: Ruin generation forcefully disabled.
+#endif
 
 #ifdef TESTING
 #warn compiling in TESTING mode. testing() debug messages will be visible.

@@ -209,7 +209,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	)
 
 	///Bitflag that controls what in game ways something can select this species as a spawnable source, such as magic mirrors. See [mob defines][code/__DEFINES/mobs.dm] for possible sources.
-	var/changesource_flags = NONE
+	var/changesource_flags = null
 
 	///Unique cookie given by admins through prayers
 	var/species_cookie = /obj/item/food/cookie

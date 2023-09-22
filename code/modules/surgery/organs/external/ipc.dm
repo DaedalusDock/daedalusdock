@@ -73,7 +73,7 @@
 	cosmetic_only = TRUE
 
 	zone = BODY_ZONE_HEAD
-	slot = ORGAN_SLOT_EXTERNAL_IPC_SCREEN
+	slot = ORGAN_SLOT_EXTERNAL_SAURIAN_SCREEN
 	layers = list(BODY_ADJ_LAYER)
 
 	feature_key = "saurian_screen"

@@ -63,6 +63,8 @@
 
 	special_step_sounds = list('sound/effects/servostep.ogg')
 
+	changesource_flags = NONE
+
 /datum/species/ipc/saurian
 	name = "Saurian"
 	id = SPECIES_SAURIAN

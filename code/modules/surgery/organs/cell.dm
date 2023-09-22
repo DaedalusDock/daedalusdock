@@ -27,7 +27,8 @@
 
 	RegisterSignal(owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(give))
 	RegisterSignal(owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
-	if(owner.stat == DEAD && get_percent())
+
+	if(!special && owner.stat == DEAD && get_percent())
 		initiate_reboot(owner)
 
 /obj/item/organ/cell/Remove(mob/living/carbon/carbon, special = 0)
@@ -35,7 +36,6 @@
 	UnregisterSignal(carbon, COMSIG_LIVING_ELECTROCUTE_ACT)
 
 	carbon.clear_alert(ALERT_CHARGE)
-	carbon.death()
 	return ..()
 
 /obj/item/organ/cell/on_life(delta_time, times_fired)

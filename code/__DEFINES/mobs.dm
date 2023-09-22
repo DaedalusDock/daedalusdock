@@ -521,7 +521,7 @@
 #define PULL_PRONE_SLOWDOWN 1.5
 #define HUMAN_CARRY_SLOWDOWN 0.35
 
-//Flags that control what things can spawn species (whitelist)
+//Flags that control what things can spawn species (whitelist) (changesource_flagx)
 //Badmin magic mirror
 #define MIRROR_BADMIN (1<<0)
 //Standard magic mirror (wizard)

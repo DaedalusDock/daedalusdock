@@ -34,7 +34,7 @@
 /area/awaymission/bmpship/midship)
 "ck" = (
 /obj/effect/turf_decal/trimline/neutral/line,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
 "cB" = (
@@ -43,7 +43,7 @@
 /turf/open/floor/plating/airless,
 /area/awaymission/bmpship/midship)
 "cE" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/command{
 	emergency = 1;
 	name = "E.V.A. Storage";
@@ -82,7 +82,7 @@
 /obj/machinery/porta_turret{
 	dir = 8;
 	installation = /obj/item/gun/energy/lasercannon;
-	
+
 	},
 /obj/effect/mapping_helpers/atom_injector/obj_flag{
 	inject_flags = 1;
@@ -126,7 +126,7 @@
 /obj/machinery/porta_turret{
 	dir = 8;
 	installation = /obj/item/gun/energy/lasercannon;
-	
+
 	},
 /obj/effect/mapping_helpers/atom_injector/obj_flag{
 	inject_flags = 1;
@@ -171,7 +171,7 @@
 /area/awaymission/bmpship/fore)
 "gH" = (
 /obj/effect/turf_decal/trimline/neutral/filled/shrink_cw,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
 "gR" = (
@@ -217,7 +217,7 @@
 /area/awaymission/bmpship/aft)
 "iU" = (
 /obj/effect/turf_decal/trimline/neutral/filled/line,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
 "ja" = (
@@ -243,7 +243,7 @@
 /turf/template_noop,
 /area/template_noop)
 "lf" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/light/warm/directional/west,
 /turf/open/floor/iron/white/side{
 	dir = 4
@@ -260,7 +260,7 @@
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/aft)
 "lx" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/power/apc/unlocked{
 	dir = 1;
 	environ = 0;
@@ -296,7 +296,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Entry Hall"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/mineral/plastitanium,
 /area/awaymission/bmpship/aft)
 "nb" = (
@@ -379,7 +379,7 @@
 /area/template_noop)
 "pb" = (
 /obj/effect/turf_decal/trimline/neutral/filled/shrink_cw,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "pe" = (
@@ -422,7 +422,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/dark/side/airless{
 	dir = 4
 	},
@@ -639,12 +639,12 @@
 	dir = 4
 	},
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/bmpship/aft)
 "yb" = (
 /obj/effect/turf_decal/stripes/line,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/turf_decal/trimline/neutral/filled/end,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
@@ -698,7 +698,7 @@
 /area/awaymission/bmpship/fore)
 "zO" = (
 /obj/effect/turf_decal/trimline/neutral/filled/warning,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "zW" = (
@@ -717,7 +717,7 @@
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/fore)
 "Ak" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/command{
 	emergency = 1;
 	name = "Teleport Access";
@@ -776,7 +776,7 @@
 "Cz" = (
 /obj/effect/turf_decal/siding/blue/corner,
 /obj/effect/turf_decal/trimline/neutral/filled/line,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
 "CK" = (
@@ -799,7 +799,7 @@
 /obj/effect/turf_decal/trimline/neutral/corner{
 	dir = 8
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "CN" = (
@@ -809,7 +809,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/corner{
 	dir = 4
 	},
@@ -829,7 +829,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/dark/side/airless{
 	dir = 5
 	},
@@ -919,7 +919,7 @@
 /area/awaymission/bmpship/aft)
 "Gb" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible/layer2,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/light/broken/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/broken_floor,
@@ -987,7 +987,7 @@
 "HT" = (
 /obj/effect/turf_decal/siding/blue,
 /obj/effect/turf_decal/trimline/neutral/filled/line,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
 "Io" = (
@@ -1035,7 +1035,7 @@
 	},
 /area/awaymission/bmpship/aft)
 "Ko" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/side{
 	dir = 4
 	},
@@ -1072,7 +1072,7 @@
 	name = "Teleport Access";
 	req_access_txt = "17"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
 "LX" = (
@@ -1085,7 +1085,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/trimline/neutral/filled/shrink_ccw,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/light/broken/directional/south,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
@@ -1101,7 +1101,7 @@
 /turf/open/floor/mineral/plastitanium,
 /area/awaymission/bmpship/aft)
 "Mw" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/awaymission/bmpship/midship)
 "MC" = (
@@ -1168,7 +1168,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Entry Hall"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/mineral/plastitanium,
 /area/awaymission/bmpship/aft)
 "OF" = (
@@ -1204,7 +1204,7 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 4
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/midship)
 "Ry" = (
@@ -1242,7 +1242,7 @@
 	dir = 8
 	},
 /obj/structure/door_assembly/door_assembly_com,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/mineral/plastitanium/airless,
 /area/awaymission/bmpship/fore)
@@ -1253,7 +1253,7 @@
 /area/awaymission/bmpship/midship)
 "Tj" = (
 /obj/effect/turf_decal/trimline/neutral/filled/shrink_ccw,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/light/broken/directional/south,
 /turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
@@ -1287,7 +1287,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/turf_decal/trimline/neutral/filled/end{
 	dir = 1
 	},
@@ -1343,7 +1343,7 @@
 /area/awaymission/bmpship/aft)
 "Ye" = (
 /obj/effect/turf_decal/trimline/neutral/line,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "Yp" = (
@@ -1369,7 +1369,7 @@
 /obj/machinery/porta_turret{
 	dir = 8;
 	installation = /obj/item/gun/energy/lasercannon;
-	
+
 	},
 /obj/effect/mapping_helpers/atom_injector/obj_flag{
 	inject_flags = 1;
@@ -1383,7 +1383,7 @@
 /area/awaymission/bmpship/fore)
 "ZA" = (
 /obj/machinery/power/apc/auto_name/directional/south,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/fore)
 "ZS" = (

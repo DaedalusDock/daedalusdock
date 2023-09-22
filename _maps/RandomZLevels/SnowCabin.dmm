@@ -95,7 +95,7 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "ar" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/command{
 	name = "Manager's Office"
 	},
@@ -124,12 +124,12 @@
 /area/awaymission/cabin)
 "av" = (
 /obj/machinery/telecomms/relay/preset/mining,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "aw" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
@@ -173,7 +173,7 @@
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "aD" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/power/smes/magical{
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit. It seems to be powered just fine without our intervention.";
 	name = "\improper Nanotrasen power storage unit"
@@ -190,7 +190,7 @@
 /area/awaymission/cabin)
 "aF" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
@@ -233,7 +233,7 @@
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
@@ -343,7 +343,7 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "bb" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "bc" = (
@@ -363,7 +363,7 @@
 /area/awaymission/cabin)
 "bf" = (
 /obj/machinery/light/directional/west,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "bg" = (
@@ -403,7 +403,7 @@
 	id_tag = "snowdinbutworse5";
 	name = "Cabin 5"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "bn" = (
@@ -694,7 +694,7 @@
 /obj/structure/sign/poster/official/soft_cap_pop_art{
 	pixel_y = 32
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cu" = (
@@ -717,7 +717,7 @@
 /area/awaymission/cabin/caves/mountain)
 "cz" = (
 /obj/machinery/light/directional/north,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/musician/piano{
 	desc = "Very theatrical.";
 	icon_state = "piano";
@@ -726,7 +726,7 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cA" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/wood{
 	name = "Stage Left"
 	},
@@ -754,12 +754,12 @@
 /area/awaymission/cabin)
 "cE" = (
 /obj/machinery/light/directional/north,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cF" = (
 /obj/structure/table,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/cabin)
 "cG" = (
@@ -772,11 +772,11 @@
 /area/awaymission/cabin)
 "cH" = (
 /obj/effect/landmark/awaystart,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cI" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/chair/office/light,
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
@@ -796,7 +796,7 @@
 /obj/item/reagent_containers/food/condiment/saltshaker{
 	pixel_x = -8
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/cabin)
 "cK" = (
@@ -808,7 +808,7 @@
 /area/awaymission/cabin)
 "cL" = (
 /obj/machinery/light/small/directional/west,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
@@ -829,12 +829,12 @@
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "cP" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "cQ" = (
 /obj/effect/landmark/awaystart,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "cR" = (
@@ -993,7 +993,7 @@
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "du" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
@@ -1007,7 +1007,7 @@
 	icon_state = "turbine";
 	name = "geothermal generator"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
@@ -1177,7 +1177,7 @@
 /turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "eg" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "eh" = (
@@ -1187,7 +1187,7 @@
 "ei" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/glass,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "ej" = (
@@ -1222,7 +1222,7 @@
 /turf/open/floor/wood/freezing,
 /area/awaymission/cabin)
 "eo" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock{
 	name = "Kitchen"
 	},
@@ -1253,7 +1253,7 @@
 /area/awaymission/cabin)
 "et" = (
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "eu" = (
@@ -2098,7 +2098,7 @@
 /area/awaymission/cabin)
 "he" = (
 /obj/structure/table/wood,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/reagent_containers/food/drinks/mug/coco{
 	desc = "Still hot!";
 	pixel_y = -2
@@ -2134,13 +2134,13 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "hi" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "hj" = (
 /obj/machinery/light/directional/west,
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "hk" = (
@@ -2156,7 +2156,7 @@
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "hm" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/wood{
 	name = "Gateway"
 	},
@@ -2185,7 +2185,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/oil,
 /obj/effect/decal/cleanable/generic,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "hs" = (
@@ -2193,12 +2193,12 @@
 /obj/structure/sign/poster/contraband/missing_gloves{
 	pixel_x = 32
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "ht" = (
 /obj/machinery/light/directional/south,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "hu" = (
@@ -2229,7 +2229,7 @@
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "hx" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/wood{
 	name = "Stage Right"
 	},
@@ -2243,38 +2243,38 @@
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "hz" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/cabin)
 "hA" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/freezer{
 	name = "Freezer"
 	},
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "hB" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock{
 	name = "Backstage"
 	},
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "hC" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/chair/wood{
 	dir = 4
 	},
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "hD" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/table/reinforced,
 /obj/item/folder/white,
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "hE" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/chair/wood,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
@@ -2290,12 +2290,12 @@
 /obj/structure/chair/wood{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "hH" = (
 /obj/machinery/light/directional/south,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "hI" = (
@@ -2303,7 +2303,7 @@
 /obj/structure/sign/poster/official/report_crimes{
 	pixel_y = -32
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "hJ" = (
@@ -2423,7 +2423,7 @@
 	},
 /area/awaymission/cabin/caves/sovietcave)
 "in" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
@@ -2565,7 +2565,7 @@
 	id_tag = "snowdinbutworse1";
 	name = "Cabin 1"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "iW" = (
@@ -2573,7 +2573,7 @@
 	id_tag = "snowdinbutworse2";
 	name = "Cabin 2"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "iX" = (
@@ -2581,7 +2581,7 @@
 	id_tag = "snowdinbutworse3";
 	name = "Cabin 3"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "iY" = (
@@ -2589,7 +2589,7 @@
 	id_tag = "snowdinbutworse4";
 	name = "Cabin 4"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "iZ" = (
@@ -2814,7 +2814,7 @@
 /turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jC" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/door/airlock/engineering{
 	name = "Generator Room"
 	},
@@ -3644,7 +3644,7 @@
 /obj/machinery/door/airlock/glass_large{
 	name = "Medical Bay"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "nN" = (
@@ -3660,7 +3660,7 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "nR" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/newscaster/directional/south,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
@@ -3682,7 +3682,7 @@
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "nV" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/door/airlock/maintenance{
 	name = "Maintenance"

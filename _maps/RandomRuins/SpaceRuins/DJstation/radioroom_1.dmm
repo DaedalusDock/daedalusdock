@@ -73,7 +73,7 @@
 /turf/open/floor/iron/vaporwave,
 /area/ruin/space/djstation)
 "A" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/djstation)
 "H" = (
@@ -81,7 +81,7 @@
 /turf/open/floor/iron/vaporwave,
 /area/ruin/space/djstation)
 "J" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/south,
 /turf/open/floor/iron,
 /area/ruin/space/djstation)

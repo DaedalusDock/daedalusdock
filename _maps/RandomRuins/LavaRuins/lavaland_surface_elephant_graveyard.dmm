@@ -203,7 +203,7 @@
 "gY" = (
 /obj/structure/table,
 /obj/machinery/power/floodlight,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "iE" = (
@@ -238,12 +238,12 @@
 /area/ruin/unpowered/elephant_graveyard)
 "lt" = (
 /obj/structure/table,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/clipboard,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "lK" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/reagent_containers/glass/bottle/frostoil{
 	desc = "A small bottle. Contains cold sauce. There's a label on here: APPLY ON SEVERE BURNS.";
 	volume = 10
@@ -315,7 +315,7 @@
 "rg" = (
 /obj/structure/rack,
 /obj/item/shovel,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/wrench,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -325,7 +325,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "sg" = (
 /obj/structure/table,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/t_scanner/adv_mining_scanner/lesser,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -398,13 +398,13 @@
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "AT" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/food/deadmouse,
 /obj/item/assembly/mousetrap,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "Br" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "Bu" = (
@@ -473,7 +473,7 @@
 /area/lavaland/surface)
 "Iz" = (
 /obj/structure/table,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/paper_bin,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -509,7 +509,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "Mx" = (
 /obj/structure/flora/rock,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/pickaxe{
 	layer = 2.5;
 	pixel_x = -8;
@@ -524,7 +524,7 @@
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "MI" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/power/floodlight,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -542,7 +542,7 @@
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "OC" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -553,7 +553,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "PN" = (
 /obj/machinery/power/floodlight,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "Ql" = (
@@ -563,7 +563,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "Td" = (
 /obj/structure/table,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/paper/crumpled/muddy/fluff/elephant_graveyard/rnd_notes,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -627,7 +627,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "XY" = (
 /obj/structure/table,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/reagent_containers/glass/bottle/plasma{
 	volume = 25
 	},
@@ -635,7 +635,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "Yq" = (
 /obj/machinery/power/port_gen/pacman,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "YM" = (

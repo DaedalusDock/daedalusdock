@@ -854,3 +854,132 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/turf/open/floor/floor = get_turf(src)
 	floor.burn_tile()
 	qdel(src)
+
+/obj/effect/mapping_helpers/smart_cable
+	name = "smart cable"
+	icon = 'icons/obj/power_cond/cable.dmi'
+	icon_state = "mapping_helper"
+	color = "yellow"
+	var/connect_to_same_color = TRUE
+
+/obj/effect/mapping_helpers/smart_cable/Initialize(mapload)
+	. = ..()
+	spawn_cable()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/smart_cable/LateInitialize()
+	qdel(src)
+
+/obj/effect/mapping_helpers/smart_cable/proc/spawn_cable()
+	var/passed_directions = NONE
+	var/dir_count = 0
+	var/turf/my_turf = loc
+	var/obj/machinery/power/terminal/terminal_on_myturf = locate() in my_turf
+	var/obj/machinery/power/smes/smes_on_myturf = locate() in my_turf
+	for(var/cardinal in GLOB.cardinals)
+		var/turf/step_turf = get_step(my_turf, cardinal)
+		var/obj/effect/mapping_helpers/smart_cable/cable_spawner = locate() in step_turf
+		if(!cable_spawner)
+			continue
+		if((connect_to_same_color && cable_spawner.connect_to_same_color) && (color != cable_spawner.color))
+			continue
+		// If we are on a terminal, and there's an SMES in our step direction, disregard the connection
+		if(terminal_on_myturf)
+			var/obj/machinery/power/smes/smes = locate() in step_turf
+			if(smes)
+				continue
+		// If we are on an SMES, and there's a terminal on our step direction, disregard the connection
+		if(smes_on_myturf)
+			var/obj/machinery/power/terminal/terminal = locate() in step_turf
+			if(terminal)
+				continue
+		dir_count++
+		passed_directions |= cardinal
+	if(dir_count == 0)
+		WARNING("Smart cable mapping helper failed to spawn, connected to 0 directions, at [loc.x],[loc.y],[loc.z]")
+		return
+	switch(dir_count)
+		if(1)
+			//We spawn one cable with an open knot
+			spawn_cable_for_direction(passed_directions)
+		if(2)
+			//We spawn one cable that connects with 2 directions
+			spawn_cable_for_direction(passed_directions)
+		if(3)
+			//We spawn two cables, connecting with 3 directions total
+			spawn_cables_for_directions(passed_directions)
+		if(4)
+			//We spawn four cables, connecting with 4 directions total
+			spawn_cables_for_directions(passed_directions)
+	// if we want a knot, and we connect with more than 1 direction, spawn an extra open knotted cable connecting with any of the directions
+	if(dir_count > 1 && knot_desirable())
+		spawn_knotty_connecting_to_directions(passed_directions)
+
+/obj/effect/mapping_helpers/smart_cable/proc/knot_desirable()
+	var/turf/my_turf = loc
+	var/obj/machinery/power/terminal/terminal = locate() in my_turf
+	if(terminal)
+		return TRUE
+	var/obj/structure/grille/grille = locate() in my_turf
+	if(grille)
+		return TRUE
+	var/obj/machinery/power/smes/smes = locate() in my_turf
+	if(smes)
+		return TRUE
+	var/obj/machinery/power/apc/apc = locate() in my_turf
+	if(apc)
+		return TRUE
+	return FALSE
+
+/obj/effect/mapping_helpers/smart_cable/proc/spawn_cable_for_direction(direction)
+	var/obj/structure/cable/cable = new(loc)
+	cable.color = color
+	cable.set_directions(direction)
+
+/obj/effect/mapping_helpers/smart_cable/proc/spawn_cables_for_directions(directions)
+	if((directions & NORTH) && (directions & EAST))
+		spawn_cable_for_direction(NORTH|EAST)
+	if((directions & EAST) && (directions & SOUTH))
+		spawn_cable_for_direction(EAST|SOUTH)
+	if((directions & SOUTH) && (directions & WEST))
+		spawn_cable_for_direction(SOUTH|WEST)
+	if((directions & WEST) && (directions & NORTH))
+		spawn_cable_for_direction(WEST|NORTH)
+
+/obj/effect/mapping_helpers/smart_cable/proc/spawn_knotty_connecting_to_directions(directions)
+	if(directions & NORTH)
+		spawn_cable_for_direction(NORTH)
+		return
+	if(directions & SOUTH)
+		spawn_cable_for_direction(SOUTH)
+		return
+	if(directions & EAST)
+		spawn_cable_for_direction(EAST)
+		return
+	if(directions & WEST)
+		spawn_cable_for_direction(WEST)
+		return
+
+/obj/effect/mapping_helpers/smart_cable/color
+	connect_to_same_color = TRUE
+
+/obj/effect/mapping_helpers/smart_cable/color/yellow
+	color = "yellow"
+
+/obj/effect/mapping_helpers/smart_cable/color/red
+	color = "red"
+
+/obj/effect/mapping_helpers/smart_cable/color/blue
+	color = "blue"
+
+/obj/effect/mapping_helpers/smart_cable/color_connector
+	connect_to_same_color = FALSE
+
+/obj/effect/mapping_helpers/smart_cable/color_connector/yellow
+	color = "yellow"
+
+/obj/effect/mapping_helpers/smart_cable/color_connector/red
+	color = "red"
+
+/obj/effect/mapping_helpers/smart_cable/color_connector/blue
+	color = "blue"

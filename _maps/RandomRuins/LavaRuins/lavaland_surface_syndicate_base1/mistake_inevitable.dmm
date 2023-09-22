@@ -8,7 +8,7 @@
 /turf/open/floor/iron/dark,
 /area/ruin/syndicate_lava_base/testlab)
 "be" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/south{
 	req_access_txt = "150"
 	},
@@ -43,7 +43,7 @@
 "ef" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/ruin/syndicate_lava_base/testlab)
 "em" = (
@@ -65,7 +65,7 @@
 "fY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
 /obj/machinery/power/energy_accumulator/grounding_rod/anchored,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "gJ" = (
@@ -140,7 +140,7 @@
 "kP" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/power/energy_accumulator/tesla_coil/anchored,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "lR" = (
@@ -148,7 +148,7 @@
 	dir = 6
 	},
 /obj/machinery/power/energy_accumulator/grounding_rod/anchored,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "me" = (
@@ -168,14 +168,14 @@
 	req_access_txt = "150"
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/modular_map_connector,
 /turf/open/floor/iron/dark,
 /area/ruin/syndicate_lava_base/testlab)
 "oo" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
 /obj/machinery/power/energy_accumulator/tesla_coil/anchored,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "oV" = (
@@ -191,12 +191,12 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "rT" = (
 /obj/effect/turf_decal/stripes/line,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/power/emitter/welded{
 	dir = 1
 	},
@@ -239,7 +239,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "yO" = (
@@ -261,7 +261,7 @@
 /area/ruin/syndicate_lava_base/testlab)
 "AV" = (
 /obj/structure/extinguisher_cabinet/directional/east,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4,
 /turf/open/floor/iron/dark,
@@ -299,7 +299,7 @@
 /area/ruin/syndicate_lava_base/testlab)
 "IG" = (
 /obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/syndicate_lava_base/testlab)
 "JO" = (
@@ -318,7 +318,7 @@
 /area/ruin/syndicate_lava_base/testlab)
 "Rn" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "Rp" = (
@@ -336,7 +336,7 @@
 /area/ruin/syndicate_lava_base/testlab)
 "Vp" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer4,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/ruin/syndicate_lava_base/testlab)
 "XN" = (
@@ -363,7 +363,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/syndicate_lava_base/testlab)
 "ZR" = (

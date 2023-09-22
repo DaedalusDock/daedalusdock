@@ -2,7 +2,7 @@
 "ak" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/food_or_drink/seed,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/side,
 /area/ruin/space/has_grav/thelizardsgas)
 "aK" = (
@@ -21,7 +21,7 @@
 /obj/item/clothing/shoes/cowboy/lizard{
 	desc = "You can hear a faint hissing from inside the boots."
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/side,
 /area/ruin/space/has_grav/thelizardsgas)
 "bp" = (
@@ -45,7 +45,7 @@
 /turf/open/misc/asteroid/airless,
 /area/ruin/space/has_grav/thelizardsgas)
 "cm" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
@@ -73,11 +73,11 @@
 "gS" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/food_or_drink/donkpockets,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/side,
 /area/ruin/space/has_grav/thelizardsgas)
 "hl" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/side,
 /area/ruin/space/has_grav/thelizardsgas)
 "ig" = (
@@ -131,7 +131,7 @@
 /area/ruin/space/has_grav/thelizardsgas)
 "na" = (
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/hidden,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/side,
 /area/ruin/space/has_grav/thelizardsgas)
 "nL" = (
@@ -140,7 +140,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/side,
 /area/ruin/space/has_grav/thelizardsgas)
 "oZ" = (
@@ -158,7 +158,7 @@
 	desc = "After all, what's more important than making sure you get what you're due?";
 	name = "Criminal Shutters"
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "rC" = (
@@ -199,7 +199,7 @@
 /turf/open/misc/asteroid/airless,
 /area/ruin/space/has_grav/thelizardsgas)
 "xb" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/sign/warning/fire{
 	pixel_y = 32
 	},
@@ -228,7 +228,7 @@
 /area/ruin/space/has_grav/thelizardsgas)
 "zz" = (
 /obj/machinery/door/window,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/thelizardsgas)
 "AZ" = (
@@ -243,7 +243,7 @@
 	locked = 0;
 	start_charge = 60
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/item/paper/fluff/spaceruins/lizardsgas/memorandum,
 /obj/effect/spawner/random/contraband/cannabis/lizardsgas,
 /obj/effect/spawner/random/contraband/cannabis/lizardsgas,
@@ -278,7 +278,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/thelizardsgas)
 "CA" = (
@@ -336,7 +336,7 @@
 	charge = 2e+006;
 	output_level = 0
 	},
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/thelizardsgas)
 "Je" = (
@@ -364,7 +364,7 @@
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/thelizardsgas)
 "JY" = (
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /turf/open/floor/iron/white/corner,
 /area/ruin/space/has_grav/thelizardsgas)
 "Kw" = (
@@ -391,7 +391,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment,
-/obj/structure/cable,
+/obj/effect/mapping_helpers/smart_cable/color/yellow,
 /obj/structure/sign/poster/fluff/lizards_gas_power{
 	pixel_x = 32
 	},

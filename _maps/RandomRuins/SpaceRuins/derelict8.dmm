@@ -149,7 +149,7 @@
 "yY" = (
 /obj/effect/spawner/random/trash/hobo_squat,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/has_grav)
 "zc" = (
 /obj/item/stack/tile/iron,
@@ -169,7 +169,7 @@
 /obj/effect/spawner/random/maintenance/three,
 /obj/item/airlock_painter/decal,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/has_grav)
 "zK" = (
 /obj/item/shard,
@@ -230,7 +230,7 @@
 "KW" = (
 /obj/effect/spawner/random/trash/food_packaging,
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/has_grav)
 "Li" = (
 /obj/effect/turf_decal/stripes/line{

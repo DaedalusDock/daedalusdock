@@ -125,11 +125,12 @@
 		smoothed_stripe.appearance_flags = RESET_COLOR
 		smoothed_stripe.color = stripe_paint || material_color
 		new_overlays += smoothed_stripe
+		/*
 		if(shiny_stripe)
 			var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
 			stripe_shine.appearance_flags = RESET_COLOR
 			new_overlays += stripe_shine
-
+		*/
 		var/neighbor_stripe = NONE
 		if(!neighbor_typecache)
 			neighbor_typecache = typecacheof(list(/obj/machinery/door/airlock, /obj/structure/window/reinforced/fulltile, /obj/structure/window/fulltile, /obj/structure/window/reinforced/shuttle, /obj/machinery/door/poddoor))

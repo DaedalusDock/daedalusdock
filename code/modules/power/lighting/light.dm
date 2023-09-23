@@ -56,10 +56,10 @@
 	///Inner, brightest radius of the nightshift light
 	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.7
+	var/nightshift_light_power = 0.5
 	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#FFDDCC"
-	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/nightshift_light_color = "#dfac72"
+	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE

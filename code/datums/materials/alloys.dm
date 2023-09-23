@@ -48,8 +48,6 @@
 	wall_color = "#57575c"
 	hard_wall_decon = TRUE
 
-	wall_shine = WALL_SHINE_BOTH
-
 /datum/material/alloy/plasteel/on_applied_obj(obj/item/target_item, amount, material_flags)
 	. = ..()
 	if(!istype(target_item))
@@ -88,8 +86,6 @@
 	false_wall_type = /obj/structure/falsewall/plastitanium
 	hard_wall_decon = TRUE
 	wall_color = "#423b3b"
-
-	wall_shine = WALL_SHINE_REINFORCED
 
 /** Plasmaglass
  *
@@ -171,8 +167,6 @@
 	reinforced_wall_icon = 'icons/turf/walls/solid_wall_reinforced.dmi'
 	wall_name = "hull"
 	hard_wall_decon = TRUE
-
-	wall_shine = WALL_SHINE_BOTH
 
 /datum/material/alloy/alien/on_applied_obj(obj/item/target_item, amount, material_flags)
 	. = ..()

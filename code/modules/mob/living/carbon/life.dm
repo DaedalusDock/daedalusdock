@@ -29,6 +29,10 @@
 	if(stat != DEAD && !(IS_IN_STASIS(src)))
 		handle_shock()
 		handle_pain()
+		if(shock_stage >= SHOCK_TIER_1)
+			add_movespeed_modifier(/datum/movespeed_modifier/shock, TRUE)
+		else
+			remove_movespeed_modifier(/datum/movespeed_modifier/shock, TRUE)
 
 	check_cremation(delta_time, times_fired)
 

@@ -27,6 +27,15 @@
 	movetypes = FLYING
 	variable = TRUE
 
+/datum/movespeed_modifier/pain
+	variable = TRUE
+
+/datum/movespeed_modifier/shock
+	multiplicative_slowdown = 3
+
+/datum/movespeed_modifier/asystole
+	multiplicative_slowdown = 10
+
 /datum/movespeed_modifier/equipment_speedmod
 	variable = TRUE
 	blacklisted_movetypes = FLOATING

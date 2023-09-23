@@ -186,7 +186,14 @@
 	if(stat)
 		return
 
-	if(!(life_ticks % 5) && getPain() >= maxHealth)
+	var/pain = getPain()
+
+	if(pain >= 10)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, (pain / 10))
+	else
+		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
+
+	if(!(life_ticks % 5) && pain >= maxHealth)
 		if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			return
 		else

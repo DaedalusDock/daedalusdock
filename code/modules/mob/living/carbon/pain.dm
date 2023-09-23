@@ -241,12 +241,12 @@
 	for(var/obj/item/organ/I as anything in organs)
 		if(prob(1) && (!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 5))
 			var/obj/item/bodypart/parent = I.ownerlimb
-			var/pain = 10
+			var/pain_given = 10
 			var/message = "You feel a dull pain in your [parent.plaintext_zone]"
 			if(I.damage > I.low_threshold)
-				pain = 25
+				pain_given = 25
 				message = "You feel a pain in your [parent.plaintext_zone]"
 			if(I.damage > (I.high_threshold * I.maxHealth))
-				pain = 50
+				pain_given = 50
 				message = "You feel a sharp pain in your [parent.plaintext_zone]"
-			pain_message(message, pain)
+			pain_message(message, pain_given)

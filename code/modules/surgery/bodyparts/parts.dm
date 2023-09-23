@@ -2,7 +2,7 @@
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."
 	icon_state = "default_human_chest"
-	max_damage = 100
+	max_damage = 200
 	body_zone = BODY_ZONE_CHEST
 	body_part = CHEST
 	plaintext_zone = "chest"

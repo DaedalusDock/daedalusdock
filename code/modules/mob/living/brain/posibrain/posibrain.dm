@@ -19,8 +19,16 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	high_threshold = 0.66
 	relative_size = 60
 
+
+	actions_types = list(
+		/datum/action/innate/posibrain_print_laws,
+		/datum/action/innate/posibrain_say_laws,
+	)
+
 	/// The current occupant.
 	var/mob/living/brain/brainmob = null
+	/// Populated by preferences, used for IPCs
+	var/datum/ai_laws/shackles
 
 	/// Keep track of suiciding
 	var/suicided = FALSE
@@ -62,6 +70,15 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if(autoping)
 		ping_ghosts("created", TRUE)
 		create_brainmob()
+
+/obj/item/organ/posibrain/Destroy(force)
+	shackles = null
+	if(brainmob)
+		QDEL_NULL(brainmob)
+
+	if(owner?.mind) //You aren't allowed to return to brains that don't exist
+		owner.mind.set_current(null)
+	return ..()
 
 /obj/item/organ/posibrain/Topic(href, href_list)
 	if(href_list["activate"])

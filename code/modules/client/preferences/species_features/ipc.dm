@@ -1,3 +1,26 @@
+/datum/preference/choiced/ipc_shackles
+	explanation = "Shackle Laws"
+	savefile_key = "ipc_shackles"
+	requires_accessible = TRUE
+	savefile_identifier = PREFERENCE_CHARACTER
+	priority = PREFERENCE_PRIORITY_APPEARANCE_MODS //Lowest ever priority
+
+/datum/preference/choiced/ipc_shackles/is_accessible(datum/preferences/preferences)
+	. = ..()
+	return ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/ipc)
+
+/datum/preference/choiced/ipc_shackles/init_possible_values()
+	return get_shackle_laws() + null
+
+/datum/preference/choiced/ipc_shackles/create_default_value()
+	return null
+
+/datum/preference/choiced/ipc_shackles/apply_to_human(mob/living/carbon/human/target, value)
+	var/obj/item/organ/posibrain/P = target.getorganslot(ORGAN_SLOT_POSIBRAIN)
+	if(!P)
+		return
+	P.set_shackles(value)
+
 /datum/preference/choiced/ipc_screen
 	explanation = "Screen"
 	savefile_key = "ipc_screen"

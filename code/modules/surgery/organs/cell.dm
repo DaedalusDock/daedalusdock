@@ -126,6 +126,7 @@
 	}
 
 /obj/item/organ/cell/attempt_vital_organ_revival(mob/living/carbon/human/ipc)
+	set waitfor = FALSE
 	if(!(ipc.stat == DEAD && (organ_flags & ORGAN_VITAL) && !(organ_flags & ORGAN_DEAD) && ipc.needs_organ(slot)))
 		return
 

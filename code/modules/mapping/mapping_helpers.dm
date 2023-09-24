@@ -878,23 +878,27 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/obj/machinery/power/smes/smes_on_myturf = locate() in my_turf
 	for(var/cardinal in GLOB.cardinals)
 		var/turf/step_turf = get_step(my_turf, cardinal)
-		var/obj/effect/mapping_helpers/smart_cable/cable_spawner = locate() in step_turf
-		if(!cable_spawner)
-			continue
-		if((connect_to_same_color && cable_spawner.connect_to_same_color) && (color != cable_spawner.color))
-			continue
-		// If we are on a terminal, and there's an SMES in our step direction, disregard the connection
-		if(terminal_on_myturf)
-			var/obj/machinery/power/smes/smes = locate() in step_turf
-			if(smes)
+		for(var/obj/effect/mapping_helpers/smart_cable/cable_spawner in step_turf)
+			if((connect_to_same_color && cable_spawner.connect_to_same_color) && (color != cable_spawner.color))
 				continue
-		// If we are on an SMES, and there's a terminal on our step direction, disregard the connection
-		if(smes_on_myturf)
-			var/obj/machinery/power/terminal/terminal = locate() in step_turf
-			if(terminal)
-				continue
-		dir_count++
-		passed_directions |= cardinal
+			// If we are on a terminal, and there's an SMES in our step direction, disregard the connection
+			if(terminal_on_myturf)
+				var/obj/machinery/power/smes/smes = locate() in step_turf
+				if(smes)
+					var/obj/machinery/power/apc/apc_on_myturf = locate() in my_turf
+					// Unless there's an APC on our turf (which means it's a terminal for the APC, and not for the SMES)
+					if(!apc_on_myturf)
+						continue
+			// If we are on an SMES, and there's a terminal on our step direction, disregard the connection
+			if(smes_on_myturf)
+				var/obj/machinery/power/terminal/terminal = locate() in step_turf
+				if(terminal)
+					var/obj/machinery/power/apc/apc_on_myturf = locate() in step_turf
+					// Unless there's an APC on the step turf (which means it's a terminal for the APC, and not for the SMES)
+					if(!apc_on_myturf)
+						continue
+			dir_count++
+			passed_directions |= cardinal
 	if(dir_count == 0)
 		WARNING("Smart cable mapping helper failed to spawn, connected to 0 directions, at [loc.x],[loc.y],[loc.z]")
 		return
@@ -928,6 +932,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		return TRUE
 	var/obj/machinery/power/apc/apc = locate() in my_turf
 	if(apc)
+		return TRUE
+	var/obj/machinery/power/emitter/emitter = locate() in my_turf
+	if(emitter)
 		return TRUE
 	return FALSE
 

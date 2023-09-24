@@ -279,10 +279,10 @@
 	var/list/message_data = list(
 		"name" = name,
 		"job" = job,
-		"contents" = job,
+		"contents" = message,
 		"outgoing" = outgoing,
 		//If there's no reply address, pretend it's automated so we don't give them a null link
-		"automated" = !!reply_addr || automated,
+		"automated" = !reply_addr || automated,
 		"target_addr" = reply_addr,
 	)
 

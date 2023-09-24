@@ -58,6 +58,8 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	/// Number of total expansion bays this computer has available.
 	var/max_bays = 0
 
+	/// Is this computer allowed to save imprint information? (truthy), If so, what's the prefix?
+	var/imprint_prefix = FALSE
 	var/saved_identification = null // next two values are the currently imprinted id and job values
 	var/saved_job = null
 
@@ -615,7 +617,10 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	return TRUE
 
 /obj/item/modular_computer/proc/UpdateDisplay()
-	name = "[saved_identification] ([saved_job])"
+	if(!imprint_prefix || !saved_identification)
+		name = initial(name) //No saved ID, no fucked up name.
+		return
+	name = "[imprint_prefix] - [saved_identification] [saved_job ? "([saved_job])" : null]"
 
 /obj/item/modular_computer/screwdriver_act(mob/user, obj/item/tool)
 	if(!deconstructable)

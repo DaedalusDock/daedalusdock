@@ -18,6 +18,8 @@
 	comp_light_luminosity = 2.3 //Same as the PDA
 	looping_sound = FALSE
 
+	imprint_prefix = "PDA"
+
 	var/has_variants = TRUE
 	var/finish_color = null
 

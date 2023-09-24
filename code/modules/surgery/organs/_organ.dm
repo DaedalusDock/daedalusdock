@@ -155,6 +155,10 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 		reciever.cosmetic_organs.Add(src)
 		reciever.update_body_parts()
+
+	if(!special && !cosmetic_only && owner.stat == DEAD && (organ_flags & ORGAN_VITAL) && !(organ_flags & ORGAN_DEAD) && owner.needs_organ(slot))
+		attempt_vital_organ_revival(owner)
+
 	return TRUE
 
 
@@ -389,8 +393,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			organ_flags &= ~ORGAN_DEAD
 			return TRUE
 
-//Looking for brains?
-//Try code/modules/mob/living/carbon/brain/brain_item.dm
+/// Called by Insert() if the organ is vital and the target is dead.
+/obj/item/organ/proc/attempt_vital_organ_revival(mob/living/carbon/human/owner)
+	set waitfor = FALSE
+	if(!owner.revive())
+		return FALSE
+
+	. = TRUE
+	owner.grab_ghost()
+	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
+		spawn(-1)
+			owner.emote("gasp")
 
 /mob/living/proc/regenerate_organs()
 	return FALSE

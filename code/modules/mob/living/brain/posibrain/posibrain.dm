@@ -264,7 +264,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	if(L.mind && L.mind.current)
 		L.mind.transfer_to(brainmob)
 
-
+	brainmob.set_stat(CONSCIOUS)
 	brainmob.grant_language(/datum/language/machine, TRUE, TRUE, LANGUAGE_MMI)
 	update_appearance()
 

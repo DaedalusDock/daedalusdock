@@ -19,7 +19,7 @@
 		TRAIT_NOSOFTCRIT,
 		TRAIT_LIMBATTACHMENT,
 	)
-	inherent_biotypes = list(MOB_ROBOTIC, MOB_HUMANOID)
+	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 
 	job_outfit_type = SPECIES_HUMAN
 

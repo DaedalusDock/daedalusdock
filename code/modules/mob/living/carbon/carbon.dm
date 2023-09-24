@@ -838,15 +838,25 @@
 	..()
 
 /mob/living/carbon/can_be_revived()
-	. = ..()
+	. = TRUE
+
 	if(HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
-	if(needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)))
-		return FALSE
-	if(needs_organ(ORGAN_SLOT_POSIBRAIN) && !getorganslot(ORGAN_SLOT_POSIBRAIN))
-		return FALSE
-	if(needs_organ(ORGAN_SLOT_CELL) && !getorganslot(ORGAN_SLOT_CELL))
-		return FALSE
+
+	if(needs_organ(ORGAN_SLOT_BRAIN) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)))
+		var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
+		if(!B || (B.organ_flags & ORGAN_DEAD))
+			return FALSE
+
+	if(needs_organ(ORGAN_SLOT_POSIBRAIN))
+		var/obj/item/organ/posibrain/B = getorganslot(ORGAN_SLOT_POSIBRAIN)
+		if(!B || (B.organ_flags & ORGAN_DEAD))
+			return FALSE
+
+	if(needs_organ(ORGAN_SLOT_CELL))
+		var/obj/item/organ/cell/C = getorganslot(ORGAN_SLOT_CELL)
+		if(!C || (C.get_percent() == 0))
+			return FALSE
 
 /mob/living/carbon/harvest(mob/living/user)
 	if(QDELETED(src))

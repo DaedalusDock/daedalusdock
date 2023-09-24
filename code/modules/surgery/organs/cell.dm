@@ -28,9 +28,6 @@
 	RegisterSignal(owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(give))
 	RegisterSignal(owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
 
-	if(!special && owner.stat == DEAD && get_percent())
-		initiate_reboot(owner)
-
 /obj/item/organ/cell/Remove(mob/living/carbon/carbon, special = 0)
 	UnregisterSignal(carbon, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
 	UnregisterSignal(carbon, COMSIG_LIVING_ELECTROCUTE_ACT)
@@ -81,7 +78,7 @@
 				carbon.clear_alert(ALERT_CHARGE)
 
 		if(last_charge == 0)
-			initiate_reboot(owner)
+			attempt_vital_organ_revival(owner)
 
 /obj/item/organ/cell/proc/get_percent()
 	if(!cell)
@@ -110,7 +107,7 @@
 	return servo_cost * damage_factor
 
 #define OWNER_CHECK \
-	if(QDELETED(src) || QDELETED(owner) || owner != ipc || !get_percent()) { \
+	if(QDELETED(src) || QDELETED(owner) || owner != ipc || !get_percent() || owner.stat == DEAD) { \
 		if(!QDELETED(screen)) { \
 			screen.set_sprite("None"); \
 			if(!QDELETED(ipc)) { \
@@ -128,8 +125,15 @@
 		return \
 	}
 
-/obj/item/organ/cell/proc/initiate_reboot(mob/living/carbon/human/ipc)
-	set waitfor = FALSE
+/obj/item/organ/cell/attempt_vital_organ_revival(mob/living/carbon/human/ipc)
+	if(!(ipc.stat == DEAD && (organ_flags & ORGAN_VITAL) && !(organ_flags & ORGAN_DEAD) && ipc.needs_organ(slot)))
+		return
+
+	if(ipc.revive())
+		ipc.notify_ghost_cloning("Your chassis power has been restored!")
+		ipc.grab_ghost()
+	else
+		return
 
 	ADD_TRAIT(ipc, TRAIT_INCAPACITATED, ref(src))
 	ADD_TRAIT(ipc, TRAIT_FLOORED, ref(src))
@@ -138,9 +142,6 @@
 	ADD_TRAIT(ipc, TRAIT_NO_VOLUNTARY_SPEECH, ref(src))
 	ADD_TRAIT(ipc, TRAIT_BLIND, ref(src))
 
-	ipc.notify_ghost_cloning("Your chassis power has been restored!")
-	ipc.revive()
-	ipc.grab_ghost()
 
 	var/obj/item/organ/ipc_screen/screen = ipc.getorganslot(ORGAN_SLOT_EXTERNAL_IPC_SCREEN)
 	if(screen)

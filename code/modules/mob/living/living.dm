@@ -767,6 +767,7 @@
 
 	if(full_heal)
 		fully_heal(admin_revive = admin_revive)
+
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
 		set_suicide(FALSE)
 		set_stat(UNCONSCIOUS) //the mob starts unconscious,
@@ -778,12 +779,15 @@
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		reload_fullscreen()
 		. = TRUE
+
 		if(excess_healing)
 			INVOKE_ASYNC(src, PROC_REF(emote), "gasp")
 			log_combat(src, src, "revived")
+
 	else if(admin_revive)
 		updatehealth()
 		get_up(TRUE)
+
 	// The signal is called after everything else so components can properly check the updated values
 	SEND_SIGNAL(src, COMSIG_LIVING_REVIVE, full_heal, admin_revive)
 

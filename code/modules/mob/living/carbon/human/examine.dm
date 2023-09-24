@@ -126,7 +126,7 @@
 
 			. += generate_death_examine_text()
 
-	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/brain))
+	if(get_bodypart(BODY_ZONE_HEAD) && needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
 	var/list/msg = list()

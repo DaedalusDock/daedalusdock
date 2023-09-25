@@ -43,8 +43,6 @@
 	///The size of the reagent container
 	var/reagent_vol = 10
 
-	var/failure_time = 0
-
 	///Do we effect the appearance of our mob. Used to save time in preference code
 	var/visual = FALSE
 	///If the organ is cosmetic only, it loses all organ functionality.
@@ -259,13 +257,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(cosmetic_only)
 		CRASH("Cosmetic organ processing!")
 
-	if(organ_flags & ORGAN_DEAD)
-		handle_failing_organs(delta_time)
-		return
-
-	if(failure_time > 0)
-		failure_time--
-
 	if(organ_flags & ORGAN_SYNTHETIC_EMP) //Synthetic organ has been emped, is now failing.
 		return applyOrganDamage(decay_factor * maxHealth * delta_time, updating_health = FALSE)
 
@@ -447,22 +438,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			ears = new()
 			ears.Insert(src)
 		ears.setOrganDamage(0)
-
-/obj/item/organ/proc/handle_failing_organs(delta_time)
-	if(owner.stat == DEAD)
-		return
-
-	failure_time += delta_time
-	organ_failure(delta_time)
-
-/** organ_failure
- * generic proc for handling dying organs
- *
- * Arguments:
- * delta_time - seconds since last tick
- */
-/obj/item/organ/proc/organ_failure(delta_time)
-	return
 
 /** get_availability
  * returns whether the species should innately have this organ.

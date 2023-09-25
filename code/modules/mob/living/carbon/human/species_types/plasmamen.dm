@@ -51,6 +51,7 @@
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/bone/plasmaman,
 		ORGAN_SLOT_APPENDIX = null,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver/plasmaman,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
 	)
 
 	//* BODY TEMPERATURE THINGS *//

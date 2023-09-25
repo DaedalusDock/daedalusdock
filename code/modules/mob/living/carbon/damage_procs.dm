@@ -96,6 +96,10 @@
 
 	var/list/pick_organs = shuffle(processing_organs)
 	// Prioritize damaging our filtration organs first.
+	var/obj/item/organ/kidneys/kidneys = organs_by_slot[ORGAN_SLOT_KIDNEYS]
+	if(kidneys)
+		pick_organs -= kidneys
+		pick_organs.Insert(1, kidneys)
 	var/obj/item/organ/liver/liver = organs_by_slot[ORGAN_SLOT_LIVER]
 	if(liver)
 		pick_organs -= liver

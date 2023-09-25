@@ -1296,9 +1296,9 @@
 
 	switch(damtype)
 		if(BRUTE)
-			return bruteloss < (maxHealth/2)
+			return getBruteLoss() < (maxHealth/2)
 		if(BURN)
-			return fireloss < (maxHealth/2)
+			return getFireLoss() < (maxHealth/2)
 
 /mob/living/carbon/proc/get_wounds()
 	RETURN_TYPE(/list)

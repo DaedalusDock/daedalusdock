@@ -23,7 +23,7 @@
 
 /obj/item/clothing/mask/breath/AltClick(mob/user)
 	..()
-	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
+	if(user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		adjustmask(user)
 
 /obj/item/clothing/mask/breath/examine(mob/user)

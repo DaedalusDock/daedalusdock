@@ -146,8 +146,10 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(ownerlimb)
 		ownerlimb.remove_organ(src)
+
 	limb.add_organ(src)
 	forceMove(limb)
+	item_flags |= ABSTRACT
 
 	if(visual)
 		if(!stored_feature_id && reciever.dna?.features) //We only want this set *once*
@@ -173,6 +175,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		CRASH("Tried to remove an organ with no owner argument.")
 
 	UnregisterSignal(owner, COMSIG_PARENT_EXAMINE)
+
+	item_flags &= ~ABSTRACT
 
 	owner = null
 	for(var/datum/action/action as anything in actions)

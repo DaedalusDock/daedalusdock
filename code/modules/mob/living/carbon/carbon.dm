@@ -899,6 +899,7 @@
 	bodyparts += new_bodypart
 	new_bodypart.set_owner(src)
 	new_bodypart.forceMove(src)
+	new_bodypart.item_flags |= ABSTRACT
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)
@@ -915,6 +916,7 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	bodyparts -= old_bodypart
+	old_bodypart.item_flags &= ~ABSTRACT
 	if(old_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs - 1)
 		if(!old_bodypart.bodypart_disabled)

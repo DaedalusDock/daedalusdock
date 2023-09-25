@@ -56,7 +56,7 @@
 		if(L.damage > (L.high_threshold * L.maxHealth))
 			next_breath--
 	if(H)
-		if(H.damage > (H.high_threshold * L.maxHealth))
+		if(H.damage > (H.high_threshold * H.maxHealth))
 			next_breath--
 
 	if((times_fired % next_breath) == 0 || failed_last_breath)

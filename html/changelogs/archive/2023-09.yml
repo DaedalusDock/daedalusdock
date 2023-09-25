@@ -146,3 +146,6 @@
   - balance: Health analyzers now output blood oxygenation, and heartrate.
   - balance: Husking is no longer caused by burn damage.
   - bugfix: Unstable Mutagen has a recipe
+2023-09-25:
+  francinum:
+  - bugfix: Whiteship custom landing spots work again.

@@ -1,0 +1,5 @@
+author: LemonInTheDark
+delete-after: true
+changes:
+  - tweak: Bitfield entries in View Variables show NONE instead of a blank entry if
+      the field is empty.

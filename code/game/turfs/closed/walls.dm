@@ -47,9 +47,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 	//These are set by the material, do not touch!!!
 	var/material_color
-	var/shiny_wall
 
-	var/shiny_stripe
 	var/stripe_icon
 	//Ok you can touch vars again :)
 
@@ -123,7 +121,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 				break
 
 	var/old_cache_key = cache_key
-	cache_key = "[icon]:[smoothing_junction]:[plating_color]:[stripe_icon]:[stripe_color]:[neighbor_stripe]:[shiny_wall]:[shiny_stripe]:[rusted]:[hard_decon && d_state]"
+	cache_key = "[icon]:[smoothing_junction]:[plating_color]:[stripe_icon]:[stripe_color]:[neighbor_stripe]:[rusted]:[hard_decon && d_state]"
 	if(!(old_cache_key == cache_key))
 
 		var/potential_overlays = global.wall_overlays_cache[cache_key]
@@ -136,30 +134,16 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 			overlays.len = 0
 			var/list/new_overlays = list()
 
-			if(shiny_wall)
-				var/image/shine = image(icon, "shine-[smoothing_junction]")
-				shine.appearance_flags = RESET_COLOR
-				new_overlays += shine
-
 			var/image/smoothed_stripe = image(stripe_icon, icon_state)
 			smoothed_stripe.appearance_flags = RESET_COLOR
 			smoothed_stripe.color = stripe_color
 			new_overlays += smoothed_stripe
-
-			if(shiny_stripe)
-				var/image/stripe_shine = image(stripe_icon, "shine-[smoothing_junction]")
-				stripe_shine.appearance_flags = RESET_COLOR
-				new_overlays += stripe_shine
 
 			if(neighbor_stripe)
 				var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
 				neighb_stripe_overlay.appearance_flags = RESET_COLOR
 				neighb_stripe_overlay.color = stripe_color
 				new_overlays += neighb_stripe_overlay
-				if(shiny_wall)
-					var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[neighbor_stripe]")
-					shine.appearance_flags = RESET_COLOR
-					new_overlays += shine
 
 			if(rusted)
 				var/image/rust_overlay = image('icons/turf/rust_overlay.dmi', "blobby_rust")
@@ -245,13 +229,9 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 
 	if(reinf_mat_ref)
 		icon = plating_mat_ref.reinforced_wall_icon
-		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
-		shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_REINFORCED
 		material_color = plating_mat_ref.wall_color
 	else
 		icon = plating_mat_ref.wall_icon
-		shiny_wall = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
-		shiny_stripe = plating_mat_ref.wall_shine & WALL_SHINE_PLATING
 		material_color = plating_mat_ref.wall_color
 
 	stripe_icon = plating_mat_ref.wall_stripe_icon

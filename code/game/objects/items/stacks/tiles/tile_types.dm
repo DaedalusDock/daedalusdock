@@ -134,33 +134,7 @@
 	turf_type = /turf/open/floor/wood
 	resistance_flags = FLAMMABLE
 	merge_type = /obj/item/stack/tile/wood
-	tile_reskin_types = list(
-		/obj/item/stack/tile/wood,
-		/obj/item/stack/tile/wood/large,
-		/obj/item/stack/tile/wood/tile,
-		/obj/item/stack/tile/wood/parquet,
-	)
 
-/obj/item/stack/tile/wood/parquet
-	name = "parquet wood floor tile"
-	singular_name = "parquet wood floor tile"
-	icon_state = "tile-wood_parquet"
-	turf_type = /turf/open/floor/wood/parquet
-	merge_type = /obj/item/stack/tile/wood/parquet
-
-/obj/item/stack/tile/wood/large
-	name = "large wood floor tile"
-	singular_name = "large wood floor tile"
-	icon_state = "tile-wood_large"
-	turf_type = /turf/open/floor/wood/large
-	merge_type = /obj/item/stack/tile/wood/large
-
-/obj/item/stack/tile/wood/tile
-	name = "tiled wood floor tile"
-	singular_name = "tiled wood floor tile"
-	icon_state = "tile-wood_tile"
-	turf_type = /turf/open/floor/wood/tile
-	merge_type = /obj/item/stack/tile/wood/tile
 
 //Bamboo
 /obj/item/stack/tile/bamboo

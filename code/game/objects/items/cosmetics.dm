@@ -54,7 +54,7 @@
 	if(!open || !ismob(M))
 		return
 
-	if(!ishuman(M))
+	if(!ishuman(M) || !M:has_mouth())
 		to_chat(user, span_warning("Where are the lips on that?"))
 		return
 

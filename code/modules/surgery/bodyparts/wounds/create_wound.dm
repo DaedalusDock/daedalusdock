@@ -18,7 +18,7 @@
 		if(prob(Ceil(damage/4)) && set_sever_tendon(TRUE))
 			internal_damage = TRUE
 		if(internal_damage)
-			to_chat(owner, span_danger("You feel something rip in your [plaintext_zone]!"))
+			owner?.apply_pain(50, body_zone, "You feel something rip in your [plaintext_zone]!")
 
 	//Burn damage can cause fluid loss due to blistering and cook-off
 	if(owner && !surgical && (damage > FLUIDLOSS_BURN_REQUIRED) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))

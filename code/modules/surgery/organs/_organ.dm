@@ -43,8 +43,6 @@
 	///The size of the reagent container
 	var/reagent_vol = 10
 
-	var/failure_time = 0
-
 	///Do we effect the appearance of our mob. Used to save time in preference code
 	var/visual = FALSE
 	///If the organ is cosmetic only, it loses all organ functionality.
@@ -146,8 +144,10 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(ownerlimb)
 		ownerlimb.remove_organ(src)
+
 	limb.add_organ(src)
 	forceMove(limb)
+	item_flags |= ABSTRACT
 
 	if(visual)
 		if(!stored_feature_id && reciever.dna?.features) //We only want this set *once*
@@ -155,8 +155,20 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 		reciever.cosmetic_organs.Add(src)
 		reciever.update_body_parts()
+
+	PreRevivalInsertion(special)
+	if(!special && !cosmetic_only && owner.stat == DEAD && (organ_flags & ORGAN_VITAL) && !(organ_flags & ORGAN_DEAD) && owner.needs_organ(slot))
+		attempt_vital_organ_revival(owner)
+
 	return TRUE
 
+/*
+ * Called before attempt_vital_organ_revival during a successful Insert()
+ *
+ * special - "quick swapping" an organ out - when TRUE, the mob will be unaffected by not having that organ for the moment
+ */
+/obj/item/organ/proc/PreRevivalInsertion(special)
+	return
 
 /*
  * Remove the organ from the select mob.
@@ -169,6 +181,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		CRASH("Tried to remove an organ with no owner argument.")
 
 	UnregisterSignal(owner, COMSIG_PARENT_EXAMINE)
+
+	item_flags &= ~ABSTRACT
 
 	owner = null
 	for(var/datum/action/action as anything in actions)
@@ -187,7 +201,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		organ_owner.organs_by_slot.Remove(slot)
 
 	if(!cosmetic_only)
-		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE))
+		if((organ_flags & ORGAN_VITAL) && !special && !(organ_owner.status_flags & GODMODE) && organ_owner.needs_organ(slot))
 			organ_owner.death()
 		organ_owner.processing_organs -= src
 		START_PROCESSING(SSobj, src)
@@ -215,7 +229,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Add a trait to an organ that it will give its owner.
 /obj/item/organ/proc/add_organ_trait(trait)
-	organ_traits += trait
+	organ_traits |= trait
 	update_organ_traits()
 
 /// Removes a trait from an organ, and by extension, its owner.
@@ -250,13 +264,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/on_life(delta_time, times_fired)
 	if(cosmetic_only)
 		CRASH("Cosmetic organ processing!")
-
-	if(organ_flags & ORGAN_DEAD)
-		handle_failing_organs(delta_time)
-		return
-
-	if(failure_time > 0)
-		failure_time--
 
 	if(organ_flags & ORGAN_SYNTHETIC_EMP) //Synthetic organ has been emped, is now failing.
 		return applyOrganDamage(decay_factor * maxHealth * delta_time, updating_health = FALSE)
@@ -389,8 +396,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			organ_flags &= ~ORGAN_DEAD
 			return TRUE
 
-//Looking for brains?
-//Try code/modules/mob/living/carbon/brain/brain_item.dm
+/// Called by Insert() if the organ is vital and the target is dead.
+/obj/item/organ/proc/attempt_vital_organ_revival(mob/living/carbon/human/owner)
+	set waitfor = FALSE
+	if(!owner.revive())
+		return FALSE
+
+	. = TRUE
+	owner.grab_ghost()
+	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
+		spawn(-1)
+			owner.emote("gasp")
 
 /mob/living/proc/regenerate_organs()
 	return FALSE
@@ -430,22 +446,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			ears = new()
 			ears.Insert(src)
 		ears.setOrganDamage(0)
-
-/obj/item/organ/proc/handle_failing_organs(delta_time)
-	if(owner.stat == DEAD)
-		return
-
-	failure_time += delta_time
-	organ_failure(delta_time)
-
-/** organ_failure
- * generic proc for handling dying organs
- *
- * Arguments:
- * delta_time - seconds since last tick
- */
-/obj/item/organ/proc/organ_failure(delta_time)
-	return
 
 /** get_availability
  * returns whether the species should innately have this organ.

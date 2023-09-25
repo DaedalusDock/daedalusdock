@@ -645,9 +645,10 @@
 	if(!(methods & INGEST) || !((methods & (TOUCH|VAPOR)) && (exposed_mob.is_mouth_covered() || exposed_mob.is_eyes_covered())))
 		return
 
-	if(!exposed_mob.getorganslot(ORGAN_SLOT_EYES)) //can't blind somebody with no eyes
+	var/obj/item/organ/eyes/E = exposed_mob.getorganslot(ORGAN_SLOT_EYES)
+	if(!E && !(E.organ_flags & ORGAN_SYNTHETIC)) //can't blind somebody with no eyes
 		to_chat(exposed_mob, span_notice("Your eye sockets feel wet."))
-	else
+	else if(!(E.organ_flags & ORGAN_SYNTHETIC))
 		if(!exposed_mob.eye_blurry)
 			to_chat(exposed_mob, span_warning("Tears well up in your eyes!"))
 		exposed_mob.blind_eyes(2)

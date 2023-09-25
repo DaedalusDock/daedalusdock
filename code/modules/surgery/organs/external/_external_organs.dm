@@ -26,7 +26,10 @@
 
 ///Update our features after something changed our appearance
 /obj/item/organ/proc/mutate_feature(features, mob/living/carbon/human/human)
-	if(!dna_block || !get_global_feature_list())
+	if(!dna_block)
+		return
+
+	if(!get_global_feature_list())
 		CRASH("External organ has no dna block/feature_list implimented!")
 
 	var/list/feature_list = get_global_feature_list()
@@ -56,7 +59,7 @@
 
 		if(ORGAN_COLOR_INHERIT_ALL)
 			mutcolors = ownerlimb.mutcolors.Copy()
-			draw_color = mutcolors["[mutcolor_used]_1"]
+			draw_color = mutcolors["[mutcolor_used]_[mutcolor_index]"]
 
 	color = draw_color
 	return TRUE

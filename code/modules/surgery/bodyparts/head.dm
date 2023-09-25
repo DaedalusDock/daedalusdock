@@ -40,6 +40,9 @@
 	var/obj/item/organ/ears/ears
 	var/obj/item/organ/tongue/tongue
 
+	///See [mob/living/proc/has_mouth()]
+	var/can_ingest_reagents = TRUE
+
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
 	///Render sclera for this species?
 	var/eye_sclera = FALSE

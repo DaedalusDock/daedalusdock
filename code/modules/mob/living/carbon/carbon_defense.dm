@@ -37,6 +37,7 @@
 		return wear_mask
 	if(check_glasses && glasses && (glasses.flags_cover & GLASSESCOVERSEYES))
 		return glasses
+
 /mob/living/carbon/is_pepper_proof(check_head = TRUE, check_mask = TRUE)
 	if(check_head &&(head?.flags_cover & PEPPERPROOF))
 		return head
@@ -585,6 +586,8 @@
 
 /mob/living/carbon/can_hear()
 	. = FALSE
+	if(HAS_TRAIT(src, TRAIT_NOEARS) && !HAS_TRAIT(src, TRAIT_DEAF))
+		return TRUE
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	if(ears && !HAS_TRAIT(src, TRAIT_DEAF))
 		. = TRUE

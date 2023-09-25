@@ -59,52 +59,6 @@
 	return pick(GLOB.backpacklist)
 
 /proc/random_features()
-	if(!GLOB.tails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list,  add_blank = TRUE)
-	if(!GLOB.tails_list_human.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human)
-	if(!GLOB.tails_list_lizard.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
-	if(!GLOB.snouts_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
-	if(!GLOB.horns_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/horns, GLOB.horns_list)
-	if(!GLOB.ears_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
-	if(!GLOB.frills_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
-	if(!GLOB.spines_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
-	if(!GLOB.legs_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
-	if(!GLOB.wings_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
-	if(!GLOB.moth_wings_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
-	if(!GLOB.moth_antennae_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	if(!GLOB.moth_markings_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	if(!GLOB.pod_hair_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
-	if(!GLOB.teshari_feathers_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
-	if(!GLOB.teshari_ears_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_ears, GLOB.teshari_ears_list)
-	if(!GLOB.teshari_body_feathers_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_body_feathers, GLOB.teshari_body_feathers_list)
-	if(!GLOB.teshari_tails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/teshari, GLOB.teshari_tails_list)
-
-	if(!GLOB.vox_hair_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list)
-	if(!GLOB.vox_facial_hair_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list)
-	if(!GLOB.tails_list_vox.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/vox, GLOB.tails_list_vox)
-	if(!GLOB.vox_snouts_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
-
 	//For now we will always return none for tail_human and ears. | "For now" he says.
 	return(list(
 		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
@@ -131,6 +85,12 @@
 		"teshari_ears" = pick(GLOB.teshari_ears_list),
 		"teshari_body_feathers" = pick(GLOB.teshari_body_feathers_list),
 		"tail_teshari" = pick(GLOB.teshari_tails_list),
+		"ipc_screen" = pick(GLOB.ipc_screens_list),
+		"ipc_antenna" = pick(GLOB.ipc_antenna_list),
+		"saurian_screen" = pick(GLOB.saurian_screens_list),
+		"saurian_tail" = pick(GLOB.saurian_tails_list),
+		"saurian_scutes" = pick(GLOB.saurian_scutes_list),
+		"saurian_antenna" = pick(GLOB.saurian_antenna_list),
 	))
 
 /proc/random_mutant_colors()

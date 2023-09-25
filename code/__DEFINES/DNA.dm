@@ -37,7 +37,7 @@
 #define DNA_UNI_IDENTITY_BLOCKS 7
 
 /// This number needs to equal the total number of DNA blocks
-#define DNA_FEATURE_BLOCKS 28
+#define DNA_FEATURE_BLOCKS 32
 
 #define DNA_MUTANT_COLOR_BLOCK 1
 #define DNA_ETHEREAL_COLOR_BLOCK 2
@@ -65,6 +65,12 @@
 #define DNA_VOX_FACIAL_HAIR_BLOCK 24
 #define DNA_VOX_TAIL_BLOCK 25
 #define DNA_VOX_SNOUT_BLOCK 26
+#define DNA_IPC_SCREEN_BLOCK 27
+#define DNA_IPC_ANTENNA_BLOCK 28
+#define DNA_SAURIAN_SCREEN_BLOCK 29
+#define DNA_SAURIAN_TAIL_BLOCK 30
+#define DNA_SAURIAN_SCUTES_BLOCK 31
+#define DNA_SAURIAN_ANTENNA_BLOCK 32
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -103,6 +109,8 @@
 #define SCLERA 23
 ///Has non-human hair. Used by pref code to hide standard hair options.
 #define NONHUMANHAIR 24
+///Snowflake for IPCs, so they can pick prosthetic branding
+#define BRANDEDPROSTHETICS 25
 
 /// For use in /datum/species/var/organs
 #define DOES_NOT_NEED "does_not_need"
@@ -113,14 +121,17 @@
 #define ORGAN_SLOT_BRAIN_ANTIDROP "brain_antidrop"
 #define ORGAN_SLOT_BRAIN_ANTISTUN "brain_antistun"
 #define ORGAN_SLOT_BREATHING_TUBE "breathing_tube"
+#define ORGAN_SLOT_CELL "cell"
 #define ORGAN_SLOT_EARS "ears"
 #define ORGAN_SLOT_EYES "eye_sight"
 #define ORGAN_SLOT_HEART "heart"
 #define ORGAN_SLOT_HEART_AID "heartdrive"
 #define ORGAN_SLOT_HUD "eye_hud"
 #define ORGAN_SLOT_LIVER "liver"
+#define ORGAN_SLOT_KIDNEYS "kidneys"
 #define ORGAN_SLOT_LUNGS "lungs"
 #define ORGAN_SLOT_PARASITE_EGG "parasite_egg"
+#define ORGAN_SLOT_POSIBRAIN "posibrain"
 #define ORGAN_SLOT_REGENERATIVE_CORE "hivecore"
 #define ORGAN_SLOT_RIGHT_ARM_AUG "r_arm_device"
 #define ORGAN_SLOT_LEFT_ARM_AUG "l_arm_device" //This one ignores alphabetical order cause the arms should be together
@@ -145,6 +156,10 @@
 #define ORGAN_SLOT_EXTERNAL_TESHARI_FEATHERS "teshari_feathers"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_EARS "teshari_ears"
 #define ORGAN_SLOT_EXTERNAL_TESHARI_BODY_FEATHERS "teshari_body_feathers"
+#define ORGAN_SLOT_EXTERNAL_IPC_SCREEN "ipc_screen"
+#define ORGAN_SLOT_EXTERNAL_IPC_ANTENNA "ipc_antenna"
+#define ORGAN_SLOT_EXTERNAL_SAURIAN_SCREEN "saurian_screen"
+#define ORGAN_SLOT_EXTERNAL_SAURIAN_SCUTES "saurian_scutes"
 
 /// Xenomorph organ slots
 #define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"
@@ -184,6 +199,7 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_ZOMBIE,
 	ORGAN_SLOT_THRUSTERS,
 	ORGAN_SLOT_HUD,
+	ORGAN_SLOT_KIDNEYS,
 	ORGAN_SLOT_LIVER,
 	ORGAN_SLOT_TONGUE,
 	ORGAN_SLOT_VOICE,

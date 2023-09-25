@@ -29,6 +29,10 @@
 	if(stat != DEAD && !(IS_IN_STASIS(src)))
 		handle_shock()
 		handle_pain()
+		if(shock_stage >= SHOCK_TIER_1)
+			add_movespeed_modifier(/datum/movespeed_modifier/shock, TRUE)
+		else
+			remove_movespeed_modifier(/datum/movespeed_modifier/shock, TRUE)
 
 	check_cremation(delta_time, times_fired)
 
@@ -52,7 +56,7 @@
 		if(L.damage > (L.high_threshold * L.maxHealth))
 			next_breath--
 	if(H)
-		if(H.damage > (H.high_threshold * L.maxHealth))
+		if(H.damage > (H.high_threshold * H.maxHealth))
 			next_breath--
 
 	if((times_fired % next_breath) == 0 || failed_last_breath)
@@ -589,7 +593,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 	reagents.end_metabolization(src) //Stops trait-based effects on reagents, to prevent permanent buffs
 
-	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))
+	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
 		return
 
 	adjustToxLoss(0.6 * delta_time, TRUE,  TRUE)
@@ -685,6 +689,11 @@ All effects don't start immediately, but rather get worse over time; the rate is
  * related situations (i.e not just cardiac arrest)
  */
 /mob/living/carbon/proc/undergoing_cardiac_arrest()
+	if(isipc(src))
+		var/obj/item/organ/cell/C = getorganslot(ORGAN_SLOT_CELL)
+		if(C && ((C.organ_flags & ORGAN_DEAD) || !C.get_percent()))
+			return TRUE
+
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(istype(heart) && heart.is_working())
 		return FALSE

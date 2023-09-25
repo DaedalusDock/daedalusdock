@@ -1041,7 +1041,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/sbiten/affect_ingest(mob/living/carbon/C, removed)
-	C.adjust_bodytemperature(10  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, BODYTEMP_HEAT_DAMAGE_LIMIT) //310.15 is the normal bodytemp.
+	C.adjust_bodytemperature(10  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.dna.species.heat_level_1) //310.15 is the normal bodytemp.
 	return ..()
 
 /datum/reagent/consumable/ethanol/red_mead

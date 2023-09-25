@@ -288,7 +288,7 @@
 	var/curr_confusion = get_timed_status_effect_duration(/datum/status_effect/confusion)
 	set_timed_status_effect(min(curr_confusion + amount, 15 SECONDS), /datum/status_effect/confusion)
 
-	flash_pain(120)
+	flash_pain(PAIN_MEDIUM)
 
 	if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
 		if(knockdown)

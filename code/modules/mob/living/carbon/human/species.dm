@@ -72,15 +72,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/scream_verb = "screams"
 	///What languages this species can understand and say. Use a [language holder datum][/datum/language_holder] in this var.
 	var/species_language_holder = /datum/language_holder
-	/**
-	  * Visible CURRENT bodyparts that are unique to a species.
-	  * DO NOT USE THIS AS A LIST OF ALL POSSIBLE BODYPARTS AS IT WILL FUCK
-	  * SHIT UP! Changes to this list for non-species specific bodyparts (ie
-	  * cat ears and tails) should be assigned at organ level if possible.
-	  * Assoc values are defaults for given bodyparts, also modified by aforementioned organs.
-	  * They also allow for faster '[]' list access versus 'in'. Other than that, they are useless right now.
-	  * Layer hiding is handled by [/datum/species/proc/handle_mutant_bodyparts] below.
-	  */
+	/// DEPRECATED: Now only handles legs.
 	var/list/mutant_bodyparts = list()
 	///Internal organs that are unique to this race, like a tail.
 	var/list/mutant_organs = list()
@@ -105,6 +97,34 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	///List of cosmetic organs to generate like horns, frills, wings, etc. list(typepath of organ = "Round Beautiful BDSM Snout"). Still WIP
 	var/list/cosmetic_organs = list()
 
+	//* BODY TEMPERATURE THINGS *//
+	var/cold_level_3 = 120
+	var/cold_level_2 = 200
+	var/cold_level_1 = BODYTEMP_COLD_DAMAGE_LIMIT
+	var/cold_discomfort_level = 285
+
+	/// The natural body temperature to adjust towards
+	var/bodytemp_normal = BODYTEMP_NORMAL
+
+	var/heat_discomfort_level = 315
+	var/heat_level_1 = BODYTEMP_HEAT_DAMAGE_LIMIT
+	var/heat_level_2 = 400
+	var/heat_level_3 = 1000
+
+	/// Minimum amount of kelvin moved toward normal body temperature per tick.
+	var/bodytemp_autorecovery_min = BODYTEMP_AUTORECOVERY_MINIMUM
+	var/list/heat_discomfort_strings = list(
+		"You feel sweat drip down your neck.",
+		"You feel uncomfortably warm.",
+		"Your skin prickles in the heat."
+		)
+	var/list/cold_discomfort_strings = list(
+		"You feel chilly.",
+		"You shiver suddenly.",
+		"Your chilly flesh stands out in goosebumps."
+	)
+
+	//* MODIFIERS *//
 	///Multiplier for the race's speed. Positive numbers make it move slower, negative numbers make it move faster.
 	var/speedmod = 0
 	///Percentage modifier for overall defense of the race, or less defense, if it's negative.
@@ -127,8 +147,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/fixed_mut_color = ""
 	///Special mutation that can be found in the genepool exclusively in this species. Dont leave empty or changing species will be a headache
 	var/inert_mutation = /datum/mutation/human/dwarfism
-	///Used to set the mob's deathsound upon species change
-	var/deathsound
 	///Sounds to override barefeet walking
 	var/list/special_step_sounds
 	///Special sound for grabbing
@@ -150,15 +168,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/wings_icons = list("Angel")
 	///Used to determine what description to give when using a potion of flight, if false it will describe them as growing new wings
 	var/has_innate_wings = FALSE
-
-	/// The natural temperature for a body
-	var/bodytemp_normal = BODYTEMP_NORMAL
-	/// Minimum amount of kelvin moved toward normal body temperature per tick.
-	var/bodytemp_autorecovery_min = BODYTEMP_AUTORECOVERY_MINIMUM
-	/// The body temperature limit the body can take before it starts taking damage from heat.
-	var/bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT
-	/// The body temperature limit the body can take before it starts taking damage from cold.
-	var/bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT
 
 	/// The icon_state of the fire overlay added when sufficently ablaze and standing. see onfire.dmi
 	var/fire_overlay = "human_burning"
@@ -197,10 +206,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
 	)
 
 	///Bitflag that controls what in game ways something can select this species as a spawnable source, such as magic mirrors. See [mob defines][code/__DEFINES/mobs.dm] for possible sources.
-	var/changesource_flags = NONE
+	var/changesource_flags = null
 
 	///Unique cookie given by admins through prayers
 	var/species_cookie = /obj/item/food/cookie
@@ -389,13 +399,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				var/obj/item/organ/brain/brain = oldorgan
 				if(!brain.decoy_override)//"Just keep it if it's fake" - confucius, probably
 					brain.before_organ_replacement(neworgan)
-					brain.Remove(C,TRUE, TRUE) //brain argument used so it doesn't cause any... sudden death.
+					brain.Remove(C,TRUE) //brain argument used so it doesn't cause any... sudden death.
 					QDEL_NULL(brain)
 					oldorgan = null //now deleted
 			else
 				oldorgan.before_organ_replacement(neworgan)
 				oldorgan.Remove(C,TRUE)
 				QDEL_NULL(oldorgan) //we cannot just tab this out because we need to skip the deleting if it is a decoy brain.
+				oldorgan = null
 
 		if(oldorgan)
 			oldorgan.setOrganDamage(0)
@@ -414,7 +425,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				continue
 			var/obj/item/organ/I = C.getorgan(mutantorgan)
 			if(I)
-				I.Remove(C)
+				I.Remove(C, TRUE)
 				qdel(I)
 
 		for(var/mutantorgan in old_species.cosmetic_organs)
@@ -424,6 +435,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			if(I)
 				I.Remove(C)
 				qdel(I)
+
+		if(replace_current)
+			for(var/slot in old_species.organs)
+				if(!(slot in organs))
+					var/obj/item/organ/O = C.getorganslot(slot)
+					if(!O)
+						continue
+					O.Remove(C, TRUE)
+					qdel(O)
 
 	for(var/organ_path in mutant_organs)
 		var/obj/item/organ/current_organ = C.getorgan(organ_path)
@@ -574,7 +594,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/handle_body(mob/living/carbon/human/species_human)
 	species_human.remove_overlay(BODY_LAYER)
 	if(HAS_TRAIT(species_human, TRAIT_INVISIBLE_MAN))
-		return handle_mutant_bodyparts(species_human)
+		return
 	var/list/standing = list()
 
 	var/obj/item/bodypart/head/noggin = species_human.get_bodypart(BODY_ZONE_HEAD)
@@ -660,102 +680,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		species_human.overlays_standing[BODY_LAYER] = standing
 
 	species_human.apply_overlay(BODY_LAYER)
-	handle_mutant_bodyparts(species_human)
-
-/**
- * Handles the mutant bodyparts of a human
- *
- * Handles the adding and displaying of, layers, colors, and overlays of mutant bodyparts and accessories.
- * Handles digitigrade leg displaying and squishing.
- * Arguments:
- * * H - Human, whoever we're handling the body for
- * * forced_colour - The forced color of an accessory. Leave null to use mutant color.
- */
-/datum/species/proc/handle_mutant_bodyparts(mob/living/carbon/human/source, forced_colour)
-	var/list/bodyparts_to_add = mutant_bodyparts.Copy()
-	var/list/relevent_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER, BODY_FRONT_LAYER)
-	var/list/standing = list()
-
-	source.remove_overlay(BODY_BEHIND_LAYER)
-	source.remove_overlay(BODY_ADJ_LAYER)
-	source.remove_overlay(BODY_FRONT_LAYER)
-
-	if(!mutant_bodyparts || HAS_TRAIT(source, TRAIT_INVISIBLE_MAN))
-		return
-
-	if(!bodyparts_to_add)
-		return
-
-	var/g = (source.physique == FEMALE) ? "f" : "m"
-
-	for(var/layer in relevent_layers)
-		var/layertext = mutant_bodyparts_layertext(layer)
-
-		for(var/bodypart in bodyparts_to_add)
-			var/datum/sprite_accessory/accessory
-			switch(bodypart)
-				if("legs")
-					accessory = GLOB.legs_list[source.dna.features["legs"]]
-				if("caps")
-					accessory = GLOB.caps_list[source.dna.features["caps"]]
-
-			if(!accessory || accessory.icon_state == "none")
-				continue
-
-			var/mutable_appearance/accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
-
-			if(accessory.gender_specific)
-				accessory_overlay.icon_state = "[g]_[bodypart]_[accessory.icon_state]_[layertext]"
-			else
-				accessory_overlay.icon_state = "m_[bodypart]_[accessory.icon_state]_[layertext]"
-
-			if(accessory.em_block)
-				accessory_overlay.overlays += emissive_blocker(accessory_overlay.icon, accessory_overlay.icon_state, accessory_overlay.alpha)
-
-			if(accessory.center)
-				accessory_overlay = center_image(accessory_overlay, accessory.dimension_x, accessory.dimension_y)
-
-			if(!(HAS_TRAIT(source, TRAIT_HUSK)))
-				if(!forced_colour)
-					switch(accessory.color_src)
-						if(MUTCOLORS)
-							if(fixed_mut_color)
-								accessory_overlay.color = fixed_mut_color
-							else
-								accessory_overlay.color = source.dna.mutant_colors[MUTCOLORS_GENERIC_1]
-						if(HAIR)
-							if(hair_color == "mutcolor")
-								accessory_overlay.color = source.dna.mutant_colors[MUTCOLORS_GENERIC_1]
-							else if(hair_color == "fixedmutcolor")
-								accessory_overlay.color = fixed_mut_color
-							else
-								accessory_overlay.color = source.hair_color
-						if(FACEHAIR)
-							accessory_overlay.color = source.facial_hair_color
-						if(EYECOLOR)
-							accessory_overlay.color = source.eye_color_left
-				else
-					accessory_overlay.color = forced_colour
-			standing += accessory_overlay
-
-			if(accessory.hasinner)
-				var/mutable_appearance/inner_accessory_overlay = mutable_appearance(accessory.icon, layer = -layer)
-				if(accessory.gender_specific)
-					inner_accessory_overlay.icon_state = "[g]_[bodypart]inner_[accessory.icon_state]_[layertext]"
-				else
-					inner_accessory_overlay.icon_state = "m_[bodypart]inner_[accessory.icon_state]_[layertext]"
-
-				if(accessory.center)
-					inner_accessory_overlay = center_image(inner_accessory_overlay, accessory.dimension_x, accessory.dimension_y)
-
-				standing += inner_accessory_overlay
-
-		source.overlays_standing[layer] = standing.Copy()
-		standing = list()
-
-	source.apply_overlay(BODY_BEHIND_LAYER)
-	source.apply_overlay(BODY_ADJ_LAYER)
-	source.apply_overlay(BODY_FRONT_LAYER)
 
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
@@ -1065,6 +989,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
 	if(atk_effect == ATTACK_EFFECT_BITE)
+		if(!user.has_mouth())
+			to_chat(user, span_warning("You can't [atk_verb] without a mouth!"))
+			return FALSE
 		if(user.is_mouth_covered(mask_only = TRUE))
 			to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
 			return FALSE
@@ -1484,29 +1411,29 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/old_bodytemp = humi.old_bodytemperature
 	var/bodytemp = humi.bodytemperature
 	// Body temperature is too hot, and we do not have resist traits
-	if(bodytemp > bodytemp_heat_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
+	if(bodytemp > heat_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
 
 		//Remove any slowdown from the cold.
 		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 		// display alerts based on how hot it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
-		if(bodytemp in bodytemp_heat_damage_limit to BODYTEMP_HEAT_WARNING_2)
+		if(bodytemp in heat_level_1 to heat_level_2)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
-		else if(bodytemp in BODYTEMP_HEAT_WARNING_2 to BODYTEMP_HEAT_WARNING_3)
+		else if(bodytemp in heat_level_2 to heat_level_3)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
 		else
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
 
 	// Body temperature is too cold, and we do not have resist traits
-	else if(bodytemp < bodytemp_cold_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
+	else if(bodytemp < cold_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
 		// clear any hot moods and apply cold mood
 		// Apply cold slow down
-		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((bodytemp_cold_damage_limit - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
+		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((cold_level_1 - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
 		// Display alerts based how cold it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
-		if(bodytemp in BODYTEMP_COLD_WARNING_2 to bodytemp_cold_damage_limit)
+		if(bodytemp in cold_level_1 to cold_level_2)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
-		else if(bodytemp in BODYTEMP_COLD_WARNING_3 to BODYTEMP_COLD_WARNING_2)
+		else if(bodytemp in cold_level_2 to cold_level_3)
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
 		else
 			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
@@ -1514,9 +1441,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// We are not to hot or cold, remove status and moods
 	// Optimization here, we check these things based off the old temperature to avoid unneeded work
 	// We're not perfect about this, because it'd just add more work to the base case, and resistances are rare
-	else if (old_bodytemp > bodytemp_heat_damage_limit || old_bodytemp < bodytemp_cold_damage_limit)
+	else if (old_bodytemp > heat_level_1 || old_bodytemp < cold_level_1)
 		humi.clear_alert(ALERT_TEMPERATURE)
 		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
+
+
+	if(prob(5))
+		if(bodytemp < cold_discomfort_level)
+			to_chat(humi, span_danger(pick(cold_discomfort_strings)))
+		else if(bodytemp > heat_discomfort_level)
+			to_chat(humi, span_danger(pick(heat_discomfort_strings)))
 
 	// Store the old bodytemp for future checking
 	humi.old_bodytemperature = bodytemp
@@ -1529,7 +1463,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/body_temperature_damage(mob/living/carbon/human/humi, delta_time, times_fired)
 	// Body temperature is too hot, and we do not have resist traits
 	// Apply some burn damage to the body
-	if(humi.coretemperature > bodytemp_heat_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
+	if(humi.coretemperature > heat_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
 		var/firemodifier = humi.fire_stacks / 50
 		if (!humi.on_fire) // We are not on fire, reduce the modifier
 			firemodifier = min(firemodifier, 0)
@@ -1547,12 +1481,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// Apply the damage to all body parts
 		humi.adjustFireLoss(burn_damage, FALSE)
 
-	if(humi.coretemperature < bodytemp_cold_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTCOLD) && !CHEM_EFFECT_MAGNITUDE(humi, CE_CRYO))
+	if(humi.coretemperature < cold_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTCOLD) && !CHEM_EFFECT_MAGNITUDE(humi, CE_CRYO))
 		var/damage_mod = coldmod * humi.physiology.cold_mod
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
-		if(humi.coretemperature in 201 to bodytemp_cold_damage_limit)
+		if(humi.coretemperature in cold_level_1 to cold_level_2)
 			humi.adjustFireLoss(COLD_DAMAGE_LEVEL_1 * damage_mod * delta_time, FALSE)
-		else if(humi.coretemperature in 120 to 200)
+		else if(humi.coretemperature in cold_level_2 to cold_level_3)
 			humi.adjustFireLoss(COLD_DAMAGE_LEVEL_2 * damage_mod * delta_time, FALSE)
 		else
 			humi.adjustFireLoss(COLD_DAMAGE_LEVEL_3 * damage_mod * delta_time, FALSE)
@@ -1661,7 +1595,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/obj/item/organ/wings/functional/wings = new(null, wings_icon, H.physique)
 	wings.Insert(H)
-	handle_mutant_bodyparts(H)
 
 ///Species override for unarmed attacks because the attack_hand proc was made by a mouth-breathing troglodyte on a tricycle. Also to whoever thought it would be a good idea to make it so the original spec_unarmedattack was not actually linked to unarmed attack needs to be checked by a doctor because they clearly have a vast empty space in their head.
 /datum/species/proc/spec_unarmedattack(mob/living/carbon/human/user, atom/target, modifiers)
@@ -1699,6 +1632,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		features["skin_tone"] = GLOB.preference_entries[/datum/preference/choiced/skin_tone]
 
 	features += populate_features()
+	#ifdef TESTING
+	for(var/feat in features)
+		if(!features[feat])
+			stack_trace("Feature key [feat] has no associated preference.")
+	#endif
 	sortTim(features, GLOBAL_PROC_REF(cmp_pref_name), associative = TRUE)
 
 	GLOB.features_by_species[type] = features
@@ -1952,7 +1890,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/to_add = list()
 
 	// Hot temperature tolerance
-	if(heatmod > 1 || bodytemp_heat_damage_limit < BODYTEMP_HEAT_DAMAGE_LIMIT)
+	if(heatmod > 1 || heat_level_1 < BODYTEMP_HEAT_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "temperature-high",
@@ -1960,7 +1898,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to high temperatures.",
 		))
 
-	if(heatmod < 1 || bodytemp_heat_damage_limit > BODYTEMP_HEAT_DAMAGE_LIMIT)
+	if(heatmod < 1 || heat_level_1 > BODYTEMP_HEAT_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
@@ -1969,7 +1907,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		))
 
 	// Cold temperature tolerance
-	if(coldmod > 1 || bodytemp_cold_damage_limit > BODYTEMP_COLD_DAMAGE_LIMIT)
+	if(coldmod > 1 || cold_level_1 > BODYTEMP_COLD_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "temperature-low",
@@ -1977,7 +1915,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[plural_form] are vulnerable to cold temperatures.",
 		))
 
-	if(coldmod < 1 || bodytemp_cold_damage_limit < BODYTEMP_COLD_DAMAGE_LIMIT)
+	if(coldmod < 1 || cold_level_1 < BODYTEMP_COLD_DAMAGE_LIMIT)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 			SPECIES_PERK_ICON = "thermometer-empty",
@@ -2125,9 +2063,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	new_species ||= target.dna.species //If no new species is provided, assume its src.
 	//Note for future: Potentionally add a new C.dna.species() to build a template species for more accurate limb replacement
 
+	var/is_digitigrade = FALSE
 	if((new_species.digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == "Digitigrade Legs") || new_species.digitigrade_customization == DIGITIGRADE_FORCED)
-		new_species.bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
-		new_species.bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
+		is_digitigrade = TRUE
 
 	for(var/obj/item/bodypart/old_part as anything in target.bodyparts)
 		if(old_part.change_exempt_flags & BP_BLOCK_CHANGE_SPECIES)
@@ -2137,6 +2075,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/obj/item/bodypart/new_part
 		if(path)
 			new_part = new path()
+			if(istype(new_part, /obj/item/bodypart/leg) && is_digitigrade)
+				new_part:set_digitigrade(TRUE)
 			new_part.replace_limb(target, TRUE)
 			new_part.update_limb(is_creating = TRUE)
 			qdel(old_part)
@@ -2146,14 +2086,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	target.create_bodyparts(bodypart_overrides)
 
 /datum/species/proc/replace_missing_bodyparts(mob/living/carbon/target)
+	var/is_digitigrade = FALSE
 	if((digitigrade_customization == DIGITIGRADE_OPTIONAL && target.dna.features["legs"] == "Digitigrade Legs") || digitigrade_customization == DIGITIGRADE_FORCED)
-		bodypart_overrides[BODY_ZONE_R_LEG] = /obj/item/bodypart/leg/right/digitigrade
-		bodypart_overrides[BODY_ZONE_L_LEG] = /obj/item/bodypart/leg/left/digitigrade
+		is_digitigrade = TRUE
 
 	for(var/slot in target.get_missing_limbs())
 		var/obj/item/bodypart/path = bodypart_overrides[slot]
 		if(path)
 			path = new path()
+			if(istype(path, /obj/item/bodypart/leg) && is_digitigrade)
+				path:set_digitigrade(TRUE)
 			path.attach_limb(target, TRUE)
 			path.update_limb(is_creating = TRUE)
 
@@ -2164,6 +2106,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		var/obj/item/bodypart/new_part = bodypart_overrides[BP.body_zone]
 		if(new_part)
 			new_part = new new_part()
+			if(istype(new_part, /obj/item/bodypart/leg) && is_digitigrade)
+				new_part:set_digitigrade(TRUE)
 			new_part.replace_limb(target, TRUE)
 			new_part.update_limb(is_creating = TRUE)
 			qdel(BP)
@@ -2198,3 +2142,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			break
 
 	return pick_weight(chosen)
+
+/datum/species/proc/get_deathgasp_sound(mob/living/carbon/human/H)
+	return pick('goon/sounds/voice/death_1.ogg', 'goon/sounds/voice/death_2.ogg')

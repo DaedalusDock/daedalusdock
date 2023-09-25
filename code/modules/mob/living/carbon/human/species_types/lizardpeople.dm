@@ -33,15 +33,32 @@
 	disliked_food = GRAIN | DAIRY | CLOTH
 	liked_food = GROSS | MEAT | SEAFOOD | NUTS
 	inert_mutation = /datum/mutation/human/firebreath
-	deathsound = 'sound/voice/lizard/deathsound.ogg'
 	wings_icons = list("Dragon")
 	species_language_holder = /datum/language_holder/lizard
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
 	// Lizards are coldblooded and can stand a greater temperature range than humans
-	bodytemp_heat_damage_limit = (BODYTEMP_HEAT_DAMAGE_LIMIT + 20) // This puts lizards 10 above lavaland max heat for ash lizards.
-	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 10)
+	cold_level_3 = 130
+	cold_level_2 = 220
+	cold_level_1 = 280
 
+	bodytemp_normal = BODYTEMP_NORMAL - 10
+
+	heat_level_1 = 420
+	heat_level_2 = 480
+	heat_level_3 = 1100
+
+	heat_discomfort_strings = list(
+		"You feel soothingly warm.",
+		"You feel the heat sink into your bones.",
+		"You feel warm enough to take a nap."
+	)
+
+	cold_discomfort_strings = list(
+		"You feel chilly.",
+		"You feel sluggish and cold.",
+		"Your scales bristle against the cold."
+	)
 	ass_image = 'icons/ass/asslizard.png'
 
 	bodypart_overrides = list(
@@ -63,6 +80,7 @@
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys
 	)
 
 
@@ -85,6 +103,9 @@
 			"howl" = 1
 		) = 80
 	)
+
+/datum/species/lizard/get_deathgasp_sound(mob/living/carbon/human/H)
+	return 'sound/voice/lizard/deathsound.ogg'
 
 /// Lizards are cold blooded and do not stabilize body temperature naturally
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, delta_time, times_fired)
@@ -193,6 +214,7 @@ Lizard subspecies: ASHWALKERS
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys
 	)
 
 
@@ -230,6 +252,7 @@ Lizard subspecies: SILVER SCALED
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
 	)
 
 	///stored mutcolor for when we turn back off of a silverscale.

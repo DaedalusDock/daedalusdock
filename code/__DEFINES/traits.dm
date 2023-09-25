@@ -160,6 +160,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_BLIND "blind"
 #define TRAIT_MUTE "mute"
 #define TRAIT_EMOTEMUTE "emotemute"
+/// User cannot use the Say() verb. This is used to force speech while "muting" the client.
+#define TRAIT_NO_VOLUNTARY_SPEECH "no_say_typing"
 #define TRAIT_DEAF "deaf"
 #define TRAIT_NEARSIGHT "nearsighted"
 #define TRAIT_FAT "fat"
@@ -233,7 +235,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_VAL_CORRIN_MEMBER "val_corrin_member"
 /// reduces the use time of syringes, pills, patches and medigels but only when using on someone
 #define TRAIT_FASTMED "fast_med_use"
+/// Mob does not breathe.
 #define TRAIT_NOBREATH "no_breath"
+/// Mob does not need ears to hear
+#define TRAIT_NOEARS "no_ears"
 #define TRAIT_ANTIMAGIC "anti_magic"
 #define TRAIT_HOLY "holy"
 /// Like antimagic, but doesn't block the user from casting
@@ -241,6 +246,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_DEPRESSION "depression"
 #define TRAIT_JOLLY "jolly"
 #define TRAIT_NOCRITDAMAGE "no_crit"
+/// Cannot experience Shock (pain version, not electrical)
+#define TRAIT_NO_PAINSHOCK "no_painshock"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"

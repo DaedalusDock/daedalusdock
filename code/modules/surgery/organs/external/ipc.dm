@@ -72,7 +72,6 @@
 		return TRUE
 	return FALSE
 
-
 /obj/item/organ/saurian_screen
 	name = "saurian ipc screen"
 	visual = TRUE
@@ -218,7 +217,7 @@
 
 	dna_block = DNA_SAURIAN_ANTENNA_BLOCK
 	color_source = ORGAN_COLOR_INHERIT_ALL
-	mutcolor_used = MUTCOLORS_KEY_IPC_ANTENNA
+	mutcolor_used = MUTCOLORS_KEY_SAURIAN_ANTENNA
 
 /obj/item/organ/saurian_antenna/get_global_feature_list()
 	return GLOB.saurian_antenna_list

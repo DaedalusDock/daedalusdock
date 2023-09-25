@@ -130,4 +130,4 @@ GLOBAL_REAL_VAR(ipc_chassis_options) = list(
 	relevant_external_organ = /obj/item/organ/saurian_antenna
 	is_sub_preference = TRUE
 
-	color_key = MUTCOLORS_KEY_IPC_ANTENNA
+	color_key = MUTCOLORS_KEY_SAURIAN_ANTENNA

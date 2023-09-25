@@ -4988,7 +4988,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "bno" = (
 /obj/structure/transit_tube/diagonal,
@@ -9453,7 +9453,6 @@
 	c_tag = "Medbay Cryogenics";
 	network = list("ss13","medbay")
 	},
-/turf/open/floor/plating,
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/medical/cryo)
 "cGF" = (
@@ -10359,7 +10358,7 @@
 	},
 /obj/structure/cable,
 /obj/effect/turf_decal/siding/wood,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "cTh" = (
 /obj/structure/cable,
@@ -11116,7 +11115,7 @@
 	dir = 4
 	},
 /obj/structure/extinguisher_cabinet/directional/west,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "dfI" = (
 /obj/effect/turf_decal/plaque{
@@ -12188,7 +12187,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "dwv" = (
 /obj/structure/reagent_dispensers/watertank,
@@ -28864,7 +28863,7 @@
 "jzs" = (
 /obj/effect/turf_decal/siding/wood,
 /obj/machinery/vending/coffee,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "jzz" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -39888,7 +39887,7 @@
 	},
 /obj/machinery/washing_machine,
 /obj/machinery/firealarm/directional/west,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "ntw" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
@@ -45479,7 +45478,7 @@
 	pixel_x = -1;
 	pixel_y = 4
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "ptB" = (
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible{
@@ -47451,7 +47450,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "qft" = (
 /turf/open/floor/iron/white,
@@ -48550,7 +48549,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "qyx" = (
 /obj/machinery/smartfridge,
@@ -49019,7 +49018,7 @@
 /obj/machinery/light/warm/directional/north,
 /obj/effect/turf_decal/siding/wood/corner,
 /obj/structure/reagent_dispensers/water_cooler,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "qHM" = (
 /obj/machinery/door/airlock/maintenance{
@@ -49435,7 +49434,7 @@
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 8
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "qPr" = (
 /obj/structure/table/wood,
@@ -59284,7 +59283,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "uyh" = (
 /obj/machinery/door/firedoor,
@@ -61470,7 +61469,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/station/medical/break_room)
 "vse" = (
 /obj/structure/rack,

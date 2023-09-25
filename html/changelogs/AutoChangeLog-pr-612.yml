@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - balance: Non-advanced health analyzers get chem scan mode back
-  - balance: Health analyzers now output blood oxygenation, and heartrate.
-  - balance: Husking is no longer caused by burn damage.

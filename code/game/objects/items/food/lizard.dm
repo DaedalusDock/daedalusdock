@@ -3,8 +3,8 @@
 //Meat Dishes
 
 /obj/item/food/raw_tiziran_sausage
-	name = "raw Tiziran blood sausage"
-	desc = "A raw Tiziran blood sausage, ready to be cured on a drying rack."
+	name = "raw Jitarai blood sausage"
+	desc = "A raw Jitarai blood sausage, ready to be cured on a drying rack."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "raw_lizard_sausage"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 3, /datum/reagent/blood = 3)
@@ -17,7 +17,7 @@
 	AddElement(/datum/element/dryable, /obj/item/food/tiziran_sausage)
 
 /obj/item/food/tiziran_sausage
-	name = "\improper Tiziran blood sausage"
+	name = "\improper Jitarai blood sausage"
 	desc = "A coarse dry-cured blood sausage, traditionally made by farmers in the farmlands around Zagoskeld. Similar in texture to old-Earth Spanish chorizo."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_sausage"
@@ -28,7 +28,7 @@
 
 /obj/item/food/raw_headcheese
 	name = "raw headcheese block"
-	desc = "A common food on Tizira, headcheese is traditionally made of an animal's head, with the organs removed, boiled until it falls apart, at which point it is collected, strained of moisture, salted heavily, packed into blocks, and left to dry and age for several months. The resulting hard block tastes similar to cheese."
+	desc = "A common food on Jitarai, headcheese is traditionally made of an animal's head, with the organs removed, boiled until it falls apart, at which point it is collected, strained of moisture, salted heavily, packed into blocks, and left to dry and age for several months. The resulting hard block tastes similar to cheese."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "raw_lizard_cheese"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 5, /datum/reagent/consumable/salt = 5)
@@ -42,7 +42,7 @@
 
 /obj/item/food/headcheese
 	name = "headcheese block"
-	desc = "A cured block of headcheese. Delicious, if you're a unathi."
+	desc = "A cured block of headcheese. Delicious, if you're a Jinan."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_cheese"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 5, /datum/reagent/consumable/salt = 5)
@@ -55,7 +55,7 @@
 
 /obj/item/food/headcheese_slice
 	name = "headcheese slice"
-	desc = "A slice of headcheese, useful for making sandwiches and snacks. Or surviving the cold Tiziran winters."
+	desc = "A slice of headcheese, useful for making sandwiches and snacks."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_cheese_slice"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 1, /datum/reagent/consumable/salt = 1)
@@ -75,7 +75,7 @@
 
 /obj/item/food/tsatsikh
 	name = "tsatsikh"
-	desc = "A Tiziran dish consisting of spiced ground offal, stuffed into a stomach and boiled. Pretty foul to anyone who's not used to the taste."
+	desc = "A Jitarai dish consisting of spiced ground offal, stuffed into a stomach and boiled. Pretty foul to anyone who's not used to the taste."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "tsatsikh"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 5)
@@ -166,7 +166,7 @@
 
 /obj/item/food/kebab/picoss_skewers
 	name = "picoss skewer"
-	desc = "A popular Tiziran streetfood consisting of vinegar-marinated armorfish on a skewer with onion and chillis."
+	desc = "A popular Jitarai streetfood consisting of vinegar-marinated armorfish on a skewer with onion and chillis."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "picoss_skewer"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 3, /datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/vinegar= 1, /datum/reagent/consumable/capsaicin = 1)
@@ -218,7 +218,7 @@
 
 /obj/item/food/lizard_surf_n_turf
 	name = "\improper Zagosk surf 'n' turf smorgasbord"
-	desc = "A massive platter of Tizira's finest meat and seafood, typically shared by groups at the beach. Of course, nothing's stopping you eating it on your own... fatass."
+	desc = "A massive platter of Jitarai's finest meat and seafood, typically shared by groups at the beach. Of course, nothing's stopping you eating it on your own... fatass."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "surf_n_turf"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 15, /datum/reagent/consumable/nutriment/protein = 10, /datum/reagent/consumable/nutriment/vitamin = 10)
@@ -230,7 +230,7 @@
 
 /obj/item/food/spaghetti/nizaya
 	name = "nizaya pasta"
-	desc = "A form of root and nut pasta originally native to the oceanside regions of Tizira. It's similar in texture and appearance to gnocchi."
+	desc = "A form of root and nut pasta originally native to the oceanside regions of Jitarai. It's similar in texture and appearance to gnocchi."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "nizaya"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 2)
@@ -239,7 +239,7 @@
 
 /obj/item/food/spaghetti/snail_nizaya
 	name = "desert snail nizaya"
-	desc = "A high class pasta dish from Tizira's vineyard region of Valyngia. Traditionally made with only the finest Tiziran wine... but the human swill will do, in a pinch."
+	desc = "A high class pasta dish from Jitarai's vineyard region. Traditionally made with only the finest Jitarai wine... but the human swill will do, in a pinch."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "snail_nizaya"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/consumable/nutriment/vitamin = 6)
@@ -277,7 +277,7 @@
 
 /obj/item/food/rootdough
 	name = "root dough"
-	desc = "A root based dough, made with nuts and tubers. Used in a wide range of Tiziran cooking."
+	desc = "A root based dough, made with nuts and tubers. Used in a wide range of Jitarai cooking."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "rootdough"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
@@ -381,18 +381,18 @@
 //Pizza Dishes
 /obj/item/food/pizza/rustic_flatbread
 	name = "rustic flatbread"
-	desc = "A simple Tiziran country dish, popular as a side to meat or fish dishes. Topped with herbs and oil."
+	desc = "A simple Jitarai country dish, popular as a side to meat or fish dishes. Topped with herbs and oil."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "rustic_flatbread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 15, /datum/reagent/consumable/nutriment/vitamin = 10)
 	tastes = list("bread" = 1, "herb" = 1, "oil" = 1, "garlic" = 1)
 	slice_type = null
 	foodtypes = VEGETABLES | NUTS
-	boxtag = "Tiziran Flatbread"
+	boxtag = "Jitarai Flatbread"
 
 /obj/item/food/pizza/italic_flatbread
 	name = "\improper Italic flatbread"
-	desc = "The introduction of human foods to Tizira led to an advancement in unathi cooking- the Italic flatbread is now a common sight on the menus of takeout stores on the planet."
+	desc = "The introduction of human foods to Jitarai led to an advancement in unathi cooking- the Italic flatbread is now a common sight on the menus of takeout stores on the planet."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "italic_flatbread"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 15, /datum/reagent/consumable/nutriment/protein = 10, /datum/reagent/consumable/nutriment/vitamin = 15)
@@ -413,20 +413,9 @@
 	boxtag = "Imperial Victory Flatbread"
 
 //Sandwiches/Toast Dishes
-/obj/item/food/emperor_roll
-	name = "emperor roll"
-	desc = "A popular sandwich on Tizira, named in honour of the Imperial family."
-	icon = 'icons/obj/food/lizard.dmi'
-	icon_state = "emperor_roll"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/protein = 7, /datum/reagent/consumable/nutriment/vitamin = 1)
-	tastes = list("bread" = 1, "cheese" = 1, "liver" = 1, "caviar" = 1)
-	foodtypes = VEGETABLES | NUTS | MEAT | GROSS | SEAFOOD
-	food_flags = FOOD_FINGER_FOOD
-	w_class = WEIGHT_CLASS_SMALL
-
 /obj/item/food/honey_roll
 	name = "honey sweetroll"
-	desc = "A sweetened rootroll with sliced fruit, enjoyed as a seasonal dessert on Tizira."
+	desc = "A sweetened rootroll with sliced fruit, enjoyed as a seasonal dessert on Jitarai."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "honey_roll"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/consumable/honey = 2)
@@ -437,8 +426,8 @@
 
 //Soup Dishes
 /obj/item/food/soup/atrakor_dumplings
-	name = "\improper Atrakor dumpling soup"
-	desc = "A bowl of rich, meaty dumpling soup, traditionally served during the festival of Atrakor's Might on Tizira. The dumplings are shaped like the Night Sky Lord himself."
+	name = "\improper Shanra dumpling soup"
+	desc = "A bowl of rich, meaty dumpling soup."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "atrakor_dumplings"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/nutriment/protein = 4, /datum/reagent/consumable/nutriment/vitamin = 2)
@@ -455,7 +444,7 @@
 	foodtypes = MEAT | VEGETABLES | NUTS
 
 /obj/item/food/soup/black_broth
-	name = "\improper Tiziran black broth"
+	name = "\improper Jitarai black broth"
 	desc = "A bowl of sausage, onion, blood and vinegar, served ice cold. Every bit as rough as it sounds."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "black_broth"
@@ -484,7 +473,7 @@
 //Egg Dishes
 /obj/item/food/black_eggs
 	name = "black scrambled eggs"
-	desc = "A country dish from rural Tizira. Made with eggs, blood, and foraged greens. Traditionally eaten with rootbread and a spicy sauce."
+	desc = "A country dish from rural Jitarai. Made with eggs, blood, and foraged greens. Traditionally eaten with rootbread and a spicy sauce."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "black_eggs"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 4, /datum/reagent/consumable/nutriment/vitamin = 2)
@@ -536,7 +525,7 @@
 
 /obj/item/food/kebab/candied_mushrooms
 	name = "candied mushrooms"
-	desc = "A slightly bizarre dish from Tizira, consisting of seraka mushrooms coated with caramel on a skewer. Carries a pronounced 'sweet and savoury' kick."
+	desc = "A slightly bizarre dish from Jitarai, consisting of seraka mushrooms coated with caramel on a skewer. Carries a pronounced 'sweet and savoury' kick."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "candied_mushrooms"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/consumable/caramel = 3)
@@ -555,7 +544,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/lizard_dumplings
-	name = "\improper Tiziran dumplings"
+	name = "\improper Jitarai dumplings"
 	desc = "Mashed root vegetables, mixed with korta flour and boiled to produce a large, round and slightly spicy dumpling. Commonly eaten in soup."
 	icon = 'icons/obj/food/lizard.dmi'
 	icon_state = "lizard_dumplings"
@@ -586,7 +575,7 @@
 
 /obj/item/food/desert_snails
 	name = "canned desert snails"
-	desc = "Giant snails from the Tiziran desert, packaged in brine. Shells included. Probably best not eaten raw, unless you're a unathi."
+	desc = "Giant snails from the Jitarai desert, packaged in brine. Shells included. Probably best not eaten raw, unless you're a Jinan."
 	icon = 'icons/obj/food/canned.dmi'
 	icon_state = "canned_snails"
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 4, /datum/reagent/consumable/salt = 2)

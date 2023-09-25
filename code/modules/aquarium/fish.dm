@@ -429,7 +429,7 @@
 
 	stable_population = 3
 
-//Tiziran Fish
+//Jitarai Fish
 /obj/item/fish/dwarf_moonfish
 	name = "dwarf moonfish"
 	desc = "Ordinarily in the wild, the Zagoskian moonfish is around the size of a tuna, however through selective breeding a smaller breed suitable for being kept as an aquarium pet has been created."
@@ -440,7 +440,7 @@
 
 /obj/item/fish/gunner_jellyfish
 	name = "gunner jellyfish"
-	desc = "So called due to their resemblance to an artillery shell, the gunner jellyfish is native to Tizira, where it is enjoyed as a delicacy. Produces a mild hallucinogen that is destroyed by cooking."
+	desc = "So called due to their resemblance to an artillery shell, the gunner jellyfish is native to Jitarai, where it is enjoyed as a delicacy. Produces a mild hallucinogen that is destroyed by cooking."
 	icon_state = "gunner_jellyfish"
 	required_fluid_type = AQUARIUM_FLUID_SALTWATER
 	stable_population = 4
@@ -448,7 +448,7 @@
 
 /obj/item/fish/needlefish
 	name = "needlefish"
-	desc = "A tiny, transparent fish which resides in large schools in the oceans of Tizira. A common food for other, larger fish."
+	desc = "A tiny, transparent fish which resides in large schools in the oceans of Jitarai. A common food for other, larger fish."
 	icon_state = "needlefish"
 	required_fluid_type = AQUARIUM_FLUID_SALTWATER
 	stable_population = 12
@@ -456,7 +456,7 @@
 
 /obj/item/fish/armorfish
 	name = "armorfish"
-	desc = "A small shellfish native to Tizira's oceans, known for its exceptionally hard shell. Consumed similarly to prawns."
+	desc = "A small shellfish native to Jitarai's oceans, known for its exceptionally hard shell. Consumed similarly to prawns."
 	icon_state = "armorfish"
 	required_fluid_type = AQUARIUM_FLUID_SALTWATER
 	stable_population = 10

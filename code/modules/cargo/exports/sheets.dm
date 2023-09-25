@@ -37,7 +37,7 @@
 
 /datum/export/stack/skin/lizard
 	cost = CARGO_CRATE_VALUE * 0.75
-	unit_name = "unathi hide"
+	unit_name = "jinan hide"
 	export_types = list(/obj/item/stack/sheet/animalhide/lizard)
 
 /datum/export/stack/skin/gondola

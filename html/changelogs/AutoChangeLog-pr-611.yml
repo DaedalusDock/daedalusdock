@@ -1,0 +1,4 @@
+author: KylerAce
+delete-after: true
+changes:
+  - bugfix: queuing clicks should work correctly now

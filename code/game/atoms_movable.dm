@@ -687,6 +687,9 @@
  * most of the time you want forceMove()FALS
  */
 /atom/movable/proc/abstract_move(atom/new_loc)
+	if(QDELING(src))
+		CRASH("Illegal abstract_move() on [type]!")
+
 	var/atom/old_loc = loc
 	var/direction = get_dir(old_loc, new_loc)
 	loc = new_loc
@@ -766,11 +769,17 @@
 	if(oldarea != newarea)
 		newarea.Entered(src, oldarea)
 
+	if(loc != newloc) // Something moved us out of where we just moved to, Abort!!!
+		return
+
 	Moved(oldloc, direction, FALSE, old_locs)
 
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
+	if(QDELING(src))
+		CRASH("Illegal Move()! on [type]")
+
 	var/atom/movable/pullee = pulling
 	var/turf/current_turf = loc
 	if(!moving_from_pull)
@@ -1184,6 +1193,9 @@
 	return currently_z_moving > old_z_moving_value
 
 /atom/movable/proc/forceMove(atom/destination)
+	if(QDELING(src))
+		CRASH("Illegal forceMove() on [type]!")
+
 	. = FALSE
 	if(destination)
 		. = doMove(destination)
@@ -1291,6 +1303,9 @@
  * * continuous_move - If this check is coming from something in the context of already drifting
  */
 /atom/movable/proc/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	if(anchored)
+		return TRUE
+
 	if(has_gravity())
 		return TRUE
 

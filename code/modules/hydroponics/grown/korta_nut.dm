@@ -1,7 +1,7 @@
 //Korta Nut
 /obj/item/seeds/korta_nut
 	name = "pack of korta nut seeds"
-	desc = "These seeds grow into korta nut bushes, native to Tizira."
+	desc = "These seeds grow into korta nut bushes."
 	icon_state = "seed-korta"
 	species = "kortanut"
 	plantname = "Korta Nut Bush"
@@ -30,7 +30,7 @@
 //Sweet Korta Nut
 /obj/item/seeds/korta_nut/sweet
 	name = "pack of sweet korta nut seeds"
-	desc = "These seeds grow into sweet korta nuts, a mutation of the original species that produces a thick syrup that Tizirans use for desserts."
+	desc = "These seeds grow into sweet korta nuts, a mutation of the original species that produces a thick syrup used as a sweetener."
 	icon_state = "seed-sweetkorta"
 	species = "kortanut"
 	plantname = "Sweet Korta Nut Bush"

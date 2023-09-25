@@ -204,9 +204,7 @@
 			new /obj/item/defibrillator/compact(src)
 		if(87) //1% chance
 			new /obj/item/weed_extract(src)
-		if(88)
-			new /obj/item/reagent_containers/food/drinks/bottle/lizardwine(src)
-		if(89)
+		if(88 to 89)
 			new /obj/item/melee/energy/sword/bananium(src)
 		if(90)
 			new /obj/item/dnainjector/wackymut(src)

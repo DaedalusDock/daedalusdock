@@ -140,3 +140,12 @@
   - bugfix: Security Helmets can now ACTUALLY have flashlights attached again.
   - bugfix: diphenhydramine, antihol, lipolicide, and anacea are craftable again.
   - bugfix: Antihol shows up in the codex.
+2023-09-18:
+  Kapu1178:
+  - balance: Non-advanced health analyzers get chem scan mode back
+  - balance: Health analyzers now output blood oxygenation, and heartrate.
+  - balance: Husking is no longer caused by burn damage.
+  - bugfix: Unstable Mutagen has a recipe
+2023-09-25:
+  francinum:
+  - bugfix: Whiteship custom landing spots work again.

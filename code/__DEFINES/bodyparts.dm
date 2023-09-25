@@ -39,6 +39,8 @@
 #define BP_CUT_AWAY (1<<10)
 /// Limb cannot feel pain
 #define BP_NO_PAIN (1<<11)
+/// Limb is MF dead
+#define BP_DEAD (1<<12)
 
 #define HATCH_CLOSED 1
 #define HATCH_UNSCREWED 2

@@ -443,6 +443,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 	pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
 	. |= wound_life()
+	. |= update_germs()
 
 /obj/item/bodypart/proc/wound_life()
 	if(!LAZYLEN(wounds))
@@ -763,6 +764,10 @@
 		return
 
 	if(HAS_TRAIT(src, TRAIT_PARALYSIS))
+		set_disabled(TRUE)
+		return
+
+	if(bodypart_flags & BP_DEAD)
 		set_disabled(TRUE)
 		return
 

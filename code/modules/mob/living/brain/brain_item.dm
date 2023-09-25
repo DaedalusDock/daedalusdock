@@ -1,4 +1,5 @@
 #define BRAIN_DAMAGE_THRESHOLDS 10
+#define BRAIN_DECAY_RATE 1
 
 /obj/item/organ/brain
 	name = "brain"
@@ -644,3 +645,6 @@
 		trauma_desc += trauma.scan_desc
 		trauma_text += trauma_desc
 	. += tag ? "<span style='font-weight: bold; color:#ff9933'>Cerebral traumas detected: [english_list(trauma_text)]</span>" : "Cerebral traumas detected: [english_list(trauma_text)]"
+
+#undef BRAIN_DAMAGE_THRESHOLDS
+#undef BRAIN_DECAY_RATE

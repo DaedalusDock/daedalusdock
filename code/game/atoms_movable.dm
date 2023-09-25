@@ -95,6 +95,9 @@
 	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
 	var/list/do_afters
 
+	/// Look, we're defining this here so it doesn't need to be redefined 4 times, okay? Sorry.
+	var/germ_level = 0
+
 /mutable_appearance/emissive_blocker
 
 /mutable_appearance/emissive_blocker/New()
@@ -1739,3 +1742,7 @@
 			return FALSE
 
 	return destination.Enter(src, TRUE)
+
+/atom/movable/wash(clean_types)
+	. = ..()
+	germ_level = 0

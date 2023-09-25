@@ -252,9 +252,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// This is on_life() but for when the organ is dead or outside of a mob. Bad name.
 /obj/item/organ/proc/on_death(delta_time, times_fired)
-	if(organ_flags & (ORGAN_SYNTHETIC | ORGAN_FROZEN))
+	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_FROZEN|ORGAN_DEAD))
 		return
-	return applyOrganDamage(ORGAN_DECAY_RATE, updating_health = FALSE)
+
+	germ_level += rand(2,6)
+	if(germ_level >= INFECTION_LEVEL_TWO)
+		germ_level += rand(2,6)
+	if(germ_level >= INFECTION_LEVEL_THREE)
+		set_organ_dead(TRUE)
 
 /// Called once every life tick on every organ in a carbon's body
 /// NOTE: THIS IS VERY HOT. Be careful what you put in here
@@ -268,10 +273,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_SYNTHETIC_EMP) //Synthetic organ has been emped, is now failing.
 		return applyOrganDamage(decay_factor * maxHealth * delta_time, updating_health = FALSE)
 
-	if(!damage) // No sense healing if you're not even hurt bro
+	if(organ_flags & ORGAN_SYNTHETIC)
 		return
 
-	return handle_regeneration()
+	if(owner.bodytemperature > TCRYO && !(organ_flags & ORGAN_FROZEN))
+		handle_antibiotics()
+		. = handle_germ_effects()
+
+
+	if(damage) // No sense healing if you're not even hurt bro
+		. = handle_regeneration() || .
 
 /obj/item/organ/proc/handle_regeneration()
 	if((organ_flags & ORGAN_SYNTHETIC) || CHEM_EFFECT_MAGNITUDE(owner, CE_TOXIN) || owner.undergoing_cardiac_arrest())
@@ -279,6 +290,49 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(damage < maxHealth * 0.1)
 		return applyOrganDamage(-0.1, updating_health = FALSE)
+
+//Germs
+/obj/item/organ/proc/handle_antibiotics()
+	if(!owner || !germ_level)
+		return
+
+	if (!CHEM_EFFECT_MAGNITUDE(owner, CE_ANTIBIOTIC))
+		return
+
+	if (germ_level < INFECTION_LEVEL_ONE)
+		germ_level = 0	//cure instantly
+	else if (germ_level < INFECTION_LEVEL_TWO)
+		germ_level -= 5	//at germ_level == 500, this should cure the infection in 5 minutes
+	else
+		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
+	if(owner.body_position == LYING_DOWN)
+		germ_level -= 2
+	germ_level = max(0, germ_level)
+
+
+/obj/item/organ/proc/handle_germ_effects()
+	//** Handle the effects of infections
+	var/antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/medicine/spaceacillin)
+
+	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(0.3))
+		germ_level--
+
+	if (germ_level >= INFECTION_LEVEL_ONE/2)
+		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes, when immunity is full.
+		if(antibiotics < 5 && prob(round(germ_level/6 * 0.01)))
+			germ_level += 1
+
+	if(germ_level >= INFECTION_LEVEL_ONE)
+		var/fever_temperature = (owner.dna.species.heat_level_1 - owner.dna.species.bodytemp_normal - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.dna.species.bodytemp_normal
+		owner.bodytemperature += clamp((fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, 0, fever_temperature - owner.bodytemperature)
+
+	if (germ_level >= INFECTION_LEVEL_TWO)
+		//spread germs
+		if (antibiotics < 5 && ownerlimb.germ_level < germ_level && ( ownerlimb.germ_level < INFECTION_LEVEL_ONE*2 || prob(0.3) ))
+			ownerlimb.germ_level++
+
+		if (prob(3))	//about once every 30 seconds
+			. = applyOrganDamage(1,silent=prob(30), updating_health = FALSE)
 
 /obj/item/organ/examine(mob/user)
 	. = ..()

@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Integrated Positronic Chassis & Jinan variant
+  - bugfix: Pain flashes actually show up in client huds now
+  - balance: Increased pain taken from brute damage by 50% (0.4 >> 0.6)
+  - bugfix: Carbon health values now only care about brain loss.

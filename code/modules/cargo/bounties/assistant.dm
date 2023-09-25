@@ -82,7 +82,7 @@
 
 /datum/bounty/item/assistant/donkpocket
 	name = "Donk-Pockets"
-	description = "Consumer safety recall: Warning. Donk-Pockets manufactured in the past year contain hazardous unathi biomatter. Return units to CentCom immediately."
+	description = "Consumer safety recall: Warning. Donk-Pockets manufactured in the past year contain hazardous biomatter. Return units to management immediately."
 	reward = CARGO_CRATE_VALUE * 6
 	required_count = 10
 	wanted_types = list(/obj/item/food/donkpocket = TRUE)

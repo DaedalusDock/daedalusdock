@@ -26,7 +26,7 @@
 
 /datum/bounty/item/mining/bone_armor
 	name = "Bone Armor"
-	description = "Station 14 has volunteered their unathi crew for ballistic armor testing. Ship over some bone armor."
+	description = "Station 14 has volunteered their Jinan crew for ballistic armor testing. Ship over some bone armor."
 	reward = CARGO_CRATE_VALUE * 10
 	wanted_types = list(/obj/item/clothing/suit/armor/bone = TRUE)
 

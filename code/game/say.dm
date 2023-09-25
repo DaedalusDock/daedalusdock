@@ -86,7 +86,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/messagepart
 	var/languageicon = ""
 	if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
-		messagepart = message_mods[MODE_CUSTOM_SAY_EMOTE]
+		messagepart = "<span class='emote'>[message_mods[MODE_CUSTOM_SAY_EMOTE]]</span>"
 	else
 		messagepart = lang_treat(speaker, message_language, raw_message, spans, message_mods)
 

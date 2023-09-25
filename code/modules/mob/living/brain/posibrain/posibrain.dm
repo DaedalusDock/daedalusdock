@@ -86,6 +86,23 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		if(istype(ghost))
 			activate(ghost)
 
+/obj/item/organ/posibrain/PreRevivalInsertion(special)
+	if(brainmob)
+		if(owner.key)
+			owner.ghostize()
+
+		if(brainmob.mind)
+			brainmob.mind.transfer_to(owner)
+		else
+			owner.key = brainmob.key
+
+		owner.set_suicide(brainmob.suiciding)
+
+		QDEL_NULL(brainmob)
+
+	else
+		owner.set_suicide(suicided)
+
 /obj/item/organ/posibrain/Insert(mob/living/carbon/C, special, drop_if_replaced)
 	. = ..()
 	if(!.)
@@ -93,25 +110,9 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 
 	name = initial(name)
 
-	if(brainmob)
-		if(C.key)
-			C.ghostize()
-
-		if(brainmob.mind)
-			brainmob.mind.transfer_to(C)
-		else
-			C.key = brainmob.key
-
-		C.set_suicide(brainmob.suiciding)
-
-		QDEL_NULL(brainmob)
-
-	else
-		C.set_suicide(suicided)
-
-/obj/item/organ/posibrain/Remove(mob/living/carbon/organ_owner, special, no_id_transfer)
+/obj/item/organ/posibrain/Remove(mob/living/carbon/organ_owner, special)
 	. = ..()
-	if((!QDELING(src) || !QDELETED(owner)) && !no_id_transfer && !special)
+	if((!QDELING(src) || !QDELETED(owner)) && !special)
 		transfer_identity(organ_owner)
 
 /obj/item/organ/posibrain/on_life()

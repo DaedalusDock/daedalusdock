@@ -51,35 +51,39 @@
 	. = ..()
 	set_max_health(maxHealth)
 
-/obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0,no_id_transfer = FALSE)
+/obj/item/organ/brain/PreRevivalInsertion(special)
+	if(owner.mind && owner.mind.has_antag_datum(/datum/antagonist/changeling) && !special) //congrats, you're trapped in a body you don't control
+		return
+
+	if(brainmob)
+		if(owner.key)
+			owner.ghostize()
+
+		if(brainmob.mind)
+			brainmob.mind.transfer_to(owner)
+		else
+			owner.key = brainmob.key
+
+		owner.set_suicide(brainmob.suiciding)
+
+		QDEL_NULL(brainmob)
+
+	else
+		owner.set_suicide(suicided)
+
+/obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0)
 	. = ..()
 	if(!.)
 		return
 
 	name = "brain"
 
-	if(C.mind && C.mind.has_antag_datum(/datum/antagonist/changeling) && !no_id_transfer) //congrats, you're trapped in a body you don't control
+	if(C.mind && C.mind.has_antag_datum(/datum/antagonist/changeling) && !special) //congrats, you're trapped in a body you don't control
 		if(brainmob && !(C.stat == DEAD || (HAS_TRAIT(C, TRAIT_DEATHCOMA))))
 			to_chat(brainmob, span_danger("You can't feel your body! You're still just a brain!"))
 		forceMove(C)
 		C.update_body_parts()
 		return
-
-	if(brainmob)
-		if(C.key)
-			C.ghostize()
-
-		if(brainmob.mind)
-			brainmob.mind.transfer_to(C)
-		else
-			C.key = brainmob.key
-
-		C.set_suicide(brainmob.suiciding)
-
-		QDEL_NULL(brainmob)
-
-	else
-		C.set_suicide(suicided)
 
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
@@ -89,7 +93,7 @@
 	//Update the body's icon so it doesnt appear debrained anymore
 	C.update_body_parts()
 
-/obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0, no_id_transfer = FALSE)
+/obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0)
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
 	if(!QDELETED(C) && length(skillchips))
 		to_chat(C, span_notice("You feel your skillchips enable emergency power saving mode, deactivating as your brain leaves your body..."))
@@ -105,7 +109,7 @@
 		BT.on_lose(TRUE)
 		BT.owner = null
 
-	if((!QDELING(src) || !QDELETED(owner)) && !no_id_transfer && !special)
+	if((!QDELING(src) || !QDELETED(owner)) && !special)
 		transfer_identity(C)
 	C.update_body_parts()
 

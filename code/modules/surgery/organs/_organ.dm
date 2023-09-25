@@ -156,11 +156,19 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		reciever.cosmetic_organs.Add(src)
 		reciever.update_body_parts()
 
+	PreRevivalInsertion(special)
 	if(!special && !cosmetic_only && owner.stat == DEAD && (organ_flags & ORGAN_VITAL) && !(organ_flags & ORGAN_DEAD) && owner.needs_organ(slot))
 		attempt_vital_organ_revival(owner)
 
 	return TRUE
 
+/*
+ * Called before attempt_vital_organ_revival during a successful Insert()
+ *
+ * special - "quick swapping" an organ out - when TRUE, the mob will be unaffected by not having that organ for the moment
+ */
+/obj/item/organ/proc/PreRevivalInsertion(special)
+	return
 
 /*
  * Remove the organ from the select mob.

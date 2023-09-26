@@ -87,6 +87,14 @@
 
 	GLOB.emote_list = init_emote_list()
 
+	for(var/datum/grab/G as anything in subtypesof(/datum/grab))
+		if(isabstract(G))
+			continue
+		GLOB.all_grabstates[G.type] = G
+	for(var/path in GLOB.all_grabstates)
+		var/datum/grab/G = GLOB.all_grabstates[path]
+		G.refresh_updown()
+
 	init_crafting_recipes(GLOB.crafting_recipes)
 	init_loadout_references()
 	init_augment_references()

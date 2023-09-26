@@ -348,3 +348,16 @@
 
 	visible_message(span_danger("[attack_message_spectator]"), vision_distance = COMBAT_MESSAGE_RANGE)
 	return 1
+
+/**
+ * Interaction handler for being clicked on with a grab. This is called regardless of user intent.
+ *
+ * **Parameters**:
+ * - `grab` - The grab item being used.
+ * - `click_params` - List of click parameters.
+ *
+ * Returns boolean to indicate whether the attack call was handled or not. If `FALSE`, the next `use_*` proc in the
+ * resolve chain will be called.
+ */
+/atom/proc/use_grab(obj/item/hand_item/grab/grab, list/params)
+	return FALSE

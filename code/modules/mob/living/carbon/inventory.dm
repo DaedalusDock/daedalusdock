@@ -299,3 +299,11 @@
 		covered_flags |= worn_item.body_parts_covered
 
 	return covered_flags
+
+///Returns an item that is covering a bodypart.
+/mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP)
+	return get_item_covering_zone(body_zone2cover_flags(BP.body_zone))
+
+///Returns an item that is covering a body_zone (BODY_ZONE_CHEST, etc)
+/mob/living/carbon/proc/get_item_covering_zone(zone)
+	for(var/obj/item in get_all_worn_items())

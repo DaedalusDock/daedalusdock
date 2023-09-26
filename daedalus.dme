@@ -2979,6 +2979,8 @@
 #include "code\modules\food_and_drinks\restaurant\custom_order.dm"
 #include "code\modules\food_and_drinks\restaurant\generic_venues.dm"
 #include "code\modules\food_and_drinks\restaurant\customers\_customer.dm"
+#include "code\modules\grab\grab_datum.dm"
+#include "code\modules\grab\grab_object.dm"
 #include "code\modules\holiday\easter.dm"
 #include "code\modules\holiday\foreign_calendar.dm"
 #include "code\modules\holiday\holidays.dm"

@@ -2218,3 +2218,9 @@
 //Currently only changed by Observers to be hearing through their orbit target.
 /atom/proc/hear_location()
 	return src
+
+///Reset plane and layer values to their defaults.
+/atom/proc/reset_plane_and_layer()
+	plane = initial(plane)
+	layer = initial(layer)
+

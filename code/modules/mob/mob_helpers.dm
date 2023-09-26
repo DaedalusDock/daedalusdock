@@ -516,3 +516,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 /// Can this mob SMELL THE SMELLY SMELLS?
 /mob/proc/can_smell(intensity)
 	return FALSE
+
+//returns the number of size categories between two mob_sizes, rounded. Positive means A is larger than B
+/proc/mob_size_difference(mob_size_A, mob_size_B)
+	return round(log(2, mob_size_A/mob_size_B), 1)

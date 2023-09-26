@@ -88,3 +88,6 @@
 
 	///A lazylist of preference-applied appearance mods present on this human. Type:Instance
 	var/list/appearance_mods
+
+	///A lazylist of grab objects gripping us
+	var/list/grabbed_by

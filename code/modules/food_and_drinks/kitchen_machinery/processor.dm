@@ -126,8 +126,9 @@
 		visible_message(span_warning("[user] stuffs [pushed_mob] into [src]!"))
 		pushed_mob.forceMove(src)
 		LAZYADD(processor_contents, pushed_mob)
-		user.stop_pulling()
+		user.release_all_grabs()
 		return
+
 	if(!LAZYLEN(processor_contents))
 		to_chat(user, span_warning("[src] is empty!"))
 		return TRUE

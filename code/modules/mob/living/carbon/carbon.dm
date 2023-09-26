@@ -160,7 +160,7 @@
 				thrown_thing = throwable_mob
 				if(grab_state >= GRAB_NECK)
 					neckgrab_throw = TRUE
-				stop_pulling()
+				release_all_grabs()
 				if(HAS_TRAIT(src, TRAIT_PACIFISM))
 					to_chat(src, span_notice("You gently let go of [throwable_mob]."))
 					return
@@ -776,7 +776,7 @@
 /mob/living/carbon/proc/update_handcuffed()
 	if(handcuffed)
 		drop_all_held_items()
-		stop_pulling()
+		release_all_grabs()
 		throw_alert(ALERT_HANDCUFFED, /atom/movable/screen/alert/restrained/handcuffed, new_master = src.handcuffed)
 	else
 		clear_alert(ALERT_HANDCUFFED)

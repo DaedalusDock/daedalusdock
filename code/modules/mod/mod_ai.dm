@@ -74,7 +74,7 @@
 #define AI_FALL_TIME 1 SECONDS
 
 /obj/item/mod/control/relaymove(mob/user, direction)
-	if((!active && wearer) || get_charge() < CHARGE_PER_STEP  || user != ai || !COOLDOWN_FINISHED(src, cooldown_mod_move) || (wearer?.pulledby?.grab_state > GRAB_PASSIVE))
+	if((!active && wearer) || get_charge() < CHARGE_PER_STEP  || user != ai || !COOLDOWN_FINISHED(src, cooldown_mod_move) || (wearer.check_grab_severity(GRAB_AGGRESSIVE)))
 		return FALSE
 	var/timemodifier = MOVE_DELAY * (ISDIAGONALDIR(direction) ? 2 : 1) * (wearer ? WEARER_DELAY : LONE_DELAY)
 	if(wearer && !wearer.Process_Spacemove(direction))

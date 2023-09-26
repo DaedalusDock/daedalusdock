@@ -309,7 +309,7 @@
 			for(var/mob/living/M in contents)
 				if(++mobs_stored >= mob_storage_capacity)
 					return FALSE
-		L.stop_pulling()
+		L.release_all_grabs()
 
 	else if(istype(AM, /obj/structure/closet))
 		return FALSE

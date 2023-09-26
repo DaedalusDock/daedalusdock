@@ -133,18 +133,20 @@
 				ContactContractDisease(D)
 
 		//Should stop you pushing a restrained person out of the way
-		if(L.pulledby && L.pulledby != src && HAS_TRAIT(L, TRAIT_RESTRAINED))
+		if(LAZYLEN(L.grabbed_by) && !is_grabbing(L) && HAS_TRAIT(L, TRAIT_RESTRAINED))
 			if(!(world.time % 5))
 				to_chat(src, span_warning("[L] is restrained, you cannot push past."))
 			return TRUE
 
-		if(L.pulling)
-			if(ismob(L.pulling))
-				var/mob/P = L.pulling
-				if(HAS_TRAIT(P, TRAIT_RESTRAINED))
-					if(!(world.time % 5))
-						to_chat(src, span_warning("[L] is restraining [P], you cannot push past."))
-					return TRUE
+		var/list/grabs = L.get_active_grabs()
+		if(length(grabs))
+			for(var/obj/item/hand_item/grab/G in grabs)
+				if(ismob(G.affecting))
+					var/mob/P = L.pulling
+					if(HAS_TRAIT(P, TRAIT_RESTRAINED))
+						if(!(world.time % 5))
+							to_chat(src, span_warning("[L] is restraining [P], you cannot push past."))
+						return TRUE
 
 	if(moving_diagonally)//no mob swap during diagonal moves.
 		return TRUE
@@ -283,8 +285,9 @@
 			for(var/obj/structure/window/win in get_step(W, dir_to_target))
 				now_pushing = FALSE
 				return
-	if(pulling == AM)
-		stop_pulling()
+
+	release_grab(AM)
+
 	var/current_dir
 	if(isliving(AM))
 		current_dir = AM.dir
@@ -426,8 +429,6 @@
 
 	if(istype(AM) && Adjacent(AM))
 		start_pulling(AM)
-	else if(!combat_mode) //Don;'t cancel pulls if misclicking in combat mode.
-		stop_pulling()
 
 /mob/living/stop_pulling()
 	animate_interact(pulling, INTERACT_UNPULL)
@@ -440,7 +441,7 @@
 /mob/living/verb/stop_pulling1()
 	set name = "Stop Pulling"
 	set category = "IC"
-	stop_pulling()
+	release_all_grabs()
 
 //same as above
 /mob/living/pointed(atom/A as mob|obj|turf in view(client.view, src))
@@ -1240,7 +1241,7 @@
 	return
 
 /mob/living/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
-	stop_pulling()
+	release_all_grabs()
 	. = ..()
 
 // Used in polymorph code to shapeshift mobs into other creatures
@@ -1599,7 +1600,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/forceMove(atom/destination)
 	if(!currently_z_moving)
-		stop_pulling()
+		release_all_grabs()
+		free_from_all_grabs()
 		if(buckled && !HAS_TRAIT(src, TRAIT_CANNOT_BE_UNBUCKLED))
 			buckled.unbuckle_mob(src, force = TRUE)
 		if(has_buckled_mobs())

@@ -88,7 +88,7 @@
 	update_health_hud()
 	med_hud_set_health()
 	med_hud_set_status()
-	stop_pulling()
+	release_all_grabs()
 
 	set_ssd_indicator(FALSE)
 	set_typing_indicator(FALSE)

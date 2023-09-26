@@ -337,8 +337,9 @@
 	. = ..()
 	if(!.)
 		return
-	if(istype(mod.wearer.pulling, /obj/structure/closet))
-		mod.wearer.stop_pulling()
+	for(var/obj/item/hand_item/grab/G in mod.wearer.get_active_grabs())
+		if(istype(G.affecting, /obj/structure/closet))
+			qdel(G)
 
 /obj/item/mod/module/magnet/proc/check_locker(obj/structure/closet/locker)
 	if(!mod?.wearer)

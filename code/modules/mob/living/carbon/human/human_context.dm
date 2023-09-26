@@ -7,16 +7,9 @@
 	if (user == src)
 		return .
 
-	if (pulledby == user)
-		switch (user.grab_state)
-			if (GRAB_PASSIVE)
-				context[SCREENTIP_CONTEXT_CTRL_LMB] = "Grip"
-			if (GRAB_AGGRESSIVE)
-				context[SCREENTIP_CONTEXT_CTRL_LMB] = "Choke"
-			if (GRAB_NECK)
-				context[SCREENTIP_CONTEXT_CTRL_LMB] = "Strangle"
-			else
-				return .
+	var/obj/item/hand_item/grab/G = user.is_grabbing(src)
+	if (G)
+		G.current_grab.add_context(context, user)
 	else
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Pull"
 

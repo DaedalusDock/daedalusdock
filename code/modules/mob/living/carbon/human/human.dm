@@ -852,7 +852,8 @@
 			set_species(newtype)
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
-	if(pulling != M || grab_state != GRAB_AGGRESSIVE || stat != CONSCIOUS)
+	var/obj/item/hand_item/grab/G = is_grabbing(M)
+	if(!G || G.current_grab.damage_stage != GRAB_AGGRESSIVE || stat != CONSCIOUS)
 		return FALSE
 
 	//If they dragged themselves to you and you're currently aggressively grabbing them try to piggyback

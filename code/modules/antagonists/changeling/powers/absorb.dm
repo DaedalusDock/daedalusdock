@@ -16,10 +16,11 @@
 		to_chat(owner, span_warning("We are already absorbing!"))
 		return
 
-	if(!owner.pulling || !iscarbon(owner.pulling))
+	var/obj/item/hand_item/grab/G = owner.get_active_grabs()?[1]
+	if(!G)
 		to_chat(owner, span_warning("We must be grabbing a creature to absorb them!"))
 		return
-	if(owner.grab_state <= GRAB_NECK)
+	if(!G.can_absorb)
 		to_chat(owner, span_warning("We must have a tighter grip to absorb this creature!"))
 		return
 

@@ -25,7 +25,7 @@
 /*
 	This section is for overrides of existing procs.
 */
-/obj/item/hand_item/grab/Initialize(mapload, atom/movable/target, datum/grab/grab_type)
+/obj/item/hand_item/grab/Initialize(mapload, atom/movable/target, datum/grab/grab_type, defer_hand)
 	. = ..()
 	current_grab = GLOB.all_grabstates[grab_type]
 
@@ -34,12 +34,10 @@
 		return INITIALIZE_HINT_QDEL
 
 	affecting = target
-	if(!istype(affecting))
+	if(!istype(assailant) || !assailant.add_grab(src, defer_hand = defer_hand))
 		return INITIALIZE_HINT_QDEL
 	target_zone = assailant.zone_selected
 
-	if(!can_grab())
-		return INITIALIZE_HINT_QDEL
 	if(!setup())
 		return INITIALIZE_HINT_QDEL
 
@@ -48,7 +46,9 @@
 		name = "[initial(name)] ([BP.plaintext_zone])"
 		RegisterSignal(affecting, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(on_limb_loss))
 
-	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_del))
+	RegisterSignal(assailant, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
+	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
+	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
 
 	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
 	RegisterSignal(assailant, COMSIG_MOVABLE_MOVED, PROC_REF(relay_user_move))
@@ -87,14 +87,16 @@
 	// End workaround
 	if (QDELETED(src) || !assailant || !current_grab)
 		return TRUE
-	if(A.attack_grab(src, params) || current_grab.hit_with_grab(src, A, params)) //If there is no use_grab override or if it returns FALSE; then will behave according to intent.
+	if(A.attack_grab(assailant, affecting, src, params) || current_grab.hit_with_grab(src, A, params)) //If there is no use_grab override or if it returns FALSE; then will behave according to intent.
 		return TRUE
 	return ..()
 
 /obj/item/hand_item/grab/Destroy()
+	if(affecting && assailant)
+		current_grab.let_go(src)
 	if(affecting)
 		reset_position()
-		affecting.grabbed_by -= src
+		LAZYREMOVE(affecting.grabbed_by, src)
 		affecting.reset_plane_and_layer()
 		affecting = null
 	assailant = null
@@ -142,50 +144,13 @@
 		return
 	current_grab.let_go(src)
 
-/obj/item/hand_item/grab/proc/can_grab()
-	if(!assailant.Adjacent(affecting))
-		return FALSE
-
-	if(assailant.anchored || affecting.anchored)
-		return FALSE
-
-	if(assailant.get_active_hand())
-		to_chat(assailant, span_warning("You can't grab someone if your hand is full."))
-		return FALSE
-
-	if(length(assailant.grabbed_by))
-		to_chat(assailant, span_warning("You can't grab someone if you're being grabbed."))
-		return FALSE
-
-	var/obj/item/bodypart/BP = get_targeted_bodypart()
-	if(!istype(BP))
-		to_chat(assailant, span_warning("\The [affecting] is missing that body part!"))
-		return FALSE
-
-	if(assailant == affecting)
-		if(!current_grab.can_grab_self)	//let's not nab ourselves
-			to_chat(assailant, span_warning("You can't grab yourself!"))
-			return FALSE
-
-		var/active_hand = assailant.get_active_hand()
-		if(BP == active_hand)
-			to_chat(assailant, span_warning("You can't grab your own [BP.plaintext_zone] with itself!"))
-			return FALSE
-
-	for(var/obj/item/hand_item/grab/G in affecting.grabbed_by)
-		if(G.assailant == assailant && G.target_zone == target_zone)
-			var/obj/item/bodypart/targeted = G.get_targeted_bodypart()
-			to_chat(assailant, span_warning("You already grabbed [affecting]'s [targeted.plaintext_zone]."))
-			return FALSE
-	return TRUE
-
 // This will run from Initialize, after can_grab and other checks have succeeded. Must call parent; returning FALSE means failure and qdels the grab.
 /obj/item/hand_item/grab/proc/setup()
 	if(!assailant.put_in_active_hand(src))
 		return FALSE // This should succeed as we checked the hand, but if not we abort here.
 	if(!current_grab.setup(src))
 		return FALSE
-	affecting.grabbed_by += src // This is how we handle affecting being deleted.
+	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
 
 	adjust_position()
 	action_used()
@@ -194,6 +159,7 @@
 
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 	update_appearance()
+	current_grab.update_grab_effects(null)
 	return TRUE
 
 // Returns the bodypart of the grabbed person that the grabber is targeting
@@ -292,6 +258,7 @@
 
 	if(isliving(affecting))
 		return affecting
+
 /// Primarily used for do_after() callbacks, checks if the grab item is still holding onto something
 /obj/item/hand_item/grab/proc/is_grabbing(atom/movable/AM)
 	return affecting == AM
@@ -305,52 +272,24 @@
 	current_grab.assailant_moved(src)
 
 /// Target deleted, ABORT
-/obj/item/hand_item/grab/proc/target_del(datum/source)
+/obj/item/hand_item/grab/proc/target_or_owner_del(datum/source)
 	SIGNAL_HANDLER
 	qdel(src)
 
-/*
-	This section is for the simple procs used to return things from current_grab.
-*/
-/obj/item/hand_item/grab/proc/stop_move()
-	return current_grab.stop_move
+/// If something tries to throw the target.
+/obj/item/hand_item/grab/proc/target_thrown(atom/movable/source, list/arguments)
+	SIGNAL_HANDLER
 
-/obj/item/hand_item/grab/proc/force_stand()
-	return current_grab.force_stand
+	if(!current_grab.stop_move)
+		return
+	if(arguments[4] == assailant && current_grab.can_throw)
+		return
+
+	return COMPONENT_CANCEL_THROW
 
 /obj/item/hand_item/grab/attackby(obj/W, mob/user)
 	if(user == assailant)
 		current_grab.item_attack(src, W)
-
-/obj/item/hand_item/grab/proc/can_absorb()
-	return current_grab.can_absorb
-
-/obj/item/hand_item/grab/proc/assailant_reverse_facing()
-	return current_grab.reverse_facing
-
-/obj/item/hand_item/grab/proc/shield_assailant()
-	return current_grab.shield_assailant
-
-/obj/item/hand_item/grab/proc/point_blank_mult()
-	return current_grab.point_blank_mult
-
-/obj/item/hand_item/grab/proc/damage_stage()
-	return current_grab.damage_stage
-
-/obj/item/hand_item/grab/proc/force_danger()
-	return current_grab.force_danger
-
-/obj/item/hand_item/grab/proc/grab_slowdown()
-	return current_grab.grab_slowdown
-
-/obj/item/hand_item/grab/proc/ladder_carry()
-	return current_grab.ladder_carry
-
-/obj/item/hand_item/grab/proc/assailant_moved()
-	current_grab.assailant_moved(src)
-
-/obj/item/hand_item/grab/proc/restrains()
-	return current_grab.restrains
 
 /obj/item/hand_item/grab/proc/resolve_openhand_attack()
 	return current_grab.resolve_openhand_attack(src)

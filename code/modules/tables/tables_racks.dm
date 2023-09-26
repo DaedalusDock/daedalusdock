@@ -98,10 +98,6 @@
 /obj/structure/table/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/obj/structure/table/attack_hand(mob/living/user, list/modifiers)
-	try_place_pulled_onto_table(user)
-	return ..()
-
 /obj/structure/table/attack_tk(mob/user)
 	return
 
@@ -238,23 +234,29 @@
 	else
 		layer = TABLE_LAYER
 
-/obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user)
-	if(!Adjacent(user) || !user.pulling)
+/obj/structure/table/attack_grab(mob/living/user, obj/item/hand_item/grab/grab, list/params)
+	try_place_pulled_onto_table(user, G.affecting)
+
+/obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user, atom/movable/target, obj/item/hand_item/grab/grab)
+	if(!Adjacent(user))
 		return
 
-	if(isliving(user.pulling))
-		var/mob/living/pushed_mob = user.pulling
+	if(isliving(target))
+		var/mob/living/pushed_mob = target
 		if(pushed_mob.buckled)
 			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 			return
 		if(user.combat_mode)
-			switch(user.grab_state)
-				if(GRAB_PASSIVE)
+			switch(grab.current_grab.type)
+				if(/datum/grab/simple, /datum/grab/normal)
 					to_chat(user, span_warning("You need a better grip to do that!"))
 					return
-				if(GRAB_AGGRESSIVE)
+				#warn aggro grab
+				/*
+				if(/datum/grab/aggressive)
 					tablepush(user, pushed_mob)
-				if(GRAB_NECK to GRAB_KILL)
+				*/
+				else
 					tablelimbsmash(user, pushed_mob)
 		else
 			pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
@@ -263,13 +265,15 @@
 				tableplace(user, pushed_mob)
 			else
 				return
-		user.stop_pulling()
-	else if(user.pulling.pass_flags & PASSTABLE)
+		user.release_all_grabs()
+
+	else if(target.pass_flags & PASSTABLE)
 		user.Move_Pulled(src)
-		if (user.pulling.loc == loc)
+		if (target.loc == loc)
 			user.visible_message(span_notice("[user] places [user.pulling] onto [src]."),
 				span_notice("You place [user.pulling] onto [src]."))
-			user.stop_pulling()
+
+			user.release_grab(target)
 
 /obj/structure/table/proc/tableplace(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.forceMove(loc)

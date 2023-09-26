@@ -83,7 +83,7 @@
 			losebreath = max(2, losebreath + 1)
 
 		else if(!getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-			if((pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_DEAD))
+			if((check_grab_severity(GRAB_NECK)) || (lungs?.organ_flags & ORGAN_DEAD))
 				losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
 	// Recover from breath loss

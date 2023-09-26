@@ -55,7 +55,9 @@
 		. = fold_out(force)
 		return
 	visible_message(span_notice("[src] deactivates its holochassis emitter and folds back into a compact card!"))
-	stop_pulling()
+
+	release_all_grabs()
+
 	if(ismobholder(loc))
 		var/obj/item/mob_holder/MH = loc
 		MH.release_mob(display_messages = FALSE)

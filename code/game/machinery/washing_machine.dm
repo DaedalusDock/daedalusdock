@@ -369,21 +369,28 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		to_chat(user, span_warning("[src] is busy!"))
 		return
 
-	if(user.pulling && isliving(user.pulling))
-		var/mob/living/L = user.pulling
-		if(L.buckled || L.has_buckled_mobs())
-			return
-		if(state_open)
-			if(istype(L, /mob/living/simple_animal/pet))
-				L.forceMove(src)
-				update_appearance()
-		return
-
 	if(!state_open)
 		open_machine()
 	else
 		state_open = FALSE //close the door
 		update_appearance()
+
+/obj/machinery/washing_machine/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(busy)
+		to_chat(user, span_warning("[src] is busy!"))
+		return
+
+	if(!isliving(victim))
+		return
+
+	var/mob/living/L = victim
+	if(L.buckled || L.has_buckled_mobs())
+		return
+	if(state_open)
+		if(istype(L, /mob/living/simple_animal/pet))
+			L.forceMove(src)
+			update_appearance()
 
 /obj/machinery/washing_machine/attack_hand_secondary(mob/user, modifiers)
 	. = ..()

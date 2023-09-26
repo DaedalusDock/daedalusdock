@@ -92,14 +92,14 @@
 	// This way you can't ride two movements at once while drifting, since that'd be dumb as fuck
 	RegisterSignal(movable_parent, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, PROC_REF(handle_glidesize_update))
 	// If you stop pulling something mid drift, I want it to retain that momentum
-	RegisterSignal(movable_parent, COMSIG_ATOM_NO_LONGER_PULLING, PROC_REF(stopped_pulling))
+	RegisterSignal(movable_parent, COMSIG_ATOM_NO_LONGER_GRABBING, PROC_REF(stopped_pulling))
 
 /datum/component/drift/proc/drifting_stop()
 	SIGNAL_HANDLER
 	var/atom/movable/movable_parent = parent
 	movable_parent.inertia_moving = FALSE
 	ignore_next_glide = FALSE
-	UnregisterSignal(movable_parent, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, COMSIG_ATOM_NO_LONGER_PULLING))
+	UnregisterSignal(movable_parent, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, COMSIG_ATOM_NO_LONGER_GRABBING))
 
 /datum/component/drift/proc/before_move(datum/source)
 	SIGNAL_HANDLER

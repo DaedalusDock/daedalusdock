@@ -191,7 +191,8 @@
 		to_chat(A, span_warning("You fail to disarm [D]!"))
 		playsound(D, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
 	log_combat(A, D, "disarmed (CQC)", "[I ? " grabbing \the [I]" : ""]")
-	if(restraining && A.pulling == D)
+
+	if(restraining && A.is_grabbing(D))
 		log_combat(A, D, "knocked out (Chokehold)(CQC)")
 		D.visible_message(span_danger("[A] puts [D] into a chokehold!"), \
 						span_userdanger("You're put into a chokehold by [A]!"), span_hear("You hear shuffling and a muffled groan!"), null, A)

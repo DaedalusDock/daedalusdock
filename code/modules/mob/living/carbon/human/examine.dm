@@ -208,7 +208,9 @@
 		msg += "[t_He] look[p_s()] a little soaked.\n"
 
 
-	if(pulledby?.grab_state)
+	for(var/obj/item/hand_item/grab/G in grabbed_by)
+		if(G.current_grab.can_move)
+			continue
 		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
 
 	if(nutrition < NUTRITION_LEVEL_STARVING - 50)

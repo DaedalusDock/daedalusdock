@@ -13,7 +13,6 @@
 	var/throw_range = 7
 	///Max range this atom can be thrown via telekinesis
 	var/tk_throw_range = 10
-	var/mob/pulledby = null
 	var/initial_language_holder = /datum/language_holder
 	var/datum/language_holder/language_holder // Mindless mobs and objects need language too, some times. Mind holder takes prescedence.
 	var/verb_say = "says"
@@ -64,7 +63,6 @@
 	var/movement_type = GROUND
 
 	var/atom/movable/pulling
-	var/grab_state = 0
 	var/throwforce = 0
 	var/datum/component/orbiter/orbiting
 
@@ -169,11 +167,6 @@
 		RemoveElement(/datum/element/light_blocking)
 
 	invisibility = INVISIBILITY_ABSTRACT
-
-	if(pulledby)
-		pulledby.stop_pulling()
-	if(pulling)
-		stop_pulling()
 
 	if(orbiting)
 		orbiting.end_orbit(src)
@@ -566,9 +559,6 @@
 		if(NAMEOF(src, anchored))
 			set_anchored(var_value)
 			. = TRUE
-		if(NAMEOF(src, pulledby))
-			set_pulledby(var_value)
-			. = TRUE
 		if(NAMEOF(src, glide_size))
 			set_glide_size(var_value)
 			. = TRUE
@@ -637,12 +627,12 @@
 	if(!pulling)
 		return FALSE
 	if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
-		stop_pulling()
+		release_grab(moving_atom)
 		return FALSE
 	if(isliving(pulling))
 		var/mob/living/pulling_mob = pulling
 		if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
-			stop_pulling()
+			release_grab(moving_atom)
 			return FALSE
 	if(moving_atom == loc && pulling.density)
 		return FALSE
@@ -664,6 +654,7 @@
  * If z_allowed is TRUE, the z level of the pulling will be ignored.This is to allow things to be dragged up and down stairs.
  */
 /atom/movable/proc/check_pulling(only_pulling = FALSE, z_allowed = FALSE)
+	#warn this probably needs a fat rewrite to use grab datums
 	if(pulling)
 		if(get_dist(src, pulling) > 1 || (z != pulling.z && !z_allowed))
 			stop_pulling()
@@ -857,7 +848,8 @@
 		set_currently_z_moving(FALSE, TRUE)
 		return
 
-	if(. && pulling && pulling == pullee && pulling != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
+	#warn FUUUUCK
+	if(. && LAZYLEN && pulling == pullee && pulling != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
 		if(pulling.anchored)
 			stop_pulling()
 		else
@@ -1376,9 +1368,6 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_THROW, args) & COMPONENT_CANCEL_THROW)
 		return
 
-	if (pulledby)
-		pulledby.stop_pulling()
-
 	//They are moving! Wouldn't it be cool if we calculated their momentum and added it to the throw?
 	if (thrower && thrower.last_move && thrower.client && thrower.client.move_delay >= world.time + world.tick_lag*2)
 		var/user_momentum = thrower.cached_multiplicative_slowdown
@@ -1435,8 +1424,9 @@
 	thrown_thing.diagonal_error = dist_x/2 - dist_y
 	thrown_thing.start_time = world.time
 
-	if(pulledby)
-		pulledby.stop_pulling()
+	if(LAZYLEN(grabbed_by))
+		free_from_all_grabs()
+
 	if (quickstart && (throwing || SSthrowing.state == SS_RUNNING)) //Avoid stack overflow edgecases.
 		quickstart = FALSE
 	throwing = thrown_thing
@@ -1640,44 +1630,6 @@
 //Returns an atom's power cell, if it has one. Overload for individual items.
 /atom/movable/proc/get_cell()
 	return
-
-/atom/movable/proc/can_be_pulled(user, grab_state, force)
-	if(src == user || !isturf(loc))
-		return FALSE
-	if(SEND_SIGNAL(src, COMSIG_ATOM_CAN_BE_PULLED, user) & COMSIG_ATOM_CANT_PULL)
-		return FALSE
-	if(anchored || throwing)
-		return FALSE
-	if(force < (move_resist * MOVE_FORCE_PULL_RATIO))
-		return FALSE
-	return TRUE
-
-/**
- * Updates the grab state of the movable
- *
- * This exists to act as a hook for behaviour
- */
-/atom/movable/proc/setGrabState(newstate)
-	if(newstate == grab_state)
-		return
-	SEND_SIGNAL(src, COMSIG_MOVABLE_SET_GRAB_STATE, newstate)
-	. = grab_state
-	grab_state = newstate
-	switch(grab_state) // Current state.
-		if(GRAB_PASSIVE)
-			REMOVE_TRAIT(pulling, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-			REMOVE_TRAIT(pulling, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
-			if(. >= GRAB_NECK) // Previous state was a a neck-grab or higher.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-		if(GRAB_AGGRESSIVE)
-			if(. >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-			else // Grab got upgraded from a passive one.
-				ADD_TRAIT(pulling, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-				ADD_TRAIT(pulling, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
-		if(GRAB_NECK, GRAB_KILL)
-			if(. <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
 
 /**
  * Adds the deadchat_plays component to this atom with simple movement commands.

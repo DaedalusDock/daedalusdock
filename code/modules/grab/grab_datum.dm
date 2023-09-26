@@ -29,7 +29,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	/// How much the grab increases point blank damage.
 	var/point_blank_mult = 1
 	/// Affects how much damage is being dealt using certain actions.
-	var/damage_stage = 1
+	var/damage_stage = GRAB_PASSIVE
 	/// If the grabbed person and the grabbing person are on the same tile.
 	var/same_tile = FALSE
 	/// If the grabber can carry the grabbed person up or down ladders.
@@ -65,10 +65,10 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/can_grab_self = TRUE
 
 	// The names of different intents for use in attack logs
-	var/help_action = "help intent"
-	var/disarm_action = "disarm intent"
-	var/grab_action = "grab intent"
-	var/harm_action = "harm intent"
+	var/help_action = ""
+	var/disarm_action = ""
+	var/grab_action = ""
+	var/harm_action = ""
 
 /*
 	These procs shouldn't be overriden in the children unless you know what you're doing with them; they handle important core functions.
@@ -121,7 +121,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab/proc/let_go(obj/item/hand_item/grab/G)
 	if (G)
 		let_go_effect(G)
-		qdel(G)
+		if(!QDELETED(G))
+			qdel(G)
 
 /datum/grab/proc/on_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
 	G.special_target_functional = check_special_target(G)
@@ -245,22 +246,58 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 */
 
 // What happens when you upgrade from one grab state to the next.
-/datum/grab/proc/upgrade_effect(obj/item/hand_item/grab/G)
+/datum/grab/proc/upgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
+	update_grab_effects(old_grab)
 
 // Conditions to see if upgrading is possible
 /datum/grab/proc/can_upgrade(obj/item/hand_item/grab/G)
-	return 1
+	if(!upgrab)
+		return FALSE
+
+	if(!(G.affecting.status_flags & CANPUSH) || HAS_TRAIT(G.affecting, TRAIT_PUSHIMMUNE))
+		to_chat(user, span_warning("[src] can't be grabbed more aggressively!"))
+		return FALSE
+
+	if(upgrab.damage_stage >= GRAB_AGGRESSIVE && HAS_TRAIT(G.assailant, TRAIT_PACIFISM))
+		to_chat(user, span_warning("You don't want to risk hurting [src]!"))
+		return FALSE
+	return TRUE
 
 // What happens when you downgrade from one grab state to the next.
-/datum/grab/proc/downgrade_effect(obj/item/hand_item/grab/G)
+/datum/grab/proc/downgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
+	update_grab_effects(old_grab)
 
 // Conditions to see if downgrading is possible
 /datum/grab/proc/can_downgrade(obj/item/hand_item/grab/G)
-	return 1
+	return TRUE
 
 // What happens when you let go of someone by either dropping the grab
 // or by downgrading from the lowest grab state.
 /datum/grab/proc/let_go_effect(obj/item/hand_item/grab/G)
+	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
+	SEND_SIGNAL(G.assailant, COMSIG_ATOM_NO_LONGER_GRABBING, G.affecting)
+	update_grab_effects(null)
+
+/datum/grab/proc/update_grab_effects(datum/grab/old_grab)
+	var/old_damage_stage = old_grab?.damage_stage || 0
+
+	switch(damage_stage) // Current state.
+		if(GRAB_PASSIVE)
+			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
+			if(old_damage_stage >= GRAB_NECK) // Previous state was a a neck-grab or higher.
+				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
+
+		if(GRAB_AGGRESSIVE)
+			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.
+				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
+			else // Grab got upgraded from a passive one.
+				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
+				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
+
+		if(GRAB_NECK, GRAB_KILL)
+			if(old_damage_stage <= GRAB_AGGRESSIVE)
+				ADD_TRAIT(G.affecting, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
 
 // What happens each tic when process is called.
 /datum/grab/proc/process_effect(obj/item/hand_item/grab/G)
@@ -369,3 +406,18 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 /datum/grab/proc/moved_effect(obj/item/hand_item/grab/G)
 	return
+
+/// Add screentip context, user will always be assailant.
+/datum/grab/proc/add_context(list/context, mob/living/user)
+	if(disarm_action)
+		context[SCREENTIP_CONTEXT_RMB] = capitalize(disarm_action)
+
+	if(grab_action)
+		context[SCREENTIP_CONTEXT_CTRL_LMB] = capitalize(grab_action)
+
+	if(user.combat_mode)
+		if(harm_action)
+			context[SCREENTIP_CONTEXT_RMB] = capitalize(harm_action)
+
+	else if(help_action)
+		context[SCREENTIP_CONTEXT_LMB] = capitalize(help_action)

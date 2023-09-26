@@ -29,7 +29,7 @@
 	source.delay = controller.movement_delay
 
 	var/can_move = TRUE
-	if(controller.ai_traits & STOP_MOVING_WHEN_PULLED && pawn.pulledby) //Need to store more state. Annoying.
+	if(controller.ai_traits & STOP_MOVING_WHEN_PULLED && LAZYLEN(pawn.grabbed_by)) //Need to store more state. Annoying.
 		can_move = FALSE
 
 	if(!isturf(pawn.loc)) //No moving if not on a turf

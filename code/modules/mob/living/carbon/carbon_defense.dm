@@ -290,8 +290,8 @@
 			COMBAT_MESSAGE_RANGE,
 		)
 		log_combat(src, target, "shoved", "knocking them down")
-		target.pulledby?.stop_pulling()
-		target.stop_pulling()
+		target.free_from_all_grabs()
+		target.release_all_grabs()
 		return
 
 	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.

@@ -67,8 +67,8 @@
 	if(index)
 		held_items[index] = null
 
-	if(I.pulledby)
-		I.pulledby.stop_pulling()
+	if(LAZYLEN(I.grabbed_by))
+		I.free_from_all_grabs()
 
 	I.screen_loc = null
 	if(client)

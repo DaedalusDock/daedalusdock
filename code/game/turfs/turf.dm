@@ -305,7 +305,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	for(var/atom/movable/falling_mob as anything in falling_movables)
 		if(!(flags & FALL_RETAIN_PULL))
-			falling_mob.stop_pulling()
+			falling_mob.release_all_grabs()
 
 		if(!(flags & FALL_INTERCEPTED))
 			falling_mob.onZImpact(src, levels)
@@ -315,6 +315,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 				prev_turf.audible_message(span_hear("You hear something slam into the deck below."))
 			#endif
 
+		#warn FUUUUUCk
 		if(falling_mob.pulledby && (falling_mob.z != falling_mob.pulledby.z || get_dist(falling_mob, falling_mob.pulledby) > 1))
 			falling_mob.pulledby.stop_pulling()
 	return TRUE

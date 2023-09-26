@@ -1,7 +1,7 @@
 ///Dog specific idle behavior.
 /datum/idle_behavior/idle_dog/perform_idle_behavior(delta_time, datum/ai_controller/dog/controller)
 	var/mob/living/living_pawn = controller.pawn
-	if(!isturf(living_pawn.loc) || living_pawn.pulledby)
+	if(!isturf(living_pawn.loc) || LAZYLEN(living_pawn.grabbed_by))
 		return
 
 	// if we were just ordered to heel, chill out for a bit

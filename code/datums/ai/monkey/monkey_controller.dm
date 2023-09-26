@@ -54,7 +54,7 @@ have ways of interacting with a specific mob and control it.
 	RegisterSignal(new_pawn, COMSIG_MOB_ATTACK_ALIEN, PROC_REF(on_attack_alien))
 	RegisterSignal(new_pawn, COMSIG_ATOM_BULLET_ACT, PROC_REF(on_bullet_act))
 	RegisterSignal(new_pawn, COMSIG_ATOM_HITBY, PROC_REF(on_hitby))
-	RegisterSignal(new_pawn, COMSIG_LIVING_START_PULL, PROC_REF(on_startpulling))
+	RegisterSignal(new_pawn, COMSIG_LIVING_START_GRAB, PROC_REF(on_startpulling))
 	RegisterSignal(new_pawn, COMSIG_LIVING_TRY_SYRINGE, PROC_REF(on_try_syringe))
 	RegisterSignal(new_pawn, COMSIG_ATOM_HULK_ATTACK, PROC_REF(on_attack_hulk))
 	RegisterSignal(new_pawn, COMSIG_CARBON_CUFF_ATTEMPTED, PROC_REF(on_attempt_cuff))
@@ -70,7 +70,7 @@ have ways of interacting with a specific mob and control it.
 		COMSIG_ATOM_ATTACK_PAW,
 		COMSIG_ATOM_BULLET_ACT,
 		COMSIG_ATOM_HITBY,
-		COMSIG_LIVING_START_PULL,
+		COMSIG_LIVING_START_GRAB,
 		COMSIG_LIVING_TRY_SYRINGE,
 		COMSIG_ATOM_HULK_ATTACK,
 		COMSIG_CARBON_CUFF_ATTEMPTED,
@@ -189,11 +189,12 @@ have ways of interacting with a specific mob and control it.
 		in_the_way_mob.knockOver(living_pawn)
 		return
 
-/datum/ai_controller/monkey/proc/on_startpulling(datum/source, atom/movable/puller, state, force)
+/datum/ai_controller/monkey/proc/on_grabbed(datum/source, atom/movable/puller)
 	SIGNAL_HANDLER
+
 	var/mob/living/living_pawn = pawn
 	if(!IS_DEAD_OR_INCAP(living_pawn) && prob(MONKEY_PULL_AGGRO_PROB)) // nuh uh you don't pull me!
-		retaliate(living_pawn.pulledby)
+		retaliate(puller)
 		return TRUE
 
 /datum/ai_controller/monkey/proc/on_try_syringe(datum/source, mob/user)

@@ -151,7 +151,7 @@
 						span_userdanger("[src] leaps at your face!"))
 
 	// probiscis-blocker handling
-	if(target.is_mouth_covered(head_only = TRUE))
+	if(!target.has_mouth() || target.is_mouth_covered(head_only = TRUE))
 		target.visible_message(span_danger("[src] smashes against [target]'s [target.head]!"), \
 							span_userdanger("[src] smashes against your [target.head]!"))
 		Die()
@@ -254,7 +254,7 @@
 	var/mob/living/carbon/C = M
 	if(ishuman(C) && !(ITEM_SLOT_MASK in C.dna.species.no_equip))
 		var/mob/living/carbon/human/H = C
-		if(H.is_mouth_covered(head_only = 1))
+		if(!H.has_mouth() || H.is_mouth_covered(head_only = 1))
 			return FALSE
 		return TRUE
 	return FALSE

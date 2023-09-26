@@ -1089,7 +1089,7 @@
 	log_message("[brain_obj] moved in as pilot.", LOG_MECHA)
 	if(!internal_damage)
 		SEND_SOUND(brain_obj, sound('sound/mecha/nominal.ogg',volume=50))
-	log_game("[key_name(user)] has put the MMI/posibrain of [key_name(brain_mob)] into [src] at [AREACOORD(src)]")
+	log_game("[key_name(user)] has put the organ/posibrain of [key_name(brain_mob)] into [src] at [AREACOORD(src)]")
 	return TRUE
 
 /obj/vehicle/sealed/mecha/container_resist_act(mob/living/user)

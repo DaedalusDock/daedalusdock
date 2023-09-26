@@ -5,11 +5,7 @@
 /area/icemoon/underground/explored)
 "cP" = (
 /mob/living/simple_animal/hostile/asteroid/polarbear,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "dy" = (
 /obj/item/grown/log,
@@ -36,11 +32,7 @@
 	pixel_y = 24
 	},
 /obj/item/plate,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "ht" = (
 /obj/structure/flora/tree/dead,
@@ -62,11 +54,7 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "ng" = (
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "nq" = (
 /obj/item/grown/log{
@@ -84,11 +72,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "qd" = (
 /mob/living/simple_animal/hostile/tree,
@@ -111,11 +95,7 @@
 	pixel_x = 6;
 	pixel_y = 11
 	},
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "uG" = (
 /obj/item/grown/log,
@@ -131,11 +111,7 @@
 /obj/item/ammo_casing/shotgun/buckshot,
 /obj/item/ammo_casing/shotgun/buckshot,
 /obj/item/ammo_casing/shotgun/buckshot,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "vk" = (
 /obj/structure/railing{
@@ -158,11 +134,7 @@
 	name = "porridge";
 	pixel_y = 3
 	},
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "wl" = (
 /obj/effect/turf_decal/siding/wood{
@@ -201,11 +173,7 @@
 /area/icemoon/underground/explored)
 "zT" = (
 /obj/structure/bed/dogbed,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "Cv" = (
 /obj/structure/bookcase/random/religion,
@@ -238,11 +206,7 @@
 	color = "#f2ffbd"
 	},
 /obj/item/flashlight/lantern,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "Ez" = (
 /obj/structure/railing{
@@ -268,11 +232,7 @@
 /obj/structure/chair/wood{
 	dir = 8
 	},
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "HF" = (
 /obj/effect/decal/cleanable/blood/gibs,
@@ -320,11 +280,7 @@
 "Nz" = (
 /obj/structure/bed,
 /obj/item/bedsheet/patriot,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "NP" = (
 /obj/item/wallframe/picture,
@@ -340,11 +296,7 @@
 /obj/item/food/grown/potato/sweet,
 /obj/item/seeds/coffee,
 /obj/item/seeds/coffee,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "QI" = (
 /turf/open/floor/stone{
@@ -368,11 +320,7 @@
 	},
 /obj/structure/mineral_door/wood,
 /obj/item/assembly/mousetrap/armed,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 "Sv" = (
 /turf/open/genturf,
@@ -416,11 +364,7 @@
 	dir = 1
 	},
 /obj/structure/mineral_door/wood,
-/turf/open/floor/wood/large{
-	initial_gas = list("oxygen" = 14, "nitrogen" = 30);
-	temperature = 180;
-	
-	},
+/turf/open/floor/wood,
 /area/ruin/powered/shuttle)
 
 (1,1,1) = {"

@@ -34,6 +34,7 @@
 		ORGAN_SLOT_STOMACH = null,
 		ORGAN_SLOT_APPENDIX = null,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
 	)
 
 /datum/species/abductor/on_species_gain(mob/living/carbon/C, datum/species/old_species)

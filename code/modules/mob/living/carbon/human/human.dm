@@ -73,19 +73,20 @@
 	. = ..()
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
 	. += "Move Mode: [m_intent]"
-	if (internal)
-		var/datum/gas_mixture/internal_air = internal.return_air()
-		if (!internal_air)
-			QDEL_NULL(internal)
-		else
-			. += ""
-			. += "Internal Atmosphere Info: [internal.name]"
-			. += "Tank Pressure: [internal_air.returnPressure()]"
-			. += "Distribution Pressure: [internal.distribute_pressure]"
+
+	var/obj/item/tank/target_tank = internal || external
+	if(target_tank)
+		var/datum/gas_mixture/internal_air = target_tank.return_air()
+		. += ""
+		. += "Internal Atmosphere Info: [target_tank.name]"
+		. += "Tank Pressure: [internal_air.returnPressure()]"
+		. += "Distribution Pressure: [target_tank.distribute_pressure]"
+
 	if(istype(wear_suit, /obj/item/clothing/suit/space))
 		var/obj/item/clothing/suit/space/S = wear_suit
 		. += "Thermal Regulator: [S.thermal_on ? "on" : "off"]"
 		. += "Cell Charge: [S.cell ? "[round(S.cell.percent(), 0.1)]%" : "!invalid!"]"
+
 	if(mind)
 		var/datum/antagonist/changeling/changeling = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling)
@@ -382,6 +383,8 @@
 	else if(HAS_TRAIT(src, TRAIT_PIERCEIMMUNE))
 		. = FALSE
 	var/obj/item/bodypart/the_part = get_bodypart(target_zone) || get_bodypart(BODY_ZONE_CHEST)
+	if(!IS_ORGANIC_LIMB(the_part))
+		return FALSE
 	// Loop through the clothing covering this bodypart and see if there's any thiccmaterials
 	if(!(injection_flags & INJECT_CHECK_PENETRATE_THICK))
 		for(var/obj/item/clothing/iter_clothing in clothingonpart(the_part))
@@ -545,26 +548,6 @@
 	if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
 		if(!silent)
 			to_chat(src, span_warning("[target.name] is dead!"))
-		return FALSE
-
-	if (is_mouth_covered())
-		if(!silent)
-			to_chat(src, span_warning("Remove your mask first!"))
-		return FALSE
-
-	if (target.is_mouth_covered())
-		if(!silent)
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-		return FALSE
-
-	if (!getorganslot(ORGAN_SLOT_LUNGS))
-		if(!silent)
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-		return FALSE
-
-	if (HAS_TRAIT(src, TRAIT_NOBREATH))
-		if(!silent)
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
 		return FALSE
 
 	return TRUE
@@ -951,7 +934,7 @@
 		return
 	var/health_deficiency = maxHealth - health
 	if(health_deficiency >= 40)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 75)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 25)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
@@ -962,7 +945,16 @@
 		return diff * physiology.stamina_mod
 	return diff
 
-/mob/living/carbon/human/adjust_nutrition(change) //Honestly FUCK the oldcoders for putting nutrition on /mob someone else can move it up because holy hell I'd have to fix SO many typechecks
+/mob/living/carbon/human/adjust_nutrition(change)
+	if(isipc(src))
+		var/obj/item/organ/cell/C = getorganslot(ORGAN_SLOT_CELL)
+		if(C)
+			if(change > 0)
+				. = C.give(change)
+			else
+				. = C.use(change, TRUE)
+		return .
+
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER))
 		return FALSE
 	return ..()
@@ -1076,6 +1068,13 @@
 /mob/living/carbon/human/species/vox
 	race = /datum/species/vox
 
+/mob/living/carbon/human/species/ipc
+	race = /datum/species/ipc
+
+/mob/living/carbon/human/species/ipc/saurian
+	race = /datum/species/ipc/saurian
+
+
 /mob/living/carbon/human/verb/checkpulse()
 	set name = "Check Pulse"
 	set category = "IC"
@@ -1123,6 +1122,12 @@
 				return FALSE
 		if(ORGAN_SLOT_LUNGS)
 			if(HAS_TRAIT(src, TRAIT_NOBREATH))
+				return FALSE
+		if(ORGAN_SLOT_LIVER)
+			if(HAS_TRAIT(src, TRAIT_NOMETABOLISM))
+				return FALSE
+		if(ORGAN_SLOT_EARS)
+			if(HAS_TRAIT(src, TRAIT_NOEARS))
 				return FALSE
 
 	return dna.species.organs[slot]

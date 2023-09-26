@@ -571,7 +571,7 @@
 		create_wound(WOUND_BURN, burn, update_damage = FALSE)
 
 	//Initial pain spike
-	owner?.apply_pain(0.6*burn + 0.4*brute, body_zone, updating_health = FALSE)
+	owner?.apply_pain(0.8*burn + 0.6*brute, body_zone, updating_health = FALSE)
 
 	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
 		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))
@@ -1162,15 +1162,12 @@
 		O.inherit_color(force = TRUE)
 
 ///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
-/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)
-	var/icon_holder
-	if(greyscale)
-		icon_greyscale = icon
-		icon_holder = icon
+/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic, update_owner = TRUE)
+	if(!isnull(greyscale) && greyscale == TRUE)
+		icon_greyscale = icon || icon_greyscale
 		should_draw_greyscale = TRUE
-	else
-		icon_static = icon
-		icon_holder = icon
+	else if(greyscale == FALSE)
+		icon_static = icon || icon_static
 		should_draw_greyscale = FALSE
 
 	if(id) //limb_id should never be falsey
@@ -1179,15 +1176,15 @@
 	if(!isnull(dimorphic))
 		is_dimorphic = dimorphic
 
-	if(owner)
+	if(owner && update_owner)
 		owner.update_body_parts()
 	else
 		update_icon_dropped()
 
 	//This foot gun needs a safety
-	if(!icon_exists(icon_holder, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
+	if(!icon_exists(should_draw_greyscale ? icon_greyscale : icon_static, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
 		reset_appearance()
-		stack_trace("change_appearance([icon], [id], [greyscale], [dimorphic]) generated null icon")
+		stack_trace("change_appearance([icon || "NULL"], [id || "NULL"], [greyscale|| "NULL"], [dimorphic|| "NULL"]) generated null icon. Appearance not applied.")
 
 ///Resets the base appearance of a limb to it's default values.
 /obj/item/bodypart/proc/reset_appearance()
@@ -1244,7 +1241,7 @@
 		brute_damage *= 2
 		burn_damage *= 2
 
-	receive_damage(brute_damage, burn_damage)
+	receive_damage(brute_damage, burn_damage, breaks_bones = FALSE)
 	do_sparks(number = 1, cardinal_only = FALSE, source = owner)
 	ADD_TRAIT(src, TRAIT_PARALYSIS, EMP_TRAIT)
 	addtimer(CALLBACK(src, PROC_REF(un_paralyze)), time_needed)

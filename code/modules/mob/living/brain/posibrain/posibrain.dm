@@ -1,6 +1,6 @@
 GLOBAL_VAR(posibrain_notify_cooldown)
 
-/obj/item/mmi/posibrain
+/obj/item/organ/posibrain
 	name = "positronic brain"
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
 	icon = 'icons/obj/assemblies.dmi'
@@ -8,7 +8,30 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	base_icon_state = "posibrain"
 	w_class = WEIGHT_CLASS_NORMAL
 	req_access = list(ACCESS_ROBOTICS)
-	braintype = "Android"
+
+	layer = ABOVE_MOB_LAYER
+	zone = BODY_ZONE_CHEST
+	slot = ORGAN_SLOT_POSIBRAIN
+	organ_flags = ORGAN_SYNTHETIC
+
+	maxHealth = 90
+	low_threshold = 0.33
+	high_threshold = 0.66
+	relative_size = 60
+
+
+	actions_types = list(
+		/datum/action/innate/posibrain_print_laws,
+		/datum/action/innate/posibrain_say_laws,
+	)
+
+	/// The current occupant.
+	var/mob/living/brain/brainmob = null
+	/// Populated by preferences, used for IPCs
+	var/datum/ai_laws/shackles
+
+	/// Keep track of suiciding
+	var/suicided = FALSE
 
 	///Message sent to the user when polling ghosts
 	var/begin_activation_message = "<span class='notice'>You carefully locate the manual activation switch and start the positronic brain's boot process.</span>"
@@ -42,22 +65,112 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	///List of all ckeys who has already entered this posibrain once before.
 	var/list/ckeys_entered = list()
 
-/obj/item/mmi/posibrain/Topic(href, href_list)
+/obj/item/organ/posibrain/Initialize(mapload)
+	. = ..()
+	if(autoping)
+		ping_ghosts("created", TRUE)
+		create_brainmob()
+
+/obj/item/organ/posibrain/Destroy(force)
+	shackles = null
+	if(brainmob)
+		QDEL_NULL(brainmob)
+
+	if(owner?.mind) //You aren't allowed to return to brains that don't exist
+		owner.mind.set_current(null)
+	return ..()
+
+/obj/item/organ/posibrain/Topic(href, href_list)
 	if(href_list["activate"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
 			activate(ghost)
 
+/obj/item/organ/posibrain/PreRevivalInsertion(special)
+	if(brainmob)
+		if(owner.key)
+			owner.ghostize()
+
+		if(brainmob.mind)
+			brainmob.mind.transfer_to(owner)
+		else
+			owner.key = brainmob.key
+
+		owner.set_suicide(brainmob.suiciding)
+
+		QDEL_NULL(brainmob)
+
+	else
+		owner.set_suicide(suicided)
+
+/obj/item/organ/posibrain/Insert(mob/living/carbon/C, special, drop_if_replaced)
+	. = ..()
+	if(!.)
+		return
+
+	name = initial(name)
+
+/obj/item/organ/posibrain/Remove(mob/living/carbon/organ_owner, special)
+	. = ..()
+	if((!QDELING(src) || !QDELETED(owner)) && !special)
+		transfer_identity(organ_owner)
+
+/obj/item/organ/posibrain/on_life()
+	if (!owner || owner.stat)
+		return
+	if (damage < (maxHealth * low_threshold))
+		return
+
+	if (prob(1) && !owner.has_status_effect(/datum/status_effect/confusion))
+		to_chat(owner, span_warning("Your comprehension of spacial positioning goes temporarily awry."))
+		owner.adjust_timed_status_effect(12 SECONDS, /datum/status_effect/confusion)
+
+	if (prob(1) && owner.eye_blurry < 1)
+		to_chat(owner, span_warning("Your optical interpretations become transiently erratic."))
+		owner.adjust_blurriness(6)
+
+	var/obj/item/organ/ears/E = owner.getorganslot(ORGAN_SLOT_EARS)
+	if (E && prob(1) && E.deaf < 1)
+		to_chat(owner, span_warning("Your capacity to differentiate audio signals briefly fails you."))
+		E.deaf += 6
+	if (prob(1) && !owner.has_status_effect(/datum/status_effect/speech/slurring))
+		to_chat(owner, span_warning("Your ability to form coherent speech struggles to keep up."))
+		owner.adjust_timed_status_effect(12 SECONDS, /datum/status_effect/speech/slurring/generic)
+
+	if (damage < (maxHealth * high_threshold))
+		return
+
+	if (prob(2))
+		if (prob(15) && !owner.IsSleeping())
+			owner.visible_message("\The [owner] suddenly halts all activity.")
+			owner.Sleeping(20 SECONDS)
+
+		else if (owner.anchored || isspaceturf(get_turf(owner)))
+			owner.visible_message("<i>\The [owner] seizes and twitches!</i>")
+			owner.Stun(4 SECONDS)
+		else
+			owner.visible_message("<i>\The [owner] seizes and clatters down in a heap!</i>", null, pick("Clang!", "Crash!", "Clunk!"))
+			owner.Knockdown(4 SECONDS)
+
+	if (prob(2))
+		var/obj/item/organ/cell/C = owner.getorganslot(ORGAN_SLOT_CELL)
+		if (C && C.get_charge() > 250)
+			C.use(250)
+			to_chat(owner, span_warning("Your chassis power routine fluctuates wildly."))
+			var/datum/effect_system/spark_spread/S = new
+			S.set_up(2, 0, loc)
+			S.start()
+
 ///Notify ghosts that the posibrain is up for grabs
-/obj/item/mmi/posibrain/proc/ping_ghosts(msg, newlymade)
+/obj/item/organ/posibrain/proc/ping_ghosts(msg, newlymade)
 	if(newlymade || GLOB.posibrain_notify_cooldown <= world.time)
 		notify_ghosts("[name] [msg] in [get_area(src)]! [ask_role ? "Personality requested: \[[ask_role]\]" : ""]", ghost_sound = !newlymade ? 'sound/effects/ghost2.ogg':null, notify_volume = 75, enter_link = "<a href=?src=[REF(src)];activate=1>(Click to enter)</a>", source = src, action = NOTIFY_ATTACK, flashwindow = FALSE, ignore_key = POLL_IGNORE_POSIBRAIN, notify_suiciders = FALSE)
 		if(!newlymade)
 			GLOB.posibrain_notify_cooldown = world.time + ask_delay
 
-/obj/item/mmi/posibrain/attack_self(mob/user)
+/obj/item/organ/posibrain/attack_self(mob/user)
 	if(!brainmob)
-		set_brainmob(new /mob/living/brain(src))
+		create_brainmob()
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_SILICONS))
 		to_chat(user, span_warning("Central Command has temporarily outlawed posibrain sentience in this sector..."))
 	if(is_occupied())
@@ -74,7 +187,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	update_appearance()
 	addtimer(CALLBACK(src, PROC_REF(check_success)), ask_delay)
 
-/obj/item/mmi/posibrain/AltClick(mob/living/user)
+/obj/item/organ/posibrain/AltClick(mob/living/user)
 	if(!istype(user) || !user.canUseTopic(src, USE_CLOSE))
 		return
 	var/input_seed = tgui_input_text(user, "Enter a personality seed", "Enter seed", ask_role, MAX_NAME_LEN)
@@ -86,7 +199,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	ask_role = input_seed
 	update_appearance()
 
-/obj/item/mmi/posibrain/proc/check_success()
+/obj/item/organ/posibrain/proc/check_success()
 	searching = FALSE
 	update_appearance()
 	if(QDELETED(brainmob))
@@ -98,10 +211,10 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		visible_message(fail_message)
 
 ///ATTACK GHOST IGNORING PARENT RETURN VALUE
-/obj/item/mmi/posibrain/attack_ghost(mob/user)
+/obj/item/organ/posibrain/attack_ghost(mob/user)
 	activate(user)
 
-/obj/item/mmi/posibrain/proc/is_occupied()
+/obj/item/organ/posibrain/proc/is_occupied()
 	if(brainmob.key)
 		return TRUE
 	if(iscyborg(loc))
@@ -111,7 +224,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	return FALSE
 
 ///Two ways to activate a positronic brain. A clickable link in the ghost notif, or simply clicking the object itself.
-/obj/item/mmi/posibrain/proc/activate(mob/user)
+/obj/item/organ/posibrain/proc/activate(mob/user)
 	if(QDELETED(brainmob))
 		return
 	if(user.ckey in ckeys_entered)
@@ -129,27 +242,35 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		brainmob.set_suicide(FALSE)
 	transfer_personality(user)
 
-/obj/item/mmi/posibrain/transfer_identity(mob/living/carbon/transfered_user)
-	name = "[initial(name)] ([transfered_user])"
-	brainmob.name = transfered_user.real_name
-	brainmob.real_name = transfered_user.real_name
-	if(transfered_user.has_dna())
+/obj/item/organ/posibrain/proc/transfer_identity(mob/living/L)
+	name = "[initial(name)] ([L])"
+
+	if(brainmob)
+		return
+	if(!L.mind)
+		return
+
+	brainmob = new(src) //We dont use create_brainmob() because thats for ghost spawns
+	brainmob.name = L.real_name
+	brainmob.real_name = L.real_name
+	brainmob.timeofhostdeath = L.timeofdeath
+	brainmob.suiciding = suicided
+	if(L.has_dna())
+		var/mob/living/carbon/C = L
 		if(!brainmob.stored_dna)
 			brainmob.stored_dna = new /datum/dna/stored(brainmob)
-		transfered_user.dna.copy_dna(brainmob.stored_dna)
-	brainmob.timeofhostdeath = transfered_user.timeofdeath
-	brainmob.set_stat(CONSCIOUS)
-	if(brainmob.mind)
-		brainmob.mind.set_assigned_role(SSjob.GetJobType(posibrain_job_path))
-	if(transfered_user.mind)
-		transfered_user.mind.transfer_to(brainmob)
+		C.dna.copy_dna(brainmob.stored_dna)
+		if(HAS_TRAIT(L, TRAIT_BADDNA))
+			LAZYSET(brainmob.status_traits, TRAIT_BADDNA, L.status_traits[TRAIT_BADDNA])
+	if(L.mind && L.mind.current)
+		L.mind.transfer_to(brainmob)
 
-	brainmob.mind.remove_all_antag_datums()
-	brainmob.mind.wipe_memory()
+	brainmob.set_stat(CONSCIOUS)
+	brainmob.grant_language(/datum/language/machine, TRUE, TRUE, LANGUAGE_MMI)
 	update_appearance()
 
 ///Moves the candidate from the ghost to the posibrain
-/obj/item/mmi/posibrain/proc/transfer_personality(mob/candidate)
+/obj/item/organ/posibrain/proc/transfer_personality(mob/candidate)
 	if(QDELETED(brainmob))
 		return
 	if(is_occupied()) //Prevents hostile takeover if two ghosts get the prompt or link for the same brain.
@@ -172,7 +293,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	return TRUE
 
 
-/obj/item/mmi/posibrain/examine(mob/user)
+/obj/item/organ/posibrain/examine(mob/user)
 	. = ..()
 	if(brainmob?.key)
 		switch(brainmob.stat)
@@ -187,22 +308,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 			. += span_notice("Current consciousness seed: \"[ask_role]\"")
 		. += span_boldnotice("Alt-click to set a consciousness seed, specifying what [src] will be used for. This can help generate a personality interested in that role.")
 
-/obj/item/mmi/posibrain/Initialize(mapload)
-	. = ..()
-	set_brainmob(new /mob/living/brain(src))
-	var/new_name
-	if(!LAZYLEN(possible_names))
-		new_name = pick(GLOB.posibrain_names)
-	else
-		new_name = pick(possible_names)
-	brainmob.name = "[new_name]-[rand(100, 999)]"
-	brainmob.real_name = brainmob.name
-	brainmob.forceMove(src)
-	brainmob.container = src
-	if(autoping)
-		ping_ghosts("created", TRUE)
-
-/obj/item/mmi/posibrain/update_icon_state()
+/obj/item/organ/posibrain/update_icon_state()
 	. = ..()
 	if(searching)
 		icon_state = "[base_icon_state]-searching"
@@ -213,8 +319,38 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	icon_state = "[base_icon_state]"
 	return
 
-/obj/item/mmi/posibrain/attackby(obj/item/O, mob/user, params)
+/obj/item/organ/posibrain/attackby(obj/item/O, mob/user, params)
 	return
 
-/obj/item/mmi/posibrain/add_mmi_overlay()
-	return
+/// Proc to hook behavior associated to the change in value of the [/obj/item/mmi/var/brainmob] variable.
+/obj/item/organ/posibrain/proc/set_brainmob(mob/living/brain/new_brainmob)
+	if(brainmob == new_brainmob)
+		return FALSE
+	. = brainmob
+	SEND_SIGNAL(src, COMSIG_MMI_SET_BRAINMOB, new_brainmob)
+	brainmob = new_brainmob
+	if(new_brainmob)
+		ADD_TRAIT(new_brainmob, TRAIT_IMMOBILIZED, BRAIN_UNAIDED)
+		ADD_TRAIT(new_brainmob, TRAIT_HANDS_BLOCKED, BRAIN_UNAIDED)
+	if(.)
+		var/mob/living/brain/old_brainmob = .
+		ADD_TRAIT(old_brainmob, TRAIT_IMMOBILIZED, BRAIN_UNAIDED)
+		ADD_TRAIT(old_brainmob, TRAIT_HANDS_BLOCKED, BRAIN_UNAIDED)
+
+/obj/item/organ/posibrain/proc/create_brainmob()
+	var/_brainmob = new /mob/living/brain(src)
+	set_brainmob(_brainmob)
+
+	var/new_name
+	if(!LAZYLEN(possible_names))
+		new_name = pick(GLOB.posibrain_names)
+	else
+		new_name = pick(possible_names)
+	brainmob.name = "[new_name]-[rand(100, 999)]"
+	brainmob.real_name = brainmob.name
+	brainmob.forceMove(src)
+	brainmob.container = src
+	brainmob.grant_language(/datum/language/machine, TRUE, TRUE, LANGUAGE_MMI)
+
+/obj/item/organ/posibrain/ipc
+	autoping = FALSE

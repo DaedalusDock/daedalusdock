@@ -126,7 +126,7 @@
 
 			. += generate_death_examine_text()
 
-	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/brain))
+	if(get_bodypart(BODY_ZONE_HEAD) && needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
 	var/list/msg = list()
@@ -269,9 +269,9 @@
 					msg += "[t_He] appear[p_s()] to be staring off into space.\n"
 				if (HAS_TRAIT(src, TRAIT_DEAF))
 					msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
-				if (bodytemperature > dna.species.bodytemp_heat_damage_limit)
+				if (bodytemperature > dna.species.heat_level_1)
 					msg += "[t_He] [t_is] flushed and wheezing.\n"
-				if (bodytemperature < dna.species.bodytemp_cold_damage_limit)
+				if (bodytemperature < dna.species.cold_level_1)
 					msg += "[t_He] [t_is] shivering.\n"
 
 			msg += "</span>"

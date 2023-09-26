@@ -1,0 +1,6 @@
+/turf/open/floor/wood/parquet : /turf/open/floor/wood
+/turf/open/floor/wood/tile : /turf/open/floor/wood
+/turf/open/floor/wood/large : /turf/open/floor/wood
+/obj/item/stack/tile/wood/tile : /obj/item/stack/tile/wood
+/obj/item/stack/tile/wood/parquet : /obj/item/stack/tile/wood
+/obj/item/stack/tile/wood/large : /obj/item/stack/tile/wood

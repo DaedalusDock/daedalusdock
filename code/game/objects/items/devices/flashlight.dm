@@ -97,7 +97,9 @@
 						to_chat(user, span_notice("[M]'s pupils narrow."))
 
 			if(BODY_ZONE_PRECISE_MOUTH)
-
+				if(!M.has_mouth())
+					to_chat(user, span_warning("They don't have a mouth."))
+					return
 				if(M.is_mouth_covered())
 					to_chat(user, span_warning("You're going to need to remove that [(M.head && M.head.flags_cover & HEADCOVERSMOUTH) ? "helmet" : "mask"] first!"))
 					return

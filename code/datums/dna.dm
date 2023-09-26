@@ -245,6 +245,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(features["vox_snout"])
 		L[DNA_VOX_SNOUT_BLOCK] = construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len)
 
+	if(features["ipc_screen"])
+		L[DNA_IPC_SCREEN_BLOCK] = construct_block(GLOB.ipc_screens_list.Find(features["ipc_screen"]), GLOB.ipc_screens_list.len)
+	if(features["ipc_antenna"])
+		L[DNA_IPC_ANTENNA_BLOCK] = construct_block(GLOB.ipc_antenna_list.Find(features["DNA_IPC_ANTENNA_BLOCK"]), GLOB.ipc_antenna_list.len)
+
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
 
@@ -543,7 +548,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			new_race = mrace
 		else
 			return
-		deathsound = new_race.deathsound
 
 		if(dna.species.properly_gained)
 			dna.species.on_species_loss(src, new_race, pref_load)
@@ -693,6 +697,20 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["vox_facial_hair"] = GLOB.vox_facial_hair_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_FACIAL_HAIR_BLOCK), GLOB.vox_facial_hair_list.len)]
 	if(dna.features["vox_snout"])
 		dna.features["vox_snout"] = GLOB.vox_snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SNOUT_BLOCK), GLOB.vox_snouts_list.len)]
+
+	if(dna.features["ipc_screen"])
+		dna.features["ipc_screen"] = GLOB.ipc_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_SCREEN_BLOCK), GLOB.ipc_screens_list.len)]
+	if(dna.features["ipc_antenna"])
+		dna.features["ipc_antenna"] = GLOB.ipc_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_ANTENNA_BLOCK), GLOB.ipc_antenna_list.len)]
+
+	if(dna.features["saurian_screen"])
+		dna.features["saurian_screen"] = GLOB.saurian_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCREEN_BLOCK), GLOB.saurian_screens_list.len)]
+	if(dna.features["saurian_tail"])
+		dna.features["saurian_tail"] = GLOB.saurian_tails_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_TAIL_BLOCK), GLOB.saurian_tails_list.len)]
+	if(dna.features["saurian_scutes"])
+		dna.features["saurian_scutes"] = GLOB.saurian_scutes_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCUTES_BLOCK), GLOB.saurian_scutes_list.len)]
+	if(dna.features["saurian_antenna"])
+		dna.features["saurian_antenna"] = GLOB.saurian_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_ANTENNA_BLOCK), GLOB.saurian_antenna_list.len)]
 
 	for(var/obj/item/organ/O as anything in cosmetic_organs)
 		O.mutate_feature(features, src)

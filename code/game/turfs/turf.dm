@@ -369,7 +369,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return TRUE
 
 /turf/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
 
 	if(arrived.flags_2 & ATMOS_SENSITIVE_2)
 		LAZYDISTINCTADD(atmos_sensitive_contents, arrived)
@@ -377,14 +376,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			if(isnull(zone.atmos_sensitive_contents))
 				SSzas.zones_with_sensitive_contents += zone
 			LAZYDISTINCTADD(zone.atmos_sensitive_contents, arrived)
+	// Spatial grid tracking needs to happen before the signal is sent
+	. = ..()
 
 	if (!arrived.bound_overlay && !(arrived.zmm_flags & ZMM_IGNORE) && arrived.invisibility != INVISIBILITY_ABSTRACT && TURF_IS_MIMICKING(above))
 		above.update_mimic()
 
 
 /turf/Exited(atom/movable/gone, direction)
-	. = ..()
-
 	if(gone.flags_2 & ATMOS_SENSITIVE_2)
 		if(!isnull(atmos_sensitive_contents))
 			LAZYREMOVE(atmos_sensitive_contents, gone)
@@ -392,6 +391,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			LAZYREMOVE(zone.atmos_sensitive_contents, gone)
 			if(isnull(zone.atmos_sensitive_contents))
 				SSzas.zones_with_sensitive_contents -= zone
+
+	// Spatial grid tracking needs to happen before the signal is sent
+	. = ..()
 
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
 /turf/proc/assemble_baseturfs(turf/fake_baseturf_type)

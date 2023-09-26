@@ -2,7 +2,7 @@
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."
 	icon_state = "default_human_chest"
-	max_damage = 100
+	max_damage = 200
 	body_zone = BODY_ZONE_CHEST
 	body_part = CHEST
 	plaintext_zone = "chest"
@@ -275,6 +275,14 @@
 	tendon_name = "cruciate ligament"
 
 	minimum_break_damage = 30
+
+	/// Can these legs be digitigrade? See digitigrade.dm
+	var/can_be_digitigrade = FALSE
+	///Set limb_id to this when in "digi mode". MUST BE UNIQUE LIKE ALL LIMB IDS
+	var/digitigrade_id
+	/// Used solely by digitigrade limbs to remember what their old limb ID was.
+	var/old_limb_id
+
 
 /obj/item/bodypart/leg/left
 	name = "left leg"

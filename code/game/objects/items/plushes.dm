@@ -498,7 +498,7 @@
 
 /obj/item/toy/plush/lizard_plushie
 	name = "lizard plushie"
-	desc = "An adorable stuffed toy that resembles a unathi."
+	desc = "An adorable stuffed toy that resembles a Jinan."
 	icon_state = "map_plushie_lizard"
 	greyscale_config = /datum/greyscale_config/plush_lizard
 	attack_verb_continuous = list("claws", "hisses", "tail slaps")
@@ -521,12 +521,12 @@
 
 // Preset lizard plushie that uses the original lizard plush green. (Or close to it)
 /obj/item/toy/plush/lizard_plushie/green
-	desc = "An adorable stuffed toy that resembles a green unathi. This one fills you with nostalgia and soul."
+	desc = "An adorable stuffed toy that resembles a green Jinan. This one fills you with nostalgia and soul."
 	greyscale_colors = "#66ff33#000000"
 
 /obj/item/toy/plush/space_lizard_plushie
 	name = "space lizard plushie"
-	desc = "An adorable stuffed toy that resembles a very determined spacefaring unathi. To infinity and beyond, little guy."
+	desc = "An adorable stuffed toy that resembles a very determined spacefaring Jinan. To infinity and beyond, little guy."
 	icon_state = "plushie_spacelizard"
 	inhand_icon_state = "plushie_spacelizard"
 	// space lizards can't hit people with their tail, it's stuck in their suit

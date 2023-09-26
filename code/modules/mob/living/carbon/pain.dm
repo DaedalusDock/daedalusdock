@@ -20,8 +20,14 @@
 		return FALSE
 	return apply_pain(amount, updating_health = updating_health)
 
+/mob/living/proc/flash_pain(severity = PAIN_SMALL)
+	return
+
+/mob/living/carbon/flash_pain(severity = PAIN_SMALL)
+	flick(severity, hud_used?.pain)
+
 /mob/living/carbon/apply_pain(amount, def_zone, message, ignore_cd, updating_health = TRUE)
-	if((status_flags & GODMODE))
+	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))
 		return FALSE
 
 	amount -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3
@@ -47,7 +53,7 @@
 				continue
 
 			amount_remaining -= abs(used)
-			. = TRUE
+		. = amount - amount_remaining
 	else
 		BP = get_bodypart(def_zone, TRUE)
 		if(!BP)
@@ -55,17 +61,21 @@
 		. = BP.adjustPain(amount)
 
 
-	if((amount > 0))
-		flash_pain(min(round(8*amount)+55, 255))
+	if(.)
+		switch(.)
+			if(1 to 20)
+				flash_pain(PAIN_SMALL)
+			if(20 to 40)
+				flash_pain(PAIN_MEDIUM)
+				shake_camera(src, 1, 2)
+			if(40 to INFINITY)
+				flash_pain(PAIN_LARGE)
+				shake_camera(src, 3, 4)
+
 		pain_message(message, amount, ignore_cd)
 
 	if(updating_health && .)
 		updatehealth()
-
-/mob/proc/flash_pain(target)
-	if(hud_used?.pain)
-		animate(hud_used.pain, alpha = target, time = 15, easing = ELASTIC_EASING)
-		animate(hud_used.pain = 0, time = 20)
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE
@@ -111,6 +121,10 @@
 		return
 
 	if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		return
+
+	if(HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))
+		shock_stage = 0
 		return
 
 	var/heart_attack_gaming = undergoing_cardiac_arrest()
@@ -172,7 +186,14 @@
 	if(stat)
 		return
 
-	if(!(life_ticks % 5) && getPain() >= maxHealth)
+	var/pain = getPain()
+
+	if(pain >= 10)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, (pain / 10))
+	else
+		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
+
+	if(!(life_ticks % 5) && pain >= maxHealth)
 		if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			return
 		else
@@ -220,12 +241,12 @@
 	for(var/obj/item/organ/I as anything in organs)
 		if(prob(1) && (!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 5))
 			var/obj/item/bodypart/parent = I.ownerlimb
-			var/pain = 10
+			var/pain_given = 10
 			var/message = "You feel a dull pain in your [parent.plaintext_zone]"
 			if(I.damage > I.low_threshold)
-				pain = 25
+				pain_given = 25
 				message = "You feel a pain in your [parent.plaintext_zone]"
 			if(I.damage > (I.high_threshold * I.maxHealth))
-				pain = 50
+				pain_given = 50
 				message = "You feel a sharp pain in your [parent.plaintext_zone]"
-			pain_message(message, pain)
+			pain_message(message, pain_given)

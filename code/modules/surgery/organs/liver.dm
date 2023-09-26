@@ -124,62 +124,6 @@
 /obj/item/organ/liver/handle_regeneration()
 	return
 
-/obj/item/organ/liver/handle_failing_organs(delta_time)
-	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || HAS_TRAIT(src, TRAIT_NOMETABOLISM))
-		return
-	return ..()
-
-/obj/item/organ/liver/organ_failure(delta_time)
-
-	switch(failure_time/LIVER_FAILURE_STAGE_SECONDS)
-		if(1)
-			to_chat(owner, span_userdanger("You feel stabbing pain in your abdomen!"))
-		if(2)
-			to_chat(owner, span_userdanger("You feel a burning sensation in your gut!"))
-			owner.vomit()
-		if(3)
-			to_chat(owner, span_userdanger("You feel painful acid in your throat!"))
-			owner.vomit(blood = TRUE)
-		if(4)
-			to_chat(owner, span_userdanger("Overwhelming pain knocks you out!"))
-			owner.vomit(blood = TRUE, distance = rand(1,2))
-			owner.emote("Scream")
-			owner.AdjustUnconscious(2.5 SECONDS)
-		if(5)
-			to_chat(owner, span_userdanger("You feel as if your guts are about to melt!"))
-			owner.vomit(blood = TRUE,distance = rand(1,3))
-			owner.emote("Scream")
-			owner.AdjustUnconscious(5 SECONDS)
-
-	switch(failure_time)
-			//After 60 seconds we begin to feel the effects
-		if(1 * LIVER_FAILURE_STAGE_SECONDS to 2 * LIVER_FAILURE_STAGE_SECONDS - 1)
-			owner.adjustToxLoss(0.2 * delta_time,forced = TRUE)
-			owner.adjust_disgust(0.1 * delta_time)
-
-		if(2 * LIVER_FAILURE_STAGE_SECONDS to 3 * LIVER_FAILURE_STAGE_SECONDS - 1)
-			owner.adjustToxLoss(0.4 * delta_time,forced = TRUE)
-			owner.adjust_drowsyness(0.25 * delta_time)
-			owner.adjust_disgust(0.3 * delta_time)
-
-		if(3 * LIVER_FAILURE_STAGE_SECONDS to 4 * LIVER_FAILURE_STAGE_SECONDS - 1)
-			owner.adjustToxLoss(0.6 * delta_time,forced = TRUE)
-			owner.adjustOrganLoss(pick(ORGAN_SLOT_HEART,ORGAN_SLOT_LUNGS,ORGAN_SLOT_STOMACH,ORGAN_SLOT_EYES,ORGAN_SLOT_EARS),0.2 * delta_time)
-			owner.adjust_drowsyness(0.5 * delta_time)
-			owner.adjust_disgust(0.6 * delta_time)
-
-			if(DT_PROB(1.5, delta_time))
-				owner.emote("drool")
-
-		if(4 * LIVER_FAILURE_STAGE_SECONDS to INFINITY)
-			owner.adjustToxLoss(0.8 * delta_time,forced = TRUE)
-			owner.adjustOrganLoss(pick(ORGAN_SLOT_HEART,ORGAN_SLOT_LUNGS,ORGAN_SLOT_STOMACH,ORGAN_SLOT_EYES,ORGAN_SLOT_EARS),0.5 * delta_time)
-			owner.adjust_drowsyness(0.8 * delta_time)
-			owner.adjust_disgust(1.2 * delta_time)
-
-			if(DT_PROB(3, delta_time))
-				owner.emote("drool")
-
 /obj/item/organ/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
 	if(!ishuman(owner) || !(organ_flags & ORGAN_DEAD))
 		return
@@ -187,13 +131,11 @@
 	var/mob/living/carbon/human/humie_owner = owner
 	if(!humie_owner.getorganslot(ORGAN_SLOT_EYES) || humie_owner.is_eyes_covered())
 		return
-	switch(failure_time)
-		if(0 to 3 * LIVER_FAILURE_STAGE_SECONDS - 1)
-			examine_list += span_notice("[owner]'s eyes are slightly yellow.")
-		if(3 * LIVER_FAILURE_STAGE_SECONDS to 4 * LIVER_FAILURE_STAGE_SECONDS - 1)
-			examine_list += span_notice("[owner]'s eyes are completely yellow, and he is visibly suffering.")
-		if(4 * LIVER_FAILURE_STAGE_SECONDS to INFINITY)
-			examine_list += span_danger("[owner]'s eyes are completely yellow and swelling with pus. [owner.p_they()] don't look like they will be alive for much longer.")
+
+	if(damage > maxHealth * low_threshold)
+		examine_list += span_notice("[owner]'s eyes are slightly yellow.")
+	else if(damage > maxHealth * high_threshold)
+		examine_list += span_notice("[owner]'s eyes are completely yellow, and he is visibly suffering.")
 
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN

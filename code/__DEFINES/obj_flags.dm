@@ -76,6 +76,8 @@
 #define STACKABLE_HELMET_EXEMPT (1<<14)
 /// Usable as casting clothes by wizards (only matters for suits and headwear)
 #define CASTING_CLOTHES (1<<15)
+/// This head clothing can deliver air from an airtank
+#define HEADINTERNALS (1<<16)
 
 /// Flags for the organ_flags var on /obj/item/organ
 

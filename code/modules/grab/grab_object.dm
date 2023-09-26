@@ -2,24 +2,30 @@
 	name = "grab"
 	item_flags = DROPDEL | ABSTRACT | HAND_ITEM | NOBLUDGEON
 
-	var/mob/living/carbon/human/affecting = null
-	var/mob/living/carbon/human/assailant = null
+	/// The initiator of the grab
+	var/mob/living/assailant = null
+	/// The thing being grabbed
+	var/atom/movable/affecting = null
 
+	/// The grab datum currently being used
 	var/datum/grab/current_grab
-	var/type_name
 
+	/// world.time of the last action
 	var/last_action
+	/// world.time of the last upgrade
 	var/last_upgrade
-
-	var/special_target_functional = 1
-
-	var/attacking = 0
+	/// Indicates if the current grab has special interactions applied to the target organ (eyes and mouth at time of writing)
+	var/special_target_functional = TRUE
+	/// Used to avoid stacking interactions that sleep during /decl/grab/proc/on_hit_foo() (ie. do_after() is used)
+	var/is_currently_resolving_hit = FALSE
+	/// Records a specific bodypart that was targetted by this grab.
 	var/target_zone
-	var/done_struggle = FALSE // Used by struggle grab datum to keep track of state.
+	/// Used by struggle grab datum to keep track of state.
+	var/done_struggle = FALSE
 /*
 	This section is for overrides of existing procs.
 */
-/obj/item/hand_item/grab/Initialize(mapload, mob/living/carbon/human/victim, datum/grab/grab_type)
+/obj/item/hand_item/grab/Initialize(mapload, atom/movable/target, datum/grab/grab_type)
 	. = ..()
 	current_grab = GLOB.all_grabstates[grab_type]
 
@@ -27,29 +33,37 @@
 	if(!istype(assailant))
 		return INITIALIZE_HINT_QDEL
 
-	affecting = victim
+	affecting = target
 	if(!istype(affecting))
 		return INITIALIZE_HINT_QDEL
 	target_zone = assailant.zone_selected
 
 	if(!can_grab())
 		return INITIALIZE_HINT_QDEL
-	if(!init())
+	if(!setup())
 		return INITIALIZE_HINT_QDEL
 
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
-	name = "[initial(name)] ([BP.plaintext_zone])"
+	if(BP)
+		name = "[initial(name)] ([BP.plaintext_zone])"
+		RegisterSignal(affecting, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(on_limb_loss))
+
+	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_del))
 
 	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
 	RegisterSignal(assailant, COMSIG_MOVABLE_MOVED, PROC_REF(relay_user_move))
 
-	RegisterSignal(affecting, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(on_limb_loss))
-	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_del))
+/obj/item/hand_item/grab/Destroy()
+	assailant = null
+	affecting = null
+	return ..()
 
 /obj/item/hand_item/grab/examine(mob/user)
 	. = ..()
+	var/mob/living/L = get_affecting_mob()
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
-	to_chat(user, "A grab on \the [affecting]'s [BP.plaintext_zone].")
+	if(L && BP)
+		to_chat(user, "A grab on \the [L]'s [BP.plaintext_zone].")
 
 /obj/item/hand_item/grab/update_icon_state()
 	. = ..()
@@ -71,17 +85,11 @@
 
 /obj/item/hand_item/grab/pre_attack(atom/A, mob/living/user, params)
 	// End workaround
-	if (QDELETED(src) || !assailant)
+	if (QDELETED(src) || !assailant || !current_grab)
 		return TRUE
-	if (A.use_grab(src, params))
-		user.changeNext_move(CLICK_CD_MELEE)
-		action_used()
-		if (current_grab.downgrade_on_action)
-			downgrade()
+	if(A.attack_grab(src, params) || current_grab.hit_with_grab(src, A, params)) //If there is no use_grab override or if it returns FALSE; then will behave according to intent.
 		return TRUE
-	if(current_grab.hit_with_grab(src, params)) //If there is no use_grab override or if it returns FALSE; then will behave according to intent.
-		return TRUE
-	return ..() //To cover for legacy behavior. Should not reach here normally. Have all grabs be handled by use_grab or hit_with_grab.
+	return ..()
 
 /obj/item/hand_item/grab/Destroy()
 	if(affecting)
@@ -99,7 +107,7 @@
 /obj/item/hand_item/grab/proc/on_target_change(datum/source, old_sel, new_sel)
 	SIGNAL_HANDLER
 
-	if(src != assailant.get_active_hand())
+	if(src != assailant.get_active_held_item())
 		return // Note that because of this condition, there's no guarantee that target_zone = old_sel
 	if(target_zone == new_sel)
 		return
@@ -172,24 +180,26 @@
 	return TRUE
 
 // This will run from Initialize, after can_grab and other checks have succeeded. Must call parent; returning FALSE means failure and qdels the grab.
-/obj/item/hand_item/grab/proc/init()
+/obj/item/hand_item/grab/proc/setup()
 	if(!assailant.put_in_active_hand(src))
 		return FALSE // This should succeed as we checked the hand, but if not we abort here.
-
+	if(!current_grab.setup(src))
+		return FALSE
 	affecting.grabbed_by += src // This is how we handle affecting being deleted.
 
 	adjust_position()
 	action_used()
-	if(affecting.w_uniform)
-		affecting.w_uniform.add_fingerprint(assailant)
+
 	assailant.do_attack_animation(affecting)
+
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-	update_icon()
+	update_appearance()
 	return TRUE
 
 // Returns the bodypart of the grabbed person that the grabber is targeting
 /obj/item/hand_item/grab/proc/get_targeted_bodypart()
-	return (affecting?.get_bodypart(target_zone))
+	var/mob/living/L = get_affecting_mob()
+	return (L?.get_bodypart(target_zone))
 
 /obj/item/hand_item/grab/proc/resolve_item_attack(mob/living/M, obj/item/I, target_zone)
 	if((M && ishuman(M)) && I)
@@ -210,12 +220,14 @@
 /obj/item/hand_item/grab/proc/leave_forensic_traces()
 	if (!affecting)
 		return
+	var/mob/living/carbon/carbo = get_affecting_mob()
+	if(istype(carbo))
+		var/obj/item/clothing/C = carbo.get_item_covering_zone(target_zone)
+		if(istype(C))
+			C.add_fingerprint(assailant)
+			return
 
-	var/obj/item/clothing/C = affecting.get_item_covering_zone(target_zone)
-	if(istype(C))
-		C.add_fingerprint(assailant)
-	else
-		affecting.add_fingerprint(assailant) //If no clothing; add fingerprint to mob proper.
+	affecting.add_fingerprint(assailant) //If no clothing; add fingerprint to mob proper.
 
 /obj/item/hand_item/grab/proc/upgrade(bypass_cooldown = FALSE)
 	if(!check_upgrade_cooldown() && !bypass_cooldown)
@@ -272,6 +284,20 @@
 		return TRUE
 
 	return FALSE
+
+/obj/item/hand_item/grab/proc/get_affecting_mob()
+	RETURN_TYPE(/mob/living)
+	if(isobj(affecting))
+		return affecting.buckled_mobs?[1]
+
+	if(isliving(affecting))
+		return affecting
+/// Primarily used for do_after() callbacks, checks if the grab item is still holding onto something
+/obj/item/hand_item/grab/proc/is_grabbing(atom/movable/AM)
+	return affecting == AM
+/*
+ * This section is for component signal relays/hooks
+*/
 
 /// Relay when the assailant moves to the grab datum
 /obj/item/hand_item/grab/proc/relay_user_move(datum/source)

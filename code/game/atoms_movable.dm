@@ -95,6 +95,9 @@
 	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
 	var/list/do_afters
 
+	///A lazylist of grab objects gripping us
+	var/list/grabbed_by
+
 /mutable_appearance/emissive_blocker
 
 /mutable_appearance/emissive_blocker/New()

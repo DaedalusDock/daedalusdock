@@ -124,6 +124,8 @@
 	var/artery_name = "artery"
 	/// The name of the tendon this limb has
 	var/tendon_name = "tendon"
+	/// The name of the joint you can dislocate
+	var/joint_name = "joint"
 	/// The name for the amputation point of the limb
 	var/amputation_point
 	/// Surgical stage. Magic BS. Do not touch
@@ -262,7 +264,7 @@
 	. = ..()
 	. += mob_examine()
 
-/obj/item/bodypart/proc/mob_examine(hallucinating, covered)
+/obj/item/bodypart/proc/mob_examine(hallucinating, covered, just_wounds_please)
 	. = list()
 
 	if(covered)
@@ -329,6 +331,9 @@
 					flavor_text += "several [wound]s"
 				if(6 to INFINITY)
 					flavor_text += "a ton of [wound]\s"
+
+	if(just_wounds_please)
+		return english_list(flavor_text)
 
 	if(owner)
 		if(current_damage)
@@ -1371,3 +1376,42 @@
 			else
 				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
 		return
+
+/obj/item/bodypart/proc/inspect(mob/user)
+	if(is_stump)
+		to_chat(user, span_notice("[owner] is missing that bodypart."))
+		return
+
+	user.visible_message(span_notice("[user] starts inspecting [owner]'s [plaintext_zone] carefully."))
+	if(LAZYLEN(wounds))
+		to_chat(user, span_warning("You find [mob_examine(just_wounds_please = TRUE)]."))
+		var/list/stuff = list()
+		for(var/datum/wound/wound as anything in wounds)
+			if(LAZYLEN(wound.embedded_objects))
+				stuff |= wound.embedded_objects
+
+		if(length(stuff))
+			to_chat(user, span_warning("There's [english_list(stuff)] sticking out of [owner]'s [plaintext_zone]."))
+	else
+		to_chat(user, span_notice("You find no visible wounds."))
+
+	to_chat(user, span_notice("Checking skin now..."))
+
+	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
+		return
+
+	to_chat(user, span_notice("Checking bones now..."))
+	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
+		return
+
+	if(bodypart_flags & BP_BROKEN_BONES)
+		to_chat(user, span_warning("The [encased ? encased : "bone in the [plaintext_zone]"] moves slightly when you poke it!"))
+		owner.apply_pain(40, body_zone, "Your [plaintext_zone] hurts where it's poked.")
+	else
+		to_chat(user, span_notice("The [encased ? encased : "bones in the [plaintext_zone]"] seem to be fine."))
+
+	if(bodypart_flags & BP_TENDON_CUT)
+		to_chat(user, span_warning("The tendons in the [plaintext_zone] are severed!"))
+	if(bodypart_flags & BP_DISLOCATED)
+		to_chat(user, span_warning("The [joint_name] is dislocated!"))
+	return TRUE

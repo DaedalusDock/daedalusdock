@@ -31,6 +31,7 @@
 	encased = "skull"
 	artery_name = "carotid artery"
 	cavity_name = "cranial"
+	joint_name = "jaw"
 
 	minimum_break_damage = 30
 

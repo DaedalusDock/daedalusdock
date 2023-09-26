@@ -359,5 +359,5 @@
  * Returns boolean to indicate whether the attack call was handled or not. If `FALSE`, the next `use_*` proc in the
  * resolve chain will be called.
  */
-/atom/proc/use_grab(obj/item/hand_item/grab/grab, list/params)
+/atom/proc/attack_grab(obj/item/hand_item/grab/grab, list/params)
 	return FALSE

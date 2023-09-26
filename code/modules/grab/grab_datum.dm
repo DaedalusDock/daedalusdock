@@ -83,6 +83,11 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	if(downgrab)
 		downgrab = GLOB.all_grabstates[upgrab]
 
+/// Called by the grab item's setup() proc. May return FALSE to interrupt, otherwise the grab has succeeded.
+/datum/grab/proc/setup(obj/item/hand_item/grab)
+	SHOULD_CALL_PARENT(TRUE)
+	return TRUE
+
 // This is for the strings defined as datum variables. It takes them and swaps out keywords for relevent ones from the grab
 // object involved.
 /datum/grab/proc/string_process(obj/item/hand_item/grab/G, to_write, obj/item/used_item)
@@ -147,39 +152,48 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		qdel(G)
 		return
 
-/datum/grab/proc/hit_with_grab(obj/item/hand_item/grab/G, params)
+/datum/grab/proc/hit_with_grab(obj/item/hand_item/grab/G, atom/target, params)
 	if(downgrade_on_action)
 		G.downgrade()
 
-	if(G.check_action_cooldown() && !G.attacking)
-		var/combat_mode = G.assailant.combat_mode
-		if(params[RIGHT_CLICK])
-			if(on_hit_disarm(G))
-				G.action_used()
-				make_log(G, disarm_action)
-				return TRUE
-
-		else if(params[CTRL_CLICK])
-			if(on_hit_grab(G))
-				G.action_used()
-				make_log(G, grab_action)
-				return TRUE
-
-
-		else if(combat_mode)
-			if(on_hit_harm(G))
-				G.action_used()
-				make_log(G, harm_action)
-				return TRUE
-		else
-			if(on_hit_help(G))
-				G.action_used()
-				make_log(G, help_action)
-				return TRUE
-
-	else
+	if(!G.check_action_cooldown() || G.is_currently_resolving_hit)
 		to_chat(G.assailant, span_warning("You must wait before you can do that."))
 		return FALSE
+
+	G.is_currently_resolving_hit = TRUE
+	var/combat_mode = G.assailant.combat_mode
+	if(params[RIGHT_CLICK])
+		if(on_hit_disarm(G))
+			. = disarm_action || TRUE
+
+	else if(params[CTRL_CLICK])
+		if(on_hit_grab(G))
+			. = grab_action || TRUE
+
+
+	else if(combat_mode)
+		if(on_hit_harm(G))
+			. = harm_action || TRUE
+	else
+		if(on_hit_help(G))
+			. = help_action || TRUE
+
+	if(QDELETED(src))
+		return
+
+	G.is_currently_resolving_hit = FALSE
+
+	if(!.)
+		return
+
+	G.action_used()
+	if(G.assailant)
+		G.assailant.changeNext_move(CLICK_CD_MELEE)
+		if(istext(.) && G.affecting)
+			make_log(G, "used [.] on")
+
+	if(downgrade_on_action)
+		G.downgrade()
 
 /datum/grab/proc/make_log(obj/item/hand_item/grab/G, action)
 	log_combat(G.assailant, G.affecting, "[action]s their victim")

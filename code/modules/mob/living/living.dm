@@ -1054,34 +1054,21 @@
 		else if(last_special <= world.time)
 			resist_restraints() //trying to remove cuffs.
 
+/// Attempt to break free of grabs. Returning TRUE means the user broke free and can move.
 /mob/proc/resist_grab(moving_resist)
-	return 1 //returning 0 means we successfully broke free
+	return TRUE
 
 /mob/living/resist_grab(moving_resist)
-	. = TRUE
-	if(pulledby.grab_state || body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
-		var/altered_grab_state = pulledby.grab_state
-		if((body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS)) && pulledby.grab_state < GRAB_KILL) //If prone, resisting out of a grab is equivalent to 1 grab state higher. won't make the grab state exceed the normal max, however
-			altered_grab_state++
-		var/resist_chance = BASE_GRAB_RESIST_CHANCE /// see defines/combat.dm, this should be baseline 60%
-		resist_chance = (resist_chance/altered_grab_state) ///Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
-		if(prob(resist_chance))
-			visible_message(span_danger("[src] breaks free of [pulledby]'s grip!"), \
-							span_danger("You break free of [pulledby]'s grip!"), null, null, pulledby)
-			to_chat(pulledby, span_warning("[src] breaks free of your grip!"))
-			log_combat(pulledby, src, "broke grab")
-			pulledby.stop_pulling()
-			return FALSE
-		else
-			stamina.adjust(-rand(15,20)) //failure to escape still imparts a pretty serious penalty
-			visible_message(span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"), \
-							span_warning("You struggle as you fail to break free of [pulledby]'s grip!"), null, null, pulledby)
-			to_chat(pulledby, span_danger("[src] struggles as they fail to break free of your grip!"))
-		if(moving_resist && client) //we resisted by trying to move
-			client.move_delay = world.time + 4 SECONDS
-	else
-		pulledby.stop_pulling()
-		return FALSE
+	if(!LAZYLEN(grabbed_by))
+		return TRUE
+
+	if(moving_resist && client) //we resisted by trying to move
+		client.move_delay = world.time + 4 SECONDS
+
+	visible_message(span_danger("\The [src] struggles to break free!"))
+
+	for(var/obj/item/hand_item/grab/G as anything in grabbed_by)
+		. = G.handle_resist() || .
 
 /mob/living/proc/resist_buckle()
 	buckled.user_unbuckle_mob(src,src)

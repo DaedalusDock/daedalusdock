@@ -1,0 +1,316 @@
+/datum/grab/normal
+	icon = 'goon/icons/items/grab.dmi'
+	icon_state = "1"
+
+	help_action = "inspect"
+	disarm_action = "pin"
+	grab_action = "jointlock"
+	harm_action = "dislocate"
+
+	var/drop_headbutt = 1
+
+/datum/grab/normal/setup(obj/item/hand_item/grab/G)
+	if(!(. = ..()))
+		return
+
+	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
+	if(!BP)
+		return
+
+	if(G.affecting != G.assailant)
+		G.assailant.visible_message(span_warning("[G.assailant] has grabbed [G.affecting]'s [BP.plaintext_zone]!"))
+	else
+		G.assailant.visible_message(span_notice("[G.assailant] has grabbed [G.assailant.p_their()] [BP.plaintext_zone]!"))
+
+/datum/grab/normal/on_hit_help(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
+
+	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
+	if(!BP || !proximity || (A && A != G.get_affecting_mob()))
+		return FALSE
+	return BP.inspect(G.assailant)
+
+/datum/grab/normal/on_hit_disarm(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
+
+	if(!proximity)
+		return FALSE
+
+	var/mob/living/affecting = G.get_affecting_mob()
+	var/mob/living/assailant = G.assailant
+	if(affecting && A && A == affecting && !affecting.body_position == STANDING_UP)
+
+		affecting.visible_message(span_danger("\The [assailant] is trying to pin \the [affecting] to the ground!"))
+		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "harm")))
+			G.action_used()
+			affecting.visible_message(span_danger("\The [assailant] pins \the [affecting] to the ground!"))
+			return TRUE
+		affecting.visible_message(span_warning("\The [assailant] fails to pin \the [affecting] to the ground."))
+
+	return FALSE
+
+/datum/grab/normal/on_hit_grab(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
+
+	if(!proximity)
+		return FALSE
+
+	var/mob/living/affecting = G.get_affecting_mob()
+	if(!affecting || (A && A != affecting))
+		return FALSE
+
+	var/mob/living/assailant = G.assailant
+	if(!assailant)
+		return FALSE
+
+	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
+	if(!BP)
+		to_chat(assailant, span_warning("\The [affecting] is missing that body part!"))
+		return FALSE
+
+	assailant.visible_message(span_danger("\The [assailant] begins to [pick("bend", "twist")] \the [affecting]'s [BP.plaintext_zone] into a jointlock!"))
+	if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "harm")))
+		G.action_used()
+		BP.jointlock(assailant)
+		assailant.visible_message(span_danger("\The [affecting]'s [BP.plaintext_zone] is twisted!"))
+		playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+		return TRUE
+
+	affecting.visible_message(span_warning("\The [assailant] fails to jointlock \the [affecting]'s [BP.plaintext_zone]."))
+	return FALSE
+
+/datum/grab/normal/on_hit_harm(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
+
+	if(!proximity)
+		return FALSE
+
+	var/mob/living/affecting = G.get_affecting_mob()
+	if(!affecting || (A && A != affecting))
+		return FALSE
+
+	var/mob/living/assailant = G.assailant
+	if(!assailant)
+		return FALSE
+
+	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
+	if(!BP)
+		to_chat(assailant, span_warning("\The [affecting] is missing that body part!"))
+		return  FALSE
+
+	if(BP.can_be_dislocated())
+		assailant.visible_message(span_danger("\The [assailant] begins to dislocate \the [affecting]'s [BP.joint_name]!"))
+		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC))
+			G.action_used()
+			BP.set_dislocated()
+			assailant.visible_message(span_danger("\The [affecting]'s [BP.joint_name] [pick("gives way","caves in","crumbles","collapses")]!"))
+			playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+			return TRUE
+
+		affecting.visible_message(span_warning("\The [assailant] fails to dislocate \the [affecting]'s [BP.joint_name]."))
+		return FALSE
+
+	if(BP.can_be_dislocated())
+		to_chat(assailant, span_warning("\The [affecting]'s [BP.joint_name] is already dislocated!"))
+	else
+		to_chat(assailant, span_warning("You can't dislocate \the [affecting]'s [BP.joint_name]!"))
+	return FALSE
+
+/datum/grab/normal/resolve_openhand_attack(var/obj/item/hand_item/grab/G)
+	if(!G.assailant.combat_mode)
+		return FALSE
+	if(G.target_zone == BODY_ZONE_HEAD)
+		if(G.assailant.zone_selected == BODY_ZONE_PRECISE_EYES)
+			if(attack_eye(G))
+				return TRUE
+		else
+			if(headbutt(G))
+				if(drop_headbutt)
+					let_go()
+				return TRUE
+	return FALSE
+
+/datum/grab/normal/proc/attack_eye(var/obj/item/hand_item/grab/G)
+	var/mob/living/carbon/human/target = G.get_affecting_mob()
+	var/mob/living/carbon/human/attacker = G.assailant
+	if(!istype(target) || !istype(attacker))
+		return
+
+	if(target.is_eyes_covered())
+		to_chat(attacker, "<span class='danger'>You're going to need to remove the eye covering first.</span>")
+		return
+
+	var/obj/item/organ/eyes/E = target.getorganslot(ORGAN_SLOT_EYES)
+	if(E)
+		to_chat(attacker, "<span class='danger'>You cannot locate any eyes on [target]!</span>")
+		return
+
+	log_combat(attacker, target, "attacked the eyes of (grab)")
+
+	if(E)
+		E.applyOrganDamage(rand(3,4))
+		attacker.visible_message(span_danger("\The [attacker] jams [G.p_their()] fingers into \the [target]'s [E.name]!"))
+		if(!(E.organ_flags & ORGAN_SYNTHETIC))
+			to_chat(target, span_danger("You experience immense pain as fingers are jammed into your [E.name]!"))
+		else
+			to_chat(target, span_danger("You experience fingers being jammed into your [E.name]."))
+	else
+		attacker.visible_message(span_danger("\The [attacker] attempts to press [G.p_their()] fingers into \the [target]'s [E.name], but [target.p_they()] doesn't have any!"))
+	return TRUE
+
+/datum/grab/normal/proc/headbutt(var/obj/item/hand_item/grab/G)
+	var/mob/living/carbon/human/target = G.get_affecting_mob()
+	var/mob/living/carbon/human/attacker = G.assailant
+	if(!istype(target)	 || !istype(attacker))
+		return
+
+	if(target.body_position == LYING_DOWN)
+		return
+
+	var/damage = 20
+	var/obj/item/clothing/hat = attacker.head
+	var/sharpness
+	if(istype(hat))
+		damage += hat.force * 3
+		sharpness = hat.sharpness
+
+	if(sharpness & SHARP_POINTY)
+		if(istype(hat))
+			attacker.visible_message(span_danger("\The [attacker] gores \the [target] with \the [hat]!"))
+		else
+			attacker.visible_message(span_danger("\The [attacker] gores \the [target]!"))
+	else
+		attacker.visible_message(span_danger("\The [attacker] thrusts [attacker.p_their()] head into \the [target]'s skull!"))
+
+	var/armor = target.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	target.apply_damage(damage, BRUTE, BODY_ZONE_HEAD, armor, sharpness = sharpness)
+	attacker.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
+
+	if(armor < 0.5 && target.can_head_trauma_ko() && prob(damage))
+		target.Unconscious(20 SECONDS)
+		target.visible_message(span_danger("\The [target] collapses, now fast asleep."))
+
+	playsound(attacker.loc, "swing_hit", 25, 1, -1)
+	log_combat(attacker, target, "headbutted")
+	return 1
+
+// Handles special targeting like eyes and mouth being covered.
+/datum/grab/normal/special_target_effect(var/obj/item/hand_item/grab/G)
+	var/mob/living/affecting_mob = G.get_affecting_mob()
+	if(istype(affecting_mob) && G.special_target_functional)
+		switch(G.target_zone)
+			if(BODY_ZONE_PRECISE_MOUTH)
+				if(iscarbon(affecting_mob))
+					var/mob/living/carbon/C = affecting_mob
+					C.silent = max(C.silent, 2)
+			if(BODY_ZONE_PRECISE_EYES)
+				affecting_mob.blind_eyes(2 SECONDS)
+
+// Handles when they change targeted areas and something is supposed to happen.
+/datum/grab/normal/special_target_change(var/obj/item/hand_item/grab/G, old_zone, new_zone)
+	if((old_zone != BODY_ZONE_HEAD && old_zone != BODY_ZONE_CHEST) || !G.get_affecting_mob())
+		return
+	switch(new_zone)
+		if(BODY_ZONE_PRECISE_MOUTH)
+			G.assailant.visible_message("<span class='warning'>\The [G.assailant] covers [G.affecting]'s mouth!</span>")
+		if(BODY_ZONE_PRECISE_EYES)
+			G.assailant.visible_message("<span class='warning'>\The [G.assailant] covers [G.affecting]'s eyes!</span>")
+
+/datum/grab/normal/check_special_target(var/obj/item/hand_item/grab/G)
+	var/mob/living/affecting_mob = G.get_affecting_mob()
+	if(!istype(affecting_mob))
+		return FALSE
+	switch(G.target_zone)
+		if(BODY_ZONE_PRECISE_MOUTH)
+			if(!affecting_mob.has_mouth())
+				to_chat(G.assailant, "<span class='danger'>You cannot locate a mouth on [G.affecting]!</span>")
+				return FALSE
+		if(BODY_ZONE_PRECISE_EYES)
+			if(!affecting_mob.getorganslot(ORGAN_SLOT_EYES))
+				to_chat(G.assailant, "<span class='danger'>You cannot locate any eyes on [G.affecting]!</span>")
+				return FALSE
+	return TRUE
+
+/datum/grab/normal/resolve_item_attack(var/obj/item/hand_item/grab/G, var/mob/living/carbon/human/user, var/obj/item/I)
+	switch(G.target_zone)
+		if(BODY_ZONE_HEAD)
+			return attack_throat(G, I, user)
+		else
+			return attack_tendons(G, I, user, G.target_zone)
+
+/datum/grab/normal/proc/attack_throat(var/obj/item/hand_item/grab/G, var/obj/item/W, mob/living/user)
+	var/mob/living/carbon/affecting = G.get_affecting_mob()
+	if(!istype(affecting))
+		return
+	if(!user.combat_mode)
+		return FALSE // Not trying to hurt them.
+
+	if(!(W.sharpness & SHARP_EDGED) || !W.force || W.damtype != BRUTE)
+		return FALSE //unsuitable weapon
+
+	if(DOING_INTERACTION(user, "throat slit"))
+		return FALSE
+
+	user.visible_message("<span class='danger'>\The [user] begins to slit [affecting]'s throat with \the [W]!</span>")
+
+	user.changeNext_move(CLICK_CD_MELEE)
+	if(!do_after(user, affecting, 2 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(G, TYPE_PROC_REF(/obj/item/hand_item/grab, is_grabbing), affecting), interaction_key = "throat slit", display = W))
+		return FALSE
+
+	if(!(G && G.affecting == affecting)) //check that we still have a grab
+		return FALSE
+
+	var/armor
+
+	//presumably, if they are wearing a helmet that stops pressure effects, then it probably covers the throat as well
+	for(var/obj/item/clothing/equipped in affecting.get_equipped_items())
+		if((equipped.body_parts_covered & HEAD) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
+			armor = affecting.run_armor_check(BODY_ZONE_HEAD, MELEE, silent = TRUE)
+			break
+
+	var/total_damage = 0
+	for(var/i in 1 to 3)
+		var/damage = min(W.force*1.5, 20)
+		affecting.apply_damage(damage, BRUTE, BODY_ZONE_HEAD, armor, sharpness = W.sharpness)
+		total_damage += damage
+
+	if(total_damage)
+		user.visible_message("<span class='danger'>\The [user] slit [affecting]'s throat open with \the [W]!</span>")
+
+		if(W.hitsound)
+			playsound(affecting.loc, W.hitsound, 50, 1, -1)
+
+	G.last_action = world.time
+
+	log_combat(user, affecting, "slit throat (grab)")
+	return 1
+
+/datum/grab/normal/proc/attack_tendons(var/obj/item/hand_item/grab/G, var/obj/item/W, mob/living/user, var/target_zone)
+	var/mob/living/affecting = G.get_affecting_mob()
+	if(!affecting)
+		return
+	if(!user.combat_mode)
+		return FALSE // Not trying to hurt them.
+
+	if(!(W.sharpness & SHARP_EDGED) || !W.force || W.damtype != BRUTE)
+		return FALSE //unsuitable weapon
+
+	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
+	if(!BP || !(BP.check_tendon() == CHECKTENDON_OK))
+		return FALSE
+
+	if(DOING_INTERACTION(user, "slice tendon"))
+		return FALSE
+
+	user.visible_message(span_danger("\The [user] begins to cut \the [affecting]'s [BP.tendon_name] with \the [W]!"))
+	user.changeNext_move(CLICK_CD_MELEE)
+
+	if(!do_after(user, affecting, 2 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(G, TYPE_PROC_REF(/obj/item/hand_item/grab, is_grabbing), affecting), interaction_key = "slice tendon", display = W))
+		return FALSE
+
+	if(!BP || !BP.set_sever_tendon(TRUE))
+		return FALSE
+
+	user.visible_message(span_danger("\The [user] cut \the [affecting]'s [BP.tendon_name] with \the [W]!"))
+
+	if(W.hitsound)
+		playsound(affecting.loc, W.hitsound, 50, 1, -1)
+	G.last_action = world.time
+	log_combat(user, affecting, "hamstrung (grab)")
+	return TRUE

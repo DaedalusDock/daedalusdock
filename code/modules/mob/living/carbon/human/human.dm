@@ -1131,3 +1131,18 @@
 				return FALSE
 
 	return dna.species.organs[slot]
+
+//Used by various things that knock people out by applying blunt trauma to the head.
+//Checks that the species has a "head" (brain containing organ) and that hit_zone refers to it.
+/mob/living/carbon/human/proc/can_head_trauma_ko()
+	var/obj/item/organ/brain = getorganslot(ORGAN_SLOT_BRAIN)
+	if(!brain || !needs_organ(ORGAN_SLOT_BRAIN))
+		return FALSE
+
+	//if the parent organ is significantly larger than the brain organ, then hitting it is not guaranteed
+	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+	if(!head)
+		return FALSE
+	if(head.w_class > brain.w_class + 1)
+		return prob(100 / 2**(head.w_class - brain.w_class - 1))
+	return TRUE

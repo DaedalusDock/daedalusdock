@@ -28,7 +28,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	if (!.)
 		return FALSE
 
-	if (user.grab_state != GRAB_AGGRESSIVE)
+	var/obj/item/hand_item/grab/G = user.is_grabbing(src)
+	if (G && G.current_grab.damage_stage != GRAB_AGGRESSIVE)
 		return TRUE
 
 	if (ishuman(user))

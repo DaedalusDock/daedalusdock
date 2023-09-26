@@ -235,7 +235,7 @@
 		layer = TABLE_LAYER
 
 /obj/structure/table/attack_grab(mob/living/user, obj/item/hand_item/grab/grab, list/params)
-	try_place_pulled_onto_table(user, G.affecting)
+	try_place_pulled_onto_table(user, grab.affecting, grab)
 
 /obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user, atom/movable/target, obj/item/hand_item/grab/grab)
 	if(!Adjacent(user))
@@ -247,15 +247,13 @@
 			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 			return
 		if(user.combat_mode)
-			switch(grab.current_grab.type)
-				if(/datum/grab/simple, /datum/grab/normal)
+			switch(grab.current_grab.damage_stage)
+				if(GRAB_PASSIVE)
 					to_chat(user, span_warning("You need a better grip to do that!"))
 					return
-				#warn aggro grab
-				/*
-				if(/datum/grab/aggressive)
+
+				if(GRAB_AGGRESSIVE)
 					tablepush(user, pushed_mob)
-				*/
 				else
 					tablelimbsmash(user, pushed_mob)
 		else
@@ -265,13 +263,13 @@
 				tableplace(user, pushed_mob)
 			else
 				return
-		user.release_all_grabs()
+		user.release_grab(pushed_mob)
 
 	else if(target.pass_flags & PASSTABLE)
-		user.Move_Pulled(src)
+		user.move_grabbed_atoms_towards(src)
 		if (target.loc == loc)
-			user.visible_message(span_notice("[user] places [user.pulling] onto [src]."),
-				span_notice("You place [user.pulling] onto [src]."))
+			user.visible_message(span_notice("[user] places [target] onto [src]."),
+				span_notice("You place [target] onto [src]."))
 
 			user.release_grab(target)
 

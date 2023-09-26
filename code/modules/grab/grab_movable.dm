@@ -1,11 +1,7 @@
-/// Attempt to create a grab, returns TRUE on success
-/atom/movable/proc/try_make_grab(atom/movable/target, grab_type)
-	return canUseTopic(src, USE_IGNORE_TK|USE_CLOSE) && make_grab(target, grab_type)
-
 /atom/movable/proc/can_be_grabbed(mob/living/grabber, target_zone, force)
 	if(!istype(grabber) || !isturf(loc) || !isturf(grabber.loc))
 		return FALSE
-	if(SEND_SIGNAL(src, COMSIG_ATOM_CAN_BE_GRABBED, grabber) & COMSIG_ATOM_CANT_PULL)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_CAN_BE_GRABBED, grabber) & COMSIG_ATOM_NO_GRAB)
 		return FALSE
 	if(!grabber.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return FALSE
@@ -21,10 +17,52 @@
 	return TRUE
 
 /atom/movable/proc/buckled_grab_check(var/mob/grabber)
-	if(grabber.buckled == src && buckled_mob == grabber)
+	if(grabber.buckled == src && (grabber in buckled_mobs))
 		return TRUE
 	if(grabber.anchored)
 		return FALSE
 	if(grabber.buckled)
 		return FALSE
 	return TRUE
+
+/**
+ * Checks if the pulling and pulledby should be stopped because they're out of reach.
+ * If z_allowed is TRUE, the z level of the pulling will be ignored.This is to allow things to be dragged up and down stairs.
+ */
+/atom/movable/proc/recheck_grabs(only_pulling = FALSE, z_allowed = FALSE)
+	if(only_pulling)
+		return
+
+	for(var/obj/item/hand_item/grab/G in grabbed_by)
+		if(moving_diagonally != FIRST_DIAG_STEP && (get_dist(src, G.assailant) > 1 || z != G.assailant.z)) //separated from our puller and not in the middle of a diagonal move.
+			qdel(G)
+
+/// Move grabbed atoms towards a destination
+/mob/living/proc/move_grabbed_atoms_towards(atom/destination)
+	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+		var/atom/movable/pulling = G.affecting
+		if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
+			qdel(G)
+			continue
+
+		if(isliving(pulling))
+			var/mob/living/pulling_mob = pulling
+			if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
+				qdel(G)
+				continue
+
+		if(destination == loc && pulling.density)
+			continue
+
+		var/move_dir = get_dir(pulling.loc, destination)
+		if(!Process_Spacemove(move_dir))
+			continue
+
+		// At this point the move was successful
+		pulling.Move(get_step(pulling.loc, move_dir), move_dir, glide_size)
+
+		if(!isliving(pulling))
+			continue
+
+		var/mob/living/pulled_mob = pulling
+		set_pull_offsets(pulled_mob)

@@ -163,7 +163,7 @@
 
 /datum/action/cooldown/spell/jaunt/bloodcrawl/slaughter_demon/try_enter_jaunt(obj/effect/decal/cleanable/blood, mob/living/jaunter)
 	// Save this before the actual jaunt
-	var/atom/coming_with = jaunter.pulling
+	var/atom/coming_with = jaunter.get_active_grab()?.affecting
 
 	// Does the actual jaunt
 	. = ..()

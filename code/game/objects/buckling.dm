@@ -349,6 +349,7 @@
 				span_notice("You unbuckle yourself from [src]."),\
 				span_hear("You hear metal clanking."))
 		add_fingerprint(user)
+
 		if(isliving(M.pulledby))
 			var/mob/living/L = M.pulledby
 			L.set_pull_offsets(M, L.grab_state)

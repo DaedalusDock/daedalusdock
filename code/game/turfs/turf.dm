@@ -205,7 +205,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	user.move_grabbed_atoms_towards(src)
 
 /**
  * Check whether the specified turf is blocked by something dense inside it with respect to a specific atom.
@@ -303,21 +303,26 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!(flags & FALL_INTERCEPTED) && falling.zFall(levels + 1))
 		return FALSE
 
-	for(var/atom/movable/falling_mob as anything in falling_movables)
+	for(var/atom/movable/falling_movable as anything in falling_movables)
+		var/mob/living/L = falling_movable
+		if(!isliving(L))
+			L = null
 		if(!(flags & FALL_RETAIN_PULL))
-			falling_mob.release_all_grabs()
+			L?.release_all_grabs()
 
 		if(!(flags & FALL_INTERCEPTED))
-			falling_mob.onZImpact(src, levels)
+			falling_movable.onZImpact(src, levels)
 
 			#ifndef ZMIMIC_MULTIZ_SPEECH //Multiz speech handles this otherwise
 			if(!(flags & FALL_NO_MESSAGE))
 				prev_turf.audible_message(span_hear("You hear something slam into the deck below."))
 			#endif
 
-		#warn FUUUUUCk
-		if(falling_mob.pulledby && (falling_mob.z != falling_mob.pulledby.z || get_dist(falling_mob, falling_mob.pulledby) > 1))
-			falling_mob.pulledby.stop_pulling()
+		if(L)
+			if(LAZYLEN(L.grabbed_by))
+				for(var/obj/item/hand_item/grab/G in L.grabbed_by)
+					if(L.z != G.assailant.z || get_dist(L, G.assailant.z > 1))
+						qdel(G)
 	return TRUE
 
 /turf/proc/handleRCL(obj/item/rcl/C, mob/user)

@@ -363,10 +363,9 @@
 		if(undergoing_cardiac_arrest())
 			set_heartattack(FALSE)
 		var/list/shocking_queue = list()
-		if(iscarbon(pulling) && source != pulling)
-			shocking_queue += pulling
-		if(iscarbon(pulledby) && source != pulledby)
-			shocking_queue += pulledby
+		shocking_queue += get_all_grabbed_movables()
+		shocking_queue -= source
+
 		if(iscarbon(buckled) && source != buckled)
 			shocking_queue += buckled
 		for(var/mob/living/carbon/carried in buckled_mobs)

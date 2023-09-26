@@ -54,6 +54,7 @@
 	RegisterSignal(assailant, COMSIG_MOVABLE_MOVED, PROC_REF(relay_user_move))
 
 /obj/item/hand_item/grab/Destroy()
+	current_grab?.let_go(src)
 	assailant = null
 	affecting = null
 	return ..()
@@ -159,7 +160,7 @@
 
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 	update_appearance()
-	current_grab.update_grab_effects(null)
+	current_grab.update_grab_effects(src, null)
 	return TRUE
 
 // Returns the bodypart of the grabbed person that the grabber is targeting

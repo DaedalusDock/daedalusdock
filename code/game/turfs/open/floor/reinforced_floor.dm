@@ -92,7 +92,7 @@
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	user.move_grabbed_atoms_towards(src)
 
 //air filled floors; used in atmos pressure chambers
 

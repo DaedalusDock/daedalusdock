@@ -1,4 +1,4 @@
-/mob/living/carbon/human/add_grab(var/obj/item/grab/grab, defer_hand = FALSE)
+/mob/living/carbon/human/add_grab(var/obj/item/hand_item/grab/grab, defer_hand = FALSE)
 	if(defer_hand)
 		. = put_in_inactive_hand(grab)
 	else
@@ -10,7 +10,7 @@
 		return
 
 	var/obj/item/bodypart/BP = get_bodypart(deprecise_zone(target_zone))
-	if(!istype(organ))
+	if(!istype(BP))
 		to_chat(grabber, span_warning("\The [src] is missing that body part!"))
 		return FALSE
 
@@ -21,13 +21,16 @@
 			return FALSE
 
 		if(using_slot == BP)
-			to_chat(src, span_warning("You can't grab your own [organ.name] with itself!"))
+			to_chat(src, span_warning("You can't grab your own [BP.plaintext_zone] with itself!"))
 			return FALSE
-
+	/*
 	if(pull_damage())
 		to_chat(grabber, span_warning("Pulling \the [src] in their current condition would probably be a bad idea."))
+	*/
 
-	var/obj/item/clothing/C = get_covering_equipped_item_by_zone(target_zone)
+	var/obj/item/clothing/C = get_item_covering_zone(target_zone)
 	if(istype(C))
+		C.add_fingerprint(grabber)
+	else
 		C.add_fingerprint(grabber)
 

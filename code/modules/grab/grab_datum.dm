@@ -121,8 +121,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab/proc/let_go(obj/item/hand_item/grab/G)
 	if (G)
 		let_go_effect(G)
-		if(!QDELETED(G))
-			qdel(G)
+		G.current_grab = null
+		qdel(G)
 
 /datum/grab/proc/on_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
 	G.special_target_functional = check_special_target(G)
@@ -247,25 +247,27 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 // What happens when you upgrade from one grab state to the next.
 /datum/grab/proc/upgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
-	update_grab_effects(old_grab)
+	update_grab_effects(G, old_grab)
 
 // Conditions to see if upgrading is possible
 /datum/grab/proc/can_upgrade(obj/item/hand_item/grab/G)
 	if(!upgrab)
 		return FALSE
 
-	if(!(G.affecting.status_flags & CANPUSH) || HAS_TRAIT(G.affecting, TRAIT_PUSHIMMUNE))
-		to_chat(user, span_warning("[src] can't be grabbed more aggressively!"))
-		return FALSE
+	if(isliving(G.affecting))
+		var/mob/living/L = G.affecting
+		if(!(L.status_flags & CANPUSH) || HAS_TRAIT(L, TRAIT_PUSHIMMUNE))
+			to_chat(G.assailant, span_warning("[src] can't be grabbed more aggressively!"))
+			return FALSE
 
 	if(upgrab.damage_stage >= GRAB_AGGRESSIVE && HAS_TRAIT(G.assailant, TRAIT_PACIFISM))
-		to_chat(user, span_warning("You don't want to risk hurting [src]!"))
+		to_chat(G.assailant, span_warning("You don't want to risk hurting [src]!"))
 		return FALSE
 	return TRUE
 
 // What happens when you downgrade from one grab state to the next.
 /datum/grab/proc/downgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
-	update_grab_effects(old_grab)
+	update_grab_effects(G, old_grab)
 
 // Conditions to see if downgrading is possible
 /datum/grab/proc/can_downgrade(obj/item/hand_item/grab/G)
@@ -276,12 +278,12 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab/proc/let_go_effect(obj/item/hand_item/grab/G)
 	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
 	SEND_SIGNAL(G.assailant, COMSIG_ATOM_NO_LONGER_GRABBING, G.affecting)
-	update_grab_effects(null)
+	update_grab_effects(G, null, TRUE)
 
-/datum/grab/proc/update_grab_effects(datum/grab/old_grab)
+/datum/grab/proc/update_grab_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
 	var/old_damage_stage = old_grab?.damage_stage || 0
 
-	switch(damage_stage) // Current state.
+	switch(!dropping_grab || damage_stage) // Current state.
 		if(GRAB_PASSIVE)
 			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
 			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)

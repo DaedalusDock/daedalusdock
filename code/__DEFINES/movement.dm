@@ -61,7 +61,7 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 /// Used when the grip on a pulled object shouldn't be broken.
 #define FALL_RETAIN_PULL (1<<3)
 
-/// Runs check_pulling() by the end of [/atom/movable/proc/zMove] for every movable that's pulling something. Should be kept enabled unless you know what you are doing.
+/// Runs recheck_grabs() by the end of [/atom/movable/proc/zMove] for every movable that's pulling something. Should be kept enabled unless you know what you are doing.
 #define ZMOVE_CHECK_PULLING (1<<0)
 /// Checks if pulledby is nearby. if not, stop being pulled.
 #define ZMOVE_CHECK_PULLEDBY (1<<1)

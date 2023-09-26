@@ -118,16 +118,6 @@
 	if(processing)
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return TRUE
-	if(ismob(user.pulling) && PROCESSOR_SELECT_RECIPE(user.pulling))
-		if(user.grab_state < GRAB_AGGRESSIVE)
-			to_chat(user, span_warning("You need a better grip to do that!"))
-			return
-		var/mob/living/pushed_mob = user.pulling
-		visible_message(span_warning("[user] stuffs [pushed_mob] into [src]!"))
-		pushed_mob.forceMove(src)
-		LAZYADD(processor_contents, pushed_mob)
-		user.release_all_grabs()
-		return
 
 	if(!LAZYLEN(processor_contents))
 		to_chat(user, span_warning("[src] is empty!"))
@@ -157,6 +147,23 @@
 	pixel_x = base_pixel_x //return to its spot after shaking
 	processing = FALSE
 	visible_message(span_notice("\The [src] finishes processing."))
+
+/obj/machinery/processor/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(processing)
+		to_chat(user, span_warning("[src] is in the process of processing!"))
+		return TRUE
+
+	if(ismobvictim && PROCESSOR_SELECT_RECIPE(victim))
+		if(grab.current_grab.damage_stage < GRAB_AGGRESSIVE)
+			to_chat(user, span_warning("You need a better grip to do that!"))
+			return
+		var/mob/living/pushed_mob = victim
+		visible_message(span_warning("[user] stuffs [pushed_mob] into [src]!"))
+		qdel(grab)
+		pushed_mob.forceMove(src)
+		LAZYADD(processor_contents, pushed_mob)
+		return
 
 /obj/machinery/processor/verb/eject()
 	set category = "Object"

@@ -12,7 +12,7 @@
 ///called for each movable in a turf contents on /turf/zImpact(): (atom/movable/A, levels)
 #define COMSIG_ATOM_INTERCEPT_Z_FALL "movable_intercept_z_impact"
 ///called on a movable when it starts pulling (atom/movable/pulled, state, force)
-#define COMSIG_ATOM_START_GRAB "movable_start_grab"
+#define COMSIG_LIVING_START_GRAB "movable_start_grab"
 ///called on a movable when it has been grabbed
 #define COMSIG_ATOM_GET_GRABBED "movable_start_grabbed"
 ///called on /living, when a grab is attempted, but before it completes, from base of [/mob/living/make_grab]: (atom/movable/thing, grab_type)

@@ -142,7 +142,7 @@
 		if(length(grabs))
 			for(var/obj/item/hand_item/grab/G in grabs)
 				if(ismob(G.affecting))
-					var/mob/P = L.pulling
+					var/mob/P = G.affecting
 					if(HAS_TRAIT(P, TRAIT_RESTRAINED))
 						if(!(world.time % 5))
 							to_chat(src, span_warning("[L] is restraining [P], you cannot push past."))
@@ -159,7 +159,7 @@
 				mob_swap = TRUE
 		else
 			//You can swap with the person you are dragging on grab intent, and restrained people in most cases
-			if(M.pulledby == src && !too_strong)
+			if(is_grabbing(M) && !too_strong)
 				mob_swap = TRUE
 			else if(
 				!(HAS_TRAIT(M, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))&&\
@@ -1590,10 +1590,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 						"[C] leaps out of [src]'s way!")]</span>")
 	C.Paralyze(40)
 
-/mob/living/can_be_pulled()
-	return ..() && !(buckled?.buckle_prevents_pull)
-
-
 /// Called when mob changes from a standing position into a prone while lacking the ability to stand up at the moment.
 /mob/living/proc/on_fall()
 	return
@@ -1647,7 +1643,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/mob/living/U = user
 	if(isliving(dropping))
 		var/mob/living/M = dropping
-		if(U.pulling == M && mob_size > M.mob_size)
+		if(U.is_grabbing(M) && !U.combat_mode && mob_size > M.mob_size)
 			M.mob_try_pickup(U)//blame kevinz
 			return//dont open the mobs inventory if you are picking them up
 	. = ..()
@@ -1975,31 +1971,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			var/atom/movable/old_buckled = .
 			if(old_buckled.buckle_lying == 0 && (resting || HAS_TRAIT(src, TRAIT_FLOORED))) // The buckle forced us to stay up (like a chair)
 				set_lying_down() // We want to rest or are otherwise floored, so let's drop on the ground.
-
-/mob/living/set_pulledby(new_pulledby)
-	. = ..()
-	if(. == FALSE) //null is a valid value here, we only want to return if FALSE is explicitly passed.
-		return
-	if(pulledby)
-		if(!. && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
-			ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-	else if(. && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
-		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-
-
-/// Updates the grab state of the mob and updates movespeed
-/mob/living/setGrabState(newstate)
-	. = ..()
-	switch(grab_state)
-		if(GRAB_PASSIVE)
-			remove_movespeed_modifier(MOVESPEED_ID_MOB_GRAB_STATE)
-		if(GRAB_AGGRESSIVE)
-			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/aggressive)
-		if(GRAB_NECK)
-			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/neck)
-		if(GRAB_KILL)
-			add_movespeed_modifier(/datum/movespeed_modifier/grab_slowdown/kill)
-
 
 /// Only defined for carbons who can wear masks and helmets, we just assume other mobs have visible faces
 /mob/living/proc/is_face_visible()

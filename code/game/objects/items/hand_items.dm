@@ -124,7 +124,7 @@
 		return
 
 	var/obj/item/hand_item/grab/G = user.is_grabbing(target)
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || !G || !(G.damage_stage >= GRAB_AGGRESSIVE)|| HAS_TRAIT(user, TRAIT_EXHAUSTED))
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || !G || !(G.current_grab.damage_stage >= GRAB_AGGRESSIVE)|| HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		return FALSE
 
 	// [user] gives [target] a [prefix_desc] noogie[affix_desc]!

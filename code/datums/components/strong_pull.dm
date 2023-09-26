@@ -17,7 +17,7 @@ Basically, the items they pull cannot be pulled (except by the puller)
 
 /datum/component/strong_pull/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_ATOM_START_GRAB, PROC_REF(on_pull))
+	RegisterSignal(parent, COMSIG_LIVING_START_GRAB, PROC_REF(on_pull))
 
 /**
  * Called when the parent grabs something, adds signals to the object to reject interactions

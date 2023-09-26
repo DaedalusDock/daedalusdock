@@ -40,8 +40,11 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 
 /mob/living/carbon/alien/humanoid/resist_grab(moving_resist)
 	if(LAZYLEN(grabbed_by))
-		visible_message(span_danger("[src] breaks free of [pulledby]'s grip!"), \
-						span_danger("You break free of [pulledby]'s grip!"))
+		for(var/obj/item/hand_item/grab/G in grabbed_by)
+			visible_message(
+				span_danger("[src] breaks free of [G.assailant]'s grip!"),
+				span_danger("You break free of [G.assailant]'s grip!")
+			)
 	free_from_all_grabs()
 	. = 0
 

@@ -386,6 +386,23 @@
 	else
 		user.set_move_intent(MOVE_INTENT_RUN)
 
+/atom/movable/screen/pull
+	name = "stop pulling"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "pull"
+	base_icon_state = "pull"
+
+/atom/movable/screen/pull/Click()
+	if(isobserver(usr))
+		return
+	if(isliving(usr) && usr == hud.mymob)
+		var/mob/living/L = usr
+		L.release_all_grabs()
+
+/atom/movable/screen/pull/update_icon_state()
+	icon_state = "[base_icon_state][hud?.mymob?.pulling ? null : 0]"
+	return ..()
+
 /atom/movable/screen/resist
 	name = "resist"
 	icon = 'icons/hud/screen_midnight.dmi'

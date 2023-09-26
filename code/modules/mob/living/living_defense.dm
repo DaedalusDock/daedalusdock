@@ -137,6 +137,8 @@
 	adjust_fire_stacks(3)
 	ignite_mob()
 
+#warn replace
+/*
 /mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = FALSE)
 	if(user == src || anchored || !isturf(user.loc))
 		return FALSE
@@ -202,7 +204,7 @@
 					Move(user.loc)
 		user.set_pull_offsets(src, grab_state)
 		return TRUE
-
+*/
 
 /mob/living/attack_slime(mob/living/simple_animal/slime/M)
 	if(!SSticker.HasRoundStarted())

@@ -36,7 +36,7 @@
 	target.throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
 
 /datum/element/atmos_requirements/proc/is_breathable_atmos(mob/living/target)
-	if(target.check_grab_severity(GRAB_KILL)) && atmos_requirements["min_oxy"])
+	if(target.check_grab_severity(GRAB_KILL) && atmos_requirements["min_oxy"])
 		return FALSE
 
 

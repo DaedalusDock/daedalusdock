@@ -267,7 +267,7 @@
 
 	if(!living_pawn.is_grabbing(target) && !monkey_is_grabbing_target) //Dont steal from my fellow monkeys.
 		if(living_pawn.Adjacent(target) && isturf(target.loc))
-			target.grabbedby(living_pawn)
+			living_pawn.try_make_grab(target)
 		return //Do the rest next turn
 
 	var/datum/weakref/disposal_ref = controller.blackboard[disposal_target_key]

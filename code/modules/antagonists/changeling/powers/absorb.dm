@@ -16,21 +16,21 @@
 		to_chat(owner, span_warning("We are already absorbing!"))
 		return
 
-	var/obj/item/hand_item/grab/G = owner.get_active_grabs()?[1]
+	var/obj/item/hand_item/grab/G = owner.get_active_grab()
 	if(!G)
 		to_chat(owner, span_warning("We must be grabbing a creature to absorb them!"))
 		return
-	if(!G.can_absorb)
+	if(!G.current_grab.can_absorb)
 		to_chat(owner, span_warning("We must have a tighter grip to absorb this creature!"))
 		return
 
-	var/mob/living/carbon/target = owner.pulling
+	var/mob/living/carbon/target = G.affecting
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
 	return changeling.can_absorb_dna(target)
 
-/datum/action/changeling/absorb_dna/sting_action(mob/owner)
+/datum/action/changeling/absorb_dna/sting_action(mob/living/owner)
 	var/datum/antagonist/changeling/changeling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
-	var/mob/living/carbon/human/target = owner.pulling
+	var/mob/living/carbon/human/target = owner.get_active_grab()?.affecting
 	is_absorbing = TRUE
 
 	if(!attempt_absorb(target))

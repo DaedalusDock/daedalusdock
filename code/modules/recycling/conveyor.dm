@@ -299,7 +299,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	user.move_grabbed_atoms_towards(src)
 
 /obj/machinery/conveyor/power_change()
 	. = ..()

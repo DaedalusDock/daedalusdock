@@ -1,4 +1,4 @@
-/mob/living/proc/should_strip(mob/user)
+/mob/living/proc/should_strip(mob/living/user)
 	. = TRUE
 
 	if(user.is_grabbing(src) && !user.combat_mode && isliving(user))

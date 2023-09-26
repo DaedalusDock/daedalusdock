@@ -80,8 +80,9 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 		if(target.buckled || target.body_position == LYING_DOWN)
 			return zone
 		// if your target is being grabbed aggressively by someone you cannot miss either
-		if(target.pulledby)
-			return zone
+		for(var/obj/item/hand_item/grab/G in target.grabbed_by)
+			if(G.current_grab.stop_move)
+				return zone
 
 
 	var/miss_chance = GLOB.bodyzone_miss_chance[zone]

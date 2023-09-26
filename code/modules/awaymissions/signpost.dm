@@ -20,9 +20,14 @@
 		var/turf/T = find_safe_turf(zlevels=zlevels)
 
 		if(T)
-			var/list/grabbing= user.get_all_grabbed_movables()
-			for(var/atom/movable/AM as anything in grabbing)
-				AM.forceMove(T)
+			var/atom/movable/preserve_grab
+			if(isliving(user))
+				var/mob/living/L = user
+				var/list/grabbing= user.get_all_grabbed_movables()
+				for(var/atom/movable/AM as anything in grabbing)
+					preserve_grab ||= AM
+					AM.forceMove(T)
+
 			user.forceMove(T)
 			if(AM)
 				user.try_make_grab(AM)

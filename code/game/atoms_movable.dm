@@ -272,10 +272,13 @@
 	// This is run after ALL movables have been moved, so pulls don't get broken unless they are actually out of range.
 	if(z_move_flags & ZMOVE_CHECK_PULLS)
 		for(var/atom/movable/moved_mov as anything in moving_movs)
-			if(z_move_flags & ZMOVE_CHECK_PULLEDBY && moved_mov.pulledby && (moved_mov.z != moved_mov.pulledby.z || get_dist(moved_mov, moved_mov.pulledby) > 1))
-				moved_mov.pulledby.stop_pulling()
+			if(z_move_flags & ZMOVE_CHECK_PULLEDBY)
+				for(var/obj/item/hand_item/grab/G in grabbed_by)
+					if(G.assailant.z != moved_mov.z || get_dist(moved_mov, G.assailant) > 1)
+						qdel(G)
+
 			if(z_move_flags & ZMOVE_CHECK_PULLING)
-				moved_mov.check_pulling(TRUE)
+				moved_mov.recheck_grabs(TRUE)
 	return TRUE
 
 /// Returns a list of movables that should also be affected when src moves through zlevels, and src.
@@ -605,68 +608,6 @@
 				span_danger("[src] grabs you passively."))
 	return TRUE
 
-/atom/movable/proc/stop_pulling()
-	if(!pulling)
-		return
-	pulling.set_pulledby(null)
-	setGrabState(GRAB_PASSIVE)
-	var/atom/movable/old_pulling = pulling
-	pulling = null
-	SEND_SIGNAL(old_pulling, COMSIG_ATOM_NO_LONGER_PULLED, src)
-	SEND_SIGNAL(src, COMSIG_ATOM_NO_LONGER_PULLING, old_pulling)
-
-///Reports the event of the change in value of the pulledby variable.
-/atom/movable/proc/set_pulledby(new_pulledby)
-	if(new_pulledby == pulledby)
-		return FALSE //null signals there was a change, be sure to return FALSE if none happened here.
-	. = pulledby
-	pulledby = new_pulledby
-
-
-/atom/movable/proc/Move_Pulled(atom/moving_atom)
-	if(!pulling)
-		return FALSE
-	if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
-		release_grab(moving_atom)
-		return FALSE
-	if(isliving(pulling))
-		var/mob/living/pulling_mob = pulling
-		if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
-			release_grab(moving_atom)
-			return FALSE
-	if(moving_atom == loc && pulling.density)
-		return FALSE
-	var/move_dir = get_dir(pulling.loc, moving_atom)
-	if(!Process_Spacemove(move_dir))
-		return FALSE
-	pulling.Move(get_step(pulling.loc, move_dir), move_dir, glide_size)
-	return TRUE
-
-/mob/living/Move_Pulled(atom/moving_atom)
-	. = ..()
-	if(!. || !isliving(moving_atom))
-		return
-	var/mob/living/pulled_mob = moving_atom
-	set_pull_offsets(pulled_mob, grab_state)
-
-/**
- * Checks if the pulling and pulledby should be stopped because they're out of reach.
- * If z_allowed is TRUE, the z level of the pulling will be ignored.This is to allow things to be dragged up and down stairs.
- */
-/atom/movable/proc/check_pulling(only_pulling = FALSE, z_allowed = FALSE)
-	#warn this probably needs a fat rewrite to use grab datums
-	if(pulling)
-		if(get_dist(src, pulling) > 1 || (z != pulling.z && !z_allowed))
-			stop_pulling()
-		else if(!isturf(loc))
-			stop_pulling()
-		else if(pulling && !isturf(pulling.loc) && pulling.loc != loc) //to be removed once all code that changes an object's loc uses forceMove().
-			log_game("DEBUG:[src]'s pull on [pulling] wasn't broken despite [pulling] being in [pulling.loc]. Pull stopped manually.")
-			stop_pulling()
-		else if(pulling.anchored || pulling.move_resist > move_force)
-			stop_pulling()
-	if(!only_pulling && pulledby && moving_diagonally != FIRST_DIAG_STEP && (get_dist(src, pulledby) > 1 || z != pulledby.z)) //separated from our puller and not in the middle of a diagonal move.
-		pulledby.stop_pulling()
 
 /atom/movable/proc/set_glide_size(target = 8)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, target)
@@ -777,7 +718,7 @@
 	var/atom/movable/pullee = pulling
 	var/turf/current_turf = loc
 	if(!moving_from_pull)
-		check_pulling(z_allowed = TRUE)
+		recheck_grabs(z_allowed = TRUE)
 	if(!loc || !newloc)
 		return FALSE
 	var/atom/oldloc = loc
@@ -866,7 +807,7 @@
 
 				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
 					pulling.move_from_pull(src, target_turf, glide_size)
-			check_pulling()
+			recheck_grabs()
 
 	//glide_size strangely enough can change mid movement animation and update correctly while the animation is playing
 	//This means that if you don't override it late like this, it will just be set back by the movement update that's called when you move turfs.

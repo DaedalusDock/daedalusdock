@@ -15,14 +15,25 @@
 
 	break_chance_table = list(5, 20, 40, 80, 100)
 
-/datum/grab/normal/aggressive/process_effect(obj/item/hand_item/grab/G)
-	var/mob/living/affecting_mob = G.get_affecting_mob()
-	if(istype(affecting_mob))
-		if(G.target_zone in list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM))
-			affecting_mob.drop_all_held_items()
-		// Keeps those who are on the ground down
-		if(affecting_mob.body_position == LYING_DOWN)
-			affecting_mob.Knockdown(4 SECONDS)
+/datum/grab/normal/aggressive/apply_grab_effects(obj/item/hand_item/grab/G)
+	if(!isliving(G.affecting))
+		return
+
+	var/mob/living/L = G.affecting
+	RegisterSignal(G.affecting, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(target_bodyposition_change))
+
+	if(L.body_position == LYING_DOWN)
+		ADD_TRAIT(L, TRAIT_FLOORED, AGGRESSIVE_GRAB)
+	ADD_TRAIT(L, TRAIT_HANDS_BLOCKED, AGGRESSIVE_GRAB)
+
+/datum/grab/normal/aggressive/remove_grab_effects(obj/item/hand_item/grab/G)
+	UnregisterSignal(G.affecting, COMSIG_LIVING_SET_BODY_POSITION)
+	REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, AGGRESSIVE_GRAB)
+	REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, AGGRESSIVE_GRAB)
+
+/datum/grab/normal/aggressive/proc/target_bodyposition_change(mob/living/source)
+	if(source.body_position == LYING_DOWN)
+		ADD_TRAIT(source, TRAIT_FLOORED, AGGRESSIVE_GRAB)
 
 /datum/grab/normal/aggressive/can_upgrade(obj/item/hand_item/grab/G)
 	. = ..()

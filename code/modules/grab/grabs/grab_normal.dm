@@ -181,20 +181,23 @@
 	return 1
 
 // Handles special targeting like eyes and mouth being covered.
-/datum/grab/normal/special_target_effect(var/obj/item/hand_item/grab/G)
+/datum/grab/normal/special_bodyzone_effects(obj/item/hand_item/grab/G)
 	var/mob/living/affecting_mob = G.get_affecting_mob()
 	if(istype(affecting_mob) && G.special_target_functional)
 		switch(G.target_zone)
 			if(BODY_ZONE_PRECISE_MOUTH)
-				if(iscarbon(affecting_mob))
-					var/mob/living/carbon/C = affecting_mob
-					C.silent = max(C.silent, 2)
+				ADD_TRAIT(affecting_mob, TRAIT_MUTE, REF(G))
 			if(BODY_ZONE_PRECISE_EYES)
-				affecting_mob.blind_eyes(2 SECONDS)
+				ADD_TRAIT(affecting_mob, TRAIT_BLIND, REF(G))
+
+/datum/grab/normal/remove_bodyzone_effects(obj/item/hand_item/grab/G)
+	REMOVE_TRAIT(G.affecting, TRAIT_MUTE, REF(G))
+	REMOVE_TRAIT(G.affecting, TRAIT_BLIND, REF(G))
 
 // Handles when they change targeted areas and something is supposed to happen.
-/datum/grab/normal/special_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
-	if((old_zone != BODY_ZONE_HEAD && old_zone != BODY_ZONE_CHEST) || !G.get_affecting_mob())
+/datum/grab/normal/special_bodyzone_change(obj/item/hand_item/grab/G, old_zone, new_zone)
+	old_zone = parse_zone(old_zone)
+	if(old_zone != BODY_ZONE_HEAD && old_zone != BODY_ZONE_CHEST) || !G.get_affecting_mob()
 		return
 	switch(new_zone)
 		if(BODY_ZONE_PRECISE_MOUTH)

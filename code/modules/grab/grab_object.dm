@@ -74,9 +74,6 @@
 	if(current_grab.icon_state)
 		icon_state = current_grab.icon_state
 
-/obj/item/hand_item/grab/process()
-	current_grab.process(src)
-
 /obj/item/hand_item/grab/attack_self(mob/user)
 	if (!assailant)
 		return
@@ -109,7 +106,7 @@
 	This section is for newly defined useful procs.
 */
 
-/obj/item/hand_item/grab/proc/on_target_change(datum/source, old_sel, new_sel)
+/obj/item/hand_item/grab/proc/on_target_change(datum/source, new_sel)
 	SIGNAL_HANDLER
 
 	if(src != assailant.get_active_held_item())
@@ -131,6 +128,7 @@
 	if(!isbodypart(get_targeted_bodypart()))
 		current_grab.let_go(src)
 		return
+
 	current_grab.on_target_change(src, old_zone, target_zone)
 
 /obj/item/hand_item/grab/proc/on_limb_loss(mob/victim, obj/item/bodypart/lost)
@@ -169,13 +167,13 @@
 
 	playsound(affecting.loc, sound, 50, 1, -1)
 	update_appearance()
-	current_grab.update_grab_effects(src, null)
+	current_grab.update_stage_effects(src, null)
 	return TRUE
 
 // Returns the bodypart of the grabbed person that the grabber is targeting
 /obj/item/hand_item/grab/proc/get_targeted_bodypart()
 	var/mob/living/L = get_affecting_mob()
-	return (L?.get_bodypart(target_zone))
+	return (L?.get_bodypart(deprecise_zone(target_zone)))
 
 /obj/item/hand_item/grab/proc/resolve_item_attack(mob/living/M, obj/item/I, target_zone)
 	if((M && ishuman(M)) && I)
@@ -212,7 +210,15 @@
 
 	var/datum/grab/upgrab = current_grab.upgrade(src)
 	if(upgrab)
+		if(is_grab_unique(current_grab))
+			current_grab.remove_grab_effects(src)
+		var/apply_effects = is_grab_unique(upgrab)
+
 		current_grab = upgrab
+
+		if(apply_effects)
+			current_grab.apply_grab_effects(src)
+
 		last_upgrade = world.time
 		adjust_position()
 		update_appearance()
@@ -222,8 +228,25 @@
 /obj/item/hand_item/grab/proc/downgrade()
 	var/datum/grab/downgrab = current_grab.downgrade(src)
 	if(downgrab)
+		if(is_grab_unique(current_grab))
+			current_grab.remove_grab_effects(src)
+		var/apply_effects = is_grab_unique(downgrab)
+
 		current_grab = downgrab
+
+		if(apply_effects)
+			current_grab.apply_grab_effects(src)
 		update_appearance()
+
+/// Used to prevent repeated effect application or early effect removal
+/obj/item/hand_item/grab/proc/is_grab_unique(datum/grab/grab_datum)
+	var/count = 0
+	for(var/obj/item/hand_item/grab/other as anything in affecting.grabbed_by)
+		if(other.current_grab == grab_datum)
+			count++
+
+	if(count >= 2)
+		return FALSE
 
 /obj/item/hand_item/grab/proc/draw_affecting_over()
 	affecting.plane = assailant.plane

@@ -119,6 +119,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		return
 
 /datum/grab/proc/let_go(obj/item/hand_item/grab/G)
+	SHOULD_NOT_OVERRIDE(TRUE)
 	if (G)
 		let_go_effect(G)
 		G.current_grab = null
@@ -126,14 +127,11 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 			qdel(G)
 
 /datum/grab/proc/on_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
+	remove_bodyzone_effects(G)
 	G.special_target_functional = check_special_target(G)
 	if(G.special_target_functional)
-		special_target_change(G, old_zone, new_zone)
-		special_target_effect(G)
-
-/datum/grab/process(obj/item/hand_item/grab/G)
-	special_target_effect(G)
-	process_effect(G)
+		special_bodyzone_change(G, old_zone, new_zone)
+		special_bodyzone_effects(G)
 
 /datum/grab/proc/throw_held(obj/item/hand_item/grab/G)
 	if(G.assailant == G.affecting)
@@ -241,7 +239,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 // What happens when you upgrade from one grab state to the next.
 /datum/grab/proc/upgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
-	update_grab_effects(G, old_grab)
+	update_stage_effects(G, old_grab)
 
 // Conditions to see if upgrading is possible
 /datum/grab/proc/can_upgrade(obj/item/hand_item/grab/G)
@@ -261,7 +259,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 // What happens when you downgrade from one grab state to the next.
 /datum/grab/proc/downgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
-	update_grab_effects(G, old_grab)
+	update_stage_effects(G, old_grab)
 
 // Conditions to see if downgrading is possible
 /datum/grab/proc/can_downgrade(obj/item/hand_item/grab/G)
@@ -272,40 +270,51 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab/proc/let_go_effect(obj/item/hand_item/grab/G)
 	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
 	SEND_SIGNAL(G.assailant, COMSIG_LIVING_NO_LONGER_GRABBING, G.affecting)
+
+	remove_bodyzone_effects(G)
+	if(G.is_grab_unique(src))
+		remove_grab_effects(G)
+		update_stage_effects(G, null, TRUE)
+
 	if(G.assailant)
 		G.assailant.after_grab_release(G.affecting)
 
-	update_grab_effects(G, null, TRUE)
-
-/datum/grab/proc/update_grab_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
+/// Add effects that apply based on damage_stage here
+/datum/grab/proc/update_stage_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
 	var/old_damage_stage = old_grab?.damage_stage || 0
 
 	switch(!dropping_grab || damage_stage) // Current state.
 		if(GRAB_PASSIVE)
-			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
+			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
+			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
 			if(old_damage_stage >= GRAB_NECK) // Previous state was a a neck-grab or higher.
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
+				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
 
 		if(GRAB_AGGRESSIVE)
 			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
+				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
 			else // Grab got upgraded from a passive one.
-				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, CHOKEHOLD_TRAIT)
-				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, CHOKEHOLD_TRAIT)
+				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
+				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
 
 		if(GRAB_NECK, GRAB_KILL)
 			if(old_damage_stage <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(G.affecting, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
+				ADD_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
 
-// What happens each tic when process is called.
-/datum/grab/proc/process_effect(obj/item/hand_item/grab/G)
+/// Apply effects to people here. Remove them in remove_grab_effects()
+/datum/grab/proc/apply_grab_effects(obj/item/hand_item/grab/G)
 
-// Handles special targeting like eyes and mouth being covered.
-/datum/grab/proc/special_target_effect(obj/item/hand_item/grab/G)
+/datum/grab/proc/remove_grab_effects(obj/item/hand_item/grab/G)
+
+/// Handles special targeting like eyes and mouth being covered.
+/// CLEAR OUT ANY EFFECTS USING remove_bodyzone_effects()
+/datum/grab/proc/special_bodyzone_effects(obj/item/hand_item/grab/G)
+
+/// Clear out any effects from special_bodyzone_effects()
+/datum/grab/proc/remove_bodyzone_effects(obj/item/hand_item/grab/G)
 
 // Handles when they change targeted areas and something is supposed to happen.
-/datum/grab/proc/special_target_change(obj/item/hand_item/grab/G, diff_zone)
+/datum/grab/proc/special_bodyzone_change(obj/item/hand_item/grab/G, diff_zone)
 
 // Checks if the special target works on the grabbed humanoid.
 /datum/grab/proc/check_special_target(obj/item/hand_item/grab/G)

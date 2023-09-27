@@ -53,7 +53,6 @@
 	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
 
 	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
-	RegisterSignal(assailant, COMSIG_MOVABLE_MOVED, PROC_REF(relay_user_move))
 
 /obj/item/hand_item/grab/Destroy()
 	current_grab?.let_go(src)
@@ -236,6 +235,8 @@
 
 		if(apply_effects)
 			current_grab.apply_grab_effects(src)
+
+		adjust_position()
 		update_appearance()
 
 /// Used to prevent repeated effect application or early effect removal
@@ -263,15 +264,6 @@
 /obj/item/hand_item/grab/proc/handle_resist()
 	current_grab.handle_resist(src)
 
-/obj/item/hand_item/grab/proc/adjust_position(force = 0)
-	if(force)	affecting.forceMove(assailant.loc)
-
-	if(!assailant || !affecting || !assailant.Adjacent(affecting))
-		qdel(src)
-		return 0
-	else
-		current_grab.adjust_position(src)
-
 /obj/item/hand_item/grab/proc/has_hold_on_bodypart(obj/item/bodypart/BP)
 	if (!BP)
 		return FALSE
@@ -296,11 +288,6 @@
  * This section is for component signal relays/hooks
 */
 
-/// Relay when the assailant moves to the grab datum
-/obj/item/hand_item/grab/proc/relay_user_move(datum/source)
-	SIGNAL_HANDLER
-	current_grab.assailant_moved(src)
-
 /// Target deleted, ABORT
 /obj/item/hand_item/grab/proc/target_or_owner_del(datum/source)
 	SIGNAL_HANDLER
@@ -323,3 +310,18 @@
 
 /obj/item/hand_item/grab/proc/resolve_openhand_attack()
 	return current_grab.resolve_openhand_attack(src)
+
+/obj/item/hand_item/grab/proc/adjust_position()
+	if(QDELETED(assailant) || QDELETED(affecting) || !assailant.Adjacent(affecting))
+		qdel(src)
+		return FALSE
+
+	if(assailant)
+		assailant.setDir(get_dir(assailant, affecting))
+
+	if(current_grab.same_tile)
+		affecting.move_from_pull(assailant, get_turf(assailant))
+		affecting.setDir(assailant.dir)
+
+	affecting.update_offsets()
+	affecting.reset_plane_and_layer()

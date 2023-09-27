@@ -777,7 +777,15 @@
 				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
 					pulling.move_from_pull(src, target_turf, glide_size)
 
-			recheck_grabs()
+				if(get_dist(src, pulling) > 1)
+					qdel(G)
+
+				if(!QDELETED(G))
+					G.current_grab.moved_effect(G)
+					if(G.current_grab.downgrade_on_move)
+						G.downgrade()
+
+	recheck_grabs(only_pulled = TRUE)
 
 	//glide_size strangely enough can change mid movement animation and update correctly while the animation is playing
 	//This means that if you don't override it late like this, it will just be set back by the movement update that's called when you move turfs.
@@ -788,6 +796,7 @@
 
 	if(set_dir_on_move && dir != direct)
 		setDir(direct)
+
 	if(. && has_buckled_mobs() && !handle_buckled_mob_movement(loc, direct, glide_size_override)) //movement failed due to buckled mob(s)
 		. = FALSE
 

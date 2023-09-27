@@ -32,7 +32,7 @@
  * Checks if the pulling and pulledby should be stopped because they're out of reach.
  * If z_allowed is TRUE, the z level of the pulling will be ignored.This is to allow things to be dragged up and down stairs.
  */
-/atom/movable/proc/recheck_grabs(only_pulling = FALSE, z_allowed = FALSE)
+/atom/movable/proc/recheck_grabs(only_pulling = FALSE, only_pulled = FALSE, z_allowed = FALSE)
 	if(only_pulling)
 		return
 
@@ -83,7 +83,7 @@
 		if(length(grabbed_by))
 			for(var/obj/item/hand_item/grab/G as anything in grabbed_by)
 				var/grab_dir = get_dir(G.assailant, src)
-				if(grab_dir && G.current_grab.shift > 0)
+				if(grab_dir && G.current_grab.shift != 0)
 					if(grab_dir & WEST)
 						new_pixel_x = min(new_pixel_x+G.current_grab.shift, base_pixel_x+G.current_grab.shift)
 					else if(grab_dir & EAST)

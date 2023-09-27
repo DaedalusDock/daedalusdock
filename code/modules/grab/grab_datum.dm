@@ -198,39 +198,6 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab/proc/make_log(obj/item/hand_item/grab/G, action)
 	log_combat(G.assailant, G.affecting, "[action]s their victim")
 
-/datum/grab/proc/adjust_position(obj/item/hand_item/grab/G)
-	var/mob/living/carbon/human/affecting = G.affecting
-	var/mob/living/carbon/human/assailant = G.assailant
-	var/adir = get_dir(assailant, affecting)
-
-	if(same_tile)
-		affecting.forceMove(assailant.loc)
-		adir = assailant.dir
-		affecting.setDir(assailant.dir)
-
-	switch(adir)
-		if(NORTH)
-			animate(affecting, pixel_x = 0, pixel_y =-shift, 5, 1, LINEAR_EASING)
-			G.draw_affecting_under()
-		if(SOUTH)
-			animate(affecting, pixel_x = 0, pixel_y = shift, 5, 1, LINEAR_EASING)
-			G.draw_affecting_over()
-		if(WEST)
-			animate(affecting, pixel_x = shift, pixel_y = 0, 5, 1, LINEAR_EASING)
-			G.draw_affecting_under()
-		if(EAST)
-			animate(affecting, pixel_x =-shift, pixel_y = 0, 5, 1, LINEAR_EASING)
-			G.draw_affecting_under()
-
-	affecting.reset_plane_and_layer()
-
-// This is called whenever the assailant moves.
-/datum/grab/proc/assailant_moved(obj/item/hand_item/grab/G)
-	adjust_position(G)
-	moved_effect(G)
-	if(downgrade_on_move)
-		G.downgrade()
-
 /*
 	Override these procs to set how the grab state will work. Some of them are best
 	overriden in the parent of the grab set (for example, the behaviour for on_hit_intent(var/obj/item/hand_item/grab/G)

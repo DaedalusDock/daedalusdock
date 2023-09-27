@@ -1,5 +1,5 @@
 /datum/grab/normal/aggressive
-	//upgrab =   /datum/grab/normal/neck
+	upgrab =   /datum/grab/normal/neck
 	downgrab = /datum/grab/normal/passive
 	shift = 12
 	stop_move = 1

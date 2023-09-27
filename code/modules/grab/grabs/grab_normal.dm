@@ -197,7 +197,7 @@
 // Handles when they change targeted areas and something is supposed to happen.
 /datum/grab/normal/special_bodyzone_change(obj/item/hand_item/grab/G, old_zone, new_zone)
 	old_zone = parse_zone(old_zone)
-	if(old_zone != BODY_ZONE_HEAD && old_zone != BODY_ZONE_CHEST) || !G.get_affecting_mob()
+	if((old_zone != BODY_ZONE_HEAD && old_zone != BODY_ZONE_CHEST) || !G.get_affecting_mob())
 		return
 	switch(new_zone)
 		if(BODY_ZONE_PRECISE_MOUTH)

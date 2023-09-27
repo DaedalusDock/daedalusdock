@@ -2989,6 +2989,7 @@
 #include "code\modules\grab\grab_silicon.dm"
 #include "code\modules\grab\human_grab.dm"
 #include "code\modules\grab\grabs\grab_aggressive.dm"
+#include "code\modules\grab\grabs\grab_neck.dm"
 #include "code\modules\grab\grabs\grab_normal.dm"
 #include "code\modules\grab\grabs\grab_passive.dm"
 #include "code\modules\grab\grabs\grab_simple.dm"

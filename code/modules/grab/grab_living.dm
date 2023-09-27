@@ -86,7 +86,10 @@
 	grab.forceMove(src)
 	return TRUE
 
-/mob/living/recheck_grabs(only_pulling = FALSE, z_allowed = FALSE)
+/mob/living/recheck_grabs(only_pulling = FALSE, only_pulled = FALSE, z_allowed = FALSE)
+	if(only_pulled)
+		return ..()
+
 	for(var/obj/item/hand_item/grab/G in get_active_grabs())
 		var/atom/movable/pulling = G.affecting
 		if(get_dist(src, pulling) > 1 || (z != pulling.z && !z_allowed))

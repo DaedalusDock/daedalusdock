@@ -167,7 +167,7 @@
 		if(C.dna.species.grab_sound)
 			sound = C.dna.species.grab_sound
 
-	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+	playsound(affecting.loc, sound, 50, 1, -1)
 	update_appearance()
 	current_grab.update_grab_effects(src, null)
 	return TRUE

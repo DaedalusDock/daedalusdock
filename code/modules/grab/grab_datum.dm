@@ -407,7 +407,10 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	return
 
 /// Add screentip context, user will always be assailant.
-/datum/grab/proc/add_context(list/context, mob/living/user)
+/datum/grab/proc/add_context(list/context, obj/item/held_item, mob/living/user, atom/movable/target)
+	if(!(isgrab(held_item) && held_item:current_grab == src))
+		return
+
 	if(disarm_action)
 		context[SCREENTIP_CONTEXT_RMB] = capitalize(disarm_action)
 

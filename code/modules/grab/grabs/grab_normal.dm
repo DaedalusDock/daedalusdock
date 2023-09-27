@@ -45,7 +45,7 @@
 
 	return FALSE
 
-/datum/grab/normal/on_hit_grab(var/obj/item/hand_item/grab/G, atom/A)
+/datum/grab/normal/on_hit_grab(obj/item/hand_item/grab/G, atom/A)
 	var/mob/living/affecting = G.get_affecting_mob()
 	if(!affecting || (A && A != affecting))
 		return FALSE
@@ -102,7 +102,7 @@
 		to_chat(assailant, span_warning("You can't dislocate \the [affecting]'s [BP.joint_name]!"))
 	return FALSE
 
-/datum/grab/normal/resolve_openhand_attack(var/obj/item/hand_item/grab/G)
+/datum/grab/normal/resolve_openhand_attack(obj/item/hand_item/grab/G)
 	if(!G.assailant.combat_mode)
 		return FALSE
 	if(G.target_zone == BODY_ZONE_HEAD)
@@ -116,7 +116,7 @@
 				return TRUE
 	return FALSE
 
-/datum/grab/normal/proc/attack_eye(var/obj/item/hand_item/grab/G)
+/datum/grab/normal/proc/attack_eye(obj/item/hand_item/grab/G)
 	var/mob/living/carbon/human/target = G.get_affecting_mob()
 	var/mob/living/carbon/human/attacker = G.assailant
 	if(!istype(target) || !istype(attacker))
@@ -144,7 +144,7 @@
 		attacker.visible_message(span_danger("\The [attacker] attempts to press [G.p_their()] fingers into \the [target]'s [E.name], but [target.p_they()] doesn't have any!"))
 	return TRUE
 
-/datum/grab/normal/proc/headbutt(var/obj/item/hand_item/grab/G)
+/datum/grab/normal/proc/headbutt(obj/item/hand_item/grab/G)
 	var/mob/living/carbon/human/target = G.get_affecting_mob()
 	var/mob/living/carbon/human/attacker = G.assailant
 	if(!istype(target)	 || !istype(attacker))
@@ -193,7 +193,7 @@
 				affecting_mob.blind_eyes(2 SECONDS)
 
 // Handles when they change targeted areas and something is supposed to happen.
-/datum/grab/normal/special_target_change(var/obj/item/hand_item/grab/G, old_zone, new_zone)
+/datum/grab/normal/special_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
 	if((old_zone != BODY_ZONE_HEAD && old_zone != BODY_ZONE_CHEST) || !G.get_affecting_mob())
 		return
 	switch(new_zone)
@@ -217,14 +217,14 @@
 				return FALSE
 	return TRUE
 
-/datum/grab/normal/resolve_item_attack(var/obj/item/hand_item/grab/G, var/mob/living/carbon/human/user, var/obj/item/I)
+/datum/grab/normal/resolve_item_attack(obj/item/hand_item/grab/G, mob/living/carbon/human/user, obj/item/I)
 	switch(G.target_zone)
 		if(BODY_ZONE_HEAD)
 			return attack_throat(G, I, user)
 		else
 			return attack_tendons(G, I, user, G.target_zone)
 
-/datum/grab/normal/proc/attack_throat(var/obj/item/hand_item/grab/G, var/obj/item/W, mob/living/user)
+/datum/grab/normal/proc/attack_throat(obj/item/hand_item/grab/G, obj/item/W, mob/living/user)
 	var/mob/living/carbon/affecting = G.get_affecting_mob()
 	if(!istype(affecting))
 		return
@@ -271,7 +271,7 @@
 	log_combat(user, affecting, "slit throat (grab)")
 	return 1
 
-/datum/grab/normal/proc/attack_tendons(var/obj/item/hand_item/grab/G, var/obj/item/W, mob/living/user, var/target_zone)
+/datum/grab/normal/proc/attack_tendons(obj/item/hand_item/grab/G, obj/item/W, mob/living/user, target_zone)
 	var/mob/living/affecting = G.get_affecting_mob()
 	if(!affecting)
 		return
@@ -304,3 +304,13 @@
 	G.last_action = world.time
 	log_combat(user, affecting, "hamstrung (grab)")
 	return TRUE
+
+/datum/grab/normal/add_context(list/context, obj/item/held_item, mob/living/user, atom/movable/target)
+	. = ..()
+	if(held_item.sharpness & SHARP_EDGED)
+		var/obj/item/hand_item/grab/G = user.is_grabbing(target)
+		switch(G.target_zone)
+			if(BODY_ZONE_HEAD)
+				context[SCREENTIP_CONTEXT_LMB] = "Slice neck"
+			else
+				context[SCREENTIP_CONTEXT_LMB] = "Attack tendons"

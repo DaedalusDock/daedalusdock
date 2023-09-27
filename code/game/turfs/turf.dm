@@ -201,9 +201,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/clear_signal_refs()
 	return
 
-/turf/attack_hand(mob/user, list/modifiers)
+/turf/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
+		return
+	if(!isliving(user))
 		return
 	user.move_grabbed_atoms_towards(src)
 

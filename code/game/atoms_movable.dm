@@ -572,43 +572,6 @@
 
 	return ..()
 
-
-/atom/movable/proc/start_pulling(atom/movable/pulled_atom, state, force = move_force, supress_message = FALSE)
-	if(QDELETED(pulled_atom))
-		return FALSE
-	if(!(pulled_atom.can_be_pulled(src, state, force)))
-		return FALSE
-
-	// If we're pulling something then drop what we're currently pulling and pull this instead.
-	if(pulling)
-		if(state == 0)
-			stop_pulling()
-			return FALSE
-		// Are we trying to pull something we are already pulling? Then enter grab cycle and end.
-		if(pulled_atom == pulling)
-			setGrabState(state)
-			if(istype(pulled_atom,/mob/living))
-				var/mob/living/pulled_mob = pulled_atom
-				pulled_mob.grabbedby(src)
-			return TRUE
-		stop_pulling()
-
-	if(pulled_atom.pulledby)
-		log_combat(pulled_atom, pulled_atom.pulledby, "pulled from", src)
-		pulled_atom.pulledby.stop_pulling() //an object can't be pulled by two mobs at once.
-	pulling = pulled_atom
-	pulled_atom.set_pulledby(src)
-	SEND_SIGNAL(src, COMSIG_ATOM_START_PULL, pulled_atom, state, force)
-	setGrabState(state)
-	if(ismob(pulled_atom))
-		var/mob/pulled_mob = pulled_atom
-		log_combat(src, pulled_mob, "grabbed", addition="passive grab")
-		if(!supress_message)
-			pulled_mob.visible_message(span_warning("[src] grabs [pulled_mob] passively."), \
-				span_danger("[src] grabs you passively."))
-	return TRUE
-
-
 /atom/movable/proc/set_glide_size(target = 8)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, target)
 	glide_size = target
@@ -715,12 +678,13 @@
 	if(QDELING(src))
 		CRASH("Illegal Move()! on [type]")
 
-	var/atom/movable/pullee = pulling
 	var/turf/current_turf = loc
 	if(!moving_from_pull)
 		recheck_grabs(z_allowed = TRUE)
+
 	if(!loc || !newloc)
 		return FALSE
+
 	var/atom/oldloc = loc
 	//Early override for some cases like diagonal movement
 	if(glide_size_override && glide_size != glide_size_override)
@@ -789,13 +753,18 @@
 		set_currently_z_moving(FALSE, TRUE)
 		return
 
-	#warn FUUUUCK
-	if(. && LAZYLEN && pulling == pullee && pulling != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
-		if(pulling.anchored)
-			stop_pulling()
-		else
-			//puller and pullee more than one tile away or in diagonal position and whatever the pullee is pulling isn't already moving from a pull as it'll most likely result in an infinite loop a la ouroborus.
-			if(!pulling.pulling?.moving_from_pull)
+	if(. && isliving(src))
+		var/mob/living/L = src
+		var/list/grabs = L.get_active_grabs()
+		if(LAZYLEN(grabs))
+			for(var/obj/item/hand_item/grab/G in grabs)
+				var/atom/movable/pulling = G.affecting
+				if(pulling.anchored)
+					qdel(G)
+					continue
+				//puller and pullee more than one tile away or in diagonal position and whatever the pullee is pulling isn't already moving from a pull as it'll most likely result in an infinite loop a la ouroborus.
+				if(G.assailant.moving_from_pull)
+					continue
 				var/pull_dir = get_dir(pulling, src)
 				var/target_turf = current_turf
 
@@ -807,6 +776,7 @@
 
 				if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
 					pulling.move_from_pull(src, target_turf, glide_size)
+
 			recheck_grabs()
 
 	//glide_size strangely enough can change mid movement animation and update correctly while the animation is playing
@@ -1147,8 +1117,8 @@
 	var/is_multi_tile = bound_width > world.icon_size || bound_height > world.icon_size
 	if(destination)
 		///zMove already handles whether a pull from another movable should be broken.
-		if(pulledby && !currently_z_moving)
-			pulledby.stop_pulling()
+		if(LAZYLEN(grabbed_by) && !currently_z_moving)
+			free_from_all_grabs()
 
 		var/same_loc = oldloc == destination
 		var/area/old_area = get_area(oldloc)
@@ -1248,8 +1218,19 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_SPACEMOVE, movement_dir, continuous_move) & COMSIG_MOVABLE_STOP_SPACEMOVE)
 		return TRUE
 
-	if(pulledby && (pulledby.pulledby != src || moving_from_pull))
-		return TRUE
+	// If we are being pulled by something AND (we are NOT pulling them OR we are moving from a pull), do not drift
+	if(LAZYLEN(grabbed_by))
+		var/can_drift = TRUE
+		if(isliving(src))
+			var/mob/living/L = src
+			for(var/obj/item/hand_item/grab/G in grabbed_by)
+				if(!L.is_grabbing(G.assailant))
+					can_drift = FALSE // Something is grabbing us and we're not grabbing them
+		else
+			can_drift = FALSE
+
+		if(!can_drift || moving_from_pull)
+			return TRUE
 
 	if(throwing)
 		return TRUE

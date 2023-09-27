@@ -41,6 +41,8 @@
 	if(!setup())
 		return INITIALIZE_HINT_QDEL
 
+	update_appearance(UPDATE_ICON_STATE)
+
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(BP)
 		name = "[initial(name)] ([BP.plaintext_zone])"
@@ -68,6 +70,7 @@
 
 /obj/item/hand_item/grab/update_icon_state()
 	. = ..()
+	icon = current_grab.icon
 	if(current_grab.icon_state)
 		icon_state = current_grab.icon_state
 
@@ -88,18 +91,17 @@
 	// End workaround
 	if (QDELETED(src) || !assailant || !current_grab)
 		return TRUE
-	if(A.attack_grab(assailant, affecting, src, params) || current_grab.hit_with_grab(src, A, params)) //If there is no use_grab override or if it returns FALSE; then will behave according to intent.
+	if(A.attack_grab(assailant, affecting, src, params2list(params)) || current_grab.hit_with_grab(src, A, params2list(params))) //If there is no use_grab override or if it returns FALSE; then will behave according to intent.
 		return TRUE
 	return ..()
 
 /obj/item/hand_item/grab/Destroy()
+	if(affecting)
+		LAZYREMOVE(affecting.grabbed_by, src)
+		affecting.update_offsets()
 	if(affecting && assailant)
 		current_grab.let_go(src)
-	if(affecting)
-		reset_position()
-		LAZYREMOVE(affecting.grabbed_by, src)
-		affecting.reset_plane_and_layer()
-		affecting = null
+	affecting = null
 	assailant = null
 	return ..()
 
@@ -147,16 +149,23 @@
 
 // This will run from Initialize, after can_grab and other checks have succeeded. Must call parent; returning FALSE means failure and qdels the grab.
 /obj/item/hand_item/grab/proc/setup()
-	if(!assailant.put_in_active_hand(src))
-		return FALSE // This should succeed as we checked the hand, but if not we abort here.
 	if(!current_grab.setup(src))
 		return FALSE
+
+	assailant.update_pull_hud_icon()
+
 	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
 
 	adjust_position()
 	action_used()
 
-	assailant.do_attack_animation(affecting)
+	assailant.animate_interact(affecting, INTERACT_GRAB)
+
+	var/sound = 'sound/weapons/thudswoosh.ogg'
+	if(iscarbon(assailant))
+		var/mob/living/carbon/C = assailant
+		if(C.dna.species.grab_sound)
+			sound = C.dna.species.grab_sound
 
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 	update_appearance()
@@ -239,9 +248,6 @@
 		return 0
 	else
 		current_grab.adjust_position(src)
-
-/obj/item/hand_item/grab/proc/reset_position()
-	current_grab.reset_position(src)
 
 /obj/item/hand_item/grab/proc/has_hold_on_bodypart(obj/item/bodypart/BP)
 	if (!BP)

@@ -324,7 +324,7 @@
 	if(!istype(target, /obj/structure/closet) || !(target in view(mod.wearer)))
 		balloon_alert(mod.wearer, "invalid target!")
 		return
-	var/obj/structure/closet/locker = target
+
 	if(locker.anchored || locker.move_resist >= MOVE_FORCE_OVERPOWERING)
 		balloon_alert(mod.wearer, "target anchored!")
 		return
@@ -346,7 +346,7 @@
 		return
 	if(!locker.Adjacent(mod.wearer) || !isturf(locker.loc) || !isturf(mod.wearer.loc))
 		return
-	mod.wearer.start_pulling(locker)
+	mod.wearer.try_make_grab(locker)
 	locker.strong_grab = TRUE
 	RegisterSignal(locker, COMSIG_ATOM_NO_LONGER_GRABBED, PROC_REF(on_stop_pull))
 

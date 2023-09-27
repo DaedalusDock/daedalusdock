@@ -198,15 +198,16 @@
 		playsound(D, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
 	log_combat(A, D, "disarmed (CQC)", "[I ? " grabbing \the [I]" : ""]")
 
-	if(restraining && A.is_grabbing(D))
+	var/obj/item/hand_item/grab/G = A.is_grabbing(D)
+	if(restraining && G)
 		log_combat(A, D, "knocked out (Chokehold)(CQC)")
 		D.visible_message(span_danger("[A] puts [D] into a chokehold!"), \
 						span_userdanger("You're put into a chokehold by [A]!"), span_hear("You hear shuffling and a muffled groan!"), null, A)
 		to_chat(A, span_danger("You put [D] into a chokehold!"))
 		D.SetSleeping(400)
 		restraining = FALSE
-		if(A.grab_state < GRAB_NECK && !HAS_TRAIT(A, TRAIT_PACIFISM))
-			A.setGrabState(GRAB_NECK)
+		if(G.current_grab.damage_stage < GRAB_NECK && !HAS_TRAIT(A, TRAIT_PACIFISM))
+			G.upgrade()
 	else
 		restraining = FALSE
 		return FALSE

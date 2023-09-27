@@ -154,7 +154,7 @@
 		to_chat(user, span_warning("[src] is in the process of processing!"))
 		return TRUE
 
-	if(ismobvictim && PROCESSOR_SELECT_RECIPE(victim))
+	if(ismob(victim) && PROCESSOR_SELECT_RECIPE(victim))
 		if(grab.current_grab.damage_stage < GRAB_AGGRESSIVE)
 			to_chat(user, span_warning("You need a better grip to do that!"))
 			return

@@ -212,7 +212,7 @@
 	if(welded || locked)
 		return FALSE
 	if(strong_grab)
-		to_chat(user, span_danger("[pulledby] has an incredibly strong grip on [src], preventing it from opening."))
+		to_chat(user, span_danger("[grabbed_by[1].assailant] has an incredibly strong grip on [src], preventing it from opening."))
 		return FALSE
 	var/turf/T = get_turf(src)
 	for(var/mob/living/L in T)

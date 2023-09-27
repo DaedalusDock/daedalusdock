@@ -1,4 +1,6 @@
 /mob/living/proc/can_grab(atom/movable/target, target_zone, defer_hand)
+	if(throwing || !(mobility_flags & MOBILITY_PULL))
+		return FALSE
 	if(!ismob(target) && target.anchored)
 		to_chat(src, span_warning("\The [target] won't budge!"))
 		return FALSE
@@ -29,7 +31,7 @@
 				return FALSE
 	return TRUE
 
-/mob/living/proc/can_be_grabbed(mob/living/grabber, target_zone, force)
+/mob/living/can_be_grabbed(mob/living/grabber, target_zone, force)
 	. = ..()
 	if(!.)
 		return
@@ -77,16 +79,12 @@
 
 	return grab
 
-/mob/living/add_grab(obj/item/hand_item/grab/grab, defer_hand)
+/mob/living/proc/add_grab(obj/item/hand_item/grab/grab, defer_hand)
 	for(var/obj/item/hand_item/grab/other_grab in contents)
 		if(other_grab != grab)
 			return FALSE
 	grab.forceMove(src)
 	return TRUE
-
-/mob/living/ProcessGrabs()
-	if(LAZYLEN(grabbed_by))
-		resist()
 
 /mob/living/recheck_grabs(only_pulling = FALSE, z_allowed = FALSE)
 	for(var/obj/item/hand_item/grab/G in get_active_grabs())
@@ -102,3 +100,11 @@
 			qdel(G)
 
 	return ..()
+
+/// Called by grab objects when a grab has been released
+/mob/living/proc/after_grab_release(atom/movable/old_target)
+	animate_interact(old_target, INTERACT_UNPULL)
+	if(ismob(pulling))
+		var/mob/living/L = pulling
+		L.reset_pull_offsets()
+	update_pull_hud_icon()

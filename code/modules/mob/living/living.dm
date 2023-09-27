@@ -297,7 +297,8 @@
 	if(current_dir)
 		AM.setDir(current_dir)
 	now_pushing = FALSE
-
+#warn old start_pulling stuff
+/*
 /mob/living/start_pulling(atom/movable/AM, state, force = pull_force, supress_message = FALSE)
 	if(!AM || !src)
 		return FALSE
@@ -387,39 +388,12 @@
 			update_pull_movespeed()
 
 		set_pull_offsets(M, state)
+*/
 
-/mob/living/proc/set_pull_offsets(mob/living/M, grab_state = GRAB_PASSIVE)
-	if(M.buckled)
-		return //don't make them change direction or offset them if they're buckled into something.
-	var/offset = 0
-	switch(grab_state)
-		if(GRAB_PASSIVE)
-			offset = GRAB_PIXEL_SHIFT_PASSIVE
-		if(GRAB_AGGRESSIVE)
-			offset = GRAB_PIXEL_SHIFT_AGGRESSIVE
-		if(GRAB_NECK)
-			offset = GRAB_PIXEL_SHIFT_NECK
-		if(GRAB_KILL)
-			offset = GRAB_PIXEL_SHIFT_NECK
-	M.setDir(get_dir(M, src))
-	switch(M.dir)
-		if(NORTH)
-			animate(M, pixel_x = M.base_pixel_x, pixel_y = M.base_pixel_y + offset, 3)
-		if(SOUTH)
-			animate(M, pixel_x = M.base_pixel_x, pixel_y = M.base_pixel_y - offset, 3)
-		if(EAST)
-			if(M.lying_angle == 270) //update the dragged dude's direction if we've turned
-				M.set_lying_angle(90)
-			animate(M, pixel_x = M.base_pixel_x + offset, pixel_y = M.base_pixel_y, 3)
-		if(WEST)
-			if(M.lying_angle == 90)
-				M.set_lying_angle(270)
-			animate(M, pixel_x = M.base_pixel_x - offset, pixel_y = M.base_pixel_y, 3)
-
-/mob/living/proc/reset_pull_offsets(mob/living/M, override)
-	if(!override && M.buckled)
+/mob/living/proc/reset_pull_offsets(override)
+	if(!override && buckled)
 		return
-	animate(M, pixel_x = M.base_pixel_x, pixel_y = M.base_pixel_y, 1)
+	animate(src, pixel_x = src.base_pixel_x, pixel_y = src.base_pixel_y, 1)
 
 //mob verbs are a lot faster than object verbs
 //for more info on why this is not atom/pull, see examinate() in mob.dm
@@ -428,15 +402,7 @@
 	set category = "Object"
 
 	if(istype(AM) && Adjacent(AM))
-		start_pulling(AM)
-
-/mob/living/stop_pulling()
-	animate_interact(pulling, INTERACT_UNPULL)
-	if(ismob(pulling))
-		reset_pull_offsets(pulling)
-	..()
-	update_pull_movespeed()
-	update_pull_hud_icon()
+		try_make_grab(AM)
 
 /mob/living/verb/stop_pulling1()
 	set name = "Stop Pulling"
@@ -488,8 +454,12 @@
 
 	if(!(flags & IGNORE_RESTRAINTS) && HAS_TRAIT(src, TRAIT_RESTRAINED))
 		return TRUE
-	if(!(flags & IGNORE_GRAB) && pulledby && pulledby.grab_state >= GRAB_AGGRESSIVE)
-		return TRUE
+
+	if(!(flags & IGNORE_GRAB))
+		for(var/obj/item/hand_item/grab/G in grabbed_by)
+			if(G.current_grab.restrains)
+				return TRUE
+
 	if(!(flags & IGNORE_STASIS) && IS_IN_HARD_STASIS(src))
 		return TRUE
 	return FALSE
@@ -908,9 +878,8 @@
 
 	. = ..()
 
-	if(moving_diagonally != FIRST_DIAG_STEP && isliving(pulledby))
-		var/mob/living/L = pulledby
-		L.set_pull_offsets(src, pulledby.grab_state)
+	if(moving_diagonally != FIRST_DIAG_STEP)
+		update_offsets()
 
 	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
 		active_storage.hide_contents(src)
@@ -1036,8 +1005,7 @@
 
 	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
 	//resisting grabs (as if it helps anyone...)
-	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && pulledby)
-		log_combat(src, pulledby, "resisted grab")
+	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && LAZYLEN(grabbed_by))
 		resist_grab()
 		return
 
@@ -1069,6 +1037,7 @@
 	visible_message(span_danger("\The [src] struggles to break free!"))
 
 	for(var/obj/item/hand_item/grab/G as anything in grabbed_by)
+		log_combat(src, G.assailant, "resisted grab")
 		. = G.handle_resist() || .
 
 /mob/living/proc/resist_buckle()

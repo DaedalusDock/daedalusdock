@@ -11,14 +11,14 @@
 /datum/grab/simple/upgrade(obj/item/hand_item/grab/G)
 	return
 
-/datum/grab/simple/on_hit_disarm(var/obj/item/hand_item/grab/G, var/atom/A)
+/datum/grab/simple/on_hit_disarm(obj/item/hand_item/grab/G, atom/A)
 	return FALSE
 
-/datum/grab/simple/on_hit_grab(var/obj/item/hand_item/grab/G, var/atom/A)
+/datum/grab/simple/on_hit_grab(obj/item/hand_item/grab/G, atom/A)
 	return FALSE
 
-/datum/grab/simple/on_hit_harm(var/obj/item/hand_item/grab/G, var/atom/A)
+/datum/grab/simple/on_hit_harm(obj/item/hand_item/grab/G, atom/A)
 	return FALSE
 
-/datum/grab/simple/resolve_openhand_attack(var/obj/item/hand_item/grab/G)
+/datum/grab/simple/resolve_openhand_attack(obj/item/hand_item/grab/G)
 	return FALSE

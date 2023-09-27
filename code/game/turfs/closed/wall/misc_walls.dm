@@ -20,7 +20,7 @@
 		if(stored_pulling)
 			stored_pulling.setDir(direction)
 			stored_pulling.forceMove(src)
-			H.try_make_grab(stored_pulling, supress_message = TRUE)
+			H.try_make_grab(stored_pulling)
 
 /turf/closed/wall/mineral/cult/artificer
 	name = "runed stone wall"

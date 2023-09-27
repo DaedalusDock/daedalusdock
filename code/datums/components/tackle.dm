@@ -211,9 +211,7 @@
 			target.stamina.adjust(-40)
 			target.Paralyze(5)
 			target.Knockdown(30)
-			if(ishuman(target) && ishuman(user))
-				INVOKE_ASYNC(S.dna.species, TYPE_PROC_REF(/datum/species, grab), S, T)
-				S.setGrabState(GRAB_PASSIVE)
+			S.try_make_grab(target, /datum/grab/normal/aggressive)
 
 		if(5 to INFINITY) // absolutely BODIED
 			user.visible_message(span_warning("[user] lands a monster [tackle_word] on [target], knocking [target.p_them()] senseless and applying an aggressive pin!"), span_userdanger("You land a monster [tackle_word] on [target], knocking [target.p_them()] senseless and applying an aggressive pin!"), ignored_mobs = target)
@@ -225,10 +223,7 @@
 			target.stamina.adjust(-40)
 			target.Paralyze(5)
 			target.Knockdown(30)
-			if(ishuman(target) && ishuman(user))
-				INVOKE_ASYNC(S.dna.species, TYPE_PROC_REF(/datum/species, grab), S, T)
-				S.setGrabState(GRAB_AGGRESSIVE)
-
+			S.try_make_grab(target, /datum/grab/normal/aggressive)
 
 	return COMPONENT_MOVABLE_IMPACT_FLIP_HITPUSH
 

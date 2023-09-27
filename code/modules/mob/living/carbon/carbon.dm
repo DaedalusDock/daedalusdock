@@ -153,17 +153,20 @@
 	var/obj/item/I = get_active_held_item()
 	var/neckgrab_throw = FALSE // we can't check for if it's a neckgrab throw when totaling up power_throw since we've already stopped pulling them by then, so get it early
 
-	if(!I)
-		if(pulling && isliving(pulling) && grab_state >= GRAB_AGGRESSIVE)
-			var/mob/living/throwable_mob = pulling
-			if(!throwable_mob.buckled)
-				thrown_thing = throwable_mob
-				if(grab_state >= GRAB_NECK)
-					neckgrab_throw = TRUE
-				release_all_grabs()
-				if(HAS_TRAIT(src, TRAIT_PACIFISM))
-					to_chat(src, span_notice("You gently let go of [throwable_mob]."))
-					return
+	if(isgrab(I))
+		var/obj/item/hand_item/grab/G = I
+		if(!G.current_grab.can_throw)
+			return
+
+		var/mob/living/throwable_mob = G.affecting
+		if(!throwable_mob.buckled)
+			thrown_thing = throwable_mob
+			if(G.current_grab.damage_stage >= GRAB_NECK)
+				neckgrab_throw = TRUE
+			release_all_grabs()
+			if(HAS_TRAIT(src, TRAIT_PACIFISM))
+				to_chat(src, span_notice("You gently let go of [throwable_mob]."))
+				return
 	else
 		thrown_thing = I.on_thrown(src, target)
 

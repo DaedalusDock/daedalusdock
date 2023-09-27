@@ -32,5 +32,5 @@
 	if(istype(C))
 		C.add_fingerprint(grabber)
 	else
-		C.add_fingerprint(grabber)
+		add_fingerprint(grabber)
 

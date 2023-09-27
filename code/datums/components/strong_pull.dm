@@ -25,8 +25,8 @@ Basically, the items they pull cannot be pulled (except by the puller)
 /datum/component/strong_pull/proc/on_pull(datum/source, atom/movable/pulled, state, force)
 	SIGNAL_HANDLER
 	strongpulling = pulled
-	RegisterSignal(strongpulling, COMSIG_ATOM_CAN_BE_PULLED, PROC_REF(reject_further_pulls))
-	RegisterSignal(strongpulling, COMSIG_ATOM_NO_LONGER_PULLED, PROC_REF(on_no_longer_pulled))
+	RegisterSignal(strongpulling, COMSIG_ATOM_CAN_BE_GRABBED, PROC_REF(reject_further_pulls))
+	RegisterSignal(strongpulling, COMSIG_ATOM_NO_LONGER_GRABBED, PROC_REF(on_no_longer_pulled))
 	if(istype(strongpulling, /obj/structure/closet) && !istype(strongpulling, /obj/structure/closet/body_bag))
 		var/obj/structure/closet/grabbed_closet = strongpulling
 		grabbed_closet.strong_grab = TRUE
@@ -37,13 +37,13 @@ Basically, the items they pull cannot be pulled (except by the puller)
 /datum/component/strong_pull/proc/reject_further_pulls(datum/source, mob/living/puller)
 	SIGNAL_HANDLER
 	if(puller != parent) //for increasing grabs, you need to have a valid pull. thus, parent should be able to pull the same object again
-		return COMSIG_ATOM_CANT_PULL
+		return COMSIG_ATOM_NO_GRAB
 
 /*
  * Unregisters signals and stops any buffs to pulling.
  */
 /datum/component/strong_pull/proc/lose_strong_grip()
-	UnregisterSignal(strongpulling, list(COMSIG_ATOM_CAN_BE_PULLED, COMSIG_ATOM_NO_LONGER_PULLED))
+	UnregisterSignal(strongpulling, list(COMSIG_ATOM_CAN_BE_GRABBED, COMSIG_ATOM_NO_LONGER_GRABBED))
 	if(istype(strongpulling, /obj/structure/closet))
 		var/obj/structure/closet/ungrabbed_closet = strongpulling
 		ungrabbed_closet.strong_grab = FALSE

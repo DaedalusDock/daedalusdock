@@ -42,8 +42,8 @@
 /datum/unit_test/chain_pull_through_space/Run()
 	// Alice pulls Bob, who pulls Charlie
 	// Normally, when Alice moves forward, the rest follow
-	alice.start_pulling(bob)
-	bob.start_pulling(charlie)
+	alice.try_make_grab(bob)
+	bob.try_make_grab(charlie)
 
 	// Walk normally to the left, make sure we're still a chain
 	alice.Move(locate(run_loc_floor_bottom_left.x + 1, run_loc_floor_bottom_left.y, run_loc_floor_bottom_left.z))

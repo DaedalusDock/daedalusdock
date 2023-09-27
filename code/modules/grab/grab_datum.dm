@@ -2,7 +2,7 @@
 GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab
 	abstract_type = /datum/grab
-	var/icon
+	var/icon = 'goon/icons/items/grab.dmi'
 	var/icon_state
 
 	var/type_name
@@ -122,7 +122,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	if (G)
 		let_go_effect(G)
 		G.current_grab = null
-		qdel(G)
+		if(!QDELETED(G))
+			qdel(G)
 
 /datum/grab/proc/on_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
 	G.special_target_functional = check_special_target(G)
@@ -164,22 +165,22 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	G.is_currently_resolving_hit = TRUE
 	var/combat_mode = G.assailant.combat_mode
 	if(params[RIGHT_CLICK])
-		if(on_hit_disarm(G))
+		if(on_hit_disarm(G, target))
 			. = disarm_action || TRUE
 
 	else if(params[CTRL_CLICK])
-		if(on_hit_grab(G))
+		if(on_hit_grab(G, target))
 			. = grab_action || TRUE
 
 
 	else if(combat_mode)
-		if(on_hit_harm(G))
+		if(on_hit_harm(G, target))
 			. = harm_action || TRUE
 	else
-		if(on_hit_help(G))
+		if(on_hit_help(G, target))
 			. = help_action || TRUE
 
-	if(QDELETED(src))
+	if(QDELETED(G))
 		return
 
 	G.is_currently_resolving_hit = FALSE
@@ -223,13 +224,6 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 			animate(affecting, pixel_x =-shift, pixel_y = 0, 5, 1, LINEAR_EASING)
 			G.draw_affecting_under()
 
-	affecting.reset_plane_and_layer()
-
-/datum/grab/proc/reset_position(obj/item/hand_item/grab/G)
-	var/mob/living/carbon/human/affecting = G.affecting
-
-	if(!affecting.buckled)
-		animate(affecting, pixel_x = 0, pixel_y = 0, 4, 1, LINEAR_EASING)
 	affecting.reset_plane_and_layer()
 
 // This is called whenever the assailant moves.
@@ -277,7 +271,10 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 // or by downgrading from the lowest grab state.
 /datum/grab/proc/let_go_effect(obj/item/hand_item/grab/G)
 	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
-	SEND_SIGNAL(G.assailant, COMSIG_ATOM_NO_LONGER_GRABBING, G.affecting)
+	SEND_SIGNAL(G.assailant, COMSIG_LIVING_NO_LONGER_GRABBING, G.affecting)
+	if(G.assailant)
+		G.assailant.after_grab_release(G.affecting)
+
 	update_grab_effects(G, null, TRUE)
 
 /datum/grab/proc/update_grab_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
@@ -419,7 +416,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	if(user.combat_mode)
 		if(harm_action)
-			context[SCREENTIP_CONTEXT_RMB] = capitalize(harm_action)
+			context[SCREENTIP_CONTEXT_LMB] = capitalize(harm_action)
 
 	else if(help_action)
 		context[SCREENTIP_CONTEXT_LMB] = capitalize(help_action)

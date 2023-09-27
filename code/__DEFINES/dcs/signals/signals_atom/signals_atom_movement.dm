@@ -7,8 +7,8 @@
 	#define COMSIG_ATOM_NO_GRAB (1 << 0)
 ///signal sent out by an atom when it is no longer being pulled by something else : (atom/puller)
 #define COMSIG_ATOM_NO_LONGER_GRABBED "movable_no_longer_grabbed"
-///signal sent out by an atom when it is no longer pulling something : (atom/pulling)
-#define COMSIG_ATOM_NO_LONGER_GRABBING "movable_no_longer_grabbing"
+///signal sent out by a living mob when it is no longer pulling something : (atom/pulling)
+#define COMSIG_LIVING_NO_LONGER_GRABBING "living_no_longer_grabbing"
 ///called for each movable in a turf contents on /turf/zImpact(): (atom/movable/A, levels)
 #define COMSIG_ATOM_INTERCEPT_Z_FALL "movable_intercept_z_impact"
 ///called on a movable when it starts pulling (atom/movable/pulled, state, force)

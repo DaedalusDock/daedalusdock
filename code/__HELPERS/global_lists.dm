@@ -90,7 +90,8 @@
 	for(var/datum/grab/G as anything in subtypesof(/datum/grab))
 		if(isabstract(G))
 			continue
-		GLOB.all_grabstates[G.type] = G
+		GLOB.all_grabstates[G] = new G
+
 	for(var/path in GLOB.all_grabstates)
 		var/datum/grab/G = GLOB.all_grabstates[path]
 		G.refresh_updown()

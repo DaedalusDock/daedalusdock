@@ -52,7 +52,7 @@
 
 	user.changeNext_move(CLICK_CD_MELEE)
 	var/mob/living/GM = victim
-	if(grab.current_grab.damage_level >= GRAB_AGGRESSIVE)
+	if(grab.current_grab.damage_stage >= GRAB_AGGRESSIVE)
 		if(GM.loc != get_turf(src))
 			to_chat(user, span_warning("[GM] needs to be on [src]!"))
 			return
@@ -195,7 +195,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 
 	var/mob/living/GM = victim
 
-	if(grab.current_grab.damage_level >= GRAB_AGGRESSIVE)
+	if(grab.current_grab.damage_stage >= GRAB_AGGRESSIVE)
 		if(GM.loc != get_turf(src))
 			to_chat(user, span_notice("[GM.name] needs to be on [src]."))
 			return

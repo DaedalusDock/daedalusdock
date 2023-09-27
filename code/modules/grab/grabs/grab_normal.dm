@@ -1,4 +1,5 @@
 /datum/grab/normal
+	abstract_type = /datum/grab/normal
 	icon = 'goon/icons/items/grab.dmi'
 	icon_state = "1"
 
@@ -22,17 +23,14 @@
 	else
 		G.assailant.visible_message(span_notice("[G.assailant] has grabbed [G.assailant.p_their()] [BP.plaintext_zone]!"))
 
-/datum/grab/normal/on_hit_help(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
+/datum/grab/normal/on_hit_help(obj/item/hand_item/grab/G, atom/A)
 
 	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
-	if(!BP || !proximity || (A && A != G.get_affecting_mob()))
+	if(!BP || (A && A != G.get_affecting_mob()))
 		return FALSE
 	return BP.inspect(G.assailant)
 
-/datum/grab/normal/on_hit_disarm(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
-
-	if(!proximity)
-		return FALSE
+/datum/grab/normal/on_hit_disarm(obj/item/hand_item/grab/G, atom/A)
 
 	var/mob/living/affecting = G.get_affecting_mob()
 	var/mob/living/assailant = G.assailant
@@ -47,11 +45,7 @@
 
 	return FALSE
 
-/datum/grab/normal/on_hit_grab(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
-
-	if(!proximity)
-		return FALSE
-
+/datum/grab/normal/on_hit_grab(var/obj/item/hand_item/grab/G, atom/A)
 	var/mob/living/affecting = G.get_affecting_mob()
 	if(!affecting || (A && A != affecting))
 		return FALSE
@@ -76,11 +70,7 @@
 	affecting.visible_message(span_warning("\The [assailant] fails to jointlock \the [affecting]'s [BP.plaintext_zone]."))
 	return FALSE
 
-/datum/grab/normal/on_hit_harm(var/obj/item/hand_item/grab/G, var/atom/A, var/proximity)
-
-	if(!proximity)
-		return FALSE
-
+/datum/grab/normal/on_hit_harm(obj/item/hand_item/grab/G, atom/A)
 	var/mob/living/affecting = G.get_affecting_mob()
 	if(!affecting || (A && A != affecting))
 		return FALSE

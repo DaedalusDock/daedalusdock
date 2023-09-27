@@ -23,14 +23,15 @@
 			var/atom/movable/preserve_grab
 			if(isliving(user))
 				var/mob/living/L = user
-				var/list/grabbing= user.get_all_grabbed_movables()
+				var/list/grabbing= L.get_all_grabbed_movables()
 				for(var/atom/movable/AM as anything in grabbing)
 					preserve_grab ||= AM
 					AM.forceMove(T)
 
 			user.forceMove(T)
-			if(AM)
-				user.try_make_grab(AM)
+			if(preserve_grab && isliving(user))
+				var/mob/living/L = user
+				L.try_make_grab(preserve_grab)
 
 			to_chat(user, span_notice("You blink and find yourself in [get_area_name(T)]."))
 		else

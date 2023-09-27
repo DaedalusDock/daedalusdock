@@ -166,7 +166,7 @@ Striking a noncultist, however, will tear their flesh."}
 	else
 		. += "The sword appears to be quite lifeless."
 
-/obj/item/cult_bastard/can_be_pulled(user)
+/obj/item/cult_bastard/can_be_grabbed(mob/living/grabber, target_zone, force)
 	return FALSE
 
 /obj/item/cult_bastard/attack_self(mob/user)

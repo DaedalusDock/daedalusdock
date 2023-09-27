@@ -961,7 +961,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(attacker_style?.grab_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return TRUE
 	else
-		target.grabbedby(user)
+		user.try_make_grab(target)
 		return TRUE
 
 ///This proc handles punching damage.

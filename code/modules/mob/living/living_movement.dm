@@ -96,10 +96,10 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown)
 		current_turf_slowdown = 0
 
-
 /mob/living/proc/update_pull_movespeed()
 	SEND_SIGNAL(src, COMSIG_LIVING_UPDATING_PULL_MOVESPEED)
-
+#warn drag movespeed
+/*
 	if(pulling)
 		if(isliving(pulling))
 			var/mob/living/L = pulling
@@ -116,6 +116,7 @@
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bulky_drag, multiplicative_slowdown = S.drag_slowdown)
 			return
 	remove_movespeed_modifier(/datum/movespeed_modifier/bulky_drag)
+*/
 
 /**
  * We want to relay the zmovement to the buckled atom when possible

@@ -209,9 +209,9 @@
 
 
 	for(var/obj/item/hand_item/grab/G in grabbed_by)
-		if(G.current_grab.can_move)
+		if(!G.current_grab.stop_move)
 			continue
-		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
+		msg += "[t_He] [t_is] restrained by [G.assailant]'s grip.\n"
 
 	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
 		msg += "[t_He] [t_is] severely malnourished.\n"

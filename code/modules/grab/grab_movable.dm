@@ -12,8 +12,11 @@
 		return FALSE
 	if(throwing)
 		return FALSE
+	#warn Impliment pull force
+	/* Impliment pull force
 	if(force < (move_resist * MOVE_FORCE_PULL_RATIO))
 		return FALSE
+	*/
 	return TRUE
 
 /atom/movable/proc/buckled_grab_check(var/mob/grabber)
@@ -65,4 +68,30 @@
 			continue
 
 		var/mob/living/pulled_mob = pulling
-		set_pull_offsets(pulled_mob)
+		update_offsets(pulled_mob)
+
+
+/atom/movable/proc/update_offsets()
+	var/last_pixel_x = pixel_x
+	var/last_pixel_y = pixel_y
+
+	var/new_pixel_x = base_pixel_x
+	var/new_pixel_y = base_pixel_y
+
+	if(isturf(loc))
+		// Update offsets from grabs.
+		if(length(grabbed_by))
+			for(var/obj/item/hand_item/grab/G as anything in grabbed_by)
+				var/grab_dir = get_dir(G.assailant, src)
+				if(grab_dir && G.current_grab.shift > 0)
+					if(grab_dir & WEST)
+						new_pixel_x = min(new_pixel_x+G.current_grab.shift, base_pixel_x+G.current_grab.shift)
+					else if(grab_dir & EAST)
+						new_pixel_x = max(new_pixel_x-G.current_grab.shift, base_pixel_x-G.current_grab.shift)
+					if(grab_dir & NORTH)
+						new_pixel_y = max(new_pixel_y-G.current_grab.shift, base_pixel_y-G.current_grab.shift)
+					else if(grab_dir & SOUTH)
+						new_pixel_y = min(new_pixel_y+G.current_grab.shift, base_pixel_y+G.current_grab.shift)
+
+	if(last_pixel_x != new_pixel_x || last_pixel_y != new_pixel_y)
+		animate(src, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 3, 1, (LINEAR_EASING|EASE_IN))

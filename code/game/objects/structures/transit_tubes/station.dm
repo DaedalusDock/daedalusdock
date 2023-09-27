@@ -90,14 +90,14 @@
 		return
 
 	var/mob/living/GM = victim
-	if(grab.current_grab.damage_level >= GRAB_AGGRESSIVE)
+	if(grab.current_grab.damage_stage >= GRAB_AGGRESSIVE)
 		if(GM.buckled || GM.has_buckled_mobs())
 			to_chat(user, span_warning("[GM] is attached to something!"))
 			return
 		for(var/obj/structure/transit_tube_pod/pod in loc)
 			pod.visible_message(span_warning("[user] starts putting [GM] into the [pod]!"))
 			if(do_after(user, src, 15))
-				if(open_status == STATION_TUBE_OPEN && GM && grab.current_grab?.damage_level >= GRAB_AGGRESSIVE && G.is_grabbing(victim) && !GM.buckled && !GM.has_buckled_mobs())
+				if(open_status == STATION_TUBE_OPEN && GM && grab.current_grab?.damage_stage >= GRAB_AGGRESSIVE && user.is_grabbing(victim) && !GM.buckled && !GM.has_buckled_mobs())
 					GM.Paralyze(100)
 					src.BumpedBy(GM)
 			break

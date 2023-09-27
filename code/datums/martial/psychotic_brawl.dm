@@ -24,22 +24,24 @@
 			A.Stun(20)
 			atk_verb = "cried looking at"
 		if(3)
-			if(A.grab_state >= GRAB_AGGRESSIVE)
-				D.grabbedby(A, 1)
+			var/obj/item/hand_item/grab/G = A.is_grabbing(D)
+			if(G?.current_grab.damage_stage == GRAB_AGGRESSIVE)
+				G.upgrade(TRUE)
 			else
-				A.start_pulling(D, supress_message = TRUE)
-				if(A.pulling)
+				A.try_make_grab(D)
+				G = A.is_grabbing(D)
+				if(G)
 					D.drop_all_held_items()
-					D.stop_pulling()
+					D.release_all_grabs()
 					if(grab_attack)
 						log_combat(A, D, "grabbed", addition="aggressively")
 						D.visible_message(span_warning("[A] violently grabs [D]!"), \
 										span_userdanger("You're violently grabbed by [A]!"), span_hear("You hear sounds of aggressive fondling!"), null, A)
 						to_chat(A, span_danger("You violently grab [D]!"))
-						A.setGrabState(GRAB_AGGRESSIVE) //Instant aggressive grab
+						G.upgrade(TRUE)
 					else
 						log_combat(A, D, "grabbed", addition="passively")
-						A.setGrabState(GRAB_PASSIVE)
+
 		if(4)
 			A.do_attack_animation(D, ATTACK_EFFECT_PUNCH)
 			atk_verb = "headbutt"

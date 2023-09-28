@@ -429,7 +429,7 @@
 			stored_pulling.forceMove(loc)
 		forceMove(AM)
 		if(stored_pulling)
-			try_make_grab(stored_pulling, stored_pulling)
+			try_make_grab(stored_pulling, stored_tier)
 
 /mob/living/simple_animal/hostile/construct/harvester/AttackingTarget()
 	if(iscarbon(target))

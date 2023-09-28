@@ -384,7 +384,6 @@
 	if(QDELING(src))
 		CRASH("Illegal Move()! on [type]")
 
-	var/turf/current_turf = loc
 	if(!moving_from_pull)
 		recheck_grabs(z_allowed = TRUE)
 
@@ -464,6 +463,9 @@
 		set_currently_z_moving(FALSE)
 		return
 
+	if(set_dir_on_move && dir != direct)
+		setDir(direct)
+
 	if(. && isliving(src))
 		var/mob/living/L = src
 		L.handle_grabs_during_movement(oldloc, direct)
@@ -476,9 +478,6 @@
 		set_glide_size(glide_size_override)
 
 	last_move = direct
-
-	if(set_dir_on_move && dir != direct)
-		setDir(direct)
 
 	if(. && has_buckled_mobs() && !handle_buckled_mob_movement(loc, direct, glide_size_override)) //movement failed due to buckled mob(s)
 		. = FALSE
@@ -803,10 +802,6 @@
 	var/atom/oldloc = loc
 	var/is_multi_tile = bound_width > world.icon_size || bound_height > world.icon_size
 	if(destination)
-		///zMove already handles whether a pull from another movable should be broken.
-		if(LAZYLEN(grabbed_by) && !currently_z_moving)
-			free_from_all_grabs()
-
 		var/same_loc = oldloc == destination
 		var/area/old_area = get_area(oldloc)
 		var/area/destarea = get_area(destination)

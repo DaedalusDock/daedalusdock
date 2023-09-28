@@ -310,7 +310,7 @@
 
 /datum/grab/normal/add_context(list/context, obj/item/held_item, mob/living/user, atom/movable/target)
 	. = ..()
-	if(held_item.sharpness & SHARP_EDGED)
+	if(held_item?.sharpness & SHARP_EDGED)
 		var/obj/item/hand_item/grab/G = user.is_grabbing(target)
 		switch(G.target_zone)
 			if(BODY_ZONE_HEAD)

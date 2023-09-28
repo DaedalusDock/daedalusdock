@@ -249,8 +249,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /// Add effects that apply based on damage_stage here
 /datum/grab/proc/update_stage_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
 	var/old_damage_stage = old_grab?.damage_stage || 0
+	var/new_stage = dropping_grab ? 0 : damage_stage
 
-	switch(!dropping_grab || damage_stage) // Current state.
+	switch(new_stage) // Current state.
 		if(GRAB_PASSIVE)
 			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
 			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))

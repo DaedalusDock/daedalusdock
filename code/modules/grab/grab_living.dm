@@ -112,35 +112,46 @@
 	update_pull_hud_icon()
 
 /mob/living/proc/handle_grabs_during_movement(turf/old_loc, direction)
-	var/list/grabs = recursively_get_all_grabbed_movables()
-	if(LAZYLEN(grabs))
-		for(var/obj/item/hand_item/grab/G in grabs)
-			var/atom/movable/pulling = G.affecting
-			if(pulling == src || pulling.loc == loc || !old_loc.Adjacent(AM))
+	var/list/grabs_in_grab_chain = get_active_grabs() //recursively_get_conga_line()
+	if(!LAZYLEN(grabs_in_grab_chain))
+		return
+
+	for(var/obj/item/hand_item/grab/G in grabs_in_grab_chain)
+		var/atom/movable/pulling = G.affecting
+		if(pulling == src || pulling.loc == loc)
+			continue
+		if(pulling.anchored)
+			qdel(G)
+			continue
+
+		var/pull_dir = get_dir(pulling, src)
+		var/target_turf = old_loc
+
+		// Pulling things down/up stairs. zMove() has flags for check_pulling and stop_pulling calls.
+		// You may wonder why we're not just forcemoving the pulling movable and regrabbing it.
+		// The answer is simple. forcemoving and regrabbing is ugly and breaks conga lines.
+		if(pulling.z != z)
+			target_turf = get_step(pulling, get_dir(pulling, old_loc))
+
+
+		if(target_turf != old_loc || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1 && old_loc.Adjacent(pulling))
+			pulling.move_from_pull(G.assailant, get_step(pulling, get_dir(pulling, target_turf)), glide_size)
+			if(QDELETED(G))
 				continue
-			if(pulling.anchored)
-				qdel(G)
-				continue
-			var/pull_dir = get_dir(pulling, src)
-			var/target_turf = current_turf
 
-			// Pulling things down/up stairs. zMove() has flags for check_pulling and stop_pulling calls.
-			// You may wonder why we're not just forcemoving the pulling movable and regrabbing it.
-			// The answer is simple. forcemoving and regrabbing is ugly and breaks conga lines.
-			if(pulling.z != z)
-				target_turf = get_step(pulling, get_dir(pulling, current_turf))
+		if(!MultiZAdjacent(pulling))
+			qdel(G)
+			continue
 
-			if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
-				pulling.move_from_pull(src, target_turf, glide_size)
-				if(QDELETED(G))
-					continue
+		if(!QDELETED(G))
+			G.update_offsets()
+			G.current_grab.moved_effect(G)
+			if(G.current_grab.downgrade_on_move)
+				G.downgrade()
 
-			if(!MultiZAdjacent(pulling))
-				qdel(G)
-				continue
+	var/list/my_grabs = get_active_grabs()
+	for(var/obj/item/hand_item/grab/G in my_grabs)
+		if(G.current_grab.reverse_facing)
+			setDir(global.reverse_dir[direction])
 
-			if(!QDELETED(G))
-				G.update_offsets()
-				G.current_grab.moved_effect(G)
-				if(G.current_grab.downgrade_on_move)
-					G.downgrade()
+

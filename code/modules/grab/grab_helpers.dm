@@ -55,6 +55,7 @@
 	QDEL_LIST(grabbed_by)
 	grabbed_by = null
 
+
 /// Gets every grabber of this atom, and every grabber of those grabbers, repeat
 /atom/movable/proc/recursively_get_all_grabbers()
 	RETURN_TYPE(/list)
@@ -72,6 +73,16 @@
 		if(isliving(G.affecting))
 			var/mob/living/L = G.affecting
 			. |= L.recursively_get_all_grabbed_movables()
+
+/// Gets every grab object owned by this mob, and every grabbed atom of those grabbed mobs
+/mob/living/proc/recursively_get_conga_line()
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+		. |= G
+		if(isliving(G.affecting))
+			var/mob/living/L = G.affecting
+			. |= L.recursively_get_conga_line()
 
 /// Get every single member of a grab chain
 /atom/movable/proc/get_all_grab_chain_members()

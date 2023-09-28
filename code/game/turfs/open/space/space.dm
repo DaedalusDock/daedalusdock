@@ -123,7 +123,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	if(!arrived || src != arrived.loc)
 		return
 
-	if(destination_z && destination_x && destination_y && !LAZYLEN(arrived.grabbed_by) && !arrived.currently_z_moving)
+	if(destination_z && destination_x && destination_y && !LAZYLEN(arrived.grabbed_by))
 		var/tx = destination_x
 		var/ty = destination_y
 		var/turf/DT = locate(tx, ty, destination_z)
@@ -144,14 +144,8 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 		if(SEND_SIGNAL(arrived, COMSIG_MOVABLE_LATERAL_Z_MOVE) & COMPONENT_BLOCK_MOVEMENT)
 			return
-		arrived.zMove(null, DT, ZMOVE_ALLOW_BUCKLED)
 
-		if(isliving(arrived))
-			var/mob/living/L = arrived
-			for(var/obj/item/hand_item/grab/G as anything in L.get_active_grabs())
-				var/atom/movable/current_pull = G.affecting
-				var/turf/target_turf = get_step(G.assailant.loc, REVERSE_DIR(G.assailant.dir)) || G.assailant.loc
-				current_pull.zMove(null, target_turf, ZMOVE_ALLOW_BUCKLED)
+		arrived.Move(null, DT)
 
 
 /turf/open/space/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)

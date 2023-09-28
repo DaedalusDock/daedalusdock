@@ -55,15 +55,15 @@
 		if(S)
 			S.update_appearance()
 
-/obj/structure/stairs/proc/on_exit(datum/source, atom/movable/leaving, direction)
+/obj/structure/stairs/proc/on_exit(datum/source, atom/movable/leaving, direction, no_side_effects)
 	SIGNAL_HANDLER
 
 	if(leaving == src)
 		return //Let's not block ourselves.
 
 	if(!isobserver(leaving) && isTerminator() && direction == dir)
-		leaving.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
-		INVOKE_ASYNC(src, PROC_REF(stair_ascend), leaving)
+		if(!no_side_effects)
+			INVOKE_ASYNC(src, PROC_REF(stair_ascend), leaving)
 		leaving.Bump(src)
 		return COMPONENT_ATOM_BLOCK_EXIT
 
@@ -91,10 +91,10 @@
 		to_chat(climber, span_warning("Something blocks the path."))
 		return
 
-	if(!target.Enter(climber))
+	if(!target.Enter(climber, FALSE))
 		to_chat(climber, span_warning("Something blocks the path."))
 		return
-
+	climber.set_currently_z_moving(TRUE)
 	climber.forceMove(target)
 	if(!(climber.throwing || (climber.movement_type & (VENTCRAWLING | FLYING)) || HAS_TRAIT(climber, TRAIT_IMMOBILIZED)))
 		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)

@@ -535,7 +535,10 @@
 		var/atom/loc_atom = loc
 		return loc_atom.relaymove(src, UP)
 
-	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
+	//Human's up() override has its own feedback
+	var/flags = ishuman(src) ? ZMOVE_FLIGHT_FLAGS : ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK
+	. = zstep(src, UP, flags)
+	if(.)
 		to_chat(src, span_notice("You move upwards."))
 
 ///Moves a mob down a z level
@@ -547,8 +550,9 @@
 		var/atom/loc_atom = loc
 		return loc_atom.relaymove(src, DOWN)
 
-	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
+	if(zstep(src, DOWN, ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
+
 	return FALSE
 
 /mob/abstract_move(atom/destination)

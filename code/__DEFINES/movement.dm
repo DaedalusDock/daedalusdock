@@ -79,6 +79,8 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define ZMOVE_INCLUDE_PULLED (1<<8)
 /// Skips check for whether the moving atom is anchored or not.
 #define ZMOVE_ALLOW_ANCHORED (1<<9)
+/// Skip CanMoveOnto() checks
+#define ZMOVE_SKIP_CANMOVEONTO (1<<10)
 
 #define ZMOVE_CHECK_PULLS (ZMOVE_CHECK_PULLING|ZMOVE_CHECK_PULLEDBY)
 

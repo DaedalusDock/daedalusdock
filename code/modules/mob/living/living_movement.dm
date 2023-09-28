@@ -118,26 +118,7 @@
 	remove_movespeed_modifier(/datum/movespeed_modifier/bulky_drag)
 */
 
-/**
- * We want to relay the zmovement to the buckled atom when possible
- * and only run what we can't have on buckled.zMove() or buckled.can_z_move() here.
- * This way we can avoid esoteric bugs, copypasta and inconsistencies.
- */
-/mob/living/zMove(dir, turf/target, z_move_flags = ZMOVE_FLIGHT_FLAGS)
-	if(buckled)
-		if(buckled.currently_z_moving)
-			return FALSE
-		if(!(z_move_flags & ZMOVE_ALLOW_BUCKLED))
-			buckled.unbuckle_mob(src, force = TRUE, can_fall = FALSE)
-		else
-			if(!target)
-				target = can_z_move(dir, get_turf(src), z_move_flags, src)
-				if(!target)
-					return FALSE
-			return buckled.zMove(dir, target, z_move_flags) // Return value is a loc.
-	return ..()
-
-/mob/living/can_z_move(direction, turf/start, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK, mob/living/rider)
+/mob/living/can_z_move(direction, turf/start, z_move_flags, mob/living/rider)
 	// Check physical climbing ability
 	if((z_move_flags & ZMOVE_INCAPACITATED_CHECKS))
 		if(incapacitated())

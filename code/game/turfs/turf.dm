@@ -262,7 +262,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
 				return FALSE
 
-		return direction == UP //can't go below
+		return direction & UP //can't go below
 	else
 		if(density) //No fuck off
 			return FALSE
@@ -278,7 +278,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 ///Called each time the target falls down a z level possibly making their trajectory come to a halt. see __DEFINES/movement.dm.
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf)
-	var/flags = NONE
+	var/flags = FALL_RETAIN_PULL
 	var/list/falling_movables = falling.get_z_move_affected()
 	var/list/falling_mob_names
 
@@ -383,7 +383,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 						return FALSE
 					continue
 				else
-					if(!firstbump || ((thing.layer > firstbump.layer || (thing.flags_1 & ON_BORDER_1|BUMP_PRIORITY_1)) && !(firstbump.flags_1 & ON_BORDER_1)))
+					if(!firstbump || ((thing.layer < firstbump.layer || (thing.flags_1 & ON_BORDER_1|BUMP_PRIORITY_1)) && !(firstbump.flags_1 & ON_BORDER_1)))
 						firstbump = thing
 
 	if(QDELETED(mover)) //Mover deleted from Cross/CanPass/Bump, do not proceed.

@@ -1389,11 +1389,11 @@
  *
  * Default behaviour is to send the [COMSIG_ATOM_EXIT]
  */
-/atom/Exit(atom/movable/leaving, direction)
+/atom/Exit(atom/movable/leaving, direction, no_side_effects)
 	// Don't call `..()` here, otherwise `Uncross()` gets called.
 	// See the doc comment on `Uncross()` to learn why this is bad.
 
-	if(SEND_SIGNAL(src, COMSIG_ATOM_EXIT, leaving, direction) & COMPONENT_ATOM_BLOCK_EXIT)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_EXIT, leaving, direction, no_side_effects) & COMPONENT_ATOM_BLOCK_EXIT)
 		return FALSE
 
 	return TRUE

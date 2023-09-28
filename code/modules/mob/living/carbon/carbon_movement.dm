@@ -6,7 +6,7 @@
 	..()
 	return loc.handle_slip(src, knockdown_amount, slipped_on, lube_flags, paralyze, force_drop)
 
-/mob/living/carbon/Move(NewLoc, direct)
+/mob/living/carbon/Move(NewLoc, direct, glide_size_override, z_movement_flags)
 	. = ..()
 	if(!(usr == src))
 		return

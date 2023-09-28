@@ -169,32 +169,18 @@
 				mob_swap = TRUE
 		if(mob_swap)
 			//switch our position with M
-			if(loc && !loc.Adjacent(M.loc))
+			if(loc && !loc.MultiZAdjacent(M.loc))
 				return TRUE
+
 			now_pushing = TRUE
+
 			var/oldloc = loc
 			var/oldMloc = M.loc
-
-
-			var/M_passmob = (M.pass_flags & PASSMOB) // we give PASSMOB to both mobs to avoid bumping other mobs during swap.
-			var/src_passmob = (pass_flags & PASSMOB)
-			M.pass_flags |= PASSMOB
-			pass_flags |= PASSMOB
-
-			var/move_failed = FALSE
-			if(!M.Move(oldloc) || !Move(oldMloc))
-				M.forceMove(oldMloc)
-				forceMove(oldloc)
-				move_failed = TRUE
-			if(!src_passmob)
-				pass_flags &= ~PASSMOB
-			if(!M_passmob)
-				M.pass_flags &= ~PASSMOB
+			forceMove(oldMloc)
+			M.forceMove(oldloc)
 
 			now_pushing = FALSE
-
-			if(!move_failed)
-				return TRUE
+			return TRUE
 
 	//okay, so we didn't switch. but should we push?
 	//not if he's not CANPUSH of course
@@ -860,7 +846,7 @@
 /mob/living/proc/update_wound_overlays()
 	return
 
-/mob/living/Move(atom/newloc, direct, glide_size_override)
+/mob/living/Move(atom/newloc, direct, glide_size_override, z_movement_flags)
 	if(lying_angle != 0)
 		lying_angle_on_movement(direct)
 	if (buckled && buckled.loc != newloc) //not updating position
@@ -1565,15 +1551,21 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/forceMove(atom/destination)
 	if(!currently_z_moving)
-		release_all_grabs()
-		free_from_all_grabs()
 		if(buckled && !HAS_TRAIT(src, TRAIT_CANNOT_BE_UNBUCKLED))
 			buckled.unbuckle_mob(src, force = TRUE)
 		if(has_buckled_mobs())
 			unbuckle_all_mobs(force = TRUE)
+
 	. = ..()
-	if(. && client)
+	if(!.)
+		return
+	if(!QDELETED(src) && (LAZYLEN(grabbed_by) || get_active_grabs()))
+		recheck_grabs()
+
+	if(client)
 		reset_perspective()
+
+
 
 
 /mob/living/proc/update_z(new_z) // 1+ to register, null to unregister

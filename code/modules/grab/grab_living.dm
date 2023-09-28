@@ -96,8 +96,7 @@
 			qdel(G)
 		else if(!isturf(loc))
 			qdel(G)
-		else if(pulling && !isturf(pulling.loc) && pulling.loc != loc) //to be removed once all code that changes an object's loc uses forceMove().
-			log_game("DEBUG:[src]'s pull on [pulling] wasn't broken despite [pulling] being in [pulling.loc]. Pull stopped manually.")
+		else if(!isturf(pulling.loc)) //to be removed once all code that changes an object's loc uses forceMove().
 			qdel(G)
 		else if(pulling.anchored || pulling.move_resist > move_force)
 			qdel(G)
@@ -111,3 +110,37 @@
 		var/mob/living/L = pulling
 		L.reset_pull_offsets()
 	update_pull_hud_icon()
+
+/mob/living/proc/handle_grabs_during_movement(turf/old_loc, direction)
+	var/list/grabs = recursively_get_all_grabbed_movables()
+	if(LAZYLEN(grabs))
+		for(var/obj/item/hand_item/grab/G in grabs)
+			var/atom/movable/pulling = G.affecting
+			if(pulling == src || pulling.loc == loc || !old_loc.Adjacent(AM))
+				continue
+			if(pulling.anchored)
+				qdel(G)
+				continue
+			var/pull_dir = get_dir(pulling, src)
+			var/target_turf = current_turf
+
+			// Pulling things down/up stairs. zMove() has flags for check_pulling and stop_pulling calls.
+			// You may wonder why we're not just forcemoving the pulling movable and regrabbing it.
+			// The answer is simple. forcemoving and regrabbing is ugly and breaks conga lines.
+			if(pulling.z != z)
+				target_turf = get_step(pulling, get_dir(pulling, current_turf))
+
+			if(target_turf != current_turf || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
+				pulling.move_from_pull(src, target_turf, glide_size)
+				if(QDELETED(G))
+					continue
+
+			if(!MultiZAdjacent(pulling))
+				qdel(G)
+				continue
+
+			if(!QDELETED(G))
+				G.update_offsets()
+				G.current_grab.moved_effect(G)
+				if(G.current_grab.downgrade_on_move)
+					G.downgrade()

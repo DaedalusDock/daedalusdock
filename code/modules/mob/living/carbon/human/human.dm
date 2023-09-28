@@ -1147,3 +1147,14 @@
 	if(head.w_class > brain.w_class + 1)
 		return prob(100 / 2**(head.w_class - brain.w_class - 1))
 	return TRUE
+
+/mob/living/carbon/human/up()
+	. = ..()
+	if(.)
+		return
+	var/obj/climbable = check_zclimb()
+	if(!climbable)
+		can_z_move(UP, get_turf(src), ZMOVE_FEEDBACK|ZMOVE_FLIGHT_FLAGS)
+		return FALSE
+
+	return ClimbUp(climbable)

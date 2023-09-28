@@ -248,6 +248,7 @@
 
 	if(count >= 2)
 		return FALSE
+	return TRUE
 
 /obj/item/hand_item/grab/proc/draw_affecting_over()
 	affecting.plane = assailant.plane

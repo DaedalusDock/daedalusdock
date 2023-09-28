@@ -92,7 +92,7 @@
 
 	for(var/obj/item/hand_item/grab/G in get_active_grabs())
 		var/atom/movable/pulling = G.affecting
-		if(get_dist(src, pulling) > 1 || (z != pulling.z && !z_allowed))
+		if(!MultiZAdjacent(src, pulling))
 			qdel(G)
 		else if(!isturf(loc))
 			qdel(G)
@@ -120,7 +120,7 @@
 		var/atom/movable/pulling = G.affecting
 		if(pulling == src || pulling.loc == loc)
 			continue
-		if(pulling.anchored)
+		if(pulling.anchored || !isturf(loc))
 			qdel(G)
 			continue
 
@@ -134,12 +134,12 @@
 			target_turf = get_step(pulling, get_dir(pulling, old_loc))
 
 
-		if(target_turf != old_loc || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1 && old_loc.Adjacent(pulling))
+		if(target_turf != old_loc || (moving_diagonally != SECOND_DIAG_STEP && ISDIAGONALDIR(pull_dir)) || get_dist(src, pulling) > 1)
 			pulling.move_from_pull(G.assailant, get_step(pulling, get_dir(pulling, target_turf)), glide_size)
 			if(QDELETED(G))
 				continue
 
-		if(!MultiZAdjacent(pulling))
+		if(!pulling.MultiZAdjacent(src))
 			qdel(G)
 			continue
 

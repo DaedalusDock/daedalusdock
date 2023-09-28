@@ -56,6 +56,8 @@
 
 /obj/item/hand_item/grab/Destroy()
 	current_grab?.let_go(src)
+	if(assailant)
+		assailant.after_grab_release(affecting)
 	assailant = null
 	affecting = null
 	return ..()

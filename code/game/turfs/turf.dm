@@ -323,7 +323,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		if(L)
 			if(LAZYLEN(L.grabbed_by))
 				for(var/obj/item/hand_item/grab/G in L.grabbed_by)
-					if(L.z != G.assailant.z || get_dist(L, G.assailant.z > 1))
+					if(L.z != G.assailant.z || get_dist(L, G.assailant) > 1)
 						qdel(G)
 	return TRUE
 

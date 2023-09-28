@@ -1550,6 +1550,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	return
 
 /mob/living/forceMove(atom/destination)
+	var/old_loc = loc
 	if(!currently_z_moving)
 		if(buckled && !HAS_TRAIT(src, TRAIT_CANNOT_BE_UNBUCKLED))
 			buckled.unbuckle_mob(src, force = TRUE)
@@ -1559,7 +1560,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	. = ..()
 	if(!.)
 		return
-	if(!QDELETED(src) && (LAZYLEN(grabbed_by) || get_active_grabs()))
+
+	if(!QDELETED(src))
+		handle_grabs_during_movement(old_loc, get_dir(old_loc, src))
 		recheck_grabs()
 
 	if(client)

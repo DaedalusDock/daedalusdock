@@ -37,7 +37,7 @@
 		return
 
 	for(var/obj/item/hand_item/grab/G in grabbed_by)
-		if(moving_diagonally != FIRST_DIAG_STEP && (get_dist(src, G.assailant) > 1 || z != G.assailant.z)) //separated from our puller and not in the middle of a diagonal move.
+		if(moving_diagonally != FIRST_DIAG_STEP && !MultiZAdjacent(G.assailant)) //separated from our puller and not in the middle of a diagonal move.
 			qdel(G)
 
 /// Move grabbed atoms towards a destination
@@ -95,3 +95,5 @@
 
 	if(last_pixel_x != new_pixel_x || last_pixel_y != new_pixel_y)
 		animate(src, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 3, 1, (LINEAR_EASING|EASE_IN))
+
+	UPDATE_OO_IF_PRESENT

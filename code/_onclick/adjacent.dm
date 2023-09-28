@@ -166,11 +166,20 @@
 	// Are they below us?
 	if(N.z < T.z && HasBelow(T.z))
 		var/turf/B = GetBelow(T)
-		return TURF_IS_MIMICKING(B) && neighbor.Adjacent(B)
+		. = TURF_IS_MIMICKING(T) && neighbor.Adjacent(B)
+		if(!.)
+			B = GetAbove(N)
+			. = TURF_IS_MIMICKING(B) && src.Adjacent(B)
+		return
+
 
 	// Are they above us?
 	if(HasAbove(T.z))
 		var/turf/A = GetAbove(T)
-		return TURF_IS_MIMICKING(A) && neighbor.Adjacent(A)
+		. = TURF_IS_MIMICKING(A) && neighbor.Adjacent(A)
+		if(!.)
+			A = GetBelow(N)
+			. = TURF_IS_MIMICKING(N) && src.Adjacent(A)
+		return
 
 	return FALSE

@@ -243,9 +243,6 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		remove_grab_effects(G)
 		update_stage_effects(G, null, TRUE)
 
-	if(G.assailant)
-		G.assailant.after_grab_release(G.affecting)
-
 /// Add effects that apply based on damage_stage here
 /datum/grab/proc/update_stage_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
 	var/old_damage_stage = old_grab?.damage_stage || 0

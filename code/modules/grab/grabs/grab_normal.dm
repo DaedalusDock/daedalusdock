@@ -308,6 +308,12 @@
 	log_combat(user, affecting, "hamstrung (grab)")
 	return TRUE
 
+/datum/grab/normal/enter_as_down(obj/item/hand_item/grab/G)
+	. = ..()
+	G.assailant.visible_message(
+		span_warning("<b>[G.assailant]</b> loosens their grip on [G.affecting]."),
+	)
+
 /datum/grab/normal/add_context(list/context, obj/item/held_item, mob/living/user, atom/movable/target)
 	. = ..()
 	if(held_item?.sharpness & SHARP_EDGED)

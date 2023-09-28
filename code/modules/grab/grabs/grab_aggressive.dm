@@ -52,3 +52,16 @@
 				if((C.clothing_flags & STOPSPRESSUREDAMAGE) && C.returnArmor().getRating(MELEE) > 20)
 					to_chat(G.assailant, span_warning("\The [C] is in the way!"))
 					return FALSE
+
+/datum/grab/normal/aggressive/enter_as_up(obj/item/hand_item/grab/G)
+	. = ..()
+	G.assailant.visible_message(
+		span_danger("<b>[G.assailant]</b> tightens their grip on [G.affecting] (now hands)!"),
+		blind_message = span_hear("You hear aggressive shuffling.")
+	)
+
+/datum/grab/normal/aggressive/enter_as_down(obj/item/hand_item/grab/G)
+	. = ..()
+	G.assailant.visible_message(
+		span_danger("<b>[G.assailant]</b> loosens their grip on [G.affecting], allowing them to breathe!"),
+	)

@@ -103,7 +103,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	if (can_upgrade(G))
 		upgrade_effect(G)
-		log_combat(G.assailant, G.affecting, "tightens their grip on their victim to [upgrab.state_name]")
+		log_combat(G.assailant, G.affecting, "tightens their grip [upgrab.state_name] on")
 		return upgrab
 	else
 		to_chat(G.assailant, span_warning("[string_process(G, fail_up)]"))
@@ -188,7 +188,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	G.action_used()
 	if(G.assailant)
-		G.assailant.changeNext_move(CLICK_CD_MELEE)
+		G.assailant.changeNext_move(CLICK_CD_GRABBING)
 		if(istext(.) && G.affecting)
 			make_log(G, "used [.] on")
 
@@ -196,7 +196,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		G.downgrade()
 
 /datum/grab/proc/make_log(obj/item/hand_item/grab/G, action)
-	log_combat(G.assailant, G.affecting, "[action]s their victim")
+	log_combat(G.assailant, G.affecting, "[action] their victim")
 
 /*
 	Override these procs to set how the grab state will work. Some of them are best
@@ -308,6 +308,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 // Used when you want an effect to happen when the grab enters this state as an upgrade
 /datum/grab/proc/enter_as_up(obj/item/hand_item/grab/G)
+
+// Used when you want an effect to happen when the grab enters this state as a downgrade
+/datum/grab/proc/enter_as_down(obj/item/hand_item/grab/G)
 
 /datum/grab/proc/item_attack(obj/item/hand_item/grab/G, obj/item)
 

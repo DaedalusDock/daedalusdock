@@ -238,6 +238,7 @@
 		if(apply_effects)
 			current_grab.apply_grab_effects(src)
 
+		current_grab.enter_as_down(src)
 		adjust_position()
 		update_appearance()
 

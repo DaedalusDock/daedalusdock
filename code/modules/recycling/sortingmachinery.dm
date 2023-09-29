@@ -381,7 +381,7 @@
 	new_barcode.cut_multiplier = cut_multiplier		// Also the registered percent cut.
 	user.put_in_hands(new_barcode)
 
-/obj/item/sales_tagger/CtrlClick(mob/user)
+/obj/item/sales_tagger/CtrlClick(mob/user, list/params)
 	. = ..()
 	payments_acc = null
 	to_chat(user, span_notice("You clear the registered account."))

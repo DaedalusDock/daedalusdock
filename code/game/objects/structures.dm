@@ -96,3 +96,33 @@
 		L.Paralyze(10 SECONDS)
 
 	visible_message(span_warning("[src] slams into [highest] from above!"))
+
+/obj/structure/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(!user.combat_mode)
+		return
+	if (!grab.current_grab.enable_violent_interactions)
+		to_chat(user, span_warning("You need a better grip to do that!"))
+		return TRUE
+
+	var/mob/living/affecting_mob = grab.get_affecting_mob()
+	if(!istype(affecting_mob))
+		to_chat(user, span_warning("You need to be grabbing a living creature to do that!"))
+		return TRUE
+
+	// Slam their face against the table.
+	var/blocked = affecting_mob.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	if (prob(30 * ((100-blocked)/100)))
+		affecting_mob.Knockdown(10 SECONDS)
+
+	affecting_mob.apply_damage(8, BRUTE, BODY_ZONE_HEAD, blocked)
+	visible_message(span_danger("<b>[user]</b> slams <b>[affecting_mob]</b>'s face against \the [src]!"))
+	playsound(loc, 'sound/items/trayhit1.ogg', 50, 1)
+
+	take_damage(rand(1,5), BRUTE)
+	for(var/obj/item/shard/S in loc)
+		if(prob(50))
+			affecting_mob.visible_message(span_danger("\The [S] slices into [affecting_mob]'s face!"), span_danger("\The [S] slices into your face!"))
+			S.melee_attack_chain(user, victim, params)
+	qdel(grab)
+	return TRUE

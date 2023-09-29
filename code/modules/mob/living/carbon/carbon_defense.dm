@@ -158,7 +158,7 @@
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	return FALSE
+	return . || FALSE
 
 
 /mob/living/carbon/attack_paw(mob/living/carbon/human/user, list/modifiers)

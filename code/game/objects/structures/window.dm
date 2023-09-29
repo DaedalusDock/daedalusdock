@@ -435,6 +435,39 @@
 /obj/structure/window/GetExplosionBlock()
 	return reinf && fulltile ? real_explosion_block : 0
 
+/obj/structure/window/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	if (!user.combat_mode || !grab.current_grab.enable_violent_interactions)
+		return ..()
+
+	var/mob/living/affecting_mob = grab.get_affecting_mob()
+	if(!istype(affecting_mob))
+		if(isitem(victim))
+			var/obj/item/I = victim
+			I.melee_attack_chain(user, src, params)
+		return TRUE
+
+	var/def_zone = ran_zone(BODY_ZONE_HEAD, 20)
+	var/blocked = affecting_mob.run_armor_check(def_zone, MELEE)
+	if(grab.current_grab.damage_stage < GRAB_NECK)
+		affecting_mob.visible_message(span_danger("<b>[user]</b> bashes <b>[affecting_mob]</b> against \the [src]!"))
+		if(prob(50 * ((100 - blocked/100))))
+			affecting_mob.Knockdown(4 SECONDS)
+		affecting_mob.apply_damage(10, BRUTE, def_zone, blocked)
+		take_damage(10)
+		qdel(grab)
+	else
+		affecting_mob.visible_message(span_danger("<b>[user]</b> crushes <b>[affecting_mob]</b> against \the [src]!"))
+		affecting_mob.Knockdown(10 SECONDS)
+		affecting_mob.apply_damage(20, BRUTE, def_zone, blocked)
+		take_damage(20)
+		qdel(grab)
+
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src)
+	splatter.transfer_mob_blood_dna(victim)
+	vis_contents += splatter
+	bloodied = TRUE
+	return TRUE
+
 /obj/structure/window/spawner/east
 	dir = EAST
 

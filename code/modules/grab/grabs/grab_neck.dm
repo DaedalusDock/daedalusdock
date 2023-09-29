@@ -8,7 +8,6 @@
 	shift = -10
 	stop_move = TRUE
 	reverse_facing = TRUE
-	shield_assailant = TRUE
 	point_blank_mult = 2
 	damage_stage = GRAB_NECK
 	same_tile = TRUE
@@ -28,7 +27,7 @@
 
 /datum/grab/normal/neck/remove_grab_effects(obj/item/hand_item/grab/G)
 	. = ..()
-	ADD_TRAIT(G.affecting, TRAIT_FLOORED, NECK_GRAB)
+	REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, NECK_GRAB)
 
 /datum/grab/normal/neck/enter_as_up(obj/item/hand_item/grab/G)
 	. = ..()

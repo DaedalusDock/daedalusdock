@@ -209,6 +209,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return
 	user.move_grabbed_atoms_towards(src)
 
+/turf/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(.)
+		return
+	if(!isliving(user))
+		return
+	user.move_grabbed_atoms_towards(src)
+
+
 /**
  * Check whether the specified turf is blocked by something dense inside it with respect to a specific atom.
  *

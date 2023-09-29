@@ -2,7 +2,6 @@
 	shift = 8
 	stop_move = FALSE
 	reverse_facing = FALSE
-	shield_assailant = FALSE
 	point_blank_mult = 1
 	same_tile = FALSE
 	icon_state = "1"

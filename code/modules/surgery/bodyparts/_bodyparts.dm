@@ -1308,6 +1308,9 @@
 	if(check_bones() & CHECKBONES_BROKEN)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
 
+	if(bodypart_flags & BP_DISLOCATED)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Dislocated</span>" : "Dislocated"
+
 	if (length(cavity_items) || length(embedded_objects))
 		var/unknown_body = 0
 		for(var/obj/item/I in cavity_items + embedded_objects)

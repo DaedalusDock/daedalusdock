@@ -108,6 +108,7 @@
 	animate_interact(old_target, INTERACT_UNPULL)
 	update_pull_hud_icon()
 
+/// Called during or immediately after movement. Used to move grab targets around to ensure the grabs do not break during movement.
 /mob/living/proc/handle_grabs_during_movement(turf/old_loc, direction)
 	var/list/grabs_in_grab_chain = get_active_grabs() //recursively_get_conga_line()
 	if(!LAZYLEN(grabs_in_grab_chain))

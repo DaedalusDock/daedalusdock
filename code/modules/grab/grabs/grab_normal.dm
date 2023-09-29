@@ -34,15 +34,20 @@
 
 	var/mob/living/affecting = G.get_affecting_mob()
 	var/mob/living/assailant = G.assailant
-	if(affecting && A && A == affecting && !affecting.body_position == STANDING_UP)
+	if(affecting && A && A == affecting)
+		if(affecting.body_position == LYING_DOWN)
+			to_chat(assailant, span_warning("They're already on the ground."))
+			return FALSE
 
 		affecting.visible_message(span_danger("\The [assailant] is trying to pin \the [affecting] to the ground!"))
+
 		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "harm")))
 			G.action_used()
 			affecting.visible_message(span_danger("\The [assailant] pins \the [affecting] to the ground!"))
+			affecting.Knockdown(1 SECOND) // This can only be performed with an aggressive grab, which ensures that once someone is knocked down, they stay down/
 			return TRUE
-		affecting.visible_message(span_warning("\The [assailant] fails to pin \the [affecting] to the ground."))
 
+		affecting.visible_message(span_warning("\The [assailant] fails to pin \the [affecting] to the ground."))
 	return FALSE
 
 /datum/grab/normal/on_hit_grab(obj/item/hand_item/grab/G, atom/A)
@@ -88,7 +93,7 @@
 		assailant.visible_message(span_danger("\The [assailant] begins to dislocate \the [affecting]'s [BP.joint_name]!"))
 		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC))
 			G.action_used()
-			BP.set_dislocated()
+			BP.set_dislocated(TRUE)
 			assailant.visible_message(span_danger("\The [affecting]'s [BP.joint_name] [pick("gives way","caves in","crumbles","collapses")]!"))
 			playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			return TRUE
@@ -147,7 +152,7 @@
 /datum/grab/normal/proc/headbutt(obj/item/hand_item/grab/G)
 	var/mob/living/carbon/human/target = G.get_affecting_mob()
 	var/mob/living/carbon/human/attacker = G.assailant
-	if(!istype(target)	 || !istype(attacker))
+	if(!istype(target) || !istype(attacker))
 		return
 
 	if(target.body_position == LYING_DOWN)
@@ -162,11 +167,11 @@
 
 	if(sharpness & SHARP_POINTY)
 		if(istype(hat))
-			attacker.visible_message(span_danger("\The [attacker] gores \the [target] with \the [hat]!"))
+			attacker.visible_message(span_danger("\The <b>[attacker]</b> gores \the <b>[target]</b> with \the [hat]!"))
 		else
-			attacker.visible_message(span_danger("\The [attacker] gores \the [target]!"))
+			attacker.visible_message(span_danger("\The <b>[attacker]</b> gores \the <b>[target]</b>!"))
 	else
-		attacker.visible_message(span_danger("\The [attacker] thrusts [attacker.p_their()] head into \the [target]'s skull!"))
+		attacker.visible_message(span_danger("\The <b>[attacker]</b> thrusts [attacker.p_their()] head into \the <b>[target]</b>'s skull!"))
 
 	var/armor = target.run_armor_check(BODY_ZONE_HEAD, MELEE)
 	target.apply_damage(damage, BRUTE, BODY_ZONE_HEAD, armor, sharpness = sharpness)

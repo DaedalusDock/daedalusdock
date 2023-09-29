@@ -51,6 +51,7 @@
 	RegisterSignal(assailant, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
 	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
 	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
+	RegisterSignal(affecting, COMSIG_ATOM_ATTACK_HAND, PROC_REF(intercept_attack_hand))
 
 	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
 
@@ -61,6 +62,41 @@
 	assailant = null
 	affecting = null
 	return ..()
+
+// This will run from Initialize, after can_grab and other checks have succeeded. Must call parent; returning FALSE means failure and qdels the grab.
+/obj/item/hand_item/grab/proc/setup()
+	if(!current_grab.setup(src))
+		return FALSE
+
+	assailant.update_pull_hud_icon()
+
+	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
+
+	adjust_position()
+	action_used()
+
+	assailant.animate_interact(affecting, INTERACT_GRAB)
+
+	var/sound = 'sound/weapons/thudswoosh.ogg'
+	if(iscarbon(assailant))
+		var/mob/living/carbon/C = assailant
+		if(C.dna.species.grab_sound)
+			sound = C.dna.species.grab_sound
+
+	if(isliving(affecting))
+		var/mob/living/affecting_mob = affecting
+		for(var/datum/disease/D as anything in assailant.diseases)
+			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+				affecting_mob.ContactContractDisease(D)
+
+		for(var/datum/disease/D as anything in affecting_mob.diseases)
+			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+				assailant.ContactContractDisease(D)
+
+	playsound(affecting.loc, sound, 50, 1, -1)
+	update_appearance()
+	current_grab.update_stage_effects(src, null)
+	return TRUE
 
 /obj/item/hand_item/grab/examine(mob/user)
 	. = ..()
@@ -85,13 +121,14 @@
 		downgrade()
 
 
-/obj/item/hand_item/grab/pre_attack(atom/A, mob/living/user, params)
-	// End workaround
+/obj/item/hand_item/grab/melee_attack_chain(mob/user, atom/target, params)
 	if (QDELETED(src) || !assailant || !current_grab)
-		return TRUE
-	if(A.attack_grab(assailant, affecting, src, params2list(params)) || current_grab.hit_with_grab(src, A, params2list(params))) //If there is no use_grab override or if it returns FALSE; then will behave according to intent.
-		return TRUE
-	return ..()
+		return
+
+	if(target.attack_grab(assailant, affecting, src, params2list(params)))
+		return
+
+	current_grab.hit_with_grab(src, target, params2list(params))
 
 /obj/item/hand_item/grab/Destroy()
 	if(affecting)
@@ -146,40 +183,14 @@
 		return
 	current_grab.let_go(src)
 
-// This will run from Initialize, after can_grab and other checks have succeeded. Must call parent; returning FALSE means failure and qdels the grab.
-/obj/item/hand_item/grab/proc/setup()
-	if(!current_grab.setup(src))
-		return FALSE
+/// Intercepts attack_hand() calls on our target.
+/obj/item/hand_item/grab/proc/intercept_attack_hand(atom/movable/source, user, list/modifiers)
+	SIGNAL_HANDLER
+	if(user != assailant)
+		return
 
-	assailant.update_pull_hud_icon()
-
-	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
-
-	adjust_position()
-	action_used()
-
-	assailant.animate_interact(affecting, INTERACT_GRAB)
-
-	var/sound = 'sound/weapons/thudswoosh.ogg'
-	if(iscarbon(assailant))
-		var/mob/living/carbon/C = assailant
-		if(C.dna.species.grab_sound)
-			sound = C.dna.species.grab_sound
-
-	if(isliving(affecting))
-		var/mob/living/affecting_mob = affecting
-		for(var/datum/disease/D as anything in assailant.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				affecting_mob.ContactContractDisease(D)
-
-		for(var/datum/disease/D as anything in affecting_mob.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				assailant.ContactContractDisease(D)
-
-	playsound(affecting.loc, sound, 50, 1, -1)
-	update_appearance()
-	current_grab.update_stage_effects(src, null)
-	return TRUE
+	if(current_grab.resolve_openhand_attack(src))
+		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 // Returns the bodypart of the grabbed person that the grabber is targeting
 /obj/item/hand_item/grab/proc/get_targeted_bodypart()
@@ -253,7 +264,7 @@
 		update_appearance()
 
 /// Used to prevent repeated effect application or early effect removal
-/obj/item/hand_item/grab/proc/is_grab_unique 	(datum/grab/grab_datum)
+/obj/item/hand_item/grab/proc/is_grab_unique(datum/grab/grab_datum)
 	var/count = 0
 	for(var/obj/item/hand_item/grab/other as anything in affecting.grabbed_by)
 		if(other.current_grab == grab_datum)

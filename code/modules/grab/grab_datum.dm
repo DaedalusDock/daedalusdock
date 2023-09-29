@@ -5,33 +5,23 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/icon = 'goon/icons/items/grab.dmi'
 	var/icon_state
 
-	var/type_name
-	var/state_name
-	var/fancy_desc
-
 	/// The grab that this will upgrade to if it upgrades, null means no upgrade
 	var/datum/grab/upgrab
 	/// The grab that this will downgrade to if it downgrades, null means break grab on downgrade
 	var/datum/grab/downgrab
 
-	var/datum/time_counter						// For things that need to be timed
-
 	// Whether or not the grabbed person can move out of the grab
 	var/stop_move = FALSE
-	// Whether the person being grabbed is facing forwards or backwards.
+	// Whether the assailant is facing forwards or backwards.
 	var/reverse_facing = FALSE
 	/// Whether this grab state is strong enough to, as a changeling, absorb the person you're grabbing.
 	var/can_absorb = FALSE
-	/// Whether the person you're grabbing will shield you from bullets.
-	var/shield_assailant = FALSE
 	/// How much the grab increases point blank damage.
 	var/point_blank_mult = 1
 	/// Affects how much damage is being dealt using certain actions.
 	var/damage_stage = GRAB_PASSIVE
 	/// If the grabbed person and the grabbing person are on the same tile.
 	var/same_tile = FALSE
-	/// If the grabber can carry the grabbed person up or down ladders.
-	var/ladder_carry = FALSE
 	/// If the grabber can throw the person grabbed.
 	var/can_throw = FALSE
 	/// If the grab needs to be downgraded when the grabber does stuff.
@@ -53,8 +43,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/fail_up = "You fail to upgrade the grab."
 	var/fail_down = "You fail to downgrade the grab."
 
-	var/upgrade_cooldown = 40
-	var/action_cooldown = 40
+	var/upgrade_cooldown = 4 SECONDS
+	var/action_cooldown = 4 SECONDS
 
 	var/can_downgrade_on_resist = TRUE
 	var/list/break_chance_table = list(100)
@@ -101,7 +91,6 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	if (can_upgrade(G))
 		upgrade_effect(G)
-		log_combat(G.assailant, G.affecting, "tightens their grip [upgrab.state_name] on")
 		return upgrab
 	else
 		to_chat(G.assailant, span_warning("[string_process(G, fail_up)]"))
@@ -250,10 +239,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		if(GRAB_PASSIVE)
 			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
 			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
-			if(old_damage_stage >= GRAB_NECK) // Previous state was a a neck-grab or higher.
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
 			if(old_damage_stage >= GRAB_AGGRESSIVE)
 				REMOVE_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
+				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
 
 		if(GRAB_AGGRESSIVE)
 			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.

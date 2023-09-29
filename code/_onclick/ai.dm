@@ -123,7 +123,7 @@
 	A.AICtrlShiftClick(src)
 /mob/living/silicon/ai/ShiftClickOn(atom/A)
 	A.AIShiftClick(src)
-/mob/living/silicon/ai/CtrlClickOn(atom/A)
+/mob/living/silicon/ai/CtrlClickOn(atom/A, list/params)
 	A.AICtrlClick(src)
 /mob/living/silicon/ai/AltClickOn(atom/A)
 	A.AIAltClick(src)

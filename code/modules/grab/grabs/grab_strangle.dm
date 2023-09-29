@@ -6,7 +6,6 @@
 	shift = 0
 	stop_move = TRUE
 	reverse_facing = TRUE
-	shield_assailant = FALSE
 	point_blank_mult = 2
 	damage_stage = GRAB_KILL
 	same_tile = TRUE

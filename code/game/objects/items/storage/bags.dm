@@ -234,7 +234,7 @@
 	. = ..()
 	. += span_notice("Ctrl-click to activate seed extraction.")
 
-/obj/item/storage/bag/plants/portaseeder/CtrlClick(mob/user)
+/obj/item/storage/bag/plants/portaseeder/CtrlClick(mob/user, list/params)
 	if(user.incapacitated())
 		return
 	for(var/obj/item/plant in contents)

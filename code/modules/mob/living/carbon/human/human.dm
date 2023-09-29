@@ -763,7 +763,9 @@
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		BP.set_sever_artery(FALSE)
 		BP.set_sever_tendon(FALSE)
+		BP.set_dislocated(FALSE)
 		BP.heal_bones()
+		BP.adjustPain(-INFINITY)
 
 	remove_all_embedded_objects()
 	set_heartattack(FALSE)

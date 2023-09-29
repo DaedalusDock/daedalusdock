@@ -75,11 +75,13 @@
 				if(was_alive && swirlie.stat == DEAD && swirlie.client)
 					swirlie.client.give_award(/datum/award/achievement/misc/swirlie, swirlie) // just like space high school all over again!
 				swirlie = null
+				return TRUE
 			else
 				playsound(src.loc, 'sound/effects/bang.ogg', 25, TRUE)
 				GM.visible_message(span_danger("[user] slams [GM.name] into [src]!"), span_userdanger("[user] slams you into [src]!"))
 				log_combat(user, GM, "toilet slammed")
 				GM.adjustBruteLoss(5)
+				return TRUE
 	else
 		to_chat(user, span_warning("You need a tighter grip!"))
 

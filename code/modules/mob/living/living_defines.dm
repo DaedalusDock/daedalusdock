@@ -147,8 +147,6 @@
 	var/list/diseases /// list of all diseases in a mob
 	var/list/disease_resistances
 
-	var/slowed_by_drag = TRUE ///Whether the mob is slowed down when dragging another prone mob
-
 	/// List of changes to body temperature, used by desease symtoms like fever
 	var/list/body_temp_changes = list()
 

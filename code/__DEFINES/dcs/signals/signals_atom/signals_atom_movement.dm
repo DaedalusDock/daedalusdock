@@ -18,8 +18,6 @@
 ///called on /living, when a grab is attempted, but before it completes, from base of [/mob/living/make_grab]: (atom/movable/thing, grab_type)
 #define COMSIG_LIVING_TRY_GRAB "living_try_pull"
 	#define COMSIG_LIVING_CANCEL_GRAB (1 << 0)
-/// Called from /mob/living/update_pull_movespeed
-#define COMSIG_LIVING_UPDATING_PULL_MOVESPEED "living_updating_pull_movespeed"
 
 /// Called from /mob/living/PushAM -- Called when this mob is about to push a movable, but before it moves
 /// (aotm/movable/being_pushed)

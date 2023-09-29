@@ -44,12 +44,6 @@
 	for(var/obj/item/hand_item/grab/G in get_active_grabs())
 		. |= G.affecting
 
-/// Checks to see if we have a grab with atleast the given damage_stage
-/atom/movable/proc/check_grab_severities(stage)
-	for(var/obj/item/hand_item/grab/G in grabbed_by)
-		if(G.current_grab.damage_stage >= stage)
-			return G
-
 /// Frees src from all grabs.
 /atom/movable/proc/free_from_all_grabs()
 	QDEL_LIST(grabbed_by)

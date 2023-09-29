@@ -166,6 +166,16 @@
 		if(C.dna.species.grab_sound)
 			sound = C.dna.species.grab_sound
 
+	if(isliving(affecting))
+		var/mob/living/affecting_mob = affecting
+		for(var/datum/disease/D as anything in assailant.diseases)
+			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+				affecting_mob.ContactContractDisease(D)
+
+		for(var/datum/disease/D as anything in affecting_mob.diseases)
+			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+				assailant.ContactContractDisease(D)
+
 	playsound(affecting.loc, sound, 50, 1, -1)
 	update_appearance()
 	current_grab.update_stage_effects(src, null)
@@ -243,7 +253,7 @@
 		update_appearance()
 
 /// Used to prevent repeated effect application or early effect removal
-/obj/item/hand_item/grab/proc/is_grab_unique(datum/grab/grab_datum)
+/obj/item/hand_item/grab/proc/is_grab_unique 	(datum/grab/grab_datum)
 	var/count = 0
 	for(var/obj/item/hand_item/grab/other as anything in affecting.grabbed_by)
 		if(other.current_grab == grab_datum)

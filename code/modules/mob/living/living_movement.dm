@@ -97,26 +97,24 @@
 		current_turf_slowdown = 0
 
 /mob/living/proc/update_pull_movespeed()
-	SEND_SIGNAL(src, COMSIG_LIVING_UPDATING_PULL_MOVESPEED)
-#warn drag movespeed
-/*
-	if(pulling)
+	var/list/obj/item/hand_item/grab/grabs = get_active_grabs()
+	if(!length(grabs))
+		remove_movespeed_modifier(/datum/movespeed_modifier/grabbing)
+		return
+
+	var/slowdown_total = 0
+	for(var/obj/item/hand_item/grab/G as anything in grabs)
+		var/atom/movable/pulling = G.affecting
 		if(isliving(pulling))
 			var/mob/living/L = pulling
-			if(!slowed_by_drag || L.body_position == STANDING_UP || L.buckled || grab_state >= GRAB_AGGRESSIVE)
-				remove_movespeed_modifier(/datum/movespeed_modifier/bulky_drag)
-				return
-			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bulky_drag, multiplicative_slowdown = PULL_PRONE_SLOWDOWN)
-			return
+			if(G.current_grab.grab_slowdown || L.body_position == LYING_DOWN)
+				slowdown_total += max(G.current_grab.grab_slowdown, PULL_PRONE_SLOWDOWN)
+
 		if(isobj(pulling))
 			var/obj/structure/S = pulling
-			if(!slowed_by_drag || !S.drag_slowdown)
-				remove_movespeed_modifier(/datum/movespeed_modifier/bulky_drag)
-				return
-			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bulky_drag, multiplicative_slowdown = S.drag_slowdown)
-			return
-	remove_movespeed_modifier(/datum/movespeed_modifier/bulky_drag)
-*/
+			slowdown_total += S.drag_slowdown
+
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/grabbing, multiplicative_slowdown = slowdown_total)
 
 /mob/living/can_z_move(direction, turf/start, z_move_flags, mob/living/rider)
 	// Check physical climbing ability

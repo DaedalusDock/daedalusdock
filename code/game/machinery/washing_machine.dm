@@ -391,6 +391,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 		if(istype(L, /mob/living/simple_animal/pet))
 			L.forceMove(src)
 			update_appearance()
+			return TRUE
 
 /obj/machinery/washing_machine/attack_hand_secondary(mob/user, modifiers)
 	. = ..()

@@ -28,13 +28,6 @@
 	. = list(src)
 	if(buckled_mobs)
 		. |= buckled_mobs
-	if(!(z_move_flags & ZMOVE_INCLUDE_PULLED))
-		return
-	for(var/mob/living/buckled as anything in buckled_mobs)
-		if(buckled.pulling)
-			. |= buckled.pulling
-	if(pulling)
-		. |= pulling
 
 /**
  * Checks if the destination turf is elegible for z movement from the start turf to a given direction and returns it if so.

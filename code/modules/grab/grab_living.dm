@@ -106,9 +106,6 @@
 /// Called by grab objects when a grab has been released
 /mob/living/proc/after_grab_release(atom/movable/old_target)
 	animate_interact(old_target, INTERACT_UNPULL)
-	if(ismob(pulling))
-		var/mob/living/L = pulling
-		L.reset_pull_offsets()
 	update_pull_hud_icon()
 
 /mob/living/proc/handle_grabs_during_movement(turf/old_loc, direction)
@@ -125,7 +122,7 @@
 			continue
 
 		var/pull_dir = get_dir(pulling, src)
-		var/target_turf = old_loc
+		var/target_turf = G.current_grab.same_tile ? loc : old_loc
 
 		// Pulling things down/up stairs. zMove() has flags for check_pulling and stop_pulling calls.
 		// You may wonder why we're not just forcemoving the pulling movable and regrabbing it.
@@ -151,7 +148,7 @@
 
 	var/list/my_grabs = get_active_grabs()
 	for(var/obj/item/hand_item/grab/G in my_grabs)
-		if(G.current_grab.reverse_facing)
+		if(G.current_grab.reverse_facing || HAS_TRAIT(G.affecting, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
 			setDir(global.reverse_dir[direction])
 
 

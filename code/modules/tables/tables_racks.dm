@@ -236,6 +236,7 @@
 
 /obj/structure/table/attack_grab(mob/living/user, obj/item/hand_item/grab/grab, list/params)
 	try_place_pulled_onto_table(user, grab.affecting, grab)
+	return TRUE
 
 /obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user, atom/movable/target, obj/item/hand_item/grab/grab)
 	if(!Adjacent(user))

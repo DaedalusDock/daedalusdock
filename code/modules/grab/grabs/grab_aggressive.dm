@@ -1,21 +1,24 @@
 /datum/grab/normal/aggressive
 	upgrab =   /datum/grab/normal/neck
 	downgrab = /datum/grab/normal/passive
+
+	grab_slowdown = 0.7
 	shift = 12
-	stop_move = 1
-	reverse_facing = 0
-	shield_assailant = 0
+	stop_move = TRUE
+	reverse_facing = FALSE
+	shield_assailant = FALSE
 	point_blank_mult = 1.5
-	damage_stage = 1
-	same_tile = 0
-	can_throw = 1
-	force_danger = 1
+	damage_stage = GRAB_AGGRESSIVE
+	same_tile = FALSE
+	can_throw = TRUE
+	enable_violent_interactions = TRUE
 	breakability = 3
 	icon_state = "2"
 
 	break_chance_table = list(5, 20, 40, 80, 100)
 
 /datum/grab/normal/aggressive/apply_grab_effects(obj/item/hand_item/grab/G)
+	. = ..()
 	if(!isliving(G.affecting))
 		return
 
@@ -24,12 +27,11 @@
 
 	if(L.body_position == LYING_DOWN)
 		ADD_TRAIT(L, TRAIT_FLOORED, AGGRESSIVE_GRAB)
-	ADD_TRAIT(L, TRAIT_HANDS_BLOCKED, AGGRESSIVE_GRAB)
 
 /datum/grab/normal/aggressive/remove_grab_effects(obj/item/hand_item/grab/G)
+	. = ..()
 	UnregisterSignal(G.affecting, COMSIG_LIVING_SET_BODY_POSITION)
 	REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, AGGRESSIVE_GRAB)
-	REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, AGGRESSIVE_GRAB)
 
 /datum/grab/normal/aggressive/proc/target_bodyposition_change(mob/living/source)
 	if(source.body_position == LYING_DOWN)

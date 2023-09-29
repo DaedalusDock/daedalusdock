@@ -73,34 +73,39 @@
 		to_chat(user, span_warning("[src] cannot be used unless bolted to the ground!"))
 		return
 
-	if(user.pulling && isliving(user.pulling))
-		var/mob/living/L = user.pulling
-		if(!iscarbon(L))
-			to_chat(user, span_warning("This item is not suitable for the gibber!"))
-			return
-		var/mob/living/carbon/C = L
-		if(C.buckled ||C.has_buckled_mobs())
-			to_chat(user, span_warning("[C] is attached to something!"))
-			return
+	startgibbing(user)
 
-		if(!ignore_clothing)
-			for(var/obj/item/I in C.held_items + C.get_equipped_items())
-				if(!HAS_TRAIT(I, TRAIT_NODROP))
-					to_chat(user, span_warning("Subject may not have abiotic items on!"))
-					return
+/obj/machinery/gibber/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(!isliving(victim))
+		return
 
-		user.visible_message(span_danger("[user] starts to put [C] into the gibber!"))
+	var/mob/living/L = victim
+	if(!iscarbon(L))
+		to_chat(user, span_warning("This item is not suitable for the gibber!"))
+		return
 
-		add_fingerprint(user)
+	var/mob/living/carbon/C = L
+	if(C.buckled ||C.has_buckled_mobs())
+		to_chat(user, span_warning("[C] is attached to something!"))
+		return
 
-		if(do_after(user, src, gibtime))
-			if(C && user.pulling == C && !C.buckled && !C.has_buckled_mobs() && !occupant)
-				user.visible_message(span_danger("[user] stuffs [C] into the gibber!"))
-				C.forceMove(src)
-				set_occupant(C)
-				update_appearance()
-	else
-		startgibbing(user)
+	if(!ignore_clothing)
+		for(var/obj/item/I in C.held_items + C.get_equipped_items())
+			if(!HAS_TRAIT(I, TRAIT_NODROP))
+				to_chat(user, span_warning("Subject may not have abiotic items on!"))
+				return
+
+	user.visible_message(span_danger("[user] starts to put [C] into the gibber!"))
+
+	add_fingerprint(user)
+
+	if(do_after(user, src, gibtime))
+		if(C && user.is_grabbing(C) && !C.buckled && !C.has_buckled_mobs() && !occupant)
+			user.visible_message(span_danger("[user] stuffs [C] into the gibber!"))
+			C.forceMove(src)
+			set_occupant(C)
+			update_appearance()
 
 /obj/machinery/gibber/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()

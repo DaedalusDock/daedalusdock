@@ -162,10 +162,6 @@
 		// as a result of player input and not because they were pulled or any other magic.
 		SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_MOVED)
 
-	var/atom/movable/P = mob.pulling
-	if(P && !ismob(P) && P.density && !HAS_TRAIT(P, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
-		mob.setDir(turn(mob.dir, 180))
-
 /**
  * Checks to see if you're being grabbed and if so attempts to break it
  *
@@ -344,8 +340,16 @@
 				continue
 		if(rebound.anchored)
 			return rebound
-		if(pulling == rebound)
-			continue
+		if(isliving(rebound))
+			var/mob/living/L = rebound
+			var/_continue = FALSE
+			if(LAZYLEN(L.grabbed_by))
+				for(var/obj/item/hand_item/grab/G in L.grabbed_by)
+					if(G.assailant == src)
+						_continue = TRUE
+						break
+			if(_continue)
+				continue
 		return rebound
 
 /mob/has_gravity()

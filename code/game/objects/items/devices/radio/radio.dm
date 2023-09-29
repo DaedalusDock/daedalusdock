@@ -228,7 +228,7 @@
 		if(talking_carbon.handcuffed)// If we're handcuffed, we can't press the button
 			to_chat(talking_carbon, span_warning("You can't use the radio while handcuffed!"))
 			return ITALICS | REDUCE_RANGE
-		if(talking_carbon.check_grab_severities(GRAB_AGGRESSIVE))
+		if(HAS_TRAIT(talking_carbon, TRAIT_AGGRESSIVE_GRAB))
 			to_chat(talking_carbon, span_warning("You can't use the radio while aggressively grabbed!"))
 			return ITALICS | REDUCE_RANGE
 

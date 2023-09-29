@@ -163,7 +163,7 @@
 		qdel(grab)
 		pushed_mob.forceMove(src)
 		LAZYADD(processor_contents, pushed_mob)
-		return
+		return TRUE
 
 /obj/machinery/processor/verb/eject()
 	set category = "Object"

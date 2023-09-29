@@ -101,9 +101,8 @@
 		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)
 
 	/// Moves anything that's being dragged by src or anything buckled to it to the stairs turf.
-	climber.pulling?.move_from_pull(climber, loc, climber.glide_size)
 	for(var/mob/living/buckled as anything in climber.buckled_mobs)
-		buckled.pulling?.move_from_pull(buckled, loc, buckled.glide_size)
+		buckled.handle_grabs_during_movement(my_turf, get_dir(my_turf, target))
 
 /obj/structure/stairs/intercept_zImpact(list/falling_movables, levels = 1)
 	. = ..()

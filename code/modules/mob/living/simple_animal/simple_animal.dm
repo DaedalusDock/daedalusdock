@@ -309,7 +309,7 @@
 /mob/living/simple_animal/proc/environment_air_is_safe()
 	. = TRUE
 
-	if(check_grab_severities(GRAB_KILL) && atmos_requirements["min_oxy"])
+	if(HAS_TRAIT(src, TRAIT_KILL_GRAB) && atmos_requirements["min_oxy"])
 		. = FALSE //getting choked
 
 	if(isturf(loc) && isopenturf(loc))

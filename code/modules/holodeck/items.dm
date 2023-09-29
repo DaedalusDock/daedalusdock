@@ -100,11 +100,12 @@
 	var/mob/living/L = victim
 	if(grab.current_grab.damage_stage < 1)
 		to_chat(user, span_warning("You need a better grip to do that!"))
-		return
+		return TRUE
 	L.forceMove(loc)
 	L.Paralyze(100)
 	visible_message(span_danger("[user] dunks [L] into \the [src]!"))
 	user.release_grab(L)
+	return TRUE
 
 /obj/structure/holohoop/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if (isitem(AM) && !istype(AM,/obj/projectile))

@@ -18,8 +18,6 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	// Whether or not the grabbed person can move out of the grab
 	var/stop_move = FALSE
-	/// Whether or not the grabbed person is forced to be standing
-	var/force_stand = FALSE
 	// Whether the person being grabbed is facing forwards or backwards.
 	var/reverse_facing = FALSE
 	/// Whether this grab state is strong enough to, as a changeling, absorb the person you're grabbing.
@@ -40,12 +38,12 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/downgrade_on_action = FALSE
 	/// If the grab needs to be downgraded when the grabber moves.
 	var/downgrade_on_move = FALSE
-	/// If the grab is strong enough to be able to force someone to do something harmful to them.
-	var/force_danger = FALSE
+	/// If the grab is strong enough to be able to force someone to do something harmful to them, like slam their head into glass.
+	var/enable_violent_interactions = FALSE
 	/// If the grab acts like cuffs and prevents action from the victim.
 	var/restrains = FALSE
 
-	var/grab_slowdown = 7
+	var/grab_slowdown = 0
 
 	var/shift = 0
 
@@ -245,8 +243,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 /// Add effects that apply based on damage_stage here
 /datum/grab/proc/update_stage_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
-	var/old_damage_stage = old_grab?.damage_stage || 0
-	var/new_stage = dropping_grab ? 0 : damage_stage
+	var/old_damage_stage = old_grab?.damage_stage || GRAB_PASSIVE
+	var/new_stage = dropping_grab ? GRAB_PASSIVE : damage_stage
 
 	switch(new_stage) // Current state.
 		if(GRAB_PASSIVE)
@@ -254,6 +252,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
 			if(old_damage_stage >= GRAB_NECK) // Previous state was a a neck-grab or higher.
 				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
+			if(old_damage_stage >= GRAB_AGGRESSIVE)
+				REMOVE_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
 
 		if(GRAB_AGGRESSIVE)
 			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.
@@ -261,15 +261,25 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 			else // Grab got upgraded from a passive one.
 				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
 				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
+				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
 
 		if(GRAB_NECK, GRAB_KILL)
+			if(old_damage_stage < GRAB_AGGRESSIVE)
+				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
 			if(old_damage_stage <= GRAB_AGGRESSIVE)
 				ADD_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
+				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
+				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
+
 
 /// Apply effects to people here. Remove them in remove_grab_effects()
 /datum/grab/proc/apply_grab_effects(obj/item/hand_item/grab/G)
+	SHOULD_CALL_PARENT(TRUE)
+	if(G.loc != G.assailant.loc && same_tile)
+		G.affecting.move_from_pull(G.assailant, get_turf(G.assailant))
 
 /datum/grab/proc/remove_grab_effects(obj/item/hand_item/grab/G)
+	SHOULD_CALL_PARENT(TRUE)
 
 /// Handles special targeting like eyes and mouth being covered.
 /// CLEAR OUT ANY EFFECTS USING remove_bodyzone_effects()
@@ -363,11 +373,13 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		to_chat(G.affecting, span_warning("You try to break free but feel that unless something changes, you'll never escape!"))
 		return
 
-	var/break_chance = break_chance_table[clamp(break_strength, 1, length(break_chance_table))]
 
 	if (assailant.incapacitated())
 		let_go(G)
+		stack_trace("Someone resisted a grab while the assailant was incapacitated. This shouldn't ever happen.")
+		return
 
+	var/break_chance = break_chance_table[clamp(break_strength, 1, length(break_chance_table))]
 	if(prob(break_chance))
 		if(can_downgrade_on_resist && !prob((break_chance+100)/2))
 			affecting.visible_message(span_danger("[affecting] has loosened [assailant]'s grip!"))

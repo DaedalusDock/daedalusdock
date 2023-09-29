@@ -62,7 +62,6 @@
 	  */
 	var/movement_type = GROUND
 
-	var/atom/movable/pulling
 	var/throwforce = 0
 	var/datum/component/orbiter/orbiting
 

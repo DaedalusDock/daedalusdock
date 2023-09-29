@@ -32,17 +32,19 @@
 
 /obj/structure/altar_of_gods/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
 	. = ..()
-	if(!isliving(user.pulling))
+	if(!isliving(victim))
 		return
+
 	var/mob/living/pushed_mob = victim
 	if(pushed_mob.buckled)
 		to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
-		return
+		return TRUE
 
 	to_chat(user, span_notice("You try to coax [pushed_mob] onto [src]..."))
 	if(!do_after(user,(5 SECONDS),target = pushed_mob))
-		return
+		return TRUE
 	pushed_mob.forceMove(loc)
+	return TRUE
 
 /obj/structure/altar_of_gods/examine_more(mob/user)
 	if(!isobserver(user))

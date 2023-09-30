@@ -104,7 +104,7 @@
 	L.forceMove(loc)
 	L.Paralyze(100)
 	visible_message(span_danger("[user] dunks [L] into \the [src]!"))
-	user.release_grab(L)
+	user.release_grabs(L)
 	return TRUE
 
 /obj/structure/holohoop/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)

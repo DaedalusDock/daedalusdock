@@ -264,7 +264,7 @@
 				tableplace(user, pushed_mob)
 			else
 				return
-		user.release_grab(pushed_mob)
+		user.release_grabs(pushed_mob)
 
 	else if(target.pass_flags & PASSTABLE)
 		user.move_grabbed_atoms_towards(src)
@@ -272,7 +272,7 @@
 			user.visible_message(span_notice("[user] places [target] onto [src]."),
 				span_notice("You place [target] onto [src]."))
 
-			user.release_grab(target)
+			user.release_grabs(target)
 
 /obj/structure/table/proc/tableplace(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.forceMove(loc)

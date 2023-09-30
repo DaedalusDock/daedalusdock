@@ -16,7 +16,7 @@
 		qdel(G)
 
 /// Release the given movable from a grab
-/mob/living/proc/release_grab(atom/movable/AM)
+/mob/living/proc/release_grabs(atom/movable/AM)
 	for(var/obj/item/hand_item/grab/G in get_active_grabs())
 		if(G.affecting == AM)
 			qdel(G)

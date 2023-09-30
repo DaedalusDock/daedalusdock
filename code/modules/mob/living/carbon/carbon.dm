@@ -163,7 +163,7 @@
 			thrown_thing = I.on_thrown(src, target)
 			if(!thrown_thing)
 				return
-			qdel(G)
+			release_grabs(I)
 		else
 			if(!G.current_grab.can_throw || !isliving(G.affecting))
 				return
@@ -173,7 +173,7 @@
 				thrown_thing = throwable_mob
 				if(G.current_grab.damage_stage >= GRAB_NECK)
 					neckgrab_throw = TRUE
-				release_all_grabs()
+				release_grabs(throwable_mob)
 				if(HAS_TRAIT(src, TRAIT_PACIFISM))
 					to_chat(src, span_notice("You gently let go of [throwable_mob]."))
 					return

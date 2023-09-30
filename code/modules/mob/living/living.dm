@@ -272,7 +272,7 @@
 				now_pushing = FALSE
 				return
 
-	release_grab(AM)
+	release_grabs(AM)
 
 	var/current_dir
 	if(isliving(AM))

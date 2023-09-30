@@ -301,7 +301,9 @@
 /obj/item/hand_item/grab/proc/get_affecting_mob()
 	RETURN_TYPE(/mob/living)
 	if(isobj(affecting))
-		return affecting.buckled_mobs?[1]
+		if(length(affecting.buckled_mobs))
+			return affecting.buckled_mobs?[1]
+		return
 
 	if(isliving(affecting))
 		return affecting

@@ -452,7 +452,7 @@
 		affecting_mob.visible_message(span_danger("<b>[user]</b> bashes <b>[affecting_mob]</b> against \the [src]!"))
 		if(prob(50 * ((100 - blocked/100))))
 			affecting_mob.Knockdown(4 SECONDS)
-		affecting_mob.apply_damage(10, BRUTE, def_zone, blocked)
+		affecting_mob.apply_damage(20, BRUTE, def_zone, blocked)
 		take_damage(10)
 		qdel(grab)
 	else

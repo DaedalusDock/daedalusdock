@@ -151,11 +151,6 @@
 				to_chat(src, span_warning("Unbuckle from [buckled] first."))
 			return FALSE
 
-/mob/set_currently_z_moving(value)
-	if(buckled)
-		return buckled.set_currently_z_moving(value)
-	return ..()
-
 /mob/living/keybind_face_direction(direction)
 	if(stat != CONSCIOUS)
 		return

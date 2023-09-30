@@ -288,7 +288,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 ///Called each time the target falls down a z level possibly making their trajectory come to a halt. see __DEFINES/movement.dm.
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf)
 	var/flags = FALL_RETAIN_PULL
-	var/list/falling_movables = falling.get_z_move_affected()
+	var/list/falling_movables = falling.get_move_group()
 	var/list/falling_mob_names
 
 	for(var/atom/movable/falling_mob as anything in falling_movables)

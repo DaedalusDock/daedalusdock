@@ -142,7 +142,7 @@
 			continue
 
 		if(!QDELETED(G))
-			G.update_offsets()
+			G.affecting.update_offsets()
 			G.current_grab.moved_effect(G)
 			if(G.current_grab.downgrade_on_move)
 				G.downgrade()
@@ -150,6 +150,8 @@
 	var/list/my_grabs = get_active_grabs()
 	for(var/obj/item/hand_item/grab/G in my_grabs)
 		if(G.current_grab.reverse_facing || HAS_TRAIT(G.affecting, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
+			if(!direction)
+				direction = get_dir(src, G.affecting)
 			setDir(global.reverse_dir[direction])
 
 

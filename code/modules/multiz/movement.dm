@@ -23,12 +23,6 @@
 	INVOKE_ASYNC(src, PROC_REF(SpinAnimation), 5, 2)
 	return TRUE
 
-/// Returns a list of movables that should also be affected when src moves through zlevels, and src.
-/atom/movable/proc/get_z_move_affected(z_move_flags)
-	. = list(src)
-	if(buckled_mobs)
-		. |= buckled_mobs
-
 /**
  * Checks if the destination turf is elegible for z movement from the start turf to a given direction and returns it if so.
  * Args:
@@ -134,7 +128,7 @@
 		return
 
 	var/turf/falling_from = get_turf(loc)
-	forceMove(destination)
+	forceMoveWithGroup(destination, z_movement = TRUE)
 	destination.zImpact(src, 1, prev_turf)
 
 /atom/movable/proc/CanZFall(turf/from, direction, anchor_bypass)
@@ -241,6 +235,24 @@
 		playsound(destination, 'sound/effects/stairs_step.ogg', 50)
 
 #warn TODO
+
+/// Returns a list of movables that should also be affected when calling forceMoveWithGroup()
+/atom/movable/proc/get_move_group()
+	SHOULD_CALL_PARENT(TRUE)
+	RETURN_TYPE(/list)
+	. = list(src)
+	if(length(buckled_mobs))
+		. |= buckled_mobs
+
+/// forceMove() wrapper to include things like buckled mobs.
+/atom/movable/proc/forceMoveWithGroup(destination, z_movement)
+	var/list/movers = get_move_group()
+	for(var/atom/movable/AM as anything in movers)
+		if(z_movement)
+			AM.set_currently_z_moving(TRUE)
+		AM.forceMove(destination)
+		if(z_movement)
+			AM.set_currently_z_moving(FALSE)
 /*
 /**
  * We want to relay the zmovement to the buckled atom when possible

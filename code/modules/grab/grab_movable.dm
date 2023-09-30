@@ -64,11 +64,7 @@
 		// At this point the move was successful
 		pulling.Move(get_step(pulling.loc, move_dir), move_dir, glide_size)
 
-		if(!isliving(pulling))
-			continue
-
-		var/mob/living/pulled_mob = pulling
-		update_offsets(pulled_mob)
+		pulling.update_offsets()
 
 
 /atom/movable/proc/update_offsets()
@@ -78,10 +74,17 @@
 	var/new_pixel_x = base_pixel_x
 	var/new_pixel_y = base_pixel_y
 
+	var/list/grabbed_by = list()
+
+	grabbed_by += src.grabbed_by
+	if(isliving(src))
+		var/mob/living/L = src
+		if(buckled)
+			grabbed_by += buckled.grabbed_by
+
 	if(isturf(loc))
-		// Update offsets from grabs.
 		if(length(grabbed_by))
-			for(var/obj/item/hand_item/grab/G as anything in grabbed_by)
+			for(var/obj/item/hand_item/grab/G in grabbed_by)
 				var/grab_dir = get_dir(G.assailant, src)
 				if(grab_dir && G.current_grab.shift != 0)
 					if(grab_dir & WEST)

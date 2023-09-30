@@ -447,7 +447,7 @@
 		return TRUE
 
 
-	var/def_zone = grab.target_zone
+	var/def_zone = deprecise_zone(grab.target_zone)
 	var/obj/item/bodypart/BP = affecting.get_bodypart(def_zone)
 	if(!BP)
 		return

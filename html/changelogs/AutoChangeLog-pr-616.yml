@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: De-bolded radio channels in chat. Italicized and granted a slightly different
+      color to speaking verbs, to increase readability.

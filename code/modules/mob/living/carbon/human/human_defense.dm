@@ -536,113 +536,111 @@
 	var/list/damaged = list()
 	var/list/inventory_items_to_kill = list()
 	var/bodypart
-	if(affect_clothing)
-		//HEAD//
-		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_HEAD) //only if we didn't specify a zone or if that zone is the head.
-			var/obj/item/clothing/head_clothes = null
-			if(glasses)
-				head_clothes = glasses
-			if(wear_mask)
-				head_clothes = wear_mask
-			if(wear_neck)
-				head_clothes = wear_neck
-			if(head)
-				head_clothes = head
-			if(head_clothes)
-				if(!(head_clothes.resistance_flags & UNACIDABLE))
-					head_clothes.acid_act(acidpwr, acid_volume)
-					update_worn_glasses()
-					update_worn_mask()
-					update_worn_neck()
-					update_worn_head()
-				else
-					to_chat(src, span_notice("Your [head_clothes.name] protects your head and face from the acid!"))
+	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_HEAD) //only if we didn't specify a zone or if that zone is the head.
+		var/obj/item/clothing/head_clothes = null
+		if(glasses)
+			head_clothes = glasses
+		if(wear_mask)
+			head_clothes = wear_mask
+		if(wear_neck)
+			head_clothes = wear_neck
+		if(head)
+			head_clothes = head
+		if(head_clothes)
+			if(!(head_clothes.resistance_flags & UNACIDABLE) && affect_clothing)
+				head_clothes.acid_act(acidpwr, acid_volume)
+				update_worn_glasses()
+				update_worn_mask()
+				update_worn_neck()
+				update_worn_head()
 			else
-				bodypart = get_bodypart(BODY_ZONE_HEAD)
-				if(bodypart)
-					damaged += bodypart
-				if(ears)
-					inventory_items_to_kill += ears
+				to_chat(src, span_notice("Your [head_clothes.name] protects your head and face from the acid!"))
+		else
+			bodypart = get_bodypart(BODY_ZONE_HEAD)
+			if(bodypart)
+				damaged += bodypart
+			if(ears)
+				inventory_items_to_kill += ears
 
-		//CHEST//
-		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_CHEST)
-			var/obj/item/clothing/chest_clothes = null
-			if(w_uniform)
-				chest_clothes = w_uniform
-			if(wear_suit)
-				chest_clothes = wear_suit
-			if(chest_clothes)
-				if(!(chest_clothes.resistance_flags & UNACIDABLE))
-					chest_clothes.acid_act(acidpwr, acid_volume)
-					update_worn_undersuit()
-					update_worn_oversuit()
-				else
-					to_chat(src, span_notice("Your [chest_clothes.name] protects your body from the acid!"))
+	//CHEST//
+	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_CHEST)
+		var/obj/item/clothing/chest_clothes = null
+		if(w_uniform)
+			chest_clothes = w_uniform
+		if(wear_suit)
+			chest_clothes = wear_suit
+		if(chest_clothes)
+			if(!(chest_clothes.resistance_flags & UNACIDABLE) && affect_clothing)
+				chest_clothes.acid_act(acidpwr, acid_volume)
+				update_worn_undersuit()
+				update_worn_oversuit()
 			else
-				bodypart = get_bodypart(BODY_ZONE_CHEST)
-				if(bodypart)
-					damaged += bodypart
-				if(wear_id)
-					inventory_items_to_kill += wear_id
-				if(r_store)
-					inventory_items_to_kill += r_store
-				if(l_store)
-					inventory_items_to_kill += l_store
-				if(s_store)
-					inventory_items_to_kill += s_store
+				to_chat(src, span_notice("Your [chest_clothes.name] protects your body from the acid!"))
+		else
+			bodypart = get_bodypart(BODY_ZONE_CHEST)
+			if(bodypart)
+				damaged += bodypart
+			if(wear_id)
+				inventory_items_to_kill += wear_id
+			if(r_store)
+				inventory_items_to_kill += r_store
+			if(l_store)
+				inventory_items_to_kill += l_store
+			if(s_store)
+				inventory_items_to_kill += s_store
 
 
-		//ARMS & HANDS//
-		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_ARM || bodyzone_hit == BODY_ZONE_R_ARM)
-			var/obj/item/clothing/arm_clothes = null
-			if(gloves)
-				arm_clothes = gloves
-			if(w_uniform && ((w_uniform.body_parts_covered & HANDS) || (w_uniform.body_parts_covered & ARMS)))
-				arm_clothes = w_uniform
-			if(wear_suit && ((wear_suit.body_parts_covered & HANDS) || (wear_suit.body_parts_covered & ARMS)))
-				arm_clothes = wear_suit
+	//ARMS & HANDS//
+	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_ARM || bodyzone_hit == BODY_ZONE_R_ARM)
+		var/obj/item/clothing/arm_clothes = null
+		if(gloves)
+			arm_clothes = gloves
+		if(w_uniform && ((w_uniform.body_parts_covered & HANDS) || (w_uniform.body_parts_covered & ARMS)))
+			arm_clothes = w_uniform
+		if(wear_suit && ((wear_suit.body_parts_covered & HANDS) || (wear_suit.body_parts_covered & ARMS)))
+			arm_clothes = wear_suit
 
-			if(arm_clothes)
-				if(!(arm_clothes.resistance_flags & UNACIDABLE))
-					arm_clothes.acid_act(acidpwr, acid_volume)
-					update_worn_gloves()
-					update_worn_undersuit()
-					update_worn_oversuit()
-				else
-					to_chat(src, span_notice("Your [arm_clothes.name] protects your arms and hands from the acid!"))
+		if(arm_clothes)
+			if(!(arm_clothes.resistance_flags & UNACIDABLE) && affect_clothing)
+				arm_clothes.acid_act(acidpwr, acid_volume)
+				update_worn_gloves()
+				update_worn_undersuit()
+				update_worn_oversuit()
 			else
-				bodypart = get_bodypart(BODY_ZONE_R_ARM)
-				if(bodypart)
-					damaged += bodypart
-				bodypart = get_bodypart(BODY_ZONE_L_ARM)
-				if(.)
-					damaged += bodypart
+				to_chat(src, span_notice("Your [arm_clothes.name] protects your arms and hands from the acid!"))
+		else
+			bodypart = get_bodypart(BODY_ZONE_R_ARM)
+			if(bodypart)
+				damaged += bodypart
+			bodypart = get_bodypart(BODY_ZONE_L_ARM)
+			if(.)
+				damaged += bodypart
 
 
-		//LEGS & FEET//
-		if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_LEG || bodyzone_hit == BODY_ZONE_R_LEG || bodyzone_hit == "feet")
-			var/obj/item/clothing/leg_clothes = null
-			if(shoes)
-				leg_clothes = shoes
-			if(w_uniform && ((w_uniform.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (w_uniform.body_parts_covered & LEGS))))
-				leg_clothes = w_uniform
-			if(wear_suit && ((wear_suit.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (wear_suit.body_parts_covered & LEGS))))
-				leg_clothes = wear_suit
-			if(leg_clothes)
-				if(!(leg_clothes.resistance_flags & UNACIDABLE))
-					leg_clothes.acid_act(acidpwr, acid_volume)
-					update_worn_shoes()
-					update_worn_undersuit()
-					update_worn_oversuit()
-				else
-					to_chat(src, span_notice("Your [leg_clothes.name] protects your legs and feet from the acid!"))
+	//LEGS & FEET//
+	if(!bodyzone_hit || bodyzone_hit == BODY_ZONE_L_LEG || bodyzone_hit == BODY_ZONE_R_LEG || bodyzone_hit == "feet")
+		var/obj/item/clothing/leg_clothes = null
+		if(shoes)
+			leg_clothes = shoes
+		if(w_uniform && ((w_uniform.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (w_uniform.body_parts_covered & LEGS))))
+			leg_clothes = w_uniform
+		if(wear_suit && ((wear_suit.body_parts_covered & FEET) || (bodyzone_hit != "feet" && (wear_suit.body_parts_covered & LEGS))))
+			leg_clothes = wear_suit
+		if(leg_clothes)
+			if(!(leg_clothes.resistance_flags & UNACIDABLE) && affect_clothing)
+				leg_clothes.acid_act(acidpwr, acid_volume)
+				update_worn_shoes()
+				update_worn_undersuit()
+				update_worn_oversuit()
 			else
-				bodypart = get_bodypart(BODY_ZONE_R_LEG)
-				if(bodypart)
-					damaged += bodypart
-				bodypart = get_bodypart(BODY_ZONE_L_LEG)
-				if(bodypart)
-					damaged += bodypart
+				to_chat(src, span_notice("Your [leg_clothes.name] protects your legs and feet from the acid!"))
+		else
+			bodypart = get_bodypart(BODY_ZONE_R_LEG)
+			if(bodypart)
+				damaged += bodypart
+			bodypart = get_bodypart(BODY_ZONE_L_LEG)
+			if(bodypart)
+				damaged += bodypart
 
 	//DAMAGE//
 	if(affect_body)

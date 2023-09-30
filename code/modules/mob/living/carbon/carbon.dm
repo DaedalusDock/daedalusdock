@@ -158,44 +158,52 @@
 
 	if(isgrab(I))
 		var/obj/item/hand_item/grab/G = I
-		if(!G.current_grab.can_throw)
-			return
-
-		var/mob/living/throwable_mob = G.affecting
-		if(!throwable_mob.buckled)
-			thrown_thing = throwable_mob
-			if(G.current_grab.damage_stage >= GRAB_NECK)
-				neckgrab_throw = TRUE
-			release_all_grabs()
-			if(HAS_TRAIT(src, TRAIT_PACIFISM))
-				to_chat(src, span_notice("You gently let go of [throwable_mob]."))
+		if(isitem(G.affecting))
+			I = G.affecting
+			thrown_thing = I.on_thrown(src, target)
+			if(!thrown_thing)
 				return
+			qdel(G)
+		else
+			if(!G.current_grab.can_throw || !isliving(G.affecting))
+				return
+
+			var/mob/living/throwable_mob = G.affecting
+			if(!throwable_mob.buckled)
+				thrown_thing = throwable_mob
+				if(G.current_grab.damage_stage >= GRAB_NECK)
+					neckgrab_throw = TRUE
+				release_all_grabs()
+				if(HAS_TRAIT(src, TRAIT_PACIFISM))
+					to_chat(src, span_notice("You gently let go of [throwable_mob]."))
+					return
 	else
 		thrown_thing = I.on_thrown(src, target)
 
-	if(thrown_thing)
+	if(!thrown_thing)
+		return
 
-		if(isliving(thrown_thing))
-			var/turf/start_T = get_turf(loc) //Get the start and target tile for the descriptors
-			var/turf/end_T = get_turf(target)
-			if(start_T && end_T)
-				log_combat(src, thrown_thing, "thrown", addition="grab from tile in [AREACOORD(start_T)] towards tile at [AREACOORD(end_T)]")
-		var/power_throw = 0
-		if(HAS_TRAIT(src, TRAIT_HULK))
-			power_throw++
-		if(HAS_TRAIT(src, TRAIT_DWARF))
-			power_throw--
-		if(HAS_TRAIT(thrown_thing, TRAIT_DWARF))
-			power_throw++
-		if(neckgrab_throw)
-			power_throw++
-		do_attack_animation(target, no_effect = TRUE) //PARIAH EDIT ADDITION - AESTHETICS
-		playsound(loc, 'sound/weapons/punchmiss.ogg', 50, TRUE, -1) //PARIAH EDIT ADDITION - AESTHETICS
-		visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
-						span_danger("You throw [thrown_thing][power_throw ? " really hard!" : "."]"))
-		log_message("has thrown [thrown_thing] [power_throw ? "really hard" : ""]", LOG_ATTACK)
-		newtonian_move(get_dir(target, src))
-		thrown_thing.safe_throw_at(target, thrown_thing.throw_range, thrown_thing.throw_speed + power_throw, src, null, null, null, move_force)
+	if(isliving(thrown_thing))
+		var/turf/start_T = get_turf(loc) //Get the start and target tile for the descriptors
+		var/turf/end_T = get_turf(target)
+		if(start_T && end_T)
+			log_combat(src, thrown_thing, "thrown", addition="grab from tile in [AREACOORD(start_T)] towards tile at [AREACOORD(end_T)]")
+	var/power_throw = 0
+	if(HAS_TRAIT(src, TRAIT_HULK))
+		power_throw++
+	if(HAS_TRAIT(src, TRAIT_DWARF))
+		power_throw--
+	if(HAS_TRAIT(thrown_thing, TRAIT_DWARF))
+		power_throw++
+	if(neckgrab_throw)
+		power_throw++
+	do_attack_animation(target, no_effect = TRUE) //PARIAH EDIT ADDITION - AESTHETICS
+	playsound(loc, 'sound/weapons/punchmiss.ogg', 50, TRUE, -1) //PARIAH EDIT ADDITION - AESTHETICS
+	visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
+					span_danger("You throw [thrown_thing][power_throw ? " really hard!" : "."]"))
+	log_message("has thrown [thrown_thing] [power_throw ? "really hard" : ""]", LOG_ATTACK)
+	newtonian_move(get_dir(target, src))
+	thrown_thing.safe_throw_at(target, thrown_thing.throw_range, thrown_thing.throw_speed + power_throw, src, null, null, null, move_force)
 
 
 /mob/living/carbon/proc/canBeHandcuffed()

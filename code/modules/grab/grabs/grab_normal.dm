@@ -76,8 +76,8 @@
 	return FALSE
 
 /datum/grab/normal/on_hit_harm(obj/item/hand_item/grab/G, atom/A)
-	var/mob/living/affecting = G.get_affecting_mob()
-	if(!affecting || (A && A != affecting))
+	var/mob/living/carbon/affecting = G.get_affecting_mob()
+	if(!istype(affecting) || (A && A != affecting))
 		return FALSE
 
 	var/mob/living/assailant = G.assailant
@@ -89,12 +89,21 @@
 		to_chat(assailant, span_warning("\The [affecting] is missing that body part!"))
 		return  FALSE
 
+	if(BP.bodypart_flags & BP_DISLOCATED)
+		assailant.visible_message(span_notice("\The [assailant] begins to place [affecting]'s [BP.joint_name] back in it's socket."))
+		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC))
+			G.action_used()
+			BP.set_dislocated(FALSE)
+			assailant.visible_message(span_warning("\The [affecting]'s [BP.joint_name] pops back into place!"))
+			affecting.pain_message("AAAHHHHAAGGHHHH", 50, TRUE)
+		return TRUE
+
 	if(BP.can_be_dislocated())
 		assailant.visible_message(span_danger("\The [assailant] begins to dislocate \the [affecting]'s [BP.joint_name]!"))
 		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC))
 			G.action_used()
 			BP.set_dislocated(TRUE)
-			assailant.visible_message(span_danger("\The [affecting]'s [BP.joint_name] [pick("gives way","caves in","crumbles","collapses")]!"))
+			assailant.visible_message(span_danger("\The [affecting]'s [BP.joint_name] [pick("gives way","caves in","collapses")]!"))
 			playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			return TRUE
 

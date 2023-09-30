@@ -79,8 +79,8 @@
 	grabbed_by += src.grabbed_by
 	if(isliving(src))
 		var/mob/living/L = src
-		if(buckled)
-			grabbed_by += buckled.grabbed_by
+		if(L.buckled)
+			grabbed_by += L.buckled.grabbed_by
 
 	if(isturf(loc))
 		if(length(grabbed_by))

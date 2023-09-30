@@ -152,6 +152,8 @@
 		if(G.current_grab.reverse_facing || HAS_TRAIT(G.affecting, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
 			if(!direction)
 				direction = get_dir(src, G.affecting)
+			if(!direction)
+				continue
 			setDir(global.reverse_dir[direction])
 
 

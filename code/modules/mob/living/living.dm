@@ -924,9 +924,6 @@
 	if(!LAZYLEN(grabbed_by))
 		return TRUE
 
-	if(moving_resist && client) //we resisted by trying to move
-		client.move_delay = world.time + 4 SECONDS
-
 	if(!moving_resist)
 		visible_message(span_danger("\The [src] struggles to break free!"))
 

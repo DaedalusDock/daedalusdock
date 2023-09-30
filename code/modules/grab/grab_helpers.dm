@@ -46,7 +46,7 @@
 
 /// Frees src from all grabs.
 /atom/movable/proc/free_from_all_grabs()
-	QDEL_LIST(grabbed_by)
+	grabbed_by?.len = 0
 	grabbed_by = null
 
 

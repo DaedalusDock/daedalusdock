@@ -36,7 +36,7 @@
 	affecting = target
 	if(!istype(assailant) || !assailant.add_grab(src, defer_hand = defer_hand))
 		return INITIALIZE_HINT_QDEL
-	target_zone = assailant.zone_selected
+	target_zone = deprecise_zone(assailant.zone_selected)
 
 	if(!setup())
 		return INITIALIZE_HINT_QDEL
@@ -135,7 +135,7 @@
 		LAZYREMOVE(affecting.grabbed_by, src)
 		affecting.update_offsets()
 	if(affecting && assailant)
-		current_grab.let_go(src)
+		current_grab?.let_go(src)
 	affecting = null
 	assailant = null
 	return ..()
@@ -149,6 +149,7 @@
 
 	if(src != assailant.get_active_held_item())
 		return // Note that because of this condition, there's no guarantee that target_zone = old_sel
+	new_sel = deprecise_zone(new_sel)
 	if(target_zone == new_sel)
 		return
 
@@ -281,10 +282,6 @@
 /obj/item/hand_item/grab/proc/draw_affecting_under()
 	affecting.plane = assailant.plane
 	affecting.layer = assailant.layer - 0.01
-
-
-/obj/item/hand_item/grab/proc/throw_held()
-	return current_grab.throw_held(src)
 
 /obj/item/hand_item/grab/proc/handle_resist()
 	current_grab.handle_resist(src)

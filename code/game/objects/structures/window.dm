@@ -448,7 +448,7 @@
 
 
 	var/def_zone = deprecise_zone(grab.target_zone)
-	var/obj/item/bodypart/BP = affecting.get_bodypart(def_zone)
+	var/obj/item/bodypart/BP = affecting_mob.get_bodypart(def_zone)
 	if(!BP)
 		return
 	var/blocked = affecting_mob.run_armor_check(def_zone, MELEE)
@@ -461,9 +461,9 @@
 			if(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)
 				if(prob(50 * ((100 - blocked/100))))
 					var/side = def_zone == BODY_ZONE_L_ARM ? LEFT_HANDS : RIGHT_HANDS
-					var/obj/item/I = affecting.get_held_items_for_side(side)
+					var/obj/item/I = affecting_mob.get_held_items_for_side(side)
 					if(I)
-						affecting.dropItemToGround(I)
+						affecting_mob.dropItemToGround(I)
 		affecting_mob.apply_damage(20, BRUTE, def_zone, blocked)
 		take_damage(10)
 		qdel(grab)
@@ -474,9 +474,9 @@
 				affecting_mob.Knockdown(10 SECONDS)
 			if(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)
 				var/side = def_zone == BODY_ZONE_L_ARM ? LEFT_HANDS : RIGHT_HANDS
-				var/obj/item/I = affecting.get_held_items_for_side(side)
+				var/obj/item/I = affecting_mob.get_held_items_for_side(side)
 				if(I)
-					affecting.dropItemToGround(I)
+					affecting_mob.dropItemToGround(I)
 
 		affecting_mob.apply_damage(20, BRUTE, def_zone, blocked)
 		take_damage(20)

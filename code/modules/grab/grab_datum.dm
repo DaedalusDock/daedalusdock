@@ -47,8 +47,10 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/action_cooldown = 4 SECONDS
 
 	var/can_downgrade_on_resist = TRUE
-	var/list/break_chance_table = list(100)
+
+	/// The baseline index of break_chance_table, before modifiers. This can be higher than the length of break_chance_table.
 	var/breakability = 2
+	var/list/break_chance_table = list(100)
 
 	var/can_grab_self = TRUE
 
@@ -119,25 +121,6 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	if(G.special_target_functional)
 		special_bodyzone_change(G, old_zone, new_zone)
 		special_bodyzone_effects(G)
-
-/datum/grab/proc/throw_held(obj/item/hand_item/grab/G)
-	if(G.assailant == G.affecting)
-		return
-
-	var/mob/living/carbon/human/affecting = G.affecting
-
-	if(can_throw)
-		. = affecting
-		var/mob/thrower = G.loc
-
-		animate(affecting, pixel_x = 0, pixel_y = 0, 4, 1)
-		qdel(G)
-
-		// check if we're grabbing with our inactive hand
-		G = thrower.get_inactive_hand()
-		if(!istype(G))	return
-		qdel(G)
-		return
 
 /datum/grab/proc/hit_with_grab(obj/item/hand_item/grab/G, atom/target, params)
 	if(downgrade_on_action)
@@ -228,7 +211,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	remove_bodyzone_effects(G)
 	if(G.is_grab_unique(src))
 		remove_grab_effects(G)
-		update_stage_effects(G, null, TRUE)
+		update_stage_effects(G, src, TRUE)
 
 /// Add effects that apply based on damage_stage here
 /datum/grab/proc/update_stage_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
@@ -315,20 +298,17 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab/proc/resolve_item_attack(obj/item/hand_item/grab/G, mob/living/carbon/human/user, obj/item/I, target_zone)
 	return FALSE
 
+/// Handle resist actions from the affected mob. Returns TRUE if the grab was broken.
 /datum/grab/proc/handle_resist(obj/item/hand_item/grab/G)
 	var/mob/living/carbon/human/affecting = G.affecting
 	var/mob/living/carbon/human/assailant = G.assailant
-
-	if(affecting.incapacitated())
-		to_chat(G.affecting, span_warning("You can't resist in your current state!"))
-		return
 
 	var/break_strength = breakability + size_difference(affecting, assailant)
 	var/affecting_shock = affecting.getPain()
 	var/assailant_shock = assailant.getPain()
 
 	// Target modifiers
-	if(affecting.incapacitated())
+	if(affecting.incapacitated(IGNORE_GRAB))
 		break_strength--
 	if(affecting.has_status_effect(/datum/status_effect/confusion))
 		break_strength--
@@ -359,23 +339,23 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	if(break_strength < 1)
 		to_chat(G.affecting, span_warning("You try to break free but feel that unless something changes, you'll never escape!"))
-		return
+		return FALSE
 
-
-	if (assailant.incapacitated())
+	if (assailant.incapacitated(IGNORE_GRAB))
 		let_go(G)
 		stack_trace("Someone resisted a grab while the assailant was incapacitated. This shouldn't ever happen.")
-		return
+		return TRUE
 
 	var/break_chance = break_chance_table[clamp(break_strength, 1, length(break_chance_table))]
 	if(prob(break_chance))
 		if(can_downgrade_on_resist && !prob((break_chance+100)/2))
 			affecting.visible_message(span_danger("[affecting] has loosened [assailant]'s grip!"))
 			G.downgrade()
-			return
+			return FALSE
 		else
 			affecting.visible_message(span_danger("[affecting] has broken free of [assailant]'s grip!"))
 			let_go(G)
+			return TRUE
 
 /datum/grab/proc/size_difference(mob/living/A, mob/living/B)
 	return mob_size_difference(A.mob_size, B.mob_size)

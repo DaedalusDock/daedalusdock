@@ -392,7 +392,7 @@
 	if(direct & (UP|DOWN))
 		if(!can_z_move(direct, null, z_movement_flags))
 			return FALSE
-		set_currently_z_moving(TRUE)
+		set_currently_z_moving(ZMOVING_VERTICAL)
 
 	var/atom/oldloc = loc
 	//Early override for some cases like diagonal movement
@@ -465,7 +465,7 @@
 	if(set_dir_on_move && dir != direct)
 		setDir(direct)
 
-	if(. && isliving(src))
+	if(. && isliving(src) && currently_z_moving != ZMOVING_LATERAL)
 		var/mob/living/L = src
 		L.handle_grabs_during_movement(oldloc, direct)
 
@@ -776,7 +776,7 @@
 	anchored = anchorvalue
 	SEND_SIGNAL(src, COMSIG_MOVABLE_SET_ANCHORED, anchorvalue)
 
-/// Sets the currently_z_moving variable to a new value. Used to allow some zMovement sources to have precedence over others.
+/// Sets the currently_z_moving variable to a new value. Used to temporarily disable some Move() side effects.
 /atom/movable/proc/set_currently_z_moving(new_z_moving_value)
 	if(new_z_moving_value == currently_z_moving)
 		return FALSE

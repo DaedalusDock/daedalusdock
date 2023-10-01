@@ -927,9 +927,13 @@
 	if(!moving_resist)
 		visible_message(span_danger("\The [src] struggles to break free!"))
 
+	. = TRUE
 	for(var/obj/item/hand_item/grab/G as anything in grabbed_by)
+		if(G.assailant == src) //Grabbing our own bodyparts
+			continue
 		log_combat(src, G.assailant, "resisted grab")
-		. = G.handle_resist() || .
+		if(!G.handle_resist())
+			. = FALSE
 
 /mob/living/proc/resist_buckle()
 	buckled.user_unbuckle_mob(src,src)
@@ -1466,14 +1470,12 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(!.)
 		return
 
-	if(!QDELETED(src))
+	if(!QDELETED(src) && currently_z_moving == ZMOVING_VERTICAL) // Lateral Z movement handles this on it's own
 		handle_grabs_during_movement(old_loc, get_dir(old_loc, src))
 		recheck_grabs()
 
 	if(client)
 		reset_perspective()
-
-
 
 
 /mob/living/proc/update_z(new_z) // 1+ to register, null to unregister

@@ -142,7 +142,6 @@
 			continue
 
 		if(!QDELETED(G))
-			G.affecting.update_offsets()
 			G.current_grab.moved_effect(G)
 			if(G.current_grab.downgrade_on_move)
 				G.downgrade()

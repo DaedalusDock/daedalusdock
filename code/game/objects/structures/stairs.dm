@@ -95,7 +95,7 @@
 		to_chat(climber, span_warning("Something blocks the path."))
 		return
 
-	climber.forceMoveWithGroup(target, z_movement = TRUE)
+	climber.forceMoveWithGroup(target, z_movement = ZMOVING_VERTICAL)
 
 	if(!(climber.throwing || (climber.movement_type & (VENTCRAWLING | FLYING)) || HAS_TRAIT(climber, TRAIT_IMMOBILIZED)))
 		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)

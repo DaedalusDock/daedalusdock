@@ -128,7 +128,7 @@
 		return
 
 	var/turf/falling_from = get_turf(loc)
-	forceMoveWithGroup(destination, z_movement = TRUE)
+	forceMoveWithGroup(destination, z_movement = ZMOVING_VERTICAL)
 	destination.zImpact(src, 1, prev_turf)
 
 /atom/movable/proc/CanZFall(turf/from, direction, anchor_bypass)
@@ -234,8 +234,6 @@
 		playsound(oldloc, 'sound/effects/stairs_step.ogg', 50)
 		playsound(destination, 'sound/effects/stairs_step.ogg', 50)
 
-#warn TODO
-
 /// Returns a list of movables that should also be affected when calling forceMoveWithGroup()
 /atom/movable/proc/get_move_group()
 	SHOULD_CALL_PARENT(TRUE)
@@ -249,7 +247,7 @@
 	var/list/movers = get_move_group()
 	for(var/atom/movable/AM as anything in movers)
 		if(z_movement)
-			AM.set_currently_z_moving(TRUE)
+			AM.set_currently_z_moving(z_movement)
 		AM.forceMove(destination)
 		if(z_movement)
 			AM.set_currently_z_moving(FALSE)

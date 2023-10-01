@@ -101,6 +101,8 @@
 	. = ..()
 	if(!user.combat_mode)
 		return
+	if(!grab.target_zone == BODY_ZONE_HEAD)
+		return
 	if (!grab.current_grab.enable_violent_interactions)
 		to_chat(user, span_warning("You need a better grip to do that!"))
 		return TRUE
@@ -115,7 +117,7 @@
 	if (prob(30 * ((100-blocked)/100)))
 		affecting_mob.Knockdown(10 SECONDS)
 
-	affecting_mob.apply_damage(8, BRUTE, BODY_ZONE_HEAD, blocked)
+	affecting_mob.apply_damage(30, BRUTE, BODY_ZONE_HEAD, blocked)
 	visible_message(span_danger("<b>[user]</b> slams <b>[affecting_mob]</b>'s face against \the [src]!"))
 	playsound(loc, 'sound/items/trayhit1.ogg', 50, 1)
 

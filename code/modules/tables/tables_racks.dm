@@ -234,8 +234,8 @@
 	else
 		layer = TABLE_LAYER
 
-/obj/structure/table/attack_grab(mob/living/user, obj/item/hand_item/grab/grab, list/params)
-	try_place_pulled_onto_table(user, grab.affecting, grab)
+/obj/structure/table/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	try_place_pulled_onto_table(user, victim, grab)
 	return TRUE
 
 /obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user, atom/movable/target, obj/item/hand_item/grab/grab)
@@ -253,10 +253,11 @@
 					to_chat(user, span_warning("You need a better grip to do that!"))
 					return
 
-				if(GRAB_AGGRESSIVE)
+				if(GRAB_NECK, GRAB_KILL)
 					tablepush(user, pushed_mob)
 				else
-					tablelimbsmash(user, pushed_mob)
+					if(grab.target_zone == BODY_ZONE_HEAD)
+						tablelimbsmash(user, pushed_mob)
 		else
 			pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
 								span_userdanger("[user] begins to place [pushed_mob] onto [src]..."))
@@ -308,16 +309,24 @@
 	log_combat(user, pushed_mob, "tabled", null, "onto [src]")
 
 /obj/structure/table/proc/tablelimbsmash(mob/living/user, mob/living/pushed_mob)
-	pushed_mob.Knockdown(30)
-	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(user.zone_selected) || pushed_mob.get_bodypart(BODY_ZONE_HEAD)
-	banged_limb?.receive_damage(30)
+	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(BODY_ZONE_HEAD)
+	if(!banged_limb)
+		return
+
+	var/blocked = pushed_mob.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	pushed_mob.apply_damage(30, BRUTE, BODY_ZONE_HEAD, blocked)
+	if (prob(30 * ((100-blocked)/100)))
+		pushed_mob.Knockdown(10 SECONDS)
+
 	pushed_mob.stamina.adjust(-60)
 	take_damage(50)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
 		deconstruct(FALSE)
-	playsound(pushed_mob, 'sound/effects/bang.ogg', 90, TRUE)
-	pushed_mob.visible_message(span_danger("[user] smashes [pushed_mob]'s [banged_limb.name] against \the [src]!"),
-								span_userdanger("[user] smashes your [banged_limb.name] against \the [src]"))
+
+	playsound(pushed_mob, 'sound/items/trayhit1.ogg', 70, TRUE)
+	pushed_mob.visible_message(
+		span_danger("<b>[user]</b> smashes <b>[pushed_mob]</b>'s [banged_limb.plaintext_zone] against \the [src]!"),
+	)
 	log_combat(user, pushed_mob, "head slammed", null, "against [src]")
 
 /obj/structure/table/screwdriver_act_secondary(mob/living/user, obj/item/tool)

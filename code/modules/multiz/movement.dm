@@ -127,7 +127,6 @@
 	if(QDELETED(src))
 		return
 
-	var/turf/falling_from = get_turf(loc)
 	forceMoveWithGroup(destination, z_movement = ZMOVING_VERTICAL)
 	destination.zImpact(src, 1, prev_turf)
 

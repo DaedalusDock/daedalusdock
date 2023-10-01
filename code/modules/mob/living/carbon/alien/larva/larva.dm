@@ -69,7 +69,7 @@
 /mob/living/carbon/alien/larva/toggle_throw_mode()
 	return
 
-/mob/living/carbon/alien/larva/can_grab(atom/movable/target, target_zone, defer_hand)
+/mob/living/carbon/alien/larva/can_grab(atom/movable/target, target_zone, use_offhand)
 	return FALSE
 
 /mob/living/carbon/alien/larva/canBeHandcuffed()

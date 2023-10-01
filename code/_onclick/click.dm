@@ -394,7 +394,7 @@
 		G.current_grab.hit_with_grab(G, src, params)
 		return TRUE
 
-	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art))
+	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art, params))
 		human_user.changeNext_move(CLICK_CD_MELEE)
 		human_user.animate_interact(src, INTERACT_GRAB)
 		return TRUE

@@ -1,4 +1,4 @@
-/atom/movable/proc/can_be_grabbed(mob/living/grabber, target_zone, force)
+/atom/movable/proc/can_be_grabbed(mob/living/grabber, target_zone, use_offhand)
 	if(!istype(grabber) || !isturf(loc) || !isturf(grabber.loc))
 		return FALSE
 	if(SEND_SIGNAL(src, COMSIG_ATOM_CAN_BE_GRABBED, grabber) & COMSIG_ATOM_NO_GRAB)
@@ -12,11 +12,9 @@
 		return FALSE
 	if(throwing)
 		return FALSE
-	#warn Impliment pull force
-	/* Impliment pull force
-	if(force < (move_resist * MOVE_FORCE_PULL_RATIO))
+	if(pull_force < (move_resist * MOVE_FORCE_PULL_RATIO))
+		to_chat(grabber, span_warning("You aren't strong enough to move [src]!"))
 		return FALSE
-	*/
 	return TRUE
 
 /atom/movable/proc/buckled_grab_check(var/mob/grabber)

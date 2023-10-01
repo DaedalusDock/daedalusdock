@@ -65,7 +65,7 @@
 
 /// A trait source when adding traits through unit tests
 #define TRAIT_SOURCE_UNIT_TESTS "unit_tests"
-/*
+
 #include "achievements.dm"
 #include "anchored_mobs.dm"
 #include "anonymous_themes.dm"
@@ -76,9 +76,7 @@
 #include "bloody_footprints.dm"
 #include "breath.dm"
 #include "card_mismatch.dm"
-*/
 #include "chain_pull_through_space.dm"
-/*
 #include "chat_filter.dm"
 #include "circuit_component_category.dm"
 #include "closets.dm"
@@ -88,9 +86,7 @@
 #include "confusion.dm"
 #include "connect_loc.dm"
 #include "crayons.dm"
-*/
 #include "create_and_destroy.dm"
-/*
 #include "dcs_get_id_from_elements.dm"
 #include "designs.dm"
 #include "dummy_spawn.dm"
@@ -157,14 +153,11 @@
 #include "stomach.dm"
 #include "strippable.dm"
 #include "subsystem_init.dm"
-*/
 #include "surgeries.dm"
-/*
 #include "teleporters.dm"
 #include "tgui_create_message.dm"
 #include "timer_sanity.dm"
 #include "traitor.dm"
-*/
 #include "unit_test.dm"
 #include "wizard_loadout.dm"
 #include "wounds.dm"

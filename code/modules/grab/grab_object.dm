@@ -25,7 +25,7 @@
 /*
 	This section is for overrides of existing procs.
 */
-/obj/item/hand_item/grab/Initialize(mapload, atom/movable/target, datum/grab/grab_type, defer_hand)
+/obj/item/hand_item/grab/Initialize(mapload, atom/movable/target, datum/grab/grab_type, use_offhand)
 	. = ..()
 	current_grab = GLOB.all_grabstates[grab_type]
 
@@ -34,7 +34,7 @@
 		return INITIALIZE_HINT_QDEL
 
 	affecting = target
-	if(!istype(assailant) || !assailant.add_grab(src, defer_hand = defer_hand))
+	if(!istype(assailant) || !assailant.add_grab(src, use_offhand = use_offhand))
 		return INITIALIZE_HINT_QDEL
 	target_zone = deprecise_zone(assailant.zone_selected)
 

@@ -1,11 +1,11 @@
-/mob/living/proc/can_grab(atom/movable/target, target_zone, defer_hand)
+/mob/living/proc/can_grab(atom/movable/target, target_zone, use_offhand)
 	if(throwing || !(mobility_flags & MOBILITY_PULL))
 		return FALSE
 	if(!ismob(target) && target.anchored)
 		to_chat(src, span_warning("\The [target] won't budge!"))
 		return FALSE
 
-	if(defer_hand)
+	if(use_offhand)
 		if(!get_empty_held_index())
 			to_chat(src, span_warning("Your hands are full!"))
 			return FALSE
@@ -31,7 +31,7 @@
 				return FALSE
 	return TRUE
 
-/mob/living/can_be_grabbed(mob/living/grabber, target_zone, force)
+/mob/living/can_be_grabbed(mob/living/grabber, target_zone, use_offhand)
 	. = ..()
 	if(!.)
 		return
@@ -39,10 +39,10 @@
 		return FALSE
 
 /// Attempt to create a grab, returns TRUE on success
-/mob/living/proc/try_make_grab(atom/movable/target, grab_type)
-	return canUseTopic(src, USE_IGNORE_TK|USE_CLOSE) && make_grab(target, grab_type)
+/mob/living/proc/try_make_grab(atom/movable/target, grab_type, use_offhand)
+	return canUseTopic(src, USE_IGNORE_TK|USE_CLOSE) && make_grab(target, grab_type, use_offhand)
 
-/mob/living/proc/make_grab(atom/movable/target, grab_type = /datum/grab/simple, defer_hand)
+/mob/living/proc/make_grab(atom/movable/target, grab_type = /datum/grab/simple, use_offhand)
 	if(SEND_SIGNAL(src, COMSIG_LIVING_TRY_GRAB, target, grab_type) & COMSIG_LIVING_CANCEL_GRAB)
 		return
 
@@ -63,8 +63,8 @@
 	face_atom(target)
 
 	var/obj/item/hand_item/grab/grab
-	if(ispath(grab_type, /datum/grab) && can_grab(target, zone_selected, defer_hand = defer_hand) && target.can_be_grabbed(src, zone_selected, defer_hand))
-		grab = new /obj/item/hand_item/grab(src, target, grab_type, defer_hand)
+	if(ispath(grab_type, /datum/grab) && can_grab(target, zone_selected, use_offhand) && target.can_be_grabbed(src, zone_selected, use_offhand))
+		grab = new /obj/item/hand_item/grab(src, target, grab_type, use_offhand)
 
 
 	if(QDELETED(grab))
@@ -79,7 +79,7 @@
 
 	return grab
 
-/mob/living/proc/add_grab(obj/item/hand_item/grab/grab, defer_hand)
+/mob/living/proc/add_grab(obj/item/hand_item/grab/grab, use_offhand)
 	for(var/obj/item/hand_item/grab/other_grab in contents)
 		if(other_grab != grab)
 			return FALSE

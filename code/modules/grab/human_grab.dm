@@ -1,10 +1,10 @@
-/mob/living/carbon/human/add_grab(var/obj/item/hand_item/grab/grab, defer_hand = FALSE)
-	if(defer_hand)
+/mob/living/carbon/human/add_grab(var/obj/item/hand_item/grab/grab, use_offhand = FALSE)
+	if(use_offhand)
 		. = put_in_inactive_hand(grab)
 	else
 		. = put_in_active_hand(grab)
 
-/mob/living/carbon/human/can_be_grabbed(mob/living/grabber, target_zone, defer_hand = FALSE)
+/mob/living/carbon/human/can_be_grabbed(mob/living/grabber, target_zone, use_offhand)
 	. = ..()
 	if(!.)
 		return
@@ -15,7 +15,7 @@
 		return FALSE
 
 	if(grabber == src)
-		var/using_slot = defer_hand ? get_inactive_hand() : get_active_hand()
+		var/using_slot = use_offhand ? get_inactive_hand() : get_active_hand()
 		if(!using_slot)
 			to_chat(src, span_warning("You cannot grab yourself without a usable hand!"))
 			return FALSE

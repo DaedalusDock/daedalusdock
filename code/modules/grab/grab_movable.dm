@@ -17,7 +17,7 @@
 		return FALSE
 	return TRUE
 
-/atom/movable/proc/buckled_grab_check(var/mob/grabber)
+/atom/movable/proc/buckled_grab_check(mob/grabber)
 	if(grabber.buckled == src && (grabber in buckled_mobs))
 		return TRUE
 	if(grabber.anchored)

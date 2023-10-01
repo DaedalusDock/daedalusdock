@@ -219,7 +219,7 @@
 		if(BODY_ZONE_PRECISE_EYES)
 			G.assailant.visible_message("<span class='warning'>\The [G.assailant] covers [G.affecting]'s eyes!</span>")
 
-/datum/grab/normal/check_special_target(var/obj/item/hand_item/grab/G)
+/datum/grab/normal/check_special_target(obj/item/hand_item/grab/G)
 	var/mob/living/affecting_mob = G.get_affecting_mob()
 	if(!istype(affecting_mob))
 		return FALSE

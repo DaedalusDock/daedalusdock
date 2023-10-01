@@ -1,4 +1,4 @@
-/mob/living/carbon/human/add_grab(var/obj/item/hand_item/grab/grab, use_offhand = FALSE)
+/mob/living/carbon/human/add_grab(obj/item/hand_item/grab/grab, use_offhand = FALSE)
 	if(use_offhand)
 		. = put_in_inactive_hand(grab)
 	else

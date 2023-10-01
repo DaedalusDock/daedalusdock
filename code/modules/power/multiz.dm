@@ -15,6 +15,12 @@
 /obj/structure/cable/multiz/proc/set_multiz_linked_dirs()
 	linked_dirs = CABLE_NORTH|CABLE_SOUTH|CABLE_EAST|CABLE_WEST
 
+/obj/structure/cable/multiz/is_knotted()
+	return FALSE
+
+/obj/structure/cable/multiz/amount_of_cables_worth()
+	return 1
+
 /obj/structure/cable/multiz/update_icon_state()
 	. = ..()
 	icon_state = "cablerelay-on"

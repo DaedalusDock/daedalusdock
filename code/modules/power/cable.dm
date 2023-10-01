@@ -15,12 +15,9 @@
 	obj_flags = CAN_BE_HIT
 	/// What cable directions does this cable connect to. Uses a 0-255 bitmasking defined in 'globalvars\lists\cables.dm', with translation lists there aswell
 	var/linked_dirs = NONE
-	/// How cables is this cable structure worth when deconstructed
-	var/cables_worth = 1
-	/// Whether it's a cable with an open knot, this is checked for connections to machinery
-	var/knotted = FALSE
 	/// The powernet the cable is connected to
 	var/datum/powernet/powernet
+	var/merge_on_init = FALSE
 
 /obj/structure/cable/Initialize(mapload)
 	. = ..()
@@ -31,6 +28,23 @@
 	if(isturf(loc))
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
+	if(merge_on_init)
+		merge_new_connections()
+
+/obj/structure/cable/proc/is_knotted()
+	var/dir_count = 0
+	for(var/dir in GLOB.cable_dirs)
+		if(!(linked_dirs & dir))
+			continue
+		dir_count++
+		if(dir_count >= 2)
+			return FALSE
+	return TRUE
+
+/obj/structure/cable/proc/amount_of_cables_worth()
+	if(is_knotted())
+		return 1
+	return 2
 
 /obj/structure/cable/proc/set_directions(new_directions, merge_connections = TRUE)
 	linked_dirs = new_directions
@@ -39,13 +53,8 @@
 		if(!(linked_dirs & dir))
 			continue
 		new_dir_count++
-	if(new_dir_count == 1)
-		knotted = TRUE
-	else
-		knotted = FALSE
 	if(new_dir_count > 2)
 		WARNING("Cable has more than 2 directions on [loc.x],[loc.y],[loc.z]")
-	cables_worth = new_dir_count
 	if(merge_connections)
 		merge_new_connections()
 	update_appearance()
@@ -70,7 +79,7 @@
 
 /obj/structure/cable/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1))
-		var/obj/item/stack/cable_coil/coil = new /obj/item/stack/cable_coil(drop_location(), cables_worth)
+		var/obj/item/stack/cable_coil/coil = new /obj/item/stack/cable_coil(drop_location(), amount_of_cables_worth())
 		coil.color = color
 	qdel(src)
 
@@ -103,6 +112,10 @@
 	else if(W.tool_behaviour == TOOL_MULTITOOL)
 		to_chat(user, get_power_info())
 		shock(user, 5, 0.2)
+	else if (istype(W, /obj/item/stack/cable_coil))
+		var/obj/item/stack/cable_coil/coil = W
+		coil.place_turf(loc, user, NONE)
+
 
 	add_fingerprint(user)
 
@@ -186,7 +199,7 @@
 ////////////////////////////////////////////////
 
 /obj/structure/cable/proc/merge_connected_cables()
-	for(var/obj/structure/cable/C in get_cable_connections())
+	for(var/obj/structure/cable/C as anything in get_cable_connections())
 		if(!C)
 			continue
 
@@ -212,7 +225,7 @@
 
 	//first let's add turf cables to our powernet
 	//then we'll connect machines on turf where a cable is present
-	for(var/atom/movable/AM in get_machine_connections())
+	for(var/atom/movable/AM as anything in get_machine_connections())
 		if(istype(AM, /obj/machinery/power/apc))
 			var/obj/machinery/power/apc/N = AM
 			if(!N.terminal)
@@ -260,7 +273,7 @@
 
 /obj/structure/cable/proc/get_machine_connections(powernetless_only = FALSE)
 	. = list()
-	if(!knotted)
+	if(!is_knotted())
 		return
 	for(var/obj/machinery/power/P in get_turf(src))
 		if(powernetless_only && P.powernet)
@@ -325,6 +338,141 @@
 			first = FALSE
 			continue
 		addtimer(CALLBACK(O, PROC_REF(auto_propagate_cut_cable), O), 0) //so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
+
+///////////////////////////////////////////////
+// Cable variants for mapping
+///////////////////////////////////////////////
+/obj/structure/cable/yellow
+	color = "yellow"
+	merge_on_init = TRUE
+
+/obj/structure/cable/yellow/n
+	icon_state = "cable-1"
+	linked_dirs = CABLE_NORTH
+
+/obj/structure/cable/yellow/s
+	icon_state = "cable-2"
+	linked_dirs = CABLE_SOUTH
+
+/obj/structure/cable/yellow/e
+	icon_state = "cable-4"
+	linked_dirs = CABLE_EAST
+
+/obj/structure/cable/yellow/w
+	icon_state = "cable-8"
+	linked_dirs = CABLE_WEST
+
+/obj/structure/cable/yellow/n_s
+	icon_state = "cable-3"
+	linked_dirs = CABLE_NORTH|CABLE_SOUTH
+
+/obj/structure/cable/yellow/e_w
+	icon_state = "cable-12"
+	linked_dirs = CABLE_EAST|CABLE_WEST
+
+/obj/structure/cable/yellow/n_w
+	icon_state = "cable-9"
+	linked_dirs = CABLE_NORTH|CABLE_WEST
+
+/obj/structure/cable/yellow/w_s
+	icon_state = "cable-10"
+	linked_dirs = CABLE_WEST|CABLE_SOUTH
+
+/obj/structure/cable/yellow/s_e
+	icon_state = "cable-6"
+	linked_dirs = CABLE_SOUTH|CABLE_EAST
+
+/obj/structure/cable/yellow/e_n
+	icon_state = "cable-5"
+	linked_dirs = CABLE_EAST|CABLE_NORTH
+
+/obj/structure/cable/red
+	color = "red"
+	merge_on_init = TRUE
+
+/obj/structure/cable/red/n
+	icon_state = "cable-1"
+	linked_dirs = CABLE_NORTH
+
+/obj/structure/cable/red/s
+	icon_state = "cable-2"
+	linked_dirs = CABLE_SOUTH
+
+/obj/structure/cable/red/e
+	icon_state = "cable-4"
+	linked_dirs = CABLE_EAST
+
+/obj/structure/cable/red/w
+	icon_state = "cable-8"
+	linked_dirs = CABLE_WEST
+
+/obj/structure/cable/red/n_s
+	icon_state = "cable-3"
+	linked_dirs = CABLE_NORTH|CABLE_SOUTH
+
+/obj/structure/cable/red/e_w
+	icon_state = "cable-12"
+	linked_dirs = CABLE_EAST|CABLE_WEST
+
+/obj/structure/cable/red/n_w
+	icon_state = "cable-9"
+	linked_dirs = CABLE_NORTH|CABLE_WEST
+
+/obj/structure/cable/red/w_s
+	icon_state = "cable-10"
+	linked_dirs = CABLE_WEST|CABLE_SOUTH
+
+/obj/structure/cable/red/s_e
+	icon_state = "cable-6"
+	linked_dirs = CABLE_SOUTH|CABLE_EAST
+
+/obj/structure/cable/red/e_n
+	icon_state = "cable-5"
+	linked_dirs = CABLE_EAST|CABLE_NORTH
+
+/obj/structure/cable/blue
+	color = "blue"
+	merge_on_init = TRUE
+
+/obj/structure/cable/blue/n
+	icon_state = "cable-1"
+	linked_dirs = CABLE_NORTH
+
+/obj/structure/cable/blue/s
+	icon_state = "cable-2"
+	linked_dirs = CABLE_SOUTH
+
+/obj/structure/cable/blue/e
+	icon_state = "cable-4"
+	linked_dirs = CABLE_EAST
+
+/obj/structure/cable/blue/w
+	icon_state = "cable-8"
+	linked_dirs = CABLE_WEST
+
+/obj/structure/cable/blue/n_s
+	icon_state = "cable-3"
+	linked_dirs = CABLE_NORTH|CABLE_SOUTH
+
+/obj/structure/cable/blue/e_w
+	icon_state = "cable-12"
+	linked_dirs = CABLE_EAST|CABLE_WEST
+
+/obj/structure/cable/blue/n_w
+	icon_state = "cable-9"
+	linked_dirs = CABLE_NORTH|CABLE_WEST
+
+/obj/structure/cable/blue/w_s
+	icon_state = "cable-10"
+	linked_dirs = CABLE_WEST|CABLE_SOUTH
+
+/obj/structure/cable/blue/s_e
+	icon_state = "cable-6"
+	linked_dirs = CABLE_SOUTH|CABLE_EAST
+
+/obj/structure/cable/blue/e_n
+	icon_state = "cable-5"
+	linked_dirs = CABLE_EAST|CABLE_NORTH
 
 ///////////////////////////////////////////////
 // The cable coil object, used for laying cable
@@ -591,7 +739,7 @@
 	var/obj/structure/cable/C
 	// See if there's any knotted cables we can add onto
 	for(var/obj/structure/cable/cable_on_turf in T)
-		if(!cable_on_turf.knotted)
+		if(!cable_on_turf.is_knotted())
 			continue
 		C = cable_on_turf
 		adding_to_knotted = TRUE
@@ -609,7 +757,7 @@
 			to_chat(user, span_warning("There's already a cable at that position!"))
 			return
 		for(var/obj/structure/cable/cable_on_turf in T)
-			if(cable_on_turf.knotted)
+			if(cable_on_turf.is_knotted())
 				continue
 			if(cable_on_turf.linked_dirs == target_directions)
 				to_chat(user, span_warning("There's already a cable at that position!"))

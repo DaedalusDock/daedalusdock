@@ -432,7 +432,7 @@
 	if(!can_have_cabling())
 		return null
 	for(var/obj/structure/cable/C in src)
-		if(!C.knotted)
+		if(!C.is_knotted())
 			continue
 		C.update_appearance()
 		return C

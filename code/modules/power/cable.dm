@@ -28,6 +28,7 @@
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
 	mapping_init()
+	update_layer()
 
 /obj/structure/cable/proc/mapping_init()
 	linked_dirs = text2num(icon_state)
@@ -93,7 +94,14 @@
 
 /obj/structure/cable/update_icon_state()
 	icon_state = "[linked_dirs]"
+	update_layer()
 	return ..()
+
+/obj/structure/cable/proc/update_layer()
+	if(is_knotted())
+		layer = WIRE_KNOT_LAYER
+	else
+		layer = WIRE_LAYER
 
 
 /obj/structure/cable/examine(mob/user)

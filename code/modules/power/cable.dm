@@ -8,7 +8,7 @@
 	name = "power cable"
 	desc = "A flexible, superconducting insulated cable for heavy-duty power transfer."
 	icon = 'icons/obj/power_cond/cable.dmi'
-	icon_state = "cable-0"
+	icon_state = "0"
 	color = "yellow"
 	layer = WIRE_LAYER //Above hidden pipes, GAS_PIPE_HIDDEN_LAYER
 	anchored = TRUE
@@ -17,7 +17,7 @@
 	var/linked_dirs = NONE
 	/// The powernet the cable is connected to
 	var/datum/powernet/powernet
-	var/merge_on_init = FALSE
+	var/mapping_init = FALSE
 
 /obj/structure/cable/Initialize(mapload)
 	. = ..()
@@ -28,8 +28,13 @@
 	if(isturf(loc))
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
-	if(merge_on_init)
-		merge_new_connections()
+	if(mapping_init)
+		mapping_init()
+
+/obj/structure/cable/proc/mapping_init()
+	mapping_init = FALSE
+	linked_dirs = text2num(icon_state)
+	merge_new_connections()
 
 /obj/structure/cable/proc/is_knotted()
 	var/dir_count = 0
@@ -88,7 +93,9 @@
 ///////////////////////////////////
 
 /obj/structure/cable/update_icon_state()
-	icon_state = "cable-[linked_dirs]"
+	if(mapping_init)
+		return
+	icon_state = "[linked_dirs]"
 	return ..()
 
 
@@ -114,7 +121,7 @@
 		shock(user, 5, 0.2)
 	else if (istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = W
-		coil.place_turf(loc, user, NONE)
+		coil.place_turf(loc, user, NONE, TRUE, src)
 
 
 	add_fingerprint(user)
@@ -269,6 +276,13 @@
 			if(powernetless_only && cable_structure.powernet)
 				continue
 			. += cable_structure
+	// Connect to other knotted cables if we are knotted
+	for(var/obj/structure/cable/cable_structure in get_turf(src))
+		if(cable_structure == src)
+			continue
+		if(!cable_structure.is_knotted())
+			continue
+		. += cable_structure
 
 
 /obj/structure/cable/proc/get_machine_connections(powernetless_only = FALSE)
@@ -342,137 +356,17 @@
 ///////////////////////////////////////////////
 // Cable variants for mapping
 ///////////////////////////////////////////////
-/obj/structure/cable/yellow
+/obj/structure/cable/mapping
+	mapping_init = TRUE
+
+/obj/structure/cable/mapping/yellow
 	color = "yellow"
-	merge_on_init = TRUE
 
-/obj/structure/cable/yellow/n
-	icon_state = "cable-1"
-	linked_dirs = CABLE_NORTH
-
-/obj/structure/cable/yellow/s
-	icon_state = "cable-2"
-	linked_dirs = CABLE_SOUTH
-
-/obj/structure/cable/yellow/e
-	icon_state = "cable-4"
-	linked_dirs = CABLE_EAST
-
-/obj/structure/cable/yellow/w
-	icon_state = "cable-8"
-	linked_dirs = CABLE_WEST
-
-/obj/structure/cable/yellow/n_s
-	icon_state = "cable-3"
-	linked_dirs = CABLE_NORTH|CABLE_SOUTH
-
-/obj/structure/cable/yellow/e_w
-	icon_state = "cable-12"
-	linked_dirs = CABLE_EAST|CABLE_WEST
-
-/obj/structure/cable/yellow/n_w
-	icon_state = "cable-9"
-	linked_dirs = CABLE_NORTH|CABLE_WEST
-
-/obj/structure/cable/yellow/w_s
-	icon_state = "cable-10"
-	linked_dirs = CABLE_WEST|CABLE_SOUTH
-
-/obj/structure/cable/yellow/s_e
-	icon_state = "cable-6"
-	linked_dirs = CABLE_SOUTH|CABLE_EAST
-
-/obj/structure/cable/yellow/e_n
-	icon_state = "cable-5"
-	linked_dirs = CABLE_EAST|CABLE_NORTH
-
-/obj/structure/cable/red
-	color = "red"
-	merge_on_init = TRUE
-
-/obj/structure/cable/red/n
-	icon_state = "cable-1"
-	linked_dirs = CABLE_NORTH
-
-/obj/structure/cable/red/s
-	icon_state = "cable-2"
-	linked_dirs = CABLE_SOUTH
-
-/obj/structure/cable/red/e
-	icon_state = "cable-4"
-	linked_dirs = CABLE_EAST
-
-/obj/structure/cable/red/w
-	icon_state = "cable-8"
-	linked_dirs = CABLE_WEST
-
-/obj/structure/cable/red/n_s
-	icon_state = "cable-3"
-	linked_dirs = CABLE_NORTH|CABLE_SOUTH
-
-/obj/structure/cable/red/e_w
-	icon_state = "cable-12"
-	linked_dirs = CABLE_EAST|CABLE_WEST
-
-/obj/structure/cable/red/n_w
-	icon_state = "cable-9"
-	linked_dirs = CABLE_NORTH|CABLE_WEST
-
-/obj/structure/cable/red/w_s
-	icon_state = "cable-10"
-	linked_dirs = CABLE_WEST|CABLE_SOUTH
-
-/obj/structure/cable/red/s_e
-	icon_state = "cable-6"
-	linked_dirs = CABLE_SOUTH|CABLE_EAST
-
-/obj/structure/cable/red/e_n
-	icon_state = "cable-5"
-	linked_dirs = CABLE_EAST|CABLE_NORTH
-
-/obj/structure/cable/blue
+/obj/structure/cable/mapping/blue
 	color = "blue"
-	merge_on_init = TRUE
 
-/obj/structure/cable/blue/n
-	icon_state = "cable-1"
-	linked_dirs = CABLE_NORTH
-
-/obj/structure/cable/blue/s
-	icon_state = "cable-2"
-	linked_dirs = CABLE_SOUTH
-
-/obj/structure/cable/blue/e
-	icon_state = "cable-4"
-	linked_dirs = CABLE_EAST
-
-/obj/structure/cable/blue/w
-	icon_state = "cable-8"
-	linked_dirs = CABLE_WEST
-
-/obj/structure/cable/blue/n_s
-	icon_state = "cable-3"
-	linked_dirs = CABLE_NORTH|CABLE_SOUTH
-
-/obj/structure/cable/blue/e_w
-	icon_state = "cable-12"
-	linked_dirs = CABLE_EAST|CABLE_WEST
-
-/obj/structure/cable/blue/n_w
-	icon_state = "cable-9"
-	linked_dirs = CABLE_NORTH|CABLE_WEST
-
-/obj/structure/cable/blue/w_s
-	icon_state = "cable-10"
-	linked_dirs = CABLE_WEST|CABLE_SOUTH
-
-/obj/structure/cable/blue/s_e
-	icon_state = "cable-6"
-	linked_dirs = CABLE_SOUTH|CABLE_EAST
-
-/obj/structure/cable/blue/e_n
-	icon_state = "cable-5"
-	linked_dirs = CABLE_EAST|CABLE_NORTH
+/obj/structure/cable/mapping/red
+	color = "red"
 
 ///////////////////////////////////////////////
 // The cable coil object, used for laying cable
@@ -673,7 +567,7 @@
 	for(var/obj/structure/cable/cable_on_turf in T)
 		if(cable_on_turf.linked_dirs & cable_direction)
 			return
-	place_turf(T, user, cable_direction)
+	place_turf(T, user, cable_direction, TRUE)
 
 /obj/item/stack/cable_coil/proc/try_construct_multiz_hub(mob/user)
 	if(!use(1))
@@ -707,7 +601,7 @@
 //////////////////////////////////////////////
 
 // called when cable_coil is clicked on a turf
-/obj/item/stack/cable_coil/proc/place_turf(turf/T, mob/user, cable_direction = NONE)
+/obj/item/stack/cable_coil/proc/place_turf(turf/T, mob/user, cable_direction = NONE, connect_to_knotted = FALSE, obj/structure/cable/target_knot = null)
 	if(!isturf(user.loc))
 		return
 
@@ -737,13 +631,18 @@
 	var/adding_to_knotted = FALSE
 
 	var/obj/structure/cable/C
-	// See if there's any knotted cables we can add onto
-	for(var/obj/structure/cable/cable_on_turf in T)
-		if(!cable_on_turf.is_knotted())
-			continue
-		C = cable_on_turf
-		adding_to_knotted = TRUE
-		break
+	// See if there's any knotted cables we can add onto, if that's what we want to do
+	if(connect_to_knotted)
+		if(target_knot && target_knot.is_knotted())
+			C = target_knot
+			adding_to_knotted = TRUE
+		else
+			for(var/obj/structure/cable/cable_on_turf in T)
+				if(!cable_on_turf.is_knotted())
+					continue
+				C = cable_on_turf
+				adding_to_knotted = TRUE
+				break
 
 	if(!C)
 		C = new /obj/structure/cable(T)
@@ -761,6 +660,12 @@
 				continue
 			if(cable_on_turf.linked_dirs == target_directions)
 				to_chat(user, span_warning("There's already a cable at that position!"))
+				return
+	else
+		for(var/obj/structure/cable/cable_on_turf in T)
+			if(cable_on_turf.linked_dirs == target_directions)
+				to_chat(user, span_warning("There's already a cable at that position!"))
+				qdel(C)
 				return
 
 	//create a new powernet with the cable, if needed it will be merged later

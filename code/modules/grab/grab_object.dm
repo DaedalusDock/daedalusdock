@@ -29,6 +29,7 @@
 
 	assailant = loc
 	if(!istype(assailant))
+		assailant = null
 		return INITIALIZE_HINT_QDEL
 
 	affecting = target

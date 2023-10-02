@@ -351,7 +351,7 @@
 
 	if(!(flags & IGNORE_GRAB))
 		for(var/obj/item/hand_item/grab/G in grabbed_by)
-			if(G.current_grab.restrains)
+			if(G.current_grab.restrains && !G.assailant == src)
 				return TRUE
 
 	if(!(flags & IGNORE_STASIS) && IS_IN_HARD_STASIS(src))

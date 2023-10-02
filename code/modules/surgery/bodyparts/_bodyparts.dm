@@ -189,8 +189,6 @@
 	/// How much generic bleedstacks we have on this bodypart
 	var/generic_bleedstacks
 
-	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
-	var/obj/item/hand_item/self_grasp/grasped_by
 	/// If something is currently supporting this limb as a splint
 	var/obj/item/splint
 	/// The bandage that may-or-may-not be absorbing our blood

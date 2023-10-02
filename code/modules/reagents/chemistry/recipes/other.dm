@@ -34,7 +34,7 @@
 
 
 /datum/chemical_reaction/unstable_mutagen
-	results = list(/datum/reagent/toxin/mutagen)
+	results = list(/datum/reagent/toxin/mutagen = 1)
 	required_reagents = list(/datum/reagent/chlorine = 1, /datum/reagent/toxin/plasma = 1, /datum/reagent/uranium/radium = 1)
 
 /datum/chemical_reaction/plasma_solidification

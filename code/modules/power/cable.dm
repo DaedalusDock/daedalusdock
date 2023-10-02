@@ -27,11 +27,9 @@
 	if(isturf(loc))
 		var/turf/turf_loc = loc
 		turf_loc.add_blueprints_preround(src)
-	if(mapping_init)
-		mapping_init()
+	mapping_init()
 
 /obj/structure/cable/proc/mapping_init()
-	mapping_init = FALSE
 	linked_dirs = text2num(icon_state)
 	merge_new_connections()
 
@@ -64,6 +62,8 @@
 	update_appearance()
 
 /obj/structure/cable/proc/merge_new_connections()
+	if(linked_dirs == NONE)
+		return
 	merge_connected_cables()
 	merge_connected_machines()
 

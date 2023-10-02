@@ -1017,9 +1017,6 @@
 			cached_bleed_rate += round(iter_wound.damage / 40, DAMAGE_PRECISION)
 			bodypart_flags |= BP_BLEEDING
 
-	if(!cached_bleed_rate)
-		QDEL_NULL(grasped_by)
-
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?
 	if(cached_bleed_rate != old_bleed_rate)
 		update_part_wound_overlay()
@@ -1031,8 +1028,6 @@
 	var/bleed_rate = cached_bleed_rate
 	if(owner.body_position == LYING_DOWN)
 		bleed_rate *= 0.75
-	if(grasped_by)
-		bleed_rate *= 0.7
 
 	if(bandage)
 		bleed_rate *= bandage.absorption_rate_modifier

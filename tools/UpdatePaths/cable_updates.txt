@@ -2,11 +2,11 @@
 #comment cable_updates.txt
 
 
-/obj/structure/cable : /obj/effect/mapping_helpers/smart_cable/color/yellow
-/obj/structure/cable/layer1 : /obj/effect/mapping_helpers/smart_cable/color/red
-/obj/structure/cable/layer3 : /obj/effect/mapping_helpers/smart_cable/color/blue
+/obj/structure/cable : /obj/structure/cable/smart_cable/color/yellow
+/obj/structure/cable/layer1 : /obj/structure/cable/smart_cable/color/red
+/obj/structure/cable/layer3 : /obj/structure/cable/smart_cable/color/blue
 /obj/structure/cable/multilayer/multiz : /obj/structure/cable/multiz
-/obj/structure/cable/multilayer : /obj/effect/mapping_helpers/smart_cable/color_connector/yellow
+/obj/structure/cable/multilayer : /obj/structure/cable/smart_cable/color_connector/yellow
 /obj/item/rcl : /obj/item/stack/cable_coil/red
 /obj/item/stack/pipe_cleaner_coil : /obj/item/stack/cable_coil
 /obj/item/stack/pipe_cleaner_coil/random : /obj/item/stack/cable_coil/random

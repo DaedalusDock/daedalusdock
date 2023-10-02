@@ -4,7 +4,7 @@
 /area/template_noop)
 "ab" = (
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/template_noop,
 /area/template_noop)
 "ad" = (
@@ -57,7 +57,7 @@
 /area/ruin/space/has_grav/onehalf/dorms_med)
 "aq" = (
 /obj/machinery/door/airlock/external/ruin,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/onehalf/drone_bay)
 "ar" = (
@@ -144,7 +144,7 @@
 /area/ruin/space/has_grav/onehalf/dorms_med)
 "aD" = (
 /obj/machinery/light/small/directional/west,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/onehalf/drone_bay)
 "aE" = (
@@ -171,7 +171,7 @@
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/onehalf/dorms_med)
 "aL" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/onehalf/dorms_med)
 "aM" = (
@@ -181,7 +181,7 @@
 /obj/item/reagent_containers/blood/o_minus,
 /obj/item/reagent_containers/blood/o_minus,
 /obj/machinery/power/apc/auto_name/directional/east,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/onehalf/dorms_med)
 "aN" = (
@@ -229,13 +229,13 @@
 /turf/template_noop,
 /area/template_noop)
 "aT" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav/onehalf/hallway)
 "aV" = (
 /obj/machinery/door/airlock/medical/glass,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/onehalf/dorms_med)
 "aW" = (
@@ -246,7 +246,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/drone_bay)
 "aY" = (
@@ -254,7 +254,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/drone_bay)
 "aZ" = (
@@ -354,7 +354,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav/onehalf/hallway)
@@ -362,14 +362,14 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav/onehalf/hallway)
 "bk" = (
 /obj/structure/disposalpipe/junction{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav/onehalf/hallway)
@@ -377,7 +377,7 @@
 /obj/structure/disposalpipe/junction{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav/onehalf/hallway)
 "bn" = (
@@ -385,14 +385,14 @@
 	dir = 4
 	},
 /obj/machinery/door/airlock/public/glass,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/drone_bay)
 "bo" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/drone_bay)
 "bp" = (
@@ -470,7 +470,7 @@
 	dir = 4
 	},
 /obj/machinery/power/apc/auto_name/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav/onehalf/hallway)
 "bB" = (
@@ -618,7 +618,7 @@
 /area/ruin/space/has_grav/onehalf/bridge)
 "cf" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "cg" = (
@@ -702,7 +702,7 @@
 	id = "bridge_onehalf";
 	name = "bridge blast door"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/onehalf/bridge)
 "cr" = (
@@ -768,12 +768,12 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Bridge"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "cF" = (
 /obj/machinery/light/small/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "cG" = (
@@ -784,7 +784,7 @@
 /obj/machinery/door/airlock/command/glass{
 	name = "Bridge"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "cI" = (
@@ -801,7 +801,7 @@
 /obj/structure/chair/comfy/black{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "cK" = (
@@ -829,7 +829,7 @@
 /area/ruin/space/has_grav/onehalf/bridge)
 "cS" = (
 /obj/structure/chair/office,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "cT" = (
@@ -902,13 +902,13 @@
 /area/template_noop)
 "ms" = (
 /obj/item/stack/tile/iron/base,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "nu" = (
 /obj/item/crowbar/red,
 /obj/item/multitool,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/onehalf/bridge)
 "pG" = (
@@ -930,11 +930,11 @@
 /area/ruin/space/has_grav/onehalf/dorms_med)
 "KC" = (
 /obj/structure/frame/computer,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 "Vh" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/onehalf/bridge)
 

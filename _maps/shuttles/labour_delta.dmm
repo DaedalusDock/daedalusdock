@@ -26,7 +26,7 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)
 "f" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/spawner/structure/window/reinforced/shuttle,
 /turf/open/floor/plating,
 /area/shuttle/labor)

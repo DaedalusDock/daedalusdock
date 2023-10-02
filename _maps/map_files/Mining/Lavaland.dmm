@@ -406,7 +406,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "bM" = (
@@ -473,12 +473,12 @@
 	desc = "Powered by the tears and sweat of laborers.";
 	name = "Prison Ofitser"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "cf" = (
 /obj/machinery/computer/secure_data,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
@@ -486,14 +486,14 @@
 /area/mine/laborcamp/security)
 "cg" = (
 /obj/machinery/computer/security/labor,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "ch" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "cl" = (
@@ -640,7 +640,7 @@
 /obj/machinery/power/smes{
 	charge = 5e+006
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
 "cT" = (
@@ -649,12 +649,12 @@
 /obj/structure/sign/warning/electricshock{
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
 "cU" = (
 /obj/machinery/portable_atmospherics/canister/oxygen,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
 "cV" = (
@@ -750,7 +750,7 @@
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/port_gen/pacman{
 	anchored = 1
 	},
@@ -778,7 +778,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/production)
 "du" = (
@@ -825,11 +825,11 @@
 /obj/machinery/power/port_gen/pacman{
 	anchored = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
 "dH" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/binary/pump/on,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
@@ -863,7 +863,7 @@
 	name = "Mining Station Communications";
 	req_access_txt = "48"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -885,7 +885,7 @@
 	name = "Mining Station Maintenance";
 	req_access_txt = "48"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/layer_manifold,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
@@ -943,7 +943,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -980,7 +980,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
@@ -1013,7 +1013,7 @@
 /turf/open/floor/plating,
 /area/mine/production)
 "eq" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -1028,7 +1028,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "eC" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -1352,7 +1352,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
 "go" = (
@@ -1389,7 +1389,7 @@
 /turf/open/lava/smooth/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "gT" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron/dark,
@@ -1445,7 +1445,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -1472,7 +1472,7 @@
 /area/lavaland/surface/outdoors)
 "ia" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/mine/production)
 "id" = (
@@ -1700,7 +1700,7 @@
 /turf/open/lava/smooth/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "kI" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/mining/glass{
 	name = "Processing Area";
 	req_access_txt = "48"
@@ -2119,12 +2119,12 @@
 "nA" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "nI" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
 "nM" = (
@@ -2184,7 +2184,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -2216,7 +2216,7 @@
 /obj/structure/chair/comfy/brown{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -2224,7 +2224,7 @@
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "oW" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
@@ -2381,7 +2381,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/cafeteria,
 /area/mine/laborcamp)
 "qt" = (
@@ -2405,7 +2405,7 @@
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "rj" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
 "rB" = (
@@ -2415,7 +2415,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/production)
 "rG" = (
@@ -2442,7 +2442,7 @@
 /turf/open/floor/iron,
 /area/mine/mechbay)
 "sa" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -2485,7 +2485,7 @@
 /turf/open/floor/iron/dark,
 /area/mine/laborcamp)
 "sM" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/mine/laborcamp/security)
@@ -2551,7 +2551,7 @@
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "uk" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
@@ -2624,7 +2624,7 @@
 	name = "Mining Shuttle Airlock";
 	space_dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/production)
 "vq" = (
@@ -2714,7 +2714,7 @@
 /obj/structure/closet/secure_closet/engineering_welding{
 	req_access = list(54)
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
@@ -2768,7 +2768,7 @@
 /obj/machinery/light/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "xT" = (
@@ -2788,7 +2788,7 @@
 /area/mine/laborcamp)
 "xV" = (
 /obj/machinery/computer/mech_bay_power_console,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron,
 /area/mine/mechbay)
@@ -2829,7 +2829,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/red,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "zA" = (
@@ -2839,7 +2839,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "zH" = (
@@ -2856,11 +2856,11 @@
 "zS" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "zT" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/loading_area{
 	dir = 4
 	},
@@ -2926,7 +2926,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -2938,7 +2938,7 @@
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "Be" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
@@ -3006,7 +3006,7 @@
 /turf/open/floor/iron,
 /area/mine/production)
 "BZ" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/glass{
 	name = "Mining Station Bridge"
 	},
@@ -3203,7 +3203,7 @@
 /area/lavaland/surface/outdoors)
 "FF" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/mine/laborcamp/security)
 "FM" = (
@@ -3319,7 +3319,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "Hd" = (
@@ -3361,7 +3361,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "HG" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/circuit,
 /area/mine/maintenance)
@@ -3395,7 +3395,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "Iq" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/security/glass{
 	name = "Labor Camp Monitoring";
 	req_access_txt = "2"
@@ -3566,7 +3566,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "Km" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/glass{
 	name = "Mining Station Bridge"
 	},
@@ -3585,7 +3585,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/table,
 /obj/item/stack/package_wrap,
 /obj/item/stack/package_wrap,
@@ -3602,13 +3602,13 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/south,
 /turf/open/floor/iron/cafeteria,
 /area/mine/laborcamp)
 "KP" = (
 /obj/machinery/meter,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
@@ -3630,7 +3630,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors/explored)
 "KY" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/bluespace_beacon,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -3676,7 +3676,7 @@
 	dir = 1
 	},
 /obj/machinery/light/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
@@ -3687,7 +3687,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "LL" = (
@@ -3853,7 +3853,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/newscaster/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "PZ" = (
@@ -3905,7 +3905,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/iron,
 /area/mine/production)
@@ -3973,7 +3973,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp/security)
 "QS" = (
@@ -3990,7 +3990,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "Rx" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/production)
 "Ry" = (
@@ -4033,7 +4033,7 @@
 	name = "Mining Station EVA";
 	req_access_txt = "54"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -4054,7 +4054,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -4067,7 +4067,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "Sh" = (
@@ -4160,7 +4160,7 @@
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "TC" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
@@ -4172,7 +4172,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "TI" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -4211,7 +4211,7 @@
 	name = "Mining Shuttle Airlock";
 	space_dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/production)
 "Uc" = (
@@ -4264,11 +4264,11 @@
 	name = "Mining Station Mech Bay";
 	req_access_txt = "54"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/mine/mechbay)
 "UH" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
@@ -4324,7 +4324,7 @@
 /turf/open/floor/iron,
 /area/mine/living_quarters)
 "Vm" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/spawner/random/engineering/tracking_beacon,
@@ -4390,7 +4390,7 @@
 /area/mine/living_quarters)
 "VX" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/mine/living_quarters)
@@ -4450,7 +4450,7 @@
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
 "WR" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron,
 /area/mine/living_quarters)
@@ -4570,7 +4570,7 @@
 /turf/open/floor/iron/freezer,
 /area/mine/living_quarters)
 "Zh" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/brown,
 /obj/effect/turf_decal/tile/brown{
 	dir = 8

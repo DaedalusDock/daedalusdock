@@ -46,7 +46,7 @@
 /area/space/nearstation)
 "ao" = (
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/space,
 /area/space/nearstation)
 "ap" = (
@@ -58,7 +58,7 @@
 "aq" = (
 /obj/machinery/camera/directional/north,
 /obj/machinery/computer/monitor,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "ar" = (
@@ -82,7 +82,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "at" = (
@@ -92,7 +92,7 @@
 /obj/machinery/power/terminal{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "au" = (
@@ -116,7 +116,7 @@
 	dir = 4
 	},
 /obj/machinery/door/airlock/external/glass/ruin,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/engineering/main)
 "aD" = (
@@ -126,7 +126,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 6
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "aF" = (
@@ -141,7 +141,7 @@
 	dir = 8
 	},
 /obj/structure/closet/radiation,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "aH" = (
@@ -194,7 +194,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "aU" = (
@@ -207,7 +207,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "aV" = (
@@ -217,7 +217,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "aX" = (
@@ -257,12 +257,12 @@
 /obj/item/inducer,
 /obj/item/storage/belt/utility/chief/full,
 /obj/machinery/power/apc/auto_name/directional/west,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "be" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "bf" = (
@@ -274,7 +274,7 @@
 	dir = 8
 	},
 /obj/machinery/power/apc/auto_name/directional/west,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "bh" = (
@@ -286,7 +286,7 @@
 "bk" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/machinery/door/airlock,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
 "bl" = (
@@ -340,7 +340,7 @@
 /area/station/science)
 "bt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/science)
 "bu" = (
@@ -357,7 +357,7 @@
 "bx" = (
 /obj/machinery/door/airlock,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/engineering/main)
 "by" = (
@@ -396,7 +396,7 @@
 	pixel_y = 4
 	},
 /obj/item/uplink/nuclear/debug,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "bH" = (
@@ -466,7 +466,7 @@
 "bR" = (
 /obj/machinery/camera/directional/north,
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/chem_heater,
 /turf/open/floor/iron/dark,
 /area/station/medical/chemistry)
@@ -493,7 +493,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /mob/living/carbon/human,
 /turf/open/floor/iron/white/corner{
 	dir = 1
@@ -541,7 +541,7 @@
 /area/station/science)
 "cd" = (
 /obj/machinery/door/airlock,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/command/bridge)
 "ce" = (
@@ -551,11 +551,11 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "cf" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "cg" = (
@@ -563,23 +563,23 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "ch" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
 "ci" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/security/brig)
 "cj" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
 "ck" = (
@@ -590,7 +590,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white/corner{
 	dir = 1
 	},
@@ -748,7 +748,7 @@
 /area/station/medical/medbay)
 "cI" = (
 /obj/machinery/power/apc/auto_name/directional/east,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/security/brig)
 "cJ" = (
@@ -800,7 +800,7 @@
 	},
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/turf_decal/stripes/corner,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/construction)
 "cX" = (
@@ -808,7 +808,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/stripes/line,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/construction)
 "cY" = (
@@ -832,7 +832,7 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "dd" = (
@@ -842,7 +842,7 @@
 	},
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/turf_decal/stripes/line,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "de" = (
@@ -872,7 +872,7 @@
 	dir = 10
 	},
 /obj/effect/turf_decal/stripes/corner,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "dl" = (
@@ -961,7 +961,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "dB" = (
@@ -1135,7 +1135,7 @@
 "eg" = (
 /obj/machinery/door/airlock,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/security/brig)
 "eh" = (
@@ -1143,7 +1143,7 @@
 /area/station/hallway/secondary/entry)
 "ei" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "ej" = (
@@ -1171,7 +1171,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "es" = (
@@ -1220,7 +1220,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "eA" = (
@@ -1251,7 +1251,7 @@
 /area/space)
 "eF" = (
 /obj/machinery/power/apc/auto_name/directional/east,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "eG" = (
@@ -1266,7 +1266,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "eJ" = (
@@ -1300,7 +1300,7 @@
 /area/station/cargo/storage)
 "eP" = (
 /obj/machinery/power/apc/auto_name/directional/west,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "eQ" = (
@@ -1378,7 +1378,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "fa" = (
@@ -1516,13 +1516,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/hallway/primary/central)
 "fw" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/effect/turf_decal/stripes/corner,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fx" = (
@@ -1532,7 +1532,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fy" = (
@@ -1543,7 +1543,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fz" = (
@@ -1553,7 +1553,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fA" = (
@@ -1563,7 +1563,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fB" = (
@@ -1577,7 +1577,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fD" = (
@@ -1589,7 +1589,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fE" = (
@@ -1599,7 +1599,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fF" = (
@@ -1616,7 +1616,7 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fI" = (
@@ -1627,7 +1627,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 5
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "fM" = (
@@ -1651,7 +1651,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/commons/storage/primary)
 "fO" = (
@@ -1672,12 +1672,12 @@
 "fR" = (
 /obj/machinery/door/airlock,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/commons/storage/primary)
 "fS" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "fU" = (
@@ -1688,21 +1688,21 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 6
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "fV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "fW" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 9
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "fX" = (
@@ -1723,7 +1723,7 @@
 /area/station/commons/storage/primary)
 "fY" = (
 /obj/machinery/light/directional/west,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "fZ" = (
@@ -1778,7 +1778,7 @@
 	dir = 4;
 	pixel_x = 32
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/computer/shuttle/mining,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
@@ -1799,7 +1799,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 10
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "gn" = (
@@ -1808,7 +1808,7 @@
 /area/station/security/brig)
 "go" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "gp" = (
@@ -1823,14 +1823,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 5
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "gu" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "gv" = (
@@ -1869,7 +1869,7 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "gB" = (
@@ -1888,7 +1888,7 @@
 /area/station/hallway/secondary/entry)
 "gD" = (
 /obj/machinery/camera/autoname/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
 	},
@@ -1914,7 +1914,7 @@
 	dir = 4
 	},
 /obj/machinery/camera/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "gI" = (
@@ -1936,7 +1936,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/science)
 "hD" = (
@@ -1954,7 +1954,7 @@
 /area/station/construction)
 "jb" = (
 /obj/machinery/door/airlock,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/science)
 "jE" = (
@@ -1970,7 +1970,7 @@
 /area/station/commons/storage/primary)
 "kj" = (
 /obj/machinery/door/airlock,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "kn" = (
@@ -1986,7 +1986,7 @@
 	dir = 8
 	},
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "lc" = (
@@ -1996,7 +1996,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "lX" = (
@@ -2062,7 +2062,7 @@
 /turf/open/floor/engine,
 /area/station/cargo/miningoffice)
 "rn" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -2076,7 +2076,7 @@
 /area/station/cargo/miningoffice)
 "rL" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "sr" = (
@@ -2084,7 +2084,7 @@
 /turf/open/floor/iron/dark,
 /area/station/construction)
 "sE" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/rtg/debug,
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
@@ -2131,7 +2131,7 @@
 /area/station/engineering/atmos)
 "uO" = (
 /obj/machinery/door/airlock/public/glass,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "uQ" = (
@@ -2169,7 +2169,7 @@
 	dir = 4
 	},
 /obj/machinery/door/airlock/public/glass,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
 "wb" = (
@@ -2192,7 +2192,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "wM" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "wS" = (
@@ -2225,7 +2225,7 @@
 /area/station/hallway/secondary/entry)
 "zo" = (
 /obj/machinery/power/apc/auto_name/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "AE" = (
@@ -2277,7 +2277,7 @@
 /area/station/science/misc_lab)
 "CV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
 "Df" = (
@@ -2290,7 +2290,7 @@
 "DA" = (
 /obj/machinery/light/directional/north,
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/science)
 "DW" = (
@@ -2302,7 +2302,7 @@
 /area/station/medical/medbay)
 "EA" = (
 /obj/effect/turf_decal/stripes/line,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/construction)
 "EG" = (
@@ -2326,7 +2326,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "EX" = (
@@ -2403,7 +2403,7 @@
 /turf/open/floor/iron/dark,
 /area/station/medical/chemistry)
 "LH" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -2414,7 +2414,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/sleeper/syndie/fullupgrade,
 /turf/open/floor/iron/white/corner{
 	dir = 1
@@ -2425,7 +2425,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
 "Mh" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "ME" = (
@@ -2440,7 +2440,7 @@
 /area/station/engineering/gravity_generator)
 "MY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "Nb" = (
@@ -2453,7 +2453,7 @@
 /area/station/medical/chemistry)
 "Ns" = (
 /obj/machinery/door/airlock/public/glass,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/medical/medbay)
 "Oo" = (
@@ -2473,7 +2473,7 @@
 /turf/open/floor/iron,
 /area/station/science)
 "Qi" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
@@ -2547,16 +2547,16 @@
 /area/station/maintenance/aft)
 "TV" = (
 /obj/machinery/door/airlock,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/construction)
 "Vg" = (
 /obj/machinery/light/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "Vr" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
@@ -2564,12 +2564,12 @@
 /turf/open/floor/iron/dark,
 /area/station/science/misc_lab)
 "Vy" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "VA" = (
 /obj/structure/fans/tiny,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "We" = (
@@ -2594,7 +2594,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "WK" = (
@@ -2606,7 +2606,7 @@
 	dir = 8
 	},
 /obj/machinery/door/airlock/external/glass/ruin,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/engineering/main)
 "Xg" = (
@@ -2625,7 +2625,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "XC" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/science)
 "XR" = (

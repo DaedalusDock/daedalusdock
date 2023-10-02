@@ -55,11 +55,11 @@
 /turf/open/floor/engine,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "an" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "ao" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east{
 	start_charge = 0
 	},
@@ -254,13 +254,13 @@
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "bb" = (
 /obj/machinery/power/smes,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "bc" = (
 /obj/structure/table,
 /obj/item/stock_parts/cell/hyper,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "be" = (
@@ -357,11 +357,11 @@
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "bs" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "bt" = (
@@ -513,7 +513,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "ca" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east{
 	start_charge = 0
 	},
@@ -538,7 +538,7 @@
 /area/ruin/space/has_grav/derelictoutpost/dockedship)
 "ce" = (
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "ch" = (
@@ -551,11 +551,11 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost)
 "cj" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost)
 "ck" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/south{
 	start_charge = 0
 	},
@@ -584,7 +584,7 @@
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "cq" = (
 /obj/structure/barricade/wooden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "cr" = (
@@ -593,7 +593,7 @@
 	req_access_txt = "10"
 	},
 /obj/structure/barricade/wooden,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/powerstorage)
 "cu" = (
@@ -615,12 +615,12 @@
 	name = "checkpoint security doors"
 	},
 /obj/machinery/door/firedoor,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost)
 "cA" = (
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost)
 "cC" = (
@@ -658,18 +658,18 @@
 /obj/structure/closet/crate{
 	icon_state = "crateopen"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "cI" = (
 /obj/structure/janitorialcart,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "cJ" = (
 /obj/structure/alien/weeds/creature,
 /obj/item/mop,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "cK" = (
@@ -679,7 +679,7 @@
 	name = "dried blood trail"
 	},
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "cL" = (
@@ -689,13 +689,13 @@
 	name = "dried blood trail"
 	},
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "cM" = (
 /obj/structure/alien/weeds/creature,
 /obj/structure/glowshroom/single,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "cO" = (
@@ -783,7 +783,7 @@
 	},
 /obj/structure/alien/weeds/creature,
 /obj/machinery/light/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "dg" = (
@@ -793,7 +793,7 @@
 	name = "dried blood trail"
 	},
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
 "dh" = (
@@ -808,7 +808,7 @@
 	desc = "A pried-open airlock. Scratch marks mark the sidings of the door.";
 	name = "pried-open airlock"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost/cargobay)
@@ -820,7 +820,7 @@
 	},
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost)
 "dk" = (
@@ -856,7 +856,7 @@
 	name = "dried blood trail"
 	},
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost)
 "ds" = (
@@ -869,7 +869,7 @@
 	name = "dried blood trail"
 	},
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost)
 "dC" = (
@@ -882,7 +882,7 @@
 /area/ruin/space/has_grav/derelictoutpost)
 "dI" = (
 /obj/structure/alien/weeds/creature,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost)
 "dJ" = (
@@ -917,7 +917,7 @@
 	icon_state = "trails_1";
 	name = "dried blood trail"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost)
 "dN" = (
@@ -1017,7 +1017,7 @@
 	icon_state = "trails_1";
 	name = "dried blood trail"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost)
 "eh" = (
@@ -1047,7 +1047,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargostorage)
 "el" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east{
 	start_charge = 0
 	},
@@ -1080,7 +1080,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargostorage)
 "eu" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargostorage)
 "ew" = (
@@ -1115,7 +1115,7 @@
 	icon_state = "trails_1";
 	name = "dried blood trail"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargostorage)
 "eA" = (
@@ -1165,7 +1165,7 @@
 	icon_state = "trails_1";
 	name = "dried blood trail"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/derelictoutpost/cargostorage)
 "eJ" = (
@@ -1179,7 +1179,7 @@
 	icon_state = "trails_1";
 	name = "dried blood trail"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost/cargostorage)
 "eK" = (
@@ -1188,7 +1188,7 @@
 	icon_state = "trails_1";
 	name = "dried blood trail"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/derelictoutpost)
 "eL" = (

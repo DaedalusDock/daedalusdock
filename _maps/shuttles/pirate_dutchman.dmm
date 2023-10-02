@@ -381,7 +381,7 @@
 /area/shuttle/pirate/flying_dutchman)
 "ny" = (
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/space/basic,
 /area/shuttle/pirate/flying_dutchman)
@@ -476,7 +476,7 @@
 /obj/machinery/power/tracker{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/solarpanel/airless,
 /area/shuttle/pirate/flying_dutchman)
 "vi" = (
@@ -683,7 +683,7 @@
 /turf/open/floor/wood/airless,
 /area/shuttle/pirate/flying_dutchman)
 "Gt" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/closed/wall/mineral/wood/nonmetal,
 /area/shuttle/pirate/flying_dutchman)
 "Hh" = (
@@ -787,7 +787,7 @@
 /area/shuttle/pirate/flying_dutchman)
 "Oe" = (
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/space/basic,
 /area/shuttle/pirate/flying_dutchman)
 "OL" = (
@@ -848,7 +848,7 @@
 /area/shuttle/pirate/flying_dutchman)
 "RY" = (
 /obj/machinery/power/solar/fake,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/solarpanel/airless,
 /area/shuttle/pirate/flying_dutchman)
 "Sp" = (

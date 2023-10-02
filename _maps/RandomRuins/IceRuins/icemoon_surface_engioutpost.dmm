@@ -3,7 +3,7 @@
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 "ag" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/port_gen/pacman,
 /turf/open/floor/plating,
 /area/ruin/planetengi)
@@ -33,7 +33,7 @@
 "ar" = (
 /obj/effect/mob_spawn/corpse/human/assistant,
 /obj/item/construction/rcd,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/catwalk_floor/iron,
 /area/ruin/planetengi)
 "as" = (
@@ -43,7 +43,7 @@
 /obj/effect/turf_decal/trimline/yellow/filled/warning{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east{
 	start_charge = 0
 	},
@@ -57,7 +57,7 @@
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "av" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/planetengi)
 "aw" = (
@@ -85,7 +85,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "aA" = (
@@ -116,7 +116,7 @@
 /turf/open/misc/snow/actually_safe,
 /area/ruin/planetengi)
 "aF" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/catwalk_floor/iron,
 /area/ruin/planetengi)
 "aG" = (
@@ -135,7 +135,7 @@
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "aJ" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "aK" = (
@@ -175,7 +175,7 @@
 /area/ruin/planetengi)
 "aW" = (
 /obj/item/clothing/under/rank/engineering/chief_engineer,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "aX" = (
@@ -234,7 +234,7 @@
 	name = "Production Room";
 	req_access_txt = "204"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "br" = (
@@ -376,7 +376,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "bZ" = (
@@ -435,7 +435,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "cj" = (
@@ -443,7 +443,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "ck" = (
@@ -482,7 +482,7 @@
 /area/ruin/planetengi)
 "ct" = (
 /obj/structure/window/reinforced/plasma/spawner/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/ruin/planetengi)
 "cu" = (
@@ -540,7 +540,7 @@
 /obj/effect/decal/remains/human,
 /obj/item/mod/control/pre_equipped/engineering,
 /obj/effect/decal/cleanable/blood/old,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/iron,
 /area/ruin/planetengi)
@@ -594,7 +594,7 @@
 /turf/open/floor/iron,
 /area/ruin/planetengi)
 "cX" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/emitter/welded{
 	dir = 1
 	},

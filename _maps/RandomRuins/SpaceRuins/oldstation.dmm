@@ -301,7 +301,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "aU" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "aV" = (
@@ -387,7 +387,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/bridge)
 "bh" = (
@@ -409,7 +409,7 @@
 "bi" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/bridge)
 "bj" = (
@@ -534,7 +534,7 @@
 "bx" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/airlock/maintenance_hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "by" = (
@@ -544,7 +544,7 @@
 "bz" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
@@ -557,13 +557,13 @@
 /obj/effect/spawner/structure/window/hollow/reinforced/end{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/bridge)
 "bC" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 6
 	},
@@ -644,7 +644,7 @@
 "bQ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "bR" = (
@@ -733,7 +733,7 @@
 "ce" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north{
 	start_charge = 0
 	},
@@ -755,7 +755,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/airlock/command,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
@@ -769,7 +769,7 @@
 "ck" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -884,7 +884,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "cB" = (
@@ -892,7 +892,7 @@
 /obj/machinery/door/airlock/science,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "cC" = (
@@ -903,7 +903,7 @@
 "cD" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "cE" = (
@@ -947,7 +947,7 @@
 /obj/effect/spawner/structure/window/hollow/reinforced/end{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/bridge)
 "cN" = (
@@ -960,7 +960,7 @@
 "cO" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
@@ -1108,7 +1108,7 @@
 "dk" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 10
 	},
@@ -1128,7 +1128,7 @@
 	pixel_x = -23
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "dn" = (
@@ -1216,7 +1216,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
@@ -1236,7 +1236,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor/closed,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
@@ -1249,14 +1249,14 @@
 /obj/machinery/door/airlock/science,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor/closed,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "dD" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/roller,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -1270,7 +1270,7 @@
 "dG" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /mob/living/simple_animal/hostile/alien/drone,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -1299,14 +1299,14 @@
 	name = "Bridge"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/bridge)
 "dM" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -1319,13 +1319,13 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/north,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "dO" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hydro)
 "dP" = (
@@ -1353,7 +1353,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/west{
 	start_charge = 0
 	},
@@ -1404,7 +1404,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/cobweb,
 /obj/machinery/light_switch/directional/west,
 /obj/machinery/power/apc/auto_name/directional/north{
@@ -1430,7 +1430,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "ec" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north{
 	start_charge = 0
 	},
@@ -1562,7 +1562,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/sec)
 "eu" = (
@@ -1612,7 +1612,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light_switch/directional/north,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
@@ -1708,7 +1708,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "eP" = (
@@ -1743,7 +1743,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hydro)
 "eT" = (
@@ -1752,7 +1752,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
@@ -1766,7 +1766,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/sec)
 "eV" = (
@@ -1811,7 +1811,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "fd" = (
@@ -1824,7 +1824,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "ff" = (
@@ -1840,7 +1840,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "fh" = (
@@ -1876,7 +1876,7 @@
 "fm" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/airlock/maintenance_hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
@@ -1921,7 +1921,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "fu" = (
@@ -1977,7 +1977,7 @@
 "fE" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "fF" = (
@@ -2040,7 +2040,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -2125,7 +2125,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/mining)
 "fY" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
@@ -2155,7 +2155,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/mining)
 "ge" = (
 /obj/structure/alien/weeds,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/gibs/old,
 /obj/effect/decal/cleanable/blood/old,
 /obj/machinery/power/apc/auto_name/directional/east{
@@ -2180,7 +2180,7 @@
 	},
 /obj/effect/turf_decal/tile/brown,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
@@ -2188,7 +2188,7 @@
 "gi" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
@@ -2215,7 +2215,7 @@
 "gl" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/airlock/maintenance_hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
@@ -2223,7 +2223,7 @@
 "gm" = (
 /obj/machinery/door/firedoor/closed,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
@@ -2233,13 +2233,13 @@
 /obj/machinery/door/poddoor{
 	id = "ancient"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "go" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
@@ -2248,7 +2248,7 @@
 "gp" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 8
@@ -2258,7 +2258,7 @@
 "gq" = (
 /obj/machinery/door/airlock/maintenance_hatch,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -2269,7 +2269,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "gr" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -2280,7 +2280,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "gs" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/cafeteria,
@@ -2288,7 +2288,7 @@
 "gt" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 4
 	},
@@ -2311,7 +2311,7 @@
 	pixel_y = 23
 	},
 /obj/effect/decal/cleanable/food/egg_smudge,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/has_grav/ancientstation/charlie/kitchen)
 "gw" = (
@@ -2322,13 +2322,13 @@
 "gx" = (
 /obj/machinery/door/airlock/maintenance_hatch,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "gy" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -2347,13 +2347,13 @@
 /obj/machinery/door/poddoor{
 	id = "ancient"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/sec)
 "gB" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/sec)
 "gC" = (
@@ -2377,7 +2377,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/item/reagent_containers/glass/bottle/nutrient/ez,
 /obj/item/reagent_containers/glass/bottle/nutrient/l4z,
 /obj/item/reagent_containers/glass/bottle/nutrient/rh,
@@ -2459,12 +2459,12 @@
 	name = "Engineering Storage"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/delta/storage)
 "gT" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/airless,
@@ -2484,7 +2484,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "gW" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "gX" = (
@@ -2526,7 +2526,7 @@
 /obj/machinery/door/firedoor,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "he" = (
@@ -2563,7 +2563,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "hk" = (
@@ -2575,7 +2575,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "hm" = (
@@ -2584,7 +2584,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "hn" = (
@@ -2599,13 +2599,13 @@
 "ho" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/yellow,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "hp" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
@@ -2617,7 +2617,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "hr" = (
@@ -2707,7 +2707,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "hE" = (
@@ -2788,7 +2788,7 @@
 "hL" = (
 /obj/machinery/light/small/directional/east,
 /obj/structure/alien/weeds,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/ancientstation/delta/ai)
@@ -2807,7 +2807,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "hP" = (
@@ -2829,7 +2829,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "hR" = (
@@ -2916,7 +2916,7 @@
 "ia" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -2934,7 +2934,7 @@
 	id = "ancient"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -2953,7 +2953,7 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -2972,7 +2972,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/solar_control{
 	dir = 1;
 	id = "aftport";
@@ -3004,14 +3004,14 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "ih" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/generic,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "ii" = (
@@ -3032,7 +3032,7 @@
 /obj/structure/transit_tube{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3177,7 +3177,7 @@
 	dir = 4
 	},
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3208,7 +3208,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east{
 	start_charge = 0
 	},
@@ -3219,7 +3219,7 @@
 	name = "Medical Bay"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor/closed,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -3380,7 +3380,7 @@
 "iO" = (
 /obj/structure/transit_tube/crossing/horizontal,
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3463,7 +3463,7 @@
 	name = "backup power storage unit"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/storage)
 "iW" = (
@@ -3542,7 +3542,7 @@
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "jh" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/east,
 /obj/effect/turf_decal/tile/yellow{
@@ -3562,7 +3562,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/storage)
 "jk" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -3576,7 +3576,7 @@
 	dir = 5
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "jm" = (
@@ -3589,7 +3589,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "jn" = (
@@ -3625,7 +3625,7 @@
 /obj/structure/transit_tube{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3638,7 +3638,7 @@
 /obj/structure/transit_tube/station/reverse/flipped,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3650,7 +3650,7 @@
 "jr" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3666,7 +3666,7 @@
 	req_access_txt = "200"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3690,7 +3690,7 @@
 "jv" = (
 /obj/machinery/door/firedoor,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "jx" = (
@@ -3738,7 +3738,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/ai)
 "jD" = (
 /obj/item/solar_assembly,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/ruin/solars/ancientstation/charlie/solars)
 "jE" = (
@@ -3768,7 +3768,7 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "jJ" = (
@@ -3780,7 +3780,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "jK" = (
@@ -3848,7 +3848,7 @@
 "jQ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/item/stack/sheet/glass{
 	amount = 50
 	},
@@ -3862,7 +3862,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "jR" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/storage)
 "jS" = (
@@ -3886,7 +3886,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/dorms)
 "jV" = (
@@ -3919,7 +3919,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "jX" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3927,7 +3927,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hydro)
 "jY" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -3959,7 +3959,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "kb" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -3994,7 +3994,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/proto)
 "kh" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/ancientstation/delta/proto)
 "ki" = (
@@ -4177,7 +4177,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/external/ruin{
 	name = "Engineering External Access"
 	},
@@ -4197,7 +4197,7 @@
 "kJ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "kK" = (
@@ -4350,7 +4350,7 @@
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/ancientstation/delta/proto)
 "ld" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks,
 /obj/structure/alien/weeds,
 /turf/open/floor/iron/dark,
@@ -4462,7 +4462,7 @@
 "lv" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/power/apc/auto_name/directional/east{
@@ -4475,12 +4475,12 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/dorms)
 "lx" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light/small/directional/north,
 /obj/machinery/power/apc/auto_name/directional/north{
 	start_charge = 0
@@ -4509,7 +4509,7 @@
 	name = "Prototype Laboratory";
 	req_access_txt = "200"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/side,
 /area/ruin/space/has_grav/ancientstation/delta/proto)
@@ -4637,7 +4637,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/dorms)
 "lS" = (
 /obj/machinery/power/solar,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/ruin/solars/ancientstation/charlie/solars)
 "lT" = (
@@ -4664,7 +4664,7 @@
 "lX" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/airlock/maintenance_hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -4683,7 +4683,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "lZ" = (
 /obj/structure/alien/weeds,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/ancientstation/delta/ai)
@@ -4720,19 +4720,19 @@
 "mh" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/firealarm/directional/east,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "mi" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "mj" = (
 /obj/machinery/door/airlock/highsecurity,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/structure/alien/weeds,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/xtracks,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/plating,
@@ -4811,7 +4811,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/firealarm/directional/south,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "mt" = (
@@ -4836,7 +4836,7 @@
 /obj/item/paper/fluff/ruins/oldstation/protosleep{
 	info = "<b>*Prototype Sleeper*</b><br><br>We have deliverted the lastest in medical technology to the medical bay for your use."
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -4867,7 +4867,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "my" = (
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/template_noop,
 /area/ruin/solars/ancientstation/charlie/solars)
 "mz" = (
@@ -4967,7 +4967,7 @@
 /obj/machinery/door/airlock/mining/glass{
 	name = "Mining Equipment"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -5012,7 +5012,7 @@
 	},
 /obj/effect/turf_decal/tile/brown,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/south{
 	start_charge = 0
 	},
@@ -5024,11 +5024,11 @@
 	},
 /obj/effect/turf_decal/tile/brown,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/beta/mining)
 "mS" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -5060,7 +5060,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/beta/mining)
 "mV" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
@@ -5083,7 +5083,7 @@
 "mY" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -5093,7 +5093,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "mZ" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -5101,7 +5101,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "na" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
@@ -5124,7 +5124,7 @@
 	id = "ancient"
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -5135,7 +5135,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "nc" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -5158,7 +5158,7 @@
 "ne" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 8
@@ -5290,14 +5290,14 @@
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "nu" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/item/stack/rods,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/visible/layer4,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "nv" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/atmos/glass{
 	name = "Station Atmospherics"
@@ -5305,11 +5305,11 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "nw" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "nx" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/item/shard,
 /obj/machinery/atmospherics/components/binary/pump/layer4,
 /turf/open/floor/plating/airless,
@@ -5412,7 +5412,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "nJ" = (
@@ -5420,7 +5420,7 @@
 /obj/machinery/door/airlock/engineering{
 	name = "Backup Generator Room"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/storage)
 "nK" = (
@@ -5437,7 +5437,7 @@
 "nL" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/alien/weeds,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -5464,7 +5464,7 @@
 /obj/machinery/door/firedoor,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "nP" = (
@@ -5495,7 +5495,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/directional/east,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "nV" = (
@@ -5508,7 +5508,7 @@
 	dir = 1
 	},
 /obj/structure/alien/weeds,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -5521,7 +5521,7 @@
 	dir = 1
 	},
 /mob/living/simple_animal/hostile/alien,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "nX" = (
@@ -5541,7 +5541,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/layer4{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "oa" = (
@@ -5583,7 +5583,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "oe" = (
@@ -5654,7 +5654,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/cobweb,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -5667,7 +5667,7 @@
 "oo" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -5763,7 +5763,7 @@
 	pixel_x = -23
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -5852,7 +5852,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "oM" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/item/stack/rods,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -5865,7 +5865,7 @@
 "oN" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/xenoblood/xgibs/larva/body,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "oO" = (
@@ -5881,14 +5881,14 @@
 	icon_state = "medium"
 	},
 /obj/effect/decal/cleanable/glass,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/west{
 	start_charge = 0
 	},
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/storage)
 "oQ" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/item/shard{
 	icon_state = "small"
 	},
@@ -5916,7 +5916,7 @@
 "oU" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/firealarm/directional/west,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/xenoblood/xgibs/up,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -5944,7 +5944,7 @@
 	pixel_x = -23
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
@@ -5967,7 +5967,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "pc" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/glass,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
@@ -6019,7 +6019,7 @@
 /obj/machinery/power/apc/auto_name/directional/east{
 	start_charge = 0
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/dorms)
 "pi" = (
@@ -6094,7 +6094,7 @@
 /obj/machinery/power/apc/auto_name/directional/south{
 	start_charge = 0
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/delta/storage)
 "pB" = (
@@ -6158,7 +6158,7 @@
 /turf/open/floor/engine/o2,
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "qA" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating/airless,
@@ -6185,7 +6185,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/firealarm/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "rW" = (
@@ -6240,7 +6240,7 @@
 "ty" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "tz" = (
@@ -6258,7 +6258,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "tO" = (
@@ -6284,7 +6284,7 @@
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "uB" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -6295,7 +6295,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/hall)
 "uP" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating/airless,
@@ -6325,7 +6325,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/ruin/space/has_grav/ancientstation/charlie/kitchen)
 "vM" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -6374,13 +6374,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
 "wj" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/delta/storage)
 "wx" = (
@@ -6398,7 +6398,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "wL" = (
@@ -6411,7 +6411,7 @@
 "xr" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
@@ -6470,7 +6470,7 @@
 "zB" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
@@ -6485,7 +6485,7 @@
 "zH" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -6515,7 +6515,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "Af" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -6538,7 +6538,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "BX" = (
 /obj/effect/decal/cleanable/glass,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating/airless,
@@ -6566,7 +6566,7 @@
 "Dg" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
@@ -6587,7 +6587,7 @@
 /area/ruin/space/has_grav/ancientstation/beta/atmos)
 "Dt" = (
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/template_noop,
 /area/template_noop)
 "Dw" = (
@@ -6668,7 +6668,7 @@
 "Fv" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/dorms)
 "FH" = (
@@ -6688,7 +6688,7 @@
 "FP" = (
 /obj/machinery/power/rtg/old_station,
 /obj/structure/lattice/catwalk,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/template_noop,
 /area/template_noop)
 "FV" = (
@@ -6713,7 +6713,7 @@
 "GS" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 9
 	},
@@ -6755,13 +6755,13 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/blood/tracks,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "Iy" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 4
 	},
@@ -6833,7 +6833,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "KD" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/delta/storage)
 "KF" = (
@@ -6932,13 +6932,13 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/firealarm/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "MZ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 6
 	},
@@ -6947,7 +6947,7 @@
 "NE" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/charlie/hall)
@@ -7025,7 +7025,7 @@
 "Pd" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -7153,7 +7153,7 @@
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 5
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "Sn" = (
@@ -7211,7 +7211,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/firedoor/closed,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "TL" = (
@@ -7241,7 +7241,7 @@
 /area/ruin/space/has_grav/ancientstation/delta/storage)
 "UB" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north{
 	start_charge = 0
 	},
@@ -7282,13 +7282,13 @@
 /turf/closed/wall,
 /area/ruin/space/has_grav/ancientstation/delta/storage)
 "Wk" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "Wn" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
@@ -7310,7 +7310,7 @@
 "WA" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -7343,7 +7343,7 @@
 /area/ruin/space/has_grav/ancientstation/charlie/hydro)
 "XJ" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/ancientstation/charlie/engie)
 "Yc" = (
@@ -7364,7 +7364,7 @@
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 6
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/hall)
 "Yi" = (
@@ -7405,7 +7405,7 @@
 "YM" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
 	},

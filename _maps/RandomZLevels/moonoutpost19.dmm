@@ -78,7 +78,7 @@
 /obj/machinery/gateway/away{
 	calibrated = 0
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark{
 	heat_capacity = 1e+006
 	},
@@ -131,7 +131,7 @@
 	},
 /area/awaymission/moonoutpost19/syndicate)
 "bg" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark{
 	heat_capacity = 1e+006
 	},
@@ -255,7 +255,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -340,7 +340,7 @@
 /area/awaymission/moonoutpost19/syndicate)
 "bC" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -475,7 +475,7 @@
 	name = "Gateway";
 	req_access_txt = "150"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -491,7 +491,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 9
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -501,7 +501,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -512,7 +512,7 @@
 	inputting = 0;
 	output_level = 15000
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -634,7 +634,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006;
 	initial_gas = list("carbon_dioxide" = 48.7, "nitrogen" = 13.2, "oxygen" = 32.4);
@@ -676,7 +676,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -688,7 +688,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -761,7 +761,7 @@
 	},
 /area/awaymission/moonoutpost19/syndicate)
 "ct" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006;
 	initial_gas = list("carbon_dioxide" = 48.7, "nitrogen" = 13.2, "oxygen" = 32.4)
@@ -769,7 +769,7 @@
 /area/awaymission/moonoutpost19/syndicate)
 "cu" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006;
 	initial_gas = list("carbon_dioxide" = 48.7, "nitrogen" = 13.2, "oxygen" = 32.4);
@@ -781,7 +781,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006;
 	initial_gas = list("carbon_dioxide" = 48.7, "nitrogen" = 13.2, "oxygen" = 32.4);
@@ -793,13 +793,13 @@
 	name = "Power Maintenance";
 	req_access_txt = "150"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/syndicate)
 "cx" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -811,7 +811,7 @@
 /area/awaymission/moonoutpost19/syndicate)
 "cz" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -927,7 +927,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006;
 	initial_gas = list("carbon_dioxide" = 48.7, "nitrogen" = 13.2, "oxygen" = 32.4);
@@ -964,7 +964,7 @@
 	name = "P.A.C.M.A.N.-type portable generator"
 	},
 /obj/effect/turf_decal/stripes/line,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -975,7 +975,7 @@
 	name = "S.U.P.E.R.P.A.C.M.A.N.-type portable generator"
 	},
 /obj/effect/turf_decal/stripes/line,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1404,7 +1404,7 @@
 	dir = 10
 	},
 /obj/structure/alien/weeds,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/moonoutpost19/research)
 "ej" = (
@@ -1412,7 +1412,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -1484,7 +1484,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/moonoutpost19/research)
 "ey" = (
@@ -1510,7 +1510,7 @@
 	name = "Acid-Proof containment chamber blast door"
 	},
 /obj/effect/spawner/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1566,7 +1566,7 @@
 /obj/structure/chair/office/light{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/moonoutpost19/research)
 "eO" = (
@@ -1600,7 +1600,7 @@
 /obj/machinery/power/port_gen/pacman{
 	name = "P.A.C.M.A.N.-type portable generator"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1611,7 +1611,7 @@
 /obj/structure/sign/poster/official/build{
 	pixel_y = 32
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1625,7 +1625,7 @@
 	pixel_y = 23;
 	req_access = null
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1637,20 +1637,20 @@
 	inputting = 0;
 	output_level = 15000
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/research)
 "eX" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/research)
 "eY" = (
 /obj/item/newspaper,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1661,7 +1661,7 @@
 	dir = 8;
 	icon_state = "ltrails_1"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1682,7 +1682,7 @@
 	dir = 8;
 	icon_state = "ltrails_1"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -1696,7 +1696,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006
 	},
@@ -1707,7 +1707,7 @@
 	},
 /obj/structure/alien/weeds,
 /obj/effect/turf_decal/tile/purple,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006
 	},
@@ -1773,7 +1773,7 @@
 /area/awaymission/moonoutpost19/research)
 "fl" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/moonoutpost19/research)
 "fm" = (
@@ -1817,20 +1817,20 @@
 "fw" = (
 /obj/structure/alien/weeds,
 /obj/effect/turf_decal/tile/purple,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/research)
 "fy" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/research)
 "fz" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -1840,21 +1840,21 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/research)
 "fB" = (
 /obj/structure/alien/weeds/node,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/moonoutpost19/research)
 "fC" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible{
 	dir = 5
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/moonoutpost19/research)
 "fD" = (
@@ -1895,7 +1895,7 @@
 /obj/item/shard{
 	icon_state = "medium"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/engine,
 /area/awaymission/moonoutpost19/research)
 "fF" = (
@@ -1970,14 +1970,14 @@
 /area/awaymission/moonoutpost19/research)
 "fQ" = (
 /obj/machinery/door/airlock/maintenance,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/research)
 "fR" = (
 /obj/effect/decal/cleanable/oil,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -2067,7 +2067,7 @@
 	},
 /obj/structure/alien/weeds,
 /obj/effect/turf_decal/tile/purple,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006
 	},
@@ -2175,7 +2175,7 @@
 /obj/machinery/firealarm/directional/east,
 /obj/structure/alien/weeds,
 /obj/effect/turf_decal/tile/purple,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006
 	},
@@ -2262,7 +2262,7 @@
 	name = "Acid-Proof containment chamber blast door"
 	},
 /obj/effect/spawner/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -2314,7 +2314,7 @@
 /obj/machinery/computer/monitor/secret{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -2374,7 +2374,7 @@
 	start_charge = 100
 	},
 /obj/effect/turf_decal/tile/purple,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white{
 	heat_capacity = 1e+006
 	},
@@ -2572,14 +2572,14 @@
 /area/awaymission/moonoutpost19/research)
 "hd" = (
 /obj/effect/decal/cleanable/cobweb,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/research)
 "he" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -3614,7 +3614,7 @@
 	pixel_y = 25;
 	start_charge = 100
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3699,20 +3699,20 @@
 "jT" = (
 /obj/machinery/light/small/directional/north,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "jU" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "jV" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3720,7 +3720,7 @@
 "jX" = (
 /obj/item/cigbutt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3735,7 +3735,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3744,7 +3744,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3754,14 +3754,14 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "kb" = (
 /obj/machinery/door/firedoor/closed,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3769,7 +3769,7 @@
 "ke" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006;
 	initial_gas = list("carbon_dioxide" = 48.7, "nitrogen" = 13.2, "oxygen" = 32.4);
@@ -3779,7 +3779,7 @@
 "kf" = (
 /obj/machinery/light/small/directional/north,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006;
 	initial_gas = list("carbon_dioxide" = 48.7, "nitrogen" = 13.2, "oxygen" = 32.4);
@@ -3790,7 +3790,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/firedoor/closed,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3798,7 +3798,7 @@
 "kk" = (
 /obj/machinery/light/small/directional/south,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -5339,7 +5339,7 @@
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "qg" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
@@ -5552,7 +5552,7 @@
 /obj/machinery/power/port_gen/pacman/super{
 	name = "S.U.P.E.R.P.A.C.M.A.N.-type portable generator"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
@@ -5746,7 +5746,7 @@
 	},
 /area/awaymission/moonoutpost19/hive)
 "AC" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
@@ -5797,7 +5797,7 @@
 	inject_flags = 1;
 	target_type = /obj/machinery/door/airlock
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -5829,7 +5829,7 @@
 	},
 /area/awaymission/moonoutpost19/main)
 "DZ" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006;
@@ -5875,7 +5875,7 @@
 /area/awaymission/moonoutpost19/arrivals)
 "Gn" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark{
 	heat_capacity = 1e+006
 	},
@@ -5900,7 +5900,7 @@
 /area/awaymission/moonoutpost19/arrivals)
 "Hm" = (
 /obj/effect/decal/cleanable/oil,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
@@ -5919,7 +5919,7 @@
 /area/awaymission/moonoutpost19/main)
 "HQ" = (
 /obj/machinery/power/shieldwallgen/unlocked,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -6008,7 +6008,7 @@
 	},
 /area/awaymission/moonoutpost19/hive)
 "KE" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/iron{
 	dir = 8;
@@ -6299,7 +6299,7 @@
 	},
 /area/awaymission/moonoutpost19/research)
 "VB" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/iron{
 	dir = 8;
@@ -6455,7 +6455,7 @@
 /area/awaymission/moonoutpost19/arrivals)
 "ZG" = (
 /obj/item/stack/rods,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006

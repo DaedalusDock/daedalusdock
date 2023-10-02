@@ -87,26 +87,26 @@
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 9
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/smooth_large,
 /area/shuttle/abandoned/engine)
 "an" = (
 /obj/machinery/power/terminal{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/port_gen/pacman,
 /obj/effect/turf_decal/bot_white,
 /turf/open/floor/iron/smooth_large,
 /area/shuttle/abandoned/engine)
 "ao" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/port_gen/pacman/super,
 /obj/effect/turf_decal/bot_white,
 /turf/open/floor/iron/smooth_large,
 /area/shuttle/abandoned/engine)
 "ap" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
@@ -122,7 +122,7 @@
 /obj/effect/turf_decal/stripes/white/box,
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/airlock/hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
@@ -207,7 +207,7 @@
 /turf/closed/wall/mineral/plastitanium/nodiagonal,
 /area/shuttle/abandoned/cargo)
 "aE" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light/cold/no_nightlight/directional/east,
 /obj/machinery/light/cold/no_nightlight/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -529,7 +529,7 @@
 /obj/effect/turf_decal/stripes/white/box,
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/airlock/hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
@@ -564,7 +564,7 @@
 /turf/open/floor/iron/dark/textured_large,
 /area/shuttle/abandoned/bridge)
 "bL" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
@@ -650,7 +650,7 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/abandoned/engine)
 "ca" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/table,
 /obj/machinery/cell_charger,
 /obj/item/stock_parts/cell/high,
@@ -695,7 +695,7 @@
 "ck" = (
 /obj/effect/turf_decal/stripes/white/box,
 /obj/machinery/door/airlock/hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
@@ -732,7 +732,7 @@
 /obj/effect/turf_decal/stripes/red/line{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
@@ -758,7 +758,7 @@
 /turf/closed/wall/mineral/plastitanium/nodiagonal,
 /area/shuttle/abandoned/cargo)
 "cE" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light/cold/no_nightlight/directional/east,
 /obj/machinery/light/cold/no_nightlight/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -894,7 +894,7 @@
 /turf/open/floor/plastic,
 /area/shuttle/abandoned/bridge)
 "dg" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/chair{
 	dir = 4;
 	pixel_x = 7
@@ -951,7 +951,7 @@
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/abandoned/bridge)
 "dm" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/siding/white,
 /obj/machinery/atmospherics/components/unary/vent_pump/on,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -986,7 +986,7 @@
 "dq" = (
 /obj/effect/turf_decal/stripes/white/box,
 /obj/machinery/door/airlock/hatch,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 4
 	},
@@ -1303,7 +1303,7 @@
 	},
 /area/shuttle/abandoned/bridge)
 "IC" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},
@@ -1311,7 +1311,7 @@
 /turf/open/floor/catwalk_floor,
 /area/shuttle/abandoned/bridge)
 "Ki" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 9
 	},
@@ -1322,7 +1322,7 @@
 /turf/open/floor/catwalk_floor,
 /area/shuttle/abandoned/bridge)
 "LM" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 4
 	},
@@ -1372,7 +1372,7 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/abandoned/cargo)
 "Rg" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 4
 	},
@@ -1452,7 +1452,7 @@
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/bridge)
 "ZA" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
 	},

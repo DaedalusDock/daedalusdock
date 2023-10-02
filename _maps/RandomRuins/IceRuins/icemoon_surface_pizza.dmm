@@ -74,7 +74,7 @@
 /turf/open/floor/iron/freezer,
 /area/ruin/pizzeria)
 "cv" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -123,7 +123,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
@@ -322,7 +322,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/ruin/pizzeria/kitchen)
 "jY" = (
@@ -332,7 +332,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -394,7 +394,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark/side{
 	dir = 10
 	},
@@ -623,7 +623,7 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/surface/outdoors/nospawn)
 "vO" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/bot,
 /obj/machinery/light/small/broken/directional/north,
 /turf/open/floor/plating,
@@ -720,7 +720,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north{
 	start_charge = 0
 	},
@@ -733,7 +733,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /turf/open/floor/iron/dark/side{
 	dir = 10
@@ -754,7 +754,7 @@
 	dir = 4;
 	pixel_x = -12
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /obj/structure/mirror/directional/west,
 /turf/open/floor/iron/freezer,
@@ -789,7 +789,7 @@
 	},
 /area/ruin/pizzeria)
 "AA" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock{
 	name = "Kitchen";
 	req_access_txt = "28"
@@ -854,7 +854,7 @@
 	},
 /area/ruin/pizzeria)
 "CZ" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
@@ -974,7 +974,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -1122,7 +1122,7 @@
 	},
 /area/ruin/pizzeria)
 "Lf" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden{
 	dir = 6
 	},
@@ -1258,7 +1258,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /turf/open/floor/iron/freezer,
 /area/ruin/pizzeria)
@@ -1305,7 +1305,7 @@
 	},
 /area/ruin/pizzeria)
 "PE" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /turf/open/floor/iron/freezer,
 /area/ruin/pizzeria)
@@ -1429,7 +1429,7 @@
 /obj/machinery/door/airlock{
 	name = "Restrooms"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/simple/supply/hidden,
 /turf/open/floor/iron/freezer,
 /area/ruin/pizzeria)
@@ -1649,7 +1649,7 @@
 /turf/open/floor/iron/checker,
 /area/ruin/pizzeria)
 "Ym" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/maintenance{
 	name = "Maintenance Access";
 	req_access_txt = "28"

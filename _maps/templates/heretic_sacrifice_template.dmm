@@ -37,7 +37,7 @@
 /turf/open/misc/ironsand,
 /area/centcom/heretic_sacrifice/rust)
 "fh" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/centcom/heretic_sacrifice/rust)
 "gJ" = (
@@ -53,7 +53,7 @@
 /area/centcom/heretic_sacrifice/flesh)
 "jg" = (
 /obj/effect/decal/cleanable/blood/old,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/rust,
 /area/centcom/heretic_sacrifice/rust)
 "jB" = (
@@ -75,7 +75,7 @@
 /area/centcom/heretic_sacrifice/rust)
 "mG" = (
 /obj/effect/turf_decal/weather,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/rust,
 /area/centcom/heretic_sacrifice/rust)
 "mR" = (
@@ -203,7 +203,7 @@
 /turf/open/floor/plating/rust,
 /area/centcom/heretic_sacrifice/rust)
 "uT" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/rust,
 /area/centcom/heretic_sacrifice/rust)
 "vs" = (

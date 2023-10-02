@@ -50,7 +50,7 @@
 	name = "Telecommunications APC";
 	pixel_y = -25
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/telecomms)
 "o" = (
@@ -168,7 +168,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/modular_map_connector,
 /obj/machinery/door/airlock/security{
 	name = "Security Office";
@@ -213,7 +213,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer4{
 	dir = 5
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/ruin/syndicate_lava_base/telecomms)
 "Q" = (

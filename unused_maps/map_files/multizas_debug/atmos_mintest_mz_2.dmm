@@ -54,7 +54,7 @@
 /area/hallway/primary/upper)
 "n" = (
 /obj/machinery/light/floor/has_bulb,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/iron,
 /area/hallway/primary/upper)

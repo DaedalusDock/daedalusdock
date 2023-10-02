@@ -44,12 +44,12 @@
 /area/ruin/tcommsat_oldaisat)
 "ak" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/ruin/tcommsat_oldaisat)
 "al" = (
 /obj/machinery/light/small/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/ruin/tcommsat_oldaisat)
 "am" = (
@@ -86,7 +86,7 @@
 /turf/template_noop,
 /area/template_noop)
 "au" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/ruin/tcommsat_oldaisat)
 "av" = (

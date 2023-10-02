@@ -90,7 +90,7 @@
 /obj/machinery/light/small/directional/north,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/button/door/directional/north{
 	id = "caravantrade3_cargo_port";
 	name = "Cargo Blast Door Control"
@@ -223,7 +223,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/machinery/light/small/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/button/door/directional/north{
 	id = "caravantrade2_cargo_port";
 	name = "Cargo Blast Door Control"
@@ -440,7 +440,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/shuttle/caravan/freighter3)
 "gT" = (
@@ -559,7 +559,7 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/shuttle/caravan/freighter3)
 "hv" = (
@@ -665,7 +665,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/shuttle/caravan/freighter3)
 "ia" = (
@@ -746,7 +746,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/shuttle/caravan/freighter2)
 "is" = (
@@ -853,7 +853,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/shuttle/caravan/freighter2)
 "iU" = (
@@ -933,7 +933,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating/airless,
 /area/shuttle/caravan/freighter2)
 "jq" = (

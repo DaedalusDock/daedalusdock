@@ -278,7 +278,7 @@
 	name = "Engineering APC";
 	pixel_x = 25
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/engineering)
 "bn" = (
@@ -331,7 +331,7 @@
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "bD" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "bE" = (
@@ -466,7 +466,7 @@
 /obj/machinery/gateway/away{
 	calibrated = 0
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "bU" = (
@@ -510,7 +510,7 @@
 "bZ" = (
 /obj/effect/landmark/awaystart,
 /obj/effect/turf_decal/stripes/line,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "ca" = (
@@ -525,7 +525,7 @@
 	name = "Gateway APC";
 	pixel_x = 25
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "cf" = (
@@ -563,18 +563,18 @@
 	dir = 2
 	},
 /obj/effect/landmark/awaystart,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "cl" = (
 /obj/machinery/light/directional/east,
 /obj/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "cn" = (
 /obj/machinery/light/small/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "cp" = (
@@ -629,7 +629,7 @@
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "cz" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /mob/living/simple_animal/hostile/syndicate/ranged/smg,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
@@ -660,7 +660,7 @@
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "cL" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /mob/living/simple_animal/hostile/syndicate/ranged,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
@@ -695,7 +695,7 @@
 	name = "Gateway Access";
 	req_access_txt = "205"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/gateway)
 "cS" = (
@@ -704,12 +704,12 @@
 	name = "Genetics APC";
 	pixel_x = 25
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/genetics)
 "cY" = (
 /obj/item/ammo_casing/c9mm,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "cZ" = (
@@ -776,12 +776,12 @@
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "dg" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior)
 "dk" = (
 /obj/effect/decal/cleanable/blood/drip,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "dl" = (
@@ -819,7 +819,7 @@
 /area/awaymission/research/interior/secure)
 "dy" = (
 /obj/machinery/light/small/directional/east,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "dz" = (
@@ -889,7 +889,7 @@
 /area/awaymission/research/interior/medbay)
 "dR" = (
 /obj/item/ammo_casing/c45,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "dW" = (
@@ -916,7 +916,7 @@
 /area/awaymission/research/interior)
 "dZ" = (
 /obj/machinery/light/small/directional/west,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "ea" = (
@@ -944,7 +944,7 @@
 "eg" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/machinery/light/small/directional/east,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "eh" = (
@@ -1002,7 +1002,7 @@
 	req_access_txt = "12"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "eu" = (
@@ -1107,7 +1107,7 @@
 /obj/machinery/door/airlock/maintenance_hatch{
 	req_access_txt = "12"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "eI" = (
@@ -1115,7 +1115,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "eJ" = (
@@ -1325,7 +1325,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "ft" = (
@@ -1334,7 +1334,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "fu" = (
@@ -1359,12 +1359,12 @@
 	capacity = 9e+006;
 	charge = 10000
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "fx" = (
 /obj/machinery/light/small/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "fy" = (
@@ -1373,7 +1373,7 @@
 	name = "Vault APC";
 	pixel_x = 25
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "fz" = (
@@ -1482,7 +1482,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "fO" = (
@@ -1570,7 +1570,7 @@
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "gf" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "gg" = (
@@ -1579,17 +1579,17 @@
 	name = "Power Storage";
 	req_access_txt = "205"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "gj" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /mob/living/simple_animal/hostile/nanotrasen/ranged/smg,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "gk" = (
 /obj/structure/barricade/security,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "gl" = (
@@ -1600,7 +1600,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/secure)
 "gn" = (
@@ -1611,12 +1611,12 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/secure)
 "gp" = (
 /obj/machinery/light/small/directional/south,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior)
 "gq" = (
@@ -1627,7 +1627,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior)
 "gB" = (
@@ -1654,7 +1654,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "gQ" = (
@@ -1821,7 +1821,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "hq" = (
@@ -1842,7 +1842,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "hs" = (
@@ -1877,7 +1877,7 @@
 /obj/effect/turf_decal/tile/purple{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "hz" = (
@@ -1917,7 +1917,7 @@
 /area/awaymission/research/interior)
 "hD" = (
 /obj/machinery/light/small/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "hE" = (
@@ -1933,7 +1933,7 @@
 /area/awaymission/research/interior/security)
 "hF" = (
 /obj/effect/spawner/structure/window/reinforced,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/security)
 "hG" = (
@@ -1952,7 +1952,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "hI" = (
@@ -2052,7 +2052,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "hS" = (
@@ -2132,7 +2132,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "il" = (
@@ -2165,7 +2165,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "it" = (
@@ -2175,7 +2175,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "iv" = (
@@ -2183,7 +2183,7 @@
 	name = "Security Maintenance";
 	req_access_txt = "63"
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "iA" = (
@@ -2218,7 +2218,7 @@
 /area/awaymission/research/interior)
 "iF" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/security)
 "iJ" = (
@@ -2270,7 +2270,7 @@
 /turf/open/floor/iron,
 /area/awaymission/research/interior/maint)
 "iU" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/awaymission/research/interior/maint)
 "iW" = (
@@ -2652,7 +2652,7 @@
 	name = "Dorms APC";
 	pixel_x = 25
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/dorm)
 "kq" = (
@@ -3155,7 +3155,7 @@
 /area/awaymission/research/interior/dorm)
 "lW" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/medbay)
 "lX" = (
@@ -3173,7 +3173,7 @@
 /area/awaymission/research/interior/dorm)
 "lZ" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/escapepods)
 "ma" = (
@@ -3608,7 +3608,7 @@
 /area/awaymission/research/interior/escapepods)
 "pv" = (
 /obj/effect/turf_decal/tile/green/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "pS" = (
@@ -3644,7 +3644,7 @@
 /area/awaymission/research/interior/genetics)
 "qp" = (
 /obj/effect/turf_decal/tile/purple/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "qP" = (
@@ -3657,7 +3657,7 @@
 /turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "qS" = (
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "qY" = (
@@ -3665,7 +3665,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/red/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "qZ" = (
@@ -3745,7 +3745,7 @@
 "sM" = (
 /obj/structure/window/reinforced,
 /obj/effect/landmark/awaystart,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/awaymission/research/interior/gateway)
 "ts" = (
@@ -3883,7 +3883,7 @@
 /obj/item/paper_bin,
 /obj/item/pen,
 /obj/effect/turf_decal/tile/red/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "yj" = (
@@ -3923,7 +3923,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/awaymission/research/interior/maint)
 "zs" = (
@@ -4000,7 +4000,7 @@
 "CK" = (
 /obj/structure/table,
 /obj/effect/turf_decal/tile/red/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "CN" = (
@@ -4217,7 +4217,7 @@
 "Jw" = (
 /obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/purple/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior)
 "Jz" = (
@@ -4348,7 +4348,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/red/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "Ov" = (
@@ -4467,7 +4467,7 @@
 /area/awaymission/research/interior/engineering)
 "QQ" = (
 /obj/effect/turf_decal/tile/red/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/security)
 "Re" = (
@@ -4503,7 +4503,7 @@
 	pixel_x = 25
 	},
 /obj/effect/turf_decal/tile/purple/fourcorners,
-/obj/effect/mapping_helpers/smart_cable/color/yellow,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/awaymission/research/interior/cryo)
 "Th" = (

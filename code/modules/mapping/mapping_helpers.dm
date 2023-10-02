@@ -855,22 +855,17 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	floor.burn_tile()
 	qdel(src)
 
-/obj/effect/mapping_helpers/smart_cable
-	name = "smart cable"
-	icon = 'icons/obj/power_cond/cable.dmi'
+/obj/structure/cable/smart_cable
 	icon_state = "mapping_helper"
 	color = "yellow"
 	var/connect_to_same_color = TRUE
+	var/has_become_cable = FALSE
 
-/obj/effect/mapping_helpers/smart_cable/Initialize(mapload)
-	. = ..()
+/obj/structure/cable/smart_cable/Initialize(mapload)
 	spawn_cable()
-	return INITIALIZE_HINT_LATELOAD
+	return ..()
 
-/obj/effect/mapping_helpers/smart_cable/LateInitialize()
-	qdel(src)
-
-/obj/effect/mapping_helpers/smart_cable/proc/spawn_cable()
+/obj/structure/cable/smart_cable/proc/spawn_cable()
 	var/passed_directions = NONE
 	var/dir_count = 0
 	var/turf/my_turf = loc
@@ -878,7 +873,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/obj/machinery/power/smes/smes_on_myturf = locate() in my_turf
 	for(var/cardinal in GLOB.cardinals)
 		var/turf/step_turf = get_step(my_turf, cardinal)
-		for(var/obj/effect/mapping_helpers/smart_cable/cable_spawner in step_turf)
+		for(var/obj/structure/cable/smart_cable/cable_spawner in step_turf)
 			if((connect_to_same_color && cable_spawner.connect_to_same_color) && (color != cable_spawner.color))
 				continue
 			// If we are on a terminal, and there's an SMES in our step direction, disregard the connection
@@ -919,7 +914,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	if(dir_count > 1 && knot_desirable())
 		spawn_knotty_connecting_to_directions(passed_directions)
 
-/obj/effect/mapping_helpers/smart_cable/proc/knot_desirable()
+/obj/structure/cable/smart_cable/proc/knot_desirable()
 	var/turf/my_turf = loc
 	var/obj/machinery/power/terminal/terminal = locate() in my_turf
 	if(terminal)
@@ -938,12 +933,17 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		return TRUE
 	return FALSE
 
-/obj/effect/mapping_helpers/smart_cable/proc/spawn_cable_for_direction(direction)
-	var/obj/structure/cable/cable = new(loc)
+/obj/structure/cable/smart_cable/proc/spawn_cable_for_direction(direction)
+	var/obj/structure/cable/cable
+	if(has_become_cable)
+		cable = new(loc)
+	else
+		cable = src
+		has_become_cable = TRUE
 	cable.color = color
 	cable.set_directions(direction)
 
-/obj/effect/mapping_helpers/smart_cable/proc/spawn_cables_for_directions(directions)
+/obj/structure/cable/smart_cable/proc/spawn_cables_for_directions(directions)
 	if((directions & NORTH) && (directions & EAST))
 		spawn_cable_for_direction(NORTH|EAST)
 	if((directions & EAST) && (directions & SOUTH))
@@ -953,7 +953,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	if((directions & WEST) && (directions & NORTH))
 		spawn_cable_for_direction(WEST|NORTH)
 
-/obj/effect/mapping_helpers/smart_cable/proc/spawn_knotty_connecting_to_directions(directions)
+/obj/structure/cable/smart_cable/proc/spawn_knotty_connecting_to_directions(directions)
 	if(directions & NORTH)
 		spawn_cable_for_direction(NORTH)
 		return
@@ -967,26 +967,26 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		spawn_cable_for_direction(WEST)
 		return
 
-/obj/effect/mapping_helpers/smart_cable/color
+/obj/structure/cable/smart_cable/color
 	connect_to_same_color = TRUE
 
-/obj/effect/mapping_helpers/smart_cable/color/yellow
+/obj/structure/cable/smart_cable/color/yellow
 	color = "yellow"
 
-/obj/effect/mapping_helpers/smart_cable/color/red
+/obj/structure/cable/smart_cable/color/red
 	color = "red"
 
-/obj/effect/mapping_helpers/smart_cable/color/blue
+/obj/structure/cable/smart_cable/color/blue
 	color = "blue"
 
-/obj/effect/mapping_helpers/smart_cable/color_connector
+/obj/structure/cable/smart_cable/color_connector
 	connect_to_same_color = FALSE
 
-/obj/effect/mapping_helpers/smart_cable/color_connector/yellow
+/obj/structure/cable/smart_cable/color_connector/yellow
 	color = "yellow"
 
-/obj/effect/mapping_helpers/smart_cable/color_connector/red
+/obj/structure/cable/smart_cable/color_connector/red
 	color = "red"
 
-/obj/effect/mapping_helpers/smart_cable/color_connector/blue
+/obj/structure/cable/smart_cable/color_connector/blue
 	color = "blue"

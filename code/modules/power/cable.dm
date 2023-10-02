@@ -58,7 +58,7 @@
 			continue
 		new_dir_count++
 	if(new_dir_count > 2)
-		WARNING("Cable has more than 2 directions on [loc.x],[loc.y],[loc.z]")
+		CRASH("Cable has more than 2 directions on [loc.x],[loc.y],[loc.z]")
 	if(merge_connections)
 		merge_new_connections()
 	update_appearance()

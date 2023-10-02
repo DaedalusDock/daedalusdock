@@ -17,7 +17,6 @@
 	var/linked_dirs = NONE
 	/// The powernet the cable is connected to
 	var/datum/powernet/powernet
-	var/mapping_init = FALSE
 
 /obj/structure/cable/Initialize(mapload)
 	. = ..()
@@ -93,8 +92,6 @@
 ///////////////////////////////////
 
 /obj/structure/cable/update_icon_state()
-	if(mapping_init)
-		return
 	icon_state = "[linked_dirs]"
 	return ..()
 
@@ -357,7 +354,6 @@
 // Cable variants for mapping
 ///////////////////////////////////////////////
 /obj/structure/cable/mapping
-	mapping_init = TRUE
 
 /obj/structure/cable/mapping/yellow
 	color = "yellow"

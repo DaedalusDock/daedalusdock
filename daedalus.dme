@@ -2993,6 +2993,7 @@
 #include "code\modules\grab\grabs\grab_passive.dm"
 #include "code\modules\grab\grabs\grab_simple.dm"
 #include "code\modules\grab\grabs\grab_strangle.dm"
+#include "code\modules\grab\grabs\grab_struggle.dm"
 #include "code\modules\holiday\easter.dm"
 #include "code\modules\holiday\foreign_calendar.dm"
 #include "code\modules\holiday\holidays.dm"

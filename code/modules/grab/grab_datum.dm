@@ -123,14 +123,18 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		special_bodyzone_effects(G)
 
 /datum/grab/proc/hit_with_grab(obj/item/hand_item/grab/G, atom/target, params)
+	if(G.is_currently_resolving_hit)
+		return FALSE
+
+	if(!COOLDOWN_FINISHED(G, action_cd))
+		to_chat(G.assailant, span_warning("You must wait [round(COOLDOWN_TIMELEFT(G, action_cd) * 0.1, 0.1)] seconds before you can perform a grab action."))
+		return FALSE
+
 	if(downgrade_on_action)
 		G.downgrade()
 
-	if(!G.check_action_cooldown() || G.is_currently_resolving_hit)
-		to_chat(G.assailant, span_warning("You must wait before you can do that."))
-		return FALSE
-
 	G.is_currently_resolving_hit = TRUE
+
 	var/combat_mode = G.assailant.combat_mode
 	if(params[RIGHT_CLICK])
 		if(on_hit_disarm(G, target))
@@ -210,7 +214,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	remove_bodyzone_effects(G)
 	if(G.is_grab_unique(src))
-		remove_grab_effects(G)
+		remove_unique_grab_effects(G)
 		update_stage_effects(G, src, TRUE)
 
 /// Add effects that apply based on damage_stage here
@@ -243,13 +247,14 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
 
 
-/// Apply effects to people here. Remove them in remove_grab_effects()
-/datum/grab/proc/apply_grab_effects(obj/item/hand_item/grab/G)
+/// Apply effects that should only be applied when a grab type is first used on a mob.
+/datum/grab/proc/apply_unique_grab_effects(obj/item/hand_item/grab/G)
 	SHOULD_CALL_PARENT(TRUE)
 	if(G.loc != G.assailant.loc && same_tile)
 		G.affecting.move_from_pull(G.assailant, get_turf(G.assailant))
 
-/datum/grab/proc/remove_grab_effects(obj/item/hand_item/grab/G)
+/// Remove effects added by apply_unique_grab_effects()
+/datum/grab/proc/remove_unique_grab_effects(obj/item/hand_item/grab/G)
 	SHOULD_CALL_PARENT(TRUE)
 
 /// Handles special targeting like eyes and mouth being covered.
@@ -288,10 +293,16 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	return FALSE
 
 // Used when you want an effect to happen when the grab enters this state as an upgrade
-/datum/grab/proc/enter_as_up(obj/item/hand_item/grab/G)
+/// Return TRUE unless the grab state is changing during this proc (for example, calling upgrade())
+/datum/grab/proc/enter_as_up(obj/item/hand_item/grab/G, silent)
+	SHOULD_CALL_PARENT(TRUE)
+	return TRUE
 
 // Used when you want an effect to happen when the grab enters this state as a downgrade
-/datum/grab/proc/enter_as_down(obj/item/hand_item/grab/G)
+/// Return TRUE unless the grab state is changing during this proc (for example, calling upgrade())
+/datum/grab/proc/enter_as_down(obj/item/hand_item/grab/G, silent)
+	SHOULD_CALL_PARENT(TRUE)
+	return TRUE
 
 /datum/grab/proc/item_attack(obj/item/hand_item/grab/G, obj/item)
 
@@ -349,11 +360,11 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/break_chance = break_chance_table[clamp(break_strength, 1, length(break_chance_table))]
 	if(prob(break_chance))
 		if(can_downgrade_on_resist && !prob((break_chance+100)/2))
-			affecting.visible_message(span_danger("[affecting] has loosened [assailant]'s grip!"))
+			affecting.visible_message(span_danger("[affecting] has loosened [assailant]'s grip!"), vision_distance = COMBAT_MESSAGE_RANGE)
 			G.downgrade()
 			return FALSE
 		else
-			affecting.visible_message(span_danger("[affecting] has broken free of [assailant]'s grip!"))
+			affecting.visible_message(span_danger("[affecting] has broken free of [assailant]'s grip!"), vision_distance = COMBAT_MESSAGE_RANGE)
 			let_go(G)
 			return TRUE
 

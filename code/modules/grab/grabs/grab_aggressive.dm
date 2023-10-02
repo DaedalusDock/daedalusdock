@@ -16,7 +16,7 @@
 
 	break_chance_table = list(5, 20, 40, 80, 100)
 
-/datum/grab/normal/aggressive/apply_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/aggressive/apply_unique_grab_effects(obj/item/hand_item/grab/G)
 	. = ..()
 	if(!isliving(G.affecting))
 		return
@@ -27,7 +27,7 @@
 	if(L.body_position == LYING_DOWN)
 		ADD_TRAIT(L, TRAIT_FLOORED, AGGRESSIVE_GRAB)
 
-/datum/grab/normal/aggressive/remove_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/aggressive/remove_unique_grab_effects(obj/item/hand_item/grab/G)
 	. = ..()
 	UnregisterSignal(G.affecting, COMSIG_LIVING_SET_BODY_POSITION)
 	REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, AGGRESSIVE_GRAB)
@@ -54,15 +54,19 @@
 					to_chat(G.assailant, span_warning("\The [C] is in the way!"))
 					return FALSE
 
-/datum/grab/normal/aggressive/enter_as_up(obj/item/hand_item/grab/G)
+/datum/grab/normal/aggressive/enter_as_up(obj/item/hand_item/grab/G, silent)
 	. = ..()
-	G.assailant.visible_message(
-		span_danger("<b>[G.assailant]</b> tightens their grip on [G.affecting] (now hands)!"),
-		blind_message = span_hear("You hear aggressive shuffling.")
-	)
+	if(!silent)
+		G.assailant.visible_message(
+			span_danger("<b>[G.assailant]</b> tightens their grip on [G.affecting] (now hands)!"),
+			blind_message = span_hear("You hear aggressive shuffling."),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+		)
 
-/datum/grab/normal/aggressive/enter_as_down(obj/item/hand_item/grab/G)
+/datum/grab/normal/aggressive/enter_as_down(obj/item/hand_item/grab/G, silent)
 	. = ..()
-	G.assailant.visible_message(
-		span_danger("<b>[G.assailant]</b> loosens their grip on [G.affecting], allowing them to breathe!"),
-	)
+	if(!silent)
+		G.assailant.visible_message(
+			span_danger("<b>[G.assailant]</b> loosens their grip on [G.affecting], allowing them to breathe!"),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+		)

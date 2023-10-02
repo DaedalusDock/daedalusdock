@@ -10,10 +10,10 @@
 	/// The grab datum currently being used
 	var/datum/grab/current_grab
 
-	/// world.time of the last action
-	var/last_action
-	/// world.time of the last upgrade
-	var/last_upgrade
+	/// Cooldown for actions
+	COOLDOWN_DECLARE(action_cd)
+	/// Cooldown for upgrade times
+	COOLDOWN_DECLARE(upgrade_cd)
 	/// Indicates if the current grab has special interactions applied to the target organ (eyes and mouth at time of writing)
 	var/special_target_functional = TRUE
 	/// Used to avoid stacking interactions that sleep during /decl/grab/proc/on_hit_foo() (ie. do_after() is used)
@@ -22,9 +22,7 @@
 	var/target_zone
 	/// Used by struggle grab datum to keep track of state.
 	var/done_struggle = FALSE
-/*
-	This section is for overrides of existing procs.
-*/
+
 /obj/item/hand_item/grab/Initialize(mapload, atom/movable/target, datum/grab/grab_type, use_offhand)
 	. = ..()
 	current_grab = GLOB.all_grabstates[grab_type]
@@ -38,35 +36,8 @@
 		return INITIALIZE_HINT_QDEL
 	target_zone = deprecise_zone(assailant.zone_selected)
 
-	if(!setup())
-		return INITIALIZE_HINT_QDEL
-
-	update_appearance(UPDATE_ICON_STATE)
-
-	var/obj/item/bodypart/BP = get_targeted_bodypart()
-	if(BP)
-		name = "[initial(name)] ([BP.plaintext_zone])"
-		RegisterSignal(affecting, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(on_limb_loss))
-
-	RegisterSignal(assailant, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
-	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
-	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
-	RegisterSignal(affecting, COMSIG_ATOM_ATTACK_HAND, PROC_REF(intercept_attack_hand))
-
-	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
-
-/obj/item/hand_item/grab/Destroy()
-	current_grab?.let_go(src)
-	if(assailant)
-		assailant.after_grab_release(affecting)
-	assailant = null
-	affecting = null
-	return ..()
-
-// This will run from Initialize, after can_grab and other checks have succeeded. Must call parent; returning FALSE means failure and qdels the grab.
-/obj/item/hand_item/grab/proc/setup()
 	if(!current_grab.setup(src))
-		return FALSE
+		return INITIALIZE_HINT_QDEL
 
 	assailant.update_pull_hud_icon()
 
@@ -83,6 +54,8 @@
 		if(C.dna.species.grab_sound)
 			sound = C.dna.species.grab_sound
 
+	playsound(affecting.loc, sound, 50, 1, -1)
+
 	if(isliving(affecting))
 		var/mob/living/affecting_mob = affecting
 		for(var/datum/disease/D as anything in assailant.diseases)
@@ -93,10 +66,37 @@
 			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 				assailant.ContactContractDisease(D)
 
-	playsound(affecting.loc, sound, 50, 1, -1)
-	update_appearance()
 	current_grab.update_stage_effects(src, null)
-	return TRUE
+
+	update_appearance(UPDATE_ICON_STATE)
+
+	var/mob/living/L = get_affecting_mob()
+	if(L && assailant.combat_mode)
+		upgrade(TRUE)
+
+	var/obj/item/bodypart/BP = get_targeted_bodypart()
+	if(BP)
+		name = "[initial(name)] ([BP.plaintext_zone])"
+		RegisterSignal(affecting, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(on_limb_loss))
+
+	RegisterSignal(assailant, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
+	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
+	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
+	RegisterSignal(affecting, COMSIG_ATOM_ATTACK_HAND, PROC_REF(intercept_attack_hand))
+
+	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
+
+/obj/item/hand_item/grab/Destroy()
+	if(assailant)
+		assailant.after_grab_release(affecting)
+	if(affecting)
+		LAZYREMOVE(affecting.grabbed_by, src)
+		affecting.update_offsets()
+	if(affecting && assailant && current_grab)
+		current_grab.let_go(src)
+	affecting = null
+	assailant = null
+	return ..()
 
 /obj/item/hand_item/grab/examine(mob/user)
 	. = ..()
@@ -129,16 +129,6 @@
 		return
 
 	current_grab.hit_with_grab(src, target, params2list(params))
-
-/obj/item/hand_item/grab/Destroy()
-	if(affecting)
-		LAZYREMOVE(affecting.grabbed_by, src)
-		affecting.update_offsets()
-	if(affecting && assailant)
-		current_grab?.let_go(src)
-	affecting = null
-	assailant = null
-	return ..()
 
 /*
 	This section is for newly defined useful procs.
@@ -205,14 +195,8 @@
 		return 0
 
 /obj/item/hand_item/grab/proc/action_used()
-	last_action = world.time
+	COOLDOWN_START(src, action_cd, current_grab.action_cooldown)
 	leave_forensic_traces()
-
-/obj/item/hand_item/grab/proc/check_action_cooldown()
-	return (world.time >= last_action + current_grab.action_cooldown)
-
-/obj/item/hand_item/grab/proc/check_upgrade_cooldown()
-	return (world.time >= last_upgrade + current_grab.upgrade_cooldown)
 
 /obj/item/hand_item/grab/proc/leave_forensic_traces()
 	if (!affecting)
@@ -226,43 +210,50 @@
 
 	affecting.add_fingerprint(assailant) //If no clothing; add fingerprint to mob proper.
 
-/obj/item/hand_item/grab/proc/upgrade(bypass_cooldown = FALSE)
-	if(!check_upgrade_cooldown() && !bypass_cooldown)
-		to_chat(assailant, span_warning("It's too soon to upgrade."))
+/obj/item/hand_item/grab/proc/upgrade(bypass_cooldown, silent)
+	if(!COOLDOWN_FINISHED(src, upgrade_cd) && !bypass_cooldown)
+		if(!silent)
+			to_chat(assailant, span_warning("You must wait [round(COOLDOWN_TIMELEFT(src, upgrade_cd) * 0.1, 0.1)] seconds to upgrade."))
 		return
 
 	var/datum/grab/upgrab = current_grab.upgrade(src)
-	if(upgrab)
-		if(is_grab_unique(current_grab))
-			current_grab.remove_grab_effects(src)
-		var/apply_effects = is_grab_unique(upgrab)
+	if(!upgrab)
+		return
 
-		current_grab = upgrab
+	if(is_grab_unique(current_grab))
+		current_grab.remove_unique_grab_effects(src)
 
-		if(apply_effects)
-			current_grab.apply_grab_effects(src)
+	current_grab = upgrab
 
-		last_upgrade = world.time
-		adjust_position()
-		update_appearance()
-		leave_forensic_traces()
-		current_grab.enter_as_up(src)
+	COOLDOWN_START(src, upgrade_cd, current_grab.upgrade_cooldown)
 
-/obj/item/hand_item/grab/proc/downgrade()
+	adjust_position()
+	update_appearance()
+	leave_forensic_traces()
+
+	if(!current_grab.enter_as_up(src, silent))
+		return
+	if(is_grab_unique(current_grab))
+		current_grab.apply_unique_grab_effects(src)
+
+/obj/item/hand_item/grab/proc/downgrade(silent)
 	var/datum/grab/downgrab = current_grab.downgrade(src)
-	if(downgrab)
-		if(is_grab_unique(current_grab))
-			current_grab.remove_grab_effects(src)
-		var/apply_effects = is_grab_unique(downgrab)
+	if(!downgrab)
+		return
+	if(is_grab_unique(current_grab))
+		current_grab.remove_unique_grab_effects(src)
 
-		current_grab = downgrab
+	current_grab = downgrab
 
-		if(apply_effects)
-			current_grab.apply_grab_effects(src)
+	if(!current_grab.enter_as_down(src))
+		return
 
-		current_grab.enter_as_down(src)
-		adjust_position()
-		update_appearance()
+	if(is_grab_unique(current_grab))
+		current_grab.apply_unique_grab_effects(src)
+
+	current_grab.enter_as_down(src, silent)
+	adjust_position()
+	update_appearance()
 
 /// Used to prevent repeated effect application or early effect removal
 /obj/item/hand_item/grab/proc/is_grab_unique(datum/grab/grab_datum)

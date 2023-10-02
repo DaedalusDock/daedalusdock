@@ -1,5 +1,5 @@
 /datum/grab/normal/passive
-	upgrab = /datum/grab/normal/aggressive
+	upgrab = /datum/grab/normal/struggle
 	shift = 8
 	stop_move = 0
 	reverse_facing = 0

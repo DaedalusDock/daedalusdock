@@ -283,7 +283,7 @@
 		if(W.hitsound)
 			playsound(affecting.loc, W.hitsound, 50, 1, -1)
 
-	G.last_action = world.time
+	COOLDOWN_START(G, action_cd, action_cooldown)
 
 	log_combat(user, affecting, "slit throat (grab)")
 	return 1
@@ -305,7 +305,7 @@
 	if(DOING_INTERACTION(user, "slice tendon"))
 		return FALSE
 
-	user.visible_message(span_danger("\The [user] begins to cut \the [affecting]'s [BP.tendon_name] with \the [W]!"))
+	user.visible_message(span_danger("\The [user] begins to cut \the [affecting]'s [BP.tendon_name] with \the [W]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	user.changeNext_move(CLICK_CD_MELEE)
 
 	if(!do_after(user, affecting, 2 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(G, TYPE_PROC_REF(/obj/item/hand_item/grab, is_grabbing), affecting), interaction_key = "slice tendon", display = W))
@@ -318,11 +318,13 @@
 
 	if(W.hitsound)
 		playsound(affecting.loc, W.hitsound, 50, 1, -1)
-	G.last_action = world.time
+
+	COOLDOWN_START(G, action_cd, action_cooldown)
+
 	log_combat(user, affecting, "hamstrung (grab)")
 	return TRUE
 
-/datum/grab/normal/enter_as_down(obj/item/hand_item/grab/G)
+/datum/grab/normal/enter_as_down(obj/item/hand_item/grab/G, silent)
 	. = ..()
 	G.assailant.visible_message(
 		span_warning("<b>[G.assailant]</b> loosens their grip on [G.affecting]."),

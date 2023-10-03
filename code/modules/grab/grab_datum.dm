@@ -109,14 +109,15 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 /datum/grab/proc/let_go(obj/item/hand_item/grab/G)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	if (G)
-		let_go_effect(G)
-		G.current_grab = null
-		if(!QDELETED(G))
-			qdel(G)
+	if(!G)
+		return
+	let_go_effect(G)
+	G.current_grab = null
+	if(!QDELETED(G))
+		qdel(G)
 
 /datum/grab/proc/on_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
-	remove_bodyzone_effects(G)
+	remove_bodyzone_effects(G, old_zone, new_zone)
 	G.special_target_functional = check_special_target(G)
 	if(G.special_target_functional)
 		special_bodyzone_change(G, old_zone, new_zone)
@@ -214,7 +215,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
 	SEND_SIGNAL(G.assailant, COMSIG_LIVING_NO_LONGER_GRABBING, G.affecting)
 
-	remove_bodyzone_effects(G)
+	remove_bodyzone_effects(G, G.target_zone)
 	if(G.is_grab_unique(src))
 		remove_unique_grab_effects(G)
 		update_stage_effects(G, src, TRUE)
@@ -262,9 +263,29 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /// Handles special targeting like eyes and mouth being covered.
 /// CLEAR OUT ANY EFFECTS USING remove_bodyzone_effects()
 /datum/grab/proc/special_bodyzone_effects(obj/item/hand_item/grab/G)
+	SHOULD_CALL_PARENT(TRUE)
+	var/mob/living/carbon/C = G.affecting
+	if(!istype(C))
+		return
+
+	var/obj/item/bodypart/BP = C.get_bodypart(deprecise_zone(G.target_zone))
+	if(!BP)
+		return
+
+	ADD_TRAIT(BP, TRAIT_BODYPART_GRABBED, REF(G))
 
 /// Clear out any effects from special_bodyzone_effects()
-/datum/grab/proc/remove_bodyzone_effects(obj/item/hand_item/grab/G)
+/datum/grab/proc/remove_bodyzone_effects(obj/item/hand_item/grab/G, old_zone, new_zone)
+	SHOULD_CALL_PARENT(TRUE)
+	var/mob/living/carbon/C = G.affecting
+	if(!istype(C))
+		return
+
+	var/obj/item/bodypart/BP = C.get_bodypart(deprecise_zone(old_zone))
+	if(!BP)
+		return
+
+	REMOVE_TRAIT(BP, TRAIT_BODYPART_GRABBED, REF(G))
 
 // Handles when they change targeted areas and something is supposed to happen.
 /datum/grab/proc/special_bodyzone_change(obj/item/hand_item/grab/G, diff_zone)

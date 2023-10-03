@@ -35,18 +35,18 @@
 	affecting = target
 	if(!istype(assailant) || !assailant.add_grab(src, use_offhand = use_offhand))
 		return INITIALIZE_HINT_QDEL
+
 	target_zone = deprecise_zone(assailant.zone_selected)
 
 	if(!current_grab.setup(src))
 		return INITIALIZE_HINT_QDEL
 
+	/// Apply any needed updates to the assailant
 	assailant.update_pull_hud_icon()
-
 	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
 
+	/// Do flavor things like pixel offsets, animation, sound
 	adjust_position()
-	action_used()
-
 	assailant.animate_interact(affecting, INTERACT_GRAB)
 
 	var/sound = 'sound/weapons/thudswoosh.ogg'
@@ -57,6 +57,7 @@
 
 	playsound(affecting.loc, sound, 50, 1, -1)
 
+	/// Spread diseases
 	if(isliving(affecting))
 		var/mob/living/affecting_mob = affecting
 		for(var/datum/disease/D as anything in assailant.diseases)
@@ -67,21 +68,26 @@
 			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 				assailant.ContactContractDisease(D)
 
+	/// Setup the effects applied by grab
 	current_grab.update_stage_effects(src, null)
-
-	update_appearance(UPDATE_ICON_STATE)
+	current_grab.special_bodyzone_effects(src)
 
 	var/mob/living/L = get_affecting_mob()
 	if(L && assailant.combat_mode)
 		upgrade(TRUE)
 
+	/// Update appearance
+	update_appearance(UPDATE_ICON_STATE)
+
+	/// Setup signals
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(BP)
 		name = "[initial(name)] ([BP.plaintext_zone])"
 		RegisterSignal(affecting, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(on_limb_loss))
 
 	RegisterSignal(assailant, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
-	RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
+	if(affecting != assailant)
+		RegisterSignal(affecting, COMSIG_PARENT_QDELETING, PROC_REF(target_or_owner_del))
 	RegisterSignal(affecting, COMSIG_MOVABLE_PRE_THROW, PROC_REF(target_thrown))
 	RegisterSignal(affecting, COMSIG_ATOM_ATTACK_HAND, PROC_REF(intercept_attack_hand))
 
@@ -140,13 +146,23 @@
 
 	if(src != assailant.get_active_held_item())
 		return // Note that because of this condition, there's no guarantee that target_zone = old_sel
+
 	new_sel = deprecise_zone(new_sel)
 	if(target_zone == new_sel)
 		return
 
+	var/obj/item/bodypart/BP
+
+	if(affecting == assailant && iscarbon(assailant))
+		BP = assailant.get_bodypart(new_sel)
+		var/using_slot = assailant.get_held_index_of_item(src)
+		if(assailant.has_hand_for_held_index(using_slot) == BP)
+			to_chat(assailant, span_warning("You can't grab your own [BP.plaintext_zone] with itself!"))
+			return
+
 	var/old_zone = target_zone
 	target_zone = new_sel
-	var/obj/item/bodypart/BP = get_targeted_bodypart()
+	BP = get_targeted_bodypart()
 
 	if (!BP)
 		to_chat(assailant, span_warning("You fail to grab \the [affecting] there as they do not have that bodypart!"))
@@ -186,6 +202,7 @@
 
 // Returns the bodypart of the grabbed person that the grabber is targeting
 /obj/item/hand_item/grab/proc/get_targeted_bodypart()
+	RETURN_TYPE(/obj/item/bodypart)
 	var/mob/living/L = get_affecting_mob()
 	return (L?.get_bodypart(deprecise_zone(target_zone)))
 

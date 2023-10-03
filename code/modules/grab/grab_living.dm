@@ -70,8 +70,6 @@
 	if(QDELETED(grab))
 		if(original_target != src && ismob(original_target))
 			to_chat(original_target, span_warning("\The [src] tries to grab you, but fails!"))
-		to_chat(src, span_warning("You try to grab \the [target], but fail!"))
-
 		return null
 
 	SEND_SIGNAL(src, COMSIG_LIVING_START_GRAB, target, grab)

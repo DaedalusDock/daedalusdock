@@ -194,6 +194,7 @@
 
 // Handles special targeting like eyes and mouth being covered.
 /datum/grab/normal/special_bodyzone_effects(obj/item/hand_item/grab/G)
+	. = ..()
 	var/mob/living/affecting_mob = G.get_affecting_mob()
 	if(istype(affecting_mob) && G.special_target_functional)
 		switch(G.target_zone)
@@ -203,6 +204,7 @@
 				ADD_TRAIT(affecting_mob, TRAIT_BLIND, REF(G))
 
 /datum/grab/normal/remove_bodyzone_effects(obj/item/hand_item/grab/G)
+	. = ..()
 	REMOVE_TRAIT(G.affecting, TRAIT_MUTE, REF(G))
 	REMOVE_TRAIT(G.affecting, TRAIT_BLIND, REF(G))
 

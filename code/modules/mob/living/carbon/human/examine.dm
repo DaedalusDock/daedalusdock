@@ -209,6 +209,9 @@
 
 
 	for(var/obj/item/hand_item/grab/G in grabbed_by)
+		if(G.assailant == src)
+			msg += "[t_He] [t_is] gripping [t_His] [G.get_targeted_bodypart().plaintext_zone].\n"
+			continue
 		if(!G.current_grab.stop_move)
 			continue
 		msg += "[t_He] [t_is] restrained by [G.assailant]'s grip.\n"

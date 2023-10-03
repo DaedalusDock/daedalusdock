@@ -1029,6 +1029,9 @@
 	if(owner.body_position == LYING_DOWN)
 		bleed_rate *= 0.75
 
+	if(HAS_TRAIT(src, TRAIT_BODYPART_GRABBED))
+		bleed_rate *= 0.4
+
 	if(bandage)
 		bleed_rate *= bandage.absorption_rate_modifier
 

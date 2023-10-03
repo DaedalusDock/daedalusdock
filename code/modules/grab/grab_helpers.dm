@@ -64,8 +64,8 @@
 	. = list()
 	for(var/obj/item/hand_item/grab/G in get_active_grabs())
 		. |= G.affecting
-		if(isliving(G.affecting))
-			var/mob/living/L = G.affecting
+		var/mob/living/L = G.get_affecting_mob()
+		if(L)
 			. |= L.recursively_get_all_grabbed_movables()
 
 /// Gets every grab object owned by this mob, and every grabbed atom of those grabbed mobs
@@ -74,8 +74,8 @@
 	. = list()
 	for(var/obj/item/hand_item/grab/G in get_active_grabs())
 		. |= G
-		if(isliving(G.affecting))
-			var/mob/living/L = G.affecting
+		var/mob/living/L = G.get_affecting_mob()
+		if(L)
 			. |= L.recursively_get_conga_line()
 
 /// Get every single member of a grab chain

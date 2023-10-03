@@ -1,9 +1,6 @@
 #define AO_TURF_CHECK(T) ((!T.opacity && !(locate(/obj/structure/low_wall) in T)) || !T.permit_ao)
 #define AO_SELF_CHECK(T) (!T.opacity || !(locate(/obj/structure/low_wall) in T))
 
-/// If ao_junction equals this, no AO shadows are present.
-#define AO_ALL_NEIGHBORS 255
-
 /**
  * Define for getting a bitfield of adjacent turfs that meet a condition.
  *

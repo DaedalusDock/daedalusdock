@@ -30,7 +30,7 @@
 				"scarred stump" = 0
 				)
 
-	..(damage_amt, lost_limb)
+	..(damage_amt)
 
 /datum/wound/lost_limb/can_merge(datum/wound/other)
 	return 0 //cannot be merged

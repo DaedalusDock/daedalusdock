@@ -2,7 +2,7 @@
 GLOBAL_LIST_EMPTY(all_grabstates)
 /datum/grab
 	abstract_type = /datum/grab
-	var/icon = 'goon/icons/items/grab.dmi'
+	var/icon = 'icons/hud/screen_gen.dmi'
 	var/icon_state
 
 	/// The grab that this will upgrade to if it upgrades, null means no upgrade
@@ -71,7 +71,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		upgrab = GLOB.all_grabstates[upgrab]
 
 	if(downgrab)
-		downgrab = GLOB.all_grabstates[upgrab]
+		downgrab = GLOB.all_grabstates[downgrab]
 
 /// Called by the grab item's setup() proc. May return FALSE to interrupt, otherwise the grab has succeeded.
 /datum/grab/proc/setup(obj/item/hand_item/grab)
@@ -187,11 +187,13 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	if(!upgrab)
 		return FALSE
 
-	if(isliving(G.affecting))
-		var/mob/living/L = G.affecting
-		if(!(L.status_flags & CANPUSH) || HAS_TRAIT(L, TRAIT_PUSHIMMUNE))
-			to_chat(G.assailant, span_warning("[src] can't be grabbed more aggressively!"))
-			return FALSE
+	var/mob/living/L = G.get_affecting_mob()
+	if(!isliving(L))
+		return FALSE
+
+	if(!(L.status_flags & CANPUSH) || HAS_TRAIT(L, TRAIT_PUSHIMMUNE))
+		to_chat(G.assailant, span_warning("[src] can't be grabbed more aggressively!"))
+		return FALSE
 
 	if(upgrab.damage_stage >= GRAB_AGGRESSIVE && HAS_TRAIT(G.assailant, TRAIT_PACIFISM))
 		to_chat(G.assailant, span_warning("You don't want to risk hurting [src]!"))

@@ -4,7 +4,7 @@
 	reverse_facing = FALSE
 	point_blank_mult = 1
 	same_tile = FALSE
-	icon_state = "1"
+	icon_state = "!reinforce"
 	break_chance_table = list(15, 60, 100)
 
 /datum/grab/simple/upgrade(obj/item/hand_item/grab/G)

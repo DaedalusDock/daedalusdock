@@ -14,7 +14,7 @@
 	can_throw = TRUE
 	enable_violent_interactions = TRUE
 	restrains = TRUE
-	icon_state = "3"
+	icon_state = "kill"
 	break_chance_table = list(3, 18, 45, 100)
 
 /datum/grab/normal/neck/apply_unique_grab_effects(obj/item/hand_item/grab/G)

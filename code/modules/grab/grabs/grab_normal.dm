@@ -1,7 +1,5 @@
 /datum/grab/normal
 	abstract_type = /datum/grab/normal
-	icon = 'goon/icons/items/grab.dmi'
-	icon_state = "1"
 
 	help_action = "inspect"
 	disarm_action = "pin"

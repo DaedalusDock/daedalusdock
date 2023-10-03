@@ -1,6 +1,5 @@
 /datum/grab/normal/kill
 	downgrab = /datum/grab/normal/neck
-
 	grab_slowdown = 1.4
 
 	shift = 0
@@ -13,7 +12,7 @@
 	restrains = TRUE
 	downgrade_on_action = TRUE
 	downgrade_on_move = TRUE
-	icon_state = "3"
+	icon_state = "kill1"
 	break_chance_table = list(5, 20, 40, 80, 100)
 
 /datum/grab/normal/kill/apply_unique_grab_effects(obj/item/hand_item/grab/G)

@@ -12,7 +12,7 @@
 	can_throw = TRUE
 	enable_violent_interactions = TRUE
 	breakability = 3
-	icon_state = "2"
+	icon_state = "reinforce1"
 
 	break_chance_table = list(5, 20, 40, 80, 100)
 

@@ -5,7 +5,7 @@
 	reverse_facing = 0
 	point_blank_mult = 1.1
 	same_tile = 0
-	icon_state = "1"
+	icon_state = "!reinforce"
 	break_chance_table = list(15, 60, 100)
 
 /datum/grab/normal/passive/on_hit_disarm(obj/item/hand_item/grab/G, atom/A)

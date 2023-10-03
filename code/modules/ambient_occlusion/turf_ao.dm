@@ -107,7 +107,7 @@
 
 	/**
 	 * Current ambient occlusion overlays.
-	 * Tracked so we can reverse them without dropping all priority overlays.
+	 * Tracked here so that they can be reapplied during update_overlays()
 	 */
 	var/tmp/list/ao_overlays
 

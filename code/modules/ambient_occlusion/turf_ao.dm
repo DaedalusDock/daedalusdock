@@ -56,7 +56,7 @@
 		}                                            \
 	}
 
-#define PROCESS_AO(TARGET, AO_LIST, NEIGHBORS, ALPHA) \
+#define PROCESS_AO(TARGET, AO_VAR, NEIGHBORS, ALPHA) \
 	if (permit_ao && NEIGHBORS != AO_ALL_NEIGHBORS) { \
 		if (NEIGHBORS != AO_ALL_NEIGHBORS) { \
 			var/image/I = cache["ao-[NEIGHBORS]|[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]|[ALPHA]"]; \
@@ -64,18 +64,14 @@
 				/* This will also add the image to the cache. */ \
 				I = make_ao_image(NEIGHBORS, TARGET.pixel_x, TARGET.pixel_y, TARGET.pixel_z, TARGET.pixel_w, ALPHA) \
 			} \
-			LAZYADD(AO_LIST, I); \
+			AO_VAR = I; \
 		} \
 	} \
-	UNSETEMPTY(AO_LIST); \
-	if (AO_LIST) { \
-		TARGET.add_overlay(AO_LIST, TRUE); \
-	}
+	TARGET.add_overlay(AO_VAR, TRUE);
 
-#define CUT_AO(TARGET, AO_LIST) \
-	if (AO_LIST) { \
-		TARGET.cut_overlay(AO_LIST, TRUE); \
-		AO_LIST.Cut(); \
+#define CUT_AO(TARGET, AO_VAR) \
+	if (AO_VAR) { \
+		TARGET.cut_overlay(AO_VAR, TRUE); \
 	}
 
 /proc/make_ao_image(corner, px = 0, py = 0, pz = 0, pw = 0, alpha)
@@ -109,7 +105,7 @@
 	 * Current ambient occlusion overlays.
 	 * Tracked here so that they can be reapplied during update_overlays()
 	 */
-	var/tmp/list/ao_overlays
+	var/tmp/image/ao_overlay
 
 	/**
 	 * What directions this is currently smoothing with.
@@ -119,8 +115,8 @@
 	 */
 	var/tmp/ao_junction
 
-	/// The same as ao_overlays, but for the mimic turf.
-	var/tmp/list/ao_overlays_mimic
+	/// The same as ao_overlay, but for the mimic turf.
+	var/tmp/image/ao_overlay_mimic
 
 	/// The same as ao_junction, but for the mimic turf.
 	var/tmp/ao_junction_mimic
@@ -156,24 +152,24 @@
 
 /turf/proc/update_ao()
 	var/list/cache = SSao.image_cache
-	CUT_AO(shadower, ao_overlays_mimic)
-	CUT_AO(src, ao_overlays)
+	CUT_AO(shadower, ao_overlay_mimic)
+	CUT_AO(src, ao_overlay)
 	if (z_flags & Z_MIMIC_BELOW)
-		PROCESS_AO(shadower, ao_overlays_mimic, ao_junction_mimic, Z_AO_ALPHA)
+		PROCESS_AO(shadower, ao_overlay_mimic, ao_junction_mimic, Z_AO_ALPHA)
 	if (AO_TURF_CHECK(src) && !(z_flags & Z_MIMIC_NO_AO))
-		PROCESS_AO(src, ao_overlays, ao_junction, WALL_AO_ALPHA)
+		PROCESS_AO(src, ao_overlay, ao_junction, WALL_AO_ALPHA)
 
 /turf/update_overlays()
 	. = ..()
-	if(permit_ao && ao_overlays)
-		. += ao_overlays
+	if(permit_ao && ao_overlay)
+		. += ao_overlay
 
 /atom/movable/openspace/multiplier/update_overlays()
 	. = ..()
 	var/turf/Tloc = loc
 	ASSERT(isturf(Tloc))
-	if (Tloc.ao_overlays_mimic)
-		.+= Tloc.ao_overlays_mimic
+	if (Tloc.ao_overlay_mimic)
+		.+= Tloc.ao_overlay_mimic
 
 #undef PROCESS_AO
 #undef CUT_AO

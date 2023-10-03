@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Fixed a bug that caused specific projectiles to collide with objects they
-      shouldn't.

@@ -2,3 +2,8 @@
   Kapu1178:
   - qol: De-bolded radio channels in chat. Italicized and granted a slightly different
       color to speaking verbs, to increase readability.
+2023-10-03:
+  Kapu1178:
+  - bugfix: Fixed a bug that caused specific projectiles to collide with objects they
+      shouldn't.
+  - bugfix: Mutagen's recipe now works. For real this time.

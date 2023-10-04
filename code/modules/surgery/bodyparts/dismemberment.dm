@@ -364,6 +364,12 @@
 
 	SEND_SIGNAL(src, COMSIG_LIMB_ATTACH, new_limb_owner, special)
 
+	if((!existing || existing.is_stump) && mob_chest)
+		var/datum/wound/lost_limb/W = locate() in mob_chest.wounds
+		if(W)
+			qdel(W)
+			mob_chest.update_damage()
+
 	if(existing?.is_stump)
 		qdel(existing)
 

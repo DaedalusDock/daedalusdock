@@ -67,12 +67,6 @@
 	required_count = 3
 	wanted_types = list(/obj/item/organ/tongue = TRUE)
 
-/datum/bounty/item/medical/lizard_tail
-	name = "Unathi Tail"
-	description = "The Wizard Federation has made off with Nanotrasen's supply of unathi tails. While CentCom is dealing with the wizards, can the station spare a tail of their own?"
-	reward = CARGO_CRATE_VALUE * 6
-	wanted_types = list(/obj/item/organ/tail/lizard = TRUE)
-
 /datum/bounty/item/medical/cat_tail
 	name = "Cat Tail"
 	description = "Central Command has run out of heavy duty pipe cleaners. Can you ship over a cat tail to help us out?"
@@ -87,15 +81,9 @@
 
 /datum/bounty/item/medical/tail_whip //Like the cat tail bounties, with more processing.
 	name = "Nine Tails whip"
-	description = "Commander Jackson is looking for a fine addition to her exotic weapons collection. She will reward you handsomely for either a Cat or Liz o' Nine Tails."
+	description = "Commander Jackson is looking for a fine addition to her exotic weapons collection. She will reward you handsomely for either a Cat o' Nine Tails."
 	reward = CARGO_CRATE_VALUE * 8
-	wanted_types = list(/obj/item/melee/chainofcommand/tailwhip = TRUE)
-
-/datum/bounty/item/medical/surgerycomp
-	name = "Surgery Computer"
-	description = "After another freak bombing incident at our annual cheesefest at centcom, we have a massive stack of injured crew on our end. Please send us a fresh surgery computer, if at all possible."
-	reward = CARGO_CRATE_VALUE * 12
-	wanted_types = list(/obj/machinery/computer/operating = TRUE)
+	wanted_types = list(/obj/item/melee/chainofcommand/kitty = TRUE)
 
 /datum/bounty/item/medical/surgerytable
 	name = "Operating Table"

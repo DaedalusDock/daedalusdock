@@ -20,7 +20,14 @@
 	var/hitsound_wall = ""
 
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-	var/def_zone = "" //Aiming at
+	/// The body_zone the firer aimed at. May be overriden by some casings using zone_override
+	var/aimed_def_zone = BODY_ZONE_CHEST
+	/// The body_zone the projectile is about to hit, taking into account randomness. Don't set directly, will not do anything.
+	var/def_zone = ""
+
+	/// Can this projectile miss it's def_zone?
+	var/can_miss_zone = TRUE
+
 	var/atom/movable/firer = null//Who shot it
 	var/datum/fired_from = null // the thing that the projectile was fired from (gun, turret, spell)
 	var/suppressed = FALSE //Attack message
@@ -59,7 +66,7 @@
 	  * If you so badly need to make one go through *everything*, override check_pierce() for your projectile to always return PROJECTILE_PIERCE_PHASE/HIT.
 	  */
 	/// The "usual" flags of pass_flags is used in that can_hit_target ignores these unless they're specifically targeted/clicked on. This behavior entirely bypasses process_hit if triggered, rather than phasing which uses prehit_pierce() to check.
-	pass_flags = PASSTABLE
+	pass_flags = NONE
 	/// If FALSE, allow us to hit something directly targeted/clicked/whatnot even if we're able to phase through it
 	var/phasing_ignore_direct_target = FALSE
 	/// Bitflag for things the projectile should just phase through entirely - No hitting unless direct target and [phasing_ignore_direct_target] is FALSE. Uses pass_flags flags.
@@ -207,11 +214,12 @@
 	var/embed_adjustment_tile
 	///How many tiles must the projectile travel until embedding odds start being adjusted
 	var/embed_min_distance = 0
+	/// If true directly targeted turfs can be hit
+	var/can_hit_turfs = FALSE
+
 	var/static/list/projectile_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
-	/// If true directly targeted turfs can be hit
-	var/can_hit_turfs = FALSE
 
 /obj/projectile/Initialize(mapload)
 	. = ..()
@@ -259,8 +267,8 @@
 	var/obj/item/bodypart/hit_limb
 	if(isliving(target))
 		var/mob/living/L = target
-		hit_limb = L.check_limb_hit(def_zone)
-	SEND_SIGNAL(src, COMSIG_PROJECTILE_SELF_ON_HIT, firer, target, Angle, hit_limb)
+		hit_limb = L.get_bodypart(def_zone)
+	SEND_SIGNAL(src, COMSIG_PROJECTILE_SELF_ON_HIT, firer, target, Angle, def_zone)
 
 	if(QDELETED(src)) // in case one of the above signals deleted the projectile for whatever reason
 		return
@@ -268,7 +276,10 @@
 
 	var/hitx
 	var/hity
-	if(target == original)
+	if(target.flags_1 & ON_BORDER_1)
+		hitx = p_x
+		hity = p_y
+	else if(target == original)
 		hitx = target.pixel_x + p_x - 16
 		hity = target.pixel_y + p_y - 16
 	else
@@ -297,7 +308,7 @@
 	var/mob/living/L = target
 
 	if(blocked != 100) // not completely blocked
-		if(damage && L.blood_volume && damage_type == BRUTE)
+		if(damage && L.blood_volume && damage_type == BRUTE && (!hit_limb || (hit_limb.bodypart_flags & BP_HAS_BLOOD)))
 			var/splatter_dir = dir
 			if(starting)
 				splatter_dir = get_dir(starting, target_loca)
@@ -311,14 +322,16 @@
 			new impact_effect_type(target_loca, hitx, hity)
 
 		var/organ_hit_text = ""
-		var/limb_hit = hit_limb
-		if(limb_hit)
-			organ_hit_text = " in \the [parse_zone(limb_hit)]"
+		if(hit_limb)
+			organ_hit_text = " in \the [hit_limb.plaintext_zone]"
+
 		if(suppressed == SUPPRESSED_VERY)
 			playsound(loc, hitsound, 5, TRUE, -1)
+
 		else if(suppressed)
 			playsound(loc, hitsound, 5, TRUE, -1)
 			to_chat(L, span_userdanger("You're shot by \a [src][organ_hit_text]!"))
+
 		else
 			if(hitsound)
 				var/volume = vol_by_damage()
@@ -420,10 +433,9 @@
 				store_hitscan_collision(point_cache)
 			return TRUE
 
-	var/distance = get_dist(T, starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
-	def_zone = ran_zone(def_zone, max(100-(7*distance), 5)) //Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
+	var/target = select_target(T, A, A)
 
-	return process_hit(T, select_target(T, A, A), A) // SELECT TARGET FIRST!
+	return process_hit(T, target, A) // SELECT TARGET FIRST!
 
 /**
  * The primary workhorse proc of projectile impacts.
@@ -452,30 +464,49 @@
 	// 1.
 	if(QDELETED(src) || !T || !target)
 		return
+
 	// 2.
 	impacted[target] = TRUE //hash lookup > in for performance in hit-checking
+
 	// 3.
 	var/mode = prehit_pierce(target)
 	if(mode == PROJECTILE_DELETE_WITHOUT_HITTING)
 		qdel(src)
 		return hit_something
+
 	else if(mode == PROJECTILE_PIERCE_PHASE)
 		if(!(movement_type & PHASING))
 			temporary_unstoppable_movement = TRUE
 			movement_type |= PHASING
+
 		return process_hit(T, select_target(T, target, bumped), bumped, hit_something) // try to hit something else
+
 	// at this point we are going to hit the thing
 	// in which case send signal to it
+	var/distance = get_dist(T, starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
+	if(iscarbon(target))
+		var/distance_mult = 7
+		if(istype(fired_from, /obj/item/gun))
+			var/obj/item/gun/G = fired_from
+			distance_mult = G.accuracy_falloff
+
+		def_zone = can_miss_zone ? get_zone_with_miss_chance(aimed_def_zone, target, clamp(distance * distance_mult, 0, 100), TRUE) : aimed_def_zone
+	else
+		def_zone = aimed_def_zone
+
 	SEND_SIGNAL(target, COMSIG_PROJECTILE_PREHIT, args)
 	if(mode == PROJECTILE_PIERCE_HIT)
 		++pierces
+
 	hit_something = TRUE
+
 	var/result = target.bullet_act(src, def_zone, mode == PROJECTILE_PIERCE_HIT)
 	if((result == BULLET_ACT_FORCE_PIERCE) || (mode == PROJECTILE_PIERCE_HIT))
 		if(!(movement_type & PHASING))
 			temporary_unstoppable_movement = TRUE
 			movement_type |= PHASING
 		return process_hit(T, select_target(T, target, bumped), bumped, TRUE)
+
 	qdel(src)
 	return hit_something
 
@@ -484,7 +515,7 @@
  *
  * @params
  * T - The turf
- * target - The "preferred" atom to hit, usually what we Bumped() first.
+ * target - The "preferred" atom to hit, usually what we BumpedBy() first.
  * bumped - used to track if something is the reason we impacted in the first place.
  *    If set, this atom is always treated as dense by can_hit_target.
  *
@@ -501,7 +532,7 @@
  */
 /obj/projectile/proc/select_target(turf/our_turf, atom/target, atom/bumped)
 	// 1. special bumped border object check
-	if((bumped?.flags_1 & ON_BORDER_1) && can_hit_target(bumped, original == bumped, FALSE, TRUE))
+	if((bumped?.flags_1 & (ON_BORDER_1|BUMP_PRIORITY_1)) && can_hit_target(bumped, original == bumped, TRUE, TRUE))
 		return bumped
 	// 2. original
 	if(can_hit_target(original, TRUE, FALSE, original == bumped))
@@ -643,9 +674,9 @@
  * Return PROJECTILE_DELETE_WITHOUT_HITTING to delete projectile without hitting at all!
  */
 /obj/projectile/proc/prehit_pierce(atom/A)
-	if((projectile_phasing & A.pass_flags_self) && (phasing_ignore_direct_target || original != A))
+	if((projectile_phasing & (A.pass_flags_self & ~LETPASSCLICKS)) && (phasing_ignore_direct_target || original != A))
 		return PROJECTILE_PIERCE_PHASE
-	if(projectile_piercing & A.pass_flags_self)
+	if(projectile_piercing & (A.pass_flags_self & ~LETPASSCLICKS))
 		return PROJECTILE_PIERCE_HIT
 	if(ismovable(A))
 		var/atom/movable/AM = A

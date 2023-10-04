@@ -128,7 +128,7 @@
 				managed_overlays = flat
 		if(EMISSIVE_BLOCK_UNIQUE)
 			render_target = ref(src)
-			em_block = new(src, render_target)
+			em_block = new(null, src)
 			overlays += em_block
 			if(managed_overlays)
 				if(islist(managed_overlays))
@@ -200,16 +200,16 @@
 
 
 	vis_locs = null //clears this atom out of all viscontents
-	vis_contents.Cut()
+	if(length(vis_contents))
+		vis_contents.Cut()
 
 /atom/movable/proc/update_emissive_block()
 	if(!blocks_emissive)
 		return
-	else if (blocks_emissive == EMISSIVE_BLOCK_GENERIC)
-		var/mutable_appearance/gen_emissive_blocker = emissive_blocker(icon, icon_state, alpha = src.alpha, appearance_flags = src.appearance_flags)
-		gen_emissive_blocker.dir = dir
-		return gen_emissive_blocker
-	else if(blocks_emissive == EMISSIVE_BLOCK_UNIQUE)
+	if (blocks_emissive == EMISSIVE_BLOCK_GENERIC)
+		return fast_emissive_blocker(src)
+
+	if(blocks_emissive == EMISSIVE_BLOCK_UNIQUE)
 		if(!em_block && !QDELETED(src))
 			render_target = ref(src)
 			em_block = new(src, render_target)
@@ -687,6 +687,9 @@
  * most of the time you want forceMove()FALS
  */
 /atom/movable/proc/abstract_move(atom/new_loc)
+	if(QDELING(src))
+		CRASH("Illegal abstract_move() on [type]!")
+
 	var/atom/old_loc = loc
 	var/direction = get_dir(old_loc, new_loc)
 	loc = new_loc
@@ -766,11 +769,17 @@
 	if(oldarea != newarea)
 		newarea.Entered(src, oldarea)
 
+	if(loc != newloc) // Something moved us out of where we just moved to, Abort!!!
+		return
+
 	Moved(oldloc, direction, FALSE, old_locs)
 
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
+	if(QDELING(src))
+		CRASH("Illegal Move()! on [type]")
+
 	var/atom/movable/pullee = pulling
 	var/turf/current_turf = loc
 	if(!moving_from_pull)
@@ -1006,7 +1015,7 @@
 		. = TRUE
 		if(QDELETED(bumped_atom))
 			return
-	bumped_atom.Bumped(src)
+	bumped_atom.BumpedBy(src)
 
 /atom/movable/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -1184,6 +1193,9 @@
 	return currently_z_moving > old_z_moving_value
 
 /atom/movable/proc/forceMove(atom/destination)
+	if(QDELING(src))
+		CRASH("Illegal forceMove() on [type]!")
+
 	. = FALSE
 	if(destination)
 		. = doMove(destination)
@@ -1291,6 +1303,9 @@
  * * continuous_move - If this check is coming from something in the context of already drifting
  */
 /atom/movable/proc/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
+	if(anchored)
+		return TRUE
+
 	if(has_gravity())
 		return TRUE
 
@@ -1714,3 +1729,13 @@
  */
 /atom/movable/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlighting = FALSE)
 	return
+
+/// Tests if src can move from their current loc to an adjacent destination, without doing the move.
+/atom/movable/proc/can_step_into(turf/destination)
+	var/current_loc = get_turf(src)
+	var/direction = get_dir(current_loc, destination)
+	if(loc)
+		if(!loc.Exit(src, direction))
+			return FALSE
+
+	return destination.Enter(src, TRUE)

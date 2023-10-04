@@ -19,7 +19,7 @@
 	purchasable_from = ~(UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS)
 
 /datum/uplink_item/suits/space_suit
-	name = "Syndicate Space Suit"
+	name = "Crimson Space Suit"
 	desc = "This red and black Syndicate space suit is less encumbering than Nanotrasen variants, \
 			fits inside bags, and has a weapon slot. Nanotrasen crew members are trained to report red space suit \
 			sightings, however."
@@ -29,7 +29,7 @@
 // Low progression cost
 
 /datum/uplink_item/suits/modsuit
-	name = "Syndicate MODsuit"
+	name = "Crimson MODsuit"
 	desc = "The feared MODsuit of a Syndicate agent. Features armoring and a set of inbuilt modules."
 	item = /obj/item/mod/control/pre_equipped/traitor
 	cost = 8

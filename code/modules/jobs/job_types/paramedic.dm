@@ -36,10 +36,10 @@
 
 	mail_goodies = list(
 		/obj/item/reagent_containers/hypospray/medipen = 20,
-		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 10,
-		/obj/item/reagent_containers/hypospray/medipen/salacid = 10,
-		/obj/item/reagent_containers/hypospray/medipen/salbutamol = 10,
-		/obj/item/reagent_containers/hypospray/medipen/penacid = 10,
+		/obj/item/reagent_containers/hypospray/medipen/dermaline = 10,
+		/obj/item/reagent_containers/hypospray/medipen/meralyne = 10,
+		/obj/item/reagent_containers/hypospray/medipen/dexalin = 10,
+		/obj/item/reagent_containers/hypospray/medipen/dylovene = 10,
 		/obj/item/reagent_containers/hypospray/medipen/survival/luxury = 5
 	)
 	rpg_title = "Corpse Runner"

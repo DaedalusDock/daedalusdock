@@ -147,6 +147,23 @@
 		usr.update_held_items()
 	return TRUE
 
+/atom/movable/screen/inventory/MouseDrop_T(atom/dropped, mob/user, params)
+	if(user != hud?.mymob || !slot_id)
+		return TRUE
+	if(!isitem(dropped))
+		return TRUE
+	if(world.time <= usr.next_move)
+		return TRUE
+	if(usr.incapacitated(IGNORE_STASIS))
+		return TRUE
+	if(ismecha(usr.loc)) // stops inventory actions in a mech
+		return TRUE
+	if(!user.is_holding(dropped))
+		return TRUE
+
+	user.equip_to_slot_if_possible(dropped, slot_id, FALSE, FALSE, FALSE)
+	return TRUE
+
 /atom/movable/screen/inventory/MouseEntered(location, control, params)
 	. = ..()
 	add_overlays()
@@ -222,10 +239,13 @@
 	var/mob/user = hud?.mymob
 	if(usr != user)
 		return TRUE
+
 	if(world.time <= user.next_move)
 		return TRUE
+
 	if(user.incapacitated())
 		return TRUE
+
 	if (ismecha(user.loc)) // stops inventory actions in a mech
 		return TRUE
 
@@ -235,6 +255,36 @@
 			I.Click(location, control, params)
 	else
 		user.swap_hand(held_index)
+	return TRUE
+
+/atom/movable/screen/inventory/hand/MouseDrop_T(atom/dropping, mob/user, params)
+	if(!isitem(dropping))
+		return TRUE
+
+	if(usr != hud?.mymob)
+		return TRUE
+
+	if(world.time <= user.next_move)
+		return TRUE
+
+	if(user.incapacitated())
+		return TRUE
+
+	if(ismecha(user.loc)) // stops inventory actions in a mech
+		return TRUE
+
+	if(!user.CanReach(dropping))
+		return TRUE
+
+	var/obj/item/I = dropping
+	if(!(user.is_holding(I) || (I.item_flags & (IN_STORAGE|IN_INVENTORY))))
+		return TRUE
+
+	var/item_index = user.get_held_index_of_item(I)
+	if(item_index)
+		user.swapHeldIndexes(item_index, held_index)
+	else
+		user.putItemFromInventoryInHandIfPossible(dropping, held_index)
 	return TRUE
 
 /atom/movable/screen/close
@@ -406,6 +456,35 @@
 	var/obj/item/inserted = usr.get_active_held_item()
 	if(inserted)
 		storage_master.attempt_insert(inserted, usr)
+
+	return TRUE
+
+/atom/movable/screen/storage/MouseDrop_T(atom/dropping, mob/user, params)
+	var/datum/storage/storage_master = master
+
+	if(!istype(storage_master))
+		return FALSE
+
+	if(!isitem(dropping))
+		return TRUE
+
+	if(world.time <= user.next_move)
+		return TRUE
+
+	if(user.incapacitated())
+		return TRUE
+
+	if(ismecha(user.loc)) // stops inventory actions in a mech
+		return TRUE
+
+	if(!user.CanReach(dropping))
+		return TRUE
+
+	var/obj/item/I = dropping
+	if(!(user.is_holding(I) || (I.item_flags & IN_STORAGE)))
+		return TRUE
+
+	storage_master.attempt_insert(dropping, usr)
 
 	return TRUE
 
@@ -607,14 +686,6 @@
 	icon_state = "fullhealth0"
 	screen_loc = ui_living_healthdoll
 	var/filtered = FALSE //so we don't repeatedly create the mask of the mob every update
-
-/atom/movable/screen/mood
-	name = "mood"
-	icon_state = "mood5"
-	screen_loc = ui_mood
-
-/atom/movable/screen/mood/attack_tk()
-	return
 
 /atom/movable/screen/component_button
 	var/atom/movable/screen/parent
@@ -818,3 +889,11 @@
 		icon_state = "no_walk1"
 	else
 		icon_state = "no_walk0"
+
+/atom/movable/screen/pain
+	name = "pain overlay"
+	icon_state = ""
+	layer = UI_DAMAGE_LAYER
+	plane = FULLSCREEN_PLANE
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
+

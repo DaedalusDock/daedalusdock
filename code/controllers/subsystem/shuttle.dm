@@ -165,7 +165,7 @@ SUBSYSTEM_DEF(shuttle)
 	if(!supply)
 		log_mapping("No /obj/docking_port/mobile/supply placed on the map!")
 
-	if(CONFIG_GET(flag/arrivals_shuttle_require_undocked))
+	if(CONFIG_GET(flag/arrivals_shuttle_require_undocked) && arrivals)
 		arrivals.Launch(TRUE)
 
 	return ..()

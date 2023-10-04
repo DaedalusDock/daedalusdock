@@ -416,9 +416,9 @@
 	name = "medical cyborg expanded hypospray"
 	desc = "An upgrade to the Medical model's hypospray, allowing it \
 		to treat a wider range of conditions and problems."
-	additional_reagents = list(/datum/reagent/medicine/mannitol, /datum/reagent/medicine/oculine, /datum/reagent/medicine/inacusiate,
-		/datum/reagent/medicine/mutadone, /datum/reagent/medicine/haloperidol, /datum/reagent/medicine/oxandrolone, /datum/reagent/medicine/sal_acid,
-		/datum/reagent/medicine/rezadone, /datum/reagent/medicine/pen_acid)
+	additional_reagents = list(/datum/reagent/medicine/alkysine, /datum/reagent/medicine/imidazoline, /datum/reagent/medicine/inacusiate,
+		/datum/reagent/medicine/ryetalyn, /datum/reagent/medicine/haloperidol, /datum/reagent/medicine/dermaline, /datum/reagent/medicine/meralyne,
+		/datum/reagent/medicine/potass_iodide, /datum/reagent/medicine/ipecac)
 
 /obj/item/borg/upgrade/piercing_hypospray
 	name = "cyborg piercing hypospray"
@@ -497,29 +497,6 @@
 	. = ..()
 	if(.)
 		defib_instance?.forceMove(R.drop_location()) // [on_defib_instance_qdel_or_moved()] handles the rest.
-
-/obj/item/borg/upgrade/processor
-	name = "medical cyborg surgical processor"
-	desc = "An upgrade to the Medical model, installing a processor \
-		capable of scanning surgery disks and carrying \
-		out procedures"
-	icon_state = "cyborg_upgrade3"
-	require_model = TRUE
-	model_type = list(/obj/item/robot_model/medical, /obj/item/robot_model/syndicate_medical)
-	model_flags = BORG_MODEL_MEDICAL
-
-/obj/item/borg/upgrade/processor/action(mob/living/silicon/robot/R, user = usr)
-	. = ..()
-	if(.)
-		var/obj/item/surgical_processor/SP = new(R.model)
-		R.model.basic_modules += SP
-		R.model.add_module(SP, FALSE, TRUE)
-
-/obj/item/borg/upgrade/processor/deactivate(mob/living/silicon/robot/R, user = usr)
-	. = ..()
-	if (.)
-		var/obj/item/surgical_processor/SP = locate() in R.model
-		R.model.remove_module(SP, TRUE)
 
 /obj/item/borg/upgrade/ai
 	name = "B.O.R.I.S. module"

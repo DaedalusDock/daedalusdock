@@ -15,9 +15,9 @@
 	return 0
 
 /mob/living/proc/Stun(amount, ignore_canstun = FALSE) //Can't go below remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -32,9 +32,9 @@
 	return S
 
 /mob/living/proc/SetStun(amount, ignore_canstun = FALSE) //Sets remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(amount <= 0)
@@ -53,9 +53,9 @@
 	return S
 
 /mob/living/proc/AdjustStun(amount, ignore_canstun = FALSE) //Adds to remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -80,9 +80,9 @@
 	return 0
 
 /mob/living/proc/Knockdown(amount, ignore_canstun = FALSE) //Can't go below remaining duration
-	if(SEND_SIGNAL(src, /datum/status_effect/incapacitating/knockdown, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -97,9 +97,9 @@
 	return K
 
 /mob/living/proc/SetKnockdown(amount, ignore_canstun = FALSE) //Sets remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(amount <= 0)
@@ -118,9 +118,9 @@
 	return K
 
 /mob/living/proc/AdjustKnockdown(amount, ignore_canstun = FALSE) //Adds to remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_KNOCKDOWN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -145,9 +145,9 @@
 	return 0
 
 /mob/living/proc/Immobilize(amount, ignore_canstun = FALSE) //Can't go below remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -159,9 +159,9 @@
 	return I
 
 /mob/living/proc/SetImmobilized(amount, ignore_canstun = FALSE) //Sets remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	var/datum/status_effect/incapacitating/immobilized/I = IsImmobilized()
 	if(amount <= 0)
@@ -177,9 +177,9 @@
 	return I
 
 /mob/living/proc/AdjustImmobilized(amount, ignore_canstun = FALSE) //Adds to remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -201,9 +201,9 @@
 	return 0
 
 /mob/living/proc/Paralyze(amount, ignore_canstun = FALSE) //Can't go below remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -218,9 +218,9 @@
 	return P
 
 /mob/living/proc/SetParalyzed(amount, ignore_canstun = FALSE) //Sets remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(amount <= 0)
@@ -239,9 +239,9 @@
 	return P
 
 /mob/living/proc/AdjustParalyzed(amount, ignore_canstun = FALSE) //Adds to remaining duration
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
-		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
+		return
+	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
@@ -287,6 +287,8 @@
 
 	var/curr_confusion = get_timed_status_effect_duration(/datum/status_effect/confusion)
 	set_timed_status_effect(min(curr_confusion + amount, 15 SECONDS), /datum/status_effect/confusion)
+
+	flash_pain(PAIN_MEDIUM)
 
 	if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
 		if(knockdown)

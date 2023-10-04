@@ -13,7 +13,6 @@
 #define SCANGATE_MOTH "moth"
 #define SCANGATE_JELLY "jelly"
 #define SCANGATE_POD "pod"
-#define SCANGATE_GOLEM "golem"
 #define SCANGATE_ZOMBIE "zombie"
 #define SCANGATE_TESHARI "teshari"
 
@@ -153,8 +152,6 @@
 						scan_species = /datum/species/jelly
 					if(SCANGATE_POD)
 						scan_species = /datum/species/pod
-					if(SCANGATE_GOLEM)
-						scan_species = /datum/species/golem
 					if(SCANGATE_ZOMBIE)
 						scan_species = /datum/species/zombie
 					if(SCANGATE_TESHARI)
@@ -280,6 +277,5 @@
 #undef SCANGATE_MOTH
 #undef SCANGATE_JELLY
 #undef SCANGATE_POD
-#undef SCANGATE_GOLEM
 #undef SCANGATE_ZOMBIE
 #undef SCANGATE_TESHARI

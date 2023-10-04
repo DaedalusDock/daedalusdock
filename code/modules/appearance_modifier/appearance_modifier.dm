@@ -2,7 +2,7 @@
 	var/name = "You shouldn't see this!"
 
 	///If you don't want an appearance mod to be usable, use this.
-	var/abstract_type = /datum/appearance_modifier
+	abstract_type = /datum/appearance_modifier
 	///The icon that gets blended onto the base appearance. Generated in new()
 	var/icon/my_icon = null
 	var/icon2use = ""

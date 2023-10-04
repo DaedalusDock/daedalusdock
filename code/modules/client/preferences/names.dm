@@ -9,7 +9,7 @@
 	var/group
 
 	/// Whether or not to allow numbers in the person's name
-	var/allow_numbers = FALSE
+	var/allow_numbers = TRUE
 
 	/// If the highest priority job matches this, will prioritize this name in the UI
 	var/relevant_job

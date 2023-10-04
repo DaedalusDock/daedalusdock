@@ -5,6 +5,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 
 //TODO: someone please get rid of this shit
 /datum/datacore
+	var/finished_setup = FALSE
 	var/list/medical = list()
 	var/medicalPrintCount = 0
 	var/list/general = list()
@@ -183,13 +184,14 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		if(ishuman(N.new_character))
 			manifest_inject(N.new_character, N.client)
 		CHECK_TICK
+	finished_setup = TRUE
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_DATACORE_READY, src)
 
 /datum/datacore/proc/manifest_modify(name, assignment, trim)
 	var/datum/data/record/foundrecord = find_record("name", name, GLOB.data_core.general)
 	if(foundrecord)
 		foundrecord.fields["rank"] = assignment
 		foundrecord.fields["trim"] = trim
-
 
 /datum/datacore/proc/get_manifest()
 	// First we build up the order in which we want the departments to appear in.

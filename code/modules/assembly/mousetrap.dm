@@ -75,8 +75,7 @@
 					affecting = H.get_bodypart(type)
 					H.Stun(60)
 		if(affecting)
-			if(affecting.receive_damage(1, 0))
-				H.update_damage_overlays()
+			affecting.receive_damage(1, 0)
 	else if(ismouse(target))
 		var/mob/living/simple_animal/mouse/M = target
 		visible_message(span_boldannounce("SPLAT!"))

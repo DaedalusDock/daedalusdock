@@ -726,6 +726,12 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	query_in_progress = FALSE
 	return json_data
 
+//DM Editor 'simplified' maphelpers.
+#if defined(SIMPLE_MAPHELPERS)
+#define PAINT_PREFIX "s_"
+#else
+#define PAINT_PREFIX ""
+#endif
 
 /obj/effect/mapping_helpers/paint_wall
 	name = "Paint Wall Helper"
@@ -792,31 +798,31 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	name = "Command Wall Paint"
 	wall_paint = PAINT_WALL_COMMAND
 	stripe_paint = PAINT_STRIPE_COMMAND
-	icon_state = "paint_bridge"
+	icon_state = PAINT_PREFIX+"paint_bridge"
 
 /obj/effect/mapping_helpers/paint_wall/medical
 	name = "Medical Wall Paint"
 	wall_paint = PAINT_WALL_MEDICAL
 	stripe_paint = PAINT_STRIPE_MEDICAL
-	icon_state = "paint_medical"
+	icon_state = PAINT_PREFIX+"paint_medical"
 
 /obj/effect/mapping_helpers/paint_wall/daedalus
 	name = "Daedalus Wall Paint"
 	wall_paint = PAINT_WALL_DAEDALUS
 	stripe_paint = PAINT_STRIPE_DAEDALUS
-	icon_state = "paint_daedalus"
+	icon_state = PAINT_PREFIX+"paint_daedalus"
 
 /obj/effect/mapping_helpers/paint_wall/priapus
 	name = "Priapus Wall Paint"
 	wall_paint = PAINT_WALL_PRIAPUS
 	stripe_paint = PAINT_STRIPE_PRIAPUS
-	icon_state = "paint_priapus"
+	icon_state = PAINT_PREFIX+"paint_priapus"
 
 /obj/effect/mapping_helpers/paint_wall/centcom
 	name = "Central Command Wall Paint"
 	wall_paint = PAINT_WALL_CENTCOM
 	stripe_paint = PAINT_STRIPE_CENTCOM
-	icon_state = "paint_centcom"
+	icon_state = PAINT_PREFIX+"paint_centcom"
 
 
 /obj/effect/mapping_helpers/broken_floor

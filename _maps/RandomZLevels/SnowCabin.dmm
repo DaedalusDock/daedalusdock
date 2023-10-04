@@ -217,7 +217,6 @@
 /obj/item/surgicaldrill,
 /obj/item/circular_saw,
 /obj/item/cautery,
-/obj/item/surgical_drapes,
 /obj/item/scalpel,
 /obj/item/hemostat,
 /turf/open/floor/iron/white,
@@ -482,10 +481,6 @@
 "bC" = (
 /obj/machinery/gibber,
 /turf/open/floor/iron/freezer,
-/area/awaymission/cabin)
-"bD" = (
-/obj/machinery/computer/operating,
-/turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "bE" = (
 /turf/open/floor/iron/white,
@@ -985,7 +980,7 @@
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dr" = (
 /obj/effect/decal/cleanable/blood,
-/obj/item/reagent_containers/pill/patch/libital,
+/obj/item/reagent_containers/pill/bicaridine,
 /turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ds" = (
@@ -1130,7 +1125,7 @@
 /turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dW" = (
-/obj/item/reagent_containers/pill/patch/libital,
+/obj/item/reagent_containers/pill/bicaridine,
 /turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dZ" = (
@@ -2356,7 +2351,7 @@
 /area/awaymission/cabin/snowforest/sovietsurface)
 "hY" = (
 /obj/effect/decal/cleanable/blood/gibs,
-/obj/item/reagent_containers/pill/patch/libital,
+/obj/item/reagent_containers/pill/bicaridine,
 /turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "hZ" = (
@@ -33112,7 +33107,7 @@ an
 eg
 aq
 an
-bD
+bE
 bE
 bE
 cI

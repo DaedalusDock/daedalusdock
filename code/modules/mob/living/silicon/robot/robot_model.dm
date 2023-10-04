@@ -355,7 +355,7 @@
 		/obj/item/paint_remover,
 		/obj/item/lightreplacer/cyborg,
 		/obj/item/holosign_creator,
-		/obj/item/reagent_containers/spray/cyborg_drying)
+		)
 	radio_channels = list(RADIO_CHANNEL_SERVICE)
 	emag_modules = list(/obj/item/reagent_containers/spray/cyborg_lube)
 	cyborg_base_icon = "janitor"
@@ -561,11 +561,6 @@
 
 	return ..()
 
-/obj/item/reagent_containers/spray/cyborg_drying
-	name = "drying agent spray"
-	color = "#A000A0"
-	list_reagents = list(/datum/reagent/drying_agent = 250)
-
 /obj/item/reagent_containers/spray/cyborg_lube
 	name = "lube spray"
 	list_reagents = list(/datum/reagent/lube = 250)
@@ -576,10 +571,6 @@
 	if(light_replacer)
 		for(var/charge in 1 to coeff)
 			light_replacer.Charge(cyborg)
-
-	var/obj/item/reagent_containers/spray/cyborg_drying/drying_agent = locate(/obj/item/reagent_containers/spray/cyborg_drying) in basic_modules
-	if(drying_agent)
-		drying_agent.reagents.add_reagent(/datum/reagent/drying_agent, 5 * coeff)
 
 	var/obj/item/reagent_containers/spray/cyborg_lube/lube = locate(/obj/item/reagent_containers/spray/cyborg_lube) in emag_modules
 	if(lube)
@@ -600,7 +591,6 @@
 		/obj/item/borg/apparatus/beaker,
 		/obj/item/reagent_containers/dropper,
 		/obj/item/reagent_containers/syringe,
-		/obj/item/surgical_drapes,
 		/obj/item/retractor,
 		/obj/item/hemostat,
 		/obj/item/cautery,
@@ -611,7 +601,7 @@
 		/obj/item/extinguisher/mini,
 		/obj/item/roller/robo,
 		/obj/item/borg/cyborghug/medical,
-		/obj/item/stack/medical/gauze,
+		/obj/item/stack/gauze,
 		/obj/item/stack/medical/bone_gel,
 		/obj/item/borg/apparatus/organ_storage,
 		/obj/item/borg/lollipop)
@@ -791,7 +781,6 @@
 		/obj/item/reagent_containers/borghypo/syndicate,
 		/obj/item/shockpaddles/syndicate/cyborg,
 		/obj/item/healthanalyzer,
-		/obj/item/surgical_drapes,
 		/obj/item/retractor,
 		/obj/item/hemostat,
 		/obj/item/cautery,
@@ -802,7 +791,7 @@
 		/obj/item/crowbar/cyborg,
 		/obj/item/extinguisher/mini,
 		/obj/item/pinpointer/syndicate_cyborg,
-		/obj/item/stack/medical/gauze,
+		/obj/item/stack/gauze,
 		/obj/item/gun/medbeam,
 		/obj/item/borg/apparatus/organ_storage)
 

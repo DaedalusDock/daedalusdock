@@ -13,6 +13,7 @@ SUBSYSTEM_DEF(minor_mapping)
 	var/list/spawn_list = list(
 		/mob/living/simple_animal/mouse = 5,
 		/mob/living/basic/cockroach = 2,
+		/mob/living/simple_animal/slug = 2,
 	)
 
 	var/list/landmarks = list()

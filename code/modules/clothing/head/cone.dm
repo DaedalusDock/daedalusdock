@@ -16,7 +16,7 @@
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 
-/obj/item/clothing/head/cone/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/head/cone/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)

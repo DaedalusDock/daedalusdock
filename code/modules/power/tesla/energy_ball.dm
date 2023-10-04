@@ -156,7 +156,7 @@
 /obj/energy_ball/Bump(atom/A)
 	dust_mobs(A)
 
-/obj/energy_ball/Bumped(atom/movable/AM)
+/obj/energy_ball/BumpedBy(atom/movable/AM)
 	dust_mobs(AM)
 
 /obj/energy_ball/attack_tk(mob/user)

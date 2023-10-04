@@ -21,6 +21,7 @@ again.
 	name = "window spawner"
 	spawn_list = list(/obj/structure/low_wall, /obj/structure/window/fulltile)
 	dir = SOUTH
+	layer = ABOVE_OBJ_LAYER
 
 /obj/effect/spawner/structure/window/Initialize(mapload)
 	. = ..()

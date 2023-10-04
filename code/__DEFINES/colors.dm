@@ -209,9 +209,6 @@
 #define COLOR_PRIDE_GREEN "#41FC66"
 #define COLOR_PRIDE_BLUE "#42FFF2"
 #define COLOR_PRIDE_PURPLE "#5D5DFC"
-// Medical colors
-#define COLOR_MEDICAL_BRUTE "#ff0000"
-#define COLOR_MEDICAL_BURN "#ff7700"
 
 /// The default color for admin say, used as a fallback when the preference is not enabled
 #define DEFAULT_ASAY_COLOR COLOR_MOSTLY_PURE_RED
@@ -248,3 +245,27 @@
 #define CL_MATRIX_CG 18
 #define CL_MATRIX_CB 19
 #define CL_MATRIX_CA 20
+
+// Medical readout colors
+#define COLOR_MEDICAL_BRUTE "#ff0000"
+#define COLOR_MEDICAL_BURN "#ff7700"
+#define COLOR_MEDICAL_TOXIN "#00ff00"
+#define COLOR_MEDICAL_OXYLOSS "#0000ff"
+#define COLOR_MEDICAL_CRYSTAL "#0066ff"
+#define COLOR_MEDICAL_ROBOTIC "#666688"
+#define COLOR_MEDICAL_INTERNAL "#ff66ff"
+#define COLOR_MEDICAL_RADIATION "#66ff66"
+#define COLOR_MEDICAL_NECROTIC "#663333"
+#define COLOR_MEDICAL_INTERNAL_DANGER "#aa3333"
+#define COLOR_MEDICAL_DISLOCATED "#6666ff"
+#define COLOR_MEDICAL_BROKEN "#ff00aa"
+#define COLOR_MEDICAL_SPLINTED "#ff66aa"
+#define COLOR_MEDICAL_EMBEDDED "#D580FF"
+#define COLOR_MEDICAL_LIGAMENT "#4DA6FF"
+#define COLOR_MEDICAL_GENETIC "#3BB300"
+#define COLOR_MEDICAL_IMPLANT "#aa66ff"
+#define COLOR_MEDICAL_UNKNOWN_IMPLANT "#aa00ff"
+#define COLOR_MEDICAL_SCARRING "#aa9999"
+#define COLOR_MEDICAL_MISSING "#886666"
+
+#define COLORED_SQUARE(COLOR) "<span style='font-face: fixedsys; font-size: 14px; background-color: [COLOR]; color: [COLOR]'>___</span>"

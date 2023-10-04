@@ -16,37 +16,13 @@
 	render_key = "tail"
 	dna_block = DNA_TAIL_BLOCK
 
-	///The original owner of this tail
-	var/datum/weakref/original_owner //Yay, snowflake code!
-
 /obj/item/organ/tail/Destroy()
-	original_owner = null
 	return ..()
 
 /obj/item/organ/tail/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
 		return FALSE
 	return TRUE
-
-/obj/item/organ/tail/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
-	. = ..()
-	if(.)
-		original_owner ||= WEAKREF(reciever) //One and done
-
-		SEND_SIGNAL(reciever, COMSIG_CLEAR_MOOD_EVENT, "tail_lost")
-		SEND_SIGNAL(reciever, COMSIG_CLEAR_MOOD_EVENT, "tail_balance_lost")
-
-		if(original_owner?.resolve() == reciever)
-			SEND_SIGNAL(reciever, COMSIG_CLEAR_MOOD_EVENT, "wrong_tail_regained")
-		else if(type in reciever.dna.species.cosmetic_organs)
-			SEND_SIGNAL(reciever, COMSIG_ADD_MOOD_EVENT, "wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
-
-/obj/item/organ/tail/Remove(mob/living/carbon/organ_owner, special, moving)
-	. = ..()
-
-	if(type in organ_owner.dna.species.cosmetic_organs)
-		SEND_SIGNAL(organ_owner, COMSIG_ADD_MOOD_EVENT, "tail_lost", /datum/mood_event/tail_lost)
-		SEND_SIGNAL(organ_owner, COMSIG_ADD_MOOD_EVENT, "tail_balance_lost", /datum/mood_event/tail_balance_lost)
 
 /obj/item/organ/tail/get_global_feature_list()
 	return GLOB.tails_list

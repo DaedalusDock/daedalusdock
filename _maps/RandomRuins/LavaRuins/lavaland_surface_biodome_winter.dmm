@@ -16,8 +16,8 @@
 /area/ruin/powered/snow_biodome)
 "ad" = (
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
+/obj/item/stack/gauze,
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
 /area/ruin/powered/snow_biodome)
@@ -71,10 +71,6 @@
 "aq" = (
 /turf/closed/wall/mineral/wood,
 /area/ruin/powered/snow_biodome)
-"ar" = (
-/obj/machinery/door/airlock/wood,
-/turf/open/floor/wood/parquet,
-/area/ruin/powered/snow_biodome)
 "as" = (
 /obj/machinery/door/poddoor{
 	id = "winter_biodome"
@@ -87,7 +83,7 @@
 "au" = (
 /obj/structure/bed,
 /obj/item/bedsheet/blue,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/ruin/powered/snow_biodome)
 "av" = (
 /obj/structure/bookcase/random,
@@ -121,9 +117,6 @@
 /obj/structure/flora/tree/pine,
 /turf/open/misc/asteroid/snow,
 /area/ruin/powered/snow_biodome)
-"aA" = (
-/turf/open/floor/wood/parquet,
-/area/ruin/powered/snow_biodome)
 "aB" = (
 /obj/structure/flora/rock/pile/icy,
 /turf/open/misc/asteroid/snow,
@@ -134,7 +127,7 @@
 /area/ruin/powered/snow_biodome)
 "aD" = (
 /obj/machinery/light/small/directional/east,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/ruin/powered/snow_biodome)
 "aE" = (
 /obj/structure/extinguisher_cabinet,
@@ -214,7 +207,7 @@
 /area/ruin/powered/snow_biodome)
 "bw" = (
 /obj/machinery/light/small/directional/west,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/ruin/powered/snow_biodome)
 "bx" = (
 /obj/machinery/light/directional/east,
@@ -305,7 +298,7 @@
 /obj/item/bedsheet/blue{
 	dir = 4
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/ruin/powered/snow_biodome)
 "tb" = (
 /obj/effect/mapping_helpers/no_lava,
@@ -321,7 +314,7 @@
 /obj/structure/bed{
 	dir = 4
 	},
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/ruin/powered/snow_biodome)
 "vr" = (
 /obj/machinery/light/small/directional/north,
@@ -830,11 +823,11 @@ tb
 Wg
 ad
 af
-ar
+ay
 bw
-aA
+at
 aD
-ar
+ay
 at
 aq
 ak

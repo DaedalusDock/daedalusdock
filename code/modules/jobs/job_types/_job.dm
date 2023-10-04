@@ -374,23 +374,33 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(istype(card))
 		ADD_TRAIT(card, TRAIT_JOB_FIRST_ID_CARD, ROUNDSTART_TRAIT)
 		shuffle_inplace(card.access) // Shuffle access list to make NTNet passkeys less predictable
+
 		card.registered_name = H.real_name
 		if(H.age)
 			card.registered_age = H.age
+		card.blood_type = H.dna.blood_type
+		card.dna_hash = H.dna.unique_identity
+		card.fingerprint = md5(H.dna.unique_identity)
 		card.update_label()
 		card.update_icon()
+
 		var/datum/bank_account/B = SSeconomy.bank_accounts_by_id["[H.account_id]"]
 		if(B && B.account_id == H.account_id)
 			card.registered_account = B
 			B.bank_cards += card
+
 		H.sec_hud_set_ID()
+		if(!GLOB.data_core.finished_setup)
+			card.RegisterSignal(SSdcs, COMSIG_GLOB_DATACORE_READY, TYPE_PROC_REF(/obj/item/card/id, datacore_ready))
+		else
+			spawn(0) //Race condition? I hardly knew her!
+				card.set_icon()
 
 	var/obj/item/modular_computer/tablet/pda/PDA = H.get_item_by_slot(pda_slot)
 	if(istype(PDA))
 		PDA.saved_identification = H.real_name
 		PDA.saved_job = J.title
 		PDA.UpdateDisplay()
-
 
 /datum/outfit/job/get_chameleon_disguise_info()
 	var/list/types = ..()

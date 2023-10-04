@@ -56,6 +56,12 @@
 	*/
 	var/list/cooldowns
 
+	// Abstract types are expanded upon more in __DEFINES\abstract.dm
+	/// If this var's value is equivalent to the current type, it is considered abstract.
+	/// It is illegal to instantiate abstract types.
+	var/datum/abstract_type = /datum
+
+
 #ifdef REFERENCE_TRACKING
 	var/running_find_references
 	var/last_find_references = 0

@@ -39,6 +39,8 @@
 	if(!loc)
 		return
 
+	life_ticks++
+
 	if(!IS_IN_STASIS(src))
 
 		if(stat != DEAD)
@@ -47,7 +49,9 @@
 
 		if(stat != DEAD)
 			//Breathing, if applicable
-			handle_breathing(delta_time, times_fired)
+			handle_breathing(times_fired)
+
+		handle_chemicals()
 
 		handle_diseases(delta_time, times_fired)// DEAD check is in the proc itself; we want it to spread even if the mob is dead, but to handle its disease-y properties only if you're not.
 
@@ -61,13 +65,15 @@
 		//Handle temperature/pressure differences between body and environment
 		var/datum/gas_mixture/environment = loc.return_air()
 		if(environment)
-			handle_environment(environment, delta_time, times_fired)
-
-		handle_gravity(delta_time, times_fired)
+			if(handle_environment(environment, delta_time, times_fired))
+				updatehealth()
 
 		if(stat != DEAD)
 			handle_traits(delta_time, times_fired) // eye, ear, brain damages
 			handle_status_effects(delta_time, times_fired) //all special effects, stun, knockdown, jitteryness, hallucination, sleeping, etc
+
+	if(!IS_IN_HARD_STASIS(src))
+		handle_gravity(delta_time, times_fired)
 
 	if(machine)
 		machine.check_eye(src)
@@ -86,6 +92,9 @@
 	return
 
 /mob/living/proc/handle_random_events(delta_time, times_fired)
+	return
+
+/mob/living/proc/handle_chemicals()
 	return
 
 // Base mob environment handler for body temperature

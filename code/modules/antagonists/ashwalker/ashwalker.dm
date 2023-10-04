@@ -23,22 +23,6 @@
 /datum/antagonist/ashwalker/get_team()
 	return ashie_team
 
-/datum/antagonist/ashwalker/on_body_transfer(mob/living/old_body, mob/living/new_body)
-	. = ..()
-	UnregisterSignal(old_body, COMSIG_MOB_EXAMINATE)
-	RegisterSignal(new_body, COMSIG_MOB_EXAMINATE, PROC_REF(on_examinate))
-
 /datum/antagonist/ashwalker/on_gain()
 	. = ..()
-	RegisterSignal(owner.current, COMSIG_MOB_EXAMINATE, PROC_REF(on_examinate))
 	owner.teach_crafting_recipe(/datum/crafting_recipe/skeleton_key)
-
-/datum/antagonist/ashwalker/on_removal()
-	. = ..()
-	UnregisterSignal(owner.current, COMSIG_MOB_EXAMINATE)
-
-/datum/antagonist/ashwalker/proc/on_examinate(datum/source, atom/A)
-	SIGNAL_HANDLER
-
-	if(istype(A, /obj/structure/headpike))
-		SEND_SIGNAL(owner.current, COMSIG_ADD_MOOD_EVENT, "oogabooga", /datum/mood_event/sacrifice_good)

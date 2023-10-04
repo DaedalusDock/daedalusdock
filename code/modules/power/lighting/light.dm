@@ -21,16 +21,16 @@
 	///Amount of power used
 	var/static_power_used = 0
 	///The outer radius of the light's... light.
-	var/bulb_outer_range = 7
+	var/bulb_outer_range = 9
 	///The inner radius of the bulb's light, where it is at maximum brightness
-	var/bulb_inner_range = 1.5
+	var/bulb_inner_range = 1.8
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 1
+	var/bulb_power = 0.6
 	///The falloff of the emitted light. Adjust until it looks good.
-	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/bulb_falloff = 1.85
 
 	///Default colour of the light.
-	var/bulb_colour = "#f2f9f7"
+	var/bulb_colour = "#dfac72"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/status = LIGHT_OK
 	///Should we flicker?
@@ -56,10 +56,10 @@
 	///Inner, brightest radius of the nightshift light
 	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.85
+	var/nightshift_light_power = 0.5
 	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#FFDDCC"
-	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/nightshift_light_color = "#dfac72"
+	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
@@ -70,7 +70,7 @@
 	///Determines the colour of the light while it's in emergency mode
 	var/bulb_emergency_colour = "#FF3232"
 	///The multiplier for determining the light's power in emergency mode
-	var/bulb_emergency_pow_mul = 0.4
+	var/bulb_emergency_pow_mul = 0.6
 	///The minimum value for the light's power in emergency mode
 	var/bulb_emergency_pow_min = 0.2
 
@@ -511,14 +511,12 @@
 		to_chat(user, span_notice("You telekinetically remove the light [fitting]."))
 	else
 		var/obj/item/bodypart/affecting = electrician.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
-		if(affecting?.receive_damage( 0, 5 )) // 5 burn damage
-			electrician.update_damage_overlays()
+		affecting?.receive_damage( 0, 5 )
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
 			to_chat(user, span_notice("You feel like you're burning, but you can push through."))
 			if(!do_after(user, src, 5 SECONDS))
 				return
-			if(affecting?.receive_damage( 0, 10 )) // 10 more burn damage
-				electrician.update_damage_overlays()
+			affecting?.receive_damage( 0, 10 ) // 10 more burn damage
 			to_chat(user, span_notice("You manage to remove the light [fitting], shattering it in process."))
 			break_light_tube()
 		else

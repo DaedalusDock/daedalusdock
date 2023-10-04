@@ -126,7 +126,7 @@
 	. = ..()
 	if(!can_interact(user))
 		return
-	if(!user.canUseTopic(src, !issilicon(user)) || !is_operational)
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH) || !is_operational)
 		return
 
 /obj/machinery/computer/ui_interact(mob/user, datum/tgui/ui)

@@ -17,6 +17,7 @@
 	light_outer_range = 4
 	light_power = 0.3
 	light_on = FALSE
+	force = 10
 	var/on = FALSE
 
 
@@ -96,7 +97,9 @@
 						to_chat(user, span_notice("[M]'s pupils narrow."))
 
 			if(BODY_ZONE_PRECISE_MOUTH)
-
+				if(!M.has_mouth())
+					to_chat(user, span_warning("They don't have a mouth."))
+					return
 				if(M.is_mouth_covered())
 					to_chat(user, span_warning("You're going to need to remove that [(M.head && M.head.flags_cover & HEADCOVERSMOUTH) ? "helmet" : "mask"] first!"))
 					return
@@ -462,7 +465,7 @@
 	base_icon_state = "glowstick"
 	inhand_icon_state = "glowstick"
 	worn_icon_state = "lightstick"
-	grind_results = list(/datum/reagent/phenol = 15, /datum/reagent/hydrogen = 10, /datum/reagent/oxygen = 5) //Meth-in-a-stick
+	grind_results = list(/datum/reagent/uranium/radium = 15, /datum/reagent/hydrogen = 10, /datum/reagent/oxygen = 5)
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 

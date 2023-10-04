@@ -39,6 +39,8 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 	var/list/mutcolors = list()
 	///See above
 	var/mutcolor_used
+	///Which index of the mutcolor key list to use. Defaults to 1, so MUTCOLORS_GENERIC_1 if mutcolor_used is MUTCOLORS_KEY_GENERIC
+	var/mutcolor_index = 1
 
 	///Does this organ have any bodytypes to pass to it's ownerlimb?
 	var/external_bodytypes = NONE
@@ -109,7 +111,7 @@ GLOBAL_LIST_EMPTY(organ_overlays_cache)
 
 		if(!icon_exists(sprite_datum.icon, finished_icon_state))
 			stack_trace("Organ state layer [layer_text] missing from [sprite_datum.type]!")
-			dump_error = TRUE
+			//dump_error = TRUE
 
 		var/icon/temp_icon = icon(sprite_datum.icon, finished_icon_state)
 		if(sprite_datum.color_src && draw_color)

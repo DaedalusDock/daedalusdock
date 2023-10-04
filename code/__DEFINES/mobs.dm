@@ -23,15 +23,24 @@
 #define BLOOD_VOLUME_BAD 224
 #define BLOOD_VOLUME_SURVIVE 122
 
-/// How efficiently humans regenerate blood.
-#define BLOOD_REGEN_FACTOR 0.25
+// Blood circulation levels
+#define BLOOD_CIRC_FULL 100
+#define BLOOD_CIRC_SAFE 85
+#define BLOOD_CIRC_OKAY 70
+#define BLOOD_CIRC_BAD 60
+#define BLOOD_CIRC_SURVIVE 30
+
+// Values for flash_pain()
+#define PAIN_SMALL "weakest_pain"
+#define PAIN_MEDIUM "weak_pain"
+#define PAIN_LARGE "pain"
 
 //Sizes of mobs, used by mob/living/var/mob_size
-#define MOB_SIZE_TINY 0
-#define MOB_SIZE_SMALL 1
-#define MOB_SIZE_HUMAN 2
-#define MOB_SIZE_LARGE 3
-#define MOB_SIZE_HUGE 4 // Use this for things you don't want bluespace body-bagged
+#define MOB_SIZE_TINY 1
+#define MOB_SIZE_SMALL 5
+#define MOB_SIZE_HUMAN 10
+#define MOB_SIZE_LARGE 20
+#define MOB_SIZE_HUGE 40 // Use this for things you don't want bluespace body-bagged
 
 //Ventcrawling defines
 #define VENTCRAWLER_NONE   0
@@ -50,11 +59,6 @@
 #define MOB_REPTILE (1 << 8)
 #define MOB_SPIRIT (1 << 9)
 #define MOB_PLANT (1 << 10)
-
-
-//Organ defines for carbon mobs
-#define ORGAN_ORGANIC 1
-#define ORGAN_ROBOTIC 2
 
 #define DEFAULT_BODYPART_ICON_ORGANIC 'icons/mob/human_parts_greyscale.dmi'
 #define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
@@ -88,6 +92,8 @@
 #define BODYTYPE_VOX_OTHER (1<<8)
 ///The limb is small and feathery
 #define BODYTYPE_TESHARI (1<<9)
+/// IPC heads.
+#define BODYTYPE_BOXHEAD (1<<10)
 
 //Defines for Species IDs
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
@@ -103,6 +109,7 @@
 #define SPECIES_FELINE "felinid"
 #define SPECIES_FLYPERSON "fly"
 #define SPECIES_HUMAN "human"
+#define SPECIES_IPC "ipc"
 #define SPECIES_JELLYPERSON "jelly"
 #define SPECIES_SLIMEPERSON "slime"
 #define SPECIES_LUMINESCENT "luminescent"
@@ -116,6 +123,7 @@
 #define SPECIES_MUSHROOM "mush"
 #define SPECIES_PLASMAMAN "plasmaman"
 #define SPECIES_PODPERSON "pod"
+#define SPECIES_SAURIAN "saurian"
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
 #define SPECIES_SNAIL "snail"
@@ -154,8 +162,7 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
-#define HUMAN_FAILBREATH_OXYLOSS (rand(2,4))
-#define HUMAN_CRIT_FAILBREATH_OXYLOSS (rand(3,6))
+#define HUMAN_FAILBREATH_OXYLOSS 1
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -177,7 +184,11 @@
 //Brain Damage defines
 #define BRAIN_DAMAGE_MILD 20
 #define BRAIN_DAMAGE_SEVERE 100
+#define BRAIN_DAMAGE_CRITICAL 150
 #define BRAIN_DAMAGE_DEATH 200
+
+#define BRAIN_DECAY_RATE 0.5
+#define ORGAN_DECAY_RATE 0.002
 
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild
 #define BRAIN_TRAUMA_SEVERE /datum/brain_trauma/severe
@@ -211,6 +222,7 @@
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
+#define SURGERY_DEENCASED 3
 
 //Health hud screws for carbon mobs
 #define SCREWYHUD_NONE 0
@@ -232,26 +244,6 @@
 #define BEAUTY_LEVEL_DECENT 33
 #define BEAUTY_LEVEL_GOOD 66
 #define BEAUTY_LEVEL_GREAT 100
-
-//Moods levels for humans
-#define MOOD_LEVEL_HAPPY4 15
-#define MOOD_LEVEL_HAPPY3 10
-#define MOOD_LEVEL_HAPPY2 6
-#define MOOD_LEVEL_HAPPY1 2
-#define MOOD_LEVEL_NEUTRAL 0
-#define MOOD_LEVEL_SAD1 -3
-#define MOOD_LEVEL_SAD2 -7
-#define MOOD_LEVEL_SAD3 -15
-#define MOOD_LEVEL_SAD4 -20
-
-//Sanity levels for humans
-#define SANITY_MAXIMUM 150
-#define SANITY_GREAT 125
-#define SANITY_NEUTRAL 100
-#define SANITY_DISTURBED 75
-#define SANITY_UNSTABLE 50
-#define SANITY_CRAZY 25
-#define SANITY_INSANE 0
 
 //Nutrition levels for humans
 #define NUTRITION_LEVEL_FAT 600
@@ -426,7 +418,78 @@
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
-#define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4) // By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
+/// Applies a Chemical Effect with the given magnitude to the mob
+#define APPLY_CHEM_EFFECT(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] += magnitude; \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+#define SET_CHEM_EFFECT_IF_LOWER(mob, effect, magnitude) \
+	if(effect in mob.chem_effects) { \
+		mob.chem_effects[effect] = max(magnitude , mob.chem_effects[effect]); \
+	} \
+	else { \
+		mob.chem_effects[effect] = magnitude; \
+	}
+
+///Check chem effect presence in a mob
+#define CHEM_EFFECT_MAGNITUDE(mob, effect) (mob.chem_effects[effect] || 0)
+
+//CHEMICAL EFFECTS
+/// Prevents damage from freezing. Boolean.
+#define CE_CRYO "cryo"
+/// Organ preservation effects like formaldehyde. Boolean.
+#define CE_ORGAN_PRESERVATION "formaldehyde"
+/// Inaprovaline
+#define CE_STABLE "stable"
+/// Breathing depression, makes you need more air
+#define CE_BREATHLOSS "breathloss"
+/// Fights off necrosis in bodyparts and organs
+#define CE_ANTIBIOTIC "antibiotic"
+/// Iron/nutriment
+#define CE_BLOODRESTORE "bloodrestore"
+#define CE_PAINKILLER "painkiller"
+/// Liver filtering
+#define CE_ALCOHOL       "alcohol"
+/// Liver damage
+#define CE_ALCOHOL_TOXIC "alcotoxic"
+/// Increases or decreases heart rate
+#define CE_PULSE "xcardic"
+/// Reduces incoming toxin damage and helps with liver filtering
+#define CE_ANTITOX "antitox"
+/// Dexalin.
+#define CE_OXYGENATED "oxygen"
+/// Anti-virus effect.
+#define CE_ANTIVIRAL "antiviral"
+// Generic toxins, stops autoheal.
+#define CE_TOXIN "toxins"
+/// Gets in the way of blood circulation, higher the worse
+#define CE_BLOCKAGE "blockage"
+/// Lowers the subject's voice to a whisper
+#define	CE_VOICELOSS "whispers"
+/// Makes it harder to disarm someone
+#define CE_STIMULANT "stimulants"
+/// Multiplier for bloodloss
+#define CE_ANTICOAGULANT "anticoagulant"
+/// Enables brain regeneration even in poor circumstances
+#define CE_BRAIN_REGEN "brainregen"
+
+// Pulse levels, very simplified.
+#define PULSE_NONE 0 // So !M.pulse checks would be possible.
+#define PULSE_SLOW 1 // <60 bpm
+#define PULSE_NORM 2 //  60-90 bpm
+#define PULSE_FAST 3 //  90-120 bpm
+#define PULSE_2FAST 4 // >120 bpm
+#define PULSE_THREADY 5 // Occurs during hypovolemic shock
+#define GETPULSE_HAND 0 // Less accurate. (hand)
+#define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
+#define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
+
+// Partial stasis sources
+#define STASIS_CRYOGENIC_FREEZING "cryo"
 
 // Eye protection
 #define FLASH_PROTECTION_SENSITIVE -1
@@ -444,6 +507,7 @@
 
 // /obj/item/bodypart on_mob_life() retval flag
 #define BODYPART_LIFE_UPDATE_HEALTH (1<<0)
+#define BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS (1<<1)
 
 #define MAX_REVIVE_FIRE_DAMAGE 180
 #define MAX_REVIVE_BRUTE_DAMAGE 180
@@ -457,7 +521,7 @@
 #define PULL_PRONE_SLOWDOWN 1.5
 #define HUMAN_CARRY_SLOWDOWN 0.35
 
-//Flags that control what things can spawn species (whitelist)
+//Flags that control what things can spawn species (whitelist) (changesource_flagx)
 //Badmin magic mirror
 #define MIRROR_BADMIN (1<<0)
 //Standard magic mirror (wizard)
@@ -518,9 +582,6 @@
 
 
 #define SILENCE_RANGED_MESSAGE (1<<0)
-
-/// Returns whether or not the given mob can succumb
-#define CAN_SUCCUMB(target) (HAS_TRAIT(target, TRAIT_CRITICAL_CONDITION) && !HAS_TRAIT(target, TRAIT_NODEATH))
 
 // Body position defines.
 /// Mob is standing up, usually associated with lying_angle value of 0.
@@ -678,14 +739,21 @@
 #define ABOVE_BODY_FRONT_LAYER (BODY_FRONT_LAYER-1)
 
 //used by canUseTopic()
-/// If silicons need to be next to the atom to use this
-#define BE_CLOSE TRUE
-/// If other mobs (monkeys, aliens, etc) can use this
-#define NO_DEXTERITY TRUE // I had to change 20+ files because some non-dnd-playing fuckchumbis can't spell "dexterity"
-// If telekinesis you can use it from a distance
-#define NO_TK TRUE
-/// If mobs can use this while resting
-#define FLOOR_OKAY TRUE
+/// Needs to be Adjacent() to target.
+#define USE_CLOSE (1<<0)
+/// Needs to be an AdvancedToolUser
+#define USE_DEXTERITY (1<<1)
+// Forbid TK overriding USE_CLOSE
+#define USE_IGNORE_TK (1<<2)
+/// The mob needs to have hands (Does not need EMPTY hands)
+#define USE_NEED_HANDS (1<<3)
+/// Allows the mob to be resting
+#define USE_RESTING (1<<4)
+/// Ignore USE_CLOSE if they have silicon reach
+#define USE_SILICON_REACH (1<<5)
+/// Needs to be literate
+#define USE_LITERACY (1<<6)
+
 
 /// The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)
 #define RESIZE_DEFAULT_SIZE 1
@@ -726,3 +794,19 @@ GLOBAL_REAL_VAR(list/voice_type2sound) = list(
 
 ///Managed global that is a reference to the real global
 GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
+
+/// Breath succeeded completely
+#define BREATH_OKAY 1
+/// Breath caused damage, but should not be obvious
+#define BREATH_SILENT_DAMAGING 0
+/// Breath succeeded but is damaging.
+#define BREATH_DAMAGING -1
+/// Breath completely failed. chokies!!
+#define BREATH_FAILED -2
+
+/// Attack missed.
+#define MOB_ATTACKEDBY_MISS 3
+/// Attack completely failed (missing user, etc)
+#define MOB_ATTACKEDBY_FAIL 0
+#define MOB_ATTACKEDBY_SUCCESS 1
+#define MOB_ATTACKEDBY_NO_DAMAGE 2

@@ -20,6 +20,7 @@
 	gender = PLURAL
 	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
+
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
@@ -36,21 +37,23 @@
 	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
 	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
 
-		// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
+	// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
 	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
-	var/splint_factor
+	var/splint_slowdown = null
 	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
 	var/burn_cleanliness_bonus
-	/// How much blood flow this stack can absorb if used as a bandage on a cut wound, note that absorption is how much we lower the flow rate, not the raw amount of blood we suck up
-	var/absorption_capacity
-	/// How quickly we lower the blood flow on a cut wound we're bandaging. Expected lifetime of this bandage in seconds is thus absorption_capacity/absorption_rate, or until the cut heals, whichever comes first
-	var/absorption_rate
+
+	/// How much blood this stack can absorb until the owner starts loosing blood again.
+	var/absorption_capacity = 0
+	/// How much this stack reduces blood flow, multiplier
+	var/absorption_rate_modifier = 1
+
 	/// Amount of matter for RCD
 	var/matter_amount = 0
 	/// Does this stack require a unique girder in order to make a wall?
 	var/has_unique_girder = FALSE
 
-/obj/item/stack/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+/obj/item/stack/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1, absorption_capacity)
 	if(new_amount != null)
 		amount = new_amount
 	while(amount > max_amount)
@@ -58,6 +61,9 @@
 		new type(loc, max_amount, FALSE)
 	if(!merge_type)
 		merge_type = type
+
+	if(absorption_capacity)
+		src.absorption_capacity = absorption_capacity
 
 	if(LAZYLEN(mat_override))
 		set_mats_per_unit(mat_override, mat_amt)
@@ -153,6 +159,7 @@
 
 /obj/item/stack/examine(mob/user)
 	. = ..()
+	var/plural = get_amount()>1
 	if(is_cyborg)
 		if(singular_name)
 			. += "There is enough energy for [get_amount()] [singular_name]\s."
@@ -160,15 +167,21 @@
 			. += "There is enough energy for [get_amount()]."
 		return
 	if(singular_name)
-		if(get_amount()>1)
+		if(plural)
 			. += "There are [get_amount()] [singular_name]\s in the stack."
 		else
 			. += "There is [get_amount()] [singular_name] in the stack."
-	else if(get_amount()>1)
+	else if(plural)
 		. += "There are [get_amount()] in the stack."
 	else
 		. += "There is [get_amount()] in the stack."
 	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
+
+	if(absorption_capacity < initial(absorption_capacity))
+		if(absorption_capacity == 0)
+			. += span_warning("[plural ? "They are" : "It is"] drenched in blood, this won't be a suitable bandage.")
+		else
+			. += span_warning("[plural ? "They are" : "It is"] covered in blood.")
 
 /obj/item/stack/proc/get_amount()
 	if(is_cyborg)
@@ -447,6 +460,8 @@
 		return FALSE
 	if(mats_per_unit ~! check.mats_per_unit) // ~! in case of lists this operator checks only keys, but not values
 		return FALSE
+	if(absorption_capacity != check.absorption_capacity)
+		return FALSE
 	if(is_cyborg) // No merging cyborg stacks into other stacks
 		return FALSE
 	if(ismob(loc) && !inhand) // no merging with items that are on the mob
@@ -512,6 +527,27 @@
 		merge(hitting)
 	. = ..()
 
+/obj/item/stack/attack(mob/living/M, mob/living/user, params)
+	if(splint_slowdown)
+		return try_splint(M, user)
+
+	if(!user.combat_mode && absorption_capacity && ishuman(M))
+		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected, TRUE)
+		if(BP.bandage)
+			to_chat(user, span_warning("[M]'s [BP.plaintext_zone] is already bandaged."))
+			return FALSE
+
+		if(do_after(user, M, 5 SECONDS, DO_PUBLIC, display = src))
+			if(user == M)
+				user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
+			else
+				user.visible_message(span_notice("[user] applies [src] to [M]'s [BP.plaintext_zone]."))
+			BP.apply_bandage(src)
+		return
+
+	return ..()
+
+
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/attack_hand(mob/user, list/modifiers)
 	if(user.get_inactive_held_item() == src)
@@ -526,13 +562,13 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 
-	if(is_cyborg || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(is_cyborg || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(is_zero_amount(delete_if_zero = TRUE))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	var/max = get_amount()
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
-	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, !iscyborg(user)))
+	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	split_stack(user, stackmaterial)
 	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
@@ -547,7 +583,7 @@
 /obj/item/stack/proc/split_stack(mob/user, amount)
 	if(!use(amount, TRUE, FALSE))
 		return null
-	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE, mats_per_unit)
+	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE, mats_per_unit, absorption_capacity)
 	. = F
 	F.copy_evidences(src)
 	loc.atom_storage?.refresh_views()

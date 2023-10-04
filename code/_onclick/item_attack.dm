@@ -151,6 +151,9 @@
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
+	if (user.can_operate_on(src) && attacking_item.attempt_surgery(src, user))
+		return TRUE
+
 	user.changeNext_move(attacking_item.combat_click_delay)
 	return attacking_item.attack(src, user, params)
 
@@ -178,6 +181,9 @@
 	if(signal_return & COMPONENT_SKIP_ATTACK)
 		return
 
+	if(!user.combat_mode)
+		return
+
 	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK, M, user, params)
 
 	if(item_flags & NOBLUDGEON)
@@ -186,11 +192,6 @@
 	if(force && HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return
-
-	if(!force)
-		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-	else if(hitsound)
-		playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
 
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
@@ -201,10 +202,22 @@
 	user.stamina_swing(src.stamina_cost)
 
 	user.do_attack_animation(M)
-	M.attacked_by(src, user)
+	var/attack_return = M.attacked_by(src, user)
+	switch(attack_return)
+		if(MOB_ATTACKEDBY_NO_DAMAGE)
+			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
+		if(MOB_ATTACKEDBY_SUCCESS)
+			if(hitsound)
+				playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+		if(MOB_ATTACKEDBY_MISS)
+			playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)])")
+	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
+	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
 	add_fingerprint(user)
+
+	/// If we missed or the attack failed, interrupt attack chain.
+	return missed
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking
 /obj/item/proc/attack_secondary(mob/living/victim, mob/living/user, params)

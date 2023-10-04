@@ -225,3 +225,6 @@
 	var/datum/client_interface/mock_client
 
 	var/interaction_range = 0 //how far a mob has to be to interact with something without caring about obsctruction, defaulted to 0 tiles
+
+	/// Keeps track of what ambience we are playing. Yeah i know it sucks.
+	var/playing_ambience

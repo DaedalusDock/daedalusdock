@@ -23,7 +23,6 @@
 
 /datum/powernet/New()
 	SSmachines.powernets += src
-	SSpackets.queued_networks += src
 
 /datum/powernet/Destroy()
 	//Go away references, you suck!
@@ -119,5 +118,7 @@
 
 /// Pass a signal through a powernet to all connected data equipment.
 // SSpackets does this for us!
+// We just need to inform them we have something to deal with.
 /datum/powernet/proc/queue_signal(datum/signal/signal)
 	next_packet_queue += signal
+	SSpackets.queued_networks |= src

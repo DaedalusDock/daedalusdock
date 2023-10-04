@@ -52,7 +52,7 @@
 
 	/// When flipped, you can beat the clown. Or kill simplemobs. Or beat the clown.
 	var/flipped = FALSE
-	var/can_be_flipped = TRUE
+	var/can_be_flipped = FALSE
 
 	var/unflipped_force = 5
 
@@ -380,6 +380,7 @@
 	on_stun_sound = 'sound/weapons/egloves.ogg'
 	on_stun_volume = 50
 	active = FALSE
+	can_be_flipped = TRUE
 
 	var/throw_stun_chance = 35
 	var/obj/item/stock_parts/cell/cell

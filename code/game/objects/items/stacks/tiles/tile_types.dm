@@ -11,8 +11,8 @@
 	righthand_file = 'icons/mob/inhands/misc/tiles_righthand.dmi'
 	icon = 'icons/obj/tiles.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
-	force = 1
-	throwforce = 1
+	force = 6
+	throwforce = 15
 	throw_speed = 3
 	throw_range = 7
 	max_amount = 60
@@ -134,33 +134,7 @@
 	turf_type = /turf/open/floor/wood
 	resistance_flags = FLAMMABLE
 	merge_type = /obj/item/stack/tile/wood
-	tile_reskin_types = list(
-		/obj/item/stack/tile/wood,
-		/obj/item/stack/tile/wood/large,
-		/obj/item/stack/tile/wood/tile,
-		/obj/item/stack/tile/wood/parquet,
-	)
 
-/obj/item/stack/tile/wood/parquet
-	name = "parquet wood floor tile"
-	singular_name = "parquet wood floor tile"
-	icon_state = "tile-wood_parquet"
-	turf_type = /turf/open/floor/wood/parquet
-	merge_type = /obj/item/stack/tile/wood/parquet
-
-/obj/item/stack/tile/wood/large
-	name = "large wood floor tile"
-	singular_name = "large wood floor tile"
-	icon_state = "tile-wood_large"
-	turf_type = /turf/open/floor/wood/large
-	merge_type = /obj/item/stack/tile/wood/large
-
-/obj/item/stack/tile/wood/tile
-	name = "tiled wood floor tile"
-	singular_name = "tiled wood floor tile"
-	icon_state = "tile-wood_tile"
-	turf_type = /turf/open/floor/wood/tile
-	merge_type = /obj/item/stack/tile/wood/tile
 
 //Bamboo
 /obj/item/stack/tile/bamboo
@@ -376,7 +350,7 @@
 	. += neon_overlay
 	. += emissive_appearance(neon_icon || icon, neon_icon_state || icon_state, alpha = emissive_alpha)
 
-/obj/item/stack/tile/carpet/neon/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/carpet/neon/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands || !neon_inhand_icon_state)
 		return
@@ -1146,7 +1120,7 @@
 	. = ..()
 	. += emissive_appearance(icon, icon_state, alpha = alpha)
 
-/obj/item/stack/tile/emissive_test/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/stack/tile/emissive_test/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	. += emissive_appearance(standing.icon, standing.icon_state, alpha = standing.alpha)
 

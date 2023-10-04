@@ -31,6 +31,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
+
 	// Moths
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
@@ -49,6 +50,14 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/vox, GLOB.tails_list_vox)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
 
+	//IPC
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_screen, GLOB.ipc_screens_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_antenna, GLOB.ipc_antenna_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_screen, GLOB.saurian_screens_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_tail, GLOB.saurian_tails_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_scutes, GLOB.saurian_scutes_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_antenna, GLOB.saurian_antenna_list, add_blank = TRUE)
+
 	//Species
 	for(var/spath in subtypesof(/datum/species))
 		var/datum/species/S = new spath()
@@ -56,8 +65,13 @@
 	sort_list(GLOB.species_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	//Surgeries
-	for(var/path in subtypesof(/datum/surgery))
-		GLOB.surgeries_list += new path()
+	for(var/datum/surgery_step/path as anything in subtypesof(/datum/surgery_step))
+		if(!isabstract(path))
+			path = new path()
+			GLOB.surgeries_list += path
+			if(!length(path.allowed_tools))
+				stack_trace("Surgery type [path.type] has no allowed_items list.")
+
 	sort_list(GLOB.surgeries_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	// Hair Gradients - Initialise all /datum/sprite_accessory/hair_gradient into an list indexed by gradient-style name

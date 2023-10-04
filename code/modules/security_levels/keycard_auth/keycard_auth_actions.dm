@@ -1,11 +1,10 @@
 /datum/keycard_auth_action
+	abstract_type = /datum/keycard_auth_action
 	/// Display name of the action
 	var/name = "Abstract KAD Action"
 	/// FontAwesome Icon for TGUI display
 	var/ui_icon = "exclamation-triangle"
 
-	/// Abstractness var, Move this up to datum later.
-	var/abstract_type = /datum/keycard_auth_action
 
 
 	// I don't *PLAN* to do this right now, but it's easy as fuck to support so why not.

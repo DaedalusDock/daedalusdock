@@ -22,27 +22,25 @@
 #define DEFAULT_UNDERLAY_ICON 'icons/turf/floors.dmi'
 #define DEFAULT_UNDERLAY_ICON_STATE "plating"
 
-
-/**
- * Checks if `src` can smooth with `target`, based on the [/area/var/area_limited_icon_smoothing] variable of their areas.
- *
- * * If `target` doesn't have an area (E.g. the edge of the z level), return `FALSE`.
- * * If one area has `area_limited_icon_smoothing` set, and the other area's type doesn't match it, return `FALSE`.
- * * Else, return `TRUE`.
- *
- * Arguments:
- * * target - The atom we're trying to smooth with.
- */
-/atom/proc/can_area_smooth(atom/target)
-	var/area/target_area = get_area(target)
-	var/area/source_area = get_area(src)
-	if(!target_area)
-		return FALSE
-	if(target_area.area_limited_icon_smoothing && !istype(source_area, target_area.area_limited_icon_smoothing))
-		return FALSE
-	if(source_area.area_limited_icon_smoothing && !istype(target_area, source_area.area_limited_icon_smoothing))
-		return FALSE
-	return TRUE
+/// Test if thing (an atom) can smooth with an adjacent turf. This is a macro because it is a very very hot proc.
+#define CAN_AREAS_SMOOTH(thing, turf, val) \
+	do{ \
+		if(isnull(turf)) { \
+			break; \
+		}; \
+		var/area/source_area = get_step(thing, 0)?.loc; \
+		var/area/target_area = turf:loc; \
+		if(isnull(target_area)) { \
+			break; \
+		};\
+		if(target_area.area_limited_icon_smoothing && !istype(source_area, target_area.area_limited_icon_smoothing)) { \
+			break; \
+		}; \
+		if(source_area.area_limited_icon_smoothing && !istype(target_area, source_area.area_limited_icon_smoothing)) { \
+			break; \
+		}; \
+		val = TRUE; \
+	}while(FALSE)
 
 ///Scans all adjacent turfs to find targets to smooth with.
 /atom/proc/calculate_adjacencies()
@@ -210,7 +208,9 @@
 	if(!target_turf)
 		return NULLTURF_BORDER
 
-	if(!can_area_smooth(target_turf))
+	var/can_area_smooth
+	CAN_AREAS_SMOOTH(src, target_turf, can_area_smooth)
+	if(isnull(can_area_smooth))
 		return NO_ADJ_FOUND
 
 	if(isnull(canSmoothWith)) //special case in which it will only smooth with itself
@@ -255,35 +255,38 @@
 		set_adj_in_dir: { \
 			do { \
 				var/turf/neighbor = get_step(src, direction); \
-				if(neighbor && can_area_smooth(neighbor)) { \
-					var/neighbor_smoothing_groups = neighbor.smoothing_groups; \
-					if(neighbor_smoothing_groups) { \
-						for(var/target in canSmoothWith) { \
-							if(canSmoothWith[target] & neighbor_smoothing_groups[target]) { \
-								new_junction |= direction_flag; \
-								break set_adj_in_dir; \
-							}; \
-						}; \
-					}; \
-					if(smooth_obj) { \
-						for(var/atom/movable/thing as anything in neighbor) { \
-							var/thing_smoothing_groups = thing.smoothing_groups; \
-							if(!thing.anchored || isnull(thing_smoothing_groups)) { \
-								continue; \
-							}; \
+				var/can_area_smooth; \
+					CAN_AREAS_SMOOTH(src, neighbor, can_area_smooth); \
+					if(neighbor && can_area_smooth) { \
+						var/neighbor_smoothing_groups = neighbor.smoothing_groups; \
+						if(neighbor_smoothing_groups) { \
 							for(var/target in canSmoothWith) { \
-								if(canSmoothWith[target] & thing_smoothing_groups[target]) { \
+								if(canSmoothWith[target] & neighbor_smoothing_groups[target]) { \
 									new_junction |= direction_flag; \
 									break set_adj_in_dir; \
 								}; \
 							}; \
 						}; \
+						if(smooth_obj) { \
+							for(var/atom/movable/thing as anything in neighbor) { \
+								var/thing_smoothing_groups = thing.smoothing_groups; \
+								if(!thing.anchored || isnull(thing_smoothing_groups)) { \
+									continue; \
+								}; \
+								for(var/target in canSmoothWith) { \
+									if(canSmoothWith[target] & thing_smoothing_groups[target]) { \
+										new_junction |= direction_flag; \
+										break set_adj_in_dir; \
+									}; \
+								}; \
+							}; \
+						}; \
+					} else if (smooth_border) { \
+						new_junction |= direction_flag; \
 					}; \
-				} else if (smooth_border) { \
-					new_junction |= direction_flag; \
-				}; \
 			} while(FALSE) \
 		}
+
 
 	for(var/direction in GLOB.cardinals) //Cardinal case first.
 		SET_ADJ_IN_DIR(direction, direction)

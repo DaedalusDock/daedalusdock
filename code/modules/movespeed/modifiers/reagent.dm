@@ -17,7 +17,7 @@
 	multiplicative_slowdown = -0.8
 
 /datum/movespeed_modifier/reagent/methamphetamine
-	multiplicative_slowdown = -0.65
+	multiplicative_slowdown = -0.25
 
 /datum/movespeed_modifier/reagent/nitrium
 	multiplicative_slowdown = -0.65
@@ -38,4 +38,19 @@
 	multiplicative_slowdown = -0.35
 
 /datum/movespeed_modifier/reagent/nooartrium
+	multiplicative_slowdown = 2
+
+/datum/movespeed_modifier/inaprovaline
+	multiplicative_slowdown = 1.5
+
+/datum/movespeed_modifier/tramadol
+	multiplicative_slowdown = 1.5
+
+/datum/movespeed_modifier/morphine
+	multiplicative_slowdown = 1.5
+
+/datum/movespeed_modifier/hyperzine
+	multiplicative_slowdown = -0.4
+
+/datum/movespeed_modifier/impedrezene
 	multiplicative_slowdown = 2

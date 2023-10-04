@@ -652,14 +652,6 @@
 		/obj/item/stock_parts/micro_laser = 1,
 		/obj/item/stack/sheet/glass = 1)
 
-/obj/item/circuitboard/machine/chem_mass_spec
-	name = "High-Performance Liquid Chromatography (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/chem_mass_spec
-	req_components = list(
-	/obj/item/stock_parts/micro_laser = 1,
-	/obj/item/stack/cable_coil = 5)
-
 /obj/item/circuitboard/machine/chem_master
 	name = "ChemMaster 3000 (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -706,30 +698,6 @@
 	build_path = /obj/machinery/harvester
 	req_components = list(/obj/item/stock_parts/micro_laser = 4)
 
-/obj/item/circuitboard/machine/medical_kiosk
-	name = "Medical Kiosk (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/medical_kiosk
-	var/custom_cost = 10
-	req_components = list(
-		/obj/item/healthanalyzer = 1,
-		/obj/item/stock_parts/scanning_module = 1)
-
-/obj/item/circuitboard/machine/medical_kiosk/multitool_act(mob/living/user)
-	. = ..()
-	var/new_cost = tgui_input_number(user, "New cost for using this medical kiosk", "Pricing", custom_cost, 1000, 10)
-	if(!new_cost || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
-		return
-	if(loc != user)
-		to_chat(user, span_warning("You must hold the circuitboard to change its cost!"))
-		return
-	custom_cost = new_cost
-	to_chat(user, span_notice("The cost is now set to [custom_cost]."))
-
-/obj/item/circuitboard/machine/medical_kiosk/examine(mob/user)
-	. = ..()
-	. += "The cost to use this kiosk is set to [custom_cost]."
-
 /obj/item/circuitboard/machine/limbgrower
 	name = "Limb Grower (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -765,6 +733,7 @@
 	def_components = list(
 		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/medical
 	)
+
 /obj/item/circuitboard/machine/sleeper
 	name = "Sleeper (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -816,6 +785,25 @@
 	build_path = /obj/machinery/medipen_refiller
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 1)
+
+/obj/item/circuitboard/machine/bodyscanner
+	name = "Body Scanner (Machine Board)"
+	greyscale_colors = CIRCUIT_COLOR_MEDICAL
+	build_path = /obj/machinery/bodyscanner
+	req_components = list(
+		/obj/item/stock_parts/matter_bin = 1,
+		/obj/item/stock_parts/scanning_module = 1,
+		/obj/item/stock_parts/capacitor = 1
+	)
+
+/obj/item/circuitboard/machine/bodyscanner_console
+	name = "Body Scanner Console (Machine Board)"
+	greyscale_colors = CIRCUIT_COLOR_MEDICAL
+	build_path = /obj/machinery/bodyscanner_console
+	req_components = list(
+		/obj/item/stack/cable_coil = 1,
+		/obj/item/stack/sheet/glass = 1
+	)
 
 /obj/item/circuitboard/machine/cyborgrecharger
 	name = "Cyborg Recharger (Machine Board)"
@@ -920,6 +908,9 @@
 	name = "Departmental Fabricator - Security (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SECURITY
 	build_path = /obj/machinery/rnd/production/fabricator/department/security
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/hyper/preloaded/fabricator/security
+	)
 
 /obj/item/circuitboard/machine/recharger
 	name = "Weapon Recharger (Machine Board)"

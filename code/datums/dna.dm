@@ -152,15 +152,15 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/proc/check_mutation(mutation_type)
 	return get_mutation(mutation_type)
 
-/datum/dna/proc/remove_all_mutations(list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), mutadone = FALSE)
-	remove_mutation_group(mutations, classes, mutadone)
+/datum/dna/proc/remove_all_mutations(list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), ryetalyn = FALSE)
+	remove_mutation_group(mutations, classes, ryetalyn)
 	scrambled = FALSE
 
-/datum/dna/proc/remove_mutation_group(list/group, list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), mutadone = FALSE)
+/datum/dna/proc/remove_mutation_group(list/group, list/classes = list(MUT_NORMAL, MUT_EXTRA, MUT_OTHER), ryetalyn = FALSE)
 	if(!group)
 		return
 	for(var/datum/mutation/human/HM in group)
-		if((HM.class in classes) && !(HM.mutadone_proof && mutadone))
+		if((HM.class in classes) && !(HM.ryetalyn_proof && ryetalyn))
 			force_lose(HM)
 
 /datum/dna/proc/generate_unique_identity()
@@ -244,6 +244,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_VOX_FACIAL_HAIR_BLOCK] = construct_block(GLOB.vox_facial_hair_list.Find(features["vox_facial_hair"]), GLOB.vox_facial_hair_list.len)
 	if(features["vox_snout"])
 		L[DNA_VOX_SNOUT_BLOCK] = construct_block(GLOB.vox_snouts_list.Find(features["vox_snout"]), GLOB.vox_snouts_list.len)
+
+	if(features["ipc_screen"])
+		L[DNA_IPC_SCREEN_BLOCK] = construct_block(GLOB.ipc_screens_list.Find(features["ipc_screen"]), GLOB.ipc_screens_list.len)
+	if(features["ipc_antenna"])
+		L[DNA_IPC_ANTENNA_BLOCK] = construct_block(GLOB.ipc_antenna_list.Find(features["DNA_IPC_ANTENNA_BLOCK"]), GLOB.ipc_antenna_list.len)
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -488,7 +493,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 /datum/dna/stored/check_mutation(mutation_name)
 	return
 
-/datum/dna/stored/remove_all_mutations(list/classes, mutadone = FALSE)
+/datum/dna/stored/remove_all_mutations(list/classes, ryetalyn = FALSE)
 	return
 
 /datum/dna/stored/remove_mutation_group(list/group)
@@ -543,7 +548,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			new_race = mrace
 		else
 			return
-		deathsound = new_race.deathsound
 
 		if(dna.species.properly_gained)
 			dna.species.on_species_loss(src, new_race, pref_load)
@@ -694,6 +698,20 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(dna.features["vox_snout"])
 		dna.features["vox_snout"] = GLOB.vox_snouts_list[deconstruct_block(get_uni_feature_block(features, DNA_VOX_SNOUT_BLOCK), GLOB.vox_snouts_list.len)]
 
+	if(dna.features["ipc_screen"])
+		dna.features["ipc_screen"] = GLOB.ipc_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_SCREEN_BLOCK), GLOB.ipc_screens_list.len)]
+	if(dna.features["ipc_antenna"])
+		dna.features["ipc_antenna"] = GLOB.ipc_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_ANTENNA_BLOCK), GLOB.ipc_antenna_list.len)]
+
+	if(dna.features["saurian_screen"])
+		dna.features["saurian_screen"] = GLOB.saurian_screens_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCREEN_BLOCK), GLOB.saurian_screens_list.len)]
+	if(dna.features["saurian_tail"])
+		dna.features["saurian_tail"] = GLOB.saurian_tails_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_TAIL_BLOCK), GLOB.saurian_tails_list.len)]
+	if(dna.features["saurian_scutes"])
+		dna.features["saurian_scutes"] = GLOB.saurian_scutes_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_SCUTES_BLOCK), GLOB.saurian_scutes_list.len)]
+	if(dna.features["saurian_antenna"])
+		dna.features["saurian_antenna"] = GLOB.saurian_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_SAURIAN_ANTENNA_BLOCK), GLOB.saurian_antenna_list.len)]
+
 	for(var/obj/item/organ/O as anything in cosmetic_organs)
 		O.mutate_feature(features, src)
 
@@ -807,7 +825,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			if(HM)
 				HM.scrambled = TRUE
 				if(HM.quality & resilient)
-					HM.mutadone_proof = TRUE
+					HM.ryetalyn_proof = TRUE
 		return TRUE
 
 /mob/living/carbon/proc/random_mutate_unique_identity()
@@ -886,7 +904,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	dna.remove_all_mutations()
 	dna.stability = 100
 	if(prob(max(70-instability,0)))
-		switch(rand(0,10)) //not complete and utter death
+		switch(rand(0,7)) //not complete and utter death
 			if(0)
 				monkeyize()
 			if(1)
@@ -901,14 +919,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				to_chat(src, span_notice("Oh, I actually feel quite alright!")) //you thought
 				physiology.damage_resistance = -20000
 			if(5)
-				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
-				reagents.add_reagent(/datum/reagent/aslimetoxin, 10)
-			if(6)
 				apply_status_effect(/datum/status_effect/go_away)
-			if(7)
+			if(6)
 				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
 				ForceContractDisease(new/datum/disease/decloning()) //slow acting, non-viral clone damage based GBS
-			if(8)
+			if(7)
 				var/list/elligible_organs = list()
 				for(var/obj/item/organ/organ as anything in processing_organs) //make sure we dont get an implant or cavity item
 					elligible_organs += organ
@@ -920,9 +935,6 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 					O.forceMove(drop_location())
 					if(prob(20))
 						O.animate_atom_living()
-			if(9 to 10)
-				ForceContractDisease(new/datum/disease/gastrolosis())
-				to_chat(src, span_notice("Oh, I actually feel quite alright!"))
 	else
 		switch(rand(0,5))
 			if(0)
@@ -934,14 +946,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 				death()
 				petrify(INFINITY)
 			if(3)
-				if(prob(95))
-					var/obj/item/bodypart/BP = get_bodypart(pick(BODY_ZONE_CHEST,BODY_ZONE_HEAD))
-					if(BP)
-						BP.dismember()
-					else
-						gib()
+				var/obj/item/bodypart/BP = get_bodypart(pick(BODY_ZONE_CHEST,BODY_ZONE_HEAD))
+				if(BP)
+					BP.dismember()
 				else
-					set_species(/datum/species/dullahan)
+					gib()
 			if(4)
 				visible_message(span_warning("[src]'s skin melts off!"), span_boldwarning("Your skin melts off!"))
 				spawn_gibs()

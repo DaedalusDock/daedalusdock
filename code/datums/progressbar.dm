@@ -149,7 +149,7 @@
 	var/listindex = 0
 
 /datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
-	if(!_owner || !_goal)
+	if(!_owner)
 		return
 
 	owner = _owner

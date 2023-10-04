@@ -13,6 +13,7 @@
 	desc = "The internal organ part of the antenna. Science has not yet given it a good name."
 	icon = 'icons/obj/radio.dmi'//maybe make a unique sprite later. not important
 	icon_state = "walkietalkie"
+	implant_flags = IMPLANT_KNOWN
 
 /obj/item/implant/radio/antenna/Initialize(mapload)
 	. = ..()
@@ -22,7 +23,7 @@
 	if(..())
 		return
 	var/obj/item/implant/radio/antenna/linked_radio = new(owner)
-	linked_radio.implant(owner, null, TRUE, TRUE)
+	linked_radio.implant(owner, null, BODY_ZONE_CHEST, TRUE, TRUE)
 	radio_weakref = WEAKREF(linked_radio)
 
 /datum/mutation/human/antenna/on_losing(mob/living/carbon/human/owner)

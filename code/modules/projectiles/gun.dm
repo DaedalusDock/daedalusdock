@@ -49,6 +49,9 @@
 	///Can we hold up our target with this? Default to yes
 	var/can_hold_up = TRUE
 
+	/// For every turf a fired projectile travels, increase the target bodyzone inaccuracy by this much.
+	var/accuracy_falloff = 3
+
 	/// Just 'slightly' snowflakey way to modify projectile damage for projectiles fired from this gun.
 	var/projectile_damage_multiplier = 1
 
@@ -449,7 +452,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 
 	if(bayonet && can_bayonet) //if it has a bayonet, and the bayonet can be removed
@@ -470,7 +473,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(pin && user.is_holding(src))
 		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
@@ -487,7 +490,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, no_tk = NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(pin && user.is_holding(src))
 		user.visible_message(span_warning("[user] attempts to remove [pin] from [src] with [I]."),
@@ -499,6 +502,21 @@
 								span_warning("You rip [pin] out of [src] with [I], mangling the pin in the process."), null, 3)
 			QDEL_NULL(pin)
 			return TRUE
+
+/obj/item/gun/on_disarm_attempt(mob/living/user, mob/living/attacker)
+	var/list/turfs = list()
+	for(var/turf/T in view())
+		turfs += T
+	if(length(turfs))
+		var/turf/shoot_to = pick(turfs)
+		if(process_fire(shoot_to, user, message = FALSE, bonus_spread = 10))
+			user.visible_message(
+				span_danger("\The [src] goes off during the struggle!"),
+				blind_message = span_hear("You hear a gunshot!")
+			)
+			log_combat(attacker, user, "caused a misfire with a disarm")
+			return TRUE
+		log_combat(attacker, user, "caused a misfire with a disarm, but the gun didn't go off")
 
 /obj/item/gun/proc/remove_bayonet(mob/living/user, obj/item/tool_item)
 	tool_item?.play_tool_sound(src)

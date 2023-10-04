@@ -298,8 +298,8 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 
 	visible_message(span_notice("[src] hums and hisses as it moves [mob_occupant.real_name] into storage."))
 
-	for(var/obj/item/item_content as anything in mob_occupant)
-		if(!istype(item_content) || HAS_TRAIT(item_content, TRAIT_NODROP))
+	for(var/obj/item/item_content in mob_occupant)
+		if(!HAS_TRAIT(item_content, TRAIT_NODROP) || (item_content.item_flags & ABSTRACT))
 			continue
 		if (issilicon(mob_occupant) && istype(item_content, /obj/item/mmi))
 			continue

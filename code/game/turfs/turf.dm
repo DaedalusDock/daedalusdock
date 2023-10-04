@@ -375,16 +375,47 @@ GLOBAL_LIST_EMPTY(station_turfs)
 						return FALSE
 					continue
 				else
-					if(!firstbump || ((thing.layer > firstbump.layer || thing.flags_1 & ON_BORDER_1) && !(firstbump.flags_1 & ON_BORDER_1)))
+					if(!firstbump || ((thing.layer > firstbump.layer || (thing.flags_1 & ON_BORDER_1|BUMP_PRIORITY_1)) && !(firstbump.flags_1 & ON_BORDER_1)))
 						firstbump = thing
+
 	if(QDELETED(mover)) //Mover deleted from Cross/CanPass/Bump, do not proceed.
 		return FALSE
+
 	if(!canPassSelf) //Even if mover is unstoppable they need to bump us.
 		firstbump = src
+
 	if(firstbump)
 		mover.Bump(firstbump)
 		return (mover.movement_type & PHASING)
+
 	return TRUE
+
+/turf/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+
+	if(arrived.flags_2 & ATMOS_SENSITIVE_2)
+		LAZYDISTINCTADD(atmos_sensitive_contents, arrived)
+		if(TURF_HAS_VALID_ZONE(src))
+			if(isnull(zone.atmos_sensitive_contents))
+				SSzas.zones_with_sensitive_contents += zone
+			LAZYDISTINCTADD(zone.atmos_sensitive_contents, arrived)
+	// Spatial grid tracking needs to happen before the signal is sent
+	. = ..()
+
+	if (!arrived.bound_overlay && !(arrived.zmm_flags & ZMM_IGNORE) && arrived.invisibility != INVISIBILITY_ABSTRACT && TURF_IS_MIMICKING(above))
+		above.update_mimic()
+
+
+/turf/Exited(atom/movable/gone, direction)
+	if(gone.flags_2 & ATMOS_SENSITIVE_2)
+		if(!isnull(atmos_sensitive_contents))
+			LAZYREMOVE(atmos_sensitive_contents, gone)
+		if(TURF_HAS_VALID_ZONE(src))
+			LAZYREMOVE(zone.atmos_sensitive_contents, gone)
+			if(isnull(zone.atmos_sensitive_contents))
+				SSzas.zones_with_sensitive_contents -= zone
+
+	// Spatial grid tracking needs to happen before the signal is sent
+	. = ..()
 
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
 /turf/proc/assemble_baseturfs(turf/fake_baseturf_type)
@@ -680,3 +711,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/TakeTemperature(temp)
 	temperature += temp
+
+/turf/proc/is_below_sound_pressure()
+	var/datum/gas_mixture/GM = unsafe_return_air()
+	if(isnull(GM) || GM.returnPressure() < SOUND_MINIMUM_PRESSURE)
+		return TRUE

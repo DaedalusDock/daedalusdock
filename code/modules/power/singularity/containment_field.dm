@@ -118,7 +118,7 @@
 	///Used to add a delay between shocks. In some cases this used to crash servers by spawning hundreds of sparks every second.
 	var/has_shocked = FALSE
 
-/obj/machinery/field/Bumped(atom/movable/mover)
+/obj/machinery/field/BumpedBy(atom/movable/mover)
 	if(has_shocked)
 		return
 	if(isliving(mover))

@@ -108,8 +108,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_type = /turf/closed/wall/mineral/uranium
 	false_wall_type = /obj/structure/falsewall/uranium
 
-	wall_shine = NONE
-
 /datum/material/uranium/on_applied(atom/source, amount, material_flags)
 	. = ..()
 
@@ -149,8 +147,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_type = /turf/closed/wall/mineral/plasma
 	false_wall_type = /obj/structure/falsewall/plasma
 
-	wall_shine = NONE
-
 /datum/material/plasma/on_applied(atom/source, amount, material_flags)
 	. = ..()
 	if(ismovable(source))
@@ -183,11 +179,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.15
 	wall_type = null
 
-/datum/material/bluespace/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.reagents.add_reagent(/datum/reagent/bluespace, rand(5, 8))
-	source_item?.reagents?.add_reagent(/datum/reagent/bluespace, source_item.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Honks and slips
 /datum/material/bananium
 	name = "bananium"
@@ -202,8 +193,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/bananium
 	false_wall_type = /obj/structure/falsewall/bananium
-
-	wall_shine = NONE
 
 /datum/material/bananium/on_applied(atom/source, amount, material_flags)
 	. = ..()
@@ -234,8 +223,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_icon = 'icons/turf/walls/metal_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/titanium
 	false_wall_type = /obj/structure/falsewall/titanium
-
-	wall_shine = NONE
 
 /datum/material/titanium/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.apply_damage(15, BRUTE, BODY_ZONE_HEAD)
@@ -270,11 +257,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = -0.01
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.1, LASER = 0.3, ENERGY = 0.5, BOMB = 1, BIO = 1, FIRE = 1.1, ACID = 1)
 
-/datum/material/plastic/on_accidental_mat_consumption(mob/living/carbon/eater, obj/item/food)
-	eater.reagents.add_reagent(/datum/reagent/plastic_polymers, rand(6, 8))
-	food?.reagents?.add_reagent(/datum/reagent/plastic_polymers, food.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Force decrease and mushy sound effect. (Not yet implemented)
 /datum/material/biomass
 	name = "biomass"
@@ -301,8 +283,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	wall_type = /turf/closed/wall/mineral/wood
 	false_wall_type = /obj/structure/falsewall/wood
 
-	wall_shine = NONE
-
 /datum/material/wood/on_applied_obj(obj/source, amount, material_flags)
 	. = ..()
 	if(material_flags & MATERIAL_AFFECT_STATISTICS)
@@ -322,26 +302,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 
 	return TRUE
 
-///Stronk force increase
-/datum/material/adamantine
-	name = "adamantine"
-	desc = "A powerful material made out of magic, I mean science!"
-	color = "#6d7e8e"
-	greyscale_colors = "#6d7e8e"
-	strength_modifier = 1.5
-	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
-	sheet_type = /obj/item/stack/sheet/mineral/adamantine
-	value_per_unit = 0.25
-	beauty_modifier = 0.4
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.3, ENERGY = 1.3, BOMB = 1, BIO = 1, FIRE = 2.5, ACID = 1)
-	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
-
-/datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
-	return TRUE
-
 ///RPG Magic.
 /datum/material/mythril
 	name = "mythril"
@@ -355,8 +315,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.5, ENERGY = 1.5, BOMB = 1.5, BIO = 1.5, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = 0.5
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/mythril/on_applied_obj(atom/source, amount, material_flags)
 	. = ..()
@@ -431,8 +389,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	texture_layer_icon_state = "sand"
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 
-	wall_shine = NONE
-
 /datum/material/sand/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.adjust_disgust(17)
 	return TRUE
@@ -451,8 +407,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	texture_layer_icon_state = "brick"
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 
-	wall_shine = NONE
-
 /datum/material/snow
 	name = "snow"
 	desc = "There's no business like snow business."
@@ -465,8 +419,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/snow/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/water, rand(5, 10))
@@ -483,8 +435,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 1, ENERGY = 1, BOMB = 1.2, BIO = 1.2, FIRE = 1.5, ACID = 1.5)
 	texture_layer_icon_state = "runed"
 	wall_icon = 'icons/turf/walls/cult_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/runedmetal/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/fuel/unholywater, rand(8, 12))
@@ -539,8 +489,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 0.25, BULLET = 0.25, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0, ACID = 1.5)
 	beauty_modifier = -0.1
 	wall_icon = 'icons/turf/walls/stone_wall.dmi'
-
-	wall_shine = NONE
 
 /datum/material/cardboard/on_applied_obj(obj/source, amount, material_flags)
 	. = ..()

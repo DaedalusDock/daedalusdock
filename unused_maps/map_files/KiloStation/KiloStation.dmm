@@ -2022,7 +2022,7 @@
 /obj/structure/table,
 /obj/machinery/light/small/directional/west,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "ajI" = (
@@ -6845,7 +6845,7 @@
 	pixel_x = 10;
 	pixel_y = 10
 	},
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 8
 	},
 /obj/item/stack/medical/mesh{
@@ -7606,7 +7606,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /turf/open/floor/iron/dark,
@@ -24503,7 +24503,7 @@
 /area/station/engineering/atmos/pumproom)
 "dRQ" = (
 /obj/structure/rack,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/bruise_pack,
 /obj/effect/turf_decal/bot,
 /obj/machinery/light/small/directional/north,

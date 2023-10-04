@@ -373,12 +373,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 		deconstruct()
 		return
 
-	if(istype(O, /obj/item/stack/medical/gauze))
-		var/obj/item/stack/medical/gauze/G = O
-		new /obj/item/reagent_containers/glass/rag(src.loc)
-		to_chat(user, span_notice("You tear off a strip of gauze and make a rag."))
-		G.use(1)
-		return
+	if(istype(O, /obj/item/stack))
+		var/obj/item/stack/S = O
+		if(initial(S.absorption_capacity) && S.absorption_capacity < initial(S.absorption_capacity))
+			if(do_after(user, src, 3 SECONDS, DO_PUBLIC, display = S))
+				user.visible_message(span_notice("[user] washes and wrings out [S] in [src]."), blind_message = span_hear("You hear water running."))
+				add_blood_DNA(S.return_blood_DNA())
+				S.absorption_capacity = initial(S.absorption_capacity)
+				var/forensics = S.GetComponent(/datum/component/forensics)
+				if(forensics)
+					qdel(forensics)
+				return
 
 	if(istype(O, /obj/item/stack/sheet/cloth))
 		var/obj/item/stack/sheet/cloth/cloth = O
@@ -569,8 +574,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 		playsound(loc, 'sound/effects/slosh.ogg', 25, TRUE)
 		return
 
-	if(istype(O, /obj/item/stack/medical/gauze))
-		var/obj/item/stack/medical/gauze/G = O
+	if(istype(O, /obj/item/stack/gauze))
+		var/obj/item/stack/gauze/G = O
 		new /obj/item/reagent_containers/glass/rag(loc)
 		to_chat(user, span_notice("You tear off a strip of gauze and make a rag."))
 		G.use(1)

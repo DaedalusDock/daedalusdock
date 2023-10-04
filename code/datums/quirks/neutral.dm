@@ -83,16 +83,6 @@
 		species.disliked_food &= ~MEAT
 	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
 
-/datum/quirk/snob
-	name = "Snob"
-	desc = "You care about the finer things, if a room doesn't look nice its just not really worth it, is it?"
-	icon = "user-tie"
-	value = 0
-	gain_text = "<span class='notice'>You feel like you understand what things should look like.</span>"
-	lose_text = "<span class='notice'>Well who cares about deco anyways?</span>"
-	medical_record_text = "Patient seems to be rather stuck up."
-	mob_trait = TRAIT_SNOB
-
 /datum/quirk/pineapple_liker
 	name = "Ananas Affinity"
 	desc = "You find yourself greatly enjoying fruits of the ananas genus. You can't seem to ever get enough of their sweet goodness!"
@@ -273,61 +263,6 @@
 	medical_record_text = "Fucking creep kept staring at me the whole damn checkup. I'm only diagnosing this because it's less awkward than thinking it was on purpose."
 	mob_trait = TRAIT_SHIFTY_EYES
 
-/datum/quirk/item_quirk/bald
-	name = "Smooth-Headed"
-	desc = "You have no hair and are quite insecure about it! Keep your wig on, or at least your head covered up."
-	icon = "egg"
-	value = 0
-	mob_trait = TRAIT_BALD
-	gain_text = "<span class='notice'>Your head is as smooth as can be, it's terrible.</span>"
-	lose_text = "<span class='notice'>Your head itches, could it be... growing hair?!</span>"
-	medical_record_text = "Patient starkly refused to take off headwear during examination."
-	/// The user's starting hairstyle
-	var/old_hair
-
-/datum/quirk/item_quirk/bald/add(client/client_source)
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	old_hair = human_holder.hairstyle
-	human_holder.hairstyle = "Bald"
-	human_holder.update_body_parts()
-	RegisterSignal(human_holder, COMSIG_CARBON_EQUIP_HAT, PROC_REF(equip_hat))
-	RegisterSignal(human_holder, COMSIG_CARBON_UNEQUIP_HAT, PROC_REF(unequip_hat))
-
-/datum/quirk/item_quirk/bald/add_unique(client/client_source)
-	var/obj/item/clothing/head/wig/natural/baldie_wig = new(get_turf(quirk_holder))
-
-	if (old_hair == "Bald")
-		baldie_wig.hairstyle = pick(GLOB.hairstyles_list - "Bald")
-	else
-		baldie_wig.hairstyle = old_hair
-
-	baldie_wig.update_appearance()
-
-	give_item_to_holder(baldie_wig, list(LOCATION_HEAD = ITEM_SLOT_HEAD, LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-
-/datum/quirk/item_quirk/bald/remove()
-	. = ..()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.hairstyle = old_hair
-	human_holder.update_body_parts()
-	UnregisterSignal(human_holder, list(COMSIG_CARBON_EQUIP_HAT, COMSIG_CARBON_UNEQUIP_HAT))
-	SEND_SIGNAL(human_holder, COMSIG_CLEAR_MOOD_EVENT, "bad_hair_day")
-
-///Checks if the headgear equipped is a wig and sets the mood event accordingly
-/datum/quirk/item_quirk/bald/proc/equip_hat(mob/user, obj/item/hat)
-	SIGNAL_HANDLER
-
-	if(istype(hat, /obj/item/clothing/head/wig))
-		SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_hair_day", /datum/mood_event/confident_mane) //Our head is covered, but also by a wig so we're happy.
-	else
-		SEND_SIGNAL(quirk_holder, COMSIG_CLEAR_MOOD_EVENT, "bad_hair_day") //Our head is covered
-
-///Applies a bad moodlet for having an uncovered head
-/datum/quirk/item_quirk/bald/proc/unequip_hat(mob/user, obj/item/clothing, force, newloc, no_move, invdrop, silent)
-	SIGNAL_HANDLER
-
-	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_hair_day", /datum/mood_event/bald)
-
 /datum/quirk/item_quirk/tongue_tied
 	name = "Tongue Tied"
 	desc = "Due to a past incident, your ability to communicate has been relegated to your hands."
@@ -392,99 +327,3 @@
 
 /datum/quirk/item_quirk/colorist/add_unique(client/client_source)
 	give_item_to_holder(/obj/item/dyespray, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-
-#define GAMING_WITHDRAWAL_TIME (15 MINUTES)
-/datum/quirk/gamer
-	name = "Gamer"
-	desc = "You are a hardcore gamer, and you have a need to game. You love winning and hate losing. You only like gamer food."
-	icon = "gamepad"
-	value = 0
-	gain_text = span_notice("You feel the sudden urge to game.")
-	lose_text = span_notice("You've lost all interest in gaming.")
-	medical_record_text = "Patient has a severe video game addiction."
-	mob_trait = TRAIT_GAMER
-	/// Timer for gaming withdrawal to kick in
-	var/gaming_withdrawal_timer = TIMER_ID_NULL
-
-/datum/quirk/gamer/add(client/client_source)
-	// Gamer diet
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/datum/species/species = human_holder.dna.species
-	species.liked_food = JUNKFOOD
-	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, PROC_REF(on_species_gain))
-	RegisterSignal(human_holder, COMSIG_MOB_WON_VIDEOGAME, PROC_REF(won_game))
-	RegisterSignal(human_holder, COMSIG_MOB_LOST_VIDEOGAME, PROC_REF(lost_game))
-	RegisterSignal(human_holder, COMSIG_MOB_PLAYED_VIDEOGAME, PROC_REF(gamed))
-
-/datum/quirk/gamer/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species)
-	SIGNAL_HANDLER
-	new_species.liked_food = JUNKFOOD
-
-/datum/quirk/gamer/remove()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/datum/species/species = human_holder.dna.species
-	species.liked_food = initial(species.liked_food)
-	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
-	UnregisterSignal(human_holder, COMSIG_MOB_WON_VIDEOGAME)
-	UnregisterSignal(human_holder, COMSIG_MOB_LOST_VIDEOGAME)
-	UnregisterSignal(human_holder, COMSIG_MOB_PLAYED_VIDEOGAME)
-
-/datum/quirk/gamer/add_unique(client/client_source)
-	// The gamer starts off quelled
-	gaming_withdrawal_timer = addtimer(CALLBACK(src, PROC_REF(enter_withdrawal)), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
-
-/**
- * Gamer won a game
- *
- * Executed on the COMSIG_MOB_WON_VIDEOGAME signal
- * This signal should be called whenever a player has won a video game.
- * (E.g. Orion Trail)
- */
-/datum/quirk/gamer/proc/won_game()
-	SIGNAL_HANDLER
-	// Epic gamer victory
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	SEND_SIGNAL(human_holder, COMSIG_ADD_MOOD_EVENT, "gamer_won", /datum/mood_event/gamer_won)
-
-/**
- * Gamer lost a game
- *
- * Executed on the COMSIG_MOB_LOST_VIDEOGAME signal
- * This signal should be called whenever a player has lost a video game.
- * (E.g. Orion Trail)
- */
-/datum/quirk/gamer/proc/lost_game()
-	SIGNAL_HANDLER
-	// Executed when a gamer has lost
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	SEND_SIGNAL(human_holder, COMSIG_ADD_MOOD_EVENT, "gamer_lost", /datum/mood_event/gamer_lost)
-	// Executed asynchronously due to say()
-	INVOKE_ASYNC(src, PROC_REF(gamer_moment))
-/**
- * Gamer is playing a game
- *
- * Executed on the COMSIG_MOB_PLAYED_VIDEOGAME signal
- * This signal should be called whenever a player interacts with a video game.
- */
-/datum/quirk/gamer/proc/gamed()
-	SIGNAL_HANDLER
-
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	// Remove withdrawal malus
-	SEND_SIGNAL(human_holder, COMSIG_CLEAR_MOOD_EVENT, "gamer_withdrawal")
-	// Reset withdrawal timer
-	if (gaming_withdrawal_timer)
-		deltimer(gaming_withdrawal_timer)
-	gaming_withdrawal_timer = addtimer(CALLBACK(src, PROC_REF(enter_withdrawal)), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
-
-
-/datum/quirk/gamer/proc/gamer_moment()
-	// It was a heated gamer moment...
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.say(";[pick("SHIT", "PISS", "FUCK", "CUNT", "COCKSUCKER", "MOTHERFUCKER")]!!", forced = name)
-
-/datum/quirk/gamer/proc/enter_withdrawal()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	SEND_SIGNAL(human_holder, COMSIG_ADD_MOOD_EVENT, "gamer_withdrawal", /datum/mood_event/gamer_withdrawal)
-
-#undef GAMING_WITHDRAWAL_TIME

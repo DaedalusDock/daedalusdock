@@ -70,7 +70,7 @@
 	return list(0, 0)
 
 /mob/living/carbon/get_hand_pixels()
-	var/obj/item/bodypart/hand = has_active_hand()
+	var/obj/item/bodypart/hand = has_active_hand() ? get_active_hand() : null
 	if(!hand)
 		return null
 	else

@@ -21,7 +21,7 @@
 	base_pixel_x = -16
 	layer = LARGE_MOB_LAYER
 	speed = 10
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = 1
 	var/hopping = FALSE
 	var/hop_cooldown = 0 //Strictly for player controlled leapers
@@ -119,10 +119,11 @@
 	taste_description = "french cuisine"
 	taste_mult = 1.3
 
-/datum/reagent/toxin/leaper_venom/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/toxin/leaper_venom/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
 	if(volume >= 10)
-		M.adjustToxLoss(5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
-	..()
+		C.adjustToxLoss(5 * removed, 0)
+		return TRUE
 
 /obj/effect/temp_visual/leaper_crush
 	name = "grim tidings"

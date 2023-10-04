@@ -73,20 +73,23 @@
 /// Clothes that block speech (i.e the muzzle). Can be applied to any clothing piece.
 #define BLOCKS_SPEECH (1<<13)
 /// prevents from placing on plasmaman helmet
-#define PLASMAMAN_HELMET_EXEMPT (1<<14)
+#define STACKABLE_HELMET_EXEMPT (1<<14)
 /// Usable as casting clothes by wizards (only matters for suits and headwear)
 #define CASTING_CLOTHES (1<<15)
+/// This head clothing can deliver air from an airtank
+#define HEADINTERNALS (1<<16)
 
 /// Flags for the organ_flags var on /obj/item/organ
 
 #define ORGAN_SYNTHETIC (1<<0) //Synthetic organs, or cybernetic organs. Reacts to EMPs and don't deteriorate or heal
 #define ORGAN_FROZEN (1<<1) //Frozen organs, don't deteriorate
-#define ORGAN_FAILING (1<<2) //Failing organs perform damaging effects until replaced or fixed
+#define ORGAN_DEAD (1<<2) //Failing organs perform damaging effects until replaced or fixed
 #define ORGAN_EXTERNAL (1<<3) //Was this organ implanted/inserted/etc, if true will not be removed during species change.
 #define ORGAN_VITAL (1<<4) //Currently only the brain
 #define ORGAN_EDIBLE (1<<5) //is a snack? :D
 #define ORGAN_SYNTHETIC_EMP (1<<6) //Synthetic organ affected by an EMP. Deteriorates over time.
 #define ORGAN_UNREMOVABLE (1<<7) //Can't be removed using surgery
+#define ORGAN_CUT_AWAY (1<<8) //! The organ is not attached to the parent.
 
 /// Integrity defines for clothing (not flags but close enough)
 #define CLOTHING_PRISTINE 0 // We have no damage on the clothing

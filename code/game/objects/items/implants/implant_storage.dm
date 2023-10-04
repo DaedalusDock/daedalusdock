@@ -25,7 +25,7 @@
 		qdel(atom_storage)
 	return ..()
 
-/obj/item/implant/storage/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/storage/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	for(var/X in target.implants)
 		if(istype(X, type))
 			var/obj/item/implant/storage/imp_e = X

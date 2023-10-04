@@ -209,7 +209,7 @@
 "ib" = (
 /obj/structure/table_frame/wood,
 /obj/effect/mapping_helpers/broken_floor,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/awaymission/bmpship/fore)
 "ip" = (
 /obj/machinery/light/broken/directional/north,
@@ -477,7 +477,7 @@
 "sr" = (
 /obj/effect/spawner/random/maintenance/four,
 /obj/structure/closet/crate,
-/obj/item/grenade/chem_grenade/smart_metal_foam,
+/obj/item/grenade/chem_grenade/metalfoam,
 /obj/item/electronics/airlock,
 /turf/open/floor/plating/airless,
 /area/awaymission/bmpship/aft)
@@ -492,7 +492,7 @@
 /area/awaymission/bmpship/fore)
 "tb" = (
 /obj/item/kirbyplants,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/awaymission/bmpship/fore)
 "tn" = (
 /obj/structure/chair{
@@ -517,7 +517,7 @@
 "tN" = (
 /obj/structure/table/wood,
 /obj/item/paper/fluff/ruins/crashedship/captains_log,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/awaymission/bmpship/fore)
 "uf" = (
 /obj/machinery/suit_storage_unit/open,
@@ -1232,7 +1232,7 @@
 /obj/structure/table/wood,
 /obj/effect/spawner/random/decoration,
 /obj/effect/mapping_helpers/broken_floor,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/awaymission/bmpship/fore)
 "SF" = (
 /obj/effect/turf_decal/stripes/line{
@@ -1335,7 +1335,7 @@
 /turf/open/floor/iron/airless,
 /area/awaymission/bmpship/aft)
 "XW" = (
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/awaymission/bmpship/fore)
 "Ya" = (
 /obj/effect/decal/cleanable/glass,
@@ -1393,7 +1393,7 @@
 /area/awaymission/bmpship/midship)
 "ZX" = (
 /obj/effect/mapping_helpers/broken_floor,
-/turf/open/floor/wood/parquet,
+/turf/open/floor/wood,
 /area/awaymission/bmpship/fore)
 "ZY" = (
 /obj/effect/turf_decal/stripes/line{

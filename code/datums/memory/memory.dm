@@ -102,26 +102,6 @@
 	var/list/story_moods
 
 
-
-	var/victim_mood = extra_info[DETAIL_PROTAGONIST_MOOD]
-
-	if(victim_mood != MOODLESS_MEMORY) //How the victim felt when it all happend.
-		switch(victim_mood)
-			if(MOOD_LEVEL_SAD4 to MOOD_LEVEL_SAD2)
-				story_moods = strings(MEMORY_FILE, "sad")
-				if("[action]_sad" in GLOB.string_cache[MEMORY_FILE])
-					story_moods += strings(MEMORY_FILE, "[action]_sad")
-			if(MOOD_LEVEL_SAD2 to MOOD_LEVEL_HAPPY2)
-				story_moods = strings(MEMORY_FILE, "neutral")
-				if("[action]_neutral" in GLOB.string_cache[MEMORY_FILE])
-					story_moods += strings(MEMORY_FILE, "[action]_neutral")
-			if(MOOD_LEVEL_HAPPY2 to MOOD_LEVEL_HAPPY4)
-				story_moods = strings(MEMORY_FILE, "happy")
-				if("[action]_happy" in GLOB.string_cache[MEMORY_FILE])
-					story_moods += strings(MEMORY_FILE, "[action]_happy")
-
-
-
 	//storybuilding
 
 	//The forewords for this specific type of story (E.g. This engraving depicts)

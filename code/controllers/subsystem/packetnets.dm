@@ -40,6 +40,14 @@ SUBSYSTEM_DEF(packets)
 	///What processing stage we're at
 	var/stage = SSPACKETS_POWERNETS
 
+/// Generates a unique (at time of read) ID for an atom, It just plays silly with the ref.
+/// Pass the target atom in as arg[1]
+/datum/controller/subsystem/packets/proc/generate_net_id(caller)
+	if(!caller)
+		CRASH("Attempted to generate netid for null")
+	. = REF(caller)
+	. = "[copytext(.,4,(length(.)))]0"
+
 /datum/controller/subsystem/packets/PreInit(timeofday)
 	hibernate_checks = list(
 		NAMEOF(src, queued_networks),
@@ -101,6 +109,7 @@ SUBSYSTEM_DEF(packets)
 			///No packets no problem
 			if(!length(net.current_packet_queue))
 				current_networks.len--
+				queued_networks -= net
 				continue
 
 			for(var/datum/signal/signal as anything in net.current_packet_queue)
@@ -122,6 +131,9 @@ SUBSYSTEM_DEF(packets)
 
 			// Only cut it from the current run when it's done
 			current_networks.len--
+			// We may have generated more packets in the course of rs calls, If so, don't dequeue it.
+			if(!length(net.next_packet_queue))
+				queued_networks -= net
 
 		cost_networks = MC_AVERAGE(cost_networks, TICK_DELTA_TO_MS(cached_cost))
 		resumed = FALSE

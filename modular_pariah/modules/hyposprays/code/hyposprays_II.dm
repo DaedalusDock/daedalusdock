@@ -195,7 +195,7 @@
 		return
 
 	if(iscarbon(injectee))
-		var/obj/item/bodypart/affecting = injectee.get_bodypart(check_zone(user.zone_selected))
+		var/obj/item/bodypart/affecting = injectee.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!affecting)
 			to_chat(user, span_warning("The limb is missing!"))
 			return
@@ -230,7 +230,7 @@
 		if(HYPO_INJECT)
 			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = INJECT)
 		if(HYPO_SPRAY)
-			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = PATCH)
+			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = TOUCH)
 
 	var/long_sound = vial.amount_per_transfer_from_this >= 15
 	playsound(loc, long_sound ? 'modular_pariah/modules/hyposprays/sound/hypospray_long.ogg' : pick('modular_pariah/modules/hyposprays/sound/hypospray.ogg','modular_pariah/modules/hyposprays/sound/hypospray2.ogg'), 50, 1, -1)

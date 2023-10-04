@@ -43,7 +43,6 @@
 				if(damagetype & SHAME)
 					stamina.adjust(-200)
 					set_suicide(FALSE)
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "shameful_suicide", /datum/mood_event/shameful_suicide)
 					return
 
 				if(damagetype & MANUAL_SUICIDE_NONLETHAL) //Make sure to call the necessary procs if it does kill later
@@ -143,7 +142,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(HEALTH_LOSS_PER_TYPE_CAP(src) - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(maxHealth - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 
@@ -162,7 +161,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(HEALTH_LOSS_PER_TYPE_CAP(src) - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(maxHealth - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 
@@ -232,9 +231,7 @@
 	switch(stat)
 		if(CONSCIOUS)
 			return TRUE
-		if(SOFT_CRIT)
-			to_chat(src, span_warning("You can't commit suicide while in a critical condition!"))
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			to_chat(src, span_warning("You need to be conscious to commit suicide!"))
 		if(DEAD)
 			to_chat(src, span_warning("You're already dead!"))

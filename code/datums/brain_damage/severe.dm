@@ -28,13 +28,14 @@
 	lose_text = "<span class='notice'>You suddenly remember how languages work.</span>"
 
 /datum/brain_trauma/severe/aphasia/on_gain()
-	owner.add_blocked_language(subtypesof(/datum/language/) - /datum/language/aphasia, LANGUAGE_APHASIA)
+	owner.add_blocked_language(subtypesof(/datum/language) - /datum/language/aphasia, LANGUAGE_APHASIA)
 	owner.grant_language(/datum/language/aphasia, TRUE, TRUE, LANGUAGE_APHASIA)
 	..()
 
 /datum/brain_trauma/severe/aphasia/on_lose()
-	owner.remove_blocked_language(subtypesof(/datum/language/), LANGUAGE_APHASIA)
-	owner.remove_language(/datum/language/aphasia, TRUE, TRUE, LANGUAGE_APHASIA)
+	if(!QDELETED(owner)) // This can create language holders on qdeleting mobs. This is bad.
+		owner.remove_blocked_language(subtypesof(/datum/language/), LANGUAGE_APHASIA)
+		owner.remove_language(/datum/language/aphasia, TRUE, TRUE, LANGUAGE_APHASIA)
 	..()
 
 /datum/brain_trauma/severe/blindness

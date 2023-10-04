@@ -14,7 +14,6 @@
 		owner.visible_message(span_danger("[owner] starts having a seizure!"), span_userdanger("You have a seizure!"))
 		owner.Unconscious(200 * GET_MUTATION_POWER(src))
 		owner.set_timed_status_effect(2000 SECONDS * GET_MUTATION_POWER(src), /datum/status_effect/jitter)
-		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "epilepsy", /datum/mood_event/epilepsy)
 		addtimer(CALLBACK(src, PROC_REF(jitter_less)), 90)
 
 /datum/mutation/human/epilepsy/proc/jitter_less()
@@ -425,49 +424,3 @@
 		return //remove the 'edge' cases
 	to_chat(owner, span_danger("You trip over your own feet."))
 	owner.Knockdown(30)
-
-/datum/mutation/human/martyrdom
-	name = "Internal Martyrdom"
-	desc = "A mutation that makes the body destruct when near death. Not damaging, but very, VERY disorienting."
-	locked = TRUE
-	quality = POSITIVE //not that cloning will be an option a lot but generally lets keep this around i guess?
-	text_gain_indication = "<span class='warning'>You get an intense feeling of heartburn.</span>"
-	text_lose_indication = "<span class='notice'>Your internal organs feel at ease.</span>"
-
-/datum/mutation/human/martyrdom/on_acquiring()
-	. = ..()
-	if(.)
-		return TRUE
-	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(bloody_shower))
-
-/datum/mutation/human/martyrdom/on_losing()
-	. = ..()
-	if(.)
-		return TRUE
-	UnregisterSignal(owner, COMSIG_MOB_STATCHANGE)
-
-/datum/mutation/human/martyrdom/proc/bloody_shower(datum/source, new_stat)
-	SIGNAL_HANDLER
-
-	if(new_stat != HARD_CRIT)
-		return
-	var/list/organs = owner.getorgansofzone(BODY_ZONE_HEAD, TRUE)
-
-	for(var/obj/item/organ/I in organs)
-		qdel(I)
-
-	explosion(owner, light_impact_range = 2, adminlog = TRUE, explosion_cause = src)
-	for(var/mob/living/carbon/human/H in view(2,owner))
-		var/obj/item/organ/eyes/eyes = H.getorganslot(ORGAN_SLOT_EYES)
-		if(eyes)
-			to_chat(H, span_userdanger("You are blinded by a shower of blood!"))
-		else
-			to_chat(H, span_userdanger("You are knocked down by a wave of... blood?!"))
-		H.Stun(20)
-		H.blur_eyes(20)
-		eyes?.applyOrganDamage(5)
-		H.adjust_timed_status_effect(3 SECONDS, /datum/status_effect/confusion)
-	for(var/mob/living/silicon/S in view(2,owner))
-		to_chat(S, span_userdanger("Your sensors are disabled by a shower of blood!"))
-		S.Paralyze(60)
-	owner.gib()

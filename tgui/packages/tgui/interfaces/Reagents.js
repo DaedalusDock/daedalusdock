@@ -1,5 +1,5 @@
 import { useBackend, useLocalState } from '../backend';
-import { Button, Icon, LabeledList, NumberInput, Section, Stack, Table } from '../components';
+import { Button, NumberInput, Section, Stack, Table } from '../components';
 import { Window } from '../layouts';
 import { ReagentLookup } from './common/ReagentLookup';
 import { RecipeLookup } from './common/RecipeLookup';
@@ -14,33 +14,7 @@ export const Reagents = (props, context) => {
     beakerSync,
     reagent_mode_recipe,
     reagent_mode_reagent,
-    bitflags = {},
   } = data;
-
-  const flagIcons = [
-    { flag: bitflags.BRUTE, icon: "gavel" },
-    { flag: bitflags.BURN, icon: "burn" },
-    { flag: bitflags.TOXIN, icon: "biohazard" },
-    { flag: bitflags.OXY, icon: "wind" },
-    { flag: bitflags.CLONE, icon: "male" },
-    { flag: bitflags.HEALING, icon: "medkit" },
-    { flag: bitflags.DAMAGING, icon: "skull-crossbones" },
-    { flag: bitflags.EXPLOSIVE, icon: "bomb" },
-    { flag: bitflags.OTHER, icon: "question" },
-    { flag: bitflags.DANGEROUS, icon: "exclamation-triangle" },
-    { flag: bitflags.EASY, icon: "chess-pawn" },
-    { flag: bitflags.MODERATE, icon: "chess-knight" },
-    { flag: bitflags.HARD, icon: "chess-queen" },
-    { flag: bitflags.ORGAN, icon: "brain" },
-    { flag: bitflags.DRINK, icon: "cocktail" },
-    { flag: bitflags.FOOD, icon: "drumstick-bite" },
-    { flag: bitflags.SLIME, icon: "microscope" },
-    { flag: bitflags.DRUG, icon: "pills" },
-    { flag: bitflags.UNIQUE, icon: "puzzle-piece" },
-    { flag: bitflags.CHEMICAL, icon: "flask" },
-    { flag: bitflags.PLANT, icon: "seedling" },
-    { flag: bitflags.COMPETITIVE, icon: "recycle" },
-  ];
 
   const [page, setPage] = useLocalState(context, "page", 1);
 
@@ -110,16 +84,6 @@ export const Reagents = (props, context) => {
               </Stack.Item>
             </Stack>
           </Stack.Item>
-          <Stack.Item>
-            <Section title="Tags">
-              <TagBox
-                bitflags={bitflags} />
-            </Section>
-          </Stack.Item>
-          <Stack.Item grow={2} basis={0}>
-            <RecipeLibrary
-              flagIcons={flagIcons} />
-          </Stack.Item>
         </Stack>
       </Window.Content>
     </Window>
@@ -127,227 +91,10 @@ export const Reagents = (props, context) => {
 };
 
 
-const TagBox = (props, context) => {
-  const { act, data } = useBackend(context);
-  const [page, setPage] = useLocalState(context, "page", 1);
-  const { bitflags } = props;
-  const { selectedBitflags } = data;
-  return (
-    <LabeledList>
-      <LabeledList.Item label="Affects">
-        <Button
-          color={selectedBitflags & bitflags.BRUTE ? "green" : "red"}
-          icon="gavel"
-          onClick={() => {
-            act('toggle_tag_brute');
-            setPage(1);
-          }}>
-          Brute
-        </Button>
-        <Button
-          color={selectedBitflags & bitflags.BURN ? "green" : "red"}
-          icon="burn"
-          onClick={() => {
-            act('toggle_tag_burn');
-            setPage(1);
-          }}>
-          Burn
-        </Button>
-        <Button
-          color={selectedBitflags & bitflags.TOXIN ? "green" : "red"}
-          icon="biohazard"
-          onClick={() => {
-            act('toggle_tag_toxin');
-            setPage(1);
-          }}>
-          Toxin
-        </Button>
-        <Button
-          color={selectedBitflags & bitflags.OXY ? "green" : "red"}
-          icon="wind"
-          onClick={() => {
-            act('toggle_tag_oxy');
-            setPage(1);
-          }}>
-          Suffocation
-        </Button>
-        <Button
-          color={selectedBitflags & bitflags.CLONE ? "green" : "red"}
-          icon="male"
-          onClick={() => {
-            act('toggle_tag_clone');
-            setPage(1);
-          }}>
-          Clone
-        </Button>
-        <Button
-          color={selectedBitflags & bitflags.ORGAN ? "green" : "red"}
-          icon="brain"
-          onClick={() => {
-            act('toggle_tag_organ');
-            setPage(1);
-          }}>
-          Organ
-        </Button>
-        <Button
-          icon="flask"
-          color={selectedBitflags & bitflags.CHEMICAL ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_chemical');
-            setPage(1);
-          }}>
-          Chemical
-        </Button>
-        <Button
-          icon="seedling"
-          color={selectedBitflags & bitflags.PLANT ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_plant');
-            setPage(1);
-          }}>
-          Plants
-        </Button>
-        <Button
-          icon="question"
-          color={selectedBitflags & bitflags.OTHER ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_other');
-            setPage(1);
-          }}>
-          Other
-        </Button>
-      </LabeledList.Item>
-      <LabeledList.Item label="Type">
-        <Button
-          color={selectedBitflags & bitflags.DRINK ? "green" : "red"}
-          icon="cocktail"
-          onClick={() => {
-            act('toggle_tag_drink');
-            setPage(1);
-          }}>
-          Drink
-        </Button>
-        <Button
-          color={selectedBitflags & bitflags.FOOD ? "green" : "red"}
-          icon="drumstick-bite"
-          onClick={() => {
-            act('toggle_tag_food');
-            setPage(1);
-          }}>
-          Food
-        </Button>
-        <Button
-          color={selectedBitflags & bitflags.HEALING ? "green" : "red"}
-          icon="medkit"
-          onClick={() => {
-            act('toggle_tag_healing');
-            setPage(1);
-          }}>
-          Healing
-        </Button>
-        <Button
-          icon="skull-crossbones"
-          color={selectedBitflags & bitflags.DAMAGING ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_damaging');
-            setPage(1);
-          }}>
-          Toxic
-        </Button>
-        <Button
-          icon="pills"
-          color={selectedBitflags & bitflags.DRUG ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_drug');
-            setPage(1);
-          }}>
-          Drugs
-        </Button>
-        <Button
-          icon="microscope"
-          color={selectedBitflags & bitflags.SLIME ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_slime');
-            setPage(1);
-          }}>
-          Slime
-        </Button>
-        <Button
-          icon="bomb"
-          color={selectedBitflags & bitflags.EXPLOSIVE ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_explosive');
-            setPage(1);
-          }}>
-          Explosive
-        </Button>
-        <Button
-          icon="puzzle-piece"
-          color={selectedBitflags & bitflags.UNIQUE ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_unique');
-            setPage(1);
-          }}>
-          Unique
-        </Button>
-      </LabeledList.Item>
-      <LabeledList.Item label="Difficulty">
-        <Button
-          icon="chess-pawn"
-          color={selectedBitflags & bitflags.EASY ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_easy');
-            setPage(1);
-          }}>
-          Easy
-        </Button>
-        <Button
-          icon="chess-knight"
-          color={selectedBitflags & bitflags.MODERATE ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_moderate');
-            setPage(1);
-          }}>
-          Moderate
-        </Button>
-        <Button
-          icon="chess-queen"
-          color={selectedBitflags & bitflags.HARD ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_hard');
-            setPage(1);
-          }}>
-          Hard
-        </Button>
-        <Button
-          icon="exclamation-triangle"
-          color={selectedBitflags & bitflags.DANGEROUS ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_dangerous');
-            setPage(1);
-          }}>
-          Dangerous
-        </Button>
-        <Button
-          icon="recycle"
-          color={selectedBitflags & bitflags.COMPETITIVE ? "green" : "red"}
-          onClick={() => {
-            act('toggle_tag_competitive');
-            setPage(1);
-          }}>
-          Competitive
-        </Button>
-      </LabeledList.Item>
-    </LabeledList>
-  );
-};
-
 const RecipeLibrary = (props, context) => {
   const { act, data } = useBackend(context);
   const [page, setPage] = useLocalState(context, "page", 1);
-  const { flagIcons } = props;
   const {
-    selectedBitflags,
     currentReagents = [],
     master_reaction_list = [],
     linkedBeaker,
@@ -377,10 +124,7 @@ const RecipeLibrary = (props, context) => {
   const visibleReactions = bookmarkMode
     ? bookmarkArray
     : master_reaction_list.filter(reaction => (
-      (selectedBitflags
-        ? matchBitflag(selectedBitflags, reaction.bitflags)
-        : true)
-      && matchReagents(reaction)
+      matchReagents(reaction)
     ));
 
   const pageIndexMax = Math.ceil(visibleReactions.length/50);
@@ -478,16 +222,6 @@ const RecipeLibrary = (props, context) => {
                     id: reactant.id,
                   })} />
               ))}
-            </Table.Cell>
-            <Table.Cell width="60px">
-              {flagIcons
-                .filter(meta => reaction.bitflags & meta.flag)
-                .map(meta => (
-                  <Icon
-                    key={meta.flag}
-                    name={meta.icon}
-                    mr={1} />
-                ))}
             </Table.Cell>
             <Table.Cell width="20px">
               {!bookmarkMode && (

@@ -72,13 +72,8 @@
 		cut_overlay(I)
 		overlays_standing[cache_index] = null
 
-//used when putting/removing clothes that hide certain mutant body parts to just update those and not update the whole body.
-/mob/living/carbon/human/proc/update_mutant_bodyparts()
-	dna.species.handle_mutant_bodyparts(src)
-	update_body_parts()
-
 /mob/living/carbon/update_body(is_creating = FALSE)
-	dna.species.handle_body(src) //This calls `handle_mutant_bodyparts` which calls `update_mutant_bodyparts()`. Don't double call!
+	dna.species.handle_body(src)
 	update_body_parts(is_creating)
 
 /mob/living/carbon/regenerate_icons()
@@ -116,7 +111,7 @@
 		if(get_held_index_of_item(I) % 2 == 0)
 			icon_file = I.righthand_file
 
-		hands += I.build_worn_icon(default_layer = HANDS_LAYER, default_icon_file = icon_file, isinhands = TRUE)
+		hands += I.build_worn_icon(src, default_layer = HANDS_LAYER, default_icon_file = icon_file, isinhands = TRUE)
 
 	overlays_standing[HANDS_LAYER] = hands
 	apply_overlay(HANDS_LAYER)
@@ -124,17 +119,21 @@
 /mob/living/carbon/update_damage_overlays()
 	remove_overlay(DAMAGE_LAYER)
 
-	var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/dam_mob.dmi', "blank", -DAMAGE_LAYER)
-	overlays_standing[DAMAGE_LAYER] = damage_overlay
+	var/list/overlays = list()
 
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		if(iter_part.dmg_overlay_type)
-			if(iter_part.brutestate)
-				damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0") //we're adding icon_states of the base image as overlays
-			if(iter_part.burnstate)
-				damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
+		if(iter_part.is_stump)
+			continue
 
-	apply_overlay(DAMAGE_LAYER)
+		if(iter_part.icon_dmg_overlay && !iter_part.is_husked)
+			if(iter_part.brutestate)
+				overlays += image(iter_part.icon_dmg_overlay, "[iter_part.body_zone]_[iter_part.brutestate]0", -DAMAGE_LAYER) //we're adding icon_states of the base image as overlays
+			if(iter_part.burnstate)
+				overlays += image(iter_part.icon_dmg_overlay, "[iter_part.body_zone]_0[iter_part.burnstate]", -DAMAGE_LAYER)
+
+	overlays_standing[DAMAGE_LAYER] = overlays
+	if(length(overlays))
+		apply_overlay(DAMAGE_LAYER)
 
 /mob/living/carbon/update_wound_overlays()
 	remove_overlay(WOUND_LAYER)
@@ -160,7 +159,7 @@
 
 	if(wear_mask)
 		if(!(check_obscured_slots() & ITEM_SLOT_MASK))
-			overlays_standing[FACEMASK_LAYER] = wear_mask.build_worn_icon(default_layer = FACEMASK_LAYER, default_icon_file = 'icons/mob/clothing/mask.dmi')
+			overlays_standing[FACEMASK_LAYER] = wear_mask.build_worn_icon(src, src, default_layer = FACEMASK_LAYER, default_icon_file = 'icons/mob/clothing/mask.dmi')
 		update_hud_wear_mask(wear_mask)
 
 	apply_overlay(FACEMASK_LAYER)
@@ -174,7 +173,7 @@
 
 	if(wear_neck)
 		if(!(check_obscured_slots() & ITEM_SLOT_NECK))
-			overlays_standing[NECK_LAYER] = wear_neck.build_worn_icon(default_layer = NECK_LAYER, default_icon_file = 'icons/mob/clothing/neck.dmi')
+			overlays_standing[NECK_LAYER] = wear_neck.build_worn_icon(src, default_layer = NECK_LAYER, default_icon_file = 'icons/mob/clothing/neck.dmi')
 		update_hud_neck(wear_neck)
 
 	apply_overlay(NECK_LAYER)
@@ -187,7 +186,7 @@
 		inv.update_appearance()
 
 	if(back)
-		overlays_standing[BACK_LAYER] = back.build_worn_icon(default_layer = BACK_LAYER, default_icon_file = 'icons/mob/clothing/back.dmi')
+		overlays_standing[BACK_LAYER] = back.build_worn_icon(src, default_layer = BACK_LAYER, default_icon_file = 'icons/mob/clothing/back.dmi')
 		update_hud_back(back)
 
 	apply_overlay(BACK_LAYER)
@@ -203,7 +202,7 @@
 		inv.update_appearance()
 
 	if(head)
-		overlays_standing[HEAD_LAYER] = head.build_worn_icon(default_layer = HEAD_LAYER, default_icon_file = 'icons/mob/clothing/head.dmi')
+		overlays_standing[HEAD_LAYER] = head.build_worn_icon(src, default_layer = HEAD_LAYER, default_icon_file = 'icons/mob/clothing/head.dmi')
 		update_hud_head(head)
 
 	apply_overlay(HEAD_LAYER)
@@ -251,7 +250,7 @@
 //Overlays for the worn overlay so you can overlay while you overlay
 //eg: ammo counters, primed grenade flashing, etc.
 //"icon_file" is used automatically for inhands etc. to make sure it gets the right inhand file
-/obj/item/proc/worn_overlays(mutable_appearance/standing, isinhands = FALSE, icon_file)
+/obj/item/proc/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, icon_file)
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
@@ -263,13 +262,14 @@
 
 ///Checks to see if any bodyparts need to be redrawn, then does so. update_limb_data = TRUE redraws the limbs to conform to the owner.
 /mob/living/carbon/proc/update_body_parts(update_limb_data)
-	update_damage_overlays()
 	update_wound_overlays()
 	update_eyes(update_limb_data)
 
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
+		if(limb.is_stump)
+			continue
 		limb.update_limb(is_creating = update_limb_data) //Update limb actually doesn't do much, get_limb_icon is the cpu eater.
 
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
@@ -288,20 +288,25 @@
 		return
 
 	//GENERATE NEW LIMBS
+	remove_overlay(BODYPARTS_LAYER)
 	var/list/new_limbs = list()
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
+		if(limb.is_stump)
+			continue
 		if(limb in needs_update)
 			var/list/limb_overlays = limb.get_limb_overlays()
 			GLOB.limb_overlays_cache[icon_render_keys[limb.body_zone]] = limb_overlays
 			new_limbs += limb_overlays
 		else
 			new_limbs += GLOB.limb_overlays_cache[icon_render_keys[limb.body_zone]]
-		remove_overlay(BODYPARTS_LAYER)
 
 	if(new_limbs.len)
 		overlays_standing[BODYPARTS_LAYER] = new_limbs
 
 	apply_overlay(BODYPARTS_LAYER)
+
+/mob/living/carbon/add_overlay(list/add_overlays)
+	. = ..()
 
 ///Update the eye sprite on the carbon. Calling with refresh = TRUE will update the sprite information of the eye organ first.
 /mob/living/carbon/proc/update_eyes(refresh = TRUE)

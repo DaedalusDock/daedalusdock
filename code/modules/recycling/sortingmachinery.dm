@@ -116,7 +116,7 @@
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
 			return
 		var/str = tgui_input_text(user, "Label text?", "Set label", max_length = MAX_NAME_LEN)
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if(!str || !length(str))
 			to_chat(user, span_warning("Invalid text!"))

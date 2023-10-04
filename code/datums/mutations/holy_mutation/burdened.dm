@@ -19,7 +19,7 @@
 	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(organ_removed_burden))
 
 	RegisterSignal(owner, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(limbs_added_burden))
-	RegisterSignal(owner, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(limbs_removed_burden))
+	RegisterSignal(owner, COMSIG_CARBON_REMOVED_LIMB, PROC_REF(limbs_removed_burden))
 
 	RegisterSignal(owner, COMSIG_CARBON_GAIN_ADDICTION, PROC_REF(addict_added_burden))
 	RegisterSignal(owner, COMSIG_CARBON_LOSE_ADDICTION, PROC_REF(addict_removed_burden))
@@ -36,7 +36,7 @@
 		COMSIG_CARBON_GAIN_ORGAN,
 		COMSIG_CARBON_LOSE_ORGAN,
 		COMSIG_CARBON_ATTACH_LIMB,
-		COMSIG_CARBON_REMOVE_LIMB,
+		COMSIG_CARBON_REMOVED_LIMB,
 		COMSIG_CARBON_GAIN_ADDICTION,
 		COMSIG_CARBON_LOSE_ADDICTION,
 		COMSIG_CARBON_GAIN_MUTATION,

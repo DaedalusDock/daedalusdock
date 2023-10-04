@@ -117,7 +117,7 @@
 	/// Whether the tongue's already embedded in a target once before
 	var/embedded_once_alread = FALSE
 
-/obj/item/hardened_spike/chem/embedded(mob/living/carbon/human/embedded_mob)
+/obj/item/hardened_spike/chem/embedded(obj/item/bodypart/part)
 	if(embedded_once_alread)
 		return
 	embedded_once_alread = TRUE
@@ -126,12 +126,17 @@
 	if(!fired_by)
 		return
 
+	if(!part.owner)
+		return
+
 	var/datum/action/send_chems/chem_action = new(src)
-	chem_action.transfered_ref = WEAKREF(embedded_mob)
+	chem_action.transfered_ref = WEAKREF(part.owner)
 	chem_action.Grant(fired_by)
 
 	to_chat(fired_by, span_notice("Link established! Use the \"Transfer Chemicals\" ability \
 		to send your chemicals to the linked target!"))
+
+	RegisterSignal(part, COMSIG_LIMB_REMOVE, PROC_REF(limb_removed))
 
 /obj/item/hardened_spike/chem/unembedded()
 	var/mob/living/carbon/fired_by = fired_by_ref?.resolve()
@@ -141,6 +146,11 @@
 		QDEL_NULL(chem_action)
 
 	return ..()
+
+
+/obj/item/hardened_spike/chem/proc/limb_removed(obj/item/bodypart/source)
+	SIGNAL_HANDLER
+	unembedded()
 
 /datum/action/send_chems
 	name = "Transfer Chemicals"
@@ -169,7 +179,7 @@
 	if(!ishuman(transfered))
 		return FALSE
 
-	to_chat(transfered, span_warning("You feel a tiny prick!"))
+	transfered.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
 	transferer.reagents.trans_to(transfered, transferer.reagents.total_volume, 1, 1, 0, transfered_by = transferer)
 
 	var/obj/item/hardened_spike/chem/chem_spike = target

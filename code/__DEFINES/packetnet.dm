@@ -21,6 +21,7 @@
 // Net Classes
 #define NETCLASS_P2P_PHONE "PNET_VCSTATION"
 #define NETCLASS_APC "PNET_AREAPOWER"
+#define NETCLASS_TERMINAL "PNET_STERM"
 
 // Packet fields
 // not honestly thrilled with having these be defines but kapu wants it that way
@@ -35,6 +36,12 @@
 /// Network Class of a device, used as part of ping replies.
 #define PACKET_NETCLASS "netclass"
 
+// Special addresses
+#define NET_ADDRESS_PING "ping"
+
+// Standard Commands
+#define NET_COMMAND_PING_REPLY "ping_reply"
+
 
 // Dataterminal connection/disconnect return values
 
@@ -46,6 +53,9 @@
 
 /// Connection rejected, Not sharing a turf (???)
 #define NETJACK_CONNECT_NOTSAMETURF 2
+
+/// Data Terminal not found.
+#define NETJACK_CONNECT_NOT_FOUND 3
 
 // receive_signal return codes
 

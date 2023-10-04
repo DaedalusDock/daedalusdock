@@ -41,8 +41,15 @@
 	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_change))
 	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
 
+/obj/item/reagent_containers/pre_attack(atom/A, mob/living/user, params)
+	if (user.combat_mode)
+		if(try_splash(user, A))
+			return TRUE
+
+	return ..()
+
 /obj/item/reagent_containers/attack(mob/living/M, mob/living/user, params)
-	if (!user.combat_mode)
+	if(!user.combat_mode)
 		return
 	return ..()
 
@@ -80,10 +87,6 @@
 	mode_change_message(user)
 
 /obj/item/reagent_containers/pre_attack_secondary(atom/target, mob/living/user, params)
-	if(HAS_TRAIT(target, DO_NOT_SPLASH))
-		return ..()
-	if(!user.combat_mode)
-		return ..()
 	if (try_splash(user, target))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -95,23 +98,23 @@
 		return FALSE
 
 	if (!reagents?.total_volume)
+		to_chat(user, span_warning("There are no reagents in this container to splash!"))
 		return FALSE
 
 	var/punctuation = ismob(target) ? "!" : "."
 
 	var/reagent_text
 	user.visible_message(
-		span_danger("[user] splashes the contents of [src] onto [target][punctuation]"),
-		span_danger("You splash the contents of [src] onto [target][punctuation]"),
+		span_danger("[user] splashes the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
+		span_danger("You splash the contents of [src] onto [target == user ? "themself" : target][punctuation]"),
 		ignored_mobs = target,
 	)
-
-	if (ismob(target))
-		var/mob/target_mob = target
-		target_mob.show_message(
-			span_userdanger("[user] splash the contents of [src] onto you!"),
+	if(user != target && ismob(target))
+		var/mob/living/L = target
+		L.show_message(
+			span_userdanger("You're soaked in the contents of [src]!"),
 			MSG_VISUAL,
-			span_userdanger("You feel drenched!"),
+			span_userdanger("You're soaked by a splash of liquid!")
 		)
 
 	for(var/datum/reagent/reagent as anything in reagents.reagent_list)
@@ -122,10 +125,10 @@
 		log_combat(thrown_by, target, "splashed (thrown) [english_list(reagents.reagent_list)]")
 		message_admins("[ADMIN_LOOKUPFLW(thrown_by)] splashed (thrown) [english_list(reagents.reagent_list)] on [target] at [ADMIN_VERBOSEJMP(target)].")
 
-	reagents.expose(target, TOUCH)
+	if(!reagents.trans_to(target, reagents.total_volume, methods = TOUCH))
+		reagents.expose(target, TOUCH)
+		reagents.clear_reagents()
 	log_combat(user, target, "splashed", reagent_text)
-	reagents.clear_reagents()
-
 	return TRUE
 
 /obj/item/reagent_containers/proc/canconsume(mob/eater, mob/user)
@@ -133,6 +136,9 @@
 		return FALSE
 	var/mob/living/carbon/C = eater
 	var/covered = ""
+	if(!C.has_mouth())
+		to_chat(user, span_warning("You don't have a mouth."))
+		return FALSE
 	if(C.is_mouth_covered(head_only = 1))
 		covered = "headgear"
 	else if(C.is_mouth_covered(mask_only = 1))

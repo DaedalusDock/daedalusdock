@@ -717,7 +717,7 @@
 /obj/structure/closet/crate/freezer,
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/bot_assembly/medbot,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/reagent_containers/food/drinks/bottle/whiskey,
 /obj/item/reagent_containers/glass/bottle/ethanol,
 /obj/item/organ/stomach,
@@ -820,17 +820,12 @@
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = 6
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = -3
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/glass/bottle/epinephrine{
 	pixel_x = -3;
 	pixel_y = 8
 	},
-/obj/item/reagent_containers/glass/bottle/multiver{
-	pixel_x = 6;
-	pixel_y = 8
-	},
+/obj/item/reagent_containers/glass/bottle/dylovene,
 /obj/item/reagent_containers/syringe/epinephrine{
 	pixel_x = 3;
 	pixel_y = -2
@@ -849,7 +844,6 @@
 "cH" = (
 /obj/machinery/light/directional/south,
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /turf/open/floor/carpet/cyan,
 /area/shuttle/escape/luxury)
 "cI" = (

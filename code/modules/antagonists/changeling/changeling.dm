@@ -11,7 +11,6 @@
 	roundend_category = "changelings"
 	antagpanel_category = "Changeling"
 	job_rank = ROLE_CHANGELING
-	antag_moodlet = /datum/mood_event/focused
 	antag_hud_name = "changeling"
 	hijack_speed = 0.5
 	ui_name = "AntagInfoChangeling"
@@ -602,35 +601,16 @@
 		destroy_objective.find_target()
 		objectives += destroy_objective
 	else
-		if(prob(70))
-			var/datum/objective/assassinate/kill_objective = new
-			kill_objective.owner = owner
-			kill_objective.find_target()
-			objectives += kill_objective
-		else
-			var/datum/objective/maroon/maroon_objective = new
-			maroon_objective.owner = owner
-			maroon_objective.find_target()
-			objectives += maroon_objective
-
-			if (!(locate(/datum/objective/escape) in objectives) && escape_objective_possible)
-				var/datum/objective/escape/escape_with_identity/identity_theft = new
-				identity_theft.owner = owner
-				identity_theft.target = maroon_objective.target
-				identity_theft.update_explanation_text()
-				objectives += identity_theft
-				escape_objective_possible = FALSE
+		var/datum/objective/assassinate/kill_objective = new
+		kill_objective.owner = owner
+		kill_objective.find_target()
+		objectives += kill_objective
 
 	if (!(locate(/datum/objective/escape) in objectives) && escape_objective_possible)
-		if(prob(50))
-			var/datum/objective/escape/escape_objective = new
-			escape_objective.owner = owner
-			objectives += escape_objective
-		else
-			var/datum/objective/escape/escape_with_identity/identity_theft = new
-			identity_theft.owner = owner
-			identity_theft.find_target()
-			objectives += identity_theft
+		var/datum/objective/escape/escape_with_identity/identity_theft = new
+		identity_theft.owner = owner
+		identity_theft.find_target()
+		objectives += identity_theft
 		escape_objective_possible = FALSE
 
 /datum/antagonist/changeling/get_admin_commands()

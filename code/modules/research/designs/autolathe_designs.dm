@@ -497,6 +497,15 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
+/datum/design/fixovein
+	name = "Vascular Recoupler"
+	id = "vascroup"
+	build_type = AUTOLATHE | FABRICATOR
+	materials = list(/datum/material/iron = 4000, /datum/material/glass = 1500, /datum/material/silver = 500)
+	build_path = /obj/item/fixovein
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
 /datum/design/circular_saw
 	name = "Circular Saw"
 	id = "circular_saw"

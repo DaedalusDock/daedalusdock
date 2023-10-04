@@ -12,15 +12,17 @@
 #define PREFERENCE_PRIORITY_BODY_TYPE 5
 /// Augments come after species and bodytype.
 #define PREFERENCE_PRIORITY_AUGMENTS 6
+/// Applies branding to prosthetics
+#define PREFERENCE_PRIORITY_BRANDED_PROSTHETICS 7
 /// The priority hair is applied. We apply human hair first, and moth hair after, only if they are a moth. Sorry.
-#define PREFERENCE_PRIORITY_HUMAN_HAIR 7
+#define PREFERENCE_PRIORITY_HUMAN_HAIR 8
 /// The priority non-human hair is applied (used to apply moth hair after normal hair)
-#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 8
+#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 9
 /// The priority at which names are decided, needed for proper randomization.
-#define PREFERENCE_PRIORITY_NAMES 9
+#define PREFERENCE_PRIORITY_NAMES 10
 /// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
-#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 10
-#define PREFERENCE_PRIORITY_APPEARANCE_MODS 11
+#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 11
+#define PREFERENCE_PRIORITY_APPEARANCE_MODS 12
 
 /// The maximum preference priority, keep this updated, but don't use it for `priority`.
 #define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_APPEARANCE_MODS
@@ -40,7 +42,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /proc/init_preference_entries()
 	var/list/output = list()
 	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
+		if (isabstract(preference_type))
 			continue
 		output[preference_type] = new preference_type
 	return output
@@ -48,7 +50,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /proc/init_preference_entries_by_key()
 	var/list/output = list()
 	for (var/datum/preference/preference_type as anything in subtypesof(/datum/preference))
-		if (initial(preference_type.abstract_type) == preference_type)
+		if (isabstract(preference_type))
 			continue
 		output[initial(preference_type.savefile_key)] = GLOB.preference_entries[preference_type]
 	return output
@@ -56,7 +58,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 /proc/init_all_pref_groups()
 	. = list()
 	for(var/datum/preference_group/module as anything in typesof(/datum/preference_group))
-		if(initial(module.abstract_type) == module)
+		if(isabstract(module))
 			continue
 
 		. += new module()
@@ -86,6 +88,7 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 
 /// Represents an individual preference.
 /datum/preference
+	abstract_type = /datum/preference
 	/// The display default name when inserted into the chargen
 	var/explanation = "ERROR"
 
@@ -98,9 +101,6 @@ GLOBAL_LIST_INIT(all_pref_groups, init_all_pref_groups())
 	/// This isn't used for anything other than as a key for UI data.
 	/// It is up to the PreferencesMenu UI itself to interpret it.
 	var/category = "misc"
-
-	/// Do not instantiate if type matches this.
-	var/abstract_type = /datum/preference
 
 	/// What savefile should this preference be read from?
 	/// Valid values are PREFERENCE_CHARACTER and PREFERENCE_PLAYER.

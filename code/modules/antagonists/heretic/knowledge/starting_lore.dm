@@ -114,7 +114,7 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 
 	// By this point they are making a new heart
 	// If their current heart is organic / not synthetic, we can continue the ritual as normal
-	if(our_living_heart.status == ORGAN_ORGANIC && !(our_living_heart.organ_flags & ORGAN_SYNTHETIC))
+	if(!(our_living_heart.organ_flags & ORGAN_SYNTHETIC))
 		return TRUE
 
 	// If their current heart is not organic / is synthetic, they need an organic replacement
@@ -129,7 +129,7 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 			continue
 		if(!nearby_organ.useable)
 			continue
-		if(nearby_organ.status != ORGAN_ORGANIC || (nearby_organ.organ_flags & (ORGAN_SYNTHETIC|ORGAN_FAILING)))
+		if(nearby_organ.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD))
 			continue
 
 		selected_atoms += nearby_organ
@@ -143,7 +143,7 @@ GLOBAL_LIST_INIT(heretic_start_knowledge, initialize_starting_knowledge())
 	var/obj/item/organ/our_new_heart = user.getorganslot(our_heretic.living_heart_organ_slot)
 
 	// Our heart is robotic or synthetic - we need to replace it, and we fortunately should have one by here
-	if(our_new_heart.status != ORGAN_ORGANIC || (our_new_heart.organ_flags & ORGAN_SYNTHETIC))
+	if(our_new_heart.organ_flags & ORGAN_SYNTHETIC)
 		var/obj/item/organ/our_replacement_heart = locate(required_organ_type) in selected_atoms
 		if(our_replacement_heart)
 			// Throw our current heart out of our chest, violently

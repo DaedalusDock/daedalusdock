@@ -3,7 +3,7 @@
 	desc = "Didn't make sense not to live for fun, your brain gets smart but your head gets dumb."
 	icon = 'icons/mob/human_parts.dmi'
 	icon_state = "default_human_head"
-	max_damage = 200
+	max_damage = 75
 	body_zone = BODY_ZONE_HEAD
 	body_part = HEAD
 	plaintext_zone = "head"
@@ -27,11 +27,21 @@
 
 	bodypart_flags = STOCK_BP_FLAGS_HEAD
 
+	amputation_point = "neck"
+	encased = "skull"
+	artery_name = "carotid artery"
+	cavity_name = "cranial"
+
+	minimum_break_damage = 30
+
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/brain/brain //The brain organ
 	var/obj/item/organ/eyes/eyes
 	var/obj/item/organ/ears/ears
 	var/obj/item/organ/tongue/tongue
+
+	///See [mob/living/proc/has_mouth()]
+	var/can_ingest_reagents = TRUE
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
 	///Render sclera for this species?
@@ -142,13 +152,7 @@
 		if(!tongue)
 			. += span_info("[real_name]'s tongue has been removed.")
 
-
-/obj/item/bodypart/head/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT)
-		return FALSE
-	return ..()
-
-/obj/item/bodypart/head/drop_organs(mob/user, violent_removal)
+/obj/item/bodypart/head/drop_contents(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
 	for(var/obj/item/head_item in src.contents)
 		if(head_item == brain)
@@ -158,19 +162,14 @@
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
 			if(violent_removal && prob(rand(80, 100))) //ghetto surgery can damage the brain.
 				to_chat(user, span_warning("[brain] was damaged in the process!"))
-				old_brain.setOrganDamage(brain.maxHealth)
+				old_brain.setOrganDamage(old_brain.maxHealth)
 			old_brain.forceMove(head_turf)
 			update_icon_dropped()
 		else
 			if(istype(head_item, /obj/item/reagent_containers/pill))
 				for(var/datum/action/item_action/hands_free/activate_pill/pill_action in head_item.actions)
 					qdel(pill_action)
-			else if(istype(head_item, /obj/item/organ))
-				var/obj/item/organ/organ = head_item
-				if(organ.organ_flags & ORGAN_UNREMOVABLE)
-					continue
-				remove_organ(organ)
-			head_item.forceMove(head_turf)
+
 	eyes = null
 	ears = null
 	tongue = null
@@ -319,7 +318,7 @@
 	limb_id = SPECIES_MONKEY
 	bodytype = BODYTYPE_MONKEY | BODYTYPE_ORGANIC
 	should_draw_greyscale = FALSE
-	dmg_overlay_type = SPECIES_MONKEY
+	icon_dmg_overlay = 'icons/mob/species/monkey/damage.dmi'
 	is_dimorphic = FALSE
 
 /obj/item/bodypart/head/alien

@@ -5,7 +5,7 @@
 	button_icon_state = "panacea"
 	chemical_cost = 20
 	dna_cost = 1
-	req_stat = HARD_CRIT
+	req_stat = UNCONSCIOUS
 
 //Heals the things that the other regenerative abilities don't.
 /datum/action/changeling/panacea/sting_action(mob/user)
@@ -26,10 +26,10 @@
 			C.vomit(0)
 		O.forceMove(get_turf(user))
 
-	user.reagents.add_reagent(/datum/reagent/medicine/mutadone, 10)
-	user.reagents.add_reagent(/datum/reagent/medicine/pen_acid, 20)
+	user.reagents.add_reagent(/datum/reagent/medicine/ryetalyn, 10)
+	user.reagents.add_reagent(/datum/reagent/medicine/dexalin, 20)
 	user.reagents.add_reagent(/datum/reagent/medicine/antihol, 10)
-	user.reagents.add_reagent(/datum/reagent/medicine/mannitol, 25)
+	user.reagents.add_reagent(/datum/reagent/medicine/alkysine, 25)
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user

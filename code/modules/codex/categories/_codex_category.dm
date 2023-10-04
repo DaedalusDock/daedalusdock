@@ -5,10 +5,10 @@
 	var/defer_population = FALSE
 	var/guide_name
 	var/guide_html
-	var/link_columns = 2
+	var/link_columns = 0
 
 /datum/codex_category/proc/get_category_link(datum/codex_entry/entry)
-	return "This page is categorized under <span codexlink='[name] (category)'>[name].</span>"
+	return "This page is categorized under <span codexlink='[name] (category)'>[name]</span>."
 
 //Children should call ..() at the end after filling the items list
 /datum/codex_category/proc/Populate()
@@ -17,7 +17,7 @@
 	if(length(items))
 		var/lore_text = desc + "<hr>"
 		if(guide_name && guide_html)
-			lore_text += "This category has <span codexlink='Guide to [capitalize(guide_name || name)]'>an associated guide.</span><hr>"
+			lore_text += "This category has <span codexlink='Guide to [capitalize(guide_name || name)]'>an associated guide</span>.<hr>"
 
 		items = sortTim(items, GLOBAL_PROC_REF(cmp_text_asc), TRUE)
 		var/list/links = list()
@@ -33,13 +33,13 @@
 		var/list/link_cells = list()
 		for(var/letter in GLOB.alphabet_upper)
 			if(length(links[letter]))
-				link_cells += "<td><b><center>[letter]</center></b>\n<hr>\n<br>\n[jointext(links[letter], "\n<br>\n")]</td>\n"
+				link_cells += "<td style='width:100%'><b><center>[letter]</center></b>\n<hr>\n<br>\n[jointext(links[letter], "\n<br>\n")]</td>\n"
 
-		var/list/link_table = list("<table>")
+		var/list/link_table = list("<table style='width:100%'>")
 		var/link_counter = 0
 		for(var/i = 1 to length(link_cells))
 			if(link_counter == 0)
-				link_table += "<tr>"
+				link_table += "<tr style='width:100%'>"
 			link_table += link_cells[i]
 			if(link_counter == link_columns)
 				link_table += "</tr>"

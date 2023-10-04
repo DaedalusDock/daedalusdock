@@ -9,7 +9,7 @@
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 
-	force = 7
+	force = 14
 	throwforce = 7
 	stamina_damage = 35
 	stamina_cost = 12
@@ -120,7 +120,6 @@
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 /obj/item/crowbar/power/syndicate
-	name = "Syndicate jaws of life"
 	desc = "A re-engineered copy of Daedalus' standard jaws of life. Can be used to force open airlocks in its crowbar configuration."
 	icon_state = "jaws_syndie"
 	toolspeed = 0.5

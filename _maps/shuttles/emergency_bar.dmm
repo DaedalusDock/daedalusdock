@@ -254,7 +254,6 @@
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/structure/table,
 /obj/item/storage/box/drinkingglasses,
-/obj/item/reagent_containers/food/drinks/bottle/lizardwine,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -408,7 +407,6 @@
 /area/shuttle/escape)
 "bw" = (
 /obj/structure/table/optable,
-/obj/item/surgical_drapes,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)

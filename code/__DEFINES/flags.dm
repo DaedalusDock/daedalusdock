@@ -56,6 +56,13 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define HAS_CONTEXTUAL_SCREENTIPS_1 (1<<18)
 // Whether or not this atom is storing contents for a disassociated storage object
 #define HAS_DISASSOCIATED_STORAGE_1 (1<<19)
+// Atom has similar priority to border objects when doing Bump() calculations.
+#define BUMP_PRIORITY_1 (1<<20)
+/// If this atom has experienced a decal element "init finished" sourced appearance update
+/// We use this to ensure stacked decals don't double up appearance updates for no rasin
+/// Flag as an optimization, don't make this a trait without profiling
+/// Yes I know this is a stupid flag, no you can't take him from me ~LemonInTheDark
+#define DECAL_INIT_UPDATE_EXPERIENCED_1 (1<<21)
 
 //OH YEAH BABY FLAGS_2 HERE WE GO
 ///Plasma Contamination

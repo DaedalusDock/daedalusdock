@@ -956,11 +956,13 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/ab = FALSE
 	var/list/modifiers = params2list(params)
 
+	var/button_clicked = LAZYACCESS(modifiers, "button")
+	
 	var/dragged = LAZYACCESS(modifiers, DRAG)
-	if(dragged && !LAZYACCESS(modifiers, dragged)) //I don't know what's going on here, but I don't trust it
+	if(dragged && button_clicked != dragged) 
 		return
 
-	if (object && IS_WEAKREF_OF(object, middle_drag_atom_ref) && LAZYACCESS(modifiers, LEFT_CLICK))
+	if (object && IS_WEAKREF_OF(object, middle_drag_atom_ref) && button_clicked == LEFT_CLICK)
 		ab = max(0, 5 SECONDS-(world.time-middragtime)*0.1)
 
 	var/mcl = CONFIG_GET(number/minute_click_limit)
@@ -1019,7 +1021,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		winset(src, null, "input.background-color=[COLOR_INPUT_DISABLED]")
 
 	else
-		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_ENABLED]")
+		winset(src, null, "input.background-color=[COLOR_INPUT_ENABLED]")
 
 	SEND_SIGNAL(src, COMSIG_CLIENT_CLICK, object, location, control, params, usr)
 
@@ -1108,6 +1110,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	movement_keys = list()
 	for(var/kb_name in D.key_bindings)
 		for(var/key in D.key_bindings[kb_name])
+			if(!hotkeys && !SSinput.unprintables_cache[key])
+				continue
 			switch(kb_name)
 				if("North")
 					movement_keys[key] = NORTH
@@ -1231,12 +1235,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 /client/proc/set_right_click_menu_mode(shift_only)
 	if(shift_only)
 		winset(src, "mapwindow.map", "right-click=true")
-		winset(src, "ShiftUp", "is-disabled=false")
-		winset(src, "Shift", "is-disabled=false")
+		winset(src, "default.PROTECTED-Shift", "command=\".winset :map.right-click=false\nKeyDown Shift\"")
+		winset(src, "default.PROTECTED-ShiftUp", "command=\".winset :map.right-click=true\nKeyUp Shift\"")
 	else
 		winset(src, "mapwindow.map", "right-click=false")
-		winset(src, "default.Shift", "is-disabled=true")
-		winset(src, "default.ShiftUp", "is-disabled=true")
+		winset(src, "default.PROTECTED-Shift", "command=\"KeyDown Shift\"")
+		winset(src, "default.PROTECTED-ShiftUp", "command=\"KeyUp Shift\"")
 
 /client/proc/update_ambience_pref()
 	if(prefs.toggles & SOUND_AMBIENCE)

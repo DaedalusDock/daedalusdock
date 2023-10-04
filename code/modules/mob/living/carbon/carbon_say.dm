@@ -25,3 +25,8 @@
 		return T.could_speak_language(language)
 	else
 		return initial(language.flags) & TONGUELESS_SPEECH
+
+/mob/living/carbon/get_message_mods(message, list/mods)
+	. = ..()
+	if(CHEM_EFFECT_MAGNITUDE(src, CE_VOICELOSS) && !mods[WHISPER_MODE])
+		mods[WHISPER_MODE] = MODE_WHISPER

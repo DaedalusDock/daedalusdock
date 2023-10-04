@@ -38,21 +38,9 @@
 	var/seed_modifier = 0
 	if(seed)
 		seed_modifier = round(seed.potency / 25)
-	var/obj/item/stack/cotton = new cotton_type(user.loc, 1 + seed_modifier)
-	var/old_cotton_amount = cotton.amount
-	for(var/obj/item/stack/potential_stack in user.loc)
-		if(QDELETED(potential_stack))
-			continue
-		if(potential_stack == cotton)
-			continue
-		if(!istype(potential_stack, cotton_type))
-			continue
-		if(potential_stack.amount >= potential_stack.max_amount)
-			continue
-		potential_stack.attackby(cotton, user)
-
-	if(cotton.amount > old_cotton_amount)
-		to_chat(user, span_notice("You add the newly-formed [cotton_name] to the stack. It now contains [cotton.amount] [cotton_name]."))
+	var/amount = 1 + seed_modifier
+	var/obj/item/stack/cotton = new cotton_type(user.drop_location(), amount)
+	to_chat(user, span_notice("You pull [src] apart, salvaging [amount] [cotton.name]."))
 	qdel(src)
 
 //reinforced mutated variant

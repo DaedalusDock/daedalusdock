@@ -114,6 +114,9 @@
 #define HAS_TRAIT_FROM_ONLY(target, trait, source) (target.status_traits?[trait] && (source in target.status_traits[trait]) && (length(target.status_traits[trait]) == 1))
 #define HAS_TRAIT_NOT_FROM(target, trait, source) (target.status_traits?[trait] && (length(target.status_traits[trait] - source) > 0))
 
+/// For use in start/stop metabolize. Since we don't want touch metabolism ending to interrupt bloodstream chems of the same type, etc.
+#define CHEM_TRAIT_SOURCE(class) "[type]_[class]"
+
 /*
 Remember to update _globalvars/traits.dm if you're adding/removing/renaming traits.
 */
@@ -150,8 +153,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NO_SPRINT "no_sprint"
 /// In softcrit.
 #define TRAIT_SOFT_CRITICAL_CONDITION "soft-critical-condition"
-/// In hardcrit. Is able to succumb.
-#define TRAIT_CRITICAL_CONDITION "critical-condition"
 /// Whitelist for mobs that can read or write
 #define TRAIT_LITERATE "literate"
 /// Blacklist for mobs that can't read or write
@@ -159,6 +160,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_BLIND "blind"
 #define TRAIT_MUTE "mute"
 #define TRAIT_EMOTEMUTE "emotemute"
+/// User cannot use the Say() verb. This is used to force speech while "muting" the client.
+#define TRAIT_NO_VOLUNTARY_SPEECH "no_say_typing"
 #define TRAIT_DEAF "deaf"
 #define TRAIT_NEARSIGHT "nearsighted"
 #define TRAIT_FAT "fat"
@@ -194,6 +197,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PUSHIMMUNE "push_immunity"
 #define TRAIT_SHOCKIMMUNE "shock_immunity"
 #define TRAIT_TESLA_SHOCKIMMUNE "tesla_shock_immunity"
+/// You cannot ENTER cardiac arrest.
 #define TRAIT_STABLEHEART "stable_heart"
 /// Prevents you from leaving your corpse
 #define TRAIT_CORPSELOCKED "corpselocked"
@@ -231,7 +235,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_VAL_CORRIN_MEMBER "val_corrin_member"
 /// reduces the use time of syringes, pills, patches and medigels but only when using on someone
 #define TRAIT_FASTMED "fast_med_use"
+/// Mob does not breathe.
 #define TRAIT_NOBREATH "no_breath"
+/// Mob does not need ears to hear
+#define TRAIT_NOEARS "no_ears"
 #define TRAIT_ANTIMAGIC "anti_magic"
 #define TRAIT_HOLY "holy"
 /// Like antimagic, but doesn't block the user from casting
@@ -239,6 +246,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_DEPRESSION "depression"
 #define TRAIT_JOLLY "jolly"
 #define TRAIT_NOCRITDAMAGE "no_crit"
+/// Cannot experience Shock (pain version, not electrical)
+#define TRAIT_NO_PAINSHOCK "no_painshock"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"
@@ -279,6 +288,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MESON_VISION "meson_vision"
 /// Gives us Night vision
 #define TRAIT_TRUE_NIGHT_VISION "true_night_vision"
+/// Prevents direction changes done by face_atom()
+#define TRAIT_CANNOTFACE "cannotface"
 
 /// Negates our gravity, letting us move normally on floors in 0-g
 #define TRAIT_NEGATES_GRAVITY "negates_gravity"
@@ -309,7 +320,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// We can handle 'dangerous' plants in botany safely
 #define TRAIT_PLANT_SAFE "plant_safe"
 #define TRAIT_UNINTELLIGIBLE_SPEECH "unintelligible-speech"
-#define TRAIT_UNSTABLE "unstable"
 #define TRAIT_OIL_FRIED "oil_fried"
 #define TRAIT_MEDICAL_HUD "med_hud"
 #define TRAIT_SECURITY_HUD "sec_hud"
@@ -581,6 +591,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_KEEP_DIRECTION_WHILE_PULLING "keep_direction_while_pulling"
 // Prevents this item from entering closets/crates entirely via insertion_allowed()
 #define TRAIT_REJECT_INSERTION "reject_insertion"
+/// Wearing this item in the mask slot will make your voice Unknown
+#define TRAIT_HIDES_VOICE "hides_voice"
+/// Wearing this item in the mask slot will make your voice your current ID, or unknown
+#define TRAIT_REPLACES_VOICE "replaces_voice"
 
 //quirk traits
 #define TRAIT_ALCOHOL_TOLERANCE "alcohol_tolerance"
@@ -604,7 +618,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EMPATH "empath"
 #define TRAIT_FRIENDLY "friendly"
 #define TRAIT_GRABWEAKNESS "grab_weakness"
-#define TRAIT_SNOB "snob"
 #define TRAIT_BALD "bald"
 #define TRAIT_BADTOUCH "bad_touch"
 #define TRAIT_EXTROVERT "extrovert"
@@ -614,9 +627,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_SMOKER "smoker"
 /// Gives you the Shifty Eyes quirk, rarely making people who examine you think you examined them back even when you didn't
 #define TRAIT_SHIFTY_EYES "shifty_eyes"
-
-///Trait for the gamer quirk.
-#define TRAIT_GAMER "gamer"
 
 ///Trait for dryable items
 #define TRAIT_DRYABLE "trait_dryable"
@@ -666,6 +676,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// trait denoting someone will sometimes recover out of crit
 #define TRAIT_UNBREAKABLE "unbreakable"
+
+/// trait denoting something is being risen up by a table
+#define TRAIT_TABLE_RISEN "table_risen"
 
 // common trait sources
 #define TRAIT_GENERIC "generic"
@@ -724,6 +737,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define RESTING_TRAIT "resting"
 /// trait associated to a stat value or range of
 #define STAT_TRAIT "stat"
+/// Trait from the BRAIN
+#define BRAIN_TRAIT "brain_trait"
 #define STATION_TRAIT "station-trait"
 /// obtained from mapping helper
 #define MAPPING_HELPER_TRAIT "mapping-helper"
@@ -741,13 +756,12 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define HIGHLANDER_TRAIT "highlander"
 /// Trait associated with airflow/spacewind
 #define AIRFLOW_TRAIT "airflow"
+/// Trait on stumps
+#define STUMP_TRAIT "stump"
 
 ///generic atom traits
 /// Trait from [/datum/element/rust]. Its rusty and should be applying a special overlay to denote this.
 #define TRAIT_RUSTY "rust_trait"
-///stops someone from splashing their reagent_container on an object with this trait
-#define DO_NOT_SPLASH "do_not_splash"
-
 // unique trait sources, still defines
 #define CLONING_POD_TRAIT "cloning-pod"
 #define STATUE_MUTE "statue"
@@ -760,7 +774,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define EYES_COVERED "eyes_covered"
 #define HYPNOCHAIR_TRAIT "hypnochair"
 #define FLASHLIGHT_EYES "flashlight_eyes"
-#define IMPURE_OCULINE "impure_oculine"
 #define BLINDFOLD_TRAIT "blindfolded"
 #define TRAIT_SANTA "santa"
 #define SCRYING_ORB "scrying-orb"
@@ -844,6 +857,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define ITEM_SCALING_TRAIT "item_scaling"
 /// From EMPs
 #define EMP_TRAIT "emp"
+/// Given by the operating table
+#define OPTABLE_TRAIT "optable"
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and
@@ -949,3 +964,12 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define RIGHT_LEG_TRAIT "right_leg"
 #define LEFT_LEG_TRAIT "left_leg"
 
+// Reagent traits
+#define TRAIT_ZOMBIEPOWDER "zombiepowder"
+#define TRAIT_ROTATIUM "rotatedidiot"
+#define TRAIT_VENOMSIZE "venomsize"
+#define TRAIT_HYPERZINE "zoomzoomzoom"
+#define TRAIT_EPHEDRINE "ephedrine"
+#define TRAIT_HALOPERIDOL "haloperidol"
+#define TRAIT_STIMULANTS "stimulants"
+#define TRAIT_IMPEDREZENE "impedrezene"

@@ -13,7 +13,7 @@
 	emote_taunt = list("screeches")
 	emote_hear = list("cackles","screeches")
 	combat_mode = TRUE
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	ranged_cooldown_time = 5 SECONDS
 	vision_range = 9
 	retreat_distance = 2

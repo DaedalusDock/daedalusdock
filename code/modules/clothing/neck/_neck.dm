@@ -8,7 +8,7 @@
 	strip_delay = 40
 	equip_delay_other = 40
 
-/obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/neck/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -17,7 +17,13 @@
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
 		if(HAS_BLOOD_DNA(src))
-			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
+			if(istype(wearer))
+				var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
+				if(!head?.icon_bloodycover)
+					return
+				. += image(head.icon_bloodycover, "maskblood")
+			else
+				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 
 /obj/item/clothing/neck/tie
 	name = "tie"
@@ -83,7 +89,7 @@
 
 	if(carbon_patient.stat != DEAD && !(HAS_TRAIT(carbon_patient, TRAIT_FAKEDEATH)))
 		if(istype(heart))
-			heart_strength = (heart.beating ? "a healthy" : span_danger("an unstable"))
+			heart_strength = (heart.pulse == PULSE_NORM ? "a healthy" : span_danger("an unstable"))
 		if(istype(lungs))
 			lung_strength = ((carbon_patient.failed_last_breath || carbon_patient.losebreath) ? span_danger("strained") : "healthy")
 

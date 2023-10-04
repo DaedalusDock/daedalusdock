@@ -10,7 +10,7 @@ export const Jukebox = (props, context) => {
     active,
     track_selected,
     track_length,
-    track_beat,
+    track_author,
     volume,
   } = data;
   const songs = flow([
@@ -46,9 +46,8 @@ export const Jukebox = (props, context) => {
             <LabeledList.Item label="Track Length">
               {track_selected ? track_length : "No Track Selected"}
             </LabeledList.Item>
-            <LabeledList.Item label="Track Beat">
-              {track_selected ? track_beat : "No Track Selected"}
-              {track_beat === 1 ? " beat" : " beats"}
+            <LabeledList.Item label="Author">
+              {track_selected ? (track_author ? track_author : "Priapus Company Band") : "No Track Selected"}
             </LabeledList.Item>
           </LabeledList>
         </Section>

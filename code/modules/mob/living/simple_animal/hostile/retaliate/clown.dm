@@ -316,7 +316,7 @@
 	attack_verb_simple = "ferociously maul"
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	loot = list(/obj/item/clothing/mask/gas/clown_hat, /obj/effect/gibspawner/xeno/bodypartless, /obj/effect/particle_effect/foam, /obj/item/soap)
-	attack_reagent = /datum/reagent/peaceborg/confuse
+	attack_reagent = /datum/reagent/cryptobiolin
 
 /mob/living/simple_animal/hostile/retaliate/clown/clownhulk/destroyer
 	name = "The Destroyer"
@@ -333,7 +333,7 @@
 	melee_damage_lower = 20
 	melee_damage_upper = 40
 	armour_penetration = 30
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	attack_verb_continuous = "acts out divine vengeance on"
 	attack_verb_simple = "act out divine vengeance on"
 	obj_damage = 50

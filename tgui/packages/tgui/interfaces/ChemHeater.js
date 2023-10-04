@@ -1,8 +1,6 @@
 import { round, toFixed } from 'common/math';
-import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { AnimatedNumber, Box, Button, Flex, Icon, NumberInput, ProgressBar, RoundGauge, Section, Table } from '../components';
-import { COLORS } from '../constants';
 import { Window } from '../layouts';
 import { BeakerContents } from './common/BeakerContents';
 
@@ -12,35 +10,24 @@ export const ChemHeater = (props, context) => {
     targetTemp,
     isActive,
     isFlashing,
-    currentpH,
     isBeakerLoaded,
     currentTemp,
     beakerCurrentVolume,
     beakerMaxVolume,
-    acidicBufferVol,
-    basicBufferVol,
     dispenseVolume,
     upgradeLevel,
-    tutorialMessage,
     beakerContents = [],
     activeReactions = [],
   } = data;
   return (
     <Window
       width={330}
-      height={tutorialMessage ? 680 : 350}>
+      height={350}>
       <Window.Content scrollable>
         <Section
           title="Controls"
           buttons={(
             <Flex>
-              <Button
-                icon={"question"}
-                selected={tutorialMessage}
-                content={"Help"}
-                left={-2}
-                tooltip={"Guides you through a tutorial reaction!"}
-                onClick={() => act('help')} />
               <Button
                 icon={isActive ? 'power-off' : 'times'}
                 selected={isActive}
@@ -54,23 +41,7 @@ export const ChemHeater = (props, context) => {
                 Heat
               </Table.Cell>
               <Table.Cell />
-              <Table.Cell bold collapsing color="label">
-                Buffers
-              </Table.Cell>
               <Table.Cell />
-              <Table.Cell>
-                <NumberInput
-                  width="45px"
-                  unit="u"
-                  step={1}
-                  stepPixelSize={3}
-                  value={dispenseVolume}
-                  minValue={1}
-                  maxValue={10}
-                  onDrag={(e, value) => act('disp_vol', {
-                    target: value,
-                  })} />
-              </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell collapsing color="label">
@@ -89,32 +60,6 @@ export const ChemHeater = (props, context) => {
                     target: value,
                   })} />
               </Table.Cell>
-              <Table.Cell collapsing color="label">
-                Acidic:
-              </Table.Cell>
-              <Table.Cell>
-                <Button
-                  icon={'syringe'}
-                  disabled={!acidicBufferVol}
-                  tooltip={'Inject'}
-                  tooltipPosition={"left"}
-                  onClick={() => act('acidBuffer', {
-                    target: 1,
-                  })} />
-              </Table.Cell>
-              <Table.Cell color={COLORS.reagent.acidicbuffer} textAlign="center">
-                {acidicBufferVol + "u"}
-              </Table.Cell>
-              <Table.Cell>
-                <Button
-                  icon={'upload'}
-                  tooltip={'Draw all'}
-                  tooltipPosition={"top"}
-                  disabled={acidicBufferVol === 100}
-                  onClick={() => act('acidBuffer', {
-                    target: -100,
-                  })} />
-              </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell collapsing color="label">
@@ -131,72 +76,11 @@ export const ChemHeater = (props, context) => {
                   ) || '—'}
                 </Box>
               </Table.Cell>
-              <Table.Cell collapsing color="label">
-                Basic:
-              </Table.Cell>
-              <Table.Cell>
-                <Button
-                  icon={'syringe'}
-                  tooltip={'Inject'}
-                  tooltipPosition={"left"}
-                  disabled={!basicBufferVol}
-                  onClick={() => act('basicBuffer', {
-                    target: 1,
-                  })} />
-              </Table.Cell>
-              <Table.Cell color={COLORS.reagent.basicbuffer} textAlign="center">
-                {basicBufferVol + "u"}
-              </Table.Cell>
-              <Table.Cell>
-                <Button
-                  icon={'upload'}
-                  tooltip={'Draw all'}
-                  disabled={basicBufferVol === 100}
-                  onClick={() => act('basicBuffer', {
-                    target: -100,
-                  })} />
-              </Table.Cell>
             </Table.Row>
           </Table>
         </Section>
         {!!isBeakerLoaded && (
-          <Section
-            title="Reactions"
-            buttons={(
-              <Flex>
-                <Flex.Item color="label">
-                  <AnimatedNumber
-                    value={currentpH}
-                    format={value => 'pH: ' + round(value, 3)} />
-                </Flex.Item>
-                <Flex.Item>
-                  <AnimatedNumber value={currentpH}>
-                    {(_, value) => (
-                      <RoundGauge
-                        size={1.60}
-                        value={value}
-                        minValue={0}
-                        maxValue={14}
-                        alertAfter={isFlashing}
-                        content={"test"}
-                        format={value => null}
-                        ranges={{
-                          "red": [-0.22, 1.5],
-                          "orange": [1.5, 3],
-                          "yellow": [3, 4.5],
-                          "olive": [4.5, 5],
-                          "good": [5, 6],
-                          "green": [6, 8.5],
-                          "teal": [8.5, 9.5],
-                          "blue": [9.5, 11],
-                          "purple": [11, 12.5],
-                          "violet": [12.5, 14],
-                        }} />
-                    )}
-                  </AnimatedNumber>
-                </Flex.Item>
-              </Flex>
-            )}>
+          <Section title="Reactions">
             {activeReactions.length === 0 && (
               <Box color="label">
                 No active reactions.
@@ -273,16 +157,6 @@ export const ChemHeater = (props, context) => {
                 <Table.Row />
               </Table>
             )}
-          </Section>
-        )}
-        {tutorialMessage && (
-          <Section
-            title="Tutorial"
-            preserveWhitespace>
-            <img
-              src={resolveAsset("chem_help_advisor.gif")}
-              width="30px" />
-            {tutorialMessage}
           </Section>
         )}
         <Section

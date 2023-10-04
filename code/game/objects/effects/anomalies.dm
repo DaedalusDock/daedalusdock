@@ -164,7 +164,7 @@
 /obj/effect/anomaly/grav/Bump(atom/A)
 	gravShock(A)
 
-/obj/effect/anomaly/grav/Bumped(atom/movable/AM)
+/obj/effect/anomaly/grav/BumpedBy(atom/movable/AM)
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/proc/gravShock(mob/living/A)
@@ -227,7 +227,7 @@
 /obj/effect/anomaly/flux/Bump(atom/A)
 	mobShock(A)
 
-/obj/effect/anomaly/flux/Bumped(atom/movable/AM)
+/obj/effect/anomaly/flux/BumpedBy(atom/movable/AM)
 	mobShock(AM)
 
 /obj/effect/anomaly/flux/proc/mobShock(mob/living/M)
@@ -256,7 +256,7 @@
 	for(var/mob/living/M in range(1,src))
 		do_teleport(M, locate(M.x, M.y, M.z), 4, channel = TELEPORT_CHANNEL_BLUESPACE)
 
-/obj/effect/anomaly/bluespace/Bumped(atom/movable/AM)
+/obj/effect/anomaly/bluespace/BumpedBy(atom/movable/AM)
 	if(isliving(AM))
 		do_teleport(AM, locate(AM.x, AM.y, AM.z), 8, channel = TELEPORT_CHANNEL_BLUESPACE)
 

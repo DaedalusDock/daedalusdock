@@ -221,7 +221,7 @@
 				if(!desired)
 					return FALSE
 
-			if(QDELETED(src) || QDELETED(usr) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK)) // Sanity checkin' in case stupid stuff happens while we wait for input()
+			if(QDELETED(src) || QDELETED(usr) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK)) // Sanity checkin' in case stupid stuff happens while we wait for input()
 				return FALSE
 
 			for(var/obj/item/dispensed_item in src)
@@ -443,7 +443,7 @@
 	. = ..()
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		max_n_of_items = 20 * B.rating
-		repair_rate = max(0, STANDARD_ORGAN_HEALING * (B.rating - 1) * 0.5)
+		repair_rate = max(0, (0.1) * (B.rating - 1) * 0.5)
 
 /obj/machinery/smartfridge/organ/process(delta_time)
 	for(var/obj/item/organ/organ in contents)
@@ -493,9 +493,9 @@
 /obj/machinery/smartfridge/chemistry/preloaded
 	initial_contents = list(
 		/obj/item/reagent_containers/pill/epinephrine = 12,
-		/obj/item/reagent_containers/pill/multiver = 5,
+		/obj/item/reagent_containers/pill/dylovene = 5,
 		/obj/item/reagent_containers/glass/bottle/epinephrine = 1,
-		/obj/item/reagent_containers/glass/bottle/multiver = 1)
+		/obj/item/reagent_containers/glass/bottle/dylovene = 1)
 
 // ----------------------------
 // Virology Medical Smartfridge

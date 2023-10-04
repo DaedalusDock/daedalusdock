@@ -42,9 +42,9 @@
 	loaded_projectile.fired_from = fired_from
 	loaded_projectile.hit_prone_targets = user.combat_mode
 	if (zone_override)
-		loaded_projectile.def_zone = zone_override
+		loaded_projectile.aimed_def_zone = zone_override
 	else
-		loaded_projectile.def_zone = user.zone_selected
+		loaded_projectile.aimed_def_zone = user.zone_selected
 	loaded_projectile.suppressed = quiet
 
 	if(isgun(fired_from))

@@ -1,4 +1,3 @@
-#define C2NAMEREAGENT "[initial(reagent.name)] (Has Side-Effects)"
 /*
 Contains:
 Borg Hypospray
@@ -28,7 +27,7 @@ Borg Hypospray
 	var/bypass_protection = 0 //If the hypospray can go through armor or thick material
 
 	var/list/datum/reagents/reagent_list = list()
-	var/list/reagent_ids = list(/datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/c2/libital, /datum/reagent/medicine/c2/multiver, /datum/reagent/medicine/c2/aiuri, /datum/reagent/medicine/epinephrine, /datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/salglu_solution)
+	var/list/reagent_ids = list(/datum/reagent/medicine/bicaridine, /datum/reagent/medicine/dylovene, /datum/reagent/medicine/kelotane, /datum/reagent/medicine/epinephrine, /datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/saline_glucose)
 	var/accepts_reagent_upgrades = TRUE //If upgrades can increase number of reagents dispensed.
 	var/list/modes = list() //Basically the inverse of reagent_ids. Instead of having numbers as "keys" and strings as values it has strings as keys and numbers as values.
 								//Used as list for input() in shakers.
@@ -69,17 +68,11 @@ Borg Hypospray
 
 	modes[reagent] = length(modes) + 1
 
-	if(initial(reagent.harmful))
-		reagent_names[C2NAMEREAGENT] = reagent
-	else
-		reagent_names[initial(reagent.name)] = reagent
+	reagent_names[initial(reagent.name)] = reagent
 
 /obj/item/reagent_containers/borghypo/proc/del_reagent(datum/reagent/reagent)
 	reagent_ids -= reagent
-	if(istype(reagent, /datum/reagent/medicine/c2))
-		reagent_names -= C2NAMEREAGENT
-	else
-		reagent_names -= initial(reagent.name)
+	reagent_names -= initial(reagent.name)
 	var/datum/reagents/RG
 	var/datum/reagents/TRG
 	for(var/i in 1 to length(reagent_ids))
@@ -111,7 +104,7 @@ Borg Hypospray
 	if(!istype(M))
 		return
 	if(R.total_volume && M.try_inject(user, user.zone_selected, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE | (bypass_protection ? INJECT_CHECK_PENETRATE_THICK : 0)))
-		to_chat(M, span_warning("You feel a tiny prick!"))
+		M.apply_pain(1, user.zone_selected, "You feel a tiny prick!")
 		to_chat(user, span_notice("You inject [M] with the injector."))
 		if(M.reagents)
 			var/trans = R.trans_to(M, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
@@ -189,7 +182,7 @@ Borg Hypospray
 	charge_cost = 20
 	recharge_time = 2
 	reagent_ids = list(
-		/datum/reagent/medicine/syndicate_nanites,
+		/datum/reagent/medicine/omnizine,
 		/datum/reagent/medicine/inacusiate,
 		/datum/reagent/medicine/potass_iodide,
 		/datum/reagent/medicine/morphine,
@@ -217,7 +210,7 @@ Borg Shaker
 	/datum/reagent/consumable/limejuice, /datum/reagent/consumable/menthol, /datum/reagent/consumable/milk,
 	/datum/reagent/consumable/nothing, /datum/reagent/consumable/orangejuice, /datum/reagent/consumable/peachjuice,
 	/datum/reagent/consumable/sodawater, /datum/reagent/consumable/space_cola, /datum/reagent/consumable/spacemountainwind,
-	/datum/reagent/consumable/pwr_game, /datum/reagent/consumable/shamblers, /datum/reagent/consumable/soymilk,
+	/datum/reagent/consumable/shamblers, /datum/reagent/consumable/soymilk,
 	/datum/reagent/consumable/space_up, /datum/reagent/consumable/sugar, /datum/reagent/consumable/tea,
 	/datum/reagent/consumable/tomatojuice, /datum/reagent/consumable/tonic, /datum/reagent/water,
 	/datum/reagent/consumable/pineapplejuice, /datum/reagent/consumable/sol_dry,
@@ -284,13 +277,13 @@ Borg Shaker
 /obj/item/reagent_containers/borghypo/peace
 	name = "Peace Hypospray"
 
-	reagent_ids = list(/datum/reagent/peaceborg/confuse,/datum/reagent/peaceborg/tire,/datum/reagent/pax/peaceborg)
+	reagent_ids = list(/datum/reagent/cryptobiolin, /datum/reagent/pax)
 	accepts_reagent_upgrades = FALSE
 
 /obj/item/reagent_containers/borghypo/peace/hacked
 	desc = "Everything's peaceful in death!"
 	icon_state = "borghypo_s"
-	reagent_ids = list(/datum/reagent/peaceborg/confuse,/datum/reagent/peaceborg/tire,/datum/reagent/pax/peaceborg,/datum/reagent/toxin/staminatoxin,/datum/reagent/toxin/sulfonal,/datum/reagent/toxin/sodium_thiopental,/datum/reagent/toxin/cyanide,/datum/reagent/toxin/fentanyl)
+	reagent_ids = list(/datum/reagent/cryptobiolin,/datum/reagent/pax,/datum/reagent/toxin/staminatoxin,/datum/reagent/toxin/sulfonal,/datum/reagent/toxin/sodium_thiopental,/datum/reagent/toxin/cyanide,/datum/reagent/toxin/fentanyl)
 	accepts_reagent_upgrades = FALSE
 
 /obj/item/reagent_containers/borghypo/epi
@@ -298,5 +291,3 @@ Borg Shaker
 	desc = "An advanced chemical synthesizer and injection system, designed to stabilize patients."
 	reagent_ids = list(/datum/reagent/medicine/epinephrine)
 	accepts_reagent_upgrades = FALSE
-
-#undef C2NAMEREAGENT

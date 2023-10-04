@@ -1,4 +1,5 @@
 /mob/living/carbon
+	maxHealth = 200
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	//pressure_resistance = 15
@@ -22,6 +23,10 @@
 	///A list of organs that process, used to keep life() fast!
 	var/list/obj/item/organ/processing_organs = list()
 
+	/// Bloodstream reagents
+	var/datum/reagents/bloodstream = null
+	/// Surface level reagents
+	var/datum/reagents/touching = null
 	///Can't talk. Value goes down every life proc. NOTE TO FUTURE CODERS: DO NOT INITIALIZE NUMERICAL VARS AS NULL OR I WILL MURDER YOU.
 	var/silent = 0
 	///How many dream images we have left to send
@@ -42,6 +47,8 @@
 	var/obj/item/clothing/mask/wear_mask = null
 	var/obj/item/clothing/neck/wear_neck = null
 	var/obj/item/tank/internal = null
+	/// "External" air tank. Never set this manually. Not required to stay directly equipped on the mob (i.e. could be a machine or MOD suit module).
+	var/obj/item/tank/external = null
 	var/obj/item/clothing/head = null
 
 	///only used by humans
@@ -114,6 +121,9 @@
 	var/sprinting = FALSE
 	///How many tiles we have continuously moved in the same direction
 	var/sustained_moves = 0
-
+	//stores flavor text here.
+	var/examine_text = ""
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+	COOLDOWN_DECLARE(blood_spray_cd)
+	COOLDOWN_DECLARE(breath_sound_cd)

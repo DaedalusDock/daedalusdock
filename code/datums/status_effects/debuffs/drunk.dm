@@ -117,7 +117,6 @@
 /datum/status_effect/inebriated/drunk/on_apply()
 	. = ..()
 	owner.sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
-	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, id, /datum/mood_event/drunk)
 
 /datum/status_effect/inebriated/drunk/on_remove()
 	clear_effects()
@@ -130,8 +129,6 @@
 
 /// Clears any side effects we set due to being drunk.
 /datum/status_effect/inebriated/drunk/proc/clear_effects()
-	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, id)
-
 	if(owner.sound_environment_override == SOUND_ENVIRONMENT_PSYCHOTIC)
 		owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
 
@@ -155,16 +152,13 @@
 		if(drunk_value > BALLMER_PEAK_WINDOWS_ME) // by this point you're into windows ME territory
 			owner.say(pick_list_replacements(VISTA_FILE, "ballmer_windows_me_msg"), forced = "ballmer")
 
-	// There's always a 30% chance to gain some drunken slurring
-	if(prob(30))
-		owner.adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/slurring/drunk)
+	// Drunk slurring scales in intensity based on how drunk we are -at 16 you will likely not even notice it,
+	// but when we start to scale up you definitely will
+	if(drunk_value >= 16)
+		owner.adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/slurring/drunk, max_duration = 20 SECONDS)
 
 	// And drunk people will always lose jitteriness
 	owner.adjust_timed_status_effect(-6 SECONDS, /datum/status_effect/jitter)
-
-	// Over 11, we will constantly gain slurring up to 10 seconds of slurring.
-	if(drunk_value >= 11)
-		owner.adjust_timed_status_effect(2.4 SECONDS, /datum/status_effect/speech/slurring/drunk, max_duration = 10 SECONDS)
 
 	// Over 41, we have a 30% chance to gain confusion, and we will always have 20 seconds of dizziness.
 	if(drunk_value >= 41)
@@ -189,14 +183,14 @@
 	// Over 81, we will gain constant toxloss
 	if(drunk_value >= 81)
 		owner.adjustToxLoss(1)
-		if(owner.stat <= SOFT_CRIT && prob(5))
+		if(owner.stat != CONSCIOUS && prob(5))
 			to_chat(owner, span_warning("Maybe you should lie down for a bit..."))
 
 	// Over 91, we gain even more toxloss, brain damage, and have a chance of dropping into a long sleep
 	if(drunk_value >= 91)
 		owner.adjustToxLoss(1)
 		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.4)
-		if(owner.stat <= SOFT_CRIT && prob(20))
+		if(owner.stat != CONSCIOUS && prob(20))
 			// Don't put us in a deep sleep if the shuttle's here. QoL, mainly.
 			if(SSshuttle.emergency.mode == SHUTTLE_DOCKED && is_station_level(owner.z))
 				to_chat(owner, span_warning("You're so tired... but you can't miss that shuttle..."))

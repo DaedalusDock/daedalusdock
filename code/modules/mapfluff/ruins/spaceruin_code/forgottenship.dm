@@ -18,23 +18,20 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 	desc = "An advanced vendor that dispenses medical drugs, both recreational and medicinal."
 	products = list(/obj/item/reagent_containers/syringe = 4,
 					/obj/item/healthanalyzer = 4,
-					/obj/item/reagent_containers/pill/patch/libital = 5,
-					/obj/item/reagent_containers/pill/patch/aiuri = 5,
-					/obj/item/reagent_containers/glass/bottle/multiver = 1,
-					/obj/item/reagent_containers/glass/bottle/syriniver = 1,
+					/obj/item/reagent_containers/glass/bottle/bicaridine = 2,
+					/obj/item/reagent_containers/glass/bottle/kelotane = 5,
+					/obj/item/reagent_containers/glass/bottle/dylovene = 1,
 					/obj/item/reagent_containers/glass/bottle/epinephrine = 3,
 					/obj/item/reagent_containers/glass/bottle/morphine = 3,
 					/obj/item/reagent_containers/glass/bottle/potass_iodide = 1,
-					/obj/item/reagent_containers/glass/bottle/salglu_solution = 3,
+					/obj/item/reagent_containers/glass/bottle/saline_glucose = 3,
 					/obj/item/reagent_containers/syringe/antiviral = 5,
-					/obj/item/reagent_containers/medigel/libital = 2,
-					/obj/item/reagent_containers/medigel/aiuri = 2,
-					/obj/item/reagent_containers/medigel/sterilizine = 1)
+			)
 	contraband = list(/obj/item/reagent_containers/glass/bottle/cold = 2,
 					/obj/item/restraints/handcuffs = 4,
 					/obj/item/storage/backpack/duffelbag/syndie/surgery = 1,
 					/obj/item/storage/medkit/tactical = 1)
-	premium = list(/obj/item/storage/pill_bottle/psicodine = 2,
+	premium = list(/obj/item/storage/pill_bottle/ryetalyn = 2,
 					/obj/item/reagent_containers/hypospray/medipen = 3,
 					/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
 					/obj/item/storage/medkit/regular = 3,
@@ -69,11 +66,6 @@ GLOBAL_VAR_INIT(fscpassword, generate_password())
 	info = "Greetings, operatives. You are assigned to SCSBC-12(Syndicate Cyber Sun Battle Cruiser 12) to protect our high-ranking officer while he is on his way to next outpost. While you are travelling, he is the captain of this ship and <b>you must</b> obey his orders.<br><br>Remember, disobeying high-ranking officer orders is a reason for termination."
 
 /////////// forgottenship items
-
-/obj/item/disk/surgery/forgottenship
-	name = "Advanced Surgery Disk"
-	desc = "A disk that contains advanced surgery procedures, must be loaded into an Operating Console."
-	surgeries = list(/datum/surgery/advanced/lobotomy, /datum/surgery/advanced/bioware/vein_threading, /datum/surgery/advanced/bioware/nerve_splicing)
 
 /obj/structure/fluff/empty_sleeper/syndicate/captain
 	icon_state = "sleeper_s-open"

@@ -2440,7 +2440,6 @@
 /obj/structure/table/optable{
 	name = "Robotics Operating Table"
 	},
-/obj/item/surgical_drapes,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "gR" = (
@@ -2722,9 +2721,6 @@
 /obj/structure/table,
 /obj/item/reagent_containers/glass/bottle/aluminium{
 	pixel_x = 6
-	},
-/obj/item/reagent_containers/glass/bottle/bromine{
-	pixel_x = -6
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/yellow{
@@ -3302,7 +3298,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/ancientstation/delta/rnd)
 "iF" = (
-/obj/machinery/chem_heater/withbuffer,
+/obj/machinery/chem_heater,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
@@ -5372,7 +5368,6 @@
 	pixel_y = 12
 	},
 /obj/item/retractor,
-/obj/item/surgical_drapes,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},

@@ -241,7 +241,7 @@
 
 /obj/item/clothing/glasses/regular/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/knockoff,25,list(BODY_ZONE_PRECISE_EYES),list(ITEM_SLOT_EYES))
+	AddComponent(/datum/component/knockoff, 25, list(BODY_ZONE_PRECISE_EYES), slot_flags)
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
@@ -437,7 +437,7 @@
 		add_atom_colour(user.eye_color_left, FIXED_COLOUR_PRIORITY) // I want this to be an average of the colors of both eyes, but that can be done later
 		colored_before = TRUE
 
-/obj/item/clothing/glasses/blindfold/white/worn_overlays(mutable_appearance/standing, isinhands = FALSE, file2use)
+/obj/item/clothing/glasses/blindfold/white/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE, file2use)
 	. = ..()
 	if(isinhands || !ishuman(loc) || colored_before)
 		return
@@ -640,33 +640,6 @@
 	desc = "A pair of glasses with uniquely colored lenses. The frame is inscribed with 'Best Salesman 1997'."
 	icon_state = "salesman"
 	inhand_icon_state = "salesman"
-	///Tells us who the current wearer([BIGSHOT]) is.
-	var/mob/living/carbon/human/bigshot
-
-/obj/item/clothing/glasses/salesman/equipped(mob/living/carbon/human/user, slot)
-	..()
-	if(slot != ITEM_SLOT_EYES)
-		return
-	bigshot = user
-	RegisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE, PROC_REF(moodshift))
-
-/obj/item/clothing/glasses/salesman/dropped(mob/living/carbon/human/user)
-	..()
-	UnregisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE)
-	bigshot = initial(bigshot)
-	icon_state = initial(icon_state)
-	desc = initial(desc)
-
-/obj/item/clothing/glasses/salesman/proc/moodshift(atom/movable/source, amount)
-	SIGNAL_HANDLER
-	if(amount < SANITY_UNSTABLE)
-		icon_state = "salesman_fzz"
-		desc = "A pair of glasses, the lenses are full of TV static. They've certainly seen better days..."
-		bigshot.update_worn_glasses()
-	else
-		icon_state = initial(icon_state)
-		desc = initial(desc)
-		bigshot.update_worn_glasses()
 
 /obj/item/clothing/glasses/nightmare_vision
 	name = "nightmare vision goggles"

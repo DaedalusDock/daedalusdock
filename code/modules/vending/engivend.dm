@@ -9,7 +9,7 @@
 		/obj/item/clothing/glasses/meson/engine = 2,
 		/obj/item/clothing/glasses/welding = 3,
 		/obj/item/multitool = 4,
-		/obj/item/grenade/chem_grenade/smart_metal_foam = 10,
+		/obj/item/grenade/chem_grenade/metalfoam = 10,
 		/obj/item/geiger_counter = 5,
 		/obj/item/stock_parts/cell/high = 10,
 		/obj/item/electronics/airlock = 10,
@@ -24,7 +24,6 @@
 	premium = list(
 		/obj/item/storage/belt/utility = 3,
 		/obj/item/construction/rcd/loaded = 2,
-		/obj/item/storage/box/smart_metal_foam = 1
 	)
 	refill_canister = /obj/item/vending_refill/engivend
 	default_price = PAYCHECK_EASY

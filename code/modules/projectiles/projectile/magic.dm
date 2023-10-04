@@ -333,11 +333,6 @@
 	name = "bolt of sapping"
 	icon_state = "sapping"
 
-/obj/projectile/magic/sapping/on_hit(mob/living/target)
-	. = ..()
-	if(isliving(target))
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, REF(src), /datum/mood_event/sapped)
-
 /obj/projectile/magic/necropotence
 	name = "bolt of necropotence"
 	icon_state = "necropotence"

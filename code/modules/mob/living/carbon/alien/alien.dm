@@ -32,7 +32,6 @@
 
 	create_internal_organs()
 
-	ADD_TRAIT(src, TRAIT_CAN_STRIP, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_NEVER_WOUNDED, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -70,9 +69,6 @@
 					apply_damage(HEAT_DAMAGE_LEVEL_2 * delta_time, BURN)
 	else
 		clear_alert(ALERT_XENO_FIRE)
-
-/mob/living/carbon/alien/reagent_check(datum/reagent/R, delta_time, times_fired) //can metabolize all reagents
-	return FALSE
 
 /mob/living/carbon/alien/get_status_tab_items()
 	. = ..()

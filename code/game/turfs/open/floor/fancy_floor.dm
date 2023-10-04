@@ -10,6 +10,7 @@
 
 /turf/open/floor/wood
 	desc = "Stylish dark wood."
+	icon = 'icons/turf/wood.dmi'
 	icon_state = "wood"
 	floor_tile = /obj/item/stack/tile/wood
 	broken_blend = BLEND_DEFAULT
@@ -80,27 +81,6 @@
 
 /turf/open/floor/wood/airless
 	initial_gas = AIRLESS_ATMOS
-
-/turf/open/floor/wood/tile
-	icon_state = "wood_tile"
-	floor_tile = /obj/item/stack/tile/wood/tile
-
-/turf/open/floor/wood/tile/setup_broken_states()
-	return list("wood_tile-broken", "wood_tile-broken2", "wood_tile-broken3")
-
-/turf/open/floor/wood/parquet
-	icon_state = "wood_parquet"
-	floor_tile = /obj/item/stack/tile/wood/parquet
-
-/turf/open/floor/wood/parquet/setup_broken_states()
-	return list("wood_parquet-broken", "wood_parquet-broken2", "wood_parquet-broken3", "wood_parquet-broken4", "wood_parquet-broken5", "wood_parquet-broken6", "wood_parquet-broken7")
-
-/turf/open/floor/wood/large
-	icon_state = "wood_large"
-	floor_tile = /obj/item/stack/tile/wood/large
-
-/turf/open/floor/wood/large/setup_broken_states()
-	return list("wood_large-broken", "wood_large-broken2", "wood_large-broken3")
 
 /turf/open/floor/bamboo
 	desc = "A bamboo mat with a decorative trim."
@@ -784,3 +764,13 @@
 	. = ..()
 	appearance = global.space_appearances[(((x + y) ^ ~(x * y) + z) % 25) + 1]
 	layer = initial(layer)
+
+/turf/open/floor/mud
+	name = "mud"
+	desc = "A wet, muddy pool of dirt."
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "dirt"
+	footstep = FOOTSTEP_MEAT //this is... probably the closest sounding to mud.
+	barefootstep = FOOTSTEP_MEAT
+	clawfootstep = FOOTSTEP_MEAT
+	heavyfootstep = FOOTSTEP_GENERIC_HEAVY

@@ -29,7 +29,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	materials = list(/datum/material/iron = 1700, /datum/material/glass = 1350, /datum/material/gold = 500) //Gold, because SWAG.
 	construction_time = 75
-	build_path = /obj/item/mmi/posibrain
+	build_path = /obj/item/organ/posibrain
 	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_OMNI
 
@@ -58,15 +58,6 @@
 	build_type = FABRICATOR
 	materials = list(/datum/material/glass = 2500, /datum/material/plastic = 3000, /datum/material/gold = 1000, /datum/material/titanium = 1000)
 	build_path = /obj/item/reagent_containers/glass/beaker/meta
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
-/datum/design/ph_meter
-	name = "Chemical Analyzer"
-	id = "ph_meter"
-	build_type = FABRICATOR
-	materials = list(/datum/material/glass = 2500, /datum/material/gold = 1000, /datum/material/titanium = 1000)
-	build_path = /obj/item/ph_meter
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -140,16 +131,6 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
-/datum/design/healthanalyzer_advanced
-	name = "Advanced Health Analyzer"
-	desc = "A hand-held body scanner able to distinguish vital signs of the subject with high accuracy."
-	id = "healthanalyzer_advanced"
-	build_path = /obj/item/healthanalyzer/advanced
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 2500, /datum/material/silver = 2000, /datum/material/gold = 1500)
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
 /datum/design/medigel
 	name = "Medical Gel"
 	desc = "A medical gel applicator bottle, designed for precision application, with an unscrewable cap."
@@ -157,15 +138,6 @@
 	build_path = /obj/item/reagent_containers/medigel
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 2500, /datum/material/glass = 500)
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
-
-/datum/design/surgical_drapes
-	name = "Surgical Drapes"
-	id = "surgical_drapes"
-	build_type = FABRICATOR
-	materials = list(/datum/material/plastic = 2000)
-	build_path = /obj/item/surgical_drapes
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -224,9 +196,27 @@
 	desc = "Is used to contain blood used for transfusion. Must be attached to an IV drip."
 	id = "blood_pack"
 	build_type = FABRICATOR
-	mapload_design_flags = DESIGN_FAB_MEDICAL
 	materials = list(/datum/material/plastic = 1000)
 	build_path = /obj/item/reagent_containers/blood
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
+/datum/design/blood_pack
+	name = "Bone Gel"
+	desc = "Used to mend bone fractures."
+	id = "bone_gel"
+	build_type = FABRICATOR
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/medical/bone_gel
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
+/datum/design/sticky_tape/surgical
+	name = "Surgical Tape"
+	id = "surgical_tape"
+	build_type = FABRICATOR
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/sticky_tape/surgical
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
@@ -569,80 +559,3 @@
 	desc = "A pair of cybernetic eyes."
 	id = "cybernetic_eyes_improved"
 	build_path = /obj/item/organ/eyes/robotic
-
-/////////////////////
-///Surgery Designs///
-/////////////////////
-
-/datum/design/surgery
-	name = "Surgery Design"
-	desc = "what"
-	id = DESIGN_ID_IGNORE
-	research_icon = 'icons/obj/surgery.dmi'
-	research_icon_state = "surgery_any"
-	var/surgery
-
-/datum/design/surgery/lobotomy
-	name = "Lobotomy"
-	desc = "An invasive surgical procedure which guarantees removal of almost all brain traumas, but might cause another permanent trauma in return."
-	id = "surgery_lobotomy"
-	surgery = /datum/surgery/advanced/lobotomy
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/viral_bonding
-	name = "Viral Bonding"
-	desc = "A surgical procedure that forces a symbiotic relationship between a virus and its host. The patient must be dosed with spaceacillin, virus food, and formaldehyde."
-	id = "surgery_viral_bond"
-	surgery = /datum/surgery/advanced/viral_bonding
-	research_icon_state = "surgery_chest"
-
-/datum/design/surgery/healing //PLEASE ACCOUNT FOR UNIQUE HEALING BRANCHES IN THE hptech HREF (currently 2 for Brute/Burn; Combo is bonus)
-	name = "Tend Wounds"
-	desc = "An upgraded version of the original surgery."
-	id = DESIGN_ID_IGNORE
-
-/datum/design/surgery/healing/brute_upgrade
-	name = "Tend Wounds (Brute) Upgrade"
-	surgery = /datum/surgery/healing/brute/upgraded
-	id = "surgery_heal_brute_upgrade"
-
-/datum/design/surgery/healing/burn_upgrade
-	name = "Tend Wounds (Burn) Upgrade"
-	surgery = /datum/surgery/healing/burn/upgraded
-	id = "surgery_heal_burn_upgrade"
-
-/datum/design/surgery/healing/combo
-	name = "Tend Wounds (Physical)"
-	desc = "A surgical procedure that repairs both bruises and burns. Repair efficiency is not as high as the individual surgeries but it is faster."
-	surgery = /datum/surgery/healing/combo
-	id = "surgery_heal_combo"
-
-/datum/design/surgery/brainwashing // This is a traitor item
-	name = "Brainwashing"
-	desc = "A surgical procedure which directly implants a directive into the patient's brain, making it their absolute priority. It can be cleared using a mindshield implant."
-	id = "surgery_brainwashing"
-	surgery = /datum/surgery/advanced/brainwashing
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/necrotic_revival // While romerol is a thing, this HAS to exist.
-	name = "Necrotic Revival"
-	desc = "An experimental surgical procedure that stimulates the growth of a Romerol tumor inside the patient's brain. Requires zombie powder or rezadone."
-	id = "surgery_zombie"
-	surgery = /datum/surgery/advanced/necrotic_revival
-	research_icon_state = "surgery_head"
-
-/datum/design/surgery/wing_reconstruction
-	name = "Wing Reconstruction"
-	desc = "An experimental surgical procedure that reconstructs the damaged wings of moths. Requires Synthflesh."
-	id = "surgery_wing_reconstruction"
-	surgery = /datum/surgery/advanced/wing_reconstruction
-	research_icon_state = "surgery_chest"
-
-/datum/design/sticky_tape/surgical
-	name = "Surgical Tape"
-	id = "surgical_tape"
-	build_type = FABRICATOR
-	materials = list(/datum/material/plastic = 500)
-	build_path = /obj/item/stack/sticky_tape/surgical
-	category = list(DCAT_MEDICAL)
-	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI

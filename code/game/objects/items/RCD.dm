@@ -370,7 +370,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	set category = "Object"
 	set src in view(1)
 
-	if(!usr.canUseTopic(src, BE_CLOSE))
+	if(!usr.canUseTopic(src, USE_CLOSE))
 		return
 
 	toggle_window_glass(usr)
@@ -380,7 +380,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	set category = "Object"
 	set src in view(1)
 
-	if(!usr.canUseTopic(src, BE_CLOSE))
+	if(!usr.canUseTopic(src, USE_CLOSE))
 		return
 
 	toggle_window_size(usr)
@@ -874,7 +874,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 
 /obj/item/rcd_ammo
 	name = "compressed matter cartridge"
-	desc = "Highly compressed matter for the RCD."
+	desc = "Compressed matter for the RCD."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "rcdammo"
 	w_class = WEIGHT_CLASS_TINY
@@ -884,6 +884,8 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	var/ammoamt = 40
 
 /obj/item/rcd_ammo/large
+	name = "highly compressed matter cartridge"
+	desc = "Tightly compressed matter for the RCD."
 	custom_materials = list(/datum/material/iron=48000, /datum/material/glass=32000)
 	ammoamt = 160
 

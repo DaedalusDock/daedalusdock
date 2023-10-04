@@ -245,6 +245,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_laser_heavy
 	name = "Exosuit Weapon (CH-LC \"Solaris\" Laser Cannon)"
@@ -255,6 +256,7 @@
 	materials = list(/datum/material/iron=10000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_disabler
 	name = "Exosuit Weapon (CH-DS \"Peacemaker\" Disabler)"
@@ -397,6 +399,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/silver=5000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_proj_armor
 	name = "Exosuit Module (Reflective Armor Booster Module)"
@@ -407,6 +410,7 @@
 	materials = list(/datum/material/iron=20000,/datum/material/gold=5000)
 	construction_time = 100
 	category = list(DCAT_MECHA_OBJ)
+	mapload_design_flags = DESIGN_FAB_ROBOTICS
 
 /datum/design/mech_diamond_drill
 	name = "Exosuit Mining (Diamond Mining Drill)"

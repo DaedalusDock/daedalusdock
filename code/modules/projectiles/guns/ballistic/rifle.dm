@@ -16,6 +16,8 @@
 	bolt_drop_sound = 'sound/weapons/gun/rifle/bolt_in.ogg'
 	tac_reloads = FALSE
 
+	accuracy_falloff = 2 //Rifles are extremely accurate
+
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
 	if (bolt_locked == FALSE)
 		to_chat(user, span_notice("You open the bolt of \the [src]."))
@@ -85,7 +87,7 @@
 				return FALSE
 	..()
 
-/obj/item/gun/ballistic/rifle/boltaction/process_fire(mob/user)
+/obj/item/gun/ballistic/rifle/boltaction/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(can_jam)
 		if(chambered.loaded_projectile)
 			if(prob(jamming_chance))

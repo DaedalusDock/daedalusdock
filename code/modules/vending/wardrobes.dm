@@ -344,7 +344,7 @@
 	name = "JaniDrobe"
 	desc = "A self cleaning vending machine capable of dispensing clothing for janitors."
 	icon_state = "janidrobe"
-	product_ads = "Come and get your janitorial clothing, now endorsed by unathi janitors everywhere!"
+	product_ads = "Come and get your janitorial clothing, now endorsed by Jinan janitors everywhere!"
 	vend_reply = "Thank you for using the JaniDrobe!"
 	products = list(/obj/item/clothing/under/rank/civilian/janitor = 2,
 					/obj/item/clothing/under/rank/civilian/janitor/skirt = 2,
@@ -454,17 +454,18 @@
 	icon_state = "chemdrobe"
 	product_ads = "Our clothes are 0.5% more resistant to acid spills! Get yours now!"
 	vend_reply = "Thank you for using the ChemDrobe!"
-	products = list(/obj/item/clothing/under/rank/medical/chemist = 2,
-					/obj/item/clothing/under/rank/medical/chemist/skirt = 2,
-					/obj/item/clothing/head/beret/medical = 2,
-					/obj/item/clothing/shoes/sneakers/white = 2,
-					/obj/item/clothing/suit/toggle/labcoat/chemist = 2,
-					/obj/item/clothing/suit/hooded/wintercoat/medical/chemistry = 2,
-					/obj/item/storage/backpack/chemistry = 2,
-					/obj/item/storage/backpack/satchel/chem = 2,
-					/obj/item/storage/backpack/duffelbag/chemistry = 2,
-					/obj/item/storage/bag/chemistry = 2,
-					/obj/item/ph_booklet = 3)
+	products = list(
+		/obj/item/clothing/under/rank/medical/chemist = 2,
+		/obj/item/clothing/under/rank/medical/chemist/skirt = 2,
+		/obj/item/clothing/head/beret/medical = 2,
+		/obj/item/clothing/shoes/sneakers/white = 2,
+		/obj/item/clothing/suit/toggle/labcoat/chemist = 2,
+		/obj/item/clothing/suit/hooded/wintercoat/medical/chemistry = 2,
+		/obj/item/storage/backpack/chemistry = 2,
+		/obj/item/storage/backpack/satchel/chem = 2,
+		/obj/item/storage/backpack/duffelbag/chemistry = 2,
+		/obj/item/storage/bag/chemistry = 2,
+	)
 	contraband = list(/obj/item/reagent_containers/spray/syndicate = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/chem_wardrobe
 	payment_department = ACCOUNT_MED

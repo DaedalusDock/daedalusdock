@@ -826,13 +826,12 @@
 			var/status
 			switch (M.stat)
 				if(CONSCIOUS)
-					status = "Alive"
-				if(SOFT_CRIT)
-					status = "<font color='orange'><b>Dying</b></font>"
+					if(!HAS_TRAIT(M, TRAIT_SOFT_CRITICAL_CONDITION))
+						status = "Alive"
+					else
+						status = "<font color='orange'><b>Dying</b></font>"
 				if(UNCONSCIOUS)
 					status = "<font color='orange'><b>Unconscious</b></font>"
-				if(HARD_CRIT)
-					status = "<font color='orange'><b>Unconscious and Dying</b></font>"
 				if(DEAD)
 					status = "<font color='red'><b>Dead</b></font>"
 			health_description = "Status = [status]"

@@ -201,7 +201,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	}
 
 	if(network_flags & NETWORK_FLAG_GEN_ID)
-		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+		net_id = SSpackets.generate_net_id(src)
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -591,34 +591,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 
 	return TRUE // If we passed all of those checks, woohoo! We can interact with this machine.
 
-/obj/machinery/proc/check_nap_violations()
-	if(!SSeconomy.full_ancap)
-		return TRUE
-	if(!occupant || state_open)
-		return TRUE
-	var/mob/living/occupant_mob = occupant
-	var/obj/item/card/id/occupant_id = occupant_mob.get_idcard(TRUE)
-	if(!occupant_id)
-		say("[market_verb] NAP Violation: No ID card found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/insurance = occupant_id.registered_account
-	if(!insurance)
-		say("[market_verb] NAP Violation: No bank account found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	if(!insurance.adjust_money(-fair_market_price))
-		say("[market_verb] NAP Violation: Unable to pay.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/department_account = SSeconomy.department_accounts_by_id[payment_department]
-	if(department_account)
-		department_account.adjust_money(fair_market_price)
-	return TRUE
-
-/obj/machinery/proc/nap_violation(mob/violator)
-	return
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/machinery/attack_hand(mob/living/user, list/modifiers)
@@ -634,6 +606,15 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 				span_notice("A floppy disk ejects from [src].")
 			)
 		return TRUE
+
+	if(iscarbon(user))
+		var/brainloss = user.getBrainLoss()
+		if(brainloss > 120)
+			visible_message(span_warning("\The [user] stares cluelessly at \the [src]."))
+			return TRUE
+		if(prob(min(brainloss, 30)))
+			to_chat(user, span_warning("You momentarily forget how to use \the [src]."))
+			return TRUE
 
 //Return a non FALSE value to interrupt attack_hand propagation to subtypes.
 /obj/machinery/interact(mob/user, special_state)
@@ -651,7 +632,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	..()
 	if(!can_interact(usr))
 		return TRUE
-	if(!usr.canUseTopic(src))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return TRUE
 	add_fingerprint(usr)
 	update_last_used(usr)

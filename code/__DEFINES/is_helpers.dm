@@ -65,7 +65,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 //Human sub-species
 #define isabductor(A) (is_species(A, /datum/species/abductor))
-#define isgolem(A) (is_species(A, /datum/species/golem))
 #define islizard(A) (is_species(A, /datum/species/lizard))
 #define isplasmaman(A) (is_species(A, /datum/species/plasmaman))
 #define isvox(A) (is_species(A, /datum/species/vox))
@@ -83,6 +82,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define ismonkey(A) (is_species(A, /datum/species/monkey))
 #define isandroid(A) (is_species(A, /datum/species/android))
 #define isteshari(A) (is_species(A, /datum/species/teshari))
+#define isipc(A) (is_species(A, /datum/species/ipc))
 
 //More carbon mobs
 #define isalien(A) (istype(A, /mob/living/carbon/alien))

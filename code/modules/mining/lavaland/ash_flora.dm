@@ -233,7 +233,7 @@
 
 /obj/item/food/grown/ash_flora/seraka
 	name = "seraka cap"
-	desc = "Small, deeply flavourful mushrooms originally native to Tizira."
+	desc = "Small, deeply flavourful mushrooms."
 	icon_state = "seraka_cap"
 	seed = /obj/item/seeds/lavaland/seraka
 	wine_power = 40
@@ -286,7 +286,7 @@
 	genes = list(/datum/plant_gene/trait/sticky, /datum/plant_gene/trait/stinging)
 	graft_gene = /datum/plant_gene/trait/sticky
 	growing_icon = 'icons/obj/hydroponics/growing_vegetables.dmi'
-	reagents_add = list(/datum/reagent/water = 0.08, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/c2/helbital = 0.05)
+	reagents_add = list(/datum/reagent/water = 0.08, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/meralyne = 0.05)
 
 ///Star Cactus Plants.
 /obj/item/food/grown/star_cactus
@@ -345,14 +345,14 @@
 
 /obj/item/seeds/lavaland/seraka
 	name = "pack of seraka mycelium"
-	desc = "This mycelium grows into seraka mushrooms, a species of savoury mushrooms originally native to Tizira used in food and traditional medicine."
+	desc = "This mycelium grows into seraka mushrooms, a species of savoury mushrooms used in food and traditional medicine."
 	icon_state = "mycelium-seraka"
 	species = "seraka"
 	plantname = "Seraka Mushrooms"
 	product = /obj/item/food/grown/ash_flora/seraka
 	genes = list(/datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/trait/fire_resistance)
 	growing_icon = 'icons/obj/hydroponics/growing_mushrooms.dmi'
-	reagents_add = list(/datum/reagent/toxin/mushroom_powder = 0.1, /datum/reagent/medicine/coagulant/seraka_extract = 0.02)
+	reagents_add = list(/datum/reagent/toxin/mushroom_powder = 0.1, /datum/reagent/medicine/coagulant = 0.02)
 
 //CRAFTING
 

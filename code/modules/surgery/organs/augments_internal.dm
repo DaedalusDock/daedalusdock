@@ -3,7 +3,6 @@
 	name = "cybernetic implant"
 	desc = "A state-of-the-art implant that improves a baseline's functionality."
 	visual = FALSE
-	status = ORGAN_ROBOTIC
 	organ_flags = ORGAN_SYNTHETIC
 	var/implant_color = "#FFFFFF"
 	var/implant_overlay
@@ -129,11 +128,11 @@
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/on_signal(datum/source, amount)
 	SIGNAL_HANDLER
-	if(!(organ_flags & ORGAN_FAILING) && amount > 0)
+	if(!(organ_flags & (ORGAN_DEAD|ORGAN_CUT_AWAY)) && amount > 0)
 		addtimer(CALLBACK(src, PROC_REF(clear_stuns)), stun_cap_amount, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/clear_stuns()
-	if(owner || !(organ_flags & ORGAN_FAILING))
+	if(owner || !(organ_flags & (ORGAN_DEAD|ORGAN_CUT_AWAY)))
 		owner.SetStun(0)
 		owner.SetKnockdown(0)
 		owner.SetImmobilized(0)
@@ -141,13 +140,13 @@
 
 /obj/item/organ/cyberimp/brain/anti_stun/emp_act(severity)
 	. = ..()
-	if((organ_flags & ORGAN_FAILING) || . & EMP_PROTECT_SELF)
+	if((organ_flags & (ORGAN_DEAD|ORGAN_CUT_AWAY)) || . & EMP_PROTECT_SELF)
 		return
-	organ_flags |= ORGAN_FAILING
+	set_organ_dead(TRUE)
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 90 / severity)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/reboot()
-	organ_flags &= ~ORGAN_FAILING
+	set_organ_dead(FALSE)
 
 //[[[[MOUTH]]]]
 /obj/item/organ/cyberimp/mouth

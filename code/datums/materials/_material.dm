@@ -47,9 +47,6 @@ Simple datum which is instanced once per type and is used for every object of sa
 	///What type of shard the material will shatter to
 	var/obj/item/shard_type
 
-	///Snowflake for walls. Will be removed when materials are redone
-	var/wall_shine = WALL_SHINE_PLATING
-
 	///Icon for walls which are plated with this material
 	var/wall_icon = 'icons/turf/walls/solid_wall.dmi'
 	///Icon for reinforced walls which are plated with this material

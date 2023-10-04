@@ -67,6 +67,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	savefile_key = "facial_hair_gradient"
 	relevant_species_trait = FACEHAIR
+	sub_preference = /datum/preference/color/facial_hair_gradient
 
 /datum/preference/choiced/facial_hair_gradient/init_possible_values()
 	return assoc_to_keys(GLOB.facial_hair_gradients_list)
@@ -187,6 +188,14 @@
 /datum/preference/color/sclera/apply_to_human(mob/living/carbon/human/target, value)
 	target.sclera_color = value
 	target.update_eyes()
+
+/datum/preference/color/mutcolor
+	abstract_type = /datum/preference/color/mutcolor
+	var/color_key = ""
+
+/datum/preference/color/mutcolor/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.mutant_colors["[color_key]_1"] = sanitize_hexcolor(value)
+
 /datum/preference/tri_color
 	abstract_type = /datum/preference/tri_color
 	///dna.features["mutcolors"][color_key] = input
@@ -203,8 +212,8 @@
 	return islist(value) && value.len == 3 && (findtext(value[1], GLOB.is_color) && findtext(value[2], GLOB.is_color) && findtext(value[3], GLOB.is_color))
 
 /datum/preference/tri_color/apply_to_human(mob/living/carbon/human/target, value)
-	if (type == abstract_type)
-		return ..()
+	if (isabstract(src))
+		CRASH("`apply_to_human()` was called for abstract preference [type]")
 
 	target.dna.mutant_colors["[color_key]_1"] = sanitize_hexcolor(value[1])
 	target.dna.mutant_colors["[color_key]_2"] = sanitize_hexcolor(value[2])

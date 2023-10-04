@@ -29,7 +29,6 @@
 	//These are set by the material, do not touch!!!
 	var/material_color
 	var/stripe_icon
-	var/shiny_stripe
 	//Ok you can touch vars again :)
 
 /obj/structure/low_wall/Initialize(mapload)
@@ -75,7 +74,9 @@
 		var/obj/structure/low_wall/neighbor = locate() in step_turf
 		if(neighbor)
 			continue
-		if(!can_area_smooth(step_turf))
+		var/can_area_smooth
+		CAN_AREAS_SMOOTH(src, step_turf, can_area_smooth)
+		if(isnull(can_area_smooth))
 			continue
 		for(var/atom/movable/movable_thing as anything in step_turf)
 			if(airlock_typecache[movable_thing.type])
@@ -87,20 +88,19 @@
 		neighb_stripe_overlay.appearance_flags = RESET_COLOR
 		neighb_stripe_overlay.color = stripe_paint || material_color
 		overlays += neighb_stripe_overlay
-		if(shiny_stripe)
-			var/image/shine = image('icons/turf/walls/neighbor_stripe.dmi', "shine-[smoothing_junction]")
-			shine.appearance_flags = RESET_COLOR
-			overlays += shine
 
 	return ..()
 
-/obj/structure/low_wall/CanAllowThrough(atom/movable/mover, turf/target)
+/obj/structure/low_wall/CanAllowThrough(atom/movable/mover, border_dir)
 	. = ..()
 	if(.)
 		return
 	if(mover.throwing)
 		return TRUE
 	if(locate(/obj/structure/low_wall) in get_turf(mover))
+		return TRUE
+	var/obj/structure/table/T = locate() in get_turf(mover)
+	if(T && T.flipped != TRUE)
 		return TRUE
 
 /obj/structure/low_wall/IsObscured()
@@ -192,7 +192,6 @@
 
 	material_color = mat_ref.wall_color
 	stripe_icon = mat_ref.wall_stripe_icon
-	shiny_stripe = mat_ref.wall_shine
 
 	if(update_appearance)
 		update_appearance()

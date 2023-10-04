@@ -22,10 +22,12 @@
 
 ///Dummy types for prepainted walls
 /turf/closed/wall/prepainted
-	name = "dummy"
+	name = "Pre-Painted Wall"
 
 /turf/closed/wall/r_wall/prepainted
-	name = "dummy"
+	name = "PRe-Painted Reinforced Wall"
+
+//Daedalus/"Standard" walls
 
 /turf/closed/wall/prepainted/daedalus
 	color = PAINT_WALL_DAEDALUS
@@ -37,3 +39,23 @@
 	wall_paint = PAINT_WALL_DAEDALUS
 	stripe_paint = PAINT_STRIPE_DAEDALUS
 
+/turf/closed/wall/prepainted/medical
+	color = PAINT_WALL_MEDICAL
+	wall_paint = PAINT_WALL_MEDICAL
+	stripe_paint = PAINT_STRIPE_MEDICAL
+
+
+/turf/closed/wall/r_wall/prepainted/medical
+	color = PAINT_WALL_MEDICAL
+	wall_paint = PAINT_WALL_MEDICAL
+	stripe_paint = PAINT_STRIPE_MEDICAL
+
+/turf/closed/wall/prepainted/bridge
+	color = PAINT_WALL_COMMAND
+	wall_paint = PAINT_WALL_COMMAND
+	stripe_paint = PAINT_STRIPE_COMMAND
+
+/turf/closed/wall/r_wall/prepainted/bridge
+	color = PAINT_WALL_COMMAND
+	wall_paint = PAINT_WALL_COMMAND
+	stripe_paint = PAINT_STRIPE_COMMAND

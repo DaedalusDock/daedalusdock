@@ -176,27 +176,32 @@ export class Changelog extends Component {
 
     const header = (
       <Section>
-        <h1>Traditional Games Space Station 13</h1>
+        <h1>Daedalus Dock</h1>
+        <p>
+          <b>Brought to you by: </b>
+          Kapu1178, Francinum, Spyroshark, Cenrus, FunnyLegJiggle, Zonespace,
+          bluezorua, DTraitor, LemonInTheDark
+        </p>
         <p>
           <b>Thanks to: </b>
-          Baystation 12, /vg/station, NTstation, CDK Station devs,
-          FacepunchStation, GoonStation devs, the original Space Station 13
+          Baystation 12, /vg/station, Goonstation, TGstation, NTstation,
+          CDK Station devs, FacepunchStation, the original Space Station 13
           developers, Invisty for the title image and the countless others who
-          have contributed to the game, issue tracker or wiki over the years.
+          have contributed to the game, over the years.
         </p>
         <p>
           {'Current project maintainers can be found '}
-          <a href="https://github.com/tgstation?tab=members">
+          <a href="https://github.com/orgs/DaedalusDock/people">
             here
           </a>
           {', recent GitHub contributors can be found '}
-          <a href="https://github.com/tgstation/tgstation/pulse/monthly">
+          <a href="https://github.com/daedalusDock/daedalusdock/pulse/monthly">
             here
           </a>.
         </p>
         <p>
           {'You can also join our discord '}
-          <a href="https://tgstation13.org/phpBB/viewforum.php?f=60">
+          <a href="https://discord.daedalus13.net/">
             here
           </a>.
         </p>
@@ -219,10 +224,10 @@ export class Changelog extends Component {
           I Said No
         </p>
         <p>
-          Traditional Games Space Station 13 is thankful to the
+          Daedalus Dock is thankful to the
           GoonStation 13 Development Team for its work on the game up to the
           {' r4407 release. The changelog for changes up to r4407 can be seen '}
-          <a href="https://wiki.ss13.co/Changelog#April_2010">
+          <a href="https://wiki.ss13.co/Pre-2016_Changelog#April_2010">
             here
           </a>
           .

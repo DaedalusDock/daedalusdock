@@ -31,7 +31,6 @@
 	bot_type = MULE_BOT
 	path_image_color = "#7F5200"
 
-	var/network_id = NETWORK_BOTS_CARGO
 	/// unique identifier in case there are multiple mulebots.
 	var/id
 
@@ -85,10 +84,6 @@
 	suffix = null
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/mulebot)
 	diag_hud_set_mulebotcell()
-
-	if(network_id)
-		AddComponent(/datum/component/ntnet_interface, network_id)
-
 
 /mob/living/simple_animal/bot/mulebot/handle_atom_del(atom/A)
 	if(A == load)
@@ -281,7 +276,7 @@
 			if(usr.has_unlimited_silicon_privilege)
 				bot_cover_flags ^= BOT_COVER_LOCKED
 				. = TRUE
-		if("power")
+		if("on")
 			if(bot_mode_flags & BOT_MODE_ON)
 				turn_off()
 			else if(bot_cover_flags & BOT_COVER_OPEN)
@@ -466,7 +461,7 @@
 	if(cell)
 		. += "Charge Left: [cell.charge]/[cell.maxcharge]"
 	else
-		. += text("No Cell Inserted!")
+		. += "No Cell Inserted!"
 	if(load)
 		. += "Current Load: [get_load_name()]"
 

@@ -19,7 +19,7 @@
 		vision_distance = 5
 	)
 
-	addtimer(CALLBACK(src, .proc/inflate, user), 2 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(inflate), user), 2 SECONDS)
 
 /obj/item/inflatable/proc/inflate(mob/user)
 	var/turf/T = get_turf(src)
@@ -369,7 +369,7 @@
 	user.forceMove(src)
 	update_icon()
 	user.visible_message(span_notice("[user] enters \the [src]."), span_notice("You enter \the [src]."))
-	RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/remove_vis)
+	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(remove_vis))
 
 /obj/structure/inflatable/shelter/proc/remove_vis(mob/user, force)
 	vis_contents.Remove(user)

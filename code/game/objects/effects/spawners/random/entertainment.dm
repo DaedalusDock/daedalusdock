@@ -57,7 +57,6 @@
 		/obj/item/coin/titanium = 3,
 		/obj/item/coin/diamond = 2,
 		/obj/item/coin/bananium = 2,
-		/obj/item/coin/adamantine = 2,
 		/obj/item/coin/mythril = 2,
 		/obj/item/coin/runite = 2,
 		/obj/item/coin/twoheaded = 1,
@@ -113,7 +112,6 @@
 		/obj/item/clothing/mask/cigarette/rollie/cannabis = 15,
 		/obj/item/reagent_containers/syringe = 15,
 		/obj/item/cigbutt/roach = 15,
-		/obj/item/clothing/mask/cigarette/rollie/mindbreaker = 5,
 	)
 
 /obj/effect/spawner/random/entertainment/dice
@@ -227,5 +225,4 @@
 
 /obj/effect/spawner/random/entertainment/toy/Initialize(mapload)
 	loot += GLOB.arcade_prize_pool
-	. = ..()
-	return INITIALIZE_HINT_QDEL
+	return ..()

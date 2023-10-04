@@ -98,7 +98,7 @@
 			return TRUE
 	return FALSE
 
-/obj/structure/grille/Bumped(atom/movable/AM)
+/obj/structure/grille/BumpedBy(atom/movable/AM)
 	if(!ismob(AM))
 		return
 	var/mob/M = AM

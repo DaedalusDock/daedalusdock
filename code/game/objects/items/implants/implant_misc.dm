@@ -34,6 +34,8 @@
 
 /obj/item/implant/radio
 	name = "internal radio implant"
+	implant_flags = IMPLANT_KNOWN
+
 	var/obj/item/radio/implanted/radio
 	var/radio_key
 	var/subspace_transmission = FALSE
@@ -69,20 +71,6 @@
 	desc = "Are you there God? It's me, Syndicate Comms Agent."
 	radio_key = /obj/item/encryptionkey/syndicate
 	subspace_transmission = TRUE
-
-/obj/item/implant/radio/slime
-	name = "slime radio"
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "adamantine_resonator"
-	radio_key = /obj/item/encryptionkey/headset_sci
-	subspace_transmission = TRUE
-
-/obj/item/implant/radio/get_data()
-	var/dat = {"<b>Implant Specifications:</b><BR>
-				<b>Name:</b> Internal Radio Implant<BR>
-				<b>Life:</b> 24 hours<BR>
-				<b>Implant Details:</b> Allows user to use an internal radio, useful if user expects equipment loss, or cannot equip conventional radios."}
-	return dat
 
 /obj/item/implanter/radio
 	name = "implanter (internal radio)"

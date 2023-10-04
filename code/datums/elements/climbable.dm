@@ -1,5 +1,5 @@
 /datum/element/climbable
-	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
+	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH // Detach for turfs
 	id_arg_index = 2
 	///Time it takes to climb onto the object
 	var/climb_time = (2 SECONDS)
@@ -106,11 +106,17 @@
 	. = step(user, dir_step)
 	climbed_thing.set_density(TRUE)
 
+	if(istype(climbed_thing, /obj/structure/table/optable)) //This is my joker arc
+		var/obj/structure/table/optable/table = climbed_thing
+		table.get_patient()
+
 ///Handles climbing onto the atom when you click-drag
 /datum/element/climbable/proc/mousedrop_receive(atom/climbed_thing, atom/movable/dropped_atom, mob/user, params)
 	SIGNAL_HANDLER
 	if(user == dropped_atom && isliving(dropped_atom))
 		var/mob/living/living_target = dropped_atom
+		if(living_target.combat_mode)
+			return
 		if(isanimal(living_target))
 			var/mob/living/simple_animal/animal = dropped_atom
 			if (!animal.dextrous)

@@ -45,8 +45,8 @@
 	//This could be a global count like sec and med record printouts. See GLOB.data_core.medicalPrintCount AKA datacore.dm
 	var/frNum = ++forensicPrintCount
 
-	P.name = text("FR-[] 'Forensic Record'", frNum)
-	P.info = text("<center><B>Forensic Record - (FR-[])</B></center><HR><BR>", frNum)
+	P.name = "FR-[frNum] 'Forensic Record'"
+	P.info = "<center><B>Forensic Record - (FR-[frNum])</B></center><HR><BR>"
 	P.info += jointext(log, "<BR>")
 	P.info += "<HR><B>Notes:</B><BR>"
 	P.update_appearance()
@@ -183,7 +183,7 @@
 
 /obj/item/detective_scanner/AltClick(mob/living/user)
 	// Best way for checking if a player can use while not incapacitated, etc
-	if(!user.canUseTopic(src, be_close=TRUE))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(!LAZYLEN(log))
 		to_chat(user, span_notice("Cannot clear logs, the scanner has no logs."))

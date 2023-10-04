@@ -171,9 +171,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 	"lizards" = typecacheof(list(
 		/obj/item/clothing/head/lizard,
 		/obj/item/clothing/shoes/cowboy/lizard,
-		/obj/item/food/kebab/tail,
 		/obj/item/organ/tail/lizard,
-		/obj/item/reagent_containers/food/drinks/bottle/lizardwine,
 		/obj/item/toy/plush/lizard_plushie,
 	)),
 
@@ -255,7 +253,6 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 		/obj/item/scalpel,
 		/obj/item/storage/medkit,
 		/obj/item/storage/pill_bottle,
-		/obj/item/surgical_drapes,
 		/obj/item/surgicaldrill,
 		/obj/machinery/atmospherics/components/unary/cryo_cell,
 		/obj/machinery/dna_scannernew,
@@ -501,7 +498,6 @@ GLOBAL_LIST_INIT(phobia_species, list(
 		/datum/species/plasmaman,
 		/datum/species/skeleton,
 	)),
-	"the supernatural" = typecacheof(list(/datum/species/golem/runic)),
 ))
 
 /// Creates a regular expression to match against the given phobia

@@ -128,6 +128,7 @@
 	/mob/living/simple_animal/slime = "gelatinous",
 	/mob/living/simple_animal/hostile/hivebot = "robotic",
 	/mob/living/simple_animal/hostile/bear = "ursine",
+	/mob/living/simple_animal/hostile/retaliate/hog = "greasy",
 	)
 
 /datum/round_event/animal_infestation/dangerous/announce(fake)

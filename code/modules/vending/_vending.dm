@@ -608,7 +608,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 							C.visible_message(span_danger("[O] explodes in a shower of gore beneath [src]!"), \
 								span_userdanger("Oh f-"))
 							O.dismember()
-							O.drop_organs()
+							O.drop_contents()
 							qdel(O)
 							new /obj/effect/gibspawner/human/bodypartless(get_turf(C))
 
@@ -1316,7 +1316,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 		to_chat(user, span_warning("You must be holding the price tagger to continue!"))
 		return
 	var/chosen_price = tgui_input_number(user, "Set price", "Price", price)
-	if(!chosen_price || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK) || loc != user)
+	if(!chosen_price || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK) || loc != user)
 		return
 	price = chosen_price
 	to_chat(user, span_notice(" The [src] will now give things a [price] cr tag."))

@@ -41,7 +41,7 @@
 	B.mimic_broken(src, target)
 
 	qdel(src)
-	target.Bumped(B)
+	target.BumpedBy(B)
 
 /obj/item/reagent_containers/food/drinks/bottle/attack_secondary(atom/target, mob/living/user, params)
 
@@ -131,7 +131,7 @@
 
 /obj/item/broken_bottle/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/caltrop, min_damage = force)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4)
 	AddComponent(/datum/component/butchering, 200, 55)
 
 /// Mimics the appearance and properties of the passed in bottle.
@@ -146,7 +146,7 @@
 	if(to_mimic.isGlass)
 		if(prob(33))
 			var/obj/item/shard/stab_with = new(to_mimic.drop_location())
-			target.Bumped(stab_with)
+			target.BumpedBy(stab_with)
 		playsound(src, SFX_SHATTER, 70, TRUE)
 	else
 		force = 0
@@ -265,10 +265,6 @@
 	list_reagents = list(/datum/reagent/water/holywater = 100)
 	foodtype = NONE
 
-/obj/item/reagent_containers/food/drinks/bottle/holywater/hell
-	desc = "A flask of holy water...it's been sitting in the Necropolis a while though."
-	list_reagents = list(/datum/reagent/hellwater = 100)
-
 /obj/item/reagent_containers/food/drinks/bottle/vermouth
 	name = "Goldeneye vermouth"
 	desc = "Sweet, sweet dryness~"
@@ -374,13 +370,6 @@
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe/premium/redact()
 	return
-
-/obj/item/reagent_containers/food/drinks/bottle/lizardwine
-	name = "bottle of unathi wine"
-	desc = "An alcoholic beverage from Space China, made by infusing unathi tails in ethanol. Inexplicably popular among command staff."
-	icon_state = "lizardwine"
-	list_reagents = list(/datum/reagent/consumable/ethanol/lizardwine = 100)
-	foodtype = FRUIT | ALCOHOL
 
 /obj/item/reagent_containers/food/drinks/bottle/hcider
 	name = "Jian Hard Cider"
@@ -638,7 +627,7 @@
 	icon_state = "vodkabottle"
 	list_reagents = list()
 	var/list/accelerants = list( /datum/reagent/consumable/ethanol, /datum/reagent/fuel, /datum/reagent/clf3, /datum/reagent/phlogiston,
-							/datum/reagent/napalm, /datum/reagent/hellwater, /datum/reagent/toxin/plasma, /datum/reagent/toxin/spore_burning)
+							/datum/reagent/napalm, /datum/reagent/toxin/plasma, /datum/reagent/toxin/spore_burning)
 	var/active = FALSE
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/CheckParts(list/parts_list)

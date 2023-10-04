@@ -183,7 +183,7 @@
 	var/static/list/random_reagents = list()
 	if(!random_reagents.len)
 		for(var/datum/reagent/random_candidate as anything in subtypesof(/datum/reagent))
-			if(!(initial(random_candidate.abstract_type) == random_candidate) && (initial(random_candidate.chemical_flags) & REAGENT_CAN_BE_SYNTHESIZED))
+			if(!(isabstract(random_candidate)) && !(initial(random_candidate.chemical_flags) & REAGENT_SPECIAL))
 				random_reagents += random_candidate
 	var/picked_reagent = pick(random_reagents)
 	return picked_reagent

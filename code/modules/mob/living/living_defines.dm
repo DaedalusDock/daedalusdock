@@ -21,11 +21,11 @@
 	var/datum/stamina_container/stamina
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
-	var/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
-	var/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
-	var/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
-	var/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
-	var/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
+	VAR_PROTECTED/bruteloss = 0 ///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
+	VAR_PROTECTED/oxyloss = 0 ///Oxygen depravation damage (no air in lungs)
+	VAR_PROTECTED/toxloss = 0 ///Toxic damage caused by being poisoned or radiated
+	VAR_PROTECTED/fireloss = 0 ///Burn damage caused by being way too hot, too cold or burnt.
+	VAR_PROTECTED/cloneloss = 0 ///Damage caused by being cloned or ejected from the cloner early. slimes also deal cloneloss damage to victims
 
 	var/crit_threshold = HEALTH_THRESHOLD_CRIT /// when the mob goes from "normal" to crit
 	///When the mob enters hard critical state and is fully incapacitated.
@@ -74,7 +74,9 @@
 
 	var/list/quirks = list()
 
-	var/list/surgeries = list() ///a list of surgery datums. generally empty, they're added when the player wants them.
+	/// A lazylist of active surgeries and their relevant data.
+	var/list/surgeries_in_progress
+
 	///Mob specific surgery speed modifier
 	var/mob_surgery_speed_mod = 1
 
@@ -195,3 +197,13 @@
 	var/obj/effect/abstract/aim_overlay/gunpoint
 	var/gunpoint_flags = TARGET_CAN_MOVE | TARGET_CAN_INTERACT | TARGET_CAN_RADIO
 	var/use_gunpoint = FALSE
+
+	/// How many ticks of Life() has this mob gone through
+	var/life_ticks = 0
+	/// Chemical effects. Built by the chemical processing stage of Life().
+	var/list/chem_effects = list()
+
+	/// For each life tick, how many do we skip?
+	var/stasis_level = 0
+	/// List of stasis sources to their given value
+	var/list/stasis_sources = list()

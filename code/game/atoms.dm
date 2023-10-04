@@ -241,11 +241,11 @@
 
 	initialized = TRUE
 
-	if(!isnull(greyscale_config) && !isnull(greyscale_colors))
+	if(greyscale_config && greyscale_colors)
 		update_greyscale()
 
 	//atom color stuff
-	if(!isnull(color))
+	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
 	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
@@ -306,8 +306,8 @@
 
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
-	LAZYCLEARLIST(overlays)
-	LAZYNULL(managed_overlays)
+	if(length(overlays))
+		overlays.Cut()
 
 	QDEL_NULL(light)
 	QDEL_NULL(ai_controller)
@@ -533,12 +533,16 @@
 /atom/proc/return_analyzable_air()
 	return null
 
+///Return air that a contained mob will be breathing.
+/atom/proc/return_breathable_air()
+	return return_air()
+
 ///Check if this atoms eye is still alive (probably)
 /atom/proc/check_eye(mob/user)
 	SIGNAL_HANDLER
 	return
 
-/atom/proc/Bumped(atom/movable/bumped_atom)
+/atom/proc/BumpedBy(atom/movable/bumped_atom)
 	set waitfor = FALSE
 	SEND_SIGNAL(src, COMSIG_ATOM_BUMPED, bumped_atom)
 
@@ -704,7 +708,7 @@
 						. += "[round(current_reagent.volume, 0.01)] units of [current_reagent.name]"
 					if(reagents.is_reacting)
 						. += span_warning("It is currently reacting!")
-					. += span_notice("The solution's pH is [round(reagents.ph, 0.01)] and has a temperature of [reagents.chem_temp]K.")
+					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
 				else //Otherwise, just show the total volume
 					var/total_volume = 0
 					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
@@ -1280,7 +1284,7 @@
 							break
 						if (!ispath(text2path(chosen_id)))
 							chosen_id = pick_closest_path(chosen_id, make_types_fancy(subtypesof(/datum/reagent)))
-							if (ispath(chosen_id) && initial(chosen_id.abstract_type) != chosen_id)
+							if (ispath(chosen_id) && !isabstract(chosen_id))
 								valid_id = TRUE
 						else
 							valid_id = TRUE

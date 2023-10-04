@@ -14,7 +14,7 @@
 		/obj/item/reagent_containers/glass/bottle/toxin = 1,
 		/obj/item/reagent_containers/glass/bottle/morphine = 2,
 		/obj/item/reagent_containers/glass/bottle/epinephrine= 3,
-		/obj/item/reagent_containers/glass/bottle/multiver = 3,
+		/obj/item/reagent_containers/glass/bottle/dylovene = 3,
 		/obj/item/storage/box/rxglasses = 1)
 	generate_items_inside(items_inside,src)
 
@@ -81,12 +81,10 @@
 	new /obj/item/radio/headset/heads/cmo(src)
 	new /obj/item/megaphone/command(src)
 	new /obj/item/defibrillator/compact/loaded(src)
-	new /obj/item/healthanalyzer/advanced(src)
 	new /obj/item/assembly/flash/handheld(src)
 	// new /obj/item/reagent_containers/hypospray/cmo(src) //ORIGINAL
 	new /obj/item/storage/hypospraykit/cmo(src) //PARIAH EDIT
 	new /obj/item/autosurgeon/organ/cmo(src)
-	new /obj/item/door_remote/chief_medical_officer(src)
 	new /obj/item/clothing/neck/petcollar(src)
 	new /obj/item/pet_carrier(src)
 	new /obj/item/wallframe/defib_mount(src)
@@ -95,7 +93,7 @@
 	new /obj/item/storage/lockbox/medal/med(src)
 	new /obj/item/gun/ballistic/rifle/tranqrifle(src)
 	new /obj/item/ammo_box/magazine/tranq_rifle(src)
-	new /obj/item/ammo_box/magazine/tranq_rifle/mutadone(src)
+	new /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn(src)
 
 
 /obj/structure/closet/secure_closet/animal
@@ -120,11 +118,7 @@
 	new /obj/item/storage/box/pillbottles(src)
 	new /obj/item/storage/box/medigels(src)
 	new /obj/item/storage/box/medigels(src)
-	new /obj/item/storage/box/hypospray(src) //PARIAH EDIT ADDITION
-	new /obj/item/storage/box/hypospray(src) //PARIAH EDIT ADDITION
-	new /obj/item/ph_booklet(src)
 	new /obj/item/reagent_containers/dropper(src)
-	new /obj/item/reagent_containers/glass/bottle/acidic_buffer(src) //hopefully they get the hint
 
 /obj/structure/closet/secure_closet/chemical/heisenberg //contains one of each beaker, syringe etc.
 	name = "advanced chemical closet"

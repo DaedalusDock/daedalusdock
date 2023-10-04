@@ -1,0 +1,1 @@
+/obj/item/book/manual/wiki/surgery : /obj/item/book/manual/codex/surgery

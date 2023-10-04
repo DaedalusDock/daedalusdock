@@ -75,16 +75,6 @@
 	var/datum/objective/assassinate/obsessed/kill = new
 	kill.owner = owner
 	kill.target = obsessionmind
-	var/obj/family_heirloom
-
-	for(var/datum/quirk/quirky in obsessionmind.current.quirks)
-		if(istype(quirky, /datum/quirk/item_quirk/family_heirloom))
-			var/datum/quirk/item_quirk/family_heirloom/heirloom_quirk = quirky
-			family_heirloom = heirloom_quirk.heirloom?.resolve()
-			break
-	if(family_heirloom)
-		objectives_left += "heirloom"
-
 	// If they have no coworkers, jealousy will pick someone else on the station. This will never be a free objective.
 	if(!is_captain_job(obsessionmind.assigned_role))
 		objectives_left += "jealous"
@@ -108,12 +98,6 @@
 				hug.owner = owner
 				hug.target = obsessionmind
 				objectives += hug
-			if("heirloom")
-				var/datum/objective/steal/heirloom_thief/heirloom_thief = new
-				heirloom_thief.owner = owner
-				heirloom_thief.target = obsessionmind//while you usually wouldn't need this for stealing, we need the name of the obsession
-				heirloom_thief.steal_target = family_heirloom
-				objectives += heirloom_thief
 			if("jealous")
 				var/datum/objective/assassinate/jealous/jealous = new
 				jealous.owner = owner

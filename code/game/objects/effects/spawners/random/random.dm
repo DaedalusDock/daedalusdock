@@ -32,14 +32,7 @@
 
 /obj/effect/spawner/random/Initialize(mapload)
 	. = ..()
-
-	if(should_spawn_on_init())
-		spawn_loot()
-		return INITIALIZE_HINT_QDEL
-
-/// Helper proc that returns TRUE if the spawner should spawn loot in Initialise() and FALSE otherwise. Override this to change spawning behaviour.
-/obj/effect/spawner/random/proc/should_spawn_on_init()
-	return spawn_on_init
+	spawn_loot()
 
 ///If the spawner has any loot defined, randomly picks some and spawns it. Does not cleanup the spawner.
 /obj/effect/spawner/random/proc/spawn_loot(lootcount_override)

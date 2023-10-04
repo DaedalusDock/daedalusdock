@@ -12,7 +12,7 @@
 	max_amount = 5
 	resistance_flags = FLAMMABLE
 	grind_results = list(/datum/reagent/cellulose = 5)
-	splint_factor = 0.65
+	splint_slowdown = 4
 	merge_type = /obj/item/stack/sticky_tape
 	usesound = 'sound/items/duct_tape_rip.ogg'
 	var/list/conferred_embed = EMBED_HARMLESS
@@ -141,7 +141,7 @@
 	icon_state = "tape_y"
 	prefix = "super sticky"
 	conferred_embed = EMBED_HARMLESS_SUPERIOR
-	splint_factor = 0.4
+	splint_slowdown = 6
 	merge_type = /obj/item/stack/sticky_tape/super
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/super
 
@@ -172,7 +172,7 @@
 	icon_state = "tape_w"
 	prefix = "surgical"
 	conferred_embed = list("embed_chance" = 30, "pain_mult" = 0, "jostle_pain_mult" = 0, "ignore_throwspeed_threshold" = TRUE)
-	splint_factor = 0.5
+	splint_slowdown = 3
 	custom_price = PAYCHECK_MEDIUM
 	merge_type = /obj/item/stack/sticky_tape/surgical
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical

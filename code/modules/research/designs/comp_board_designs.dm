@@ -59,12 +59,6 @@
 	id = "med_data"
 	build_path = /obj/item/circuitboard/computer/med_data
 
-/datum/design/board/operating
-	name = "Circuit Board (Operating Computer)"
-	desc = "Allows for the construction of circuit boards used to build an operating computer console."
-	id = "operating"
-	build_path = /obj/item/circuitboard/computer/operating
-
 /datum/design/board/pandemic
 	name = "Circuit Board (PanD.E.M.I.C. 2200)"
 	desc = "Allows for the construction of circuit boards used to build a PanD.E.M.I.C. 2200 console."
@@ -237,3 +231,17 @@
 	id = "account_console"
 	build_type = IMPRINTER
 	build_path = /obj/item/circuitboard/computer/accounting
+
+/datum/design/board/bodyscanner
+	name = "Circuit Board (Body Scanner)"
+	desc = "Allows for the construction of circuit boards used to assess the wealth of crewmates on station."
+	id = "bodyscanner"
+	build_type = IMPRINTER
+	build_path = /obj/item/circuitboard/machine/bodyscanner
+
+/datum/design/board/bodyscanner_console
+	name = "Circuit Board (Body Scanner)"
+	desc = "Allows for the construction of circuit boards used to assess the wealth of crewmates on station."
+	id = "bodyscanner_console"
+	build_type = IMPRINTER
+	build_path = /obj/item/circuitboard/machine/bodyscanner_console

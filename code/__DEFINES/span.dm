@@ -31,6 +31,7 @@
 #define span_colossus(str) ("<span class='colossus'>" + str + "</span>")
 #define span_command_headset(str) ("<span class='command_headset'>" + str + "</span>")
 #define span_comradio(str) ("<span class='comradio'>" + str + "</span>")
+#define span_computertext(str) ("<span class='computerText'>" + str + "</span>")
 #define span_cult(str) ("<span class='cult'>" + str + "</span>")
 #define span_cultbold(str) ("<span class='cultbold'>" + str + "</span>")
 #define span_cultboldtalic(str) ("<span class='cultboldtalic'>" + str + "</span>")
@@ -122,3 +123,12 @@
 // Spans that use embedded tgui components:
 // Sorted alphabetically
 #define span_tooltip(tip, main_text) ("<span data-component=\"Tooltip\" data-content=\"" + tip + "\" class=\"tooltip\">" + main_text + "</span>")
+
+// Generic color spans for good/bad etc
+#define span_bad(str) ("<span class='bad'>" + str + "</span>")
+#define span_mild(str) ("<span class='mild'>" + str + "</span>")
+#define span_average(str) ("<span class='average'>" + str + "</span>")
+#define span_good(str) ("<span class='good'>" + str + "</span>")
+
+// Codex
+#define CODEX_LINK(str, entrytext) ("<span codexlink='" + entrytext + "'>" + str + "</span>")

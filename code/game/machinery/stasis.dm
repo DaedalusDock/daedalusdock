@@ -39,7 +39,7 @@
 	. = ..()
 	if(!can_interact(user))
 		return
-	if(world.time >= stasis_can_toggle && user.canUseTopic(src, !issilicon(user)))
+	if(world.time >= stasis_can_toggle && user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		stasis_enabled = !stasis_enabled
 		stasis_can_toggle = world.time + STASIS_TOGGLE_COOLDOWN
 		playsound(src, 'sound/machines/click.ogg', 60, TRUE)
@@ -52,7 +52,7 @@
 /obj/machinery/stasis/Exited(atom/movable/gone, direction)
 	if(gone == occupant)
 		var/mob/living/L = gone
-		if(IS_IN_STASIS(L))
+		if(IS_IN_HARD_STASIS(L))
 			thaw_them(L)
 	return ..()
 
@@ -103,13 +103,13 @@
 		return
 	var/freq = rand(24750, 26550)
 	playsound(src, 'sound/effects/spray.ogg', 5, TRUE, 2, frequency = freq)
-	target.apply_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
+	target.apply_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_MACHINE_EFFECT)
 	ADD_TRAIT(target, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC)
 	target.extinguish_mob()
 	update_use_power(ACTIVE_POWER_USE)
 
 /obj/machinery/stasis/proc/thaw_them(mob/living/target)
-	target.remove_status_effect(/datum/status_effect/grouped/stasis, STASIS_MACHINE_EFFECT)
+	target.remove_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_MACHINE_EFFECT)
 	REMOVE_TRAIT(target, TRAIT_TUMOR_SUPPRESSED, TRAIT_GENERIC)
 	if(target == occupant)
 		update_use_power(IDLE_POWER_USE)
@@ -118,7 +118,7 @@
 	if(!can_be_occupant(L))
 		return
 	set_occupant(L)
-	if(stasis_running() && check_nap_violations())
+	if(stasis_running())
 		chill_out(L)
 	update_appearance()
 
@@ -129,14 +129,14 @@
 	update_appearance()
 
 /obj/machinery/stasis/process()
-	if(!(occupant && isliving(occupant) && check_nap_violations()))
+	if(!isliving(occupant))
 		update_use_power(IDLE_POWER_USE)
 		return
 	var/mob/living/L_occupant = occupant
 	if(stasis_running())
-		if(!IS_IN_STASIS(L_occupant))
+		if(!IS_IN_HARD_STASIS(L_occupant))
 			chill_out(L_occupant)
-	else if(IS_IN_STASIS(L_occupant))
+	else if(IS_IN_HARD_STASIS(L_occupant))
 		thaw_them(L_occupant)
 
 /obj/machinery/stasis/screwdriver_act(mob/living/user, obj/item/I)
@@ -147,8 +147,5 @@
 /obj/machinery/stasis/crowbar_act(mob/living/user, obj/item/I)
 	. = ..()
 	return default_deconstruction_crowbar(I) || .
-
-/obj/machinery/stasis/nap_violation(mob/violator)
-	unbuckle_mob(violator, TRUE)
 
 #undef STASIS_TOGGLE_COOLDOWN

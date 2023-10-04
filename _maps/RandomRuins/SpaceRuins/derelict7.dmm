@@ -251,7 +251,6 @@
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav)
 "Ca" = (
-/obj/machinery/medical_kiosk,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},

@@ -152,7 +152,7 @@ Stabilized extracts:
 	var/choice = tgui_input_list(user, "Which do you want to reset?", "Familiar Adjustment", sort_list(list("Familiar Location", "Familiar Species", "Familiar Sentience", "Familiar Name")))
 	if(isnull(choice))
 		return
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	if(isliving(user))
 		var/mob/living/L = user
@@ -187,10 +187,6 @@ Stabilized extracts:
 /obj/item/slimecross/stabilized/lightpink
 	colour = "light pink"
 	effect_desc = "The owner moves at high speeds while holding this extract, also stabilizes anyone in critical condition around you using Epinephrine."
-
-/obj/item/slimecross/stabilized/adamantine
-	colour = "adamantine"
-	effect_desc = "Owner gains a slight boost in damage resistance to all types."
 
 /obj/item/slimecross/stabilized/rainbow
 	colour = "rainbow"

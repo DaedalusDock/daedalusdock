@@ -6,7 +6,7 @@
 	density = FALSE
 	anchored = TRUE
 	var/obj/item/spear/spear
-	var/obj/item/spear/speartype
+	var/obj/item/spear/speartype = /obj/item/spear
 	var/obj/item/bodypart/head/victim
 
 /obj/structure/headpike/bone //for bone spears
@@ -63,11 +63,11 @@
 	return ..()
 
 /obj/structure/headpike/deconstruct(disassembled)
-	if(!disassembled)
-		return ..()
 	if(victim)
 		victim.forceMove(drop_location())
 		victim = null
+	if(!disassembled)
+		return ..()
 	if(spear)
 		spear.forceMove(drop_location())
 		spear = null

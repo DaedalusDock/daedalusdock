@@ -255,11 +255,8 @@
 	if(C.internal != null || C.has_smoke_protection())
 		return FALSE
 	var/fraction = 1/initial(lifetime)
-	reagents.copy_to(C, fraction*reagents.total_volume)
-	reagents.expose(M, INGEST, fraction)
+	reagents.expose(M, VAPOR, fraction*reagents.total_volume)
 	return TRUE
-
-
 
 /datum/effect_system/smoke_spread/chem
 	/// Evil evil hack so we have something to "hold" our reagents

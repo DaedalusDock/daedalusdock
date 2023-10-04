@@ -360,7 +360,7 @@
 	if (active)
 		return
 	var/newspread = tgui_input_number(user, "Please enter a new spread amount", "Grenade Spread", 5, 100, 5)
-	if(!newspread || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!newspread || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	unit_spread = newspread
 	to_chat(user, span_notice("You set the time release to [unit_spread] units per detonation."))
@@ -413,25 +413,6 @@
 
 	beakers += beaker_one
 	beakers += beaker_two
-
-
-/obj/item/grenade/chem_grenade/smart_metal_foam
-	name = "smart metal foam grenade"
-	desc = "Used for emergency sealing of hull breaches, while keeping areas accessible."
-	stage = GRENADE_READY
-
-/obj/item/grenade/chem_grenade/smart_metal_foam/Initialize(mapload)
-	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/large/beaker_one = new(src)
-	var/obj/item/reagent_containers/glass/beaker/beaker_two = new(src)
-
-	beaker_one.reagents.add_reagent(/datum/reagent/aluminium, 75)
-	beaker_two.reagents.add_reagent(/datum/reagent/smart_foaming_agent, 25)
-	beaker_two.reagents.add_reagent(/datum/reagent/toxin/acid/fluacid, 25)
-
-	beakers += beaker_one
-	beakers += beaker_two
-
 
 /obj/item/grenade/chem_grenade/incendiary
 	name = "incendiary grenade"

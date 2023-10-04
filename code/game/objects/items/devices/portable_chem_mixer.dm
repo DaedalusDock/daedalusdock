@@ -80,7 +80,7 @@
 /obj/item/storage/portable_chem_mixer/AltClick(mob/living/user)
 	if(!atom_storage.locked)
 		return ..()
-	if(!can_interact(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	replace_beaker(user)
 	update_appearance()
@@ -171,7 +171,6 @@
 			var/total_ph = 0
 			for (var/datum/reagents/rs in value["reagents"])
 				total_volume += rs.total_volume
-				total_ph = rs.ph
 			if(is_hallucinating && prob(5))
 				chemname = "[pick_list_replacements("hallucination.json", "chemicals")]"
 			chemicals.Add(list(list("title" = chemname, "id" = ckey(temp.name), "volume" = total_volume, "pH" = total_ph)))
@@ -179,8 +178,7 @@
 	var/beakerContents[0]
 	if(beaker)
 		for(var/datum/reagent/R in beaker.reagents.reagent_list)
-			beakerContents.Add(list(list("name" = R.name, "id" = ckey(R.name), "volume" = R.volume, "pH" = R.ph))) // list in a list because Byond merges the first list...
-		data["beakerCurrentpH"] = round(beaker.reagents.ph, 0.01)
+			beakerContents.Add(list(list("name" = R.name, "id" = ckey(R.name), "volume" = R.volume))) // list in a list because Byond merges the first list...
 	data["beakerContents"] = beakerContents
 
 	return data

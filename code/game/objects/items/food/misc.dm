@@ -301,7 +301,7 @@
 	desc = "Still gross, but at least it has a mountain of sugar on it."
 	icon_state = "spiderlollipop"
 	worn_icon_state = "lollipop_stick"
-	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/toxin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/omnizine = 2) //lollipop, but vitamins = toxins
+	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/toxin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/tricordrazine = 2) //lollipop, but vitamins = toxins
 	tastes = list("cobwebs" = 1, "sugar" = 2)
 	foodtypes = JUNKFOOD | SUGAR
 	food_flags = FOOD_FINGER_FOOD
@@ -425,7 +425,7 @@
 	icon = 'icons/obj/lollipop.dmi'
 	icon_state = "lollipop_stick"
 	inhand_icon_state = "lollipop_stick"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/omnizine = 2) //Honk
+	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/tricordrazine = 2) //Honk
 	tastes = list("candy" = 1)
 	foodtypes = JUNKFOOD | SUGAR
 	food_flags = FOOD_FINGER_FOOD
@@ -453,7 +453,7 @@
 	throwforce = 0
 
 /obj/item/food/lollipop/cyborg
-	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/psicodine = 2) //psicodine instead of omnizine, because the latter was making coders freak out
+	food_reagents = list(/datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/nutriment/vitamin = 1, /datum/reagent/iron = 10, /datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/tricordrazine = 2)
 
 /obj/item/food/bubblegum
 	name = "bubblegum"
@@ -484,13 +484,6 @@
 	food_reagents = list(/datum/reagent/drug/nicotine = 10, /datum/reagent/consumable/menthol = 5)
 	tastes = list("mint" = 1)
 	color = "#60A584"
-
-/obj/item/food/bubblegum/happiness
-	name = "HP+ gum"
-	desc = "A rubbery strip of gum. It smells funny."
-	food_reagents = list(/datum/reagent/drug/happiness = 15)
-	tastes = list("paint thinner" = 1)
-	color = "#EE35FF"
 
 /obj/item/food/bubblegum/bubblegum
 	name = "bubblegum gum"
@@ -545,7 +538,7 @@
 	icon = 'icons/obj/lollipop.dmi'
 	icon_state = "gumball"
 	worn_icon_state = "bubblegum"
-	food_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/sal_acid = 2, /datum/reagent/medicine/oxandrolone = 2) //Kek
+	food_reagents = list(/datum/reagent/consumable/sugar = 5, /datum/reagent/medicine/meralyne = 2, /datum/reagent/medicine/dermaline = 2) //Kek
 	tastes = list("candy")
 	foodtypes = JUNKFOOD
 	food_flags = FOOD_FINGER_FOOD
@@ -933,7 +926,7 @@
 	name = "warm Ready-Donk: Bachelor Chow"
 	desc = "A quick Donk-dinner, now with flavour! And it's even hot!"
 	icon_state = "ready_donk_warm"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/omnizine = 3)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/medicine/tricordrazine = 3)
 	microwaved_type = null
 	tastes = list("food?" = 2, "laziness" = 1)
 

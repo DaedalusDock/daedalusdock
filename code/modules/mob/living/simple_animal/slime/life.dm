@@ -31,7 +31,7 @@
 // Unlike most of the simple animals, slimes support UNCONSCIOUS. This is an ugly hack.
 /mob/living/simple_animal/slime/update_stat()
 	switch(stat)
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			if(health > 0)
 				return
 	return ..()
@@ -141,27 +141,7 @@
 				adjustBruteLoss(round(sqrt(bodytemperature)) * delta_time)
 	else
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
-	/*
-	if(stat != DEAD)
-		var/bz_percentage =0
-		if(environment.gases[/datum/gas/bz])
-			bz_percentage = environment.gases[/datum/gas/bz][MOLES] / environment.get_moles()
-		var/stasis = (bz_percentage >= 0.05 && bodytemperature < (T0C + 100)) || force_stasis
 
-		switch(stat)
-			if(CONSCIOUS)
-				if(stasis)
-					to_chat(src, span_danger("Nerve gas in the air has put you in stasis!"))
-					set_stat(UNCONSCIOUS)
-					powerlevel = 0
-					rabid = FALSE
-					regenerate_icons()
-			if(UNCONSCIOUS, HARD_CRIT)
-				if(!stasis)
-					to_chat(src, span_notice("You wake up from the stasis."))
-					set_stat(CONSCIOUS)
-					regenerate_icons()
-	*/
 	updatehealth()
 
 

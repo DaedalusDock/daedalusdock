@@ -32,7 +32,3 @@
 /datum/generecipe/tonguechem
 	required = "/datum/mutation/human/tongue_spike; /datum/mutation/human/stimmed"
 	result = /datum/mutation/human/tongue_spike/chem
-
-/datum/generecipe/martyrdom
-	required = "/datum/mutation/human/strong; /datum/mutation/human/stimmed"
-	result = /datum/mutation/human/martyrdom

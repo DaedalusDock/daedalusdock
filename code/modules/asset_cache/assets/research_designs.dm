@@ -25,9 +25,11 @@
 			icon_file = initial(item.icon)
 
 		icon_state = initial(item.icon_state)
+		#ifdef UNIT_TESTS
 		if(!icon_exists(icon_file, icon_state, FALSE))
 			warning("design [D] with icon '[icon_file]' missing state '[icon_state]'")
 			continue
+		#endif
 		I = icon(icon_file, icon_state, SOUTH)
 
 		Insert(initial(D.id), I)

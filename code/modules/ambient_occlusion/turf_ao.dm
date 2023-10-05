@@ -59,7 +59,7 @@
 #define PROCESS_AO(TARGET, AO_VAR, NEIGHBORS, ALPHA, SHADOWER) \
 	if (permit_ao && NEIGHBORS != AO_ALL_NEIGHBORS) { \
 		if (NEIGHBORS != AO_ALL_NEIGHBORS) { \
-			var/image/I = cache["ao-[NEIGHBORS]|[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]|[ALPHA]"]; \
+			var/image/I = cache["ao-[NEIGHBORS]|[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]|[ALPHA]|[SHADOWER]"]; \
 			if (!I) { \
 				/* This will also add the image to the cache. */ \
 				I = make_ao_image(NEIGHBORS, TARGET.pixel_x, TARGET.pixel_y, TARGET.pixel_z, TARGET.pixel_w, ALPHA, SHADOWER) \

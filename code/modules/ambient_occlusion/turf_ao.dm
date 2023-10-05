@@ -56,13 +56,13 @@
 		}                                            \
 	}
 
-#define PROCESS_AO(TARGET, AO_VAR, NEIGHBORS, ALPHA) \
+#define PROCESS_AO(TARGET, AO_VAR, NEIGHBORS, ALPHA, SHADOWER) \
 	if (permit_ao && NEIGHBORS != AO_ALL_NEIGHBORS) { \
 		if (NEIGHBORS != AO_ALL_NEIGHBORS) { \
 			var/image/I = cache["ao-[NEIGHBORS]|[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]|[ALPHA]"]; \
 			if (!I) { \
 				/* This will also add the image to the cache. */ \
-				I = make_ao_image(NEIGHBORS, TARGET.pixel_x, TARGET.pixel_y, TARGET.pixel_z, TARGET.pixel_w, ALPHA) \
+				I = make_ao_image(NEIGHBORS, TARGET.pixel_x, TARGET.pixel_y, TARGET.pixel_z, TARGET.pixel_w, ALPHA, SHADOWER) \
 			} \
 			AO_VAR = I; \
 		} \
@@ -74,13 +74,13 @@
 		TARGET.cut_overlay(AO_VAR, TRUE); \
 	}
 
-/proc/make_ao_image(corner, px = 0, py = 0, pz = 0, pw = 0, alpha)
+/proc/make_ao_image(corner, px = 0, py = 0, pz = 0, pw = 0, alpha, shadower)
 	var/list/cache = SSao.image_cache
 	var/cstr = "ao-[corner]"
 	// PROCESS_AO above also uses this cache, check it before changing this key.
-	var/key = "[cstr]|[px]/[py]/[pz]/[pw]|[alpha]"
+	var/key = "[cstr]|[px]/[py]/[pz]/[pw]|[alpha]|[shadower]"
 
-	var/image/I = image('icons/turf/shadows.dmi', cstr)
+	var/image/I = image(shadower ? 'icons/turf/uncut_shadows.dmi' : 'icons/turf/shadows.dmi', cstr)
 	I.alpha = alpha
 	I.blend_mode = BLEND_OVERLAY
 	I.appearance_flags = RESET_ALPHA | RESET_COLOR | TILE_BOUND
@@ -155,9 +155,9 @@
 	CUT_AO(shadower, ao_overlay_mimic)
 	CUT_AO(src, ao_overlay)
 	if (z_flags & Z_MIMIC_BELOW)
-		PROCESS_AO(shadower, ao_overlay_mimic, ao_junction_mimic, Z_AO_ALPHA)
+		PROCESS_AO(shadower, ao_overlay_mimic, ao_junction_mimic, Z_AO_ALPHA, TRUE)
 	if (AO_TURF_CHECK(src) && !(z_flags & Z_MIMIC_NO_AO))
-		PROCESS_AO(src, ao_overlay, ao_junction, WALL_AO_ALPHA)
+		PROCESS_AO(src, ao_overlay, ao_junction, WALL_AO_ALPHA, FALSE)
 
 /turf/update_overlays()
 	. = ..()

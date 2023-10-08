@@ -667,9 +667,9 @@
  * Return PROJECTILE_DELETE_WITHOUT_HITTING to delete projectile without hitting at all!
  */
 /obj/projectile/proc/prehit_pierce(atom/A)
-	if((projectile_phasing & A.pass_flags_self) && (phasing_ignore_direct_target || original != A))
+	if((projectile_phasing & (A.pass_flags_self & ~LETPASSCLICKS)) && (phasing_ignore_direct_target || original != A))
 		return PROJECTILE_PIERCE_PHASE
-	if(projectile_piercing & A.pass_flags_self)
+	if(projectile_piercing & (A.pass_flags_self & ~LETPASSCLICKS))
 		return PROJECTILE_PIERCE_HIT
 	if(ismovable(A))
 		var/atom/movable/AM = A

@@ -14,6 +14,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	slot = ORGAN_SLOT_POSIBRAIN
 	organ_flags = ORGAN_SYNTHETIC
 
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
+
 	maxHealth = 90
 	low_threshold = 0.33
 	high_threshold = 0.66

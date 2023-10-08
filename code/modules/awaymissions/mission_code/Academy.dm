@@ -250,7 +250,7 @@
 			//Destroy Equipment
 			T.visible_message(span_userdanger("Everything [user] is holding and wearing disappears!"))
 			for(var/obj/item/I in user)
-				if(istype(I, /obj/item/implant))
+				if(istype(I, /obj/item/implant) || (I.item_flags & ABSTRACT))
 					continue
 				qdel(I)
 		if(5)

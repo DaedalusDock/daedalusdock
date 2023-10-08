@@ -94,13 +94,13 @@
 	RegisterSignal(assailant, COMSIG_MOB_SELECTED_ZONE_SET, PROC_REF(on_target_change))
 
 /obj/item/hand_item/grab/Destroy()
-	if(assailant)
-		assailant.after_grab_release(affecting)
 	if(affecting)
 		LAZYREMOVE(affecting.grabbed_by, src)
 		affecting.update_offsets()
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
+	if(assailant)
+		assailant.after_grab_release(affecting)
 	affecting = null
 	assailant = null
 	return ..()

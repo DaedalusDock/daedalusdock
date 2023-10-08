@@ -1,0 +1,5 @@
+author: Zandario
+delete-after: true
+changes:
+  - refactor: Ambient Occlusion looks better and is faster.
+  - bugfix: Reduced roundstart lag

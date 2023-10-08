@@ -18,7 +18,7 @@
 /obj/projectile/bullet/c46x30mm
 	name = "4.6x30mm bullet"
 	damage = 20
-	embed_falloff_tile = -4
+	embed_adjustment_tile = 2
 
 /obj/projectile/bullet/c46x30mm/ap
 	name = "4.6x30mm armor-piercing bullet"

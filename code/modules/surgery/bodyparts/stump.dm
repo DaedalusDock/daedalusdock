@@ -32,7 +32,6 @@
 	stump.body_zone = body_zone
 	stump.bodytype = bodytype
 	stump.body_part = body_part
-	stump.dismemberable = FALSE
 	stump.amputation_point = amputation_point
 
 

@@ -5,7 +5,7 @@
 
 ///Remove target limb from it's owner, with side effects.
 /obj/item/bodypart/proc/dismember(dismember_type = DROPLIMB_EDGE, silent=FALSE, clean = FALSE)
-	if(!owner || !dismemberable)
+	if(!owner || !dismemberable || (is_stump && !clean))
 		return FALSE
 
 	var/mob/living/carbon/limb_owner = owner
@@ -15,9 +15,6 @@
 	if(HAS_TRAIT(limb_owner, TRAIT_NODISMEMBER))
 		return FALSE
 
-	var/obj/item/bodypart/affecting = limb_owner.get_bodypart(BODY_ZONE_CHEST)
-
-	affecting.receive_damage(clamp(brute_dam/2, 15, 50), clamp(burn_dam/2, 0, 50)) //Damage the chest based on limb's existing damage
 	if(!silent)
 		var/list/messages = violent_dismember_messages(dismember_type, clean)
 		if(length(messages))
@@ -27,16 +24,19 @@
 				span_hear("[messages[3]]")
 			)
 
+	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
+	var/obj/item/bodypart/stump
+
 	if(!clean)
 		playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
 		limb_owner.shock_stage += minimum_break_damage
 		if(bodypart_flags & BP_HAS_BLOOD)
 			limb_owner.bleed(rand(20, 40))
+		stump = create_stump()
 
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
 
-	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
-	var/obj/item/bodypart/stump = create_stump()
+	// At this point the limb has been removed from it's parent mob.
 	drop_limb()
 	adjustPain(60)
 
@@ -46,14 +46,20 @@
 		limb_owner.add_splatter_floor(owner_location)
 
 	// * Stumpty Dumpty *//
-	var/obj/item/bodypart/chest/parent_chest = limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	if(!QDELETED(parent_chest) && !QDELETED(limb_owner))
-		var/datum/wound/lost_limb/W = new(stump, dismember_type, clean)
-		LAZYADD(stump.wounds, W)
-		stump.attach_limb(limb_owner)
-		stump.adjustPain(max_damage)
-		if(!clean && dismember_type != BURN)
-			stump.set_sever_artery(TRUE)
+	var/obj/item/bodypart/parent_bodypart = limb_owner.get_bodypart(BODY_ZONE_CHEST)
+	var/obj/item/bodypart/damaged_bodypart = stump || parent_bodypart
+	if(!QDELETED(parent_bodypart) && !QDELETED(limb_owner))
+		var/datum/wound/lost_limb/W = new(src, dismember_type, clean)
+		if(stump)
+			damaged_bodypart = stump
+			stump.attach_limb(limb_owner)
+			stump.adjustPain(max_damage)
+			if(dismember_type != DROPLIMB_BURN)
+				stump.set_sever_artery(TRUE)
+
+		LAZYADD(damaged_bodypart.wounds, W)
+		W.parent = damaged_bodypart
+		damaged_bodypart.update_damage()
 
 	if(QDELETED(src)) //Could have dropped into lava/explosion/chasm/whatever
 		return TRUE
@@ -160,10 +166,6 @@
 
 	if(!phantom_owner.has_embedded_objects())
 		phantom_owner.clear_alert(ALERT_EMBEDDED_OBJECT)
-
-	// * Unregister wounds from parent * //
-	for(var/datum/wound/W as anything in wounds)
-		W.unregister_from_mob(phantom_owner)
 
 	bodypart_flags |= BP_CUT_AWAY
 
@@ -362,6 +364,12 @@
 
 	SEND_SIGNAL(src, COMSIG_LIMB_ATTACH, new_limb_owner, special)
 
+	if((!existing || existing.is_stump) && mob_chest)
+		var/datum/wound/lost_limb/W = locate() in mob_chest.wounds
+		if(W)
+			qdel(W)
+			mob_chest.update_damage()
+
 	if(existing?.is_stump)
 		qdel(existing)
 
@@ -385,9 +393,6 @@
 
 	for(var/obj/item/organ/limb_organ as anything in contained_organs)
 		limb_organ.Insert(new_limb_owner, special)
-
-	for(var/datum/wound/W as anything in wounds)
-		W.register_to_mob(new_limb_owner)
 
 	if(check_bones() & CHECKBONES_BROKEN)
 		apply_bone_break(new_limb_owner)

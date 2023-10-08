@@ -14,9 +14,7 @@
 	abstract_type = /datum/surgery_step/limb
 
 /datum/surgery_step/limb/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)
-	if(affected)
-		return affected
+	return TRUE
 
 //////////////////////////////////////////////////////////////////
 //	 limb attachment surgery step
@@ -52,7 +50,7 @@
 	if(!user.temporarilyRemoveItemFromInventory(tool))
 		return
 	var/obj/item/bodypart/BP = tool
-	user.visible_message(span_notice("[user] has attached the [BP.plaintext_zone]  to [target]'s [BP.amputation_point]."))
+	user.visible_message(span_notice("[user] has attached the [BP.plaintext_zone] to [target]'s [BP.amputation_point]."))
 	BP.attach_limb(target)
 	..()
 

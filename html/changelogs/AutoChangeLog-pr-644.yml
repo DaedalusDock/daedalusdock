@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: the die of fate no longer has a 5% chance to break the game
+  - bugfix: IPCs can Read.

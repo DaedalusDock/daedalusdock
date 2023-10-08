@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: Adjusted the time it takes for blood to try.
+  - bugfix: Vox now die when debrained.

@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - balance: Ballistics now have recoil by default
-  - balance: Bullet embedding logic has been changed

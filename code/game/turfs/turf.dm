@@ -201,11 +201,22 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/clear_signal_refs()
 	return
 
-/turf/attack_hand(mob/user, list/modifiers)
+/turf/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	if(!isliving(user))
+		return
+	user.move_grabbed_atoms_towards(src)
+
+/turf/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(.)
+		return
+	if(!isliving(user))
+		return
+	user.move_grabbed_atoms_towards(src)
+
 
 /**
  * Check whether the specified turf is blocked by something dense inside it with respect to a specific atom.
@@ -260,7 +271,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
 				return FALSE
 
-		return direction == UP //can't go below
+		return direction & UP //can't go below
 	else
 		if(density) //No fuck off
 			return FALSE
@@ -276,8 +287,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 ///Called each time the target falls down a z level possibly making their trajectory come to a halt. see __DEFINES/movement.dm.
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf)
-	var/flags = NONE
-	var/list/falling_movables = falling.get_z_move_affected()
+	var/flags = FALL_RETAIN_PULL
+	var/list/falling_movables = falling.get_move_group()
 	var/list/falling_mob_names
 
 	for(var/atom/movable/falling_mob as anything in falling_movables)
@@ -303,20 +314,26 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!(flags & FALL_INTERCEPTED) && falling.zFall(levels + 1))
 		return FALSE
 
-	for(var/atom/movable/falling_mob as anything in falling_movables)
+	for(var/atom/movable/falling_movable as anything in falling_movables)
+		var/mob/living/L = falling_movable
+		if(!isliving(L))
+			L = null
 		if(!(flags & FALL_RETAIN_PULL))
-			falling_mob.stop_pulling()
+			L?.release_all_grabs()
 
 		if(!(flags & FALL_INTERCEPTED))
-			falling_mob.onZImpact(src, levels)
+			falling_movable.onZImpact(src, levels)
 
 			#ifndef ZMIMIC_MULTIZ_SPEECH //Multiz speech handles this otherwise
 			if(!(flags & FALL_NO_MESSAGE))
 				prev_turf.audible_message(span_hear("You hear something slam into the deck below."))
 			#endif
 
-		if(falling_mob.pulledby && (falling_mob.z != falling_mob.pulledby.z || get_dist(falling_mob, falling_mob.pulledby) > 1))
-			falling_mob.pulledby.stop_pulling()
+		if(L)
+			if(LAZYLEN(L.grabbed_by))
+				for(var/obj/item/hand_item/grab/G in L.grabbed_by)
+					if(L.z != G.assailant.z || get_dist(L, G.assailant) > 1)
+						qdel(G)
 	return TRUE
 
 /turf/proc/handleRCL(obj/item/rcl/C, mob/user)
@@ -375,7 +392,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 						return FALSE
 					continue
 				else
-					if(!firstbump || ((thing.layer > firstbump.layer || (thing.flags_1 & ON_BORDER_1|BUMP_PRIORITY_1)) && !(firstbump.flags_1 & ON_BORDER_1)))
+					if(!firstbump || ((thing.layer < firstbump.layer || (thing.flags_1 & ON_BORDER_1|BUMP_PRIORITY_1)) && !(firstbump.flags_1 & ON_BORDER_1)))
 						firstbump = thing
 
 	if(QDELETED(mover)) //Mover deleted from Cross/CanPass/Bump, do not proceed.

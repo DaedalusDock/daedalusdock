@@ -83,7 +83,7 @@
 	blacklisted_movetypes = (FLYING|FLOATING)
 	variable = TRUE
 
-/datum/movespeed_modifier/bulky_drag
+/datum/movespeed_modifier/grabbing
 	variable = TRUE
 
 /datum/movespeed_modifier/cold

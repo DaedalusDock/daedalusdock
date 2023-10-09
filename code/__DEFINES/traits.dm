@@ -408,8 +408,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_SPRAY_PAINTABLE "spray_paintable"
 /// This person is blushing
 #define TRAIT_BLUSHING "blushing"
-
-#define TRAIT_NOBLEED "nobleed" //This carbon doesn't bleed
+/// This bodypart is being held in a grab, and reduces bleeding
+#define TRAIT_BODYPART_GRABBED "bodypart_grabbed"
+/// This carbon doesn't bleed
+#define TRAIT_NOBLEED "nobleed"
 /// This atom can ignore the "is on a turf" check for simple AI datum attacks, allowing them to attack from bags or lockers as long as any other conditions are met
 #define TRAIT_AI_BAGATTACK "bagattack"
 /// This mobs bodyparts are invisible but still clickable.
@@ -887,7 +889,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define STATION_TRAIT_UNIQUE_AI "station_trait_unique_ai"
 #define STATION_TRAIT_CARP_INFESTATION "station_trait_carp_infestation"
 #define STATION_TRAIT_PREMIUM_INTERNALS "station_trait_premium_internals"
-#define STATION_TRAIT_RANDOM_ARRIVALS "station_trait_random_arrivals"
 #define STATION_TRAIT_HANGOVER "station_trait_hangover"
 #define STATION_TRAIT_FILLED_MAINT "station_trait_filled_maint"
 #define STATION_TRAIT_EMPTY_MAINT "station_trait_empty_maint"

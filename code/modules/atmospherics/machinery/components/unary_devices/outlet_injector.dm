@@ -20,7 +20,7 @@
 	///Rate of operation of the device
 	var/volume_rate = 50
 
-/obj/machinery/atmospherics/components/unary/outlet_injector/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/unary/outlet_injector/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)

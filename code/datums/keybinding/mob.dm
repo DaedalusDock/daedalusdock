@@ -12,11 +12,13 @@
 	. = ..()
 	if(.)
 		return
-	var/mob/M = user.mob
-	if(!M.pulling)
-		to_chat(user, span_notice("You are not pulling anything."))
+	var/mob/living/M = user.mob
+	if(!istype(M))
+		return
+	if(!LAZYLEN(M.get_active_grabs()))
+		to_chat(user, span_notice("You are not grabbing anything."))
 	else
-		M.stop_pulling()
+		M.release_all_grabs()
 	return TRUE
 
 /datum/keybinding/mob/swap_hands

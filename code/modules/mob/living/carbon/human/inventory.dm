@@ -184,7 +184,7 @@
 				update_worn_undersuit()
 			if(wear_suit.breakouttime) //when equipping a straightjacket
 				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
-				stop_pulling() //can't pull if restrained
+				release_all_grabs() //can't pull if restrained
 				update_mob_action_buttons() //certain action buttons will no longer be usable.
 			update_worn_oversuit()
 		if(ITEM_SLOT_ICLOTHING)

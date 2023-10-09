@@ -224,6 +224,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isfalsewall(A) (istype(A, /obj/structure/falsewall))
 
+#define isgrab(A) (istype(A, /obj/item/hand_item/grab))
+
 //Assemblies
 #define isassembly(O) (istype(O, /obj/item/assembly))
 
@@ -271,3 +273,4 @@ GLOBAL_LIST_INIT(book_types, typecacheof(list(
 #define is_security_officer_job(job_type) (istype(job_type, /datum/job/security_officer))
 #define is_research_director_job(job_type) (istype(job_type, /datum/job/research_director))
 #define is_unassigned_job(job_type) (istype(job_type, /datum/job/unassigned))
+

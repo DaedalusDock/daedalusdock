@@ -259,9 +259,15 @@
 
 	controller.current_movement_target = target
 
-	if(target.pulledby != living_pawn && !HAS_AI_CONTROLLER_TYPE(target.pulledby, /datum/ai_controller/monkey)) //Dont steal from my fellow monkeys.
+	var/monkey_is_grabbing_target = FALSE
+	for(var/obj/item/hand_item/grab/G as anything in target.grabbed_by)
+		if(!HAS_AI_CONTROLLER_TYPE(G.assailant, /datum/ai_controller/monkey))
+			monkey_is_grabbing_target = TRUE
+			break
+
+	if(!living_pawn.is_grabbing(target) && !monkey_is_grabbing_target) //Dont steal from my fellow monkeys.
 		if(living_pawn.Adjacent(target) && isturf(target.loc))
-			target.grabbedby(living_pawn)
+			living_pawn.try_make_grab(target)
 		return //Do the rest next turn
 
 	var/datum/weakref/disposal_ref = controller.blackboard[disposal_target_key]

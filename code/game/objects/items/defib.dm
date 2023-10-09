@@ -514,8 +514,7 @@
 	update_appearance()
 
 /obj/item/shockpaddles/proc/shock_pulling(dmg, mob/H)
-	if(isliving(H.pulledby)) //CLEAR!
-		var/mob/living/M = H.pulledby
+	for(var/mob/living/M in H.recursively_get_all_grabbers())
 		if(M.electrocute_act(dmg, H))
 			M.visible_message(span_danger("[M] is electrocuted by [M.p_their()] contact with [H]!"))
 			M.emote("scream")

@@ -763,7 +763,9 @@
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		BP.set_sever_artery(FALSE)
 		BP.set_sever_tendon(FALSE)
+		BP.set_dislocated(FALSE)
 		BP.heal_bones()
+		BP.adjustPain(-INFINITY)
 
 	remove_all_embedded_objects()
 	set_heartattack(FALSE)
@@ -852,7 +854,8 @@
 			set_species(newtype)
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
-	if(pulling != M || grab_state != GRAB_AGGRESSIVE || stat != CONSCIOUS)
+	var/obj/item/hand_item/grab/G = is_grabbing(M)
+	if(!G || G.current_grab.damage_stage != GRAB_AGGRESSIVE || stat != CONSCIOUS)
 		return FALSE
 
 	//If they dragged themselves to you and you're currently aggressively grabbing them try to piggyback
@@ -1131,3 +1134,29 @@
 				return FALSE
 
 	return dna.species.organs[slot]
+
+//Used by various things that knock people out by applying blunt trauma to the head.
+//Checks that the species has a "head" (brain containing organ) and that hit_zone refers to it.
+/mob/living/carbon/human/proc/can_head_trauma_ko()
+	var/obj/item/organ/brain = getorganslot(ORGAN_SLOT_BRAIN)
+	if(!brain || !needs_organ(ORGAN_SLOT_BRAIN))
+		return FALSE
+
+	//if the parent organ is significantly larger than the brain organ, then hitting it is not guaranteed
+	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+	if(!head)
+		return FALSE
+	if(head.w_class > brain.w_class + 1)
+		return prob(100 / 2**(head.w_class - brain.w_class - 1))
+	return TRUE
+
+/mob/living/carbon/human/up()
+	. = ..()
+	if(.)
+		return
+	var/obj/climbable = check_zclimb()
+	if(!climbable)
+		can_z_move(UP, get_turf(src), ZMOVE_FEEDBACK|ZMOVE_FLIGHT_FLAGS)
+		return FALSE
+
+	return ClimbUp(climbable)

@@ -26,7 +26,7 @@ Passive gate is similar to the regular pump except:
 	///Stores the radio connection
 	var/datum/radio_frequency/radio_connection
 
-/obj/machinery/atmospherics/components/binary/passive_gate/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/passive_gate/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)

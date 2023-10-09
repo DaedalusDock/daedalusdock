@@ -318,7 +318,7 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 		if(SSticker.current_state == GAME_STATE_PLAYING)
 			investigate_log("was brought online and is now producing gravity for this level.", INVESTIGATE_GRAVITY)
 			message_admins("The gravity generator was brought online [ADMIN_VERBOSEJMP(src)]")
-			shake_everyone()
+		shake_everyone()
 
 
 /obj/machinery/gravity_generator/main/proc/disable()

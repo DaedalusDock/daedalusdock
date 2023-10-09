@@ -144,6 +144,9 @@
 			if(G.current_grab.downgrade_on_move)
 				G.downgrade()
 
+			if(moving_diagonally != FIRST_DIAG_STEP)
+				pulling.update_offsets()
+
 	var/list/my_grabs = get_active_grabs()
 	for(var/obj/item/hand_item/grab/G in my_grabs)
 		if(G.current_grab.reverse_facing || HAS_TRAIT(G.affecting, TRAIT_KEEP_DIRECTION_WHILE_PULLING))

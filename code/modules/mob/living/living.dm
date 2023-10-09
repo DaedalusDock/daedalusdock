@@ -771,9 +771,6 @@
 
 	. = ..()
 
-	if(moving_diagonally != FIRST_DIAG_STEP)
-		update_offsets()
-
 	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
 		active_storage.hide_contents(src)
 

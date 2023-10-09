@@ -30,6 +30,17 @@
 	if(_butcher_callback)
 		butcher_callback = _butcher_callback
 
+	if(isitem(parent))
+		RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(onItemAttack))
+
+/datum/component/butchering/proc/onItemAttack(obj/item/source, mob/living/M, mob/living/user)
+	SIGNAL_HANDLER
+
+	if(M.stat == DEAD && (M.butcher_results || M.guaranteed_butcher_results)) //can we butcher it?
+		if(butchering_enabled && (can_be_blunt || (source.sharpness & SHARP_EDGED)))
+			INVOKE_ASYNC(src, PROC_REF(startButcher), source, M, user)
+			return COMPONENT_CANCEL_ATTACK_CHAIN
+
 /datum/component/butchering/proc/startButcher(obj/item/source, mob/living/M, mob/living/user)
 	to_chat(user, span_notice("You begin to butcher [M]..."))
 	playsound(M.loc, butcher_sound, 50, TRUE, -1)

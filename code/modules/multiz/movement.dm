@@ -88,7 +88,7 @@
 	return destination //used by some child types checks and zMove()
 
 /// Precipitates a movable (plus whatever buckled to it) to lower z levels if possible and then calls zImpact()
-/atom/movable/proc/zFall(force = FALSE)
+/atom/movable/proc/zFall(levels = 1, force = FALSE)
 	if(QDELETED(src))
 		return FALSE
 
@@ -108,7 +108,7 @@
 		var/mob/living/falling_living = src
 		//relay this mess to whatever the mob is buckled to.
 		if(falling_living.buckled)
-			return falling_living.buckled.zFall(force)
+			return falling_living.buckled.zFall(levels, force)
 
 	if(!force && !can_z_move(direction, get_turf(src), direction == DOWN ? ZMOVE_SKIP_CANMOVEONTO|ZMOVE_FALL_FLAGS : ZMOVE_FALL_FLAGS))
 		return FALSE
@@ -116,11 +116,12 @@
 	if(!CanZFall(get_turf(src), direction))
 		return FALSE
 
-	spawn(0)
-		_doZFall(target, get_turf(src))
-	return TRUE
+	. = TRUE
 
-/atom/movable/proc/_doZFall(turf/destination, turf/prev_turf)
+	spawn(0)
+		_doZFall(target, get_turf(src), levels)
+
+/atom/movable/proc/_doZFall(turf/destination, turf/prev_turf, levels)
 	PRIVATE_PROC(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
@@ -128,7 +129,7 @@
 		return
 
 	forceMoveWithGroup(destination, z_movement = ZMOVING_VERTICAL)
-	destination.zImpact(src, 1, prev_turf)
+	destination.zImpact(src, levels, prev_turf)
 
 /atom/movable/proc/CanZFall(turf/from, direction, anchor_bypass)
 	if(anchored && !anchor_bypass)

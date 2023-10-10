@@ -607,7 +607,7 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/security/glass{
 	name = "Security E.V.A. Storage";
-	req_access_txt = "3"
+	req_one_access_txt = "1;4"
 	},
 /obj/structure/cable,
 /turf/open/floor/iron,

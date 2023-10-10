@@ -478,7 +478,7 @@
 	name = "cortical stack"
 	desc = "A peculiarly advanced bio-electronic device that seems to hold the memories and identity of a Vox."
 	icon_state = "cortical-stack"
-	organ_flags = ORGAN_SYNTHETIC
+	organ_flags = ORGAN_SYNTHETIC|ORGAN_VITAL
 
 /obj/item/organ/brain/vox/emp_act(severity)
 	. = ..()

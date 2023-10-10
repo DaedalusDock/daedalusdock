@@ -101,11 +101,6 @@
 		if(ai.master_multicam)
 			ai.master_multicam.refresh_view()
 
-/mob/camera/ai_eye/zMove(dir, turf/target, z_move_flags = NONE, recursions_left = 1, list/falling_movs)
-	. = ..()
-	if(.)
-		setLoc(loc, force_update = TRUE)
-
 /mob/camera/ai_eye/Move()
 	return
 

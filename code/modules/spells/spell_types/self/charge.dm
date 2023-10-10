@@ -21,8 +21,8 @@
 	. = ..()
 
 	// Charge people we're pulling first and foremost
-	if(isliving(cast_on.pulling))
-		var/mob/living/pulled_living = cast_on.pulling
+	if(isliving(cast_on.get_active_grab()?.affecting))
+		var/mob/living/pulled_living = cast_on.get_active_grab()?.affecting
 		var/pulled_has_spells = FALSE
 
 		for(var/datum/action/cooldown/spell/spell in pulled_living.actions)

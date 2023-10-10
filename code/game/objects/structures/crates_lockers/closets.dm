@@ -212,7 +212,8 @@
 	if(welded || locked)
 		return FALSE
 	if(strong_grab)
-		to_chat(user, span_danger("[pulledby] has an incredibly strong grip on [src], preventing it from opening."))
+		var/obj/item/hand_item/grab/G = grabbed_by[1]
+		to_chat(user, span_danger("[G.assailant] has an incredibly strong grip on [src], preventing it from opening."))
 		return FALSE
 	var/turf/T = get_turf(src)
 	for(var/mob/living/L in T)
@@ -309,7 +310,7 @@
 			for(var/mob/living/M in contents)
 				if(++mobs_stored >= mob_storage_capacity)
 					return FALSE
-		L.stop_pulling()
+		L.release_all_grabs()
 
 	else if(istype(AM, /obj/structure/closet))
 		return FALSE

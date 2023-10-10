@@ -422,13 +422,14 @@
 /mob/living/simple_animal/hostile/construct/harvester/Bump(atom/AM)
 	. = ..()
 	if(istype(AM, /turf/closed/wall/mineral/cult) && AM != loc) //we can go through cult walls
-		var/atom/movable/stored_pulling = pulling
+		var/atom/movable/stored_pulling = get_active_grab()?.affecting
+		var/datum/grab/stored_tier = get_active_grab()?.current_grab.type
 		if(stored_pulling)
 			stored_pulling.setDir(get_dir(stored_pulling.loc, loc))
 			stored_pulling.forceMove(loc)
 		forceMove(AM)
 		if(stored_pulling)
-			start_pulling(stored_pulling, supress_message = TRUE) //drag anything we're pulling through the wall with us by magic
+			try_make_grab(stored_pulling, stored_tier)
 
 /mob/living/simple_animal/hostile/construct/harvester/AttackingTarget()
 	if(iscarbon(target))

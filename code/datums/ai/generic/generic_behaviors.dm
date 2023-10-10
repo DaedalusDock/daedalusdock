@@ -43,7 +43,7 @@
 	if(get_dist(batman, big_guy) >= give_up_distance)
 		finish_action(controller, FALSE, target_key)
 
-	big_guy.start_pulling(batman)
+	big_guy.try_make_grab(batman)
 	big_guy.setDir(get_dir(big_guy, batman))
 
 	batman.visible_message(span_warning("[batman] gets a slightly too tight hug from [big_guy]!"), span_userdanger("You feel your body break as [big_guy] embraces you!"))

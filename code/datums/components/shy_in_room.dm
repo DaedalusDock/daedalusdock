@@ -16,7 +16,7 @@
 
 /datum/component/shy_in_room/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_MOB_CLICKON, PROC_REF(on_clickon))
-	RegisterSignal(parent, COMSIG_LIVING_TRY_PULL, PROC_REF(on_try_pull))
+	RegisterSignal(parent, COMSIG_LIVING_TRY_GRAB, PROC_REF(on_try_pull))
 	RegisterSignal(parent, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HUMAN_EARLY_UNARMED_ATTACK), PROC_REF(on_unarmed_attack))
 	RegisterSignal(parent, COMSIG_TRY_STRIP, PROC_REF(on_try_strip))
 	RegisterSignal(parent, COMSIG_TRY_ALT_ACTION, PROC_REF(on_try_alt_action))
@@ -25,7 +25,7 @@
 /datum/component/shy_in_room/UnregisterFromParent()
 	UnregisterSignal(parent, list(
 		COMSIG_MOB_CLICKON,
-		COMSIG_LIVING_TRY_PULL,
+		COMSIG_LIVING_TRY_GRAB,
 		COMSIG_LIVING_UNARMED_ATTACK,
 		COMSIG_HUMAN_EARLY_UNARMED_ATTACK,
 		COMSIG_TRY_STRIP,
@@ -60,7 +60,7 @@
 
 /datum/component/shy_in_room/proc/on_try_pull(datum/source, atom/movable/target, force)
 	SIGNAL_HANDLER
-	return is_shy(target) && COMSIG_LIVING_CANCEL_PULL
+	return is_shy(target) && COMSIG_LIVING_CANCEL_GRAB
 
 /datum/component/shy_in_room/proc/on_unarmed_attack(datum/source, atom/target, proximity, modifiers)
 	SIGNAL_HANDLER

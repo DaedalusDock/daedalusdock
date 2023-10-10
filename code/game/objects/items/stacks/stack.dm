@@ -490,8 +490,12 @@
 		transfer = min(transfer, round((target_stack.source.max_energy - target_stack.source.energy) / target_stack.cost))
 	else
 		transfer = min(transfer, (limit ? limit : target_stack.max_amount) - target_stack.amount)
-	if(pulledby)
-		pulledby.start_pulling(target_stack)
+	if(LAZYLEN(grabbed_by))
+		for(var/obj/item/hand_item/grab/G in grabbed_by)
+			var/mob/living/grabber = G.assailant
+			qdel(G)
+			grabber.try_make_grab(target_stack)
+
 	target_stack.copy_evidences(src)
 	use(transfer, transfer = TRUE, check = FALSE)
 	target_stack.add(transfer)

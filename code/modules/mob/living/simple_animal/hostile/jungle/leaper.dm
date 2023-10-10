@@ -142,7 +142,7 @@
 	. = ..()
 	remove_verb(src, /mob/living/verb/pulled)
 
-/mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A)
+/mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A, list/params)
 	face_atom(A)
 	GiveTarget(A)
 	if(!isturf(loc))

@@ -73,7 +73,7 @@
 
 	remove_pen(user)
 
-/obj/item/modular_computer/tablet/CtrlClick(mob/user)
+/obj/item/modular_computer/tablet/CtrlClick(mob/user, list/params)
 	. = ..()
 	if(.)
 		return

@@ -155,6 +155,31 @@
 	update_disabled()
 	return TRUE
 
+/obj/item/bodypart/proc/can_be_dislocated()
+	if(!(bodypart_flags & BP_CAN_BE_DISLOCATED))
+		return FALSE
+	if(bodypart_flags & BP_DISLOCATED)
+		return FALSE
+	return TRUE
+
+/obj/item/bodypart/proc/set_dislocated(val, painless)
+	if(val)
+		if(!can_be_dislocated())
+			return FALSE
+	else
+		if(can_be_dislocated())
+			return FALSE
+
+	if(val)
+		bodypart_flags |= BP_DISLOCATED
+		if(!painless)
+			owner?.apply_pain(20, body_zone, "A surge of pain shoots through your [plaintext_zone].")
+	else
+		bodypart_flags &= BP_DISLOCATED
+
+	return TRUE
+
+
 /obj/item/bodypart/proc/clamp_wounds()
 	for(var/datum/wound/W as anything in wounds)
 		. ||= !W.clamped
@@ -223,3 +248,14 @@
 	if(!W)
 		return
 	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
+
+/obj/item/bodypart/proc/jointlock(mob/living/user)
+	if(!IS_ORGANIC_LIMB(src))
+		return
+
+	var/armor = owner.run_armor_check(body_zone, MELEE, silent = TRUE)
+	if(armor > 70)
+		return
+
+	var/max_halloss = round(owner.maxHealth * 0.8 * ((100 - armor) / 100)) //up to 80% of passing out, further reduced by armour
+	owner.apply_pain(max(30, max_halloss - owner.getPain()), body_zone, "your [plaintext_zone] is in excruciating pain")

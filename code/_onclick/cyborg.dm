@@ -99,7 +99,7 @@
 	A.BorgCtrlShiftClick(src)
 /mob/living/silicon/robot/ShiftClickOn(atom/A)
 	A.BorgShiftClick(src)
-/mob/living/silicon/robot/CtrlClickOn(atom/A)
+/mob/living/silicon/robot/CtrlClickOn(atom/A, list/params)
 	A.BorgCtrlClick(src)
 /mob/living/silicon/robot/AltClickOn(atom/A)
 	A.BorgAltClick(src)

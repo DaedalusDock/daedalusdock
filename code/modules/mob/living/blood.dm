@@ -319,8 +319,9 @@
 				qdel(drop)//the drip is replaced by a bigger splatter
 		else
 			drop = new(T, get_static_viruses())
-			drop.transfer_mob_blood_dna(src)
-			return
+			if(!QDELETED(drop)) // Can be qdeleted if it merged with another blood decal.
+				drop.transfer_mob_blood_dna(src)
+				return
 
 	// Find a blood decal or create a new one.
 	var/obj/effect/decal/cleanable/blood/B = locate() in T

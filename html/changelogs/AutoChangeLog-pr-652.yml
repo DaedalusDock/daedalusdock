@@ -1,0 +1,4 @@
+author: RimiNosha
+delete-after: true
+changes:
+  - bugfix: Secoffs should be able to access their EVA suits now.

@@ -23,3 +23,6 @@
   - balance: Bullet embedding logic has been changed
   itsmeow:
   - code_imp: 'Optimized z-level transition mirages, saving ~0.32s init. /:cl:'
+2023-10-11:
+  RimiNosha:
+  - bugfix: Secoffs should be able to access their EVA suits now.

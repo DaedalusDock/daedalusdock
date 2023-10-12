@@ -5,3 +5,9 @@
 
 #define GetAbove(A) (HasAbove(A:z) ? get_step(A, UP) : null)
 #define GetBelow(A) (HasBelow(A:z) ? get_step(A, DOWN) : null)
+
+
+/// Vertical Z movement
+#define ZMOVING_VERTICAL 1
+/// Laterial Z movement
+#define ZMOVING_LATERAL 2

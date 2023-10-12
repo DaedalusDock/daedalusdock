@@ -1,7 +1,7 @@
 /datum/idle_behavior/idle_monkey/perform_idle_behavior(delta_time, datum/ai_controller/controller)
 	var/mob/living/living_pawn = controller.pawn
 
-	if(DT_PROB(25, delta_time) && (living_pawn.mobility_flags & MOBILITY_MOVE) && isturf(living_pawn.loc) && !living_pawn.pulledby)
+	if(DT_PROB(25, delta_time) && (living_pawn.mobility_flags & MOBILITY_MOVE) && isturf(living_pawn.loc) && !LAZYLEN(living_pawn.grabbed_by))
 		var/move_dir = pick(GLOB.alldirs)
 		living_pawn.Move(get_step(living_pawn, move_dir), move_dir)
 	else if(DT_PROB(5, delta_time))

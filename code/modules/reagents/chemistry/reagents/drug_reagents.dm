@@ -549,16 +549,17 @@
 	dancer.spin(30, 2)
 	if(dancer.disgust < 40)
 		dancer.adjust_disgust(10)
-	if(!dancer.pulledby)
+	if(!LAZYLEN(dancer.grabbed_by))
 		return
 	var/dancer_turf = get_turf(dancer)
-	var/atom/movable/dance_partner = dancer.pulledby
-	dance_partner.visible_message(span_danger("[dance_partner] tries to hold onto [dancer], but is thrown back!"), span_danger("You try to hold onto [dancer], but you are thrown back!"), null, COMBAT_MESSAGE_RANGE)
-	var/throwtarget = get_edge_target_turf(dancer_turf, get_dir(dancer_turf, get_step_away(dance_partner, dancer_turf)))
-	if(overdosed)
-		dance_partner.throw_at(target = throwtarget, range = 7, speed = 4)
-	else
-		dance_partner.throw_at(target = throwtarget, range = 4, speed = 1) //superspeed
+	for(var/obj/item/hand_item/grab/G in dancer.grabbed_by)
+		var/atom/movable/dance_partner = G.assailant
+		dance_partner.visible_message(span_danger("[dance_partner] tries to hold onto [dancer], but is thrown back!"), span_danger("You try to hold onto [dancer], but you are thrown back!"), null, COMBAT_MESSAGE_RANGE)
+		var/throwtarget = get_edge_target_turf(dancer_turf, get_dir(dancer_turf, get_step_away(dance_partner, dancer_turf)))
+		if(overdosed)
+			dance_partner.throw_at(target = throwtarget, range = 7, speed = 4)
+		else
+			dance_partner.throw_at(target = throwtarget, range = 4, speed = 1) //superspeed
 
 /datum/reagent/drug/saturnx
 	name = "SaturnX"

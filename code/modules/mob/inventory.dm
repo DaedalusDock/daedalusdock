@@ -47,6 +47,12 @@
 	return has_hand_for_held_index(active_hand_index)
 
 
+/// Returns the first available empty held index
+/mob/proc/get_empty_held_index()
+	for(var/i in 1 to length(held_items))
+		if(isnull(held_items[i]))
+			return i
+
 //Finds the first available (null) index OR all available (null) indexes in held_items based on a side.
 //Lefts: 1, 3, 5, 7...
 //Rights:2, 4, 6, 8...
@@ -162,11 +168,14 @@
 	held_items[hand_index] = I
 	I.plane = ABOVE_HUD_PLANE
 	I.equipped(src, ITEM_SLOT_HANDS)
+
 	if(QDELETED(I)) // this is here because some ABSTRACT items like slappers and circle hands could be moved from hand to hand then delete, which meant you'd have a null in your hand until you cleared it (say, by dropping it)
 		held_items[hand_index] = null
 		return FALSE
-	if(I.pulledby)
-		I.pulledby.stop_pulling()
+
+	if(LAZYLEN(I.grabbed_by))
+		I.free_from_all_grabs()
+
 	update_held_items()
 	I.pixel_x = I.base_pixel_x
 	I.pixel_y = I.base_pixel_y

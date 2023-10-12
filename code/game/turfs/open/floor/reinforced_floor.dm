@@ -88,11 +88,13 @@
 /turf/open/floor/engine/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/turf/open/floor/engine/attack_hand(mob/user, list/modifiers)
+/turf/open/floor/engine/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	if(!isliving(user))
+		return
+	user.move_grabbed_atoms_towards(src)
 
 //air filled floors; used in atmos pressure chambers
 

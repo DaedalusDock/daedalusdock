@@ -207,7 +207,7 @@
 	else
 		slipper.Knockdown(knockdown_amount)
 		slipper.Paralyze(paralyze_amount)
-		slipper.stop_pulling()
+		slipper.release_all_grabs()
 
 	if(buckled_obj)
 		buckled_obj.unbuckle_mob(slipper)

@@ -55,7 +55,9 @@
 		. = fold_out(force)
 		return
 	visible_message(span_notice("[src] deactivates its holochassis emitter and folds back into a compact card!"))
-	stop_pulling()
+
+	release_all_grabs()
+
 	if(ismobholder(loc))
 		var/obj/item/mob_holder/MH = loc
 		MH.release_mob(display_messages = FALSE)
@@ -137,7 +139,7 @@
 	if(loc != card)
 		visible_message(span_notice("[src] [resting? "lays down for a moment..." : "perks up from the ground."]"))
 
-/mob/living/silicon/pai/start_pulling(atom/movable/AM, state, force = move_force, supress_message = FALSE)
+/mob/living/silicon/pai/try_make_grab(atom/movable/target, grab_type)
 	return FALSE
 
 /mob/living/silicon/pai/proc/toggle_integrated_light()

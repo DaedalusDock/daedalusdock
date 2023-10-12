@@ -263,7 +263,7 @@
 	turns_since_move++
 	if(turns_since_move < turns_per_move)
 		return TRUE
-	if(stop_automated_movement_when_pulled && pulledby) //Some animals don't move when pulled
+	if(stop_automated_movement_when_pulled && LAZYLEN(grabbed_by)) //Some animals don't move when pulled
 		return TRUE
 	var/anydir = pick(GLOB.cardinals)
 	if(Process_Spacemove(anydir))
@@ -309,7 +309,7 @@
 /mob/living/simple_animal/proc/environment_air_is_safe()
 	. = TRUE
 
-	if(pulledby && pulledby.grab_state >= GRAB_KILL && atmos_requirements["min_oxy"])
+	if(HAS_TRAIT(src, TRAIT_KILL_GRAB) && atmos_requirements["min_oxy"])
 		. = FALSE //getting choked
 
 	if(isturf(loc) && isopenturf(loc))
@@ -648,7 +648,7 @@
 			stack_trace("Something attempted to set simple animals AI to an invalid state: [togglestatus]")
 
 /mob/living/simple_animal/proc/consider_wakeup()
-	if (pulledby || shouldwakeup)
+	if (LAZYLEN(grabbed_by) || shouldwakeup)
 		toggle_ai(AI_ON)
 
 /mob/living/simple_animal/on_changed_z_level(turf/old_turf, turf/new_turf)

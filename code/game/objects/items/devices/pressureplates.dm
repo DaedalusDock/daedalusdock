@@ -74,7 +74,7 @@
 		sigdev = null
 	return ..()
 
-/obj/item/pressure_plate/CtrlClick(mob/user)
+/obj/item/pressure_plate/CtrlClick(mob/user, list/params)
 	if(protected)
 		to_chat(user, span_warning("You can't quite seem to turn this pressure plate off..."))
 		return

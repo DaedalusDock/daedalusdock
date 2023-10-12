@@ -435,6 +435,59 @@
 /obj/structure/window/GetExplosionBlock()
 	return reinf && fulltile ? real_explosion_block : 0
 
+/obj/structure/window/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	if (!user.combat_mode || !grab.current_grab.enable_violent_interactions)
+		return ..()
+
+	var/mob/living/affecting_mob = grab.get_affecting_mob()
+	if(!istype(affecting_mob))
+		if(isitem(victim))
+			var/obj/item/I = victim
+			I.melee_attack_chain(user, src, params)
+		return TRUE
+
+
+	var/def_zone = deprecise_zone(grab.target_zone)
+	var/obj/item/bodypart/BP = affecting_mob.get_bodypart(def_zone)
+	if(!BP)
+		return
+	var/blocked = affecting_mob.run_armor_check(def_zone, MELEE)
+	if(grab.current_grab.damage_stage < GRAB_NECK)
+		affecting_mob.visible_message(span_danger("<b>[user]</b> bashes <b>[affecting_mob]</b>'s [BP.plaintext_zone] against \the [src]!"))
+		switch(def_zone)
+			if(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
+				if(prob(50 * ((100 - blocked/100))))
+					affecting_mob.Knockdown(4 SECONDS)
+			if(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)
+				if(prob(50 * ((100 - blocked/100))))
+					var/side = def_zone == BODY_ZONE_L_ARM ? LEFT_HANDS : RIGHT_HANDS
+					var/obj/item/I = affecting_mob.get_held_items_for_side(side)
+					if(I)
+						affecting_mob.dropItemToGround(I)
+		affecting_mob.apply_damage(20, BRUTE, def_zone, blocked)
+		take_damage(10)
+		qdel(grab)
+	else
+		affecting_mob.visible_message(span_danger("<b>[user]</b> crushes <b>[affecting_mob]</b>'s [BP.plaintext_zone] against \the [src]!"))
+		switch(def_zone)
+			if(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
+				affecting_mob.Knockdown(10 SECONDS)
+			if(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM)
+				var/side = def_zone == BODY_ZONE_L_ARM ? LEFT_HANDS : RIGHT_HANDS
+				var/obj/item/I = affecting_mob.get_held_items_for_side(side)
+				if(I)
+					affecting_mob.dropItemToGround(I)
+
+		affecting_mob.apply_damage(20, BRUTE, def_zone, blocked)
+		take_damage(20)
+		qdel(grab)
+
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src)
+	splatter.transfer_mob_blood_dna(victim)
+	vis_contents += splatter
+	bloodied = TRUE
+	return TRUE
+
 /obj/structure/window/spawner/east
 	dir = EAST
 

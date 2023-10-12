@@ -34,7 +34,7 @@
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(target_del))
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_sight))
 	RegisterSignal(user, COMSIG_MOB_FIRED_GUN, PROC_REF(user_shot))
-	RegisterSignal(user, list(COMSIG_PARENT_ATTACKBY, COMSIG_LIVING_GET_PULLED, COMSIG_HUMAN_DISARM_HIT), PROC_REF(trigger))
+	RegisterSignal(user, list(COMSIG_PARENT_ATTACKBY, COMSIG_ATOM_GET_GRABBED, COMSIG_HUMAN_DISARM_HIT), PROC_REF(trigger))
 	RegisterSignal(
 		user,
 		list(

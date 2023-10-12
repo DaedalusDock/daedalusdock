@@ -129,10 +129,6 @@
 	port_id = "infiltrator"
 	who_can_purchase = null
 
-/datum/map_template/shuttle/aux_base
-	port_id = "aux_base"
-	who_can_purchase = null
-
 /datum/map_template/shuttle/escape_pod
 	port_id = "escape_pod"
 	who_can_purchase = null
@@ -635,14 +631,6 @@
 /datum/map_template/shuttle/arrival/omega
 	suffix = "omega"
 	name = "arrival shuttle (Omega)"
-
-/datum/map_template/shuttle/aux_base/default
-	suffix = "default"
-	name = "auxilliary base (Default)"
-
-/datum/map_template/shuttle/aux_base/small
-	suffix = "small"
-	name = "auxilliary base (Small)"
 
 /datum/map_template/shuttle/escape_pod/default
 	suffix = "default"

@@ -49,23 +49,3 @@
 	reward = CARGO_CRATE_VALUE * 10
 	required_count = 3
 	wanted_types = list(/obj/item/knife/combat/bone = TRUE)
-
-/datum/bounty/item/mining/polypore_mushroom
-	name = "Mushroom Bowl"
-	description = "Lieutenant Jeb dropped his favorite mushroom bowl. Cheer him up by shipping a new one, will you?"
-	reward = CARGO_CRATE_VALUE * 15 //5x mushroom shavings
-	wanted_types = list(/obj/item/reagent_containers/glass/bowl/mushroom_bowl = TRUE)
-
-/datum/bounty/item/mining/inocybe_mushroom
-	name = "Mushroom Caps"
-	description = "Our botanist claims that he can distill tasty liquor from absolutely any plant. Let's see what he'll do with Inocybe mushroom caps."
-	reward = CARGO_CRATE_VALUE * 9
-	required_count = 3
-	wanted_types = list(/obj/item/food/grown/ash_flora/mushroom_cap = TRUE)
-
-/datum/bounty/item/mining/porcini_mushroom
-	name = "Mushroom Leaves"
-	description = "Porcini mushroom leaves are rumored to have healing properties. Our researchers want to put that claim to the test."
-	reward = CARGO_CRATE_VALUE * 9
-	required_count = 3
-	wanted_types = list(/obj/item/food/grown/ash_flora/mushroom_leaf = TRUE)

@@ -278,10 +278,6 @@
 /turf/open/floor/iron,
 /area/station/security/prison)
 "acS" = (
-/obj/structure/closet/crate/necropolis{
-	desc = "Presumably placed here by top men.";
-	name = "\improper Ark of the Covenant"
-	},
 /obj/item/toy/clockwork_watch{
 	desc = "An ancient piece of machinery, made from an unknown metal by an unknown maker.";
 	name = "\improper Ancient Relic"
@@ -5270,18 +5266,6 @@
 /obj/structure/reagent_dispensers/fueltank,
 /turf/open/floor/iron,
 /area/station/maintenance/port)
-"bqg" = (
-/obj/docking_port/stationary{
-	dir = 2;
-	dwidth = 3;
-	height = 5;
-	id = "commonmining_home";
-	name = "SS13: Common Mining Dock";
-	roundstart_template = /datum/map_template/shuttle/mining_common/meta;
-	width = 7
-	},
-/turf/open/floor/plating,
-/area/station/hallway/primary/port)
 "bql" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -30924,9 +30908,6 @@
 /area/station/science/xenobiology)
 "knP" = (
 /obj/machinery/light/directional/west,
-/obj/machinery/computer/camera_advanced/base_construction/aux{
-	dir = 4
-	},
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted{
 	dir = 1
 	},
@@ -34789,10 +34770,6 @@
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/station/engineering/main)
-"lGS" = (
-/obj/docking_port/stationary/public_mining_dock,
-/turf/open/floor/plating,
-/area/station/construction/mining/aux_base)
 "lHb" = (
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/plating,
@@ -41654,18 +41631,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/security/medical)
-"obX" = (
-/obj/docking_port/stationary{
-	dheight = 4;
-	dwidth = 4;
-	height = 9;
-	id = "aux_base_zone";
-	name = "aux base zone";
-	roundstart_template = /datum/map_template/shuttle/aux_base/default;
-	width = 9
-	},
-/turf/open/floor/plating,
-/area/station/construction/mining/aux_base)
 "ocv" = (
 /obj/effect/landmark/start/scientist,
 /obj/machinery/light/floor/has_bulb,
@@ -56506,7 +56471,6 @@
 /obj/item/wallframe/camera,
 /obj/item/wallframe/camera,
 /obj/item/wallframe/camera,
-/obj/item/assault_pod/mining,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 1
 	},
@@ -81393,11 +81357,11 @@ aDa
 aDa
 aDa
 aDa
-obX
 aDa
 aDa
 aDa
-lGS
+aDa
+aDa
 cWM
 ilJ
 tra
@@ -84498,7 +84462,7 @@ ctd
 qTx
 blY
 cNG
-bqg
+rJv
 rJv
 rJv
 rJv

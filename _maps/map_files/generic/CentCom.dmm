@@ -272,12 +272,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/hidden/layer5,
 /turf/open/floor/iron/smooth,
 /area/centcom/syndicate_mothership/control)
-"aU" = (
-/obj/structure/flora/tree/dead,
-/turf/open/misc/asteroid/basalt/wasteland{
-	temperature = 2.7
-	},
-/area/centcom/central_command_areas/holding)
 "aV" = (
 /obj/structure/table/wood,
 /obj/item/clipboard,
@@ -2506,11 +2500,6 @@
 /obj/structure/weightmachine/weightlifter,
 /turf/open/floor/mineral/titanium,
 /area/centcom/syndicate_mothership/control)
-"hs" = (
-/turf/open/misc/asteroid/basalt/wasteland{
-	temperature = 2.7
-	},
-/area/centcom/central_command_areas/holding)
 "ht" = (
 /obj/item/kirbyplants{
 	icon_state = "plant-21"
@@ -3945,9 +3934,6 @@
 "ll" = (
 /turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
-"lm" = (
-/turf/open/misc/asteroid/basalt/wasteland/safe_air,
-/area/centcom/central_command_areas/holding)
 "ln" = (
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/brown,
@@ -10969,7 +10955,6 @@
 /turf/open/floor/stone,
 /area/centcom/central_command_areas/holding)
 "FX" = (
-/obj/machinery/computer/auxiliary_base/directional/north,
 /obj/structure/table/reinforced,
 /obj/item/clipboard,
 /obj/item/radio/headset/headset_cent,
@@ -11261,7 +11246,7 @@
 /area/centcom/syndicate_mothership/control)
 "GM" = (
 /obj/structure/flora/tree/dead,
-/turf/open/misc/asteroid/basalt/wasteland/safe_air,
+/turf/open/misc/asteroid/basalt/safe_air,
 /area/centcom/central_command_areas/holding)
 "GN" = (
 /obj/structure/table/reinforced,
@@ -13792,10 +13777,6 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/cafeteria,
 /area/centcom/central_command_areas/holding)
-"OC" = (
-/obj/structure/flora/rock/pile,
-/turf/open/misc/asteroid/basalt/wasteland/safe_air,
-/area/centcom/central_command_areas/holding)
 "OD" = (
 /obj/machinery/microwave{
 	desc = "Cooks and boils stuff, somehow.";
@@ -14013,7 +13994,6 @@
 /turf/open/floor/iron/sepia,
 /area/centcom/central_command_areas/holding)
 "Pg" = (
-/obj/machinery/computer/auxiliary_base/directional/north,
 /obj/structure/table/reinforced,
 /obj/item/clipboard,
 /obj/item/folder/yellow,
@@ -34941,14 +34921,14 @@ OL
 OL
 OL
 pJ
-hs
-hs
+Ud
+Ud
 pJ
 Zc
 pJ
 pJ
-hs
-hs
+Ud
+Ud
 OL
 OL
 OL
@@ -35194,16 +35174,16 @@ kb
 OL
 pJ
 pJ
-hs
+Ud
+Ud
 pJ
 pJ
 pJ
+Ud
+Ud
+Ud
 pJ
-pJ
-pJ
-hs
-pJ
-hs
+Ud
 pJ
 Nd
 Nd
@@ -35449,7 +35429,7 @@ ao
 kb
 OL
 OL
-hs
+Ud
 pJ
 Nd
 Nd
@@ -35457,8 +35437,8 @@ Nd
 Nd
 Nd
 pJ
-hs
-hs
+Ud
+Ud
 pJ
 pJ
 pJ
@@ -36220,7 +36200,7 @@ kb
 OL
 pJ
 pJ
-hs
+Ud
 pJ
 Nd
 OB
@@ -36476,8 +36456,8 @@ kb
 kb
 OL
 pJ
-pJ
-pJ
+Ud
+Ud
 pJ
 Nd
 QA
@@ -36733,7 +36713,7 @@ kb
 OL
 OL
 pJ
-aU
+GM
 pJ
 pJ
 Nd
@@ -37242,16 +37222,16 @@ kb
 OL
 pJ
 OL
-hs
+Ud
+Ud
 pJ
 pJ
-pJ
-aU
-pJ
-hs
-pJ
-pJ
-hs
+GM
+Ud
+Ud
+Ud
+Ud
+Ud
 Nd
 RD
 QL
@@ -37757,14 +37737,14 @@ OL
 pJ
 pJ
 pJ
+Ud
+pJ
+Ud
 pJ
 pJ
-hs
-pJ
-pJ
-pJ
-aU
-pJ
+Ud
+GM
+Ud
 pJ
 Oi
 hb
@@ -38014,14 +37994,14 @@ OL
 pJ
 pJ
 pJ
-aU
+GM
+Ud
+Ud
+Ud
 pJ
-hs
-hs
 pJ
 pJ
-pJ
-hs
+Ud
 pJ
 Nd
 Xx
@@ -38268,7 +38248,7 @@ hh
 Ff
 hh
 OL
-aU
+GM
 pJ
 pJ
 pJ
@@ -38783,9 +38763,9 @@ OL
 OL
 OL
 Zc
-hs
+Ud
 pJ
-pJ
+Ud
 Oi
 MW
 AD
@@ -39040,9 +39020,9 @@ OL
 OL
 OL
 pJ
+Ud
 pJ
-pJ
-hs
+Ud
 Oi
 dB
 TA
@@ -39061,7 +39041,7 @@ UU
 yg
 yg
 Nd
-lm
+Ud
 Ud
 Ud
 Ud
@@ -39296,10 +39276,10 @@ Es
 OL
 OL
 pJ
-pJ
-pJ
+Ud
+Ud
 Zc
-hs
+Ud
 Nd
 fO
 fO
@@ -39320,7 +39300,7 @@ yg
 Nd
 Ud
 Gd
-lm
+Ud
 Ud
 OL
 Di
@@ -39553,7 +39533,7 @@ Es
 Es
 OL
 pJ
-aU
+GM
 pJ
 pJ
 pJ
@@ -39576,7 +39556,7 @@ yg
 yg
 Nd
 Ud
-lm
+Ud
 pJ
 Ud
 OL
@@ -40069,7 +40049,7 @@ OL
 Zc
 pJ
 pJ
-aU
+GM
 pJ
 Oi
 FA
@@ -40323,7 +40303,7 @@ Ff
 Ff
 Es
 OL
-aU
+GM
 pJ
 pJ
 pJ
@@ -40346,10 +40326,10 @@ Rv
 yg
 yg
 Nd
-lm
 Ud
 Ud
-lm
+Ud
+Ud
 OL
 OL
 OL
@@ -40605,7 +40585,7 @@ yg
 Nd
 Ud
 Ud
-OC
+Gd
 Ud
 Ud
 Ud
@@ -40838,9 +40818,9 @@ Ff
 Es
 OL
 pJ
-hs
-pJ
-hs
+Ud
+Ud
+Ud
 Nd
 Zi
 kw
@@ -40860,14 +40840,14 @@ fO
 eZ
 yg
 Nd
-lm
+Ud
 Ud
 Ud
 Ud
 Ud
 GM
 Ud
-lm
+Ud
 Ud
 OL
 OL
@@ -41095,9 +41075,9 @@ Ff
 Es
 OL
 pJ
-pJ
+Ud
 Zc
-hs
+Ud
 Nd
 bI
 fp
@@ -41352,7 +41332,7 @@ Ff
 Es
 OL
 pJ
-aU
+GM
 pJ
 pJ
 Nd
@@ -41865,7 +41845,7 @@ Bz
 Es
 Es
 OL
-hs
+Ud
 Zc
 pJ
 pJ
@@ -42124,9 +42104,9 @@ hh
 OL
 OL
 pJ
-aU
-pJ
-hs
+GM
+Ud
+Ud
 Oi
 dB
 hg
@@ -42411,7 +42391,7 @@ Ud
 Ud
 Gd
 Ud
-lm
+Ud
 OL
 aa
 aa
@@ -42659,8 +42639,8 @@ fO
 yg
 yg
 Nd
-lm
-lm
+Ud
+Ud
 Ud
 Ud
 Ud
@@ -42894,7 +42874,7 @@ Es
 hh
 hh
 OL
-aU
+GM
 pJ
 pJ
 pJ
@@ -42916,7 +42896,7 @@ fO
 hy
 hy
 Nd
-lm
+Ud
 Gd
 Ud
 Ud
@@ -42924,8 +42904,8 @@ GM
 Ud
 Ud
 Ud
-lm
-OC
+Ud
+Gd
 OL
 aa
 aa
@@ -43154,7 +43134,7 @@ OL
 pJ
 pJ
 pJ
-hs
+Ud
 Oi
 FA
 gi
@@ -43411,7 +43391,7 @@ pJ
 pJ
 pJ
 pJ
-aU
+GM
 Nd
 Nd
 Nd
@@ -43664,19 +43644,19 @@ hh
 Ff
 hh
 OL
-aU
+GM
 Zc
-hs
+Ud
 pJ
 pJ
 pJ
 pJ
 Zc
-hs
+Ud
 pJ
 pJ
-pJ
-hs
+Ud
+Ud
 Oi
 yg
 yg
@@ -43688,7 +43668,7 @@ yg
 yg
 Nd
 Ud
-lm
+Ud
 Nd
 dh
 CQ
@@ -43923,14 +43903,14 @@ hh
 OL
 pJ
 pJ
-hs
-hs
+Ud
+Ud
 pJ
 pJ
 pJ
 pJ
-hs
-hs
+Ud
+Ud
 pJ
 Zc
 pJ
@@ -47287,7 +47267,7 @@ Nd
 Nd
 Nd
 pJ
-hs
+Ud
 pJ
 Nd
 PI

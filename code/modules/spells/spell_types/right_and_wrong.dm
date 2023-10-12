@@ -76,9 +76,7 @@ GLOBAL_LIST_INIT(summoned_magic, list(
 	/obj/item/gun/magic/staff/healing,
 	/obj/item/gun/magic/staff/door,
 	/obj/item/scrying,
-	/obj/item/warpwhistle,
-	/obj/item/immortality_talisman,
-	/obj/item/melee/ghost_sword))
+	/obj/item/warpwhistle))
 
 GLOBAL_LIST_INIT(summoned_special_magic, list(
 	/obj/item/gun/magic/staff/change,
@@ -92,8 +90,6 @@ GLOBAL_LIST_INIT(summoned_special_magic, list(
 GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	/obj/item/antag_spawner/contract,
 	/obj/item/gun/magic,
-	/obj/item/immortality_talisman,
-	/obj/item/melee/ghost_sword,
 	/obj/item/necromantic_stone,
 	/obj/item/scrying,
 	/obj/item/spellbook,

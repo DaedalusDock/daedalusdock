@@ -2611,10 +2611,6 @@
 /area/station/engineering/main)
 "Xg" = (
 /obj/machinery/light/directional/east,
-/obj/machinery/vending/syndichem{
-	onstation = 0;
-	req_access = null
-	},
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
 "Xp" = (

@@ -1680,14 +1680,6 @@
 	
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
-"ms" = (
-/obj/structure/spawner/mining/goliath,
-/turf/open/misc/asteroid/basalt{
-	initial_gas = list("nitrogen" = 23, "oxygen" = 14);
-	temperature = 2.7;
-	
-	},
-/area/awaymission/caves/bmp_asteroid/level_three)
 "mX" = (
 /obj/structure/closet/crate/miningcar{
 	name = "Mining cart"
@@ -15437,7 +15429,7 @@ hq
 ak
 ak
 hq
-ms
+hq
 ac
 ac
 ac

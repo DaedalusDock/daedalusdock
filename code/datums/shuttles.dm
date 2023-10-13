@@ -273,7 +273,7 @@
 	We've got fun activities for everyone, an all access cockpit, and no boring security brig! Boo! Play dress up with your friends! \
 	Collect all the bedsheets before your neighbour does! Check if the AI is watching you with our patent pending \"Peeping Tom AI Multitool Detector\" or PEEEEEETUR for short. \
 	Have a fun ride!"
-	admin_notes = "Brig is replaced by anchored greentext book surrounded by lavaland chasms, stationside door has been removed to prevent accidental dropping. No brig."
+	admin_notes = "Brig is replaced by anchored greentext book surrounded by chasms, stationside door has been removed to prevent accidental dropping. No brig."
 	credit_cost = CARGO_CRATE_VALUE * 16
 
 /datum/map_template/shuttle/emergency/cramped
@@ -584,14 +584,6 @@
 /datum/map_template/shuttle/labour/kilo
 	suffix = "kilo"
 	name = "labour shuttle (Kilo)"
-
-/datum/map_template/shuttle/mining_common/meta
-	suffix = "meta"
-	name = "lavaland shuttle (Meta)"
-
-/datum/map_template/shuttle/mining_common/kilo
-	suffix = "kilo"
-	name = "lavaland shuttle (Kilo)"
 
 /datum/map_template/shuttle/arrival/delta
 	suffix = "delta"

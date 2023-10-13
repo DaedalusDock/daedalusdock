@@ -38,7 +38,7 @@
 	/// If a room is too big it doesn't have beauty.
 	var/beauty_threshold = 150
 
-	/// For space, the asteroid, lavaland, etc. Used with blueprints or with weather to determine if we are adding a new area (vs editing a station room)
+	/// For space, the asteroid, etc. Used with blueprints or with weather to determine if we are adding a new area (vs editing a station room)
 	var/outdoors = FALSE
 
 	/// Size of the area in open turfs, only calculated for indoors areas.
@@ -416,7 +416,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		playing_ambience = null
 		return
 
-	//Station ambience is dependant on a functioning and charged APC. (Lavaland always has it's ambience.)
+	//Station ambience is dependant on a functioning and charged APC.
 	if(!is_mining_level(my_area.z) && ((!my_area.apc || !my_area.apc.operating || !my_area.apc.cell?.charge && my_area.requires_power)))
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
 		playing_ambience = null

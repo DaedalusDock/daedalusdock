@@ -232,6 +232,10 @@
 	var/buildstackamount = 5
 	can_atmos_pass = CANPASS_NEVER
 
+/obj/structure/fans/Initialize(mapload)
+	. = ..()
+	zas_update_loc()
+
 /obj/structure/fans/deconstruct()
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(buildstacktype)
@@ -257,13 +261,6 @@
 	icon_state = "fan_tiny"
 	buildstackamount = 2
 
-/obj/structure/fans/Initialize(mapload)
-	. = ..()
-	//air_update_turf(TRUE, TRUE)
-
-/obj/structure/fans/Destroy()
-	//air_update_turf(TRUE, FALSE)
-	. = ..()
 //Invisible, indestructible fans
 /obj/structure/fans/tiny/invisible
 	name = "air flow blocker"
@@ -284,7 +281,6 @@
 	icon = 'icons/hud/screen_gen.dmi'
 	icon_state = "x2"
 	var/static/possible = list(
-		/obj/item/ship_in_a_bottle,
 		/obj/item/gun/energy/pulse,
 		/obj/item/book/granter/martial/carp,
 		/obj/item/melee/supermatter_sword,

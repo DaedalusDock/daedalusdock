@@ -104,7 +104,8 @@
 	if(!proj_turf)
 		proj_turf = get_turf(src)
 	resonance_damage = initial(resonance_damage)
-	if(lavaland_equipment_pressure_check(proj_turf))
+	var/pressure = proj_turf.unsafe_return_air().returnPressure()
+	if(pressure < 20)
 		name = "strong [initial(name)]"
 		resonance_damage *= 3
 	else

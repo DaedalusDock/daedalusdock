@@ -1,7 +1,7 @@
 /**
  * Causes weather to occur on a z level in certain area types
  *
- * The effects of weather occur across an entire z-level. For instance, lavaland has periodic ash storms that scorch most unprotected creatures.
+ * The effects of weather occur across an entire z-level.
  * Weather always occurs on different z levels at different times, regardless of weather type.
  * Can have custom durations, targets, and can automatically protect indoor areas.
  *

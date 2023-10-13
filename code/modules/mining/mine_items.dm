@@ -29,9 +29,9 @@
 	new /obj/item/storage/backpack/duffelbag(src)
 	new /obj/item/storage/backpack/explorer(src)
 	new /obj/item/storage/backpack/satchel/explorer(src)
-	new /obj/item/clothing/under/rank/cargo/miner/lavaland(src)
-	new /obj/item/clothing/under/rank/cargo/miner/lavaland(src)
-	new /obj/item/clothing/under/rank/cargo/miner/lavaland(src)
+	new /obj/item/clothing/under/rank/cargo/miner(src)
+	new /obj/item/clothing/under/rank/cargo/miner(src)
+	new /obj/item/clothing/under/rank/cargo/miner(src)
 	new /obj/item/clothing/shoes/workboots/mining(src)
 	new /obj/item/clothing/shoes/workboots/mining(src)
 	new /obj/item/clothing/shoes/workboots/mining(src)
@@ -61,7 +61,6 @@
 	new /obj/item/storage/bag/plants(src)
 	new /obj/item/storage/bag/ore(src)
 	new /obj/item/t_scanner/adv_mining_scanner/lesser(src)
-	new /obj/item/gun/energy/recharge/kinetic_accelerator(src)
 	new /obj/item/clothing/glasses/meson(src)
 	new /obj/item/survivalcapsule(src)
 
@@ -89,13 +88,6 @@
 		return
 
 	return ..()
-
-/obj/machinery/computer/shuttle/mining/common
-	name = "lavaland shuttle console"
-	desc = "Used to call and send the lavaland shuttle."
-	circuit = /obj/item/circuitboard/computer/mining_shuttle/common
-	shuttleId = "mining_common"
-	possible_destinations = "commonmining_home;lavaland_common_away;landing_zone_dock;mining_public"
 
 /**********************Mining car (Crate like thing, not the rail car)**************************/
 

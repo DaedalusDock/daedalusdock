@@ -50,11 +50,6 @@
 	description = "Yes, it's a very confusing day at the Megastation. Will the syndicate conflict resolution operatives succeed?"
 	mappath = "_maps/map_files/Mafia/mafia_syndie.dmm"
 
-/datum/map_template/mafia/lavaland
-	name = "Lavaland Excursion"
-	description = "The station has no idea what's going down on lavaland right now, we got changelings... traitors, and worst of all... lawyers roleblocking you every night."
-	mappath = "_maps/map_files/Mafia/mafia_lavaland.dmm"
-
 /datum/map_template/mafia/ufo
 	name = "Alien Mothership"
 	description = "The haunted ghost UFO tour has gone south and now it's up to our fine townies and scare seekers to kill the actual real alien changelings..."

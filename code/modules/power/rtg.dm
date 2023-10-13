@@ -117,33 +117,6 @@
 	name = "Totally a [joke]."
 	desc = "Yup. That's a [joke]."
 
-/obj/machinery/power/rtg/lavaland
-	name = "Lava powered RTG"
-	desc = "This device only works when exposed to the toxic fumes of Lavaland"
-	circuit = null
-	power_gen = 1500
-	anchored = TRUE
-	resistance_flags = LAVA_PROOF
-
-/obj/machinery/power/rtg/lavaland/Initialize(mapload)
-	. = ..()
-	var/turf/our_turf = get_turf(src)
-	if(!islava(our_turf))
-		power_gen = 0
-	if(!is_mining_level(z))
-		power_gen = 0
-
-/obj/machinery/power/rtg/lavaland/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
-	. = ..()
-	var/turf/our_turf = get_turf(src)
-	if(!islava(our_turf))
-		power_gen = 0
-		return
-	if(!is_mining_level(z))
-		power_gen = 0
-		return
-	power_gen = initial(power_gen)
-
 /obj/machinery/power/rtg/old_station
 	name = "Old RTG"
 	desc = "A very old RTG, it seems on the verge of being destroyed"

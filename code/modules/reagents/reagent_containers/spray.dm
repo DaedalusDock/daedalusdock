@@ -228,7 +228,6 @@
 	volume = 10
 	list_reagents = list(/datum/reagent/water = 10)
 
-///Subtype used for the lavaland clown ruin.
 /obj/item/reagent_containers/spray/waterflower/superlube
 	name = "clown flower"
 	desc = "A delightly devilish flower... you got a feeling where this is going."

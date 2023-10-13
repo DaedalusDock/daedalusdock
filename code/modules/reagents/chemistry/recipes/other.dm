@@ -423,7 +423,7 @@
 
 /datum/chemical_reaction/carpet/simple_neon_orange
 	results = list(/datum/reagent/carpet/neon/simple_orange = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/consumable/vitfro = 1)
+	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/consumable/orangejuice = 1)
 
 /datum/chemical_reaction/carpet/simple_neon_yellow
 	results = list(/datum/reagent/carpet/neon/simple_yellow = 2)

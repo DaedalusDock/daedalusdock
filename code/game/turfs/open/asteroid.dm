@@ -86,10 +86,6 @@
 		for(var/obj/item/stack/ore/O in src)
 			SEND_SIGNAL(W, COMSIG_PARENT_ATTACKBY, O)
 
-
-/turf/open/floor/plating/lavaland_baseturf
-	baseturfs = /turf/open/misc/asteroid/basalt/lava_land_surface
-
 /turf/open/misc/asteroid/dug //When you want one of these to be already dug.
 	dug = TRUE
 	base_icon_state = "asteroid_dug"
@@ -108,7 +104,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	digResult = /obj/item/stack/ore/glass/basalt
 	broken_state = "basalt_dug"
 
-	initial_gas = LAVALAND_DEFAULT_ATMOS
+	initial_gas = OPENTURF_LOW_PRESSURE
 	simulated = FALSE //OH *FUCK* NO.
 
 /turf/open/misc/asteroid/basalt/getDug()
@@ -141,12 +137,6 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 		if("basalt5", "basalt9")
 			B.set_light(l_outer_range = 1.4, l_power = 0.6, l_color = LIGHT_COLOR_LAVA) //barely anything!
 
-///////Surface. The surface is warm, but survivable without a suit. Internals are required. The floors break to chasms, which drop you into the underground.
-
-/turf/open/misc/asteroid/basalt/lava_land_surface
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-	baseturfs = /turf/open/lava/smooth/lava_land_surface
-
 /turf/open/misc/asteroid/lowpressure
 	initial_gas = OPENTURF_LOW_PRESSURE
 	baseturfs = /turf/open/misc/asteroid/lowpressure
@@ -173,7 +163,7 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 	flags_1 = NONE
 
 	simulated = FALSE
-	initial_gas = ICEMOON_DEFAULT_ATMOS
+	initial_gas = OPENTURF_LOW_PRESSURE
 
 	bullet_sizzle = TRUE
 	bullet_bounce_sound = null
@@ -188,14 +178,6 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 		icon_state = "snow_dug"
 		return TRUE
 	return FALSE
-
-/turf/open/misc/asteroid/snow/icemoon
-	baseturfs = /turf/open/openspace/icemoon
-	slowdown = 0
-
-/turf/open/lava/plasma/ice_moon
-	baseturfs = /turf/open/lava/plasma/ice_moon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/open/misc/asteroid/snow/ice
 	name = "icy snow"

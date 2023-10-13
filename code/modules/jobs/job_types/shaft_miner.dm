@@ -39,7 +39,7 @@
 	jobtype = /datum/job/shaft_miner
 
 	id_trim = /datum/id_trim/job/shaft_miner
-	uniform = /obj/item/clothing/under/rank/cargo/miner/lavaland
+	uniform = /obj/item/clothing/under/rank/cargo/miner
 	backpack_contents = list(
 		/obj/item/flashlight/seclite = 1,
 		/obj/item/knife/combat/survival = 1,
@@ -58,7 +58,6 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/explorer
 
 	box = /obj/item/storage/box/survival/mining
-	chameleon_extras = /obj/item/gun/energy/recharge/kinetic_accelerator
 
 /datum/outfit/job/miner/plasmaman
 	name = "Shaft Miner (Plasmaman)"
@@ -76,7 +75,6 @@
 	suit_store = /obj/item/tank/internals/oxygen
 	backpack_contents = list(
 		/obj/item/flashlight/seclite = 1,
-		/obj/item/gun/energy/recharge/kinetic_accelerator = 1,
 		/obj/item/knife/combat/survival = 1,
 		/obj/item/mining_voucher = 1,
 		/obj/item/stack/marker_beacon/ten = 1,

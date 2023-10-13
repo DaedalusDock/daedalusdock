@@ -676,43 +676,6 @@
 		C.adjust_nutrition(-3 * nutriment_factor * removed)
 	return ..()
 
-////Lavaland Flora Reagents////
-
-
-/datum/reagent/consumable/entpoly
-	name = "Entropic Polypnium"
-	description = "An ichor, derived from a certain mushroom, makes for a bad time."
-	color = "#1d043d"
-	taste_description = "bitter mushroom"
-
-
-/datum/reagent/consumable/entpoly/affect_ingest(mob/living/carbon/C, removed)
-	if(current_cycle >= 10)
-		C.Unconscious(40 * removed, FALSE)
-	if(prob(10))
-		C.losebreath += 4 * removed
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, 150, updating_health = FALSE)
-		C.adjustToxLoss(3 * removed,0)
-		C.stamina.adjust(-10 * removed)
-		C.blur_eyes(5)
-		. = TRUE
-	return ..() || .
-
-/datum/reagent/consumable/vitfro
-	name = "Vitrium Froth"
-	description = "A bubbly paste that heals wounds of the skin."
-	color = "#d3a308"
-	nutriment_factor = 3 * REAGENTS_METABOLISM
-	taste_description = "fruity mushroom"
-
-
-/datum/reagent/consumable/vitfro/affect_ingest(mob/living/carbon/C, removed)
-	if(prob(55))
-		C.adjustBruteLoss(-1 * removed, 0)
-		C.adjustFireLoss(-1 * removed, 0)
-		. = TRUE
-	return ..() || .
-
 /datum/reagent/consumable/clownstears
 	name = "Clown's Tears"
 	description = "The sorrow and melancholy of a thousand bereaved clowns, forever denied their Honkmechs."

@@ -181,9 +181,6 @@
 	///Cooldown length between bumpsmashes
 	var/smashcooldown = 3
 
-	///Bool for whether this mech can only be used on lavaland
-	var/lavaland_only = FALSE
-
 	/// Ui size, so you can make the UI bigger if you let it load a lot of stuff
 	var/ui_x = 1100
 	/// Ui size, so you can make the UI bigger if you let it load a lot of stuff
@@ -723,11 +720,6 @@
 	if(!use_power(step_energy_drain))
 		if(!TIMER_COOLDOWN_CHECK(src, COOLDOWN_MECHA_MESSAGE))
 			to_chat(occupants, "[icon2html(src, occupants)][span_warning("Insufficient power to move!")]")
-			TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_MESSAGE, 2 SECONDS)
-		return FALSE
-	if(lavaland_only && is_mining_level(z))
-		if(!TIMER_COOLDOWN_CHECK(src, COOLDOWN_MECHA_MESSAGE))
-			to_chat(occupants, "[icon2html(src, occupants)][span_warning("Invalid Environment.")]")
 			TIMER_COOLDOWN_START(src, COOLDOWN_MECHA_MESSAGE, 2 SECONDS)
 		return FALSE
 

@@ -195,14 +195,6 @@
 	name = "test chamber 2 vent"
 	id = TEST_ROOM_ATMOS_MAINVENT_2
 
-/obj/machinery/door/poddoor/incinerator_syndicatelava_main
-	name = "turbine vent"
-	id = INCINERATOR_SYNDICATELAVA_MAINVENT
-
-/obj/machinery/door/poddoor/incinerator_syndicatelava_aux
-	name = "combustion chamber vent"
-	id = INCINERATOR_SYNDICATELAVA_AUXVENT
-
 /obj/machinery/door/poddoor/massdriver_ordnance
 	name = "Ordnance Launcher Bay Door"
 	id = MASSDRIVER_ORDNANCE

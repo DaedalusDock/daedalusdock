@@ -8,6 +8,12 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSITEM
 
+	/// This item can be dropped into other things
+	mouse_drop_pointer = MOUSE_ACTIVE_POINTER
+
+	///the icon to indicate this object is being dragged
+	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
+
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 		IF YOU ADD MORE ICON CRAP TO THIS
 		ENSURE YOU ALSO ADD THE NEW VARS TO CHAMELEON ITEM_ACTION'S update_item() PROC (/datum/action/item_action/chameleon/change/proc/update_item())
@@ -155,9 +161,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	var/datum/weakref/thrownby = null //I cannot verbally describe how much I hate this var
 	///Items can by default thrown up to 10 tiles by TK users
 	tk_throw_range = 10
-
-	///the icon to indicate this object is being dragged
-	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
 	///Does it embed and if yes, what kind of embed
 	var/list/embedding
@@ -999,6 +1002,15 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 				apply_outline(COLOR_RED_GRAY) //if they're dead or handcuffed, let's show the outline as red to indicate that they can't interact with that right now
 			else
 				apply_outline() //if the player's alive and well we send the command with no color set, so it uses the theme's color
+
+	else if(usr.client && get_dist(usr, src) <= 1)
+		usr.client.is_mouseover_item = TRUE
+		usr.update_mouse_pointer()
+
+/obj/item/MouseDrag(over_object, src_location, over_location, src_control, over_control, params)
+	. = ..()
+	deltimer(tip_timer)
+	closeToolTip(usr)
 
 /obj/item/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
 	. = ..()

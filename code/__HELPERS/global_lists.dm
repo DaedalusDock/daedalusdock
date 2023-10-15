@@ -77,6 +77,7 @@
 	init_keybindings()
 
 	GLOB.emote_list = init_emote_list()
+	GLOB.mod_themes = setup_mod_themes()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
 	init_loadout_references()

@@ -2228,9 +2228,7 @@
 	// Now we're gonna do a scanline effect
 	// Gonna take this atom and give it a render target, then use it as a source for a filter
 	// (We use an atom because it seems as if setting render_target on an MA is just invalid. I hate this engine)
-	var/atom/movable/scanline = new(null)
-	scanline.icon = 'icons/effects/effects.dmi'
-	scanline.icon_state = "scanline"
+	var/atom/movable/scanline = new /atom/movable{icon = 'icons/effects/effects.dmi'; icon_state = "scanline"}(null)
 	scanline.appearance_flags |= RESET_TRANSFORM
 	// * so it doesn't render
 	var/static/uid_scan = 0

@@ -10,9 +10,11 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 
 	/// This item can be dropped into other things
 	mouse_drop_pointer = MOUSE_ACTIVE_POINTER
-
 	///the icon to indicate this object is being dragged
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
+
+	// We are not using DEFINE_INTERACTABLE because we want to ignore items in our storage and such.
+	is_mouseover_interactable = TRUE
 
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 		IF YOU ADD MORE ICON CRAP TO THIS
@@ -615,6 +617,7 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
 	user?.update_equipment_speed_mods()
+	user?.update_mouse_pointer()
 
 /// called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
@@ -1003,8 +1006,8 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			else
 				apply_outline() //if the player's alive and well we send the command with no color set, so it uses the theme's color
 
+	// We are not using DEFINE_INTERACTABLE because we want to ignore items in our storage and such.
 	else if(usr.client && get_dist(usr, src) <= 1)
-		usr.client.is_mouseover_item = TRUE
 		usr.update_mouse_pointer()
 
 /obj/item/MouseDrag(over_object, src_location, over_location, src_control, over_control, params)
@@ -1017,9 +1020,11 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	remove_filter("hover_outline") //get rid of the hover effect in case the mouse exit isn't called if someone drags and drops an item and somthing goes wrong
 
 /obj/item/MouseExited()
+	. = ..()
 	deltimer(tip_timer) //delete any in-progress timer if the mouse is moved off the item before it finishes
 	closeToolTip(usr)
 	remove_filter("hover_outline")
+	usr.update_mouse_pointer()
 
 /obj/item/proc/apply_outline(outline_color = null)
 	if(((get(src, /mob) != usr) && !src.loc.atom_storage && !(src.item_flags & IN_STORAGE)) || QDELETED(src) || isobserver(usr)) //cancel if the item isn't in an inventory, is being deleted, or if the person hovering is a ghost (so that people spectating you don't randomly make your items glow)

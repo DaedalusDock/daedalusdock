@@ -104,6 +104,7 @@
 #include "code\__DEFINES\injection.dm"
 #include "code\__DEFINES\input.dm"
 #include "code\__DEFINES\instruments.dm"
+#include "code\__DEFINES\interactable.dm"
 #include "code\__DEFINES\interaction_flags.dm"
 #include "code\__DEFINES\interaction_particle.dm"
 #include "code\__DEFINES\inventory.dm"

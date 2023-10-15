@@ -172,6 +172,8 @@
 	var/datum/storage/atom_storage
 	/// How this atom should react to having its astar blocking checked
 	var/can_astar_pass = CANASTARPASS_DENSITY
+	/// !DO NOT DIRECTLY EDIT! Can mobs "interact" with this item? THIS IS ONLY USED FOR MOUSE ICONS. SEE interactables.dm.
+	var/is_mouseover_interactable
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -2094,7 +2096,15 @@
 	return TRUE
 
 /atom/MouseEntered(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	. = !(1 || ..())
 	SSmouse_entered.hovers[usr.client] = src
+	SSmouse_entered.sustained_hovers[usr.client] = src
+
+/atom/MouseExited(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	. = !(1 || ..())
+	SSmouse_entered.sustained_hovers[usr.client] = null
 
 /// Fired whenever this atom is the most recent to be hovered over in the tick.
 /// Preferred over MouseEntered if you do not need information such as the position of the mouse.
@@ -2105,6 +2115,9 @@
 	var/mob/user = client?.mob
 	if (isnull(user))
 		return
+
+	if(is_mouseover_interactable && user.can_interact_with(src))
+		user.update_mouse_pointer(); \
 
 	// Screentips
 	var/datum/hud/active_hud = user.hud_used

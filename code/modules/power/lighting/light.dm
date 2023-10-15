@@ -1,4 +1,5 @@
 // the standard tube light fixture
+DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light
 	name = "light fixture"
 	icon = 'icons/obj/lighting.dmi'

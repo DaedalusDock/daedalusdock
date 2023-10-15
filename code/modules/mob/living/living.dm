@@ -2369,12 +2369,20 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/has_mouth()
 	return TRUE
 
-/mob/living/get_mouse_pointer_icon()
-	. = ..()
-	if(client.is_mouseover_item && (mobility_flags & MOBILITY_PICKUP))
-		. = 'icons/effects/mouse_pointers/interact.dmi'
-
+/mob/living/get_mouse_pointer_icon(check_sustained)
 	if(istype(loc, /obj/vehicle/sealed))
 		var/obj/vehicle/sealed/E = loc
 		if(E.mouse_pointer)
-			. = E.mouse_pointer
+			return E.mouse_pointer
+
+	var/atom/A = SSmouse_entered.sustained_hovers[client]
+	if(A?.is_mouseover_interactable && (mobility_flags & MOBILITY_USE) && can_interact_with(A))
+		if(isitem(A))
+			if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+				return MOUSE_ICON_HOVERING_INTERACTABLE
+		else
+			return MOUSE_ICON_HOVERING_INTERACTABLE
+
+	var/obj/item/I = get_active_held_item()
+	if(I && !(I.item_flags & (ABSTRACT|HAND_ITEM)))
+		return MOUSE_ICON_HOVERING_INTERACTABLE

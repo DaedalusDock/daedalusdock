@@ -29,6 +29,7 @@
 	smoothing_groups = SMOOTH_GROUP_TABLES
 	canSmoothWith = SMOOTH_GROUP_TABLES
 	flags_1 = BUMP_PRIORITY_1
+	mouse_drop_pointer = TRUE
 
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods

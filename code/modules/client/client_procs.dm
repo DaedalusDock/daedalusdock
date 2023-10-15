@@ -401,6 +401,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	// Initialize stat panel
 	stat_panel.initialize(
+		assets = list(get_asset_datum(/datum/asset/simple/namespaced/cursors)),
 		inline_html = file2text('html/statbrowser.html'),
 		inline_js = file2text('html/statbrowser.js'),
 		inline_css = file2text('html/statbrowser.css'),
@@ -624,6 +625,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	active_mousedown_item = null
 	SSambience.remove_ambience_client(src)
 	SSmouse_entered.hovers -= src
+	SSmouse_entered.sustained_hovers -= src
 	SSping.currentrun -= src
 	QDEL_NULL(view_size)
 	QDEL_NULL(void)
@@ -957,9 +959,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/list/modifiers = params2list(params)
 
 	var/button_clicked = LAZYACCESS(modifiers, "button")
-	
+
 	var/dragged = LAZYACCESS(modifiers, DRAG)
-	if(dragged && button_clicked != dragged) 
+	if(dragged && button_clicked != dragged)
 		return
 
 	if (object && IS_WEAKREF_OF(object, middle_drag_atom_ref) && button_clicked == LEFT_CLICK)

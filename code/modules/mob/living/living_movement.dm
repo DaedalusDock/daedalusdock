@@ -1,5 +1,7 @@
 /mob/living/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
+	if(client)
+		update_mouse_pointer()
 	update_turf_movespeed(loc)
 	if(HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY))
 		if(!isgroundlessturf(loc))

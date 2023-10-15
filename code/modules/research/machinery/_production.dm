@@ -2,6 +2,7 @@
 #define MODE_BUILD 0
 #define MAX_QUEUE_LEN 5
 
+DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production
 	name = "technology fabricator"
 	desc = "Makes researched and prototype items with materials and energy."

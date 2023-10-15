@@ -168,6 +168,8 @@
 	if(I.pulledby)
 		I.pulledby.stop_pulling()
 	update_held_items()
+	if(hand_index == active_hand_index)
+		update_mouse_pointer()
 	I.pixel_x = I.base_pixel_x
 	I.pixel_y = I.base_pixel_y
 	return hand_index

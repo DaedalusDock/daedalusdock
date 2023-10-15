@@ -91,7 +91,7 @@ li a:hover:not(.active) {
 	text-decoration: none;
 	font-size: 12px;
 	margin: 0;
-	cursor: pointer;
+	cursor: url("link_select.cur"), pointer;
 	transition-duration: 100ms;
 	order: 3;
 	min-width: 40px;
@@ -203,7 +203,7 @@ li a:hover:not(.active) {
 	padding: 7px 14px;
 	color: black;
 	text-decoration: none;
-	cursor: pointer;
+	cursor: url("link_select.cur"), pointer;
 	font-size: 13px;
 	margin: 2px 2px;
 }

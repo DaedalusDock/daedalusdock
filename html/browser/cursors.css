@@ -8,6 +8,7 @@
 	cursor: url("disabled.cur"), auto;
 }
 
+
 a:hover
 {
 	cursor: url("link_select.cur"), auto;

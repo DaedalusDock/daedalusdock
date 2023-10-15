@@ -1,3 +1,4 @@
+DEFINE_INTERACTABLE(/mob/living)
 /mob/living
 	see_invisible = SEE_INVISIBLE_LIVING
 	sight = 0

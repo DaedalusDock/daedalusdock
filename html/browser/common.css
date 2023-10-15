@@ -394,7 +394,7 @@ div.notice
 
 .slider {
   position: absolute;
-  cursor: pointer;
+  cursor: url("link_select.cur"), pointer;
   top: 0;
   left: 0;
   right: 0;

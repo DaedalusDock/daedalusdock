@@ -1,5 +1,6 @@
 #define LOCKER_FULL -1
 
+DEFINE_INTERACTABLE(/obj/structure/closet)
 /obj/structure/closet
 	name = "closet"
 	desc = "It's a basic storage unit."

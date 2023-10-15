@@ -1,6 +1,7 @@
 GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/effects/fire.dmi', "fire"))
 GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons/effects/welding_effect.dmi', "welding_sparks", GASFIRE_LAYER, ABOVE_LIGHTING_PLANE))
 
+DEFINE_INTERACTABLE(/obj/item)
 /// Anything you can pick up and hold.
 /obj/item
 	name = "item"
@@ -12,9 +13,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	mouse_drop_pointer = MOUSE_ACTIVE_POINTER
 	///the icon to indicate this object is being dragged
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
-
-	// We are not using DEFINE_INTERACTABLE because we want to ignore items in our storage and such.
-	is_mouseover_interactable = TRUE
 
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 		IF YOU ADD MORE ICON CRAP TO THIS
@@ -1006,10 +1004,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 			else
 				apply_outline() //if the player's alive and well we send the command with no color set, so it uses the theme's color
 
-	// We are not using DEFINE_INTERACTABLE because we want to ignore items in our storage and such.
-	else if(usr.client && get_dist(usr, src) <= 1)
-		usr.update_mouse_pointer()
-
 /obj/item/MouseDrag(over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()
 	deltimer(tip_timer)
@@ -1024,7 +1018,6 @@ GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons
 	deltimer(tip_timer) //delete any in-progress timer if the mouse is moved off the item before it finishes
 	closeToolTip(usr)
 	remove_filter("hover_outline")
-	usr.update_mouse_pointer()
 
 /obj/item/proc/apply_outline(outline_color = null)
 	if(((get(src, /mob) != usr) && !src.loc.atom_storage && !(src.item_flags & IN_STORAGE)) || QDELETED(src) || isobserver(usr)) //cancel if the item isn't in an inventory, is being deleted, or if the person hovering is a ghost (so that people spectating you don't randomly make your items glow)

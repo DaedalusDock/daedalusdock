@@ -2117,7 +2117,7 @@
 		return
 
 	if(is_mouseover_interactable && user.can_interact_with(src))
-		user.update_mouse_pointer(); \
+		user.update_mouse_pointer()
 
 	// Screentips
 	var/datum/hud/active_hud = user.hud_used

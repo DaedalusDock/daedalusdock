@@ -24,6 +24,7 @@
 	category = list(DCAT_FRAME)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
+DEFINE_INTERACTABLE(/obj/machinery/light_switch)
 /obj/machinery/light_switch
 	name = "light switch"
 	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'

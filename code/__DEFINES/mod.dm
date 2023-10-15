@@ -43,6 +43,6 @@
 #define MODLINK_FREQ_CENTCOM "CC"
 
 /// Global list of all /datum/mod_theme
-GLOBAL_LIST_INIT(mod_themes, setup_mod_themes())
+GLOBAL_LIST_EMPTY(mod_themes)
 /// Global list of all ids associated to a /datum/mod_link instance
 GLOBAL_LIST_EMPTY(mod_link_ids)

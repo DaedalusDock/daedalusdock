@@ -673,6 +673,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// trait denoting something is being risen up by a table
 #define TRAIT_TABLE_RISEN "table_risen"
 
+/// Whether or not the user is in a MODlink call, prevents making more calls
+#define TRAIT_IN_CALL "in_call"
+
 // common trait sources
 #define TRAIT_GENERIC "generic"
 #define UNCONSCIOUS_TRAIT "unconscious"

@@ -11645,9 +11645,7 @@
 	pixel_x = -5;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/glass/bottle/formaldehyde{
-	pixel_x = 1
-	},
+/obj/item/reagent_containers/glass/bottle/space_cleaner,
 /obj/structure/sign/warning/chemdiamond{
 	pixel_y = 32
 	},

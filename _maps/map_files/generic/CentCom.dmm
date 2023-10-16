@@ -11884,10 +11884,7 @@
 	pixel_x = -6;
 	pixel_y = 5
 	},
-/obj/item/reagent_containers/glass/bottle/formaldehyde{
-	pixel_x = 8;
-	pixel_y = 4
-	},
+/obj/item/reagent_containers/glass/bottle/space_cleaner,
 /turf/open/floor/mineral/plastitanium/red,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
 "II" = (

@@ -513,8 +513,8 @@
 		/obj/item/reagent_containers/glass/bottle/mutagen = 1,
 		/obj/item/reagent_containers/glass/bottle/sugar = 1,
 		/obj/item/reagent_containers/glass/bottle/plasma = 1,
-		/obj/item/reagent_containers/glass/bottle/synaptizine = 1,
-		/obj/item/reagent_containers/glass/bottle/formaldehyde = 1)
+		/obj/item/reagent_containers/glass/bottle/synaptizine = 1
+	)
 
 // ----------------------------
 // Disk """fridge"""

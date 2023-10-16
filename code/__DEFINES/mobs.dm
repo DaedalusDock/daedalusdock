@@ -446,8 +446,6 @@
 //CHEMICAL EFFECTS
 /// Prevents damage from freezing. Boolean.
 #define CE_CRYO "cryo"
-/// Organ preservation effects like formaldehyde. Boolean.
-#define CE_ORGAN_PRESERVATION "formaldehyde"
 /// Inaprovaline
 #define CE_STABLE "stable"
 /// Breathing depression, makes you need more air

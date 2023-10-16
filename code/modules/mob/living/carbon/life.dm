@@ -286,8 +286,6 @@
 /mob/living/carbon/proc/handle_organs(delta_time, times_fired)
 	var/update
 	if(stat == DEAD)
-		if(CHEM_EFFECT_MAGNITUDE(src, CE_ORGAN_PRESERVATION)) // No organ decay if the body contains formaldehyde.
-			return
 		for(var/obj/item/organ/organ as anything in processing_organs)
 			update += organ.on_death(delta_time, times_fired) //Needed so organs decay while inside the body.
 		return

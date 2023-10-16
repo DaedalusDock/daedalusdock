@@ -73,8 +73,10 @@
 		doMove(destination)
 	else if (istype(destination, /obj/item/mmi))
 		doMove(destination)
+	else if (istype(destination, /obj/item/organ/posibrain))
+		doMove(destination)
 	else
-		CRASH("Brainmob without a container [src] attempted to move to [destination].")
+		CRASH("Brainmob without a container [src] attempted to move to destination of type [destination.type].")
 
 /mob/living/brain/update_mouse_pointer()
 	if (!client)

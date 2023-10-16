@@ -17,15 +17,6 @@
 /datum/station_trait/distant_supply_lines/on_round_start()
 	SSeconomy.pack_price_modifier *= 1.2
 
-/datum/station_trait/random_spawns
-	name = "Drive-by landing"
-	trait_type = STATION_TRAIT_NEGATIVE
-	weight = 2
-	show_in_report = TRUE
-	report_message = "Sorry for that, we missed your station by a few miles, so we just launched you towards your station in pods. Hope you don't mind!"
-	trait_to_give = STATION_TRAIT_RANDOM_ARRIVALS
-	blacklist = list(/datum/station_trait/hangover)
-
 /datum/station_trait/hangover
 	name = "Hangover"
 	trait_type = STATION_TRAIT_NEGATIVE
@@ -33,7 +24,6 @@
 	show_in_report = TRUE
 	report_message = "Ohh....Man....That mandatory office party from last shift...God that was awesome..I woke up in some random toilet 3 sectors away..."
 	trait_to_give = STATION_TRAIT_HANGOVER
-	blacklist = list(/datum/station_trait/random_spawns)
 
 /datum/station_trait/hangover/New()
 	. = ..()
@@ -157,10 +147,8 @@
 	if(!weapon_types)
 		weapon_types = list(
 			/obj/item/chair = 20,
-			/obj/item/tailclub = 10,
 			/obj/item/melee/baseball_bat = 10,
-			/obj/item/melee/chainofcommand/tailwhip = 10,
-			/obj/item/melee/chainofcommand/tailwhip/kitty = 10,
+			/obj/item/melee/chainofcommand/kitty = 10,
 			/obj/item/reagent_containers/food/drinks/bottle = 20,
 			/obj/item/reagent_containers/food/drinks/bottle/kong = 5,
 			/obj/item/switchblade/extended = 10,

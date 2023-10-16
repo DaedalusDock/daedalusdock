@@ -121,7 +121,7 @@
 		dust_mob(user, cause = "hand")
 		return
 
-	if(!user.is_mouth_covered())
+	if(user.has_mouth() && !user.is_mouth_covered())
 		if(user.combat_mode)
 			dust_mob(user,
 				span_danger("As [user] tries to take a bite out of [src] everything goes silent before [user.p_their()] body starts to glow and burst into flames before flashing to ash."),

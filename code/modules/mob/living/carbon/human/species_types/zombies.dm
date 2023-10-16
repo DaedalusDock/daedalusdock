@@ -31,9 +31,16 @@
 	disliked_food = NONE
 	liked_food = GROSS | MEAT | RAW
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | ERT_SPAWN
-	bodytemp_normal = T0C // They have no natural body heat, the environment regulates body temp
-	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_EXIST // Take damage at fire temp
-	bodytemp_cold_damage_limit = T0C + 50 // take damage below minimum movement temp
+
+
+	heat_discomfort_level = INFINITY
+	cold_discomfort_level = -(INFINITY)
+
+	bodytemp_normal = T0C
+
+	heat_level_1 = FIRE_MINIMUM_TEMPERATURE_TO_EXIST
+	heat_level_2 = FIRE_MINIMUM_TEMPERATURE_TO_EXIST + 100
+	heat_level_3 = FIRE_MINIMUM_TEMPERATURE_TO_EXIST + 200
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/zombie,
@@ -86,6 +93,9 @@
 	))
 
 	return to_add
+
+/datum/species/zombie/body_temperature_core()
+	return
 
 /datum/species/zombie/infectious
 	name = "\improper Infectious Zombie"

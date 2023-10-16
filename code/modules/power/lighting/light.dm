@@ -21,16 +21,16 @@
 	///Amount of power used
 	var/static_power_used = 0
 	///The outer radius of the light's... light.
-	var/bulb_outer_range = 7
+	var/bulb_outer_range = 9
 	///The inner radius of the bulb's light, where it is at maximum brightness
-	var/bulb_inner_range = 1.5
+	var/bulb_inner_range = 1.8
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 0.85
+	var/bulb_power = 0.6
 	///The falloff of the emitted light. Adjust until it looks good.
-	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/bulb_falloff = 1.85
 
 	///Default colour of the light.
-	var/bulb_colour = "#f0fafa"
+	var/bulb_colour = "#dfac72"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/status = LIGHT_OK
 	///Should we flicker?
@@ -56,10 +56,10 @@
 	///Inner, brightest radius of the nightshift light
 	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.7
+	var/nightshift_light_power = 0.5
 	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#FFDDCC"
-	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/nightshift_light_color = "#dfac72"
+	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE

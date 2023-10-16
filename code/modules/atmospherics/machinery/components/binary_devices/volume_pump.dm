@@ -39,7 +39,7 @@
 		/obj/item/circuit_component/atmos_volume_pump,
 	))
 
-/obj/machinery/atmospherics/components/binary/volume_pump/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/volume_pump/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		set_on(!on)
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)

@@ -702,11 +702,19 @@ structure_check() searches for nearby cultist structures required for the invoca
 		fail_invoke()
 		log_game("Summon Cultist rune failed - target died")
 		return
-	if(cultist_to_summon.pulledby || cultist_to_summon.buckled)
-		to_chat(user, "<span class='cult italic'>[cultist_to_summon] is being held in place!</span>")
-		fail_invoke()
-		log_game("Summon Cultist rune failed - target restrained")
-		return
+	if(LAZYLEN(cultist_to_summon.grabbed_by) || cultist_to_summon.buckled)
+		var/grab_check = 0
+		if(!cultist_to_summon.buckled)
+			for(var/obj/item/hand_item/grab/G in cultist_to_summon.grabbed_by)
+				if(G.current_grab.stop_move)
+					grab_check++
+
+		if(grab_check == 0)
+			to_chat(user, "<span class='cult italic'>[cultist_to_summon] is being held in place!</span>")
+			fail_invoke()
+			log_game("Summon Cultist rune failed - target restrained")
+			return
+
 	if(!IS_CULTIST(cultist_to_summon))
 		to_chat(user, "<span class='cult italic'>[cultist_to_summon] is not a follower of the Geometer!</span>")
 		fail_invoke()

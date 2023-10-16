@@ -144,6 +144,8 @@
 	medium_burn_msg = ROBOTIC_MEDIUM_BURN_MSG
 	heavy_burn_msg = ROBOTIC_HEAVY_BURN_MSG
 
+	dismemberable = FALSE
+
 	var/wired = FALSE
 	var/obj/item/stock_parts/cell/cell = null
 

@@ -218,11 +218,6 @@
 	id = "comp_split"
 	build_path = /obj/item/circuit_component/split
 
-/datum/design/component/pull
-	name = "Pull Component"
-	id = "comp_pull"
-	build_path = /obj/item/circuit_component/pull
-
 /datum/design/component/soundemitter
 	name = "Sound Emitter Component"
 	id = "comp_soundemitter"

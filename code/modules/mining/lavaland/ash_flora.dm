@@ -233,7 +233,7 @@
 
 /obj/item/food/grown/ash_flora/seraka
 	name = "seraka cap"
-	desc = "Small, deeply flavourful mushrooms originally native to Tizira."
+	desc = "Small, deeply flavourful mushrooms."
 	icon_state = "seraka_cap"
 	seed = /obj/item/seeds/lavaland/seraka
 	wine_power = 40
@@ -345,7 +345,7 @@
 
 /obj/item/seeds/lavaland/seraka
 	name = "pack of seraka mycelium"
-	desc = "This mycelium grows into seraka mushrooms, a species of savoury mushrooms originally native to Tizira used in food and traditional medicine."
+	desc = "This mycelium grows into seraka mushrooms, a species of savoury mushrooms used in food and traditional medicine."
 	icon_state = "mycelium-seraka"
 	species = "seraka"
 	plantname = "Seraka Mushrooms"

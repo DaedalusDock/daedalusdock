@@ -124,6 +124,8 @@
 	var/artery_name = "artery"
 	/// The name of the tendon this limb has
 	var/tendon_name = "tendon"
+	/// The name of the joint you can dislocate
+	var/joint_name = "joint"
 	/// The name for the amputation point of the limb
 	var/amputation_point
 	/// Surgical stage. Magic BS. Do not touch
@@ -187,8 +189,6 @@
 	/// How much generic bleedstacks we have on this bodypart
 	var/generic_bleedstacks
 
-	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
-	var/obj/item/hand_item/self_grasp/grasped_by
 	/// If something is currently supporting this limb as a splint
 	var/obj/item/splint
 	/// The bandage that may-or-may-not be absorbing our blood
@@ -262,7 +262,7 @@
 	. = ..()
 	. += mob_examine()
 
-/obj/item/bodypart/proc/mob_examine(hallucinating, covered)
+/obj/item/bodypart/proc/mob_examine(hallucinating, covered, just_wounds_please)
 	. = list()
 
 	if(covered)
@@ -329,6 +329,9 @@
 					flavor_text += "several [wound]s"
 				if(6 to INFINITY)
 					flavor_text += "a ton of [wound]\s"
+
+	if(just_wounds_please)
+		return english_list(flavor_text)
 
 	if(owner)
 		if(current_damage)
@@ -571,7 +574,7 @@
 		create_wound(WOUND_BURN, burn, update_damage = FALSE)
 
 	//Initial pain spike
-	owner?.apply_pain(0.6*burn + 0.4*brute, body_zone, updating_health = FALSE)
+	owner?.apply_pain(0.8*burn + 0.6*brute, body_zone, updating_health = FALSE)
 
 	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
 		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))
@@ -1014,9 +1017,6 @@
 			cached_bleed_rate += round(iter_wound.damage / 40, DAMAGE_PRECISION)
 			bodypart_flags |= BP_BLEEDING
 
-	if(!cached_bleed_rate)
-		QDEL_NULL(grasped_by)
-
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?
 	if(cached_bleed_rate != old_bleed_rate)
 		update_part_wound_overlay()
@@ -1028,8 +1028,9 @@
 	var/bleed_rate = cached_bleed_rate
 	if(owner.body_position == LYING_DOWN)
 		bleed_rate *= 0.75
-	if(grasped_by)
-		bleed_rate *= 0.7
+
+	if(HAS_TRAIT(src, TRAIT_BODYPART_GRABBED))
+		bleed_rate *= 0.4
 
 	if(bandage)
 		bleed_rate *= bandage.absorption_rate_modifier
@@ -1162,15 +1163,12 @@
 		O.inherit_color(force = TRUE)
 
 ///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
-/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)
-	var/icon_holder
-	if(greyscale)
-		icon_greyscale = icon
-		icon_holder = icon
+/obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic, update_owner = TRUE)
+	if(!isnull(greyscale) && greyscale == TRUE)
+		icon_greyscale = icon || icon_greyscale
 		should_draw_greyscale = TRUE
-	else
-		icon_static = icon
-		icon_holder = icon
+	else if(greyscale == FALSE)
+		icon_static = icon || icon_static
 		should_draw_greyscale = FALSE
 
 	if(id) //limb_id should never be falsey
@@ -1179,15 +1177,15 @@
 	if(!isnull(dimorphic))
 		is_dimorphic = dimorphic
 
-	if(owner)
+	if(owner && update_owner)
 		owner.update_body_parts()
 	else
 		update_icon_dropped()
 
 	//This foot gun needs a safety
-	if(!icon_exists(icon_holder, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
+	if(!icon_exists(should_draw_greyscale ? icon_greyscale : icon_static, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
 		reset_appearance()
-		stack_trace("change_appearance([icon], [id], [greyscale], [dimorphic]) generated null icon")
+		stack_trace("change_appearance([icon || "NULL"], [id || "NULL"], [greyscale|| "NULL"], [dimorphic|| "NULL"]) generated null icon. Appearance not applied.")
 
 ///Resets the base appearance of a limb to it's default values.
 /obj/item/bodypart/proc/reset_appearance()
@@ -1244,7 +1242,7 @@
 		brute_damage *= 2
 		burn_damage *= 2
 
-	receive_damage(brute_damage, burn_damage)
+	receive_damage(brute_damage, burn_damage, breaks_bones = FALSE)
 	do_sparks(number = 1, cardinal_only = FALSE, source = owner)
 	ADD_TRAIT(src, TRAIT_PARALYSIS, EMP_TRAIT)
 	addtimer(CALLBACK(src, PROC_REF(un_paralyze)), time_needed)
@@ -1305,6 +1303,9 @@
 
 	if(check_bones() & CHECKBONES_BROKEN)
 		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Fractured</span>" : "Fractured"
+
+	if(bodypart_flags & BP_DISLOCATED)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Dislocated</span>" : "Dislocated"
 
 	if (length(cavity_items) || length(embedded_objects))
 		var/unknown_body = 0
@@ -1374,3 +1375,42 @@
 			else
 				user.visible_message(span_notice("[user] removes [removed] from [owner]'s [plaintext_zone]."))
 		return
+
+/obj/item/bodypart/proc/inspect(mob/user)
+	if(is_stump)
+		to_chat(user, span_notice("[owner] is missing that bodypart."))
+		return
+
+	user.visible_message(span_notice("[user] starts inspecting [owner]'s [plaintext_zone] carefully."))
+	if(LAZYLEN(wounds))
+		to_chat(user, span_warning("You find [mob_examine(just_wounds_please = TRUE)]."))
+		var/list/stuff = list()
+		for(var/datum/wound/wound as anything in wounds)
+			if(LAZYLEN(wound.embedded_objects))
+				stuff |= wound.embedded_objects
+
+		if(length(stuff))
+			to_chat(user, span_warning("There's [english_list(stuff)] sticking out of [owner]'s [plaintext_zone]."))
+	else
+		to_chat(user, span_notice("You find no visible wounds."))
+
+	to_chat(user, span_notice("Checking skin now..."))
+
+	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
+		return
+
+	to_chat(user, span_notice("Checking bones now..."))
+	if(!do_after(user, owner, 1 SECOND, DO_PUBLIC))
+		return
+
+	if(bodypart_flags & BP_BROKEN_BONES)
+		to_chat(user, span_warning("The [encased ? encased : "bone in the [plaintext_zone]"] moves slightly when you poke it!"))
+		owner.apply_pain(40, body_zone, "Your [plaintext_zone] hurts where it's poked.")
+	else
+		to_chat(user, span_notice("The [encased ? encased : "bones in the [plaintext_zone]"] seem to be fine."))
+
+	if(bodypart_flags & BP_TENDON_CUT)
+		to_chat(user, span_warning("The tendons in the [plaintext_zone] are severed!"))
+	if(bodypart_flags & BP_DISLOCATED)
+		to_chat(user, span_warning("The [joint_name] is dislocated!"))
+	return TRUE

@@ -37,6 +37,7 @@
 		return wear_mask
 	if(check_glasses && glasses && (glasses.flags_cover & GLASSESCOVERSEYES))
 		return glasses
+
 /mob/living/carbon/is_pepper_proof(check_head = TRUE, check_mask = TRUE)
 	if(check_head &&(head?.flags_cover & PEPPERPROOF))
 		return head
@@ -157,7 +158,7 @@
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	return FALSE
+	return . || FALSE
 
 
 /mob/living/carbon/attack_paw(mob/living/carbon/human/user, list/modifiers)
@@ -289,8 +290,7 @@
 			COMBAT_MESSAGE_RANGE,
 		)
 		log_combat(src, target, "shoved", "knocking them down")
-		target.pulledby?.stop_pulling()
-		target.stop_pulling()
+		target.release_all_grabs()
 		return
 
 	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
@@ -362,10 +362,9 @@
 		if(undergoing_cardiac_arrest())
 			set_heartattack(FALSE)
 		var/list/shocking_queue = list()
-		if(iscarbon(pulling) && source != pulling)
-			shocking_queue += pulling
-		if(iscarbon(pulledby) && source != pulledby)
-			shocking_queue += pulledby
+		shocking_queue += get_all_grabbed_movables()
+		shocking_queue -= source
+
 		if(iscarbon(buckled) && source != buckled)
 			shocking_queue += buckled
 		for(var/mob/living/carbon/carried in buckled_mobs)
@@ -585,6 +584,8 @@
 
 /mob/living/carbon/can_hear()
 	. = FALSE
+	if(HAS_TRAIT(src, TRAIT_NOEARS) && !HAS_TRAIT(src, TRAIT_DEAF))
+		return TRUE
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	if(ears && !HAS_TRAIT(src, TRAIT_DEAF))
 		. = TRUE
@@ -600,77 +601,3 @@
 		var/obj/item/bodypart/limb = _limb
 		if (!IS_ORGANIC_LIMB(limb))
 			. += (limb.brute_dam) + (limb.burn_dam)
-
-/mob/living/carbon/grabbedby(mob/living/carbon/user, supress_message = FALSE)
-	if(user != src)
-		return ..()
-
-	var/obj/item/bodypart/grasped_part = get_bodypart(zone_selected)
-	if(!grasped_part?.get_modified_bleed_rate())
-		return
-	var/starting_hand_index = active_hand_index
-	if(starting_hand_index == grasped_part.held_index)
-		to_chat(src, span_danger("You can't grasp your [grasped_part.name] with itself!"))
-		return
-
-	to_chat(src, span_warning("You try grasping at your [grasped_part.name], trying to stop the bleeding..."))
-	if(!do_after(src, time = 0.75 SECONDS))
-		to_chat(src, span_danger("You fail to grasp your [grasped_part.name]."))
-		return
-
-	var/obj/item/hand_item/self_grasp/grasp = new
-	if(starting_hand_index != active_hand_index || !put_in_active_hand(grasp))
-		to_chat(src, span_danger("You fail to grasp your [grasped_part.name]."))
-		QDEL_NULL(grasp)
-		return
-	grasp.grasp_limb(grasped_part)
-
-/// an abstract item representing you holding your own limb to staunch the bleeding, see [/mob/living/carbon/proc/grabbedby] will probably need to find somewhere else to put this.
-/obj/item/hand_item/self_grasp
-	name = "self-grasp"
-	desc = "Sometimes all you can do is slow the bleeding."
-	icon_state = "latexballon"
-	inhand_icon_state = "nothing"
-	slowdown = 0.5
-	item_flags = DROPDEL | ABSTRACT | NOBLUDGEON | SLOWS_WHILE_IN_HAND | HAND_ITEM
-	/// The bodypart we're staunching bleeding on, which also has a reference to us in [/obj/item/bodypart/var/grasped_by]
-	var/obj/item/bodypart/grasped_part
-	/// The carbon who owns all of this mess
-	var/mob/living/carbon/user
-
-/obj/item/hand_item/self_grasp/Destroy()
-	if(user)
-		to_chat(user, span_warning("You stop holding onto your[grasped_part ? " [grasped_part.name]" : "self"]."))
-		UnregisterSignal(user, COMSIG_PARENT_QDELETING)
-	if(grasped_part)
-		UnregisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING))
-		grasped_part.grasped_by = null
-		grasped_part.refresh_bleed_rate()
-	grasped_part = null
-	user = null
-	return ..()
-
-/// The limb or the whole damn person we were grasping got deleted or dismembered, so we don't care anymore
-/obj/item/hand_item/self_grasp/proc/qdel_void()
-	SIGNAL_HANDLER
-	qdel(src)
-
-/// We've already cleared that the bodypart in question is bleeding in [the place we create this][/mob/living/carbon/proc/grabbedby], so set up the connections
-/obj/item/hand_item/self_grasp/proc/grasp_limb(obj/item/bodypart/grasping_part)
-	user = grasping_part.owner
-	if(!istype(user))
-		stack_trace("[src] attempted to try_grasp() with [istype(user, /datum) ? user.type : isnull(user) ? "null" : user] user")
-		qdel(src)
-		return
-
-	grasped_part = grasping_part
-	grasped_part.grasped_by = src
-	grasped_part.refresh_bleed_rate()
-	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(qdel_void))
-	RegisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING), PROC_REF(qdel_void))
-
-	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.name], trying to stop the bleeding."), span_notice("You grab hold of your [grasped_part.name] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
-	playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
-	return TRUE
-
-#undef SHAKE_ANIMATION_OFFSET

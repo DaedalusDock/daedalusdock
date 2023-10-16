@@ -73,8 +73,12 @@
 		if(!ventcrawler && living_caller.mob_size != MOB_SIZE_TINY)
 			return FALSE
 
-	if(caller?.pulling)
-		return CanAStarPass(ID, to_dir, caller.pulling, no_id = no_id)
+	if(isliving(caller))
+		var/mob/living/L = caller
+		var/list/grabs = L.get_active_grabs()
+		for(var/obj/item/hand_item/grab/G in grabs)
+			if(!CanAStarPass(ID, to_dir, G.affecting, no_id = no_id))
+				return FALSE
 	return TRUE //diseases, stings, etc can pass
 
 

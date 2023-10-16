@@ -53,7 +53,7 @@
 
 
 /datum/reagent/mutationtoxin/lizard
-	name = "Unathi Mutation Toxin"
+	name = "Jinan Mutation Toxin"
 	description = "A lizarding toxin."
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/lizard

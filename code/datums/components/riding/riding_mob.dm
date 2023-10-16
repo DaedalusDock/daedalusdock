@@ -13,7 +13,7 @@
 
 	. = ..()
 	var/mob/living/living_parent = parent
-	living_parent.stop_pulling() // was only used on humans previously, may change some other behavior
+	living_parent.release_all_grabs() // was only used on humans previously, may change some other behavior
 	log_riding(living_parent, riding_mob)
 	riding_mob.set_glide_size(living_parent.glide_size)
 	handle_vehicle_offsets(living_parent.dir)

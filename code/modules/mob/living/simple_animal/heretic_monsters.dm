@@ -219,7 +219,7 @@
 /mob/living/simple_animal/hostile/heretic_summon/armsy/has_gravity(turf/T)
 	return TRUE
 
-/mob/living/simple_animal/hostile/heretic_summon/armsy/can_be_pulled()
+/mob/living/simple_animal/hostile/heretic_summon/armsy/can_be_grabbed(mob/living/grabber, target_zone, force)
 	return FALSE
 
 /// Updates every body in the chain to force move onto a single tile.

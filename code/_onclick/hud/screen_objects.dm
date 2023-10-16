@@ -395,10 +395,12 @@
 /atom/movable/screen/pull/Click()
 	if(isobserver(usr))
 		return
-	usr.stop_pulling()
+	if(isliving(usr) && usr == hud.mymob)
+		var/mob/living/L = usr
+		L.release_all_grabs()
 
 /atom/movable/screen/pull/update_icon_state()
-	icon_state = "[base_icon_state][hud?.mymob?.pulling ? null : 0]"
+	icon_state = "[base_icon_state][LAZYLEN(hud?.mymob?:get_active_grabs()) ? null : 0]"
 	return ..()
 
 /atom/movable/screen/resist
@@ -889,3 +891,11 @@
 		icon_state = "no_walk1"
 	else
 		icon_state = "no_walk0"
+
+/atom/movable/screen/pain
+	name = "pain overlay"
+	icon_state = ""
+	layer = UI_DAMAGE_LAYER
+	plane = FULLSCREEN_PLANE
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
+

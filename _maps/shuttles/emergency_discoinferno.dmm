@@ -192,7 +192,6 @@
 /area/shuttle/escape)
 "L" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/drinks/bottle/lizardwine,
 /turf/open/floor/wood,
 /area/shuttle/escape)
 "M" = (

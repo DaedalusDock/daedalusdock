@@ -459,7 +459,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/can_interact(mob/user)
 	return ..() && user.loc != src
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/unary/cryo_cell/CtrlClick(mob/user, list/params)
 	if(can_interact(user) && !state_open)
 		set_on(!on)
 	return ..()

@@ -43,15 +43,17 @@
 //These procs fetch a cumulative total damage from all bodyparts
 /mob/living/carbon/getBruteLoss()
 	var/amount = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		if(!IS_ORGANIC_LIMB(BP))
+			continue
 		amount += BP.brute_dam
 	return amount
 
 /mob/living/carbon/getFireLoss()
 	var/amount = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		if(!IS_ORGANIC_LIMB(BP))
+			continue
 		amount += BP.burn_dam
 	return amount
 
@@ -94,6 +96,10 @@
 
 	var/list/pick_organs = shuffle(processing_organs)
 	// Prioritize damaging our filtration organs first.
+	var/obj/item/organ/kidneys/kidneys = organs_by_slot[ORGAN_SLOT_KIDNEYS]
+	if(kidneys)
+		pick_organs -= kidneys
+		pick_organs.Insert(1, kidneys)
 	var/obj/item/organ/liver/liver = organs_by_slot[ORGAN_SLOT_LIVER]
 	if(liver)
 		pick_organs -= liver
@@ -168,6 +174,9 @@
 		return O.damage
 
 /mob/living/carbon/getBrainLoss()
+	if(!needs_organ(ORGAN_SLOT_BRAIN))
+		return 0
+
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	return B ? B.damage : maxHealth
 
@@ -275,6 +284,8 @@
 		update_damage_overlays()
 
 /mob/living/carbon/getOxyLoss()
+	if(HAS_TRAIT(src, TRAIT_NOBREATH))
+		return 0
 	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
 	if(!L || (L.organ_flags & ORGAN_DEAD))
 		return maxHealth / 2

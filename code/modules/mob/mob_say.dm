@@ -5,6 +5,10 @@
 	set name = "Say"
 	set category = "IC"
 	set instant = TRUE
+
+	if(HAS_TRAIT(src, TRAIT_NO_VOLUNTARY_SPEECH))
+		return
+
 	//PARIAH EDIT ADDITION
 	if(typing_indicator)
 		set_typing_indicator(FALSE)

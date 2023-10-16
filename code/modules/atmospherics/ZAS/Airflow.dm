@@ -36,8 +36,6 @@ This entire system is an absolute mess.
 /mob/living/airflow_stun(delta_p)
 	if(stat == 2)
 		return FALSE
-	if(pulledby || pulling)
-		return FALSE
 	if(last_airflow_stun > world.time - zas_settings.airflow_stun_cooldown)
 		return FALSE
 	if(!(status_flags & CANSTUN) && !(status_flags & CANKNOCKDOWN))

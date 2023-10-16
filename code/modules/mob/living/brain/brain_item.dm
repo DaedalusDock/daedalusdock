@@ -51,35 +51,39 @@
 	. = ..()
 	set_max_health(maxHealth)
 
-/obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0,no_id_transfer = FALSE)
+/obj/item/organ/brain/PreRevivalInsertion(special)
+	if(owner.mind && owner.mind.has_antag_datum(/datum/antagonist/changeling) && !special) //congrats, you're trapped in a body you don't control
+		return
+
+	if(brainmob)
+		if(owner.key)
+			owner.ghostize()
+
+		if(brainmob.mind)
+			brainmob.mind.transfer_to(owner)
+		else
+			owner.key = brainmob.key
+
+		owner.set_suicide(brainmob.suiciding)
+
+		QDEL_NULL(brainmob)
+
+	else
+		owner.set_suicide(suicided)
+
+/obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0)
 	. = ..()
 	if(!.)
 		return
 
 	name = "brain"
 
-	if(C.mind && C.mind.has_antag_datum(/datum/antagonist/changeling) && !no_id_transfer) //congrats, you're trapped in a body you don't control
+	if(C.mind && C.mind.has_antag_datum(/datum/antagonist/changeling) && !special) //congrats, you're trapped in a body you don't control
 		if(brainmob && !(C.stat == DEAD || (HAS_TRAIT(C, TRAIT_DEATHCOMA))))
 			to_chat(brainmob, span_danger("You can't feel your body! You're still just a brain!"))
 		forceMove(C)
 		C.update_body_parts()
 		return
-
-	if(brainmob)
-		if(C.key)
-			C.ghostize()
-
-		if(brainmob.mind)
-			brainmob.mind.transfer_to(C)
-		else
-			C.key = brainmob.key
-
-		C.set_suicide(brainmob.suiciding)
-
-		QDEL_NULL(brainmob)
-
-	else
-		C.set_suicide(suicided)
 
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
@@ -89,7 +93,7 @@
 	//Update the body's icon so it doesnt appear debrained anymore
 	C.update_body_parts()
 
-/obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0, no_id_transfer = FALSE)
+/obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0)
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
 	if(!QDELETED(C) && length(skillchips))
 		to_chat(C, span_notice("You feel your skillchips enable emergency power saving mode, deactivating as your brain leaves your body..."))
@@ -105,10 +109,9 @@
 		BT.on_lose(TRUE)
 		BT.owner = null
 
-	if((!gc_destroyed || (owner && !owner.gc_destroyed)) && !no_id_transfer)
+	if((!QDELING(src) || !QDELETED(owner)) && !special)
 		transfer_identity(C)
 	C.update_body_parts()
-	REMOVE_TRAIT(C, TRAIT_KNOCKEDOUT, BRAIN_TRAIT)
 
 /obj/item/organ/brain/proc/transfer_identity(mob/living/L)
 	name = "[L.name]'s brain"
@@ -284,9 +287,9 @@
 		oxygen_reserve = min(initial(oxygen_reserve), oxygen_reserve+1)
 
 	if(!oxygen_reserve) //(hardcrit)
-		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, BRAIN_TRAIT)
+		add_organ_trait(TRAIT_KNOCKEDOUT)
 	else
-		REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, BRAIN_TRAIT)
+		remove_organ_trait(TRAIT_KNOCKEDOUT)
 
 	var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || CHEM_EFFECT_MAGNITUDE(owner, CE_BRAIN_REGEN) || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
 	var/damprob
@@ -418,8 +421,10 @@
 	else
 		if(owner)
 			owner.revive()
+			owner.grab_ghost()
 		else if(brainmob)
 			brainmob.revive()
+			brainmob.grab_ghost()
 		return
 
 /obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)
@@ -472,7 +477,7 @@
 	name = "cortical stack"
 	desc = "A peculiarly advanced bio-electronic device that seems to hold the memories and identity of a Vox."
 	icon_state = "cortical-stack"
-	organ_flags = ORGAN_SYNTHETIC
+	organ_flags = ORGAN_SYNTHETIC|ORGAN_VITAL
 
 /obj/item/organ/brain/vox/emp_act(severity)
 	. = ..()

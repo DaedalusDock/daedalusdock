@@ -31,27 +31,14 @@
 	SHOULD_CALL_PARENT(FALSE)
 	return below.examine(user)
 
-/**
- * Prepares a moving movable to be precipitated if Move() is successful.
- * This is done in Enter() and not Entered() because there's no easy way to tell
- * if the latter was called by Move() or forceMove() while the former is only called by Move().
- */
-/turf/open/openspace/Enter(atom/movable/movable, atom/oldloc)
-	. = ..()
-	if(.)
-		//higher priority than CURRENTLY_Z_FALLING so the movable doesn't fall on Entered()
-		movable.set_currently_z_moving(CURRENTLY_Z_FALLING_FROM_MOVE)
-
 ///Makes movables fall when forceMove()'d to this turf.
 /turf/open/openspace/Entered(atom/movable/movable)
 	. = ..()
-	if(movable.set_currently_z_moving(CURRENTLY_Z_FALLING))
-		movable.zFall(falling_from_move = TRUE)
-
-/turf/open/openspace/proc/zfall_if_on_turf(atom/movable/movable)
-	if(QDELETED(movable) || movable.loc != src)
-		return
 	movable.zFall()
+
+/turf/open/openspace/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	. = ..()
+	hitting_atom.zFall()
 
 /turf/open/openspace/can_have_cabling()
 	if(locate(/obj/structure/lattice/catwalk, src))

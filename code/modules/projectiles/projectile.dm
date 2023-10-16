@@ -160,8 +160,12 @@
 	///Whether or not our bullet lacks penetrative power, and is easily stopped by armor.
 	var/weak_against_armour = FALSE
 	var/projectile_type = /obj/projectile
-	var/range = 50 //This will de-increment every step. When 0, it will deletze the projectile.
-	var/decayedRange //stores original range
+	///Sets the max range of the projectile, This will de-increment every step. When 0, it will deletze the object.
+	var/range = 50
+	///Archive of original range value.
+	var/decayedRange
+	///Total distance traveled.
+	var/distance_traveled
 	var/reflect_range_decrease = 5 //amount of original range that falls off when reflecting, so it doesn't go forever
 	var/reflectable = NONE // Can it be reflected or not?
 	// Status effects applied on hit
@@ -206,8 +210,10 @@
 	var/sharpness = NONE
 	///How much we want to drop both wound_bonus and bare_wound_bonus (to a minimum of 0 for the latter) per tile, for falloff purposes
 	var/wound_falloff_tile
-	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
-	var/embed_falloff_tile
+	///How much we want to adjust the embed_chance value, if we can embed, per tile, for falloff purposes
+	var/embed_adjustment_tile
+	///How many tiles must the projectile travel until embedding odds start being adjusted
+	var/embed_min_distance = 0
 	/// If true directly targeted turfs can be hit
 	var/can_hit_turfs = FALSE
 
@@ -224,8 +230,9 @@
 
 /obj/projectile/proc/Range()
 	range--
-	if(embedding)
-		embedding["embed_chance"] += embed_falloff_tile
+	distance_traveled++
+	if((embed_min_distance > distance_traveled) && embedding && embed_adjustment_tile)
+		embedding["embed_chance"] += embed_adjustment_tile
 	if(range <= 0 && loc)
 		on_range()
 
@@ -667,9 +674,9 @@
  * Return PROJECTILE_DELETE_WITHOUT_HITTING to delete projectile without hitting at all!
  */
 /obj/projectile/proc/prehit_pierce(atom/A)
-	if((projectile_phasing & A.pass_flags_self) && (phasing_ignore_direct_target || original != A))
+	if((projectile_phasing & (A.pass_flags_self & ~LETPASSCLICKS)) && (phasing_ignore_direct_target || original != A))
 		return PROJECTILE_PIERCE_PHASE
-	if(projectile_piercing & A.pass_flags_self)
+	if(projectile_piercing & (A.pass_flags_self & ~LETPASSCLICKS))
 		return PROJECTILE_PIERCE_HIT
 	if(ismovable(A))
 		var/atom/movable/AM = A

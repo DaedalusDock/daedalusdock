@@ -126,7 +126,7 @@
 
 			. += generate_death_examine_text()
 
-	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/brain))
+	if(get_bodypart(BODY_ZONE_HEAD) && needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
 	var/list/msg = list()
@@ -208,8 +208,13 @@
 		msg += "[t_He] look[p_s()] a little soaked.\n"
 
 
-	if(pulledby?.grab_state)
-		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
+	for(var/obj/item/hand_item/grab/G in grabbed_by)
+		if(G.assailant == src)
+			msg += "[t_He] [t_is] gripping [t_His] [G.get_targeted_bodypart().plaintext_zone].\n"
+			continue
+		if(!G.current_grab.stop_move)
+			continue
+		msg += "[t_He] [t_is] restrained by [G.assailant]'s grip.\n"
 
 	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
 		msg += "[t_He] [t_is] severely malnourished.\n"
@@ -237,17 +242,6 @@
 		if(-INFINITY to BLOOD_VOLUME_BAD)
 			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
 
-	if(is_bleeding())
-		var/list/obj/item/bodypart/grasped_limbs = list()
-
-		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(body_part.grasped_by)
-				grasped_limbs += body_part
-
-		for(var/i in grasped_limbs)
-			var/obj/item/bodypart/grasped_part = i
-			msg += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
-
 	if(islist(stun_absorption))
 		for(var/i in stun_absorption)
 			if(stun_absorption[i]["end_time"] > world.time && stun_absorption[i]["examine_message"])
@@ -269,9 +263,9 @@
 					msg += "[t_He] appear[p_s()] to be staring off into space.\n"
 				if (HAS_TRAIT(src, TRAIT_DEAF))
 					msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
-				if (bodytemperature > dna.species.bodytemp_heat_damage_limit)
+				if (bodytemperature > dna.species.heat_level_1)
 					msg += "[t_He] [t_is] flushed and wheezing.\n"
-				if (bodytemperature < dna.species.bodytemp_cold_damage_limit)
+				if (bodytemperature < dna.species.cold_level_1)
 					msg += "[t_He] [t_is] shivering.\n"
 
 			msg += "</span>"

@@ -8,7 +8,8 @@
 		/datum/preference_group/job_specific,
 		/datum/preference_group/appearance_mods,
 		/datum/preference_group/meta,
-		/datum/preference_group/quirks
+		/datum/preference_group/quirks,
+		/datum/preference_group/ipc_shackles,
 	)
 
 /datum/preference_group/category/general/get_content(datum/preferences/prefs)

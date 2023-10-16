@@ -102,12 +102,12 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PREBUCKLE, M, force, buckle_mob_flags) & COMPONENT_BLOCK_BUCKLE)
 		return FALSE
 
-	if(M.pulledby)
+	if(LAZYLEN(M.grabbed_by))
 		if(buckle_prevents_pull)
-			M.pulledby.stop_pulling()
-		else if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
-			L.reset_pull_offsets(M, TRUE)
+			M.free_from_all_grabs()
+
+		else if(LAZYLEN(grabbed_by))
+			M.reset_pull_offsets(TRUE)
 
 	if(anchored)
 		ADD_TRAIT(M, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
@@ -346,7 +346,6 @@
 				span_notice("You unbuckle yourself from [src]."),\
 				span_hear("You hear metal clanking."))
 		add_fingerprint(user)
-		if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
-			L.set_pull_offsets(M, L.grab_state)
+
+		update_offsets()
 	return M

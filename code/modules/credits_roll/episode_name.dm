@@ -318,7 +318,7 @@
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
 			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
-			if(hbrain.damage < 60)
+			if(hbrain?.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage
 		var/average_braindamage = braindamage_total / human_escapees

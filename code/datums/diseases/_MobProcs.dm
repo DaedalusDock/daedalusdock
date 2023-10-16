@@ -143,9 +143,12 @@
 	return ..()
 
 /mob/living/proc/CanSpreadAirborneDisease()
-	return !is_mouth_covered()
+	return has_mouth() && !is_mouth_covered()
 
 /mob/living/carbon/CanSpreadAirborneDisease()
+	if(!has_mouth() || losebreath)
+		return FALSE
+
 	if(head && (head.flags_cover & HEADCOVERSMOUTH) && head.returnArmor().getRating(BIO) >= 25)
 		return FALSE
 

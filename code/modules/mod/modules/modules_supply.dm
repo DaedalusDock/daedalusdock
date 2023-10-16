@@ -315,8 +315,8 @@
 	. = ..()
 	if(!.)
 		return
-	if(istype(mod.wearer.pulling, /obj/structure/closet))
-		var/obj/structure/closet/locker = mod.wearer.pulling
+	var/obj/structure/closet/locker = mod.wearer.get_active_grab()?.affecting
+	if(istype(locker, /obj/structure/closet))
 		playsound(locker, 'sound/effects/gravhit.ogg', 75, TRUE)
 		locker.forceMove(mod.wearer.loc)
 		locker.throw_at(target, range = 7, speed = 4, thrower = mod.wearer)
@@ -324,7 +324,7 @@
 	if(!istype(target, /obj/structure/closet) || !(target in view(mod.wearer)))
 		balloon_alert(mod.wearer, "invalid target!")
 		return
-	var/obj/structure/closet/locker = target
+
 	if(locker.anchored || locker.move_resist >= MOVE_FORCE_OVERPOWERING)
 		balloon_alert(mod.wearer, "target anchored!")
 		return
@@ -337,23 +337,24 @@
 	. = ..()
 	if(!.)
 		return
-	if(istype(mod.wearer.pulling, /obj/structure/closet))
-		mod.wearer.stop_pulling()
+	for(var/obj/item/hand_item/grab/G in mod.wearer.get_active_grabs())
+		if(istype(G.affecting, /obj/structure/closet))
+			qdel(G)
 
 /obj/item/mod/module/magnet/proc/check_locker(obj/structure/closet/locker)
 	if(!mod?.wearer)
 		return
 	if(!locker.Adjacent(mod.wearer) || !isturf(locker.loc) || !isturf(mod.wearer.loc))
 		return
-	mod.wearer.start_pulling(locker)
+	mod.wearer.try_make_grab(locker)
 	locker.strong_grab = TRUE
-	RegisterSignal(locker, COMSIG_ATOM_NO_LONGER_PULLED, PROC_REF(on_stop_pull))
+	RegisterSignal(locker, COMSIG_ATOM_NO_LONGER_GRABBED, PROC_REF(on_stop_pull))
 
 /obj/item/mod/module/magnet/proc/on_stop_pull(obj/structure/closet/locker, atom/movable/last_puller)
 	SIGNAL_HANDLER
 
 	locker.strong_grab = FALSE
-	UnregisterSignal(locker, COMSIG_ATOM_NO_LONGER_PULLED)
+	UnregisterSignal(locker, COMSIG_ATOM_NO_LONGER_GRABBED)
 
 /obj/item/mod/module/ash_accretion
 	name = "MOD ash accretion module"

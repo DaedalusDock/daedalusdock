@@ -18,11 +18,19 @@
 	sexes = FALSE //no fetish content allowed
 	toxic_food = NONE
 
+	//* BODY TEMPERATURE THINGS *//
+	cold_level_3 = 120
+	cold_level_2 = 200
+	cold_level_1 = 283
+	cold_discomfort_level = 340
 	// Body temperature for ethereals is much higher then humans as they like hotter environments
-	bodytemp_normal = (BODYTEMP_NORMAL + 50)
-	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD // about 150C
-	// Cold temperatures hurt faster as it is harder to move with out the heat energy
-	bodytemp_cold_damage_limit = (T20C - 10) // about 10c
+	bodytemp_normal = BODYTEMP_NORMAL + 50
+
+	heat_discomfort_level = 370
+	heat_level_1 = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD //Around 423 k
+	heat_level_2 = 400
+	heat_level_3 = 1000
+
 
 	hair_color = "fixedmutcolor"
 	hair_alpha = 140
@@ -46,6 +54,7 @@
 		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/ethereal,
 		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
 		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
 	)
 
 	var/current_color

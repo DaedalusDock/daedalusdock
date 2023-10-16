@@ -1,15 +1,4 @@
 *
 {
-	cursor: url("normal_select.cur"), auto;
-}
-
-*:disabled
-{
-	cursor: url("disabled.cur"), auto;
-}
-
-
-a:hover
-{
-	cursor: url("link_select.cur"), auto;
+	cursor: url("default.cur"), auto;
 }

@@ -2116,7 +2116,7 @@
 	if (isnull(user))
 		return
 
-	if(is_mouseover_interactable && user.can_interact_with(src))
+	if(is_mouseover_interactable)
 		user.update_mouse_pointer()
 
 	// Screentips

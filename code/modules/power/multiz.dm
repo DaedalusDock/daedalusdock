@@ -2,7 +2,7 @@
 	name = "multi z layer cable hub"
 	desc = "A flexible, superconducting insulated multi Z layer hub for heavy-duty multi Z power transfer."
 	icon = 'icons/obj/power.dmi'
-	icon_state = "cablerelay-on"
+	icon_state = "cable_bridge"
 	linked_dirs = CABLE_NORTH|CABLE_SOUTH|CABLE_EAST|CABLE_WEST
 
 /obj/structure/cable/multiz/Initialize(mapload)

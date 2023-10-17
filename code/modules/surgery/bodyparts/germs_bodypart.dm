@@ -25,26 +25,25 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	if(owner.bodytemperature > TCRYO)	//cryo stops germs from moving and doing their bad stuffs
 		if(!CHEM_EFFECT_MAGNITUDE(owner, CE_ANTIBIOTIC))
-			//** Syncing germ levels with external wounds
+			// Syncing germ levels with external wounds
 			handle_germ_sync()
 
-			//** Handle antibiotics and curing infections
+			// Handle antibiotics and curing infections
 			handle_antibiotics()
 
-		//** Handle the effects of infections
+		// Handle the effects of infections
 		. = handle_germ_effects()
 
+/// Syncing germ levels with external wounds
 /obj/item/bodypart/proc/handle_germ_sync()
-	//var/turf/open/T = get_turf(owner)
 	for(var/datum/wound/W as anything in wounds)
 		//Open wounds can become infected
-		/*if(max(T?.dirt*10, 2*owner.germ_level) > W.germ_level && W.infection_check())
-			W.germ_level++*/
-		if(2*owner.germ_level > W.germ_level && W.infection_check())
+		if((2*owner.germ_level > W.germ_level) && W.infection_check())
 			W.germ_level++
 		if (W.germ_level > germ_level || prob(min(W.germ_level, 30)))
 			germ_level++
 
+/// Handle antibiotics and curing infections
 /obj/item/bodypart/proc/handle_antibiotics()
 	if(!germ_level)
 		return
@@ -59,12 +58,14 @@ Note that amputating the affected organ does in fact remove the infection from t
 		germ_level -= 2
 	germ_level = max(0, germ_level)
 
+/// Handle the effects of infections
 /obj/item/bodypart/proc/handle_germ_effects()
 	var/antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/medicine/spaceacillin)
 	//** Handle the effects of infections
 	if(germ_level < INFECTION_LEVEL_TWO)
-		if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(0.3))
-			germ_level--
+		if(isnull(owner) || owner.stat != DEAD)
+			if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(0.3))
+				germ_level--
 
 		if (germ_level >= INFECTION_LEVEL_ONE/2)
 			//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes, when immunity is full.
@@ -116,9 +117,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 					parent.germ_level++
 
 	if(germ_level >= INFECTION_LEVEL_THREE && antibiotics < 30)	//overdosing is necessary to stop severe infections
-		if (!(bodypart_flags & BP_DEAD))
-			bodypart_flags |= BP_DEAD
-			to_chat(owner, span_notice("You can't feel your [plaintext_zone] anymore..."))
+		if (!(bodypart_flags & BP_NECROTIC))
+			bodypart_flags |= BP_NECROTIC
+			to_chat(owner, span_warning("You can't feel your [plaintext_zone] anymore..."))
 			update_disabled()
 
 		germ_level++

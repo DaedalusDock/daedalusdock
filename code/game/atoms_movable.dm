@@ -96,7 +96,7 @@
 	var/list/grabbed_by
 
 	/// Look, we're defining this here so it doesn't need to be redefined 4 times, okay? Sorry.
-	var/germ_level = 0
+	var/germ_level = GERM_LEVEL_AMBIENT
 
 /mutable_appearance/emissive_blocker
 

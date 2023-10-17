@@ -2,6 +2,8 @@
 	name = "limb"
 	desc = "Why is it detached..."
 
+	germ_level = 0
+
 	force = 6
 	throwforce = 3
 	stamina_damage = 40
@@ -319,6 +321,18 @@
 				bone = "broken [bone]"
 			wound_descriptors["a [bone] exposed"] = 1
 
+			if(!encased || how_open() >= SURGERY_DEENCASED)
+				var/list/bits = list()
+				for(var/obj/item/organ/organ in contained_organs)
+					if(organ.cosmetic_only)
+						continue
+					bits += organ.get_visible_state()
+
+				for(var/obj/item/implant in cavity_items)
+					bits += implant.name
+				if(length(bits))
+					wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
+
 		for(var/wound in wound_descriptors)
 			switch(wound_descriptors[wound])
 				if(1)
@@ -444,8 +458,9 @@
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
-	pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
-	. |= wound_life()
+	if(owner.stat != DEAD)
+		pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
+		. |= wound_life()
 	. |= update_germs()
 
 /obj/item/bodypart/proc/wound_life()
@@ -770,7 +785,7 @@
 		set_disabled(TRUE)
 		return
 
-	if(bodypart_flags & BP_DEAD)
+	if(bodypart_flags & BP_NECROTIC)
 		set_disabled(TRUE)
 		return
 

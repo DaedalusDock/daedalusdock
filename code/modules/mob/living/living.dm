@@ -628,7 +628,7 @@
 		adjustToxLoss(-20, TRUE, TRUE) //slime friendly
 		updatehealth()
 
-		grab_ghost()
+	grab_ghost()
 
 	if(full_heal)
 		fully_heal(admin_revive = admin_revive)

@@ -22,9 +22,9 @@
 
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
-	else
-		if(handle_bodyparts(delta_time, times_fired))
-			updatehealth()
+
+	if(handle_bodyparts(delta_time, times_fired))
+		updatehealth()
 
 	if(stat != DEAD && !(IS_IN_STASIS(src)))
 		handle_shock()

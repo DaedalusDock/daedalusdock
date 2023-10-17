@@ -18,6 +18,9 @@
 #define DROPLIMB_THRESHOLD_TEAROFF 0.5
 #define DROPLIMB_THRESHOLD_DESTROY 1
 
+/// The amount of time an organ has to be dead for it to be unrecoverable
+#define ORGAN_RECOVERY_THRESHOLD (5 MINUTES)
+
 //Bodypart flags
 #define BP_BLEEDING (1<<0)
 #define BP_HAS_BLOOD (1<<1)
@@ -40,7 +43,7 @@
 /// Limb cannot feel pain
 #define BP_NO_PAIN (1<<11)
 /// Limb is MF dead
-#define BP_DEAD (1<<12)
+#define BP_NECROTIC (1<<12)
 /// Limb can be dislocated
 #define BP_CAN_BE_DISLOCATED (1<<13)
 /// Limb is dislocated

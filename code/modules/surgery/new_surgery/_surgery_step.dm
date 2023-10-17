@@ -146,8 +146,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 					user.ContactContractDisease(D)
 
-	/*if(shock_level)
-		target.shock_stage = max(target.shock_stage, shock_level)*/
+	if(shock_level && !(HAS_TRAIT(target, TRAIT_NO_PAINSHOCK) || HAS_TRAIT(target, TRAIT_FAKEDEATH)))
+		target.shock_stage = max(target.shock_stage, shock_level)
 
 	if (target.stat == UNCONSCIOUS && prob(20))
 		to_chat(target, span_boldnotice("... [pick("bright light", "faraway pain", "something moving in you", "soft beeping")] ..."))

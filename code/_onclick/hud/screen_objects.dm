@@ -848,26 +848,19 @@
 	if(.)
 		return FALSE
 
-	var/mob/targetmob = usr
-	if(isobserver(usr))
-		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
-			var/mob/M = usr.client.eye
-			targetmob = M
-
-	var/datum/hud/hud = targetmob.hud_used
-	if(!hud?.gun_setting_icon)
+	var/mob/living/user = hud?.mymob
+	if(!user)
 		return
+	user.use_gunpoint = !user.use_gunpoint
 
 	hud.gun_setting_icon.update_icon_state()
-	hud.update_gunpoint(targetmob)
-
+	hud.update_gunpoint(user)
 
 /atom/movable/screen/gun_mode/update_icon_state()
 	. = ..()
 	var/mob/living/user = hud?.mymob
 	if(!user)
 		return
-	user.use_gunpoint = !user.use_gunpoint
 
 	if(!user.use_gunpoint)
 		icon_state = "gun0"
@@ -886,25 +879,17 @@
 	if(.)
 		return FALSE
 
-	var/mob/targetmob = usr
-	if(isobserver(usr))
-		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
-			var/mob/M = usr.client.eye
-			targetmob = M
-
-	var/datum/hud/hud = targetmob.hud_used
-	if(!hud?.gun_setting_icon)
-		return
-
-	locate(type, hud.gunpoint_options):update_icon_state()
-
-/atom/movable/screen/gun_radio/update_icon_state()
-	. = ..()
 	var/mob/living/user = hud?.mymob
 	if(!user)
 		return
-	user.toggle_gunpoint_flag(TARGET_CAN_RADIO)
 
+	user.toggle_gunpoint_flag(TARGET_CAN_RADIO)
+	update_icon_state()
+
+/atom/movable/screen/gun_radio/update_icon_state()
+	. = ..()
+
+	var/mob/living/user = hud?.mymob
 	if(user.gunpoint_flags & TARGET_CAN_RADIO)
 		icon_state = "no_radio1"
 	else
@@ -920,25 +905,17 @@
 	if(.)
 		return FALSE
 
-	var/mob/targetmob = usr
-	if(isobserver(usr))
-		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
-			var/mob/M = usr.client.eye
-			targetmob = M
-
-	var/datum/hud/hud = targetmob.hud_used
-	if(!hud?.gun_setting_icon)
-		return
-
-	locate(type, hud.gunpoint_options):update_icon_state()
-
-/atom/movable/screen/gun_item/update_icon_state()
-	. = ..()
 	var/mob/living/user = hud?.mymob
 	if(!user)
 		return
 
 	user.toggle_gunpoint_flag(TARGET_CAN_INTERACT)
+	update_icon_state()
+
+/atom/movable/screen/gun_item/update_icon_state()
+	. = ..()
+
+	var/mob/living/user = hud?.mymob
 	if(user.gunpoint_flags & TARGET_CAN_INTERACT)
 		icon_state = "no_item1"
 	else
@@ -954,25 +931,17 @@
 	if(.)
 		return FALSE
 
-	var/mob/targetmob = usr
-	if(isobserver(usr))
-		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
-			var/mob/M = usr.client.eye
-			targetmob = M
-
-	var/datum/hud/hud = targetmob.hud_used
-	if(!hud?.gun_setting_icon)
-		return
-
-	locate(type, hud.gunpoint_options):update_icon_state()
-
-/atom/movable/screen/gun_move/update_icon_state()
-	. = ..()
 	var/mob/living/user = hud?.mymob
 	if(!user)
 		return
 
 	user.toggle_gunpoint_flag(TARGET_CAN_MOVE)
+	update_icon_state()
+
+/atom/movable/screen/gun_move/update_icon_state()
+	. = ..()
+
+	var/mob/living/user = hud?.mymob
 	if(user.gunpoint_flags & TARGET_CAN_MOVE)
 		icon_state = "no_walk1"
 	else

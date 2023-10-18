@@ -29,12 +29,16 @@
 	return ..()
 
 /atom/movable/screen/movable/action_button/can_usr_use(mob/user)
-	. = ..()
+	// Observers can only click on action buttons if they're not observing something
+	if(isobserver(user))
+		var/mob/dead/observer/O = user
+		if(O.observetarget)
+			return FALSE
+
 	if(linked_action)
 		if(linked_action.viewers[user.hud_used])
 			return TRUE
-		return FALSE
-
+	return FALSE
 
 /atom/movable/screen/movable/action_button/Click(location,control,params)
 	. = ..()

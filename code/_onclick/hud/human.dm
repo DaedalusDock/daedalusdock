@@ -4,7 +4,8 @@
 /atom/movable/screen/human/toggle
 	name = "toggle"
 	icon_state = "toggle"
-	private_screen = FALSE
+
+	private_screen = FALSE // We handle cases where usr != owner.
 
 /atom/movable/screen/human/toggle/Click()
 	. = ..()

@@ -274,6 +274,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 			show_hud(hud_version, M)
 	else if (viewmob.hud_used)
 		viewmob.hud_used.plane_masters_update()
+		viewmob.show_other_mob_action_buttons(mymob)
 
 	return TRUE
 
@@ -304,10 +305,11 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	if(!mymob)
 		return
 
-/datum/hud/proc/update_gunpoint(mob/living/screenmob)
-	if(!istype(screenmob))
+/datum/hud/proc/update_gunpoint(mob/screenmob)
+	var/mob/living/L = mymob
+	if(!istype(screenmob) || !istype(L))
 		return
-	if(!screenmob.hud_used.gun_setting_icon)
+	if(!mymob.hud_used.gun_setting_icon)
 		return
 
 	screenmob.client.screen -= gun_setting_icon
@@ -316,7 +318,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		return
 
 	screenmob.client.screen += gun_setting_icon
-	if(screenmob.use_gunpoint)
+	if(L.use_gunpoint || screenmob != L)
 		screenmob.client.screen += gunpoint_options
 
 

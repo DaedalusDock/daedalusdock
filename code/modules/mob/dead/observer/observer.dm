@@ -771,6 +771,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	see_invisible = initial(see_invisible)
 
 	if(target)
+		hide_other_mob_action_buttons(target)
 		UnregisterSignal(target, COMSIG_MOB_UPDATE_SIGHT)
 		LAZYREMOVE(target.observers, src)
 

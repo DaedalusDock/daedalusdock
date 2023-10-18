@@ -9,8 +9,8 @@
 
 	if(!length(C.parallax_layers_cached))
 		C.parallax_layers_cached = list()
-		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_1(null, screenmob)
-		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/stars(null, screenmob)
+		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/layer_1(null, src)
+		C.parallax_layers_cached += new /atom/movable/screen/parallax_layer/stars(null, src)
 
 	C.parallax_layers = C.parallax_layers_cached.Copy()
 
@@ -252,9 +252,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/parallax_layer)
 	screen_loc = "CENTER-7,CENTER-7"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
-/atom/movable/screen/parallax_layer/Initialize(mapload, mob/owner)
+/atom/movable/screen/parallax_layer/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	var/client/boss = owner?.client
+	// Parallax layers are independant of hud, they care about client
+	// Not doing this will just create a bunch of hard deletes
+	hud = null
+
+	var/client/boss = hud_owner?.mymob?.canon_client
+
 	if(!boss) // If this typepath all starts to harddel your culprit is likely this
 		return INITIALIZE_HINT_QDEL
 

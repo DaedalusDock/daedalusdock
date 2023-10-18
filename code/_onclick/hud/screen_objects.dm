@@ -32,6 +32,11 @@
 	 */
 	var/del_on_map_removal = TRUE
 
+/atom/movable/screen/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	if(istype(hud_owner))
+		hud = hud_owner
+
 /atom/movable/screen/Destroy()
 	master = null
 	hud = null

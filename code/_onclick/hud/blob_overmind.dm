@@ -15,9 +15,11 @@
 	desc = "Help on playing blob!"
 
 /atom/movable/screen/blob/blob_help/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.blob_help()
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/camera/blob/B = hud.mymob
+	B.blob_help()
 
 /atom/movable/screen/blob/jump_to_node
 	icon_state = "ui_tonode"
@@ -25,9 +27,11 @@
 	desc = "Moves your camera to a selected blob node."
 
 /atom/movable/screen/blob/jump_to_node/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.jump_to_node()
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/camera/blob/B = hud.mymob
+	B.jump_to_node()
 
 /atom/movable/screen/blob/jump_to_core
 	icon_state = "ui_tocore"
@@ -46,11 +50,14 @@
 	return ..()
 
 /atom/movable/screen/blob/jump_to_core/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		if(!B.placed)
-			B.place_blob_core(BLOB_NORMAL_PLACEMENT)
-		B.transport_core()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/camera/blob/B = hud.mymob
+	if(!B.placed)
+		B.place_blob_core(BLOB_NORMAL_PLACEMENT)
+	B.transport_core()
 
 /atom/movable/screen/blob/blobbernaut
 	icon_state = "ui_blobbernaut"
@@ -64,9 +71,12 @@
 	desc = "Produces a strong, smart blobbernaut from a factory blob for [BLOBMOB_BLOBBERNAUT_RESOURCE_COST] resources.<br>The factory blob used will become fragile and unable to produce spores."
 
 /atom/movable/screen/blob/blobbernaut/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.create_blobbernaut()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/camera/blob/B = hud.mymob
+	B.create_blobbernaut()
 
 /atom/movable/screen/blob/resource_blob
 	icon_state = "ui_resource"
@@ -80,9 +90,12 @@
 	desc = "Produces a resource blob for [BLOB_STRUCTURE_RESOURCE_COST] resources.<br>Resource blobs will give you resources every few seconds."
 
 /atom/movable/screen/blob/resource_blob/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.createSpecial(BLOB_STRUCTURE_RESOURCE_COST, /obj/structure/blob/special/resource, BLOB_RESOURCE_MIN_DISTANCE, TRUE)
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/camera/blob/B = hud.mymob
+	B.createSpecial(BLOB_STRUCTURE_RESOURCE_COST, /obj/structure/blob/special/resource, BLOB_RESOURCE_MIN_DISTANCE, TRUE)
 
 /atom/movable/screen/blob/node_blob
 	icon_state = "ui_node"
@@ -96,9 +109,12 @@
 	desc = "Produces a node blob for [BLOB_STRUCTURE_NODE_COST] resources.<br>Node blobs will expand and activate nearby resource and factory blobs."
 
 /atom/movable/screen/blob/node_blob/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.createSpecial(BLOB_STRUCTURE_NODE_COST, /obj/structure/blob/special/node, BLOB_NODE_MIN_DISTANCE, FALSE)
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/camera/blob/B = hud.mymob
+	B.createSpecial(BLOB_STRUCTURE_NODE_COST, /obj/structure/blob/special/node, BLOB_NODE_MIN_DISTANCE, FALSE)
 
 /atom/movable/screen/blob/factory_blob
 	icon_state = "ui_factory"
@@ -112,9 +128,12 @@
 	desc = "Produces a factory blob for [BLOB_STRUCTURE_FACTORY_COST] resources.<br>Factory blobs will produce spores every few seconds."
 
 /atom/movable/screen/blob/factory_blob/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.createSpecial(BLOB_STRUCTURE_FACTORY_COST, /obj/structure/blob/special/factory, BLOB_FACTORY_MIN_DISTANCE, TRUE)
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/camera/blob/B = hud.mymob
+	B.createSpecial(BLOB_STRUCTURE_FACTORY_COST, /obj/structure/blob/special/factory, BLOB_FACTORY_MIN_DISTANCE, TRUE)
 
 /atom/movable/screen/blob/readapt_strain
 	icon_state = "ui_chemswap"
@@ -134,9 +153,12 @@
 	return ..()
 
 /atom/movable/screen/blob/readapt_strain/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.strain_reroll()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/camera/blob/B = hud.mymob
+	B.strain_reroll()
 
 /atom/movable/screen/blob/relocate_core
 	icon_state = "ui_swap"
@@ -150,9 +172,12 @@
 	desc = "Swaps a node and your core for [BLOB_POWER_RELOCATE_COST] resources."
 
 /atom/movable/screen/blob/relocate_core/Click()
-	if(isovermind(usr))
-		var/mob/camera/blob/B = usr
-		B.relocate_core()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/camera/blob/B = hud.mymob
+	B.relocate_core()
 
 /datum/hud/blob_overmind/New(mob/owner)
 	..()

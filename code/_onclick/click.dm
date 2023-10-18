@@ -538,6 +538,10 @@
 	transform = M
 
 /atom/movable/screen/click_catcher/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK) && iscarbon(usr))
 		var/mob/living/carbon/C = usr

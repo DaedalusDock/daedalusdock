@@ -108,9 +108,12 @@
 	desc = "Spring forth into battle!"
 
 /atom/movable/screen/guardian/manifest/Click()
-	if(isguardian(usr))
-		var/mob/living/simple_animal/hostile/guardian/G = usr
-		G.Manifest()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/simple_animal/hostile/guardian/G = hud.mymob
+	G.Manifest()
 
 
 /atom/movable/screen/guardian/recall
@@ -119,9 +122,11 @@
 	desc = "Return to your user."
 
 /atom/movable/screen/guardian/recall/Click()
-	if(isguardian(usr))
-		var/mob/living/simple_animal/hostile/guardian/G = usr
-		G.Recall()
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/living/simple_animal/hostile/guardian/G = hud.mymob
+	G.Recall()
 
 /atom/movable/screen/guardian/toggle_mode
 	icon_state = "toggle"
@@ -129,9 +134,12 @@
 	desc = "Switch between ability modes."
 
 /atom/movable/screen/guardian/toggle_mode/Click()
-	if(isguardian(usr))
-		var/mob/living/simple_animal/hostile/guardian/G = usr
-		G.ToggleMode()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/simple_animal/hostile/guardian/G = hud.mymob
+	G.ToggleMode()
 
 /atom/movable/screen/guardian/toggle_mode/inactive
 	icon_state = "notoggle" //greyed out so it doesn't look like it'll work
@@ -147,9 +155,11 @@
 	desc = "Communicate telepathically with your user."
 
 /atom/movable/screen/guardian/communicate/Click()
-	if(isguardian(usr))
-		var/mob/living/simple_animal/hostile/guardian/G = usr
-		G.Communicate()
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/living/simple_animal/hostile/guardian/G = hud.mymob
+	G.Communicate()
 
 
 /atom/movable/screen/guardian/toggle_light
@@ -158,6 +168,9 @@
 	desc = "Glow like star dust."
 
 /atom/movable/screen/guardian/toggle_light/Click()
-	if(isguardian(usr))
-		var/mob/living/simple_animal/hostile/guardian/G = usr
-		G.ToggleLight()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/simple_animal/hostile/guardian/G = hud.mymob
+	G.ToggleLight()

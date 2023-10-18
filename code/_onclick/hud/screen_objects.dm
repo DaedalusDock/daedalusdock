@@ -32,6 +32,9 @@
 	 */
 	var/del_on_map_removal = TRUE
 
+	/// If set to TRUE, mobs that do not own this hud cannot click this screen object.
+	var/private_screen = TRUE
+
 /atom/movable/screen/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	if(istype(hud_owner))
@@ -41,6 +44,18 @@
 	master = null
 	hud = null
 	return ..()
+
+/atom/movable/screen/Click(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	. = !(TRUE || ..())
+
+	if(!can_usr_use(usr))
+		return TRUE
+
+/atom/movable/screen/proc/can_usr_use(mob/user)
+	. = TRUE
+	if(private_screen && (hud?.mymob != user))
+		return FALSE
 
 /atom/movable/screen/examine(mob/user)
 	return list()
@@ -64,6 +79,10 @@
 	name = "swap hand"
 
 /atom/movable/screen/swap_hand/Click()
+	. = ..()
+	if(.)
+		return FALSE
+
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(world.time <= usr.next_move)
@@ -84,8 +103,9 @@
 	screen_loc = ui_navigate_menu
 
 /atom/movable/screen/navigate/Click()
-	if(!isliving(usr))
-		return TRUE
+	. = ..()
+	if(.)
+		return FALSE
 	var/mob/living/navigator = usr
 	navigator.navigate()
 
@@ -102,8 +122,12 @@
 	screen_loc = ui_building
 
 /atom/movable/screen/area_creator/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	if(usr.incapacitated() || (isobserver(usr) && !isAdminGhostAI(usr)))
 		return TRUE
+
 	var/area/A = get_area(usr)
 	if(!A.outdoors)
 		to_chat(usr, span_warning("There is already a defined structure here."))
@@ -117,6 +141,10 @@
 	screen_loc = ui_language_menu
 
 /atom/movable/screen/language_menu/Click()
+	. = ..()
+	if(.)
+		return FALSE
+
 	var/mob/M = usr
 	var/datum/language_holder/H = M.get_language_holder()
 	H.open_language_menu(usr)
@@ -135,6 +163,10 @@
 /atom/movable/screen/inventory/Click(location, control, params)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
+	. = ..()
+	if(.)
+		return FALSE
+
 	if(world.time <= usr.next_move)
 		return TRUE
 
@@ -241,10 +273,11 @@
 /atom/movable/screen/inventory/hand/Click(location, control, params)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
-	var/mob/user = hud?.mymob
-	if(usr != user)
-		return TRUE
+	. = ..()
+	if(.)
+		return FALSE
 
+	var/mob/user = hud?.mymob
 	if(world.time <= user.next_move)
 		return TRUE
 
@@ -302,6 +335,9 @@
 	master = new_master
 
 /atom/movable/screen/close/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	var/datum/storage/storage = master
 	storage.hide_contents(usr)
 	return TRUE
@@ -313,6 +349,9 @@
 	plane = HUD_PLANE
 
 /atom/movable/screen/drop/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	if(usr.stat == CONSCIOUS)
 		usr.dropItemToGround(usr.get_active_held_item())
 
@@ -327,6 +366,9 @@
 	update_appearance()
 
 /atom/movable/screen/combattoggle/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	if(isliving(usr))
 		var/mob/living/owner = usr
 		owner.set_combat_mode(!owner.combat_mode, FALSE)
@@ -373,6 +415,9 @@
 	icon_state = "running"
 
 /atom/movable/screen/mov_intent/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	toggle(usr)
 
 /atom/movable/screen/mov_intent/update_icon_state()
@@ -384,8 +429,6 @@
 	return ..()
 
 /atom/movable/screen/mov_intent/proc/toggle(mob/user)
-	if(isobserver(user))
-		return
 	if(user.m_intent != MOVE_INTENT_WALK)
 		user.set_move_intent(MOVE_INTENT_WALK)
 	else
@@ -398,11 +441,12 @@
 	base_icon_state = "pull"
 
 /atom/movable/screen/pull/Click()
-	if(isobserver(usr))
-		return
-	if(isliving(usr) && usr == hud.mymob)
-		var/mob/living/L = usr
-		L.release_all_grabs()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/L = usr
+	L.release_all_grabs()
 
 /atom/movable/screen/pull/update_icon_state()
 	icon_state = "[base_icon_state][LAZYLEN(hud?.mymob?:get_active_grabs()) ? null : 0]"
@@ -415,9 +459,11 @@
 	plane = HUD_PLANE
 
 /atom/movable/screen/resist/Click()
-	if(isliving(usr))
-		var/mob/living/L = usr
-		L.resist()
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/living/L = usr
+	L.resist()
 
 /atom/movable/screen/rest
 	name = "rest"
@@ -427,9 +473,12 @@
 	plane = HUD_PLANE
 
 /atom/movable/screen/rest/Click()
-	if(isliving(usr))
-		var/mob/living/L = usr
-		L.toggle_resting()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/L = usr
+	L.toggle_resting()
 
 /atom/movable/screen/rest/update_icon_state()
 	var/mob/living/user = hud?.mymob
@@ -449,6 +498,10 @@
 	master = new_master
 
 /atom/movable/screen/storage/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	var/datum/storage/storage_master = master
 	if(!istype(storage_master))
 		return FALSE
@@ -501,9 +554,12 @@
 	icon_state = "act_throw_off"
 
 /atom/movable/screen/throw_catch/Click()
-	if(iscarbon(usr))
-		var/mob/living/carbon/C = usr
-		C.toggle_throw_mode()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/carbon/C = usr
+	C.toggle_throw_mode()
 
 /atom/movable/screen/zone_sel
 	name = "damage zone"
@@ -514,8 +570,9 @@
 	var/hovering
 
 /atom/movable/screen/zone_sel/Click(location, control,params)
-	if(isobserver(usr))
-		return
+	. = ..()
+	if(.)
+		return FALSE
 
 	var/list/modifiers = params2list(params)
 	var/icon_x = text2num(LAZYACCESS(modifiers, ICON_X))
@@ -685,9 +742,12 @@
 	screen_loc = ui_healthdoll
 
 /atom/movable/screen/healthdoll/Click()
-	if (iscarbon(usr))
-		var/mob/living/carbon/C = usr
-		C.check_self_for_injuries()
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/carbon/C = usr
+	C.check_self_for_injuries()
 
 /atom/movable/screen/healthdoll/living
 	icon_state = "fullhealth0"
@@ -702,6 +762,10 @@
 	src.parent = parent
 
 /atom/movable/screen/component_button/Click(params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	if(parent)
 		parent.component_click(src, params)
 
@@ -740,16 +804,19 @@
 	name = "stamina"
 	icon_state = "stamina0"
 	screen_loc = ui_stamina
+	private_screen = FALSE
 
 /atom/movable/screen/stamina/Click(location, control, params)
-	if (iscarbon(usr))
-		var/mob/living/carbon/C = usr
-		var/content = {"
-		<div class='examine_block'>
-			[span_boldnotice("You have [C.stamina.current]/[C.stamina.maximum] stamina.")]
-		</div>
-		"}
-		to_chat(C, content)
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/living/carbon/C = hud.mymob
+	var/content = {"
+	<div class='examine_block'>
+		[span_boldnotice("You have [C.stamina.current]/[C.stamina.maximum] stamina.")]
+	</div>
+	"}
+	to_chat(usr, content)
 
 /atom/movable/screen/stamina/MouseEntered(location, control, params)
 	. = ..()
@@ -776,6 +843,9 @@
 
 /atom/movable/screen/gun_mode/Click(location, control, params)
 	. = ..()
+	if(.)
+		return FALSE
+
 	var/mob/targetmob = usr
 	if(isobserver(usr))
 		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
@@ -811,6 +881,9 @@
 
 /atom/movable/screen/gun_radio/Click(location, control, params)
 	. = ..()
+	if(.)
+		return FALSE
+
 	var/mob/targetmob = usr
 	if(isobserver(usr))
 		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
@@ -842,6 +915,9 @@
 
 /atom/movable/screen/gun_item/Click(location, control, params)
 	. = ..()
+	if(.)
+		return FALSE
+
 	var/mob/targetmob = usr
 	if(isobserver(usr))
 		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
@@ -873,6 +949,9 @@
 
 /atom/movable/screen/gun_move/Click(location, control, params)
 	. = ..()
+	if(.)
+		return FALSE
+
 	var/mob/targetmob = usr
 	if(isobserver(usr))
 		if(ishuman(usr.client.eye) && (usr.client.eye != usr))

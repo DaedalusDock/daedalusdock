@@ -5,10 +5,6 @@
 	name = "cyborg module"
 	icon_state = "nomod"
 
-/atom/movable/screen/robot/Click()
-	if(isobserver(usr))
-		return 1
-
 /atom/movable/screen/robot/module/Click()
 	if(..())
 		return

@@ -6,9 +6,11 @@
 	icon_state = "leap_off"
 
 /atom/movable/screen/alien/leap/Click()
-	if(isalienhunter(usr))
-		var/mob/living/carbon/alien/humanoid/hunter/AH = usr
-		AH.toggle_leap()
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/living/carbon/alien/humanoid/hunter/AH = hud.mymob
+	AH.toggle_leap()
 
 /atom/movable/screen/alien/plasma_display
 	name = "plasma stored"

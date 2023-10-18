@@ -5,8 +5,12 @@
 	var/required_software
 
 /atom/movable/screen/pai/Click()
-	if(isobserver(usr) || usr.incapacitated())
+	. = ..()
+	if(.)
 		return FALSE
+	if(usr.incapacitated())
+		return FALSE
+
 	var/mob/living/silicon/pai/pAI = usr
 	if(required_software && !pAI.software.Find(required_software))
 		to_chat(pAI, PAI_MISSING_SOFTWARE_MESSAGE)

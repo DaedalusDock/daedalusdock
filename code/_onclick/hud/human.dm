@@ -6,6 +6,9 @@
 	icon_state = "toggle"
 
 /atom/movable/screen/human/toggle/Click()
+	. = ..()
+	if(.)
+		return FALSE
 
 	var/mob/targetmob = usr
 
@@ -28,8 +31,12 @@
 	icon_state = "act_equip"
 
 /atom/movable/screen/human/equip/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	if(ismecha(usr.loc)) // stops inventory actions in a mech
 		return TRUE
+
 	var/mob/living/carbon/human/H = usr
 	H.quick_equip()
 
@@ -47,9 +54,11 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 /atom/movable/screen/ling/sting/Click()
-	if(isobserver(usr))
-		return
-	var/mob/living/carbon/carbon_user = usr
+	. = ..()
+	if(.)
+		return FALSE
+
+	var/mob/living/carbon/carbon_user = hud.mymob
 	carbon_user.unset_sting()
 
 /datum/hud/human/New(mob/living/carbon/human/owner)

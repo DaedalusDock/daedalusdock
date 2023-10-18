@@ -105,6 +105,8 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/alert/can_usr_use(mob/user)
+	return owner == usr
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
@@ -865,8 +867,10 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	return 1
 
 /atom/movable/screen/alert/Click(location, control, params)
-	if(!usr || !usr.client)
+	. = ..()
+	if(.)
 		return FALSE
+
 	if(usr != owner)
 		return FALSE
 	var/list/modifiers = params2list(params)

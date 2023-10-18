@@ -311,7 +311,7 @@
 	var/atom/movable/screen/movable/action_button/button = create_button()
 	SetId(button, viewer)
 
-	button.our_hud = our_hud
+	button.hud = our_hud
 	viewers[our_hud] = button
 	if(viewer.client)
 		viewer.client.screen += button

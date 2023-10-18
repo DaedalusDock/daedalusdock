@@ -4,6 +4,7 @@
 /atom/movable/screen/human/toggle
 	name = "toggle"
 	icon_state = "toggle"
+	private_screen = FALSE
 
 /atom/movable/screen/human/toggle/Click()
 	. = ..()

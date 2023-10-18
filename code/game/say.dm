@@ -37,6 +37,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 /mob/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
+	if(LAZYLEN(observers))
+		for(var/mob/dead/observer/O as anything in observers)
+			O.Hear(arglist(args))
+
 	if(client && radio_freq)
 		var/atom/movable/virtualspeaker/V = speaker
 		if(isAI(V.source))

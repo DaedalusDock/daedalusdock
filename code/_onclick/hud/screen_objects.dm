@@ -274,7 +274,7 @@
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	. = ..()
-	if(.)
+	if(!can_usr_use(usr))
 		return FALSE
 
 	var/mob/user = hud?.mymob
@@ -330,7 +330,7 @@
 	plane = ABOVE_HUD_PLANE
 	icon_state = "backpack_close"
 
-/atom/movable/screen/close/Initialize(mapload, new_master)
+/atom/movable/screen/close/Initialize(mapload, datum/hud/hud_owner, new_master)
 	. = ..()
 	master = new_master
 
@@ -493,9 +493,13 @@
 	screen_loc = "7,7 to 10,8"
 	plane = HUD_PLANE
 
-/atom/movable/screen/storage/Initialize(mapload, new_master)
+/atom/movable/screen/storage/Initialize(mapload, datum/hud/hud_owner, new_master)
 	. = ..()
 	master = new_master
+
+/atom/movable/screen/storage/can_usr_use(mob/user)
+	// Storage does all of it's own sanity checking and stuff.
+	return TRUE
 
 /atom/movable/screen/storage/Click(location, control, params)
 	. = ..()
@@ -820,12 +824,10 @@
 
 /atom/movable/screen/stamina/MouseEntered(location, control, params)
 	. = ..()
-	var/mob/living/L = usr
-	if(!istype(L))
-		return
-
 	if(QDELETED(src))
 		return
+
+	var/mob/living/L = hud.mymob
 	var/_content = {"
 		Stamina: [L.stamina.current]/[L.stamina.maximum]<br>
 		Regen: [L.stamina.regen_rate]

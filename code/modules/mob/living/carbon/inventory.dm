@@ -73,11 +73,11 @@
 	I.screen_loc = null
 	if(client)
 		client.screen -= I
-	if(observers?.len)
-		for(var/M in observers)
-			var/mob/dead/observe = M
+	if(LAZYLEN(observers))
+		for(var/mob/dead/observe as anything in observers)
 			if(observe.client)
 				observe.client.screen -= I
+
 	I.forceMove(src)
 	I.plane = ABOVE_HUD_PLANE
 	I.appearance_flags |= NO_CLIENT_COLOR

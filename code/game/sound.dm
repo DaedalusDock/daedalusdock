@@ -154,6 +154,9 @@
 			sound_to_use.echo[4] = 0 //RoomHF setting, 0 means normal reverb.
 
 	SEND_SOUND(src, sound_to_use)
+	if(LAZYLEN(observers))
+		for(var/mob/dead/observer/O as anything in observers)
+			SEND_SOUND(src, sound_to_use)
 
 /proc/sound_to_playing_players(soundin, volume = 100, vary = FALSE, frequency = 0, channel = 0, pressure_affected = FALSE, sound/S)
 	if(!S)

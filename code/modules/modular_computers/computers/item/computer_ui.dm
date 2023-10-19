@@ -48,7 +48,7 @@
 	. = ..()
 	var/list/data = list()
 
-	data["show_imprint"] = istype(src, /obj/item/modular_computer/tablet/)
+	data["show_imprint"] = !!imprint_prefix
 
 	return data
 
@@ -63,8 +63,15 @@
 
 	var/obj/item/computer_hardware/card_slot/cardholder = all_components[MC_CARD]
 	var/obj/item/computer_hardware/hard_drive/role/ssd = all_components[MC_HDD_JOB]
-	data["cardholder"] = FALSE
+	var/obj/item/computer_hardware/hard_drive/hard_drive = all_components[MC_HDD]
 
+	//This filetype structure makes me want to murder someone.
+	var/datum/computer_file/data/text/autorun = hard_drive?.find_file_by_name(MC_AUTORUN_FILE)
+	// Get the autorun ID to determine which program is autorun.
+	var/autorun_id = autorun?.stored_text //Empty text files are zero length strings.
+
+
+	data["cardholder"] = FALSE
 	if(cardholder)
 		data["cardholder"] = TRUE
 
@@ -92,7 +99,7 @@
 			if(prog in idle_threads)
 				running = TRUE
 
-			data["disk_programs"] += list(list("name" = prog.filename, "desc" = prog.filedesc, "running" = running, "icon" = prog.program_icon, "alert" = prog.alert_pending))
+			data["disk_programs"] += list(list("name" = prog.filename, "desc" = prog.filedesc, "running" = running, "icon" = prog.program_icon, "alert" = prog.alert_pending, "autorun" = (autorun_id == prog.filename)))
 
 	data["removable_media"] = list()
 	if(all_components[MC_SDD])
@@ -105,13 +112,12 @@
 		data["removable_media"] += "secondary RFID card"
 
 	data["programs"] = list()
-	var/obj/item/computer_hardware/hard_drive/hard_drive = all_components[MC_HDD]
 	for(var/datum/computer_file/program/P in hard_drive.stored_files)
 		var/running = FALSE
 		if(P in idle_threads)
 			running = TRUE
 
-		data["programs"] += list(list("name" = P.filename, "desc" = P.filedesc, "running" = running, "icon" = P.program_icon, "alert" = P.alert_pending))
+		data["programs"] += list(list("name" = P.filename, "desc" = P.filedesc, "running" = running, "icon" = P.program_icon, "alert" = P.alert_pending, "autorun" = (autorun_id == P.filename)))
 
 	data["has_light"] = has_light
 	data["light_on"] = light_on
@@ -127,6 +133,7 @@
 		return
 
 	var/obj/item/computer_hardware/hard_drive/hard_drive = all_components[MC_HDD]
+	var/obj/item/computer_hardware/hard_drive/role/ssd = all_components[MC_HDD_JOB]
 	switch(action)
 		if("PC_exit")
 			kill_program()
@@ -134,6 +141,29 @@
 		if("PC_shutdown")
 			shutdown_computer()
 			return TRUE
+		if("PC_setautorun")
+			var/prog_name = params["name"]
+			var/datum/computer_file/program/P = null
+			if(!hard_drive)
+				return FALSE //No hard drive. Nowhere to store the autorun file.
+			var/datum/computer_file/data/text/autorun_file = hard_drive.find_file_by_name(MC_AUTORUN_FILE)
+			if(!autorun_file)
+				autorun_file = new
+				autorun_file.filename = MC_AUTORUN_FILE
+				autorun_file.calculate_size()
+				hard_drive.store_file(autorun_file)
+
+			// Check the hard drive first.
+			P = hard_drive.find_file_by_name(prog_name)
+			if(!istype(P) && ssd)//If we have a job disk...
+				//Second Trial.
+				P = ssd.find_file_by_name(prog_name)
+			if(istype(P))
+				autorun_file.stored_text = prog_name //Store it for autorun.
+				autorun_file.calculate_size()
+				hard_drive.recalculate_size()
+				return TRUE
+
 		if("PC_minimize")
 			var/mob/user = usr
 			if(!active_program)
@@ -164,7 +194,7 @@
 			var/prog = params["name"]
 			var/is_disk = params["is_disk"]
 			var/datum/computer_file/program/P = null
-			var/obj/item/computer_hardware/hard_drive/role/ssd = all_components[MC_HDD_JOB]
+
 			var/mob/user = usr
 
 			if(hard_drive && !is_disk)
@@ -175,33 +205,8 @@
 			if(!P || !istype(P)) // Program not found or it's not executable program.
 				to_chat(user, span_danger("\The [src]'s screen shows \"I/O ERROR - Unable to run program\" warning."))
 				return
+			return try_run_program(P, user)
 
-			P.computer = src
-
-			if(!P.is_supported_by_hardware(hardware_flag, 1, user))
-				return
-
-			// The program is already running. Resume it.
-			if(P in idle_threads)
-				P.program_state = PROGRAM_STATE_ACTIVE
-				active_program = P
-				P.alert_pending = FALSE
-				idle_threads.Remove(P)
-				update_appearance()
-				return
-
-			if(idle_threads.len > max_idle_programs)
-				to_chat(user, span_danger("\The [src] displays a \"Maximal CPU load reached. Unable to run another program.\" error."))
-				return
-
-			if(P.requires_ntnet && !get_ntnet_status(P.requires_ntnet_feature)) // The program requires NTNet connection, but we are not connected to NTNet.
-				to_chat(user, span_danger("\The [src]'s screen shows \"Unable to connect to NTNet. Please retry. If problem persists contact your system administrator.\" warning."))
-				return
-			if(P.run_program(user))
-				active_program = P
-				P.alert_pending = FALSE
-				update_appearance()
-			return 1
 
 		if("PC_toggle_light")
 			return toggle_flashlight()
@@ -230,7 +235,6 @@
 						user.put_in_hands(portable_drive)
 						playsound(src, 'sound/machines/card_slide.ogg', 50)
 				if("job disk")
-					var/obj/item/computer_hardware/hard_drive/role/ssd = all_components[MC_HDD_JOB]
 					if(!ssd)
 						return
 					if(uninstall_component(ssd, usr))

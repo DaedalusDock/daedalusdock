@@ -42,7 +42,7 @@
 		all_entries.Add(list(list(
 		"name" = H.name,
 		"desc" = H.desc,
-		"enabled" = H.enabled,
+		"enabled" = H.is_enabled(),
 		"critical" = H.critical,
 		"powerusage" = H.power_usage
 		)))
@@ -59,5 +59,5 @@
 		if("PC_toggle_component")
 			var/obj/item/computer_hardware/H = computer.find_hardware_by_name(params["name"])
 			if(H && istype(H))
-				H.enabled = !H.enabled
+				H.enable_changed(!H.is_enabled())
 			. = TRUE

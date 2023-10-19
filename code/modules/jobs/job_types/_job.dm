@@ -401,6 +401,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		PDA.saved_identification = H.real_name
 		PDA.saved_job = J.title
 		PDA.UpdateDisplay()
+		if(H.mind)
+			spawn(-1) //Ssshhh linter don't worry about the lack of a user it's all gonna be okay.
+				PDA.turn_on()
 
 /datum/outfit/job/get_chameleon_disguise_info()
 	var/list/types = ..()

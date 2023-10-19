@@ -151,7 +151,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  * returns INITIALIZE_HINT_LATELOAD
  */
 /area/Initialize(mapload)
-	icon_state = ""
+	icon = null
 	if(!ambientsounds)
 		ambientsounds = GLOB.ambience_assoc[ambience_index]
 

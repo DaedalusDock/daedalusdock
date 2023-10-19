@@ -1,0 +1,4 @@
+author: mc-oofert
+delete-after: true
+changes:
+  - bugfix: SDQL now displays turf locations instead of saying they are in nullspace

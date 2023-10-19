@@ -67390,7 +67390,6 @@
 /area/station/commons/storage/primary)
 "xzi" = (
 /obj/structure/cable,
-/obj/machinery/computer/shuttle/mining/common,
 /obj/structure/window/reinforced{
 	dir = 1
 	},

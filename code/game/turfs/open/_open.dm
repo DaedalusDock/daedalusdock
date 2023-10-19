@@ -237,3 +237,25 @@
 	playsound(src, 'sound/weapons/genhit.ogg', 50, TRUE)
 	to_chat(user, span_notice("You build a floor."))
 	PlaceOnTop(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
+
+/// Used primarily for heretic's temple. To be removed.
+/turf/open/indestructible/necropolis
+	name = "necropolis floor"
+	desc = "It's regarding you suspiciously."
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "necro1"
+	baseturfs = /turf/open/indestructible/necropolis
+	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
+	footstep = FOOTSTEP_LAVA
+	barefootstep = FOOTSTEP_LAVA
+	clawfootstep = FOOTSTEP_LAVA
+	heavyfootstep = FOOTSTEP_LAVA
+	tiled_dirt = FALSE
+
+/turf/open/indestructible/necropolis/Initialize(mapload)
+	. = ..()
+	if(prob(12))
+		icon_state = "necro[rand(2,3)]"
+
+/turf/open/indestructible/necropolis/air
+	initial_gas_mix = OPENTURF_DEFAULT_ATMOS

@@ -26,3 +26,15 @@
 2023-10-11:
   RimiNosha:
   - bugfix: Secoffs should be able to access their EVA suits now.
+2023-10-20:
+  Kapu1178:
+  - qol: Improved client performance
+  francinum:
+  - balance: PDA Messages no longer require a central server
+  - balance: The Message server now logs any PDA message it can get it's grubby little
+      hands on, with it's integrated GPRS Receiver.
+  - code_imp: Modular Computers are now capable of handling radio packets, in a limited
+      sense, It's easy to remove these limits, but I saw it best to prioritize performance
+      first.
+  mc-oofert:
+  - bugfix: SDQL now displays turf locations instead of saying they are in nullspace

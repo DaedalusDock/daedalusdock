@@ -4021,7 +4021,6 @@
 #include "code\modules\reagents\chemistry\machinery\reagentgrinder.dm"
 #include "code\modules\reagents\chemistry\machinery\smoke_machine.dm"
 #include "code\modules\reagents\chemistry\reagents\alcohol_reagents.dm"
-#include "code\modules\reagents\chemistry\reagents\carpet_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\colorful_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\dispenser_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\drink_reagents.dm"

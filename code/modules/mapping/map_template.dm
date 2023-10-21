@@ -151,7 +151,6 @@
 	if(T.y+height > world.maxy)
 		return
 
-	SSzas.can_fire = FALSE
 	// Accept cached maps, but don't save them automatically - we don't want
 	// ruins clogging up memory for the whole round.
 	var/datum/parsed_map/parsed = cached_map || new(file(mappath))
@@ -179,7 +178,6 @@
 		generate_ceiling(affected_turfs)
 
 	log_game("[name] loaded at [T.x],[T.y],[T.z]")
-	SSzas.can_fire = TRUE
 	return bounds
 
 /datum/map_template/proc/generate_ceiling(affected_turfs)

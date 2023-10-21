@@ -582,3 +582,11 @@ SUBSYSTEM_DEF(zas)
 		active_edges -= E
 	if(processing_edges)
 		processing_edges -= E
+
+/datum/controller/subsystem/zas/StartLoadingMap()
+	. = ..()
+	can_fire = FALSE
+
+/datum/controller/subsystem/zas/StopLoadingMap()
+	. = ..()
+	can_fire = TRUE

@@ -1,18 +1,23 @@
-/datum/controller/subsystem/mapping/proc/generate_asteroid(datum/mining_template/template, datum/callback/asteroid_generator, datum/callback/after_load)
+/datum/controller/subsystem/mapping/proc/generate_asteroid(datum/mining_template/template, center, datum/callback/asteroid_generator)
 	Master.StartLoadingMap()
 
 	SSatoms.map_loader_begin(REF(template))
-	var/list/atoms = asteroid_generator.Invoke()
+	var/list/turfs = asteroid_generator.Invoke()
+	template.Generate(center, turfs.Copy())
 	SSatoms.map_loader_stop(REF(template))
 
+	var/list/atoms = list()
 	// Initialize all of the atoms in the asteroid
+	for(var/turf/T as anything in turfs)
+		atoms += T
+		atoms += T.contents
+
 	SSatoms.InitializeAtoms(atoms)
-	for(var/turf/T as turf in atoms)
+	for(var/turf/T as turf in turfs)
 		T.AfterChange(CHANGETURF_IGNORE_AIR)
 	Master.StopLoadingMap()
 
-	if(after_load)
-		after_load.Invoke()
+	template.AfterInitialize(center, atoms)
 
 /// Cleanup our currently loaded mining template
 /proc/CleanupAsteroidMagnet(turf/center, size)
@@ -80,4 +85,4 @@
 			T.assemble_baseturfs(initial(T.baseturfs))
 			. += T
 
-	return template.Generate(center, .)
+	return .

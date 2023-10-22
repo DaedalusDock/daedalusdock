@@ -16,11 +16,11 @@
 
 /// Cleanup our currently loaded mining template
 /proc/CleanupAsteroidMagnet(turf/center, size)
-	var/list/turfs_to_destroy = ReserveTurfsForAsteroidGeneration(center, size)
+	var/list/turfs_to_destroy = ReserveTurfsForAsteroidGeneration(center, size, space_only = FALSE)
 	for(var/turf/T as anything in turfs_to_destroy)
 		CHECK_TICK
 
-		for(var/atom/movable/AM as anything in turfs_to_destroy)
+		for(var/atom/movable/AM as anything in T)
 			CHECK_TICK
 			if(isdead(AM) || iscameramob(AM) || iseffect(AM) || istype(AM, /atom/movable/openspace))
 				continue
@@ -29,15 +29,18 @@
 		T.ChangeTurf(/turf/baseturf_bottom)
 
 /// Sanitizes a block of turfs to prevent writing over undesired locations
-/proc/ReserveTurfsForAsteroidGeneration(turf/center, size)
+/proc/ReserveTurfsForAsteroidGeneration(turf/center, size, space_only = TRUE)
 	. = list()
 
-	for(var/turf/open/space/S in RANGE_TURFS(size, center))
-		if(!(istype(S.loc, /area/station/cargo/mining/asteroid_magnet)))
+	for(var/turf/T as anythiong in RANGE_TURFS(size, center))
+		if(space_only && !isspaceturf(T))
 			continue
-		. += S
+		if(!(istype(T.loc, /area/station/cargo/mining/asteroid_magnet)))
+			continue
+		. += T
 		CHECK_TICK
 
+/// Generates a circular asteroid.
 /proc/GenerateRoundAsteroid(datum/mining_template/template, turf/center, initial_turf_path = /turf/closed/mineral/asteroid/tospace, size = 7, list/turfs, hollow = FALSE)
 	. = list()
 	if(!length(turfs))
@@ -47,6 +50,8 @@
 		center = center.ChangeTurf(/turf/open/misc/asteroid/airless/tospace, flags = CHANGETURF_DEFER_CHANGE)
 	else
 		center = center.ChangeTurf(initial_turf_path, flags = CHANGETURF_DEFER_CHANGE)
+		GENERATOR_CHECK_TICK
+		center.assemble_baseturfs(initial(center.baseturfs))
 
 	. += center
 
@@ -70,8 +75,9 @@
 
 		else
 			var/turf/T = locate(current_turf.x, current_turf.y, current_turf.z)
-			// I don't like needing to specify the baseturf here, this may cause issues
-			T = T.ChangeTurf(initial_turf_path, /turf/open/misc/asteroid/airless/tospace, flags = CHANGETURF_DEFER_CHANGE)
+			T = T.ChangeTurf(initial_turf_path, flags = CHANGETURF_DEFER_CHANGE)
+			GENERATOR_CHECK_TICK
+			T.assemble_baseturfs(initial(T.baseturfs))
 			. += T
 
 	return template.Generate(center, .)

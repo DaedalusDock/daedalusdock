@@ -414,6 +414,7 @@
 	icon_state = "redrock"
 	base_icon_state = "red_wall"
 
+/// Breaks down to an asteroid floor that breaks down to space
 /turf/closed/mineral/asteroid/tospace
 	baseturfs = /turf/open/misc/asteroid/airless/tospace
 

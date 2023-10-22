@@ -10,7 +10,6 @@
 	mats_per_unit = list(/datum/material/bluespace=MINERAL_MATERIAL_AMOUNT)
 	points = 50
 	refined_type = /obj/item/stack/sheet/bluespace_crystal
-	scan_state = "rock_BScrystal"
 	merge_type = /obj/item/stack/ore/bluespace_crystal
 	/// The teleport range when crushed/thrown at someone.
 	var/blink_range = 8

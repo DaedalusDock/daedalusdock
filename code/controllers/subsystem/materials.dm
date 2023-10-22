@@ -7,7 +7,7 @@ These materials call on_applied() on whatever item they are applied to, common e
 
 SUBSYSTEM_DEF(materials)
 	name = "Materials"
-	flags = SS_NO_FIRE | SS_NO_INIT
+	flags = SS_NO_FIRE
 	///Dictionary of material.id || material ref
 	var/list/materials
 	///Dictionary of type || list of material refs
@@ -31,6 +31,35 @@ SUBSYSTEM_DEF(materials)
 	var/list/rigid_stack_recipes = list(
 		new /datum/stack_recipe("Carving block", /obj/structure/carving_block, 5, one_per_turf = TRUE, on_floor = TRUE, applies_mats = TRUE),
 	)
+
+	// * ORE THINGS * //
+	var/list/ores = list()
+	var/list/common_ores = list()
+	var/list/uncommon_ores = list()
+	var/list/rare_ores = list()
+
+/datum/controller/subsystem/materials/Initialize(start_timeofday)
+	if(!materials)
+		InitializeMaterials()
+
+	InitializeOres()
+	return ..()
+
+/datum/controller/subsystem/materials/proc/InitializeOres()
+	for(var/datum/ore/ore as anything in typesof(/datum/ore))
+		if(isabstract(ore))
+			continue
+
+		ore = new ore()
+		ores += ore
+
+		switch(ore.rarity)
+			if(MINING_COMMON)
+				common_ores += ore
+			if(MINING_UNCOMMON)
+				uncommon_ores += ore
+			if(MINING_RARE)
+				uncommon_ores += ore
 
 ///Ran on initialize, populated the materials and materials_by_category dictionaries with their appropiate vars (See these variables for more info)
 /datum/controller/subsystem/materials/proc/InitializeMaterials()

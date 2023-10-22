@@ -145,7 +145,7 @@
 		return
 	if(istype(target, /turf/closed/mineral))
 		var/turf/closed/mineral/mineral_turf = target
-		mineral_turf.gets_drilled(mod.wearer)
+		mineral_turf.MinedAway()
 		drain_power(use_power_cost)
 	else if(istype(target, /turf/open/misc/asteroid))
 		var/turf/open/misc/asteroid/sand_turf = target
@@ -159,7 +159,7 @@
 	if(!istype(bumped_into, /turf/closed/mineral) || !drain_power(use_power_cost))
 		return
 	var/turf/closed/mineral/mineral_turf = bumped_into
-	mineral_turf.gets_drilled(mod.wearer)
+	mineral_turf.MinedAway()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 ///Ore Bag - Lets you pick up ores and drop them from the suit.
@@ -412,7 +412,7 @@
 	visible_message(span_danger("[src] explodes!"))
 	playsound(src, 'sound/magic/magic_missile.ogg', 200, vary = TRUE)
 	for(var/turf/closed/mineral/rock in circle_range_turfs(src, 2))
-		rock.gets_drilled()
+		rock.MinedAway()
 	for(var/mob/living/mob in range(1, src))
 		mob.apply_damage(12 * (ishostile(mob) ? fauna_boost : 1), BRUTE, spread_damage = TRUE)
 	for(var/obj/object in range(1, src))

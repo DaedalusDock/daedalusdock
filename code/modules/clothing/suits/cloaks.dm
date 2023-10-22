@@ -98,12 +98,6 @@
 	icon_state = "cleanercloak"
 	associated_skill_path = /datum/skill/cleaning
 
-/obj/item/clothing/neck/cloak/skill_reward/mining
-	name = "legendary miner's cloak"
-	desc = "Worn by the most skilled miners, this legendary cloak is only attainable by achieving true mineral enlightenment. This status symbol represents a being who has forgotten more about rocks than most miners will ever know, a being who has moved mountains and filled valleys."
-	icon_state = "minercloak"
-	associated_skill_path = /datum/skill/mining
-
 /obj/item/clothing/neck/cloak/skill_reward/playing
 	name = "legendary veteran's cloak"
 	desc = "Worn by the wisest of veteran employees, this legendary cloak is only attainable by maintaining a living employment agreement with Nanotrasen for over <b>five thousand hours</b>. This status symbol represents a being is better than you in nearly every quantifiable way, simple as that."

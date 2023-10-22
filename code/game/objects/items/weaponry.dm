@@ -924,7 +924,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		wall_target.dismantle_wall()
 	else if(ismineralturf(target) && prob(force*damage_mod))
 		var/turf/closed/mineral/mineral_target = target
-		mineral_target.gets_drilled()
+		mineral_target.MinedAway()
 
 /obj/effect/temp_visual/slash
 	icon_state = "highfreq_slash"

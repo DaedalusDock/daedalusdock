@@ -25,7 +25,7 @@
 	sleep(duration)
 	if(ismineralturf(T))
 		var/turf/closed/mineral/M = T
-		M.gets_drilled()
+		M.MinedAway()
 	playsound(T, SFX_EXPLOSION, 80, TRUE)
 	T.create_fire(1, 10)
 

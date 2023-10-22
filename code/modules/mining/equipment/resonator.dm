@@ -123,7 +123,8 @@
 	new /obj/effect/temp_visual/resonance_crush(src_turf)
 	if(ismineralturf(src_turf))
 		var/turf/closed/mineral/mineral_turf = src_turf
-		mineral_turf.gets_drilled(creator)
+		mineral_turf.MinedAway()
+
 	check_pressure(src_turf)
 	playsound(src_turf, 'sound/weapons/resonator_blast.ogg', 50, TRUE)
 	for(var/mob/living/attacked_living in src_turf)

@@ -66,9 +66,6 @@
 	if (!mapload)
 		visibilityChanged()
 
-	for(var/atom/movable/content as anything in src)
-		Entered(content, null)
-
 	var/area/our_area = loc
 	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
@@ -416,6 +413,9 @@
 	icon = MAP_SWITCH('icons/turf/walls/legacy/red_wall.dmi', 'icons/turf/mining.dmi')
 	icon_state = "redrock"
 	base_icon_state = "red_wall"
+
+/turf/closed/mineral/asteroid/tospace
+	baseturfs = /turf/open/misc/asteroid/airless/tospace
 
 /turf/closed/mineral/random/stationside/asteroid
 	name = "iron rock"

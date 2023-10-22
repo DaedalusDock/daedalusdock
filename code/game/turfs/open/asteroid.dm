@@ -16,6 +16,9 @@
 
 	simulated = TRUE //Kilostation
 
+	/// Set to TRUE to call ex_act parent
+	var/explodable = FALSE
+
 	/// Base turf type to be created by the tunnel
 	var/turf_type = /turf/open/misc/asteroid
 	/// Probability floor has a different icon state
@@ -59,7 +62,9 @@
 	return
 
 /turf/open/misc/asteroid/ex_act(severity, target)
-	return
+	if(!explodable)
+		return
+	return ..()
 
 /turf/open/misc/asteroid/attackby(obj/item/W, mob/user, params)
 	. = ..()
@@ -148,6 +153,12 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 
 	baseturfs = /turf/open/misc/asteroid/airless
 	turf_type = /turf/open/misc/asteroid/airless
+
+/// Destroys down to zlevel baseturf
+/turf/open/misc/asteroid/airless/tospace
+	explodable = TRUE
+	baseturfs = /turf/baseturf_bottom
+	turf_type = /turf/open/misc/asteroid/airless/tospace
 
 /turf/open/misc/asteroid/snow
 	gender = PLURAL

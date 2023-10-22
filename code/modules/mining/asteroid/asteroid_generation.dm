@@ -14,6 +14,20 @@
 	if(after_load)
 		after_load.Invoke()
 
+/// Cleanup our currently loaded mining template
+/proc/CleanupAsteroidMagnet(turf/center, size)
+	var/list/turfs_to_destroy = ReserveTurfsForAsteroidGeneration(center, size)
+	for(var/turf/T as anything in turfs_to_destroy)
+		CHECK_TICK
+
+		for(var/atom/movable/AM as anything in turfs_to_destroy)
+			CHECK_TICK
+			if(isdead(AM) || iscameramob(AM) || iseffect(AM) || istype(AM, /atom/movable/openspace))
+				continue
+			qdel(AM)
+
+		T.ChangeTurf(/turf/baseturf_bottom)
+
 /// Sanitizes a block of turfs to prevent writing over undesired locations
 /proc/ReserveTurfsForAsteroidGeneration(turf/center, size)
 	. = list()
@@ -24,13 +38,13 @@
 		. += S
 		CHECK_TICK
 
-/proc/GenerateRoundAsteroid(datum/mining_template/template, turf/center, initial_turf_path = /turf/closed/mineral/asteroid, size = 7, list/turfs, hollow = FALSE)
+/proc/GenerateRoundAsteroid(datum/mining_template/template, turf/center, initial_turf_path = /turf/closed/mineral/asteroid/tospace, size = 7, list/turfs, hollow = FALSE)
 	. = list()
 	if(!length(turfs))
 		return list()
 
 	if (hollow)
-		center = center.ChangeTurf(/turf/open/misc/asteroid/airless, /turf/baseturf_bottom, flags = CHANGETURF_DEFER_CHANGE)
+		center = center.ChangeTurf(/turf/open/misc/asteroid/airless/tospace, flags = CHANGETURF_DEFER_CHANGE)
 	else
 		center = center.ChangeTurf(initial_turf_path, flags = CHANGETURF_DEFER_CHANGE)
 
@@ -51,12 +65,13 @@
 
 		if (hollow && total_distance < size / 2)
 			var/turf/open/misc/asteroid/airless/floor = locate(current_turf.x, current_turf.y, current_turf.z)
-			floor = floor.ChangeTurf(/turf/open/misc/asteroid/airless, flags = CHANGETURF_DEFER_CHANGE)
+			floor = floor.ChangeTurf(/turf/open/misc/asteroid/airless/tospace, flags = CHANGETURF_DEFER_CHANGE)
 			. += floor
 
 		else
 			var/turf/T = locate(current_turf.x, current_turf.y, current_turf.z)
-			T = T.ChangeTurf(initial_turf_path, flags = CHANGETURF_DEFER_CHANGE)
+			// I don't like needing to specify the baseturf here, this may cause issues
+			T = T.ChangeTurf(initial_turf_path, /turf/open/misc/asteroid/airless/tospace, flags = CHANGETURF_DEFER_CHANGE)
 			. += T
 
 	return template.Generate(center, .)

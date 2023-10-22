@@ -22,5 +22,5 @@
 	var/size = 5
 
 	var/list/turfs = ReserveTurfsForAsteroidGeneration(center, size)
-	var/datum/callback/asteroid_cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(GenerateRoundAsteroid), template, center, /turf/closed/mineral/asteroid, 7, turfs, TRUE)
+	var/datum/callback/asteroid_cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(GenerateRoundAsteroid), template, center, /turf/closed/mineral/asteroid/tospace, 7, turfs, TRUE)
 	SSmapping.generate_asteroid(template, asteroid_cb)

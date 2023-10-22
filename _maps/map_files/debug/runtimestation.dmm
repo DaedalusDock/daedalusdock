@@ -1939,11 +1939,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/science)
-"gZ" = (
-/obj/structure/lattice/catwalk,
-/obj/structure/lattice/catwalk,
-/turf/open/space/basic,
-/area/space)
 "hD" = (
 /obj/structure/closet/secure_closet/chemical/heisenberg{
 	locked = 0
@@ -7520,7 +7515,7 @@ QH
 QH
 QH
 QH
-gZ
+qk
 aa
 aa
 aa

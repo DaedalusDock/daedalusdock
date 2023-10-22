@@ -32,7 +32,7 @@
 /proc/ReserveTurfsForAsteroidGeneration(turf/center, size, space_only = TRUE)
 	. = list()
 
-	for(var/turf/T as anythiong in RANGE_TURFS(size, center))
+	for(var/turf/T as anything in RANGE_TURFS(size, center))
 		if(space_only && !isspaceturf(T))
 			continue
 		if(!(istype(T.loc, /area/station/cargo/mining/asteroid_magnet)))

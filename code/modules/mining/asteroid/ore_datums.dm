@@ -36,6 +36,7 @@
 	amount_per_turf_min = 3
 	amount_per_turf_max = 6
 
+	mining_health = 60
 	spread_chance = 60
 
 /datum/ore/silver
@@ -50,6 +51,7 @@
 	amount_per_turf_min = 4
 	amount_per_turf_max = 12
 
+	mining_health = 80
 	spread_chance = 20
 
 /datum/ore/gold
@@ -64,6 +66,7 @@
 	amount_per_turf_min = 4
 	amount_per_turf_max = 8
 
+	mining_health = 100
 	spread_chance = 5
 
 

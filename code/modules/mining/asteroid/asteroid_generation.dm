@@ -102,16 +102,15 @@
 		GENERATOR_CHECK_TICK
 
 		var/list/ore_pool = SSmaterials.common_ores
-		/*
+
 		var/rarity = rand(1, 100) + rarity_modifier
 		switch(rarity)
-			if(100 to 90)
-				ore_pool = SSmaterials.common_ores
-			if(89 to 50)
+			if(90 to 100)
+				ore_pool = SSmaterials.rare_ores
+			if(50 to 89)
 				ore_pool = SSmaterials.uncommon_ores
 			else
-				ore_pool = SSmaterials.rare_ores
-		*/
+				ore_pool = SSmaterials.common_ores
 
 
 		var/datum/ore/chosen_ore = pick(ore_pool)

@@ -22,8 +22,8 @@
 	transform = MAP_SWITCH(TRANSLATE_MATRIX(-4, -4), matrix())
 
 	/// Health decreased by mining.
-	var/mining_health = 100
-	var/mining_max_health = 100
+	var/mining_health = 20
+	var/mining_max_health = 20
 
 	var/turf/open/floor/plating/turf_type = /turf/open/misc/asteroid/airless
 	var/datum/ore/mineralType = null

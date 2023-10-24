@@ -26,7 +26,7 @@
 			to_chat(usr, "Could not find [name]. Skipping.")
 			continue
 		//Get reaction
-		var/list/reactions = GLOB.chemical_reactions_list_product_index[reagent.type]
+		var/list/reactions = SSreagents.chemical_reactions_list_product_index[reagent.type]
 
 		if(!length(reactions))
 			to_chat(usr, "Could not find [name] reaction! Continuing anyways.")

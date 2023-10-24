@@ -14,7 +14,7 @@
 
 		var/list/production_strings = list()
 
-		for(var/datum/chemical_reaction/reaction as anything in GLOB.chemical_reactions_list_product_index[R])
+		for(var/datum/chemical_reaction/reaction as anything in SSreagents.chemical_reactions_list_product_index[R])
 
 			if(!length(reaction.required_reagents))
 				continue

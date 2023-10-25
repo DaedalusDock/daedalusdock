@@ -38,3 +38,6 @@
       first.
   mc-oofert:
   - bugfix: SDQL now displays turf locations instead of saying they are in nullspace
+2023-10-25:
+  Kapu1178:
+  - code_imp: Cleaned up material code

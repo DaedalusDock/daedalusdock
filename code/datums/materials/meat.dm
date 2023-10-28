@@ -3,6 +3,7 @@
 	name = "meat"
 	desc = "Meat"
 	id = /datum/material/meat // So the bespoke versions are categorized under this
+
 	color = rgb(214, 67, 67)
 	greyscale_colors = rgb(214, 67, 67)
 	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
@@ -34,7 +35,7 @@
 
 
 /datum/material/meat/mob_meat
-	init_flags = MATERIAL_INIT_BESPOKE
+	bespoke = TRUE
 	var/subjectname = ""
 	var/subjectjob = null
 
@@ -42,7 +43,7 @@
 	if(!istype(source))
 		return FALSE
 
-	name = "[source?.name ? "[source.name]'s" : "mystery"] [initial(name)]"
+	name = "[source.name ? "[source.name]'s" : "mystery"] [initial(name)]"
 
 	if(source.real_name)
 		subjectname = source.real_name
@@ -56,7 +57,7 @@
 	return ..()
 
 /datum/material/meat/species_meat
-	init_flags = MATERIAL_INIT_BESPOKE
+	bespoke = TRUE
 
 /datum/material/meat/species_meat/Initialize(_id, datum/species/source)
 	if(!istype(source))

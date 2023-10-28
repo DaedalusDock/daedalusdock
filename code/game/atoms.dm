@@ -1786,21 +1786,19 @@
 
 /// Sets the custom materials for an item.
 /atom/proc/set_custom_materials(list/materials, multiplier = 1)
-	if(custom_materials && material_flags & MATERIAL_EFFECTS) //Only runs if custom materials existed at first and affected src.
-		for(var/current_material in custom_materials)
-			var/datum/material/custom_material = GET_MATERIAL_REF(current_material)
-			custom_material.on_removed(src, custom_materials[current_material] * material_modifier, material_flags) //Remove the current materials
+	if(length(custom_materials) && istype(custom_materials[1], /datum/material) && (material_flags & MATERIAL_EFFECTS)) //Only runs if custom materials existed at first and affected src.
+		for(var/datum/material/material as anything in custom_materials)
+			material.on_removed(src, custom_materials[material] * material_modifier, material_flags) //Remove the current materials
 
 	if(!length(materials))
 		custom_materials = null
 		return
 
-	if(material_flags & MATERIAL_EFFECTS)
-		for(var/current_material in materials)
-			var/datum/material/custom_material = GET_MATERIAL_REF(current_material)
-			custom_material.on_applied(src, materials[current_material] * multiplier * material_modifier, material_flags)
-
 	custom_materials = SSmaterials.FindOrCreateMaterialCombo(materials, multiplier)
+
+	if(material_flags & MATERIAL_EFFECTS)
+		for(var/datum/material/material as anything in custom_materials)
+			material.on_applied(src, materials[material] * multiplier * material_modifier, material_flags)
 
 /**
  * Returns the material composition of the atom.

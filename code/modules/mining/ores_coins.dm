@@ -15,12 +15,13 @@
 	full_w_class = WEIGHT_CLASS_BULKY
 	singular_name = "ore chunk"
 	material_flags = MATERIAL_EFFECTS
-	var/points = 0 //How many points this ore gets you from the ore redemption machine
-	var/refined_type = null //What this ore defaults to being refined into
 	novariants = TRUE // Ore stacks handle their icon updates themselves to keep the illusion that there's more going
+
 	var/list/stack_overlays
-	var/scan_state = "" //Used by mineral turfs for their scan overlay.
-	var/spreadChance = 0 //Also used by mineral turfs for spreading veins
+	/// How many points this ore gets you from the ore redemption machine
+	var/points = 0
+	/// What this ore defaults to being refined into
+	var/refined_type = null
 
 /obj/item/stack/ore/update_overlays()
 	. = ..()
@@ -156,7 +157,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	points = 16
 	mats_per_unit = list(/datum/material/silver=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/silver
-	spreadChance = 5
 	merge_type = /obj/item/stack/ore/silver
 
 /obj/item/stack/ore/gold
@@ -167,7 +167,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	points = 18
 	mats_per_unit = list(/datum/material/gold=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/gold
-	spreadChance = 5
 	merge_type = /obj/item/stack/ore/gold
 
 /obj/item/stack/ore/diamond
@@ -198,7 +197,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	points = 50
 	mats_per_unit = list(/datum/material/titanium=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/titanium
-	spreadChance = 5
 	merge_type = /obj/item/stack/ore/titanium
 
 /obj/item/stack/ore/slag

@@ -1,7 +1,8 @@
 /// Used in asteroid composition lists to indicate a skip
 #define SKIP "skip"
 
-/// Mining template rarities
+// Mining template rarities
+#define MINING_NO_RANDOM_SPAWN -1
 #define MINING_COMMON 1
 #define MINING_UNCOMMON 2
 #define MINING_RARE 3

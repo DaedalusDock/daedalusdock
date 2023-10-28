@@ -139,7 +139,7 @@
 		var/turf/T = get_step(src, dir)
 		var/turf/closed/mineral/random/M = T
 		if(istype(M) && !M.mineralType)
-			M.change_ore(mineralType, mineralAmt)
+			M.change_ore(mineralType, mineralAmt, TRUE)
 
 /turf/closed/mineral/proc/change_ore(datum/ore/new_ore, amount, random)
 	mineralType = new_ore
@@ -274,15 +274,14 @@
 
 /turf/closed/mineral/random
 	var/list/mineralSpawnChanceList = list(
-		/obj/item/stack/ore/uranium = 5,
-		/obj/item/stack/ore/diamond = 1,
-		/obj/item/stack/ore/gold = 10,
-		/obj/item/stack/ore/silver = 12,
-		/obj/item/stack/ore/plasma = 20,
-		/obj/item/stack/ore/iron = 40,
-		/obj/item/stack/ore/titanium = 11,
-		/turf/closed/mineral/gibtonite = 4,
-		/obj/item/stack/ore/bluespace_crystal = 1
+		/datum/ore/uranium = 5,
+		/datum/ore/diamond = 1,
+		/datum/ore/gold = 10,
+		/datum/ore/silver = 12,
+		/datum/ore/plasma = 20,
+		/datum/ore/iron = 40,
+		/datum/ore/titanium = 11,
+		/datum/ore/bluespace_crystal = 1
 	)
 	var/mineralChance = 13
 
@@ -319,35 +318,35 @@
 	icon_state = "rock_highchance"
 	mineralChance = 25
 	mineralSpawnChanceList = list(
-		/obj/item/stack/ore/uranium = 35, /obj/item/stack/ore/diamond = 30, /obj/item/stack/ore/gold = 45, /obj/item/stack/ore/titanium = 45,
-		/obj/item/stack/ore/silver = 50, /obj/item/stack/ore/plasma = 50, /obj/item/stack/ore/bluespace_crystal = 20)
+		/datum/ore/uranium = 35, /datum/ore/diamond = 30, /datum/ore/gold = 45, /datum/ore/titanium = 45,
+		/datum/ore/silver = 50, /datum/ore/plasma = 50, /datum/ore/bluespace_crystal = 20)
 
 /turf/closed/mineral/random/low_chance
 	icon_state = "rock_lowchance"
 	mineralChance = 6
 	mineralSpawnChanceList = list(
-		/obj/item/stack/ore/uranium = 2, /obj/item/stack/ore/diamond = 1, /obj/item/stack/ore/gold = 4, /obj/item/stack/ore/titanium = 4,
-		/obj/item/stack/ore/silver = 6, /obj/item/stack/ore/plasma = 15, /obj/item/stack/ore/iron = 40,
-		/turf/closed/mineral/gibtonite = 2, /obj/item/stack/ore/bluespace_crystal = 1)
+		/datum/ore/uranium = 2, /datum/ore/diamond = 1, /datum/ore/gold = 4, /datum/ore/titanium = 4,
+		/datum/ore/silver = 6, /datum/ore/plasma = 15, /datum/ore/iron = 40,
+		/turf/closed/mineral/gibtonite = 2, /datum/ore/bluespace_crystal = 1)
 
 //extremely low chance of rare ores, meant mostly for populating stations with large amounts of asteroid
 /turf/closed/mineral/random/stationside
 	icon_state = "rock_nochance"
 	mineralChance = 4
 	mineralSpawnChanceList = list(
-		/obj/item/stack/ore/uranium = 1, /obj/item/stack/ore/diamond = 1, /obj/item/stack/ore/gold = 3, /obj/item/stack/ore/titanium = 5,
-		/obj/item/stack/ore/silver = 4, /obj/item/stack/ore/plasma = 3, /obj/item/stack/ore/iron = 50)
+		/datum/ore/uranium = 1, /datum/ore/diamond = 1, /datum/ore/gold = 3, /datum/ore/titanium = 5,
+		/datum/ore/silver = 4, /datum/ore/plasma = 3, /datum/ore/iron = 50)
 
 /turf/closed/mineral/random/labormineral
 	icon_state = "rock_labor"
 	mineralSpawnChanceList = list(
-		/obj/item/stack/ore/uranium = 3, /obj/item/stack/ore/diamond = 1, /obj/item/stack/ore/gold = 8, /obj/item/stack/ore/titanium = 8,
-		/obj/item/stack/ore/silver = 20, /obj/item/stack/ore/plasma = 30, /obj/item/stack/ore/iron = 95,
+		/datum/ore/uranium = 3, /datum/ore/diamond = 1, /datum/ore/gold = 8, /datum/ore/titanium = 8,
+		/datum/ore/silver = 20, /datum/ore/plasma = 30, /datum/ore/iron = 95,
 		/turf/closed/mineral/gibtonite = 2)
 
 // Subtypes for mappers placing ores manually.
 /turf/closed/mineral/iron
-	mineralType = /obj/item/stack/ore/iron
+	mineralType = /datum/ore/iron
 
 /turf/closed/mineral/iron/ice
 	icon_state = "icerock_iron"
@@ -360,10 +359,10 @@
 	defer_change = TRUE
 
 /turf/closed/mineral/uranium
-	mineralType = /obj/item/stack/ore/uranium
+	mineralType = /datum/ore/uranium
 
 /turf/closed/mineral/diamond
-	mineralType = /obj/item/stack/ore/diamond
+	mineralType = /datum/ore/diamond
 
 /turf/closed/mineral/diamond/ice
 	icon_state = "icerock_iron"
@@ -376,16 +375,16 @@
 	defer_change = TRUE
 
 /turf/closed/mineral/gold
-	mineralType = /obj/item/stack/ore/gold
+	mineralType = /datum/ore/gold
 
 /turf/closed/mineral/silver
-	mineralType = /obj/item/stack/ore/silver
+	mineralType = /datum/ore/silver
 
 /turf/closed/mineral/titanium
-	mineralType = /obj/item/stack/ore/titanium
+	mineralType = /datum/ore/titanium
 
 /turf/closed/mineral/plasma
-	mineralType = /obj/item/stack/ore/plasma
+	mineralType = /datum/ore/plasma
 
 /turf/closed/mineral/plasma/ice
 	icon_state = "icerock_plasma"
@@ -398,11 +397,11 @@
 	defer_change = TRUE
 
 /turf/closed/mineral/bananium
-	mineralType = /obj/item/stack/ore/bananium
+	mineralType = /datum/ore/bananium
 	mineralAmt = 3
 
 /turf/closed/mineral/bscrystal
-	mineralType = /obj/item/stack/ore/bluespace_crystal
+	mineralType = /datum/ore/bluespace_crystal
 	mineralAmt = 1
 
 /turf/closed/mineral/volcanic

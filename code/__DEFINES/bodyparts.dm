@@ -23,24 +23,24 @@
 
 //Bodypart flags
 #define BP_BLEEDING (1<<0)
-#define BP_HAS_BLOOD (1<<1)
-#define BP_HAS_BONES (1<<2)
+#define BP_HAS_BLOOD (1<<1) // IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
+#define BP_HAS_BONES (1<<2) // IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_BROKEN_BONES (1<<3)
-/// This limb has a tendon
+/// This limb has a tendon IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_HAS_TENDON (1<<4)
 /// This limb's tendon is cut, and is disabled.
 #define BP_TENDON_CUT (1<<5)
-/// This limb has an artery.
+/// This limb has an artery. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_HAS_ARTERY (1<<6)
 /// This limb's artery is cut, causing massive bleeding.
 #define BP_ARTERY_CUT (1<<7)
-/// This limb has a "hand" and contributes to usable_arms
+/// This limb has a "hand" and contributes to usable_arms. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_IS_GRABBY_LIMB (1<<8)
-/// This limb is able to be used for movement and contributes to usable_legs
+/// This limb is able to be used for movement and contributes to usable_legs. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_IS_MOVEMENT_LIMB (1<<9)
 /// Limb is not connected to the nervous system and is not usable.
 #define BP_CUT_AWAY (1<<10)
-/// Limb cannot feel pain
+/// Limb cannot feel pain. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_NO_PAIN (1<<11)
 /// Limb is MF dead
 #define BP_NECROTIC (1<<12)

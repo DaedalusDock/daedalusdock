@@ -270,7 +270,7 @@ div.notice
 	margin: 3px 0;
 	color: #ffffff;
 	overflow: hidden;
-	background: inherit;
+	background: none;
 	box-shadow: 0 0 10px #FFCC00
 }
 

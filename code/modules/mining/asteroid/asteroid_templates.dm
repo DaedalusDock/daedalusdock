@@ -9,6 +9,10 @@
 	/// The center turf.
 	var/turf/center
 
+	// Asteroid Map location
+	var/x
+	var/y
+
 /datum/mining_template/New(center, max_size)
 	. = ..()
 	src.center = center

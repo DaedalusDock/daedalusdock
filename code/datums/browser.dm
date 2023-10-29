@@ -80,7 +80,7 @@
 	</head>
 	<body scroll=auto>
 		<div class='uiWrapper'>
-			[title ? "<div class='uiTitle'><tt>[title]</tt></div></div>" : ""]
+			[title ? "<div class='uiTitle'><tt>[title]</tt></div>" : ""]
 			<div class='uiContent'>
 	"}
 //" This is here because else the rest of the file looks like a string in notepad++.

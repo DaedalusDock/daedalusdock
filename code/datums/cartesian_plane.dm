@@ -38,18 +38,28 @@
 	src.y2 = y2
 
 	// Calculate the offsets to push the lower bound within a usable range.
-	offset_x = (x1 * -1) + 1
-	offset_y = (y1 * -1) + 1
+	offset_x = 1 - x1
+	offset_y = 1 - y1
 
-	x_size = (x1 < 0 && x2 > 0) ? abs(x1 + x2) + 1 : abs(x1 - x2)
-	y_size = (y1 < 0 && y2 > 0) ? abs(y1 + y2) + 1 : abs(y1 - y2)
+	x_size = (x1 < 0 && x2 > 0) ? abs(x1 - x2) + 1 : abs(x1 - x2)
+	y_size = (y1 < 0 && y2 > 0) ? abs(y1 - y2) + 1 : abs(y1 - y2)
 
 	plane = new/list(x_size, y_size)
 
+/// Pass in a logical coordinate and see if it's in the map. This does not take array coordinates!
 /datum/cartesian_plane/proc/SanitizeCoordinate(x, y)
 	PRIVATE_PROC(TRUE)
-	if(x > x2 || x < x1 || y < y1 || y > y2)
+	if(x > x2 || x < x1 || y < y1  || y > y2)
 		return FALSE
+	return TRUE
+
+/// Returns the bounds of the map as a list
+/datum/cartesian_plane/proc/return_bounds()
+	return list(x1, x2, y1, y2)
+
+/// Returns the offsets of the map as a list
+/datum/cartesian_plane/proc/return_offsets()
+	return list(offset_x, offset_y)
 
 /// Get the content at a given coordinate
 /datum/cartesian_plane/proc/return_coordinate(x, y)
@@ -74,3 +84,11 @@
 			var/foo = plane[_x][_y]
 			if(foo)
 				. += foo
+
+/// Returns the contents of a block of coordinates in chebyshev range from the given coordinate
+/datum/cartesian_plane/proc/return_range(x, y, range)
+	var/x1 = clamp(x-range, src.x1, src.x2)
+	var/x2 = clamp(x+range, src.x1, src.x2)
+	var/y1 = clamp(y-range, src.y1, src.y2)
+	var/y2 = clamp(y+range, src.y1, src.y2)
+	return return_block(x1, x2, y1, y2)

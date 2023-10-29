@@ -142,6 +142,8 @@
 			M.change_ore(mineralType, mineralAmt, TRUE)
 
 /turf/closed/mineral/proc/change_ore(datum/ore/new_ore, amount, random)
+	if(ispath(new_ore))
+		new_ore = locate(new_ore) in SSmaterials.ores
 	mineralType = new_ore
 
 	if(new_ore.mining_health)

@@ -22,6 +22,12 @@
 	/// The chance to spread during spread_vein()
 	var/spread_chance = 0
 
+/datum/ore/Destroy(force, ...)
+	if(!force)
+		stack_trace("Something is trying to delete an ore datum, these are singletons!")
+		return QDEL_HINT_LETMELIVE
+	return ..()
+
 
 // -=~* COMMON ORES *~=-
 /datum/ore/iron

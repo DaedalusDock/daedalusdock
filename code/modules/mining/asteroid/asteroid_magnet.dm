@@ -71,15 +71,19 @@
 			<legend class='computerLegend' style='margin: auto'>
 				<b>X-Axis</b>
 			</legend>
-			<div style='width: 54%;margin: 0 auto'>
-				[button_element(src, "-100", "x=-100")]
-				[button_element(src, "-10", "x=-10")]
-				[button_element(src, "-1", "x=-1")]
-				<span class='linkOff'>[coords_x]</span>
-				[button_element(src, "1", "x=1")]
-				[button_element(src, "10", "x=10")]
-				[button_element(src, "100", "x=100")]
-			</div>
+			<table style='margin: auto'>
+				<tr>
+					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-100", "x=-100")]</td>
+					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-10", "x=-10")]</td>
+					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-1", "x=-1")]</td>
+					<td style='min-width: 5%;text-align: center;'>
+						<span class='computerLegend'>[coords_x]</span>
+					</td>
+					<td style='min-width: 5%;text-align: left;'>[button_element(src, "1", "x=1")]</td>
+					<td style='min-width: 5%;text-align: left;'>[button_element(src, "10", "x=10")]</td>
+					<td style='min-width: 5%;text-align: left;'>[button_element(src, "100", "x=100")]</td>
+				</tr>
+			</table>
 		</fieldset>
 	"}
 
@@ -89,15 +93,19 @@
 			<legend class='computerLegend' style='margin: auto'>
 				<b>Y-Axis</b>
 			</legend>
-			<div style='width: 54%;margin: 0 auto'>
-				[button_element(src, "-100", "y=-100", style = "width: 7%")]
-				[button_element(src, "-10", "y=-10")]
-				[button_element(src, "-1", "y=-1")]
-				<span class='computerLegend' style='margin: auto; max-width:10%'>[coords_y]</span>
-				[button_element(src, "1", "y=1")]
-				[button_element(src, "10", "y=10")]
-				[button_element(src, "100", "y=100")]
-			</div>
+			<table style='margin: auto'>
+				<tr>
+					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-100", "y=-100")]</td>
+					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-10", "y=-10")]</td>
+					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-1", "y=-1")]</td>
+					<td style='min-width: 5%;text-align: center;'>
+						<span class='computerLegend'>[coords_y]</span>
+					</td>
+					<td style='min-width: 5%;text-align: left;'>[button_element(src, "1", "y=1")]</td>
+					<td style='min-width: 5%;text-align: left;'>[button_element(src, "10", "y=10")]</td>
+					<td style='min-width: 5%;text-align: left;'>[button_element(src, "100", "y=100")]</td>
+				</tr>
+			</table>
 		</fieldset>
 	"}
 
@@ -150,16 +158,10 @@
 	if(closest)
 		var/dx = closest.x - coords_x
 		var/dy = closest.y - coords_y
-		if(dx == 0)
-			if(dy > 0)
-				ping_result = 270
-			else
-				ping_result = 90
-		else
-			ping_result = arctan(dy / dx)
-			if(dx < 0)
-				ping_result += 180
+		var/angle = arccos(dy / sqrt((dx ** 2) + (dy ** 2)))
+		if(dx < 0)
+			angle = 360 - angle
 
-		ping_result = "AZIMUTH [(WRAP(ping_result + 90, 0, 360) % 360)]"
+		ping_result = "AZIMUTH [angle]"
 	else
 		ping_result = "ERR"

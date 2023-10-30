@@ -55,6 +55,17 @@
 		updateUsrDialog()
 		return
 
+	if(href_list["select"])
+		var/datum/mining_template/T = locate(href_list["select"]) in available_templates
+		if(!T)
+			return
+		if(selected_template)
+			available_templates += T
+		selected_template = T
+		available_templates -= T
+		updateUsrDialog()
+		return
+
 /obj/machinery/asteroid_magnet/ui_interact(mob/user, datum/tgui/ui)
 	var/content = list()
 
@@ -127,15 +138,37 @@
 	// Close coordinates fieldset
 	content += "</fieldset>"
 
-
+	// Asteroids list fieldset
 	content += {"
 	<fieldset class='computerPane'>
 		<legend class='computerLegend'>
 			<b>Available Asteroids</b>
 		</legend>
-	<table style='width:100%'>
 	"}
+
+	content += {"
+		<table class='zebraTable' style='min-width:100%;height: 560px;overflow-y: auto'>
+	"}
+
+	for(var/datum/mining_template/template as anything in available_templates)
+		content += {"
+					<tr class='highlighter' style='display: block;min-width: 100%' onclick='byondCall([ref(template)])'>
+						<td>
+						<span style='padding-left: 10px'>[template.name] ([template.x],[template.y])</span>
+						</td>
+					</tr>
+		"}
+
 	content += "</table></fieldset>"
+
+	content += {"
+	<script>
+	function byondCall(id){
+		window.location = 'byond://?src=[ref(src)];select=' + id
+	}
+	</script>
+	"}
+
 
 	var/datum/browser/popup = new(user, "asteroidmagnet", name, 460, 550)
 	popup.set_content(jointext(content,""))
@@ -145,6 +178,7 @@
 	var/datum/mining_template/T = map.return_coordinate(coords_x, coords_y)
 	if(T)
 		ping_result = "LOCATED"
+		available_templates += T
 		return
 
 	var/datum/mining_template/closest

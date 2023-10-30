@@ -591,3 +591,7 @@ span.color_holder_box{
 {
 	color: #ff0000;
 }
+
+.highlighter:hover {
+	background-color: #f0c400 !important;
+}

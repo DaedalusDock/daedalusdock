@@ -82,19 +82,18 @@
 			<legend class='computerLegend' style='margin: auto'>
 				<b>X-Axis</b>
 			</legend>
-			<table style='margin: auto'>
-				<tr>
-					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-100", "x=-100")]</td>
-					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-10", "x=-10")]</td>
-					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-1", "x=-1")]</td>
-					<td style='min-width: 5%;text-align: center;'>
-						<span class='computerLegend'>[coords_x]</span>
-					</td>
-					<td style='min-width: 5%;text-align: left;'>[button_element(src, "1", "x=1")]</td>
-					<td style='min-width: 5%;text-align: left;'>[button_element(src, "10", "x=10")]</td>
-					<td style='min-width: 5%;text-align: left;'>[button_element(src, "100", "x=100")]</td>
-				</tr>
-			</table>
+			<div style='display: flex; justify-content: center; gap: 5px'>
+				<div style='display: inline-block'>[button_element(src, "-100", "x=-100")]</div>
+				<div style='display: inline-block'>[button_element(src, "-10", "x=-10")]</div>
+				<div style='display: inline-block'>[button_element(src, "-1", "x=-1")]</div>
+				<div style='display: inline-block; padding: 0.5em'>
+					<span class='computerLegend'>[coords_x]</span>
+				</div>
+				<div style='display: inline-block'>[button_element(src, "1", "x=1")]</div>
+				<div style='display: inline-block'>[button_element(src, "10", "x=10")]</div>
+				<div style='display: inline-block'>[button_element(src, "100", "x=100")]</div>
+				<span style='visibility: hidden'>---</span>
+			</div>
 		</fieldset>
 	"}
 
@@ -104,19 +103,18 @@
 			<legend class='computerLegend' style='margin: auto'>
 				<b>Y-Axis</b>
 			</legend>
-			<table style='margin: auto'>
-				<tr>
-					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-100", "y=-100")]</td>
-					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-10", "y=-10")]</td>
-					<td style='min-width: 5%;text-align: right;'>[button_element(src, "-1", "y=-1")]</td>
-					<td style='min-width: 5%;text-align: center;'>
-						<span class='computerLegend'>[coords_y]</span>
-					</td>
-					<td style='min-width: 5%;text-align: left;'>[button_element(src, "1", "y=1")]</td>
-					<td style='min-width: 5%;text-align: left;'>[button_element(src, "10", "y=10")]</td>
-					<td style='min-width: 5%;text-align: left;'>[button_element(src, "100", "y=100")]</td>
-				</tr>
-			</table>
+			<div style='display: flex; justify-content: center'>
+				<div style='display: inline-block'>[button_element(src, "-100", "y=-100")]</div>
+				<div style='display: inline-block'>[button_element(src, "-10", "y=-10")]</div>
+				<div style='display: inline-block'>[button_element(src, "-1", "y=-1")]</div>
+				<div style='display: inline-block; padding: 0.5em'>
+					<span class='computerLegend'>[coords_y]</span>
+				</div>
+				<div style='display: inline-block'>[button_element(src, "1", "y=1")]</div>
+				<div style='display: inline-block'>[button_element(src, "10", "y=10")]</div>
+				<div style='display: inline-block'>[button_element(src, "100", "y=100")]</div>
+				<span style='visibility: hidden'>---</span>
+			</div>
 		</fieldset>
 	"}
 
@@ -154,7 +152,7 @@
 		content += {"
 					<tr class='highlighter' style='display: block;min-width: 100%' onclick='byondCall([ref(template)])'>
 						<td>
-						<span style='padding-left: 10px'>[template.name] ([template.x],[template.y])</span>
+						<span class='computerText' style='padding-left: 10px'>[template.name] ([template.x],[template.y])</span>
 						</td>
 					</tr>
 		"}

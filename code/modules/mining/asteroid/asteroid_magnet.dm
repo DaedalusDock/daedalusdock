@@ -182,6 +182,7 @@
 	var/datum/mining_template/closest
 	var/lowest_dist = INFINITY
 	for(var/datum/mining_template/asteroid as anything in all_templates)
+		// Get the euclidean distance between the ping and the asteroid.
 		var/dist = sqrt(((asteroid.x - coords_x) ** 2) + ((asteroid.y - coords_y) ** 2))
 		if(dist < lowest_dist)
 			closest = asteroid
@@ -190,10 +191,11 @@
 	if(closest)
 		var/dx = closest.x - coords_x
 		var/dy = closest.y - coords_y
+		// Get the angle as 0 - 180 degrees
 		var/angle = arccos(dy / sqrt((dx ** 2) + (dy ** 2)))
-		if(dx < 0)
+		if(dx < 0) // If the X-axis distance is negative, put it between 181 and 359. 180 and 360/0 are impossible, as that requires X == 0.
 			angle = 360 - angle
 
-		ping_result = "AZIMUTH [angle]"
+		ping_result = "AZIMUTH [round(angle, 0.01)]"
 	else
 		ping_result = "ERR"

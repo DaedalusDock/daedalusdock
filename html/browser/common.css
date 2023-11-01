@@ -265,6 +265,8 @@ div.notice
 	text-align: center;
 	text-shadow: 0 0 5px #FFCC00;
 	overflow: hidden;
+	font-size: 15px;
+	font-family: monospace;
 }
 
 .computerPaneNested
@@ -569,11 +571,11 @@ span.color_holder_box{
 	border: 1px solid rgba(255, 183, 0, 0.5);
 }
 
-.zebraTable tr:nth-child(even){
+.zebraTable div:nth-child(2n) tr:nth-child(even){
 	background-color: #7c5500;
 }
 
-.zebraTable tr:nth-child(odd){
+.zebraTable div:nth-child(2n+1) tr:nth-child(odd){
 	background-color: #533200;
 }
 

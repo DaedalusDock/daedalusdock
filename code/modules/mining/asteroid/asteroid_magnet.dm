@@ -10,7 +10,7 @@
 	/// The map that stores asteroids
 	var/datum/cartesian_plane/map
 	/// The currently selected template
-	var/list/datum/mining_template/selected_template
+	var/datum/mining_template/selected_template
 
 	var/coords_x = 0
 	var/coords_y = 0
@@ -143,21 +143,40 @@
 			<b>Available Asteroids</b>
 		</legend>
 	"}
+	// Selected asteroid container
+	var/asteroid_name = "N/A"
+	var/asteroid_desc = "N/A"
+	if(selected_template)
+		asteroid_name = selected_template.name
+		asteroid_desc = selected_template.description
 
 	content += {"
-		<table class='zebraTable' style='min-width:100%;height: 560px;overflow-y: auto'>
+		<div class="computerLegend" style="margin-bottom: 2em; width: 97%; height: 7em;">
+			<div style='font-size: 200%; text-align: center'>
+				[asteroid_name]
+			</div>
+			<div style='text-align: center'>
+				[asteroid_desc]
+			</div>
+		</div>
 	"}
 
+	// Asteroid list container
+	content += {"
+		<div class='zebraTable' style='display: flex;width: 100%; height: 120px;overflow-y: auto'>
+	"}
+
+	var/i = 0
 	for(var/datum/mining_template/template as anything in available_templates)
+		i++
+		var/bg_color = i % 2 == 0 ? "#7c5500" : "#533200"
 		content += {"
-					<tr class='highlighter' style='display: block;min-width: 100%' onclick='byondCall([ref(template)])'>
-						<td>
+					<div class='highlighter' onclick='byondCall(\"[ref(template)]\")' style='width: 100%;height: 2em;background-color: [bg_color]'>
 						<span class='computerText' style='padding-left: 10px'>[template.name] ([template.x],[template.y])</span>
-						</td>
-					</tr>
+					</div>
 		"}
 
-	content += "</table></fieldset>"
+	content += "</div></fieldset>"
 
 	content += {"
 	<script>
@@ -168,7 +187,7 @@
 	"}
 
 
-	var/datum/browser/popup = new(user, "asteroidmagnet", name, 460, 550)
+	var/datum/browser/popup = new(user, "asteroidmagnet", name, 460, 560)
 	popup.set_content(jointext(content,""))
 	popup.open()
 

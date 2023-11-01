@@ -1,7 +1,7 @@
 /datum/mining_template
 	abstract_type = /datum/mining_template
-	var/name = ""
-	var/description = ""
+	var/name = "PLACEHOLDER NAME"
+	var/description = "PLACEHOLDER DESC"
 	var/rarity = null
 	var/randomly_appear = FALSE
 	/// The size (radius, chebyshev distance). Will be clamped to the size of the asteroid magnet in New().

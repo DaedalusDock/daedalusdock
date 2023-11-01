@@ -70,7 +70,8 @@
 	var/content = list()
 
 	content += {"
-	<fieldset class='computerPane'>
+	<div style='width: 100%; display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch;'>
+	<fieldset class='computerPane' style='margin-right: 2em; display: inline-block; min-width: 45%;'>
 		<legend class='computerLegend'>
 			<b>Magnet Controls</b>
 		</legend>
@@ -138,7 +139,7 @@
 
 	// Asteroids list fieldset
 	content += {"
-	<fieldset class='computerPane'>
+	<fieldset class='computerPane' style='display: inline-block; min-width: 45%;'>
 		<legend class='computerLegend'>
 			<b>Available Asteroids</b>
 		</legend>
@@ -176,7 +177,7 @@
 					</div>
 		"}
 
-	content += "</div></fieldset>"
+	content += "</div></fieldset></div>"
 
 	content += {"
 	<script>
@@ -187,7 +188,7 @@
 	"}
 
 
-	var/datum/browser/popup = new(user, "asteroidmagnet", name, 460, 560)
+	var/datum/browser/popup = new(user, "asteroidmagnet", name, 920, 400)
 	popup.set_content(jointext(content,""))
 	popup.open()
 

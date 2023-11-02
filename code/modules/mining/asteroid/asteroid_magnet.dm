@@ -277,9 +277,6 @@
 
 /// Performs a full summoning sequence, including putting up boundaries, clearing out the area, and bringing in the new asteroid.
 /obj/machinery/asteroid_magnet/proc/summon_sequence(datum/mining_template/template)
-	if(findtext(status, "ERROR", 1, 5))
-		return
-
 	var/magnet_error = check_for_magnet_errors()
 	if(magnet_error)
 		status = magnet_error

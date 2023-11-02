@@ -1,6 +1,9 @@
+#define STATUS_OKAY "OK"
+
 /obj/machinery/asteroid_magnet
 	name = "asteroid magnet computer"
 	icon_state = "blackbox"
+	resistance_flags = INDESTRUCTIBLE
 	use_power = NO_POWER_USE
 
 	/// Templates available to succ in
@@ -12,18 +15,40 @@
 	/// The currently selected template
 	var/datum/mining_template/selected_template
 
+	/// Center turf X, set in mapping
+	VAR_PRIVATE/center_x = 0
+	/// Center turf Y, set in mapping
+	VAR_PRIVATE/center_y = 0
+	/// The center turf
+	VAR_PRIVATE/turf/center_turf
+	/// The size (chebyshev) of the available area, set in mapping
+	var/area_size = 0
+
 	var/coords_x = 0
 	var/coords_y = 0
 
 	var/ping_result = "N/A"
 
+	/// Status of the user interface
+	var/status = STATUS_OKAY
+
 /obj/machinery/asteroid_magnet/Initialize(mapload)
 	. = ..()
+	if(mapload)
+		if(!center_x || !center_y)
+			stack_trace("Asteroid magnet does not have X or Y coordinates, deleting.")
+			return INITIALIZE_HINT_QDEL
 
+		if(!area_size)
+			stack_trace("Asteroid magnet does not have a valid size, deleting.")
+			return INITIALIZE_HINT_QDEL
+
+	center_turf = locate(center_x, center_y, z)
 	available_templates = list()
 	all_templates = list()
+
 	map = new(-100, 100, -100, 100)
-	var/datum/mining_template/simple_asteroid/A = new()
+	var/datum/mining_template/simple_asteroid/A = new(center_turf, area_size)
 	A.x = 0
 	A.y = 1
 	all_templates += A
@@ -59,11 +84,12 @@
 		var/datum/mining_template/T = locate(href_list["select"]) in available_templates
 		if(!T)
 			return
-		if(selected_template)
-			available_templates += T
 		selected_template = T
-		available_templates -= T
 		updateUsrDialog()
+		return
+
+	if(href_list["summon_selected"])
+		summon_sequence()
 		return
 
 /obj/machinery/asteroid_magnet/ui_interact(mob/user, datum/tgui/ui)
@@ -125,11 +151,26 @@
 			<legend class='computerLegend' style='margin: auto;'>
 				<b>Ping</b>
 			</legend>
-			<div class='computerLegend' style='margin: auto; width:25%'>
+			<div class='computerLegend' style='margin: auto; width:30%'>
 				[ping_result]
 			</div>
 			<div style='margin: auto; width: 10%'>
 				[button_element(src, "PING", "ping=1")]
+			</div>
+		</fieldset>
+	"}
+
+	// Summoner
+	content += {"
+		<fieldset class='computerPaneNested'>
+			<legend class='computerLegend' style='margin: auto;'>
+				<b>Summon</b>
+			</legend>
+			<div class='computerLegend' style='margin: auto; width:30%'>
+				[status]
+			</div>
+			<div style='margin: auto; width: 16.5%'>
+				[button_element(src, "SUMMON", "summon_selected=1")]
 			</div>
 		</fieldset>
 	"}
@@ -164,13 +205,15 @@
 
 	// Asteroid list container
 	content += {"
-		<div class='zebraTable' style='display: flex;width: 100%; height: 120px;overflow-y: auto'>
+		<div class='zebraTable' style='display: flex;flex-direction: column;width: 100%; height: 190px;overflow-y: auto'>
 	"}
 
 	var/i = 0
 	for(var/datum/mining_template/template as anything in available_templates)
 		i++
 		var/bg_color = i % 2 == 0 ? "#7c5500" : "#533200"
+		if(selected_template == template)
+			bg_color = "#e67300 !important"
 		content += {"
 					<div class='highlighter' onclick='byondCall(\"[ref(template)]\")' style='width: 100%;height: 2em;background-color: [bg_color]'>
 						<span class='computerText' style='padding-left: 10px'>[template.name] ([template.x],[template.y])</span>
@@ -188,15 +231,16 @@
 	"}
 
 
-	var/datum/browser/popup = new(user, "asteroidmagnet", name, 920, 400)
+	var/datum/browser/popup = new(user, "asteroidmagnet", name, 920, 455)
 	popup.set_content(jointext(content,""))
+	popup.set_window_options("can_close=1;can_minimize=1;can_maximize=0;can_resize=1;titlebar=1;")
 	popup.open()
 
 /obj/machinery/asteroid_magnet/proc/ping(coords_x, coords_y)
 	var/datum/mining_template/T = map.return_coordinate(coords_x, coords_y)
 	if(T)
 		ping_result = "LOCATED"
-		available_templates += T
+		available_templates |= T
 		return
 
 	var/datum/mining_template/closest
@@ -219,3 +263,84 @@
 		ping_result = "AZIMUTH [round(angle, 0.01)]"
 	else
 		ping_result = "ERR"
+
+/// Test to see if we should clear the magnet area.
+/// Returns FALSE if it can clear, returns a string error message if it can't.
+/obj/machinery/asteroid_magnet/proc/check_for_magnet_errors()
+	. = FALSE
+	if(isnull(selected_template))
+		return "ERROR N1"
+
+	for(var/mob/M as mob in range(area_size + 1, center_turf))
+		if(isliving(M))
+			return "ERROR C3"
+
+/// Performs a full summoning sequence, including putting up boundaries, clearing out the area, and bringing in the new asteroid.
+/obj/machinery/asteroid_magnet/proc/summon_sequence(datum/mining_template/template)
+	if(findtext(status, "ERROR", 1, 5))
+		return
+
+	var/magnet_error = check_for_magnet_errors()
+	if(magnet_error)
+		status = magnet_error
+		updateUsrDialog()
+		return
+
+	var/area/station/cargo/mining/asteroid_magnet/A = get_area(center_turf)
+	A.area_flags |= NOTELEPORT // We dont want people getting nuked during the generation sequence
+	status = "Summoning[ellipsis()]"
+	updateUsrDialog()
+
+	var/time = world.timeofday
+	var/list/forcefields = PlaceForcefield()
+	CleanupTemplate()
+	PlaceTemplate(selected_template)
+
+	/// This process should take ATLEAST 20 seconds
+	time = (world.timeofday + 20 SECONDS) - time
+	if(time > 0)
+		addtimer(CALLBACK(src, PROC_REF(_FinishSummonSequence), forcefields), time)
+	else
+		_FinishSummonSequence(forcefields)
+	return
+
+/obj/machinery/asteroid_magnet/proc/_FinishSummonSequence(list/forcefields)
+	QDEL_LIST(forcefields)
+
+	var/area/station/cargo/mining/asteroid_magnet/A = get_area(center_turf)
+	A.area_flags &= ~NOTELEPORT // Annnnd done
+
+	status = STATUS_OKAY
+	updateUsrDialog()
+
+/// Summoning part of summon_sequence()
+/obj/machinery/asteroid_magnet/proc/PlaceTemplate(datum/mining_template/template)
+	PRIVATE_PROC(TRUE)
+	template.Generate()
+
+/// Places the forcefield boundary during summon_sequence
+/obj/machinery/asteroid_magnet/proc/PlaceForcefield()
+	PRIVATE_PROC(TRUE)
+	. = list()
+	var/list/turfs = RANGE_TURFS(area_size, center_turf) ^ RANGE_TURFS(area_size + 1, center_turf)
+	for(var/turf/T as anything in turfs)
+		. += new /obj/effect/forcefield/asteroid_magnet(T)
+
+
+/// Cleanup our currently loaded mining template
+/obj/machinery/asteroid_magnet/proc/CleanupTemplate()
+	PRIVATE_PROC(TRUE)
+
+	var/list/turfs_to_destroy = ReserveTurfsForAsteroidGeneration(center_turf, area_size, space_only = FALSE)
+	for(var/turf/T as anything in turfs_to_destroy)
+		CHECK_TICK
+
+		for(var/atom/movable/AM as anything in T)
+			CHECK_TICK
+			if(isdead(AM) || iscameramob(AM) || iseffect(AM) || !(ismob(AM) || isobj(AM)))
+				continue
+			qdel(AM)
+
+		T.ChangeTurf(/turf/baseturf_bottom)
+
+#undef STATUS_OKAY

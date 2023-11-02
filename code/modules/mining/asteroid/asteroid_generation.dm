@@ -3,7 +3,7 @@
 
 	SSatoms.map_loader_begin(REF(template))
 	var/list/turfs = asteroid_generator.Invoke()
-	template.Generate(turfs.Copy())
+	template.Populate(turfs.Copy())
 	SSatoms.map_loader_stop(REF(template))
 
 	var/list/atoms = list()
@@ -19,20 +19,6 @@
 
 	template.AfterInitialize(atoms)
 
-/// Cleanup our currently loaded mining template
-/proc/CleanupAsteroidMagnet(turf/center, size)
-	var/list/turfs_to_destroy = ReserveTurfsForAsteroidGeneration(center, size, space_only = FALSE)
-	for(var/turf/T as anything in turfs_to_destroy)
-		CHECK_TICK
-
-		for(var/atom/movable/AM as anything in T)
-			CHECK_TICK
-			if(isdead(AM) || iscameramob(AM) || iseffect(AM) || istype(AM, /atom/movable/openspace))
-				continue
-			qdel(AM)
-
-		T.ChangeTurf(/turf/baseturf_bottom)
-
 /// Sanitizes a block of turfs to prevent writing over undesired locations
 /proc/ReserveTurfsForAsteroidGeneration(turf/center, size, space_only = TRUE)
 	. = list()
@@ -46,7 +32,7 @@
 		CHECK_TICK
 
 /// Generates a circular asteroid.
-/proc/GenerateRoundAsteroid(datum/mining_template/template, turf/center, initial_turf_path = /turf/closed/mineral/asteroid/tospace, size = 6, list/turfs, hollow = FALSE)
+/proc/GenerateRoundAsteroid(datum/mining_template/template, turf/center = template.center, initial_turf_path = /turf/closed/mineral/asteroid/tospace, size = template.size || 6, list/turfs, hollow = FALSE)
 	. = list()
 	if(!length(turfs))
 		return list()

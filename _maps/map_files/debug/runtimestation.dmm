@@ -2557,6 +2557,15 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/construction)
+"TX" = (
+/obj/machinery/asteroid_magnet{
+	center_x = 47;
+	center_y = 32;
+	area_size = 6
+	},
+/obj/structure/lattice/catwalk,
+/turf/open/space/basic,
+/area/space)
 "Vg" = (
 /obj/machinery/light/directional/south,
 /obj/structure/cable,
@@ -6947,8 +6956,8 @@ aa
 aa
 aa
 aa
-aa
-aa
+qk
+TX
 qk
 QH
 QH

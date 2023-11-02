@@ -19,10 +19,14 @@
 	if(size)
 		size = max(size, max_size)
 
+/// The proc to call to completely generate an asteroid
+/datum/mining_template/proc/Generate()
+	return
+
 /// Called during SSmapping.generate_asteroid(). Here is where you mangle the geometry provided by the asteroid generator function.
 /// Atoms at this stage are NOT initialized
-/datum/mining_template/proc/Generate(list/turfs)
-
+/datum/mining_template/proc/Populate(list/turfs)
+	return
 /// Called during SSmapping.generate_asteroid() after all atoms have been initialized.
 /datum/mining_template/proc/AfterInitialize(list/atoms)
 	return
@@ -32,25 +36,11 @@
 	rarity = -1
 	size = 3
 
-/datum/mining_template/simple_asteroid/Generate(list/turfs)
+/datum/mining_template/simple_asteroid/Generate()
+	var/is_hollow = rand(15)
+	var/list/turfs = ReserveTurfsForAsteroidGeneration(center, size)
+	var/datum/callback/asteroid_cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(GenerateRoundAsteroid), src, center, /turf/closed/mineral/asteroid/tospace, null, turfs, is_hollow)
+	SSmapping.generate_asteroid(src, asteroid_cb)
+
+/datum/mining_template/simple_asteroid/Populate(list/turfs)
 	InsertAsteroidMaterials(src, turfs, rand(2, 6), rand(0, 30))
-
-/client/verb/TestLoadAsteroid()
-	_TestLoadAsteroid()
-
-/proc/_TestLoadAsteroid(destroy)
-	var/time = world.timeofday
-	var/datum/mining_template/simple_asteroid/template = new(get_turf(usr), 5)
-
-	var/list/turfs = ReserveTurfsForAsteroidGeneration(template.center, template.size)
-	var/datum/callback/asteroid_cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(GenerateRoundAsteroid), template, template.center, /turf/closed/mineral/asteroid/tospace, null, turfs, TRUE)
-	SSmapping.generate_asteroid(template, asteroid_cb)
-
-	to_chat(usr, span_warning("Asteroid took [DisplayTimeText(world.timeofday - time, 0.01)] to generate."))
-
-	if(destroy)
-		sleep(5 SECONDS)
-
-		time = world.timeofday
-		CleanupAsteroidMagnet(template.center, template.size)
-		to_chat(usr, span_warning("Asteroid took [DisplayTimeText(world.timeofday - time, 0.01)] to destroy."))

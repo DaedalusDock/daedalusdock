@@ -58,7 +58,7 @@ SUBSYSTEM_DEF(materials)
 			if(MINING_UNCOMMON)
 				uncommon_ores += ore
 			if(MINING_RARE)
-				uncommon_ores += ore
+				rare_ores += ore
 
 ///Ran on initialize, populated the materials and materials_by_category dictionaries with their appropiate vars (See these variables for more info)
 /datum/controller/subsystem/materials/proc/InitializeMaterials()

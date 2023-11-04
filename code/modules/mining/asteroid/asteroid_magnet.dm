@@ -1,4 +1,5 @@
 #define STATUS_OKAY "OK"
+#define MAX_COLLISIONS_BEFORE_ABORT 10
 
 /obj/machinery/asteroid_magnet
 	name = "asteroid magnet computer"
@@ -9,7 +10,7 @@
 	/// Templates available to succ in
 	var/list/datum/mining_template/available_templates
 	/// All templates in the "map".
-	var/list/datum/mining_template/all_templates
+	var/list/datum/mining_template/templates_on_map
 	/// The map that stores asteroids
 	var/datum/cartesian_plane/map
 	/// The currently selected template
@@ -27,7 +28,7 @@
 	var/coords_x = 0
 	var/coords_y = 0
 
-	var/ping_result = "N/A"
+	var/ping_result = "N/A<div style='visibility: hidden;'>...</div>"
 
 	/// Status of the user interface
 	var/status = STATUS_OKAY
@@ -45,14 +46,9 @@
 
 	center_turf = locate(center_x, center_y, z)
 	available_templates = list()
-	all_templates = list()
+	templates_on_map = list()
 
-	map = new(-100, 100, -100, 100)
-	var/datum/mining_template/simple_asteroid/A = new(center_turf, area_size)
-	A.x = 0
-	A.y = 1
-	all_templates += A
-	map.set_coordinate(0, 1, A)
+	GenerateMap()
 
 /obj/machinery/asteroid_magnet/Topic(href, href_list)
 	. = ..()
@@ -151,7 +147,7 @@
 			<legend class='computerLegend' style='margin: auto;'>
 				<b>Ping</b>
 			</legend>
-			<div class='computerLegend' style='margin: auto; width:30%'>
+			<div class='computerLegend' style='margin: auto; width:30%;'>
 				[ping_result]
 			</div>
 			<div style='margin: auto; width: 10%'>
@@ -182,24 +178,22 @@
 	content += {"
 	<fieldset class='computerPane' style='display: inline-block; min-width: 45%;'>
 		<legend class='computerLegend'>
-			<b>Available Asteroids</b>
+			<b>Celestial Bodies</b>
 		</legend>
 	"}
 	// Selected asteroid container
-	var/asteroid_name = "N/A"
-	var/asteroid_desc = "N/A"
+	var/asteroid_name
+	var/asteroid_desc
 	if(selected_template)
 		asteroid_name = selected_template.name
-		asteroid_desc = selected_template.description
+		asteroid_desc = jointext(selected_template.get_description(), "")
 
 	content += {"
 		<div class="computerLegend" style="margin-bottom: 2em; width: 97%; height: 7em;">
 			<div style='font-size: 200%; text-align: center'>
-				[asteroid_name]
+				[asteroid_name || "N/A"]
 			</div>
-			<div style='text-align: center'>
-				[asteroid_desc]
-			</div>
+			[asteroid_desc ? "<div style='text-align:left; margin-left:20%; display: flex; flex-direction: column'>[asteroid_desc]</div>" : "<div style='text-align: center'>N/A</div>"]
 		</div>
 	"}
 
@@ -231,21 +225,23 @@
 	"}
 
 
-	var/datum/browser/popup = new(user, "asteroidmagnet", name, 920, 455)
+	var/datum/browser/popup = new(user, "asteroidmagnet", name, 920, 470)
 	popup.set_content(jointext(content,""))
 	popup.set_window_options("can_close=1;can_minimize=1;can_maximize=0;can_resize=1;titlebar=1;")
 	popup.open()
 
 /obj/machinery/asteroid_magnet/proc/ping(coords_x, coords_y)
 	var/datum/mining_template/T = map.return_coordinate(coords_x, coords_y)
-	if(T)
-		ping_result = "LOCATED"
+	if(T && !T.found)
+		T.found = TRUE
 		available_templates |= T
+		templates_on_map -= T
+		ping_result = "LOCATED"
 		return
 
 	var/datum/mining_template/closest
 	var/lowest_dist = INFINITY
-	for(var/datum/mining_template/asteroid as anything in all_templates)
+	for(var/datum/mining_template/asteroid as anything in templates_on_map)
 		// Get the euclidean distance between the ping and the asteroid.
 		var/dist = sqrt(((asteroid.x - coords_x) ** 2) + ((asteroid.y - coords_y) ** 2))
 		if(dist < lowest_dist)
@@ -260,7 +256,7 @@
 		if(dx < 0) // If the X-axis distance is negative, put it between 181 and 359. 180 and 360/0 are impossible, as that requires X == 0.
 			angle = 360 - angle
 
-		ping_result = "AZIMUTH [round(angle, 0.01)]"
+		ping_result = "AZIMUTH<br>[round(angle, 0.01)]"
 	else
 		ping_result = "ERR"
 
@@ -340,4 +336,51 @@
 
 		T.ChangeTurf(/turf/baseturf_bottom)
 
+
+/// Generates the random map for the magnet.
+/obj/machinery/asteroid_magnet/proc/GenerateMap()
+	PRIVATE_PROC(TRUE)
+	map = new(-100, 100, -100, 100)
+
+	// Generate common templates
+	for(var/i in 1 to 12)
+		InsertTemplateToMap(pick(SSmaterials.template_paths_by_rarity["[MINING_COMMON]"]))
+
+	/*
+	// Generate uncommon templates
+	for(var/i in 1 to 4)
+		InsertTemplateToMap(pick(SSmaterials.template_paths_by_rarity["[MINING_UNCOMMON]"]))
+
+	// Generate rare templates
+	for(var/i in 1 to 2)
+		InsertTemplateToMap(pick(SSmaterials.template_paths_by_rarity["[MINING_RARE]"]))
+	*/
+
+/obj/machinery/asteroid_magnet/proc/InsertTemplateToMap(path)
+	PRIVATE_PROC(TRUE)
+
+	var/collisions = 0
+	var/datum/mining_template/template
+	var/x
+	var/y
+
+	template = new path(center_turf, area_size)
+	template.randomize()
+	templates_on_map += template
+
+	do
+		x = rand(-100, 100)
+		y = rand(-100, 100)
+
+		if(map.return_coordinate(x, y))
+			collisions++
+		else
+			map.set_coordinate(x, y, template)
+			template.x = x
+			template.y = y
+			break
+
+	while (collisions <= MAX_COLLISIONS_BEFORE_ABORT)
+
+#undef MAX_COLLISIONS_BEFORE_ABORT
 #undef STATUS_OKAY

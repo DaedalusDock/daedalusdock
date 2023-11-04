@@ -1,5 +1,7 @@
 /datum/ore
 	abstract_type = /datum/ore
+
+	var/name = ""
 	/// The typepath of the stack dropped when mined
 	var/stack_path = null
 
@@ -31,6 +33,7 @@
 
 // -=~* COMMON ORES *~=-
 /datum/ore/iron
+	name = "Iron"
 	stack_path = /obj/item/stack/ore/iron
 	scan_state = "rock_Iron"
 
@@ -46,6 +49,7 @@
 	spread_chance = 60
 
 /datum/ore/silver
+	name = "Silver"
 	stack_path = /obj/item/stack/ore/silver
 	scan_state = "rock_Silver"
 
@@ -61,6 +65,7 @@
 	spread_chance = 20
 
 /datum/ore/gold
+	name = "Gold"
 	stack_path = /obj/item/stack/ore/gold
 	scan_state = "rock_Gold"
 
@@ -76,6 +81,7 @@
 	spread_chance = 5
 
 /datum/ore/diamond
+	name = "Diamond"
 	stack_path = /obj/item/stack/ore/diamond
 	scan_state = "rock_Diamond"
 
@@ -91,6 +97,7 @@
 	spread_chance = 5
 
 /datum/ore/uranium
+	name = "Uranium"
 	stack_path = /obj/item/stack/ore/uranium
 	scan_state = "rock_Uranium"
 
@@ -106,6 +113,7 @@
 	spread_chance = 0
 
 /datum/ore/plasma
+	name = "Plasma"
 	stack_path = /obj/item/stack/ore/plasma
 	scan_state = "rock_Plasma"
 
@@ -121,6 +129,7 @@
 	spread_chance = 0
 
 /datum/ore/titanium
+	name = "Titanium"
 	stack_path = /obj/item/stack/ore/bananium
 	scan_state = "rock_Titanium"
 
@@ -136,6 +145,7 @@
 	spread_chance = 0
 
 /datum/ore/bananium
+	name = "Bananium"
 	stack_path = /obj/item/stack/ore/bananium
 	scan_state = "rock_Bananium"
 
@@ -147,6 +157,7 @@
 	mining_health = 100
 
 /datum/ore/bluespace_crystal
+	name = "Stupid Shit"
 	stack_path = /obj/item/stack/ore/bluespace_crystal
 	scan_state = "rock_Bluespace"
 	rarity = MINING_NO_RANDOM_SPAWN

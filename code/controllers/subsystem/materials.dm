@@ -39,9 +39,13 @@ SUBSYSTEM_DEF(materials)
 	var/list/uncommon_ores = list()
 	var/list/rare_ores = list()
 
+	///Blank versions of all of the mining templates, indexed by rarity.
+	var/list/template_paths_by_rarity = list()
+
 /datum/controller/subsystem/materials/Initialize(start_timeofday)
 	InitializeMaterials()
 	InitializeOres()
+	InitializeTemplates()
 	return ..()
 
 /datum/controller/subsystem/materials/proc/InitializeOres()
@@ -59,6 +63,13 @@ SUBSYSTEM_DEF(materials)
 				uncommon_ores += ore
 			if(MINING_RARE)
 				rare_ores += ore
+
+/datum/controller/subsystem/materials/proc/InitializeTemplates()
+	for(var/datum/mining_template/template as anything in typesof(/datum/mining_template))
+		if(isabstract(template))
+			continue
+
+		LAZYADD(template_paths_by_rarity["[initial(template.rarity)]"], template)
 
 ///Ran on initialize, populated the materials and materials_by_category dictionaries with their appropiate vars (See these variables for more info)
 /datum/controller/subsystem/materials/proc/InitializeMaterials()

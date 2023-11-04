@@ -78,7 +78,7 @@
 
 	return .
 
-/proc/InsertAsteroidMaterials(datum/mining_template/template, list/turfs, vein_count, rarity_modifier)
+/proc/InsertAsteroidMaterials(datum/mining_template/template, list/turfs, vein_count, rarity_modifier, list/determined_ore)
 	var/list/viable_turfs = list()
 	for(var/turf/closed/mineral/asteroid/A in turfs)
 		viable_turfs += A
@@ -87,19 +87,24 @@
 		vein_count--
 		GENERATOR_CHECK_TICK
 
-		var/list/ore_pool = SSmaterials.common_ores
+		var/list/ore_pool
+		var/datum/ore/chosen_ore
 
-		var/rarity = rand(1, 100) + rarity_modifier
-		switch(rarity)
-			if(90 to 100)
-				ore_pool = SSmaterials.rare_ores
-			if(50 to 89)
-				ore_pool = SSmaterials.uncommon_ores
-			else
-				ore_pool = SSmaterials.common_ores
+		if(!length(determined_ore))
+			var/rarity = rand(1, 100) + rarity_modifier
+			switch(rarity)
+				if(90 to 100)
+					ore_pool = SSmaterials.rare_ores
+				if(50 to 89)
+					ore_pool = SSmaterials.uncommon_ores
+				else
+					ore_pool = SSmaterials.common_ores
 
+			chosen_ore = pick(ore_pool)
 
-		var/datum/ore/chosen_ore = pick(ore_pool)
+		else
+			chosen_ore = pick_n_take(determined_ore)
+
 		var/turfs_in_vein = rand(chosen_ore.turfs_per_vein_min, chosen_ore.turfs_per_vein_max)
 		var/mats_per_turf = rand(chosen_ore.amount_per_turf_min, chosen_ore.amount_per_turf_max)
 

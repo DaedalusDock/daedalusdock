@@ -1,5 +1,5 @@
 /datum/job/shaft_miner
-	title = JOB_SHAFT_MINER
+	title = JOB_PROSPECTOR
 	description = "Travel to strange lands. Mine ores. \
 		Meet strange creatures. Kill them for their gold."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
@@ -35,7 +35,7 @@
 
 
 /datum/outfit/job/miner
-	name = "Shaft Miner"
+	name = JOB_PROSPECTOR
 	jobtype = /datum/job/shaft_miner
 
 	id_trim = /datum/id_trim/job/shaft_miner
@@ -71,7 +71,7 @@
 /datum/outfit/job/miner/equipped
 	name = "Shaft Miner (Equipment)"
 
-	suit = /obj/item/clothing/suit/hooded/explorer
+	suit = /obj/item/clothing/suit/space/nasavoid/old
 	suit_store = /obj/item/tank/internals/oxygen
 	backpack_contents = list(
 		/obj/item/flashlight/seclite = 1,
@@ -81,21 +81,14 @@
 		/obj/item/t_scanner/adv_mining_scanner/lesser = 1,
 		)
 	glasses = /obj/item/clothing/glasses/meson
-	mask = /obj/item/clothing/mask/gas/explorer
+	head = /obj/item/clothing/head/helmet/space/nasavoid/old
+	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
-
-/datum/outfit/job/miner/equipped/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	..()
-	if(visualsOnly)
-		return
-	if(istype(H.wear_suit, /obj/item/clothing/suit/hooded))
-		var/obj/item/clothing/suit/hooded/S = H.wear_suit
-		S.ToggleHood()
 
 /datum/outfit/job/miner/equipped/mod
 	name = "Shaft Miner (Equipment + MODsuit)"
 	back = /obj/item/mod/control/pre_equipped/mining
 	suit = null
-	mask = /obj/item/clothing/mask/gas/explorer
+	mask = /obj/item/clothing/mask/breath
 	backpack_contents = null
 	box = null

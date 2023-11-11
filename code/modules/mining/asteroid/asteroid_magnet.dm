@@ -225,7 +225,7 @@
 	"}
 
 
-	var/datum/browser/popup = new(user, "asteroidmagnet", name, 920, 470)
+	var/datum/browser/popup = new(user, "asteroidmagnet", name, 920, 475)
 	popup.set_content(jointext(content,""))
 	popup.set_window_options("can_close=1;can_minimize=1;can_maximize=0;can_resize=1;titlebar=1;")
 	popup.open()

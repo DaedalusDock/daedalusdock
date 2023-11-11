@@ -3297,7 +3297,6 @@
 #include "code\modules\mining\asteroid\asteroid_templates.dm"
 #include "code\modules\mining\asteroid\ore_datums.dm"
 #include "code\modules\mining\asteroid\templates\simple_asteroid.dm"
-#include "code\modules\mining\equipment\explorer_gear.dm"
 #include "code\modules\mining\equipment\kheiral_cuffs.dm"
 #include "code\modules\mining\equipment\lazarus_injector.dm"
 #include "code\modules\mining\equipment\marker_beacons.dm"

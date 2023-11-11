@@ -176,12 +176,15 @@
 	if (!isturf(T))
 		return
 
+	if(DOING_INTERACTION(user, "MINING_ORE"))
+		return
+
 	if(TIMER_COOLDOWN_CHECK(src, REF(user))) //prevents mining turfs in progress
 		return
 
 	TIMER_COOLDOWN_START(src, REF(user), tool_mine_speed)
 
-	if(!I.use_tool(src, user, tool_mine_speed, volume=50))
+	if(!I.use_tool(src, user, tool_mine_speed, volume=50, interaction_key = "MINING_ORE"))
 		TIMER_COOLDOWN_END(src, REF(user)) //if we fail we can start again immediately
 		return
 

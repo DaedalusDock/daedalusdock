@@ -36,7 +36,8 @@
 		suit_compatible = TRUE
 
 	if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
-		old_limb_id = limb_id
+		if(limb_id != digitigrade_id)
+			old_limb_id = limb_id
 		limb_id = digitigrade_id
 	else
 		limb_id = old_limb_id

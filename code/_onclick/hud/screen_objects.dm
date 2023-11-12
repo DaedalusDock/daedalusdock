@@ -14,8 +14,8 @@
 	speech_span = SPAN_ROBOT
 	vis_flags = VIS_INHERIT_PLANE
 	appearance_flags = APPEARANCE_UI
-	/// A reference to the object in the slot. Grabs or items, generally.
-	var/obj/master = null
+	/// A reference to the object in the slot. Grabs or items, generally, but any datum will do.
+	var/datum/weakref/master_ref = null
 	/// A reference to the owner HUD, if any.
 	var/datum/hud/hud = null
 	/**
@@ -33,7 +33,7 @@
 	var/del_on_map_removal = TRUE
 
 /atom/movable/screen/Destroy()
-	master = null
+	master_ref = null
 	hud = null
 	return ..()
 
@@ -295,10 +295,12 @@
 
 /atom/movable/screen/close/Initialize(mapload, new_master)
 	. = ..()
-	master = new_master
+	master_ref = WEAKREF(new_master)
 
 /atom/movable/screen/close/Click()
-	var/datum/storage/storage = master
+	var/datum/storage/storage = master_ref?.resolve()
+	if(!storage)
+		return
 	storage.hide_contents(usr)
 	return TRUE
 
@@ -443,10 +445,10 @@
 
 /atom/movable/screen/storage/Initialize(mapload, new_master)
 	. = ..()
-	master = new_master
+	master_ref = WEAKREF(new_master)
 
 /atom/movable/screen/storage/Click(location, control, params)
-	var/datum/storage/storage_master = master
+	var/datum/storage/storage_master = master_ref?.resolve()
 	if(!istype(storage_master))
 		return FALSE
 
@@ -464,7 +466,7 @@
 	return TRUE
 
 /atom/movable/screen/storage/MouseDrop_T(atom/dropping, mob/user, params)
-	var/datum/storage/storage_master = master
+	var/datum/storage/storage_master = master_ref?.resolve()
 
 	if(!istype(storage_master))
 		return FALSE

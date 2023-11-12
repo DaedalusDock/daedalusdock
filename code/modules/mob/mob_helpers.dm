@@ -324,7 +324,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 					A.name = header
 				A.desc = message
 				A.action = action
-				A.target = source
+				A.target_ref = WEAKREF(source)
 				if(!alert_overlay)
 					alert_overlay = new(source)
 					var/icon/size_check = icon(source.icon, source.icon_state)

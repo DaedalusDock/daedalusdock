@@ -21558,6 +21558,7 @@
 /area/station/engineering/main)
 "gML" = (
 /obj/structure/table/wood/poker,
+/obj/item/clothing/mask/cigarette/pipe,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "gMU" = (
@@ -39046,7 +39047,7 @@
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/security/holding_cell)
 "neZ" = (
-/obj/machinery/restaurant_portal/restaurant,
+/obj/machinery/jukebox,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "nfc" = (
@@ -49437,9 +49438,8 @@
 /turf/open/floor/wood,
 /area/station/medical/break_room)
 "qPr" = (
-/obj/structure/table/wood,
-/obj/item/clothing/mask/cigarette/pipe,
 /obj/machinery/light/directional/north,
+/obj/machinery/restaurant_portal/restaurant,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "qPy" = (

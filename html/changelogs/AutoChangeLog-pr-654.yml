@@ -1,0 +1,6 @@
+author: Kapu1178, Ivory, yyzsong
+delete-after: true
+changes:
+  - imageadd: Added a new mouse cursor
+  - code_imp: Added support for UIs to have custom cursors
+  - code_imp: Added support for dynamic cursor behavior with interactables.

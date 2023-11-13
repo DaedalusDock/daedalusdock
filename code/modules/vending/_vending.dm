@@ -39,6 +39,7 @@
 	///List of items that have been returned to the vending machine.
 	var/list/returned_products
 
+DEFINE_INTERACTABLE(/obj/machinery/vending)
 /**
  * # vending machines
  *

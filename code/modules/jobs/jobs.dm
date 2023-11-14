@@ -19,7 +19,6 @@ GLOBAL_LIST_INIT(exp_specialmap, list(
 		ROLE_SKELETON,
 		ROLE_ZOMBIE,
 		ROLE_SPACE_BAR_PATRON,
-		ROLE_LAVALAND_SYNDICATE,
 		ROLE_MAINTENANCE_DRONE,
 		ROLE_GHOST_ROLE,
 		), // Ghost roles
@@ -65,7 +64,7 @@ GLOBAL_PROTECT(exp_specialmap)
 	job = engi_expand.Replace(job, "station engineer")
 	job = atmos_expand.Replace(job, "atmospheric technician")
 	job = doc_expand.Replace(job, "medical doctor")
-	job = mine_expand.Replace(job, "shaft miner")
+	job = mine_expand.Replace(job, "prospector")
 	job = chef_expand.Replace(job, "cook")
 	job = borg_expand.Replace(job, "cyborg")
 	return job

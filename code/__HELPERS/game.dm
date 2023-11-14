@@ -343,18 +343,6 @@
 	var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
 	announcer.announce("ARRIVAL", character.real_name, rank, list()) //make the list empty to make it announce it in common
 
-///Check if the turf pressure allows specialized equipment to work
-/proc/lavaland_equipment_pressure_check(turf/turf_to_check)
-	. = FALSE
-	if(!istype(turf_to_check))
-		return
-	var/datum/gas_mixture/environment = turf_to_check.unsafe_return_air()
-	if(isnull(environment))
-		return
-	var/pressure = environment.returnPressure()
-	if(pressure <= LAVALAND_EQUIPMENT_EFFECT_PRESSURE)
-		. = TRUE
-
 ///Find an obstruction free turf that's within the range of the center. Can also condition on if it is of a certain area type.
 /proc/find_obstruction_free_location(range, atom/center, area/specific_area)
 	var/list/possible_loc = list()

@@ -218,18 +218,6 @@
 	..()
 	blacklist += subtypesof(/obj/item/gun/energy/e_gun)
 
-/datum/crafting_recipe/ebow
-	name = "Energy Crossbow"
-	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
-	result = /obj/item/gun/energy/recharge/ebow/large
-	reqs = list(/obj/item/gun/energy/recharge/kinetic_accelerator = 1,
-				/obj/item/stack/cable_coil = 5,
-				/obj/item/weaponcrafting/gunkit/ebow = 1,
-				/datum/reagent/uranium/radium = 15)
-	time = 200
-	category = CAT_WEAPONRY
-	subcategory = CAT_WEAPON
-
 /datum/crafting_recipe/xraylaser
 	name = "X-ray Laser Gun"
 	tool_behaviors = list(TOOL_SCREWDRIVER, TOOL_WIRECUTTER)
@@ -876,38 +864,6 @@
 	reqs = list(/obj/item/stack/sheet/bone = 4)
 	category = CAT_PRIMAL
 
-/datum/crafting_recipe/goliathcloak
-	name = "Goliath Cloak"
-	result = /obj/item/clothing/suit/hooded/cloak/goliath
-	time = 50
-	reqs = list(/obj/item/stack/sheet/leather = 2,
-				/obj/item/stack/sheet/sinew = 2,
-				/obj/item/stack/sheet/animalhide/goliath_hide = 2) //it takes 4 goliaths to make 1 cloak if the plates are skinned
-	category = CAT_PRIMAL
-
-/datum/crafting_recipe/drakecloak
-	name = "Ash Drake Armour"
-	result = /obj/item/clothing/suit/hooded/cloak/drake
-	time = 60
-	reqs = list(/obj/item/stack/sheet/bone = 10,
-				/obj/item/stack/sheet/sinew = 2,
-				/obj/item/stack/sheet/animalhide/ashdrake = 5)
-	category = CAT_PRIMAL
-
-/datum/crafting_recipe/godslayer
-	name = "Godslayer Armour"
-	result = /obj/item/clothing/suit/hooded/cloak/godslayer
-	time = 60
-	reqs = list(/obj/item/ice_energy_crystal = 1, /obj/item/wendigo_skull = 1, /obj/item/clockwork_alloy = 1)
-	category = CAT_PRIMAL
-
-/datum/crafting_recipe/firebrand
-	name = "Firebrand"
-	result = /obj/item/match/firebrand
-	time = 100 //Long construction time. Making fire is hard work.
-	reqs = list(/obj/item/stack/sheet/mineral/wood = 2)
-	category = CAT_PRIMAL
-
 /datum/crafting_recipe/gold_horn
 	name = "Golden Bike Horn"
 	result = /obj/item/bikehorn/golden
@@ -931,14 +887,6 @@
 				/obj/item/stack/sheet/sinew = 1)
 	category = CAT_PRIMAL
 
-/datum/crafting_recipe/boneaxe
-	name = "Bone Axe"
-	result = /obj/item/fireaxe/boneaxe
-	time = 50
-	reqs = list(/obj/item/stack/sheet/bone = 6,
-				/obj/item/stack/sheet/sinew = 3)
-	category = CAT_PRIMAL
-
 /datum/crafting_recipe/bonfire
 	name = "Bonfire"
 	time = 60
@@ -947,15 +895,6 @@
 	blacklist = list(/obj/item/grown/log/steel)
 	result = /obj/structure/bonfire
 	category = CAT_PRIMAL
-
-/datum/crafting_recipe/skeleton_key
-	name = "Skeleton Key"
-	time = 30
-	reqs = list(/obj/item/stack/sheet/bone = 5)
-	result = /obj/item/skeleton_key
-	always_available = FALSE
-	category = CAT_PRIMAL
-
 /datum/crafting_recipe/rake //Category resorting incoming
 	name = "Rake"
 	time = 30
@@ -1097,47 +1036,6 @@
 	reqs = list(/obj/item/tank/internals/oxygen = 2, /obj/item/extinguisher = 1, /obj/item/pipe = 3, /obj/item/stack/cable_coil = MAXCOIL)
 	category = CAT_MISC
 	tool_behaviors = list(TOOL_WRENCH, TOOL_WELDER, TOOL_WIRECUTTER)
-
-/datum/crafting_recipe/rib
-	name = "Colossal Rib"
-	always_available = FALSE
-	reqs = list(
-		/obj/item/stack/sheet/bone = 10,
-		/datum/reagent/fuel/oil = 5,
-	)
-	result = /obj/structure/statue/bone/rib
-	category = CAT_PRIMAL
-
-/datum/crafting_recipe/skull
-	name = "Skull Carving"
-	always_available = FALSE
-	reqs = list(
-		/obj/item/stack/sheet/bone = 6,
-		/datum/reagent/fuel/oil = 5,
-	)
-	result = /obj/structure/statue/bone/skull
-	category = CAT_PRIMAL
-
-/datum/crafting_recipe/halfskull
-	name = "Cracked Skull Carving"
-	always_available = FALSE
-	reqs = list(
-		/obj/item/stack/sheet/bone = 3,
-		/datum/reagent/fuel/oil = 5,
-	)
-	result = /obj/structure/statue/bone/skull/half
-	category = CAT_PRIMAL
-
-/datum/crafting_recipe/boneshovel
-	name = "Serrated Bone Shovel"
-	always_available = FALSE
-	reqs = list(
-		/obj/item/stack/sheet/bone = 4,
-		/datum/reagent/fuel/oil = 5,
-		/obj/item/shovel/spade = 1,
-	)
-	result = /obj/item/shovel/serrated
-	category = CAT_PRIMAL
 
 /datum/crafting_recipe/lasso
 	name = "Bone Lasso"

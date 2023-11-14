@@ -193,14 +193,6 @@
 	icon_state = "clockwork_floor_filled"
 	floor_tile = /obj/item/stack/tile/bronze/filled
 
-/turf/open/floor/bronze/filled/lavaland
-
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
-/turf/open/floor/bronze/filled/icemoon
-
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-
 /turf/open/floor/white
 	name = "white floor"
 	desc = "A tile in a pure white color."

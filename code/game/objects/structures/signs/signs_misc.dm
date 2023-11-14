@@ -1,3 +1,6 @@
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/gym, 32)
+MAPPING_DIRECTIONAL_HELPERS(/obj/structure/sign/gym/right, 32)
+
 /obj/structure/sign/gym
 	name = "\improper Gym Encouragement Sign"
 	sign_change_name = "gym_left"

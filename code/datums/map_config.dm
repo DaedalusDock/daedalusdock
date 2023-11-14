@@ -174,9 +174,6 @@
 		log_world("map_config space_empty_levels is not a number!")
 		return
 
-	if ("minetype" in json)
-		minetype = json["minetype"]
-
 	allow_custom_shuttles = json["allow_custom_shuttles"] != FALSE
 
 	if ("job_changes" in json)

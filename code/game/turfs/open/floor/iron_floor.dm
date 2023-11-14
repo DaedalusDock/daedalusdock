@@ -39,10 +39,6 @@
 	initial_gas = TCOMMS_ATMOS
 	temperature = 80
 
-/turf/open/floor/iron/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-	temperature = 80
-
 /turf/open/floor/iron/textured
 	icon_state = "textured"
 	base_icon_state = "textured"

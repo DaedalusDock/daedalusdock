@@ -145,8 +145,8 @@
 #define INIT_ORDER_NETWORKS 45
 #define INIT_ORDER_SPATIAL_GRID 43
 #define INIT_ORDER_ECONOMY 40
-#define INIT_ORDER_OUTPUTS 35
-#define INIT_ORDER_RESTAURANT 34
+#define INIT_ORDER_OUTPUTS 36
+#define INIT_ORDER_RESTAURANT 35
 #define INIT_ORDER_TECH 33 //Must init before atoms, so design datums are ready.
 #define INIT_ORDER_ATOMS 30
 #define INIT_ORDER_LANGUAGE 25

@@ -455,8 +455,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 			to_chat(user, span_cult("You[moveuserlater ? "r vision blurs, and you suddenly appear somewhere else":" send everything above the rune away"]."))
 		else
 			to_chat(user, span_cult("You[moveuserlater ? "r vision blurs briefly, but nothing happens":" try send everything above the rune away, but the teleportation fails"]."))
-		if(is_mining_level(z) && !is_mining_level(target.z)) //No effect if you stay on lavaland
-			actual_selected_rune.handle_portal("lava")
+		if(is_mining_level(z) && !is_mining_level(target.z))
+			actual_selected_rune.handle_portal("space")
 		else
 			var/area/A = get_area(T)
 			if(initial(A.name) == "Space")

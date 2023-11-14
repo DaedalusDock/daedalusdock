@@ -282,6 +282,7 @@
 	var/area/station/cargo/mining/asteroid_magnet/A = get_area(center_turf)
 	A.area_flags |= NOTELEPORT // We dont want people getting nuked during the generation sequence
 	status = "Summoning[ellipsis()]"
+	available_templates -= template
 	updateUsrDialog()
 
 	var/time = world.timeofday

@@ -10,9 +10,6 @@
 	var/icon_deny = "mining-deny"
 	var/obj/item/card/id/inserted_id
 	var/list/prize_list = list( //if you add something to this, please, for the love of god, sort it by price/type. use tabs and not spaces.
-		new /datum/data/mining_equipment("1 Marker Beacon", /obj/item/stack/marker_beacon, 10),
-		new /datum/data/mining_equipment("10 Marker Beacons", /obj/item/stack/marker_beacon/ten, 100),
-		new /datum/data/mining_equipment("30 Marker Beacons", /obj/item/stack/marker_beacon/thirty, 300),
 		new /datum/data/mining_equipment("Whiskey", /obj/item/reagent_containers/food/drinks/bottle/whiskey, 100),
 		new /datum/data/mining_equipment("Absinthe", /obj/item/reagent_containers/food/drinks/bottle/absinthe/premium, 100),
 		new /datum/data/mining_equipment("Bubblegum Gum Packet", /obj/item/storage/box/gum/bubblegum, 100),
@@ -21,8 +18,6 @@
 		new /datum/data/mining_equipment("Laser Pointer", /obj/item/laser_pointer, 300),
 		new /datum/data/mining_equipment("Alien Toy", /obj/item/clothing/mask/facehugger/toy, 300),
 		new /datum/data/mining_equipment("Stabilizing Serum", /obj/item/hivelordstabilizer, 400),
-		new /datum/data/mining_equipment("Fulton Beacon", /obj/item/fulton_core, 400),
-		new /datum/data/mining_equipment("Shelter Capsule", /obj/item/survivalcapsule, 400),
 		new /datum/data/mining_equipment("GAR Meson Scanners", /obj/item/clothing/glasses/meson/gar, 500),
 		new /datum/data/mining_equipment("Explorer's Webbing", /obj/item/storage/belt/mining, 500),
 		new /datum/data/mining_equipment("Point Transfer Card", /obj/item/card/mining_point_card, 500),
@@ -31,21 +26,15 @@
 		new /datum/data/mining_equipment("Tracking Implant Kit", /obj/item/storage/box/minertracker, 600),
 		new /datum/data/mining_equipment("Jaunter", /obj/item/wormhole_jaunter, 750),
 		new /datum/data/mining_equipment("Advanced Scanner", /obj/item/t_scanner/adv_mining_scanner, 800),
-		new /datum/data/mining_equipment("Resonator", /obj/item/resonator, 800),
 		new /datum/data/mining_equipment("Luxury Medipen", /obj/item/reagent_containers/hypospray/medipen/survival/luxury, 1000),
-		new /datum/data/mining_equipment("Fulton Pack", /obj/item/extraction_pack, 1000),
-		new /datum/data/mining_equipment("Lazarus Injector", /obj/item/lazarus_injector, 1000),
 		new /datum/data/mining_equipment("Silver Pickaxe", /obj/item/pickaxe/silver, 1000),
 		new /datum/data/mining_equipment("Mining Conscription Kit", /obj/item/storage/backpack/duffelbag/mining_conscript, 1500),
 		new /datum/data/mining_equipment("Space Cash", /obj/item/stack/spacecash/c1000, 2000),
 		new /datum/data/mining_equipment("Diamond Pickaxe", /obj/item/pickaxe/diamond, 2000),
 		new /datum/data/mining_equipment("Kheiral Cuffs", /obj/item/kheiral_cuffs, 2000),
-		new /datum/data/mining_equipment("Super Resonator", /obj/item/resonator/upgraded, 2500),
 		new /datum/data/mining_equipment("Jump Boots", /obj/item/clothing/shoes/bhop, 2500),
 		new /datum/data/mining_equipment("Ice Hiking Boots", /obj/item/clothing/shoes/winterboots/ice_boots, 2500),
 		new /datum/data/mining_equipment("Mining MODsuit", /obj/item/mod/control/pre_equipped/mining, 2500),
-		new /datum/data/mining_equipment("Luxury Shelter Capsule", /obj/item/survivalcapsule/luxury, 3000),
-		new /datum/data/mining_equipment("Luxury Bar Capsule", /obj/item/survivalcapsule/luxuryelite, 10000),
 	)
 
 /datum/data/mining_equipment

@@ -34,8 +34,6 @@
 	/// If a turf is "weak" it can be broken with no tools
 	var/weak_turf = FALSE
 
-	///How long it takes to mine this turf with tools, before the tool's speed and the user's skill modifier are factored in.
-	var/tool_mine_speed = 2 SECONDS
 	///How long it takes to mine this turf without tools, if it's weak.
 	var/hand_mine_speed = 15 SECONDS
 
@@ -157,7 +155,10 @@
 		mineralAmt = rand(new_ore.amount_per_turf_min, new_ore.amount_per_turf_max)
 
 /turf/closed/mineral/proc/mine(damage, obj/item/I, user)
-	mining_health -= 20
+	if(damage <= 0)
+		return
+
+	mining_health -= damage
 	if(mining_health < 0)
 		MinedAway()
 		SSblackbox.record_feedback("tally", "pick_used_mining", 1, I.type)
@@ -179,17 +180,17 @@
 	if(DOING_INTERACTION(user, "MINING_ORE"))
 		return
 
-	if(TIMER_COOLDOWN_CHECK(src, REF(user))) //prevents mining turfs in progress
-		return
-
-	TIMER_COOLDOWN_START(src, REF(user), tool_mine_speed)
-
-	if(!I.use_tool(src, user, tool_mine_speed, volume=50, interaction_key = "MINING_ORE"))
-		TIMER_COOLDOWN_END(src, REF(user)) //if we fail we can start again immediately
+	if(!I.use_tool(src, user, 0.5 SECONDS, volume=50, interaction_key = "MINING_ORE"))
 		return
 
 	if(ismineralturf(src)) // Changeturf memes
-		mine(20, I)
+		var/damage = 40
+		//I'm a hack
+		if(istype(I, /obj/item/pickaxe))
+			var/obj/item/pickaxe/pick = I
+			damage = pick.damage
+
+		mine(damage, I)
 
 /turf/closed/mineral/attack_hand(mob/user)
 	if(!weak_turf)

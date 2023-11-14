@@ -163,6 +163,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		stack_trace("Incorrect turf deletion")
 	changing_turf = FALSE
 
+	if(ao_queued)
+		#warn TEST
+		SSao.queue -= src
+		ao_queued  = FALSE
+
 	if (z_flags & Z_MIMIC_BELOW)
 		cleanup_zmimic()
 

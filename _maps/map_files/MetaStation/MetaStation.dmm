@@ -13011,6 +13011,7 @@
 /area/station/ai_monitored/command/nuke_storage)
 "dOu" = (
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "dOx" = (
@@ -28647,7 +28648,6 @@
 /area/station/engineering/main)
 "jAH" = (
 /obj/machinery/holopad,
-/obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
@@ -35524,6 +35524,7 @@
 /area/station/command/heads_quarters/hos)
 "mcY" = (
 /obj/effect/turf_decal/tile/brown/half/contrasted,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "mdd" = (
@@ -38732,6 +38733,7 @@
 	dir = 8
 	},
 /obj/machinery/power/apc/auto_name/directional/west,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "nej" = (
@@ -58240,6 +58242,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
 "ulq" = (

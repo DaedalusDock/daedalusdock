@@ -180,7 +180,7 @@
 	if(DOING_INTERACTION(user, "MINING_ORE"))
 		return
 
-	if(!I.use_tool(src, user, 0.5 SECONDS, volume=50, interaction_key = "MINING_ORE"))
+	if(!I.use_tool(src, user, 1 SECONDS, volume=50, interaction_key = "MINING_ORE"))
 		return
 
 	if(ismineralturf(src)) // Changeturf memes

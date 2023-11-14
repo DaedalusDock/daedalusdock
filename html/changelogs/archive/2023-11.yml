@@ -1,0 +1,9 @@
+2023-11-14:
+  Kapu1178, Ivory, yyzsong:
+  - imageadd: Added a new mouse cursor
+  - code_imp: Added support for UIs to have custom cursors
+  - code_imp: Added support for dynamic cursor behavior with interactables.
+  francinum:
+  - bugfix: Media System Validation is less likely to die unexpectedly.
+  - rscadd: The Meta Bar now has a jukebox
+  - rscadd: And it can be used by non-bartenders.

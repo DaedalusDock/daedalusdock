@@ -188,7 +188,7 @@
 		//I'm a hack
 		if(istype(I, /obj/item/pickaxe))
 			var/obj/item/pickaxe/pick = I
-			damage = pick.damage
+			damage = pick.mining_damage
 
 		mine(damage, I)
 

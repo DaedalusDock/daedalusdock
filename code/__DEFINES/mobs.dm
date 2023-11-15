@@ -305,8 +305,7 @@
 #define SENTIENCE_ORGANIC 1
 #define SENTIENCE_ARTIFICIAL 2
 #define SENTIENCE_HUMANOID 3
-#define SENTIENCE_MINEBOT 4
-#define SENTIENCE_BOSS 5
+#define SENTIENCE_BOSS 4
 
 //Mob AI Status
 #define POWER_RESTORATION_OFF 0
@@ -591,9 +590,6 @@
 
 ///How much a mob's sprite should be moved when they're lying down
 #define PIXEL_Y_OFFSET_LYING -6
-
-///Define for spawning megafauna instead of a mob for cave gen
-#define SPAWN_MEGAFAUNA "bluh bluh huge boss"
 
 ///Squash flags. For squashable element
 

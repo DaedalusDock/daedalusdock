@@ -4,90 +4,6 @@
 
 #define REAGENT_TRANSFER_AMOUNT "amount"
 
-/// Initialises all /datum/reagent into a list indexed by reagent id
-/proc/init_chemical_reagent_list()
-	var/list/reagent_list = list()
-
-	var/paths = subtypesof(/datum/reagent)
-
-	for(var/datum/reagent/path as anything in paths)
-		if(isabstract(path))//Are we abstract?
-			continue
-		var/datum/reagent/D = new path()
-		D.mass = rand(10, 800) //This is terrible and should be removed ASAP!
-		reagent_list[path] = D
-
-	return reagent_list
-
-/proc/build_chemical_reactions_lists()
-	//Chemical Reactions - Initialises all /datum/chemical_reaction into a list
-	// It is filtered into multiple lists within a list.
-	// For example:
-	// chemical_reactions_list_reactant_index[/datum/reagent/toxin/plasma] is a list of all reactions relating to plasma
-	//For chemical reaction list product index - indexes reactions based off the product reagent type - see get_recipe_from_reagent_product() in helpers
-	//For chemical reactions list lookup list - creates a bit list of info passed to the UI. This is saved to reduce lag from new windows opening, since it's a lot of data.
-
-	//Prevent these reactions from appearing in lookup tables (UI code)
-	var/list/blacklist = (/datum/chemical_reaction/randomized)
-
-	if(GLOB.chemical_reactions_list_reactant_index)
-		return
-
-	//Randomized need to go last since they need to check against conflicts with normal recipes
-	var/paths = subtypesof(/datum/chemical_reaction) - typesof(/datum/chemical_reaction/randomized) + subtypesof(/datum/chemical_reaction/randomized)
-	GLOB.chemical_reactions_list = list() //typepath to reaction list
-	GLOB.chemical_reactions_list_reactant_index = list() //reagents to reaction list
-	GLOB.chemical_reactions_results_lookup_list = list() //UI glob
-	GLOB.chemical_reactions_list_product_index = list() //product to reaction list
-
-	for(var/path in paths)
-		var/datum/chemical_reaction/D = new path()
-		var/list/reaction_ids = list()
-		var/list/product_ids = list()
-		var/list/reagents = list()
-		var/list/product_names = list()
-
-		if(!D.required_reagents || !D.required_reagents.len) //Skip impossible reactions
-			continue
-
-		GLOB.chemical_reactions_list[path] = D
-
-		for(var/reaction in D.required_reagents)
-			reaction_ids += reaction
-			var/datum/reagent/reagent = find_reagent_object_from_type(reaction)
-			reagents += list(list("name" = reagent.name, "id" = reagent.type))
-
-		for(var/product in D.results)
-			var/datum/reagent/reagent = find_reagent_object_from_type(product)
-			product_names += reagent.name
-			product_ids += product
-
-		var/product_name
-		if(!length(product_names))
-			var/list/names = splittext("[D.type]", "/")
-			product_name = names[names.len]
-		else
-			product_name = product_names[1]
-
-		// Create filters based on each reagent id in the required reagents list - this is specifically for finding reactions from product(reagent) ids/typepaths.
-		for(var/id in product_ids)
-			if(is_type_in_list(D.type, blacklist))
-				continue
-			if(!GLOB.chemical_reactions_list_product_index[id])
-				GLOB.chemical_reactions_list_product_index[id] = list()
-			GLOB.chemical_reactions_list_product_index[id] += D
-
-		//Master list of ALL reactions that is used in the UI lookup table. This is expensive to make, and we don't want to lag the server by creating it on UI request, so it's cached to send to UIs instantly.
-		if(!(is_type_in_list(D.type, blacklist)))
-			GLOB.chemical_reactions_results_lookup_list += list(list("name" = product_name, "id" = D.type, "reactants" = reagents))
-
-		// Create filters based on each reagent id in the required reagents list - this is used to speed up handle_reactions()
-		for(var/id in reaction_ids)
-			if(!GLOB.chemical_reactions_list_reactant_index[id])
-				GLOB.chemical_reactions_list_reactant_index[id] = list()
-			GLOB.chemical_reactions_list_reactant_index[id] += D
-			break // Don't bother adding ourselves to other reagent ids, it is redundant
-
 ///////////////////////////////Main reagents code/////////////////////////////////////////////
 
 /// Holder for a bunch of [/datum/reagent]
@@ -167,7 +83,7 @@
 	if(SEND_SIGNAL(src, COMSIG_REAGENTS_PRE_ADD_REAGENT, reagent, amount, reagtemp, data, no_react) & COMPONENT_CANCEL_REAGENT_ADD)
 		return FALSE
 
-	var/datum/reagent/glob_reagent = GLOB.chemical_reagents_list[reagent]
+	var/datum/reagent/glob_reagent = SSreagents.chemical_reagents_list[reagent]
 	if(!glob_reagent)
 		stack_trace("[my_atom] attempted to add a reagent called '[reagent]' which doesn't exist. ([usr])")
 		return FALSE
@@ -791,7 +707,7 @@
 			return FALSE
 
 	var/list/cached_reagents = reagent_list
-	var/list/cached_reactions = GLOB.chemical_reactions_list_reactant_index
+	var/list/cached_reactions = SSreagents.chemical_reactions_list_reactant_index
 	var/datum/cached_my_atom = my_atom
 	LAZYNULL(failed_but_capable_reactions)
 
@@ -1400,7 +1316,7 @@
 	var/list/possible_reactions = list()
 	if(!length(cached_reagents))
 		return null
-	cached_reactions = GLOB.chemical_reactions_list_reactant_index
+	cached_reactions = SSreagents.chemical_reactions_list_reactant_index
 	for(var/_reagent in cached_reagents)
 		var/datum/reagent/reagent = _reagent
 		for(var/_reaction in cached_reactions[reagent.type]) // Was a big list but now it should be smaller since we filtered it with our reagent id
@@ -1655,7 +1571,7 @@
 /datum/reagents/ui_static_data(mob/user)
 	var/data = list()
 	//Use GLOB list - saves processing
-	data["master_reaction_list"] = GLOB.chemical_reactions_results_lookup_list
+	data["master_reaction_list"] = SSreagents.chemical_reactions_results_lookup_list
 	return data
 
 /* Returns a reaction type by index from an input reagent type

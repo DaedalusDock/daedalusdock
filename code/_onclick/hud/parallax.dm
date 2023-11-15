@@ -197,7 +197,7 @@
 		var/change_x
 		var/change_y
 		if(parallax_layer.absolute)
-			// We use change here so the typically large absolute objects (just lavaland for now) don't jitter so much
+			// We use change here so the typically large absolute objects don't jitter so much
 			change_x = (posobj.x - SSparallax.planet_x_offset) * our_speed + parallax_layer.offset_x
 			change_y = (posobj.y - SSparallax.planet_y_offset) * our_speed + parallax_layer.offset_y
 		else

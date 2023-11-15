@@ -1,4 +1,5 @@
 #define DOOR_CLOSE_WAIT 60 ///Default wait until doors autoclose
+DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door
 	name = "door"
 	desc = "It opens and closes."

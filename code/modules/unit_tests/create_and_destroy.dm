@@ -74,10 +74,6 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/mob/living/silicon/robot/model)
 	//This lad also sleeps
 	ignore += typesof(/obj/item/hilbertshotel)
-	//this boi spawns turf changing stuff, and it stacks and causes pain. Let's just not
-	ignore += typesof(/obj/effect/sliding_puzzle)
-	//Stacks baseturfs, can't be tested here
-	ignore += typesof(/obj/effect/temp_visual/lava_warning)
 	//Stacks baseturfs, can't be tested here
 	ignore += typesof(/obj/effect/landmark/ctf)
 	//Our system doesn't support it without warning spam from unregister calls on things that never registered

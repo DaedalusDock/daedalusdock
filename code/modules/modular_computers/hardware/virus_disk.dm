@@ -1,85 +1,139 @@
+
+/// Completely give up sending the virus. Returns immediately.
+#define VIRUS_MODE_ABORT -1
+/// 'Generic' mode. Assumes no more than the magic packet is required, and simply adds some bogus registers to cover up the real fields.
+#define VIRUS_MODE_GENERIC 0
+/// Throw out the old signal and provide an entirely unique one. Use this if you need to mark a packet inviolable.
+#define VIRUS_MODE_RAW_SIGNAL 1
+/// Add a list of extra fields to the packet.
+#define VIRUS_MODE_EXTRA_STAPLE 2
+
 /obj/item/computer_hardware/hard_drive/role/virus
 	name = "\improper generic virus disk"
 	icon_state = "virusdisk"
+	var/magic_packet = "HONK!" //Set this in user_input()
 	var/charges = 5
 
-/obj/item/computer_hardware/hard_drive/role/virus/proc/send_virus(obj/item/modular_computer/tablet/target, mob/living/user)
+// Due to the GPRSification of PDAs, theses now share quite a lot of code.
+// All viruses work in roughly the same way, sending a magic packet with a bogus command
+// Some viruses may have additional data as a payload.
+/obj/item/computer_hardware/hard_drive/role/virus/proc/send_virus(target_addr, mob/living/user)
+	if(!target_addr)
+		return
+	if(charges <= 0)
+		to_chat(user, span_notice("ERROR: Out of charges."))
+		return
+	var/obj/item/computer_hardware/network_card/packetnet/pnetcard = holder.all_components[MC_NET]
+	if(!istype(pnetcard))//Very unlikely, but this path isn't too hot to make me worry.
+		to_chat(user, span_warning("ERROR: NON-GPRS NETWORK CARD."))
+		return
+	var/list/user_input_tuple = user_input(target_addr, user)
+	var/datum/signal/outgoing = new(src, list(
+		SSpackets.pda_exploitable_register = magic_packet,
+		PACKET_DESTINATION_ADDRESS = target_addr
+		))
+	var/signal_data = outgoing.data
+	switch(user_input_tuple[1])
+		if(VIRUS_MODE_ABORT)
+			return
+		if(VIRUS_MODE_GENERIC)
+			//Add some fluffy bogus data.
+			var/itermax = rand(1,3)
+			for(var/iter = 0, iter<itermax, iter++)
+				var/reg_name = pick_list(PACKET_STRING_FILE, "packet_field_names")
+				if(reg_name == SSpackets.pda_exploitable_register)
+					continue //Just skip one.
+				signal_data[reg_name] = random_string(rand(16,32), GLOB.hex_characters)
+
+		if(VIRUS_MODE_RAW_SIGNAL)
+			outgoing = user_input_tuple[2]
+		if(VIRUS_MODE_EXTRA_STAPLE)
+			outgoing.data.Add(user_input_tuple[2])
+	//We need to scromble the fields to make it not perfectly obvious which one is which
+	shuffle_inplace(outgoing.data)
+	pnetcard.post_signal(outgoing)
+	to_chat(user, span_notice("Virus sent."))
+	--charges
 	return
+
+/*
+ * Your chance to get input from the user/set custom data for your virus.
+ * Return value is a list of 1/2 values:
+ * list(VIRUS_MODE_ABORT) - Abort the send attempt
+ *
+ * list(VIRUS_MODE_GENERIC) - Sets the value of the SSpackets.exploitable_pda_register field on the packet to it's magic_packet.
+ * This mode also adds some bogus garbage to the packet to disguise exactly which field is the vulnerable one.
+ *
+ * list(VIRUS_MODE_RAW_SIGNAL, ref/datum/signal) - Signal packet will be sent as is, If you need to mark a packet inviolable, use this one.
+ *
+ * list(VIRUS_MODE_EXTRA_STAPLE, list(signal_data)) - List will be appended to the standard values
+ */
+/obj/item/computer_hardware/hard_drive/role/virus/proc/user_input(target_addr, mob/living/user)
+	return list(VIRUS_MODE_ABORT)
 
 /obj/item/computer_hardware/hard_drive/role/virus/clown
 	name = "\improper H.O.N.K. disk"
 
-/obj/item/computer_hardware/hard_drive/role/virus/clown/send_virus(obj/item/modular_computer/tablet/target, mob/living/user)
-	if(charges <= 0)
-		to_chat(user, span_notice("ERROR: Out of charges."))
-		return
-
-	if(target)
-		user.show_message(span_notice("Success!"))
-		charges--
-		target.honkamnt = rand(15, 25)
-	else
-		to_chat(user, span_notice("ERROR: Could not find device."))
+/obj/item/computer_hardware/hard_drive/role/virus/clown/user_input(target_addr, mob/living/user)
+	magic_packet = SSpackets.clownvirus_magic_packet
+	return list(VIRUS_MODE_GENERIC)
 
 /obj/item/computer_hardware/hard_drive/role/virus/mime
 	name = "\improper sound of silence disk"
 
-/obj/item/computer_hardware/hard_drive/role/virus/mime/send_virus(obj/item/modular_computer/tablet/target, mob/living/user)
-	if(charges <= 0)
-		to_chat(user, span_notice("ERROR: Out of charges."))
-		return
+/obj/item/computer_hardware/hard_drive/role/virus/mime/user_input(target_addr, mob/living/user)
+	magic_packet = SSpackets.mimevirus_magic_packet
+	return list(VIRUS_MODE_GENERIC)
 
-	if(target)
-		user.show_message(span_notice("Success!"))
-		charges--
 
-		var/obj/item/computer_hardware/hard_drive/drive = target.all_components[MC_HDD]
-
-		for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-			app.ringer_status = FALSE
-			app.ringtone = ""
-	else
-		to_chat(user, span_notice("ERROR: Could not find device."))
 
 /obj/item/computer_hardware/hard_drive/role/virus/deto
 	name = "\improper D.E.T.O.M.A.T.I.X. disk"
-	charges = 6
+	charges = 1
 
-/obj/item/computer_hardware/hard_drive/role/virus/deto/send_virus(obj/item/modular_computer/tablet/target, mob/living/user)
-	if(charges <= 0)
-		to_chat(user, span_notice("ERROR: Out of charges."))
+/obj/item/computer_hardware/hard_drive/role/virus/deto/user_input(target_addr, mob/living/user)
+	if(!holder) //What?
+		stack_trace("Attempted to send a detomatix virus without a holder computer?? | loc.type:[loc.type]")
+		return list(VIRUS_MODE_ABORT)
+	magic_packet = SSpackets.detomatix_magic_packet
+	//Shamelessly stolen from msg_input
+	var/text_message = null
+
+
+	text_message = tgui_input_text(user, "Enter a message", "NT Messaging")
+
+	if(!user.canUseTopic(holder, USE_CLOSE))
 		return
 
-	var/difficulty = 0
-	var/obj/item/computer_hardware/hard_drive/role/disk = target.all_components[MC_HDD_JOB]
+	text_message = sanitize(text_message)
+	if(!text_message)
+		return list(VIRUS_MODE_ABORT)
+	var/sender_name = sanitize(tgui_input_text(user, "Enter the sending name", "NT Messaging"))
+	if(!sender_name)
+		return list(VIRUS_MODE_ABORT)
+	var/sender_job = sanitize(tgui_input_text(user, "Enter the sending job", "NT Messaging"))
+	if(!sender_name)
+		return list(VIRUS_MODE_ABORT)
 
-	if(disk)
-		difficulty += bit_count(disk.disk_flags & (DISK_MED | DISK_SEC | DISK_POWER | DISK_MANIFEST))
-		if(disk.disk_flags & DISK_MANIFEST)
-			difficulty++ //if cartridge has manifest access it has extra snowflake difficulty
-	if(SEND_SIGNAL(target, COMSIG_TABLET_CHECK_DETONATE) & COMPONENT_TABLET_NO_DETONATE || prob(difficulty * 15))
-		user.show_message(span_danger("ERROR: Target could not be bombed."), MSG_VISUAL)
-		charges--
-		return
+	if(!user.canUseTopic(holder, USE_CLOSE))
+		return list(VIRUS_MODE_ABORT)
 
-	var/original_host = holder
-	var/fakename = sanitize_name(tgui_input_text(user, "Enter a name for the rigged message.", "Forge Message", max_length = MAX_NAME_LEN), allow_numbers = TRUE)
-	if(!fakename || holder != original_host || !user.canUseTopic(holder, USE_CLOSE|USE_IGNORE_TK))
-		return
-	var/fakejob = sanitize_name(tgui_input_text(user, "Enter a job for the rigged message.", "Forge Message", max_length = MAX_NAME_LEN), allow_numbers = TRUE)
-	if(!fakejob || holder != original_host || !user.canUseTopic(holder, USE_CLOSE|USE_IGNORE_TK))
-		return
-
-	var/obj/item/computer_hardware/hard_drive/drive = holder.all_components[MC_HDD]
-
-	for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-		if(charges > 0 && app.send_message(user, list(target), rigged = REF(user), fake_name = fakename, fake_job = fakejob))
-			charges--
-			user.show_message(span_notice("Success!"))
-			var/reference = REF(src)
-			ADD_TRAIT(target, TRAIT_PDA_CAN_EXPLODE, reference)
-			ADD_TRAIT(target, TRAIT_PDA_MESSAGE_MENU_RIGGED, reference)
-			addtimer(TRAIT_CALLBACK_REMOVE(target, TRAIT_PDA_MESSAGE_MENU_RIGGED, reference), 10 SECONDS)
+	var/list/pda_data_staple = list(
+		// We already have the target address
+		// GPRS Card handles the source address
+		PACKET_CMD = NETCMD_PDAMESSAGE,
+		"name" = sender_name,
+		"job" = sender_job,
+		"message" = text_message
+	)
+	//Add some fluffy bogus data.
+	var/itermax = rand(1,3)
+	for(var/iter = 0, iter<itermax, iter++)
+		var/reg_name = pick_list(PACKET_STRING_FILE, "packet_field_names")
+		if(reg_name == SSpackets.pda_exploitable_register)
+			continue //Just skip one.
+		pda_data_staple[reg_name] = random_string(rand(16,32), GLOB.hex_characters)
+	return list(VIRUS_MODE_EXTRA_STAPLE, pda_data_staple)
 
 /obj/item/computer_hardware/hard_drive/role/virus/frame
 	name = "\improper F.R.A.M.E. disk"
@@ -87,44 +141,22 @@
 	var/telecrystals = 0
 	var/current_progression = 0
 
-/obj/item/computer_hardware/hard_drive/role/virus/frame/send_virus(obj/item/modular_computer/tablet/target, mob/living/user)
-	if(charges <= 0)
-		to_chat(user, span_notice("ERROR: Out of charges."))
-		return
-
-	if(target)
-		charges--
-		var/lock_code = "[rand(100,999)] [pick(GLOB.phonetic_alphabet)]"
-		to_chat(user, span_notice("Success! The unlock code to the target is: [lock_code]"))
-		var/datum/component/uplink/hidden_uplink = target.GetComponent(/datum/component/uplink)
-		if(!hidden_uplink)
-			var/datum/mind/target_mind
-			var/list/backup_players = list()
-			for(var/datum/mind/player as anything in get_crewmember_minds())
-				if(player.assigned_role?.title == target.saved_job)
-					backup_players += player
-				if(player.name == target.saved_identification)
-					target_mind = player
-					break
-			if(!target_mind)
-				if(!length(backup_players))
-					target_mind = user.mind
-				else
-					target_mind = pick(backup_players)
-			hidden_uplink = target.AddComponent(/datum/component/uplink, target_mind, enabled = TRUE, starting_tc = telecrystals, has_progression = TRUE)
-			hidden_uplink.uplink_handler.has_objectives = TRUE
-			hidden_uplink.uplink_handler.owner = target_mind
-			hidden_uplink.uplink_handler.can_take_objectives = FALSE
-			hidden_uplink.uplink_handler.progression_points = min(SStraitor.current_global_progression, current_progression)
-			hidden_uplink.uplink_handler.generate_objectives()
-			SStraitor.register_uplink_handler(hidden_uplink.uplink_handler)
-		else
-			hidden_uplink.add_telecrystals(telecrystals)
-		telecrystals = 0
-		hidden_uplink.locked = FALSE
-		hidden_uplink.active = TRUE
-	else
-		to_chat(user, span_notice("ERROR: Could not find device."))
+/obj/item/computer_hardware/hard_drive/role/virus/frame/user_input(target_addr, mob/living/user)
+	var/lock_code = "[rand(100,999)] [pick(GLOB.phonetic_alphabet)]"
+	var/datum/signal/outgoing = new(
+		src,
+		list(
+			"command" = SSpackets.framevirus_magic_packet,
+			"telecrystals" = telecrystals,
+			"current_progression" = current_progression,
+			"lock_code" = lock_code,
+			"fallback_mind" = user.mind // yeah?
+		)
+	)
+	to_chat(user, "Sending... Attempting to install uplink with Code: [span_robot(lock_code)]")
+	telecrystals = 0 // Burn the crystals regardless.
+	outgoing.has_magic_data = MAGIC_DATA_INVIOLABLE //touch this and you lose your spine, legs, AND eyes. Three for one.
+	return list(VIRUS_MODE_RAW_SIGNAL, outgoing)
 
 /obj/item/computer_hardware/hard_drive/role/virus/frame/attackby(obj/item/I, mob/user, params)
 	. = ..()
@@ -134,7 +166,10 @@
 			return
 		var/obj/item/stack/telecrystal/telecrystalStack = I
 		telecrystals += telecrystalStack.amount
-		to_chat(user, span_notice("You slot [telecrystalStack] into [src]. The next time it's used, it will also give telecrystals."))
+		to_chat(user, span_notice("You slot [telecrystalStack] into [src]. The next time it's used, it will also give [telecrystals] telecrystal\s."))
 		telecrystalStack.use(telecrystalStack.amount)
 
-
+#undef VIRUS_MODE_ABORT
+#undef VIRUS_MODE_GENERIC
+#undef VIRUS_MODE_RAW_SIGNAL
+#undef VIRUS_MODE_EXTRA_STAPLE

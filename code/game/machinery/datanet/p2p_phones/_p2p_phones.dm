@@ -590,7 +590,7 @@
 
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
-	v_signal.has_magic_data = TRUE //We're sending a virtual speaker. This packet MUST be discarded.
+	v_signal.has_magic_data = MAGIC_DATA_INVIOLABLE //We're sending a virtual speaker. This packet MUST be discarded.
 	v_signal.data[PACKET_SOURCE_ADDRESS] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
 	v_signal.data[PACKET_DESTINATION_ADDRESS] = callstation.active_caller[CALLER_NETID]
 	v_signal.data["command"] = "tel_voicedata"

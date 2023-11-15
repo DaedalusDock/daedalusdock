@@ -116,11 +116,13 @@
 		eject_occupant(src, TRUE)
 
 /////// The Console ////////
+DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 /obj/machinery/bodyscanner_console
 	name = "body scanner console"
 	icon = 'icons/obj/machines/bodyscanner.dmi'
 	icon_state = "bodyscanner_console_powered"
 	dir = EAST
+	mouse_drop_pointer = TRUE
 
 	var/obj/machinery/bodyscanner/linked_scanner
 	/// Data! Maybe there's something to be done with data disks here.

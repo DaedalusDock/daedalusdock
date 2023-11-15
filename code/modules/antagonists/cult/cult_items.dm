@@ -996,6 +996,21 @@ Striking a noncultist, however, will tear their flesh."}
 /obj/effect/ebeam/blood
 	name = "blood beam"
 
+/obj/effect/temp_visual/at_shield
+	name = "anti-toolbox field"
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "at_shield2"
+	layer = FLY_LAYER
+	light_system = MOVABLE_LIGHT
+	light_outer_range = 2
+	duration = 8
+	var/target
+
+/obj/effect/temp_visual/at_shield/Initialize(mapload, new_target)
+	. = ..()
+	target = new_target
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, orbit), target, 0, FALSE, 0, 0, FALSE, TRUE)
+
 /obj/item/shield/mirror
 	name = "mirror shield"
 	desc = "An infamous shield used by Nar'Sien sects to confuse and disorient their enemies. Its edges are weighted for use as a throwing weapon - capable of disabling multiple foes with preternatural accuracy."

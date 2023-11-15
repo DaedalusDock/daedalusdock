@@ -61,9 +61,6 @@
 		if(CIV_JOB_ENG)
 			var/subtype = pick(subtypesof(/datum/bounty/item/engineering))
 			return new subtype
-		if(CIV_JOB_MINE)
-			var/subtype = pick(subtypesof(/datum/bounty/item/mining))
-			return new subtype
 		if(CIV_JOB_MED)
 			var/subtype = pick(subtypesof(/datum/bounty/item/medical))
 			return new subtype

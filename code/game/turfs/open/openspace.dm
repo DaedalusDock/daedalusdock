@@ -113,38 +113,3 @@
 	if(caller && !caller.can_z_move(DOWN, src, null , ZMOVE_FALL_FLAGS)) //If we can't fall here (flying/lattice), it's fine to path through
 		return TRUE
 	return FALSE
-
-/turf/open/openspace/icemoon
-	name = "ice chasm"
-	baseturfs = /turf/open/openspace/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-	simulated = FALSE
-
-	var/replacement_turf = /turf/open/misc/asteroid/snow/icemoon
-	/// Replaces itself with replacement_turf if the turf below this one is in a no ruins allowed area (usually ruins themselves)
-	var/protect_ruin = TRUE
-	/// If true mineral turfs below this openspace turf will be mined automatically
-	var/drill_below = TRUE
-
-/turf/open/openspace/icemoon/Initialize(mapload)
-	. = ..()
-	var/turf/T = GetBelow(src)
-	//I wonder if I should error here
-	if(!T)
-		return
-	if(T.turf_flags & NO_RUINS && protect_ruin)
-		ChangeTurf(replacement_turf, null, CHANGETURF_IGNORE_AIR)
-		return
-	if(!ismineralturf(T) || !drill_below)
-		return
-	var/turf/closed/mineral/M = T
-	M.mineralAmt = 0
-	M.gets_drilled()
-	baseturfs = /turf/open/openspace/icemoon //This is to ensure that IF random turf generation produces a openturf, there won't be other turfs assigned other than openspace.
-
-/turf/open/openspace/icemoon/keep_below
-	drill_below = FALSE
-
-/turf/open/openspace/icemoon/ruins
-	protect_ruin = FALSE
-	drill_below = FALSE

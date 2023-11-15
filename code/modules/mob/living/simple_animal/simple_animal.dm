@@ -591,10 +591,13 @@
 		return
 	if(!dextrous)
 		return
+
 	if(!hand_index)
 		hand_index = (active_hand_index % held_items.len)+1
+
 	var/oindex = active_hand_index
 	active_hand_index = hand_index
+
 	if(hud_used)
 		var/atom/movable/screen/inventory/hand/H
 		H = hud_used.hand_slots["[hand_index]"]
@@ -603,6 +606,8 @@
 		H = hud_used.hand_slots["[oindex]"]
 		if(H)
 			H.update_appearance()
+
+	update_mouse_pointer()
 
 /mob/living/simple_animal/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, ignore_animation = TRUE)
 	. = ..()

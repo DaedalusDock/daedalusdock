@@ -59,32 +59,3 @@
 
 /obj/effect/mob_spawn/ghost_role/human/pirate/skeleton/gunner
 	rank = "Gunner"
-
-/obj/effect/mob_spawn/ghost_role/human/pirate/silverscale
-	name = "elegant sleeper"
-	desc = "Cozy. You get the feeling you aren't supposed to be here, though..."
-	icon = 'icons/obj/machines/sleeper.dmi'
-	icon_state = "sleeper"
-	prompt_name = "a silverscale"
-	mob_species = /datum/species/lizard/silverscale
-	outfit = /datum/outfit/pirate/silverscale
-	rank = "High-born"
-
-/obj/effect/mob_spawn/ghost_role/human/pirate/silverscale/generate_pirate_name(spawn_gender)
-	var/first_name
-	switch(gender)
-		if(MALE)
-			first_name = pick(GLOB.lizard_names_male)
-		if(FEMALE)
-			first_name = pick(GLOB.lizard_names_female)
-		else
-			first_name = pick(GLOB.lizard_names_male + GLOB.lizard_names_female)
-
-	return "[rank] [first_name]-Silverscale"
-
-/obj/effect/mob_spawn/ghost_role/human/pirate/silverscale/captain
-	rank = "Old-guard"
-	outfit = /datum/outfit/pirate/silverscale/captain
-
-/obj/effect/mob_spawn/ghost_role/human/pirate/silverscale/gunner
-	rank = "Top-drawer"

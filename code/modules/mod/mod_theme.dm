@@ -284,11 +284,10 @@
 		/obj/item/mining_scanner,
 		/obj/item/t_scanner/adv_mining_scanner,
 		/obj/item/pickaxe,
-		/obj/item/kinetic_crusher,
 		/obj/item/stack/ore/plasma,
 		/obj/item/storage/bag/ore,
 	)
-	inbuilt_modules = list(/obj/item/mod/module/ash_accretion, /obj/item/mod/module/sphere_transform)
+	inbuilt_modules = list()
 	skins = list(
 		"mining" = list(
 			HELMET_FLAGS = list(

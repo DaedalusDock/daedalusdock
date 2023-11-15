@@ -63,6 +63,7 @@
 /datum/browser/proc/get_header()
 	var/file
 	head_content += "<link rel='stylesheet' type='text/css' href='[common_asset.get_url_mappings()["common.css"]]'>"
+
 	for (file in stylesheets)
 		head_content += "<link rel='stylesheet' type='text/css' href='[SSassets.transport.get_asset_url(file)]'>"
 
@@ -80,7 +81,7 @@
 	</head>
 	<body scroll=auto>
 		<div class='uiWrapper'>
-			[title ? "<div class='uiTitle'><tt>[title]</tt></div></div>" : ""]
+			[title ? "<div class='uiTitle'><tt>[title]</tt></div>" : ""]
 			<div class='uiContent'>
 	"}
 //" This is here because else the rest of the file looks like a string in notepad++.

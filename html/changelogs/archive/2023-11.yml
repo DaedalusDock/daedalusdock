@@ -7,3 +7,6 @@
   - bugfix: Media System Validation is less likely to die unexpectedly.
   - rscadd: The Meta Bar now has a jukebox
   - rscadd: And it can be used by non-bartenders.
+2023-11-15:
+  Kapu1178:
+  - rscdel: Lavaland and it's baggage

@@ -47,8 +47,8 @@
 		return
 
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
+	var/atom/movable/original_target = target
 	if(ismob(target))
-		var/atom/movable/original_target = target
 		var/mob/grabbed_mob = target
 
 		while(ismob(grabbed_mob) && grabbed_mob.buckled)

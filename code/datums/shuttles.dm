@@ -421,7 +421,7 @@
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"
 	name = "transport ferry"
-	description = "Standard issue Box/Metastation CentCom ferry."
+	description = "Standard issue Box/Theseus CentCom ferry."
 
 /datum/map_template/shuttle/ferry/meat
 	suffix = "meat"

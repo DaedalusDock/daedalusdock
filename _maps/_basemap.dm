@@ -4,7 +4,7 @@
 	#ifdef ALL_MAPS
 		#include "map_files\debug\runtimestation.dmm"
 		#include "map_files\debug\multiz.dmm"
-		#include "map_files\MetaStation\MetaStation.dmm"
+		#include "map_files\Theseus\Theseus.dmm"
 
 		#ifdef CIBUILDING
 			#include "templates.dm"

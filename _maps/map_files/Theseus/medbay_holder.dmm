@@ -14040,7 +14040,7 @@
 	dwidth = 9;
 	height = 25;
 	id = "emergency_home";
-	name = "MetaStation emergency evac bay";
+	name = "emergency evac bay";
 	width = 29
 	},
 /turf/open/space/basic,

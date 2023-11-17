@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Under certain circumstances, masks would show as invisible in your mask
+      slot. This has been fixed.

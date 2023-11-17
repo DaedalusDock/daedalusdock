@@ -597,9 +597,10 @@ There are several things that need to be remembered:
 		inv.update_icon()
 
 	if(wear_mask)
+		var/obj/item/worn_item = wear_mask
 		update_hud_wear_mask(worn_item)
+
 		if(!(check_obscured_slots() & ITEM_SLOT_MASK))
-			var/obj/item/worn_item = wear_mask
 			var/mutable_appearance/mask_overlay
 			var/icon_file
 			var/handled_by_bodytype = TRUE

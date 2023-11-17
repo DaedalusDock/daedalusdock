@@ -64,6 +64,11 @@ SUBSYSTEM_DEF(icon_smooth)
 
 	return ..()
 
+/datum/controller/subsystem/icon_smooth/StartLoadingMap()
+	can_fire = FALSE
+
+/datum/controller/subsystem/icon_smooth/StopLoadingMap()
+	can_fire = TRUE
 
 /datum/controller/subsystem/icon_smooth/proc/add_to_queue(atom/thing)
 	if(thing.smoothing_flags & SMOOTH_QUEUED)

@@ -99,7 +99,6 @@
 	/mob/living/simple_animal/deer = "hooved",
 	/mob/living/simple_animal/hostile/ant = "hungry",
 	/mob/living/simple_animal/hostile/mushroom = "fungal",
-	/mob/living/simple_animal/hostile/asteroid/gutlunch/grublunch = "warbling",
 	/mob/living/simple_animal/hostile/asteroid/goldgrub = "shiny",
 	/mob/living/simple_animal/hostile/retaliate/frog = "hopping",
 	)

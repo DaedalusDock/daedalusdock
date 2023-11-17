@@ -101,13 +101,16 @@
 	mod_type = /obj/item/mod/control/pre_equipped/safeguard
 
 /obj/machinery/suit_storage_unit/mining
-	suit_type = /obj/item/clothing/suit/hooded/explorer
-	mask_type = /obj/item/clothing/mask/gas/explorer
+	suit_type = /obj/item/clothing/suit/space/nasavoid/old
+	helmet_type = /obj/item/clothing/head/helmet/space/nasavoid/old
+	mask_type = /obj/item/clothing/mask/breath
+	storage_type = /obj/item/tank/internals/oxygen
 
 /obj/machinery/suit_storage_unit/mining/eva
 	suit_type = null
 	mask_type = /obj/item/clothing/mask/breath
 	mod_type = /obj/item/mod/control/pre_equipped/mining
+	storage_type = /obj/item/tank/internals/oxygen
 
 /obj/machinery/suit_storage_unit/medical
 	mask_type = /obj/item/clothing/mask/breath/medical

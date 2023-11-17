@@ -172,6 +172,8 @@
 	var/datum/storage/atom_storage
 	/// How this atom should react to having its astar blocking checked
 	var/can_astar_pass = CANASTARPASS_DENSITY
+	/// !DO NOT DIRECTLY EDIT! Can mobs "interact" with this item? THIS IS ONLY USED FOR MOUSE ICONS. SEE interactables.dm.
+	var/is_mouseover_interactable
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -1786,21 +1788,19 @@
 
 /// Sets the custom materials for an item.
 /atom/proc/set_custom_materials(list/materials, multiplier = 1)
-	if(custom_materials && material_flags & MATERIAL_EFFECTS) //Only runs if custom materials existed at first and affected src.
-		for(var/current_material in custom_materials)
-			var/datum/material/custom_material = GET_MATERIAL_REF(current_material)
-			custom_material.on_removed(src, custom_materials[current_material] * material_modifier, material_flags) //Remove the current materials
+	if(length(custom_materials) && istype(custom_materials[1], /datum/material) && (material_flags & MATERIAL_EFFECTS)) //Only runs if custom materials existed at first and affected src.
+		for(var/datum/material/material as anything in custom_materials)
+			material.on_removed(src, custom_materials[material] * material_modifier, material_flags) //Remove the current materials
 
 	if(!length(materials))
 		custom_materials = null
 		return
 
-	if(material_flags & MATERIAL_EFFECTS)
-		for(var/current_material in materials)
-			var/datum/material/custom_material = GET_MATERIAL_REF(current_material)
-			custom_material.on_applied(src, materials[current_material] * multiplier * material_modifier, material_flags)
-
 	custom_materials = SSmaterials.FindOrCreateMaterialCombo(materials, multiplier)
+
+	if(material_flags & MATERIAL_EFFECTS)
+		for(var/datum/material/material as anything in custom_materials)
+			material.on_applied(src, materials[material] * multiplier * material_modifier, material_flags)
 
 /**
  * Returns the material composition of the atom.
@@ -2094,7 +2094,15 @@
 	return TRUE
 
 /atom/MouseEntered(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	. = !(1 || ..())
 	SSmouse_entered.hovers[usr.client] = src
+	SSmouse_entered.sustained_hovers[usr.client] = src
+
+/atom/MouseExited(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	. = !(1 || ..())
+	SSmouse_entered.sustained_hovers[usr.client] = null
 
 /// Fired whenever this atom is the most recent to be hovered over in the tick.
 /// Preferred over MouseEntered if you do not need information such as the position of the mouse.
@@ -2105,6 +2113,9 @@
 	var/mob/user = client?.mob
 	if (isnull(user))
 		return
+
+	if(is_mouseover_interactable)
+		user.update_mouse_pointer()
 
 	// Screentips
 	var/datum/hud/active_hud = user.hud_used

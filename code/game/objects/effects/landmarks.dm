@@ -99,7 +99,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Cook"
 
 /obj/effect/landmark/start/shaft_miner
-	name = "Shaft Miner"
+	name = JOB_PROSPECTOR
 	icon_state = "Shaft Miner"
 
 /obj/effect/landmark/start/security_officer

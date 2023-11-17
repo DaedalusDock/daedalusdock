@@ -194,26 +194,6 @@ SUBSYSTEM_DEF(mapping)
  * Sets up all of the ruins to be spawned
  */
 /datum/controller/subsystem/mapping/proc/setup_ruins()
-	// Generate mining ruins
-	var/list/lava_ruins = levels_by_trait(ZTRAIT_LAVA_RUINS)
-	if (lava_ruins.len)
-		seedRuins(lava_ruins, CONFIG_GET(number/lavaland_budget), list(/area/lavaland/surface/outdoors/unexplored), themed_ruins[ZTRAIT_LAVA_RUINS], clear_below = TRUE)
-		for (var/lava_z in lava_ruins)
-			spawn_rivers(lava_z)
-
-	var/list/ice_ruins = levels_by_trait(ZTRAIT_ICE_RUINS)
-	if (ice_ruins.len)
-		// needs to be whitelisted for underground too so place_below ruins work
-		seedRuins(ice_ruins, CONFIG_GET(number/icemoon_budget), list(/area/icemoon/surface/outdoors/unexplored, /area/icemoon/underground/unexplored), themed_ruins[ZTRAIT_ICE_RUINS], clear_below = TRUE)
-		for (var/ice_z in ice_ruins)
-			spawn_rivers(ice_z, 4, /turf/open/openspace/icemoon, /area/icemoon/surface/outdoors/unexplored/rivers)
-
-	var/list/ice_ruins_underground = levels_by_trait(ZTRAIT_ICE_RUINS_UNDERGROUND)
-	if (ice_ruins_underground.len)
-		seedRuins(ice_ruins_underground, CONFIG_GET(number/icemoon_budget), list(/area/icemoon/underground/unexplored), themed_ruins[ZTRAIT_ICE_RUINS_UNDERGROUND], clear_below = TRUE)
-		for (var/ice_z in ice_ruins_underground)
-			spawn_rivers(ice_z, 4, level_trait(ice_z, ZTRAIT_BASETURF), /area/icemoon/underground/unexplored/rivers)
-
 	// Generate deep space ruins
 	var/list/space_ruins = levels_by_trait(ZTRAIT_SPACE_RUINS)
 	if (space_ruins.len)
@@ -366,11 +346,6 @@ Used by the AI doomsday and the self-destruct nuke.
 	while (world.maxz < (5 - 1) && space_levels_so_far < config.space_ruin_levels)
 		++space_levels_so_far
 		add_new_zlevel("Empty Area [space_levels_so_far]", ZTRAITS_SPACE)
-
-	if(config.minetype == "lavaland")
-		LoadGroup(FailedZs, "Lavaland", "map_files/Mining", "Lavaland.dmm", default_traits = ZTRAITS_LAVALAND)
-	else if (!isnull(config.minetype) && config.minetype != "none")
-		INIT_ANNOUNCE("WARNING: An unknown minetype '[config.minetype]' was set! This is being ignored! Update the maploader code!")
 #endif
 
 	if(LAZYLEN(FailedZs)) //but seriously, unless the server's filesystem is messed up this will never happen

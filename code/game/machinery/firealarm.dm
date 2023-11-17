@@ -10,6 +10,7 @@
 	result_path = /obj/machinery/firealarm
 	pixel_shift = 26
 
+DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 /obj/machinery/firealarm
 	name = "fire alarm"
 	desc = "<i>\"Pull this in case of emergency\"</i>. Thus, keep pulling it forever."

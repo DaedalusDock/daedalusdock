@@ -12,6 +12,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/desc = "its..stuff."
 	/// What the material is indexed by in the SSmaterials.materials list. Defaults to the type of the material.
 	var/id
+	///If set to TRUE, this material doesn't generate at roundstart, and generates unique instances based on the variables passed to GET_MATERIAL_REF
+	var/bespoke = FALSE
 
 	///Base color of the material, is used for greyscale. Item isn't changed in color if this is null.
 	///Deprecated, use greyscale_color instead.
@@ -20,8 +22,6 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/greyscale_colors
 	///Base alpha of the material, is used for greyscale icons.
 	var/alpha = 255
-	///Bitflags that influence how SSmaterials handles this material.
-	var/init_flags = MATERIAL_INIT_MAPLOAD
 	///Materials "Traits". its a map of key = category | Value = Bool. Used to define what it can be used for
 	var/list/categories = list()
 	///The type of sheet this material creates. This should be replaced as soon as possible by greyscale sheets

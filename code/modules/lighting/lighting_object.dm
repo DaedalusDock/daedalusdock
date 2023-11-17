@@ -145,7 +145,7 @@
 	else
 		affected_turf.underlays -= additive_underlay
 
-	affected_turf.luminosity = set_luminosity
+	affected_turf.luminosity = set_luminosity || affected_turf.loc:area_has_base_lighting
 
 	if (affected_turf.above)
 		if(affected_turf.above.shadower)

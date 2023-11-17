@@ -1,8 +1,8 @@
 {
 	"version": 1,
-	"map_name": "MetaStation",
-	"map_path": "map_files/MetaStation",
-	"map_file": "MetaStation.dmm",
+	"map_name": "Theseus",
+	"map_path": "map_files/Theseus",
+	"map_file": "Theseus.dmm",
 	"webmap_id": "DaedalusMeta",
 	"shuttles": {
 		"cargo": "cargo_box",

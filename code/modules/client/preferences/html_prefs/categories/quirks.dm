@@ -50,7 +50,7 @@
 	for(var/quirk in all_quirks)
 		if(quirk in user_quirks)
 			continue
-		var/quirk_type ="<span style='color: #AAAAFF'>Neuteral</span>"
+		var/quirk_type ="<span style='color: #AAAAFF'>Neutral</span>"
 		if(quirk_info[quirk]["value"])
 			quirk_type = quirk_info[quirk]["value"] > 0 ? "<span style='color: #AAFFAA'>Positive</span>" : "<span style='color: #FFAAAA'>Negative</span>"
 

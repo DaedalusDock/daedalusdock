@@ -72,7 +72,6 @@ require only minor tweaks.
 
 // boolean - weather types that occur on the level
 #define ZTRAIT_SNOWSTORM "Weather_Snowstorm"
-#define ZTRAIT_ASHSTORM "Weather_Ashstorm"
 #define ZTRAIT_VOIDSTORM "Weather_Voidstorm"
 
 /// boolean - does this z prevent ghosts from observing it
@@ -113,13 +112,6 @@ require only minor tweaks.
 #define ZTRAITS_STATION list(ZTRAIT_LINKAGE = CROSSLINKED, ZTRAIT_STATION = TRUE)
 ///Z level traits for Deep Space
 #define ZTRAITS_SPACE list(ZTRAIT_LINKAGE = CROSSLINKED, ZTRAIT_SPACE_RUINS = TRUE)
-///Z level traits for Lavaland
-#define ZTRAITS_LAVALAND list(\
-	ZTRAIT_MINING = TRUE, \
-	ZTRAIT_ASHSTORM = TRUE, \
-	ZTRAIT_LAVA_RUINS = TRUE, \
-	ZTRAIT_BOMBCAP_MULTIPLIER = 2, \
-	ZTRAIT_BASETURF = /turf/open/lava/smooth/lava_land_surface)
 ///Z level traits for Away Missions
 #define ZTRAITS_AWAY list(ZTRAIT_AWAY = TRUE)
 ///Z level traits for Secret Away Missions
@@ -152,7 +144,6 @@ require only minor tweaks.
 #define PLACE_DEFAULT "random"
 #define PLACE_SAME_Z "same" //On same z level as original ruin
 #define PLACE_SPACE_RUIN "space" //On space ruin z level(s)
-#define PLACE_LAVA_RUIN "lavaland" //On lavaland ruin z levels(s)
 #define PLACE_BELOW "below" //On z levl below - centered on same tile
 #define PLACE_ISOLATED "isolated" //On isolated ruin z level
 

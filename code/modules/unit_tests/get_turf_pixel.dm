@@ -7,5 +7,9 @@
 	var/turf/north = locate(1, world.maxy, run_loc_floor_bottom_left.z)
 
 	//hes really long, so hes really good at peaking over the edge of the map
-	var/mob/living/simple_animal/hostile/megafauna/colossus/long_larry = allocate(/mob/living/simple_animal/hostile/megafauna/colossus, north)
-	TEST_ASSERT(istype(get_turf_pixel(long_larry), /turf), "get_turf_pixel() isnt clamping a mob whos sprite is above the bounds of the world inside of the map.")
+	var/obj/effect/turfpixeltester/E = allocate(/obj/effect/turfpixeltester, north)
+	TEST_ASSERT(istype(get_turf_pixel(E), /turf), "get_turf_pixel() isnt clamping an atom whos sprite is above the bounds of the world inside of the map.")
+
+/obj/effect/turfpixeltester
+	icon = 'icons/mob/lavaland/96x96megafauna.dmi'
+	icon_state = "bubblegum"

@@ -47,7 +47,6 @@
 	var/static/list/accepted = typecacheof(list(
 		/obj/item/food/grown/tobacco,
 		/obj/item/food/grown/tea,
-		/obj/item/food/grown/ash_flora/mushroom_leaf,
 		/obj/item/food/grown/ambrosia/vulgaris,
 		/obj/item/food/grown/ambrosia/deus,
 		/obj/item/food/grown/wheat,

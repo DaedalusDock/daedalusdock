@@ -1202,12 +1202,9 @@
 				/mob/living/simple_animal/hostile/carp/ranged,
 				/mob/living/simple_animal/hostile/carp/ranged/chaos,
 				/mob/living/simple_animal/hostile/asteroid/basilisk/watcher,
-				/mob/living/simple_animal/hostile/asteroid/goliath/beast,
 				/mob/living/simple_animal/hostile/headcrab,
 				/mob/living/simple_animal/hostile/morph,
 				/mob/living/basic/stickman,
-				/mob/living/basic/stickman/dog,
-				/mob/living/simple_animal/hostile/megafauna/dragon/lesser,
 				/mob/living/simple_animal/hostile/gorilla,
 				/mob/living/simple_animal/parrot,
 				/mob/living/simple_animal/pet/dog/corgi,
@@ -2196,3 +2193,26 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/has_mouth()
 	return TRUE
+
+/mob/living/get_mouse_pointer_icon(check_sustained)
+	if(istype(loc, /obj/vehicle/sealed))
+		var/obj/vehicle/sealed/E = loc
+		if(E.mouse_pointer)
+			return E.mouse_pointer
+
+	var/atom/A = SSmouse_entered.sustained_hovers[client]
+	if(isnull(A))
+		return
+
+	if(istype(A, /atom/movable/screen/movable/action_button))
+		var/atom/movable/screen/movable/action_button/action = A
+		if(action.can_use(src))
+			return MOUSE_ICON_HOVERING_INTERACTABLE
+		return
+
+	if(A.is_mouseover_interactable && (mobility_flags & MOBILITY_USE) && can_interact_with(A))
+		if(isitem(A))
+			if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+				return MOUSE_ICON_HOVERING_INTERACTABLE
+		else
+			return MOUSE_ICON_HOVERING_INTERACTABLE

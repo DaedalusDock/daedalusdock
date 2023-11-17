@@ -315,7 +315,7 @@
 		cures = list(pick(advance_cures[res]))
 		oldres = res
 		// Get the cure name from the cure_id
-		var/datum/reagent/D = GLOB.chemical_reagents_list[cures[1]]
+		var/datum/reagent/D = SSreagents.chemical_reagents_list[cures[1]]
 		cure_text = D.name
 
 // Randomly generate a symptom, has a chance to lose or gain a symptom.

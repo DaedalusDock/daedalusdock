@@ -437,53 +437,6 @@
 	if(prob(emp_vulnerability/severity)) //Chance of permanent effects
 		organ_flags |= ORGAN_SYNTHETIC_EMP //Starts organ faliure - gonna need replacing soon.
 
-
-/obj/item/organ/lungs/ashwalker
-	name = "blackened frilled lungs" // blackened from necropolis exposure
-	desc = "Exposure to the necropolis has mutated these lungs to breathe the air of Indecipheres, the lava-covered moon."
-	icon_state = "lungs-ashwalker"
-
-// Normal oxygen is 21 kPa partial pressure, but SS13 humans can tolerate down
-// to 16 kPa. So it follows that ashwalkers, as humanoids, follow the same rules.
-#define GAS_TOLERANCE 5
-
-/obj/item/organ/lungs/ashwalker/Initialize(mapload)
-	. = ..()
-
-	var/datum/gas_mixture/mix = SSzas.lavaland_atmos
-
-	if(!mix?.total_moles) // this typically means we didn't load lavaland, like if we're using #define LOWMEMORYMODE
-		return
-
-	// Take a "breath" of the air
-	var/datum/gas_mixture/breath = mix.remove(mix.total_moles * BREATH_PERCENTAGE)
-
-	var/list/breath_gases = breath.gas
-	var/O2_moles = breath_gases[GAS_OXYGEN]
-	var/N2_moles = breath_gases[GAS_NITROGEN]
-	var/plasma_moles = breath_gases[GAS_PLASMA]
-	var/CO2_moles = breath_gases[GAS_CO2]
-
-	//Partial pressures in our breath
-	var/O2_pp = breath.getBreathPartialPressure(O2_moles)
-	var/N2_pp = breath.getBreathPartialPressure(N2_moles)
-	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
-	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)
-
-	safe_oxygen_min = max(0, O2_pp - GAS_TOLERANCE)
-	safe_nitro_min = max(0, N2_pp - GAS_TOLERANCE)
-	safe_plasma_min = max(0, Plasma_pp - GAS_TOLERANCE)
-
-	// Increase plasma tolerance based on amount in base air
-	safe_plasma_max += Plasma_pp
-
-	// CO2 is always a waste gas, so none is required, but ashwalkers
-	// tolerate the base amount plus tolerance*2 (humans tolerate only 10 pp)
-
-	safe_co2_max = CO2_pp + GAS_TOLERANCE * 2
-
-#undef GAS_TOLERANCE
-
 /obj/item/organ/lungs/ethereal
 	name = "aeration reticulum"
 	desc = "These exotic lungs seem crunchier than most."

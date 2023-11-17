@@ -139,19 +139,3 @@
 
 /datum/action/innate/construction/place_structure/fan/after_place(obj/placed_structure, remaining)
 	to_chat(owner, span_notice("Tiny fan placed. [remaining] fans remaining."))
-
-/datum/action/innate/construction/place_structure/turret
-	name = "Install Plasma Anti-Wildlife Turret"
-	button_icon_state = "build_turret"
-	structure_name = "turrets"
-	structure_path = /obj/machinery/porta_turret/aux_base
-	place_sound = 'sound/items/drill_use.ogg'
-
-/datum/action/innate/construction/place_structure/turret/after_place(obj/placed_structure, remaining)
-	var/obj/machinery/computer/auxiliary_base/turret_controller = locate() in get_area(placed_structure)
-	if(!turret_controller)
-		to_chat(owner, span_notice("<b>Warning:</b> Aux base controller not found. Turrets might not work properly."))
-		return
-
-	LAZYADD(turret_controller.turrets, WEAKREF(placed_structure))
-	to_chat(owner, span_notice("You've constructed an additional turret. [remaining] turrets remaining."))

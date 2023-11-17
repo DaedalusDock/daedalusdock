@@ -428,7 +428,6 @@
 		/obj/item/wormhole_jaunter,
 		/obj/item/stack/marker_beacon,
 		/obj/item/key/lasso,
-		/obj/item/skeleton_key
 		))
 
 

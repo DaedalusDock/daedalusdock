@@ -29,6 +29,7 @@
 	smoothing_groups = SMOOTH_GROUP_TABLES
 	canSmoothWith = SMOOTH_GROUP_TABLES
 	flags_1 = BUMP_PRIORITY_1
+	mouse_drop_pointer = TRUE
 
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods
@@ -808,6 +809,7 @@
 	name = "operating table"
 	desc = "Used for advanced medical procedures."
 	icon = 'icons/obj/surgery.dmi'
+	base_icon_state = "optable"
 	icon_state = "optable"
 	buildstack = /obj/item/stack/sheet/mineral/silver
 	smoothing_flags = NONE
@@ -817,6 +819,7 @@
 	buckle_lying = NO_BUCKLE_LYING
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
+	flipped = -1
 
 	var/obj/machinery/vitals_monitor/connected_monitor
 	var/mob/living/carbon/human/patient = null

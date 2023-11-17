@@ -167,11 +167,6 @@
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/computer/camera_advanced/base_construction
 
-/obj/item/circuitboard/computer/base_construction/aux
-	name = "circuit board (Aux Mining Base Construction Console)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/computer/camera_advanced/base_construction/aux
-
 /obj/item/circuitboard/computer/base_construction/centcom
 	name = "circuit board (Centcom Base Construction Console)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
@@ -543,10 +538,6 @@
 	name = "Mining Shuttle (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
 	build_path = /obj/machinery/computer/shuttle/mining
-
-/obj/item/circuitboard/computer/mining_shuttle/common
-	name = "Lavaland Shuttle (Computer Board)"
-	build_path = /obj/machinery/computer/shuttle/mining/common
 
 /obj/item/circuitboard/computer/exoscanner_console
 	name = "Scanner Array Control Console (Computer Board)"

@@ -251,7 +251,7 @@
 /mob/living/simple_animal/hostile/bee/toxin/Initialize(mapload)
 	. = ..()
 	var/datum/reagent/R = pick(typesof(/datum/reagent/toxin))
-	assign_reagent(GLOB.chemical_reagents_list[R])
+	assign_reagent(SSreagents.chemical_reagents_list[R])
 /mob/living/simple_animal/hostile/bee/queen
 	name = "queen bee"
 	desc = "She's the queen of bees, BZZ BZZ!"
@@ -309,7 +309,7 @@
 			else
 				to_chat(user, span_warning("You don't have enough royal bee jelly to split a bee in two!"))
 		else
-			var/datum/reagent/R = GLOB.chemical_reagents_list[S.reagents.get_master_reagent_id()]
+			var/datum/reagent/R = SSreagents.chemical_reagents_list[S.reagents.get_master_reagent_id()]
 			if(R && S.reagents.has_reagent(R.type, 5))
 				S.reagents.remove_reagent(R.type,5)
 				queen.assign_reagent(R)

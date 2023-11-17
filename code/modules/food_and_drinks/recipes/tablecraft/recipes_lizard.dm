@@ -409,12 +409,3 @@
 	)
 	result = /obj/item/food/lizard_dumplings
 	subcategory = CAT_LIZARD
-
-/datum/crafting_recipe/food/steeped_mushrooms
-	name = "Steeped mushrooms"
-	reqs = list(
-		/obj/item/food/grown/ash_flora/seraka = 1,
-		/datum/reagent/lye = 5
-	)
-	result = /obj/item/food/steeped_mushrooms
-	subcategory = CAT_LIZARD

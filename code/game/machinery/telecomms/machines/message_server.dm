@@ -76,11 +76,15 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/telecomms/message_server
 
-	var/list/datum/data_tablet_msg/pda_msgs = list()
-	var/list/datum/data_tablet_msg/modular_msgs = list()
+	network_flags = NETWORK_FLAG_GEN_ID
+	net_class = NETCLASS_MESSAGE_SERVER
+
+	var/list/datum/data_pda_message/pda_msgs = list()
 	var/list/datum/data_rc_msg/rc_msgs = list()
 	var/decryptkey = "password"
 	var/calibrating = 15 MINUTES //Init reads this and adds world.time, then becomes 0 when that time has passed and the machine works
+
+	var/datum/radio_frequency/common_freq
 
 /obj/machinery/telecomms/message_server/Initialize(mapload)
 	. = ..()
@@ -90,9 +94,18 @@
 	if (calibrating)
 		calibrating += world.time
 		say("Calibrating... Estimated wait time: [rand(3, 9)] minutes.")
-		pda_msgs += new /datum/data_tablet_msg("System Administrator", "system", "This is an automated message. System calibration started at [stationtime2text()].")
+		pda_msgs += new /datum/data_pda_message("loopback", "loopback", "This is an automated message. System calibration started at [stationtime2text()].")
 	else
-		pda_msgs += new /datum/data_tablet_msg("System Administrator", "system", MESSAGE_SERVER_FUNCTIONING_MESSAGE)
+		pda_msgs += new /datum/data_pda_message("loopback", "loopback", MESSAGE_SERVER_FUNCTIONING_MESSAGE)
+
+/obj/machinery/telecomms/message_server/update_power()
+	. = ..()
+	if(on && !common_freq) //On, and don't have a radio connection (either we tossed it when turning !on, or we're initializing)
+		common_freq = SSpackets.add_object(src, FREQ_COMMON, RADIO_PDAMESSAGE) //Might end up removing this filter one day, but for now, opts are opts.
+	else if(!on) //Turned off, toss the frequency connection.
+		SSpackets.remove_object(src, FREQ_COMMON)
+		common_freq = null
+
 
 /obj/machinery/telecomms/message_server/Destroy()
 	for(var/obj/machinery/computer/message_monitor/monitor in GLOB.telecomms_list)
@@ -109,27 +122,24 @@
 	var/newKey
 	newKey += pick("the", "if", "of", "as", "in", "a", "you", "from", "to", "an", "too", "little", "snow", "dead", "drunk", "rosebud", "duck", "al", "le")
 	newKey += pick("diamond", "beer", "mushroom", "assistant", "clown", "captain", "twinkie", "security", "nuke", "small", "big", "escape", "yellow", "gloves", "monkey", "engine", "nuclear", "ai")
-	newKey += pick("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
+	newKey += pick(GLOB.numerals)
 	return newKey
 
 /obj/machinery/telecomms/message_server/process()
 	. = ..()
 	if(calibrating && calibrating <= world.time)
 		calibrating = 0
-		pda_msgs += new /datum/data_tablet_msg("System Administrator", "system", MESSAGE_SERVER_FUNCTIONING_MESSAGE)
+		pda_msgs += new /datum/data_pda_message("loopback", "loopback", MESSAGE_SERVER_FUNCTIONING_MESSAGE)
 
+
+// Handle RC Messages. I'll packetize these eventually I swear
 /obj/machinery/telecomms/message_server/receive_information(datum/signal/subspace/messaging/signal, obj/machinery/telecomms/machine_from)
 	// can't log non-message signals
 	if(!istype(signal) || !signal.data["message"] || !on || calibrating)
 		return
 
 	// log the signal
-	if(istype(signal, /datum/signal/subspace/messaging/tablet_msg))
-		var/datum/signal/subspace/messaging/tablet_msg/PDAsignal = signal
-		var/datum/data_tablet_msg/msg = new(PDAsignal.format_target(), "[PDAsignal.data["name"]] ([PDAsignal.data["job"]])", PDAsignal.data["message"], PDAsignal.data["photo"])
-		pda_msgs += msg
-		signal.logged = msg
-	else if(istype(signal, /datum/signal/subspace/messaging/rc))
+	if(istype(signal, /datum/signal/subspace/messaging/rc))
 		var/datum/data_rc_msg/msg = new(signal.data["rec_dpt"], signal.data["send_dpt"], signal.data["message"], signal.data["stamped"], signal.data["verified"], signal.data["priority"])
 		signal.logged = msg
 		if(signal.data["send_dpt"]) // don't log messages not from a department but allow them to work
@@ -139,6 +149,29 @@
 	// pass it along to either the hub or the broadcaster
 	if(!relay_information(signal, /obj/machinery/telecomms/hub))
 		relay_information(signal, /obj/machinery/telecomms/broadcaster)
+
+/obj/machinery/telecomms/message_server/receive_signal(datum/signal/signal)
+	. = ..()
+	//Let upstream deal with the pings.
+	if(. || calibrating) // If we're calibrating, just return, the fancy part of us isn't ready yet.
+		return
+	var/list/sig_data = signal.data //cachemere sweater
+	switch(signal.data[PACKET_CMD])
+		if(NETCMD_PDAMESSAGE)
+			var/datum/data_pda_message/log_unit = new(sig_data[PACKET_DESTINATION_ADDRESS], sig_data[PACKET_SOURCE_ADDRESS], sig_data["message"])
+			pda_msgs += log_unit
+			return RECEIVE_SIGNAL_FINISHED
+		else
+			//Unhandled.
+			return RECEIVE_SIGNAL_CONTINUE
+
+/obj/machinery/telecomms/message_server/post_signal(datum/signal/sending_signal, preserve_s_addr)
+	if(isnull(sending_signal)) //nullcheck for sanic speed
+		return //You need a pipe and something to send down it, though.
+	if(!preserve_s_addr)
+		sending_signal.data[PACKET_SOURCE_ADDRESS] = src.net_id
+	sending_signal.transmission_method = TRANSMISSION_RADIO
+	sending_signal.author = WEAKREF(src) // Override the sending signal author.
 
 /obj/machinery/telecomms/message_server/update_overlays()
 	. = ..()
@@ -158,7 +191,7 @@
 	data = init_data
 	var/turf/T = get_turf(init_source)
 	if(!T)
-		CRASH("Uh on, no source turf!")
+		CRASH("Uh oh, no source turf!")
 	levels = list(T.z)
 	if(!("reject" in data))
 		data["reject"] = TRUE
@@ -168,28 +201,6 @@
 	copy.original = src
 	copy.levels = levels
 	return copy
-
-// Tablet message signal datum
-/datum/signal/subspace/messaging/tablet_msg/proc/format_target()
-	if (length(data["targets"]) > 1)
-		return "Everyone"
-	var/obj/item/modular_computer/target = data["targets"][1]
-	return "[target.saved_identification] ([target.saved_job])"
-
-/datum/signal/subspace/messaging/tablet_msg/proc/format_message()
-	return "\"[data["message"]]\""
-
-/datum/signal/subspace/messaging/tablet_msg/broadcast()
-	SSpackets.queued_tablet_messages += src
-	/// MOVED TO SSPACKETS
-	/*
-	if (!logged)  // Can only go through if a message server logs it
-		return
-	for (var/obj/item/modular_computer/comp in data["targets"])
-		var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
-		for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-			app.receive_message(src)
-	*/
 
 // Request Console signal datum
 /datum/signal/subspace/messaging/rc/broadcast()
@@ -201,33 +212,18 @@
 			Console.createmessage(data["sender"], data["send_dpt"], data["message"], data["verified"], data["stamped"], data["priority"], data["notify_freq"])
 
 // Log datums stored by the message server.
-/datum/data_tablet_msg
+/datum/data_pda_message
 	var/sender = "Unspecified"
 	var/recipient = "Unspecified"
 	var/message = "Blank"  // transferred message
-	var/datum/picture/picture  // attached photo
-	var/automated = 0 //automated message
 
-/datum/data_tablet_msg/New(param_rec, param_sender, param_message, param_photo)
+/datum/data_pda_message/New(param_rec, param_sender, param_message)
 	if(param_rec)
 		recipient = param_rec
 	if(param_sender)
 		sender = param_sender
 	if(param_message)
 		message = param_message
-	if(param_photo)
-		picture = param_photo
-
-/datum/data_tablet_msg/Topic(href,href_list)
-	..()
-	if(href_list["photo"])
-		var/mob/M = usr
-		M << browse_rsc(picture.picture_image, "pda_photo.png")
-		M << browse("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>PDA Photo</title></head>" \
-		+ "<body style='overflow:hidden;margin:0;text-align:center'>" \
-		+ "<img src='pda_photo.png' width='192' style='-ms-interpolation-mode:nearest-neighbor' />" \
-		+ "</body></html>", "window=pdaphoto;size=[picture.psize_x]x[picture.psize_y];can-close=true")
-		onclose(M, "pdaphoto")
 
 /datum/data_rc_msg
 	var/rec_dpt = "Unspecified"  // receiving department

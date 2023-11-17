@@ -3,6 +3,8 @@
 	force = 0
 	throwforce = 0
 	item_flags = DROPDEL | ABSTRACT | HAND_ITEM
+	mouse_drag_pointer = FALSE
+	mouse_drop_pointer = FALSE
 
 /obj/item/hand_item/Initialize(mapload)
 	. = ..()

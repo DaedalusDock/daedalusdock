@@ -1,9 +1,10 @@
 /** Materials made from other materials.
  */
 /datum/material/alloy
+	abstract_type = /datum/material/alloy
+
 	name = "alloy"
 	desc = "A material composed of two or more other materials."
-	init_flags = NONE
 	/// The materials this alloy is made from weighted by their ratios.
 	var/list/composition = null
 	/// Breakdown flags required to reduce this alloy to its component materials.
@@ -32,7 +33,6 @@
 	desc = "The heavy duty result of infusing iron with plasma."
 	color = "#706374"
 	greyscale_colors = "#706374"
-	init_flags = MATERIAL_INIT_MAPLOAD
 	value_per_unit = 0.135
 	strength_modifier = 1.25
 	integrity_modifier = 1.5 // Heavy duty.
@@ -72,7 +72,6 @@
 	desc = "The extremely heat resistant result of infusing titanium with plasma."
 	color = "#3a313a"
 	greyscale_colors = "#3a313a"
-	init_flags = MATERIAL_INIT_MAPLOAD
 	value_per_unit = 0.225
 	strength_modifier = 0.9 // It's a lightweight alloy.
 	integrity_modifier = 1.3
@@ -97,7 +96,6 @@
 	color = "#ff80f4"
 	greyscale_colors = "#ff80f4"
 	alpha = 150
-	init_flags = MATERIAL_INIT_MAPLOAD
 	integrity_modifier = 0.5
 	armor_modifiers = list(MELEE = 0.8, BULLET = 0.8, LASER = 1.2, ENERGY = 1.2, BOMB = 0.3, BIO = 1.2, FIRE = 2, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/plasmaglass
@@ -117,7 +115,6 @@
 	color = "#cfbee0"
 	greyscale_colors = "#cfbee0"
 	alpha = 150
-	init_flags = MATERIAL_INIT_MAPLOAD
 	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 0.8, ENERGY = 0.8, BOMB = 0.5, BIO = 1.2, FIRE = 0.8, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/titaniumglass
 	shard_type = /obj/item/shard/titanium
@@ -136,7 +133,6 @@
 	color = "#5d3369"
 	greyscale_colors = "#5d3369"
 	alpha = 150
-	init_flags = MATERIAL_INIT_MAPLOAD
 	integrity_modifier = 1.1
 	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 1.2, ENERGY = 1.2, BOMB = 0.5, BIO = 1.2, FIRE = 2, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/plastitaniumglass
@@ -156,7 +152,6 @@
 	desc = "An extremely dense alloy similar to plasteel in composition. It requires exotic metallurgical processes to create."
 	color = "#6041aa"
 	greyscale_colors = "#6041aa"
-	init_flags = MATERIAL_INIT_MAPLOAD
 	strength_modifier = 1.5 // It's twice the density of plasteel and just as durable. Getting hit with it is going to HURT.
 	integrity_modifier = 1.5
 	armor_modifiers = list(MELEE = 1.4, BULLET = 1.4, LASER = 1.2, ENERGY = 1.2, BOMB = 1.5, BIO = 1.2, FIRE = 1.2, ACID = 1.2)

@@ -149,6 +149,7 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	else
 		signal.filter_list = devices
 
+	// Store routing data for SSPackets to handle.
 	signal.frequency_datum = src
 	signal.range = range
 

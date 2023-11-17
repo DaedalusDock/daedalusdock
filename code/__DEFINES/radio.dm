@@ -106,6 +106,7 @@
 #define RADIO_ATMOSIA "atmosia"
 #define RADIO_AIRLOCK "airlock"
 #define RADIO_MAGNETS "magnets"
+#define RADIO_PDAMESSAGE "pdamessage"
 
 #define DEFAULT_SIGNALER_CODE 30
 

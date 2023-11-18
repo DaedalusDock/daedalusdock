@@ -18,22 +18,25 @@
 	name = "Asteroid Magnet"
 	use_typesof = TRUE
 	associated_paths = list(/obj/machinery/asteroid_magnet)
+
+/datum/codex_entry/machine/asteroid_magnet/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
+	. = ..()
 	lore_text = {"
 		An extremely powerful magnet that is able to draw in magnetically charged bodies floating in the void.
 
 		<h2>Error Codes</h2>
-		<h1>B1</h1>
+		<h1>[GLOB.magnet_error_codes[MAGNET_ERROR_KEY_BUSY]]</h1>
 		The stellar body magnet is currently busy, wait for it to finish it's current task.
 
-		<h1>C4</h1>
+		<h1>[GLOB.magnet_error_codes[MAGNET_ERROR_KEY_USED_COORD]]</h1>
 		The coordinates provided have already been used.
 
-		<h1>F5</h1>
+		<h1>[GLOB.magnet_error_codes[MAGNET_ERROR_KEY_COOLDOWN]]</h1>
 		The stellar body magnet is cooling down, wait for it to finish before using it again.
 
-		<h1>L2</h1>
+		<h1>[GLOB.magnet_error_codes[MAGNET_ERROR_KEY_MOB]]</h1>
 		There is a biological lifeform within the bounds of the magnetic field. Remove it and try again.
 
-		<h1>N1</h1>
+		<h1>[GLOB.magnet_error_codes[MAGNET_ERROR_KEY_NO_COORD]]</h1>
 		There are no selected coordinates.
 	"}

@@ -3,6 +3,7 @@
 
 /obj/machinery/asteroid_magnet
 	name = "asteroid magnet computer"
+	desc = "Control panel for the asteroid magnet."
 	icon_state = "blackbox"
 	resistance_flags = INDESTRUCTIBLE
 	use_power = NO_POWER_USE
@@ -270,20 +271,20 @@
 /obj/machinery/asteroid_magnet/proc/check_for_magnet_errors(datum/mining_template/template)
 	. = FALSE
 	if(summon_in_progress)
-		return "ERROR B1"
+		return GLOB.magnet_error_codes[MAGNET_ERROR_KEY_BUSY]
 
 	if(!COOLDOWN_FINISHED(src, summon_cd))
-		return "ERROR F5"
+		return GLOB.magnet_error_codes[MAGNET_ERROR_KEY_COOLDOWN]
 
 	if(isnull(template))
-		return "ERROR N1"
+		return GLOB.magnet_error_codes[MAGNET_ERROR_KEY_NO_COORD]
 
 	if(template.summoned)
-		return "ERROR C4"
+		return GLOB.magnet_error_codes[MAGNET_ERROR_KEY_USED_COORD]
 
 	for(var/mob/M as mob in range(area_size + 1, center_turf))
 		if(isliving(M))
-			return "ERROR L2"
+			return GLOB.magnet_error_codes[MAGNET_ERROR_KEY_MOB]
 
 /// Performs a full summoning sequence, including putting up boundaries, clearing out the area, and bringing in the new asteroid.
 /obj/machinery/asteroid_magnet/proc/summon_sequence(datum/mining_template/template)

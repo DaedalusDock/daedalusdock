@@ -344,7 +344,7 @@
 /obj/machinery/asteroid_magnet/proc/CleanupTemplate()
 	PRIVATE_PROC(TRUE)
 
-	var/list/turfs_to_destroy = ReserveTurfsForAsteroidGeneration(center_turf, area_size, space_only = FALSE)
+	var/list/turfs_to_destroy = ReserveTurfsForAsteroidGeneration(center_turf, area_size, baseturf_only = FALSE)
 	for(var/turf/T as anything in turfs_to_destroy)
 		CHECK_TICK
 

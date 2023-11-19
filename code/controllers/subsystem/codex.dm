@@ -20,11 +20,6 @@ SUBSYSTEM_DEF(codex)
 	// <span codexlink='keyword'>whatever</span> when shit gets tricky
 	linkRegex = regex(@"<(span|l)(\s+codexlink='([^>]*)'|)>([^<]+)</(span|l)>","g")
 
-	// used to remove trailing linebreaks when retrieving codex body.
-	// TODO: clean up codex page generation so this isn't necessary.
-	trailingLinebreakRegexStart = regex(@"^<\s*\/*\s*br\s*\/*\s*>", "ig")
-	trailingLinebreakRegexEnd = regex(@"<\s*\/*\s*br\s*\/*\s*>$", "ig")
-
 	// Create general hardcoded entries.
 	for(var/datum/codex_entry/entry as anything in subtypesof(/datum/codex_entry))
 		if(initial(entry.name) && !(isabstract(entry)))

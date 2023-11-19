@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	plane = ABOVE_HUD_PLANE
 	var/datum/radial_menu/parent
 
-/atom/movable/screen/radial/persistent/center/can_usr_use(mob/user)
+/atom/movable/screen/radial/can_usr_use(mob/user)
 	return usr.client == parent.current_user
 
 /atom/movable/screen/radial/proc/set_parent(new_value)

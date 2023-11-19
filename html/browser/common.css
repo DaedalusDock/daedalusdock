@@ -490,8 +490,8 @@ ul.sparse {
 }
 
 .severity img {
-    display: inline-block;
-    vertical-align: middle;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .codexLore
@@ -515,7 +515,7 @@ ul.sparse {
 
 .dmCodexBody
 {
-	margin-left: 15px;
+	margin: 0px 10px;
 }
 
 .dmCodexBody td
@@ -526,6 +526,11 @@ ul.sparse {
 .dmCodexHeader
 {
 	text-align: center;
+}
+
+.dmCodexFooter
+{
+	margin-top: 10px;
 }
 
 .tooltip {
@@ -600,4 +605,8 @@ span.color_holder_box{
 
 .highlighter:hover {
 	background-color: #f0c400 !important;
+}
+
+.paragraph {
+	text-indent: 2em;
 }

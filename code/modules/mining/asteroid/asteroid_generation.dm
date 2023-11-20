@@ -20,11 +20,11 @@
 	template.AfterInitialize(atoms)
 
 /// Sanitizes a block of turfs to prevent writing over undesired locations
-/proc/ReserveTurfsForAsteroidGeneration(turf/center, size, space_only = TRUE)
+/proc/ReserveTurfsForAsteroidGeneration(turf/center, size, baseturf_only = TRUE)
 	. = list()
 
 	for(var/turf/T as anything in RANGE_TURFS(size, center))
-		if(space_only && !isspaceturf(T))
+		if(baseturf_only && !islevelbaseturf(T))
 			continue
 		if(!(istype(T.loc, /area/station/cargo/mining/asteroid_magnet)))
 			continue

@@ -128,7 +128,8 @@
 #define INIT_ORDER_ACHIEVEMENTS 77
 #define INIT_ORDER_STATION 74 //This is high priority because it manipulates a lot of the subsystems that will initialize after it.
 #define INIT_ORDER_QUIRKS 73
-#define INIT_ORDER_REAGENTS 72 //HAS to be before mapping and assets - both create objects, which creates reagents, which relies on lists made in this subsystem
+#define INIT_ORDER_MATERIALS 72 //HAS to be before reagents, reagents have materials
+#define INIT_ORDER_REAGENTS 71 //HAS to be before mapping and assets - both create objects, which creates reagents, which relies on lists made in this subsystem
 #define INIT_ORDER_EVENTS 70
 #define INIT_ORDER_IDACCESS 66
 #define INIT_ORDER_JOBS 65 // Must init before atoms, to set up properly the dynamic job lists.
@@ -144,8 +145,8 @@
 #define INIT_ORDER_NETWORKS 45
 #define INIT_ORDER_SPATIAL_GRID 43
 #define INIT_ORDER_ECONOMY 40
-#define INIT_ORDER_OUTPUTS 35
-#define INIT_ORDER_RESTAURANT 34
+#define INIT_ORDER_OUTPUTS 36
+#define INIT_ORDER_RESTAURANT 35
 #define INIT_ORDER_TECH 33 //Must init before atoms, so design datums are ready.
 #define INIT_ORDER_ATOMS 30
 #define INIT_ORDER_LANGUAGE 25

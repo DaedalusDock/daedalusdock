@@ -9,12 +9,12 @@
 
 		var/datum/codex_entry/entry = new(
 			_display_name = "[initial(R.name)] (chemical)",
-			_lore_text = "[initial(R.description)] It apparently tastes of [initial(R.taste_description)]."
+			_lore_text = "&nbsp;&nbsp;&nbsp;&nbsp;[initial(R.description)] It apparently tastes of [initial(R.taste_description)]."
 		)
 
 		var/list/production_strings = list()
 
-		for(var/datum/chemical_reaction/reaction as anything in GLOB.chemical_reactions_list_product_index[R])
+		for(var/datum/chemical_reaction/reaction as anything in SSreagents.chemical_reactions_list_product_index[R])
 
 			if(!length(reaction.required_reagents))
 				continue

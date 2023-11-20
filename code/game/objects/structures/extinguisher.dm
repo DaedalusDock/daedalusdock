@@ -1,3 +1,4 @@
+DEFINE_INTERACTABLE(/obj/structure/extinguisher_cabinet)
 /obj/structure/extinguisher_cabinet
 	name = "extinguisher cabinet"
 	desc = "A small wall mounted cabinet designed to hold a fire extinguisher."

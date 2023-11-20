@@ -64,7 +64,7 @@
 //Supply
 #define JOB_QUARTERMASTER "Quartermaster"
 #define JOB_CARGO_TECHNICIAN "Cargo Technician"
-#define JOB_SHAFT_MINER "Shaft Miner"
+#define JOB_PROSPECTOR "Prospector"
 //Service
 #define JOB_BARTENDER "Bartender"
 #define JOB_BOTANIST "Botanist"

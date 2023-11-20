@@ -61,7 +61,8 @@
 /datum/reagent/toxin/radon/affect_blood(mob/living/carbon/M, removed)
 	. = ..()
 	var/obj/item/organ/lungs/lungs = M.getorganslot(ORGAN_SLOT_LUNGS)
-	if(!istype(lungs, /obj/item/organ/lungs/ashwalker))
+	if(isnull(lungs))
 		return
 
-	lungs.applyOrganDamage(2 * removed)
+	lungs.applyOrganDamage(2 * removed, updating_health = FALSE)
+	return TRUE

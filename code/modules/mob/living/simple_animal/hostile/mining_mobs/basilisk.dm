@@ -122,7 +122,6 @@
 	attack_vis_effect = null // doesn't bite unlike the parent type.
 	stat_attack = UNCONSCIOUS
 	robust_searching = 1
-	crusher_loot = /obj/item/crusher_trophy/watcher_wing
 	gold_core_spawnable = NO_SPAWN
 	loot = list()
 	butcher_results = list(/obj/item/stack/ore/diamond = 2, /obj/item/stack/sheet/sinew = 2, /obj/item/stack/sheet/bone = 1)
@@ -171,8 +170,6 @@
 	light_power = 2.5
 	light_color = LIGHT_COLOR_LAVA
 	projectiletype = /obj/projectile/temp/basilisk/magmawing
-	crusher_loot = /obj/item/crusher_trophy/blaster_tubes/magma_wing
-	crusher_drop_mod = 60
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/watcher/icewing
 	name = "icewing watcher"
@@ -185,8 +182,6 @@
 	health = 170
 	projectiletype = /obj/projectile/temp/basilisk/icewing
 	butcher_results = list(/obj/item/stack/ore/diamond = 5, /obj/item/stack/sheet/bone = 1) //No sinew; the wings are too fragile to be usable
-	crusher_loot = /obj/item/crusher_trophy/watcher_wing/ice_wing
-	crusher_drop_mod = 30
 
 /obj/projectile/temp/basilisk/magmawing
 	name = "scorching blast"

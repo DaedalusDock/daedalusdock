@@ -120,14 +120,12 @@
 			if(!ghost.client || isnewplayer(ghost))
 				continue
 			if(ghost.client.prefs.chat_toggles & CHAT_GHOSTSIGHT && !(ghost in viewers(user_turf, null)))
-				ghost.show_message("<span class='emote'>[FOLLOW_LINK(ghost, user)] [dchatmsg]</span>")
+				ghost.show_message("[FOLLOW_LINK(ghost, user)]<span class='emote'> [dchatmsg]</span>")
 
 	if(emote_type == EMOTE_AUDIBLE)
 	//PARIAH EDIT
-		// Original: user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b> [msg]</span>", audible_message_flags = EMOTE_MESSAGE)
 		user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b>[space][msg]</span>", audible_message_flags = EMOTE_MESSAGE, separation = space)
 	else
-		// Original: user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b> [msg]</span>", visible_message_flags = EMOTE_MESSAGE)
 		user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b>[space][msg]</span>", visible_message_flags = EMOTE_MESSAGE, separation = space)
 	//PARIAH EDIT END
 	SEND_SIGNAL(user, COMSIG_MOB_EMOTED(key))

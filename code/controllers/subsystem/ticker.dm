@@ -704,7 +704,10 @@ SUBSYSTEM_DEF(ticker)
 	///The full datum of the last song used.
 	var/datum/media/old_login_music
 
-	if(rustg_file_exists("data/last_round_lobby_music.txt"))
+	#if DM_VERSION > 514
+	#warn Native fexists() call, Replace with rustg_file_exists() once behaviour is correct
+	#endif
+	if(fexists("data/last_round_lobby_music.txt")) //The define isn't truthy
 		old_login_music_t = rustg_file_read("data/last_round_lobby_music.txt")
 	var/list/music_tracks = title_music_data + rare_music_data
 	//Filter map-specific tracks

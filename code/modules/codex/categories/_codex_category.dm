@@ -15,7 +15,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(length(items))
-		var/lore_text = desc + "<hr>"
+		var/lore_text = "<div style='text-align:center'>[desc]</div>" + "<hr>"
 		if(guide_name && guide_html)
 			lore_text += "This category has <span codexlink='Guide to [capitalize(guide_name || name)]'>an associated guide</span>.<hr>"
 

@@ -236,10 +236,6 @@
 	list_reagents = list(/datum/reagent/medicine/synaptizine = 8, /datum/reagent/medicine/dermaline = 8, /datum/reagent/medicine/meralyne = 8, /datum/reagent/medicine/leporazine = 6)
 
 /obj/item/reagent_containers/hypospray/medipen/survival/inject(mob/living/affected_mob, mob/user)
-	if(lavaland_equipment_pressure_check(get_turf(user)))
-		amount_per_transfer_from_this = initial(amount_per_transfer_from_this)
-		return ..()
-
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_SURVIVALPEN))
 		to_chat(user,span_notice("You are too busy to use \the [src]!"))
 		return

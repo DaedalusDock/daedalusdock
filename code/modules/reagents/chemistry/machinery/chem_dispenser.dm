@@ -209,7 +209,7 @@
 	if(user.hallucinating())
 		is_hallucinating = TRUE
 	for(var/re in dispensable_reagents)
-		var/datum/reagent/temp = GLOB.chemical_reagents_list[re]
+		var/datum/reagent/temp = SSreagents.chemical_reagents_list[re]
 		if(temp)
 			var/chemname = temp.name
 			if(is_hallucinating && prob(5))

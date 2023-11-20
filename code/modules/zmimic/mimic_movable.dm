@@ -98,8 +98,8 @@
 	blend_mode = BLEND_MULTIPLY
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/turf/Tloc = loc
-	if (Tloc.ao_overlays_mimic)
-		overlays += Tloc.ao_overlays_mimic
+	if (Tloc.ao_overlay_mimic)
+		overlays += Tloc.ao_overlay_mimic
 	invisibility = 0
 
 	if (islist(color))

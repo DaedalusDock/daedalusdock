@@ -740,7 +740,7 @@ This is here to make the tiles around the station mininuke change when it's arme
 	if (last_secured_location == get_turf(src))
 		return FALSE
 
-	var/mob/holder = pulledby || get(src, /mob)
+	var/mob/holder = get(src, /mob)
 	if (isnull(holder?.client))
 		return FALSE
 

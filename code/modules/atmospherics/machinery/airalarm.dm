@@ -74,6 +74,7 @@
 
 
 
+DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."

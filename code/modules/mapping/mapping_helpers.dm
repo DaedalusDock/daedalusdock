@@ -83,10 +83,6 @@
 	name = "lava baseturf editor"
 	baseturf = /turf/open/lava/smooth
 
-/obj/effect/baseturf_helper/lava_land/surface
-	name = "lavaland baseturf editor"
-	baseturf = /turf/open/lava/smooth/lava_land_surface
-
 /obj/effect/baseturf_helper/reinforced_plating
 	name = "reinforced plating baseturf editor"
 	baseturf = /turf/open/floor/plating/reinforced

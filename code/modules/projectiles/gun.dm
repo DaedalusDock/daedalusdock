@@ -31,7 +31,9 @@
 	var/suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
 	var/suppressed_volume = 60
 	var/can_unsuppress = TRUE
-	var/recoil = 0 //boom boom shake the room
+	// boom boom shake the room
+	var/recoil = 0
+
 	var/clumsy_check = TRUE
 	var/obj/item/ammo_casing/chambered = null
 	trigger_guard = TRIGGER_GUARD_NORMAL //trigger guard on the weapon, hulks can't fire them with their big meaty fingers
@@ -42,7 +44,8 @@
 	var/firing_burst = 0 //Prevent the weapon from firing again while already firing
 	var/semicd = 0 //cooldown handler
 	var/weapon_weight = WEAPON_LIGHT
-	var/dual_wield_spread = 24 //additional spread when dual wielding
+	///additional spread when dual wielding
+	var/dual_wield_spread = 24
 	///Can we hold up our target with this? Default to yes
 	var/can_hold_up = TRUE
 
@@ -58,11 +61,13 @@
 	lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
 
+	/// Required for firing, [/obj/item/firing_pin/proc/pin_auth] is called as part of firing.
 	var/obj/item/firing_pin/pin = /obj/item/firing_pin //standard firing pin for most guns
 	/// True if a gun dosen't need a pin, mostly used for abstract guns like tentacles and meathooks
 	var/pinless = FALSE
 
-	var/can_bayonet = FALSE //if a bayonet can be added or removed if it already has one.
+	///if a bayonet can be added, or removed, if it already has one.
+	var/can_bayonet = FALSE
 	var/obj/item/knife/bayonet
 	var/knife_x_offset = 0
 	var/knife_y_offset = 0
@@ -70,6 +75,7 @@
 	var/ammo_x_offset = 0 //used for positioning ammo count overlay on sprite
 	var/ammo_y_offset = 0
 
+	/// How many tiles do we knock the poor bastard we just point-blanked back?
 	var/pb_knockback = 0
 
 /obj/item/gun/Initialize(mapload)
@@ -161,32 +167,33 @@
 	if(recoil && !tk_firing(user))
 		shake_camera(user, recoil + 1, recoil)
 	fire_sounds()
-	if(!suppressed)
-		if(message)
-			if(tk_firing(user))
-				visible_message(
-						span_danger("[src] fires itself[pointblank ? " point blank at [pbtarget]!" : "!"]"),
-						blind_message = span_hear("You hear a gunshot!"),
-						vision_distance = COMBAT_MESSAGE_RANGE
-				)
-			else if(pointblank)
-				user.visible_message(
-						span_danger("[user] fires [src] point blank at [pbtarget]!"),
-						span_danger("You fire [src] point blank at [pbtarget]!"),
-						span_hear("You hear a gunshot!"), COMBAT_MESSAGE_RANGE, pbtarget
-				)
-				to_chat(pbtarget, span_userdanger("[user] fires [src] point blank at you!"))
-				if(pb_knockback > 0 && ismob(pbtarget))
-					var/mob/PBT = pbtarget
-					var/atom/throw_target = get_edge_target_turf(PBT, user.dir)
-					PBT.throw_at(throw_target, pb_knockback, 2)
-			else if(!tk_firing(user))
-				user.visible_message(
-						span_danger("[user] fires [src]!"),
-						blind_message = span_hear("You hear a gunshot!"),
-						vision_distance = COMBAT_MESSAGE_RANGE,
-						ignored_mobs = user
-				)
+	if(suppressed || !message)
+		return
+
+	if(tk_firing(user))
+		visible_message(
+				span_danger("[src] fires itself[pointblank ? " point blank at [pbtarget]!" : "!"]"),
+				blind_message = span_hear("You hear a gunshot!"),
+				vision_distance = COMBAT_MESSAGE_RANGE
+		)
+	else if(pointblank)
+		user.visible_message(
+				span_danger("[user] fires [src] point blank at [pbtarget]!"),
+				span_danger("You fire [src] point blank at [pbtarget]!"),
+				span_hear("You hear a gunshot!"), COMBAT_MESSAGE_RANGE, pbtarget
+		)
+		to_chat(pbtarget, span_userdanger("[user] fires [src] point blank at you!"))
+		if(pb_knockback > 0 && ismob(pbtarget))
+			var/mob/PBT = pbtarget
+			var/atom/throw_target = get_edge_target_turf(PBT, user.dir)
+			PBT.throw_at(throw_target, pb_knockback, 2)
+	else if(!tk_firing(user))
+		user.visible_message(
+				span_danger("[user] fires [src]!"),
+				blind_message = span_hear("You hear a gunshot!"),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				ignored_mobs = user
+		)
 
 /obj/item/gun/emp_act(severity)
 	. = ..()

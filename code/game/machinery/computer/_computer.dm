@@ -1,3 +1,4 @@
+DEFINE_INTERACTABLE(/obj/machinery/computer)
 /obj/machinery/computer
 	name = "computer"
 	icon = 'icons/obj/computer.dmi'

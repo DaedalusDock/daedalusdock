@@ -29,4 +29,4 @@
 		icon = smooth_icon
 
 /turf/open/misc/grass/lavaland
-	initial_gas = LAVALAND_DEFAULT_ATMOS
+	initial_gas = OPENTURF_LOW_PRESSURE

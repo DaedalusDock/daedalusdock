@@ -15,10 +15,9 @@
 	var/lasting_pain = 0
 	if(bodypart_flags & BP_BROKEN_BONES)
 		lasting_pain += 10
-	/*
-	else if(is_dislocated())
+
+	else if(bodypart_flags & BP_DISLOCATED)
 		lasting_pain += 5
-	*/
 
 	var/organ_dam = 0
 	for(var/obj/item/organ/O as anything in contained_organs)

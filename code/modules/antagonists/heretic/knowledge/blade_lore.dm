@@ -241,7 +241,6 @@
 /datum/heretic_knowledge/duel_stance/on_gain(mob/user)
 	ADD_TRAIT(user, TRAIT_NODISMEMBER, type)
 	RegisterSignal(user, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
-	RegisterSignal(user, COMSIG_CARBON_GAIN_WOUND, PROC_REF(on_wound_gain))
 	RegisterSignal(user, COMSIG_CARBON_HEALTH_UPDATE, PROC_REF(on_health_update))
 
 	on_health_update(user) // Run this once, so if the knowledge is learned while hurt it activates properly
@@ -252,7 +251,7 @@
 		REMOVE_TRAIT(user, TRAIT_HARDLY_WOUNDED, type)
 		REMOVE_TRAIT(user, TRAIT_STUNRESISTANCE, type)
 
-	UnregisterSignal(user, list(COMSIG_PARENT_EXAMINE, COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_HEALTH_UPDATE))
+	UnregisterSignal(user, list(COMSIG_PARENT_EXAMINE, COMSIG_CARBON_HEALTH_UPDATE))
 
 /datum/heretic_knowledge/duel_stance/proc/on_examine(mob/living/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
@@ -260,14 +259,6 @@
 	var/obj/item/held_item = source.get_active_held_item()
 	if(in_duelist_stance)
 		examine_list += span_warning("[source] looks unnaturally poised[held_item?.force >= 15 ? " and ready to strike out":""].")
-
-/datum/heretic_knowledge/duel_stance/proc/on_wound_gain(mob/living/source, datum/wound/gained_wound, obj/item/bodypart/limb)
-	SIGNAL_HANDLER
-
-	if(!gained_wound.bleed_timer)
-		return
-
-	gained_wound.bleed_timer -= 15
 
 /datum/heretic_knowledge/duel_stance/proc/on_health_update(mob/living/source)
 	SIGNAL_HANDLER

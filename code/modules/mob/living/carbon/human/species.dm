@@ -952,7 +952,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	user.do_cpr(target)
 
 
-/datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+/datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style, list/params)
 	if(target.check_block())
 		target.visible_message(span_warning("[target] blocks [user]'s grab!"), \
 						span_userdanger("You block [user]'s grab!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
@@ -961,7 +961,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(attacker_style?.grab_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return TRUE
 	else
-		target.grabbedby(user)
+		user.try_make_grab(target, use_offhand = params?[RIGHT_CLICK])
 		return TRUE
 
 ///This proc handles punching damage.

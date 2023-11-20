@@ -1,0 +1,21 @@
+2023-11-14:
+  Kapu1178, Ivory, yyzsong:
+  - imageadd: Added a new mouse cursor
+  - code_imp: Added support for UIs to have custom cursors
+  - code_imp: Added support for dynamic cursor behavior with interactables.
+  francinum:
+  - bugfix: Media System Validation is less likely to die unexpectedly.
+  - rscadd: The Meta Bar now has a jukebox
+  - rscadd: And it can be used by non-bartenders.
+2023-11-15:
+  Kapu1178:
+  - rscdel: Lavaland and it's baggage
+2023-11-18:
+  Kapu1178:
+  - bugfix: Under certain circumstances, masks would show as invisible in your mask
+      slot. This has been fixed.
+  - tweak: Renamed Metastation to Theseus. You know why.
+  - bugfix: You can no longer flip operating tables.
+2023-11-20:
+  Kapu1178:
+  - tweak: The Codex now supports nicer formatting.

@@ -84,7 +84,7 @@
 	alt_titles = list("Cargo Technician", "Deck Worker", "Mailman")
 
 /datum/job/shaft_miner
-	alt_titles = list("Shaft Miner", "Prospector")
+	alt_titles = list(JOB_PROSPECTOR)
 
 // Service
 

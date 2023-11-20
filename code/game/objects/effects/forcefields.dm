@@ -66,3 +66,12 @@
 	name = "invisible blockade"
 	desc = "You're gonna be here awhile."
 	initial_duration = 1 MINUTES
+
+/obj/effect/forcefield/asteroid_magnet
+	name = "magnetic field"
+	desc = "This looks dangerous."
+	icon = 'goon/icons/obj/effects.dmi'
+	icon_state = "forcefield"
+
+	initial_duration = 0
+	opacity = TRUE

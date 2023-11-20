@@ -70,26 +70,12 @@
 	else if(istype(C, /obj/item/stack/tile/iron))
 		build_with_floor_tiles(C, user)
 
-// Chasms for Lavaland, with planetary atmos and lava glow
 /turf/open/chasm/lavaland
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
+	initial_gas = OPENTURF_LOW_PRESSURE
 	baseturfs = /turf/open/chasm/lavaland
 	light_outer_range = 1.9 //slightly less range than lava
 	light_power = 0.65 //less bright, too
 	light_color = LIGHT_COLOR_LAVA //let's just say you're falling into lava, that makes sense right
-
-// Chasms for Ice moon, with planetary atmos and glow
-/turf/open/chasm/icemoon
-	icon = 'icons/turf/floors/icechasms.dmi'
-	icon_state = "icechasms-255"
-	base_icon_state = "icechasms"
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-
-	baseturfs = /turf/open/chasm/icemoon
-	light_outer_range = 1.9
-	light_power = 0.65
-	light_color = LIGHT_COLOR_PURPLE
 
 // Chasms for the jungle, with planetary atmos and a different icon
 /turf/open/chasm/jungle

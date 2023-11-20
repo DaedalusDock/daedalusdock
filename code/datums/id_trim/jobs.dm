@@ -510,7 +510,7 @@
 	department_access = list(ACCESS_AUX_BASE, ACCESS_RESEARCH, ACCESS_RND)
 
 /datum/id_trim/job/shaft_miner
-	assignment = "Shaft Miner"
+	assignment = "Prospector"
 	trim_state = "trim_shaftminer"
 	sechud_icon_state = SECHUD_SHAFT_MINER
 	extra_access = list(ACCESS_CARGO, ACCESS_MAINT_TUNNELS, ACCESS_QM)

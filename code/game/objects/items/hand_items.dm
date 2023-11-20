@@ -3,6 +3,8 @@
 	force = 0
 	throwforce = 0
 	item_flags = DROPDEL | ABSTRACT | HAND_ITEM
+	mouse_drag_pointer = FALSE
+	mouse_drop_pointer = FALSE
 
 /obj/item/hand_item/Initialize(mapload)
 	. = ..()
@@ -123,7 +125,8 @@
 		to_chat(user, span_warning("You can't bring yourself to noogie [target]! You don't want to risk harming anyone..."))
 		return
 
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target || user.grab_state < GRAB_AGGRESSIVE || HAS_TRAIT(user, TRAIT_EXHAUSTED))
+	var/obj/item/hand_item/grab/G = user.is_grabbing(target)
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || !G || !(G.current_grab.damage_stage >= GRAB_AGGRESSIVE)|| HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		return FALSE
 
 	// [user] gives [target] a [prefix_desc] noogie[affix_desc]!
@@ -153,7 +156,7 @@
 
 /// The actual meat and bones of the noogie'ing
 /obj/item/hand_item/noogie/proc/noogie_loop(mob/living/carbon/human/user, mob/living/carbon/target, iteration)
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target)
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || !user.is_grabbing(target))
 		return FALSE
 
 	if(HAS_TRAIT(user, TRAIT_EXHAUSTED))

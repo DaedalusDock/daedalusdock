@@ -882,11 +882,11 @@
 /datum/status_effect/stabilized/black/proc/on_grab(mob/living/source, new_state)
 	SIGNAL_HANDLER
 
-	if(new_state < GRAB_KILL || !isliving(source.pulling))
+	if(new_state < GRAB_KILL || !isliving(source.get_active_grab()?.affecting))
 		draining_ref = null
 		return
 
-	var/mob/living/draining = source.pulling
+	var/mob/living/draining = source.get_active_grab()?.affecting
 	if(draining.stat == DEAD)
 		return
 
@@ -902,7 +902,8 @@
 	return span_warning("[owner.p_they(TRUE)] [owner.p_are()] draining health from [draining]!")
 
 /datum/status_effect/stabilized/black/tick()
-	if(owner.grab_state < GRAB_KILL || !IS_WEAKREF_OF(owner.pulling, draining_ref))
+	var/obj/item/hand_item/grab/G = owner.get_active_grab()
+	if(G.current_grab.damage_stage < GRAB_KILL || !IS_WEAKREF_OF(G.affecting, draining_ref))
 		return
 
 	var/mob/living/drained = draining_ref.resolve()

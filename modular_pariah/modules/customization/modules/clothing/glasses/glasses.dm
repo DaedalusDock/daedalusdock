@@ -2,7 +2,7 @@
 	var/can_switch_eye = FALSE	//Having this default to false means that its easy to make sure this doesnt apply to any pre-existing items
 	var/current_eye = "_R"	//Added to the end of the icon_state to make this easy code-wise, L and R being the wearer's Left and Right
 
-/obj/item/clothing/glasses/CtrlClick(mob/user)
+/obj/item/clothing/glasses/CtrlClick(mob/user, list/params)
 	. = ..()
 	if(.)
 		return

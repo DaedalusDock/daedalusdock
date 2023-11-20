@@ -12,7 +12,7 @@
 	/// If the hardware uses extra power, change this.
 	var/power_usage = 0
 	/// If the hardware is turned off set this to 0.
-	var/enabled = TRUE
+	VAR_PROTECTED/enabled = TRUE
 	/// Prevent disabling for important component, like the CPU.
 	var/critical = FALSE
 	/// Prevents direct installation of removable media.
@@ -124,3 +124,11 @@
  */
 /obj/item/computer_hardware/proc/try_eject(mob/living/user = null, forced = FALSE)
 	return FALSE
+
+/// Called when the device's enablement changes state.
+/obj/item/computer_hardware/proc/enable_changed(new_state)
+	SHOULD_CALL_PARENT(TRUE)
+	enabled = new_state
+
+/obj/item/computer_hardware/proc/is_enabled()
+	return enabled

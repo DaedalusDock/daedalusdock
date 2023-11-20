@@ -177,7 +177,7 @@
 	output += "</center>"
 
 	var/datum/browser/popup = new(src, "playersetup", "<center><div>Welcome to<br>Daedalus Outpost</div></center>", 270, 310)
-	popup.set_window_options("can_close=0;focus=false;")
+	popup.set_window_options("can_close=0;focus=false;can_resize=0")
 	popup.set_content(output.Join())
 	popup.open(FALSE)
 

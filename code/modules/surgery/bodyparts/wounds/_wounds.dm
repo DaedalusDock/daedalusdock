@@ -5,8 +5,6 @@
 /datum/wound
 	///The bodypart this wound is on
 	var/obj/item/bodypart/parent
-	///The mob this wound belongs to
-	var/mob/living/carbon/mob_parent
 
 	///Number representing the current stage
 	var/current_stage = 0
@@ -71,29 +69,14 @@
 
 	if(istype(BP))
 		parent = BP
-		if(parent.owner)
-			register_to_mob(parent.owner)
 
 /datum/wound/Destroy()
-	if(mob_parent)
-		unregister_from_mob()
 	if(parent)
 		LAZYREMOVE(parent.wounds, src)
 		parent = null
 
 	LAZYCLEARLIST(embedded_objects)
 	return ..()
-
-/datum/wound/proc/register_to_mob(mob/living/carbon/C)
-	if(mob_parent)
-		unregister_from_mob()
-	mob_parent = C
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_GAIN_WOUND, src, parent)
-
-/datum/wound/proc/unregister_from_mob()
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_LOSE_WOUND, src, parent)
-	mob_parent = null
-
 
 ///Returns 1 if there's a next stage, 0 otherwise
 /datum/wound/proc/init_stage(initial_damage)

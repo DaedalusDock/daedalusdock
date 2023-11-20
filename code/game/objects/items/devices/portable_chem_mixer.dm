@@ -164,7 +164,7 @@
 		is_hallucinating = TRUE
 	for(var/re in dispensable_reagents)
 		var/value = dispensable_reagents[re]
-		var/datum/reagent/temp = GLOB.chemical_reagents_list[re]
+		var/datum/reagent/temp = SSreagents.chemical_reagents_list[re]
 		if(temp)
 			var/chemname = temp.name
 			var/total_volume = 0

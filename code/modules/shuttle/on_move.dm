@@ -28,9 +28,7 @@ All ShuttleMove procs go here
 				var/mob/living/M = thing
 				if(M.buckled)
 					M.buckled.unbuckle_mob(M, 1)
-				if(M.pulledby)
-					M.pulledby.stop_pulling()
-				M.stop_pulling()
+				M.release_all_grabs()
 				M.visible_message(span_warning("[shuttle] slams into [M]!"))
 				SSblackbox.record_feedback("tally", "shuttle_gib", 1, M.type)
 				log_attack("[key_name(M)] was shuttle gibbed by [shuttle].")

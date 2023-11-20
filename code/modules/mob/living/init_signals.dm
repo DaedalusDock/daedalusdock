@@ -154,8 +154,7 @@
 /mob/living/proc/on_pull_blocked_trait_gain(datum/source)
 	SIGNAL_HANDLER
 	mobility_flags &= ~(MOBILITY_PULL)
-	if(pulling)
-		stop_pulling()
+	release_all_grabs()
 
 /// Called when [TRAIT_PULL_BLOCKED] is removed from the mob.
 /mob/living/proc/on_pull_blocked_trait_loss(datum/source)

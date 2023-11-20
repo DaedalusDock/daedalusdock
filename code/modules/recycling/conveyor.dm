@@ -295,11 +295,13 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 
 
 // attack with hand, move pulled object onto conveyor
-/obj/machinery/conveyor/attack_hand(mob/user, list/modifiers)
+/obj/machinery/conveyor/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+
+	if(!istype(user))
+		user.move_grabbed_atoms_towards(src)
 
 /obj/machinery/conveyor/power_change()
 	. = ..()

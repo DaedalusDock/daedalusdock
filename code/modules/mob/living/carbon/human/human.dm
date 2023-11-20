@@ -287,18 +287,21 @@
 					return
 
 				var/datum/data/crime/crime = GLOB.data_core.createCrimeEntry(t1, "", allowed_access, stationtime2text(), fine)
-				for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
-					if(tablet.saved_identification == R.fields["name"])
-						var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
-						var/datum/signal/subspace/messaging/tablet_msg/signal = new(src, list(
-							"name" = "Security Citation",
-							"job" = "Citation Server",
-							"message" = message,
-							"targets" = list(tablet),
-							"automated" = TRUE
-						))
-						signal.send_to_receivers()
-						usr.log_message("(PDA: Citation Server) sent \"[message]\" to [signal.format_target()]", LOG_PDA)
+				var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+				if(announcer)
+					announcer.notify_citation(R.fields["name"], t1, fine)
+				// for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
+				// 	if(tablet.saved_identification == R.fields["name"])
+				// 		var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
+				// 		var/datum/signal/subspace/messaging/tablet_msg/signal = new(src, list(
+				// 			"name" = "Security Citation",
+				// 			"job" = "Citation Server",
+				// 			"message" = message,
+				// 			"targets" = list(tablet),
+				// 			"automated" = TRUE
+				// 		))
+				// 		signal.send_to_receivers()
+				// 		usr.log_message("(PDA: Citation Server) sent \"[message]\" to [signal.format_target()]", LOG_PDA)
 				GLOB.data_core.addCitation(R.fields["id"], crime)
 				investigate_log("New Citation: <strong>[t1]</strong> Fine: [fine] | Added to [R.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
 				SSblackbox.ReportCitation(crime.dataId, usr.ckey, usr.real_name, R.fields["name"], t1, fine)
@@ -763,7 +766,9 @@
 	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		BP.set_sever_artery(FALSE)
 		BP.set_sever_tendon(FALSE)
+		BP.set_dislocated(FALSE)
 		BP.heal_bones()
+		BP.adjustPain(-INFINITY)
 
 	remove_all_embedded_objects()
 	set_heartattack(FALSE)
@@ -852,7 +857,8 @@
 			set_species(newtype)
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
-	if(pulling != M || grab_state != GRAB_AGGRESSIVE || stat != CONSCIOUS)
+	var/obj/item/hand_item/grab/G = is_grabbing(M)
+	if(!G || G.current_grab.damage_stage != GRAB_AGGRESSIVE || stat != CONSCIOUS)
 		return FALSE
 
 	//If they dragged themselves to you and you're currently aggressively grabbing them try to piggyback
@@ -1026,12 +1032,6 @@
 /mob/living/carbon/human/species/lizard
 	race = /datum/species/lizard
 
-/mob/living/carbon/human/species/lizard/ashwalker
-	race = /datum/species/lizard/ashwalker
-
-/mob/living/carbon/human/species/lizard/silverscale
-	race = /datum/species/lizard/silverscale
-
 /mob/living/carbon/human/species/ethereal
 	race = /datum/species/ethereal
 
@@ -1131,3 +1131,29 @@
 				return FALSE
 
 	return dna.species.organs[slot]
+
+//Used by various things that knock people out by applying blunt trauma to the head.
+//Checks that the species has a "head" (brain containing organ) and that hit_zone refers to it.
+/mob/living/carbon/human/proc/can_head_trauma_ko()
+	var/obj/item/organ/brain = getorganslot(ORGAN_SLOT_BRAIN)
+	if(!brain || !needs_organ(ORGAN_SLOT_BRAIN))
+		return FALSE
+
+	//if the parent organ is significantly larger than the brain organ, then hitting it is not guaranteed
+	var/obj/item/bodypart/head = get_bodypart(BODY_ZONE_HEAD)
+	if(!head)
+		return FALSE
+	if(head.w_class > brain.w_class + 1)
+		return prob(100 / 2**(head.w_class - brain.w_class - 1))
+	return TRUE
+
+/mob/living/carbon/human/up()
+	. = ..()
+	if(.)
+		return
+	var/obj/climbable = check_zclimb()
+	if(!climbable)
+		can_z_move(UP, get_turf(src), ZMOVE_FEEDBACK|ZMOVE_FLIGHT_FLAGS)
+		return FALSE
+
+	return ClimbUp(climbable)

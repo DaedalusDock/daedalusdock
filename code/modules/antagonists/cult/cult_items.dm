@@ -166,7 +166,7 @@ Striking a noncultist, however, will tear their flesh."}
 	else
 		. += "The sword appears to be quite lifeless."
 
-/obj/item/cult_bastard/can_be_pulled(user)
+/obj/item/cult_bastard/can_be_grabbed(mob/living/grabber, target_zone, force)
 	return FALSE
 
 /obj/item/cult_bastard/attack_self(mob/user)
@@ -607,8 +607,9 @@ Striking a noncultist, however, will tear their flesh."}
 
 /obj/item/cult_shift/proc/handle_teleport_grab(turf/T, mob/user)
 	var/mob/living/carbon/C = user
-	if(C.pulling)
-		var/atom/movable/pulled = C.pulling
+	var/list/obj/item/hand_item/grab/grabs = C.get_active_grabs()
+	if(length(grabs))
+		var/atom/movable/pulled = grabs[1].affecting
 		do_teleport(pulled, T, channel = TELEPORT_CHANNEL_CULT)
 		. = pulled
 
@@ -636,7 +637,7 @@ Striking a noncultist, however, will tear their flesh."}
 		var/atom/movable/pulled = handle_teleport_grab(destination, C)
 		if(do_teleport(C, destination, channel = TELEPORT_CHANNEL_CULT))
 			if(pulled)
-				C.start_pulling(pulled) //forcemove resets pulls, so we need to re-pull
+				C.try_make_grab(pulled) //forcemove resets pulls, so we need to re-pull
 			new /obj/effect/temp_visual/dir_setting/cult/phase(destination, C.dir)
 			playsound(destination, 'sound/effects/phasein.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 			playsound(destination, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -994,6 +995,21 @@ Striking a noncultist, however, will tear their flesh."}
 
 /obj/effect/ebeam/blood
 	name = "blood beam"
+
+/obj/effect/temp_visual/at_shield
+	name = "anti-toolbox field"
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "at_shield2"
+	layer = FLY_LAYER
+	light_system = MOVABLE_LIGHT
+	light_outer_range = 2
+	duration = 8
+	var/target
+
+/obj/effect/temp_visual/at_shield/Initialize(mapload, new_target)
+	. = ..()
+	target = new_target
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, orbit), target, 0, FALSE, 0, 0, FALSE, TRUE)
 
 /obj/item/shield/mirror
 	name = "mirror shield"

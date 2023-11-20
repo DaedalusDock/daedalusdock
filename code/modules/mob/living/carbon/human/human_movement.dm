@@ -25,7 +25,7 @@
 	if(dna.species.negates_gravity(src) || ..())
 		return TRUE
 
-/mob/living/carbon/human/Move(NewLoc, direct)
+/mob/living/carbon/human/Move(NewLoc, direct, glide_size_override, z_movement_flags)
 	. = ..()
 	if(shoes && body_position == STANDING_UP && loc == NewLoc && has_gravity(loc))
 		SEND_SIGNAL(shoes, COMSIG_SHOES_STEP_ACTION)

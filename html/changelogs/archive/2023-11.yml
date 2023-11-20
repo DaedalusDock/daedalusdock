@@ -16,3 +16,6 @@
       slot. This has been fixed.
   - tweak: Renamed Metastation to Theseus. You know why.
   - bugfix: You can no longer flip operating tables.
+2023-11-20:
+  Kapu1178:
+  - tweak: The Codex now supports nicer formatting.

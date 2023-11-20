@@ -361,15 +361,13 @@
 ///////////////////////////////////////////////
 // Cable variants for mapping
 ///////////////////////////////////////////////
-/obj/structure/cable/mapping
-
-/obj/structure/cable/mapping/yellow
+/obj/structure/cable/yellow
 	color = "yellow"
 
-/obj/structure/cable/mapping/blue
+/obj/structure/cable/blue
 	color = "blue"
 
-/obj/structure/cable/mapping/red
+/obj/structure/cable/red
 	color = "red"
 
 ///////////////////////////////////////////////

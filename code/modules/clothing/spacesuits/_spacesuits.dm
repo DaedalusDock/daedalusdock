@@ -6,7 +6,7 @@
 	name = "space helmet"
 	icon_state = "spaceold"
 	desc = "A special helmet with solar UV shielding to protect your eyes from harmful rays."
-	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | PLASMAMAN_HELMET_EXEMPT
+	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | STACKABLE_HELMET_EXEMPT | HEADINTERNALS
 	inhand_icon_state = "spaceold"
 	permeability_coefficient = 0.01
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 80, ACID = 70)
@@ -126,7 +126,7 @@
 	. = ..()
 	if(in_range(src, user) || isobserver(user))
 		. += "The thermal regulator is [thermal_on ? "on" : "off"] and the temperature is set to \
-			[round(temperature_setting-T0C,0.1)] &deg;C ([round(temperature_setting*1.8-459.67,0.1)] &deg;F)"
+			[round(temperature_setting-T0C,0.1)] &deg;C ([round(FAHRENHEIT(temperature_setting), 0.1)] &deg;F)"
 		. += "The power meter shows [cell ? "[round(cell.percent(), 0.1)]%" : "!invalid!"] charge remaining."
 		if(cell_cover_open)
 			. += "The cell cover is open exposing the cell and setting knobs."
@@ -140,6 +140,11 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/item/clothing/suit/space/screwdriver_act(mob/living/user, obj/item/tool)
+	if(cell_cover_open)
+		if(cell)
+			remove_cell(user)
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
 	var/range_low = 20 // Default min temp c
 	var/range_high = 45 // default max temp c
 	if(obj_flags & EMAGGED)
@@ -165,31 +170,14 @@
 		to_chat(user, span_notice("You successfully install \the [cell] into [src]."))
 		return
 
-/// Open the cell cover when ALT+Click on the suit
-/obj/item/clothing/suit/space/AltClick(mob/living/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		return ..()
-	toggle_spacesuit_cell(user)
-
-/// Remove the cell whent he cover is open on CTRL+Click
-/obj/item/clothing/suit/space/CtrlClick(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		if(cell_cover_open && cell)
-			remove_cell(user)
-			return
-	return ..()
-
-// Remove the cell when using the suit on its self
-/obj/item/clothing/suit/space/attack_self(mob/user)
-	remove_cell(user)
-
 /// Remove the cell from the suit if the cell cover is open
 /obj/item/clothing/suit/space/proc/remove_cell(mob/user)
 	if(cell_cover_open && cell)
 		user.visible_message(span_notice("[user] removes \the [cell] from [src]!"), \
-			span_notice("You remove [cell]."))
+			span_notice("You remove [cell] from [src]."))
 		cell.add_fingerprint(user)
-		user.put_in_hands(cell)
+		if(!user.put_in_hands(cell))
+			cell.forceMove(user.drop_location())
 		cell = null
 
 /// Toggle the space suit's cell cover
@@ -263,8 +251,8 @@
 		cell.emp_act(severity)
 
 /obj/item/clothing/head/helmet/space/suicide_act(mob/living/carbon/user)
-	var/datum/gas_mixture/environment = user.loc.return_air()
-	if(HAS_TRAIT(user, TRAIT_RESISTCOLD) || !environment || environment.get_temperature() >= user.get_body_temp_cold_damage_limit())
+	var/datum/gas_mixture/environment = user.loc.unsafe_return_air()
+	if(HAS_TRAIT(user, TRAIT_RESISTCOLD) || !environment || environment.temperature >= user.get_body_temp_cold_damage_limit())
 		user.visible_message(span_suicide("[user] is beating [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 		return BRUTELOSS
 	user.say("You want proof? I'll give you proof! Here's proof of what'll happen to you if you stay here with your stuff!", forced = "space helmet suicide")

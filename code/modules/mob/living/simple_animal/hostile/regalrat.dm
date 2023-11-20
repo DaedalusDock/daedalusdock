@@ -118,7 +118,7 @@
 	. = ..()
 	if(stat == DEAD || !environment || !environment.getGroupGas(GAS_METHANE))
 		return
-	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.get_moles()
+	var/miasma_percentage = environment.gas[GAS_METHANE] / environment.total_moles
 	if(miasma_percentage>=0.25)
 		heal_bodypart_damage(1)
 
@@ -192,7 +192,7 @@
 
 /mob/living/simple_animal/hostile/regalrat/controlled/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/get_player)
+	INVOKE_ASYNC(src, PROC_REF(get_player))
 	var/kingdom = pick("Plague","Miasma","Maintenance","Trash","Garbage","Rat","Vermin","Cheese")
 	var/title = pick("King","Lord","Prince","Emperor","Supreme","Overlord","Master","Shogun","Bojar","Tsar")
 	name = "[kingdom] [title]"
@@ -398,11 +398,12 @@
 	taste_description = "something funny"
 	overdose_threshold = 20
 
-/datum/reagent/rat_spit/on_mob_metabolize(mob/living/L)
-	..()
-	if(HAS_TRAIT(L, TRAIT_AGEUSIA))
+/datum/reagent/rat_spit/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_INGEST)
 		return
-	to_chat(L, span_notice("This food has a funny taste!"))
+	if(HAS_TRAIT(C, TRAIT_AGEUSIA))
+		return
+	to_chat(C, span_notice("This food has a funny taste!"))
 
 /datum/reagent/rat_spit/overdose_start(mob/living/M)
 	..()
@@ -411,15 +412,14 @@
 		to_chat(victim, span_userdanger("With this last sip, you feel your body convulsing horribly from the contents you've ingested. As you contemplate your actions, you sense an awakened kinship with rat-kind and their newly risen leader!"))
 		victim.faction |= "rat"
 		victim.vomit()
-	metabolization_rate = 10 * REAGENTS_METABOLISM
+	metabolization_rate = 10 * initial(metabolization_rate)
 
-/datum/reagent/rat_spit/on_mob_life(mob/living/carbon/C)
+/datum/reagent/rat_spit/affect_blood(mob/living/carbon/C, removed)
 	if(prob(15))
 		to_chat(C, span_notice("You feel queasy!"))
-		C.adjust_disgust(3)
+		C.adjust_disgust(3 * removed)
 	else if(prob(10))
 		to_chat(C, span_warning("That food does not sit up well!"))
-		C.adjust_disgust(5)
+		C.adjust_disgust(5 * removed)
 	else if(prob(5))
 		C.vomit()
-	..()

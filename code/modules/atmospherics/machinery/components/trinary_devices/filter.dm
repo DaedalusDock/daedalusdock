@@ -12,7 +12,7 @@
 	power_rating = 15000
 
 	///Rate of transfer of the gases to the outputs
-	var/transfer_rate = MAX_TRANSFER_RATE
+	var/transfer_rate = ATMOS_DEFAULT_VOLUME_FILTER
 	///What gases are we filtering, by typepath
 	var/list/filter_type = list()
 	///Frequency id for connecting to the NTNet
@@ -22,7 +22,7 @@
 	//Last power draw, for the progress bar in the UI
 	var/last_power_draw = 0
 
-/obj/machinery/atmospherics/components/trinary/filter/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/trinary/filter/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -31,7 +31,7 @@
 
 /obj/machinery/atmospherics/components/trinary/filter/AltClick(mob/user)
 	if(can_interact(user))
-		transfer_rate = MAX_TRANSFER_RATE
+		transfer_rate = ATMOS_DEFAULT_VOLUME_FILTER
 		investigate_log("was set to [transfer_rate] L/s by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "volume output set to [transfer_rate] L/s")
 		update_appearance()
@@ -73,27 +73,11 @@
 	var/datum/gas_mixture/air2 = airs[2]
 	var/datum/gas_mixture/air3 = airs[3]
 
-	var/transfer_ratio = transfer_rate / air1.volume
-
-	if(transfer_ratio <= 0)
-		return
-
-	// Attempt to transfer the gas.
-
-	// If the main output is full, we try to send filtered output to the side port (air2).
-	// If the side output is full, we try to send the non-filtered gases to the main output port (air3).
-	// Any gas that can't be moved due to its destination being too full is sent back to the input (air1).
-
-	var/side_output_full = air2.returnPressure() >= MAX_OUTPUT_PRESSURE
-	var/main_output_full = air3.returnPressure() >= MAX_OUTPUT_PRESSURE
-
-	// If both output ports are full, there's nothing we can do. Don't bother removing anything from the input.
-	if (side_output_full && main_output_full)
-		return
-
-	var/datum/gas_mixture/removed = air1.removeRatio(transfer_ratio)
-
-	if(!removed || !removed.get_moles())
+	var/transfer_moles_max = calculate_transfer_moles(air1, air3, MAX_OMNI_PRESSURE - air3.returnPressure(), parents[3]?.combined_volume || 0)
+	transfer_moles_max = min(transfer_moles_max, (calculate_transfer_moles(air1, air2, MAX_OMNI_PRESSURE - air2.returnPressure(), parents[2]?.combined_volume || 0)))
+	//Figure out the amount of moles to transfer
+	var/transfer_moles = clamp(((transfer_rate/air1.volume)*air1.total_moles), 0, transfer_moles_max)
+	if(!transfer_moles)
 		return
 
 	var/filtering = TRUE
@@ -102,32 +86,13 @@
 
 	// Process if we have a filter set.
 	// If no filter is set, we just try to forward everything to air3 to avoid gas being outright lost.
-	if(filtering)
-		var/datum/gas_mixture/merge_to
-		// Send things to the side output if we can, return them to the input if we can't.
-		// This means that other gases continue to flow to the main output if the side output is blocked.
-		if (side_output_full)
-			merge_to = air1
-		else
-			merge_to = air2
-
-		var/draw = filter_gas(filter_type, removed, merge_to, removed, available_power = power_rating)
-		if(draw > -1)
-			ATMOS_USE_POWER(draw)
-			last_power_draw = draw
-
-		// Send things to the side output if we can, return them to the input if we can't.
-		// This means that other gases continue to flow to the main output if the side output is blocked.
-		// Make sure we don't send any now-empty gas entries to the main output
-
-	// Send things to the main output if we can, return them to the input if we can't.
-	// This lets filtered gases continue to flow to the side output in a manner consistent with the main output behavior.
-	if (main_output_full)
-		air1.merge(removed)
-	else
-		air3.merge(removed)
+	var/draw = filtering ? filter_gas(filter_type, air1, air2, air3, transfer_moles, power_rating) : pump_gas(air1, air3, transfer_moles, power_rating)
+	if(draw > -1)
+		ATMOS_USE_POWER(draw)
+		last_power_draw = draw
 
 	update_parents()
+
 
 /obj/machinery/atmospherics/components/trinary/filter/atmos_init()
 	set_frequency(frequency)
@@ -144,7 +109,7 @@
 	var/static/all_gases = xgm_gas_data.gases
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
-	data["max_rate"] = round(MAX_TRANSFER_RATE)
+	data["max_rate"] = round(ATMOS_DEFAULT_VOLUME_FILTER)
 	data["last_draw"] = last_power_draw
 	data["max_power"] = power_rating
 
@@ -166,13 +131,13 @@
 		if("rate")
 			var/rate = params["rate"]
 			if(rate == "max")
-				rate = MAX_TRANSFER_RATE
+				rate = ATMOS_DEFAULT_VOLUME_FILTER
 				. = TRUE
 			else if(text2num(rate) != null)
 				rate = text2num(rate)
 				. = TRUE
 			if(.)
-				transfer_rate = clamp(rate, 0, MAX_TRANSFER_RATE)
+				transfer_rate = clamp(rate, 0, ATMOS_DEFAULT_VOLUME_FILTER)
 				investigate_log("was set to [transfer_rate] L/s by [key_name(usr)]", INVESTIGATE_ATMOS)
 		if("toggle_filter")
 			if(!params["val"])

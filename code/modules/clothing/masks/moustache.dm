@@ -4,7 +4,7 @@
 	icon_state = "fake-moustache"
 	w_class = WEIGHT_CLASS_TINY
 	flags_inv = HIDEFACE
-	species_exception = list(/datum/species/golem)
+
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/mask/fakemoustache/italian

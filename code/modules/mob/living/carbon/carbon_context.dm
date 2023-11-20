@@ -1,7 +1,7 @@
 /mob/living/carbon/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 
-	if (!isnull(held_item))
+	if (!isnull(held_item) && !(held_item.item_flags & (ABSTRACT|HAND_ITEM)))
 		context[SCREENTIP_CONTEXT_CTRL_SHIFT_LMB] = "Offer item"
 		return CONTEXTUAL_SCREENTIP_SET
 
@@ -15,17 +15,14 @@
 	else if (human_user == src)
 		context[SCREENTIP_CONTEXT_LMB] = "Check injuries"
 
-		if (get_bodypart(human_user.zone_selected)?.get_modified_bleed_rate())
-			context[SCREENTIP_CONTEXT_CTRL_LMB] = "Grab limb"
-
 	if (human_user != src)
-		context[SCREENTIP_CONTEXT_RMB] = "Shove"
+		context[SCREENTIP_CONTEXT_RMB] = "Disarm"
 
 		if (!human_user.combat_mode)
 			if (body_position == STANDING_UP)
-				if(check_zone(user.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD))
+				if(deprecise_zone(user.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD))
 					context[SCREENTIP_CONTEXT_LMB] = "Headpat"
-				else if(user.zone_selected == BODY_ZONE_PRECISE_GROIN && !isnull(getorgan(/obj/item/organ/external/tail)))
+				else if(user.zone_selected == BODY_ZONE_PRECISE_GROIN && !isnull(getorgan(/obj/item/organ/tail)))
 					context[SCREENTIP_CONTEXT_LMB] = "Pull tail"
 				else
 					context[SCREENTIP_CONTEXT_LMB] = "Hug"

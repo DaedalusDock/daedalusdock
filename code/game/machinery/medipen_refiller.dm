@@ -6,12 +6,14 @@
 	density = TRUE
 	circuit = /obj/item/circuitboard/machine/medipen_refiller
 	/// list of medipen subtypes it can refill
-	var/list/allowed = list(/obj/item/reagent_containers/hypospray/medipen = /datum/reagent/medicine/epinephrine,
-						    /obj/item/reagent_containers/hypospray/medipen/atropine = /datum/reagent/medicine/atropine,
-						    /obj/item/reagent_containers/hypospray/medipen/salbutamol = /datum/reagent/medicine/salbutamol,
-						    /obj/item/reagent_containers/hypospray/medipen/oxandrolone = /datum/reagent/medicine/oxandrolone,
-						    /obj/item/reagent_containers/hypospray/medipen/salacid = /datum/reagent/medicine/sal_acid,
-						    /obj/item/reagent_containers/hypospray/medipen/penacid = /datum/reagent/medicine/pen_acid)
+	var/list/allowed = list(
+		/obj/item/reagent_containers/hypospray/medipen = /datum/reagent/medicine/epinephrine,
+		/obj/item/reagent_containers/hypospray/medipen/atropine = /datum/reagent/medicine/atropine,
+		/obj/item/reagent_containers/hypospray/medipen/dexalin = /datum/reagent/medicine/dexalin,
+		/obj/item/reagent_containers/hypospray/medipen/dermaline = /datum/reagent/medicine/dermaline,
+		/obj/item/reagent_containers/hypospray/medipen/meralyne = /datum/reagent/medicine/meralyne,
+	)
+
 	/// var to prevent glitches in the animation
 	var/busy = FALSE
 
@@ -20,8 +22,6 @@
 	create_reagents(100, TRANSPARENT)
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		reagents.maximum_volume += 100 * B.rating
-	AddComponent(/datum/component/plumbing/simple_demand)
-
 
 /obj/machinery/medipen_refiller/RefreshParts()
 	. = ..()
@@ -58,7 +58,7 @@
 		if(reagents.has_reagent(allowed[P.type], 10))
 			busy = TRUE
 			add_overlay("active")
-			addtimer(CALLBACK(src, .proc/refill, P, user), 20)
+			addtimer(CALLBACK(src, PROC_REF(refill), P, user), 20)
 			qdel(P)
 			return
 		to_chat(user, span_danger("There aren't enough reagents to finish this operation."))

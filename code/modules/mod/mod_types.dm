@@ -16,7 +16,6 @@
 
 /obj/item/mod/control/pre_equipped/standard
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/flashlight,
 	)
@@ -24,7 +23,6 @@
 /obj/item/mod/control/pre_equipped/engineering
 	theme = /datum/mod_theme/engineering
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -34,7 +32,6 @@
 /obj/item/mod/control/pre_equipped/atmospheric
 	theme = /datum/mod_theme/atmospheric
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -45,7 +42,6 @@
 	theme = /datum/mod_theme/advanced
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -65,7 +61,6 @@
 	theme = /datum/mod_theme/mining
 	applied_core = /obj/item/mod/core/plasma
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/gps,
 		/obj/item/mod/module/orebag,
 		/obj/item/mod/module/clamp,
@@ -75,7 +70,6 @@
 /obj/item/mod/control/pre_equipped/medical
 	theme = /datum/mod_theme/medical
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/health_analyzer,
 		/obj/item/mod/module/quick_carry,
@@ -85,7 +79,6 @@
 	theme = /datum/mod_theme/rescue
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/health_analyzer,
 		/obj/item/mod/module/injector,
@@ -95,7 +88,6 @@
 	theme = /datum/mod_theme/research
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/circuit,
@@ -105,7 +97,6 @@
 /obj/item/mod/control/pre_equipped/security
 	theme = /datum/mod_theme/security
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/magnetic_harness,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/pepper_shoulders,
@@ -115,7 +106,6 @@
 	theme = /datum/mod_theme/safeguard
 	applied_cell = /obj/item/stock_parts/cell/super
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/magnetic_harness,
 		/obj/item/mod/module/flashlight,
 		/obj/item/mod/module/jetpack,
@@ -126,7 +116,6 @@
 	theme = /datum/mod_theme/magnate
 	applied_cell = /obj/item/stock_parts/cell/hyper
 	initial_modules = list(
-		/obj/item/mod/module/storage/large_capacity,
 		/obj/item/mod/module/hat_stabilizer,
 		/obj/item/mod/module/magnetic_harness,
 		/obj/item/mod/module/jetpack/advanced,
@@ -136,7 +125,6 @@
 /obj/item/mod/control/pre_equipped/cosmohonk
 	theme = /datum/mod_theme/cosmohonk
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/waddle,
 		/obj/item/mod/module/bikehorn,
 	)
@@ -212,7 +200,6 @@
 	theme = /datum/mod_theme/prototype
 	req_access = list(ACCESS_AWAY_GENERAL)
 	initial_modules = list(
-		/obj/item/mod/module/storage,
 		/obj/item/mod/module/welding,
 		/obj/item/mod/module/rad_protection,
 		/obj/item/mod/module/flashlight,
@@ -327,6 +314,7 @@
 		/obj/item/mod/module/timestopper,
 		/obj/item/mod/module/rewinder,
 		/obj/item/mod/module/tem,
+		/obj/item/mod/module/anomaly_locked/kinesis/plus,
 	)
 
 /obj/item/mod/control/pre_equipped/debug
@@ -352,39 +340,7 @@
 		/obj/item/mod/module/quick_carry/advanced,
 		/obj/item/mod/module/magboot/advanced,
 		/obj/item/mod/module/jetpack,
-	)
-
-/obj/item/mod/control/pre_equipped/contractor
-	theme = /datum/mod_theme/contractor
-	applied_cell = /obj/item/stock_parts/cell/hyper
-	initial_modules = list(
-		/obj/item/mod/module/storage/syndicate,
-		/obj/item/mod/module/tether,
-		/obj/item/mod/module/flashlight,
-		/obj/item/mod/module/dna_lock,
-		/obj/item/mod/module/magnetic_harness,
-		/obj/item/mod/module/emp_shield,
-	)
-
-/obj/item/mod/control/pre_equipped/contractor/upgraded
-	applied_cell = /obj/item/stock_parts/cell/bluespace
-	initial_modules = list(
-		/obj/item/mod/module/storage/syndicate,
-		/obj/item/mod/module/jetpack,
-		/obj/item/mod/module/dna_lock,
-		/obj/item/mod/module/magnetic_harness,
-		/obj/item/mod/module/baton_holster/preloaded,
-		/obj/item/mod/module/emp_shield,
-	)
-
-/obj/item/mod/control/pre_equipped/contractor/upgraded/adminbus
-	initial_modules = list(
-		/obj/item/mod/module/storage/syndicate,
-		/obj/item/mod/module/jetpack/advanced,
-		/obj/item/mod/module/springlock/contractor/no_complexity,
-		/obj/item/mod/module/baton_holster/preloaded,
-		/obj/item/mod/module/scorpion_hook,
-		/obj/item/mod/module/emp_shield,
+		/obj/item/mod/module/anomaly_locked/kinesis/admin,
 	)
 
 //these exist for the prefs menu
@@ -396,8 +352,5 @@
 
 /obj/item/mod/control/pre_equipped/syndicate_empty/elite
 	theme = /datum/mod_theme/elite
-
-/obj/item/mod/control/pre_equipped/syndicate_empty/contractor
-	theme = /datum/mod_theme/contractor
 
 INITIALIZE_IMMEDIATE(/obj/item/mod/control/pre_equipped/syndicate_empty)

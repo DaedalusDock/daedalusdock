@@ -9,7 +9,13 @@ SUBSYSTEM_DEF(processing)
 	var/stat_tag = "P" //Used for logging
 	var/list/processing = list()
 	var/list/currentrun = list()
-	var/process_proc = /datum/proc/process //Francinum is going to FUCK ME (Of course I will~)
+
+/datum/controller/subsystem/processing/PreInit()
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, processing),
+		NAMEOF(src, currentrun)
+	)
 
 /datum/controller/subsystem/processing/stat_entry(msg)
 	msg = "[stat_tag]:[length(processing)]"
@@ -26,7 +32,7 @@ SUBSYSTEM_DEF(processing)
 		current_run.len--
 		if(QDELETED(thing))
 			processing -= thing
-		else if(call(thing, process_proc)(wait * 0.1) == PROCESS_KILL) //Fran is REALLY going to kill me
+		else if(call(thing, TYPE_PROC_REF(/datum, process))(wait * 0.1) == PROCESS_KILL)
 			// fully stop so that a future START_PROCESSING will work
 			STOP_PROCESSING(src, thing)
 		if (MC_TICK_CHECK)

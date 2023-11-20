@@ -47,7 +47,7 @@
 		spot1.Beam(spot2,beam_effect,time=2 SECONDS)
 		current_charges--
 		owner?.update_mob_action_buttons()
-		addtimer(CALLBACK(src, .proc/charge), charge_rate)
+		addtimer(CALLBACK(src, PROC_REF(charge)), charge_rate)
 		return TRUE
 
 	return FALSE

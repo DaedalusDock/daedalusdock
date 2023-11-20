@@ -39,7 +39,7 @@
 		/obj/item/circuit_component/atmos_pump,
 	))
 
-/obj/machinery/atmospherics/components/binary/pump/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/pump/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		set_on(!on)
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -48,7 +48,7 @@
 
 /obj/machinery/atmospherics/components/binary/pump/AltClick(mob/user)
 	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
+		target_pressure = MAX_PUMP_PRESSURE
 		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "pressure output set to [target_pressure] kPa")
 		update_appearance()
@@ -72,7 +72,7 @@
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 	//var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure())
+	var/transfer_moles = calculate_transfer_moles(air1, air2, target_pressure - air2.returnPressure(), parents[2]?.combined_volume || 0)
 	var/draw = pump_gas(air1, air2, transfer_moles, power_rating)
 	if(draw > -1)
 		update_parents()
@@ -117,7 +117,7 @@
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
+	data["max_pressure"] = round(MAX_PUMP_PRESSURE)
 	data["last_draw"] = last_power_draw
 	data["max_power"] = power_rating
 	return data
@@ -134,13 +134,13 @@
 		if("pressure")
 			var/pressure = params["pressure"]
 			if(pressure == "max")
-				pressure = MAX_OUTPUT_PRESSURE
+				pressure = MAX_PUMP_PRESSURE
 				. = TRUE
 			else if(text2num(pressure) != null)
 				pressure = text2num(pressure)
 				. = TRUE
 			if(.)
-				target_pressure = clamp(pressure, 0, MAX_OUTPUT_PRESSURE)
+				target_pressure = clamp(pressure, 0, MAX_PUMP_PRESSURE)
 				investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
 	update_appearance()
 
@@ -151,6 +151,10 @@
 
 /obj/machinery/atmospherics/components/binary/pump/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
+		return
+
+	if("status" in signal.data)
+		broadcast_status()
 		return
 
 	var/old_on = on //for logging
@@ -166,10 +170,6 @@
 
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)
-
-	if("status" in signal.data)
-		broadcast_status()
-		return
 
 	broadcast_status()
 	update_appearance()
@@ -233,10 +233,10 @@
 	var/obj/machinery/atmospherics/components/binary/pump/connected_pump
 
 /obj/item/circuit_component/atmos_pump/populate_ports()
-	pressure_value = add_input_port("New Pressure", PORT_TYPE_NUMBER, trigger = .proc/set_pump_pressure)
-	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = .proc/set_pump_on)
-	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = .proc/set_pump_off)
-	request_data = add_input_port("Request Port Data", PORT_TYPE_SIGNAL, trigger = .proc/request_pump_data)
+	pressure_value = add_input_port("New Pressure", PORT_TYPE_NUMBER, trigger = PROC_REF(set_pump_pressure))
+	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_on))
+	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_off))
+	request_data = add_input_port("Request Port Data", PORT_TYPE_SIGNAL, trigger = PROC_REF(request_pump_data))
 
 	input_pressure = add_output_port("Input Pressure", PORT_TYPE_NUMBER)
 	output_pressure = add_output_port("Output Pressure", PORT_TYPE_NUMBER)
@@ -251,7 +251,7 @@
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/pump))
 		connected_pump = shell
-		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, .proc/handle_pump_activation)
+		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, PROC_REF(handle_pump_activation))
 
 /obj/item/circuit_component/atmos_pump/unregister_usb_parent(atom/movable/shell)
 	UnregisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON)
@@ -259,7 +259,7 @@
 	return ..()
 
 /obj/item/circuit_component/atmos_pump/pre_input_received(datum/port/input/port)
-	pressure_value.set_value(clamp(pressure_value.value, 0, MAX_OUTPUT_PRESSURE))
+	pressure_value.set_value(clamp(pressure_value.value, 0, MAX_PUMP_PRESSURE))
 
 /obj/item/circuit_component/atmos_pump/proc/handle_pump_activation(datum/source, active)
 	SIGNAL_HANDLER
@@ -297,5 +297,5 @@
 	var/datum/gas_mixture/air_output = connected_pump.airs[2]
 	input_pressure.set_output(air_input.returnPressure())
 	output_pressure.set_output(air_output.returnPressure())
-	input_temperature.set_output(air_input.get_temperature())
-	output_temperature.set_output(air_output.get_temperature())
+	input_temperature.set_output(air_input.temperature)
+	output_temperature.set_output(air_output.temperature)

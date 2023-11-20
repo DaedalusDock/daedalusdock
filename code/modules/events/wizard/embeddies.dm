@@ -40,7 +40,7 @@ GLOBAL_DATUM(global_funny_embedding, /datum/global_funny_embedding)
 /datum/global_funny_embedding/New()
 	. = ..()
 	//second operation takes MUCH longer, so lets set up signals first.
-	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, .proc/on_new_item_in_existence)
+	RegisterSignal(SSdcs, COMSIG_GLOB_NEW_ITEM, PROC_REF(on_new_item_in_existence))
 	handle_current_items()
 
 /datum/global_funny_embedding/Destroy(force)
@@ -66,7 +66,7 @@ GLOBAL_DATUM(global_funny_embedding, /datum/global_funny_embedding)
 /datum/global_funny_embedding/proc/handle_current_items()
 	for(var/obj/item/embed_item in world)
 		CHECK_TICK
-		if(!(embed_item.flags_1 & INITIALIZED_1))
+		if(!embed_item.initialized)
 			continue
 		if(!embed_item.embedding)
 			embed_item.embedding = embed_type

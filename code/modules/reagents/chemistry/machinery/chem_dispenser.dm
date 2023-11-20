@@ -36,15 +36,16 @@
 	var/nopower_state = "dispenser_nopower"
 	var/has_panel_overlay = TRUE
 	var/obj/item/reagent_containers/beaker = null
-	//dispensable_reagents is copypasted in plumbing synthesizers. Please update accordingly. (I didn't make it global because that would limit custom chem dispensers)
 	var/list/dispensable_reagents = list(
 		/datum/reagent/aluminium,
-		/datum/reagent/bromine,
+		/datum/reagent/ammonia,
 		/datum/reagent/carbon,
+		/datum/reagent/calcium,
 		/datum/reagent/chlorine,
 		/datum/reagent/copper,
 		/datum/reagent/consumable/ethanol,
 		/datum/reagent/fluorine,
+		/datum/reagent/fuel,
 		/datum/reagent/hydrogen,
 		/datum/reagent/iodine,
 		/datum/reagent/iron,
@@ -54,43 +55,20 @@
 		/datum/reagent/oxygen,
 		/datum/reagent/phosphorus,
 		/datum/reagent/potassium,
-		/datum/reagent/uranium/radium,
 		/datum/reagent/silicon,
 		/datum/reagent/sodium,
-		/datum/reagent/stable_plasma,
 		/datum/reagent/consumable/sugar,
+		/datum/reagent/uranium/radium,
 		/datum/reagent/sulfur,
-		/datum/reagent/toxin/acid,
 		/datum/reagent/water,
-		/datum/reagent/fuel
-	)
-	//PARIAH EDIT
-	var/list/upgrade_reagents = list(
-		/datum/reagent/fuel/oil,
-		/datum/reagent/ammonia,
-		/datum/reagent/ash
-	)
-
-	var/list/upgrade_reagents2 = list(
-		/datum/reagent/acetone,
-		/datum/reagent/phenol,
-		/datum/reagent/diethylamine
-	)
-
-	var/list/upgrade_reagents3 = list(
-		/datum/reagent/medicine/mine_salve,
-		/datum/reagent/toxin
 	)
 
 	var/list/emagged_reagents = list(
 		/datum/reagent/drug/space_drugs,
-		/datum/reagent/toxin/plasma,
 		/datum/reagent/consumable/frostoil,
-		/datum/reagent/toxin/carpotoxin,
 		/datum/reagent/toxin/histamine,
 		/datum/reagent/medicine/morphine
 	)
-	//PARIAH EDIT END
 
 	var/list/recording_recipe
 
@@ -98,19 +76,9 @@
 
 /obj/machinery/chem_dispenser/Initialize(mapload)
 	. = ..()
-	dispensable_reagents = sort_list(dispensable_reagents, /proc/cmp_reagents_asc)
+	dispensable_reagents = sort_list(dispensable_reagents, GLOBAL_PROC_REF(cmp_reagents_asc))
 	if(emagged_reagents)
-		emagged_reagents = sort_list(emagged_reagents, /proc/cmp_reagents_asc)
-	if(upgrade_reagents)
-		upgrade_reagents = sort_list(upgrade_reagents, /proc/cmp_reagents_asc)
-	//PARIAH EDIT
-	if(upgrade_reagents)
-		upgrade_reagents = sort_list(upgrade_reagents, /proc/cmp_reagents_asc)
-	if(upgrade_reagents2)
-		upgrade_reagents2 = sort_list(upgrade_reagents2, /proc/cmp_reagents_asc)
-	if(upgrade_reagents3)
-		upgrade_reagents3 = sort_list(upgrade_reagents3, /proc/cmp_reagents_asc)
-	//PARIAH EDIT END
+		emagged_reagents = sort_list(emagged_reagents, GLOBAL_PROC_REF(cmp_reagents_asc))
 	if(is_operational)
 		begin_processing()
 	update_appearance()
@@ -223,7 +191,7 @@
 	var/beakerCurrentVolume = 0
 	if(beaker && beaker.reagents && beaker.reagents.reagent_list.len)
 		for(var/datum/reagent/R in beaker.reagents.reagent_list)
-			beakerContents.Add(list(list("name" = R.name, "volume" = round(R.volume, 0.01), "pH" = R.ph, "purity" = R.purity))) // list in a list because Byond merges the first list...
+			beakerContents.Add(list(list("name" = R.name, "volume" = round(R.volume, 0.01)))) // list in a list because Byond merges the first list...
 			beakerCurrentVolume += R.volume
 	data["beakerContents"] = beakerContents
 
@@ -231,24 +199,22 @@
 		data["beakerCurrentVolume"] = round(beakerCurrentVolume, 0.01)
 		data["beakerMaxVolume"] = beaker.volume
 		data["beakerTransferAmounts"] = beaker.possible_transfer_amounts
-		data["beakerCurrentpH"] = round(beaker.reagents.ph, 0.01)
 	else
 		data["beakerCurrentVolume"] = null
 		data["beakerMaxVolume"] = null
 		data["beakerTransferAmounts"] = null
-		data["beakerCurrentpH"] = null
 
 	var/chemicals[0]
 	var/is_hallucinating = FALSE
 	if(user.hallucinating())
 		is_hallucinating = TRUE
 	for(var/re in dispensable_reagents)
-		var/datum/reagent/temp = GLOB.chemical_reagents_list[re]
+		var/datum/reagent/temp = SSreagents.chemical_reagents_list[re]
 		if(temp)
 			var/chemname = temp.name
 			if(is_hallucinating && prob(5))
 				chemname = "[pick_list_replacements("hallucination.json", "chemicals")]"
-			chemicals.Add(list(list("title" = chemname, "id" = ckey(temp.name), "pH" = temp.ph, "pHCol" = convert_ph_to_readable_color(temp.ph))))
+			chemicals.Add(list(list("title" = chemname, "id" = ckey(temp.name))))
 	data["chemicals"] = chemicals
 	data["recipes"] = saved_recipes
 
@@ -348,7 +314,7 @@
 			if(!is_operational)
 				return
 			var/name = tgui_input_text(usr, "What do you want to name this recipe?", "Recipe Name", MAX_NAME_LEN)
-			if(!usr.canUseTopic(src, !issilicon(usr)))
+			if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 				return
 			if(saved_recipes[name] && tgui_alert(usr, "\"[name]\" already exists, do you want to overwrite it?",, list("Yes", "No")) == "No")
 				return
@@ -434,8 +400,6 @@
 		recharge_amount *= C.rating
 		parts_rating += C.rating
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
-		if (M.rating > 3)
-			dispensable_reagents |= upgrade_reagents
 		parts_rating += M.rating
 	powerefficiency = round(newpowereff, 0.01)
 
@@ -461,7 +425,7 @@
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	if(!can_interact(user) || !user.canUseTopic(src, !issilicon(user), FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH|USE_IGNORE_TK))
 		return
 	replace_beaker(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -504,7 +468,6 @@
 		/datum/reagent/consumable/tonic,
 		/datum/reagent/consumable/sodawater,
 		/datum/reagent/consumable/lemon_lime,
-		/datum/reagent/consumable/pwr_game,
 		/datum/reagent/consumable/shamblers,
 		/datum/reagent/consumable/sugar,
 		/datum/reagent/consumable/pineapplejuice,
@@ -515,25 +478,8 @@
 		/datum/reagent/consumable/lemonjuice,
 		/datum/reagent/consumable/menthol
 	)
-	//PARIAH EDIT
-	upgrade_reagents = list(
-		/datum/reagent/consumable/applejuice,
-		/datum/reagent/consumable/pumpkinjuice,
-		/datum/reagent/consumable/vanilla
-	)
-	upgrade_reagents2 = list(
-		/datum/reagent/consumable/banana,
-		/datum/reagent/consumable/berryjuice,
-		/datum/reagent/consumable/blumpkinjuice
-	)
-	upgrade_reagents3 = list(
-		/datum/reagent/consumable/watermelonjuice,
-		/datum/reagent/consumable/peachjuice,
-		/datum/reagent/consumable/sol_dry
-	)
-	//PARIAH EDIT END
+
 	emagged_reagents = list(
-		/datum/reagent/consumable/ethanol/thirteenloko,
 		/datum/reagent/consumable/ethanol/whiskey_cola,
 		/datum/reagent/toxin/mindbreaker,
 		/datum/reagent/toxin/staminatoxin
@@ -607,9 +553,8 @@
 		/datum/reagent/consumable/ethanol/curacao,
 		/datum/reagent/consumable/ethanol/sake,
 		/datum/reagent/consumable/ethanol/applejack,
-		/datum/reagent/consumable/ethanol/synthanol// PARIAH EDIT
 	)
-	upgrade_reagents = null
+
 	emagged_reagents = list(
 		/datum/reagent/consumable/ethanol,
 		/datum/reagent/iron,
@@ -632,7 +577,6 @@
 	name = "mutagen dispenser"
 	desc = "Creates and dispenses mutagen."
 	dispensable_reagents = list(/datum/reagent/toxin/mutagen)
-	upgrade_reagents = null
 	emagged_reagents = list(/datum/reagent/toxin/plasma)
 
 
@@ -657,7 +601,6 @@
 		/datum/reagent/ammonia,
 		/datum/reagent/ash,
 		/datum/reagent/diethylamine)
-	upgrade_reagents = null
 
 /obj/machinery/chem_dispenser/fullupgrade //fully ugpraded stock parts, emagged
 	desc = "Creates and dispenses chemicals. This model has had its safeties shorted out."
@@ -682,7 +625,6 @@
 	use_power = NO_POWER_USE
 	dispensable_reagents = list(
 		/datum/reagent/aluminium,
-		/datum/reagent/bromine,
 		/datum/reagent/carbon,
 		/datum/reagent/chlorine,
 		/datum/reagent/copper,
@@ -713,12 +655,11 @@
 		/datum/reagent/diethylamine,
 		/datum/reagent/fuel/oil,
 		/datum/reagent/saltpetre,
-		/datum/reagent/medicine/mine_salve,
 		/datum/reagent/medicine/morphine,
 		/datum/reagent/drug/space_drugs,
 		/datum/reagent/toxin,
 		/datum/reagent/toxin/plasma,
 		/datum/reagent/uranium,
 		/datum/reagent/consumable/liquidelectricity/enriched,
-		/datum/reagent/medicine/c2/synthflesh
+		/datum/reagent/medicine/synthflesh
 	)

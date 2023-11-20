@@ -17,7 +17,7 @@
 /mob/living/simple_animal/hostile/guardian/fire/Initialize(mapload, theme)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -34,9 +34,11 @@
 
 /mob/living/simple_animal/hostile/guardian/fire/proc/on_entered(datum/source, AM as mob|obj)
 	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	collision_ignite(AM)
 
-/mob/living/simple_animal/hostile/guardian/fire/Bumped(atom/movable/AM)
+/mob/living/simple_animal/hostile/guardian/fire/BumpedBy(atom/movable/AM)
 	..()
 	collision_ignite(AM)
 

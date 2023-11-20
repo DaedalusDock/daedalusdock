@@ -20,7 +20,7 @@
 	if(!pref) //No preferences? We'll let you pass, this time (just a precautionary check,you dont wanna mess up gamemode setting logic)
 		return FALSE
 	if(banned_quirks)
-		for(var/Q in pref.all_quirks)
+		for(var/Q in pref.read_preference(/datum/preference/blob/quirks))
 			if(banned_quirks[Q])
 				return TRUE
 	return FALSE

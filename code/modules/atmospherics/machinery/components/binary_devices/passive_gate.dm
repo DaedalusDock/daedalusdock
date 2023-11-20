@@ -26,7 +26,7 @@ Passive gate is similar to the regular pump except:
 	///Stores the radio connection
 	var/datum/radio_frequency/radio_connection
 
-/obj/machinery/atmospherics/components/binary/passive_gate/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/passive_gate/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -35,7 +35,7 @@ Passive gate is similar to the regular pump except:
 
 /obj/machinery/atmospherics/components/binary/passive_gate/AltClick(mob/user)
 	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
+		target_pressure = MAX_PUMP_PRESSURE
 		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "pressure output set to [target_pressure] kPa")
 		update_appearance()
@@ -62,8 +62,8 @@ Passive gate is similar to the regular pump except:
 	var/pressure_delta = input_starting_pressure - target_pressure
 
 	var/transfer_moles = (target_pressure/air1.volume)*air1.total_moles
-	transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta))
-	if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)//pump_gas() will return a negative number if no flow occurred
+	transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta, parents[2]?.combined_volume || 0))
+	if(pump_gas_passive(air1, air2, transfer_moles) >= 0)//pump_gas() will return a negative number if no flow occurred
 		update_parents()
 
 //Radio remote control
@@ -110,7 +110,7 @@ Passive gate is similar to the regular pump except:
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
+	data["max_pressure"] = round(MAX_PUMP_PRESSURE)
 	return data
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_act(action, params)
@@ -125,7 +125,7 @@ Passive gate is similar to the regular pump except:
 		if("pressure")
 			var/pressure = params["pressure"]
 			if(pressure == "max")
-				pressure = MAX_OUTPUT_PRESSURE
+				pressure = MAX_PUMP_PRESSURE
 				. = TRUE
 			else if(text2num(pressure) != null)
 				pressure = text2num(pressure)
@@ -144,6 +144,10 @@ Passive gate is similar to the regular pump except:
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
+	if("status" in signal.data)
+		broadcast_status()
+		return
+
 	var/old_on = on //for logging
 
 	if("power" in signal.data)
@@ -157,10 +161,6 @@ Passive gate is similar to the regular pump except:
 
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)
-
-	if("status" in signal.data)
-		broadcast_status()
-		return
 
 	broadcast_status()
 	update_appearance()

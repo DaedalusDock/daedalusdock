@@ -7,7 +7,7 @@
 
 /mob/living/carbon/set_suicide(suicide_state) //you thought that box trick was pretty clever, didn't you? well now hardmode is on, boyo.
 	. = ..()
-	var/obj/item/organ/internal/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		B.suicided = suicide_state
 
@@ -41,9 +41,8 @@
 				damagetype = held_item.suicide_act(src)
 			if(damagetype)
 				if(damagetype & SHAME)
-					adjustStaminaLoss(200)
+					stamina.adjust(-200)
 					set_suicide(FALSE)
-					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "shameful_suicide", /datum/mood_event/shameful_suicide)
 					return
 
 				if(damagetype & MANUAL_SUICIDE_NONLETHAL) //Make sure to call the necessary procs if it does kill later
@@ -85,7 +84,7 @@
 		var/suicide_message
 
 		if(!combat_mode)
-			var/obj/item/organ/internal/brain/userbrain = getorgan(/obj/item/organ/internal/brain)
+			var/obj/item/organ/brain/userbrain = getorgan(/obj/item/organ/brain)
 			if(userbrain?.damage >= 75)
 				suicide_message = "[src] pulls both arms outwards in front of [p_their()] chest and pumps them behind [p_their()] back, repeats this motion in a smaller range of motion \
 						down to [p_their()] hips two times once more all while sliding [p_their()] legs in a faux walking motion, claps [p_their()] hands together \
@@ -143,7 +142,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(maxHealth * 2 - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(maxHealth - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 
@@ -162,7 +161,7 @@
 		suicide_log()
 
 		//put em at -175
-		adjustOxyLoss(max(maxHealth * 2 - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
+		adjustOxyLoss(max(maxHealth - getToxLoss() - getFireLoss() - getBruteLoss() - getOxyLoss(), 0))
 		death(FALSE)
 		ghostize(FALSE) // Disallows reentering body and disassociates mind
 
@@ -232,9 +231,7 @@
 	switch(stat)
 		if(CONSCIOUS)
 			return TRUE
-		if(SOFT_CRIT)
-			to_chat(src, span_warning("You can't commit suicide while in a critical condition!"))
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			to_chat(src, span_warning("You need to be conscious to commit suicide!"))
 		if(DEAD)
 			to_chat(src, span_warning("You're already dead!"))

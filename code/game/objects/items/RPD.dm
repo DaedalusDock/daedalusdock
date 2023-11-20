@@ -210,8 +210,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	var/category = ATMOS_CATEGORY
 	///Piping layer we are going to spawn the atmos device in
 	var/piping_layer = PIPING_LAYER_DEFAULT
-	///Layer for disposal ducts
-	var/ducting_layer = DUCT_LAYER_DEFAULT
 	///Stores the current device to spawn
 	var/datum/pipe_info/recipe
 	///Stores the first atmos device
@@ -252,7 +250,7 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 /obj/item/pipe_dispenser/equipped(mob/user, slot, initial)
 	. = ..()
 	if(slot == ITEM_SLOT_HANDS)
-		RegisterSignal(user, COMSIG_MOUSE_SCROLL_ON, .proc/mouse_wheeled)
+		RegisterSignal(user, COMSIG_MOUSE_SCROLL_ON, PROC_REF(mouse_wheeled))
 	else
 		UnregisterSignal(user,COMSIG_MOUSE_SCROLL_ON)
 
@@ -329,7 +327,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	var/list/data = list(
 		"category" = category,
 		"piping_layer" = piping_layer,
-		"ducting_layer" = ducting_layer,
 		"preview_rows" = recipe.get_preview(p_dir),
 		"categories" = list(),
 		"selected_color" = paint_color,
@@ -364,8 +361,9 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	if(.)
 		return
 
-	if(!usr.canUseTopic(src, BE_CLOSE))
+	if(!usr.canUseTopic(src, USE_CLOSE))
 		return
+
 	var/playeffect = TRUE
 	switch(action)
 		if("color")
@@ -383,9 +381,6 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 			playeffect = FALSE
 		if("piping_layer")
 			piping_layer = text2num(params["piping_layer"])
-			playeffect = FALSE
-		if("ducting_layer")
-			ducting_layer = text2num(params["ducting_layer"])
 			playeffect = FALSE
 		if("pipe_type")
 			var/static/list/recipes

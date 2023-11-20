@@ -2,6 +2,12 @@
 ## Must be set to something other than 'default_pwd' and at least 7 characters long to be valid.
 #COMMS_KEY default_pwd
 
+## Github Fine-Grained API Key with AT LEAST `issue.write` scope for the target repository.
+#ISSUE_KEY github_pat_EXAMPLE
+
+##Github API 'slug' for issue reporting, format owner/repo
+ISSUE_SLUG daedalusdock/daedalusdock
+
 ## World address and port for server receiving cross server messages
 ## Use '+' to denote spaces in ServerName
 ## Repeat this entry to add more servers

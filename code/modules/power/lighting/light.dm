@@ -1,4 +1,5 @@
 // the standard tube light fixture
+DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light
 	name = "light fixture"
 	icon = 'icons/obj/lighting.dmi'
@@ -21,16 +22,16 @@
 	///Amount of power used
 	var/static_power_used = 0
 	///The outer radius of the light's... light.
-	var/bulb_outer_range = 7
+	var/bulb_outer_range = 9
 	///The inner radius of the bulb's light, where it is at maximum brightness
-	var/bulb_inner_range = 1.5
+	var/bulb_inner_range = 1.8
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 1
+	var/bulb_power = 0.6
 	///The falloff of the emitted light. Adjust until it looks good.
-	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/bulb_falloff = 1.85
 
 	///Default colour of the light.
-	var/bulb_colour = "#f2f9f7"
+	var/bulb_colour = "#dfac72"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/status = LIGHT_OK
 	///Should we flicker?
@@ -56,10 +57,10 @@
 	///Inner, brightest radius of the nightshift light
 	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.85
+	var/nightshift_light_power = 0.5
 	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#FFDDCC"
-	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/nightshift_light_color = "#dfac72"
+	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
@@ -70,7 +71,7 @@
 	///Determines the colour of the light while it's in emergency mode
 	var/bulb_emergency_colour = "#FF3232"
 	///The multiplier for determining the light's power in emergency mode
-	var/bulb_emergency_pow_mul = 0.4
+	var/bulb_emergency_pow_mul = 0.6
 	///The minimum value for the light's power in emergency mode
 	var/bulb_emergency_pow_min = 0.2
 
@@ -94,7 +95,7 @@
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
 
-	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, .proc/on_light_eater)
+	RegisterSignal(src, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
 	become_atmos_sensitive()
 	return INITIALIZE_HINT_LATELOAD
 
@@ -112,7 +113,7 @@
 			if(prob(1))
 				break_light_tube(TRUE)
 	#endif
-	addtimer(CALLBACK(src, .proc/update, FALSE), 0.1 SECONDS)
+	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
 	if(my_area)
@@ -170,11 +171,11 @@
 		if(instant)
 			turn_on(trigger, play_sound)
 		else if(maploaded)
-			turn_on(trigger, play_sound)
+			turn_on(trigger)
 			maploaded = FALSE
 		else if(!turning_on)
 			turning_on = TRUE
-			addtimer(CALLBACK(src, .proc/turn_on, trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+			addtimer(CALLBACK(src, PROC_REF(turn_on), trigger, play_sound), rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
 	else if(has_emergency_power(LIGHT_EMERGENCY_POWER_USE) && !turned_off())
 		use_power = IDLE_POWER_USE
 		emergency_mode = TRUE
@@ -208,7 +209,7 @@
 		if(!start_only)
 			do_sparks(3, TRUE, src)
 		var/delay = rand(BROKEN_SPARKS_MIN, BROKEN_SPARKS_MAX)
-		addtimer(CALLBACK(src, .proc/broken_sparks), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
+		addtimer(CALLBACK(src, PROC_REF(broken_sparks)), delay, TIMER_UNIQUE | TIMER_NO_HASH_WAIT)
 
 /obj/machinery/light/process()
 	if (!cell)
@@ -269,7 +270,7 @@
 	//PARIAH EDIT ADDITION
 	if(istype(tool, /obj/item/multitool) && constant_flickering)
 		to_chat(user, span_notice("You start repairing the ballast of [src] with [tool]."))
-		if(do_after(user, src, 2 SECONDS))
+		if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = tool))
 			stop_flickering()
 			to_chat(user, span_notice("You repair the ballast of [src]!"))
 		return TRUE
@@ -311,6 +312,8 @@
 	if(istype(tool, /obj/item/stock_parts/cell))
 		return FALSE
 
+	if(status != LIGHT_EMPTY)
+		return ..()
 	to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
 	if(has_power() && (tool.flags_1 & CONDUCT_1))
 		do_sparks(3, TRUE, src)
@@ -480,9 +483,9 @@
 	var/mob/living/carbon/human/electrician = user
 
 	if(istype(electrician))
-		var/obj/item/organ/internal/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
-		if(istype(maybe_stomach, /obj/item/organ/internal/stomach/ethereal))
-			var/obj/item/organ/internal/stomach/ethereal/stomach = maybe_stomach
+		var/obj/item/organ/stomach/maybe_stomach = electrician.getorganslot(ORGAN_SLOT_STOMACH)
+		if(istype(maybe_stomach, /obj/item/organ/stomach/ethereal))
+			var/obj/item/organ/stomach/ethereal/stomach = maybe_stomach
 			if(stomach.drain_time > world.time)
 				return
 			to_chat(electrician, span_notice("You start channeling some power through the [fitting] into your body."))
@@ -509,14 +512,12 @@
 		to_chat(user, span_notice("You telekinetically remove the light [fitting]."))
 	else
 		var/obj/item/bodypart/affecting = electrician.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
-		if(affecting?.receive_damage( 0, 5 )) // 5 burn damage
-			electrician.update_damage_overlays()
+		affecting?.receive_damage( 0, 5 )
 		if(HAS_TRAIT(user, TRAIT_LIGHTBULB_REMOVER))
 			to_chat(user, span_notice("You feel like you're burning, but you can push through."))
 			if(!do_after(user, src, 5 SECONDS))
 				return
-			if(affecting?.receive_damage( 0, 10 )) // 10 more burn damage
-				electrician.update_damage_overlays()
+			affecting?.receive_damage( 0, 10 ) // 10 more burn damage
 			to_chat(user, span_notice("You manage to remove the light [fitting], shattering it in process."))
 			break_light_tube()
 		else

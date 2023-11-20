@@ -7,7 +7,6 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	antagpanel_category = "Wizard"
 	job_rank = ROLE_WIZARD
 	antag_hud_name = "wizard"
-	antag_moodlet = /datum/mood_event/focused
 	hijack_speed = 0.5
 	ui_name = "AntagInfoWizard"
 	suicide_cry = "FOR THE FEDERATION!!"
@@ -102,28 +101,18 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	owner.current.forceMove(pick(GLOB.wizardstart))
 
 /datum/antagonist/wizard/proc/create_objectives()
-	switch(rand(1,100))
+	switch(rand(1,85))
 		if(1 to 30)
 			var/datum/objective/assassinate/kill_objective = new
 			kill_objective.owner = owner
 			kill_objective.find_target()
 			objectives += kill_objective
 
-			if (!(locate(/datum/objective/escape) in objectives))
-				var/datum/objective/escape/escape_objective = new
-				escape_objective.owner = owner
-				objectives += escape_objective
-
 		if(31 to 60)
 			var/datum/objective/steal/steal_objective = new
 			steal_objective.owner = owner
 			steal_objective.find_target()
 			objectives += steal_objective
-
-			if (!(locate(/datum/objective/escape) in objectives))
-				var/datum/objective/escape/escape_objective = new
-				escape_objective.owner = owner
-				objectives += escape_objective
 
 		if(61 to 85)
 			var/datum/objective/assassinate/kill_objective = new
@@ -136,16 +125,6 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 			steal_objective.find_target()
 			objectives += steal_objective
 
-			if (!(locate(/datum/objective/survive) in objectives))
-				var/datum/objective/survive/survive_objective = new
-				survive_objective.owner = owner
-				objectives += survive_objective
-
-		else
-			if (!(locate(/datum/objective/hijack) in objectives))
-				var/datum/objective/hijack/hijack_objective = new
-				hijack_objective.owner = owner
-				objectives += hijack_objective
 
 /datum/antagonist/wizard/on_removal()
 	// Currently removes all spells regardless of innate or not. Could be improved.
@@ -202,7 +181,7 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 
 /datum/antagonist/wizard/get_admin_commands()
 	. = ..()
-	.["Send to Lair"] = CALLBACK(src,.proc/admin_send_to_lair)
+	.["Send to Lair"] = CALLBACK(src,PROC_REF(admin_send_to_lair))
 
 /datum/antagonist/wizard/proc/admin_send_to_lair(mob/admin)
 	owner.current.forceMove(pick(GLOB.wizardstart))
@@ -341,7 +320,7 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	fireball.Grant(living_current)
 
 	var/obj/item/implant/exile/exiled = new /obj/item/implant/exile(living_current)
-	exiled.implant(living_current)
+	exiled.implant(living_current, body_zone = BODY_ZONE_CHEST)
 
 /datum/antagonist/wizard/academy/create_objectives()
 	var/datum/objective/new_objective = new("Protect Wizard Academy from the intruders")

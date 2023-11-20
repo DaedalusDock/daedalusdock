@@ -51,10 +51,10 @@ Charged extracts:
 
 /obj/item/slimecross/charged/purple
 	colour = "purple"
-	effect_desc = "Creates a packet of omnizine."
+	effect_desc = "Creates a packet of tricordrazine."
 
 /obj/item/slimecross/charged/purple/do_effect(mob/user)
-	new /obj/item/slimecrossbeaker/omnizine(get_turf(user))
+	new /obj/item/slimecrossbeaker/tricordrazine(get_turf(user))
 	user.visible_message(span_notice("[src] sparks, and floods with a regenerative solution!"))
 	..()
 
@@ -170,11 +170,11 @@ Charged extracts:
 	if(!istype(H))
 		to_chat(user, span_warning("You must be a humanoid to use this!"))
 		return
-	var/racechoice = tgui_input_list(H, "Choose your slime subspecies", "Slime Selection", sort_list(subtypesof(/datum/species/jelly), /proc/cmp_typepaths_asc))
+	var/racechoice = tgui_input_list(H, "Choose your slime subspecies", "Slime Selection", sort_list(subtypesof(/datum/species/jelly), GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(racechoice))
 		to_chat(user, span_notice("You decide not to become a slime for now."))
 		return
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	H.set_species(racechoice, icon_update=1)
 	H.visible_message(span_warning("[H] suddenly shifts form as [src] dissolves into [H.p_their()] skin!"))
@@ -197,7 +197,7 @@ Charged extracts:
 
 /obj/item/slimecross/charged/gold/do_effect(mob/user)
 	user.visible_message(span_warning("[src] starts shuddering violently!"))
-	addtimer(CALLBACK(src, .proc/startTimer), 50)
+	addtimer(CALLBACK(src, PROC_REF(startTimer)), 50)
 
 /obj/item/slimecross/charged/gold/proc/startTimer()
 	START_PROCESSING(SSobj, src)
@@ -222,7 +222,7 @@ Charged extracts:
 
 /obj/item/slimecross/charged/oil/do_effect(mob/user)
 	user.visible_message(span_danger("[src] begins to shake with rapidly increasing force!"))
-	addtimer(CALLBACK(src, .proc/boom), 50)
+	addtimer(CALLBACK(src, PROC_REF(boom)), 50)
 
 /obj/item/slimecross/charged/oil/proc/boom()
 	explosion(src, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4, explosion_cause = src) //Much smaller effect than normal oils, but devastatingly strong where it does hit.
@@ -256,15 +256,6 @@ Charged extracts:
 /obj/item/slimecross/charged/lightpink/do_effect(mob/user)
 	new /obj/item/slimepotion/peacepotion(get_turf(user))
 	user.visible_message(span_notice("[src] distills into a potion!"))
-	..()
-
-/obj/item/slimecross/charged/adamantine
-	colour = "adamantine"
-	effect_desc = "Creates a completed golem shell."
-
-/obj/item/slimecross/charged/adamantine/do_effect(mob/user)
-	user.visible_message(span_notice("[src] produces a fully formed golem shell!"))
-	new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(src), /datum/species/golem/adamantine, user)
 	..()
 
 /obj/item/slimecross/charged/rainbow

@@ -92,7 +92,7 @@
 	if(!anchored || panel_open)
 		return ..()
 	obj_flags |= BEING_SHOCKED
-	addtimer(CALLBACK(src, .proc/reset_shocked), 1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(reset_shocked)), 1 SECONDS)
 	flick("coilhit", src)
 	if(!(zap_flags & ZAP_GENERATES_POWER)) //Prevent infinite recursive power
 		return 0

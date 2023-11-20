@@ -813,7 +813,6 @@
 /area/shuttle/sbc_starfury)
 "cM" = (
 /obj/structure/table,
-/obj/item/surgical_drapes,
 /obj/item/razor,
 /obj/machinery/button/door/directional/west{
 	id = "starfury_surgery_shutters";
@@ -1037,7 +1036,7 @@
 /obj/item/bodypart/arm/right/robot{
 	pixel_x = 3
 	},
-/obj/item/book/manual/wiki/surgery,
+/obj/item/book/manual/codex/surgery,
 /obj/effect/turf_decal/siding/blue{
 	dir = 4
 	},
@@ -1048,13 +1047,6 @@
 /turf/open/floor/iron/white/side{
 	dir = 10
 	},
-/area/shuttle/sbc_starfury)
-"dC" = (
-/obj/machinery/computer/operating{
-	dir = 1
-	},
-/obj/structure/cable,
-/turf/open/floor/iron,
 /area/shuttle/sbc_starfury)
 "dD" = (
 /obj/structure/closet/crate/freezer/blood,
@@ -6593,7 +6585,7 @@ ae
 hx
 df
 ds
-dC
+MS
 UB
 dY
 ec

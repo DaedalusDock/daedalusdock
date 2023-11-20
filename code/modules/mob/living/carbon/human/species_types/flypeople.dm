@@ -3,15 +3,16 @@
 	plural_form = "Flypeople"
 	id = SPECIES_FLYPERSON
 	say_mod = "buzzes"
-	species_traits = list(HAS_FLESH, HAS_BONE, TRAIT_ANTENNAE)
+	species_traits = list()
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
 		TRAIT_CAN_STRIP,
 		TRAIT_CAN_USE_FLIGHT_POTION,
+		TRAIT_ANTENNAE,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_BUG
 	meat = /obj/item/food/meat/slab/human/mutant/fly
-	mutanteyes = /obj/item/organ/internal/eyes/fly
+
 	liked_food = GROSS
 	disliked_food = NONE
 	toxic_food = NONE
@@ -20,13 +21,7 @@
 	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 
-	mutanttongue = /obj/item/organ/internal/tongue/fly
-	mutantheart = /obj/item/organ/internal/heart/fly
-	mutantlungs = /obj/item/organ/internal/lungs/fly
-	mutantliver = /obj/item/organ/internal/liver/fly
-	mutantstomach = /obj/item/organ/internal/stomach/fly
-	mutantappendix = /obj/item/organ/internal/appendix/fly
-	mutant_organs = list(/obj/item/organ/internal/fly, /obj/item/organ/internal/fly/groin)
+	mutant_organs = list(/obj/item/organ/fly, /obj/item/organ/fly/groin)
 
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/fly,
@@ -37,12 +32,17 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/fly,
 	)
 
-/datum/species/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
-	if(chem.type == /datum/reagent/toxin/pestkiller)
-		H.adjustToxLoss(3 * REAGENTS_EFFECT_MULTIPLIER * delta_time)
-		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
-		return TRUE
-	..()
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart/fly,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/fly,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes/fly,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/fly,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/fly,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix/fly,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/fly,
+	)
 
 /datum/species/fly/check_species_weakness(obj/item/weapon, mob/living/attacker)
 	if(istype(weapon, /obj/item/melee/flyswatter))
@@ -103,44 +103,43 @@
 
 	return to_add
 
-/obj/item/organ/internal/heart/fly
+/obj/item/organ/heart/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
 
-/obj/item/organ/internal/heart/fly/Initialize(mapload)
+/obj/item/organ/heart/fly/Initialize(mapload)
 	. = ..()
 	name = odd_organ_name()
 	icon_state = pick("brain-x-d", "liver-x", "kidneys-x", "stomach-x", "lungs-x", "random_fly_1", "random_fly_2", "random_fly_3", "random_fly_4", "random_fly_5")
 
-/obj/item/organ/internal/heart/fly/update_icon_state()
+/obj/item/organ/heart/fly/update_icon_state()
 	SHOULD_CALL_PARENT(FALSE)
 	return //don't set icon thank you
 
-/obj/item/organ/internal/lungs/fly
+/obj/item/organ/lungs/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
 
-/obj/item/organ/internal/lungs/fly/Initialize(mapload)
+/obj/item/organ/lungs/fly/Initialize(mapload)
 	. = ..()
 	name = odd_organ_name()
 	icon_state = pick("brain-x-d", "liver-x", "kidneys-x", "stomach-x", "lungs-x", "random_fly_1", "random_fly_2", "random_fly_3", "random_fly_4", "random_fly_5")
 
-/obj/item/organ/internal/liver/fly
+/obj/item/organ/liver/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
-	alcohol_tolerance = 0.007 //flies eat vomit, so a lower alcohol tolerance is perfect!
 
-/obj/item/organ/internal/liver/fly/Initialize(mapload)
+/obj/item/organ/liver/fly/Initialize(mapload)
 	. = ..()
 	name = odd_organ_name()
 	icon_state = pick("brain-x-d", "liver-x", "kidneys-x", "stomach-x", "lungs-x", "random_fly_1", "random_fly_2", "random_fly_3", "random_fly_4", "random_fly_5")
 
-/obj/item/organ/internal/stomach/fly
+/obj/item/organ/stomach/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
 
-/obj/item/organ/internal/stomach/fly/Initialize(mapload)
+/obj/item/organ/stomach/fly/Initialize(mapload)
 	. = ..()
 	name = odd_organ_name()
 	icon_state = pick("brain-x-d", "liver-x", "kidneys-x", "stomach-x", "lungs-x", "random_fly_1", "random_fly_2", "random_fly_3", "random_fly_4", "random_fly_5")
 
-/obj/item/organ/internal/stomach/fly/on_life(delta_time, times_fired)
+/obj/item/organ/stomach/fly/on_life(delta_time, times_fired)
 	if(locate(/datum/reagent/consumable) in reagents.reagent_list)
 		var/mob/living/carbon/body = owner
 		// we do not loss any nutrition as a fly when vomiting out food
@@ -150,26 +149,26 @@
 					span_userdanger("You throw up on the floor!"))
 	return ..()
 
-/obj/item/organ/internal/appendix/fly
+/obj/item/organ/appendix/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
 
-/obj/item/organ/internal/appendix/fly/Initialize(mapload)
+/obj/item/organ/appendix/fly/Initialize(mapload)
 	. = ..()
 	name = odd_organ_name()
 	icon_state = pick("brain-x-d", "liver-x", "kidneys-x", "stomach-x", "lungs-x", "random_fly_1", "random_fly_2", "random_fly_3", "random_fly_4", "random_fly_5")
 
-/obj/item/organ/internal/appendix/fly/update_appearance(updates=ALL)
+/obj/item/organ/appendix/fly/update_appearance(updates=ALL)
 	return ..(updates & ~(UPDATE_NAME|UPDATE_ICON)) //don't set name or icon thank you
 
 //useless organs we throw in just to fuck with surgeons a bit more
-/obj/item/organ/internal/fly
+/obj/item/organ/fly
 	desc = "You have no idea what the hell this is, or how it manages to keep something alive in any capacity."
 	visual = FALSE
 
-/obj/item/organ/internal/fly/Initialize(mapload)
+/obj/item/organ/fly/Initialize(mapload)
 	. = ..()
 	name = odd_organ_name()
 	icon_state = pick("brain-x-d", "liver-x", "kidneys-x", "stomach-x", "lungs-x", "random_fly_1", "random_fly_2", "random_fly_3", "random_fly_4", "random_fly_5")
 
-/obj/item/organ/internal/fly/groin //appendix is the only groin organ so we gotta have one of these too lol
+/obj/item/organ/fly/groin //appendix is the only groin organ so we gotta have one of these too lol
 	zone = BODY_ZONE_PRECISE_GROIN

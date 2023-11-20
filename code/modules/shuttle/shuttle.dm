@@ -317,7 +317,7 @@
 	dheight = 18
 	dwidth = 18
 	dir = 2
-	shuttlekeys = list("whiteship_meta", "whiteship_pubby", "whiteship_box", "whiteship_cere", "whiteship_kilo", "whiteship_donut", "whiteship_delta", "whiteship_tram")
+	shuttlekeys = list("whiteship_meta", "whiteship_pubby", "whiteship_box", "whiteship_cere", "whiteship_kilo", "whiteship_donut", "whiteship_delta")
 
 /// Helper proc that tests to ensure all whiteship templates can spawn at their docking port, and logs their sizes
 /// This should be a unit test, but too much of our other code breaks during shuttle movement, so not yet, not yet.
@@ -408,6 +408,9 @@
 	///if this shuttle can move docking ports other than the one it is docked at
 	var/can_move_docking_ports = FALSE
 	var/list/hidden_turfs = list()
+
+	///Bolt doors on take off, unbolt on arrival?
+	var/bolt_doors = FALSE
 
 /obj/docking_port/mobile/register(replace = FALSE)
 	. = ..()

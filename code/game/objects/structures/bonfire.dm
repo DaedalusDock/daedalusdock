@@ -34,7 +34,7 @@
 /obj/structure/bonfire/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -100,10 +100,9 @@
 /obj/structure/bonfire/proc/check_oxygen()
 	if(isopenturf(loc))
 		var/turf/open/bonfire_turf = loc
-		var/datum/gas_mixture/local_gas = bonfire_turf.return_air()
-		if(local_gas)
-			if(local_gas.hasGas(GAS_OXYGEN, 5))
-				return TRUE
+		var/datum/gas_mixture/local_gas = bonfire_turf.unsafe_return_air()
+		if(local_gas.hasGas(GAS_OXYGEN, 5))
+			return TRUE
 	return FALSE
 
 /obj/structure/bonfire/proc/start_burning()
@@ -121,6 +120,9 @@
 
 /obj/structure/bonfire/proc/on_entered(datum/source, atom/movable/entered)
 	SIGNAL_HANDLER
+	if(entered == src)
+		return
+
 	if(burning)
 		if(!grill)
 			bonfire_burn()

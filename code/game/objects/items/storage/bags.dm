@@ -122,7 +122,7 @@
 		return
 	if(listeningTo)
 		UnregisterSignal(listeningTo, COMSIG_MOVABLE_MOVED)
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, .proc/pickup_ores)
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(pickup_ores))
 	listeningTo = user
 
 /obj/item/storage/bag/ore/dropped()
@@ -141,8 +141,9 @@
 	if(!isturf(tile))
 		return
 
-	if(istype(user.pulling, /obj/structure/ore_box))
-		box = user.pulling
+	var/obj/item/hand_item/grab/G = user.get_active_held_item()
+	if(isgrab(G) && istype(G.affecting, /obj/structure/ore_box))
+		box = G.affecting
 
 	if(atom_storage)
 		for(var/thing in tile)
@@ -233,7 +234,7 @@
 	. = ..()
 	. += span_notice("Ctrl-click to activate seed extraction.")
 
-/obj/item/storage/bag/plants/portaseeder/CtrlClick(mob/user)
+/obj/item/storage/bag/plants/portaseeder/CtrlClick(mob/user, list/params)
 	if(user.incapacitated())
 		return
 	for(var/obj/item/plant in contents)
@@ -366,7 +367,7 @@
 	var/delay = rand(2,4)
 	var/datum/move_loop/loop = SSmove_manager.move_rand(tray_item, list(NORTH,SOUTH,EAST,WEST), delay, timeout = rand(1, 2) * delay, flags = MOVEMENT_LOOP_START_FAST)
 	//This does mean scattering is tied to the tray. Not sure how better to handle it
-	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, .proc/change_speed)
+	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(change_speed))
 
 /obj/item/storage/bag/tray/proc/change_speed(datum/move_loop/source)
 	SIGNAL_HANDLER
@@ -423,7 +424,8 @@
 		/obj/item/reagent_containers/medigel,
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/chem_pack
+		/obj/item/reagent_containers/chem_pack,
+		/obj/item/reagent_containers/pill
 		))
 
 /*
@@ -437,6 +439,7 @@
 	worn_icon_state = "biobag"
 	desc = "A bag for the safe transportation and disposal of biowaste and other virulent materials."
 	resistance_flags = FLAMMABLE
+	slot_flags = null //Primarily to limit slime extract storage on one person at a time
 
 /obj/item/storage/bag/bio/Initialize()
 	. = ..()
@@ -444,6 +447,7 @@
 	atom_storage.max_slots = 25
 	atom_storage.set_holdable(list(
 		/obj/item/bodypart,
+		/obj/item/slime_extract,
 		/obj/item/food/monkeycube,
 		/obj/item/healthanalyzer,
 		/obj/item/organ,
@@ -455,7 +459,6 @@
 		/obj/item/reagent_containers/hypospray/medipen,
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
-		/obj/item/bodypart,
 		/obj/item/healthanalyzer
 		))
 
@@ -480,7 +483,6 @@
 		/obj/item/food/deadmouse,
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
-		/obj/item/petri_dish,
 		/obj/item/reagent_containers/dropper,
 		/obj/item/reagent_containers/glass/beaker,
 		/obj/item/reagent_containers/glass/bottle,
@@ -488,8 +490,6 @@
 		/obj/item/food/monkeycube,
 		/obj/item/organ,
 		/obj/item/bodypart,
-		/obj/item/petri_dish,
-		/obj/item/swab
 		))
 
 /*

@@ -56,6 +56,12 @@
 	*/
 	var/list/cooldowns
 
+	// Abstract types are expanded upon more in __DEFINES\abstract.dm
+	/// If this var's value is equivalent to the current type, it is considered abstract.
+	/// It is illegal to instantiate abstract types.
+	var/datum/abstract_type = /datum
+
+
 #ifdef REFERENCE_TRACKING
 	var/running_find_references
 	var/last_find_references = 0
@@ -270,3 +276,11 @@
 		return
 	SEND_SIGNAL(source, COMSIG_CD_RESET(index), S_TIMER_COOLDOWN_TIMELEFT(source, index))
 	TIMER_COOLDOWN_END(source, index)
+
+///Generate a tag for this /datum, if it implements one
+///Should be called as early as possible, best would be in New, to avoid weakref mistargets
+///Really just don't use this, you don't need it, global lists will do just fine MOST of the time
+///We really only use it for mobs to make id'ing people easier
+/datum/proc/GenerateTag()
+	datum_flags |= DF_USE_TAG
+

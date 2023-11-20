@@ -30,7 +30,7 @@
 
 /datum/component/smell/process()
 	var/turf/T = get_turf(parent:drop_location())
-	if(!T?.return_air()?.total_moles)
+	if(!T?.unsafe_return_air()?.total_moles)
 		return
 
 	for(var/mob/living/L as mob in range(radius, parent))

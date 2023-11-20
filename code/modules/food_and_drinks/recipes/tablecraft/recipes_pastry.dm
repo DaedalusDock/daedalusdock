@@ -60,7 +60,7 @@
 /datum/crafting_recipe/food/donut/trumpet
 	name = "Spaceman's Donut"
 	reqs = list(
-		/datum/reagent/medicine/polypyr = 3,
+		/datum/reagent/medicine/tricordrazine = 3,
 		/obj/item/food/donut/plain = 1
 	)
 
@@ -135,7 +135,7 @@
 /datum/crafting_recipe/food/donut/jelly/trumpet
 	name = "Spaceman's Jelly Donut"
 	reqs = list(
-		/datum/reagent/medicine/polypyr = 3,
+		/datum/reagent/medicine/tricordrazine = 3,
 		/obj/item/food/donut/jelly/plain = 1
 	)
 
@@ -210,7 +210,7 @@
 /datum/crafting_recipe/food/donut/slimejelly/trumpet
 	name = "Spaceman's Slime Donut"
 	reqs = list(
-		/datum/reagent/medicine/polypyr = 3,
+		/datum/reagent/medicine/tricordrazine = 3,
 		/obj/item/food/donut/jelly/slimejelly/plain = 1
 	)
 
@@ -386,17 +386,6 @@
 		/obj/item/food/grown/berries = 1
 	)
 	result = /obj/item/food/donkpocket/berry
-	subcategory = CAT_PASTRY
-
-/datum/crafting_recipe/food/donkpocket/gondola
-	time = 15
-	name = "Gondola-pocket"
-	reqs = list(
-		/obj/item/food/pastrybase = 1,
-		/obj/item/food/meatball = 1,
-		/datum/reagent/gondola_mutation_toxin = 5
-	)
-	result = /obj/item/food/donkpocket/gondola
 	subcategory = CAT_PASTRY
 
 ////////////////////////////////////////////////MUFFINS////////////////////////////////////////////////

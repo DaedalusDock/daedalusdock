@@ -37,9 +37,9 @@
 
 /mob/oranges_ear/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	flags_1 |= INITIALIZED_1
+	initialized = TRUE
 	return INITIALIZE_HINT_NORMAL
 
 /mob/oranges_ear/Destroy(force)
@@ -104,23 +104,17 @@
 
 	var/list/assigned_oranges_ears = SSspatial_grid.assign_oranges_ears(hearables_from_grid)
 
-	var/old_luminosity = center_turf.luminosity
-	center_turf.luminosity = 6 //man if only we had an inbuilt dview()
-
 	//this is the ENTIRE reason all this shit is worth it due to how view() works and can be optimized
 	//view() constructs lists of viewed atoms by default and specifying a specific type of atom to look for limits the lists it constructs to those of that
 	//primitive type and then when the view operation is completed the output is then typechecked to only iterate through objects in view with the same
-	//typepath. by assigning one /mob/oranges_ear to every turf with hearable atoms on it and giving them references to each one means that:
-	//1. view() only constructs lists of atoms with the mob primitive type and
-	//2. the mobs returned by view are fast typechecked to only iterate through /mob/oranges_ear mobs, which guarantees at most one per turf
-	//on a whole this can outperform iterating through all movables in view() by ~2x especially when hearables are a tiny percentage of movables in view
-	for(var/mob/oranges_ear/ear in view(view_radius, center_turf))
+	//typepath. by assigning one /mob/oranges_ear to every turf with hearable atoms on it and giving them references to each one means that
+	//hearers() can be used over view(), which is a huge speed increase.
+	for(var/mob/oranges_ear/ear in hearers(view_radius, center_turf))
 		. += ear.references
 
 	for(var/mob/oranges_ear/remaining_ear as anything in assigned_oranges_ears)//we need to clean up our mess
 		remaining_ear.unassign()
 
-	center_turf.luminosity = old_luminosity
 	return .
 
 /**
@@ -181,6 +175,7 @@
 	. = list()
 	for(var/obj/item/radio/radio as anything in radios)
 		if(radio.canhear_range == -1)
+			.[radio] = list()
 			continue
 		.[radio] = get_hearers_in_LOS(radio.canhear_range, radio, FALSE)
 

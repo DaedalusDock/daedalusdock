@@ -23,7 +23,7 @@
 	///Which side is the valve regulating?
 	var/regulate_mode = REGULATE_OUTPUT
 
-/obj/machinery/atmospherics/components/binary/pressure_valve/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/pressure_valve/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -32,7 +32,7 @@
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/AltClick(mob/user)
 	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
+		target_pressure = MAX_PUMP_PRESSURE
 		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "target pressure set to [target_pressure] kPa")
 		update_appearance()
@@ -70,7 +70,19 @@
 		if(REGULATE_OUTPUT)
 			pressure_delta = target_pressure - output_starting_pressure
 
-	if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)
+	//-1 if pump_gas() did not move any gas, >= 0 otherwise
+	var/returnval = -1
+	var/transfer_moles
+	//Figure out how much gas to transfer to meet the target pressure.
+	switch (regulate_mode)
+		if (REGULATE_INPUT)
+			transfer_moles = min(transfer_moles, calculate_transfer_moles(air2, air1, pressure_delta, parents[1]?.combined_volume || 0))
+		if (REGULATE_OUTPUT)
+			transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta, parents[2]?.combined_volume || 0))
+
+	returnval = pump_gas_passive(air1, air2, transfer_moles)
+
+	if(returnval >= 0)
 		update_parents()
 		is_gas_flowing = TRUE
 	else
@@ -162,6 +174,10 @@
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
+	if("status" in signal.data)
+		broadcast_status()
+		return
+
 	var/old_on = on //for logging
 
 	if("power" in signal.data)
@@ -175,10 +191,6 @@
 
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)
-
-	if("status" in signal.data)
-		broadcast_status()
-		return
 
 	broadcast_status()
 	update_appearance()

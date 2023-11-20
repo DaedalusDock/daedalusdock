@@ -12,7 +12,7 @@ SUBSYSTEM_DEF(blackbox)
 							"admin_secrets_fun_used" = 2,
 							"explosion" = 3,
 							"time_dilation_current" = 3,
-							"science_techweb_unlock" = 2,
+							"science_techweb_unlock" = 3,
 							"round_end_stats" = 2,
 							"testmerged_prs" = 2) //associative list of any feedback variables that have had their format changed since creation and their current version, remember to update this
 
@@ -80,8 +80,6 @@ SUBSYSTEM_DEF(blackbox)
 /datum/controller/subsystem/blackbox/proc/FinalFeedback()
 	record_feedback("tally", "ahelp_stats", GLOB.ahelp_tickets.active_tickets.len, "unresolved")
 	for (var/obj/machinery/telecomms/message_server/MS in GLOB.telecomms_list)
-		if (MS.pda_msgs.len)
-			record_feedback("tally", "radio_usage", MS.pda_msgs.len, "PDA")
 		if (MS.rc_msgs.len)
 			record_feedback("tally", "radio_usage", MS.rc_msgs.len, "request console")
 
@@ -346,7 +344,7 @@ Versioning
 		"oxy" = L.getOxyLoss(),
 		"tox" = L.getToxLoss(),
 		"clone" = L.getCloneLoss(),
-		"stamina" = L.getStaminaLoss(),
+		"stamina" = L.stamina.current,
 		"x_coord" = L.x,
 		"y_coord" = L.y,
 		"z_coord" = L.z,

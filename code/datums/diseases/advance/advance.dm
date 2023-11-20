@@ -35,40 +35,40 @@
 
 	// The order goes from easy to cure to hard to cure. Keep in mind that sentient diseases pick two cures from tier 6 and up, ensure they won't react away in bodies.
 	var/static/list/advance_cures = list(
-									list( // level 1
-										/datum/reagent/copper, /datum/reagent/silver, /datum/reagent/iodine, /datum/reagent/iron, /datum/reagent/carbon
-									),
-									list( // level 2
-										/datum/reagent/potassium, /datum/reagent/consumable/ethanol, /datum/reagent/lithium, /datum/reagent/silicon, /datum/reagent/bromine
-									),
-									list( // level 3
-										/datum/reagent/consumable/salt, /datum/reagent/consumable/sugar, /datum/reagent/consumable/orangejuice, /datum/reagent/consumable/tomatojuice, /datum/reagent/consumable/milk
-									),
-									list( //level 4
-										/datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/salglu_solution, /datum/reagent/medicine/epinephrine, /datum/reagent/medicine/c2/multiver
-									),
-									list( //level 5
-										/datum/reagent/fuel/oil, /datum/reagent/medicine/synaptizine, /datum/reagent/medicine/mannitol, /datum/reagent/drug/space_drugs, /datum/reagent/cryptobiolin
-									),
-									list( // level 6
-										/datum/reagent/phenol, /datum/reagent/medicine/inacusiate, /datum/reagent/medicine/oculine, /datum/reagent/medicine/antihol
-									),
-									list( // level 7
-										/datum/reagent/medicine/leporazine, /datum/reagent/toxin/mindbreaker, /datum/reagent/medicine/higadrite
-									),
-									list( // level 8
-										/datum/reagent/pax, /datum/reagent/drug/happiness, /datum/reagent/medicine/ephedrine
-									),
-									list( // level 9
-										/datum/reagent/toxin/lipolicide, /datum/reagent/medicine/sal_acid
-									),
-									list( // level 10
-										/datum/reagent/medicine/haloperidol, /datum/reagent/drug/aranesp, /datum/reagent/medicine/diphenhydramine
-									),
-									list( //level 11
-										/datum/reagent/medicine/modafinil, /datum/reagent/toxin/anacea
-									)
-								)
+		list( // level 1
+			/datum/reagent/copper, /datum/reagent/silver, /datum/reagent/iodine, /datum/reagent/iron, /datum/reagent/carbon
+		),
+		list( // level 2
+			/datum/reagent/potassium, /datum/reagent/consumable/ethanol, /datum/reagent/lithium, /datum/reagent/silicon,
+		),
+		list( // level 3
+			/datum/reagent/consumable/salt, /datum/reagent/consumable/sugar, /datum/reagent/consumable/orangejuice, /datum/reagent/consumable/tomatojuice, /datum/reagent/consumable/milk
+		),
+		list( //level 4
+			/datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/saline_glucose, /datum/reagent/medicine/epinephrine, /datum/reagent/medicine/dylovene
+		),
+		list( //level 5
+			/datum/reagent/fuel/oil, /datum/reagent/medicine/synaptizine, /datum/reagent/medicine/alkysine, /datum/reagent/drug/space_drugs, /datum/reagent/cryptobiolin
+		),
+		list( // level 6
+			/datum/reagent/medicine/inacusiate, /datum/reagent/medicine/imidazoline, /datum/reagent/medicine/antihol
+		),
+		list( // level 7
+			/datum/reagent/medicine/leporazine, /datum/reagent/medicine/chlorpromazine,
+		),
+		list( // level 8
+			/datum/reagent/medicine/haloperidol, /datum/reagent/medicine/ephedrine
+		),
+		list( // level 9
+			/datum/reagent/toxin/lipolicide,
+		),
+		list( // level 10
+			/datum/reagent/drug/aranesp, /datum/reagent/medicine/diphenhydramine
+		),
+		list( //level 11
+			/datum/reagent/toxin/anacea
+		)
+	)
 
 /*
 
@@ -93,7 +93,7 @@
 		advance_diseases += P
 	var/replace_num = advance_diseases.len + 1 - DISEASE_LIMIT //amount of diseases that need to be removed to fit this one
 	if(replace_num > 0)
-		sortTim(advance_diseases, /proc/cmp_advdisease_resistance_asc)
+		sortTim(advance_diseases, GLOBAL_PROC_REF(cmp_advdisease_resistance_asc))
 		for(var/i in 1 to replace_num)
 			var/datum/disease/advance/competition = advance_diseases[i]
 			if(totalTransmittable() > competition.totalResistance())
@@ -315,7 +315,7 @@
 		cures = list(pick(advance_cures[res]))
 		oldres = res
 		// Get the cure name from the cure_id
-		var/datum/reagent/D = GLOB.chemical_reagents_list[cures[1]]
+		var/datum/reagent/D = SSreagents.chemical_reagents_list[cures[1]]
 		cure_text = D.name
 
 // Randomly generate a symptom, has a chance to lose or gain a symptom.
@@ -451,7 +451,7 @@
 	symptoms += SSdisease.list_symptoms.Copy()
 	do
 		if(user)
-			var/symptom = tgui_input_list(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom", sort_list(symptoms, /proc/cmp_typepaths_asc))
+			var/symptom = tgui_input_list(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom", sort_list(symptoms, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 			if(isnull(symptom))
 				return
 			else if(istext(symptom))

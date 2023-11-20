@@ -84,7 +84,7 @@
 		for(var/path in subtypesof(/datum/outfit/job))
 			var/datum/outfit/O = path
 			standard_outfit_options[initial(O.name)] = path
-		sortTim(standard_outfit_options, /proc/cmp_text_asc)
+		sortTim(standard_outfit_options, GLOBAL_PROC_REF(cmp_text_asc))
 	outfit_options = standard_outfit_options
 
 /datum/action/chameleon_outfit/Trigger(trigger_flags)
@@ -179,7 +179,7 @@
 
 /datum/action/item_action/chameleon/change/proc/select_look(mob/user)
 	var/obj/item/picked_item
-	var/picked_name = tgui_input_list(user, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, /proc/cmp_typepaths_asc))
+	var/picked_name = tgui_input_list(user, "Select [chameleon_name] to change into", "Chameleon Settings", sort_list(chameleon_list, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(picked_name))
 		return
 	if(isnull(chameleon_list[picked_name]))
@@ -551,8 +551,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
-	var/voice_change = 1 ///This determines if the voice changer is on or off.
-
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/mask/chameleon/Initialize(mapload)
@@ -563,6 +561,7 @@
 	chameleon_action.chameleon_blacklist = typecacheof(/obj/item/clothing/mask/changeling, only_root_path = TRUE)
 	chameleon_action.initialize_disguises()
 	add_item_action(chameleon_action)
+	ADD_TRAIT(src, TRAIT_REPLACES_VOICE, REF(src))
 
 /obj/item/clothing/mask/chameleon/emp_act(severity)
 	. = ..()
@@ -575,19 +574,22 @@
 	chameleon_action.emp_randomise(INFINITY)
 
 /obj/item/clothing/mask/chameleon/attack_self(mob/user)
-	voice_change = !voice_change
-	to_chat(user, span_notice("The voice changer is now [voice_change ? "on" : "off"]!"))
-
+	var/on = HAS_TRAIT(src, TRAIT_REPLACES_VOICE)
+	if(on)
+		REMOVE_TRAIT(src, TRAIT_REPLACES_VOICE, REF(src))
+		to_chat(user, span_notice("You switch [src]'s voice changer off."))
+	else
+		ADD_TRAIT(src, TRAIT_REPLACES_VOICE, REF(src))
+		to_chat(user, span_notice("You switch [src]'s voice changer on."))
 
 /obj/item/clothing/mask/chameleon/drone
 	//Same as the drone chameleon hat, undroppable and no protection
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
-	// Can drones use the voice changer part? Let's not find out.
-	voice_change = 0
 
 /obj/item/clothing/mask/chameleon/drone/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
+	REMOVE_TRAIT(src, TRAIT_REPLACES_VOICE, REF(src)) // Can drones use the voice changer part? Let's not find out.
 	chameleon_action.random_look()
 	var/datum/action/item_action/chameleon/drone/togglehatmask/togglehatmask_action = new(src)
 	togglehatmask_action.build_all_button_icons()
@@ -629,7 +631,7 @@
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/shoes/chameleon/noslip
-	clothing_flags = NOSLIP
+	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	can_be_bloody = FALSE
 
 /obj/item/clothing/shoes/chameleon/noslip/broken/Initialize(mapload)

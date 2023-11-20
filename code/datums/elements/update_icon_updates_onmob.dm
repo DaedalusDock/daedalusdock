@@ -12,7 +12,7 @@
 	. = ..()
 	if(!istype(target, /obj/item))
 		return ELEMENT_INCOMPATIBLE
-	RegisterSignal(target, COMSIG_ATOM_UPDATED_ICON, .proc/update_onmob)
+	RegisterSignal(target, COMSIG_ATOM_UPDATED_ICON, PROC_REF(update_onmob))
 	update_flags = flags
 	update_body = body
 

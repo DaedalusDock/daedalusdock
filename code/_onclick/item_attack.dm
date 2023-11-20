@@ -85,6 +85,7 @@
 /obj/item/proc/pre_attack(atom/A, mob/living/user, params) //do stuff before attackby!
 	if(SEND_SIGNAL(src, COMSIG_ITEM_PRE_ATTACK, A, user, params) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
+
 	return FALSE //return TRUE to avoid calling attackby after this proc does stuff
 
 /**
@@ -150,7 +151,10 @@
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
 		return TRUE
-	user.changeNext_move(CLICK_CD_MELEE)
+	if (user.can_operate_on(src) && attacking_item.attempt_surgery(src, user))
+		return TRUE
+
+	user.changeNext_move(attacking_item.combat_click_delay)
 	return attacking_item.attack(src, user, params)
 
 /mob/living/attackby_secondary(obj/item/weapon, mob/living/user, params)
@@ -177,6 +181,9 @@
 	if(signal_return & COMPONENT_SKIP_ATTACK)
 		return
 
+	if(!user.combat_mode)
+		return
+
 	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK, M, user, params)
 
 	if(item_flags & NOBLUDGEON)
@@ -186,22 +193,31 @@
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return
 
-	if(!force)
-		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-	else if(hitsound)
-		playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
-
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 
 	if(force && M == user && user.client)
 		user.client.give_award(/datum/award/achievement/misc/selfouch, user)
 
-	user.do_attack_animation(M)
-	M.attacked_by(src, user)
+	user.stamina_swing(src.stamina_cost)
 
-	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)])")
+	user.do_attack_animation(M)
+	var/attack_return = M.attacked_by(src, user)
+	switch(attack_return)
+		if(MOB_ATTACKEDBY_NO_DAMAGE)
+			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
+		if(MOB_ATTACKEDBY_SUCCESS)
+			if(hitsound)
+				playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+		if(MOB_ATTACKEDBY_MISS)
+			playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+
+	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
+	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
 	add_fingerprint(user)
+
+	/// If we missed or the attack failed, interrupt attack chain.
+	return missed
 
 /// The equivalent of [/obj/item/proc/attack] but for alternate attacks, AKA right clicking
 /obj/item/proc/attack_secondary(mob/living/victim, mob/living/user, params)
@@ -321,15 +337,27 @@
 	var/message_hit_area = ""
 	if(hit_area)
 		message_hit_area = " in the [hit_area]"
-	var/attack_message_spectator = "[src] [message_verb_continuous][message_hit_area] with [I]!"
-	var/attack_message_victim = "Something [message_verb_continuous] you[message_hit_area] with [I]!"
-	var/attack_message_attacker = "You [message_verb_simple] [src][message_hit_area] with [I]!"
-	if(user in viewers(src, null))
-		attack_message_spectator = "[user] [message_verb_continuous] [src][message_hit_area] with [I]!"
-		attack_message_victim = "[user] [message_verb_continuous] you[message_hit_area] with [I]!"
+
+	var/attack_message_spectator = "<b>[src]</b> [message_verb_continuous][message_hit_area] with [I]!"
+
+	if(user in viewers(src))
+		attack_message_spectator = "<b>[user]</b> [message_verb_continuous] <b>[src]</b>[message_hit_area] with [I]!"
+
 	if(user == src)
-		attack_message_victim = "You [message_verb_simple] yourself[message_hit_area] with [I]"
-	visible_message(span_danger("[attack_message_spectator]"),\
-		span_userdanger("[attack_message_victim]"), null, COMBAT_MESSAGE_RANGE, user)
-	to_chat(user, span_danger("[attack_message_attacker]"))
+		attack_message_spectator = "<b>[user]</b> [message_verb_simple] [user.p_them()]self[message_hit_area] with [I]!"
+
+	visible_message(span_danger("[attack_message_spectator]"), vision_distance = COMBAT_MESSAGE_RANGE)
 	return 1
+
+/**
+ * Interaction handler for being clicked on with a grab. This is called regardless of user intent.
+ *
+ * **Parameters**:
+ * - `grab` - The grab item being used.
+ * - `click_params` - List of click parameters.
+ *
+ * Returns boolean to indicate whether the attack call was handled or not. If `FALSE`, the next `use_*` proc in the
+ * resolve chain will be called.
+ */
+/atom/proc/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	return FALSE

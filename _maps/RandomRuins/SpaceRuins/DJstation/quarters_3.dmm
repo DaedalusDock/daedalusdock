@@ -15,7 +15,6 @@
 /obj/structure/toilet{
 	dir = 4
 	},
-/obj/machinery/duct,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/djstation)
 "d" = (
@@ -23,8 +22,7 @@
 /turf/open/floor/iron/dark,
 /area/ruin/space/djstation)
 "f" = (
-/obj/machinery/duct,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/djstation)
 "h" = (
 /obj/structure/table/reinforced/plastitaniumglass,
@@ -52,14 +50,13 @@
 /area/ruin/space/djstation)
 "t" = (
 /obj/machinery/light/directional/south,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/djstation)
 "u" = (
-/obj/machinery/duct,
 /obj/machinery/door/airlock/silver{
 	name = "Bedroom"
 	},
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/djstation)
 "v" = (
 /obj/structure/window/plasma,
@@ -74,7 +71,6 @@
 	spawn_scatter_radius = 1
 	},
 /obj/structure/table/reinforced/rglass,
-/obj/machinery/duct,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/djstation)
 "z" = (
@@ -84,7 +80,7 @@
 /area/ruin/space/djstation)
 "A" = (
 /obj/effect/spawner/random/clothing/wardrobe_closet,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/djstation)
 "B" = (
 /obj/machinery/door/airlock/public/glass{
@@ -94,7 +90,6 @@
 /turf/template_noop,
 /area/template_noop)
 "C" = (
-/obj/machinery/duct,
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/djstation)
@@ -102,7 +97,6 @@
 /turf/open/floor/carpet/purple,
 /area/ruin/space/djstation)
 "H" = (
-/obj/machinery/duct,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/djstation)
 "J" = (
@@ -126,14 +120,12 @@
 /area/ruin/space/djstation)
 "T" = (
 /obj/structure/dresser,
-/obj/machinery/duct,
-/turf/open/floor/wood/tile,
+/turf/open/floor/wood,
 /area/ruin/space/djstation)
 "U" = (
 /obj/machinery/door/airlock/silver{
 	name = "Bathroom"
 	},
-/obj/machinery/duct,
 /turf/open/floor/iron/freezer,
 /area/ruin/space/djstation)
 "V" = (
@@ -155,10 +147,6 @@
 /obj/effect/spawner/random/structure/grille,
 /turf/template_noop,
 /area/space/nearstation)
-"Z" = (
-/obj/machinery/duct,
-/turf/open/floor/iron/dark,
-/area/ruin/space/djstation)
 
 (1,1,1) = {"
 a
@@ -178,9 +166,9 @@ a
 a
 W
 i
-Z
-Z
-Z
+V
+V
+V
 V
 b
 i
@@ -191,7 +179,7 @@ a
 a
 W
 i
-Z
+V
 V
 d
 V

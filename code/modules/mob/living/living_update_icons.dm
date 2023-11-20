@@ -15,3 +15,4 @@
 
 	if(changed)
 		animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)
+		UPDATE_OO_IF_PRESENT

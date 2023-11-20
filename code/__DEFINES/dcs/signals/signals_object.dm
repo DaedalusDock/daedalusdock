@@ -49,9 +49,9 @@
 #define COMSIG_TELEPORTER_NEW_TARGET "teleporter_new_target"
 
 // /obj/machinery/power/supermatter_crystal signals
-/// from /obj/machinery/power/supermatter_crystal/process_atmos(); when the SM delam reaches the point of sounding alarms
+/// from /obj/machinery/power/supermatter/process_atmos(); when the SM delam reaches the point of sounding alarms
 #define COMSIG_SUPERMATTER_DELAM_START_ALARM "sm_delam_start_alarm"
-/// from /obj/machinery/power/supermatter_crystal/process_atmos(); when the SM sounds an audible alarm
+/// from /obj/machinery/power/supermatter/process_atmos(); when the SM sounds an audible alarm
 #define COMSIG_SUPERMATTER_DELAM_ALARM "sm_delam_alarm"
 
 // /obj/machinery/atmospherics/components/unary/cryo_cell signals
@@ -279,7 +279,8 @@
 
 ///called from base of /obj/item/radio/proc/set_frequency(): (list/args)
 #define COMSIG_RADIO_NEW_FREQUENCY "radio_new_frequency"
-
+///called during SSpacketnets/proc/ImmediateSubspaceVocalSend(): (message, freq_num)
+#define COMSIG_RADIO_RECEIVE "radio_receive"
 // /obj/item/pen signals
 
 ///called after rotation in /obj/item/pen/attack_self(): (rotation, mob/living/carbon/user)

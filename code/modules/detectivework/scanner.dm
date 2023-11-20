@@ -34,7 +34,7 @@
 	if(log.len && !scanning)
 		scanning = TRUE
 		to_chat(user, span_notice("Printing report, please wait..."))
-		addtimer(CALLBACK(src, .proc/PrintReport), 100)
+		addtimer(CALLBACK(src, PROC_REF(PrintReport)), 100)
 	else
 		to_chat(user, span_notice("The scanner has no logs or is in use."))
 
@@ -45,8 +45,8 @@
 	//This could be a global count like sec and med record printouts. See GLOB.data_core.medicalPrintCount AKA datacore.dm
 	var/frNum = ++forensicPrintCount
 
-	P.name = text("FR-[] 'Forensic Record'", frNum)
-	P.info = text("<center><B>Forensic Record - (FR-[])</B></center><HR><BR>", frNum)
+	P.name = "FR-[frNum] 'Forensic Record'"
+	P.info = "<center><B>Forensic Record - (FR-[frNum])</B></center><HR><BR>"
 	P.info += jointext(log, "<BR>")
 	P.info += "<HR><B>Notes:</B><BR>"
 	P.update_appearance()
@@ -59,10 +59,6 @@
 	// Clear the logs
 	log = list()
 	scanning = FALSE
-
-/obj/item/detective_scanner/pre_attack_secondary(atom/A, mob/user, params)
-	scan(A, user)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/detective_scanner/afterattack(atom/A, mob/user, params)
 	. = ..()
@@ -187,7 +183,7 @@
 
 /obj/item/detective_scanner/AltClick(mob/living/user)
 	// Best way for checking if a player can use while not incapacitated, etc
-	if(!user.canUseTopic(src, be_close=TRUE))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(!LAZYLEN(log))
 		to_chat(user, span_notice("Cannot clear logs, the scanner has no logs."))

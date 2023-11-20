@@ -1,6 +1,8 @@
+// PDA Message Nonsense: https://hackmd.io/OajA9tVpS-K7xA68t6gv8Q
+
 /datum/computer_file/program/messenger
 	filename = "nt_messenger"
-	filedesc = "Direct Messenger"
+	filedesc = "Messenger"
 	category = PROGRAM_CATEGORY_MISC
 	program_icon_state = "command"
 	program_state = PROGRAM_STATE_BACKGROUND
@@ -17,210 +19,225 @@
 	var/ringtone = "beep"
 	/// Whether or not the ringtone is currently on.
 	var/ringer_status = TRUE
-	/// Whether or not we're sending and receiving messages.
-	var/sending_and_receiving = TRUE
 	/// The messages currently saved in the app.
 	var/messages = list()
 	/// great wisdom from PDA.dm - "no spamming" (prevents people from spamming the same message over and over)
 	var/last_text
 	/// even more wisdom from PDA.dm - "no everyone spamming" (prevents people from spamming the same message over and over)
 	var/last_text_everyone
-	/// Scanned photo for sending purposes.
-	var/datum/picture/picture
-	/// Whether or not we allow emojis to be sent by the user.
-	var/allow_emojis = FALSE
 	/// Whether or not we're currently looking at the message list.
 	var/viewing_messages = FALSE
-	// Whether or not this device is currently hidden from the message monitor.
-	var/monitor_hidden = FALSE
 	// Whether or not we're sorting by job.
 	var/sort_by_job = TRUE
 	// Whether or not we're sending (or trying to send) a virus.
 	var/sending_virus = FALSE
 
-	/// The path for the current loaded image in rsc
-	var/photo_path
 
 	/// Whether or not this app is loaded on a silicon's tablet.
 	var/is_silicon = FALSE
 	/// Whether or not we're in a mime PDA.
 	var/mime_mode = FALSE
 
-/datum/computer_file/program/messenger/proc/ScrubMessengerList()
-	var/list/dictionary = list()
+	/// Cache of the network card, so we don't need to drag it out of the list every time.
+	var/obj/item/computer_hardware/network_card/packetnet/netcard_cache
+	/// Learned PDA info tuples
+	///
+	///list(d_addr1 = list(d_addr1, name, job), d_addr2=list(d_addr2, name, job),...)
+	var/list/known_cells = list()
 
-	for(var/obj/item/modular_computer/messenger in GetViewableDevices(sort_by_job))
-		if(messenger.saved_identification && messenger.saved_job && !(messenger == computer))
-			var/list/data = list()
-			data["name"] = messenger.saved_identification
-			data["job"] = messenger.saved_job
-			data["ref"] = REF(messenger)
-
-			//if(data["ref"] != REF(computer)) // you cannot message yourself (despite all my rage)
-			dictionary += list(data)
-
-	return dictionary
-
-/proc/GetViewableDevices(sort_by_job = FALSE)
-	var/list/dictionary = list()
-
-	var/sortmode
-	if(sort_by_job)
-		sortmode = /proc/cmp_pdajob_asc
-	else
-		sortmode = /proc/cmp_pdaname_asc
-
-	for(var/obj/item/modular_computer/P in sort_list(GLOB.TabletMessengers, sortmode))
-		var/obj/item/computer_hardware/hard_drive/drive = P.all_components[MC_HDD]
-		if(!drive)
-			continue
-		for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-			if(!P.saved_identification || !P.saved_job || P.invisible || app.monitor_hidden)
-				continue
-			dictionary += P
-
-	return dictionary
-
-/datum/computer_file/program/messenger/proc/StringifyMessengerTarget(obj/item/modular_computer/messenger)
-	return "[messenger.saved_identification] ([messenger.saved_job])"
-
-/datum/computer_file/program/messenger/proc/ProcessPhoto()
-	if(computer.saved_image)
-		var/icon/img = computer.saved_image.picture_image
-		var/deter_path = "tmp_msg_photo[rand(0, 99999)].png"
-		usr << browse_rsc(img, deter_path) // funny random assignment for now, i'll make an actual key later
-		photo_path = deter_path
 
 /datum/computer_file/program/messenger/ui_state(mob/user)
 	if(istype(user, /mob/living/silicon))
 		return GLOB.reverse_contained_state
 	return GLOB.default_state
 
-/datum/computer_file/program/messenger/ui_act(action, list/params, datum/tgui/ui)
+/datum/computer_file/program/messenger/can_run(mob/user, loud, access_to_check, transfer, list/access)
 	. = ..()
-	if(.)
+	if(!. || transfer) //Already declined for other reason.
+	//Or We're checking just download access here, not runtime compatibility
+		return .
+	var/obj/item/computer_hardware/network_card/packetnet/pnetcard = computer.all_components[MC_NET]
+	if(!istype(pnetcard))
+		if(loud)
+			to_chat(user, span_danger("\The [computer] flashes a \"GPRS Error - Incompatible Network card\" warning."))
+		return FALSE
+
+/datum/computer_file/program/messenger/event_hardware_changed(background)
+	. = ..()
+	if(netcard_cache != computer.all_components[MC_NET])
+		if(background)
+			computer.visible_message(span_danger("\The [computer]'s screen displays a \"Process [filename].[filetype] (PID [rand(100,999)]) terminated - GPRS hardware error\" error"))
+		else
+			computer.visible_message(span_danger("\The [computer]'s screen briefly freezes and then shows \"NETWORK ERROR - GPRS hardware error. Verify hardware presence or contact a certified technician.\" error."))
+		kill_program(TRUE)
+
+/datum/computer_file/program/messenger/run_program(mob/living/user)
+	. = ..()
+	if(!.)
+		return
+	//If we got here, it's safe to assume this, probably.
+	netcard_cache = computer.all_components[MC_NET]
+
+/datum/computer_file/program/messenger/process_tick(delta_time)
+	. = ..()
+	while(netcard_cache.check_queue())
+		process_signal(netcard_cache.pop_signal())
+
+/datum/computer_file/program/messenger/kill_program(forced)
+	. = ..()
+	netcard_cache = null
+
+/datum/computer_file/program/messenger/proc/process_signal(datum/signal/signal)
+	if(!signal)
+		CRASH("Messenger program attempted to process null signal??")
+	var/list/signal_data = signal.data
+	if(!signal_data)
+		return
+	var/signal_command = signal_data[PACKET_CMD]
+	//Network ID verification is "hardware accelerated" (AKA: Done for us by the card)
+
+	var/rigged = FALSE//are we going to explode?
+
+	//Due to BYOND's lack of dynamic switch statements, we get to run this massive ifchain..
+
+	// "Exploiting a bug" my ass this shit is going to suck to write.
+	// ESPECIALLY THIS FUCKER RIGHT HERE vvvv
+	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.detomatix_magic_packet)
+		//This one falls through to standard PDA behaviour, so we need to be checked first.
+		if(signal_data[PACKET_DESTINATION_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
+			//Calculate our "difficulty"
+			var/difficulty
+			var/obj/item/computer_hardware/hard_drive/role/our_jobdisk = computer.all_components[MC_HDD_JOB]
+			if(our_jobdisk)
+				difficulty += bit_count(our_jobdisk & (DISK_MED | DISK_SEC | DISK_POWER | DISK_MANIFEST))
+				if(our_jobdisk.disk_flags & DISK_MANIFEST)
+					difficulty++ //if cartridge has manifest access it has extra snowflake difficulty
+			if(!(SEND_SIGNAL(computer, COMSIG_TABLET_CHECK_DETONATE) & COMPONENT_TABLET_NO_DETONATE || prob(difficulty * 15)))
+				rigged = TRUE //Cool, we're allowed to blow up. Really glad this whole check wasn't for nothing.
+				var/trait_timer_key = signal_data[PACKET_SOURCE_ADDRESS]
+				ADD_TRAIT(computer, TRAIT_PDA_CAN_EXPLODE, trait_timer_key)
+				ADD_TRAIT(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key)
+				addtimer(TRAIT_CALLBACK_REMOVE(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key), 10 SECONDS)
+			//Intentional fallthrough.
+	if(signal_command == NETCMD_PDAMESSAGE)
+		log_message(
+			signal_data["name"] || "#UNK",
+			signal_data["job"] || "#UNK",
+			html_decode("\"[signal_data["message"]]\"") || "#ERROR_MISSING_FIELD",
+			FALSE,
+			signal_data["automated"] || FALSE,
+			signal_data[PACKET_SOURCE_ADDRESS] || null
+			)
+		if(computer.hardware_flag == PROGRAM_TABLET) //We need to render the extraneous bullshit to chat.
+			show_in_chat(signal_data, rigged)
+		if(ringer_status)
+			computer.ring(ringtone)
+
 		return
 
-	switch(action)
-		if("PDA_ringSet")
-			var/t = tgui_input_text(usr, "Enter a new ringtone", "Ringtone", "", 20)
-			var/mob/living/usr_mob = usr
-			if(in_range(computer, usr_mob) && computer.loc == usr_mob && t)
-				if(SEND_SIGNAL(computer, COMSIG_TABLET_CHANGE_ID, usr_mob, t) & COMPONENT_STOP_RINGTONE_CHANGE)
-					return
+	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.clownvirus_magic_packet)
+		computer.honkamnt = rand(15, 25)
+		return
+	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.mimevirus_magic_packet)
+		ringer_status = FALSE
+		ringtone = ""
+		return
+	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.framevirus_magic_packet)
+		if(computer.hardware_flag != PROGRAM_TABLET)
+			return //If it's not a PDA, too bad!
+		if(!(signal.has_magic_data & MAGIC_DATA_MUST_OBFUSCATE))
+			return //Must be obfuscated, due to the ability to create uplinkss.
+		var/datum/component/uplink/hidden_uplink = computer.GetComponent(/datum/component/uplink)
+		if(!hidden_uplink)
+			var/datum/mind/target_mind
+			var/list/backup_players = list()
+			for(var/datum/mind/player as anything in get_crewmember_minds())
+				if(player.assigned_role?.title == computer.saved_job)
+					backup_players += player
+				if(player.name == computer.saved_identification)
+					target_mind = player
+					break
+			if(!target_mind)
+				if(!length(backup_players))
+					target_mind = signal_data["fallback_mind"] //yea...
 				else
-					ringtone = t
-					return(UI_UPDATE)
-		if("PDA_ringer_status")
-			ringer_status = !ringer_status
-			return(UI_UPDATE)
-		if("PDA_sAndR")
-			sending_and_receiving = !sending_and_receiving
-			return(UI_UPDATE)
-		if("PDA_viewMessages")
-			viewing_messages = !viewing_messages
-			return(UI_UPDATE)
-		if("PDA_clearMessages")
-			messages = list()
-			return(UI_UPDATE)
-		if("PDA_changeSortStyle")
-			sort_by_job = !sort_by_job
-			return(UI_UPDATE)
-		if("PDA_sendEveryone")
-			if(!sending_and_receiving)
-				to_chat(usr, span_notice("ERROR: Device has sending disabled."))
-				return
+					target_mind = pick(backup_players)
+			hidden_uplink = computer.AddComponent(/datum/component/uplink, target_mind, enabled = TRUE, starting_tc = signal_data["telecrystals"], has_progression = TRUE)
+			hidden_uplink.uplink_handler.has_objectives = TRUE
+			hidden_uplink.uplink_handler.owner = target_mind
+			hidden_uplink.uplink_handler.can_take_objectives = FALSE
+			hidden_uplink.uplink_handler.progression_points = min(SStraitor.current_global_progression, signal_data["current_progression"])
+			hidden_uplink.uplink_handler.generate_objectives()
+			SStraitor.register_uplink_handler(hidden_uplink.uplink_handler)
+		else
+			hidden_uplink.add_telecrystals(signal_data["telecrystals"])
+		//Unlock it regardless of if we created it or not.
+		hidden_uplink.locked = FALSE
+		hidden_uplink.active = TRUE
 
-			var/list/targets = list()
+/datum/computer_file/program/messenger/proc/show_in_chat(list/signal_data, rigged)
+	var/mob/living/L = null
+	if(holder.holder.loc && isliving(holder.holder.loc))
+		L = holder.holder.loc
+	//Maybe they are a pAI!
+	else
+		L = get(holder.holder, /mob/living/silicon)
 
-			for(var/obj/item/modular_computer/mc in GetViewableDevices())
-				targets += mc
+	if(L && L.stat == CONSCIOUS)
+		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PACKET_SOURCE_ADDRESS]]'>Reply</a>)"
+		var/hrefstart
+		var/hrefend
+		if (isAI(L))
+			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
+			hrefend = "</a>"
 
-			if(targets.len > 0)
-				send_message(usr, targets, TRUE)
+		if(signal_data[PACKET_SOURCE_ADDRESS] == null)
+			reply = "\[#ERRNOADDR\]"
 
-			return(UI_UPDATE)
-		if("PDA_sendMessage")
-			if(!sending_and_receiving)
-				to_chat(usr, span_notice("ERROR: Device has sending disabled."))
-				return
-			var/obj/item/modular_computer/target = locate(params["ref"])
-			if(!target)
-				return // we don't want tommy sending his messages to nullspace
-			if(!(target.saved_identification == params["name"] && target.saved_job == params["job"]))
-				to_chat(usr, span_notice("ERROR: User no longer exists."))
-				return
+		if(signal_data["automated"])
+			reply = "\[Automated Message\]"
 
-			var/obj/item/computer_hardware/hard_drive/drive = target.all_components[MC_HDD]
 
-			for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-				if(!app.sending_and_receiving && !sending_virus)
-					to_chat(usr, span_notice("ERROR: Device has receiving disabled."))
+		var/inbound_message = "\"[signal_data["message"]]\""
+		inbound_message = emoji_parse(inbound_message)
+
+		if(ringer_status)
+			to_chat(L, "<span class='infoplain'>[icon2html(src)] <b>PDA message from [hrefstart][signal_data["name"]] ([signal_data["job"]])[hrefend], </b>[inbound_message] [reply]</span>")
+
+/datum/computer_file/program/messenger/Topic(href, href_list)
+	..()
+
+	if(!href_list["close"] && usr.canUseTopic(computer, USE_CLOSE|USE_IGNORE_TK))
+		switch(href_list["choice"])
+			if("Message")
+				send_message(usr, href_list["target"])
+			if("Mess_us_up")
+				if(!HAS_TRAIT(src, TRAIT_PDA_CAN_EXPLODE))
+					var/obj/item/modular_computer/tablet/comp = computer
+					comp.explode(usr, from_message_menu = TRUE)
 					return
-				if(sending_virus)
-					var/obj/item/computer_hardware/hard_drive/role/virus/disk = computer.all_components[MC_HDD_JOB]
-					if(istype(disk))
-						disk.send_virus(target, usr)
-						return(UI_UPDATE)
-				send_message(usr, list(target))
-				return(UI_UPDATE)
-		if("PDA_clearPhoto")
-			computer.saved_image = null
-			photo_path = null
-			return(UI_UPDATE)
-		if("PDA_toggleVirus")
-			sending_virus = !sending_virus
-			return(UI_UPDATE)
 
-
-/datum/computer_file/program/messenger/ui_data(mob/user)
-	var/list/data = get_header_data()
-
-	var/obj/item/computer_hardware/hard_drive/role/disk = computer.all_components[MC_HDD_JOB]
-
-	data["owner"] = computer.saved_identification
-	data["messages"] = messages
-	data["ringer_status"] = ringer_status
-	data["sending_and_receiving"] = sending_and_receiving
-	data["messengers"] = ScrubMessengerList()
-	data["viewing_messages"] = viewing_messages
-	data["sortByJob"] = sort_by_job
-	data["isSilicon"] = is_silicon
-	data["photo"] = photo_path
-
-	if(disk)
-		data["canSpam"] = disk.CanSpam()
-		data["virus_attach"] = istype(disk, /obj/item/computer_hardware/hard_drive/role/virus)
-		data["sending_virus"] = sending_virus
-
-	return data
-
-////////////////////////
-// MESSAGE HANDLING
-////////////////////////
-
-// How I Learned To Stop Being A PDA Bloat Chump And Learn To Embrace The Lightweight
-
-// Gets the input for a message being sent.
-
-/datum/computer_file/program/messenger/proc/msg_input(mob/living/U = usr, rigged = FALSE)
-	var/t = null
+/datum/computer_file/program/messenger/proc/msg_input(mob/living/U = usr)
+	var/text_message = null
 
 	if(mime_mode)
-		t = emoji_sanitize(tgui_input_text(U, "Enter emojis", "NT Messaging"))
+		text_message = emoji_sanitize(tgui_input_text(U, "Enter emojis", "NT Messaging"))
 	else
-		t = tgui_input_text(U, "Enter a message", "NT Messaging")
+		text_message = tgui_input_text(U, "Enter a message", "NT Messaging")
 
-	if (!t || !sending_and_receiving)
+	if (!text_message || !netcard_cache.radio_state)
 		return
-	if(!U.canUseTopic(computer, BE_CLOSE))
+	if(!U.canUseTopic(computer, USE_CLOSE))
 		return
-	return sanitize(t)
+	return sanitize(text_message)
 
-/datum/computer_file/program/messenger/proc/send_message(mob/living/user, list/obj/item/modular_computer/targets, everyone = FALSE, rigged = FALSE, fake_name = null, fake_job = null)
-	var/message = msg_input(user, rigged)
-	if(!message || !targets.len)
-		return FALSE
+/datum/computer_file/program/messenger/proc/send_message(mob/living/user, target_address, everyone = FALSE, staple = null, fake_name = null, fake_job = null)
+	var/message = msg_input(user)
+	if(!message)
+		return
+	if(!netcard_cache.radio_state)
+		to_chat(usr, span_notice("ERROR: GPRS Modem Disabled."))
+		return
 	if((last_text && world.time < last_text + 10) || (everyone && last_text_everyone && world.time < last_text_everyone + 2 MINUTES))
 		return FALSE
 
@@ -243,125 +260,118 @@
 		log_admin_private("[key_name(usr)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term in PDA messages. Message: \"[message]\"")
 
 	// Send the signal
-	var/list/string_targets = list()
-	for (var/obj/item/modular_computer/comp in targets)
-		if (comp.saved_identification && comp.saved_job)  // != src is checked by the UI
-			string_targets += STRINGIFY_PDA_TARGET(comp.saved_identification, comp.saved_job)
-
-	if (!string_targets.len)
-		return FALSE
-
-	var/datum/signal/subspace/messaging/tablet_msg/signal = new(computer, list(
-		"name" = fake_name || computer.saved_identification,
-		"job" = fake_job || computer.saved_job,
-		"message" = html_decode(message),
-		"ref" = REF(computer),
-		"targets" = targets,
-		"emojis" = allow_emojis,
-		"rigged" = rigged,
-		"photo" = photo_path,
-		"automated" = FALSE,
-	))
-	if(rigged) //Will skip the message server and go straight to the hub so it can't be cheesed by disabling the message server machine
-		signal.data["rigged_user"] = REF(user) // Used for bomb logging
-		signal.server_type = /obj/machinery/telecomms/hub
-		signal.data["reject"] = FALSE // Do not refuse the message
-
-	signal.send_to_receivers()
-
-	// If it didn't reach, note that fact
-	if (!signal.data["done"])
-		to_chat(user, span_notice("ERROR: Server isn't responding."))
-		if(ringer_status)
-			playsound(src, 'sound/machines/terminal_error.ogg', 15, TRUE)
-		return FALSE
-
-	if(allow_emojis)
-		message = emoji_parse(message)//already sent- this just shows the sent emoji as one to the sender in the to_chat
-		signal.data["message"] = emoji_parse(signal.data["message"])
-
+	var/datum/signal/pda_message = new(
+		src,
+		list(
+			PACKET_CMD = NETCMD_PDAMESSAGE,
+			"name" = fake_name || computer.saved_identification,
+			"job" = fake_job || computer.saved_job,
+			"message" = html_decode(message),
+			PACKET_DESTINATION_ADDRESS = target_address
+		),
+		logging_data = user
+	)
+	netcard_cache.post_signal(pda_message)
 	// Log it in our logs
-	var/list/message_data = list()
-	message_data["name"] = signal.data["name"]
-	message_data["job"] = signal.data["job"]
-	message_data["contents"] = html_decode(signal.format_message())
-	message_data["outgoing"] = TRUE
-	message_data["ref"] = signal.data["ref"]
-	message_data["photo"] = signal.data["photo"]
+	log_message(fake_name || computer.saved_identification,fake_job || computer.saved_job,html_decode(message),TRUE,FALSE,target_address)
 
-	// Show it to ghosts
-	var/ghost_message = span_name("[message_data["name"]] </span><span class='game say'>[rigged ? "Rigged" : ""] PDA Message</span> --> [span_name("[signal.format_target()]")]: <span class='message'>[signal.format_message()]")
-	for(var/mob/M in GLOB.player_list)
-		if(isobserver(M) && (M.client?.prefs.chat_toggles & CHAT_GHOSTPDA))
-			to_chat(M, "[FOLLOW_LINK(M, user)] [ghost_message]")
+/datum/computer_file/program/messenger/proc/log_message(name, job, message, outgoing, automated, reply_addr)
+	var/list/message_data = list(
+		"name" = name,
+		"job" = job,
+		"contents" = message,
+		"outgoing" = outgoing,
+		//If there's no reply address, pretend it's automated so we don't give them a null link
+		"automated" = !reply_addr || automated,
+		"target_addr" = reply_addr,
+	)
 
-	// Log in the talk log
-	user.log_talk(message, LOG_PDA, tag="[rigged ? "Rigged" : ""] PDA: [initial(message_data["name"])] to [signal.format_target()]")
-	if(rigged)
-		log_bomber(user, "sent a rigged PDA message (Name: [message_data["name"]]. Job: [message_data["job"]]) to [english_list(string_targets)] [!is_special_character(user) ? "(SENT BY NON-ANTAG)" : ""]")
-	to_chat(user, span_info("PDA message sent to [signal.format_target()]: [signal.format_message()]"))
+	messages += list(message_data) //Needs to be wrapped for engine reasons.
 
-	if (ringer_status)
-		computer.send_sound()
+/datum/computer_file/program/messenger/ui_act(action, list/params, datum/tgui/ui)
+	. = ..()
+	if(.)
+		return
 
-	last_text = world.time
-	if (everyone)
-		message_data["name"] = "Everyone"
-		message_data["job"] = ""
-		last_text_everyone = world.time
-
-	messages += list(message_data)
-	return TRUE
-
-/datum/computer_file/program/messenger/proc/receive_message(datum/signal/subspace/messaging/tablet_msg/signal)
-	var/list/message_data = list()
-	message_data["name"] = signal.data["name"]
-	message_data["job"] = signal.data["job"]
-	message_data["contents"] = signal.format_message()
-	message_data["outgoing"] = FALSE
-	message_data["ref"] = signal.data["ref"]
-	message_data["automated"] = signal.data["automated"]
-	message_data["photo"] = signal.data["photo"]
-	messages += list(message_data)
-
-	var/mob/living/L = null
-	if(holder.holder.loc && isliving(holder.holder.loc))
-		L = holder.holder.loc
-	//Maybe they are a pAI!
-	else
-		L = get(holder.holder, /mob/living/silicon)
-
-	if(L && (L.stat == CONSCIOUS || L.stat == SOFT_CRIT))
-		var/reply = "(<a href='byond://?src=[REF(src)];choice=[signal.data["rigged"] ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal.data["ref"]]'>Reply</a>)"
-		var/hrefstart
-		var/hrefend
-		if (isAI(L))
-			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal.data["name"])]'>"
-			hrefend = "</a>"
-
-		if(signal.data["automated"])
-			reply = "\[Automated Message\]"
-
-		var/inbound_message = signal.format_message()
-		if(signal.data["emojis"] == TRUE)//so will not parse emojis as such from pdas that don't send emojis
-			inbound_message = emoji_parse(inbound_message)
-
-		if(ringer_status)
-			to_chat(L, "<span class='infoplain'>[icon2html(src)] <b>PDA message from [hrefstart][signal.data["name"]] ([signal.data["job"]])[hrefend], </b>[inbound_message] [reply]</span>")
-
-
-	if (ringer_status)
-		computer.ring(ringtone)
-
-/datum/computer_file/program/messenger/Topic(href, href_list)
-	..()
-
-	if(!href_list["close"] && usr.canUseTopic(computer, BE_CLOSE, FALSE, NO_TK))
-		switch(href_list["choice"])
-			if("Message")
-				send_message(usr, list(locate(href_list["target"])))
-			if("Mess_us_up")
-				if(!HAS_TRAIT(src, TRAIT_PDA_CAN_EXPLODE))
-					var/obj/item/modular_computer/tablet/comp = computer
-					comp.explode(usr, from_message_menu = TRUE)
+	switch(action)
+		if("PDA_ringSet")
+			var/t = tgui_input_text(usr, "Enter a new ringtone", "Ringtone", "", 20)
+			var/mob/living/usr_mob = usr
+			//This is uplink shit. If it's not a tablet, we only care about the basic range check.
+			if(in_range(computer, usr_mob) && (computer.hardware_flag == PROGRAM_TABLET && computer.loc == usr_mob) && t)
+				if(SEND_SIGNAL(computer, COMSIG_TABLET_CHANGE_ID, usr_mob, t) & COMPONENT_STOP_RINGTONE_CHANGE)
 					return
+				else
+					ringtone = t
+					return(UI_UPDATE)
+		if("PDA_ringer_status")
+			ringer_status = !ringer_status
+			return(UI_UPDATE)
+		if("PDA_sAndR")
+			netcard_cache.set_radio_state(!netcard_cache.radio_state)
+			return(UI_UPDATE)
+		if("PDA_viewMessages")
+			viewing_messages = !viewing_messages
+			return(UI_UPDATE)
+		if("PDA_clearMessages")
+			messages = list()
+			return(UI_UPDATE)
+		if("PDA_changeSortStyle")
+			sort_by_job = !sort_by_job
+			return(UI_UPDATE)
+		if("PDA_sendEveryone")
+			if(!netcard_cache.radio_state)
+				to_chat(usr, span_notice("ERROR: GPRS Modem Disabled."))
+				return
+			//So much easier with GPRS.
+			send_message(usr, null, TRUE)
+
+			return(UI_UPDATE)
+		if("PDA_sendMessage")
+			if(!netcard_cache.radio_state)
+				to_chat(usr, span_notice("ERROR: GPRS Modem Disabled."))
+				return
+			var/target_addr = params["target_addr"]
+			if(sending_virus)
+				var/obj/item/computer_hardware/hard_drive/role/virus/disk = computer.all_components[MC_HDD_JOB]
+				if(istype(disk))
+					disk.send_virus(target_addr, usr)
+					return(UI_UPDATE)
+			send_message(usr, target_addr)
+			return(UI_UPDATE)
+		if("PDA_toggleVirus")
+			sending_virus = !sending_virus
+			return(UI_UPDATE)
+		if("PDA_scanForPDAs")
+			var/obj/item/computer_hardware/network_card/packetnet/pnetcard = computer.all_components[MC_NET]
+			pnetcard.known_pdas = list() //Flush.
+			if(!istype(pnetcard)) //This catches nulls too, so...
+				to_chat(usr, span_warning("Radio missing or bad driver!"))
+			var/datum/signal/ping_sig = new(src, list(
+				PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
+				"pda_scan" = "true"
+			))
+			pnetcard.post_signal(ping_sig)
+			// The UI update loop from the computer will handle the scan refresh.
+			return(UI_UPDATE)
+
+/datum/computer_file/program/messenger/ui_data(mob/user)
+	var/list/data = get_header_data()
+
+	var/obj/item/computer_hardware/hard_drive/role/disk = computer.all_components[MC_HDD_JOB]
+
+	data["owner"] = computer.saved_identification
+	data["messages"] = messages
+	data["ringer_status"] = ringer_status
+	data["sending_and_receiving"] = netcard_cache.radio_state
+	data["messengers"] = netcard_cache.known_pdas
+	data["viewing_messages"] = viewing_messages
+	data["sortByJob"] = sort_by_job
+	data["isSilicon"] = is_silicon
+
+	if(disk)
+		data["canSpam"] = disk.CanSpam()
+		data["virus_attach"] = istype(disk, /obj/item/computer_hardware/hard_drive/role/virus)
+		data["sending_virus"] = sending_virus
+
+	return data

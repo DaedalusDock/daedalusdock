@@ -55,7 +55,7 @@
 	else
 		M.visible_message(span_warning("[user] attempts to feed [M] from [src]."), \
 			span_warning("[user] attempts to feed you from [src]."))
-		if(!do_after(user, M))
+		if(!do_after(user, M, 3 SECONDS))
 			return
 		if(!reagents || !reagents.total_volume)
 			return // The condiment might be empty after the delay.
@@ -103,7 +103,7 @@
 
 /obj/item/reagent_containers/food/condiment/enzyme/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
+	var/datum/chemical_reaction/recipe = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
 	var/milk_required = recipe.required_reagents[/datum/reagent/consumable/milk]
 	var/enzyme_required = recipe.required_catalysts[/datum/reagent/consumable/enzyme]
 	. += span_notice("[milk_required] milk, [enzyme_required] enzyme and you got cheese.")
@@ -121,7 +121,7 @@
 
 /obj/item/reagent_containers/food/condiment/sugar/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
+	var/datum/chemical_reaction/recipe = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
 	var/flour_required = recipe.required_reagents[/datum/reagent/consumable/flour]
 	var/eggyolk_required = recipe.required_reagents[/datum/reagent/consumable/eggyolk]
 	var/sugar_required = recipe.required_reagents[/datum/reagent/consumable/sugar]
@@ -185,7 +185,7 @@
 
 /obj/item/reagent_containers/food/condiment/milk/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
+	var/datum/chemical_reaction/recipe = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
 	var/milk_required = recipe.required_reagents[/datum/reagent/consumable/milk]
 	var/enzyme_required = recipe.required_catalysts[/datum/reagent/consumable/enzyme]
 	. += span_notice("[milk_required] milk, [enzyme_required] enzyme and you got cheese.")
@@ -203,8 +203,8 @@
 
 /obj/item/reagent_containers/food/condiment/flour/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe_dough = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/dough]
-	var/datum/chemical_reaction/recipe_cakebatter = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
+	var/datum/chemical_reaction/recipe_dough = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/dough]
+	var/datum/chemical_reaction/recipe_cakebatter = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
 	var/dough_flour_required = recipe_dough.required_reagents[/datum/reagent/consumable/flour]
 	var/dough_water_required = recipe_dough.required_reagents[/datum/reagent/water]
 	var/cakebatter_flour_required = recipe_cakebatter.required_reagents[/datum/reagent/consumable/flour]
@@ -315,8 +315,8 @@
 
 /obj/item/reagent_containers/food/condiment/pack/create_reagents(max_vol, flags)
 	. = ..()
-	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_REM_REAGENT), .proc/on_reagent_add, TRUE)
-	RegisterSignal(reagents, COMSIG_REAGENTS_DEL_REAGENT, .proc/on_reagent_del, TRUE)
+	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_REM_REAGENT), PROC_REF(on_reagent_add), TRUE)
+	RegisterSignal(reagents, COMSIG_REAGENTS_DEL_REAGENT, PROC_REF(on_reagent_del), TRUE)
 
 /obj/item/reagent_containers/food/condiment/pack/update_icon()
 	SHOULD_CALL_PARENT(FALSE)

@@ -28,7 +28,7 @@
 
 	if(density && flags_1 & ON_BORDER_1) // blocks normal movement from and to the direction it's facing.
 		var/static/list/loc_connections = list(
-			COMSIG_ATOM_EXIT = .proc/on_exit,
+			COMSIG_ATOM_EXIT = PROC_REF(on_exit),
 		)
 		AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -64,7 +64,7 @@
 
 /obj/structure/railing/deconstruct(disassembled)
 	if(!(flags_1 & NODECONSTRUCT_1))
-		var/obj/item/stack/rods/rod = new /obj/item/stack/rods(drop_location(), 3)
+		var/obj/item/stack/rods/rod = new /obj/item/stack/rods(drop_location(), 6)
 		transfer_fingerprints_to(rod)
 	return ..()
 
@@ -74,7 +74,7 @@
 	if(flags_1&NODECONSTRUCT_1)
 		return
 	to_chat(user, span_notice("You begin to [anchored ? "unfasten the railing from":"fasten the railing to"] the floor..."))
-	if(I.use_tool(src, user, volume = 75, extra_checks = CALLBACK(src, .proc/check_anchored, anchored)))
+	if(I.use_tool(src, user, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
 		set_anchored(!anchored)
 		to_chat(user, span_notice("You [anchored ? "fasten the railing to":"unfasten the railing from"] the floor."))
 	return TRUE
@@ -85,7 +85,7 @@
 		return . || mover.throwing || mover.movement_type & (FLYING | FLOATING)
 	return TRUE
 
-/obj/structure/railing/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller)
+/obj/structure/railing/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
 	if(!(to_dir & dir))
 		return TRUE
 	return ..()
@@ -117,3 +117,27 @@
 /obj/structure/railing/proc/check_anchored(checked_anchored)
 	if(anchored == checked_anchored)
 		return TRUE
+
+/obj/structure/railing/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	var/mob/living/L = grab.get_affecting_mob()
+	if(!grab.current_grab.enable_violent_interactions || !isliving(L))
+		return ..()
+
+	if(!Adjacent(L))
+		user.move_grabbed_atoms_towards(get_turf(src))
+		return ..()
+
+	if(user.combat_mode)
+		visible_message(span_danger("<b>[user] slams <b>[L]</b>'s face against \the [src]!</span>"))
+		playsound(loc, 'sound/effects/grillehit.ogg', 50, 1)
+		var/blocked = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		if (prob(30 * ((100 - blocked)/100)))
+			L.Knockdown(10 SECONDS)
+		L.apply_damage(8, BRUTE, BODY_ZONE_HEAD)
+	else
+		if (get_turf(L) == get_turf(src))
+			L.forceMove(get_step(src, src.dir))
+		else
+			L.forceMove(get_turf(src))
+		L.Knockdown(10 SECONDS)
+		visible_message(span_danger("<b>[user]</b> throws \the <b>[L]</b> over \the [src].</span>"))

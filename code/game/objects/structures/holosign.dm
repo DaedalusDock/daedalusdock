@@ -114,7 +114,6 @@
 /obj/structure/holosign/barrier/atmos/Destroy()
 	var/turf/local = get_turf(loc)
 	REMOVE_TRAIT(local, TRAIT_FIREDOOR_STOP, TRAIT_GENERIC)
-	zas_update_loc()
 	return ..()
 
 /obj/structure/holosign/barrier/cyborg
@@ -157,7 +156,7 @@
 		return CheckHuman(mover)
 	return TRUE
 
-/obj/structure/holosign/barrier/medical/Bumped(atom/movable/AM)
+/obj/structure/holosign/barrier/medical/BumpedBy(atom/movable/AM)
 	. = ..()
 	icon_state = "holo_medical"
 	if(ishuman(AM) && !CheckHuman(AM))
@@ -201,9 +200,9 @@
 			var/mob/living/M = user
 			M.electrocute_act(15,"Energy Barrier")
 			shockcd = TRUE
-			addtimer(CALLBACK(src, .proc/cooldown), 5)
+			addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)
 
-/obj/structure/holosign/barrier/cyborg/hacked/Bumped(atom/movable/AM)
+/obj/structure/holosign/barrier/cyborg/hacked/BumpedBy(atom/movable/AM)
 	if(shockcd)
 		return
 
@@ -213,4 +212,4 @@
 	var/mob/living/M = AM
 	M.electrocute_act(15,"Energy Barrier")
 	shockcd = TRUE
-	addtimer(CALLBACK(src, .proc/cooldown), 5)
+	addtimer(CALLBACK(src, PROC_REF(cooldown)), 5)

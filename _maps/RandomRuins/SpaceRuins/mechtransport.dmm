@@ -153,16 +153,6 @@
 /obj/item/stack/tile/iron/base,
 /turf/open/floor/mineral/titanium/yellow/airless,
 /area/ruin/space/has_grav/powered/mechtransport)
-"M" = (
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg1"
-	},
-/area/ruin/space/has_grav/powered/mechtransport)
-"N" = (
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg2"
-	},
-/area/ruin/space/has_grav/powered/mechtransport)
 "O" = (
 /obj/structure/mecha_wreckage/odysseus,
 /turf/open/floor/mineral/titanium/yellow/airless,
@@ -174,11 +164,6 @@
 "Q" = (
 /obj/structure/mecha_wreckage/gygax,
 /turf/open/floor/mineral/titanium/airless,
-/area/ruin/space/has_grav/powered/mechtransport)
-"R" = (
-/turf/open/floor/plating/airless{
-	icon_state = "platingdmg3"
-	},
 /area/ruin/space/has_grav/powered/mechtransport)
 "S" = (
 /obj/item/stack/rods,
@@ -195,6 +180,10 @@
 /obj/structure/shuttle/engine/propulsion,
 /turf/template_noop,
 /area/ruin/space/has_grav/powered/mechtransport)
+"Y" = (
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating/airless,
+/area/ruin/space/has_grav/powered/mechtransport)
 
 (1,1,1) = {"
 a
@@ -207,7 +196,7 @@ d
 d
 G
 I
-M
+Y
 P
 T
 T
@@ -226,7 +215,7 @@ H
 S
 H
 I
-R
+Y
 V
 T
 "}
@@ -241,7 +230,7 @@ w
 F
 w
 H
-N
+Y
 I
 I
 T

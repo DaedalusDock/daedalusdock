@@ -6,6 +6,8 @@
 	desc = "A charging dock for energy based weaponry."
 	circuit = /obj/item/circuitboard/machine/recharger
 	pass_flags = PASSTABLE
+	zmm_flags = ZMM_MANGLE_PLANES
+
 	var/obj/item/charging = null
 	var/recharge_coeff = 1
 	var/using_power = FALSE //Did we put power into "charging" last process()?

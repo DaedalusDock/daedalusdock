@@ -98,7 +98,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 
 /obj/effect/reactor_em_field/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/update_light_colors), 10 SECONDS, TIMER_LOOP)
+	addtimer(CALLBACK(src, PROC_REF(update_light_colors)), 10 SECONDS, TIMER_LOOP)
 	if(!GLOB.fusion_reactions.len)
 		GLOB.fusion_reactions = list()
 		for(var/rtype in subtypesof(/datum/fusion_reaction))
@@ -266,7 +266,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 	)
 	set_light(l_outer_range = 15, l_power = 1, l_color = "#ccccff")
 	empulse(get_turf(src), Ceil(plasma_temperature/1000), Ceil(plasma_temperature/300))
-	addtimer(CALLBACK(src, .proc/kaboom), 5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(kaboom)), 5 SECONDS)
 
 /obj/effect/reactor_em_field/proc/kaboom()
 	radiate_all()
@@ -426,7 +426,7 @@ Deuterium-tritium fusion: 4.5 x 10^7 K
 				continue
 
 			/// Sort based on reaction priority to avoid deut-deut eating all the deut before deut-trit can run etc.
-			sortTim(possible_reactions, /proc/cmp_fusion_reaction_des)
+			sortTim(possible_reactions, GLOBAL_PROC_REF(cmp_fusion_reaction_des))
 
 			//split up the reacting atoms between the possible reactions
 			while(possible_reactions.len)

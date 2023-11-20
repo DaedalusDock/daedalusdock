@@ -33,8 +33,6 @@ SUBSYSTEM_DEF(economy)
 	 */
 	var/full_ancap = FALSE
 
-	/// Departmental cash provided to science when a node is researched in specific configs.
-	var/techweb_bounty = 250
 	/**
 	  * List of normal (no department ones) accounts' identifiers with associated datum accounts, for big O performance.
 	  * A list of sole account datums can be obtained with flatten_list(), another variable would be redundant rn.

@@ -88,9 +88,9 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	. += GLOB.monkey_recipes
 
 /obj/item/stack/sheet/animalhide/lizard
-	name = "unathi skin"
+	name = "jinan skin"
 	desc = "Sssssss..."
-	singular_name = "unathi skin piece"
+	singular_name = "jinan skin piece"
 	icon_state = "sheet-lizard"
 	inhand_icon_state = "sheet-lizard"
 	merge_type = /obj/item/stack/sheet/animalhide/lizard
@@ -191,7 +191,6 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 	new/datum/stack_recipe("leather jacket", /obj/item/clothing/suit/jacket/leather, 7), \
 	new/datum/stack_recipe("leather shoes", /obj/item/clothing/shoes/laceup, 2), \
 	new/datum/stack_recipe("leather overcoat", /obj/item/clothing/suit/jacket/leather/overcoat, 10), \
-	new/datum/stack_recipe("saddle", /obj/item/saddle, 5), \
 	new/datum/stack_recipe("sheriff vest", /obj/item/clothing/accessory/vest_sheriff, 4), \
 	new/datum/stack_recipe_list("cowboy hats", list( \
 		new/datum/stack_recipe("sheriff hat", /obj/item/clothing/head/cowboy_hat_brown, 2), \
@@ -269,7 +268,7 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 //Step one - dehairing.
 
 /obj/item/stack/sheet/animalhide/attackby(obj/item/W, mob/user, params)
-	if(W.get_sharpness())
+	if(W.sharpness & SHARP_EDGED)
 		playsound(loc, 'sound/weapons/slice.ogg', 50, TRUE, -1)
 		user.visible_message(span_notice("[user] starts cutting hair off \the [src]."), span_notice("You start cutting the hair off \the [src]..."), span_hear("You hear the sound of a knife rubbing against flesh."))
 		if(do_after(user, src, 5 SECONDS))

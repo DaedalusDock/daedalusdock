@@ -260,7 +260,7 @@ Burning extracts:
 
 /obj/item/slimecross/burning/oil/do_effect(mob/user)
 	user.visible_message(span_warning("[user] activates [src]. It's going to explode!"), span_danger("You activate [src]. It crackles in anticipation"))
-	addtimer(CALLBACK(src, .proc/boom), 50)
+	addtimer(CALLBACK(src, PROC_REF(boom)), 50)
 
 /// Inflicts a blastwave upon every mob within a small radius.
 /obj/item/slimecross/burning/oil/proc/boom()
@@ -287,21 +287,12 @@ Burning extracts:
 
 /obj/item/slimecross/burning/lightpink
 	colour = "light pink"
-	effect_desc = "Paxes everyone in sight."
+	effect_desc = "Drugs everyone in sight."
 
 /obj/item/slimecross/burning/lightpink/do_effect(mob/user)
 	user.visible_message(span_danger("[src] lets off a hypnotizing pink glow!"))
 	for(var/mob/living/carbon/C in view(7, get_turf(user)))
-		C.reagents.add_reagent(/datum/reagent/pax,5)
-	..()
-
-/obj/item/slimecross/burning/adamantine
-	colour = "adamantine"
-	effect_desc = "Creates a mighty adamantine shield."
-
-/obj/item/slimecross/burning/adamantine/do_effect(mob/user)
-	user.visible_message(span_notice("[src] crystallizes into a large shield!"))
-	new /obj/item/shield/adamantineshield(get_turf(user))
+		C.reagents.add_reagent(/datum/reagent/medicine/haloperidol, 10)
 	..()
 
 /obj/item/slimecross/burning/rainbow

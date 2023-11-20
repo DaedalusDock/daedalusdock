@@ -8,11 +8,15 @@
 	total_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
 	spawn_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
 	supervisors = "the head of security, and the head of your assigned department (if applicable)"
-	selection_color = "#ffeeee"
+	selection_color = "#601c1c"
 	minimal_player_age = 7
 	exp_requirements = 300
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/mars_exec,
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -27,7 +31,6 @@
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_SECURITY_OFFICER
 	bounty_types = CIV_JOB_SEC
 	departments_list = list(
 		/datum/job_department/security,
@@ -68,7 +71,9 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	if(ishuman(spawning))
 		var/department = setup_department(spawning, spawning.client)
 		if(department)
-			announce_latejoin(spawning, department, GLOB.security_officer_distribution)
+			var/obj/machinery/announcement_system/announcement_system = pick(GLOB.announcement_systems)
+			if(announcement_system)
+				announcement_system.announce_secoff_latejoin(spawning, department, GLOB.security_officer_distribution)
 
 
 /// Returns the department this mob was assigned to, if any.
@@ -89,22 +94,22 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 		if(SEC_DEPT_SUPPLY)
 			ears = /obj/item/radio/headset/headset_sec/alt/department/supply
 			dep_trim = /datum/id_trim/job/security_officer/supply
-			destination = /area/security/checkpoint/supply
+			destination = /area/station/security/checkpoint/supply
 			accessory = /obj/item/clothing/accessory/armband/cargo
 		if(SEC_DEPT_ENGINEERING)
 			ears = /obj/item/radio/headset/headset_sec/alt/department/engi
 			dep_trim = /datum/id_trim/job/security_officer/engineering
-			destination = /area/security/checkpoint/engineering
+			destination = /area/station/security/checkpoint/engineering
 			accessory = /obj/item/clothing/accessory/armband/engine
 		if(SEC_DEPT_MEDICAL)
 			ears = /obj/item/radio/headset/headset_sec/alt/department/med
 			dep_trim = /datum/id_trim/job/security_officer/medical
-			destination = /area/security/checkpoint/medical
+			destination = /area/station/security/checkpoint/medical
 			accessory = /obj/item/clothing/accessory/armband/medblue
 		if(SEC_DEPT_SCIENCE)
 			ears = /obj/item/radio/headset/headset_sec/alt/department/sci
 			dep_trim = /datum/id_trim/job/security_officer/science
-			destination = /area/security/checkpoint/science
+			destination = /area/station/security/checkpoint/science
 			accessory = /obj/item/clothing/accessory/armband/science
 
 	if(accessory)
@@ -145,43 +150,6 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	return department
 
 
-/datum/job/security_officer/proc/announce_latejoin(
-	mob/officer,
-	department,
-	distribution,
-)
-	var/obj/machinery/announcement_system/announcement_system = pick(GLOB.announcement_systems)
-	if (isnull(announcement_system))
-		return
-
-	announcement_system.announce_officer(officer, department)
-
-	var/list/targets = list()
-
-	var/list/partners = list()
-	for (var/officer_ref in distribution)
-		var/mob/partner = locate(officer_ref)
-		if (!istype(partner) || distribution[officer_ref] != department)
-			continue
-		partners += partner.real_name
-
-	if (partners.len)
-		for (var/obj/item/modular_computer/pda as anything in GLOB.TabletMessengers)
-			if (pda.saved_identification in partners)
-				targets += pda
-
-	if (!targets.len)
-		return
-
-	var/datum/signal/subspace/messaging/tablet_msg/signal = new(announcement_system, list(
-		"name" = "Security Department Update",
-		"job" = "Automated Announcement System",
-		"message" = "Officer [officer.real_name] has been assigned to your department, [department].",
-		"targets" = targets,
-		"automated" = TRUE,
-	))
-
-	signal.send_to_receivers()
 
 /datum/job/security_officer/proc/get_my_department(mob/character, preferred_department)
 	var/department = GLOB.security_officer_distribution[REF(character)]
@@ -246,6 +214,8 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	head = null
 	mask = /obj/item/clothing/mask/gas/sechailer
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null
 
 /obj/item/radio/headset/headset_sec/alt/department/Initialize(mapload)
 	. = ..()

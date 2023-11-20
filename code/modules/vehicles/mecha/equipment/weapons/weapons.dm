@@ -134,25 +134,6 @@
 		return TRUE
 	return FALSE
 
-//Exosuit-mounted kinetic accelerator
-/obj/item/mecha_parts/mecha_equipment/weapon/energy/mecha_kineticgun
-	equip_cooldown = 10
-	name = "Exosuit Proto-kinetic Accelerator"
-	desc = "An exosuit-mounted mining tool that does increased damage in low pressure. Drawing from an onboard power source allows it to project further than the handheld version."
-	icon_state = "mecha_kineticgun"
-	energy_drain = 30
-	projectile = /obj/projectile/kinetic/mech
-	fire_sound = 'sound/weapons/kenetic_accel.ogg'
-	harmful = TRUE
-
-//attachable to all mechas, like the plasma cutter
-/obj/item/mecha_parts/mecha_equipment/weapon/energy/mecha_kineticgun/can_attach(obj/vehicle/sealed/mecha/M, attach_right = FALSE)
-	. = ..()
-	if(.) //combat mech
-		return
-	if(default_can_attach(M, attach_right))
-		return TRUE
-
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/taser
 	name = "\improper PBT \"Pacifier\" mounted taser"
 	desc = "A weapon for combat exosuits. Shoots non-lethal stunning electrodes."
@@ -195,7 +176,7 @@
 		to_chat(M, "<font color='red' size='7'>HONK</font>")
 		M.SetSleeping(0)
 		M.adjust_timed_status_effect(40 SECONDS, /datum/status_effect/speech/stutter)
-		var/obj/item/organ/internal/ears/ears = M.getorganslot(ORGAN_SLOT_EARS)
+		var/obj/item/organ/ears/ears = M.getorganslot(ORGAN_SLOT_EARS)
 		if(ears)
 			ears.adjustEarDamage(0, 30)
 		M.Paralyze(60)
@@ -380,7 +361,7 @@
 	var/turf/T = get_turf(src)
 	message_admins("[ADMIN_LOOKUPFLW(user)] fired a [F] in [ADMIN_VERBOSEJMP(T)]")
 	log_game("[key_name(user)] fired a [F] in [AREACOORD(T)]")
-	addtimer(CALLBACK(F, /obj/item/grenade/flashbang.proc/detonate), det_time)
+	addtimer(CALLBACK(F, TYPE_PROC_REF(/obj/item/grenade/flashbang, detonate)), det_time)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/flashbang/clusterbang //Because I am a heartless bastard -Sieve //Heartless? for making the poor man's honkblast? - Kaze
 	name = "\improper SOB-3 grenade launcher"

@@ -6,9 +6,8 @@
 	name = "technology spawner"
 	icon_state = "disk"
 	spawn_loot_count = 2
-	loot = list( // Space loot spawner. Couple of random bits of technology-adjacent stuff including anomaly cores and BEPIS techs.
+	loot = list( // Space loot spawner. Couple of random bits of technology-adjacent stuff including anomaly cores..
 		/obj/item/raw_anomaly_core/random,
-		/obj/item/disk/tech_disk/spaceloot,
 		/obj/item/camera_bug,
 	)
 

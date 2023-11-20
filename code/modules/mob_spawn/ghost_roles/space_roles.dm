@@ -60,6 +60,8 @@
 	back = /obj/item/mod/control/pre_equipped/prototype
 	mask = /obj/item/clothing/mask/breath
 	internals_slot = ITEM_SLOT_SUITSTORE
+	backpack_contents = null
+	box = null
 
 /obj/effect/mob_spawn/ghost_role/human/oldsci
 	name = "old cryogenics pod"
@@ -87,20 +89,16 @@
 	id = /obj/item/card/id/away/old/sci
 	l_pocket = /obj/item/stack/medical/bruise_pack
 
-///asteroid comms agent
-
-/obj/effect/mob_spawn/ghost_role/human/lavaland_syndicate/comms/space
-	you_are_text = "You are a syndicate agent, assigned to a small listening post station situated near your hated enemy's top secret research facility: Space Station 13."
-	flavour_text = "Monitor enemy activity as best you can, and try to keep a low profile. Monitor enemy activity as best you can, and try to keep a low profile. Use the communication equipment to provide support to any field agents, and sow disinformation to throw Nanotrasen off your trail. Do not let the base fall into enemy hands!"
-	important_text = "DO NOT abandon the base."
-
-/obj/effect/mob_spawn/ghost_role/human/lavaland_syndicate/comms/space/Initialize(mapload)
-	. = ..()
-	if(prob(90)) //only has a 10% chance of existing, otherwise it'll just be a NPC syndie.
-		new /mob/living/simple_animal/hostile/syndicate/ranged(get_turf(src))
-		return INITIALIZE_HINT_QDEL
-
 ///battlecruiser stuff
+/obj/effect/mob_spawn/ghost_role/human/syndicate
+	name = "Syndicate Operative"
+	icon = 'icons/obj/machines/sleeper.dmi'
+	icon_state = "sleeper_s"
+	prompt_name = "a syndicate operative"
+	you_are_text = "You are a syndicate operative."
+	flavour_text = "You have awoken, without instruction. Death to Nanotrasen! If there are some clues around as to what you're supposed to be doing, you best follow those."
+	outfit = /datum/outfit/syndicate_empty
+	spawner_job_path = /datum/job/space_syndicate
 
 /obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser
 	name = "Syndicate Battlecruiser Ship Operative"
@@ -179,9 +177,23 @@
 		if(battlecruiser_team.nuke)
 			var/obj/machinery/nuclearbomb/nuke = battlecruiser_team.nuke
 			antag_memory += "<B>[nuke] Code</B>: [nuke.r_code]<br>"
-			owner.add_memory(MEMORY_NUKECODE, list(DETAIL_NUKE_CODE = nuke.r_code, DETAIL_PROTAGONIST = owner.current), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_FLAG_NOLOCATION | MEMORY_FLAG_NOMOOD | MEMORY_FLAG_NOPERSISTENCE)
+			owner.add_memory(MEMORY_NUKECODE, list(DETAIL_NUKE_CODE = nuke.r_code, DETAIL_PROTAGONIST = owner.current), story_value = STORY_VALUE_AMAZING, memory_flags = MEMORY_FLAG_NOLOCATION | MEMORY_FLAG_NOPERSISTENCE)
 			to_chat(owner, "The nuclear authorization code is: <B>[nuke.r_code]</B>")
 	return ..()
+
+/datum/outfit/syndicate_empty
+	name = "Syndicate Operative Empty"
+	uniform = /obj/item/clothing/under/syndicate
+	shoes = /obj/item/clothing/shoes/combat
+	gloves = /obj/item/clothing/gloves/tackler/combat/insulated
+	ears = /obj/item/radio/headset/syndicate/alt
+	back = /obj/item/storage/backpack
+	implants = list(/obj/item/implant/weapons_auth)
+	id = /obj/item/card/id/advanced/chameleon
+	id_trim = /datum/id_trim/chameleon/operative
+
+/datum/outfit/syndicate_empty/post_equip(mob/living/carbon/human/H)
+	H.faction |= ROLE_SYNDICATE
 
 /datum/outfit/syndicate_empty/battlecruiser
 	name = "Syndicate Battlecruiser Ship Operative"

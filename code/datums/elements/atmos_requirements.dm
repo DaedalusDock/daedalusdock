@@ -20,7 +20,7 @@
 	if(!isliving(target))
 		return ELEMENT_INCOMPATIBLE
 	src.atmos_requirements = string_assoc_list(atmos_requirements)
-	RegisterSignal(target, COMSIG_LIVING_HANDLE_BREATHING, .proc/on_non_stasis_life)
+	RegisterSignal(target, COMSIG_LIVING_HANDLE_BREATHING, PROC_REF(on_non_stasis_life))
 
 /datum/element/atmos_requirements/Detach(datum/target)
 	. = ..()
@@ -36,7 +36,7 @@
 	target.throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
 
 /datum/element/atmos_requirements/proc/is_breathable_atmos(mob/living/target)
-	if(target.pulledby && target.pulledby.grab_state >= GRAB_KILL && atmos_requirements["min_oxy"])
+	if(HAS_TRAIT(target, TRAIT_KILL_GRAB) && atmos_requirements["min_oxy"])
 		return FALSE
 
 	if(!isopenturf(target.loc))
@@ -46,7 +46,7 @@
 	if(!open_turf.air && (atmos_requirements["min_oxy"] || atmos_requirements["min_tox"] || atmos_requirements["min_n2"] || atmos_requirements["min_co2"]))
 		return FALSE
 
-	var/list/open_turf_gases = open_turf.return_air().gas
+	var/list/open_turf_gases = open_turf.unsafe_return_air().gas
 
 
 	var/plas = open_turf_gases[GAS_PLASMA]

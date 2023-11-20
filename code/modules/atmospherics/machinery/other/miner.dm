@@ -55,12 +55,12 @@
 		broken_message = span_boldnotice("AIR VENTING TO SPACE")
 		set_broken(TRUE)
 		return FALSE
-	var/datum/gas_mixture/G = OT.return_air()
+	var/datum/gas_mixture/G = OT.unsafe_return_air()
 	if(G.returnPressure() > (max_ext_kpa - ((spawn_mol*spawn_temp*R_IDEAL_GAS_EQUATION)/(CELL_VOLUME))))
 		broken_message = span_boldwarning("EXTERNAL PRESSURE OVER THRESHOLD")
 		set_broken(TRUE)
 		return FALSE
-	if(G.get_moles() > max_ext_mol)
+	if(G.total_moles > max_ext_mol)
 		broken_message = span_boldwarning("EXTERNAL AIR CONCENTRATION OVER THRESHOLD")
 		set_broken(TRUE)
 		return FALSE
@@ -83,7 +83,7 @@
 	if(!active)
 		active_power_usage = idle_power_usage
 	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/G = T.return_air()
+	var/datum/gas_mixture/G = T.unsafe_return_air()
 	var/P = G.returnPressure()
 	switch(power_draw)
 		if(GASMINER_POWER_NONE)

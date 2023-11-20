@@ -39,10 +39,13 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 	..(I, cuff_break = INSTANT_CUFFBREAK)
 
 /mob/living/carbon/alien/humanoid/resist_grab(moving_resist)
-	if(pulledby.grab_state)
-		visible_message(span_danger("[src] breaks free of [pulledby]'s grip!"), \
-						span_danger("You break free of [pulledby]'s grip!"))
-	pulledby.stop_pulling()
+	if(LAZYLEN(grabbed_by))
+		for(var/obj/item/hand_item/grab/G in grabbed_by)
+			visible_message(
+				span_danger("[src] breaks free of [G.assailant]'s grip!"),
+				span_danger("You break free of [G.assailant]'s grip!")
+			)
+	free_from_all_grabs()
 	. = 0
 
 /mob/living/carbon/alien/humanoid/get_permeability_protection(list/target_zones)
@@ -64,7 +67,7 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 
 
 /mob/living/carbon/alien/humanoid/check_breath(datum/gas_mixture/breath)
-	if(breath?.get_moles() > 0 && !HAS_TRAIT(src, TRAIT_ALIEN_SNEAK))
+	if(breath?.total_moles > 0 && !HAS_TRAIT(src, TRAIT_ALIEN_SNEAK))
 		playsound(get_turf(src), pick('sound/voice/lowHiss2.ogg', 'sound/voice/lowHiss3.ogg', 'sound/voice/lowHiss4.ogg'), 50, FALSE, -5)
 	return ..()
 

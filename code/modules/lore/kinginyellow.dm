@@ -35,7 +35,7 @@
 	var/turf/possible_loc = get_oov_turf(L)
 	if(possible_loc && !my_liege)
 		my_liege = new(possible_loc, L)
-		RegisterSignal(my_liege, COMSIG_PARENT_QDELETING, .proc/king_gone)
+		RegisterSignal(my_liege, COMSIG_PARENT_QDELETING, PROC_REF(king_gone))
 
 /obj/item/kinginyellow/proc/king_gone(datum/source)
 	SIGNAL_HANDLER
@@ -104,11 +104,11 @@
 		return INITIALIZE_HINT_QDEL
 	COOLDOWN_START(src, grace_period, 5 SECONDS)
 	target = _target
-	RegisterSignal(target, COMSIG_MOVABLE_MOVED, .proc/target_moved)
+	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(target_moved))
 	me = image('goon/icons/obj/kinginyellow.dmi', src, "kingyellow")
 	target.client?.images += me
 	setDir(get_dir(src, target))
-	addtimer(CALLBACK(src, .proc/check_expire), 5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(check_expire)), 5 SECONDS)
 
 /obj/effect/kinginyellow_mob/Destroy(force)
 	if(target)
@@ -141,7 +141,7 @@
 	if(!(src in view(target)))
 		vanish()
 	else
-		addtimer(CALLBACK(src, .proc/check_expire), 5 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(check_expire)), 5 SECONDS)
 
 /obj/effect/kinginyellow_mob/attackby(obj/item/weapon, mob/user, params)
 	vanish()

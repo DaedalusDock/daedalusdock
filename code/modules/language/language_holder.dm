@@ -317,16 +317,14 @@ Key procs
 								/datum/language/draconic = list(LANGUAGE_ATOM),
 								/datum/language/moffic = list(LANGUAGE_ATOM),
 								/datum/language/calcic = list(LANGUAGE_ATOM),
-								/datum/language/voltaic = list(LANGUAGE_ATOM),
-								/datum/language/nekomimetic = list(LANGUAGE_ATOM))
+								/datum/language/voltaic = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/uncommon = list(LANGUAGE_ATOM),
 							/datum/language/machine = list(LANGUAGE_ATOM),
 							/datum/language/draconic = list(LANGUAGE_ATOM),
 							/datum/language/moffic = list(LANGUAGE_ATOM),
 							/datum/language/calcic = list(LANGUAGE_ATOM),
-							/datum/language/voltaic = list(LANGUAGE_ATOM),
-							/datum/language/nekomimetic = list(LANGUAGE_ATOM))
+							/datum/language/voltaic = list(LANGUAGE_ATOM))
 
 /datum/language_holder/moth
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
@@ -380,12 +378,6 @@ Key procs
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/sylvan = list(LANGUAGE_ATOM))
 
-/datum/language_holder/felinid
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/nekomimetic = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/nekomimetic = list(LANGUAGE_ATOM))
-
 /datum/language_holder/shadowpeople
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 								/datum/language/shadowtongue = list(LANGUAGE_ATOM))
@@ -404,20 +396,20 @@ Key procs
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/vox = list(LANGUAGE_ATOM))
 
-/datum/language_holder/skrell
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/skrell = list(LANGUAGE_ATOM),
-								/datum/language/slime = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/skrell = list(LANGUAGE_ATOM),
-							/datum/language/slime = list(LANGUAGE_ATOM))
-
 /datum/language_holder/teshari
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 								/datum/language/schechi = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/schechi = list(LANGUAGE_ATOM))
 
+/datum/language_holder/ipc
+	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
+								/datum/language/machine = list(LANGUAGE_ATOM),
+								/datum/language/draconic = list(LANGUAGE_ATOM))
+
+	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
+							/datum/language/machine = list(LANGUAGE_ATOM),
+							/datum/language/draconic = list(LANGUAGE_ATOM))
 /datum/language_holder/empty
 	understood_languages = list()
 	spoken_languages = list()

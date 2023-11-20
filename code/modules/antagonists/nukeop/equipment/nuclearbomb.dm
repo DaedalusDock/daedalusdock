@@ -483,7 +483,7 @@ GLOBAL_VAR(station_nuke_source)
 	sound_to_playing_players('sound/machines/alarm.ogg')
 	if(SSticker?.mode)
 		SSticker.roundend_check_paused = TRUE
-	addtimer(CALLBACK(src, .proc/actually_explode), 100)
+	addtimer(CALLBACK(src, PROC_REF(actually_explode)), 100)
 
 /obj/machinery/nuclearbomb/proc/actually_explode()
 	if(!core)
@@ -520,12 +520,12 @@ GLOBAL_VAR(station_nuke_source)
 
 /obj/machinery/nuclearbomb/proc/really_actually_explode(off_station)
 	var/turf/bomb_location = get_turf(src)
-	Cinematic(get_cinematic_type(off_station),world,CALLBACK(SSticker,/datum/controller/subsystem/ticker/proc/station_explosion_detonation,src))
+	Cinematic(get_cinematic_type(off_station),world,CALLBACK(SSticker,TYPE_PROC_REF(/datum/controller/subsystem/ticker, station_explosion_detonation),src))
 	if(off_station == STATION_DESTROYED_NUKE)
-		INVOKE_ASYNC(GLOBAL_PROC,.proc/KillEveryoneOnStation)
+		INVOKE_ASYNC(GLOBAL_PROC,GLOBAL_PROC_REF(KillEveryoneOnStation))
 		return
 	if(off_station != NUKE_NEAR_MISS) // Don't kill people in the station if the nuke missed, even if we are technically on the same z-level
-		INVOKE_ASYNC(GLOBAL_PROC,.proc/KillEveryoneOnZLevel, bomb_location.z)
+		INVOKE_ASYNC(GLOBAL_PROC,GLOBAL_PROC_REF(KillEveryoneOnZLevel), bomb_location.z)
 
 /obj/machinery/nuclearbomb/proc/get_cinematic_type(off_station)
 	if(off_station < NUKE_NEAR_MISS)
@@ -568,10 +568,10 @@ GLOBAL_VAR(station_nuke_source)
 		disarm()
 		return
 	if(is_station_level(bomb_location.z))
-		addtimer(CALLBACK(src, .proc/really_actually_explode), 110)
+		addtimer(CALLBACK(src, PROC_REF(really_actually_explode)), 110)
 	else
 		visible_message(span_notice("[src] fizzes ominously."))
-		addtimer(CALLBACK(src, .proc/local_foam), 110)
+		addtimer(CALLBACK(src, PROC_REF(local_foam)), 110)
 
 /obj/machinery/nuclearbomb/beer/proc/disarm()
 	detonation_timer = null
@@ -692,16 +692,19 @@ This is here to make the tiles around the station mininuke change when it's arme
 	if(!fake)
 		SSpoints_of_interest.make_point_of_interest(src)
 		last_disk_move = world.time
-		START_PROCESSING(SSobj, src)
+		if(CONFIG_GET(flag/lone_op_nag))
+			START_PROCESSING(SSobj, src)
 
-/obj/item/disk/nuclear/ComponentInitialize()
-	. = ..()
 	AddComponent(/datum/component/stationloving, !fake)
 
 /obj/item/disk/nuclear/process()
 	if(fake)
 		STOP_PROCESSING(SSobj, src)
 		CRASH("A fake nuke disk tried to call process(). Who the fuck and how the fuck")
+
+	if(!CONFIG_GET(flag/lone_op_nag))
+		STOP_PROCESSING(SSobj, src)
+		return
 
 	var/turf/new_turf = get_turf(src)
 
@@ -737,7 +740,7 @@ This is here to make the tiles around the station mininuke change when it's arme
 	if (last_secured_location == get_turf(src))
 		return FALSE
 
-	var/mob/holder = pulledby || get(src, /mob)
+	var/mob/holder = get(src, /mob)
 	if (isnull(holder?.client))
 		return FALSE
 
@@ -778,8 +781,8 @@ This is here to make the tiles around the station mininuke change when it's arme
 	user.visible_message(span_suicide("[user] is going delta! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(src, 'sound/machines/alarm.ogg', 50, -1, TRUE)
 	for(var/i in 1 to 100)
-		addtimer(CALLBACK(user, /atom/proc/add_atom_colour, (i % 2)? "#00FF00" : "#FF0000", ADMIN_COLOUR_PRIORITY), i)
-	addtimer(CALLBACK(src, .proc/manual_suicide, user), 101)
+		addtimer(CALLBACK(user, TYPE_PROC_REF(/atom, add_atom_colour), (i % 2)? "#00FF00" : "#FF0000", ADMIN_COLOUR_PRIORITY), i)
+	addtimer(CALLBACK(src, PROC_REF(manual_suicide), user), 101)
 	return MANUAL_SUICIDE
 
 /obj/item/disk/nuclear/proc/manual_suicide(mob/living/user)

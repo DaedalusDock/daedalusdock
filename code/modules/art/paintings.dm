@@ -210,7 +210,7 @@
 		return
 	var/sniped_amount = painting_metadata.credit_value
 	var/offer_amount = tgui_input_number(user, "How much do you want to offer?", "Patronage Amount", (painting_metadata.credit_value + 1), account.account_balance, painting_metadata.credit_value)
-	if(!offer_amount || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!offer_amount || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(sniped_amount != painting_metadata.credit_value)
 		return
@@ -237,7 +237,7 @@
 	var/list/radial_options = list()
 	for(var/frame_name in possible_frames)
 		radial_options[frame_name] = image(icon, "[icon_state]frame_[frame_name]")
-	var/result = show_radial_menu(user, loc, radial_options, radius = 60, custom_check = CALLBACK(src, .proc/can_select_frame, user), tooltips = TRUE)
+	var/result = show_radial_menu(user, loc, radial_options, radius = 60, custom_check = CALLBACK(src, PROC_REF(can_select_frame), user), tooltips = TRUE)
 	if(!result)
 		return
 	painting_metadata.frame_type = result
@@ -327,7 +327,7 @@
 	if(painting_metadata.loaded_from_json) // No renaming old paintings
 		return
 	var/new_name = tgui_input_text(user, "What do you want to name the painting?", "Title Your Masterpiece")
-	if(new_name != painting_metadata.title && new_name && user.canUseTopic(src, BE_CLOSE))
+	if(new_name != painting_metadata.title && new_name && user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		painting_metadata.title = new_name
 	var/sign_choice = tgui_alert(user, "Do you want to sign it or remain anonymous?", "Sign painting?", list("Yes", "No"))
 	if(sign_choice != "Yes")
@@ -506,7 +506,7 @@
 /obj/structure/sign/painting/AltClick(mob/user)
 	. = ..()
 	if(current_canvas?.can_select_frame(user))
-		INVOKE_ASYNC(current_canvas, /obj/item/canvas.proc/select_new_frame, user)
+		INVOKE_ASYNC(current_canvas, TYPE_PROC_REF(/obj/item/canvas, select_new_frame), user)
 
 /obj/structure/sign/painting/proc/frame_canvas(mob/user, obj/item/canvas/new_canvas)
 	if(!(new_canvas.type in accepted_canvas_types))

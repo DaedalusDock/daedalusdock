@@ -29,39 +29,6 @@
 		log_combat(user, swirlie, "swirlied (brute)")
 		swirlie.adjustBruteLoss(5)
 
-	else if(user.pulling && isliving(user.pulling))
-		user.changeNext_move(CLICK_CD_MELEE)
-		var/mob/living/GM = user.pulling
-		if(user.grab_state >= GRAB_AGGRESSIVE)
-			if(GM.loc != get_turf(src))
-				to_chat(user, span_warning("[GM] needs to be on [src]!"))
-				return
-			if(!swirlie)
-				if(open)
-					GM.visible_message(span_danger("[user] starts to give [GM] a swirlie!"), span_userdanger("[user] starts to give you a swirlie..."))
-					swirlie = GM
-					var/was_alive = (swirlie.stat != DEAD)
-					if(do_after(user, src, 3 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
-						GM.visible_message(span_danger("[user] gives [GM] a swirlie!"), span_userdanger("[user] gives you a swirlie!"), span_hear("You hear a toilet flushing."))
-						if(iscarbon(GM))
-							var/mob/living/carbon/C = GM
-							if(!C.internal)
-								log_combat(user, C, "swirlied (oxy)")
-								C.adjustOxyLoss(5)
-						else
-							log_combat(user, GM, "swirlied (oxy)")
-							GM.adjustOxyLoss(5)
-					if(was_alive && swirlie.stat == DEAD && swirlie.client)
-						swirlie.client.give_award(/datum/award/achievement/misc/swirlie, swirlie) // just like space high school all over again!
-					swirlie = null
-				else
-					playsound(src.loc, 'sound/effects/bang.ogg', 25, TRUE)
-					GM.visible_message(span_danger("[user] slams [GM.name] into [src]!"), span_userdanger("[user] slams you into [src]!"))
-					log_combat(user, GM, "toilet slammed")
-					GM.adjustBruteLoss(5)
-		else
-			to_chat(user, span_warning("You need a tighter grip!"))
-
 	else if(cistern && !open && user.CanReach(src))
 		if(!contents.len)
 			to_chat(user, span_notice("The cistern is empty."))
@@ -77,6 +44,46 @@
 		open = !open
 		update_appearance()
 
+
+/obj/structure/toilet/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(!isliving(victim))
+		return
+
+	user.changeNext_move(CLICK_CD_MELEE)
+	var/mob/living/GM = victim
+	if(grab.current_grab.damage_stage >= GRAB_AGGRESSIVE)
+		if(GM.loc != get_turf(src))
+			to_chat(user, span_warning("[GM] needs to be on [src]!"))
+			return
+
+		if(!swirlie)
+			if(open)
+				GM.visible_message(span_danger("[user] starts to give [GM] a swirlie!"), span_userdanger("[user] starts to give you a swirlie..."))
+				swirlie = GM
+				var/was_alive = (swirlie.stat != DEAD)
+				if(do_after(user, src, 3 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
+					GM.visible_message(span_danger("[user] gives [GM] a swirlie!"), span_userdanger("[user] gives you a swirlie!"), span_hear("You hear a toilet flushing."))
+					if(iscarbon(GM))
+						var/mob/living/carbon/C = GM
+						if(!C.internal)
+							log_combat(user, C, "swirlied (oxy)")
+							C.adjustOxyLoss(5)
+					else
+						log_combat(user, GM, "swirlied (oxy)")
+						GM.adjustOxyLoss(5)
+				if(was_alive && swirlie.stat == DEAD && swirlie.client)
+					swirlie.client.give_award(/datum/award/achievement/misc/swirlie, swirlie) // just like space high school all over again!
+				swirlie = null
+				return TRUE
+			else
+				playsound(src.loc, 'sound/effects/bang.ogg', 25, TRUE)
+				GM.visible_message(span_danger("[user] slams [GM.name] into [src]!"), span_userdanger("[user] slams you into [src]!"))
+				log_combat(user, GM, "toilet slammed")
+				GM.adjustBruteLoss(5)
+				return TRUE
+	else
+		to_chat(user, span_warning("You need a tighter grip!"))
 
 /obj/structure/toilet/update_icon_state()
 	icon_state = "toilet[open][cistern]"
@@ -169,19 +176,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	. = ..()
 	if(.)
 		return
-	if(user.pulling && isliving(user.pulling))
-		var/mob/living/GM = user.pulling
-		if(user.grab_state >= GRAB_AGGRESSIVE)
-			if(GM.loc != get_turf(src))
-				to_chat(user, span_notice("[GM.name] needs to be on [src]."))
-				return
-			user.changeNext_move(CLICK_CD_MELEE)
-			user.visible_message(span_danger("[user] slams [GM] into [src]!"), span_danger("You slam [GM] into [src]!"))
-			GM.adjustBruteLoss(8)
-		else
-			to_chat(user, span_warning("You need a tighter grip!"))
 
-	else if(exposed)
+	if(exposed)
 		if(!hiddenitem)
 			to_chat(user, span_warning("There is nothing in the drain holder!"))
 		else
@@ -193,6 +189,23 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 			hiddenitem = null
 	else
 		..()
+
+/obj/structure/urinal/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(!isliving(victim))
+		return
+
+	var/mob/living/GM = victim
+
+	if(grab.current_grab.damage_stage >= GRAB_AGGRESSIVE)
+		if(GM.loc != get_turf(src))
+			to_chat(user, span_notice("[GM.name] needs to be on [src]."))
+			return
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.visible_message(span_danger("[user] slams [GM] into [src]!"), span_danger("You slam [GM] into [src]!"))
+		GM.adjustBruteLoss(8)
+	else
+		to_chat(user, span_warning("You need a tighter grip!"))
 
 /obj/structure/urinal/attackby(obj/item/I, mob/living/user, params)
 	if(exposed)
@@ -258,7 +271,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	anchored = TRUE
 	///Something's being washed at the moment
 	var/busy = FALSE
-	///What kind of reagent is produced by this sink by default? (We now have actual plumbing, Arcane, August 2020)
+	///What kind of reagent is produced by this sink by default?
 	var/dispensedreagent = /datum/reagent/water
 	///Material to drop when broken or deconstructed.
 	var/buildstacktype = /obj/item/stack/sheet/iron
@@ -276,7 +289,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	if(has_water_reclaimer)
 		create_reagents(100, NO_REACT)
 		reagents.add_reagent(dispensedreagent, 100)
-	AddComponent(/datum/component/plumbing/simple_demand, bolt)
 
 /obj/structure/sink/examine(mob/user)
 	. = ..()
@@ -374,12 +386,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 		deconstruct()
 		return
 
-	if(istype(O, /obj/item/stack/medical/gauze))
-		var/obj/item/stack/medical/gauze/G = O
-		new /obj/item/reagent_containers/glass/rag(src.loc)
-		to_chat(user, span_notice("You tear off a strip of gauze and make a rag."))
-		G.use(1)
-		return
+	if(istype(O, /obj/item/stack))
+		var/obj/item/stack/S = O
+		if(initial(S.absorption_capacity) && S.absorption_capacity < initial(S.absorption_capacity))
+			if(do_after(user, src, 3 SECONDS, DO_PUBLIC, display = S))
+				user.visible_message(span_notice("[user] washes and wrings out [S] in [src]."), blind_message = span_hear("You hear water running."))
+				add_blood_DNA(S.return_blood_DNA())
+				S.absorption_capacity = initial(S.absorption_capacity)
+				var/forensics = S.GetComponent(/datum/component/forensics)
+				if(forensics)
+					qdel(forensics)
+				return
 
 	if(istype(O, /obj/item/stack/sheet/cloth))
 		var/obj/item/stack/sheet/cloth/cloth = O
@@ -437,7 +454,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 /obj/structure/sink/proc/begin_reclamation()
 	if(!reclaiming)
 		reclaiming = TRUE
-		START_PROCESSING(SSfluids, src)
+		START_PROCESSING(SSobj, src)
 
 /obj/structure/sink/kitchen
 	name = "kitchen sink"
@@ -570,8 +587,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 		playsound(loc, 'sound/effects/slosh.ogg', 25, TRUE)
 		return
 
-	if(istype(O, /obj/item/stack/medical/gauze))
-		var/obj/item/stack/medical/gauze/G = O
+	if(istype(O, /obj/item/stack/gauze))
+		var/obj/item/stack/gauze/G = O
 		new /obj/item/reagent_containers/glass/rag(loc)
 		to_chat(user, span_notice("You tear off a strip of gauze and make a rag."))
 		G.use(1)

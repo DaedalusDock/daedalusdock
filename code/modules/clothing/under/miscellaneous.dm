@@ -104,3 +104,12 @@
 	icon_state = "captain_parade"
 	inhand_icon_state = "by_suit"
 	can_adjust = FALSE
+
+/obj/item/clothing/under/misc/tacticasual
+	name = "Tacticasual Uniform"
+	desc = "A simple pair of black tactical slacks, a belt, and white wifebeater worn by rugged, tactical people. Comes with extra pockets."
+	icon = 'icons/obj/clothing/under/misc.dmi'
+	worn_icon = 'icons/mob/clothing/under/misc.dmi'
+	icon_state = "tacticasual"
+	inhand_icon_state = "tacticasual"
+	can_adjust = FALSE

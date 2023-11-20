@@ -23,7 +23,7 @@
 		qdel(src)
 		return
 	if(!friend.client && friend_initialized)
-		addtimer(CALLBACK(src, .proc/reroll_friend), 600)
+		addtimer(CALLBACK(src, PROC_REF(reroll_friend)), 600)
 
 /datum/brain_trauma/special/imaginary_friend/on_death()
 	..()
@@ -98,9 +98,9 @@
 	owner = imaginary_friend_owner
 
 	if(appearance_from_prefs)
-		INVOKE_ASYNC(src, .proc/setup_friend_from_prefs, appearance_from_prefs)
+		INVOKE_ASYNC(src, PROC_REF(setup_friend_from_prefs), appearance_from_prefs)
 	else
-		INVOKE_ASYNC(src, .proc/setup_friend)
+		INVOKE_ASYNC(src, PROC_REF(setup_friend))
 
 	join = new
 	join.Grant(src)
@@ -131,8 +131,9 @@
 	// Determine what job is marked as 'High' priority.
 	var/datum/job/appearance_job
 	var/highest_pref = 0
-	for(var/job in appearance_from_prefs.job_preferences)
-		var/this_pref = appearance_from_prefs.job_preferences[job]
+	var/list/job_prefs = appearance_from_prefs.read_preference(/datum/preference/blob/job_priority)
+	for(var/job in job_prefs)
+		var/this_pref = job_prefs[job]
 		if(this_pref > highest_pref)
 			appearance_job = SSjob.GetJob(job)
 			highest_pref = this_pref
@@ -216,7 +217,7 @@
 	if(owner.client)
 		var/mutable_appearance/MA = mutable_appearance('icons/mob/talk.dmi', src, "default[say_test(message)]", FLY_LAYER)
 		MA.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-		INVOKE_ASYNC(GLOBAL_PROC, /proc/flick_overlay, MA, list(owner.client), 30)
+		INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(flick_overlay), MA, list(owner.client), 30)
 
 	for(var/mob/M in GLOB.dead_mob_list)
 		var/link = FOLLOW_LINK(M, owner)

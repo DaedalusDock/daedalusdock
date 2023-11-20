@@ -180,19 +180,14 @@ Temporary Items
 #dmdoc default folder
 /dmdoc
 
-# Ignore custom music and title screens (amend as appropriate)
-/config/jukebox_music/sounds/*
-!/config/jukebox_music/sounds/exclude
-/config/credits_music/sounds/*
-!/config/credits_music/sounds/exclude
-/config/credits_music/jsons/*
-!/config/credits_music/jsons/EXAMPLE.json
-/config/title_music/sounds/*
-!/config/title_music/sounds/exclude
-/config/title_music/jsons/*
-!/config/title_music/jsons/EXAMPLE.json
-/config/title_screens/images/*
-!/config/title_screens/images/exclude
+#Ignore everything but the example config in the media jsons directory, For easy testing.
+/config/media/jsons/*
+!/config/media/jsons/__EXAMPLE.json
+/config/media/sounds/*
+!/config/media/jsons/exclude
+
+#This file contains developer-specific config overrides. These shouldn't be committed.
+config/_config_nogit.txt
 
 #Linux docker
 /tools/LinuxOneShot/SetupProgram/obj/*
@@ -202,6 +197,10 @@ Temporary Items
 /tools/LinuxOneShot/TGS_Config
 /tools/LinuxOneShot/TGS_Instances
 /tools/LinuxOneShot/TGS_Logs
+
+# byond-tracy, we intentionally do not ship this and do not want to maintain it
+prof.dll
+libprof.so
 
 # JavaScript tools
 **/node_modules

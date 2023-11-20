@@ -32,19 +32,18 @@
 
 	create_internal_organs()
 
-	ADD_TRAIT(src, TRAIT_CAN_STRIP, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_NEVER_WOUNDED, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 	. = ..()
 
 /mob/living/carbon/alien/create_internal_organs()
-	internal_organs += new /obj/item/organ/internal/brain/alien
-	internal_organs += new /obj/item/organ/internal/alien/hivenode
-	internal_organs += new /obj/item/organ/internal/tongue/alien
-	internal_organs += new /obj/item/organ/internal/eyes/night_vision/alien
-	internal_organs += new /obj/item/organ/internal/liver/alien
-	internal_organs += new /obj/item/organ/internal/ears
+	organs += new /obj/item/organ/brain/alien
+	organs += new /obj/item/organ/alien/hivenode
+	organs += new /obj/item/organ/tongue/alien
+	organs += new /obj/item/organ/eyes/night_vision/alien
+	organs += new /obj/item/organ/liver/alien
+	organs += new /obj/item/organ/ears
 	..()
 
 /mob/living/carbon/alien/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) // beepsky won't hunt aliums
@@ -71,9 +70,6 @@
 	else
 		clear_alert(ALERT_XENO_FIRE)
 
-/mob/living/carbon/alien/reagent_check(datum/reagent/R, delta_time, times_fired) //can metabolize all reagents
-	return FALSE
-
 /mob/living/carbon/alien/get_status_tab_items()
 	. = ..()
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
@@ -92,7 +88,7 @@ Des: Gives the client of the alien an image on each infected mob.
 		for (var/i in GLOB.mob_living_list)
 			var/mob/living/L = i
 			if(HAS_TRAIT(L, TRAIT_XENO_HOST))
-				var/obj/item/organ/internal/body_egg/alien_embryo/A = L.getorgan(/obj/item/organ/internal/body_egg/alien_embryo)
+				var/obj/item/organ/body_egg/alien_embryo/A = L.getorgan(/obj/item/organ/body_egg/alien_embryo)
 				if(A)
 					var/I = image('icons/mob/alien.dmi', loc = L, icon_state = "infected[A.stage]")
 					client.images += I

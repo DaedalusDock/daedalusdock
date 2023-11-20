@@ -12,7 +12,7 @@ const searchFor = searchText => createSearch(
 );
 
 const getCategory = (category: string[]) => {
-  return category[0] === "Circuitry" ? category[1] : category[0];
+  return category[0] === "Wiremod" ? category[1] : category[0];
 };
 
 type Design = {

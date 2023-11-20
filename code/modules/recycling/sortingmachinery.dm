@@ -7,7 +7,7 @@
 
 /obj/item/delivery/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, .proc/disposal_handling)
+	RegisterSignal(src, COMSIG_MOVABLE_DISPOSING, PROC_REF(disposal_handling))
 
 /**
  * Initial check if manually unwrapping
@@ -116,7 +116,7 @@
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
 			return
 		var/str = tgui_input_text(user, "Label text?", "Set label", max_length = MAX_NAME_LEN)
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if(!str || !length(str))
 			to_chat(user, span_warning("Invalid text!"))
@@ -381,7 +381,7 @@
 	new_barcode.cut_multiplier = cut_multiplier		// Also the registered percent cut.
 	user.put_in_hands(new_barcode)
 
-/obj/item/sales_tagger/CtrlClick(mob/user)
+/obj/item/sales_tagger/CtrlClick(mob/user, list/params)
 	. = ..()
 	payments_acc = null
 	to_chat(user, span_notice("You clear the registered account."))

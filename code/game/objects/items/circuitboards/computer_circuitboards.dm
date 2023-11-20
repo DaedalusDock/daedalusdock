@@ -153,6 +153,10 @@
 	name = "Antinoblium Supply Control (Computer Board)"
 	build_path = /obj/machinery/computer/atmos_control/antinoblium_tank
 
+/obj/item/circuitboard/computer/atmos_control/engine
+	name = "Engine Control (Computer Board)"
+	build_path = /obj/machinery/computer/atmos_control/engine
+
 /obj/item/circuitboard/computer/auxiliary_base
 	name = "Auxiliary Base Management Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
@@ -162,11 +166,6 @@
 	name = "circuit board (Generic Base Construction Console)"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/computer/camera_advanced/base_construction
-
-/obj/item/circuitboard/computer/base_construction/aux
-	name = "circuit board (Aux Mining Base Construction Console)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/computer/camera_advanced/base_construction/aux
 
 /obj/item/circuitboard/computer/base_construction/centcom
 	name = "circuit board (Centcom Base Construction Console)"
@@ -353,11 +352,6 @@
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/computer/med_data
 
-/obj/item/circuitboard/computer/operating
-	name = "Operating Computer (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/computer/operating
-
 /obj/item/circuitboard/computer/pandemic
 	name = "PanD.E.M.I.C. 2200 (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
@@ -385,16 +379,6 @@
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/computer/mecha
 
-/obj/item/circuitboard/computer/rdconsole
-	name = "R&D Console (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/computer/rdconsole
-
-/obj/item/circuitboard/computer/rdservercontrol
-	name = "R&D Server Control (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
-	build_path = /obj/machinery/computer/rdservercontrol
-
 /obj/item/circuitboard/computer/research
 	name = "Research Monitor (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
@@ -419,6 +403,12 @@
 	name = "DNA Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/computer/scan_consolenew
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+	def_components = list(
+		/obj/item/disk/data = /obj/item/disk/data/medium
+	)
 
 /obj/item/circuitboard/computer/mechpad
 	name = "Mecha Orbital Pad Console (Computer Board)"
@@ -548,10 +538,6 @@
 	name = "Mining Shuttle (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
 	build_path = /obj/machinery/computer/shuttle/mining
-
-/obj/item/circuitboard/computer/mining_shuttle/common
-	name = "Lavaland Shuttle (Computer Board)"
-	build_path = /obj/machinery/computer/shuttle/mining/common
 
 /obj/item/circuitboard/computer/exoscanner_console
 	name = "Scanner Array Control Console (Computer Board)"

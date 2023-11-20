@@ -87,9 +87,6 @@
 	icon_state = "coathop"
 	inhand_icon_state = "coathop"
 	armor = list(MELEE = 10, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, FIRE = 0, ACID = 35)
-	allowed = list(
-		/obj/item/melee/baton/telescopic,
-	)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/hop
 	supports_variations_flags = NONE
 
@@ -211,12 +208,6 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 20, ACID = 30)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/cmo
 
-/obj/item/clothing/suit/hooded/wintercoat/medical/cmo/Initialize(mapload)
-	. = ..()
-	allowed += list(
-		/obj/item/melee/baton/telescopic,
-	)
-
 /obj/item/clothing/head/hooded/winterhood/medical/cmo
 	desc = "A blue winter coat hood."
 	icon_state = "hood_cmo"
@@ -289,7 +280,7 @@
 	)
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science
-	species_exception = list(/datum/species/golem)
+
 	supports_variations_flags = NONE
 
 /obj/item/clothing/head/hooded/winterhood/science
@@ -305,12 +296,6 @@
 	inhand_icon_state = "coatrd"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science/rd
-
-/obj/item/clothing/suit/hooded/wintercoat/science/rd/Initialize(mapload)
-	. = ..()
-	allowed += list(
-		/obj/item/melee/baton/telescopic,
-	)
 
 /obj/item/clothing/head/hooded/winterhood/science/rd
 	desc = "A white winter coat hood. It smells faintly of hair gel."
@@ -347,6 +332,7 @@
 	desc = "A surprisingly heavy yellow winter coat with reflective orange stripes. It has a small wrench for its zipper tab, and the inside layer is covered with a radiation-resistant silver-nylon blend. Because you're worth it."
 	icon_state = "coatengineer"
 	inhand_icon_state = "coatengineer"
+	zmm_flags = ZMM_MANGLE_PLANES
 	allowed = list(
 		/obj/item/analyzer,
 		/obj/item/construction/rcd,
@@ -356,10 +342,9 @@
 	)
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/engineering
-	species_exception = list(/datum/species/golem/uranium)
 	supports_variations_flags = NONE
 
-/obj/item/clothing/suit/hooded/wintercoat/engineering/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/suit/hooded/wintercoat/engineering/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
@@ -368,8 +353,9 @@
 	desc = "A yellow winter coat hood. Definitely not a replacement for a hard hat."
 	icon_state = "hood_engineer"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 20, ACID = 0)
+	zmm_flags = ZMM_MANGLE_PLANES
 
-/obj/item/clothing/head/hooded/winterhood/engineering/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/head/hooded/winterhood/engineering/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
@@ -382,12 +368,6 @@
 	inhand_icon_state = "coatce"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 10)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/engineering/ce
-
-/obj/item/clothing/suit/hooded/wintercoat/engineering/ce/Initialize(mapload)
-	. = ..()
-	allowed += list(
-		/obj/item/melee/baton/telescopic,
-	)
 
 /obj/item/clothing/head/hooded/winterhood/engineering/ce
 	desc = "A white winter coat hood. Feels surprisingly heavy. The tag says that it's not child safe."
@@ -439,7 +419,6 @@
 	icon_state = "coatminer"
 	inhand_icon_state = "coatminer"
 	allowed = list(
-		/obj/item/gun/energy/recharge/kinetic_accelerator,
 		/obj/item/mining_scanner,
 		/obj/item/pickaxe,
 		/obj/item/resonator,
@@ -465,7 +444,7 @@
 	flags_1 = IS_PLAYER_COLORABLE_1
 
 //In case colors are changed after initialization
-/obj/item/clothing/suit/hooded/wintercoat/custom/set_greyscale(list/colors, new_config, new_worn_config, new_inhand_left, new_inhand_right)
+/obj/item/clothing/suit/hooded/wintercoat/custom/set_greyscale(list/colors, new_config, queue, new_worn_config, new_inhand_left, new_inhand_right)
 	. = ..()
 	if(hood)
 		var/list/coat_colors = SSgreyscale.ParseColorString(greyscale_colors)

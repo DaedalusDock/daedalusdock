@@ -192,7 +192,7 @@
 			chefcount++
 		if(H.is_wearing_item_of_type(/obj/item/clothing/under/rank/civilian/lawyer))
 			lawyercount++
-		if(H.mind && H.mind.assigned_role.title == "Shaft Miner")
+		if(H.mind && H.mind.assigned_role.title == JOB_PROSPECTOR)
 			minercount++
 		if(H.mind && H.mind.assigned_role.title == "Chaplain")
 			chaplaincount++
@@ -270,13 +270,13 @@
 					if(H.is_wearing_item_of_type(/obj/item/clothing/under/rank/security/detective))
 						chance += 250
 					episode_names += new /datum/episode_name/rare("[uppertext(H.real_name)]: LOOSE CANNON", "The Detective was the only survivor in the shuttle.", chance)
-				if("Shaft Miner")
+				if(JOB_PROSPECTOR)
 					var/chance = 250
 					if(H.is_wearing_item_of_type(/obj/item/pickaxe))
 						chance += 1000
 					if(H.is_wearing_item_of_type(/obj/item/storage/backpack/explorer))
 						chance += 500
-					if(H.is_wearing_item_of_type(/obj/item/clothing/suit/hooded/explorer))
+					if(H.is_wearing_item_of_type(/obj/item/clothing/suit/space/nasavoid/old))
 						chance += 250
 					episode_names += new /datum/episode_name/rare("[pick("YOU KNOW THE DRILL", "CAN YOU DIG IT?", "JOURNEY TO THE CENTER OF THE ASTEROI", "CAVE STORY", "QUARRY ON")]", "The Miner was the only survivor in the shuttle.", chance)
 				if("Librarian")
@@ -317,8 +317,8 @@
 		var/braindamage_total = 0
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
-			var/obj/item/organ/internal/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
-			if(hbrain.damage < 60)
+			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
+			if(hbrain?.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage
 		var/average_braindamage = braindamage_total / human_escapees
@@ -353,7 +353,7 @@
 		var/turf/location = alarm.loc
 		if(!istype(location) || !is_station_level(alarm.z))
 			continue
-		var/datum/gas_mixture/environment = location.return_air()
+		var/datum/gas_mixture/environment = location.unsafe_return_air()
 		if(!environment)
 			continue
 		avg_temp += environment.temperature

@@ -8,29 +8,35 @@
 /obj/item/inflatable/attack_self(mob/user, modifiers)
 	if(!deploy_path)
 		return
+	user.dropItemToGround(src)
+	anchored = TRUE
+	add_fingerprint(user)
+
+	user.visible_message(
+		span_notice("\The [user] pulls the inflation cord on \the [src]."),
+		span_notice("You pull the inflation cord on \the [src]."),
+		span_hear("You can hear rushing air."),
+		vision_distance = 5
+	)
+
+	addtimer(CALLBACK(src, PROC_REF(inflate), user), 2 SECONDS)
+
+/obj/item/inflatable/proc/inflate(mob/user)
 	var/turf/T = get_turf(src)
-	if (isspaceturf(T))
-		to_chat(user, span_warning("You cannot use \the [src] in open space."))
+	if(!T)
+		anchored = FALSE
+		visible_message(span_notice("\The [src] fails to inflate here."))
+		return
+	if(T.contains_dense_objects())
+		anchored = FALSE
+		visible_message(span_notice("\The [src] is blocked and fails to inflate."))
 		return
 
-	user.visible_message(
-		span_notice("\The [user] starts inflating \an [src]."),
-		span_notice("You start inflating \the [src]."),
-		span_notice("You can hear rushing air."),
-		vision_distance = 5
-	)
-	if (!do_after(user, time = 1 SECONDS))
-		return
-
-	user.visible_message(
-		span_notice("\The [user] finishes inflating \an [src]."),
-		span_notice("You inflate \the [src]."),
-		vision_distance = 5
-	)
 	playsound(loc, 'sound/items/zip.ogg', 75, 1)
 	var/obj/structure/inflatable/R = new deploy_path(T)
 	transfer_fingerprints_to(R)
-	R.add_fingerprint(user)
+	if(user)
+		R.add_fingerprint(user)
 	update_integrity(R.get_integrity())
 	qdel(src)
 
@@ -45,6 +51,12 @@
 	desc = "A folded membrane which rapidly expands into a simple door on activation."
 	icon_state = "folded_door"
 	deploy_path = /obj/structure/inflatable/door
+
+/obj/item/inflatable/shelter
+	name = "inflatable shelter"
+	desc = "A special plasma shelter designed to resist great heat and temperatures so that victims can survive until rescue."
+	icon_state = "folded"
+	deploy_path = /obj/structure/inflatable/shelter
 
 /obj/structure/inflatable
 	name = "inflatable"
@@ -69,8 +81,8 @@
 	undeploy_path = /obj/item/inflatable/wall
 	can_atmos_pass = CANPASS_NEVER
 
-/obj/structure/inflatable/New(location)
-	..()
+/obj/structure/inflatable/Initialize()
+	. = ..()
 	zas_update_loc()
 
 /obj/structure/inflatable/Initialize()
@@ -78,7 +90,6 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/inflatable/Destroy()
-	zas_update_loc()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -95,7 +106,7 @@
 
 	for(var/check_dir in GLOB.cardinals)
 		var/turf/T = get_step(src, check_dir)
-		var/datum/gas_mixture/env = T.return_air()
+		var/datum/gas_mixture/env = T.unsafe_return_air()
 		var/pressure = env.returnPressure()
 		min_pressure = min(min_pressure, pressure)
 		max_pressure = max(max_pressure, pressure)
@@ -155,7 +166,7 @@
 		if(!undeploy_path)
 			return
 		visible_message("\The [src] slowly deflates.")
-		addtimer(CALLBACK(src, .proc/after_deflate), 5 SECONDS, TIMER_STOPPABLE)
+		addtimer(CALLBACK(src, PROC_REF(after_deflate)), 5 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/proc/after_deflate()
 	if(QDELETED(src))
@@ -240,7 +251,7 @@
 /obj/structure/inflatable/door/proc/Open()
 	isSwitchingStates = 1
 	flick("door_opening",src)
-	addtimer(CALLBACK(src, .proc/FinishOpen), 1 SECONDS, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(FinishOpen)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishOpen()
 	set_density(0)
@@ -259,7 +270,7 @@
 
 	isSwitchingStates = 1
 	flick("door_closing",src)
-	addtimer(CALLBACK(src, .proc/FinishClose), 1 SECONDS, TIMER_STOPPABLE)
+	addtimer(CALLBACK(src, PROC_REF(FinishClose)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishClose()
 	set_density(1)
@@ -291,6 +302,107 @@
 			src.transfer_fingerprints_to(R)
 			qdel(src)
 
+//inflatable shelters from vg
+/obj/structure/inflatable/shelter
+	name = "inflatable shelter"
+	density = TRUE
+	anchored = FALSE
+	opacity = 0
+	can_buckle = TRUE
+	icon_state = "shelter_base"
+	undeploy_path = /obj/item/inflatable/shelter
+	var/list/exiting = list()
+	var/datum/gas_mixture/cabin_air
+
+/obj/structure/inflatable/shelter/Initialize()
+	. = ..()
+	cabin_air = new
+	cabin_air.volume = CELL_VOLUME / 3
+	cabin_air.temperature = T20C + 20
+	cabin_air.adjustMultipleGases(
+		GAS_OXYGEN, MOLES_O2STANDARD,
+		GAS_NITROGEN, MOLES_N2STANDARD)
+
+/obj/structure/inflatable/shelter/examine(mob/user)
+	. = ..()
+	. += span_notice("Click to enter. Use grab on shelter to force target inside. Use resist to exit. Right click to deflate.")
+	var/list/living_contents = list()
+	for(var/mob/living/L in contents)
+		living_contents += L.name
+	if(length(living_contents))
+		. += span_notice("You can see [english_list(living_contents)] inside.")
+
+/obj/structure/inflatable/shelter/attack_hand(mob/user)
+	if(!isturf(user.loc))
+		to_chat(user, span_warning("You can't climb into \the [src] from here!"))
+		return FALSE
+	user.visible_message(span_notice("[user] begins to climb into \the [src]."), span_notice("You begin to climb into \the [src]."))
+	if(do_after(user, src, 3 SECONDS))
+		enter_shelter(user)
+
+/obj/structure/inflatable/shelter/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	if(!in_range(user, src) || !in_range(M, src))
+		return FALSE
+	if(!isturf(user.loc) || !isturf(M.loc))
+		return FALSE
+	if(do_after(user, src, 3 SECONDS, DO_PUBLIC, display = src))
+		if(!in_range(M, src) || !isturf(M.loc))
+			return FALSE //in case the target has moved
+		enter_shelter(M)
+		return
+
+/obj/structure/inflatable/shelter/Destroy()
+	for(var/atom/movable/AM as anything in src)
+		AM.forceMove(loc)
+	qdel(cabin_air)
+	cabin_air = null
+	exiting = null
+	return ..()
+
+/obj/structure/inflatable/shelter/remove_air(amount)
+	return cabin_air.remove(amount)
+
+/obj/structure/inflatable/shelter/return_air()
+	return cabin_air
+
+/obj/structure/inflatable/shelter/proc/enter_shelter(mob/user)
+	user.forceMove(src)
+	update_icon()
+	user.visible_message(span_notice("[user] enters \the [src]."), span_notice("You enter \the [src]."))
+	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(remove_vis))
+
+/obj/structure/inflatable/shelter/proc/remove_vis(mob/user, force)
+	vis_contents.Remove(user)
+
+/obj/structure/inflatable/shelter/container_resist_act(mob/living/user)
+	if (user.loc != src)
+		exiting -= user
+		to_chat(user, span_warning("You cannot climb out of something you aren't even in!"))
+		return
+	if(user in exiting)
+		exiting -= user
+		to_chat(user, span_warning("You stop climbing free of \the [src]."))
+		return
+	user.visible_message(span_notice("[user] starts climbing out of \the [src]."), span_notice("You start climbing out of \the [src]."))
+	exiting += user
+
+	if(do_after(user, src, 5 SECONDS))
+		if (user in exiting)
+			user.forceMove(get_turf(src))
+			update_icon()
+			exiting -= user
+			UnregisterSignal(user, COMSIG_PARENT_QDELETING)
+			user.visible_message(span_notice("[user] climbs out of \the [src]."), span_notice("You climb out of \the [src]."))
+
+
+/obj/structure/inflatable/shelter/update_overlays()
+	. = ..()
+	vis_contents.Cut()
+	for(var/mob/living/L in contents)
+		vis_contents.Add(L)
+	if(length(contents))
+		. += mutable_appearance(icon, "shelter_top", ABOVE_MOB_LAYER)
+
 /obj/item/inflatable/torn
 	name = "torn inflatable wall"
 	desc = "A folded membrane which rapidly expands into a large cubical shape on activation. It is too torn to be usable."
@@ -298,7 +410,7 @@
 	icon_state = "folded_wall_torn"
 
 /obj/item/inflatable/torn/attack_self(mob/user)
-	to_chat(user, "<span class='notice'>The inflatable wall is too torn to be inflated!</span>")
+	to_chat(user, span_notice("The inflatable wall is too torn to be inflated!"))
 	add_fingerprint(user)
 
 /obj/item/inflatable/door/torn
@@ -308,19 +420,20 @@
 	icon_state = "folded_door_torn"
 
 /obj/item/inflatable/door/torn/attack_self(mob/user)
-	to_chat(user, "<span class='notice'>The inflatable door is too torn to be inflated!</span>")
+	to_chat(user, span_notice("The inflatable door is too torn to be inflated!"))
 	add_fingerprint(user)
 
 /obj/item/storage/briefcase/inflatable
-	name = "inflatable barrier box"
-	desc = "Contains inflatable walls and doors. THE SPRITE IS A PLACEHOLDER, OKAY?"
+	name = "inflatable barrier case"
+	desc = "A carrying case for inflatable walls and doors."
+	icon_state = "inflatable"
 	w_class = WEIGHT_CLASS_NORMAL
 	max_integrity = 150
 	force = 8
 	hitsound = SFX_SWING_HIT
 	throw_speed = 2
 	throw_range = 4
-	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 3)
+	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4)
 
 /obj/item/storage/briefcase/inflatable/Initialize()
 	. = ..()

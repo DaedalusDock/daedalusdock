@@ -1,11 +1,13 @@
 
-GLOBAL_DATUM_INIT(fullbright_overlay, /mutable_appearance, create_fullbright_overlay())
+GLOBAL_REAL_VAR(mutable_appearance/fullbright_overlay) = create_fullbright_overlay()
 
-/proc/create_fullbright_overlay()
+/proc/create_fullbright_overlay(color)
 	var/mutable_appearance/lighting_effect = mutable_appearance('icons/effects/alphacolors.dmi', "white")
 	lighting_effect.plane = LIGHTING_PLANE
 	lighting_effect.layer = LIGHTING_PRIMARY_LAYER
 	lighting_effect.blend_mode = BLEND_ADD
+	if(color)
+		lighting_effect.color = color
 	return lighting_effect
 
 /area

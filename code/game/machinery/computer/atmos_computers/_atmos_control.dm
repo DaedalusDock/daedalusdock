@@ -131,8 +131,8 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 
 /obj/machinery/computer/atmos_control/ui_static_data(mob/user)
 	var/data = list()
-	data["maxInput"] = MAX_TRANSFER_RATE
-	data["maxOutput"] = MAX_OUTPUT_PRESSURE
+	data["maxInput"] = ATMOS_DEFAULT_VOLUME_PUMP
+	data["maxOutput"] = MAX_PUMP_PRESSURE
 	data["control"] = control
 	data["reconnecting"] = reconnecting
 	return data
@@ -181,7 +181,7 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 			var/target = text2num(params["rate"])
 			if(isnull(target))
 				return FALSE
-			target = clamp(target, 0, MAX_TRANSFER_RATE)
+			target = clamp(target, 0, ATMOS_DEFAULT_VOLUME_PUMP)
 			signal.data += list("tag" = params["chamber"] + "_in", "set_volume_rate" = target)
 		if("adjust_output")
 			if(!(params["chamber"] in atmos_chambers))
@@ -189,7 +189,7 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 			var/target = text2num(params["rate"])
 			if(isnull(target))
 				return FALSE
-			target = clamp(target, 0, MAX_OUTPUT_PRESSURE)
+			target = clamp(target, 0, MAX_PUMP_PRESSURE)
 			signal.data += list("tag" = params["chamber"] + "_out", "set_internal_pressure" = target)
 
 	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)

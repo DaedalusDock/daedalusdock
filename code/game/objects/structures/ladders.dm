@@ -5,12 +5,13 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "ladder11"
 	anchored = TRUE
-	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN
+	obj_flags = CAN_BE_HIT
 	var/obj/structure/ladder/down   //the ladder below this one
 	var/obj/structure/ladder/up     //the ladder above this one
 	var/crafted = FALSE
 	/// Optional travel time for ladder in deciseconds
-	var/travel_time = 0
+	var/travel_time = 3 SECONDS
+	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
 	..()
@@ -38,14 +39,14 @@
 	var/obj/structure/ladder/L
 
 	if (!down)
-		L = locate() in SSmapping.get_turf_below(T)
+		L = locate() in GetBelow(T)
 		if (L)
 			if(crafted == L.crafted)
 				down = L
 				L.up = src  // Don't waste effort looping the other way
 				L.update_appearance()
 	if (!up)
-		L = locate() in SSmapping.get_turf_above(T)
+		L = locate() in GetAbove(T)
 		if (L)
 			if(crafted == L.crafted)
 				up = L
@@ -76,15 +77,24 @@
 	var/response = SEND_SIGNAL(user, COMSIG_LADDER_TRAVEL, src, ladder, going_up)
 	if(response & LADDER_TRAVEL_BLOCK)
 		return
-
+	var/turf/target = get_turf(ladder)
 	if(!is_ghost)
 		ladder.add_fingerprint(user)
-		if(!do_after(user, src, travel_time))
-			return
-		show_fluff_message(going_up, user)
+		for(var/atom/movable/AM as anything in target)
+			if(!AM.CanMoveOnto(user, get_dir(AM, user)))
+				to_chat(user, span_warning("[AM] blocks your path."))
+				return
 
-	var/turf/target = get_turf(ladder)
-	user.zMove(target = target, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED|ZMOVE_INCLUDE_PULLED)
+		user.Move(loc)
+		if(!do_after(user, src, travel_time, DO_PUBLIC))
+			return
+
+	if(!zstep(user, going_up ? UP : DOWN, ZMOVE_INCAPACITATED_CHECKS))
+		return
+
+	if(!is_ghost)
+		show_fluff_message(going_up, user, loc)
+		show_fluff_message(going_up, user, target)
 	ladder.use(user) //reopening ladder radial menu ahead
 
 /obj/structure/ladder/proc/use(mob/user, is_ghost=FALSE)
@@ -100,7 +110,7 @@
 		to_chat(user, span_warning("[src] doesn't seem to lead anywhere!"))
 		return
 
-	var/result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, .proc/check_menu, user, is_ghost), require_near = !is_ghost, tooltips = TRUE)
+	var/result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, PROC_REF(check_menu), user, is_ghost), require_near = !is_ghost, tooltips = TRUE)
 	if (!is_ghost && !in_range(src, user))
 		return  // nice try
 	switch(result)
@@ -152,11 +162,13 @@
 	use(user, TRUE)
 	return ..()
 
-/obj/structure/ladder/proc/show_fluff_message(going_up, mob/user)
+/obj/structure/ladder/proc/show_fluff_message(going_up, mob/user, atom/dest)
 	if(going_up)
-		user.visible_message(span_notice("[user] climbs up [src]."), span_notice("You climb up [src]."))
+		dest.visible_message(span_notice("[user] climbs up [src]."), span_notice("You climb up [src]."))
 	else
-		user.visible_message(span_notice("[user] climbs down [src]."), span_notice("You climb down [src]."))
+		dest.visible_message(span_notice("[user] climbs down [src]."), span_notice("You climb down [src]."))
+
+	playsound(dest, pick(climbsounds), 50)
 
 
 // Indestructible away mission ladders which link based on a mapped ID and height value rather than X/Y/Z.

@@ -68,11 +68,11 @@ export const SupermatterMonitorContent = (props, context) => {
                 <ProgressBar
                   value={SM_power}
                   minValue={0}
-                  maxValue={5000}
+                  maxValue={300}
                   ranges={{
-                    good: [-Infinity, 5000],
-                    average: [5000, 7000],
-                    bad: [7000, Infinity],
+                    good: [-Infinity, 150],
+                    average: [150, 300],
+                    bad: [300, Infinity],
                   }}>
                   {toFixed(SM_power) + ' MeV/cm3'}
                 </ProgressBar>
@@ -83,10 +83,10 @@ export const SupermatterMonitorContent = (props, context) => {
                   minValue={0}
                   maxValue={logScale(10000)}
                   ranges={{
-                    teal: [-Infinity, logScale(80)],
-                    good: [logScale(80), logScale(373)],
-                    average: [logScale(373), logScale(1000)],
-                    bad: [logScale(1000), Infinity],
+                    teal: [-Infinity, logScale(500)],
+                    good: [logScale(500), logScale(2000)],
+                    average: [logScale(2000), logScale(4000)],
+                    bad: [logScale(4000), Infinity],
                   }}>
                   {toFixed(SM_ambienttemp) + ' K'}
                 </ProgressBar>
@@ -113,9 +113,9 @@ export const SupermatterMonitorContent = (props, context) => {
                   minValue={0}
                   maxValue={logScale(50000)}
                   ranges={{
-                    good: [logScale(1), logScale(300)],
-                    average: [-Infinity, logScale(1000)],
-                    bad: [logScale(1000), +Infinity],
+                    good: [-Infinity, logScale(5000)],
+                    average: [logScale(5000), logScale(10000)],
+                    bad: [logScale(10000), +Infinity],
                   }}>
                   {toFixed(SM_ambientpressure) + ' kPa'}
                 </ProgressBar>

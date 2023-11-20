@@ -77,7 +77,7 @@
 		bite_consumption = bite_consumption, \
 		microwaved_type = microwaved_type, \
 		junkiness = junkiness, \
-		check_liked = CALLBACK(src, .proc/check_holyness))
+		check_liked = CALLBACK(src, PROC_REF(check_holyness)))
 
 /*
  * Callback to be used with the edible component.
@@ -91,7 +91,6 @@
 	if(!holy_person.mind?.holy_role || HAS_TRAIT(holy_person, TRAIT_AGEUSIA))
 		return
 	to_chat(holy_person, span_notice("Truly, a piece of heaven!"))
-	SEND_SIGNAL(holy_person, COMSIG_ADD_MOOD_EVENT, "Divine_chew", /datum/mood_event/holy_consumption)
 	return FOOD_LIKED
 
 /// Barrel melon Seeds

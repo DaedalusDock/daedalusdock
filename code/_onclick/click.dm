@@ -37,17 +37,18 @@
  *
  * Note that this proc can be overridden, and is in the case of screen objects.
  */
-/atom/Click(location,control,params)
-	if(flags_1 & INITIALIZED_1)
+/atom/Click(location, control, params)
+	if(initialized)
 		SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
+
 		usr.ClickOn(src, params)
 
 /atom/DblClick(location,control,params)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		usr.DblClickOn(src,params)
 
 /atom/MouseWheel(delta_x,delta_y,location,control,params)
-	if(flags_1 & INITIALIZED_1)
+	if(initialized)
 		usr.MouseWheelOn(src, delta_x, delta_y, params)
 
 /**
@@ -98,7 +99,7 @@
 			AltClickOn(A)
 		return
 	if(LAZYACCESS(modifiers, CTRL_CLICK))
-		CtrlClickOn(A)
+		CtrlClickOn(A, modifiers)
 		return
 
 	//PARIAH EDIT ADDITION
@@ -133,11 +134,10 @@
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			W.attack_self_secondary(src, modifiers)
 			update_held_items()
-			return
 		else
 			W.attack_self(src, modifiers)
 			update_held_items()
-			return
+		return
 
 	//These are always reachable.
 	//User itself, current loc, and user inventory
@@ -351,11 +351,11 @@
  * Ctrl click
  * For most objects, pull
  */
-/mob/proc/CtrlClickOn(atom/A)
-	A.CtrlClick(src)
+/mob/proc/CtrlClickOn(atom/A, list/params)
+	A.CtrlClick(src, params)
 	return
 
-/atom/proc/CtrlClick(mob/user)
+/atom/proc/CtrlClick(mob/user, list/params)
 	SEND_SIGNAL(src, COMSIG_CLICK_CTRL, user)
 	SEND_SIGNAL(user, COMSIG_MOB_CTRL_CLICKED, src)
 	var/mob/living/ML = user
@@ -364,7 +364,7 @@
 	if(!can_interact(user))
 		return FALSE
 
-/mob/living/CtrlClick(mob/user)
+/mob/living/CtrlClick(mob/user, list/params)
 	if(!isliving(user) || !user.CanReach(src) || user.incapacitated())
 		return ..()
 
@@ -379,7 +379,7 @@
 	return ..()
 
 
-/mob/living/carbon/human/CtrlClick(mob/user)
+/mob/living/carbon/human/CtrlClick(mob/user, list/params)
 
 	if(!ishuman(user) || !user.CanReach(src) || user.incapacitated())
 		return ..()
@@ -388,7 +388,13 @@
 		return FALSE
 
 	var/mob/living/carbon/human/human_user = user
-	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art))
+	// If they're wielding a grab item, do the normal click chain.
+	var/obj/item/hand_item/grab/G = user.get_active_held_item()
+	if(isgrab(G))
+		G.current_grab.hit_with_grab(G, src, params)
+		return TRUE
+
+	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art, params))
 		human_user.changeNext_move(CLICK_CD_MELEE)
 		human_user.animate_interact(src, INTERACT_GRAB)
 		return TRUE

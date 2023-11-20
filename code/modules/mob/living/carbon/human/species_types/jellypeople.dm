@@ -11,7 +11,6 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_TOXINLOVER,
 	)
-	mutantlungs = /obj/item/organ/internal/lungs/slime
 	meat = /obj/item/food/meat/slab/human/mutant/slime
 	exotic_blood = /datum/reagent/toxin/slimejelly
 	var/datum/action/innate/regenerate_limbs/regenerate_limbs
@@ -33,6 +32,18 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/slime,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
 /datum/species/jelly/on_species_loss(mob/living/carbon/old_jellyperson)
@@ -284,7 +295,7 @@
 	var/datum/species/jelly/slime/spare_datum = spare.dna.species
 	spare_datum.bodies = origin_datum.bodies
 
-	H.transfer_trait_datums(spare)
+	H.transfer_quirk_datums(spare)
 	H.mind.transfer_to(spare)
 	spare.visible_message("<span class='warning'>[H] distorts as a new body \
 		\"steps out\" of [H.p_them()].</span>",
@@ -340,7 +351,7 @@
 		switch(body.stat)
 			if(CONSCIOUS)
 				stat = "Conscious"
-			if(SOFT_CRIT to HARD_CRIT) // Also includes UNCONSCIOUS
+			if(UNCONSCIOUS)
 				stat = "Unconscious"
 			if(DEAD)
 				stat = "Dead"
@@ -429,7 +440,7 @@
 			span_notice("You stop moving this body..."))
 	else
 		to_chat(M.current, span_notice("You abandon this body..."))
-	M.current.transfer_trait_datums(dupe)
+	M.current.transfer_quirk_datums(dupe)
 	M.transfer_to(dupe)
 	dupe.visible_message("<span class='notice'>[dupe] blinks and looks \
 		around.</span>",
@@ -735,11 +746,13 @@
 	return TRUE
 
 /datum/action/innate/link_minds/Activate()
-	if(!isliving(owner.pulling) || owner.grab_state < GRAB_AGGRESSIVE)
+	var/mob/living/L = owner
+	var/obj/item/hand_item/grab/G = L.get_active_grab()
+	if(!isliving(G?.affecting) || G.current_grab.damage_stage < GRAB_AGGRESSIVE)
 		to_chat(owner, span_warning("You need to aggressively grab someone to link minds!"))
 		return
 
-	var/mob/living/living_target = owner.pulling
+	var/mob/living/living_target = G.affecting
 	if(living_target.stat == DEAD)
 		to_chat(owner, span_warning("They're dead!"))
 		return
@@ -748,7 +761,7 @@
 	to_chat(living_target, span_warning("You feel a foreign presence within your mind..."))
 	currently_linking = TRUE
 
-	if(!do_after(owner, living_target, 6 SECONDS, extra_checks = CALLBACK(src, .proc/while_link_callback, living_target)))
+	if(!do_after(owner, living_target, 6 SECONDS, extra_checks = CALLBACK(src, PROC_REF(while_link_callback), living_target)))
 		to_chat(owner, span_warning("You can't seem to link [living_target]'s mind."))
 		to_chat(living_target, span_warning("The foreign presence leaves your mind."))
 		currently_linking = FALSE
@@ -768,11 +781,9 @@
 /datum/action/innate/link_minds/proc/while_link_callback(mob/living/linkee)
 	if(!is_species(owner, req_species))
 		return FALSE
-	if(!owner.pulling)
-		return FALSE
-	if(owner.pulling != linkee)
-		return FALSE
-	if(owner.grab_state < GRAB_AGGRESSIVE)
+	var/mob/living/L = owner
+	var/obj/item/hand_item/grab/G = L.is_grabbing(linkee)
+	if(!G || G.current_grab.damage_stage < GRAB_AGGRESSIVE)
 		return FALSE
 	if(linkee.stat == DEAD)
 		return FALSE

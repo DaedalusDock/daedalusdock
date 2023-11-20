@@ -27,6 +27,15 @@
 	movetypes = FLYING
 	variable = TRUE
 
+/datum/movespeed_modifier/pain
+	variable = TRUE
+
+/datum/movespeed_modifier/shock
+	multiplicative_slowdown = 3
+
+/datum/movespeed_modifier/asystole
+	multiplicative_slowdown = 10
+
 /datum/movespeed_modifier/equipment_speedmod
 	variable = TRUE
 	blacklisted_movetypes = FLOATING
@@ -65,12 +74,16 @@
 	var/mod = CONFIG_GET(number/movedelay/run_delay)
 	multiplicative_slowdown = isnum(mod)? mod : initial(multiplicative_slowdown)
 
+/datum/movespeed_modifier/config_walk_run/sprint/sync()
+	var/mod = CONFIG_GET(number/movedelay/sprint_delay)
+	multiplicative_slowdown = isnum(mod) ? mod : initial(multiplicative_slowdown)
+
 /datum/movespeed_modifier/turf_slowdown
 	movetypes = GROUND
 	blacklisted_movetypes = (FLYING|FLOATING)
 	variable = TRUE
 
-/datum/movespeed_modifier/bulky_drag
+/datum/movespeed_modifier/grabbing
 	variable = TRUE
 
 /datum/movespeed_modifier/cold
@@ -107,6 +120,9 @@
 /datum/movespeed_modifier/slime_tempmod
 	variable = TRUE
 
+/datum/movespeed_modifier/living_exhaustion
+	multiplicative_slowdown = STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN
+	flags = IGNORE_NOSLOW
 /datum/movespeed_modifier/carbon_crawling
 	multiplicative_slowdown = CRAWLING_ADD_SLOWDOWN
 	flags = IGNORE_NOSLOW

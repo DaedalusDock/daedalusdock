@@ -249,15 +249,14 @@
 	if(!visualsOnly)
 		apply_fingerprints(H)
 		if(internals_slot)
-			H.internal = H.get_item_by_slot(internals_slot)
-			H?.update_mob_action_buttons()
+			H.open_internals(H.get_item_by_slot(internals_slot))
 		if(implants)
 			for(var/implant_type in implants)
 				var/obj/item/implant/I = SSwardrobe.provide_type(implant_type, H)
-				I.implant(H, null, TRUE)
+				I.implant(H, null, BODY_ZONE_CHEST, TRUE)
 
 		// Insert the skillchips associated with this outfit into the target.
-		if(skillchips)
+		if(skillchips && H.needs_organ(ORGAN_SLOT_BRAIN))
 			for(var/skillchip_path in skillchips)
 				var/obj/item/skillchip/skillchip_instance = SSwardrobe.provide_type(skillchip_path)
 				var/implant_msg = H.implant_skillchip(skillchip_instance)

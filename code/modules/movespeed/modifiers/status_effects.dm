@@ -21,3 +21,6 @@
 
 /datum/movespeed_modifier/status_effect/hazard_area
 	multiplicative_slowdown = 4
+
+/datum/movespeed_modifier/status_effect/disorient
+	multiplicative_slowdown = 1

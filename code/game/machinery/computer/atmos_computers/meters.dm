@@ -37,7 +37,7 @@
 		"device" = "AM",
 		"sigtype" = "status",
 		"timestamp" = world.time,
-		"gasmix" = gas_mixture_parser(target.return_air()),
+		"gasmix" = gas_mixture_parser(target.unsafe_return_air()),
 	))
 	radio_connection.post_signal(signal)
 

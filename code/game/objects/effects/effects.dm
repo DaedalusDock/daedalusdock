@@ -43,6 +43,7 @@
 
 ///The abstract effect ignores even more effects and is often typechecked for atoms that should truly not be fucked with.
 /obj/effect/abstract
+	anchored = TRUE
 
 /obj/effect/abstract/singularity_pull()
 	return
@@ -58,3 +59,8 @@
 
 /obj/effect/dummy/singularity_act()
 	return
+
+/obj/effect/CanZFall(turf/from, direction, anchor_bypass)
+	if(istype(src, /obj/effect/decal/cleanable))
+		return ..()
+	return FALSE

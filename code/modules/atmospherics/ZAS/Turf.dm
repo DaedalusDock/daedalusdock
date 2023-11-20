@@ -47,7 +47,7 @@
 
 		var/turf/target = get_step(src, d)
 
-		if(!target)
+		if(isnull(target) || !target.simulated)
 			continue
 		var/us_blocks_target
 		ATMOS_CANPASS_TURF(us_blocks_target, src, target)
@@ -65,9 +65,8 @@
 
 		open_directions |= d
 
-		if(target.simulated)
-			if(TURF_HAS_VALID_ZONE(target))
-				SSzas.connect(target, src)
+		if(TURF_HAS_VALID_ZONE(target))
+			SSzas.connect(target, src)
 
 // Helper for can_safely_remove_from_zone().
 #define GET_ZONE_NEIGHBOURS(T, ret) \
@@ -92,8 +91,8 @@
 */
 ///Simple heuristic for determining if removing the turf from it's zone will not partition the zone (A very bad thing).
 /turf/proc/can_safely_remove_from_zone()
-	if(!zone)
-		return 1
+	if(isnull(zone))
+		return TRUE
 
 	var/check_dirs
 	GET_ZONE_NEIGHBOURS(src, check_dirs)
@@ -125,7 +124,7 @@
 	if(!simulated)
 		return ..()
 
-	if(zone && zone.invalid) //this turf's zone is in the process of being rebuilt
+	if(!isnull(zone) && zone.invalid) //this turf's zone is in the process of being rebuilt
 		copy_zone_air() //not very efficient :(
 		zone = null //Easier than iterating through the list at the zone.
 
@@ -153,7 +152,7 @@
 	#endif
 		var/turf/target = get_step(src, d)
 
-		if(!target) //edge of map
+		if(isnull(target)) //edge of map
 			continue
 
 		target.open_directions &= ~reverse_dir[d]
@@ -192,7 +191,7 @@
 
 			if(TURF_HAS_VALID_ZONE(target))
 				//Might have assigned a zone, since this happens for each direction.
-				if(!zone)
+				if(isnull(zone))
 					//We do not merge if
 					//    they are blocking us and we are not blocking them, or if
 					//    we are blocking them and not blocking ourselves - this prevents tiny zones from forming on doorways.
@@ -274,6 +273,8 @@
 		return
 	var/datum/gas_mixture/my_air = return_air()
 	my_air.merge(giver)
+	if(TURF_HAS_VALID_ZONE(src))
+		SSzas.mark_zone_update(zone)
 
 ///Basically adjustGasWithTemp() but a turf proc.
 /turf/proc/assume_gas(gasid, moles, temp = null)
@@ -287,29 +288,51 @@
 	else
 		my_air.adjustGasWithTemp(gasid, moles, temp)
 
+	if(TURF_HAS_VALID_ZONE(src))
+		SSzas.mark_zone_update(zone)
+
 	return 1
 
 ///Return the currently used gas_mixture datum.
 /turf/return_air()
 	RETURN_TYPE(/datum/gas_mixture)
 	if(!simulated)
-		if(air)
+		if(!isnull(air))
 			return air.copy()
 		else
 			make_air()
 			return air.copy()
 
-	else if(zone)
+	else if(!isnull(zone))
 		if(!zone.invalid)
 			SSzas.mark_zone_update(zone)
 			return zone.air
 		else
-			if(!air)
-				make_air()
 			copy_zone_air()
 			return air
 	else
-		if(!air)
+		if(isnull(air))
+			make_air()
+		return air
+
+///Return the currently used gas_mixture datum. DOES NOT MARK ZONE FOR UPDATE.
+/turf/unsafe_return_air()
+	RETURN_TYPE(/datum/gas_mixture)
+	if(!simulated)
+		if(!isnull(air))
+			return air.copy()
+		else
+			make_air()
+			return air.copy()
+
+	else if(!isnull(zone))
+		if(!zone.invalid)
+			return zone.air
+		else
+			copy_zone_air()
+			return air
+	else
+		if(isnull(air))
 			make_air()
 		return air
 
@@ -323,12 +346,11 @@
 		AIR_UPDATE_VALUES(air)
 
 	else
-		if(!initial_gas)
-			air = new
-			return
+		if(!isnull(air))
+			return air
 
 		// Grab an existing mixture from the cache
-		var/gas_key = parse_gas()
+		var/gas_key = json_encode(initial_gas + temperature)
 		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
 		if(GM)
 			air = GM
@@ -337,21 +359,15 @@
 		// No cache? no problem. make one.
 		GM = new
 		air = GM
-		if(initial_gas)
+		if(!isnull(initial_gas))
 			GM.gas = initial_gas.Copy()
 		GM.temperature = temperature
 		AIR_UPDATE_VALUES(GM)
 		SSzas.unsimulated_gas_cache[gas_key] = air
 
-///Parse an unsimulated turf's initial gas mixture into a string
-/turf/proc/parse_gas()
-	. = "[temperature]"
-	for(var/gas in initial_gas)
-		. += "[gas]-[initial_gas[gas]]"
-
 ///Copies this turf's group share from the zone. Usually used before removing it from the zone.
 /turf/proc/copy_zone_air()
-	if(!air)
+	if(isnull(air))
 		air = new/datum/gas_mixture
 	air.copyFrom(zone.air)
 	air.group_multiplier = 1
@@ -371,14 +387,14 @@
 /turf/open/space/atmos_spawn_air()
 	return
 
-///Checks a turf to see if any of it's contents are dense. Is NOT recursive.
+///Checks a turf to see if any of it's contents are dense. Is NOT recursive. See also is_blocked_turf()
 /turf/proc/contains_dense_objects()
 	if(density)
-		return 1
+		return src
 	for(var/atom/movable/A as anything in src)
 		if(A.density && !(A.flags_1 & ON_BORDER_1))
-			return 1
-	return 0
+			return A
+	return FALSE
 
 ///I literally don't know where this proc came from.
 /turf/proc/TryGetNonDenseNeighbour()
@@ -396,4 +412,4 @@
 	return length(adjacent_turfs) ? adjacent_turfs : null
 
 /turf/open/return_analyzable_air()
-	return return_air()
+	return unsafe_return_air()

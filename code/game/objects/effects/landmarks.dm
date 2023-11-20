@@ -99,7 +99,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Cook"
 
 /obj/effect/landmark/start/shaft_miner
-	name = "Shaft Miner"
+	name = JOB_PROSPECTOR
 	icon_state = "Shaft Miner"
 
 /obj/effect/landmark/start/security_officer
@@ -300,6 +300,12 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 /obj/effect/landmark/carpspawn
 	name = "carpspawn"
 	icon_state = "carp_spawn"
+
+//spawn for mice and other maint pests
+/obj/effect/landmark/pestspawn
+	name = "pestspawn"
+	icon_state = "pest_spawn"
+	layer = MOB_LAYER //needs to display above catwalks
 
 //observer start
 /obj/effect/landmark/observer_start

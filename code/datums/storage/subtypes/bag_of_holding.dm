@@ -7,7 +7,7 @@
 	matching -= resolve_parent
 
 	if(istype(to_insert, /obj/item/storage/backpack/holding) || matching.len)
-		INVOKE_ASYNC(src, .proc/recursive_insertion, to_insert, user)
+		INVOKE_ASYNC(src, PROC_REF(recursive_insertion), to_insert, user)
 		return
 
 	return ..()
@@ -18,7 +18,7 @@
 		return
 
 	var/safety = tgui_alert(user, "Doing this will have extremely dire consequences for the station and its crew. Be sure you know what you're doing.", "Put in [to_insert.name]?", list("Proceed", "Abort"))
-	if(safety != "Proceed" || QDELETED(to_insert) || QDELETED(resolve_parent) || QDELETED(user) || !user.canUseTopic(resolve_parent, BE_CLOSE, iscarbon(user)))
+	if(safety != "Proceed" || QDELETED(to_insert) || QDELETED(resolve_parent) || QDELETED(user) || !iscarbon(user) || !user.canUseTopic(resolve_parent, USE_CLOSE|USE_DEXTERITY))
 		return
 
 	var/turf/loccheck = get_turf(resolve_parent)

@@ -1,4 +1,4 @@
-/// Test that all reagent names are different in order to prevent #65231
+/// Test that all reagent names are different in order to prevent tgstation#65231
 /datum/unit_test/reagent_names
 
 /datum/unit_test/reagent_names/Run()

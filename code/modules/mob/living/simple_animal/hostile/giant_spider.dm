@@ -67,7 +67,6 @@
 
 	if(poison_per_bite)
 		AddElement(/datum/element/venomous, poison_type, poison_per_bite)
-	AddElement(/datum/element/nerfed_pulling, GLOB.typecache_general_bad_things_to_easily_move)
 	AddElement(/datum/element/prevent_attacking_of_types, GLOB.typecache_general_bad_hostile_attack_targets, "this tastes awful!")
 
 /mob/living/simple_animal/hostile/giant_spider/Login()
@@ -415,7 +414,7 @@
 		return FALSE
 
 	StartCooldown(wrap_time)
-	INVOKE_ASYNC(src, .proc/cocoon, to_wrap)
+	INVOKE_ASYNC(src, PROC_REF(cocoon), to_wrap)
 	return TRUE
 
 /datum/action/cooldown/wrap/proc/cocoon(atom/movable/to_wrap)
@@ -686,7 +685,7 @@
 
 /mob/living/simple_animal/hostile/giant_spider/hunter/flesh/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/blood_walk, /obj/effect/decal/cleanable/blood/bubblegum, blood_spawn_chance = 5)
+	AddElement(/datum/element/blood_walk, /obj/effect/decal/cleanable/blood, blood_spawn_chance = 5)
 
 /mob/living/simple_animal/hostile/giant_spider/hunter/flesh/AttackingTarget()
 	if(DOING_INTERACTION(src, INTERACTION_SPIDER_KEY))

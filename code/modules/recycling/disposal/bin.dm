@@ -40,10 +40,10 @@
 	air_contents = new /datum/gas_mixture()
 	//gas.volume = 1.05 * CELLSTANDARD
 	update_appearance()
-	RegisterSignal(src, COMSIG_RAT_INTERACT, .proc/on_rat_rummage)
-	RegisterSignal(src, COMSIG_STORAGE_DUMP_CONTENT, .proc/on_storage_dump)
+	RegisterSignal(src, COMSIG_RAT_INTERACT, PROC_REF(on_rat_rummage))
+	RegisterSignal(src, COMSIG_STORAGE_DUMP_CONTENT, PROC_REF(on_storage_dump))
 	var/static/list/loc_connections = list(
-		COMSIG_CARBON_DISARM_COLLIDE = .proc/trash_carbon,
+		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(trash_carbon),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	return INITIALIZE_HINT_LATELOAD //we need turfs to have air
@@ -285,6 +285,7 @@
 	name = "disposal unit"
 	desc = "A pneumatic waste disposal unit."
 	icon_state = "disposal"
+	zmm_flags = ZMM_MANGLE_PLANES
 
 // attack by item places it in to disposal
 /obj/machinery/disposal/bin/attackby(obj/item/I, mob/user, params)
@@ -435,7 +436,7 @@
 
 	var/atom/L = loc //recharging from loc turf
 
-	var/datum/gas_mixture/env = L.return_air()
+	var/datum/gas_mixture/env = L.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 	if(!env.temperature)
 		return
 	var/pressure_delta = (SEND_PRESSURE*1.01) - air_contents.returnPressure()
@@ -445,7 +446,7 @@
 	//Actually transfer the gas
 	var/datum/gas_mixture/removed = env.remove(transfer_moles)
 	air_contents.merge(removed)
-	//air_update_turf(FALSE, FALSE)
+	SAFE_ZAS_UPDATE(L)
 
 	//if full enough, switch to ready mode
 	if(air_contents.returnPressure() >= SEND_PRESSURE)
@@ -478,7 +479,7 @@
 		..()
 		flush()
 
-/obj/machinery/disposal/delivery_chute/Bumped(atom/movable/AM) //Go straight into the chute
+/obj/machinery/disposal/delivery_chute/BumpedBy(atom/movable/AM) //Go straight into the chute
 	if(QDELETED(AM) || !AM.CanEnterDisposals())
 		return
 	switch(dir)
@@ -528,7 +529,7 @@
 /obj/machinery/disposal/proc/on_rat_rummage(datum/source, mob/living/simple_animal/hostile/regalrat/king)
 	SIGNAL_HANDLER
 
-	INVOKE_ASYNC(src, /obj/machinery/disposal/.proc/rat_rummage, king)
+	INVOKE_ASYNC(src, TYPE_PROC_REF(/obj/machinery/disposal, rat_rummage), king)
 
 /obj/machinery/disposal/proc/trash_carbon(datum/source, mob/living/carbon/shover, mob/living/carbon/target, shove_blocked)
 	SIGNAL_HANDLER

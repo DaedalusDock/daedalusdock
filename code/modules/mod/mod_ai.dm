@@ -74,7 +74,7 @@
 #define AI_FALL_TIME 1 SECONDS
 
 /obj/item/mod/control/relaymove(mob/user, direction)
-	if((!active && wearer) || get_charge() < CHARGE_PER_STEP  || user != ai || !COOLDOWN_FINISHED(src, cooldown_mod_move) || (wearer?.pulledby?.grab_state > GRAB_PASSIVE))
+	if((!active && wearer) || get_charge() < CHARGE_PER_STEP  || user != ai || !COOLDOWN_FINISHED(src, cooldown_mod_move) || HAS_TRAIT(wearer, TRAIT_AGGRESSIVE_GRAB))
 		return FALSE
 	var/timemodifier = MOVE_DELAY * (ISDIAGONALDIR(direction) ? 2 : 1) * (wearer ? WEARER_DELAY : LONE_DELAY)
 	if(wearer && !wearer.Process_Spacemove(direction))
@@ -88,7 +88,7 @@
 		return wearer.loc.relaymove(wearer, direction)
 	else if(wearer)
 		ADD_TRAIT(wearer, TRAIT_FORCED_STANDING, MOD_TRAIT)
-		addtimer(CALLBACK(src, .proc/ai_fall), AI_FALL_TIME, TIMER_UNIQUE | TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, PROC_REF(ai_fall)), AI_FALL_TIME, TIMER_UNIQUE | TIMER_OVERRIDE)
 	var/atom/movable/mover = wearer || src
 	return step(mover, direction)
 
@@ -114,7 +114,7 @@
 	if(!ai)
 		return
 	ai.apply_damage(150, BURN)
-	INVOKE_ASYNC(ai, /mob/living/silicon/ai.proc/death)
+	INVOKE_ASYNC(ai, TYPE_PROC_REF(/mob/living/silicon/ai, death))
 	ai.forceMove(src)
 	stored_ai = WEAKREF(ai)
 	icon_state = "minicard-filled"

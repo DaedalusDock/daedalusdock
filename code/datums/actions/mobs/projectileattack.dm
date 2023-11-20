@@ -66,7 +66,7 @@
 	button_icon_state = "kineticgun"
 	desc = "Fires projectiles repeatedly at a given target."
 	cooldown_time = 1.5 SECONDS
-	projectile_type = /obj/projectile/colossus/snowball
+	projectile_type = /obj/projectile/bullet/honker
 	default_projectile_spread = 45
 	/// Total shot count
 	var/shot_count = 60
@@ -84,12 +84,12 @@
 	button_icon_state = "sniper_zoom"
 	desc = "Fires projectiles that will split into shrapnel after a period of time."
 	cooldown_time = 6 SECONDS
-	projectile_type = /obj/projectile/colossus/frost_orb
+	projectile_type = /obj/projectile/bullet/honker
 	has_homing = TRUE
 	default_projectile_spread = 180
 	shot_count = 8
 	shot_delay = 1 SECONDS
-	var/shrapnel_projectile_type = /obj/projectile/colossus/ice_blast
+	var/shrapnel_projectile_type = /obj/projectile/bullet/honker
 	var/shrapnel_angles = list(0, 60, 120, 180, 240, 300)
 	var/shrapnel_spread = 10
 	var/break_time = 2 SECONDS
@@ -97,7 +97,7 @@
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/shrapnel/attack_sequence(mob/living/firer, atom/target)
 	for(var/i in 1 to shot_count)
 		var/obj/projectile/to_explode = shoot_projectile(firer, target, null, firer, rand(-default_projectile_spread, default_projectile_spread), null)
-		addtimer(CALLBACK(src, .proc/explode_into_shrapnel, firer, target, to_explode), break_time)
+		addtimer(CALLBACK(src, PROC_REF(explode_into_shrapnel), firer, target, to_explode), break_time)
 		SLEEP_CHECK_DEATH(shot_delay, src)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/shrapnel/proc/explode_into_shrapnel(mob/living/firer, atom/target, obj/projectile/to_explode)
@@ -114,7 +114,7 @@
 	button_icon_state = "sniper_zoom"
 	desc = "Fires projectiles in a spiral pattern."
 	cooldown_time = 3 SECONDS
-	projectile_type = /obj/projectile/colossus
+	projectile_type = /obj/projectile/bullet/honker
 	projectile_sound = 'sound/magic/clockwork/invoke_general.ogg'
 	/// Whether or not the attack is the enraged form
 	var/enraged = FALSE
@@ -122,7 +122,7 @@
 /datum/action/cooldown/mob_cooldown/projectile_attack/spiral_shots/attack_sequence(mob/living/firer, atom/target)
 	if(enraged)
 		SLEEP_CHECK_DEATH(1 SECONDS, firer)
-		INVOKE_ASYNC(src, .proc/create_spiral_attack, firer, target, TRUE)
+		INVOKE_ASYNC(src, PROC_REF(create_spiral_attack), firer, target, TRUE)
 		create_spiral_attack(firer, target, FALSE)
 		return
 	create_spiral_attack(firer, target)
@@ -148,7 +148,7 @@
 	button_icon_state = "at_shield2"
 	desc = "Fires projectiles in all directions."
 	cooldown_time = 3 SECONDS
-	projectile_type = /obj/projectile/colossus
+	projectile_type = /obj/projectile/bullet/honker
 	projectile_sound = 'sound/magic/clockwork/invoke_general.ogg'
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/random_aoe/attack_sequence(mob/living/firer, atom/target)
@@ -163,7 +163,7 @@
 	button_icon_state = "shotgun"
 	desc = "Fires projectiles in a shotgun pattern."
 	cooldown_time = 2 SECONDS
-	projectile_type = /obj/projectile/colossus
+	projectile_type = /obj/projectile/bullet/honker
 	projectile_sound = 'sound/magic/clockwork/invoke_general.ogg'
 	var/list/shot_angles = list(12.5, 7.5, 2.5, -2.5, -7.5, -12.5)
 
@@ -183,7 +183,7 @@
 /datum/action/cooldown/mob_cooldown/projectile_attack/shotgun_blast/pattern
 	name = "Alternating Shotgun Fire"
 	desc = "Fires projectiles in an alternating shotgun pattern."
-	projectile_type = /obj/projectile/colossus/ice_blast
+	projectile_type = /obj/projectile/bullet/honker
 	projectile_sound = null
 	shot_angles = list(list(-40, -20, 0, 20, 40), list(-30, -10, 10, 30))
 	var/shot_count = 5
@@ -200,7 +200,7 @@
 	button_icon_state = "pistol"
 	desc = "Fires projectiles in specific directions."
 	cooldown_time = 4 SECONDS
-	projectile_type = /obj/projectile/colossus
+	projectile_type = /obj/projectile/bullet/honker
 	projectile_sound = 'sound/magic/clockwork/invoke_general.ogg'
 	var/list/firing_directions
 
@@ -234,19 +234,3 @@
 	fire_in_directions(firer, target, GLOB.diagonals)
 	SLEEP_CHECK_DEATH(1 SECONDS, firer)
 	fire_in_directions(firer, target, GLOB.cardinals)
-
-/datum/action/cooldown/mob_cooldown/projectile_attack/kinetic_accelerator
-	name = "Fire Kinetic Accelerator"
-	button_icon = 'icons/obj/guns/energy.dmi'
-	button_icon_state = "kineticgun"
-	desc = "Fires a kinetic accelerator projectile at the target."
-	cooldown_time = 1.5 SECONDS
-	projectile_type = /obj/projectile/kinetic/miner
-	projectile_sound = 'sound/weapons/kenetic_accel.ogg'
-
-/datum/action/cooldown/mob_cooldown/projectile_attack/kinetic_accelerator/Activate(atom/target_atom)
-	. = ..()
-	playsound(owner, projectile_sound, 200, TRUE, 2)
-	owner.visible_message(span_danger("[owner] fires the proto-kinetic accelerator!"))
-	owner.face_atom(target_atom)
-	new /obj/effect/temp_visual/dir_setting/firing_effect(owner.loc, owner.dir)

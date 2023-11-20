@@ -26,9 +26,15 @@
 
 /obj/item/mining_scanner/admin/attack_self(mob/user)
 	for(var/turf/closed/mineral/M in world)
-		if(M.scan_state)
-			M.icon_state = M.scan_state
-	qdel(src)
+		var/obj/effect/temp_visual/mining_overlay/oldC = locate(/obj/effect/temp_visual/mining_overlay/debug) in M
+		if(oldC)
+			qdel(oldC)
+
+		if(!M.mineralType?.scan_state)
+			continue
+
+		var/obj/effect/temp_visual/mining_overlay/C = new /obj/effect/temp_visual/mining_overlay/debug(M)
+		C.icon_state = M.mineralType.scan_state
 
 /obj/item/t_scanner/adv_mining_scanner
 	desc = "A scanner that automatically checks surrounding rock for useful minerals; it can also be used to stop gibtonite detonations. This one has an extended range."
@@ -62,17 +68,16 @@
 		mineral_scan_pulse(t, range)
 
 /proc/mineral_scan_pulse(turf/T, range = world.view)
-	var/list/minerals = list()
-	for(var/turf/closed/mineral/M in range(range, T))
-		if(M.scan_state)
-			minerals += M
-	if(LAZYLEN(minerals))
-		for(var/turf/closed/mineral/M in minerals)
-			var/obj/effect/temp_visual/mining_overlay/oldC = locate(/obj/effect/temp_visual/mining_overlay) in M
-			if(oldC)
-				qdel(oldC)
-			var/obj/effect/temp_visual/mining_overlay/C = new /obj/effect/temp_visual/mining_overlay(M)
-			C.icon_state = M.scan_state
+	for(var/turf/closed/mineral/M in RANGE_TURFS(range, T))
+		if(!M.mineralType?.scan_state)
+			continue
+
+		var/obj/effect/temp_visual/mining_overlay/oldC = locate(/obj/effect/temp_visual/mining_overlay) in M
+		if(oldC)
+			qdel(oldC)
+
+		var/obj/effect/temp_visual/mining_overlay/C = new /obj/effect/temp_visual/mining_overlay(M)
+		C.icon_state = M.mineralType.scan_state
 
 /obj/effect/temp_visual/mining_overlay
 	plane = FULLSCREEN_PLANE
@@ -86,3 +91,6 @@
 /obj/effect/temp_visual/mining_overlay/Initialize(mapload)
 	. = ..()
 	animate(src, alpha = 0, time = duration, easing = EASE_IN)
+
+/obj/effect/temp_visual/mining_overlay/debug
+	duration = 60 MINUTES // long enough

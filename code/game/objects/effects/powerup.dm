@@ -20,18 +20,20 @@
 	if(lifetime)
 		QDEL_IN(src, lifetime)
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/powerup/proc/on_entered(datum/source, atom/movable/movable_atom)
 	SIGNAL_HANDLER
+	if(movable_atom == src)
+		return
 	trigger(movable_atom)
 
 /obj/effect/powerup/Bump(atom/bumped_atom)
 	trigger(bumped_atom)
 
-/obj/effect/powerup/Bumped(atom/movable/movable_atom)
+/obj/effect/powerup/BumpedBy(atom/movable/movable_atom)
 	trigger(movable_atom)
 
 /// Triggers the effect of the powerup on the target, returns FALSE if the target is not /mob/living, is dead or the cooldown hasn't finished, returns TRUE otherwise

@@ -6,7 +6,7 @@
 	alpha = 180
 	layer = ABOVE_ALL_MOB_LAYER
 
-/mob/proc/animate_interact(atom/target, state)
+/mob/proc/animate_interact(atom/target, state, atom/reference)
 	set waitfor = FALSE
 
 	var/list/origin_coords = get_hand_pixels()
@@ -26,7 +26,11 @@
 	var/x_offset = target.x - x
 	var/y_offset = target.y - y
 
-	particle.icon_state = state
+	if(reference)
+		particle.icon = reference.icon
+		particle.icon_state = reference.icon_state
+	else
+		particle.icon_state = state
 	particle.loc = owner_loc
 	particle.pixel_x = origin_coords[1]
 	particle.pixel_y = origin_coords[2]
@@ -66,7 +70,7 @@
 	return list(0, 0)
 
 /mob/living/carbon/get_hand_pixels()
-	var/obj/item/bodypart/hand = has_active_hand()
+	var/obj/item/bodypart/hand = has_active_hand() ? get_active_hand() : null
 	if(!hand)
 		return null
 	else

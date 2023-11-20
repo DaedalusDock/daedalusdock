@@ -37,7 +37,7 @@
 	else
 		M.visible_message(span_danger("[user] attempts to force [M] to [apply_method] [src]."), \
 							span_userdanger("[user] attempts to force you to [apply_method] [src]."))
-		if(!do_after(user, M, CHEM_INTERACT_DELAY(3 SECONDS, user)))
+		if(!do_after(user, M, CHEM_INTERACT_DELAY(3 SECONDS, user), DO_PUBLIC, display = src))
 			return FALSE
 		M.visible_message(span_danger("[user] forces [M] to [apply_method] [src]."), \
 							span_userdanger("[user] forces you to [apply_method] [src]."))
@@ -47,7 +47,7 @@
 ///Runs the consumption code, can be overriden for special effects
 /obj/item/reagent_containers/pill/proc/on_consumption(mob/M, mob/user)
 	if(icon_state == "pill4" && prob(5)) //you take the red pill - you stay in Wonderland, and I show you how deep the rabbit hole goes
-		addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, M, span_notice("[pick(strings(REDPILL_FILE, "redpill_questions"))]")), 50)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), M, span_notice("[pick(strings(REDPILL_FILE, "redpill_questions"))]")), 50)
 
 	if(reagents.total_volume)
 		reagents.trans_to(M, reagents.total_volume, transfered_by = user, methods = apply_type)
@@ -114,18 +114,18 @@
 	icon_state = "pill19"
 	list_reagents = list(/datum/reagent/medicine/ephedrine = 10, /datum/reagent/medicine/antihol = 10, /datum/reagent/consumable/coffee = 30)
 
-/obj/item/reagent_containers/pill/salbutamol
-	name = "salbutamol pill"
+/obj/item/reagent_containers/pill/dexalin
+	name = "dexalin pill"
 	desc = "Used to treat oxygen deprivation."
 	icon_state = "pill16"
-	list_reagents = list(/datum/reagent/medicine/salbutamol = 30)
+	list_reagents = list(/datum/reagent/medicine/dexalin = 30)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/multiver
-	name = "multiver pill"
-	desc = "Neutralizes many common toxins and scales with unique medicine in the system. Diluted with granibitaluri."
+/obj/item/reagent_containers/pill/dylovene
+	name = "dylovene pill"
+	desc = "Helps counteract nervous system damage induced by toxins."
 	icon_state = "pill17"
-	list_reagents = list(/datum/reagent/medicine/c2/multiver = 5, /datum/reagent/medicine/granibitaluri = 5)
+	list_reagents = list(/datum/reagent/medicine/dylovene = 5)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/epinephrine
@@ -135,37 +135,23 @@
 	list_reagents = list(/datum/reagent/medicine/epinephrine = 15)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/mannitol
-	name = "mannitol pill"
+/obj/item/reagent_containers/pill/alkysine
+	name = "alkysine pill"
 	desc = "Used to treat brain damage."
 	icon_state = "pill17"
-	list_reagents = list(/datum/reagent/medicine/mannitol = 14)
+	list_reagents = list(/datum/reagent/medicine/alkysine = 14)
 	rename_with_volume = TRUE
 
-//Lower quantity mannitol pills (50u pills heal 250 brain damage, 5u pills heal 25)
-/obj/item/reagent_containers/pill/mannitol/braintumor
+//Lower quantity alkysine pills (50u pills heal 250 brain damage, 5u pills heal 25)
+/obj/item/reagent_containers/pill/alkysine/braintumor
 	desc = "Used to treat symptoms for brain tumors."
-	list_reagents = list(/datum/reagent/medicine/mannitol = 5)
+	list_reagents = list(/datum/reagent/medicine/alkysine = 5)
 
-/obj/item/reagent_containers/pill/mutadone
-	name = "mutadone pill"
+/obj/item/reagent_containers/pill/ryetalyn
+	name = "ryetalyn pill"
 	desc = "Used to treat genetic damage."
 	icon_state = "pill20"
-	list_reagents = list(/datum/reagent/medicine/mutadone = 50)
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/salicylic
-	name = "salicylic acid pill"
-	desc = "Used to dull pain."
-	icon_state = "pill9"
-	list_reagents = list(/datum/reagent/medicine/sal_acid = 24)
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/oxandrolone
-	name = "oxandrolone pill"
-	desc = "Used to stimulate burn healing."
-	icon_state = "pill11"
-	list_reagents = list(/datum/reagent/medicine/oxandrolone = 24)
+	list_reagents = list(/datum/reagent/medicine/ryetalyn = 50)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/insulin
@@ -175,24 +161,17 @@
 	list_reagents = list(/datum/reagent/medicine/insulin = 50)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/psicodine
-	name = "psicodine pill"
-	desc = "Used to treat mental instability and phobias."
-	list_reagents = list(/datum/reagent/medicine/psicodine = 10)
-	icon_state = "pill22"
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/penacid
-	name = "pentetic acid pill"
-	desc = "Used to expunge radiation and toxins."
-	list_reagents = list(/datum/reagent/medicine/pen_acid = 10)
-	icon_state = "pill22"
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/neurine
-	name = "neurine pill"
+/obj/item/reagent_containers/pill/alkysine
+	name = "alkysine pill"
 	desc = "Used to treat non-severe mental traumas."
-	list_reagents = list(/datum/reagent/medicine/neurine = 10)
+	list_reagents = list(/datum/reagent/medicine/alkysine = 10)
+	icon_state = "pill22"
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/ipecac
+	name = "ipecac pill"
+	desc = "Used to purge the stomach of reagents."
+	list_reagents = list(/datum/reagent/medicine/ipecac = 5)
 	icon_state = "pill22"
 	rename_with_volume = TRUE
 
@@ -205,12 +184,6 @@
 	list_reagents = list(/datum/reagent/mutationtoxin/shadow = 5)
 
 ///////////////////////////////////////// Psychologist inventory pills
-/obj/item/reagent_containers/pill/happinesspsych
-	name = "mood stabilizer pill"
-	desc = "Used to temporarily alleviate anxiety and depression, take only as prescribed."
-	list_reagents = list(/datum/reagent/drug/happiness = 5)
-	icon_state = "pill_happy"
-	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/paxpsych
 	name = "pacification pill"
@@ -222,7 +195,7 @@
 /obj/item/reagent_containers/pill/lsdpsych
 	name = "antipsychotic pill"
 	desc = "Talk to your healthcare provider immediately if hallucinations worsen or new hallucinations emerge."
-	list_reagents = list(/datum/reagent/toxin/mindbreaker = 5)
+	list_reagents = list(/datum/reagent/medicine/chlorpromazine = 5)
 	icon_state = "pill14"
 	rename_with_volume = TRUE
 
@@ -282,11 +255,32 @@
 	list_reagents = list(/datum/reagent/medicine/potass_iodide = 15)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/pill/probital
-	name = "Probital pill"
-	desc = "Used to treat brute damage of minor and moderate severity.The carving in the pill says 'Eat before ingesting'. Causes fatigue and diluted with granibitaluri."
+/obj/item/reagent_containers/pill/bicaridine
+	name = "bicaridine pill"
+	desc = "Used to treat minor physical trauma. The carving in the pill says 'Eat before ingesting'."
 	icon_state = "pill12"
-	list_reagents = list(/datum/reagent/medicine/c2/probital = 5, /datum/reagent/medicine/granibitaluri = 10)
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 5)
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/meralyne
+	name = "meralyne pill"
+	desc = "Used to treat brute damage of minor and moderate severity. The carving in the pill says 'Eat before ingesting'."
+	icon_state = "pill12"
+	list_reagents = list(/datum/reagent/medicine/meralyne = 5)
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/kelotane
+	name = "kelotane pill"
+	desc = "Used to treat minor burns. The carving in the pill says 'Eat before ingesting'."
+	icon_state = "pill12"
+	list_reagents = list(/datum/reagent/medicine/kelotane = 5)
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/dermaline
+	name = "dermaline pill"
+	desc = "Used to treat second and third degree burns. The carving in the pill says 'Eat before ingesting'."
+	icon_state = "pill12"
+	list_reagents = list(/datum/reagent/medicine/dermaline = 5)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/iron
@@ -294,4 +288,11 @@
 	desc = "Used to reduce bloodloss slowly."
 	icon_state = "pill8"
 	list_reagents = list(/datum/reagent/iron = 30)
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/haloperidol
+	name = "haloperidol pill"
+	desc = "Used to treat drug abuse and psychosis."
+	icon_state = "pill8"
+	list_reagents = list(/datum/reagent/medicine/haloperidol = 5)
 	rename_with_volume = TRUE

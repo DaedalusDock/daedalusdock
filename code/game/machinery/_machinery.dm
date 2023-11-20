@@ -116,9 +116,18 @@
 		//AREA_USAGE_EQUIP,AREA_USAGE_ENVIRON or AREA_USAGE_LIGHT
 	///A combination of factors such as having power, not being broken and so on. Boolean.
 	var/is_operational = TRUE
-	var/wire_compatible = FALSE
 
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
+
+	/// The place that designs are stored. This will be created by apply_default_parts().
+	var/obj/item/disk/data/internal_disk = null
+	/// A design disk that may-or-may-not be inserted into this machine.
+	var/obj/item/disk/data/inserted_disk = null
+	/// Used for data management.
+	var/obj/item/disk/data/selected_disk = null
+	/// Can insert a disk into this machine
+	var/has_disk_slot = FALSE
+
 	var/panel_open = FALSE
 	var/state_open = FALSE
 	var/critical_machine = FALSE //If this machine is critical to station operation and should have the area be excempted from power failures.
@@ -153,7 +162,7 @@
 
 	/// Linked Network Terminal
 	var/obj/machinery/power/data_terminal/netjack
-	/// Network ID, automatically generated when `generate_netid` is true on definition.
+	/// Network ID, see network_flags for autopopulation info.
 	var/net_id
 	/// General purpose 'master' ID for slave machines.
 	var/master_id
@@ -165,10 +174,16 @@
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
 
+GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/Initialize(mapload)
 	if(!armor)
-		armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+		armor = machinery_default_armor
+
 	. = ..()
+
+	SETUP_SMOOTHING()
+	QUEUE_SMOOTH(src)
+
 	GLOB.machines += src
 
 	if(ispath(circuit, /obj/item/circuitboard))
@@ -181,17 +196,23 @@
 	if(occupant_typecache)
 		occupant_typecache = typecacheof(occupant_typecache)
 
-	if((resistance_flags & INDESTRUCTIBLE) && component_parts){ // This is needed to prevent indestructible machinery still blowing up. If an explosion occurs on the same tile as the indestructible machinery without the PREVENT_CONTENTS_EXPLOSION_1 flag, /datum/controller/subsystem/explosions/proc/propagate_blastwave will call ex_act on all movable atoms inside the machine, including the circuit board and component parts. However, if those parts get deleted, the entire machine gets deleted, allowing for INDESTRUCTIBLE machines to be destroyed. (See #62164 for more info)
+
+	/*
+	 * This is needed to prevent indestructible machinery still blowing up.
+	 * If an explosion occurs on the same tile as the indestructible machinery without the PREVENT_CONTENTS_EXPLOSION_1 flag,
+	 * /datum/controller/subsystem/explosions/proc/propagate_blastwave will call ex_act on all movable atoms inside the machine,
+	 * including the circuit board and component parts. However, if those parts get deleted, the entire machine gets deleted,
+	 * allowing for INDESTRUCTIBLE machines to be destroyed. (See tgstation#62164 for more info)
+	 */
+	if((resistance_flags & INDESTRUCTIBLE) && component_parts)
 		flags_1 |= PREVENT_CONTENTS_EXPLOSION_1
-	}
 
 	if(network_flags & NETWORK_FLAG_GEN_ID)
-		net_id = SSnetworks.get_next_HID()//Just going to parasite this.
+		net_id = SSpackets.generate_net_id(src)
 
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
-	. = ..()
 	power_change()
 	if(use_power == NO_POWER_USE)
 		return
@@ -209,6 +230,8 @@
 	QDEL_NULL(circuit)
 	unset_static_power()
 	unlink_from_jack(ignore_check = TRUE)
+	selected_disk = null
+	QDEL_NULL(inserted_disk)
 	return ..()
 
 /**
@@ -221,9 +244,9 @@
 
 	var/area/our_area = get_area(src)
 	if(our_area)
-		RegisterSignal(our_area, COMSIG_AREA_POWER_CHANGE, .proc/power_change)
-	RegisterSignal(src, COMSIG_ENTER_AREA, .proc/on_enter_area)
-	RegisterSignal(src, COMSIG_EXIT_AREA, .proc/on_exit_area)
+		RegisterSignal(our_area, COMSIG_AREA_POWER_CHANGE, PROC_REF(power_change))
+	RegisterSignal(src, COMSIG_ENTER_AREA, PROC_REF(on_enter_area))
+	RegisterSignal(src, COMSIG_EXIT_AREA, PROC_REF(on_exit_area))
 
 /**
  * proc to call when the machine stops requiring power after a duration of requiring power
@@ -243,7 +266,7 @@
 	SIGNAL_HANDLER
 	update_current_power_usage()
 	power_change()
-	RegisterSignal(area_to_register, COMSIG_AREA_POWER_CHANGE, .proc/power_change)
+	RegisterSignal(area_to_register, COMSIG_AREA_POWER_CHANGE, PROC_REF(power_change))
 
 /obj/machinery/proc/on_exit_area(datum/source, area/area_to_unregister)
 	SIGNAL_HANDLER
@@ -575,35 +598,30 @@
 
 	return TRUE // If we passed all of those checks, woohoo! We can interact with this machine.
 
-/obj/machinery/proc/check_nap_violations()
-	if(!SSeconomy.full_ancap)
-		return TRUE
-	if(!occupant || state_open)
-		return TRUE
-	var/mob/living/occupant_mob = occupant
-	var/obj/item/card/id/occupant_id = occupant_mob.get_idcard(TRUE)
-	if(!occupant_id)
-		say("[market_verb] NAP Violation: No ID card found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/insurance = occupant_id.registered_account
-	if(!insurance)
-		say("[market_verb] NAP Violation: No bank account found.")
-		nap_violation(occupant_mob)
-		return FALSE
-	if(!insurance.adjust_money(-fair_market_price))
-		say("[market_verb] NAP Violation: Unable to pay.")
-		nap_violation(occupant_mob)
-		return FALSE
-	var/datum/bank_account/department_account = SSeconomy.department_accounts_by_id[payment_department]
-	if(department_account)
-		department_account.adjust_money(fair_market_price)
-	return TRUE
-
-/obj/machinery/proc/nap_violation(mob/violator)
-	return
-
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+/obj/machinery/attack_hand(mob/living/user, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(LAZYACCESS(modifiers, RIGHT_CLICK) && inserted_disk) //grumble grumble click code grumble grumble
+		var/obj/item/disk/disk = eject_disk(user)
+		if(disk)
+			user.visible_message(
+				span_notice("You remove [disk] from [src]."),
+				span_notice("A floppy disk ejects from [src].")
+			)
+		return TRUE
+
+	if(iscarbon(user))
+		var/brainloss = user.getBrainLoss()
+		if(brainloss > 120)
+			visible_message(span_warning("\The [user] stares cluelessly at \the [src]."))
+			return TRUE
+		if(prob(min(brainloss, 30)))
+			to_chat(user, span_warning("You momentarily forget how to use \the [src]."))
+			return TRUE
 
 //Return a non FALSE value to interrupt attack_hand propagation to subtypes.
 /obj/machinery/interact(mob/user, special_state)
@@ -621,7 +639,7 @@
 	..()
 	if(!can_interact(usr))
 		return TRUE
-	if(!usr.canUseTopic(src))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return TRUE
 	add_fingerprint(usr)
 	update_last_used(usr)
@@ -677,6 +695,11 @@
 	. = ..()
 	if(.)
 		return
+
+	if(has_disk_slot && istype(weapon, /obj/item/disk/data))
+		insert_disk(user, weapon)
+		return TRUE
+
 	update_last_used(user)
 
 /obj/machinery/attackby_secondary(obj/item/weapon, mob/user, params)
@@ -719,6 +742,9 @@
 	active_power_usage = initial(active_power_usage) * (1 + parts_energy_rating)
 	update_current_power_usage()
 
+	internal_disk = locate() in component_parts
+	selected_disk = internal_disk
+
 /obj/machinery/proc/default_pry_open(obj/item/crowbar)
 	. = !(state_open || panel_open || is_operational || (flags_1 & NODECONSTRUCT_1)) && crowbar.tool_behaviour == TOOL_CROWBAR
 	if(!.)
@@ -745,6 +771,9 @@
 	for(var/obj/item/part in component_parts)
 		part.forceMove(loc)
 	LAZYCLEARLIST(component_parts)
+
+	internal_disk = null //Component parts removes this.
+	eject_disk()
 	return ..()
 
 /**
@@ -858,7 +887,7 @@
 	wrench.play_tool_sound(src, 50)
 	var/prev_anchored = anchored
 	//as long as we're the same anchored state and we're either on a floor or are anchored, toggle our anchored state
-	if(!wrench.use_tool(src, user, time, extra_checks = CALLBACK(src, .proc/unfasten_wrench_check, prev_anchored, user)))
+	if(!wrench.use_tool(src, user, time, extra_checks = CALLBACK(src, PROC_REF(unfasten_wrench_check), prev_anchored, user)))
 		return FAILED_UNFASTEN
 	if(!anchored && ground.is_blocked_turf(exclude_mobs = TRUE, source_atom = src))
 		to_chat(user, span_notice("You fail to secure [src]."))
@@ -1030,3 +1059,130 @@
 	if(isliving(user))
 		last_used_time = world.time
 		last_user_mobtype = user.type
+
+/obj/machinery/proc/insert_disk(mob/user, obj/item/disk/data/disk)
+	if(!istype(disk))
+		return FALSE
+
+	if(inserted_disk)
+		to_chat(user, span_warning("The machine already has a design disk inserted!"))
+		return FALSE
+
+	if(user && user.transferItemToLoc(disk, src))
+		user.visible_message(
+			span_notice("[user] inserts a floppy disk into [src]."),
+			span_notice("You insert [disk] into [src]."),
+		)
+		inserted_disk = disk
+		updateUsrDialog()
+		return TRUE
+
+	inserted_disk = disk
+	disk.forceMove(src)
+	updateUsrDialog()
+	return TRUE
+
+/// Eject an inserted disk. Pass a user to put the disk in their hands.
+/obj/machinery/proc/eject_disk(mob/user)
+	if(!inserted_disk)
+		return FALSE
+
+	if(user)
+		if(Adjacent(user) && user.put_in_active_hand(inserted_disk))
+			. = inserted_disk
+			inserted_disk = null
+		else
+			return FALSE
+
+	if(!.)
+		inserted_disk.forceMove(drop_location())
+		. = inserted_disk
+
+	if(.)
+		selected_disk = internal_disk
+		updateUsrDialog()
+	return .
+
+/// Toggle the selected disk between internal and inserted.
+/obj/machinery/proc/toggle_disk(mob/user)
+	if(selected_disk == internal_disk)
+		if(inserted_disk)
+			selected_disk = inserted_disk
+			updateUsrDialog()
+			return
+		else if(user)
+			alert(user, "No disk inserted!","ERROR", "OK")
+			return
+
+	if(selected_disk == inserted_disk)
+		selected_disk = internal_disk
+		updateUsrDialog()
+		return
+
+/// Copy data from the internal disk to an inserted one or visa-versa.
+/obj/machinery/proc/disk_copy(mob/user, index, data, unique)
+	if(selected_disk == internal_disk)
+		if(!inserted_disk)
+			alert(user, "No disk to copy to!","ERROR", "OK")
+			return
+		if(!inserted_disk.write(index, data, unique))
+			alert(user, "Failed to write to external disk!","ERROR", "OK")
+			return
+
+		log_game("[key_name(user)] copied [data] from [src] to an external disk ([get_area_name(src)])")
+	else
+		if(!internal_disk.write(index, data, unique))
+			alert(user, "Failed to write to device disk!","ERROR", "OK")
+			return
+
+		log_game("[key_name(user)] copied [data] from an external disk to [src] ([get_area_name(src)])")
+
+/obj/machinery/proc/disk_del(mob/user, index, data)
+	if(alert(user, "Are you sure you want to delete [data]?", "File Operation", "Yes", "No") != "Yes")
+		return
+
+	if(selected_disk == internal_disk)
+		if(!internal_disk.remove(index, data))
+			alert(user, "Failed to delete file!","ERROR", "OK")
+			return
+		else
+			log_game("[key_name(user)] deleted [data] from [src]")
+			return TRUE
+	else
+		if(!internal_disk.remove(index, data))
+			alert(user, "Failed to delete file!","ERROR", "OK")
+			return
+		else
+			log_game("[key_name(user)] deleted [data] from an external disk at [src] ([get_area_name(src)])")
+			return TRUE
+
+/obj/machinery/proc/disk_move(mob/user, index, data, unique)
+	if(selected_disk == internal_disk)
+		if(!inserted_disk)
+			alert(user, "No disk to move to!","ERROR", "OK")
+			return
+		if(!inserted_disk.write(index, data, unique))
+			alert(user, "Failed to write to external disk!","ERROR", "OK")
+			return
+
+		if(!internal_disk.remove(index, data))
+			log_game("[key_name(user)] copied [data] from [src] to an external disk ([get_area_name(src)])")
+			spawn(0)
+				alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
+			return TRUE
+
+		log_game("[key_name(user)] moved [data] from [src] to an external disk ([get_area_name(src)])")
+		return TRUE
+
+	else
+		if(!internal_disk.write(index, data, unique))
+			alert(user, "Failed to write to device disk!","ERROR", "OK")
+			return
+		if(!inserted_disk.remove(index, data))
+			log_game("[key_name(user)] copied [data] from an external disk to [src] ([get_area_name(src)])")
+			spawn(0)
+				alert(user, "Failed to delete file, resorting to copy","ERROR", "OK")
+			return TRUE
+
+		log_game("[key_name(user)] moved [data] from an external disk to [src] ([get_area_name(src)])")
+		return TRUE

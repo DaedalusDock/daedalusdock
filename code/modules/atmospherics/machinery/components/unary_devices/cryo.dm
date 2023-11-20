@@ -16,7 +16,7 @@
 	// Must be tall, otherwise the filter will consider this as a 32x32 tile
 	// and will crop the head off.
 	icon_state = "mask_bg"
-	layer = ABOVE_MOB_LAYER
+	layer = MOB_LAYER + 0.01 //Why is this required? I don't know
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pixel_y = 22
 	appearance_flags = KEEP_TOGETHER
@@ -29,8 +29,8 @@
 	// It will follow this as the animation goes, but that's no problem as the "mask" icon state
 	// already accounts for this.
 	add_filter("alpha_mask", 1, list("type" = "alpha", "icon" = icon('icons/obj/cryogenics.dmi', "mask"), "y" = -22))
-	RegisterSignal(parent, COMSIG_MACHINERY_SET_OCCUPANT, .proc/on_set_occupant)
-	RegisterSignal(parent, COMSIG_CRYO_SET_ON, .proc/on_set_on)
+	RegisterSignal(parent, COMSIG_MACHINERY_SET_OCCUPANT, PROC_REF(on_set_occupant))
+	RegisterSignal(parent, COMSIG_CRYO_SET_ON, PROC_REF(on_set_on))
 
 /// COMSIG_MACHINERY_SET_OCCUPANT callback
 /atom/movable/visual/cryo_occupant/proc/on_set_occupant(datum/source, mob/living/new_occupant)
@@ -83,7 +83,6 @@
 
 	showpipe = FALSE
 
-	var/autoeject = TRUE
 	var/volume = 100
 
 	var/efficiency = 1
@@ -125,10 +124,17 @@
 	occupant_vis = new(null, src)
 	vis_contents += occupant_vis
 	if(airs[1])
-		airs[1].volume = CELL_VOLUME * 0.5
+		airs[1].volume = 200
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/set_occupant(atom/movable/new_occupant)
+	var/mob/living/occupant_mob = occupant
+	if(occupant_mob)
+		occupant_mob.SetSleeping(10)
 	. = ..()
+	occupant_mob = occupant
+	if(occupant_mob)
+		occupant_mob.PermaSleeping()
+
 	update_appearance()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/on_construction()
@@ -208,10 +214,6 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return
 	. += (on && is_operational) ? GLOB.cryo_overlay_cover_on : GLOB.cryo_overlay_cover_off
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/nap_violation(mob/violator)
-	open_machine()
-
-
 /obj/machinery/atmospherics/components/unary/cryo_cell/set_on(active)
 	if(on == active)
 		return
@@ -243,26 +245,17 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	var/mob/living/mob_occupant = occupant
 	if(mob_occupant.on_fire)
 		mob_occupant.extinguish_mob()
-	if(!check_nap_violations())
-		return
 	if(mob_occupant.stat == DEAD) // We don't bother with dead people.
 		return
-	if(mob_occupant.get_organic_health() >= mob_occupant.getMaxHealth()) // Don't bother with fully healed people.
-		set_on(FALSE)
-		playsound(src, 'sound/machines/cryo_warning.ogg', volume) // Bug the doctors.
-		var/msg = "Patient fully restored."
-		if(autoeject) // Eject if configured.
-			msg += " Auto ejecting patient now."
-			open_machine()
-		radio.talk_into(src, msg, radio_channel)
-		return
+
+	if (prob(2))
+		to_chat(mob_occupant, span_boldnotice("... [pick("floating", "cold")] ..."))
 
 	var/datum/gas_mixture/air1 = airs[1]
 
-	if(air1.get_moles() > CRYO_MIN_GAS_MOLES)
+	if(air1.total_moles > CRYO_MIN_GAS_MOLES)
 		if(beaker)
 			beaker.reagents.trans_to(occupant, (CRYO_TX_QTY / (efficiency * CRYO_MULTIPLY_FACTOR)) * delta_time, efficiency * CRYO_MULTIPLY_FACTOR, methods = VAPOR) // Transfer reagents.
-			consume_gas = TRUE
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/process_atmos()
@@ -272,49 +265,16 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		return
 
 	var/datum/gas_mixture/air1 = airs[1]
+	if(air1.temperature > 2000)
+		take_damage(clamp((air1.temperature)/200, 10, 20), BURN)
 
-	/* PARIAH EDIT REMOVAL - HUGBOX BARGAGE
-	if(!nodes[1] || !airs[1] || !air1.gas.len || air1.get_moles() < CRYO_MIN_GAS_MOLES) // Turn off if the machine won't work.
-		var/msg = "Insufficient cryogenic gas, shutting down."
-		radio.talk_into(src, msg, radio_channel)
-		set_on(FALSE)
-		return
-	*/
+	update_parents()
 
-	if(occupant)
-		var/mob/living/mob_occupant = occupant
-		var/cold_protection = 0
-		var/temperature_delta = air1.temperature - mob_occupant.bodytemperature // The only semi-realistic thing here: share temperature between the cell and the occupant.
+/obj/machinery/atmospherics/components/unary/cryo_cell/return_air()
+	return airs[1]
 
-		if(ishuman(mob_occupant))
-			var/mob/living/carbon/human/H = mob_occupant
-			cold_protection = H.get_cold_protection(air1.temperature)
-
-		if(abs(temperature_delta) > 1)
-			var/air_heat_capacity = air1.getHeatCapacity()
-
-			var/heat = ((1 - cold_protection) * 0.1 + conduction_coefficient) * temperature_delta * (air_heat_capacity * heat_capacity / (air_heat_capacity + heat_capacity))
-
-			air1.temperature = clamp(air1.temperature - heat / air_heat_capacity, TCMB, MAX_TEMPERATURE)
-			mob_occupant.adjust_bodytemperature(heat / heat_capacity, TCMB)
-
-			//lets have the core temp match the body temp in humans
-			if(ishuman(mob_occupant))
-				var/mob/living/carbon/human/humi = mob_occupant
-				humi.adjust_coretemperature(humi.bodytemperature - humi.coretemperature)
-
-		if(air1.temperature > 2000)
-			take_damage(clamp((air1.temperature)/200, 10, 20), BURN)
-
-		update_parents()
-
-/obj/machinery/atmospherics/components/unary/cryo_cell/handle_internal_lifeform(mob/lifeform_inside_me, breath_request)
-
-	if(breath_request <= 0)
-		return null
-	var/datum/gas_mixture/air1 = airs[1]
-	var/breath_percentage = breath_request / air1.volume
-	return air1.remove(air1.get_moles() * breath_percentage)
+/obj/machinery/atmospherics/components/unary/cryo_cell/return_breathable_air()
+	return loc?.return_air()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/assume_air(datum/gas_mixture/giver)
 	airs[1].merge(giver)
@@ -367,9 +327,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	if(user.incapacitated() || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !ISADVANCEDTOOLUSER(user))
 		return
 	if(isliving(target))
-		var/mob/living/L = target
-		if(L.incapacitated())
-			close_machine(target)
+		close_machine(target)
 	else
 		user.visible_message(span_notice("[user] starts shoving [target] inside [src]."), span_notice("You start shoving [target] inside [src]."))
 		if (do_after(user, target, 2.5 SECONDS))
@@ -428,7 +386,6 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	data["isOperating"] = on
 	data["hasOccupant"] = occupant ? TRUE : FALSE
 	data["isOpen"] = state_open
-	data["autoEject"] = autoeject
 
 	data["occupant"] = list()
 	if(occupant)
@@ -436,12 +393,13 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		data["occupant"]["name"] = mob_occupant.name
 		switch(mob_occupant.stat)
 			if(CONSCIOUS)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "good"
-			if(SOFT_CRIT)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "average"
-			if(UNCONSCIOUS, HARD_CRIT)
+				if(!HAS_TRAIT(mob_occupant, TRAIT_SOFT_CRITICAL_CONDITION))
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "good"
+				else
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "average"
+			if(UNCONSCIOUS)
 				data["occupant"]["stat"] = "Unconscious"
 				data["occupant"]["statstate"] = "average"
 			if(DEAD)
@@ -490,9 +448,6 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 			else
 				open_machine()
 			. = TRUE
-		if("autoeject")
-			autoeject = !autoeject
-			. = TRUE
 		if("ejectbeaker")
 			if(beaker)
 				beaker.forceMove(drop_location())
@@ -504,7 +459,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/can_interact(mob/user)
 	return ..() && user.loc != src
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/unary/cryo_cell/CtrlClick(mob/user, list/params)
 	if(can_interact(user) && !state_open)
 		set_on(!on)
 	return ..()
@@ -529,7 +484,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
 	var/datum/gas_mixture/G = airs[1]
 
-	if(G.get_moles() > 10)
+	if(G.total_moles > 10)
 		return G.temperature
 	return ..()
 

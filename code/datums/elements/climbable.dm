@@ -1,5 +1,5 @@
 /datum/element/climbable
-	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
+	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH // Detach for turfs
 	id_arg_index = 2
 	///Time it takes to climb onto the object
 	var/climb_time = (2 SECONDS)
@@ -18,10 +18,10 @@
 	if(climb_stun)
 		src.climb_stun = climb_stun
 
-	RegisterSignal(target, COMSIG_ATOM_ATTACK_HAND, .proc/attack_hand)
-	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
-	RegisterSignal(target, COMSIG_MOUSEDROPPED_ONTO, .proc/mousedrop_receive)
-	RegisterSignal(target, COMSIG_ATOM_BUMPED, .proc/try_speedrun)
+	RegisterSignal(target, COMSIG_ATOM_ATTACK_HAND, PROC_REF(attack_hand))
+	RegisterSignal(target, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(target, COMSIG_MOUSEDROPPED_ONTO, PROC_REF(mousedrop_receive))
+	RegisterSignal(target, COMSIG_ATOM_BUMPED, PROC_REF(try_speedrun))
 	ADD_TRAIT(target, TRAIT_CLIMBABLE, ELEMENT_TRAIT(type))
 
 /datum/element/climbable/Detach(datum/target)
@@ -69,7 +69,7 @@
 		adjusted_climb_time *= 0.8
 		adjusted_climb_stun *= 0.8
 	LAZYADDASSOCLIST(current_climbers, climbed_thing, user)
-	if(do_after(user, climbed_thing, adjusted_climb_time))
+	if(do_after(user, climbed_thing, adjusted_climb_time, DO_PUBLIC))
 		if(QDELETED(climbed_thing)) //Checking if structure has been destroyed
 			return
 		if(do_climb(climbed_thing, user, params))
@@ -106,17 +106,23 @@
 	. = step(user, dir_step)
 	climbed_thing.set_density(TRUE)
 
+	if(istype(climbed_thing, /obj/structure/table/optable)) //This is my joker arc
+		var/obj/structure/table/optable/table = climbed_thing
+		table.get_patient()
+
 ///Handles climbing onto the atom when you click-drag
 /datum/element/climbable/proc/mousedrop_receive(atom/climbed_thing, atom/movable/dropped_atom, mob/user, params)
 	SIGNAL_HANDLER
 	if(user == dropped_atom && isliving(dropped_atom))
 		var/mob/living/living_target = dropped_atom
+		if(living_target.combat_mode)
+			return
 		if(isanimal(living_target))
 			var/mob/living/simple_animal/animal = dropped_atom
 			if (!animal.dextrous)
 				return
 		if(living_target.mobility_flags & MOBILITY_MOVE)
-			INVOKE_ASYNC(src, .proc/climb_structure, climbed_thing, living_target, params)
+			INVOKE_ASYNC(src, PROC_REF(climb_structure), climbed_thing, living_target, params)
 			return
 
 ///Tries to climb onto the target if the forced movement of the mob allows it

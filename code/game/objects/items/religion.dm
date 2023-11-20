@@ -329,7 +329,7 @@
 	if(staffcooldown + staffwait > world.time)
 		return
 	user.visible_message(span_notice("[user] chants deeply and waves [user.p_their()] staff!"))
-	if(do_after(user, src, 2 SECONDS))
+	if(do_after(user, src, 2 SECONDS, DO_PUBLIC, display = src))
 		target.add_atom_colour(conversion_color, WASHABLE_COLOUR_PRIORITY) //wololo
 	staffcooldown = world.time
 
@@ -363,7 +363,7 @@
 	icon_state = "crusader"
 	w_class = WEIGHT_CLASS_NORMAL
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 60, BIO = 0, FIRE = 60, ACID = 60) //does this even do anything on boots?
-	clothing_flags = NOSLIP
+	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOES_MIN_TEMP_PROTECT
 	heat_protection = FEET

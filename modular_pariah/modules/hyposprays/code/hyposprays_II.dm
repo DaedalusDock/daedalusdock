@@ -68,6 +68,8 @@
 		vial = new start_vial
 		update_appearance()
 
+	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
+
 /obj/item/hypospray/mkii/update_overlays()
 	. = ..()
 	if(!vial)
@@ -82,10 +84,6 @@
 	var/mutable_appearance/chem_loaded = mutable_appearance('modular_pariah/modules/hyposprays/icons/hyposprays.dmi', vial_spritetype)
 	chem_loaded.color = vial.chem_color
 	. += chem_loaded
-
-/obj/item/hypospray/mkii/ComponentInitialize()
-	. = ..()
-	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/hypospray/mkii/update_icon_state()
 	. = ..()
@@ -197,7 +195,7 @@
 		return
 
 	if(iscarbon(injectee))
-		var/obj/item/bodypart/affecting = injectee.get_bodypart(check_zone(user.zone_selected))
+		var/obj/item/bodypart/affecting = injectee.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!affecting)
 			to_chat(user, span_warning("The limb is missing!"))
 			return
@@ -217,7 +215,7 @@
 	if(injectee != user)
 		injectee.visible_message(span_danger("[user] is trying to [fp_verb] [injectee] with [src]!"), \
 						span_userdanger("[user] is trying to [fp_verb] you with [src]!"))
-	if(!do_after(user, injectee, inject_wait, extra_checks = CALLBACK(injectee, /mob/living/proc/can_inject, user, user.zone_selected, penetrates)))
+	if(!do_after(user, injectee, inject_wait, extra_checks = CALLBACK(injectee, TYPE_PROC_REF(/mob/living, can_inject), user, user.zone_selected, penetrates)))
 		return
 	if(!vial.reagents.total_volume)
 		return
@@ -232,7 +230,7 @@
 		if(HYPO_INJECT)
 			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = INJECT)
 		if(HYPO_SPRAY)
-			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = PATCH)
+			vial.reagents.trans_to(injectee, vial.amount_per_transfer_from_this, methods = TOUCH)
 
 	var/long_sound = vial.amount_per_transfer_from_this >= 15
 	playsound(loc, long_sound ? 'modular_pariah/modules/hyposprays/sound/hypospray_long.ogg' : pick('modular_pariah/modules/hyposprays/sound/hypospray.ogg','modular_pariah/modules/hyposprays/sound/hypospray2.ogg'), 50, 1, -1)

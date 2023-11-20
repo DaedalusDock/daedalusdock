@@ -13,6 +13,7 @@
 	name = "emergency firesuit"
 	desc = "A suit that helps protect against fire and heat."
 	icon_state = "fire"
+	zmm_flags = ZMM_MANGLE_PLANES
 	inhand_icon_state = "ro_suit"
 	w_class = WEIGHT_CLASS_BULKY
 	permeability_coefficient = 0.5
@@ -30,7 +31,7 @@
 	equip_delay_other = 60
 	resistance_flags = FIRE_PROOF
 
-/obj/item/clothing/suit/fire/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/suit/fire/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)
@@ -138,6 +139,7 @@
 	name = "radiation suit"
 	desc = "A suit that protects against radiation. The label reads, 'Made with lead. Please do not consume insulation.'"
 	icon_state = "rad"
+	zmm_flags = ZMM_MANGLE_PLANES
 	inhand_icon_state = "rad_suit"
 	w_class = WEIGHT_CLASS_BULKY
 	permeability_coefficient = 0.5
@@ -156,7 +158,7 @@
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
 
-/obj/item/clothing/suit/radiation/worn_overlays(mutable_appearance/standing, isinhands, icon_file)
+/obj/item/clothing/suit/radiation/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands, icon_file)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = src.alpha)

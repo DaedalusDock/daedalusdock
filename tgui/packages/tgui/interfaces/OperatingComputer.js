@@ -1,5 +1,5 @@
 import { useBackend, useSharedState } from '../backend';
-import { AnimatedNumber, Button, LabeledList, NoticeBox, ProgressBar, Section, Tabs } from '../components';
+import { AnimatedNumber, LabeledList, NoticeBox, ProgressBar, Section, Tabs } from '../components';
 import { Window } from '../layouts';
 
 const damageTypes = [
@@ -153,10 +153,6 @@ const SurgeryProceduresView = (props, context) => {
   } = data;
   return (
     <Section title="Advanced Surgery Procedures">
-      <Button
-        icon="download"
-        content="Sync Research Database"
-        onClick={() => act('sync')} />
       {surgeries.map(surgery => (
         <Section
           title={surgery.name}

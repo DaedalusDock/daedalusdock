@@ -40,7 +40,7 @@
 	lose_text = "<span class='notice'>You've developed fluency in Galactic Common."
 	medical_record_text = "Patient does not speak Galactic Common and may require an interpreter."
 
-/datum/quirk/foreigner/add()
+/datum/quirk/foreigner/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	human_holder.add_blocked_language(/datum/language/common)
 	if(ishumanbasic(human_holder))
@@ -61,12 +61,12 @@
 	lose_text = "<span class='notice'>You feel like eating meat isn't that bad.</span>"
 	medical_record_text = "Patient reports a vegetarian diet."
 
-/datum/quirk/vegetarian/add()
+/datum/quirk/vegetarian/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	species.liked_food &= ~MEAT
 	species.disliked_food |= MEAT
-	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, .proc/on_species_gain)
+	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, PROC_REF(on_species_gain))
 
 /datum/quirk/vegetarian/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species)
 	SIGNAL_HANDLER
@@ -83,16 +83,6 @@
 		species.disliked_food &= ~MEAT
 	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
 
-/datum/quirk/snob
-	name = "Snob"
-	desc = "You care about the finer things, if a room doesn't look nice its just not really worth it, is it?"
-	icon = "user-tie"
-	value = 0
-	gain_text = "<span class='notice'>You feel like you understand what things should look like.</span>"
-	lose_text = "<span class='notice'>Well who cares about deco anyways?</span>"
-	medical_record_text = "Patient seems to be rather stuck up."
-	mob_trait = TRAIT_SNOB
-
 /datum/quirk/pineapple_liker
 	name = "Ananas Affinity"
 	desc = "You find yourself greatly enjoying fruits of the ananas genus. You can't seem to ever get enough of their sweet goodness!"
@@ -102,11 +92,11 @@
 	lose_text = "<span class='notice'>Your feelings towards pineapples seem to return to a lukewarm state.</span>"
 	medical_record_text = "Patient demonstrates a pathological love of pineapple."
 
-/datum/quirk/pineapple_liker/add()
+/datum/quirk/pineapple_liker/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	species.liked_food |= PINEAPPLE
-	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, .proc/on_species_gain)
+	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, PROC_REF(on_species_gain))
 
 /datum/quirk/pineapple_liker/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species)
 	SIGNAL_HANDLER
@@ -127,11 +117,11 @@
 	lose_text = "<span class='notice'>Your feelings towards pineapples seem to return to a lukewarm state.</span>"
 	medical_record_text = "Patient is correct to think that pineapple is disgusting."
 
-/datum/quirk/pineapple_hater/add()
+/datum/quirk/pineapple_hater/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	species.disliked_food |= PINEAPPLE
-	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, .proc/on_species_gain)
+	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, PROC_REF(on_species_gain))
 
 /datum/quirk/pineapple_hater/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species)
 	SIGNAL_HANDLER
@@ -152,13 +142,13 @@
 	lose_text = "<span class='notice'>You feel like eating normal food again.</span>"
 	medical_record_text = "Patient demonstrates irregular nutrition preferences."
 
-/datum/quirk/deviant_tastes/add()
+/datum/quirk/deviant_tastes/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/datum/species/species = human_holder.dna.species
 	var/liked = species.liked_food
 	species.liked_food = species.disliked_food
 	species.disliked_food = liked
-	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, .proc/on_species_gain)
+	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, PROC_REF(on_species_gain))
 
 /datum/quirk/deviant_tastes/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species)
 	SIGNAL_HANDLER
@@ -174,14 +164,15 @@
 	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
 
 /datum/quirk/heterochromatic
-	name = "Heterochromatic"
+	name = "Heterochromia"
 	desc = "One of your eyes is a different color than the other!"
 	icon = "eye-low-vision" // Ignore the icon name, its actually a fairly good representation of different color eyes
 	value = 0
+	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_CHANGES_APPEARANCE
 	var/color
 
-/datum/quirk/heterochromatic/add()
-	color = color || quirk_holder.client?.prefs?.read_preference(/datum/preference/color/heterochromatic)
+/datum/quirk/heterochromatic/add_unique(client/client_source)
+	color = client_source?.prefs?.read_preference(/datum/preference/color/heterochromatic)
 	if(!color)
 		return
 
@@ -205,17 +196,17 @@
 	human_holder.eye_color_heterochromatic = TRUE
 	human_holder.eye_color_right = color
 	// We set override to TRUE as link to holder will be called whenever the preference is applied, given this quirk exists on the mob
-	RegisterSignal(human_holder, COMSIG_CARBON_LOSE_ORGAN, .proc/check_eye_removal, override=TRUE)
+	RegisterSignal(human_holder, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(check_eye_removal), override=TRUE)
 
-	var/obj/item/organ/internal/eyes/eyes_of_the_holder = quirk_holder.getorgan(/obj/item/organ/internal/eyes)
+	var/obj/item/organ/eyes/eyes_of_the_holder = quirk_holder.getorgan(/obj/item/organ/eyes)
 	if(!eyes_of_the_holder)
 		return
 
 	eyes_of_the_holder.eye_color_right = color
 	eyes_of_the_holder.old_eye_color_right = color
-	eyes_of_the_holder.refresh()
+	human_holder.update_eyes()
 
-/datum/quirk/heterochromatic/proc/check_eye_removal(datum/source, obj/item/organ/internal/eyes/removed)
+/datum/quirk/heterochromatic/proc/check_eye_removal(datum/source, obj/item/organ/eyes/removed)
 	SIGNAL_HANDLER
 
 	if(!istype(removed))
@@ -234,7 +225,7 @@
 	value = 0
 	medical_record_text = "Patient is afflicted with almost complete color blindness."
 
-/datum/quirk/monochromatic/add()
+/datum/quirk/monochromatic/add(client/client_source)
 	quirk_holder.add_client_colour(/datum/client_colour/monochrome)
 
 /datum/quirk/monochromatic/post_add()
@@ -251,20 +242,14 @@
 	icon = "spider"
 	value = 0
 	medical_record_text = "Patient has an irrational fear of something."
-	var/phobia
 
-/datum/quirk/phobia/add()
-	phobia = phobia || quirk_holder.client?.prefs?.read_preference(/datum/preference/choiced/phobia)
-
-	if(phobia)
-		var/mob/living/carbon/human/human_holder = quirk_holder
-		human_holder.gain_trauma(new /datum/brain_trauma/mild/phobia(phobia), TRAUMA_RESILIENCE_ABSOLUTE)
-
-/datum/quirk/phobia/post_add()
+// Phobia will follow you between transfers
+/datum/quirk/phobia/add(client/client_source)
+	var/phobia = client_source?.prefs.read_preference(/datum/preference/choiced/phobia)
 	if(!phobia)
-		var/mob/living/carbon/human/human_holder = quirk_holder
-		phobia = human_holder.client.prefs.read_preference(/datum/preference/choiced/phobia)
-		human_holder.gain_trauma(new /datum/brain_trauma/mild/phobia(phobia), TRAUMA_RESILIENCE_ABSOLUTE)
+		return
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	human_holder.gain_trauma(new /datum/brain_trauma/mild/phobia(phobia), TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/quirk/phobia/remove()
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -278,61 +263,6 @@
 	medical_record_text = "Fucking creep kept staring at me the whole damn checkup. I'm only diagnosing this because it's less awkward than thinking it was on purpose."
 	mob_trait = TRAIT_SHIFTY_EYES
 
-/datum/quirk/item_quirk/bald
-	name = "Smooth-Headed"
-	desc = "You have no hair and are quite insecure about it! Keep your wig on, or at least your head covered up."
-	icon = "egg"
-	value = 0
-	mob_trait = TRAIT_BALD
-	gain_text = "<span class='notice'>Your head is as smooth as can be, it's terrible.</span>"
-	lose_text = "<span class='notice'>Your head itches, could it be... growing hair?!</span>"
-	medical_record_text = "Patient starkly refused to take off headwear during examination."
-	/// The user's starting hairstyle
-	var/old_hair
-
-/datum/quirk/item_quirk/bald/add()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	old_hair = human_holder.hairstyle
-	human_holder.hairstyle = "Bald"
-	human_holder.update_body_parts()
-	RegisterSignal(human_holder, COMSIG_CARBON_EQUIP_HAT, .proc/equip_hat)
-	RegisterSignal(human_holder, COMSIG_CARBON_UNEQUIP_HAT, .proc/unequip_hat)
-
-/datum/quirk/item_quirk/bald/add_unique()
-	var/obj/item/clothing/head/wig/natural/baldie_wig = new(get_turf(quirk_holder))
-
-	if (old_hair == "Bald")
-		baldie_wig.hairstyle = pick(GLOB.hairstyles_list - "Bald")
-	else
-		baldie_wig.hairstyle = old_hair
-
-	baldie_wig.update_appearance()
-
-	give_item_to_holder(baldie_wig, list(LOCATION_HEAD = ITEM_SLOT_HEAD, LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-
-/datum/quirk/item_quirk/bald/remove()
-	. = ..()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.hairstyle = old_hair
-	human_holder.update_body_parts()
-	UnregisterSignal(human_holder, list(COMSIG_CARBON_EQUIP_HAT, COMSIG_CARBON_UNEQUIP_HAT))
-	SEND_SIGNAL(human_holder, COMSIG_CLEAR_MOOD_EVENT, "bad_hair_day")
-
-///Checks if the headgear equipped is a wig and sets the mood event accordingly
-/datum/quirk/item_quirk/bald/proc/equip_hat(mob/user, obj/item/hat)
-	SIGNAL_HANDLER
-
-	if(istype(hat, /obj/item/clothing/head/wig))
-		SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_hair_day", /datum/mood_event/confident_mane) //Our head is covered, but also by a wig so we're happy.
-	else
-		SEND_SIGNAL(quirk_holder, COMSIG_CLEAR_MOOD_EVENT, "bad_hair_day") //Our head is covered
-
-///Applies a bad moodlet for having an uncovered head
-/datum/quirk/item_quirk/bald/proc/unequip_hat(mob/user, obj/item/clothing, force, newloc, no_move, invdrop, silent)
-	SIGNAL_HANDLER
-
-	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_hair_day", /datum/mood_event/bald)
-
 /datum/quirk/item_quirk/tongue_tied
 	name = "Tongue Tied"
 	desc = "Due to a past incident, your ability to communicate has been relegated to your hands."
@@ -340,13 +270,13 @@
 	value = 0
 	medical_record_text = "During physical examination, patient's tongue was found to be uniquely damaged."
 
-/datum/quirk/item_quirk/tongue_tied/add_unique()
+/datum/quirk/item_quirk/tongue_tied/add_unique(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/obj/item/organ/internal/tongue/old_tongue = human_holder.getorganslot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/tongue/old_tongue = human_holder.getorganslot(ORGAN_SLOT_TONGUE)
 	old_tongue.Remove(human_holder)
 	qdel(old_tongue)
 
-	var/obj/item/organ/internal/tongue/tied/new_tongue = new(get_turf(human_holder))
+	var/obj/item/organ/tongue/tied/new_tongue = new(get_turf(human_holder))
 	new_tongue.Insert(human_holder)
 	// Only tongues of people with this quirk can't be removed. Manually spawned or found tongues can be.
 	new_tongue.organ_flags |= ORGAN_UNREMOVABLE
@@ -369,7 +299,7 @@
 	lose_text = "<span class='danger'>You forget how photo cameras work.</span>"
 	medical_record_text = "Patient mentions photography as a stress-relieving hobby."
 
-/datum/quirk/item_quirk/photographer/add_unique()
+/datum/quirk/item_quirk/photographer/add_unique(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/storage/photo_album/personal/photo_album = new(get_turf(human_holder))
 	photo_album.persistence_id = "personal_[human_holder.last_mind?.key]" // this is a persistent album, the ID is tied to the account's key to avoid tampering
@@ -395,101 +325,5 @@
 	value = 0
 	medical_record_text = "Patient enjoys dyeing their hair with pretty colors."
 
-/datum/quirk/item_quirk/colorist/add_unique()
+/datum/quirk/item_quirk/colorist/add_unique(client/client_source)
 	give_item_to_holder(/obj/item/dyespray, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-
-#define GAMING_WITHDRAWAL_TIME (15 MINUTES)
-/datum/quirk/gamer
-	name = "Gamer"
-	desc = "You are a hardcore gamer, and you have a need to game. You love winning and hate losing. You only like gamer food."
-	icon = "gamepad"
-	value = 0
-	gain_text = span_notice("You feel the sudden urge to game.")
-	lose_text = span_notice("You've lost all interest in gaming.")
-	medical_record_text = "Patient has a severe video game addiction."
-	mob_trait = TRAIT_GAMER
-	/// Timer for gaming withdrawal to kick in
-	var/gaming_withdrawal_timer = TIMER_ID_NULL
-
-/datum/quirk/gamer/add()
-	// Gamer diet
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/datum/species/species = human_holder.dna.species
-	species.liked_food = JUNKFOOD
-	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, .proc/on_species_gain)
-	RegisterSignal(human_holder, COMSIG_MOB_WON_VIDEOGAME, .proc/won_game)
-	RegisterSignal(human_holder, COMSIG_MOB_LOST_VIDEOGAME, .proc/lost_game)
-	RegisterSignal(human_holder, COMSIG_MOB_PLAYED_VIDEOGAME, .proc/gamed)
-
-/datum/quirk/gamer/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species)
-	SIGNAL_HANDLER
-	new_species.liked_food = JUNKFOOD
-
-/datum/quirk/gamer/remove()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/datum/species/species = human_holder.dna.species
-	species.liked_food = initial(species.liked_food)
-	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
-	UnregisterSignal(human_holder, COMSIG_MOB_WON_VIDEOGAME)
-	UnregisterSignal(human_holder, COMSIG_MOB_LOST_VIDEOGAME)
-	UnregisterSignal(human_holder, COMSIG_MOB_PLAYED_VIDEOGAME)
-
-/datum/quirk/gamer/add_unique()
-	// The gamer starts off quelled
-	gaming_withdrawal_timer = addtimer(CALLBACK(src, .proc/enter_withdrawal), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
-
-/**
- * Gamer won a game
- *
- * Executed on the COMSIG_MOB_WON_VIDEOGAME signal
- * This signal should be called whenever a player has won a video game.
- * (E.g. Orion Trail)
- */
-/datum/quirk/gamer/proc/won_game()
-	SIGNAL_HANDLER
-	// Epic gamer victory
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	SEND_SIGNAL(human_holder, COMSIG_ADD_MOOD_EVENT, "gamer_won", /datum/mood_event/gamer_won)
-
-/**
- * Gamer lost a game
- *
- * Executed on the COMSIG_MOB_LOST_VIDEOGAME signal
- * This signal should be called whenever a player has lost a video game.
- * (E.g. Orion Trail)
- */
-/datum/quirk/gamer/proc/lost_game()
-	SIGNAL_HANDLER
-	// Executed when a gamer has lost
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	SEND_SIGNAL(human_holder, COMSIG_ADD_MOOD_EVENT, "gamer_lost", /datum/mood_event/gamer_lost)
-	// Executed asynchronously due to say()
-	INVOKE_ASYNC(src, .proc/gamer_moment)
-/**
- * Gamer is playing a game
- *
- * Executed on the COMSIG_MOB_PLAYED_VIDEOGAME signal
- * This signal should be called whenever a player interacts with a video game.
- */
-/datum/quirk/gamer/proc/gamed()
-	SIGNAL_HANDLER
-
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	// Remove withdrawal malus
-	SEND_SIGNAL(human_holder, COMSIG_CLEAR_MOOD_EVENT, "gamer_withdrawal")
-	// Reset withdrawal timer
-	if (gaming_withdrawal_timer)
-		deltimer(gaming_withdrawal_timer)
-	gaming_withdrawal_timer = addtimer(CALLBACK(src, .proc/enter_withdrawal), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
-
-
-/datum/quirk/gamer/proc/gamer_moment()
-	// It was a heated gamer moment...
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.say(";[pick("SHIT", "PISS", "FUCK", "CUNT", "COCKSUCKER", "MOTHERFUCKER")]!!", forced = name)
-
-/datum/quirk/gamer/proc/enter_withdrawal()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	SEND_SIGNAL(human_holder, COMSIG_ADD_MOOD_EVENT, "gamer_withdrawal", /datum/mood_event/gamer_withdrawal)
-
-#undef GAMING_WITHDRAWAL_TIME

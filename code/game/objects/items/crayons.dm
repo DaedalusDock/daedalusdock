@@ -162,7 +162,7 @@
 		ui.open()
 
 /obj/item/toy/crayon/spraycan/AltClick(mob/user)
-	if(has_cap && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(has_cap && user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
 		is_capped = !is_capped
 		to_chat(user, span_notice("The cap on [src] is now [is_capped ? "on" : "off"]."))
 		update_appearance()
@@ -368,7 +368,7 @@
 		wait_time *= 3
 
 	if(gang_mode || !instant)
-		if(!do_after(user, target, 5 SECONDS))
+		if(!do_after(user, target, 5 SECONDS, DO_PUBLIC, display = src))
 			return
 
 	var/charges_used = use_charges(user, cost)
@@ -438,6 +438,9 @@
 		if(iscarbon(M))
 			var/mob/living/carbon/C = M
 			var/covered = ""
+			if(!C.has_mouth())
+				to_chat(C, span_warning("They don't have a mouth."))
+				return
 			if(C.is_mouth_covered(head_only = 1))
 				covered = "headgear"
 			else if(C.is_mouth_covered(mask_only = 1))
@@ -797,16 +800,29 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	if(istype(target, /obj/item/bodypart) && actually_paints)
+
 		var/obj/item/bodypart/limb = target
+		if(!(limb.bodytype & BODYTYPE_HUMANOID))
+			to_chat(user, span_notice("You can't think of anything to change about [src]."))
+			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 		if(!IS_ORGANIC_LIMB(limb))
 			var/list/skins = list()
-			var/static/list/style_list_icons = list("standard" = 'icons/mob/augmentation/augments.dmi', "engineer" = 'icons/mob/augmentation/augments_engineer.dmi', "security" = 'icons/mob/augmentation/augments_security.dmi', "mining" = 'icons/mob/augmentation/augments_mining.dmi')
+			var/static/list/style_list_icons = list(
+				"standard" = 'icons/mob/augmentation/augments.dmi',
+				"engineer" = 'icons/mob/augmentation/augments_engineer.dmi',
+				"security" = 'icons/mob/augmentation/augments_security.dmi',
+				"mining" = 'icons/mob/augmentation/augments_mining.dmi'
+			)
+
 			for(var/skin_option in style_list_icons)
 				var/image/part_image = image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.body_zone]")
 				if(limb.aux_zone) //Hands
 					part_image.overlays += image(icon = style_list_icons[skin_option], icon_state = "[limb.limb_id]_[limb.aux_zone]")
 				skins += list("[skin_option]" = part_image)
+
 			var/choice = show_radial_menu(user, src, skins, require_near = TRUE)
+
 			if(choice && (use_charges(user, 5, requires_full = FALSE) == 5))
 				playsound(user.loc, 'sound/effects/spray.ogg', 5, TRUE, 5)
 				limb.change_appearance(style_list_icons[choice], greyscale = FALSE)

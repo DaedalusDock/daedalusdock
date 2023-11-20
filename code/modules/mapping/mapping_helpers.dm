@@ -83,9 +83,22 @@
 	name = "lava baseturf editor"
 	baseturf = /turf/open/lava/smooth
 
-/obj/effect/baseturf_helper/lava_land/surface
-	name = "lavaland baseturf editor"
-	baseturf = /turf/open/lava/smooth/lava_land_surface
+/obj/effect/baseturf_helper/reinforced_plating
+	name = "reinforced plating baseturf editor"
+	baseturf = /turf/open/floor/plating/reinforced
+	baseturf_to_replace = list(/turf/open/floor/plating,/turf/open/space,/turf/baseturf_bottom)
+
+//This applies the reinforced plating to the above Z level for every tile in the area where this is placed
+/obj/effect/baseturf_helper/reinforced_plating/ceiling
+	name = "reinforced ceiling plating baseturf editor"
+
+/obj/effect/baseturf_helper/reinforced_plating/ceiling/replace_baseturf(turf/thing)
+	var/turf/ceiling = GetAbove(thing)
+	if(isnull(ceiling))
+		CRASH("baseturf helper is attempting to modify the Z level above but there is no Z level above above it.")
+	if(isspaceturf(ceiling) || istype(ceiling, /turf/open/openspace))
+		return
+	return ..(ceiling)
 
 
 /obj/effect/mapping_helpers
@@ -96,7 +109,6 @@
 /obj/effect/mapping_helpers/Initialize(mapload)
 	..()
 	return late ? INITIALIZE_HINT_LATELOAD : INITIALIZE_HINT_QDEL
-
 
 //airlock helpers
 /obj/effect/mapping_helpers/airlock
@@ -282,6 +294,17 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 /obj/effect/mapping_helpers/atom_injector/proc/generate_stack_trace()
 	. = "[name] found no targets at ([x], [y], [z]). First Match Only: [first_match_only ? "true" : "false"] target type: [target_type] | target name: [target_name]"
 
+/obj/effect/mapping_helpers/atom_injector/obj_flag
+	name = "Obj Flag Injector"
+	icon_state = "objflag_helper"
+	var/inject_flags = NONE
+
+/obj/effect/mapping_helpers/atom_injector/obj_flag/inject(atom/target)
+	if(!isobj(target))
+		return
+	var/obj/obj_target = target
+	obj_target.obj_flags |= inject_flags
+
 ///This helper applies components to things on the map directly.
 /obj/effect/mapping_helpers/atom_injector/component_injector
 	name = "Component Injector"
@@ -460,7 +483,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		var/obj/structure/bodycontainer/morgue/j = pick(trays)
 		var/mob/living/carbon/human/h = new /mob/living/carbon/human(j, 1)
 		h.death()
-		for (var/part in h.internal_organs) //randomly remove organs from each body, set those we keep to be in stasis
+		for (var/part in h.processing_organs) //randomly remove organs from each body, set those we keep to be in stasis
 			if (prob(40))
 				qdel(part)
 			else
@@ -656,7 +679,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 
 /obj/effect/mapping_helpers/circuit_spawner/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/spawn_circuit)
+	INVOKE_ASYNC(src, PROC_REF(spawn_circuit))
 
 /obj/effect/mapping_helpers/circuit_spawner/proc/spawn_circuit()
 	var/list/errors = list()
@@ -699,6 +722,12 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	query_in_progress = FALSE
 	return json_data
 
+//DM Editor 'simplified' maphelpers.
+#if defined(SIMPLE_MAPHELPERS)
+#define PAINT_PREFIX "s_"
+#else
+#define PAINT_PREFIX ""
+#endif
 
 /obj/effect/mapping_helpers/paint_wall
 	name = "Paint Wall Helper"
@@ -732,9 +761,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		var/obj/structure/low_wall/low_wall = locate() in loc
 		if(low_wall)
 			if(!isnull(wall_paint))
-				low_wall.set_wall_paint(wall_paint)
+				low_wall.paint_wall(wall_paint)
 			if(!isnull(stripe_paint))
-				low_wall.set_stripe_paint(stripe_paint)
+				low_wall.paint_stripe(stripe_paint)
 			did_anything = TRUE
 		else
 			var/obj/structure/falsewall/falsewall = locate() in loc
@@ -762,12 +791,62 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	qdel(src)
 
 /obj/effect/mapping_helpers/paint_wall/bridge
-	name = "Bridge Wall Paint"
+	name = "Command Wall Paint"
+	wall_paint = PAINT_WALL_COMMAND
 	stripe_paint = PAINT_STRIPE_COMMAND
-	icon_state = "paint_bridge"
+	icon_state = PAINT_PREFIX+"paint_bridge"
 
 /obj/effect/mapping_helpers/paint_wall/medical
 	name = "Medical Wall Paint"
 	wall_paint = PAINT_WALL_MEDICAL
 	stripe_paint = PAINT_STRIPE_MEDICAL
-	icon_state = "paint_medical"
+	icon_state = PAINT_PREFIX+"paint_medical"
+
+/obj/effect/mapping_helpers/paint_wall/daedalus
+	name = "Daedalus Wall Paint"
+	wall_paint = PAINT_WALL_DAEDALUS
+	stripe_paint = PAINT_STRIPE_DAEDALUS
+	icon_state = PAINT_PREFIX+"paint_daedalus"
+
+/obj/effect/mapping_helpers/paint_wall/priapus
+	name = "Priapus Wall Paint"
+	wall_paint = PAINT_WALL_PRIAPUS
+	stripe_paint = PAINT_STRIPE_PRIAPUS
+	icon_state = PAINT_PREFIX+"paint_priapus"
+
+/obj/effect/mapping_helpers/paint_wall/centcom
+	name = "Central Command Wall Paint"
+	wall_paint = PAINT_WALL_CENTCOM
+	stripe_paint = PAINT_STRIPE_CENTCOM
+	icon_state = PAINT_PREFIX+"paint_centcom"
+
+
+/obj/effect/mapping_helpers/broken_floor
+	name = "broken floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "damaged1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/broken_floor/Initialize(mapload)
+	.=..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/broken_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.break_tile()
+	qdel(src)
+
+/obj/effect/mapping_helpers/burnt_floor
+	name = "burnt floor"
+	icon = 'icons/turf/damage.dmi'
+	icon_state = "floorscorched1"
+	late = TRUE
+
+/obj/effect/mapping_helpers/burnt_floor/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/burnt_floor/LateInitialize()
+	var/turf/open/floor/floor = get_turf(src)
+	floor.burn_tile()
+	qdel(src)

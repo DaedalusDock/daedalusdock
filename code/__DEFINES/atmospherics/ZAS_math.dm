@@ -3,6 +3,9 @@
 #define ONE_ATMOSPHERE             101.325 // kPa.
 #define IDEAL_GAS_ENTROPY_CONSTANT 1164    // (mol^3 * s^3) / (kg^3 * L).
 
+//Actually adiabatic exponent - 1.
+#define ADIABATIC_EXPONENT          0.667
+
 // Radiation constants.
 #define STEFAN_BOLTZMANN_CONSTANT    5.6704e-8 // W/(m^2*K^4).
 #define COSMIC_RADIATION_TEMPERATURE 3.15      // K.
@@ -19,6 +22,7 @@
 #define TCMB  2.7    // -270.3 degrees celsius
 
 #define CELSIUS + T0C
+#define KELVIN_TO_CELSIUS(X) ((X) - T0C)
 
 #define ATMOS_PRECISION 0.0001
 #define QUANTIZE(variable) (round(variable, ATMOS_PRECISION))

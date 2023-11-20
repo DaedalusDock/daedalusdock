@@ -73,7 +73,7 @@
 		if(!ai_action)
 			background_icon_state = "bg_tech"
 		build_all_button_icons()
-		addtimer(CALLBACK(src, .proc/reset_ready), 3 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(reset_ready)), 3 SECONDS)
 		return
 	var/obj/item/mod/control/mod = target
 	reset_ready()

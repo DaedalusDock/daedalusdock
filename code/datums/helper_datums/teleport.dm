@@ -12,7 +12,6 @@
 	var/static/list/delete_atoms = zebra_typecacheof(list(
 		/obj/effect = TRUE,
 		/obj/effect/dummy/chameleon = FALSE,
-		/obj/effect/wisp = FALSE,
 		/obj/effect/mob_spawn = FALSE,
 		/obj/effect/immovablerod = FALSE,
 	))
@@ -135,7 +134,7 @@
 	if(no_teleport && (destination_area.area_flags & NOTELEPORT))
 		return
 
-	var/datum/gas_mixture/floor_gas = floor_turf.return_air()
+	var/datum/gas_mixture/floor_gas = floor_turf.unsafe_return_air()
 
 	if(!floor_gas)
 		return

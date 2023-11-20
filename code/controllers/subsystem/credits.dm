@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(credits)
 	name = "Credits"
 	flags = SS_NO_FIRE|SS_NO_INIT
 
-	var/scroll_speed = 4 //Lower is faster.
+	var/pixels_per_second = 50
 	var/splash_time = 2750 //Time in miliseconds that each head of staff/star/production staff etc splash screen gets before displaying the next one.
 
 	var/control = "mapwindow.credits" //if updating this, update in credits.html as well
@@ -90,7 +90,7 @@ SUBSYSTEM_DEF(credits)
 	var/scrollytext = ss_string + episode_string + cast_string + disclaimers_string + fallen_string
 	var/splashytext = producers_string + star_string
 
-	js_args = list(scrollytext, splashytext, theme, scroll_speed, splash_time) //arguments for the makeCredits function back in the javascript
+	js_args = list(scrollytext, splashytext, theme, pixels_per_second, splash_time) //arguments for the makeCredits function back in the javascript
 	finalized = TRUE
 
 /*
@@ -200,6 +200,9 @@ SUBSYSTEM_DEF(credits)
 	var/list/dead_names = list()
 	var/cast_count
 	for(var/datum/mind/M as anything in SSticker.minds)
+		if(isobserver(M.current))
+			continue
+
 		if(M.key && M.name)
 			if(!M.current || (M.current.stat == DEAD)) //Their body was destroyed or they are simply dead
 				dead_names += M.name
@@ -223,21 +226,15 @@ SUBSYSTEM_DEF(credits)
 			cast_string += "[name]<br>"
 	cast_string += "</div><br>"
 
-/mob/living/proc/get_credits_entry()
+/mob/proc/get_credits_entry()
 	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
-	/// initial(name) is used over this now.
-	/*var/gender_text
-	switch(gender)
-		if("male")
-			gender_text = "Himself"
-		if("female")
-			gender_text = "Herself"
-		if("neuter")
-			gender_text = "Themself"
-		if("plural")
-			gender_text = "Themselves"
-		else
-			gender_text = "Itself"*/
+	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"
+	else
+		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[initial(name)]</td></tr>"
+
+/mob/living/get_credits_entry()
+	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
 
 	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
 		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"

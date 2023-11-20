@@ -20,7 +20,7 @@
 		/obj/item/shard,
 		/obj/effect/decal/cleanable/ash,
 		/obj/item/clothing/suit/armor,
-		/obj/item/organ/internal/lungs,
+		/obj/item/organ/lungs,
 	)
 	actions_to_add = list(/datum/action/cooldown/spell/jaunt/mirror_walk)
 
@@ -59,7 +59,7 @@
 		recent_examiner_refs += user_ref
 		apply_damage(maxHealth * 0.1) // We take 10% of our health as damage upon being examined
 		playsound(src, 'sound/effects/ghost2.ogg', 40, TRUE)
-		addtimer(CALLBACK(src, .proc/clear_recent_examiner, user_ref), recent_examine_damage_cooldown)
+		addtimer(CALLBACK(src, PROC_REF(clear_recent_examiner), user_ref), recent_examine_damage_cooldown)
 
 	// If we're examined on low enough health we die straight up
 	else

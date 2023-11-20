@@ -33,7 +33,7 @@
 ///Queues another lollipop to be fabricated if there is enough room for one
 /obj/item/borg/lollipop/proc/check_amount()
 	if(!charging && candy < candymax)
-		addtimer(CALLBACK(src, .proc/charge_lollipops), charge_delay)
+		addtimer(CALLBACK(src, PROC_REF(charge_lollipops)), charge_delay)
 		charging = TRUE
 
 ///Increases the amount of lollipops
@@ -211,7 +211,7 @@
 	)
 	damage = 10
 	nodamage = FALSE
-	embed_falloff_tile = 0
+	embed_adjustment_tile = -3 //It's a goddamn lollipop
 
 /obj/projectile/bullet/reusable/lollipop/Initialize(mapload)
 	var/obj/item/food/lollipop/lollipop = new ammo_type(src)

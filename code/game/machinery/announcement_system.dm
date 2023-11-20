@@ -16,6 +16,10 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 	circuit = /obj/item/circuitboard/machine/announcement_system
 
+	network_flags = NETWORK_FLAG_GEN_ID // Generate an ID so we can send PDA messages with a valid source.
+
+	var/datum/radio_frequency/common_freq
+
 	var/obj/item/radio/headset/radio
 	var/arrival = "%PERSON has signed up as %RANK"
 	var/arrivalToggle = 1
@@ -29,7 +33,10 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 /obj/machinery/announcement_system/Initialize(mapload)
 	. = ..()
 	GLOB.announcement_systems += src
+	// Voice Radio makes me cry.
 	radio = new /obj/item/radio/headset/silicon/ai(src)
+	// We don't need to be *present* on the frequency, just be able to send packets on it.
+	common_freq = SSpackets.return_frequency(FREQ_COMMON)
 	update_appearance()
 
 /obj/machinery/announcement_system/update_icon_state()
@@ -93,13 +100,6 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	//PARIAH EDIT END
 	broadcast(message, channels)
 
-/// Announces a new security officer joining over the radio
-/obj/machinery/announcement_system/proc/announce_officer(mob/officer, department)
-	if (!is_operational)
-		return
-
-	broadcast("Officer [officer.real_name] has been assigned to [department].", list(RADIO_CHANNEL_SECURITY))
-
 /// Sends a message to the appropriate channels.
 /obj/machinery/announcement_system/proc/broadcast(message, list/channels)
 	use_power(active_power_usage)
@@ -127,7 +127,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	. = ..()
 	if(.)
 		return
-	if(!usr.canUseTopic(src, !issilicon(usr)))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(machine_stat & BROKEN)
 		visible_message(span_warning("[src] buzzes."), span_hear("You hear a faint buzz."))
@@ -136,14 +136,14 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	switch(action)
 		if("ArrivalText")
 			var/NewMessage = trim(html_encode(param["newText"]), MAX_MESSAGE_LEN)
-			if(!usr.canUseTopic(src, !issilicon(usr)))
+			if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 				return
 			if(NewMessage)
 				arrival = NewMessage
 				log_game("The arrivals announcement was updated: [NewMessage] by:[key_name(usr)]")
 		if("NewheadText")
 			var/NewMessage = trim(html_encode(param["newText"]), MAX_MESSAGE_LEN)
-			if(!usr.canUseTopic(src, !issilicon(usr)))
+			if(!usr.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 				return
 			if(NewMessage)
 				newhead = NewMessage
@@ -160,7 +160,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	. = attack_ai(user)
 
 /obj/machinery/announcement_system/attack_ai(mob/user)
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(machine_stat & BROKEN)
 		to_chat(user, span_warning("[src]'s firmware appears to be malfunctioning!"))
@@ -184,3 +184,63 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		return
 	obj_flags |= EMAGGED
 	act_up()
+
+/obj/machinery/announcement_system/proc/announce_secoff_latejoin(
+	mob/officer,
+	department,
+	distribution)
+
+	if (!is_operational)
+		return
+
+	broadcast("Officer [officer.real_name] has been assigned to [department].", list(RADIO_CHANNEL_SECURITY))
+
+	var/list/targets = list()
+
+	var/list/partners = list()
+	for (var/officer_ref in distribution)
+		var/mob/partner = locate(officer_ref)
+		if (!istype(partner) || distribution[officer_ref] != department)
+			continue
+		partners += partner.real_name
+
+	if (partners.len)
+		for (var/obj/item/modular_computer/pda as anything in GLOB.TabletMessengers)
+			if (pda.saved_identification in partners)
+				var/obj/item/computer_hardware/network_card/packetnet/rfcard = pda.all_components[MC_NET]
+				if(!istype(rfcard))
+					break //No RF card to send to.
+				targets += rfcard.hardware_id
+
+	if (!targets.len)
+		return
+
+	for(var/next_addr in targets)
+		var/datum/signal/outgoing = create_signal(next_addr, list(
+			PACKET_CMD = NETCMD_PDAMESSAGE,
+			"name" = "Security Department Update",
+			"job" = "Automated Announcement System",
+			"message" = "Officer [officer.real_name] has been assigned to your department, [department].",
+			"automated" = TRUE,
+		))
+		outgoing.transmission_method = TRANSMISSION_RADIO
+		common_freq.post_signal(outgoing, RADIO_PDAMESSAGE)
+
+/obj/machinery/announcement_system/proc/notify_citation(cited_name, cite_message, fine_amount)
+	if (!is_operational)
+		return
+	for (var/obj/item/modular_computer/tablet in GLOB.TabletMessengers)
+		if(tablet.saved_identification == cited_name)
+			var/obj/item/computer_hardware/network_card/packetnet/rfcard = tablet.all_components[MC_NET]
+			if(!istype(rfcard))
+				break //No RF card to send to.
+			var/message = "You have been fined [fine_amount] credits for '[cite_message]'. Fines may be paid at security."
+			var/datum/signal/outgoing = create_signal(rfcard.hardware_id, list(
+				PACKET_CMD = NETCMD_PDAMESSAGE,
+				"name" = "Security Citation",
+				"job" = "Citation Server",
+				"message" = message,
+				"automated" = TRUE,
+			))
+			outgoing.transmission_method = TRANSMISSION_RADIO
+			common_freq.post_signal(outgoing, RADIO_PDAMESSAGE)

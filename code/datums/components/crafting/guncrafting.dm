@@ -15,7 +15,7 @@
 	icon = 'icons/obj/improvised.dmi'
 	icon_state = "riflestock"
 
-///These gun kits are printed from the security protolathe to then be used in making new weapons
+///These gun kits are printed from the security fabricator to then be used in making new weapons
 
 // GUN PART KIT //
 
@@ -43,7 +43,7 @@
 
 /obj/item/weaponcrafting/gunkit/temperature
 	name = "temperature gun parts kit"
-	desc = "A suitcase containing the necessary gun parts to tranform a standard energy gun into a temperature gun. Fantastic at birthday parties and killing indigenious populations of unathi."
+	desc = "A suitcase containing the necessary gun parts to tranform a standard energy gun into a temperature gun. Fantastic at birthday parties."
 
 /obj/item/weaponcrafting/gunkit/beam_rifle
 	name = "particle acceleration rifle part kit"

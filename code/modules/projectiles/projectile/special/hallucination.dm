@@ -100,7 +100,7 @@
 			layer = ABOVE_MOB_LAYER
 	hal_target.client.images += blood
 	animate(blood, pixel_x = target_pixel_x, pixel_y = target_pixel_y, alpha = 0, time = 5)
-	addtimer(CALLBACK(src, .proc/cleanup_blood), 5)
+	addtimer(CALLBACK(src, PROC_REF(cleanup_blood)), 5)
 
 /obj/projectile/hallucination/proc/cleanup_blood(image/blood)
 	hal_target.client.images -= blood
@@ -135,7 +135,7 @@
 	hit_duration_wall = 5
 
 /obj/projectile/hallucination/bullet/hal_apply_effect()
-	hal_target.adjustStaminaLoss(60)
+	hal_target.stamina.adjust(-60)
 
 /obj/projectile/hallucination/laser
 	name = "laser"
@@ -151,7 +151,7 @@
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 
 /obj/projectile/hallucination/laser/hal_apply_effect()
-	hal_target.adjustStaminaLoss(20)
+	hal_target.stamina.adjust(-20)
 	hal_target.blur_eyes(2)
 
 /obj/projectile/hallucination/taser
@@ -171,7 +171,7 @@
 	if(hal_target.dna && hal_target.dna.check_mutation(/datum/mutation/human/hulk))
 		hal_target.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ), forced = "hulk")
 	else if((hal_target.status_flags & CANKNOCKDOWN) && !HAS_TRAIT(hal_target, TRAIT_STUNIMMUNE))
-		addtimer(CALLBACK(hal_target, /mob/living/carbon.proc/do_jitter_animation, 20), 5)
+		addtimer(CALLBACK(hal_target, TYPE_PROC_REF(/mob/living/carbon, do_jitter_animation), 20), 5)
 
 /obj/projectile/hallucination/disabler
 	name = "disabler beam"
@@ -186,7 +186,7 @@
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 
 /obj/projectile/hallucination/disabler/hal_apply_effect()
-	hal_target.adjustStaminaLoss(25)
+	hal_target.stamina.adjust(-25)
 
 /obj/projectile/hallucination/ebow
 	name = "bolt"
@@ -201,7 +201,7 @@
 /obj/projectile/hallucination/ebow/hal_apply_effect()
 	hal_target.Paralyze(100)
 	hal_target.adjust_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter)
-	hal_target.adjustStaminaLoss(8)
+	hal_target.stamina.adjust(-8)
 
 /obj/projectile/hallucination/change
 	name = "bolt of change"

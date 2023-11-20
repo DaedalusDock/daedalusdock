@@ -501,7 +501,7 @@
 /area/cargo/warehouse/upper)
 "acq" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/ai";
+	control_area = "/area/station/ai_monitored/turret_protected/ai";
 	name = "AI Chamber turret control";
 	pixel_x = 5;
 	pixel_y = -24
@@ -7896,7 +7896,7 @@
 /area/command/bridge)
 "azk" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/ai_upload";
+	control_area = "/area/station/ai_monitored/turret_protected/ai_upload";
 	name = "AI Upload turret control";
 	pixel_y = -25
 	},
@@ -16182,7 +16182,7 @@
 	},
 /obj/machinery/power/apc/highcap/directional/south{
 	name = "Central Primary Hallway APC";
-
+	
 	},
 /obj/structure/cable,
 /obj/machinery/door/firedoor,
@@ -18560,7 +18560,7 @@
 /area/medical/medbay/central)
 "boO" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/reagent_containers/glass/bottle/epinephrine,
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
@@ -20139,7 +20139,7 @@
 /area/science/lab)
 "bur" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/rnd/production/protolathe/department/science,
+/obj/machinery/rnd/production/fabricator/department/science,
 /turf/open/floor/iron,
 /area/science/lab)
 "bus" = (
@@ -20752,7 +20752,7 @@
 	dir = 8
 	},
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /turf/open/floor/iron/white,
@@ -20781,7 +20781,7 @@
 /obj/structure/table/glass,
 /obj/item/book/manual/wiki/research_and_development,
 /obj/item/disk/tech_disk,
-/obj/item/disk/design_disk,
+/obj/item/disk/data,
 /obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/iron/dark,
 /area/science/lab)
@@ -24317,7 +24317,7 @@
 /turf/open/floor/engine,
 /area/maintenance/department/engine)
 "bKl" = (
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -25377,7 +25377,7 @@
 /obj/effect/turf_decal/tile/yellow,
 /obj/machinery/newscaster/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
-/obj/machinery/rnd/production/protolathe/department/engineering,
+/obj/machinery/rnd/production/fabricator/department/engineering,
 /turf/open/floor/iron,
 /area/engineering/lobby)
 "bON" = (
@@ -26357,7 +26357,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "bSy" = (
-/obj/machinery/gravity_generator/main/station,
+/obj/machinery/gravity_generator/main,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/white,
 /area/engineering/gravity_generator)
@@ -30870,7 +30870,7 @@
 /area/space/nearstation)
 "cnC" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/aisat_interior";
+	control_area = "/area/station/ai_monitored/turret_protected/aisat_interior";
 	name = "AI Satellite turret control";
 	pixel_x = -5;
 	pixel_y = -24
@@ -32220,7 +32220,7 @@
 /obj/structure/cable,
 /obj/machinery/power/apc/highcap/five_k/directional/south{
 	name = "Chapel APC";
-
+	
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
@@ -34928,7 +34928,7 @@
 "ete" = (
 /obj/machinery/power/apc/highcap/ten_k/directional/west{
 	name = "Engineering APC";
-
+	
 	},
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -39494,7 +39494,7 @@
 	dir = 8
 	},
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
@@ -42316,7 +42316,7 @@
 /area/space/nearstation)
 "lsr" = (
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/clothing/neck/stethoscope,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -42394,7 +42394,7 @@
 /turf/open/floor/iron/dark,
 /area/service/library/lounge)
 "lxx" = (
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 2
 	},
 /obj/machinery/door/window/right/directional/south{
@@ -45636,7 +45636,7 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 1
 	},
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/machinery/light/small{
 	dir = 4
 	},
@@ -47161,7 +47161,7 @@
 	},
 /obj/machinery/power/apc/highcap/five_k/directional/south{
 	name = "Chapel APC";
-
+	
 	},
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
@@ -47558,7 +47558,7 @@
 	dir = 8
 	},
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /turf/open/floor/iron,
 /area/medical/medbay/central)
 "qip" = (
@@ -53275,7 +53275,7 @@
 /turf/open/floor/iron,
 /area/engineering/storage_shared)
 "uMr" = (
-/obj/machinery/power/supermatter_crystal/engine,
+/obj/machinery/power/supermatter,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/engine,
 /area/engineering/supermatter)

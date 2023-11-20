@@ -21,8 +21,18 @@
 	implant = new(src)
 
 /obj/item/mod/module/pathfinder/Destroy()
-	implant = null
+	QDEL_NULL(implant)
 	return ..()
+
+/obj/item/mod/module/pathfinder/Exited(atom/movable/gone, direction)
+	if(gone == implant)
+		implant = null
+		update_icon_state()
+	return ..()
+
+/obj/item/mod/module/pathfinder/update_icon_state()
+	. = ..()
+	icon_state = implant ? "pathfinder" : "pathfinder_empty"
 
 /obj/item/mod/module/pathfinder/examine(mob/user)
 	. = ..()
@@ -37,7 +47,7 @@
 	if(!do_after(user, target, 1.5 SECONDS))
 		balloon_alert(user, "interrupted!")
 		return
-	if(!implant.implant(target, user))
+	if(!implant.implant(target, user, deprecise_zone(user.zone_selected)))
 		balloon_alert(user, "can't implant!")
 		return
 	if(target == user)
@@ -45,8 +55,6 @@
 	else
 		target.visible_message(span_notice("[user] implants [target]."), span_notice("[user] implants you with [implant]."))
 	playsound(src, 'sound/effects/spray.ogg', 30, TRUE, -6)
-	icon_state = "pathfinder_empty"
-	implant = null
 
 /obj/item/mod/module/pathfinder/proc/attach(mob/living/user)
 	if(!ishuman(user))
@@ -66,6 +74,8 @@
 	name = "MOD pathfinder implant"
 	desc = "Lets you recall a MODsuit to you at any time."
 	actions_types = list(/datum/action/item_action/mod_recall)
+	implant_flags = IMPLANT_KNOWN
+
 	/// The pathfinder module we are linked to.
 	var/obj/item/mod/module/pathfinder/module
 	/// The jet icon we apply to the MOD.
@@ -117,7 +127,7 @@
 	ADD_TRAIT(module.mod, TRAIT_MOVE_FLYING, MOD_TRAIT)
 	animate(module.mod, 0.2 SECONDS, pixel_x = base_pixel_y, pixel_y = base_pixel_y)
 	module.mod.add_overlay(jet_icon)
-	RegisterSignal(module.mod, COMSIG_MOVABLE_MOVED, .proc/on_move)
+	RegisterSignal(module.mod, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	balloon_alert(imp_in, "suit recalled")
 	return TRUE
 

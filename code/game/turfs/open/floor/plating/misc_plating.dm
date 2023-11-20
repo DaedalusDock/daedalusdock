@@ -6,14 +6,11 @@
 	initial_gas = OPENTURF_LOW_PRESSURE
 	baseturfs = /turf/open/floor/plating/lowpressure
 
-/turf/open/floor/plating/icemoon
-	icon_state = "plating"
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-
 /turf/open/floor/plating/abductor
 	name = "alien floor"
 	icon_state = "alienpod1"
 	base_icon_state = "alienpod1"
+	damaged_icon = 'icons/turf/floors.dmi'
 	tiled_dirt = FALSE
 
 /turf/open/floor/plating/abductor/setup_broken_states()
@@ -55,17 +52,13 @@
 /turf/open/floor/plating/snowed/cavern
 	temperature = 120
 
-/turf/open/floor/plating/snowed/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-
 /turf/open/floor/plating/snowed/smoothed
 	icon = 'icons/turf/floors/snow_turf.dmi'
 	icon_state = "snow_turf-0"
 	base_icon_state = "snow_turf"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_FLOOR_SNOWED)
-	canSmoothWith = list(SMOOTH_GROUP_FLOOR_SNOWED)
-
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_FLOOR_SNOWED
+	canSmoothWith = SMOOTH_GROUP_FLOOR_SNOWED
 
 /turf/open/floor/plating/snowed/temperatre
 	temperature = 255.37
@@ -73,14 +66,6 @@
 //Used in SnowCabin.dm
 /turf/open/floor/plating/snowed/snow_cabin
 	temperature = 180
-
-/turf/open/floor/plating/snowed/smoothed/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-
-/turf/open/floor/plating/lavaland_atmos
-
-	baseturfs = /turf/open/lava/smooth/lava_land_surface
-	initial_gas = LAVALAND_DEFAULT_ATMOS
 
 /turf/open/floor/plating/elevatorshaft
 	name = "elevator shaft"

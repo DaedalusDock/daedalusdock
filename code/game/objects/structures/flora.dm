@@ -33,7 +33,7 @@
 /obj/structure/flora/tree/attackby(obj/item/attacking_item, mob/user, params)
 	if(!log_amount || flags_1 & NODECONSTRUCT_1)
 		return ..()
-	if(!attacking_item.get_sharpness() || attacking_item.force <= 0)
+	if(!(attacking_item.sharpness & SHARP_EDGED) || attacking_item.force <= 0)
 		return ..()
 	var/my_turf = get_turf(src)
 	if(attacking_item.hitsound)
@@ -342,7 +342,7 @@
 	var/trimmable = TRUE
 	var/list/static/random_plant_states
 
-/obj/item/kirbyplants/ComponentInitialize()
+/obj/item/kirbyplants/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/tactical)
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE, force_unwielded=10, force_wielded=10)
@@ -350,7 +350,7 @@
 
 /obj/item/kirbyplants/attackby(obj/item/I, mob/living/user, params)
 	. = ..()
-	if(trimmable && HAS_TRAIT(user,TRAIT_BONSAI) && isturf(loc) && I.get_sharpness())
+	if(trimmable && HAS_TRAIT(user,TRAIT_BONSAI) && isturf(loc) && (I.sharpness & SHARP_EDGED))
 		to_chat(user,span_notice("You start trimming [src]."))
 		if(do_after(user, src, 3 SECONDS))
 			to_chat(user,span_notice("You finish trimming [src]."))
@@ -422,10 +422,6 @@
 	desc = "An old botanical research sample collected on a long forgotten jungle planet."
 	icon_state = "fern"
 	trimmable = FALSE
-
-/obj/item/kirbyplants/fern/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_ALGAE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 5)
 
 //a rock is flora according to where the icon file is
 //and now these defines

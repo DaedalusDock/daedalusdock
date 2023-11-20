@@ -140,7 +140,7 @@
 			if(params["list"] == "security")
 				security_records = GLOB.data_core.get_security_records()
 			ui.send_full_update()
-			addtimer(CALLBACK(src, .proc/refresh_again), 3 SECONDS)
+			addtimer(CALLBACK(src, PROC_REF(refresh_again)), 3 SECONDS)
 		if("remote_signaler")
 			signaler.ui_interact(src)
 		if("security_hud")

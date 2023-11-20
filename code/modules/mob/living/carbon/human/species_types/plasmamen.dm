@@ -5,7 +5,7 @@
 	say_mod = "rattles"
 	sexes = 0
 	meat = /obj/item/stack/sheet/mineral/plasma
-	species_traits = list(NOBLOOD, NOTRANSSTING, HAS_BONE, BODY_RESIZABLE)
+	species_traits = list(NOBLOOD, NOTRANSSTING, BODY_RESIZABLE)
 	// plasmemes get hard to wound since they only need a severe bone wound to dismember, but unlike skellies, they can't pop their bones back into place
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
@@ -18,13 +18,11 @@
 	)
 
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
-	mutantlungs = /obj/item/organ/internal/lungs/plasmaman
-	mutanttongue = /obj/item/organ/internal/tongue/bone/plasmaman
-	mutantliver = /obj/item/organ/internal/liver/plasmaman
-	mutantstomach = /obj/item/organ/internal/stomach/bone/plasmaman
+
 	burnmod = 1.5
 	heatmod = 1.5
 	brutemod = 1.5
+
 	payday_modifier = 0.75
 	breathid = GAS_PLASMA
 	disliked_food = FRUIT | CLOTH
@@ -43,14 +41,33 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/plasmaman,
 	)
 
-	// Body temperature for Plasmen is much lower human as they can handle colder environments
-	bodytemp_normal = (BODYTEMP_NORMAL - 40)
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = null,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/plasmaman,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/bone/plasmaman,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/bone/plasmaman,
+		ORGAN_SLOT_APPENDIX = null,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/plasmaman,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
+	)
+
+	//* BODY TEMPERATURE THINGS *//
+	cold_level_3 = 80
+	cold_level_2 = 130
+	cold_level_1 = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
+	cold_discomfort_level = 255
+
+	bodytemp_normal = BODYTEMP_NORMAL - 40
 	// The minimum amount they stabilize per tick is reduced making hot areas harder to deal with
 	bodytemp_autorecovery_min = 2
-	// They are hurt at hot temps faster as it is harder to hold their form
-	bodytemp_heat_damage_limit = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
-	// This effects how fast body temp stabilizes, also if cold resit is lost on the mob
-	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
+
+	heat_discomfort_level = 300
+	heat_level_1 = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
+	heat_level_2 = 400
+	heat_level_3 = 1000
 
 	ass_image = 'icons/ass/assplasma.png'
 
@@ -72,7 +89,7 @@
 		return
 	if(!atmos_sealed && (!istype(H.w_uniform, /obj/item/clothing/under/plasmaman) || !istype(H.head, /obj/item/clothing/head/helmet/space/plasmaman) || !istype(H.gloves, /obj/item/clothing/gloves)))
 		var/datum/gas_mixture/environment = H.loc.return_air()
-		if(environment?.get_moles())
+		if(environment?.total_moles)
 			/*if(environment.gases[/datum/gas/hypernoblium] && (environment.gases[/datum/gas/hypernoblium][MOLES]) >= 5)
 				if(H.on_fire && H.fire_stacks > 0)
 					H.adjust_fire_stacks(-10 * delta_time)*/
@@ -97,16 +114,43 @@
 		no_protection = TRUE
 	. = ..()
 
-/datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
-	equipping.internal = equipping.get_item_for_held_index(2)
+/datum/species/plasmaman/pre_equip_species_outfit(datum/outfit/O, mob/living/carbon/human/equipping, visuals_only = FALSE)
+	if(!O)
+		give_important_for_life(equipping)
+		return
+
+	var/obj/item/clothing/mask = O.mask
+	if(!(mask && (initial(mask.clothing_flags) & MASKINTERNALS)))
+		equipping.equip_to_slot(new /obj/item/clothing/mask/breath, ITEM_SLOT_MASK, TRUE, FALSE)
+
+	if(!ispath(O.uniform, /obj/item/clothing/under/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/under/plasmaman, ITEM_SLOT_ICLOTHING, TRUE, FALSE)
+
+	if(!ispath(O.head, /obj/item/clothing/head/helmet/space/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/head/helmet/space/plasmaman, ITEM_SLOT_HEAD, TRUE, FALSE)
+
+	if(!ispath(O.gloves, /obj/item/clothing/gloves/color/plasmaman))
+		equipping.equip_to_slot(new /obj/item/clothing/gloves/color/plasmaman, ITEM_SLOT_GLOVES, TRUE, FALSE)
+
+	if(!ispath(O.r_hand, /obj/item/tank/internals/plasmaman) && !ispath(ispath(O.l_hand, /obj/item/tank/internals/plasmaman)))
+		var/obj/item/tank/internals/plasmaman/belt/full/tank = new
+		if(!O.r_hand)
+			equipping.put_in_r_hand(tank)
+		else if(!O.l_hand)
+			equipping.put_in_l_hand(tank)
+		else
+			equipping.put_in_r_hand(tank)
+		equipping.open_internals(tank)
 
 /datum/species/plasmaman/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()
-	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
-	if(!human_to_equip.internal)
+	var/obj/item/I = human_to_equip.get_item_for_held_index(2)
+	if(I)
+		human_to_equip.open_internals(I)
+	else
 		var/obj/item/tank/internals/plasmaman/belt/new_tank = new(null)
 		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
-			human_to_equip.internal = human_to_equip.belt
+			human_to_equip.open_internals(human_to_equip.belt)
 		else
 			stack_trace("Plasmaman going without internals. Uhoh.")
 
@@ -120,41 +164,6 @@
 		randname += " [lastname]"
 
 	return randname
-
-/datum/species/plasmaman/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
-	. = ..()
-	if(istype(chem, /datum/reagent/toxin/plasma))
-		H.reagents.remove_reagent(chem.type, chem.metabolization_rate * delta_time)
-		if(prob(10))
-			for(var/obj/item/bodypart/BP as anything in H.bodyparts)
-				BP.heal_bones()
-		return TRUE
-
-	if(istype(chem, /datum/reagent/toxin/bonehurtingjuice))
-		H.adjustStaminaLoss(7.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
-		H.adjustBruteLoss(0.5 * REAGENTS_EFFECT_MULTIPLIER * delta_time, 0)
-		if(DT_PROB(10, delta_time))
-			switch(rand(1, 3))
-				if(1)
-					H.say(pick("oof.", "ouch.", "my bones.", "oof ouch.", "oof ouch my bones."), forced = /datum/reagent/toxin/bonehurtingjuice)
-				if(2)
-					H.manual_emote(pick("oofs silently.", "looks like [H.p_their()] bones hurt.", "grimaces, as though [H.p_their()] bones hurt."))
-				if(3)
-					to_chat(H, span_warning("Your bones hurt!"))
-		if(chem.overdosed)
-			if(DT_PROB(2, delta_time) && iscarbon(H)) //big oof
-				var/selected_part = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG) //God help you if the same limb gets picked twice quickly.
-				var/obj/item/bodypart/bp = H.get_bodypart(selected_part) //We're so sorry skeletons, you're so misunderstood
-				if(bp)
-					playsound(H, get_sfx(SFX_DESECRATION), 50, TRUE, -1) //You just want to socialize
-					H.visible_message(span_warning("[H] rattles loudly and flails around!!"), span_danger("Your bones hurt so much that your missing muscles spasm!!"))
-					H.say("OOF!!", forced=/datum/reagent/toxin/bonehurtingjuice)
-					bp.receive_damage(200, 0, 0) //But I don't think we should
-				else
-					to_chat(H, span_warning("Your missing arm aches from wherever you left it."))
-					H.emote("sigh")
-		H.reagents.remove_reagent(chem.type, chem.metabolization_rate * delta_time)
-		return TRUE
 
 /datum/species/plasmaman/get_species_description()
 	return "Found on the Icemoon of Freyja, plasmamen consist of colonial \

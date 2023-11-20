@@ -6,6 +6,7 @@
 	strip_delay = 40
 	equip_delay_other = 40
 	supports_variations_flags = CLOTHING_SNOUTED_VARIATION | CLOTHING_VOX_VARIATION
+
 	var/modifies_speech = FALSE
 	var/mask_adjusted = FALSE
 	var/adjusted_flags = null
@@ -18,10 +19,25 @@
 		var/status = !(clothing_flags & VOICEBOX_DISABLED)
 		to_chat(user, span_notice("You turn the voice box in [src] [status ? "on" : "off"]."))
 
+/obj/item/clothing/mask/attackby(obj/item/W, mob/user, params)
+	. = ..()
+	if(istype(W, /obj/item/voice_changer))
+		if(!(flags_inv & HIDEFACE))
+			to_chat(user, span_warning("[src] is not compatible with [W]."))
+			return TRUE
+		if(!user.is_holding(src))
+			to_chat(user, span_warning("You must be holding [src] to do that."))
+			return TRUE
+		if(!do_after(user, src, 5 SECONDS, DO_PUBLIC, display = W))
+			return TRUE
+		AddComponent(/datum/component/voice_changer, W)
+		to_chat(user, span_notice("You insert [W] into [src]."))
+		return TRUE
+
 /obj/item/clothing/mask/equipped(mob/M, slot)
 	. = ..()
 	if (slot == ITEM_SLOT_MASK && modifies_speech)
-		RegisterSignal(M, COMSIG_MOB_SAY, .proc/handle_speech)
+		RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	else
 		UnregisterSignal(M, COMSIG_MOB_SAY)
 
@@ -35,7 +51,7 @@
 		if(M.get_item_by_slot(ITEM_SLOT_MASK) == src)
 			if(vval)
 				if(!modifies_speech)
-					RegisterSignal(M, COMSIG_MOB_SAY, .proc/handle_speech)
+					RegisterSignal(M, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 			else if(modifies_speech)
 				UnregisterSignal(M, COMSIG_MOB_SAY)
 	return ..()
@@ -43,7 +59,7 @@
 /obj/item/clothing/mask/proc/handle_speech()
 	SIGNAL_HANDLER
 
-/obj/item/clothing/mask/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
+/obj/item/clothing/mask/worn_overlays(mob/living/carbon/human/wearer, mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
 	if(isinhands)
 		return
@@ -52,7 +68,13 @@
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
 		if(HAS_BLOOD_DNA(src))
-			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
+			if(istype(wearer))
+				var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
+				if(!head?.icon_bloodycover)
+					return
+				. += image(head.icon_bloodycover, "maskblood")
+			else
+				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 
 /obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()
@@ -61,18 +83,21 @@
 		M.update_worn_mask()
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
-/obj/item/clothing/mask/proc/adjustmask(mob/living/user)
+/obj/item/clothing/mask/proc/adjustmask(mob/living/carbon/user)
 	if(user?.incapacitated())
 		return
+
 	mask_adjusted = !mask_adjusted
+
 	if(!mask_adjusted)
-		src.icon_state = initial(icon_state)
+		icon_state = initial(icon_state)
 		permeability_coefficient = initial(permeability_coefficient)
 		clothing_flags |= visor_flags
 		flags_inv |= visor_flags_inv
 		flags_cover |= visor_flags_cover
 		to_chat(user, span_notice("You push \the [src] back into place."))
 		slot_flags = initial(slot_flags)
+
 	else
 		icon_state += "_up"
 		to_chat(user, span_notice("You push \the [src] out of the way."))
@@ -82,9 +107,15 @@
 		flags_cover &= ~visor_flags_cover
 		if(adjusted_flags)
 			slot_flags = adjusted_flags
-	if(user)
+
+	if(!istype(user))
+		return
+
+	if(user.wear_mask == src)
 		user.wear_mask_update(src, toggle_off = mask_adjusted)
-		user?.update_mob_action_buttons() //when mask is adjusted out, we update all buttons icon so the user's potential internal tank correctly shows as off.
+
+	if(loc == user)
+		user.update_mob_action_buttons() //when mask is adjusted out, we update all buttons icon so the user's potential internal tank correctly shows as off.
 
 /**
  * Proc called in lungs.dm to act if wearing a mask with filters, used to reduce the filters durability, return a changed gas mixture depending on the filter status

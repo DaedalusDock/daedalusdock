@@ -220,7 +220,7 @@
 	var/turf/T = get_turf(src)
 	T.visible_message(span_userdanger("[src] flares briefly."))
 
-	addtimer(CALLBACK(src, .proc/effect, user, .), 1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(effect), user, .), 1 SECONDS)
 	COOLDOWN_START(src, roll_cd, 2.5 SECONDS)
 
 /obj/item/dice/d20/fate/equipped(mob/user, slot)
@@ -250,7 +250,7 @@
 			//Destroy Equipment
 			T.visible_message(span_userdanger("Everything [user] is holding and wearing disappears!"))
 			for(var/obj/item/I in user)
-				if(istype(I, /obj/item/implant))
+				if(istype(I, /obj/item/implant) || (I.item_flags & ABSTRACT))
 					continue
 				qdel(I)
 		if(5)
@@ -410,7 +410,7 @@
 	icon_state = "1"
 	color = rgb(0,0,255)
 
-/obj/structure/ladder/unbreakable/rune/ComponentInitialize()
+/obj/structure/ladder/unbreakable/rune/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 

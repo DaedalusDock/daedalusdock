@@ -119,10 +119,6 @@
 	id_tag = INCINERATOR_ATMOS_AIRLOCK_SENSOR
 	master_tag = INCINERATOR_ATMOS_AIRLOCK_CONTROLLER
 
-/obj/machinery/airlock_sensor/incinerator_syndicatelava
-	id_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_SENSOR
-	master_tag = INCINERATOR_SYNDICATELAVA_AIRLOCK_CONTROLLER
-
 /obj/machinery/airlock_sensor/update_icon_state()
 	if(!on)
 		icon_state = "[base_icon_state]_off"
@@ -147,7 +143,7 @@
 
 /obj/machinery/airlock_sensor/process()
 	if(on)
-		var/datum/gas_mixture/air_sample = return_air()
+		var/datum/gas_mixture/air_sample = loc.unsafe_return_air()
 		var/pressure = round(air_sample.returnPressure(),0.1)
 		alert = (pressure < ONE_ATMOSPHERE*0.8)
 

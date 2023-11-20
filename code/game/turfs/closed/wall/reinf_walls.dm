@@ -10,6 +10,13 @@
 	explosion_block = 2
 	rad_insulation = RAD_HEAVY_INSULATION
 
+// DMEd Specific Simplified wall icons
+#if defined(SIMPLE_MAPHELPERS)
+/turf/closed/wall/r_wall
+	icon='icons/effects/simplified_wall_helpers.dmi'
+	icon_state="r_generic"
+#endif
+
 /turf/closed/wall/r_wall/syndicate
 	name = "hull"
 	desc = "The armored hull of an ominous looking ship."

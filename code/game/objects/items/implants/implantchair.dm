@@ -78,10 +78,10 @@
 		ready_implants--
 		if(!replenishing && auto_replenish)
 			replenishing = TRUE
-			addtimer(CALLBACK(src,.proc/replenish),replenish_cooldown)
+			addtimer(CALLBACK(src,PROC_REF(replenish)),replenish_cooldown)
 		if(injection_cooldown > 0)
 			ready = FALSE
-			addtimer(CALLBACK(src,.proc/set_ready),injection_cooldown)
+			addtimer(CALLBACK(src,PROC_REF(set_ready)),injection_cooldown)
 	else
 		playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 25, TRUE)
 	update_appearance()
@@ -90,7 +90,7 @@
 	var/obj/item/I = new implant_type
 	if(istype(I, /obj/item/implant))
 		var/obj/item/implant/P = I
-		if(P.implant(M))
+		if(P.implant(M, body_zone = BODY_ZONE_CHEST))
 			visible_message(span_warning("[M] is implanted by [src]."))
 			return TRUE
 	else if(istype(I, /obj/item/organ))
@@ -171,7 +171,6 @@
 	if(!istype(H))
 		return FALSE
 	H.set_species(/datum/species/human, 1)//lizards go home
-	purrbation_remove(H)//remove cats
 	H.dna.remove_all_mutations()//hulks out
 	return TRUE
 

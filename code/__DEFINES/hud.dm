@@ -11,9 +11,9 @@
 
 // Consider these images/atoms as part of the UI/HUD (apart of the appearance_flags)
 /// Used for progress bars and chat messages
-#define APPEARANCE_UI_IGNORE_ALPHA (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|RESET_ALPHA|PIXEL_SCALE)
+#define APPEARANCE_UI_IGNORE_ALPHA (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|RESET_ALPHA|PIXEL_SCALE|TILE_BOUND)
 /// Used for HUD objects
-#define APPEARANCE_UI (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|PIXEL_SCALE)
+#define APPEARANCE_UI (RESET_COLOR|RESET_TRANSFORM|NO_CLIENT_COLOR|PIXEL_SCALE|TILE_BOUND)
 
 /*
 	These defines specificy screen locations.  For more information, see the byond documentation on the screen_loc var.
@@ -203,6 +203,12 @@
 
 //Families
 #define ui_wanted_lvl "NORTH,11"
+
+//Gun buttons
+#define ui_gun1 "EAST-2:26,SOUTH+2:7"
+#define ui_gun2 "EAST-1:28, SOUTH+3:7"
+#define ui_gun3 "EAST-2:26,SOUTH+3:7"
+#define ui_gun_select "EAST-1:28,SOUTH+2:7"
 
 // Defines relating to action button positions
 

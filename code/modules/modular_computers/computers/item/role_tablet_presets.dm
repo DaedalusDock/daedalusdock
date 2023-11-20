@@ -86,7 +86,7 @@
 
 /obj/item/modular_computer/tablet/pda/captain/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, .proc/tab_no_detonate)
+	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(tab_no_detonate))
 
 /obj/item/modular_computer/tablet/pda/cargo
 	name = "cargo technician PDA"
@@ -162,10 +162,10 @@
 	greyscale_colors = null
 	insert_type = /obj/item/toy/crayon/rainbow
 
-/obj/item/modular_computer/tablet/pda/clown/ComponentInitialize()
+/obj/item/modular_computer/tablet/pda/clown/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/slippery/clowning, 120, NO_SLIP_WHEN_WALKING, CALLBACK(src, .proc/AfterSlip), slot_whitelist = list(ITEM_SLOT_ID, ITEM_SLOT_BELT))
-	AddComponent(/datum/component/wearertargeting/sitcomlaughter, CALLBACK(src, .proc/after_sitcom_laugh))
+	AddComponent(/datum/component/slippery/clowning, 120, NO_SLIP_WHEN_WALKING, CALLBACK(src, PROC_REF(AfterSlip)), slot_whitelist = list(ITEM_SLOT_ID, ITEM_SLOT_BELT))
+	AddComponent(/datum/component/wearertargeting/sitcomlaughter, CALLBACK(src, PROC_REF(after_sitcom_laugh)))
 
 /obj/item/modular_computer/tablet/pda/clown/update_overlays()
 	. = ..()
@@ -195,7 +195,7 @@
 	if(hdd)
 		for(var/datum/computer_file/program/messenger/msg in hdd.stored_files)
 			msg.mime_mode = TRUE
-			msg.allow_emojis = TRUE
+
 
 /obj/item/modular_computer/tablet/pda/curator
 	name = "curator PDA"
@@ -204,14 +204,6 @@
 	greyscale_colors = null
 	icon_state = "pda-library"
 	insert_type = /obj/item/pen/fountain
-
-/obj/item/modular_computer/tablet/pda/curator/Initialize(mapload)
-	. = ..()
-	var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
-
-	if(hdd)
-		for(var/datum/computer_file/program/messenger/msg in hdd.stored_files)
-			msg.allow_emojis = TRUE
 
 /obj/item/modular_computer/tablet/pda/syndicate
 	name = "military PDA"

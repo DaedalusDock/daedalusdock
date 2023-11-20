@@ -74,6 +74,7 @@
 
 
 
+DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."
@@ -87,6 +88,7 @@
 	integrity_failure = 0.33
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	resistance_flags = FIRE_PROOF
+	zmm_flags = ZMM_MANGLE_PLANES
 
 	var/danger_level = 0
 	var/mode = AALARM_MODE_SCRUBBING
@@ -162,7 +164,7 @@
 
 	alarm_manager = new(src)
 	soundloop = new(src, FALSE)
-	RegisterSignal(src, COMSIG_FIRE_ALERT, .proc/handle_alert)
+	RegisterSignal(src, COMSIG_FIRE_ALERT, PROC_REF(handle_alert))
 	update_appearance()
 
 	set_frequency(frequency)
@@ -239,7 +241,7 @@
 	data["fire_alarm"] = !!alert_type //Same here
 
 	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/environment = T.return_air()
+	var/datum/gas_mixture/environment = T.unsafe_return_air()
 	var/datum/tlv/cur_tlv
 
 	data["environment_data"] = list()
@@ -259,7 +261,7 @@
 							"unit" = "K ([round(temperature - T0C, 0.1)]C)",
 							"danger_level" = cur_tlv.get_danger_level(temperature)
 	))
-	var/total_moles = environment.get_moles()
+	var/total_moles = environment.total_moles
 	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume
 	for(var/gas_id in environment.gas)
 		if(!(gas_id in TLV)) // We're not interested in this gas, it seems.
@@ -425,7 +427,7 @@
 					tlv.vars[name] = round(value, 0.01)
 				investigate_log(" treshold value for [env]:[name] was set to [value] by [key_name(usr)]",INVESTIGATE_ATMOS)
 				var/turf/our_turf = get_turf(src)
-				var/datum/gas_mixture/environment = our_turf.return_air()
+				var/datum/gas_mixture/environment = our_turf.unsafe_return_air()
 				check_air_dangerlevel(environment)
 				. = TRUE
 		if("mode")
@@ -675,15 +677,15 @@
 /obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume)
 	. = ..()
 	if(!danger_level)
-		check_air_dangerlevel(loc.return_air())
+		check_air_dangerlevel(loc.unsafe_return_air())
 
 /obj/machinery/airalarm/process_atmos()
 	if((machine_stat & (NOPOWER|BROKEN)) || shorted)
 		return
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.unsafe_return_air() //Later in the proc we update the zone if we modified it.
 
-	check_air_dangerlevel(loc.return_air())
+	check_air_dangerlevel(environment)
 
 	if(!my_area.apc?.terminal)
 		COOLDOWN_START(src, hibernating, 5 SECONDS)
@@ -717,6 +719,11 @@
 	local_term.use_power(energy2use)
 	environment.temperature += delta_temperature
 
+	if(isturf(loc))
+		var/turf/T = loc
+		if(TURF_HAS_VALID_ZONE(T))
+			SSzas.mark_zone_update(T.zone)
+
 /**
  * main proc for throwing a shitfit if the air isnt right.
  * goes into warning mode if gas parameters are beyond the tlv warning bounds, goes into hazard mode if gas parameters are beyond tlv hazard bounds
@@ -748,7 +755,7 @@
 	danger_level = max(pressure_dangerlevel, temperature_dangerlevel, gas_dangerlevel)
 
 	if(old_danger_level != danger_level)
-		INVOKE_ASYNC(src, .proc/apply_danger_level)
+		INVOKE_ASYNC(src, PROC_REF(apply_danger_level))
 		if(alert_type)
 			if(!danger_level)
 				my_area.communicate_fire_alert(FIRE_CLEAR)
@@ -762,7 +769,7 @@
 
 	if(mode == AALARM_MODE_REPLACEMENT && environment_pressure < ONE_ATMOSPHERE * 0.05)
 		mode = AALARM_MODE_SCRUBBING
-		INVOKE_ASYNC(src, .proc/apply_mode, src)
+		INVOKE_ASYNC(src, PROC_REF(apply_mode), src)
 
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)
@@ -918,7 +925,7 @@
 	. = ..()
 	if(!can_interact(user))
 		return
-	if(!user.canUseTopic(src, !issilicon(user)) || !isturf(loc))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH) || !isturf(loc))
 		return
 	togglelock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -1069,7 +1076,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
 
 	if(COMPONENT_TRIGGERED_BY(request_data, port))
 		var/turf/alarm_turf = get_turf(connected_alarm)
-		var/datum/gas_mixture/environment = alarm_turf.return_air()
+		var/datum/gas_mixture/environment = alarm_turf.unsafe_return_air()
 		pressure.set_output(round(environment.returnPressure()))
 		my_temperature.set_output(round(environment.temperature))
 		if(ispath(options_map[current_option]))

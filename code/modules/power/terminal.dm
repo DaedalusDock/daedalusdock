@@ -69,3 +69,33 @@
 	..()
 	dismantle(user, I)
 	return TRUE
+
+/// The evil cousin of the data terminal, the data-enabled terminal.
+/obj/machinery/power/terminal/datanet
+	name = "data-enabled terminal"
+	desc = "It's an underfloor wiring terminal for power equipment. It's been retrofit with extra wires for data networking."
+	network_flags = NETWORK_FLAG_POWERNET_DATANODE
+
+//Terminals have an inherent concept of a master that it already manages, so we don't need to handle it here...
+
+//This is going to be major copypaste
+
+/obj/machinery/power/terminal/datanet/post_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
+	if(!powernet || !signal)
+		return //What do you expect me to transmit on, the fucking air?
+	if(signal.author.resolve() != master)
+		CRASH("Data terminal was told to pass a signal from something other than it's master machine?")
+	signal.transmission_method = TRANSMISSION_WIRE
+	//Fuck you, we're the author now bitch.
+	signal.author = WEAKREF(src)
+	powernet.queue_signal(signal)
+
+/obj/machinery/power/terminal/datanet/receive_signal(datum/signal/signal)
+	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
+	if(!powernet) //Did we somehow receive a signal without a powernet?
+		return //*shrug*
+	if(signal.transmission_method != TRANSMISSION_WIRE)
+		CRASH("Data-enabled terminal received a non-wire data packet")
+	if(master)
+		master.receive_signal(signal)

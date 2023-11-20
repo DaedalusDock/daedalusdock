@@ -7,16 +7,16 @@
 	worn_icon_state = "moistnugget"
 	mag_type = /obj/item/ammo_box/magazine/internal/boltaction
 	bolt_wording = "bolt"
-	bolt_type = BOLT_TYPE_STANDARD
+	bolt_type = BOLT_TYPE_LOCKING
 	semi_auto = FALSE
 	internal_magazine = TRUE
 	fire_sound = 'sound/weapons/gun/rifle/shot.ogg'
 	fire_sound_volume = 90
-	vary_fire_sound = FALSE
 	rack_sound = 'sound/weapons/gun/rifle/bolt_out.ogg'
 	bolt_drop_sound = 'sound/weapons/gun/rifle/bolt_in.ogg'
 	tac_reloads = FALSE
-	gun_flags = NEEDS_OPEN_BOLT_TO_UNLOAD
+
+	accuracy_falloff = 2 //Rifles are extremely accurate
 
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
 	if (bolt_locked == FALSE)
@@ -87,7 +87,7 @@
 				return FALSE
 	..()
 
-/obj/item/gun/ballistic/rifle/boltaction/process_fire(mob/user)
+/obj/item/gun/ballistic/rifle/boltaction/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(can_jam)
 		if(chambered.loaded_projectile)
 			if(prob(jamming_chance))
@@ -101,7 +101,7 @@
 	if(can_jam)
 		if(bolt_locked)
 			if(istype(item, /obj/item/gun_maintenance_supplies))
-				if(do_after(user, src, 10 SECONDS))
+				if(do_after(user, 10 SECONDS, target = src))
 					user.visible_message(span_notice("[user] finishes maintenance of [src]."))
 					jamming_chance = 10
 					qdel(item)

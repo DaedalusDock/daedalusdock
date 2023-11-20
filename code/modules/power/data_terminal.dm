@@ -12,6 +12,37 @@
 	connect_to_network()
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
 
+/obj/machinery/power/data_terminal/Destroy()
+	. = ..()
+	// Disconnect from the seizing machine.
+	disconnect_machine(connected_machine)
+
+/obj/machinery/power/data_terminal/should_have_node()
+	return TRUE
+
+/obj/machinery/power/data_terminal/screwdriver_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(.)
+		return
+	/// Oop, we have a connected machine, make sure they're sure.
+	if(connected_machine && !(tgui_alert(user, "The link light is on, deconstructing this will disconnect the device.", "Disconnect?",list("Disconnect","Abort")) == "Disconnect"))
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
+	user.visible_message(
+		"[user] starts unscrewing [src] from \the [src.loc].",
+		"You start unscrewing [src] from \the [src.loc]",
+		"You hear quiet metal scraping.")
+	tool.play_tool_sound(src, 50)
+	if(!do_after(user, src, 10 SECONDS, DO_PUBLIC))
+		to_chat(user, span_warning("You need to stand still to unscrew [src]!"))
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
+	playsound(src.loc, 'sound/machines/click.ogg', 75, TRUE)
+	user.visible_message("[user] unscrewed \the [src] from \the [src.loc]", "You unscrewed \the [src] from \the [src.loc]")
+	new /obj/item/data_terminal_construct(src.loc)
+	qdel(src)
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
 /obj/machinery/power/data_terminal/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
 	if(!powernet) //Did we somehow receive a signal without a powernet?
@@ -41,7 +72,7 @@
 	if(get_turf(src) != get_turf(new_machine)) //REALLY shouldn't happen.
 		return NETJACK_CONNECT_NOTSAMETURF
 	// Be ready to tear ourselves out if they move.
-	RegisterSignal(new_machine, COMSIG_MOVABLE_MOVED, /obj/machinery/power/data_terminal/proc/tear_out)
+	RegisterSignal(new_machine, COMSIG_MOVABLE_MOVED, TYPE_PROC_REF(/obj/machinery/power/data_terminal, tear_out))
 	//Actually link them.
 	connected_machine = new_machine
 	new_machine.netjack = src
@@ -49,6 +80,8 @@
 
 /// Attempt to disconnect from a data terminal.
 /obj/machinery/power/data_terminal/proc/disconnect_machine(obj/machinery/leaving_machine)
+	if(!leaving_machine && !connected_machine) // No connected machine in the first place
+		return
 	if(leaving_machine != connected_machine)//Let's just be sure.
 		CRASH("[leaving_machine] [REF(leaving_machine)] attempted to disconnect despite not owning the data terminal (owned by [connected_machine] [REF(connected_machine)])!")
 	UnregisterSignal(leaving_machine, COMSIG_MOVABLE_MOVED)
@@ -61,3 +94,44 @@
 	do_sparks(10, FALSE, src)
 	visible_message(span_warning("As [connected_machine] moves, \the [src] violently sparks as it disconnects from the network!")) //Good job fuckface
 	disconnect_machine(connected_machine)
+
+/// Data terminal item
+
+/obj/item/data_terminal_construct
+	name = "disconnected data terminal"
+	desc = "A data terminal, used for connecting to powerline networks."
+	icon_state = "dterm_construct"
+	icon = 'icons/obj/power.dmi'
+
+/obj/item/data_terminal_construct/examine(mob/user)
+	. = ..()
+	. += span_notice("You can [span_bold("screw")] it to the floor to install it.")
+
+/obj/item/data_terminal_construct/screwdriver_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(.)
+		return
+
+	if(HAS_TRAIT(src, TRAIT_NODROP) && loc == user)
+		to_chat(user, span_warning("\The [src] is stuck to your hand!"))
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
+	var/turf/T = get_turf(src)
+	if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && isfloorturf(T))
+		to_chat(user, span_warning("You can only install the [src] if the floor plating is removed!"))
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
+	user.visible_message(
+		"[user] starts screwing [src] into \the [T].",
+		"You start screwing [src] into \the [T]",
+		"You hear quiet metal scraping.")
+	tool.play_tool_sound(src, 50)
+	if(!do_after(user, src, 10 SECONDS, DO_PUBLIC))
+		to_chat(user, span_warning("You need to stand still to install [src]!"))
+		return TOOL_ACT_TOOLTYPE_SUCCESS
+
+	playsound(src.loc, 'sound/machines/click.ogg', 75, TRUE)
+	user.visible_message("[user] installed \the [src] on \the [T]", "You installed \the [src] on \the [T]")
+	new /obj/machinery/power/data_terminal(T)
+	qdel(src)
+	return TOOL_ACT_TOOLTYPE_SUCCESS

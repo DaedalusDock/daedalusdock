@@ -1,9 +1,9 @@
 #define BP_MAX_ROOM_SIZE 300
 
-GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/engineering/main, \
-															    /area/engineering/supermatter, \
-															    /area/engineering/atmospherics_engine, \
-															    /area/ai_monitored/turret_protected/ai))
+GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/station/engineering/main, \
+															    /area/station/engineering/supermatter, \
+															    /area/station/engineering/atmospherics_engine, \
+															    /area/station/ai_monitored/turret_protected/ai))
 
 // Gets an atmos isolated contained space
 // Returns an associative list of turf|dirs pairs
@@ -36,9 +36,9 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/engineerin
 			if(break_if_found[checkT.type] || break_if_found[checkT.loc.type])
 				return FALSE
 			var/static/list/cardinal_cache = list("[NORTH]"=TRUE, "[EAST]"=TRUE, "[SOUTH]"=TRUE, "[WEST]"=TRUE)
-			var/canpass
-			ATMOS_CANPASS_TURF(canpass, checkT, sourceT)
-			if(!cardinal_cache["[dir]"] || !canpass)
+			var/blocked
+			ATMOS_CANPASS_TURF(blocked, checkT, sourceT)
+			if(!cardinal_cache["[dir]"] || (blocked & AIR_BLOCKED))
 				continue
 			found_turfs += checkT // Since checkT is connected, add it to the list to be processed
 
@@ -112,11 +112,11 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/engineerin
 	for(var/area/A in world)
 		GLOB.sortedAreas.Add(A)
 
-	sortTim(GLOB.sortedAreas, /proc/cmp_name_asc)
+	sortTim(GLOB.sortedAreas, GLOBAL_PROC_REF(cmp_name_asc))
 
 /area/proc/addSorted()
 	GLOB.sortedAreas.Add(src)
-	sortTim(GLOB.sortedAreas, /proc/cmp_name_asc)
+	sortTim(GLOB.sortedAreas, GLOBAL_PROC_REF(cmp_name_asc))
 
 //Takes: Area type as a text string from a variable.
 //Returns: Instance for the area in the world.
@@ -161,9 +161,8 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/engineerin
 
 	var/list/turfs = list()
 	if(subtypes)
-		var/list/cache = typecacheof(areatype)
 		for(var/area/area_to_check as anything in GLOB.sortedAreas)
-			if(!cache[area_to_check.type])
+			if(!istype(area_to_check, areatype))
 				continue
 			for(var/turf/turf_in_area in area_to_check)
 				if(target_z == 0 || target_z == turf_in_area.z)

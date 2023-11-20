@@ -14,7 +14,7 @@
 	return list()
 
 /obj/item/choice_beacon/proc/canUseBeacon(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return TRUE
 	else
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 40, TRUE)
@@ -29,7 +29,7 @@
 		return
 	if(isnull(display_names[choice]))
 		return
-	if(!M.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!M.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 
 	spawn_option(display_names[choice],M)
@@ -96,12 +96,12 @@
 	if(!augment_list)
 		augment_list = list()
 		var/list/templist = list(
-		/obj/item/organ/internal/cyberimp/brain/anti_drop,
-		/obj/item/organ/internal/cyberimp/arm/toolset,
-		/obj/item/organ/internal/cyberimp/arm/surgery,
-		/obj/item/organ/internal/cyberimp/chest/thrusters,
-		/obj/item/organ/internal/lungs/cybernetic/tier3,
-		/obj/item/organ/internal/liver/cybernetic/tier3) //cyberimplants range from a nice bonus to fucking broken bullshit so no subtypesof
+		/obj/item/organ/cyberimp/brain/anti_drop,
+		/obj/item/organ/cyberimp/arm/toolset,
+		/obj/item/organ/cyberimp/arm/surgery,
+		/obj/item/organ/cyberimp/chest/thrusters,
+		/obj/item/organ/lungs/cybernetic/tier3,
+		/obj/item/organ/liver/cybernetic/tier3) //cyberimplants range from a nice bonus to fucking broken bullshit so no subtypesof
 		for(var/V in templist)
 			var/atom/A = V
 			augment_list[initial(A.name)] = A

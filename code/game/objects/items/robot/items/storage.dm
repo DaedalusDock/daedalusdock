@@ -9,7 +9,7 @@
 	var/list/storable = list()
 
 /obj/item/borg/apparatus/Initialize(mapload)
-	RegisterSignal(loc.loc, COMSIG_BORG_SAFE_DECONSTRUCT, .proc/safedecon)
+	RegisterSignal(loc.loc, COMSIG_BORG_SAFE_DECONSTRUCT, PROC_REF(safedecon))
 	return ..()
 
 /obj/item/borg/apparatus/Destroy()
@@ -66,7 +66,7 @@
 			var/obj/item/item = atom
 			item.forceMove(src)
 			stored = item
-			RegisterSignal(stored, COMSIG_ATOM_UPDATED_ICON, .proc/on_stored_updated_icon)
+			RegisterSignal(stored, COMSIG_ATOM_UPDATED_ICON, PROC_REF(on_stored_updated_icon))
 			update_appearance()
 			return
 	else
@@ -100,7 +100,7 @@
 
 /obj/item/borg/apparatus/beaker/Initialize(mapload)
 	add_glass()
-	RegisterSignal(stored, COMSIG_ATOM_UPDATED_ICON, .proc/on_stored_updated_icon)
+	RegisterSignal(stored, COMSIG_ATOM_UPDATED_ICON, PROC_REF(on_stored_updated_icon))
 	update_appearance()
 	return ..()
 

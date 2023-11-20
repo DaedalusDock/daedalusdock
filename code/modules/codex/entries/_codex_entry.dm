@@ -19,10 +19,10 @@
 	var/disambiguator
 	var/list/categories
 
-	///Allows you to mark a type as "abstract" and to not generate it.
-	var/abstract_type
+	//Codex entries support abstract_type.
+	//Since the basetype is used for dynamically generated entries, it is not abstract.
 
-/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator)
 
 	SScodex.all_entries += src
 
@@ -40,6 +40,9 @@
 		antag_text = _antag_text
 	if(_controls_text)
 		controls_text = _controls_text
+	if(_disambiguator)
+		disambiguator = _disambiguator
+
 
 	if(use_typesof && length(associated_paths))
 		var/new_assoc_paths = list()
@@ -65,7 +68,7 @@
 		else
 			CRASH("Attempted to instantiate unnamed codex entry with no associated strings!")
 
-	LAZYDISTINCTADD(associated_strings, codex_sanitize(name))
+	LAZYDISTINCTADD(associated_strings, "[codex_sanitize(name)]" )
 	for(var/associated_string in associated_strings)
 		var/clean_string = codex_sanitize(associated_string)
 		if(!clean_string)
@@ -102,8 +105,6 @@
 		for(var/datum/codex_category/category in categories)
 			. += category.get_category_link(src)
 
-// TODO: clean up codex bodies until trimming linebreaks is unnecessary.
-#define TRIM_LINEBREAKS(TEXT) replacetext(replacetext(TEXT, SScodex.trailingLinebreakRegexStart, null), SScodex.trailingLinebreakRegexEnd, null)
 /datum/codex_entry/proc/get_codex_body(mob/presenting_to, include_header = TRUE, include_footer = TRUE)
 	RETURN_TYPE(/list)
 
@@ -111,25 +112,24 @@
 	if(include_header && presenting_to)
 		var/header = get_codex_header(presenting_to)
 		if(length(header))
-			. += "<span class='dmCodexHeader'>"
+			. += "<div class='dmCodexHeader'>"
 			. += jointext(header, null)
-			. += "</span>"
+			. += "</div>"
 
-	. += "<span class='dmCodexBody'>"
+	. += "<div class='dmCodexBody'>"
 	if(lore_text)
-		. += "<p><span class='codexLore'>[TRIM_LINEBREAKS(lore_text)]</span></p>"
+		. += "<div class='codexLore'>[lore_text]</div>"
 	if(mechanics_text)
-		. += "<h3>OOC Information</h3>\n<p><span class='codexMechanics'>[TRIM_LINEBREAKS(mechanics_text)]</span></p>"
+		. += "<h3>OOC Information</h3><div class='codexMechanics'>[mechanics_text]</div>"
 	if(antag_text && (!presenting_to || (presenting_to.mind && !length(presenting_to.mind.antag_datums))))
-		. += "<h3>Antagonist Information</h3>\n<p><span class='codexAntag'>[TRIM_LINEBREAKS(antag_text)]</span></p>"
+		. += "<h3>Antagonist Information</h3><div class='codexAntag'>[antag_text]</div>"
 	if(controls_text)
-		. += "<h3>Controls</h3>\n<p><span class='codexControls'>[TRIM_LINEBREAKS(controls_text)]</span></p>"
-	. += "</span>"
+		. += "<h3>Controls</h3><div class='codexControls'>[controls_text]</div>"
+	. += "</div>"
 
 	if(include_footer)
 		var/footer = get_codex_footer(presenting_to)
 		if(length(footer))
-			. += "<span class='dmCodexFooter'>"
+			. += "<div class='dmCodexFooter'>"
 			. += footer
-			. += "</span>"
-#undef TRIM_LINEBREAKS
+			. += "</div>"

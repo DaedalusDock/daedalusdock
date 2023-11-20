@@ -29,7 +29,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID
 	speed = 0
-	stat_attack = HARD_CRIT
+	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
 	check_friendly_fire = TRUE
 	interaction_flags_atom = INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND|INTERACT_ATOM_ATTACK_HAND|INTERACT_ATOM_NO_FINGERPRINT_INTERACT
@@ -69,7 +69,7 @@
 		npc_options["Sell"] = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_sell")
 	if(!npc_options.len)
 		return FALSE
-	var/npc_result = show_radial_menu(user, src, npc_options, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/npc_result = show_radial_menu(user, src, npc_options, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	switch(npc_result)
 		if("Buy")
 			buy_item(user)
@@ -126,7 +126,7 @@
 		display_names["[initial(thing.name)]"] = thing
 		var/image/item_image = image(icon = initial(thing.icon), icon_state = initial(thing.icon_state))
 		items += list("[initial(thing.name)]" = item_image)
-	var/pick = show_radial_menu(user, src, items, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/pick = show_radial_menu(user, src, items, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	if(!pick)
 		return
 	var/path_reference = display_names[pick]
@@ -147,7 +147,7 @@
 		"Yes" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_yes"),
 		"No" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_no")
 	)
-	var/npc_result = show_radial_menu(user, src, npc_options, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/npc_result = show_radial_menu(user, src, npc_options, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	if(npc_result != "Yes")
 		return
 	face_atom(user)
@@ -188,7 +188,7 @@
 		"Yes" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_yes"),
 		"No" = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_no")
 	)
-	var/npc_result = show_radial_menu(user, src, npc_options, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
+	var/npc_result = show_radial_menu(user, src, npc_options, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
 	face_atom(user)
 	if(npc_result != "Yes")
 		say(itemsellcancelphrase)
@@ -228,7 +228,6 @@
 		/obj/item/clothing/mask/bandana/skull/black = 50,
 		/obj/item/food/cookie/sugar/spookyskull = 10,
 		/obj/item/instrument/trombone/spectral = 10000,
-		/obj/item/shovel/serrated = 150
 	)
 	wanted_items = list(
 		/obj/item/reagent_containers/food/condiment/milk = 1000,

@@ -37,7 +37,6 @@
 		return FALSE
 	var/max_temp = min(500 + (500 * (0.2 * cell.rating)), 1000) // 373 to 1000
 	reagents.adjust_thermal_energy(0.4 * cell.maxcharge * reagents.total_volume * delta_time, max_temp = max_temp) // 4 kelvin every tick on a basic cell. 160k on bluespace
-	reagents.handle_reactions()
 	update_appearance()
 	if(reagents.chem_temp >= max_temp)
 		change_power_status(FALSE)
@@ -141,7 +140,7 @@
 		var/mob/living/carbon/C = A
 		var/reagentlist = pretty_string_from_reagent_list(reagents)
 		var/log_object = "containing [reagentlist]"
-		if(user.combat_mode && !C.is_mouth_covered())
+		if(user.combat_mode && C.has_mouth() && !C.is_mouth_covered())
 			reagents.trans_to(C, reagents.total_volume, transfered_by = user, methods = INGEST)
 			C.visible_message(span_danger("[user] smothers \the [C] with \the [src]!"), span_userdanger("[user] smothers you with \the [src]!"), span_hear("You hear some struggling and muffled cries of surprise."))
 			log_combat(user, C, "smothered", src, log_object)

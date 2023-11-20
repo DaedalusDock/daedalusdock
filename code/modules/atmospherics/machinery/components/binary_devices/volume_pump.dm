@@ -23,7 +23,7 @@
 	power_rating = 15000
 
 	///Transfer rate of the component in L/s
-	var/transfer_rate = MAX_TRANSFER_RATE
+	var/transfer_rate = ATMOS_DEFAULT_VOLUME_PUMP
 	///Frequency for radio signaling
 	var/frequency = 0
 	///ID for radio signaling
@@ -39,7 +39,7 @@
 		/obj/item/circuit_component/atmos_volume_pump,
 	))
 
-/obj/machinery/atmospherics/components/binary/volume_pump/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/volume_pump/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		set_on(!on)
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -48,7 +48,7 @@
 
 /obj/machinery/atmospherics/components/binary/volume_pump/AltClick(mob/user)
 	if(can_interact(user))
-		transfer_rate = MAX_TRANSFER_RATE
+		transfer_rate = ATMOS_DEFAULT_VOLUME_PUMP
 		investigate_log("was set to [transfer_rate] L/s by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "volume output set to [transfer_rate] L/s")
 		update_appearance()
@@ -129,7 +129,7 @@
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
-	data["max_rate"] = round(MAX_TRANSFER_RATE)
+	data["max_rate"] = round(ATMOS_DEFAULT_VOLUME_PUMP)
 	data["last_draw"] = last_power_draw
 	data["max_power"] = power_rating
 	return data
@@ -151,19 +151,23 @@
 		if("rate")
 			var/rate = params["rate"]
 			if(rate == "max")
-				rate = MAX_TRANSFER_RATE
+				rate = ATMOS_DEFAULT_VOLUME_PUMP
 				. = TRUE
 			else if(text2num(rate) != null)
 				rate = text2num(rate)
 				. = TRUE
 			if(.)
-				transfer_rate = clamp(rate, 0, MAX_TRANSFER_RATE)
+				transfer_rate = clamp(rate, 0, ATMOS_DEFAULT_VOLUME_PUMP)
 				investigate_log("was set to [transfer_rate] L/s by [key_name(usr)]", INVESTIGATE_ATMOS)
 	update_appearance()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
+
+	if("status" in signal.data)
+		broadcast_status()
+		return //do not update_appearance
 
 	var/old_on = on //for logging
 
@@ -180,9 +184,7 @@
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)
 
-	if("status" in signal.data)
-		broadcast_status()
-		return //do not update_appearance
+
 
 	broadcast_status()
 	update_appearance()
@@ -205,15 +207,15 @@
 
 /obj/machinery/atmospherics/components/binary/volume_pump/on
 	on = TRUE
-	icon_state = "volpump_on_map"
+	icon_state = "volpump_on_map-3"
 
 /obj/machinery/atmospherics/components/binary/volume_pump/on/layer2
 	piping_layer = 2
-	icon_state = "volpump_map-2"
+	icon_state = "volpump_on_map-2"
 
 /obj/machinery/atmospherics/components/binary/volume_pump/on/layer4
 	piping_layer = 4
-	icon_state = "volpump_map-4"
+	icon_state = "volpump_on_map-4"
 
 /obj/item/circuit_component/atmos_volume_pump
 	display_name = "Atmospheric Volume Pump"
@@ -248,10 +250,10 @@
 	var/obj/machinery/atmospherics/components/binary/volume_pump/connected_pump
 
 /obj/item/circuit_component/atmos_volume_pump/populate_ports()
-	transfer_rate = add_input_port("New Transfer Rate", PORT_TYPE_NUMBER, trigger = .proc/set_transfer_rate)
-	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = .proc/set_pump_on)
-	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = .proc/set_pump_off)
-	request_data = add_input_port("Request Port Data", PORT_TYPE_SIGNAL, trigger = .proc/request_pump_data)
+	transfer_rate = add_input_port("New Transfer Rate", PORT_TYPE_NUMBER, trigger = PROC_REF(set_transfer_rate))
+	on = add_input_port("Turn On", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_on))
+	off = add_input_port("Turn Off", PORT_TYPE_SIGNAL, trigger = PROC_REF(set_pump_off))
+	request_data = add_input_port("Request Port Data", PORT_TYPE_SIGNAL, trigger = PROC_REF(request_pump_data))
 
 	input_pressure = add_output_port("Input Pressure", PORT_TYPE_NUMBER)
 	output_pressure = add_output_port("Output Pressure", PORT_TYPE_NUMBER)
@@ -266,7 +268,7 @@
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/volume_pump))
 		connected_pump = shell
-		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, .proc/handle_pump_activation)
+		RegisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON, PROC_REF(handle_pump_activation))
 
 /obj/item/circuit_component/atmos_volume_pump/unregister_usb_parent(atom/movable/shell)
 	UnregisterSignal(connected_pump, COMSIG_ATMOS_MACHINE_SET_ON)
@@ -274,7 +276,7 @@
 	return ..()
 
 /obj/item/circuit_component/atmos_volume_pump/pre_input_received(datum/port/input/port)
-	transfer_rate.set_value(clamp(transfer_rate.value, 0, MAX_TRANSFER_RATE))
+	transfer_rate.set_value(clamp(transfer_rate.value, 0, ATMOS_DEFAULT_VOLUME_PUMP))
 
 /obj/item/circuit_component/atmos_volume_pump/proc/handle_pump_activation(datum/source, active)
 	SIGNAL_HANDLER
@@ -312,5 +314,5 @@
 	var/datum/gas_mixture/air_output = connected_pump.airs[2]
 	input_pressure.set_output(air_input.returnPressure())
 	output_pressure.set_output(air_output.returnPressure())
-	input_temperature.set_output(air_input.get_temperature())
-	output_temperature.set_output(air_output.get_temperature())
+	input_temperature.set_output(air_input.temperature)
+	output_temperature.set_output(air_output.temperature)

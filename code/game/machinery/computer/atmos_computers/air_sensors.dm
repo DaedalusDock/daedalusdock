@@ -93,3 +93,7 @@
 /obj/machinery/air_sensor/incinerator_tank
 	name = "incinerator chamber gas sensor"
 	chamber_id = ATMOS_GAS_MONITOR_INCINERATOR
+
+/obj/machinery/air_sensor/engine
+	name = "incinerator chamber gas sensor"
+	chamber_id = ATMOS_GAS_MONITOR_ENGINE

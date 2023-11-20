@@ -36,13 +36,13 @@
 		CHECK_TICK
 
 /datum/round_event/aurora_caelus/end()
-	for(var/turf/open/space/S in world)
-		var/area/A = S.loc
-		if(A.area_flags & AREA_USES_STARLIGHT)
-			S.set_light(l_power = initial(S.light_power), l_color = initial(S.light_color))
-		CHECK_TICK
 	priority_announce(
 		"The aurora caelus event is now ending. Starlight conditions will slowly return to normal. When this has concluded, please return to your workplace and continue work as normal. Have a pleasant shift, [station_name()], and thank you for watching with us.",
 		"Ananke Meteorology Division"
 	)
+	for(var/turf/open/space/S in world)
+		var/area/A = S.loc
+		if(A.area_flags & AREA_USES_STARLIGHT)
+			S.set_light(l_power = initial(S.light_power), l_color = global.starlight_color)
+		CHECK_TICK
 

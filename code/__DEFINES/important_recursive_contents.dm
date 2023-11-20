@@ -7,6 +7,7 @@
 #define RECURSIVE_CONTENTS_CLIENT_MOBS "recursive_contents_client_mobs"
 ///the parent of storage components currently shown to some client mob get this. gets removed when nothing is viewing the parent
 #define RECURSIVE_CONTENTS_ACTIVE_STORAGE "recursive_contents_active_storage"
-
-///The temperature channel of the important_recursive_contents list, everything in here will be sent a signal when their holding object changes temperature
-#define RECURSIVE_CONTENTS_ATMOS_SENSITIVE "RECURSIVE_CONTENTS_ATMOS_SENSITIVE"
+///this is given to radio listeners of any channel that ISN'T FREQ_ATMOS_CONTROL
+#define RECURSIVE_CONTENTS_RADIO_NONATMOS "recursive_contents_radio_nonatmos"
+///this is given to radio listents of SPECIFICALLY FREQ_ATMOS_CONTROL
+#define RECURSIVE_CONTENTS_RADIO_ATMOS "recursive_contents_radio_atmos"

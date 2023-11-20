@@ -45,7 +45,7 @@
 				audible_message(span_notice("[src] lets out a screech, it doesn't seem to be able to handle the load."))
 				break
 			use_power(active_power_usage)
-			O.throw_at(target, drive_range * power, power)
+			O.throw_at(target, drive_range * power, power, spin = FALSE)
 	flick("mass_driver1", src)
 
 /obj/machinery/mass_driver/emp_act(severity)

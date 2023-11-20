@@ -1,9 +1,3 @@
-/datum/bounty/item/assistant/strange_object
-	name = "Strange Object"
-	description = "Ananke has taken an interest in strange objects. Find one in maint, and ship it off to CentCom right away."
-	reward = CARGO_CRATE_VALUE * 2.4
-	wanted_types = list(/obj/item/relic = TRUE)
-
 /datum/bounty/item/assistant/scooter
 	name = "Scooter"
 	description = "Ananke has determined walking to be wasteful. Ship a scooter to CentCom to speed operations up."
@@ -88,7 +82,7 @@
 
 /datum/bounty/item/assistant/donkpocket
 	name = "Donk-Pockets"
-	description = "Consumer safety recall: Warning. Donk-Pockets manufactured in the past year contain hazardous unathi biomatter. Return units to CentCom immediately."
+	description = "Consumer safety recall: Warning. Donk-Pockets manufactured in the past year contain hazardous biomatter. Return units to management immediately."
 	reward = CARGO_CRATE_VALUE * 6
 	required_count = 10
 	wanted_types = list(/obj/item/food/donkpocket = TRUE)

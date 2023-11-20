@@ -122,7 +122,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		JOB_ATMOSPHERIC_TECHNICIAN = 42,
 		// 50-59: Cargo
 		JOB_QUARTERMASTER = 51,
-		JOB_SHAFT_MINER = 52,
+		JOB_PROSPECTOR = 52,
 		JOB_CARGO_TECHNICIAN = 53,
 		// 60+: Civilian/other
 		JOB_HEAD_OF_PERSONNEL = 60,
@@ -244,17 +244,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 
 		// Binary living/dead status
 		if (sensor_mode >= SENSOR_LIVING)
-			entry["life_status"] = (tracked_living_mob.stat != DEAD)
-
-		// Damage
-		if (sensor_mode >= SENSOR_VITALS)
-			entry += list(
-				"oxydam" = round(tracked_living_mob.getOxyLoss(), 1),
-				"toxdam" = round(tracked_living_mob.getToxLoss(), 1),
-				"burndam" = round(tracked_living_mob.getFireLoss(), 1),
-				"brutedam" = round(tracked_living_mob.getBruteLoss(), 1),
-				"health" = round(tracked_living_mob.health, 1),
-			)
+			entry["life_status"] = (tracked_living_mob.stat)
 
 		// Location
 		if (sensor_mode >= SENSOR_COORDS)

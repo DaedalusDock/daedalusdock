@@ -8,13 +8,11 @@
 
 #define SCANGATE_HUMAN "human"
 #define SCANGATE_LIZARD "lizard"
-#define SCANGATE_FELINID "felinid"
 #define SCANGATE_FLY "fly"
 #define SCANGATE_PLASMAMAN "plasma"
 #define SCANGATE_MOTH "moth"
 #define SCANGATE_JELLY "jelly"
 #define SCANGATE_POD "pod"
-#define SCANGATE_GOLEM "golem"
 #define SCANGATE_ZOMBIE "zombie"
 #define SCANGATE_TESHARI "teshari"
 
@@ -53,7 +51,7 @@
 	wires = new /datum/wires/scanner_gate(src)
 	set_scanline("passive")
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -71,7 +69,9 @@
 
 /obj/machinery/scanner_gate/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-	INVOKE_ASYNC(src, .proc/auto_scan, AM)
+	if(AM == src)
+		return
+	INVOKE_ASYNC(src, PROC_REF(auto_scan), AM)
 
 /obj/machinery/scanner_gate/proc/auto_scan(atom/movable/AM)
 	if(!(machine_stat & (BROKEN|NOPOWER)) && isliving(AM) & (!panel_open))
@@ -82,7 +82,7 @@
 	deltimer(scanline_timer)
 	add_overlay(type)
 	if(duration)
-		scanline_timer = addtimer(CALLBACK(src, .proc/set_scanline, "passive"), duration, TIMER_STOPPABLE)
+		scanline_timer = addtimer(CALLBACK(src, PROC_REF(set_scanline), "passive"), duration, TIMER_STOPPABLE)
 
 /obj/machinery/scanner_gate/attackby(obj/item/W, mob/user, params)
 	var/obj/item/card/id/card = W.GetID()
@@ -144,8 +144,6 @@
 						scan_species = /datum/species/lizard
 					if(SCANGATE_FLY)
 						scan_species = /datum/species/fly
-					if(SCANGATE_FELINID)
-						scan_species = /datum/species/human/felinid
 					if(SCANGATE_PLASMAMAN)
 						scan_species = /datum/species/plasmaman
 					if(SCANGATE_MOTH)
@@ -154,8 +152,6 @@
 						scan_species = /datum/species/jelly
 					if(SCANGATE_POD)
 						scan_species = /datum/species/pod
-					if(SCANGATE_GOLEM)
-						scan_species = /datum/species/golem
 					if(SCANGATE_ZOMBIE)
 						scan_species = /datum/species/zombie
 					if(SCANGATE_TESHARI)
@@ -276,12 +272,10 @@
 
 #undef SCANGATE_HUMAN
 #undef SCANGATE_LIZARD
-#undef SCANGATE_FELINID
 #undef SCANGATE_FLY
 #undef SCANGATE_PLASMAMAN
 #undef SCANGATE_MOTH
 #undef SCANGATE_JELLY
 #undef SCANGATE_POD
-#undef SCANGATE_GOLEM
 #undef SCANGATE_ZOMBIE
 #undef SCANGATE_TESHARI

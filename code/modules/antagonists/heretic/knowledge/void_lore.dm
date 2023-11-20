@@ -64,7 +64,7 @@
 	route = PATH_VOID
 
 /datum/heretic_knowledge/void_grasp/on_gain(mob/user)
-	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, .proc/on_mansus_grasp)
+	RegisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK, PROC_REF(on_mansus_grasp))
 
 /datum/heretic_knowledge/void_grasp/on_lose(mob/user)
 	UnregisterSignal(user, COMSIG_HERETIC_MANSUS_GRASP_ATTACK)
@@ -148,7 +148,7 @@
 	var/dir = angle2dir(dir2angle(get_dir(user, target)) + 180)
 	user.forceMove(get_step(target, dir))
 
-	INVOKE_ASYNC(src, .proc/follow_up_attack, user, target, blade)
+	INVOKE_ASYNC(src, PROC_REF(follow_up_attack), user, target, blade)
 
 /datum/heretic_knowledge/blade_upgrade/void/proc/follow_up_attack(mob/living/user, mob/living/target, obj/item/melee/sickly_blade/blade)
 	blade.melee_attack_chain(user, target)
@@ -203,8 +203,8 @@
 
 	// Let's get this show on the road!
 	sound_loop = new(user, TRUE, TRUE)
-	RegisterSignal(user, COMSIG_LIVING_LIFE, .proc/on_life)
-	RegisterSignal(user, COMSIG_LIVING_DEATH, .proc/on_death)
+	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(on_life))
+	RegisterSignal(user, COMSIG_LIVING_DEATH, PROC_REF(on_death))
 
 /datum/heretic_knowledge/final/void_final/on_lose(mob/user)
 	on_death() // Losing is pretty much dying. I think

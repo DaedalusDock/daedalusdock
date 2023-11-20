@@ -47,7 +47,6 @@
 	var/static/list/accepted = typecacheof(list(
 		/obj/item/food/grown/tobacco,
 		/obj/item/food/grown/tea,
-		/obj/item/food/grown/ash_flora/mushroom_leaf,
 		/obj/item/food/grown/ambrosia/vulgaris,
 		/obj/item/food/grown/ambrosia/deus,
 		/obj/item/food/grown/wheat,
@@ -67,7 +66,7 @@
 	if(isnull(held_item))
 		return NONE
 
-	if(held_item.get_sharpness())
+	if(held_item.sharpness & SHARP_EDGED)
 		// May be a little long, but I think "cut into planks" for steel caps may be confusing.
 		context[SCREENTIP_CONTEXT_LMB] = "Cut into [plank_name]"
 		return CONTEXTUAL_SCREENTIP_SET
@@ -79,7 +78,7 @@
 	return NONE
 
 /obj/item/grown/log/attackby(obj/item/W, mob/user, params)
-	if(W.get_sharpness())
+	if(W.sharpness & SHARP_EDGED)
 		user.show_message(span_notice("You make [plank_name] out of \the [src]!"), MSG_VISUAL)
 		var/seed_modifier = 0
 		if(seed)

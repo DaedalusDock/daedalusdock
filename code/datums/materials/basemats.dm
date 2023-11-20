@@ -104,7 +104,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.05
 	beauty_modifier = 0.3 //It shines so beautiful
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.4, LASER = 0.5, ENERGY = 0.5, BOMB = 0, BIO = 0, FIRE = 1, ACID = 1)
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/uranium
 	false_wall_type = /obj/structure/falsewall/uranium
 
@@ -143,7 +143,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.1
 	beauty_modifier = 0.15
 	armor_modifiers = list(MELEE = 1.4, BULLET = 0.7, LASER = 0, ENERGY = 1.2, BOMB = 0, BIO = 1.2, FIRE = 0, ACID = 0.5)
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/plasma
 	false_wall_type = /obj/structure/falsewall/plasma
 
@@ -179,11 +179,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.15
 	wall_type = null
 
-/datum/material/bluespace/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.reagents.add_reagent(/datum/reagent/bluespace, rand(5, 8))
-	source_item?.reagents?.add_reagent(/datum/reagent/bluespace, source_item.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Honks and slips
 /datum/material/bananium
 	name = "bananium"
@@ -195,7 +190,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.5
 	beauty_modifier = 0.5
 	armor_modifiers = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 100, BIO = 0, FIRE = 10, ACID = 0) //Clowns cant be blown away.
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/bananium
 	false_wall_type = /obj/structure/falsewall/bananium
 
@@ -225,7 +220,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	sheet_type = /obj/item/stack/sheet/mineral/titanium
 	value_per_unit = 0.0625
 	armor_modifiers = list(MELEE = 1.35, BULLET = 1.3, LASER = 1.3, ENERGY = 1.25, BOMB = 1.25, BIO = 1, FIRE = 0.7, ACID = 1)
-	wall_greyscale_config = /datum/greyscale_config/metal_wall
+	wall_icon = 'icons/turf/walls/metal_wall.dmi'
 	wall_type = /turf/closed/wall/mineral/titanium
 	false_wall_type = /obj/structure/falsewall/titanium
 
@@ -262,11 +257,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = -0.01
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.1, LASER = 0.3, ENERGY = 0.5, BOMB = 1, BIO = 1, FIRE = 1.1, ACID = 1)
 
-/datum/material/plastic/on_accidental_mat_consumption(mob/living/carbon/eater, obj/item/food)
-	eater.reagents.add_reagent(/datum/reagent/plastic_polymers, rand(6, 8))
-	food?.reagents?.add_reagent(/datum/reagent/plastic_polymers, food.reagents.total_volume*(2/5))
-	return TRUE
-
 ///Force decrease and mushy sound effect. (Not yet implemented)
 /datum/material/biomass
 	name = "biomass"
@@ -287,8 +277,8 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.01
 	armor_modifiers = list(MELEE = 1.1, BULLET = 1.1, LASER = 0.4, ENERGY = 0.4, BOMB = 1, BIO = 0.2, FIRE = 0, ACID = 0.3)
 	texture_layer_icon_state = "woodgrain"
-	wall_greyscale_config = /datum/greyscale_config/wood_wall
-	wall_stripe_greyscale_config = /datum/greyscale_config/wood_wall_stripe
+	wall_icon = 'icons/turf/walls/wood_wall.dmi'
+	wall_stripe_icon = 'icons/turf/walls/wood_wall_stripe.dmi'
 	wall_color = "#93662C"
 	wall_type = /turf/closed/wall/mineral/wood
 	false_wall_type = /obj/structure/falsewall/wood
@@ -312,24 +302,6 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 
 	return TRUE
 
-///Stronk force increase
-/datum/material/adamantine
-	name = "adamantine"
-	desc = "A powerful material made out of magic, I mean science!"
-	color = "#6d7e8e"
-	greyscale_colors = "#6d7e8e"
-	strength_modifier = 1.5
-	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_BASE_RECIPES = TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
-	sheet_type = /obj/item/stack/sheet/mineral/adamantine
-	value_per_unit = 0.25
-	beauty_modifier = 0.4
-	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.3, ENERGY = 1.3, BOMB = 1, BIO = 1, FIRE = 2.5, ACID = 1)
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
-
-/datum/material/adamantine/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
-	victim.apply_damage(20, BRUTE, BODY_ZONE_HEAD)
-	return TRUE
-
 ///RPG Magic.
 /datum/material/mythril
 	name = "mythril"
@@ -342,7 +314,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	strength_modifier = 1.2
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.5, LASER = 1.5, ENERGY = 1.5, BOMB = 1.5, BIO = 1.5, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = 0.5
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 
 /datum/material/mythril/on_applied_obj(atom/source, amount, material_flags)
 	. = ..()
@@ -415,7 +387,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = 0.25
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 
 /datum/material/sand/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.adjust_disgust(17)
@@ -433,7 +405,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 0.5, BULLET = 0.5, LASER = 1.25, ENERGY = 0.5, BOMB = 0.5, BIO = 0.25, FIRE = 1.5, ACID = 1.5)
 	turf_sound_override = FOOTSTEP_WOOD
 	texture_layer_icon_state = "brick"
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 
 /datum/material/snow
 	name = "snow"
@@ -446,7 +418,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	armor_modifiers = list(MELEE = 0.25, BULLET = 0.25, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0.25, ACID = 1.5)
 	turf_sound_override = FOOTSTEP_SAND
 	texture_layer_icon_state = "sand"
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 
 /datum/material/snow/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/water, rand(5, 10))
@@ -462,7 +434,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.75
 	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 1, ENERGY = 1, BOMB = 1.2, BIO = 1.2, FIRE = 1.5, ACID = 1.5)
 	texture_layer_icon_state = "runed"
-	wall_greyscale_config = /datum/greyscale_config/cult_wall
+	wall_icon = 'icons/turf/walls/cult_wall.dmi'
 
 /datum/material/runedmetal/on_accidental_mat_consumption(mob/living/carbon/victim, obj/item/source_item)
 	victim.reagents.add_reagent(/datum/reagent/fuel/unholywater, rand(8, 12))
@@ -516,7 +488,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	value_per_unit = 0.003
 	armor_modifiers = list(MELEE = 0.25, BULLET = 0.25, LASER = 0.25, ENERGY = 0.25, BOMB = 0.25, BIO = 0.25, FIRE = 0, ACID = 1.5)
 	beauty_modifier = -0.1
-	wall_greyscale_config = /datum/greyscale_config/stone_wall
+	wall_icon = 'icons/turf/walls/stone_wall.dmi'
 
 /datum/material/cardboard/on_applied_obj(obj/source, amount, material_flags)
 	. = ..()

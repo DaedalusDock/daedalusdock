@@ -39,6 +39,7 @@
 #define LOG_ECON (1 << 19)
 #define LOG_VICTIM (1 << 20)
 #define LOG_RADIO_EMOTE (1 << 21)
+#define LOG_MECHCOMP (1 <<22)
 
 //Individual logging panel pages
 #define INDIVIDUAL_ATTACK_LOG (LOG_ATTACK | LOG_VICTIM)

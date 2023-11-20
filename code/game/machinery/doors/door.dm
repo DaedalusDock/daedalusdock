@@ -1,4 +1,5 @@
 #define DOOR_CLOSE_WAIT 60 ///Default wait until doors autoclose
+DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door
 	name = "door"
 	desc = "It opens and closes."
@@ -53,6 +54,9 @@
 	var/align_to_windows = FALSE
 	var/auto_dir_align = TRUE
 
+	///Sound to play when knocked on
+	var/knock_sound = 'goon/sounds/Door_Metal_Knock_1.ogg'
+
 /obj/machinery/door/Initialize(mapload)
 	. = ..()
 	set_init_door_layer()
@@ -70,7 +74,7 @@
 	//doors only block while dense though so we have to use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
-	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, .proc/check_security_level)
+	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_security_level))
 
 /obj/machinery/door/LateInitialize()
 	. = ..()
@@ -154,6 +158,7 @@
 
 	if (isnull(held_item) && Adjacent(user))
 		context[SCREENTIP_CONTEXT_LMB] = "Open"
+		context[SCREENTIP_CONTEXT_RMB] = "Knock"
 		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/door/check_access_list(list/access_list)
@@ -173,7 +178,6 @@
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
-	zas_update_loc()
 	return ..()
 
 /obj/machinery/door/zas_canpass(turf/other)
@@ -214,7 +218,7 @@
 /obj/machinery/door/proc/try_remove_seal(mob/user)
 	return
 
-/obj/machinery/door/Bumped(atom/movable/AM)
+/obj/machinery/door/BumpedBy(atom/movable/AM)
 	. = ..()
 	if(operating || (obj_flags & EMAGGED) || (!can_open_with_hands && density))
 		return
@@ -246,8 +250,11 @@
 		return
 
 /obj/machinery/door/Move()
-	zas_update_loc()
+	var/turf/T = loc
 	. = ..()
+	if(.)
+		T.zas_update_loc()
+		zas_update_loc()
 
 
 /obj/machinery/door/CanAllowThrough(atom/movable/mover, border_dir)
@@ -275,6 +282,9 @@
 	. = ..()
 	if(.)
 		return
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		knock_on(user)
+		return TRUE
 	if(try_remove_seal(user))
 		return
 	if(try_safety_unlock(user))
@@ -387,12 +397,12 @@
 	if (. & EMP_PROTECT_SELF)
 		return
 	if(prob(20/severity) && (istype(src, /obj/machinery/door/airlock) || istype(src, /obj/machinery/door/window)) )
-		INVOKE_ASYNC(src, .proc/open)
+		INVOKE_ASYNC(src, PROC_REF(open))
 	if(prob(severity*10 - 20))
 		if(secondsElectrified == MACHINE_NOT_ELECTRIFIED)
 			secondsElectrified = MACHINE_ELECTRIFIED_PERMANENT
 			LAZYADD(shockedby, "\[[time_stamp()]\]EM Pulse")
-			addtimer(CALLBACK(src, .proc/unelectrify), 300)
+			addtimer(CALLBACK(src, PROC_REF(unelectrify)), 300)
 
 /obj/machinery/door/proc/unelectrify()
 	secondsElectrified = MACHINE_NOT_ELECTRIFIED
@@ -508,7 +518,7 @@
 		close()
 
 /obj/machinery/door/proc/autoclose_in(wait)
-	addtimer(CALLBACK(src, .proc/autoclose), wait, TIMER_UNIQUE | TIMER_NO_HASH_WAIT | TIMER_OVERRIDE)
+	addtimer(CALLBACK(src, PROC_REF(autoclose)), wait, TIMER_UNIQUE | TIMER_NO_HASH_WAIT | TIMER_OVERRIDE)
 
 /obj/machinery/door/proc/requiresID()
 	return 1
@@ -561,5 +571,8 @@
 	zap_flags &= ~ZAP_OBJ_DAMAGE
 	. = ..()
 
+/obj/machinery/door/proc/knock_on(mob/user)
+	user.changeNext_move(CLICK_CD_MELEE)
+	playsound(src, knock_sound, 100, TRUE)
 
 #undef DOOR_CLOSE_WAIT

@@ -49,7 +49,6 @@
 			absorbed_plasma += plas_amt
 		if(G.temperature > T20C)
 			G.temperature = max(G.temperature/2,T20C)
-		//T.air_update_turf(FALSE, FALSE)
 
 /obj/effect/particle_effect/foam/firefighting/kill_foam()
 	STOP_PROCESSING(SSfastprocess, src)
@@ -94,9 +93,6 @@
 	START_PROCESSING(SSfastprocess, src)
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, TRUE, -3)
 	become_atmos_sensitive()
-
-/obj/effect/particle_effect/foam/ComponentInitialize()
-	. = ..()
 	if(slippery_foam)
 		AddComponent(/datum/component/slippery, 100)
 
@@ -175,7 +171,7 @@
 /obj/effect/particle_effect/foam/proc/spread_foam()
 	var/turf/t_loc = get_turf(src)
 	//This should just be atmos adjacent turfs, come on guys
-	for(var/turf/T in t_loc.reachableAdjacentTurfs())
+	for(var/turf/T in t_loc.reachableAdjacentTurfs(no_id = TRUE))
 		var/obj/effect/particle_effect/foam/foundfoam = locate() in T //Don't spread foam where there's already foam!
 		if(foundfoam)
 			continue
@@ -281,12 +277,12 @@
 
 /obj/structure/foamedmetal/Destroy()
 	set_density(0)
-	zas_update_loc()
 	. = ..()
 
 /obj/structure/foamedmetal/Move()
 	. = ..()
-	zas_update_loc()
+	if(.)
+		zas_update_loc()
 
 /obj/structure/foamedmetal/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
@@ -322,16 +318,15 @@
 	if(isopenturf(loc))
 		var/turf/open/O = loc
 		O.ClearWet()
-		if(O.return_air())
-			var/datum/gas_mixture/G = O.return_air()
-			G.temperature = 293.15
-			QDEL_NULL(O.fire)
-			var/list/G_gases = G.gas
-			for(var/I in G_gases)
-				if(I == GAS_OXYGEN || I == GAS_NITROGEN)
-					continue
-				G_gases[I] = 0
-			AIR_UPDATE_VALUES(G)
+		var/datum/gas_mixture/G = O.return_air()
+		G.temperature = 293.15
+		QDEL_NULL(O.fire)
+		var/list/G_gases = G.gas
+		for(var/I in G_gases)
+			if(I == GAS_OXYGEN || I == GAS_NITROGEN)
+				continue
+			G_gases[I] = 0
+		AIR_UPDATE_VALUES(G)
 		for(var/obj/machinery/atmospherics/components/unary/U in O)
 			if(!U.welded)
 				U.welded = TRUE

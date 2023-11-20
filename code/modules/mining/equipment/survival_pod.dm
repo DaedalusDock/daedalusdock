@@ -1,5 +1,5 @@
 /*****************************Survival Pod********************************/
-/area/survivalpod
+/area/misc/survivalpod
 	name = "\improper Emergency Shelter"
 	icon_state = "away"
 	static_lighting = TRUE
@@ -88,8 +88,8 @@
 	icon_state = "pod_window-0"
 	base_icon_state = "pod_window"
 	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD, SMOOTH_GROUP_SHUTTLE_PARTS)
-	canSmoothWith = list(SMOOTH_GROUP_SURVIVAL_TITANIUM_POD)
+	smoothing_groups = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SURVIVAL_TITANIUM_POD
+	canSmoothWith = SMOOTH_GROUP_SURVIVAL_TITANIUM_POD
 
 /obj/structure/window/reinforced/shuttle/survival_pod/spawner/north
 	dir = NORTH
@@ -109,7 +109,7 @@
 /obj/machinery/door/airlock/survival_pod
 	name = "airlock"
 	assemblytype = /obj/structure/door_assembly/door_assembly_pod
-	airlock_paint = "#333333"
+	smoothing_groups = SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_SURVIVAL_TITANIUM_POD
 
 /obj/machinery/door/airlock/survival_pod/glass
 	opacity = FALSE
@@ -201,7 +201,7 @@
 	pixel_y = -4
 	flags_1 = NODECONSTRUCT_1
 
-/obj/machinery/smartfridge/survival_pod/ComponentInitialize()
+/obj/machinery/smartfridge/survival_pod/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
 
@@ -232,6 +232,10 @@
 	var/buildstackamount = 5
 	can_atmos_pass = CANPASS_NEVER
 
+/obj/structure/fans/Initialize(mapload)
+	. = ..()
+	zas_update_loc()
+
 /obj/structure/fans/deconstruct()
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(buildstacktype)
@@ -257,13 +261,6 @@
 	icon_state = "fan_tiny"
 	buildstackamount = 2
 
-/obj/structure/fans/Initialize(mapload)
-	. = ..()
-	//air_update_turf(TRUE, TRUE)
-
-/obj/structure/fans/Destroy()
-	//air_update_turf(TRUE, FALSE)
-	. = ..()
 //Invisible, indestructible fans
 /obj/structure/fans/tiny/invisible
 	name = "air flow blocker"
@@ -284,14 +281,11 @@
 	icon = 'icons/hud/screen_gen.dmi'
 	icon_state = "x2"
 	var/static/possible = list(
-		/obj/item/ship_in_a_bottle,
 		/obj/item/gun/energy/pulse,
 		/obj/item/book/granter/martial/carp,
-		//obj/item/melee/supermatter_sword,
+		/obj/item/melee/supermatter_sword,
 		/obj/item/shield/changeling,
-		/obj/item/lava_staff,
 		/obj/item/energy_katana,
-		/obj/item/hierophant_club,
 		/obj/item/his_grace,
 		/obj/item/gun/energy/minigun,
 		/obj/item/gun/ballistic/automatic/l6_saw,

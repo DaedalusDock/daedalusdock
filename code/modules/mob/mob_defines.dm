@@ -7,7 +7,6 @@
  * Has a lot of the creature game world logic, such as health etc
  */
 /mob
-	datum_flags = DF_USE_TAG
 	density = TRUE
 	layer = MOB_LAYER
 	plane = GAME_PLANE
@@ -52,6 +51,7 @@
 	/// A list of chameleon actions we have specifically
 	/// This can be unified with the actions list
 	var/list/datum/action/item_action/chameleon/chameleon_item_actions
+
 	///Cursor icon used when holding shift over things
 	var/examine_cursor_icon = 'icons/effects/mouse_pointers/examine_pointer.dmi'
 
@@ -193,9 +193,6 @@
 	///List of progress bars this mob is currently seeing for actions
 	var/list/progressbars = null //for stacking do_after bars
 
-	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
-	var/list/do_afters
-
 	///Allows a datum to intercept all click calls this mob is the source of
 	var/datum/click_intercept
 
@@ -229,5 +226,6 @@
 	var/datum/client_interface/mock_client
 
 	var/interaction_range = 0 //how far a mob has to be to interact with something without caring about obsctruction, defaulted to 0 tiles
-	///how much gravity is slowing us down
-	var/gravity_slowdown = 0
+
+	/// Keeps track of what ambience we are playing. Yeah i know it sucks.
+	var/playing_ambience

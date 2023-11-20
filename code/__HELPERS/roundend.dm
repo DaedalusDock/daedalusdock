@@ -228,7 +228,7 @@
 		speed_round = TRUE
 
 	popcount = gather_roundend_feedback()
-	INVOKE_ASYNC(SScredits, /datum/controller/subsystem/credits/proc/draft) //Must always come after popcount is set
+	INVOKE_ASYNC(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, draft)) //Must always come after popcount is set
 	for(var/client/C in GLOB.clients)
 		C.playcreditsmusic(50)
 
@@ -625,7 +625,7 @@
 	var/currrent_category
 	var/datum/antagonist/previous_category
 
-	sortTim(all_antagonists, /proc/cmp_antag_category)
+	sortTim(all_antagonists, GLOBAL_PROC_REF(cmp_antag_category))
 
 	for(var/datum/antagonist/A in all_antagonists)
 		if(!A.show_in_roundend)
@@ -707,17 +707,14 @@
 	parts += "</ul>"
 	return parts.Join()
 
-
 /proc/printobjectives(list/objectives)
-	if(!objectives || !objectives.len)
+	if(!length(objectives))
 		return
+
 	var/list/objective_parts = list()
 	var/count = 1
 	for(var/datum/objective/objective in objectives)
-		if(objective.check_completion())
-			objective_parts += "<b>[objective.objective_name] #[count]</b>: [objective.explanation_text] [span_greentext("Success!")]"
-		else
-			objective_parts += "<b>[objective.objective_name] #[count]</b>: [objective.explanation_text] [span_redtext("Fail.")]"
+		objective_parts += "<b>[objective.objective_name] #[count]</b>: [objective.explanation_text] [objective.get_roundend_suffix()]"
 		count++
 	return objective_parts.Join("<br>")
 

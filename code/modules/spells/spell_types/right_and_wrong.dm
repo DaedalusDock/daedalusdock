@@ -39,7 +39,6 @@ GLOBAL_LIST_INIT(summoned_guns, list(
 	/obj/item/gun/energy/pulse/carbine,
 	/obj/item/gun/energy/decloner,
 	/obj/item/gun/energy/mindflayer,
-	/obj/item/gun/energy/recharge/kinetic_accelerator,
 	/obj/item/gun/energy/plasmacutter/adv,
 	/obj/item/gun/energy/wormhole_projector,
 	/obj/item/gun/ballistic/automatic/wt550,
@@ -76,9 +75,7 @@ GLOBAL_LIST_INIT(summoned_magic, list(
 	/obj/item/gun/magic/staff/healing,
 	/obj/item/gun/magic/staff/door,
 	/obj/item/scrying,
-	/obj/item/warpwhistle,
-	/obj/item/immortality_talisman,
-	/obj/item/melee/ghost_sword))
+	/obj/item/warpwhistle))
 
 GLOBAL_LIST_INIT(summoned_special_magic, list(
 	/obj/item/gun/magic/staff/change,
@@ -92,8 +89,6 @@ GLOBAL_LIST_INIT(summoned_special_magic, list(
 GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	/obj/item/antag_spawner/contract,
 	/obj/item/gun/magic,
-	/obj/item/immortality_talisman,
-	/obj/item/melee/ghost_sword,
 	/obj/item/necromantic_stone,
 	/obj/item/scrying,
 	/obj/item/spellbook,
@@ -188,7 +183,7 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	if(GLOB.summon_magic)
 		GLOB.summon_magic.survivor_probability = survivor_probability
 	else
-		GLOB.summon_magic = new /datum/summon_things_controller(/proc/give_magic, survivor_probability)
+		GLOB.summon_magic = new /datum/summon_things_controller(GLOBAL_PROC_REF(give_magic), survivor_probability)
 	GLOB.summon_magic.give_out_gear()
 
 /*
@@ -208,7 +203,7 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	if(GLOB.summon_guns)
 		GLOB.summon_guns.survivor_probability = survivor_probability
 	else
-		GLOB.summon_guns = new /datum/summon_things_controller(/proc/give_guns, survivor_probability)
+		GLOB.summon_guns = new /datum/summon_things_controller(GLOBAL_PROC_REF(give_guns), survivor_probability)
 	GLOB.summon_guns.give_out_gear()
 
 /*
@@ -268,7 +263,7 @@ GLOBAL_LIST_INIT(summoned_magic_objectives, list(
 	src.survivor_probability = survivor_probability
 	src.give_proc_path = give_proc_path
 
-	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, .proc/gear_up_new_crew)
+	RegisterSignal(SSdcs, COMSIG_GLOB_CREWMEMBER_JOINED, PROC_REF(gear_up_new_crew))
 
 /datum/summon_things_controller/Destroy(force, ...)
 	. = ..()

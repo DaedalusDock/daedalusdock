@@ -65,11 +65,9 @@
 	if(disk_flags & DISK_BUDGET)
 		progs_to_store += new /datum/computer_file/program/budgetorders(src)
 
-	/*if(disk_flags & DISK_STATUS)
-		progs_to_store += new /datum/computer_file/program/status(src)*/
+	if(disk_flags & DISK_STATUS)
+		progs_to_store += new /datum/computer_file/program/status(src)
 
-	if(disk_flags & DISK_SCI)
-		progs_to_store += new /datum/computer_file/program/science(src)
 
 	for (var/datum/computer_file/program/prog in progs_to_store)
 		prog.usage_flags = PROGRAM_ALL

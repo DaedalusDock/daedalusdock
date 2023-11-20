@@ -1,5 +1,3 @@
-#define PROB_MOUSE_SPAWN 98
-
 SUBSYSTEM_DEF(minor_mapping)
 	name = "Minor Mapping"
 	init_order = INIT_ORDER_MINOR_MAPPING
@@ -10,29 +8,23 @@ SUBSYSTEM_DEF(minor_mapping)
 	place_satchels()
 	return ..()
 
-/datum/controller/subsystem/minor_mapping/proc/trigger_migration(num_mice=10)
-	var/list/exposed_wires = find_exposed_wires()
+/datum/controller/subsystem/minor_mapping/proc/trigger_migration(num_pests=10)
+	//this list could use some more mobs
+	var/list/spawn_list = list(
+		/mob/living/simple_animal/mouse = 5,
+		/mob/living/basic/cockroach = 2,
+		/mob/living/simple_animal/slug = 2,
+	)
 
-	var/mob/living/simple_animal/mouse/mouse
-	var/turf/open/proposed_turf
+	var/list/landmarks = list()
+	for(var/obj/effect/landmark/pestspawn/C in GLOB.landmarks_list)
+		landmarks += C
 
-
-	while((num_mice > 0) && exposed_wires.len)
-		proposed_turf = pick_n_take(exposed_wires)
-
-		if(!istype(proposed_turf))
-			continue
-
-		if(prob(PROB_MOUSE_SPAWN))
-			if(!mouse)
-				mouse = new(proposed_turf)
-			else
-				mouse.forceMove(proposed_turf)
-		else
-			mouse = new /mob/living/simple_animal/hostile/regalrat/controlled(proposed_turf)
-		if(proposed_turf.return_air().hasGas(GAS_OXYGEN, 5))
-			num_mice -= 1
-			mouse = null
+	while(num_pests > 0 && length(landmarks))
+		var/obj/effect/landmark/pestspawn/S = pick_n_take(landmarks)
+		var/mob/living/pickedpest = pick_weight(spawn_list)
+		pickedpest = new pickedpest (S.loc)
+		num_pests -= 1
 
 /datum/controller/subsystem/minor_mapping/proc/place_satchels(amount=10)
 	var/list/turfs = find_satchel_suitable_turfs()
@@ -67,5 +59,3 @@ SUBSYSTEM_DEF(minor_mapping)
 				suitable += detected_turf
 
 	return shuffle(suitable)
-
-#undef PROB_MOUSE_SPAWN

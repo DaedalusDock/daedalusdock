@@ -12,20 +12,25 @@
 	var/broken = FALSE
 
 /obj/structure/Initialize(mapload)
-	if (!armor)
-		armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	. = ..()
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+
+	#ifdef UNIT_TESTS
+	ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_groups)
+	ASSERT_SORTED_SMOOTHING_GROUPS(canSmoothWith)
+	#endif
+
+	SETUP_SMOOTHING()
+	if(!isnull(smoothing_flags))
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 		if(smoothing_flags & SMOOTH_CORNERS)
 			icon_state = ""
+
 	GLOB.cameranet.updateVisibility(src)
 
 /obj/structure/Destroy()
 	GLOB.cameranet.updateVisibility(src)
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
-		QUEUE_SMOOTH_NEIGHBORS(src)
+	QUEUE_SMOOTH_NEIGHBORS(src)
 	return ..()
 
 /obj/structure/ui_act(action, params)
@@ -62,3 +67,64 @@
 		take_damage(power/8000, BURN, "energy")
 	power -= power/2000 //walls take a lot out of ya
 	. = ..()
+
+/obj/structure/onZImpact(turf/impacted_turf, levels, message)
+	. = ..()
+	var/atom/highest
+	for(var/atom/movable/hurt_atom as anything in impacted_turf)
+		if(hurt_atom == src)
+			continue
+		if(!hurt_atom.density)
+			continue
+		if(isobj(hurt_atom) || ismob(hurt_atom))
+			if(hurt_atom.layer > highest?.layer)
+				highest = hurt_atom
+
+	if(!highest)
+		return
+
+	if(isobj(highest))
+		var/obj/O = highest
+		if(!O.uses_integrity)
+			return
+		O.take_damage(80 * levels)
+
+	if(ismob(highest))
+		var/mob/living/L = highest
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		L.apply_damage(80 * levels, blocked = armor, spread_damage = TRUE)
+		L.Paralyze(10 SECONDS)
+
+	visible_message(span_warning("[src] slams into [highest] from above!"))
+
+/obj/structure/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(!user.combat_mode)
+		return
+	if(!grab.target_zone == BODY_ZONE_HEAD)
+		return
+	if (!grab.current_grab.enable_violent_interactions)
+		to_chat(user, span_warning("You need a better grip to do that!"))
+		return TRUE
+
+	var/mob/living/affecting_mob = grab.get_affecting_mob()
+	if(!istype(affecting_mob))
+		to_chat(user, span_warning("You need to be grabbing a living creature to do that!"))
+		return TRUE
+
+	// Slam their face against the table.
+	var/blocked = affecting_mob.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	if (prob(30 * ((100-blocked)/100)))
+		affecting_mob.Knockdown(10 SECONDS)
+
+	affecting_mob.apply_damage(30, BRUTE, BODY_ZONE_HEAD, blocked)
+	visible_message(span_danger("<b>[user]</b> slams <b>[affecting_mob]</b>'s face against \the [src]!"))
+	playsound(loc, 'sound/items/trayhit1.ogg', 50, 1)
+
+	take_damage(rand(1,5), BRUTE)
+	for(var/obj/item/shard/S in loc)
+		if(prob(50))
+			affecting_mob.visible_message(span_danger("\The [S] slices into [affecting_mob]'s face!"), span_danger("\The [S] slices into your face!"))
+			S.melee_attack_chain(user, victim, params)
+	qdel(grab)
+	return TRUE

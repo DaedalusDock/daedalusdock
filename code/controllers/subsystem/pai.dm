@@ -44,7 +44,7 @@ SUBSYSTEM_DEF(pai)
 	to_chat(user, span_notice("You have requested pAI assistance."))
 	var/mutable_appearance/alert_overlay = mutable_appearance('icons/obj/aicards.dmi', "pai")
 	notify_ghosts("[user] is requesting a pAI personality! Use the pAI button to submit yourself as one.", source=user, alert_overlay = alert_overlay, action=NOTIFY_ORBIT, header="pAI Request!", ignore_key = POLL_IGNORE_PAI)
-	addtimer(CALLBACK(src, .proc/request_again), 10 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(request_again)), 10 SECONDS)
 	return TRUE
 
 /**
@@ -144,7 +144,7 @@ SUBSYSTEM_DEF(pai)
 		if(!paicard.pai)
 			paicard.alertUpdate()
 	to_chat(usr, span_notice("Your pAI candidacy has been submitted!"))
-	addtimer(CALLBACK(src, .proc/submit_again), 10 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(submit_again)), 10 SECONDS)
 	return TRUE
 
 /datum/controller/subsystem/pai/proc/request_again()

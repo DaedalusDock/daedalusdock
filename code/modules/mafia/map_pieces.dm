@@ -26,7 +26,7 @@
 		MF = create_mafia_game()
 	MF.ui_interact(user)
 
-/area/mafia
+/area/centcom/mafia
 	name = "Mafia Minigame"
 	icon_state = "mafia"
 	static_lighting = FALSE
@@ -49,11 +49,6 @@
 	name = "Syndicate Megastation"
 	description = "Yes, it's a very confusing day at the Megastation. Will the syndicate conflict resolution operatives succeed?"
 	mappath = "_maps/map_files/Mafia/mafia_syndie.dmm"
-
-/datum/map_template/mafia/lavaland
-	name = "Lavaland Excursion"
-	description = "The station has no idea what's going down on lavaland right now, we got changelings... traitors, and worst of all... lawyers roleblocking you every night."
-	mappath = "_maps/map_files/Mafia/mafia_lavaland.dmm"
 
 /datum/map_template/mafia/ufo
 	name = "Alien Mothership"

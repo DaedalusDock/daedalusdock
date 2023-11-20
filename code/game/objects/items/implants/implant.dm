@@ -10,6 +10,10 @@
 	// If the implant needs no action button, then null this out.
 	// Or, if you want to add a unique action button, then replace this.
 	actions_types = list(/datum/action/item_action/hands_free/activate)
+
+	/// Flags for behavior
+	var/implant_flags = NONE
+
 	///the mob that's implanted with this
 	var/mob/living/imp_in = null
 	///implant color, used for selecting either the "b" version or the "r" version of the implant case sprite when the implant is in a case.
@@ -24,7 +28,7 @@
 	SEND_SIGNAL(src, COMSIG_IMPLANT_ACTIVATED)
 
 /obj/item/implant/ui_action_click()
-	INVOKE_ASYNC(src, .proc/activate, "action_button")
+	INVOKE_ASYNC(src, PROC_REF(activate), "action_button")
 
 /obj/item/implant/item_action_slot_check(slot, mob/user)
 	return user == imp_in
@@ -54,12 +58,18 @@
  * * silent - unused here
  * * force - if true, implantation will not fail if can_be_implanted_in returns false
  */
-/obj/item/implant/proc/implant(mob/living/target, mob/user, silent = FALSE, force = FALSE)
+/obj/item/implant/proc/implant(mob/living/target, mob/user, body_zone, silent = FALSE, force = FALSE)
 	if(SEND_SIGNAL(src, COMSIG_IMPLANT_IMPLANTING, args) & COMPONENT_STOP_IMPLANTING)
 		return
 	LAZYINITLIST(target.implants)
 	if(!force && !can_be_implanted_in(target))
 		return FALSE
+
+	var/obj/item/bodypart/BP
+	if(ishuman(target))
+		BP = target.get_bodypart(body_zone)
+		if(!BP)
+			return FALSE
 
 	for(var/X in target.implants)
 		var/obj/item/implant/other_implant = X
@@ -75,7 +85,7 @@
 			qdel(other_implant)
 			continue
 
-		if(!istype(other_implant, type) || allow_multiple)
+		if(!istype(other_implant, type) || !(implant_flags & IMPLANT_HIGHLANDER))
 			continue
 
 		if(other_implant.uses < initial(other_implant.uses)*2)
@@ -96,6 +106,10 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/target_human = target
 		target_human.sec_hud_set_implants()
+
+		if(BP.cavity_name)
+			forceMove(BP)
+			BP.add_cavity_item(src)
 
 	if(user)
 		log_combat(user, target, "implanted", "\a [name]")

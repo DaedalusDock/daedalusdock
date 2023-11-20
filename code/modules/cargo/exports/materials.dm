@@ -65,11 +65,6 @@
 	material_id = /datum/material/titanium
 	message = "cm3 of titanium"
 
-/datum/export/material/adamantine
-	cost = CARGO_CRATE_VALUE
-	material_id = /datum/material/adamantine
-	message = "cm3 of adamantine"
-
 /datum/export/material/mythril
 	cost = CARGO_CRATE_VALUE * 3
 	material_id = /datum/material/mythril

@@ -7,11 +7,15 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#d7b088"
+	selection_color = "#15381b"
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SUPPLY
 	exp_granted_type = EXP_TYPE_CREW
+
+	employers = list(
+		/datum/employer/hermes
+	)
 
 	outfits = list(
 		"Default" = list(
@@ -25,7 +29,6 @@
 
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM)
 
-	display_order = JOB_DISPLAY_ORDER_QUARTERMASTER
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,

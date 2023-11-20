@@ -42,7 +42,7 @@
 		icon_state = initial(icon_state)
 	return ..()
 
-/obj/machinery/transformer/Bumped(atom/movable/AM)
+/obj/machinery/transformer/BumpedBy(atom/movable/AM)
 	if(cooldown == 1)
 		return
 
@@ -102,7 +102,7 @@
 		R.set_connected_ai(masterAI)
 		R.lawsync()
 		R.lawupdate = TRUE
-	addtimer(CALLBACK(src, .proc/unlock_new_robot, R), 50)
+	addtimer(CALLBACK(src, PROC_REF(unlock_new_robot), R), 50)
 
 /obj/machinery/transformer/proc/unlock_new_robot(mob/living/silicon/robot/R)
 	playsound(src.loc, 'sound/machines/ping.ogg', 50, FALSE)

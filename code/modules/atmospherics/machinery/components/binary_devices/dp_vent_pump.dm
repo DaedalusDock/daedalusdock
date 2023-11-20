@@ -62,7 +62,7 @@
 	var/datum/gas_mixture/air1 = airs[1]
 	var/datum/gas_mixture/air2 = airs[2]
 
-	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/environment = loc.unsafe_return_air() //We SAFE_ZAS_UPDATE later!
 	var/environment_pressure = environment.returnPressure()
 
 	if(pump_direction) //input -> external
@@ -101,7 +101,7 @@
 			return
 		if(!environment.total_moles)
 			return
-		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta)
+		var/transfer_moles = calculate_transfer_moles(environment, air2, pressure_delta, parents[2]?.combined_volume || 0)
 
 		var/draw = pump_gas(environment, air2, transfer_moles, power_rating)
 		if(draw > -1)
@@ -109,7 +109,9 @@
 			parent2.update = TRUE
 			ATMOS_USE_POWER(draw)
 
-	//Radio remote control
+	SAFE_ZAS_UPDATE(loc)
+
+//Radio remote control
 
 /**
  * Called in atmos_init(), used to change or remove the radio frequency from the component
@@ -152,6 +154,10 @@
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
+	if(("status" in signal.data)) //Send stauts and early return, I'm cargoculting the timer here.
+		broadcast_status()
+		return
+
 	if("power" in signal.data)
 		on = text2num(signal.data["power"])
 
@@ -181,10 +187,10 @@
 	if("set_external_pressure" in signal.data)
 		external_pressure_bound = clamp(text2num(signal.data["set_external_pressure"]),0,MAX_PUMP_PRESSURE)
 
-	addtimer(CALLBACK(src, .proc/broadcast_status), 2)
+	addtimer(CALLBACK(src, PROC_REF(broadcast_status)), 2)
+	update_appearance()
 
-	if(!("status" in signal.data)) //do not update_appearance
-		update_appearance()
+
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume
 	name = "large dual-port air vent"
@@ -219,10 +225,6 @@
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/incinerator_atmos
 	id = INCINERATOR_ATMOS_DP_VENTPUMP
-	frequency = FREQ_AIRLOCK_CONTROL
-
-/obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/incinerator_syndicatelava
-	id = INCINERATOR_SYNDICATELAVA_DP_VENTPUMP
 	frequency = FREQ_AIRLOCK_CONTROL
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/layer2

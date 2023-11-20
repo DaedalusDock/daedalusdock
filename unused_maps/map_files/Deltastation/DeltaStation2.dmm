@@ -4679,22 +4679,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/grimy,
 /area/ai_monitored/turret_protected/aisat_interior)
-"bhx" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/rnd/production/protolathe/department/engineering,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/machinery/light/directional/north,
-/obj/effect/turf_decal/bot,
-/obj/machinery/camera/directional/north{
-	c_tag = "Engineering - Shared Storage";
-	name = "engineering camera"
-	},
-/turf/open/floor/iron/dark,
-/area/engineering/storage_shared)
 "bhN" = (
 /obj/structure/table,
 /obj/item/crowbar,
@@ -14294,15 +14278,6 @@
 	},
 /turf/open/floor/iron,
 /area/science/lab)
-"dcK" = (
-/obj/machinery/status_display/ai/directional/east,
-/obj/machinery/light/directional/east,
-/obj/machinery/rnd/production/protolathe/department/science,
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/iron,
-/area/science/lab)
 "dcM" = (
 /turf/closed/wall,
 /area/medical/chemistry)
@@ -22768,7 +22743,7 @@
 "evi" = (
 /obj/machinery/vending/wallmed/directional/north,
 /obj/structure/table/glass,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 1
 	},
@@ -38009,14 +37984,6 @@
 	},
 /turf/open/floor/carpet/red,
 /area/hallway/secondary/service)
-"iPT" = (
-/obj/structure/table/wood/fancy,
-/obj/item/book/granter/action/spell/smoke/lesser,
-/obj/item/nullrod,
-/obj/item/organ/internal/heart,
-/obj/item/reagent_containers/food/drinks/bottle/holywater,
-/turf/open/floor/iron/grimy,
-/area/service/chapel/office)
 "iPX" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -40989,6 +40956,22 @@
 /obj/item/pen,
 /turf/open/floor/iron/grimy,
 /area/command/bridge)
+"jIc" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/rnd/production/fabricator/department/engineering,
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/machinery/light/directional/north,
+/obj/effect/turf_decal/bot,
+/obj/machinery/camera/directional/north{
+	c_tag = "Engineering - Shared Storage";
+	name = "engineering camera"
+	},
+/turf/open/floor/iron/dark,
+/area/engineering/storage_shared)
 "jId" = (
 /obj/structure/table/wood,
 /obj/item/lipstick/random{
@@ -42068,7 +42051,7 @@
 /area/service/library)
 "kaN" = (
 /obj/structure/rack,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/suture,
 /obj/item/stack/medical/mesh,
 /obj/item/reagent_containers/syringe/epinephrine{
@@ -44268,7 +44251,7 @@
 /area/service/kitchen)
 "kKz" = (
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/ai_upload";
+	control_area = "/area/station/ai_monitored/turret_protected/ai_upload";
 	icon_state = "control_stun";
 	name = "AI Upload turret control";
 	pixel_y = -32
@@ -56446,7 +56429,7 @@
 	pixel_x = -4;
 	pixel_y = 8
 	},
-/obj/item/stack/medical/gauze{
+/obj/item/stack/gauze{
 	pixel_x = 8
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -58408,7 +58391,7 @@
 /area/service/library)
 "oSE" = (
 /obj/structure/table,
-/obj/item/stack/medical/gauze,
+/obj/item/stack/gauze,
 /obj/item/stack/medical/suture,
 /obj/item/stack/medical/mesh,
 /obj/effect/turf_decal/tile/blue{
@@ -74475,6 +74458,15 @@
 /obj/structure/chair/stool/directional/south,
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
+"twY" = (
+/obj/machinery/status_display/ai/directional/east,
+/obj/machinery/light/directional/east,
+/obj/machinery/rnd/production/fabricator/department/science,
+/obj/effect/turf_decal/stripes/line{
+	dir = 5
+	},
+/turf/open/floor/iron,
+/area/science/lab)
 "txm" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -75787,7 +75779,7 @@
 /turf/open/floor/iron/grimy,
 /area/service/abandoned_gambling_den)
 "tUA" = (
-/obj/machinery/gravity_generator/main/station,
+/obj/machinery/gravity_generator/main,
 /obj/effect/turf_decal/bot_white,
 /obj/effect/turf_decal/tile/neutral/half,
 /obj/effect/turf_decal/tile/neutral/half{
@@ -77090,7 +77082,7 @@
 "upp" = (
 /obj/item/kirbyplants/random,
 /obj/machinery/turretid{
-	control_area = "/area/ai_monitored/turret_protected/aisat_interior";
+	control_area = "/area/station/ai_monitored/turret_protected/aisat_interior";
 	name = "Antechamber Turret Control";
 	pixel_x = -32;
 	req_access = null;
@@ -77163,7 +77155,7 @@
 /turf/open/floor/iron,
 /area/medical/virology)
 "uqa" = (
-/obj/machinery/power/supermatter_crystal,
+/obj/machinery/power/supermatter,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible/layer4,
 /turf/open/floor/engine,
@@ -87430,6 +87422,14 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/theater)
+"xBV" = (
+/obj/structure/table/wood/fancy,
+/obj/item/book/granter/action/spell/smoke/lesser,
+/obj/item/nullrod,
+/obj/item/organ/heart,
+/obj/item/reagent_containers/food/drinks/bottle/holywater,
+/turf/open/floor/iron/grimy,
+/area/service/chapel/office)
 "xBY" = (
 /obj/effect/landmark/start/chief_medical_officer,
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -113897,7 +113897,7 @@ sQL
 vjs
 dkA
 fcL
-bhx
+jIc
 qDz
 mks
 cBF
@@ -122990,7 +122990,7 @@ voB
 rEg
 jfi
 nPB
-iPT
+xBV
 nPB
 xxi
 qJg
@@ -128083,7 +128083,7 @@ rVg
 ylh
 cZm
 mcx
-dcK
+twY
 dej
 cZm
 dgQ

@@ -55,7 +55,7 @@
 	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null //this mind's antag HUD
 	var/holy_role = NONE //is this person a chaplain or admin role allowed to use bibles, Any rank besides 'NONE' allows for this.
 
-	var/mob/living/enslaved_to //If this mind's master is another mob (i.e. adamantine golems)
+	var/mob/living/enslaved_to //If this mind's master is another mob
 	var/datum/language_holder/language_holder
 	var/unconvertable = FALSE
 	var/late_joiner = FALSE
@@ -123,7 +123,7 @@
 		UnregisterSignal(src, COMSIG_PARENT_QDELETING)
 	current = new_current
 	if(current)
-		RegisterSignal(src, COMSIG_PARENT_QDELETING, .proc/clear_current)
+		RegisterSignal(src, COMSIG_PARENT_QDELETING, PROC_REF(clear_current))
 
 /datum/mind/proc/clear_current(datum/source)
 	SIGNAL_HANDLER
@@ -164,7 +164,7 @@
 		var/mob/living/carbon/C = new_character
 		C.last_mind = src
 	transfer_martial_arts(new_character)
-	RegisterSignal(new_character, COMSIG_LIVING_DEATH, .proc/set_death_time)
+	RegisterSignal(new_character, COMSIG_LIVING_DEATH, PROC_REF(set_death_time))
 	if(active || force_key_move)
 		new_character.key = key //now transfer the key to link the client to our new body
 	if(new_character.client)
@@ -289,7 +289,7 @@
 	var/datum/team/antag_team = A.get_team()
 	if(antag_team)
 		antag_team.add_member(src)
-	INVOKE_ASYNC(A, /datum/antagonist.proc/on_gain)
+	INVOKE_ASYNC(A, TYPE_PROC_REF(/datum/antagonist, on_gain))
 	log_game("[key_name(src)] has gained antag datum [A.name]([A.type])")
 	return A
 
@@ -414,7 +414,7 @@
 
 	if(implant)
 		var/obj/item/implant/uplink/starting/new_implant = new(traitor_mob)
-		new_implant.implant(traitor_mob, null, silent = TRUE)
+		new_implant.implant(traitor_mob, null, BODY_ZONE_CHEST, silent = TRUE)
 		if(!silent)
 			to_chat(traitor_mob, span_boldnotice("Your Syndicate Uplink has been cunningly implanted in you, for a small TC fee. Simply trigger the uplink to access it."))
 		return new_implant
@@ -426,6 +426,9 @@
 		CRASH("Uplink creation failed.")
 	new_uplink.setup_unlock_code()
 	new_uplink.uplink_handler.owner = traitor_mob.mind
+	if(isturf(new_uplink.uplink_handler))
+		stack_trace("what")
+
 	new_uplink.uplink_handler.assigned_role = traitor_mob.mind.assigned_role.title
 	new_uplink.uplink_handler.assigned_species = traitor_mob.dna.species.id
 	if(uplink_loc == R)
@@ -712,7 +715,7 @@
 					log_admin("[key_name(usr)] gave [current] an uplink.")
 
 	else if (href_list["obj_announce"])
-		announce_objectives()
+		announce_objectives(TRUE)
 
 	//Something in here might have changed your mob
 	if(self_antagging && (!usr || !usr.client) && current.client)
@@ -726,12 +729,26 @@
 		all_objectives |= A.objectives
 	return all_objectives
 
-/datum/mind/proc/announce_objectives()
+/// Prints the objectives to the mind's owner. If loudly is true, instead open a window.
+/datum/mind/proc/announce_objectives(loudly)
 	var/obj_count = 1
-	to_chat(current, span_notice("Your current objectives:"))
-	for(var/datum/objective/objective as anything in get_all_objectives())
-		to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
-		obj_count++
+	if(!loudly)
+		to_chat(current, span_notice("Your current objectives:"))
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
+			obj_count++
+	else
+		var/list/content = list("<div>")
+		content +="<span style='text-align: center;color: red'><h1>Your objectives may have been changed!</h1></span><br><br>"
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			content += "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]<br><br>"
+			obj_count++
+
+		content += "</div>"
+		var/datum/browser/popup = new(current, "Objectives", "Objectives", 700, 300)
+		popup.set_window_options("can_close=1;can_minimize=10;can_maximize=0;can_resize=0;titlebar=1;")
+		popup.set_content(jointext(content, ""))
+		popup.open(current)
 
 /datum/mind/proc/find_syndicate_uplink(check_unlocked)
 	var/list/L = current.get_all_contents()
@@ -851,13 +868,6 @@
 		CRASH("set_assigned_role called with invalid role: [isnull(new_role) ? "null" : new_role]")
 	. = assigned_role
 	assigned_role = new_role
-
-/// Simple proc to make someone become contractor support
-/datum/mind/proc/make_contractor_support()
-	if(has_antag_datum(/datum/antagonist/traitor/contractor_support))
-		return
-	add_antag_datum(/datum/antagonist/traitor/contractor_support)
-
 
 /mob/dead/new_player/sync_mind()
 	return

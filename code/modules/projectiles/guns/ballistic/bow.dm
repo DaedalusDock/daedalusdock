@@ -14,7 +14,10 @@
 	weapon_weight = WEAPON_HEAVY
 	w_class = WEIGHT_CLASS_BULKY
 	internal_magazine = TRUE
+	cartridge_wording = "arrow"
 	bolt_type = BOLT_TYPE_NO_BOLT
+	recoil = 0 // Bows don't have recoil.
+
 	var/drawn = FALSE
 
 /obj/item/gun/ballistic/bow/update_icon_state()
@@ -68,6 +71,7 @@
 	name = "arrow"
 	desc = "Stabby Stabman!"
 	icon_state = "arrow"
+	inhand_icon_state = "arrow"
 	flags_1 = NONE
 	throwforce = 1
 	projectile_type = /obj/projectile/bullet/reusable/arrow
@@ -77,7 +81,7 @@
 
 /obj/item/ammo_casing/caseless/arrow/despawning/dropped()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/floor_vanish), 5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(floor_vanish)), 5 SECONDS)
 
 /obj/item/ammo_casing/caseless/arrow/despawning/proc/floor_vanish()
 	if(isturf(loc))
@@ -97,7 +101,7 @@
 	name = "quiver"
 	desc = "Holds arrows for your bow. Good, because while pocketing arrows is possible, it surely can't be pleasant."
 	icon_state = "quiver"
-	inhand_icon_state = "quiver"
+	inhand_icon_state = null
 	worn_icon_state = "harpoon_quiver"
 	var/arrow_path = /obj/item/ammo_casing/caseless/arrow
 

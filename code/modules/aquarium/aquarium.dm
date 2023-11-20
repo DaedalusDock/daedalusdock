@@ -43,7 +43,7 @@
 /obj/structure/aquarium/Initialize(mapload)
 	. = ..()
 	update_appearance()
-	RegisterSignal(src,COMSIG_PARENT_ATTACKBY, .proc/feed_feedback)
+	RegisterSignal(src,COMSIG_PARENT_ATTACKBY, PROC_REF(feed_feedback))
 
 /obj/structure/aquarium/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
@@ -101,7 +101,7 @@
 	. += span_notice("Alt-click to [panel_open ? "close" : "open"] the control panel.")
 
 /obj/structure/aquarium/AltClick(mob/user)
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return ..()
 	panel_open = !panel_open
 	update_appearance()
@@ -142,53 +142,36 @@
 	return NONE
 
 /obj/structure/aquarium/interact(mob/user)
-	if(!broken && user.pulling && isliving(user.pulling))
-		var/mob/living/living_pulled = user.pulling
-		var/datum/component/aquarium_content/content_component = living_pulled.GetComponent(/datum/component/aquarium_content)
-		if(content_component && content_component.is_ready_to_insert(src))
-			try_to_put_mob_in(user)
-	else if(panel_open)
+	if(panel_open)
 		. = ..() //call base ui_interact
-	else
-		admire(user)
+
+/obj/structure/aquarium/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(broken || !isliving(victim))
+		return
+
+	var/mob/living/living_pulled = victim
+	var/datum/component/aquarium_content/content_component = living_pulled.GetComponent(/datum/component/aquarium_content)
+	if(content_component && content_component.is_ready_to_insert(src))
+		try_to_put_mob_in(user, grab)
 
 /// Tries to put mob pulled by the user in the aquarium after a delay
-/obj/structure/aquarium/proc/try_to_put_mob_in(mob/user)
-	if(user.pulling && isliving(user.pulling))
-		var/mob/living/living_pulled = user.pulling
-		if(living_pulled.buckled || living_pulled.has_buckled_mobs())
-			to_chat(user, span_warning("[living_pulled] is attached to something!"))
-			return
-		user.visible_message(span_danger("[user] starts to put [living_pulled] into [src]!"))
-		if(do_after(user, src, 10 SECONDS))
-			if(QDELETED(living_pulled) || user.pulling != living_pulled || living_pulled.buckled || living_pulled.has_buckled_mobs())
-				return
-			var/datum/component/aquarium_content/content_component = living_pulled.GetComponent(/datum/component/aquarium_content)
-			if(content_component || content_component.is_ready_to_insert(src))
-				return
-			user.visible_message(span_danger("[user] stuffs [living_pulled] into [src]!"))
-			living_pulled.forceMove(src)
-			update_appearance()
+/obj/structure/aquarium/proc/try_to_put_mob_in(mob/living/user, obj/item/hand_item/grab/G)
+	var/mob/living/living_pulled = G.affecting
+	if(living_pulled.buckled || living_pulled.has_buckled_mobs())
+		to_chat(user, span_warning("[living_pulled] is attached to something!"))
+		return
+	user.visible_message(span_danger("[user] starts to put [living_pulled] into [src]!"))
 
-///Apply mood bonus depending on aquarium status
-/obj/structure/aquarium/proc/admire(mob/user)
-	to_chat(user,span_notice("You take a moment to watch [src]."))
-	if(do_after(user, src, 5 SECONDS))
-		var/alive_fish = 0
-		var/dead_fish = 0
-		for(var/obj/item/fish/fish in tracked_fish)
-			if(fish.status == FISH_ALIVE)
-				alive_fish++
-			else
-				dead_fish++
-		//Check if there are live fish - good mood
-		//All fish dead - bad mood.
-		//No fish - nothing.
-		if(alive_fish > 0)
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "aquarium", /datum/mood_event/aquarium_positive)
-		else if(dead_fish > 0)
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "aquarium", /datum/mood_event/aquarium_negative)
-		// Could maybe scale power of this mood with number/types of fish
+	if(do_after(user, src, 10 SECONDS))
+		if(QDELETED(living_pulled) || !user.is_grabbing(living_pulled) || living_pulled.buckled || living_pulled.has_buckled_mobs())
+			return
+		var/datum/component/aquarium_content/content_component = living_pulled.GetComponent(/datum/component/aquarium_content)
+		if(content_component || content_component.is_ready_to_insert(src))
+			return
+		user.visible_message(span_danger("[user] stuffs [living_pulled] into [src]!"))
+		living_pulled.forceMove(src)
+		update_appearance()
 
 /obj/structure/aquarium/ui_data(mob/user)
 	. = ..()

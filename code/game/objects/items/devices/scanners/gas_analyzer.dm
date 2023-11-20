@@ -34,7 +34,7 @@
 /obj/item/analyzer/AltClick(mob/user) //Barometer output for measuring when the next storm happens
 	..()
 
-	if(user.canUseTopic(src, BE_CLOSE))
+	if(user.canUseTopic(src, USE_CLOSE))
 		if(cooldown)
 			to_chat(user, span_warning("[src]'s barometer function is preparing itself."))
 			return
@@ -73,7 +73,7 @@
 			else
 				to_chat(user, span_warning("[src]'s barometer function says a storm will land in approximately [butchertime(fixed)]."))
 		cooldown = TRUE
-		addtimer(CALLBACK(src,/obj/item/analyzer/proc/ping), cooldown_time)
+		addtimer(CALLBACK(src,TYPE_PROC_REF(/obj/item/analyzer, ping)), cooldown_time)
 
 /obj/item/analyzer/proc/ping()
 	if(isliving(loc))
@@ -150,10 +150,10 @@
 			message += span_boldnotice("Node [mix_number]")
 			mix_name += " - Node [mix_number]"
 
-		var/total_moles = air.get_moles()
+		var/total_moles = air.total_moles
 		var/pressure = air.returnPressure()
 		var/volume = air.get_volume() //could just do mixture.volume... but safety, I guess?
-		var/temperature = air.get_temperature()
+		var/temperature = air.temperature
 
 		if(total_moles > 0)
 			message += span_notice("Moles: [round(total_moles, 0.01)] mol")

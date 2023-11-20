@@ -102,17 +102,17 @@
 	if(SEND_SIGNAL(src, COMSIG_MOVABLE_PREBUCKLE, M, force, buckle_mob_flags) & COMPONENT_BLOCK_BUCKLE)
 		return FALSE
 
-	if(M.pulledby)
+	if(LAZYLEN(M.grabbed_by))
 		if(buckle_prevents_pull)
-			M.pulledby.stop_pulling()
-		else if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
-			L.reset_pull_offsets(M, TRUE)
+			M.free_from_all_grabs()
+
+		else if(LAZYLEN(grabbed_by))
+			M.reset_pull_offsets(TRUE)
 
 	if(anchored)
 		ADD_TRAIT(M, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
 	if(!length(buckled_mobs))
-		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, .proc/on_set_anchored)
+		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_set_anchored))
 	M.set_buckled(src)
 	buckled_mobs |= M
 	M.throw_alert(ALERT_BUCKLED, /atom/movable/screen/alert/buckled)
@@ -161,15 +161,13 @@
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UNBUCKLE, buckled_mob, force)
 
 	if(can_fall)
-		var/turf/location = buckled_mob.loc
-		if(istype(location) && !buckled_mob.currently_z_moving)
-			location.zFall(buckled_mob)
+		if(!buckled_mob.currently_z_moving)
+			buckled_mob.zFall()
 
 	post_unbuckle_mob(.)
 
 	if(!QDELETED(buckled_mob) && !buckled_mob.currently_z_moving && isturf(buckled_mob.loc)) // In the case they unbuckled to a flying movable midflight.
-		var/turf/pitfall = buckled_mob.loc
-		pitfall?.zFall(buckled_mob)
+		buckled_mob.zFall()
 
 /atom/movable/proc/on_set_anchored(atom/movable/source, anchorvalue)
 	SIGNAL_HANDLER
@@ -348,7 +346,6 @@
 				span_notice("You unbuckle yourself from [src]."),\
 				span_hear("You hear metal clanking."))
 		add_fingerprint(user)
-		if(isliving(M.pulledby))
-			var/mob/living/L = M.pulledby
-			L.set_pull_offsets(M, L.grab_state)
+
+		update_offsets()
 	return M

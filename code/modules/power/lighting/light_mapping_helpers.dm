@@ -9,7 +9,7 @@
 /obj/machinery/light/built/Initialize(mapload)
 	. = ..()
 	status = LIGHT_EMPTY
-	update(0)
+	update(FALSE, FALSE, FALSE)
 
 /obj/machinery/light/no_nightlight
 	nightshift_enabled = FALSE
@@ -21,8 +21,8 @@
 	nightshift_allowed = FALSE
 
 /obj/machinery/light/cold
-	bulb_colour = "#deefff"
-	nightshift_light_color = "#deefff"
+	bulb_colour = LIGHT_COLOR_FAINT_BLUE
+	nightshift_light_color = LIGHT_COLOR_FAINT_BLUE
 
 /obj/machinery/light/cold/no_nightlight
 	nightshift_allowed = FALSE
@@ -70,7 +70,7 @@
 /obj/machinery/light/small/built/Initialize(mapload)
 	. = ..()
 	status = LIGHT_EMPTY
-	update(0)
+	update(FALSE, FALSE, FALSE)
 
 /obj/machinery/light/small/red
 	bulb_colour = "#FF3232"

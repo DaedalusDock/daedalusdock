@@ -264,7 +264,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 			to_chat(summoner, "[span_danger("<B>Your [name] is under attack! You take damage!")]</B>")
 			summoner.visible_message(span_danger("<B>Blood sprays from [summoner] as [src] takes damage!</B>"))
 			switch(summoner.stat)
-				if(UNCONSCIOUS, HARD_CRIT)
+				if(UNCONSCIOUS)
 					to_chat(summoner, "[span_danger("<B>Your body can't take the strain of sustaining [src] in this condition, it begins to fall apart!")]</B>")
 					summoner.adjustCloneLoss(amount * 0.5) //dying hosts take 50% bonus damage as cloneloss
 		update_health_hud()
@@ -300,8 +300,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		held_items[index] = null
 		update_held_items()
 
-	if(I.pulledby)
-		I.pulledby.stop_pulling()
+	if(LAZYLEN(I.grabbed_by))
+		I.free_from_all_grabs()
 
 	I.screen_loc = null // will get moved if inventory is visible
 	I.forceMove(src)

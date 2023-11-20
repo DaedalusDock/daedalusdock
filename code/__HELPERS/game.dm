@@ -41,7 +41,7 @@
 
 		else if(istype(object_to_check, /mob/living/carbon))
 			var/mob/living/carbon/mob_to_check = object_to_check
-			for(var/organ in mob_to_check.internal_organs)
+			for(var/organ in mob_to_check.processing_organs)
 				found_organ = organ
 				found_organ.organ_flags ^= ORGAN_FROZEN
 
@@ -126,7 +126,7 @@
 /proc/flick_overlay(image/image_to_show, list/show_to, duration)
 	for(var/client/add_to in show_to)
 		add_to.images += image_to_show
-	addtimer(CALLBACK(GLOBAL_PROC, /proc/remove_images_from_clients, image_to_show, show_to), duration, TIMER_CLIENT_TIME)
+	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(remove_images_from_clients), image_to_show, show_to), duration, TIMER_CLIENT_TIME)
 
 ///wrapper for flick_overlay(), flicks to everyone who can see the target atom
 /proc/flick_overlay_view(image/image_to_show, atom/target, duration)
@@ -210,7 +210,8 @@
 		if(!candidate_mob.key || !candidate_mob.client || (ignore_category && GLOB.poll_ignore[ignore_category] && (candidate_mob.ckey in GLOB.poll_ignore[ignore_category])))
 			continue
 		if(be_special_flag)
-			if(!(candidate_mob.client.prefs) || !(be_special_flag in candidate_mob.client.prefs.be_special))
+			var/list/client_antags = candidate_mob.client?.prefs?.read_preference(/datum/preference/blob/antagonists)
+			if(!(client_antags?[be_special_flag]))
 				continue
 
 			var/required_time = GLOB.special_roles[be_special_flag] || 0
@@ -341,18 +342,6 @@
 
 	var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
 	announcer.announce("ARRIVAL", character.real_name, rank, list()) //make the list empty to make it announce it in common
-
-///Check if the turf pressure allows specialized equipment to work
-/proc/lavaland_equipment_pressure_check(turf/turf_to_check)
-	. = FALSE
-	if(!istype(turf_to_check))
-		return
-	var/datum/gas_mixture/environment = turf_to_check.return_air()
-	if(!istype(environment))
-		return
-	var/pressure = environment.returnPressure()
-	if(pressure <= LAVALAND_EQUIPMENT_EFFECT_PRESSURE)
-		. = TRUE
 
 ///Find an obstruction free turf that's within the range of the center. Can also condition on if it is of a certain area type.
 /proc/find_obstruction_free_location(range, atom/center, area/specific_area)

@@ -1,0 +1,110 @@
+2023-06-06:
+  Jacquerel:
+  - bugfix: Changing z-level while jaunting will no longer reveal you.
+  - bugfix: If a shuttle lands on you while jaunting you will die rather than be stuck
+      in a weird purgatory state.
+  - bugfix: Mirror Walk will not appear tinted as if it can be cast when it can't,
+      and vice versa.
+  - qol: Blood Crawl and Shadow Walk will now display whether you can use them or
+      not in the same manner as Mirror Walk.
+  - refactor: Jaunt code which adds and removes temporary traits or effects should
+      hopefully be easier to work with in the future.
+  Kapu1178:
+  - rscadd: HTML Prefs.
+  - rscadd: Loadout 2!
+  - code_imp: Nothin' to see here folks
+  - rscadd: Stamina regeration
+  - rscadd: Sprinting
+  - rscadd: Stamina damage during combat
+  - rscadd: Goon Softcrit
+  - imageadd: Retiled Metastation
+  VexingRaven:
+  - bugfix: Multi-Z Ruins work again (Ice Moon Mining Site spawns again with the Demonic
+      Frost Miner)
+  - bugfix: Soul Scythes can no longer phase through the floor into Centcom.
+  francinum:
+  - rscadd: Some reagents have gotten a new description
+  - refactor: Abstract reagents are no longer detected via a magic list
+  - code_imp: Instantiating an abstract reagent is now illegal and will error
+  - admin: Some reagents have disappeared from admin lists due to not being real
+2023-06-07:
+  Kapu1178:
+  - rscdel: H.A.R.S mutation
+  - bugfix: Force feeding works again
+2023-06-11:
+  Kapu1178:
+  - balance: Heads lost Telebatons and gained Flashes
+  - balance: Reduced the blast speed of heirophant's blasts.
+  - balance: Reduced the stamina cost of sprinting
+  - balance: Reduced the speed of sprinting
+  - qol: Sprinting no longer drains stamina if you aren't able to move in that direction.
+  - qol: The code initializes faster.
+  francinum:
+  - rscdel: Airlock controller UIs are reverted to HTML
+2023-06-14:
+  Kapu1178:
+  - rscadd: You can now climb up Z-levels if you're standing on an object and have
+      something to grip. Floors and lattice are both grippable.
+  - rscadd: You can now safely descend 1 Z-Level if you are on Walk intent.
+  - rscadd: You can now hear across Z-Levels. This means you can talk to eachother
+      from 1 floor away.
+  - qol: Improved audio-visual feedback when people fall down Z levels.
+  - refactor: Look Upwards and Look Downwards are not ass anymore.
+  - bugfix: Fixed a critical issue with Z-Mimic.
+  francinum:
+  - config: Lone Op disk security nagging can now be configured.
+2023-06-15:
+  chesse20:
+  - rscadd: A bunch of old loadout items
+  - rscadd: A few new masks
+  - bugfix: You can see which jobs let you use certain items
+2023-06-18:
+  JohnFulpWillard, LemonInTheDark, MTandi, SmArtKar, Mothblocks:
+  - refactor: JPS Pathfinding & Bot code.
+  Kapu1178:
+  - bugfix: Decapitation is now lethal again.
+  - bugfix: Tongueless speech works again.
+  - bugfix: Fabricators no longer get SLOWER with better parts
+  - qol: Fabricators now have a queue system.
+  - bugfix: Pref menu window somehow changed size?? Fixed
+  Kylerace:
+  - bugfix: Extremely rare and horrific bug relating to the spatial gridmap
+2023-06-19:
+  Kapu1178:
+  - bugfix: Transformations no longer ghost players due to deleting their brain.
+  - bugfix: Fabricators now animate correctly.
+  Spyroshark:
+  - qol: Mouse spawns are now mapped in, rather then spawning on exposed wires.
+  - rscadd: 'New Event: Animal Infestation. Comes in different variants, and includes
+      a hint as to what was spawned.'
+  - rscdel: Removed the Mice Migration event, replaced by Animal Infestation
+  - rscdel: Regal Rats no longer spawn roundstart.
+2023-06-22:
+  Kapu1178:
+  - tweak: You must expose your flesh to be healed by tend wounds.
+  - rscadd: You can now see player's jobs in the lobby.
+  - qol: Surgically attaching your head to a body no longer sends your brain to [DATA
+      EXPUNGED]
+  KylerAce, Kapu1178:
+  - code_imp: Verbs are now pushed back 1 tick to prevent overtime (lag)
+  Spyroshark:
+  - balance: Lavaland mobs no longer take reduced projectile or throwing damage.
+2023-06-25:
+  MrStonedOne:
+  - server: Security improvement.
+2023-06-26:
+  Kapu1178:
+  - bugfix: Disablers like, do stamina damage.
+  - bugfix: LOOC can be used while in soft crit
+  - tweak: Darkened the color of the Daedalus walls.
+  - balance: All air mixture values are rounded to 0.0001.
+  - rscadd: Augment Customization
+  - rscdel: Prosthetic Quirk
+2023-06-27:
+  Kapu1178:
+  - rscdel: Plumbing (FOR REAL)
+  - rscdel: Cytology
+  LemonInTheDark, Guillaume Prata:
+  - bugfix: Maps loaded post init will no longer randomly enter a failed state. Hopefully.
+  - qol: Be polite! While on walk intent you won't bump, swap places or push other
+      people now.

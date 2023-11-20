@@ -24,8 +24,6 @@
 	var/mob/living/carbon/human/affecting = null
 	///The suit's spark system, used for... sparking.
 	var/datum/effect_system/spark_spread/spark_system
-	///The suit's stored research.  Used for the research objective (see antagonist file)
-	var/datum/techweb/stored_research
 	///The katana registered with the suit, used for recalling and catching the katana.  Set when the ninja outfit is created.
 	var/obj/item/energy_katana/energyKatana
 
@@ -57,6 +55,9 @@
 	///Whether or not the adrenaline boost ability is available
 	var/a_boost = TRUE
 
+	/// Design theft objective
+	var/list/stored_designs = list()
+
 /obj/item/clothing/suit/space/space_ninja/examine(mob/user)
 	. = ..()
 	if(!s_initialized)
@@ -74,9 +75,6 @@
 	spark_system = new
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
-
-	//Research Init
-	stored_research = new()
 
 	//Cell Init
 	cell = new/obj/item/stock_parts/cell/high

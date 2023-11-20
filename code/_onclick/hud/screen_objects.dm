@@ -126,6 +126,7 @@
 	/// The overlay when hovering over with an item in your hand
 	var/image/object_overlay
 	plane = HUD_PLANE
+	mouse_drop_zone = TRUE
 
 /atom/movable/screen/inventory/Click(location, control, params)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
@@ -145,6 +146,23 @@
 
 	if(usr.attack_ui(slot_id, params))
 		usr.update_held_items()
+	return TRUE
+
+/atom/movable/screen/inventory/MouseDrop_T(atom/dropped, mob/user, params)
+	if(user != hud?.mymob || !slot_id)
+		return TRUE
+	if(!isitem(dropped))
+		return TRUE
+	if(world.time <= usr.next_move)
+		return TRUE
+	if(usr.incapacitated(IGNORE_STASIS))
+		return TRUE
+	if(ismecha(usr.loc)) // stops inventory actions in a mech
+		return TRUE
+	if(!user.is_holding(dropped))
+		return TRUE
+
+	user.equip_to_slot_if_possible(dropped, slot_id, FALSE, FALSE, FALSE)
 	return TRUE
 
 /atom/movable/screen/inventory/MouseEntered(location, control, params)
@@ -222,10 +240,13 @@
 	var/mob/user = hud?.mymob
 	if(usr != user)
 		return TRUE
+
 	if(world.time <= user.next_move)
 		return TRUE
+
 	if(user.incapacitated())
 		return TRUE
+
 	if (ismecha(user.loc)) // stops inventory actions in a mech
 		return TRUE
 
@@ -235,6 +256,36 @@
 			I.Click(location, control, params)
 	else
 		user.swap_hand(held_index)
+	return TRUE
+
+/atom/movable/screen/inventory/hand/MouseDrop_T(atom/dropping, mob/user, params)
+	if(!isitem(dropping))
+		return TRUE
+
+	if(usr != hud?.mymob)
+		return TRUE
+
+	if(world.time <= user.next_move)
+		return TRUE
+
+	if(user.incapacitated())
+		return TRUE
+
+	if(ismecha(user.loc)) // stops inventory actions in a mech
+		return TRUE
+
+	if(!user.CanReach(dropping))
+		return TRUE
+
+	var/obj/item/I = dropping
+	if(!(user.is_holding(I) || (I.item_flags & (IN_STORAGE|IN_INVENTORY))))
+		return TRUE
+
+	var/item_index = user.get_held_index_of_item(I)
+	if(item_index)
+		user.swapHeldIndexes(item_index, held_index)
+	else
+		user.putItemFromInventoryInHandIfPossible(dropping, held_index)
 	return TRUE
 
 /atom/movable/screen/close
@@ -324,14 +375,17 @@
 	switch(hud?.mymob?.m_intent)
 		if(MOVE_INTENT_WALK)
 			icon_state = "walking"
-		if(MOVE_INTENT_RUN)
+		if(MOVE_INTENT_RUN, MOVE_INTENT_SPRINT)
 			icon_state = "running"
 	return ..()
 
 /atom/movable/screen/mov_intent/proc/toggle(mob/user)
 	if(isobserver(user))
 		return
-	user.toggle_move_intent(user)
+	if(user.m_intent != MOVE_INTENT_WALK)
+		user.set_move_intent(MOVE_INTENT_WALK)
+	else
+		user.set_move_intent(MOVE_INTENT_RUN)
 
 /atom/movable/screen/pull
 	name = "stop pulling"
@@ -342,10 +396,12 @@
 /atom/movable/screen/pull/Click()
 	if(isobserver(usr))
 		return
-	usr.stop_pulling()
+	if(isliving(usr) && usr == hud.mymob)
+		var/mob/living/L = usr
+		L.release_all_grabs()
 
 /atom/movable/screen/pull/update_icon_state()
-	icon_state = "[base_icon_state][hud?.mymob?.pulling ? null : 0]"
+	icon_state = "[base_icon_state][LAZYLEN(hud?.mymob?:get_active_grabs()) ? null : 0]"
 	return ..()
 
 /atom/movable/screen/resist
@@ -383,6 +439,7 @@
 	icon_state = "block"
 	screen_loc = "7,7 to 10,8"
 	plane = HUD_PLANE
+	mouse_drop_zone = TRUE
 
 /atom/movable/screen/storage/Initialize(mapload, new_master)
 	. = ..()
@@ -403,6 +460,35 @@
 	var/obj/item/inserted = usr.get_active_held_item()
 	if(inserted)
 		storage_master.attempt_insert(inserted, usr)
+
+	return TRUE
+
+/atom/movable/screen/storage/MouseDrop_T(atom/dropping, mob/user, params)
+	var/datum/storage/storage_master = master
+
+	if(!istype(storage_master))
+		return FALSE
+
+	if(!isitem(dropping))
+		return TRUE
+
+	if(world.time <= user.next_move)
+		return TRUE
+
+	if(user.incapacitated())
+		return TRUE
+
+	if(ismecha(user.loc)) // stops inventory actions in a mech
+		return TRUE
+
+	if(!user.CanReach(dropping))
+		return TRUE
+
+	var/obj/item/I = dropping
+	if(!(user.is_holding(I) || (I.item_flags & IN_STORAGE)))
+		return TRUE
+
+	storage_master.attempt_insert(dropping, usr)
 
 	return TRUE
 
@@ -470,6 +556,7 @@
 	plane = ABOVE_HUD_PLANE
 
 /atom/movable/screen/zone_sel/MouseExited(location, control, params)
+	. = ..()
 	if(!isobserver(usr) && hovering)
 		vis_contents -= hover_overlays_cache[hovering]
 		hovering = null
@@ -605,14 +692,6 @@
 	screen_loc = ui_living_healthdoll
 	var/filtered = FALSE //so we don't repeatedly create the mask of the mob every update
 
-/atom/movable/screen/mood
-	name = "mood"
-	icon_state = "mood5"
-	screen_loc = ui_mood
-
-/atom/movable/screen/mood/attack_tk()
-	return
-
 /atom/movable/screen/component_button
 	var/atom/movable/screen/parent
 
@@ -633,7 +712,7 @@
 
 /atom/movable/screen/combo/proc/clear_streak()
 	animate(src, alpha = 0, 2 SECONDS, SINE_EASING)
-	timerid = addtimer(CALLBACK(src, .proc/reset_icons), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
+	timerid = addtimer(CALLBACK(src, PROC_REF(reset_icons)), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 
 /atom/movable/screen/combo/proc/reset_icons()
 	cut_overlays()
@@ -646,7 +725,7 @@
 	alpha = 255
 	if(!streak)
 		return ..()
-	timerid = addtimer(CALLBACK(src, .proc/clear_streak), time, TIMER_UNIQUE | TIMER_STOPPABLE)
+	timerid = addtimer(CALLBACK(src, PROC_REF(clear_streak)), time, TIMER_UNIQUE | TIMER_STOPPABLE)
 	icon_state = "combo"
 	for(var/i = 1; i <= length(streak); ++i)
 		var/intent_text = copytext(streak, i, i + 1)
@@ -659,3 +738,167 @@
 	name = "stamina"
 	icon_state = "stamina0"
 	screen_loc = ui_stamina
+
+/atom/movable/screen/stamina/Click(location, control, params)
+	if (iscarbon(usr))
+		var/mob/living/carbon/C = usr
+		var/content = {"
+		<div class='examine_block'>
+			[span_boldnotice("You have [C.stamina.current]/[C.stamina.maximum] stamina.")]
+		</div>
+		"}
+		to_chat(C, content)
+
+/atom/movable/screen/stamina/MouseEntered(location, control, params)
+	. = ..()
+	var/mob/living/L = usr
+	if(!istype(L))
+		return
+
+	if(QDELETED(src))
+		return
+	var/_content = {"
+		Stamina: [L.stamina.current]/[L.stamina.maximum]<br>
+		Regen: [L.stamina.regen_rate]
+	"}
+	openToolTip(usr, src, params, title = "Stamina", content = _content)
+
+/atom/movable/screen/stamina/MouseExited(location, control, params)
+	. = ..()
+	closeToolTip(usr)
+
+/atom/movable/screen/gun_mode
+	name = "Toggle Gun Mode"
+	icon_state = "gun0"
+	screen_loc = ui_gun_select
+
+/atom/movable/screen/gun_mode/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	hud.gun_setting_icon.update_icon_state()
+	hud.update_gunpoint(targetmob)
+
+
+/atom/movable/screen/gun_mode/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+	user.use_gunpoint = !user.use_gunpoint
+
+	if(!user.use_gunpoint)
+		icon_state = "gun0"
+		user.client.screen -= hud.gunpoint_options
+	else
+		icon_state = "gun1"
+		user.client.screen += hud.gunpoint_options
+
+/atom/movable/screen/gun_radio
+	name = "Disallow Radio Use"
+	icon_state = "no_radio1"
+	screen_loc = ui_gun1
+
+/atom/movable/screen/gun_radio/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	locate(type, hud.gunpoint_options):update_icon_state()
+
+/atom/movable/screen/gun_radio/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+	user.toggle_gunpoint_flag(TARGET_CAN_RADIO)
+
+	if(user.gunpoint_flags & TARGET_CAN_RADIO)
+		icon_state = "no_radio1"
+	else
+		icon_state = "no_radio0"
+
+/atom/movable/screen/gun_item
+	name = "Allow Item Use"
+	icon_state = "no_item1"
+	screen_loc = ui_gun2
+
+/atom/movable/screen/gun_item/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	locate(type, hud.gunpoint_options):update_icon_state()
+
+/atom/movable/screen/gun_item/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+
+	user.toggle_gunpoint_flag(TARGET_CAN_INTERACT)
+	if(user.gunpoint_flags & TARGET_CAN_INTERACT)
+		icon_state = "no_item1"
+	else
+		icon_state = "no_item0"
+
+/atom/movable/screen/gun_move
+	name = "Allow Movement"
+	icon_state = "no_walk1"
+	screen_loc = ui_gun3
+
+/atom/movable/screen/gun_move/Click(location, control, params)
+	. = ..()
+	var/mob/targetmob = usr
+	if(isobserver(usr))
+		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+			var/mob/M = usr.client.eye
+			targetmob = M
+
+	var/datum/hud/hud = targetmob.hud_used
+	if(!hud?.gun_setting_icon)
+		return
+
+	locate(type, hud.gunpoint_options):update_icon_state()
+
+/atom/movable/screen/gun_move/update_icon_state()
+	. = ..()
+	var/mob/living/user = hud?.mymob
+	if(!user)
+		return
+
+	user.toggle_gunpoint_flag(TARGET_CAN_MOVE)
+	if(user.gunpoint_flags & TARGET_CAN_MOVE)
+		icon_state = "no_walk1"
+	else
+		icon_state = "no_walk0"
+
+/atom/movable/screen/pain
+	name = "pain overlay"
+	icon_state = ""
+	layer = UI_DAMAGE_LAYER
+	plane = FULLSCREEN_PLANE
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
+

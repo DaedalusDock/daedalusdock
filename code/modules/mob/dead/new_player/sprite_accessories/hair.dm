@@ -1256,7 +1256,3 @@
 /datum/sprite_accessory/vox_hair/ruffhawk
 	name = "Vox Ruffhawk"
 	icon_state = "ruffhawk"
-
-/datum/sprite_accessory/vox_hair/none
-	name = "None"
-	icon_state = "none"

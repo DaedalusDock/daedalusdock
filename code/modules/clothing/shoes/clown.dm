@@ -6,7 +6,6 @@
 	slowdown = SHOES_SLOWDOWN+1
 	var/enabled_waddle = TRUE
 	lace_time = 20 SECONDS // how the hell do these laces even work??
-	species_exception = list(/datum/species/golem/bananium)
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/shoes/clown_shoes/Initialize(mapload)
@@ -14,21 +13,16 @@
 
 	create_storage(type = /datum/storage/pockets/shoes/clown)
 	LoadComponent(/datum/component/squeak, list('sound/effects/clownstep1.ogg'=1,'sound/effects/clownstep2.ogg'=1), 50, falloff_exponent = 20) //die off quick please
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_CLOWN, CELL_VIRUS_TABLE_GENERIC, rand(2,3), 0)
 
 /obj/item/clothing/shoes/clown_shoes/equipped(mob/user, slot)
 	. = ..()
 	if(slot == ITEM_SLOT_FEET)
 		if(enabled_waddle)
 			ADD_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
-		if(is_clown_job(user.mind?.assigned_role))
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "clownshoes", /datum/mood_event/clownshoes)
 
 /obj/item/clothing/shoes/clown_shoes/dropped(mob/user)
 	. = ..()
 	REMOVE_WADDLE(user, WADDLE_SOURCE_CLOWNSHOES)
-	if(is_clown_job(user.mind?.assigned_role))
-		SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, "clownshoes")
 
 /obj/item/clothing/shoes/clown_shoes/CtrlClick(mob/living/user)
 	if(!isliving(user))

@@ -22,7 +22,7 @@
 	var/last_power_draw = 0
 
 
-/obj/machinery/atmospherics/components/trinary/mixer/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/trinary/mixer/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -31,7 +31,7 @@
 
 /obj/machinery/atmospherics/components/trinary/mixer/AltClick(mob/user)
 	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
+		target_pressure = MAX_OMNI_PRESSURE
 		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
 		balloon_alert(user, "pressure output on set to [target_pressure] kPa")
 		update_appearance()
@@ -49,8 +49,8 @@
 	var/on_state = on && nodes[1] && nodes[2] && nodes[3] && is_operational
 	icon_state = "mixer_[on_state ? "on" : "off"]-[set_overlay_offset(piping_layer)][flipped ? "_f" : ""]"
 
-/obj/machinery/atmospherics/components/trinary/mixer/New()
-	..()
+/obj/machinery/atmospherics/components/trinary/mixer/Initialize()
+	. = ..()
 	var/datum/gas_mixture/air3 = airs[3]
 	air3.volume = 300
 	airs[3] = air3
@@ -76,14 +76,14 @@
 		//No need to mix if target is already full!
 		return
 
-	var/delta = clamp((air3 ? (MAX_OUTPUT_PRESSURE - air3.returnPressure()) : 0), 0, MAX_OUTPUT_PRESSURE)
+	var/delta = clamp((air3 ? (MAX_OMNI_PRESSURE - air3.returnPressure()) : 0), 0, MAX_OMNI_PRESSURE)
 	var/transfer_moles_max = INFINITY
 	var/transfer_moles = 0
 	/// Node 1
-	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air1, air3, delta))
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air1, air3, delta, parents[3]?.combined_volume || 0))
 	transfer_moles += (target_pressure*node1_concentration/air1.volume)*air1.total_moles
 	// Node 2
-	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air2, air3, delta))
+	transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(air2, air3, delta, parents[3]?.combined_volume || 0))
 	transfer_moles += (target_pressure*node2_concentration/air2.volume)*air2.total_moles
 	// Finalize
 	transfer_moles = clamp(transfer_moles, 0, transfer_moles_max)
@@ -98,12 +98,7 @@
 		ATMOS_USE_POWER(draw)
 		last_power_draw = draw
 
-	var/datum/pipeline/parent1 = parents[1]
-	parent1.update = TRUE
-	var/datum/pipeline/parent2 = parents[2]
-	parent2.update = TRUE
-	var/datum/pipeline/parent3 = parents[3]
-	parent3.update = TRUE
+	update_parents()
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -115,7 +110,7 @@
 	var/data = list()
 	data["on"] = on
 	data["set_pressure"] = round(target_pressure)
-	data["max_pressure"] = round(MAX_OUTPUT_PRESSURE)
+	data["max_pressure"] = round(MAX_OMNI_PRESSURE)
 	data["node1_concentration"] = round(node1_concentration*100, 1)
 	data["node2_concentration"] = round(node2_concentration*100, 1)
 	data["last_draw"] = last_power_draw
@@ -134,13 +129,13 @@
 		if("pressure")
 			var/pressure = params["pressure"]
 			if(pressure == "max")
-				pressure = MAX_OUTPUT_PRESSURE
+				pressure = MAX_OMNI_PRESSURE
 				. = TRUE
 			else if(text2num(pressure) != null)
 				pressure = text2num(pressure)
 				. = TRUE
 			if(.)
-				target_pressure = clamp(pressure, 0, MAX_OUTPUT_PRESSURE)
+				target_pressure = clamp(pressure, 0, MAX_OMNI_PRESSURE)
 				investigate_log("was set to [target_pressure] kPa by [key_name(usr)]", INVESTIGATE_ATMOS)
 		if("node1")
 			var/value = text2num(params["concentration"])
@@ -211,7 +206,7 @@
 	icon_state = "mixer_on-0"
 	node1_concentration = N2STANDARD
 	node2_concentration = O2STANDARD
-	target_pressure = MAX_OUTPUT_PRESSURE
+	target_pressure = MAX_OMNI_PRESSURE
 	on = TRUE
 
 /obj/machinery/atmospherics/components/trinary/mixer/airmix/inverse

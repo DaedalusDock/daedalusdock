@@ -10,15 +10,21 @@
 	clawfootstep = FOOTSTEP_HARD_CLAW
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	flags_1 = NO_SCREENTIPS_1
-
-	turf_flags = CAN_BE_DIRTY_1 ///PARIAH EDIT - Overriden in modular_pariah\modules\decay_subsystem\code\decay_turf_handling.dm
-	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
-	canSmoothWith = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
+	turf_flags = CAN_BE_DIRTY_1 | IS_SOLID
+	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_OPEN_FLOOR
+	canSmoothWith = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_OPEN_FLOOR
 
 	heat_capacity = 10000
 	tiled_dirt = TRUE
 
+
 	overfloor_placed = TRUE
+	/// Icon path for the damaged states
+	var/damaged_icon = 'icons/turf/damage.dmi'
+	/// blend_mode for broken overlays
+	var/broken_blend = BLEND_DEFAULT
+	/// blend_mode for burned overlays
+	var/burned_blend = BLEND_MULTIPLY
 
 	var/broken = FALSE
 	var/burnt = FALSE
@@ -26,6 +32,8 @@
 	var/floor_tile = null
 	var/list/broken_states
 	var/list/burnt_states
+	/// Determines if you can deconstruct this with a RCD
+	var/rcd_proof = FALSE
 
 /turf/open/floor/Initialize(mapload)
 	. = ..()
@@ -45,19 +53,30 @@
 		burnt = TRUE
 	if(mapload && prob(33))
 		MakeDirty()
-	if(is_station_level(z))
-		GLOB.station_turfs += src
 
 /turf/open/floor/proc/setup_broken_states()
 	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 
 /turf/open/floor/proc/setup_burnt_states()
-	return
+	return list("floorscorched1", "floorscorched2")
 
-/turf/open/floor/Destroy()
-	if(is_station_level(z))
-		GLOB.station_turfs -= src
-	return ..()
+/turf/open/floor/update_overlays()
+	. = ..()
+	var/mutable_appearance/overlay
+	if(broken)
+		overlay = mutable_appearance(damaged_icon, pick(broken_states))
+		overlay.blend_mode = broken_blend
+		. += overlay
+
+	else if(burnt)
+		if(LAZYLEN(burnt_states))
+			overlay = mutable_appearance(damaged_icon, pick(burnt_states))
+			overlay.blend_mode = burned_blend
+			. += overlay
+		else
+			overlay = mutable_appearance(damaged_icon, pick(broken_states))
+			overlay.blend_mode = broken_blend
+			. += overlay
 
 /turf/open/floor/ex_act(severity, target)
 	. = ..()
@@ -78,8 +97,7 @@
 			switch(rand(1, 3))
 				if(1)
 					if(!length(baseturfs) || !ispath(baseturfs[baseturfs.len-1], /turf/open/floor))
-						ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-						ReplaceWithLattice()
+						TryScrapeToLattice()
 					else
 						ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
 					if(prob(33))
@@ -125,17 +143,16 @@
 /turf/open/floor/break_tile()
 	if(broken)
 		return
-	icon_state = pick(broken_states)
-	broken = 1
+	RemoveElement(/datum/element/decal)
+	broken = TRUE
+	update_appearance(UPDATE_OVERLAYS)
 
 /turf/open/floor/burn_tile()
 	if(broken || burnt)
 		return
-	if(LAZYLEN(burnt_states))
-		icon_state = pick(burnt_states)
-	else
-		icon_state = pick(broken_states)
-	burnt = 1
+	RemoveElement(/datum/element/decal)
+	burnt = TRUE
+	update_appearance(UPDATE_OVERLAYS)
 
 /// Things seem to rely on this actually returning plating. Override it if you have other baseturfs.
 /turf/open/floor/proc/make_plating(force = FALSE)
@@ -224,7 +241,7 @@
 			if(prob(70))
 				sheer = TRUE
 			else if(prob(50) && (/turf/open/space in baseturfs))
-				ReplaceWithLattice()
+				TryScrapeToLattice()
 	if(sheer)
 		if(has_tile())
 			remove_tile(null, TRUE, TRUE, TRUE)
@@ -314,10 +331,15 @@
 			new_airlock.update_appearance()
 			return TRUE
 		if(RCD_DECONSTRUCT)
-			if(!ScrapeAway(flags = CHANGETURF_INHERIT_AIR))
+			if(rcd_proof)
+				balloon_alert(user, "it's too thick!")
 				return FALSE
-			to_chat(user, span_notice("You deconstruct [src]."))
-			return TRUE
+			else
+				var/old_turf_name = name
+				if(!ScrapeAway(flags = CHANGETURF_INHERIT_AIR))
+					return FALSE
+				to_chat(user, span_notice("You deconstruct the [old_turf_name]."))
+				return TRUE
 		if(RCD_WINDOWGRILLE)
 			if(locate(/obj/structure/grille) in src)
 				return FALSE

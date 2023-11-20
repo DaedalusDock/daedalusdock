@@ -24,6 +24,7 @@
 #define ALERT_IRRADIATED "irradiated"
 #define ALERT_EMBEDDED_OBJECT "embeddedobject"
 #define ALERT_SHOES_KNOT "shoealert"
+#define ALERT_SOFTCRIT "softcrit"
 
 //antag related
 #define ALERT_HYPNOSIS "hypnosis"

@@ -20,16 +20,10 @@ SUBSYSTEM_DEF(codex)
 	// <span codexlink='keyword'>whatever</span> when shit gets tricky
 	linkRegex = regex(@"<(span|l)(\s+codexlink='([^>]*)'|)>([^<]+)</(span|l)>","g")
 
-	// used to remove trailing linebreaks when retrieving codex body.
-	// TODO: clean up codex page generation so this isn't necessary.
-	trailingLinebreakRegexStart = regex(@"^<\s*\/*\s*br\s*\/*\s*>", "igm")
-	trailingLinebreakRegexEnd = regex(@"<\s*\/*\s*br\s*\/*\s*>$", "igm")
-
 	// Create general hardcoded entries.
-	for(var/ctype in subtypesof(/datum/codex_entry))
-		var/datum/codex_entry/centry = ctype
-		if(initial(centry.name) && !(initial(centry.abstract_type) == centry))
-			centry = new centry()
+	for(var/datum/codex_entry/entry as anything in subtypesof(/datum/codex_entry))
+		if(initial(entry.name) && !(isabstract(entry)))
+			entry = new entry()
 
 	// Create categorized entries.
 	var/list/deferred_population = list()
@@ -49,7 +43,7 @@ SUBSYSTEM_DEF(codex)
 	// Create the index file for later use.
 	for(var/datum/codex_entry/entry as anything in all_entries)
 		index_file[entry.name] = entry
-	index_file = sortTim(index_file, /proc/cmp_text_asc)
+	index_file = sortTim(index_file, GLOBAL_PROC_REF(cmp_text_asc))
 	. = ..()
 
 /datum/controller/subsystem/codex/proc/parse_links(string, viewer)
@@ -109,7 +103,7 @@ SUBSYSTEM_DEF(codex)
 				var/datum/codex_entry/entry = entries_by_string[entry_title]
 				if(findtext(entry.name, searching) || findtext(entry.lore_text, searching) || findtext(entry.mechanics_text, searching) || findtext(entry.antag_text, searching))
 					results |= entry
-		search_cache[searching] = sortTim(results, /proc/cmp_name_asc)
+		search_cache[searching] = sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
 	return search_cache[searching]
 
 /datum/controller/subsystem/codex/Topic(href, href_list)

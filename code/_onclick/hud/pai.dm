@@ -90,8 +90,8 @@
 	var/list/modifiers = params2list(params)
 	var/mob/living/carbon/holder = get(pAI.card.loc, /mob/living/carbon)
 	if(holder)
-		if (LAZYACCESS(modifiers, RIGHT_CLICK))
-			pAI.hostscan.attack_secondary(holder, pAI)
+		if (LAZYACCESS(modifiers, CTRL_CLICK)) //This is a UI element so I don't care about the interaction overlap.
+			pAI.hostscan.attack_self(pAI)
 		else
 			pAI.hostscan.attack(holder, pAI)
 	else

@@ -4,8 +4,8 @@
 	var/is_swarming = FALSE
 	var/list/swarm_members = list()
 	var/static/list/swarming_loc_connections = list(
-		COMSIG_ATOM_EXITED =.proc/leave_swarm,
-		COMSIG_ATOM_ENTERED = .proc/join_swarm
+		COMSIG_ATOM_EXITED =PROC_REF(leave_swarm),
+		COMSIG_ATOM_ENTERED = PROC_REF(join_swarm)
 	)
 
 
@@ -28,6 +28,8 @@
 
 /datum/component/swarming/proc/join_swarm(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 
 	var/datum/component/swarming/other_swarm = arrived.GetComponent(/datum/component/swarming)
 	if(!other_swarm)

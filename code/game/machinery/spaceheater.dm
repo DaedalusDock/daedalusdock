@@ -364,7 +364,7 @@
 		return
 	//Dropper tools
 	if(beaker)
-		if(is_type_in_list(item, list(/obj/item/reagent_containers/dropper, /obj/item/ph_meter, /obj/item/ph_paper, /obj/item/reagent_containers/syringe)))
+		if(is_type_in_list(item, list(/obj/item/reagent_containers/dropper, /obj/item/reagent_containers/syringe)))
 			item.afterattack(beaker, user, 1)
 		return
 
@@ -378,7 +378,6 @@
 		/obj/item/stack/cable_coil = 2,
 		/obj/item/stack/sheet/glass = 2,
 		/obj/item/stack/sheet/iron = 2,
-		/obj/item/thermometer = 1
 		)
 	for(var/item in bonus_junk)
 		if(prob(80))
@@ -397,7 +396,7 @@
 
 /obj/machinery/space_heater/improvised_chem_heater/AltClick(mob/living/user)
 	. = ..()
-	if(!can_interact(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	replace_beaker(user)
 

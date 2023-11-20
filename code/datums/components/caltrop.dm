@@ -21,7 +21,7 @@
 
 	///given to connect_loc to listen for something moving over target
 	var/static/list/crossed_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 
 	///So we can update ant damage
@@ -41,7 +41,7 @@
 	if(ismovable(parent))
 		AddComponent(/datum/component/connect_loc_behalf, parent, crossed_connections)
 	else
-		RegisterSignal(get_turf(parent), COMSIG_ATOM_ENTERED, .proc/on_entered)
+		RegisterSignal(get_turf(parent), COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
 
 // Inherit the new values passed to the component
 /datum/component/caltrop/InheritComponent(datum/component/caltrop/new_comp, original, min_damage, max_damage, probability, flags, soundfile)
@@ -60,6 +60,8 @@
 
 /datum/component/caltrop/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
+	if(arrived == parent)
+		return
 
 	if(!prob(probability))
 		return
@@ -81,7 +83,7 @@
 	if(H.buckled) //if they're buckled to something, that something should be checked instead.
 		return
 
-	if(H.body_position == LYING_DOWN && !(flags & CALTROP_NOCRAWL)) //if we're not standing we cant step on the caltrop
+	if(H.body_position == LYING_DOWN && (flags & CALTROP_NOCRAWL)) //if we're not standing we cant step on the caltrop
 		return
 
 	var/picked_def_zone = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -89,7 +91,7 @@
 	if(!istype(O))
 		return
 
-	if(!IS_ORGANIC_LIMB(O))
+	if(O.bodypart_flags & BP_NO_PAIN)
 		return
 
 	if (!(flags & CALTROP_BYPASS_SHOES))

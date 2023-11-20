@@ -41,11 +41,11 @@
 
 /datum/component/trapdoor/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_TURF_CHANGE, .proc/turf_changed_pre)
+	RegisterSignal(parent, COMSIG_TURF_CHANGE, PROC_REF(turf_changed_pre))
 	if(!src.assembly)
-		RegisterSignal(SSdcs, COMSIG_GLOB_TRAPDOOR_LINK, .proc/on_link_requested)
+		RegisterSignal(SSdcs, COMSIG_GLOB_TRAPDOOR_LINK, PROC_REF(on_link_requested))
 	else
-		RegisterSignal(assembly, COMSIG_ASSEMBLY_PULSED, .proc/toggle_trapdoor)
+		RegisterSignal(assembly, COMSIG_ASSEMBLY_PULSED, PROC_REF(toggle_trapdoor))
 
 /datum/component/trapdoor/UnregisterFromParent()
 	. = ..()
@@ -81,7 +81,7 @@
 	src.assembly = assembly
 	assembly.linked = TRUE
 	UnregisterSignal(SSdcs, COMSIG_GLOB_TRAPDOOR_LINK)
-	RegisterSignal(assembly, COMSIG_ASSEMBLY_PULSED, .proc/toggle_trapdoor)
+	RegisterSignal(assembly, COMSIG_ASSEMBLY_PULSED, PROC_REF(toggle_trapdoor))
 
 ///signal called by our assembly being pulsed
 /datum/component/trapdoor/proc/toggle_trapdoor(datum/source)
@@ -102,7 +102,7 @@
 			assembly.stored_decals.Cut()
 			assembly = null
 		return
-	post_change_callbacks += CALLBACK(assembly, /obj/item/assembly/trapdoor.proc/carry_over_trapdoor, trapdoor_turf_path)
+	post_change_callbacks += CALLBACK(assembly, TYPE_PROC_REF(/obj/item/assembly/trapdoor, carry_over_trapdoor), trapdoor_turf_path)
 
 /**
  * ## carry_over_trapdoor
@@ -123,7 +123,7 @@
 	var/turf/open/trapdoor_turf = parent
 	///we want to save this turf's decals as they were right before deletion, so this is the point where we begin listening
 	if(assembly)
-		RegisterSignal(parent, COMSIG_TURF_DECAL_DETACHED, .proc/decal_detached)
+		RegisterSignal(parent, COMSIG_TURF_DECAL_DETACHED, PROC_REF(decal_detached))
 	playsound(trapdoor_turf, 'sound/machines/trapdoor/trapdoor_open.ogg', 50)
 	trapdoor_turf.visible_message(span_warning("[trapdoor_turf] swings open!"))
 	trapdoor_turf.ChangeTurf(/turf/open/openspace, flags = CHANGETURF_INHERIT_AIR)

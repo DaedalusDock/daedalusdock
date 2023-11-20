@@ -18,6 +18,8 @@
 	comp_light_luminosity = 2.3 //Same as the PDA
 	looping_sound = FALSE
 
+	imprint_prefix = "PDA"
+
 	var/has_variants = TRUE
 	var/finish_color = null
 
@@ -73,7 +75,7 @@
 
 	remove_pen(user)
 
-/obj/item/modular_computer/tablet/CtrlClick(mob/user)
+/obj/item/modular_computer/tablet/CtrlClick(mob/user, list/params)
 	. = ..()
 	if(.)
 		return
@@ -86,7 +88,7 @@
 
 /obj/item/modular_computer/tablet/proc/remove_pen(mob/user)
 
-	if(issilicon(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK)) //TK doesn't work even with this removed but here for readability
+	if(issilicon(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK)) //TK doesn't work even with this removed but here for readability
 		return
 
 	if(inserted_item)
@@ -125,35 +127,6 @@
 	qdel(src)
 
 // SUBTYPES
-
-/obj/item/modular_computer/tablet/syndicate_contract_uplink
-	name = "contractor tablet"
-	icon = 'icons/obj/contractor_tablet.dmi'
-	icon_state = "tablet"
-	icon_state_unpowered = "tablet"
-	icon_state_powered = "tablet"
-	icon_state_menu = "assign"
-	w_class = WEIGHT_CLASS_SMALL
-	slot_flags = ITEM_SLOT_ID | ITEM_SLOT_BELT
-	comp_light_luminosity = 6.3
-	has_variants = FALSE
-
-/obj/item/modular_computer/tablet/syndicate_contract_uplink/Initialize(mapload)
-	. = ..()
-	var/obj/item/computer_hardware/hard_drive/small/syndicate/hard_drive = new
-	var/datum/computer_file/program/contract_uplink/uplink = new
-
-	active_program = uplink
-	uplink.program_state = PROGRAM_STATE_ACTIVE
-	uplink.computer = src
-
-	hard_drive.store_file(uplink)
-
-	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))
-	install_component(hard_drive)
-	install_component(new /obj/item/computer_hardware/network_card)
-	install_component(new /obj/item/computer_hardware/card_slot)
-	install_component(new /obj/item/computer_hardware/printer/mini)
 
 /// Given to Nuke Ops members.
 /obj/item/modular_computer/tablet/nukeops
@@ -314,10 +287,17 @@
 
 /obj/item/modular_computer/tablet/pda/Initialize(mapload)
 	. = ..()
-	install_component(new /obj/item/computer_hardware/hard_drive/small)
+	var/obj/item/computer_hardware/hard_drive/small/hdd = new /obj/item/computer_hardware/hard_drive/small
+	install_component(hdd)
 	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))
-	install_component(new /obj/item/computer_hardware/network_card)
+	install_component(new /obj/item/computer_hardware/network_card/packetnet)
 	install_component(new /obj/item/computer_hardware/card_slot)
+
+	var/datum/computer_file/data/text/autorun_file = new
+	autorun_file.filename = MC_AUTORUN_FILE
+	autorun_file.stored_text = "nt_messenger"
+	autorun_file.calculate_size()
+	hdd.store_file(autorun_file)
 
 	if(default_disk)
 		var/obj/item/computer_hardware/hard_drive/portable/disk = new default_disk(src)

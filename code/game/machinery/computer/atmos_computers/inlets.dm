@@ -1,6 +1,6 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored
 	on = TRUE
-	volume_rate = MAX_TRANSFER_RATE
+	volume_rate = ATMOS_DEFAULT_VOLUME_PUMP
 	/// The unique string that represents which atmos chamber to associate with.
 	var/chamber_id
 	var/frequency = FREQ_ATMOS_STORAGE
@@ -164,3 +164,7 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/ordnance_mixing_input
 	name = "ordnance mixing input injector"
 	chamber_id = ATMOS_GAS_MONITOR_ORDNANCE_LAB
+
+/obj/machinery/atmospherics/components/unary/outlet_injector/monitored/engine_input
+	name = "engine input injector"
+	chamber_id = ATMOS_GAS_MONITOR_ENGINE

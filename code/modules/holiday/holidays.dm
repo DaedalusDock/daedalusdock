@@ -199,11 +199,12 @@
 /datum/holiday/april_fools/celebrate()
 	. = ..()
 	SSjob.set_overflow_role(/datum/job/clown)
-	SSticker.login_music = 'sound/ambience/clown.ogg'
-	for(var/i in GLOB.new_player_list)
-		var/mob/dead/new_player/P = i
-		if(P.client)
-			P.client.playtitlemusic()
+	var/datum/media/clowntrack = new(
+		name = "Clown.ogg",
+		author = "giizismukwa2",
+		path = "sound/ambience/clown.ogg"
+	)
+	SSticker.set_login_music(clowntrack)
 
 /datum/holiday/spess
 	name = "Cosmonautics Day"
@@ -256,15 +257,15 @@
 
 //Draconic Day is celebrated on May 3rd, the date on which the Draconic language was merged (#26780)
 /datum/holiday/draconic_day
-	name = "Sinta'Unathi Language Day"
+	name = "Jisanuoari Language Day"
 	begin_month = MAY
 	begin_day = 3
 
 /datum/holiday/draconic_day/greet()
-	return "On this day, the Unathi celebrate their language with literature and other cultural works."
+	return "On this day, the Jinan celebrate their language with literature and other cultural works."
 
 /datum/holiday/draconic_day/getStationPrefix()
-	return pick("Draconic", "Literature", "Reading")
+	return pick("Saurian", "Literature", "Reading")
 
 /datum/holiday/firefighter
 	name = "Firefighter's Day"
@@ -283,20 +284,6 @@
 
 /datum/holiday/bee/getStationPrefix()
 	return pick("Bee","Honey","Hive","Africanized","Mead","Buzz")
-
-// JUNE
-
-//The Festival of Atrakor's Might (Tizira's Moon) is celebrated on June 15th, the date on which the lizard visual revamp was merged (#9808)
-/datum/holiday/atrakor_festival
-	name = "Festival of Atrakor's Might"
-	begin_month = JUNE
-	begin_day = 15
-
-/datum/holiday/atrakor_festival/greet()
-	return "On this day, the Unathi traditionally celebrate the Festival of Atrakor's Might, where they honour the moon god with lavishly adorned clothing, large portions of food, and a massive celebration into the night."
-
-/datum/holiday/atrakor_festival/getStationPrefix()
-	return pick("Moon", "Night Sky", "Celebration")
 
 /// Garbage DAYYYYY
 /// Huh?.... NOOOO
@@ -427,17 +414,17 @@
 
 // SEPTEMBER
 
-//Tiziran Unification Day is celebrated on Sept 1st, the day on which lizards were made a roundstart race
+//Jitarai Unification Day is celebrated on Sept 1st, the day on which lizards were made a roundstart race
 /datum/holiday/tiziran_unification
-	name = "Moghes Unification Day"
+	name = "Jitarai Unification Day"
 	begin_month = SEPTEMBER
 	begin_day = 1
 
 /datum/holiday/tiziran_unification/greet()
-	return "On this day over 400 years ago, the Unathi first united under a single banner, ready to face the stars as one unified people."
+	return "On this day over 900 years ago, the Jinan people first united under Companion, ready to face the stars as one unified people."
 
 /datum/holiday/tiziran_unification/getStationPrefix()
-	return pick("Moghes", "Unathi", "Imperial")
+	return pick("Jitarai", "Jinan", "Friendly") // Friendly is a reference to Friend Computer from Paranoia
 
 /datum/holiday/ianbirthday
 	name = "Ian's Birthday" //github.com/tgstation/tgstation/commit/de7e4f0de0d568cd6e1f0d7bcc3fd34700598acb
@@ -730,7 +717,7 @@
 
 /datum/holiday/xmas/celebrate()
 	. = ..()
-	SSticker.OnRoundstart(CALLBACK(src, .proc/roundstart_celebrate))
+	SSticker.OnRoundstart(CALLBACK(src, PROC_REF(roundstart_celebrate)))
 	GLOB.maintenance_loot += list(
 		list(
 			/obj/item/toy/xmas_cracker = 3,

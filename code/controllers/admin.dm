@@ -11,7 +11,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 	name = text
 	src.target = target
 	if(istype(target, /datum)) //Harddel man bad
-		RegisterSignal(target, COMSIG_PARENT_QDELETING, .proc/cleanup)
+		RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(cleanup))
 
 /obj/effect/statclick/Destroy()
 	target = null
@@ -98,15 +98,18 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 	if(!check_rights(R_ADMIN) || !SSticker.initialized)
 		return
 
-	var/list/music_jsons = SSticker.get_music_jsons()
-	var/list/name2json = list()
-	for(var/json in music_jsons)
-		name2json[json["name"]] = json
+	var/list/music_tracks = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)+SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_RARE)
+	if(!length(music_tracks))
+		to_chat(usr, span_admin("MEDIA: No media tracks available. Manual music changing can't be used on fallback tracks."))
+		return
+	var/list/name2track = list()
+	for(var/datum/media/track in music_tracks)
+		name2track[track.name] = track
 
-	var/list/selection = input(usr, "Select a track to play", "Change Title Music") as null|anything in name2json
+	var/datum/media/selection = input(usr, "Select a track to play", "Change Title Music") as null|anything in name2track
 	if(isnull(selection))
 		return
-	selection = name2json[selection]
+	selection = name2track[selection]
 	SSticker.set_login_music(selection)
-	log_admin("[key_name_admin(usr)] changed the title music to [selection["name"]] ([selection["file"]])")
-	message_admins("[key_name_admin(usr)] changed the title music to [selection["name"]] ([selection["file"]])")
+	log_admin("[key_name_admin(usr)] changed the title music to [selection.name] ([selection.path])")
+	message_admins("[key_name_admin(usr)] changed the title music to [selection.name] ([selection.path])")

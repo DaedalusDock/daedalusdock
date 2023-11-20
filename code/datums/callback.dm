@@ -5,10 +5,10 @@
  * ## USAGE
  *
  * ```
- * var/datum/callback/C = new(object|null, /proc/type/path|"procstring", arg1, arg2, ... argn)
+ * var/datum/callback/C = new(object|null, GLOBAL_PROC_REF(type/path|"procstring"), arg1, arg2, ... argn)
  * var/timerid = addtimer(C, time, timertype)
  * you can also use the compiler define shorthand
- * var/timerid = addtimer(CALLBACK(object|null, /proc/type/path|procstring, arg1, arg2, ... argn), time, timertype)
+ * var/timerid = addtimer(CALLBACK(object|null, GLOBAL_PROC_REF(type/path|procstring), arg1, arg2, ... argn), time, timertype)
  * ```
  *
  * Note: proc strings can only be given for datum proc calls, global procs must be proc paths
@@ -39,7 +39,7 @@
  * ### when the above doesn't apply:
  *.proc/procname
  *
- * `CALLBACK(src, .proc/some_proc_here)`
+ * `CALLBACK(src, PROC_REF(some_proc_here))`
  *
  *
  * proc defined on a parent of a some type
@@ -95,6 +95,22 @@
 		call(proctocall)(arglist(calling_arguments))
 	else
 		call(thingtocall, proctocall)(arglist(calling_arguments))
+
+
+/**
+ * Qdel a callback datum
+ * This is not allowed and will stack trace. callback datums are structs, if they are referenced they exist
+ *
+ * Arguments
+ * * force set to true to force the deletion to be allowed.
+ * * ... an optional list of extra arguments to pass to the proc
+ */
+/datum/callback/Destroy(force=FALSE, ...)
+	SHOULD_CALL_PARENT(FALSE)
+	if (force)
+		return ..()
+	stack_trace("Callbacks can not be qdeleted. If they are referenced, they must exist. ([object == GLOBAL_PROC ? GLOBAL_PROC : object.type] [delegate])")
+	return QDEL_HINT_LETMELIVE
 
 /**
  * Invoke this callback

@@ -15,13 +15,13 @@
 	full_w_class = WEIGHT_CLASS_BULKY
 	singular_name = "ore chunk"
 	material_flags = MATERIAL_EFFECTS
-	var/points = 0 //How many points this ore gets you from the ore redemption machine
-	var/refined_type = null //What this ore defaults to being refined into
-	var/mine_experience = 5 //How much experience do you get for mining this ore?
 	novariants = TRUE // Ore stacks handle their icon updates themselves to keep the illusion that there's more going
+
 	var/list/stack_overlays
-	var/scan_state = "" //Used by mineral turfs for their scan overlay.
-	var/spreadChance = 0 //Also used by mineral turfs for spreading veins
+	/// How many points this ore gets you from the ore redemption machine
+	var/points = 0
+	/// What this ore defaults to being refined into
+	var/refined_type = null
 
 /obj/item/stack/ore/update_overlays()
 	. = ..()
@@ -79,9 +79,6 @@
 	material_flags = NONE
 	mats_per_unit = list(/datum/material/uranium=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/uranium
-	mine_experience = 6
-	scan_state = "rock_Uranium"
-	spreadChance = 5
 	merge_type = /obj/item/stack/ore/uranium
 
 /obj/item/stack/ore/iron
@@ -92,9 +89,6 @@
 	points = 1
 	mats_per_unit = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/iron
-	mine_experience = 1
-	scan_state = "rock_Iron"
-	spreadChance = 20
 	merge_type = /obj/item/stack/ore/iron
 
 /obj/item/stack/ore/glass
@@ -106,7 +100,6 @@
 	mats_per_unit = list(/datum/material/glass=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/glass
 	w_class = WEIGHT_CLASS_TINY
-	mine_experience = 0 //its sand
 	merge_type = /obj/item/stack/ore/glass
 
 GLOBAL_LIST_INIT(sand_recipes, list(\
@@ -126,7 +119,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		C.visible_message(span_danger("[C]'s eye protection blocks the sand!"), span_warning("Your eye protection blocks the sand!"))
 		return
 	C.adjust_blurriness(6)
-	C.adjustStaminaLoss(15)//the pain from your eyes burning does stamina damage
+	C.stamina.adjust(-15)//the pain from your eyes burning does stamina damage
 	C.adjust_timed_status_effect(5 SECONDS, /datum/status_effect/confusion)
 	to_chat(C, span_userdanger("\The [src] gets into your eyes! The pain, it burns!"))
 	qdel(src)
@@ -140,7 +133,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	icon_state = "volcanic_sand"
 	inhand_icon_state = "volcanic_sand"
 	singular_name = "volcanic ash pile"
-	mine_experience = 0
 	merge_type = /obj/item/stack/ore/glass/basalt
 
 /obj/item/stack/ore/plasma
@@ -151,9 +143,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	points = 15
 	mats_per_unit = list(/datum/material/plasma=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/plasma
-	mine_experience = 5
-	scan_state = "rock_Plasma"
-	spreadChance = 8
 	merge_type = /obj/item/stack/ore/plasma
 
 /obj/item/stack/ore/plasma/welder_act(mob/living/user, obj/item/I)
@@ -166,11 +155,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	inhand_icon_state = "Silver ore"
 	singular_name = "silver ore chunk"
 	points = 16
-	mine_experience = 3
 	mats_per_unit = list(/datum/material/silver=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/silver
-	scan_state = "rock_Silver"
-	spreadChance = 5
 	merge_type = /obj/item/stack/ore/silver
 
 /obj/item/stack/ore/gold
@@ -179,11 +165,8 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	inhand_icon_state = "Gold ore"
 	singular_name = "gold ore chunk"
 	points = 18
-	mine_experience = 5
 	mats_per_unit = list(/datum/material/gold=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/gold
-	scan_state = "rock_Gold"
-	spreadChance = 5
 	merge_type = /obj/item/stack/ore/gold
 
 /obj/item/stack/ore/diamond
@@ -194,8 +177,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	points = 50
 	mats_per_unit = list(/datum/material/diamond=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/diamond
-	mine_experience = 10
-	scan_state = "rock_Diamond"
 	merge_type = /obj/item/stack/ore/diamond
 
 /obj/item/stack/ore/bananium
@@ -206,8 +187,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	points = 60
 	mats_per_unit = list(/datum/material/bananium=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/bananium
-	mine_experience = 15
-	scan_state = "rock_Bananium"
 	merge_type = /obj/item/stack/ore/bananium
 
 /obj/item/stack/ore/titanium
@@ -218,9 +197,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	points = 50
 	mats_per_unit = list(/datum/material/titanium=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/titanium
-	mine_experience = 3
-	scan_state = "rock_Titanium"
-	spreadChance = 5
 	merge_type = /obj/item/stack/ore/titanium
 
 /obj/item/stack/ore/slag
@@ -245,7 +221,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	var/attacher = "UNKNOWN"
 	var/det_timer
 
-/obj/item/gibtonite/ComponentInitialize()
+/obj/item/gibtonite/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 
@@ -316,7 +292,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		else
 			user.visible_message(span_warning("[user] strikes \the [src], causing a chain reaction!"), span_danger("You strike \the [src], causing a chain reaction."))
 			log_bomber(user, "has primed a", src, "for detonation", notify_admins)
-		det_timer = addtimer(CALLBACK(src, .proc/detonate, notify_admins), det_time, TIMER_STOPPABLE)
+		det_timer = addtimer(CALLBACK(src, PROC_REF(detonate), notify_admins), det_time, TIMER_STOPPABLE)
 
 /obj/item/gibtonite/proc/detonate(notify_admins)
 	if(primed)
@@ -383,7 +359,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	if (!attack_self(user))
 		user.visible_message(span_suicide("[user] couldn't flip \the [src]!"))
 		return SHAME
-	addtimer(CALLBACK(src, .proc/manual_suicide, user), 10)//10 = time takes for flip animation
+	addtimer(CALLBACK(src, PROC_REF(manual_suicide), user), 10)//10 = time takes for flip animation
 	return MANUAL_SUICIDE_NONLETHAL
 
 /obj/item/coin/proc/manual_suicide(mob/living/user)
@@ -468,9 +444,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 /obj/item/coin/bananium
 	custom_materials = list(/datum/material/bananium = 400)
 
-/obj/item/coin/adamantine
-	custom_materials = list(/datum/material/adamantine = 400)
-
 /obj/item/coin/mythril
 	custom_materials = list(/datum/material/mythril = 400)
 
@@ -525,7 +498,5 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 /obj/item/coin/gold/doubloon
 	name = "doubloon"
 
-/obj/item/coin/adamantine/doubloon
-	name = "doubloon"
 
 #undef ORESTACK_OVERLAYS_MAX

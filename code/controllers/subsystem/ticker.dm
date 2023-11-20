@@ -25,10 +25,10 @@ SUBSYSTEM_DEF(ticker)
 	///All players that are readied up and about to spawn in.
 	var/list/mob/dead/new_player/ready_players
 
-	///JSON for the music played in the lobby
-	var/list/login_music
-	///JSON for the round end music.
-	var/list/credits_music
+	///Media track for the music played in the lobby
+	var/datum/media/login_music
+	///Media track for the round end music.
+	var/datum/media/credits_music
 
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
@@ -54,6 +54,8 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayersReady = 0
 	/// Num of ready admins, used for pregame stats on statpanel (only viewable by admins)
 	var/total_admins_ready = 0
+	/// Data for lobby player stat panels during the pre-game.
+	var/list/player_ready_data = list()
 
 	var/queue_delay = 0
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
@@ -115,7 +117,8 @@ SUBSYSTEM_DEF(ticker)
 			for(var/client/C in GLOB.clients)
 				window_flash(C, ignorepref = TRUE) //let them know lobby has opened up.
 			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
-			send2chat("New round starting on [SSmapping.config.map_name]!", CONFIG_GET(string/chat_announce_new_game))
+			var/newround_staple = CONFIG_GET(string/chat_newgame_staple)
+			send2chat("New round starting on [SSmapping.config.map_name][newround_staple ? ", [newround_staple]" : null]!", CONFIG_GET(string/chat_announce_new_game))
 			current_state = GAME_STATE_PREGAME
 			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 
@@ -127,11 +130,46 @@ SUBSYSTEM_DEF(ticker)
 			totalPlayers = LAZYLEN(GLOB.new_player_list)
 			totalPlayersReady = 0
 			total_admins_ready = 0
+			player_ready_data.Cut()
+			var/list/players = list()
+
 			for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
-				if(player.ready == PLAYER_READY_TO_PLAY)
+				if(player.ready == PLAYER_READY_TO_PLAY || player.ready == PLAYER_READY_TO_OBSERVE)
 					++totalPlayersReady
 					if(player.client?.holder)
 						++total_admins_ready
+
+					players[player.key] = player
+
+			sortTim(players, GLOBAL_PROC_REF(cmp_text_asc))
+
+			if(CONFIG_GET(flag/show_job_estimation))
+				for(var/ckey in players)
+					var/mob/dead/new_player/player = players[ckey]
+					var/datum/preferences/prefs = player.client?.prefs
+					if(!prefs)
+						continue
+					if(!prefs.read_preference(/datum/preference/toggle/ready_job))
+						continue
+
+					var/display = player.client?.holder?.fakekey || ckey
+					if(player.ready == PLAYER_READY_TO_OBSERVE)
+						player_ready_data += "* [display] as Observer"
+						continue
+
+					var/datum/job/J = prefs.get_highest_priority_job()
+					if(!J)
+						player_ready_data += "* [display] forgot to pick a job!"
+						continue
+					var/title = prefs.alt_job_titles?[J.title] || J.title
+					if(player.ready == PLAYER_READY_TO_PLAY)
+						player_ready_data += "* [display] as [title]"
+
+				if(length(player_ready_data))
+					player_ready_data.Insert(1, "------------------")
+					player_ready_data.Insert(1, "Job Estimation:")
+					player_ready_data.Insert(1, "")
+
 
 			if(start_immediately)
 				timeLeft = 0
@@ -224,7 +262,7 @@ SUBSYSTEM_DEF(ticker)
 	log_world("Game start took [(world.timeofday - init_start)/10]s")
 	round_start_time = world.time
 	round_start_timeofday = REALTIMEOFDAY
-	INVOKE_ASYNC(SSdbcore, /datum/controller/subsystem/dbcore/proc/SetRoundStart)
+	INVOKE_ASYNC(SSdbcore, TYPE_PROC_REF(/datum/controller/subsystem/dbcore,SetRoundStart))
 
 	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
 	SEND_SOUND(world, sound(SSstation.announcer.get_rand_welcome_sound()))
@@ -371,16 +409,9 @@ SUBSYSTEM_DEF(ticker)
 			captainless = FALSE
 			var/acting_captain = !is_captain_job(player_assigned_role)
 			SSjob.promote_to_captain(new_player_living, acting_captain)
-			OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/minor_announce, player_assigned_role.get_captaincy_announcement(new_player_living), ""))
+			OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(minor_announce), player_assigned_role.get_captaincy_announcement(new_player_living), ""))
 		if((player_assigned_role.job_flags & JOB_ASSIGN_QUIRKS) && ishuman(new_player_living) && CONFIG_GET(flag/roundstart_traits))
-			if(new_player_mob.client?.prefs?.should_be_random_hardcore(player_assigned_role, new_player_living.mind))
-				new_player_mob.client.prefs.hardcore_random_setup(new_player_living)
 			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
-		//PARIAH EDIT ADDITION
-		if(ishuman(new_player_living))
-			for(var/datum/loadout_item/item as anything in loadout_list_to_datums(new_player_mob.client?.prefs?.loadout_list))
-				item.post_equip_item(new_player_mob.client?.prefs, new_player_living)
-		//PARIAH EDIT END
 		CHECK_TICK
 
 	if(captainless)
@@ -427,7 +458,7 @@ SUBSYSTEM_DEF(ticker)
 			living.client?.init_verbs()
 			livings += living
 	if(livings.len)
-		addtimer(CALLBACK(src, .proc/release_characters, livings), 30, TIMER_CLIENT_TIME)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)
@@ -472,7 +503,7 @@ SUBSYSTEM_DEF(ticker)
 		return
 	if(world.time - SSticker.round_start_time < 10 MINUTES) //Not forcing map rotation for very short rounds.
 		return
-	INVOKE_ASYNC(SSmapping, /datum/controller/subsystem/mapping/.proc/maprotate)
+	INVOKE_ASYNC(SSmapping, TYPE_PROC_REF(/datum/controller/subsystem/mapping, maprotate))
 
 /datum/controller/subsystem/ticker/proc/HasRoundStarted()
 	return current_state >= GAME_STATE_PLAYING
@@ -607,7 +638,7 @@ SUBSYSTEM_DEF(ticker)
 	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
 	if(roll_credits)
 		if(roll_credits_in)
-			addtimer(CALLBACK(SScredits, /datum/controller/subsystem/credits/proc/compile_credits), roll_credits_in)
+			addtimer(CALLBACK(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, compile_credits)), roll_credits_in)
 		else
 			SScredits.compile_credits()
 
@@ -653,103 +684,47 @@ SUBSYSTEM_DEF(ticker)
 	if(possible_themes.len)
 		return "[global.config.directory]/reboot_themes/[pick(possible_themes)]"
 
-/datum/controller/subsystem/ticker/proc/set_login_music(list/json)
-	if(!islist(json))
-		CRASH("Non-list given to set_login_music()!")
+/datum/controller/subsystem/ticker/proc/set_login_music(datum/media/track)
+	if(!istype(track))
+		CRASH("Non-datum/media given to set_login_music()!")
 
 	if(credits_music == login_music)
-		credits_music = json
-	login_music = json
+		credits_music = track
+	login_music = track
 
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.client)
 			continue
 		player.client.playtitlemusic()
 
-/datum/controller/subsystem/ticker/proc/get_music_jsons(get_credits_music)
-	RETURN_TYPE(/list)
-	var/list/byond_sound_formats = list(
-		"mid" = TRUE,
-		"midi" = TRUE,
-		"mod" = TRUE,
-		"it" = TRUE,
-		"s3m" = TRUE,
-		"xm" = TRUE,
-		"oxm" = TRUE,
-		"wav" = TRUE,
-		"ogg" = TRUE,
-		"raw" = TRUE,
-		"wma" = TRUE,
-		"aiff" = TRUE,
-		"mp3" = TRUE,
-	)
-
-	var/list/music_data = list()
-	var/direct = get_credits_music ? "[global.config.directory]/credits_music/jsons/" : "[global.config.directory]/title_music/jsons/"
-	for(var/json_entry in flist(direct))
-		var/list/music_entry = json_decode(file2text("[direct][json_entry]"))
-		music_data += list(music_entry)
-
-	///Verify that the file actually exists!
-	for(var/entry in music_data)
-		if(entry["name"] == "EXAMPLE")
-			music_data -= list(entry)
-			continue
-
-		entry["file"] = "[config.directory]/[entry["file"]]"
-		if(!fexists(entry["file"]))
-			spawn(0)
-				UNTIL(SSticker.initialized)
-				message_admins("Music file for [entry["name"]] doesn't exist! ([entry["file"]]) call Kapu!")
-
-			music_data -= list(entry)
-			continue
-
-	///Remove any files with illegal extensions.
-	for(var/entry in music_data)
-		var/list/directory_split = splittext(entry["file"], "/")
-		var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
-		if(extension_split.len >= 2)
-			var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
-			if(byond_sound_formats[ext])
-				continue
-		spawn(0)
-			UNTIL(SSticker.initialized)
-			message_admins("Music file for [entry["name"]] doesn't has an illegal file! ([entry["file"]]) call Kapu!")
-		music_data -= list(entry)
-
-	return music_data
-
 /datum/controller/subsystem/ticker/proc/pick_login_music()
-	var/list/title_music_data = list()
-	var/list/rare_music_data = list()
-	///The json of the song used last round.
-	var/list/old_login_music
+	var/list/title_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)
+	var/list/rare_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_RARE)
+	///The full path of the last song used
+	var/old_login_music_t
+	///The full datum of the last song used.
+	var/datum/media/old_login_music
 
-	if(fexists("data/last_round_lobby_music.json"))
-		old_login_music = json_decode(file2text("data/last_round_lobby_music.json"))
-
-	//Remove the previous song.
-	var/list/music_jsons = get_music_jsons()
-	for(var/list/music_entry as anything in music_jsons)
-		if(old_login_music && (music_entry["file"] == old_login_music["file"]))
-			old_login_music = music_entry
-
-		//Find rare sounds that are map-agnostic or belong to our map
-		if(music_entry["rare"])
-			if((!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
-				rare_music_data += list(music_entry)
-
-		//Filter out songs that don't belong to our map, add map-agnostic songs.
-		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name)
-			title_music_data += list(music_entry)
-
-	//Remove the old login music from the current pool if it wouldn't empty the pool.
+	#if DM_VERSION > 514
+	#warn Native fexists() call, Replace with rustg_file_exists() once behaviour is correct
+	#endif
+	if(fexists("data/last_round_lobby_music.txt")) //The define isn't truthy
+		old_login_music_t = rustg_file_read("data/last_round_lobby_music.txt")
+	var/list/music_tracks = title_music_data + rare_music_data
+	//Filter map-specific tracks
+	for(var/datum/media/music_filtered as anything in music_tracks)
+		if(old_login_music_t && (music_filtered.path == old_login_music_t))
+			old_login_music = music_filtered
+		if(music_filtered.map && music_filtered.map != SSmapping.config.map_name)
+			rare_music_data -= music_filtered
+			title_music_data -= music_filtered
+	//Remove the previous song
 	if(old_login_music)
-		if(old_login_music["rare"] && (length(rare_music_data) > 1))
-			rare_music_data -= list(old_login_music)
+		//Remove the old login music from the current pool if it wouldn't empty the pool.
+		if((MEDIA_TAG_LOBBYMUSIC_RARE in old_login_music.media_tags) && (length(rare_music_data) > 1))
+			rare_music_data -= old_login_music
 		else if(length(title_music_data) > 1)
-			title_music_data -= list(old_login_music)
+			title_music_data -= old_login_music
 
 	//Try to set a song json
 	var/use_rare_music = prob(10)
@@ -762,26 +737,15 @@ SUBSYSTEM_DEF(ticker)
 	if(!login_music)
 		var/music = pick(world.file2list(ROUND_START_MUSIC_LIST, "\n"))
 		var/list/split_path = splittext(music, "/")
-		login_music = list("name" = split_path[length(split_path)], "author" = null, "file" = music)
+		//Construct a minimal music track to satisfy the system.
+		login_music = new(name = split_path[length(split_path)], path = music)
 
 	//Write the last round file to our current choice
-	rustg_file_write(json_encode(login_music), "data/last_round_lobby_music.json")
+	rustg_file_write(login_music.path, "data/last_round_lobby_music.txt")
 
 /datum/controller/subsystem/ticker/proc/pick_credits_music()
-	var/list/music_data = list()
-	var/list/rare_music_data = list()
-
-	//Remove the previous song.
-	var/list/music_jsons = get_music_jsons(TRUE)
-	for(var/list/music_entry as anything in music_jsons)
-		//Find rare sounds that are map-agnostic or belong to our map
-		if(music_entry["rare"])
-			if((!music_entry["map"] || (music_entry["map"] == SSmapping.config.map_name)))
-				rare_music_data += list(music_entry)
-
-		//Filter out songs that don't belong to our map, add map-agnostic songs.
-		else if(!music_entry["map"] || music_entry["map"] == SSmapping.config.map_name)
-			music_data += list(music_entry)
+	var/list/music_data = SSmedia.get_track_pool(MEDIA_TAG_ROUNDEND_COMMON)
+	var/list/rare_music_data = SSmedia.get_track_pool(MEDIA_TAG_ROUNDEND_RARE)
 
 	//Try to set a song json
 	var/use_rare_music = prob(10)

@@ -67,7 +67,7 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	update_icon_nopipes(TRUE)
 	switching = TRUE
 	playsound(src, (on ? on_sound : off_sound), 50, TRUE)
-	addtimer(CALLBACK(src, .proc/finish_interact), 1 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(finish_interact)), 1 SECONDS)
 
 /**
  * Called by iteract() after a 1 second timer, calls toggle(), allows another interaction with the component.
@@ -122,7 +122,7 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	. = ..()
 	if(istype(shell, /obj/machinery/atmospherics/components/binary/valve/digital))
 		attached_valve = shell
-		RegisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN, .proc/handle_valve_toggled)
+		RegisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN, PROC_REF(handle_valve_toggled))
 
 /obj/item/circuit_component/digital_valve/unregister_usb_parent(atom/movable/shell)
 	UnregisterSignal(attached_valve, COMSIG_VALVE_SET_OPEN)

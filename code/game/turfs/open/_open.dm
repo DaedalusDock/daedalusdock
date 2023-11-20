@@ -9,37 +9,6 @@
 	var/clawfootstep = null
 	var/heavyfootstep = null
 
-
-//direction is direction of travel of A
-/turf/open/zPassIn(atom/movable/A, direction, turf/source)
-	if(direction == DOWN)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_IN_DOWN)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of A
-/turf/open/zPassOut(atom/movable/A, direction, turf/destination)
-	if(direction == UP)
-		for(var/obj/O in contents)
-			if(O.obj_flags & BLOCK_Z_OUT_UP)
-				return FALSE
-		return TRUE
-	return FALSE
-
-//direction is direction of travel of air
-/turf/open/zAirIn(direction, turf/source)
-	return (direction == DOWN)
-
-//direction is direction of travel of air
-/turf/open/zAirOut(direction, turf/source)
-	return (direction == UP)
-
-/turf/open/update_icon()
-	. = ..()
-	//update_visuals()
-
 /turf/open/indestructible
 	name = "floor"
 	icon = 'icons/turf/floors.dmi'
@@ -73,7 +42,7 @@
 /turf/open/indestructible/permalube
 	icon_state = "darkfull"
 
-/turf/open/indestructible/permalube/ComponentInitialize()
+/turf/open/indestructible/permalube/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_LUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -86,7 +55,7 @@
 	heavyfootstep = null
 	var/sound = 'sound/effects/clownstep1.ogg'
 
-/turf/open/indestructible/honk/ComponentInitialize()
+/turf/open/indestructible/honk/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wet_floor, TURF_WET_SUPERLUBE, INFINITY, 0, INFINITY, TRUE)
 
@@ -94,49 +63,6 @@
 	. = ..()
 	if(ismob(arrived))
 		playsound(src, sound, 50, TRUE)
-
-/turf/open/indestructible/necropolis
-	name = "necropolis floor"
-	desc = "It's regarding you suspiciously."
-	icon = 'icons/turf/floors.dmi'
-	icon_state = "necro1"
-	baseturfs = /turf/open/indestructible/necropolis
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-	footstep = FOOTSTEP_LAVA
-	barefootstep = FOOTSTEP_LAVA
-	clawfootstep = FOOTSTEP_LAVA
-	heavyfootstep = FOOTSTEP_LAVA
-	tiled_dirt = FALSE
-
-/turf/open/indestructible/necropolis/Initialize(mapload)
-	. = ..()
-	if(prob(12))
-		icon_state = "necro[rand(2,3)]"
-
-/turf/open/indestructible/necropolis/air
-	initial_gas = OPENTURF_DEFAULT_ATMOS
-
-/turf/open/indestructible/boss //you put stone tiles on this and use it as a base
-	name = "necropolis floor"
-	icon = 'icons/turf/boss_floors.dmi'
-	icon_state = "boss"
-	baseturfs = /turf/open/indestructible/boss
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
-/turf/open/indestructible/boss/air
-	initial_gas = OPENTURF_DEFAULT_ATMOS
-
-/turf/open/indestructible/hierophant
-	icon = 'icons/turf/floors/hierophant_floor.dmi'
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-	baseturfs = /turf/open/indestructible/hierophant
-	smoothing_flags = SMOOTH_CORNERS
-	tiled_dirt = FALSE
-
-/turf/open/indestructible/hierophant/two
-
-/turf/open/indestructible/hierophant/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
-	return FALSE
 
 /turf/open/indestructible/paper
 	name = "notebook floor"
@@ -162,31 +88,15 @@
 	icon_state = "bluespace"
 	blocks_air = TRUE
 	baseturfs = /turf/open/indestructible/airblock
-/*
-/turf/open/Initalize_Atmos(times_fired)
-	excited = FALSE
-	update_visuals()
-
-	current_cycle = times_fired
-	immediate_calculate_adjacent_turfs()
-	for(var/i in atmos_adjacent_turfs)
-		var/turf/open/enemy_tile = i
-		var/datum/gas_mixture/enemy_air = enemy_tile.return_air()
-		if(!excited && air.compare(enemy_air))
-			//testing("Active turf found. Return value of compare(): [is_active]")
-			excited = TRUE
-			SSair.active_turfs += src
-*/
 
 /turf/open/GetHeatCapacity()
-	. = air.getHeatCapacity()
+	. = unsafe_return_air().getHeatCapacity()
 
 /turf/open/return_temperature()
-	. = return_air().temperature
+	. = unsafe_return_air().temperature
 
 /turf/open/TakeTemperature(temp)
-	air.temperature += temp
-	//air_update_turf(FALSE, FALSE)
+	return_air().temperature += temp
 
 /turf/open/proc/freeze_turf()
 	for(var/obj/I in contents)
@@ -212,48 +122,66 @@
 		movable_content.wash(CLEAN_WASH)
 	return TRUE
 
-/turf/open/handle_slip(mob/living/carbon/slipper, knockdown_amount, obj/O, lube, paralyze_amount, force_drop)
-	if(slipper.movement_type & FLYING)
+/turf/open/handle_slip(mob/living/carbon/slipper, knockdown_amount, obj/slippable, lube, paralyze_amount, force_drop)
+	if(slipper.movement_type & (FLYING | FLOATING))
 		return FALSE
-	if(has_gravity(src))
-		var/obj/buckled_obj
-		if(slipper.buckled)
-			buckled_obj = slipper.buckled
-			if(!(lube&GALOSHES_DONT_HELP)) //can't slip while buckled unless it's lube.
-				return FALSE
-		else
-			if(!(lube & SLIP_WHEN_CRAWLING) && (slipper.body_position == LYING_DOWN || !(slipper.status_flags & CANKNOCKDOWN))) // can't slip unbuckled mob if they're lying or can't fall.
-				return FALSE
-			if(slipper.m_intent == MOVE_INTENT_WALK && (lube&NO_SLIP_WHEN_WALKING))
-				return FALSE
-		if(!(lube&SLIDE_ICE))
-			to_chat(slipper, span_notice("You slipped[ O ? " on the [O.name]" : ""]!"))
-			playsound(slipper.loc, 'sound/misc/slip.ogg', 50, TRUE, -3)
+	if(!has_gravity(src))
+		return FALSE
 
-		SEND_SIGNAL(slipper, COMSIG_ON_CARBON_SLIP)
-		if(force_drop)
-			for(var/obj/item/I in slipper.held_items)
-				slipper.accident(I)
+	var/slide_distance = 4
+	if(lube & SLIDE_ICE)
+		// Ice slides only go 1 tile, this is so you will slip across ice until you reach a non-slip tile
+		slide_distance = 1
+	else if(HAS_TRAIT(slipper, TRAIT_NO_SLIP_SLIDE))
+		// Stops sliding
+		slide_distance = 0
 
-		var/olddir = slipper.dir
-		slipper.moving_diagonally = 0 //If this was part of diagonal move slipping will stop it.
-		if(!(lube & SLIDE_ICE))
-			slipper.Knockdown(knockdown_amount)
-			slipper.Paralyze(paralyze_amount)
-			slipper.stop_pulling()
-		else
-			slipper.Knockdown(20)
+	var/obj/buckled_obj
+	if(slipper.buckled)
+		if(!(lube & GALOSHES_DONT_HELP)) //can't slip while buckled unless it's lube.
+			return FALSE
+		buckled_obj = slipper.buckled
+	else
+		if(!(lube & SLIP_WHEN_CRAWLING) && (slipper.body_position == LYING_DOWN || !(slipper.status_flags & CANKNOCKDOWN))) // can't slip unbuckled mob if they're lying or can't fall.
+			return FALSE
+		if(slipper.m_intent == MOVE_INTENT_WALK && (lube & NO_SLIP_WHEN_WALKING))
+			return FALSE
 
-		if(buckled_obj)
-			buckled_obj.unbuckle_mob(slipper)
-			lube |= SLIDE_ICE
+	if(!(lube & SLIDE_ICE))
+		// Ice slides are intended to be combo'd so don't give the feedback
+		to_chat(slipper, span_notice("You slipped[ slippable ? " on the [slippable.name]" : ""]!"))
+		playsound(slipper.loc, 'sound/misc/slip.ogg', 50, TRUE, -3)
 
-		var/turf/target = get_ranged_target_turf(slipper, olddir, 4)
+	SEND_SIGNAL(slipper, COMSIG_ON_CARBON_SLIP)
+
+	if(force_drop)
+		for(var/obj/item/item in slipper.held_items)
+			slipper.accident(item)
+
+	var/olddir = slipper.dir
+	slipper.moving_diagonally = 0 //If this was part of diagonal move slipping will stop it.
+	if(lube & SLIDE_ICE)
+		// They need to be kept upright to maintain the combo effect (So don't knockdown)
+		slipper.Immobilize(1 SECONDS)
+		slipper.incapacitate(1 SECONDS)
+	else
+		slipper.Knockdown(knockdown_amount)
+		slipper.Paralyze(paralyze_amount)
+		slipper.release_all_grabs()
+
+	if(buckled_obj)
+		buckled_obj.unbuckle_mob(slipper)
+		// This is added onto the end so they slip "out of their chair" (one tile)
+		lube |= SLIDE_ICE
+		slide_distance = 1
+
+	if(slide_distance)
+		var/turf/target = get_ranged_target_turf(slipper, olddir, slide_distance)
 		if(lube & SLIDE)
 			slipper.AddComponent(/datum/component/force_move, target, TRUE)
-		else if(lube&SLIDE_ICE)
+		else if(lube & SLIDE_ICE)
 			slipper.AddComponent(/datum/component/force_move, target, FALSE)//spinning would be bad for ice, fucks up the next dir
-		return TRUE
+	return TRUE
 
 /turf/open/proc/MakeSlippery(wet_setting = TURF_WET_WATER, min_wet_time = 0, wet_time_to_add = 0, max_wet_time = MAXIMUM_WET_TIME, permanent)
 	AddComponent(/datum/component/wet_floor, wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
@@ -309,3 +237,25 @@
 	playsound(src, 'sound/weapons/genhit.ogg', 50, TRUE)
 	to_chat(user, span_notice("You build a floor."))
 	PlaceOnTop(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
+
+/// Used primarily for heretic's temple. To be removed.
+/turf/open/indestructible/necropolis
+	name = "necropolis floor"
+	desc = "It's regarding you suspiciously."
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "necro1"
+	baseturfs = /turf/open/indestructible/necropolis
+	initial_gas = OPENTURF_LOW_PRESSURE
+	footstep = FOOTSTEP_LAVA
+	barefootstep = FOOTSTEP_LAVA
+	clawfootstep = FOOTSTEP_LAVA
+	heavyfootstep = FOOTSTEP_LAVA
+	tiled_dirt = FALSE
+
+/turf/open/indestructible/necropolis/Initialize(mapload)
+	. = ..()
+	if(prob(12))
+		icon_state = "necro[rand(2,3)]"
+
+/turf/open/indestructible/necropolis/air
+	initial_gas = OPENTURF_DEFAULT_ATMOS

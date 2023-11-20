@@ -32,7 +32,8 @@ DEFINE_BITFIELD(smoothing_flags, list(
  * * Matched with the `list/canSmoothWith` variable to check whether smoothing is possible or not.
  */
 
-#define S_TURF(num) ((24 * 0) + num) //Not any different from the number itself, but kept this way in case someone wants to expand it by adding stuff before it.
+#define S_TURF(num) (#num + ",")
+
 /* /turf only */
 
 #define SMOOTH_GROUP_TURF_OPEN S_TURF(0) ///turf/open
@@ -93,22 +94,21 @@ DEFINE_BITFIELD(smoothing_flags, list(
 #define SMOOTH_GROUP_BAMBOO_FLOOR S_TURF(52) //![/turf/open/floor/bamboo]
 
 #define SMOOTH_GROUP_CLOSED_TURFS S_TURF(53) ///turf/closed
-#define SMOOTH_GROUP_SURVIVAL_TITANIUM_WALLS S_TURF(53) ///turf/closed/wall/mineral/titanium/survival
-#define SMOOTH_GROUP_HOTEL_WALLS S_TURF(54) ///turf/closed/indestructible/hotelwall
-#define SMOOTH_GROUP_MINERAL_WALLS S_TURF(55) ///turf/closed/mineral, /turf/closed/indestructible
-#define SMOOTH_GROUP_BOSS_WALLS S_TURF(56) ///turf/closed/indestructible/riveted/boss
+#define SMOOTH_GROUP_SURVIVAL_TITANIUM_WALLS S_TURF(54) ///turf/closed/wall/mineral/titanium/survival
+#define SMOOTH_GROUP_HOTEL_WALLS S_TURF(55) ///turf/closed/indestructible/hotelwall
+#define SMOOTH_GROUP_MINERAL_WALLS S_TURF(56) ///turf/closed/mineral, /turf/closed/indestructible
+#define SMOOTH_GROUP_BOSS_WALLS S_TURF(57) ///turf/closed/indestructible/riveted/boss
 
-#define MAX_S_TURF SMOOTH_GROUP_BOSS_WALLS //Always match this value with the one above it.
+#define MAX_S_TURF 56 //Always match this value with the one above it.
 
-
-#define S_OBJ(num) (MAX_S_TURF + 1 + num)
+#define S_OBJ(num) ("-" + #num + ",")
 /* /obj included */
 
-#define SMOOTH_GROUP_WALLS S_OBJ(0) ///turf/closed/wall, /obj/structure/falsewall
-#define SMOOTH_GROUP_HIERO_WALL S_OBJ(1) ///obj/effect/temp_visual/elite_tumor_wall, /obj/effect/temp_visual/hierophant/wall
-#define SMOOTH_GROUP_SURVIVAL_TITANIUM_POD S_OBJ(2) ///turf/closed/wall/mineral/titanium/survival/pod, /obj/machinery/door/airlock/survival_pod, /obj/structure/window/reinforced/shuttle/survival_pod
+#define SMOOTH_GROUP_WALLS S_OBJ(1) ///turf/closed/wall, /obj/structure/falsewall
+#define SMOOTH_GROUP_HIERO_WALL S_OBJ(2) ///obj/effect/temp_visual/elite_tumor_wall, /obj/effect/temp_visual/hierophant/wall
+#define SMOOTH_GROUP_SURVIVAL_TITANIUM_POD S_OBJ(3) ///turf/closed/wall/mineral/titanium/survival/pod, /obj/machinery/door/airlock/survival_pod, /obj/structure/window/reinforced/shuttle/survival_pod
 
-#define SMOOTH_GROUP_PAPERFRAME S_OBJ(20) ///obj/structure/window/paperframe, /obj/structure/mineral_door/paperframe
+#define SMOOTH_GROUP_PAPERFRAME S_OBJ(4) ///obj/structure/window/paperframe, /obj/structure/mineral_door/paperframe
 
 #define SMOOTH_GROUP_WINDOW_FULLTILE S_OBJ(21) ///turf/closed/indestructible/fakeglass, /obj/structure/window/fulltile, /obj/structure/window/reinforced/fulltile, /obj/structure/window/reinforced/tinted/fulltile, /obj/structure/window/plasma/fulltile, /obj/structure/window/reinforced/plasma/fulltile
 #define SMOOTH_GROUP_WINDOW_FULLTILE_BRONZE S_OBJ(22) ///obj/structure/window/bronze/fulltile
@@ -148,4 +148,30 @@ DEFINE_BITFIELD(smoothing_flags, list(
 
 #define SMOOTH_GROUP_GAS_TANK S_OBJ(71)
 
-#define MAX_S_OBJ SMOOTH_GROUP_GAS_TANK //Always match this value with the one above it.
+/// Performs the work to set smoothing_groups and canSmoothWith.
+/// An inlined function used in both turf/Initialize and atom/Initialize.
+#define SETUP_SMOOTHING(...) \
+	if (istext(smoothing_groups)) { \
+		SET_SMOOTHING_GROUPS(smoothing_groups); \
+	} \
+\
+	if (istext(canSmoothWith)) { \
+		/* S_OBJ is always negative, and we are guaranteed to be sorted. */ \
+		if (canSmoothWith[1] == "-") { \
+			smoothing_flags |= SMOOTH_OBJ; \
+		} \
+		SET_SMOOTHING_GROUPS(canSmoothWith); \
+	}
+
+/// Given a smoothing groups variable, will set out to the actual numbers inside it
+#define UNWRAP_SMOOTHING_GROUPS(smoothing_groups, out) \
+	json_decode("\[[##smoothing_groups]0\]"); \
+	##out.len--;
+
+#define ASSERT_SORTED_SMOOTHING_GROUPS(smoothing_group_variable) \
+	do { \
+		if(smoothing_group_variable) { \
+			var/list/unwrapped = UNWRAP_SMOOTHING_GROUPS(smoothing_group_variable, unwrapped); \
+			assert_sorted(unwrapped, "[#smoothing_group_variable] ([type])"); \
+		} \
+	} while(FALSE)

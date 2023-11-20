@@ -7,10 +7,16 @@
 	lefthand_file = 'icons/mob/inhands/equipment/toolbox_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/toolbox_righthand.dmi'
 	flags_1 = CONDUCT_1
-	force = 12
-	throwforce = 12
+
+	force = 20
+	throwforce = 10
 	throw_speed = 2
 	throw_range = 7
+	stamina_damage = 47
+	stamina_cost = 20
+	stamina_critical_chance = 10
+	combat_click_delay = CLICK_CD_MELEE * 2
+
 	w_class = WEIGHT_CLASS_BULKY
 	custom_materials = list(/datum/material/iron = 500)
 	attack_verb_continuous = list("robusts")

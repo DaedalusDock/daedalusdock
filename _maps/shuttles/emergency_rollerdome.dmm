@@ -283,10 +283,6 @@
 /obj/structure/railing,
 /turf/open/floor/wood,
 /area/shuttle/escape)
-"RN" = (
-/obj/machinery/jukebox/disco/indestructible,
-/turf/open/floor/light,
-/area/shuttle/escape)
 "TU" = (
 /obj/structure/railing{
 	dir = 10
@@ -461,7 +457,7 @@ Cg
 ce
 pa
 HS
-RN
+HS
 HS
 pa
 dJ

@@ -15,8 +15,8 @@
 	return ..()
 
 /datum/status_effect/confusion/on_apply()
-	RegisterSignal(owner, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_confusion)
-	RegisterSignal(owner, COMSIG_MOB_CLIENT_PRE_MOVE, .proc/on_move)
+	RegisterSignal(owner, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(remove_confusion))
+	RegisterSignal(owner, COMSIG_MOB_CLIENT_PRE_MOVE, PROC_REF(on_move))
 	return TRUE
 
 /datum/status_effect/confusion/on_remove()
@@ -31,6 +31,10 @@
 /// Signal proc for [COMSIG_MOB_CLIENT_PRE_MOVE]. We have a chance to mix up our movement pre-move with confusion.
 /datum/status_effect/confusion/proc/on_move(datum/source, list/move_args)
 	SIGNAL_HANDLER
+
+	var/mob/living/L = source
+	if(L.body_position == LYING_DOWN)
+		return
 
 	// How much time is left in the duration, in seconds.
 	var/time_left = (duration - world.time) / 10

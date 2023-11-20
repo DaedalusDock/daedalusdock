@@ -62,8 +62,8 @@
 	var/chromosome_name
 	/// Has the chromosome been modified
 	var/modified = FALSE //ugly but we really don't want chromosomes and on_acquiring to overlap and apply double the powers
-	/// Is this mutation mutadone proof
-	var/mutadone_proof = FALSE
+	/// Is this mutation ryetalyn proof
+	var/ryetalyn_proof = FALSE
 
 	//Chromosome stuff - set to -1 to prevent people from changing it. Example: It'd be a waste to decrease cooldown on mutism
 	/// genetic stability coeff
@@ -81,7 +81,7 @@
 	. = ..()
 	src.class = class
 	if(timer)
-		addtimer(CALLBACK(src, .proc/remove), timer)
+		addtimer(CALLBACK(src, PROC_REF(remove)), timer)
 		timeout = timer
 	if(copymut && istype(copymut, /datum/mutation/human))
 		copy_mutation(copymut)
@@ -116,7 +116,7 @@
 		owner.apply_overlay(layer_used)
 	grant_power() //we do checks here so nothing about hulk getting magic
 	if(!modified)
-		addtimer(CALLBACK(src, .proc/modify, 0.5 SECONDS)) //gonna want children calling ..() to run first
+		addtimer(CALLBACK(src, PROC_REF(modify), 0.5 SECONDS)) //gonna want children calling ..() to run first
 
 /datum/mutation/human/proc/get_visual_indicator()
 	return
@@ -190,7 +190,7 @@
 	synchronizer_coeff = mutation_to_copy.synchronizer_coeff
 	power_coeff = mutation_to_copy.power_coeff
 	energy_coeff = mutation_to_copy.energy_coeff
-	mutadone_proof = mutation_to_copy.mutadone_proof
+	ryetalyn_proof = mutation_to_copy.ryetalyn_proof
 	can_chromosome = mutation_to_copy.can_chromosome
 	valid_chrom_list = mutation_to_copy.valid_chrom_list
 
@@ -199,7 +199,7 @@
 	synchronizer_coeff = initial(synchronizer_coeff)
 	power_coeff = initial(power_coeff)
 	energy_coeff = initial(energy_coeff)
-	mutadone_proof = initial(mutadone_proof)
+	ryetalyn_proof = initial(ryetalyn_proof)
 	can_chromosome = initial(can_chromosome)
 	chromosome_name = null
 

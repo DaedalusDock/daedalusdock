@@ -3,18 +3,22 @@
 	if(!CONFIG_GET(number/commendation_percent_poll))
 		return
 
-	var/number_to_ask = round(LAZYLEN(GLOB.joined_player_list) * CONFIG_GET(number/commendation_percent_poll)) + rand(0,1)
+	//This does an implicit copy(), I have no idea why JPL is a lazylist, but there's no LAZYSHUFFLE() so get fucked.
+	var/list/ckeys_to_ask = shuffle(GLOB.joined_player_list)
+	var/number_to_ask = round(LAZYLEN(ckeys_to_ask) * CONFIG_GET(number/commendation_percent_poll)) + rand(0,1)
+
+
 	if(number_to_ask == 0)
 		message_admins("Not enough eligible players to poll for commendations.")
 		return
 	message_admins("Polling [number_to_ask] players for commendations.")
 
-	for(var/i in GLOB.joined_player_list)
+	for(var/i in ckeys_to_ask)
 		var/mob/check_mob = get_mob_by_ckey(i)
 		if(!check_mob?.mind || !check_mob.client)
 			continue
 		// maybe some other filters like bans or whatever
-		INVOKE_ASYNC(check_mob, /mob.proc/query_heart, 1)
+		INVOKE_ASYNC(check_mob, TYPE_PROC_REF(/mob, query_heart), 1)
 		number_to_ask--
 		if(number_to_ask <= 0)
 			break
@@ -44,9 +48,9 @@
 		if(1)
 			heart_nominee = tgui_input_text(src, "What was their name? Just a first or last name may be enough.", "<3?")
 		if(2)
-			heart_nominee = tgui_input_text(src, "Try again, what was their name? Just a first or last name may be enough.", "<3?")
+			heart_nominee = tgui_input_text(src, "Try again, what was their name? Just a first or last name may be enough.", "<3??")
 		if(3)
-			heart_nominee = tgui_input_text(src, "One more try, what was their name? Just a first or last name may be enough.", "<3?")
+			heart_nominee = tgui_input_text(src, "One more try, what was their name? Just a first or last name may be enough.", "<3???")
 
 	if(!heart_nominee)
 		return
@@ -69,7 +73,7 @@
 				return
 			if("Nope")
 				continue
-			else
+			else //Cancel
 				return
 
 	query_heart(attempt + 1)

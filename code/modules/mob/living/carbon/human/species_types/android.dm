@@ -24,7 +24,6 @@
 	)
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	meat = null
-	mutanttongue = /obj/item/organ/internal/tongue/robot
 	species_language_holder = /datum/language_holder/synthetic
 	wings_icons = list("Robotic")
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
@@ -38,6 +37,18 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/robot,
 	)
 	examine_limb_id = SPECIES_HUMAN
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = null,
+		ORGAN_SLOT_LUNGS = null,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/robot,
+		ORGAN_SLOT_STOMACH = null,
+		ORGAN_SLOT_APPENDIX = null,
+		ORGAN_SLOT_LIVER = null,
+	)
 
 /datum/species/android/on_species_gain(mob/living/carbon/C)
 	. = ..()

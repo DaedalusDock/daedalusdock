@@ -17,7 +17,7 @@
 	///Check if the gas is moving from one pipenet to the other
 	var/is_gas_flowing = FALSE
 
-/obj/machinery/atmospherics/components/binary/temperature_gate/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/temperature_gate/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -59,14 +59,14 @@
 	var/pressure_delta = air1.returnPressure() - air2.returnPressure()
 	if(!inverted)
 		if(air1.temperature < target_temperature)
-			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)
+			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta, parents[2]?.combined_volume || 0)) >= 0)
 				update_parents()
 				is_gas_flowing = TRUE
 		else
 			is_gas_flowing = FALSE
 	else
 		if(air1.temperature > target_temperature)
-			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta)) >= 0)
+			if(pump_gas_passive(air1, air2, calculate_transfer_moles(air1, air2, pressure_delta, parents[2]?.combined_volume || 0)) >= 0)
 				update_parents()
 				is_gas_flowing = TRUE
 		else

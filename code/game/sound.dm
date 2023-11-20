@@ -57,8 +57,8 @@
 
 	. = list()//output everything that successfully heard the sound
 
-	var/turf/above_turf = SSmapping.get_turf_above(turf_source)
-	var/turf/below_turf = SSmapping.get_turf_below(turf_source)
+	var/turf/above_turf = GetAbove(turf_source)
+	var/turf/below_turf = GetBelow(turf_source)
 
 	if(ignore_walls)
 
@@ -112,8 +112,8 @@
 		if(pressure_affected)
 			//Atmosphere affects sound
 			var/pressure_factor = 1
-			var/datum/gas_mixture/hearer_env = turf_loc.return_air()
-			var/datum/gas_mixture/source_env = turf_source.return_air()
+			var/datum/gas_mixture/hearer_env = turf_loc.unsafe_return_air()
+			var/datum/gas_mixture/source_env = turf_source.unsafe_return_air()
 
 			if(hearer_env && source_env)
 				var/pressure = min(hearer_env.returnPressure(), source_env.returnPressure())
@@ -176,14 +176,14 @@
 	UNTIL(SSticker.login_music) //wait for SSticker init to set the login music
 
 	if(prefs && (prefs.toggles & SOUND_LOBBY))
-		SEND_SOUND(src, sound(SSticker.login_music["file"], repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
+		SEND_SOUND(src, sound(SSticker.login_music.path, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
 
 	UNTIL(SSticker.current_state >= GAME_STATE_PREGAME)
-	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.login_music["name"]]</i>[SSticker.login_music["author"] ? " by [SSticker.login_music["author"]]" : ""]"))
+	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.login_music.name]</i>[SSticker.login_music.author ? " by [SSticker.login_music.author]" : ""]"))
 
 /client/proc/playcreditsmusic(vol = 85)
-	SEND_SOUND(src, sound(SSticker.credits_music["file"], repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC))
-	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.credits_music["name"]]</i>[SSticker.credits_music["author"] ? " by [SSticker.credits_music["author"]]" : ""]"))
+	SEND_SOUND(src, sound(SSticker.credits_music.path, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC))
+	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.credits_music.name]</i>[SSticker.credits_music.author ? " by [SSticker.credits_music.author]" : ""]"))
 
 /proc/get_rand_frequency()
 	return rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.
@@ -258,5 +258,7 @@
 				soundin = pick('sound/effects/rocktap1.ogg', 'sound/effects/rocktap2.ogg', 'sound/effects/rocktap3.ogg')
 			if(SFX_BREAK_BONE)
 				soundin= pick('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
+			if(SFX_PAINT)
+				soundin= pick('sound/effects/paint_1.ogg','sound/effects/paint_2.ogg','sound/effects/paint_3.ogg')
 
 	return soundin

@@ -130,7 +130,7 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/proc/throw_wrassle(mob/living/A, mob/living/D)
 	if(!D)
 		return
-	if(!A.pulling || A.pulling != D)
+	if(!A.is_grabbing(D))
 		to_chat(A, span_warning("You need to have [D] in a cinch!"))
 		return
 	D.forceMove(A.loc)
@@ -199,7 +199,7 @@ If you make a derivative work from this code, you must include this notification
 		if (T && isturf(T))
 			if (!D.stat)
 				D.emote("scream")
-			D.throw_at(T, 10, 4, A, TRUE, TRUE, callback = CALLBACK(D, /mob/living.proc/Paralyze, 20))
+			D.throw_at(T, 10, 4, A, TRUE, TRUE, callback = CALLBACK(D, TYPE_PROC_REF(/mob/living, Paralyze), 20))
 	log_combat(A, D, "has thrown with wrestling")
 	return
 
@@ -214,7 +214,7 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/proc/slam(mob/living/A, mob/living/D)
 	if(!D)
 		return
-	if(!A.pulling || A.pulling != D)
+	if(!A.is_grabbing(D))
 		to_chat(A, span_warning("You need to have [D] in a cinch!"))
 		return
 	D.forceMove(A.loc)
@@ -336,7 +336,7 @@ If you make a derivative work from this code, you must include this notification
 			A.setDir(turn(A.dir, 90))
 
 		A.forceMove(D.loc)
-		addtimer(CALLBACK(src, .proc/CheckStrikeTurf, A, T), 4)
+		addtimer(CALLBACK(src, PROC_REF(CheckStrikeTurf), A, T), 4)
 
 		D.visible_message(span_danger("[A] headbutts [D]!"), \
 						span_userdanger("You're headbutted by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
@@ -452,9 +452,10 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/grab_act(mob/living/A, mob/living/D)
 	if(check_streak(A,D))
 		return 1
-	if(A.pulling == D)
+	if(A.is_grabbing(D))
 		return 1
-	A.start_pulling(D)
+	if(!A.try_make_grab(D))
+		return 1
 	D.visible_message(span_danger("[A] gets [D] in a cinch!"), \
 					span_userdanger("You're put into a cinch by [A]!"), span_hear("You hear aggressive shuffling!"), COMBAT_MESSAGE_RANGE, A)
 	to_chat(A, span_danger("You get [D] in a cinch!"))

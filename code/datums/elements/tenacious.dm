@@ -4,30 +4,33 @@
  * Used by sparring sect!
  */
 /datum/element/tenacious
-	element_flags = ELEMENT_DETACH
 
 /datum/element/tenacious/Attach(datum/target)
 	. = ..()
 
 	if(!ishuman(target))
 		return COMPONENT_INCOMPATIBLE
-	var/mob/living/carbon/human/valid_target = target
-	on_stat_change(valid_target, new_stat = valid_target.stat) //immediately try adding movement bonus if they're in soft crit
-	RegisterSignal(target, COMSIG_MOB_STATCHANGE, .proc/on_stat_change)
+
+	if(HAS_TRAIT(target, TRAIT_SOFT_CRITICAL_CONDITION))
+		on_softcrit_gain(target)
+
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_SOFT_CRITICAL_CONDITION), PROC_REF(on_softcrit_gain))
+	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_SOFT_CRITICAL_CONDITION), PROC_REF(on_softcrit_loss))
 	ADD_TRAIT(target, TRAIT_TENACIOUS, ELEMENT_TRAIT(type))
 
 /datum/element/tenacious/Detach(datum/target)
 	UnregisterSignal(target, COMSIG_MOB_STATCHANGE)
 	REMOVE_TRAIT(target, TRAIT_TENACIOUS, ELEMENT_TRAIT(type))
+	on_softcrit_loss(target)
 	return ..()
 
 ///signal called by the stat of the target changing
-/datum/element/tenacious/proc/on_stat_change(mob/living/carbon/human/target, new_stat)
+/datum/element/tenacious/proc/on_softcrit_gain(mob/living/carbon/human/target)
 	SIGNAL_HANDLER
+	to_chat(target, span_danger("Your tenacity kicks in!"))
+	target.add_movespeed_modifier(/datum/movespeed_modifier/tenacious)
 
-	if(new_stat == SOFT_CRIT)
-		target.balloon_alert(target, "your tenacity kicks in")
-		target.add_movespeed_modifier(/datum/movespeed_modifier/tenacious)
-	else
-		target.balloon_alert(target, "your tenacity wears off")
-		target.remove_movespeed_modifier(/datum/movespeed_modifier/tenacious)
+/datum/element/tenacious/proc/on_softcrit_loss(mob/living/carbon/target)
+	SIGNAL_HANDLER
+	to_chat(target, span_danger("Your tenacity wears off!"))
+	target.remove_movespeed_modifier(/datum/movespeed_modifier/tenacious)

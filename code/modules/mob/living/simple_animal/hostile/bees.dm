@@ -66,7 +66,6 @@
 	AddElement(/datum/element/simple_flying)
 	AddComponent(/datum/component/clickbox, x_offset = -2, y_offset = -2)
 	AddComponent(/datum/component/swarming)
-	add_cell_sample()
 
 /mob/living/simple_animal/hostile/bee/mob_pickup_checks(mob/living/user, display_messages)
 	if(flags_1 & HOLOGRAM_1)
@@ -182,8 +181,9 @@
 		if(. && beegent && isliving(target))
 			var/mob/living/L = target
 			if(L.reagents)
-				beegent.expose_mob(L, INJECT)
-				L.reagents.add_reagent(beegent.type, rand(1,5))
+				var/amount = rand(1,5)
+				beegent.expose_mob(L, amount, methods = INJECT)
+				L.reagents.add_reagent(beegent.type, amount)
 
 /mob/living/simple_animal/hostile/bee/proc/assign_reagent(datum/reagent/R)
 	if(istype(R))
@@ -251,12 +251,7 @@
 /mob/living/simple_animal/hostile/bee/toxin/Initialize(mapload)
 	. = ..()
 	var/datum/reagent/R = pick(typesof(/datum/reagent/toxin))
-	assign_reagent(GLOB.chemical_reagents_list[R])
-
-/mob/living/simple_animal/hostile/bee/add_cell_sample()
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_QUEEN_BEE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
+	assign_reagent(SSreagents.chemical_reagents_list[R])
 /mob/living/simple_animal/hostile/bee/queen
 	name = "queen bee"
 	desc = "She's the queen of bees, BZZ BZZ!"
@@ -273,8 +268,7 @@
 	. = ..()
 	if(. && beegent && isliving(target))
 		var/mob/living/L = target
-		beegent.expose_mob(L, TOUCH)
-		L.reagents.add_reagent(beegent.type, rand(1,5))
+		beegent.expose_mob(L, rand(1,5), methods = TOUCH)
 
 
 //PEASENT BEES
@@ -315,7 +309,7 @@
 			else
 				to_chat(user, span_warning("You don't have enough royal bee jelly to split a bee in two!"))
 		else
-			var/datum/reagent/R = GLOB.chemical_reagents_list[S.reagents.get_master_reagent_id()]
+			var/datum/reagent/R = SSreagents.chemical_reagents_list[S.reagents.get_master_reagent_id()]
 			if(R && S.reagents.has_reagent(R.type, 5))
 				S.reagents.remove_reagent(R.type,5)
 				queen.assign_reagent(R)
@@ -330,10 +324,6 @@
 	user.say("IT'S HIP TO EAT BEES!")
 	qdel(src)
 	return TOXLOSS
-
-/obj/item/queen_bee/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_QUEEN_BEE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/item/queen_bee/bought/Initialize(mapload)
 	. = ..()
@@ -357,7 +347,7 @@
 
 /mob/living/simple_animal/hostile/bee/short/Initialize(mapload, timetolive=50 SECONDS)
 	. = ..()
-	addtimer(CALLBACK(src, .proc/death), timetolive)
+	addtimer(CALLBACK(src, PROC_REF(death)), timetolive)
 
 /obj/item/trash/bee
 	name = "bee"
@@ -369,7 +359,6 @@
 /obj/item/trash/bee/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/edible, list(/datum/reagent/consumable/nutriment/vitamin = 5), null, RAW | MEAT | GROSS, 10, 0, list("bee"), null, 10)
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_QUEEN_BEE, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/item/trash/bee/update_overlays()
 	. = ..()

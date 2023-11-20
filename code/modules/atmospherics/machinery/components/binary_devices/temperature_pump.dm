@@ -12,7 +12,7 @@
 	///Maximum allowed transfer percentage
 	var/max_heat_transfer_rate = 100
 
-/obj/machinery/atmospherics/components/binary/temperature_pump/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/temperature_pump/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -37,7 +37,7 @@
 	var/datum/gas_mixture/air_input = airs[1]
 	var/datum/gas_mixture/air_output = airs[2]
 
-	if(!QUANTIZE(air_input.get_moles()) || !QUANTIZE(air_output.get_moles())) //Don't transfer if there's no gas
+	if(!QUANTIZE(air_input.total_moles) || !QUANTIZE(air_output.total_moles)) //Don't transfer if there's no gas
 		return
 	var/datum/gas_mixture/remove_input = air_input.removeRatio(0.9)
 	var/datum/gas_mixture/remove_output = air_output.removeRatio(0.9)

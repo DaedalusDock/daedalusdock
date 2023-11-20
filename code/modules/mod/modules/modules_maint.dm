@@ -18,7 +18,7 @@
 	mod.activation_step_time *= 2
 
 /obj/item/mod/module/springlock/on_suit_activation()
-	RegisterSignal(mod.wearer, COMSIG_ATOM_EXPOSE_REAGENTS, .proc/on_wearer_exposed)
+	RegisterSignal(mod.wearer, COMSIG_ATOM_EXPOSE_REAGENTS, PROC_REF(on_wearer_exposed))
 
 /obj/item/mod/module/springlock/on_suit_deactivation(deleting = FALSE)
 	UnregisterSignal(mod.wearer, COMSIG_ATOM_EXPOSE_REAGENTS)
@@ -27,12 +27,12 @@
 /obj/item/mod/module/springlock/proc/on_wearer_exposed(atom/source, list/reagents, datum/reagents/source_reagents, methods, volume_modifier, show_message)
 	SIGNAL_HANDLER
 
-	if(!(methods & (VAPOR|PATCH|TOUCH)))
+	if(!(methods & (VAPOR|TOUCH)))
 		return //remove non-touch reagent exposure
 	to_chat(mod.wearer, span_danger("[src] makes an ominous click sound..."))
 	playsound(src, 'sound/items/modsuit/springlock.ogg', 75, TRUE)
-	addtimer(CALLBACK(src, .proc/snap_shut), rand(3 SECONDS, 5 SECONDS))
-	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, .proc/on_activate_spring_block)
+	addtimer(CALLBACK(src, PROC_REF(snap_shut)), rand(3 SECONDS, 5 SECONDS))
+	RegisterSignal(mod, COMSIG_MOD_ACTIVATE, PROC_REF(on_activate_spring_block))
 
 ///Signal fired when wearer attempts to activate/deactivate suits
 /obj/item/mod/module/springlock/proc/on_activate_spring_block(datum/source, user)
@@ -68,7 +68,7 @@
 	/// The current element in the rainbow_order list we are on.
 	var/rave_number = 1
 	/// The track we selected to play.
-	var/datum/track/selection
+	var/datum/media/selection
 	/// A list of all the songs we can play.
 	var/list/songs = list()
 	/// A list of the colors the module can take.
@@ -83,18 +83,11 @@
 
 /obj/item/mod/module/visor/rave/Initialize(mapload)
 	. = ..()
-	var/list/tracks = flist("[global.config.directory]/jukebox_music/sounds/")
-	for(var/sound in tracks)
-		var/datum/track/track = new()
-		track.song_path = file("[global.config.directory]/jukebox_music/sounds/[sound]")
-		var/list/sound_params = splittext(sound,"+")
-		if(length(sound_params) != 3)
-			continue
-		track.song_name = sound_params[1]
-		track.song_length = text2num(sound_params[2])
-		track.song_beat = text2num(sound_params[3])
-		songs[track.song_name] = track
-	if(length(songs))
+	//This is structured in a stupid way. It'd be more effort to recode it than to crush the format until it's happy.
+	var/list/datum/media/tmp_songs = SSmedia.get_track_pool(MEDIA_TAG_JUKEBOX)
+	for(var/datum/media/track as anything in tmp_songs)
+		songs[track.name] = track
+	if(songs.len)
 		var/song_name = pick(songs)
 		selection = songs[song_name]
 
@@ -105,7 +98,7 @@
 	rave_screen = mod.wearer.add_client_colour(/datum/client_colour/rave)
 	rave_screen.update_colour(rainbow_order[rave_number])
 	if(selection)
-		mod.wearer.playsound_local(get_turf(src), null, 50, channel = CHANNEL_JUKEBOX, sound_to_use = sound(selection.song_path), use_reverb = FALSE)
+		mod.wearer.playsound_local(get_turf(src), null, 50, channel = CHANNEL_JUKEBOX, sound_to_use = sound(selection.path), use_reverb = FALSE)
 
 /obj/item/mod/module/visor/rave/on_deactivation(display_message = TRUE, deleting = FALSE)
 	. = ..()
@@ -133,7 +126,7 @@
 /obj/item/mod/module/visor/rave/get_configuration()
 	. = ..()
 	if(length(songs))
-		.["selection"] = add_ui_configuration("Song", "list", selection.song_name, clean_songs())
+		.["selection"] = add_ui_configuration("Song", "list", selection.name, clean_songs())
 
 /obj/item/mod/module/visor/rave/configure_edit(key, value)
 	switch(key)
@@ -146,30 +139,6 @@
 	. = list()
 	for(var/track in songs)
 		. += track
-
-///Tanner - Tans you with spraytan.
-/obj/item/mod/module/tanner
-	name = "MOD tanning module"
-	desc = "A tanning module for modular suits. Skin cancer functionality has not been ever proven, \
-		although who knows with the rumors..."
-	icon_state = "tanning"
-	module_type = MODULE_USABLE
-	complexity = 1
-	use_power_cost = DEFAULT_CHARGE_DRAIN * 5
-	incompatible_modules = list(/obj/item/mod/module/tanner)
-	cooldown_time = 30 SECONDS
-
-/obj/item/mod/module/tanner/on_use()
-	. = ..()
-	if(!.)
-		return
-	playsound(src, 'sound/machines/microwave/microwave-end.ogg', 50, TRUE)
-	var/datum/reagents/holder = new()
-	holder.add_reagent(/datum/reagent/spraytan, 10)
-	holder.trans_to(mod.wearer, 10, methods = VAPOR)
-	if(prob(5))
-		SSradiation.irradiate(mod.wearer)
-	drain_power(use_power_cost)
 
 ///Balloon Blower - Blows a balloon.
 /obj/item/mod/module/balloon
@@ -283,8 +252,7 @@
 		return
 	playsound(src, 'sound/effects/curseattack.ogg', 50)
 	mod.wearer.AddElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY)
-	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, .proc/check_upstairs)
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
+	RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(check_upstairs))
 	ADD_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, MOD_TRAIT)
 	check_upstairs() //todo at some point flip your screen around
 
@@ -299,24 +267,23 @@
 		playsound(src, 'sound/effects/curseattack.ogg', 50)
 	qdel(mod.wearer.RemoveElement(/datum/element/forced_gravity, NEGATIVE_GRAVITY))
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED)
-	step_count = 0
-	mod.wearer.update_gravity(mod.wearer.has_gravity())
 	REMOVE_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, MOD_TRAIT)
-	var/turf/open/openspace/current_turf = get_turf(mod.wearer)
-	if(istype(current_turf))
-		current_turf.zFall(mod.wearer, falling_from_move = TRUE)
+	mod.wearer.zFall()
 
 /obj/item/mod/module/atrocinator/proc/check_upstairs()
 	SIGNAL_HANDLER
 
 	if(you_fucked_up || mod.wearer.has_gravity() != NEGATIVE_GRAVITY)
 		return
+
 	var/turf/open/current_turf = get_turf(mod.wearer)
-	var/turf/open/openspace/turf_above = get_step_multiz(mod.wearer, UP)
+	var/turf/open/openspace/turf_above = GetAbove(mod.wearer)
+
 	if(current_turf && istype(turf_above))
-		current_turf.zFall(mod.wearer)
+		mod.wearer.zFall()
+
 	else if(!turf_above && istype(current_turf) && !current_turf.simulated) //nothing holding you down
-		INVOKE_ASYNC(src, .proc/fly_away)
+		INVOKE_ASYNC(src, PROC_REF(fly_away))
 	else if(!(step_count % 2))
 		playsound(current_turf, 'sound/items/modsuit/atrocinator_step.ogg', 50)
 	step_count++

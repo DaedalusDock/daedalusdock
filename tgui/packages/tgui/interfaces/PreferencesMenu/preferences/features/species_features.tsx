@@ -81,46 +81,6 @@ export const feature_headtails: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 
-export const feature_vox_tail: FeatureChoiced = {
-  name: "Tail",
-  component: FeatureDropdownInput,
-};
-
-export const feature_vox_hair: FeatureChoiced = {
-  name: "Hairstyle",
-  component: FeatureDropdownInput,
-};
-
-export const feature_vox_facial_hair: FeatureChoiced = {
-  name: "Facial hair",
-  component: FeatureDropdownInput,
-};
-
-export const feature_vox_snout: FeatureChoiced = {
-  name: "Snout",
-  component: FeatureDropdownInput,
-};
-
-export const teshari_feathers: Feature<string> = {
-  name: "Head feathers",
-  component: FeatureDropdownInput,
-};
-
-export const teshari_ears: Feature<string> = {
-  name: "Ears",
-  component: FeatureDropdownInput,
-};
-
-export const teshari_body_feathers: Feature<string> = {
-  name: "Body feathers",
-  component: FeatureDropdownInput,
-};
-
-export const tail_teshari: Feature<string> = {
-  name: "Tail",
-  component: FeatureDropdownInput,
-};
-
 export const teshari_tail_colors: Feature<string[]> = {
   name: "Teshari Tail Colors",
   component: FeatureTriColorInput,
@@ -133,5 +93,10 @@ export const teshari_body_colors: Feature<string[]> = {
 
 export const heterochromatic: Feature<string> = {
   name: "Heterochromatic (Right Eye) color",
+  component: FeatureColorInput,
+};
+
+export const sclera_color: Feature<string> = {
+  name: "Sclera color",
   component: FeatureColorInput,
 };

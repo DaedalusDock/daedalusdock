@@ -5,7 +5,7 @@
  */
 /client/verb/drop_item()
 	set hidden = TRUE
-	if(!iscyborg(mob) && mob.stat == CONSCIOUS)
+	if(!iscyborg(mob) && mob.stat != CONSCIOUS)
 		mob.dropItemToGround(mob.get_active_held_item())
 	return
 
@@ -104,7 +104,7 @@
 	if(isAI(mob))
 		return AIMove(new_loc,direct,mob)
 
-	if(Process_Grab()) //are we restrained by someone's grip?
+	if(Process_Grabs()) //are we restrained by someone's grip?
 		return
 
 	if(mob.buckled) //if we're buckled to something, tell it we moved.
@@ -113,9 +113,9 @@
 	if(!(L.mobility_flags & MOBILITY_MOVE))
 		return FALSE
 
-	if(isobj(mob.loc) || ismob(mob.loc)) //Inside an object, tell it we moved
-		var/atom/O = mob.loc
-		return O.relaymove(mob, direct)
+	if(ismovable(mob.loc)) //Inside an object, tell it we moved
+		var/atom/loc_atom = mob.loc
+		return loc_atom.relaymove(mob, direct)
 
 	if(!mob.Process_Spacemove(direct))
 		return FALSE
@@ -162,28 +162,20 @@
 		// as a result of player input and not because they were pulled or any other magic.
 		SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_MOVED)
 
-	var/atom/movable/P = mob.pulling
-	if(P && !ismob(P) && P.density && !HAS_TRAIT(P, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
-		mob.setDir(turn(mob.dir, 180))
-
 /**
  * Checks to see if you're being grabbed and if so attempts to break it
  *
  * Called by client/Move()
  */
-/client/proc/Process_Grab()
-	if(!mob.pulledby)
-		return FALSE
-	if(mob.pulledby == mob.pulling && mob.pulledby.grab_state == GRAB_PASSIVE) //Don't autoresist passive grabs if we're grabbing them too.
-		return FALSE
+/client/proc/Process_Grabs()
 	if(HAS_TRAIT(mob, TRAIT_INCAPACITATED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
-		return TRUE
+		return FALSE
 	else if(HAS_TRAIT(mob, TRAIT_RESTRAINED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		to_chat(src, span_warning("You're restrained! You can't move!"))
-		return TRUE
-	return mob.resist_grab(TRUE)
+		return FALSE
+	return !mob.resist_grab(TRUE)
 
 
 /**
@@ -348,8 +340,16 @@
 				continue
 		if(rebound.anchored)
 			return rebound
-		if(pulling == rebound)
-			continue
+		if(isliving(rebound))
+			var/mob/living/L = rebound
+			var/_continue = FALSE
+			if(LAZYLEN(L.grabbed_by))
+				for(var/obj/item/hand_item/grab/G in L.grabbed_by)
+					if(G.assailant == src)
+						_continue = TRUE
+						break
+			if(_continue)
+				continue
 		return rebound
 
 /mob/has_gravity()
@@ -359,25 +359,22 @@
  * Does this mob ignore gravity
  */
 /mob/proc/mob_negates_gravity()
-	var/turf/turf = get_turf(src)
-	return !isgroundlessturf(turf) && HAS_TRAIT(src, TRAIT_NEGATES_GRAVITY)
+	return FALSE
 
-/// Called when this mob slips over, override as needed
-/mob/proc/slip(knockdown_amount, obj/O, lube, paralyze, force_drop)
-	mind?.add_memory(MEMORY_SLIPPED, list(DETAIL_WHAT_BY = O, DETAIL_PROTAGONIST = src), story_value = STORY_VALUE_OKAY)
+/**
+ * Called when this mob slips over, override as needed
+ *
+ * knockdown_amount - time (in deciseconds) the slip leaves them on the ground
+ * slipped_on - optional, what'd we slip on? if not set, we assume they just fell over
+ * lube - bitflag of "lube flags", see [mobs.dm] for more information
+ * paralyze - time (in deciseconds) the slip leaves them paralyzed / unable to move
+ * force_drop = the slip forces them to drop held items
+ */
+/mob/proc/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
+	mind?.add_memory(MEMORY_SLIPPED, list(DETAIL_WHAT_BY = slipped_on, DETAIL_PROTAGONIST = src), story_value = STORY_VALUE_OKAY)
 	if(mind)
 		SSblackbox.record_feedback("amount", "slips", 1)
 	return
-
-/// Update the gravity status of this mob
-/mob/proc/update_gravity(has_gravity, override=FALSE)
-	var/speed_change = max(0, has_gravity - STANDARD_GRAVITY)
-	if(!speed_change && gravity_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
-		gravity_slowdown = 0
-	else if(gravity_slowdown != speed_change)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, multiplicative_slowdown=speed_change)
-		gravity_slowdown = speed_change
 
 //bodypart selection verbs - Cyberboss
 //8: repeated presses toggles through head - eyes - mouth
@@ -509,18 +506,19 @@
 	set hidden = TRUE
 	set instant = TRUE
 	if(mob)
-		mob.toggle_move_intent(usr)
+		if(mob.m_intent != MOVE_INTENT_WALK)
+			mob.set_move_intent(MOVE_INTENT_WALK)
+		else
+			mob.set_move_intent(MOVE_INTENT_RUN)
 
 /**
  * Toggle the move intent of the mob
  *
  * triggers an update the move intent hud as well
  */
-/mob/proc/toggle_move_intent(mob/user)
-	if(m_intent == MOVE_INTENT_RUN)
-		m_intent = MOVE_INTENT_WALK
-	else
-		m_intent = MOVE_INTENT_RUN
+/mob/proc/set_move_intent(new_state)
+	m_intent = new_state
+
 	if(hud_used?.static_inventory)
 		for(var/atom/movable/screen/mov_intent/selector in hud_used.static_inventory)
 			selector.update_appearance()
@@ -531,21 +529,20 @@
 	set category = "IC"
 
 	var/turf/current_turf = get_turf(src)
-	var/turf/above_turf = SSmapping.get_turf_above(current_turf)
+	var/turf/above_turf = GetAbove(current_turf)
 
-	var/ventcrawling_flag = HAS_TRAIT(src, TRAIT_MOVE_VENTCRAWLING) ? ZMOVE_VENTCRAWLING : 0
 	if(!above_turf)
-		to_chat(src, span_warning("There's nowhere to go in that direction!"))
+		to_chat(src, span_warning("There's nothing of interest in that direction."))
 		return
 
-	if(can_z_move(DOWN, above_turf, current_turf, ZMOVE_FALL_FLAGS|ventcrawling_flag)) //Will we fall down if we go up?
-		if(buckled)
-			to_chat(src, span_warning("[buckled] is is not capable of flight."))
-		else
-			to_chat(src, span_warning("You are not Superman."))
-		return
+	if(ismovable(loc)) //Inside an object, tell it we moved
+		var/atom/loc_atom = loc
+		return loc_atom.relaymove(src, UP)
 
-	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+	//Human's up() override has its own feedback
+	var/flags = ishuman(src) ? ZMOVE_FLIGHT_FLAGS : ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK
+	. = zstep(src, UP, flags)
+	if(.)
 		to_chat(src, span_notice("You move upwards."))
 
 ///Moves a mob down a z level
@@ -553,9 +550,13 @@
 	set name = "Move Down"
 	set category = "IC"
 
-	var/ventcrawling_flag = HAS_TRAIT(src, TRAIT_MOVE_VENTCRAWLING) ? ZMOVE_VENTCRAWLING : 0
-	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK|ventcrawling_flag))
+	if(ismovable(loc)) //Inside an object, tell it we moved
+		var/atom/loc_atom = loc
+		return loc_atom.relaymove(src, DOWN)
+
+	if(zstep(src, DOWN, ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
+
 	return FALSE
 
 /mob/abstract_move(atom/destination)

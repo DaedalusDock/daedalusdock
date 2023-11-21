@@ -385,7 +385,12 @@
 		if(!thing.mouse_opacity)
 			continue
 		if(thing.IsObscured())
-			continue
+			continue'
+		if(isitem(thing))
+			var/obj/item/I = thing
+			if(I.item_flags & ABSTRACT)
+				continue
+
 		possible_targets += thing
 	if(!possible_targets.len)
 		finish_action(controller, FALSE)

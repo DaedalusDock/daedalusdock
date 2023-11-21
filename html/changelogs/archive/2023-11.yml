@@ -19,3 +19,12 @@
 2023-11-20:
   Kapu1178:
   - tweak: The Codex now supports nicer formatting.
+2023-11-21:
+  Kapu1178:
+  - bugfix: Airlock codex entry works.
+  - rscadd: Asteroid Magnet codex entry.
+  - rscadd: The magnet now has a 60 second cooldown between uses.
+  - bugfix: Summoned asteroids are removed from the list of available asteroids.
+  - bugfix: Fixed a bug that allowed you to summon multiple asteroids at once.
+  - balance: Hitting someone with a thrown body now only knocks them down briefly
+      instead of stunning + knocking down for 2 seconds

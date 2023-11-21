@@ -434,6 +434,5 @@
 	for(var/obj/structure/cable/C in src)
 		if(!C.is_knotted())
 			continue
-		C.update_appearance()
 		return C
 	return null

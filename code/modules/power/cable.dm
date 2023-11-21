@@ -361,14 +361,30 @@
 ///////////////////////////////////////////////
 // Cable variants for mapping
 ///////////////////////////////////////////////
-/obj/structure/cable/yellow
-	color = "yellow"
-
-/obj/structure/cable/blue
-	color = "blue"
 
 /obj/structure/cable/red
-	color = "red"
+	color = COLOR_RED
+
+/obj/structure/cable/yellow
+	color = COLOR_YELLOW
+
+/obj/structure/cable/blue
+	color = COLOR_STRONG_BLUE
+
+/obj/structure/cable/green
+	color = COLOR_DARK_LIME
+
+/obj/structure/cable/pink
+	color = COLOR_LIGHT_PINK
+
+/obj/structure/cable/orange
+	color = COLOR_MOSTLY_PURE_ORANGE
+
+/obj/structure/cable/cyan
+	color = COLOR_CYAN
+
+/obj/structure/cable/white
+	color = COLOR_WHITE
 
 ///////////////////////////////////////////////
 // The cable coil object, used for laying cable

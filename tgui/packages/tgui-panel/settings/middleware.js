@@ -8,7 +8,7 @@ import { storage } from 'common/storage';
 import { setClientTheme } from '../themes';
 import { loadSettings, updateSettings } from './actions';
 import { selectSettings } from './selectors';
-import { FONTS_DISABLED } from './constants';
+import { FONTS_DISABLED, DEFAULT_THEME } from './constants';
 
 const setGlobalFontSize = fontSize => {
   document.documentElement.style

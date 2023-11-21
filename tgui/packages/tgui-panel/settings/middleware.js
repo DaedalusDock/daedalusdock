@@ -38,10 +38,8 @@ export const settingsMiddleware = store => {
     }
     if (type === updateSettings.type || type === loadSettings.type) {
       // Set client theme
-      const theme = payload?.theme;
-      if (theme) {
-        setClientTheme(theme);
-      }
+      const theme = payload?.theme || DEFAULT_THEME; // Really stupid hack to beat a race condition
+      setClientTheme(theme);
       // Pass action to get an updated state
       next(action);
       const settings = selectSettings(store.getState());

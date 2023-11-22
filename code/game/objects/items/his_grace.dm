@@ -64,7 +64,7 @@
 	else
 		..()
 
-/obj/item/his_grace/CtrlClick(mob/user) //you can't pull his grace
+/obj/item/his_grace/CtrlClick(mob/user, list/params) //you can't pull his grace
 	return
 
 /obj/item/his_grace/examine(mob/user)

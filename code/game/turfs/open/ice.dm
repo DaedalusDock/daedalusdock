@@ -5,7 +5,6 @@
 	icon_state = "ice_turf-0"
 	base_icon_state = "ice_turf-0"
 	temperature = 180
-	temperature = 180
 
 	baseturfs = /turf/open/misc/ice
 	slowdown = 1
@@ -31,13 +30,3 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
 	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_FLOOR_ICE
 	canSmoothWith = SMOOTH_GROUP_FLOOR_ICE
-
-/turf/open/misc/ice/icemoon
-	baseturfs = /turf/open/openspace/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-	slowdown = 0
-	simulated = FALSE
-
-/turf/open/misc/ice/icemoon/no_planet_atmos
-	simulated = TRUE
-

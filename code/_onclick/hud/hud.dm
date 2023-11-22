@@ -85,7 +85,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/wanted/wanted_lvl
 	var/atom/movable/screen/spacesuit
 
-	var/atom/movable/screen/fullscreen/pain
+	var/atom/movable/screen/pain/pain
 	// subtypes can override this to force a specific UI style
 	var/ui_style
 
@@ -255,6 +255,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 				screenmob.client.screen -= hotkeybuttons
 			if(infodisplay.len)
 				screenmob.client.screen -= infodisplay
+
+	if(pain)
+		screenmob.client.screen += pain
 
 	hud_version = display_hud_version
 	update_gunpoint(screenmob)

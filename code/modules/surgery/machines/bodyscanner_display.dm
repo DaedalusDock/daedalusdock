@@ -1,5 +1,6 @@
 GLOBAL_LIST_EMPTY(bodyscanscreens)
 
+DEFINE_INTERACTABLE(/obj/machinery/body_scan_display)
 /obj/machinery/body_scan_display
 	name = "body scan display"
 	desc = "A wall-mounted display linked to a body scanner."

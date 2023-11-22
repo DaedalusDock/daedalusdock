@@ -31,6 +31,8 @@
 	var/message_AI = ""
 	/// Message displayed if the user is a monkey.
 	var/message_monkey = ""
+	/// Message displayed if the user is an IPC.
+	var/message_ipc = ""
 	/// Message to display if the user is a simple_animal.
 	var/message_simple = ""
 	/// Message with %t at the end to allow adding params to the message, like for mobs doing an emote relatively to something else.
@@ -118,14 +120,12 @@
 			if(!ghost.client || isnewplayer(ghost))
 				continue
 			if(ghost.client.prefs.chat_toggles & CHAT_GHOSTSIGHT && !(ghost in viewers(user_turf, null)))
-				ghost.show_message("<span class='emote'>[FOLLOW_LINK(ghost, user)] [dchatmsg]</span>")
+				ghost.show_message("[FOLLOW_LINK(ghost, user)]<span class='emote'> [dchatmsg]</span>")
 
 	if(emote_type == EMOTE_AUDIBLE)
 	//PARIAH EDIT
-		// Original: user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b> [msg]</span>", audible_message_flags = EMOTE_MESSAGE)
 		user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b>[space][msg]</span>", audible_message_flags = EMOTE_MESSAGE, separation = space)
 	else
-		// Original: user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b> [msg]</span>", visible_message_flags = EMOTE_MESSAGE)
 		user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b>[space][msg]</span>", visible_message_flags = EMOTE_MESSAGE, separation = space)
 	//PARIAH EDIT END
 	SEND_SIGNAL(user, COMSIG_MOB_EMOTED(key))
@@ -205,10 +205,10 @@
  *
  * Returns the new message, or msg directly, if no change was needed.
  */
-/datum/emote/proc/select_message_type(mob/user, msg, intentional)
+/datum/emote/proc/select_message_type(mob/living/user, msg, intentional)
 	// Basically, we don't care that the others can use datum variables, because they're never going to change.
 	. = msg
-	if(!muzzle_ignore && user.is_muzzled() && emote_type == EMOTE_AUDIBLE)
+	if(!muzzle_ignore && user.has_mouth() && user.is_muzzled() && emote_type == EMOTE_AUDIBLE)
 		return "makes a [pick("strong ", "weak ", "")]noise."
 	if(user.mind && user.mind.miming && message_mime)
 		. = message_mime
@@ -216,7 +216,7 @@
 		. = message_alien
 	else if(islarva(user) && message_larva)
 		. = message_larva
-	else if(iscyborg(user) && message_robot)
+	else if((iscyborg(user) || isipc(user)) && message_robot)
 		. = message_robot
 	else if(isAI(user) && message_AI)
 		. = message_AI
@@ -224,6 +224,8 @@
 		. = message_monkey
 	else if(isanimal(user) && message_simple)
 		. = message_simple
+	else if(isipc(user) && message_ipc)
+		. = message_ipc
 
 /**
  * Replaces the %t in the message in message_param by params.

@@ -141,8 +141,9 @@
 	if(!isturf(tile))
 		return
 
-	if(istype(user.pulling, /obj/structure/ore_box))
-		box = user.pulling
+	var/obj/item/hand_item/grab/G = user.get_active_held_item()
+	if(isgrab(G) && istype(G.affecting, /obj/structure/ore_box))
+		box = G.affecting
 
 	if(atom_storage)
 		for(var/thing in tile)
@@ -233,7 +234,7 @@
 	. = ..()
 	. += span_notice("Ctrl-click to activate seed extraction.")
 
-/obj/item/storage/bag/plants/portaseeder/CtrlClick(mob/user)
+/obj/item/storage/bag/plants/portaseeder/CtrlClick(mob/user, list/params)
 	if(user.incapacitated())
 		return
 	for(var/obj/item/plant in contents)

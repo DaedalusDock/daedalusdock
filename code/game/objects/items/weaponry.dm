@@ -563,29 +563,12 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	icon_state = "hippocratic"
 	impressiveness = 50
 
-/obj/item/tailclub
-	name = "tail club"
-	desc = "For the beating to death of unathi with their own tails."
-	icon_state = "tailclub"
-	force = 14
-	throwforce = 1 // why are you throwing a club do you even weapon
-	throw_speed = 1
-	throw_range = 1
-	attack_verb_continuous = list("clubs", "bludgeons")
-	attack_verb_simple = list("club", "bludgeon")
-
-/obj/item/melee/chainofcommand/tailwhip
-	name = "liz o' nine tails"
-	desc = "A whip fashioned from the severed tails of unathi."
-	icon_state = "tailwhip"
-	inhand_icon_state = "tailwhip"
-	item_flags = NONE
-
-/obj/item/melee/chainofcommand/tailwhip/kitty
+/obj/item/melee/chainofcommand/kitty
 	name = "cat o' nine tails"
 	desc = "A whip fashioned from the severed tails of cats."
 	icon_state = "catwhip"
 	inhand_icon_state = "catwhip"
+	item_flags = NONE
 
 /obj/item/melee/skateboard
 	name = "skateboard"
@@ -941,7 +924,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		wall_target.dismantle_wall()
 	else if(ismineralturf(target) && prob(force*damage_mod))
 		var/turf/closed/mineral/mineral_target = target
-		mineral_target.gets_drilled()
+		mineral_target.MinedAway()
 
 /obj/effect/temp_visual/slash
 	icon_state = "highfreq_slash"

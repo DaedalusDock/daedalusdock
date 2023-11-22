@@ -17,6 +17,8 @@
 	attack_verb_continuous = list("hits", "pierces", "slices", "attacks")
 	attack_verb_simple = list("hit", "pierce", "slice", "attack")
 
+	var/mining_damage = 20
+
 /obj/item/pickaxe/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(use_tool(user, user, 30, volume=50))
@@ -31,6 +33,8 @@
 	attack_verb_simple = list("ineffectively hit")
 	force = 1
 	throwforce = 1
+
+	mining_damage = 5
 
 /obj/item/pickaxe/mini
 	name = "compact pickaxe"
@@ -51,12 +55,16 @@
 	desc = "A silver-plated pickaxe that mines slightly faster than standard-issue."
 	force = 17
 
+	mining_damage = 30
+
 /obj/item/pickaxe/diamond
 	name = "diamond-tipped pickaxe"
 	icon_state = "dpickaxe"
 	toolspeed = 0.3
 	desc = "A pickaxe with a diamond pick head. Extremely robust at cracking rock walls and digging up dirt."
 	force = 19
+
+	mining_damage = 50
 
 /obj/item/pickaxe/drill
 	name = "mining drill"
@@ -66,6 +74,8 @@
 	usesound = 'sound/weapons/drill.ogg'
 	hitsound = 'sound/weapons/drill.ogg'
 	desc = "An electric mining drill for the especially scrawny."
+
+	mining_damage = 60
 
 /obj/item/pickaxe/drill/cyborg
 	name = "cyborg mining drill"
@@ -95,6 +105,8 @@
 	hitsound = 'sound/weapons/sonic_jackhammer.ogg'
 	desc = "Cracks rocks with sonic blasts."
 
+	mining_damage = 100
+
 /obj/item/pickaxe/improvised
 	name = "improvised pickaxe"
 	desc = "A pickaxe made with a knife and crowbar taped together, how does it not break?"
@@ -106,6 +118,8 @@
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron=12050) //metal needed for a crowbar and for a knife, why the FUCK does a knife cost 6 metal sheets while a crowbar costs 0.025 sheets? shit makes no sense fuck this
+
+	mining_damage = 15
 
 /obj/item/shovel
 	name = "shovel"
@@ -148,17 +162,3 @@
 	throwforce = 1
 	w_class = WEIGHT_CLASS_SMALL
 
-/obj/item/shovel/serrated
-	name = "serrated bone shovel"
-	desc = "A wicked tool that cleaves through dirt just as easily as it does flesh. The design was styled after ancient lavaland tribal designs."
-	icon_state = "shovel_bone"
-	worn_icon_state = "shovel_serr"
-	lefthand_file = 'icons/mob/inhands/equipment/mining_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/mining_righthand.dmi'
-	force = 15
-	throwforce = 12
-	w_class = WEIGHT_CLASS_NORMAL
-	toolspeed = 0.7
-	attack_verb_continuous = list("slashes", "impales", "stabs", "slices")
-	attack_verb_simple = list("slash", "impale", "stab", "slice")
-	sharpness = SHARP_EDGED

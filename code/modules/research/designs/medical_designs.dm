@@ -29,7 +29,7 @@
 	build_type = FABRICATOR  | MECHFAB
 	materials = list(/datum/material/iron = 1700, /datum/material/glass = 1350, /datum/material/gold = 500) //Gold, because SWAG.
 	construction_time = 75
-	build_path = /obj/item/mmi/posibrain
+	build_path = /obj/item/organ/posibrain
 	category = list(DCAT_SILICON)
 	mapload_design_flags = DESIGN_FAB_OMNI
 

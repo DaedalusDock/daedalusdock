@@ -170,7 +170,6 @@
 		if(57 to 58)
 			new /obj/item/toy/balloon/syndicate(src)
 		if(59 to 60)
-			new /obj/item/borg/upgrade/modkit/aoe/mobs(src)
 			new /obj/item/clothing/suit/space(src)
 			new /obj/item/clothing/head/helmet/space(src)
 		if(61 to 62)
@@ -204,9 +203,7 @@
 			new /obj/item/defibrillator/compact(src)
 		if(87) //1% chance
 			new /obj/item/weed_extract(src)
-		if(88)
-			new /obj/item/reagent_containers/food/drinks/bottle/lizardwine(src)
-		if(89)
+		if(88 to 89)
 			new /obj/item/melee/energy/sword/bananium(src)
 		if(90)
 			new /obj/item/dnainjector/wackymut(src)

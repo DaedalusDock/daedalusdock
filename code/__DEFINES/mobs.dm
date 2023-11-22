@@ -30,6 +30,11 @@
 #define BLOOD_CIRC_BAD 60
 #define BLOOD_CIRC_SURVIVE 30
 
+// Values for flash_pain()
+#define PAIN_SMALL "weakest_pain"
+#define PAIN_MEDIUM "weak_pain"
+#define PAIN_LARGE "pain"
+
 //Sizes of mobs, used by mob/living/var/mob_size
 #define MOB_SIZE_TINY 1
 #define MOB_SIZE_SMALL 5
@@ -87,6 +92,8 @@
 #define BODYTYPE_VOX_OTHER (1<<8)
 ///The limb is small and feathery
 #define BODYTYPE_TESHARI (1<<9)
+/// IPC heads.
+#define BODYTYPE_BOXHEAD (1<<10)
 
 //Defines for Species IDs
 ///A placeholder bodytype for xeno larva, so their limbs cannot be attached to anything.
@@ -102,6 +109,7 @@
 #define SPECIES_FELINE "felinid"
 #define SPECIES_FLYPERSON "fly"
 #define SPECIES_HUMAN "human"
+#define SPECIES_IPC "ipc"
 #define SPECIES_JELLYPERSON "jelly"
 #define SPECIES_SLIMEPERSON "slime"
 #define SPECIES_LUMINESCENT "luminescent"
@@ -115,6 +123,7 @@
 #define SPECIES_MUSHROOM "mush"
 #define SPECIES_PLASMAMAN "plasmaman"
 #define SPECIES_PODPERSON "pod"
+#define SPECIES_SAURIAN "saurian"
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
 #define SPECIES_SNAIL "snail"
@@ -296,8 +305,7 @@
 #define SENTIENCE_ORGANIC 1
 #define SENTIENCE_ARTIFICIAL 2
 #define SENTIENCE_HUMANOID 3
-#define SENTIENCE_MINEBOT 4
-#define SENTIENCE_BOSS 5
+#define SENTIENCE_BOSS 4
 
 //Mob AI Status
 #define POWER_RESTORATION_OFF 0
@@ -512,7 +520,7 @@
 #define PULL_PRONE_SLOWDOWN 1.5
 #define HUMAN_CARRY_SLOWDOWN 0.35
 
-//Flags that control what things can spawn species (whitelist)
+//Flags that control what things can spawn species (whitelist) (changesource_flagx)
 //Badmin magic mirror
 #define MIRROR_BADMIN (1<<0)
 //Standard magic mirror (wizard)
@@ -582,9 +590,6 @@
 
 ///How much a mob's sprite should be moved when they're lying down
 #define PIXEL_Y_OFFSET_LYING -6
-
-///Define for spawning megafauna instead of a mob for cave gen
-#define SPAWN_MEGAFAUNA "bluh bluh huge boss"
 
 ///Squash flags. For squashable element
 

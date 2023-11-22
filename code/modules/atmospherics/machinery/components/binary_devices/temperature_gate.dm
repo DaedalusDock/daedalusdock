@@ -17,7 +17,7 @@
 	///Check if the gas is moving from one pipenet to the other
 	var/is_gas_flowing = FALSE
 
-/obj/machinery/atmospherics/components/binary/temperature_gate/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/temperature_gate/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)

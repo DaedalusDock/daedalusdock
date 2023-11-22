@@ -12,8 +12,11 @@
 
 	var/smell_type =  /datum/component/smell/strong
 	var/should_dry = TRUE
+	/// How long should it take for blood to dry?
+	var/dry_duration = 10 MINUTES
 	var/dryname = "dried blood" //when the blood lasts long enough, it becomes dry and gets a new name
 	var/drydesc = "Looks like it's been here a while. Eew." //as above
+	/// World.time + dry_duration
 	var/drytime = 0
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
@@ -35,7 +38,7 @@
 	return ..()
 
 /obj/effect/decal/cleanable/blood/proc/get_timer()
-	drytime = world.time + 3 MINUTES
+	drytime = world.time + dry_duration
 
 /obj/effect/decal/cleanable/blood/proc/start_drying()
 	get_timer()
@@ -227,11 +230,15 @@
 	desc = "It's red."
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
-	bloodiness = 0
-	var/drips = 1
+	bloodiness = BLOOD_AMOUNT_PER_DECAL / 10
 	dryname = "drips of blood"
 	drydesc = "It's red."
 	smell_type = /datum/component/smell/subtle
+	dry_duration = 4 MINUTES
+
+	/// Keeps track of how many drops of blood this decal has. See blood.dm
+	var/drips = 1
+
 
 /obj/effect/decal/cleanable/blood/drip/can_bloodcrawl_in()
 	return TRUE

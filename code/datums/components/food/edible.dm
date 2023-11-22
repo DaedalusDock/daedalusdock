@@ -411,6 +411,10 @@ Behavior that's still missing from this component that original food items had t
 		return FALSE
 	var/mob/living/carbon/C = eater
 	var/covered = ""
+	if(!C.has_mouth())
+		to_chat(feeder, span_warning("They don't have a mouth to feed."))
+		return FALSE
+
 	if(C.is_mouth_covered(head_only = 1))
 		covered = "headgear"
 	else if(C.is_mouth_covered(mask_only = 1))

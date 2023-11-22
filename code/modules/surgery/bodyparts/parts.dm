@@ -2,7 +2,7 @@
 	name = BODY_ZONE_CHEST
 	desc = "It's impolite to stare at a person's chest."
 	icon_state = "default_human_chest"
-	max_damage = 100
+	max_damage = 200
 	body_zone = BODY_ZONE_CHEST
 	body_part = CHEST
 	plaintext_zone = "chest"
@@ -16,6 +16,7 @@
 	encased = "ribcage"
 	artery_name = "aorta"
 	cavity_name = "thoracic"
+	joint_name = "neck"
 
 	minimum_break_damage = 35
 
@@ -105,6 +106,7 @@
 	px_y = 0
 	bodypart_trait_source = LEFT_ARM_TRAIT
 	amputation_point = "left shoulder"
+	joint_name = "left elbow"
 
 
 /obj/item/bodypart/arm/left/set_owner(new_owner)
@@ -188,6 +190,7 @@
 	bodypart_trait_source = RIGHT_ARM_TRAIT
 	can_be_disabled = TRUE
 	amputation_point = "right shoulder"
+	joint_name = "right elbow"
 
 /obj/item/bodypart/arm/right/set_owner(new_owner)
 	. = ..()
@@ -276,6 +279,14 @@
 
 	minimum_break_damage = 30
 
+	/// Can these legs be digitigrade? See digitigrade.dm
+	var/can_be_digitigrade = FALSE
+	///Set limb_id to this when in "digi mode". MUST BE UNIQUE LIKE ALL LIMB IDS
+	var/digitigrade_id
+	/// Used solely by digitigrade limbs to remember what their old limb ID was.
+	var/old_limb_id
+
+
 /obj/item/bodypart/leg/left
 	name = "left leg"
 	desc = "Some athletes prefer to tie their left shoelaces first for good \
@@ -289,6 +300,7 @@
 	can_be_disabled = TRUE
 	bodypart_trait_source = LEFT_LEG_TRAIT
 	amputation_point = "left hip"
+	joint_name = "left knee"
 
 
 /obj/item/bodypart/leg/left/set_owner(new_owner)
@@ -369,6 +381,7 @@
 	bodypart_trait_source = RIGHT_LEG_TRAIT
 	can_be_disabled = TRUE
 	amputation_point = "right hip"
+	joint_name = "right knee"
 
 /obj/item/bodypart/leg/right/set_owner(new_owner)
 	. = ..()

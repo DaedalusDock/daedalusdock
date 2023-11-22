@@ -455,8 +455,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 			to_chat(user, span_cult("You[moveuserlater ? "r vision blurs, and you suddenly appear somewhere else":" send everything above the rune away"]."))
 		else
 			to_chat(user, span_cult("You[moveuserlater ? "r vision blurs briefly, but nothing happens":" try send everything above the rune away, but the teleportation fails"]."))
-		if(is_mining_level(z) && !is_mining_level(target.z)) //No effect if you stay on lavaland
-			actual_selected_rune.handle_portal("lava")
+		if(is_mining_level(z) && !is_mining_level(target.z))
+			actual_selected_rune.handle_portal("space")
 		else
 			var/area/A = get_area(T)
 			if(initial(A.name) == "Space")
@@ -702,11 +702,19 @@ structure_check() searches for nearby cultist structures required for the invoca
 		fail_invoke()
 		log_game("Summon Cultist rune failed - target died")
 		return
-	if(cultist_to_summon.pulledby || cultist_to_summon.buckled)
-		to_chat(user, "<span class='cult italic'>[cultist_to_summon] is being held in place!</span>")
-		fail_invoke()
-		log_game("Summon Cultist rune failed - target restrained")
-		return
+	if(LAZYLEN(cultist_to_summon.grabbed_by) || cultist_to_summon.buckled)
+		var/grab_check = 0
+		if(!cultist_to_summon.buckled)
+			for(var/obj/item/hand_item/grab/G in cultist_to_summon.grabbed_by)
+				if(G.current_grab.stop_move)
+					grab_check++
+
+		if(grab_check == 0)
+			to_chat(user, "<span class='cult italic'>[cultist_to_summon] is being held in place!</span>")
+			fail_invoke()
+			log_game("Summon Cultist rune failed - target restrained")
+			return
+
 	if(!IS_CULTIST(cultist_to_summon))
 		to_chat(user, "<span class='cult italic'>[cultist_to_summon] is not a follower of the Geometer!</span>")
 		fail_invoke()

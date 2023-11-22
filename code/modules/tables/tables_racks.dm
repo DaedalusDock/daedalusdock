@@ -29,6 +29,7 @@
 	smoothing_groups = SMOOTH_GROUP_TABLES
 	canSmoothWith = SMOOTH_GROUP_TABLES
 	flags_1 = BUMP_PRIORITY_1
+	mouse_drop_pointer = TRUE
 
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods
@@ -97,10 +98,6 @@
 
 /obj/structure/table/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
-
-/obj/structure/table/attack_hand(mob/living/user, list/modifiers)
-	try_place_pulled_onto_table(user)
-	return ..()
 
 /obj/structure/table/attack_tk(mob/user)
 	return
@@ -238,24 +235,30 @@
 	else
 		layer = TABLE_LAYER
 
-/obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user)
-	if(!Adjacent(user) || !user.pulling)
+/obj/structure/table/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	try_place_pulled_onto_table(user, victim, grab)
+	return TRUE
+
+/obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user, atom/movable/target, obj/item/hand_item/grab/grab)
+	if(!Adjacent(user))
 		return
 
-	if(isliving(user.pulling))
-		var/mob/living/pushed_mob = user.pulling
+	if(isliving(target))
+		var/mob/living/pushed_mob = target
 		if(pushed_mob.buckled)
 			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 			return
 		if(user.combat_mode)
-			switch(user.grab_state)
+			switch(grab.current_grab.damage_stage)
 				if(GRAB_PASSIVE)
 					to_chat(user, span_warning("You need a better grip to do that!"))
 					return
-				if(GRAB_AGGRESSIVE)
+
+				if(GRAB_NECK, GRAB_KILL)
 					tablepush(user, pushed_mob)
-				if(GRAB_NECK to GRAB_KILL)
-					tablelimbsmash(user, pushed_mob)
+				else
+					if(grab.target_zone == BODY_ZONE_HEAD)
+						tablelimbsmash(user, pushed_mob)
 		else
 			pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
 								span_userdanger("[user] begins to place [pushed_mob] onto [src]..."))
@@ -263,13 +266,15 @@
 				tableplace(user, pushed_mob)
 			else
 				return
-		user.stop_pulling()
-	else if(user.pulling.pass_flags & PASSTABLE)
-		user.Move_Pulled(src)
-		if (user.pulling.loc == loc)
-			user.visible_message(span_notice("[user] places [user.pulling] onto [src]."),
-				span_notice("You place [user.pulling] onto [src]."))
-			user.stop_pulling()
+		user.release_grabs(pushed_mob)
+
+	else if(target.pass_flags & PASSTABLE)
+		user.move_grabbed_atoms_towards(src)
+		if (target.loc == loc)
+			user.visible_message(span_notice("[user] places [target] onto [src]."),
+				span_notice("You place [target] onto [src]."))
+
+			user.release_grabs(target)
 
 /obj/structure/table/proc/tableplace(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.forceMove(loc)
@@ -305,16 +310,24 @@
 	log_combat(user, pushed_mob, "tabled", null, "onto [src]")
 
 /obj/structure/table/proc/tablelimbsmash(mob/living/user, mob/living/pushed_mob)
-	pushed_mob.Knockdown(30)
-	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(user.zone_selected) || pushed_mob.get_bodypart(BODY_ZONE_HEAD)
-	banged_limb?.receive_damage(30)
+	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(BODY_ZONE_HEAD)
+	if(!banged_limb)
+		return
+
+	var/blocked = pushed_mob.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	pushed_mob.apply_damage(30, BRUTE, BODY_ZONE_HEAD, blocked)
+	if (prob(30 * ((100-blocked)/100)))
+		pushed_mob.Knockdown(10 SECONDS)
+
 	pushed_mob.stamina.adjust(-60)
 	take_damage(50)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
 		deconstruct(FALSE)
-	playsound(pushed_mob, 'sound/effects/bang.ogg', 90, TRUE)
-	pushed_mob.visible_message(span_danger("[user] smashes [pushed_mob]'s [banged_limb.name] against \the [src]!"),
-								span_userdanger("[user] smashes your [banged_limb.name] against \the [src]"))
+
+	playsound(pushed_mob, 'sound/items/trayhit1.ogg', 70, TRUE)
+	pushed_mob.visible_message(
+		span_danger("<b>[user]</b> smashes <b>[pushed_mob]</b>'s [banged_limb.plaintext_zone] against \the [src]!"),
+	)
 	log_combat(user, pushed_mob, "head slammed", null, "against [src]")
 
 /obj/structure/table/screwdriver_act_secondary(mob/living/user, obj/item/tool)
@@ -796,6 +809,7 @@
 	name = "operating table"
 	desc = "Used for advanced medical procedures."
 	icon = 'icons/obj/surgery.dmi'
+	base_icon_state = "optable"
 	icon_state = "optable"
 	buildstack = /obj/item/stack/sheet/mineral/silver
 	smoothing_flags = NONE
@@ -805,6 +819,7 @@
 	buckle_lying = NO_BUCKLE_LYING
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
+	flipped = -1
 
 	var/obj/machinery/vitals_monitor/connected_monitor
 	var/mob/living/carbon/human/patient = null

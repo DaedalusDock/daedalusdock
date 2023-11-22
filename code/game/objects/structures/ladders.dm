@@ -5,7 +5,7 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "ladder11"
 	anchored = TRUE
-	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN
+	obj_flags = CAN_BE_HIT
 	var/obj/structure/ladder/down   //the ladder below this one
 	var/obj/structure/ladder/up     //the ladder above this one
 	var/crafted = FALSE
@@ -89,7 +89,7 @@
 		if(!do_after(user, src, travel_time, DO_PUBLIC))
 			return
 
-	if(!user.zMove(target = target, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED|ZMOVE_INCLUDE_PULLED|ZMOVE_IGNORE_OBSTACLES))
+	if(!zstep(user, going_up ? UP : DOWN, ZMOVE_INCAPACITATED_CHECKS))
 		return
 
 	if(!is_ghost)

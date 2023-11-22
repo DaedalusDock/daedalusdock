@@ -357,7 +357,7 @@
 			else
 				if(holding_still)
 					holding_still = max(holding_still - (0.5 * delta_time), 0)
-				else if (docile && pulledby)
+				else if (docile && LAZYLEN(grabbed_by))
 					holding_still = 10
 				else if(!HAS_TRAIT(src, TRAIT_IMMOBILIZED) && isturf(loc) && prob(33))
 					step(src, pick(GLOB.cardinals))

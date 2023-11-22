@@ -1,3 +1,4 @@
+DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 /atom/movable/screen/movable/action_button
 	var/datum/action/linked_action
 	var/datum/hud/our_hud

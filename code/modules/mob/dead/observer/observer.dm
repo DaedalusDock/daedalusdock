@@ -245,7 +245,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 	ghostize(FALSE)
 
-/mob/dead/observer/Move(NewLoc, direct, glide_size_override = 32)
+/mob/dead/observer/Move(NewLoc, direct, glide_size_override = 32, z_movement_flags)
 	setDir(direct)
 
 	if(glide_size_override)

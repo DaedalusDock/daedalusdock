@@ -102,7 +102,6 @@ GLOBAL_LIST_INIT(phobia_mobs, list(
 
 GLOBAL_LIST_INIT(phobia_objs, list(
 	"snakes" = typecacheof(list(
-		/obj/item/rod_of_asclepius,
 		/obj/item/toy/plush/snakeplushie,
 	)),
 	"spiders" = typecacheof(list(/obj/structure/spider)),
@@ -171,9 +170,7 @@ GLOBAL_LIST_INIT(phobia_objs, list(
 	"lizards" = typecacheof(list(
 		/obj/item/clothing/head/lizard,
 		/obj/item/clothing/shoes/cowboy/lizard,
-		/obj/item/food/kebab/tail,
 		/obj/item/organ/tail/lizard,
-		/obj/item/reagent_containers/food/drinks/bottle/lizardwine,
 		/obj/item/toy/plush/lizard_plushie,
 	)),
 

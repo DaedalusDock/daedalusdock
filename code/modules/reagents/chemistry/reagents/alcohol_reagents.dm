@@ -356,16 +356,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			return list("synthetic wine"=1)
 	return ..()
 
-/datum/reagent/consumable/ethanol/lizardwine
-	name = "Unathi Wine"
-	description = "An alcoholic beverage from Space China, made by infusing unathi tails in ethanol."
-	color = "#7E4043" // rgb: 126, 64, 67
-	boozepwr = 45
-	quality = DRINK_FANTASTIC
-	taste_description = "scaley sweetness"
-
-	glass_price = DRINK_PRICE_STOCK
-
 /datum/reagent/consumable/ethanol/grappa
 	name = "Grappa"
 	description = "A fine Italian brandy, for when regular wine just isn't alcoholic enough for you."
@@ -1051,7 +1041,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/sbiten/affect_ingest(mob/living/carbon/C, removed)
-	C.adjust_bodytemperature(10  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, BODYTEMP_HEAT_DAMAGE_LIMIT) //310.15 is the normal bodytemp.
+	C.adjust_bodytemperature(10  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.dna.species.heat_level_1) //310.15 is the normal bodytemp.
 	return ..()
 
 /datum/reagent/consumable/ethanol/red_mead
@@ -2251,7 +2241,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	taste_description = "fiery, with an aftertaste of burnt flesh"
 	glass_icon_state = "mauna_loa"
 	glass_name = "Mauna Loa"
-	glass_desc = "Lavaland in a drink... mug... volcano... thing."
+	glass_desc = "Lava in a drink... mug... volcano... thing."
 
 	ingest_met = 1
 
@@ -2341,7 +2331,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/kortara
 	name = "Kortara"
-	description = "A sweet, milky nut-based drink enjoyed on Tizira. Frequently mixed with fruit juices and cocoa for extra refreshment."
+	description = "A sweet, milky nut-based drink enjoyed on Jitarai. Frequently mixed with fruit juices and cocoa for extra refreshment."
 	boozepwr = 25
 	color = "#EEC39A"
 	quality = DRINK_GOOD
@@ -2373,14 +2363,14 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	C.apply_status_effect(/datum/status_effect/throat_soothed)
 	return ..()
 /datum/reagent/consumable/ethanol/white_tiziran
-	name = "White Tiziran"
+	name = "White Vodtara"
 	description = "A mix of vodka and kortara. The Lizard imbibes."
 	boozepwr = 65
 	color = "#A68340"
 	quality = DRINK_GOOD
 	taste_description = "strikes and gutters"
 	glass_icon_state = "white_tiziran"
-	glass_name = "White Tiziran"
+	glass_name = "White Vodtara"
 	glass_desc = "I had a rough night and I hate the fucking humans, man."
 
 
@@ -2409,7 +2399,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	taste_description = "regret"
 	glass_icon_state = "protein_blend"
 	glass_name = "Protein Blend"
-	glass_desc = "Vile, even by unathi standards."
+	glass_desc = "Vile, even by Jinan standards."
 	nutriment_factor = 3 * REAGENTS_METABOLISM
 
 
@@ -2430,7 +2420,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/mushi_kombucha
 	name = "Mushi Kombucha"
-	description = "A popular summer beverage on Tizira, made from sweetened mushroom tea."
+	description = "A popular Sol-summer beverage made from sweetened mushroom tea."
 	boozepwr = 10
 	color = "#C46400"
 	quality = DRINK_VERYGOOD
@@ -2442,7 +2432,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/triumphal_arch
 	name = "Triumphal Arch"
-	description = "A drink celebrating the Unathi Empire and its military victories. It's popular at bars on Unification Day."
+	description = "A drink celebrating the Jinan Unified Government. It's popular at bars on Unification Day."
 	boozepwr = 60
 	color = "#FFD700"
 	quality = DRINK_FANTASTIC

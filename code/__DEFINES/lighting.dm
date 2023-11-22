@@ -97,7 +97,7 @@ do { \
 } while (FALSE)
 
 /// The default falloff curve for all atoms. It's a magic number you should adjust until it looks good.
-#define LIGHTING_DEFAULT_FALLOFF_CURVE 2.36
+#define LIGHTING_DEFAULT_FALLOFF_CURVE 2
 
 /// Include this to have lights randomly break on initialize.
 #define LIGHTS_RANDOMLY_BROKEN

@@ -1032,7 +1032,7 @@
 		if(user)
 			user.examinate(src)
 
-/obj/machinery/hydroponics/CtrlClick(mob/user)
+/obj/machinery/hydroponics/CtrlClick(mob/user, list/params)
 	. = ..()
 	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
@@ -1130,7 +1130,7 @@
 		qdel(src)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/hydroponics/soil/CtrlClick(mob/user)
+/obj/machinery/hydroponics/soil/CtrlClick(mob/user, list/params)
 	return //Soil has no electricity.
 
 

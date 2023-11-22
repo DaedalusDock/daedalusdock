@@ -92,7 +92,7 @@
 /obj/structure/alien/resin/wall/block_superconductivity()
 	return 1
 
-/// meant for one lavaland ruin or anywhere that has simplemobs who can push aside structures
+/// meant for anywhere that has simplemobs who can push aside structures
 /obj/structure/alien/resin/wall/immovable
 	desc = "Dense resin solidified into a wall."
 	move_resist = MOVE_FORCE_VERY_STRONG

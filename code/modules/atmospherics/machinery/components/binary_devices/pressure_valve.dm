@@ -23,7 +23,7 @@
 	///Which side is the valve regulating?
 	var/regulate_mode = REGULATE_OUTPUT
 
-/obj/machinery/atmospherics/components/binary/pressure_valve/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/pressure_valve/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)

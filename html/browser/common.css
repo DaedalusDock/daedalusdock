@@ -39,6 +39,10 @@ a:hover
 	background: #aa5f36;
 }
 
+a.inlineblock {
+	display: inline-block;
+}
+
 a.white, a.white:link, a.white:visited, a.white:active
 {
 	color: #40628a;
@@ -261,6 +265,8 @@ div.notice
 	text-align: center;
 	text-shadow: 0 0 5px #FFCC00;
 	overflow: hidden;
+	font-size: 15px;
+	font-family: monospace;
 }
 
 .computerPaneNested
@@ -270,7 +276,7 @@ div.notice
 	margin: 3px 0;
 	color: #ffffff;
 	overflow: hidden;
-	background: inherit;
+	background: none;
 	box-shadow: 0 0 10px #FFCC00
 }
 
@@ -484,8 +490,8 @@ ul.sparse {
 }
 
 .severity img {
-    display: inline-block;
-    vertical-align: middle;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .codexLore
@@ -509,7 +515,7 @@ ul.sparse {
 
 .dmCodexBody
 {
-	margin-left: 15px;
+	margin: 0px 10px;
 }
 
 .dmCodexBody td
@@ -520,6 +526,11 @@ ul.sparse {
 .dmCodexHeader
 {
 	text-align: center;
+}
+
+.dmCodexFooter
+{
+	margin-top: 10px;
 }
 
 .tooltip {
@@ -565,11 +576,11 @@ span.color_holder_box{
 	border: 1px solid rgba(255, 183, 0, 0.5);
 }
 
-.zebraTable tr:nth-child(even){
+.zebraTable div:nth-child(2n) tr:nth-child(even){
 	background-color: #7c5500;
 }
 
-.zebraTable tr:nth-child(odd){
+.zebraTable div:nth-child(2n+1) tr:nth-child(odd){
 	background-color: #533200;
 }
 
@@ -590,4 +601,12 @@ span.color_holder_box{
 .bad
 {
 	color: #ff0000;
+}
+
+.highlighter:hover {
+	background-color: #f0c400 !important;
+}
+
+.paragraph {
+	text-indent: 2em;
 }

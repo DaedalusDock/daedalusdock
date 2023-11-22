@@ -53,7 +53,7 @@
 
 
 /datum/reagent/mutationtoxin/lizard
-	name = "Unathi Mutation Toxin"
+	name = "Jinan Mutation Toxin"
 	description = "A lizarding toxin."
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/lizard
@@ -138,14 +138,6 @@
 	color = "#5EFF3B" //RGB: 94, 255, 59
 	race = /datum/species/zombie //Not the infectious kind. The days of xenobio zombie outbreaks are long past.
 	taste_description = "brai...nothing in particular"
-	chemical_flags = REAGENT_NO_RANDOM_RECIPE
-
-/datum/reagent/mutationtoxin/ash
-	name = "Ash Mutation Toxin"
-	description = "An ashen toxin."
-	color = "#5EFF3B" //RGB: 94, 255, 59
-	race = /datum/species/lizard/ashwalker
-	taste_description = "savagery"
 	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
 //DANGEROUS RACES

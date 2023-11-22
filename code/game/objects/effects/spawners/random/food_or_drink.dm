@@ -147,7 +147,6 @@
 		/obj/item/reagent_containers/food/drinks/bottle/goldschlager = 2,
 		/obj/item/reagent_containers/food/drinks/bottle/patron = 1,
 		/obj/item/reagent_containers/food/drinks/bottle/kong = 1,
-		/obj/item/reagent_containers/food/drinks/bottle/lizardwine = 1,
 		/obj/item/reagent_containers/food/drinks/bottle/vodka/badminka = 1,
 		/obj/item/reagent_containers/food/drinks/bottle/trappist = 1,
 	)
@@ -209,7 +208,6 @@
 		/obj/item/food/kebab/candied_mushrooms = 5,
 		/obj/item/food/steeped_mushrooms = 5,
 		/obj/item/food/larvae = 5,
-		/obj/item/food/emperor_roll = 5,
 		/obj/item/food/honey_roll = 5,
 	)
 

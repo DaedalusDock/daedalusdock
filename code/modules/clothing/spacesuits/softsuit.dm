@@ -4,26 +4,28 @@
 	desc = "An old, NASA CentCom branch designed, dark red space suit helmet."
 	icon_state = "void"
 	inhand_icon_state = "void"
+	supports_variations_flags = NONE
 
 /obj/item/clothing/suit/space/nasavoid
 	name = "NASA Voidsuit"
 	icon_state = "void"
 	inhand_icon_state = "void"
-	desc = "An old, NASA CentCom branch designed, dark red space suit."
+	desc = "A spacesuit older than you are."
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/multitool)
+	supports_variations_flags = NONE
 
 /obj/item/clothing/head/helmet/space/nasavoid/old
-	name = "Engineering Void Helmet"
-	desc = "A CentCom engineering dark red space suit helmet. While old and dusty, it still gets the job done."
+	name = "old space helmet"
+	desc = "A space helmet older than you are. Check it for cracks."
 	icon_state = "void"
 	inhand_icon_state = "void"
 
 /obj/item/clothing/suit/space/nasavoid/old
-	name = "Engineering Voidsuit"
+	name = "old space suit"
 	icon_state = "void"
 	inhand_icon_state = "void"
-	desc = "A CentCom engineering dark red space suit. Age has degraded the suit making it difficult to move around in."
-	slowdown = 4
+	desc = "A cumbersome spacesuit older than you are."
+	slowdown = 1.2
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/multitool)
 
 	//EVA suit

@@ -1,7 +1,7 @@
 /mob/living/carbon/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 
-	if (!isnull(held_item))
+	if (!isnull(held_item) && !(held_item.item_flags & (ABSTRACT|HAND_ITEM)))
 		context[SCREENTIP_CONTEXT_CTRL_SHIFT_LMB] = "Offer item"
 		return CONTEXTUAL_SCREENTIP_SET
 
@@ -15,11 +15,8 @@
 	else if (human_user == src)
 		context[SCREENTIP_CONTEXT_LMB] = "Check injuries"
 
-		if (get_bodypart(human_user.zone_selected)?.get_modified_bleed_rate())
-			context[SCREENTIP_CONTEXT_CTRL_LMB] = "Grab limb"
-
 	if (human_user != src)
-		context[SCREENTIP_CONTEXT_RMB] = "Shove"
+		context[SCREENTIP_CONTEXT_RMB] = "Disarm"
 
 		if (!human_user.combat_mode)
 			if (body_position == STANDING_UP)

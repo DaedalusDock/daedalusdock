@@ -144,10 +144,10 @@
 	return dna.species.bodytemp_normal + get_body_temp_normal_change()
 
 /mob/living/carbon/human/get_body_temp_heat_damage_limit()
-	return dna.species.bodytemp_heat_damage_limit
+	return dna.species.heat_level_1
 
 /mob/living/carbon/human/get_body_temp_cold_damage_limit()
-	return dna.species.bodytemp_cold_damage_limit
+	return dna.species.cold_level_1
 
 /mob/living/carbon/human/proc/get_thermal_protection()
 	var/thermal_protection = 0 //Simple check to estimate how protected we are against multiple temperatures

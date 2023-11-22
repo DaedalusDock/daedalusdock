@@ -31,6 +31,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
+
 	// Moths
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
@@ -48,6 +49,14 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list, add_blank = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/vox, GLOB.tails_list_vox)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
+
+	//IPC
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_screen, GLOB.ipc_screens_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_antenna, GLOB.ipc_antenna_list, add_blank = TRUE)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_screen, GLOB.saurian_screens_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_tail, GLOB.saurian_tails_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_scutes, GLOB.saurian_scutes_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/saurian_antenna, GLOB.saurian_antenna_list, add_blank = TRUE)
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))
@@ -78,9 +87,19 @@
 
 	GLOB.emote_list = init_emote_list()
 
+	for(var/datum/grab/G as anything in subtypesof(/datum/grab))
+		if(isabstract(G))
+			continue
+		GLOB.all_grabstates[G] = new G
+
+	for(var/path in GLOB.all_grabstates)
+		var/datum/grab/G = GLOB.all_grabstates[path]
+		G.refresh_updown()
+
 	init_crafting_recipes(GLOB.crafting_recipes)
 	init_loadout_references()
 	init_augment_references()
+	init_magnet_error_codes()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -197,3 +216,25 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 				GLOB.augment_categories_to_slots[L.category] = list()
 			GLOB.augment_categories_to_slots[L.category] += L.slot
 		GLOB.augment_slot_to_items[L.slot] += L.type
+
+GLOBAL_LIST_INIT(magnet_error_codes, list(
+	MAGNET_ERROR_KEY_BUSY,
+	MAGNET_ERROR_KEY_USED_COORD,
+	MAGNET_ERROR_KEY_COOLDOWN,
+	MAGNET_ERROR_KEY_MOB,
+	MAGNET_ERROR_KEY_NO_COORD
+
+))
+
+/proc/init_magnet_error_codes()
+	var/list/existing_codes = list()
+	var/code
+	for(var/key in GLOB.magnet_error_codes)
+		do
+			code = "[pick(GLOB.alphabet_upper)][rand(1,9)]"
+			if(code in existing_codes)
+				continue
+			else
+				GLOB.magnet_error_codes[key] = code
+				existing_codes += code
+		while(isnull(GLOB.magnet_error_codes[key]))

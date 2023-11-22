@@ -1,17 +1,16 @@
 /datum/language/draconic
-	name = "Sinta'Unathi"
-	desc = "The common language of the Unathi, composed of sibilant hisses and rattles."
+	name = "Jinanuar"
+	desc = "The common language of the Jinans, composed of sibilant hisses, grumbles, and clicks."
 	key = "o"
-	flags = TONGUELESS_SPEECH
 	space_chance = 40
+
 	syllables = list(
-		"za", "az", "ze", "ez", "zi", "iz", "zo", "oz", "zu", "uz", "zs", "sz",
-		"ha", "ah", "he", "eh", "hi", "ih", "ho", "oh", "hu", "uh", "hs", "sh",
-		"la", "al", "le", "el", "li", "il", "lo", "ol", "lu", "ul", "ls", "sl",
-		"ka", "ak", "ke", "ek", "ki", "ik", "ko", "ok", "ku", "uk", "ks", "sk",
-		"sa", "as", "se", "es", "si", "is", "so", "os", "su", "us", "ss", "ss",
-		"ra", "ar", "re", "er", "ri", "ir", "ro", "or", "ru", "ur", "rs", "sr",
-		"a",  "a",  "e",  "e",  "i",  "i",  "o",  "o",  "u",  "u",  "s",  "s"
+		"ji", "na", "an", "ua", "au", "ou", "uo", "uh", "hu", "ar", "ra",
+		"in", "ni", "ka", "ak", "ke", "ek", "ki", "ik", "uk", "ks", "sk",
+		"sa", "as", "se", "es", "si", "is", "su", "us", "ss", "ss", "rs",
+		"sr", "ur", "ru", "ra", "nu", "un", "il", "li", "sl", "ls", "ri",
+		"ir", "ij", "ai", "ia", "hi", "ih",
+		"j", "j", "a", "a", "i", "i", "u", "u", "r", "r", "s", "s", "s"
 	)
 	icon_state = "lizard"
 	default_priority = 90

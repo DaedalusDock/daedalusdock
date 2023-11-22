@@ -49,7 +49,7 @@
 	var/power_usage = screen_on ? base_active_power_usage : base_idle_power_usage
 
 	for(var/obj/item/computer_hardware/H in all_components)
-		if(H.enabled)
+		if(H.is_enabled())
 			power_usage += H.power_usage
 
 	if(use_power(power_usage))

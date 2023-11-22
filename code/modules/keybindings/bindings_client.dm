@@ -73,7 +73,8 @@
 
 	holder?.key_down(_key, src)
 	mob.focus?.key_down(_key, src)
-	mob.update_mouse_pointer()
+	if(ShiftMod)
+		mob.update_mouse_pointer()
 
 
 /client/verb/keyUp(_key as text)
@@ -87,6 +88,9 @@
 
 	if(!keys_held[_key])
 		return
+
+	if(keys_held["Shift"])
+		mob.update_mouse_pointer()
 
 	keys_held -= _key
 
@@ -103,5 +107,5 @@
 			break
 	holder?.key_up(_key, src)
 	mob.focus?.key_up(_key, src)
-	mob.update_mouse_pointer()
+
 

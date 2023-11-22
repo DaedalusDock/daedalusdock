@@ -200,7 +200,7 @@
 
 	var/raw_msg = message
 	if(visible_message_flags & EMOTE_MESSAGE)
-		message = "<span class='emote'><b>[src]</b>[separation][message]</span>" //PARIAH EDIT - Better emotes
+		message = "<b>[src]</b><span class='emote'>[separation][message]</span>"
 
 	for(var/mob/M in hearers)
 		if(!M.client)
@@ -992,8 +992,14 @@
 
 ///Can the mob interact() with an atom?
 /mob/proc/can_interact_with(atom/A)
+	if(istype(A, /atom/movable/screen))
+		var/atom/movable/screen/screen = A
+		if(screen.hud?.mymob ==src)
+			return TRUE
+
 	if(isAdminGhostAI(src) || Adjacent(A))
 		return TRUE
+
 	var/datum/dna/mob_dna = has_dna()
 	if(mob_dna?.check_mutation(/datum/mutation/human/telekinesis) && tkMaxRangeCheck(src, A))
 		return TRUE
@@ -1155,32 +1161,25 @@
 				return
 			LA.alpha = lighting_alpha
 
-/*
-/mob/proc/sync_ao_plane_alpha()
-	if(!hud_used)
-		return
-	var/datum/preferences/prefs = client?.prefs
-	if(!prefs)
-		return
-
-	var/atom/movable/screen/plane_master/lighting/L = hud_used.plane_masters["[AO_PLANE]"]
-	if (L)
-		L.alpha = prefs.read_preference(/datum/preference/toggle/ambient_occlusion) ? WALL_AO_ALPHA : 0*/
-
 ///Update the mouse pointer of the attached client in this mob
 /mob/proc/update_mouse_pointer()
+	set waitfor = FALSE
 	if(!client)
 		return
-	if(client.mouse_pointer_icon != initial(client.mouse_pointer_icon))//only send changes to the client if theyre needed
-		client.mouse_pointer_icon = initial(client.mouse_pointer_icon)
-	if(examine_cursor_icon && client.keys_held["Shift"]) //mouse shit is hardcoded, make this non hard-coded once we make mouse modifiers bindable
-		client.mouse_pointer_icon = examine_cursor_icon
-	if(istype(loc, /obj/vehicle/sealed))
-		var/obj/vehicle/sealed/E = loc
-		if(E.mouse_pointer)
-			client.mouse_pointer_icon = E.mouse_pointer
+
 	if(client.mouse_override_icon)
-		client.mouse_pointer_icon = client.mouse_override_icon
+		if(client.mouse_pointer_icon != client.mouse_override_icon)
+			client.mouse_pointer_icon = client.mouse_override_icon
+		return
+
+	. = get_mouse_pointer_icon()
+	. ||= 'icons/effects/mouse_pointers/default.dmi'
+	if(. != client.mouse_pointer_icon)
+		client.mouse_pointer_icon = .
+
+///Gets the dmi file for the mouse pointer the attached client should use
+/mob/proc/get_mouse_pointer_icon()
+	return
 
 /**
  * Can this mob see in the dark

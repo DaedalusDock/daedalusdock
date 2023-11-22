@@ -31,6 +31,7 @@
 	encased = "skull"
 	artery_name = "carotid artery"
 	cavity_name = "cranial"
+	joint_name = "jaw"
 
 	minimum_break_damage = 30
 
@@ -39,6 +40,9 @@
 	var/obj/item/organ/eyes/eyes
 	var/obj/item/organ/ears/ears
 	var/obj/item/organ/tongue/tongue
+
+	///See [mob/living/proc/has_mouth()]
+	var/can_ingest_reagents = TRUE
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
 	///Render sclera for this species?

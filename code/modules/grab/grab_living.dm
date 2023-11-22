@@ -48,14 +48,15 @@
 
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
 	var/atom/movable/original_target = target
-	var/mob/grabbing_mob = (ismob(target) && target)
+	if(ismob(target))
+		var/mob/grabbed_mob = target
 
-	while(istype(grabbing_mob) && grabbing_mob.buckled)
-		grabbing_mob = grabbing_mob.buckled
+		while(ismob(grabbed_mob) && grabbed_mob.buckled)
+			grabbed_mob = grabbed_mob.buckled
 
-	if(grabbing_mob && grabbing_mob != original_target)
-		target = grabbing_mob
-		to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead!"))
+		if(grabbed_mob && grabbed_mob != original_target)
+			target = grabbed_mob
+			to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead!"))
 
 	if(!istype(target))
 		return

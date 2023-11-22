@@ -8,7 +8,6 @@
 	if(!buckled_grab_check(grabber))
 		return FALSE
 	if(anchored)
-		to_chat(grabber, span_warning("\The [src] won't budge!"))
 		return FALSE
 	if(throwing)
 		return FALSE

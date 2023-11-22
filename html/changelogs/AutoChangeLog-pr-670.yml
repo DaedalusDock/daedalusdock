@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscdel: Removed feedback on trying to grab an anchored object.

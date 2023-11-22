@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - tweak: Changes event bounds from 3-10 minutes to 20-30 minutes.

@@ -1,0 +1,8 @@
+author: Spyroshark
+delete-after: true
+changes:
+  - rscdel: Removed Anomaly events, Wisdom Cow event, and the Space Dragon spawning
+      event.
+  - rscadd: New Solar Flare event to replace the niche of pyro anomalies.
+  - balance: Spontaneous Brain Trauma events are much less common. Wormholes and Hostile
+      Mob Infestations are slightly more common.

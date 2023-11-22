@@ -262,10 +262,8 @@
 	spacesuit = new /atom/movable/screen/spacesuit
 	infodisplay += spacesuit
 
-	healths = new /atom/movable/screen/healths(null, src)
-	infodisplay += healths
-
 	healthdoll = new /atom/movable/screen/healthdoll(null, src)
+	healthdoll.hud = src
 	infodisplay += healthdoll
 
 	stamina = new /atom/movable/screen/stamina(null, src)

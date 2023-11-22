@@ -99,6 +99,7 @@
 	init_crafting_recipes(GLOB.crafting_recipes)
 	init_loadout_references()
 	init_augment_references()
+	init_magnet_error_codes()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -215,3 +216,25 @@ GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
 				GLOB.augment_categories_to_slots[L.category] = list()
 			GLOB.augment_categories_to_slots[L.category] += L.slot
 		GLOB.augment_slot_to_items[L.slot] += L.type
+
+GLOBAL_LIST_INIT(magnet_error_codes, list(
+	MAGNET_ERROR_KEY_BUSY,
+	MAGNET_ERROR_KEY_USED_COORD,
+	MAGNET_ERROR_KEY_COOLDOWN,
+	MAGNET_ERROR_KEY_MOB,
+	MAGNET_ERROR_KEY_NO_COORD
+
+))
+
+/proc/init_magnet_error_codes()
+	var/list/existing_codes = list()
+	var/code
+	for(var/key in GLOB.magnet_error_codes)
+		do
+			code = "[pick(GLOB.alphabet_upper)][rand(1,9)]"
+			if(code in existing_codes)
+				continue
+			else
+				GLOB.magnet_error_codes[key] = code
+				existing_codes += code
+		while(isnull(GLOB.magnet_error_codes[key]))

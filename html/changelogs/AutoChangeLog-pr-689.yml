@@ -1,0 +1,8 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscdel: Health indicator due to being confusing.
+  - balance: Adjusted rate of slowdown from pain.
+  - tweak: Added healthdoll indicator for pain.
+  - bugfix: Tackling works again.
+  - bugfix: Hogs no longer shit runtimes, they just shit.

@@ -10,3 +10,21 @@
 2023-11-15:
   Kapu1178:
   - rscdel: Lavaland and it's baggage
+2023-11-18:
+  Kapu1178:
+  - bugfix: Under certain circumstances, masks would show as invisible in your mask
+      slot. This has been fixed.
+  - tweak: Renamed Metastation to Theseus. You know why.
+  - bugfix: You can no longer flip operating tables.
+2023-11-20:
+  Kapu1178:
+  - tweak: The Codex now supports nicer formatting.
+2023-11-21:
+  Kapu1178:
+  - bugfix: Airlock codex entry works.
+  - rscadd: Asteroid Magnet codex entry.
+  - rscadd: The magnet now has a 60 second cooldown between uses.
+  - bugfix: Summoned asteroids are removed from the list of available asteroids.
+  - bugfix: Fixed a bug that allowed you to summon multiple asteroids at once.
+  - balance: Hitting someone with a thrown body now only knocks them down briefly
+      instead of stunning + knocking down for 2 seconds

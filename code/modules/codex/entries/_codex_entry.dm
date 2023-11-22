@@ -105,8 +105,6 @@
 		for(var/datum/codex_category/category in categories)
 			. += category.get_category_link(src)
 
-// TODO: clean up codex bodies until trimming linebreaks is unnecessary.
-#define TRIM_LINEBREAKS(TEXT) replacetext(replacetext(TEXT, SScodex.trailingLinebreakRegexStart, null), SScodex.trailingLinebreakRegexEnd, null)
 /datum/codex_entry/proc/get_codex_body(mob/presenting_to, include_header = TRUE, include_footer = TRUE)
 	RETURN_TYPE(/list)
 
@@ -114,25 +112,24 @@
 	if(include_header && presenting_to)
 		var/header = get_codex_header(presenting_to)
 		if(length(header))
-			. += "<span class='dmCodexHeader'>"
+			. += "<div class='dmCodexHeader'>"
 			. += jointext(header, null)
-			. += "</span>"
+			. += "</div>"
 
-	. += "<span class='dmCodexBody'>"
+	. += "<div class='dmCodexBody'>"
 	if(lore_text)
-		. += "<p><span class='codexLore'>[TRIM_LINEBREAKS(lore_text)]</span></p>"
+		. += "<div class='codexLore'>[lore_text]</div>"
 	if(mechanics_text)
-		. += "<h3>OOC Information</h3>\n<p><span class='codexMechanics'>[TRIM_LINEBREAKS(mechanics_text)]</span></p>"
+		. += "<h3>OOC Information</h3><div class='codexMechanics'>[mechanics_text]</div>"
 	if(antag_text && (!presenting_to || (presenting_to.mind && !length(presenting_to.mind.antag_datums))))
-		. += "<h3>Antagonist Information</h3>\n<p><span class='codexAntag'>[TRIM_LINEBREAKS(antag_text)]</span></p>"
+		. += "<h3>Antagonist Information</h3><div class='codexAntag'>[antag_text]</div>"
 	if(controls_text)
-		. += "<h3>Controls</h3>\n<p><span class='codexControls'>[TRIM_LINEBREAKS(controls_text)]</span></p>"
-	. += "</span>"
+		. += "<h3>Controls</h3><div class='codexControls'>[controls_text]</div>"
+	. += "</div>"
 
 	if(include_footer)
 		var/footer = get_codex_footer(presenting_to)
 		if(length(footer))
-			. += "<span class='dmCodexFooter'>"
+			. += "<div class='dmCodexFooter'>"
 			. += footer
-			. += "</span>"
-#undef TRIM_LINEBREAKS
+			. += "</div>"

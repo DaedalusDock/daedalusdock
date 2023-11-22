@@ -886,9 +886,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	human_to_equip.equipOutfit(outfit_important_for_life)
 
-/datum/species/proc/update_health_hud(mob/living/carbon/human/H)
-	return FALSE
-
 /**
  * Species based handling for irradiation
  *

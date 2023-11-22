@@ -10,7 +10,7 @@
 /datum/codex_entry/power/supermatter
 	name = "Supermatter Engine"
 	associated_paths = list(/obj/machinery/power/supermatter)
-	lore_text = "The Supermatter is a highly unstable fragment of exotic matter, \
+	lore_text = "&nbsp;&nbsp;&nbsp;&nbsp;The Supermatter is a highly unstable fragment of exotic matter, \
 		which reacts with the atmosphere around it relative to it's own internal charge. As part of it's use as a power generator, \
 		the supermatter will release energy in the form of heat and radiation, along with shedding 'waste' gasses from it's mass. \
 		These byproducts must be managed, and the heat captured and converted for use as electrical power."

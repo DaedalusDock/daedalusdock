@@ -1,0 +1,4 @@
+author: Time-Green
+delete-after: true
+changes:
+  - bugfix: AI controlled mobs can no longer disembowel or delimb people randomly.

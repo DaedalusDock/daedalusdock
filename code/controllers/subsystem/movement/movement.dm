@@ -61,7 +61,7 @@ SUBSYSTEM_DEF(movement)
 		// No longer queued since we just got removed from the loop
 		loop.queued_time = null
 		loop.process() //This shouldn't get nulls, if it does, runtime
-		if(!QDELETED(loop) && loop.status & MOVELOOP_STATUS_QUEUED) //Re-Insert the loop
+		if(!QDELETED(loop) && (loop.status & MOVELOOP_STATUS_QUEUED)) //Re-Insert the loop
 			loop.status &= ~MOVELOOP_STATUS_QUEUED
 			loop.timer = world.time + loop.delay
 			queue_loop(loop)

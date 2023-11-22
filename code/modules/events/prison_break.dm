@@ -1,7 +1,7 @@
 /datum/round_event_control/grey_tide
 	name = "Grey Tide"
 	typepath = /datum/round_event/grey_tide
-	max_occurrences = 2
+	max_occurrences = 1
 	min_players = 5
 
 /datum/round_event/grey_tide

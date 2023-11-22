@@ -123,7 +123,7 @@
 		antag_fraction += ((1 + ruleset.scaled_times) * ruleset.get_antag_cap(population)) / mode.roundstart_pop_ready
 
 	for(var/i in 1 to max_scale)
-		if(antag_fraction < 0.25)
+		if(antag_fraction < 0.15)
 			scaled_times += 1
 			antag_fraction += get_antag_cap(population) / mode.roundstart_pop_ready // we added new antags, gotta update the %
 

@@ -9,6 +9,7 @@
 	var/list/spawned_mobs = list()
 	var/status
 	fakeable = FALSE
+	#warn make ghost roles use SSmidrounds
 
 /datum/round_event/ghost_role/start()
 	try_spawning()

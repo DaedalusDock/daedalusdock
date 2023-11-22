@@ -2,8 +2,8 @@
 	name = "Aurora Caelus"
 	typepath = /datum/round_event/aurora_caelus
 	max_occurrences = 1
-	weight = 1
-	earliest_start = 5 MINUTES
+	weight = 3
+	earliest_start = 20 MINUTES
 
 /datum/round_event_control/aurora_caelus/canSpawnEvent(players)
 	if(!CONFIG_GET(flag/starlight))

@@ -27,6 +27,8 @@ SUBSYSTEM_DEF(statpanels)
 			"Map: [SSmapping.config?.map_name || "Loading..."]",
 			cached ? "Next Map: [cached.map_name]" : null,
 			"Round ID: [GLOB.round_id ? GLOB.round_id : "NULL"]",
+			"Gamemode: [SSticker.get_mode_name()]",
+			"\n",
 			"Time Dilation: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)",
 			"Server Time: [time2text(world.timeofday, "hh:mm:ss DD-MM-YYYY")]",
 			"\n",

@@ -426,7 +426,9 @@
 
 	var/turf/next_step = movement_path[1]
 	var/atom/old_loc = moving.loc
-	moving.Move(next_step, get_dir(moving, next_step), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	//KAPU NOTE: WE DO NOT HAVE THIS
+	//moving.Move(next_step, get_dir(moving, next_step), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	moving.Move(next_step, get_dir(moving, next_step))
 	. = (old_loc != moving?.loc) ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 	// this check if we're on exactly the next tile may be overly brittle for dense objects who may get bumped slightly
@@ -494,7 +496,9 @@
 		return
 	var/atom/old_loc = moving.loc
 	var/turf/next = get_step_to(moving, target)
-	moving.Move(next, get_dir(moving, next), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	// KAPU NOTE: WE DO NOT HAVE THIS MOVEMENT ARG. I DIDN'T WANT TO REDO ALL OF OUR MOVE CALLS AGAIN.
+	//moving.Move(next, get_dir(moving, next), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	moving.Move(next, get_dir(moving, next))
 	return old_loc != moving?.loc ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 /**
@@ -528,7 +532,9 @@
 		return
 	var/atom/old_loc = moving.loc
 	var/turf/next = get_step_away(moving, target)
-	moving.Move(next, get_dir(moving, next), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	// KAPU NOTE: WE DO NOT HAVE THIS MOVEMENT ARG. I DIDN'T WANT TO REDO ALL OF OUR MOVE CALLS AGAIN.
+	//moving.Move(next, get_dir(moving, next), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	moving.Move(next, get_dir(moving, next))
 	return old_loc != moving?.loc ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 
@@ -630,7 +636,9 @@
 	if(y_ticker >= 1)
 		y_ticker = MODULUS(x_ticker, 1)
 	var/atom/old_loc = moving.loc
-	moving.Move(moving_towards, get_dir(moving, moving_towards), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	// KAPU NOTE: WE DO NOT HAVE THIS MOVEMENT ARG. I DIDN'T WANT TO REDO ALL OF OUR MOVE CALLS AGAIN.
+	//moving.Move(moving_towards, get_dir(moving, moving_towards), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	moving.Move(moving_towards, get_dir(moving, moving_towards))
 
 	//YOU FOUND THEM! GOOD JOB
 	if(home && get_turf(moving) == get_turf(target))
@@ -712,7 +720,9 @@
 /datum/move_loop/has_target/move_towards_budget/move()
 	var/turf/target_turf = get_step_towards(moving, target)
 	var/atom/old_loc = moving.loc
-	moving.Move(target_turf, get_dir(moving, target_turf), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	// KAPU NOTE: WE DO NOT HAVE THIS MOVEMENT ARG. I DIDN'T WANT TO REDO ALL OF OUR MOVE CALLS AGAIN.
+	//moving.Move(target_turf, get_dir(moving, target_turf), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	moving.Move(target_turf, get_dir(moving, target_turf))
 	return old_loc != moving?.loc ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 
@@ -763,7 +773,9 @@
 		var/testdir = pick(potential_dirs)
 		var/turf/moving_towards = get_step(moving, testdir)
 		var/atom/old_loc = moving.loc
-		moving.Move(moving_towards, testdir, FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+		// KAPU NOTE: WE DO NOT HAVE THIS MOVEMENT ARG. I DIDN'T WANT TO REDO ALL OF OUR MOVE CALLS AGAIN.
+		//moving.Move(moving_towards, testdir, FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+		moving.Move(moving_towards, testdir)
 		if(old_loc != moving?.loc)  //If it worked, we're done
 			return MOVELOOP_SUCCESS
 		potential_dirs -= testdir
@@ -792,7 +804,9 @@
 /datum/move_loop/move_to_rand/move()
 	var/atom/old_loc = moving.loc
 	var/turf/next = get_step_rand(moving)
-	moving.Move(next, get_dir(moving, next), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	// KAPU NOTE: WE DO NOT HAVE THIS MOVEMENT ARG. I DIDN'T WANT TO REDO ALL OF OUR MOVE CALLS AGAIN.
+	//moving.Move(next, get_dir(moving, next), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
+	moving.Move(next, get_dir(moving, next))
 	return old_loc != moving?.loc ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 /**

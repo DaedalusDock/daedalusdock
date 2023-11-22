@@ -11,9 +11,9 @@
 /datum/round_event_control/animal_infestation/dangerous
 	name = "Animal Infestation: Dangerous"
 	typepath = /datum/round_event/animal_infestation/dangerous
-	weight = 2
+	weight = 4
 	earliest_start = 20 MINUTES
-	min_players = 12 //let's not dump hostile mobs on a lowpop round.
+	min_players = 10 //let's not dump hostile mobs on a lowpop round.
 
 /datum/round_event/animal_infestation
 	var/mob_count
@@ -50,6 +50,8 @@
 	if(!length(spawn_turfs))
 		//if there's no good turfs, just use the initial turf
 		spawn_turfs += initial_turf
+
+	announce_to_ghosts(initial_turf)
 
 /datum/round_event/animal_infestation/announce(fake)
 	if(fake)

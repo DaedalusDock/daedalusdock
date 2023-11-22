@@ -14,3 +14,9 @@
 		stoplag(); \
 		SSatoms.map_loader_begin(REF(template)); \
 	}
+
+#define MAGNET_ERROR_KEY_BUSY 1
+#define MAGNET_ERROR_KEY_USED_COORD 2
+#define MAGNET_ERROR_KEY_COOLDOWN 3
+#define MAGNET_ERROR_KEY_MOB 4
+#define MAGNET_ERROR_KEY_NO_COORD 5

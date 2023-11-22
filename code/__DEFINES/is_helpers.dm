@@ -33,6 +33,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isspaceturf(A) (istype(A, /turf/open/space))
 
+#define islevelbaseturf(A) istype(A, SSmapping.level_trait(A.z, ZTRAIT_BASETURF) || /turf/open/space)
+
 #define isfloorturf(A) (istype(A, /turf/open/floor))
 
 #define isclosedturf(A) (istype(A, /turf/closed))

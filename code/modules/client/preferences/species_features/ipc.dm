@@ -1,3 +1,4 @@
+#define NO_SHACKLES "None"
 /datum/preference/choiced/ipc_shackles
 	explanation = "Shackle Laws"
 	savefile_key = "ipc_shackles"
@@ -10,12 +11,15 @@
 	return ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/ipc)
 
 /datum/preference/choiced/ipc_shackles/init_possible_values()
-	return get_shackle_laws() + null
+	return get_shackle_laws() + NO_SHACKLES
 
 /datum/preference/choiced/ipc_shackles/create_default_value()
-	return null
+	return NO_SHACKLES
 
 /datum/preference/choiced/ipc_shackles/apply_to_human(mob/living/carbon/human/target, value)
+	if(value == NO_SHACKLES)
+		value = null
+
 	var/obj/item/organ/posibrain/P = target.getorganslot(ORGAN_SLOT_POSIBRAIN)
 	if(!P)
 		return
@@ -131,3 +135,5 @@ GLOBAL_REAL_VAR(ipc_chassis_options) = list(
 	is_sub_preference = TRUE
 
 	color_key = MUTCOLORS_KEY_SAURIAN_ANTENNA
+
+#undef NO_SHACKLES

@@ -53,7 +53,7 @@
 	if(istype(target, /obj/item/food))
 		consume(target)
 		return
-	if(istype(target, /atom/movable))
+	if(ismob(target))
 		var/mob/living/moving_target = target
 		if(moving_target.buckled == src)
 			return

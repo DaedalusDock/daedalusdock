@@ -280,10 +280,6 @@
 	spacesuit.hud = src
 	infodisplay += spacesuit
 
-	healths = new /atom/movable/screen/healths()
-	healths.hud = src
-	infodisplay += healths
-
 	healthdoll = new /atom/movable/screen/healthdoll()
 	healthdoll.hud = src
 	infodisplay += healthdoll

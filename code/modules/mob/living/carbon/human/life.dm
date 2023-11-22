@@ -305,6 +305,11 @@
 			return TRUE
 	return ..()
 
+/mob/living/carbon/human/set_heartattack(status)
+	. = ..()
+	if(.)
+		update_health_hud()
+
 #undef THERMAL_PROTECTION_HEAD
 #undef THERMAL_PROTECTION_CHEST
 #undef THERMAL_PROTECTION_GROIN

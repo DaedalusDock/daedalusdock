@@ -25,6 +25,8 @@
 	var/timer = 0
 	///Is this loop running or not
 	var/running = FALSE
+	///Track if we're currently paused
+	var/paused = FALSE
 
 /datum/move_loop/New(datum/movement_packet/owner, datum/controller/subsystem/movement/controller, atom/moving, priority, flags, datum/extra_info)
 	src.owner = owner
@@ -51,7 +53,7 @@
 		return TRUE
 	return FALSE
 
-/datum/move_loop/proc/start_loop()
+/datum/move_loop/proc/loop_started()
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_MOVELOOP_START)
 	running = TRUE
@@ -62,7 +64,8 @@
 		return
 	timer = world.time + delay
 
-/datum/move_loop/proc/stop_loop()
+///Called when a loop is stopped, doesn't stop the loop itself
+/datum/move_loop/proc/loop_stopped()
 	SHOULD_CALL_PARENT(TRUE)
 	running = FALSE
 	SEND_SIGNAL(src, COMSIG_MOVELOOP_STOP)
@@ -125,6 +128,24 @@
 ///Returns FALSE if nothing happen, TRUE otherwise
 /datum/move_loop/proc/move()
 	return MOVELOOP_FAILURE
+
+///Pause our loop untill restarted with resume_loop()
+/datum/move_loop/proc/pause_loop()
+	if(!controller || !running || paused) //we dead
+		return
+
+	//Dequeue us from our current bucket
+	controller.dequeue_loop(src)
+	paused = TRUE
+
+///Resume our loop after being paused by pause_loop()
+/datum/move_loop/proc/resume_loop()
+	if(!controller || !running || !paused)
+		return
+
+	controller.queue_loop(src)
+	timer = world.time
+	paused = FALSE
 
 ///Removes the atom from some movement subsystem. Defaults to SSmovement
 /datum/controller/subsystem/move_manager/proc/stop_looping(atom/movable/moving, datum/controller/subsystem/movement/subsystem = SSmovement)
@@ -388,7 +409,7 @@
 		return TRUE
 	return FALSE
 
-/datum/move_loop/has_target/jps/start_loop()
+/datum/move_loop/has_target/jps/loop_started()
 	. = ..()
 	if(!movement_path)
 		INVOKE_ASYNC(src, PROC_REF(recalculate_path))

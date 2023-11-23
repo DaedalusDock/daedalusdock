@@ -1,6 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - qol: The new mouse cursors are more pleasant to use
-  - imageadd: An arrow has been added at the top left which identifies the actual
-      position of the target pixel.

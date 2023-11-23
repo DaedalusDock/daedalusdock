@@ -16,6 +16,9 @@
 	var/datum/media/selection = null
 	/// Volume of the songs played
 	var/volume = 65
+
+	/// Prevents huge network overhead from the TGUI dial
+	var/updating_volume = FALSE
 	COOLDOWN_DECLARE(jukebox_error_cd)
 
 	COOLDOWN_DECLARE(reactivation_timer)
@@ -130,16 +133,21 @@
 			var/new_volume = params["volume"]
 			if(new_volume == "reset")
 				volume = initial(volume)
+				update_volume()
 				return TRUE
 			else if(new_volume == "min")
 				volume = 0
+				update_volume()
 				return TRUE
 			else if(new_volume == "max")
 				volume = initial(volume)
+				update_volume()
 				return TRUE
 			else if(text2num(new_volume) != null)
 				volume = text2num(new_volume)
+				update_volume()
 				return TRUE
+
 
 /obj/machinery/jukebox/proc/activate_music()
 	active = TRUE
@@ -206,6 +214,27 @@
 		hearers[M] = LISTENER_HEARING
 		M.playsound_local(get_turf(M), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = song_played, use_reverb = TRUE)
 
+/obj/machinery/jukebox/proc/update_volume()
+	set waitfor = FALSE
+	if(updating_volume)
+		return
+
+	updating_volume = TRUE
+	sleep(3 SECONDS) //Give a 3 second buffer for volume changes
+	if(QDELETED(src))
+		return
+
+	var/sound/S = sound(selection.path)
+	S.status = SOUND_UPDATE
+	for(var/mob/hearer as anything in hearers)
+		if(hearers[hearer] == LISTENER_MUTED)
+			continue
+		CHECK_TICK
+
+		hearer.playsound_local(get_turf(hearer), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)
+
+	updating_volume = FALSE
+
 /obj/machinery/jukebox/proc/hearer_moved(mob/source)
 	SIGNAL_HANDLER
 
@@ -238,7 +267,7 @@
 	source.playsound_local(get_turf(source), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)
 	hearers[source] = LISTENER_MUTED
 
-	RegisterSignal(source, SIGNAL_REMOVETRAIT(TRAIT_DEAF), PROC_REF(hearer_undeafened))
+	RegisterSignal(source, SIGNAL_REMOVETRAIT(TRAIT_DEAF), PROC_REF(hearer_undeafened), TRUE)
 
 /obj/machinery/jukebox/proc/hearer_undeafened(mob/source)
 	SIGNAL_HANDLER

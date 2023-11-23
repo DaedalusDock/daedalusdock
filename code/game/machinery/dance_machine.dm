@@ -222,13 +222,7 @@
 			hearers[source] = LISTENER_HEARING
 
 	// If they were hearing, but are now out of range...
-	else if(source.z == src.z && get_dist(src, source) > JUKEBOX_RANGE)
-		var/sound/S = sound(selection.path, channel = CHANNEL_JUKEBOX, volume = volume)
-		S.status = SOUND_UPDATE|SOUND_MUTE
-		source.playsound_local(get_turf(source), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)
-		hearers[source] = LISTENER_MUTED
-
-	else if(source.z != src.z)
+	else if(source.z != src.z || get_dist(src, source) > JUKEBOX_RANGE)
 		var/sound/S = sound(selection.path, channel = CHANNEL_JUKEBOX, volume = volume)
 		S.status = SOUND_UPDATE|SOUND_MUTE
 		source.playsound_local(get_turf(source), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)

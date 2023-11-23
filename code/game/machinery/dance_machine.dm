@@ -11,7 +11,7 @@
 	var/list/songs = list()
 	var/datum/media/selection = null
 	/// Volume of the songs played
-	var/volume = 50
+	var/volume = 65
 	COOLDOWN_DECLARE(jukebox_error_cd)
 
 // here lies the Disco machine. May it rest in fuck.
@@ -155,11 +155,13 @@
 	lying_prev = 0
 
 /obj/machinery/jukebox/proc/music_over()
-	for(var/mob/living/L in rangers)
-		if(!L || !L.client)
+	for(var/datum/weakref/W as anything in rangers)
+		var/mob/M = W.resolve()
+		if(!M)
 			continue
-		L.stop_sound_channel(CHANNEL_JUKEBOX)
-	rangers = list()
+		remove_hearer(M)
+
+	rangers.len = 0
 
 #define JUKEBOX_RANGE 10
 /obj/machinery/jukebox/process()
@@ -167,17 +169,18 @@
 		var/sound/song_played = sound(selection.path)
 
 		for(var/mob/M in SSspatial_grid.orthogonal_range_search(src, SPATIAL_GRID_CONTENTS_TYPE_HEARING, JUKEBOX_RANGE))
-			if(!M.client || !(M.client.prefs.toggles & SOUND_INSTRUMENTS))
+			if(!M.client || !(M.client.prefs.toggles & SOUND_INSTRUMENTS) || !M.can_hear())
 				continue
-			if(!(M in rangers))
-				rangers[M] = TRUE
-				M.playsound_local(get_turf(M), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = song_played, use_reverb = FALSE)
-		for(var/mob/L in rangers)
-			if(get_dist(src,L) > JUKEBOX_RANGE)
-				rangers -= L
-				if(!L || !L.client)
-					continue
-				L.stop_sound_channel(CHANNEL_JUKEBOX)
+
+			var/datum/weakref/W = WEAKREF(M)
+			if((W in rangers))
+				continue
+
+			rangers += W
+			RegisterSignal(M, COMSIG_MOVABLE_MOVED, PROC_REF(hearer_moved))
+			RegisterSignal(M, SIGNAL_ADDTRAIT(TRAIT_DEAF), PROC_REF(remove_hearer))
+			M.playsound_local(get_turf(M), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = song_played, use_reverb = TRUE)
+
 	else if(active)
 		active = FALSE
 		update_use_power(IDLE_POWER_USE)
@@ -186,4 +189,18 @@
 		playsound(src,'sound/machines/terminal_off.ogg',50,TRUE)
 		update_appearance()
 		stop = world.time + 10 SECONDS
+
+/obj/machinery/jukebox/proc/hearer_moved(mob/source)
+	SIGNAL_HANDLER
+
+	if(get_dist(src, source) > JUKEBOX_RANGE)
+		remove_hearer(source)
+
+/obj/machinery/jukebox/proc/remove_hearer(mob/hearer)
+	rangers -= hearer.weak_reference
+	UnregisterSignal(hearer, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(hearer, SIGNAL_ADDTRAIT(TRAIT_DEAF))
+	if(hearer.client)
+		hearer.stop_sound_channel(CHANNEL_JUKEBOX)
+
 #undef JUKEBOX_RANGE

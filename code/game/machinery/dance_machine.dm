@@ -6,7 +6,9 @@
 	verb_say = "states"
 	density = TRUE
 	var/active = FALSE
-	var/list/rangers = list()
+	/// A list of mobs who are listening or were listening to the current song.
+	var/list/hearers = list()
+
 	var/stop = 0
 	var/list/songs = list()
 	var/datum/media/selection = null
@@ -155,30 +157,38 @@
 	lying_prev = 0
 
 /obj/machinery/jukebox/proc/music_over()
-	for(var/datum/weakref/W as anything in rangers)
+	for(var/datum/weakref/W as anything in hearers)
 		var/mob/M = W.resolve()
 		if(!M)
 			continue
-		remove_hearer(M)
+		unregister_signals(M)
 
-	rangers.len = 0
+	hearers.len = 0
 
 #define JUKEBOX_RANGE 10
+#define LISTENER_MUTED "muted"
+#define LISTENER_HEARING "hearing"
 /obj/machinery/jukebox/process()
 	if(world.time < stop && active)
 		var/sound/song_played = sound(selection.path)
 
-		for(var/mob/M in SSspatial_grid.orthogonal_range_search(src, SPATIAL_GRID_CONTENTS_TYPE_HEARING, JUKEBOX_RANGE))
-			if(!M.client || !(M.client.prefs.toggles & SOUND_INSTRUMENTS) || !M.can_hear())
+		for(var/mob/M in SSspatial_grid.orthogonal_range_search(src, SPATIAL_GRID_CONTENTS_TYPE_CLIENTS, JUKEBOX_RANGE))
+			if(!M.client || !(M.client.prefs.toggles & SOUND_INSTRUMENTS))
 				continue
 
 			var/datum/weakref/W = WEAKREF(M)
-			if((W in rangers))
+			if((W in hearers))
 				continue
 
-			rangers += W
-			RegisterSignal(M, COMSIG_MOVABLE_MOVED, PROC_REF(hearer_moved))
-			RegisterSignal(M, SIGNAL_ADDTRAIT(TRAIT_DEAF), PROC_REF(remove_hearer))
+			register_signals(M)
+			if(!M.can_hear())
+				hearers[W] = LISTENER_MUTED
+				var/sound/muted = sound(selection.path, channel = CHANNEL_JUKEBOX, volume = volume)
+				muted.status = SOUND_MUTE
+				M.playsound_local(get_turf(M), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = muted, use_reverb = TRUE)
+				continue
+
+			hearers[W] = LISTENER_HEARING
 			M.playsound_local(get_turf(M), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = song_played, use_reverb = TRUE)
 
 	else if(active)
@@ -193,14 +203,56 @@
 /obj/machinery/jukebox/proc/hearer_moved(mob/source)
 	SIGNAL_HANDLER
 
-	if(get_dist(src, source) > JUKEBOX_RANGE)
-		remove_hearer(source)
+	// If they aren't hearing music...
+	if(hearers[WEAKREF(source)] == LISTENER_MUTED)
+		// But they are now within range and aren't deaf...
+		if(get_dist(src, source) <= JUKEBOX_RANGE && source.can_hear())
+			var/sound/S = sound(selection.path, channel = CHANNEL_JUKEBOX, volume = volume)
+			S.status = SOUND_UPDATE
+			source.playsound_local(get_turf(source), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)
+			hearers[WEAKREF(source)] = LISTENER_HEARING
 
-/obj/machinery/jukebox/proc/remove_hearer(mob/hearer)
-	rangers -= hearer.weak_reference
+	// If they were hearing, but are now out of range...
+	else if(get_dist(src, source) > JUKEBOX_RANGE)
+		var/sound/S = sound(selection.path, channel = CHANNEL_JUKEBOX, volume = volume)
+		S.status = SOUND_UPDATE|SOUND_MUTE
+		source.playsound_local(get_turf(source), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)
+		hearers[WEAKREF(source)] = LISTENER_MUTED
+
+/obj/machinery/jukebox/proc/hearer_deafened(mob/source)
+	SIGNAL_HANDLER
+	if(hearers[WEAKREF(source)] == LISTENER_MUTED)
+		return
+
+	var/sound/S = sound(selection.path, channel = CHANNEL_JUKEBOX, volume = volume)
+	S.status = SOUND_UPDATE|SOUND_MUTE
+	source.playsound_local(get_turf(source), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)
+	hearers[WEAKREF(source)] = LISTENER_MUTED
+
+	RegisterSignal(source, SIGNAL_REMOVETRAIT(TRAIT_DEAF), PROC_REF(hearer_undeafened))
+
+/obj/machinery/jukebox/proc/hearer_undeafened(mob/source)
+	SIGNAL_HANDLER
+	if(get_dist(src, source) > JUKEBOX_RANGE)
+		return
+
+	var/sound/S = sound(selection.path, channel = CHANNEL_JUKEBOX, volume = volume)
+	S.status = SOUND_UPDATE
+	source.playsound_local(get_turf(source), null, volume, channel = CHANNEL_JUKEBOX, sound_to_use = S, use_reverb = TRUE)
+
+	hearers[WEAKREF(source)] = LISTENER_HEARING
+
+/obj/machinery/jukebox/proc/unregister_signals(mob/hearer)
 	UnregisterSignal(hearer, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(hearer, SIGNAL_ADDTRAIT(TRAIT_DEAF))
+	UnregisterSignal(hearer, SIGNAL_REMOVETRAIT(TRAIT_DEAF))
 	if(hearer.client)
 		hearer.stop_sound_channel(CHANNEL_JUKEBOX)
 
+/obj/machinery/jukebox/proc/register_signals(mob/hearer)
+	RegisterSignal(hearer, COMSIG_MOVABLE_MOVED, PROC_REF(hearer_moved))
+	RegisterSignal(hearer, SIGNAL_ADDTRAIT(TRAIT_DEAF), PROC_REF(hearer_deafened))
+
+#undef LISTENER_HEARING
+#undef LISTENER_MUTED
 #undef JUKEBOX_RANGE

@@ -109,8 +109,6 @@
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	if(C.has_reagent(/datum/reagent/medicine/epinephrine))
-		C.set_heartattack(TRUE)
 
 /datum/reagent/medicine/inaprovaline/overdose_start(mob/living/carbon/C)
 	C.add_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
@@ -622,10 +620,6 @@
 		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(10*volume, 20))
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
-
-	if(C.has_reagent(/datum/reagent/medicine/inaprovaline))
-		C.set_heartattack(TRUE)
-		return
 
 	if(volume >= 4 && C.undergoing_cardiac_arrest())
 		holder.remove_reagent(src, 4)

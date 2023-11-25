@@ -52,3 +52,7 @@
   - imageadd: An arrow has been added at the top left which identifies the actual
       position of the target pixel.
   - bugfix: PDA server now logs messages again
+2023-11-25:
+  Kapu1178:
+  - bugfix: Inaprovaline will no longer "randomly" stop your heart (specific interaction
+      that wasn't super rare)

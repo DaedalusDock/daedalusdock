@@ -402,7 +402,10 @@
 /datum/component/riding/creature/hog/ride_check(mob/living/user, consequences = TRUE)
 	var/mob/living/simple_animal/hostile/retaliate/hog/hog_ridden = parent
 	if(hog_ridden.client)
-		. = ..()
+		return ..()
+
 	if(prob(15))
 		hog_ridden.flingRider(user)
-	. = ..()
+		return FALSE
+
+	return ..()

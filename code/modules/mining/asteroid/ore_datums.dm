@@ -130,7 +130,7 @@
 
 /datum/ore/titanium
 	name = "Titanium"
-	stack_path = /obj/item/stack/ore/bananium
+	stack_path = /obj/item/stack/ore/titanium
 	scan_state = "rock_Titanium"
 
 	rarity = MINING_RARE

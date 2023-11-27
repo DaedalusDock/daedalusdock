@@ -279,3 +279,7 @@
 /datum/proc/GenerateTag()
 	datum_flags |= DF_USE_TAG
 
+/// Return text from this proc to provide extra context to hard deletes that happen to it
+/// Optional, you should use this for cases where replication is difficult and extra context is required
+/datum/proc/dump_harddel_info()
+	return

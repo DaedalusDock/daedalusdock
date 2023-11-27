@@ -29,6 +29,10 @@
 
 	var/note = "Congratulations on your station upgrading to the new NtOS and Thinktronic based collaboration effort, bringing you the best in electronics and software since 2467!"  // the note used by the notekeeping app, stored here for convenience
 
+/obj/item/modular_computer/tablet/Destroy()
+	QDEL_NULL(inserted_item)
+	return ..()
+
 /obj/item/modular_computer/tablet/update_icon_state()
 	if(has_variants && !bypass_state)
 		if(!finish_color)
@@ -60,6 +64,7 @@
 				return
 			to_chat(user, span_notice("You insert \the [W] into \the [src]."))
 			inserted_item = W
+			RegisterSignal(W, COMSIG_PARENT_QDELETING, PROC_REF(inserted_item_gone))
 			playsound(src, 'sound/machines/pda_button1.ogg', 50, TRUE)
 
 	if(istype(W, /obj/item/paper))
@@ -82,6 +87,10 @@
 
 	remove_pen(user)
 
+/obj/item/modular_computer/proc/inserted_item_gone(datum/source)
+	SIGNAL_HANDLER
+	inserted_item = null
+
 /obj/item/modular_computer/tablet/proc/tab_no_detonate()
 	SIGNAL_HANDLER
 	return COMPONENT_TABLET_NO_DETONATE
@@ -94,6 +103,7 @@
 	if(inserted_item)
 		to_chat(user, span_notice("You remove [inserted_item] from [src]."))
 		user.put_in_hands(inserted_item)
+		UnregisterSignal(inserted_item, COMSIG_PARENT_QDELETING)
 		inserted_item = null
 		update_appearance()
 		playsound(src, 'sound/machines/pda_button2.ogg', 50, TRUE)

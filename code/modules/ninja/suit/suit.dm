@@ -85,6 +85,7 @@
 /obj/item/clothing/suit/space/space_ninja/Destroy()
 	QDEL_NULL(spark_system)
 	QDEL_NULL(cell)
+	QDEL_NULL(energy_katana)
 	return ..()
 
 // seal the cell in the ninja outfit

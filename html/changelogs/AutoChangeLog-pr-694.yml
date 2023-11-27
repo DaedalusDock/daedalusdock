@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - tweak: Adjusted volume of breathing in space.
+  - bugfix: Fixed an issue where you could hear breathing in space even if you couldn't
+      actually breathe (no internals, etc).

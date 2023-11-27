@@ -11,7 +11,7 @@
 			return FALSE
 
 	else if(get_active_held_item())
-		to_chat(src, span_warning("Your [active_hand_index % 2 ? "right" : "left"] hand is full!"))
+		to_chat(src, span_warning("Your [active_hand_index % 2 ? "left" : "right"] hand is full!"))
 		return FALSE
 
 	if(LAZYLEN(grabbed_by))

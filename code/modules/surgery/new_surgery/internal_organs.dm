@@ -21,8 +21,8 @@
 		/obj/item/stack/medical/bruise_pack = 100,
 		/obj/item/stack/sticky_tape = 20
 	)
-	min_duration = 70
-	max_duration = 90
+	min_duration = 3 SECONDS
+	max_duration = 5 SECONDS
 
 /datum/surgery_step/internal/fix_organ/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()

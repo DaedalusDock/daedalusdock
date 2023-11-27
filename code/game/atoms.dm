@@ -313,6 +313,9 @@
 
 	QDEL_NULL(light)
 	QDEL_NULL(ai_controller)
+	LAZYNULL(managed_overlays)
+	if(length(light_sources))
+		light_sources.len = 0
 
 	if(smoothing_flags & SMOOTH_QUEUED)
 		SSicon_smooth.remove_from_queues(src)

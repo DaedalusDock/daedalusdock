@@ -23,6 +23,9 @@
 		usr.client.running_find_references = type
 
 	log_reftracker("Beginning search for references to a [type].")
+	var/additional_info = dump_harddel_info()
+	if(additional_info)
+		log_reftracker("Additional information: [additional_info]")
 
 	var/starting_time = world.time
 

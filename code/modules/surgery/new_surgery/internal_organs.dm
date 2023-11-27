@@ -17,6 +17,7 @@
 	name = "Repair internal organ"
 	desc = "Repairs damage to a patient's internal organ."
 	allowed_tools = list(
+		/obj/item/stack/medical/suture = 100,
 		/obj/item/stack/medical/bruise_pack = 100,
 		/obj/item/stack/sticky_tape = 20
 	)
@@ -31,14 +32,16 @@
 	for(var/obj/item/organ/I in affected.contained_organs)
 		if(istype(I, /obj/item/organ/brain))
 			continue
-		if(!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 0)
+		if(!(I.organ_flags & (ORGAN_SYNTHETIC)) && I.damage > 0)
 			return TRUE
 
 /datum/surgery_step/internal/fix_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/organs = list()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(!(I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
+		if(istype(I, /obj/item/organ/brain))
+			continue
+		if(!(I.organ_flags & (ORGAN_SYNTHETIC)) && I.damage > 0)
 			organs[I.name] = I.slot
 
 	var/obj/item/organ/O
@@ -52,9 +55,12 @@
 			to_chat(user, span_warning("[O] is too far gone, it cannot be salvaged."))
 			organ_to_replace = -1
 			continue
+		// You need to treat the necrotization, bro
+		if(O.organ_flags & ORGAN_DEAD)
+			to_chat(user, span_warning("[O] is decayed, you must replace it or perform <b>Treat Necrosis</b>."))
+			continue
 
-	if(organ_to_replace)
-		return list(organ_to_replace, organs[organ_to_replace])
+		return list(organ_to_replace, O)
 
 /datum/surgery_step/internal/fix_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/tool_name = "\the [tool]"
@@ -73,7 +79,7 @@
 	if(!O)
 		return
 	if(!O.can_recover())
-		to_chat(user, span_warning("[LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] is too far gone, it cannot be salvaged."))
+		to_chat(user, span_warning("[O] is too far gone, it cannot be salvaged."))
 		return ..()
 
 	O.surgically_fix(user)

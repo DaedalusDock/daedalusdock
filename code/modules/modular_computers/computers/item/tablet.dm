@@ -87,7 +87,7 @@
 
 	remove_pen(user)
 
-/obj/item/modular_computer/proc/inserted_item_gone(datum/source)
+/obj/item/modular_computer/tablet/proc/inserted_item_gone(datum/source)
 	SIGNAL_HANDLER
 	inserted_item = null
 

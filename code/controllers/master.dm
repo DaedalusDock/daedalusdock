@@ -552,6 +552,10 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 				SS.hibernating = TRUE
 				continue
 
+			if(SS.hibernating)
+				hibernating = FALSE
+				SS.update_nextfire(reset_time = TRUE)
+
 		SS.enqueue()
 	. = 1
 

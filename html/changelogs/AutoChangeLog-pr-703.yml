@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Fixed a runtime with hog riding
-  - bugfix: Fixed titanium being replaced with bananium in asteroids
-  - bugfix: Fixed a runtime in the credits episode draft sequence

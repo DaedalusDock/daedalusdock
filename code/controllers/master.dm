@@ -550,6 +550,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 					break
 			if(!enter_queue)
 				SS.hibernating = TRUE
+				SS.update_nextfire()
 				continue
 
 		SS.enqueue()

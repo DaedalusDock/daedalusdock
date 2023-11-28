@@ -88,10 +88,10 @@
 	drag_slowdown = initial(drag_slowdown)
 
 /**
-  * Checks to see if we can fold. Return TRUE to actually perform the fold and delete.
-  *
-  * Arguments:
-  * * the_folder - over_object of MouseDrop aka usr
+	* Checks to see if we can fold. Return TRUE to actually perform the fold and delete.
+	*
+	* Arguments:
+	* * the_folder - over_object of MouseDrop aka usr
 */
 /obj/structure/closet/body_bag/proc/attempt_fold(mob/living/carbon/human/the_folder)
 	. = FALSE

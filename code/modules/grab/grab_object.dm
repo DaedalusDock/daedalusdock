@@ -100,6 +100,7 @@
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
 	if(assailant)
+		LAZYREMOVE(assailant.active_grabs, src)
 		assailant.after_grab_release(affecting)
 	affecting = null
 	assailant = null

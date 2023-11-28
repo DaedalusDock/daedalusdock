@@ -401,7 +401,7 @@
 		L.release_all_grabs()
 
 /atom/movable/screen/pull/update_icon_state()
-	icon_state = "[base_icon_state][LAZYLEN(hud?.mymob?:get_active_grabs()) ? null : 0]"
+	icon_state = "[base_icon_state][LAZYLEN(hud?.mymob?:active_grabs) ? null : 0]"
 	return ..()
 
 /atom/movable/screen/resist

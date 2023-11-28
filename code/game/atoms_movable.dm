@@ -863,9 +863,6 @@
 			if(old_area)
 				old_area.Exited(src, NONE)
 
-	if(!forcemove_should_maintain_grab && length(active_grabs))
-		recheck_grabs()
-
 	Moved(oldloc, NONE, TRUE)
 
 /**

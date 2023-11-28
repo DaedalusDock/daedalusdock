@@ -119,8 +119,6 @@
 		lastcirc = circ
 		update_appearance()
 
-	src.updateDialog()
-
 	//Power
 	last_circ1_gen = circ1.return_stored_energy()
 	last_circ2_gen = circ2.return_stored_energy()

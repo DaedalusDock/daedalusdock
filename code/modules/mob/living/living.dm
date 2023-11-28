@@ -1465,7 +1465,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		handle_grabs_during_movement(old_loc, get_dir(old_loc, src))
 		recheck_grabs()
 
-	if(!forcemove_should_maintain_grab && length(active_grabs))
+	else if(!forcemove_should_maintain_grab && length(active_grabs))
 		recheck_grabs()
 
 	if(client)

@@ -76,14 +76,12 @@
 	SEND_SIGNAL(src, COMSIG_LIVING_START_GRAB, target, grab)
 	SEND_SIGNAL(target, COMSIG_ATOM_GET_GRABBED, src, grab)
 
-	LAZYADD(active_grabs, grab)
-
 	return grab
 
 /mob/living/proc/add_grab(obj/item/hand_item/grab/grab, use_offhand)
-	for(var/obj/item/hand_item/grab/other_grab in contents)
-		if(other_grab != grab)
-			return FALSE
+	if(LAZYLEN(active_grabs))
+		return FALSE //Non-humans only get 1 grab
+
 	grab.forceMove(src)
 	return TRUE
 

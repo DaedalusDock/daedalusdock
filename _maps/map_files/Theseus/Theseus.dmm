@@ -3018,7 +3018,7 @@
 /obj/structure/cable,
 /obj/machinery/door/airlock/medical/glass{
 	name = "Operating Rooms";
-	req_access_txt = "45";
+	req_access_txt = "5";
 	stripe_paint = "#DE3A3A"
 	},
 /obj/effect/turf_decal/siding/red{
@@ -35356,14 +35356,14 @@
 /obj/effect/turf_decal/siding/yellow{
 	dir = 1
 	},
-/obj/machinery/door/airlock/medical/glass{
-	name = "Operating Rooms";
-	req_access_txt = "45";
-	stripe_paint = "#DE3A3A"
-	},
 /obj/machinery/door/firedoor,
 /obj/effect/mapping_helpers/airlock/unres{
 	dir = 1
+	},
+/obj/machinery/door/airlock/medical/glass{
+	name = "Operating Rooms";
+	req_access_txt = "5";
+	stripe_paint = "#DE3A3A"
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/aft)
@@ -36008,6 +36008,14 @@
 "mkV" = (
 /obj/effect/turf_decal/tile/yellow/half/contrasted,
 /obj/machinery/firealarm/directional/south,
+/obj/structure/rack,
+/obj/item/bodybag/stasis{
+	pixel_y = 12
+	},
+/obj/item/bodybag/stasis{
+	pixel_y = 6
+	},
+/obj/item/bodybag/stasis,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "mkY" = (
@@ -53081,15 +53089,15 @@
 "smN" = (
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/door/airlock/medical/glass{
-	name = "Operating Rooms";
-	req_access_txt = "45";
-	stripe_paint = "#DE3A3A"
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/siding/red{
 	dir = 1
+	},
+/obj/machinery/door/airlock/medical/glass{
+	name = "Operating Rooms";
+	req_access_txt = "5";
+	stripe_paint = "#DE3A3A"
 	},
 /turf/open/floor/iron,
 /area/station/medical/surgery/prep)
@@ -63445,15 +63453,15 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/trimline/blue/corner,
-/obj/machinery/door/airlock/medical/glass{
-	name = "Operating Rooms";
-	req_access_txt = "45";
-	stripe_paint = "#DE3A3A"
-	},
 /obj/machinery/door/firedoor,
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/unres{
 	dir = 1
+	},
+/obj/machinery/door/airlock/medical/glass{
+	name = "Operating Rooms";
+	req_access_txt = "5";
+	stripe_paint = "#DE3A3A"
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/aft)

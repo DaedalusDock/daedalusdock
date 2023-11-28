@@ -357,3 +357,18 @@
 	if(sinched)
 		for(var/mob/living/target in contents)
 			to_chat(target, span_warning("You hear a faint hiss, and a white mist fills your vision..."))
+
+/obj/structure/closet/body_bag/stasis
+	name = "stasis bag"
+	desc = "A highly advanced and highly expensive device for suspending living creatures during medical transport."
+	icon_state = "ntenvirobag"
+
+/obj/structure/closet/body_bag/stasis/take_contents(mapload)
+	. = ..()
+	for(var/mob/living/L in contents)
+		L.apply_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_BODYBAG_EFFECT)
+
+/obj/structure/closet/body_bag/stasis/dump_contents()
+	for(var/mob/living/L in contents)
+		L.remove_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_BODYBAG_EFFECT)
+	return ..()

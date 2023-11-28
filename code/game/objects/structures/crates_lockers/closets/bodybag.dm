@@ -76,12 +76,23 @@
 		perform_fold(usr)
 		qdel(src)
 
-		/**
-		  * Checks to see if we can fold. Return TRUE to actually perform the fold and delete.
-			*
-		  * Arguments:
-		  * * the_folder - over_object of MouseDrop aka usr
-		  */
+/obj/structure/closet/body_bag/take_contents(mapload)
+	. = ..()
+	if(locate(/mob) in contents)
+		drag_slowdown = PULL_PRONE_SLOWDOWN
+	else
+		drag_slowdown = initial(drag_slowdown)
+
+/obj/structure/closet/body_bag/dump_contents()
+	. = ..()
+	drag_slowdown = initial(drag_slowdown)
+
+/**
+  * Checks to see if we can fold. Return TRUE to actually perform the fold and delete.
+  *
+  * Arguments:
+  * * the_folder - over_object of MouseDrop aka usr
+*/
 /obj/structure/closet/body_bag/proc/attempt_fold(mob/living/carbon/human/the_folder)
 	. = FALSE
 	if(!istype(the_folder))

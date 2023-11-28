@@ -550,11 +550,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 					break
 			if(!enter_queue)
 				SS.hibernating = TRUE
+				SS.update_nextfire()
 				continue
-
-			if(SS.hibernating)
-				hibernating = FALSE
-				SS.update_nextfire(reset_time = TRUE)
 
 		SS.enqueue()
 	. = 1

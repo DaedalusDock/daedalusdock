@@ -139,7 +139,7 @@
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
 
-	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 80)
+	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50)
 	if(!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE)
 		src << breathing
 		COOLDOWN_START(src, breath_sound_cd, 3.5 SECONDS)

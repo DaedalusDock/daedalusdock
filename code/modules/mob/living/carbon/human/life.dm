@@ -100,15 +100,17 @@
 			. = lun.check_breath(breath, src, forced)
 			if(. == BREATH_OKAY)
 				adjustOxyLoss(-5)
-				return
+				return TRUE
 			if(. >= BREATH_SILENT_DAMAGING) // Breath succeeded
-				return
+				return TRUE
 
 			// Failed a breath for one reason or another.
 			blur_eyes(3)
 			if(prob(20))
 				spawn(-1)
 					emote("gasp")
+
+			return FALSE
 
 /// Environment handlers for species
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)
@@ -304,6 +306,11 @@
 		if(CH.clothing_flags & BLOCK_GAS_SMOKE_EFFECT)
 			return TRUE
 	return ..()
+
+/mob/living/carbon/human/set_heartattack(status)
+	. = ..()
+	if(.)
+		update_health_hud()
 
 #undef THERMAL_PROTECTION_HEAD
 #undef THERMAL_PROTECTION_CHEST

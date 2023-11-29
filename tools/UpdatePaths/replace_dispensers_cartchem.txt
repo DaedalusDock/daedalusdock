@@ -1,0 +1,3 @@
+/obj/machinery/chem_dispenser/mutagen : /obj/machinery/chem_dispenser/mini/mutagen{@OLD}
+/obj/machinery/chem_dispenser/mutagensaltpeter : /obj/machinery/chem_dispenser/mini/mutagensaltpeter{@OLD}
+/obj/machinery/chem_dispenser/fullupgrade : /obj/machinery/chem_dispenser{@OLD}

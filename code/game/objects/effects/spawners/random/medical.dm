@@ -147,3 +147,39 @@
 		/obj/item/storage/box/masks,
 		/obj/item/storage/box/syringes,
 	)
+
+/obj/effect/spawner/random/medical/chem_cartridge
+	name = "random chem cartridge"
+	loot = list(
+		/obj/item/reagent_containers/chem_cartridge/large = 1,
+		/obj/item/reagent_containers/chem_cartridge/medium = 5,
+		/obj/item/reagent_containers/chem_cartridge/small = 10,
+	)
+	var/static/list/cached_whitelist
+	var/is_always_full = FALSE
+
+/obj/effect/spawner/random/medical/chem_cartridge/Initialize(mapload)
+	if(!cached_whitelist)
+		cached_whitelist = list()
+		for(var/datum/reagent/reagent as anything in CARTRIDGE_LIST_CHEM_DISPENSER)
+			cached_whitelist += reagent
+	. = ..()
+
+/*
+/obj/effect/spawner/random/medical/chem_cartridge/spawn_loot(lootcount_override)
+	var/obj/item/reagent_containers/chem_cartridge/cartridge = new type_path_to_make(spawn_loc)
+	cartridge.reagents.add_reagent(pick(cached_whitelist), is_always_full ? cartridge.volume : rand(0, cartridge.volume))
+	return cartridge
+
+/obj/effect/spawner/random/medical/chem_cartridge/three
+	name = "3x random chem cartridge"
+	spawn_loot_count = 3
+
+/obj/effect/spawner/random/medical/chem_cartridge/full
+	name = "random full chem cartridge"
+	is_always_full = TRUE
+
+/obj/effect/spawner/random/medical/chem_cartridge/full/three
+	name = "3x random full chem cartridge"
+	spawn_loot_count = 3
+*/

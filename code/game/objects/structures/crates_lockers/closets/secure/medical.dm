@@ -131,3 +131,17 @@
 	new /obj/item/storage/box/syringes/variety(src)
 	new /obj/item/storage/box/beakers/variety(src)
 	new /obj/item/clothing/glasses/science(src)
+
+/obj/structure/closet/secure_closet/chemical/cartridge
+	name = "cartridge closet"
+	desc = "Store dangerous chemical cartridges in here."
+	req_access = list(ACCESS_PHARMACY)
+	icon_door = "chemical"
+
+/obj/structure/closet/secure_closet/chemical/cartridge/PopulateContents()
+	var/cartridges = CARTRIDGE_LIST_CHEM_DISPENSER
+
+	for(var/chem_path in cartridges)
+		var/cart_path = cartridges[chem_path]
+		var/obj/item/reagent_containers/chem_cartridge/cart = new cart_path(src, chem_path)
+		cart.reagents.add_reagent(chem_path, cart.volume)

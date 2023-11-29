@@ -63,7 +63,7 @@
 		"pain" = target.getPain(),
 		"shock" = target.shock_stage,
 		"losebreath" = target.losebreath,
-		"asystole" = target.undergoing_cardiac_arrest(),
+		"asystole" = BOOLEAN(target.undergoing_cardiac_arrest()),
 		"blood volume" = target.blood_volume,
 		"blood circulation" = target.get_blood_circulation(),
 		"blood oxygenation" = target.get_blood_oxygenation(),
@@ -119,6 +119,8 @@
 		var/how_open = BP.how_open()
 		if(how_open)
 			how_open = open_levels[how_open]
+		else
+			how_open = "Closed"
 
 		var/list/cavity_objects = list()
 		for(var/obj/item/I in BP.cavity_items)
@@ -174,24 +176,24 @@
 			var/list/reagent = list()
 			reagent["name"] = R.name
 			reagent["quantity"] = round(R.volume, 1)
-			reagent["visible"] = !(R.chemical_flags & (REAGENT_INVISIBLE))
-			reagent["overdosed"] = R.overdosed
+			reagent["visible"] = BOOLEAN(!(R.chemical_flags & (REAGENT_INVISIBLE)))
+			reagent["overdosed"] = BOOLEAN(R.overdosed)
 			reagents["ingest"] += list(reagent)
 
 	for(var/datum/reagent/R in target.bloodstream.reagent_list)
 		var/list/reagent = list()
 		reagent["name"] = R.name
 		reagent["quantity"] = round(R.volume, 1)
-		reagent["visible"] = !(R.chemical_flags & (REAGENT_INVISIBLE))
-		reagent["overdosed"] = R.overdosed
+		reagent["visible"] = BOOLEAN(!(R.chemical_flags & (REAGENT_INVISIBLE)))
+		reagent["overdosed"] = BOOLEAN(R.overdosed)
 		reagents["blood"] += list(reagent)
 
 	for(var/datum/reagent/R in target.touching.reagent_list)
 		var/list/reagent = list()
 		reagent["name"] = R.name
 		reagent["quantity"] = round(R.volume, 1)
-		reagent["visible"] = !(R.chemical_flags & (REAGENT_INVISIBLE))
-		reagent["overdosed"] = R.overdosed
+		reagent["visible"] = BOOLEAN(!(R.chemical_flags & (REAGENT_INVISIBLE)))
+		reagent["overdosed"] = BOOLEAN(R.overdosed)
 		reagents["touch"] += list(reagent)
 
 	return ui_data
@@ -201,16 +203,16 @@
 
 	for(var/datum/wound/wound as anything in wounds)
 		wound_data += list(list(
-			"NAME" = wound.wound_type,
+			"NAME" = capitalize(wound.wound_type),
 			"STAGE" = wound.current_stage,
 			"MAX_STAGE" = length(wound.stages),
 			"AMOUNT" = wound.amount,
 			"DAMAGE" = wound.damage,
-			"HEALING" = wound.can_autoheal(),
+			"HEALING" = BOOLEAN(wound.can_autoheal()),
 			"BLEEDING" = wound.bleeding() ? "[WOUND_BLEED_RATE(wound)]u" : null,
-			"CLAMPED" = wound.clamped,
-			"TREATED" = wound.is_treated(),
-			"SURGICAL" = wound.is_surgical(),
+			"CLAMPED" = BOOLEAN(wound.clamped),
+			"TREATED" = BOOLEAN(wound.is_treated()),
+			"SURGICAL" = BOOLEAN(wound.is_surgical()),
 		))
 
 	return wound_data

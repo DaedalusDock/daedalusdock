@@ -67,3 +67,7 @@
   - qol: The jukebox now works SIGNIFICANTLY better.
   KylerAce:
   - code_imp: verb callbacks will no longer execute if the original client disconnected
+2023-11-29:
+  MrStonedOne:
+  - bugfix: Fixed a bug with subsystems that caused some subsystems to fire faster
+      than intended after having no work for some time.

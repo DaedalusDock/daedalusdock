@@ -1,5 +1,0 @@
-author: MrStonedOne
-delete-after: true
-changes:
-  - bugfix: Fixed a bug with subsystems that caused some subsystems to fire faster
-      than intended after having no work for some time.

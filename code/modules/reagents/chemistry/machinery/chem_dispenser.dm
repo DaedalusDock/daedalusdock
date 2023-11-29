@@ -28,7 +28,7 @@
 	var/has_panel_overlay = TRUE
 	var/obj/item/reagent_containers/beaker = null
 	/// The maximum amount of cartridges the dispenser can contain.
-	var/maximum_cartridges = 25
+	var/maximum_cartridges = 24
 
 	var/list/spawn_cartridges = CARTRIDGE_LIST_CHEM_DISPENSER
 

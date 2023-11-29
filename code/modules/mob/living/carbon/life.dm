@@ -20,11 +20,11 @@
 		if(stat != DEAD)
 			handle_brain_damage(delta_time, times_fired)
 
+		if(handle_bodyparts(delta_time, times_fired))
+			updatehealth()
+
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
-
-	if(handle_bodyparts(delta_time, times_fired))
-		updatehealth()
 
 	if(stat != DEAD && !(IS_IN_STASIS(src)))
 		handle_shock()

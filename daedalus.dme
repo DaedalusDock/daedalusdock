@@ -2813,6 +2813,8 @@
 #include "code\modules\credits_roll\credits_client_procs.dm"
 #include "code\modules\credits_roll\credits_core.dm"
 #include "code\modules\credits_roll\episode_name.dm"
+#include "code\modules\debug_health\debug_health.dm"
+#include "code\modules\debug_health\organ_debug.dm"
 #include "code\modules\detectivework\detective_work.dm"
 #include "code\modules\detectivework\evidence.dm"
 #include "code\modules\detectivework\scanner.dm"

@@ -1034,7 +1034,7 @@
 
 	for(var/datum/wound/iter_wound as anything in wounds)
 		if(iter_wound.bleeding())
-			cached_bleed_rate += round(iter_wound.damage / 40, DAMAGE_PRECISION)
+			cached_bleed_rate += WOUND_BLEED_RATE(iter_wound)
 			bodypart_flags |= BP_BLEEDING
 
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?

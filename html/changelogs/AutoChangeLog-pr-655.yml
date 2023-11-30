@@ -1,0 +1,4 @@
+author: Fikou
+delete-after: true
+changes:
+  - rscadd: MODsuits can now call other modsuits with the MODlink feature

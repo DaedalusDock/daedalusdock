@@ -172,7 +172,7 @@ SUBSYSTEM_DEF(id_access)
 		),
 		"[ACCESS_CMO]" = list(
 			"regions" = list(REGION_MEDBAY),
-			"head" = JOB_CHIEF_MEDICAL_OFFICER,
+			"head" = JOB_MEDICAL_DIRECTOR,
 			"templates" = list(),
 			"pdas" = list(),
 		),

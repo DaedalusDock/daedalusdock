@@ -60,7 +60,7 @@
 		JOB_ATMOSPHERIC_TECHNICIAN = "Technician",
 	)
 	var/static/list/medical_titles = list(
-		JOB_CHIEF_MEDICAL_OFFICER = "C.M.O.",
+		JOB_MEDICAL_DIRECTOR = "C.M.O.",
 		JOB_MEDICAL_DOCTOR = "M.D.",
 		JOB_CHEMIST = "Pharm.D.",
 	)

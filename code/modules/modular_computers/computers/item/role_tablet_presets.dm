@@ -89,7 +89,7 @@
 	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(tab_no_detonate))
 
 /obj/item/modular_computer/tablet/pda/cargo
-	name = "cargo technician PDA"
+	name = "deckhand PDA"
 	default_disk = /obj/item/computer_hardware/hard_drive/role/quartermaster
 	greyscale_colors = "#D6B328#6506CA"
 
@@ -198,7 +198,7 @@
 
 
 /obj/item/modular_computer/tablet/pda/curator
-	name = "curator PDA"
+	name = "archivist PDA"
 	default_disk = /obj/item/computer_hardware/hard_drive/role/curator
 	greyscale_config = null
 	greyscale_colors = null

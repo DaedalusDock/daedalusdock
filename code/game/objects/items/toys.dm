@@ -972,7 +972,7 @@
 	toysay = "Any heads of staff?"
 
 /obj/item/toy/figure/cargotech
-	name = "\improper Cargo Technician action figure"
+	name = "\improper" + JOB_CARGO_TECHNICIAN + "action figure"
 	icon_state = "cargotech"
 	toysay = "For Cargonia!"
 
@@ -1053,12 +1053,12 @@
 	toysay = "My client is a dirty traitor!"
 
 /obj/item/toy/figure/curator
-	name = "\improper Curator action figure"
+	name = "\improper Archivist action figure"
 	icon_state = "curator"
 	toysay = "One day while..."
 
 /obj/item/toy/figure/md
-	name = "\improper Medical Doctor action figure"
+	name = "\improper " + JOB_MEDICAL_DOCTOR + "action figure"
 	icon_state = "md"
 	toysay = "The patient is already dead!"
 

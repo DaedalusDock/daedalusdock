@@ -148,7 +148,7 @@
 	return ..()
 
 /datum/id_trim/job/cargo_technician
-	assignment = "Cargo Technician"
+	assignment = JOB_DECKHAND
 	trim_state = "trim_cargotechnician"
 	sechud_icon_state = SECHUD_CARGO_TECHNICIAN
 	extra_access = list(ACCESS_QM, ACCESS_MINING, ACCESS_MINING_STATION)
@@ -178,8 +178,8 @@
 	job = /datum/job/chemist
 
 /datum/id_trim/job/chief_engineer
-	assignment = "Chief Engineer"
-	intern_alt_name = "Chief Engineer-in-Training"
+	assignment = JOB_CHIEF_ENGINEER
+	intern_alt_name = JOB_CHIEF_ENGINEER + "-in-Training"
 	trim_state = "trim_chiefengineer"
 	sechud_icon_state = SECHUD_CHIEF_ENGINEER
 	extra_access = list(ACCESS_TELEPORTER)
@@ -232,7 +232,7 @@
 	sechud_icon_state = SECHUD_CHEF
 
 /datum/id_trim/job/curator
-	assignment = "Curator"
+	assignment = JOB_ARCHIVEST
 	trim_state = "trim_curator"
 	sechud_icon_state = SECHUD_CURATOR
 	extra_access = list()
@@ -337,7 +337,7 @@
 	job = /datum/job/lawyer
 
 /datum/id_trim/job/medical_doctor
-	assignment = "Medical Doctor"
+	assignment = JOB_MEDICAL_DOCTOR
 	trim_state = "trim_medicaldoctor"
 	sechud_icon_state = SECHUD_MEDICAL_DOCTOR
 	extra_access = list(ACCESS_CHEMISTRY, ACCESS_VIROLOGY)

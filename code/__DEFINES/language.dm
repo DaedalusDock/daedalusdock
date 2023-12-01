@@ -13,7 +13,7 @@
 #define LANGUAGE_APHASIA "aphasia"
 #define LANGUAGE_CTF "ctf"
 #define LANGUAGE_CULTIST "cultist"
-#define LANGUAGE_CURATOR "curator"
+#define LANGUAGE_ARCHIVIST "archivist"
 #define LANGUAGE_GLAND "gland"
 #define LANGUAGE_HAT "hat"
 #define LANGUAGE_MALF "malf"

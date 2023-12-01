@@ -103,7 +103,7 @@
 	channels = list(RADIO_CHANNEL_ENGINEERING = 1, RADIO_CHANNEL_COMMAND = 1)
 
 /obj/item/encryptionkey/heads/cmo
-	name = "\proper the Medical Director's encryption key"
+	name = "\proper the medical director's encryption key"
 	icon_state = "cmo_cypherkey"
 	channels = list(RADIO_CHANNEL_MEDICAL = 1, RADIO_CHANNEL_COMMAND = 1)
 

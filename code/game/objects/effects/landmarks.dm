@@ -71,7 +71,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Janitor"
 
 /obj/effect/landmark/start/cargo_technician
-	name = "Cargo Technician"
+	name = JOB_DECKHAND
 	icon_state = "Cargo Technician"
 
 /obj/effect/landmark/start/bartender
@@ -127,7 +127,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Warden"
 
 /obj/effect/landmark/start/chief_engineer
-	name = "Chief Engineer"
+	name = JOB_CHIEF_ENGINEER
 	icon_state = "Chief Engineer"
 
 /obj/effect/landmark/start/head_of_personnel
@@ -135,7 +135,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Head of Personnel"
 
 /obj/effect/landmark/start/librarian
-	name = "Curator"
+	name = JOB_ARCHIVEST
 	icon_state = "Curator"
 
 /obj/effect/landmark/start/lawyer
@@ -147,7 +147,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Station Engineer"
 
 /obj/effect/landmark/start/medical_doctor
-	name = "Medical Doctor"
+	name = JOB_MEDICAL_DOCTOR
 	icon_state = "Medical Doctor"
 
 /obj/effect/landmark/start/paramedic

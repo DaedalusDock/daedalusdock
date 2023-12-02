@@ -331,12 +331,11 @@ SUBSYSTEM_DEF(ticker)
 		qdel(bomb)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
-	var/list/spawn_spots = SSJob.latejoin_trackers.Copy()
+	var/list/spawn_spots = SSjob.latejoin_trackers.Copy()
 	var/list/spawn_spots_reload = spawn_spots.Copy() //In case we run out, we need something to reload from.
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
-		if(!player.mind && (player.ready -= PLAYER_READY_TO_OBSERVE))
-			//Player is either not ready, or failed job selection for some reason.
-			player.new_player_panel()
+		if(!player.mind)
+			//New player has logged out.
 			continue
 
 		switch(player.ready)

@@ -331,19 +331,34 @@ SUBSYSTEM_DEF(ticker)
 		qdel(bomb)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
-	for(var/i in GLOB.new_player_list)
-		var/mob/dead/new_player/player = i
-		if(player.ready == PLAYER_READY_TO_PLAY && player.mind)
-			GLOB.joined_player_list += player.ckey
-			var/atom/destination = player.mind.assigned_role.get_roundstart_spawn_point()
-			if(!destination) // Failed to fetch a proper roundstart location, won't be going anywhere.
-				player.new_player_panel()
-				continue
-			player.create_character(destination)
-		else if(player.ready == PLAYER_READY_TO_OBSERVE)
-			player.make_me_an_observer(TRUE)
-		else
+	var/list/spawn_spots = SSJob.latejoin_trackers.Copy()
+	var/list/spawn_spots_reload = spawn_spots.Copy() //In case we run out, we need something to reload from.
+	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+		if(!player.mind && (player.ready -= PLAYER_READY_TO_OBSERVE))
+			//Player is either not ready, or failed job selection for some reason.
 			player.new_player_panel()
+			continue
+
+		switch(player.ready)
+			if(PLAYER_READY_TO_OBSERVE)
+				player.make_me_an_observer(TRUE)
+
+			if(PLAYER_READY_TO_PLAY)
+				GLOB.joined_player_list += player.ckey
+				var/atom/spawn_loc = player.mind.assigned_role.get_roundstart_spawn_point()
+				if(spawn_loc) //If we've been given an override, just take it and get out of here.
+					player.create_character(spawn_loc)
+
+				else //We haven't been passed an override destination. Give us the usual treatment.
+					if(!length(spawn_spots))
+						spawn_spots = spawn_spots_reload.Copy()
+
+					spawn_loc = pick_n_take(spawn_spots)
+					player.create_character(spawn_loc)
+			else //PLAYER_NOT_READY
+				stack_trace("New Player with a mind was not ready.")
+				player.new_player_panel()
+
 		CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/collect_minds()

@@ -150,36 +150,45 @@
 
 /obj/effect/spawner/random/medical/chem_cartridge
 	name = "random chem cartridge"
-	loot = list(
-		/obj/item/reagent_containers/chem_cartridge/large = 1,
-		/obj/item/reagent_containers/chem_cartridge/medium = 5,
-		/obj/item/reagent_containers/chem_cartridge/small = 10,
-	)
-	var/static/list/cached_whitelist
-	var/is_always_full = FALSE
+	spawn_loot_count = 1
 
-/*
-/obj/effect/spawner/random/medical/chem_cartridge/Initialize(mapload)
-	if(!cached_whitelist)
-		cached_whitelist = list()
-		for(var/datum/reagent/reagent as anything in GLOB.CARTRIDGE_LIST_CHEM_DISPENSER)
-			cached_whitelist += reagent
-	. = ..()
+//this is just here for subtypes
+/obj/effect/spawner/random/medical/chem_cartridge/proc/get_chem_list()
+	return GLOB.cartridge_list_chems
 
 /obj/effect/spawner/random/medical/chem_cartridge/spawn_loot(lootcount_override)
-	var/obj/item/reagent_containers/chem_cartridge/cartridge = new type_path_to_make(spawn_loc)
-	cartridge.reagents.add_reagent(pick(cached_whitelist), is_always_full ? cartridge.volume : rand(0, cartridge.volume))
-	return cartridge
+	var/list/spawn_cartridges = get_chem_list()
+	var/loot_spawned = 0
+	while(loot_spawned < spawn_loot_count)
+		var/datum/reagent/chem_type = pick(spawn_cartridges)
+		var/obj/item/reagent_containers/chem_cartridge/chem_cartridge = spawn_cartridges[chem_type]
+		chem_cartridge = new chem_cartridge(loc)
+		chem_cartridge.reagents.add_reagent(chem_type, chem_cartridge.volume)
+		chem_cartridge.setLabel(initial(chem_type.name))
+		loot_spawned += 1
 
 /obj/effect/spawner/random/medical/chem_cartridge/three
 	name = "3x random chem cartridge"
 	spawn_loot_count = 3
 
-/obj/effect/spawner/random/medical/chem_cartridge/full
-	name = "random full chem cartridge"
-	is_always_full = TRUE
+/obj/effect/spawner/random/medical/chem_cartridge/booze
+	name = "random booze cartridge"
+	spawn_loot_count = 1
 
-/obj/effect/spawner/random/medical/chem_cartridge/full/three
-	name = "3x random full chem cartridge"
+/obj/effect/spawner/random/medical/chem_cartridge/booze/get_chem_list()
+	return GLOB.cartridge_list_booze
+
+/obj/effect/spawner/random/medical/chem_cartridge/booze/three
+	name = "3x random booze cartridge"
 	spawn_loot_count = 3
-*/
+
+/obj/effect/spawner/random/medical/chem_cartridge/drink
+	name = "random drink cartridge"
+	spawn_loot_count = 1
+
+/obj/effect/spawner/random/medical/chem_cartridge/drink/get_chem_list()
+	return GLOB.cartridge_list_drinks
+
+/obj/effect/spawner/random/medical/chem_cartridge/drink/three
+	name = "3x random drink cartridge"
+	spawn_loot_count = 3

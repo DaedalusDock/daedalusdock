@@ -1251,7 +1251,7 @@
 
 //this is just here for subtypes
 /datum/supply_pack/medical/chemical_carts/proc/set_cart_list()
-	contains = GLOB.cartridge_list_chems
+	contains = GLOB.cartridge_list_chems.Copy()
 
 /datum/supply_pack/medical/chemical_carts/fill(obj/structure/closet/crate/crate)
 	for(var/datum/reagent/chem as anything in contains)
@@ -1626,7 +1626,7 @@
 	group = "Service"
 
 /datum/supply_pack/medical/chemical_carts/soft_drinks_chem_cartridge/set_cart_list()
-	contains = GLOB.cartridge_list_drinks
+	contains = GLOB.cartridge_list_drinks.Copy()
 
 /datum/supply_pack/medical/chemical_carts/booze_chem_cartridge
 	name = "Booze Cartridge Luxury Pack (Full Dispenser)"
@@ -1635,7 +1635,7 @@
 	group = "Service"
 
 /datum/supply_pack/medical/chemical_carts/booze_chem_cartridge/set_cart_list()
-	contains = GLOB.cartridge_list_booze
+	contains = GLOB.cartridge_list_booze.Copy()
 
 /datum/supply_pack/service/party
 	name = "Party Equipment"

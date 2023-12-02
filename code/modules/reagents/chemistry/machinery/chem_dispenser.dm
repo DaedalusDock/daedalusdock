@@ -46,7 +46,7 @@
 
 //this is just here for subtypes
 /obj/machinery/chem_dispenser/proc/set_cart_list()
-	spawn_cartridges = GLOB.cartridge_list_chems
+	spawn_cartridges = GLOB.cartridge_list_chems.Copy()
 
 /// Spawns the cartridges the chem dispenser should have on mapload. Kept as a seperate proc for admin convienience.
 /obj/machinery/chem_dispenser/proc/spawn_cartridges()

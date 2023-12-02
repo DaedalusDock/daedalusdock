@@ -17,7 +17,7 @@
 	pass_flags = PASSTABLE
 
 /obj/machinery/chem_dispenser/drinks/set_cart_list()
-	spawn_cartridges = GLOB.cartridge_list_drinks
+	spawn_cartridges = GLOB.cartridge_list_drinks.Copy()
 
 /obj/machinery/chem_dispenser/drinks/Initialize(mapload)
 	. = ..()
@@ -57,7 +57,7 @@
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/drinks/beer
 
 /obj/machinery/chem_dispenser/drinks/beer/set_cart_list()
-	spawn_cartridges = GLOB.cartridge_list_booze
+	spawn_cartridges = GLOB.cartridge_list_booze.Copy()
 
 /obj/machinery/chem_dispenser/mini/mutagen
 	name = "mini mutagen dispenser"
@@ -71,4 +71,4 @@
 	desc = "Dispenses chemicals useful for botany."
 
 /obj/machinery/chem_dispenser/mini/mutagensaltpeter/set_cart_list()
-	spawn_cartridges = GLOB.cartridge_list_botany
+	spawn_cartridges = GLOB.cartridge_list_botany.Copy()

@@ -139,9 +139,10 @@
 	icon_door = "chemical"
 
 /obj/structure/closet/secure_closet/chemical/cartridge/PopulateContents()
-	var/cartridges = GLOB.cartridge_list_chems
+	var/list/spawn_cartridges = GLOB.cartridge_list_chems
 
-	for(var/chem_path in cartridges)
-		var/cart_path = cartridges[chem_path]
-		var/obj/item/reagent_containers/chem_cartridge/cart = new cart_path(src, chem_path)
-		cart.reagents.add_reagent(chem_path, cart.volume)
+	for(var/datum/reagent/chem_type as anything in spawn_cartridges)
+		var/obj/item/reagent_containers/chem_cartridge/chem_cartridge = spawn_cartridges[chem_type]
+		chem_cartridge = new chem_cartridge(src)
+		chem_cartridge.reagents.add_reagent(chem_type, chem_cartridge.volume)
+		chem_cartridge.setLabel(initial(chem_type.name))

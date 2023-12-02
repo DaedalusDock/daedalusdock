@@ -15,7 +15,9 @@
 	working_state = null
 	nopower_state = null
 	pass_flags = PASSTABLE
-	spawn_cartridges = CARTRIDGE_LIST_DRINKS
+
+/obj/machinery/chem_dispenser/drinks/set_cart_list()
+	spawn_cartridges = GLOB.cartridge_list_drinks
 
 /obj/machinery/chem_dispenser/drinks/Initialize(mapload)
 	. = ..()
@@ -53,16 +55,20 @@
 	dispensed_temperature = WATER_MATTERSTATE_CHANGE_TEMP
 	heater_coefficient = SOFT_DISPENSER_HEATER_COEFFICIENT
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/drinks/beer
-	spawn_cartridges = CARTRIDGE_LIST_BOOZE
+
+/obj/machinery/chem_dispenser/drinks/beer/set_cart_list()
+	spawn_cartridges = GLOB.cartridge_list_booze
 
 /obj/machinery/chem_dispenser/mini/mutagen
 	name = "mini mutagen dispenser"
 	desc = "Dispenses mutagen."
-	spawn_cartridges = list(/datum/reagent/toxin/mutagen = /obj/item/reagent_containers/chem_cartridge/medium)
 
+/obj/machinery/chem_dispenser/mini/mutagen/set_cart_list()
+	spawn_cartridges = list(/datum/reagent/toxin/mutagen = /obj/item/reagent_containers/chem_cartridge/medium)
 
 /obj/machinery/chem_dispenser/mini/mutagensaltpeter
 	name = "botanical mini chemical dispenser"
 	desc = "Dispenses chemicals useful for botany."
 
-	spawn_cartridges = CARTRIDGE_LIST_BOTANY
+/obj/machinery/chem_dispenser/mini/mutagensaltpeter/set_cart_list()
+	spawn_cartridges = GLOB.cartridge_list_botany

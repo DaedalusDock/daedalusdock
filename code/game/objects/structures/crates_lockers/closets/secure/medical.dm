@@ -139,7 +139,7 @@
 	icon_door = "chemical"
 
 /obj/structure/closet/secure_closet/chemical/cartridge/PopulateContents()
-	var/cartridges = CARTRIDGE_LIST_CHEM_DISPENSER
+	var/cartridges = GLOB.cartridge_list_chems
 
 	for(var/chem_path in cartridges)
 		var/cart_path = cartridges[chem_path]

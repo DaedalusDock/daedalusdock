@@ -158,14 +158,14 @@
 	var/static/list/cached_whitelist
 	var/is_always_full = FALSE
 
+/*
 /obj/effect/spawner/random/medical/chem_cartridge/Initialize(mapload)
 	if(!cached_whitelist)
 		cached_whitelist = list()
-		for(var/datum/reagent/reagent as anything in CARTRIDGE_LIST_CHEM_DISPENSER)
+		for(var/datum/reagent/reagent as anything in GLOB.CARTRIDGE_LIST_CHEM_DISPENSER)
 			cached_whitelist += reagent
 	. = ..()
 
-/*
 /obj/effect/spawner/random/medical/chem_cartridge/spawn_loot(lootcount_override)
 	var/obj/item/reagent_containers/chem_cartridge/cartridge = new type_path_to_make(spawn_loc)
 	cartridge.reagents.add_reagent(pick(cached_whitelist), is_always_full ? cartridge.volume : rand(0, cartridge.volume))

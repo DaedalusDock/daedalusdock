@@ -1247,8 +1247,11 @@
 	name = "Deluxe Chemistry Cartridge Pack"
 	desc = "Contains a full set of chem dispenser cartridges with every chemical you'll need for making pharmaceuticals."
 	cost = CARGO_CRATE_VALUE * 35 //price may need balancing
-	contains = CARTRIDGE_LIST_CHEM_DISPENSER
 	crate_name = "chemical cartridges crate"
+
+//this is just here for subtypes
+/datum/supply_pack/medical/chemical_carts/proc/set_cart_list()
+	contains = GLOB.cartridge_list_chems
 
 /datum/supply_pack/medical/chemical_carts/fill(obj/structure/closet/crate/crate)
 	for(var/datum/reagent/chem as anything in contains)
@@ -1270,8 +1273,7 @@
 					/obj/item/reagent_containers/chem_cartridge/medium,
 					/obj/item/reagent_containers/chem_cartridge/small,
 					/obj/item/reagent_containers/chem_cartridge/small,
-					/obj/item/reagent_containers/chem_cartridge/small
-	)
+					/obj/item/reagent_containers/chem_cartridge/small)
 	crate_name = "empty chemical cartridges crate"
 
 /datum/supply_pack/medical/defibs
@@ -1617,35 +1619,23 @@
 	crate_name = "\improper MULEbot Crate"
 	crate_type = /obj/structure/closet/crate/large
 
-/datum/supply_pack/service/soft_drinks_chem_cartridge
+/datum/supply_pack/medical/chemical_carts/soft_drinks_chem_cartridge //IGNORE THE TYPEPATH PLEASE
 	name = "Soft Drinks Cartridge Luxury Pack (Full Dispenser)"
 	desc = "Contains a full set of chem cartridges of the same size inside a soft drinks dispenser at shift start."
 	cost = CARGO_CRATE_VALUE * 25
-	contains = CARTRIDGE_LIST_DRINKS
+	group = "Service"
 
-/datum/supply_pack/service/soft_drinks_chem_cartridge/fill(obj/structure/closet/crate/crate)
-	for(var/datum/reagent/chem as anything in contains)
-		var/obj/item/reagent_containers/chem_cartridge/cartridge = contains[chem]
-		cartridge = new cartridge(crate)
-		if(admin_spawned)
-			cartridge.flags_1 |= ADMIN_SPAWNED_1
-		cartridge.setLabel(initial(chem.name))
-		cartridge.reagents.add_reagent(chem, cartridge.volume)
+/datum/supply_pack/medical/chemical_carts/soft_drinks_chem_cartridge/set_cart_list()
+	contains = GLOB.cartridge_list_drinks
 
-/datum/supply_pack/service/booze_chem_cartridge
+/datum/supply_pack/medical/chemical_carts/booze_chem_cartridge
 	name = "Booze Cartridge Luxury Pack (Full Dispenser)"
 	desc = "Contains a full set of chem cartridges of the same size inside a booze dispenser at shift start."
 	cost = CARGO_CRATE_VALUE * 30
-	contains = CARTRIDGE_LIST_BOOZE
+	group = "Service"
 
-/datum/supply_pack/service/booze_chem_cartridge/fill(obj/structure/closet/crate/crate)
-	for(var/datum/reagent/chem as anything in contains)
-		var/obj/item/reagent_containers/chem_cartridge/cartridge = contains[chem]
-		cartridge = new cartridge(crate)
-		if(admin_spawned)
-			cartridge.flags_1 |= ADMIN_SPAWNED_1
-		cartridge.setLabel(initial(chem.name))
-		cartridge.reagents.add_reagent(chem, cartridge.volume)
+/datum/supply_pack/medical/chemical_carts/booze_chem_cartridge/set_cart_list()
+	contains = GLOB.cartridge_list_booze
 
 /datum/supply_pack/service/party
 	name = "Party Equipment"

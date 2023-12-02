@@ -29,8 +29,7 @@
 	var/obj/item/reagent_containers/beaker = null
 	/// The maximum amount of cartridges the dispenser can contain.
 	var/maximum_cartridges = 24
-
-	var/list/spawn_cartridges = CARTRIDGE_LIST_CHEM_DISPENSER
+	var/list/spawn_cartridges
 
 	/// Associative, label -> cartridge
 	var/list/cartridges = list()
@@ -41,8 +40,13 @@
 		begin_processing()
 	update_appearance()
 
+	set_cart_list()
 	if(spawn_cartridges && mapload)
 		spawn_cartridges()
+
+//this is just here for subtypes
+/obj/machinery/chem_dispenser/proc/set_cart_list()
+	spawn_cartridges = GLOB.cartridge_list_chems
 
 /// Spawns the cartridges the chem dispenser should have on mapload. Kept as a seperate proc for admin convienience.
 /obj/machinery/chem_dispenser/proc/spawn_cartridges()

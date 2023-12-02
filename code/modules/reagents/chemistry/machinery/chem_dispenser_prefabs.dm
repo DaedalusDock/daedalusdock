@@ -14,7 +14,7 @@
 	circuit = /obj/item/circuitboard/machine/chem_dispenser/drinks
 	working_state = null
 	nopower_state = null
-	pass_flags = PASSTABLE
+	pass_flags = PASSTABLE | PASSMACHINE | LETPASSCLICKS
 
 /obj/machinery/chem_dispenser/drinks/set_cart_list()
 	spawn_cartridges = GLOB.cartridge_list_drinks.Copy()

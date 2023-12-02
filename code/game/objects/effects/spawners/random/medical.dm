@@ -159,7 +159,7 @@
 /obj/effect/spawner/random/medical/chem_cartridge/spawn_loot(lootcount_override)
 	var/list/spawn_cartridges = get_chem_list()
 	var/loot_spawned = 0
-	while(loot_spawned < spawn_loot_count)
+	for(var/i in 1 to spawn_loot_count)
 		var/datum/reagent/chem_type = pick(spawn_cartridges)
 		var/obj/item/reagent_containers/chem_cartridge/chem_cartridge = spawn_cartridges[chem_type]
 		chem_cartridge = new chem_cartridge(loc)

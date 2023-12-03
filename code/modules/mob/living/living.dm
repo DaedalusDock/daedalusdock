@@ -138,7 +138,7 @@
 				to_chat(src, span_warning("[L] is restrained, you cannot push past."))
 			return TRUE
 
-		var/list/grabs = L.get_active_grabs()
+		var/list/grabs = L.active_grabs
 		if(length(grabs))
 			for(var/obj/item/hand_item/grab/G in grabs)
 				if(ismob(G.affecting))
@@ -759,10 +759,7 @@
 		lying_angle_on_movement(direct)
 	if (buckled && buckled.loc != newloc) //not updating position
 		if (!buckled.anchored)
-			buckled.moving_from_pull = moving_from_pull
-			. = buckled.Move(newloc, direct, glide_size)
-			buckled.moving_from_pull = null
-		return
+			return buckled.move_from_pull(newloc, buckled, glide_size)
 
 	var/old_direction = dir
 	var/turf/T = loc
@@ -1466,6 +1463,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	if(!QDELETED(src) && currently_z_moving == ZMOVING_VERTICAL) // Lateral Z movement handles this on it's own
 		handle_grabs_during_movement(old_loc, get_dir(old_loc, src))
+		recheck_grabs()
+
+	else if(!forcemove_should_maintain_grab && length(active_grabs))
 		recheck_grabs()
 
 	if(client)

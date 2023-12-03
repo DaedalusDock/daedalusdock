@@ -35,8 +35,11 @@
 	var/generic_canpass = TRUE
 	///0: not doing a diagonal move. 1 and 2: doing the first/second step of the diagonal move
 	var/moving_diagonally = 0
-	///attempt to resume grab after moving instead of before.
-	var/atom/movable/moving_from_pull
+	/// Tracks if the mob is currently in the movechain during a pulling movement.
+	var/moving_from_pull = FALSE
+	/// Tracks if forceMove() should break grabs or not.
+	var/forcemove_should_maintain_grab = FALSE
+
 	///Holds information about any movement loops currently running/waiting to run on the movable. Lazy, will be null if nothing's going on
 	var/datum/movement_packet/move_packet
 	var/datum/forced_movement/force_moving = null //handled soley by forced_movement.dm
@@ -486,9 +489,11 @@
 
 /// Called when src is being moved to a target turf because another movable (puller) is moving around.
 /atom/movable/proc/move_from_pull(atom/movable/puller, turf/target_turf, glide_size_override)
-	moving_from_pull = puller
-	Move(target_turf, get_dir(src, target_turf), glide_size_override)
-	moving_from_pull = null
+	moving_from_pull = TRUE
+	forcemove_should_maintain_grab = TRUE
+	. = Move(target_turf, get_dir(src, target_turf), glide_size_override)
+	moving_from_pull = FALSE
+	forcemove_should_maintain_grab = FALSE
 
 /**
  * Called after a successful Move(). By this point, we've already moved.
@@ -800,6 +805,7 @@
 	. = FALSE
 	var/atom/oldloc = loc
 	var/is_multi_tile = bound_width > world.icon_size || bound_height > world.icon_size
+
 	if(destination)
 		var/same_loc = oldloc == destination
 		var/area/old_area = get_area(oldloc)

@@ -169,8 +169,7 @@
 	module_store_icon.screen_loc = ui_borg_store
 	module_store_icon.hud = src
 
-	pull_icon = new /atom/movable/screen/pull()
-	pull_icon.icon = 'icons/hud/screen_cyborg.dmi'
+	pull_icon = new /atom/movable/screen/pull/robot()
 	pull_icon.screen_loc = ui_borg_pull
 	pull_icon.hud = src
 	pull_icon.update_appearance()

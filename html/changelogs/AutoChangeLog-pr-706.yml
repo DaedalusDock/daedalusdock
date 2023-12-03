@@ -1,0 +1,10 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Grabs will now properly break when they logically should, no longer requiring
+      a user to perform an action to refresh their state.
+  - bugfix: Edgelocks are no longer one-way doors.
+  - bugfix: AI can now close the Thermo-Electric Generator TGUI interface (What a
+      bug!).
+  - bugfix: Cyborgs and friends can now grab things.
+  - qol: Clicking an item while grabbing it will now end the grab and pickup the item.

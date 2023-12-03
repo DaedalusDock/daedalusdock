@@ -5,7 +5,16 @@
 	var/list/removed_organs = list()
 
 	for(var/obj/item/organ/organ as anything in hollow_boy.organs)
-		organ.moveToNullspace()
+		var/runtimed = FALSE
+		// Doing this is considered a bug, so let's discard the error for the sake of this test.
+		try
+			organ.moveToNullspace()
+		catch(var/exception/E)
+			runtimed = TRUE
+
+		if(!runtimed)
+			TEST_FAIL("Improperly removing an organ ([organ.type]) did not runtime.")
+
 		removed_organs += organ
 
 	for(var/obj/item/organ/organ as anything in removed_organs)

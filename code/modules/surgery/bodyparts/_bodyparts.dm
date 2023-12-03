@@ -259,7 +259,7 @@
 
 /obj/item/bodypart/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
 	. = ..()
-	if(owner)
+	if(owner && loc != owner)
 		drop_limb(FALSE, TRUE)
 		stack_trace("Bodypart moved while it still had an owner")
 

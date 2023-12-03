@@ -153,6 +153,7 @@
 #include "stomach.dm"
 #include "strippable.dm"
 #include "subsystem_init.dm"
+#include "subsystem_sanity.dm"
 #include "surgeries.dm"
 #include "teleporters.dm"
 #include "tgui_create_message.dm"

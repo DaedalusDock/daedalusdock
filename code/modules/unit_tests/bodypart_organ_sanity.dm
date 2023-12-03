@@ -9,7 +9,8 @@
 		// Doing this is considered a bug, so let's discard the error for the sake of this test.
 		try
 			organ.moveToNullspace()
-		catch(var/exception/E)
+
+		catch
 			runtimed = TRUE
 
 		if(!runtimed)

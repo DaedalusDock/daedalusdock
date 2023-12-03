@@ -95,6 +95,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 	return ..()
 
+/obj/item/organ/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	if(owner)
+		Remove(owner)
+		stack_trace("Organ removed while it still had an owner.")
+
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+		stack_trace("Organ removed while it still had an ownerlimb.")
+
+
 /*
  * Insert the organ into the select mob.
  *
@@ -134,6 +145,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	//Add to internal organs
 	owner.organs |= src
 	owner.organs_by_slot[slot] = src
+	ADD_TRAIT(src, TRAIT_INSIDE_BODY, REF(owner))
 
 	if(!cosmetic_only)
 		STOP_PROCESSING(SSobj, src)
@@ -196,6 +208,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	organ_flags |= ORGAN_CUT_AWAY
 
+	REMOVE_TRAIT(src, TRAIT_INSIDE_BODY, REF(organ_owner))
 	organ_owner.organs -= src
 	if(organ_owner.organs_by_slot[slot] == src)
 		organ_owner.organs_by_slot.Remove(slot)

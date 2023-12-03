@@ -252,10 +252,16 @@
 
 /obj/item/bodypart/forceMove(atom/destination) //Please. Never forcemove a limb if its's actually in use. This is only for borgs.
 	SHOULD_CALL_PARENT(TRUE)
-
 	. = ..()
+
 	if(isturf(destination))
 		update_icon_dropped()
+
+/obj/item/bodypart/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	if(owner)
+		drop_limb(FALSE, TRUE)
+		stack_trace("Bodypart moved while it still had an owner")
 
 /obj/item/bodypart/examine(mob/user)
 	SHOULD_CALL_PARENT(TRUE)

@@ -916,6 +916,7 @@
 	new_bodypart.set_owner(src)
 	new_bodypart.forceMove(src)
 	new_bodypart.item_flags |= ABSTRACT
+	ADD_TRAIT(new_bodypart, TRAIT_INSIDE_BODY, REF(src))
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)
@@ -931,6 +932,7 @@
 /mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
+	REMOVE_TRAIT(old_bodypart, TRAIT_INSIDE_BODY, REF(src))
 	bodyparts -= old_bodypart
 	old_bodypart.item_flags &= ~ABSTRACT
 	if(old_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
@@ -1444,3 +1446,9 @@
 	if(!H?.can_ingest_reagents)
 		return FALSE
 	return TRUE
+
+/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop)
+	if(I && HAS_TRAIT(I, TRAIT_INSIDE_BODY))
+		stack_trace("Something tried to drop an organ or bodypart that isn't allowed to be dropped")
+		return FALSE
+	return ..()

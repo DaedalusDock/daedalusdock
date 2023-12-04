@@ -8,7 +8,7 @@
 
 /datum/reagent/medicine
 	taste_description = "bitterness"
-	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SCANNABLE
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE
 	abstract_type = /datum/reagent/medicine
 	show_in_codex = TRUE
 

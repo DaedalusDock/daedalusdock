@@ -15,7 +15,7 @@
 	growthstages = 3
 	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
 	genes = list(/datum/plant_gene/trait/plant_type/weed_hardy)
-	mutatelist = list(/obj/item/seeds/starthistle/corpse_flower, /obj/item/seeds/galaxythistle)
+	mutatelist = list(/obj/item/seeds/galaxythistle)
 	graft_gene = /datum/plant_gene/trait/plant_type/weed_hardy
 
 /obj/item/seeds/starthistle/harvest(mob/user)
@@ -29,19 +29,6 @@
 			harvestseeds.forceMove(output_loc)
 
 	parent.update_tray(user, seed_count)
-
-// Corpse flower
-/obj/item/seeds/starthistle/corpse_flower
-	name = "pack of corpse flower seeds"
-	desc = "A species of plant that emits a horrible odor. The odor stops being produced in difficult atmospheric conditions."
-	icon_state = "seed-corpse-flower"
-	species = "corpse-flower"
-	plantname = "Corpse flower"
-	production = 2
-	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
-	genes = list(/datum/plant_gene/trait/gas_production)
-	mutatelist = null
-	reagents_add = list(/datum/reagent/toxin/formaldehyde = 0.1)
 
 //Galaxy Thistle
 /obj/item/seeds/galaxythistle

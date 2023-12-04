@@ -248,7 +248,9 @@
 	for(var/atom/movable/AM as anything in movers)
 		if(z_movement)
 			AM.set_currently_z_moving(z_movement)
+		AM.forcemove_should_maintain_grab = TRUE
 		AM.forceMove(destination)
+		AM.forcemove_should_maintain_grab = FALSE
 		if(z_movement)
 			AM.set_currently_z_moving(FALSE)
 /*

@@ -220,6 +220,15 @@
 	category = list(DCAT_MEDICAL)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
 
+/datum/design/suture
+	name = "Sutures"
+	id = "suture"
+	build_type = FABRICATOR
+	materials = list(/datum/material/plastic = 500)
+	build_path = /obj/item/stack/medical/suture
+	category = list(DCAT_MEDICAL)
+	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_OMNI
+
 /////////////////////////////////////////
 //////////Cybernetic Implants////////////
 /////////////////////////////////////////

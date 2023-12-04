@@ -26,6 +26,10 @@
 	if(QDELETED(src))
 		return FALSE
 
+	// Increase germ_level regularly
+	if(germ_level < GERM_LEVEL_AMBIENT && prob(30))	//if you're just standing there, you shouldn't get more germs beyond an ambient level
+		germ_level++
+
 	//Body temperature stability and damage
 	if(dna.species.handle_body_temperature(src, delta_time, times_fired))
 		updatehealth()
@@ -100,15 +104,17 @@
 			. = lun.check_breath(breath, src, forced)
 			if(. == BREATH_OKAY)
 				adjustOxyLoss(-5)
-				return
+				return TRUE
 			if(. >= BREATH_SILENT_DAMAGING) // Breath succeeded
-				return
+				return TRUE
 
 			// Failed a breath for one reason or another.
 			blur_eyes(3)
 			if(prob(20))
 				spawn(-1)
 					emote("gasp")
+
+			return FALSE
 
 /// Environment handlers for species
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, delta_time, times_fired)

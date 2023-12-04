@@ -153,8 +153,7 @@
 	module_store_icon = new /atom/movable/screen/robot/store(null, src)
 	module_store_icon.screen_loc = ui_borg_store
 
-	pull_icon = new /atom/movable/screen/pull(null, src)
-	pull_icon.icon = 'icons/hud/screen_cyborg.dmi'
+	pull_icon = new /atom/movable/screen/pull/robot(null, src)
 	pull_icon.screen_loc = ui_borg_pull
 	pull_icon.update_appearance()
 	hotkeybuttons += pull_icon

@@ -227,6 +227,8 @@
 	permeability_coefficient = 0.01
 	clothing_traits = list(TRAIT_QUICK_CARRY, TRAIT_FINGERPRINT_PASSTHROUGH)
 	resistance_flags = NONE
+	// Just as the doctor ordered
+	germ_level = 0
 
 /obj/item/clothing/gloves/color/latex/nitrile
 	name = "nitrile gloves"

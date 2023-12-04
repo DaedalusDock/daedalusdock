@@ -11639,23 +11639,6 @@
 	},
 /turf/open/floor/iron/textured,
 /area/station/medical/medbay/central)
-"BO" = (
-/obj/structure/rack,
-/obj/item/reagent_containers/glass/bottle/basic_buffer{
-	pixel_x = -5;
-	pixel_y = 3
-	},
-/obj/item/reagent_containers/glass/bottle/formaldehyde{
-	pixel_x = 1
-	},
-/obj/structure/sign/warning/chemdiamond{
-	pixel_y = 32
-	},
-/obj/machinery/light_switch/directional/east,
-/turf/open/floor/iron/dark/textured_edge{
-	dir = 8
-	},
-/area/station/medical/medbay/central)
 "BP" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Morgue Maintenance";
@@ -14034,17 +14017,6 @@
 /obj/structure/lattice,
 /turf/open/space,
 /area/space/nearstation)
-"HQ" = (
-/obj/docking_port/stationary{
-	dir = 2;
-	dwidth = 9;
-	height = 25;
-	id = "emergency_home";
-	name = "emergency evac bay";
-	width = 29
-	},
-/turf/open/space/basic,
-/area/space)
 "HR" = (
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/closed/wall/r_wall/prepainted/daedalus,
@@ -14748,6 +14720,32 @@
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/space)
+"KZ" = (
+/obj/docking_port/stationary{
+	dir = 2;
+	dwidth = 9;
+	height = 25;
+	id = "emergency_home";
+	name = "emergency evac bay";
+	width = 29
+	},
+/turf/open/space/basic,
+/area/space)
+"RX" = (
+/obj/structure/rack,
+/obj/item/reagent_containers/glass/bottle/basic_buffer{
+	pixel_x = -5;
+	pixel_y = 3
+	},
+/obj/item/reagent_containers/glass/bottle/space_cleaner,
+/obj/structure/sign/warning/chemdiamond{
+	pixel_y = 32
+	},
+/obj/machinery/light_switch/directional/east,
+/turf/open/floor/iron/dark/textured_edge{
+	dir = 8
+	},
+/area/station/medical/medbay/central)
 
 (1,1,1) = {"
 aa
@@ -24309,7 +24307,7 @@ na
 zZ
 AK
 lb
-BO
+RX
 Ci
 CC
 CX
@@ -25887,7 +25885,7 @@ He
 Ht
 Hb
 HO
-HQ
+KZ
 aa
 aa
 aa

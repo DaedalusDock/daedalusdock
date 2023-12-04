@@ -52,6 +52,8 @@
 	if(!can_usr_use(usr))
 		return TRUE
 
+	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
+
 /atom/movable/screen/proc/can_usr_use(mob/user)
 	. = TRUE
 	if(private_screen && (hud?.mymob != user))

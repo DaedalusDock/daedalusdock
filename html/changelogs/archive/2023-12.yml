@@ -15,3 +15,9 @@
   - imageadd: Added texture to unreinforced walls.
   francinum:
   - imageadd: Credits companies have been changed
+2023-12-05:
+  Kapu1178:
+  - bugfix: Alleviated a bug with space drift
+  Kapu1178, jlsnow301:
+  - rscadd: Organ and Limb necrosis
+  - rscadd: A robust debug interface for human health, courtesy of jlsnow301

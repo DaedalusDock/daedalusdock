@@ -75,7 +75,7 @@
 
 	if(isliving(caller))
 		var/mob/living/L = caller
-		var/list/grabs = L.get_active_grabs()
+		var/list/grabs = L.active_grabs
 		for(var/obj/item/hand_item/grab/G in grabs)
 			if(!CanAStarPass(ID, to_dir, G.affecting, no_id = no_id))
 				return FALSE

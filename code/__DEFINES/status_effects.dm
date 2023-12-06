@@ -39,6 +39,10 @@
 
 #define STASIS_ASCENSION_EFFECT "heretic_ascension"
 
+#define STASIS_BODYBAG_EFFECT "stasis_bodybag"
+
+#define STASIS_DEBUG_HEALTH "stasis_debug_health"
+
 // Status effect application helpers.
 // These are macros for easier use of adjust_timed_status_effect and set_timed_status_effect.
 //

@@ -8,7 +8,6 @@
 	if(!buckled_grab_check(grabber))
 		return FALSE
 	if(anchored)
-		to_chat(grabber, span_warning("\The [src] won't budge!"))
 		return FALSE
 	if(throwing)
 		return FALSE
@@ -40,7 +39,7 @@
 
 /// Move grabbed atoms towards a destination
 /mob/living/proc/move_grabbed_atoms_towards(atom/destination)
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		var/atom/movable/pulling = G.affecting
 		if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
 			qdel(G)

@@ -524,7 +524,7 @@ SUBSYSTEM_DEF(timer)
 		4 = flags,
 		5 = callBack, /* Safe to hold this directly becasue it's never del'd */
 		6 = "[callBack.object]",
-		7 = text_ref(callBack.object),
+		7 = ref(callBack.object),
 		8 = getcallingtype(),
 		9 = callBack.delegate,
 		10 = callBack.arguments ? callBack.arguments.Copy() : null,

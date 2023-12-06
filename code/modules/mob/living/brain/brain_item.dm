@@ -1,4 +1,5 @@
 #define BRAIN_DAMAGE_THRESHOLDS 10
+#define BRAIN_DECAY_RATE 1
 
 /obj/item/organ/brain
 	name = "brain"
@@ -297,20 +298,20 @@
 	switch(blood_percent)
 		if(BLOOD_CIRC_SAFE to INFINITY)
 			if(can_heal)
-				. = applyOrganDamage(-1)
+				. |= applyOrganDamage(-1, updating_health = FALSE)
 
 		if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
 			if(prob(1))
 				to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
 			if(!past_damage_threshold(2) && prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 
 		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
 			if(!past_damage_threshold(4) && prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 
 			if(prob(10))
 				owner.Unconscious(rand(1,3) SECONDS)
@@ -320,7 +321,7 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
 			if(!past_damage_threshold(6) && prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 
 			if(prob(15))
 				owner.Unconscious(rand(3,5) SECONDS)
@@ -330,10 +331,10 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
 			if(prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 			if(prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
-	..()
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+	. = ..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)
 	. = ..()
@@ -644,3 +645,6 @@
 		trauma_desc += trauma.scan_desc
 		trauma_text += trauma_desc
 	. += tag ? "<span style='font-weight: bold; color:#ff9933'>Cerebral traumas detected: [english_list(trauma_text)]</span>" : "Cerebral traumas detected: [english_list(trauma_text)]"
+
+#undef BRAIN_DAMAGE_THRESHOLDS
+#undef BRAIN_DECAY_RATE

@@ -2,6 +2,8 @@
 	name = "limb"
 	desc = "Why is it detached..."
 
+	germ_level = 0
+
 	force = 6
 	throwforce = 3
 	stamina_damage = 40
@@ -325,6 +327,18 @@
 				bone = "broken [bone]"
 			wound_descriptors["a [bone] exposed"] = 1
 
+			if(!encased || how_open() >= SURGERY_DEENCASED)
+				var/list/bits = list()
+				for(var/obj/item/organ/organ in contained_organs)
+					if(organ.cosmetic_only)
+						continue
+					bits += organ.get_visible_state()
+
+				for(var/obj/item/implant in cavity_items)
+					bits += implant.name
+				if(length(bits))
+					wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
+
 		for(var/wound in wound_descriptors)
 			switch(wound_descriptors[wound])
 				if(1)
@@ -450,8 +464,10 @@
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
-	pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
-	. |= wound_life()
+	if(owner.stat != DEAD)
+		pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
+		. |= wound_life()
+	. |= update_germs()
 
 /obj/item/bodypart/proc/wound_life()
 	if(!LAZYLEN(wounds))
@@ -775,6 +791,10 @@
 		set_disabled(TRUE)
 		return
 
+	if(bodypart_flags & BP_NECROTIC)
+		set_disabled(TRUE)
+		return
+
 	var/total_damage = max(brute_dam + burn_dam)
 
 	// this block of checks is for limbs that can be disabled, but not through pure damage (AKA limbs that suffer wounds, human/monkey parts and such)
@@ -1020,7 +1040,7 @@
 
 	for(var/datum/wound/iter_wound as anything in wounds)
 		if(iter_wound.bleeding())
-			cached_bleed_rate += round(iter_wound.damage / 40, DAMAGE_PRECISION)
+			cached_bleed_rate += WOUND_BLEED_RATE(iter_wound)
 			bodypart_flags |= BP_BLEEDING
 
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?

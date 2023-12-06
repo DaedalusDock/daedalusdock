@@ -99,7 +99,7 @@
 		current_turf_slowdown = 0
 
 /mob/living/proc/update_pull_movespeed()
-	var/list/obj/item/hand_item/grab/grabs = get_active_grabs()
+	var/list/obj/item/hand_item/grab/grabs = active_grabs
 	if(!length(grabs))
 		remove_movespeed_modifier(/datum/movespeed_modifier/grabbing)
 		return

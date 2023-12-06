@@ -170,7 +170,7 @@
 
 /datum/brain_trauma/special/quantum_alignment/proc/try_entangle()
 	//Check for pulled mobs
-	var/list/grabs = owner.get_active_grabs()
+	var/list/grabs = owner.active_grabs
 	if(length(grabs))
 		for(var/obj/item/hand_item/grab/G in grabs)
 			entangle(G.affecting)

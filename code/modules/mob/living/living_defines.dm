@@ -169,6 +169,9 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// Is this mob allowed to be buckled/unbuckled to/from things?
 	var/can_buckle_to = TRUE
 
+	/// A lazylist of grab objects we have
+	var/list/active_grabs
+
 	///The y amount a mob's sprite should be offset due to the current position they're in (e.g. lying down moves your sprite down)
 	var/body_position_pixel_x_offset = 0
 	///The x amount a mob's sprite should be offset due to the current position they're in

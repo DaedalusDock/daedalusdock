@@ -87,9 +87,9 @@
 
 /datum/component/rot/proc/check_reagent(datum/reagents/source, datum/reagent/modified)
 	SIGNAL_HANDLER
-	if(modified && !istype(modified, /datum/reagent/toxin/formaldehyde))
+	if(modified && !istype(modified, /datum/reagent/space_cleaner))
 		return
-	if(source.has_reagent(/datum/reagent/toxin/formaldehyde, 15))
+	if(source.has_reagent(/datum/reagent/space_cleaner, 15))
 		rest(REAGENT_BLOCKER)
 		return
 	start_up(REAGENT_BLOCKER)

@@ -228,20 +228,25 @@
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
 	if(!. || !I)
 		return
+
 	if(index && !QDELETED(src) && dna.species.mutanthands) //hand freed, fill with claws, skip if we're getting deleted.
 		put_in_hand(new dna.species.mutanthands(), index)
+
 	if(I == wear_suit)
 		if(s_store && invdrop)
 			dropItemToGround(s_store, TRUE) //It makes no sense for your suit storage to stay on you if you drop your suit.
+
 		if(wear_suit.breakouttime) //when unequipping a straightjacket
 			REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
 			drop_all_held_items() //suit is restraining
 			update_mob_action_buttons() //certain action buttons may be usable again.
+
 		wear_suit = null
 		if(!QDELETED(src)) //no need to update we're getting deleted anyway
 			if(I.flags_inv & HIDEJUMPSUIT)
 				update_worn_undersuit()
 			update_worn_oversuit()
+
 	else if(I == w_uniform)
 		if(invdrop)
 			if(r_store)
@@ -252,57 +257,68 @@
 				dropItemToGround(wear_id)
 			if(belt)
 				dropItemToGround(belt)
+
 		w_uniform = null
 		update_suit_sensors()
+
 		if(!QDELETED(src))
 			update_worn_undersuit()
+
 	else if(I == gloves)
 		gloves = null
 		if(!QDELETED(src))
 			update_worn_gloves()
+
 	else if(I == glasses)
 		glasses = null
+
 		var/obj/item/clothing/glasses/G = I
 		if(G.glass_colour_type)
 			update_glasses_color(G, 0)
+
 		if(G.tint)
 			update_tint()
-		if(G.vision_correction)
-			if(HAS_TRAIT(src, TRAIT_NEARSIGHT))
-				overlay_fullscreen("nearsighted", /atom/movable/screen/fullscreen/impaired, 1)
+
+		if(G.vision_correction && HAS_TRAIT(src, TRAIT_NEARSIGHT))
+			overlay_fullscreen("nearsighted", /atom/movable/screen/fullscreen/impaired, 1)
+
 		if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view || !isnull(G.lighting_alpha))
 			update_sight()
+
 		if(!QDELETED(src))
 			update_worn_glasses()
+
 	else if(I == ears)
 		ears = null
 		if(!QDELETED(src))
 			update_inv_ears()
-	else if(I == shoes)
-		shoes = null
-		if(!QDELETED(src))
-			update_worn_shoes()
+
 	else if(I == belt)
 		belt = null
 		if(!QDELETED(src))
 			update_worn_belt()
+
 	else if(I == wear_id)
 		wear_id = null
 		sec_hud_set_ID()
 		if(!QDELETED(src))
 			update_worn_id()
+
 	else if(I == r_store)
 		r_store = null
 		if(!QDELETED(src))
 			update_pockets()
+
 	else if(I == l_store)
 		l_store = null
 		if(!QDELETED(src))
 			update_pockets()
+
 	else if(I == s_store)
 		s_store = null
 		if(!QDELETED(src))
 			update_suit_storage()
+
 	update_equipment_speed_mods()
 
 	// Send a signal for when we unequip an item that used to cover our feet/shoes. Used for bloody feet

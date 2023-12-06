@@ -382,22 +382,27 @@
 /obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(ishuman(victim))
-		var/mob/living/carbon/human/human_victim = victim
-		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
-			if(!human_victim.get_bodypart(body_zone))
-				user.temporarilyRemoveItemFromInventory(src, TRUE)
-				if(!attach_limb(victim))
-					to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
-					forceMove(human_victim.loc)
-				if(human_victim == user)
-					human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
-					span_notice("You force [src] into your empty socket, and it locks into place!"))
-				else
-					human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
-					span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
-				return
-	..()
+	if(!ishuman(victim) || !HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
+		return ..()
+
+	var/mob/living/carbon/human/human_victim = victim
+	if(human_victim.get_bodypart(body_zone))
+		return ..()
+
+	if(!user.temporarilyRemoveItemFromInventory(src))
+		return ..()
+
+	if(!attach_limb(victim))
+		to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
+		return
+
+	if(human_victim == user)
+		human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
+		span_notice("You force [src] into your empty socket, and it locks into place!"))
+	else
+		human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
+		span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
+
 
 /obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
 	SHOULD_CALL_PARENT(TRUE)

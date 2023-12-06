@@ -342,7 +342,7 @@
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
 /mob/proc/temporarilyRemoveItemFromInventory(obj/item/I, force = FALSE, idrop = TRUE)
-	if(I.item_flags & ABSTRACT)
+	if((I.item_flags & ABSTRACT) && !force)
 		return //Do nothing. Abstract items shouldn't end up in inventories and doing this triggers various odd side effects.
 	return doUnEquip(I, force, null, TRUE, idrop, silent = TRUE)
 

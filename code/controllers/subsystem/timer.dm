@@ -507,8 +507,8 @@ SUBSYSTEM_DEF(timer)
 		callBack.delegate:[callBack.delegate]([callBack.arguments ? callBack.arguments.Join(", ") : ""]), source: [source]"
 #else
 	// Generate a debuggable name for the timer, simpler but wayyyy cheaper, string generation is a bitch and this saves a LOT of time
-	name = "Timer: [id] ([text_ref(src)]), TTR: [timeToRun], wait:[wait] Flags: [flags], \
-		callBack: [text_ref(callBack)], callBack.object: [callBack.object]([getcallingtype()]), \
+	name = "Timer: [id] ([ref(src)]), TTR: [timeToRun], wait:[wait] Flags: [flags], \
+		callBack: [ref(callBack)], callBack.object: [callBack.object]([getcallingtype()]), \
 		callBack.delegate:[callBack.delegate], source: [source]"
 #endif
 

@@ -607,7 +607,7 @@ Striking a noncultist, however, will tear their flesh."}
 
 /obj/item/cult_shift/proc/handle_teleport_grab(turf/T, mob/user)
 	var/mob/living/carbon/C = user
-	var/list/obj/item/hand_item/grab/grabs = C.get_active_grabs()
+	var/list/obj/item/hand_item/grab/grabs = C.active_grabs
 	if(length(grabs))
 		var/atom/movable/pulled = grabs[1].affecting
 		do_teleport(pulled, T, channel = TELEPORT_CHANNEL_CULT)

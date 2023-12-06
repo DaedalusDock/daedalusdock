@@ -20,11 +20,11 @@
 		if(stat != DEAD)
 			handle_brain_damage(delta_time, times_fired)
 
-	if(stat == DEAD)
-		stop_sound_channel(CHANNEL_HEARTBEAT)
-	else
 		if(handle_bodyparts(delta_time, times_fired))
 			updatehealth()
+
+	if(stat == DEAD)
+		stop_sound_channel(CHANNEL_HEARTBEAT)
 
 	if(stat != DEAD && !(IS_IN_STASIS(src)))
 		handle_shock()
@@ -139,7 +139,7 @@
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
 
-	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 80)
+	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50)
 	if(!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE)
 		src << breathing
 		COOLDOWN_START(src, breath_sound_cd, 3.5 SECONDS)
@@ -286,8 +286,6 @@
 /mob/living/carbon/proc/handle_organs(delta_time, times_fired)
 	var/update
 	if(stat == DEAD)
-		if(CHEM_EFFECT_MAGNITUDE(src, CE_ORGAN_PRESERVATION)) // No organ decay if the body contains formaldehyde.
-			return
 		for(var/obj/item/organ/organ as anything in processing_organs)
 			update += organ.on_death(delta_time, times_fired) //Needed so organs decay while inside the body.
 		return

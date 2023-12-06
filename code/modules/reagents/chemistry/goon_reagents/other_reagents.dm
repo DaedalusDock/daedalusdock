@@ -105,6 +105,7 @@
 	touch_met = 2
 	var/clean_types = CLEAN_WASH
 	chemical_flags = REAGENT_CLEANS
+	show_in_codex = TRUE
 
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()

@@ -205,7 +205,8 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/admin_ghost,
 	/client/proc/cmd_admin_create_centcom_report,
 	/client/proc/debug_spell_requirements,
-	/client/proc/analyze_openturf
+	/client/proc/analyze_openturf,
+	/client/proc/debug_health,
 )
 
 GLOBAL_LIST_INIT(admin_verbs_possess, list(/proc/possess, GLOBAL_PROC_REF(release)))

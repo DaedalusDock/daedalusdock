@@ -401,8 +401,18 @@
 		L.release_all_grabs()
 
 /atom/movable/screen/pull/update_icon_state()
-	icon_state = "[base_icon_state][LAZYLEN(hud?.mymob?:get_active_grabs()) ? null : 0]"
+	icon_state = "[base_icon_state][LAZYLEN(hud?.mymob?:active_grabs) ? null : 0]"
 	return ..()
+
+/atom/movable/screen/pull/robot
+	icon = 'icons/hud/screen_cyborg.dmi'
+
+/atom/movable/screen/pull/robot/update_icon_state()
+	. = ..()
+	if(LAZYLEN(hud?.mymob?:active_grabs))
+		icon_state = base_icon_state
+	else
+		icon_state = null
 
 /atom/movable/screen/resist
 	name = "resist"
@@ -657,7 +667,7 @@
 /atom/movable/screen/healths/blob
 	name = "blob health"
 	icon_state = "block"
-	screen_loc = ui_internal
+	screen_loc = ui_blob_health
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /atom/movable/screen/healths/blob/overmind
@@ -679,7 +689,7 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /atom/movable/screen/healthdoll
-	name = "health doll"
+	name = "physical health"
 	screen_loc = ui_healthdoll
 
 /atom/movable/screen/healthdoll/Click()

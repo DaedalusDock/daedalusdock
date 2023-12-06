@@ -11,7 +11,7 @@
 			return FALSE
 
 	else if(get_active_held_item())
-		to_chat(src, span_warning("Your [active_hand_index % 2 ? "right" : "left"] hand is full!"))
+		to_chat(src, span_warning("Your [active_hand_index % 2 ? "left" : "right"] hand is full!"))
 		return FALSE
 
 	if(LAZYLEN(grabbed_by))
@@ -48,14 +48,15 @@
 
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
 	var/atom/movable/original_target = target
-	var/mob/grabbing_mob = (ismob(target) && target)
+	if(ismob(target))
+		var/mob/grabbed_mob = target
 
-	while(istype(grabbing_mob) && grabbing_mob.buckled)
-		grabbing_mob = grabbing_mob.buckled
+		while(ismob(grabbed_mob) && grabbed_mob.buckled)
+			grabbed_mob = grabbed_mob.buckled
 
-	if(grabbing_mob && grabbing_mob != original_target)
-		target = grabbing_mob
-		to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead!"))
+		if(grabbed_mob && grabbed_mob != original_target)
+			target = grabbed_mob
+			to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead!"))
 
 	if(!istype(target))
 		return
@@ -78,9 +79,9 @@
 	return grab
 
 /mob/living/proc/add_grab(obj/item/hand_item/grab/grab, use_offhand)
-	for(var/obj/item/hand_item/grab/other_grab in contents)
-		if(other_grab != grab)
-			return FALSE
+	if(LAZYLEN(active_grabs))
+		return FALSE //Non-humans only get 1 grab
+
 	grab.forceMove(src)
 	return TRUE
 
@@ -88,7 +89,7 @@
 	if(only_pulled)
 		return ..()
 
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		var/atom/movable/pulling = G.affecting
 		if(!MultiZAdjacent(src, pulling))
 			qdel(G)
@@ -108,7 +109,7 @@
 
 /// Called during or immediately after movement. Used to move grab targets around to ensure the grabs do not break during movement.
 /mob/living/proc/handle_grabs_during_movement(turf/old_loc, direction)
-	var/list/grabs_in_grab_chain = get_active_grabs() //recursively_get_conga_line()
+	var/list/grabs_in_grab_chain = active_grabs //recursively_get_conga_line()
 	if(!LAZYLEN(grabs_in_grab_chain))
 		return
 
@@ -147,7 +148,7 @@
 			if(moving_diagonally != FIRST_DIAG_STEP)
 				pulling.update_offsets()
 
-	var/list/my_grabs = get_active_grabs()
+	var/list/my_grabs = active_grabs
 	for(var/obj/item/hand_item/grab/G in my_grabs)
 		if(G.current_grab.reverse_facing || HAS_TRAIT(G.affecting, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
 			if(!direction)

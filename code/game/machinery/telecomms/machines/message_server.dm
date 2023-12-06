@@ -152,8 +152,8 @@
 
 /obj/machinery/telecomms/message_server/receive_signal(datum/signal/signal)
 	. = ..()
-	//Let upstream deal with the pings.
-	if(. || calibrating) // If we're calibrating, just return, the fancy part of us isn't ready yet.
+	//Let upstream deal with the pings. But ignore the return value for now, we're here to sniff every packet we can.
+	if(calibrating) // If we're calibrating, just return, the fancy part of us isn't ready yet.
 		return
 	var/list/sig_data = signal.data //cachemere sweater
 	switch(signal.data[PACKET_CMD])
@@ -162,7 +162,7 @@
 			pda_msgs += log_unit
 			return RECEIVE_SIGNAL_FINISHED
 		else
-			//Unhandled.
+			//It's not a PDA message, just abort.
 			return RECEIVE_SIGNAL_CONTINUE
 
 /obj/machinery/telecomms/message_server/post_signal(datum/signal/sending_signal, preserve_s_addr)

@@ -5355,7 +5355,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "nt" = (
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /turf/open/floor/iron,
 /area/station/maintenance/port/aft)
 "nu" = (
@@ -5599,7 +5599,7 @@
 /area/station/maintenance/port/aft)
 "oa" = (
 /obj/effect/turf_decal/bot,
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /turf/open/floor/iron,
 /area/station/maintenance/port/aft)
 "ob" = (
@@ -6695,7 +6695,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "qx" = (
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)

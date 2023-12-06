@@ -129,7 +129,7 @@ SUBSYSTEM_DEF(media)
 				if(!json_data["author"])
 					return list(MEDIA_TAG_ALLMEDIA, "Track has no author.")
 
-				#if DM_VERSION > 514
+				#if DM_VERSION > 515
 				#warn Native fexists() call, Replace with rustg_file_exists() once behaviour is correct
 				#endif
 				// Does our file actually exist?

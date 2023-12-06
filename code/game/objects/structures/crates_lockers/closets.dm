@@ -250,6 +250,9 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	if(!location)
 		return
 	for(var/atom/movable/AM as anything in location)
+		if(iseffect(AM))
+			continue
+
 		if(AM != src && insert(AM, mapload) == LOCKER_FULL) // limit reached
 			if(mapload) // Yea, it's a mapping issue. Blame mappers.
 				log_mapping("Closet storage capacity of [type] exceeded on mapload at [AREACOORD(src)]")

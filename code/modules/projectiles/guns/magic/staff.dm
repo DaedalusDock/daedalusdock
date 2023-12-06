@@ -83,7 +83,7 @@
 	healing_beam.mounted = TRUE
 
 /obj/item/gun/magic/staff/healing/Destroy()
-	qdel(healing_beam)
+	QDEL_NULL(healing_beam)
 	return ..()
 
 /obj/item/gun/magic/staff/healing/unrestricted

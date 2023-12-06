@@ -341,6 +341,11 @@ SUBSYSTEM_DEF(garbage)
 		del(to_delete)
 		return
 
+	if(istype(to_delete, /obj/effect/mapping_helpers/burnt_floor))
+		var/atom/A = to_delete
+		if(!A.initialized)
+			stack_trace("gimmie gimmie")
+
 	var/datum/qdel_item/trash = SSgarbage.items[to_delete.type]
 	if (isnull(trash))
 		trash = SSgarbage.items[to_delete.type] = new /datum/qdel_item(to_delete.type)

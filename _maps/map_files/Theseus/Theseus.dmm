@@ -558,7 +558,7 @@
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory)
 "agi" = (
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/item/clothing/gloves/color/fyellow,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
@@ -5688,7 +5688,7 @@
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
 	},
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/spawner/random/food_or_drink/donkpockets,
 /obj/effect/spawner/random/food_or_drink/cups,
 /turf/open/floor/iron,
@@ -20496,7 +20496,7 @@
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/maintenance/port/fore)
 "gvy" = (
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/spawner/random/maintenance/two,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
@@ -21806,7 +21806,7 @@
 /area/station/command/teleporter)
 "gVR" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/turf_decal/bot,
 /obj/item/electronics/apc,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -31962,7 +31962,7 @@
 /area/station/engineering/supermatter/room)
 "kMi" = (
 /obj/effect/turf_decal/bot,
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /turf/open/floor/iron,
 /area/station/maintenance/port/aft)
 "kMp" = (
@@ -36963,7 +36963,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "mBg" = (
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /turf/open/floor/iron,
 /area/station/maintenance/port/aft)
 "mBh" = (
@@ -51472,7 +51472,7 @@
 "rII" = (
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible/layer5,
 /obj/machinery/atmospherics/pipe/smart/simple/purple/visible,
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/item/circuitboard/machine/thermomachine,
 /turf/open/floor/iron/dark/textured,
 /area/station/engineering/atmos)
@@ -56162,7 +56162,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/bot,
 /obj/structure/disposalpipe/segment,
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/iron,
 /area/station/cargo/warehouse)
@@ -59808,7 +59808,7 @@
 /area/station/construction/storage_wing)
 "uTU" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/turf_decal/bot,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
@@ -68036,7 +68036,7 @@
 /turf/open/floor/iron/dark,
 /area/station/engineering/gravity_generator)
 "xTt" = (
-/obj/effect/spawner/random/structure/crate_empty,
+/obj/effect/spawner/random/structure/closet_empty/crate,
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)

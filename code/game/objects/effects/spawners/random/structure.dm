@@ -84,7 +84,16 @@
 		/obj/structure/tank_holder/extinguisher/advanced = 1,
 	)
 
-/obj/effect/spawner/random/structure/crate_empty
+/obj/effect/spawner/random/structure/closet_empty
+	name = "empty closet spawner"
+	icon_state = "locker"
+	loot = list(
+		/obj/structure/closet = 850,
+		/obj/structure/closet/cabinet = 150,
+		/obj/structure/closet/acloset = 1,
+	)
+
+/obj/effect/spawner/random/structure/closet_empty/crate
 	name = "empty crate spawner"
 	icon_state = "crate"
 	loot = list(
@@ -100,12 +109,23 @@
 		/obj/structure/closet/crate/science = 1,
 	)
 
+/obj/effect/spawner/random/structure/closet_empty/crate/with_loot
+	name = "crate spawner with maintenance loot"
+	icon_state = "crate"
+
+/obj/effect/spawner/random/structure/closet_empty/crate/with_loot/spawn_item(location, path)
+	var/obj/structure/closet/crate/crate_to_fill = ..()
+	for(var/i in 1 to rand(2,6))
+		new /obj/effect/spawner/random/maintenance(crate_to_fill)
+
+	return crate_to_fill
+
 /obj/effect/spawner/random/structure/crate_loot
 	name = "lootcrate spawner"
 	icon_state = "crate"
 	loot = list(
-		/obj/structure/closet/crate/maint = 15,
-		/obj/effect/spawner/random/structure/crate_empty = 4,
+		/obj/effect/spawner/random/structure/closet_empty/crate/with_loot = 15,
+		/obj/effect/spawner/random/structure/closet_empty/crate = 4,
 		/obj/structure/closet/crate/secure/loot = 1,
 	)
 

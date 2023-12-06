@@ -23,12 +23,13 @@
 		usr.client.running_find_references = type
 
 	log_reftracker("Beginning search for references to a [type].")
+	var/additional_info = dump_harddel_info()
+	if(additional_info)
+		log_reftracker("Additional information: [additional_info]")
 
 	var/starting_time = world.time
 
-#if DM_VERSION >= 515
 	log_reftracker("Refcount for [type]: [refcount(src)]")
-#endif
 
 	//Time to search the whole game for our ref
 	DoSearchVar(GLOB, "GLOB", search_time = starting_time) //globals
@@ -109,7 +110,7 @@
 					found_refs[varname] = TRUE
 					continue //End early, don't want these logging
 				#endif
-				log_reftracker("Found [type] [text_ref(src)] in [datum_container.type]'s [container_print] [varname] var. [container_name]")
+				log_reftracker("Found [type] [ref(src)] in [datum_container.type]'s [container_print] [varname] var. [container_name]")
 				continue
 
 			if(islist(variable))
@@ -166,7 +167,7 @@
 /// Return info about us for reference searching purposes
 /// Will be logged as a representation of this datum if it's a part of a search chain
 /datum/proc/ref_search_details()
-	return text_ref(src)
+	return ref(src)
 
 /datum/callback/ref_search_details()
-	return "[text_ref(src)] (obj: [object] proc: [delegate] args: [json_encode(arguments)] user: [user?.resolve() || "null"])"
+	return "[ref(src)] (obj: [object] proc: [delegate] args: [json_encode(arguments)] user: [user?.resolve() || "null"])"

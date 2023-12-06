@@ -130,6 +130,11 @@
 	AddElement(/datum/element/strippable, GLOB.strippable_parrot_items, TYPE_PROC_REF(/mob/living, should_strip))
 	AddElement(/datum/element/simple_flying)
 
+
+/mob/living/simple_animal/parrot/Destroy()
+	QDEL_NULL(ears)
+	return ..()
+
 /mob/living/simple_animal/parrot/examine(mob/user)
 	. = ..()
 	if(stat)

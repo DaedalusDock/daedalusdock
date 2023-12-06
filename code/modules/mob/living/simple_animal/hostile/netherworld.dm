@@ -255,7 +255,7 @@
 		'sound/ai/default/shuttlerecalled.ogg',
 		'sound/ai/default/aimalf.ogg') //hahahaha fuck you code divers //Go fuck yourself asshole. Karma will bite you in the ass for wasting 7 minutes of my life.
 
-/mob/living/simple_animal/hostile/netherworld/migo/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null)
+/mob/living/simple_animal/hostile/netherworld/migo/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	..()
 	if(stat)
 		return

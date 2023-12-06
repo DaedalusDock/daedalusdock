@@ -86,6 +86,7 @@
 	init_keybindings()
 
 	GLOB.emote_list = init_emote_list()
+	GLOB.mod_themes = setup_mod_themes()
 
 	for(var/datum/grab/G as anything in subtypesof(/datum/grab))
 		if(isabstract(G))

@@ -286,6 +286,8 @@ const ParametersSection = (props, context) => {
     active,
     malfunctioning,
     locked,
+    link_id,
+    link_call,
     open,
     selected_module,
     complexity,
@@ -319,6 +321,23 @@ const ParametersSection = (props, context) => {
               onClick={() => act('lock')} />
           } >
           {locked ? 'Locked' : 'Unlocked'}
+        </LabeledList.Item>
+        <LabeledList.Item
+          label="MODLink"
+          buttons={
+            <Button
+              icon={'wifi'}
+              color={link_call ? 'good' : 'default'}
+              disabled={!link_id}
+              content={
+                link_call
+                  ? 'Calling (' + link_call + ')'
+                  : 'Call'
+              }
+              onClick={() => act('call')}
+            />
+          } >
+          {link_id}
         </LabeledList.Item>
         <LabeledList.Item label="Cover">
           {open ? 'Open' : 'Closed'}

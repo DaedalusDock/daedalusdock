@@ -26,11 +26,7 @@
 
 /datum/component/carbon_sprint/proc/onMobMove(datum/source, list/move_args)
 	var/direct = move_args[MOVE_ARG_DIRECTION]
-	if(SEND_SIGNAL(carbon_parent, COMSIG_CARBON_PRE_SPRINT) & INTERRUPT_SPRINT)
-		if(sprinting)
-			stopSprint()
-		return
-	if(!sprint_key_down || HAS_TRAIT(carbon_parent, TRAIT_NO_SPRINT))
+	if((SEND_SIGNAL(carbon_parent, COMSIG_CARBON_PRE_SPRINT) & INTERRUPT_SPRINT) || !can_sprint())
 		if(sprinting)
 			stopSprint()
 		return
@@ -78,4 +74,16 @@
 	sustained_moves = FALSE
 	last_dust = null
 	carbon_parent.set_move_intent(MOVE_INTENT_RUN)
+
+/datum/component/carbon_sprint/proc/can_sprint()
+	. = TRUE
+
+	if(!sprint_key_down)
+		return FALSE
+
+	if(carbon_parent.movement_type & (FLOATING|FLYING|VENTCRAWLING|PHASING))
+		return FALSE
+
+	if(HAS_TRAIT(carbon_parent, TRAIT_NO_SPRINT))
+		return FALSE
 

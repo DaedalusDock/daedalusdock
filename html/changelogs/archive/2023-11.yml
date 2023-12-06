@@ -56,3 +56,18 @@
   Kapu1178:
   - bugfix: Inaprovaline will no longer "randomly" stop your heart (specific interaction
       that wasn't super rare)
+2023-11-28:
+  Kapu1178:
+  - bugfix: Fixed a runtime with hog riding
+  - bugfix: Fixed titanium being replaced with bananium in asteroids
+  - bugfix: Fixed a runtime in the credits episode draft sequence
+  - tweak: Adjusted volume of breathing in space.
+  - bugfix: Fixed an issue where you could hear breathing in space even if you couldn't
+      actually breathe (no internals, etc).
+  - qol: The jukebox now works SIGNIFICANTLY better.
+  KylerAce:
+  - code_imp: verb callbacks will no longer execute if the original client disconnected
+2023-11-29:
+  MrStonedOne:
+  - bugfix: Fixed a bug with subsystems that caused some subsystems to fire faster
+      than intended after having no work for some time.

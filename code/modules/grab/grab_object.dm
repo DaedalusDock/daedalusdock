@@ -42,8 +42,10 @@
 		return INITIALIZE_HINT_QDEL
 
 	/// Apply any needed updates to the assailant
-	assailant.update_pull_hud_icon()
 	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
+	LAZYOR(assailant.active_grabs, src)
+
+	assailant.update_pull_hud_icon()
 
 	/// Do flavor things like pixel offsets, animation, sound
 	adjust_position()
@@ -100,6 +102,7 @@
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
 	if(assailant)
+		LAZYREMOVE(assailant.active_grabs, src)
 		assailant.after_grab_release(affecting)
 	affecting = null
 	assailant = null

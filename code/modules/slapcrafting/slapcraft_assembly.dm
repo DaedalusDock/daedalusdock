@@ -12,6 +12,9 @@
 	/// All items that want to place itself in the resulting item after the recipe is finished.
 	var/list/items_to_place_in_result = list()
 
+	///A list of weakrefs to finished items (not including items-in-items), used to move items around after they're complete and this object is qdeling.
+	var/list/datum/weakref/finished_items = list()
+
 /obj/item/slapcraft_assembly/examine(mob/user)
 	. = ..()
 	// Describe the steps that already have been performed on the assembly
@@ -76,16 +79,20 @@
 /obj/item/slapcraft_assembly/proc/disassemble(force = FALSE)
 	if((disassembling || being_finished) && !force)
 		return
+
 	disassembling = TRUE
-	var/turf/my_turf = get_turf(src)
-	if(!my_turf)
+
+	var/atom/dump_loc = drop_location()
+	if(!dump_loc)
 		qdel(src)
 		return
+
 	for(var/obj/item/component as anything in contents)
 		/// Handle atom del causing the assembly to disassemble, don't touch the deleted atom
 		if(QDELETED(component))
 			continue
-		component.forceMove(my_turf)
+		component.forceMove(dump_loc)
+
 	qdel(src)
 
 /// Progresses the assembly to the next step and finishes it if made it through the last step.

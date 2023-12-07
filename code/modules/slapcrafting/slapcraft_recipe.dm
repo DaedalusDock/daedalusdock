@@ -215,10 +215,15 @@
 	assembly.being_finished = TRUE
 	var/list/results = list()
 	create_items(assembly, results)
+
 	// Move items which wanted to go to the resulted item into it. Only supports for the first created item.
 	var/atom/movable/first_item = results[1]
+
 	for(var/obj/item/item as anything in assembly.items_to_place_in_result)
 		item.forceMove(first_item)
+
+	for(var/obj/item/item as anything in (results - assembly.items_to_place_in_result))
+		assembly.finished_items += WEAKREF(item)
 
 	after_create_items(results, assembly)
 	dispose_assembly(assembly)
@@ -240,12 +245,15 @@
 	else if (result_amount)
 		multi_to_craft = list()
 		multi_to_craft[result_type] = result_amount
+
 	if(multi_to_craft.len)
 		for(var/path in multi_to_craft)
 			var/amount = multi_to_craft[path]
-			var/shift_pixels = amount > 1 ? TRUE : FALSE
+			var/shift_pixels = (amount > 1)
+
 			for(var/i in 1 to amount)
 				var/atom/movable/new_thing = create_item(path, assembly)
+
 				if(shift_pixels)
 					new_thing.pixel_x += rand(-4,4)
 					new_thing.pixel_y += rand(-4,4)
@@ -253,7 +261,7 @@
 
 /// Creates and returns a new item. This gets called for every item that is supposed to be created in the recipe.
 /datum/slapcraft_recipe/proc/create_item(item_path, obj/item/slapcraft_assembly/assembly)
-	return new item_path(assembly.loc)
+	return new item_path(assembly.drop_location())
 
 /// Behaviour after the item is created, and before the slapcrafting assembly is disposed.
 /// Here you can move the components into the item if you wish, or do other stuff with them.

@@ -44,20 +44,41 @@
 			target_recipe = recipe_choice_translation[choice]
 	if(!target_recipe)
 		return TRUE
+
 	// We have found the recipe we want to do, make an assembly item where the first item used to be.
-	var/obj/item/slapcraft_assembly/assembly = new(get_turf(first_item))
+	var/obj/item/slapcraft_assembly/assembly = new()
 	assembly.set_recipe(target_recipe)
+
+	/// The location to place the assembly or items if the user cannot hold them
+	var/atom/fallback_loc = drop_location()
 
 	var/datum/slapcraft_step/step_one = SLAPCRAFT_STEP(target_recipe.steps[1])
 
 	// Instantly and silently perform the first step on the assembly, disassemble it if something went wrong
 	if(!step_one.perform(src, first_item, assembly, instant = TRUE, silent = TRUE))
+		assembly.forceMove(fallback_loc)
 		assembly.disassemble()
 		return TRUE
 
 	var/datum/slapcraft_step/step_two = target_recipe.next_suitable_step(src, second_item, assembly.step_states)
 	// Perform the second step, also disassemble it if we stopped working on it, because keeping 1 component assembly is futile.
 	if(!step_two.perform(src, second_item, assembly))
+		assembly.forceMove(fallback_loc)
 		assembly.disassemble()
 		return TRUE
+
+	if(QDELING(assembly) && assembly.being_finished)
+		var/in_hands = FALSE
+		if(length(assembly.finished_items) == 1)
+			var/obj/item/finished_item = assembly.finished_items[1].resolve()
+			if(put_in_hands(finished_item))
+				in_hands = TRUE
+
+		if(!in_hands)
+			for(var/datum/weakref/W as anything in assembly.finished_items)
+				var/obj/item/finished_item = W.resolve()
+				finished_item.forceMove(fallback_loc)
+
+		assembly.finished_items = null
+
 	return TRUE

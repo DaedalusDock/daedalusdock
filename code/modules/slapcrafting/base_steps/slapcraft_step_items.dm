@@ -3,10 +3,12 @@
 	abstract_type = /datum/slapcraft_step/item
 	insert_item_into_result = TRUE
 
-/datum/slapcraft_step/item/welder/base_only
+/datum/slapcraft_step/item/welder
 	desc = "Start with normal sized welding tool."
 	finished_desc = "A welding tool has been added."
 	item_types = list(/obj/item/weldingtool)
+
+/datum/slapcraft_step/item/welder/base_only
 	blacklist_item_types = list(/obj/item/weldingtool/mini, /obj/item/weldingtool/largetank, /obj/item/weldingtool/experimental)
 
 /datum/slapcraft_step/item/igniter

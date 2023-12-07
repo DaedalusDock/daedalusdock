@@ -94,6 +94,7 @@
 /datum/slapcraft_step/proc/perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, instant = FALSE, silent = FALSE)
 	if(!perform_check(user, item, assembly) || !assembly.recipe.check_correct_step(type, assembly.step_states))
 		return FALSE
+
 	if(perform_time && !instant)
 		if(!silent)
 			user.visible_message(
@@ -111,12 +112,16 @@
 		user.visible_message(
 			span_notice(step_replace_text(finish_msg, user, item, assembly)),
 			span_notice(step_replace_text(finish_msg_self, user, item, assembly))
-			)
+		)
+
 	if(!silent)
 		play_perform_sound(user, item, assembly)
+
 	on_perform(user, item, assembly)
+
 	if(insert_item)
 		move_item_to_assembly(user, item, assembly)
+
 	if(progress_crafting(user, item, assembly))
 		assembly.finished_step(user, src)
 	return TRUE
@@ -156,7 +161,11 @@
 
 /// Proc to perform handling a do_after, return FALSE if it failed, TRUE if succeeded.
 /datum/slapcraft_step/proc/perform_do_after(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, time_to_do)
-	if(!do_after(user, time_to_do, target = assembly))
+	var/flags = DO_PUBLIC
+	if(user.is_holding(item) && user.is_holding(assembly))
+		flags |= IGNORE_USER_LOC_CHANGE
+
+	if(!do_after(user, item, time_to_do, flags, interaction_key = "SLAPCRAFT"))
 		return FALSE
 	return TRUE
 

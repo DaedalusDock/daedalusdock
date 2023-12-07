@@ -83,15 +83,35 @@
 	disassembling = TRUE
 
 	var/atom/dump_loc = drop_location()
+
 	if(!dump_loc)
 		qdel(src)
 		return
 
-	for(var/obj/item/component as anything in contents)
-		/// Handle atom del causing the assembly to disassemble, don't touch the deleted atom
-		if(QDELETED(component))
-			continue
-		component.forceMove(dump_loc)
+	var/mob/living/holder
+	if(ismob(loc))
+		holder = loc
+		if(!holder.is_holding(src))
+			holder = null
+
+	to_chat(world, "[holder]")
+
+	moveToNullspace()
+
+	if(length(contents) <= 2 && holder)
+		for(var/obj/item/component as anything in contents)
+			// Handle atom del causing the assembly to disassemble, don't touch the deleted atom
+			if(QDELETED(component))
+				continue
+
+			if(!holder.put_in_hands(component))
+				component.forceMove(dump_loc)
+	else
+		for(var/obj/item/component as anything in contents)
+			// Handle atom del causing the assembly to disassemble, don't touch the deleted atom
+			if(QDELETED(component))
+				continue
+			component.forceMove(dump_loc)
 
 	qdel(src)
 

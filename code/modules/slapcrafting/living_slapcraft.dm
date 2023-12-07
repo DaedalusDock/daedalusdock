@@ -56,14 +56,17 @@
 
 	// Instantly and silently perform the first step on the assembly, disassemble it if something went wrong
 	if(!step_one.perform(src, first_item, assembly, instant = TRUE, silent = TRUE))
-		assembly.forceMove(fallback_loc)
 		assembly.disassemble()
 		return TRUE
+
+	fallback_loc = drop_location() //We may have moved
+
+	if(!put_in_hands(assembly))
+		assembly.forceMove(fallback_loc)
 
 	var/datum/slapcraft_step/step_two = target_recipe.next_suitable_step(src, second_item, assembly.step_states)
 	// Perform the second step, also disassemble it if we stopped working on it, because keeping 1 component assembly is futile.
 	if(!step_two.perform(src, second_item, assembly))
-		assembly.forceMove(fallback_loc)
 		assembly.disassemble()
 		return TRUE
 

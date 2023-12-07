@@ -72,9 +72,10 @@
 	if(!typecache)
 		CRASH("Slapcraft step [type] tried to check a type without a typecache!")
 	if(typecache[checked_type])
-		if(blacklist_typecache && blacklist_typecache[checked_type])
+		if(blacklist_typecache?[checked_type])
 			return FALSE
 		return TRUE
+
 	return FALSE
 
 /// Checks if the passed item is a proper type to perform this step, and whether it passes the `can_perform()` check. Asembly can be null

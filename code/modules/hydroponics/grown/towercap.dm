@@ -78,20 +78,6 @@
 	return NONE
 
 /obj/item/grown/log/attackby(obj/item/W, mob/user, params)
-	if(W.sharpness & SHARP_EDGED)
-		user.show_message(span_notice("You make [plank_name] out of \the [src]!"), MSG_VISUAL)
-		var/seed_modifier = 0
-		if(seed)
-			seed_modifier = round(seed.potency / 25)
-		var/obj/item/stack/plank = new plank_type(user.loc, 1 + seed_modifier, FALSE)
-		var/old_plank_amount = plank.amount
-		for (var/obj/item/stack/ST in user.loc)
-			if (ST != plank && istype(ST, plank_type) && ST.amount < ST.max_amount)
-				ST.attackby(plank, user) //we try to transfer all old unfinished stacks to the new stack we created.
-		if (plank.amount > old_plank_amount)
-			to_chat(user, span_notice("You add the newly-formed [plank_name] to the stack. It now contains [plank.amount] [plank_name]."))
-		qdel(src)
-
 	if(CheckAccepted(W))
 		var/obj/item/food/grown/leaf = W
 		if(HAS_TRAIT(leaf, TRAIT_DRIED))
@@ -106,6 +92,13 @@
 			to_chat(usr, span_warning("You must dry this first!"))
 	else
 		return ..()
+
+/// Returns an amount of planks that the log will yield
+/obj/item/grown/log/proc/get_plank_amount()
+	var/plank_amount = 1
+	if(seed)
+		plank_amount += round(seed.potency / 25)
+	return plank_amount
 
 /obj/item/grown/log/proc/CheckAccepted(obj/item/I)
 	return is_type_in_typecache(I, accepted)

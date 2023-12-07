@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Maintenance crates have items...again? I don't know anymore. This genuinely
-      pissed me the hell off.
-  - bugfix: Maintenance crates are no longer mapping helper munchers.

@@ -6,26 +6,34 @@
 	var/desc
 	/// Hint displayed to the user which examines the item required for the first step.
 	var/examine_hint
+
 	/// List of all steps to finish this recipe
 	var/list/steps
+
 	/// Type of the item that will be yielded as the result.
 	var/result_type
 	/// Amount of how many resulting types will be crafted.
 	var/result_amount = 1
 	/// Instead of result type you can use this as associative list of types to amounts for a more varied output
 	var/list/result_list
+
 	/// Weight class of the assemblies for this recipe.
 	var/assembly_weight_class = WEIGHT_CLASS_NORMAL
 	/// Suffix for the assembly name.
 	var/assembly_name_suffix = "assembly"
+
 	/// Category this recipe is in the handbook.
 	var/category = SLAP_CAT_MISC
 	/// Subcategory this recipe is in the handbook.
 	var/subcategory = SLAP_SUBCAT_MISC
+
 	/// Appearance in the radial menu for the user to choose from if there are recipe collisions.
 	var/image/radial_appearance
 	/// Order in which the steps should be performed.
 	var/step_order = SLAP_ORDER_STEP_BY_STEP
+
+	/// Should we print text when we finish? Mostly used to de-bloat chat.
+	var/show_finish_text = FALSE
 
 /datum/slapcraft_recipe/New()
 	. = ..()
@@ -201,6 +209,9 @@
 
 /// User has finished the recipe in an assembly.
 /datum/slapcraft_recipe/proc/finish_recipe(mob/living/user, obj/item/slapcraft_assembly/assembly)
+	if(show_finish_text)
+		to_chat(user, span_notice("You finish \the [name]."))
+
 	assembly.being_finished = TRUE
 	var/list/results = list()
 	create_items(assembly, results)

@@ -3,8 +3,8 @@
 	examine_hint = "You could chop it down into planks with something sharp..."
 	category = SLAP_CAT_MISC
 	steps = list(
-	/datum/slapcraft_step/chop_log,
-	/datum/slapcraft_step/weapon/sharp/chop
+		/datum/slapcraft_step/chop_log,
+		/datum/slapcraft_step/weapon/sharp/chop
 	)
 	result_type = /obj/item/stack/sheet/mineral/wood
 

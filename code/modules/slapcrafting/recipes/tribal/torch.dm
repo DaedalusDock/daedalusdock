@@ -3,9 +3,9 @@
 	examine_hint = "You could craft a torch, starting by adding dried leaf to a log..."
 	category = SLAP_CAT_TRIBAL
 	steps = list(
-	/datum/slapcraft_step/log,
-	/datum/slapcraft_step/dried_leaf,
-	/datum/slapcraft_step/tool/knife/carve_torch
+		/datum/slapcraft_step/log,
+		/datum/slapcraft_step/dried_leaf,
+		/datum/slapcraft_step/tool/knife/carve_torch
 	)
 	result_type = /obj/item/flashlight/flare/torch
 

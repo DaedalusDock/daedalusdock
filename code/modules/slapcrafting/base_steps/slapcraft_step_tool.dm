@@ -37,6 +37,15 @@
 	list_desc = "screwdriver"
 	tool_behaviour = TOOL_SCREWDRIVER
 
+/datum/slapcraft_step/tool/screwdriver/secure
+	desc = "Secure the parts with a screwdriver."
+	todo_desc = "You could secure the parts with a screwdriver..."
+
+	start_msg = "%USER% begins to secure the %TARGET%."
+	start_msg_self = "You begin to secure the %TARGET%."
+	finish_msg = "%USER% secures the %TARGET%."
+	finish_msg_self = "You secure the %TARGET%."
+
 /datum/slapcraft_step/tool/wirecutter
 	list_desc = "wirecutter"
 	tool_behaviour = TOOL_WIRECUTTER

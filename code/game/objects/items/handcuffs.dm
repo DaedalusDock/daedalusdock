@@ -224,18 +224,7 @@
 	color = null
 
 /obj/item/restraints/handcuffs/cable/attackby(obj/item/I, mob/user, params) //Slapcrafting
-	if(istype(I, /obj/item/stack/rods))
-		var/obj/item/stack/rods/R = I
-		if (R.use(1))
-			var/obj/item/wirerod/W = new /obj/item/wirerod
-			remove_item_from_storage(user)
-			user.put_in_hands(W)
-			to_chat(user, span_notice("You wrap [src] around the top of [I]."))
-			qdel(src)
-		else
-			to_chat(user, span_warning("You need one rod to make a wired rod!"))
-			return
-	else if(istype(I, /obj/item/stack/sheet/iron))
+	if(istype(I, /obj/item/stack/sheet/iron))
 		var/obj/item/stack/sheet/iron/M = I
 		if(M.get_amount() < 6)
 			to_chat(user, span_warning("You need at least six iron sheets to make good enough weights!"))

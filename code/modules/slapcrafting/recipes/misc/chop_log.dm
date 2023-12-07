@@ -19,13 +19,3 @@
 	finished_desc = "It's waiting to be chopped down into planks."
 	item_types = list(/obj/item/grown/log)
 
-/datum/slapcraft_step/weapon/sharp/chop
-	perform_time = 0.7 SECONDS
-	desc = "Chop the log into planks."
-	todo_desc = "You could chop logs in to planks..."
-
-	finish_msg = "You finish chopping down the log into planks."
-	start_msg = "%USER% begins chopping the log."
-	start_msg_self = "You begin chopping the log with the sharp tool."
-	finish_msg = "%USER% chops down the log into planks."
-	finish_msg_self = "You chop the log into planks."

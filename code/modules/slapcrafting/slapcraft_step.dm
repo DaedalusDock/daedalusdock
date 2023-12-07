@@ -102,9 +102,11 @@
 				)
 		if(!perform_do_after(user, item, assembly, perform_time * get_speed_multiplier(user, item, assembly)))
 			return FALSE
+
 		// Do checks again because we spent time in a do_after(), this time also check deletions.
 		if(QDELETED(assembly) || QDELETED(item) || !perform_check(user, item, assembly) || !assembly.recipe.check_correct_step(type, assembly.step_states))
 			return FALSE
+
 	if(!silent)
 		user.visible_message(
 			span_notice(step_replace_text(finish_msg, user, item, assembly)),

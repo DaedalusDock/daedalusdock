@@ -28,3 +28,26 @@
 /datum/slapcraft_step/stack/make_list_desc()
 	var/obj/item/stack/stack_cast = item_types[1]
 	return "[amount]x [initial(stack_cast.singular_name)]"
+
+
+/datum/slapcraft_step/stack/rod/one
+	desc = "Add a rod to the assembly."
+	todo_desc = "You could add a rod..."
+	item_types = list(/obj/item/stack/rods)
+	amount = 1
+
+	start_msg = "%USER% begins inserts a rod to the %TARGET%."
+	start_msg_self = "You begin inserting a rod to the %TARGET%."
+	finish_msg = "%USER% inserts a rod to the %TARGET%."
+	finish_msg_self = "You insert a rod to the %TARGET%."
+
+/datum/slapcraft_step/stack/cable/one
+	desc = "Add a cable to the assembly."
+	todo_desc = "You could add a cable..."
+	item_types = list(/obj/item/stack/cable_coil)
+	amount = 1
+
+	start_msg = "%USER% begins attaching a cable to the %TARGET%."
+	start_msg_self = "You begin inserting a cable to the %TARGET%."
+	finish_msg = "%USER% attaches a cable to the %TARGET%."
+	finish_msg_self = "You attach a cable to the %TARGET%."

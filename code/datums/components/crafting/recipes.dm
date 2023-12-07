@@ -586,17 +586,6 @@
 	category = CAT_WEAPONRY
 	subcategory = CAT_WEAPON
 
-/datum/crafting_recipe/spear
-	name = "Spear"
-	result = /obj/item/spear
-	reqs = list(/obj/item/restraints/handcuffs/cable = 1,
-				/obj/item/shard = 1,
-				/obj/item/stack/rods = 1)
-	parts = list(/obj/item/shard = 1)
-	time = 40
-	category = CAT_WEAPONRY
-	subcategory = CAT_WEAPON
-
 /datum/crafting_recipe/lizardhat
 	name = "Lizard Cloche Hat"
 	result = /obj/item/clothing/head/lizard

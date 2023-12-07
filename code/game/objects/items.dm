@@ -400,6 +400,11 @@ DEFINE_INTERACTABLE(/obj/item)
 	. = ..()
 
 	. += "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] object."
+	/// Add slapcraft hints for the item if its eligible for any recipes.
+	var/list/slapcraft_hints = slapcraft_examine_hints_for_type(type)
+	if(slapcraft_hints)
+		for(var/hint in slapcraft_hints)
+			. += span_notice(hint)
 
 /obj/item/interact(mob/user)
 	add_fingerprint(user)

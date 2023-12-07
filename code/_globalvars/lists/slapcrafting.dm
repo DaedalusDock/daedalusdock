@@ -1,11 +1,11 @@
 GLOBAL_LIST_EMPTY(slapcraft_firststep_recipe_cache)
 GLOBAL_LIST_EMPTY(slapcraft_categorized_recipes)
-GLOBAL_LIST_INIT(slapcraft_steps, build_slapcraft_steps())
-GLOBAL_LIST_INIT(slapcraft_recipes, build_slapcraft_recipes())
+GLOBAL_LIST_EMPTY(slapcraft_steps)
+GLOBAL_LIST_EMPTY(slapcraft_recipes)
 
 
-/proc/build_slapcraft_recipes()
-	var/list/recipe_list = list()
+/proc/init_slapcraft_recipes()
+	var/list/recipe_list = GLOB.slapcraft_recipes
 	for(var/datum/type as anything in typesof(/datum/slapcraft_recipe))
 		if(isabstract(type))
 			continue
@@ -19,15 +19,12 @@ GLOBAL_LIST_INIT(slapcraft_recipes, build_slapcraft_recipes())
 			GLOB.slapcraft_categorized_recipes[recipe.category][recipe.subcategory] = list()
 		GLOB.slapcraft_categorized_recipes[recipe.category][recipe.subcategory] += recipe
 
-	return recipe_list
-
-/proc/build_slapcraft_steps()
-	var/list/step_list = list()
+/proc/init_slapcraft_steps()
+	var/list/step_list = GLOB.slapcraft_steps
 	for(var/datum/type as anything in typesof(/datum/slapcraft_step))
 		if(isabstract(type))
 			continue
 		step_list[type] = new type()
-	return step_list
 
 /// Gets cached recipes for a type. This is a method of optimizating recipe lookup. Ugly but gets the job done.
 /// also WARNING: This will make it so all recipes whose first step is not type checked will not work, which all recipes that I can think of will be.

@@ -4,7 +4,7 @@
 	category = SLAP_CAT_MISC
 	steps = list(
 		/datum/slapcraft_step/chop_log,
-		/datum/slapcraft_step/weapon/sharp/chop
+		/datum/slapcraft_step/attack/sharp/chop
 	)
 	result_type = /obj/item/stack/sheet/mineral/wood
 

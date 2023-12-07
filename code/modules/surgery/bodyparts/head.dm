@@ -25,7 +25,7 @@
 	unarmed_stun_threshold = 4
 	bodypart_trait_source = HEAD_TRAIT
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD
+	bodypart_flags = (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY | BP_CAN_BE_DISLOCATED)
 
 	amputation_point = "neck"
 	encased = "skull"

@@ -1341,7 +1341,7 @@
 	contains = list(/obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck,
 					/obj/item/clothing/under/rank/medical/chief_medical_officer/turtleneck/skirt)
 
-/datum/supply_pack/medical/medical/atk
+/datum/supply_pack/medical/atk
 	name = "Triage - Advanced trauma supplies"
 	desc = "It's a bunch of bruise packs in a trenchcoat."
 	cost = CARGO_CRATE_VALUE * 3
@@ -1350,10 +1350,20 @@
 		/obj/item/stack/medical/bruise_pack,
 		/obj/item/stack/medical/bruise_pack,
 		/obj/item/stack/medical/bruise_pack,
-		/obj/item/stack/medical/bruise_pack,
-		/obj/item/stack/medical/bruise_pack,
-		/obj/item/stack/medical/bruise_pack
-		)
+		/obj/item/stack/medical/suture,
+		/obj/item/stack/medical/suture,
+		/obj/item/stack/medical/suture,
+	)
+
+/datum/supply_pack/medical/stasis_bags
+	name = "Stasis Bags Crate"
+	desc = "A shipment of stasis bags for medical triage."
+	cost = CARGO_CRATE_VALUE * 8
+	contains = list(
+		/obj/item/bodybag/stasis,
+		/obj/item/bodybag/stasis,
+		/obj/item/bodybag/stasis,
+	)
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Science /////////////////////////////////////////

@@ -35,6 +35,14 @@
 #define PAIN_MEDIUM "weak_pain"
 #define PAIN_LARGE "pain"
 
+//Germs and infections.
+#define GERM_LEVEL_AMBIENT  275 // Maximum germ level you can reach by standing still.
+#define GERM_LEVEL_MOVE_CAP 300 // Maximum germ level you can reach by running around.
+
+#define INFECTION_LEVEL_ONE   250
+#define INFECTION_LEVEL_TWO   500  // infections grow from ambient to two in ~5 minutes
+#define INFECTION_LEVEL_THREE 1000 // infections grow from two to three in ~10 minutes
+
 //Sizes of mobs, used by mob/living/var/mob_size
 #define MOB_SIZE_TINY 1
 #define MOB_SIZE_SMALL 5
@@ -186,9 +194,6 @@
 #define BRAIN_DAMAGE_SEVERE 100
 #define BRAIN_DAMAGE_CRITICAL 150
 #define BRAIN_DAMAGE_DEATH 200
-
-#define BRAIN_DECAY_RATE 0.5
-#define ORGAN_DECAY_RATE 0.002
 
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild
 #define BRAIN_TRAUMA_SEVERE /datum/brain_trauma/severe
@@ -440,8 +445,6 @@
 //CHEMICAL EFFECTS
 /// Prevents damage from freezing. Boolean.
 #define CE_CRYO "cryo"
-/// Organ preservation effects like formaldehyde. Boolean.
-#define CE_ORGAN_PRESERVATION "formaldehyde"
 /// Inaprovaline
 #define CE_STABLE "stable"
 /// Breathing depression, makes you need more air

@@ -165,6 +165,7 @@
 	data["cartAmount"] = length(cartridges)
 	data["maxCarts"] = maximum_cartridges
 	data["isBeakerLoaded"] = beaker ? 1 : 0
+	data["beakerName"] = "[beaker?.name]"
 
 	var/beakerContents[0]
 	var/beakerCurrentVolume = 0

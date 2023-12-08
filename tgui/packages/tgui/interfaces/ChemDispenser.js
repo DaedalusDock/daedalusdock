@@ -99,11 +99,9 @@ export const ChemDispenser = (props, context) => {
                     content="Eject"
                     disabled={!data.isBeakerLoaded}
                     onClick={() => act('eject')}
-                  />
-                // eslint-disable-next-line react/jsx-indent
-                )
+                  />)
               }>
-              {'No beaker'}
+              {data.isBeakerLoaded ? (data.beakerName) : ('No Beaker')}
             </LabeledList.Item>
             <LabeledList.Item label="Contents">
               <Box color="label">

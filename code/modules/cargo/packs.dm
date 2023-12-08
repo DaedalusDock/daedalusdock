@@ -1249,6 +1249,10 @@
 	cost = CARGO_CRATE_VALUE * 35 //price may need balancing
 	crate_name = "chemical cartridges crate"
 
+/datum/supply_pack/medical/chemical_carts/New()
+	. = ..()
+	set_cart_list()
+
 //this is just here for subtypes
 /datum/supply_pack/medical/chemical_carts/proc/set_cart_list()
 	contains = GLOB.cartridge_list_chems.Copy()

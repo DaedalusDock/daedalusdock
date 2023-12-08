@@ -94,8 +94,6 @@
 		if(!holder.is_holding(src))
 			holder = null
 
-	to_chat(world, "[holder]")
-
 	moveToNullspace()
 
 	if(length(contents) <= 2 && holder)

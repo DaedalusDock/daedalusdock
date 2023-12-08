@@ -1,5 +1,10 @@
 /// Have a living mob attempt to do a slapcraft. The mob is using the second item on the first item.
 /mob/living/proc/try_slapcraft(obj/item/first_item, obj/item/second_item)
+	// You cannot craft with items in storage, you must be holding them in hand
+	// or they must be on the floor
+	if((first_item.item_flags | second_item.item_flags) & IN_STORAGE)
+		return FALSE
+
 	// We need to find a recipe where the first item corresponds to the first step
 	// ..and the second item corresponds to the second step
 	var/list/available_recipes = slapcraft_recipes_for_type(first_item.type)

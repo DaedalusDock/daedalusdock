@@ -4171,6 +4171,7 @@
 #include "code\modules\slapcrafting\slapcraft_recipe.dm"
 #include "code\modules\slapcrafting\slapcraft_step.dm"
 #include "code\modules\slapcrafting\base_steps\slapcraft_step_items.dm"
+#include "code\modules\slapcrafting\base_steps\slapcraft_step_material.dm"
 #include "code\modules\slapcrafting\base_steps\slapcraft_step_reagent.dm"
 #include "code\modules\slapcrafting\base_steps\slapcraft_step_reagent_container.dm"
 #include "code\modules\slapcrafting\base_steps\slapcraft_step_stack.dm"

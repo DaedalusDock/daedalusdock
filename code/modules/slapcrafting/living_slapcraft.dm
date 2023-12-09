@@ -79,7 +79,7 @@
 		var/in_hands = FALSE
 		if(length(assembly.finished_items) == 1)
 			var/obj/item/finished_item = assembly.finished_items[1].resolve()
-			if(put_in_hands(finished_item))
+			if(isitem(finished_item) && put_in_hands(finished_item))
 				in_hands = TRUE
 
 		if(!in_hands)

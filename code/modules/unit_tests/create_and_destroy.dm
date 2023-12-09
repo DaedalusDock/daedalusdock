@@ -128,6 +128,7 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	GLOB.running_create_and_destroy = FALSE
 	//Hell code, we're bound to have ended the round somehow so let's stop if from ending while we work
 	SSticker.delay_end = TRUE
+	SSgarbage.collection_timeout[GC_QUEUE_CHECK] = 10 SECONDS
 	//Prevent the garbage subsystem from harddeling anything, if only to save time
 	SSgarbage.collection_timeout[GC_QUEUE_HARDDELETE] = 10000 HOURS
 	//Clear it, just in case

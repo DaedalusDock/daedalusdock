@@ -47,7 +47,13 @@
 	item_types = list(/obj/item/stack/cable_coil)
 	amount = 1
 
-	start_msg = "%USER% begins attaching a cable to the %TARGET%."
-	start_msg_self = "You begin inserting a cable to the %TARGET%."
-	finish_msg = "%USER% attaches a cable to the %TARGET%."
-	finish_msg_self = "You attach a cable to the %TARGET%."
+	start_msg = "%USER% begins attaching some cable to the %TARGET%."
+	start_msg_self = "You begin inserting some cable to the %TARGET%."
+	finish_msg = "%USER% attaches some cable to the %TARGET%."
+	finish_msg_self = "You attach some cable to the %TARGET%."
+
+/datum/slapcraft_step/stack/cable/fifteen
+	desc = "Add 15 cable to the assembly."
+	todo_desc = "You could add some cable..."
+	item_types = list(/obj/item/stack/cable_coil)
+	amount = 15

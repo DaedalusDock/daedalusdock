@@ -34,3 +34,10 @@
 	item_types = list(/obj/item/wirerod)
 	start_msg = "%USER% begins attaching a wirerod to the %TARGET%."
 	start_msg_self = "You begin attaching a wirerod to the %TARGET%."
+
+/datum/slapcraft_step/item/grenade
+	desc = "Attach a grenade."
+	item_types = list(/obj/item/grenade)
+	perform_time = 0
+	finish_msg = "%USER% attaches an explosive to the %TARGET%."
+	finish_msg_self = "You attach an explosive to the %TARGET%."

@@ -1,10 +1,10 @@
 /datum/slapcraft_recipe/chop_log
 	name = "chop log"
 	examine_hint = "You could chop it down into planks with something sharp..."
-	category = SLAP_CAT_MISC
+	category = SLAP_CAT_PROCESSING
 	steps = list(
 		/datum/slapcraft_step/chop_log,
-		/datum/slapcraft_step/attack/sharp/chop
+		/datum/slapcraft_step/attack/sharp/chop_log
 	)
 	result_type = /obj/item/stack/sheet/mineral/wood
 
@@ -19,3 +19,14 @@
 	finished_desc = "It's waiting to be chopped down into planks."
 	item_types = list(/obj/item/grown/log)
 
+/datum/slapcraft_step/attack/sharp/chop_log
+	perform_time = 0.7 SECONDS
+	force = 10 //hatchets have a force of 12, as reference
+	desc = "Chop the log into planks."
+	todo_desc = "You could chop logs in to planks..."
+
+	finish_msg = "You finish chopping down the log into planks."
+	start_msg = "%USER% begins chopping the log."
+	start_msg_self = "You begin chopping the log with the sharp tool."
+	finish_msg = "%USER% chops down the log into planks."
+	finish_msg_self = "You chop the log into planks."

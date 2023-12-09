@@ -129,8 +129,6 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	//Hell code, we're bound to have ended the round somehow so let's stop if from ending while we work
 	SSticker.delay_end = TRUE
 	SSgarbage.collection_timeout[GC_QUEUE_CHECK] = 10 SECONDS
-	//Prevent the garbage subsystem from harddeling anything, if only to save time
-	SSgarbage.collection_timeout[GC_QUEUE_HARDDELETE] = 10000 HOURS
 	//Clear it, just in case
 	cached_contents.Cut()
 
@@ -146,6 +144,7 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		time_needed += SSgarbage.collection_timeout[index]
 
 	var/start_time = world.time
+	var/real_start_time = REALTIMEOFDAY
 	var/garbage_queue_processed = FALSE
 
 	sleep(time_needed)
@@ -163,11 +162,11 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 			oldest_packet_creation = min(qdeld_at, oldest_packet_creation)
 
 		//If we've found a packet that got del'd later then we finished, then all our shit has been processed
-		if(oldest_packet_creation > start_time)
+		if	if(oldest_packet_creation > start_time && !length(SSgarbage.queues[GC_QUEUE_HARDDELETE])))
 			garbage_queue_processed = TRUE
 			break
 
-		if(world.time > start_time + time_needed + 30 MINUTES) //If this gets us gitbanned I'm going to laugh so hard
+		if(REALTIMEOFDAY > real_start_time + time_needed + 50 MINUTES) //If this gets us gitbanned I'm going to laugh so hard
 			TEST_FAIL("Something has gone horribly wrong, the garbage queue has been processing for well over 30 minutes. What the hell did you do")
 			break
 
@@ -199,4 +198,4 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 
 	SSticker.delay_end = FALSE
 	//This shouldn't be needed, but let's be polite
-	SSgarbage.collection_timeout[GC_QUEUE_HARDDELETE] = 10 SECONDS
+	SSgarbage.collection_timeout[GC_QUEUE_CHECK] = GC_CHECK_QUEUE

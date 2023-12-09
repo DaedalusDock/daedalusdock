@@ -8,12 +8,15 @@
 
 /datum/slapcraft_step/stack/can_perform(mob/living/user, obj/item/item)
 	var/obj/item/stack/stack = item
-	if(stack.amount < amount)
+	if(istype(stack) &&  stack.amount < amount)
 		return FALSE
 	return TRUE
 
 /datum/slapcraft_step/stack/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	var/obj/item/stack/stack = item
+	if(!istype(stack)) // Children of this type may not actually pass stacks
+		return ..()
+
 	var/obj/item/item_to_move
 	// Exactly how much we needed, just put the entirety in the assembly
 	if(stack.amount == amount)
@@ -28,6 +31,39 @@
 /datum/slapcraft_step/stack/make_list_desc()
 	var/obj/item/stack/stack_cast = item_types[1]
 	return "[amount]x [initial(stack_cast.singular_name)]"
+
+
+/// Can be a stack, another stack, or another item.
+/datum/slapcraft_step/stack/or_other
+	abstract_type = /datum/slapcraft_step/stack/or_other
+	/// An associative list of stack_type : amount.
+	var/list/amounts
+
+/datum/slapcraft_step/stack/or_other/New()
+	. = ..()
+	for(var/path in amounts)
+		var/required_amt = amounts[path]
+		var/list/path_tree = subtypesof(path)
+		for(var/child in path_tree)
+			path_tree[child] = required_amt
+
+/datum/slapcraft_step/stack/or_other/can_perform(mob/living/user, obj/item/item)
+	if(isstack(item))
+		var/obj/item/stack/S = item
+		if(S.amount < amounts[S.type])
+			return FALSE
+
+	return TRUE
+
+/datum/slapcraft_step/stack/or_other/binding
+	item_types = list(
+		/obj/item/stack/sticky_tape,
+		/obj/item/stack/cable_coil
+	)
+	amounts = list(
+		/obj/item/stack/sticky_tape = 1,
+		/obj/item/stack/cable_coil = 5,
+	)
 
 
 /datum/slapcraft_step/stack/rod/one

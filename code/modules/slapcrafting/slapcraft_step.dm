@@ -109,6 +109,10 @@
 		if(QDELETED(assembly) || QDELETED(item) || !perform_check(user, item, assembly) || !assembly.recipe.check_correct_step(type, assembly.step_states))
 			return FALSE
 
+	// If they can't actually drop the item, don't use it in crafting.
+	if((item.item_flags & IN_INVENTORY) && !user.temporarilyRemoveItemFromInventory(item))
+		return FALSE
+
 	if(!silent)
 		user.visible_message(
 			span_notice(step_replace_text(finish_msg, user, item, assembly)),

@@ -4,6 +4,10 @@
 	icon = 'icons/obj/surgery.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 0
+
+	//Germ level starts at 0
+	germ_level = 0
+
 	///The mob that owns this organ.
 	var/mob/living/carbon/owner = null
 	///The body zone this organ is supposed to inhabit.
@@ -19,6 +23,9 @@
 	var/decay_factor = 0 //same as above but when without a living owner, set to 0 for generic organs
 	var/high_threshold = 0.66
 	var/low_threshold = 0.33 //when minor organ damage occurs
+
+	/// The world.time of this organ's death
+	var/time_of_death = 0
 
 	/// The relative size of this organ, used for probability to hit.
 	var/relative_size = 25
@@ -264,9 +271,15 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// This is on_life() but for when the organ is dead or outside of a mob. Bad name.
 /obj/item/organ/proc/on_death(delta_time, times_fired)
-	if(organ_flags & (ORGAN_SYNTHETIC | ORGAN_FROZEN))
+	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_FROZEN|ORGAN_DEAD))
 		return
-	return applyOrganDamage(ORGAN_DECAY_RATE, updating_health = FALSE)
+
+	if(isnull(owner))
+		germ_level += rand(1,3)
+		if(germ_level >= INFECTION_LEVEL_TWO)
+			germ_level += rand(1,3)
+		if(germ_level >= INFECTION_LEVEL_THREE)
+			set_organ_dead(TRUE)
 
 /// Called once every life tick on every organ in a carbon's body
 /// NOTE: THIS IS VERY HOT. Be careful what you put in here
@@ -280,10 +293,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_SYNTHETIC_EMP) //Synthetic organ has been emped, is now failing.
 		return applyOrganDamage(decay_factor * maxHealth * delta_time, updating_health = FALSE)
 
-	if(!damage) // No sense healing if you're not even hurt bro
+	if(organ_flags & ORGAN_SYNTHETIC)
 		return
 
-	return handle_regeneration()
+	if(owner.bodytemperature > TCRYO && !(organ_flags & ORGAN_FROZEN))
+		handle_antibiotics()
+		. = handle_germ_effects()
+
+
+	if(damage) // No sense healing if you're not even hurt bro
+		. = handle_regeneration() || .
 
 /obj/item/organ/proc/handle_regeneration()
 	if((organ_flags & ORGAN_SYNTHETIC) || CHEM_EFFECT_MAGNITUDE(owner, CE_TOXIN) || owner.undergoing_cardiac_arrest())
@@ -292,6 +311,51 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(damage < maxHealth * 0.1)
 		return applyOrganDamage(-0.1, updating_health = FALSE)
 
+//Germs
+/obj/item/organ/proc/handle_antibiotics()
+	if(!owner || !germ_level)
+		return
+
+	if (!CHEM_EFFECT_MAGNITUDE(owner, CE_ANTIBIOTIC))
+		return
+
+	if (germ_level < INFECTION_LEVEL_ONE)
+		germ_level = 0	//cure instantly
+	else if (germ_level < INFECTION_LEVEL_TWO)
+		germ_level -= 5	//at germ_level == 500, this should cure the infection in 5 minutes
+	else
+		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
+
+	if(owner.body_position == LYING_DOWN)
+		germ_level -= 2
+
+	germ_level = max(0, germ_level)
+
+
+/obj/item/organ/proc/handle_germ_effects()
+	//** Handle the effects of infections
+	var/antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/medicine/spaceacillin)
+
+	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(0.3))
+		germ_level--
+
+	if (germ_level >= INFECTION_LEVEL_ONE/2)
+		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes, when immunity is full.
+		if(antibiotics < 5 && prob(round(germ_level/6 * 0.01)))
+			germ_level += 1
+
+	if(germ_level >= INFECTION_LEVEL_ONE)
+		var/fever_temperature = (owner.dna.species.heat_level_1 - owner.dna.species.bodytemp_normal - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.dna.species.bodytemp_normal
+		owner.bodytemperature += clamp((fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, 0, fever_temperature - owner.bodytemperature)
+
+	if (germ_level >= INFECTION_LEVEL_TWO)
+		//spread germs
+		if (antibiotics < 5 && ownerlimb.germ_level < germ_level && ( ownerlimb.germ_level < INFECTION_LEVEL_ONE*2 || prob(0.3) ))
+			ownerlimb.germ_level++
+
+		if (prob(3))	//about once every 30 seconds
+			. = applyOrganDamage(1,silent=prob(30), updating_health = FALSE)
+
 /obj/item/organ/examine(mob/user)
 	. = ..()
 
@@ -299,12 +363,31 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(organ_flags & ORGAN_DEAD)
 		if(organ_flags & ORGAN_SYNTHETIC)
-			to_chat(user, span_warning("\The [src] looks completely spent."))
+			. += span_warning("\The [src] looks completely spent.")
 		else
-			to_chat(user, span_warning("The decay has set into \the [src]."))
+			if(can_recover())
+				. += span_warning("It has begun to decay.")
+			else
+				. += span_warning("The decay has set into [src].")
 
-	if(damage > high_threshold * maxHealth)
+	else if(damage > high_threshold * maxHealth)
 		. += span_warning("[src] is starting to look discolored.")
+
+/obj/item/organ/proc/get_visible_state()
+	if(damage > maxHealth)
+		. = "bits and pieces of a destroyed "
+	else if(damage > (maxHealth * high_threshold))
+		. = "broken "
+	else if(damage > (maxHealth * low_threshold))
+		. = "badly damaged "
+	else if(damage > 5)
+		. = "damaged "
+	if(organ_flags & ORGAN_DEAD)
+		if(can_recover())
+			. = "decaying [.]"
+		else
+			. = "necrotic [.]"
+	. = "[.][name]"
 
 ///Used as callbacks by object pooling
 /obj/item/organ/proc/exit_wardrobe()
@@ -332,6 +415,10 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 	if(maximum < damage)
 		return
+	// If the organ can't be healed, don't heal it.
+	if(damage_amount < 0 && !can_recover())
+		return
+
 	var/old_damage = damage
 	damage = min(clamp(damage + damage_amount, 0, maximum), maxHealth)
 	. = damage - old_damage
@@ -402,11 +489,21 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		if(organ_flags & ORGAN_DEAD)
 			return FALSE
 		organ_flags |= ORGAN_DEAD
+		time_of_death = world.time
 		return TRUE
 	else
 		if(organ_flags & ORGAN_DEAD)
 			organ_flags &= ~ORGAN_DEAD
+			time_of_death = 0
 			return TRUE
+
+/// Can this organ be revived from the dead?
+/obj/item/organ/proc/can_recover()
+	// You can always repair a cyber organ
+	if((organ_flags & ORGAN_SYNTHETIC))
+		return TRUE
+
+	return ((maxHealth > 0) && (!(organ_flags & ORGAN_DEAD) || time_of_death >= (world.time - ORGAN_RECOVERY_THRESHOLD)))
 
 /// Called by Insert() if the organ is vital and the target is dead.
 /obj/item/organ/proc/attempt_vital_organ_revival(mob/living/carbon/human/owner)
@@ -480,9 +577,40 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 
+	// Necrotic
 	if(organ_flags & ORGAN_DEAD)
-		. += tag ?"<span style='font-weight: bold; color:#cc3333'>Non-Functional</span>" : "Non-Functional"
+		if(organ_flags & ORGAN_SYNTHETIC)
+			if(can_recover())
+				. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Failing</span>" : "Failing"
+			else
+				. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_NECROTIC]'>Irreparably Damaged</span>" : "Irreperably Damaged"
+		else
+			if(can_recover())
+				. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Decaying</span>" : "Decaying"
+			else
+				. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_NECROTIC]'>Necrotic</span>" : "Necrotic"
 
+	// Infection
+	var/germ_message
+	switch (germ_level)
+		if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + ((INFECTION_LEVEL_TWO - INFECTION_LEVEL_ONE) / 3))
+			germ_message =  "Mild Infection"
+		if (INFECTION_LEVEL_ONE + ((INFECTION_LEVEL_TWO - INFECTION_LEVEL_ONE) / 3) to INFECTION_LEVEL_ONE + (2 * (INFECTION_LEVEL_TWO - INFECTION_LEVEL_ONE) / 3))
+			germ_message =  "Mild Infection+"
+		if (INFECTION_LEVEL_ONE + (2 * (INFECTION_LEVEL_TWO - INFECTION_LEVEL_ONE) / 3) to INFECTION_LEVEL_TWO)
+			germ_message =  "Mild Infection++"
+		if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + ((INFECTION_LEVEL_THREE - INFECTION_LEVEL_THREE) / 3))
+			germ_message =  "Acute Infection"
+		if (INFECTION_LEVEL_TWO + ((INFECTION_LEVEL_THREE - INFECTION_LEVEL_THREE) / 3) to INFECTION_LEVEL_TWO + (2 * (INFECTION_LEVEL_THREE - INFECTION_LEVEL_TWO) / 3))
+			germ_message =  "Acute Infection+"
+		if (INFECTION_LEVEL_TWO + (2 * (INFECTION_LEVEL_THREE - INFECTION_LEVEL_TWO) / 3) to INFECTION_LEVEL_THREE)
+			germ_message =  "Acute Infection++"
+		if (INFECTION_LEVEL_THREE to INFINITY)
+			germ_message =  "Septic"
+	if (germ_message)
+		. += tag ? "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>[germ_message]</span>" : germ_message
+
+	// Add more info if Technetium is in their blood
 	if(owner.has_reagent(/datum/reagent/technetium))
 		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
 	else if(damage > high_threshold)

@@ -120,3 +120,9 @@
 	icon_state = "syndieenvirobag_folded"
 	unfoldedbag_path = /obj/structure/closet/body_bag/environmental/prisoner/syndicate
 	resistance_flags = ACID_PROOF | FIRE_PROOF | FREEZE_PROOF | LAVA_PROOF
+
+/obj/item/bodybag/stasis
+	name = "stasis bag"
+	desc = "A highly advanced and highly expensive device for suspending living creatures during medical transport."
+	icon_state = "ntenvirobag_folded"
+	unfoldedbag_path = /obj/structure/closet/body_bag/stasis

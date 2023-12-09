@@ -18,31 +18,36 @@
 #define DROPLIMB_THRESHOLD_TEAROFF 0.5
 #define DROPLIMB_THRESHOLD_DESTROY 1
 
+/// The amount of time an organ has to be dead for it to be unrecoverable
+#define ORGAN_RECOVERY_THRESHOLD (5 MINUTES)
+
 //Bodypart flags
 #define BP_BLEEDING (1<<0)
-#define BP_HAS_BLOOD (1<<1)
-#define BP_HAS_BONES (1<<2)
+#define BP_HAS_BLOOD (1<<1) // IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
+#define BP_HAS_BONES (1<<2) // IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_BROKEN_BONES (1<<3)
-/// This limb has a tendon
+/// This limb has a tendon IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_HAS_TENDON (1<<4)
 /// This limb's tendon is cut, and is disabled.
 #define BP_TENDON_CUT (1<<5)
-/// This limb has an artery.
+/// This limb has an artery. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_HAS_ARTERY (1<<6)
 /// This limb's artery is cut, causing massive bleeding.
 #define BP_ARTERY_CUT (1<<7)
-/// This limb has a "hand" and contributes to usable_arms
+/// This limb has a "hand" and contributes to usable_arms. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_IS_GRABBY_LIMB (1<<8)
-/// This limb is able to be used for movement and contributes to usable_legs
+/// This limb is able to be used for movement and contributes to usable_legs. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_IS_MOVEMENT_LIMB (1<<9)
 /// Limb is not connected to the nervous system and is not usable.
 #define BP_CUT_AWAY (1<<10)
-/// Limb cannot feel pain
+/// Limb cannot feel pain. IMMUTABLE: DO NOT ADD/REMOVE AFTER DEFINITION
 #define BP_NO_PAIN (1<<11)
+/// Limb is MF dead
+#define BP_NECROTIC (1<<12)
 /// Limb can be dislocated
-#define BP_CAN_BE_DISLOCATED (1<<12)
+#define BP_CAN_BE_DISLOCATED (1<<13)
 /// Limb is dislocated
-#define BP_DISLOCATED (1<<13)
+#define BP_DISLOCATED (1<<14)
 
 #define HATCH_CLOSED 1
 #define HATCH_UNSCREWED 2

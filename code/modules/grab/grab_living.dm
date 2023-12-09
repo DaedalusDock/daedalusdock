@@ -79,9 +79,9 @@
 	return grab
 
 /mob/living/proc/add_grab(obj/item/hand_item/grab/grab, use_offhand)
-	for(var/obj/item/hand_item/grab/other_grab in contents)
-		if(other_grab != grab)
-			return FALSE
+	if(LAZYLEN(active_grabs))
+		return FALSE //Non-humans only get 1 grab
+
 	grab.forceMove(src)
 	return TRUE
 
@@ -89,7 +89,7 @@
 	if(only_pulled)
 		return ..()
 
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		var/atom/movable/pulling = G.affecting
 		if(!MultiZAdjacent(src, pulling))
 			qdel(G)
@@ -109,7 +109,7 @@
 
 /// Called during or immediately after movement. Used to move grab targets around to ensure the grabs do not break during movement.
 /mob/living/proc/handle_grabs_during_movement(turf/old_loc, direction)
-	var/list/grabs_in_grab_chain = get_active_grabs() //recursively_get_conga_line()
+	var/list/grabs_in_grab_chain = active_grabs //recursively_get_conga_line()
 	if(!LAZYLEN(grabs_in_grab_chain))
 		return
 
@@ -148,7 +148,7 @@
 			if(moving_diagonally != FIRST_DIAG_STEP)
 				pulling.update_offsets()
 
-	var/list/my_grabs = get_active_grabs()
+	var/list/my_grabs = active_grabs
 	for(var/obj/item/hand_item/grab/G in my_grabs)
 		if(G.current_grab.reverse_facing || HAS_TRAIT(G.affecting, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
 			if(!direction)

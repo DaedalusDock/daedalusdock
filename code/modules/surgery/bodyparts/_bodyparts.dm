@@ -2,6 +2,8 @@
 	name = "limb"
 	desc = "Why is it detached..."
 
+	germ_level = 0
+
 	force = 6
 	throwforce = 3
 	stamina_damage = 40
@@ -325,6 +327,18 @@
 				bone = "broken [bone]"
 			wound_descriptors["a [bone] exposed"] = 1
 
+			if(!encased || how_open() >= SURGERY_DEENCASED)
+				var/list/bits = list()
+				for(var/obj/item/organ/organ in contained_organs)
+					if(organ.cosmetic_only)
+						continue
+					bits += organ.get_visible_state()
+
+				for(var/obj/item/implant in cavity_items)
+					bits += implant.name
+				if(length(bits))
+					wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
+
 		for(var/wound in wound_descriptors)
 			switch(wound_descriptors[wound])
 				if(1)
@@ -368,22 +382,27 @@
 /obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if(ishuman(victim))
-		var/mob/living/carbon/human/human_victim = victim
-		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
-			if(!human_victim.get_bodypart(body_zone))
-				user.temporarilyRemoveItemFromInventory(src, TRUE)
-				if(!attach_limb(victim))
-					to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
-					forceMove(human_victim.loc)
-				if(human_victim == user)
-					human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
-					span_notice("You force [src] into your empty socket, and it locks into place!"))
-				else
-					human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
-					span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
-				return
-	..()
+	if(!ishuman(victim) || !HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
+		return ..()
+
+	var/mob/living/carbon/human/human_victim = victim
+	if(human_victim.get_bodypart(body_zone))
+		return ..()
+
+	if(!user.temporarilyRemoveItemFromInventory(src))
+		return ..()
+
+	if(!attach_limb(victim))
+		to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
+		return
+
+	if(human_victim == user)
+		human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
+		span_notice("You force [src] into your empty socket, and it locks into place!"))
+	else
+		human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
+		span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
+
 
 /obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
 	SHOULD_CALL_PARENT(TRUE)
@@ -450,8 +469,10 @@
 //Return TRUE to get whatever mob this is in to update health.
 /obj/item/bodypart/proc/on_life(delta_time, times_fired, stam_heal)
 	SHOULD_CALL_PARENT(TRUE)
-	pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
-	. |= wound_life()
+	if(owner.stat != DEAD)
+		pain = max(pain - (owner.body_position == LYING_DOWN ? 3 : 1), 0)
+		. |= wound_life()
+	. |= update_germs()
 
 /obj/item/bodypart/proc/wound_life()
 	if(!LAZYLEN(wounds))
@@ -775,6 +796,10 @@
 		set_disabled(TRUE)
 		return
 
+	if(bodypart_flags & BP_NECROTIC)
+		set_disabled(TRUE)
+		return
+
 	var/total_damage = max(brute_dam + burn_dam)
 
 	// this block of checks is for limbs that can be disabled, but not through pure damage (AKA limbs that suffer wounds, human/monkey parts and such)
@@ -1020,7 +1045,7 @@
 
 	for(var/datum/wound/iter_wound as anything in wounds)
 		if(iter_wound.bleeding())
-			cached_bleed_rate += round(iter_wound.damage / 40, DAMAGE_PRECISION)
+			cached_bleed_rate += WOUND_BLEED_RATE(iter_wound)
 			bodypart_flags |= BP_BLEEDING
 
 	// Our bleed overlay is based directly off bleed_rate, so go aheead and update that would you?

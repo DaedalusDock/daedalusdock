@@ -47,6 +47,8 @@
 		for(var/child in path_tree)
 			path_tree[child] = required_amt
 
+		amounts += path_tree
+
 /datum/slapcraft_step/stack/or_other/can_perform(mob/living/user, obj/item/item)
 	if(isstack(item))
 		var/obj/item/stack/S = item

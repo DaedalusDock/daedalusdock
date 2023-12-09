@@ -162,7 +162,7 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 			oldest_packet_creation = min(qdeld_at, oldest_packet_creation)
 
 		//If we've found a packet that got del'd later then we finished, then all our shit has been processed
-		if	if(oldest_packet_creation > start_time && !length(SSgarbage.queues[GC_QUEUE_HARDDELETE])))
+		if	if(oldest_packet_creation > start_time && !length(SSgarbage.queues[GC_QUEUE_HARDDELETE]))
 			garbage_queue_processed = TRUE
 			break
 

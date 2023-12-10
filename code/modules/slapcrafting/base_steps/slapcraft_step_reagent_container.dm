@@ -23,6 +23,10 @@
 	var/temperature_max
 
 /datum/slapcraft_step/reagent_container/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/item/reagent_containers/container = item
 	if(!container.reagents)
 		return FALSE

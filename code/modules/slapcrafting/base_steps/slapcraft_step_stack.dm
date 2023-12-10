@@ -7,6 +7,10 @@
 	var/amount = 1
 
 /datum/slapcraft_step/stack/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/item/stack/stack = item
 	if(istype(stack) &&  stack.amount < amount)
 		return FALSE
@@ -26,11 +30,6 @@
 		var/obj/item/stack/split_stack = stack.split_stack(null, amount)
 		item_to_move = split_stack
 	item = item_to_move
-	return ..()
-
-/datum/slapcraft_step/stack/remove_item_from_mob(mob/living/user, obj/item/item)
-	if(isstack(item)) // Child types may want to pass a non-stack in!
-		return TRUE
 	return ..()
 
 /datum/slapcraft_step/stack/make_list_desc()
@@ -58,6 +57,10 @@
 		amounts += path_tree
 
 /datum/slapcraft_step/stack/or_other/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	if(isstack(item))
 		var/obj/item/stack/S = item
 		if(S.amount < amounts[S.type])

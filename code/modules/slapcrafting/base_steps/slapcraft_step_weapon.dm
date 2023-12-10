@@ -3,6 +3,8 @@
 	abstract_type = /datum/slapcraft_step/attack
 	insert_item = FALSE
 	check_types = FALSE
+	check_if_mob_can_drop_item = FALSE
+
 	list_desc = "sharp implement"
 	/// Sharpness flags needed to perform.
 	var/require_sharpness = NONE
@@ -10,14 +12,15 @@
 	var/force = 0
 
 /datum/slapcraft_step/attack/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	if(require_sharpness && !(item.sharpness & require_sharpness))
 		return FALSE
 	if(item.force < force)
 		return FALSE
 	return TRUE
-
-/datum/slapcraft_step/attack/remove_item_from_mob(mob/living/user, obj/item/item)
-	return TRUE // We aren't.
 
 /datum/slapcraft_step/attack/play_perform_sound(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	// Sharpness was required, so play a slicing sound

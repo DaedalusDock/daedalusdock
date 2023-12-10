@@ -10,15 +10,14 @@
 	var/amount = 0
 
 /datum/slapcraft_step/material/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/item/stack/stack = item
 	if(stack.custom_materials[GET_MATERIAL_REF(mat_type)] < amount)
 		return FALSE
 	return TRUE
-
-/datum/slapcraft_step/material/remove_item_from_mob(mob/living/user, obj/item/item)
-	if(isstack(item))
-		return TRUE
-	return ..()
 
 /datum/slapcraft_step/material/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	var/obj/item/stack/stack = item

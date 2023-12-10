@@ -3,12 +3,18 @@
 	abstract_type = /datum/slapcraft_step/tool
 	insert_item = FALSE
 	check_types = FALSE
+	check_if_mob_can_drop_item = FALSE
+
 	/// What tool behaviour do we need for this step.
 	var/tool_behaviour
 	/// How much fuel is required, only relevant for welding tools.
 	var/required_fuel = 0
 
 /datum/slapcraft_step/tool/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	if(item.tool_behaviour != tool_behaviour)
 		return FALSE
 	if(!item.tool_use_check(user, required_fuel))
@@ -24,9 +30,6 @@
 // Only relevant for welding tools I believe.
 /datum/slapcraft_step/tool/on_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	item.use(required_fuel)
-
-/datum/slapcraft_step/reagent/remove_item_from_mob(mob/living/user, obj/item/item)
-	return TRUE // You're USING the tool, not inserting the tool.
 
 /datum/slapcraft_step/tool/crowbar
 	list_desc = "crowbar"

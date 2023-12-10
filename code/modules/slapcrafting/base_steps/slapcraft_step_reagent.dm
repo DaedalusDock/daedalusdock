@@ -30,6 +30,10 @@
 	return ..()
 
 /datum/slapcraft_step/reagent/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/item/reagent_containers/container = item
 	if(!container.reagents)
 		return FALSE
@@ -77,9 +81,6 @@
 		container.reagents.remove_reagent_list(reagent_list)
 	else
 		container.reagents.remove_reagent(reagent_type, reagent_volume)
-
-/datum/slapcraft_step/reagent/remove_item_from_mob(mob/living/user, obj/item/item)
-	return TRUE
 
 /datum/slapcraft_step/reagent/make_list_desc()
 	if(reagent_list)

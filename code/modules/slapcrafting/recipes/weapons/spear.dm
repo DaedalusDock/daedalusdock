@@ -12,6 +12,7 @@
 /datum/slapcraft_recipe/wirerod
 	name = "wirerod"
 	category = SLAP_CAT_MISC
+	examine_hint = "You could add some wire..."
 
 	steps = list(
 		/datum/slapcraft_step/stack/rod/one,

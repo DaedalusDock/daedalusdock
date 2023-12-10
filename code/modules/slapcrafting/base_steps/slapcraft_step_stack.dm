@@ -12,7 +12,7 @@
 		return
 
 	var/obj/item/stack/stack = item
-	if(istype(stack) &&  stack.amount < amount)
+	if(istype(stack) && stack.amount < amount)
 		return FALSE
 	return TRUE
 
@@ -27,7 +27,7 @@
 		item_to_move = stack
 	else
 		// We have more than we need, split the stacks off
-		var/obj/item/stack/split_stack = stack.split_stack(null, amount)
+		var/obj/item/stack/split_stack = stack.split_stack(null, amount, null)
 		item_to_move = split_stack
 	item = item_to_move
 	return ..()

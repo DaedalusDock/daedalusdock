@@ -8,6 +8,8 @@
 	list_desc = "sharp implement"
 	/// Sharpness flags needed to perform.
 	var/require_sharpness = NONE
+	/// If we want exactly this bitfield, not "has any"
+	var/require_exact = FALSE
 	/// Required force of the item.
 	var/force = 0
 
@@ -16,8 +18,14 @@
 	if(!.)
 		return
 
-	if(require_sharpness && !(item.sharpness & require_sharpness))
-		return FALSE
+	if(require_sharpness || require_exact)
+		if(require_exact)
+			if(!(require_sharpness == item.sharpness))
+				return FALSE
+
+		else if(!(require_sharpness & item.sharpness))
+			return FALSE
+
 	if(item.force < force)
 		return FALSE
 	return TRUE
@@ -32,6 +40,12 @@
 
 /datum/slapcraft_step/attack/sharp
 	require_sharpness = SHARP_EDGED
+
+/datum/slapcraft_step/attack/bludgeon
+	list_desc = "blunt object"
+
+	require_sharpness = NONE
+	require_exact = TRUE
 
 /datum/slapcraft_step/attack/sharp/chop
 	perform_time = 0.7 SECONDS

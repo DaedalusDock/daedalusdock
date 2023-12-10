@@ -25,6 +25,9 @@
 /datum/slapcraft_step/tool/on_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	item.use(required_fuel)
 
+/datum/slapcraft_step/reagent/remove_item_from_mob(mob/living/user, obj/item/item)
+	return TRUE // You're USING the tool, not inserting the tool.
+
 /datum/slapcraft_step/tool/crowbar
 	list_desc = "crowbar"
 	tool_behaviour = TOOL_CROWBAR

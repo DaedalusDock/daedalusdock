@@ -16,6 +16,9 @@
 		return FALSE
 	return TRUE
 
+/datum/slapcraft_step/attack/remove_item_from_mob(mob/living/user, obj/item/item)
+	return TRUE // We aren't.
+
 /datum/slapcraft_step/attack/play_perform_sound(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	// Sharpness was required, so play a slicing sound
 	if(require_sharpness)

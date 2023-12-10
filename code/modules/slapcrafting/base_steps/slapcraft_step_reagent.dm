@@ -78,6 +78,9 @@
 	else
 		container.reagents.remove_reagent(reagent_type, reagent_volume)
 
+/datum/slapcraft_step/reagent/remove_item_from_mob(mob/living/user, obj/item/item)
+	return TRUE
+
 /datum/slapcraft_step/reagent/make_list_desc()
 	if(reagent_list)
 		var/string = ""

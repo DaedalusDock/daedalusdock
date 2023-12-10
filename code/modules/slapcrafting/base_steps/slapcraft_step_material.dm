@@ -15,6 +15,11 @@
 		return FALSE
 	return TRUE
 
+/datum/slapcraft_step/material/remove_item_from_mob(mob/living/user, obj/item/item)
+	if(isstack(item))
+		return TRUE
+	return ..()
+
 /datum/slapcraft_step/material/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	var/obj/item/stack/stack = item
 	var/obj/item/item_to_move

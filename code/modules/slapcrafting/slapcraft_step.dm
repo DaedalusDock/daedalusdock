@@ -19,7 +19,6 @@
 	/// Personalized visible message when you start the step.
 	var/start_msg_self
 
-
 	/// Whether we insert the valid item in the assembly.
 	var/insert_item = TRUE
 	/// Whether we insert the item into the resulting item's contents
@@ -110,7 +109,7 @@
 			return FALSE
 
 	// If they can't actually drop the item, don't use it in crafting.
-	if((item.item_flags & IN_INVENTORY) && !user.temporarilyRemoveItemFromInventory(item))
+	if(!remove_item_from_mob(user, item))
 		return FALSE
 
 	if(!silent)
@@ -148,6 +147,12 @@
 /// Behaviour to happen on performing this step. Perhaps removing a portion of reagents to create an IED or something.
 /datum/slapcraft_step/proc/on_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	return
+
+/// Attempts to remove the item from the mob's inventory.
+/datum/slapcraft_step/proc/remove_item_from_mob(mob/living/user, obj/item/item)
+	if((item.item_flags & IN_INVENTORY) && !user.temporarilyRemoveItemFromInventory(item))
+		return FALSE
+	return TRUE
 
 /// Behaviour to move the item into the assembly. Stackable items may want to change how they do this.
 /datum/slapcraft_step/proc/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)

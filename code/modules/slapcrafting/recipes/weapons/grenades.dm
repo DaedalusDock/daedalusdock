@@ -39,3 +39,31 @@
 	start_msg_self = "You begin addding some cables to the %TARGET%."
 	finish_msg = "%USER% adds some cables to the %TARGET%."
 	finish_msg_self = "You add some cables to the %TARGET%."
+
+/datum/slapcraft_recipe/molotov
+	name = "molotov cocktail"
+	examine_hint = "With flammable liquid and something to light, you could create a molotov..."
+	category = SLAP_CAT_WEAPONS
+	steps = list(
+		/datum/slapcraft_step/booze_bottle,
+		/datum/slapcraft_step/stack/or_other/molotov_fuse
+		)
+	result_type = /obj/item/reagent_containers/food/drinks/bottle/molotov
+
+/datum/slapcraft_step/booze_bottle
+	desc = "Get a bottle full of alcohol or another flammable substance."
+	finished_desc = "Now you just need some kind of fuse..."
+	insert_item_into_result = TRUE //the rest is handled in bottle.dm
+	item_types = list(/obj/item/reagent_containers/food/drinks/bottle)
+
+/datum/slapcraft_step/stack/or_other/molotov_fuse
+	desc = "Add a rag, cloth, or something else to work as a fuse."
+	todo_desc = "Now you just need some kind of fuse..."
+	item_types = list(
+		/obj/item/reagent_containers/glass/rag,
+		/obj/item/stack/sheet/cloth,
+		/obj/item/clothing/neck/tie
+	)
+	amounts = list(
+		/obj/item/stack/sheet/cloth = 1
+	)

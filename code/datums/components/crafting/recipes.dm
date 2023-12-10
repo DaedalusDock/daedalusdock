@@ -52,6 +52,7 @@
 		return TRUE
 	return FALSE
 
+/*
 /datum/crafting_recipe/improv_explosive
 	name = "IED"
 	result = /obj/item/grenade/iedcasing
@@ -63,7 +64,9 @@
 	time = 15
 	category = CAT_WEAPONRY
 	subcategory = CAT_WEAPON
+*/
 
+/*
 /datum/crafting_recipe/lance
 	name = "Explosive Lance (Grenade)"
 	result = /obj/item/spear/explosive
@@ -75,6 +78,7 @@
 	time = 15
 	category = CAT_WEAPONRY
 	subcategory = CAT_WEAPON
+*/
 
 /datum/crafting_recipe/strobeshield
 	name = "Strobe Shield"

@@ -58,13 +58,17 @@
 	return TRUE
 
 /datum/slapcraft_step/stack/or_other/binding
+	desc = "Tie the assembly together."
+	todo_desc = "You could use something to tie this the assembly together..."
 	item_types = list(
 		/obj/item/stack/sticky_tape,
-		/obj/item/stack/cable_coil
+		/obj/item/stack/cable_coil,
+		/obj/item/stack/sheet/cloth
 	)
 	amounts = list(
-		/obj/item/stack/sticky_tape = 1,
-		/obj/item/stack/cable_coil = 5,
+		/obj/item/stack/sticky_tape = 2,
+		/obj/item/stack/sheet/cloth = 1,
+		/obj/item/stack/cable_coil = 15,
 	)
 
 

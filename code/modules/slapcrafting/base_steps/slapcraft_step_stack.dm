@@ -84,7 +84,7 @@
 	amounts = list(
 		/obj/item/stack/sticky_tape = 2,
 		/obj/item/stack/sheet/cloth = 1,
-		/obj/item/stack/cable_coil = 15,
+		/obj/item/stack/cable_coil = 10,
 	)
 
 
@@ -99,6 +99,28 @@
 	finish_msg = "%USER% inserts a rod to the %TARGET%."
 	finish_msg_self = "You insert a rod to the %TARGET%."
 
+/datum/slapcraft_step/stack/metal/one
+	desc = "Add a sheet of metal to the assembly."
+	todo_desc = "You could add a sheet of metal..."
+	item_types = list(/obj/item/stack/sheet/iron)
+	amount = 1
+
+	start_msg = "%USER% begins adds a sheet of metal to the %TARGET%."
+	start_msg_self = "You begin adds a sheet of metal to the %TARGET%."
+	finish_msg = "%USER% adds a sheet of metal to the %TARGET%."
+	finish_msg_self = "You adds a sheet of metal to the %TARGET%."
+
+/datum/slapcraft_step/stack/metal/five
+	desc = "Add 5 sheets of metal to the assembly."
+	todo_desc = "You could add some metal sheets..."
+	item_types = list(/obj/item/stack/sheet/iron)
+	amount = 5
+
+	start_msg = "%USER% starts adding some metal to the %TARGET%."
+	start_msg_self = "You begin adds some metal to the %TARGET%."
+	finish_msg = "%USER% adds some metal to the %TARGET%."
+	finish_msg_self = "You add some metal to the %TARGET%."
+
 /datum/slapcraft_step/stack/cable/one
 	desc = "Add a cable to the assembly."
 	todo_desc = "You could add a cable..."
@@ -110,8 +132,18 @@
 	finish_msg = "%USER% attaches some cable to the %TARGET%."
 	finish_msg_self = "You attach some cable to the %TARGET%."
 
+/datum/slapcraft_step/stack/cable/five
+	desc = "Add 5 cable to the assembly."
+	todo_desc = "You could add some cable..."
+	item_types = list(/obj/item/stack/cable_coil)
+	amount = 5
+
+/datum/slapcraft_step/stack/cable/ten
+	desc = "Add 10 cable to the assembly."
+	item_types = list(/obj/item/stack/cable_coil)
+	amount = 10
+
 /datum/slapcraft_step/stack/cable/fifteen
 	desc = "Add 15 cable to the assembly."
-	todo_desc = "You could add some cable..."
 	item_types = list(/obj/item/stack/cable_coil)
 	amount = 15

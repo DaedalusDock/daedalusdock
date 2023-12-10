@@ -94,6 +94,7 @@
 	..()
 	blacklist |= subtypesof(/obj/item/shield/riot/)
 
+/*
 /datum/crafting_recipe/molotov
 	name = "Molotov"
 	result = /obj/item/reagent_containers/food/drinks/bottle/molotov
@@ -103,7 +104,8 @@
 	time = 40
 	category = CAT_WEAPONRY
 	subcategory = CAT_WEAPON
-
+*/
+/*
 /datum/crafting_recipe/stunprod
 	name = "Stunprod"
 	result = /obj/item/melee/baton/security/cattleprod
@@ -124,7 +126,8 @@
 	time = 40
 	category = CAT_WEAPONRY
 	subcategory = CAT_WEAPON
-
+*/
+/*
 /datum/crafting_recipe/bola
 	name = "Bola"
 	result = /obj/item/restraints/legcuffs/bola
@@ -133,7 +136,7 @@
 	time = 20//15 faster than crafting them by hand!
 	category= CAT_WEAPONRY
 	subcategory = CAT_WEAPON
-
+*/
 /datum/crafting_recipe/gonbola
 	name = "Gonbola"
 	result = /obj/item/restraints/legcuffs/bola/gonbola

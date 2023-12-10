@@ -19,7 +19,8 @@
 	/// Personalized visible message when you start the step.
 	var/start_msg_self
 
-
+	/// If the user is holding the item, check if they need to be able to drop it to be able to craft with it.
+	var/check_if_mob_can_drop_item = TRUE
 	/// Whether we insert the valid item in the assembly.
 	var/insert_item = TRUE
 	/// Whether we insert the item into the resulting item's contents
@@ -109,10 +110,6 @@
 		if(QDELETED(assembly) || QDELETED(item) || !perform_check(user, item, assembly) || !assembly.recipe.check_correct_step(type, assembly.step_states))
 			return FALSE
 
-	// If they can't actually drop the item, don't use it in crafting.
-	if((item.item_flags & IN_INVENTORY) && !user.temporarilyRemoveItemFromInventory(item))
-		return FALSE
-
 	if(!silent)
 		user.visible_message(
 			span_notice(step_replace_text(finish_msg, user, item, assembly)),
@@ -143,6 +140,11 @@
 /// Checks whether a user can perform this step with an item. Exists so steps can override this proc for their own behavioural checks.
 /// `assembly` can be null here, when the recipe finding checks are trying to figure out what recipe we can make.
 /datum/slapcraft_step/proc/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+	SHOULD_CALL_PARENT(TRUE)
+
+	// Check if the mob can actually remove the item from their inventory
+	if(check_if_mob_can_drop_item && (item.item_flags & IN_INVENTORY) && !user.canUnequipItem(item))
+		return FALSE
 	return TRUE
 
 /// Behaviour to happen on performing this step. Perhaps removing a portion of reagents to create an IED or something.

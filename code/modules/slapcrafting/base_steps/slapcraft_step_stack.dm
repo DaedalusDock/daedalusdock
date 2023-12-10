@@ -7,6 +7,10 @@
 	var/amount = 1
 
 /datum/slapcraft_step/stack/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/item/stack/stack = item
 	if(istype(stack) &&  stack.amount < amount)
 		return FALSE
@@ -30,14 +34,17 @@
 
 /datum/slapcraft_step/stack/make_list_desc()
 	var/obj/item/stack/stack_cast = item_types[1]
-	return "[amount]x [initial(stack_cast.singular_name)]"
-
+	if(istype(stack_cast))
+		return "[amount]x [initial(stack_cast.singular_name)]"
+	return ..()
 
 /// Can be a stack, another stack, or another item.
 /datum/slapcraft_step/stack/or_other
 	abstract_type = /datum/slapcraft_step/stack/or_other
 	/// An associative list of stack_type : amount.
 	var/list/amounts
+	// Do not set this on or_other, its set dynamically!
+	amount = 0
 
 /datum/slapcraft_step/stack/or_other/New()
 	. = ..()
@@ -50,12 +57,21 @@
 		amounts += path_tree
 
 /datum/slapcraft_step/stack/or_other/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	if(isstack(item))
 		var/obj/item/stack/S = item
 		if(S.amount < amounts[S.type])
 			return FALSE
 
 	return TRUE
+
+/datum/slapcraft_step/stack/or_other/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+	amount = amounts[item.type]
+	return ..()
+
 
 /datum/slapcraft_step/stack/or_other/binding
 	desc = "Tie the assembly together."

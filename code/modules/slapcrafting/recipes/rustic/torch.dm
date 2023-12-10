@@ -34,6 +34,10 @@
 	)
 
 /datum/slapcraft_step/dried_leaf/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+	. = ..()
+	if(!.)
+		return
+
 	if(!HAS_TRAIT(item, TRAIT_DRIED))
 		return FALSE
 	return TRUE

@@ -3,12 +3,18 @@
 	abstract_type = /datum/slapcraft_step/tool
 	insert_item = FALSE
 	check_types = FALSE
+	check_if_mob_can_drop_item = FALSE
+
 	/// What tool behaviour do we need for this step.
 	var/tool_behaviour
 	/// How much fuel is required, only relevant for welding tools.
 	var/required_fuel = 0
 
 /datum/slapcraft_step/tool/can_perform(mob/living/user, obj/item/item)
+	. = ..()
+	if(!.)
+		return
+
 	if(item.tool_behaviour != tool_behaviour)
 		return FALSE
 	if(!item.tool_use_check(user, required_fuel))

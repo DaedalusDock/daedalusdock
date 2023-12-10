@@ -2,6 +2,7 @@
 /// This alternatively can also transfer to a container inside the crafting assembly too!
 /datum/slapcraft_step/reagent
 	abstract_type = /datum/slapcraft_step/reagent
+	check_if_mob_can_drop_item = FALSE
 	insert_item = FALSE
 	item_types = list(/obj/item/reagent_containers)
 	finish_msg = "%USER% finishes adding some reagents to %TARGET%."

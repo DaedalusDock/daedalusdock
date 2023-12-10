@@ -142,28 +142,45 @@
 		SEND_SIGNAL(src, COMSIG_CARBON_UNEQUIP_HAT, I, force, newloc, no_move, invdrop, silent)
 		if(!QDELETED(src))
 			head_update(I)
+
 	else if(I == back)
 		back = null
 		if(!QDELETED(src))
 			update_worn_back()
+
 	else if(I == wear_mask)
 		wear_mask = null
 		if(!QDELETED(src))
 			wear_mask_update(I, toggle_off = 1)
-	if(I == wear_neck)
+
+	else if(I == wear_neck)
 		wear_neck = null
 		if(!QDELETED(src))
 			update_worn_neck(I)
+
 	else if(I == handcuffed)
 		set_handcuffed(null)
 		if(buckled?.buckle_requires_restraints)
 			buckled.unbuckle_mob(src)
 		if(!QDELETED(src))
 			update_handcuffed()
+
+	else if(I == shoes)
+		shoes = null
+		if(!QDELETED(src))
+			update_worn_shoes()
+
 	else if(I == legcuffed)
 		legcuffed = null
 		if(!QDELETED(src))
 			update_worn_legcuffs()
+
+	// Not an else-if because we're probably equipped in another slot
+	if((I == internal || I == external) && (QDELETED(src) || QDELETED(I) || I.loc != src))
+		cutoff_internals()
+		if(!QDELETED(src))
+			update_mob_action_buttons(UPDATE_BUTTON_STATUS)
+
 	update_equipment_speed_mods()
 
 //handle stuff to update when a mob equips/unequips a mask.

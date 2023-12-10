@@ -319,19 +319,21 @@ Diagnostic HUDs!
 /// Returns a pixel_y value to use for hud code
 /atom/proc/get_hud_pixel_y()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	var/static/med_hud_icon_height_cache = list()
-	. = med_hud_icon_height_cache[icon]
-	if(isnull(.))
-		if(isnull(icon))
-			return 0
+	var/static/hud_icon_height_cache = list()
+	if(isnull(icon))
+		return 0
 
-		var/icon/I
-		if(isfile(icon))
-			I = icon(icon, icon_state, dir)
-		else
-			I = icon
-		. = I.Height() - world.icon_size
-		med_hud_icon_height_cache[isfile(icon) ? icon : I] = .
+	. = hud_icon_height_cache[icon]
+
+	if(!isnull(.)) // 0 is valid
+		return .
+
+	var/icon/I
+	I = icon(icon, icon_state, dir)
+	. = I.Height() - world.icon_size
+
+	if(isfile(icon) && length("[icon]")) // Do NOT cache icon instances, only filepaths
+		hud_icon_height_cache[icon] = .
 
 //Sillycone hooks
 /mob/living/silicon/proc/diag_hud_set_health()

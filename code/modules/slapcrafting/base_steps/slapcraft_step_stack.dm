@@ -99,7 +99,18 @@
 	finish_msg = "%USER% inserts a rod to the %TARGET%."
 	finish_msg_self = "You insert a rod to the %TARGET%."
 
-/datum/slapcraft_step/stack/metal/one
+/datum/slapcraft_step/stack/rod/two
+	desc = "Add 2 rod to the assembly."
+	todo_desc = "You could add some rods..."
+	item_types = list(/obj/item/stack/rods)
+	amount = 2
+
+	start_msg = "%USER% adds some rods to the %TARGET%."
+	start_msg_self = "You add some rods to the %TARGET%."
+	finish_msg = "%USER% adds some rods to the %TARGET%."
+	finish_msg_self = "You add some rods to the %TARGET%."
+
+/datum/slapcraft_step/stack/iron/one
 	desc = "Add a sheet of metal to the assembly."
 	todo_desc = "You could add a sheet of metal..."
 	item_types = list(/obj/item/stack/sheet/iron)
@@ -110,7 +121,7 @@
 	finish_msg = "%USER% adds a sheet of metal to the %TARGET%."
 	finish_msg_self = "You adds a sheet of metal to the %TARGET%."
 
-/datum/slapcraft_step/stack/metal/five
+/datum/slapcraft_step/stack/iron/five
 	desc = "Add 5 sheets of metal to the assembly."
 	todo_desc = "You could add some metal sheets..."
 	item_types = list(/obj/item/stack/sheet/iron)

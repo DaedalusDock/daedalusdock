@@ -429,6 +429,7 @@
 	time = 6 SECONDS //Has a four second do_after when building manually
 	category = CAT_ROBOT
 
+/*
 /datum/crafting_recipe/improvised_pneumatic_cannon //Pretty easy to obtain but
 	name = "Pneumatic Cannon"
 	result = /obj/item/pneumatic_cannon/ghetto
@@ -452,6 +453,7 @@
 	time = 10
 	category = CAT_WEAPONRY
 	subcategory = CAT_WEAPON
+*/
 
 /datum/crafting_recipe/meteorslug
 	name = "Meteorslug Shell"

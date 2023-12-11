@@ -14,7 +14,7 @@
 	steps = list(
 		/datum/slapcraft_step/item/wirerod,
 		/datum/slapcraft_step/item/igniter,
-		/datum/slapcraft_step/item/bluespace_prod
+		/datum/slapcraft_step/stack/teleprod_crystal
 	)
 	result_type = /obj/item/melee/baton/security/cattleprod/teleprod
 

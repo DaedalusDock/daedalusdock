@@ -11,7 +11,10 @@
 
 	var/obj/item/stack/stack = item
 	if(istype(stack) && stack.amount < amount)
-		error_list += "There are not enough [item] (need [amount])."
+		if(item.gender == PLURAL) //this looks really funny if you dont know byond
+			error_list += "There are not enough [initial(item.name)] (need [amount])."
+		else
+			error_list += "There is not enough [initial(item.name)] (need [amount])."
 		. = FALSE
 
 /datum/slapcraft_step/stack/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)

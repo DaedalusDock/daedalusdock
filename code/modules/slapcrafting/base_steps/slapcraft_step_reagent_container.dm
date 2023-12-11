@@ -22,10 +22,8 @@
 	/// If defined it's the maximum required temperature for the step to work.
 	var/temperature_max
 
-/datum/slapcraft_step/reagent_container/can_perform(mob/living/user, obj/item/item)
+/datum/slapcraft_step/reagent_container/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	. = ..()
-	if(!.)
-		return
 
 	var/obj/item/reagent_containers/container = item
 	if(!container.reagents)
@@ -42,13 +40,16 @@
 	else if (reagent_type)
 		if(!container.reagents.has_reagent(reagent_type, reagent_volume))
 			return FALSE
+
 	if(!isnull(container_volume) && container.reagents.maximum_volume < container_volume)
 		return FALSE
+
 	if(!isnull(maximum_volume) && container.reagents.maximum_volume > maximum_volume)
 		return FALSE
+
 	if(!isnull(free_volume) && (container.reagents.maximum_volume - container.reagents.total_volume) < free_volume)
 		return FALSE
-	return TRUE
+
 
 /datum/slapcraft_step/reagent_container/make_list_desc()
 	. = ..()

@@ -9,15 +9,14 @@
 	/// Amount (cm3) of the material required
 	var/amount = 0
 
-/datum/slapcraft_step/material/can_perform(mob/living/user, obj/item/item)
+/datum/slapcraft_step/material/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	. = ..()
-	if(!.)
-		return
 
 	var/obj/item/stack/stack = item
-	if(stack.custom_materials[GET_MATERIAL_REF(mat_type)] < amount)
-		return FALSE
-	return TRUE
+	var/datum/material/mat = GET_MATERIAL_REF(mat_type)
+	if(stack.custom_materials[mat] < amount)
+		error_list += "Not enough [mat.name] (need [amount])."
+		. = FALSE
 
 /datum/slapcraft_step/material/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	var/obj/item/stack/stack = item

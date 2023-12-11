@@ -30,7 +30,7 @@
 	make_readable_reagent_string()
 	return ..()
 
-/datum/slapcraft_step/reagent/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+/datum/slapcraft_step/reagent/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	. = ..()
 	if(!.)
 		return

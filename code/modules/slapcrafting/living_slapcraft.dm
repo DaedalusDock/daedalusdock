@@ -21,10 +21,11 @@
 		// Get next suitable step that is available after the first one would be performed.
 		var/list/pretend_list = list()
 		pretend_list[step_one.type] = TRUE
-		var/datum/slapcraft_step/next_step = recipe.next_suitable_step(src, second_item, pretend_list)
+
+		var/datum/slapcraft_step/next_step = recipe.next_suitable_step(src, second_item, pretend_list, check_type_only = TRUE)
 		if(!next_step)
 			continue
-		if(!next_step.perform_check(src, second_item, null))
+		if(!next_step.perform_check(src, second_item, null, check_type_only = TRUE))
 			continue
 
 		recipes += recipe
@@ -59,9 +60,14 @@
 
 	var/datum/slapcraft_step/step_one = SLAPCRAFT_STEP(target_recipe.steps[1])
 
+	var/list/errors = list()
+
 	// Instantly and silently perform the first step on the assembly, disassemble it if something went wrong
-	if(!step_one.perform(src, first_item, assembly, instant = TRUE, silent = TRUE))
+	if(!step_one.perform(src, first_item, assembly, instant = TRUE, silent = TRUE, error_list = errors))
 		assembly.disassemble()
+		if(length(errors))
+			errors = span_danger("I cannot craft that.<hr>[jointext(errors, "<br>")]")
+			to_chat(src, examine_block(errors))
 		return TRUE
 
 	fallback_loc = drop_location() //We may have moved
@@ -69,10 +75,13 @@
 	if(!put_in_hands(assembly))
 		assembly.forceMove(fallback_loc)
 
-	var/datum/slapcraft_step/step_two = target_recipe.next_suitable_step(src, second_item, assembly.step_states)
+	var/datum/slapcraft_step/step_two = target_recipe.next_suitable_step(src, second_item, assembly.step_states, check_type_only = TRUE)
 	// Perform the second step, also disassemble it if we stopped working on it, because keeping 1 component assembly is futile.
-	if(!step_two.perform(src, second_item, assembly))
+	if(!step_two.perform(src, second_item, assembly, error_list = errors))
 		assembly.disassemble()
+		if(length(errors))
+			errors = span_danger("I cannot craft that.<hr>[jointext(errors, "<br>")]")
+			to_chat(src, examine_block(errors))
 		return TRUE
 
 	if(QDELING(assembly) && assembly.being_finished)

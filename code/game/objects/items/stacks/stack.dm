@@ -73,6 +73,8 @@
 		set_mats_per_unit(custom_materials, amount ? 1/amount : 1)
 
 	. = ..()
+	// HELLO THIS IS KAPU. THIS IS BROKEN.
+	// BECAUSE ON DAEDALUS ALL MOVABLES CALL LOC.ENTERED(SRC) POST-INITIALIZE, STACKS WILL ALWAYS MERGE.
 	if(merge)
 		for(var/obj/item/stack/item_stack in loc)
 			if(item_stack == src)
@@ -557,7 +559,7 @@
 	if(user.get_inactive_held_item() == src)
 		if(is_zero_amount(delete_if_zero = TRUE))
 			return
-		return split_stack(user, 1)
+		return split_stack(user, 1, user)
 	else
 		. = ..()
 
@@ -574,7 +576,7 @@
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
 	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	split_stack(user, stackmaterial)
+	split_stack(user, stackmaterial, user)
 	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -583,11 +585,13 @@
  * Arguments:
  * - [user][/mob]: The mob splitting the stack.
  * - amount: The number of units to split from this stack.
+ * - spawn_loc: The place to spawn the new stack, accepts null.
  */
-/obj/item/stack/proc/split_stack(mob/user, amount)
+/obj/item/stack/proc/split_stack(mob/user, amount, spawn_loc)
 	if(!use(amount, TRUE, FALSE))
 		return null
-	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE, mats_per_unit, absorption_capacity)
+
+	var/obj/item/stack/F = new type(spawn_loc, amount, FALSE, mats_per_unit, absorption_capacity)
 	. = F
 	F.copy_evidences(src)
 	loc.atom_storage?.refresh_views()

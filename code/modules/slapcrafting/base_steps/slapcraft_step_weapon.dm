@@ -8,6 +8,8 @@
 	list_desc = "sharp implement"
 	/// Sharpness flags needed to perform.
 	var/require_sharpness = NONE
+	/// If we want exactly this bitfield, not "has any"
+	var/require_exact = FALSE
 	/// Required force of the item.
 	var/force = 0
 
@@ -16,8 +18,14 @@
 	if(!.)
 		return
 
-	if(require_sharpness && !(item.sharpness & require_sharpness))
-		return FALSE
+	if(require_sharpness || require_exact)
+		if(require_exact)
+			if(!(require_sharpness == item.sharpness))
+				return FALSE
+
+		else if(!(require_sharpness & item.sharpness))
+			return FALSE
+
 	if(item.force < force)
 		return FALSE
 	return TRUE
@@ -35,8 +43,19 @@
 	todo_desc = "Now you'll need to cut it with something..."
 	require_sharpness = SHARP_EDGED
 
-/datum/slapcraft_step/attack/blunt
-	desc = "Smack the assembly with something heavy and blunt." //this is a generic description and should be overriden
-	todo_desc = "Now you'll need to hammer it with something..."
-	//require_sharpness = SHARP_EDGED come back to this
-	force = 10
+/datum/slapcraft_step/attack/bludgeon
+	list_desc = "blunt object"
+
+	require_sharpness = NONE
+	require_exact = TRUE
+
+/datum/slapcraft_step/attack/sharp/chop
+	perform_time = 0.7 SECONDS
+	desc = "Chop the log into planks."
+	todo_desc = "You could chop logs in to planks..."
+
+	finish_msg = "You finish chopping down the log into planks."
+	start_msg = "%USER% begins chopping the log."
+	start_msg_self = "You begin chopping the log with the sharp tool."
+	finish_msg = "%USER% chops down the log into planks."
+	finish_msg_self = "You chop the log into planks."

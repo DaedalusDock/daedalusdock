@@ -32,6 +32,7 @@
 /datum/slapcraft_step/item/wirerod
 	desc = "Attach a wirerod."
 	item_types = list(/obj/item/wirerod)
+
 	start_msg = "%USER% begins attaching a wirerod to the %TARGET%."
 	start_msg_self = "You begin attaching a wirerod to the %TARGET%."
 

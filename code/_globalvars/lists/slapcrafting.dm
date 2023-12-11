@@ -31,24 +31,26 @@ GLOBAL_LIST_EMPTY(slapcraft_recipes)
 /// If you wish to remove this and GLOB.slapcraft_firststep_recipe_cache should this cause issues, replace the return with GLOB.slapcraft_recipes
 /proc/slapcraft_recipes_for_type(passed_type)
 	// Falsy entry means we need to make a cache for this type.
-	if(!GLOB.slapcraft_firststep_recipe_cache[passed_type])
+	if(isnull(GLOB.slapcraft_firststep_recipe_cache[passed_type]))
 		var/list/fitting_recipes = list()
 		for(var/recipe_type in GLOB.slapcraft_recipes)
 			var/datum/slapcraft_recipe/recipe = SLAPCRAFT_RECIPE(recipe_type)
 			var/datum/slapcraft_step/step_one = SLAPCRAFT_STEP(recipe.steps[1])
 			if(step_one.check_type(passed_type))
 				fitting_recipes += recipe
+
 		if(fitting_recipes.len == 0)
-			GLOB.slapcraft_firststep_recipe_cache[passed_type] = TRUE
+			GLOB.slapcraft_firststep_recipe_cache[passed_type] = FALSE
 		else if (fitting_recipes.len == 1)
 			GLOB.slapcraft_firststep_recipe_cache[passed_type] = fitting_recipes[1]
 		else
 			GLOB.slapcraft_firststep_recipe_cache[passed_type] = fitting_recipes
 
+
 	var/value = GLOB.slapcraft_firststep_recipe_cache[passed_type]
-	// Hacky, but byond allows us to do this. If TRUE then no recipes match
-	if(value == TRUE)
+	if(value == FALSE)
 		return null
+
 	// Once again, either pointing to a list or to a single value is something hacky but useful here for a very easy memory optimization.
 	else if (islist(value))
 		return value
@@ -60,11 +62,10 @@ GLOBAL_LIST_EMPTY(slapcraft_recipes)
 	var/list/valid_recipes = slapcraft_recipes_for_type(passed_type)
 	if(!valid_recipes)
 		return null
+
 	var/list/all_hints = list()
 	for(var/datum/slapcraft_recipe/recipe as anything in valid_recipes)
 		if(recipe.examine_hint)
 			all_hints += recipe.examine_hint
 
-	if(all_hints.len == 0)
-		return null
 	return all_hints

@@ -28,3 +28,7 @@
   - bugfix: Maintenance crates are no longer mapping helper munchers.
   - bugfix: Holding shift displays the examine icon again
   - server: Developers are now required to use BYOND 515
+2023-12-11:
+  SyncIt21:
+  - bugfix: Cryostylane and oxygen reaction now cools down temps. Other reactions
+      with the REACTION_HEAT_ARBITARY flag also cools down temps correctly

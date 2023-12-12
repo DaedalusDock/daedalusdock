@@ -282,12 +282,13 @@
 				continue
 			. += cable_structure
 	// Connect to other knotted cables if we are knotted
-	for(var/obj/structure/cable/cable_structure in get_turf(src))
-		if(cable_structure == src)
-			continue
-		if(!cable_structure.is_knotted())
-			continue
-		. += cable_structure
+	if(is_knotted())
+		for(var/obj/structure/cable/cable_structure in get_turf(src))
+			if(cable_structure == src)
+				continue
+			if(!cable_structure.is_knotted())
+				continue
+			. += cable_structure
 
 
 /obj/structure/cable/proc/get_machine_connections(powernetless_only = FALSE)

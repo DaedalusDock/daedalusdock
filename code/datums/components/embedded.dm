@@ -91,7 +91,7 @@
 		damage += weapon.w_class * impact_pain_mult
 		var/post_armor_damage = damage
 		if(limb_owner)
-			var/armor = limb_owner.run_armor_check(limb.body_zone, MELEE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armour_penetration, weak_against_armour = I.weak_against_armour)
+			var/armor = limb_owner.run_armor_check(limb.body_zone, PUNCTURE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armour_penetration, weak_against_armour = I.weak_against_armour)
 			post_armor_damage = damage * ((100-armor)/100)
 
 		if(post_armor_damage <= 0)

@@ -19,10 +19,12 @@
 #define BRAIN "brain"
 
 //Damage flag defines //
-/// Involves a melee attack or a thrown object.
-#define MELEE "melee"
-/// Involves a solid projectile.
-#define BULLET "bullet"
+/// Involves a blunt object.
+#define BLUNT "bludgeoning"
+/// Involves a weapon with a point, or bullets.
+#define PUNCTURE "puncture"
+/// Involves a weapon with a sharp edge, like a knife.
+#define SLASH "slash"
 /// Involves a laser.
 #define LASER "laser"
 /// Involves an EMP or energy-based projectile.

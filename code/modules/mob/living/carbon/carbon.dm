@@ -1349,7 +1349,7 @@
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 

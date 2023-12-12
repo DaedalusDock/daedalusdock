@@ -1,7 +1,7 @@
 
 /obj/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	..()
-	take_damage(AM.throwforce, BRUTE, MELEE, 1, get_dir(src, AM))
+	take_damage(AM.throwforce, BRUTE, BLUNT, 1, get_dir(src, AM))
 
 /obj/ex_act(severity, target)
 	if(resistance_flags & INDESTRUCTIBLE)
@@ -36,7 +36,7 @@
 		playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 	else
 		playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
-	var/damage = take_damage(hulk_damage(), BRUTE, MELEE, 0, get_dir(src, user))
+	var/damage = take_damage(hulk_damage(), BRUTE, BLUNT, 0, get_dir(src, user))
 	user.visible_message(span_danger("[user] smashes [src][damage ? "" : ", without leaving a mark"]!"), span_danger("You smash [src][damage ? "" : ", without leaving a mark"]!"), null, COMBAT_MESSAGE_RANGE)
 	return TRUE
 
@@ -47,10 +47,10 @@
 		var/turf/T = loc
 		if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(src, TRAIT_T_RAY_VISIBLE))
 			return
-	take_damage(400, BRUTE, MELEE, 0, get_dir(src, B))
+	take_damage(400, BRUTE, BLUNT, 0, get_dir(src, B))
 
 /obj/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)
-	if(attack_generic(user, 60, BRUTE, MELEE, 0))
+	if(attack_generic(user, 60, BRUTE, BLUNT, 0))
 		playsound(src.loc, 'sound/weapons/slash.ogg', 100, TRUE)
 
 /obj/attack_basic_mob(mob/living/basic/user, list/modifiers)
@@ -59,9 +59,9 @@
 		return FALSE
 	else
 		if(user.obj_damage)
-			. = attack_generic(user, user.obj_damage, user.melee_damage_type, MELEE, TRUE, user.armour_penetration)
+			. = attack_generic(user, user.obj_damage, user.melee_damage_type, BLUNT, TRUE, user.armour_penetration)
 		else
-			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, MELEE,TRUE, user.armour_penetration)
+			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, BLUNT,TRUE, user.armour_penetration)
 		if(.)
 			playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 
@@ -74,9 +74,9 @@
 		if(user.environment_smash)
 			play_soundeffect = FALSE
 		if(user.obj_damage)
-			. = attack_generic(user, user.obj_damage, user.melee_damage_type, MELEE, play_soundeffect, user.armour_penetration)
+			. = attack_generic(user, user.obj_damage, user.melee_damage_type, BLUNT, play_soundeffect, user.armour_penetration)
 		else
-			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, MELEE, play_soundeffect, user.armour_penetration)
+			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, BLUNT, play_soundeffect, user.armour_penetration)
 		if(. && !play_soundeffect)
 			playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 		if(user.client)
@@ -96,7 +96,7 @@
 /obj/attack_slime(mob/living/simple_animal/slime/user)
 	if(!user.is_adult)
 		return
-	attack_generic(user, rand(10, 15), BRUTE, MELEE, 1)
+	attack_generic(user, rand(10, 15), BRUTE, BLUNT, 1)
 
 
 /obj/singularity_act()

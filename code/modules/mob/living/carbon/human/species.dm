@@ -1022,7 +1022,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		log_combat(user, target, "attempted to punch")
 		return FALSE
 
-	var/armor_block = target.run_armor_check(affecting, MELEE)
+	var/armor_block = target.run_armor_check(affecting, BLUNT)
 
 	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
@@ -1135,7 +1135,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	hit_area = affecting.plaintext_zone
 	var/def_zone = affecting.body_zone
 
-	var/armor_block = H.run_armor_check(affecting, MELEE, span_notice("Your armor has protected your [hit_area]!"), span_warning("Your armor has softened a hit to your [hit_area]!"),I.armour_penetration, weak_against_armour = I.weak_against_armour)
+	var/armor_block = H.run_armor_check(affecting, BLUNT, span_notice("Your armor has protected your [hit_area]!"), span_warning("Your armor has softened a hit to your [hit_area]!"),I.armour_penetration, weak_against_armour = I.weak_against_armour)
 	armor_block = min(90,armor_block) //cap damage reduction at 90%
 
 	var/weakness = check_species_weakness(I, user)

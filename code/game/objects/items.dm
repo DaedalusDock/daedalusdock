@@ -342,7 +342,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/blob_act(obj/structure/blob/B)
 	if(B && B.loc == loc)
-		atom_destruction(MELEE)
+		atom_destruction(BLUNT)
 
 
 /**Makes cool stuff happen when you suicide with an item
@@ -1533,7 +1533,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage((w_class * 5) * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 
@@ -1545,7 +1545,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!istype(attacker))
 		return 0
 	var/obj/item/bodypart/BP = attacker.get_active_hand()
-	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, MELEE, silent = TRUE), sharpness = sharpness)
+	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, BLUNT, silent = TRUE), sharpness = sharpness)
 	attacker.visible_message(span_danger("[attacker] hurts \his hand on [src]!"))
 	log_combat(attacker, user, "Attempted to disarm but was blocked by", src)
 	playsound(user, hitsound, 50, 1, -1)

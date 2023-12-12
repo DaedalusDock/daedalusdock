@@ -72,8 +72,10 @@
 /atom/proc/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir, armour_penetration = 0)
 	if(!uses_integrity)
 		CRASH("/atom/proc/run_atom_armor was called on [src] without being implemented as a type that uses integrity!")
-	if(damage_flag == MELEE && damage_amount < damage_deflection)
+
+	if(damage_flag == BLUNT && damage_amount < damage_deflection)
 		return 0
+
 	switch(damage_type)
 		if(BRUTE)
 		if(BURN)

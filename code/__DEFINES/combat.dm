@@ -20,7 +20,7 @@
 
 //Damage flag defines //
 /// Involves a blunt object.
-#define BLUNT "bludgeoning"
+#define BLUNT "blunt"
 /// Involves a weapon with a point, or bullets.
 #define PUNCTURE "puncture"
 /// Involves a weapon with a sharp edge, like a knife.

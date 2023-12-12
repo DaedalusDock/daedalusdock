@@ -6,7 +6,7 @@
 	icon = 'icons/effects/effects.dmi'
 	anchored = TRUE
 	max_integrity = 1
-	armor = list(BLUNT = 0, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 0, BIO = 0, FIRE = 20, ACID = 20)
+	armor = list(BLUNT = 0, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 0, BIO = 0, FIRE = 20, ACID = 20)
 	var/obj/item/holosign_creator/projector
 	var/use_vis_overlay = TRUE
 

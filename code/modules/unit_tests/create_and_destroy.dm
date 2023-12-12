@@ -128,7 +128,7 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	GLOB.running_create_and_destroy = FALSE
 	//Hell code, we're bound to have ended the round somehow so let's stop if from ending while we work
 	SSticker.delay_end = TRUE
-	SSgarbage.collection_timeout[GC_QUEUE_CHECK] = 10 SECONDS
+	SSgarbage.collection_timeout[GC_QUEUE_CHECK] = 1 MINUTE
 	//Clear it, just in case
 	cached_contents.Cut()
 

@@ -26,7 +26,7 @@
 	playsound(src, P.hitsound, 50, TRUE)
 	var/damage
 	if(!QDELETED(src)) //Bullet on_hit effect might have already destroyed this object
-		damage = take_damage(P.damage, P.damage_type, P.armor_flag, 0, turn(P.dir, 180), P.armour_penetration)
+		damage = take_damage(P.damage, P.damage_type, P.armor_flag, 0, turn(P.dir, 180), P.armor_penetration)
 	if(P.suppressed != SUPPRESSED_VERY)
 		visible_message(span_danger("[src] is hit by \a [P][damage ? "" : ", without leaving a mark"]!"), null, null, COMBAT_MESSAGE_RANGE)
 
@@ -59,9 +59,9 @@
 		return FALSE
 	else
 		if(user.obj_damage)
-			. = attack_generic(user, user.obj_damage, user.melee_damage_type, BLUNT, TRUE, user.armour_penetration)
+			. = attack_generic(user, user.obj_damage, user.melee_damage_type, BLUNT, TRUE, user.armor_penetration)
 		else
-			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, BLUNT,TRUE, user.armour_penetration)
+			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, BLUNT,TRUE, user.armor_penetration)
 		if(.)
 			playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 
@@ -74,9 +74,9 @@
 		if(user.environment_smash)
 			play_soundeffect = FALSE
 		if(user.obj_damage)
-			. = attack_generic(user, user.obj_damage, user.melee_damage_type, BLUNT, play_soundeffect, user.armour_penetration)
+			. = attack_generic(user, user.obj_damage, user.melee_damage_type, BLUNT, play_soundeffect, user.armor_penetration)
 		else
-			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, BLUNT, play_soundeffect, user.armour_penetration)
+			. = attack_generic(user, rand(user.melee_damage_lower,user.melee_damage_upper), user.melee_damage_type, BLUNT, play_soundeffect, user.armor_penetration)
 		if(. && !play_soundeffect)
 			playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 		if(user.client)

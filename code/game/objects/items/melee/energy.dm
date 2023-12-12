@@ -125,7 +125,7 @@
 	throwforce = 25
 	throw_speed = 3
 	throw_range = 5
-	armour_penetration = 100
+	armor_penetration = 100
 	sharpness = SHARP_EDGED
 	w_class = WEIGHT_CLASS_NORMAL
 	flags_1 = CONDUCT_1
@@ -160,7 +160,7 @@
 	throwforce = 5
 	throw_speed = 3
 	throw_range = 5
-	armour_penetration = 35
+	armor_penetration = 35
 	block_chance = 50
 	embedding = list("embed_chance" = 75, "impact_pain_mult" = 10)
 

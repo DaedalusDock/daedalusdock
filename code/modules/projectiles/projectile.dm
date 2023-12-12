@@ -156,9 +156,9 @@
 	///Defines what armor to use when it hits things.  Must be set to bullet, laser, energy, or bomb
 	var/armor_flag = PUNCTURE
 	///How much armor this projectile pierces.
-	var/armour_penetration = 0
+	var/armor_penetration = 0
 	///Whether or not our bullet lacks penetrative power, and is easily stopped by armor.
-	var/weak_against_armour = FALSE
+	var/weak_against_armor = FALSE
 	var/projectile_type = /obj/projectile
 	///Sets the max range of the projectile, This will de-increment every step. When 0, it will deletze the object.
 	var/range = 50

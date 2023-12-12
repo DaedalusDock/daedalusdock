@@ -5,7 +5,7 @@
 	damage = 90
 	paralyze = 100
 	dismemberment = 90
-	armour_penetration = 100
+	armor_penetration = 100
 	damage_type = BRUTE
 	armor_flag = PUNCTURE
 

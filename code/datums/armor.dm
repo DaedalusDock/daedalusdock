@@ -124,3 +124,18 @@
 	GenerateTag()
 
 #undef ARMORID
+
+/proc/armor_flag_to_strike_string(flag)
+	switch(flag)
+		if(BLUNT)
+			return "strike"
+		if(PUNCTURE)
+			return "stab"
+		if(SLASH)
+			return "slash"
+		if(ACID)
+			return "acid"
+		if(FIRE)
+			return "burn"
+		else
+			return "blow"

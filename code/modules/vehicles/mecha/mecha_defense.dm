@@ -133,7 +133,7 @@
 		return BULLET_ACT_HIT
 	log_message("Hit by projectile. Type: [hitting_projectile]([hitting_projectile.damage_type]).", LOG_MECHA, color="red")
 	// yes we *have* to run the armor calc proc here I love tg projectile code too
-	try_damage_component(run_atom_armor(hitting_projectile.damage, hitting_projectile.damage_type, hitting_projectile.armor_flag, 0, REVERSE_DIR(hitting_projectile.dir), hitting_projectile.armour_penetration), hitting_projectile.def_zone)
+	try_damage_component(run_atom_armor(hitting_projectile.damage, hitting_projectile.damage_type, hitting_projectile.armor_flag, 0, REVERSE_DIR(hitting_projectile.dir), hitting_projectile.armor_penetration), hitting_projectile.def_zone)
 	return ..()
 
 /obj/vehicle/sealed/mecha/ex_act(severity, target)

@@ -102,7 +102,7 @@
 	icon_state = "knife"
 	speed = 2
 	damage = 25
-	armour_penetration = 100
+	armor_penetration = 100
 	sharpness = SHARP_EDGED
 	pass_flags = PASSTABLE | PASSFLAPS
 

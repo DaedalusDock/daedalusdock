@@ -117,7 +117,7 @@
 /obj/item/food/clothing/proc/after_eat(mob/eater)
 	var/obj/item/clothing/resolved_clothing = clothing.resolve()
 	if (resolved_clothing)
-		resolved_clothing.take_damage(MOTH_EATING_CLOTHING_DAMAGE, sound_effect = FALSE, damage_flag = BOMB, armour_penetration = 100) //This leaves clothing shreds.
+		resolved_clothing.take_damage(MOTH_EATING_CLOTHING_DAMAGE, sound_effect = FALSE, damage_flag = BOMB, armor_penetration = 100) //This leaves clothing shreds.
 	else
 		qdel(src)
 
@@ -179,16 +179,16 @@
  * * def_zone: The bodypart zone in question
  * * damage_amount: Incoming damage
  * * damage_type: BRUTE or BURN
- * * armour_penetration: If the attack had armour_penetration
+ * * armor_penetration: If the attack had armor_penetration
  */
-/obj/item/clothing/proc/take_damage_zone(def_zone, damage_amount, damage_type, armour_penetration)
+/obj/item/clothing/proc/take_damage_zone(def_zone, damage_amount, damage_type, armor_penetration)
 	if(!def_zone || !limb_integrity || (initial(body_parts_covered) in GLOB.bitflags)) // the second check sees if we only cover one bodypart anyway and don't need to bother with this
 		return
 	var/list/covered_limbs = cover_flags2body_zones(body_parts_covered) // what do we actually cover?
 	if(!(def_zone in covered_limbs))
 		return
 
-	var/damage_dealt = take_damage(damage_amount * 0.1, damage_type, armour_penetration, FALSE) * 10 // only deal 10% of the damage to the general integrity damage, then multiply it by 10 so we know how much to deal to limb
+	var/damage_dealt = take_damage(damage_amount * 0.1, damage_type, armor_penetration, FALSE) * 10 // only deal 10% of the damage to the general integrity damage, then multiply it by 10 so we know how much to deal to limb
 	LAZYINITLIST(damage_by_parts)
 	damage_by_parts[def_zone] += damage_dealt
 	if(damage_by_parts[def_zone] > limb_integrity)

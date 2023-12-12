@@ -80,7 +80,7 @@
 
 	var/actual_chance = embed_chance
 	var/penetrative_behaviour = 1 //Keep this above 1, as it is a multiplier for the pen_mod for determining actual embed chance.
-	if(weapon.weak_against_armour)
+	if(weapon.weak_against_armor)
 		penetrative_behaviour = ARMOR_WEAKENED_MULTIPLIER
 
 	if(throwingdatum?.speed > weapon.throw_speed)

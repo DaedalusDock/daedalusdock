@@ -4,7 +4,7 @@
 	damage = 0
 	damage_type = OXY
 	nodamage = TRUE
-	armour_penetration = 100
+	armor_penetration = 100
 	armor_flag = NONE
 	/// determines what type of antimagic can block the spell projectile
 	var/antimagic_flags = MAGIC_RESISTANCE
@@ -576,7 +576,7 @@
 	damage = 0
 	damage_type = BURN
 	nodamage = FALSE
-	armour_penetration = 100
+	armor_penetration = 100
 	adj_temperature = -200 // Cools you down greatly per hit
 
 /obj/projectile/magic/nothing

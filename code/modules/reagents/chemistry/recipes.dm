@@ -40,7 +40,7 @@
 	/// How sharp the temperature exponential curve is (to the power of value)
 	var/temp_exponent_factor = 2
 
-	/// How much the temperature will change (with no intervention) (i.e. for 30u made the temperature will increase by 100, same with 300u. The final temp will always be start + this value, with the exception con beakers with different specific heats)
+	/// How much the temperature changes per unit of chem used. without REACTION_HEAT_ARBITARY flag the rate of change depends on the holder heat capacity else results are more accurate
 	var/thermic_constant = 50
 	/// Optimal/max rate possible if all conditions are perfect
 	var/rate_up_lim = 30

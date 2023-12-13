@@ -39,7 +39,7 @@
 	name = "7.12x82mm hollow-point bullet"
 	damage = 50
 	sharpness = SHARP_EDGED
-	weak_against_armor = TRUE
+	weak_against_armor = 2
 
 /obj/projectile/bullet/incendiary/mm712x82
 	name = "7.12x82mm incendiary bullet"

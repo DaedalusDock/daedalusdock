@@ -1,12 +1,12 @@
 
-/mob/living/proc/run_armor_check(def_zone = null, attack_flag = BLUNT, absorb_text = null, soften_text = null, armor_penetration, penetrated_text, silent=FALSE, weak_against_armor = FALSE)
+/mob/living/proc/run_armor_check(def_zone = null, attack_flag = BLUNT, absorb_text = null, soften_text = null, armor_penetration, penetrated_text, silent=FALSE, weak_against_armor = null)
 	var/our_armor = getarmor(def_zone, attack_flag)
 
 	if(our_armor <= 0)
 		return our_armor
 
-	if(weak_against_armor && our_armor >= 0)
-		our_armor *= ARMOR_WEAKENED_MULTIPLIER
+	if(weak_against_armor)
+		our_armor *= weak_against_armor
 
 	var/armor_after_penetration = max(0, our_armor - armor_penetration)
 	if(silent)

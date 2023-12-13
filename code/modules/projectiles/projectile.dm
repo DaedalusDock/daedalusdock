@@ -157,8 +157,8 @@
 	var/armor_flag = PUNCTURE
 	///How much armor this projectile pierces.
 	var/armor_penetration = 0
-	///Whether or not our bullet lacks penetrative power, and is easily stopped by armor.
-	var/weak_against_armor = FALSE
+	/// A multiplier applied to the defender's armor, making it more effective against this projectile.
+	var/weak_against_armor = null
 	var/projectile_type = /obj/projectile
 	///Sets the max range of the projectile, This will de-increment every step. When 0, it will deletze the object.
 	var/range = 50

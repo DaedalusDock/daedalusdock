@@ -134,8 +134,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/slowdown = 0
 	///percentage of armour effectiveness to remove
 	var/armor_penetration = 0
-	///Whether or not our object is easily hindered by the presence of armor
-	var/weak_against_armor = FALSE
+	/// A multiplier applied to the target's armor. "2" means that their armor is twice as effective against this item.
+	var/weak_against_armor = null
 	///What objects the suit storage can store
 	var/list/allowed = null
 	///In deciseconds, how long an item takes to equip; counts only for normal clothing slots, not pockets etc.

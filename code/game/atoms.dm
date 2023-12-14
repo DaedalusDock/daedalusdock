@@ -2234,4 +2234,3 @@
 /atom/proc/reset_plane_and_layer()
 	plane = initial(plane)
 	layer = initial(layer)
-

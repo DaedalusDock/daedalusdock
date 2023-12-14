@@ -15,7 +15,7 @@
 	stamina_damage = 47
 	stamina_cost = 20
 	stamina_critical_chance = 10
-	combat_click_delay = CLICK_CD_MELEE * 2
+	combat_click_delay = CLICK_CD_MELEE * 2.5
 
 	w_class = WEIGHT_CLASS_BULKY
 	custom_materials = list(/datum/material/iron = 500)

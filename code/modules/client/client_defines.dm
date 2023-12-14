@@ -115,6 +115,8 @@
 	preload_rsc = PRELOAD_RSC
 
 	var/atom/movable/screen/click_catcher/void
+	// Keep track of if our client has their mouse down or not
+	var/mouse_down = FALSE
 
 	///used to make a special mouse cursor, this one for mouse up icon
 	var/mouse_up_icon = null

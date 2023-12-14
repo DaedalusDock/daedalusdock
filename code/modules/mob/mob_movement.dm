@@ -104,7 +104,7 @@
 	if(isAI(mob))
 		return AIMove(new_loc,direct,mob)
 
-	if(Process_Grabs()) //are we restrained by someone's grip?
+	if(!check_can_move()) //are we restrained by someone's grip?
 		return
 
 	if(mob.buckled) //if we're buckled to something, tell it we moved.
@@ -163,11 +163,11 @@
 		SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_MOVED)
 
 /**
- * Checks to see if you're being grabbed and if so attempts to break it
+ * Checks to see if an external factor is preventing movement, mainly grabbing.
  *
  * Called by client/Move()
  */
-/client/proc/Process_Grabs()
+/client/proc/check_can_move()
 	if(HAS_TRAIT(mob, TRAIT_INCAPACITATED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		return FALSE
@@ -175,7 +175,7 @@
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		to_chat(src, span_warning("You're restrained! You can't move!"))
 		return FALSE
-	return !mob.resist_grab(TRUE)
+	return mob.resist_grab(TRUE)
 
 
 /**

@@ -40,7 +40,7 @@
 
 /obj/item/organ/kidneys/on_death(delta_time, times_fired)
 	. = ..()
-	if(!owner)
+	if(!owner || (owner.stat == DEAD))
 		return
 
 	if(!CHEM_EFFECT_MAGNITUDE(owner, CE_ANTITOX) && prob(33))

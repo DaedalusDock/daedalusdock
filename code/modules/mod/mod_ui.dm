@@ -13,6 +13,8 @@
 	data["locked"] = locked
 	data["complexity"] = complexity
 	data["selected_module"] = selected_module?.name
+	data["link_id"] = mod_link.id
+	data["link_call"] = mod_link.get_other()?.id
 	data["wearer_name"] = wearer ? (wearer.get_authentification_name("Unknown") || "Unknown") : "No Occupant"
 	data["wearer_job"] = wearer ? wearer.get_assignment("Unknown", "Unknown", FALSE) : "No Job"
 	data["AI"] = ai?.name
@@ -66,6 +68,11 @@
 		if("lock")
 			locked = !locked
 			balloon_alert(usr, "[locked ? "locked" : "unlocked"]!")
+		if("call")
+			if(!mod_link.link_call)
+				call_link(usr, mod_link)
+			else
+				mod_link.end_call()
 		if("activate")
 			toggle_activate(usr)
 		if("select")

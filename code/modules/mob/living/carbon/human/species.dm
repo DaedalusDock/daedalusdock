@@ -410,6 +410,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		if(oldorgan)
 			oldorgan.setOrganDamage(0)
+			oldorgan.germ_level = 0
 		else if(should_have && !(initial(neworgan.zone) in excluded_zones))
 			used_neworgan = TRUE
 			neworgan.Insert(C, TRUE, FALSE)
@@ -705,13 +706,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	human_mob.update_body()
 
 /datum/species/proc/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
-	if(HAS_TRAIT(H, TRAIT_NOBREATH))
-		H.setOxyLoss(0)
-		H.losebreath = 0
-
-		var/takes_crit_damage = (!HAS_TRAIT(H, TRAIT_NOCRITDAMAGE))
-		if((H.health < H.hardcrit_threshold) && takes_crit_damage && H.stat != DEAD)
-			H.adjustBruteLoss(0.5 * delta_time)
+	// If you're dirty, your gloves will become dirty, too.
+	if(H.gloves && (H.germ_level > H.gloves.germ_level) && prob(10))
+		H.gloves.germ_level += 1
 
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
 	return
@@ -885,9 +882,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return
 
 	human_to_equip.equipOutfit(outfit_important_for_life)
-
-/datum/species/proc/update_health_hud(mob/living/carbon/human/H)
-	return FALSE
 
 /**
  * Species based handling for irradiation

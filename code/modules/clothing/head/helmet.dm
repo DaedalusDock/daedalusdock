@@ -3,7 +3,7 @@
 	desc = "Standard Security gear. Protects the head from impacts."
 	icon_state = "helmet"
 	inhand_icon_state = "helmet"
-	armor = list(BLUNT = 35, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 42, PUNCTURE = 25, SLASH = 25, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_TEMP_PROTECT
 	heat_protection = HEAD
@@ -46,12 +46,13 @@
 		qdel(src)
 		return TRUE
 	return ..()
+
 /obj/item/clothing/head/helmet/alt
 	name = "bulletproof helmet"
 	desc = "A bulletproof combat helmet that excels in protecting the wearer against traditional projectile weaponry and explosives to a minor extent."
 	icon_state = "helmetalt"
 	inhand_icon_state = "helmetalt"
-	armor = list(BLUNT = 15, PUNCTURE = 60, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 40, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 20, PUNCTURE = 60, SLASH = 25, LASER = 10, ENERGY = 10, BOMB = 40, BIO = 0, FIRE = 50, ACID = 50)
 	dog_fashion = null
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -64,7 +65,7 @@
 	desc = "A tactical black helmet, sealed from outside hazards with a plate of glass and not much else."
 	icon_state = "marine_command"
 	inhand_icon_state = "helmetalt"
-	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 30, ENERGY = 25, BOMB = 50, BIO = 100, FIRE = 40, ACID = 50)
+	armor = list(BLUNT = 60, PUNCTURE = 50, SLASH = 70, LASER = 30, ENERGY = 25, BOMB = 50, BIO = 100, FIRE = 40, ACID = 50)
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	clothing_flags = STOPSPRESSUREDAMAGE | STACKABLE_HELMET_EXEMPT
 	resistance_flags = FIRE_PROOF | ACID_PROOF
@@ -106,7 +107,7 @@
 	toggle_message = "You pull the visor down on"
 	alt_toggle_message = "You push the visor up on"
 	can_toggle = 1
-	armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
+	armor = list(BLUNT = 60, PUNCTURE = 10, SLASH = 60, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
 	flags_inv = HIDEEARS|HIDEFACE|HIDESNOUT
 	strip_delay = 80
 	actions_types = list(/datum/action/item_action/toggle)
@@ -225,7 +226,7 @@
 	flags_inv = HIDEEARS|HIDEHAIR
 	icon_state = "thunderdome"
 	inhand_icon_state = "thunderdome"
-	armor = list(BLUNT = 80, PUNCTURE = 80, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 100, BIO = 100, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 80, PUNCTURE = 80, SLASH = 80, LASER = 50, ENERGY = 50, BOMB = 100, BIO = 100, FIRE = 90, ACID = 90)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	heat_protection = HEAD
@@ -298,7 +299,7 @@
 	desc = "A classic metal helmet."
 	icon_state = "knight_green"
 	inhand_icon_state = "knight_green"
-	armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80) // no wound armor cause getting domed in a bucket head sounds like concussion city
+	armor = list(BLUNT = 50, PUNCTURE = 0, SLASH = 50, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80) // no wound armor cause getting domed in a bucket head sounds like concussion city
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 	strip_delay = 80
@@ -340,7 +341,7 @@
 	icon_state = "durathread"
 	inhand_icon_state = "durathread"
 	resistance_flags = FLAMMABLE
-	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 15, BIO = 0, FIRE = 40, ACID = 50)
+	armor = list(BLUNT = 25, PUNCTURE = 0, SLASH = 15, LASER = 30, ENERGY = 40, BOMB = 15, BIO = 0, FIRE = 40, ACID = 50)
 	strip_delay = 60
 
 /obj/item/clothing/head/helmet/rus_helmet
@@ -363,14 +364,14 @@
 	body_parts_covered = HEAD
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
-	armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 30, BOMB = 20, BIO = 50, FIRE = -10, ACID = 50)
+	armor = list(BLUNT = 25, PUNCTURE = 20, SLASH = 25, LASER = 20, ENERGY = 30, BOMB = 20, BIO = 50, FIRE = -10, ACID = 50)
 
 /obj/item/clothing/head/helmet/infiltrator
 	name = "infiltrator helmet"
 	desc = "The galaxy isn't big enough for the two of us."
 	icon_state = "infiltrator"
 	inhand_icon_state = "infiltrator"
-	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 70, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 40, LASER = 30, ENERGY = 40, BOMB = 70, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	flash_protect = FLASH_PROTECTION_WELDER
 	flags_inv = HIDEHAIR|HIDEFACIALHAIR|HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDESNOUT

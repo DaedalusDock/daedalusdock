@@ -5,7 +5,7 @@
 	check_types = FALSE
 	check_if_mob_can_drop_item = FALSE
 
-	list_desc = "sharp implement"
+	list_desc = "cutting implement"
 	/// Sharpness flags needed to perform.
 	var/require_sharpness = NONE
 	/// If we want exactly this bitfield, not "has any"
@@ -45,9 +45,11 @@
 
 /datum/slapcraft_step/attack/bludgeon
 	list_desc = "blunt object"
-
 	require_sharpness = NONE
 	require_exact = TRUE
+
+/datum/slapcraft_step/attack/bludgeon/heavy
+	force = 10 //strength of a fire extinguisher, toolboxes and batons will easily pass this too
 
 /datum/slapcraft_step/attack/sharp/chop
 	perform_time = 0.7 SECONDS

@@ -100,7 +100,7 @@
 	finish_msg_self = "You insert a rod to the %TARGET%."
 
 /datum/slapcraft_step/stack/rod/two
-	desc = "Add 2 rod to the assembly."
+	desc = "Add two rods to the assembly."
 	todo_desc = "You could add some rods..."
 	item_types = list(/obj/item/stack/rods)
 	amount = 2

@@ -29,15 +29,31 @@
 	start_msg = "%USER% begins attaching shard of glass to the %TARGET%."
 	start_msg_self = "You begin attaching shard of glass to the %TARGET%."
 
+/datum/slapcraft_step/item/glass_shard/insert
+	insert_item_into_result = TRUE
+
 /datum/slapcraft_step/item/wirerod
 	desc = "Attach a wirerod."
+	todo_desc = "You could attach a wired rod..."
+	finished_desc = "A wired rod has been added."
 	item_types = list(/obj/item/wirerod)
 
 	start_msg = "%USER% begins attaching a wirerod to the %TARGET%."
 	start_msg_self = "You begin attaching a wirerod to the %TARGET%."
 
+/datum/slapcraft_step/item/metal_ball
+	desc = "Attach a metal ball."
+	todo_desc = "You could attach a metal ball..."
+	finished_desc = "A metal ball has been added."
+	item_types = list(/obj/item/wirerod)
+
+	start_msg = "%USER% begins attaching a metal ball to the %TARGET%."
+	start_msg_self = "You begin attaching a metal ball to the %TARGET%."
+
 /datum/slapcraft_step/item/grenade
 	desc = "Attach a grenade."
+	todo_desc = "You could attach a grenade..."
+	finished_desc = "A grenade has been added."
 	item_types = list(/obj/item/grenade)
 	perform_time = 0
 	finish_msg = "%USER% attaches an explosive to the %TARGET%."

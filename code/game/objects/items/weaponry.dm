@@ -273,20 +273,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/katana/cursed //used by wizard events, see the tendril_loot.dm file for the miner one
 	slot_flags = null
 
-/obj/item/wirerod
-	name = "wired rod"
-	desc = "A rod with some wire wrapped around the top. It'd be easy to attach something to the top bit."
-	icon_state = "wiredrod"
-	inhand_icon_state = "rods"
-	flags_1 = CONDUCT_1
-	force = 9
-	throwforce = 10
-	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron=1150, /datum/material/glass=75)
-	attack_verb_continuous = list("hits", "bludgeons", "whacks", "bonks")
-	attack_verb_simple = list("hit", "bludgeon", "whack", "bonk")
-	//crafting is handled in modules/slapcrafting/recipes now
-
 /obj/item/throwing_star
 	name = "throwing star"
 	desc = "An ancient weapon still used to this day, due to its ease of lodging itself into its victim's body parts."
@@ -911,3 +897,23 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		balloon_alert(user, "you're too weak!")
 		return
 	return ..()
+
+/obj/item/mace
+	name = "\improper iron mace"
+	desc = "A crude mace made made from pieces of metal welded together."
+	icon_state = "shitty_mace"
+	inhand_icon_state = "mace"
+	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
+	force = 2
+	throwforce = 1
+	w_class = WEIGHT_CLASS_BULKY
+	hitsound = 'sound/weapons/smash.ogg'
+	attack_verb_continuous = list("attacks", "bludgeons", "smashes", "thwacks", "wallops")
+	attack_verb_simple = list("attack", "bludgeon", "smash", "thwack", "wallop")
+
+	stamina_damage = 20
+	stamina_cost = 15
+	stamina_critical_chance = 10
+	force = 14
+	combat_click_delay = CLICK_CD_MELEE * 1.5

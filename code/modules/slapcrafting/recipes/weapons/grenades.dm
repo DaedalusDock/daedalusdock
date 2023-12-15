@@ -19,7 +19,7 @@
 
 /datum/slapcraft_recipe/molotov
 	name = "molotov cocktail"
-	examine_hint = "With flammable liquid and something to light, you could create a molotov..."
+	examine_hint = "With a bottle of flammable liquid and something to light, you could create a molotov..."
 	category = SLAP_CAT_WEAPONS
 	steps = list(
 		/datum/slapcraft_step/booze_bottle,

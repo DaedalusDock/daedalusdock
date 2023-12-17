@@ -218,7 +218,8 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	remove_bodyzone_effects(G, G.target_zone)
 	if(G.is_grab_unique(src))
 		remove_unique_grab_effects(G)
-		update_stage_effects(G, src, TRUE)
+
+	update_stage_effects(G, src, TRUE)
 
 /// Add effects that apply based on damage_stage here
 /datum/grab/proc/update_stage_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)

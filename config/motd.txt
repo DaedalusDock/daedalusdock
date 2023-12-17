@@ -1,7 +1,9 @@
 <!-- Most valid html will work in here, excluding images. -->
 
-<h1>Welcome to Daedalus Dock!</h1>
-
-<i>This server is running a crafted with care lovechild of Baystation12 and TGStation.</i>
-
-<i>Enjoy your stay!</i>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<div style='color: #ff8c00;text-shadow: 1px 1px 2px #Fa0, 0 0 3px #FFCC00;width:100%;text-align: center'>
+	<span style='font-size: 300%;'>
+	Welcome, Employee.<br>
+	</span>
+	<i>We appreciate your assistance in this time of need.</i>
+	</div>

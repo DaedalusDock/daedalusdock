@@ -16,7 +16,7 @@
 	category = SLAP_CAT_WEAPONS
 	steps = list(
 		/datum/slapcraft_step/item/pipe,
-		/datum/slapcraft_step/stack/rod/two
+		/datum/slapcraft_step/stack/rod/two,
 		/datum/slapcraft_step/item/pipe,
 		/datum/slapcraft_step/tool/welder/weld_together
 	)

@@ -46,7 +46,7 @@ GLOBAL_LIST_EMPTY(cached_holster_typecaches)
 	return contents
 
 /datum/storage/holster/get_quickdraw_item(atom/resolve_location)
-	return (locate(/obj/item) in resolve_location) || ..()
+	return (locate(/obj/item) in holstered_items) || ..()
 
 /datum/storage/holster/handle_enter(datum/source, obj/item/arrived)
 	. = ..()

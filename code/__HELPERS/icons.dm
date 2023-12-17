@@ -1151,7 +1151,7 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 	dummySave = null
 	fdel("tmp/dummySave.sav") //if you get the idea to try and make this more optimized, make sure to still call unlock on the savefile after every write to unlock it.
 
-/proc/icon2html(thing, target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, sourceonly = FALSE, extra_classes = null)
+/proc/icon2html(thing, target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, sourceonly = FALSE, extra_classes = null, realsize = FALSE)
 	if (!thing)
 		return
 	if(SSlag_switch.measures[DISABLE_USR_ICON2HTML] && usr && !HAS_TRAIT(usr, TRAIT_BYPASS_MEASURES))
@@ -1218,6 +1218,18 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		SSassets.transport.send_assets(thing2, key)
 	if(sourceonly)
 		return SSassets.transport.get_asset_url(key)
+
+	if(realsize)
+		var/static/list/icon_widths = list()
+		var/static/list/icon_heights = list()
+		var/x = icon_widths[key]
+		var/y = icon_heights[key]
+		if(isnull(x))
+			x = icon_widths[key] = I.Width()
+		if(isnull(y))
+			y = icon_heights[key] = I.Height()
+
+		return "<img class='[extra_classes] icon icon-[icon_state]' style='width:[x]px;height:[y]px;min-height:[y]px' src='[SSassets.transport.get_asset_url(key)]'>"
 	return "<img class='[extra_classes] icon icon-[icon_state]' src='[SSassets.transport.get_asset_url(key)]'>"
 
 /proc/icon2base64html(thing)

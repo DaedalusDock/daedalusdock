@@ -401,8 +401,10 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	var/admin_msg = span_adminnotice(span_adminhelp("Ticket [TicketHref("#[id]", ref_src)]</span><b>: [LinkedReplyName(ref_src)] [FullMonty(ref_src)]:</b> <span class='linkify'>[keywords_lookup(msg)]"))
 
 	AddInteraction("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>")
-	AddInteractionPlayer("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
+	AddInteractionPlayer("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>")
 	log_admin_private("Ticket #[id]: [key_name(initiator)]: [msg]")
+
+	var/tag_help = icon2html('icons/misc/chattags.dmi', list(initiator) + GLOB.admins, "help", realsize = TRUE)
 
 	//send this msg to all admins
 	for(var/client/X in GLOB.admins)
@@ -412,13 +414,15 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		to_chat(X,
 			type = MESSAGE_TYPE_ADMINPM,
 			html = admin_msg,
-			confidential = TRUE)
+			confidential = TRUE
+		)
 
 	//show it to the person adminhelping too
 	to_chat(initiator,
 		type = MESSAGE_TYPE_ADMINPM,
-		html = span_adminnotice("PM to-<b>Admins</b>: <span class='linkify'>[msg]</span>"),
-		confidential = TRUE)
+		html = span_adminnotice("[tag_help] <b>[key_name(initiator)]</b>:<span class='linkify'>[msg]</span>"),
+		confidential = TRUE
+	)
 	SSblackbox.LogAhelp(id, "Ticket Opened", msg, null, initiator.ckey, urgent = urgent)
 
 //Reopen a closed ticket

@@ -404,7 +404,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	AddInteractionPlayer("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>")
 	log_admin_private("Ticket #[id]: [key_name(initiator)]: [msg]")
 
-	var/tag_help = icon2html('icons/misc/chattags.dmi', list(initiator) + GLOB.admins, "help", realsize = TRUE)
+	var/tag_help = icon2html('icons/misc/chattags.dmi', GLOB.admins | initiator, "help", realsize = TRUE)
 
 	//send this msg to all admins
 	for(var/client/X in GLOB.admins)

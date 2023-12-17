@@ -179,7 +179,7 @@ GLOBAL_LIST_INIT(detective_vest_allowed, typecacheof(list(
 	/obj/item/taperecorder,
 	/obj/item/tank/internals/emergency_oxygen,
 	/obj/item/tank/internals/plasmaman,
-	/obj/item/storage/belt/holster/detective,
+	/obj/item/storage/belt/new_holster/shoulder,
 	/obj/item/storage/belt/holster/nukie,
 	/obj/item/storage/belt/holster/thermal,
 	)))
@@ -196,7 +196,7 @@ GLOBAL_LIST_INIT(security_vest_allowed, typecacheof(list(
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals/emergency_oxygen,
 	/obj/item/tank/internals/plasmaman,
-	/obj/item/storage/belt/holster/detective,
+	/obj/item/storage/belt/new_holster/shoulder,
 	/obj/item/storage/belt/holster/nukie,
 	/obj/item/storage/belt/holster/thermal,
 	)))
@@ -209,7 +209,7 @@ GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
 	/obj/item/melee/baton,
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
-	/obj/item/storage/belt/holster/detective,
+	/obj/item/storage/belt/new_holster/shoulder,
 	/obj/item/storage/belt/holster/nukie,
 	/obj/item/storage/belt/holster/thermal,
 	)))

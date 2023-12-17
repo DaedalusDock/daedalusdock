@@ -16,7 +16,7 @@
 
 	return ..()
 
-/obj/item/storage/belt/holster/shoulder
+/obj/item/storage/belt/new_holster/shoulder
 	name = "shoulder holster"
 	desc = "A rather plain but still cool looking holster that can hold a " + /obj/item/gun/ballistic/revolver/detective::name + "and some small objects."
 	icon_state = "holster"

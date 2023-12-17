@@ -545,9 +545,7 @@ SUBSYSTEM_DEF(job)
 			handle_auto_deadmin_roles(player_client, job.title)
 
 	if(player_client)
-		to_chat(player_client, examine_block(span_infoplain("You are the <span style='color:[job.selection_color]'>[chosen_title]</span>.<br><br>As the <span style='color:[job.selection_color]'>[chosen_title == job.title ? chosen_title : "[chosen_title] ([job.title])"]</span> you answer directly to [job.supervisors]. Special circumstances may change this.")))
-
-	job.radio_help_message(equipping)
+		job.on_join_message(player_client, chosen_title)
 
 	if(player_client)
 		// We agreed it's safe to remove this, but commented out instead of fully removed incase we want to reverse that decision.

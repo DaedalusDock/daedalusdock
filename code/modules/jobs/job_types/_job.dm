@@ -49,6 +49,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// Keep it short and useful. Avoid in-jokes, these are for new players.
 	var/description
 
+	/// A string added to the on-join block to tell you how to use your radio.
+	var/radio_help_message = "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>"
+
 	/// Innate skill levels unlocked at roundstart. Based on config.jobs_have_minimal_access config setting, for example with a skeleton crew. Format is list(/datum/skill/foo = SKILL_EXP_NOVICE) with exp as an integer or as per code/_DEFINES/skills.dm
 	var/list/skills
 	/// Innate skill levels unlocked at roundstart. Based on config.jobs_have_minimal_access config setting, for example with a full crew. Format is list(/datum/skill/foo = SKILL_EXP_NOVICE) with exp as an integer or as per code/_DEFINES/skills.dm
@@ -304,9 +307,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!job_changes)
 		return FALSE
 	return TRUE
-
-/datum/job/proc/radio_help_message(mob/M)
-	to_chat(M, "<b>Prefix your message with :h to speak on your department's radio. To see other prefixes, look closely at your headset.</b>")
 
 /datum/outfit/job
 	name = "Standard Gear"
@@ -588,3 +588,18 @@ GLOBAL_LIST_INIT(job_display_order, list(
 /datum/job/proc/after_latejoin_spawn(mob/living/spawning)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_JOB_AFTER_LATEJOIN_SPAWN, src, spawning)
+
+/// Called by SSjob when a player joins the round as this job.
+/datum/job/proc/on_join_message(client/C, job_title_pref)
+	var/job_header = "<u><span style='font-size: 200%'>You are the <span style='color:[selection_color]'>[job_title_pref]</span></span></u>."
+	var/job_info = span_info("\
+		<br><br>\
+		[description]\
+		<br><br>\
+		As the <span style='color:[selection_color]'>[job_title_pref == title ? job_title_pref : "[job_title_pref] ([title])"]</span> \
+		you answer directly to [supervisors]. Special circumstances may change this.\
+		<br><br>\
+		[radio_help_message]\
+	")
+
+	to_chat(C, examine_block("[job_header][job_info]"))

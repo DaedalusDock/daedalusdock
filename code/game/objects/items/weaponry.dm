@@ -899,14 +899,12 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	return ..()
 
 /obj/item/mace
-	name = "\improper iron mace"
+	name = "iron mace"
 	desc = "A crude mace made made from pieces of metal welded together."
 	icon_state = "shitty_mace"
 	inhand_icon_state = "mace"
 	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
-	force = 2
-	throwforce = 1
 	w_class = WEIGHT_CLASS_BULKY
 	hitsound = 'sound/weapons/smash.ogg'
 	attack_verb_continuous = list("attacks", "bludgeons", "smashes", "thwacks", "wallops")
@@ -916,4 +914,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	stamina_cost = 15
 	stamina_critical_chance = 10
 	force = 14
+	throwforce = 10
+	throw_range = 2 //it's not going very far.
 	combat_click_delay = CLICK_CD_MELEE * 1.5

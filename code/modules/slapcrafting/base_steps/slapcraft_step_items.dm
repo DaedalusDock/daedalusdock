@@ -58,3 +58,9 @@
 	perform_time = 0
 	finish_msg = "%USER% attaches an explosive to the %TARGET%."
 	finish_msg_self = "You attach an explosive to the %TARGET%."
+
+/datum/slapcraft_step/item/pipe
+	desc = "Attach a pipe."
+	item_types = list(/obj/item/pipe/quaternary)
+	finish_msg = "%USER% attaches a pipe to the %TARGET%."
+	finish_msg_self = "You attach a pipe to the %TARGET%."

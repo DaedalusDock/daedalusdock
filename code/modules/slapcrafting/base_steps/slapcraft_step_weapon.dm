@@ -39,7 +39,7 @@
 		playsound(assembly, item.hitsound, 50, TRUE, -1)
 
 /datum/slapcraft_step/attack/sharp
-	desc = "Cut the assembly with somethign sharp." //this is a generic description and should be overriden
+	desc = "Cut the assembly with something sharp."
 	todo_desc = "Now you'll need to cut it with something..."
 	require_sharpness = SHARP_EDGED
 

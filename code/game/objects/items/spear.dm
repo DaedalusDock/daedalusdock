@@ -38,7 +38,7 @@
 	return BRUTELOSS
 
 /obj/item/spear/CheckParts(list/parts_list)
-	var/obj/item/shard/tip = locate() in parts_list
+	var/obj/item/shard/tip = locate() in contents
 	if(tip)
 		if (istype(tip, /obj/item/shard/plasma))
 			force = 11

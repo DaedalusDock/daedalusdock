@@ -40,3 +40,26 @@
 		/obj/item/gun/ballistic/revolver/detective = 1,
 		/obj/item/ammo_box/c38 = 2,
 	),src)
+
+/obj/item/storage/belt/new_holster/shoulder/ert
+	name = "marine's holster"
+	desc = "A rather plain but still cool looking holster that can hold an " + /obj/item/gun/ballistic/automatic/pistol/m1911::name + "and some small objects."
+	icon_state = "syndicate_holster"
+	inhand_icon_state = "syndicate_holster"
+	worn_icon_state = "syndicate_holster"
+
+/obj/item/storage/belt/new_holster/shoulder/ert/Initialize()
+	. = ..()
+	var/datum/storage/holster/storage = atom_storage
+	storage.holster_slots = 1
+	storage.max_slots = 3
+	storage.max_specific_storage = WEIGHT_CLASS_TINY
+	storage.set_holsterable(
+		/obj/item/gun/ballistic/automatic/pistol/m1911,
+	)
+
+/obj/item/storage/belt/new_holster/shoulder/ert/full/PopulateContents()
+	generate_items_inside(list(
+		/obj/item/gun/ballistic/automatic/pistol/m1911 = 1,
+		/obj/item/ammo_box/magazine/m45 = 2,
+	),src)

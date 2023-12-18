@@ -239,13 +239,13 @@
 			if(holder)
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_danger("[tag_in] <b>[key_name(src, recipient, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
+					html = span_danger("[tag_in] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
 					confidential = TRUE
 				)
 
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("[tag_out] <b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
+					html = span_notice("[tag_out] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
 					confidential = TRUE
 				)
 
@@ -283,12 +283,10 @@
 			if(holder) //sender is an admin but recipient is not. Do BIG RED TEXT
 				var/already_logged = FALSE
 				if(!recipient.current_ticket)
-					//new /datum/admin_help(msg, recipient, TRUE) //ORIGINAL
-					new /datum/admin_help(msg, recipient, TRUE, src) //PARIAH EDIT CHANGE - ADMIN
+					new /datum/admin_help(msg, recipient, TRUE, src)
 					already_logged = TRUE
 					SSblackbox.LogAhelp(recipient.current_ticket.id, "Ticket Opened", msg, recipient.ckey, src.ckey)
 
-				//PARIAH EDIT ADDITION BEGIN - ADMIN
 				if(recipient.current_ticket.handler)
 					if(recipient.current_ticket.handler != usr.ckey)
 						var/response = tgui_alert(usr, "This ticket is already being handled by [recipient.current_ticket.handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
@@ -297,23 +295,25 @@
 							return
 				else
 					recipient.current_ticket.HandleIssue()
-				//PARIAH EDIT ADDITION END
+
+				var/recipient_message = "\
+				<div class='adminpmbox'>\
+				<div class='' style='color: black; background: #f88; padding: 0.2em 0.5em;'>\
+				Administrator PM from [admin_pm_href(src, key_name(src, FALSE, FALSE), "color:#00379e")]\
+				</div>\
+				<div style='padding: 0.2em 0.5em;text-align: left'>\
+				[span_adminsay(msg)]\
+				</div>\
+				<div class='' style='font-size: 100%; background: #fcc; padding: 0.2em 0.5em;'>\
+				[admin_pm_href(src, "< Click here to reply >", "color: #00379e")]\
+				</div></div>"
 
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = "<font color='red' size='4'><b>-- Administrator private message --</b></font>",
+					html = recipient_message,
 					confidential = TRUE
 				)
-				to_chat(recipient,
-					type = MESSAGE_TYPE_ADMINPM,
-					html = span_adminsay("[tag_in] <b>[key_name(src, recipient, 0)]</b>: <span class='linkify'>[msg]</span>"),
-					confidential = TRUE
-				)
-				to_chat(recipient,
-					type = MESSAGE_TYPE_ADMINPM,
-					html = span_adminsay("<i>Click on the administrator's name to reply.</i>"),
-					confidential = TRUE
-				)
+
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
 					html = span_notice("[tag_out] <b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[msg]</span>"),

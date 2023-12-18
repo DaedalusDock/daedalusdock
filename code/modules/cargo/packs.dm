@@ -655,8 +655,8 @@
 	name = "Thermal Pistol Crate"
 	desc = "Contains a pair of holsters each with two experimental thermal pistols, using nanites as the basis for their ammo. Requires Armory access to open."
 	cost = CARGO_CRATE_VALUE * 7
-	contains = list(/obj/item/storage/belt/holster/thermal,
-					/obj/item/storage/belt/holster/thermal)
+	contains = list(/obj/item/storage/belt/holster/shoulder/thermal,
+					/obj/item/storage/belt/holster/shoulder/thermal)
 	crate_name = "thermal pistol crate"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -2540,8 +2540,7 @@
 	name = "Art Supplies"
 	desc = "Make some happy little accidents with a rapid pipe cleaner layer, three spraycans, and lots of crayons!"
 	cost = CARGO_CRATE_VALUE * 1.8
-	contains = list(/obj/item/rcl,
-					/obj/item/storage/toolbox/artistic,
+	contains = list(/obj/item/storage/toolbox/artistic,
 					/obj/item/toy/crayon/spraycan,
 					/obj/item/toy/crayon/spraycan,
 					/obj/item/toy/crayon/spraycan,

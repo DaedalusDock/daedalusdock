@@ -231,14 +231,14 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible{
 	dir = 4
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/mining/large)
 "B" = (
 /obj/effect/turf_decal/box/corners{
 	dir = 8
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/mining/large)
 "C" = (
@@ -251,7 +251,7 @@
 /area/shuttle/mining/large)
 "E" = (
 /obj/effect/turf_decal/box/corners,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/mining/large)
 "F" = (
@@ -278,7 +278,7 @@
 	name = "Mining Shuttle External Airlock"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -289,7 +289,7 @@
 "J" = (
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -300,7 +300,7 @@
 /obj/structure/sign/warning/vacuum/external{
 	pixel_x = 32
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
@@ -328,7 +328,7 @@
 	port_direction = 2;
 	width = 7
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1

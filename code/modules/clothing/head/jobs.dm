@@ -144,9 +144,7 @@
 /obj/item/clothing/head/hos
 	name = "head of security cap"
 	desc = "The robust standard-issue cap of the Head of Security. For showing the officers who's in charge."
-	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 10, FIRE = 50, ACID = 60)
 	icon_state = "hoscap"
-	strip_delay = 80
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 

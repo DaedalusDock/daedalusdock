@@ -1082,7 +1082,7 @@
 /obj/effect/turf_decal/bot_white,
 /obj/structure/closet/crate/secure/gear,
 /obj/item/storage/belt/bandolier,
-/obj/item/storage/belt/holster,
+/obj/item/storage/belt/holster/shoulder,
 /turf/open/floor/iron/dark/airless,
 /area/shuttle/caravan/freighter2)
 "jZ" = (

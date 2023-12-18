@@ -74,7 +74,7 @@
 	if(modifiers[ALT_CLICK] || modifiers[SHIFT_CLICK] || modifiers[CTRL_CLICK] || modifiers[MIDDLE_CLICK])
 		return
 
-	if(!user.throw_mode || user.get_active_held_item() || length(user.get_active_grabs()) || user.buckled || user.incapacitated())
+	if(!user.throw_mode || user.get_active_held_item() || length(user.active_grabs) || user.buckled || user.incapacitated())
 		return
 
 	if(!A || !(isturf(A) || isturf(A.loc)))

@@ -655,8 +655,8 @@
 	name = "Thermal Pistol Crate"
 	desc = "Contains a pair of holsters each with two experimental thermal pistols, using nanites as the basis for their ammo. Requires Armory access to open."
 	cost = CARGO_CRATE_VALUE * 7
-	contains = list(/obj/item/storage/belt/holster/thermal,
-					/obj/item/storage/belt/holster/thermal)
+	contains = list(/obj/item/storage/belt/holster/shoulder/thermal,
+					/obj/item/storage/belt/holster/shoulder/thermal)
 	crate_name = "thermal pistol crate"
 
 //////////////////////////////////////////////////////////////////////////////

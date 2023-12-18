@@ -59,7 +59,7 @@
 
 
 /datum/outfit/job/detective
-	name = "Detective"
+	name = JOB_DETECTIVE
 	jobtype = /datum/job/detective
 
 	id_trim = /datum/id_trim/job/detective
@@ -67,11 +67,9 @@
 	suit = /obj/item/clothing/suit/det_suit
 	backpack_contents = list(
 		/obj/item/detective_scanner = 1,
-		/obj/item/melee/baton = 1,
 		/obj/item/storage/box/evidence = 1,
-		)
+	)
 	belt = /obj/item/modular_computer/tablet/pda/detective
-	ears = /obj/item/radio/headset/headset_sec/alt
 	gloves = /obj/item/clothing/gloves/color/black
 	head = /obj/item/clothing/head/fedora/det_hat
 	mask = /obj/item/clothing/mask/cigarette
@@ -84,10 +82,10 @@
 		/obj/item/clothing/glasses/sunglasses,
 		/obj/item/gun/ballistic/revolver/detective,
 		)
-	implants = list(/obj/item/implant/mindshield)
+
 
 /datum/outfit/job/detective/plasmaman
-	name = "Detective (Plasmaman)"
+	name = JOB_DETECTIVE + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white

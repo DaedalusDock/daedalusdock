@@ -69,7 +69,7 @@
 		JOB_CAPTAIN,
 		JOB_CHIEF_ENGINEER,
 		JOB_RESEARCH_DIRECTOR,
-		JOB_CHIEF_MEDICAL_OFFICER,
+		JOB_MEDICAL_DIRECTOR,
 		JOB_SECURITY_MARSHAL,
 		JOB_STATION_ENGINEER,
 		JOB_SCIENTIST,
@@ -111,7 +111,7 @@
 /datum/objective_item/steal/low_risk/clown_shoes
 	name = "the clown's shoes"
 	targetitem = /obj/item/clothing/shoes/clown_shoes
-	excludefromjob = list(JOB_CLOWN, JOB_CARGO_TECHNICIAN, JOB_QUARTERMASTER)
+	excludefromjob = list(JOB_CLOWN, JOB_DECKHAND, JOB_QUARTERMASTER)
 
 /datum/objective_item/steal/low_risk/clown_shoes/TargetExists()
 	for(var/mob/player as anything in GLOB.player_list)
@@ -127,7 +127,7 @@
 /datum/objective_item/steal/low_risk/cargo_budget
 	name = "cargo's departmental budget"
 	targetitem = /obj/item/card/id/departmental_budget/car
-	excludefromjob = list(JOB_QUARTERMASTER, JOB_CARGO_TECHNICIAN)
+	excludefromjob = list(JOB_QUARTERMASTER, JOB_DECKHAND)
 	exists_on_map = TRUE
 
 /obj/item/card/id/departmental_budget/car/add_stealing_item_objective()
@@ -196,10 +196,9 @@
 
 /datum/objective_item/steal/hypo
 	name = "the hypospray"
-	// targetitem = /obj/item/reagent_containers/hypospray/cmo //ORIGINAL
 	targetitem = /obj/item/hypospray/mkii/cmo //PARIAH EDIT
 	difficulty = 5
-	excludefromjob = list(JOB_CHIEF_MEDICAL_OFFICER)
+	excludefromjob = list(JOB_MEDICAL_DIRECTOR)
 	exists_on_map = TRUE
 
 /obj/item/hypospray/mkii/cmo/add_stealing_item_objective() //PARIAH EDIT

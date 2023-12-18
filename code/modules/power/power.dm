@@ -24,9 +24,6 @@
 	// You should know what you're doing if you're messing with stuff at this level anyways.
 	network_flags = NONE
 
-	///cable layer to which the machine is connected
-	var/machinery_layer = MACHINERY_LAYER_1
-
 /obj/machinery/power/Initialize(mapload)
 	. = ..()
 	if(isturf(loc))
@@ -202,7 +199,7 @@
 	if(!T || !istype(T))
 		return FALSE
 
-	var/obj/structure/cable/C = T.get_cable_node(machinery_layer) //check if we have a node cable on the machine turf, the first found is picked
+	var/obj/structure/cable/C = T.get_cable_node() //check if we have a node cable on the machine turf, the first found is picked
 	if(!C || !C.powernet)
 		var/obj/machinery/power/terminal/term = locate(/obj/machinery/power/terminal) in T
 		if(!term || !term.powernet)
@@ -431,11 +428,11 @@
 ///////////////////////////////////////////////
 
 // return a cable able connect to machinery on layer if there's one on the turf, null if there isn't one
-/turf/proc/get_cable_node(machinery_layer = MACHINERY_LAYER_1)
+/turf/proc/get_cable_node()
 	if(!can_have_cabling())
 		return null
 	for(var/obj/structure/cable/C in src)
-		if(C.machinery_layer & machinery_layer)
-			C.update_appearance()
-			return C
+		if(!C.is_knotted())
+			continue
+		return C
 	return null

@@ -24,7 +24,7 @@
 	dir = 8
 	},
 /obj/machinery/power/data_terminal,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/table/glass,
 /obj/machinery/telephone/command,
 /turf/open/floor/iron/white,
@@ -33,7 +33,7 @@
 /obj/item/radio/intercom/directional/south,
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/blue/half/contrasted,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/computer/crew{
 	dir = 1
 	},
@@ -43,7 +43,7 @@
 /obj/structure/filingcabinet/chestdrawer,
 /obj/machinery/newscaster/directional/south,
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/space)
 "af" = (
@@ -307,7 +307,7 @@
 /area/space)
 "aJ" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "chem_lockdown";
 	name = "Chemistry shutters"
@@ -493,7 +493,7 @@
 /turf/open/floor/iron/dark,
 /area/space)
 "bg" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "chem_lockdown";
 	name = "Chemistry shutters"
@@ -508,7 +508,7 @@
 /turf/open/floor/iron/white,
 /area/space)
 "bh" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
@@ -537,7 +537,7 @@
 /turf/open/floor/iron/white,
 /area/space)
 "bm" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 8
 	},
@@ -556,7 +556,7 @@
 /turf/open/floor/iron/white,
 /area/space)
 "bp" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/chem_heater,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
@@ -697,7 +697,7 @@
 /turf/open/floor/iron/dark,
 /area/space)
 "bH" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{

@@ -590,7 +590,7 @@
 
 	id = /obj/item/card/id/advanced/centcom/ert/medical
 	suit = /obj/item/clothing/suit/armor/vest/marine/medic
-	suit_store = /obj/item/storage/belt/new_holster/shoulder/ert/full
+	suit_store = /obj/item/storage/belt/holster/shoulder/ert/full
 	back = /obj/item/storage/backpack/ert/medical
 	l_pocket = /obj/item/healthanalyzer
 	head = /obj/item/clothing/head/helmet/marine/medic

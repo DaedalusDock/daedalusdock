@@ -40,6 +40,19 @@ GLOBAL_LIST_EMPTY(cached_holster_typecaches)
 
 	return ..()
 
+/datum/storage/holster/check_total_weight(obj/item/to_insert, atom/resolve_location)
+	var/total_weight = to_insert.w_class
+
+	for(var/obj/item/thing in resolve_location)
+		if(thing in holstered_items)
+			continue
+		total_weight += thing.w_class
+
+	if(total_weight > max_total_storage)
+		return FALSE
+
+	return TRUE
+
 /datum/storage/holster/contents_for_display(atom/resolve_location)
 	var/list/contents = resolve_location.contents - holstered_items
 	contents.Insert(1, holstered_items)

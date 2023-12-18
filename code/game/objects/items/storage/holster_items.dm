@@ -30,7 +30,7 @@
 /// Detective's shoulder holster.
 /obj/item/storage/belt/holster/shoulder
 	name = "revolver shoulder holster"
-	desc = "A strap of leather designed to hold a " + /obj/item/gun/ballistic/revolver/detective::name + "and some small objects."
+	desc = "A strap of leather designed to hold a " + /obj/item/gun/ballistic/revolver/detective::name + " and some small objects."
 	icon_state = "holster"
 	inhand_icon_state = "holster"
 	worn_icon_state = "holster"

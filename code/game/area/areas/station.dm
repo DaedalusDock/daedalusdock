@@ -1167,12 +1167,11 @@
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 /area/station/security/detectives_office
-	name = "\improper Detective's Office"
+	name = "\improper Private Investigator's Office"
 	icon_state = "detective"
 	ambientsounds = list('sound/ambience/ambidet1.ogg','sound/ambience/ambidet2.ogg')
 
 /area/station/security/detectives_office/private_investigators_office
-	name = "\improper Private Investigator's Office"
 	icon_state = "investigate_office"
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 

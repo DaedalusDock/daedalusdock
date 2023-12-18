@@ -242,7 +242,7 @@
 	job = /datum/job/curator
 
 /datum/id_trim/job/detective
-	assignment = "Detective"
+	assignment = JOB_DETECTIVE
 	trim_state = "trim_detective"
 	sechud_icon_state = SECHUD_DETECTIVE
 	extra_access = list()

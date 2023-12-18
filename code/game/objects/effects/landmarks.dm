@@ -581,7 +581,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	location = "Security"
 
 /obj/effect/landmark/navigate_destination/det
-	location = "Detective's Office"
+	location = "Private Investigator's Office"
 
 /obj/effect/landmark/navigate_destination/research
 	location = "Research"

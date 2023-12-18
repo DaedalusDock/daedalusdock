@@ -43,7 +43,7 @@
 #define JOB_PERSONAL_AI "Personal AI"
 //Security
 #define JOB_WARDEN "Warden"
-#define JOB_DETECTIVE "Gumshoe"
+#define JOB_DETECTIVE "Private Investigator"
 #define JOB_SECURITY_OFFICER "Security Officer"
 #define JOB_SECURITY_OFFICER_MEDICAL "Security Officer (Medical)"
 #define JOB_SECURITY_OFFICER_ENGINEERING "Security Officer (Engineering)"

@@ -222,8 +222,8 @@
 		return TRUE
 
 /obj/item/clothing/suit/armor/vest/det_suit
-	name = "detective's armor vest"
-	desc = "An armored vest with a detective's badge on it."
+	name = "private investigator's armor vest"
+	desc = "An armored vest with a private investigator's badge on it."
 	icon_state = "detective-armor"
 	resistance_flags = FLAMMABLE
 	dog_fashion = null

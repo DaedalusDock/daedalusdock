@@ -109,7 +109,7 @@
 	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/security/detective/skirt
-	name = "detective's suitskirt"
+	name = "private investigator's suitskirt"
 	desc = "Someone who wears this means business."
 	icon_state = "detective_skirt"
 	inhand_icon_state = "det"

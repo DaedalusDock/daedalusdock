@@ -16,7 +16,7 @@
 			Be warned, that spirits are often capricious or just little assholes. To use, simply speak your question aloud, then begin shaking."
 	item = /obj/item/toy/eightball/haunted
 	cost = 2
-	restricted_roles = list(JOB_ARCHIVEST)
+	restricted_roles = list(JOB_ARCHIVIST)
 	limited_stock = 1 //please don't spam deadchat
 
 /datum/uplink_item/role_restricted/bureaucratic_error_remote

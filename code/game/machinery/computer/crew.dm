@@ -129,7 +129,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		JOB_BARTENDER = 61,
 		JOB_COOK = 62,
 		JOB_BOTANIST = 63,
-		JOB_ARCHIVEST = 64,
+		JOB_ARCHIVIST = 64,
 		JOB_CHAPLAIN = 65,
 		JOB_CLOWN = 66,
 		JOB_MIME = 67,

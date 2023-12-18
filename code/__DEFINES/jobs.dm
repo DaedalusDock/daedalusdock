@@ -72,7 +72,7 @@
 #define JOB_JANITOR "Janitor"
 #define JOB_CLOWN "Clown"
 #define JOB_MIME "Mime"
-#define JOB_ARCHIVEST "Archivist"
+#define JOB_ARCHIVIST "Archivist"
 #define JOB_LAWYER "Lawyer"
 #define JOB_CHAPLAIN "Chaplain"
 #define JOB_PSYCHOLOGIST "Psychologist"

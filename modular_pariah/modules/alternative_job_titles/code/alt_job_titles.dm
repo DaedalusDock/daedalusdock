@@ -98,7 +98,7 @@
 	alt_titles = list(JOB_BOTANIST)
 
 /datum/job/curator
-	alt_titles = list(JOB_ARCHIVEST)
+	alt_titles = list(JOB_ARCHIVIST)
 
 /datum/job/janitor
 	alt_titles = list(JOB_JANITOR, "Custodian", "Sanitation Technician")

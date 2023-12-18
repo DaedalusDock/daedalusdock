@@ -232,7 +232,7 @@
 	sechud_icon_state = SECHUD_CHEF
 
 /datum/id_trim/job/curator
-	assignment = JOB_ARCHIVEST
+	assignment = JOB_ARCHIVIST
 	trim_state = "trim_curator"
 	sechud_icon_state = SECHUD_CURATOR
 	extra_access = list()

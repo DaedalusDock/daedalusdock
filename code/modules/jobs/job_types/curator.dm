@@ -1,5 +1,5 @@
 /datum/job/curator
-	title = JOB_ARCHIVEST
+	title = JOB_ARCHIVIST
 	description = "Read and write books and hand them to people, stock \
 		bookshelves, report on station news."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
@@ -55,7 +55,7 @@
 	accessory = /obj/item/clothing/accessory/pocketprotector/full
 
 /datum/outfit/job/curator/plasmaman
-	name = JOB_ARCHIVEST + " (Plasmaman)"
+	name = JOB_ARCHIVIST + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/curator
 	gloves = /obj/item/clothing/gloves/color/plasmaman/prototype

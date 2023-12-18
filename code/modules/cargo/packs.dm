@@ -2540,8 +2540,7 @@
 	name = "Art Supplies"
 	desc = "Make some happy little accidents with a rapid pipe cleaner layer, three spraycans, and lots of crayons!"
 	cost = CARGO_CRATE_VALUE * 1.8
-	contains = list(/obj/item/rcl,
-					/obj/item/storage/toolbox/artistic,
+	contains = list(/obj/item/storage/toolbox/artistic,
 					/obj/item/toy/crayon/spraycan,
 					/obj/item/toy/crayon/spraycan,
 					/obj/item/toy/crayon/spraycan,

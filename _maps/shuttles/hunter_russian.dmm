@@ -28,7 +28,7 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/hunter/russian)
 "bK" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -168,7 +168,7 @@
 /obj/machinery/door/airlock/security/glass{
 	name = "Ship Support Systems"
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -227,7 +227,7 @@
 /turf/open/floor/pod/dark,
 /area/shuttle/hunter/russian)
 "sR" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -389,7 +389,7 @@
 /area/shuttle/hunter/russian)
 "Ej" = (
 /obj/machinery/power/apc/auto_name/directional/east,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/suit_storage_unit/standard_unit{
 	mask_type = /obj/item/clothing/mask/gas;
 	storage_type = /obj/item/tank/internals/oxygen/yellow
@@ -410,7 +410,7 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/hunter/russian)
 "Fy" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/power/smes/engineering{
 	charge = 1e+006
@@ -446,7 +446,7 @@
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/hunter/russian)
 "Gu" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -679,7 +679,7 @@
 /turf/open/floor/pod/dark,
 /area/shuttle/hunter/russian)
 "WG" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/terminal{
 	dir = 8
 	},

@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: A new storage type, Holster, which allows specific items to ignore storage
+      restrictions.
+  - bugfix: Quickdraw storages can be opened normally.

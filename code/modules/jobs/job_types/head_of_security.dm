@@ -1,5 +1,5 @@
 /datum/job/head_of_security
-	title = JOB_HEAD_OF_SECURITY
+	title = JOB_SECURITY_MARSHAL
 	description = "Coordinate security personnel, ensure they are not corrupt, \
 		make sure every department is protected."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
@@ -53,7 +53,7 @@
 
 
 /datum/outfit/job/hos
-	name = "Head of Security"
+	name = JOB_SECURITY_MARSHAL
 	jobtype = /datum/job/head_of_security
 
 	id = /obj/item/card/id/advanced/silver
@@ -85,7 +85,7 @@
 	implants = list(/obj/item/implant/mindshield)
 
 /datum/outfit/job/hos/plasmaman
-	name = "Head of Security (Plasmaman)"
+	name = "Security Marshal (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/security/head_of_security
 	gloves = /obj/item/clothing/gloves/color/plasmaman/black
@@ -94,7 +94,7 @@
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/hos/mod
-	name = "Head of Security (MODsuit)"
+	name = "Security Marshal (MODsuit)"
 
 	suit_store = /obj/item/tank/internals/oxygen
 	back = /obj/item/mod/control/pre_equipped/safeguard

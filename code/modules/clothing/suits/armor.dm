@@ -101,7 +101,7 @@
 	strip_delay = 80
 
 /obj/item/clothing/suit/armor/hos/hos_formal
-	name = "\improper Head of Security's parade jacket"
+	name = "\improper Security Marshal's parade jacket"
 	desc = "For when an armoured vest isn't fashionable enough."
 	icon_state = "hosformal"
 	inhand_icon_state = "hostrench"

@@ -53,7 +53,7 @@
 	default_disk = /obj/item/computer_hardware/hard_drive/role/hop
 
 /obj/item/modular_computer/tablet/pda/heads/hos
-	name = "head of security PDA"
+	name = "security marshal PDA"
 	default_disk = /obj/item/computer_hardware/hard_drive/role/hos
 	greyscale_config = /datum/greyscale_config/tablet/head
 	greyscale_colors = "#EA3232#0000CC"

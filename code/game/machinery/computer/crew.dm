@@ -97,7 +97,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		// 00: Captain
 		JOB_CAPTAIN = 00,
 		// 10-19: Security
-		JOB_HEAD_OF_SECURITY = 10,
+		JOB_SECURITY_MARSHAL = 10,
 		JOB_WARDEN = 11,
 		JOB_SECURITY_OFFICER = 12,
 		JOB_SECURITY_OFFICER_MEDICAL = 13,

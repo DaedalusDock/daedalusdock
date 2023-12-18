@@ -107,7 +107,7 @@
 	abstract_type = /obj/structure/statue/gold
 
 /obj/structure/statue/gold/hos
-	name = "statue of the head of security"
+	name = "statue of the security marshal"
 	icon_state = "hos"
 
 /obj/structure/statue/gold/hop

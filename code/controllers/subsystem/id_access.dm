@@ -166,7 +166,7 @@ SUBSYSTEM_DEF(id_access)
 		),
 		"[ACCESS_HOS]" = list(
 			"regions" = list(REGION_SECURITY),
-			"head" = JOB_HEAD_OF_SECURITY,
+			"head" = JOB_SECURITY_MARSHAL,
 			"templates" = list(),
 			"pdas" = list(),
 		),

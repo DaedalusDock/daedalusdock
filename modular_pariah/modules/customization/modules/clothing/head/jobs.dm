@@ -1,8 +1,8 @@
 // This is for all the berets that /tg/ didn't want. You're welcome, they should look better.
 
 /obj/item/clothing/head/hos/beret
-	name = "head of security beret"
-	desc = "A robust beret for the Head of Security, for looking stylish while not sacrificing protection."
+	name = "security marshal beret"
+	desc = "A robust beret for the Security Marshal, for looking stylish while not sacrificing protection."
 	icon_state = "beret_badge"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn

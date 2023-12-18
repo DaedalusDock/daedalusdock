@@ -291,8 +291,8 @@
 	job = /datum/job/head_of_personnel
 
 /datum/id_trim/job/head_of_security
-	assignment = "Head of Security"
-	intern_alt_name = "Head of Security-in-Training"
+	assignment = JOB_SECURITY_MARSHAL
+	intern_alt_name = JOB_SECURITY_MARSHAL + "-in-Training"
 	trim_state = "trim_headofsecurity"
 	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
 	extra_access = list(ACCESS_TELEPORTER)

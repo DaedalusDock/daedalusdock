@@ -43,7 +43,7 @@
 	new /obj/item/storage/lockbox/medal/hop(src)
 
 /obj/structure/closet/secure_closet/hos
-	name = "\proper head of security's locker"
+	name = "\proper security marshal's locker"
 	req_access = list(ACCESS_HOS)
 	icon_state = "hos"
 

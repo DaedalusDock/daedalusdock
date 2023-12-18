@@ -401,7 +401,7 @@
 	icon_state = "hop_office"
 
 /area/station/command/heads_quarters/hos
-	name = "\improper Head of Security's Office"
+	name = "\improper Security Marshal's Office"
 	icon_state = "hos_office"
 
 /area/station/command/heads_quarters/rd

@@ -45,7 +45,7 @@
 	progression_minimum = 20 MINUTES
 	progression_maximum = 60 MINUTES
 	applicable_heads = list(
-		JOB_HEAD_OF_SECURITY = /area/station/command/heads_quarters/hos,
+		JOB_SECURITY_MARSHAL = /area/station/command/heads_quarters/hos,
 	)
 	progression_reward = list(10 MINUTES, 15 MINUTES)
 	telecrystal_reward = list(2, 3)

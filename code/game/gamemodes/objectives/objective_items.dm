@@ -70,7 +70,7 @@
 		JOB_CHIEF_ENGINEER,
 		JOB_RESEARCH_DIRECTOR,
 		JOB_CHIEF_MEDICAL_OFFICER,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_STATION_ENGINEER,
 		JOB_SCIENTIST,
 		JOB_ATMOSPHERIC_TECHNICIAN,
@@ -145,10 +145,10 @@
 	ADD_STEAL_ITEM(src, /obj/item/gun/energy/laser/captain)
 
 /datum/objective_item/steal/hoslaser
-	name = "the head of security's personal laser gun"
+	name = "the security marshal's personal laser gun"
 	targetitem = /obj/item/gun/energy/e_gun/hos
 	difficulty = 10
-	excludefromjob = list(JOB_HEAD_OF_SECURITY)
+	excludefromjob = list(JOB_SECURITY_MARSHAL)
 	exists_on_map = TRUE
 
 /obj/item/gun/energy/e_gun/hos/add_stealing_item_objective()
@@ -218,7 +218,7 @@
 	name = "a reflector trenchcoat"
 	targetitem = /obj/item/clothing/suit/hooded/ablative
 	difficulty = 3
-	excludefromjob = list(JOB_HEAD_OF_SECURITY, JOB_WARDEN)
+	excludefromjob = list(JOB_SECURITY_MARSHAL, JOB_WARDEN)
 	exists_on_map = TRUE
 
 /obj/item/clothing/suit/hooded/ablative/add_stealing_item_objective()

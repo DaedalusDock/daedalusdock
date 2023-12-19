@@ -68,6 +68,8 @@
 /datum/slapcraft_step/tool/welder/weld_together
 	desc = "Weld the assembly together."
 	todo_desc = "You need to weld the assembly together..."
+	required_fuel = 3
+	perform_time = 4 //this is intended to be a "finishing" step
 
 	start_msg = "%USER% begins to secure the %TARGET%."
 	start_msg_self = "You begin to secure the %TARGET%."

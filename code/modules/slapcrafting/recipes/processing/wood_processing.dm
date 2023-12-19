@@ -30,3 +30,5 @@
 	start_msg_self = "You begin chopping the log with the sharp tool."
 	finish_msg = "%USER% chops down the log into planks."
 	finish_msg_self = "You chop the log into planks."
+
+//paper processing will be added here later

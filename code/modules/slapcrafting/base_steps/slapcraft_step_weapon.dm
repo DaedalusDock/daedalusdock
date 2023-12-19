@@ -5,7 +5,7 @@
 	check_types = FALSE
 	check_if_mob_can_drop_item = FALSE
 
-	list_desc = "cutting implement"
+	list_desc = "sharp implement"
 	/// Sharpness flags needed to perform.
 	var/require_sharpness = NONE
 	/// If we want exactly this bitfield, not "has any"

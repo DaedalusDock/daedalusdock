@@ -149,12 +149,48 @@
 	item_types = list(/obj/item/stack/cable_coil)
 	amount = 5
 
+	start_msg = "%USER% begins attaching some cable to the %TARGET%."
+	start_msg_self = "You begin inserting some cable to the %TARGET%."
+	finish_msg = "%USER% attaches some cable to the %TARGET%."
+	finish_msg_self = "You attach some cable to the %TARGET%."
+
 /datum/slapcraft_step/stack/cable/ten
 	desc = "Add 10 cable to the assembly."
 	item_types = list(/obj/item/stack/cable_coil)
 	amount = 10
 
+	start_msg = "%USER% begins attaching some cable to the %TARGET%."
+	start_msg_self = "You begin inserting some cable to the %TARGET%."
+	finish_msg = "%USER% attaches some cable to the %TARGET%."
+	finish_msg_self = "You attach some cable to the %TARGET%."
+
 /datum/slapcraft_step/stack/cable/fifteen
 	desc = "Add 15 cable to the assembly."
 	item_types = list(/obj/item/stack/cable_coil)
 	amount = 15
+
+	start_msg = "%USER% begins attaching some cable to the %TARGET%."
+	start_msg_self = "You begin inserting some cable to the %TARGET%."
+	finish_msg = "%USER% attaches some cable to the %TARGET%."
+	finish_msg_self = "You attach some cable to the %TARGET%."
+
+/datum/slapcraft_step/stack/cardboard/one
+	desc = "Add a sheet of cardboard to the assembly."
+	todo_desc = "You could add a sheet of cardboard..."
+	item_types = list(/obj/item/stack/sheet/cardboard)
+	amount = 1
+	perform_time = 0
+
+	finish_msg = "%USER% adds a sheet of cardboard to the %TARGET%."
+	finish_msg_self = "You add a sheet of cardboard to the %TARGET%."
+
+/datum/slapcraft_step/stack/wood/one
+	desc = "Add a plank of wood to the assembly."
+	todo_desc = "You could add a plank of wood..."
+	item_types = list(/obj/item/stack/sheet/mineral/wood)
+	amount = 1
+
+	start_msg = "%USER% begins attaching a wooden plank to the %TARGET%."
+	start_msg_self = "You begin attaching a wooden plank  to the %TARGET%."
+	finish_msg = "%USER% attaches a wooden plank to the %TARGET%."
+	finish_msg_self = "You attach a wooden plank to the %TARGET%."

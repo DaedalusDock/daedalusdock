@@ -17,6 +17,8 @@
 #define SLAP_CAT_PROCESSING "Processing"
 #define SLAP_CAT_COMPONENTS "Components"
 #define SLAP_CAT_WEAPONS "Weapons"
-#define SLAP_CAT_ROBOTS "Robots"
+#define SLAP_CAT_TOOLS "Tools"
+#define SLAP_CAT_ROBOTS "Robots" //currently empty, will be used for simple bots
 #define SLAP_CAT_CLOTHING "Clothing"
+#define SLAP_CAT_MEDICAL "Medical"
 #define SLAP_CAT_RUSTIC "Rustic"

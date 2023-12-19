@@ -624,6 +624,9 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 /obj/item/stack/cable_coil/five
 	amount = 5
 
+/obj/item/stack/cable_coil/ten
+	amount = 10
+
 /obj/item/stack/cable_coil/cut
 	amount = null
 	icon_state = "coil2"

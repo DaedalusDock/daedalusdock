@@ -50,13 +50,17 @@
 			return "[item] is not blunt."
 
 /datum/slapcraft_step/attack/sharp
+	desc = "Cut the assembly with something sharp."
+	todo_desc = "Now you'll need to cut it with something..."
 	require_sharpness = SHARP_EDGED
 
 /datum/slapcraft_step/attack/bludgeon
 	list_desc = "blunt object"
-
 	require_sharpness = NONE
 	require_exact = TRUE
+
+/datum/slapcraft_step/attack/bludgeon/heavy
+	force = 10 //strength of a fire extinguisher, toolboxes and batons will easily pass this too
 
 /datum/slapcraft_step/attack/sharp/chop
 	perform_time = 0.7 SECONDS

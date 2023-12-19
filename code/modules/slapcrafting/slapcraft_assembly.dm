@@ -27,8 +27,9 @@
 	for(var/step_type in next_steps)
 		var/datum/slapcraft_step/next_step = SLAPCRAFT_STEP(step_type)
 		. += span_boldnotice(next_step.todo_desc)
-	// And tell them that it can be disassembled back into the components aswell.
-	. += span_boldnotice("Use in hand to disassemble this back into components.")
+	// And tell them if it can be disassembled back into the components aswell.
+	if(recipe.can_disassemble)
+		. += span_boldnotice("Use in hand to disassemble this back into components.")
 
 /obj/item/slapcraft_assembly/attackby(obj/item/item, mob/user, params)
 	// Get the next step
@@ -50,8 +51,11 @@
 		. += component_overlay
 
 /obj/item/slapcraft_assembly/attack_self(mob/user)
-	to_chat(user, span_notice("You take apart \the [src]"))
-	disassemble()
+	if(recipe.can_disassemble)
+		to_chat(user, span_notice("You take apart \the [src]"))
+		disassemble()
+	else
+		to_chat(user, span_warning("You can't take this apart!"))
 
 // Something in the assembly got deleted. Perhaps burned, melted or otherwise.
 /obj/item/slapcraft_assembly/handle_atom_del(atom/deleted_atom)

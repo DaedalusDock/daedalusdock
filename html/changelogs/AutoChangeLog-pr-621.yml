@@ -1,8 +1,0 @@
-author: Azarak
-delete-after: true
-changes:
-  - rscadd: Added old non-smart functionalities for cables
-  - rscadd: Added a built in RCL functionality to cable coil
-  - rscadd: Added a smart cable placing mapping helper
-  - rscdel: Removed "smart" functionalities from cables
-  - rscdel: Removed the RCL and pipe cleaners

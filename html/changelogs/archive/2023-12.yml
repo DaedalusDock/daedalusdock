@@ -39,3 +39,16 @@
   Kapu1178:
   - qol: Added Delosane900 to the list of Immortals, whose names will live on in git
       history.
+2023-12-19:
+  Amunak, Zamujasa:
+  - rscadd: Adds image tags to admin helps and admin PMs
+  Azarak:
+  - rscadd: Added old non-smart functionalities for cables
+  - rscadd: Added a built in RCL functionality to cable coil
+  - rscadd: Added a smart cable placing mapping helper
+  - rscdel: Removed "smart" functionalities from cables
+  - rscdel: Removed the RCL and pipe cleaners
+  Kapu1178:
+  - rscadd: A new storage type, Holster, which allows specific items to ignore storage
+      restrictions.
+  - bugfix: Quickdraw storages can be opened normally.

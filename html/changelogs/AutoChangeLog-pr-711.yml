@@ -1,0 +1,7 @@
+author: RimiNosha
+delete-after: true
+changes:
+  - rscadd: Chemical cartridges! Chem/booze/soda dispensers now draw from cartridges
+      instead of magically synthesizing chemicals.
+  - balance: Chem dispensers no longer have infinite chems and will need to be refilled.
+      Medical has spare cartridges, and more can be bought from cargo.

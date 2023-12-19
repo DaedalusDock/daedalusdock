@@ -31,6 +31,8 @@
 	var/image/radial_appearance
 	/// Order in which the steps should be performed.
 	var/step_order = SLAP_ORDER_STEP_BY_STEP
+	// Can this assembly be taken apart before it's finished?
+	var/can_disassemble = TRUE
 
 	/// Should we print text when we finish? Mostly used to de-bloat chat.
 	var/show_finish_text = FALSE

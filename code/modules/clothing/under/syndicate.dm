@@ -4,7 +4,7 @@
 	icon_state = "syndicate"
 	inhand_icon_state = "bl_suit"
 	has_sensor = NO_SENSORS
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
+	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
 	alt_covers_chest = TRUE
 	icon = 'icons/obj/clothing/under/syndicate.dmi'
 	worn_icon = 'icons/mob/clothing/under/syndicate.dmi'
@@ -16,7 +16,7 @@
 	icon_state = "syndicate_skirt"
 	inhand_icon_state = "bl_suit"
 	has_sensor = NO_SENSORS
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
+	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
 	alt_covers_chest = TRUE
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 	dying_key = DYE_REGISTRY_JUMPSKIRT
@@ -27,7 +27,7 @@
 	desc = "It still counts as stealth if there are no witnesses."
 	icon_state = "bloodred_pajamas"
 	inhand_icon_state = "bl_suit"
-	armor = list(MELEE = 10, BULLET = 10, LASER = 10,ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
+	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	can_adjust = FALSE
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -37,14 +37,14 @@
 	desc = "Do operatives dream of nuclear sheep?"
 	icon_state = "bloodred_pajamas"
 	inhand_icon_state = "bl_suit"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
 
 /obj/item/clothing/under/syndicate/tacticool
 	name = "tacticool turtleneck"
 	desc = "Just looking at it makes you want to buy an SKS, go into the woods, and -operate-."
 	icon_state = "tactifool"
 	inhand_icon_state = "bl_suit"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
 	supports_variations_flags = NONE
 
 /obj/item/clothing/under/syndicate/tacticool/skirt
@@ -52,7 +52,7 @@
 	desc = "Just looking at it makes you want to buy an SKS, go into the woods, and -operate-."
 	icon_state = "tactifool_skirt"
 	inhand_icon_state = "bl_suit"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 40)
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 	dying_key = DYE_REGISTRY_JUMPSKIRT
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -78,7 +78,7 @@
 	desc = "Badly translated labels tell you to clean this in Vodka. Great for squatting in."
 	icon_state = "trackpants"
 	can_adjust = FALSE
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	resistance_flags = NONE
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -93,6 +93,6 @@
 	desc = "Military grade tracksuits for frontline squatting."
 	icon_state = "rus_under"
 	can_adjust = FALSE
-	armor = list(MELEE = 5, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	resistance_flags = NONE
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

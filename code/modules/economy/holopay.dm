@@ -5,7 +5,7 @@
 	icon_state = "card_scanner"
 	alpha = 150
 	anchored = TRUE
-	armor = list(MELEE = 0, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 0, BIO = 0, FIRE = 20, ACID = 20)
+	armor = list(BLUNT = 0, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 50, BOMB = 0, BIO = 0, FIRE = 20, ACID = 20)
 	max_integrity = 15
 	layer = FLY_LAYER
 	/// ID linked to the holopay
@@ -49,7 +49,7 @@
 		return .
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	user.changeNext_move(CLICK_CD_MELEE)
-	take_damage(5, BRUTE, MELEE, 1)
+	take_damage(5, BRUTE, BLUNT, 1)
 
 /obj/structure/holopay/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)

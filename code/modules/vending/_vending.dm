@@ -57,7 +57,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	verb_exclaim = "beeps"
 	max_integrity = 300
 	integrity_failure = 0.33
-	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
 	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5

@@ -133,9 +133,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	/// How much clothing is slowing you down. Negative values speeds you up
 	var/slowdown = 0
 	///percentage of armour effectiveness to remove
-	var/armour_penetration = 0
-	///Whether or not our object is easily hindered by the presence of armor
-	var/weak_against_armour = FALSE
+	var/armor_penetration = 0
+	/// A multiplier applied to the target's armor. "2" means that their armor is twice as effective against this item.
+	var/weak_against_armor = null
 	///What objects the suit storage can store
 	var/list/allowed = null
 	///In deciseconds, how long an item takes to equip; counts only for normal clothing slots, not pockets etc.
@@ -342,7 +342,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/blob_act(obj/structure/blob/B)
 	if(B && B.loc == loc)
-		atom_destruction(MELEE)
+		atom_destruction(BLUNT)
 
 
 /**Makes cool stuff happen when you suicide with an item
@@ -730,6 +730,15 @@ DEFINE_INTERACTABLE(/obj/item)
 		return
 
 	attack_self(user)
+
+/// Returns an armor flag to check against for dealing damage.
+/obj/item/proc/get_attack_flag()
+	if(sharpness & SHARP_POINTY)
+		return PUNCTURE
+	if(sharpness & SHARP_EDGED)
+		return SLASH
+
+	return BLUNT
 
 ///This proc determines if and at what an object will reflect energy projectiles if it's in l_hand,r_hand or wear_suit
 /obj/item/proc/IsReflect(def_zone)
@@ -1538,7 +1547,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage((w_class * 5) * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 
@@ -1550,7 +1559,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!istype(attacker))
 		return 0
 	var/obj/item/bodypart/BP = attacker.get_active_hand()
-	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, MELEE, silent = TRUE), sharpness = sharpness)
+
+	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, get_attack_flag(), silent = TRUE), sharpness = sharpness)
+
 	attacker.visible_message(span_danger("[attacker] hurts \his hand on [src]!"))
 	log_combat(attacker, user, "Attempted to disarm but was blocked by", src)
 	playsound(user, hitsound, 50, 1, -1)

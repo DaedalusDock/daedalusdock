@@ -33,7 +33,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	greyscale_colors = "#ffff00#000000"
 	density = TRUE
 	volume = 2000
-	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 80, ACID = 50)
+	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 80, ACID = 50)
 	max_integrity = 300
 	integrity_failure = 0.4
 	//pressure_resistance = 7 * ONE_ATMOSPHERE
@@ -461,7 +461,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	if(gone == internal_cell)
 		internal_cell = null
 
-/obj/machinery/portable_atmospherics/canister/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armour_penetration = 0)
+/obj/machinery/portable_atmospherics/canister/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armor_penetration = 0)
 	. = ..()
 	if(!. || QDELETED(src))
 		return

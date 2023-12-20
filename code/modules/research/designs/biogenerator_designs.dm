@@ -223,7 +223,7 @@
 	id = "s_holster"
 	build_type = BIOGENERATOR
 	materials = list(/datum/material/biomass= 400)
-	build_path = /obj/item/storage/belt/holster
+	build_path = /obj/item/storage/belt/holster/shoulder/generic
 	category = list("Organic Materials")
 	mapload_design_flags = DESIGN_BIOGENERATOR
 

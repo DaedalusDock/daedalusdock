@@ -12,7 +12,7 @@
 	attack_verb_continuous = list("bans")
 	attack_verb_simple = list("ban")
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/banhammer/Initialize(mapload)
@@ -74,7 +74,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/claymore/Initialize(mapload)
@@ -97,7 +97,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 20
 	throw_speed = 3
 	throw_range = 5
-	armour_penetration = 35
+	armor_penetration = 35
 
 /obj/item/claymore/highlander //ALL COMMENTS MADE REGARDING THIS SWORD MUST BE MADE IN ALL CAPS
 	desc = "<b><i>THERE CAN BE ONLY ONE, AND IT WILL BE YOU!!!</i></b>\nActivate it in your hand to point to the nearest victim."
@@ -263,7 +263,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/katana/suicide_act(mob/user)
@@ -284,7 +284,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 10 //10 + 2 (WEIGHT_CLASS_SMALL) * 4 (EMBEDDED_IMPACT_PAIN_MULTIPLIER) = 18 damage on hit due to guaranteed embedding
 	throw_speed = 4
 	embedding = list("pain_mult" = 4, "embed_chance" = 100, "fall_chance" = 0)
-	armour_penetration = 40
+	armor_penetration = 40
 
 	w_class = WEIGHT_CLASS_SMALL
 	sharpness = SHARP_POINTY
@@ -396,7 +396,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
-	armour_penetration = 100
+	armor_penetration = 100
 	attack_verb_continuous = list("bludgeons", "whacks", "disciplines")
 	attack_verb_simple = list("bludgeon", "whack", "discipline")
 	resistance_flags = FLAMMABLE
@@ -856,7 +856,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 			living_target.gib()
 			log_combat(user, living_target, "gibbed", src)
 	else if(target.uses_integrity)
-		target.take_damage(force*damage_mod*3, BRUTE, MELEE, FALSE, null, 50)
+		target.take_damage(force*damage_mod*3, BRUTE, BLUNT, FALSE, null, 50)
 	else if(iswallturf(target) && prob(force*damage_mod*0.5))
 		var/turf/closed/wall/wall_target = target
 		wall_target.dismantle_wall()

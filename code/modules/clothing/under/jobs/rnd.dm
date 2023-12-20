@@ -7,7 +7,7 @@
 	name = "research director's vest suit"
 	icon_state = "director"
 	inhand_icon_state = "lb_suit"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 35)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 10, FIRE = 0, ACID = 35)
 	can_adjust = FALSE
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -105,7 +105,7 @@
 	icon_state = "genetics"
 	inhand_icon_state = "w_suit"
 	permeability_coefficient = 0.5
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/under/rank/rnd/geneticist/skirt
 	name = "geneticist's jumpskirt"

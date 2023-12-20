@@ -314,7 +314,7 @@
 	if(!banged_limb)
 		return
 
-	var/blocked = pushed_mob.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	var/blocked = pushed_mob.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 	pushed_mob.apply_damage(30, BRUTE, BODY_ZONE_HEAD, blocked)
 	if (prob(30 * ((100-blocked)/100)))
 		pushed_mob.Knockdown(10 SECONDS)
@@ -530,7 +530,7 @@
 	canSmoothWith = SMOOTH_GROUP_GLASS_TABLES
 	max_integrity = 70
 	resistance_flags = ACID_PROOF
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
 	var/glass_shard_type = /obj/item/shard
 
 /obj/structure/table/glass/CanAllowThrough(atom/movable/mover, border_dir)
@@ -720,7 +720,7 @@
 	buildstack = /obj/item/stack/sheet/plasteel
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(MELEE = 10, BULLET = 30, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
+	armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
 	flipped = -1
 
 /obj/structure/table/reinforced/deconstruction_hints(mob/user)
@@ -947,7 +947,7 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_KICK)
 	user.visible_message(span_danger("[user] kicks [src]."), null, null, COMBAT_MESSAGE_RANGE)
-	take_damage(rand(4,8), BRUTE, MELEE, 1)
+	take_damage(rand(4,8), BRUTE, BLUNT, 1)
 
 /obj/structure/rack/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)

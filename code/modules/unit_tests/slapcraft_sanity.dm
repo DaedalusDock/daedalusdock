@@ -1,10 +1,10 @@
 /datum/unit_test/slapcraft_recipe_sanity/Run()
 
-	for(var/datum/slapcraft_recipe/R as anything in subtypesof(/datum/slapcraft_recipe))
+	for(var/datum/slapcraft_recipe/R as anything in typesof(/datum/slapcraft_recipe))
 		if(isabstract(R))
 			continue
 
-		R = new()
+		R = new R()
 		// Check if the recipe has atleast 2 steps.
 		if(length(R.steps) < 2)
 			TEST_FAIL("Slapcrafting recipe of type [R.type] has less than 2 steps. This is wrong.")

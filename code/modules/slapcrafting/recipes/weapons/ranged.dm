@@ -17,7 +17,7 @@
 	steps = list(
 		/datum/slapcraft_step/item/pipe,
 		/datum/slapcraft_step/stack/rod/two,
-		/datum/slapcraft_step/item/pipe,
+		/datum/slapcraft_step/item/pipe/second,
 		/datum/slapcraft_step/tool/welder/weld_together
 	)
 	result_type = /obj/item/pneumatic_cannon/ghetto

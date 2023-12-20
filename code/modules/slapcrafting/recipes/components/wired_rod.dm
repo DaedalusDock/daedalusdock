@@ -13,7 +13,8 @@
 	examine_hint = "You could cut the wire off with wirecutters..."
 	category = SLAP_CAT_COMPONENTS
 	steps = list(
-		/datum/slapcraft_step/tool/wirecutter
+		/datum/slapcraft_step/item/wirerod,
+		/datum/slapcraft_step/tool/wirecutter,
 	)
 	result_list = list(
 		/obj/item/stack/rods,

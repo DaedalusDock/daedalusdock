@@ -61,6 +61,10 @@
 	start_msg = "%USER% begins attaching a metal ball to the %TARGET%."
 	start_msg_self = "You begin attaching a metal ball to the %TARGET%."
 
+/datum/slapcraft_step/item/metal_ball/second
+
+/datum/slapcraft_step/item/metal_ball/third
+
 /datum/slapcraft_step/item/grenade
 	desc = "Attach a grenade."
 	todo_desc = "You could attach a grenade..."
@@ -76,6 +80,9 @@
 	finish_msg = "%USER% attaches a pipe to the %TARGET%."
 	finish_msg_self = "You attach a pipe to the %TARGET%."
 
+/// Disambiguation go BRRRR
+/datum/slapcraft_step/item/pipe/second
+
 /datum/slapcraft_step/item/paper
 	desc = "Attach a sheet of paper."
 	item_types = list(/obj/item/paper)
@@ -83,8 +90,21 @@
 	finish_msg = "%USER% adds a sheet of paper to the %TARGET%."
 	finish_msg_self = "You add a sheet of paper to the %TARGET%."
 
+/// Disambiguation go BRRRR
+/datum/slapcraft_step/item/paper/second
+/// Disambiguation go BRRRR
+/datum/slapcraft_step/item/paper/third
+/// Disambiguation go BRRRR
+/datum/slapcraft_step/item/paper/fourth
+/// Disambiguation go BRRRR
+/datum/slapcraft_step/item/paper/fifth
+
 /datum/slapcraft_step/item/flashlight
 	desc = "Attach a flashlight."
 	item_types = list(/obj/item/flashlight)
 	finish_msg = "%USER% attaches a flashlight to the %TARGET%."
 	finish_msg_self = "You attach a flashlight to the %TARGET%."
+
+/// Disambiguation go BRRRR
+/datum/slapcraft_step/item/flashlight/again
+

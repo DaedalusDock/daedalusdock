@@ -17,9 +17,9 @@
 	examine_hint = "With a cutting tool and more paper, you could make a bag..."
 	category = SLAP_CAT_MISC
 	steps = list(
-		/datum/slapcraft_step/attack/sharp,
 		/datum/slapcraft_step/item/paper,
-		/datum/slapcraft_step/item/paper
+		/datum/slapcraft_step/attack/sharp,
+		/datum/slapcraft_step/item/paper/second
 	)
 	result_type = /obj/item/storage/box/papersack
 
@@ -28,8 +28,8 @@
 	examine_hint = "If you cut this and add a second sheet of paper, you could make a cup..."
 	category = SLAP_CAT_MISC
 	steps = list(
-		/datum/slapcraft_step/attack/sharp,
 		/datum/slapcraft_step/item/paper
+		/datum/slapcraft_step/attack/sharp,
 	)
 	result_type = /obj/item/reagent_containers/food/drinks/sillycup
 
@@ -40,9 +40,9 @@
 	steps = list(
 		/datum/slapcraft_step/stack/wood/one,
 		/datum/slapcraft_step/item/paper,
-		/datum/slapcraft_step/item/paper,
-		/datum/slapcraft_step/item/paper,
-		/datum/slapcraft_step/item/paper,
-		/datum/slapcraft_step/item/paper //okay maybe we need paper as a sheet type
+		/datum/slapcraft_step/item/paper/second,
+		/datum/slapcraft_step/item/paper/third,
+		/datum/slapcraft_step/item/paper/fourth,
+		/datum/slapcraft_step/item/paper/fifth //okay maybe we need paper as a sheet type
 	)
 	result_type = /obj/item/stack/sheet/paperframes

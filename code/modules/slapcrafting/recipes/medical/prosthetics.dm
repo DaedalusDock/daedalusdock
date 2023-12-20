@@ -7,6 +7,6 @@
 	steps = list(
 		/datum/slapcraft_step/item/flashlight,
 		/datum/slapcraft_step/stack/cable/fifteen,
-		/datum/slapcraft_step/item/flashlight
+		/datum/slapcraft_step/item/flashlight/again
 	)
 	result_type = /obj/item/organ/eyes/robotic/flashlight

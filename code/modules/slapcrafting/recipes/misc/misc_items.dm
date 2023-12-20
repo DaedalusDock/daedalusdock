@@ -28,7 +28,7 @@
 	examine_hint = "If you cut this and add a second sheet of paper, you could make a cup..."
 	category = SLAP_CAT_MISC
 	steps = list(
-		/datum/slapcraft_step/item/paper
+		/datum/slapcraft_step/item/paper,
 		/datum/slapcraft_step/attack/sharp,
 	)
 	result_type = /obj/item/reagent_containers/food/drinks/sillycup

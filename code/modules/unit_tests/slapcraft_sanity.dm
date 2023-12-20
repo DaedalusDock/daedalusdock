@@ -1,6 +1,6 @@
 /datum/unit_test/slapcraft_recipe_sanity/Run()
 
-	for(var/datum/slapcraft_recipe/R as anything in typesof(/datum/slapcraft_recipe))
+	for(var/datum/slapcraft_recipe/R as anything in subtypesof(/datum/slapcraft_recipe))
 		if(isabstract(R))
 			continue
 

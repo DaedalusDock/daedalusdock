@@ -92,6 +92,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/obj/machinery/computer/holodeck)
 	//runtimes if not paired with a landmark
 	ignore += typesof(/obj/structure/industrial_lift)
+	//throws garbage to the log if it spawns without neighbors. It's a mapping helper anyways.
+	ignore += typesof(/obj/structure/cable/smart_cable)
 
 	var/list/cached_contents = spawn_at.contents.Copy()
 	var/original_turf_type = spawn_at.type

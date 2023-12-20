@@ -1316,5 +1316,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/list/hints = slapcraft_examine_hints_for_type(given_type)
 	if(!length(hints))
 		return
+	hints.Insert(1, "<div style='text-align: center;font-size: 200%;font-weight: bold'>Craftables<hr></div>")
 
 	to_chat(mob, examine_block("<span class='notice'>[jointext(hints, "<br>")]</span>"))

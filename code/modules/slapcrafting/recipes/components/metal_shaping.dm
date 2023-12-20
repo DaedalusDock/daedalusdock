@@ -13,7 +13,7 @@
 
 /datum/slapcraft_recipe/metal_ball
 	name = "metal pipe"
-	examine_hint = "You could form this into a pipe, starting by heating it with a welder..."
+	examine_hint = "You could form this into a ball, starting by heating it with a welder..."
 	category = SLAP_CAT_COMPONENTS
 	can_disassemble = FALSE
 	steps = list(

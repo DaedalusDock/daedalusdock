@@ -79,12 +79,23 @@
 
 	return FALSE
 
-/// Checks if the passed item is a proper type to perform this step, and whether it passes the `can_perform()` check. Asembly can be null
-/datum/slapcraft_step/proc/perform_check(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+/// Checks if the passed item is a proper type to perform this step, and whether it passes the `can_perform()` check. Assembly can be null
+/datum/slapcraft_step/proc/perform_check(
+		mob/living/user,
+		obj/item/item,
+		obj/item/slapcraft_assembly/assembly,
+		check_type_only,
+		error_list = list()
+	)
+
 	if(check_types && !check_type(item.type))
 		return FALSE
-	if(!can_perform(user, item, assembly))
+
+	if(!can_perform(user, item, assembly, error_list))
+		if(check_types && check_type_only)
+			return TRUE
 		return FALSE
+
 	//Check if we finish the assembly, and whether that's possible
 	if(assembly)
 		// If would be finished, but can't be
@@ -93,8 +104,8 @@
 	return TRUE
 
 /// Make a user perform this step, by using an item on the assembly, trying to progress the assembly.
-/datum/slapcraft_step/proc/perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, instant = FALSE, silent = FALSE)
-	if(!perform_check(user, item, assembly) || !assembly.recipe.check_correct_step(type, assembly.step_states))
+/datum/slapcraft_step/proc/perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, instant = FALSE, silent = FALSE, list/error_list = list())
+	if(!perform_check(user, item, assembly, error_list = error_list) || !assembly.recipe.check_correct_step(type, assembly.step_states))
 		return FALSE
 
 	if(perform_time && !instant)
@@ -139,13 +150,13 @@
 
 /// Checks whether a user can perform this step with an item. Exists so steps can override this proc for their own behavioural checks.
 /// `assembly` can be null here, when the recipe finding checks are trying to figure out what recipe we can make.
-/datum/slapcraft_step/proc/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+/datum/slapcraft_step/proc/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	SHOULD_CALL_PARENT(TRUE)
-
+	. = TRUE
 	// Check if the mob can actually remove the item from their inventory
 	if(check_if_mob_can_drop_item && (item.item_flags & IN_INVENTORY) && !user.canUnequipItem(item))
-		return FALSE
-	return TRUE
+		error_list += "I cannot drop [item]."
+		. = FALSE
 
 /// Behaviour to happen on performing this step. Perhaps removing a portion of reagents to create an IED or something.
 /datum/slapcraft_step/proc/on_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)

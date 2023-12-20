@@ -33,14 +33,12 @@
 		/obj/item/food/grown/wheat,
 	)
 
-/datum/slapcraft_step/dried_leaf/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
+/datum/slapcraft_step/dried_leaf/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	. = ..()
-	if(!.)
-		return
 
 	if(!HAS_TRAIT(item, TRAIT_DRIED))
-		return FALSE
-	return TRUE
+		error_list += "[item] is not dried."
+		. = FALSE
 
 /datum/slapcraft_step/tool/knife/carve_torch
 	desc = "Carve the torch from a log."

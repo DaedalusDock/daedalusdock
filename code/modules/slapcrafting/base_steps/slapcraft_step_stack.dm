@@ -6,15 +6,16 @@
 	/// Amount of the stack items to be put into the assembly.
 	var/amount = 1
 
-/datum/slapcraft_step/stack/can_perform(mob/living/user, obj/item/item)
+/datum/slapcraft_step/stack/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	. = ..()
-	if(!.)
-		return
 
 	var/obj/item/stack/stack = item
 	if(istype(stack) && stack.amount < amount)
-		return FALSE
-	return TRUE
+		if(item.gender == PLURAL) //this looks really funny if you dont know byond
+			error_list += "There are not enough [initial(item.name)] (need [amount])."
+		else
+			error_list += "There is not enough [initial(item.name)] (need [amount])."
+		. = FALSE
 
 /datum/slapcraft_step/stack/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	var/obj/item/stack/stack = item
@@ -56,22 +57,19 @@
 
 		amounts += path_tree
 
-/datum/slapcraft_step/stack/or_other/can_perform(mob/living/user, obj/item/item)
+/datum/slapcraft_step/stack/or_other/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	. = ..()
-	if(!.)
-		return
 
 	if(isstack(item))
 		var/obj/item/stack/S = item
 		if(S.amount < amounts[S.type])
-			return FALSE
-
-	return TRUE
+			error_list += "There are not enough [initial(item.name)] (need [amounts[S.type]])."
+			. = FALSE
 
 /datum/slapcraft_step/stack/or_other/move_item_to_assembly(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly)
 	amount = amounts[item.type]
-	return ..()
-
+	. = ..()
+	amount = 0
 
 /datum/slapcraft_step/stack/or_other/binding
 	desc = "Tie the assembly together."

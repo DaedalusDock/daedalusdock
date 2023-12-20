@@ -10,16 +10,14 @@
 	/// How much fuel is required, only relevant for welding tools.
 	var/required_fuel = 0
 
-/datum/slapcraft_step/tool/can_perform(mob/living/user, obj/item/item)
+/datum/slapcraft_step/tool/can_perform(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, list/error_list = list())
 	. = ..()
-	if(!.)
-		return
 
 	if(item.tool_behaviour != tool_behaviour)
-		return FALSE
+		. = FALSE
+
 	if(!item.tool_use_check(user, required_fuel))
-		return
-	return TRUE
+		. = FALSE
 
 /datum/slapcraft_step/tool/perform_do_after(mob/living/user, obj/item/item, obj/item/slapcraft_assembly/assembly, time_to_do)
 	// This will play the tool sound aswell. Rackety

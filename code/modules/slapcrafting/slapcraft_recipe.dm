@@ -59,13 +59,13 @@
 	return radial_appearance
 
 /// Returns the next suitable step to be performed with the item by the user with such step_states
-/datum/slapcraft_recipe/proc/next_suitable_step(mob/living/user, obj/item/item, list/step_states)
+/datum/slapcraft_recipe/proc/next_suitable_step(mob/living/user, obj/item/item, list/step_states, check_type_only)
 	var/datum/slapcraft_step/chosen_step
 	for(var/step_type in steps)
 		if(!check_correct_step(step_type, step_states))
 			continue
 		var/datum/slapcraft_step/iterated_step = SLAPCRAFT_STEP(step_type)
-		if(!iterated_step.perform_check(user, item, null))
+		if(!iterated_step.perform_check(user, item, null, check_type_only = check_type_only))
 			continue
 		chosen_step = iterated_step
 		break

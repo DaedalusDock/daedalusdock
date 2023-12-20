@@ -29,7 +29,7 @@
 			var/datum/slapcraft_step/iterated_step = SLAPCRAFT_STEP(step_type)
 			if(!iterated_step.optional)
 				continue
-			switch(step_order)
+			switch(R.step_order)
 				if(SLAP_ORDER_STEP_BY_STEP, SLAP_ORDER_FIRST_AND_LAST)
 					// If first, or last
 					if(step_count == 1 || step_count == R.steps.len)

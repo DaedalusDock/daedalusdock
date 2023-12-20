@@ -52,3 +52,9 @@
   - rscadd: A new storage type, Holster, which allows specific items to ignore storage
       restrictions.
   - bugfix: Quickdraw storages can be opened normally.
+2023-12-20:
+  RimiNosha:
+  - rscadd: Chemical cartridges! Chem/booze/soda dispensers now draw from cartridges
+      instead of magically synthesizing chemicals.
+  - balance: Chem dispensers no longer have infinite chems and will need to be refilled.
+      Medical has spare cartridges, and more can be bought from cargo.

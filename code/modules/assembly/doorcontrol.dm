@@ -25,7 +25,7 @@
 	if(cooldown)
 		return
 	cooldown = TRUE
-	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(TRACKING_KEY_DOORS))
+	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(/obj/machinery/door))
 		if(M.id == src.id)
 			if(openclose == null || !sync_doors)
 				openclose = M.density
@@ -46,7 +46,7 @@
 	if(cooldown)
 		return
 	cooldown = TRUE
-	for(var/obj/structure/curtain/cloth/fancy/mechanical/M in GLOB.curtains)
+	for(var/obj/structure/curtain/cloth/fancy/mechanical/M as anything in INSTANCES_OF(/obj/structure/curtain/cloth/fancy/mechanical))
 		if(M.id == src.id)
 			if(openclose == null || !sync_doors)
 				openclose = M.density
@@ -73,7 +73,7 @@
 	cooldown = TRUE
 	var/doors_need_closing = FALSE
 	var/list/obj/machinery/door/airlock/open_or_close = list()
-	for(var/obj/machinery/door/airlock/D in GLOB.airlocks)
+	for(var/obj/machinery/door/airlock/D in INSTANCES_OF(/obj/machinery/door))
 		if(D.id_tag == src.id)
 			if(specialfunctions & OPEN)
 				open_or_close += D
@@ -107,7 +107,7 @@
 	if(cooldown)
 		return
 	cooldown = TRUE
-	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(TRACKING_KEY_DOORS))
+	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(/obj/machinery/door))
 		if (M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/door/poddoor, open))
 
@@ -119,7 +119,7 @@
 
 	sleep(60)
 
-	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(TRACKING_KEY_DOORS))
+	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(/obj/machinery/door))
 		if (M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/door/poddoor, close))
 

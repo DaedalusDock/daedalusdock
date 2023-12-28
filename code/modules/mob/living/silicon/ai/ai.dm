@@ -179,7 +179,8 @@
 		))
 
 	GLOB.ai_list += src
-	GLOB.shuttle_caller_list += src
+
+	SET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 
 	builtInCamera = new (src)
 	builtInCamera.network = list("ss13")
@@ -215,7 +216,7 @@
 
 /mob/living/silicon/ai/Destroy()
 	GLOB.ai_list -= src
-	GLOB.shuttle_caller_list -= src
+	UNSET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	SSshuttle.autoEvac()
 	QDEL_NULL(eyeobj) // No AI, no Eye
 	QDEL_NULL(spark_system)
@@ -447,7 +448,7 @@
 			to_chat(src, "Target is not on or near any active cameras on the station.")
 		return
 	if (href_list["ai_take_control"]) //Mech domination
-		var/obj/vehicle/sealed/mecha/M = locate(href_list["ai_take_control"]) in GLOB.mechas_list
+		var/obj/vehicle/sealed/mecha/M = locate(href_list["ai_take_control"]) in INSTANCES_OF(/obj/vehicle/sealed/mecha)
 		if (!M)
 			return
 

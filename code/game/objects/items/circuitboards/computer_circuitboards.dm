@@ -303,10 +303,10 @@
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Initialize(mapload)
 	. = ..()
-	GLOB.syndicate_shuttle_boards += src
+	SET_TRACKING(__TYPE__)
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Destroy()
-	GLOB.syndicate_shuttle_boards -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/item/circuitboard/computer/syndicatedoor

@@ -89,7 +89,7 @@
 /obj/machinery/computer/communications/Initialize(mapload)
 	. = ..()
 	SET_TRACKING(__TYPE__)
-	GLOB.shuttle_caller_list += src
+	SET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	AddComponent(/datum/component/gps, "Secured Communications Signal")
 
 /// Are we NOT a silicon, AND we're logged in as the captain?
@@ -754,7 +754,7 @@
 
 /obj/machinery/computer/communications/Destroy()
 	UNSET_TRACKING(__TYPE__)
-	GLOB.shuttle_caller_list -= src
+	UNSET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	SSshuttle.autoEvac()
 	return ..()
 

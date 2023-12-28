@@ -15,7 +15,7 @@
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
 	..()
-	GLOB.ladders += src
+	SET_TRACKING(__TYPE__)
 	if (up)
 		src.up = up
 		up.down = src
@@ -29,7 +29,7 @@
 /obj/structure/ladder/Destroy(force)
 	if ((resistance_flags & INDESTRUCTIBLE) && !force)
 		return QDEL_HINT_LETMELIVE
-	GLOB.ladders -= src
+	UNSET_TRACKING(__TYPE__)
 	disconnect()
 	return ..()
 
@@ -185,7 +185,7 @@
 		update_appearance()
 		return
 
-	for(var/obj/structure/ladder/unbreakable/unbreakable_ladder in GLOB.ladders)
+	for(var/obj/structure/ladder/unbreakable/unbreakable_ladder in INSTANCES_OF(/obj/structure/ladder))
 		if (unbreakable_ladder.id != id)
 			continue  // not one of our pals
 		if (!down && unbreakable_ladder.height == height - 1)

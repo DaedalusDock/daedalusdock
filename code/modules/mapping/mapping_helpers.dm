@@ -471,14 +471,16 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/bodycount = 2 //number of bodies to spawn
 
 /obj/effect/mapping_helpers/dead_body_placer/LateInitialize()
-	var/area/a = get_area(src)
+	var/area/my_area = get_area(src)
 	var/list/trays = list()
-	for (var/i in a.contents)
-		if (istype(i, /obj/structure/bodycontainer/morgue))
-			trays += i
+	for (var/obj/structure/bodycontainer/morgue/tray as anything in INSTANCES_OF(/obj/structure/bodycontainer/morgue))
+		if(get_area(tray) == my_area)
+			trays += tray
+
 	if(!trays.len)
 		log_mapping("[src] at [x],[y] could not find any morgues.")
 		return
+
 	for (var/i = 1 to bodycount)
 		var/obj/structure/bodycontainer/morgue/j = pick(trays)
 		var/mob/living/carbon/human/h = new /mob/living/carbon/human(j, 1)

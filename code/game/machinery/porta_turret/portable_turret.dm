@@ -470,9 +470,8 @@ DEFINE_BITFIELD(turret_flags, list(
 				if(!in_faction(C))
 					targets += C
 
-	for(var/A in GLOB.mechas_list)
-		if((get_dist(A, base) < scan_range) && can_see(base, A, scan_range))
-			var/obj/vehicle/sealed/mecha/mech = A
+	for(var/obj/vehicle/sealed/mecha/mech as anything in INSTANCES_OF(/obj/vehicle/sealed/mecha))
+		if((get_dist(mech, base) < scan_range) && can_see(base, mech, scan_range))
 			for(var/O in mech.occupants)
 				var/mob/living/occupant = O
 				if(!in_faction(occupant)) //If there is a user and they're not in our faction

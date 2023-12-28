@@ -26,6 +26,7 @@
 
 /obj/structure/chair/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(prob(0.2))
 		name = "tactical [name]"
 	MakeRotate()
@@ -36,6 +37,7 @@
 
 /obj/structure/chair/Destroy()
 	SSjob.latejoin_trackers -= src //These may be here due to the arrivals shuttle
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/structure/chair/deconstruct(disassembled)

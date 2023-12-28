@@ -143,7 +143,7 @@
 	var/list/area_index = list()
 
 	if (regime_set == "Teleporter")
-		for (var/obj/item/beacon/beacon as anything in GLOB.teleportbeacons)
+		for (var/obj/item/beacon/beacon as anything in INSTANCES_OF(/obj/item/beacon))
 			if (!is_eligible(beacon))
 				continue
 

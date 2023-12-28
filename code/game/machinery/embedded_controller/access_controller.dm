@@ -245,7 +245,7 @@
 			lostPower = FALSE
 
 /obj/machinery/door_buttons/airlock_controller/findObjsByTag()
-	for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
+	for(var/obj/machinery/door/airlock/A in INSTANCES_OF(/obj/machinery/door))
 		if(A.id_tag == idInterior)
 			interiorAirlock = A
 		else if(A.id_tag == idExterior)

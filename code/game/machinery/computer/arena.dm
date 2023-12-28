@@ -249,7 +249,7 @@
 
 
 /obj/machinery/computer/arena/proc/set_doors(closed = FALSE)
-	for(var/obj/machinery/door/poddoor/D in INSTANCES_OF(TRACKING_KEY_DOORS)) //I really dislike pathing of these
+	for(var/obj/machinery/door/poddoor/D in INSTANCES_OF(/obj/machinery/door)) //I really dislike pathing of these
 		if(D.id != arena_id)
 			continue
 		if(closed)

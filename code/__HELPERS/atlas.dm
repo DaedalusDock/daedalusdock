@@ -25,6 +25,18 @@ GLOBAL_REAL_VAR(list/atlas) = list()
 
 #define INSTANCES_OF_COPY(x) (::atlas[x]:Copy())
 
-
 // Tracking keys
-#define TRACKING_KEY_DOORS "doors"
+/// Key used for things that can call the shuttle
+#define TRACKING_KEY_SHUTTLE_CALLER "shuttle_caller"
+#define TRACKING_KEY_RCD "rcds"
+
+/proc/list_debug()
+	var/list/lists = list()
+	for(var/V in GLOB.vars)
+		if(islist(GLOB.vars[V]))
+			lists[V] = GLOB.vars[V]
+
+	sortTim(lists, GLOBAL_PROC_REF(cmp_list_length), TRUE)
+
+	for(var/name in lists)
+		to_chat(world, "[name] - [length(lists[name])]")

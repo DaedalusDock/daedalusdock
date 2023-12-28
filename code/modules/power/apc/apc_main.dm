@@ -566,10 +566,14 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, E
 		INVOKE_ASYNC(src, PROC_REF(break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
-	for(var/obj/machinery/light/breaked_light in area)
+	var/area/A = get_area(src)
+	for(var/obj/machinery/light/breaked_light in INSTANCES_OF(/obj/machinery/light))
+		if(A != get_area(breaked_light))
+			continue
+
 		breaked_light.on = TRUE
 		breaked_light.break_light_tube()
-		stoplag()
+		CHECK_TICK
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 2000)

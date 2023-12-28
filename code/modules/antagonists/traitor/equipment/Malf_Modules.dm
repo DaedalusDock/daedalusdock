@@ -353,7 +353,7 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 	uses = 1
 
 /datum/action/innate/ai/lockdown/Activate()
-	for(var/obj/machinery/door/D in GLOB.airlocks)
+	for(var/obj/machinery/door/D in INSTANCES_OF(/obj/machinery/door))
 		if(!is_station_level(D.z))
 			continue
 		INVOKE_ASYNC(D, TYPE_PROC_REF(/obj/machinery/door, hostile_lockdown), owner)
@@ -439,7 +439,7 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 	cooldown_period = 100
 
 /datum/action/innate/ai/destroy_rcds/Activate()
-	for(var/I in GLOB.rcd_list)
+	for(var/I in INSTANCES_OF(TRACKING_KEY_RCD))
 		if(!istype(I, /obj/item/construction/rcd/borg)) //Ensures that cyborg RCDs are spared.
 			var/obj/item/construction/rcd/RCD = I
 			RCD.detonate_pulse()
@@ -688,7 +688,7 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 		bellman.obj_flags |= EMAGGED
 		bellman.update_appearance()
 
-	for(var/obj/machinery/door/firedoor/firelock in INSTANCES_OF(TRACKING_KEY_DOORS))
+	for(var/obj/machinery/door/firedoor/firelock in INSTANCES_OF(/obj/machinery/door))
 		if(!is_station_level(firelock.z))
 			continue
 

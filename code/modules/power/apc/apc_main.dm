@@ -124,7 +124,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, E
 	if(!armor)
 		armor = global.default_apc_armor
 	..()
-	GLOB.apcs_list += src
+	SET_TRACKING(__TYPE__)
 
 	wires = new /datum/wires/apc(src)
 
@@ -196,7 +196,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, E
 		log_mapping("APC: ([src]) at [AREACOORD(src)] with dir ([dir] | [uppertext(dir2text(dir))]) has pixel_[dir & (WEST|EAST) ? "x" : "y"] value [offset_old] - should be [dir & (SOUTH|EAST) ? "-" : ""][APC_PIXEL_OFFSET]. Use the directional/ helpers!")
 
 /obj/machinery/power/apc/Destroy()
-	GLOB.apcs_list -= src
+	UNSET_TRACKING(__TYPE__)
 
 	if(malfai && operating)
 		malfai.malf_picker.processing_time = clamp(malfai.malf_picker.processing_time - 10,0,1000)

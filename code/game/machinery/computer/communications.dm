@@ -88,6 +88,7 @@
 
 /obj/machinery/computer/communications/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	GLOB.shuttle_caller_list += src
 	AddComponent(/datum/component/gps, "Secured Communications Signal")
 
@@ -752,6 +753,7 @@
 	frequency.post_signal(status_signal)
 
 /obj/machinery/computer/communications/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	GLOB.shuttle_caller_list -= src
 	SSshuttle.autoEvac()
 	return ..()

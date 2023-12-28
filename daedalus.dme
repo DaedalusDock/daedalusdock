@@ -323,6 +323,7 @@
 #include "code\__HELPERS\admin.dm"
 #include "code\__HELPERS\ai.dm"
 #include "code\__HELPERS\areas.dm"
+#include "code\__HELPERS\atlas.dm"
 #include "code\__HELPERS\atmospherics.dm"
 #include "code\__HELPERS\atoms.dm"
 #include "code\__HELPERS\bitflag_lists.dm"

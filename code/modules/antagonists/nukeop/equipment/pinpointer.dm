@@ -44,8 +44,7 @@
 				var/mob/living/silicon/ai/A = V
 				if(A.nuking)
 					target = A
-			for(var/V in GLOB.apcs_list)
-				var/obj/machinery/power/apc/A = V
+			for(var/obj/machinery/power/apc/A as anything in INSTANCES_OF(/obj/machinery/power/apc))
 				if(A.malfhack && A.occupier)
 					target = A
 		if(TRACK_INFILTRATOR)

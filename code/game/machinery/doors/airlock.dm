@@ -290,7 +290,7 @@
 			otherlock.close_others -= src
 		close_others.Cut()
 	if(id_tag)
-		for(var/obj/machinery/door_buttons/D in GLOB.machines)
+		for(var/obj/machinery/door_buttons/D as anything in INSTANCES_OF(/obj/machinery/door_buttons))
 			D.removeMe(src)
 	QDEL_NULL(note)
 	QDEL_NULL(seal)

@@ -15,7 +15,7 @@
 		else
 			msg = "Its tracking indicator is blank."
 	. += msg
-	for(var/obj/machinery/nuclearbomb/bomb in GLOB.machines)
+	for(var/obj/machinery/nuclearbomb/bomb as anything in INSTANCES_OF(/obj/machinery/nuclearbomb))
 		if(bomb.timing)
 			. += "Extreme danger. Arming signal detected. Time remaining: [bomb.get_time_left()]."
 
@@ -23,7 +23,7 @@
 	..()
 	if(!active || alert)
 		return
-	for(var/obj/machinery/nuclearbomb/bomb as anything in GLOB.nuke_list)
+	for(var/obj/machinery/nuclearbomb/bomb as anything in INSTANCES_OF(/obj/machinery/nuclearbomb))
 		if(!bomb.timing)
 			continue
 		alert = TRUE

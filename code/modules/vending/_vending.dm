@@ -189,6 +189,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
  * * TRUE - all other cases
  */
 /obj/machinery/vending/Initialize(mapload)
+	SET_TRACKING(__TYPE__)
 	var/build_inv = FALSE
 	if(!refill_canister)
 		circuit = null
@@ -221,6 +222,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	Radio.set_listening(FALSE, TRUE)
 
 /obj/machinery/vending/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	QDEL_NULL(wires)
 	QDEL_NULL(coin)
 	QDEL_NULL(bill)

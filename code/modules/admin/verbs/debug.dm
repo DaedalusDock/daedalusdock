@@ -251,7 +251,7 @@
 			areas_with_multiple_APCs.Add(A.type)
 		CHECK_TICK
 
-	for(var/obj/machinery/airalarm/AA in GLOB.machines)
+	for(var/obj/machinery/airalarm/AA as anything in INSTANCES_OF(/obj/machinery/airalarm))
 		var/area/A = get_area(AA)
 		if(!A) //Make sure the target isn't inside an object, which results in runtimes.
 			dat += "Skipped over [AA] in invalid location, [AA.loc].<br>"
@@ -260,7 +260,7 @@
 			areas_with_air_alarm.Add(A.type)
 		CHECK_TICK
 
-	for(var/obj/machinery/requests_console/RC in GLOB.machines)
+	for(var/obj/machinery/requests_console/RC as anything in INSTANCES_OF(/obj/machinery/requests_console))
 		var/area/A = get_area(RC)
 		if(!A)
 			dat += "Skipped over [RC] in invalid location, [RC.loc].<br>"
@@ -269,7 +269,7 @@
 			areas_with_RC.Add(A.type)
 		CHECK_TICK
 
-	for(var/obj/machinery/light/L in GLOB.machines)
+	for(var/obj/machinery/light/L as anything in INSTANCES_OF(/obj/machinery/light))
 		var/area/A = get_area(L)
 		if(!A)
 			dat += "Skipped over [L] in invalid location, [L.loc].<br>"
@@ -278,7 +278,7 @@
 			areas_with_light.Add(A.type)
 		CHECK_TICK
 
-	for(var/obj/machinery/light_switch/LS in GLOB.machines)
+	for(var/obj/machinery/light_switch/LS as anything in INSTANCES_OF(/obj/machinery/light_switch))
 		var/area/A = get_area(LS)
 		if(!A)
 			dat += "Skipped over [LS] in invalid location, [LS.loc].<br>"
@@ -287,7 +287,7 @@
 			areas_with_LS.Add(A.type)
 		CHECK_TICK
 
-	for(var/obj/item/radio/intercom/I in GLOB.machines)
+	for(var/obj/item/radio/intercom/I as anything in INSTANCES_OF(/obj/item/radio/intercom))
 		var/area/A = get_area(I)
 		if(!A)
 			dat += "Skipped over [I] in invalid location, [I.loc].<br>"
@@ -296,7 +296,7 @@
 			areas_with_intercom.Add(A.type)
 		CHECK_TICK
 
-	for(var/obj/machinery/camera/C in GLOB.machines)
+	for(var/obj/machinery/camera/C as anything in INSTANCES_OF(/obj/machinery/camera))
 		var/area/A = get_area(C)
 		if(!A)
 			dat += "Skipped over [C] in invalid location, [C.loc].<br>"

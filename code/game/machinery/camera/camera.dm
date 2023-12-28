@@ -67,6 +67,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 
 /obj/machinery/camera/Initialize(mapload, obj/structure/camera_assembly/old_assembly)
 	. = ..()
+	SET_TRACKING(__TYPE__)
+
 	for(var/i in network)
 		network -= i
 		network += lowertext(i)
@@ -117,6 +119,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	create_prox_monitor()
 
 /obj/machinery/camera/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	if(can_use())
 		toggle_cam(null, 0) //kick anyone viewing out and remove from the camera chunks
 	GLOB.cameranet.removeCamera(src)

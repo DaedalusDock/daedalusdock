@@ -160,7 +160,7 @@
 
 	if(!team)
 		team = new()
-		var/obj/machinery/nuclearbomb/selfdestruct/nuke = locate() in GLOB.nuke_list
+		var/obj/machinery/nuclearbomb/selfdestruct/nuke = locate() in INSTANCES_OF(/obj/machinery/nuclearbomb)
 		if(nuke.r_code == "ADMIN")
 			nuke.r_code = random_nukecode()
 		team.nuke = nuke

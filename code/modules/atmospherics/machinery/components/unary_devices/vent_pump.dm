@@ -50,9 +50,12 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/Initialize()
 	if(!id_tag)
 		id_tag = SSpackets.generate_net_id(src)
+
+	SET_TRACKING(__TYPE__)
 	. = ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	var/area/vent_area = get_area(src)
 	if(vent_area)
 		vent_area.air_vent_info -= id_tag

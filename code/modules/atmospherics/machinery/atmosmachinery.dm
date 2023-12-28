@@ -77,6 +77,7 @@
 			. += span_notice("Alt-click to crawl through it.")
 
 GLOBAL_REAL_VAR(atmos_machinery_default_armor) = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 100, ACID = 70)
+
 /obj/machinery/atmospherics/New(loc, process = TRUE, setdir, init_dir = ALL_CARDINALS)
 	if(!isnull(setdir))
 		setDir(setdir)
@@ -86,13 +87,19 @@ GLOBAL_REAL_VAR(atmos_machinery_default_armor) = list(MELEE = 25, BULLET = 10, L
 	if (!armor)
 		armor = global.atmos_machinery_default_armor
 	..()
+
 	if(process)
 		SSairmachines.start_processing_machine(src)
 	set_init_directions(init_dir)
 
 /obj/machinery/atmospherics/Initialize(mapload)
+	#ifdef DEBUG_MAPS
+	::atmospherics += src
+	#endif
+
 	if(mapload && name != initial(name))
 		override_naming = TRUE
+
 	var/turf/turf_loc = null
 	if(isturf(loc))
 		turf_loc = loc
@@ -111,6 +118,9 @@ GLOBAL_REAL_VAR(atmos_machinery_default_armor) = list(MELEE = 25, BULLET = 10, L
 	if(pipe_vision_img)
 		qdel(pipe_vision_img)
 
+	#ifdef DEBUG_MAPS
+	::atmospherics -= src
+	#endif
 	return ..()
 	//return QDEL_HINT_FINDREFERENCE
 

@@ -59,6 +59,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(building)
 		buildstage = 0
 		panel_open = TRUE
@@ -85,6 +86,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 
 /obj/machinery/firealarm/Destroy()
 	set_area(null)
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/firealarm/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)

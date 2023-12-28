@@ -165,7 +165,7 @@
 		return
 
 	var/list/locations = list()
-	for(var/obj/machinery/computer/teleporter/computer in GLOB.machines)
+	for(var/obj/machinery/computer/teleporter/computer as anything in INSTANCES_OF(/obj/machinery/computer/teleporter))
 		var/atom/target = computer.target_ref?.resolve()
 		if(!target)
 			computer.target_ref = null

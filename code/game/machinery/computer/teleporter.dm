@@ -15,6 +15,7 @@
 
 /obj/machinery/computer/teleporter/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	id = "[rand(1000, 9999)]"
 	link_power_station()
 
@@ -23,6 +24,7 @@
 	))
 
 /obj/machinery/computer/teleporter/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	if (power_station)
 		power_station.teleporter_console = null
 		power_station = null

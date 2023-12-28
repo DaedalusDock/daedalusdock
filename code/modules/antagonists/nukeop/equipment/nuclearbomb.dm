@@ -37,8 +37,8 @@ GLOBAL_VAR(station_nuke_source)
 
 /obj/machinery/nuclearbomb/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	countdown = new(src)
-	GLOB.nuke_list += src
 	core = new /obj/item/nuke_core(src)
 	STOP_PROCESSING(SSobj, core)
 	update_appearance()
@@ -46,11 +46,11 @@ GLOBAL_VAR(station_nuke_source)
 	previous_level = get_security_level()
 
 /obj/machinery/nuclearbomb/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	safety = FALSE
 	if(!exploding)
 		// If we're not exploding, set the alert level back to normal
 		set_safety()
-	GLOB.nuke_list -= src
 	QDEL_NULL(countdown)
 	QDEL_NULL(core)
 	. = ..()
@@ -597,7 +597,7 @@ GLOBAL_VAR(station_nuke_source)
 /obj/machinery/nuclearbomb/beer/proc/stationwide_foam()
 	priority_announce("The scrubbers network is experiencing a backpressure surge. Some ejection of contents may occur.")
 
-	for (var/obj/machinery/atmospherics/components/unary/vent_scrubber/vent in GLOB.machines)
+	for (var/obj/machinery/atmospherics/components/unary/vent_scrubber/vent as anything in INSTANCES_OF(/obj/machinery/atmospherics/components/unary/vent_scrubber))
 		var/turf/vent_turf = get_turf(vent)
 		if (!vent_turf || !is_station_level(vent_turf.z) || vent.welded)
 			continue

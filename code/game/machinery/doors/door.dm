@@ -59,6 +59,8 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 
 /obj/machinery/door/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(TRACKING_KEY_DOORS)
+
 	set_init_door_layer()
 	update_freelook_sight()
 	register_context()
@@ -173,6 +175,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		layer = initial(layer)
 
 /obj/machinery/door/Destroy()
+	UNSET_TRACKING(TRACKING_KEY_DOORS)
 	update_freelook_sight()
 	GLOB.airlocks -= src
 	if(spark_system)

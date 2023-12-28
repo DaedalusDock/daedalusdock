@@ -33,7 +33,7 @@
 
 /obj/machinery/power/turbine/Initialize(mapload)
 	. = ..()
-
+	SET_TRACKING(__TYPE__)
 	if(has_gasmix)
 		machine_gasmix = new
 		machine_gasmix.volume = gas_theoretical_volume
@@ -46,6 +46,7 @@
 	update_appearance()
 
 /obj/machinery/power/turbine/Destroy()
+	UNSET_TRACKING(__TYPE__)
 
 	air_update_turf(TRUE)
 

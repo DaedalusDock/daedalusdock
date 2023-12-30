@@ -1048,7 +1048,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!reagents.total_volume)
 		if(ismob(loc))
 			to_chat(M, span_warning("[src] is empty!"))
-			STOP_PROCESSING(SSobj, src)
+			. = PROCESS_KILL
 			//it's reusable so it won't unequip when empty
 		return
 

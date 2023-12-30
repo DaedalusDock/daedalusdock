@@ -65,15 +65,16 @@
 /obj/structure/blob/special/core/process(delta_time)
 	if(QDELETED(src))
 		return
+
 	if(!overmind)
 		qdel(src)
+
 	if(overmind)
 		overmind.blobstrain.core_process()
 		overmind.update_health_hud()
 	pulse_area(overmind, claim_range, pulse_range, expand_range)
 	reinforce_area(delta_time)
 	produce_spores()
-	..()
 
 /obj/structure/blob/special/core/Initialize(mapload)
 	. = ..()

@@ -82,7 +82,7 @@
 		damtype = BRUTE
 		update_appearance()
 		if(!can_off_process)
-			STOP_PROCESSING(SSobj, src)
+			. = PROCESS_KILL
 		return
 
 	//This is to start fires. process() is only called if the welder is on.

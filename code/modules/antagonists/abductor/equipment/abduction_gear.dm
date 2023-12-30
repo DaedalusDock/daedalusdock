@@ -124,7 +124,7 @@
 /obj/item/clothing/suit/armor/abductor/vest/process(delta_time)
 	combat_cooldown += delta_time
 	if(combat_cooldown >= initial(combat_cooldown))
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
 
 /obj/item/clothing/suit/armor/abductor/Destroy()
 	STOP_PROCESSING(SSobj, src)

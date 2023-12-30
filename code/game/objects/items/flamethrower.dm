@@ -46,8 +46,8 @@
 
 /obj/item/flamethrower/process()
 	if(!lit || !igniter)
-		STOP_PROCESSING(SSobj, src)
-		return null
+		return PROCESS_KILL
+
 	var/turf/location = loc
 	if(istype(location, /mob/))
 		var/mob/M = location
@@ -55,7 +55,6 @@
 			location = M.loc
 	if(isturf(location)) //start a fire if possible
 		igniter.flamethrower_process(location)
-
 
 /obj/item/flamethrower/update_icon_state()
 	inhand_icon_state = "flamethrower_[lit]"

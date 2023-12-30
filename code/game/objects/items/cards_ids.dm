@@ -1228,10 +1228,11 @@
 /obj/item/card/id/advanced/prisoner/process(delta_time)
 	if(!timed)
 		return
+
 	time_left -= delta_time
 	if(time_left <= 0)
 		say("Sentence time has been served. Thank you for your cooperation in our corporate rehabilitation program!")
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
 
 /obj/item/card/id/advanced/prisoner/attack_self(mob/user)
 	to_chat(usr, span_notice("You have accumulated [points] out of the [goal] points you need for freedom."))

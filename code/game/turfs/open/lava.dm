@@ -68,7 +68,7 @@
 
 /turf/open/lava/process(delta_time)
 	if(!burn_stuff(null, delta_time))
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
 
 /turf/open/lava/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)

@@ -50,7 +50,7 @@
 /area/hallway/primary/central)
 "al" = (
 /obj/machinery/power/rtg/debug,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "am" = (
@@ -73,7 +73,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "ap" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aq" = (
@@ -113,7 +113,7 @@
 /area/hallway/primary/central)
 "ay" = (
 /obj/machinery/power/apc/auto_name/directional/east,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "az" = (
@@ -171,7 +171,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aI" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
@@ -192,7 +192,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aN" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/rtg/debug,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
@@ -209,7 +209,7 @@
 /area/hallway/primary/central)
 "aT" = (
 /obj/machinery/gravity_generator/main,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aU" = (
@@ -427,17 +427,17 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bA" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/arrows,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bB" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/hallway/primary/central)
 "bC" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/arrows{
 	dir = 4;
 	icon_state = "arrows"
@@ -544,14 +544,14 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bY" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/public/glass{
 	name = "Power"
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "bZ" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/public/glass{
 	name = "Main Floor"
 	},
@@ -559,7 +559,7 @@
 /area/hallway/primary/central)
 "ca" = (
 /obj/machinery/light/floor/has_bulb,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cb" = (
@@ -720,7 +720,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cz" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/public/glass{
 	name = "Gravgen"
 	},
@@ -828,12 +828,12 @@
 	dir = 4;
 	icon_state = "circ-off-0"
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cQ" = (
 /obj/machinery/power/generator,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cR" = (
@@ -841,7 +841,7 @@
 	dir = 8;
 	icon_state = "circ-off-0"
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cS" = (
@@ -864,7 +864,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "cW" = (
-/obj/structure/cable/multilayer/multiz,
+/obj/structure/cable/multiz,
 /turf/open/floor/plating,
 /area/hallway/primary/central)
 "cX" = (

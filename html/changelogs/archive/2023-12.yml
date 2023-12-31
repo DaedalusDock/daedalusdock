@@ -39,3 +39,25 @@
   Kapu1178:
   - qol: Added Delosane900 to the list of Immortals, whose names will live on in git
       history.
+2023-12-19:
+  Amunak, Zamujasa:
+  - rscadd: Adds image tags to admin helps and admin PMs
+  Azarak:
+  - rscadd: Added old non-smart functionalities for cables
+  - rscadd: Added a built in RCL functionality to cable coil
+  - rscadd: Added a smart cable placing mapping helper
+  - rscdel: Removed "smart" functionalities from cables
+  - rscdel: Removed the RCL and pipe cleaners
+  Kapu1178:
+  - rscadd: A new storage type, Holster, which allows specific items to ignore storage
+      restrictions.
+  - bugfix: Quickdraw storages can be opened normally.
+2023-12-20:
+  RimiNosha:
+  - rscadd: Chemical cartridges! Chem/booze/soda dispensers now draw from cartridges
+      instead of magically synthesizing chemicals.
+  - balance: Chem dispensers no longer have infinite chems and will need to be refilled.
+      Medical has spare cartridges, and more can be bought from cargo.
+2023-12-24:
+  Kapu1178:
+  - balance: Crawling is slower.

@@ -43,7 +43,7 @@
 	return ..()
 
 /obj/Destroy(force)
-	if(!ismachinery(src))
+	if(!ismachinery(src) && (datum_flags & DF_ISPROCESSING))
 		STOP_PROCESSING(SSobj, src)
 		stack_trace("Obj of type [type] processing after Destroy(), please fix this.")
 	SStgui.close_uis(src)

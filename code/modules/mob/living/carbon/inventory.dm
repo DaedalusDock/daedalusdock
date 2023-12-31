@@ -326,4 +326,4 @@
 	zone = body_zone2cover_flags(zone)
 	for(var/obj/item/I in get_all_worn_items())
 		if(zone & I.body_parts_covered)
-			return item
+			return I

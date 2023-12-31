@@ -74,6 +74,7 @@
 
 /obj/effect/mob_spawn/ghost_role/spider/Destroy()
 	egg = null
+	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/spider/process(delta_time)

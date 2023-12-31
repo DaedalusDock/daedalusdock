@@ -49,6 +49,10 @@
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 	AddElement(/datum/element/tool_flash, 2)
 
+/obj/item/weldingtool/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/weldingtool/update_icon_state()
 	if(welding)
 		inhand_icon_state = "[initial(inhand_icon_state)]1"

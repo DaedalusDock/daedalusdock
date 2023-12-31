@@ -24,8 +24,8 @@
 	create_reagents(90, OPENCONTAINER)
 
 /obj/item/gun/chem/Destroy()
-	. = ..()
 	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/item/gun/chem/can_shoot()
 	return syringes_left

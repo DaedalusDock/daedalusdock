@@ -120,7 +120,8 @@
 
 /obj/structure/spider/spiderling/Destroy()
 	new/obj/item/food/spiderling(get_turf(src))
-	. = ..()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/structure/spider/spiderling/Initialize(mapload)
 	. = ..()

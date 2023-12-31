@@ -173,6 +173,10 @@
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
+/obj/item/mecha_parts/mecha_equipment/mining_scanner/Destroy()
+	STOP_PROCESSING(SSfastprocess, src)
+	return ..()
+
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/can_attach(obj/vehicle/sealed/mecha/M, attach_right = FALSE)
 	if(..())
 		if(istype(M, /obj/vehicle/sealed/mecha/working))

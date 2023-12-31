@@ -184,6 +184,10 @@
 	var/obj/machinery/power/supermatter/shard
 	var/balanced = 1
 
+/obj/item/melee/supermatter_sword/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/melee/supermatter_sword/Initialize(mapload)
 	. = ..()
 	shard = new /obj/machinery/power/supermatter/shard(src)

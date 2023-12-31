@@ -30,6 +30,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/burnt = FALSE
 	/// How long the match lasts in seconds
 
+/obj/item/match/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/match/process(delta_time)
 	smoketime -= delta_time * (1 SECONDS)
 	if(smoketime <= 0)

@@ -903,6 +903,9 @@
 
 /datum/status_effect/stabilized/black/tick()
 	var/obj/item/hand_item/grab/G = owner.get_active_grab()
+	if(!G)
+		return
+
 	if(G.current_grab.damage_stage < GRAB_KILL || !IS_WEAKREF_OF(G.affecting, draining_ref))
 		return
 

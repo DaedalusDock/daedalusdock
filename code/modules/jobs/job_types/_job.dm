@@ -436,7 +436,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	return "Due to extreme staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 
-/// Returns an atom where the mob should spawn in.
+/// Returns either an atom the mob should spawn in, or null, if we have no special overrides.
 /datum/job/proc/get_roundstart_spawn_point()
 	if(random_spawns_possible)
 		if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
@@ -451,7 +451,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(length(GLOB.jobspawn_overrides[title]))
 		return pick(GLOB.jobspawn_overrides[title])
 
-	return get_latejoin_spawn_point()
+	return null //We don't care where we go. Let Ticker decide for us.
 
 
 /// Handles finding and picking a valid roundstart effect landmark spawn point, in case no uncommon different spawning events occur.

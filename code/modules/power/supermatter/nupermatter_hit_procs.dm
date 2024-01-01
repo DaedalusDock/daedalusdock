@@ -18,7 +18,7 @@
 	if(!istype(projectile.firer, /obj/machinery/power/emitter))
 		investigate_log("has been hit by [projectile] fired by [key_name(projectile.firer)]", INVESTIGATE_ENGINE)
 
-	if(projectile.armor_flag != BULLET || kiss_power) //This is a beam.
+	if(projectile.armor_flag != PUNCTURE || kiss_power) //This is a beam.
 		power += ((projectile.damage * SUPERMATTER_BULLET_ENERGY + kiss_power) * charging_factor) / power_factor
 
 		if(!has_been_powered)

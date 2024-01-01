@@ -1,0 +1,11 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Melee and Bullet armor has been split further into Blunt, Puncture, and
+      Slash armor.
+  - balance: Attacks now check against different armor types based on the sharpness
+      (sharp, pointy, both, blunt) of the weapon.
+  - balance: Spear force reduced by 3
+  - balance: Rubber and DumDum rounds are now 5x weaker to armor than a standard bullet,
+      from 2x.
+  - balance: Shrapnel is now 3x weaker to armor, from 2x.

@@ -19,10 +19,12 @@
 #define BRAIN "brain"
 
 //Damage flag defines //
-/// Involves a melee attack or a thrown object.
-#define MELEE "melee"
-/// Involves a solid projectile.
-#define BULLET "bullet"
+/// Involves a blunt object.
+#define BLUNT "blunt"
+/// Involves a weapon with a point, or bullets.
+#define PUNCTURE "puncture"
+/// Involves a weapon with a sharp edge, like a knife.
+#define SLASH "slash"
 /// Involves a laser.
 #define LASER "laser"
 /// Involves an EMP or energy-based projectile.
@@ -88,9 +90,9 @@
 #define BASE_GRAB_RESIST_CHANCE 60 //base chance for whether or not you can escape from a grab
 
 //slowdown when in softcrit. Note that crawling slowdown will also apply at the same time!
-#define SOFTCRIT_ADD_SLOWDOWN 4
+#define SOFTCRIT_ADD_SLOWDOWN 3
 //slowdown when crawling
-#define CRAWLING_ADD_SLOWDOWN 4
+#define CRAWLING_ADD_SLOWDOWN 6
 
 //Attack types for checking shields/hit reactions
 #define MELEE_ATTACK 1
@@ -290,6 +292,3 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 
 /// Martial arts attack happened and succeeded, do not allow a check for a regular attack.
 #define MARTIAL_ATTACK_SUCCESS TRUE
-
-/// IF an object is weak against armor, this is the value that any present armor is multiplied by
-#define ARMOR_WEAKENED_MULTIPLIER 2

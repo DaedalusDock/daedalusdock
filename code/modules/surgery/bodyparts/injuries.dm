@@ -253,7 +253,7 @@
 	if(!IS_ORGANIC_LIMB(src))
 		return
 
-	var/armor = owner.run_armor_check(body_zone, MELEE, silent = TRUE)
+	var/armor = owner.run_armor_check(body_zone, BLUNT, silent = TRUE)
 	if(armor > 70)
 		return
 

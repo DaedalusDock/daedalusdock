@@ -218,6 +218,7 @@
 /obj/item/bodypart/proc/add_organ(obj/item/organ/O)
 	O.ownerlimb = src
 	contained_organs |= O
+	ADD_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
 
 	if(O.visual)
 		if(owner && O.external_bodytypes)
@@ -228,6 +229,7 @@
 /obj/item/bodypart/proc/remove_organ(obj/item/organ/O)
 	contained_organs -= O
 
+	REMOVE_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
 	if(owner && O.visual && O.external_bodytypes)
 		synchronize_bodytypes(owner)
 

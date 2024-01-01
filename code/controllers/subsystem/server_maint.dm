@@ -35,8 +35,9 @@ SUBSYSTEM_DEF(server_maint)
 
 /datum/controller/subsystem/server_maint/fire(resumed = FALSE)
 	if(!resumed)
-		if(list_clear_nulls(GLOB.clients))
-			log_world("Found a null in clients list!")
+		var/nulls = list_clear_nulls(GLOB.clients)
+		if(nulls)
+			log_world("Found [nulls] null(s) in clients list!")
 		src.currentrun = GLOB.clients.Copy()
 
 		var/position_in_loop = (cleanup_ticker / delay) + 1	 //Index at 1, thanks byond

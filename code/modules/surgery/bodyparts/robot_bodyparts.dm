@@ -25,7 +25,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -52,7 +52,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -79,7 +79,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -106,7 +106,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -132,7 +132,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
@@ -243,7 +243,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
 	icon_dmg_overlay = 'icons/mob/species/misc/robotic_damage.dmi'
 
-	armor = list(MELEE = 5, BULLET = 5, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
 
 	bodypart_flags = BP_NO_PAIN | STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 

@@ -19,10 +19,12 @@
 #define BRAIN "brain"
 
 //Damage flag defines //
-/// Involves a melee attack or a thrown object.
-#define MELEE "melee"
-/// Involves a solid projectile.
-#define BULLET "bullet"
+/// Involves a blunt object.
+#define BLUNT "blunt"
+/// Involves a weapon with a point, or bullets.
+#define PUNCTURE "puncture"
+/// Involves a weapon with a sharp edge, like a knife.
+#define SLASH "slash"
 /// Involves a laser.
 #define LASER "laser"
 /// Involves an EMP or energy-based projectile.
@@ -290,6 +292,3 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 
 /// Martial arts attack happened and succeeded, do not allow a check for a regular attack.
 #define MARTIAL_ATTACK_SUCCESS TRUE
-
-/// IF an object is weak against armor, this is the value that any present armor is multiplied by
-#define ARMOR_WEAKENED_MULTIPLIER 2

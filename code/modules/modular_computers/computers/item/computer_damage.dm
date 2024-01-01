@@ -2,7 +2,7 @@
 	. = ..()
 	var/component_probability = min(50, max(damage_amount*0.1, 1 - atom_integrity/max_integrity))
 	switch(damage_flag)
-		if(BULLET)
+		if(PUNCTURE)
 			component_probability = damage_amount * 0.5
 		if(LASER)
 			component_probability = damage_amount * 0.66

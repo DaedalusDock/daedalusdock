@@ -210,7 +210,7 @@ a.popt {
 
 
 .motd {
-  color: #dfdfcf;
+  color: #CAC5A5;
   font-family: Verdana, sans-serif;
   white-space: normal;
 }
@@ -221,7 +221,7 @@ a.popt {
 .motd h4,
 .motd h5,
 .motd h6 {
-  color: #dfdfcf;
+  color: #CAC5A5;
   text-decoration: underline;
 }
 
@@ -230,7 +230,7 @@ a.popt {
 .motd a:visited,
 .motd a:active,
 .motd a:hover {
-  color: #dfdfcf;
+  color: #CAC5A5;
 }
 
 
@@ -269,7 +269,7 @@ a.popt {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #dfdfcf;
+  color: #CAC5A5;
   font-family: Georgia, Verdana, sans-serif;
 }
 
@@ -285,6 +285,7 @@ em {
 .ooc {
   color: #cca300;
   font-weight: bold;
+  text-shadow: 0 0 2px #db7900;
 }
 
 .looc {
@@ -338,7 +339,7 @@ em {
 /* IF YOU CHANGE THIS KEEP IT IN SYNC WITH TGUI CONSTANTS */
 
 .radio {
-  color: #1ecc43;
+  color: #39894a;
 }
 
 .sciradio {
@@ -350,11 +351,11 @@ em {
 }
 
 .secradio {
-  color: #dd3535;
+  color: #B71C1C;
 }
 
 .medradio {
-  color: #57b8f0;
+  color: #0097a7;
 }
 
 .engradio {
@@ -410,18 +411,19 @@ em {
 }
 
 .userdanger {
-  color: #FF6D6D;
+  color: #dd3535;
   font-weight: bold;
   font-size: 185%;
 }
 
 .bolddanger {
-  color: #FF6D6D;
+  color: #dd3535;
   font-weight: bold;
 }
 
 .danger {
-  color: #FF6D6D;
+  color: #dd3535;
+  text-shadow: 0 0 0.3em #FF0000;
 }
 
 .warning {
@@ -469,7 +471,7 @@ em {
 }
 
 .notice {
-  color: #7996ff;
+  color: #D47D5A;
 }
 
 .tinynotice {
@@ -514,7 +516,7 @@ em {
 }
 
 .unconscious {
-  color: #dfdfcf;
+  color: #CAC5A5;
   font-weight: bold;
 }
 
@@ -910,7 +912,7 @@ em {
 
 
 .text-normal {
-  color: #dfdfcf;
+  color: #CAC5A5;
   font-weight: normal;
   font-style: normal;
 }
@@ -953,8 +955,9 @@ em {
 }
 
 .subtle {
-  color: #4343ca;
+  color: #8A72C5;
   font-style: italic;
+  font-size: 85%;
 }
 
 .talk {
@@ -968,6 +971,11 @@ em {
 
 .emote {
   color : #bbbbad;
+}
+
+.debug {
+  color: #5ce43d;
+  font-weight: bold;
 }
 
 .adminpmbox {

@@ -254,7 +254,7 @@
 			limb_owner.emote("scream")
 
 			if(!IS_ORGANIC_LIMB(limb))
-				user.visible_message(
+				limb_owner.visible_message(
 					span_danger("The damage to \the [limb_owner]'s [limb.plaintext_zone] worsens."),\
 					span_danger("The damage to your [limb.plaintext_zone] worsens."),\
 					span_danger("You hear the screech of abused metal.")
@@ -265,6 +265,7 @@
 					span_danger("The wound on your [limb.plaintext_zone] widens with a nasty ripping noise."),\
 					span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
 				)
+
 	if(user == limb_owner)
 		user.visible_message(
 			span_warning("[user] successfully rips [weapon] [harmful ? "out" : "off"] of [user.p_their()] [limb.plaintext_zone]!"),

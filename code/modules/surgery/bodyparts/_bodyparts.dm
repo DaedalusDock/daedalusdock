@@ -458,7 +458,10 @@
 			if(O.organ_flags & ORGAN_UNREMOVABLE)
 				continue
 			else
-				remove_organ(O)
+				if(O.owner)
+					O.Remove(O.owner)
+				else
+					remove_organ(O)
 
 		item_in_bodypart.forceMove(bodypart_turf)
 		if(!violent_removal)

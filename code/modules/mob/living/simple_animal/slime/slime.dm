@@ -116,16 +116,6 @@
 	clear_friends()
 	return ..()
 
-/mob/living/simple_animal/slime/create_reagents(max_vol, flags)
-	. = ..()
-	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_DEL_REAGENT), PROC_REF(on_reagent_change))
-	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
-
-/// Handles removing signal hooks incase someone is crazy enough to reset the reagents datum.
-/mob/living/simple_animal/slime/proc/on_reagents_del(datum/reagents/reagents)
-	SIGNAL_HANDLER
-	UnregisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_PARENT_QDELETING))
-	return NONE
 
 /mob/living/simple_animal/slime/proc/set_colour(new_colour)
 	colour = new_colour

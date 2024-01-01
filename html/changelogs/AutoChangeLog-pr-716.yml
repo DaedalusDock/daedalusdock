@@ -1,0 +1,4 @@
+author: Time-Green
+delete-after: true
+changes:
+  - bugfix: Odd cases where bodyparts and organs end up outside of mobs are handled.

@@ -613,6 +613,9 @@
 
 //Proc used to resuscitate a mob, for full_heal see fully_heal()
 /mob/living/proc/revive(full_heal = FALSE, admin_revive = FALSE, excess_healing = 0)
+	if(QDELETED(src))
+		return
+
 	if(excess_healing)
 		if(iscarbon(src))
 			var/mob/living/carbon/C = src

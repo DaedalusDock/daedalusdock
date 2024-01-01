@@ -20,7 +20,6 @@
 	handle_nutrition(delta_time, times_fired)
 	if(QDELETED(src)) // Stop if the slime split during handle_nutrition()
 		return
-	reagents.remove_all(0.5 * REAGENTS_METABOLISM * reagents.reagent_list.len * delta_time) //Slimes are such snowflakes
 	handle_targets(delta_time, times_fired)
 	if(ckey)
 		return

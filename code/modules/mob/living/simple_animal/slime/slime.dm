@@ -100,7 +100,6 @@
 	else
 		var/datum/action/innate/slime/evolve/E = new
 		E.Grant(src)
-	create_reagents(100)
 	set_colour(new_colour)
 	. = ..()
 	set_nutrition(700)
@@ -158,22 +157,6 @@
 		icon_state = icon_dead
 	..()
 
-/**
- * Snowflake handling of reagent movespeed modifiers
- *
- * Should be moved to the reagents at some point in the future. As it is I'm in a hurry.
- */
-/mob/living/simple_animal/slime/proc/on_reagent_change(datum/reagents/holder, ...)
-	SIGNAL_HANDLER
-	remove_movespeed_modifier(/datum/movespeed_modifier/slime_reagentmod)
-	var/amount = 0
-	if(reagents.has_reagent(/datum/reagent/medicine/morphine)) // morphine slows slimes down
-		amount = 2
-	if(reagents.has_reagent(/datum/reagent/consumable/frostoil)) // Frostoil also makes them move VEEERRYYYYY slow
-		amount = 5
-	if(amount)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_reagentmod, multiplicative_slowdown = amount)
-	return NONE
 
 /mob/living/simple_animal/slime/updatehealth()
 	. = ..()

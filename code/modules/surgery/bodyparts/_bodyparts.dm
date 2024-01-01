@@ -1121,8 +1121,7 @@
 	if(bandage || !istype(new_bandage) || !new_bandage.absorption_capacity)
 		return
 
-	bandage = new_bandage.split_stack(null, 1)
-	bandage.forceMove(src)
+	bandage = new_bandage.split_stack(null, 1, src)
 	RegisterSignal(bandage, COMSIG_PARENT_QDELETING, PROC_REF(bandage_gone))
 	if(bandage.absorption_capacity && owner.stat < UNCONSCIOUS)
 		for(var/datum/wound/iter_wound as anything in wounds)

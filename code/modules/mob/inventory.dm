@@ -260,15 +260,6 @@
 	for(var/obj/item/I in held_items)
 		. |= dropItemToGround(I)
 
-//Here lie drop_from_inventory and before_item_take, already forgotten and not missed.
-
-/mob/proc/canUnEquip(obj/item/I, force)
-	if(!I)
-		return TRUE
-	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
-		return FALSE
-	return TRUE
-
 /mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE)
 	if(!can_put_in_hand(I, hand_index))
 		return FALSE
@@ -315,11 +306,11 @@
 /**
  * Used to drop an item (if it exists) to the ground.
  * * Will pass as TRUE is successfully dropped, or if there is no item to drop.
- * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via doUnEquip()
+ * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via tryUnequipItem()
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
 /mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE)
-	. = doUnEquip(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
+	. = tryUnequipItem(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
 	if(!. || !I) //ensure the item exists and that it was dropped properly.
 		return
 	if(!(I.item_flags & NO_PIXEL_RANDOM_DROP))
@@ -329,7 +320,7 @@
 
 //for when the item will be immediately placed in a loc other than the ground. Supports shifting the item's x and y from click modifiers.
 /mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, list/user_click_modifiers)
-	. = doUnEquip(I, force, newloc, FALSE, silent = silent)
+	. = tryUnequipItem(I, force, newloc, FALSE, silent = silent)
 	if(. && user_click_modifiers)
 		//Center the icon where the user clicked.
 		if(!LAZYACCESS(user_click_modifiers, ICON_X) || !LAZYACCESS(user_click_modifiers, ICON_Y))
@@ -344,19 +335,19 @@
 /mob/proc/temporarilyRemoveItemFromInventory(obj/item/I, force = FALSE, idrop = TRUE)
 	if((I.item_flags & ABSTRACT) && !force)
 		return //Do nothing. Abstract items shouldn't end up in inventories and doing this triggers various odd side effects.
-	return doUnEquip(I, force, null, TRUE, idrop, silent = TRUE)
+	return tryUnequipItem(I, force, null, TRUE, idrop, silent = TRUE)
 
 //DO NOT CALL THIS PROC
 //use one of the above 3 helper procs
 //you may override it, but do not modify the args
-/mob/proc/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
+/mob/proc/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE) //Force overrides TRAIT_NODROP for things like wizarditis and admin undress.
 													//Use no_move if the item is just gonna be immediately moved afterward
 													//Invdrop is used to prevent stuff in pockets dropping. only set to false if it's going to immediately be replaced
 	PROTECTED_PROC(TRUE)
 	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
 
-	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
+	if(!force && !canUnequipItem(I, newloc, no_move, invdrop, silent))
 		return FALSE
 
 	if((SEND_SIGNAL(I, COMSIG_ITEM_PRE_UNEQUIP, force, newloc, no_move, invdrop, silent) & COMPONENT_ITEM_BLOCK_UNEQUIP) && !force)
@@ -380,6 +371,16 @@
 		I.dropped(src, silent)
 	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)
+	return TRUE
+
+/// Test if an item can be dropped, core to tryUnequipItem()
+/mob/proc/canUnequipItem(obj/item/I, newloc, no_move, invdrop, silent)
+	if(isnull(I))
+		return TRUE
+
+	if(HAS_TRAIT(I, TRAIT_NODROP))
+		return FALSE
+
 	return TRUE
 
 /**

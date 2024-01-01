@@ -126,7 +126,7 @@
 	. = ..()
 	if(ishuman(dropping))
 		if(dropping != user)
-			try_place_pulled_onto_table(user)
+			try_place_pulled_onto_table(user, dropping)
 			return
 		var/mob/living/carbon/human/H = user
 		if(H.incapacitated() || H.body_position == LYING_DOWN || !H.combat_mode)
@@ -248,7 +248,8 @@
 		if(pushed_mob.buckled)
 			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 			return
-		if(user.combat_mode)
+
+		if(user.combat_mode && grab)
 			switch(grab.current_grab.damage_stage)
 				if(GRAB_PASSIVE)
 					to_chat(user, span_warning("You need a better grip to do that!"))

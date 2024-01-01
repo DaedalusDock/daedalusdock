@@ -280,7 +280,6 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	max_integrity = 40
 	sharpness = SHARP_EDGED
 	var/icon_prefix
-	var/shiv_type = /obj/item/knife/shiv
 	var/craft_time = 3.5 SECONDS
 	var/obj/item/stack/sheet/weld_material = /obj/item/stack/sheet/glass
 	embedding = list("embed_chance" = 65)
@@ -342,19 +341,9 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	if(istype(item, /obj/item/lightreplacer))
 		var/obj/item/lightreplacer/lightreplacer = item
 		lightreplacer.attackby(src, user)
-	else if(istype(item, /obj/item/stack/sheet/cloth))
-		var/obj/item/stack/sheet/cloth/cloth = item
-		to_chat(user, span_notice("You begin to wrap the [cloth] around the [src]..."))
-		if(do_after(user, craft_time, target = src))
-			var/obj/item/knife/shiv/shiv = new shiv_type
-			cloth.use(1)
-			to_chat(user, span_notice("You wrap the [cloth] around the [src], forming a makeshift weapon."))
-			remove_item_from_storage(src)
-			qdel(src)
-			user.put_in_hands(shiv)
-
 	else
 		return ..()
+	//creating shivs has been moved to modules/slapcrafting/recipes/melee
 
 /obj/item/shard/welder_act(mob/living/user, obj/item/I)
 	..()
@@ -390,7 +379,6 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	custom_materials = list(/datum/material/alloy/plasmaglass=MINERAL_MATERIAL_AMOUNT)
 	icon_prefix = "plasma"
 	weld_material = /obj/item/stack/sheet/plasmaglass
-	shiv_type = /obj/item/knife/shiv/plasma
 	craft_time = 7 SECONDS
 
 /obj/item/shard/titanium
@@ -402,7 +390,6 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	custom_materials = list(/datum/material/alloy/titaniumglass=MINERAL_MATERIAL_AMOUNT)
 	icon_prefix = "titanium"
 	weld_material = /obj/item/stack/sheet/titaniumglass
-	shiv_type = /obj/item/knife/shiv/titanium
 	craft_time = 7 SECONDS
 
 /obj/item/shard/plastitanium
@@ -415,5 +402,4 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	custom_materials = list(/datum/material/alloy/plastitaniumglass=MINERAL_MATERIAL_AMOUNT)
 	icon_prefix = "plastitanium"
 	weld_material = /obj/item/stack/sheet/plastitaniumglass
-	shiv_type = /obj/item/knife/shiv/plastitanium
 	craft_time = 14 SECONDS

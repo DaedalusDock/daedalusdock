@@ -132,7 +132,7 @@
 /mob/living/carbon/proc/has_equipped(obj/item/item, slot, initial = FALSE)
 	return item.equipped(src, slot, initial)
 
-/mob/living/carbon/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !I) //We don't want to set anything to null if the parent returned 0.
 		return
@@ -319,8 +319,11 @@
 
 ///Returns an item that is covering a bodypart.
 /mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP)
-	return get_item_covering_zone(body_zone2cover_flags(BP.body_zone))
+	return get_item_covering_zone(BP.body_zone)
 
 ///Returns an item that is covering a body_zone (BODY_ZONE_CHEST, etc)
 /mob/living/carbon/proc/get_item_covering_zone(zone)
-	for(var/obj/item in get_all_worn_items())
+	zone = body_zone2cover_flags(zone)
+	for(var/obj/item/I in get_all_worn_items())
+		if(zone & I.body_parts_covered)
+			return I

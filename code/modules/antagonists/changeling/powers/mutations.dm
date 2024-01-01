@@ -112,10 +112,10 @@
 	..()
 
 /datum/action/changeling/suit/sting_action(mob/living/carbon/human/user)
-	if(!user.canUnEquip(user.wear_suit))
+	if(!user.canUnequipItem(user.wear_suit))
 		to_chat(user, span_warning("\the [user.wear_suit] is stuck to your body, you cannot grow a [suit_name_simple] over it!"))
 		return
-	if(!user.canUnEquip(user.head))
+	if(!user.canUnequipItem(user.head))
 		to_chat(user, span_warning("\the [user.head] is stuck on your head, you cannot grow a [helmet_name_simple] over it!"))
 		return
 	..()

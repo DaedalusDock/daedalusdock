@@ -273,68 +273,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/katana/cursed //used by wizard events, see the tendril_loot.dm file for the miner one
 	slot_flags = null
 
-/obj/item/wirerod
-	name = "wired rod"
-	desc = "A rod with some wire wrapped around the top. It'd be easy to attach something to the top bit."
-	icon_state = "wiredrod"
-	inhand_icon_state = "rods"
-	flags_1 = CONDUCT_1
-	force = 9
-	throwforce = 10
-	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron=1150, /datum/material/glass=75)
-	attack_verb_continuous = list("hits", "bludgeons", "whacks", "bonks")
-	attack_verb_simple = list("hit", "bludgeon", "whack", "bonk")
-
-/obj/item/wirerod/Initialize(mapload)
-	. = ..()
-
-	var/static/list/hovering_item_typechecks = list(
-		/obj/item/shard = list(
-			SCREENTIP_CONTEXT_LMB = "Craft spear",
-		),
-
-		/obj/item/assembly/igniter = list(
-			SCREENTIP_CONTEXT_LMB = "Craft stunprod",
-		),
-	)
-
-	AddElement(/datum/element/contextual_screentip_item_typechecks, hovering_item_typechecks)
-
-/obj/item/wirerod/attackby(obj/item/attacking_item, mob/user, params)
-	if(istype(attacking_item, /obj/item/shard))
-		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/spear
-		user.balloon_alert(user, "crafting spear...")
-		if(do_after(user, src, initial(recipe_to_use.time))) // we do initial work here to get the correct timer
-			var/obj/item/spear/crafted_spear = new /obj/item/spear()
-
-			remove_item_from_storage(user)
-			if (!user.transferItemToLoc(attacking_item, crafted_spear))
-				return
-			crafted_spear.CheckParts(list(attacking_item))
-			qdel(src)
-
-			user.put_in_hands(crafted_spear)
-			user.balloon_alert(user, "crafted spear")
-		return
-
-	if(istype(attacking_item, /obj/item/assembly/igniter) && !(HAS_TRAIT(attacking_item, TRAIT_NODROP)))
-		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/stunprod
-		user.balloon_alert(user, "crafting cattleprod...")
-		if(do_after(user, src, initial(recipe_to_use.time)))
-			var/obj/item/melee/baton/security/cattleprod/prod = new
-
-			remove_item_from_storage(user)
-
-			qdel(attacking_item)
-			qdel(src)
-
-			user.put_in_hands(prod)
-			user.balloon_alert(user, "crafted cattleprod")
-		return
-	return ..()
-
-
 /obj/item/throwing_star
 	name = "throwing star"
 	desc = "An ancient weapon still used to this day, due to its ease of lodging itself into its victim's body parts."
@@ -959,3 +897,23 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		balloon_alert(user, "you're too weak!")
 		return
 	return ..()
+
+/obj/item/mace
+	name = "iron mace"
+	desc = "A crude mace made made from pieces of metal welded together."
+	icon_state = "shitty_mace"
+	inhand_icon_state = "mace"
+	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
+	w_class = WEIGHT_CLASS_BULKY
+	hitsound = 'sound/weapons/smash.ogg'
+	attack_verb_continuous = list("attacks", "bludgeons", "smashes", "thwacks", "wallops")
+	attack_verb_simple = list("attack", "bludgeon", "smash", "thwack", "wallop")
+
+	stamina_damage = 20
+	stamina_cost = 15
+	stamina_critical_chance = 10
+	force = 14
+	throwforce = 10
+	throw_range = 2 //it's not going very far.
+	combat_click_delay = CLICK_CD_MELEE * 1.5

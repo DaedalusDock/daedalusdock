@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - qol: Hermes Transport has instituted new seat filling algorithms to decrease lap-seating
+      in long-range transport shuttles.

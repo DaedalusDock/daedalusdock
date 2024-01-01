@@ -977,3 +977,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HALOPERIDOL "haloperidol"
 #define TRAIT_STIMULANTS "stimulants"
 #define TRAIT_IMPEDREZENE "impedrezene"
+
+/// Given to items that are bodyparts attached to a mob, organs attached to a mob or inside a bodypart
+#define TRAIT_INSIDE_BODY "inside_body"

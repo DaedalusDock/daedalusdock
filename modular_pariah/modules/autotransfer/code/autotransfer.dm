@@ -16,8 +16,8 @@ SUBSYSTEM_DEF(autotransfer)
 	if(!init_vote) //Autotransfer voting disabled.
 		can_fire = FALSE
 		return ..()
-	starttime = world.realtime
-	targettime = starttime + init_vote
+	starttime = REALTIMEOFDAY
+	targettime = REALTIMEOFDAY + init_vote
 	voteinterval = CONFIG_GET(number/vote_autotransfer_interval)
 	maxvotes = CONFIG_GET(number/vote_autotransfer_maximum)
 	return ..()
@@ -28,10 +28,11 @@ SUBSYSTEM_DEF(autotransfer)
 	curvotes = SSautotransfer.curvotes
 
 /datum/controller/subsystem/autotransfer/fire()
-	if(world.realtime < targettime)
+	if(REALTIMEOFDAY < targettime)
 		return
+
 	if(maxvotes == NO_MAXVOTES_CAP || maxvotes > curvotes)
-		SSvote.initiate_vote("transfer","server")
+		SSvote.initiate_vote(/datum/vote/crew_transfer, "server")
 		targettime = targettime + voteinterval
 		curvotes++
 	else

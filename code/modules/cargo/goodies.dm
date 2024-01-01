@@ -71,7 +71,7 @@
 	desc = "Contains twinned thermal pistols in a holster, ready for use in the field."
 	cost = PAYCHECK_HARD * 15
 	access_view = ACCESS_ARMORY
-	contains = list(/obj/item/storage/belt/holster/thermal)
+	contains = list(/obj/item/storage/belt/holster/shoulder/thermal)
 
 /datum/supply_pack/goody/sologamermitts
 	name = "Insulated Gloves Single-Pack"

@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: During Crew Transfer votes, non-afk players will be counted as Continue Playing
+      if they do not vote.
+  - bugfix: Map voting works FOR REAL.

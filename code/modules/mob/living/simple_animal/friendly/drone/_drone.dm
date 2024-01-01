@@ -143,7 +143,6 @@
 		/obj/item/stack/cable_coil,
 		/obj/item/stack/circuit_stack,
 		/obj/item/stack/conveyor,
-		/obj/item/stack/pipe_cleaner_coil,
 		/obj/item/stack/rods,
 		/obj/item/stack/sheet,
 		/obj/item/stack/tile,

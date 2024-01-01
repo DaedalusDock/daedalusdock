@@ -16,3 +16,6 @@
 
 /// Until a condition is true, sleep
 #define UNTIL(X) while(!(X)) stoplag()
+
+/// Clears all nulls in a list, returning the amount removed.
+#define list_clear_nulls(L) ((L):RemoveAll(null))

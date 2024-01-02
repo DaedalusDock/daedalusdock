@@ -195,8 +195,11 @@
 		hud_obj.fade_out()
 		hud_obj = null
 
-	var/datum/data/record/general_record = find_record("name", clicked_on.name, GLOB.data_core.general)
-	var/datum/data/record/security_record = find_record("name", clicked_on.name, GLOB.data_core.security)
+	var/mob/living/carbon/human/H = clicked_on
+	var/name_to_search = H.get_idcard()?.registered_name
+
+	var/datum/data/record/general_record = find_record("name", name_to_search, GLOB.data_core.general)
+	var/datum/data/record/security_record = find_record("name", name_to_search, GLOB.data_core.security)
 
 	hud_obj = new()
 	RegisterSignal(hud_obj, COMSIG_PARENT_QDELETING, PROC_REF(hud_obj_gone))
@@ -210,7 +213,7 @@
 
 	hud_obj.vis_contents += holder
 
-	var/list/text = list("<span style='text-align:center'>[clicked_on.name]</span>")
+	var/list/text = list("<span style='text-align:center'>[uppertext(clicked_on.name)]</span>")
 	text += "<br><br><br><br><br><br><br>"
 	if(!security_record)
 		text += "<br><span style='text-align:center'>NO DATA</span>"
@@ -224,7 +227,42 @@
 		text += "<br><span style='text-align:center'>[wanted_status]</span>"
 
 	owner.play_screen_text(jointext(text, ""), hud_obj)
+	print_message(security_record)
 	return TRUE
+
+/datum/action/innate/investigate/proc/print_message(datum/data/record/security)
+	var/list/text = list()
+	var/wanted = security?.fields["criminal"]
+	switch(wanted)
+		if(null)
+			wanted = "UNKNOWN"
+		if(CRIMINAL_WANTED)
+			wanted = "WANTED"
+		else
+			wanted = uppertext(wanted)
+
+	text += "<div class='examine_block' style='text-align:center'>"
+	text += "<div style='font-size: 160%'><span class='danger'>[wanted]</span>"
+	text += "<hr>"
+	if(isnull(security))
+		text += "<span class='warning' style='font-size: 120%'>NO DATA</span>"
+	else
+		text += "<div style='text-shadow: 0 0 0.3em #FF0000'><span class='warning' style='font-style:normal; font-size: 120%'>[security.fields["name"]]</span></div>"
+
+		if(length(security.fields["crim"]))
+			text += "<table style='min-width:100%;border: 2px solid rgba(255, 100, 100, 1);border-collapse: collapse;'>"
+			for(var/i in 1 to min(4, length(security.fields["crim"])))
+				var/datum/data/crime/crime = security.fields["crim"][i]
+				text += {"
+					<tr style='border: 2px solid rgba(255, 100, 100, 1)'>
+						<td style='vertical-align: middle; border: 2px solid rgba(255, 100, 100, 1); text-align:center; padding: 4px'><span class='warning' style='font-style:normal'>[crime.crimeName]</span></td>
+						<td style='vertical-align: middle; border: 2px solid rgba(255, 100, 100, 1); text-align:center; padding: 4px'><span class='warning' style='font-style:normal'>[crime.crimeDetails]</td>
+					</tr>
+				"}
+			text += "</table>"
+	text += "</div>"
+
+	to_chat(owner, jointext(text, ""))
 
 /datum/action/innate/investigate/proc/make_holder(datum/data/record/general_record)
 	var/atom/movable/screen/holder = new()

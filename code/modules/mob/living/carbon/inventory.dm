@@ -73,11 +73,13 @@
 	I.screen_loc = null
 	if(client)
 		client.screen -= I
+
 	if(observers?.len)
 		for(var/M in observers)
 			var/mob/dead/observe = M
 			if(observe.client)
 				observe.client.screen -= I
+
 	I.forceMove(src)
 	I.plane = ABOVE_HUD_PLANE
 	I.appearance_flags |= NO_CLIENT_COLOR
@@ -89,31 +91,40 @@
 				return
 			back = I
 			update_worn_back()
+
 		if(ITEM_SLOT_MASK)
 			if(wear_mask)
 				return
+
 			wear_mask = I
 			wear_mask_update(I, toggle_off = 0)
+
 		if(ITEM_SLOT_HEAD)
 			if(head)
 				return
+
 			head = I
 			SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_HAT, I)
 			head_update(I)
+
 		if(ITEM_SLOT_NECK)
 			if(wear_neck)
 				return
 			wear_neck = I
 			update_worn_neck(I)
+
 		if(ITEM_SLOT_HANDCUFFED)
 			set_handcuffed(I)
 			update_handcuffed()
+
 		if(ITEM_SLOT_LEGCUFFED)
 			legcuffed = I
 			update_worn_legcuffs()
+
 		if(ITEM_SLOT_HANDS)
 			put_in_hands(I)
 			update_held_items()
+
 		if(ITEM_SLOT_BACKPACK)
 			if(!back || !back.atom_storage?.attempt_insert(I, src, override = TRUE))
 				not_handled = TRUE
@@ -124,12 +135,14 @@
 	//We cannot call it for items that have not been handled as they are not yet correctly
 	//in a slot (handled further down inheritance chain, probably living/carbon/human/equip_to_slot
 	if(!not_handled)
-		has_equipped(I, slot, initial)
+		afterEquipItem(I, slot, initial)
 
 	return not_handled
 
 /// This proc is called after an item has been successfully handled and equipped to a slot.
-/mob/living/carbon/proc/has_equipped(obj/item/item, slot, initial = FALSE)
+/mob/living/carbon/proc/afterEquipItem(obj/item/item, slot, initial = FALSE)
+	if(length(item.actions))
+		item.update_action_buttons(UPDATE_BUTTON_STATUS)
 	return item.equipped(src, slot, initial)
 
 /mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)

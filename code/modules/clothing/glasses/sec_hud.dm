@@ -309,6 +309,7 @@
 
 	addtimer(CALLBACK(hud_obj, TYPE_PROC_REF(/atom/movable/screen/text/screen_text/atom_hud, fade_out)), 7 SECONDS)
 
+	var/obj/item/target = src.target
 	owner.visible_message(
 		span_notice("[owner]'s [target.name] emits a quiet click."),
 		null,

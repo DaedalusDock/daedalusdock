@@ -1022,7 +1022,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		log_combat(user, target, "attempted to punch")
 		return FALSE
 
-	var/armor_block = target.run_armor_check(affecting, MELEE)
+	var/armor_block = target.run_armor_check(affecting, BLUNT)
 
 	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
@@ -1120,12 +1120,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, mob/living/carbon/human/H)
 	// Allows you to put in item-specific reactions based on species
 	if(user != H)
-		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armour_penetration))
+		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armor_penetration))
 			return MOB_ATTACKEDBY_NO_DAMAGE
 
 	if(H.check_block())
-		H.visible_message(span_warning("[H] blocks [I]!"), \
-						span_userdanger("You block [I]!"))
+		H.visible_message(
+			span_warning("[H] blocks [I]!"),
+			span_userdanger("You block [I]!")
+		)
 		return MOB_ATTACKEDBY_NO_DAMAGE
 
 	var/hit_area
@@ -1133,9 +1135,18 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		affecting = H.bodyparts[1]
 
 	hit_area = affecting.plaintext_zone
-	var/def_zone = affecting.body_zone
 
-	var/armor_block = H.run_armor_check(affecting, MELEE, span_notice("Your armor has protected your [hit_area]!"), span_warning("Your armor has softened a hit to your [hit_area]!"),I.armour_penetration, weak_against_armour = I.weak_against_armour)
+	var/def_zone = affecting.body_zone
+	var/attack_flag = I.get_attack_flag()
+	var/armor_block = H.run_armor_check(
+			def_zone = affecting,
+			attack_flag = attack_flag,
+			absorb_text = span_notice("Your armor has protected your [hit_area]!"),
+			soften_text = span_warning("Your armor has softened a [armor_flag_to_strike_string(attack_flag)] to your [hit_area]!"),
+			armor_penetration = I.armor_penetration,
+			weak_against_armor = I.weak_against_armor
+		)
+
 	armor_block = min(90,armor_block) //cap damage reduction at 90%
 
 	var/weakness = check_species_weakness(I, user)
@@ -1223,6 +1234,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, forced = FALSE, spread_damage = FALSE, sharpness = NONE, attack_direction = null, cap_loss_at = 0)
 	SEND_SIGNAL(H, COMSIG_MOB_APPLY_DAMAGE, damage, damagetype, def_zone, sharpness, attack_direction)
+
 	var/hit_percent = (100-(blocked+armor))/100
 	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
 	if(!damage || (!forced && hit_percent <= 0))
@@ -1247,6 +1259,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				BP.receive_damage(damage_amount, 0, sharpness = sharpness)
 			else//no bodypart, we deal damage with a more general method.
 				H.adjustBruteLoss(damage_amount)
+
 		if(BURN)
 			H.damageoverlaytemp = 20
 			var/damage_amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
@@ -1254,17 +1267,22 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				BP.receive_damage(0, damage_amount, sharpness = sharpness)
 			else
 				H.adjustFireLoss(damage_amount)
+
 		if(TOX)
 			var/damage_amount = forced ? damage : damage * hit_percent * H.physiology.tox_mod
 			H.adjustToxLoss(damage_amount)
+
 		if(OXY)
 			var/damage_amount = forced ? damage : damage * hit_percent * H.physiology.oxy_mod
 			H.adjustOxyLoss(damage_amount)
+
 		if(CLONE)
 			var/damage_amount = forced ? damage : damage * hit_percent * H.physiology.clone_mod
 			H.adjustCloneLoss(damage_amount)
+
 		if(STAMINA)
 			H.stamina.adjust(-damage)
+
 		if(BRAIN)
 			var/damage_amount = forced ? damage : damage * hit_percent * H.physiology.brain_mod
 			H.adjustOrganLoss(ORGAN_SLOT_BRAIN, damage_amount)

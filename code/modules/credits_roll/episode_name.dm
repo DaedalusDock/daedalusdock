@@ -261,7 +261,7 @@
 					theme = "clown"
 				if("Detective")
 					var/chance = 250
-					if(H.is_wearing_item_of_type(/obj/item/storage/belt/holster/detective))
+					if(H.is_wearing_item_of_type(/obj/item/storage/belt/holster/shoulder))
 						chance += 1000
 					if(H.is_wearing_item_of_type(/obj/item/clothing/head/fedora/det_hat))
 						chance += 500

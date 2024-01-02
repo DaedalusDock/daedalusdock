@@ -6,7 +6,7 @@
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "trolley"
 	max_integrity = 150
-	armor = list(MELEE = 0, BULLET = 0, LASER = 20, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
 	var/cargo_limit = MAX_CARGO_LIMIT
 	var/amount_of_cargo = 0
 

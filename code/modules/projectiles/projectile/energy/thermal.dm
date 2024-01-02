@@ -4,7 +4,7 @@
 	damage = 20
 	damage_type = BURN
 	armor_flag = ENERGY
-	armour_penetration = 10
+	armor_penetration = 10
 	reflectable = NONE
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
 
@@ -26,7 +26,7 @@
 	icon_state = "cryoshot"
 	damage = 20
 	damage_type = BRUTE
-	armour_penetration = 10
+	armor_penetration = 10
 	armor_flag = ENERGY
 	sharpness = SHARP_POINTY //it's a big ol' shard of ice
 	reflectable = NONE

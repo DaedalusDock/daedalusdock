@@ -45,12 +45,14 @@
 				results += "Powernet with fewer than 10 cables! (number [PN.number]) - example cable at [ADMIN_VERBOSEJMP(C)]"
 
 	for(var/turf/T in world.contents)
-		var/found_one = FALSE
-		for(var/obj/structure/cable/C in T.contents)
-			if(found_one)
-				results += "Doubled wire at [ADMIN_VERBOSEJMP(C)]"
-			else
-				found_one = TRUE
+		for(var/obj/structure/cable/cable in T.contents)
+			var/directions = cable.linked_dirs
+			for(var/obj/structure/cable/other_cable in T.contents)
+				if(cable == other_cable)
+					continue
+				if(other_cable.linked_dirs == directions)
+					results += "Doubled wire at [ADMIN_VERBOSEJMP(cable)]"
+
 		var/obj/machinery/power/terminal/term = locate(/obj/machinery/power/terminal) in T.contents
 		if(term)
 			var/obj/structure/cable/C = locate(/obj/structure/cable) in T.contents

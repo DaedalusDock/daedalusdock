@@ -88,7 +88,7 @@
 	butcher_results = list(/obj/item/food/meat/slab/bear = 5, /obj/item/clothing/head/bearpelt = 1, /obj/item/bear_armor = 1)
 	melee_damage_lower = 18
 	melee_damage_upper = 20
-	armour_penetration = 20
+	armor_penetration = 20
 	health = 120
 	maxHealth = 120
 	armored = TRUE
@@ -111,7 +111,7 @@
 		A.armored = TRUE
 		A.maxHealth += 60
 		A.health += 60
-		A.armour_penetration += 20
+		A.armor_penetration += 20
 		A.melee_damage_lower += 3
 		A.melee_damage_upper += 5
 		A.update_icons()
@@ -129,7 +129,7 @@
 	melee_damage_lower = 0
 	melee_damage_upper = 0
 	sharpness = NONE //it's made of butter
-	armour_penetration = 0
+	armor_penetration = 0
 	response_harm_continuous = "takes a bite out of"
 	response_harm_simple = "take a bite out of"
 	attacked_sound = 'sound/items/eatfood.ogg'

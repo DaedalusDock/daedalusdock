@@ -254,10 +254,16 @@
 
 /obj/item/bodypart/forceMove(atom/destination) //Please. Never forcemove a limb if its's actually in use. This is only for borgs.
 	SHOULD_CALL_PARENT(TRUE)
-
 	. = ..()
+
 	if(isturf(destination))
 		update_icon_dropped()
+
+/obj/item/bodypart/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	if(owner && loc != owner)
+		drop_limb(FALSE, TRUE)
+		stack_trace("Bodypart moved while it still had an owner")
 
 /obj/item/bodypart/examine(mob/user)
 	SHOULD_CALL_PARENT(TRUE)
@@ -452,7 +458,10 @@
 			if(O.organ_flags & ORGAN_UNREMOVABLE)
 				continue
 			else
-				remove_organ(O)
+				if(O.owner)
+					O.Remove(O.owner)
+				else
+					remove_organ(O)
 
 		item_in_bodypart.forceMove(bodypart_turf)
 		if(!violent_removal)
@@ -1115,8 +1124,7 @@
 	if(bandage || !istype(new_bandage) || !new_bandage.absorption_capacity)
 		return
 
-	bandage = new_bandage.split_stack(null, 1)
-	bandage.forceMove(src)
+	bandage = new_bandage.split_stack(null, 1, src)
 	RegisterSignal(bandage, COMSIG_PARENT_QDELETING, PROC_REF(bandage_gone))
 	if(bandage.absorption_capacity && owner.stat < UNCONSCIOUS)
 		for(var/datum/wound/iter_wound as anything in wounds)

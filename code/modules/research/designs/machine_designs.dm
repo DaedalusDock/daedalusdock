@@ -98,10 +98,24 @@
 	mapload_design_flags = DESIGN_IMPRINTER
 
 /datum/design/board/chem_dispenser
-	name = "Machine Board (Portable Chem Dispenser Board)"
-	desc = "The circuit board for a portable chem dispenser."
+	name = "Machine Board (Chem Dispenser Board)"
+	desc = "The circuit board for a chem dispenser."
 	id = "chem_dispenser"
 	build_path = /obj/item/circuitboard/machine/chem_dispenser
+	mapload_design_flags = DESIGN_IMPRINTER
+
+/datum/design/board/mini_chem_dispenser
+	name = "Machine Board (Mini Chem Dispenser Board)"
+	desc = "The circuit board for a mini chem dispenser."
+	id = "chem_dispenser"
+	build_path = /obj/item/circuitboard/machine/chem_dispenser/mini
+	mapload_design_flags = DESIGN_IMPRINTER
+
+/datum/design/board/chem_dispenser
+	name = "Machine Board (Big Chem Dispenser Board)"
+	desc = "The circuit board for a big chem dispenser."
+	id = "chem_dispenser"
+	build_path = /obj/item/circuitboard/machine/chem_dispenser/big
 	mapload_design_flags = DESIGN_IMPRINTER
 
 /datum/design/board/chem_master

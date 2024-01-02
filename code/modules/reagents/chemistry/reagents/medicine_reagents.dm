@@ -36,8 +36,9 @@
 				mytray.mutateweed()
 			if(1   to 32)
 				mytray.mutatepest(user)
-			else if(prob(20))
-				mytray.visible_message(span_warning("Nothing happens..."))
+			else
+				if(prob(20))
+					mytray.visible_message(span_warning("Nothing happens..."))
 
 /datum/reagent/medicine/adminordrazine/affect_blood(mob/living/carbon/C, removed)
 	C.heal_bodypart_damage(2 * removed, 2 * removed, FALSE)

@@ -39,6 +39,19 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 /datum/data/record/proc/get_side_photo()
 	return get_photo("photo_side", WEST)
 
+/// Set the criminal status of a crew member in the security records.
+/datum/data/record/proc/set_criminal_status(new_status)
+	if(!("criminal" in fields))
+		CRASH("Tried to set criminal status in a non-security record")
+
+	var/old_status = fields["criminal"]
+	if(old_status == new_status)
+		return FALSE
+
+	fields["criminal"] = new_status
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CRIMINAL_STATUS_CHANGE, src, new_status, old_status)
+	return TRUE
+
 /**
  * You shouldn't be calling this directly, use `get_front_photo()` or `get_side_photo()`
  * instead.

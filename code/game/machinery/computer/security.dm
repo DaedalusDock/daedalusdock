@@ -165,7 +165,7 @@
 		if(sec_record.fields["criminal"] != status_to_set)
 			successful_set++
 			names_of_entries += target["name"]
-		sec_record.fields["criminal"] = status_to_set
+		sec_record.set_criminal_status(status_to_set)
 
 
 	if(successful_set > 0)
@@ -676,7 +676,7 @@ Age: [active1.fields["age"]]<BR>"}
 					R.fields["name"] = active1.fields["name"]
 					R.fields["id"] = active1.fields["id"]
 					R.name = "Security Record #[R.fields["id"]]"
-					R.fields["criminal"] = CRIMINAL_NONE
+					R.set_criminal_status(CRIMINAL_NONE)
 					R.fields["crim"] = list()
 					R.fields["notes"] = "No notes."
 					GLOB.data_core.security += R
@@ -940,17 +940,17 @@ Age: [active1.fields["age"]]<BR>"}
 							var/old_field = active2.fields["criminal"]
 							switch(href_list["criminal2"])
 								if("none")
-									active2.fields["criminal"] = CRIMINAL_NONE
+									active2.set_criminal_status(CRIMINAL_NONE)
 								if("arrest")
-									active2.fields["criminal"] = CRIMINAL_WANTED
+									active2.set_criminal_status(CRIMINAL_WANTED)
 								if("incarcerated")
-									active2.fields["criminal"] = CRIMINAL_INCARCERATED
+									active2.set_criminal_status(CRIMINAL_INCARCERATED)
 								if("suspected")
-									active2.fields["criminal"] = CRIMINAL_SUSPECT
+									active2.set_criminal_status( CRIMINAL_SUSPECT)
 								if("paroled")
-									active2.fields["criminal"] = CRIMINAL_PAROLE
+									active2.set_criminal_status(CRIMINAL_PAROLE)
 								if("released")
-									active2.fields["criminal"] = CRIMINAL_DISCHARGED
+									active2.set_criminal_status(CRIMINAL_DISCHARGED)
 
 							investigate_log("[active1.fields["name"]] has been set from [old_field] to [active2.fields["criminal"]] by [key_name(usr)].", INVESTIGATE_RECORDS)
 							for(var/i in GLOB.human_list)
@@ -1024,7 +1024,7 @@ Age: [active1.fields["age"]]<BR>"}
 				if(3)
 					R.fields["age"] = rand(5, 85)
 				if(4)
-					R.fields["criminal"] = pick(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED)
+					R.set_criminal_status(pick(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED))
 				if(5)
 					R.fields["p_stat"] = pick("*Unconscious*", "Active", "Physically Unfit")
 				if(6)

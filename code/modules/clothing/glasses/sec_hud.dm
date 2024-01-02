@@ -102,12 +102,17 @@
 
 	COOLDOWN_DECLARE(usage_cd)
 
+/datum/action/innate/investigate/Grant(mob/grant_to)
+	. = ..()
+	RegisterSignal(SSdcs, COMSIG_GLOB_CRIMINAL_STATUS_CHANGE, PROC_REF(crew_status_change))
+
 /datum/action/innate/investigate/Remove(mob/removed_from)
 	. = ..()
 	if(used_channel)
 		SEND_SOUND(removed_from, sound(channel = used_channel))
 
 	hud_obj?.end_play(removed_from)
+	UnregisterSignal(SSdcs, COMSIG_GLOB_CRIMINAL_STATUS_CHANGE)
 
 /datum/action/innate/investigate/IsAvailable(feedback)
 	if(!ishuman(owner))
@@ -190,16 +195,22 @@
 
 	owner.playsound_local(get_turf(owner), 'sound/items/sec_hud/inspect_perform.mp3', 100, channel = used_channel)
 
-	if(hud_obj)
-		UnregisterSignal(hud_obj, COMSIG_PARENT_QDELETING)
-		hud_obj.fade_out()
-		hud_obj = null
-
 	var/mob/living/carbon/human/H = clicked_on
 	var/name_to_search = H.get_idcard()?.registered_name
 
 	var/datum/data/record/general_record = find_record("name", name_to_search, GLOB.data_core.general)
 	var/datum/data/record/security_record = find_record("name", name_to_search, GLOB.data_core.security)
+
+	scan_record(general_record, security_record)
+	return TRUE
+
+/datum/action/innate/investigate/proc/scan_record(datum/data/record/general_record, datum/data/record/security_record, print = TRUE)
+	owner.playsound_local(get_turf(owner), 'sound/items/sec_hud/inspect_perform.mp3', 100, channel = used_channel)
+
+	if(hud_obj)
+		UnregisterSignal(hud_obj, COMSIG_PARENT_QDELETING)
+		hud_obj.fade_out()
+		hud_obj = null
 
 	hud_obj = new()
 	RegisterSignal(hud_obj, COMSIG_PARENT_QDELETING, PROC_REF(hud_obj_gone))
@@ -213,7 +224,7 @@
 
 	hud_obj.vis_contents += holder
 
-	var/list/text = list("<span style='text-align:center'>[uppertext(clicked_on.name)]</span>")
+	var/list/text = list("<span style='text-align:center'>[uppertext(general_record?.fields["name"]) || "UNKNOWN"]</span>")
 	text += "<br><br><br><br><br><br><br>"
 	if(!security_record)
 		text += "<br><span style='text-align:center'>NO DATA</span>"
@@ -227,8 +238,8 @@
 		text += "<br><span style='text-align:center'>[wanted_status]</span>"
 
 	owner.play_screen_text(jointext(text, ""), hud_obj)
-	print_message(security_record)
-	return TRUE
+	if(print)
+		print_message(security_record)
 
 /datum/action/innate/investigate/proc/print_message(datum/data/record/security)
 	var/list/text = list()
@@ -284,3 +295,23 @@
 /datum/action/innate/investigate/proc/hud_obj_gone(atom/movable/source)
 	SIGNAL_HANDLER
 	hud_obj = null
+
+/// Invoked by a crew member's criminal status changing.
+/datum/action/innate/investigate/proc/crew_status_change(datum/source, datum/data/record/R, new_status, old_status)
+	SIGNAL_HANDLER
+	if(new_status != CRIMINAL_WANTED)
+		return
+	if(hud_obj || !owner)
+		return
+
+	var/datum/data/record/general_record = find_record("id", R.fields["id"], GLOB.data_core.general)
+	UNLINT(scan_record(general_record, R, FALSE))
+
+	addtimer(CALLBACK(hud_obj, TYPE_PROC_REF(/atom/movable/screen/text/screen_text/atom_hud, fade_out)), 7 SECONDS)
+
+	owner.visible_message(
+		span_notice("[owner]'s [target] emits a quiet click."),
+		null,
+		span_hear("You hear a quiet click."),
+		COMBAT_MESSAGE_RANGE,
+	)

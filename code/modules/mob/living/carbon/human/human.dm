@@ -252,7 +252,7 @@
 					if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 						return
 					investigate_log("[key_name(src)] has been set from [R.fields["criminal"]] to [setcriminal] by [key_name(usr)].", INVESTIGATE_RECORDS)
-					R.fields["criminal"] = setcriminal
+					R.set_criminal_status(setcriminal)
 					sec_hud_set_security_status()
 				return
 

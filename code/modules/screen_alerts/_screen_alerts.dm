@@ -6,6 +6,7 @@
  * * alert_type: typepath for screen text type we want to play here
  */
 /mob/proc/play_screen_text(text, alert = /atom/movable/screen/text/screen_text)
+	set waitfor = FALSE
 	if(!client)
 		return
 
@@ -22,7 +23,7 @@
 	text_box.owner_ref = WEAKREF(client)
 
 	if(LAZYLEN(client.screen_texts) == 1) //lets only play one at a time, for thematic effect and prevent overlap
-		INVOKE_ASYNC(text_box, TYPE_PROC_REF(/atom/movable/screen/text/screen_text, play_to_client))
+		text_box.play_to_client()
 		return
 
 /atom/movable/screen/text/screen_text

@@ -75,6 +75,8 @@
 	return
 
 /mob/living/carbon/human/get_idcard(hand_first = TRUE)
+	RETURN_TYPE(/obj/item/card/id)
+
 	. = ..()
 	if(. && hand_first)
 		return

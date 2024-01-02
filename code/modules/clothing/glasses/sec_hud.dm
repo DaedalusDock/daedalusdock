@@ -310,7 +310,7 @@
 	addtimer(CALLBACK(hud_obj, TYPE_PROC_REF(/atom/movable/screen/text/screen_text/atom_hud, fade_out)), 7 SECONDS)
 
 	owner.visible_message(
-		span_notice("[owner]'s [target] emits a quiet click."),
+		span_notice("[owner]'s [target.name] emits a quiet click."),
 		null,
 		span_hear("You hear a quiet click."),
 		COMBAT_MESSAGE_RANGE,

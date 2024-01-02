@@ -5,17 +5,29 @@
  * * text: text we want to be displayed
  * * alert_type: typepath for screen text type we want to play here
  */
-/mob/proc/play_screen_text(text, alert_type = /atom/movable/screen/text/screen_text)
+/mob/proc/play_screen_text(text, alert = /atom/movable/screen/text/screen_text, play_next = FALSE)
 	if(!client)
 		return
-	var/atom/movable/screen/text/screen_text/text_box = new alert_type()
-	text_box.text_to_play = text
-	LAZYADD(client.screen_texts, text_box)
+
+	var/atom/movable/screen/text/screen_text/text_box
+	if(ispath(alert))
+		text_box = new alert()
+	else
+		text_box = alert
+
+	if(text)
+		text_box.text_to_play = text
+
+	if(play_next)
+		LAZYINSERT(client.screen_texts, text_box, 1)
+	else
+		LAZYADD(client.screen_texts, text_box)
+
 	if(LAZYLEN(client.screen_texts) == 1) //lets only play one at a time, for thematic effect and prevent overlap
 		INVOKE_ASYNC(text_box, TYPE_PROC_REF(/atom/movable/screen/text/screen_text, play_to_client), client)
 		return
-	client.screen_texts += text_box
 
+	client.screen_texts += text_box
 
 /atom/movable/screen/text/screen_text
 	icon = null
@@ -47,6 +59,9 @@
 	///var for the text we are going to play
 	var/text_to_play
 
+	/// Should this automatically end?
+	var/auto_end = TRUE
+
 /**
  * proc for actually playing this screen_text on a mob.
  * Arguments:
@@ -56,10 +71,12 @@
 	player?.screen += src
 	if(fade_in_time)
 		animate(src, alpha = 255)
+
 	var/list/lines_to_skip = list()
 	var/static/html_locate_regex = regex("<.*>")
 	var/tag_position = findtext(text_to_play, html_locate_regex)
 	var/reading_tag = TRUE
+
 	while(tag_position)
 		if(reading_tag)
 			if(text_to_play[tag_position] == ">")
@@ -71,26 +88,38 @@
 		else
 			tag_position = findtext(text_to_play, html_locate_regex, tag_position)
 			reading_tag = TRUE
+
 	for(var/letter = 2 to length(text_to_play) + letters_per_update step letters_per_update)
 		if(letter in lines_to_skip)
 			continue
+
 		maptext = "[style_open][copytext_char(text_to_play, 1, letter)][style_close]"
 		sleep(play_delay)
-	addtimer(CALLBACK(src, PROC_REF(after_play), player), fade_out_delay)
+
+	if(auto_end)
+		addtimer(CALLBACK(src, PROC_REF(after_play), player), fade_out_delay)
 
 ///handles post-play effects like fade out after the fade out delay
 /atom/movable/screen/text/screen_text/proc/after_play(client/player)
 	if(!fade_out_time)
 		end_play(player)
 		return
+
 	animate(src, alpha = 0, time = fade_out_time)
 	addtimer(CALLBACK(src, PROC_REF(end_play), player), fade_out_time)
 
 ///ends the play then deletes this screen object and plalys the next one in queue if it exists
 /atom/movable/screen/text/screen_text/proc/end_play(client/player)
-	player.screen -= src
-	LAZYREMOVE(player.screen_texts, src)
+	remove_and_play_next(player)
 	qdel(src)
+
+/// Removes the text from the player's screen and plays the next one if present.
+/atom/movable/screen/text/screen_text/proc/remove_and_play_next(client/player)
+	remove_from_screen(player)
 	if(!LAZYLEN(player.screen_texts))
 		return
 	player.screen_texts[1].play_to_client(player)
+
+/atom/movable/screen/text/screen_text/proc/remove_from_screen(client/player)
+	player.screen -= src
+	LAZYREMOVE(player.screen_texts, src)

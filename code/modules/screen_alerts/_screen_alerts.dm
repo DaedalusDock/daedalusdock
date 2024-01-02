@@ -62,7 +62,8 @@
 	var/auto_end = TRUE
 
 /atom/movable/screen/text/screen_text/Destroy()
-	remove_from_screen()
+	if(owner_ref)
+		remove_from_screen()
 	return ..()
 
 /**

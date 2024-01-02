@@ -4,7 +4,7 @@
 	icon_state = "securityhud"
 	hud_type = null
 	hud_trait = TRAIT_SECURITY_HUD
-	glass_colour_type = /datum/client_colour/glass_colour/red
+	glass_colour_type = null
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	actions_types = list(/datum/action/innate/investigate)
 
@@ -46,7 +46,7 @@
 	darkness_view = 1
 	flash_protect = FLASH_PROTECTION_FLASH
 	tint = 1
-	glass_colour_type = /datum/client_colour/glass_colour/darkred
+	glass_colour_type = null
 	supports_variations_flags = NONE
 
 /obj/item/clothing/glasses/hud/security/night
@@ -97,23 +97,17 @@
 	var/timer
 	/// A weakref to the most recently hovered human
 	var/datum/weakref/last_hover_ref
-	/// All generate screentext objects
-	var/list/atom/movable/screen/text/screen_text/atom_hud/hud_objs = list()
+	/// The screentext object, we handle it ourselves
+	var/atom/movable/screen/text/screen_text/atom_hud/hud_obj
 
 	COOLDOWN_DECLARE(usage_cd)
-
-/datum/action/innate/investigate/Destroy()
-	QDEL_LIST(hud_objs)
-	return ..()
 
 /datum/action/innate/investigate/Remove(mob/removed_from)
 	. = ..()
 	if(used_channel)
 		SEND_SOUND(removed_from, sound(channel = used_channel))
 
-	if(removed_from.client)
-		for(var/atom/movable/screen/text/screen_text/hud_obj in hud_objs)
-			hud_obj.end_play(removed_from.client)
+	hud_obj?.end_play(removed_from)
 
 /datum/action/innate/investigate/IsAvailable(feedback)
 	if(!ishuman(owner))
@@ -137,6 +131,10 @@
 	owner.playsound_local(get_turf(owner), vol = 200, channel = used_channel, sound_to_use = loop, wait = TRUE)
 	timer = addtimer(CALLBACK(src, PROC_REF(check_mouse_over)), 1, TIMER_STOPPABLE | TIMER_LOOP)
 
+	var/obj/item/clothing/glasses/G = target
+	if(isnull(initial(G.glass_colour_type)))
+		G.change_glass_color(owner, /datum/client_colour/glass_colour/red)
+
 /datum/action/innate/investigate/unset_ranged_ability(mob/living/on_who, text_to_show)
 	. = ..()
 	var/turf/T = get_turf(owner)
@@ -146,6 +144,11 @@
 		SEND_SOUND(owner, sound(channel = used_channel))
 
 	deltimer(timer)
+	hud_obj?.end_play()
+
+	var/obj/item/clothing/glasses/G = target
+	if(isnull(initial(G.glass_colour_type)))
+		G.change_glass_color(owner, null)
 
 /datum/action/innate/investigate/proc/check_mouse_over()
 	if(!owner.client)
@@ -174,40 +177,72 @@
 			owner.playsound_local(get_turf(owner), 'sound/items/sec_hud/inspect_unhighlight.mp3', 100, channel = used_channel)
 			owner.playsound_local(get_turf(owner), vol =  200, channel = used_channel, sound_to_use = loop, wait = TRUE)
 
-/datum/action/innate/investigate/do_ability(mob/living/caller, atom/clicked_on)
-	if(!ishuman(clicked_on))
+/datum/action/innate/investigate/do_ability(mob/living/caller, atom/clicked_on, list/params)
+	if(!ishuman(clicked_on) || params?[RIGHT_CLICK])
 		unset_ranged_ability(owner)
+		return TRUE
+
+	if(!COOLDOWN_FINISHED(src, usage_cd))
 		return TRUE
 
 	COOLDOWN_START(src, usage_cd, 2 SECONDS)
 	addtimer(VARSET_CALLBACK(src, last_hover_ref, null), 2.5 SECONDS)
 
-	owner.playsound_local(get_turf(owner), 'sound/items/sec_hud/inspect_perform.mp3', 100, channel = used_channel, wait = TRUE)
+	owner.playsound_local(get_turf(owner), 'sound/items/sec_hud/inspect_perform.mp3', 100, channel = used_channel)
 
-	var/atom/movable/screen/text/screen_text/atom_hud/new_hud_obj = new()
-	RegisterSignal(new_hud_obj, COMSIG_PARENT_QDELETING, PROC_REF(hud_obj_gone))
+	if(hud_obj)
+		UnregisterSignal(hud_obj, COMSIG_PARENT_QDELETING)
+		hud_obj.fade_out()
+		hud_obj = null
 
-	var/datum/data/record/R = find_record("name", clicked_on.name, GLOB.data_core.general)
-	if(!R)
-		return TRUE
+	var/datum/data/record/general_record = find_record("name", clicked_on.name, GLOB.data_core.general)
+	var/datum/data/record/security_record = find_record("name", clicked_on.name, GLOB.data_core.security)
 
-	var/atom/movable/screen/holder = new()
-	holder.appearance = new /mutable_appearance(R.fields["character_appearance"])
-	holder.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE
-	holder.dir = SOUTH
+	hud_obj = new()
+	RegisterSignal(hud_obj, COMSIG_PARENT_QDELETING, PROC_REF(hud_obj_gone))
+
+	var/atom/movable/screen/holder = make_holder(general_record)
 
 	animate(holder, dir = WEST, 0.5 SECONDS, loop = -1)
 	animate(dir = NORTH, 0.5 SECONDS)
 	animate(dir = EAST, 0.5 SECONDS)
 	animate(dir = SOUTH, 0.5 SECONDS)
 
-	new_hud_obj.vis_contents += holder
-	hud_objs += new_hud_obj
+	hud_obj.vis_contents += holder
 
-	owner.play_screen_text("test", alert = new_hud_obj)
+	var/list/text = list("<span style='text-align:center'>[clicked_on.name]</span>")
+	text += "<br><br><br><br><br><br><br>"
+	if(!security_record)
+		text += "<br><span style='text-align:center'>NO DATA</span>"
+	else
+		var/wanted_status = security_record.fields["criminal"]
+		if(wanted_status == CRIMINAL_WANTED)
+			wanted_status = "<span style='font-weight:bold'>WANTED</span>"
+		else
+			wanted_status = uppertext(wanted_status)
+
+		text += "<br><span style='text-align:center'>[wanted_status]</span>"
+
+	owner.play_screen_text(jointext(text, ""), hud_obj)
 	return TRUE
+
+/datum/action/innate/investigate/proc/make_holder(datum/data/record/general_record)
+	var/atom/movable/screen/holder = new()
+	if(general_record?.fields["character_appearance"])
+		holder.appearance = new /mutable_appearance(general_record.fields["character_appearance"])
+	else
+		holder.icon = 'icons/hud/noimg.dmi'
+
+	holder.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE
+	holder.dir = SOUTH
+
+	holder.makeHologram(rgb(225,125,125, 0.7 * 255))
+
+	holder.transform = holder.transform.Scale(2, 2)
+	holder.pixel_y = -16
+	holder.pixel_x = -16
+	return holder
 
 /datum/action/innate/investigate/proc/hud_obj_gone(atom/movable/source)
 	SIGNAL_HANDLER
-	hud_objs -= source
-	source.vis_contents.Cut()
+	hud_obj = null

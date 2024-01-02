@@ -243,7 +243,7 @@
 				to_chat(usr, span_warning("ERROR: Unable to locate data core entry for target."))
 				return
 			if(href_list["status"])
-				var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list("None", "*Arrest*", "Incarcerated", "Suspected", "Paroled", "Discharged", "Cancel")
+				var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED, "Cancel")
 				if(setcriminal != "Cancel")
 					if(!R)
 						return
@@ -447,13 +447,13 @@
 		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
 		if(R?.fields["criminal"])
 			switch(R.fields["criminal"])
-				if("*Arrest*")
+				if(CRIMINAL_WANTED)
 					threatcount += 5
-				if("Incarcerated")
+				if(CRIMINAL_INCARCERATED)
 					threatcount += 2
-				if("Suspected")
+				if(CRIMINAL_SUSPECT)
 					threatcount += 2
-				if("Paroled")
+				if(CRIMINAL_PAROLE)
 					threatcount += 2
 
 	//Check for dresscode violations

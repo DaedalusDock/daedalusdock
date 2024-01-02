@@ -160,7 +160,7 @@ The console is located at computer/gulag_teleporter.dm
 	if(id)
 		prisoner.equip_to_appropriate_slot(id, qdel_on_fail = TRUE)
 	if(R)
-		R.fields["criminal"] = "Incarcerated"
+		R.fields["criminal"] = CRIMINAL_INCARCERATED
 
 	use_power(active_power_usage)
 

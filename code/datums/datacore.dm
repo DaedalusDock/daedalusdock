@@ -327,7 +327,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		var/datum/data/record/S = new()
 		S.fields["id"] = id
 		S.fields["name"] = H.real_name
-		S.fields["criminal"] = "None"
+		S.fields["criminal"] = CRIMINAL_NONE
 		S.fields["citation"] = list()
 		S.fields["crim"] = list()
 		S.fields["notes"] = "No notes."

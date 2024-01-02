@@ -19,8 +19,6 @@
 #define LAZYLISTDUPLICATE(L) (L ? L.Copy() : null )
 ///Remove an item from the list, set the list to null if empty
 #define LAZYREMOVE(L, I) if(L) { L -= I; if(!length(L)) { L = null; } }
-/// Inserts an item to the list at the given index.
-#define LAZYINSERT(L, I, items...) if(!L) { L = list(); } L.Insert(I, items)
 ///Add an item to the list, if the list is null it will initialize it
 #define LAZYADD(L, I) if(!L) { L = list(); } L += I;
 ///Adds an item to the list, initalizing the list if necessary, if the item is not already in the list

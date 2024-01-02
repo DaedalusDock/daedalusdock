@@ -5,20 +5,21 @@
 	righthand_file = 'icons/mob/inhands/weapons/polearms_righthand.dmi'
 	name = "spear"
 	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
-	force = 10
+	force = 7
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	throwforce = 20
+	throwforce = 15
 	throw_speed = 4
 	embedding = list("impact_pain_mult" = 2, "remove_pain_mult" = 4, "jostle_chance" = 2.5)
-	armour_penetration = 10
+	armor_penetration = 10
 	custom_materials = list(/datum/material/iron=1150, /datum/material/glass=2075)
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb_continuous = list("attacks", "pokes", "jabs", "tears", "lacerates", "gores")
 	attack_verb_simple = list("attack", "poke", "jab", "tear", "lacerate", "gore")
 	sharpness = SHARP_EDGED // i know the whole point of spears is that they're pointy, but edged is more devastating at the moment so
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+
 	var/war_cry = "AAAAARGH!!!"
 	var/icon_prefix = "spearglass"
 
@@ -38,22 +39,22 @@
 	return BRUTELOSS
 
 /obj/item/spear/CheckParts(list/parts_list)
-	var/obj/item/shard/tip = locate() in parts_list
+	var/obj/item/shard/tip = locate() in contents
 	if(tip)
 		if (istype(tip, /obj/item/shard/plasma))
-			force = 11
+			force = 8
 			throwforce = 21
 			icon_prefix = "spearplasma"
 			AddComponent(/datum/component/two_handed, force_unwielded=11, force_wielded=19, icon_wielded="[icon_prefix]1")
 		else if (istype(tip, /obj/item/shard/titanium))
-			force = 13
+			force = 10
 			throwforce = 21
 			throw_range = 8
 			throw_speed = 5
 			icon_prefix = "speartitanium"
 			AddComponent(/datum/component/two_handed, force_unwielded=13, force_wielded=18, icon_wielded="[icon_prefix]1")
 		else if (istype(tip, /obj/item/shard/plastitanium))
-			force = 13
+			force = 10
 			throwforce = 22
 			throw_range = 9
 			throw_speed = 5
@@ -191,7 +192,7 @@
 	desc = "A haphazardly-constructed yet still deadly weapon. The pinnacle of modern technology."
 	force = 12
 	throwforce = 22
-	armour_penetration = 15 //Enhanced armor piercing
+	armor_penetration = 15 //Enhanced armor piercing
 
 /obj/item/spear/bonespear/Initialize(mapload)
 	. = ..()

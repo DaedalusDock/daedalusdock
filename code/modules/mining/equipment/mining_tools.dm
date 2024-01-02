@@ -109,7 +109,7 @@
 
 /obj/item/pickaxe/improvised
 	name = "improvised pickaxe"
-	desc = "A pickaxe made with a knife and crowbar taped together, how does it not break?"
+	desc = "A crude pickaxe made with a knife and crowbar welded together."
 	icon_state = "ipickaxe"
 	worn_icon_state = "pickaxe"
 	force = 10

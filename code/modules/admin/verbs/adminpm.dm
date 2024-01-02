@@ -25,6 +25,7 @@
 			html = span_danger("Error: Admin-PM-Panel: Only administrators may use this command."),
 			confidential = TRUE)
 		return
+
 	var/list/targets = list()
 	for(var/client/client as anything in GLOB.clients)
 		if(client.mob)
@@ -202,6 +203,13 @@
 		if(!msg)
 			return
 
+	var/list/chat_tag_recipients = GLOB.admins | recipient
+
+	// Outbound PM icon
+	var/tag_out = icon2html('icons/misc/chattags.dmi', chat_tag_recipients, "pm_out", realsize = TRUE)
+	// Inbound PM icon
+	var/tag_in = icon2html('icons/misc/chattags.dmi', chat_tag_recipients, "pm_in", realsize = TRUE)
+
 	var/rawmsg = msg
 
 	if(holder)
@@ -212,8 +220,10 @@
 	if(external)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_notice("PM to-<b>Admins</b>: <span class='linkify'>[rawmsg]</span>"),
-			confidential = TRUE)
+			html = span_notice("[tag_out] <span class='linkify'>[rawmsg]</span>"),
+			confidential = TRUE
+		)
+
 		var/datum/admin_help/AH = admin_ticket_log(src, "<font color='red'>Reply PM from-<b>[key_name(src, TRUE, TRUE)]</b> to <i>External</i>: [keywordparsedmsg]</font>")
 		AH.AddInteractionPlayer("<font color='red'>Reply PM from-<b>[key_name(src, TRUE, FALSE)]</b> to <i>External</i>: [keywordparsedmsg]</font>") // PARIAH EDIT ADDITION -- Player ticket viewing
 		externalreplyamount--
@@ -222,38 +232,48 @@
 		var/badmin = FALSE //Lets figure out if an admin is getting bwoinked.
 		if(holder && recipient.holder && !current_ticket) //Both are admins, and this is not a reply to our own ticket.
 			badmin = TRUE
+
 		if(recipient.holder && !badmin)
 			SEND_SIGNAL(current_ticket, COMSIG_ADMIN_HELP_REPLIED)
 
 			if(holder)
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_danger("Admin PM from-<b>[key_name(src, recipient, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
-					confidential = TRUE)
+					html = span_danger("[tag_in] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
+					confidential = TRUE
+				)
+
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("Admin PM to-<b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
-					confidential = TRUE)
+					html = span_notice("[tag_out] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
+					confidential = TRUE
+				)
+
 				//omg this is dumb, just fill in both their tickets
 				var/interaction_message = "<font color='purple'>PM from-<b>[key_name(src, recipient, 1)]</b> to-<b>[key_name(recipient, src, 1)]</b>: [keywordparsedmsg]</font>"
-				// admin_ticket_log(src, interaction_message, log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
-				admin_ticket_log(src, interaction_message, log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
+
+				admin_ticket_log(src, interaction_message, log_in_blackbox = FALSE, admin_only = FALSE)
 				if(recipient != src)//reeee
-					// admin_ticket_log(recipient, interaction_message, log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
-					admin_ticket_log(recipient, interaction_message, log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
+					admin_ticket_log(recipient, interaction_message, log_in_blackbox = FALSE, admin_only = FALSE)
+
 				SSblackbox.LogAhelp(current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
+
 			else //recipient is an admin but sender is not
-				var/replymsg = "Reply PM from-<b>[key_name(src, recipient, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"
-				// admin_ticket_log(src, "<font color='red'>[replymsg]</font>", log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
+				var/replymsg = "<b>[key_name(src, recipient, 1)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"
 				admin_ticket_log(src, "<font color='red'>[replymsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
+
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_danger("[replymsg]"),
-					confidential = TRUE)
+					html = span_danger("[tag_in] [replymsg]"),
+					confidential = TRUE
+				)
+
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("PM to-<b>Admins</b>: <span class='linkify'>[msg]</span>"),
-					confidential = TRUE)
+					html = span_notice("[tag_out] <b>Admins</b>: <span class='linkify'>[msg]</span>"),
+					confidential = TRUE
+				)
+
 				SSblackbox.LogAhelp(current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
 
 			//play the receiving admin the adminhelp sound (if they have them enabled)
@@ -263,12 +283,10 @@
 			if(holder) //sender is an admin but recipient is not. Do BIG RED TEXT
 				var/already_logged = FALSE
 				if(!recipient.current_ticket)
-					//new /datum/admin_help(msg, recipient, TRUE) //ORIGINAL
-					new /datum/admin_help(msg, recipient, TRUE, src) //PARIAH EDIT CHANGE - ADMIN
+					new /datum/admin_help(msg, recipient, TRUE, src)
 					already_logged = TRUE
 					SSblackbox.LogAhelp(recipient.current_ticket.id, "Ticket Opened", msg, recipient.ckey, src.ckey)
 
-				//PARIAH EDIT ADDITION BEGIN - ADMIN
 				if(recipient.current_ticket.handler)
 					if(recipient.current_ticket.handler != usr.ckey)
 						var/response = tgui_alert(usr, "This ticket is already being handled by [recipient.current_ticket.handler]. Do you want to continue?", "Ticket already assigned", list("Yes", "No"))
@@ -277,26 +295,31 @@
 							return
 				else
 					recipient.current_ticket.HandleIssue()
-				//PARIAH EDIT ADDITION END
+
+				var/recipient_message = "\
+				<div class='adminpmbox'>\
+				<div class='' style='color: black; background: #f88; padding: 0.2em 0.5em;'>\
+				Administrator PM from [admin_pm_href(src, key_name(src, FALSE, FALSE), "color:#00379e")]\
+				</div>\
+				<div style='padding: 0.2em 0.5em;text-align: left'>\
+				[span_adminsay(msg)]\
+				</div>\
+				<div class='' style='font-size: 100%; background: #fcc; padding: 0.2em 0.5em;'>\
+				[admin_pm_href(src, "< Click here to reply >", "color: #00379e")]\
+				</div></div>"
 
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = "<font color='red' size='4'><b>-- Administrator private message --</b></font>",
-					confidential = TRUE)
-				to_chat(recipient,
-					type = MESSAGE_TYPE_ADMINPM,
-					html = span_adminsay("Admin PM from-<b>[key_name(src, recipient, 0)]</b>: <span class='linkify'>[msg]</span>"),
-					confidential = TRUE)
-				to_chat(recipient,
-					type = MESSAGE_TYPE_ADMINPM,
-					html = span_adminsay("<i>Click on the administrator's name to reply.</i>"),
-					confidential = TRUE)
+					html = recipient_message,
+					confidential = TRUE
+				)
+
 				to_chat(src,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("Admin PM to-<b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[msg]</span>"),
-					confidential = TRUE)
+					html = span_notice("[tag_out] <b>[key_name(recipient, src, 1)]</b>: <span class='linkify'>[msg]</span>"),
+					confidential = TRUE
+				)
 
-				// admin_ticket_log(recipient, "<font color='purple'>PM From [key_name_admin(src)]: [keywordparsedmsg]</font>", log_in_blackbox = FALSE) // PARIAH EDIT ORIGINAL
 				admin_ticket_log(recipient, "<font color='purple'>PM From [key_name_admin(src, FALSE)]: [keywordparsedmsg]</font>", log_in_blackbox = FALSE, admin_only = FALSE) // PARIAH EDIT CHANGE -- Player ticket viewing
 
 				if(!already_logged) //Reply to an existing ticket
@@ -310,11 +333,14 @@
 					to_chat(src,
 						type = MESSAGE_TYPE_ADMINPM,
 						html = span_danger("Error: Admin-PM: Non-admin to non-admin PM communication is forbidden."),
-						confidential = TRUE)
+						confidential = TRUE
+					)
+
 					to_chat(src,
 						type = MESSAGE_TYPE_ADMINPM,
 						html = "[span_danger("<b>Message not sent:</b>")]<br>[msg]",
-						confidential = TRUE)
+						confidential = TRUE
+					)
 					return
 				current_ticket.MessageNoRecipient(msg)
 
@@ -324,17 +350,23 @@
 			to_chat(X,
 				type = MESSAGE_TYPE_ADMINPM,
 				html = span_notice("<B>PM: [key_name(src, X, 0)]-&gt;External:</B> [keywordparsedmsg]"),
-				confidential = TRUE)
+				confidential = TRUE
+			)
+
 	else
 		window_flash(recipient, ignorepref = TRUE)
 		log_admin_private("PM: [key_name(src)]->[key_name(recipient)]: [rawmsg]")
+
+		var/tag_shared = icon2html('icons/misc/chattags.dmi', GLOB.admins, "pm_other", realsize = TRUE)
+
 		//we don't use message_admins here because the sender/receiver might get it too
 		for(var/client/X in GLOB.admins)
 			if(X.key!=key && X.key!=recipient.key) //check client/X is an admin and isn't the sender or recipient
 				to_chat(X,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_notice("<B>PM: [key_name(src, X, 0)]-&gt;[key_name(recipient, X, 0)]:</B> [keywordparsedmsg]") ,
-					confidential = TRUE)
+					html = span_notice("[tag_shared]<B>: [key_name(src, X, 0)]-&gt;[key_name(recipient, X, 0)]:</B> [keywordparsedmsg]") ,
+					confidential = TRUE
+				)
 
 #define TGS_AHELP_USAGE "Usage: ticket <close|resolve|icissue|reject|reopen \[ticket #\]|list>"
 /proc/TgsPm(target,msg,sender)

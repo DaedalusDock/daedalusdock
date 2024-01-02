@@ -98,9 +98,14 @@
 		G.refresh_updown()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+
 	init_loadout_references()
 	init_augment_references()
+
 	init_magnet_error_codes()
+
+	init_slapcraft_steps()
+	init_slapcraft_recipes()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -144,7 +149,6 @@ GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
 	/obj/item/radio/intercom,
 	/obj/item/storage/secure/safe,
 	/obj/machinery/airalarm,
-	///obj/machinery/bluespace_vendor,
 	/obj/machinery/newscaster,
 	/obj/machinery/button,
 	/obj/machinery/computer/security/telescreen,

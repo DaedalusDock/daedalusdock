@@ -75,10 +75,10 @@
 	verbs += /obj/structure/table/verb/verbflip
 	verbs -= /obj/structure/table/proc/verbunflip
 
-	setDir(0)
-
 	flipped = 0
 	flags_1 &= ~ON_BORDER_1
+	setDir(0)
+
 	for(var/D in list(turn(dir, 90), turn(dir, -90)))
 		var/obj/structure/table/neighbor = locate() in get_step(src.loc,D)
 		if(neighbor && neighbor.flipped == 1 && neighbor.dir == src.dir && neighbor.buildstack == buildstack)

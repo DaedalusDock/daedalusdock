@@ -91,7 +91,7 @@
 		damage += weapon.w_class * impact_pain_mult
 		var/post_armor_damage = damage
 		if(limb_owner)
-			var/armor = limb_owner.run_armor_check(limb.body_zone, MELEE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armour_penetration, weak_against_armour = I.weak_against_armour)
+			var/armor = limb_owner.run_armor_check(limb.body_zone, PUNCTURE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armor_penetration, weak_against_armor = I.weak_against_armor)
 			post_armor_damage = damage * ((100-armor)/100)
 
 		if(post_armor_damage <= 0)
@@ -254,7 +254,7 @@
 			limb_owner.emote("scream")
 
 			if(!IS_ORGANIC_LIMB(limb))
-				user.visible_message(
+				limb_owner.visible_message(
 					span_danger("The damage to \the [limb_owner]'s [limb.plaintext_zone] worsens."),\
 					span_danger("The damage to your [limb.plaintext_zone] worsens."),\
 					span_danger("You hear the screech of abused metal.")
@@ -265,6 +265,7 @@
 					span_danger("The wound on your [limb.plaintext_zone] widens with a nasty ripping noise."),\
 					span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
 				)
+
 	if(user == limb_owner)
 		user.visible_message(
 			span_warning("[user] successfully rips [weapon] [harmful ? "out" : "off"] of [user.p_their()] [limb.plaintext_zone]!"),

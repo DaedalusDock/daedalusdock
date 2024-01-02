@@ -10,9 +10,8 @@ import { useDispatch, useSelector } from 'common/redux';
 import { Box, Button, ColorBox, Divider, Dropdown, Flex, Input, LabeledList, NumberInput, Section, Stack, Tabs, TextArea } from 'tgui/components';
 import { ChatPageSettings } from '../chat';
 import { rebuildChat, saveChatToDisk } from '../chat/actions';
-import { THEMES } from '../themes';
 import { changeSettingsTab, updateSettings } from './actions';
-import { FONTS, SETTINGS_TABS } from './constants';
+import { FONTS, SETTINGS_TABS, THEMES } from './constants';
 import { selectActiveTab, selectSettings } from './selectors';
 
 export const SettingsPanel = (props, context) => {

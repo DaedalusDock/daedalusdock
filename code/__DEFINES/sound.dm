@@ -117,6 +117,7 @@
 #define ANNOUNCER_DEFAULT "announce_default"
 #define ANNOUNCER_CENTCOM "announce_centcom"
 #define ANNOUNCER_ATTENTION "announce_attention"
+#define ANNOUNCER_ALERT "announce_alert"
 
 /// Global list of all of our announcer keys.
 GLOBAL_LIST_INIT(announcer_keys, list(

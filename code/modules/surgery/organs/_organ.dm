@@ -102,6 +102,17 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return
 	return ..()
 
+/obj/item/organ/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	if(owner)
+		Remove(owner)
+		stack_trace("Organ removed while it still had an owner.")
+
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+		stack_trace("Organ removed while it still had an ownerlimb.")
+
+
 /*
  * Insert the organ into the select mob.
  *
@@ -131,8 +142,14 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	SEND_SIGNAL(src, COMSIG_ORGAN_IMPLANTED, reciever)
 	SEND_SIGNAL(reciever, COMSIG_CARBON_GAIN_ORGAN, src, special)
 
+	if(ownerlimb)
+		ownerlimb.remove_organ(src)
+
+	forceMove(limb)
+	limb.add_organ(src)
+	item_flags |= ABSTRACT
+
 	owner = reciever
-	moveToNullspace()
 	RegisterSignal(owner, COMSIG_PARENT_EXAMINE, PROC_REF(on_owner_examine))
 	update_organ_traits(reciever)
 	for(var/datum/action/action as anything in actions)
@@ -141,6 +158,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	//Add to internal organs
 	owner.organs |= src
 	owner.organs_by_slot[slot] = src
+	ADD_TRAIT(src, TRAIT_INSIDE_BODY, REF(owner))
 
 	if(!cosmetic_only)
 		STOP_PROCESSING(SSobj, src)
@@ -148,13 +166,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		/// processing_organs must ALWAYS be ordered in the same way as organ_process_order
 		/// Otherwise life processing breaks down
 		sortTim(owner.processing_organs, GLOBAL_PROC_REF(cmp_organ_slot_asc))
-
-	if(ownerlimb)
-		ownerlimb.remove_organ(src)
-
-	limb.add_organ(src)
-	forceMove(limb)
-	item_flags |= ABSTRACT
 
 	if(visual)
 		if(!stored_feature_id && reciever.dna?.features) //We only want this set *once*
@@ -203,6 +214,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	organ_flags |= ORGAN_CUT_AWAY
 
+	REMOVE_TRAIT(src, TRAIT_INSIDE_BODY, REF(organ_owner))
 	organ_owner.organs -= src
 	if(organ_owner.organs_by_slot[slot] == src)
 		organ_owner.organs_by_slot.Remove(slot)

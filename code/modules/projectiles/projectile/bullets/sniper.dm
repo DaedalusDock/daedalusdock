@@ -7,18 +7,18 @@
 	damage = 70
 	paralyze = 100
 	dismemberment = 50
-	armour_penetration = 50
+	armor_penetration = 50
 	var/breakthings = TRUE
 
 /obj/projectile/bullet/p50/on_hit(atom/target, blocked = 0)
 	if(isobj(target) && (blocked != 100) && breakthings)
 		var/obj/O = target
-		O.take_damage(80, BRUTE, BULLET, FALSE)
+		O.take_damage(80, BRUTE, PUNCTURE, FALSE)
 	return ..()
 
 /obj/projectile/bullet/p50/soporific
 	name =".50 soporific bullet"
-	armour_penetration = 0
+	armor_penetration = 0
 	damage = 0
 	dismemberment = 0
 	paralyze = 0

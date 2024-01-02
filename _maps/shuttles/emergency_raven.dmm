@@ -1816,21 +1816,21 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/power/smes/engineering,
 /obj/effect/turf_decal/bot,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dD" = (
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dE" = (
 /obj/item/radio/intercom/directional/north,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dF" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dH" = (
@@ -1862,7 +1862,7 @@
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dN" = (
@@ -1874,7 +1874,7 @@
 /obj/machinery/power/terminal{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "dQ" = (
@@ -1970,7 +1970,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/power/port_gen/pacman,
 /obj/effect/turf_decal/bot,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "ed" = (
@@ -1978,7 +1978,7 @@
 /obj/machinery/computer/monitor{
 	dir = 1
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "ee" = (

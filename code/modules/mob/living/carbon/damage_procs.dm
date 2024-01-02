@@ -234,7 +234,7 @@
 	if(!parts.len)
 		return
 	var/obj/item/bodypart/picked = pick(parts)
-	if(picked.receive_damage(brute, burn, blocked = check_armor ? run_armor_check(picked, (brute ? MELEE : burn ? FIRE : null)) : FALSE, sharpness = sharpness))
+	if(picked.receive_damage(brute, burn, blocked = check_armor ? run_armor_check(picked, (brute ? BLUNT : burn ? FIRE : null)) : FALSE, sharpness = sharpness))
 		update_damage_overlays()
 
 ///Heal MANY bodyparts, in random order

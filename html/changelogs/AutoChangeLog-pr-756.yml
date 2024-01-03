@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Bodyparts are no longer affected by explosions directly when attached
-      to a mob. The mob handles it.

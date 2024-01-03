@@ -104,7 +104,7 @@
 
 /datum/action/innate/investigate/Grant(mob/grant_to)
 	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_CRIMINAL_STATUS_CHANGE, PROC_REF(crew_status_change), override = TRUE)
+	RegisterSignal(SSdcs, COMSIG_GLOB_WANTED_CRIMINAL, PROC_REF(wanted_fool), override = TRUE)
 
 /datum/action/innate/investigate/Remove(mob/removed_from)
 	. = ..()
@@ -112,7 +112,7 @@
 		SEND_SOUND(removed_from, sound(channel = used_channel))
 
 	hud_obj?.end_play(removed_from)
-	UnregisterSignal(SSdcs, COMSIG_GLOB_CRIMINAL_STATUS_CHANGE)
+	UnregisterSignal(SSdcs, COMSIG_GLOB_WANTED_CRIMINAL)
 
 /datum/action/innate/investigate/IsAvailable(feedback)
 	if(!ishuman(owner))
@@ -297,15 +297,13 @@
 	hud_obj = null
 
 /// Invoked by a crew member's criminal status changing.
-/datum/action/innate/investigate/proc/crew_status_change(datum/source, datum/data/record/R, new_status, old_status)
+/datum/action/innate/investigate/proc/wanted_fool(datum/source, datum/data/record/R)
 	SIGNAL_HANDLER
-	if(new_status != CRIMINAL_WANTED)
-		return
 	if(hud_obj || !owner)
 		return
 
 	var/datum/data/record/general_record = find_record("id", R.fields["id"], GLOB.data_core.general)
-	UNLINT(scan_record(general_record, R, FALSE))
+	UNLINT(scan_record(general_record, R, FALSE)) //IT DOESNT SLEEP STUPID LINTER!!!
 
 	addtimer(CALLBACK(hud_obj, TYPE_PROC_REF(/atom/movable/screen/text/screen_text/atom_hud, fade_out)), 7 SECONDS)
 

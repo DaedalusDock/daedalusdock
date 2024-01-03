@@ -49,7 +49,6 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		return FALSE
 
 	fields["criminal"] = new_status
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CRIMINAL_STATUS_CHANGE, src, new_status, old_status)
 	return TRUE
 
 /**

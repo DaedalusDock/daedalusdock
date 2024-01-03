@@ -356,6 +356,8 @@
 					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
 						dat += "<font size='4'><b>Security Data</b></font>"
 						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields["criminal"]]</A>"
+						if(active2.fields["criminal"] == CRIMINAL_WANTED)
+							dat += " [button_element(src, "BROADCAST", "choice=broadcast_criminal;criminal=[REF(active2)]")]"
 						dat += "<br><br>Citations: <A href='?src=[REF(src)];choice=Edit Field;field=citation_add'>Add New</A>"
 
 						dat +={"<table style="text-align:center;" border="1" cellspacing="0" width="100%">
@@ -498,6 +500,15 @@ What a mess.*/
 				else
 					to_chat(usr, span_danger("Unauthorized Access."))
 				playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
+
+			if("broadcast_criminal")
+				var/datum/data/record/R = locate(href_list["criminal"]) in GLOB.data_core.security
+				if(!R)
+					return
+				if(!(R.fields["criminal"] == CRIMINAL_WANTED))
+					return
+
+				SEND_GLOBAL_SIGNAL(COMSIG_GLOB_WANTED_CRIMINAL, R)
 
 //RECORD FUNCTIONS
 			if("Record Maintenance")

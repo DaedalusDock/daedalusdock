@@ -9,11 +9,11 @@
 
 /obj/effect/fun_balloon/Initialize(mapload)
 	. = ..()
-	SSobj.processing |= src
+	START_PROCESSING(SSobj, src)
 
 /obj/effect/fun_balloon/Destroy()
-	SSobj.processing -= src
-	. = ..()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/effect/fun_balloon/process()
 	if(!popped && check() && !QDELETED(src))

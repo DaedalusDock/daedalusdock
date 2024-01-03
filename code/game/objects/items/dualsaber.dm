@@ -142,12 +142,12 @@
 	return 0
 
 /obj/item/dualsaber/process()
-	if(wielded)
-		if(hacked)
-			set_light_color(pick(COLOR_SOFT_RED, LIGHT_COLOR_GREEN, LIGHT_COLOR_LIGHT_CYAN, LIGHT_COLOR_LAVENDER))
-		open_flame()
-	else
-		STOP_PROCESSING(SSobj, src)
+	if(!wielded)
+		return PROCESS_KILL
+
+	if(hacked)
+		set_light_color(pick(COLOR_SOFT_RED, LIGHT_COLOR_GREEN, LIGHT_COLOR_LIGHT_CYAN, LIGHT_COLOR_LAVENDER))
+	open_flame()
 
 /obj/item/dualsaber/IsReflect()
 	if(wielded)

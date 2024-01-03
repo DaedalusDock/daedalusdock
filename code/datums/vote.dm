@@ -168,7 +168,7 @@
 		return
 
 	SSshuttle.autoEnd()
-	var/obj/machinery/computer/communications/C = locate() in GLOB.machines
+	var/obj/machinery/computer/communications/C = locate() in INSTANCES_OF(/obj/machinery/computer/communications)
 	if(C)
 		C.post_status("shuttle")
 

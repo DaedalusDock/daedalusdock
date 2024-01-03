@@ -325,7 +325,7 @@
 			var/bone = encased ? encased : "bone"
 			if(bodypart_flags & BP_BROKEN_BONES)
 				bone = "broken [bone]"
-			wound_descriptors["a [bone] exposed"] = 1
+			wound_descriptors["[bone] exposed"] = 1
 
 			if(!encased || how_open() >= SURGERY_DEENCASED)
 				var/list/bits = list()

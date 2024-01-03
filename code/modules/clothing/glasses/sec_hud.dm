@@ -266,8 +266,8 @@
 				var/datum/data/crime/crime = security.fields["crim"][i]
 				text += {"
 					<tr style='border: 2px solid rgba(255, 100, 100, 1)'>
-						<td style='vertical-align: middle; border: 2px solid rgba(255, 100, 100, 1); text-align:center; padding: 4px'><span class='warning' style='font-style:normal'>[crime.crimeName]</span></td>
-						<td style='vertical-align: middle; border: 2px solid rgba(255, 100, 100, 1); text-align:center; padding: 4px'><span class='warning' style='font-style:normal'>[crime.crimeDetails]</td>
+						<td style='vertical-align: middle; border: 2px solid rgba(255, 100, 100, 1); text-align:center; padding: 4px'><span class='warning' style='font-style:normal;style='font-size: 100%'>[crime.crimeName]</span></td>
+						<td style='vertical-align: middle; border: 2px solid rgba(255, 100, 100, 1); text-align:center; padding: 4px'><span class='warning' style='font-style:normal;style='font-size: 100%'>[crime.crimeDetails]>/span></td>
 					</tr>
 				"}
 			text += "</table>"

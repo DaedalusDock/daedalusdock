@@ -104,7 +104,7 @@
 
 /datum/action/innate/investigate/Grant(mob/grant_to)
 	. = ..()
-	RegisterSignal(SSdcs, COMSIG_GLOB_CRIMINAL_STATUS_CHANGE, PROC_REF(crew_status_change))
+	RegisterSignal(SSdcs, COMSIG_GLOB_CRIMINAL_STATUS_CHANGE, PROC_REF(crew_status_change), override = TRUE)
 
 /datum/action/innate/investigate/Remove(mob/removed_from)
 	. = ..()

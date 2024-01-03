@@ -2222,6 +2222,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 
 /mob/living/do_hurt_animation()
+	if(stat > CONSCIOUS)
+		return
+
 	var/pixel_x = src.pixel_x
 	var/pixel_y = src.pixel_y
 	var/offset_x = pixel_x + pick(-3, -2, -1, 1, 2, 3)

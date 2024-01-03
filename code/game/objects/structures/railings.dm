@@ -8,7 +8,7 @@
 	anchored = TRUE
 	pass_flags_self = LETPASSTHROW|PASSSTRUCTURE
 	/// armor more or less consistent with grille. max_integrity about one time and a half that of a grille.
-	armor = list(MELEE = 50, BULLET = 70, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 50, PUNCTURE = 70, SLASH = 90, LASER = 70, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 0, ACID = 0)
 	max_integrity = 75
 
 	var/climbable = TRUE
@@ -130,7 +130,7 @@
 	if(user.combat_mode)
 		visible_message(span_danger("<b>[user] slams <b>[L]</b>'s face against \the [src]!</span>"))
 		playsound(loc, 'sound/effects/grillehit.ogg', 50, 1)
-		var/blocked = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/blocked = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		if (prob(30 * ((100 - blocked)/100)))
 			L.Knockdown(10 SECONDS)
 		L.apply_damage(8, BRUTE, BODY_ZONE_HEAD)

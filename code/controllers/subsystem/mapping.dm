@@ -275,7 +275,7 @@ Used by the AI doomsday and the self-destruct nuke.
 	z_list = SSmapping.z_list
 	multiz_levels = SSmapping.multiz_levels
 
-#define INIT_ANNOUNCE(X) to_chat(world, span_boldannounce("[X]")); log_world(X)
+#define INIT_ANNOUNCE(X) to_chat(world, span_debug("[X]")); log_world(X)
 /datum/controller/subsystem/mapping/proc/LoadGroup(list/errorList, name, path, files, list/traits, list/default_traits, silent = FALSE)
 	. = list()
 	var/start_time = REALTIMEOFDAY
@@ -387,7 +387,6 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 	if(map_voted || SSmapping.next_map_config) //If voted or set by other means.
 		return
 
-	var/players = GLOB.clients.len
 	var/list/mapvotes = list()
 	//count votes
 	var/pmv = CONFIG_GET(flag/preference_map_voting)
@@ -403,49 +402,64 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		for(var/M in global.config.maplist)
 			mapvotes[M] = 1
 
-	//filter votes
-	for (var/map in mapvotes)
-		if (!map)
-			mapvotes.Remove(map)
-			continue
-		if (!(map in global.config.maplist))
-			mapvotes.Remove(map)
-			continue
-		if(map in SSpersistence.blocked_maps)
-			mapvotes.Remove(map)
-			continue
-		var/datum/map_config/VM = global.config.maplist[map]
-		if (!VM)
-			mapvotes.Remove(map)
-			continue
-		if (VM.voteweight <= 0)
-			mapvotes.Remove(map)
-			continue
-		if (VM.config_min_users > 0 && players < VM.config_min_users)
-			mapvotes.Remove(map)
-			continue
-		if (VM.config_max_users > 0 && players > VM.config_max_users)
-			mapvotes.Remove(map)
-			continue
+	filter_map_options(mapvotes)
 
-		if(pmv)
-			mapvotes[map] = mapvotes[map]*VM.voteweight
+	//filter votes
+	if(pmv)
+		for (var/map in mapvotes)
+			var/datum/map_config/VM = global.config.maplist[map]
+			mapvotes[map] = mapvotes[map] * VM.voteweight
 
 	var/pickedmap = pick_weight(mapvotes)
 	if (!pickedmap)
 		return
+
 	var/datum/map_config/VM = global.config.maplist[pickedmap]
 	message_admins("Randomly rotating map to [VM.map_name]")
 	. = changemap(VM)
 	if (. && VM.map_name != config.map_name)
 		to_chat(world, span_boldannounce("Map rotation has chosen [VM.map_name] for next round!"))
 
+/// Takes a list of map names, returns a list of valid maps.
+/datum/controller/subsystem/mapping/proc/filter_map_options(list/options, voting)
+	var/players = length(GLOB.clients)
+
+	list_clear_nulls(options)
+	for(var/map_name in options)
+		// Map doesn't exist
+		if (!(map_name in global.config.maplist))
+			options.Remove(map_name)
+			continue
+
+		var/datum/map_config/VM = global.config.maplist[map_name]
+		// Map doesn't exist (again)
+		if (!VM)
+			options.Remove(map_name)
+			continue
+
+		// Polling for vote, map isn't votable
+		if(voting && (!VM.votable || VM.voteweight <= 0))
+			options.Remove(map_name)
+			continue
+
+		// Not enough players
+		if (VM.config_min_users > 0 && players < VM.config_min_users)
+			options.Remove(map_name)
+			continue
+
+		// Too many players
+		if (VM.config_max_users > 0 && players > VM.config_max_users)
+			options.Remove(map_name)
+			continue
+
+	return options
+
 /datum/controller/subsystem/mapping/proc/mapvote()
 	if(map_voted || SSmapping.next_map_config) //If voted or set by other means.
 		return
-	if(SSvote.mode) //Theres already a vote running, default to rotation.
+
+	if(!SSvote.initiate_vote(/datum/vote/change_map, "server"))
 		maprotate()
-	SSvote.initiate_vote("map", "automatic map rotation")
 
 /datum/controller/subsystem/mapping/proc/changemap(datum/map_config/VM)
 	if(!VM.MakeNextMap())

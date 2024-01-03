@@ -12,7 +12,7 @@
 	attack_verb_continuous = list("bans")
 	attack_verb_simple = list("ban")
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/banhammer/Initialize(mapload)
@@ -74,7 +74,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/claymore/Initialize(mapload)
@@ -97,7 +97,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 20
 	throw_speed = 3
 	throw_range = 5
-	armour_penetration = 35
+	armor_penetration = 35
 
 /obj/item/claymore/highlander //ALL COMMENTS MADE REGARDING THIS SWORD MUST BE MADE IN ALL CAPS
 	desc = "<b><i>THERE CAN BE ONLY ONE, AND IT WILL BE YOU!!!</i></b>\nActivate it in your hand to point to the nearest victim."
@@ -263,7 +263,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/katana/suicide_act(mob/user)
@@ -272,68 +272,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/katana/cursed //used by wizard events, see the tendril_loot.dm file for the miner one
 	slot_flags = null
-
-/obj/item/wirerod
-	name = "wired rod"
-	desc = "A rod with some wire wrapped around the top. It'd be easy to attach something to the top bit."
-	icon_state = "wiredrod"
-	inhand_icon_state = "rods"
-	flags_1 = CONDUCT_1
-	force = 9
-	throwforce = 10
-	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron=1150, /datum/material/glass=75)
-	attack_verb_continuous = list("hits", "bludgeons", "whacks", "bonks")
-	attack_verb_simple = list("hit", "bludgeon", "whack", "bonk")
-
-/obj/item/wirerod/Initialize(mapload)
-	. = ..()
-
-	var/static/list/hovering_item_typechecks = list(
-		/obj/item/shard = list(
-			SCREENTIP_CONTEXT_LMB = "Craft spear",
-		),
-
-		/obj/item/assembly/igniter = list(
-			SCREENTIP_CONTEXT_LMB = "Craft stunprod",
-		),
-	)
-
-	AddElement(/datum/element/contextual_screentip_item_typechecks, hovering_item_typechecks)
-
-/obj/item/wirerod/attackby(obj/item/attacking_item, mob/user, params)
-	if(istype(attacking_item, /obj/item/shard))
-		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/spear
-		user.balloon_alert(user, "crafting spear...")
-		if(do_after(user, src, initial(recipe_to_use.time))) // we do initial work here to get the correct timer
-			var/obj/item/spear/crafted_spear = new /obj/item/spear()
-
-			remove_item_from_storage(user)
-			if (!user.transferItemToLoc(attacking_item, crafted_spear))
-				return
-			crafted_spear.CheckParts(list(attacking_item))
-			qdel(src)
-
-			user.put_in_hands(crafted_spear)
-			user.balloon_alert(user, "crafted spear")
-		return
-
-	if(istype(attacking_item, /obj/item/assembly/igniter) && !(HAS_TRAIT(attacking_item, TRAIT_NODROP)))
-		var/datum/crafting_recipe/recipe_to_use = /datum/crafting_recipe/stunprod
-		user.balloon_alert(user, "crafting cattleprod...")
-		if(do_after(user, src, initial(recipe_to_use.time)))
-			var/obj/item/melee/baton/security/cattleprod/prod = new
-
-			remove_item_from_storage(user)
-
-			qdel(attacking_item)
-			qdel(src)
-
-			user.put_in_hands(prod)
-			user.balloon_alert(user, "crafted cattleprod")
-		return
-	return ..()
-
 
 /obj/item/throwing_star
 	name = "throwing star"
@@ -346,7 +284,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 10 //10 + 2 (WEIGHT_CLASS_SMALL) * 4 (EMBEDDED_IMPACT_PAIN_MULTIPLIER) = 18 damage on hit due to guaranteed embedding
 	throw_speed = 4
 	embedding = list("pain_mult" = 4, "embed_chance" = 100, "fall_chance" = 0)
-	armour_penetration = 40
+	armor_penetration = 40
 
 	w_class = WEIGHT_CLASS_SMALL
 	sharpness = SHARP_POINTY
@@ -458,7 +396,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
-	armour_penetration = 100
+	armor_penetration = 100
 	attack_verb_continuous = list("bludgeons", "whacks", "disciplines")
 	attack_verb_simple = list("bludgeon", "whack", "discipline")
 	resistance_flags = FLAMMABLE
@@ -918,7 +856,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 			living_target.gib()
 			log_combat(user, living_target, "gibbed", src)
 	else if(target.uses_integrity)
-		target.take_damage(force*damage_mod*3, BRUTE, MELEE, FALSE, null, 50)
+		target.take_damage(force*damage_mod*3, BRUTE, BLUNT, FALSE, null, 50)
 	else if(iswallturf(target) && prob(force*damage_mod*0.5))
 		var/turf/closed/wall/wall_target = target
 		wall_target.dismantle_wall()
@@ -959,3 +897,23 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		balloon_alert(user, "you're too weak!")
 		return
 	return ..()
+
+/obj/item/mace
+	name = "iron mace"
+	desc = "A crude mace made made from pieces of metal welded together."
+	icon_state = "shitty_mace"
+	inhand_icon_state = "mace"
+	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
+	w_class = WEIGHT_CLASS_BULKY
+	hitsound = 'sound/weapons/smash.ogg'
+	attack_verb_continuous = list("attacks", "bludgeons", "smashes", "thwacks", "wallops")
+	attack_verb_simple = list("attack", "bludgeon", "smash", "thwack", "wallop")
+
+	stamina_damage = 20
+	stamina_cost = 15
+	stamina_critical_chance = 10
+	force = 14
+	throwforce = 10
+	throw_range = 2 //it's not going very far.
+	combat_click_delay = CLICK_CD_MELEE * 1.5

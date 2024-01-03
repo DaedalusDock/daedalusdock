@@ -367,7 +367,7 @@
 	var/a_incidence_s = abs(incidence_s)
 	if(a_incidence_s > 90 && a_incidence_s < 270)
 		return FALSE
-	if((ricocheting_projectile.armor_flag in list(BULLET, BOMB)) && ricocheting_projectile.ricochet_incidence_leeway)
+	if((ricocheting_projectile.armor_flag in list(PUNCTURE, BOMB)) && ricocheting_projectile.ricochet_incidence_leeway)
 		if((a_incidence_s < 90 && a_incidence_s < 90 - ricocheting_projectile.ricochet_incidence_leeway) || (a_incidence_s > 270 && a_incidence_s -270 > ricocheting_projectile.ricochet_incidence_leeway))
 			return FALSE
 	var/new_angle_s = SIMPLIFY_DEGREES(face_angle + incidence_s)
@@ -688,6 +688,9 @@
 	. = list("[get_examine_string(user, TRUE)].<hr>") //PARIAH EDIT CHANGE
 	if(SScodex.get_codex_entry(get_codex_value(user)))
 		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
+
+	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
+		. += "<span class='notice'><b><a href='?src=\ref[user.client];show_slapcraft_hints=[type];'>You could craft [(length(slapcraft_examine_hints_for_type(type)) > 1) ? "several things" : "something"] with it.</a><b></span>"
 
 	. += get_name_chaser(user)
 	if(desc)

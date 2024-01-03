@@ -130,7 +130,7 @@
 		return TRUE
 	log_combat(attacker, defender, "punched")
 	var/obj/item/bodypart/affecting = defender.get_bodypart(ran_zone(attacker.zone_selected))
-	var/armor_block = defender.run_armor_check(affecting, MELEE)
+	var/armor_block = defender.run_armor_check(affecting, BLUNT)
 	var/picked_hit_type = pick("punch", "kick")
 	var/bonus_damage = 0
 	if(defender.body_position == LYING_DOWN)
@@ -212,4 +212,4 @@
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)

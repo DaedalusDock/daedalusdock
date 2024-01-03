@@ -5,9 +5,9 @@
 	damage = 90
 	paralyze = 100
 	dismemberment = 90
-	armour_penetration = 100
+	armor_penetration = 100
 	damage_type = BRUTE
-	armor_flag = BULLET
+	armor_flag = PUNCTURE
 
 /obj/projectile/meteor/on_hit(atom/target, blocked = FALSE)
 	. = ..()

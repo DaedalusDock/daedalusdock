@@ -76,8 +76,7 @@
 		if(HAS_TRAIT(L, TRAIT_VENTCRAWLER_NUDE) || HAS_TRAIT(L, TRAIT_VENTCRAWLER_ALWAYS))
 			. += span_notice("Alt-click to crawl through it.")
 
-GLOBAL_REAL_VAR(atmos_machinery_default_armor) = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 100, ACID = 70)
-
+GLOBAL_REAL_VAR(atmos_machinery_default_armor) = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 100, ACID = 70)
 /obj/machinery/atmospherics/New(loc, process = TRUE, setdir, init_dir = ALL_CARDINALS)
 	if(!isnull(setdir))
 		setDir(setdir)

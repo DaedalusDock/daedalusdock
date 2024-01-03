@@ -32,7 +32,7 @@
 		"}
 		var/iter = 1
 		var/datum/ai_laws/law_list = get_shackle_laws()[shackle_set]
-		for(var/law in law_list.inherent)
+		for(var/law in law_list?.inherent)
 			. += {"
 				<tr>
 					<td style='padding: 4px 8px;border-right: 2px solid rgba(255, 183, 0, 0.5);border-top: 2px solid rgba(255, 183, 0, 0.5)'>

@@ -16,7 +16,7 @@
 	desc = "USE A WEEL GUN"
 	icon_state= "84mm-hedp"
 	damage = 80
-	armour_penetration = 100
+	armor_penetration = 100
 	dismemberment = 100
 	embedding = null
 	shrapnel_type = null

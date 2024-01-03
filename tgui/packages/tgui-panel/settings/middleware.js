@@ -8,7 +8,7 @@ import { storage } from 'common/storage';
 import { setClientTheme } from '../themes';
 import { loadSettings, updateSettings } from './actions';
 import { selectSettings } from './selectors';
-import { FONTS_DISABLED } from './constants';
+import { FONTS_DISABLED, DEFAULT_THEME } from './constants';
 
 const setGlobalFontSize = fontSize => {
   document.documentElement.style
@@ -38,10 +38,8 @@ export const settingsMiddleware = store => {
     }
     if (type === updateSettings.type || type === loadSettings.type) {
       // Set client theme
-      const theme = payload?.theme;
-      if (theme) {
-        setClientTheme(theme);
-      }
+      const theme = payload?.theme || DEFAULT_THEME; // Really stupid hack to beat a race condition
+      setClientTheme(theme);
       // Pass action to get an updated state
       next(action);
       const settings = selectSettings(store.getState());

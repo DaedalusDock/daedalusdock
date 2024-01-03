@@ -112,10 +112,10 @@
 	..()
 
 /datum/action/changeling/suit/sting_action(mob/living/carbon/human/user)
-	if(!user.canUnEquip(user.wear_suit))
+	if(!user.canUnequipItem(user.wear_suit))
 		to_chat(user, span_warning("\the [user.wear_suit] is stuck to your body, you cannot grow a [suit_name_simple] over it!"))
 		return
-	if(!user.canUnEquip(user.head))
+	if(!user.canUnequipItem(user.head))
 		to_chat(user, span_warning("\the [user.head] is stuck on your head, you cannot grow a [helmet_name_simple] over it!"))
 		return
 	..()
@@ -474,7 +474,7 @@
 	item_flags = DROPDEL
 	clothing_flags = STOPSPRESSUREDAMAGE //Not THICKMATERIAL because it's organic tissue, so if somebody tries to inject something into it, it still ends up in your blood. (also balance but muh fluff)
 	allowed = list(/obj/item/flashlight, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/oxygen)
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90) //No armor at all.
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90) //No armor at all.
 	actions_types = list()
 	cell = null
 	show_hud = FALSE
@@ -503,7 +503,7 @@
 	desc = "A covering of pressure and temperature-resistant organic tissue with a glass-like chitin front."
 	item_flags = DROPDEL
 	clothing_flags = STOPSPRESSUREDAMAGE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
 /obj/item/clothing/head/helmet/space/changeling/Initialize(mapload)
@@ -534,7 +534,7 @@
 	icon_state = "lingarmor"
 	item_flags = DROPDEL
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
 	flags_inv = HIDEJUMPSUIT
 	cold_protection = 0
 	heat_protection = 0
@@ -551,7 +551,7 @@
 	desc = "A tough, hard covering of black chitin with transparent chitin in front."
 	icon_state = "lingarmorhelmet"
 	item_flags = DROPDEL
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 50, BOMB = 10, BIO = 4, FIRE = 90, ACID = 90)
 	flags_inv = HIDEEARS|HIDEHAIR|HIDEEYES|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
 
 /obj/item/clothing/head/helmet/changeling/Initialize(mapload)

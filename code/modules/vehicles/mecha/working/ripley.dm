@@ -9,7 +9,7 @@
 	max_integrity = 200
 	ui_x = 1200
 	lights_power = 7
-	armor = list(MELEE = 40, BULLET = 20, LASER = 10, ENERGY = 20, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 40, PUNCTURE = 20, SLASH = 0, LASER = 10, ENERGY = 20, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
 	max_equip_by_category = list(
 		MECHA_UTILITY = 2,
 		MECHA_POWER = 1,
@@ -54,7 +54,7 @@
 
 /obj/vehicle/sealed/mecha/working/ripley/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/armor_plate,3,/obj/item/stack/sheet/animalhide/goliath_hide,list(MELEE = 10, BULLET = 5, LASER = 5))
+	AddComponent(/datum/component/armor_plate,3,/obj/item/stack/sheet/animalhide/goliath_hide, list(BLUNT = 10, PUNCTURE = 5, LASER = 5))
 
 
 /obj/vehicle/sealed/mecha/working/ripley/Destroy()
@@ -75,7 +75,7 @@
 	max_temperature = 30000
 	max_integrity = 250
 	possible_int_damage = MECHA_INT_FIRE|MECHA_INT_TEMP_CONTROL|MECHA_INT_TANK_BREACH|MECHA_INT_CONTROL_LOST|MECHA_INT_SHORT_CIRCUIT
-	armor = list(MELEE = 40, BULLET = 30, LASER = 30, ENERGY = 30, BOMB = 60, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 40, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 60, BIO = 0, FIRE = 100, ACID = 100)
 	wreckage = /obj/structure/mecha_wreckage/ripley/mk2
 	enclosed = TRUE
 	enter_delay = 40

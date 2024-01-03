@@ -25,7 +25,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	speed = 0
 	combat_mode = TRUE
 	stop_automated_movement = 1
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
 	maxbodytemp = INFINITY

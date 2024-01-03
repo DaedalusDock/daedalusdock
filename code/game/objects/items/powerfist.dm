@@ -88,7 +88,7 @@
 	if(!gasused)
 		to_chat(user, span_warning("\The [src]'s tank is empty!"))
 		target.apply_damage((force / 5), BRUTE)
-		playsound(loc, 'sound/weapons/punch1.ogg', 50, TRUE)
+		playsound(loc, SFX_PUNCH, 50, TRUE)
 		target.visible_message(span_danger("[user]'s powerfist lets out a dull thunk as [user.p_they()] punch[user.p_es()] [target.name]!"), \
 			span_userdanger("[user]'s punches you!"))
 		return

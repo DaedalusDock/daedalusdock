@@ -309,7 +309,7 @@
 
 	var/obj/item/target = src.target
 	owner.visible_message(
-		span_notice("[owner]'s [target.name] emits a quiet click."),
+		span_notice("[owner]'s [target.name] emit[copytext_char(target.name, -1) == "s" ? "" : "s"] a quiet click."),
 		null,
 		span_hear("You hear a quiet click."),
 		COMBAT_MESSAGE_RANGE,

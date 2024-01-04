@@ -39,7 +39,7 @@
 	//This signal is needed to prevent gloves of the north star + hulk.
 	var/sig_return = SEND_SIGNAL(src, COMSIG_LIVING_EARLY_UNARMED_ATTACK, attack_target, proximity_flag, modifiers)
 	if(sig_return & COMPONENT_CANCEL_ATTACK_CHAIN)
-		return TRUE
+		return ATTACK_CHAIN_SUCCESS
 
 	if(sig_return & COMPONENT_SKIP_ATTACK_STEP)
 		return ATTACK_CHAIN_CONTINUE

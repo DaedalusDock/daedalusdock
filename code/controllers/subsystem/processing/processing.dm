@@ -54,4 +54,5 @@ SUBSYSTEM_DEF(processing)
  */
 /datum/proc/process(delta_time)
 	set waitfor = FALSE
+	stack_trace("[type] called datum process, this is wasting CPU time.")
 	return PROCESS_KILL

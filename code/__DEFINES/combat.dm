@@ -292,3 +292,9 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 
 /// Martial arts attack happened and succeeded, do not allow a check for a regular attack.
 #define MARTIAL_ATTACK_SUCCESS TRUE
+
+// Used by attack chain
+/// Continue the attack chain
+#define ATTACK_CHAIN_CONTINUE 0
+/// Attack was a success, stop any further chain procs
+#define ATTACK_CHAIN_SUCCESS 1

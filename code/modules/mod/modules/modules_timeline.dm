@@ -352,6 +352,7 @@
 /obj/structure/chrono_field/Destroy()
 	if(tem)
 		tem.field_disconnect(src)
+	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/chrono_field/update_overlays()

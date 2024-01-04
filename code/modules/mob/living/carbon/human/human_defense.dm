@@ -178,10 +178,11 @@
 		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //stabbing yourself always hits the right target
 	else
 		var/accuracy_penalty = user.get_melee_inaccuracy()
-		var/hit_zone = get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty)
+		var/hit_zone = HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty)
 		if(!hit_zone)
 			visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
 			return MOB_ATTACKEDBY_MISS
+
 		affecting = get_bodypart(hit_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
@@ -258,14 +259,15 @@
 
 	if(try_inject(user, affecting, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))//Thick suits can stop monkey bites.
 		if(..()) //successful monkey bite, this handles disease contraction.
-			var/obj/item/bodypart/arm/active_arm = user.get_active_hand()
-			var/damage = rand(active_arm.unarmed_damage_low, active_arm.unarmed_damage_high)
+			var/obj/item/bodypart/head/monkey_mouth = user.get_bodypart(BODY_ZONE_HEAD)
+			var/damage = HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? monkey_mouth.unarmed_damage_high : rand(monkey_mouth.unarmed_damage_low, monkey_mouth.unarmed_damage_high)
+
 			if(!damage)
-				return
+				return FALSE
 			if(check_shields(user, damage, "the [user.name]"))
 				return FALSE
-			if(stat != DEAD)
-				apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, PUNCTURE))
+
+			apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, PUNCTURE))
 		return TRUE
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)

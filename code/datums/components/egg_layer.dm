@@ -48,8 +48,8 @@
 	UnregisterSignal(parent, COMSIG_PARENT_ATTACKBY)
 
 /datum/component/egg_layer/Destroy(force, silent)
-	. = ..()
 	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /datum/component/egg_layer/proc/feed_food(datum/source, obj/item/food, mob/living/attacker, params)
 	SIGNAL_HANDLER

@@ -26,3 +26,15 @@
   francinum:
   - qol: Hermes Transport has instituted new seat filling algorithms to decrease lap-seating
       in long-range transport shuttles.
+2024-01-03:
+  Kapu1178:
+  - bugfix: Bodyparts are no longer affected by explosions directly when attached
+      to a mob. The mob handles it.
+  Profakos:
+  - rscdel: Removes the slime's reagent holder. This will make them not slow down
+      from somehow imbibing morphine or frostoil.
+  francinum:
+  - code_imp: rust_g 2.2.0
+2024-01-04:
+  Kapu1178:
+  - bugfix: Votes run their completion code.

@@ -379,6 +379,11 @@
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage)
 
+/obj/item/bodypart/ex_act(severity, target)
+	if(owner) // Do not explode if we are attached to a person.
+		return
+	return ..()
+
 /obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
 	SHOULD_CALL_PARENT(TRUE)
 

@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - code_imp: rust_g 2.2.0

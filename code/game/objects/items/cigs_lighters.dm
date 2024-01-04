@@ -30,6 +30,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/burnt = FALSE
 	/// How long the match lasts in seconds
 
+/obj/item/match/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/match/process(delta_time)
 	smoketime -= delta_time * (1 SECONDS)
 	if(smoketime <= 0)
@@ -1048,7 +1052,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!reagents.total_volume)
 		if(ismob(loc))
 			to_chat(M, span_warning("[src] is empty!"))
-			STOP_PROCESSING(SSobj, src)
+			. = PROCESS_KILL
 			//it's reusable so it won't unequip when empty
 		return
 

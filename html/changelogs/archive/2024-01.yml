@@ -35,3 +35,6 @@
       from somehow imbibing morphine or frostoil.
   francinum:
   - code_imp: rust_g 2.2.0
+2024-01-04:
+  Kapu1178:
+  - bugfix: Votes run their completion code.

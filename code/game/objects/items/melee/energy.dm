@@ -164,7 +164,7 @@
 	block_chance = 50
 	embedding = list("embed_chance" = 75, "impact_pain_mult" = 10)
 
-/obj/item/melee/energy/sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/melee/energy/sword/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
 	if(blade_active)
 		return ..()
 	return FALSE
@@ -208,7 +208,7 @@
 	active_force = 30
 	sword_color_icon = null // Stops icon from breaking when turned on.
 
-/obj/item/melee/energy/sword/cyborg/saw/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/melee/energy/sword/cyborg/saw/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
 	return FALSE
 
 // The colored energy swords we all know and love.

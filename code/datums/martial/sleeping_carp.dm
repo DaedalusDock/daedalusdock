@@ -238,7 +238,7 @@
 	else
 		return ..()
 
-/obj/item/staff/bostaff/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(!wielded)
+/obj/item/staff/bostaff/can_block_attack(atom/movable/hitby, damage, attack_type, armor_penetration)
+	if(wielded)
 		return ..()
 	return FALSE

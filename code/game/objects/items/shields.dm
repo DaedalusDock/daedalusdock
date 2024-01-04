@@ -27,16 +27,23 @@
 	transparent = TRUE
 	max_integrity = 75
 
-/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
 	if(transparent && (hitby.pass_flags & PASSGLASS))
 		return FALSE
+
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
-		final_block_chance += 30
+		block_mod += 30
 	if(attack_type == LEAP_ATTACK)
-		final_block_chance = 100
+		block_mod += 100
+	return ..()
+
+
+/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type, block_success)
 	. = ..()
-	if(.)
-		on_shield_block(owner, hitby, attack_text, damage, attack_type)
+	if(!.)
+		return
+
+	on_shield_block(owner, hitby, attack_text, damage, attack_type)
 
 /obj/item/shield/riot/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/melee/baton))
@@ -139,7 +146,7 @@
 	. = embedded_flash.attack_self(user)
 	update_appearance()
 
-/obj/item/shield/riot/flash/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/riot/flash/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type)
 	. = ..()
 	if (. && !embedded_flash.burnt_out)
 		embedded_flash.activate()
@@ -197,6 +204,7 @@
 	force = 3
 	throwforce = 3
 	throw_speed = 3
+	block_chance = -INFINITY
 
 	/// Whether the shield is currently extended and protecting the user.
 	var/enabled = FALSE
@@ -218,9 +226,6 @@
 		hitsound_on = hitsound, \
 		clumsy_check = !can_clumsy_use)
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
-
-/obj/item/shield/energy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	return FALSE
 
 /obj/item/shield/energy/IsReflect()
 	return enabled
@@ -266,7 +271,7 @@
 		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
-/obj/item/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/riot/tele/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
 	if(extended)
 		return ..()
 	return FALSE

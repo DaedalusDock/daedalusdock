@@ -171,11 +171,12 @@ DEFINE_INTERACTABLE(/obj/item)
 	///All items with sharpness of SHARP_EDGED or higher will automatically get the butchering component.
 	var/sharpness = NONE
 
-	///How a tool acts when you use it on something, such as wirecutters cutting wires while multitools measure power
+	///How a tool acts when you use it on something, such as wirecutfters cutting wires while multitools measure power
 	var/tool_behaviour = NONE
 	///How fast does the tool work
 	var/toolspeed = 1
 
+	#warn rework?
 	var/block_chance = 0
 	var/hit_reaction_chance = 0 //If you want to have something unrelated to blocking/armour piercing etc. Maybe not needed, but trying to think ahead/allow more freedom
 	///In tiles, how far this weapon can reach; 1 for adjacent, which is default
@@ -592,15 +593,43 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/GetDeconstructableContents()
 	return get_all_contents() - src
 
-// afterattack() and attack() prototypes moved to _onclick/item_attack.dm for consistency
+/// A helper for calling can_block_attack() and hit_reaction() together.
+/obj/item/proc/try_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
+	var/sig_return = SEND_SIGNAL(src, COMSIG_ITEM_CHECK_BLOCK)
+	var/block_result = sig_return & COMPONENT_CHECK_BLOCK_BLOCKED
 
-/obj/item/proc/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(SEND_SIGNAL(src, COMSIG_ITEM_HIT_REACT, owner, hitby, attack_text, final_block_chance, damage, attack_type) & COMPONENT_HIT_REACTION_BLOCK)
-		return TRUE
+	block_result ||= prob(can_block_attack(wielder, hitby, damage, attack_type, armor_penetration))
 
-	if(prob(final_block_chance))
-		owner.visible_message(span_danger("[owner] blocks [attack_text] with [src]!"))
-		return TRUE
+	var/list/reaction_args = args.Copy()
+	if(block_result)
+		reaction_args["block_success"] = TRUE
+	else
+		reaction_args["block_success"] = FALSE
+
+	if(!(sig_return & COMPONENT_CHECK_BLOCK_SKIP_REACTION))
+		hit_reaction(arglist(reaction_args))
+
+	if(block_result)
+		block_message(wielder, attack_text, attack_type)
+
+	return block_result
+
+/// Returns a number to feed into prob() to determine if the attack was blocked.
+/obj/item/proc/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+	var/block_chance_modifier = round(damage / -3)
+	var/final_block_chance = block_chance - (clamp((armor_penetration - src.armor_penetration)/2,0,100)) + block_chance_modifier
+	return final_block_chance
+
+/// Called when the wearer is being hit by an attack while wearing/wielding this item.
+/// Returning TRUE will eat the attack, but this should be done by can_block_attack() instead.
+/obj/item/proc/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK, block_success = TRUE)
+	SEND_SIGNAL(src, COMSIG_ITEM_HIT_REACT, owner, hitby, attack_text, damage, attack_type, block_success)
+
+	return block_success
+
+/// Called by try_block_attack on a successful block
+/obj/item/proc/block_message(mob/living/carbon/human/wielder, attack_text, attack_type)
+	wielder.visible_message(span_danger("[wielder] blocks [attack_text] with [src]!"))
 
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
 	return ITALICS | REDUCE_RANGE

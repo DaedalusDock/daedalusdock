@@ -65,7 +65,7 @@
 /datum/component/shielded/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(lost_wearer))
-	RegisterSignal(parent, COMSIG_ITEM_HIT_REACT, PROC_REF(on_hit_react))
+	RegisterSignal(parent, COMSIG_ITEM_CHECK_BLOCK, PROC_REF(on_check_block))
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(check_recharge_rune))
 	var/atom/shield = parent
 	if(ismob(shield.loc))
@@ -75,7 +75,7 @@
 		set_wearer(holder)
 
 /datum/component/shielded/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ITEM_HIT_REACT, COMSIG_PARENT_ATTACKBY))
+	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED, COMSIG_ITEM_CHECK_BLOCK, COMSIG_PARENT_ATTACKBY))
 	var/atom/shield = parent
 	if(shield.loc == wearer)
 		lost_wearer(src, wearer)
@@ -138,14 +138,14 @@
  * This proc fires when we're hit, and is responsible for checking if we're charged, then deducting one + returning that we're blocking if so.
  * It then runs the callback in [/datum/component/shielded/var/on_hit_effects] which handles the messages/sparks (so the visuals)
  */
-/datum/component/shielded/proc/on_hit_react(datum/source, mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type)
+/datum/component/shielded/proc/on_check_block(datum/source, mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type)
 	SIGNAL_HANDLER
 
 	COOLDOWN_START(src, recently_hit_cd, recharge_start_delay)
 
 	if(current_charges <= 0)
 		return
-	. = COMPONENT_HIT_REACTION_BLOCK
+	. = (COMPONENT_CHECK_BLOCK_SKIP_REACTION|COMPONENT_CHECK_BLOCK_BLOCKED)
 
 	var/charge_loss = 1 // how many charges do we lose
 

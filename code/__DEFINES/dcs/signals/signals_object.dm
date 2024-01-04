@@ -129,7 +129,13 @@
 #define COMSIG_ITEM_ATTACK_ZONE "item_attack_zone"
 ///from base of obj/item/hit_reaction(): (list/args)
 #define COMSIG_ITEM_HIT_REACT "item_hit_react"
-	#define COMPONENT_HIT_REACTION_BLOCK (1<<0)
+
+#define COMSIG_ITEM_CHECK_BLOCK "item_check_block"
+	/// Hit was blocked by the component, continue to hit_reaction
+	#define COMPONENT_CHECK_BLOCK_BLOCKED (1<<0)
+	/// Hit was blocked by the component, do not continue into hit_reaction()
+	#define COMPONENT_CHECK_BLOCK_SKIP_REACTION (1<<1)
+
 ///called on item when microwaved (): (obj/machinery/microwave/M)
 #define COMSIG_ITEM_MICROWAVE_ACT "microwave_act"
 	#define COMPONENT_SUCCESFUL_MICROWAVE (1<<0)

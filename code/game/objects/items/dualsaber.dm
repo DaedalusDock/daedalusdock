@@ -136,10 +136,10 @@
 	else
 		user.stamina.adjust(-25)
 
-/obj/item/dualsaber/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/dualsaber/can_block_attack(atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(wielded)
 		return ..()
-	return 0
+	return FALSE
 
 /obj/item/dualsaber/process()
 	if(!wielded)

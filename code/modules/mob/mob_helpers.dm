@@ -69,7 +69,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 // Emulates targetting a specific body part, and miss chances
 // May return null if missed
 // miss_chance_mod may be negative.
-/proc/get_zone_with_miss_chance(zone, mob/living/carbon/target, miss_chance_mod = 0, ranged_attack)
+/proc/get_zone_with_miss_chance(zone, mob/living/carbon/target, miss_chance_mod = 0, ranged_attack, can_truly_miss = TRUE)
 	zone = deprecise_zone(zone)
 
 	if(!ranged_attack)
@@ -88,7 +88,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 	var/miss_chance = GLOB.bodyzone_miss_chance[zone]
 	miss_chance = max(miss_chance + miss_chance_mod, 0)
 	if(prob(miss_chance))
-		if(ranged_attack || prob(miss_chance)) // Ranged attacks cannot ever fully miss.
+		if(!can_truly_miss || ranged_attack || !prob(miss_chance)) // Ranged attacks cannot ever fully miss.
 			return target.get_random_valid_zone()
 		return null
 	else

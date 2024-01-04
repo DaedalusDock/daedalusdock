@@ -948,29 +948,42 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style, list/params)
 	if(target.check_block())
-		target.visible_message(span_warning("[target] blocks [user]'s grab!"), \
-						span_userdanger("You block [user]'s grab!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
+		target.visible_message(
+			span_warning("[target] blocks [user]'s grab!"),
+			span_userdanger("You block [user]'s grab!"),
+			span_hear("You hear a swoosh!"),
+			COMBAT_MESSAGE_RANGE,
+			user
+		)
 		to_chat(user, span_warning("Your grab at [target] was blocked!"))
 		return FALSE
+
 	if(attacker_style?.grab_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return TRUE
+
 	else
 		user.try_make_grab(target, use_offhand = params?[RIGHT_CLICK])
 		return TRUE
 
 ///This proc handles punching damage.
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	// Pacifists can't harm.
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm [target]!"))
 		return FALSE
+
+	// If blocked, bail.
 	if(target.check_block())
 		target.visible_message(span_warning("[target] blocks [user]'s attack!"), \
 						span_userdanger("You block [user]'s attack!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your attack at [target] was blocked!"))
 		return FALSE
+
+	// If martial arts did something, bail.
 	if(attacker_style?.harm_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return ATTACK_HANDLED
 
+	// Find what bodypart we are attacking with.
 	var/obj/item/organ/brain/brain = user.getorganslot(ORGAN_SLOT_BRAIN)
 	var/obj/item/bodypart/attacking_bodypart
 	if(brain)
@@ -982,44 +995,45 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/atk_verb = attacking_bodypart.unarmed_attack_verb
 	var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
+	// If we're biting them, make sure we can bite, or bail.
 	if(atk_effect == ATTACK_EFFECT_BITE)
 		if(!user.has_mouth())
 			to_chat(user, span_warning("You can't [atk_verb] without a mouth!"))
 			return FALSE
+
 		if(user.is_mouth_covered(mask_only = TRUE))
 			to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
 			return FALSE
 
+	// By this point, we are attempting an attack!!!
 	user.do_attack_animation(target, atk_effect)
 
-	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
-
-	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
-
+	// Find miss chance
 	var/miss_chance = 100
 	if(attacking_bodypart.unarmed_damage_low)
-		if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER)) //kicks never miss (provided your species deals more than 0 damage)
-			miss_chance = 0
-		else
-			miss_chance = user.get_melee_inaccuracy()
+		miss_chance = user.get_melee_inaccuracy() - target.get_melee_inaccuracy()
 
+	// Set damage and find hit bodypart using weighted rng
+	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
+	var/attacking_zone = get_zone_with_miss_chance(user.zone_selected, miss_chance, can_truly_miss = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
+	var/obj/item/bodypart/affecting
+	if(attacking_zone)
+		affecting = target.get_bodypart(attacking_zone)
 
-	if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
+	if(!damage || !affecting)
 		var/rolled = target.body_position == LYING_DOWN && !target.incapacitated()
 		playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
 
 		target.visible_message(
-			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]!"), \
-			span_danger("You avoid [user]'s [atk_verb]!"),
+			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]!"),
+			null,
 			span_hear("You hear a swoosh!"),
 			COMBAT_MESSAGE_RANGE,
-			user
 		)
 		if(rolled)
 			target.setDir(pick(GLOB.cardinals))
 
-		to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
-		log_combat(user, target, "attempted to punch")
+		log_combat(user, target, "attempted to punch (missed)")
 		return FALSE
 
 	var/armor_block = target.run_armor_check(affecting, BLUNT)
@@ -1029,7 +1043,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	user.visible_message(
 		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
 		null,
-		span_hear("You hear a sickening sound of flesh hitting flesh!"),
+		span_hear("You hear a scuffle!"),
 		COMBAT_MESSAGE_RANGE
 	)
 
@@ -1041,6 +1055,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/attack_direction = get_dir(user, target)
 	var/attack_type = attacking_bodypart.attack_type
+
 	if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
 		log_combat(user, target, "kicked")
 		target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)

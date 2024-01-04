@@ -67,12 +67,21 @@
 	update_icon()
 	add_fingerprint(user)
 
-/obj/item/clothing/suit/armor/reactive/hit_reaction(owner, hitby, attack_text, final_block_chance, damage, attack_type)
+/obj/item/clothing/suit/armor/reactive/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
 	if(!active || !prob(hit_reaction_chance))
 		return FALSE
+
 	if(world.time < reactivearmor_cooldown)
-		cooldown_activation(owner)
+		cooldown_activation(wielder)
 		return FALSE
+
+	return ..()
+
+/obj/item/clothing/suit/armor/reactive/hit_reaction(owner, hitby, attack_text, final_block_chance, damage, attack_type)
+	. = ..()
+	if(!.)
+		return
+
 	if(bad_effect)
 		return emp_activation(owner, hitby, attack_text, final_block_chance, damage, attack_type)
 	else

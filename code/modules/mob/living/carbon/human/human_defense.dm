@@ -111,31 +111,30 @@
 	return FALSE
 
 /mob/living/carbon/human/proc/check_shields(atom/AM, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armor_penetration = 0)
-	var/block_chance_modifier = round(damage / -3)
-
 	for(var/obj/item/I in held_items)
 		if(!istype(I, /obj/item/clothing))
-			var/final_block_chance = I.block_chance - (clamp((armor_penetration-I.armor_penetration)/2,0,100)) + block_chance_modifier //So armour piercing blades can still be parried by other blades, for example
-			if(I.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+			if(I.try_block_attack(src, AM, attack_text, damage, attack_type))
 				return TRUE
+
 	if(wear_suit)
-		var/final_block_chance = wear_suit.block_chance - (clamp((armor_penetration-wear_suit.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(wear_suit.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(wear_suit.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(w_uniform)
-		var/final_block_chance = w_uniform.block_chance - (clamp((armor_penetration-w_uniform.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(w_uniform.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(w_uniform.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(wear_neck)
-		var/final_block_chance = wear_neck.block_chance - (clamp((armor_penetration-wear_neck.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(wear_neck.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(wear_neck.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(head)
-		var/final_block_chance = head.block_chance - (clamp((armor_penetration-head.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(head.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(head.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(SEND_SIGNAL(src, COMSIG_HUMAN_CHECK_SHIELDS, AM, damage, attack_text, attack_type, armor_penetration) & SHIELD_BLOCK)
 		return TRUE
+
 	return FALSE
 
 /mob/living/carbon/human/proc/check_block()
@@ -177,8 +176,8 @@
 	if(user == src)
 		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //stabbing yourself always hits the right target
 	else
-		var/accuracy_penalty = user.get_melee_inaccuracy()
-		var/hit_zone = HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty)
+		var/accuracy_penalty = user.get_melee_inaccuracy() - get_melee_inaccuracy()
+		var/hit_zone = get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty, can_truly_miss = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
 		if(!hit_zone)
 			visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
 			return MOB_ATTACKEDBY_MISS

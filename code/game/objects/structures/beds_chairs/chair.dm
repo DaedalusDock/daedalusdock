@@ -364,13 +364,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	qdel(src)
 
 
+/obj/item/chair/block_message(mob/living/carbon/human/wielder, attack_text, attack_type)
+	if(attack_type == UNARMED_ATTACK)
+		wielder.visible_message(span_danger("[wielder] fends off [attack_text] with [src]!"))
+	else
+		return ..()
 
-
-/obj/item/chair/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(attack_type == UNARMED_ATTACK && prob(hit_reaction_chance))
-		owner.visible_message(span_danger("[owner] fends off [attack_text] with [src]!"))
-		return TRUE
-	return FALSE
 
 /obj/item/chair/afterattack(atom/target, mob/living/carbon/user, proximity)
 	. = ..()

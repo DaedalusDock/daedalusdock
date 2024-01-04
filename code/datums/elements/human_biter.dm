@@ -15,7 +15,7 @@
 /datum/element/human_biter/proc/try_bite(mob/living/carbon/human/source, atom/target, proximity_flag, modifiers)
 	SIGNAL_HANDLER
 
-	if(!proximity_flag || !source.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK) || !isliving(target))
+	if(!source.Adjacent(target) || !source.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK) || !isliving(target))
 		return NONE
 
 	// If we can attack like normal, just go ahead and do that

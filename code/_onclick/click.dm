@@ -81,23 +81,28 @@
 		if(LAZYACCESS(modifiers, MIDDLE_CLICK))
 			ShiftMiddleClickOn(A)
 			return
+
 		if(LAZYACCESS(modifiers, CTRL_CLICK))
 			CtrlShiftClickOn(A)
 			return
+
 		ShiftClickOn(A)
 		return
+
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK))
 		if(LAZYACCESS(modifiers, CTRL_CLICK))
 			CtrlMiddleClickOn(A)
 		else
 			MiddleClickOn(A, params)
 		return
+
 	if(LAZYACCESS(modifiers, ALT_CLICK)) // alt and alt-gr (rightalt)
 		if(LAZYACCESS(modifiers, RIGHT_CLICK))
 			alt_click_on_secondary(A)
 		else
 			AltClickOn(A)
 		return
+
 	if(LAZYACCESS(modifiers, CTRL_CLICK))
 		CtrlClickOn(A, modifiers)
 		return

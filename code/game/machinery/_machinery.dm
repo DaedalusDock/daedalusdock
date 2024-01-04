@@ -605,15 +605,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	if(.)
 		return
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK) && inserted_disk) //grumble grumble click code grumble grumble
-		var/obj/item/disk/disk = eject_disk(user)
-		if(disk)
-			user.visible_message(
-				span_notice("You remove [disk] from [src]."),
-				span_notice("A floppy disk ejects from [src].")
-			)
-		return TRUE
-
 	if(iscarbon(user))
 		var/brainloss = user.getBrainLoss()
 		if(brainloss > 120)
@@ -706,6 +697,16 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	. = ..()
 	if(.)
 		return
+
+	if(inserted_disk) //grumble grumble click code grumble grumble
+		var/obj/item/disk/disk = eject_disk(user)
+		if(disk)
+			user.visible_message(
+				span_notice("You remove [disk] from [src]."),
+				span_notice("A floppy disk ejects from [src].")
+			)
+		. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	update_last_used(user)
 
 /obj/machinery/tool_act(mob/living/user, obj/item/tool, tool_type)

@@ -19,8 +19,8 @@
 		return NONE
 
 	// If we can attack like normal, just go ahead and do that
-	if(!source.can_unarmed_attack())
-		return COMPONENT_SKIP_ATTACK_STEP
+	if(source.can_unarmed_attack())
+		return NONE
 
 	if(target.attack_paw(source, modifiers))
 		return COMPONENT_CANCEL_ATTACK_CHAIN // bite successful!

@@ -147,7 +147,7 @@
 		return TRUE
 	return FALSE
 
-/obj/item/clothing/suit/space/space_ninja/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/clothing/suit/space/space_ninja/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
 	. = ..()
 	if(!.)
 		return

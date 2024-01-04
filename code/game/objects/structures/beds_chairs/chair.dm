@@ -312,7 +312,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	throwforce = 10
 	throw_range = 3
 	hitsound = 'sound/items/trayhit1.ogg'
-	hit_reaction_chance = 50
 	custom_materials = list(/datum/material/iron = 2000)
 	var/break_chance = 5 //Likely hood of smashing the chair.
 	var/obj/structure/chair/origin_type = /obj/structure/chair
@@ -363,12 +362,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 		new /obj/item/stack/rods(get_turf(loc), 2)
 	qdel(src)
 
+/obj/item/chair/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	. = ..()
+	if(prob(50) && ((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
+		return TRUE
 
-/obj/item/chair/block_message(mob/living/carbon/human/wielder, attack_text, attack_type)
-	if(attack_type == UNARMED_ATTACK)
-		wielder.visible_message(span_danger("[wielder] fends off [attack_text] with [src]!"))
-	else
-		return ..()
+/obj/item/chair/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		if(((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
+			wielder.visible_message(span_danger("[wielder] fends off [attack_text] with [src]!"))
+			return ..(do_sound = FALSE)
+	return ..()
 
 
 /obj/item/chair/afterattack(atom/target, mob/living/carbon/user, proximity)

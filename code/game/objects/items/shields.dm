@@ -2,6 +2,7 @@
 	name = "shield"
 	icon = 'icons/obj/shields.dmi'
 	block_chance = 50
+	block_sound = 'sound/weapons/block/block_shield.ogg'
 	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
 	var/transparent = FALSE // makes beam projectiles pass through the shield
 
@@ -27,16 +28,15 @@
 	transparent = TRUE
 	max_integrity = 75
 
-/obj/item/shield/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+
+/obj/item/shield/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(transparent && (hitby.pass_flags & PASSGLASS))
 		return FALSE
-
+	. = ..()
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
-		block_mod += 30
+		. += 30
 	if(attack_type == LEAP_ATTACK)
-		block_mod += 100
-	return ..()
-
+		. += 100
 
 /obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type, block_success)
 	. = ..()
@@ -205,6 +205,7 @@
 	throwforce = 3
 	throw_speed = 3
 	block_chance = -INFINITY
+	block_sound = 'sound/weapons/block/block_energy.ogg' //reflect
 
 	/// Whether the shield is currently extended and protecting the user.
 	var/enabled = FALSE
@@ -271,7 +272,7 @@
 		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
-/obj/item/shield/riot/tele/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/shield/riot/tele/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(extended)
 		return ..()
 	return FALSE

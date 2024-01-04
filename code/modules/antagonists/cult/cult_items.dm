@@ -38,22 +38,17 @@ Striking a noncultist, however, will tear their flesh."}
 
 	AddComponent(/datum/component/cult_ritual_item, span_cult(examine_text))
 
-/obj/item/melee/cultblade/dagger/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/melee/cultblade/dagger/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(IS_CULTIST(wielder) && attack_type != PROJECTILE_ATTACK)
 		return ..()
 
 	return FALSE
 
-/obj/item/melee/cultblade/dagger/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	. = ..()
-	if(!.)
-		return
-
-	new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
-	playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
-
-/obj/item/melee/cultblade/dagger/block_message(mob/living/carbon/human/wielder, attack_text)
-	wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
+/obj/item/melee/cultblade/dagger/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
+		return ..(do_message = FALSE)
+	return ..()
 
 /obj/item/melee/cultblade
 	name = "eldritch longsword"
@@ -71,7 +66,11 @@ Striking a noncultist, however, will tear their flesh."}
 	w_class = WEIGHT_CLASS_BULKY
 	force = 30 // whoever balanced this got beat in the head by a bible too many times good lord
 	throwforce = 10
+
 	block_chance = 50 // now it's officially a cult esword
+	block_sound = 'sound/weapons/block/parry_metal.ogg'
+	block_effect =/obj/effect/temp_visual/cult/sparks
+
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "rends")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
@@ -80,22 +79,18 @@ Striking a noncultist, however, will tear their flesh."}
 	. = ..()
 	AddComponent(/datum/component/butchering, 40, 100)
 
-/obj/item/melee/cultblade/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/melee/cultblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(IS_CULTIST(wielder))
 		return ..()
 
 	return FALSE
 
-/obj/item/melee/cultblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	. = ..()
-	if(!.)
-		return
+/obj/item/melee/cultblade/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
+		return ..(do_message = FALSE)
 
-	new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
-	playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
-
-/obj/item/melee/cultblade/block_message(mob/living/carbon/human/wielder, attack_text)
-	wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
+	return ..()
 
 /obj/item/melee/cultblade/attack(mob/living/target, mob/living/carbon/human/user)
 	if(!IS_CULTIST(user))
@@ -207,22 +202,16 @@ Striking a noncultist, however, will tear their flesh."}
 
 /obj/item/cult_bastard/IsReflect()
 	if(spinning)
-		playsound(src, pick('sound/weapons/effects/ric1.ogg', 'sound/weapons/effects/ric2.ogg', 'sound/weapons/effects/ric3.ogg', 'sound/weapons/effects/ric4.ogg', 'sound/weapons/effects/ric5.ogg'), 100, TRUE)
 		return TRUE
 	else
-		..()
+		return ..()
 
-/obj/item/cult_bastard/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(prob(final_block_chance))
-		if(attack_type == PROJECTILE_ATTACK)
-			owner.visible_message(span_danger("[owner] deflects [attack_text] with [src]!"))
-			playsound(src, pick('sound/weapons/effects/ric1.ogg', 'sound/weapons/effects/ric2.ogg', 'sound/weapons/effects/ric3.ogg', 'sound/weapons/effects/ric4.ogg', 'sound/weapons/effects/ric5.ogg'), 100, TRUE)
-			return TRUE
-		else
-			playsound(src, 'sound/weapons/parry.ogg', 75, TRUE)
-			owner.visible_message(span_danger("[owner] parries [attack_text] with [src]!"))
-			return TRUE
-	return FALSE
+/obj/item/cult_bastard/play_block_sound(mob/living/carbon/human/wielder, attack_type)
+	if(attack_type == PROJECTILE_ATTACK)
+		playsound(src, pick('sound/weapons/effects/ric1.ogg', 'sound/weapons/effects/ric2.ogg', 'sound/weapons/effects/ric3.ogg', 'sound/weapons/effects/ric4.ogg', 'sound/weapons/effects/ric5.ogg'), 100, TRUE)
+		return
+
+	return ..()
 
 /obj/item/cult_bastard/afterattack(atom/target, mob/user, proximity, click_parameters)
 	. = ..()
@@ -790,26 +779,24 @@ Striking a noncultist, however, will tear their flesh."}
 			playsound(T, 'sound/effects/glassbr3.ogg', 100)
 	qdel(src)
 
-/obj/item/melee/cultblade/halberd/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/melee/cultblade/halberd/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(!IS_CULTIST(wielder))
 		return FALSE
 	. = ..()
 	if(wielded)
 		. *= 2
 
-/obj/item/melee/cultblade/halberd/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	. = ..()
-	if(!.)
-		return
-
+/obj/item/melee/cultblade/halberd/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 	if(attack_type == PROJECTILE_ATTACK)
-		owner.visible_message(span_danger("[owner] deflects [attack_text] with [src]!"))
-		playsound(get_turf(owner), pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, TRUE)
-		new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
-	else
-		playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
-		owner.visible_message(span_danger("[owner] parries [attack_text] with [src]!"))
-		new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
+		wielder.visible_message(span_danger("[wielder] deflects [attack_text] with [src]!"))
+		return ..(do_message = FALSE)
+	return ..()
+
+/obj/item/melee/cultblade/halberd/play_block_sound(mob/living/carbon/wielder, attack_type)
+	if(attack_type == PROJECTILE_ATTACK)
+		playsound(wielder, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, TRUE)
+		return
+	return ..()
 
 /datum/action/innate/cult/halberd
 	name = "Bloody Bond"
@@ -1041,9 +1028,10 @@ Striking a noncultist, however, will tear their flesh."}
 	attack_verb_continuous = list("bumps", "prods")
 	attack_verb_simple = list("bump", "prod")
 	hitsound = 'sound/weapons/smash.ogg'
+	block_sound = 'sound/weapons/block/parry_metal.ogg'
 	var/illusions = 2
 
-/obj/item/shield/mirror/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/mirror/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
 	. = ..()
 	if(!.)
 		return
@@ -1064,7 +1052,6 @@ Striking a noncultist, however, will tear their flesh."}
 			if(P.reflectable & REFLECT_NORMAL)
 				return FALSE //To avoid reflection chance double-dipping with block chance
 
-		playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
 		if(illusions > 0)
 			illusions--
 			addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/shield/mirror, readd)), 450)

@@ -42,7 +42,7 @@
 	force = old_force
 	throwforce = old_throwforce
 
-/obj/item/ceremonial_blade/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/ceremonial_blade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type != MELEE_ATTACK || !ishuman(hitby.loc))
 		return ..()
 

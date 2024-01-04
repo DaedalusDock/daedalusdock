@@ -1011,11 +1011,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Find miss chance
 	var/miss_chance = 100
 	if(attacking_bodypart.unarmed_damage_low)
-		miss_chance = user.get_melee_inaccuracy() - target.get_melee_inaccuracy()
+		miss_chance -= user.get_melee_inaccuracy() - target.get_melee_inaccuracy()
 
 	// Set damage and find hit bodypart using weighted rng
 	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
-	var/attacking_zone = get_zone_with_miss_chance(user.zone_selected, miss_chance, can_truly_miss = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
+	var/attacking_zone = get_zone_with_miss_chance(user.zone_selected, target, miss_chance, can_truly_miss = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
 	var/obj/item/bodypart/affecting
 	if(attacking_zone)
 		affecting = target.get_bodypart(attacking_zone)
@@ -1041,7 +1041,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
 	user.visible_message(
-		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
+		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b> in the [affecting.plaintext_zone]!"),
 		null,
 		span_hear("You hear a scuffle!"),
 		COMBAT_MESSAGE_RANGE
@@ -1117,6 +1117,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(.)
 			M.animate_interact(H, INTERACT_DISARM)
 		return // dont attack after
+
 	if(M.combat_mode)
 		. = harm(M, H, attacker_style)
 		if(. & ATTACK_CONTINUE)

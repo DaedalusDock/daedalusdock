@@ -200,11 +200,13 @@
 		var/mob/living/silicon/robot/borg = M
 		if(borg.combat_mode && borg.stat != DEAD)
 			return TRUE
+
 	//anti-riot equipment is also anti-push
 	for(var/obj/item/I in M.held_items)
 		if(!istype(M, /obj/item/clothing))
-			if(prob(I.block_chance*2))
-				return
+			#warn test this
+			if(I.try_block_attack(M, src, "the push", 0, LEAP_ATTACK)) //close enough?
+				return TRUE
 
 /mob/living/get_photo_description(obj/item/camera/camera)
 	var/list/mob_details = list()
@@ -2178,6 +2180,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/get_melee_inaccuracy()
 	. = 0
+	if(!combat_mode) // If you aren't trying to fight, it's much easier to hit you. Suckerpunch!
+		. += 50
 	if(incapacitated())
 		. += 100
 	if(get_timed_status_effect_duration(/datum/status_effect/confusion))

@@ -73,9 +73,6 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 	zone = deprecise_zone(zone)
 
 	if(!ranged_attack)
-		// target isn't trying to fight
-		if(!target.combat_mode)
-			return zone
 		// you cannot miss if your target is prone or restrained
 		if(target.buckled || target.body_position == LYING_DOWN)
 			return zone

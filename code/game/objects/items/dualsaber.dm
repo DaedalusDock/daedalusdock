@@ -23,6 +23,7 @@
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	block_chance = 75
+	block_sound = 'sound/weapons/block/block_energy.ogg'
 	max_integrity = 200
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
@@ -136,7 +137,7 @@
 	else
 		user.stamina.adjust(-25)
 
-/obj/item/dualsaber/can_block_attack(atom/movable/hitby, damage, attack_type, armor_penetration)
+/obj/item/dualsaber/get_block_chance(atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(wielded)
 		return ..()
 	return FALSE

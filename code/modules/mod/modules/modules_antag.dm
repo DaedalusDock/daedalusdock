@@ -122,6 +122,7 @@
 	qdel(shield)
 	UnregisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS)
 
+#warn test this
 /obj/item/mod/module/energy_shield/proc/shield_reaction(mob/living/carbon/human/owner, atom/movable/hitby, damage = 0, attack_text = "the attack", attack_type = MELEE_ATTACK, armor_penetration = 0)
 	if(SEND_SIGNAL(mod, COMSIG_ITEM_CHECK_BLOCK, owner, hitby, attack_text, 0, damage, attack_type) & COMPONENT_CHECK_BLOCK_BLOCKED)
 		drain_power(use_power_cost)

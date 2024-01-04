@@ -64,6 +64,7 @@
 	throwforce = 10
 	w_class = WEIGHT_CLASS_BULKY
 	block_chance = 50
+	block_sound = 'sound/weapons/block/parry_metal.ogg'
 	armor_penetration = 75
 	sharpness = SHARP_EDGED
 	attack_verb_continuous = list("slashes", "cuts")
@@ -75,7 +76,7 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 30, 95, 5) //fast and effective, but as a sword, it might damage the results.
 
-/obj/item/melee/sabre/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/melee/sabre/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type == PROJECTILE_ATTACK)
 		return FALSE //Don't bring a sword to a gunfight
 	return ..()

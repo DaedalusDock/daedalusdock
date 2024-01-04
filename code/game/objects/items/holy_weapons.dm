@@ -215,6 +215,7 @@
 	force = 5
 	slot_flags = ITEM_SLOT_BACK
 	block_chance = 50
+	block_sound = 'sound/weapons/block/parry.ogg'
 	menu_description = "A red staff which provides a medium chance of blocking incoming attacks via a protective red aura around its user, but deals very low amount of damage. Can be worn only on the back."
 	/// The icon which appears over the mob holding the item
 	var/shield_icon = "shield-red"
@@ -248,7 +249,7 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	menu_description = "A sharp claymore which provides a low chance of blocking incoming melee attacks. Can be worn on the back or belt."
 
-/obj/item/nullrod/claymore/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/nullrod/claymore/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type == PROJECTILE_ATTACK)
 		return FALSE
 	return ..()
@@ -322,6 +323,7 @@
 	worn_icon_state = "swordblue"
 	slot_flags = ITEM_SLOT_BELT
 	hitsound = 'sound/weapons/blade1.ogg'
+	block_sound = 'sound/weapons/block/block_energy.ogg'
 	menu_description = "A sharp energy sword which provides a low chance of blocking incoming melee attacks. Can be worn on the belt."
 
 /obj/item/nullrod/claymore/saber/red
@@ -602,6 +604,7 @@
 	desc = "A long, tall staff made of polished wood. Traditionally used in ancient old-Earth martial arts, it is now used to harass the clown."
 	force = 15
 	block_chance = 40
+	block_sound = 'sound/weapons/block/parry.ogg'
 	slot_flags = ITEM_SLOT_BACK
 	w_class = WEIGHT_CLASS_BULKY
 	sharpness = NONE

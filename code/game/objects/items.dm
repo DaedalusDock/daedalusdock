@@ -77,10 +77,13 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/mob_throw_hit_sound
 	///Sound used when equipping the item into a valid slot
 	var/equip_sound
-	///Sound uses when picking the item up (into your hands)
+	///Sound used when picking the item up (into your hands)
 	var/pickup_sound
-	///Sound uses when dropping the item, or when its thrown.
+	///Sound used when dropping the item, or when its thrown.
 	var/drop_sound
+	///Sound used when successfully blocking an attack.
+	var/block_sound
+
 	///Whether or not we use stealthy audio levels for this item's attack sounds
 	var/stealthy_audio = FALSE
 
@@ -176,9 +179,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	///How fast does the tool work
 	var/toolspeed = 1
 
-	#warn rework?
-	var/block_chance = 0
-	var/hit_reaction_chance = 0 //If you want to have something unrelated to blocking/armour piercing etc. Maybe not needed, but trying to think ahead/allow more freedom
 	///In tiles, how far this weapon can reach; 1 for adjacent, which is default
 	var/reach = 1
 
@@ -226,6 +226,10 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	var/combat_click_delay = CLICK_CD_MELEE
 
+	/// The baseline chance to block **ANY** attack, projectiles included
+	var/block_chance = 0
+	/// The type of effect to create on a successful block
+	var/obj/effect/temp_visual/block_effect = /obj/effect/temp_visual/block
 
 /obj/item/Initialize(mapload)
 
@@ -598,7 +602,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/sig_return = SEND_SIGNAL(src, COMSIG_ITEM_CHECK_BLOCK)
 	var/block_result = sig_return & COMPONENT_CHECK_BLOCK_BLOCKED
 
-	block_result ||= prob(can_block_attack(wielder, hitby, damage, attack_type, armor_penetration))
+	block_result ||= prob(get_block_chance(wielder, hitby, damage, attack_type, armor_penetration))
 
 	var/list/reaction_args = args.Copy()
 	if(block_result)
@@ -607,15 +611,16 @@ DEFINE_INTERACTABLE(/obj/item)
 		reaction_args["block_success"] = FALSE
 
 	if(!(sig_return & COMPONENT_CHECK_BLOCK_SKIP_REACTION))
-		hit_reaction(arglist(reaction_args))
+		if(hit_reaction(arglist(reaction_args)))
+			block_result = TRUE
 
 	if(block_result)
-		block_message(wielder, attack_text, attack_type)
+		block_feedback(wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 
 	return block_result
 
 /// Returns a number to feed into prob() to determine if the attack was blocked.
-/obj/item/proc/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration, block_mod)
+/obj/item/proc/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	var/block_chance_modifier = round(damage / -3)
 	var/final_block_chance = block_chance - (clamp((armor_penetration - src.armor_penetration)/2,0,100)) + block_chance_modifier
 	return final_block_chance
@@ -628,8 +633,23 @@ DEFINE_INTERACTABLE(/obj/item)
 	return block_success
 
 /// Called by try_block_attack on a successful block
-/obj/item/proc/block_message(mob/living/carbon/human/wielder, attack_text, attack_type)
-	wielder.visible_message(span_danger("[wielder] blocks [attack_text] with [src]!"))
+/obj/item/proc/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		wielder.visible_message(span_danger("[wielder] blocks [attack_text] with [src]!"))
+
+	if(do_sound && block_sound)
+		play_block_sound(wielder, attack_type)
+
+	if(block_effect)
+		var/obj/effect/effect = new block_effect()
+		wielder.vis_contents += effect
+
+/// Plays the block sound effect
+/obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)
+	var/block_sound = src.block_sound
+	if(islist(block_sound))
+		block_sound = pick(block_sound)
+	playsound(wielder, block_sound, 70, TRUE)
 
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
 	return ITALICS | REDUCE_RANGE

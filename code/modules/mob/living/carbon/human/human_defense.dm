@@ -65,14 +65,19 @@
 
 	if(!(P.original == src && P.firer == src)) //can't block or reflect when shooting yourself
 		if(P.reflectable & REFLECT_NORMAL)
-			if(check_reflect(def_zone)) // Checks if you've passed a reflection% check
-				visible_message(span_danger("The [P.name] gets reflected by [src]!"), \
-								span_userdanger("The [P.name] gets reflected by [src]!"))
+			var/obj/item/reflected_with = check_reflect(def_zone)
+			if(reflected_with) // Checks if you've passed a reflection% check
+				visible_message(
+					span_danger("[src] reflects [P] with [reflected_with]!"),
+					span_userdanger("You reflect [P] with [reflected_with]!")
+				)
+				reflected_with.play_block_sound(src, PROJECTILE_ATTACK)
 				// Find a turf near or on the original location to bounce to
 				if(!isturf(loc)) //Open canopy mech (ripley) check. if we're inside something and still got hit
 					P.force_hit = TRUE //The thing we're in passed the bullet to us. Pass it back, and tell it to take the damage.
 					loc.bullet_act(P, def_zone, piercing_hit)
 					return BULLET_ACT_HIT
+
 				if(P.starting)
 					var/new_x = P.starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
 					var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
@@ -101,13 +106,13 @@
 /mob/living/carbon/human/proc/check_reflect(def_zone)
 	if(wear_suit)
 		if(wear_suit.IsReflect(def_zone))
-			return TRUE
+			return wear_suit
 	if(head)
 		if(head.IsReflect(def_zone))
-			return TRUE
+			return head
 	for(var/obj/item/I in held_items)
 		if(I.IsReflect(def_zone))
-			return TRUE
+			return I
 	return FALSE
 
 /mob/living/carbon/human/proc/check_shields(atom/AM, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armor_penetration = 0)

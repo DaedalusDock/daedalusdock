@@ -34,7 +34,7 @@
 
 		perform_eyestab(source, target, user)
 
-		return COMPONENT_SKIP_ATTACK
+		return COMPONENT_SKIP_ATTACK_STEP
 
 /datum/element/eyestab/proc/perform_eyestab(obj/item/item, mob/living/target, mob/living/user)
 	var/obj/item/bodypart/target_limb = target.get_bodypart(BODY_ZONE_HEAD)

@@ -247,8 +247,10 @@
 		if (user != src)
 			user.disarm(src)
 			return TRUE
+
 	if (!user.combat_mode)
 		return FALSE
+
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to hurt anyone!"))
 		return FALSE
@@ -256,17 +258,30 @@
 	if(user.is_muzzled() || user.is_mouth_covered(FALSE, TRUE))
 		to_chat(user, span_warning("You can't bite with your mouth covered!"))
 		return FALSE
+
 	user.do_attack_animation(src, ATTACK_EFFECT_BITE)
-	if (prob(75))
+
+	if (HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || prob(75))
 		log_combat(user, src, "attacked")
 		playsound(loc, 'sound/weapons/bite.ogg', 50, TRUE, -1)
-		visible_message(span_danger("[user.name] bites [src]!"), \
-						span_userdanger("[user.name] bites you!"), span_hear("You hear a chomp!"), COMBAT_MESSAGE_RANGE, user)
+		visible_message(
+			span_danger("[user.name] bites [src]!"),
+			span_userdanger("[user.name] bites you!"),
+			span_hear("You hear a chomp!"),
+			COMBAT_MESSAGE_RANGE,
+			user
+		)
 		to_chat(user, span_danger("You bite [src]!"))
 		return TRUE
+
 	else
-		visible_message(span_danger("[user.name]'s bite misses [src]!"), \
-						span_danger("You avoid [user.name]'s bite!"), span_hear("You hear the sound of jaws snapping shut!"), COMBAT_MESSAGE_RANGE, user)
+		visible_message(
+			span_danger("[user.name]'s bite misses [src]!"),
+			span_danger("You avoid [user.name]'s bite!"),
+			span_hear("You hear the sound of jaws snapping shut!"),
+			COMBAT_MESSAGE_RANGE,
+			user
+		)
 		to_chat(user, span_warning("Your bite misses [src]!"))
 
 	return FALSE

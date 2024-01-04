@@ -178,7 +178,7 @@
 	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, M, user, params)
 	if(signal_return & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
-	if(signal_return & COMPONENT_SKIP_ATTACK)
+	if(signal_return & COMPONENT_SKIP_ATTACK_STEP)
 		return
 
 	if(!user.combat_mode)

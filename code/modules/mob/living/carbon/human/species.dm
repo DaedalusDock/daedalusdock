@@ -1035,7 +1035,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	target.lastattacker = user.real_name
 	target.lastattackerckey = user.ckey
-	user.dna.species.spec_unarmedattacked(user, target)
 
 	if(user.limb_destroyer)
 		target.dismembering_strike(user, affecting.body_zone)
@@ -1055,9 +1054,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		. |= ATTACK_CONSUME_STAMINA
 
 	return ATTACK_CONTINUE | .
-
-/datum/species/proc/spec_unarmedattacked(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	return
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	if(target.check_block())
@@ -1607,10 +1603,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/obj/item/organ/wings/functional/wings = new(null, wings_icon, H.physique)
 	wings.Insert(H)
-
-///Species override for unarmed attacks because the attack_hand proc was made by a mouth-breathing troglodyte on a tricycle. Also to whoever thought it would be a good idea to make it so the original spec_unarmedattack was not actually linked to unarmed attack needs to be checked by a doctor because they clearly have a vast empty space in their head.
-/datum/species/proc/spec_unarmedattack(mob/living/carbon/human/user, atom/target, modifiers)
-	return FALSE
 
 /// Returns a list of strings representing features this species has.
 /// Used by the preferences UI to know what buttons to show.

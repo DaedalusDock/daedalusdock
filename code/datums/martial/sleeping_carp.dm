@@ -33,7 +33,7 @@
 	D.visible_message(span_danger("[A] [atk_verb]s [D]!"), \
 					span_userdanger("[A] [atk_verb]s you!"), null, null, A)
 	to_chat(A, span_danger("You [atk_verb] [D]!"))
-	playsound(get_turf(D), 'sound/weapons/punch1.ogg', 25, TRUE, -1)
+	playsound(get_turf(D), SFX_PUNCH, 25, TRUE, -1)
 	log_combat(A, D, "strong punched (Sleeping Carp)")
 	D.apply_damage(20, A.get_attack_type(), affecting)
 	return
@@ -87,7 +87,7 @@
 					span_userdanger("[A] [atk_verb]s you!"), null, null, A)
 	to_chat(A, span_danger("You [atk_verb] [D]!"))
 	D.apply_damage(rand(10,15), BRUTE, affecting)
-	playsound(get_turf(D), 'sound/weapons/punch1.ogg', 25, TRUE, -1)
+	playsound(get_turf(D), SFX_PUNCH, 25, TRUE, -1)
 	log_combat(A, D, "punched (Sleeping Carp)")
 	return TRUE
 

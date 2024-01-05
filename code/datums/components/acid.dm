@@ -186,7 +186,7 @@
 		return NONE
 
 	var/obj/item/bodypart/affecting = user.get_bodypart("[(user.active_hand_index % 2 == 0) ? "r" : "l" ]_arm")
-	if(!affecting?.receive_damage(0, 5))
+	if(!affecting?.receive_damage(0, 5, modifiers = NONE))
 		return NONE
 
 	to_chat(user, span_warning("The acid on \the [parent_atom] burns your hand!"))

@@ -188,7 +188,7 @@
 
 	if(harmful && prob(chance))
 		var/damage = weapon.w_class * jostle_pain_mult
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage)
+		limb.receive_damage(brute=(1-pain_stam_pct) * damage, modifiers = DAMAGE_CAN_JOSTLE_BONES)
 		limb_owner.stamina.adjust(-(pain_stam_pct * damage))
 		var/msg = pick( \
 			"A spike of pain jolts your [limb.plaintext_zone] as you bump [weapon] inside.",\
@@ -203,7 +203,7 @@
 	var/obj/item/bodypart/limb = parent
 	if(harmful)
 		var/damage = weapon.w_class * remove_pain_mult
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage)
+		limb.receive_damage(brute=(1-pain_stam_pct) * damage, modifiers = DAMAGE_CAN_JOSTLE_BONES)
 		if(limb_owner)
 			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
 

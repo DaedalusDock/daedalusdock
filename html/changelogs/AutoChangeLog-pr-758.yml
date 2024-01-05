@@ -1,8 +1,0 @@
-author: MrMelbert, Kapu1178
-delete-after: true
-changes:
-  - refactor: Refactored unarmed attacking mechanisms, this means dis-coordinated
-      humans will now bite people like monkeys (like how coordinated monkeys punch
-      people like humans?)
-  - refactor: Dis-coordinated humans smashing up machines now use their hands, rather
-      than their paws

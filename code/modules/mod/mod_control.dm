@@ -154,27 +154,14 @@
 		uninstall(module, deleting = TRUE)
 	for(var/obj/item/part as anything in mod_parts)
 		overslotting_parts -= part
-	var/atom/deleting_atom
-	if(!QDELETED(helmet))
-		deleting_atom = helmet
-		helmet = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
-	if(!QDELETED(chestplate))
-		deleting_atom = chestplate
-		chestplate = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
-	if(!QDELETED(gauntlets))
-		deleting_atom = gauntlets
-		gauntlets = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
-	if(!QDELETED(boots))
-		deleting_atom = boots
-		boots = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
+	mod_parts -= helmet
+	QDEL_NULL(helmet)
+	mod_parts -= chestplate
+	QDEL_NULL(chestplate)
+	mod_parts -= gauntlets
+	QDEL_NULL(gauntlets)
+	mod_parts -= boots
+	QDEL_NULL(boots)
 	if(core)
 		QDEL_NULL(core)
 	QDEL_NULL(wires)

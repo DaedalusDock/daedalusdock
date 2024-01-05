@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Mobs now jiggle when attacked. Jiggle jiggle.
+  - rscadd: Increased brutality of combat.
+  - soundadd: Added new punch sound effects.

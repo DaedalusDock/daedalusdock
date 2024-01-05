@@ -67,3 +67,43 @@
 		))
 
 	return to_add
+
+/datum/species/human/get_agony_sound(mob/living/carbon/human)
+	if(human.gender == MALE)
+		return pick(
+			'sound/voice/human/agony/male_scream_pain1.ogg',
+			'sound/voice/human/agony/male_scream_pain2.ogg',
+			'sound/voice/human/agony/male_scream_pain3.ogg',
+		)
+
+	return pick(
+		'sound/voice/human/agony/fem_scream_pain1.ogg',
+		'sound/voice/human/agony/fem_scream_pain2.ogg',
+		'sound/voice/human/agony/fem_scream_pain3.ogg',
+		'sound/voice/human/agony/fem_scream_pain4.ogg',
+		'sound/voice/human/agony/fem_scream_pain5.ogg',
+		'sound/voice/human/agony/fem_scream_pain6.ogg',
+		'sound/voice/human/agony/fem_scream_pain7.ogg',
+		'sound/voice/human/agony/fem_scream_pain8.ogg',
+	)
+
+/datum/species/human/get_pain_sound(mob/living/carbon/human)
+	if(human.gender == MALE)
+		return pick(
+			'sound/voice/human/wounded/male_moan_1.ogg',
+			'sound/voice/human/wounded/male_moan_2.ogg',
+			'sound/voice/human/wounded/male_moan_3.ogg',
+			'sound/voice/human/wounded/male_moan_4.ogg',
+			'sound/voice/human/wounded/male_moan_5.ogg',
+		)
+
+	return pick(
+		'sound/voice/human/wounded/female_moan_wounded1.ogg',
+		'sound/voice/human/wounded/female_moan_wounded2.ogg',
+		'sound/voice/human/wounded/female_moan_wounded3.ogg',
+		'sound/voice/human/wounded/female_moan_wounded4.ogg',
+		'sound/voice/human/wounded/female_moan_wounded5.ogg',
+		'sound/voice/human/wounded/female_moan_wounded6.ogg',
+		'sound/voice/human/wounded/female_moan_wounded7.ogg',
+		'sound/voice/human/wounded/female_moan_wounded8.ogg',
+	)

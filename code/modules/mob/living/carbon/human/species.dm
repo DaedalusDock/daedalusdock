@@ -239,18 +239,15 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/pain_emotes = list(
 		list(
 			"grunt" = 1,
-			"groan" = 1,
+			"moan" = 1,
 		) = 10,
 
 		list(
-			"grunt" = 1,
-			"groan" = 1,
+			"pain" = 1,
 		) = 40,
 
 		list(
-			"scream" = 1,
-			"whimper" = 1,
-			"cry" = 1,
+			"agony" = 1,
 		) = 70,
 	)
 
@@ -1009,7 +1006,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	user.do_attack_animation(target, atk_effect)
 
 	// Find miss chance
-	var/miss_chance = 100
+	var/miss_chance = 0
 	if(attacking_bodypart.unarmed_damage_low)
 		miss_chance -= user.get_melee_inaccuracy() - target.get_melee_inaccuracy()
 
@@ -1667,6 +1664,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 	return
+
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
 /datum/species/proc/prepare_human_for_preview(mob/living/carbon/human/human)
@@ -1696,6 +1694,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		'goon/sounds/voice/fescream1.ogg',
 		'goon/sounds/voice/fescream5.ogg',
 	)
+
+/datum/species/proc/get_agony_sound(mob/living/carbon/human/human)
+	return get_scream_sound(human)
+
+/datum/species/proc/get_pain_sound(mob/living/carbon/human/human)
+	return get_scream_sound(human)
 
 /datum/species/proc/get_types_to_preload()
 	var/list/to_store = list()

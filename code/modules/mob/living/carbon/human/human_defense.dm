@@ -663,12 +663,12 @@
 			affecting.receive_damage(damage, damage * 2, updating_health = FALSE, modifiers = NONE)
 			affected_skin = TRUE
 			if(prob(round(10 / exposure_coeff, 1)) && !screamed)
-				emote("scream")
+				emote("agony")
 				screamed = TRUE
 
 			if(affecting.name == BODY_ZONE_HEAD && !HAS_TRAIT(src, TRAIT_DISFIGURED))
 				if(prob(min(acidpwr*acid_volume, 90))) //Applies disfigurement
-					emote("scream")
+					emote("agony")
 					facial_hairstyle = "Shaved"
 					hairstyle = "Bald"
 					update_body_parts()

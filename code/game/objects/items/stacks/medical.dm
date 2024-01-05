@@ -383,7 +383,7 @@
 		C.visible_message(span_suicide("[C] screws up like an idiot and still dies anyway!"))
 		return (BRUTELOSS)
 
-	C.emote("scream")
+	C.emote("agony")
 
 	for(var/i in C.bodyparts)
 		var/obj/item/bodypart/bone = i

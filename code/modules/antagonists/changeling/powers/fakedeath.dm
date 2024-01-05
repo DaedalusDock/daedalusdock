@@ -42,7 +42,7 @@
 			loud, crunchy sound and giving you great pain!</span>",
 			"<span class='hear'>You hear organic matter ripping \
 			and tearing!</span>")
-		user.emote("scream")
+		user.emote("agony")
 		user.regenerate_limbs(list(BODY_ZONE_HEAD))
 	user.regenerate_organs()
 

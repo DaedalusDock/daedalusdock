@@ -629,7 +629,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 				L.client.give_award(/datum/award/achievement/misc/vendor_squish, L) // good job losing a fight with an inanimate object idiot
 
 			L.Paralyze(60)
-			L.emote("scream")
+			L.emote("agony")
 			. = TRUE
 			playsound(L, 'sound/effects/blobattack.ogg', 40, TRUE)
 			playsound(L, 'sound/effects/splat.ogg', 50, TRUE)

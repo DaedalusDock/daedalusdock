@@ -81,6 +81,28 @@
 		return TRUE
 	return ..()
 
+/datum/emote/living/carbon/human/pain
+	key = "pain"
+	message = "moans in pain."
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/carbon/human/pain/get_sound(mob/living/user)
+	if(!ishuman(user))
+		return
+	var/mob/living/carbon/human/human = user
+	return human.dna.species.get_agony_sound(human)
+
+/datum/emote/living/carbon/human/agony
+	key = "agony"
+	message = "screams in agony!"
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/carbon/human/agony/get_sound(mob/living/user)
+	if(!ishuman(user))
+		return
+	var/mob/living/carbon/human/human = user
+	return human.dna.species.get_agony_sound(human)
+
 /datum/emote/living/carbon/human/pale
 	key = "pale"
 	message = "goes pale for a second."

@@ -86,19 +86,15 @@
 
 	pain_emotes = list(
 		list(
-			"grunt" = 1,
 			"groan" = 1,
 			"hiss" = 1
 		) = 20,
 		list(
-			"grunt" = 1,
-			"groan" = 1,
-			"wheeze" = 1,
+			"scream" = 1,
 			"hiss" = 1,
 		) = 50,
 		list(
 			"wheeze" = 1,
-			"scream" = 1,
 			"bellow" = 1,
 			"howl" = 1
 		) = 80

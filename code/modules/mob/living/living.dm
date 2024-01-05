@@ -204,7 +204,6 @@
 	//anti-riot equipment is also anti-push
 	for(var/obj/item/I in M.held_items)
 		if(!istype(M, /obj/item/clothing))
-			#warn test this
 			if(I.try_block_attack(M, src, "the push", 0, LEAP_ATTACK)) //close enough?
 				return TRUE
 

@@ -18,7 +18,7 @@
 	combat_mode = TRUE
 	stop_automated_movement = 1
 	status_flags = CANPUSH
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	see_in_dark = 7
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)

@@ -5,8 +5,12 @@
 	icon_state = "punchingbag"
 	anchored = TRUE
 	layer = WALL_OBJ_LAYER
-	var/list/hit_sounds = list('sound/weapons/genhit1.ogg', 'sound/weapons/genhit2.ogg', 'sound/weapons/genhit3.ogg',\
-	'sound/weapons/punch1.ogg', 'sound/weapons/punch2.ogg', 'sound/weapons/punch3.ogg', 'sound/weapons/punch4.ogg')
+	var/list/hit_sounds = list(
+		'sound/weapons/genhit1.ogg',
+		'sound/weapons/genhit2.ogg',
+		'sound/weapons/genhit3.ogg',
+		SFX_PUNCH
+	)
 
 /obj/structure/punching_bag/attack_hand(mob/user, list/modifiers)
 	. = ..()

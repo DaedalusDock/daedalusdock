@@ -13,7 +13,7 @@
 	attack_verb_simple = "punch"
 	melee_damage_lower = 10
 	melee_damage_upper = 10
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	combat_mode = TRUE
 	faction = list("stickman")
 

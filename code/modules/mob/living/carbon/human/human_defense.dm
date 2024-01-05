@@ -655,7 +655,8 @@
 			damage *= (1 - get_permeability_protection(body_zone2cover_flags(affecting.body_zone)))
 			if(!damage)
 				continue
-			affecting.receive_damage(damage, damage * 2, updating_health = FALSE, breaks_bones = FALSE)
+
+			affecting.receive_damage(damage, damage * 2, updating_health = FALSE, modifiers = NONE)
 			affected_skin = TRUE
 			if(prob(round(10 / exposure_coeff, 1)) && !screamed)
 				emote("scream")

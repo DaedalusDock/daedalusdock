@@ -86,18 +86,17 @@
 
 	pain_emotes = list(
 		list(
-			"groan" = 1,
-			"hiss" = 1
-		) = 20,
+			"groans in pain." = 1,
+			"hisses in pain." = 1
+		) = (PAIN_AMT_LOW + 10),
 		list(
-			"scream" = 1,
-			"hiss" = 1,
-		) = 50,
+			"screams in pain!" = 1,
+		) = (PAIN_AMT_MEDIUM + 10),
 		list(
-			"wheeze" = 1,
-			"bellow" = 1,
-			"howl" = 1
-		) = 80
+			"me wheezes in pain!" = 1,
+			"me bellows in pain!" = 1,
+			"me howls in pain!" = 1
+		) = PAIN_AMT_AGONIZING
 	)
 
 /datum/species/lizard/get_deathgasp_sound(mob/living/carbon/human/H)

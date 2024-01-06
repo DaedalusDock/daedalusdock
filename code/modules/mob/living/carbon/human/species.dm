@@ -238,17 +238,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// A list of weighted lists to pain emotes. The list with the LOWEST damage requirement needs to be first.
 	var/list/pain_emotes = list(
 		list(
-			"grunt" = 1,
-			"moan" = 1,
-		) = 10,
+			"grunts in pain" = 1,
+			"moans in pain" = 1,
+		) = PAIN_AMT_LOW,
 
 		list(
 			"pain" = 1,
-		) = 40,
+		) = PAIN_AMT_MEDIUM,
 
 		list(
 			"agony" = 1,
-		) = 70,
+		) = PAIN_AMT_AGONIZING,
 	)
 
 ///////////

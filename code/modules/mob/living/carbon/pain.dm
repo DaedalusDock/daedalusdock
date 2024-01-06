@@ -63,12 +63,12 @@
 
 	if(.)
 		switch(.)
-			if(1 to 20)
+			if(1 to PAIN_AMT_MEDIUM)
 				flash_pain(PAIN_SMALL)
-			if(20 to 40)
+			if(20 to PAIN_AMT_MEDIUM)
 				flash_pain(PAIN_MEDIUM)
 				shake_camera(src, 1, 2)
-			if(40 to INFINITY)
+			if(PAIN_AMT_MEDIUM to INFINITY)
 				flash_pain(PAIN_LARGE)
 				shake_camera(src, 3, 4)
 
@@ -87,18 +87,18 @@
 		return FALSE
 
 	if(message)
-		switch(amount)
-			if(70 to INFINITY)
+		switch(round(amount))
+			if(PAIN_AMT_AGONIZING to INFINITY)
 				to_chat(src, span_danger(span_big(message)))
-			if(40 to 70)
+			if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING - 1)
 				to_chat(src, span_danger(message))
-			if(10 to 40)
+			if(PAIN_AMT_LOW to PAIN_AMT_MEDIUM - 1)
 				to_chat(src, span_danger(message))
 			else
 				to_chat(src, span_warning(message))
 
 	if(.)
-		COOLDOWN_START(src, pain_cd, 15 SECONDS - amount)
+		COOLDOWN_START(src, pain_cd, rand(12 SECONDS, 20 SECONDS))
 
 	return TRUE
 
@@ -106,8 +106,19 @@
 	. = ..()
 	if(!.)
 		return
+
 	var/emote = dna.species.get_pain_emote(amount)
-	if(emote && prob(amount))
+	var/probability = 0
+
+	switch(round(amount))
+		if(PAIN_AMT_AGONIZING to INFINITY)
+			probability = 100
+		if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING - 1)
+			probability = 70
+		if(1 to PAIN_AMT_MEDIUM - 1)
+			probability = 20
+
+	if(emote && prob(probability))
 		emote(emote)
 
 #define PAIN_STRING \
@@ -213,7 +224,7 @@
 		if(loop.bodypart_flags & BP_NO_PAIN)
 			continue
 
-		var/dam = loop.get_damage()
+		var/dam = loop.getPain()
 		if(dam && dam > highest_damage && (highest_damage == 0 || prob(70)))
 			damaged_part = loop
 			highest_damage = dam
@@ -227,11 +238,11 @@
 		var/burning = damaged_part.burn_dam > damaged_part.brute_dam
 		var/msg
 		switch(highest_damage)
-			if(1 to 25)
-				msg =  "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"]."
-			if(25 to 90)
+			if(1 to PAIN_AMT_MEDIUM)
+				msg = "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"]."
+			if(PAIN_AMT_MEDIUM to PAIN_AMT_AGONIZING)
 				msg = "Your [damaged_part.plaintext_zone] [burning ? "burns" : "hurts"] badly!"
-			if(90 to INFINITY)
+			if(PAIN_AMT_AGONIZING to INFINITY)
 				msg = "OH GOD! Your [damaged_part.plaintext_zone] is [burning ? "on fire" : "hurting terribly"]!"
 
 		pain_message(msg, highest_damage)
@@ -247,6 +258,20 @@
 				pain_given = 25
 				message = "You feel a pain in your [parent.plaintext_zone]"
 			if(I.damage > (I.high_threshold * I.maxHealth))
-				pain_given = 50
+				pain_given = 40
 				message = "You feel a sharp pain in your [parent.plaintext_zone]"
-			pain_message(message, pain_given)
+			apply_pain(pain_given, parent.body_zone, message)
+
+	if(prob(1))
+		var/systemic_organ_failure = getToxLoss()
+		switch(systemic_organ_failure)
+			if(5 to 17)
+				pain_message("Your body stings slightly.", 10)
+			if(17 to 35)
+				pain_message("Your body stings.", 20)
+			if(35 to 60)
+				pain_message("Your body stings strongly.", 40)
+			if(60 to 100)
+				pain_message("Your whole body hurts badly.", 40)
+			if(100 to INFINITY)
+				pain_message("Your body aches all over, it's driving you mad.", 70)

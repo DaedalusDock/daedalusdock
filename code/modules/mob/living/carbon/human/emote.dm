@@ -83,14 +83,14 @@
 
 /datum/emote/living/carbon/human/pain
 	key = "pain"
-	message = "moans in pain."
+	message = "cries out in pain!"
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/carbon/human/pain/get_sound(mob/living/user)
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/human = user
-	return human.dna.species.get_agony_sound(human)
+	return human.dna.species.get_pain_sound(human)
 
 /datum/emote/living/carbon/human/agony
 	key = "agony"

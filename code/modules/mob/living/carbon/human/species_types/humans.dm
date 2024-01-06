@@ -103,7 +103,4 @@
 		'sound/voice/human/wounded/female_moan_wounded3.ogg',
 		'sound/voice/human/wounded/female_moan_wounded4.ogg',
 		'sound/voice/human/wounded/female_moan_wounded5.ogg',
-		'sound/voice/human/wounded/female_moan_wounded6.ogg',
-		'sound/voice/human/wounded/female_moan_wounded7.ogg',
-		'sound/voice/human/wounded/female_moan_wounded8.ogg',
 	)

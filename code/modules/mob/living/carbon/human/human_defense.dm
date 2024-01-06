@@ -179,13 +179,20 @@
 		return MOB_ATTACKEDBY_FAIL
 
 	if(user == src)
-		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //stabbing yourself always hits the right target
+		affecting = get_bodypart(target_area) //stabbing yourself always hits the right target
 	else
-		var/accuracy_penalty = user.get_melee_inaccuracy() - get_melee_inaccuracy()
-		var/hit_zone = get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty, can_truly_miss = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
-		if(!hit_zone)
-			visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
-			return MOB_ATTACKEDBY_MISS
+		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_area]
+		var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
+		var/hit_zone
+		switch(roll)
+			if(CRIT_FAILURE)
+				visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
+				return MOB_ATTACKEDBY_MISS
+
+			if(FAILURE)
+				hit_zone = get_random_valid_zone()
+			else
+				hit_zone = target_area
 
 		affecting = get_bodypart(hit_zone)
 

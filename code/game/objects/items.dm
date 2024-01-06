@@ -1604,9 +1604,12 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/proc/on_disarm_attempt(mob/living/user, mob/living/attacker)
 	if(force < 1)
-		return 0
+		return FALSE
 	if(!istype(attacker))
-		return 0
+		return FALSE
+	if(sharpness)
+		return FALSE
+
 	var/obj/item/bodypart/BP = attacker.get_active_hand()
 
 	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, get_attack_flag(), silent = TRUE), sharpness = sharpness)

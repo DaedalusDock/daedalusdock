@@ -1005,19 +1005,19 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// By this point, we are attempting an attack!!!
 	user.do_attack_animation(target, atk_effect)
 
-	// Find miss chance
-	var/miss_chance = 0
-	if(attacking_bodypart.unarmed_damage_low)
-		miss_chance -= user.get_melee_inaccuracy() - target.get_melee_inaccuracy()
-
 	// Set damage and find hit bodypart using weighted rng
-	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
-	var/attacking_zone = get_zone_with_miss_chance(user.zone_selected, target, miss_chance, can_truly_miss = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
+	var/target_zone = deprecise_zone(user.zone_selected)
+	var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
+	var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (target.gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
+	// If we succeeded, hit the target area.
+	var/attacking_zone = (roll >= SUCCESS) ? target_zone : target.get_random_valid_zone()
 	var/obj/item/bodypart/affecting
 	if(attacking_zone)
 		affecting = target.get_bodypart(attacking_zone)
 
-	if(!damage || !affecting)
+	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
+
+	if(!damage || !affecting || roll == CRIT_FAILURE)
 		var/rolled = target.body_position == LYING_DOWN && !target.incapacitated()
 		playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
 

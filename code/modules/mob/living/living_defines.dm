@@ -18,6 +18,8 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// The mob's current health.
 	var/health = MAX_LIVING_HEALTH
 
+	/// The container for stats and skills
+	var/datum/gurps_stats/gurps_stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
 

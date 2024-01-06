@@ -1,6 +1,7 @@
 /mob/living/Initialize(mapload)
 	. = ..()
 	stamina = new(src)
+	gurps_stats = new(src)
 
 	register_init_signals()
 	if(unique_name)
@@ -26,7 +27,9 @@
 
 /mob/living/Destroy()
 	QDEL_NULL(z_eye)
-	qdel(stamina)
+	QDEL_NULL(stamina)
+	QDEL_NULL(gurps_stats)
+
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
 		if(effect.on_remove_on_mob_delete)
@@ -2176,23 +2179,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_ingested_reagents()
 	RETURN_TYPE(/datum/reagents)
 	return reagents
-
-/mob/living/proc/get_melee_inaccuracy()
-	. = 0
-	if(!combat_mode) // If you aren't trying to fight, it's much easier to hit you. Suckerpunch!
-		. += 50
-	if(incapacitated())
-		. += 100
-	if(get_timed_status_effect_duration(/datum/status_effect/confusion))
-		. += 10
-	if(IsKnockdown())
-		. += 15
-	if(eye_blurry)
-		. += 5
-	if(eye_blind)
-		. += 60
-	if(HAS_TRAIT(src, TRAIT_CLUMSY))
-		. += 25
 
 /mob/living/proc/needs_organ(slot)
 	return FALSE

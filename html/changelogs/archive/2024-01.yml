@@ -45,3 +45,8 @@
       people like humans?)
   - refactor: Dis-coordinated humans smashing up machines now use their hands, rather
       than their paws
+2024-01-06:
+  Kapu1178:
+  - rscadd: Mobs now jiggle when attacked. Jiggle jiggle.
+  - rscadd: Increased brutality of combat.
+  - soundadd: Added new punch sound effects.

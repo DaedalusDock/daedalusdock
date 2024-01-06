@@ -1,5 +1,6 @@
 /mob/living
 	COOLDOWN_DECLARE(pain_cd)
+	COOLDOWN_DECLARE(pain_emote_cd)
 
 /mob/living/carbon/var/shock_stage
 
@@ -119,7 +120,15 @@
 			probability = 20
 
 	if(emote && prob(probability))
-		emote(emote)
+		pain_emote(amount)
+
+/// Perform a pain response emote, amount is the amount of pain they are in. See pain defines for easy numbers.
+/mob/living/carbon/proc/pain_emote(amount = PAIN_AMT_LOW, bypass_cd)
+	if(!COOLDOWN_FINISHED(src, pain_emote_cd) && !bypass_cd)
+		return
+
+	COOLDOWN_START(src, pain_emote_cd, 5 SECONDS)
+	emote(dna.species.get_pain_emote(amount))
 
 #define PAIN_STRING \
 	pick("The pain is excruciating!",\
@@ -204,13 +213,11 @@
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 
-	if(!(life_ticks % 5) && pain >= maxHealth)
-		if(HAS_TRAIT(src, TRAIT_FAKEDEATH))
-			return
-		else
+	if(pain >= maxHealth)
+		if(stat == CONSCIOUS && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			visible_message(
 				"<b>[src]</b> slumps over, too weak to continue fighting...",
-				span_warning("The pain is too severe for you to keep going...")
+				span_danger("You give into the pain.")
 			)
 		Sleeping(10 SECONDS)
 		return

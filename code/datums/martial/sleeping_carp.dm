@@ -163,7 +163,6 @@
 
 	force = 10
 	force_wielded = 20
-	icon_state_wielded = type::base_icon_state + "1"
 	throwforce = 20
 	throw_speed = 2
 
@@ -174,6 +173,10 @@
 
 	lefthand_file = 'icons/mob/inhands/weapons/staves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/staves_righthand.dmi'
+
+/obj/item/staff/bostaff/Initialize(mapload)
+	. = ..()
+	icon_state_wielded = "base_icon_state[1]"
 
 /obj/item/staff/bostaff/update_icon_state()
 	icon_state = "[base_icon_state]0"

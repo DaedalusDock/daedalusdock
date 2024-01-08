@@ -12,7 +12,6 @@
 
 	force = 8
 	force_wielded = 12
-	icon_state_wielded = type::base_icon_state + "1"
 	throwforce = 10
 	throw_speed = 3
 	throw_range = 7
@@ -21,6 +20,10 @@
 	attack_verb_continuous = list("sweeps", "brushes off", "bludgeons", "whacks")
 	attack_verb_simple = list("sweep", "brush off", "bludgeon", "whack")
 	resistance_flags = FLAMMABLE
+
+/obj/item/pushbroom/Initialize(mapload)
+	. = ..()
+	icon_state_wielded = "base_icon_state[1]"
 
 /obj/item/pushbroom/update_icon_state()
 	icon_state = "[base_icon_state]0"

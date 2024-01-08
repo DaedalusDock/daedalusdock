@@ -7,7 +7,6 @@
 	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
 	worn_icon_state = "singularity_hammer"
-	icon_state_wielded = type::base_icon_state + "1"
 
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
@@ -26,6 +25,7 @@
 
 /obj/item/singularityhammer/Initialize(mapload)
 	. = ..()
+	icon_state_wielded = "base_icon_state[1]"
 	AddElement(/datum/element/kneejerk)
 
 /obj/item/singularityhammer/update_icon_state()
@@ -75,7 +75,6 @@
 	worn_icon_state = "mjolnir"
 	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
-	icon_state_wielded = type::base_icon_state + "1"
 
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
@@ -86,6 +85,10 @@
 	throw_range = 7
 
 	w_class = WEIGHT_CLASS_HUGE
+
+/obj/item/mjollnir/Initialize(mapload)
+	. = ..()
+	icon_state_wielded = "base_icon_state[1]"
 
 /obj/item/mjollnir/update_icon_state()
 	icon_state = "[base_icon_state]0"

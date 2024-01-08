@@ -9,7 +9,7 @@
 	base_icon_state = "pitchfork"
 	lefthand_file = 'icons/mob/inhands/weapons/polearms_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/polearms_righthand.dmi'
-	icon_state_wielded = type::base_icon_state + "1"
+	icon_state_wielded = "pitchfork1"
 
 	name = "pitchfork"
 	desc = "A simple tool used for moving hay."

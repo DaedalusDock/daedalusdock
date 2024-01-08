@@ -12,7 +12,6 @@
 	force = 5
 	force_wielded = 25
 	throwforce = 15
-	icon_state_wielded = type::base_icon_state + "1"
 
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
@@ -26,6 +25,7 @@
 
 /obj/item/fireaxe/Initialize(mapload)
 	. = ..()
+	icon_state_wielded = "base_icon_state[1]"
 	AddComponent(/datum/component/butchering, 100, 80, 0 , hitsound) //axes are not known for being precision butchering tools
 
 /obj/item/fireaxe/update_icon_state()

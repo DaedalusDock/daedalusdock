@@ -1737,8 +1737,8 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	attacker.visible_message(span_danger("[attacker] hurts \his hand on [src]!"))
 	log_combat(attacker, user, "Attempted to disarm but was blocked by", src)
-	playsound(user, hitsound, 50, 1, -1)
-	return 1
+	playsound(user, get_hitsound(), 50, 1, -1)
+	return TRUE
 
 /// Returns the sound the item makes when hitting something
 /obj/item/proc/get_hitsound()

@@ -71,6 +71,8 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	///Sound played when you hit something with the item
 	var/hitsound
+	var/wielded_hitsound
+
 	///Played when the item is used, for example tools
 	var/usesound
 	///Used when yate into a mob
@@ -231,6 +233,23 @@ DEFINE_INTERACTABLE(/obj/item)
 	/// The type of effect to create on a successful block
 	var/obj/effect/temp_visual/block_effect = /obj/effect/temp_visual/block
 
+	/*________*/
+	/*Wielding*/
+	/*‾‾‾‾‾‾‾‾*/
+	/// Is the item being held in two hands?
+	var/wielded = FALSE
+
+	/// The force of the item when wielded. If null, will be force * 1.5.
+	var/force_wielded = null
+	/// A var to hold the old, unwielded force value.
+	VAR_PRIVATE/force_unwielded = null
+	/// The icon_state to use when wielded, if any.
+	var/icon_state_wielded = null
+	/// The sound to play on wield.
+	var/wield_sound = null
+	/// The wound to play on unwield.
+	var/unwield_sound = null
+
 /obj/item/Initialize(mapload)
 
 	if(attack_verb_continuous)
@@ -256,6 +275,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			hitsound = 'sound/items/welder.ogg'
 		if(damtype == BRUTE)
 			hitsound = SFX_SWING_HIT
+
 	if(sharpness && force > 5) //give sharp objects butchering functionality, for consistency
 		AddComponent(/datum/component/butchering, 80 * toolspeed)
 
@@ -292,6 +312,11 @@ DEFINE_INTERACTABLE(/obj/item)
 		else if(usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_IGNORE_TK|USE_RESTING))
 			id.show(usr)
 		return TRUE
+
+/obj/item/update_icon_state()
+	. = ..()
+	if(wielded && icon_state_wielded)
+		icon_state = icon_state_wielded
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
@@ -658,16 +683,22 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/dropped(mob/user, silent = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	if(wielded)
+		unwield(user, FALSE, TRUE)
+
 	// Remove any item actions we temporary gave out.
 	for(var/datum/action/action_item_has as anything in actions)
 		action_item_has.Remove(user)
 
 	if((item_flags & DROPDEL) && !QDELETED(src))
 		qdel(src)
+
 	item_flags &= ~IN_INVENTORY
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
+
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
+
 	user?.update_equipment_speed_mods()
 	user?.update_mouse_pointer()
 
@@ -707,6 +738,12 @@ DEFINE_INTERACTABLE(/obj/item)
 	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	SEND_SIGNAL(user, COMSIG_MOB_EQUIPPED_ITEM, src, slot)
 
+	if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS) && slot == ITEM_SLOT_HANDS)
+		if(!wield(user))
+			stack_trace("[user] failed to wield a twohanded item.")
+			spawn(0)
+				user.dropItemToGround(src)
+
 	// Give out actions our item has to people who equip it.
 	for(var/datum/action/action as anything in actions)
 		give_item_action(action, user, slot)
@@ -717,6 +754,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, TRUE, ignore_walls = FALSE)
 		else if(slot == ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
+
 	user.update_equipment_speed_mods()
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
@@ -736,6 +774,89 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_LEGCUFFED) //these aren't true slots, so avoid granting actions there
 		return FALSE
 	return TRUE
+
+/obj/item/proc/wield(mob/living/user)
+	if(wielded)
+		return FALSE
+
+	// No free hands.
+	if(!length(user.get_empty_held_indexes()))
+		to_chat(user, span_warning("You need two hands to wield [src]."))
+		return FALSE
+
+	if(SEND_SIGNAL(src, COMSIG_ITEM_WIELD, user) & COMPONENT_ITEM_BLOCK_WIELD)
+		return FALSE
+
+	wielded = TRUE
+
+	// Let's reserve the other hand.
+	var/obj/item/offhand/offhand_item = new(user, src)
+	if(!user.put_in_inactive_hand(offhand_item)) // This should be impossible
+		stack_trace("[user] somehow failed to wield an item despite having a free hand.")
+		wielded = FALSE
+		qdel(offhand_item)
+		return FALSE
+
+	// Setup force values.
+	force_unwielded = force
+	if(!isnull(force_wielded))
+		force = force_wielded
+	else
+		force = force * 1.5
+
+	if(!HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+		to_chat(user, span_notice("You grip [src] with your other hand."))
+
+	// Feedback
+	if(wield_sound)
+		playsound(user, wield_sound, 50, TRUE)
+
+	// Change appearance
+	name = "[name] (Wielded)"
+	update_appearance()
+	return TRUE
+
+/obj/item/proc/unwield(mob/living/user, show_message = TRUE, dropping = FALSE)
+	if(!wielded)
+		return FALSE
+
+	wielded = FALSE
+
+	// Reset force
+	force = force_unwielded
+	force_unwielded = null
+
+	// Reset appearance
+	var/sf = findtext(name, " (Wielded)", -10) // 10 == length(" (Wielded)")
+	if(sf)
+		name = copytext(name, 1, sf)
+	else
+		name = "[initial(name)]"
+
+	update_appearance()
+
+	if(istype(user)) // tk showed that we might not have a mob here
+		if(!dropping)
+			var/slot = user.get_slot_by_item(src)
+			if(slot == ITEM_SLOT_HANDS)
+				user.update_worn_back()
+			else if(slot)
+				user.update_clothing(slot)
+
+			// if the item requires two handed, drop the item on unwield
+			if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+				user.dropItemToGround(src, force=TRUE)
+
+		// Show message if requested
+		if(show_message)
+			to_chat(user, span_notice("You are now carrying [src] with one hand."))
+
+	if(unwield_sound)
+		playsound(user, unwield_sound, 50, TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_UNWIELD, user)
+
+	return FALSE
 
 /**
  *the mob M is attempting to equip this item into the slot passed through as 'slot'. Return 1 if it can do this and 0 if it can't.
@@ -1618,3 +1739,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	log_combat(attacker, user, "Attempted to disarm but was blocked by", src)
 	playsound(user, hitsound, 50, 1, -1)
 	return 1
+
+/// Returns the sound the item makes when hitting something
+/obj/item/proc/get_hitsound()
+	if(wielded)
+		. = wielded_hitsound
+	. ||= hitsound

@@ -207,8 +207,7 @@
 		if(MOB_ATTACKEDBY_NO_DAMAGE)
 			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
 		if(MOB_ATTACKEDBY_SUCCESS)
-			if(hitsound)
-				playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
 		if(MOB_ATTACKEDBY_MISS)
 			playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 

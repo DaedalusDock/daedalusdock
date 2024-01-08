@@ -761,8 +761,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	sharpness = SHARP_EDGED
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	/// Wielding status.
-	var/wielded = FALSE
 	/// The color of the slash we create
 	var/slash_color = COLOR_BLUE
 	/// Previous x position of where we clicked on the target's icon
@@ -774,10 +772,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/highfrequencyblade/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
-	AddComponent(/datum/component/two_handed)
 
 /obj/item/highfrequencyblade/update_icon_state()
 	icon_state = "hfrequency[wielded]"

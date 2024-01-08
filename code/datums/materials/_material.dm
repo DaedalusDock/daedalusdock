@@ -158,7 +158,9 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 	if(!item_sound_override)
 		return
+
 	item.hitsound = item_sound_override
+	item.wielded_hitsound = item_sound_override
 	item.usesound = item_sound_override
 	item.mob_throw_hit_sound = item_sound_override
 	item.equip_sound = item_sound_override

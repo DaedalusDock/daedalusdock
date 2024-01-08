@@ -124,7 +124,7 @@
 
 /obj/item/melee/sabre/proc/suicide_dismember(mob/living/user, obj/item/bodypart/affecting)
 	if(!QDELETED(affecting) && affecting.dismemberable && affecting.owner == user && !QDELETED(user))
-		playsound(user, hitsound, 25, TRUE)
+		playsound(user, get_hitsound(), 25, TRUE)
 		affecting.dismember(BRUTE)
 		user.adjustBruteLoss(20)
 
@@ -165,7 +165,7 @@
 
 /obj/item/melee/beesword/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is stabbing [user.p_them()]self in the throat with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	playsound(get_turf(src), hitsound, 75, TRUE, -1)
+	playsound(get_turf(src), get_hitsound(), 75, TRUE, -1)
 	return TOXLOSS
 
 

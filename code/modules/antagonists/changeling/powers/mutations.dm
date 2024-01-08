@@ -337,7 +337,7 @@
 				C.apply_damage(I.force, BRUTE, BODY_ZONE_CHEST)
 				H.do_item_attack_animation(C, used_item = I)
 				H.add_mob_blood(C)
-				playsound(get_turf(H),I.hitsound,75,TRUE)
+				playsound(get_turf(H), I.get_hitsound(),75,TRUE)
 				return
 
 /obj/projectile/tentacle/on_hit(atom/target, blocked = FALSE)

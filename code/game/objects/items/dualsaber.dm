@@ -8,46 +8,46 @@
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	name = "double-bladed energy sword"
 	desc = "Handle with care."
+
 	force = 3
+	force_wielded = 34
 	throwforce = 5
 	throw_speed = 3
 	throw_range = 5
+	block_chance = 75
+	block_sound = 'sound/weapons/block/block_energy.ogg'
 	sharpness = SHARP_EDGED
+	armor_penetration = 35
+	wield_sound = 'sound/weapons/saberon.ogg'
+	unwield_sound = 'sound/weapons/saberoff.ogg'
+
 	w_class = WEIGHT_CLASS_SMALL
 	hitsound = SFX_SWING_HIT
-	armor_penetration = 35
+
 	light_system = MOVABLE_LIGHT
 	light_outer_range = 6 //TWICE AS BRIGHT AS A REGULAR ESWORD
 	light_color = LIGHT_COLOR_ELECTRIC_GREEN
 	light_on = FALSE
+
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
-	block_chance = 75
-	block_sound = 'sound/weapons/block/block_energy.ogg'
+
 	max_integrity = 200
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
+
 	var/w_class_on = WEIGHT_CLASS_BULKY
 	var/saber_color = "green"
-	var/two_hand_force = 34
 	var/hacked = FALSE
 	var/list/possible_colors = list("red", "blue", "green", "purple")
-	var/wielded = FALSE // track wielded status on item
-
-/obj/item/dualsaber/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/two_handed, force_unwielded=force, force_wielded=two_hand_force, wieldsound='sound/weapons/saberon.ogg', unwieldsound='sound/weapons/saberoff.ogg')
 
 /// Triggered on wield of two handed item
 /// Specific hulk checks due to reflection chance for balance issues and switches hitsounds.
-/obj/item/dualsaber/proc/on_wield(obj/item/source, mob/living/carbon/user)
-	SIGNAL_HANDLER
+/obj/item/dualsaber/wield(mob/user)
+	. = ..()
+	if(!.)
+		return
 
-	if(user?.has_dna())
-		if(user.dna.check_mutation(/datum/mutation/human/hulk))
-			to_chat(user, span_warning("You lack the grace to wield this!"))
-			return COMPONENT_TWOHANDED_BLOCK_WIELD
-	wielded = TRUE
 	w_class = w_class_on
 	hitsound = 'sound/weapons/blade1.ogg'
 	START_PROCESSING(SSobj, src)
@@ -56,10 +56,11 @@
 
 /// Triggered on unwield of two handed item
 /// switch hitsounds
-/obj/item/dualsaber/proc/on_unwield(obj/item/source, mob/living/carbon/user)
-	SIGNAL_HANDLER
+/obj/item/dualsaber/unwield(mob/user)
+	. = ..()
+	if(!.)
+		return
 
-	wielded = FALSE
 	w_class = initial(w_class)
 	hitsound = SFX_SWING_HIT
 	STOP_PROCESSING(SSobj, src)
@@ -95,8 +96,6 @@
 
 /obj/item/dualsaber/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	if(LAZYLEN(possible_colors))
 		saber_color = pick(possible_colors)
 		switch(saber_color)

@@ -6,7 +6,6 @@
  */
 /datum/component/two_handed
 	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS // Only one of the component can exist on an item
-	var/wielded = FALSE /// Are we holding the two handed item properly
 	var/force_multiplier = 0 /// The multiplier applied to force when wielded, does not work with force_wielded, and force_unwielded
 	var/force_wielded = 0 /// The force of the item when weilded
 	var/force_unwielded = 0 /// The force of the item when unweilded
@@ -309,7 +308,7 @@
 		return COMPONENT_BLOCK_SHARPEN_BLOCKED
 	if(sharpened_increase)
 		return COMPONENT_BLOCK_SHARPEN_ALREADY
-	var/wielded_val = 0
+	_val = 0
 	if(force_multiplier)
 		var/obj/item/parent_item = parent
 		if(wielded)
@@ -322,28 +321,3 @@
 		return COMPONENT_BLOCK_SHARPEN_MAXED
 	sharpened_increase = min(amount, (max_amount - wielded_val))
 	return COMPONENT_BLOCK_SHARPEN_APPLIED
-
-/**
- * The offhand dummy item for two handed items
- *
- */
-/obj/item/offhand
-	name = "offhand"
-	icon_state = "offhand"
-	w_class = WEIGHT_CLASS_HUGE
-	item_flags = ABSTRACT
-	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-	var/wielded = FALSE // Off Hand tracking of wielded status
-
-/obj/item/offhand/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
-
-/obj/item/offhand/Destroy()
-	wielded = FALSE
-	return ..()
-
-/obj/item/offhand/equipped(mob/user, slot)
-	. = ..()
-	if(wielded && !user.is_holding(src) && !QDELETED(src))
-		qdel(src)

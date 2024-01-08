@@ -9,47 +9,33 @@
 	base_icon_state = "broom"
 	lefthand_file = 'icons/mob/inhands/equipment/custodial_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
+
 	force = 8
+	force_wielded = 12
+	icon_state_wielded = type::base_icon_state + "1"
 	throwforce = 10
 	throw_speed = 3
 	throw_range = 7
+
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("sweeps", "brushes off", "bludgeons", "whacks")
 	attack_verb_simple = list("sweep", "brush off", "bludgeon", "whack")
 	resistance_flags = FLAMMABLE
 
-/obj/item/pushbroom/Initialize(mapload)
-	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
-	AddComponent(/datum/component/two_handed, force_unwielded=8, force_wielded=12, icon_wielded="[base_icon_state]1")
-
 /obj/item/pushbroom/update_icon_state()
 	icon_state = "[base_icon_state]0"
 	return ..()
 
-/**
- * Handles registering the sweep proc when the broom is wielded
- *
- * Arguments:
- * * source - The source of the on_wield proc call
- * * user - The user which is wielding the broom
- */
-/obj/item/pushbroom/proc/on_wield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	to_chat(user, span_notice("You brace the [src] against the ground in a firm sweeping stance."))
+/obj/item/pushbroom/wield(mob/user)
+	. = ..()
+	if(!.)
+		return
 	RegisterSignal(user, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(sweep))
 
-/**
- * Handles unregistering the sweep proc when the broom is unwielded
- *
- * Arguments:
- * * source - The source of the on_unwield proc call
- * * user - The user which is unwielding the broom
- */
-/obj/item/pushbroom/proc/on_unwield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
+/obj/item/pushbroom/unwield(mob/user)
+	. = ..()
+	if(!.)
+		return
 
 	UnregisterSignal(user, COMSIG_MOVABLE_PRE_MOVE)
 

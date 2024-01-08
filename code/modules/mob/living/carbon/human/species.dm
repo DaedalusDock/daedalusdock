@@ -737,32 +737,47 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	switch(slot)
 		if(ITEM_SLOT_HANDS)
-			if(H.get_empty_held_indexes())
+			var/empty_hands = length(H.get_empty_held_indexes())
+			if(HAS_TRAIT(I, TRAIT_NEEDS_TWO_HANDS) && ((empty_hands < 2) || H.usable_hands < 2))
+				if(!disable_warning)
+					to_chat(H, span_warning("You need two hands to hold [I]."))
+				return FALSE
+
+			if(empty_hands)
 				return TRUE
 			return FALSE
+
 		if(ITEM_SLOT_MASK)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_NECK)
 			return TRUE
+
 		if(ITEM_SLOT_BACK)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_OCLOTHING)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_GLOVES)
 			if(H.num_hands < 2)
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_FEET)
 			if(H.num_legs < 2)
 				return FALSE
+
 			if((bodytype & BODYTYPE_DIGITIGRADE) && !(I.item_flags & IGNORE_DIGITIGRADE))
 				if(!(I.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)))
 					if(!disable_warning)
 						to_chat(H, span_warning("The footwear around here isn't compatible with your feet!"))
 					return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_BELT)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 
@@ -770,31 +785,43 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_EYES)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
+
 			var/obj/item/organ/eyes/E = H.getorganslot(ORGAN_SLOT_EYES)
 			if(E?.no_glasses)
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_HEAD)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_EARS)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_ICLOTHING)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_ID)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 			if(!H.w_uniform && !nojumpsuit && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_LPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP)) //Pockets aren't visible, so you can't move TRAIT_NODROP items into them.
 				return FALSE
@@ -802,12 +829,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				return FALSE
 
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_L_LEG)
-
 			if(!H.w_uniform && !nojumpsuit && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return TRUE
+
 		if(ITEM_SLOT_RPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP))
 				return FALSE
@@ -820,41 +848,52 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return TRUE
+
 		if(ITEM_SLOT_SUITSTORE)
 			if(HAS_TRAIT(I, TRAIT_NODROP))
 				return FALSE
+
 			if(!H.wear_suit)
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a suit before you can attach this [I.name]!"))
 				return FALSE
+
 			if(!H.wear_suit.allowed)
 				if(!disable_warning)
 					to_chat(H, span_warning("You somehow have a suit with no defined allowed items for suit storage, stop that."))
 				return FALSE
+
 			if(I.w_class > WEIGHT_CLASS_BULKY)
 				if(!disable_warning)
 					to_chat(H, span_warning("The [I.name] is too big to attach!")) //should be src?
 				return FALSE
+
 			if( istype(I, /obj/item/modular_computer/tablet) || istype(I, /obj/item/pen) || is_type_in_list(I, H.wear_suit.allowed) )
 				return TRUE
+
 			return FALSE
+
 		if(ITEM_SLOT_HANDCUFFED)
 			if(!istype(I, /obj/item/restraints/handcuffs))
 				return FALSE
 			if(H.num_hands < 2)
 				return FALSE
 			return TRUE
+
 		if(ITEM_SLOT_LEGCUFFED)
 			if(!istype(I, /obj/item/restraints/legcuffs))
 				return FALSE
 			if(H.num_legs < 2)
 				return FALSE
 			return TRUE
+
 		if(ITEM_SLOT_BACKPACK)
 			if(H.back && H.back.atom_storage?.can_insert(I, H, messages = TRUE))
 				return TRUE
 			return FALSE
+
 	return FALSE //Unsupported slot
 
 /datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self)

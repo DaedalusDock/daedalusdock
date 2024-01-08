@@ -318,7 +318,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 
 /obj/item/chair/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins hitting [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	playsound(src,hitsound,50,TRUE)
+	playsound(src, get_hitsound(), 50,TRUE)
 	return BRUTELOSS
 
 /obj/item/chair/narsie_act()

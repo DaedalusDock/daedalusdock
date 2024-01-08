@@ -158,8 +158,8 @@ Striking a noncultist, however, will tear their flesh."}
 	. = ..()
 	jaunt = new(src)
 	linked_action = new(src)
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	AddComponent(/datum/component/butchering, 50, 80)
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 
 /obj/item/cult_bastard/Destroy()
 	QDEL_NULL(jaunt)
@@ -708,25 +708,24 @@ Striking a noncultist, however, will tear their flesh."}
 	base_icon_state = "occultpoleaxe"
 	inhand_icon_state = "occultpoleaxe0"
 	w_class = WEIGHT_CLASS_HUGE
+
 	force = 17
+	force_wielded = 24
 	throwforce = 40
 	throw_speed = 2
 	armor_penetration = 30
 	block_chance = 30
+
 	slot_flags = null
 	attack_verb_continuous = list("attacks", "slices", "shreds", "sunders", "lacerates", "cleaves")
 	attack_verb_simple = list("attack", "slice", "shred", "sunder", "lacerate", "cleave")
 	sharpness = SHARP_EDGED
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	var/datum/action/innate/cult/halberd/halberd_act
-	var/wielded = FALSE // track wielded status on item
 
 /obj/item/melee/cultblade/halberd/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	AddComponent(/datum/component/butchering, 100, 90)
-	AddComponent(/datum/component/two_handed, force_unwielded=17, force_wielded=24)
 
 /// triggered on wield of two handed item
 /obj/item/melee/cultblade/halberd/proc/on_wield(obj/item/source, mob/user)

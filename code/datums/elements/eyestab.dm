@@ -56,7 +56,7 @@
 
 	item.add_fingerprint(user)
 
-	playsound(item, item.hitsound, 30, TRUE, -1)
+	playsound(item, item.get_hitsound(), 30, TRUE, -1)
 
 	user.do_attack_animation(target)
 

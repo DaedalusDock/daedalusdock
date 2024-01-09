@@ -121,10 +121,10 @@
 /obj/item/gun/Destroy()
 	if(isobj(pin)) //Can still be the initial path, then we skip
 		QDEL_NULL(pin)
-	if(bayonet)
-		QDEL_NULL(bayonet)
 
-		QDEL_NULL(chambered)
+	QDEL_NULL(bayonet)
+	QDEL_NULL(chambered)
+
 	if(isatom(suppressed)) //SUPPRESSED IS USED AS BOTH A TRUE/FALSE AND AS A REF, WHAT THE FUCKKKKKKKKKKKKKKKKK
 		QDEL_NULL(suppressed)
 	return ..()

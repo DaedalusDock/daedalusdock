@@ -228,18 +228,22 @@
 /obj/item/gun/ballistic/do_chamber_update(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	if(!semi_auto && from_firing)
 		return
+
 	var/obj/item/ammo_casing/casing = chambered //Find chambered round
 	if(istype(casing)) //there's a chambered round
 		if(QDELING(casing))
 			stack_trace("Trying to move a qdeleted casing of type [casing.type]!")
 			chambered = null
+
 		else if(casing_ejector || !from_firing)
 			casing.forceMove(drop_location()) //Eject casing onto ground.
 			casing.bounce_away(TRUE)
 			SEND_SIGNAL(casing, COMSIG_CASING_EJECTED)
 			chambered = null
+
 		else if(empty_chamber)
 			chambered = null
+
 	if (chamber_next_round && (magazine?.max_ammo > 1))
 		chamber_round()
 
@@ -388,19 +392,14 @@
 	return FALSE
 
 /obj/item/gun/ballistic/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
-	if(magazine && chambered.loaded_projectile && can_misfire && misfire_probability > 0)
+	if(magazine && chambered?.loaded_projectile && can_misfire && misfire_probability > 0)
 		if(prob(misfire_probability))
 			if(blow_up(user))
 				to_chat(user, span_userdanger("[src] misfires!"))
+			return FALSE
 
 	if (sawn_off)
 		bonus_spread += SAWN_OFF_ACC_PENALTY
-	return ..()
-
-/obj/item/gun/ballistic/after_firing(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
-	if(can_misfire)
-		misfire_probability += misfire_percentage_increment
-		misfire_probability = clamp(misfire_probability, 0, misfire_probability_cap)
 	return ..()
 
 ///Installs a new suppressor, assumes that the suppressor is already in the contents of src
@@ -430,28 +429,33 @@
 			user.put_in_hands(S)
 			clear_suppressor()
 
-///Prefire empty checks for the bolt drop
-/obj/item/gun/ballistic/proc/prefire_empty_checks()
+/obj/item/gun/ballistic/before_firing(atom/target, mob/user)
+	. = ..()
 	if (!chambered && !get_ammo())
 		if (bolt_type == BOLT_TYPE_OPEN && !bolt_locked)
 			bolt_locked = TRUE
 			playsound(src, bolt_drop_sound, bolt_drop_sound_volume)
 			update_appearance()
 
-///postfire empty checks for bolt locking and sound alarms
-/obj/item/gun/ballistic/proc/postfire_empty_checks(last_shot_succeeded)
+/obj/item/gun/ballistic/after_firing(mob/living/user, pointblank, atom/pbtarget, message)
+	. = ..()
+	if(can_misfire)
+		misfire_probability += misfire_percentage_increment
+		misfire_probability = clamp(misfire_probability, 0, misfire_probability_cap)
+
+/obj/item/gun/ballistic/after_chambering(from_firing)
+	. = ..()
+	if(!from_firing)
+		return
+
 	if (!chambered && !get_ammo())
-		if (empty_alarm && last_shot_succeeded)
+		if (empty_alarm)
 			playsound(src, empty_alarm_sound, empty_alarm_volume, empty_alarm_vary)
 			update_appearance()
-		if (last_shot_succeeded && bolt_type == BOLT_TYPE_LOCKING)
+
+		if (bolt_type == BOLT_TYPE_LOCKING)
 			bolt_locked = TRUE
 			update_appearance()
-
-/obj/item/gun/ballistic/afterattack()
-	prefire_empty_checks()
-	. = ..() //The gun actually firing
-	postfire_empty_checks(.)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/attack_hand(mob/user, list/modifiers)
@@ -469,17 +473,21 @@
 				do_fire_gun(user, user, FALSE, user.get_random_valid_zone(even_weights = TRUE))
 				user.dropItemToGround(src, TRUE)
 				return
+
 			flip_cooldown = (world.time + 30)
 			user.visible_message(span_notice("[user] spins [src] around [user.p_their()] finger by the trigger. That’s pretty badass."))
 			playsound(src, 'sound/items/handling/ammobox_pickup.ogg', 20, FALSE)
 			return
+
 	if(!internal_magazine && magazine)
 		if(!magazine.ammo_count())
 			eject_magazine(user)
 			return
+
 	if(bolt_type == BOLT_TYPE_NO_BOLT)
 		chambered = null
 		var/num_unloaded = 0
+
 		for(var/obj/item/ammo_casing/CB in get_ammo_list(FALSE, TRUE))
 			CB.forceMove(drop_location())
 			CB.bounce_away(FALSE, NONE)
@@ -487,6 +495,7 @@
 			var/turf/T = get_turf(drop_location())
 			if(T && is_station_level(T.z))
 				SSblackbox.record_feedback("tally", "station_mess_created", 1, CB.name)
+
 		if (num_unloaded)
 			to_chat(user, span_notice("You unload [num_unloaded] [cartridge_wording]\s from [src]."))
 			playsound(user, eject_sound, eject_sound_volume, eject_sound_vary)
@@ -494,11 +503,14 @@
 		else
 			to_chat(user, span_warning("[src] is empty!"))
 		return
+
 	if(bolt_type == BOLT_TYPE_LOCKING && bolt_locked)
 		drop_bolt(user)
 		return
+
 	if (recent_rack > world.time)
 		return
+
 	recent_rack = world.time + rack_delay
 	rack(user)
 	return

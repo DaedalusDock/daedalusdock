@@ -94,7 +94,7 @@
 	return
 
 /**
- * Called after the weapon has successfully fired it's chambered round.
+ * Called after the weapon has successfully fired it's chambered round, and before update_chamber()
  *
  * Arguments:
  * * user - The mob firing the gun.
@@ -201,7 +201,6 @@
 		firing_burst = FALSE
 
 	update_chamber()
-	update_appearance()
 	return TRUE
 
 /**
@@ -267,7 +266,6 @@
 		// Post-fire things
 		after_firing(user, get_dist(user, target) <= 1, target, message)
 		update_chamber()
-		update_appearance()
 
 		// Make it so we can't fire as fast as the mob can click
 		fire_lockout = TRUE
@@ -313,6 +311,8 @@
 	SHOULD_NOT_OVERRIDE(TRUE) // You probably want do_chamber_update()!
 
 	do_chamber_update(empty_chamber, from_firing, chamber_next_round)
+	after_chambering(from_firing)
+	update_appearance()
 	SEND_SIGNAL(src, COMSIG_GUN_CHAMBER_PROCESSED)
 
 /**
@@ -325,6 +325,10 @@
  */
 /obj/item/gun/proc/do_chamber_update(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	PROTECTED_PROC(TRUE)
+	return
+
+/// Called after a successful shot and update_chamber()
+/obj/item/gun/proc/after_chambering(from_firing)
 	return
 
 #undef DUALWIELD_PENALTY_EXTRA_MULTIPLIER

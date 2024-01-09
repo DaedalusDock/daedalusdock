@@ -141,7 +141,6 @@
 
 	if(A == chambered)
 		chambered = null
-		update_appearance()
 
 	if(A == bayonet)
 		clear_bayonet()

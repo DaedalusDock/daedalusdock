@@ -56,7 +56,6 @@
 	burst_size = 1
 	fire_delay = 0
 	casing_ejector = FALSE
-	weapon_weight = WEAPON_HEAVY
 	bolt_type = BOLT_TYPE_NO_BOLT
 	internal_magazine = TRUE
 	cartridge_wording = "rocket"
@@ -67,6 +66,7 @@
 
 /obj/item/gun/ballistic/rocketlauncher/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	if(backblast)
 		AddElement(/datum/element/backblast)
 

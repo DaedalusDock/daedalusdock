@@ -65,9 +65,6 @@
 	/// Boolean var used to prevent the weapon from firing again while already firing
 	VAR_PRIVATE/firing_burst = FALSE //Prevent the weapon from firing again while already firing
 
-	/// I seriously don't know what this is for.
-	var/weapon_weight = WEAPON_LIGHT
-
 	/// For every turf a fired projectile travels, increase the target bodyzone inaccuracy by this much.
 	var/accuracy_falloff = 3
 
@@ -81,7 +78,7 @@
 	/// Default spread
 	var/spread = 0
 	/// Additional spread when fired while unwielded
-	var/unwielded_spread_bonus = 24
+	var/unwielded_spread_bonus = 5
 	/// Additional spread when dual wielding
 	var/dual_wield_spread = 24
 

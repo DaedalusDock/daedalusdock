@@ -306,11 +306,6 @@
 		shoot_with_empty_chamber(shooter)
 		return FALSE
 
-	var/obj/item/bodypart/other_hand = shooter.has_hand_for_held_index(shooter.get_inactive_hand_index())
-	if(weapon_weight == WEAPON_HEAVY && (shooter.get_inactive_held_item() || !other_hand))
-		to_chat(shooter, span_warning("You need two hands to fire [src]!"))
-		return FALSE
-
 	return TRUE
 
 
@@ -335,8 +330,8 @@
 /obj/item/gun/proc/do_autofire_shot(datum/source, atom/target, mob/living/shooter, params)
 	var/obj/item/gun/akimbo_gun = shooter.get_inactive_held_item()
 	var/bonus_spread = 0
-	if(istype(akimbo_gun) && weapon_weight < WEAPON_MEDIUM)
-		if(akimbo_gun.weapon_weight < WEAPON_MEDIUM && akimbo_gun.can_trigger_gun(shooter))
+	if(istype(akimbo_gun) && !(gun_flags & NO_AKIMBO))
+		if(!(akimbo_gun.gun_flags & NO_AKIMBO) && akimbo_gun.can_trigger_gun(shooter))
 			bonus_spread = dual_wield_spread
 			addtimer(CALLBACK(akimbo_gun, TYPE_PROC_REF(/obj/item/gun, do_fire_gun), target, shooter, TRUE, params, null, bonus_spread), 1)
 

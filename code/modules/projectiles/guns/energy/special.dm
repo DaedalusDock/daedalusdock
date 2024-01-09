@@ -374,8 +374,8 @@
 	desc = "A gun that shoots balls of \"tesla\", whatever that is."
 	ammo_type = list(/obj/item/ammo_casing/energy/tesla_cannon)
 	shaded_charge = TRUE
-	weapon_weight = WEAPON_HEAVY
 
 /obj/item/gun/energy/tesla_cannon/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	AddComponent(/datum/component/automatic_fire, 0.1 SECONDS)

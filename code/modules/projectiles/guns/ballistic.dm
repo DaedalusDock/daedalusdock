@@ -464,10 +464,16 @@
 			playsound(src, 'sound/items/handling/ammobox_pickup.ogg', 20, FALSE)
 			return
 
+	// You only need 1 hand to eject the magazine
 	if(!internal_magazine && magazine)
 		if(!magazine.ammo_count())
 			eject_magazine(user)
 			return
+
+	// They need two hands on the gun, or a free hand in general.
+	if(!wielded && !user.get_empty_held_index())
+		to_chat(user, span_warning("You need a free hand to do that!"))
+		return
 
 	if(bolt_type == BOLT_TYPE_NO_BOLT)
 		chambered = null

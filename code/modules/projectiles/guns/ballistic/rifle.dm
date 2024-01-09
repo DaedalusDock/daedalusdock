@@ -55,7 +55,6 @@
 	desc = "This piece of junk looks like something that could have been used 700 years ago. It feels slightly moist."
 	sawn_desc = "An extremely sawn-off Mosin Nagant, popularly known as an \"Obrez\". \
 		There was probably a reason it wasn't manufactured this short to begin with."
-	weapon_weight = WEAPON_HEAVY
 	icon_state = "moistnugget"
 	inhand_icon_state = "moistnugget"
 	slot_flags = ITEM_SLOT_BACK
@@ -64,6 +63,8 @@
 	knife_x_offset = 27
 	knife_y_offset = 13
 	can_be_sawn_off = TRUE
+	unwielded_spread_bonus = 90
+
 	var/jamming_chance = 20
 	var/unjam_chance = 10
 	var/jamming_increment = 5

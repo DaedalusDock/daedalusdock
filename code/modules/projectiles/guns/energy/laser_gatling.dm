@@ -107,7 +107,8 @@
 	slot_flags = null
 	w_class = WEIGHT_CLASS_HUGE
 	custom_materials = null
-	weapon_weight = WEAPON_HEAVY
+
+	unwielded_spread_bonus = 120
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/minigun)
 	cell_type = /obj/item/stock_parts/cell/crap
 	item_flags = NEEDS_PERMIT | SLOWS_WHILE_IN_HAND

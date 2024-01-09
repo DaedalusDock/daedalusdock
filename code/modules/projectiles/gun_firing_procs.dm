@@ -38,10 +38,6 @@
 		if(target in user.get_all_contents()) //can't shoot stuff inside us.
 			return
 
-	if(weapon_weight == WEAPON_HEAVY && !wielded)
-		to_chat(user, span_warning("You need two hands to fire [src]!"))
-		return
-
 	// * AT THIS POINT, WE ARE ABLE TO PULL THE TRIGGER * //
 	if(!can_fire()) //Just because you can pull the trigger doesn't mean it can shoot.
 		shoot_with_empty_chamber(user)
@@ -55,7 +51,7 @@
 	var/bonus_spread = 0
 	if(istype(user))
 		for(var/obj/item/gun/gun in user.held_items)
-			if(gun == src || gun.weapon_weight >= WEAPON_MEDIUM)
+			if(gun == src || (gun.gun_flags & NO_AKIMBO))
 				continue
 
 			if(gun.can_trigger_gun(user, akimbo_usage = TRUE))
@@ -76,7 +72,7 @@
 
 	var/mob/living/carbon/human/H = user
 	for(var/obj/item/gun/gun in H.held_items)
-		if(gun == src || gun.weapon_weight >= WEAPON_MEDIUM)
+		if(gun == src || (gun.gun_flags & NO_AKIMBO))
 			continue
 
 		if(gun.can_trigger_gun(user, akimbo_usage = TRUE))
@@ -105,7 +101,11 @@
 /obj/item/gun/proc/after_firing(mob/living/user, pointblank = FALSE, atom/pbtarget = null, message = 1)
 	// Shake the user's camera if it wasn't telekinesis
 	if(recoil && !tk_firing(user))
-		shake_camera(user, recoil + 1, recoil)
+		var/real_recoil = recoil
+		if(!wielded && unwielded_spread_bonus > 5)
+			real_recoil *= 2
+
+		shake_camera(user, real_recoil + 1, real_recoil)
 
 	//BANG BANG BANG
 	play_fire_sound()
@@ -235,8 +235,9 @@
 
 	if(spread)
 		randomized_gun_spread =	rand(0,spread)
-		if(!wielded && unwielded_spread_bonus)
-			randomized_gun_spread += unwielded_spread_bonus
+
+	if(ismob(user) && !wielded && unwielded_spread_bonus)
+		randomized_gun_spread += unwielded_spread_bonus
 
 	var/randomized_bonus_spread = rand(base_bonus_spread, bonus_spread)
 

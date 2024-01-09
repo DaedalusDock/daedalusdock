@@ -6,6 +6,8 @@
 	inhand_icon_state = "chronogun"
 	w_class = WEIGHT_CLASS_NORMAL
 
+	gun_flags = NO_AKIMBO
+
 	var/mob/living/current_target
 	var/last_check = 0
 	var/check_delay = 10 //Check los as often as possible, max resolution is SSobj tick though
@@ -13,8 +15,6 @@
 	var/active = FALSE
 	var/datum/beam/current_beam = null
 	var/mounted = 0 //Denotes if this is a handheld or mounted version
-
-	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/medbeam/Initialize(mapload)
 	. = ..()

@@ -23,9 +23,9 @@
 	bolt_wording = "pump"
 	cartridge_wording = "shell"
 	tac_reloads = FALSE
-	weapon_weight = WEAPON_HEAVY
 
 	pb_knockback = 2
+	unwielded_spread_bonus = 40
 
 /obj/item/gun/ballistic/shotgun/blow_up(mob/user)
 	. = 0
@@ -130,11 +130,13 @@
 	righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
 	inhand_x_dimension = 32
 	inhand_y_dimension = 32
-	weapon_weight = WEAPON_MEDIUM
+
+	gun_flags = NO_AKIMBO
 	mag_type = /obj/item/ammo_box/magazine/m12g
 	can_suppress = FALSE
 	burst_size = 1
 	fire_delay = 0
+
 	pin = /obj/item/firing_pin/implant/pindicate
 	fire_sound = 'sound/weapons/gun/shotgun/shot_alt.ogg'
 	actions_types = list()
@@ -248,7 +250,7 @@
 	icon_state = "dshotgun"
 	inhand_icon_state = "shotgun_db"
 	w_class = WEIGHT_CLASS_BULKY
-	weapon_weight = WEAPON_MEDIUM
+	gun_flags = NO_AKIMBO
 	force = 10
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
@@ -273,11 +275,6 @@
 	if(unique_reskin && !current_skin && user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		reskin_obj(user)
 
-/obj/item/gun/ballistic/shotgun/doublebarrel/sawoff(mob/user)
-	. = ..()
-	if(.)
-		weapon_weight = WEAPON_MEDIUM
-
 /obj/item/gun/ballistic/shotgun/doublebarrel/slugs
 	name = "hunting shotgun"
 	desc = "A hunting shotgun used by the wealthy to hunt \"game\"."
@@ -294,7 +291,7 @@
 	inhand_x_dimension = 32
 	inhand_y_dimension = 32
 	mag_type = /obj/item/ammo_box/magazine/internal/shot/bounty
-	weapon_weight = WEAPON_MEDIUM
+	gun_flags = NO_AKIMBO
 	semi_auto = TRUE
 	flags_1 = CONDUCT_1
 	force = 18 //it has a hook on it

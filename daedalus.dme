@@ -3893,6 +3893,7 @@
 #include "code\modules\procedural_mapping\mapGenerators\syndicate.dm"
 #include "code\modules\projectiles\aiming.dm"
 #include "code\modules\projectiles\gun.dm"
+#include "code\modules\projectiles\gun_firing_procs.dm"
 #include "code\modules\projectiles\pins.dm"
 #include "code\modules\projectiles\projectile.dm"
 #include "code\modules\projectiles\ammunition\_ammunition.dm"

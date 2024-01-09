@@ -14,21 +14,24 @@
 	fire_sound_volume = 90
 	rack_sound = 'sound/weapons/gun/rifle/bolt_out.ogg'
 	bolt_drop_sound = 'sound/weapons/gun/rifle/bolt_in.ogg'
+
 	tac_reloads = FALSE
 
 	accuracy_falloff = 2 //Rifles are extremely accurate
+	unwielded_spread_bonus = 50
 
 /obj/item/gun/ballistic/rifle/rack(mob/user = null)
 	if (bolt_locked == FALSE)
 		to_chat(user, span_notice("You open the bolt of \the [src]."))
 		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
-		process_chamber(FALSE, FALSE, FALSE)
+		update_chamber(FALSE, FALSE, FALSE)
 		bolt_locked = TRUE
 		update_appearance()
 		return
+
 	drop_bolt(user)
 
-/obj/item/gun/ballistic/rifle/can_shoot()
+/obj/item/gun/ballistic/rifle/can_fire()
 	if (bolt_locked)
 		return FALSE
 	return ..()
@@ -87,7 +90,7 @@
 				return FALSE
 	..()
 
-/obj/item/gun/ballistic/rifle/boltaction/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/ballistic/rifle/boltaction/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(can_jam)
 		if(chambered.loaded_projectile)
 			if(prob(jamming_chance))
@@ -109,7 +112,7 @@
 /obj/item/gun/ballistic/rifle/boltaction/blow_up(mob/user)
 	. = FALSE
 	if(chambered?.loaded_projectile)
-		process_fire(user, user, FALSE)
+		do_fire_gun(user, user, FALSE)
 		. = TRUE
 
 /obj/item/gun/ballistic/rifle/boltaction/harpoon
@@ -169,7 +172,7 @@
 	can_be_sawn_off = FALSE
 	projectile_damage_multiplier = 0.75
 
-/obj/item/gun/ballistic/rifle/boltaction/pipegun/handle_chamber()
+/obj/item/gun/ballistic/rifle/boltaction/pipegun/do_chamber_update()
 	. = ..()
 	do_sparks(1, TRUE, src)
 
@@ -226,7 +229,7 @@
 /obj/item/gun/ballistic/rifle/enchanted/attack_self()
 	return
 
-/obj/item/gun/ballistic/rifle/enchanted/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/ballistic/rifle/enchanted/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	. = ..()
 	if(!.)
 		return

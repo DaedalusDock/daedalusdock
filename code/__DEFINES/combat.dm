@@ -169,10 +169,12 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 #define WEAPON_LIGHT 1
 #define WEAPON_MEDIUM 2
 #define WEAPON_HEAVY 3
+
 //Gun trigger guards
 #define TRIGGER_GUARD_ALLOW_ALL -1
 #define TRIGGER_GUARD_NONE 0
 #define TRIGGER_GUARD_NORMAL 1
+
 //Gun bolt types
 ///Gun has a bolt, it stays closed while not cycling. The gun must be racked to have a bullet chambered when a mag is inserted.
 ///  Example: c20, shotguns, m90

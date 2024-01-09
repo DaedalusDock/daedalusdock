@@ -30,7 +30,7 @@
 /obj/item/gun/ballistic/shotgun/blow_up(mob/user)
 	. = 0
 	if(chambered?.loaded_projectile)
-		process_fire(user, user, FALSE)
+		do_fire_gun(user, user, FALSE)
 		. = 1
 
 /obj/item/gun/ballistic/shotgun/lethal
@@ -50,7 +50,7 @@
 
 // Automatic Shotguns//
 
-/obj/item/gun/ballistic/shotgun/automatic/shoot_live_shot(mob/living/user)
+/obj/item/gun/ballistic/shotgun/automatic/after_firing(mob/living/user)
 	..()
 	rack()
 
@@ -182,7 +182,7 @@
 	else
 		. += "[icon_state]_no_secondary_mag"
 
-/obj/item/gun/ballistic/shotgun/bulldog/handle_chamber()
+/obj/item/gun/ballistic/shotgun/bulldog/do_chamber_update()
 	if(!secondary_magazine)
 		return ..()
 	var/secondary_shells_left = LAZYLEN(secondary_magazine.stored_ammo)

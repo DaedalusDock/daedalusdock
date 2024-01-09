@@ -738,11 +738,14 @@ DEFINE_INTERACTABLE(/obj/item)
 	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	SEND_SIGNAL(user, COMSIG_MOB_EQUIPPED_ITEM, src, slot)
 
-	if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS) && slot == ITEM_SLOT_HANDS)
-		if(!wield(user))
-			stack_trace("[user] failed to wield a twohanded item.")
-			spawn(0)
-				user.dropItemToGround(src)
+	if(slot == ITEM_SLOT_HANDS)
+		if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+			if(!wield(user))
+				stack_trace("[user] failed to wield a twohanded item.")
+				spawn(0)
+					user.dropItemToGround(src)
+	else if(wielded)
+		unwield(user, FALSE)
 
 	// Give out actions our item has to people who equip it.
 	for(var/datum/action/action as anything in actions)
@@ -775,6 +778,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		return FALSE
 	return TRUE
 
+/// Attempt to wield this item with two hands. Can fail.
 /obj/item/proc/wield(mob/living/user)
 	if(wielded)
 		return FALSE

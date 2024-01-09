@@ -138,7 +138,7 @@
 	else
 		qdel(src)
 
-/obj/item/gun/energy/minigun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/energy/minigun/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(ammo_pack && ammo_pack.overheat >= ammo_pack.overheat_max)
 		to_chat(user, span_warning("The gun's heat sensor locked the trigger to prevent lens damage!"))
 		return

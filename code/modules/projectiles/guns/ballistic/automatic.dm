@@ -348,7 +348,7 @@
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2)
 
-/obj/item/gun/ballistic/automatic/sniper_rifle/reset_semicd()
+/obj/item/gun/ballistic/automatic/sniper_rifle/ready_to_fire()
 	. = ..()
 	if(suppressed)
 		playsound(src, 'sound/machines/eject.ogg', 25, TRUE, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)

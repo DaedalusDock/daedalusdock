@@ -92,7 +92,7 @@
 /obj/item/gun/magic/staff/healing/on_intruder_use(mob/living/user, atom/target)
 	if(target == user)
 		return FALSE
-	healing_beam.process_fire(target, user)
+	healing_beam.do_fire_gun(target, user)
 	return FALSE
 
 /obj/item/gun/magic/staff/healing/dropped(mob/user)
@@ -122,7 +122,7 @@
 /obj/item/gun/magic/staff/chaos/unrestricted
 	allow_intruder_use = TRUE
 
-/obj/item/gun/magic/staff/chaos/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/magic/staff/chaos/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	chambered.projectile_type = pick(allowed_projectile_types)
 	. = ..()
 
@@ -135,7 +135,7 @@
 		return TRUE
 	balloon_alert(user, "chaos!")
 	user.dropItemToGround(src, TRUE)
-	process_fire(user, user, FALSE)
+	do_fire_gun(user, user, FALSE)
 	return FALSE
 
 /obj/item/gun/magic/staff/door

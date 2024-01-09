@@ -34,7 +34,7 @@
 	///set to true so the gun is given an empty cell
 	var/dead_cell = FALSE
 
-/obj/item/gun/energy/fire_sounds()
+/obj/item/gun/energy/play_fire_sound()
 	// What frequency the energy gun's sound will make
 	var/frequency_to_use
 
@@ -125,7 +125,7 @@
 	if(ammo_type.len > 1 && can_select)
 		select_fire(user)
 
-/obj/item/gun/energy/can_shoot()
+/obj/item/gun/energy/can_fire()
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 	return !QDELETED(cell) ? (cell.charge >= shot.e_cost) : FALSE
 
@@ -146,21 +146,21 @@
 			if(!chambered.loaded_projectile)
 				chambered.newshot()
 
-/obj/item/gun/energy/handle_chamber()
+/obj/item/gun/energy/do_chamber_update()
 	if(chambered && !chambered.loaded_projectile) //if loaded_projectile is null, i.e the shot has been fired...
 		var/obj/item/ammo_casing/energy/shot = chambered
 		cell.use(shot.e_cost)//... drain the cell cell
 	chambered = null //either way, released the prepared shot
 	recharge_newshot() //try to charge a new shot
 
-/obj/item/gun/energy/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
-	if(!chambered && can_shoot())
-		process_chamber() // If the gun was drained and then recharged, load a new shot.
+/obj/item/gun/energy/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	if(!chambered && can_fire())
+		update_chamber() // If the gun was drained and then recharged, load a new shot.
 	return ..()
 
-/obj/item/gun/energy/process_burst(mob/living/user, atom/target, message = TRUE, params = null, zone_override="", sprd = 0, randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0)
-	if(!chambered && can_shoot())
-		process_chamber() // Ditto.
+/obj/item/gun/energy/do_fire_in_burst(mob/living/user, atom/target, message = TRUE, params = null, zone_override="", sprd = 0, randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0)
+	if(!chambered && can_fire())
+		update_chamber() // Ditto.
 	return ..()
 
 /obj/item/gun/energy/proc/select_fire(mob/living/user)
@@ -225,11 +225,11 @@
 
 ///Used by update_icon_state() and update_overlays()
 /obj/item/gun/energy/proc/get_charge_ratio()
-	return can_shoot() ? CEILING(clamp(cell.charge / cell.maxcharge, 0, 1) * charge_sections, 1) : 0
+	return can_fire() ? CEILING(clamp(cell.charge / cell.maxcharge, 0, 1) * charge_sections, 1) : 0
 	// Sets the ratio to 0 if the gun doesn't have enough charge to fire, or if its power cell is removed.
 
 /obj/item/gun/energy/suicide_act(mob/living/user)
-	if(istype(user) && can_shoot() && can_trigger_gun(user) && user.get_bodypart(BODY_ZONE_HEAD))
+	if(istype(user) && can_fire() && can_trigger_gun(user) && user.get_bodypart(BODY_ZONE_HEAD))
 		user.visible_message(span_suicide("[user] is putting the barrel of [src] in [user.p_their()] mouth. It looks like [user.p_theyre()] trying to commit suicide!"))
 		sleep(2.5 SECONDS)
 		if(user.is_holding(src))
@@ -258,7 +258,7 @@
 
 
 /obj/item/gun/energy/ignition_effect(atom/A, mob/living/user)
-	if(!can_shoot() || !ammo_type[select])
+	if(!can_fire() || !ammo_type[select])
 		shoot_with_empty_chamber()
 		. = ""
 	else

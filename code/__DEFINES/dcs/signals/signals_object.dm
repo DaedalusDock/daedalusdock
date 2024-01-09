@@ -294,16 +294,16 @@
 
 // /obj/item/gun signals
 
-///called in /obj/item/gun/fire_gun (user, target, flag, params)
+///called in /obj/item/gun/try_fire_gun (user, target, flag, params)
 #define COMSIG_GUN_TRY_FIRE "gun_try_fire"
 	#define COMPONENT_CANCEL_GUN_FIRE (1<<0)
-///called in /obj/item/gun/process_fire (src, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (src, target, params, zone_override)
 #define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GUN_FIRED "gun_fired"
-///called in /obj/item/gun/process_chamber (src)
+///called in /obj/item/gun/update_chamber (src)
 #define COMSIG_GUN_CHAMBER_PROCESSED "gun_chamber_processed"
-///called in /obj/item/gun/ballistic/process_chamber (casing)
+///called in /obj/item/gun/ballistic/update_chamber (casing)
 #define COMSIG_CASING_EJECTED "casing_ejected"
 
 // Jetpack things
@@ -328,11 +328,11 @@
 
 // /obj/item/grenade signals
 
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GRENADE_DETONATE "grenade_prime"
 //called from many places in grenade code (armed_by, nade, det_time, delayoverride)
 #define COMSIG_MOB_GRENADE_ARMED "grenade_mob_armed"
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GRENADE_ARMED "grenade_armed"
 
 // /obj/projectile signals (sent to the firer)

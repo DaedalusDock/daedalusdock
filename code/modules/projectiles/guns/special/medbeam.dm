@@ -56,7 +56,7 @@
 		to_chat(loc, span_warning("You lose control of the beam!"))
 	LoseTarget()
 
-/obj/item/gun/medbeam/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/medbeam/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(isliving(user))
 		add_fingerprint(user)
 

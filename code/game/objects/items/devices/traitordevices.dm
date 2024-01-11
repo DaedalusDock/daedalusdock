@@ -237,6 +237,7 @@ effective or pretty fucking useless.
 	if(user.get_item_by_slot(ITEM_SLOT_BELT) != src)
 		Deactivate()
 		return
+
 	var/turf/T = get_turf(src)
 	if(on)
 		var/lumcount = T.get_lumcount()

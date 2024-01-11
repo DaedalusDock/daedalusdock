@@ -83,4 +83,4 @@
 		leg.create_wound_easy(/datum/wound/puncture/gaping, 30)
 		log_combat(attacker, target, "broke the kneecaps of", weapon)
 		attacker.do_attack_animation(target, used_item = weapon)
-		playsound(source = get_turf(weapon), soundin = weapon.hitsound, vol = weapon.get_clamped_volume(), vary = TRUE)
+		playsound(source = get_turf(weapon), soundin = weapon.get_hitsound(), vol = weapon.get_clamped_volume(), vary = TRUE)

@@ -20,7 +20,7 @@
 	)
 	min_duration = 3 SECONDS
 	max_duration = 6 SECONDS
-	shock_level = 40
+	pain_given =40
 	delicate = 1
 
 /datum/surgery_step/bone/set_bone/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -72,7 +72,7 @@
 	blood_level = 1
 	min_duration = 2 SECONDS
 	max_duration = 3 SECONDS
-	shock_level = 20
+	pain_given =20
 
 /datum/surgery_step/bone/finish/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()

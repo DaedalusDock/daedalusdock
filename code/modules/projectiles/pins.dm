@@ -283,7 +283,7 @@
 	var/datum/bank_account/credit_card_details = user.get_bank_account()
 	if(credit_card_details in gun_owners)
 		if(multi_payment && credit_card_details)
-			if(!gun.can_shoot())
+			if(!gun.can_fire())
 				return TRUE //So you don't get charged for attempting to fire an empty gun.
 			if(credit_card_details.adjust_money(-payment_amount, "Firing Pin: Gun Rent"))
 				if(pin_owner)

@@ -5,7 +5,7 @@
 /datum/surgery_step/internal
 	can_infect = 1
 	blood_level = 1
-	shock_level = 40
+	pain_given =40
 	delicate = 1
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 	abstract_type = /datum/surgery_step/internal

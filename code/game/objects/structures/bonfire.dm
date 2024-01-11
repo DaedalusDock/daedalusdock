@@ -38,6 +38,10 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
+/obj/structure/bonfire/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/structure/bonfire/attackby(obj/item/used_item, mob/living/user, params)
 	if(istype(used_item, /obj/item/stack/rods) && !can_buckle && !grill)
 		var/obj/item/stack/rods/rods = used_item

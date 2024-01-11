@@ -169,7 +169,7 @@
 			// Body is handled by affect_touch()
 			exposed_mob.acid_act(acidpwr, reac_volume, affect_body = FALSE)
 		spawn(-1)
-			exposed_mob.emote("scream")
+			exposed_mob.emote("agony")
 
 /datum/reagent/toxin/acid/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()

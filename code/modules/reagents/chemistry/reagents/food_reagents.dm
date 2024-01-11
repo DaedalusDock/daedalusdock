@@ -256,20 +256,12 @@
 	switch(current_cycle)
 		if(1 to 15)
 			heating = 5
-			if(isslime(C))
-				heating = rand(5, 20)
 		if(15 to 25)
 			heating = 10
-			if(isslime(C))
-				heating = rand(10, 20)
 		if(25 to 35)
 			heating = 15
-			if(isslime(C))
-				heating = rand(15, 20)
 		if(35 to INFINITY)
 			heating = 20
-			if(isslime(C))
-				heating = rand(20, 25)
 	C.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
 	return ..()
 

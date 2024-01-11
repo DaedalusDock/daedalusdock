@@ -129,7 +129,13 @@
 #define COMSIG_ITEM_ATTACK_ZONE "item_attack_zone"
 ///from base of obj/item/hit_reaction(): (list/args)
 #define COMSIG_ITEM_HIT_REACT "item_hit_react"
-	#define COMPONENT_HIT_REACTION_BLOCK (1<<0)
+
+#define COMSIG_ITEM_CHECK_BLOCK "item_check_block"
+	/// Hit was blocked by the component, continue to hit_reaction
+	#define COMPONENT_CHECK_BLOCK_BLOCKED (1<<0)
+	/// Hit was blocked by the component, do not continue into hit_reaction()
+	#define COMPONENT_CHECK_BLOCK_SKIP_REACTION (1<<1)
+
 ///called on item when microwaved (): (obj/machinery/microwave/M)
 #define COMSIG_ITEM_MICROWAVE_ACT "microwave_act"
 	#define COMPONENT_SUCCESFUL_MICROWAVE (1<<0)
@@ -288,16 +294,16 @@
 
 // /obj/item/gun signals
 
-///called in /obj/item/gun/fire_gun (user, target, flag, params)
+///called in /obj/item/gun/try_fire_gun (user, target, flag, params)
 #define COMSIG_GUN_TRY_FIRE "gun_try_fire"
 	#define COMPONENT_CANCEL_GUN_FIRE (1<<0)
-///called in /obj/item/gun/process_fire (src, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (src, target, params, zone_override)
 #define COMSIG_MOB_FIRED_GUN "mob_fired_gun"
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GUN_FIRED "gun_fired"
-///called in /obj/item/gun/process_chamber (src)
+///called in /obj/item/gun/update_chamber (src)
 #define COMSIG_GUN_CHAMBER_PROCESSED "gun_chamber_processed"
-///called in /obj/item/gun/ballistic/process_chamber (casing)
+///called in /obj/item/gun/ballistic/update_chamber (casing)
 #define COMSIG_CASING_EJECTED "casing_ejected"
 
 // Jetpack things
@@ -322,11 +328,11 @@
 
 // /obj/item/grenade signals
 
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GRENADE_DETONATE "grenade_prime"
 //called from many places in grenade code (armed_by, nade, det_time, delayoverride)
 #define COMSIG_MOB_GRENADE_ARMED "grenade_mob_armed"
-///called in /obj/item/gun/process_fire (user, target, params, zone_override)
+///called in /obj/item/gun/do_fire_gun (user, target, params, zone_override)
 #define COMSIG_GRENADE_ARMED "grenade_armed"
 
 // /obj/projectile signals (sent to the firer)

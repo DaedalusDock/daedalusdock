@@ -699,12 +699,11 @@ This is here to make the tiles around the station mininuke change when it's arme
 
 /obj/item/disk/nuclear/process()
 	if(fake)
-		STOP_PROCESSING(SSobj, src)
+		. = PROCESS_KILL
 		CRASH("A fake nuke disk tried to call process(). Who the fuck and how the fuck")
 
 	if(!CONFIG_GET(flag/lone_op_nag))
-		STOP_PROCESSING(SSobj, src)
-		return
+		return PROCESS_KILL
 
 	var/turf/new_turf = get_turf(src)
 

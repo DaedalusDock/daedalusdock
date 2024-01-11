@@ -1430,16 +1430,6 @@
 /mob/living/carbon/proc/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
 
-/mob/living/carbon/get_melee_inaccuracy()
-	. = ..()
-	if(getPain() > 100)
-		. += 10
-
-	if(shock_stage > 30)
-		. += 30
-	else if(shock_stage > 10)
-		. += 10
-
 /mob/living/carbon/has_mouth()
 	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)
 	if(!H?.can_ingest_reagents)

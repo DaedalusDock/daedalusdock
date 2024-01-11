@@ -125,7 +125,7 @@
 
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		changeNext_move(CLICK_CD_HANDCUFFED)   //Doing shit in cuffs shall be vey slow
-		UnarmedAttack(A, FALSE, modifiers)
+		UnarmedAttack(A, Adjacent(A), modifiers)
 		return
 
 	if(throw_mode)
@@ -153,7 +153,7 @@
 			if(ismob(A))
 				changeNext_move(CLICK_CD_MELEE)
 
-			UnarmedAttack(A, FALSE, modifiers)
+			UnarmedAttack(A, TRUE, modifiers)
 		return
 
 	//Can't reach anything else in lockers or other weirdness
@@ -173,7 +173,7 @@
 		else
 			if(ismob(A))
 				changeNext_move(CLICK_CD_MELEE)
-			UnarmedAttack(A,1,modifiers)
+			UnarmedAttack(A, TRUE,modifiers)
 	else
 		if(W)
 			if(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -182,7 +182,7 @@
 				if(after_attack_secondary_result == SECONDARY_ATTACK_CALL_NORMAL)
 					W.afterattack(A, src, FALSE, params)
 			else
-				W.afterattack(A,src,0,params)
+				W.afterattack(A,src, FALSE, params)
 		else
 			if(LAZYACCESS(modifiers, RIGHT_CLICK))
 				ranged_secondary_attack(A, modifiers)

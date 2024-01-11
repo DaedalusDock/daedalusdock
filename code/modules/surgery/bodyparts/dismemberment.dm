@@ -18,11 +18,13 @@
 	if(!silent)
 		var/list/messages = violent_dismember_messages(dismember_type, clean)
 		if(length(messages))
-			owner.visible_message(
+			limb_owner.visible_message(
 				span_danger("[messages[1]]"),
 				span_userdanger("[messages[2]]"),
 				span_hear("[messages[3]]")
 			)
+		if(!(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(limb_owner, TRAIT_NO_PAINSHOCK) && prob(50))
+			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob/living/carbon, pain_emote), PAIN_AMT_AGONIZING, TRUE)
 
 	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
 	var/obj/item/bodypart/stump

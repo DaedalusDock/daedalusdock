@@ -33,22 +33,27 @@ Slimecrossing Weapons
 	switch(damtype)
 		if(BRUTE)
 			hitsound = 'sound/weapons/bladeslice.ogg'
+			wielded_hitsound = 'sound/weapons/bladeslice.ogg'
 			attack_verb_continuous = string_list(list("slashes", "slices", "cuts"))
 			attack_verb_simple = string_list(list("slash", "slice", "cut"))
 		if(BURN)
 			hitsound = 'sound/weapons/sear.ogg'
+			wielded_hitsound = 'sound/weapons/sear.ogg'
 			attack_verb_continuous = string_list(list("burns", "singes", "heats"))
 			attack_verb_simple = string_list(list("burn", "singe", "heat"))
 		if(TOX)
 			hitsound = 'sound/weapons/pierce.ogg'
+			wielded_hitsound = 'sound/weapons/pierce.ogg'
 			attack_verb_continuous = string_list(list("poisons", "doses", "toxifies"))
 			attack_verb_simple = string_list(list("poison", "dose", "toxify"))
 		if(OXY)
 			hitsound = 'sound/effects/space_wind.ogg'
+			wielded_hitsound = 'sound/effects/space_wind.ogg'
 			attack_verb_continuous = string_list(list("suffocates", "winds", "vacuums"))
 			attack_verb_simple = string_list(list("suffocate", "wind", "vacuum"))
 		if(CLONE)
 			hitsound = 'sound/items/geiger/ext1.ogg'
+			wielded_hitsound = 'sound/items/geiger/ext1.ogg'
 			attack_verb_continuous = string_list(list("irradiates", "mutates", "maligns"))
 			attack_verb_simple = string_list(list("irradiate", "mutate", "malign"))
 	return ..()

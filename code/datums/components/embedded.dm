@@ -251,7 +251,7 @@
 
 		if(limb_owner)
 			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
-			limb_owner.emote("scream")
+			limb_owner.emote("pain")
 
 			if(!IS_ORGANIC_LIMB(limb))
 				limb_owner.visible_message(

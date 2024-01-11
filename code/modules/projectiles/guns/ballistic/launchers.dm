@@ -56,7 +56,6 @@
 	burst_size = 1
 	fire_delay = 0
 	casing_ejector = FALSE
-	weapon_weight = WEAPON_HEAVY
 	bolt_type = BOLT_TYPE_NO_BOLT
 	internal_magazine = TRUE
 	cartridge_wording = "rocket"
@@ -67,6 +66,7 @@
 
 /obj/item/gun/ballistic/rocketlauncher/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	if(backblast)
 		AddElement(/datum/element/backblast)
 
@@ -88,7 +88,7 @@
 /obj/item/gun/ballistic/rocketlauncher/suicide_act(mob/living/user)
 	user.visible_message(span_warning("[user] aims [src] at the ground! It looks like [user.p_theyre()] performing a sick rocket jump!"), \
 		span_userdanger("You aim [src] at the ground to perform a bisnasty rocket jump..."))
-	if(can_shoot())
+	if(can_fire())
 		user.notransform = TRUE
 		playsound(src, 'sound/vehicles/rocketlaunch.ogg', 80, TRUE, 5)
 		animate(user, pixel_z = 300, time = 30, easing = LINEAR_EASING)
@@ -96,7 +96,7 @@
 		animate(user, pixel_z = 0, time = 5, easing = LINEAR_EASING)
 		sleep(0.5 SECONDS)
 		user.notransform = FALSE
-		process_fire(user, user, TRUE)
+		do_fire_gun(user, user, TRUE)
 		if(!QDELETED(user)) //if they weren't gibbed by the explosion, take care of them for good.
 			user.gib()
 		return MANUAL_SUICIDE

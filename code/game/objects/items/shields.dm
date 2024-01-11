@@ -2,6 +2,7 @@
 	name = "shield"
 	icon = 'icons/obj/shields.dmi'
 	block_chance = 50
+	block_sound = 'sound/weapons/block/block_shield.ogg'
 	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
 	var/transparent = FALSE // makes beam projectiles pass through the shield
 
@@ -27,16 +28,22 @@
 	transparent = TRUE
 	max_integrity = 75
 
-/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+
+/obj/item/shield/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(transparent && (hitby.pass_flags & PASSGLASS))
 		return FALSE
-	if(attack_type == THROWN_PROJECTILE_ATTACK)
-		final_block_chance += 30
-	if(attack_type == LEAP_ATTACK)
-		final_block_chance = 100
 	. = ..()
-	if(.)
-		on_shield_block(owner, hitby, attack_text, damage, attack_type)
+	if(attack_type == THROWN_PROJECTILE_ATTACK)
+		. += 30
+	if(attack_type == LEAP_ATTACK)
+		. += 100
+
+/obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type, block_success)
+	. = ..()
+	if(!.)
+		return
+
+	on_shield_block(owner, hitby, attack_text, damage, attack_type)
 
 /obj/item/shield/riot/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/melee/baton))
@@ -139,7 +146,7 @@
 	. = embedded_flash.attack_self(user)
 	update_appearance()
 
-/obj/item/shield/riot/flash/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/riot/flash/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, damage, attack_type)
 	. = ..()
 	if (. && !embedded_flash.burnt_out)
 		embedded_flash.activate()
@@ -197,6 +204,8 @@
 	force = 3
 	throwforce = 3
 	throw_speed = 3
+	block_chance = -INFINITY
+	block_sound = 'sound/weapons/block/block_energy.ogg' //reflect
 
 	/// Whether the shield is currently extended and protecting the user.
 	var/enabled = FALSE
@@ -218,9 +227,6 @@
 		hitsound_on = hitsound, \
 		clumsy_check = !can_clumsy_use)
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
-
-/obj/item/shield/energy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	return FALSE
 
 /obj/item/shield/energy/IsReflect()
 	return enabled
@@ -266,7 +272,7 @@
 		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
-/obj/item/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/riot/tele/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(extended)
 		return ..()
 	return FALSE

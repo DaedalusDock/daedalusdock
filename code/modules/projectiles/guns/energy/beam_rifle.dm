@@ -25,7 +25,7 @@
 	ammo_y_offset = 3
 	modifystate = FALSE
 	charge_sections = 1
-	weapon_weight = WEAPON_HEAVY
+	unwielded_spread_bonus = 30
 	w_class = WEIGHT_CLASS_BULKY
 	ammo_type = list(/obj/item/ammo_casing/energy/beam_rifle/hitscan)
 	actions_types = list(/datum/action/item_action/zoom_lock_action)

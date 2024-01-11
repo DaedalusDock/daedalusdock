@@ -76,7 +76,7 @@
 		if(carbon_user.wear_mask)
 			in_mouth = ", barely missing [carbon_user.p_their()] nose"
 	. = span_warning("[user] swings [user.p_their()] [name][in_mouth]. [user.p_they(TRUE)] light[user.p_s()] [user.p_their()] [atom.name] in the process.")
-	playsound(loc, hitsound, get_clamped_volume(), TRUE, -1)
+	playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, -1)
 	add_fingerprint(user)
 
 /*
@@ -164,7 +164,7 @@
 	block_chance = 50
 	embedding = list("embed_chance" = 75, "impact_pain_mult" = 10)
 
-/obj/item/melee/energy/sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/melee/energy/sword/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(blade_active)
 		return ..()
 	return FALSE
@@ -208,7 +208,7 @@
 	active_force = 30
 	sword_color_icon = null // Stops icon from breaking when turned on.
 
-/obj/item/melee/energy/sword/cyborg/saw/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/melee/energy/sword/cyborg/saw/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	return FALSE
 
 // The colored energy swords we all know and love.

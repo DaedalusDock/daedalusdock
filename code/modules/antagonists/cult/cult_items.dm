@@ -38,18 +38,17 @@ Striking a noncultist, however, will tear their flesh."}
 
 	AddComponent(/datum/component/cult_ritual_item, span_cult(examine_text))
 
-/obj/item/melee/cultblade/dagger/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	var/block_message = "[owner] parries [attack_text] with [src]"
-	if(owner.get_active_held_item() != src)
-		block_message = "[owner] parries [attack_text] with [src] in their offhand"
+/obj/item/melee/cultblade/dagger/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	if(IS_CULTIST(wielder) && attack_type != PROJECTILE_ATTACK)
+		return ..()
 
-	if(IS_CULTIST(owner) && prob(final_block_chance) && attack_type != PROJECTILE_ATTACK)
-		new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
-		playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
-		owner.visible_message(span_danger("[block_message]"))
-		return TRUE
-	else
-		return FALSE
+	return FALSE
+
+/obj/item/melee/cultblade/dagger/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
+		return ..(do_message = FALSE)
+	return ..()
 
 /obj/item/melee/cultblade
 	name = "eldritch longsword"
@@ -67,7 +66,11 @@ Striking a noncultist, however, will tear their flesh."}
 	w_class = WEIGHT_CLASS_BULKY
 	force = 30 // whoever balanced this got beat in the head by a bible too many times good lord
 	throwforce = 10
+
 	block_chance = 50 // now it's officially a cult esword
+	block_sound = 'sound/weapons/block/parry_metal.ogg'
+	block_effect =/obj/effect/temp_visual/cult/sparks
+
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "rends")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
@@ -76,14 +79,18 @@ Striking a noncultist, however, will tear their flesh."}
 	. = ..()
 	AddComponent(/datum/component/butchering, 40, 100)
 
-/obj/item/melee/cultblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(IS_CULTIST(owner) && prob(final_block_chance))
-		new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
-		playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
-		owner.visible_message(span_danger("[owner] parries [attack_text] with [src]!"))
-		return TRUE
-	else
-		return FALSE
+/obj/item/melee/cultblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	if(IS_CULTIST(wielder))
+		return ..()
+
+	return FALSE
+
+/obj/item/melee/cultblade/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
+		return ..(do_message = FALSE)
+
+	return ..()
 
 /obj/item/melee/cultblade/attack(mob/living/target, mob/living/carbon/human/user)
 	if(!IS_CULTIST(user))
@@ -151,8 +158,8 @@ Striking a noncultist, however, will tear their flesh."}
 	. = ..()
 	jaunt = new(src)
 	linked_action = new(src)
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	AddComponent(/datum/component/butchering, 50, 80)
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 
 /obj/item/cult_bastard/Destroy()
 	QDEL_NULL(jaunt)
@@ -195,22 +202,16 @@ Striking a noncultist, however, will tear their flesh."}
 
 /obj/item/cult_bastard/IsReflect()
 	if(spinning)
-		playsound(src, pick('sound/weapons/effects/ric1.ogg', 'sound/weapons/effects/ric2.ogg', 'sound/weapons/effects/ric3.ogg', 'sound/weapons/effects/ric4.ogg', 'sound/weapons/effects/ric5.ogg'), 100, TRUE)
 		return TRUE
 	else
-		..()
+		return ..()
 
-/obj/item/cult_bastard/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(prob(final_block_chance))
-		if(attack_type == PROJECTILE_ATTACK)
-			owner.visible_message(span_danger("[owner] deflects [attack_text] with [src]!"))
-			playsound(src, pick('sound/weapons/effects/ric1.ogg', 'sound/weapons/effects/ric2.ogg', 'sound/weapons/effects/ric3.ogg', 'sound/weapons/effects/ric4.ogg', 'sound/weapons/effects/ric5.ogg'), 100, TRUE)
-			return TRUE
-		else
-			playsound(src, 'sound/weapons/parry.ogg', 75, TRUE)
-			owner.visible_message(span_danger("[owner] parries [attack_text] with [src]!"))
-			return TRUE
-	return FALSE
+/obj/item/cult_bastard/play_block_sound(mob/living/carbon/human/wielder, attack_type)
+	if(attack_type == PROJECTILE_ATTACK)
+		playsound(src, pick('sound/weapons/effects/ric1.ogg', 'sound/weapons/effects/ric2.ogg', 'sound/weapons/effects/ric3.ogg', 'sound/weapons/effects/ric4.ogg', 'sound/weapons/effects/ric5.ogg'), 100, TRUE)
+		return
+
+	return ..()
 
 /obj/item/cult_bastard/afterattack(atom/target, mob/user, proximity, click_parameters)
 	. = ..()
@@ -707,25 +708,24 @@ Striking a noncultist, however, will tear their flesh."}
 	base_icon_state = "occultpoleaxe"
 	inhand_icon_state = "occultpoleaxe0"
 	w_class = WEIGHT_CLASS_HUGE
+
 	force = 17
+	force_wielded = 24
 	throwforce = 40
 	throw_speed = 2
 	armor_penetration = 30
 	block_chance = 30
+
 	slot_flags = null
 	attack_verb_continuous = list("attacks", "slices", "shreds", "sunders", "lacerates", "cleaves")
 	attack_verb_simple = list("attack", "slice", "shred", "sunder", "lacerate", "cleave")
 	sharpness = SHARP_EDGED
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	var/datum/action/innate/cult/halberd/halberd_act
-	var/wielded = FALSE // track wielded status on item
 
 /obj/item/melee/cultblade/halberd/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	AddComponent(/datum/component/butchering, 100, 90)
-	AddComponent(/datum/component/two_handed, force_unwielded=17, force_wielded=24)
 
 /// triggered on wield of two handed item
 /obj/item/melee/cultblade/halberd/proc/on_wield(obj/item/source, mob/user)
@@ -778,22 +778,24 @@ Striking a noncultist, however, will tear their flesh."}
 			playsound(T, 'sound/effects/glassbr3.ogg', 100)
 	qdel(src)
 
-/obj/item/melee/cultblade/halberd/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(wielded)
-		final_block_chance *= 2
-	if(IS_CULTIST(owner) && prob(final_block_chance))
-		if(attack_type == PROJECTILE_ATTACK)
-			owner.visible_message(span_danger("[owner] deflects [attack_text] with [src]!"))
-			playsound(get_turf(owner), pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, TRUE)
-			new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
-			return TRUE
-		else
-			playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
-			owner.visible_message(span_danger("[owner] parries [attack_text] with [src]!"))
-			new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
-			return TRUE
-	else
+/obj/item/melee/cultblade/halberd/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	if(!IS_CULTIST(wielder))
 		return FALSE
+	. = ..()
+	if(wielded)
+		. *= 2
+
+/obj/item/melee/cultblade/halberd/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(attack_type == PROJECTILE_ATTACK)
+		wielder.visible_message(span_danger("[wielder] deflects [attack_text] with [src]!"))
+		return ..(do_message = FALSE)
+	return ..()
+
+/obj/item/melee/cultblade/halberd/play_block_sound(mob/living/carbon/wielder, attack_type)
+	if(attack_type == PROJECTILE_ATTACK)
+		playsound(wielder, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, TRUE)
+		return
+	return ..()
 
 /datum/action/innate/cult/halberd
 	name = "Bloody Bond"
@@ -1025,9 +1027,14 @@ Striking a noncultist, however, will tear their flesh."}
 	attack_verb_continuous = list("bumps", "prods")
 	attack_verb_simple = list("bump", "prod")
 	hitsound = 'sound/weapons/smash.ogg'
+	block_sound = 'sound/weapons/block/parry_metal.ogg'
 	var/illusions = 2
 
-/obj/item/shield/mirror/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/shield/mirror/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
+	. = ..()
+	if(!.)
+		return
+
 	if(IS_CULTIST(owner))
 		if(istype(hitby, /obj/projectile))
 			var/obj/projectile/P = hitby
@@ -1040,25 +1047,23 @@ Striking a noncultist, however, will tear their flesh."}
 					owner.Paralyze(25)
 					qdel(src)
 					return FALSE
+
 			if(P.reflectable & REFLECT_NORMAL)
 				return FALSE //To avoid reflection chance double-dipping with block chance
-		. = ..()
-		if(.)
-			playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
-			if(illusions > 0)
-				illusions--
-				addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/shield/mirror, readd)), 450)
-				if(prob(60))
-					var/mob/living/simple_animal/hostile/illusion/M = new(owner.loc)
-					M.faction = list("cult")
-					M.Copy_Parent(owner, 70, 10, 5)
-					M.move_to_delay = owner.cached_multiplicative_slowdown
-				else
-					var/mob/living/simple_animal/hostile/illusion/escape/E = new(owner.loc)
-					E.Copy_Parent(owner, 70, 10)
-					E.GiveTarget(owner)
-					E.Goto(owner, owner.cached_multiplicative_slowdown, E.minimum_distance)
-			return TRUE
+
+		if(illusions > 0)
+			illusions--
+			addtimer(CALLBACK(src, TYPE_PROC_REF(/obj/item/shield/mirror, readd)), 450)
+			if(prob(60))
+				var/mob/living/simple_animal/hostile/illusion/M = new(owner.loc)
+				M.faction = list("cult")
+				M.Copy_Parent(owner, 70, 10, 5)
+				M.move_to_delay = owner.cached_multiplicative_slowdown
+			else
+				var/mob/living/simple_animal/hostile/illusion/escape/E = new(owner.loc)
+				E.Copy_Parent(owner, 70, 10)
+				E.GiveTarget(owner)
+				E.Goto(owner, owner.cached_multiplicative_slowdown, E.minimum_distance)
 	else
 		if(prob(50))
 			var/mob/living/simple_animal/hostile/illusion/H = new(owner.loc)

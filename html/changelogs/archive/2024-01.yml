@@ -50,3 +50,21 @@
   - rscadd: Mobs now jiggle when attacked. Jiggle jiggle.
   - rscadd: Increased brutality of combat.
   - soundadd: Added new punch sound effects.
+2024-01-11:
+  Kapu1178:
+  - rscadd: A wielding hotkey.
+  - refactor: Rewrites blocking to be more sane. Adds new audiovisual feedback to
+      successful blocks.
+  - balance: Adjusted pain numbers.
+  - refactor: Changed how melee accuracy works to a better(?) distribution.
+  - rscadd: Added new feedback for being in pain.
+  - soundadd: Added new sounds for being in pain.
+  - refactor: Alot of gun code.
+  - balance: Firing a gun without wielding it will yield increased spread.
+  - bugfix: Attempting to akimbo guns will no longer fail if the first gun fails to
+      fire.
+  - bugfix: Guns with locking bolts will no longer freak out if they run out of ammo
+      in certain situations.
+  - bugfix: Suppressing a gun will no longer remove it's pointblank knockback.
+  - bugfix: You are no longer able to dry fire guns you can't fire at all.
+  - bugfix: Alot more gun bugs.

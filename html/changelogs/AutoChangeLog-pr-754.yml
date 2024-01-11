@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Security Huds now require using a click action to scan a target. This
+      will print their record information to the chat, and display an on-screen visual.
+  - rscadd: Glasses color is now a pref and not a weird undocumented alt click feature.

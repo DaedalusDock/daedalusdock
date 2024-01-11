@@ -518,7 +518,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		if(locate(/obj/structure/bed/dogbed/ian) in T)
 			new /obj/item/toy/balloon/corgi(T)
 		else
-			openturfs += thing
+			openturfs += T
 
 		var/table_or_null = locate(/obj/structure/table/reinforced) in T
 		if(table_or_null)

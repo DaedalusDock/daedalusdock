@@ -81,7 +81,7 @@ SUBSYSTEM_DEF(mapping)
 			config = old_config
 	initialize_biomes()
 	loadWorld()
-	repopulate_sorted_areas()
+	require_area_resort()
 	process_teleport_locs() //Sets up the wizard teleport locations
 	preloadTemplates()
 
@@ -107,8 +107,8 @@ SUBSYSTEM_DEF(mapping)
 	// Run map generation after ruin generation to prevent issues
 	run_map_generation()
 	// Add the transit level
-	transit = add_new_zlevel("Transit/Reserved", ZTRAITS_TRANSIT)
-	repopulate_sorted_areas()
+	transit = add_new_zlevel("Transit/Reserved", ZTRAITS_TRANSIT, contain_turfs = FALSE)
+	require_area_resort()
 	// Set up Z-level transitions.
 	setup_map_transitions()
 	generate_station_area_list()
@@ -121,6 +121,7 @@ SUBSYSTEM_DEF(mapping)
 	// Cache for sonic speed
 	var/list/unused_turfs = src.unused_turfs
 	var/list/world_contents = GLOB.areas_by_type[world.area].contents
+	var/list/world_turf_contents = GLOB.areas_by_type[world.area].contained_turfs
 	var/list/lists_to_reserve = src.lists_to_reserve
 	var/index = 0
 	while(index < length(lists_to_reserve))
@@ -128,14 +129,18 @@ SUBSYSTEM_DEF(mapping)
 		var/packetlen = length(packet)
 		while(packetlen)
 			if(MC_TICK_CHECK)
-				lists_to_reserve.Cut(1, index)
-				return
+				if(index)
+					lists_to_reserve.Cut(1, index)
+					return
 			var/turf/T = packet[packetlen]
 			T.empty(RESERVED_TURF_TYPE, RESERVED_TURF_TYPE, null, TRUE)
 			LAZYINITLIST(unused_turfs["[T.z]"])
 			unused_turfs["[T.z]"] |= T
+			var/area/old_area = T.loc
+			old_area.turfs_to_uncontain += T
 			T.flags_1 |= UNUSED_RESERVATION_TURF
 			world_contents += T
+			world_turf_contents += T
 			packet.len--
 			packetlen = length(packet)
 
@@ -182,12 +187,26 @@ SUBSYSTEM_DEF(mapping)
 	return max_gravity
 
 /// Takes a z level datum, and tells the mapping subsystem to manage it
-/datum/controller/subsystem/mapping/proc/manage_z_level(datum/space_level/new_z)
+/datum/controller/subsystem/mapping/proc/manage_z_level(datum/space_level/new_z, filled_with_space, contain_turfs = TRUE)
 	z_list += new_z
 	///Increment all the z level lists (note: not all yet)
 	gravity_by_zlevel.len += 1
 	multiz_levels.len += 1
 
+	if(contain_turfs)
+		build_area_turfs(new_z.z_value, filled_with_space)
+
+/datum/controller/subsystem/mapping/proc/build_area_turfs(z_level, space_guaranteed)
+	// If we know this is filled with default tiles, we can use the default area
+	// Faster
+	if(space_guaranteed)
+		var/area/global_area = GLOB.areas_by_type[world.area]
+		global_area.contained_turfs += Z_TURFS(z_level)
+		return
+
+	for(var/turf/to_contain as anything in Z_TURFS(z_level))
+		var/area/our_area = to_contain.loc
+		our_area.contained_turfs += to_contain
 /**
  * ##setup_ruins
  *
@@ -316,7 +335,7 @@ Used by the AI doomsday and the self-destruct nuke.
 	// load the maps
 	for (var/P in parsed_maps)
 		var/datum/parsed_map/pm = P
-		if (!pm.load(1, 1, start_z + parsed_maps[P], no_changeturf = TRUE))
+		if (!pm.load(1, 1, start_z + parsed_maps[P], no_changeturf = TRUE, new_z = TRUE))
 			errorList |= pm.original_path
 	if(!silent)
 		INIT_ANNOUNCE("Loaded [name] in [(REALTIMEOFDAY - start_time)/10]s!")
@@ -367,7 +386,7 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 
 /datum/controller/subsystem/mapping/proc/generate_station_area_list()
 	var/static/list/station_areas_blacklist = typecacheof(list(/area/space, /area/mine, /area/ruin, /area/centcom/asteroid/nearstation))
-	for(var/area/A in world)
+	for(var/area/A in GLOB.areas)
 		if (is_type_in_typecache(A, station_areas_blacklist))
 			continue
 		if (!A.contents.len || !(A.area_flags & UNIQUE_AREA))
@@ -380,7 +399,7 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		log_world("ERROR: Station areas list failed to generate!")
 
 /datum/controller/subsystem/mapping/proc/run_map_generation()
-	for(var/area/A in world)
+	for(var/area/A in GLOB.areas)
 		A.RunGeneration()
 
 /datum/controller/subsystem/mapping/proc/maprotate()

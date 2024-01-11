@@ -721,10 +721,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	//move the turf
 	old_area.turfs_to_uncontain += src
 	#warn a
-	old_area.cannonize_contained_turfs()
-	if(src in old_area.contained_turfs)
+	if(src in old_area.get_contained_turfs())
 		stack_trace("Duplicate instance of [type] in [old_area.type] after removal [__FILE__] | [__LINE__]")
-	if(src in new_area.contained_turfs)
+	if(src in new_area.get_contained_turfs())
 		stack_trace("Duplicate instance of [type] in [new_area.type] before insertion [__FILE__] | [__LINE__]")
 	new_area.contents += src
 	new_area.contained_turfs += src

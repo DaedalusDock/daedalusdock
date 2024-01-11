@@ -624,13 +624,11 @@
 			continue
 		#warn a
 		var/area/old_area = oldT.loc
-		old_area.cannonize_contained_turfs()
-		underlying_area.cannonize_contained_turfs()
-		if(oldT in underlying_area.contained_turfs)
+		if(oldT in underlying_area.get_contained_turfs())
 			stack_trace("[type] already in in [underlying_area.type] before insertion [__FILE__] | [__LINE__]")
 		oldT.change_area(oldT.loc, underlying_area)
 		#warn a
-		if(oldT in old_area.contained_turfs)
+		if(oldT in old_area.get_contained_turfs())
 			stack_trace("Duplicate instance of [type] in [old_area.type] after removal [__FILE__] | [__LINE__]")
 
 		oldT.empty(FALSE)

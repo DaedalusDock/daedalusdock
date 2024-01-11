@@ -811,11 +811,6 @@ GLOBAL_LIST_EMPTY(map_model_default)
 		if(!new_z)
 			old_area = crds.loc
 			old_area.turfs_to_uncontain += crds
-			#warn a
-			if(src in old_area.turfs_to_uncontain)
-				stack_trace("Duplicate instance of [type] in [old_area.type] after removal [__FILE__] | [__LINE__]")
-			if(src in area_instance.contained_turfs)
-				stack_trace("Duplicate instance of [type] in [area_instance.type] before insertion [__FILE__] | [__LINE__]")
 			area_instance.contained_turfs += crds
 
 		area_instance.contents += crds

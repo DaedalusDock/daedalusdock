@@ -719,7 +719,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return
 
 	//move the turf
-	in_contents_of = new_area
 	old_area.turfs_to_uncontain += src
 	#warn a
 	in_contents_of = new_area

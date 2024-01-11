@@ -408,6 +408,8 @@
  * * hand_firsts - boolean that checks the hands of the mob first if TRUE.
  */
 /mob/living/proc/get_idcard(hand_first)
+	RETURN_TYPE(/obj/item/card/id)
+
 	if(!length(held_items)) //Early return for mobs without hands.
 		return
 	//Check hands

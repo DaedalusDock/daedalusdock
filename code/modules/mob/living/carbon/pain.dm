@@ -259,6 +259,9 @@
 	for(var/obj/item/organ/I as anything in organs)
 		if(prob(1) && (!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 5))
 			var/obj/item/bodypart/parent = I.ownerlimb
+			if(parent.bodypart_flags & BP_NO_PAIN)
+				continue
+
 			var/pain_given = 10
 			var/message = "You feel a dull pain in your [parent.plaintext_zone]"
 			if(I.damage > I.low_threshold)

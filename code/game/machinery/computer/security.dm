@@ -26,12 +26,6 @@
 		/obj/item/circuit_component/arrest_console_arrest,
 	))
 
-#define COMP_STATE_ARREST "*Arrest*"
-#define COMP_STATE_PRISONER "Incarcerated"
-#define COMP_STATE_SUSPECTED "Suspected"
-#define COMP_STATE_PAROL "Paroled"
-#define COMP_STATE_DISCHARGED "Discharged"
-#define COMP_STATE_NONE "None"
 #define COMP_SECURITY_ARREST_AMOUNT_TO_FLAG 10
 
 /obj/item/circuit_component/arrest_console_data
@@ -133,12 +127,12 @@
 
 /obj/item/circuit_component/arrest_console_arrest/populate_options()
 	var/static/list/component_options = list(
-		COMP_STATE_ARREST,
-		COMP_STATE_PRISONER,
-		COMP_STATE_SUSPECTED,
-		COMP_STATE_PAROL,
-		COMP_STATE_DISCHARGED,
-		COMP_STATE_NONE,
+		CRIMINAL_WANTED,
+		CRIMINAL_INCARCERATED,
+		CRIMINAL_SUSPECT,
+		CRIMINAL_PAROLE,
+		CRIMINAL_DISCHARGED,
+		CRIMINAL_NONE,
 	)
 	new_status = add_option_port("Arrest Options", component_options)
 
@@ -171,7 +165,7 @@
 		if(sec_record.fields["criminal"] != status_to_set)
 			successful_set++
 			names_of_entries += target["name"]
-		sec_record.fields["criminal"] = status_to_set
+		sec_record.set_criminal_status(status_to_set)
 
 
 	if(successful_set > 0)
@@ -181,12 +175,6 @@
 		for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
 			human.sec_hud_set_security_status()
 
-#undef COMP_STATE_ARREST
-#undef COMP_STATE_PRISONER
-#undef COMP_STATE_SUSPECTED
-#undef COMP_STATE_PAROL
-#undef COMP_STATE_DISCHARGED
-#undef COMP_STATE_NONE
 #undef COMP_SECURITY_ARREST_AMOUNT_TO_FLAG
 
 /obj/machinery/computer/secure_data/syndie
@@ -300,17 +288,17 @@
 									crimstat = E.fields["criminal"]
 							var/background
 							switch(crimstat)
-								if("*Arrest*")
+								if(CRIMINAL_WANTED)
 									background = "'background-color:#990000;'"
-								if("Incarcerated")
+								if(CRIMINAL_INCARCERATED)
 									background = "'background-color:#CD6500;'"
-								if("Suspected")
+								if(CRIMINAL_SUSPECT)
 									background = "'background-color:#CD6500;'"
-								if("Paroled")
+								if(CRIMINAL_PAROLE)
 									background = "'background-color:#CD6500;'"
-								if("Discharged")
+								if(CRIMINAL_DISCHARGED)
 									background = "'background-color:#006699;'"
-								if("None")
+								if(CRIMINAL_NONE)
 									background = "'background-color:#4F7529;'"
 								if("")
 									background = "''" //"'background-color:#FFFFFF;'"
@@ -368,6 +356,8 @@
 					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
 						dat += "<font size='4'><b>Security Data</b></font>"
 						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields["criminal"]]</A>"
+						if(active2.fields["criminal"] == CRIMINAL_WANTED)
+							dat += " [button_element(src, "BROADCAST", "choice=broadcast_criminal;criminal=[REF(active2)]")]"
 						dat += "<br><br>Citations: <A href='?src=[REF(src)];choice=Edit Field;field=citation_add'>Add New</A>"
 
 						dat +={"<table style="text-align:center;" border="1" cellspacing="0" width="100%">
@@ -510,6 +500,15 @@ What a mess.*/
 				else
 					to_chat(usr, span_danger("Unauthorized Access."))
 				playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
+
+			if("broadcast_criminal")
+				var/datum/data/record/R = locate(href_list["criminal"]) in GLOB.data_core.security
+				if(!R)
+					return
+				if(!(R.fields["criminal"] == CRIMINAL_WANTED))
+					return
+
+				SEND_GLOBAL_SIGNAL(COMSIG_GLOB_WANTED_CRIMINAL, R)
 
 //RECORD FUNCTIONS
 			if("Record Maintenance")
@@ -688,7 +687,7 @@ Age: [active1.fields["age"]]<BR>"}
 					R.fields["name"] = active1.fields["name"]
 					R.fields["id"] = active1.fields["id"]
 					R.name = "Security Record #[R.fields["id"]]"
-					R.fields["criminal"] = "None"
+					R.set_criminal_status(CRIMINAL_NONE)
 					R.fields["crim"] = list()
 					R.fields["notes"] = "No notes."
 					GLOB.data_core.security += R
@@ -719,7 +718,7 @@ Age: [active1.fields["age"]]<BR>"}
 				R.fields["name"] = active1.fields["name"]
 				R.fields["id"] = active1.fields["id"]
 				R.name = "Security Record #[R.fields["id"]]"
-				R.fields["criminal"] = "None"
+				R.fields["criminal"] = CRIMINAL_NONE
 				R.fields["crim"] = list()
 				R.fields["notes"] = "No notes."
 				GLOB.data_core.security += R
@@ -952,17 +951,18 @@ Age: [active1.fields["age"]]<BR>"}
 							var/old_field = active2.fields["criminal"]
 							switch(href_list["criminal2"])
 								if("none")
-									active2.fields["criminal"] = "None"
+									active2.set_criminal_status(CRIMINAL_NONE)
 								if("arrest")
-									active2.fields["criminal"] = "*Arrest*"
+									active2.set_criminal_status(CRIMINAL_WANTED)
 								if("incarcerated")
-									active2.fields["criminal"] = "Incarcerated"
+									active2.set_criminal_status(CRIMINAL_INCARCERATED)
 								if("suspected")
-									active2.fields["criminal"] = "Suspected"
+									active2.set_criminal_status( CRIMINAL_SUSPECT)
 								if("paroled")
-									active2.fields["criminal"] = "Paroled"
+									active2.set_criminal_status(CRIMINAL_PAROLE)
 								if("released")
-									active2.fields["criminal"] = "Discharged"
+									active2.set_criminal_status(CRIMINAL_DISCHARGED)
+
 							investigate_log("[active1.fields["name"]] has been set from [old_field] to [active2.fields["criminal"]] by [key_name(usr)].", INVESTIGATE_RECORDS)
 							for(var/i in GLOB.human_list)
 								var/mob/living/carbon/human/H = i
@@ -1035,7 +1035,7 @@ Age: [active1.fields["age"]]<BR>"}
 				if(3)
 					R.fields["age"] = rand(5, 85)
 				if(4)
-					R.fields["criminal"] = pick("None", "*Arrest*", "Incarcerated", "Suspected", "Paroled", "Discharged")
+					R.set_criminal_status(pick(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED))
 				if(5)
 					R.fields["p_stat"] = pick("*Unconscious*", "Active", "Physically Unfit")
 				if(6)

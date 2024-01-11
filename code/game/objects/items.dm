@@ -1501,12 +1501,12 @@ DEFINE_INTERACTABLE(/obj/item)
  * Updates all action buttons associated with this item
  *
  * Arguments:
- * * status_only - Update only current availability status of the buttons to show if they are ready or not to use
+ * * flags - Update flags passed to build_all_button_icons()
  * * force - Force buttons update even if the given button icon state has not changed
  */
-/obj/item/proc/update_action_buttons(force = FALSE)
+/obj/item/proc/update_action_buttons(flags = null, force = FALSE)
 	for(var/datum/action/current_action as anything in actions)
-		current_action.build_all_button_icons(null, force)
+		current_action.build_all_button_icons(flags, force)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)

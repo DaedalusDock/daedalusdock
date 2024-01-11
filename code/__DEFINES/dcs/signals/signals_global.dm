@@ -74,3 +74,6 @@
 
 ///Global signal sent when the Datacore's initial manifest is complete
 #define COMSIG_GLOB_DATACORE_READY "!datacore_ready"
+
+///Global signal sent when someone is marked as wanted.
+#define COMSIG_GLOB_WANTED_CRIMINAL "!wanted_crew"

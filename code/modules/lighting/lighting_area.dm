@@ -60,6 +60,6 @@
 	lighting_effect.color = base_lighting_color
 	lighting_effect.appearance_flags = RESET_TRANSFORM | RESET_ALPHA | RESET_COLOR
 	add_overlay(lighting_effect)
-	for(var/turf/T in get_contained_turfs())
+	for(var/turf/T as anything in get_contained_turfs())
 		T.luminosity = 1
 	area_has_base_lighting = TRUE

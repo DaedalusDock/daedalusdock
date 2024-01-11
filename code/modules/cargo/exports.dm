@@ -81,24 +81,21 @@ Then the player gets the profit from selling his own wasted time.
 	/// cost includes elasticity, this does not.
 	var/init_cost
 
-
-
 /datum/export/New()
 	..()
-	SSprocessing.processing += src
 	init_cost = cost
 	export_types = typecacheof(export_types, only_root_path = !include_subtypes, ignore_root_path = FALSE)
 	exclude_types = typecacheof(exclude_types)
 
 /datum/export/Destroy()
-	SSprocessing.processing -= src
+	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /datum/export/process()
-	..()
 	cost *= NUM_E**(k_elasticity * (1/30))
-	if(cost > init_cost)
+	if(cost >= init_cost)
 		cost = init_cost
+		return PROCESS_KILL
 
 // Checks the cost. 0 cost items are skipped in export.
 /datum/export/proc/get_cost(obj/O, apply_elastic = TRUE)
@@ -158,6 +155,8 @@ Then the player gets the profit from selling his own wasted time.
 	if(!dry_run)
 		if(apply_elastic)
 			cost *= NUM_E**(-1 * k_elasticity * export_amount) //marginal cost modifier
+			START_PROCESSING(SSprocessing, src)
+
 		SSblackbox.record_feedback("nested tally", "export_sold_cost", 1, list("[sold_item.type]", "[export_value]"))
 	return TRUE
 

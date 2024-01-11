@@ -39,10 +39,10 @@
 		return
 	chambered.newshot()
 
-/obj/item/gun/syringe/can_shoot()
+/obj/item/gun/syringe/can_fire()
 	return syringes.len
 
-/obj/item/gun/syringe/handle_chamber()
+/obj/item/gun/syringe/do_chamber_update()
 	if(chambered && !chambered.loaded_projectile) //we just fired
 		recharge_newshot()
 	update_appearance()
@@ -195,7 +195,7 @@
 	force = 4
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL
 
-/obj/item/gun/syringe/blowgun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/syringe/blowgun/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	visible_message(span_danger("[user] starts aiming with a blowgun!"))
 	if(do_after(user, src, 25))
 		user.stamina.adjust(-20)

@@ -1,6 +1,6 @@
 /datum/surgery_step/generic_organic
 	can_infect = 1
-	shock_level = 10
+	pain_given =10
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP
 	abstract_type = /datum/surgery_step/generic_organic
 
@@ -264,6 +264,7 @@
 	min_duration = 11 SECONDS
 	max_duration = 16 SECONDS
 	surgery_candidate_flags = NONE
+	pain_given = PAIN_AMT_AGONIZING + 30
 
 	preop_sound = list(
 		/obj/item/circular_saw = 'sound/surgery/saw.ogg',

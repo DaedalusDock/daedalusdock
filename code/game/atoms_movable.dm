@@ -1120,7 +1120,9 @@
 		do_item_attack_animation(attacked_atom, visual_effect_icon, used_item)
 
 	if(attacked_atom == src)
+		do_hurt_animation()
 		return //don't do an animation if attacking self
+
 	var/pixel_x_diff = 0
 	var/pixel_y_diff = 0
 	var/turn_dir = 1
@@ -1146,6 +1148,12 @@
 	var/matrix/rotated_transform = transform.Turn(15 * turn_dir)
 	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, transform=rotated_transform, time = 1, easing=BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
 	animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, transform=initial_transform, time = 2, easing=SINE_EASING, flags = ANIMATION_PARALLEL)
+
+	attacked_atom.do_hurt_animation()
+
+/// Plays an animation for getting hit.
+/atom/proc/do_hurt_animation()
+	return
 
 /atom/movable/vv_get_dropdown()
 	. = ..()

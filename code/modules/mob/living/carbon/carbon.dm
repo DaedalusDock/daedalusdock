@@ -112,7 +112,7 @@
 			Paralyze(2 SECONDS)
 			visible_message(span_danger("[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!"),\
 				span_userdanger("You violently crash into [victim][extra_speed ? " extra hard" : ""]!"))
-		playsound(src,'sound/weapons/punch1.ogg',50,TRUE)
+		playsound(src, SFX_PUNCH ,50,TRUE)
 		log_combat(src, victim, "crashed into")
 
 //Throwing stuff
@@ -1429,16 +1429,6 @@
 
 /mob/living/carbon/proc/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
-
-/mob/living/carbon/get_melee_inaccuracy()
-	. = ..()
-	if(getPain() > 100)
-		. += 10
-
-	if(shock_stage > 30)
-		. += 30
-	else if(shock_stage > 10)
-		. += 10
 
 /mob/living/carbon/has_mouth()
 	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)

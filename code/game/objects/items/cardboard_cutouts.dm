@@ -71,8 +71,8 @@
 		return
 	if(!I.force)
 		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
-	else if(I.hitsound)
-		playsound(loc, I.hitsound, get_clamped_volume(), TRUE, -1)
+	else if(I.get_hitsound())
+		playsound(loc, I.get_hitsound(), get_clamped_volume(), TRUE, -1)
 
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src)

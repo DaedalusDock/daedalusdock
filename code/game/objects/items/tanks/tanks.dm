@@ -275,7 +275,7 @@
 	excited = (excited | leaking)
 
 	if(!excited)
-		STOP_PROCESSING(SSobj, src)
+		. = PROCESS_KILL
 	excited = FALSE
 
 	if(QDELETED(src) || !leaking || !air_contents)

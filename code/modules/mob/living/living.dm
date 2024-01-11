@@ -1,6 +1,7 @@
 /mob/living/Initialize(mapload)
 	. = ..()
 	stamina = new(src)
+	gurps_stats = new(src)
 
 	register_init_signals()
 	if(unique_name)
@@ -26,7 +27,9 @@
 
 /mob/living/Destroy()
 	QDEL_NULL(z_eye)
-	qdel(stamina)
+	QDEL_NULL(stamina)
+	QDEL_NULL(gurps_stats)
+
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
 		if(effect.on_remove_on_mob_delete)
@@ -200,11 +203,12 @@
 		var/mob/living/silicon/robot/borg = M
 		if(borg.combat_mode && borg.stat != DEAD)
 			return TRUE
+
 	//anti-riot equipment is also anti-push
 	for(var/obj/item/I in M.held_items)
 		if(!istype(M, /obj/item/clothing))
-			if(prob(I.block_chance*2))
-				return
+			if(I.try_block_attack(M, src, "the push", 0, LEAP_ATTACK)) //close enough?
+				return TRUE
 
 /mob/living/get_photo_description(obj/item/camera/camera)
 	var/list/mob_details = list()
@@ -2178,21 +2182,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	RETURN_TYPE(/datum/reagents)
 	return reagents
 
-/mob/living/proc/get_melee_inaccuracy()
-	. = 0
-	if(incapacitated())
-		. += 100
-	if(get_timed_status_effect_duration(/datum/status_effect/confusion))
-		. += 10
-	if(IsKnockdown())
-		. += 15
-	if(eye_blurry)
-		. += 5
-	if(eye_blind)
-		. += 60
-	if(HAS_TRAIT(src, TRAIT_CLUMSY))
-		. += 25
-
 /mob/living/proc/needs_organ(slot)
 	return FALSE
 
@@ -2223,3 +2212,14 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return MOUSE_ICON_HOVERING_INTERACTABLE
 
 
+/mob/living/do_hurt_animation()
+	if(stat > CONSCIOUS)
+		return
+
+	var/pixel_x = src.pixel_x
+	var/pixel_y = src.pixel_y
+	var/offset_x = pixel_x + pick(-3, -2, -1, 1, 2, 3)
+	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
+
+	animate(src, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+	animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)

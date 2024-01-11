@@ -18,7 +18,7 @@
 	blood_level = 1
 	min_duration = 5 SECONDS
 	max_duration = 8 SECONDS
-	shock_level = 40
+	pain_given =40
 	delicate = 1
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED
 
@@ -59,7 +59,7 @@
 	blood_level = 1
 	min_duration = 5 SECONDS
 	max_duration = 8 SECONDS
-	shock_level = 40
+	pain_given =40
 	delicate = 1
 	strict_access_requirement = FALSE
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED

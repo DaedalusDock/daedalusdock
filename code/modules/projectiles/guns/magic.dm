@@ -23,7 +23,7 @@
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL // Has no trigger at all, uses magic instead
 	pin = /obj/item/firing_pin/magic
 
-/obj/item/gun/magic/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+/obj/item/gun/magic/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	if(no_den_usage)
 		var/area/A = get_area(user)
 		if(istype(A, /area/centcom/wizard_station))
@@ -37,14 +37,14 @@
 		return
 	. = ..()
 
-/obj/item/gun/magic/can_shoot()
+/obj/item/gun/magic/can_fire()
 	return charges
 
 /obj/item/gun/magic/recharge_newshot()
 	if (charges && chambered && !chambered.loaded_projectile)
 		chambered.newshot()
 
-/obj/item/gun/magic/handle_chamber()
+/obj/item/gun/magic/do_chamber_update()
 	if(chambered && !chambered.loaded_projectile) //if BB is null, i.e the shot has been fired...
 		charges--//... drain a charge
 		recharge_newshot()

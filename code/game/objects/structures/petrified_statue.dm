@@ -25,13 +25,17 @@
 		max_integrity = atom_integrity
 		START_PROCESSING(SSobj, src)
 
+/obj/structure/statue/petrified/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/structure/statue/petrified/process(delta_time)
 	if(!petrified_mob)
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
+
 	timer -= delta_time
 	petrified_mob.Stun(40) //So they can't do anything while petrified
 	if(timer <= 0)
-		STOP_PROCESSING(SSobj, src)
 		qdel(src)
 
 /obj/structure/statue/petrified/contents_explosion(severity, target)

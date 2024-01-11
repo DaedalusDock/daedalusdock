@@ -18,7 +18,7 @@
 	blood_level = 1
 	min_duration = 5 SECONDS
 	max_duration = 7 SECONDS
-	shock_level = 60
+	pain_given = PAIN_AMT_AGONIZING
 	delicate = 1
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED
 	strict_access_requirement = TRUE

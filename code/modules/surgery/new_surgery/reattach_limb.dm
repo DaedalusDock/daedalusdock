@@ -9,7 +9,6 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/limb
 	can_infect = 0
-	shock_level = 40
 	delicate = 1
 	abstract_type = /datum/surgery_step/limb
 
@@ -73,6 +72,7 @@
 	can_infect = 1
 	min_duration = 10 SECONDS
 	max_duration = 12 SECONDS
+	pain_given = PAIN_AMT_AGONIZING //THEMS ARE NERVES
 
 /datum/surgery_step/limb/connect/can_operate(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())

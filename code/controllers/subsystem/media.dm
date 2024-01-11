@@ -129,11 +129,8 @@ SUBSYSTEM_DEF(media)
 				if(!json_data["author"])
 					return list(MEDIA_TAG_ALLMEDIA, "Track has no author.")
 
-				#if DM_VERSION > 515
-				#warn Native fexists() call, Replace with rustg_file_exists() once behaviour is correct
-				#endif
 				// Does our file actually exist?
-				if(!fexists(jd_full_filepath))
+				if(!rustg_file_exists(jd_full_filepath))
 					return list(MEDIA_TAG_ALLMEDIA, "File [jd_full_filepath] does not exist.")
 
 				//Verify that the file extension is allowed, because BYOND is sure happy to not say a fucking word.

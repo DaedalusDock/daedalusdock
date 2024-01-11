@@ -792,11 +792,11 @@ GLOBAL_LIST_EMPTY(map_model_default)
 	//The next part of the code assumes there's ALWAYS an /area AND a /turf on a given tile
 	//first instance the /area and remove it from the members list
 	index = members.len
-	var/area/area_instance
+	var/area/old_area
 	if(members[index] != /area/template_noop)
 		if(members_attributes[index] != default_list)
 			world.preloader_setup(members_attributes[index], members[index])//preloader for assigning  set variables on atom creation
-		area_instance = loaded_areas[members[index]]
+		var/area/area_instance = loaded_areas[members[index]]
 		if(!area_instance)
 			var/area_type = members[index]
 			// If this parsed map doesn't have that area already, we check the global cache
@@ -809,9 +809,15 @@ GLOBAL_LIST_EMPTY(map_model_default)
 			loaded_areas[area_type] = area_instance
 
 		if(!new_z)
-			var/area/old_area = crds.loc
+			old_area = crds.loc
 			old_area.turfs_to_uncontain += crds
+			#warn a
+			if(src in old_area.turfs_to_uncontain)
+				stack_trace("Duplicate instance of [type] in [old_area.type] after removal [__FILE__] | [__LINE__]")
+			if(src in area_instance.contained_turfs)
+				stack_trace("Duplicate instance of [type] in [area_instance.type] before insertion [__FILE__] | [__LINE__]")
 			area_instance.contained_turfs += crds
+
 		area_instance.contents += crds
 
 		if(global.use_preloader)
@@ -838,6 +844,12 @@ GLOBAL_LIST_EMPTY(map_model_default)
 
 		if(global.use_preloader && instance)//second preloader pass, for those atoms that don't ..() in New()
 			world.preloader_load(instance)
+
+	// If this isn't template work, we didn't change our turf and we changed area, then we've gotta handle area lighting transfer
+	else if(!no_changeturf && instance)
+		// Don't do contain/uncontain stuff, this happens a few lines up when the area actally changes
+		crds.on_change_area(old_area, crds.loc)
+
 	MAPLOADING_CHECK_TICK
 
 	//finally instance all remainings objects/mobs

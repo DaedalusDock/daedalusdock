@@ -78,13 +78,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	/// WARNING: Currently to use a density shortcircuiting this does not support dense turfs with special allow through function
 	var/pathing_pass_method = TURF_PATHING_PASS_DENSITY
 
-#if defined(UNIT_TESTS) || defined(SPACEMAN_DMM)
-	/// For the area_contents list unit test
-	/// Allows us to know our area without needing to preassign it
-	/// Sorry for the mess
-	var/area/in_contents_of
-#endif
-
 /turf/vv_edit_var(var_name, new_value)
 	var/static/list/banned_edits = list(
 		NAMEOF_STATIC(src, x),
@@ -718,3 +711,28 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/datum/gas_mixture/GM = unsafe_return_air()
 	if(isnull(GM) || GM.returnPressure() < SOUND_MINIMUM_PRESSURE)
 		return TRUE
+
+/// Call to move a turf from its current area to a new one
+/turf/proc/change_area(area/old_area, area/new_area)
+	//dont waste our time
+	if(old_area == new_area)
+		return
+
+	//move the turf
+	in_contents_of = new_area
+	old_area.turfs_to_uncontain += src
+	#warn a
+	in_contents_of = new_area
+	if(src in old_area.turfs_to_uncontain)
+		stack_trace("Duplicate instance of [type] in [old_area.type] after removal [__FILE__] | [__LINE__]")
+	if(src in new_area.contained_turfs)
+		stack_trace("Duplicate instance of [type] in [new_area.type] before insertion [__FILE__] | [__LINE__]")
+	new_area.contents += src
+	new_area.contained_turfs += src
+
+	//changes to make after turf has moved
+	on_change_area(old_area, new_area)
+
+/// Allows for reactions to an area change without inherently requiring change_area() be called (I hate maploading)
+/turf/proc/on_change_area(area/old_area, area/new_area)
+	transfer_area_lighting(old_area, new_area)

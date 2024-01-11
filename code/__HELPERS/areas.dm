@@ -89,11 +89,7 @@ GLOBAL_LIST_INIT(typecache_powerfailure_safe_areas, typecacheof(/area/station/en
 		var/turf/thing = turfs[i]
 		var/area/old_area = thing.loc
 
-		old_area.turfs_to_uncontain += thing
-		newA.contents += thing
-		newA.contained_turfs += thing
-
-		thing.transfer_area_lighting(old_area, newA)
+		thing.change_area(old_area, newA)
 
 	newA.reg_in_areas_in_z()
 

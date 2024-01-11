@@ -27,3 +27,11 @@
 	for(var/turf/position as anything in ALL_TURFS())
 		if(!position.in_contents_of)
 			TEST_FAIL("Found a turf [position.type] inside [position.loc.type] that is NOT stored in any area's turf listing")
+
+
+/// For the area_contents list unit test
+/// Allows us to know our area without needing to preassign it
+/// Sorry for the mess
+#if defined(UNIT_TESTS) || defined(SPACEMAN_DMM)
+/turf/var/area/in_contents_of
+#endif

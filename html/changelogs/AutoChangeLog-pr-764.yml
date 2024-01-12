@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Default wield hotkey no longer conflicts with other default hotkeys.

@@ -1,0 +1,6 @@
+#define CRIMINAL_NONE "None"
+#define CRIMINAL_INCARCERATED "Incarcerated"
+#define CRIMINAL_WANTED "*Arrest*"
+#define CRIMINAL_SUSPECT "Suspected"
+#define CRIMINAL_PAROLE "Paroled"
+#define CRIMINAL_DISCHARGED "Discharged"

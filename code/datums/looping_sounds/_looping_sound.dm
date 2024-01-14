@@ -27,7 +27,7 @@
 	/// The max amount of loops to run for.
 	var/max_loops
 	/// If true, plays directly to provided atoms instead of from them.
-	var/direct
+	var/direct = LOOPING_SOUND_NORMAL
 	/// The extra range of the sound in tiles, defaults to 0.
 	var/extra_range = 0
 	/// The ID of the timer that's used to loop the sounds.
@@ -120,23 +120,41 @@
  */
 /datum/looping_sound/proc/play(soundfile, volume_override)
 	var/sound/sound_to_play = sound(soundfile)
-	if(direct)
-		sound_to_play.channel = SSsounds.random_available_channel()
-		sound_to_play.volume = volume_override || volume //Use volume as fallback if theres no override
-		SEND_SOUND(parent, sound_to_play)
-	else
-		playsound(
-			parent,
-			sound_to_play,
-			volume,
-			vary,
-			extra_range,
-			falloff_exponent = falloff_exponent,
-			pressure_affected = pressure_affected,
-			ignore_walls = ignore_walls,
-			falloff_distance = falloff_distance,
-			use_reverb = use_reverb
-		)
+	switch(direct)
+		if(LOOPING_SOUND_DIRECT)
+			sound_to_play.channel = SSsounds.random_available_channel()
+			sound_to_play.volume = volume_override || volume //Use volume as fallback if theres no override
+			SEND_SOUND(parent, sound_to_play)
+
+		if(LOOPING_SOUND_NORMAL)
+			playsound(
+				parent,
+				sound_to_play,
+				volume,
+				vary,
+				extra_range,
+				falloff_exponent = falloff_exponent,
+				pressure_affected = pressure_affected,
+				ignore_walls = ignore_walls,
+				falloff_distance = falloff_distance,
+				use_reverb = use_reverb
+			)
+
+		if(LOOPING_SOUND_LOCAL)
+			if(!ismob(parent))
+				return
+			var/mob/M = parent
+			M.playsound_local(
+				get_turf(M),
+				sound_to_play,
+				volume,
+				vary,
+				extra_range,
+				falloff_exponent = falloff_exponent,
+				pressure_affected = pressure_affected,
+				falloff_distance = falloff_distance,
+				use_reverb = use_reverb
+			)
 
 /// Returns the sound we should now be playing.
 /datum/looping_sound/proc/get_sound(_mid_sounds)

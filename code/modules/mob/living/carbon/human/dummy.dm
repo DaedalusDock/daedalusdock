@@ -73,7 +73,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	for(var/obj/item/delete as anything in to_nuke)
 		qdel(delete)
 
-/mob/living/carbon/human/dummy/has_equipped(obj/item/item, slot, initial = FALSE)
+/mob/living/carbon/human/dummy/afterEquipItem(obj/item/item, slot, initial = FALSE)
 	return item.visual_equipped(src, slot, initial)
 
 /mob/living/carbon/human/dummy/proc/wipe_state()

@@ -57,7 +57,7 @@
 	keybind_signal = COMSIG_KB_HUMAN_SUITEQUIP_DOWN
 
 /datum/keybinding/human/wield
-	hotkey_keys = list("X")
+	hotkey_keys = list("V")
 	name = "wield_item"
 	full_name = "Wield/Unwield item"
 	description = "Wield your held item with both hands."

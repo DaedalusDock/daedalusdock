@@ -1168,8 +1168,3 @@
 		return FALSE
 
 	return ClimbUp(climbable)
-
-/mob/living/carbon/human/update_name()
-	name = get_visible_name()
-	return ..()
-

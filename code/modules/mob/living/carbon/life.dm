@@ -329,8 +329,7 @@
 				continue
 			if(mut == UE_CHANGED)
 				if(dna.previous["name"])
-					real_name = dna.previous["name"]
-					name = real_name
+					set_real_name(dna.previous["name"])
 					dna.previous.Remove("name")
 				if(dna.previous["UE"])
 					dna.unique_enzymes = dna.previous["UE"]

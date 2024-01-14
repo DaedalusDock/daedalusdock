@@ -37,22 +37,27 @@
 	var/id_name = get_id_name("")
 	if(name_override)
 		return name_override
+
 	if(face_name)
 		if(id_name && (id_name != face_name))
 			return "[face_name] (as [id_name])"
 		return face_name
+
 	if(id_name)
 		return id_name
+
 	return "Unknown"
 
 //Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when Fluacided or when updating a human's name variable
 /mob/living/carbon/human/proc/get_face_name(if_no_face="Unknown")
-	if( wear_mask && (wear_mask.flags_inv&HIDEFACE) ) //Wearing a mask which hides our face, use id-name if possible
+	if(wear_mask && (wear_mask.flags_inv & HIDEFACE) ) //Wearing a mask which hides our face, use id-name if possible
 		return if_no_face
-	if( head && (head.flags_inv&HIDEFACE) )
+
+	if(head && (head.flags_inv & HIDEFACE) )
 		return if_no_face //Likewise for hats
+
 	var/obj/item/bodypart/O = get_bodypart(BODY_ZONE_HEAD)
-	if( !O || (HAS_TRAIT(src, TRAIT_DISFIGURED)) || (O.brutestate+O.burnstate)>2 || cloneloss>50 || !real_name || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN)) //disfigured. use id-name if possible
+	if(!O || (HAS_TRAIT(src, TRAIT_DISFIGURED)) || !real_name || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN)) //disfigured. use id-name if possible
 		return if_no_face
 	return real_name
 

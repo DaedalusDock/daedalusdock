@@ -171,7 +171,7 @@
 	if(gender == PLURAL)
 		gender = pick(MALE,FEMALE)
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 	if(!loc)
 		stack_trace("Simple animal being instantiated in nullspace")
 	update_simplemob_varspeed()

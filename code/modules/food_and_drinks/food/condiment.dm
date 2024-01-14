@@ -143,8 +143,7 @@
 	user.visible_message(span_suicide("[user] begins to swap forms with the salt shaker! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/newname = "[name]"
 	name = "[user.name]"
-	user.name = newname
-	user.real_name = newname
+	user.set_real_name(new_name)
 	desc = "Salt. From dead crew, presumably."
 	return (TOXLOSS)
 

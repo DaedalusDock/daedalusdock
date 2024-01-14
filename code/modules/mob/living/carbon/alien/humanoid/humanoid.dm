@@ -73,5 +73,4 @@ GLOBAL_LIST_INIT(strippable_alien_humanoid_items, create_strippable_list(list(
 
 /mob/living/carbon/alien/humanoid/set_name()
 	if(numba)
-		name = "[name] ([numba])"
-		real_name = name
+		set_real_name("[name] ([numba])")

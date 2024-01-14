@@ -1272,8 +1272,7 @@
 // Generally the mob we are currently in is about to be deleted
 /mob/living/proc/wabbajack_act(mob/living/new_mob)
 	log_game("[key_name(src)] is being wabbajack polymorphed into: [new_mob.name]([new_mob.type]).")
-	new_mob.name = real_name
-	new_mob.real_name = real_name
+	new_mob.set_real_name(real_name)
 
 	if(mind)
 		mind.transfer_to(new_mob)
@@ -1578,8 +1577,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/proc/set_name()
 	numba = rand(1, 1000)
-	name = "[name] ([numba])"
-	real_name = name
+	set_real_name("[name] ([numba])")
 
 /mob/living/proc/get_static_viruses() //used when creating blood and other infective objects
 	if(!LAZYLEN(diseases))

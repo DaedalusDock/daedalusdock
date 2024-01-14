@@ -324,7 +324,10 @@
 
 	name = "[owner.real_name]'s head"
 
+	var/mob/living/carbon/human/old_owner = owner
 	. = ..()
+
+	old_owner.update_name()
 
 	if(!special)
 		if(brain?.brainmob)
@@ -429,7 +432,8 @@
 		return .
 
 	if(real_name)
-		new_head_owner.real_name = real_name
+		new_head_owner.set_real_name(real_name)
+
 	real_name = ""
 
 	//Handle dental implants

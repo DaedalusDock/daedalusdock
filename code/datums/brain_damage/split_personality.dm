@@ -136,8 +136,7 @@
 /mob/living/split_personality/Initialize(mapload, _trauma)
 	if(iscarbon(loc))
 		body = loc
-		name = body.real_name
-		real_name = body.real_name
+		set_real_name(body.real_name)
 		trauma = _trauma
 	return ..()
 

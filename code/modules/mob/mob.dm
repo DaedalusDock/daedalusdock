@@ -1053,6 +1053,13 @@
 	return FALSE
 
 
+/// Updates
+/mob/proc/set_real_name(new_name, change_name = TRUE)
+	real_name = new_name
+	if(change_name)
+		name = real_name
+		update_name()
+
 /**
  * Fully update the name of a mob
  *
@@ -1075,8 +1082,7 @@
 
 	log_played_names(ckey, newname)
 
-	real_name = newname
-	name = newname
+	set_real_name(newname)
 	if(mind)
 		mind.name = newname
 		if(mind.key)

@@ -120,7 +120,7 @@ Des: Removes all infected images from the alien.
 	new_xeno.setDir(dir)
 	if(numba && unique_name)
 		new_xeno.numba = numba
-		new_xeno.set_name()
+		new_xeno.give_unique_name()
 	if(!alien_name_regex.Find(name))
 		new_xeno.set_real_name(real_name, FALSE)
 		new_xeno.name = name

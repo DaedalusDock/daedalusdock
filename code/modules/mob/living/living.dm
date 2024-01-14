@@ -5,7 +5,7 @@
 
 	register_init_signals()
 	if(unique_name)
-		set_name()
+		give_unique_name()
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_to_hud(src)
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
@@ -1575,7 +1575,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/remove_air(amount) //To prevent those in contents suffocating
 	return loc ? loc.remove_air(amount) : null
 
-/mob/living/proc/set_name()
+/// Gives simple mobs their unique/randomized name.
+/mob/living/proc/give_unique_name()
 	numba = rand(1, 1000)
 	set_real_name("[name] ([numba])")
 

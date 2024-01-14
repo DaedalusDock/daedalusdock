@@ -1169,7 +1169,7 @@
 
 	return ClimbUp(climbable)
 
-/// Sets the name of the mob based on some factors
 /mob/living/carbon/human/update_name()
-	. = ..()
 	name = get_visible_name()
+	return ..()
+

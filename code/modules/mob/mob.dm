@@ -1053,12 +1053,12 @@
 	return FALSE
 
 
-/// Updates
+/// Sets the mob's real name, and normal name if desired.
 /mob/proc/set_real_name(new_name, change_name = TRUE)
 	real_name = new_name
 	if(change_name)
 		name = real_name
-		update_name()
+	update_name()
 
 /**
  * Fully update the name of a mob

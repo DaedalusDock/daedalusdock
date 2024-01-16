@@ -1065,7 +1065,8 @@
 	real_name = new_name
 	if(change_name)
 		name = real_name
-	update_name()
+	if(update_name)
+		update_name()
 
 /**
  * Fully update the name of a mob

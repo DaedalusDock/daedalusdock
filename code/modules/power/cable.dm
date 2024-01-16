@@ -170,36 +170,43 @@
 // Machines should use add_load(), surplus(), avail()
 // Non-machines should use add_delayedload(), delayed_surplus(), newavail()
 
+/// Adds power to the power net next tick.
 /obj/structure/cable/proc/add_avail(amount)
 	if(powernet)
 		powernet.newavail += amount
 
+/// Adds load to the power net this tick.
 /obj/structure/cable/proc/add_load(amount)
 	if(powernet)
 		powernet.load += amount
 
+/// How much extra power is in the power net this tick
 /obj/structure/cable/proc/surplus()
 	if(powernet)
 		return clamp(powernet.avail-powernet.load, 0, powernet.avail)
 	else
 		return 0
 
+/// How much power is available this tick.
 /obj/structure/cable/proc/avail(amount)
 	if(powernet)
 		return amount ? powernet.avail >= amount : powernet.avail
 	else
 		return 0
 
+/// Add delayed load to the power net. This should be used outside of machine/process()
 /obj/structure/cable/proc/add_delayedload(amount)
 	if(powernet)
 		powernet.delayedload += amount
 
+/// How much surpless is in the network next tick.
 /obj/structure/cable/proc/delayed_surplus()
 	if(powernet)
 		return clamp(powernet.newavail - powernet.delayedload, 0, powernet.newavail)
 	else
 		return 0
 
+/// How much power the network will contain next tick.
 /obj/structure/cable/proc/newavail()
 	if(powernet)
 		return powernet.newavail

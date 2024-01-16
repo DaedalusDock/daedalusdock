@@ -511,15 +511,19 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/list/openturfs = list()
 
 	//confetti and a corgi balloon! (and some list stuff for more decorations)
-	for(var/thing in a.contents)
-		if(istype(thing, /obj/structure/table/reinforced))
-			table += thing
-		if(isopenturf(thing))
-			new /obj/effect/decal/cleanable/confetti(thing)
-			if(locate(/obj/structure/bed/dogbed/ian) in thing)
-				new /obj/item/toy/balloon/corgi(thing)
-			else
-				openturfs += thing
+	for(var/turf/T as anything in a.get_contained_turfs())
+		if(isopenturf(T))
+			new /obj/effect/decal/cleanable/confetti(T)
+
+		if(locate(/obj/structure/bed/dogbed/ian) in T)
+			new /obj/item/toy/balloon/corgi(T)
+		else
+			openturfs += T
+
+		var/table_or_null = locate(/obj/structure/table/reinforced) in T
+		if(table_or_null)
+			table += table_or_null
+
 
 	//cake + knife to cut it!
 	if(length(table))

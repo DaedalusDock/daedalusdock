@@ -1061,7 +1061,7 @@
 	return name
 
 /// Sets the mob's real name, and normal name if desired.
-/mob/proc/set_real_name(new_name, change_name = TRUE)
+/mob/proc/set_real_name(new_name, change_name = TRUE, update_name = TRUE)
 	real_name = new_name
 	if(change_name)
 		name = real_name

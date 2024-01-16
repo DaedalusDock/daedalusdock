@@ -128,7 +128,7 @@
 /mob/living/simple_animal/slime/update_name()
 	if(slime_name_regex.Find(name))
 		number = rand(1, 1000)
-		set_real_name("[colour] [is_adult ? "adult" : "baby"] slime ([number])")
+		set_real_name("[colour] [is_adult ? "adult" : "baby"] slime ([number])", update_name = FALSE)
 	return ..()
 
 /mob/living/simple_animal/slime/proc/random_colour()

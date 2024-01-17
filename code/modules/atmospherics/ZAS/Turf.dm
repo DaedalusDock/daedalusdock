@@ -19,13 +19,6 @@
 	var/tmp/verbose = FALSE
 #endif
 
-///Adds the graphic_add list to vis_contents, removes graphic_remove.
-/turf/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
-	if(length(graphic_add))
-		vis_contents += graphic_add
-	if(length(graphic_remove))
-		vis_contents -= graphic_remove
-
 ///Updates the turf's air source properties, breaking or creating zone connections as necessary.
 /turf/proc/update_air_properties()
 	var/self_block

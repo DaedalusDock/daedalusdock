@@ -103,7 +103,7 @@ SUBSYSTEM_DEF(airflow)
 	processing += to_add
 
 	RegisterSignal(to_add, COMSIG_PARENT_QDELETING, PROC_REF(HandleDel))
-	ADD_TRAIT(target, TRAIT_EXPERIENCING_AIRFLOW, AIRFLOW_TRAIT)
+	ADD_TRAIT(to_add, TRAIT_EXPERIENCING_AIRFLOW, AIRFLOW_TRAIT)
 
 /datum/controller/subsystem/airflow/proc/Dequeue(atom/movable/to_remove)
 	processing -= to_remove

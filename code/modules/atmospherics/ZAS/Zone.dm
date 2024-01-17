@@ -62,6 +62,8 @@ Class Procs:
 	var/last_air_temperature = null
 	///The air list of last tick()
 	VAR_PRIVATE/last_gas_list
+	/// An incrementing counter that keeps track of which air graphic cycle any sleeping procs may be in.
+	VAR_PRIVATE/processing_graphic_cycle = 0
 
 /zone/New()
 	SSzas.add_zone(src)
@@ -90,7 +92,9 @@ Class Procs:
 		if(fuel)
 			fuel_objs += fuel
 			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, PROC_REF(handle_fuel_del))
-	T.update_graphic(air.graphic)
+
+	if(air.graphic)
+		T.vis_contents += air.graphic
 
 	if(T.atmos_sensitive_contents)
 		if(isnull(atmos_sensitive_contents))
@@ -123,11 +127,16 @@ Class Procs:
 
 	contents.Remove(T)
 	fire_tiles.Remove(T)
+
 	if(T.fire)
 		var/obj/effect/decal/cleanable/oil/fuel = locate() in T
 		fuel_objs -= fuel
+
 	T.zone = null
-	T.update_graphic(graphic_remove = air.graphic)
+
+	if(air.graphic)
+		T.vis_contents -= air.graphic
+
 	if(length(contents))
 		air.group_multiplier = length(contents)
 	else
@@ -143,11 +152,16 @@ Class Procs:
 #endif
 	invalidate()
 
+	var/list/air_graphic = air.graphic // cache for sanic speed
 	for(var/turf/T as anything in contents)
 		if(!T.simulated)
 			continue
+
 		into.add_turf(T)
-		T.update_graphic(graphic_remove = air.graphic)
+		// Remove old graphic
+		if(air_graphic)
+			T.vis_contents -= air_graphic
+
 		#ifdef ZASDBG
 		T.dbg(zasdbgovl_merged)
 		#endif
@@ -178,15 +192,21 @@ Class Procs:
 
 	if(invalid)
 		return //Short circuit for explosions where rebuild is called many times over.
+
 	invalidate()
 
+	var/list/air_graphic = air.graphic // cache for sanic speed
 	for(var/turf/T as anything in contents)
 		if(!T.simulated)
 			continue
-		T.update_graphic(graphic_remove = air.graphic) //we need to remove the overlays so they're not doubled when the zone is rebuilt
+
+		if(air_graphic)
+			T.vis_contents -= air_graphic
+
 		#ifdef ZASDBG
 		//T.dbg(invalid_zone)
 		#endif
+
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
 		SSzas.mark_for_update(T)
 
@@ -230,8 +250,18 @@ Class Procs:
 	var/list/graphic_add = list()
 	var/list/graphic_remove = list()
 	if(air.checkTileGraphic(graphic_add, graphic_remove))
-		for(var/turf/T as anything in contents)
-			T.update_graphic(graphic_add, graphic_remove)
+		processing_graphic_cycle++
+		spawn(-1)
+			var/this_cycle = processing_graphic_cycle
+			for(var/turf/T as anything in contents)
+				if(invalid || this_cycle != processing_graphic_cycle)
+					return
+				if(!(T.zone == src))
+					continue
+				if(length(graphic_add))
+					T.vis_contents += graphic_add
+				if(length(graphic_remove))
+					T.vis_contents -= graphic_remove
 
 	#ifdef ZASDBG
 	SSzas.zonetime["tile graphic"] = TICK_USAGE_TO_MS(clock)

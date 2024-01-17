@@ -47,13 +47,13 @@
 	/// Has the looping started yet?
 	var/loop_started = FALSE
 
-/datum/looping_sound/New(_parent, start_immediately = FALSE, _direct = FALSE, _skip_starting_sounds = FALSE)
+/datum/looping_sound/New(_parent, start_immediately = FALSE, _direct = LOOPING_SOUND_NORMAL, _skip_starting_sounds = FALSE)
 	if(!mid_sounds)
 		WARNING("A looping sound datum was created without sounds to play.")
 		return
 
 	set_parent(_parent)
-	direct = _direct
+	direct = _direct || LOOPING_SOUND_NORMAL
 	skip_starting_sounds = _skip_starting_sounds
 
 	if(start_immediately)

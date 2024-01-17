@@ -180,6 +180,8 @@ Class Procs:
 	invalid = 1
 	SSzas.remove_zone(src)
 	atmos_sensitive_contents = null
+	fire_tiles = null
+	fuel_objs = null
 	#ifdef ZASDBG
 	for(var/turf/T as anything in contents)
 		if(!T.simulated)
@@ -262,6 +264,7 @@ Class Procs:
 					T.vis_contents += graphic_add
 				if(length(graphic_remove))
 					T.vis_contents -= graphic_remove
+				CHECK_TICK
 
 	#ifdef ZASDBG
 	SSzas.zonetime["tile graphic"] = TICK_USAGE_TO_MS(clock)

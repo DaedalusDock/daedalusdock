@@ -83,6 +83,10 @@
 	if(H2 && !H2.active)
 		H.merge(H2)
 
+	for(var/mob/living/L in H)
+		var/armor = L.run_armor_check(attack_flag = BLUNT, silent = TRUE)
+		L.apply_damage(3, BRUTE, blocked = armor, spread_damage = TRUE)
+
 	H.forceMove(P)
 	return P
 

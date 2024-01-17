@@ -119,7 +119,7 @@ Class Procs:
 	if(isnull(atmos_sensitive_contents))
 		SSzas.zones_with_sensitive_contents -= src
 
-	T.copy_zone_air()
+	T.take_zone_air_share()
 
 	for(var/d in GLOB.cardinals)
 		var/turf/other = get_step(T, d)

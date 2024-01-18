@@ -170,23 +170,26 @@
 		return
 
 	if(shock_stage == SHOCK_TIER_1)
-		pain_message(PAIN_STRING, 10 - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 
-	if(shock_stage >= SHOCK_TIER_2)
+	if(shock_stage >= SHOCK_TIER_2 && prob(shock_stage - 10))
 		if(shock_stage == SHOCK_TIER_2 && organs_by_slot[ORGAN_SLOT_EYES])
 			visible_message("<b>[src]</b> is having trouble keeping [p_their()] eyes open.")
-		if(prob(30))
-			blur_eyes(3)
-			set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
+		blur_eyes(5)
+		set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
 	if(shock_stage == SHOCK_TIER_3)
 		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 
-	if(shock_stage >= SHOCK_TIER_4 && prob(2))
+	else if(shock_stage >= SHOCK_TIER_3)
+		if(prob(20))
+			set_timed_status_effect(5 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
+
+	if(shock_stage >= SHOCK_TIER_4 && prob(5))
 		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 		Knockdown(2 SECONDS)
 
-	if(shock_stage >= SHOCK_TIER_5 && prob(5))
+	if(shock_stage >= SHOCK_TIER_5 && prob(10))
 		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 		Knockdown(2 SECONDS)
 
@@ -203,7 +206,7 @@
 #undef PAIN_STRING
 
 /mob/living/carbon/proc/handle_pain()
-	if(stat)
+	if(stat == DEAD)
 		return
 
 	var/pain = getPain()
@@ -214,12 +217,15 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 
 	if(pain >= maxHealth)
-		if(stat == CONSCIOUS && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		if(!stat && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			visible_message(
-				"<b>[src]</b> slumps over, too weak to continue fighting...",
+				span_danger("<b>[src]</b> slumps over, too weak to continue fighting...",)
 				span_danger("You give into the pain.")
 			)
-		Sleeping(10 SECONDS)
+		Unconscious(10 SECONDS)
+		return
+
+	if(stat == UNCONSCIOUS)
 		return
 
 	if(!COOLDOWN_FINISHED(src, pain_cd) && !prob(5))

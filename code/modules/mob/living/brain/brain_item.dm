@@ -388,7 +388,7 @@
 		owner.dropItemToGround(owner.get_active_held_item())
 
 	if(damage >= 0.6*maxHealth)
-		owner.set_slurring_if_lower(2 SECONDS)
+		owner.set_slurring_if_lower(10 SECONDS)
 
 	if(damage >= (maxHealth * high_threshold))
 		if(owner.body_position == STANDING_UP)

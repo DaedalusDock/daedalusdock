@@ -31,15 +31,21 @@
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))
 		return FALSE
 
-	amount -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3
-	if(amount <= 0)
+	if(amount == 0)
 		return
 
+	if(amount > 0)
+		amount -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3
+		if(amount <= 0)
+			return
+
+	var/is_healing = amount < 0
 	var/obj/item/bodypart/BP
+
 	if(!def_zone) // Distribute to all bodyparts evenly if no bodypart
 		var/list/not_full = bodyparts.Copy()
 		var/list/parts = not_full.Copy()
-		var/amount_remaining = round(amount/2)
+		var/amount_remaining = round(amount)
 		while(amount_remaining > 0 && length(not_full))
 			if(!length(parts))
 				parts += not_full
@@ -62,7 +68,7 @@
 		. = BP.adjustPain(amount)
 
 
-	if(.)
+	if(. && !is_healing)
 		switch(.)
 			if(1 to PAIN_AMT_MEDIUM)
 				flash_pain(PAIN_SMALL)
@@ -99,7 +105,7 @@
 				to_chat(src, span_warning(message))
 
 	if(.)
-		COOLDOWN_START(src, pain_cd, rand(12 SECONDS, 20 SECONDS))
+		COOLDOWN_START(src, pain_cd, rand(8 SECONDS, 14 SECONDS))
 
 	return TRUE
 
@@ -219,7 +225,7 @@
 	if(pain >= maxHealth)
 		if(!stat && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			visible_message(
-				span_danger("<b>[src]</b> slumps over, too weak to continue fighting...",)
+				span_danger("<b>[src]</b> slumps over, too weak to continue fighting..."),
 				span_danger("You give into the pain.")
 			)
 		Unconscious(10 SECONDS)
@@ -228,7 +234,10 @@
 	if(stat == UNCONSCIOUS)
 		return
 
-	if(!COOLDOWN_FINISHED(src, pain_cd) && !prob(5))
+	var/pain_timeleft = COOLDOWN_TIMELEFT(src, pain_cd)
+	if(pain_timeleft && !prob(5))
+		// At 40 pain, the pain cooldown ticks 50% faster, since handle_pain() runs every two seconds
+		COOLDOWN_START(src, pain_cd, round(pain_timeleft - (pain / 40)))
 		return
 
 	var/highest_damage

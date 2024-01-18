@@ -45,7 +45,7 @@
 	if(!def_zone) // Distribute to all bodyparts evenly if no bodypart
 		var/list/not_full = bodyparts.Copy()
 		var/list/parts = not_full.Copy()
-		var/amount_remaining = round(amount)
+		var/amount_remaining = round(amount/2)
 		while(amount_remaining > 0 && length(not_full))
 			if(!length(parts))
 				parts += not_full

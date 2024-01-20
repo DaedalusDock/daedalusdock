@@ -110,7 +110,7 @@
 		stack_trace("Something tried to spawn an infinite duration smell object outside of mapping, don't do this.")
 		return INITIALIZE_HINT_QDEL
 
-	var/component = AddComponent(\
+	AddComponent(\
 		/datum/component/smell, \
 		src.intensity || intensity, \
 		src.descriptor || descriptor, \

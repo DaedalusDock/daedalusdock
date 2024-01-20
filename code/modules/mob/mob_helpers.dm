@@ -521,7 +521,7 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 	return initial(lighting_alpha)
 
 /// Can this mob SMELL THE SMELLY SMELLS?
-/mob/proc/can_smell(intensity)
+/mob/proc/can_smell()
 	return FALSE
 
 //returns the number of size categories between two mob_sizes, rounded. Positive means A is larger than B

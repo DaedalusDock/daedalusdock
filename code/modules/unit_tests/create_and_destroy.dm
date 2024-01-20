@@ -29,6 +29,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		/obj/item/bodypart,
 		//Merge conflict marker. It doesn't runtime, but it's not a real object either
 		/obj/merge_conflict_marker,
+		// Throws a warning due to passing a zero-duration argument after mapload
+		/obj/effect/abstract/smell_holder,
 	)
 	//Say it with me now, type template
 	ignore += typesof(/obj/effect/mapping_helpers)

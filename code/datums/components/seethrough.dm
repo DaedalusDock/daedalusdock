@@ -98,18 +98,11 @@
 
 ///Apply the trickery image and animation
 /datum/component/seethrough/proc/trick_mob(mob/fool)
-	var/datum/hud/our_hud = fool.hud_used
-	for(var/atom/movable/screen/plane_master/seethrough in our_hud.get_true_plane_masters(SEETHROUGH_PLANE))
-		seethrough.unhide_plane(fool)
-
-	var/atom/atom_parent = parent
-	var/image/user_overlay = new(atom_parent)
-	user_overlay.loc = atom_parent
+	var/image/user_overlay = new(parent)
+	user_overlay.loc = parent
 	user_overlay.override = TRUE
-
-	if(clickthrough)
-		//Special plane so we can click through the overlay
-		SET_PLANE_EXPLICIT(user_overlay, SEETHROUGH_PLANE, atom_parent)
+	//Special plane so we can click through the overlay
+	user_overlay.plane = SEETHROUGH_PLANE
 
 	//These are inherited, but we already use the atom's loc so we end up at double the pixel offset
 	user_overlay.pixel_x = 0
@@ -120,7 +113,9 @@
 	animate(user_overlay, alpha = target_alpha, time = animation_time)
 
 	tricked_mobs[fool] = user_overlay
-	RegisterSignal(fool, COMSIG_MOB_LOGOUT, PROC_REF(on_client_disconnect))
+	RegisterSignal(fool, COMSIG_MOB_LOGOUT, .proc/on_client_disconnect)
+
+
 
 
 ///Unrout ourselves after we somehow moved, and start a timer so we can re-restablish our behind area after standing still for a bit
@@ -145,10 +140,6 @@
 		var/image/trickery_image = tricked_mobs[fool]
 		fool.client?.images -= trickery_image
 		UnregisterSignal(fool, COMSIG_MOB_LOGOUT)
-		var/datum/hud/our_hud = fool.hud_used
-
-		for(var/atom/movable/screen/plane_master/seethrough in our_hud.get_true_plane_masters(SEETHROUGH_PLANE))
-			seethrough.hide_plane(fool)
 
 	tricked_mobs.Cut()
 
@@ -159,6 +150,3 @@
 	tricked_mobs.Remove(fool)
 	UnregisterSignal(fool, COMSIG_MOB_LOGOUT)
 	RegisterSignal(fool, COMSIG_MOB_LOGIN, PROC_REF(trick_mob))
-	var/datum/hud/our_hud = fool.hud_used
-	for(var/atom/movable/screen/plane_master/seethrough in our_hud.get_true_plane_masters(SEETHROUGH_PLANE))
-		seethrough.hide_plane(fool)

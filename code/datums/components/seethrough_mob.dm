@@ -51,9 +51,6 @@
 	SIGNAL_HANDLER
 
 	var/mob/fool = parent
-	var/datum/hud/our_hud = fool.hud_used
-	for(var/atom/movable/screen/plane_master/seethrough as anything in our_hud.get_true_plane_masters(SEETHROUGH_PLANE))
-		seethrough.unhide_plane(fool)
 
 	var/icon/current_mob_icon = icon(fool.icon, fool.icon_state)
 	render_source_atom.pixel_x = -fool.pixel_x
@@ -69,10 +66,6 @@
 
 	trickery_image.pixel_x = 0
 	trickery_image.pixel_y = 0
-
-	if(clickthrough)
-		//Special plane so we can click through the overlay
-		SET_PLANE_EXPLICIT(trickery_image, SEETHROUGH_PLANE, fool)
 
 	fool.client.images += trickery_image
 
@@ -102,9 +95,6 @@
 
 	var/mob/fool = parent
 	UnregisterSignal(fool, COMSIG_MOB_LOGOUT)
-	var/datum/hud/our_hud = fool.hud_used
-	for(var/atom/movable/screen/plane_master/seethrough as anything in our_hud.get_true_plane_masters(SEETHROUGH_PLANE))
-		seethrough.hide_plane(fool)
 	clear_image(trickery_image, fool.client)
 
 /datum/component/seethrough_mob/proc/toggle_active()

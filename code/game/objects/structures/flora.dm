@@ -34,6 +34,10 @@
 	. = ..()
 	AddComponent(/datum/component/seethrough, get_seethrough_map())
 
+///Return a see_through_map, examples in seethrough.dm
+/obj/structure/flora/tree/proc/get_seethrough_map()
+	return SEE_THROUGH_MAP_DEFAULT
+
 /obj/structure/flora/tree/attackby(obj/item/attacking_item, mob/user, params)
 	if(!log_amount || flags_1 & NODECONSTRUCT_1)
 		return ..()

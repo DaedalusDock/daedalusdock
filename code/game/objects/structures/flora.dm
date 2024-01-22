@@ -30,6 +30,10 @@
 	herbage = TRUE
 	wood = TRUE
 
+/obj/structure/flora/tree/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/seethrough, get_seethrough_map())
+
 /obj/structure/flora/tree/attackby(obj/item/attacking_item, mob/user, params)
 	if(!log_amount || flags_1 & NODECONSTRUCT_1)
 		return ..()
@@ -71,6 +75,9 @@
 
 	if(islist(icon_states?.len))
 		icon_state = pick(icon_states)
+
+/obj/structure/flora/tree/pine/get_seethrough_map()
+	return SEE_THROUGH_MAP_DEFAULT_TWO_TALL
 
 /obj/structure/flora/tree/pine/xmas
 	name = "xmas tree"
@@ -157,10 +164,16 @@
 	icon_state = "[icon_state][rand(1, 6)]"
 	. = ..()
 
+/obj/structure/flora/tree/jungle/get_seethrough_map()
+	return SEE_THROUGH_MAP_THREE_X_THREE
+
 /obj/structure/flora/tree/jungle/small
 	pixel_y = 0
 	pixel_x = -32
 	icon = 'icons/obj/flora/jungletreesmall.dmi'
+
+/obj/structure/flora/tree/jungle/small/get_seethrough_map()
+	return SEE_THROUGH_MAP_THREE_X_TWO
 
 //grass
 /obj/structure/flora/grass

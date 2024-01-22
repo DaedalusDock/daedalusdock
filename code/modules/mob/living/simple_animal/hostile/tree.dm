@@ -47,6 +47,10 @@
 
 	var/is_tree = TRUE
 
+/mob/living/simple_animal/hostile/tree/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/seethrough_mob)
+
 /mob/living/simple_animal/hostile/tree/Life(delta_time = SSMOBS_DT, times_fired)
 	..()
 	if(!is_tree || !isopenturf(loc))

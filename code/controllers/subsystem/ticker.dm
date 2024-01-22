@@ -701,11 +701,8 @@ SUBSYSTEM_DEF(ticker)
 	if(!istype(track))
 		CRASH("Non-datum/media given to set_login_music()!")
 
-	var/index = login_music.Find(track)
-	if(index)
-		login_music.Swap(1, index)
-	else
-		login_music.Insert(1, track)
+	login_music -= track
+	login_music.Insert(1, track)
 
 	var/sound/S = sound(channel = CHANNEL_LOBBYMUSIC)
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)

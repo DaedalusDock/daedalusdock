@@ -52,7 +52,6 @@
 	if(stat != DEAD)
 		return TRUE
 
-
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
 	var/chest_covered = FALSE
 	var/head_covered = FALSE

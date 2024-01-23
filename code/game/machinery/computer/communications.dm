@@ -88,7 +88,6 @@
 
 /obj/machinery/computer/communications/Initialize(mapload)
 	. = ..()
-	GLOB.shuttle_caller_list += src
 	AddComponent(/datum/component/gps, "Secured Communications Signal")
 
 /// Are we NOT a silicon, AND we're logged in as the captain?
@@ -750,11 +749,6 @@
 			status_signal.data["picture_state"] = data1
 
 	frequency.post_signal(status_signal)
-
-/obj/machinery/computer/communications/Destroy()
-	GLOB.shuttle_caller_list -= src
-	SSshuttle.autoEvac()
-	return ..()
 
 /// Override the cooldown for special actions
 /// Used in places such as CentCom messaging back so that the crew can answer right away

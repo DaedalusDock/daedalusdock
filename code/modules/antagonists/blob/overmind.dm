@@ -65,7 +65,7 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	color = blobstrain.complementary_color
 	if(blob_core)
 		blob_core.update_appearance()
-	SSshuttle.registerHostileEnvironment(src)
+	SSevacuation.add_hostile_environment(src)
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
@@ -220,7 +220,7 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	GLOB.overminds -= src
 	QDEL_LIST_ASSOC_VAL(strain_choices)
 
-	SSshuttle.clearHostileEnvironment(src)
+	SSevacuation.remove_hostile_environment(src)
 	STOP_PROCESSING(SSobj, src)
 
 	return ..()

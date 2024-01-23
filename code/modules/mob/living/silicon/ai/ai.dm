@@ -179,7 +179,6 @@
 		))
 
 	GLOB.ai_list += src
-	GLOB.shuttle_caller_list += src
 
 	builtInCamera = new (src)
 	builtInCamera.network = list("ss13")
@@ -215,8 +214,6 @@
 
 /mob/living/silicon/ai/Destroy()
 	GLOB.ai_list -= src
-	GLOB.shuttle_caller_list -= src
-	SSshuttle.autoEvac()
 	QDEL_NULL(eyeobj) // No AI, no Eye
 	QDEL_NULL(spark_system)
 	QDEL_NULL(malf_picker)

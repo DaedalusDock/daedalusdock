@@ -167,7 +167,7 @@
 	if(!(real_winner == INITIATE_TRANSFER))
 		return
 
-	SSshuttle.autoEnd()
+	SSevacuation.auto_end()
 	var/obj/machinery/computer/communications/C = locate() in GLOB.machines
 	if(C)
 		C.post_status("shuttle")

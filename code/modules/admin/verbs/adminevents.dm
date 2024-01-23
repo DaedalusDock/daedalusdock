@@ -192,60 +192,6 @@
 
 	return
 
-/client/proc/admin_disable_shuttle()
-	set category = "Admin.Events"
-	set name = "Disable Shuttle"
-
-	if(!check_rights(R_ADMIN))
-		return
-
-	if(SSshuttle.emergency.mode == SHUTTLE_DISABLED)
-		to_chat(usr, span_warning("Error, shuttle is already disabled."))
-		return
-
-	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
-		return
-
-	message_admins(span_adminnotice("[key_name_admin(usr)] disabled the shuttle."))
-
-	SSshuttle.last_mode = SSshuttle.emergency.mode
-	SSshuttle.last_call_time = SSshuttle.emergency.timeLeft(1)
-	SSshuttle.admin_emergency_no_recall = TRUE
-	SSshuttle.emergency.setTimer(0)
-	SSshuttle.emergency.mode = SHUTTLE_DISABLED
-	priority_announce(
-		"Warning: Emergency Shuttle uplink failure, shuttle disabled until further notice.",
-		"LRSV Icarus Announcement",
-		"Emergency Shuttle Uplink Alert",
-		'sound/misc/announce_dig.ogg'
-	)
-
-/client/proc/admin_enable_shuttle()
-	set category = "Admin.Events"
-	set name = "Enable Shuttle"
-
-	if(!check_rights(R_ADMIN))
-		return
-
-	if(SSshuttle.emergency.mode != SHUTTLE_DISABLED)
-		to_chat(usr, span_warning("Error, shuttle not disabled."))
-		return
-
-	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
-		return
-
-	message_admins(span_adminnotice("[key_name_admin(usr)] enabled the emergency shuttle."))
-	SSshuttle.admin_emergency_no_recall = FALSE
-	SSshuttle.emergency_no_recall = FALSE
-	if(SSshuttle.last_mode == SHUTTLE_DISABLED) //If everything goes to shit, fix it.
-		SSshuttle.last_mode = SHUTTLE_IDLE
-
-	SSshuttle.emergency.mode = SSshuttle.last_mode
-	if(SSshuttle.last_call_time < 10 SECONDS && SSshuttle.last_mode != SHUTTLE_IDLE)
-		SSshuttle.last_call_time = 10 SECONDS //Make sure no insta departures.
-	SSshuttle.emergency.setTimer(SSshuttle.last_call_time)
-	priority_announce("Warning: Emergency Shuttle uplink reestablished, shuttle enabled.", "LRSV Icarus Announcement", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
-
 /client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in GLOB.nuke_list)
 	set category = "Admin.Events"
 	set name = "Toggle Nuke"

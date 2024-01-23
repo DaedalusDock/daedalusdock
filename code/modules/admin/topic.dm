@@ -93,12 +93,12 @@
 			return
 		SSticker.mode.admin_panel()
 
-	else if(href_list["call_shuttle"])
+	else if(href_list["start_evac"])
 		if(!check_rights(R_ADMIN))
 			return
 
 
-		switch(href_list["call_shuttle"])
+		switch(href_list["start_evac"])
 			if("1")
 				if(EMERGENCY_AT_LEAST_DOCKED)
 					return

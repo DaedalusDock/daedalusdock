@@ -455,7 +455,7 @@
 		if(SHUTTLE_DOCKED)
 			if(time_left <= ENGINES_START_TIME)
 				mode = SHUTTLE_IGNITING
-				SSshuttle.checkHostileEnvironment()
+				SSevacuation.check_hostile_environment()
 				if(mode == SHUTTLE_STRANDED)
 					return
 				for(var/A in SSshuttle.mobile_docking_ports)
@@ -465,7 +465,7 @@
 
 		if(SHUTTLE_IGNITING)
 			var/success = TRUE
-			SSshuttle.checkHostileEnvironment()
+			SSevacuation.check_hostile_environment()
 			if(mode == SHUTTLE_STRANDED)
 				return
 
@@ -509,7 +509,7 @@
 				SSmapping.mapvote() //If no map vote has been run yet, start one.
 
 		if(SHUTTLE_STRANDED, SHUTTLE_DISABLED)
-			SSshuttle.checkHostileEnvironment()
+			SSevacuation.check_hostile_environment()
 
 
 		if(SHUTTLE_ESCAPE)

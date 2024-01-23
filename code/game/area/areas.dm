@@ -47,6 +47,9 @@
 	/// If a room is too big it doesn't have beauty.
 	var/beauty_threshold = 150
 
+	/// Used by ghosts to grant new powers. See /datum/component/spook_factor
+	var/spook_level
+
 	/// For space, the asteroid, etc. Used with blueprints or with weather to determine if we are adding a new area (vs editing a station room)
 	var/outdoors = FALSE
 

@@ -22,12 +22,12 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
 
 
-#define FLOOR_PLANE -8
-
-///Slightly above the game plane but does not catch mouse clicks. Useful for certain visuals that should be clicked through, like seethrough trees
-#define SEETHROUGH_PLANE -7
+#define FLOOR_PLANE -6
 
 #define GAME_PLANE -6
+
+///Slightly above the game plane but does not catch mouse clicks. Useful for certain visuals that should be clicked through, like seethrough trees
+#define SEETHROUGH_PLANE -5
 
 // PLANE_SPACE layer(s)
 #define SPACE_LAYER 1.8

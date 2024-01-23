@@ -48,7 +48,6 @@
 	name = "Seethrough"
 	plane = SEETHROUGH_PLANE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	render_relay_plane = GAME_PLANE
 
 /atom/movable/screen/plane_master/massive_obj
 	name = "massive object plane master"

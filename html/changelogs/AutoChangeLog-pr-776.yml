@@ -1,0 +1,5 @@
+author: Time-Green, IndieanaJones
+delete-after: true
+changes:
+  - qol: Adds the seethrough component, allowing people to see behind large objects,
+      and behind their own mob if they are large

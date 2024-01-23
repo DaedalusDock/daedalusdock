@@ -8,6 +8,14 @@ SUBSYSTEM_DEF(evacuation)
 	var/datum/evacuation_controller/controller
 	/// Things blocking evacuation
 	var/list/hostile_environments = list()
+	/// Where was the emergency shuttle last called from?
+	var/area/last_evac_call_loc
+	/// How many times was the escape shuttle called?
+	var/evac_calls_count = 0
+	/// Do we prevent the recall of evacuation
+	var/no_recall = FALSE
+	/// Did admins force-prevent the recall of evacuation
+	var/admin_no_recall = FALSE
 
 /datum/controller/subsystem/evacuation/fire(resumed)
 	if(!SSticker.HasRoundStarted() || length(hostile_environments) || controller.evac_allowed())

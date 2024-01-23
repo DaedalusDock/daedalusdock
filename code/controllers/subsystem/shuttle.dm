@@ -56,6 +56,7 @@ SUBSYSTEM_DEF(shuttle)
 	var/last_mode = SHUTTLE_IDLE
 	/// Previous time left to the call, only useful for disabling and re-enabling the shuttle for admins so it doesn't have to start the whole timer again.
 	var/last_call_time = 10 MINUTES
+	var/endvote_passed = FALSE
 
 	/// Things blocking escape shuttle from leaving.
 	var/list/hostile_environments = list()
@@ -1028,3 +1029,12 @@ SUBSYSTEM_DEF(shuttle)
 			has_purchase_shuttle_access |= shuttle_template.who_can_purchase
 
 	return has_purchase_shuttle_access
+
+/datum/controller/subsystem/shuttle/proc/autoEnd()
+	if(EMERGENCY_IDLE_OR_RECALLED)
+		SSshuttle.emergency.request(silent = TRUE)
+		priority_announce("The shift has come to an end and the shuttle called. [SSsecurity_level.current_level == SEC_LEVEL_RED ? "Red Alert state confirmed: Dispatching priority shuttle. " : "" ]It will arrive in [emergency.timeLeft(600)] minutes.", FLAVOR_CENTCOM_NAME, sound_type = ANNOUNCER_SHUTTLECALLED)
+		log_game("Round end vote passed. Shuttle has been auto-called.")
+		message_admins("Round end vote passed. Shuttle has been auto-called.")
+	emergency_no_recall = TRUE
+	endvote_passed = TRUE

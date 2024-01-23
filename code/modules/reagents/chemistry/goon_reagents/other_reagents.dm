@@ -126,6 +126,8 @@
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.adjustToxLoss(rand(5,10))
 
+	exposed_turf.AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_ODOR, "bleach", 3, 5 MINUTES)
+
 /datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
 	. = ..()
 	if(methods & (TOUCH|VAPOR))

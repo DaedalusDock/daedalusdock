@@ -470,8 +470,18 @@ em {
   color: #9ab0ff;
 }
 
+.subtle {
+  color: #8A72C5;
+  font-style: italic;
+  font-size: 85%;
+}
+
 .notice {
   color: #D47D5A;
+}
+
+.obviousnotice {
+  color: #8A72C5;
 }
 
 .tinynotice {
@@ -952,12 +962,6 @@ em {
   background: #222;
   height: 1px;
   margin: 8px 16px 8px 16px;
-}
-
-.subtle {
-  color: #8A72C5;
-  font-style: italic;
-  font-size: 85%;
 }
 
 .talk {

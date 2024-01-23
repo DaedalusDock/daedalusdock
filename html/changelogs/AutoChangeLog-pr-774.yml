@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Ballistics now emit a long-lasting scent of gunpowder when fired.
+  - rscadd: Energy weapons now emit a short-lasting scent of ozone when fired.
+  - qol: You won't see multiple smell messages in a single smell tick.
+  - code_imp: Cleaned up smell code.

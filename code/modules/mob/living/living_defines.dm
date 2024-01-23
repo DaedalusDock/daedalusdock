@@ -189,7 +189,7 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/voice_type
 
 	COOLDOWN_DECLARE(smell_time)
-	var/last_smell_intensity = 0
+	var/datum/weakref/next_smell
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null

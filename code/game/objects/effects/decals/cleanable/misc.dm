@@ -152,7 +152,7 @@
 
 /obj/effect/cleanable/vomit/Initialize()
 	. = ..()
-	AddComponent(/datum/component/smell/overpowering, SCENT_SMELL, "vomit", 1)
+	AddComponent(/datum/component/smell, INTENSITY_OVERPOWERING, SCENT_SMELL, "vomit", 1)
 
 /obj/effect/decal/cleanable/vomit/attack_hand(mob/user, list/modifiers)
 	. = ..()

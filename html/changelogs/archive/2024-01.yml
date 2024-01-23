@@ -1,0 +1,81 @@
+2024-01-02:
+  Azarak, Kapu1178:
+  - rscadd: Modular slapcrafting
+  CapybaraExtravagante, LemonInTheDark, Time-Green, ninjanomnom:
+  - bugfix: Mobs will fly around space... less
+  Kapu1178:
+  - bugfix: A rare bug with grabs not removing their effects on release.
+  - tweak: Restyled TGChat for Daedalus.
+  - bugfix: You can place people onto tables without a grab again.
+  - bugfix: The suit storage slot icon works correctly again.
+  - balance: Melee and Bullet armor has been split further into Blunt, Puncture, and
+      Slash armor.
+  - balance: Attacks now check against different armor types based on the sharpness
+      (sharp, pointy, both, blunt) of the weapon.
+  - balance: Spear force reduced by 3
+  - balance: Rubber and DumDum rounds are now 5x weaker to armor than a standard bullet,
+      from 2x.
+  - balance: Shrapnel is now 3x weaker to armor, from 2x.
+  - qol: During Crew Transfer votes, non-afk players will be counted as Continue Playing
+      if they do not vote.
+  - bugfix: Map voting works FOR REAL.
+  LemonInTheDark:
+  - code_imp: Micro optimized timers
+  Time-Green:
+  - bugfix: Odd cases where bodyparts and organs end up outside of mobs are handled.
+  francinum:
+  - qol: Hermes Transport has instituted new seat filling algorithms to decrease lap-seating
+      in long-range transport shuttles.
+2024-01-03:
+  Kapu1178:
+  - bugfix: Bodyparts are no longer affected by explosions directly when attached
+      to a mob. The mob handles it.
+  Profakos:
+  - rscdel: Removes the slime's reagent holder. This will make them not slow down
+      from somehow imbibing morphine or frostoil.
+  francinum:
+  - code_imp: rust_g 2.2.0
+2024-01-04:
+  Kapu1178:
+  - bugfix: Votes run their completion code.
+2024-01-05:
+  MrMelbert, Kapu1178:
+  - refactor: Refactored unarmed attacking mechanisms, this means dis-coordinated
+      humans will now bite people like monkeys (like how coordinated monkeys punch
+      people like humans?)
+  - refactor: Dis-coordinated humans smashing up machines now use their hands, rather
+      than their paws
+2024-01-06:
+  Kapu1178:
+  - rscadd: Mobs now jiggle when attacked. Jiggle jiggle.
+  - rscadd: Increased brutality of combat.
+  - soundadd: Added new punch sound effects.
+2024-01-11:
+  Kapu1178:
+  - rscadd: A wielding hotkey.
+  - refactor: Rewrites blocking to be more sane. Adds new audiovisual feedback to
+      successful blocks.
+  - balance: Adjusted pain numbers.
+  - refactor: Changed how melee accuracy works to a better(?) distribution.
+  - rscadd: Added new feedback for being in pain.
+  - soundadd: Added new sounds for being in pain.
+  - refactor: Alot of gun code.
+  - balance: Firing a gun without wielding it will yield increased spread.
+  - bugfix: Attempting to akimbo guns will no longer fail if the first gun fails to
+      fire.
+  - bugfix: Guns with locking bolts will no longer freak out if they run out of ammo
+      in certain situations.
+  - bugfix: Suppressing a gun will no longer remove it's pointblank knockback.
+  - bugfix: You are no longer able to dry fire guns you can't fire at all.
+  - bugfix: Alot more gun bugs.
+2024-01-12:
+  Kapu1178:
+  - rscadd: Security Huds now require using a click action to scan a target. This
+      will print their record information to the chat, and display an on-screen visual.
+  - rscadd: Glasses color is now a pref and not a weird undocumented alt click feature.
+2024-01-13:
+  Kapu1178:
+  - bugfix: Default wield hotkey no longer conflicts with other default hotkeys.
+2024-01-23:
+  MisterGrimm:
+  - balance: Getting flushed into the disposal network damages mobs once more

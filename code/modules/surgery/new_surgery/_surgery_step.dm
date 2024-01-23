@@ -24,8 +24,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	var/can_infect = 0
 	/// How much blood this step can get on surgeon. 1 - hands, 2 - full body.
 	var/blood_level = 0                  // How much blood this step can get on surgeon. 1 - hands, 2 - full body.
-	/// what shock level will this step put patient on
-	var/shock_level = 0
+	/// How much pain to deliver to the patient
+	var/pain_given =0
 	/// if this step NEEDS stable optable or can be done on any valid surface with no penalty
 	var/delicate = 0
 	/// Various bitflags for requirements of the surgery.
@@ -124,9 +124,10 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	play_preop_sound(user, target, target_zone, tool)
 
 	var/obj/item/bodypart/affected = target.get_bodypart(deprecise_zone(target_zone), TRUE)
-	/*
-	if (can_infect && affected)
-		spread_germs_to_organ(affected, user)*/
+
+	if (can_infect)
+		spread_germs(user, affected)
+
 	if(user && affected)
 		if(ishuman(user) && prob(60) && (affected.bodypart_flags & BP_HAS_BLOOD))
 			var/mob/living/carbon/human/H = user
@@ -145,8 +146,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 					user.ContactContractDisease(D)
 
-	/*if(shock_level)
-		target.shock_stage = max(target.shock_stage, shock_level)*/
+	if(pain_given && !(HAS_TRAIT(target, TRAIT_NO_PAINSHOCK) || HAS_TRAIT(target, TRAIT_FAKEDEATH)) && !(affected.bodypart_flags & BP_NO_PAIN))
+		target.apply_pain(pain_given, affected.body_zone, ignore_cd = TRUE)
 
 	if (target.stat == UNCONSCIOUS && prob(20))
 		to_chat(target, span_boldnotice("... [pick("bright light", "faraway pain", "something moving in you", "soft beeping")] ..."))
@@ -215,6 +216,27 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	else
 		sound_file_use = preop_sound
 	playsound(get_turf(target), sound_file_use, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+
+/datum/surgery_step/proc/spread_germs(mob/living/carbon/user, obj/item/bodypart/BP)
+	if(!istype(user) || !istype(BP))
+		return
+
+	if(!IS_ORGANIC_LIMB(BP))
+		return
+
+	var/germ_level = user.germ_level
+	var/wearing_gloves = FALSE
+	if(user.gloves)
+		wearing_gloves = TRUE
+		germ_level = user.gloves.germ_level
+
+	germ_level = max(germ_level, BP.germ_level)
+	if(!wearing_gloves)
+		user.germ_level = germ_level
+	else
+		user.germ_level = germ_level
+
+	BP.germ_level = germ_level //as funny as scrubbing microbes out with clean gloves is - no.
 
 /// Attempt to perform a surgery step.
 /obj/item/proc/attempt_surgery(mob/living/carbon/M, mob/living/user)

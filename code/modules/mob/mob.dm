@@ -25,6 +25,7 @@
  * Parent call
  */
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	unset_machine()
 	remove_from_mob_list()
 	remove_from_dead_mob_list()
 	remove_from_alive_mob_list()
@@ -900,7 +901,6 @@
 /mob/proc/swap_hand()
 	var/obj/item/held_item = get_active_held_item()
 	if(SEND_SIGNAL(src, COMSIG_MOB_SWAP_HANDS, held_item) & COMPONENT_BLOCK_SWAP)
-		to_chat(src, span_warning("Your other hand is too busy holding [held_item]."))
 		return FALSE
 	return TRUE
 
@@ -1161,19 +1161,33 @@
 				return
 			LA.alpha = lighting_alpha
 
-///Update the mouse pointer of the attached client in this mob
+///Update the mouse pointer of the attached client in this mob. Red hot proc!
 /mob/proc/update_mouse_pointer()
 	set waitfor = FALSE
 	if(!client)
 		return
 
-	if(client.mouse_override_icon)
-		if(client.mouse_pointer_icon != client.mouse_override_icon)
-			client.mouse_pointer_icon = client.mouse_override_icon
-		return
+	// First, mouse down icons
+	if((client.mouse_down == TRUE) && client.mouse_down_icon)
+		. = client.mouse_down_icon
 
-	. = get_mouse_pointer_icon()
-	. ||= 'icons/effects/mouse_pointers/default.dmi'
+	// Second, mouse up icons
+	if(isnull(.) && (client.mouse_down == FALSE) && client.mouse_up_icon)
+		. = client.mouse_up_icon
+
+	// Third, mouse override icons
+	if(isnull(.) && client.mouse_override_icon)
+		. = client.mouse_override_icon
+
+	// Fourth, examine icon
+	if(isnull(.) && examine_cursor_icon && client.keys_held["Shift"])
+		. = examine_cursor_icon
+
+	// Last, the mob decides.
+	if(isnull(.))
+		. = get_mouse_pointer_icon()
+		. ||= 'icons/effects/mouse_pointers/default.dmi'
+
 	if(. != client.mouse_pointer_icon)
 		client.mouse_pointer_icon = .
 

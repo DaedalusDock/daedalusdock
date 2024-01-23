@@ -29,6 +29,10 @@
 
 	add_initial_reagents()
 
+/obj/item/reagent_containers/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/reagent_containers/examine()
 	. = ..()
 	if(possible_transfer_amounts.len > 1)

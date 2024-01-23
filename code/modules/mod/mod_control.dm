@@ -13,7 +13,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
 	strip_delay = 10 SECONDS
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	actions_types = list(
 		/datum/action/item_action/mod/deploy,
 		/datum/action/item_action/mod/activate,
@@ -84,6 +84,10 @@
 	var/list/modules = list()
 	/// Currently used module.
 	var/obj/item/mod/module/selected_module
+	/// The MODlink datum, letting us call people from the suit.
+	var/datum/mod_link/mod_link
+	/// The starting MODlink frequency, overridden on subtypes that want it to be something.
+	var/starting_frequency = null
 	/// AI mob inhabiting the MOD.
 	var/mob/living/silicon/ai/ai
 	/// Delay between moves as AI.
@@ -142,10 +146,10 @@
 	RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(on_exit))
 	RegisterSignal(src, COMSIG_SPEED_POTION_APPLIED, PROC_REF(on_potion))
 	movedelay = CONFIG_GET(number/movedelay/run_delay)
+	START_PROCESSING(SSobj, src)
 
 /obj/item/mod/control/Destroy()
-	if(active)
-		STOP_PROCESSING(SSobj, src)
+	STOP_PROCESSING(SSobj, src)
 	for(var/obj/item/mod/module/module as anything in modules)
 		uninstall(module, deleting = TRUE)
 	for(var/obj/item/part as anything in mod_parts)
@@ -174,6 +178,7 @@
 	if(core)
 		QDEL_NULL(core)
 	QDEL_NULL(wires)
+	QDEL_NULL(mod_link)
 	return ..()
 
 /obj/item/mod/control/atom_destruction(damage_flag)
@@ -216,6 +221,8 @@
 			. += span_notice("You could remove [ai] with an <b>intellicard</b>.")
 		else
 			. += span_notice("You could install an AI with an <b>intellicard</b>.")
+	. += span_notice("You could copy/set link frequency with a <b>multitool</b>.")
+	. += span_notice("<i>You could examine it more thoroughly...</i>")
 
 /obj/item/mod/control/examine_more(mob/user)
 	. = ..()
@@ -224,9 +231,13 @@
 /obj/item/mod/control/process(delta_time)
 	if(seconds_electrified > MACHINE_NOT_ELECTRIFIED)
 		seconds_electrified--
-	if(!get_charge() && active && !activating)
+	if(mod_link.link_call)
+		subtract_charge((DEFAULT_CHARGE_DRAIN * 0.25) * delta_time)
+	if(!active)
+		return
+	if(!get_charge() && !activating)
 		power_off()
-		return PROCESS_KILL
+		return
 	var/malfunctioning_charge_drain = 0
 	if(malfunctioning)
 		malfunctioning_charge_drain = rand(1,20)
@@ -268,6 +279,7 @@
 		conceal(null, part)
 	if(active)
 		finish_activation(on = FALSE)
+		mod_link?.end_call()
 	unset_wearer()
 
 /obj/item/mod/control/allow_attack_hand_drop(mob/user)
@@ -551,6 +563,10 @@
 	old_module.on_uninstall(deleting = deleting)
 	QDEL_LIST_ASSOC_VAL(old_module.pinned_to)
 	old_module.mod = null
+
+/// Intended for callbacks, don't use normally, just get wearer by itself.
+/obj/item/mod/control/proc/get_wearer()
+	return wearer
 
 /obj/item/mod/control/proc/update_access(mob/user, obj/item/card/id/card)
 	if(!allowed(user))

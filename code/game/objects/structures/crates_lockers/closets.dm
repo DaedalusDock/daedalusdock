@@ -10,7 +10,7 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	drag_slowdown = 1.5 // Same as a prone mob
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(MELEE = 20, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
+	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSSTRUCTURE|LETPASSCLICKS
 	zmm_flags = ZMM_MANGLE_PLANES
@@ -250,6 +250,9 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 	if(!location)
 		return
 	for(var/atom/movable/AM as anything in location)
+		if(iseffect(AM))
+			continue
+
 		if(AM != src && insert(AM, mapload) == LOCKER_FULL) // limit reached
 			if(mapload) // Yea, it's a mapping issue. Blame mappers.
 				log_mapping("Closet storage capacity of [type] exceeded on mapload at [AREACOORD(src)]")

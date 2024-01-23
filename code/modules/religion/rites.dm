@@ -654,7 +654,7 @@
 
 /datum/religion_rites/declare_arena/perform_rite(mob/living/user, atom/religious_tool)
 	var/list/filtered = list()
-	for(var/area/unfiltered_area as anything in GLOB.sortedAreas)
+	for(var/area/unfiltered_area as anything in GLOB.areas)
 		if(istype(unfiltered_area, /area/centcom)) //youuu dont need thaaat
 			continue
 		if(!(unfiltered_area.area_flags & HIDDEN_AREA))

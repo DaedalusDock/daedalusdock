@@ -15,7 +15,7 @@
 	var/mob/living/M = user.mob
 	if(!istype(M))
 		return
-	if(!LAZYLEN(M.get_active_grabs()))
+	if(!LAZYLEN(M.active_grabs))
 		to_chat(user, span_notice("You are not grabbing anything."))
 	else
 		M.release_all_grabs()

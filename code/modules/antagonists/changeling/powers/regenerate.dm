@@ -22,7 +22,7 @@
 				loud, crunchy sound and giving you great pain!</span>",
 				"<span class='hear'>You hear organic matter ripping \
 				and tearing!</span>")
-			C.emote("scream")
+			C.emote("agony")
 			C.regenerate_limbs()
 		if(!user.getorganslot(ORGAN_SLOT_BRAIN) && user.needs_organ(ORGAN_SLOT_BRAIN))
 			var/obj/item/organ/brain/B = C.dna.species.organs[ORGAN_SLOT_BRAIN]

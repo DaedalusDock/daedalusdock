@@ -3,7 +3,7 @@
 	desc = "How someone could even fit in there is byond me."
 	icon_state = "clowncar"
 	max_integrity = 150
-	armor = list(MELEE = 70, BULLET = 40, LASER = 40, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 80)
+	armor = list(BLUNT = 70, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 80)
 	enter_delay = 20
 	max_occupants = 50
 	movedelay = 0.6
@@ -25,6 +25,10 @@
 /obj/vehicle/sealed/car/clowncar/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj,src)
+
+/obj/vehicle/sealed/car/clowncar/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/vehicle/sealed/car/clowncar/process()
 	if(light_on && (obj_flags & EMAGGED))

@@ -336,17 +336,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 						qdel(G)
 	return TRUE
 
-/turf/proc/handleRCL(obj/item/rcl/C, mob/user)
-	if(C.loaded)
-		for(var/obj/structure/pipe_cleaner/LC in src)
-			if(!LC.d1 || !LC.d2)
-				LC.handlecable(C, user)
-				return
-		C.loaded.place_turf(src, user)
-		if(C.wiring_gui_menu)
-			C.wiringGuiUpdate(user)
-		C.is_empty(user)
-
 /turf/attackby(obj/item/C, mob/user, params)
 	if(..())
 		return TRUE
@@ -354,17 +343,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		var/obj/item/stack/cable_coil/coil = C
 		coil.place_turf(src, user)
 		return TRUE
-	else if(can_have_cabling() && istype(C, /obj/item/stack/pipe_cleaner_coil))
-		var/obj/item/stack/pipe_cleaner_coil/coil = C
-		for(var/obj/structure/pipe_cleaner/LC in src)
-			if(!LC.d1 || !LC.d2)
-				LC.attackby(C, user)
-				return
-		coil.place_turf(src, user)
-		return TRUE
-
-	else if(istype(C, /obj/item/rcl))
-		handleRCL(C, user)
 
 	return FALSE
 
@@ -733,3 +711,21 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/datum/gas_mixture/GM = unsafe_return_air()
 	if(isnull(GM) || GM.returnPressure() < SOUND_MINIMUM_PRESSURE)
 		return TRUE
+
+/// Call to move a turf from its current area to a new one
+/turf/proc/change_area(area/old_area, area/new_area)
+	//dont waste our time
+	if(old_area == new_area)
+		return
+
+	//move the turf
+	old_area.turfs_to_uncontain += src
+	new_area.contents += src
+	new_area.contained_turfs += src
+
+	//changes to make after turf has moved
+	on_change_area(old_area, new_area)
+
+/// Allows for reactions to an area change without inherently requiring change_area() be called (I hate maploading)
+/turf/proc/on_change_area(area/old_area, area/new_area)
+	transfer_area_lighting(old_area, new_area)

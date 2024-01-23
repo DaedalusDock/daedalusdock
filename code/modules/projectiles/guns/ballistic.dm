@@ -146,21 +146,6 @@
 	QDEL_NULL(magazine)
 	return ..()
 
-/obj/item/gun/ballistic/fire_sounds()
-	var/max_ammo = magazine?.max_ammo || initial(mag_type.max_ammo)
-	var/current_ammo = get_ammo()
-	var/frequency_to_use = sin((90 / max_ammo) * current_ammo)
-	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
-	var/play_click = round(sqrt(max_ammo * 2)) > get_ammo()
-	if(suppressed)
-		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
-		if(play_click)
-			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0, frequency = click_frequency_to_use)
-	else
-		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound)
-		if(play_click)
-			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, frequency = click_frequency_to_use)
-
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
 	if(vname in list(NAMEOF(src, suppressor_x_offset), NAMEOF(src, suppressor_y_offset), NAMEOF(src, internal_magazine), NAMEOF(src, magazine), NAMEOF(src, chambered), NAMEOF(src, empty_indicator), NAMEOF(src, sawn_off), NAMEOF(src, bolt_locked), NAMEOF(src, bolt_type)))
@@ -225,21 +210,25 @@
 		. += "[icon_state]_mag_[capacity_number]"
 
 
-/obj/item/gun/ballistic/handle_chamber(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
+/obj/item/gun/ballistic/do_chamber_update(empty_chamber = TRUE, from_firing = TRUE, chamber_next_round = TRUE)
 	if(!semi_auto && from_firing)
 		return
+
 	var/obj/item/ammo_casing/casing = chambered //Find chambered round
 	if(istype(casing)) //there's a chambered round
 		if(QDELING(casing))
 			stack_trace("Trying to move a qdeleted casing of type [casing.type]!")
 			chambered = null
+
 		else if(casing_ejector || !from_firing)
 			casing.forceMove(drop_location()) //Eject casing onto ground.
 			casing.bounce_away(TRUE)
 			SEND_SIGNAL(casing, COMSIG_CASING_EJECTED)
 			chambered = null
+
 		else if(empty_chamber)
 			chambered = null
+
 	if (chamber_next_round && (magazine?.max_ammo > 1))
 		chamber_round()
 
@@ -258,20 +247,26 @@
 /obj/item/gun/ballistic/proc/rack(mob/user = null)
 	if (bolt_type == BOLT_TYPE_NO_BOLT) //If there's no bolt, nothing to rack
 		return
+
 	if (bolt_type == BOLT_TYPE_OPEN)
 		if(!bolt_locked) //If it's an open bolt, racking again would do nothing
 			if (user)
 				to_chat(user, span_notice("[src]'s [bolt_wording] is already cocked!"))
 			return
+
 		bolt_locked = FALSE
+
 	if (user)
 		to_chat(user, span_notice("You rack the [bolt_wording] of [src]."))
-	process_chamber(!chambered, FALSE)
+
+	update_chamber(!chambered, FALSE)
+
 	if (bolt_type == BOLT_TYPE_LOCKING && !chambered)
 		bolt_locked = TRUE
 		playsound(src, lock_back_sound, lock_back_sound_volume, lock_back_sound_vary)
 	else
 		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
+
 	update_appearance()
 
 ///Drops the bolt from a locked position
@@ -325,7 +320,7 @@
 		to_chat(user, span_notice("You pull the [magazine_wording] out of [src]."))
 	update_appearance()
 
-/obj/item/gun/ballistic/can_shoot()
+/obj/item/gun/ballistic/can_fire()
 	return chambered?.loaded_projectile
 
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)
@@ -381,20 +376,15 @@
 
 	return FALSE
 
-/obj/item/gun/ballistic/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
-	if(magazine && chambered.loaded_projectile && can_misfire && misfire_probability > 0)
+/obj/item/gun/ballistic/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+	if(magazine && chambered?.loaded_projectile && can_misfire && misfire_probability > 0)
 		if(prob(misfire_probability))
 			if(blow_up(user))
 				to_chat(user, span_userdanger("[src] misfires!"))
+			return FALSE
 
 	if (sawn_off)
 		bonus_spread += SAWN_OFF_ACC_PENALTY
-	return ..()
-
-/obj/item/gun/ballistic/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
-	if(can_misfire)
-		misfire_probability += misfire_percentage_increment
-		misfire_probability = clamp(misfire_probability, 0, misfire_probability_cap)
 	return ..()
 
 ///Installs a new suppressor, assumes that the suppressor is already in the contents of src
@@ -424,28 +414,33 @@
 			user.put_in_hands(S)
 			clear_suppressor()
 
-///Prefire empty checks for the bolt drop
-/obj/item/gun/ballistic/proc/prefire_empty_checks()
+/obj/item/gun/ballistic/before_firing(atom/target, mob/user)
+	. = ..()
 	if (!chambered && !get_ammo())
 		if (bolt_type == BOLT_TYPE_OPEN && !bolt_locked)
 			bolt_locked = TRUE
 			playsound(src, bolt_drop_sound, bolt_drop_sound_volume)
 			update_appearance()
 
-///postfire empty checks for bolt locking and sound alarms
-/obj/item/gun/ballistic/proc/postfire_empty_checks(last_shot_succeeded)
+/obj/item/gun/ballistic/after_firing(mob/living/user, pointblank, atom/pbtarget, message)
+	. = ..()
+	if(can_misfire)
+		misfire_probability += misfire_percentage_increment
+		misfire_probability = clamp(misfire_probability, 0, misfire_probability_cap)
+
+/obj/item/gun/ballistic/after_chambering(from_firing)
+	. = ..()
+	if(!from_firing)
+		return
+
 	if (!chambered && !get_ammo())
-		if (empty_alarm && last_shot_succeeded)
+		if (empty_alarm)
 			playsound(src, empty_alarm_sound, empty_alarm_volume, empty_alarm_vary)
 			update_appearance()
-		if (last_shot_succeeded && bolt_type == BOLT_TYPE_LOCKING)
+
+		if (bolt_type == BOLT_TYPE_LOCKING)
 			bolt_locked = TRUE
 			update_appearance()
-
-/obj/item/gun/ballistic/afterattack()
-	prefire_empty_checks()
-	. = ..() //The gun actually firing
-	postfire_empty_checks(.)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/attack_hand(mob/user, list/modifiers)
@@ -460,20 +455,30 @@
 		if(flip_cooldown <= world.time)
 			if(HAS_TRAIT(user, TRAIT_CLUMSY) && prob(40))
 				to_chat(user, span_userdanger("While trying to flip [src] you pull the trigger and accidentally shoot yourself!"))
-				process_fire(user, user, FALSE, user.get_random_valid_zone(even_weights = TRUE))
+				do_fire_gun(user, user, FALSE, user.get_random_valid_zone(even_weights = TRUE))
 				user.dropItemToGround(src, TRUE)
 				return
+
 			flip_cooldown = (world.time + 30)
 			user.visible_message(span_notice("[user] spins [src] around [user.p_their()] finger by the trigger. That’s pretty badass."))
 			playsound(src, 'sound/items/handling/ammobox_pickup.ogg', 20, FALSE)
 			return
+
+	// You only need 1 hand to eject the magazine
 	if(!internal_magazine && magazine)
 		if(!magazine.ammo_count())
 			eject_magazine(user)
 			return
+
+	// They need two hands on the gun, or a free hand in general.
+	if(!wielded && !user.get_empty_held_index())
+		to_chat(user, span_warning("You need a free hand to do that!"))
+		return
+
 	if(bolt_type == BOLT_TYPE_NO_BOLT)
 		chambered = null
 		var/num_unloaded = 0
+
 		for(var/obj/item/ammo_casing/CB in get_ammo_list(FALSE, TRUE))
 			CB.forceMove(drop_location())
 			CB.bounce_away(FALSE, NONE)
@@ -481,6 +486,7 @@
 			var/turf/T = get_turf(drop_location())
 			if(T && is_station_level(T.z))
 				SSblackbox.record_feedback("tally", "station_mess_created", 1, CB.name)
+
 		if (num_unloaded)
 			to_chat(user, span_notice("You unload [num_unloaded] [cartridge_wording]\s from [src]."))
 			playsound(user, eject_sound, eject_sound_volume, eject_sound_vary)
@@ -488,11 +494,14 @@
 		else
 			to_chat(user, span_warning("[src] is empty!"))
 		return
+
 	if(bolt_type == BOLT_TYPE_LOCKING && bolt_locked)
 		drop_bolt(user)
 		return
+
 	if (recent_rack > world.time)
 		return
+
 	recent_rack = world.time + rack_delay
 	rack(user)
 	return
@@ -544,7 +553,7 @@
 		sleep(2.5 SECONDS)
 		if(user.is_holding(src))
 			var/turf/T = get_turf(user)
-			process_fire(user, user, FALSE, null, BODY_ZONE_HEAD)
+			do_fire_gun(user, user, FALSE, null, BODY_ZONE_HEAD)
 			user.visible_message(span_suicide("[user] blows [user.p_their()] brain[user.p_s()] out with [src]!"))
 			var/turf/target = get_ranged_target_turf(user, turn(user.dir, 180), BRAINS_BLOWN_THROW_RANGE)
 			B.Remove(user)
@@ -669,7 +678,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 	. = FALSE
 	for(var/obj/item/ammo_casing/AC in magazine.stored_ammo)
 		if(AC.loaded_projectile)
-			process_fire(user, user, FALSE)
+			do_fire_gun(user, user, FALSE)
 			. = TRUE
 
 /obj/item/gun/ballistic/proc/instant_reload()

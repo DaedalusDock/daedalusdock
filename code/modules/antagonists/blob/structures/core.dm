@@ -4,7 +4,7 @@
 	icon_state = "blank_blob"
 	desc = "A huge, pulsating yellow mass."
 	max_integrity = BLOB_CORE_MAX_HP
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 90)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 75, ACID = 90)
 	explosion_block = 6
 	point_return = -1
 	health_regen = 0 //we regen in Life() instead of when pulsed
@@ -65,15 +65,16 @@
 /obj/structure/blob/special/core/process(delta_time)
 	if(QDELETED(src))
 		return
+
 	if(!overmind)
 		qdel(src)
+
 	if(overmind)
 		overmind.blobstrain.core_process()
 		overmind.update_health_hud()
 	pulse_area(overmind, claim_range, pulse_range, expand_range)
 	reinforce_area(delta_time)
 	produce_spores()
-	..()
 
 /obj/structure/blob/special/core/Initialize(mapload)
 	. = ..()

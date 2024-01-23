@@ -283,7 +283,7 @@
 			D.Devolve()
 
 /datum/chemical_reaction/mix_virus/neuter_virus
-	required_reagents = list(/datum/reagent/toxin/formaldehyde = 1)
+	required_reagents = list(/datum/reagent/space_cleaner = 1)
 	required_catalysts = list(/datum/reagent/blood = 1)
 
 /datum/chemical_reaction/mix_virus/neuter_virus/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)

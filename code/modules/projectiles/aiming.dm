@@ -173,7 +173,7 @@
 	if(!locked)
 		return
 
-	tool.fire_gun(target, user)
+	tool.try_fire_gun(target, user)
 	qdel(src)
 
 /obj/effect/abstract/aim_overlay/proc/cancel()

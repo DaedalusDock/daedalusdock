@@ -91,7 +91,7 @@
 		damage += weapon.w_class * impact_pain_mult
 		var/post_armor_damage = damage
 		if(limb_owner)
-			var/armor = limb_owner.run_armor_check(limb.body_zone, MELEE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armour_penetration, weak_against_armour = I.weak_against_armour)
+			var/armor = limb_owner.run_armor_check(limb.body_zone, PUNCTURE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].",I.armor_penetration, weak_against_armor = I.weak_against_armor)
 			post_armor_damage = damage * ((100-armor)/100)
 
 		if(post_armor_damage <= 0)
@@ -188,7 +188,7 @@
 
 	if(harmful && prob(chance))
 		var/damage = weapon.w_class * jostle_pain_mult
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage)
+		limb.receive_damage(brute=(1-pain_stam_pct) * damage, modifiers = DAMAGE_CAN_JOSTLE_BONES)
 		limb_owner.stamina.adjust(-(pain_stam_pct * damage))
 		var/msg = pick( \
 			"A spike of pain jolts your [limb.plaintext_zone] as you bump [weapon] inside.",\
@@ -203,7 +203,7 @@
 	var/obj/item/bodypart/limb = parent
 	if(harmful)
 		var/damage = weapon.w_class * remove_pain_mult
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage)
+		limb.receive_damage(brute=(1-pain_stam_pct) * damage, modifiers = DAMAGE_CAN_JOSTLE_BONES)
 		if(limb_owner)
 			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
 
@@ -251,10 +251,10 @@
 
 		if(limb_owner)
 			limb_owner.stamina.adjust(-(pain_stam_pct * damage))
-			limb_owner.emote("scream")
+			limb_owner.emote("pain")
 
 			if(!IS_ORGANIC_LIMB(limb))
-				user.visible_message(
+				limb_owner.visible_message(
 					span_danger("The damage to \the [limb_owner]'s [limb.plaintext_zone] worsens."),\
 					span_danger("The damage to your [limb.plaintext_zone] worsens."),\
 					span_danger("You hear the screech of abused metal.")
@@ -265,6 +265,7 @@
 					span_danger("The wound on your [limb.plaintext_zone] widens with a nasty ripping noise."),\
 					span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
 				)
+
 	if(user == limb_owner)
 		user.visible_message(
 			span_warning("[user] successfully rips [weapon] [harmful ? "out" : "off"] of [user.p_their()] [limb.plaintext_zone]!"),

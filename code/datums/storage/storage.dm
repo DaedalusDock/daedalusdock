@@ -246,13 +246,13 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	can_hold_description = generate_hold_desc(can_hold_list)
 
 	if (can_hold_list)
-		var/unique_key = can_hold_list.Join("-")
+		var/unique_key = json_encode(can_hold_list)
 		if(!GLOB.cached_storage_typecaches[unique_key])
 			GLOB.cached_storage_typecaches[unique_key] = typecacheof(can_hold_list)
 		can_hold = GLOB.cached_storage_typecaches[unique_key]
 
 	if (cant_hold_list != null)
-		var/unique_key = cant_hold_list.Join("-")
+		var/unique_key = json_encode(cant_hold_list)
 		if(!GLOB.cached_storage_typecaches[unique_key])
 			GLOB.cached_storage_typecaches[unique_key] = typecacheof(cant_hold_list)
 		cant_hold = GLOB.cached_storage_typecaches[unique_key]
@@ -321,31 +321,25 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if((to_insert == resolve_parent) || (to_insert == real_location))
 		return FALSE
 
-	if(to_insert.w_class > max_specific_storage && !is_type_in_typecache(to_insert, exception_hold))
+	if(!check_weight_class(to_insert, resolve_location))
 		if(messages && user)
 			to_chat(user, span_warning("\The [to_insert] is too big for \the [resolve_parent]!"))
 		return FALSE
 
-	if(resolve_location.contents.len >= max_slots)
+	if(!check_slots_full(to_insert, resolve_location))
 		if(messages && user)
 			to_chat(user, span_warning("\The [to_insert] can't fit into \the [resolve_parent]! Make some space!"))
 		return FALSE
 
-	var/total_weight = to_insert.w_class
-
-	for(var/obj/item/thing in resolve_location)
-		total_weight += thing.w_class
-
-	if(total_weight > max_total_storage)
+	if(!check_total_weight(to_insert, resolve_location))
 		if(messages && user)
 			to_chat(user, span_warning("\The [to_insert] can't fit into \the [resolve_parent]! Make some space!"))
 		return FALSE
 
-	if(length(can_hold))
-		if(!is_type_in_typecache(to_insert, can_hold))
-			if(messages && user)
-				to_chat(user, span_warning("\The [resolve_parent] cannot hold \the [to_insert]!"))
-			return FALSE
+	if(!check_typecache_for_item(to_insert, resolve_location))
+		if(messages && user)
+			to_chat(user, span_warning("\The [resolve_parent] cannot hold \the [to_insert]!"))
+		return FALSE
 
 	if(is_type_in_typecache(to_insert, cant_hold) || HAS_TRAIT(to_insert, TRAIT_NO_STORAGE_INSERT) || (can_hold_trait && !HAS_TRAIT(to_insert, can_hold_trait)))
 		if(messages && user)
@@ -394,6 +388,42 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	to_insert.forceMove(resolve_location)
 	item_insertion_feedback(user, to_insert, override)
 	resolve_location.update_appearance()
+	return TRUE
+
+/// Checks if the item is allowed into storage based on it's weight class
+/datum/storage/proc/check_weight_class(obj/item/to_insert, atom/resolve_location)
+	if(to_insert.w_class > max_specific_storage && !is_type_in_typecache(to_insert, exception_hold))
+		return FALSE
+
+	return TRUE
+
+/// Checks if we have enough slots to allow the item inside.
+/datum/storage/proc/check_slots_full(obj/item/to_insert, atom/resolve_location)
+	if(resolve_location.contents.len >= max_slots)
+		return FALSE
+
+	return TRUE
+
+/// Checks if the total weight would exceed our capacity when adding the item.
+/datum/storage/proc/check_total_weight(obj/item/to_insert, atom/resolve_location)
+	var/total_weight = to_insert.w_class
+
+	for(var/obj/item/thing in resolve_location)
+		total_weight += thing.w_class
+
+	if(total_weight > max_total_storage)
+		return FALSE
+
+	return TRUE
+
+/// Checks if the item is in our can_hold list.
+/datum/storage/proc/check_typecache_for_item(obj/item/to_insert, atom/resolve_location)
+	if(!length(can_hold))
+		return TRUE
+
+	if(!is_type_in_typecache(to_insert, can_hold))
+		return FALSE
+
 	return TRUE
 
 /**
@@ -778,7 +808,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	return TRUE
 
 /// Signal handler for whenever we're attacked by a mob.
-/datum/storage/proc/on_attack(datum/source, mob/user)
+/datum/storage/proc/on_attack(datum/source, mob/user, list/modifiers)
 	SIGNAL_HANDLER
 
 	var/obj/item/resolve_parent = parent?.resolve()
@@ -802,7 +832,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			return
 
 	if(resolve_parent.loc == user)
-		INVOKE_ASYNC(src, PROC_REF(open_storage), user)
+		var/try_quickdraw = LAZYACCESS(modifiers, ALT_CLICK)
+		INVOKE_ASYNC(src, PROC_REF(open_storage), user, try_quickdraw)
 		return TRUE
 
 /// Generates the numbers on an item in storage to show stacking.
@@ -876,7 +907,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 					break
 
 	else
-		for(var/obj/item in resolve_location)
+		for(var/obj/item in contents_for_display(resolve_location))
 			item.mouse_opacity = MOUSE_OPACITY_OPAQUE
 			item.screen_loc = "[current_x]:[screen_pixel_x],[current_y]:[screen_pixel_y]"
 			item.maptext = ""
@@ -894,6 +925,10 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	closer.screen_loc = "[screen_start_x + cols]:[screen_pixel_x],[screen_start_y]:[screen_pixel_y]"
 
 
+/// Returns a list of items to display in the hud
+/datum/storage/proc/contents_for_display(atom/resolve_location)
+	return resolve_location.contents
+
 /// Signal handler for when we get attacked with secondary click by an item.
 /datum/storage/proc/open_storage_attackby_secondary(datum/source, atom/weapon, mob/user)
 	SIGNAL_HANDLER
@@ -908,7 +943,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	return COMPONENT_NO_AFTERATTACK
 
 /// Opens the storage to the mob, showing them the contents to their UI.
-/datum/storage/proc/open_storage(mob/to_show)
+/datum/storage/proc/open_storage(mob/to_show, performing_quickdraw)
 	var/obj/item/resolve_parent = parent?.resolve()
 	if(!resolve_parent)
 		return FALSE
@@ -933,7 +968,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			resolve_parent.balloon_alert(to_show, "locked!")
 		return FALSE
 
-	if(!quickdraw || to_show.get_active_held_item())
+	if(!(quickdraw && performing_quickdraw) || to_show.get_active_held_item())
 		show_contents(to_show)
 
 		if(animated)
@@ -944,7 +979,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 		return TRUE
 
-	var/obj/item/to_remove = locate() in resolve_location
+	var/obj/item/to_remove = get_quickdraw_item(resolve_location)
 
 	if(!to_remove)
 		return TRUE
@@ -957,6 +992,10 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		to_show.visible_message(span_warning("[to_show] draws [to_remove] from [resolve_parent]!"), span_notice("You draw [to_remove] from [resolve_parent]."))
 
 	return TRUE
+
+/// Returns an item to pull out with the quickdraw interaction.
+/datum/storage/proc/get_quickdraw_item(atom/resolve_location)
+	return locate(/obj/item) in resolve_location
 
 /// Async version of putting something into a mobs hand.
 /datum/storage/proc/put_in_hands_async(mob/toshow, obj/item/toremove)

@@ -261,7 +261,7 @@
 					theme = "clown"
 				if("Detective")
 					var/chance = 250
-					if(H.is_wearing_item_of_type(/obj/item/storage/belt/holster/detective))
+					if(H.is_wearing_item_of_type(/obj/item/storage/belt/holster/shoulder))
 						chance += 1000
 					if(H.is_wearing_item_of_type(/obj/item/clothing/head/fedora/det_hat))
 						chance += 500
@@ -318,7 +318,7 @@
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
 			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
-			if(hbrain?.damage < 60)
+			if(hbrain && hbrain.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage
 		var/average_braindamage = braindamage_total / human_escapees

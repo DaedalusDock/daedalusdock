@@ -55,8 +55,7 @@
 	var/list/cached_run = currentrun
 	if(!length(cached_run))
 		if(!length(processing))
-			STOP_PROCESSING(SSobj, src)
-			return
+			return PROCESS_KILL
 		return
 
 	var/cached_rate = rate
@@ -77,7 +76,6 @@
 		if(!regen_obj.repair_damage(regen_obj.max_integrity * cached_rate))
 			processing -= regen_obj
 			if(!length(processing))
-				STOP_PROCESSING(SSobj, src)
 				return PROCESS_KILL
 
 		if(CHECK_TICK)

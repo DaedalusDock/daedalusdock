@@ -18,5 +18,5 @@
 #endif
 	if (dll)
 		log_world("Loading Debug DLL at: [dll]")
-		LIBCALL(dll, "auxtools_init")()
+		call_ext(dll, "auxtools_init")()
 		enable_debugging()

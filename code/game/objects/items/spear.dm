@@ -5,28 +5,34 @@
 	righthand_file = 'icons/mob/inhands/weapons/polearms_righthand.dmi'
 	name = "spear"
 	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
-	force = 10
+
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	throwforce = 20
+
+	force = 7
+	force_wielded = 14
+	throwforce = 15
 	throw_speed = 4
+
 	embedding = list("impact_pain_mult" = 2, "remove_pain_mult" = 4, "jostle_chance" = 2.5)
-	armour_penetration = 10
+	armor_penetration = 10
+
 	custom_materials = list(/datum/material/iron=1150, /datum/material/glass=2075)
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb_continuous = list("attacks", "pokes", "jabs", "tears", "lacerates", "gores")
 	attack_verb_simple = list("attack", "poke", "jab", "tear", "lacerate", "gore")
 	sharpness = SHARP_EDGED // i know the whole point of spears is that they're pointy, but edged is more devastating at the moment so
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+
 	var/war_cry = "AAAAARGH!!!"
 	var/icon_prefix = "spearglass"
 
 /obj/item/spear/Initialize(mapload)
 	. = ..()
+	icon_state_wielded = "[icon_prefix]1"
 	AddComponent(/datum/component/butchering, 100, 70) //decent in a pinch, but pretty bad.
 	AddComponent(/datum/component/jousting)
-	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=18, icon_wielded="[icon_prefix]1")
 	update_appearance()
 
 /obj/item/spear/update_icon_state()
@@ -38,27 +44,32 @@
 	return BRUTELOSS
 
 /obj/item/spear/CheckParts(list/parts_list)
-	var/obj/item/shard/tip = locate() in parts_list
+	var/obj/item/shard/tip = locate() in contents
 	if(tip)
 		if (istype(tip, /obj/item/shard/plasma))
-			force = 11
+			force = 8
+			force_wielded = 16
 			throwforce = 21
 			icon_prefix = "spearplasma"
-			AddComponent(/datum/component/two_handed, force_unwielded=11, force_wielded=19, icon_wielded="[icon_prefix]1")
+			icon_state_wielded = "[icon_prefix]1"
+
 		else if (istype(tip, /obj/item/shard/titanium))
-			force = 13
+			force = 10
+			force_wielded = 20
 			throwforce = 21
 			throw_range = 8
 			throw_speed = 5
 			icon_prefix = "speartitanium"
-			AddComponent(/datum/component/two_handed, force_unwielded=13, force_wielded=18, icon_wielded="[icon_prefix]1")
+			icon_state_wielded = "[icon_prefix]1"
+
 		else if (istype(tip, /obj/item/shard/plastitanium))
-			force = 13
+			force = 12
+			force_wielded = 24
 			throwforce = 22
 			throw_range = 9
 			throw_speed = 5
 			icon_prefix = "spearplastitanium"
-			AddComponent(/datum/component/two_handed, force_unwielded=13, force_wielded=20, icon_wielded="[icon_prefix]1")
+			icon_state_wielded = "[icon_prefix]1"
 		update_appearance()
 		parts_list -= tip
 		qdel(tip)
@@ -69,27 +80,14 @@
 	icon_state = "spearbomb0"
 	base_icon_state = "spearbomb"
 	icon_prefix = "spearbomb"
+
+	force = 10
+
 	var/obj/item/grenade/explosive = null
-	var/wielded = FALSE // track wielded status on item
 
 /obj/item/spear/explosive/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	set_explosive(new /obj/item/grenade/iedcasing/spawned()) //For admin-spawned explosive lances
-	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=18, icon_wielded="[icon_prefix]1")
-
-/// triggered on wield of two handed item
-/obj/item/spear/explosive/proc/on_wield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = TRUE
-
-/// triggered on unwield of two handed item
-/obj/item/spear/explosive/proc/on_unwield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = FALSE
 
 /obj/item/spear/explosive/proc/set_explosive(obj/item/grenade/G)
 	if(explosive)
@@ -102,16 +100,15 @@
 	var/obj/item/grenade/G = locate() in parts_list
 	if(G)
 		var/obj/item/spear/lancePart = locate() in parts_list
-		var/datum/component/two_handed/comp_twohand = lancePart.GetComponent(/datum/component/two_handed)
-		if(comp_twohand)
-			var/lance_wielded = comp_twohand.force_wielded
-			var/lance_unwielded = comp_twohand.force_unwielded
-			AddComponent(/datum/component/two_handed, force_unwielded=lance_unwielded, force_wielded=lance_wielded)
+		force = lancePart.force
+		force_wielded = lancePart.force_wielded
 		throwforce = lancePart.throwforce
 		icon_prefix = lancePart.icon_prefix
+
 		parts_list -= G
 		parts_list -= lancePart
 		set_explosive(G)
+
 		qdel(lancePart)
 	..()
 
@@ -159,11 +156,9 @@
 	desc = "Recovered from the aftermath of a revolt aboard Defense Outpost Theta Aegis, in which a seemingly endless tide of Assistants caused heavy casualities among Mars security staff."
 	attack_verb_continuous = list("gores")
 	attack_verb_simple = list("gore")
-	force=15
 
-/obj/item/spear/grey_tide/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/two_handed, force_unwielded=15, force_wielded=25, icon_wielded="[icon_prefix]1")
+	force = 15
+	force_wielded = 25
 
 /obj/item/spear/grey_tide/afterattack(atom/movable/AM, mob/living/user, proximity)
 	. = ..()
@@ -187,15 +182,11 @@
 	icon_state = "bone_spear0"
 	base_icon_state = "bone_spear0"
 	icon_prefix = "bone_spear"
+
 	name = "bone spear"
 	desc = "A haphazardly-constructed yet still deadly weapon. The pinnacle of modern technology."
-	force = 12
-	throwforce = 22
-	armour_penetration = 15 //Enhanced armor piercing
 
-/obj/item/spear/bonespear/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/two_handed, force_unwielded=12, force_wielded=20, icon_wielded="[icon_prefix]1")
+	armor_penetration = 15 //Enhanced armor piercing
 
 /*
  * Bamboo Spear
@@ -206,8 +197,8 @@
 	icon_prefix = "bamboo_spear"
 	name = "bamboo spear"
 	desc = "A haphazardly-constructed bamboo stick with a sharpened tip, ready to poke holes into unsuspecting people."
+
+	force = 8
+	force_wielded = 16
 	throwforce = 22	//Better to throw
 
-/obj/item/spear/bamboospear/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/two_handed, force_unwielded=10, force_wielded=18, icon_wielded="[icon_prefix]1")

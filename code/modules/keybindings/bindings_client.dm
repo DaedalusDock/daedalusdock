@@ -89,10 +89,14 @@
 	if(!keys_held[_key])
 		return
 
+	var/update_pointer = FALSE
 	if(keys_held["Shift"])
-		mob.update_mouse_pointer()
+		update_pointer = TRUE
 
 	keys_held -= _key
+
+	if(update_pointer == TRUE)
+		mob.update_mouse_pointer()
 
 	if(!movement_locked)
 		var/movement = movement_keys[_key]

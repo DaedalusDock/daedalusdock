@@ -313,6 +313,9 @@
 
 	QDEL_NULL(light)
 	QDEL_NULL(ai_controller)
+	LAZYNULL(managed_overlays)
+	if(length(light_sources))
+		light_sources.len = 0
 
 	if(smoothing_flags & SMOOTH_QUEUED)
 		SSicon_smooth.remove_from_queues(src)
@@ -364,7 +367,7 @@
 	var/a_incidence_s = abs(incidence_s)
 	if(a_incidence_s > 90 && a_incidence_s < 270)
 		return FALSE
-	if((ricocheting_projectile.armor_flag in list(BULLET, BOMB)) && ricocheting_projectile.ricochet_incidence_leeway)
+	if((ricocheting_projectile.armor_flag in list(PUNCTURE, BOMB)) && ricocheting_projectile.ricochet_incidence_leeway)
 		if((a_incidence_s < 90 && a_incidence_s < 90 - ricocheting_projectile.ricochet_incidence_leeway) || (a_incidence_s > 270 && a_incidence_s -270 > ricocheting_projectile.ricochet_incidence_leeway))
 			return FALSE
 	var/new_angle_s = SIMPLIFY_DEGREES(face_angle + incidence_s)
@@ -685,6 +688,9 @@
 	. = list("[get_examine_string(user, TRUE)].<hr>") //PARIAH EDIT CHANGE
 	if(SScodex.get_codex_entry(get_codex_value(user)))
 		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
+
+	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
+		. += "<span class='notice'><b><a href='?src=\ref[user.client];show_slapcraft_hints=[type];'>You could craft [(length(slapcraft_examine_hints_for_type(type)) > 1) ? "several things" : "something"] with it.</a><b></span>"
 
 	. += get_name_chaser(user)
 	if(desc)
@@ -2230,8 +2236,26 @@
 /atom/proc/hear_location()
 	return src
 
+/// Makes this atom look like a "hologram"
+/// So transparent, blue and with a scanline
+/atom/proc/makeHologram(color = rgb(125,180,225, 0.5 * 255))
+	// First, we'll make things blue (roughly) and sorta transparent
+	add_filter("HOLO: Color and Transparent", 1, color_matrix_filter(color))
+	// Now we're gonna do a scanline effect
+	// Gonna take this atom and give it a render target, then use it as a source for a filter
+	// (We use an atom because it seems as if setting render_target on an MA is just invalid. I hate this engine)
+	var/atom/movable/scanline = new /atom/movable{icon = 'icons/effects/effects.dmi'; icon_state = "scanline"}(null)
+	scanline.appearance_flags |= RESET_TRANSFORM
+	// * so it doesn't render
+	var/static/uid_scan = 0
+	scanline.render_target = "*HoloScanline [uid_scan]"
+	uid_scan++
+	// Now we add it as a filter, and overlay the appearance so the render source is always around
+	add_filter("HOLO: Scanline", 2, alpha_mask_filter(render_source = scanline.render_target))
+	add_overlay(scanline)
+	qdel(scanline)
+
 ///Reset plane and layer values to their defaults.
 /atom/proc/reset_plane_and_layer()
 	plane = initial(plane)
 	layer = initial(layer)
-

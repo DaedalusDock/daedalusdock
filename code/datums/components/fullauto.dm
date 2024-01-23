@@ -30,15 +30,19 @@
 	. = ..()
 	if(!isgun(parent))
 		return COMPONENT_INCOMPATIBLE
+
 	var/obj/item/gun = parent
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(wake_up))
+
 	if(autofire_shot_delay)
 		src.autofire_shot_delay = autofire_shot_delay
+
 	if(windup_autofire)
 		src.windup_autofire = windup_autofire
 		src.windup_autofire_reduction_multiplier = windup_autofire_reduction_multiplier
 		src.windup_autofire_cap = windup_autofire_cap
 		src.windup_spindown = windup_spindown
+
 	if(autofire_stat == AUTOFIRE_STAT_IDLE && ismob(gun.loc))
 		var/mob/user = gun.loc
 		wake_up(src, user)
@@ -73,14 +77,18 @@
 
 	if(autofire_stat != AUTOFIRE_STAT_IDLE)
 		return
+
 	autofire_stat = AUTOFIRE_STAT_ALERT
+
 	if(!QDELETED(usercli))
 		clicker = usercli
 		shooter = clicker.mob
 		RegisterSignal(clicker, COMSIG_CLIENT_MOUSEDOWN, PROC_REF(on_mouse_down))
+
 	if(!QDELETED(shooter))
 		RegisterSignal(shooter, COMSIG_MOB_LOGOUT, PROC_REF(autofire_off))
 		UnregisterSignal(shooter, COMSIG_MOB_LOGIN)
+
 	RegisterSignal(parent, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(autofire_off))
 	parent.RegisterSignal(src, COMSIG_AUTOFIRE_ONMOUSEDOWN, TYPE_PROC_REF(/obj/item/gun, autofire_bypass_check))
 	parent.RegisterSignal(parent, COMSIG_AUTOFIRE_SHOT, TYPE_PROC_REF(/obj/item/gun, do_autofire))
@@ -97,11 +105,14 @@
 
 	if(!QDELETED(clicker))
 		UnregisterSignal(clicker, list(COMSIG_CLIENT_MOUSEDOWN, COMSIG_CLIENT_MOUSEUP, COMSIG_CLIENT_MOUSEDRAG))
+
 	mouse_status = AUTOFIRE_MOUSEUP //In regards to the component there's no click anymore to care about.
 	clicker = null
+
 	if(!QDELETED(shooter))
 		RegisterSignal(shooter, COMSIG_MOB_LOGIN, PROC_REF(on_client_login))
 		UnregisterSignal(shooter, COMSIG_MOB_LOGOUT)
+
 	UnregisterSignal(parent, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED))
 	shooter = null
 	parent.UnregisterSignal(parent, COMSIG_AUTOFIRE_SHOT)
@@ -166,7 +177,7 @@
 	autofire_stat = AUTOFIRE_STAT_FIRING
 
 	clicker.mouse_override_icon = 'icons/effects/mouse_pointers/weapon_pointer.dmi'
-	clicker.mouse_pointer_icon = clicker.mouse_override_icon
+	clicker.mob.update_mouse_pointer()
 
 	if(mouse_status == AUTOFIRE_MOUSEUP) //See mouse_status definition for the reason for this.
 		RegisterSignal(clicker, COMSIG_CLIENT_MOUSEUP, PROC_REF(on_mouse_up))
@@ -195,6 +206,7 @@
 	mouse_status = AUTOFIRE_MOUSEUP
 	if(autofire_stat == AUTOFIRE_STAT_FIRING)
 		stop_autofiring()
+
 	return COMPONENT_CLIENT_MOUSEUP_INTERCEPT
 
 
@@ -202,14 +214,18 @@
 	SIGNAL_HANDLER
 	if(autofire_stat != AUTOFIRE_STAT_FIRING)
 		return
+
 	STOP_PROCESSING(SSprojectiles, src)
 	autofire_stat = AUTOFIRE_STAT_ALERT
+
 	if(clicker)
 		clicker.mouse_override_icon = null
-		clicker.mouse_pointer_icon = clicker.mouse_override_icon
+		clicker.mob.update_mouse_pointer()
 		UnregisterSignal(clicker, COMSIG_CLIENT_MOUSEDRAG)
+
 	if(!QDELETED(shooter))
 		UnregisterSignal(shooter, COMSIG_MOB_SWAP_HANDS)
+
 	target = null
 	target_loc = null
 	mouse_parameters = null
@@ -225,12 +241,15 @@
 			if(QDELETED(target)) //No new target acquired, and old one was deleted, get us out of here.
 				stop_autofiring()
 				CRASH("on_mouse_drag failed to get the turf under screen object [over_object.type]. Old target was incidentally QDELETED.")
+
 			target = get_turf(target) //If previous target wasn't a turf, let's turn it into one to avoid locking onto a potentially moving target.
 			target_loc = target
 			CRASH("on_mouse_drag failed to get the turf under screen object [over_object.type]")
+
 		target = new_target
 		target_loc = new_target
 		return
+
 	target = over_object
 	target_loc = get_turf(over_object)
 	mouse_parameters = params
@@ -241,25 +260,33 @@
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, next_shot_cd))
 		return TRUE
+
 	if(QDELETED(target) || get_turf(target) != target_loc) //Target moved or got destroyed since we last aimed.
 		target = target_loc //So we keep firing on the emptied tile until we move our mouse and find a new target.
+
 	if(get_dist(shooter, target) <= 0)
 		target = get_step(shooter, shooter.dir) //Shoot in the direction faced if the mouse is on the same tile as we are.
 		target_loc = target
+
 	else if(!in_view_range(shooter, target))
 		stop_autofiring() //Elvis has left the building.
 		return FALSE
+
 	shooter.face_atom(target)
 	var/next_delay = autofire_shot_delay
+
 	if(windup_autofire)
 		next_delay = clamp(next_delay - current_windup_reduction, round(autofire_shot_delay * windup_autofire_cap), autofire_shot_delay)
 		current_windup_reduction = (current_windup_reduction + round(autofire_shot_delay * windup_autofire_reduction_multiplier))
 		timerid = addtimer(CALLBACK(src, PROC_REF(windup_reset), FALSE), windup_spindown, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
+
 	if(HAS_TRAIT(shooter, TRAIT_DOUBLE_TAP))
 		next_delay = round(next_delay * 0.5)
+
 	COOLDOWN_START(src, next_shot_cd, next_delay)
 	if(SEND_SIGNAL(parent, COMSIG_AUTOFIRE_SHOT, target, shooter, mouse_parameters) & COMPONENT_AUTOFIRE_SHOT_SUCCESS)
 		return TRUE
+
 	stop_autofiring()
 	return FALSE
 
@@ -272,15 +299,13 @@
 // Gun procs.
 
 /obj/item/gun/proc/on_autofire_start(mob/living/shooter)
-	if(semicd || shooter.incapacitated() || !can_trigger_gun(shooter))
+	if(fire_lockout || shooter.incapacitated() || !can_trigger_gun(shooter))
 		return FALSE
-	if(!can_shoot())
+
+	if(!can_fire())
 		shoot_with_empty_chamber(shooter)
 		return FALSE
-	var/obj/item/bodypart/other_hand = shooter.has_hand_for_held_index(shooter.get_inactive_hand_index())
-	if(weapon_weight == WEAPON_HEAVY && (shooter.get_inactive_held_item() || !other_hand))
-		to_chat(shooter, span_warning("You need two hands to fire [src]!"))
-		return FALSE
+
 	return TRUE
 
 
@@ -292,11 +317,12 @@
 
 /obj/item/gun/proc/do_autofire(datum/source, atom/target, mob/living/shooter, params)
 	SIGNAL_HANDLER
-	if(semicd || shooter.incapacitated())
+	if(fire_lockout || shooter.incapacitated())
 		return NONE
-	if(!can_shoot())
+	if(!can_fire())
 		shoot_with_empty_chamber(shooter)
 		return NONE
+
 	INVOKE_ASYNC(src, PROC_REF(do_autofire_shot), source, target, shooter, params)
 	return COMPONENT_AUTOFIRE_SHOT_SUCCESS //All is well, we can continue shooting.
 
@@ -304,11 +330,12 @@
 /obj/item/gun/proc/do_autofire_shot(datum/source, atom/target, mob/living/shooter, params)
 	var/obj/item/gun/akimbo_gun = shooter.get_inactive_held_item()
 	var/bonus_spread = 0
-	if(istype(akimbo_gun) && weapon_weight < WEAPON_MEDIUM)
-		if(akimbo_gun.weapon_weight < WEAPON_MEDIUM && akimbo_gun.can_trigger_gun(shooter))
+	if(istype(akimbo_gun) && !(gun_flags & NO_AKIMBO))
+		if(!(akimbo_gun.gun_flags & NO_AKIMBO) && akimbo_gun.can_trigger_gun(shooter))
 			bonus_spread = dual_wield_spread
-			addtimer(CALLBACK(akimbo_gun, TYPE_PROC_REF(/obj/item/gun, process_fire), target, shooter, TRUE, params, null, bonus_spread), 1)
-	process_fire(target, shooter, TRUE, params, null, bonus_spread)
+			addtimer(CALLBACK(akimbo_gun, TYPE_PROC_REF(/obj/item/gun, do_fire_gun), target, shooter, TRUE, params, null, bonus_spread), 1)
+
+	do_fire_gun(target, shooter, TRUE, params, null, bonus_spread)
 
 #undef AUTOFIRE_MOUSEUP
 #undef AUTOFIRE_MOUSEDOWN

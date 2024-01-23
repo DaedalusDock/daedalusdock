@@ -188,9 +188,9 @@
 		playsound(src, 'sound/effects/screech.ogg', 100, TRUE, TRUE)
 
 	if(internal_heat >= max_heat)
-		STOP_PROCESSING(SSobj, src)
 		explosion(src, devastation_range = 4, heavy_impact_range = 8, light_impact_range = 16, flash_range = 32)
 		qdel(src)
+		return PROCESS_KILL
 
 #undef DISCONNECTED
 #undef CLAMPED_OFF

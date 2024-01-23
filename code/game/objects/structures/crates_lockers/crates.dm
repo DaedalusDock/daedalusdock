@@ -109,18 +109,6 @@
 	close_sound_volume = 50
 	can_install_electronics = FALSE
 
-/obj/structure/closet/crate/maint
-
-/obj/structure/closet/crate/maint/Initialize(mapload)
-	..()
-	return INITIALIZE_HINT_QDEL
-
-/obj/structure/closet/crate/maint/PopulateContents()
-	. = ..()
-	new /obj/effect/spawner/random/structure/crate_empty(loc)
-	for(var/i in 1 to rand(2,6))
-		new /obj/effect/spawner/random/maintenance(src)
-
 /obj/structure/closet/crate/trashcart/filled
 
 /obj/structure/closet/crate/trashcart/filled/PopulateContents()

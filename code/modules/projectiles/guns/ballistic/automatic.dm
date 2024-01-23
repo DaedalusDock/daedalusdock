@@ -112,6 +112,8 @@
 	mag_display_ammo = TRUE
 	empty_indicator = TRUE
 
+	unwielded_spread_bonus = 10
+
 /obj/item/gun/ballistic/automatic/wt550/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
@@ -241,18 +243,22 @@
 	base_icon_state = "l6"
 	w_class = WEIGHT_CLASS_HUGE
 	slot_flags = 0
-	mag_type = /obj/item/ammo_box/magazine/mm712x82
-	weapon_weight = WEAPON_HEAVY
-	burst_size = 1
 	actions_types = list()
-	can_suppress = FALSE
+
 	spread = 7
+	unwielded_spread_bonus = 20
+	burst_size = 1
+
 	pin = /obj/item/firing_pin/implant/pindicate
 	bolt_type = BOLT_TYPE_OPEN
+	can_suppress = FALSE
+
 	show_bolt_icon = FALSE
 	mag_display = TRUE
 	mag_display_ammo = TRUE
+
 	tac_reloads = FALSE
+
 	fire_sound = 'sound/weapons/gun/l6/shot.ogg'
 	rack_sound = 'sound/weapons/gun/l6/l6_rack.ogg'
 	suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
@@ -330,8 +336,10 @@
 	load_sound = 'sound/weapons/gun/sniper/mag_insert.ogg'
 	rack_sound = 'sound/weapons/gun/sniper/rack.ogg'
 	suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
+
 	recoil = 2
-	weapon_weight = WEAPON_HEAVY
+	unwielded_spread_bonus = 90
+
 	mag_type = /obj/item/ammo_box/magazine/sniper_rounds
 	fire_delay = 4 SECONDS
 	burst_size = 1
@@ -348,7 +356,7 @@
 	. = ..()
 	AddComponent(/datum/component/scope, range_modifier = 2)
 
-/obj/item/gun/ballistic/automatic/sniper_rifle/reset_semicd()
+/obj/item/gun/ballistic/automatic/sniper_rifle/ready_to_fire()
 	. = ..()
 	if(suppressed)
 		playsound(src, 'sound/machines/eject.ogg', 25, TRUE, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
@@ -370,7 +378,7 @@
 	icon_state = "surplus"
 	inhand_icon_state = "moistnugget"
 	worn_icon_state = null
-	weapon_weight = WEAPON_HEAVY
+	unwielded_spread_bonus = 20
 	mag_type = /obj/item/ammo_box/magazine/m10mm/rifle
 	fire_delay = 30
 	burst_size = 1

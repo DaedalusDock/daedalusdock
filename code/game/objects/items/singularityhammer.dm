@@ -1,43 +1,32 @@
 /obj/item/singularityhammer
 	name = "singularity hammer"
 	desc = "The pinnacle of close combat technology, the hammer harnesses the power of a miniaturized singularity to deal crushing blows."
+
 	icon_state = "singularity_hammer0"
 	base_icon_state = "singularity_hammer"
 	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
 	worn_icon_state = "singularity_hammer"
+
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
+
 	force = 5
+	force_wielded = type::force * 4
 	throwforce = 15
 	throw_range = 1
+
 	w_class = WEIGHT_CLASS_HUGE
-	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 50, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 0, BOMB = 50, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	force_string = "LORD SINGULOTH HIMSELF"
 	///Is it able to pull shit right now?
 	var/charged = TRUE
-	///track wielded status on item
-	var/wielded = FALSE
 
 /obj/item/singularityhammer/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
+	icon_state_wielded = "base_icon_state[1]"
 	AddElement(/datum/element/kneejerk)
-	AddComponent(/datum/component/two_handed, force_multiplier=4, icon_wielded="[base_icon_state]1")
-
-///triggered on wield of two handed item
-/obj/item/singularityhammer/proc/on_wield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = TRUE
-
-///triggered on unwield of two handed item
-/obj/item/singularityhammer/proc/on_unwield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = FALSE
 
 /obj/item/singularityhammer/update_icon_state()
 	icon_state = "[base_icon_state]0"
@@ -86,31 +75,20 @@
 	worn_icon_state = "mjolnir"
 	lefthand_file = 'icons/mob/inhands/weapons/hammers_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/hammers_righthand.dmi'
+
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
+
 	force = 5
+	force_wielded = type::force * 5
 	throwforce = 30
 	throw_range = 7
+
 	w_class = WEIGHT_CLASS_HUGE
-	var/wielded = FALSE // track wielded status on item
 
 /obj/item/mjollnir/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
-	AddComponent(/datum/component/two_handed, force_multiplier=5, icon_wielded="[base_icon_state]1", attacksound=SFX_SPARKS)
-
-/// triggered on wield of two handed item
-/obj/item/mjollnir/proc/on_wield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = TRUE
-
-/// triggered on unwield of two handed item
-/obj/item/mjollnir/proc/on_unwield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = FALSE
+	icon_state_wielded = "base_icon_state[1]"
 
 /obj/item/mjollnir/update_icon_state()
 	icon_state = "[base_icon_state]0"

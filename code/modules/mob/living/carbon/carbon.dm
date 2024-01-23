@@ -112,7 +112,7 @@
 			Paralyze(2 SECONDS)
 			visible_message(span_danger("[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!"),\
 				span_userdanger("You violently crash into [victim][extra_speed ? " extra hard" : ""]!"))
-		playsound(src,'sound/weapons/punch1.ogg',50,TRUE)
+		playsound(src, SFX_PUNCH ,50,TRUE)
 		log_combat(src, victim, "crashed into")
 
 //Throwing stuff
@@ -893,7 +893,6 @@
 	for(var/obj/item/bodypart/bodypart_path as anything in bodyparts)
 		var/real_body_part_path = overrides?[initial(bodypart_path.body_zone)] || bodypart_path
 		var/obj/item/bodypart/bodypart_instance = new real_body_part_path()
-		bodypart_instance.set_owner(src)
 		bodyparts.Remove(bodypart_path)
 		add_bodypart(bodypart_instance)
 		switch(bodypart_instance.body_part)
@@ -916,6 +915,7 @@
 	new_bodypart.set_owner(src)
 	new_bodypart.forceMove(src)
 	new_bodypart.item_flags |= ABSTRACT
+	ADD_TRAIT(new_bodypart, TRAIT_INSIDE_BODY, REF(src))
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)
@@ -931,6 +931,7 @@
 /mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
+	REMOVE_TRAIT(old_bodypart, TRAIT_INSIDE_BODY, REF(src))
 	bodyparts -= old_bodypart
 	old_bodypart.item_flags &= ~ABSTRACT
 	if(old_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
@@ -1349,7 +1350,7 @@
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 
@@ -1429,18 +1430,14 @@
 /mob/living/carbon/proc/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
 
-/mob/living/carbon/get_melee_inaccuracy()
-	. = ..()
-	if(getPain() > 100)
-		. += 10
-
-	if(shock_stage > 30)
-		. += 30
-	else if(shock_stage > 10)
-		. += 10
-
 /mob/living/carbon/has_mouth()
 	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)
 	if(!H?.can_ingest_reagents)
 		return FALSE
 	return TRUE
+
+/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop)
+	if(I && HAS_TRAIT(I, TRAIT_INSIDE_BODY))
+		stack_trace("Something tried to drop an organ or bodypart that isn't allowed to be dropped")
+		return FALSE
+	return ..()

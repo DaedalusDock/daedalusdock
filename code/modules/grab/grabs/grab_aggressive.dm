@@ -50,7 +50,7 @@
 		if(istype(affecting_mob))
 			var/obj/item/clothing/C = affecting_mob.head
 			if(istype(C)) //hardsuit helmets etc
-				if((C.clothing_flags & STOPSPRESSUREDAMAGE) && C.returnArmor().getRating(MELEE) > 20)
+				if((C.clothing_flags & STOPSPRESSUREDAMAGE) && C.returnArmor().getRating(BLUNT) > 20)
 					to_chat(G.assailant, span_warning("\The [C] is in the way!"))
 					return FALSE
 

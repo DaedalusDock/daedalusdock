@@ -560,23 +560,6 @@
 	C.adjustToxLoss(2, FALSE)
 	. = TRUE
 
-/datum/reagent/toxin/formaldehyde
-	name = "Formaldehyde"
-	description = "Formaldehyde, on its own, is a fairly weak toxin. It contains trace amounts of Histamine, very rarely making it decay into Histamine."
-	silent_toxin = TRUE
-	reagent_state = LIQUID
-	color = "#B4004B"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	toxpwr = 1
-
-
-/datum/reagent/toxin/formaldehyde/affect_blood(mob/living/carbon/C, removed)
-	if(prob(5))
-		holder.add_reagent(/datum/reagent/toxin/histamine, pick(5,15))
-		holder.remove_reagent(/datum/reagent/toxin/formaldehyde, 1.2)
-	else
-		return ..()
-
 /datum/reagent/toxin/venom
 	name = "Venom"
 	description = "An exotic poison extracted from highly toxic fauna. Causes scaling amounts of toxin damage and bruising depending and dosage. Often decays into Histamine."

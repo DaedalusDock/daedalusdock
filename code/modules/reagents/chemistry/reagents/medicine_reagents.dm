@@ -8,7 +8,7 @@
 
 /datum/reagent/medicine
 	taste_description = "bitterness"
-	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SCANNABLE
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE
 	abstract_type = /datum/reagent/medicine
 	show_in_codex = TRUE
 
@@ -36,8 +36,9 @@
 				mytray.mutateweed()
 			if(1   to 32)
 				mytray.mutatepest(user)
-			else if(prob(20))
-				mytray.visible_message(span_warning("Nothing happens..."))
+			else
+				if(prob(20))
+					mytray.visible_message(span_warning("Nothing happens..."))
 
 /datum/reagent/medicine/adminordrazine/affect_blood(mob/living/carbon/C, removed)
 	C.heal_bodypart_damage(2 * removed, 2 * removed, FALSE)
@@ -109,8 +110,6 @@
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	if(C.has_reagent(/datum/reagent/medicine/epinephrine))
-		C.set_heartattack(TRUE)
 
 /datum/reagent/medicine/inaprovaline/overdose_start(mob/living/carbon/C)
 	C.add_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
@@ -622,10 +621,6 @@
 		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(10*volume, 20))
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
-
-	if(C.has_reagent(/datum/reagent/medicine/inaprovaline))
-		C.set_heartattack(TRUE)
-		return
 
 	if(volume >= 4 && C.undergoing_cardiac_arrest())
 		holder.remove_reagent(src, 4)

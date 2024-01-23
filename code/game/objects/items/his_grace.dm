@@ -95,10 +95,12 @@
 	if(!bloodthirst)
 		drowse()
 		return
+
 	if(bloodthirst < HIS_GRACE_CONSUME_OWNER && !ascended)
 		adjust_bloodthirst((1 + FLOOR(LAZYLEN(contents) * 0.5, 1)) * delta_time) //Maybe adjust this?
 	else
 		adjust_bloodthirst(1 * delta_time) //don't cool off rapidly once we're at the point where His Grace consumes all.
+
 	var/mob/living/master = get_atom_on_turf(src, /mob/living)
 	if(istype(master) && (src in master.held_items))
 		switch(bloodthirst)
@@ -120,13 +122,17 @@
 	if(bloodthirst >= HIS_GRACE_FALL_ASLEEP)
 		drowse()
 		return
+
 	var/list/targets = list()
 	for(var/mob/living/L in oview(2, src))
 		targets += L
+
 	if(!LAZYLEN(targets))
 		return
+
 	var/mob/living/L = pick(targets)
 	step_to(src, L)
+
 	if(Adjacent(L))
 		if(!L.stat)
 			L.visible_message(span_warning("[src] lunges at [L]!"), "<span class='his_grace big bold'>[src] lunges at you!</span>")

@@ -24,26 +24,30 @@
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = "#00aa00"
 	owner.update_body_parts()
-	RegisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
+	RegisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(check_swing))
 
 /datum/mutation/human/hulk/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
 	SIGNAL_HANDLER
 
-	if(!proximity)
-		return
-	if(!source.combat_mode || LAZYACCESS(modifiers, RIGHT_CLICK))
-		return
-	if(target.attack_hulk(owner))
-		if(world.time > (last_scream + scream_delay))
-			last_scream = world.time
-			INVOKE_ASYNC(src, PROC_REF(scream_attack), source)
-		log_combat(source, target, "punched", "hulk powers")
-		source.do_attack_animation(target, ATTACK_EFFECT_SMASH)
-		source.changeNext_move(CLICK_CD_MELEE)
+	if(!source.combat_mode || !proximity || LAZYACCESS(modifiers, RIGHT_CLICK))
+		return NONE
 
+	if(!source.can_unarmed_attack())
 		return COMPONENT_CANCEL_ATTACK_CHAIN
+
+	if(!target.attack_hulk(owner))
+		return NONE
+
+	if(world.time > (last_scream + scream_delay))
+		last_scream = world.time
+		INVOKE_ASYNC(src, PROC_REF(scream_attack), source)
+
+	log_combat(source, target, "punched", "hulk powers")
+	source.do_attack_animation(target, ATTACK_EFFECT_SMASH)
+	source.changeNext_move(CLICK_CD_MELEE)
+	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/mutation/human/hulk/proc/scream_attack(mob/living/carbon/human/source)
 	source.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ), forced="hulk")
@@ -77,7 +81,7 @@
 	for(var/obj/item/bodypart/part as anything in owner.bodyparts)
 		part.variable_color = null
 	owner.update_body_parts()
-	UnregisterSignal(owner, COMSIG_HUMAN_EARLY_UNARMED_ATTACK)
+	UnregisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)
 
@@ -196,7 +200,7 @@
 			continue
 
 		yeeted_person.adjustBruteLoss(step*0.5)
-		playsound(collateral_mob,'sound/weapons/punch1.ogg',50,TRUE)
+		playsound(collateral_mob,SFX_PUNCH,50,TRUE)
 		log_combat(the_hulk, collateral_mob, "has smacked with tail swing victim")
 		log_combat(the_hulk, yeeted_person, "has smacked this person into someone while tail swinging") // i have no idea how to better word this
 

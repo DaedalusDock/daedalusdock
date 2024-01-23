@@ -19,7 +19,7 @@
 	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	sharpness = SHARP_EDGED
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	var/bayonet = FALSE //Can this be attached to a gun?
 	tool_behaviour = TOOL_KNIFE
 
@@ -149,40 +149,36 @@
 	throwforce = 12
 	attack_verb_continuous = list("shanks", "shivs")
 	attack_verb_simple = list("shank", "shiv")
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	custom_materials = list(/datum/material/glass=400)
 
-/obj/item/knife/shiv/plasma
-	name = "plasma shiv"
-	icon_state = "plasmashiv"
-	inhand_icon_state = "plasmashiv"
-	desc = "A makeshift plasma glass shiv."
-	force = 9
-	throwforce = 13
-	armor = list(MELEE = 25, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
-	custom_materials = list(/datum/material/glass=400, /datum/material/plasma=200)
-
-/obj/item/knife/shiv/titanium
-	name = "titanium shiv"
-	icon_state = "titaniumshiv"
-	inhand_icon_state = "titaniumshiv"
-	desc = "A makeshift titanium-infused glass shiv."
-	throwforce = 14
-	throw_range = 7
-	armor = list(MELEE = 25, BULLET = 25, LASER = 25, ENERGY = 25, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
-	custom_materials = list(/datum/material/glass=400, /datum/material/titanium=200)
-
-/obj/item/knife/shiv/plastitanium
-	name = "plastitanium shiv"
-	icon_state = "plastitaniumshiv"
-	inhand_icon_state = "plastitaniumshiv"
-	desc = "A makeshift titanium-infused plasma glass shiv."
-	force = 10
-	throwforce = 15
-	throw_speed = 4
-	throw_range = 8
-	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 0, FIRE = 75, ACID = 75)
-	custom_materials = list(/datum/material/glass=400, /datum/material/alloy/plastitanium=200)
+/obj/item/knife/shiv/CheckParts(list/parts_list)
+	var/obj/item/shard/shard = locate() in contents
+	if(shard)
+		if (istype(shard, /obj/item/shard/plasma))
+			force = 9
+			throwforce = 13
+			icon_state = "plasmashiv"
+			inhand_icon_state = "plasmashiv"
+			custom_materials = list(/datum/material/glass=400, /datum/material/plasma=200)
+		else if (istype(shard, /obj/item/shard/titanium))
+			throwforce = 14
+			throw_range = 7
+			icon_state = "titaniumshiv"
+			inhand_icon_state = "titaniumshiv"
+			custom_materials = list(/datum/material/glass=400, /datum/material/titanium=200)
+		else if (istype(shard, /obj/item/shard/plastitanium))
+			force = 10
+			throwforce = 15
+			throw_speed = 4
+			throw_range = 8
+			icon_state = "plastitaniumshiv"
+			inhand_icon_state = "plastitaniumshiv"
+			custom_materials = list(/datum/material/glass=400, /datum/material/alloy/plastitanium=200)
+		update_appearance()
+		parts_list -= shard
+		qdel(shard)
+	return ..()
 
 /obj/item/knife/shiv/carrot
 	name = "carrot shiv"

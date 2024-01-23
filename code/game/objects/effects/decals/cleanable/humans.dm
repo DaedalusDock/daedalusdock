@@ -55,9 +55,8 @@
 		desc = drydesc
 		bloodiness = 0
 		color = COLOR_GRAY //not all blood splatters have their own sprites... It still looks pretty nice
-		STOP_PROCESSING(SSobj, src)
 		qdel(GetComponent(smell_type))
-		return TRUE
+		return PROCESS_KILL
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
 	C.add_blood_DNA(return_blood_DNA())

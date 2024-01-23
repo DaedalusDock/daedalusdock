@@ -178,7 +178,7 @@
 	var/signal_return = SEND_SIGNAL(src, COMSIG_ITEM_ATTACK, M, user, params)
 	if(signal_return & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
-	if(signal_return & COMPONENT_SKIP_ATTACK)
+	if(signal_return & COMPONENT_SKIP_ATTACK_STEP)
 		return
 
 	if(!user.combat_mode)
@@ -207,8 +207,7 @@
 		if(MOB_ATTACKEDBY_NO_DAMAGE)
 			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
 		if(MOB_ATTACKEDBY_SUCCESS)
-			if(hitsound)
-				playsound(loc, hitsound, get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
 		if(MOB_ATTACKEDBY_MISS)
 			playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 
@@ -249,7 +248,8 @@
 	if(!attacking_item.force)
 		return
 
-	var/damage = take_damage(attacking_item.force, attacking_item.damtype, MELEE, 1)
+	var/damage = take_damage(attacking_item.force, attacking_item.damtype, BLUNT, 1)
+
 	//only witnesses close by and the victim see a hit message.
 	user.visible_message(span_danger("[user] hits [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), \
 		span_danger("You hit [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), null, COMBAT_MESSAGE_RANGE)
@@ -272,13 +272,13 @@
 		return TRUE //successful attack
 
 /mob/living/simple_animal/attacked_by(obj/item/I, mob/living/user)
-	if(!attack_threshold_check(I.force, I.damtype, MELEE, FALSE))
+	if(!attack_threshold_check(I.force, I.damtype, BLUNT, FALSE))
 		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), TRUE, -1)
 	else
 		return ..()
 
 /mob/living/basic/attacked_by(obj/item/I, mob/living/user)
-	if(!attack_threshold_check(I.force, I.damtype, MELEE, FALSE))
+	if(!attack_threshold_check(I.force, I.damtype, BLUNT, FALSE))
 		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), TRUE, -1)
 	else
 		return ..()

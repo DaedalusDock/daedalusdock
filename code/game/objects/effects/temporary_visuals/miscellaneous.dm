@@ -536,3 +536,12 @@
 	icon_state = "light_ash"
 	icon = 'icons/effects/weather_effects.dmi'
 	duration = 3.2 SECONDS
+
+/obj/effect/temp_visual/block
+	icon_state = "blip"
+	duration = 0.65 SECONDS
+
+/obj/effect/temp_visual/block/Initialize(mapload)
+	. = ..()
+	pixel_x = rand(-12, 12)
+	pixel_y = rand(-9, 0)

@@ -206,7 +206,7 @@
 			real_target = pick(oview(2, target))
 
 		var/obj/item/gun/gun = locate() in living_pawn.held_items
-		var/can_shoot = gun?.can_shoot() || FALSE
+		var/can_shoot = gun?.can_fire() || FALSE
 		if(gun && controller.blackboard[BB_MONKEY_GUN_WORKED] && prob(95))
 			// We attempt to attack even if we can't shoot so we get the effects of pulling the trigger
 			gun.afterattack(real_target, living_pawn, FALSE)

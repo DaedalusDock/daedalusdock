@@ -73,11 +73,13 @@
 	I.screen_loc = null
 	if(client)
 		client.screen -= I
+
 	if(observers?.len)
 		for(var/M in observers)
 			var/mob/dead/observe = M
 			if(observe.client)
 				observe.client.screen -= I
+
 	I.forceMove(src)
 	I.plane = ABOVE_HUD_PLANE
 	I.appearance_flags |= NO_CLIENT_COLOR
@@ -89,31 +91,40 @@
 				return
 			back = I
 			update_worn_back()
+
 		if(ITEM_SLOT_MASK)
 			if(wear_mask)
 				return
+
 			wear_mask = I
 			wear_mask_update(I, toggle_off = 0)
+
 		if(ITEM_SLOT_HEAD)
 			if(head)
 				return
+
 			head = I
 			SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_HAT, I)
 			head_update(I)
+
 		if(ITEM_SLOT_NECK)
 			if(wear_neck)
 				return
 			wear_neck = I
 			update_worn_neck(I)
+
 		if(ITEM_SLOT_HANDCUFFED)
 			set_handcuffed(I)
 			update_handcuffed()
+
 		if(ITEM_SLOT_LEGCUFFED)
 			legcuffed = I
 			update_worn_legcuffs()
+
 		if(ITEM_SLOT_HANDS)
 			put_in_hands(I)
 			update_held_items()
+
 		if(ITEM_SLOT_BACKPACK)
 			if(!back || !back.atom_storage?.attempt_insert(I, src, override = TRUE))
 				not_handled = TRUE
@@ -124,15 +135,17 @@
 	//We cannot call it for items that have not been handled as they are not yet correctly
 	//in a slot (handled further down inheritance chain, probably living/carbon/human/equip_to_slot
 	if(!not_handled)
-		has_equipped(I, slot, initial)
+		afterEquipItem(I, slot, initial)
 
 	return not_handled
 
 /// This proc is called after an item has been successfully handled and equipped to a slot.
-/mob/living/carbon/proc/has_equipped(obj/item/item, slot, initial = FALSE)
+/mob/living/carbon/proc/afterEquipItem(obj/item/item, slot, initial = FALSE)
+	if(length(item.actions))
+		item.update_action_buttons(UPDATE_BUTTON_STATUS)
 	return item.equipped(src, slot, initial)
 
-/mob/living/carbon/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/carbon/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !I) //We don't want to set anything to null if the parent returned 0.
 		return
@@ -142,28 +155,45 @@
 		SEND_SIGNAL(src, COMSIG_CARBON_UNEQUIP_HAT, I, force, newloc, no_move, invdrop, silent)
 		if(!QDELETED(src))
 			head_update(I)
+
 	else if(I == back)
 		back = null
 		if(!QDELETED(src))
 			update_worn_back()
+
 	else if(I == wear_mask)
 		wear_mask = null
 		if(!QDELETED(src))
 			wear_mask_update(I, toggle_off = 1)
-	if(I == wear_neck)
+
+	else if(I == wear_neck)
 		wear_neck = null
 		if(!QDELETED(src))
 			update_worn_neck(I)
+
 	else if(I == handcuffed)
 		set_handcuffed(null)
 		if(buckled?.buckle_requires_restraints)
 			buckled.unbuckle_mob(src)
 		if(!QDELETED(src))
 			update_handcuffed()
+
+	else if(I == shoes)
+		shoes = null
+		if(!QDELETED(src))
+			update_worn_shoes()
+
 	else if(I == legcuffed)
 		legcuffed = null
 		if(!QDELETED(src))
 			update_worn_legcuffs()
+
+	// Not an else-if because we're probably equipped in another slot
+	if((I == internal || I == external) && (QDELETED(src) || QDELETED(I) || I.loc != src))
+		cutoff_internals()
+		if(!QDELETED(src))
+			update_mob_action_buttons(UPDATE_BUTTON_STATUS)
+
 	update_equipment_speed_mods()
 
 //handle stuff to update when a mob equips/unequips a mask.
@@ -302,8 +332,11 @@
 
 ///Returns an item that is covering a bodypart.
 /mob/living/carbon/proc/get_item_covering_bodypart(obj/item/bodypart/BP)
-	return get_item_covering_zone(body_zone2cover_flags(BP.body_zone))
+	return get_item_covering_zone(BP.body_zone)
 
 ///Returns an item that is covering a body_zone (BODY_ZONE_CHEST, etc)
 /mob/living/carbon/proc/get_item_covering_zone(zone)
-	for(var/obj/item in get_all_worn_items())
+	zone = body_zone2cover_flags(zone)
+	for(var/obj/item/inv_item in get_all_worn_items())
+		if(zone & inv_item.body_parts_covered)
+			return inv_item

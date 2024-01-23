@@ -39,6 +39,18 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 /datum/data/record/proc/get_side_photo()
 	return get_photo("photo_side", WEST)
 
+/// Set the criminal status of a crew member in the security records.
+/datum/data/record/proc/set_criminal_status(new_status)
+	if(!("criminal" in fields))
+		CRASH("Tried to set criminal status in a non-security record")
+
+	var/old_status = fields["criminal"]
+	if(old_status == new_status)
+		return FALSE
+
+	fields["criminal"] = new_status
+	return TRUE
+
 /**
  * You shouldn't be calling this directly, use `get_front_photo()` or `get_side_photo()`
  * instead.
@@ -327,7 +339,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		var/datum/data/record/S = new()
 		S.fields["id"] = id
 		S.fields["name"] = H.real_name
-		S.fields["criminal"] = "None"
+		S.fields["criminal"] = CRIMINAL_NONE
 		S.fields["citation"] = list()
 		S.fields["crim"] = list()
 		S.fields["notes"] = "No notes."

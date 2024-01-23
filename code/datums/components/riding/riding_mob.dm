@@ -186,7 +186,7 @@
 
 /datum/component/riding/creature/human/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
+	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
 	RegisterSignal(parent, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_carrier_fall_over))
 
 /datum/component/riding/creature/human/log_riding(mob/living/living_parent, mob/living/rider)
@@ -402,7 +402,10 @@
 /datum/component/riding/creature/hog/ride_check(mob/living/user, consequences = TRUE)
 	var/mob/living/simple_animal/hostile/retaliate/hog/hog_ridden = parent
 	if(hog_ridden.client)
-		. = ..()
+		return ..()
+
 	if(prob(15))
 		hog_ridden.flingRider(user)
-	. = ..()
+		return FALSE
+
+	return ..()

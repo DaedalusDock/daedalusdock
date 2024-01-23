@@ -682,6 +682,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// trait denoting something is being risen up by a table
 #define TRAIT_TABLE_RISEN "table_risen"
 
+/// Whether or not the user is in a MODlink call, prevents making more calls
+#define TRAIT_IN_CALL "in_call"
+
 // common trait sources
 #define TRAIT_GENERIC "generic"
 #define UNCONSCIOUS_TRAIT "unconscious"
@@ -904,9 +907,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Traits granted to items due to their chameleon properties.
 #define CHAMELEON_ITEM_TRAIT "chameleon_item_trait"
 
-/// This human wants to see the color of their glasses, for some reason
-#define TRAIT_SEE_GLASS_COLORS "see_glass_colors"
-
 /// this mob is under the effects of the power chord
 #define TRAIT_POWER_CHORD "power_chord"
 
@@ -974,3 +974,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HALOPERIDOL "haloperidol"
 #define TRAIT_STIMULANTS "stimulants"
 #define TRAIT_IMPEDREZENE "impedrezene"
+
+/// Given to items that are bodyparts attached to a mob, organs attached to a mob or inside a bodypart
+#define TRAIT_INSIDE_BODY "inside_body"

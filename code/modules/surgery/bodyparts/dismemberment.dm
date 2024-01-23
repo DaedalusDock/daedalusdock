@@ -18,11 +18,13 @@
 	if(!silent)
 		var/list/messages = violent_dismember_messages(dismember_type, clean)
 		if(length(messages))
-			owner.visible_message(
+			limb_owner.visible_message(
 				span_danger("[messages[1]]"),
 				span_userdanger("[messages[2]]"),
 				span_hear("[messages[3]]")
 			)
+		if(!(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(limb_owner, TRAIT_NO_PAINSHOCK) && prob(50))
+			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob/living/carbon, pain_emote), PAIN_AMT_AGONIZING, TRUE)
 
 	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
 	var/obj/item/bodypart/stump
@@ -218,6 +220,7 @@
 /obj/item/bodypart/proc/add_organ(obj/item/organ/O)
 	O.ownerlimb = src
 	contained_organs |= O
+	ADD_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
 
 	if(O.visual)
 		if(owner && O.external_bodytypes)
@@ -228,6 +231,7 @@
 /obj/item/bodypart/proc/remove_organ(obj/item/organ/O)
 	contained_organs -= O
 
+	REMOVE_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
 	if(owner && O.visual && O.external_bodytypes)
 		synchronize_bodytypes(owner)
 

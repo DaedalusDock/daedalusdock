@@ -243,7 +243,7 @@
 				to_chat(usr, span_warning("ERROR: Unable to locate data core entry for target."))
 				return
 			if(href_list["status"])
-				var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list("None", "*Arrest*", "Incarcerated", "Suspected", "Paroled", "Discharged", "Cancel")
+				var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list(CRIMINAL_NONE, CRIMINAL_WANTED, CRIMINAL_INCARCERATED, CRIMINAL_SUSPECT, CRIMINAL_PAROLE, CRIMINAL_DISCHARGED, "Cancel")
 				if(setcriminal != "Cancel")
 					if(!R)
 						return
@@ -252,7 +252,7 @@
 					if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 						return
 					investigate_log("[key_name(src)] has been set from [R.fields["criminal"]] to [setcriminal] by [key_name(usr)].", INVESTIGATE_RECORDS)
-					R.fields["criminal"] = setcriminal
+					R.set_criminal_status(setcriminal)
 					sec_hud_set_security_status()
 				return
 
@@ -447,13 +447,13 @@
 		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
 		if(R?.fields["criminal"])
 			switch(R.fields["criminal"])
-				if("*Arrest*")
+				if(CRIMINAL_WANTED)
 					threatcount += 5
-				if("Incarcerated")
+				if(CRIMINAL_INCARCERATED)
 					threatcount += 2
-				if("Suspected")
+				if(CRIMINAL_SUSPECT)
 					threatcount += 2
-				if("Paroled")
+				if(CRIMINAL_PAROLE)
 					threatcount += 2
 
 	//Check for dresscode violations
@@ -573,6 +573,8 @@
 	var/obscured = check_obscured_slots()
 	if(obscured & ITEM_SLOT_GLOVES)
 		return FALSE
+
+	germ_level = 0
 
 	if(gloves)
 		if(gloves.wash(clean_types))
@@ -709,53 +711,61 @@
 /mob/living/carbon/human/update_health_hud()
 	if(!client || !hud_used)
 		return
-	if(dna.species.update_health_hud())
-		return
-	else
-		if(hud_used.healths)
-			if(..()) //not dead
-				switch(hal_screwyhud)
-					if(SCREWYHUD_CRIT)
-						hud_used.healths.icon_state = "health6"
-					if(SCREWYHUD_DEAD)
-						hud_used.healths.icon_state = "health7"
-					if(SCREWYHUD_HEALTHY)
-						hud_used.healths.icon_state = "health0"
-		if(hud_used.healthdoll)
-			hud_used.healthdoll.cut_overlays()
-			if(stat != DEAD)
-				hud_used.healthdoll.icon_state = "healthdoll_OVERLAY"
-				for(var/obj/item/bodypart/body_part as anything in bodyparts)
-					var/icon_num = 0
-					//Hallucinations
-					if(body_part.type in hal_screwydoll)
-						icon_num = hal_screwydoll[body_part.type]
-						hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]"))
-						continue
-					//Not hallucinating
-					var/damage = body_part.burn_dam + body_part.brute_dam
-					var/comparison = (body_part.max_damage/5)
-					if(damage)
-						icon_num = 1
-					if(damage > (comparison))
-						icon_num = 2
-					if(damage > (comparison*2))
-						icon_num = 3
-					if(damage > (comparison*3))
-						icon_num = 4
-					if(damage > (comparison*4))
-						icon_num = 5
-					if(hal_screwyhud == SCREWYHUD_HEALTHY)
-						icon_num = 0
-					if(icon_num)
-						hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]"))
 
-				for(var/t in get_missing_limbs()) //Missing limbs
-					hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]6"))
-				for(var/t in get_disabled_limbs()) //Disabled limbs
-					hud_used.healthdoll.add_overlay(mutable_appearance('icons/hud/screen_gen.dmi', "[t]7"))
-			else
-				hud_used.healthdoll.icon_state = "healthdoll_DEAD"
+	if(hud_used.healths) // Kapu note: We don't use this on humans due to human health being brain health. It'd be confusing.
+		if(..()) //not dead
+			switch(hal_screwyhud)
+				if(SCREWYHUD_CRIT)
+					hud_used.healths.icon_state = "health6"
+				if(SCREWYHUD_DEAD)
+					hud_used.healths.icon_state = "health7"
+				if(SCREWYHUD_HEALTHY)
+					hud_used.healths.icon_state = "health0"
+
+	if(hud_used.healthdoll)
+		var/list/new_overlays = list()
+		hud_used.healthdoll.cut_overlays()
+		if(stat != DEAD)
+			hud_used.healthdoll.icon_state = "healthdoll_OVERLAY"
+			for(var/obj/item/bodypart/body_part as anything in bodyparts)
+				var/icon_num = 0
+
+				//Hallucinations
+				if(body_part.type in hal_screwydoll)
+					icon_num = hal_screwydoll[body_part.type]
+					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]")
+					continue
+
+				if(hal_screwyhud == SCREWYHUD_HEALTHY)
+					icon_num = 0
+				//Not hallucinating
+				else
+					var/dam_state = min(1,((body_part.brute_dam + body_part.burn_dam) / max(1,body_part.max_damage)))
+					if(dam_state)
+						icon_num = max(1, min(Ceil(dam_state * 6), 6))
+
+				if(icon_num)
+					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]")
+
+				if(body_part.getPain() > 20)
+					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone]pain")
+
+				if(body_part.bodypart_disabled) //Disabled limb
+					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone]7")
+
+			for(var/t in get_missing_limbs()) //Missing limbs
+				new_overlays += image('icons/hud/screen_gen.dmi', "[t]6")
+
+			if(undergoing_cardiac_arrest())
+				new_overlays += image('icons/hud/screen_gen.dmi', "softcrit")
+
+			if(on_fire)
+				new_overlays += image('icons/hud/screen_gen.dmi', "burning")
+
+			//Add all the overlays at once, more performant!
+			hud_used.healthdoll.add_overlay(new_overlays)
+		else
+			hud_used.healthdoll.icon_state = "healthdoll_DEAD"
 
 /mob/living/carbon/human/fully_heal(admin_revive = FALSE)
 	dna?.species.spec_fully_heal(src)
@@ -769,6 +779,7 @@
 		BP.set_dislocated(FALSE)
 		BP.heal_bones()
 		BP.adjustPain(-INFINITY)
+		BP.germ_level = 0
 
 	remove_all_embedded_objects()
 	set_heartattack(FALSE)

@@ -238,15 +238,19 @@
 	if (!moving || !starting_turf || isspaceturf(current_turf))
 		stop_moving()
 		return
+
 	if (current_turf == target_position) //We've reached our target turf, now find a new one
 		target_position = null
+
 	if (!target_position)
 		target_position = find_target_position()
 		if (!target_position)
 			stop_moving("ERROR! Cannot calculate suitable movement path.")
+
 	var/turf/nextStep = get_step_towards(src, target_position)
 	if (!Move(nextStep, get_dir(src, nextStep)))
 		target_position = null //We couldn't move towards the target turf, so find a new target turf
+
 	try_attack()
 	COOLDOWN_START(src, move_cooldown, max(MAX_SPEED - move_speed, 1))
 

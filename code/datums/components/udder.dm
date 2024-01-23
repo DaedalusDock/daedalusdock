@@ -79,9 +79,9 @@
 	. = ..()
 
 /obj/item/udder/Destroy()
-	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	udder_mob = null
+	return ..()
 
 /obj/item/udder/process(delta_time)
 	if(udder_mob.stat != DEAD)
@@ -129,7 +129,7 @@
 
 /obj/item/udder/slug/initial_conditions()
 	. = ..()
-	RegisterSignal(udder_mob, COMSIG_MOVABLE_MOVED, .proc/on_slug_move)
+	RegisterSignal(udder_mob, COMSIG_MOVABLE_MOVED, PROC_REF(on_slug_move))
 
 /obj/item/udder/slug/proc/on_slug_move()
 	SIGNAL_HANDLER

@@ -42,6 +42,11 @@
 	plane = GAME_PLANE
 	blend_mode = BLEND_OVERLAY
 
+/atom/movable/screen/plane_master/seethrough
+	name = "Seethrough"
+	plane = SEETHROUGH_PLANE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
 /atom/movable/screen/plane_master/massive_obj
 	name = "massive object plane master"
 	plane = MASSIVE_OBJ_PLANE

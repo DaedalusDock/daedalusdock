@@ -216,7 +216,7 @@
 		qdel(C)
 		return
 
-/obj/item/gun/energy/wormhole_projector/can_shoot()
+/obj/item/gun/energy/wormhole_projector/can_fire()
 	if(!firing_core)
 		return FALSE
 	return ..()
@@ -247,7 +247,7 @@
 /obj/item/gun/energy/wormhole_projector/afterattack_secondary(atom/target, mob/living/user, flag, params)
 	if(select == AMMO_SELECT_BLUE) //Last fired in left click mode. Switch to orange wormhole (right click).
 		select_fire()
-	fire_gun(target, user, flag, params)
+	try_fire_gun(target, user, flag, params)
 	return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 /obj/item/gun/energy/wormhole_projector/proc/on_portal_destroy(obj/effect/portal/P)
@@ -362,7 +362,7 @@
 		return
 	return ..()
 
-/obj/item/gun/energy/gravity_gun/can_shoot()
+/obj/item/gun/energy/gravity_gun/can_fire()
 	if(!firing_core)
 		return FALSE
 	return ..()
@@ -374,8 +374,8 @@
 	desc = "A gun that shoots balls of \"tesla\", whatever that is."
 	ammo_type = list(/obj/item/ammo_casing/energy/tesla_cannon)
 	shaded_charge = TRUE
-	weapon_weight = WEAPON_HEAVY
 
 /obj/item/gun/energy/tesla_cannon/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	AddComponent(/datum/component/automatic_fire, 0.1 SECONDS)

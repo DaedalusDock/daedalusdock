@@ -337,7 +337,7 @@
 	. = ..()
 	if(!.)
 		return
-	for(var/obj/item/hand_item/grab/G in mod.wearer.get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in mod.wearer.active_grabs)
 		if(istype(G.affecting, /obj/structure/closet))
 			qdel(G)
 

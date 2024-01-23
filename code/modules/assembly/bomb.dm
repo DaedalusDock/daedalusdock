@@ -122,11 +122,11 @@
 	if(LAZYLEN(assembly.assemblies) == igniter_count)
 		return
 
-	if((src in user.get_equipped_items(TRUE)) && !user.canUnEquip(src))
+	if((src in user.get_equipped_items(TRUE)) && !user.canUnequipItem(src))
 		to_chat(user, span_warning("[src] is stuck to you!"))
 		return
 
-	if(!user.canUnEquip(assembly))
+	if(!user.canUnequipItem(assembly))
 		to_chat(user, span_warning("[assembly] is stuck to your hand!"))
 		return
 

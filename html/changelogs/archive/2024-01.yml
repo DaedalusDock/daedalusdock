@@ -76,3 +76,6 @@
 2024-01-13:
   Kapu1178:
   - bugfix: Default wield hotkey no longer conflicts with other default hotkeys.
+2024-01-23:
+  MisterGrimm:
+  - balance: Getting flushed into the disposal network damages mobs once more

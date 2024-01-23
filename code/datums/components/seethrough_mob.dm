@@ -67,6 +67,9 @@
 	trickery_image.pixel_x = 0
 	trickery_image.pixel_y = 0
 
+	if(clickthrough) //Without this we can click ourselves if there is no other target when seethrough
+		trickery_image.plane = SEETHROUGH_PLANE
+
 	fool.client.images += trickery_image
 
 	animate(trickery_image, alpha = target_alpha, time = animation_time)
@@ -77,6 +80,7 @@
 /datum/component/seethrough_mob/proc/untrick_mob()
 	var/mob/fool = parent
 	animate(trickery_image, alpha = 255, time = animation_time)
+
 	UnregisterSignal(fool, COMSIG_MOB_LOGOUT)
 
 	//after playing the fade-in animation, remove the image and the trick atom

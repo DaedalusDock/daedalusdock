@@ -20,6 +20,6 @@
 /datum/action/cooldown/shatter_glass/Activate(atom/target)
 	. = ..()
 	var/obj/structure/S = target
-	target.deconstruct()
+	S.deconstruct()
 
 	RECORD_GHOST_POWER(src)

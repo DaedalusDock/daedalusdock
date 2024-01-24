@@ -71,6 +71,7 @@
 /mob/living/proc/death(gibbed)
 	set_stat(DEAD)
 	unset_machine()
+
 	timeofdeath = world.time
 	tod = stationtime2text()
 	var/turf/T = get_turf(src)
@@ -79,8 +80,10 @@
 		if(SSlag_switch.measures[DISABLE_DEAD_KEYLOOP] && !client?.holder)
 			to_chat(src, span_deadsay(span_big("Observer freelook is disabled.\nPlease use Orbit, Teleport, and Jump to look around.")))
 			ghostize(TRUE)
+
 	set_disgust(0)
 	SetSleeping(0, 0)
+
 	reset_perspective(null)
 	reload_fullscreen()
 	update_mob_action_buttons()
@@ -88,6 +91,7 @@
 	update_health_hud()
 	med_hud_set_health()
 	med_hud_set_status()
+
 	release_all_grabs()
 
 	set_ssd_indicator(FALSE)
@@ -99,4 +103,6 @@
 	if (client)
 		client.move_delay = initial(client.move_delay)
 
+	if(!gibbed)
+		AddComponent(/datum/component/spook_factor, SPOOK_AMT_CORPSE)
 	return TRUE

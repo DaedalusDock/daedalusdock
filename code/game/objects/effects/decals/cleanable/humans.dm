@@ -9,7 +9,10 @@
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	beauty = -100
 	clean_type = CLEAN_TYPE_BLOOD
+
 	var/smell_intensity =  INTENSITY_STRONG
+	var/spook_factor = SPOOK_AMT_BLOOD_SPLATTER
+
 	var/should_dry = TRUE
 	/// How long should it take for blood to dry?
 	var/dry_duration = 10 MINUTES
@@ -55,6 +58,8 @@
 		bloodiness = 0
 		color = COLOR_GRAY //not all blood splatters have their own sprites... It still looks pretty nice
 		qdel(GetComponent(/datum/component/smell))
+		if(spook_factor)
+			AddComponent(/datum/component/spook_factor, spook_factor)
 		return PROCESS_KILL
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
@@ -70,6 +75,7 @@
 /obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
 	add_blood_DNA(list("Non-human DNA" = random_blood_type())) // Needs to happen before ..()
 	. = ..()
+	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_SPLATTER)
 
 /obj/effect/decal/cleanable/blood/splatter
 	icon_state = "gibbl1"
@@ -126,6 +132,7 @@
 	drydesc = "They look bloody and gruesome while some terrible smell fills the air."
 	decal_reagent = /datum/reagent/liquidgibs
 	reagent_amount = 5
+
 	smell_intensity = INTENSITY_STRONG
 	///Information about the diseases our streaking spawns
 	var/list/streak_diseases
@@ -133,6 +140,7 @@
 /obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
+	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_STREAK)
 
 /obj/effect/decal/cleanable/blood/gibs/replace_decal(obj/effect/decal/cleanable/C)
 	return FALSE //Never fail to place us
@@ -234,6 +242,7 @@
 	smell_intensity = INTENSITY_SUBTLE
 	dry_duration = 4 MINUTES
 
+	spook_factor = SPOOK_AMT_BLOOD_DROP
 	/// Keeps track of how many drops of blood this decal has. See blood.dm
 	var/drips = 1
 
@@ -467,6 +476,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	random_icon_states = null
 	color = "#ff0000"
 	smell_intensity = INTENSITY_SUBTLE
+
+	spook_factor = SPOOK_AMT_BLOOD_STREAK
 
 /obj/effect/decal/cleanable/blood/squirt/Initialize(mapload, direction, list/blood_dna)
 	. = ..()

@@ -233,27 +233,35 @@ Versioning
 				return
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
+
 			if(overwrite)
 				FV.json["data"] = data
 			else
 				FV.json["data"] |= data
+
 		if("amount")
 			FV.json["data"] += increment
+
 		if("tally")
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
 			FV.json["data"]["[data]"] += increment
+
 		if("nested tally")
 			if(!islist(data))
 				return
+
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
 			FV.json["data"] = record_feedback_recurse_list(FV.json["data"], data, increment)
+
 		if("associative")
 			if(!islist(data))
 				return
+
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
+
 			var/pos = length(FV.json["data"]) + 1
 			FV.json["data"]["[pos]"] = list() //in 512 "pos" can be replaced with "[FV.json["data"].len+1]"
 			for(var/i in data)

@@ -27,7 +27,6 @@
 		to_chat(owner, span_warning("There is nobody inside of there to listen."))
 		return FALSE
 
-
 /datum/action/cooldown/ghost_whisper/PreActivate(atom/target, list/params)
 	message_to_send = ""
 	var/input = tgui_input_text(owner, "What do you want to say?", max_length = 20)
@@ -38,9 +37,13 @@
 	if(confirmation != "Ok")
 		return FALSE
 
+	if(!IsAvailable())
+		return FALSE
 	return ..()
 
 /datum/action/cooldown/ghost_whisper/Activate(atom/target)
 	. = ..()
 	to_chat(target, span_obviousnotice("<i>... [message_to_send] ...</i>"))
 	message_to_send = ""
+
+	RECORD_GHOST_POWER(src)

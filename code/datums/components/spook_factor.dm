@@ -23,27 +23,27 @@
 /datum/component/spook_factor/RegisterWithParent()
 	var/atom/movable/movable_parent = parent
 	movable_parent.become_area_sensitive(REF(src))
-	RegisterSignal(movable_parent, COMSIG_AREA_ENTER, PROC_REF(enter_area))
-	RegisterSignal(movable_parent, COMSIG_AREA_EXIT, PROC_REF(exit_area))
+	RegisterSignal(movable_parent, COMSIG_ENTER_AREA, PROC_REF(enter_area))
+	RegisterSignal(movable_parent, COMSIG_EXIT_AREA, PROC_REF(exit_area))
 
 /datum/component/spook_factor/UnregisterFromParent()
 	var/atom/movable/movable_parent = parent
-	UnregisterSignal(movable_parent, list(COMSIG_AREA_EXIT, COMSIG_AREA_ENTER))
+	UnregisterSignal(movable_parent, list(COMSIG_EXIT_AREA, COMSIG_ENTER_AREA))
 	movable_parent.lose_area_sensitivity(REF(src))
 
 /datum/component/spook_factor/InheritComponent(datum/component/C, i_am_original, spook_contribution)
 	var/area/A = affecting_area
 	affect_area(null)
 	src.spook_contribution = spook_contribution
-	affect_area(affecting_area)
+	affect_area(A)
 
 /datum/component/spook_factor/proc/affect_area(area/A)
 	if(affecting_area == A)
 		return
 
-	affecting_area?.spook_level -= spook_contribution
+	affecting_area?.adjust_spook_level(-spook_contribution)
 	affecting_area = A
-	affecting_area?.spook_level += spook_contribution
+	affecting_area?.adjust_spook_level(spook_contribution)
 
 /datum/component/spook_factor/proc/enter_area(atom/movable/source, area/A)
 	SIGNAL_HANDLER

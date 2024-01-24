@@ -118,8 +118,10 @@
 /datum/component/simple_rotation/proc/CanUserRotate(mob/user, degrees)
 	if(isliving(user) && user.canUseTopic(parent, USE_CLOSE|USE_DEXTERITY))
 		return TRUE
-	if((rotation_flags & ROTATION_GHOSTS_ALLOWED) && isobserver(user) && CONFIG_GET(flag/ghost_interaction))
-		return TRUE
+	if((rotation_flags & ROTATION_GHOSTS_ALLOWED) && isobserver(user))
+		var/area/A = get_area(parent)
+		if(A?.spook_level >= SPOOK_LEVEL_OBJECT_ROTATION)
+			return TRUE
 	return FALSE
 
 /datum/component/simple_rotation/proc/CanBeRotated(mob/user, degrees)

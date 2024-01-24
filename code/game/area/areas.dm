@@ -533,3 +533,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	for(var/datum/listener in airalarms + firealarms + firedoors)
 		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code)
+
+/// Adjusts the spook level and sends out a signal
+/area/proc/adjust_spook_level(adj)
+	var/old = spook_level
+	spook_level += adj
+	SEND_SIGNAL(src, AREA_SPOOK_LEVEL_CHANGED, src, old)

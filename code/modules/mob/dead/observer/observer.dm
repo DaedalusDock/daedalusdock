@@ -50,8 +50,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 /mob/dead/observer/Initialize(mapload, started_as_observer = FALSE)
 	src.started_as_observer = started_as_observer
-	if(!isnum(started_as_observer))
-		stack_trace("Non number wtf!!!")
 
 	set_invisibility(GLOB.observer_default_invisibility)
 

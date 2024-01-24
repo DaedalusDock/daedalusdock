@@ -4280,6 +4280,8 @@
 #include "code\modules\spooky\abilities\chilling_presence.dm"
 #include "code\modules\spooky\abilities\flicker.dm"
 #include "code\modules\spooky\abilities\knock_on_window_or_door.dm"
+#include "code\modules\spooky\abilities\shatter_glass.dm"
+#include "code\modules\spooky\abilities\shatter_light.dm"
 #include "code\modules\spooky\abilities\sleep_whisper.dm"
 #include "code\modules\spooky\components\spook_factor.dm"
 #include "code\modules\spooky\components\spooky_powers.dm"

@@ -118,10 +118,12 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 	if(!started_as_observer)
 		var/static/list/powers = list(
-			/datum/action/cooldown/ghost_whisper = 10,
-			/datum/action/cooldown/flicker = 10,
-			/datum/action/cooldown/knock_sound = 10,
-			/datum/action/cooldown/chilling_presence = 30,
+			/datum/action/cooldown/ghost_whisper = SPOOK_LEVEL_WEAK_POWERS,
+			/datum/action/cooldown/flicker = SPOOK_LEVEL_WEAK_POWERS,
+			/datum/action/cooldown/knock_sound = SPOOK_LEVEL_WEAK_POWERS,
+			/datum/action/cooldown/chilling_presence = SPOOK_LEVEL_MEDIUM_POWERS,
+			/datum/action/cooldown/shatter_light = SPOOK_LEVEL_DESTRUCTIVE_POWERS,
+			/datum/action/cooldown/shatter_glass = SPOOK_LEVEL_DESTRUCTIVE_POWERS,
 		)
 		AddComponent(/datum/component/spooky_powers, powers)
 

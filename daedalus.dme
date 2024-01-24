@@ -4279,6 +4279,7 @@
 #include "code\modules\spells\spell_types\touch\smite.dm"
 #include "code\modules\spooky\abilities\chilling_presence.dm"
 #include "code\modules\spooky\abilities\flicker.dm"
+#include "code\modules\spooky\abilities\ghost_light.dm"
 #include "code\modules\spooky\abilities\knock_on_window_or_door.dm"
 #include "code\modules\spooky\abilities\shatter_glass.dm"
 #include "code\modules\spooky\abilities\shatter_light.dm"

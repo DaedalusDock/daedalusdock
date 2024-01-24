@@ -121,6 +121,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 			/datum/action/cooldown/ghost_whisper = SPOOK_LEVEL_WEAK_POWERS,
 			/datum/action/cooldown/flicker = SPOOK_LEVEL_WEAK_POWERS,
 			/datum/action/cooldown/knock_sound = SPOOK_LEVEL_WEAK_POWERS,
+			/datum/action/cooldown/ghost_light = SPOOK_LEVEL_WEAK_POWERS,
 			/datum/action/cooldown/chilling_presence = SPOOK_LEVEL_MEDIUM_POWERS,
 			/datum/action/cooldown/shatter_light = SPOOK_LEVEL_DESTRUCTIVE_POWERS,
 			/datum/action/cooldown/shatter_glass = SPOOK_LEVEL_DESTRUCTIVE_POWERS,

@@ -3,6 +3,5 @@
 #define RECORD_GHOST_POWER(power) \
 	do {\
 		var/area/A = get_area(power.owner); \
-		var/spooky = A?.spook_level || 0; \
 		SSblackbox.record_feedback("nested tally", "ghost_power_used", 1, list(A?.name || "NULL", power.name)); \
 	} while (FALSE)

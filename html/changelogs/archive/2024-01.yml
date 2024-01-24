@@ -79,3 +79,12 @@
 2024-01-23:
   MisterGrimm:
   - balance: Getting flushed into the disposal network damages mobs once more
+2024-01-24:
+  Kapu1178:
+  - rscadd: Ballistics now emit a long-lasting scent of gunpowder when fired.
+  - rscadd: Energy weapons now emit a short-lasting scent of ozone when fired.
+  - qol: You won't see multiple smell messages in a single smell tick.
+  - code_imp: Cleaned up smell code.
+  Time-Green, IndieanaJones:
+  - qol: Adds the seethrough component, allowing people to see behind large objects,
+      and behind their own mob if they are large

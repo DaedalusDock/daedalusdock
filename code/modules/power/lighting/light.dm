@@ -438,6 +438,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	set waitfor = FALSE
 	if(flickering)
 		return
+
 	flickering = TRUE
 	if(on && status == LIGHT_OK)
 		for(var/i in 1 to amount)

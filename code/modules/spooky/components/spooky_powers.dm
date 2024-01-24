@@ -82,7 +82,3 @@
 		return
 
 	update_area(A)
-
-/mob/dead/observer/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/spooky_powers, list(/datum/action/cooldown/ghost_whisper = 10))

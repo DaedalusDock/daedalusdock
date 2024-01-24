@@ -48,7 +48,8 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	var/datum/spawners_menu/spawners_menu
 	var/datum/minigames_menu/minigames_menu
 
-/mob/dead/observer/Initialize(mapload)
+/mob/dead/observer/Initialize(mapload, started_as_observer)
+	src.started_as_observer = started_as_observer
 	set_invisibility(GLOB.observer_default_invisibility)
 
 	add_verb(src, list(
@@ -114,6 +115,15 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 	SSpoints_of_interest.make_point_of_interest(src)
 	ADD_TRAIT(src, TRAIT_HEAR_THROUGH_DARKNESS, ref(src))
+
+	if(!started_as_observer)
+		var/static/list/powers = list(
+			/datum/action/cooldown/ghost_whisper = 10,
+			/datum/action/cooldown/flicker = 10,
+			/datum/action/cooldown/knock_sound = 10,
+			/datum/action/cooldown/chilling_presence = 30,
+		)
+		AddComponent(/datum/component/spooky_powers, powers)
 
 /mob/dead/observer/get_photo_description(obj/item/camera/camera)
 	if(!invisibility || camera.see_ghosts)

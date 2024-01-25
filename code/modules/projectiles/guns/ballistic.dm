@@ -161,7 +161,7 @@
 /obj/item/gun/ballistic/update_overlays()
 	. = ..()
 	if(show_bolt_icon)
-		. += bolt.get_overlays()
+		. += bolt?.get_overlays() //update_overlays() can get called during Destroy()
 
 	if(suppressed)
 		var/mutable_appearance/MA = mutable_appearance(icon, "[icon_state]_suppressor")

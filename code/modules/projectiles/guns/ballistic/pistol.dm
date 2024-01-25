@@ -8,7 +8,7 @@
 	burst_size = 1
 	fire_delay = 0
 	actions_types = list()
-	bolt_type = BOLT_TYPE_LOCKING
+	bolt = /datum/gun_bolt/locking
 	fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
 	dry_fire_sound = 'sound/weapons/gun/pistol/dry_fire.ogg'
 	suppressed_sound = 'sound/weapons/gun/pistol/shot_suppressed.ogg'

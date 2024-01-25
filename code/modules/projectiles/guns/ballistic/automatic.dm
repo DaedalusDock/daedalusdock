@@ -54,7 +54,7 @@
 	mag_display = TRUE
 	empty_indicator = TRUE
 	mag_type = /obj/item/ammo_box/magazine/smgm9mm
-	bolt_type = BOLT_TYPE_LOCKING
+	bolt = /datum/gun_bolt/locking
 	show_bolt_icon = FALSE
 
 /obj/item/gun/ballistic/automatic/proto/Initialize(mapload)
@@ -132,7 +132,7 @@
 	icon_state = "miniuzi"
 	mag_type = /obj/item/ammo_box/magazine/uzim9mm
 	burst_size = 2
-	bolt_type = BOLT_TYPE_OPEN
+	bolt = /datum/gun_bolt/open
 	show_bolt_icon = FALSE
 	mag_display = TRUE
 	rack_sound = 'sound/weapons/gun/pistol/slide_lock.ogg'
@@ -201,7 +201,7 @@
 	burst_size = 1
 	actions_types = list()
 	fire_delay = 1
-	bolt_type = BOLT_TYPE_OPEN
+	bolt = /datum/gun_bolt/open
 	empty_indicator = TRUE
 	show_bolt_icon = FALSE
 
@@ -237,7 +237,7 @@
 	unwielded_spread_bonus = 20
 	burst_size = 1
 
-	bolt_type = BOLT_TYPE_OPEN
+	bolt = /datum/gun_bolt/open
 	can_suppress = FALSE
 
 	show_bolt_icon = FALSE

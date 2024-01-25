@@ -63,15 +63,13 @@
 	var/special_mags = FALSE
 	/**
 	* The bolt type controls how the gun functions, and what iconstates you'll need to represent those functions.
-	* BOLT_TYPE_STANDARD - The Slide doesn't lock back.  Clicking on it will only cycle the bolt.  Only 1 sprite.
-	* BOLT_TYPE_OPEN - Same as standard, but it fires directly from the magazine - No need to rack.  Doesn't hold the bullet when you drop the mag.
-	* BOLT_TYPE_LOCKING - This is most handguns and bolt action rifles.  The bolt will lock back when it's empty.  You need yourgun_bolt and yourgun_bolt_locked icon states.
-	* BOLT_TYPE_NO_BOLT - This is shotguns and revolvers.  clicking will dump out all the bullets in the gun, spent or not.
-	* see combat.dm defines for bolt types: BOLT_TYPE_STANDARD; BOLT_TYPE_LOCKING; BOLT_TYPE_OPEN; BOLT_TYPE_NO_BOLT
+	* /datum/gun_bolt - The Slide doesn't lock back.  Clicking on it will only cycle the bolt.  Only 1 sprite.
+	* /datum/gun_bolt/open - Same as standard, but it fires directly from the magazine - No need to rack.  Doesn't hold the bullet when you drop the mag.
+	* /datum/gun_bolt/locking - This is most handguns and bolt action rifles.  The bolt will lock back when it's empty. You need yourgun_bolt and yourgun_bolt_locked icon states.
+	* /datum/gun_bolt/no_bolt - This is shotguns and revolvers.  clicking will dump out all the bullets in the gun, spent or not.
 	**/
-	var/bolt_type = BOLT_TYPE_STANDARD
-	///Used for locking bolt and open bolt guns. Set a bit differently for the two but prevents firing when true for both.
-	var/bolt_locked = FALSE
+	var/datum/gun_bolt/bolt = /datum/gun_bolt
+
 	var/show_bolt_icon = TRUE ///Hides the bolt icon.
 	///Whether the gun has to be racked each shot or not.
 	var/semi_auto = TRUE
@@ -79,7 +77,7 @@
 	var/obj/item/ammo_box/magazine/magazine
 	///whether the gun ejects the chambered casing
 	var/casing_ejector = TRUE
-	///Whether the gun has an internal magazine or a detatchable one. Overridden by BOLT_TYPE_NO_BOLT.
+	///Whether the gun has an internal magazine or a detatchable one. Overridden by /datum/gun_bolt/no_bolt.
 	var/internal_magazine = FALSE
 	///Phrasing of the bolt in examine and notification messages; ex: bolt, slide, etc.
 	var/bolt_wording = "bolt"
@@ -127,28 +125,33 @@
 
 /obj/item/gun/ballistic/Initialize(mapload)
 	. = ..()
+
+	bolt = new bolt(src)
+
 	if (!spawnwithmagazine)
-		bolt_locked = TRUE
+		bolt.is_locked = TRUE
 		update_appearance()
 		return
 
 	if (!magazine)
 		magazine = new mag_type(src)
 
-	if(bolt_type == BOLT_TYPE_STANDARD || internal_magazine) //Internal magazines shouldn't get magazine + 1.
+	if((bolt.type == /datum/gun_bolt) || internal_magazine) //Internal magazines shouldn't get magazine + 1.
 		chamber_round()
 	else
 		chamber_round(replace_new_round = TRUE)
+
 	update_appearance()
 	RegisterSignal(src, COMSIG_ITEM_RECHARGED, PROC_REF(instant_reload))
 
 /obj/item/gun/ballistic/Destroy()
 	QDEL_NULL(magazine)
+	QDEL_NULL(bolt)
 	return ..()
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
-	if(vname in list(NAMEOF(src, suppressor_x_offset), NAMEOF(src, suppressor_y_offset), NAMEOF(src, internal_magazine), NAMEOF(src, magazine), NAMEOF(src, chambered), NAMEOF(src, empty_indicator), NAMEOF(src, sawn_off), NAMEOF(src, bolt_locked), NAMEOF(src, bolt_type)))
+	if(vname in list(NAMEOF(src, suppressor_x_offset), NAMEOF(src, suppressor_y_offset), NAMEOF(src, internal_magazine), NAMEOF(src, magazine), NAMEOF(src, chambered), NAMEOF(src, empty_indicator), NAMEOF(src, sawn_off), NAMEOF(src, bolt)))
 		update_appearance()
 
 /obj/item/gun/ballistic/update_icon_state()
@@ -158,10 +161,7 @@
 /obj/item/gun/ballistic/update_overlays()
 	. = ..()
 	if(show_bolt_icon)
-		if (bolt_type == BOLT_TYPE_LOCKING)
-			. += "[icon_state]_bolt[bolt_locked ? "_locked" : ""]"
-		if (bolt_type == BOLT_TYPE_OPEN && bolt_locked)
-			. += "[icon_state]_bolt"
+		. += bolt.get_overlays()
 
 	if(suppressed)
 		var/mutable_appearance/MA = mutable_appearance(icon, "[icon_state]_suppressor")
@@ -233,36 +233,28 @@
 /obj/item/gun/ballistic/proc/chamber_round(keep_bullet = FALSE, spin_cylinder, replace_new_round)
 	if (chambered || !magazine)
 		return
-	if (magazine.ammo_count())
-		chambered = magazine.get_round(keep_bullet || bolt_type == BOLT_TYPE_NO_BOLT)
-		if (bolt_type != BOLT_TYPE_OPEN)
-			chambered.forceMove(src)
-		if(replace_new_round)
-			magazine.give_round(new chambered.type)
+
+	if (!magazine.ammo_count())
+		return
+
+	chambered = magazine.get_round(keep_bullet || istype(bolt, /datum/gun_bolt/no_bolt))
+
+	if (!istype(bolt, /datum/gun_bolt/open))
+		chambered.forceMove(src)
+	if(replace_new_round)
+		magazine.give_round(new chambered.type)
 
 ///updates a bunch of racking related stuff and also handles the sound effects and the like
 /obj/item/gun/ballistic/proc/rack(mob/user = null)
-	if (bolt_type == BOLT_TYPE_NO_BOLT) //If there's no bolt, nothing to rack
+	if(bolt.pre_rack(user))
 		return
-
-	if (bolt_type == BOLT_TYPE_OPEN)
-		if(!bolt_locked) //If it's an open bolt, racking again would do nothing
-			if (user)
-				to_chat(user, span_notice("[src]'s [bolt_wording] is already cocked!"))
-			return
-
-		bolt_locked = FALSE
 
 	if (user)
 		to_chat(user, span_notice("You rack the [bolt_wording] of [src]."))
 
 	update_chamber(!chambered, FALSE)
 
-	if (bolt_type == BOLT_TYPE_LOCKING && !chambered)
-		bolt_locked = TRUE
-		playsound(src, lock_back_sound, lock_back_sound_volume, lock_back_sound_vary)
-	else
-		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
+	bolt.post_rack()
 
 	update_appearance()
 
@@ -271,8 +263,9 @@
 	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE)
 	if (user)
 		to_chat(user, span_notice("You drop the [bolt_wording] of [src]."))
+
 	chamber_round()
-	bolt_locked = FALSE
+	bolt.is_locked = FALSE
 	update_appearance()
 
 ///Handles all the logic needed for magazine insertion
@@ -287,8 +280,7 @@
 			to_chat(user, span_notice("You load [AM] into [src]."))
 		playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 
-		if (bolt_type == BOLT_TYPE_OPEN && !bolt_locked)
-			chamber_round(TRUE)
+		bolt.magazine_inserted()
 		update_appearance()
 		return TRUE
 
@@ -301,8 +293,7 @@
 	if(internal_magazine || !magazine)
 		return FALSE // fuck off
 
-	if(bolt_type == BOLT_TYPE_OPEN)
-		chambered = null
+	bolt.magazine_ejected()
 
 	if (magazine.ammo_count())
 		playsound(src, load_sound, load_sound_volume, load_sound_vary)
@@ -324,28 +315,7 @@
 
 /// Removes the magazine from the weapon, or ejects all of it's ammo, based on the bolt type.
 /obj/item/gun/ballistic/proc/unload(mob/user)
-	if(bolt_type == BOLT_TYPE_NO_BOLT)
-		if(!wielded && !user.get_empty_held_index())
-			to_chat(user, span_warning("You need a free hand to do that!"))
-			return
-
-		chambered = null
-		var/num_unloaded = 0
-
-		for(var/obj/item/ammo_casing/CB in get_ammo_list(FALSE, TRUE))
-			CB.forceMove(drop_location())
-			CB.bounce_away(FALSE, NONE)
-			num_unloaded++
-			var/turf/T = get_turf(drop_location())
-			if(T && is_station_level(T.z))
-				SSblackbox.record_feedback("tally", "station_mess_created", 1, CB.name)
-
-		if (num_unloaded)
-			to_chat(user, span_notice("You unload [num_unloaded] [cartridge_wording]\s from [src]."))
-			playsound(user, eject_sound, eject_sound_volume, eject_sound_vary)
-			update_appearance()
-		else
-			to_chat(user, span_warning("[src] is empty!"))
+	if(bolt.unload(user))
 		return
 
 	if(internal_magazine)
@@ -375,7 +345,7 @@
 		return
 
 	if (isammocasing(A) || istype(A, /obj/item/ammo_box))
-		if (bolt_type == BOLT_TYPE_NO_BOLT || internal_magazine)
+		if (istype(bolt, /datum/gun_bolt/no_bolt) || internal_magazine)
 			if (chambered && !chambered.loaded_projectile)
 				chambered.forceMove(drop_location())
 				chambered = null
@@ -384,8 +354,9 @@
 			if (num_loaded)
 				to_chat(user, span_notice("You load [num_loaded] [cartridge_wording]\s into [src]."))
 				playsound(src, load_sound, load_sound_volume, load_sound_vary)
-				if (chambered == null && bolt_type == BOLT_TYPE_NO_BOLT)
-					chamber_round()
+
+				bolt.loaded_ammo()
+
 				A.update_appearance()
 				update_appearance()
 			return
@@ -447,11 +418,7 @@
 
 /obj/item/gun/ballistic/before_firing(atom/target, mob/user)
 	. = ..()
-	if (!chambered && !get_ammo())
-		if (bolt_type == BOLT_TYPE_OPEN && !bolt_locked)
-			bolt_locked = TRUE
-			playsound(src, bolt_drop_sound, bolt_drop_sound_volume)
-			update_appearance()
+	bolt.before_firing()
 
 /obj/item/gun/ballistic/after_firing(mob/living/user, pointblank, atom/pbtarget, message)
 	. = ..()
@@ -471,9 +438,7 @@
 			playsound(src, empty_alarm_sound, empty_alarm_volume, empty_alarm_vary)
 			update_appearance()
 
-		if (bolt_type == BOLT_TYPE_LOCKING)
-			bolt_locked = TRUE
-			update_appearance()
+	bolt.after_chambering()
 
 /obj/item/gun/ballistic/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
@@ -510,8 +475,7 @@
 		to_chat(user, span_warning("You need a free hand to do that!"))
 		return
 
-	if(bolt_type == BOLT_TYPE_LOCKING && bolt_locked)
-		drop_bolt(user)
+	if(bolt.attack_self(user))
 		return
 
 	if(!COOLDOWN_FINISHED(src, recent_rack))
@@ -535,7 +499,7 @@
 	if(chambered && !hidden_chambered)
 		. += "It has a round in the chamber."
 
-	if (bolt_locked)
+	if (bolt.is_locked)
 		. += "The [bolt_wording] is locked."
 
 	if (suppressed)
@@ -667,12 +631,12 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 	if(!can_modify_ammo)
 		return
 
-	if(bolt_type == BOLT_TYPE_STANDARD)
+	if(bolt.type == /datum/gun_bolt)
 		if(get_ammo())
 			to_chat(user, span_notice("You can't get at the internals while the gun has a bullet in it!"))
 			return
 
-		else if(!bolt_locked)
+		else if(!bolt.is_locked)
 			to_chat(user, span_notice("You can't get at the internals while the bolt is down!"))
 			return
 

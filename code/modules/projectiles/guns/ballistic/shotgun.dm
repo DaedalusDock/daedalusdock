@@ -253,7 +253,7 @@
 	obj_flags = UNIQUE_RENAME
 	rack_sound_volume = 0
 	semi_auto = TRUE
-	bolt_type = BOLT_TYPE_NO_BOLT
+	bolt = /datum/gun_bolt/no_bolt
 	can_be_sawn_off = TRUE
 	pb_knockback = 3 // it's a super shotgun!
 

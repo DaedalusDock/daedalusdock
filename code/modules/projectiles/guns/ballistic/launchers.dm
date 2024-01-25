@@ -9,7 +9,7 @@
 	mag_type = /obj/item/ammo_box/magazine/internal/grenadelauncher
 	fire_sound = 'sound/weapons/gun/general/grenade_launch.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
-	bolt_type = BOLT_TYPE_NO_BOLT
+	bolt = /datum/gun_bolt/no_bolt
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/attackby(obj/item/A, mob/user, params)
 	..()
@@ -51,7 +51,7 @@
 	burst_size = 1
 	fire_delay = 0
 	casing_ejector = FALSE
-	bolt_type = BOLT_TYPE_NO_BOLT
+	bolt = /datum/gun_bolt/no_bolt
 	internal_magazine = TRUE
 	cartridge_wording = "rocket"
 	empty_indicator = TRUE

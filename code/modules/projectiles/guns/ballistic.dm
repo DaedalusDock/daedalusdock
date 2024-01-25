@@ -278,7 +278,11 @@
 		magazine = AM
 		if (display_message)
 			to_chat(user, span_notice("You load [AM] into [src]."))
-		playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
+
+		if (magazine.ammo_count())
+			playsound(src, load_sound, load_sound_volume, load_sound_vary)
+		else
+			playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 
 		bolt.magazine_inserted()
 		update_appearance()
@@ -296,9 +300,9 @@
 	bolt.magazine_ejected()
 
 	if (magazine.ammo_count())
-		playsound(src, load_sound, load_sound_volume, load_sound_vary)
+		playsound(src, eject_sound, eject_sound_volume, eject_sound_vary)
 	else
-		playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
+		playsound(src, eject_empty_sound, eject_sound_volume, eject_sound_vary)
 
 	var/obj/item/ammo_box/old_mag = magazine
 	magazine = null

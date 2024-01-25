@@ -15,19 +15,19 @@
 	///volume of loading sound
 	var/load_sound_volume = 40
 	///whether loading sound should vary
-	var/load_sound_vary = TRUE
+	var/load_sound_vary = FALSE
 	///sound of racking
 	var/rack_sound = 'sound/weapons/gun/general/bolt_rack.ogg'
 	///volume of racking
 	var/rack_sound_volume = 60
 	///whether racking sound should vary
-	var/rack_sound_vary = TRUE
+	var/rack_sound_vary = FALSE
 	///sound of when the bolt is locked back manually
 	var/lock_back_sound = 'sound/weapons/gun/general/slide_lock_1.ogg'
 	///volume of lock back
 	var/lock_back_sound_volume = 60
 	///whether lock back varies
-	var/lock_back_sound_vary = TRUE
+	var/lock_back_sound_vary = FALSE
 	///Sound of ejecting a magazine
 	var/eject_sound = 'sound/weapons/gun/general/magazine_remove_full.ogg'
 	///sound of ejecting an empty magazine
@@ -35,7 +35,7 @@
 	///volume of ejecting a magazine
 	var/eject_sound_volume = 40
 	///whether eject sound should vary
-	var/eject_sound_vary = TRUE
+	var/eject_sound_vary = FALSE
 	///sound of dropping the bolt or releasing a slide
 	var/bolt_drop_sound = 'sound/weapons/gun/general/bolt_drop.ogg'
 	///volume of bolt drop/slide release
@@ -45,7 +45,7 @@
 	///empty alarm volume sound
 	var/empty_alarm_volume = 70
 	///whether empty alarm sound varies
-	var/empty_alarm_vary = TRUE
+	var/empty_alarm_vary = FALSE
 
 	///Whether the gun will spawn loaded with a magazine
 	var/spawnwithmagazine = TRUE

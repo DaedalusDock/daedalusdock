@@ -9,11 +9,7 @@
 	mag_type = /obj/item/ammo_box/magazine/internal/grenadelauncher
 	fire_sound = 'sound/weapons/gun/general/grenade_launch.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
-	pin = /obj/item/firing_pin/implant/pindicate
 	bolt_type = BOLT_TYPE_NO_BOLT
-
-/obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted
-	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/attackby(obj/item/A, mob/user, params)
 	..()
@@ -52,7 +48,6 @@
 	fire_sound = 'sound/weapons/gun/general/rocket_launch.ogg'
 	w_class = WEIGHT_CLASS_BULKY
 	can_suppress = FALSE
-	pin = /obj/item/firing_pin/implant/pindicate
 	burst_size = 1
 	fire_delay = 0
 	casing_ejector = FALSE
@@ -60,7 +55,6 @@
 	internal_magazine = TRUE
 	cartridge_wording = "rocket"
 	empty_indicator = TRUE
-	tac_reloads = FALSE
 	/// Do we shit flames behind us when we fire?
 	var/backblast = TRUE
 
@@ -69,9 +63,6 @@
 	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	if(backblast)
 		AddElement(/datum/element/backblast)
-
-/obj/item/gun/ballistic/rocketlauncher/unrestricted
-	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/rocketlauncher/nobackblast
 	name = "flameless PML-11"

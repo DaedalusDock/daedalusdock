@@ -1,0 +1,11 @@
+/obj/item/storage/box/syndie_kit/clownpins : @DELETE
+/obj/item/gun/ballistic/automatic/c20r/unrestricted : /obj/item/gun/ballistic/automatic/c20r
+/obj/item/gun/ballistic/automatic/proto/unrestricted : /obj/item/gun/ballistic/automatic/proto
+/obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted : /obj/item/gun/ballistic/revolver/grenadelauncher
+/obj/item/gun/ballistic/rocketlauncher/unrestricted : /obj/item/gun/ballistic/rocketlauncher
+/obj/item/gun/ballistic/shotgun/bulldog/unrestricted : /obj/item/gun/ballistic/shotgun/bulldog
+/obj/item/gun/energy/pulse/loyalpin : /obj/item/gun/energy/pulse
+/obj/item/gun/energy/pulse/carbine/loyalpin : /obj/item/gun/energy/pulse/carbine
+/obj/item/gun/energy/pulse/pistol/loyalpin : /obj/item/gun/energy/pulse/pistol
+/obj/item/gun/ballistic/automatic/m90/unrestricted : /obj/item/gun/ballistic/automatic/m90
+/obj/item/gun/ballistic/automatic/l6_saw/unrestricted : /obj/item/gun/ballistic/automatic/l6_saw

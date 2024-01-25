@@ -57,7 +57,7 @@
 	name = "ERT Commander - High Alert"
 
 	backpack_contents = list(
-		/obj/item/gun/energy/pulse/pistol/loyalpin = 1,
+		/obj/item/gun/energy/pulse/pistol = 1,
 		/obj/item/melee/baton/security/loaded = 1,
 		/obj/item/storage/box/survival/engineer = 1,
 	)
@@ -93,7 +93,7 @@
 /datum/outfit/centcom/ert/security/alert
 	name = "ERT Security - High Alert"
 
-	l_hand = /obj/item/gun/energy/pulse/carbine/loyalpin
+	l_hand = /obj/item/gun/energy/pulse/carbine
 	backpack_contents = list(
 		/obj/item/melee/baton/security/loaded = 1,
 		/obj/item/storage/belt/security/full = 1,
@@ -133,7 +133,7 @@
 	name = "ERT Medic - High Alert"
 
 	backpack_contents = list(
-		/obj/item/gun/energy/pulse/pistol/loyalpin = 1,
+		/obj/item/gun/energy/pulse/pistol = 1,
 		/obj/item/gun/medbeam = 1,
 		/obj/item/melee/baton/security/loaded = 1,
 		/obj/item/reagent_containers/hypospray/combat/nanites = 1,
@@ -174,7 +174,7 @@
 
 	backpack_contents = list(
 		/obj/item/construction/rcd/combat = 1,
-		/obj/item/gun/energy/pulse/pistol/loyalpin = 1,
+		/obj/item/gun/energy/pulse/pistol = 1,
 		/obj/item/melee/baton/security/loaded = 1,
 		/obj/item/pipe_dispenser = 1,
 		/obj/item/storage/box/survival/engineer = 1,
@@ -519,7 +519,7 @@
 	shoes = /obj/item/clothing/shoes/combat/swat
 	l_pocket = /obj/item/melee/energy/sword/saber
 	r_pocket = /obj/item/shield/energy
-	l_hand = /obj/item/gun/energy/pulse/loyalpin
+	l_hand = /obj/item/gun/energy/pulse
 
 	skillchips = list(
 		/obj/item/skillchip/disk_verifier,

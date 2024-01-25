@@ -90,22 +90,6 @@
 	surplus = 0
 	purchasable_from = UPLINK_CLOWN_OPS
 
-/datum/uplink_item/dangerous/clownoppin
-	name = "Ultra Hilarious Firing Pin"
-	desc = "A firing pin that, when inserted into a gun, makes that gun only useable by clowns and clumsy people and makes that gun honk whenever anyone tries to fire it."
-	cost = 1 //much cheaper for clown ops than for clowns
-	item = /obj/item/firing_pin/clown/ultra
-	purchasable_from = UPLINK_CLOWN_OPS
-	illegal_tech = FALSE
-
-/datum/uplink_item/dangerous/clownopsuperpin
-	name = "Super Ultra Hilarious Firing Pin"
-	desc = "Like the ultra hilarious firing pin, except the gun you insert this pin into explodes when someone who isn't clumsy or a clown tries to fire it."
-	cost = 4 //much cheaper for clown ops than for clowns
-	item = /obj/item/firing_pin/clown/ultra/selfdestruct
-	purchasable_from = UPLINK_CLOWN_OPS
-	illegal_tech = FALSE
-
 /datum/uplink_item/dangerous/bioterror
 	name = "Biohazardous Chemical Sprayer"
 	desc = "A handheld chemical sprayer that allows a wide dispersal of selected chemicals. Especially tailored by the Tiger \

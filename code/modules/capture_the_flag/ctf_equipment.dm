@@ -75,7 +75,6 @@
 	fire_sound = 'sound/weapons/gun/shotgun/shot_alt.ogg'
 	semi_auto = TRUE
 	internal_magazine = FALSE
-	tac_reloads = TRUE
 
 /obj/item/gun/ballistic/shotgun/ctf/Initialize(mapload)
 	. = ..()

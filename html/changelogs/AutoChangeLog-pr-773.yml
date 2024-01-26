@@ -1,0 +1,13 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: When you are knocked out from pain, you will stay knocked out until you
+      recover enough.
+  - qol: When you are entering shock, you will hear your heartbeat.
+  - qol: Reduced time gap between pain messages.
+  - qol: Pain message time gap will scale inversely proportional to the amount of
+      pain you're in.
+  - qol: Added more effects to earlier shock stages.
+  - qol: Added a chat message for gasping caused by lung damage.
+  - balance: Increased damage required to damage organs from external wounds.
+  - balance: Reduced heart damage taken from irregular heartbeats.

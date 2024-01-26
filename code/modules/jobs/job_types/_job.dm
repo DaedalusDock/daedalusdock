@@ -244,11 +244,18 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref)
 	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
-	bank_account.payday(STARTING_PAYCHECKS, TRUE)
 	account_id = bank_account.account_id
 	bank_account.replaceable = FALSE
 
 	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
+	var/obj/item/storage/wallet/W = wear_id
+	if(istype(W))
+		var/monero = round(equipping.paycheck * dna.species.payday_modifier * STARTING_PAYCHECKS, 10)
+		var/list/obj/item/stack/spacecash/cash_list = SSeconomy.get_cash_for_amount(monero)
+		for(var/obj/item/stack/spacecash/S in cash_list)
+			S.forceMove(W)
+	else
+		bank_account.payday(STARTING_PAYCHECKS, TRUE)
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
@@ -321,6 +328,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	box = /obj/item/storage/box/survival
 
+	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart
 
 	var/backpack = /obj/item/storage/backpack
@@ -370,7 +378,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!J)
 		J = SSjob.GetJob(H.job)
 
-	var/obj/item/card/id/card = H.wear_id
+	var/obj/item/card/id/card = H.wear_id.GetID()
 	if(istype(card))
 		ADD_TRAIT(card, TRAIT_JOB_FIRST_ID_CARD, ROUNDSTART_TRAIT)
 		shuffle_inplace(card.access) // Shuffle access list to make NTNet passkeys less predictable
@@ -395,6 +403,10 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		else
 			spawn(0) //Race condition? I hardly knew her!
 				card.set_icon()
+
+	if(istype(H.wear_id, /obj/item/storage/wallet))
+		var/obj/item/storage/wallet/W = H.wear_id
+		W.close()
 
 	var/obj/item/modular_computer/tablet/pda/PDA = H.get_item_by_slot(pda_slot)
 	if(istype(PDA))

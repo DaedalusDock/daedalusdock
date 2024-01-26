@@ -64,29 +64,11 @@
 	value = 20
 	merge_type = /obj/item/stack/spacecash/c20
 
-/obj/item/stack/spacecash/c50
-	icon_state = "spacecash50"
-	singular_name = "fifty credit bill"
-	value = 50
-	merge_type = /obj/item/stack/spacecash/c50
-
 /obj/item/stack/spacecash/c100
 	icon_state = "spacecash100"
 	singular_name = "one hundred credit bill"
 	value = 100
 	merge_type = /obj/item/stack/spacecash/c100
-
-/obj/item/stack/spacecash/c200
-	icon_state = "spacecash200"
-	singular_name = "two hundred credit bill"
-	value = 200
-	merge_type = /obj/item/stack/spacecash/c200
-
-/obj/item/stack/spacecash/c500
-	icon_state = "spacecash500"
-	singular_name = "five hundred credit bill"
-	value = 500
-	merge_type = /obj/item/stack/spacecash/c500
 
 /obj/item/stack/spacecash/c1000
 	icon_state = "spacecash1000"

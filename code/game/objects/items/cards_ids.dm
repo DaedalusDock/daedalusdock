@@ -130,8 +130,6 @@
 
 	register_context()
 
-	RegisterSignal(src, COMSIG_ATOM_UPDATED_ICON, PROC_REF(update_in_wallet))
-
 /obj/item/card/id/Destroy()
 	if (registered_account)
 		registered_account.bank_cards -= src
@@ -728,16 +726,6 @@
 
 /obj/item/card/id/RemoveID()
 	return src
-
-/// Called on COMSIG_ATOM_UPDATED_ICON. Updates the visuals of the wallet this card is in.
-/obj/item/card/id/proc/update_in_wallet()
-	SIGNAL_HANDLER
-
-	if(istype(loc, /obj/item/storage/wallet))
-		var/obj/item/storage/wallet/powergaming = loc
-		if(powergaming.front_id == src)
-			powergaming.update_label()
-			powergaming.update_appearance()
 
 /// Updates the name based on the card's vars and state.
 /obj/item/card/id/proc/update_label()

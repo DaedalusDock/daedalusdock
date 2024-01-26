@@ -8,17 +8,23 @@
 	var/access = FALSE
 	var/access_view = FALSE
 	var/access_any = FALSE
+
 	var/list/contains = null
 	var/crate_name = "crate"
 	var/id
 	var/desc = ""//no desc by default
 	var/crate_type = /obj/structure/closet/crate
+
+	/// If TRUE, can spawn with missing contents due to MANIFEST_ERROR_ITEM occuring.
+	var/can_be_missing_contents = TRUE
 	var/dangerous = FALSE // Should we message admins?
 	var/special = FALSE //Event/Station Goals/Admin enabled packs
 	var/special_enabled = FALSE
+
 	var/DropPodOnly = FALSE //only usable by the Bluespace Drop Pod via the express cargo console
 	var/special_pod //If this pack comes shipped in a specific pod when launched from the express console
 	var/admin_spawned = FALSE
+
 	var/goody = FALSE //Goodies can only be purchased by private accounts and can have coupons apply to them. They also come in a lockbox instead of a full crate, so the 700 min doesn't apply
 
 /datum/supply_pack/New()

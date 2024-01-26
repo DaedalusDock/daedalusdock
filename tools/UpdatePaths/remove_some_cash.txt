@@ -1,0 +1,3 @@
+/obj/item/stack/spacecash/c50 : @DELETE
+/obj/item/stack/spacecash/c200 : @DELETE
+/obj/item/stack/spacecash/c500 : @DELETE

@@ -1634,7 +1634,6 @@
 /obj/item/storage/toolbox/mechanical{
 	pixel_y = 6
 	},
-/obj/item/stack/spacecash/c200,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/abandoned/bridge)
 "db" = (

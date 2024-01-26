@@ -365,6 +365,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 				to_chat(user, span_warning("[resolve_parent] cannot hold [to_insert] as it's a storage item of the same size!"))
 			return FALSE
 
+	if(SEND_SIGNAL(src, COMSIG_STORAGE_CAN_INSERT, to_insert, user, messages, force) & STORAGE_NO_INSERT)
+		return FALSE
+
 	return TRUE
 
 /**
@@ -388,6 +391,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	to_insert.forceMove(resolve_location)
 	item_insertion_feedback(user, to_insert, override)
 	resolve_location.update_appearance()
+	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
 	return TRUE
 
 /// Checks if the item is allowed into storage based on it's weight class
@@ -491,10 +495,10 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	for(var/mob/viewing in oviewers(user, null))
 		if(in_range(user, viewing))
 			viewing.show_message(span_notice("[user] puts [thing] [insert_preposition]to [resolve_parent]."), MSG_VISUAL)
-			return
+			continue
 		if(thing && thing.w_class >= 3)
 			viewing.show_message(span_notice("[user] puts [thing] [insert_preposition]to [resolve_parent]."), MSG_VISUAL)
-			return
+			continue
 
 /**
  * Attempts to remove an item from the storage
@@ -946,6 +950,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 /datum/storage/proc/open_storage(mob/to_show, performing_quickdraw)
 	var/obj/item/resolve_parent = parent?.resolve()
 	if(!resolve_parent)
+		return FALSE
+
+	if(SEND_SIGNAL(src, COMSIG_STORAGE_ATTEMPT_OPEN) & STORAGE_INTERRUPT_OPEN)
 		return FALSE
 
 	var/obj/item/resolve_location = real_location?.resolve()

@@ -349,3 +349,41 @@ SUBSYSTEM_DEF(economy)
 	spawned_paper.update_appearance()
 
 	return spawned_paper
+
+/// Returns a list of /obj/item/stack/spacecash-es for a given amount of money, optimized for space.
+/datum/controller/subsystem/economy/proc/get_cash_for_amount(amt)
+	RETURN_TYPE(/list)
+	. = list()
+
+	amt = round(amt) // Don't pass in decimals you twat
+	var/ten_thousands = 0
+	var/thousands = 0
+	var/hundreds = 0
+	var/tens = 0
+	var/ones = 0
+
+	ten_thousands = floor(amt / 10000)
+	amt -= ten_thousands * 10000
+
+	thousands = floor(amt / 1000)
+	amt -= thousands * 1000
+
+	hundreds = floor(amt / 100)
+	amt -= hundreds * 100
+
+	tens = floor(amt / 10)
+	amt -= tens * 10
+
+	ones = amt
+
+	if(ten_thousands)
+		. += new /obj/item/stack/spacecash/c10000(null, ten_thousands)
+	if(thousands)
+		. += new /obj/item/stack/spacecash/c1000(null, thousands)
+	if(hundreds)
+		. += new /obj/item/stack/spacecash/c100(null, hundreds)
+	if(tens)
+		. += new /obj/item/stack/spacecash/c10(null, tens)
+	if(ones)
+		. += new /obj/item/stack/spacecash/c1(null, ones)
+

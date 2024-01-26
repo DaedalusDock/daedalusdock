@@ -20,11 +20,9 @@
 	var/goodie_count = 1
 	/// Goodies which can be given to anyone. The base weight for cash is 56. For there to be a 50/50 chance of getting a department item, they need 56 weight as well.
 	var/list/generic_goodies = list(
-		/obj/item/stack/spacecash/c50 = 10,
-		/obj/item/stack/spacecash/c100 = 25,
-		/obj/item/stack/spacecash/c200 = 15,
-		/obj/item/stack/spacecash/c500 = 5,
-		/obj/item/stack/spacecash/c1000 = 1,
+		/obj/item/stack/spacecash/c10 = 50,
+		/obj/item/stack/spacecash/c20 = 5,
+		/obj/item/stack/spacecash/c100 = 1,
 	)
 	// Overlays (pure fluff)
 	/// Does the letter have the postmark overlay?

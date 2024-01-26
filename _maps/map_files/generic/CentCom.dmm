@@ -10872,7 +10872,6 @@
 /obj/item/taperecorder{
 	pixel_y = 15
 	},
-/obj/item/stack/spacecash/c50,
 /turf/open/floor/carpet,
 /area/centcom/syndicate_mothership/control)
 "Fv" = (
@@ -13276,9 +13275,6 @@
 	pixel_y = 5
 	},
 /obj/machinery/light/cold/directional/west,
-/obj/item/stack/spacecash/c200{
-	pixel_y = 17
-	},
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/syndicate_mothership/control)
 "Na" = (

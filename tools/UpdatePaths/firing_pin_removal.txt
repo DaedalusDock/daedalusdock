@@ -9,3 +9,13 @@
 /obj/item/gun/energy/pulse/pistol/loyalpin : /obj/item/gun/energy/pulse/pistol
 /obj/item/gun/ballistic/automatic/m90/unrestricted : /obj/item/gun/ballistic/automatic/m90
 /obj/item/gun/ballistic/automatic/l6_saw/unrestricted : /obj/item/gun/ballistic/automatic/l6_saw
+/obj/item/gun/ballistic/automatic/toy/unrestricted : /obj/item/gun/ballistic/automatic/toy
+/obj/item/gun/ballistic/shotgun/toy/unrestricted : /obj/item/gun/ballistic/shotgun/toy
+/obj/item/ammo_box/magazine/toy/pistol/riot : @DELETE
+/obj/item/ammo_box/magazine/toy/smg/riot : @DELETE
+/obj/item/ammo_box/magazine/toy/m762/riot : @DELETE
+/obj/item/ammo_box/foambox/riot : @DELETE
+/obj/item/ammo_box/magazine/toy/smgm45/riot : @DELETE
+/obj/item/gun/ballistic/automatic/pistol/toy/riot : /obj/item/gun/ballistic/automatic/pistol/toy
+/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted : /obj/item/gun/ballistic/automatic/c20r/toy
+/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted/riot : /obj/item/gun/ballistic/automatic/c20r/toy

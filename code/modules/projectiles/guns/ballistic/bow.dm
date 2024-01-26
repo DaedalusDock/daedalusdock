@@ -16,6 +16,7 @@
 	cartridge_wording = "arrow"
 	bolt = /datum/gun_bolt/no_bolt
 	recoil = 0 // Bows don't have recoil.
+	show_caliber_on_examine = FALSE
 
 	var/drawn = FALSE
 

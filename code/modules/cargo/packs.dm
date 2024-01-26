@@ -2384,16 +2384,6 @@
 					/obj/item/ammo_box/magazine/toy/pistol)
 	crate_name = "foam force crate"
 
-/datum/supply_pack/costumes_toys/riot_foam
-	name = "Riot Foam Darts Crate"
-	desc = "Lock and load your foam force arsenal to floor your opponents with 120 of our new and improved high density foam darts! Remember, it's Donk or Die!"
-	contraband = TRUE
-	cost = CARGO_CRATE_VALUE * 4
-	contains = list(/obj/item/ammo_box/foambox/riot,
-					/obj/item/ammo_box/foambox/riot,
-					/obj/item/ammo_box/foambox/riot)
-	crate_name = "riot foam darts crate"
-
 /datum/supply_pack/costumes_toys/formalwear
 	name = "Formalwear Crate"
 	desc = "You're gonna like the way you look, I guaranteed it. Contains an asston of fancy clothing."

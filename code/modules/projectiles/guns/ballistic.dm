@@ -61,6 +61,8 @@
 	var/empty_alarm = FALSE
 	///Whether the gun supports multiple special mag types
 	var/special_mags = FALSE
+
+
 	/**
 	* The bolt type controls how the gun functions, and what iconstates you'll need to represent those functions.
 	* /datum/gun_bolt - The Slide doesn't lock back.  Clicking on it will only cycle the bolt.  Only 1 sprite.
@@ -85,6 +87,9 @@
 	var/magazine_wording = "magazine"
 	///Phrasing of the cartridge in examine and notification messages; ex: bullet, shell, dart, etc.
 	var/cartridge_wording = "bullet"
+	/// If TRUE, will show the caliber name on examine. Set to false for things with fake calibers like bows and the tentacle "gun".
+	var/show_caliber_on_examine = TRUE
+
 	///length between individual racks
 	var/rack_delay = 5
 	///time of the most recent rack, used for cooldown purposes
@@ -135,6 +140,8 @@
 
 	if (!magazine)
 		magazine = new mag_type(src)
+
+	initial_caliber = magazine.caliber
 
 	if((bolt.type == /datum/gun_bolt) || internal_magazine) //Internal magazines shouldn't get magazine + 1.
 		chamber_round()
@@ -500,6 +507,9 @@
 /obj/item/gun/ballistic/examine(mob/user)
 	. = ..()
 
+	if(show_caliber_on_examine)
+		. += "It is chambered in [initial_caliber]."
+
 	if(chambered && !hidden_chambered)
 		. += "It has a round in the chamber."
 
@@ -653,18 +663,19 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 		user.visible_message(span_danger("[src] goes off!"), span_danger("[src] goes off in your face!"))
 		return
 
-	if(magazine.caliber == initial_caliber)
-		magazine.caliber = alternative_caliber
-		if(alternative_ammo_misfires)
-			can_misfire = TRUE
-		fire_sound = alternative_fire_sound
-		to_chat(user, span_notice("You modify [src]. Now it will fire [alternative_caliber] rounds."))
-	else
-		magazine.caliber = initial_caliber
-		if(alternative_ammo_misfires)
-			can_misfire = FALSE
-		fire_sound = initial_fire_sound
-		to_chat(user, span_notice("You reset [src]. Now it will fire [initial_caliber] rounds."))
+	if(alternative_caliber)
+		if(magazine.caliber == initial_caliber)
+			magazine.caliber = alternative_caliber
+			if(alternative_ammo_misfires)
+				can_misfire = TRUE
+			fire_sound = alternative_fire_sound
+			to_chat(user, span_notice("You modify [src]. Now it will fire [alternative_caliber] rounds."))
+		else
+			magazine.caliber = initial_caliber
+			if(alternative_ammo_misfires)
+				can_misfire = FALSE
+			fire_sound = initial_fire_sound
+			to_chat(user, span_notice("You reset [src]. Now it will fire [initial_caliber] rounds."))
 
 
 ///used for sawing guns, causes the gun to fire without the input of the user

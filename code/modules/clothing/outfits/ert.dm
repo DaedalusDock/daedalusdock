@@ -60,9 +60,9 @@
 		/obj/item/gun/energy/pulse/pistol = 1,
 		/obj/item/melee/baton/security/loaded = 1,
 		/obj/item/storage/box/survival/engineer = 1,
+		/obj/item/melee/energy/sword/saber = 1,
 	)
 	glasses = /obj/item/clothing/glasses/thermal/eyepatch
-	l_pocket = /obj/item/melee/energy/sword/saber
 
 /datum/outfit/centcom/ert/security
 	name = "ERT Security"
@@ -510,6 +510,7 @@
 		/obj/item/storage/box/flashbangs = 1,
 		/obj/item/storage/box/survival/engineer = 1,
 		/obj/item/storage/medkit/regular = 1,
+		/obj/item/melee/energy/sword/saber = 1,
 	)
 	belt = /obj/item/gun/ballistic/revolver/mateba
 	ears = /obj/item/radio/headset/headset_cent/alt
@@ -517,7 +518,6 @@
 	gloves = /obj/item/clothing/gloves/tackler/combat/insulated
 	mask = /obj/item/clothing/mask/gas/sechailer/swat
 	shoes = /obj/item/clothing/shoes/combat/swat
-	l_pocket = /obj/item/melee/energy/sword/saber
 	r_pocket = /obj/item/shield/energy
 	l_hand = /obj/item/gun/energy/pulse
 

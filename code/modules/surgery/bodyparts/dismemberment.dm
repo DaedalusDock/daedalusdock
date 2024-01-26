@@ -23,7 +23,7 @@
 				span_userdanger("[messages[2]]"),
 				span_hear("[messages[3]]")
 			)
-		if(!(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(limb_owner, TRAIT_NO_PAINSHOCK) && prob(50))
+		if(!(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(limb_owner, TRAIT_NO_PAINSHOCK) && prob(80))
 			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob/living/carbon, pain_emote), PAIN_AMT_AGONIZING, TRUE)
 
 	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
@@ -39,8 +39,8 @@
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
 
 	// At this point the limb has been removed from it's parent mob.
+	limb_owner.apply_pain(60, body_zone, "OH GOD MY [uppertext(plaintext_zone)]!!!", TRUE)
 	drop_limb()
-	adjustPain(60)
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
 	var/turf/owner_location = limb_owner.loc
@@ -88,13 +88,11 @@
 
 	if(dismember_type == DROPLIMB_BLUNT)
 		limb_owner.spray_blood(direction, 2)
-		var/obj/effect/decal/cleanable/gore
 		if(IS_ORGANIC_LIMB(src))
-			gore = new /obj/effect/decal/cleanable/blood/gibs(get_turf(limb_owner))
+			new /obj/effect/decal/cleanable/blood/gibs(get_turf(limb_owner))
 		else
-			gore = new /obj/effect/decal/cleanable/robot_debris(get_turf(limb_owner))
+			new /obj/effect/decal/cleanable/robot_debris(get_turf(limb_owner))
 
-		gore.throw_at(get_edge_target_turf(src, direction), rand(1,3), 5)
 		drop_contents()
 		qdel(src)
 

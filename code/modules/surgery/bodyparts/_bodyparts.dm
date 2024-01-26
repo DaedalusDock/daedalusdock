@@ -664,7 +664,7 @@
 	if(!LAZYLEN(contained_organs) || !(brute || burn))
 		return FALSE
 
-	var/organ_damage_threshold = 5
+	var/organ_damage_threshold = 10
 	if(sharpness & SHARP_POINTY)
 		organ_damage_threshold *= 0.5
 

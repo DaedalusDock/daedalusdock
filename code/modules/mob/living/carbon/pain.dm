@@ -31,11 +31,17 @@
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))
 		return FALSE
 
-	amount -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3
-	if(amount <= 0)
+	if(amount == 0)
 		return
 
+	if(amount > 0)
+		amount -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3
+		if(amount <= 0)
+			return
+
+	var/is_healing = amount < 0
 	var/obj/item/bodypart/BP
+
 	if(!def_zone) // Distribute to all bodyparts evenly if no bodypart
 		var/list/not_full = bodyparts.Copy()
 		var/list/parts = not_full.Copy()
@@ -62,7 +68,7 @@
 		. = BP.adjustPain(amount)
 
 
-	if(.)
+	if(. && !is_healing)
 		switch(.)
 			if(1 to PAIN_AMT_MEDIUM)
 				flash_pain(PAIN_SMALL)
@@ -99,7 +105,7 @@
 				to_chat(src, span_warning(message))
 
 	if(.)
-		COOLDOWN_START(src, pain_cd, rand(12 SECONDS, 20 SECONDS))
+		COOLDOWN_START(src, pain_cd, rand(8 SECONDS, 14 SECONDS))
 
 	return TRUE
 
@@ -170,23 +176,26 @@
 		return
 
 	if(shock_stage == SHOCK_TIER_1)
-		pain_message(PAIN_STRING, 10 - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 
-	if(shock_stage >= SHOCK_TIER_2)
+	if(shock_stage >= SHOCK_TIER_2 && prob(shock_stage - 10))
 		if(shock_stage == SHOCK_TIER_2 && organs_by_slot[ORGAN_SLOT_EYES])
 			visible_message("<b>[src]</b> is having trouble keeping [p_their()] eyes open.")
-		if(prob(30))
-			blur_eyes(3)
-			set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
+		blur_eyes(5)
+		set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
 	if(shock_stage == SHOCK_TIER_3)
 		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 
-	if(shock_stage >= SHOCK_TIER_4 && prob(2))
+	else if(shock_stage >= SHOCK_TIER_3)
+		if(prob(20))
+			set_timed_status_effect(5 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
+
+	if(shock_stage >= SHOCK_TIER_4 && prob(5))
 		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 		Knockdown(2 SECONDS)
 
-	if(shock_stage >= SHOCK_TIER_5 && prob(5))
+	if(shock_stage >= SHOCK_TIER_5 && prob(10))
 		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 		Knockdown(2 SECONDS)
 
@@ -203,7 +212,7 @@
 #undef PAIN_STRING
 
 /mob/living/carbon/proc/handle_pain()
-	if(stat)
+	if(stat == DEAD)
 		return
 
 	var/pain = getPain()
@@ -214,15 +223,21 @@
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 
 	if(pain >= maxHealth)
-		if(stat == CONSCIOUS && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		if(!stat && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			visible_message(
-				"<b>[src]</b> slumps over, too weak to continue fighting...",
+				span_danger("<b>[src]</b> slumps over, too weak to continue fighting..."),
 				span_danger("You give into the pain.")
 			)
-		Sleeping(10 SECONDS)
+		Unconscious(10 SECONDS)
 		return
 
-	if(!COOLDOWN_FINISHED(src, pain_cd) && !prob(5))
+	if(stat == UNCONSCIOUS)
+		return
+
+	var/pain_timeleft = COOLDOWN_TIMELEFT(src, pain_cd)
+	if(pain_timeleft && !prob(5))
+		// At 40 pain, the pain cooldown ticks 50% faster, since handle_pain() runs every two seconds
+		COOLDOWN_START(src, pain_cd, round(pain_timeleft - (pain / 40)))
 		return
 
 	var/highest_damage

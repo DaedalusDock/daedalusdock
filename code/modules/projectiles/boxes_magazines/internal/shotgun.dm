@@ -1,7 +1,7 @@
 /obj/item/ammo_box/magazine/internal/shot
 	name = "shotgun internal magazine"
 	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
-	caliber = CALIBER_SHOTGUN
+	caliber = CALIBER_12GAUGE
 	max_ammo = 4
 
 /obj/item/ammo_box/magazine/internal/shot/tube

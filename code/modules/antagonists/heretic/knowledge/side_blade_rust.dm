@@ -87,7 +87,7 @@
 		CALIBER_A556,
 		CALIBER_A762,
 		CALIBER_N762,
-		CALIBER_SHOTGUN,
+		CALIBER_12GAUGE,
 	)
 
 /datum/heretic_knowledge/rifle_ammo/recipe_snowflake_check(mob/living/user, list/atoms, list/selected_atoms, turf/loc)

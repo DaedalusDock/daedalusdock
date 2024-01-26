@@ -37,7 +37,7 @@
 /// The caliber used by bolt action rifles.
 #define CALIBER_A762 "a762"
 /// The caliber used by shotguns.
-#define CALIBER_SHOTGUN "shotgun"
+#define CALIBER_12GAUGE "12-gauge"
 /// The caliber used by grenade launchers.
 #define CALIBER_40MM "40mm"
 /// The caliber used by rocket launchers.

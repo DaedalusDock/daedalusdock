@@ -11,7 +11,7 @@
 // Low progression cost
 
 /datum/uplink_item/dangerous/pistol
-	name = "Makarov Pistol"
+	name = "9x19mm Pistol"
 	desc = "A servicable handgun chambered in 9x19mm Parabellum."
 	progression_minimum = 10 MINUTES
 	item = /obj/item/gun/ballistic/automatic/pistol
@@ -29,8 +29,7 @@
 
 /datum/uplink_item/dangerous/sword
 	name = "Energy Sword"
-	desc = "The energy sword is an edged weapon with a blade of pure energy. The sword is small enough to be \
-			pocketed when inactive. Activating it produces a loud, distinctive noise."
+	desc = "The energy sword is an edged weapon with a blade of pure energy. Activating it produces a loud, distinctive noise."
 	progression_minimum = 20 MINUTES
 	item = /obj/item/melee/energy/sword/saber
 	cost = 12
@@ -56,7 +55,7 @@
 
 // Medium progression cost
 /datum/uplink_item/dangerous/revolver
-	name = "Revolver"
+	name = ".357 Magnum Revolver"
 	desc = "A modern classic, 7-chamber revolver chambered in .357 S&W."
 	item = /obj/item/gun/ballistic/revolver
 	progression_minimum = 30 MINUTES

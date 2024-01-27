@@ -24364,7 +24364,6 @@
 /area/station/engineering/atmos)
 "hhS" = (
 /obj/item/radio/intercom/directional/west,
-/obj/machinery/piratepad/civilian,
 /obj/effect/turf_decal/bot_white,
 /obj/machinery/camera/directional/west{
 	c_tag = "Central Primary Hallway - Fore - Port Corner"
@@ -30081,9 +30080,6 @@
 /area/station/engineering/supermatter/room)
 "iWt" = (
 /obj/machinery/light/directional/west,
-/obj/machinery/computer/piratepad_control/civilian{
-	dir = 4
-	},
 /obj/effect/turf_decal/trimline/brown/filled/line,
 /turf/open/floor/iron,
 /area/station/construction/storage_wing)

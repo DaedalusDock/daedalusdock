@@ -25,13 +25,6 @@
 	///Is there a CRAB 17 on the station draining funds? Prevents manual fund transfer. pink levels are rising
 	var/being_dumped = FALSE
 
-	///Reference to the current civilian bounty that the account is working on.
-	var/datum/bounty/civilian_bounty
-	///If player is currently picking a civilian bounty to do, these options are held here to prevent soft-resetting through the UI.
-	var/list/datum/bounty/bounties
-	///Cooldown timer on replacing a civilain bounty. Bounties can only be replaced once every 5 minutes.
-	COOLDOWN_DECLARE(bounty_timer)
-
 /datum/bank_account/New(newname, job, modifier = 1, player_account = TRUE)
 	account_holder = newname
 	account_job = job
@@ -183,45 +176,6 @@
 				if(M.can_hear())
 					M.playsound_local(get_turf(sound_atom), 'sound/machines/twobeep_high.ogg', 50, TRUE)
 					to_chat(M, "[icon2html(icon_source, M)] [span_notice("[message]")]")
-
-/**
- * Returns a string with the civilian bounty's description on it.
- */
-/datum/bank_account/proc/bounty_text()
-	if(!civilian_bounty)
-		return FALSE
-	return civilian_bounty.description
-
-
-/**
- * Returns the required item count, or required chemical units required to submit a bounty.
- */
-/datum/bank_account/proc/bounty_num()
-	if(!civilian_bounty)
-		return FALSE
-	if(istype(civilian_bounty, /datum/bounty/item))
-		var/datum/bounty/item/item = civilian_bounty
-		return "[item.shipped_count]/[item.required_count]"
-	if(istype(civilian_bounty, /datum/bounty/reagent))
-		var/datum/bounty/reagent/chemical = civilian_bounty
-		return "[chemical.shipped_volume]/[chemical.required_volume] u"
-	if(istype(civilian_bounty, /datum/bounty/virus))
-		return "At least 1u"
-
-/**
- * Produces the value of the account's civilian bounty reward, if able.
- */
-/datum/bank_account/proc/bounty_value()
-	if(!civilian_bounty)
-		return FALSE
-	return civilian_bounty.reward
-
-/**
- * Performs house-cleaning on variables when a civilian bounty is replaced, or, when a bounty is claimed.
- */
-/datum/bank_account/proc/reset_bounty()
-	civilian_bounty = null
-	COOLDOWN_RESET(src, bounty_timer)
 
 /datum/bank_account/department
 	account_holder = "Guild Credit Agency"

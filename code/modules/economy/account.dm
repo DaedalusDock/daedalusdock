@@ -11,18 +11,24 @@
 	var/datum/job/account_job
 	///List of the physical ID card objects that are associated with this bank_account
 	var/list/bank_cards = list()
-	///Should this ID be added to the global list of accounts? If true, will be subject to station-bound economy effects as well as income.
-	var/add_to_accounts = TRUE
+
 	///The Unique ID number code associated with the owner's bank account, assigned at round start.
 	var/account_id
+	/// A randomly generated 5-digit pin to access the bank account. This is stored as a string!
+	var/account_pin
+
+	///Can this account be replaced? Set to true for default IDs not recognized by the station.
+	var/replaceable = FALSE
+	///Should this ID be added to the global list of accounts? If true, will be subject to station-bound economy effects as well as income.
+	var/add_to_accounts = TRUE
+
 	///Is there a CRAB 17 on the station draining funds? Prevents manual fund transfer. pink levels are rising
 	var/being_dumped = FALSE
+
 	///Reference to the current civilian bounty that the account is working on.
 	var/datum/bounty/civilian_bounty
 	///If player is currently picking a civilian bounty to do, these options are held here to prevent soft-resetting through the UI.
 	var/list/datum/bounty/bounties
-	///Can this account be replaced? Set to true for default IDs not recognized by the station.
-	var/replaceable = FALSE
 	///Cooldown timer on replacing a civilain bounty. Bounties can only be replaced once every 5 minutes.
 	COOLDOWN_DECLARE(bounty_timer)
 
@@ -32,6 +38,9 @@
 	payday_modifier = modifier
 	add_to_accounts = player_account
 	setup_unique_account_id()
+
+	for(var/i in 1 to 5)
+		account_pin = "[account_pin][rand(0, 9)]"
 
 /datum/bank_account/Destroy()
 	if(add_to_accounts)

@@ -1,6 +1,6 @@
 /obj/item/storage/wallet
 	name = "wallet"
-	desc = "It can hold a few small and personal things."
+	desc = "An old leather wallet with RFID blocking potential."
 	icon_state = "wallet"
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
@@ -42,12 +42,17 @@
 		/obj/item/stamp),
 		list(/obj/item/screwdriver/power)
 	)
-	atom_storage.animate_parent = FALSE
+	atom_storage.animated = FALSE
 	atom_storage.rustle_sound = FALSE
 
 	RegisterSignal(atom_storage, COMSIG_STORAGE_CAN_INSERT, PROC_REF(can_insert_item))
 	RegisterSignal(atom_storage, COMSIG_STORAGE_ATTEMPT_OPEN, PROC_REF(on_attempt_open_storage))
 	register_context()
+
+/obj/item/storage/wallet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+	context[SCREENTIP_CONTEXT_RMB] = is_open ? "Close" : "Open"
+	context[SCREENTIP_CONTEXT_ALT_LMB] = is_open ? "Close" : "Open"
 
 /obj/item/storage/wallet/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -102,11 +107,6 @@
 	. = ..()
 	if(front_id && is_open)
 		. += front_id.get_id_examine_strings(user)
-
-/obj/item/storage/wallet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	. = ..()
-	context[SCREENTIP_CONTEXT_RMB] = is_open ? "Close" : "Open"
-	context[SCREENTIP_CONTEXT_ALT_LMB] = is_open ? "Close" : "Open"
 
 /obj/item/storage/wallet/GetID()
 	if(is_open)

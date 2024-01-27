@@ -8,7 +8,7 @@
 	burst_size = 1
 	fire_delay = 0
 	actions_types = list()
-	bolt_type = BOLT_TYPE_LOCKING
+	bolt = /datum/gun_bolt/locking
 	fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
 	dry_fire_sound = 'sound/weapons/gun/pistol/dry_fire.ogg'
 	suppressed_sound = 'sound/weapons/gun/pistol/shot_suppressed.ogg'
@@ -37,7 +37,7 @@
 
 /obj/item/gun/ballistic/automatic/pistol/m1911
 	name = "\improper M1911"
-	desc = "A classic .45 handgun with a small magazine capacity."
+	desc = "A classic .45 ACP handgun with an 8-round magazine capacity."
 	icon_state = "m1911"
 	w_class = WEIGHT_CLASS_NORMAL
 	mag_type = /obj/item/ammo_box/magazine/m45
@@ -56,6 +56,7 @@
 	icon_state = "deagle"
 	force = 14
 	mag_type = /obj/item/ammo_box/magazine/m50
+	w_class = WEIGHT_CLASS_NORMAL
 	can_suppress = FALSE
 	mag_display = TRUE
 	fire_sound = 'sound/weapons/gun/rifle/shot.ogg'
@@ -74,8 +75,8 @@
 	inhand_icon_state = "deagleg"
 
 /obj/item/gun/ballistic/automatic/pistol/aps
-	name = "\improper Stechkin APS machine pistol"
-	desc = "An old Soviet machine pistol. It fires quickly, but kicks like a mule. Uses 9mm ammo. Has a threaded barrel for suppressors."
+	name = "\improper Stechkin pistol"
+	desc = "A fast-firing a handgun chambered in 9x19mm Parabellum. Utilizes 15 round magazines and kicks like a mule. Has a threaded barrel for suppressors."
 	icon_state = "aps"
 	w_class = WEIGHT_CLASS_NORMAL
 	mag_type = /obj/item/ammo_box/magazine/m9mm_aps
@@ -85,21 +86,3 @@
 	spread = 10
 	actions_types = list(/datum/action/item_action/toggle_firemode)
 	suppressor_x_offset = 6
-
-/obj/item/gun/ballistic/automatic/pistol/stickman
-	name = "flat gun"
-	desc = "A 2 dimensional gun.. what?"
-	icon_state = "flatgun"
-	mag_display = FALSE
-	show_bolt_icon = FALSE
-
-/obj/item/gun/ballistic/automatic/pistol/stickman/equipped(mob/user, slot)
-	..()
-	to_chat(user, span_notice("As you try to manipulate [src], it slips out of your possession.."))
-	if(prob(50))
-		to_chat(user, span_notice("..and vanishes from your vision! Where the hell did it go?"))
-		qdel(src)
-		user.update_icons()
-	else
-		to_chat(user, span_notice("..and falls into view. Whew, that was a close one."))
-		user.dropItemToGround(src)

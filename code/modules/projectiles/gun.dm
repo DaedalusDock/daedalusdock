@@ -47,7 +47,7 @@
 
 	/* Suppression */
 	/// whether or not a message is displayed when fired
-	var/suppressed = null
+	var/obj/item/suppressed = null
 	var/can_suppress = FALSE
 	var/can_unsuppress = TRUE
 
@@ -111,12 +111,12 @@
 /obj/item/gun/Initialize(mapload)
 	. = ..()
 	if(pin)
-		pin = new pin(src)
+		pin = new pin(src, src)
 
 	add_seclight_point()
 
 /obj/item/gun/Destroy()
-	if(isobj(pin)) //Can still be the initial path, then we skip
+	if(!ispath(pin)) //Can still be the initial path, then we skip
 		QDEL_NULL(pin)
 
 	QDEL_NULL(bayonet)
@@ -153,6 +153,7 @@
 
 	suppressed = null
 	update_appearance()
+	verbs -= /obj/item/gun/proc/user_remove_suppressor
 
 /obj/item/gun/examine(mob/user)
 	. = ..()
@@ -440,9 +441,25 @@
 	if(!fired && chambered?.loaded_projectile)
 		chambered.loaded_projectile.damage /= 5
 
-/obj/item/gun/proc/unlock() //used in summon guns and as a convience for admins
+/obj/item/gun/proc/unlock()
 	if(pin)
 		qdel(pin)
-	pin = new /obj/item/firing_pin
+	pin = new /obj/item/firing_pin(src, src)
+
+/obj/item/gun/proc/user_remove_suppressor()
+	set name = "Remove Suppressor"
+	set category = "Object"
+	set src in oview(1)
+
+	if(!isliving(usr))
+		return
+
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
+		return
+
+	to_chat(usr, span_notice("You unscrew [suppressed] from [src]."))
+	if(!usr.put_in_hands(suppressed))
+		suppressed.forceMove(drop_location())
+	clear_suppressor()
 
 #undef FIRING_PIN_REMOVAL_DELAY

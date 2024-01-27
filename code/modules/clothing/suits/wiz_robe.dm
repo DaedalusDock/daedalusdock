@@ -148,37 +148,6 @@
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	resistance_flags = FLAMMABLE
 
-/obj/item/clothing/suit/wizrobe/paper
-	name = "papier-mache robe" // no non-latin characters!
-	desc = "A robe held together by various bits of clear-tape and paste."
-	icon_state = "wizard-paper"
-	inhand_icon_state = "wizard-paper"
-	var/robe_charge = TRUE
-	actions_types = list(/datum/action/item_action/stickmen)
-
-
-/obj/item/clothing/suit/wizrobe/paper/ui_action_click(mob/user, action)
-	stickmen()
-
-
-/obj/item/clothing/suit/wizrobe/paper/verb/stickmen()
-	set category = "Object"
-	set name = "Summon Stick Minions"
-	if(!isliving(usr))
-		return
-	if(!robe_charge)
-		to_chat(usr, span_warning("The robe's internal magic supply is still recharging!"))
-		return
-
-	usr.say("Rise, my creation! Off your page into this realm!", forced = "stickman summoning")
-	playsound(loc, 'sound/magic/summon_magic.ogg', 50, TRUE, TRUE)
-	var/mob/living/M = new /mob/living/basic/stickman(get_turf(usr))
-	M.faction += list("[REF(usr)]")
-	robe_charge = FALSE
-	sleep(30)
-	robe_charge = TRUE
-	to_chat(usr, span_notice("The robe hums, its internal magic supply restored."))
-
 // The actual code for this is handled in the shielded component, see [/datum/component/shielded/proc/check_recharge_rune]
 /obj/item/wizard_armour_charge
 	name = "battlemage shield charges"

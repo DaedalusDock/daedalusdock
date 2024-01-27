@@ -9,7 +9,7 @@
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
 
-	force = 5
+	force = 10
 	force_wielded = 25
 	throwforce = 15
 

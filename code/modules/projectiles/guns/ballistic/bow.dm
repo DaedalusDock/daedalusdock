@@ -14,8 +14,9 @@
 	w_class = WEIGHT_CLASS_BULKY
 	internal_magazine = TRUE
 	cartridge_wording = "arrow"
-	bolt_type = BOLT_TYPE_NO_BOLT
+	bolt = /datum/gun_bolt/no_bolt
 	recoil = 0 // Bows don't have recoil.
+	show_caliber_on_examine = FALSE
 
 	var/drawn = FALSE
 

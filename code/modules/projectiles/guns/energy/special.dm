@@ -328,7 +328,6 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	ammo_type = list(/obj/item/ammo_casing/energy/temp, /obj/item/ammo_casing/energy/temp/hot)
 	cell_type = /obj/item/stock_parts/cell/high
-	pin = null
 
 /obj/item/gun/energy/temperature/security
 	name = "security temperature gun"

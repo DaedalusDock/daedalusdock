@@ -1,4 +1,4 @@
-// .357 (Syndie Revolver)
+// .357 (Revolver)
 
 /obj/item/ammo_casing/a357
 	name = ".357 bullet casing"

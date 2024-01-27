@@ -15,22 +15,12 @@
 	gun_flags = TOY_FIREARM_OVERLAY | NOT_A_REAL_GUN
 	casing_ejector = FALSE
 
-/obj/item/gun/ballistic/automatic/toy/unrestricted
-	pin = /obj/item/firing_pin
-
 /obj/item/gun/ballistic/automatic/pistol/toy
 	name = "foam force pistol"
 	desc = "A small, easily concealable toy handgun. Ages 8 and up."
 	mag_type = /obj/item/ammo_box/magazine/toy/pistol
 	fire_sound = 'sound/items/syringeproj.ogg'
 	gun_flags = TOY_FIREARM_OVERLAY | NOT_A_REAL_GUN
-
-/obj/item/gun/ballistic/automatic/pistol/toy/riot
-	mag_type = /obj/item/ammo_box/magazine/toy/pistol/riot
-
-/obj/item/gun/ballistic/automatic/pistol/riot/Initialize(mapload)
-	magazine = new /obj/item/ammo_box/magazine/toy/pistol/riot(src)
-	return ..()
 
 /obj/item/gun/ballistic/shotgun/toy
 	name = "foam force shotgun"
@@ -50,9 +40,6 @@
 	. = ..()
 	if(chambered && !chambered.loaded_projectile)
 		qdel(chambered)
-
-/obj/item/gun/ballistic/shotgun/toy/unrestricted
-	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/shotgun/toy/crossbow
 	name = "foam force crossbow"
@@ -77,17 +64,10 @@
 	desc = "A bullpup three-round burst toy SMG, designated 'C-20r'. Ages 8 and up."
 	can_suppress = TRUE
 	item_flags = NONE
-	mag_type = /obj/item/ammo_box/magazine/toy/smgm45/riot
+	mag_type = /obj/item/ammo_box/magazine/toy/smgm45
 	casing_ejector = FALSE
 	clumsy_check = FALSE
 	gun_flags = TOY_FIREARM_OVERLAY|NOT_A_REAL_GUN
-
-/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted //Use this for actual toys
-	pin = /obj/item/firing_pin
-	mag_type = /obj/item/ammo_box/magazine/toy/smgm45
-
-/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted/riot
-	mag_type = /obj/item/ammo_box/magazine/toy/smgm45/riot
 
 /obj/item/gun/ballistic/automatic/l6_saw/toy //This is the syndicate variant with syndicate firing pin and riot darts.
 	name = "donksoft LMG"
@@ -95,14 +75,7 @@
 	fire_sound = 'sound/items/syringeproj.ogg'
 	can_suppress = FALSE
 	item_flags = NONE
-	mag_type = /obj/item/ammo_box/magazine/toy/m762/riot
+	mag_type = /obj/item/ammo_box/magazine/toy/m762
 	casing_ejector = FALSE
 	clumsy_check = FALSE
 	gun_flags = TOY_FIREARM_OVERLAY|NOT_A_REAL_GUN
-
-/obj/item/gun/ballistic/automatic/l6_saw/toy/unrestricted //Use this for actual toys
-	pin = /obj/item/firing_pin
-	mag_type = /obj/item/ammo_box/magazine/toy/m762
-
-/obj/item/gun/ballistic/automatic/l6_saw/toy/unrestricted/riot
-	mag_type = /obj/item/ammo_box/magazine/toy/m762/riot

@@ -11,8 +11,10 @@
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
-	var/value = 0
 	grind_results = list(/datum/reagent/cellulose = 10)
+
+	/// How much money one "amount" of this is worth. Use get_item_credit_value().
+	VAR_PRIVATE/value = 0
 
 /obj/item/stack/spacecash/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
@@ -33,6 +35,11 @@
 /obj/item/stack/spacecash/use(used, transfer = FALSE, check = TRUE)
 	. = ..()
 	update_desc()
+
+/// Like use(), but for financial amounts. use_cash(20) on a stack of 10s will use 2. use_cash(22) on a stack of 10s will use 3.
+/obj/item/stack/spacecash/proc/use_cash(value_to_pay)
+	var/amt = ceil(value_to_pay / value)
+	return use(amt)
 
 /obj/item/stack/spacecash/update_icon_state()
 	. = ..()

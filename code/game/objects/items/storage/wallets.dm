@@ -18,7 +18,6 @@
 	atom_storage.max_slots = 4
 	atom_storage.set_holdable(list(
 		/obj/item/stack/spacecash,
-		/obj/item/holochip,
 		/obj/item/card,
 		/obj/item/clothing/mask/cigarette,
 		/obj/item/flashlight/pen,
@@ -214,7 +213,5 @@
 	icon_state = "wallet"
 
 /obj/item/storage/wallet/random/PopulateContents()
-	var/list/cash = SSeconomy.get_cash_for_amount(rand(5, 30))
-	for(var/obj/item/stack/spacecash/S in cash)
-		S.forceMove(src)
+	SSeconomy.spawn_cash_for_amount(rand(5, 30), src)
 	new /obj/effect/spawner/random/entertainment/wallet_storage(src)

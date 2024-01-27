@@ -7,3 +7,4 @@
 /obj/item/circuitboard/computer/bountypad : @DELETE
 /obj/item/circuitboard/machine/bountypad : @DELETE
 /datum/design/board/bountypad_control : @DELETE
+/obj/item/holochip/@SUBTYPES : @DELETE

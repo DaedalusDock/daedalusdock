@@ -150,7 +150,7 @@
 
 /obj/machinery/shuttle_scrambler/proc/dump_loot(mob/user)
 	if(credits_stored) // Prevents spamming empty holochips
-		new /obj/item/holochip(drop_location(), credits_stored)
+		SSeconomy.spawn_cash_for_amount(credits_stored, drop_location())
 		to_chat(user,span_notice("You retrieve the siphoned credits!"))
 		credits_stored = 0
 	else
@@ -479,13 +479,4 @@
 
 /datum/export/pirate/cash/get_amount(obj/O)
 	var/obj/item/stack/spacecash/C = O
-	return ..() * C.amount * C.value
-
-/datum/export/pirate/holochip
-	cost = 1
-	unit_name = "holochip"
-	export_types = list(/obj/item/holochip)
-
-/datum/export/pirate/holochip/get_cost(atom/movable/AM)
-	var/obj/item/holochip/H = AM
-	return H.credits
+	return ..() * C.get_item_credit_value()

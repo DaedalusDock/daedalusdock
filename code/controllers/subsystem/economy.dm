@@ -350,11 +350,8 @@ SUBSYSTEM_DEF(economy)
 
 	return spawned_paper
 
-/// Returns a list of /obj/item/stack/spacecash-es for a given amount of money, optimized for space.
-/datum/controller/subsystem/economy/proc/get_cash_for_amount(amt)
-	RETURN_TYPE(/list)
-	. = list()
-
+/// Spawns a given amount of money in optimal stacks at the given location.
+/datum/controller/subsystem/economy/proc/spawn_cash_for_amount(amt, spawn_loc)
 	amt = round(amt) // Don't pass in decimals you twat
 	var/ten_thousands = 0
 	var/thousands = 0
@@ -377,13 +374,13 @@ SUBSYSTEM_DEF(economy)
 	ones = amt
 
 	if(ten_thousands)
-		. += new /obj/item/stack/spacecash/c10000(null, ten_thousands)
+		new /obj/item/stack/spacecash/c10000(spawn_loc, ten_thousands)
 	if(thousands)
-		. += new /obj/item/stack/spacecash/c1000(null, thousands)
+		new /obj/item/stack/spacecash/c1000(spawn_loc, thousands)
 	if(hundreds)
-		. += new /obj/item/stack/spacecash/c100(null, hundreds)
+		new /obj/item/stack/spacecash/c100(spawn_loc, hundreds)
 	if(tens)
-		. += new /obj/item/stack/spacecash/c10(null, tens)
+		new /obj/item/stack/spacecash/c10(spawn_loc, tens)
 	if(ones)
-		. += new /obj/item/stack/spacecash/c1(null, ones)
+		new /obj/item/stack/spacecash/c1(spawn_loc, ones)
 

@@ -86,8 +86,7 @@
 	playsound(src, 'sound/machines/ping.ogg')
 	visible_message(span_notice("[src] dispenses a wad of money."), vision_distance = COMBAT_MESSAGE_RANGE)
 
-	for(var/obj/item/stack/spacecash/S in SSeconomy.get_cash_for_amount(rand(20, 200)))
-		S.forceMove(drop_location())
+	SSeconomy.spawn_cash_for_amount(rand(20, 200), drop_location())
 
 /obj/machinery/atm/proc/try_authenticate(pin)
 	if((machine_stat & NOPOWER) || !inserted_card?.registered_account)

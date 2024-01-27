@@ -14,7 +14,7 @@
 	grind_results = list(/datum/reagent/cellulose = 10)
 
 	/// How much money one "amount" of this is worth. Use get_item_credit_value().
-	VAR_PRIVATE/value = 0
+	VAR_PROTECTED/value = 0
 
 /obj/item/stack/spacecash/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()

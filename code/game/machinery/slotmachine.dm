@@ -321,5 +321,3 @@
 #undef BIG_PRIZE
 #undef SMALL_PRIZE
 #undef SPIN_PRICE
-#undef HOLOCHIP
-#undef COIN

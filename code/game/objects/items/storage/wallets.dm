@@ -15,34 +15,11 @@
 
 /obj/item/storage/wallet/Initialize()
 	. = ..()
-	atom_storage.max_slots = 4
-	atom_storage.set_holdable(list(
-		/obj/item/stack/spacecash,
-		/obj/item/card,
-		/obj/item/clothing/mask/cigarette,
-		/obj/item/flashlight/pen,
-		/obj/item/seeds,
-		/obj/item/stack/medical,
-		/obj/item/toy/crayon,
-		/obj/item/coin,
-		/obj/item/dice,
-		/obj/item/disk,
-		/obj/item/implanter,
-		/obj/item/lighter,
-		/obj/item/lipstick,
-		/obj/item/match,
-		/obj/item/paper,
-		/obj/item/pen,
-		/obj/item/photo,
-		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/syringe,
-		/obj/item/reagent_containers/pill,
-		/obj/item/screwdriver,
-		/obj/item/stamp),
-		list(/obj/item/screwdriver/power)
-	)
 	atom_storage.animated = FALSE
 	atom_storage.rustle_sound = FALSE
+	atom_storage.max_slots = 4
+	atom_storage.max_specific_storage = WEIGHT_CLASS_TINY
+	atom_storage.max_total_storage = WEIGHT_CLASS_TINY * 4
 
 	RegisterSignal(atom_storage, COMSIG_STORAGE_CAN_INSERT, PROC_REF(can_insert_item))
 	RegisterSignal(atom_storage, COMSIG_STORAGE_ATTEMPT_OPEN, PROC_REF(on_attempt_open_storage))
@@ -52,6 +29,7 @@
 	. = ..()
 	context[SCREENTIP_CONTEXT_RMB] = is_open ? "Close" : "Open"
 	context[SCREENTIP_CONTEXT_ALT_LMB] = is_open ? "Close" : "Open"
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/storage/wallet/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -157,7 +135,7 @@
 /obj/item/storage/wallet/update_name()
 	. = ..()
 	if(front_id && is_open)
-		name = "wallet displaying [front_id.name]"
+		name = "wallet displaying \a [front_id.name]"
 	else
 		name = "wallet"
 

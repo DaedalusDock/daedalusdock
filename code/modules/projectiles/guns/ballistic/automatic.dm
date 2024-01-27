@@ -54,16 +54,13 @@
 	mag_display = TRUE
 	empty_indicator = TRUE
 	mag_type = /obj/item/ammo_box/magazine/smgm9mm
-	pin = null
-	bolt_type = BOLT_TYPE_LOCKING
+	bolt = /datum/gun_bolt/locking
 	show_bolt_icon = FALSE
 
 /obj/item/gun/ballistic/automatic/proto/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
 
-/obj/item/gun/ballistic/automatic/proto/unrestricted
-	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/automatic/c20r
 	name = "\improper C-20r SMG"
@@ -74,7 +71,6 @@
 	mag_type = /obj/item/ammo_box/magazine/smgm45
 	fire_delay = 2
 	burst_size = 3
-	pin = /obj/item/firing_pin/implant/pindicate
 	can_bayonet = TRUE
 	knife_x_offset = 26
 	knife_y_offset = 12
@@ -86,9 +82,6 @@
 	. = ..()
 	if(!chambered && empty_indicator) //this is duplicated due to a layering issue with the select fire icon.
 		. += "[icon_state]_empty"
-
-/obj/item/gun/ballistic/automatic/c20r/unrestricted
-	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/automatic/c20r/Initialize(mapload)
 	. = ..()
@@ -139,7 +132,7 @@
 	icon_state = "miniuzi"
 	mag_type = /obj/item/ammo_box/magazine/uzim9mm
 	burst_size = 2
-	bolt_type = BOLT_TYPE_OPEN
+	bolt = /datum/gun_bolt/open
 	show_bolt_icon = FALSE
 	mag_display = TRUE
 	rack_sound = 'sound/weapons/gun/pistol/slide_lock.ogg'
@@ -155,10 +148,13 @@
 	mag_type = /obj/item/ammo_box/magazine/m556
 	can_suppress = FALSE
 	var/obj/item/gun/ballistic/revolver/grenadelauncher/underbarrel
+
 	burst_size = 3
 	fire_delay = 2
+
 	spread = 5
-	pin = /obj/item/firing_pin/implant/pindicate
+	unwielded_spread_bonus = 15
+
 	mag_display = TRUE
 	empty_indicator = TRUE
 	fire_sound = 'sound/weapons/gun/smg/shot_alt.ogg'
@@ -171,14 +167,6 @@
 /obj/item/gun/ballistic/automatic/m90/Destroy()
 	QDEL_NULL(underbarrel)
 	return ..()
-
-/obj/item/gun/ballistic/automatic/m90/unrestricted
-	pin = /obj/item/firing_pin
-
-/obj/item/gun/ballistic/automatic/m90/unrestricted/Initialize(mapload)
-	. = ..()
-	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted(src)
-	update_appearance()
 
 /obj/item/gun/ballistic/automatic/m90/afterattack_secondary(atom/target, mob/living/user, flag, params)
 	underbarrel.afterattack(target, user, flag, params)
@@ -213,7 +201,7 @@
 	burst_size = 1
 	actions_types = list()
 	fire_delay = 1
-	bolt_type = BOLT_TYPE_OPEN
+	bolt = /datum/gun_bolt/open
 	empty_indicator = TRUE
 	show_bolt_icon = FALSE
 
@@ -249,23 +237,17 @@
 	unwielded_spread_bonus = 20
 	burst_size = 1
 
-	pin = /obj/item/firing_pin/implant/pindicate
-	bolt_type = BOLT_TYPE_OPEN
+	bolt = /datum/gun_bolt/open
 	can_suppress = FALSE
 
 	show_bolt_icon = FALSE
 	mag_display = TRUE
 	mag_display_ammo = TRUE
 
-	tac_reloads = FALSE
-
 	fire_sound = 'sound/weapons/gun/l6/shot.ogg'
 	rack_sound = 'sound/weapons/gun/l6/l6_rack.ogg'
 	suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
 	var/cover_open = FALSE
-
-/obj/item/gun/ballistic/automatic/l6_saw/unrestricted
-	pin = /obj/item/firing_pin
 
 /obj/item/gun/ballistic/automatic/l6_saw/Initialize(mapload)
 	. = ..()
@@ -368,7 +350,6 @@
 	desc = "An illegally modified .50 cal sniper rifle with suppression compatibility. Quickscoping still doesn't work."
 	can_suppress = TRUE
 	can_unsuppress = TRUE
-	pin = /obj/item/firing_pin/implant/pindicate
 
 // Old Semi-Auto Rifle //
 

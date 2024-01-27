@@ -15,7 +15,6 @@
 	ammo_type = /obj/item/ammo_casing/a357
 	caliber = CALIBER_357
 	max_ammo = 6
-	multiload = FALSE
 
 /obj/item/ammo_box/magazine/internal/rus357/Initialize(mapload)
 	stored_ammo += new ammo_type(src)

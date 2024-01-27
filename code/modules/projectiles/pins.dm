@@ -9,16 +9,24 @@
 	w_class = WEIGHT_CLASS_TINY
 	attack_verb_continuous = list("pokes")
 	attack_verb_simple = list("poke")
+
 	var/fail_message = "invalid user!"
 	var/selfdestruct = FALSE // Explode when user check is failed.
 	var/force_replace = FALSE // Can forcefully replace other pins.
 	var/pin_removeable = FALSE // Can be replaced by any pin.
+
+	/// The gun we're apart of.
 	var/obj/item/gun/gun
 
-/obj/item/firing_pin/New(newloc)
-	..()
-	if(isgun(newloc))
-		gun = newloc
+/obj/item/firing_pin/Initialize(mapload, obj/item/gun/owner)
+	. = ..()
+	if(isgun(owner))
+		gun = owner
+
+/obj/item/firing_pin/Destroy()
+	if(gun)
+		gun.pin = null
+	return ..()
 
 /obj/item/firing_pin/afterattack(atom/target, mob/user, proximity_flag)
 	. = ..()
@@ -80,98 +88,6 @@
 	name = "magic crystal shard"
 	desc = "A small enchanted shard which allows magical weapons to fire."
 
-
-// Test pin, works only near firing range.
-/obj/item/firing_pin/test_range
-	name = "test-range firing pin"
-	desc = "This safety firing pin allows weapons to be fired within proximity to a firing range."
-	fail_message = "test range check failed!"
-	pin_removeable = TRUE
-
-/obj/item/firing_pin/test_range/pin_auth(mob/living/user)
-	if(!istype(user))
-		return FALSE
-	if (istype(get_area(user), /area/station/security/range))
-		return TRUE
-	return FALSE
-
-
-// Implant pin, checks for implant
-/obj/item/firing_pin/implant
-	name = "implant-keyed firing pin"
-	desc = "This is a security firing pin which only authorizes users who are implanted with a certain device."
-	fail_message = "implant check failed!"
-	var/obj/item/implant/req_implant = null
-
-/obj/item/firing_pin/implant/pin_auth(mob/living/user)
-	if(user)
-		for(var/obj/item/implant/I in user.implants)
-			if(req_implant && I.type == req_implant)
-				return TRUE
-	return FALSE
-
-/obj/item/firing_pin/implant/mindshield
-	name = "mindshield firing pin"
-	desc = "This Security firing pin authorizes the weapon for only mindshield-implanted users."
-	icon_state = "firing_pin_loyalty"
-	req_implant = /obj/item/implant/mindshield
-
-/obj/item/firing_pin/implant/pindicate
-	name = "syndicate firing pin"
-	icon_state = "firing_pin_pindi"
-	req_implant = /obj/item/implant/weapons_auth
-
-
-
-// Honk pin, clown's joke item.
-// Can replace other pins. Replace a pin in cap's laser for extra fun!
-/obj/item/firing_pin/clown
-	name = "hilarious firing pin"
-	desc = "Advanced clowntech that can convert any firearm into a far more useful object."
-	color = "#FFFF00"
-	fail_message = "honk!"
-	force_replace = TRUE
-
-/obj/item/firing_pin/clown/pin_auth(mob/living/user)
-	playsound(src, 'sound/items/bikehorn.ogg', 50, TRUE)
-	return FALSE
-
-// Ultra-honk pin, clown's deadly joke item.
-// A gun with ultra-honk pin is useful for clown and useless for everyone else.
-/obj/item/firing_pin/clown/ultra
-	name = "ultra hilarious firing pin"
-
-/obj/item/firing_pin/clown/ultra/pin_auth(mob/living/user)
-	playsound(src.loc, 'sound/items/bikehorn.ogg', 50, TRUE)
-	if(QDELETED(user))  //how the hell...?
-		stack_trace("/obj/item/firing_pin/clown/ultra/pin_auth called with a [isnull(user) ? "null" : "invalid"] user.")
-		return TRUE
-	if(HAS_TRAIT(user, TRAIT_CLUMSY)) //clumsy
-		return TRUE
-	if(user.mind)
-		if(is_clown_job(user.mind.assigned_role)) //traitor clowns can use this, even though they're technically not clumsy
-			return TRUE
-		if(user.mind.has_antag_datum(/datum/antagonist/nukeop/clownop)) //clown ops aren't clumsy by default and technically don't have an assigned role of "Clown", but come on, they're basically clowns
-			return TRUE
-		if(user.mind.has_antag_datum(/datum/antagonist/nukeop/leader/clownop)) //Wanna hear a funny joke?
-			return TRUE //The clown op leader antag datum isn't a subtype of the normal clown op antag datum.
-	return FALSE
-
-/obj/item/firing_pin/clown/ultra/gun_insert(mob/living/user, obj/item/gun/G)
-	..()
-	G.clumsy_check = FALSE
-
-/obj/item/firing_pin/clown/ultra/gun_remove(mob/living/user)
-	gun.clumsy_check = initial(gun.clumsy_check)
-	..()
-
-// Now two times deadlier!
-/obj/item/firing_pin/clown/ultra/selfdestruct
-	name = "super ultra hilarious firing pin"
-	desc = "Advanced clowntech that can convert any firearm into a far more useful object. It has a small nitrobananium charge on it."
-	selfdestruct = TRUE
-
-
 // DNA-keyed pin.
 // When you want to keep your toys for yourself.
 /obj/item/firing_pin/dna
@@ -202,10 +118,6 @@
 			to_chat(user, span_notice("DNA-LOCK SET."))
 	else
 		..()
-
-/obj/item/firing_pin/dna/dredd
-	desc = "This is a DNA-locked firing pin which only authorizes one user. Attempt to fire once to DNA-link. It has a small explosive charge on it."
-	selfdestruct = TRUE
 
 // Paywall pin, brought to you by ARMA 3 DLC.
 // Checks if the user has a valid bank account on an ID and if so attempts to extract a one-time payment to authorize use of the gun. Otherwise fails to shoot.
@@ -322,20 +234,6 @@
 	active_prompt_user = null
 	return FALSE //we return false here so you don't click initially to fire, get the prompt, accept the prompt, and THEN the gun
 
-// Explorer Firing Pin- Prevents use on station Z-Level, so it's justifiable to give Explorers guns that don't suck.
-/obj/item/firing_pin/explorer
-	name = "outback firing pin"
-	desc = "A firing pin used by the austrailian defense force, retrofit to prevent weapon discharge on the station."
-	icon_state = "firing_pin_explorer"
-	fail_message = "cannot fire while on station, mate!"
-
-// This checks that the user isn't on the station Z-level.
-/obj/item/firing_pin/explorer/pin_auth(mob/living/user)
-	var/turf/station_check = get_turf(user)
-	if(!station_check || is_station_level(station_check.z))
-		return FALSE
-	return TRUE
-
 // Laser tag pins
 /obj/item/firing_pin/tag
 	name = "laser tag firing pin"
@@ -363,8 +261,3 @@
 	icon_state = "firing_pin_blue"
 	suit_requirement = /obj/item/clothing/suit/bluetag
 	tagcolor = "blue"
-
-/obj/item/firing_pin/Destroy()
-	if(gun)
-		gun.pin = null
-	return ..()

@@ -47,8 +47,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
               var: var_name,
               var_mod: P_DATA_GENERATOR,
               new_value: [e, A, B, RandToNumber[rand_type]],
-            })
-          }
+            })}
           width="130px"
         />
       </Stack.Item>
@@ -64,8 +63,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                 var: var_name,
                 var_mod: P_DATA_GENERATOR,
                 new_value: [type, value, B, RandToNumber[rand_type]],
-              })
-            }
+              })}
           />
         ) : (
           <>
@@ -82,8 +80,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     B,
                     RandToNumber[rand_type],
                   ],
-                })
-              }
+                })}
             />
             <NumberInput
               animated
@@ -93,8 +90,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
                   new_value: [type, [A[0], value, A[2]], B, rand_type],
-                })
-              }
+                })}
             />
             <NumberInput
               animated
@@ -104,8 +100,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                   var: var_name,
                   var_mod: P_DATA_GENERATOR,
                   new_value: [type, [A[0], A[1], value], B, rand_type],
-                })
-              }
+                })}
             />
           </>
         )}
@@ -121,8 +116,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                 var: var_name,
                 var_mod: P_DATA_GENERATOR,
                 new_value: [type, A, value, RandToNumber[rand_type]],
-              })
-            }
+              })}
           />
         ) : (
           <>
@@ -139,8 +133,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     [value, B[1], B[2]],
                     RandToNumber[rand_type],
                   ],
-                })
-              }
+                })}
             />
             <NumberInput
               animated
@@ -155,8 +148,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     [B[0], value, B[2]],
                     RandToNumber[rand_type],
                   ],
-                })
-              }
+                })}
             />
             <NumberInput
               animated
@@ -171,8 +163,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
                     [B[0], B[1], value],
                     RandToNumber[rand_type],
                   ],
-                })
-              }
+                })}
             />
           </>
         )}
@@ -186,8 +177,7 @@ export const GeneratorListEntry = (props: GeneratorProps, context) => {
               var: var_name,
               var_mod: P_DATA_GENERATOR,
               new_value: [type, A, B, RandToNumber[value]],
-            })
-          }
+            })}
           width="130px"
         />
       </Stack.Item>

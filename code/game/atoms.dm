@@ -633,6 +633,7 @@
 	// only living mobs use armor to reduce damage, but on_hit() is going to need the value no matter what is shot.
 	var/visual_armor_check = check_projectile_armor(def_zone, hitting_projectile)
 	. = hitting_projectile.on_hit(src, visual_armor_check, def_zone, piercing_hit)
+	spawn_debris(hitting_projectile)
 
 ///Return true if we're inside the passed in atom
 /atom/proc/in_contents_of(container)//can take class or object instance as argument

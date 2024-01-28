@@ -102,8 +102,8 @@
 	// Shake the user's camera if it wasn't telekinesis
 	if(recoil && !tk_firing(user))
 		var/real_recoil = recoil
-		if(!wielded && unwielded_spread_bonus > 5)
-			real_recoil *= 2
+		if(!wielded)
+			real_recoil = unwielded_recoil
 
 		shake_camera(user, real_recoil + 1, real_recoil)
 
@@ -146,6 +146,15 @@
 					vision_distance = COMBAT_MESSAGE_RANGE,
 					ignored_mobs = user
 			)
+
+	if(smoking_gun)
+		var/x_component = sin(get_angle(user, pbtarget)) * 40
+		var/y_component = cos(get_angle(user, pbtarget)) * 40
+		var/obj/effect/abstract/particle_holder/gun_smoke = new(get_turf(src), /particles/firing_smoke)
+		gun_smoke.particles.velocity = list(x_component, y_component)
+		addtimer(VARSET_CALLBACK(gun_smoke.particles, count, 0), 5)
+		addtimer(VARSET_CALLBACK(gun_smoke.particles, drift, 0), 3)
+		QDEL_IN(gun_smoke, 0.6 SECONDS)
 
 /**
  * Called when there was an attempt to fire the gun, but the chamber was empty.

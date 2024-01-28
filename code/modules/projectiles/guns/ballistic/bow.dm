@@ -5,6 +5,7 @@
 	icon = 'icons/obj/guns/ballistic.dmi'
 	icon_state = "bow"
 	inhand_icon_state = "bow"
+	smoking_gun = FALSE
 	load_sound = null
 	fire_sound = null
 	mag_type = /obj/item/ammo_box/magazine/internal/bow

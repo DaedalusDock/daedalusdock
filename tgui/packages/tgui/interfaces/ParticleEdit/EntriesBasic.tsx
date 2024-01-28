@@ -22,8 +22,7 @@ export const EntryFloat = (props: EntryFloatProps, context) => {
           act('edit', {
             var: var_name,
             new_value: value,
-          })
-        }
+          })}
       />
     </LabeledList.Item>
   );
@@ -47,8 +46,7 @@ export const EntryCoord = (props: EntryCoordProps, context) => {
           act('edit', {
             var: var_name,
             new_value: [value, coord?.[1], coord?.[2]],
-          })
-        }
+          })}
       />
       <NumberInput
         animated
@@ -57,8 +55,7 @@ export const EntryCoord = (props: EntryCoordProps, context) => {
           act('edit', {
             var: var_name,
             new_value: [coord?.[0], value, coord?.[2]],
-          })
-        }
+          })}
       />
       <NumberInput
         animated
@@ -67,8 +64,7 @@ export const EntryCoord = (props: EntryCoordProps, context) => {
           act('edit', {
             var: var_name,
             new_value: [coord?.[0], coord?.[1], value],
-          })
-        }
+          })}
       />
     </LabeledList.Item>
   );
@@ -105,8 +101,7 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                 new_value: isLooping
                   ? gradient!.filter((x, i) => i !== gradient!.indexOf('loop'))
                   : [...(gradient || []), 'loop'],
-              })
-            }
+              })}
           />
         </Stack.Item>
         <Stack.Item>
@@ -119,8 +114,7 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                 new_value: gradient
                   ? setGradientSpace(gradient, SpaceToNum[e])
                   : { 'space': SpaceToNum[e] },
-              })
-            }
+              })}
             width="145px"
           />
         </Stack.Item>
@@ -141,8 +135,7 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                       new_value: gradient!.map((x, i) =>
                         i === index ? value : x
                       ),
-                    })
-                  }
+                    })}
                 />
                 <Button
                   icon={'minus'}
@@ -151,8 +144,7 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
                     act('edit', {
                       var: var_name,
                       new_value: gradient.filter((x, i) => i !== index),
-                    })
-                  }
+                    })}
                 />
               </>
             )
@@ -166,8 +158,7 @@ export const EntryGradient = (props: EntryGradientProps, context) => {
               act('edit', {
                 var: var_name,
                 new_value: [...(gradient || []), '#FFFFFF'],
-              })
-            }
+              })}
           />
         </Stack.Item>
       </Stack>
@@ -179,8 +170,8 @@ export const EntryTransform = (props: EntryTransformProps, context) => {
   const { act, data } = useBackend<ParticleUIData>(context);
   const [desc, setdesc] = useLocalState(context, 'desc', '');
   const len = props.transform?.length ? props.transform.length : 0;
-  const selected =
-    len < 7
+  const selected
+    = len < 7
       ? 'Simple Matrix'
       : len < 13
         ? 'Complex Matrix'
@@ -217,9 +208,7 @@ export const EntryTransform = (props: EntryTransformProps, context) => {
                   var: var_name,
                   new_value: transform!.map((x, i) =>
                     i === index ? value : x
-                  ),
-                })
-              }
+                  ) })}
             />
           ))}
         </Stack.Item>
@@ -259,8 +248,7 @@ export const EntryIcon = (props: EntryIconStateProps, context) => {
                       var: var_name,
                       var_mod: P_DATA_ICON_WEIGHT,
                       new_value: [icon_name, value],
-                    })
-                  }
+                    })}
                 />
               </Stack.Item>
               <Button
@@ -270,8 +258,7 @@ export const EntryIcon = (props: EntryIconStateProps, context) => {
                     var: var_name,
                     var_mod: P_DATA_ICON_REMOVE,
                     new_value: icon_name,
-                  })
-                }
+                  })}
               />
             </>
           ))
@@ -291,8 +278,7 @@ export const EntryIcon = (props: EntryIconStateProps, context) => {
               act('edit', {
                 var: var_name,
                 var_mod: P_DATA_ICON_ADD,
-              })
-            }
+              })}
           />
         </Stack.Item>
       </Stack>
@@ -304,8 +290,8 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
   const { act, data } = useBackend<ParticleUIData>(context);
   const [desc, setdesc] = useLocalState(context, 'desc', '');
   const { name, var_name, icon_state } = props;
-  const newValue =
-    typeof icon_state === 'string'
+  const newValue
+    = typeof icon_state === 'string'
       ? { [icon_state]: 1, 'None': 0 }
       : { ...icon_state, 'None': 0 };
   return (
@@ -331,8 +317,7 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                     act('edit', {
                       var: var_name,
                       new_value: editKeyOf(icon_state, iconstate, value),
-                    })
-                  }
+                    })}
                 />
               </Stack.Item>
               <Stack.Item>
@@ -347,8 +332,7 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                     act('edit', {
                       var: var_name,
                       new_value: editWeightOf(icon_state, iconstate, value),
-                    })
-                  }
+                    })}
                 />
               </Stack.Item>
               <Stack.Item>
@@ -362,8 +346,7 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                           ([key]) => key !== iconstate
                         )
                       ),
-                    })
-                  }
+                    })}
                 />
               </Stack.Item>
             </>
@@ -376,8 +359,7 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })
-              }
+                })}
             />
             = 1
           </>
@@ -388,8 +370,7 @@ export const EntryIconState = (props: EntryIconStateProps, context) => {
             act('edit', {
               var: var_name,
               new_value: newValue,
-            })
-          }
+            })}
         />
       </Stack>
     </LabeledList.Item>

@@ -36,8 +36,7 @@ export const ShowDesc = (props, context) => {
                 color={'red'}
                 onClick={() => setdesc('')}
               />
-            </>
-          )
+            </>)
         }>
         {VarExplanation[desc].dataunit ? (
           <LabeledList>

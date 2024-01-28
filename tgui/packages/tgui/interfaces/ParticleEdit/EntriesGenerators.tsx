@@ -30,8 +30,7 @@ export const FloatGenerator = (props: FloatGeneratorProps, context) => {
                 new_value: !Array.isArray(float)
                   ? ['num', 0, 1, RandToNumber['UNIFORM_RAND']]
                   : 0,
-              })
-            }
+              })}
           />
         </Stack.Item>
         {!Array.isArray(float) ? (
@@ -43,8 +42,7 @@ export const FloatGenerator = (props: FloatGeneratorProps, context) => {
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })
-              }
+                })}
             />
           </Stack.Item>
         ) : (
@@ -83,8 +81,7 @@ export const FloatGeneratorColor = (
                 new_value: !Array.isArray(float)
                   ? ['num', 0, 1, RandToNumber['UNIFORM_RAND']]
                   : '#FFFFFF',
-              })
-            }
+              })}
           />
         </Stack.Item>
         {typeof float === 'string' ? (
@@ -101,8 +98,7 @@ export const FloatGeneratorColor = (
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })
-              }
+                })}
             />
           </Stack.Item>
         ) : (
@@ -146,8 +142,7 @@ export const EntryGeneratorNumbersList = (
                     RandToNumber['UNIFORM_RAND'],
                   ]
                   : [1, 1, 1],
-              })
-            }
+              })}
           />
         </Stack.Item>
         <Stack.Item>
@@ -159,8 +154,7 @@ export const EntryGeneratorNumbersList = (
               act('edit', {
                 var: var_name,
                 new_value: Array.isArray(input) ? 1 : [1, 1, 1],
-              })
-            }
+              })}
           />
         </Stack.Item>
 
@@ -173,8 +167,7 @@ export const EntryGeneratorNumbersList = (
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })
-              }
+                })}
             />
           </Stack.Item>
         ) : isStringArray(input) ? (
@@ -192,8 +185,7 @@ export const EntryGeneratorNumbersList = (
                 act('edit', {
                   var: var_name,
                   new_value: [value, input![1], input![2]],
-                })
-              }
+                })}
             />
             <NumberInput
               animated
@@ -202,8 +194,7 @@ export const EntryGeneratorNumbersList = (
                 act('edit', {
                   var: var_name,
                   new_value: [input![0], value, input![2]],
-                })
-              }
+                })}
             />
             {allow_z ? (
               <NumberInput
@@ -213,8 +204,7 @@ export const EntryGeneratorNumbersList = (
                   act('edit', {
                     var: var_name,
                     new_value: [input![0], input![1], value],
-                  })
-                }
+                  })}
               />
             ) : null}
           </Stack.Item>

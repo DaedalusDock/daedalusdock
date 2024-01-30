@@ -9,7 +9,7 @@
 		return FALSE //don't do it if its already been done
 	if(istype(SSshuttle.emergency, /obj/docking_port/mobile/emergency/shuttle_build))
 		return FALSE //don't undo manual player engineering, it also would unload people and ghost them, there's just a lot of problems
-	if(EMERGENCY_AT_LEAST_DOCKED)
+	if(SSevacuation.controller.state >= EVACUATION_AWAITING)
 		return FALSE //don't remove all players when its already on station or going to centcom
 	return ..()
 

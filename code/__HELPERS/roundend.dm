@@ -17,9 +17,7 @@
 	var/num_shuttle_escapees = 0 //Above and on escape shuttle
 	var/list/list_of_human_escapees = list() //References to all escaped humans
 	var/list/list_of_mobs_on_shuttle = list()
-	var/list/area/shuttle_areas
-	if(SSshuttle?.emergency)
-		shuttle_areas = SSshuttle.emergency.shuttle_areas
+	var/list/area/evac_areas = SSevacuation.controller.get_evac_areas()
 
 	for(var/mob/M in GLOB.mob_list)
 		var/list/mob_data = list()
@@ -38,13 +36,13 @@
 				list_of_mobs_on_shuttle += M
 			if(M.stat != DEAD && !isbrain(M) && !iscameramob(M))
 				num_survivors++
-				if(EMERGENCY_ESCAPED_OR_ENDGAMED && (M.onCentCom() || M.onSyndieBase()))
+				if(SSevacuation.controller.state >= EVACUATION_NO_RETURN && (M.onCentCom() || M.onSyndieBase()))
 					num_escapees++
 					if(ishuman(M))
 						num_human_escapees++
 						list_of_human_escapees += M
 					escape_status = "escapees"
-					if(shuttle_areas[get_area(M)])
+					if(evac_areas[get_area(M)])
 						num_shuttle_escapees++
 			if(isliving(M))
 				var/mob/living/L = M
@@ -336,7 +334,7 @@
 
 /datum/controller/subsystem/ticker/proc/survivor_report(popcount)
 	var/list/parts = list()
-	var/station_evacuated = EMERGENCY_ESCAPED_OR_ENDGAMED
+	var/station_evacuated = (SSevacuation.controller.state >= EVACUATION_NO_RETURN)
 
 	if(GLOB.round_id)
 		var/statspage = CONFIG_GET(string/roundstatsurl)
@@ -427,7 +425,7 @@
 	var/mob/M = C.mob
 	if(M.mind && !isnewplayer(M))
 		if(M.stat != DEAD && !isbrain(M))
-			if(EMERGENCY_ESCAPED_OR_ENDGAMED)
+			if(SSevacuation.controller.state >= EVACUATION_NO_RETURN)
 				if(!M.onCentCom() && !M.onSyndieBase())
 					parts += "<div class='panel stationborder'>"
 					parts += "<span class='marooned'>You managed to survive, but were marooned on [station_name()]...</span>"

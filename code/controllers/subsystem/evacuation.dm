@@ -38,7 +38,8 @@ SUBSYSTEM_DEF(evacuation)
 		var/msg = "Automatically starting evacuation sequence due to crew death."
 		message_admins(msg)
 		log_shuttle("[msg] Alive: [alive], Roundstart: [total], Threshold: [threshold]")
-		controller.start_evacuation(no_recall = TRUE)
+		no_recall = TRUE
+		controller.start_evacuation()
 
 /datum/controller/subsystem/evacuation/proc/auto_end()
 	controller.start_automatic_evacuation()
@@ -63,8 +64,3 @@ SUBSYSTEM_DEF(evacuation)
 		controller.on_evacuation_blocked()
 	else
 		controller.on_evacuation_unblocked()
-
-// #define EMERGENCY_IDLE_OR_RECALLED (SSshuttle.emergency && ((SSshuttle.emergency.mode == SHUTTLE_IDLE) || (SSshuttle.emergency.mode == SHUTTLE_RECALL)))
-// #define EMERGENCY_ESCAPED_OR_ENDGAMED (SSshuttle.emergency && ((SSshuttle.emergency.mode == SHUTTLE_ESCAPE) || (SSshuttle.emergency.mode == SHUTTLE_ENDGAME)))
-// #define EMERGENCY_AT_LEAST_DOCKED (SSshuttle.emergency && SSshuttle.emergency.mode != SHUTTLE_IDLE && SSshuttle.emergency.mode != SHUTTLE_RECALL && SSshuttle.emergency.mode != SHUTTLE_CALL)
-// #define EMERGENCY_PAST_POINT_OF_NO_RETURN ((SSshuttle.emergency && SSshuttle.emergency.mode == SHUTTLE_CALL && !SSshuttle.canRecall()) || EMERGENCY_AT_LEAST_DOCKED)

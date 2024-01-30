@@ -97,17 +97,16 @@
 		if(!check_rights(R_ADMIN))
 			return
 
-
 		switch(href_list["start_evac"])
 			if("1")
-				if(EMERGENCY_AT_LEAST_DOCKED)
+				if(SSevacuation.controller.state >= EVACUATION_AWAITING)
 					return
 				SSshuttle.emergency.request()
 				log_admin("[key_name(usr)] called the Emergency Shuttle.")
 				message_admins(span_adminnotice("[key_name_admin(usr)] called the Emergency Shuttle to the station."))
 
 			if("2")
-				if(EMERGENCY_AT_LEAST_DOCKED)
+				if(SSevacuation.controller.state >= EVACUATION_AWAITING)
 					return
 				switch(SSshuttle.emergency.mode)
 					if(SHUTTLE_CALL)
@@ -118,8 +117,6 @@
 						SSshuttle.emergency.cancel()
 						log_admin("[key_name(usr)] called the Emergency Shuttle.")
 						message_admins(span_adminnotice("[key_name_admin(usr)] called the Emergency Shuttle to the station."))
-
-
 
 	else if(href_list["edit_shuttle_time"])
 		if(!check_rights(R_SERVER))

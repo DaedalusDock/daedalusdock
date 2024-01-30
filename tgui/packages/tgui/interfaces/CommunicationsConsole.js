@@ -311,7 +311,7 @@ const PageMain = (props, context) => {
     canBuyShuttles,
     canMakeAnnouncement,
     canMessageAssociates,
-    canRecallShuttles,
+    canRecallEvac,
     canRequestNuke,
     canSendToSectors,
     canSetAlertLevel,
@@ -322,10 +322,10 @@ const PageMain = (props, context) => {
     importantActionReady,
     sectors,
     shuttleCalled,
-    shuttleCalledPreviously,
-    shuttleCanEvacOrFailReason,
-    shuttleLastCalled,
-    shuttleRecallable,
+    canEvacOrFailReason,
+    evacCalledPreviously,
+    evacLastCalled,
+    evacRecallable,
   } = data;
 
   const [callingShuttle, setCallingShuttle] = useLocalState(
@@ -351,10 +351,10 @@ const PageMain = (props, context) => {
               icon="space-shuttle"
               content="Recall Emergency Shuttle"
               color="bad"
-              disabled={!canRecallShuttles || !shuttleRecallable}
+              disabled={!canRecallEvac || !evacRecallable}
               tooltip={(
-                canRecallShuttles && (
-                  !shuttleRecallable && "It's too late for the emergency shuttle to be recalled."
+                canRecallEvac && (
+                  !evacRecallable && "It's too late for the emergency shuttle to be recalled."
                 ) || (
                   "You do not have permission to recall the emergency shuttle."
                 )
@@ -366,21 +366,21 @@ const PageMain = (props, context) => {
             <Button
               icon="space-shuttle"
               content="Call Emergency Shuttle"
-              disabled={shuttleCanEvacOrFailReason !== 1}
+              disabled={canEvacOrFailReason !== 1}
               tooltip={
-                shuttleCanEvacOrFailReason !== 1
-                  ? shuttleCanEvacOrFailReason
+                canEvacOrFailReason !== 1
+                  ? canEvacOrFailReason
                   : undefined
               }
               tooltipPosition="bottom-end"
               onClick={() => setCallingShuttle(true)}
             />
           )}
-          {!!shuttleCalledPreviously && (
-            shuttleLastCalled && (
+          {!!evacCalledPreviously && (
+            evacLastCalled && (
               <Box>
                 Most recent shuttle call/recall traced to:
-                {" "}<b>{shuttleLastCalled}</b>
+                {" "}<b>{evacLastCalled}</b>
               </Box>
             ) || (
               <Box>Unable to trace most recent shuttle/recall signal.</Box>

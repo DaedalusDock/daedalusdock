@@ -151,10 +151,10 @@
 	set category = "Admin.Events"
 	set name = "Call Shuttle"
 
-	if(EMERGENCY_AT_LEAST_DOCKED)
+	if(!check_rights(R_ADMIN))
 		return
 
-	if(!check_rights(R_ADMIN))
+	if(SSevacuation.controller.state >= EVACUATION_INITIATED)
 		return
 
 	var/confirm = tgui_alert(usr, "You sure?", "Confirm", list("Yes", "Yes (No Recall)", "No"))
@@ -162,8 +162,7 @@
 		if(null, "No")
 			return
 		if("Yes (No Recall)")
-			SSshuttle.admin_emergency_no_recall = TRUE
-			SSshuttle.emergency.mode = SHUTTLE_IDLE
+			SSevacuation.admin_no_recall = TRUE
 
 	SSshuttle.emergency.request()
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Call Shuttle") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -179,10 +178,9 @@
 	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
 		return
 
-	if(SSshuttle.admin_emergency_no_recall)
-		SSshuttle.admin_emergency_no_recall = FALSE
+	SSevacuation.admin_no_recall = FALSE
 
-	if(EMERGENCY_AT_LEAST_DOCKED)
+	if(SSevacuation.controller.state >= EVACUATION_AWAITING)
 		return
 
 	SSshuttle.emergency.cancel()

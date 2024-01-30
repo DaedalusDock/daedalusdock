@@ -307,7 +307,7 @@
 		to_chat(usr, span_warning("Wireless control is disabled!"))
 		return
 
-	var/can_evac_or_fail_reason = SSshuttle.canEvac(src)
+	var/can_evac_or_fail_reason = SSevacuation.controller.can_evac(src)
 	if(can_evac_or_fail_reason != TRUE)
 		to_chat(usr, span_alert("[can_evac_or_fail_reason]"))
 		return
@@ -321,7 +321,7 @@
 		SSshuttle.requestEvac(src, reason)
 
 	// hack to display shuttle timer
-	if(!EMERGENCY_IDLE_OR_RECALLED)
+	if(SSevacuation.controller.state != EVACUATION_IDLE)
 		var/obj/machinery/computer/communications/C = locate() in GLOB.machines
 		if(C)
 			C.post_status("shuttle")

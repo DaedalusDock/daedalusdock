@@ -5,7 +5,6 @@
 	job_rank = ROLE_OPERATIVE
 	antag_hud_name = "synd"
 	show_to_ghosts = TRUE
-	hijack_speed = 2 //If you can't take out the station, take the shuttle instead.
 	suicide_cry = "FOR THE SYNDICATE!!"
 	var/datum/team/nuclear/nuke_team
 	var/always_new_team = FALSE //If not assigned a team by default ops will try to join existing ones, set this to TRUE to always create new team.
@@ -361,7 +360,7 @@
 	return TRUE
 
 /datum/team/nuclear/proc/get_result()
-	var/evacuation = EMERGENCY_ESCAPED_OR_ENDGAMED
+	var/evacuation = (SSevacuation.current.state >= EVACUATION_NO_RETURN)
 	var/disk_rescued = disk_rescued()
 	var/syndies_didnt_escape = !syndies_escaped()
 	var/station_was_nuked = GLOB.station_was_nuked

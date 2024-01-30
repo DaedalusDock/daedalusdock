@@ -6992,13 +6992,8 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
 "um" = (
-/obj/machinery/computer/communications{
-	dir = 1
-	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/iron,
+/obj/structure/filingcabinet/chestdrawer,
+/turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/ferry)
 "uo" = (
 /obj/machinery/light/floor/has_bulb,
@@ -9445,7 +9440,6 @@
 /area/centcom/tdome/administration)
 "By" = (
 /obj/machinery/light/directional/south,
-/obj/structure/filingcabinet/chestdrawer,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron/dark,
@@ -11843,14 +11837,14 @@
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/syndicate_mothership/expansion_chemicalwarfare)
 "Ir" = (
-/obj/machinery/computer/emergency_shuttle{
-	dir = 1
-	},
 /obj/machinery/newscaster{
 	pixel_y = -32
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 9
+/obj/machinery/computer/communications{
+	dir = 1
+	},
+/obj/effect/turf_decal/stripes/end{
+	dir = 1
 	},
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/ferry)

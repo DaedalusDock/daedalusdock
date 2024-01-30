@@ -177,7 +177,7 @@
 			var/reason = trim(params["reason"], MAX_MESSAGE_LEN)
 			if (length(reason) < CALL_SHUTTLE_REASON_LENGTH)
 				return
-			SSshuttle.requestEvac(usr, reason)
+			SSevacuation.controller.start_evacuation(usr, reason)
 			post_status("shuttle")
 		if ("changeSecurityLevel")
 			if (!authenticated_as_silicon_or_captain(usr))
@@ -291,7 +291,7 @@
 			// AIs cannot recall the shuttle
 			if (!authenticated(usr) || issilicon(usr) || syndicate)
 				return
-			SSshuttle.cancelEvac(usr)
+			SSevacuation.controller.cancel_evacuation(usr)
 		if ("requestNukeCodes")
 			if (!authenticated_as_non_silicon_captain(usr))
 				return
@@ -507,21 +507,18 @@
 				data["canBuyShuttles"] = can_buy_shuttles(user)
 				data["canMakeAnnouncement"] = FALSE
 				data["canMessageAssociates"] = FALSE
-				data["canRecallShuttles"] = !issilicon(user)
+				data["canRecallEvac"] = !issilicon(user)
 				data["canRequestNuke"] = FALSE
 				data["canSendToSectors"] = FALSE
 				data["canSetAlertLevel"] = FALSE
 				data["canToggleEmergencyAccess"] = FALSE
 				data["importantActionReady"] = COOLDOWN_FINISHED(src, important_action_cooldown)
-				data["shuttleCalled"] = FALSE
-				data["shuttleLastCalled"] = FALSE
+				data["evacStarted"] = FALSE
+				data["evacLastCalled"] = FALSE
 				data["aprilFools"] = SSevents.holidays && SSevents.holidays[APRIL_FOOLS]
 				data["alertLevel"] = get_security_level()
 				data["authorizeName"] = authorize_name
 				data["canLogOut"] = !issilicon(user)
-				data["shuttleCanEvacOrFailReason"] = SSshuttle.canEvac(user)
-				if(syndicate)
-					data["shuttleCanEvacOrFailReason"] = "You cannot summon the shuttle from this console!"
 
 				if (authenticated_as_non_silicon_captain(user))
 					data["canMessageAssociates"] = TRUE
@@ -550,14 +547,19 @@
 				else if(syndicate)
 					data["canMakeAnnouncement"] = TRUE
 
-				if (SSshuttle.emergency.mode != SHUTTLE_IDLE && SSshuttle.emergency.mode != SHUTTLE_RECALL)
-					data["shuttleCalled"] = TRUE
-					data["shuttleRecallable"] = SSshuttle.canRecall() || syndicate
+				data["canEvacOrFailReason"] = SSevacuation.controller.can_evac(user)
+				if(syndicate)
+					data["canEvacOrFailReason"] = "You cannot start evacuation procedure from this console!"
 
-				if (SSshuttle.emergencyCallAmount)
-					data["shuttleCalledPreviously"] = TRUE
-					if (SSshuttle.emergency_last_call_loc)
-						data["shuttleLastCalled"] = format_text(SSshuttle.emergency_last_call_loc.name)
+				if(SSevacuation.controller.state >= EVACUATION_INITIATED)
+					data["evacStarted"] = TRUE
+					data["evacRecallable"] = SSevacuation.controller.can_recall() || syndicate
+
+				if (SSevacuation.evac_calls_count)
+					data["evacCalledPreviously"] = TRUE
+					if (SSevacuation.last_evac_call_loc)
+						data["evacLastCalled"] = format_text(SSevacuation.last_evac_call_loc.name)
+
 			if (STATE_MESSAGES)
 				data["messages"] = list()
 
@@ -656,6 +658,10 @@
 		return FALSE
 	if (issilicon(user))
 		return FALSE
+	// Perhaps I should replace this with something more generic to allow any controller buy shuttles
+	// As long as they have a shuttle to replace of course
+	if (!istype(SSevacuation.controller, /datum/evacuation_controller/shuttle))
+		return
 
 	var/has_access = FALSE
 
@@ -667,7 +673,7 @@
 	if (!has_access)
 		return FALSE
 
-	if (SSshuttle.emergency.mode != SHUTTLE_RECALL && SSshuttle.emergency.mode != SHUTTLE_IDLE)
+	if (SSevacuation.controller.state != EVACUATION_IDLE)
 		return "The shuttle is already in transit."
 	if (SSshuttle.shuttle_purchased == SHUTTLEPURCHASE_PURCHASED)
 		return "A replacement shuttle has already been purchased."

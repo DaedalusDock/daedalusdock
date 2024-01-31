@@ -1,0 +1,4 @@
+author: DTraitor
+delete-after: true
+changes:
+  - refactor: Removed unnecessary checks in mod suits code

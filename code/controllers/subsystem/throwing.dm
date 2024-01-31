@@ -4,8 +4,8 @@
 SUBSYSTEM_DEF(throwing)
 	name = "Throwing"
 	priority = FIRE_PRIORITY_THROWING
-	wait = SS_TICKER
-	flags = SS_NO_INIT
+	wait = 1
+	flags = SS_NO_INIT | SS_TICKER
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
 	var/list/currentrun = list()

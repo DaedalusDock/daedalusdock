@@ -5,16 +5,22 @@ SUBSYSTEM_DEF(throwing)
 	name = "Throwing"
 	priority = FIRE_PRIORITY_THROWING
 	wait = 1
-	flags = SS_NO_INIT | SS_TICKER
+	flags = SS_NO_INIT | SS_TICKER | SS_KEEP_TIMING
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
 	var/list/currentrun = list()
 	var/list/processing = list()
 
+/datum/controller/subsystem/throwing/Initialize(start_timeofday)
+	. = ..()
+	hibernate_checks = list(
+		NAMEOF(src, currentrun),
+		NAMEOF(src, processing)
+	)
+
 /datum/controller/subsystem/throwing/stat_entry(msg)
 	msg = "P:[length(processing)]"
 	return ..()
-
 
 /datum/controller/subsystem/throwing/fire(resumed = 0)
 	if (!resumed)

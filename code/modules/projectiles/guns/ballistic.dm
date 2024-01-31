@@ -5,8 +5,11 @@
 	name = "projectile gun"
 	icon_state = "debug"
 	w_class = WEIGHT_CLASS_NORMAL
+
+	smoking_gun = TRUE
 	//Most ballistics can have a bit of recoil, just to feel punchy.
-	recoil = 1
+	recoil = 0.5
+	unwielded_recoil = 1
 
 	///sound when inserting magazine
 	var/load_sound = 'sound/weapons/gun/general/magazine_insert_full.ogg'

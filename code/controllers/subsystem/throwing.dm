@@ -11,13 +11,6 @@ SUBSYSTEM_DEF(throwing)
 	var/list/currentrun = list()
 	var/list/processing = list()
 
-/datum/controller/subsystem/throwing/Initialize(start_timeofday)
-	. = ..()
-	hibernate_checks = list(
-		NAMEOF(src, currentrun),
-		NAMEOF(src, processing)
-	)
-
 /datum/controller/subsystem/throwing/stat_entry(msg)
 	msg = "P:[length(processing)]"
 	return ..()

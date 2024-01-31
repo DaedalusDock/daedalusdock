@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Items with unique appearances for being wielded work again.
+  - bugfix: Throwing processes at the correct rate.
+  - bugfix: A code error of which it's impact I am unsure of.

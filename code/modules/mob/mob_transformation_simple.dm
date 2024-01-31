@@ -33,12 +33,10 @@
 		qdel(M)
 		return
 
-	if( istext(new_name) )
-		M.name = new_name
-		M.real_name = new_name
+	if(istext(new_name) )
+		M.set_real_name(new_name)
 	else
-		M.name = src.name
-		M.real_name = src.real_name
+		M.set_real_name(src.real_name)
 
 	if(has_dna() && M.has_dna())
 		var/mob/living/carbon/C = src

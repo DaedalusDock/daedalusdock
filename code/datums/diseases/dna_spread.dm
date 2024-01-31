@@ -59,7 +59,7 @@
 				var/datum/dna/transform_dna = strain_data["dna"]
 
 				transform_dna.transfer_identity(affected_mob, transfer_SE = 1)
-				affected_mob.real_name = affected_mob.dna.real_name
+				affected_mob.set_real_name(affected_mob.dna.real_name)
 				affected_mob.updateappearance(mutcolor_update=1)
 				affected_mob.domutcheck()
 
@@ -70,7 +70,7 @@
 /datum/disease/dnaspread/Destroy()
 	if (original_dna && transformed && affected_mob)
 		original_dna.transfer_identity(affected_mob, transfer_SE = 1)
-		affected_mob.real_name = affected_mob.dna.real_name
+		affected_mob.set_real_name(affected_mob.dna.real_name)
 		affected_mob.updateappearance(mutcolor_update=1)
 		affected_mob.domutcheck()
 

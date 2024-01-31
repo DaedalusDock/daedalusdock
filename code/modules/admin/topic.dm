@@ -1258,7 +1258,7 @@
 								O.name = obj_name
 								if(ismob(O))
 									var/mob/M = O
-									M.real_name = obj_name
+									M.set_real_name(obj_name)
 							if(where == "inhand" && isliving(usr) && isitem(O))
 								var/mob/living/L = usr
 								var/obj/item/I = O

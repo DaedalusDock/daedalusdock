@@ -1,9 +1,0 @@
-author: TiviPlus, LemonInTheDark, ChungusGamer666, Watermelon914, vinylspiders, tyeagg,
-  Kapu1178
-delete-after: true
-changes:
-  - rscadd: Added new particle effects for being on fire or wet.
-  - rscadd: Added new particle effects for firing ballistic weapons.
-  - rscadd: Added new particle effects for bullets impacting surfaces.
-  - rscadd: Bullets are now illuminated.
-  - rscadd: Bullets leave behind impact holes on most surfaces.

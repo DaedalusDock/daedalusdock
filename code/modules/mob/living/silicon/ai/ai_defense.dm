@@ -37,9 +37,11 @@
 			if(1)
 				view_core()
 			if(2)
-				SSevacuation.controller.start_evacuation(
-					src, "ALERT: Energy surge detected in AI core! \
-					Station integrity may be compromised! Initiati--%m091#ar-BZZT"
+				SSevacuation.request_evacuation(src,
+					"ALERT: Energy surge detected in AI core! \
+					Station integrity may be compromised! Initiati--%m091#ar-BZZT",
+					// I don't like it calls a single controlelr, but spam isn't cool either
+					pick(SSevacuation.controllers)
 					)
 
 /mob/living/silicon/ai/ex_act(severity, target)

@@ -65,7 +65,7 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	color = blobstrain.complementary_color
 	if(blob_core)
 		blob_core.update_appearance()
-	SSevacuation.add_hostile_environment(src)
+	SSevacuation.add_evacuation_blocker(src)
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
@@ -220,7 +220,7 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	GLOB.overminds -= src
 	QDEL_LIST_ASSOC_VAL(strain_choices)
 
-	SSevacuation.remove_hostile_environment(src)
+	SSevacuation.remove_evacuation_blocker(src)
 	STOP_PROCESSING(SSobj, src)
 
 	return ..()

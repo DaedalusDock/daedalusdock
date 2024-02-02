@@ -414,7 +414,7 @@
 	else
 		return
 
-	SSevacuation.remove_hostile_environment(src)
+	SSevacuation.remove_evacuation_blocker(src)
 	save_members()
 
 	var/charter_given = FALSE

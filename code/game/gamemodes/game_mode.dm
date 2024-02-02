@@ -59,7 +59,7 @@
 /datum/game_mode/proc/check_finished(force_ending) //to be called by SSticker
 	if(!SSticker.setup_done)
 		return FALSE
-	if(SSevacuation.controller.state >= EVACUATION_FINISHED)
+	if(SSevacuation.controller.state >= EVACUATION_STATE_FINISHED)
 		return TRUE
 	if(GLOB.station_was_nuked)
 		return TRUE
@@ -196,7 +196,7 @@
 	SSticker.mode_result = "undefined"
 	if(GLOB.station_was_nuked)
 		SSticker.news_report = STATION_DESTROYED_NUKE
-	if(SSevacuation.controller.state >= EVACUATION_NO_RETURN)
+	if(SSevacuation.station_evacuated())
 		SSticker.news_report = STATION_EVACUATED
 
 /// Mode specific admin panel.

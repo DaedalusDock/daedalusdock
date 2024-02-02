@@ -339,12 +339,9 @@
 /datum/team/nuclear/proc/disk_rescued()
 	for(var/obj/item/disk/nuclear/D in SSpoints_of_interest.real_nuclear_disks)
 		//If emergency shuttle is in transit disk is only safe on it
-		if(SSshuttle.emergency.mode == SHUTTLE_ESCAPE)
-			if(!SSshuttle.emergency.is_in_shuttle_bounds(D))
-				return FALSE
-		//If shuttle escaped check if it's on centcom side
-		else if(SSshuttle.emergency.mode == SHUTTLE_ENDGAME)
-			if(!D.onCentCom())
+		if(SSevacuation.station_evacuated())
+			var/list/area/evac_areas = SSevacuation.get_evacuation_areas()
+			if(!D.onCentCom() && !evac_areas[get_area(D)])
 				return FALSE
 		else //Otherwise disk is safe when on station
 			var/turf/T = get_turf(D)
@@ -360,7 +357,7 @@
 	return TRUE
 
 /datum/team/nuclear/proc/get_result()
-	var/evacuation = (SSevacuation.controller.state >= EVACUATION_NO_RETURN)
+	var/evacuation = (SSevacuation.controller.state >= EVACUATION_STATE_NORETURN)
 	var/disk_rescued = disk_rescued()
 	var/syndies_didnt_escape = !syndies_escaped()
 	var/station_was_nuked = GLOB.station_was_nuked
@@ -376,13 +373,13 @@
 		return NUKE_RESULT_WRONG_STATION
 	else if (!disk_rescued && !station_was_nuked && station_nuke_source && syndies_didnt_escape)
 		return NUKE_RESULT_WRONG_STATION_DEAD
-	else if ((disk_rescued && evacuation) && operatives_dead())
+	else if (disk_rescued && operatives_dead())
 		return NUKE_RESULT_CREW_WIN_SYNDIES_DEAD
 	else if (disk_rescued)
 		return NUKE_RESULT_CREW_WIN
 	else if (!disk_rescued && operatives_dead())
 		return NUKE_RESULT_DISK_LOST
-	else if (!disk_rescued && evacuation)
+	else if (!disk_rescued)
 		return NUKE_RESULT_DISK_STOLEN
 	else
 		return //Undefined result

@@ -551,7 +551,7 @@
 				if(syndicate)
 					data["canEvacOrFailReason"] = "You cannot start evacuation procedure from this console!"
 
-				if(SSevacuation.controller.state >= EVACUATION_INITIATED)
+				if(SSevacuation.controller.state >= EVACUATION_STATE_INITIATED)
 					data["evacStarted"] = TRUE
 					data["evacRecallable"] = SSevacuation.controller.can_recall() || syndicate
 
@@ -673,7 +673,7 @@
 	if (!has_access)
 		return FALSE
 
-	if (SSevacuation.controller.state != EVACUATION_IDLE)
+	if (SSevacuation.controller.state != EVACUATION_STATE_IDLE)
 		return "The shuttle is already in transit."
 	if (SSshuttle.shuttle_purchased == SHUTTLEPURCHASE_PURCHASED)
 		return "A replacement shuttle has already been purchased."

@@ -1,6 +1,6 @@
 #define POPCOUNT_SURVIVORS "survivors" //Not dead at roundend
 #define POPCOUNT_ESCAPEES "escapees" //Not dead and on centcom/shuttles marked as escaped
-#define POPCOUNT_SHUTTLE_ESCAPEES "shuttle_escapees" //Emergency shuttle only.
+#define POPCOUNT_EVAC_ESCAPEES "evac_escapees" //Evac means shuttle only.
 #define POPCOUNT_ESCAPEES_HUMANONLY "human_escapees"
 #define PERSONAL_LAST_ROUND "personal last round"
 #define SERVER_LAST_ROUND "server last round"
@@ -36,7 +36,7 @@
 				list_of_mobs_on_shuttle += M
 			if(M.stat != DEAD && !isbrain(M) && !iscameramob(M))
 				num_survivors++
-				if(SSevacuation.controller.state >= EVACUATION_NO_RETURN && (M.onCentCom() || M.onSyndieBase()))
+				if(M.onCentCom() || M.onSyndieBase() || evac_areas[get_area(M)])
 					num_escapees++
 					if(ishuman(M))
 						num_human_escapees++
@@ -108,7 +108,7 @@
 	.[POPCOUNT_SURVIVORS] = num_survivors
 	.[POPCOUNT_ESCAPEES] = num_escapees
 	.[POPCOUNT_ESCAPEES_HUMANONLY] = num_human_escapees
-	.[POPCOUNT_SHUTTLE_ESCAPEES] = num_shuttle_escapees
+	.[POPCOUNT_EVAC_ESCAPEES] = num_shuttle_escapees
 	.["all_mobs_on_shuttle"] = list_of_mobs_on_shuttle
 	.["human_escapees_list"] = list_of_human_escapees
 	.["station_integrity"] = station_integrity
@@ -334,7 +334,6 @@
 
 /datum/controller/subsystem/ticker/proc/survivor_report(popcount)
 	var/list/parts = list()
-	var/station_evacuated = (SSevacuation.controller.state >= EVACUATION_NO_RETURN)
 
 	if(GLOB.round_id)
 		var/statspage = CONFIG_GET(string/roundstatsurl)
@@ -345,9 +344,8 @@
 	var/total_players = GLOB.joined_player_list.len
 	if(total_players)
 		parts+= "[FOURSPACES]Total Population: <B>[total_players]</B>"
-		if(station_evacuated)
-			parts += "<BR>[FOURSPACES]Evacuation Rate: <B>[popcount[POPCOUNT_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_ESCAPEES]/total_players)]%)</B>"
-			parts += "[FOURSPACES](on emergency shuttle): <B>[popcount[POPCOUNT_SHUTTLE_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_SHUTTLE_ESCAPEES]/total_players)]%)</B>"
+		parts += "<BR>[FOURSPACES]Evacuation Rate: <B>[popcount[POPCOUNT_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_ESCAPEES]/total_players)]%)</B>"
+		parts += "[FOURSPACES](on means of evacuation): <B>[popcount[POPCOUNT_EVAC_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_EVAC_ESCAPEES]/total_players)]%)</B>"
 		parts += "[FOURSPACES]Survival Rate: <B>[popcount[POPCOUNT_SURVIVORS]] ([PERCENT(popcount[POPCOUNT_SURVIVORS]/total_players)]%)</B>"
 		if(SSblackbox.first_death)
 			var/list/ded = SSblackbox.first_death
@@ -425,8 +423,9 @@
 	var/mob/M = C.mob
 	if(M.mind && !isnewplayer(M))
 		if(M.stat != DEAD && !isbrain(M))
-			if(SSevacuation.controller.state >= EVACUATION_NO_RETURN)
-				if(!M.onCentCom() && !M.onSyndieBase())
+			if(SSevacuation.station_evacuated())
+				var/list/area/evac_areas = SSevacuation.get_endgame_areas()
+				if(!M.onCentCom() && !M.onSyndieBase() && !evac_areas[get_area(M)])
 					parts += "<div class='panel stationborder'>"
 					parts += "<span class='marooned'>You managed to survive, but were marooned on [station_name()]...</span>"
 				else

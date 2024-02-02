@@ -321,7 +321,7 @@
 		SSevacuation.controller.start_evacuation(src, reason)
 
 	// hack to display shuttle timer
-	if(SSevacuation.controller.state != EVACUATION_IDLE)
+	if(SSevacuation.controller.state != EVACUATION_STATE_IDLE)
 		var/obj/machinery/computer/communications/C = locate() in GLOB.machines
 		if(C)
 			C.post_status("shuttle")

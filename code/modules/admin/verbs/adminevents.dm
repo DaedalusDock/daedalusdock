@@ -154,7 +154,7 @@
 	if(!check_rights(R_ADMIN))
 		return
 
-	if(SSevacuation.controller.state >= EVACUATION_INITIATED)
+	if(SSevacuation.controller.state >= EVACUATION_STATE_INITIATED)
 		return
 
 	var/confirm = tgui_alert(usr, "You sure?", "Confirm", list("Yes", "Yes (No Recall)", "No"))
@@ -180,7 +180,7 @@
 
 	SSevacuation.admin_no_recall = FALSE
 
-	if(SSevacuation.controller.state >= EVACUATION_AWAITING)
+	if(SSevacuation.controller.state >= EVACUATION_STATE_AWAITING)
 		return
 
 	SSshuttle.emergency.cancel()
@@ -192,7 +192,7 @@
 
 /client/proc/admin_disable_evac()
 	set category = "Admin.Events"
-	set name = "Disable Shuttle"
+	set name = "Disable Evacuation"
 
 	if(!check_rights(R_ADMIN))
 		return
@@ -210,7 +210,7 @@
 
 /client/proc/admin_enable_evac()
 	set category = "Admin.Events"
-	set name = "Enable Shuttle"
+	set name = "Enable Evacuation"
 
 	if(!check_rights(R_ADMIN))
 		return

@@ -191,8 +191,8 @@
 		owner.adjustToxLoss(1)
 		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.4)
 		if(owner.stat != CONSCIOUS && prob(20))
-			// Don't put us in a deep sleep if the shuttle's here. QoL, mainly.
-			if(SSevacuation.controller.state == EVACUATION_AWAITING && is_station_level(owner.z))
+			// Don't put us in a deep sleep if evac is in process. QoL, mainly.
+			if(SSevacuation.evacuation_in_progress() && is_station_level(owner.z))
 				to_chat(owner, span_warning("You're so tired... but you can't miss the evacuation..."))
 
 			else

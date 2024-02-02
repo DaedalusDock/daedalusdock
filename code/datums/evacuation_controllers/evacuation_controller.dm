@@ -2,7 +2,7 @@
 	/// Unique identifier for UI purposes
 	var/identifier = EVACUATION_CONTROLLER_DEFAULT
 	/// The current state of the evacuation
-	var/state = EVACUATION_IDLE
+	var/state = EVACUATION_STATE_IDLE
 	/// How many times was evacuation triggered
 	var/evac_calls_count = 0
 	/// Where was the last evacuation call
@@ -17,7 +17,7 @@
 /datum/evacuation_controller/proc/can_evac(mob/user)
 	if(evacuation_disabled)
 		return "Evacuation is disabled"
-	if(state >= EVACUATION_IDLE)
+	if(state >= EVACUATION_STATE_IDLE)
 		return "Evacuation is already in progress"
 	return TRUE
 
@@ -43,7 +43,7 @@
 /datum/evacuation_controller/proc/can_cancel(mob/user)
 	if(SSevacuation.cancel_blocked || cancel_disabled)
 		return FALSE
-	if(state == EVACUATION_IDLE || state >= EVACUATION_NO_RETURN)
+	if(state == EVACUATION_STATE_IDLE || state >= EVACUATION_STATE_NORETURN)
 		return FALSE
 	return TRUE
 
@@ -62,7 +62,7 @@
 /datum/evacuation_controller/proc/get_customizable_shuttles()
 	return list()
 
-/// Returns a list of evac areas. E.g. escape pods, shuttles, etc. Doesn't include CentCom
+/// Returns assoc list of evac areas = TRUE. E.g. escape pods, shuttles, etc. Doesn't include CentCom
 /datum/evacuation_controller/proc/get_endgame_areas()
 	return list()
 

@@ -36,7 +36,6 @@ SUBSYSTEM_DEF(autotransfer)
 		targettime = targettime + voteinterval
 		curvotes++
 	else
-		SSevacuation.cancel_blocked = TRUE
 		SSevacuation.trigger_auto_evac(EVACUATION_REASON_LONG_ROUND)
 
 #undef NO_MAXVOTES_CAP

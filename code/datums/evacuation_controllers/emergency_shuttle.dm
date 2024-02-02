@@ -110,7 +110,7 @@
 		message += "\n\nWarning: Shuttle recall subroutines disabled; Recall not possible."
 
 	emergency.request(null, call_time)
-	state = EVACUATION_INITIATED
+	state = EVACUATION_STATE_INITIATED
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(sec_level_updated))
 	// UnregisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED)
 
@@ -156,7 +156,7 @@
 	if(!..())
 		return FALSE
 	emergency.cancel(get_area(user))
-	state = EVACUATION_IDLE
+	state = EVACUATION_STATE_IDLE
 	log_shuttle("[key_name(user)] has recalled the shuttle.")
 	message_admins("[ADMIN_LOOKUPFLW(user)] has recalled the shuttle.")
 	deadchat_broadcast(" has recalled the shuttle from [span_name("[get_area_name(user, TRUE)]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)
@@ -164,16 +164,16 @@
 
 /datum/evacuation_controller/shuttle/get_antag_panel()
 	switch(SSevacuation.controller.state)
-		if(EVACUATION_IDLE)
+		if(EVACUATION_STATE_IDLE)
 			return "<a href='?_src_=holder;[HrefToken()];start_evac=1'>Start Evacuation</a><br>"
-		if(EVACUATION_INITIATED)
+		if(EVACUATION_STATE_INITIATED)
 			var/timeleft = emergency.timeLeft()
 			var/dat = "ETA: <a href='?_src_=holder;[HrefToken()];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_leading(num2text(timeleft % 60), 2, "0")]</a><BR>"
 			return dat + "<a href='?_src_=holder;[HrefToken()];start_evac=2'>Send Back</a><br>"
-		if(EVACUATION_AWAITING, EVACUATION_NO_RETURN)
+		if(EVACUATION_STATE_AWAITING, EVACUATION_STATE_NORETURN)
 			var/timeleft = emergency.timeLeft()
 			return "ETA: <a href='?_src_=holder;[HrefToken()];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_leading(num2text(timeleft % 60), 2, "0")]</a><BR>"
-		if(EVACUATION_FINISHED)
+		if(EVACUATION_STATE_FINISHED)
 			return "Finished<BR>"
 
 /datum/evacuation_controller/shuttle/get_evac_areas()

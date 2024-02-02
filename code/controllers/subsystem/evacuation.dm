@@ -36,10 +36,10 @@ SUBSYSTEM_DEF(evacuation)
 	message_admins(CREW_DEATH_MESSAGE)
 	log_evacuation("[CREW_DEATH_MESSAGE] Alive: [alive], Roundstart: [total], Threshold: [threshold]")
 
-	cancel_blocked = TRUE
 	trigger_auto_evac(EVACUATION_REASON_CREW_DEATH)
 
 /datum/controller/subsystem/evacuation/proc/trigger_auto_evac(reason)
+	cancel_blocked = TRUE
 	for(var/identifier in controllers)
 		controllers[identifier].start_automatic_evacuation(reason)
 
@@ -104,7 +104,10 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/get_endgame_areas()
 	var/list/areas = list()
 	for(var/identifier in controllers)
-		areas += controllers[identifier].get_endgame_areas()
+		var/datum/evacuation_controller/controller = controllers[identifier]
+		// We only want to add the areas if the controller is in a state where evacuation has finished
+		if(controller.state >= EVACUATION_STATE_NORETURN)
+			areas += controller.get_endgame_areas()
 	return areas
 
 /datum/controller/subsystem/evacuation/proc/get_stat_data()
@@ -118,6 +121,18 @@ SUBSYSTEM_DEF(evacuation)
 	for(var/identifier in controllers)
 		status += controllers[identifier].get_world_topic_status()
 	return status
+
+/datum/controller/subsystem/evacuation/proc/evacuation_in_progress()
+	for(var/identifier in controllers)
+		if(controllers[identifier].state == EVACUATION_STATE_AWAITING)
+			return TRUE
+	return FALSE
+
+/datum/controller/subsystem/evacuation/proc/station_evacuated()
+	for(var/identifier in controllers)
+		if(controllers[identifier].state >= EVACUATION_STATE_NORETURN)
+			return TRUE
+	return FALSE
 
 /datum/controller/subsystem/evacuation/Topic(href, list/href_list)
 	..()

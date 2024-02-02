@@ -10,7 +10,7 @@
 		return FALSE //They can't pay?
 	if(SSshuttle.shuttle_purchased == SHUTTLEPURCHASE_FORCED)
 		return FALSE //don't do it if there's nothing to insure
-	if(SSevacuation.controller.state >= EVACUATION_AWAITING)
+	if(SSevacuation.controller.state >= EVACUATION_STATE_AWAITING)
 		return FALSE //catastrophes won't trigger so no point
 	return ..()
 
@@ -38,7 +38,7 @@
 	SScommunications.send_message(insurance_message, unique = TRUE)
 
 /datum/round_event/shuttle_insurance/proc/answered()
-	if(SSevacuation.controller.state >= EVACUATION_AWAITING)
+	if(SSevacuation.controller.state >= EVACUATION_STATE_AWAITING)
 		priority_announce("You are definitely too late to purchase insurance, my friends. Our agents don't work on site.", ship_name)
 		return
 	if(insurance_message && insurance_message.answered == 1)

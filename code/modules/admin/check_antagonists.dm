@@ -124,11 +124,9 @@
 		tgui_alert(usr, "The game hasn't started yet!")
 		return
 	var/list/dat = list("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Round Status</title></head><body><h1><B>Round Status</B></h1>")
-	if(IS_DYNAMIC_GAME_MODE) // Currently only used by dynamic. If more start using this, find a better way.
-		dat += "<a href='?_src_=holder;[HrefToken()];gamemode_panel=1'>Game Mode Panel</a><br>"
+	dat += "<a href='?_src_=holder;[HrefToken()];gamemode_panel=1'>Game Mode Panel</a><br>"
 	dat += "Round Duration: <B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B><BR>"
-	dat += "<B>Evacuation</B><BR>"
-	dat += SSevacuation.controller.get_antag_panel()
+	dat += "<a href='?_src_=holder;[HrefToken()];evac_panel=1'>Evacuation Panel</a><br>"
 	dat += "<a href='?_src_=holder;[HrefToken()];end_round=[REF(usr)]'>End Round Now</a><br>"
 	if(SSticker.delay_end)
 		dat += "<a href='?_src_=holder;[HrefToken()];undelay_round_end=1'>End Round Normally</a><br>"

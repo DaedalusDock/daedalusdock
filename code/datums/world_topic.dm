@@ -230,7 +230,7 @@
 	.["popcap"] = max(CONFIG_GET(number/soft_popcap), CONFIG_GET(number/hard_popcap), CONFIG_GET(number/extreme_popcap)) //generalized field for this concept for use across ss13 codebases
 	.["bunkered"] = CONFIG_GET(flag/panic_bunker) || FALSE
 	.["interviews"] = CONFIG_GET(flag/panic_bunker_interview) || FALSE
-	. += SSevacuation.controller?.get_world_status() || list()
+	. += SSevacuation.get_world_topic_status()
 
 //Status Cog Support Code
 /datum/world_topic/whois

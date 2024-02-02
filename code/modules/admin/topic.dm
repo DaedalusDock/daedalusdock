@@ -93,47 +93,14 @@
 			return
 		SSticker.mode.admin_panel()
 
+	else if(href_list["evac_panel"])
+		if(!check_rights(R_ADMIN))
+			return
+		SSevacuation.admin_panel()
+
 	else if(href_list["start_evac"])
 		if(!check_rights(R_ADMIN))
 			return
-
-		switch(href_list["start_evac"])
-			if("1")
-				if(SSevacuation.controller.state >= EVACUATION_AWAITING)
-					return
-				SSshuttle.emergency.request()
-				log_admin("[key_name(usr)] called the Emergency Shuttle.")
-				message_admins(span_adminnotice("[key_name_admin(usr)] called the Emergency Shuttle to the station."))
-
-			if("2")
-				if(SSevacuation.controller.state >= EVACUATION_AWAITING)
-					return
-				switch(SSshuttle.emergency.mode)
-					if(SHUTTLE_CALL)
-						SSshuttle.emergency.cancel()
-						log_admin("[key_name(usr)] sent the Emergency Shuttle back.")
-						message_admins(span_adminnotice("[key_name_admin(usr)] sent the Emergency Shuttle back."))
-					else
-						SSshuttle.emergency.cancel()
-						log_admin("[key_name(usr)] called the Emergency Shuttle.")
-						message_admins(span_adminnotice("[key_name_admin(usr)] called the Emergency Shuttle to the station."))
-
-	else if(href_list["edit_shuttle_time"])
-		if(!check_rights(R_SERVER))
-			return
-
-		var/timer = input("Enter new shuttle duration (seconds):","Edit Shuttle Timeleft", SSshuttle.emergency.timeLeft() ) as num|null
-		if(!timer)
-			return
-		SSshuttle.emergency.setTimer(timer SECONDS)
-		log_admin("[key_name(usr)] edited the Emergency Shuttle's timeleft to [timer] seconds.")
-		minor_announce("The emergency shuttle will reach its destination in [DisplayTimeText(timer SECONDS)].")
-		message_admins(span_adminnotice("[key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [timer] seconds."))
-	else if(href_list["trigger_centcom_recall"])
-		if(!check_rights(R_ADMIN))
-			return
-
-		usr.client.trigger_centcom_recall()
 
 	else if(href_list["move_shuttle"])
 		if(!check_rights(R_ADMIN))
@@ -153,6 +120,7 @@
 			return
 		shuttle_console.admin_controlled = !shuttle_console.admin_controlled
 		to_chat(usr, "[shuttle_console] was [shuttle_console.admin_controlled ? "locked" : "unlocked"].", confidential = TRUE)
+
 	else if(href_list["delay_round_end"])
 		if(!check_rights(R_SERVER))
 			return
@@ -175,6 +143,7 @@
 
 		log_admin("[key_name(usr)] delayed the round end for reason: [SSticker.admin_delay_notice]")
 		message_admins("[key_name_admin(usr)] delayed the round end for reason: [SSticker.admin_delay_notice]")
+
 	else if(href_list["undelay_round_end"])
 		if(!check_rights(R_SERVER))
 			return
@@ -190,6 +159,7 @@
 			message_admins("[key_name_admin(usr)] undelayed the round end. You must now manually Reboot World to start the next shift.")
 		else
 			message_admins("[key_name_admin(usr)] undelayed the round end.")
+
 	else if(href_list["end_round"])
 		if(!check_rights(R_ADMIN))
 			return

@@ -37,7 +37,7 @@ SUBSYSTEM_DEF(statpanels)
 			"Players Playing/Connected: [get_active_player_count()]/[length(GLOB.clients)]"
 		)
 
-		global_data += SSevacuation.controller.get_stat_data()
+		global_data += SSevacuation.get_stat_data()
 		src.currentrun = GLOB.clients.Copy()
 		mc_data = null
 

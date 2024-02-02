@@ -17,7 +17,7 @@
 	var/num_shuttle_escapees = 0 //Above and on escape shuttle
 	var/list/list_of_human_escapees = list() //References to all escaped humans
 	var/list/list_of_mobs_on_shuttle = list()
-	var/list/area/evac_areas = SSevacuation.controller.get_evac_areas()
+	var/list/area/evac_areas = SSevacuation.get_endgame_areas()
 
 	for(var/mob/M in GLOB.mob_list)
 		var/list/mob_data = list()

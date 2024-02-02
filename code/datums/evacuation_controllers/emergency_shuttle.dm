@@ -6,6 +6,8 @@
 	var/emergency_call_time
 	var/emergency_escape_time
 	var/emergency_dock_time
+	var/last_mode
+	var/last_call_time
 
 /datum/evacuation_controller/shuttle/New()
 	var/obj/effect/landmark/backup_mark = locate(/obj/effect/landmark/backup_escape_shuttle) in world
@@ -188,6 +190,48 @@
 		"shuttle_mode" = emergency.mode,
 		"shuttle_timer" = emergency.timeLeft()
 		)
+
+/datum/evacuation_controller/shuttle/on_hostile_environment()
+	if(emergency.mode == SHUTTLE_IGNITING)
+		emergency.mode = SHUTTLE_STRANDED
+		emergency.timer = null
+		emergency.sound_played = FALSE
+		priority_announce("Hostile environment detected. \
+			Departure has been postponed indefinitely pending \
+			conflict resolution.",
+			"LRSV Icarus Announcement",
+			do_not_modify = TRUE
+		)
+
+/datum/evacuation_controller/shuttle/on_hostile_environment_cleared()
+	if(emergency.mode == SHUTTLE_STRANDED)
+		emergency.mode = SHUTTLE_DOCKED
+		emergency.setTimer(emergency_dock_time)
+		priority_announce("Hostile environment resolved. \
+			You have 3 minutes to board the Emergency Shuttle.",
+			"LRSV Icarus Announcement",
+			sound_type = ANNOUNCER_SHUTTLEDOCK,
+			do_not_modify = TRUE
+		)
+
+/datum/evacuation_controller/shuttle/on_evacuation_disabled()
+	last_mode = emergency.mode
+	last_call_time = emergency.timeLeft(1)
+	emergency.setTimer(0)
+	emergency.mode = SHUTTLE_DISABLED
+	priority_announce(
+		"Warning: Emergency Shuttle uplink failure, shuttle disabled until further notice.",
+		"LRSV Icarus Announcement",
+		"Emergency Shuttle Uplink Alert",
+		'sound/misc/announce_dig.ogg'
+	)
+
+/datum/evacuation_controller/shuttle/on_evacuation_enabled()
+	emergency.mode = last_mode
+	if(last_call_time < 10 SECONDS && last_mode != SHUTTLE_IDLE)
+		last_call_time = 10 SECONDS //Make sure no insta departures.
+	emergency.setTimer(last_call_time)
+	priority_announce("Warning: Emergency Shuttle uplink reestablished, shuttle enabled.", "LRSV Icarus Announcement", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
 
 /obj/effect/landmark/escape_shuttle
 	name = "emergency shuttle"

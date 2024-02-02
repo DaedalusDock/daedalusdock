@@ -27,10 +27,10 @@
 /datum/evacuation_controller/proc/cancel_evacuation()
 	return can_recall()
 
-/datum/evacuation_controller/proc/on_evacuation_blocked()
+/datum/evacuation_controller/proc/on_hostile_environment()
 	return
 
-/datum/evacuation_controller/proc/on_evacuation_unblocked()
+/datum/evacuation_controller/proc/on_hostile_environment_cleared()
 	return
 
 /datum/evacuation_controller/proc/get_antag_panel()
@@ -44,3 +44,9 @@
 
 /datum/evacuation_controller/proc/get_world_status()
 	return list()
+
+/datum/evacuation_controller/proc/on_evacuation_disabled()
+	return
+
+/datum/evacuation_controller/proc/on_evacuation_enabled()
+	return

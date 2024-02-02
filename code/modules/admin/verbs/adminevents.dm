@@ -190,6 +190,40 @@
 
 	return
 
+/client/proc/admin_disable_evac()
+	set category = "Admin.Events"
+	set name = "Disable Shuttle"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	if(SSevacuation.evacuation_disabled)
+		to_chat(usr, span_warning("Error, evacuation is already disabled."))
+		return
+
+	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
+		return
+
+	message_admins(span_adminnotice("[key_name_admin(usr)] disabled the shuttle."))
+
+	SSevacuation.disable_evacuation()
+
+/client/proc/admin_enable_evac()
+	set category = "Admin.Events"
+	set name = "Enable Shuttle"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	if(!SSevacuation.evacuation_disabled)
+		to_chat(usr, span_warning("Error, shuttle not disabled."))
+		return
+
+	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
+		return
+
+	SSevacuation.enable_evacuation()
+
 /client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in GLOB.nuke_list)
 	set category = "Admin.Events"
 	set name = "Toggle Nuke"

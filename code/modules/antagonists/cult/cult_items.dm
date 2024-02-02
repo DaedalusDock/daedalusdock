@@ -544,7 +544,7 @@ Striking a noncultist, however, will tear their flesh."}
 		to_chat(user, span_warning("Nar'Sie is already on this plane, there is no delaying the end of all things."))
 		return
 
-	if(SSshuttle.emergency.mode == SHUTTLE_CALL)
+	if(SSevacuation.controller.state == EVACUATION_INITIATED)
 		var/cursetime = 3 MINUTES
 		var/timer = SSshuttle.emergency.timeLeft(1) + cursetime
 		var/security_num = seclevel2num(get_security_level())

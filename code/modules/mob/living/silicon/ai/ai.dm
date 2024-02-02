@@ -318,7 +318,7 @@
 		return
 
 	if(trim(reason))
-		SSshuttle.requestEvac(src, reason)
+		SSevacuation.controller.start_evacuation(src, reason)
 
 	// hack to display shuttle timer
 	if(SSevacuation.controller.state != EVACUATION_IDLE)

@@ -360,7 +360,7 @@
 	return TRUE
 
 /datum/team/nuclear/proc/get_result()
-	var/evacuation = (SSevacuation.current.state >= EVACUATION_NO_RETURN)
+	var/evacuation = (SSevacuation.controller.state >= EVACUATION_NO_RETURN)
 	var/disk_rescued = disk_rescued()
 	var/syndies_didnt_escape = !syndies_escaped()
 	var/station_was_nuked = GLOB.station_was_nuked

@@ -16,6 +16,8 @@ SUBSYSTEM_DEF(evacuation)
 	var/no_recall = FALSE
 	/// Did admins force-prevent the recall of evacuation
 	var/admin_no_recall = FALSE
+	/// Did admins block the evacuation
+	var/evacuation_disabled = FALSE
 
 /datum/controller/subsystem/evacuation/fire(resumed)
 	if(!SSticker.HasRoundStarted() || length(hostile_environments) || controller.evac_allowed())
@@ -61,6 +63,16 @@ SUBSYSTEM_DEF(evacuation)
 			hostile_environments -= d
 
 	if(length(hostile_environments))
-		controller.on_evacuation_blocked()
+		controller.on_hostile_environment()
 	else
-		controller.on_evacuation_unblocked()
+		controller.on_hostile_environment_cleared()
+
+/datum/controller/subsystem/evacuation/proc/disable_evacuation()
+	evacuation_disabled = TRUE
+	admin_no_recall = TRUE
+	controller.on_evacuation_disabled()
+
+/datum/controller/subsystem/evacuation/proc/enable_evacuation()
+	evacuation_disabled = FALSE
+	admin_no_recall = FALSE
+	controller.on_evacuation_enabled()

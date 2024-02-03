@@ -322,7 +322,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 			return PROCESS_KILL
 
 		if(SD_EMERGENCY)
-			return display_shuttle_status(SSshuttle.emergency)
+			return SSevacuation.emergency_status_display_process(src)
 
 		if(SD_MESSAGE)
 			return PROCESS_KILL
@@ -334,7 +334,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 /obj/machinery/status_display/evac/examine(mob/user)
 	. = ..()
 	if(current_mode == SD_EMERGENCY)
-		. += examine_shuttle(user, SSshuttle.emergency)
+		. += SSevacuation.status_display_examine(user, src)
 	else if(!message1 && !message2)
 		. += "The display is blank."
 

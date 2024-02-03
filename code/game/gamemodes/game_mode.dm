@@ -59,7 +59,7 @@
 /datum/game_mode/proc/check_finished(force_ending) //to be called by SSticker
 	if(!SSticker.setup_done)
 		return FALSE
-	if(SSevacuation.controller.state >= EVACUATION_STATE_FINISHED)
+	if(SSevacuation.station_evacuated())
 		return TRUE
 	if(GLOB.station_was_nuked)
 		return TRUE

@@ -302,12 +302,15 @@
 		Model: [connected_robot.designation] | Loc: [get_area_name(connected_robot, TRUE)] | Status: [robot_status]"
 	. += "AI shell beacons detected: [LAZYLEN(GLOB.available_ai_shells)]" //Count of total AI shells
 
-/mob/living/silicon/ai/proc/ai_call_shuttle()
+/mob/living/silicon/ai/proc/ai_start_evacuation()
 	if(control_disabled)
 		to_chat(usr, span_warning("Wireless control is disabled!"))
 		return
 
-	var/can_evac_or_fail_reason = SSevacuation.controller.can_evac(src)
+	var/list/evacuation_means = SSevacuation.get_controllers_list_ai()
+	var/identifier = tgui_input_list(src, "Choose means of evacuation", "Evacuation", evacuation_means)
+
+	var/can_evac_or_fail_reason = SSevacuation.can_evac(src, identifier)
 	if(can_evac_or_fail_reason != TRUE)
 		to_chat(usr, span_alert("[can_evac_or_fail_reason]"))
 		return
@@ -318,13 +321,11 @@
 		return
 
 	if(trim(reason))
-		SSevacuation.controller.start_evacuation(src, reason)
-
-	// hack to display shuttle timer
-	if(SSevacuation.controller.state != EVACUATION_STATE_IDLE)
-		var/obj/machinery/computer/communications/C = locate() in GLOB.machines
-		if(C)
-			C.post_status("shuttle")
+		if(SSevacuation.request_evacuation(src, reason, identifier))
+			// hack to display shuttle timer
+			var/obj/machinery/computer/communications/C = locate() in GLOB.machines
+			if(C)
+				C.post_status("shuttle")
 
 /mob/living/silicon/ai/can_interact_with(atom/A)
 	. = ..()

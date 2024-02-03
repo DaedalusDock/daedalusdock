@@ -340,7 +340,7 @@
 	for(var/obj/item/disk/nuclear/D in SSpoints_of_interest.real_nuclear_disks)
 		//If emergency shuttle is in transit disk is only safe on it
 		if(SSevacuation.station_evacuated())
-			var/list/area/evac_areas = SSevacuation.get_evacuation_areas()
+			var/list/area/evac_areas = SSevacuation.get_endgame_areas()
 			if(!D.onCentCom() && !evac_areas[get_area(D)])
 				return FALSE
 		else //Otherwise disk is safe when on station
@@ -357,7 +357,6 @@
 	return TRUE
 
 /datum/team/nuclear/proc/get_result()
-	var/evacuation = (SSevacuation.controller.state >= EVACUATION_STATE_NORETURN)
 	var/disk_rescued = disk_rescued()
 	var/syndies_didnt_escape = !syndies_escaped()
 	var/station_was_nuked = GLOB.station_was_nuked

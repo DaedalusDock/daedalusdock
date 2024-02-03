@@ -41,19 +41,27 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/trigger_auto_evac(reason)
 	cancel_blocked = TRUE
 	for(var/identifier in controllers)
-		controllers[identifier].start_automatic_evacuation(reason)
+		if(controllers[identifier].start_automatic_evacuation(reason))
+			return
 
 /datum/controller/subsystem/evacuation/proc/can_evac(mob/caller, controller_id)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
 		return "Error 500. Please contact your system administrator."
+	for(var/identifier in controllers)
+		if(controllers[identifier].state >= EVACUATION_STATE_AWAITING)
+			return "Evacuation is already in progress."
 	return controller.can_evac(caller)
 
-/datum/controller/subsystem/evacuation/proc/request_evacuation(mob/caller, reason, controller_id)
+/datum/controller/subsystem/evacuation/proc/request_evacuation(mob/caller, reason, controller_id, admin = FALSE)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
 		return
-	controller.trigger_evacuation(caller, reason)
+	for(var/identifier in controllers)
+		if(controllers[identifier].state >= EVACUATION_STATE_AWAITING)
+			to_chat(caller, "Evacuation is already in progress.")
+			return
+	return controller.trigger_evacuation(caller, reason, admin)
 
 /datum/controller/subsystem/evacuation/proc/can_cancel(mob/caller, controller_id)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
@@ -133,6 +141,54 @@ SUBSYSTEM_DEF(evacuation)
 		if(controllers[identifier].state >= EVACUATION_STATE_NORETURN)
 			return TRUE
 	return FALSE
+
+/datum/controller/subsystem/evacuation/proc/delay_evacuation(identifier, delay)
+	if(controllers[identifier])
+		controllers[identifier].delay_evacuation(delay)
+
+/datum/controller/subsystem/evacuation/proc/get_controllers_names(active_only = FALSE)
+	var/list/names = list()
+	for(var/identifier in controllers)
+		if(!active_only || controllers[identifier].state >= EVACUATION_STATE_AWAITING)
+			names += controllers[identifier].name
+	return names
+
+/datum/controller/subsystem/evacuation/proc/get_controllers_list_ai()
+	var/list/names = list()
+	for(var/identifier in controllers)
+		names["[controllers[identifier].name] | [controllers[identifier].get_state()]"] = identifier
+	return names
+
+/datum/controller/subsystem/evacuation/proc/get_active_controller()
+	for(var/identifier in controllers)
+		if(controllers[identifier].state >= EVACUATION_STATE_AWAITING)
+			return identifier
+	return null
+
+/datum/controller/subsystem/evacuation/proc/get_discord_status()
+	. = ""
+	for(var/identifier in controllers)
+		if(controllers[identifier].state != EVACUATION_STATE_IDLE)
+			. += "\n" + controllers[identifier].get_discord_status()
+	return .
+
+/datum/controller/subsystem/evacuation/proc/emergency_status_display_process(obj/machinery/status_display/evac/display)
+	for(var/identifier in controllers)
+		if(controllers[identifier].state != EVACUATION_STATE_IDLE)
+			. = controllers[identifier].emergency_status_display_process(display)
+			if(.)
+				return .
+	return PROCESS_KILL
+
+/datum/controller/subsystem/evacuation/proc/status_display_examine(mob/user, obj/machinery/status_display/evac/display)
+	. = list()
+	for(var/identifier in controllers)
+		. += controllers[identifier].status_display_examine(user, display)
+	return .
+
+/datum/controller/subsystem/evacuation/proc/centcom_recall(identifier, message)
+	if(controllers[identifier])
+		controllers[identifier].centcom_recall(message)
 
 /datum/controller/subsystem/evacuation/Topic(href, list/href_list)
 	..()

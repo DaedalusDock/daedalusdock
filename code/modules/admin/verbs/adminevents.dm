@@ -149,12 +149,13 @@
 
 /client/proc/admin_call_shuttle()
 	set category = "Admin.Events"
-	set name = "Call Shuttle"
+	set name = "Start Evacuation"
 
 	if(!check_rights(R_ADMIN))
 		return
 
-	if(SSevacuation.controller.state >= EVACUATION_STATE_INITIATED)
+	var/identifier = tgui_input_list(usr, "Choose evacuation option", "Evacuation", SSevacuation.get_controllers_names())
+	if(identifier == null)
 		return
 
 	var/confirm = tgui_alert(usr, "You sure?", "Confirm", list("Yes", "Yes (No Recall)", "No"))
@@ -162,9 +163,9 @@
 		if(null, "No")
 			return
 		if("Yes (No Recall)")
-			SSevacuation.admin_no_recall = TRUE
+			SSevacuation.block_cancel(identifier)
 
-	SSshuttle.emergency.request()
+	SSevacuation.request_evacuation(usr, null, identifier, admin = TRUE)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Call Shuttle") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] admin-called the emergency shuttle.")
 	message_admins(span_adminnotice("[key_name_admin(usr)] admin-called the emergency shuttle[confirm == "Yes (No Recall)" ? " (non-recallable)" : ""]."))
@@ -172,18 +173,20 @@
 
 /client/proc/admin_cancel_shuttle()
 	set category = "Admin.Events"
-	set name = "Cancel Shuttle"
+	set name = "Cancel Evacuation"
+
 	if(!check_rights(0))
 		return
+
+	var/identifier = tgui_input_list(usr, "Choose evacuation option", "Evacuation", SSevacuation.get_controllers_names(TRUE))
+	if(identifier == null)
+		return
+
 	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
 		return
 
-	SSevacuation.admin_no_recall = FALSE
-
-	if(SSevacuation.controller.state >= EVACUATION_STATE_AWAITING)
-		return
-
-	SSshuttle.emergency.cancel()
+	SSevacuation.unblock_cancel(identifier)
+	SSevacuation.request_cancel(usr, identifier)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Cancel Shuttle") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] admin-recalled the emergency shuttle.")
 	message_admins(span_adminnotice("[key_name_admin(usr)] admin-recalled the emergency shuttle."))
@@ -197,16 +200,15 @@
 	if(!check_rights(R_ADMIN))
 		return
 
-	if(SSevacuation.evacuation_disabled)
-		to_chat(usr, span_warning("Error, evacuation is already disabled."))
+	var/identifier = tgui_input_list(usr, "Choose evacuation option", "Evacuation", SSevacuation.get_controllers_names())
+	if(identifier == null)
 		return
 
 	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
 		return
 
-	message_admins(span_adminnotice("[key_name_admin(usr)] disabled the shuttle."))
-
-	SSevacuation.disable_evacuation()
+	message_admins(span_adminnotice("[key_name_admin(usr)] disabled the [identifier] evacuation option."))
+	SSevacuation.disable_evacuation(identifier)
 
 /client/proc/admin_enable_evac()
 	set category = "Admin.Events"
@@ -215,14 +217,14 @@
 	if(!check_rights(R_ADMIN))
 		return
 
-	if(!SSevacuation.evacuation_disabled)
-		to_chat(usr, span_warning("Error, shuttle not disabled."))
+	var/identifier = tgui_input_list(usr, "Choose evacuation option", "Evacuation", SSevacuation.get_controllers_names())
+	if(identifier == null)
 		return
 
 	if(tgui_alert(usr, "You sure?", "Confirm", list("Yes", "No")) != "Yes")
 		return
 
-	SSevacuation.enable_evacuation()
+	SSevacuation.enable_evacuation(identifier)
 
 /client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in GLOB.nuke_list)
 	set category = "Admin.Events"

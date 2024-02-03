@@ -78,7 +78,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 	if(!current_area || istype(current_area, /area/shuttle/escape/brig)) // Fails if they are in the shuttle brig
 		return FALSE
 	var/turf/current_turf = get_turf(M.current)
-	var/list/area/evac_areas = SSevacuation.controller.get_evacuation_areas()
+	var/list/area/evac_areas = SSevacuation.get_endgame_areas()
 	return current_turf.onCentCom() || current_turf.onSyndieBase() || evac_areas[current_area]
 
 /datum/objective/proc/check_completion()

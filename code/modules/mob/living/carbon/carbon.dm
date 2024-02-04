@@ -167,7 +167,7 @@
 				return
 			release_grabs(I)
 		else
-			if(!G.current_grab.can_throw || !isliving(G.affecting))
+			if(!G.current_grab.can_throw || !isliving(G.affecting) || G.affecting == src)
 				return
 
 			var/mob/living/throwable_mob = G.affecting

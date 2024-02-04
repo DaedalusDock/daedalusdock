@@ -215,6 +215,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return
 	if(!isliving(user))
 		return
+	if(user == victim)
+		return
 	user.move_grabbed_atoms_towards(src)
 
 

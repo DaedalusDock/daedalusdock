@@ -141,3 +141,6 @@
 /// Returns a list of strigns to display when examining the status display during evacuation
 /datum/evacuation_controller/proc/status_display_examine(mob/user, obj/machinery/status_display/evac/display)
 	return list()
+
+/datum/evacuation_controller/proc/get_evac_ui_data(mob/user)
+	return list()

@@ -7,7 +7,7 @@ SUBSYSTEM_DEF(evacuation)
 	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_GAME
 	/// Controllers that handle the evacuation of the station
-	var/list/datum/evacuation_controller/controllers
+	var/list/datum/evacuation_controller/controllers = list()
 	/// A list of things blocking evacuation
 	var/list/evacuation_blockers = list()
 	/// Whether you can cancel evacuation. Used by automatic evacuation
@@ -189,6 +189,12 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/centcom_recall(identifier, message)
 	if(controllers[identifier])
 		controllers[identifier].centcom_recall(message)
+
+/datum/controller/subsystem/evacuation/proc/get_evac_ui_data(mob/user)
+	var/list/data = list()
+	for(var/identifier in controllers)
+		data += list(controllers[identifier].get_evac_ui_data(user))
+	return data
 
 /datum/controller/subsystem/evacuation/Topic(href, list/href_list)
 	..()

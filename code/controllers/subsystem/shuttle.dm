@@ -75,8 +75,6 @@ SUBSYSTEM_DEF(shuttle)
 	/// The current shuttle loan event, if any.
 	var/datum/round_event/shuttle_loan/shuttle_loan
 
-	/// If the event happens where the crew can purchase shuttle insurance, catastrophe can't run.
-	var/shuttle_insurance = FALSE
 	// If the station has purchased a replacement escape shuttle this round.
 	var/shuttle_purchased = SHUTTLEPURCHASE_PURCHASABLE
 	/// For keeping track of ingame events that would unlock new shuttles, such as defeating a boss or discovering a secret item.

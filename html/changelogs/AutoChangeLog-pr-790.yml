@@ -1,0 +1,4 @@
+author: DTraitor
+delete-after: true
+changes:
+  - bugfix: Camera mobs (AI, Blob, etc) can move down on multi Z maps now

@@ -212,37 +212,29 @@
 	dir = EAST
 	port_direction = WEST
 	var/sound_played = 0 //If the launch sound has been sent to all players on the shuttle itself
+	//Set by the evacuation controller
+	var/escape_time
+	var/dock_time
 
 /obj/docking_port/mobile/emergency/canDock(obj/docking_port/stationary/S)
 	return SHUTTLE_CAN_DOCK //If the emergency shuttle can't move, the whole game breaks, so it will force itself to land even if it has to crush a few departments in the process
 
-/obj/docking_port/mobile/emergency/request(obj/docking_port/stationary/S, call_time)
+/obj/docking_port/mobile/emergency/request(obj/docking_port/stationary/S)
 	switch(mode)
 		// The shuttle can not normally be called while "recalling", so
 		// if this proc is called, it's via admin fiat
 		if(SHUTTLE_RECALL, SHUTTLE_IDLE, SHUTTLE_CALL)
-			var/datum/evacuation_controller/shuttle/controller = /datum/evacuation_controller/shuttle
-			var/escape_time = initial(controller.emergency_escape_time)
-			if(istype(SSevacuation.controller, /datum/evacuation_controller/shuttle))
-				controller = SSevacuation.controller
-				escape_time = controller.emergency_escape_time
 			mode = SHUTTLE_CALL
 			setTimer(escape_time * engine_coeff)
 
 /obj/docking_port/mobile/emergency/cancel(area/signalOrigin)
 	if(mode != SHUTTLE_CALL)
 		return
-	if(SSevacuation.no_recall || SSevacuation.admin_no_recall)
-		return
 
 	invertTimer()
 	mode = SHUTTLE_RECALL
 
-	if(prob(70))
-		SSevacuation.last_evac_call_loc = signalOrigin
-	else
-		SSevacuation.last_evac_call_loc = null
-	priority_announce("The emergency shuttle has been recalled.[SSevacuation.last_evac_call_loc ? " Recall signal traced. Results can be viewed on any communications console." : "" ]", FLAVOR_CENTCOM_NAME, sound_type = ANNOUNCER_SHUTTLERECALLED)
+	priority_announce("The emergency shuttle has been recalled.[signalOrigin ? " Recall signal traced. Results can be viewed on any communications console." : "" ]", FLAVOR_CENTCOM_NAME, sound_type = ANNOUNCER_SHUTTLERECALLED)
 
 	SSticker.emergency_reason = null
 
@@ -283,11 +275,6 @@
 					setTimer(20)
 					return
 				mode = SHUTTLE_DOCKED
-				var/datum/evacuation_controller/shuttle/controller = /datum/evacuation_controller/shuttle
-				var/dock_time = initial(controller.emergency_dock_time)
-				if(istype(SSevacuation.controller, /datum/evacuation_controller/shuttle))
-					controller = SSevacuation.controller
-					dock_time = controller.emergency_dock_time
 				setTimer(dock_time)
 				send2adminchat("Server", "The Emergency Shuttle has docked with the station.")
 				priority_announce("The Icarus has docked with the station. You have [timeLeft(600)] minutes to board before departure.", "LRSV Icarus Announcement", sound_type = ANNOUNCER_SHUTTLEDOCK)
@@ -296,9 +283,6 @@
 		if(SHUTTLE_DOCKED)
 			if(time_left <= ENGINES_START_TIME)
 				mode = SHUTTLE_IGNITING
-				SSevacuation.check_hostile_environment()
-				if(mode == SHUTTLE_STRANDED)
-					return
 				for(var/A in SSshuttle.mobile_docking_ports)
 					var/obj/docking_port/mobile/M = A
 					if(M.launch_status == UNLAUNCHED) //Pods will not launch from the mine/planet, and other ships won't launch unless we tell them to.
@@ -306,9 +290,6 @@
 
 		if(SHUTTLE_IGNITING)
 			var/success = TRUE
-			SSevacuation.check_hostile_environment()
-			if(mode == SHUTTLE_STRANDED)
-				return
 
 			success &= (check_transit_zone() == TRANSIT_READY)
 			for(var/A in SSshuttle.mobile_docking_ports)
@@ -326,7 +307,7 @@
 				priority_announce("Engines spooling up. Prepare for resonance jump.", "LRSV Icarus Announcement", do_not_modify = TRUE)
 				hyperspace_sound(HYPERSPACE_WARMUP, areas)
 
-			if(time_left <= 0 && !length(SSevacuation.hostile_environments))
+			if(time_left <= 0)
 				//move each escape pod (or applicable spaceship) to its corresponding transit dock
 				for(var/A in SSshuttle.mobile_docking_ports)
 					var/obj/docking_port/mobile/M = A
@@ -344,18 +325,10 @@
 					M.post_emergency_launch()
 				if(prob(10))
 					SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
-				var/datum/evacuation_controller/shuttle/controller = /datum/evacuation_controller/shuttle
-				var/escape_time = initial(controller.emergency_escape_time)
-				if(istype(SSevacuation.controller, /datum/evacuation_controller/shuttle))
-					controller = SSevacuation.controller
-					escape_time = controller.emergency_escape_time
 				setTimer(escape_time * engine_coeff)
 				priority_announce("The Icarus has entered the resonance gate and is enroute to it's destination. Estimate [timeLeft(600)] minutes until the shuttle docks at Sector Control.", "LRSV Icarus Announcement")
 				INVOKE_ASYNC(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, poll_hearts))
 				SSmapping.mapvote() //If no map vote has been run yet, start one.
-
-		if(SHUTTLE_STRANDED, SHUTTLE_DISABLED)
-			SSevacuation.check_hostile_environment()
 
 		if(SHUTTLE_ESCAPE)
 			if(sound_played && time_left <= HYPERSPACE_END_TIME)
@@ -394,11 +367,6 @@
 
 	mode = SHUTTLE_ESCAPE
 	launch_status = ENDGAME_LAUNCHED
-	var/datum/evacuation_controller/shuttle/controller = /datum/evacuation_controller/shuttle
-	var/escape_time = initial(controller.emergency_escape_time)
-	if(istype(SSevacuation.controller, /datum/evacuation_controller/shuttle))
-		controller = SSevacuation.controller
-		escape_time = controller.emergency_escape_time
 	setTimer(escape_time)
 	priority_announce("The Emergency Shuttle is preparing for direct jump. Estimate [timeLeft(600)] minutes until the shuttle docks at [FLAVOR_CENTCOM_SHORT].", "LSRV Icarus Announcement")
 

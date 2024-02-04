@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: You can no longer use self-grabs to propel yourself at the speed of light.
+  - bugfix: You can no longer throw yourself.

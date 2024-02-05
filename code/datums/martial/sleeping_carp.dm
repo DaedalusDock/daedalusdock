@@ -176,7 +176,7 @@
 
 /obj/item/staff/bostaff/Initialize(mapload)
 	. = ..()
-	icon_state_wielded = "base_icon_state[1]"
+	icon_state_wielded = "[base_icon_state][1]"
 
 /obj/item/staff/bostaff/update_icon_state()
 	icon_state = "[base_icon_state]0"

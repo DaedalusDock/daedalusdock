@@ -314,9 +314,9 @@ DEFINE_INTERACTABLE(/obj/item)
 		return TRUE
 
 /obj/item/update_icon_state()
-	. = ..()
 	if(wielded && icon_state_wielded)
 		icon_state = icon_state_wielded
+	return ..()
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
@@ -818,6 +818,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	// Change appearance
 	name = "[name] (Wielded)"
 	update_appearance()
+	user.update_held_items()
 	return TRUE
 
 /obj/item/proc/unwield(mob/living/user, show_message = TRUE, dropping = FALSE)
@@ -843,7 +844,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		if(!dropping)
 			var/slot = user.get_slot_by_item(src)
 			if(slot == ITEM_SLOT_HANDS)
-				user.update_worn_back()
+				user.update_held_items()
 			else if(slot)
 				user.update_clothing(slot)
 
@@ -999,7 +1000,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(flags & ITEM_SLOT_EYES)
 		owner.update_worn_glasses()
 	if(flags & ITEM_SLOT_EARS)
-		owner.update_inv_ears()
+		owner.update_worn_ears()
 	if(flags & ITEM_SLOT_MASK)
 		owner.update_worn_mask()
 	if(flags & ITEM_SLOT_HEAD)

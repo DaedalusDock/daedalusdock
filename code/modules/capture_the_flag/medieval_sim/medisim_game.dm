@@ -39,8 +39,7 @@
 			title = pick(list("Dame", "Lady"))
 		else
 			title = "Noble"
-	human_knight.real_name = "[title] [oldname]"
-	human_knight.name = human_knight.real_name
+	human_knight.set_real_name("[title] [oldname]")
 
 /obj/machinery/capture_the_flag/medisim/red
 	name = "\improper Redfield Data Realizer"

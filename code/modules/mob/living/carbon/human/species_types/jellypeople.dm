@@ -280,8 +280,7 @@
 	H.dna.transfer_identity(spare, transfer_SE=1)
 	spare.dna.mutant_colors = random_mutant_colors()
 	spare.dna.update_uf_block(DNA_MUTANT_COLOR_BLOCK)
-	spare.real_name = spare.dna.real_name
-	spare.name = spare.dna.real_name
+	spare.set_real_name(spare.dna.real_name)
 	spare.updateappearance(mutcolor_update=1)
 	spare.domutcheck()
 	spare.Move(get_step(H.loc, pick(NORTH,SOUTH,EAST,WEST)))

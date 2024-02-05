@@ -97,7 +97,7 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	var/obj/item/organ/tongue/abductor/T = H.getorganslot(ORGAN_SLOT_TONGUE)
 	T.mothership = "[team.name]"
 
-	H.real_name = "[team.name] [sub_role]"
+	H.set_real_name("[team.name] [sub_role]")
 	H.equipOutfit(outfit)
 
 	//Teleport to ship

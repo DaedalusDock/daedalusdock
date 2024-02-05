@@ -188,8 +188,7 @@
 /mob/living/simple_animal/hostile/bee/proc/assign_reagent(datum/reagent/R)
 	if(istype(R))
 		beegent = R
-		name = "[initial(name)] ([R.name])"
-		real_name = name
+		set_real_name("[initial(name)] ([R.name])")
 		//clear the old since this one is going to have some new value
 		RemoveElement(/datum/element/venomous)
 		AddElement(/datum/element/venomous, beegent.type, list(1, 5))

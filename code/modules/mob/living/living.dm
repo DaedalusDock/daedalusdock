@@ -5,7 +5,7 @@
 
 	register_init_signals()
 	if(unique_name)
-		set_name()
+		give_unique_name()
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_to_hud(src)
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
@@ -947,9 +947,6 @@
 /mob/living/proc/resist_restraints()
 	return
 
-/mob/living/proc/get_visible_name()
-	return name
-
 /mob/living/proc/update_gravity(gravity)
 	// Handle movespeed stuff
 	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
@@ -1271,8 +1268,7 @@
 // Generally the mob we are currently in is about to be deleted
 /mob/living/proc/wabbajack_act(mob/living/new_mob)
 	log_game("[key_name(src)] is being wabbajack polymorphed into: [new_mob.name]([new_mob.type]).")
-	new_mob.name = real_name
-	new_mob.real_name = real_name
+	new_mob.set_real_name(real_name)
 
 	if(mind)
 		mind.transfer_to(new_mob)
@@ -1575,10 +1571,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/remove_air(amount) //To prevent those in contents suffocating
 	return loc ? loc.remove_air(amount) : null
 
-/mob/living/proc/set_name()
+/// Gives simple mobs their unique/randomized name.
+/mob/living/proc/give_unique_name()
 	numba = rand(1, 1000)
-	name = "[name] ([numba])"
-	real_name = name
+	set_real_name("[name] ([numba])")
 
 /mob/living/proc/get_static_viruses() //used when creating blood and other infective objects
 	if(!LAZYLEN(diseases))

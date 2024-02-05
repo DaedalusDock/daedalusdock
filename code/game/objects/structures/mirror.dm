@@ -163,8 +163,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 				return TRUE
 			if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 				return TRUE
-			amazed_human.real_name = newname
-			amazed_human.name = newname
+
+			amazed_human.set_real_name(newname)
 			if(amazed_human.dna)
 				amazed_human.dna.real_name = newname
 			if(amazed_human.mind)

@@ -87,5 +87,5 @@
 	return
 
 ///Updates the handcuff overlay & HUD element.
-/mob/proc/update_inv_ears()
+/mob/proc/update_worn_ears()
 	return

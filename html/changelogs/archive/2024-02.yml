@@ -1,0 +1,23 @@
+2024-02-01:
+  DTraitor:
+  - refactor: Removed unnecessary checks in mod suits code
+  Kapu1178:
+  - bugfix: Items with unique appearances for being wielded work again.
+  - bugfix: Throwing processes at the correct rate.
+  - bugfix: A code error of which it's impact I am unsure of.
+  - rscadd: The dual-port vent pump is now in the RCD
+  - bugfix: Looping sounds play again.
+  TiviPlus, LemonInTheDark, ChungusGamer666, Watermelon914, vinylspiders, tyeagg, Kapu1178:
+  - rscadd: Added new particle effects for being on fire or wet.
+  - rscadd: Added new particle effects for firing ballistic weapons.
+  - rscadd: Added new particle effects for bullets impacting surfaces.
+  - rscadd: Bullets are now illuminated.
+  - rscadd: Bullets leave behind impact holes on most surfaces.
+2024-02-05:
+  DTraitor:
+  - bugfix: Camera mobs (AI, Blob, etc) can move down on multi Z maps now
+  Kapu1178:
+  - bugfix: You can no longer use self-grabs to propel yourself at the speed of light.
+  - bugfix: You can no longer throw yourself.
+  francinum:
+  - bugfix: Corrected mousedrag hotspots on the fancy cursor.

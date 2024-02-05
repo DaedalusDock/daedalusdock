@@ -139,6 +139,7 @@
 				return
 			belt = I
 			update_worn_belt()
+			update_name()
 
 		if(ITEM_SLOT_ID)
 			if(wear_id)
@@ -146,6 +147,7 @@
 
 			wear_id = I
 			sec_hud_set_ID()
+			update_name()
 			update_worn_id()
 
 		if(ITEM_SLOT_EARS)
@@ -153,7 +155,7 @@
 				return
 
 			ears = I
-			update_inv_ears()
+			update_worn_ears()
 
 		if(ITEM_SLOT_EYES)
 			if(glasses)
@@ -254,7 +256,11 @@
 	if(index && !QDELETED(src) && dna.species.mutanthands) //hand freed, fill with claws, skip if we're getting deleted.
 		put_in_hand(new dna.species.mutanthands(), index)
 
-	if(I == wear_suit)
+	if(I == head)
+		if(!QDELETED(src))
+			update_name()
+
+	else if(I == wear_suit)
 		if(s_store && invdrop)
 			dropItemToGround(s_store, TRUE) //It makes no sense for your suit storage to stay on you if you drop your suit.
 
@@ -313,18 +319,20 @@
 	else if(I == ears)
 		ears = null
 		if(!QDELETED(src))
-			update_inv_ears()
+			update_worn_ears()
 
 	else if(I == belt)
 		belt = null
 		if(!QDELETED(src))
 			update_worn_belt()
+			update_name()
 
 	else if(I == wear_id)
 		wear_id = null
 		sec_hud_set_ID()
 		if(!QDELETED(src))
 			update_worn_id()
+			update_name()
 
 	else if(I == r_store)
 		r_store = null
@@ -391,6 +399,7 @@
 	if(I.flags_inv & HIDEEYES)
 		update_worn_glasses()
 	sec_hud_set_security_status()
+	update_name()
 	..()
 
 /mob/living/carbon/human/head_update(obj/item/I, forced)
@@ -399,11 +408,15 @@
 	// Close internal air tank if helmet was the only breathing apparatus.
 	if (invalid_internals())
 		cutoff_internals()
+
 	if(I.flags_inv & HIDEEYES || forced)
 		update_worn_glasses()
+
 	if(I.flags_inv & HIDEEARS || forced)
 		update_body()
+
 	sec_hud_set_security_status()
+	update_name()
 	..()
 
 /mob/living/carbon/human/proc/equipOutfit(outfit, visualsOnly = FALSE)

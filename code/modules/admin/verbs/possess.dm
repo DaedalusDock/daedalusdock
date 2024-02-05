@@ -19,8 +19,7 @@
 		usr.name_archive = usr.real_name
 
 	usr.forceMove(O)
-	usr.real_name = O.name
-	usr.name = O.name
+	usr.set_real_name(O.name)
 	usr.reset_perspective(O)
 	usr.control_object = O
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Possess Object") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -33,12 +32,11 @@
 		return
 
 	if(usr.name_archive) //if you have a name archived
-		usr.real_name = usr.name_archive
+		usr.set_real_name(usr.name_archive)
 		usr.name_archive = ""
-		usr.name = usr.real_name
 		if(ishuman(usr))
 			var/mob/living/carbon/human/H = usr
-			H.name = H.get_visible_name()
+			H.update_name()
 
 	usr.forceMove(get_turf(usr.control_object))
 	usr.reset_perspective()

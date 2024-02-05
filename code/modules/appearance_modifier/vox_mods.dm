@@ -62,7 +62,7 @@
 	state2use = "vox_r_arm"
 
 /datum/appearance_modifier/vox_scute/arm/left
-	name = "Vox Scute (Arm, Right)"
+	name = "Vox Scute (Arm, Left)"
 	bodyzones_affected = list(BODY_ZONE_L_ARM)
 	state2use = "vox_l_arm"
 

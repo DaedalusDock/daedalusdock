@@ -220,6 +220,9 @@
 /// Intercepts client owner clicks to activate the ability
 /datum/action/cooldown/proc/InterceptClickOn(mob/living/caller, params, atom/target)
 	. = TRUE
+	if(istext(params))
+		params = params2list(params)
+
 	if(params?[RIGHT_CLICK])
 		unset_click_ability(caller, TRUE)
 		return

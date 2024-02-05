@@ -546,7 +546,7 @@ Striking a noncultist, however, will tear their flesh."}
 		to_chat(user, span_warning("Nar'Sie is already on this plane, there is no delaying the end of all things."))
 		return
 
-	var/identifier = SSevacuation.get_active_controller()
+	var/identifier = SSevacuation.get_initiated_controller()
 	if(!identifier)
 		return
 

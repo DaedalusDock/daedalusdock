@@ -171,13 +171,13 @@
 				return
 			message.answered = answer_index
 			message.answer_callback.InvokeAsync()
-		if ("callShuttle")
+		if ("startEvac")
 			if (!authenticated(usr) || syndicate)
 				return
 			var/reason = trim(params["reason"], MAX_MESSAGE_LEN)
-			if (length(reason) < CALL_SHUTTLE_REASON_LENGTH)
+			if (length(reason) < EVAC_REASON_LENGTH)
 				return
-			SSevacuation.request_evacuation(usr, reason, params["evac_controller"])
+			SSevacuation.request_evacuation(usr, reason, params["evacController"])
 			post_status("shuttle")
 		if ("changeSecurityLevel")
 			if (!authenticated_as_silicon_or_captain(usr))
@@ -285,11 +285,11 @@
 			log_shuttle("[key_name(usr)] has purchased [shuttle.name].")
 			SSblackbox.record_feedback("text", "shuttle_purchase", 1, shuttle.name)
 			state = STATE_MAIN
-		if ("recallShuttle")
+		if ("cancelEvac")
 			// AIs cannot recall the shuttle
 			if (!authenticated(usr) || issilicon(usr) || syndicate)
 				return
-			SSevacuation.request_cancel(usr, params["evac_controller"])
+			SSevacuation.request_cancel(usr, params["evacController"])
 		if ("requestNukeCodes")
 			if (!authenticated_as_non_silicon_captain(usr))
 				return
@@ -599,7 +599,7 @@
 
 /obj/machinery/computer/communications/ui_static_data(mob/user)
 	return list(
-		"callShuttleReasonMinLength" = CALL_SHUTTLE_REASON_LENGTH,
+		"callShuttleReasonMinLength" = EVAC_REASON_LENGTH,
 		"maxStatusLineLength" = MAX_STATUS_LINE_LENGTH,
 		"maxMessageLength" = MAX_MESSAGE_LEN,
 	)

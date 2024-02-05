@@ -13,6 +13,12 @@ SUBSYSTEM_DEF(evacuation)
 	/// Whether you can cancel evacuation. Used by automatic evacuation
 	var/cancel_blocked = FALSE
 
+/datum/controller/subsystem/evacuation/Initialize(start_timeofday)
+	for(var/path in SSmapping.config.evacuation_controllers)
+		var/datum/evacuation_controller/controller = new path
+		controllers[controller.name] = controller
+	return ..()
+
 /datum/controller/subsystem/evacuation/fire(resumed)
 	if(!SSticker.HasRoundStarted() || length(evacuation_blockers))
 		return
@@ -35,12 +41,14 @@ SUBSYSTEM_DEF(evacuation)
 
 	message_admins(CREW_DEATH_MESSAGE)
 	log_evacuation("[CREW_DEATH_MESSAGE] Alive: [alive], Roundstart: [total], Threshold: [threshold]")
-
+	priority_announce("Catastrophic casualties detected: crisis evacuation protocols activated - blocking recall signals across all channels.")
 	trigger_auto_evac(EVACUATION_REASON_CREW_DEATH)
 
 /datum/controller/subsystem/evacuation/proc/trigger_auto_evac(reason)
 	cancel_blocked = TRUE
 	for(var/identifier in controllers)
+		if(controllers[identifier].state != EVACUATION_STATE_IDLE)
+			return
 		if(controllers[identifier].start_automatic_evacuation(reason))
 			return
 
@@ -159,9 +167,9 @@ SUBSYSTEM_DEF(evacuation)
 		names["[controllers[identifier].name] | [controllers[identifier].get_state()]"] = identifier
 	return names
 
-/datum/controller/subsystem/evacuation/proc/get_active_controller()
+/datum/controller/subsystem/evacuation/proc/get_initiated_controller()
 	for(var/identifier in controllers)
-		if(controllers[identifier].state >= EVACUATION_STATE_AWAITING)
+		if(controllers[identifier].state == EVACUATION_STATE_INITIATED)
 			return identifier
 	return null
 
@@ -178,7 +186,7 @@ SUBSYSTEM_DEF(evacuation)
 			. = controllers[identifier].emergency_status_display_process(display)
 			if(.)
 				return .
-	return PROCESS_KILL
+	return list("", "")
 
 /datum/controller/subsystem/evacuation/proc/status_display_examine(mob/user, obj/machinery/status_display/evac/display)
 	. = list()
@@ -188,6 +196,8 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/centcom_recall(identifier, message)
 	if(controllers[identifier])
+		if(controllers[identifier].state != EVACUATION_STATE_INITIATED)
+			return
 		controllers[identifier].centcom_recall(message)
 
 /datum/controller/subsystem/evacuation/proc/get_evac_ui_data(mob/user)

@@ -315,12 +315,12 @@
 		to_chat(usr, span_alert("[can_evac_or_fail_reason]"))
 		return
 
-	var/reason = tgui_input_text(src, "What is the nature of your emergency? ([CALL_SHUTTLE_REASON_LENGTH] characters required.)", "Confirm Shuttle Call")
+	var/reason = tgui_input_text(src, "What is the nature of your emergency? ([EVAC_REASON_LENGTH] characters required.)", "Confirm Shuttle Call")
 
 	if(incapacitated())
 		return
 
-	if(trim(reason))
+	if(length(trim(reason)) >= EVAC_REASON_LENGTH)
 		if(SSevacuation.request_evacuation(src, reason, identifier))
 			// hack to display shuttle timer
 			var/obj/machinery/computer/communications/C = locate() in GLOB.machines

@@ -168,6 +168,8 @@
 		return
 
 	SSevacuation.trigger_auto_evac(EVACUATION_REASON_VOTE)
+	log_game("Round end vote passed. Shuttle has been auto-called.")
+	message_admins("Round end vote passed. Shuttle has been auto-called.")
 	var/obj/machinery/computer/communications/C = locate() in GLOB.machines
 	if(C)
 		C.post_status("shuttle")

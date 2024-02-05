@@ -11,7 +11,11 @@
 	var/cancel_disabled = FALSE
 	/// Did admins block the evacuation
 	var/evacuation_disabled = FALSE
+	/// The time until the evacuation is delayed.
+	/// Used to prevent canceling to reset the timer
+	var/delayed_until = 0
 
+/// Returns the current state of the evacuation
 /datum/evacuation_controller/proc/get_state()
 	switch(state)
 		if(EVACUATION_STATE_IDLE)
@@ -30,7 +34,7 @@
 /datum/evacuation_controller/proc/can_evac(mob/user)
 	if(evacuation_disabled)
 		return "Evacuation is disabled"
-	if(state >= EVACUATION_STATE_IDLE)
+	if(state != EVACUATION_STATE_IDLE)
 		return "Evacuation is already in progress"
 	return TRUE
 
@@ -40,11 +44,25 @@
 	if(can_evac_or_fail_reason != TRUE)
 		to_chat(user, span_alert("[can_evac_or_fail_reason]"))
 		return FALSE
-	start_evacuation(user, admin)
+	log_evacuation("[key_name(user)] has start the evacuation.")
+
+	var/area/signal_origin = get_area(user)
+	if(!admin && prob(70))
+		last_evac_call_loc = signal_origin
+	else
+		last_evac_call_loc = null
+	start_evacuation(user, call_reason)
+
+	deadchat_broadcast(" has started the evacuation at [span_name("[signal_origin.name]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)
+	if(call_reason)
+		SSblackbox.record_feedback("text", "shuttle_reason", 1, "[call_reason]")
+		log_evacuation("Evacuation reason: [call_reason]")
+		SSticker.emergency_reason = call_reason
+	message_admins("[ADMIN_LOOKUPFLW(user)] has started the evacuation. (<A HREF='?_src_=holder;[HrefToken()];trigger_centcom_recall=[name]'>TRIGGER CENTCOM RECALL</A>)")
 	return TRUE
 
 /// Starts the evacuation sequence. Should not be called directly, use trigger_evacuation instead
-/datum/evacuation_controller/proc/start_evacuation(mob/user, admin)
+/datum/evacuation_controller/proc/start_evacuation(mob/user, call_reason)
 	CRASH("start_evacuation not implemented. Type: [type]")
 
 /// Starts the automatic evacuation sequence
@@ -56,15 +74,26 @@
 /datum/evacuation_controller/proc/can_cancel(mob/user)
 	if(SSevacuation.cancel_blocked || cancel_disabled)
 		return FALSE
+	if(delayed_until > world.time)
+		return FALSE
 	if(state == EVACUATION_STATE_IDLE || state >= EVACUATION_STATE_NORETURN)
 		return FALSE
 	return TRUE
 
 /// Cancels the evacuation sequence, if possible
-/datum/evacuation_controller/proc/trigger_cancel_evacuation(mob/user)
+/datum/evacuation_controller/proc/trigger_cancel_evacuation(mob/user, admin)
 	if(!can_cancel(user))
 		return FALSE
+	log_evacuation("[key_name(user)] has canceled the evacuation.")
+	var/area/signal_origin = get_area(user)
+	if(!admin && prob(70))
+		last_evac_call_loc = signal_origin
+	else
+		last_evac_call_loc = null
 	cancel_evacuation(user)
+	SSticker.emergency_reason = null
+	message_admins("[ADMIN_LOOKUPFLW(user)] has canceled the evacuation.")
+	deadchat_broadcast(" has canceled the evacuation from [span_name("[signal_origin.name]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)
 	return TRUE
 
 /// Cancels the evacuation sequence. Should not be called directly, use trigger_cancel_evacuation instead
@@ -116,8 +145,11 @@
 	return TRUE
 
 /// Called when you need to delay the evacuation for some reason.
-/datum/evacuation_controller/proc/delay_evacuation()
-	return
+/datum/evacuation_controller/proc/delay_evacuation(delay)
+	if(delayed_until > world.time)
+		delayed_until = world.time + delay
+	else
+		delayed_until += delay
 
 /// Called when admin cancels the evacuation through CentCom for RP reasons
 /datum/evacuation_controller/proc/centcom_recall(message)
@@ -135,12 +167,40 @@
 /datum/evacuation_controller/proc/get_discord_status()
 	return ""
 
+/// Returns a string with the current state of the evacuation for the status display
 /datum/evacuation_controller/proc/emergency_status_display_process(obj/machinery/status_display/evac/display)
-	return
+	return // should return list with 2 strings
 
 /// Returns a list of strigns to display when examining the status display during evacuation
 /datum/evacuation_controller/proc/status_display_examine(mob/user, obj/machinery/status_display/evac/display)
 	return list()
 
+/// Returns data for the communication console
 /datum/evacuation_controller/proc/get_evac_ui_data(mob/user)
-	return list()
+	. = list(
+		"id" = name, // unique identifier for the evacuation
+		"started" = null, // if the evacuation has started
+		"actionName" = null, // name for the button to call or recall
+		"canEvacOrRecall" = null, // whether the user can call or recall the evacuation. If not, the reason
+		"status" = null, // current status of the evacuation
+		"traceString" = null, // string to display if last evacuation call was traced
+		"icon" = null,
+	)
+
+	if(state != EVACUATION_STATE_IDLE)
+		.["started"] = TRUE
+		.["actionName"] = "Cancel Evacuation ([name]})"
+		.["canEvacOrRecall"] = can_cancel(user)
+		.["status"] = get_state()
+	else
+		.["started"] = FALSE
+		.["actionName"] = "Start Evacuation [name]"
+		.["canEvacOrRecall"] = can_evac(user)
+
+	if(last_evac_call_loc)
+		.["traceString"] = "Last evacuation call was traced to [last_evac_call_loc]"
+	else if(evac_calls_count > 0)
+		.["traceString"] = "Unable to trace last evacuation call"
+
+	return .
+

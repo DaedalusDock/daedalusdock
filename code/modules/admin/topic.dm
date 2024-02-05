@@ -98,6 +98,12 @@
 			return
 		SSevacuation.admin_panel()
 
+	else if(href_list["trigger_centcom_recall"])
+		if(!check_rights(R_ADMIN))
+			return
+
+		usr.client.trigger_centcom_recall(href_list["trigger_centcom_recall"])
+
 	else if(href_list["start_evac"])
 		if(!check_rights(R_ADMIN))
 			return

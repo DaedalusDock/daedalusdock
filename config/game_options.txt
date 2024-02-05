@@ -88,7 +88,7 @@ STATION_GOAL_BUDGET 1
 REPEATED_MODE_ADJUST 45 30 10
 
 ## The amount of time it takes for the emergency shuttle to be called, from round start.
-SHUTTLE_REFUEL_DELAY 12000
+SHUTTLE_REFUEL_DELAY 0
 
 ## Variables calculate how number of antagonists will scale to population.
 ## Used as (Antagonists = Population / Coeff)

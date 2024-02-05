@@ -322,7 +322,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 			return PROCESS_KILL
 
 		if(SD_EMERGENCY)
-			return SSevacuation.emergency_status_display_process(src)
+			. = SSevacuation.emergency_status_display_process(src)
+			if(!.)
+				set_messages("eva?#","")
+				return PROCESS_KILL
+			set_messages(copytext(.[1], CHARS_PER_LINE+1), copytext(.[2], CHARS_PER_LINE+1))
 
 		if(SD_MESSAGE)
 			return PROCESS_KILL

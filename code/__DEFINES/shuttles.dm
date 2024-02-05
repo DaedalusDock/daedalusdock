@@ -48,7 +48,7 @@
 #define HYPERSPACE_LAUNCH 2
 #define HYPERSPACE_END 3
 
-#define CALL_SHUTTLE_REASON_LENGTH 12
+#define EVAC_REASON_LENGTH 12
 
 //Engine related
 #define ENGINE_COEFF_MIN 0.5

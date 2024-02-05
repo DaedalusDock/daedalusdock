@@ -130,7 +130,7 @@
 	authorized += ID
 
 	message_admins("[ADMIN_LOOKUPFLW(user)] has authorized early shuttle launch")
-	log_shuttle("[key_name(user)] has authorized early shuttle launch in [COORD(src)]")
+	log_evacuation("[key_name(user)] has authorized early shuttle launch in [COORD(src)]")
 	// Now check if we're on our way
 	. = TRUE
 	process(SSMACHINES_DT)
@@ -213,11 +213,16 @@
 	port_direction = WEST
 	var/sound_played = 0 //If the launch sound has been sent to all players on the shuttle itself
 	//Set by the evacuation controller
+	var/call_time
 	var/escape_time
 	var/dock_time
 
 /obj/docking_port/mobile/emergency/canDock(obj/docking_port/stationary/S)
 	return SHUTTLE_CAN_DOCK //If the emergency shuttle can't move, the whole game breaks, so it will force itself to land even if it has to crush a few departments in the process
+
+/obj/docking_port/mobile/emergency/register()
+	. = ..()
+	GLOB.emergency_shuttle = src
 
 /obj/docking_port/mobile/emergency/request(obj/docking_port/stationary/S)
 	switch(mode)
@@ -225,18 +230,14 @@
 		// if this proc is called, it's via admin fiat
 		if(SHUTTLE_RECALL, SHUTTLE_IDLE, SHUTTLE_CALL)
 			mode = SHUTTLE_CALL
-			setTimer(escape_time * engine_coeff)
+			setTimer(call_time * engine_coeff)
 
-/obj/docking_port/mobile/emergency/cancel(area/signalOrigin)
+/obj/docking_port/mobile/emergency/cancel()
 	if(mode != SHUTTLE_CALL)
 		return
 
 	invertTimer()
 	mode = SHUTTLE_RECALL
-
-	priority_announce("The emergency shuttle has been recalled.[signalOrigin ? " Recall signal traced. Results can be viewed on any communications console." : "" ]", FLAVOR_CENTCOM_NAME, sound_type = ANNOUNCER_SHUTTLERECALLED)
-
-	SSticker.emergency_reason = null
 
 /obj/docking_port/mobile/emergency/proc/ShuttleDBStuff()
 	set waitfor = FALSE
@@ -276,8 +277,7 @@
 					return
 				mode = SHUTTLE_DOCKED
 				setTimer(dock_time)
-				send2adminchat("Server", "The Emergency Shuttle has docked with the station.")
-				priority_announce("The Icarus has docked with the station. You have [timeLeft(600)] minutes to board before departure.", "LRSV Icarus Announcement", sound_type = ANNOUNCER_SHUTTLEDOCK)
+				SEND_SIGNAL(src, COMSIG_EMERGENCYSHUTTLE_ARRIVAL)
 				ShuttleDBStuff()
 
 		if(SHUTTLE_DOCKED)
@@ -301,10 +301,10 @@
 
 			if(time_left <= 50 && !sound_played) //4 seconds left:REV UP THOSE ENGINES BOYS. - should sync up with the launch
 				sound_played = 1 //Only rev them up once.
+				SEND_SIGNAL(src, COMSIG_EMERGENCYSHUTTLE_ANNOUNCE)
 				var/list/areas = list()
 				for(var/area/shuttle/escape/E in GLOB.areas)
 					areas += E
-				priority_announce("Engines spooling up. Prepare for resonance jump.", "LRSV Icarus Announcement", do_not_modify = TRUE)
 				hyperspace_sound(HYPERSPACE_WARMUP, areas)
 
 			if(time_left <= 0)
@@ -326,9 +326,7 @@
 				if(prob(10))
 					SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
 				setTimer(escape_time * engine_coeff)
-				priority_announce("The Icarus has entered the resonance gate and is enroute to it's destination. Estimate [timeLeft(600)] minutes until the shuttle docks at Sector Control.", "LRSV Icarus Announcement")
-				INVOKE_ASYNC(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, poll_hearts))
-				SSmapping.mapvote() //If no map vote has been run yet, start one.
+				SEND_SIGNAL(src, COMSIG_EMERGENCYSHUTTLE_DEPARTING)
 
 		if(SHUTTLE_ESCAPE)
 			if(sound_played && time_left <= HYPERSPACE_END_TIME)
@@ -353,6 +351,7 @@
 
 			if(time_left <= 0)
 				//move each escape pod to its corresponding escape dock
+				SEND_SIGNAL(src, COMSIG_EMERGENCYSHUTTLE_RETURNED)
 				for(var/A in SSshuttle.mobile_docking_ports)
 					var/obj/docking_port/mobile/M = A
 					M.on_emergency_dock()
@@ -552,6 +551,15 @@
 	height = 8
 	dir = EAST
 	important = TRUE
+
+/obj/docking_port/mobile/emergency/backup/Initialize(mapload)
+	// We want to be a valid emergency shuttle but not be the main one, keep whatever's set
+	// valid.
+	// backup shuttle ignores `timid` because THERE SHOULD BE NO TOUCHING IT
+	var/current_emergency = GLOB.emergency_shuttle
+	. = ..()
+	GLOB.emergency_shuttle = current_emergency
+	GLOB.backup_shuttle = src
 
 /obj/docking_port/mobile/emergency/shuttle_build/register()
 	. = ..()

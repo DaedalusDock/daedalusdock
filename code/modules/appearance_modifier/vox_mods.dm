@@ -1,5 +1,5 @@
 /// Vox Tail marks
-//  - These give funny patterns.to vox tails.
+//  - These give funny patterns to vox tails.
 /datum/appearance_modifier/vox_tail_mark
 	name = "Error! (Vox Tail Mark)"
 	abstract_type = /datum/appearance_modifier/vox_tail_mark

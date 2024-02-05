@@ -1,4 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Corrected mousedrag hotspots on the fancy cursor.

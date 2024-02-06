@@ -87,7 +87,7 @@
 ///Apply the blurry overlays to a mobs clients screen
 /mob/proc/update_eye_blur()
 	var/atom/movable/plane_master_controller/game_plane_master_controller = hud_used?.plane_master_controllers[PLANE_MASTERS_GAME]
-	if(eye_blurry)
+	if(eye_blurry || HAS_TRAIT(src, TRAIT_BLURRY_VISION))
 		if(game_plane_master_controller)
 			game_plane_master_controller.add_filter("eye_blur", 1, gauss_blur_filter(clamp(eye_blurry * 0.1, 0.6, 3)))
 		overlay_fullscreen("dither", /atom/movable/screen/fullscreen/dither)

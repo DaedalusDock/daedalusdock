@@ -177,6 +177,14 @@
 
 	return ..()
 
+/obj/item/bodypart/head/apply_bone_break(mob/living/carbon/C)
+	. = ..()
+	add_bodypart_trait(TRAIT_BLURRY_VISION)
+
+/obj/item/bodypart/head/apply_bone_heal(mob/living/carbon/C)
+	. = ..()
+	remove_bodypart_trait(TRAIT_BLURRY_VISION)
+
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
 

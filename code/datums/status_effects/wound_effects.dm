@@ -97,7 +97,7 @@
 		steps_left++
 		if(steps_left %% 10 == 0)
 			steps_left = 0
-		if(steps_left == 0 && (left.bodypart_flags & BP_BROKEN_BONES))
+		if(steps_left == 0 && !left.splint && (left.bodypart_flags & BP_BROKEN_BONES))
 			pain(left)
 
 		if(right)
@@ -111,7 +111,7 @@
 		steps_right++
 		if(steps_right %% 10 == 0)
 			steps_right = 0
-		if(steps_right == 0 && (right.bodypart_flags & BP_BROKEN_BONES))
+		if(steps_right == 0 && !right.splint && (right.bodypart_flags & BP_BROKEN_BONES))
 			pain(right)
 
 		if(left)

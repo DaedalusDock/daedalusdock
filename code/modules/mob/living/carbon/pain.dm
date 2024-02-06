@@ -62,9 +62,13 @@
 			amount_remaining -= abs(used)
 		. = amount - amount_remaining
 	else
-		BP = get_bodypart(def_zone, TRUE)
+		if(isbodypart(def_zone))
+			BP = def_zone
+
+		BP ||= get_bodypart(def_zone, TRUE)
 		if(!BP)
 			return
+
 		. = BP.adjustPain(amount)
 
 

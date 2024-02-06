@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Fixed missing wire nodes on some APCs on Theseus
-  - bugfix: Fixed link scryers missing an icon.

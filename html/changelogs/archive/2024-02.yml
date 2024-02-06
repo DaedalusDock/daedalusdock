@@ -21,3 +21,7 @@
   - bugfix: You can no longer throw yourself.
   francinum:
   - bugfix: Corrected mousedrag hotspots on the fancy cursor.
+2024-02-06:
+  Kapu1178:
+  - bugfix: Fixed missing wire nodes on some APCs on Theseus
+  - bugfix: Fixed link scryers missing an icon.

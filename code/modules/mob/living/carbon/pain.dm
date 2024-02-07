@@ -223,7 +223,7 @@
 	var/pain = getPain()
 
 	if(pain >= 15)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, min((pain / 30), 15))
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, min((pain / 40), 15))
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 

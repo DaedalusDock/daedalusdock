@@ -25,3 +25,7 @@
   Kapu1178:
   - bugfix: Fixed missing wire nodes on some APCs on Theseus
   - bugfix: Fixed link scryers missing an icon.
+2024-02-07:
+  Ghommie:
+  - bugfix: Fixed text effects for runechat messages (the stuff enclosed in +, | and
+      _ characters) sometimes not working.

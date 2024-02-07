@@ -75,7 +75,7 @@
 // Displays static object lighting updates
 // Also enables some debug vars on sslighting that can be used to modify
 // How extensively we prune lighting corners to update
-#define VISUALIZE_LIGHT_UPDATES
+// #define VISUALIZE_LIGHT_UPDATES
 
 ///If this is uncommented, force our verb processing into just the 2% of a tick
 ///We normally reserve for it

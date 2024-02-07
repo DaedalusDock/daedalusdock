@@ -33,11 +33,11 @@
 
 	animate(PM.get_filter("concussion_angular_blur"), size = 1.8, time = 2 SECONDS, SINE_EASING|EASE_IN, loop = -1, flags = ANIMATION_PARALLEL)
 	animate(size = 0.7, time = 2 SECONDS, SINE_EASING|EASE_OUT)
-	animate(size = 0.7, time = 10.3 SECONDS) // I just want to offset it from life ticks, so it feels more random.
+	animate(size = 0.7, time = 18.3 SECONDS) // I just want to offset it from life ticks, so it feels more random.
 
 	animate(PM.get_filter("concussion_radial_blur"), size = 0.18, time = 2 SECONDS, easing = SINE_EASING|EASE_IN, loop = -1, flags = ANIMATION_PARALLEL)
 	animate(size = 0, time = 2 SECONDS, SINE_EASING|EASE_OUT)
-	animate(size = 0, time = 10.3 SECONDS) // I just want to offset it from life ticks, so it feels more random.
+	animate(size = 0, time = 18.3 SECONDS) // I just want to offset it from life ticks, so it feels more random.
 
 /datum/status_effect/concussion/proc/remove_blur()
 	if(!owner.hud_used)

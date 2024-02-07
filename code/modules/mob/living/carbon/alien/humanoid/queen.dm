@@ -41,7 +41,7 @@
 			name = "alien princess ([rand(1, 999)])" //if this is too cutesy feel free to change it/remove it.
 			break
 
-	real_name = src.name
+	set_real_name(src.name)
 
 	var/datum/action/cooldown/spell/aoe/repulse/xeno/tail_whip = new(src)
 	tail_whip.Grant(src)

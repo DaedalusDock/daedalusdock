@@ -52763,6 +52763,9 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/structure/cable/yellow{
+	icon_state = "2"
+	},
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/maintenance/starboard/lesser)
 "qby" = (
@@ -60331,6 +60334,9 @@
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable/yellow{
 	icon_state = "3"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "2"
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)

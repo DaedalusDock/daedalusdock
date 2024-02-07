@@ -153,28 +153,24 @@
 	for(var/obj/item/mod/module/module as anything in modules)
 		uninstall(module, deleting = TRUE)
 	for(var/obj/item/part as anything in mod_parts)
+		UnregisterSignal(part, list(COMSIG_ATOM_DESTRUCTION, COMSIG_PARENT_QDELETING))
 		overslotting_parts -= part
-	var/atom/deleting_atom
+	mod_parts -= helmet
+	mod_parts -= chestplate
+	mod_parts -= gauntlets
+	mod_parts -= boots
 	if(!QDELETED(helmet))
-		deleting_atom = helmet
-		helmet = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
+		qdel(helmet)
 	if(!QDELETED(chestplate))
-		deleting_atom = chestplate
-		chestplate = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
+		qdel(chestplate)
 	if(!QDELETED(gauntlets))
-		deleting_atom = gauntlets
-		gauntlets = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
+		qdel(gauntlets)
 	if(!QDELETED(boots))
-		deleting_atom = boots
-		boots = null
-		mod_parts -= deleting_atom
-		qdel(deleting_atom)
+		qdel(boots)
+	helmet = null
+	chestplate = null
+	gauntlets = null
+	boots = null
 	if(core)
 		QDEL_NULL(core)
 	QDEL_NULL(wires)
@@ -684,15 +680,11 @@
 		var/obj/item/overslot = overslotting_parts[part]
 		overslot.forceMove(drop_location())
 		overslotting_parts[part] = null
-	if(QDELETED(src))
-		return
 	atom_destruction(damage_flag)
 
 /obj/item/mod/control/proc/on_part_deletion(obj/item/part)
 	SIGNAL_HANDLER
 
-	if(QDELETED(src))
-		return
 	qdel(src)
 
 /obj/item/mod/control/proc/on_potion(atom/movable/source, obj/item/slimepotion/speed/speed_potion, mob/living/user)

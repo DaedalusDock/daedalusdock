@@ -410,8 +410,7 @@
 	victim.stop_sound_channel(CHANNEL_HEARTBEAT)
 	var/mob/living/simple_animal/shade/soulstone_spirit = new /mob/living/simple_animal/shade(src)
 	soulstone_spirit.AddComponent(/datum/component/soulstoned, src)
-	soulstone_spirit.name = "Shade of [victim.real_name]"
-	soulstone_spirit.real_name = "Shade of [victim.real_name]"
+	soulstone_spirit.set_real_name("Shade of [victim.real_name]")
 	soulstone_spirit.key = shade_controller.key
 	soulstone_spirit.copy_languages(victim, LANGUAGE_MIND)//Copies the old mobs languages into the new mob holder.
 	if(user)

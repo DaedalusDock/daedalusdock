@@ -390,6 +390,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/treat_necrosis
 	name = "Treat necrosis"
+	desc = "Utilizes the restorative power of even the slightest amount of Peridaxon to restore functionality to an organ."
 	allowed_tools = list(
 		/obj/item/reagent_containers/dropper = 100,
 		/obj/item/reagent_containers/glass/bottle = 75,

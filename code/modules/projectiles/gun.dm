@@ -1,5 +1,21 @@
 #define FIRING_PIN_REMOVAL_DELAY 50
 
+/particles/firing_smoke
+	icon = 'icons/particles/96x96.dmi'
+	icon_state = "smoke"
+	width = 500
+	height = 500
+	count = 5
+	spawning = 15
+	lifespan = 0.5 SECONDS
+	fade = 2.4 SECONDS
+	grow = 0.12
+	drift = generator(GEN_CIRCLE, 8, 8)
+	scale = 0.1
+	spin = generator(GEN_NUM, -20, 20)
+	velocity = list(50, 0)
+	friction = generator(GEN_NUM, 0.3, 0.6)
+
 /obj/item/gun
 	name = "gun"
 	desc = "It's a gun. It's pretty terrible, though."
@@ -45,6 +61,10 @@
 	var/suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
 	var/suppressed_volume = 60
 
+	/* Misc flavor */
+	/// Should smoke particles be created when fired?
+	var/smoking_gun = FALSE
+
 	/* Suppression */
 	/// whether or not a message is displayed when fired
 	var/obj/item/suppressed = null
@@ -55,6 +75,8 @@
 
 	/// Screenshake applied to the firer
 	var/recoil = 0 // boom boom shake the room
+	/// How much recoil there is when fired with one hand
+	var/unwielded_recoil = 0
 	/// How many shots to fire per fire sequence
 	var/burst_size = 1
 	/// The cooldown (DS) before the gun can be fired again after firing

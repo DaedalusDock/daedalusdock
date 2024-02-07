@@ -23,6 +23,9 @@
 	bolt_wording = "pump"
 	cartridge_wording = "shell"
 
+	recoil = 1
+	unwielded_recoil = 4
+
 	pb_knockback = 2
 	unwielded_spread_bonus = 40
 

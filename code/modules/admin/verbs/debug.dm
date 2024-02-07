@@ -60,8 +60,7 @@
 	if (isnull(chosen_name))
 		return
 
-	pai.name = chosen_name
-	pai.real_name = pai.name
+	pai.set_real_name(chosen_name)
 	pai.key = choice.key
 	card.setPersonality(pai)
 	for(var/datum/pai_candidate/candidate in SSpai.candidates)

@@ -38,8 +38,9 @@
 
 		jostle_bones()
 		if(painful && !(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(owner, TRAIT_NO_PAINSHOCK))
-			owner.pain_emote(1000, TRUE) // We want broken bones to always do the agony scream, so we do it before applying pain.
-			owner.apply_pain(60, src)
+			spawn(-1)
+				owner.pain_emote(1000, TRUE) // We want broken bones to always do the agony scream, so we do it before applying pain.
+				owner.apply_pain(60, src)
 
 	playsound(loc, SFX_BREAK_BONE, 100, FALSE, -2)
 

@@ -25,7 +25,8 @@
 	return
 
 /mob/living/carbon/flash_pain(severity = PAIN_SMALL)
-	flick(severity, hud_used?.pain)
+	if(client && !client.prefs?.read_preference(/datum/preference/toggle/disable_pain_flash))
+		flick(severity, hud_used?.pain)
 
 /mob/living/carbon/apply_pain(amount, def_zone, message, ignore_cd, updating_health = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))

@@ -124,7 +124,9 @@
 /datum/bank_account/proc/payday(amt_of_paychecks = 1, free = FALSE)
 	if(!account_job)
 		return
+
 	var/money_to_transfer = round(account_job.paycheck * payday_modifier * amt_of_paychecks)
+
 	if(free)
 		adjust_money(money_to_transfer)
 		SSblackbox.record_feedback("amount", "free_income", money_to_transfer)
@@ -133,10 +135,7 @@
 	else
 		var/datum/bank_account/D = SSeconomy.station_master
 		if(D && transfer_money(D, money_to_transfer))
-			bank_card_talk("Payday processed, account now holds [account_balance] cr.")
 			return TRUE
-	bank_card_talk("ERROR: Payday aborted, unable to contact departmental account.")
-	#warn remove bank card talking on payday, make it a station announcement
 	return FALSE
 
 /**

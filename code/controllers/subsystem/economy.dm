@@ -93,10 +93,19 @@ SUBSYSTEM_DEF(economy)
 	//Split the station budget amongst the departments
 	departmental_payouts()
 
-	///See if we even have enough money to pay these idiots
+	//See if we even have enough money to pay these idiots
 	var/required_funds = 0
+	var/list/dead_people = list()
+
+	//Dead people don't get money.
+	for(var/datum/data/record/medical_record in GLOB.data_core.general) //dont ask
+		if(medical_record.fields["status"] == "*Deceased*")
+			dead_people += medical_record.fields["name"]
+
 	for(var/account in bank_accounts_by_id)
 		var/datum/bank_account/bank_account = bank_accounts_by_id[account]
+		if(bank_account.account_holder in dead_people)
+			continue
 		required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
 
 	if(payroll_active)
@@ -109,7 +118,15 @@ SUBSYSTEM_DEF(economy)
 				run_dry = FALSE
 			for(var/account in bank_accounts_by_id)
 				var/datum/bank_account/bank_account = bank_accounts_by_id[account]
+				if(bank_account.account_holder in dead_people)
+					continue
 				bank_account.payday()
+
+			priority_announce(
+				"Attention staff of [station_name()], you have received payment for this period. You may withdraw funds from your nearest ATM.",
+				"Station Announcement",
+				"Staff Update",
+			)
 
 	//price_update() This doesn't need to fire every 5 minutes. The only current use is market crash, which handles it on its own.
 	var/effective_mailcount = round(living_player_count())

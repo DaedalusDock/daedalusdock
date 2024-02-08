@@ -136,6 +136,7 @@
 			bank_card_talk("Payday processed, account now holds [account_balance] cr.")
 			return TRUE
 	bank_card_talk("ERROR: Payday aborted, unable to contact departmental account.")
+	#warn remove bank card talking on payday, make it a station announcement
 	return FALSE
 
 /**

@@ -1,9 +1,12 @@
 /obj/machinery/atm
 	name = "automated teller machine"
-	desc = "I LIKE MONEY"
+	desc = "An age-old technology for managing one's wealth."
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "atm"
 	base_icon_state = "atm"
+
+	pixel_y = 32
+	base_pixel_y = 32
 
 	resistance_flags = INDESTRUCTIBLE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
@@ -17,6 +20,7 @@
 	var/datum/effect_system/spark_spread/spark_system
 
 	var/entered_pin
+	var/reject_topic = FALSE
 
 /obj/machinery/atm/Initialize(mapload)
 	. = ..()
@@ -33,6 +37,11 @@
 	authenticated_account = null
 	QDEL_NULL(spark_system)
 	return ..()
+
+/obj/machinery/atm/examine(mob/user)
+	. = ..()
+	if(inserted_card)
+		. += span_notice("There is a card in the card slot.")
 
 /obj/machinery/atm/update_icon_state()
 	if(machine_stat & NOPOWER)
@@ -59,24 +68,40 @@
 	dispense_cash(rand(20, 200))
 
 /obj/machinery/atm/attackby(obj/item/I, mob/user, params)
-	. = ..()
-	if(.)
-		return
-
-	if(!isidcard(I))
-		return
+	if(!isidcard(I) && !iscash(I))
+		return ..()
 
 	if(machine_stat & NOPOWER)
 		to_chat(user, span_warning("You attempt to insert [I] into [src], but nothing happens."))
 		return TRUE
 
-	if(!user.transferItemToLoc(I, src))
+	if(isidcard(I))
+		if(inserted_card)
+			to_chat(user, span_warning("You attempt to insert [I] into [src], but there's already something in the slot."))
+			return TRUE
+		if(!user.transferItemToLoc(I, src))
+			return TRUE
+
+		inserted_card = I
+		updateUsrDialog()
+		to_chat(user, span_notice("You insert [I] into [src]."))
 		return TRUE
 
-	inserted_card = I
-	updateUsrDialog()
-	to_chat(user, span_notice("You insert [I] into [src]."))
-	return TRUE
+	if(iscash(I))
+		if(!authenticated_account)
+			to_chat(user, span_warning("You attempt to insert [I] into [src], but nothing happens."))
+			return TRUE
+
+		if(!user.transferItemToLoc(I, src))
+			return TRUE
+
+		var/value = I.get_item_credit_value()
+		qdel(I)
+		authenticated_account.adjust_money(value)
+
+		to_chat(user, span_notice("You deposit [value] into [src]."))
+		updateUsrDialog()
+		return TRUE
 
 /// Dispense the given amount of cash and give feedback.
 /obj/machinery/atm/proc/dispense_cash(amt)
@@ -84,9 +109,12 @@
 		return
 
 	playsound(src, 'sound/machines/ping.ogg')
+	reject_topic = TRUE
+	sleep(2 SECONDS)
+	reject_topic = FALSE
 	visible_message(span_notice("[src] dispenses a wad of money."), vision_distance = COMBAT_MESSAGE_RANGE)
 
-	SSeconomy.spawn_cash_for_amount(rand(20, 200), drop_location())
+	SSeconomy.spawn_cash_for_amount(amt, drop_location())
 
 /obj/machinery/atm/proc/try_authenticate(pin)
 	if((machine_stat & NOPOWER) || !inserted_card?.registered_account)
@@ -99,19 +127,20 @@
 	return TRUE
 
 /obj/machinery/atm/ui_interact(mob/user, datum/tgui/ui)
-	var/datum/browser/popup = new(user, "atm", name, 460, 550)
+	var/datum/browser/popup = new(user, "atm", name, 460, 270)
 	popup.set_content(jointext(get_content(), ""))
 	popup.open()
 
 /obj/machinery/atm/Topic(href, href_list)
 	. = ..()
-	if(!.)
+	if(. || reject_topic)
 		return
 
 	if(href_list["eject_id"])
 		inserted_card.forceMove(drop_location())
 		inserted_card = null
 		playsound(src, 'sound/machines/terminal_eject.ogg')
+		updateUsrDialog()
 		return TRUE
 
 	if(href_list["enter_pin"])
@@ -124,8 +153,9 @@
 			if("E")
 				if(try_authenticate(entered_pin))
 					entered_pin = ""
-					usr << browse(null, "window=atm-pinpad")
 					updateUsrDialog()
+					sleep(world.tick_lag)
+					usr << browse(null, "window=atm-pinpad")
 				else
 					entered_pin = "ERROR"
 					open_pinpad_ui(usr)
@@ -145,15 +175,60 @@
 
 		return TRUE
 
+	if(href_list["logout"])
+		authenticated_account = null
+		updateUsrDialog()
+		return TRUE
+
+	if(href_list["withdraw"])
+		var/amt = tgui_input_number(usr, "Enter amount (1-100)", "Withdraw", 0, 100, 0)
+		if(!amt)
+			return TRUE
+
+		amt = min(amt, authenticated_account.account_balance)
+		authenticated_account.adjust_money(-amt)
+		dispense_cash(amt)
+		updateUsrDialog()
+		return TRUE
+
 /obj/machinery/atm/proc/get_content()
+	PRIVATE_PROC(TRUE)
 	. = list()
-	. += "<div style='width:100%'>"
-	. += "<fieldset class='computerPane'>"
-	. += button_element(src, "Enter PIN", "enter_pin=1")
+	. += "<div style='width:100%;height: 100%'>"
+	. += "<fieldset class='computerPane' style='height: 100%'>"
+	. += {"
+		<legend class='computerLegend'>
+			<b>Automated Teller Machine</b>
+		</legend>
+	"}
+
+	. += "<div class='computerLegend' style='margin: auto; width:70%; height: 70px'>"
+	if(authenticated_account)
+		. += {"
+				Welcome, <b>[authenticated_account.account_holder]</b>.<br><br>
+				Your balance is: <b>[authenticated_account.account_balance]</b>
+		"}
+
+	. += "</div>"
+	. += jointext(buttons(), "")
 	. += "</fieldset>"
 	. += "</div>"
 
+/obj/machinery/atm/proc/buttons()
+	PRIVATE_PROC(TRUE)
+	RETURN_TYPE(/list)
+	. = list()
+
+	. += "<div style = 'text-align: center'>[button_element(src, "Eject Card", "eject_id=1")]</div>"
+
+	if(!authenticated_account)
+		. += "<div style = 'text-align: center'>[button_element(src, "Enter PIN", "enter_pin=1")]</div><br>"
+	else
+		. += "<div style = 'text-align: center'>[button_element(src, "Withdraw", "withdraw=1")]</div>"
+		. += "<div style = 'text-align: center'>[button_element(src, "Logout", "logout=1")]</div>"
+
 /obj/machinery/atm/proc/open_pinpad_ui(mob/user)
+	PRIVATE_PROC(TRUE)
 	var/datum/browser/popup = new(user, "atm-pinpad", "Enter Pin", 300, 280)
 	var/dat = "<TT><B>[src]</B><BR>\n\n"
 	dat += {"

@@ -617,10 +617,10 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 	return TRUE
 
 /obj/item/modular_computer/proc/UpdateDisplay()
-	if(!imprint_prefix || !saved_identification)
+	if(!imprint_prefix)
 		name = initial(name) //No saved ID, no fucked up name.
 		return
-	name = "[imprint_prefix] - [saved_identification] [saved_job ? "([saved_job])" : null]"
+	name = "[imprint_prefix] - [saved_job ? "([saved_job])" : null]"
 
 /obj/item/modular_computer/screwdriver_act(mob/user, obj/item/tool)
 	if(!deconstructable)

@@ -738,11 +738,6 @@
 "ail" = (
 /obj/structure/closet/secure_closet/personal,
 /obj/item/clothing/under/misc/assistantformal,
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/shoes/winterboots,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -5416,6 +5411,7 @@
 "bsm" = (
 /obj/item/beacon,
 /obj/effect/turf_decal/delivery,
+/obj/machinery/atm,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "bsn" = (
@@ -16187,10 +16183,8 @@
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/command/corporate_showroom)
 "eDt" = (
-/obj/machinery/computer/slot_machine{
-	pixel_y = 2
-	},
 /obj/effect/mapping_helpers/broken_floor,
+/obj/machinery/atm,
 /turf/open/floor/wood,
 /area/station/maintenance/port/aft)
 "eDG" = (
@@ -30193,10 +30187,10 @@
 /turf/open/floor/wood,
 /area/station/service/theater)
 "iYM" = (
-/obj/item/radio/intercom/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
+/obj/machinery/atm,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
 "iZa" = (
@@ -31697,12 +31691,10 @@
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
 "jyb" = (
-/obj/structure/chair/stool,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/effect/turf_decal/tile/dark{
 	dir = 4
 	},
-/obj/structure/noticeboard/directional/north,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "jyd" = (
@@ -32912,7 +32904,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/machinery/restaurant_portal/bar,
+/obj/machinery/atm,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "jRT" = (
@@ -39280,6 +39272,7 @@
 "lRn" = (
 /obj/structure/closet/firecloset,
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
 "lRr" = (
@@ -52594,6 +52587,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/checkpoint/engineering)
+"pYg" = (
+/obj/structure/chair/stool,
+/obj/machinery/atm,
+/turf/open/floor/iron/white,
+/area/station/medical/medbay/lobby)
 "pYh" = (
 /obj/machinery/button/door/directional/west{
 	id = "bridge blast";
@@ -55243,11 +55241,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/prison)
-"qPK" = (
-/obj/structure/chair/stool/directional/north,
-/obj/effect/mapping_helpers/broken_floor,
-/turf/open/floor/wood,
-/area/station/maintenance/port/aft)
 "qPM" = (
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
@@ -57101,6 +57094,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/machinery/atm,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "rtK" = (
@@ -61829,16 +61823,8 @@
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "sUq" = (
-/obj/structure/closet/secure_closet/personal,
-/obj/item/clothing/under/misc/assistantformal,
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
-/obj/item/clothing/suit/hooded/wintercoat,
-/obj/item/clothing/shoes/winterboots,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/atm,
 /turf/open/floor/iron/dark,
 /area/station/commons/locker)
 "sUw" = (
@@ -66874,6 +66860,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "4"
 	},
+/obj/machinery/atm,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "uAJ" = (
@@ -75944,6 +75931,14 @@
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
 /turf/open/space/basic,
 /area/space/nearstation)
+"xua" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/yellow/opposingcorners,
+/obj/machinery/atm,
+/turf/open/floor/iron/white,
+/area/station/hallway/secondary/entry)
 "xud" = (
 /obj/machinery/airalarm/directional/north,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
@@ -89199,7 +89194,7 @@ aaa
 aaa
 aaa
 gbI
-aVu
+xua
 kJr
 gbI
 lMJ
@@ -91781,7 +91776,7 @@ aob
 mpF
 vYs
 eDt
-qPK
+crh
 ckP
 ckP
 dvt
@@ -103602,7 +103597,7 @@ iRv
 nNz
 xGy
 vzN
-gXE
+pYg
 rFw
 tOJ
 gME

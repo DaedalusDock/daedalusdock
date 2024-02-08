@@ -200,8 +200,9 @@
 			var/obj/item/storage/wallet/W = /obj/item/storage/wallet
 			EQUIP_OUTFIT_ITEM(W, ITEM_SLOT_ID)
 			W = H.wear_id
-			W.open()
-			INVOKE_ASYNC(W, TYPE_PROC_REF(/obj/item, InsertID), new id())
+			if(W)
+				W.open()
+				INVOKE_ASYNC(W, TYPE_PROC_REF(/obj/item, InsertID), SSwardrobe.provide_type(id))
 		else
 			EQUIP_OUTFIT_ITEM(id, ITEM_SLOT_ID)
 

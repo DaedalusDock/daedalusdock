@@ -145,6 +145,8 @@
 	var/last_progress = 0
 	///Variable to ensure smooth visual stacking on multiple progress bars.
 	var/listindex = 0
+	///Does this qdelete on completion?
+	var/qdel_when_done = TRUE
 
 /datum/world_progressbar/New(atom/movable/_owner, _goal, image/underlay)
 	if(!_owner)
@@ -196,9 +198,11 @@
 	if(last_progress != goal)
 		bar.icon_state = "[bar.icon_state]_fail"
 
-	animate(bar, alpha = 0, time = PROGRESSBAR_ANIMATION_TIME)
-
-	QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
+	if(qdel_when_done)
+		animate(bar, alpha = 0, time = PROGRESSBAR_ANIMATION_TIME)
+		QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
+	else
+		bar.icon_state = "prog_bar_0"
 
 #undef PROGRESSBAR_ANIMATION_TIME
 #undef PROGRESSBAR_HEIGHT

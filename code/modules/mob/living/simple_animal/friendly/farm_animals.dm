@@ -24,7 +24,7 @@
 	attack_same = 1
 	attack_verb_continuous = "kicks"
 	attack_verb_simple = "kick"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	attack_vis_effect = ATTACK_EFFECT_KICK
 	health = 40
 	maxHealth = 40
@@ -250,7 +250,7 @@
 	response_harm_simple = "kick"
 	attack_verb_continuous = "bucks"
 	attack_verb_simple = "buck"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	health = 75
 	maxHealth = 75
 	blood_volume = BLOOD_VOLUME_NORMAL

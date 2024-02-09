@@ -33,7 +33,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 	///This is the amount of value per 1 unit of the material
 	var/value_per_unit = 0
 	///Armor modifiers, multiplies an items normal armor vars by these amounts.
-	var/armor_modifiers = list(MELEE = 1, BULLET = 1, LASER = 1, ENERGY = 1, BOMB = 1, BIO = 1, FIRE = 1, ACID = 1)
+	var/armor_modifiers = list(BLUNT = 1, PUNCTURE = 1, SLASH = 0, LASER = 1, ENERGY = 1, BOMB = 1, BIO = 1, FIRE = 1, ACID = 1)
 	///How beautiful is this material per unit.
 	var/beauty_modifier = 0
 	///Can be used to override the sound items make, lets add some SLOSHing.
@@ -158,7 +158,9 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 	if(!item_sound_override)
 		return
+
 	item.hitsound = item_sound_override
+	item.wielded_hitsound = item_sound_override
 	item.usesound = item_sound_override
 	item.mob_throw_hit_sound = item_sound_override
 	item.equip_sound = item_sound_override

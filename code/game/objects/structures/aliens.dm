@@ -12,7 +12,7 @@
 	max_integrity = 100
 
 /obj/structure/alien/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
-	if(damage_flag == MELEE)
+	if(damage_flag == BLUNT)
 		switch(damage_type)
 			if(BRUTE)
 				damage_amount *= 0.25

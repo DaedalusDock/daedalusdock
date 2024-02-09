@@ -16,6 +16,7 @@
 
 /mob/living/carbon/alien/humanoid/royal/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/seethrough_mob)
 	// as a wise man once wrote: "pull over that ass too fat"
 	REMOVE_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
@@ -28,7 +29,6 @@
 	maxHealth = 400
 	health = 400
 	icon_state = "alienq"
-	var/datum/action/small_sprite/smallsprite = new/datum/action/small_sprite/queen()
 
 /mob/living/carbon/alien/humanoid/royal/queen/Initialize(mapload)
 	//there should only be one queen
@@ -41,13 +41,10 @@
 			name = "alien princess ([rand(1, 999)])" //if this is too cutesy feel free to change it/remove it.
 			break
 
-	real_name = src.name
+	set_real_name(src.name)
 
 	var/datum/action/cooldown/spell/aoe/repulse/xeno/tail_whip = new(src)
 	tail_whip.Grant(src)
-
-	var/datum/action/small_sprite/queen/smallsprite = new(src)
-	smallsprite.Grant(src)
 
 	var/datum/action/cooldown/alien/promote/promotion = new(src)
 	promotion.Grant(src)

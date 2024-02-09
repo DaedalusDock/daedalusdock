@@ -121,8 +121,7 @@
 	if(!L.mind)
 		return
 	brainmob = new(src)
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
 	brainmob.timeofhostdeath = L.timeofdeath
 	brainmob.suiciding = suicided
 	if(L.has_dna())
@@ -388,7 +387,7 @@
 		owner.dropItemToGround(owner.get_active_held_item())
 
 	if(damage >= 0.6*maxHealth)
-		owner.set_slurring_if_lower(2 SECONDS)
+		owner.set_slurring_if_lower(10 SECONDS)
 
 	if(damage >= (maxHealth * high_threshold))
 		if(owner.body_position == STANDING_UP)
@@ -618,9 +617,11 @@
 /// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
 /obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
 	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
+
 	if(target.body_position == LYING_DOWN && owner.usable_legs)
 		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
 		return found_bodypart || active_hand
+
 	return active_hand
 
 /obj/item/organ/brain/get_scan_results(tag)

@@ -302,6 +302,10 @@
 	.=..()
 	START_PROCESSING(SSprocessing, src)
 
+/obj/structure/spawner/nether/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/structure/spawner/nether/examine(mob/user)
 	. = ..()
 	if(isskeleton(user) || iszombie(user))

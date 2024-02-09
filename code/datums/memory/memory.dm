@@ -60,8 +60,6 @@
 		/mob/living/simple_animal/hostile/asteroid/basilisk/watcher,
 		/mob/living/simple_animal/hostile/headcrab,
 		/mob/living/simple_animal/hostile/morph,
-		/mob/living/basic/stickman,
-		/mob/living/basic/stickman/dog,
 		/mob/living/simple_animal/hostile/gorilla,
 		/mob/living/simple_animal/parrot,
 		/mob/living/simple_animal/pet/dog/corgi,

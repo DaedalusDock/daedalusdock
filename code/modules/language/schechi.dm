@@ -1,6 +1,6 @@
 /datum/language/schechi
 	name = "Schechi"
-	desc = "The common language of the Kepori, consisting of miscellaneous chirps."
+	desc = "The common language of the Teshari, consisting of miscellaneous chirps."
 	key = "c"
 	space_chance = 40
 	syllables = list(

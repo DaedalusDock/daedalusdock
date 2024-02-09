@@ -115,12 +115,12 @@
 	if(isalien(owner)) //Different effects for aliens than humans
 		to_chat(owner, span_userdanger("Your Queen has been struck down!"))
 		to_chat(owner, span_danger("You are struck with overwhelming agony! You feel confused, and your connection to the hivemind is severed."))
-		owner.emote("roar")
+		owner.emote("agony")
 		owner.Stun(200) //Actually just slows them down a bit.
 
 	else if(ishuman(owner)) //Humans, being more fragile, are more overwhelmed by the mental backlash.
 		to_chat(owner, span_danger("You feel a splitting pain in your head, and are struck with a wave of nausea. You cannot hear the hivemind anymore!"))
-		owner.emote("scream")
+		owner.emote("pain")
 		owner.Paralyze(100)
 
 	owner.adjust_timed_status_effect(1 MINUTES, /datum/status_effect/jitter)

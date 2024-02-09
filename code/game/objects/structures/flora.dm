@@ -30,14 +30,22 @@
 	herbage = TRUE
 	wood = TRUE
 
+/obj/structure/flora/tree/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/seethrough, get_seethrough_map())
+
+///Return a see_through_map, examples in seethrough.dm
+/obj/structure/flora/tree/proc/get_seethrough_map()
+	return SEE_THROUGH_MAP_DEFAULT
+
 /obj/structure/flora/tree/attackby(obj/item/attacking_item, mob/user, params)
 	if(!log_amount || flags_1 & NODECONSTRUCT_1)
 		return ..()
 	if(!(attacking_item.sharpness & SHARP_EDGED) || attacking_item.force <= 0)
 		return ..()
 	var/my_turf = get_turf(src)
-	if(attacking_item.hitsound)
-		playsound(my_turf, attacking_item.hitsound, 100, FALSE, FALSE)
+	if(attacking_item.get_hitsound())
+		playsound(my_turf, attacking_item.get_hitsound(), 100, FALSE, FALSE)
 	user.visible_message(span_notice("[user] begins to cut down [src] with [attacking_item]."),span_notice("You begin to cut down [src] with [attacking_item]."), span_hear("You hear sawing."))
 	if(!do_after(user, src, 1000/attacking_item.force)) //5 seconds with 20 force, 8 seconds with a hatchet, 20 seconds with a shard.
 		return
@@ -71,6 +79,9 @@
 
 	if(islist(icon_states?.len))
 		icon_state = pick(icon_states)
+
+/obj/structure/flora/tree/pine/get_seethrough_map()
+	return SEE_THROUGH_MAP_DEFAULT_TWO_TALL
 
 /obj/structure/flora/tree/pine/xmas
 	name = "xmas tree"
@@ -157,10 +168,16 @@
 	icon_state = "[icon_state][rand(1, 6)]"
 	. = ..()
 
+/obj/structure/flora/tree/jungle/get_seethrough_map()
+	return SEE_THROUGH_MAP_THREE_X_THREE
+
 /obj/structure/flora/tree/jungle/small
 	pixel_y = 0
 	pixel_x = -32
 	icon = 'icons/obj/flora/jungletreesmall.dmi'
+
+/obj/structure/flora/tree/jungle/small/get_seethrough_map()
+	return SEE_THROUGH_MAP_THREE_X_TWO
 
 //grass
 /obj/structure/flora/grass
@@ -344,8 +361,8 @@
 
 /obj/item/kirbyplants/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 	AddComponent(/datum/component/tactical)
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE, force_unwielded=10, force_wielded=10)
 	AddElement(/datum/element/beauty, 500)
 
 /obj/item/kirbyplants/attackby(obj/item/I, mob/living/user, params)

@@ -16,7 +16,7 @@
 	///how much damage this basic mob does to objects, if any.
 	var/obj_damage = 0
 	///How much armour they ignore, as a flat reduction from the targets armour value.
-	var/armour_penetration = 0
+	var/armor_penetration = 0
 	///Damage type of a simple mob's melee attack, should it do damage.
 	var/melee_damage_type = BRUTE
 	///If the attacks from this are sharp
@@ -84,7 +84,7 @@
 		gender = pick(MALE,FEMALE)
 
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 
 	if(!loc)
 		stack_trace("Basic mob being instantiated in nullspace")

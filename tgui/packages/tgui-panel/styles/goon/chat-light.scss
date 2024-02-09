@@ -303,6 +303,7 @@ em {
 .ooc {
   color: #002eb8;
   font-weight: bold;
+  text-shadow: inherit;
 }
 
 .looc {
@@ -960,8 +961,12 @@ h1.alert, h2.alert {
 
 .subtle {
   color: #000099;
-  font-size: 75%;
+  font-size: 85%;
   font-style: italic;
+}
+
+.obviousnotice {
+  color: #000099;
 }
 
 .sayverb {
@@ -971,4 +976,33 @@ h1.alert, h2.alert {
 
 .emote {
   color: #2e2e2e;
+}
+
+.debug {
+  color: #5ce43d;
+  font-weight: bold;
+}
+
+.adminpmbox {
+  color: #ffffff;
+  text-align: center;
+  box-shadow: none;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  font-size: 110%;
+  border-image:
+  repeating-linear-gradient(
+    -45deg,
+    #520000,
+    #520000 10px,
+    #4d4100 10px,
+    #4d4100 20px
+  );
+  border-image-slice: 4;
+  border-width: 4px;
+  border-image-width: 4px;
+  border-image-outset: 0 0 0 0;
+  border-image-repeat: repeat repeat;
+  border-style: solid;
 }

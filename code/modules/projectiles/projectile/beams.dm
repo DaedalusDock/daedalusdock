@@ -53,7 +53,7 @@
 	damage = 15
 
 /obj/projectile/beam/weak/penetrator
-	armour_penetration = 50
+	armor_penetration = 50
 
 /obj/projectile/beam/practice
 	name = "practice laser"
@@ -70,7 +70,7 @@
 	icon_state = "xray"
 	damage = 15
 	range = 15
-	armour_penetration = 100
+	armor_penetration = 100
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE | PASSCLOSEDTURF | PASSMACHINE | PASSSTRUCTURE | PASSDOORS
 
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser

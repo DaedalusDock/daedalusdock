@@ -136,7 +136,7 @@
 	else
 		//drill makes a hole
 		var/obj/item/bodypart/target_part = target.get_bodypart(ran_zone(BODY_ZONE_CHEST))
-		target.apply_damage(10, BRUTE, BODY_ZONE_CHEST, target.run_armor_check(target_part, MELEE))
+		target.apply_damage(10, BRUTE, BODY_ZONE_CHEST, target.run_armor_check(target_part, BLUNT))
 
 		//blood splatters
 		var/splatter_dir = get_dir(chassis, target)
@@ -172,6 +172,10 @@
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
+
+/obj/item/mecha_parts/mecha_equipment/mining_scanner/Destroy()
+	STOP_PROCESSING(SSfastprocess, src)
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/can_attach(obj/vehicle/sealed/mecha/M, attach_right = FALSE)
 	if(..())

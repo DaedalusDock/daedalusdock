@@ -1,10 +1,11 @@
 /mob/living/Initialize(mapload)
 	. = ..()
 	stamina = new(src)
+	gurps_stats = new(src)
 
 	register_init_signals()
 	if(unique_name)
-		set_name()
+		give_unique_name()
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_to_hud(src)
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
@@ -26,7 +27,9 @@
 
 /mob/living/Destroy()
 	QDEL_NULL(z_eye)
-	qdel(stamina)
+	QDEL_NULL(stamina)
+	QDEL_NULL(gurps_stats)
+
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
 		if(effect.on_remove_on_mob_delete)
@@ -200,11 +203,12 @@
 		var/mob/living/silicon/robot/borg = M
 		if(borg.combat_mode && borg.stat != DEAD)
 			return TRUE
+
 	//anti-riot equipment is also anti-push
 	for(var/obj/item/I in M.held_items)
 		if(!istype(M, /obj/item/clothing))
-			if(prob(I.block_chance*2))
-				return
+			if(I.try_block_attack(M, src, "the push", 0, LEAP_ATTACK)) //close enough?
+				return TRUE
 
 /mob/living/get_photo_description(obj/item/camera/camera)
 	var/list/mob_details = list()
@@ -404,6 +408,8 @@
  * * hand_firsts - boolean that checks the hands of the mob first if TRUE.
  */
 /mob/living/proc/get_idcard(hand_first)
+	RETURN_TYPE(/obj/item/card/id)
+
 	if(!length(held_items)) //Early return for mobs without hands.
 		return
 	//Check hands
@@ -613,6 +619,9 @@
 
 //Proc used to resuscitate a mob, for full_heal see fully_heal()
 /mob/living/proc/revive(full_heal = FALSE, admin_revive = FALSE, excess_healing = 0)
+	if(QDELETED(src))
+		return
+
 	if(excess_healing)
 		if(iscarbon(src))
 			var/mob/living/carbon/C = src
@@ -938,9 +947,6 @@
 /mob/living/proc/resist_restraints()
 	return
 
-/mob/living/proc/get_visible_name()
-	return name
-
 /mob/living/proc/update_gravity(gravity)
 	// Handle movespeed stuff
 	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
@@ -1134,7 +1140,7 @@
 		Robot.notify_ai(AI_NOTIFICATION_NEW_BORG)
 	else
 		for(var/obj/item/item in src)
-			if(!dropItemToGround(item))
+			if(!dropItemToGround(item) || (item.item_flags & ABSTRACT))
 				qdel(item)
 				continue
 			item_contents += item
@@ -1201,7 +1207,6 @@
 				/mob/living/simple_animal/hostile/asteroid/basilisk/watcher,
 				/mob/living/simple_animal/hostile/headcrab,
 				/mob/living/simple_animal/hostile/morph,
-				/mob/living/basic/stickman,
 				/mob/living/simple_animal/hostile/gorilla,
 				/mob/living/simple_animal/parrot,
 				/mob/living/simple_animal/pet/dog/corgi,
@@ -1263,8 +1268,7 @@
 // Generally the mob we are currently in is about to be deleted
 /mob/living/proc/wabbajack_act(mob/living/new_mob)
 	log_game("[key_name(src)] is being wabbajack polymorphed into: [new_mob.name]([new_mob.type]).")
-	new_mob.name = real_name
-	new_mob.real_name = real_name
+	new_mob.set_real_name(real_name)
 
 	if(mind)
 		mind.transfer_to(new_mob)
@@ -1567,10 +1571,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/remove_air(amount) //To prevent those in contents suffocating
 	return loc ? loc.remove_air(amount) : null
 
-/mob/living/proc/set_name()
+/// Gives simple mobs their unique/randomized name.
+/mob/living/proc/give_unique_name()
 	numba = rand(1, 1000)
-	name = "[name] ([numba])"
-	real_name = name
+	set_real_name("[name] ([numba])")
 
 /mob/living/proc/get_static_viruses() //used when creating blood and other infective objects
 	if(!LAZYLEN(diseases))
@@ -2173,21 +2177,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	RETURN_TYPE(/datum/reagents)
 	return reagents
 
-/mob/living/proc/get_melee_inaccuracy()
-	. = 0
-	if(incapacitated())
-		. += 100
-	if(get_timed_status_effect_duration(/datum/status_effect/confusion))
-		. += 10
-	if(IsKnockdown())
-		. += 15
-	if(eye_blurry)
-		. += 5
-	if(eye_blind)
-		. += 60
-	if(HAS_TRAIT(src, TRAIT_CLUMSY))
-		. += 25
-
 /mob/living/proc/needs_organ(slot)
 	return FALSE
 
@@ -2218,3 +2207,14 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return MOUSE_ICON_HOVERING_INTERACTABLE
 
 
+/mob/living/do_hurt_animation()
+	if(stat > CONSCIOUS)
+		return
+
+	var/pixel_x = src.pixel_x
+	var/pixel_y = src.pixel_y
+	var/offset_x = pixel_x + pick(-3, -2, -1, 1, 2, 3)
+	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
+
+	animate(src, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+	animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)

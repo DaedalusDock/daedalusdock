@@ -10,6 +10,7 @@
 	siemens_coefficient = 1
 	var/spamcheck = 0
 	var/list/voicespan = list(SPAN_COMMAND)
+	var/megaphone_sound = 'sound/items/megaphone.ogg'
 
 /obj/item/megaphone/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is uttering [user.p_their()] last words into \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -34,7 +35,7 @@
 		if(spamcheck > world.time)
 			to_chat(user, span_warning("\The [src] needs to recharge!"))
 		else
-			playsound(loc, 'sound/items/megaphone.ogg', 100, FALSE, TRUE)
+			playsound(loc, megaphone_sound, 100, FALSE, TRUE)
 			spamcheck = world.time + 50
 			speech_args[SPEECH_SPANS] |= voicespan
 
@@ -49,6 +50,7 @@
 	name = "security megaphone"
 	icon_state = "megaphone-sec"
 	inhand_icon_state = "megaphone-sec"
+	megaphone_sound = 'sound/items/pp_megaphone.ogg'
 
 /obj/item/megaphone/command
 	name = "command megaphone"

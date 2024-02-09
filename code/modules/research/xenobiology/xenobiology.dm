@@ -624,8 +624,7 @@
 
 	if (!newname)
 		newname = "Pet Slime"
-	M.name = newname
-	M.real_name = newname
+	M.set_real_name(newname)
 	qdel(src)
 
 /obj/item/slimepotion/slime/sentience

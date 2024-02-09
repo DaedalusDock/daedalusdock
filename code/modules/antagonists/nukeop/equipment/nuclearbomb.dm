@@ -679,7 +679,7 @@ This is here to make the tiles around the station mininuke change when it's arme
 	desc = "Better keep this safe."
 	icon_state = "nucleardisk"
 	max_integrity = 250
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	var/fake = FALSE
 	var/turf/last_secured_location
@@ -699,12 +699,11 @@ This is here to make the tiles around the station mininuke change when it's arme
 
 /obj/item/disk/nuclear/process()
 	if(fake)
-		STOP_PROCESSING(SSobj, src)
+		. = PROCESS_KILL
 		CRASH("A fake nuke disk tried to call process(). Who the fuck and how the fuck")
 
 	if(!CONFIG_GET(flag/lone_op_nag))
-		STOP_PROCESSING(SSobj, src)
-		return
+		return PROCESS_KILL
 
 	var/turf/new_turf = get_turf(src)
 

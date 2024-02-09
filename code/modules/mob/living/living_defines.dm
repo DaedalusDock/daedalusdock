@@ -18,6 +18,8 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// The mob's current health.
 	var/health = MAX_LIVING_HEALTH
 
+	/// The container for stats and skills
+	var/datum/gurps_stats/gurps_stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
 
@@ -187,7 +189,7 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/voice_type
 
 	COOLDOWN_DECLARE(smell_time)
-	var/last_smell_intensity = 0
+	var/datum/weakref/next_smell
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null

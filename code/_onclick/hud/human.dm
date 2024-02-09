@@ -259,7 +259,7 @@
 	rest_icon.update_appearance()
 	static_inventory += rest_icon
 
-	spacesuit = new /atom/movable/screen/spacesuit
+	spacesuit = new /atom/movable/screen/spacesuit(null, src)
 	infodisplay += spacesuit
 
 	healthdoll = new /atom/movable/screen/healthdoll(null, src)

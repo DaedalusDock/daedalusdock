@@ -16,26 +16,6 @@
 	category = list(DCAT_AMMO)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
-/datum/design/pin_testing
-	name = "Test-Range Firing Pin"
-	desc = "This safety firing pin allows firearms to be operated within proximity to a firing range."
-	id = "pin_testing"
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 500, /datum/material/glass = 300)
-	build_path = /obj/item/firing_pin/test_range
-	category = list("Firing Pins")
-	mapload_design_flags = DESIGN_FAB_SECURITY
-
-/datum/design/pin_mindshield
-	name = "Mindshield Firing Pin"
-	desc = "This is a security firing pin which only authorizes users who are mindshield-implanted."
-	id = "pin_loyalty"
-	build_type = FABRICATOR
-	materials = list(/datum/material/silver = 600, /datum/material/diamond = 600, /datum/material/uranium = 200)
-	build_path = /obj/item/firing_pin/implant/mindshield
-	category = list("Firing Pins")
-	mapload_design_flags = DESIGN_FAB_SECURITY
-
 /datum/design/stunrevolver
 	name = "Tesla Cannon Part Kit"
 	desc = "The kit for a high-tech cannon that fires internal, reusable bolt cartridges in a revolving cylinder. The cartridges can be recharged using conventional rechargers."

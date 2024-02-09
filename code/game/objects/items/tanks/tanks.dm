@@ -29,7 +29,7 @@
 
 	custom_materials = list(/datum/material/iron = 500)
 	actions_types = list(/datum/action/item_action/set_internals)
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)
 	integrity_failure = 0.5
 
 	/// The gases this tank contains. Don't modify this directly, use return_air() to get it instead
@@ -275,7 +275,7 @@
 	excited = (excited | leaking)
 
 	if(!excited)
-		STOP_PROCESSING(SSobj, src)
+		. = PROCESS_KILL
 	excited = FALSE
 
 	if(QDELETED(src) || !leaking || !air_contents)

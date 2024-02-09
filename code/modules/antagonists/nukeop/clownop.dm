@@ -36,9 +36,9 @@
 /datum/antagonist/nukeop/leader/clownop/give_alias()
 	title = pick("Head Honker", "Slipmaster", "Clown King", "Honkbearer")
 	if(nuke_team?.syndicate_name)
-		owner.current.real_name = "[nuke_team.syndicate_name] [title]"
+		owner.current.set_real_name("[nuke_team.syndicate_name] [title]")
 	else
-		owner.current.real_name = "Syndicate [title]"
+		owner.current.set_real_name("Syndicate [title]")
 
 /datum/antagonist/nukeop/leader/clownop
 	name = "Clown Operative Leader"

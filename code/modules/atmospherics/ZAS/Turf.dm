@@ -19,13 +19,6 @@
 	var/tmp/verbose = FALSE
 #endif
 
-///Adds the graphic_add list to vis_contents, removes graphic_remove.
-/turf/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
-	if(length(graphic_add))
-		vis_contents += graphic_add
-	if(length(graphic_remove))
-		vis_contents -= graphic_remove
-
 ///Updates the turf's air source properties, breaking or creating zone connections as necessary.
 /turf/proc/update_air_properties()
 	var/self_block
@@ -124,8 +117,8 @@
 	if(!simulated)
 		return ..()
 
-	if(!isnull(zone) && zone.invalid) //this turf's zone is in the process of being rebuilt
-		copy_zone_air() //not very efficient :(
+	if(zone?.invalid) //this turf's zone is in the process of being rebuilt
+		take_zone_air_share() //not very efficient :(
 		zone = null //Easier than iterating through the list at the zone.
 
 	var/self_block
@@ -297,18 +290,19 @@
 /turf/return_air()
 	RETURN_TYPE(/datum/gas_mixture)
 	if(!simulated)
-		if(!isnull(air))
+		if(air)
 			return air.copy()
 		else
 			make_air()
 			return air.copy()
 
-	else if(!isnull(zone))
+	else if(zone)
 		if(!zone.invalid)
 			SSzas.mark_zone_update(zone)
 			return zone.air
 		else
-			copy_zone_air()
+			take_zone_air_share()
+			zone = null
 			return air
 	else
 		if(isnull(air))
@@ -319,17 +313,18 @@
 /turf/unsafe_return_air()
 	RETURN_TYPE(/datum/gas_mixture)
 	if(!simulated)
-		if(!isnull(air))
+		if(air)
 			return air.copy()
 		else
 			make_air()
 			return air.copy()
 
-	else if(!isnull(zone))
+	else if(zone)
 		if(!zone.invalid)
 			return zone.air
 		else
-			copy_zone_air()
+			take_zone_air_share()
+			zone = null
 			return air
 	else
 		if(isnull(air))
@@ -366,7 +361,7 @@
 		SSzas.unsimulated_gas_cache[gas_key] = air
 
 ///Copies this turf's group share from the zone. Usually used before removing it from the zone.
-/turf/proc/copy_zone_air()
+/turf/proc/take_zone_air_share()
 	if(isnull(air))
 		air = new/datum/gas_mixture
 	air.copyFrom(zone.air)

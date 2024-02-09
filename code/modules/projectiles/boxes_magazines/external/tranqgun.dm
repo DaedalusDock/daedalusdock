@@ -1,5 +1,5 @@
 /obj/item/ammo_box/magazine/tranq_rifle
-	name = ".308 tranquilizer magazine"
+	name = "5-round magazine (.308 tranquilizer)"
 	desc = "A magazine of tranquilizer darts."
 	icon_state = ".50mag"
 	base_icon_state = ".50mag"
@@ -9,7 +9,7 @@
 
 
 /obj/item/ammo_box/magazine/tranq_rifle/ryetalyn
-	name = ".308 ryetalyn magazine"
+	name = "5-round magazine (.308 ryetalyn)"
 	desc = "A magazine of tranquilizer darts filled with ryetalyn."
 	ammo_type = /obj/item/ammo_casing/caseless/safari_dart/ryetalyn
 	max_ammo = 5

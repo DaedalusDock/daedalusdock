@@ -27,7 +27,6 @@
 	alpha = 50
 
 	footstep_type = FOOTSTEP_MOB_CLAW
-	var/datum/action/small_sprite/mini_arachnid = new/datum/action/small_sprite/mega_arachnid()
 
 /mob/living/simple_animal/hostile/jungle/mega_arachnid/Life(delta_time = SSMOBS_DT, times_fired)
 	..()
@@ -53,7 +52,7 @@
 
 /mob/living/simple_animal/hostile/jungle/mega_arachnid/Initialize(mapload)
 	. = ..()
-	mini_arachnid.Grant(src)
+	AddComponent(/datum/component/seethrough_mob)
 
 /obj/projectile/mega_arachnid
 	name = "flesh snare"

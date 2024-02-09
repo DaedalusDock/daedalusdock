@@ -71,16 +71,21 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	///Sound played when you hit something with the item
 	var/hitsound
+	var/wielded_hitsound
+
 	///Played when the item is used, for example tools
 	var/usesound
 	///Used when yate into a mob
 	var/mob_throw_hit_sound
 	///Sound used when equipping the item into a valid slot
 	var/equip_sound
-	///Sound uses when picking the item up (into your hands)
+	///Sound used when picking the item up (into your hands)
 	var/pickup_sound
-	///Sound uses when dropping the item, or when its thrown.
+	///Sound used when dropping the item, or when its thrown.
 	var/drop_sound
+	///Sound used when successfully blocking an attack.
+	var/block_sound
+
 	///Whether or not we use stealthy audio levels for this item's attack sounds
 	var/stealthy_audio = FALSE
 
@@ -133,9 +138,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	/// How much clothing is slowing you down. Negative values speeds you up
 	var/slowdown = 0
 	///percentage of armour effectiveness to remove
-	var/armour_penetration = 0
-	///Whether or not our object is easily hindered by the presence of armor
-	var/weak_against_armour = FALSE
+	var/armor_penetration = 0
+	/// A multiplier applied to the target's armor. "2" means that their armor is twice as effective against this item.
+	var/weak_against_armor = null
 	///What objects the suit storage can store
 	var/list/allowed = null
 	///In deciseconds, how long an item takes to equip; counts only for normal clothing slots, not pockets etc.
@@ -171,13 +176,11 @@ DEFINE_INTERACTABLE(/obj/item)
 	///All items with sharpness of SHARP_EDGED or higher will automatically get the butchering component.
 	var/sharpness = NONE
 
-	///How a tool acts when you use it on something, such as wirecutters cutting wires while multitools measure power
+	///How a tool acts when you use it on something, such as wirecutfters cutting wires while multitools measure power
 	var/tool_behaviour = NONE
 	///How fast does the tool work
 	var/toolspeed = 1
 
-	var/block_chance = 0
-	var/hit_reaction_chance = 0 //If you want to have something unrelated to blocking/armour piercing etc. Maybe not needed, but trying to think ahead/allow more freedom
 	///In tiles, how far this weapon can reach; 1 for adjacent, which is default
 	var/reach = 1
 
@@ -225,6 +228,27 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	var/combat_click_delay = CLICK_CD_MELEE
 
+	/// The baseline chance to block **ANY** attack, projectiles included
+	var/block_chance = 0
+	/// The type of effect to create on a successful block
+	var/obj/effect/temp_visual/block_effect = /obj/effect/temp_visual/block
+
+	/*________*/
+	/*Wielding*/
+	/*‾‾‾‾‾‾‾‾*/
+	/// Is the item being held in two hands?
+	var/wielded = FALSE
+
+	/// The force of the item when wielded. If null, will be force * 1.5.
+	var/force_wielded = null
+	/// A var to hold the old, unwielded force value.
+	VAR_PRIVATE/force_unwielded = null
+	/// The icon_state to use when wielded, if any.
+	var/icon_state_wielded = null
+	/// The sound to play on wield.
+	var/wield_sound = null
+	/// The wound to play on unwield.
+	var/unwield_sound = null
 
 /obj/item/Initialize(mapload)
 
@@ -251,6 +275,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			hitsound = 'sound/items/welder.ogg'
 		if(damtype == BRUTE)
 			hitsound = SFX_SWING_HIT
+
 	if(sharpness && force > 5) //give sharp objects butchering functionality, for consistency
 		AddComponent(/datum/component/butchering, 80 * toolspeed)
 
@@ -287,6 +312,11 @@ DEFINE_INTERACTABLE(/obj/item)
 		else if(usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_IGNORE_TK|USE_RESTING))
 			id.show(usr)
 		return TRUE
+
+/obj/item/update_icon_state()
+	if(wielded && icon_state_wielded)
+		icon_state = icon_state_wielded
+	return ..()
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
@@ -342,7 +372,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/blob_act(obj/structure/blob/B)
 	if(B && B.loc == loc)
-		atom_destruction(MELEE)
+		atom_destruction(BLUNT)
 
 
 /**Makes cool stuff happen when you suicide with an item
@@ -584,18 +614,67 @@ DEFINE_INTERACTABLE(/obj/item)
 			R.activate_module(src)
 			R.hud_used.update_robot_modules_display()
 
+/obj/item/attackby(obj/item/item, mob/living/user, params)
+	if(user.try_slapcraft(src, item))
+		return TRUE
+	return ..()
+
 /obj/item/proc/GetDeconstructableContents()
 	return get_all_contents() - src
 
-// afterattack() and attack() prototypes moved to _onclick/item_attack.dm for consistency
+/// A helper for calling can_block_attack() and hit_reaction() together.
+/obj/item/proc/try_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
+	var/sig_return = SEND_SIGNAL(src, COMSIG_ITEM_CHECK_BLOCK)
+	var/block_result = sig_return & COMPONENT_CHECK_BLOCK_BLOCKED
 
-/obj/item/proc/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(SEND_SIGNAL(src, COMSIG_ITEM_HIT_REACT, owner, hitby, attack_text, final_block_chance, damage, attack_type) & COMPONENT_HIT_REACTION_BLOCK)
-		return TRUE
+	block_result ||= prob(get_block_chance(wielder, hitby, damage, attack_type, armor_penetration))
 
-	if(prob(final_block_chance))
-		owner.visible_message(span_danger("[owner] blocks [attack_text] with [src]!"))
-		return TRUE
+	var/list/reaction_args = args.Copy()
+	if(block_result)
+		reaction_args["block_success"] = TRUE
+	else
+		reaction_args["block_success"] = FALSE
+
+	if(!(sig_return & COMPONENT_CHECK_BLOCK_SKIP_REACTION))
+		if(hit_reaction(arglist(reaction_args)))
+			block_result = TRUE
+
+	if(block_result)
+		block_feedback(wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+
+	return block_result
+
+/// Returns a number to feed into prob() to determine if the attack was blocked.
+/obj/item/proc/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	var/block_chance_modifier = round(damage / -3)
+	var/final_block_chance = block_chance - (clamp((armor_penetration - src.armor_penetration)/2,0,100)) + block_chance_modifier
+	return final_block_chance
+
+/// Called when the wearer is being hit by an attack while wearing/wielding this item.
+/// Returning TRUE will eat the attack, but this should be done by can_block_attack() instead.
+/obj/item/proc/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK, block_success = TRUE)
+	SEND_SIGNAL(src, COMSIG_ITEM_HIT_REACT, owner, hitby, attack_text, damage, attack_type, block_success)
+
+	return block_success
+
+/// Called by try_block_attack on a successful block
+/obj/item/proc/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		wielder.visible_message(span_danger("[wielder] blocks [attack_text] with [src]!"))
+
+	if(do_sound && block_sound)
+		play_block_sound(wielder, attack_type)
+
+	if(block_effect)
+		var/obj/effect/effect = new block_effect()
+		wielder.vis_contents += effect
+
+/// Plays the block sound effect
+/obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)
+	var/block_sound = src.block_sound
+	if(islist(block_sound))
+		block_sound = pick(block_sound)
+	playsound(wielder, block_sound, 70, TRUE)
 
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
 	return ITALICS | REDUCE_RANGE
@@ -604,16 +683,22 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/dropped(mob/user, silent = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	if(wielded)
+		unwield(user, FALSE, TRUE)
+
 	// Remove any item actions we temporary gave out.
 	for(var/datum/action/action_item_has as anything in actions)
 		action_item_has.Remove(user)
 
 	if((item_flags & DROPDEL) && !QDELETED(src))
 		qdel(src)
+
 	item_flags &= ~IN_INVENTORY
 	SEND_SIGNAL(src, COMSIG_ITEM_DROPPED, user)
+
 	if(!silent)
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
+
 	user?.update_equipment_speed_mods()
 	user?.update_mouse_pointer()
 
@@ -653,6 +738,15 @@ DEFINE_INTERACTABLE(/obj/item)
 	SEND_SIGNAL(src, COMSIG_ITEM_EQUIPPED, user, slot)
 	SEND_SIGNAL(user, COMSIG_MOB_EQUIPPED_ITEM, src, slot)
 
+	if(slot == ITEM_SLOT_HANDS)
+		if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+			if(!wield(user))
+				stack_trace("[user] failed to wield a twohanded item.")
+				spawn(0)
+					user.dropItemToGround(src)
+	else if(wielded)
+		unwield(user, FALSE)
+
 	// Give out actions our item has to people who equip it.
 	for(var/datum/action/action as anything in actions)
 		give_item_action(action, user, slot)
@@ -663,6 +757,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, TRUE, ignore_walls = FALSE)
 		else if(slot == ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
+
 	user.update_equipment_speed_mods()
 
 /// Gives one of our item actions to a mob, when equipped to a certain slot
@@ -682,6 +777,91 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_LEGCUFFED) //these aren't true slots, so avoid granting actions there
 		return FALSE
 	return TRUE
+
+/// Attempt to wield this item with two hands. Can fail.
+/obj/item/proc/wield(mob/living/user)
+	if(wielded)
+		return FALSE
+
+	// No free hands.
+	if(!length(user.get_empty_held_indexes()))
+		to_chat(user, span_warning("You need two hands to wield [src]."))
+		return FALSE
+
+	if(SEND_SIGNAL(src, COMSIG_ITEM_WIELD, user) & COMPONENT_ITEM_BLOCK_WIELD)
+		return FALSE
+
+	wielded = TRUE
+
+	// Let's reserve the other hand.
+	var/obj/item/offhand/offhand_item = new(user, src)
+	if(!user.put_in_inactive_hand(offhand_item)) // This should be impossible
+		stack_trace("[user] somehow failed to wield an item despite having a free hand.")
+		wielded = FALSE
+		qdel(offhand_item)
+		return FALSE
+
+	// Setup force values.
+	force_unwielded = force
+	if(!isnull(force_wielded))
+		force = force_wielded
+	else
+		force = force * 1.5
+
+	if(!HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+		to_chat(user, span_notice("You grip [src] with your other hand."))
+
+	// Feedback
+	if(wield_sound)
+		playsound(user, wield_sound, 50, TRUE)
+
+	// Change appearance
+	name = "[name] (Wielded)"
+	update_appearance()
+	user.update_held_items()
+	return TRUE
+
+/obj/item/proc/unwield(mob/living/user, show_message = TRUE, dropping = FALSE)
+	if(!wielded)
+		return FALSE
+
+	wielded = FALSE
+
+	// Reset force
+	force = force_unwielded
+	force_unwielded = null
+
+	// Reset appearance
+	var/sf = findtext(name, " (Wielded)", -10) // 10 == length(" (Wielded)")
+	if(sf)
+		name = copytext(name, 1, sf)
+	else
+		name = "[initial(name)]"
+
+	update_appearance()
+
+	if(istype(user)) // tk showed that we might not have a mob here
+		if(!dropping)
+			var/slot = user.get_slot_by_item(src)
+			if(slot == ITEM_SLOT_HANDS)
+				user.update_held_items()
+			else if(slot)
+				user.update_clothing(slot)
+
+			// if the item requires two handed, drop the item on unwield
+			if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+				user.dropItemToGround(src, force=TRUE)
+
+		// Show message if requested
+		if(show_message)
+			to_chat(user, span_notice("You are now carrying [src] with one hand."))
+
+	if(unwield_sound)
+		playsound(user, unwield_sound, 50, TRUE)
+
+	SEND_SIGNAL(src, COMSIG_ITEM_UNWIELD, user)
+
+	return FALSE
 
 /**
  *the mob M is attempting to equip this item into the slot passed through as 'slot'. Return 1 if it can do this and 0 if it can't.
@@ -725,6 +905,15 @@ DEFINE_INTERACTABLE(/obj/item)
 		return
 
 	attack_self(user)
+
+/// Returns an armor flag to check against for dealing damage.
+/obj/item/proc/get_attack_flag()
+	if(sharpness & SHARP_POINTY)
+		return PUNCTURE
+	if(sharpness & SHARP_EDGED)
+		return SLASH
+
+	return BLUNT
 
 ///This proc determines if and at what an object will reflect energy projectiles if it's in l_hand,r_hand or wear_suit
 /obj/item/proc/IsReflect(def_zone)
@@ -811,7 +1000,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(flags & ITEM_SLOT_EYES)
 		owner.update_worn_glasses()
 	if(flags & ITEM_SLOT_EARS)
-		owner.update_inv_ears()
+		owner.update_worn_ears()
 	if(flags & ITEM_SLOT_MASK)
 		owner.update_worn_mask()
 	if(flags & ITEM_SLOT_HEAD)
@@ -1319,12 +1508,12 @@ DEFINE_INTERACTABLE(/obj/item)
  * Updates all action buttons associated with this item
  *
  * Arguments:
- * * status_only - Update only current availability status of the buttons to show if they are ready or not to use
+ * * flags - Update flags passed to build_all_button_icons()
  * * force - Force buttons update even if the given button icon state has not changed
  */
-/obj/item/proc/update_action_buttons(force = FALSE)
+/obj/item/proc/update_action_buttons(flags = null, force = FALSE)
 	for(var/datum/action/current_action as anything in actions)
-		current_action.build_all_button_icons(null, force)
+		current_action.build_all_button_icons(flags, force)
 
 // Update icons if this is being carried by a mob
 /obj/item/wash(clean_types)
@@ -1539,7 +1728,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage((w_class * 5) * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 
@@ -1547,12 +1736,23 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/proc/on_disarm_attempt(mob/living/user, mob/living/attacker)
 	if(force < 1)
-		return 0
+		return FALSE
 	if(!istype(attacker))
-		return 0
+		return FALSE
+	if(sharpness)
+		return FALSE
+
 	var/obj/item/bodypart/BP = attacker.get_active_hand()
-	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, MELEE, silent = TRUE), sharpness = sharpness)
+
+	attacker.apply_damage(force, damtype, BP, attacker.run_armor_check(BP, get_attack_flag(), silent = TRUE), sharpness = sharpness)
+
 	attacker.visible_message(span_danger("[attacker] hurts \his hand on [src]!"))
 	log_combat(attacker, user, "Attempted to disarm but was blocked by", src)
-	playsound(user, hitsound, 50, 1, -1)
-	return 1
+	playsound(user, get_hitsound(), 50, 1, -1)
+	return TRUE
+
+/// Returns the sound the item makes when hitting something
+/obj/item/proc/get_hitsound()
+	if(wielded)
+		. = wielded_hitsound
+	. ||= hitsound

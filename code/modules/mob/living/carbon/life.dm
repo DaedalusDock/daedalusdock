@@ -139,8 +139,8 @@
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
 
-	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50)
-	if(!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE)
+	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50, channel = CHANNEL_BREATHING)
+	if(shock_stage >= 10 || (!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE))
 		src << breathing
 		COOLDOWN_START(src, breath_sound_cd, 3.5 SECONDS)
 
@@ -329,8 +329,7 @@
 				continue
 			if(mut == UE_CHANGED)
 				if(dna.previous["name"])
-					real_name = dna.previous["name"]
-					name = real_name
+					set_real_name(dna.previous["name"])
 					dna.previous.Remove("name")
 				if(dna.previous["UE"])
 					dna.unique_enzymes = dna.previous["UE"]

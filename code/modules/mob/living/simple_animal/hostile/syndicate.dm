@@ -36,7 +36,7 @@
 	melee_damage_upper = 10
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	combat_mode = TRUE
 	loot = list(/obj/effect/mob_spawn/corpse/human/syndicatesoldier)
 	atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
@@ -118,7 +118,7 @@
 	attack_verb_continuous = "slashes"
 	attack_verb_simple = "slash"
 	attack_sound = 'sound/weapons/blade1.ogg'
-	armour_penetration = 35
+	armor_penetration = 35
 	light_color = COLOR_SOFT_RED
 	status_flags = 0
 	var/obj/effect/light_emitter/red_energy_sword/sord

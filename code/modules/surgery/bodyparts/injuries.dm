@@ -37,8 +37,8 @@
 		)
 
 		jostle_bones()
-		if(!(bodypart_flags & BP_NO_PAIN))
-			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+		if(!(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(owner, TRAIT_NO_PAINSHOCK))
+			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob/living/carbon/human, pain_emote), PAIN_AMT_AGONIZING, TRUE)
 
 	playsound(loc, SFX_BREAK_BONE, 100, FALSE, -2)
 
@@ -253,7 +253,7 @@
 	if(!IS_ORGANIC_LIMB(src))
 		return
 
-	var/armor = owner.run_armor_check(body_zone, MELEE, silent = TRUE)
+	var/armor = owner.run_armor_check(body_zone, BLUNT, silent = TRUE)
 	if(armor > 70)
 		return
 

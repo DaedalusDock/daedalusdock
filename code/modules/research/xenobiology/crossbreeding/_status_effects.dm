@@ -107,7 +107,7 @@
 	var/mob/living/carbon/O = owner
 	var/mob/living/carbon/C = clone
 	if(istype(C) && istype(O))
-		C.real_name = O.real_name
+		C.set_real_name(O.real_name)
 		O.dna.transfer_identity(C)
 		C.updateappearance(mutcolor_update=1)
 	if(owner.mind)
@@ -698,7 +698,7 @@
 	var/mob/living/carbon/O = owner
 	var/mob/living/carbon/C = clone
 	if(istype(C) && istype(O))
-		C.real_name = O.real_name
+		C.set_real_name(O.real_name)
 		O.dna.transfer_identity(C)
 		C.updateappearance(mutcolor_update=1)
 	return ..()
@@ -780,7 +780,7 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		originalDNA.transfer_identity(H)
-		H.real_name = originalname
+		H.set_real_name(originalname)
 		H.updateappearance(mutcolor_update=1)
 
 /datum/status_effect/brokenpeace
@@ -903,6 +903,9 @@
 
 /datum/status_effect/stabilized/black/tick()
 	var/obj/item/hand_item/grab/G = owner.get_active_grab()
+	if(!G)
+		return
+
 	if(G.current_grab.damage_stage < GRAB_KILL || !IS_WEAKREF_OF(G.affecting, draining_ref))
 		return
 

@@ -62,7 +62,7 @@
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(amount, 0, updating_health, required_status, can_break_bones = FALSE)
+		take_overall_damage(amount, 0, updating_health, required_status, modifiers = NONE)
 	else
 		heal_overall_damage(abs(amount), 0, required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
@@ -71,7 +71,7 @@
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
-		take_overall_damage(0, amount, updating_health, required_status, can_break_bones = FALSE)
+		take_overall_damage(0, amount, updating_health, required_status, modifiers = FALSE)
 	else
 		heal_overall_damage(0, abs(amount), required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
@@ -234,7 +234,7 @@
 	if(!parts.len)
 		return
 	var/obj/item/bodypart/picked = pick(parts)
-	if(picked.receive_damage(brute, burn, blocked = check_armor ? run_armor_check(picked, (brute ? MELEE : burn ? FIRE : null)) : FALSE, sharpness = sharpness))
+	if(picked.receive_damage(brute, burn, blocked = check_armor ? run_armor_check(picked, (brute ? BLUNT : burn ? FIRE : null)) : FALSE, sharpness = sharpness))
 		update_damage_overlays()
 
 ///Heal MANY bodyparts, in random order
@@ -261,7 +261,7 @@
 		update_damage_overlays()
 
 /// damage MANY bodyparts, in random order
-/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status, sharpness, can_break_bones = TRUE)
+/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, updating_health = TRUE, required_status, sharpness, modifiers = DEFAULT_DAMAGE_FLAGS)
 	if(status_flags & GODMODE)
 		return //godmode
 
@@ -276,7 +276,7 @@
 	burn /= length(not_full)
 
 	for(var/obj/item/bodypart/bp as anything in not_full)
-		update |= bp.receive_damage(brute, burn, 0, FALSE, required_status, sharpness, can_break_bones)
+		update |= bp.receive_damage(brute, burn, 0, FALSE, required_status, sharpness, modifiers = modifiers)
 
 	if(updating_health && (update & BODYPART_LIFE_UPDATE_HEALTH))
 		updatehealth()

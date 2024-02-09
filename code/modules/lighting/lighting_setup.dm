@@ -1,6 +1,6 @@
 
 /proc/create_all_lighting_objects()
-	for(var/area/A in world)
+	for(var/area/A in GLOB.areas)
 		if(!A.static_lighting)
 			continue
 

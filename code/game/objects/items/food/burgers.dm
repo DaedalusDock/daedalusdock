@@ -408,6 +408,10 @@
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
+/obj/item/food/burger/crazy/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/food/burger/crazy/process(delta_time) // DIT EES HORRIBLE
 	if(DT_PROB(2.5, delta_time))
 		var/datum/effect_system/smoke_spread/bad/green/smoke = new

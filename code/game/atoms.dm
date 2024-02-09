@@ -633,6 +633,7 @@
 	// only living mobs use armor to reduce damage, but on_hit() is going to need the value no matter what is shot.
 	var/visual_armor_check = check_projectile_armor(def_zone, hitting_projectile)
 	. = hitting_projectile.on_hit(src, visual_armor_check, def_zone, piercing_hit)
+	spawn_debris(hitting_projectile)
 
 ///Return true if we're inside the passed in atom
 /atom/proc/in_contents_of(container)//can take class or object instance as argument
@@ -705,7 +706,8 @@
 		var/list/materials_list = list()
 		for(var/datum/material/current_material as anything in custom_materials)
 			materials_list += "[current_material.name]"
-		. += "<u>It is made out of [english_list(materials_list)]</u>."
+		. += "It is made out of [english_list(materials_list)]."
+
 	if(reagents)
 		. += "<hr>" //PARIAH EDIT ADDITION
 		if(reagents.flags & TRANSPARENT)
@@ -2238,10 +2240,9 @@
 
 /// Makes this atom look like a "hologram"
 /// So transparent, blue and with a scanline
-/// The degree of the opacity is optional, based off the opacity arg (0 -> 1)
-/atom/proc/makeHologram(opacity = 0.5)
+/atom/proc/makeHologram(color = rgb(125,180,225, 0.5 * 255))
 	// First, we'll make things blue (roughly) and sorta transparent
-	add_filter("HOLO: Color and Transparent", 1, color_matrix_filter(rgb(125,180,225, opacity * 255)))
+	add_filter("HOLO: Color and Transparent", 1, color_matrix_filter(color))
 	// Now we're gonna do a scanline effect
 	// Gonna take this atom and give it a render target, then use it as a source for a filter
 	// (We use an atom because it seems as if setting render_target on an MA is just invalid. I hate this engine)

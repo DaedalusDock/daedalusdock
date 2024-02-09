@@ -238,20 +238,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// A list of weighted lists to pain emotes. The list with the LOWEST damage requirement needs to be first.
 	var/list/pain_emotes = list(
 		list(
-			"grunt" = 1,
-			"groan" = 1,
-		) = 10,
+			"grunts in pain" = 1,
+			"moans in pain" = 1,
+		) = PAIN_AMT_LOW,
 
 		list(
-			"grunt" = 1,
-			"groan" = 1,
-		) = 40,
+			"pain" = 1,
+		) = PAIN_AMT_MEDIUM,
 
 		list(
-			"scream" = 1,
-			"whimper" = 1,
-			"cry" = 1,
-		) = 70,
+			"agony" = 1,
+		) = PAIN_AMT_AGONIZING,
 	)
 
 ///////////
@@ -740,32 +737,47 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	switch(slot)
 		if(ITEM_SLOT_HANDS)
-			if(H.get_empty_held_indexes())
+			var/empty_hands = length(H.get_empty_held_indexes())
+			if(HAS_TRAIT(I, TRAIT_NEEDS_TWO_HANDS) && ((empty_hands < 2) || H.usable_hands < 2))
+				if(!disable_warning)
+					to_chat(H, span_warning("You need two hands to hold [I]."))
+				return FALSE
+
+			if(empty_hands)
 				return TRUE
 			return FALSE
+
 		if(ITEM_SLOT_MASK)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_NECK)
 			return TRUE
+
 		if(ITEM_SLOT_BACK)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_OCLOTHING)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_GLOVES)
 			if(H.num_hands < 2)
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_FEET)
 			if(H.num_legs < 2)
 				return FALSE
+
 			if((bodytype & BODYTYPE_DIGITIGRADE) && !(I.item_flags & IGNORE_DIGITIGRADE))
 				if(!(I.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)))
 					if(!disable_warning)
 						to_chat(H, span_warning("The footwear around here isn't compatible with your feet!"))
 					return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_BELT)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 
@@ -773,31 +785,43 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_EYES)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
+
 			var/obj/item/organ/eyes/E = H.getorganslot(ORGAN_SLOT_EYES)
 			if(E?.no_glasses)
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_HEAD)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_EARS)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_ICLOTHING)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_ID)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 			if(!H.w_uniform && !nojumpsuit && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+
 		if(ITEM_SLOT_LPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP)) //Pockets aren't visible, so you can't move TRAIT_NODROP items into them.
 				return FALSE
@@ -805,12 +829,13 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				return FALSE
 
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_L_LEG)
-
 			if(!H.w_uniform && !nojumpsuit && (!O || IS_ORGANIC_LIMB(O)))
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return TRUE
+
 		if(ITEM_SLOT_RPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP))
 				return FALSE
@@ -823,41 +848,52 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a jumpsuit before you can attach this [I.name]!"))
 				return FALSE
+
 			return TRUE
+
 		if(ITEM_SLOT_SUITSTORE)
 			if(HAS_TRAIT(I, TRAIT_NODROP))
 				return FALSE
+
 			if(!H.wear_suit)
 				if(!disable_warning)
 					to_chat(H, span_warning("You need a suit before you can attach this [I.name]!"))
 				return FALSE
+
 			if(!H.wear_suit.allowed)
 				if(!disable_warning)
 					to_chat(H, span_warning("You somehow have a suit with no defined allowed items for suit storage, stop that."))
 				return FALSE
+
 			if(I.w_class > WEIGHT_CLASS_BULKY)
 				if(!disable_warning)
 					to_chat(H, span_warning("The [I.name] is too big to attach!")) //should be src?
 				return FALSE
+
 			if( istype(I, /obj/item/modular_computer/tablet) || istype(I, /obj/item/pen) || is_type_in_list(I, H.wear_suit.allowed) )
 				return TRUE
+
 			return FALSE
+
 		if(ITEM_SLOT_HANDCUFFED)
 			if(!istype(I, /obj/item/restraints/handcuffs))
 				return FALSE
 			if(H.num_hands < 2)
 				return FALSE
 			return TRUE
+
 		if(ITEM_SLOT_LEGCUFFED)
 			if(!istype(I, /obj/item/restraints/legcuffs))
 				return FALSE
 			if(H.num_legs < 2)
 				return FALSE
 			return TRUE
+
 		if(ITEM_SLOT_BACKPACK)
 			if(H.back && H.back.atom_storage?.can_insert(I, H, messages = TRUE))
 				return TRUE
 			return FALSE
+
 	return FALSE //Unsupported slot
 
 /datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self)
@@ -948,29 +984,42 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style, list/params)
 	if(target.check_block())
-		target.visible_message(span_warning("[target] blocks [user]'s grab!"), \
-						span_userdanger("You block [user]'s grab!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
+		target.visible_message(
+			span_warning("[target] blocks [user]'s grab!"),
+			span_userdanger("You block [user]'s grab!"),
+			span_hear("You hear a swoosh!"),
+			COMBAT_MESSAGE_RANGE,
+			user
+		)
 		to_chat(user, span_warning("Your grab at [target] was blocked!"))
 		return FALSE
+
 	if(attacker_style?.grab_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return TRUE
+
 	else
 		user.try_make_grab(target, use_offhand = params?[RIGHT_CLICK])
 		return TRUE
 
 ///This proc handles punching damage.
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	// Pacifists can't harm.
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm [target]!"))
 		return FALSE
+
+	// If blocked, bail.
 	if(target.check_block())
 		target.visible_message(span_warning("[target] blocks [user]'s attack!"), \
 						span_userdanger("You block [user]'s attack!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your attack at [target] was blocked!"))
 		return FALSE
+
+	// If martial arts did something, bail.
 	if(attacker_style?.harm_act(user,target) == MARTIAL_ATTACK_SUCCESS)
 		return ATTACK_HANDLED
 
+	// Find what bodypart we are attacking with.
 	var/obj/item/organ/brain/brain = user.getorganslot(ORGAN_SLOT_BRAIN)
 	var/obj/item/bodypart/attacking_bodypart
 	if(brain)
@@ -982,44 +1031,45 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/atk_verb = attacking_bodypart.unarmed_attack_verb
 	var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
+	// If we're biting them, make sure we can bite, or bail.
 	if(atk_effect == ATTACK_EFFECT_BITE)
 		if(!user.has_mouth())
 			to_chat(user, span_warning("You can't [atk_verb] without a mouth!"))
 			return FALSE
+
 		if(user.is_mouth_covered(mask_only = TRUE))
 			to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
 			return FALSE
 
+	// By this point, we are attempting an attack!!!
 	user.do_attack_animation(target, atk_effect)
+
+	// Set damage and find hit bodypart using weighted rng
+	var/target_zone = deprecise_zone(user.zone_selected)
+	var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
+	var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (target.gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
+	// If we succeeded, hit the target area.
+	var/attacking_zone = (roll >= SUCCESS) ? target_zone : target.get_random_valid_zone()
+	var/obj/item/bodypart/affecting
+	if(attacking_zone)
+		affecting = target.get_bodypart(attacking_zone)
 
 	var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
 
-	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
-
-	var/miss_chance = 100
-	if(attacking_bodypart.unarmed_damage_low)
-		if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER)) //kicks never miss (provided your species deals more than 0 damage)
-			miss_chance = 0
-		else
-			miss_chance = user.get_melee_inaccuracy()
-
-
-	if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
+	if(!damage || !affecting || roll == CRIT_FAILURE)
 		var/rolled = target.body_position == LYING_DOWN && !target.incapacitated()
 		playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
 
 		target.visible_message(
-			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]!"), \
-			span_danger("You avoid [user]'s [atk_verb]!"),
+			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]!"),
+			null,
 			span_hear("You hear a swoosh!"),
 			COMBAT_MESSAGE_RANGE,
-			user
 		)
 		if(rolled)
 			target.setDir(pick(GLOB.cardinals))
 
-		to_chat(user, span_warning("Your [atk_verb] misses [target]!"))
-		log_combat(user, target, "attempted to punch")
+		log_combat(user, target, "attempted to punch (missed)")
 		return FALSE
 
 	var/armor_block = target.run_armor_check(affecting, BLUNT)
@@ -1027,21 +1077,21 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
 	user.visible_message(
-		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b>!"),
+		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b> in the [affecting.plaintext_zone]!"),
 		null,
-		span_hear("You hear a sickening sound of flesh hitting flesh!"),
+		span_hear("You hear a scuffle!"),
 		COMBAT_MESSAGE_RANGE
 	)
 
 	target.lastattacker = user.real_name
 	target.lastattackerckey = user.ckey
-	user.dna.species.spec_unarmedattacked(user, target)
 
 	if(user.limb_destroyer)
 		target.dismembering_strike(user, affecting.body_zone)
 
 	var/attack_direction = get_dir(user, target)
 	var/attack_type = attacking_bodypart.attack_type
+
 	if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
 		log_combat(user, target, "kicked")
 		target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
@@ -1055,9 +1105,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		. |= ATTACK_CONSUME_STAMINA
 
 	return ATTACK_CONTINUE | .
-
-/datum/species/proc/spec_unarmedattacked(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	return
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	if(target.check_block())
@@ -1106,6 +1153,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(.)
 			M.animate_interact(H, INTERACT_DISARM)
 		return // dont attack after
+
 	if(M.combat_mode)
 		. = harm(M, H, attacker_style)
 		if(. & ATTACK_CONTINUE)
@@ -1608,10 +1656,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/obj/item/organ/wings/functional/wings = new(null, wings_icon, H.physique)
 	wings.Insert(H)
 
-///Species override for unarmed attacks because the attack_hand proc was made by a mouth-breathing troglodyte on a tricycle. Also to whoever thought it would be a good idea to make it so the original spec_unarmedattack was not actually linked to unarmed attack needs to be checked by a doctor because they clearly have a vast empty space in their head.
-/datum/species/proc/spec_unarmedattack(mob/living/carbon/human/user, atom/target, modifiers)
-	return FALSE
-
 /// Returns a list of strings representing features this species has.
 /// Used by the preferences UI to know what buttons to show.
 /datum/species/proc/get_features()
@@ -1659,6 +1703,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	SHOULD_CALL_PARENT(TRUE)
 	. = list()
 	return
+
 /// Given a human, will adjust it before taking a picture for the preferences UI.
 /// This should create a CONSISTENT result, so the icons don't randomly change.
 /datum/species/proc/prepare_human_for_preview(mob/living/carbon/human/human)
@@ -1688,6 +1733,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		'goon/sounds/voice/fescream1.ogg',
 		'goon/sounds/voice/fescream5.ogg',
 	)
+
+/datum/species/proc/get_agony_sound(mob/living/carbon/human/human)
+	return get_scream_sound(human)
+
+/datum/species/proc/get_pain_sound(mob/living/carbon/human/human)
+	return get_scream_sound(human)
 
 /datum/species/proc/get_types_to_preload()
 	var/list/to_store = list()

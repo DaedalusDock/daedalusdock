@@ -35,8 +35,8 @@
 	if(require_sharpness)
 		playsound(assembly, 'sound/weapons/slice.ogg', 50, TRUE, -1)
 	// Else, play an attack sound if there is one.
-	else if (item.hitsound)
-		playsound(assembly, item.hitsound, 50, TRUE, -1)
+	else if (item.get_hitsound())
+		playsound(assembly, item.get_hitsound(), 50, TRUE, -1)
 
 /datum/slapcraft_step/attack/proc/sharpness_error(obj/item/item)
 	switch(require_sharpness)

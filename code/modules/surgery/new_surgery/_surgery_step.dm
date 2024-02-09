@@ -24,8 +24,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	var/can_infect = 0
 	/// How much blood this step can get on surgeon. 1 - hands, 2 - full body.
 	var/blood_level = 0                  // How much blood this step can get on surgeon. 1 - hands, 2 - full body.
-	/// what shock level will this step put patient on
-	var/shock_level = 0
+	/// How much pain to deliver to the patient
+	var/pain_given =0
 	/// if this step NEEDS stable optable or can be done on any valid surface with no penalty
 	var/delicate = 0
 	/// Various bitflags for requirements of the surgery.
@@ -146,8 +146,8 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 					user.ContactContractDisease(D)
 
-	if(shock_level && !(HAS_TRAIT(target, TRAIT_NO_PAINSHOCK) || HAS_TRAIT(target, TRAIT_FAKEDEATH)))
-		target.shock_stage = max(target.shock_stage, shock_level)
+	if(pain_given && !(HAS_TRAIT(target, TRAIT_NO_PAINSHOCK) || HAS_TRAIT(target, TRAIT_FAKEDEATH)) && !(affected.bodypart_flags & BP_NO_PAIN))
+		target.apply_pain(pain_given, affected.body_zone, ignore_cd = TRUE)
 
 	if (target.stat == UNCONSCIOUS && prob(20))
 		to_chat(target, span_boldnotice("... [pick("bright light", "faraway pain", "something moving in you", "soft beeping")] ..."))
@@ -177,7 +177,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		//. -= round(H.shock_stage * 0.5)
+		. -= round(H.shock_stage / 2)
 		if(H.eye_blurry)
 			. -= 20
 		if(H.eye_blind)

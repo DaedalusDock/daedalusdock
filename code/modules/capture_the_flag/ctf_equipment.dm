@@ -40,7 +40,7 @@
 	mag_type = /obj/item/ammo_box/magazine/recharge/ctf/rifle
 	desc = "This looks like it could really hurt in melee."
 	force = 50
-	weapon_weight = WEAPON_HEAVY
+	unwielded_spread_bonus = 20
 	slot_flags = null
 
 /obj/item/gun/ballistic/automatic/laser/ctf/Initialize(mapload)
@@ -75,7 +75,6 @@
 	fire_sound = 'sound/weapons/gun/shotgun/shot_alt.ogg'
 	semi_auto = TRUE
 	internal_magazine = FALSE
-	tac_reloads = TRUE
 
 /obj/item/gun/ballistic/shotgun/ctf/Initialize(mapload)
 	. = ..()

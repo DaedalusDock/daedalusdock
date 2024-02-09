@@ -16,7 +16,7 @@
 
 /obj/item/food/cheese/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/smell/subtle, SCENT_SMELL, "cheese", 4)
+	AddComponent(/datum/component/smell, INTENSITY_SUBTLE, SCENT_SMELL, "cheese", 4)
 
 /obj/item/food/cheese/wedge
 	name = "cheese wedge"
@@ -211,7 +211,7 @@
 /obj/item/food/badrecipe/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_GRILLED, PROC_REF(OnGrill))
-	AddComponent(/datum/component/smell/strong, SCENT_HAZE, "burned garbage", 4)
+	AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_HAZE, "burned garbage", 4)
 
 /obj/item/food/badrecipe/moldy
 	name = "moldy mess"
@@ -224,7 +224,7 @@
 
 /obj/item/food/badrecipe/moldy/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/smell/strong, SCENT_SMELL, "moldy waste", 4)
+	AddComponent(/datum/component/smell, INTENSITY_OVERPOWERING, SCENT_SMELL, "moldy waste", 4)
 
 /obj/item/food/badrecipe/moldy/bacteria
 	name = "bacteria rich moldy mess"
@@ -412,6 +412,7 @@
 	force = 30
 	throwforce = 15
 	block_chance = 55
+	block_sound = 'sound/weapons/block/parry.ogg'
 	armor_penetration = 80
 	attack_verb_continuous = list("slaps", "slathers")
 	attack_verb_simple = list("slap", "slather")
@@ -946,7 +947,7 @@
 
 /obj/item/food/ready_donk/warm/mac_n_cheese/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/smell/strong, "scent", "nostalgia", 2)
+	AddComponent(/datum/component/smell, INTENSITY_STRONG, "scent", "nostalgia", 2)
 
 /obj/item/food/ready_donk/donkhiladas
 	name = "\improper Ready-Donk: Donkhiladas"

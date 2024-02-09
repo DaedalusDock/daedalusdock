@@ -90,6 +90,10 @@ To add a crossbreed:
 			itemcolor = "#008B8B"
 	add_atom_colour(itemcolor, FIXED_COLOUR_PRIORITY)
 
+/obj/item/slimecross/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/slimecrossbeaker //To be used as a result for extract reactions that make chemicals.
 	name = "result extract"
 	desc = "You shouldn't see this."

@@ -39,7 +39,7 @@
 	areas = list()
 
 	var/list/new_latejoin = list()
-	for(var/area/shuttle/arrival/A in GLOB.sortedAreas)
+	for(var/area/shuttle/arrival/A in GLOB.areas)
 		areas += A
 
 	for(var/obj/structure/chair/C as anything in INSTANCES_OF(/obj/structure/chair))

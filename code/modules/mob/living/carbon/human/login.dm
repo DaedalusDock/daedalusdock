@@ -3,6 +3,10 @@
 
 	dna?.species?.on_owner_login(src)
 
+	// This is a preference-based effect
+	if(glasses)
+		update_glasses_color(glasses, TRUE)
+
 	if(!LAZYLEN(afk_thefts))
 		return
 

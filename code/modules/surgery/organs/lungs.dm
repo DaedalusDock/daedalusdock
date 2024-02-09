@@ -359,6 +359,7 @@
 			owner.bleed(1)
 
 		else if(prob(4))
+			to_chat(owner, span_warning(pick("I can't breathe...", "Air!", "It's getting hard to breathe.")))
 			spawn(-1)
 				owner.emote("gasp")
 			owner.losebreath = max(round(damage/2), owner.losebreath)

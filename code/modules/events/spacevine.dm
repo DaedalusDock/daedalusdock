@@ -51,9 +51,9 @@
 
 	var/obj/structure/spacevine/vine = new()
 
-	for(var/area/station/hallway/area in world)
-		for(var/turf/floor in area)
-			if(floor.Enter(vine))
+	for(var/area/station/hallway/area in GLOB.areas)
+		for(var/turf/floor in area.get_contained_turfs())
+			if(floor.Enter(vine, TRUE))
 				turfs += floor
 
 	qdel(vine)

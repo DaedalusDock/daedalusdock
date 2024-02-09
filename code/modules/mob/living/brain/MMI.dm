@@ -141,8 +141,7 @@
 /obj/item/mmi/proc/transfer_identity(mob/living/L) //Same deal as the regular brain proc. Used for human-->robot people.
 	if(!brainmob)
 		set_brainmob(new /mob/living/brain(src))
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
 	brainmob.timeofdeath = L.timeofdeath
 	if(L.has_dna())
 		var/mob/living/carbon/C = L

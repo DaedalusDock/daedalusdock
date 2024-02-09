@@ -41,6 +41,7 @@
 /obj/item/reverse_bear_trap/process(delta_time)
 	if(!ticking)
 		return
+
 	soundloop2.mid_length = max(0.5, COOLDOWN_TIMELEFT(src, kill_countdown) - 5) //beepbeepbeepbeepbeep
 	if (COOLDOWN_FINISHED(src, kill_countdown) || !isliving(loc))
 		trigger()
@@ -117,7 +118,7 @@
 	else
 		var/mob/living/carbon/human/jill = loc
 		jill.visible_message(span_boldwarning("[src] goes off in [jill]'s mouth, ripping [jill.p_their()] head apart!"), span_userdanger("[src] goes off!"))
-		jill.emote("scream")
+		jill.emote("agony")
 		playsound(src, 'sound/effects/snap.ogg', 75, TRUE, frequency = 0.5)
 		playsound(src, 'sound/effects/splat.ogg', 50, TRUE, frequency = 0.5)
 		jill.apply_damage(9999, BRUTE, BODY_ZONE_HEAD)

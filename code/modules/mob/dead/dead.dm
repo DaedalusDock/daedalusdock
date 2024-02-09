@@ -119,5 +119,5 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	..()
 	update_z(new_turf?.z)
 
-/mob/dead/can_smell(intensity)
+/mob/dead/can_smell()
 	return FALSE

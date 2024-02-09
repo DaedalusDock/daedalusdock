@@ -52,6 +52,10 @@
 	src.spawn_fast = spawn_fast
 	START_PROCESSING(SSobj, src)
 
+/obj/effect/rend/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/effect/rend/process()
 	if(!spawn_fast)
 		if(locate(/mob) in loc)

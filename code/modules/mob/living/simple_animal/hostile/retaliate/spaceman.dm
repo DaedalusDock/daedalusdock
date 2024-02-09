@@ -22,7 +22,7 @@
 	melee_damage_upper = 10
 	attack_verb_continuous = "hits"
 	attack_verb_simple = "hit"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	del_on_death = 0
@@ -48,7 +48,7 @@
 	melee_damage_upper = 15
 	attack_verb_continuous = "punches"
 	attack_verb_simple = "punch"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	faction = list("nanotrasenprivate")
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID

@@ -83,13 +83,16 @@
 /mob/living/carbon/proc/bleed(amt)
 	if(!blood_volume)
 		return
+
+	var/old_blood_volume = blood_volume
 	blood_volume = max(blood_volume - amt, 0)
+
+	// Return the difference
+	. = old_blood_volume - blood_volume
 
 	//Blood loss still happens in locker, floor stays clean
 	if(isturf(loc) && prob(sqrt(amt)*BLOOD_DRIP_RATE_MOD))
 		add_splatter_floor(loc, (amt <= 10))
-
-	return TRUE
 
 /mob/living/carbon/human/bleed(amt)
 	if(NOBLOOD in dna.species.species_traits)

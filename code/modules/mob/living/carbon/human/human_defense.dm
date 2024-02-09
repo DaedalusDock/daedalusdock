@@ -65,14 +65,19 @@
 
 	if(!(P.original == src && P.firer == src)) //can't block or reflect when shooting yourself
 		if(P.reflectable & REFLECT_NORMAL)
-			if(check_reflect(def_zone)) // Checks if you've passed a reflection% check
-				visible_message(span_danger("The [P.name] gets reflected by [src]!"), \
-								span_userdanger("The [P.name] gets reflected by [src]!"))
+			var/obj/item/reflected_with = check_reflect(def_zone)
+			if(reflected_with) // Checks if you've passed a reflection% check
+				visible_message(
+					span_danger("[src] reflects [P] with [reflected_with]!"),
+					span_userdanger("You reflect [P] with [reflected_with]!")
+				)
+				reflected_with.play_block_sound(src, PROJECTILE_ATTACK)
 				// Find a turf near or on the original location to bounce to
 				if(!isturf(loc)) //Open canopy mech (ripley) check. if we're inside something and still got hit
 					P.force_hit = TRUE //The thing we're in passed the bullet to us. Pass it back, and tell it to take the damage.
 					loc.bullet_act(P, def_zone, piercing_hit)
 					return BULLET_ACT_HIT
+
 				if(P.starting)
 					var/new_x = P.starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
 					var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
@@ -101,41 +106,40 @@
 /mob/living/carbon/human/proc/check_reflect(def_zone)
 	if(wear_suit)
 		if(wear_suit.IsReflect(def_zone))
-			return TRUE
+			return wear_suit
 	if(head)
 		if(head.IsReflect(def_zone))
-			return TRUE
+			return head
 	for(var/obj/item/I in held_items)
 		if(I.IsReflect(def_zone))
-			return TRUE
+			return I
 	return FALSE
 
 /mob/living/carbon/human/proc/check_shields(atom/AM, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armor_penetration = 0)
-	var/block_chance_modifier = round(damage / -3)
-
 	for(var/obj/item/I in held_items)
 		if(!istype(I, /obj/item/clothing))
-			var/final_block_chance = I.block_chance - (clamp((armor_penetration-I.armor_penetration)/2,0,100)) + block_chance_modifier //So armour piercing blades can still be parried by other blades, for example
-			if(I.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+			if(I.try_block_attack(src, AM, attack_text, damage, attack_type))
 				return TRUE
+
 	if(wear_suit)
-		var/final_block_chance = wear_suit.block_chance - (clamp((armor_penetration-wear_suit.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(wear_suit.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(wear_suit.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(w_uniform)
-		var/final_block_chance = w_uniform.block_chance - (clamp((armor_penetration-w_uniform.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(w_uniform.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(w_uniform.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(wear_neck)
-		var/final_block_chance = wear_neck.block_chance - (clamp((armor_penetration-wear_neck.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(wear_neck.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(wear_neck.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(head)
-		var/final_block_chance = head.block_chance - (clamp((armor_penetration-head.armor_penetration)/2,0,100)) + block_chance_modifier
-		if(head.hit_reaction(src, AM, attack_text, final_block_chance, damage, attack_type))
+		if(head.try_block_attack(src, AM, attack_text, damage, attack_type))
 			return TRUE
+
 	if(SEND_SIGNAL(src, COMSIG_HUMAN_CHECK_SHIELDS, AM, damage, attack_text, attack_type, armor_penetration) & SHIELD_BLOCK)
 		return TRUE
+
 	return FALSE
 
 /mob/living/carbon/human/proc/check_block()
@@ -175,13 +179,21 @@
 		return MOB_ATTACKEDBY_FAIL
 
 	if(user == src)
-		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //stabbing yourself always hits the right target
+		affecting = get_bodypart(target_area) //stabbing yourself always hits the right target
 	else
-		var/accuracy_penalty = user.get_melee_inaccuracy()
-		var/hit_zone = get_zone_with_miss_chance(user.zone_selected, src, accuracy_penalty)
-		if(!hit_zone)
-			visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
-			return MOB_ATTACKEDBY_MISS
+		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_area]
+		var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
+		var/hit_zone
+		switch(roll)
+			if(CRIT_FAILURE)
+				visible_message(span_danger("\The [user] swings at [src] with \the [I], narrowly missing!"))
+				return MOB_ATTACKEDBY_MISS
+
+			if(FAILURE)
+				hit_zone = get_random_valid_zone()
+			else
+				hit_zone = target_area
+
 		affecting = get_bodypart(hit_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
@@ -258,14 +270,15 @@
 
 	if(try_inject(user, affecting, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))//Thick suits can stop monkey bites.
 		if(..()) //successful monkey bite, this handles disease contraction.
-			var/obj/item/bodypart/arm/active_arm = user.get_active_hand()
-			var/damage = rand(active_arm.unarmed_damage_low, active_arm.unarmed_damage_high)
+			var/obj/item/bodypart/head/monkey_mouth = user.get_bodypart(BODY_ZONE_HEAD)
+			var/damage = HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? monkey_mouth.unarmed_damage_high : rand(monkey_mouth.unarmed_damage_low, monkey_mouth.unarmed_damage_high)
+
 			if(!damage)
-				return
+				return FALSE
 			if(check_shields(user, damage, "the [user.name]"))
 				return FALSE
-			if(stat != DEAD)
-				apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, PUNCTURE))
+
+			apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, PUNCTURE))
 		return TRUE
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)
@@ -653,15 +666,16 @@
 			damage *= (1 - get_permeability_protection(body_zone2cover_flags(affecting.body_zone)))
 			if(!damage)
 				continue
-			affecting.receive_damage(damage, damage * 2, updating_health = FALSE, breaks_bones = FALSE)
+
+			affecting.receive_damage(damage, damage * 2, updating_health = FALSE, modifiers = NONE)
 			affected_skin = TRUE
 			if(prob(round(10 / exposure_coeff, 1)) && !screamed)
-				emote("scream")
+				emote("agony")
 				screamed = TRUE
 
 			if(affecting.name == BODY_ZONE_HEAD && !HAS_TRAIT(src, TRAIT_DISFIGURED))
 				if(prob(min(acidpwr*acid_volume, 90))) //Applies disfigurement
-					emote("scream")
+					emote("agony")
 					facial_hairstyle = "Shaved"
 					hairstyle = "Bald"
 					update_body_parts()

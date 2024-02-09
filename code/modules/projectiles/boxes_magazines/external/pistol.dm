@@ -1,5 +1,5 @@
 /obj/item/ammo_box/magazine/m10mm
-	name = "pistol magazine (10mm)"
+	name = "8-round pistol magazine (10mm Auto)"
 	desc = "A gun magazine."
 	icon_state = "9x19p"
 	ammo_type = /obj/item/ammo_casing/c10mm
@@ -8,7 +8,7 @@
 	multiple_sprites = AMMO_BOX_FULL_EMPTY
 
 /obj/item/ammo_box/magazine/m45
-	name = "handgun magazine (.45)"
+	name = "8-round pistol magazine (.45 ACP)"
 	icon_state = "45-8"
 	base_icon_state = "45"
 	ammo_type = /obj/item/ammo_casing/c45
@@ -20,7 +20,7 @@
 	icon_state = "[base_icon_state]-[min(ammo_count(), 8)]"
 
 /obj/item/ammo_box/magazine/m9mm
-	name = "pistol magazine (9mm)"
+	name = "8-round pistol magazine (9x19mm)"
 	icon_state = "9x19p-8"
 	base_icon_state = "9x19p"
 	ammo_type = /obj/item/ammo_casing/c9mm
@@ -32,25 +32,25 @@
 	icon_state = "[base_icon_state]-[ammo_count() ? "8" : "0"]"
 
 /obj/item/ammo_box/magazine/m9mm/fire
-	name = "pistol magazine (9mm incendiary)"
+	name = "8-round pistol magazine (9x19mm incendiary)"
 	icon_state = "9x19pI"
 	desc = "A gun magazine. Loaded with rounds which ignite the target."
 	ammo_type = /obj/item/ammo_casing/c9mm/fire
 
 /obj/item/ammo_box/magazine/m9mm/hp
-	name = "pistol magazine (9mm HP)"
+	name = "8-round pistol magazine (9x19mm HP)"
 	icon_state = "9x19pH"
 	desc= "A gun magazine. Loaded with hollow-point rounds, extremely effective against unarmored targets, but nearly useless against protective clothing."
 	ammo_type = /obj/item/ammo_casing/c9mm/hp
 
 /obj/item/ammo_box/magazine/m9mm/ap
-	name = "pistol magazine (9mm AP)"
+	name = "8-round pistol magazine (9x19mm AP)"
 	icon_state = "9x19pA"
 	desc= "A gun magazine. Loaded with rounds which penetrate armour, but are less effective against normal targets."
 	ammo_type = /obj/item/ammo_casing/c9mm/ap
 
 /obj/item/ammo_box/magazine/m9mm_aps
-	name = "stechkin pistol magazine (9mm)"
+	name = "15-round pistol magazine (9x19mm)"
 	icon_state = "9mmaps-15"
 	base_icon_state = "9mmaps"
 	ammo_type = /obj/item/ammo_casing/c9mm
@@ -62,24 +62,24 @@
 	icon_state = "[base_icon_state]-[round(ammo_count(), 5)]"
 
 /obj/item/ammo_box/magazine/m9mm_aps/fire
-	name = "stechkin pistol magazine (9mm incendiary)"
+	name = "15-round pistol magazine (9x19mm incendiary)"
 	ammo_type = /obj/item/ammo_casing/c9mm/fire
 	max_ammo = 15
 
 /obj/item/ammo_box/magazine/m9mm_aps/hp
-	name = "stechkin pistol magazine (9mm HP)"
+	name = "15-round pistol magazine (9x19mm HP)"
 	ammo_type = /obj/item/ammo_casing/c9mm/hp
 	max_ammo = 15
 
 /obj/item/ammo_box/magazine/m9mm_aps/ap
-	name = "stechkin pistol magazine (9mm AP)"
+	name = "15-round pistol magazine (9x19mm AP)"
 	ammo_type = /obj/item/ammo_casing/c9mm/ap
 	max_ammo = 15
 
 /obj/item/ammo_box/magazine/m50
-	name = "handgun magazine (.50ae)"
+	name = "7-round pistol magazine (.50 AE)"
 	icon_state = "50ae"
 	ammo_type = /obj/item/ammo_casing/a50ae
-	caliber = CALIBER_50
+	caliber = CALIBER_50_PISTOL
 	max_ammo = 7
 	multiple_sprites = AMMO_BOX_PER_BULLET

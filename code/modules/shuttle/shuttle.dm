@@ -622,9 +622,9 @@
 		var/turf/oldT = old_turfs[i]
 		if(!oldT || !istype(oldT.loc, area_type))
 			continue
-		var/area/old_area = oldT.loc
-		underlying_area.contents += oldT
-		oldT.transfer_area_lighting(old_area, underlying_area)
+
+		oldT.change_area(oldT.loc, underlying_area)
+
 		oldT.empty(FALSE)
 
 		// Here we locate the bottommost shuttle boundary and remove all turfs above it

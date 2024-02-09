@@ -4,7 +4,7 @@
 	link_visual.name = "holocall ([mod_link.id])"
 	link_visual.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	link_visual.appearance_flags |= KEEP_TOGETHER
-	link_visual.makeHologram(0.75)
+	link_visual.makeHologram(rgb(125,180,225, 0.75 * 255))
 	mod_link.visual_overlays = user.overlays
 	link_visual.add_overlay(mod_link.visual_overlays)
 	mod_link.visual = link_visual

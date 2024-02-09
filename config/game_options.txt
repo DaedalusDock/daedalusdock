@@ -371,7 +371,7 @@ OVERFLOW_CAP -1
 #STARLIGHT
 
 ## Uncomment to bring back old grey suit assistants instead of the now default rainbow colored assistants.
-#GREY_ASSISTANTS
+GREY_ASSISTANTS
 
 ##Limit Spell Choices##
 ## Uncomment to disallow wizards from using certain spells that may be too chaotic/fun for your playerbase

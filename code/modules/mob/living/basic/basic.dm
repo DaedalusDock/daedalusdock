@@ -84,7 +84,7 @@
 		gender = pick(MALE,FEMALE)
 
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 
 	if(!loc)
 		stack_trace("Basic mob being instantiated in nullspace")

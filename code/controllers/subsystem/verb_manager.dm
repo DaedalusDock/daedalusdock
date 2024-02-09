@@ -21,7 +21,7 @@
  */
 SUBSYSTEM_DEF(verb_manager)
 	name = "Verb Manager"
-	wait = 0
+	wait = 1
 	flags = SS_TICKER | SS_HIBERNATE
 	priority = FIRE_PRIORITY_DELAYED_VERBS
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT

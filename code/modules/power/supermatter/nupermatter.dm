@@ -136,7 +136,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	radio.recalculateChannels()
 
 	AddElement(/datum/element/lateral_bound, TRUE)
-
+	AddComponent(/datum/component/smell, INTENSITY_SUBTLE, SCENT_FRAGRANCE, "weird", 2)
 
 /obj/machinery/power/supermatter/Destroy()
 	UNSET_TRACKING(__TYPE__)

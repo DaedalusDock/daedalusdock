@@ -23,13 +23,13 @@
 	if(!holds_charge)
 		empty()
 
-/obj/item/gun/energy/recharge/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
+/obj/item/gun/energy/recharge/after_firing(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
 	. = ..()
 	attempt_reload()
 
 /obj/item/gun/energy/recharge/equipped(mob/user)
 	. = ..()
-	if(!can_shoot())
+	if(!can_fire())
 		attempt_reload()
 
 /obj/item/gun/energy/recharge/dropped()
@@ -39,7 +39,7 @@
 		// calls dropped().
 		addtimer(CALLBACK(src, PROC_REF(empty_if_not_held)), 0.1 SECONDS)
 
-/obj/item/gun/energy/recharge/handle_chamber()
+/obj/item/gun/energy/recharge/do_chamber_update()
 	. = ..()
 	attempt_reload()
 
@@ -83,12 +83,12 @@
 
 /obj/item/gun/energy/recharge/update_overlays()
 	. = ..()
-	if(!no_charge_state && !can_shoot())
+	if(!no_charge_state && !can_fire())
 		. += "[base_icon_state]_empty"
 
 /obj/item/gun/energy/recharge/update_icon_state()
 	. = ..()
-	if(no_charge_state && !can_shoot())
+	if(no_charge_state && !can_fire())
 		icon_state = no_charge_state
 
 /obj/item/gun/energy/recharge/ebow

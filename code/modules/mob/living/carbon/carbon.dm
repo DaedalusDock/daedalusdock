@@ -112,7 +112,7 @@
 			Paralyze(2 SECONDS)
 			visible_message(span_danger("[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!"),\
 				span_userdanger("You violently crash into [victim][extra_speed ? " extra hard" : ""]!"))
-		playsound(src,'sound/weapons/punch1.ogg',50,TRUE)
+		playsound(src, SFX_PUNCH ,50,TRUE)
 		log_combat(src, victim, "crashed into")
 
 //Throwing stuff
@@ -167,7 +167,7 @@
 				return
 			release_grabs(I)
 		else
-			if(!G.current_grab.can_throw || !isliving(G.affecting))
+			if(!G.current_grab.can_throw || !isliving(G.affecting) || G.affecting == src)
 				return
 
 			var/mob/living/throwable_mob = G.affecting
@@ -190,6 +190,7 @@
 		var/turf/end_T = get_turf(target)
 		if(start_T && end_T)
 			log_combat(src, thrown_thing, "thrown", addition="grab from tile in [AREACOORD(start_T)] towards tile at [AREACOORD(end_T)]")
+
 	var/power_throw = 0
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		power_throw++
@@ -199,6 +200,7 @@
 		power_throw++
 	if(neckgrab_throw)
 		power_throw++
+
 	do_attack_animation(target, no_effect = TRUE) //PARIAH EDIT ADDITION - AESTHETICS
 	playsound(loc, 'sound/weapons/punchmiss.ogg', 50, TRUE, -1) //PARIAH EDIT ADDITION - AESTHETICS
 	visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
@@ -1121,7 +1123,7 @@
 		. = TRUE
 
 	if(ears && !(obscured & ITEM_SLOT_EARS) && ears.wash(clean_types))
-		update_inv_ears()
+		update_worn_ears()
 		. = TRUE
 
 	if(wear_neck && !(obscured & ITEM_SLOT_NECK) && wear_neck.wash(clean_types))
@@ -1429,16 +1431,6 @@
 
 /mob/living/carbon/proc/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
-
-/mob/living/carbon/get_melee_inaccuracy()
-	. = ..()
-	if(getPain() > 100)
-		. += 10
-
-	if(shock_stage > 30)
-		. += 30
-	else if(shock_stage > 10)
-		. += 10
 
 /mob/living/carbon/has_mouth()
 	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)

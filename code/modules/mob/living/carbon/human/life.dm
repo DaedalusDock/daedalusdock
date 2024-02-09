@@ -46,12 +46,8 @@
 
 		dna.species.spec_life(src, delta_time, times_fired) // for mutantraces
 
-	//Update our name based on whether our face is obscured/disfigured
-	name = get_visible_name()
-
 	if(stat != DEAD)
 		return TRUE
-
 
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
 	var/chest_covered = FALSE

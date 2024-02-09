@@ -7,7 +7,7 @@
 // .50AE (Desert Eagle)
 
 /obj/projectile/bullet/a50ae
-	name = ".50AE bullet"
+	name = ".50 AE bullet"
 	damage = 60
 
 // .38 (Detective's Gun)
@@ -97,7 +97,7 @@
 		var/mob/living/M = target
 		M.adjust_bodytemperature(((100-blocked)/100)*(temperature - M.bodytemperature))
 
-// .357 (Syndie Revolver)
+// .357 (Revolver)
 
 /obj/projectile/bullet/a357
 	name = ".357 bullet"

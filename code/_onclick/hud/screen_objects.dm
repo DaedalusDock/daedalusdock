@@ -337,7 +337,14 @@
 	. = ..()
 	master_ref = WEAKREF(new_master)
 
+/atom/movable/screen/close/can_usr_use(mob/user)
+	return TRUE
+
 /atom/movable/screen/close/Click()
+	. = ..()
+	if(.)
+		return
+
 	var/datum/storage/storage = master_ref?.resolve()
 	if(!storage)
 		return
@@ -515,6 +522,10 @@
 	return TRUE
 
 /atom/movable/screen/storage/Click(location, control, params)
+	. = ..()
+	if(.)
+		return
+
 	var/datum/storage/storage_master = master_ref?.resolve()
 	if(!istype(storage_master))
 		return FALSE

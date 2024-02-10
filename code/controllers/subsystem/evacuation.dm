@@ -16,7 +16,7 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/Initialize(start_timeofday)
 	for(var/path in SSmapping.config.evacuation_controllers)
 		var/datum/evacuation_controller/controller = new path
-		controllers[controller.name] = controller
+		controllers[controller.id] = controller
 	return ..()
 
 /datum/controller/subsystem/evacuation/fire(resumed)
@@ -158,7 +158,7 @@ SUBSYSTEM_DEF(evacuation)
 	var/list/names = list()
 	for(var/identifier in controllers)
 		if(!active_only || controllers[identifier].state >= EVACUATION_STATE_AWAITING)
-			names += controllers[identifier].name
+			names[controllers[identifier].name] = identifier
 	return names
 
 /datum/controller/subsystem/evacuation/proc/get_controllers_list_ai()
@@ -206,15 +206,17 @@ SUBSYSTEM_DEF(evacuation)
 		data += list(controllers[identifier].get_evac_ui_data(user))
 	return data
 
-/datum/controller/subsystem/evacuation/Topic(href, list/href_list)
-	..()
-	if(!check_rights(R_ADMIN))
-		message_admins("[usr.key] has attempted to override the evacuation panel!")
-		log_admin("[key_name(usr)] tried to use the evacuation panel without authorization.")
-		return
+/datum/controller/subsystem/evacuation/proc/panel_act(list/href_list)
+	if(href_list["evac_controller"])
+		controllers[href_list["evac_controller"]]?.panel_act(href_list)
 
 /datum/controller/subsystem/evacuation/proc/admin_panel()
-	//TODO: Add controllers to the admin panel
+	var/list/dat = list("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><title>Evacuation Panel</title></head><body><h1><B>Evacuation Panel</B></h1>")
+	for(var/identifier in controllers)
+		dat += "<hr>"
+		dat += "<h3><B>[controllers[identifier].name]</B></h3><br/>"
+		dat += controllers[identifier].admin_panel()
+	usr << browse(dat.Join(), "window=evac_panel;size=500x500")
 	return
 
 #undef CREW_DEATH_MESSAGE

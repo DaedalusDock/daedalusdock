@@ -3,6 +3,8 @@ GLOBAL_DATUM(emergency_shuttle, /obj/docking_port/mobile/emergency)
 GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 
 /datum/evacuation_controller/emergency_shuttle
+	name = "Emergency Shuttle"
+	id = "emergency_shuttle"
 	var/obj/docking_port/mobile/emergency/emergency
 	var/obj/docking_port/mobile/emergency/backup
 	var/emergency_call_time = 10 MINUTES
@@ -103,7 +105,6 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 /datum/evacuation_controller/emergency_shuttle/start_evacuation(mob/user, call_reason, area/signal_origin)
 	evac_calls_count++
 
-	var/call_time = emergency_call_time
 	var/message = "The emergency shuttle has been called."
 	if(seclevel2num(get_security_level()) >= SEC_LEVEL_RED)
 		message += " Red Alert state confirmed: Dispatching priority shuttle."
@@ -311,3 +312,32 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 		.["actionName"] = "Recall Emergency Shuttle"
 	else
 		.["actionName"] = "Call Emergency Shuttle"
+
+/datum/evacuation_controller/emergency_shuttle/admin_panel()
+	var/list/dat = list()
+	if(state == EVACUATION_STATE_IDLE)
+		dat += "<a href='?_src_=holder;[HrefToken()];evac_controller=[id];call_shuttle=1'>Call Shuttle</a><br>"
+	else
+		dat += "[emergency.getModeStr()]: <a href='?_src_=holder;[HrefToken()];evac_controller=[id];edit_shuttle_time=1'>[emergency.getTimerStr()]</a><BR>"
+		if(state == EVACUATION_STATE_INITIATED)
+			dat += "<a href='?_src_=holder;[HrefToken()];evac_controller=[id];recall_shuttle=1'>Recall Shuttle</a><br>"
+	return dat
+
+/datum/evacuation_controller/emergency_shuttle/panel_act(list/href_list)
+	if(!check_rights(R_ADMIN))
+		return
+
+	if(href_list["call_shuttle"] && state == EVACUATION_STATE_IDLE)
+		SSevacuation.request_evacuation(usr, null, id, admin = TRUE)
+
+	if(href_list["recall_shuttle"] && state != EVACUATION_STATE_IDLE)
+		SSevacuation.request_cancel(usr, id)
+
+	if(href_list["edit_shuttle_time"])
+		var/timer = input("Enter new shuttle duration (seconds):","Edit Shuttle Timeleft", emergency.timeLeft() ) as num|null
+		if(!timer)
+			return
+		emergency.setTimer(timer SECONDS)
+		log_evacuation("[key_name(usr)] edited the Emergency Shuttle's timeleft to [timer] seconds.")
+		minor_announce("The emergency shuttle will reach its destination in [DisplayTimeText(timer SECONDS)].")
+		message_admins(span_adminnotice("[key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [timer] seconds."))

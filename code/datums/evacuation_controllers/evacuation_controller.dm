@@ -1,6 +1,8 @@
 /datum/evacuation_controller
 	/// Name of the evacuation controller
 	var/name = "Evacuation Controller"
+	/// The type of the evacuation controller
+	var/id = "evacuation_controller"
 	/// The current state of the evacuation
 	var/state = EVACUATION_STATE_IDLE
 	/// How many times was evacuation triggered
@@ -58,7 +60,7 @@
 		SSblackbox.record_feedback("text", "shuttle_reason", 1, "[call_reason]")
 		log_evacuation("Evacuation reason: [call_reason]")
 		SSticker.emergency_reason = call_reason
-	message_admins("[ADMIN_LOOKUPFLW(user)] has started the evacuation. (<A HREF='?_src_=holder;[HrefToken()];trigger_centcom_recall=[name]'>TRIGGER CENTCOM RECALL</A>)")
+	message_admins("[ADMIN_LOOKUPFLW(user)] has started the evacuation. (<A HREF='?_src_=holder;[HrefToken()];trigger_centcom_recall=[id]'>TRIGGER CENTCOM RECALL</A>)")
 	return TRUE
 
 /// Starts the evacuation sequence. Should not be called directly, use trigger_evacuation instead
@@ -178,7 +180,7 @@
 /// Returns data for the communication console
 /datum/evacuation_controller/proc/get_evac_ui_data(mob/user)
 	. = list(
-		"id" = name, // unique identifier for the evacuation
+		"id" = id, // unique identifier for the evacuation
 		"started" = null, // if the evacuation has started
 		"actionName" = null, // name for the button to call or recall
 		"canEvacOrRecall" = null, // whether the user can call or recall the evacuation. If not, the reason
@@ -204,3 +206,8 @@
 
 	return .
 
+/datum/evacuation_controller/proc/admin_panel()
+	return list()
+
+/datum/evacuation_controller/proc/panel_act(list/href_list)
+	return

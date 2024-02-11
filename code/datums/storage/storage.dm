@@ -95,6 +95,11 @@
 	max_slots = src.max_slots,
 	max_specific_storage = src.max_specific_storage,
 	max_total_storage = src.max_total_storage,
+ 	numerical_stacking = src.numerical_stacking,
+	allow_quick_gather = src.allow_quick_gather,
+	allow_quick_empty = src.allow_quick_empty,
+	collection_mode = src.collection_mode,
+	attack_hand_interact = src.attack_hand_interact
 )
 	if(!istype(parent))
 		stack_trace("Storage datum ([type]) created without a [isnull(parent) ? "null parent" : "invalid parent ([parent.type])"]!")
@@ -110,6 +115,11 @@
 	src.max_slots = max_slots
 	src.max_specific_storage = max_specific_storage
 	src.max_total_storage = max_total_storage
+	src.numerical_stacking = numerical_stacking
+	src.allow_quick_gather = allow_quick_gather
+	src.allow_quick_empty = allow_quick_empty
+	src.collection_mode = collection_mode
+	src.attack_hand_interact = attack_hand_interact
 
 	orient_to_hud()
 

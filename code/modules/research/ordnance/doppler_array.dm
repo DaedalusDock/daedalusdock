@@ -18,7 +18,7 @@
 	var/obj/item/computer_hardware/hard_drive/portable/inserted_drive
 
 	// Lighting system to better communicate the directions.
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_outer_range = 4
 	light_power = 1
 	light_color = COLOR_RED

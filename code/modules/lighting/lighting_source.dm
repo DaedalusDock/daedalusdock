@@ -102,15 +102,6 @@
 		UnregisterSignal(old_atom_host, COMSIG_MOVABLE_MOVED)
 	return TRUE
 
-///signal handler for when our host atom moves and we need to update our effects
-/datum/light_source/proc/update_host_lights(atom/movable/host)
-	SIGNAL_HANDLER
-
-	if(QDELETED(host))
-		return
-
-	host.update_light()
-
 // Yes this doesn't align correctly on anything other than 4 width tabs.
 // If you want it to go switch everybody to elastic tab stops.
 // Actually that'd be great if you could!
@@ -355,6 +346,20 @@
 	applied_lum_b = lum_b
 
 	UNSETEMPTY(src.effect_str)
+
+///signal handler for when our host atom moves and we need to update our effects
+/datum/light_source/proc/update_host_lights(atom/movable/host)
+	SIGNAL_HANDLER
+	if(QDELETED(host))
+		return
+
+	// If the host is our owner, we want to call their update so they can decide who the top atom should be
+	if(host == source_atom)
+		host.update_light()
+		return
+
+	// Otherwise, our top atom just moved, so we trigger a normal rebuild
+	EFFECT_UPDATE(LIGHTING_CHECK_UPDATE)
 
 #undef EFFECT_UPDATE
 #undef LUM_FALLOFF

@@ -72,7 +72,7 @@
 	custom_materials = list(/datum/material/iron = 4000, /datum/material/glass = 2000, /datum/material/plasma = 2000, /datum/material/uranium = 3000, /datum/material/titanium = 3000)
 	hitsound = 'sound/items/welder.ogg'
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1
 	light_color = COLOR_SOFT_RED
 
@@ -228,7 +228,7 @@
 	hitsound = 'sound/weapons/blade1.ogg'
 	force = 16
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1
 	light_color = LIGHT_COLOR_GREEN
 	sharpness = SHARP_EDGED

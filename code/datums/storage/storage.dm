@@ -95,7 +95,7 @@
 	max_slots = src.max_slots,
 	max_specific_storage = src.max_specific_storage,
 	max_total_storage = src.max_total_storage,
- 	numerical_stacking = src.numerical_stacking,
+	numerical_stacking = src.numerical_stacking,
 	allow_quick_gather = src.allow_quick_gather,
 	allow_quick_empty = src.allow_quick_empty,
 	collection_mode = src.collection_mode,

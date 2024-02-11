@@ -471,12 +471,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	to_chat(user, span_notice("You put [thing] [insert_preposition]to [parent]."))
 
 	for(var/mob/viewing in oviewers(user, null))
-		if(in_range(user, viewing))
+		if(in_range(user, viewing) || (thing && thing.w_class >= 3))
 			viewing.show_message(span_notice("[user] puts [thing] [insert_preposition]to [parent]."), MSG_VISUAL)
-			return
-		if(thing && thing.w_class >= 3)
-			viewing.show_message(span_notice("[user] puts [thing] [insert_preposition]to [parent]."), MSG_VISUAL)
-			return
 
 /**
  * Attempts to remove an item from the storage

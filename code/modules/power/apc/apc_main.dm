@@ -124,7 +124,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 	if(!armor)
 		armor = global.default_apc_armor
 	..()
-	GLOB.apcs_list += src
+	SET_TRACKING(__TYPE__)
 
 	wires = new /datum/wires/apc(src)
 
@@ -196,7 +196,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 		log_mapping("APC: ([src]) at [AREACOORD(src)] with dir ([dir] | [uppertext(dir2text(dir))]) has pixel_[dir & (WEST|EAST) ? "x" : "y"] value [offset_old] - should be [dir & (SOUTH|EAST) ? "-" : ""][APC_PIXEL_OFFSET]. Use the directional/ helpers!")
 
 /obj/machinery/power/apc/Destroy()
-	GLOB.apcs_list -= src
+	UNSET_TRACKING(__TYPE__)
 
 	if(malfai && operating)
 		malfai.malf_picker.processing_time = clamp(malfai.malf_picker.processing_time - 10,0,1000)
@@ -566,10 +566,14 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 		INVOKE_ASYNC(src, PROC_REF(break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
-	for(var/obj/machinery/light/breaked_light in area)
+	var/area/A = get_area(src)
+	for(var/obj/machinery/light/breaked_light in INSTANCES_OF(/obj/machinery/light))
+		if(A != get_area(breaked_light))
+			continue
+
 		breaked_light.on = TRUE
 		breaked_light.break_light_tube()
-		stoplag()
+		CHECK_TICK
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 2000)

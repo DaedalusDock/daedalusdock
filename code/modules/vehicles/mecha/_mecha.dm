@@ -221,7 +221,7 @@
 	START_PROCESSING(SSobj, src)
 	SSpoints_of_interest.make_point_of_interest(src)
 	log_message("[src.name] created.", LOG_MECHA)
-	GLOB.mechas_list += src //global mech list
+	SET_TRACKING(__TYPE__)
 	prepare_huds()
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.add_to_hud(src)
@@ -268,7 +268,7 @@
 	QDEL_NULL(smoke_system)
 	QDEL_NULL(ui_view)
 
-	GLOB.mechas_list -= src //global mech list
+	UNSET_TRACKING(__TYPE__)
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.remove_from_hud(src) //YEET
 	lose_atmos_sensitivity()

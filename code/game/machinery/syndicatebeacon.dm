@@ -16,6 +16,13 @@
 	var/active = FALSE
 	var/icontype = "beacon"
 
+/obj/machinery/power/singularity_beacon/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/power/singularity_beacon/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/power/singularity_beacon/proc/Activate(mob/user = null)
 	if(surplus() < 1500)

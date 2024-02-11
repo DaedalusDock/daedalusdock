@@ -43,7 +43,7 @@
 	if (sr)
 		// Check every teleport beacon.
 		var/list/tele_beacons = list()
-		for(var/obj/item/beacon/W in GLOB.teleportbeacons)
+		for(var/obj/item/beacon/W as anything in INSTANCES_OF(/obj/item/beacon))
 
 			// Get the tracking beacon's turf location.
 			var/turf/tr = get_turf(W)
@@ -165,7 +165,7 @@
 		return
 
 	var/list/locations = list()
-	for(var/obj/machinery/computer/teleporter/computer in GLOB.machines)
+	for(var/obj/machinery/computer/teleporter/computer as anything in INSTANCES_OF(/obj/machinery/computer/teleporter))
 		var/atom/target = computer.target_ref?.resolve()
 		if(!target)
 			computer.target_ref = null

@@ -17,7 +17,7 @@
 	var/list/data = list()
 
 	var/list/trackerlist = list()
-	for(var/obj/vehicle/sealed/mecha/MC in GLOB.mechas_list)
+	for(var/obj/vehicle/sealed/mecha/MC as anything in INSTANCES_OF(/obj/vehicle/sealed/mecha))
 		trackerlist += MC.trackers
 
 	data["mechs"] = list()

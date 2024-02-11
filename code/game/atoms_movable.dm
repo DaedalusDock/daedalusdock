@@ -3,7 +3,58 @@
 	glide_size = 8
 	appearance_flags = TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
 
-	var/last_move = null
+	/// The last direction we moved in.
+	var/tmp/last_move = null
+	///Are we moving with inertia? Mostly used as an optimization
+	var/tmp/inertia_moving = FALSE
+	///The last time we pushed off something
+	///This is a hack to get around dumb him him me scenarios
+	var/tmp/last_pushoff
+	///0: not doing a diagonal move. 1 and 2: doing the first/second step of the diagonal move
+	var/tmp/moving_diagonally = 0
+	/// Tracks if the mob is currently in the movechain during a pulling movement.
+	var/tmp/moving_from_pull = FALSE
+	/// Tracks if forceMove() should break grabs or not.
+	var/tmp/forcemove_should_maintain_grab = FALSE
+
+	///is the mob currently ascending or descending through z levels?
+	var/tmp/currently_z_moving
+
+	///Holds information about any movement loops currently running/waiting to run on the movable. Lazy, will be null if nothing's going on
+	var/tmp/datum/movement_packet/move_packet
+	var/tmp/datum/forced_movement/force_moving = null //handled soley by forced_movement.dm
+
+	/**
+	 * an associative lazylist of relevant nested contents by "channel", the list is of the form: list(channel = list(important nested contents of that type))
+	 * each channel has a specific purpose and is meant to replace potentially expensive nested contents iteration.
+	 * do NOT add channels to this for little reason as it can add considerable memory usage.
+	 */
+	var/tmp/list/important_recursive_contents
+	///contains every client mob corresponding to every client eye in this container. lazily updated by SSparallax and is sparse:
+	///only the last container of a client eye has this list assuming no movement since SSparallax's last fire
+	var/tmp/list/client_mobs_in_contents
+
+	/// String representing the spatial grid groups we want to be held in.
+	/// acts as a key to the list of spatial grid contents types we exist in via SSspatial_grid.spatial_grid_categories.
+	/// We do it like this to prevent people trying to mutate them and to save memory on holding the lists ourselves
+	var/tmp/spatial_grid_key
+
+	var/tmp/datum/component/orbiter/orbiting
+
+	///Lazylist to keep track on the sources of illumination.
+	var/tmp/list/affected_dynamic_lights
+	///Highest-intensity light affecting us, which determines our visibility.
+	var/tmp/affecting_dynamic_lumi = 0
+
+	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
+	var/tmp/list/do_afters
+
+	///A lazylist of grab objects gripping us
+	var/tmp/list/grabbed_by
+
+	/// Look, we're defining this here so it doesn't need to be redefined 4 times, okay? Sorry.
+	var/tmp/germ_level = GERM_LEVEL_AMBIENT
+
 	var/anchored = FALSE
 	var/move_resist = MOVE_RESIST_DEFAULT
 	var/move_force = MOVE_FORCE_DEFAULT
@@ -11,6 +62,7 @@
 	var/datum/thrownthing/throwing = null
 	var/throw_speed = 2 //How many tiles to move per ds when being thrown. Float values are fully supported
 	var/throw_range = 7
+	var/throwforce = 0
 	///Max range this atom can be thrown via telekinesis
 	var/tk_throw_range = 10
 	var/initial_language_holder = /datum/language_holder
@@ -22,41 +74,14 @@
 	var/verb_sing = "sings"
 	var/verb_yell = "yells"
 	var/speech_span
-	///Are we moving with inertia? Mostly used as an optimization
-	var/inertia_moving = FALSE
+
 	///Delay in deciseconds between inertia based movement
 	var/inertia_move_delay = 5
-	///The last time we pushed off something
-	///This is a hack to get around dumb him him me scenarios
-	var/last_pushoff
+
 	/// Things we can pass through while moving. If any of this matches the thing we're trying to pass's [pass_flags_self], then we can pass through.
 	var/pass_flags = NONE
 	/// If false makes [CanPass][/atom/proc/CanPass] call [CanPassThrough][/atom/movable/proc/CanPassThrough] on this type instead of using default behaviour
 	var/generic_canpass = TRUE
-	///0: not doing a diagonal move. 1 and 2: doing the first/second step of the diagonal move
-	var/moving_diagonally = 0
-	/// Tracks if the mob is currently in the movechain during a pulling movement.
-	var/moving_from_pull = FALSE
-	/// Tracks if forceMove() should break grabs or not.
-	var/forcemove_should_maintain_grab = FALSE
-
-	///Holds information about any movement loops currently running/waiting to run on the movable. Lazy, will be null if nothing's going on
-	var/datum/movement_packet/move_packet
-	var/datum/forced_movement/force_moving = null //handled soley by forced_movement.dm
-	/**
-	 * an associative lazylist of relevant nested contents by "channel", the list is of the form: list(channel = list(important nested contents of that type))
-	 * each channel has a specific purpose and is meant to replace potentially expensive nested contents iteration.
-	 * do NOT add channels to this for little reason as it can add considerable memory usage.
-	 */
-	var/list/important_recursive_contents
-	///contains every client mob corresponding to every client eye in this container. lazily updated by SSparallax and is sparse:
-	///only the last container of a client eye has this list assuming no movement since SSparallax's last fire
-	var/list/client_mobs_in_contents
-
-	/// String representing the spatial grid groups we want to be held in.
-	/// acts as a key to the list of spatial grid contents types we exist in via SSspatial_grid.spatial_grid_categories.
-	/// We do it like this to prevent people trying to mutate them and to save memory on holding the lists ourselves
-	var/spatial_grid_key
 
 	/**
 	  * In case you have multiple types, you automatically use the most useful one.
@@ -65,24 +90,13 @@
 	  */
 	var/movement_type = GROUND
 
-	var/throwforce = 0
-	var/datum/component/orbiter/orbiting
-
-	///is the mob currently ascending or descending through z levels?
-	var/currently_z_moving
-
 	/// Either FALSE, [EMISSIVE_BLOCK_GENERIC], or [EMISSIVE_BLOCK_UNIQUE]
 	var/blocks_emissive = FALSE
 	///Internal holder for emissive blocker object, do not use directly use blocks_emissive
-	var/atom/movable/emissive_blocker/em_block
+	var/tmp/atom/movable/emissive_blocker/em_block
 
 	///Used for the calculate_adjacencies proc for icon smoothing.
 	var/can_be_unanchored = FALSE
-
-	///Lazylist to keep track on the sources of illumination.
-	var/list/affected_dynamic_lights
-	///Highest-intensity light affecting us, which determines our visibility.
-	var/affecting_dynamic_lumi = 0
 
 	/// Whether this atom should have its dir automatically changed when it moves. Setting this to FALSE allows for things such as directional windows to retain dir on moving without snowflake code all of the place.
 	var/set_dir_on_move = TRUE
@@ -91,15 +105,6 @@
 	var/contents_thermal_insulation = 0
 	/// The degree of pressure protection that mobs in list/contents have from the external environment, between 0 and 1
 	var/contents_pressure_protection = 0
-
-	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
-	var/list/do_afters
-
-	///A lazylist of grab objects gripping us
-	var/list/grabbed_by
-
-	/// Look, we're defining this here so it doesn't need to be redefined 4 times, okay? Sorry.
-	var/germ_level = GERM_LEVEL_AMBIENT
 
 /mutable_appearance/emissive_blocker
 
@@ -1264,6 +1269,7 @@
 
 /atom/movable/vv_get_dropdown()
 	. = ..()
+	VV_DROPDOWN_OPTION(VV_HK_EDIT_PARTICLES, "Edit Particles")
 	VV_DROPDOWN_OPTION(VV_HK_DEADCHAT_PLAYS, "Start/Stop Deadchat Plays")
 	VV_DROPDOWN_OPTION(VV_HK_ADD_FANTASY_AFFIX, "Add Fantasy Affix")
 
@@ -1272,6 +1278,10 @@
 
 	if(!.)
 		return
+
+	if(href_list[VV_HK_EDIT_PARTICLES] && check_rights(R_VAREDIT))
+		var/client/C = usr.client
+		C?.open_particle_editor(src)
 
 	if(href_list[VV_HK_DEADCHAT_PLAYS] && check_rights(R_FUN))
 		if(tgui_alert(usr, "Allow deadchat to control [src] via chat commands?", "Deadchat Plays [src]", list("Allow", "Cancel")) != "Allow")

@@ -160,8 +160,13 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	connected = new/obj/structure/tray/m_tray(src)
 	connected.connected = src
+
+/obj/structure/bodycontainer/morgue/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/structure/bodycontainer/morgue/examine(mob/user)
 	. = ..()

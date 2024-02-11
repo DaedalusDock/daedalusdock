@@ -1053,6 +1053,21 @@
 	return FALSE
 
 
+/mob/update_name(updates)
+	name = get_visible_name()
+	return ..()
+
+/mob/proc/get_visible_name()
+	return name
+
+/// Sets the mob's real name, and normal name if desired.
+/mob/proc/set_real_name(new_name, change_name = TRUE, update_name = TRUE)
+	real_name = new_name
+	if(change_name)
+		name = real_name
+	if(update_name)
+		update_name()
+
 /**
  * Fully update the name of a mob
  *
@@ -1075,8 +1090,8 @@
 
 	log_played_names(ckey, newname)
 
-	real_name = newname
-	name = newname
+	set_real_name(newname)
+
 	if(mind)
 		mind.name = newname
 		if(mind.key)

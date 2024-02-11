@@ -208,9 +208,8 @@
 
 	borg.mmi.name = "[initial(borg.mmi.name)]: [brainopsname]"
 	borg.mmi.brain.name = "[brainopsname]'s brain"
-	borg.mmi.brainmob.real_name = brainopsname
-	borg.mmi.brainmob.name = brainopsname
-	borg.real_name = borg.name
+	borg.mmi.brainmob.set_real_name(brainopsname)
+	borg.set_real_name(borg.name)
 
 	borg.key = C.key
 

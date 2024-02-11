@@ -6,49 +6,18 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 	luminosity = 1
 
-	/// Turf bitflags, see code/__DEFINES/flags.dm
-	var/turf_flags = NONE
-
-	/// If there's a tile over a basic floor that can be ripped out
-	var/overfloor_placed = FALSE
-	/// How accessible underfloor pieces such as wires, pipes, etc are on this turf. Can be HIDDEN, VISIBLE, or INTERACTABLE.
-	var/underfloor_accessibility = UNDERFLOOR_HIDDEN
-
 	// baseturfs can be either a list or a single turf type.
 	// In class definition like here it should always be a single type.
 	// A list will be created in initialization that figures out the baseturf's baseturf etc.
 	// In the case of a list it is sorted from bottom layer to top.
 	// This shouldn't be modified directly, use the helper procs.
-	var/list/baseturfs = /turf/baseturf_bottom
-
-	///Used for fire, if a melting temperature was reached, it will be destroyed
-	var/to_be_destroyed = 0
-	///The max temperature of the fire which it was subjected to
-	var/max_fire_temperature_sustained = 0
-
-	var/blocks_air = AIR_ALLOWED
-
-	var/list/image/blueprint_data //for the station blueprints, images of objects eg: pipes
-
-	var/list/explosion_throw_details
-
-	var/requires_activation //add to air processing after initialize?
-	var/changing_turf = FALSE
-
-	var/bullet_bounce_sound = 'sound/weapons/gun/general/mag_bullet_remove.ogg' //sound played when a shell casing is ejected ontop of the turf.
-	var/bullet_sizzle = FALSE //used by ammo_casing/bounce_away() to determine if the shell casing should make a sizzle sound when it's ejected over the turf
-							//IE if the turf is supposed to be water, set TRUE.
-
-	var/tiled_dirt = FALSE // use smooth tiled dirt decal
+	var/tmp/list/baseturfs = /turf/baseturf_bottom
+	/// Is this turf in the process of running ChangeTurf()?
+	var/tmp/changing_turf = FALSE
 
 	///Lumcount added by sources other than lighting datum objects, such as the overlay lighting component.
-	var/dynamic_lumcount = 0
-
-	///Bool, whether this turf will always be illuminated no matter what area it is in
-	var/always_lit = FALSE
-
+	var/tmp/dynamic_lumcount = 0
 	var/tmp/lighting_corners_initialised = FALSE
-
 	///Our lighting object.
 	var/tmp/datum/lighting_object/lighting_object
 	///Lighting Corner datums.
@@ -57,12 +26,48 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/tmp/datum/lighting_corner/lighting_corner_SW
 	var/tmp/datum/lighting_corner/lighting_corner_NW
 
+	/// If there's a tile over a basic floor that can be ripped out
+	var/tmp/overfloor_placed = FALSE
+
+	/// The max temperature of the fire which it was subjected to
+	var/tmp/max_fire_temperature_sustained = 0
+
+	/// For the station blueprints, images of objects eg: pipes
+	var/tmp/list/image/blueprint_data
+	var/tmp/list/explosion_throw_details
+
+	///Lazylist of movable atoms providing opacity sources.
+	var/tmp/list/atom/movable/opacity_sources
+
+	//* END TMP VARS *//
+
+
+	/// Turf bitflags, see code/__DEFINES/flags.dm
+	var/turf_flags = NONE
+
+	/// How accessible underfloor pieces such as wires, pipes, etc are on this turf. Can be HIDDEN, VISIBLE, or INTERACTABLE.
+	var/underfloor_accessibility = UNDERFLOOR_HIDDEN
+
+	///Used for fire, if a melting temperature was reached, it will be destroyed
+	var/to_be_destroyed = 0
+
+	/// Determines how air interacts with this turf.
+	var/blocks_air = AIR_ALLOWED
+
+	var/bullet_bounce_sound = 'sound/weapons/gun/general/mag_bullet_remove.ogg' //sound played when a shell casing is ejected ontop of the turf.
+	var/bullet_sizzle = FALSE //used by ammo_casing/bounce_away() to determine if the shell casing should make a sizzle sound when it's ejected over the turf
+							//IE if the turf is supposed to be water, set TRUE.
+
+	var/tiled_dirt = FALSE // use smooth tiled dirt decal
+
+	///Bool, whether this turf will always be illuminated no matter what area it is in
+	var/always_lit = FALSE
+
+	/// Set to TRUE for pseudo 3/4ths walls, otherwise, leave alone.
 	var/lighting_uses_jen = FALSE
 
 	///Which directions does this turf block the vision of, taking into account both the turf's opacity and the movable opacity_sources.
 	var/directional_opacity = NONE
-	///Lazylist of movable atoms providing opacity sources.
-	var/list/atom/movable/opacity_sources
 
 	///the holodeck can load onto this turf if TRUE
 	var/holodeck_compatible = FALSE
@@ -214,6 +219,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(.)
 		return
 	if(!isliving(user))
+		return
+	if(user == victim)
 		return
 	user.move_grabbed_atoms_towards(src)
 

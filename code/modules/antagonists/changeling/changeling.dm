@@ -628,7 +628,7 @@
 
 	var/mob/living/carbon/carbon_owner = owner.current
 	first_profile.dna.transfer_identity(carbon_owner, transfer_SE = TRUE)
-	carbon_owner.real_name = first_profile.name
+	carbon_owner.set_real_name( first_profile.name)
 	carbon_owner.updateappearance(mutcolor_update = TRUE)
 	carbon_owner.domutcheck()
 
@@ -653,7 +653,7 @@
 	)
 
 	var/datum/dna/chosen_dna = chosen_profile.dna
-	user.real_name = chosen_profile.name
+	user.set_real_name(chosen_profile.name)
 	user.underwear = chosen_profile.underwear
 	user.undershirt = chosen_profile.undershirt
 	user.socks = chosen_profile.socks

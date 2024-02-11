@@ -27,7 +27,7 @@
 	dir = WEST
 
 /obj/structure/stairs/Initialize(mapload)
-	GLOB.stairs += src
+	SET_TRACKING(__TYPE__)
 	update_surrounding()
 
 	var/static/list/loc_connections = list(
@@ -40,7 +40,7 @@
 
 /obj/structure/stairs/Destroy()
 	listeningTo = null
-	GLOB.stairs -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/structure/stairs/Move() //Look this should never happen but...

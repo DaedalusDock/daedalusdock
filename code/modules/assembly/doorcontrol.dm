@@ -25,7 +25,7 @@
 	if(cooldown)
 		return
 	cooldown = TRUE
-	for(var/obj/machinery/door/poddoor/M in GLOB.machines)
+	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(/obj/machinery/door))
 		if(M.id == src.id)
 			if(openclose == null || !sync_doors)
 				openclose = M.density
@@ -46,7 +46,7 @@
 	if(cooldown)
 		return
 	cooldown = TRUE
-	for(var/obj/structure/curtain/cloth/fancy/mechanical/M in GLOB.curtains)
+	for(var/obj/structure/curtain/cloth/fancy/mechanical/M as anything in INSTANCES_OF(/obj/structure/curtain/cloth/fancy/mechanical))
 		if(M.id == src.id)
 			if(openclose == null || !sync_doors)
 				openclose = M.density
@@ -73,7 +73,7 @@
 	cooldown = TRUE
 	var/doors_need_closing = FALSE
 	var/list/obj/machinery/door/airlock/open_or_close = list()
-	for(var/obj/machinery/door/airlock/D in GLOB.airlocks)
+	for(var/obj/machinery/door/airlock/D in INSTANCES_OF(/obj/machinery/door))
 		if(D.id_tag == src.id)
 			if(specialfunctions & OPEN)
 				open_or_close += D
@@ -107,19 +107,19 @@
 	if(cooldown)
 		return
 	cooldown = TRUE
-	for(var/obj/machinery/door/poddoor/M in GLOB.machines)
+	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(/obj/machinery/door))
 		if (M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/door/poddoor, open))
 
 	sleep(10)
 
-	for(var/obj/machinery/mass_driver/M in GLOB.machines)
+	for(var/obj/machinery/mass_driver/M as anything in INSTANCES_OF(/obj/machinery/mass_driver))
 		if(M.id == src.id)
 			M.drive()
 
 	sleep(60)
 
-	for(var/obj/machinery/door/poddoor/M in GLOB.machines)
+	for(var/obj/machinery/door/poddoor/M in INSTANCES_OF(/obj/machinery/door))
 		if (M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/door/poddoor, close))
 
@@ -133,12 +133,14 @@
 /obj/item/assembly/control/igniter/activate()
 	if(cooldown)
 		return
+
 	cooldown = TRUE
-	for(var/obj/machinery/sparker/M in GLOB.machines)
+
+	for(var/obj/machinery/sparker/M as anything in INSTANCES_OF(/obj/machinery/sparker))
 		if (M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/sparker, ignite))
 
-	for(var/obj/machinery/igniter/M in GLOB.machines)
+	for(var/obj/machinery/igniter/M as anything in INSTANCES_OF(/obj/machinery/igniter))
 		if(M.id == src.id)
 			M.use_power(50)
 			M.on = !M.on
@@ -154,12 +156,11 @@
 	if(cooldown)
 		return
 	cooldown = TRUE
-	for(var/obj/machinery/flasher/M in GLOB.machines)
+	for(var/obj/machinery/flasher/M as anything in INSTANCES_OF(/obj/machinery/flasher))
 		if(M.id == src.id)
 			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/flasher, flash))
 
 	addtimer(VARSET_CALLBACK(src, cooldown, FALSE), 50)
-
 
 /obj/item/assembly/control/crematorium
 	name = "crematorium controller"

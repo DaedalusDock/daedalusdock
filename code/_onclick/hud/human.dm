@@ -326,6 +326,11 @@
 	pain = new
 	pain.hud = src
 
+	use_timer = new()
+	use_timer.hud = src
+	use_timer.RegisterSignal(mymob, COMSIG_LIVING_CHANGENEXT_MOVE, TYPE_PROC_REF(/atom/movable/screen/progbar_container, on_changenext))
+	static_inventory += use_timer
+
 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
 		if(inv.slot_id)
 			inv.hud = src

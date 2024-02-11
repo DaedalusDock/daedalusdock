@@ -355,7 +355,7 @@ SUBSYSTEM_DEF(ticker)
 					spawn_loc = pick_n_take(spawn_spots)
 					player.create_character(spawn_loc)
 			else //PLAYER_NOT_READY
-				stack_trace("New Player with a mind was not ready.")
+				//Reload their player panel so they see latejoin instead of ready.
 				player.new_player_panel()
 
 		CHECK_TICK

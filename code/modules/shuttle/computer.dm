@@ -22,8 +22,13 @@
 
 /obj/machinery/computer/shuttle/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(!mapload)
 		connect_to_shuttle(SSshuttle.get_containing_shuttle(src))
+
+/obj/machinery/computer/shuttle/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/computer/shuttle/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()

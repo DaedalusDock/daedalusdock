@@ -86,6 +86,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/atom/movable/screen/spacesuit
 
 	var/atom/movable/screen/pain/pain
+
+	var/atom/movable/screen/progbar_container/use_timer
 	// subtypes can override this to force a specific UI style
 	var/ui_style
 
@@ -170,6 +172,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	QDEL_NULL(screentip_text)
 	QDEL_NULL(pain)
+	QDEL_NULL(use_timer)
 
 	return ..()
 

@@ -70,7 +70,7 @@
 
 	if(. && !is_healing)
 		switch(.)
-			if(1 to PAIN_AMT_MEDIUM)
+			if(1 to 20)
 				flash_pain(PAIN_SMALL)
 			if(20 to PAIN_AMT_MEDIUM)
 				flash_pain(PAIN_MEDIUM)

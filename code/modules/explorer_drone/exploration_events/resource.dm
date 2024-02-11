@@ -228,7 +228,7 @@
 /datum/exploration_event/simple/resource/welded_locker/dispense_loot(obj/item/exodrone/drone)
 	var/mob/living/carbon/human/head_species_source = new
 	head_species_source.set_species(/datum/species/skeleton)
-	head_species_source.real_name = "spaced locker victim"
+	head_species_source.set_real_name("spaced locker victim")
 	var/obj/item/bodypart/head/skeleton_head = new
 	skeleton_head.update_limb(FALSE,head_species_source)
 	qdel(head_species_source)

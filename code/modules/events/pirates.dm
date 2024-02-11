@@ -248,6 +248,14 @@
 	///This is the cargo hold ID used by the piratepad_control. Match these two to link them together.
 	var/cargo_hold_id
 
+/obj/machinery/piratepad/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/piratepad/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
+
 /obj/machinery/piratepad/multitool_act(mob/living/user, obj/item/multitool/I)
 	. = ..()
 	if (istype(I))
@@ -288,7 +296,12 @@
 
 /obj/machinery/computer/piratepad_control/Initialize(mapload)
 	..()
+	SET_TRACKING(__TYPE__)
 	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/computer/piratepad_control/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/computer/piratepad_control/multitool_act(mob/living/user, obj/item/multitool/I)
 	. = ..()
@@ -300,7 +313,7 @@
 /obj/machinery/computer/piratepad_control/LateInitialize()
 	. = ..()
 	if(cargo_hold_id)
-		for(var/obj/machinery/piratepad/P in GLOB.machines)
+		for(var/obj/machinery/piratepad/P as anything in INSTANCES_OF(/obj/machinery/piratepad))
 			if(P.cargo_hold_id == cargo_hold_id)
 				pad_ref = WEAKREF(P)
 				return

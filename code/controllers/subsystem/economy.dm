@@ -169,7 +169,7 @@ SUBSYSTEM_DEF(economy)
 	if(HAS_TRAIT(src, TRAIT_MARKET_CRASHING))
 		multiplier = 4
 
-	for(var/obj/machinery/vending/V in GLOB.machines)
+	for(var/obj/machinery/vending/V as anything in INSTANCES_OF(/obj/machinery/vending))
 		if(istype(V, /obj/machinery/vending/custom))
 			continue
 		if(!is_station_level(V.z))

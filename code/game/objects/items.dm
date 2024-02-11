@@ -14,6 +14,31 @@ DEFINE_INTERACTABLE(/obj/item)
 	///the icon to indicate this object is being dragged
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
+	max_integrity = 200
+	obj_flags = NONE
+	pass_flags = PASSTABLE
+
+	///How large is the object, used for stuff like whether it can fit in backpacks or not
+	w_class = WEIGHT_CLASS_NORMAL
+
+	///Items can by default thrown up to 10 tiles by TK users
+	tk_throw_range = 10
+
+	/// This var exists as a weird proxy "owner" ref
+	/// It's used in a few places. Stop using it, and optimially replace all uses please
+	var/tmp/obj/item/master = null
+
+	///list of /datum/action's that this item has.
+	var/tmp/list/actions
+	///list of paths of action datums to give to the item on New().
+	var/list/actions_types
+
+	///A weakref to the mob who threw the item
+	var/tmp/datum/weakref/thrownby = null
+
+	///Reference to the datum that determines whether dogs can wear the item: Needs to be in /obj/item because corgis can wear a lot of non-clothing items
+	var/tmp/datum/dog_fashion/dog_fashion = null
+
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 		IF YOU ADD MORE ICON CRAP TO THIS
 		ENSURE YOU ALSO ADD THE NEW VARS TO CHAMELEON ITEM_ACTION'S update_item() PROC (/datum/action/item_action/chameleon/change/proc/update_item())
@@ -63,9 +88,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	/// Worn overlay will be shifted by this along y axis
 	var/worn_y_offset = 0
 
-	max_integrity = 200
-
-	obj_flags = NONE
 	///Item flags for the item
 	var/item_flags = NONE
 
@@ -89,15 +111,8 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Whether or not we use stealthy audio levels for this item's attack sounds
 	var/stealthy_audio = FALSE
 
-	///How large is the object, used for stuff like whether it can fit in backpacks or not
-	w_class = WEIGHT_CLASS_NORMAL
 	///This is used to determine on which slots an item can fit.
 	var/slot_flags = 0
-	pass_flags = PASSTABLE
-	//pressure_resistance = 4
-	/// This var exists as a weird proxy "owner" ref
-	/// It's used in a few places. Stop using it, and optimially replace all uses please
-	var/obj/item/master = null
 
 	///Price of an item in a vending machine, overriding the base vending machine price. Define in terms of paycheck defines as opposed to raw numbers.
 	var/custom_price
@@ -114,11 +129,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/max_heat_protection_temperature
 	///Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by cold_protection flags
 	var/min_cold_protection_temperature
-
-	///list of /datum/action's that this item has.
-	var/list/actions
-	///list of paths of action datums to give to the item on New().
-	var/list/actions_types
 
 	//Since any item can now be a piece of clothing, this has to be put here so all items share it.
 	///This flag is used to determine when items in someone's inventory cover others. IE helmets making it so you can't see glasses, etc.
@@ -162,11 +172,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	///A blacklist of bodytypes that aren't allowed to equip this item
 	var/restricted_bodytypes = NONE
 
-	///A weakref to the mob who threw the item
-	var/datum/weakref/thrownby = null //I cannot verbally describe how much I hate this var
-	///Items can by default thrown up to 10 tiles by TK users
-	tk_throw_range = 10
-
 	///Does it embed and if yes, what kind of embed
 	var/list/embedding
 
@@ -187,14 +192,11 @@ DEFINE_INTERACTABLE(/obj/item)
 	///The list of slots by priority. equip_to_appropriate_slot() uses this list. Doesn't matter if a mob type doesn't have a slot. For default list, see [/mob/proc/equip_to_appropriate_slot]
 	var/list/slot_equipment_priority = null
 
-	///Reference to the datum that determines whether dogs can wear the item: Needs to be in /obj/item because corgis can wear a lot of non-clothing items
-	var/datum/dog_fashion/dog_fashion = null
-
 	//Tooltip vars
 	///string form of an item's force. Edit this var only to set a custom force string
 	var/force_string
-	var/last_force_string_check = 0
-	var/tip_timer
+	var/tmp/last_force_string_check = 0
+	var/tmp/tip_timer
 
 	///Determines who can shoot this
 	var/trigger_guard = TRIGGER_GUARD_NONE
@@ -237,12 +239,12 @@ DEFINE_INTERACTABLE(/obj/item)
 	/*Wielding*/
 	/*‾‾‾‾‾‾‾‾*/
 	/// Is the item being held in two hands?
-	var/wielded = FALSE
+	var/tmp/wielded = FALSE
 
 	/// The force of the item when wielded. If null, will be force * 1.5.
 	var/force_wielded = null
 	/// A var to hold the old, unwielded force value.
-	VAR_PRIVATE/force_unwielded = null
+	VAR_PRIVATE/tmp/force_unwielded = null
 	/// The icon_state to use when wielded, if any.
 	var/icon_state_wielded = null
 	/// The sound to play on wield.
@@ -314,9 +316,9 @@ DEFINE_INTERACTABLE(/obj/item)
 		return TRUE
 
 /obj/item/update_icon_state()
-	. = ..()
 	if(wielded && icon_state_wielded)
 		icon_state = icon_state_wielded
+	return ..()
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
@@ -818,6 +820,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	// Change appearance
 	name = "[name] (Wielded)"
 	update_appearance()
+	user.update_held_items()
 	return TRUE
 
 /obj/item/proc/unwield(mob/living/user, show_message = TRUE, dropping = FALSE)
@@ -843,7 +846,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		if(!dropping)
 			var/slot = user.get_slot_by_item(src)
 			if(slot == ITEM_SLOT_HANDS)
-				user.update_worn_back()
+				user.update_held_items()
 			else if(slot)
 				user.update_clothing(slot)
 
@@ -999,7 +1002,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(flags & ITEM_SLOT_EYES)
 		owner.update_worn_glasses()
 	if(flags & ITEM_SLOT_EARS)
-		owner.update_inv_ears()
+		owner.update_worn_ears()
 	if(flags & ITEM_SLOT_MASK)
 		owner.update_worn_mask()
 	if(flags & ITEM_SLOT_HEAD)

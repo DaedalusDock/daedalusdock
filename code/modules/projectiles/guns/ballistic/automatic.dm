@@ -106,6 +106,7 @@
 	empty_indicator = TRUE
 
 	unwielded_spread_bonus = 10
+	unwielded_recoil = 1.5
 
 /obj/item/gun/ballistic/automatic/wt550/Initialize(mapload)
 	. = ..()
@@ -154,6 +155,7 @@
 
 	spread = 5
 	unwielded_spread_bonus = 15
+	unwielded_recoil = 1.5
 
 	mag_display = TRUE
 	empty_indicator = TRUE
@@ -233,6 +235,7 @@
 	slot_flags = 0
 	actions_types = list()
 
+	unwielded_recoil = 2
 	spread = 7
 	unwielded_spread_bonus = 20
 	burst_size = 1
@@ -319,7 +322,8 @@
 	rack_sound = 'sound/weapons/gun/sniper/rack.ogg'
 	suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
 
-	recoil = 2
+	recoil = 1
+	unwielded_recoil = 4
 	unwielded_spread_bonus = 90
 
 	mag_type = /obj/item/ammo_box/magazine/sniper_rounds
@@ -359,6 +363,10 @@
 	icon_state = "surplus"
 	inhand_icon_state = "moistnugget"
 	worn_icon_state = null
+
+	recoil = 1
+	unwielded_recoil = 4
+
 	unwielded_spread_bonus = 20
 	mag_type = /obj/item/ammo_box/magazine/m10mm/rifle
 	fire_delay = 30

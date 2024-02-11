@@ -499,6 +499,9 @@
 #define FLASH_PROTECTION_FLASH 1
 #define FLASH_PROTECTION_WELDER 2
 
+// If a mob has a higher threshold than this, the icon shown will be increased to the big fire icon.
+#define MOB_BIG_FIRE_STACK_THRESHOLD 3
+
 // Roundstart trait system
 
 #define MAX_QUIRKS 6 //The maximum amount of quirks one character can have at roundstart

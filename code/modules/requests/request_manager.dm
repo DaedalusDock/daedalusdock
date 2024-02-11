@@ -189,7 +189,7 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 				to_chat(usr, "You cannot set the nuke code for a non-nuke-code-request request!", confidential = TRUE)
 				return TRUE
 			var/code = random_nukecode()
-			for(var/obj/machinery/nuclearbomb/selfdestruct/SD in GLOB.nuke_list)
+			for(var/obj/machinery/nuclearbomb/selfdestruct/SD in INSTANCES_OF(/obj/machinery/nuclearbomb))
 				SD.r_code = code
 			message_admins("[key_name_admin(usr)] has set the self-destruct code to \"[code]\".")
 			return TRUE

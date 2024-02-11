@@ -69,8 +69,7 @@
 			mmi.brain.name = "[real_name]'s brain"
 			mmi.name = "[initial(mmi.name)]: [real_name]"
 			mmi.set_brainmob(new /mob/living/brain(mmi))
-			mmi.brainmob.name = src.real_name
-			mmi.brainmob.real_name = src.real_name
+			mmi.brainmob.set_real_name(src.real_name)
 			mmi.brainmob.container = mmi
 			mmi.update_appearance()
 		setup_default_name()
@@ -816,8 +815,7 @@
 		upgrades |= new /obj/item/borg/upgrade/ai(src)
 	shell = TRUE
 	braintype = "AI Shell"
-	name = "Empty AI Shell-[ident]"
-	real_name = name
+	set_real_name("Empty AI Shell-[ident]")
 	GLOB.available_ai_shells |= src
 	if(!QDELETED(builtInCamera))
 		builtInCamera.c_tag = real_name //update the camera name too
@@ -835,8 +833,7 @@
 		qdel(boris)
 	shell = FALSE
 	GLOB.available_ai_shells -= src
-	name = "Unformatted Cyborg-[ident]"
-	real_name = name
+	set_real_name("Unformatted Cyborg-[ident]")
 	if(!QDELETED(builtInCamera))
 		builtInCamera.c_tag = real_name
 	diag_hud_set_aishell()
@@ -848,8 +845,8 @@
  * * AI - AI unit that initiated the deployment into the AI shell
  */
 /mob/living/silicon/robot/proc/deploy_init(mob/living/silicon/ai/AI)
-	real_name = "[AI.real_name] [designation] Shell-[ident]"
-	name = real_name
+	set_real_name("[AI.real_name] [designation] Shell-[ident]")
+
 	if(!QDELETED(builtInCamera))
 		builtInCamera.c_tag = real_name //update the camera name too
 	mainframe = AI

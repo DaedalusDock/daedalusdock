@@ -309,26 +309,34 @@
  * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via tryUnequipItem()
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
-/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE)
+/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE, animate = TRUE)
 	. = tryUnequipItem(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
 	if(!. || !I) //ensure the item exists and that it was dropped properly.
 		return
+
 	if(!(I.item_flags & NO_PIXEL_RANDOM_DROP))
 		I.pixel_x = I.base_pixel_x + rand(-6, 6)
 		I.pixel_y = I.base_pixel_y + rand(-6, 6)
-	I.do_drop_animation(src)
+
+	if(animate)
+		I.do_drop_animation(src)
 
 //for when the item will be immediately placed in a loc other than the ground. Supports shifting the item's x and y from click modifiers.
-/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, list/user_click_modifiers)
+/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, list/user_click_modifiers, animate = TRUE)
 	. = tryUnequipItem(I, force, newloc, FALSE, silent = silent)
-	if(. && user_click_modifiers)
+	if(!.)
+		return
+
+	if(user_click_modifiers)
 		//Center the icon where the user clicked.
 		if(!LAZYACCESS(user_click_modifiers, ICON_X) || !LAZYACCESS(user_click_modifiers, ICON_Y))
 			return
 		//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the location)
 		I.pixel_x = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
 		I.pixel_y = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
-	I.do_drop_animation(src)
+
+	if(animate)
+		I.do_drop_animation(src)
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D

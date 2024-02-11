@@ -1444,7 +1444,7 @@
 		return FALSE
 	return TRUE
 
-/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop)
+/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop, animate = TRUE)
 	if(I && HAS_TRAIT(I, TRAIT_INSIDE_BODY))
 		stack_trace("Something tried to drop an organ or bodypart that isn't allowed to be dropped")
 		return FALSE

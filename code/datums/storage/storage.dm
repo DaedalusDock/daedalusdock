@@ -688,7 +688,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param mob/user the user who is dumping the contents
  */
 /datum/storage/proc/dump_content_at(atom/dest_object, mob/user)
-	if(locked)
+	if(locked || (dest_object == parent))
 		return
 
 	if(!user.CanReach(parent) || !user.CanReach(dest_object))

@@ -63,7 +63,7 @@
 	var/move_force = MOVE_FORCE_DEFAULT
 	var/pull_force = PULL_FORCE_DEFAULT
 
-	 //How many tiles to move per ds when being thrown. Float values are fully supported.
+	//How many tiles to move per ds when being thrown. Float values are fully supported.
 	var/throw_speed = 1
 	var/throw_range = 7
 	/// How much damage the object deals when impacting something else.

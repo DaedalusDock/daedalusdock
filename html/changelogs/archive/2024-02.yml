@@ -29,3 +29,6 @@
   Ghommie:
   - bugfix: Fixed text effects for runechat messages (the stuff enclosed in +, | and
       _ characters) sometimes not working.
+2024-02-10:
+  Kapu1178:
+  - qol: Added an on-screen indicator for when you're unable to click.

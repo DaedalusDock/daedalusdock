@@ -5,6 +5,7 @@
 	icon_state = "atm"
 	base_icon_state = "atm"
 
+	layer = ABOVE_OBJ_LAYER + 0.001
 	pixel_y = 32
 	base_pixel_y = 32
 

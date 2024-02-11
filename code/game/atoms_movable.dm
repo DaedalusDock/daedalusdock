@@ -42,9 +42,9 @@
 	var/tmp/datum/component/orbiter/orbiting
 
 	///Lazylist to keep track on the sources of illumination.
-	var/list/affected_dynamic_lights
+	var/tmp/list/affected_dynamic_lights
 	///Highest-intensity light affecting us, which determines our visibility.
-	var/affecting_dynamic_lumi = 0
+	var/tmp/affecting_dynamic_lumi = 0
 
 	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
 	var/tmp/list/do_afters

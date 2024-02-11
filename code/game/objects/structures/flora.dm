@@ -351,7 +351,6 @@
 	w_class = WEIGHT_CLASS_HUGE
 	force = 10
 	throwforce = 13
-	throw_speed = 2
 	throw_range = 4
 	item_flags = NO_PIXEL_RANDOM_DROP
 

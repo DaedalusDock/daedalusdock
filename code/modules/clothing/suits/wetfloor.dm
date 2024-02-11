@@ -6,7 +6,6 @@
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	force = 1
 	throwforce = 3
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	body_parts_covered = CHEST|GROIN

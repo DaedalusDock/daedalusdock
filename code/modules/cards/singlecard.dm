@@ -13,7 +13,6 @@
 	max_integrity = 50
 	force = 0
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	attack_verb_continuous = list("attacks")
 	attack_verb_simple = list("attack")

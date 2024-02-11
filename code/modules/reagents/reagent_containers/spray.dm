@@ -12,7 +12,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
-	throw_speed = 3
 	throw_range = 7
 	var/stream_mode = FALSE //whether we use the more focused mode
 	var/current_range = 3 //the range of tiles the sprayer will reach.

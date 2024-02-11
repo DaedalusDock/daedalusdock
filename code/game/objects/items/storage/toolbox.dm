@@ -10,7 +10,7 @@
 
 	force = 20
 	throwforce = 10
-	throw_speed = 2
+	throw_speed = 1.5
 	throw_range = 7
 	stamina_damage = 47
 	stamina_cost = 20

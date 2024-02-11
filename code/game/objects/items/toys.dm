@@ -29,7 +29,6 @@
  */
 /obj/item/toy
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	force = 0
 
@@ -123,7 +122,6 @@
 	righthand_file = 'icons/mob/inhands/balloons_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	force = 0
 	var/random_color = TRUE
@@ -517,7 +515,6 @@
 	force = 0
 	force_wielded = 0
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 5
 
 	attack_verb_continuous = list("attacks", "strikes", "hits")

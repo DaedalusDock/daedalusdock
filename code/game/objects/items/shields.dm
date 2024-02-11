@@ -18,7 +18,6 @@
 	slot_flags = ITEM_SLOT_BACK
 	force = 10
 	throwforce = 5
-	throw_speed = 2
 	throw_range = 3
 	w_class = WEIGHT_CLASS_BULKY
 	custom_materials = list(/datum/material/glass=7500, /datum/material/iron=1000)
@@ -203,7 +202,6 @@
 	throw_range = 5
 	force = 3
 	throwforce = 3
-	throw_speed = 3
 	block_chance = -INFINITY
 	block_sound = 'sound/weapons/block/block_energy.ogg' //reflect
 
@@ -254,7 +252,6 @@
 	slot_flags = null
 	force = 3
 	throwforce = 3
-	throw_speed = 3
 	throw_range = 4
 	w_class = WEIGHT_CLASS_NORMAL
 	/// Whether the shield is extended and protecting the user..

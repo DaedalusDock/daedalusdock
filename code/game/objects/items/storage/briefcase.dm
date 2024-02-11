@@ -7,7 +7,6 @@
 	flags_1 = CONDUCT_1
 
 	hitsound = SFX_SWING_HIT
-	throw_speed = 2
 	throw_range = 4
 	force = 8
 	stamina_cost = 17

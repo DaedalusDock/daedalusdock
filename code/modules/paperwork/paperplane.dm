@@ -5,7 +5,7 @@
 	icon_state = "paperplane"
 	custom_fire_overlay = "paperplane_onfire"
 	throw_range = 7
-	throw_speed = 1
+	throw_speed = 0.5
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE

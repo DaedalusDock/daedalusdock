@@ -21,7 +21,6 @@
 	inhand_icon_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=400)
 	var/tracking_range = 20
@@ -108,7 +107,6 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
-	throw_speed = 3
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=10000)
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)

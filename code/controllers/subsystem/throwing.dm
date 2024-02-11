@@ -84,9 +84,10 @@ SUBSYSTEM_DEF(throwing)
 	var/delayed_time = 0
 	///The last world.time value stored when the thrownthing was moving.
 	var/last_move = 0
+	/// If the thrown object is spinning
+	var/is_spinning = FALSE
 
-
-/datum/thrownthing/New(thrownthing, target, init_dir, maxrange, speed, thrower, diagonals_first, force, gentle, callback, target_zone)
+/datum/thrownthing/New(thrownthing, target, init_dir, maxrange, speed, thrower, diagonals_first, force, gentle, callback, target_zone, spin)
 	. = ..()
 	src.thrownthing = thrownthing
 	RegisterSignal(thrownthing, COMSIG_PARENT_QDELETING, PROC_REF(on_thrownthing_qdel))
@@ -102,9 +103,10 @@ SUBSYSTEM_DEF(throwing)
 	src.gentle = gentle
 	src.callback = callback
 	src.target_zone = target_zone
-
+	src.is_spinning = spin
 
 /datum/thrownthing/Destroy()
+	stop_spinning()
 	SSthrowing.processing -= thrownthing
 	SSthrowing.currentrun -= thrownthing
 	thrownthing.throwing = null

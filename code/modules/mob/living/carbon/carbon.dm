@@ -236,20 +236,26 @@
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
 		var/buckle_cd = 60 SECONDS
+
 		if(handcuffed)
 			var/obj/item/restraints/O = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
 			buckle_cd = O.breakouttime
-		visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"), \
-					span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)"))
+
+		visible_message(
+			span_warning("[src] attempts to unbuckle [p_them()]self!"),
+			span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)")
+
+		)
+
 		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
-			buckled.user_unbuckle_mob(src,src)
+			return !!buckled.user_unbuckle_mob(src,src)
 		else
 			if(src && buckled)
 				to_chat(src, span_warning("You fail to unbuckle yourself!"))
 	else
-		buckled.user_unbuckle_mob(src,src)
+		return !!buckled.user_unbuckle_mob(src,src)
 
 /mob/living/carbon/resist_fire()
 	adjust_fire_stacks(-5)

@@ -191,7 +191,10 @@ SUBSYSTEM_DEF(throwing)
 	//done throwing, either because it hit something or it finished moving
 	if(!thrownthing)
 		return
+
 	thrownthing.throwing = null
+	stop_spinning()
+
 	if (!hit)
 		for (var/atom/movable/obstacle as anything in get_turf(thrownthing)) //looking for our target on the turf we land on.
 			if (obstacle == target)
@@ -223,3 +226,7 @@ SUBSYSTEM_DEF(throwing)
 		SEND_SIGNAL(thrownthing, COMSIG_MOVABLE_THROW_LANDED, src)
 
 	qdel(src)
+
+/// Remove the spinning animation from the thrown object
+/datum/thrownthing/proc/stop_spinning()
+	animate(thrownthing)

@@ -802,9 +802,11 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 	if(!living_owner.can_resist())
 		return
-	living_owner.changeNext_move(CLICK_CD_RESIST)
+
 	if(living_owner.last_special <= world.time)
-		return living_owner.resist_buckle()
+		. = living_owner.resist_buckle()
+		if(!.)
+			living_owner.changeNext_move(CLICK_CD_RESIST)
 
 /atom/movable/screen/alert/shoes/untied
 	name = "Untied Shoes"

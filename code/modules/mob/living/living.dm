@@ -938,8 +938,9 @@
 		if(!G.handle_resist())
 			. = FALSE
 
+/// Attempt to break out of a buckle. Returns TRUE if successful.
 /mob/living/proc/resist_buckle()
-	buckled.user_unbuckle_mob(src,src)
+	return !!buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
 	return

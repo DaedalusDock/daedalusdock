@@ -30,6 +30,9 @@
 
 	SEND_SIGNAL(src, COMSIG_LIVING_CHANGENEXT_MOVE, next_move)
 
+	if(client)
+		stack_trace("[num]")
+
 /**
  * Before anything else, defer these calls to a per-mobtype handler.  This allows us to
  * remove istype() spaghetti code, but requires the addition of other handler procs to simplify it.

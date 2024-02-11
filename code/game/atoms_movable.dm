@@ -1054,7 +1054,7 @@
 		quickstart = FALSE
 	throwing = thrown_thing
 	if(spin)
-		SpinAnimation(5, 1)
+		SpinAnimation(2)
 
 	SEND_SIGNAL(src, COMSIG_MOVABLE_POST_THROW, thrown_thing, spin)
 	SSthrowing.processing[src] = thrown_thing

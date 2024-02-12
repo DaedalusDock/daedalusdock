@@ -1536,7 +1536,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		// 40% for level 3 damage on humans to scream in pain
 		if (humi.stat < UNCONSCIOUS && (prob(burn_damage) * 10) / 4)
-			humi.pain_emote(1000) //AGONY!!!!
+			humi.pain_emote(1000, TRUE) //AGONY!!!!
 
 		// Apply the damage to all body parts
 		humi.adjustFireLoss(burn_damage, FALSE)

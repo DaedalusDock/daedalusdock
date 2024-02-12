@@ -32,3 +32,24 @@
 2024-02-10:
   Kapu1178:
   - qol: Added an on-screen indicator for when you're unable to click.
+2024-02-12:
+  Kapu1178:
+  - qol: Thrown objects spin more naturally.
+  - tweak: Almost all objects have had their throw speed reduced.
+  - bugfix: Unbuckling from an object no longer locks you out of actions for 2 seconds.
+  - qol: Using the Observe verb now shows you action buttons of the target.
+  - qol: Using the Observe verb now allows you to see Tooltips like normal.
+  - qol: Using the Observe verb now makes you see and hear (almost) exactly what your
+      target does.
+  - tweak: The Orbit panel now uses Observe by default. You can still use Orbit by
+      changing the toggle in the top right.
+  - bugfix: An 8 year old bug with signallers you never noticed because you don't
+      use them.
+  - qol: Added accessibility features to disable blur effects and pain flashes.
+  - balance: Walking on fractured legs causes pain
+  - balance: Reduced slowdown caused by pain directly. (pain / 15 to pain / 40)
+  - rscadd: Head fractures now give you a concussion status effect
+  whataboutism-alos:
+  - rscadd: Creates vox scutes
+  - imageadd: Creates icons for vox arm, leg, and hand scutes
+  - code_imp: Reorganized the sprites within the vox bodyparts.dmi

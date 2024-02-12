@@ -391,7 +391,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			W.fire_act(exposed_temperature, exposed_volume, exposed_pressure, adjacent)
 
 	for(var/obj/machinery/door/window/door in src)
-		if(door.dir == dir_to || door.fulltile) //Same direction or diagonal (full tile)
+		if(door.dir == dir_to) //Same direction or diagonal (full tile)
 			door.fire_act(exposed_temperature, exposed_volume, exposed_pressure, adjacent)
 
 /turf/closed/wall/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)

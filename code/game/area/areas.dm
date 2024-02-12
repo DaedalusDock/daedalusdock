@@ -47,6 +47,9 @@
 	/// If a room is too big it doesn't have beauty.
 	var/beauty_threshold = 150
 
+	/// Used by ghosts to grant new powers. See /datum/component/spook_factor
+	var/spook_level
+
 	/// For space, the asteroid, etc. Used with blueprints or with weather to determine if we are adding a new area (vs editing a station room)
 	var/outdoors = FALSE
 
@@ -530,3 +533,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	for(var/datum/listener in airalarms + firealarms + firedoors)
 		SEND_SIGNAL(listener, COMSIG_FIRE_ALERT, code)
+
+/// Adjusts the spook level and sends out a signal
+/area/proc/adjust_spook_level(adj)
+	var/old = spook_level
+	spook_level += adj
+	SEND_SIGNAL(src, AREA_SPOOK_LEVEL_CHANGED, src, old)

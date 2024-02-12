@@ -935,6 +935,8 @@
 	min_ambience_cooldown = 90 SECONDS
 	max_ambience_cooldown = 180 SECONDS
 
+	spook_level = SPOOK_AMT_CORPSE * -2 // We can expect like two dudes to be dead in here at all times.
+
 /area/station/medical/abandoned
 	name = "\improper Abandoned Medbay"
 	icon_state = "abandoned_medbay"
@@ -1009,6 +1011,8 @@
 	ambience_index = AMBIENCE_SPOOKY
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 	lightswitch = FALSE
+
+	spook_level = SPOOK_AMT_CORPSE * -10 // The morgue lays spirits to rest or something
 
 /area/station/medical/chemistry
 	name = "Chemistry"

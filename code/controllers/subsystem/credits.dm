@@ -117,22 +117,23 @@ SUBSYSTEM_DEF(credits)
 	if(customized_name)
 		episode_name = customized_name
 		return
+
 	var/list/drafted_names = list()
-	var/list/name_reasons = list()
-	var/list/is_rare_assoc_list = list()
+
 	for(var/datum/episode_name/N as anything in episode_names)
-		drafted_names["[N.thename]"] = N.weight
-		name_reasons["[N.thename]"] = N.reason
-		is_rare_assoc_list["[N.thename]"] = N.rare
-	episode_name = pick_weight(drafted_names)
-	episode_reason = name_reasons[episode_name]
-	if(is_rare_assoc_list[episode_name] == TRUE)
+		drafted_names[N] = N.weight
+
+	var/datum/episode_name/chosen = pick_weight(drafted_names)
+	episode_name = chosen.thename
+	episode_reason = chosen.reason
+	if(chosen.rare)
 		rare_episode_name = TRUE
 
 /datum/controller/subsystem/credits/proc/finalize_episodestring()
 	var/season = time2text(world.timeofday,"YY")
 	var/episodenum = GLOB.round_id || 1
-	episode_string = "<h1><span id='episodenumber'>SEASON [season] EPISODE [episodenum]</span><br><span id='episodename' title='[episode_reason]'>[episode_name]</span></h1><br><div style='padding-bottom: 75px;'></div>"
+	var/reason = episode_reason ? "<br><h3>[episode_reason]</h3>" : ""
+	episode_string = "<h1><span id='episodenumber'>SEASON [season] EPISODE [episodenum]</span><br><span id='episodename'>[episode_name]</span></h1>[reason]<br><div style='padding-bottom: 75px;'></div>"
 	log_game("So ends [is_rerun() ? "another rerun of " : ""]SEASON [season] EPISODE [episodenum] - [episode_name] ... [customized_ss]")
 
 /datum/controller/subsystem/credits/proc/finalize_disclaimerstring()

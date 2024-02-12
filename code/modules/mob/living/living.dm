@@ -662,6 +662,9 @@
 		updatehealth()
 		get_up(TRUE)
 
+	if(.)
+		qdel(GetComponent(/datum/component/spook_factor))
+
 	// The signal is called after everything else so components can properly check the updated values
 	SEND_SIGNAL(src, COMSIG_LIVING_REVIVE, full_heal, admin_revive)
 

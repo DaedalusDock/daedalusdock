@@ -11,4 +11,5 @@
 	default_value = FALSE
 
 /datum/preference/toggle/motion_sickness/apply_to_client(client/client, value)
-	SEND_SIGNAL(client.mob, COMSIG_MOB_MOTION_SICKNESS_UPDATE, value)
+	if(client.mob)
+		SEND_SIGNAL(client.mob, COMSIG_MOB_MOTION_SICKNESS_UPDATE, value)

@@ -31,7 +31,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(air_contents.check_combustability(liquid))
 		igniting = 1
 
-		create_fire(exposed_temperature)
+		create_fire(1)
 	return igniting
 
 ///Creates a fire with firelevel (fl). If create_own_fuel is given, it will create that many units of welding fuel on the turf.
@@ -385,7 +385,11 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	for(var/obj/structure/window/W in src)
 		if(W.dir == dir_to || W.fulltile) //Same direction or diagonal (full tile)
-			W.fire_act(exposed_temperature, exposed_volume, exposed_pressure)
+			W.fire_act(exposed_temperature, exposed_volume, exposed_pressure, adjacent)
+
+	for(var/obj/machinery/door/window/door in src)
+		if(W.dir == dir_to || W.fulltile) //Same direction or diagonal (full tile)
+			W.fire_act(exposed_temperature, exposed_volume, exposed_pressure, adjacent)
 
 /turf/closed/wall/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	if(!uses_integrity)

@@ -418,6 +418,9 @@ SUBSYSTEM_DEF(zas)
 	zones -= z
 	zones_to_update -= z
 	zones_with_sensitive_contents -= z
+	active_fire_zones -= z
+	if(processing_fires)
+		processing_fires -= z
 	if (processing_zones)
 		processing_zones -= z
 

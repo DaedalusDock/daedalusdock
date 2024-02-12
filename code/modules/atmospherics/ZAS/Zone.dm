@@ -180,7 +180,7 @@ Class Procs:
 	invalid = 1
 	SSzas.remove_zone(src)
 	atmos_sensitive_contents = null
-	fire_tiles = null
+	fire_tiles.Cut()
 	fuel_objs = null
 	#ifdef ZASDBG
 	for(var/turf/T as anything in contents)

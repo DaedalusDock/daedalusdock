@@ -197,6 +197,7 @@
 	var/turf/location = get_turf(owner)
 	location.hotspot_expose(700, 25 * delta_time, TRUE)
 
+#define BODYTEMP_FIRE_TEMP_SOFTCAP 1200
 /**
  * Used to deal damage to humans and count their protection.
  *
@@ -206,21 +207,26 @@
  * - no_protection: When set to TRUE, fire will ignore any possible fire protection
  *
  */
-
 /datum/status_effect/fire_handler/fire_stacks/proc/harm_human(delta_time, times_fired, no_protection = FALSE)
 	var/mob/living/carbon/human/victim = owner
 	var/thermal_protection = victim.get_thermal_protection()
 
-	if(thermal_protection >= FIRE_IMMUNITY_MAX_TEMP_PROTECT && !no_protection)
-		return
+	if(!no_protection)
+		if(thermal_protection >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
+			return
+		if(thermal_protection >= FIRE_SUIT_MAX_TEMP_PROTECT)
+			victim.adjust_bodytemperature(5.5 * delta_time)
+			return
 
-	if(thermal_protection >= FIRE_SUIT_MAX_TEMP_PROTECT && !no_protection)
-		victim.adjust_bodytemperature(5.5 * delta_time)
-		return
+	var/amount_to_heat = (BODYTEMP_HEATING_MAX + (stacks * 12)) * 0.5 * delta_time
+	if(owner.bodytemperature > BODYTEMP_FIRE_TEMP_SOFTCAP)
+		// Apply dimishing returns upon temp beyond the soft cap
+		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / owner.bodytemperature)
 
-	victim.adjust_bodytemperature((BODYTEMP_HEATING_MAX + (stacks * 12)) * 0.5 * delta_time)
+	victim.adjust_bodytemperature(amount_to_heat)
 	victim.mind?.add_memory(MEMORY_FIRE, list(DETAIL_PROTAGONIST = victim), story_value = STORY_VALUE_OKAY)
 
+#undef BODYTEMP_FIRE_TEMP_SOFTCAP
 /**
  * Handles mob ignition, should be the only way to set on_fire to TRUE
  *
@@ -236,6 +242,8 @@
 	on_fire = TRUE
 	if(!silent)
 		owner.visible_message(span_warning("[owner] catches fire!"), span_userdanger("You're set on fire!"))
+		spawn(-1)
+			owner.emote("scream")
 
 	if(firelight_type)
 		firelight_ref = WEAKREF(new firelight_type(owner))

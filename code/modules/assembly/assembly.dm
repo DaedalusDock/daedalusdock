@@ -14,7 +14,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=100)
 	throwforce = 2
-	throw_speed = 3
 	throw_range = 7
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
@@ -76,8 +75,10 @@
 	if(connected && wire_type)
 		connected.pulse_assembly(src)
 		return TRUE
+
 	if(holder && (wire_type & WIRE_PULSE))
 		holder.process_activation(src, 1, 0)
+
 	if(holder && (wire_type & WIRE_PULSE_SPECIAL))
 		holder.process_activation(src, 0, 1)
 	return TRUE

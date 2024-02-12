@@ -118,7 +118,6 @@
 	icon_state = "broken_bottle"
 	force = 9
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
 	inhand_icon_state = "broken_beer"

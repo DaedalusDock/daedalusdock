@@ -45,15 +45,23 @@
 	/// The chance we limp with the right leg each step it takes
 	var/limp_chance_right = 0
 
+	/// Keeps track of how many steps have been taken on the left leg
+	var/steps_left = 0
+	/// Keeps track of how many steps have been taken on the right leg.
+	var/steps_right = 0
+
 /datum/status_effect/limp/on_apply()
 	if(!iscarbon(owner))
 		return FALSE
 	var/mob/living/carbon/C = owner
+
 	left = C.get_bodypart(BODY_ZONE_L_LEG)
 	right = C.get_bodypart(BODY_ZONE_R_LEG)
+
 	update_limp()
 	RegisterSignal(C, COMSIG_MOVABLE_MOVED, PROC_REF(check_step))
 	RegisterSignal(C, list(COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVED_LIMB), PROC_REF(update_limp))
+
 	if(left)
 		RegisterSignal(left, COMSIG_LIMB_UPDATE_INTERACTION_SPEED, PROC_REF(update_limp))
 	if(right)
@@ -81,13 +89,39 @@
 	var/determined_mod = owner.has_status_effect(/datum/status_effect/determined) ? 0.5 : 1
 
 	if(next_leg == left)
+		// Apply slowdown, if there is any
 		if(prob(limp_chance_left * determined_mod))
 			owner.client.move_delay += slowdown_left * determined_mod
-		next_leg = right
+
+		// Apply pain every 10 steps if the leg is broken.
+		steps_left++
+		if(steps_left %% 10 == 0)
+			steps_left = 0
+		if(steps_left == 0 && !left.splint && (left.bodypart_flags & BP_BROKEN_BONES))
+			pain(left)
+
+		if(right)
+			next_leg = right
 	else
+		// Apply slowdown, if there is any
 		if(prob(limp_chance_right * determined_mod))
 			owner.client.move_delay += slowdown_right * determined_mod
-		next_leg = left
+
+		// Apply pain every 10 steps if the leg is broken.
+		steps_right++
+		if(steps_right %% 10 == 0)
+			steps_right = 0
+		if(steps_right == 0 && !right.splint && (right.bodypart_flags & BP_BROKEN_BONES))
+			pain(right)
+
+		if(left)
+			next_leg = left
+
+/datum/status_effect/limp/proc/pain(obj/item/bodypart/leg/leg)
+	if(leg.bodypart_flags & BP_NO_PAIN)
+		return
+
+	owner.apply_pain(40, leg, "A terrible pain shoots through your [leg.plaintext_zone].", TRUE)
 
 /datum/status_effect/limp/proc/update_limp()
 	SIGNAL_HANDLER

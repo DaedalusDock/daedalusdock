@@ -46,6 +46,7 @@
 	if(!id_tag)
 		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	for(var/to_filter in filter_types)
 		if(istext(to_filter))
 			filter_types -= to_filter
@@ -56,6 +57,7 @@
 	SSairmachines.start_processing_machine(src)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	var/area/scrub_area = get_area(src)
 	if(scrub_area)
 		scrub_area.air_scrub_info -= id_tag

@@ -877,7 +877,10 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 /// Opens the storage to the mob, showing them the contents to their UI.
 /datum/storage/proc/open_storage(mob/to_show, performing_quickdraw)
 	if(isobserver(to_show))
-		show_contents(to_show)
+		if(to_show.active_storage == src)
+			hide_contents(to_show)
+		else
+			show_contents(to_show)
 		return FALSE
 
 	if(!to_show.CanReach(parent))

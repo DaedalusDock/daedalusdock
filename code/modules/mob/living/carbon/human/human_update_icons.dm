@@ -698,14 +698,13 @@ There are several things that need to be remembered:
 		if(client && hud_used && hud_used.hud_version != HUD_STYLE_NOHUD)
 			worn_item.screen_loc = ui_hand_position(get_held_index_of_item(worn_item))
 			client.screen += worn_item
-			if(observers?.len)
-				for(var/M in observers)
-					var/mob/dead/observe = M
+			if(LAZYLEN(observers))
+				for(var/mob/dead/observe as anything in observers)
 					if(observe.client && observe.client.eye == src)
 						observe.client.screen += worn_item
 					else
 						observers -= observe
-						if(!observers.len)
+						if(!length(observers))
 							observers = null
 							break
 

@@ -163,8 +163,8 @@
 
 	force = 10
 	force_wielded = 20
-	throwforce = 20
-	throw_speed = 2
+	throwforce = 2
+	throw_speed = 1.5
 
 	block_chance = 50
 

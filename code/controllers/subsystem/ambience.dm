@@ -21,8 +21,8 @@ SUBSYSTEM_DEF(ambience)
 		cached_clients.len--
 
 		//Check to see if the client exists and isn't held by a new player
-		var/mob/client_mob = client_iterator?.mob
-		if(isnull(client_iterator) || !client_mob || isnewplayer(client_mob))
+		var/mob/client_mob = client_iterator?.mob.hear_location()
+		if(isnull(client_iterator) || isnewplayer(client_mob))
 			ambience_listening_clients -= client_iterator
 			client_old_areas -= client_iterator
 			continue

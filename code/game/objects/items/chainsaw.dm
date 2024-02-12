@@ -10,9 +10,11 @@
 	force = 13
 	var/force_on = 24
 	w_class = WEIGHT_CLASS_HUGE
+
 	throwforce = 13
-	throw_speed = 2
+	throw_speed = 1
 	throw_range = 4
+
 	custom_materials = list(/datum/material/iron=13000)
 	attack_verb_continuous = list("saws", "tears", "lacerates", "cuts", "chops", "dices")
 	attack_verb_simple = list("saw", "tear", "lacerate", "cut", "chop", "dice")

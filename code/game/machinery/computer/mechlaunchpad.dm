@@ -26,7 +26,7 @@
 		id ="handmade"
 
 /obj/machinery/computer/mechpad/LateInitialize()
-	for(var/obj/machinery/mechpad/pad in GLOB.mechpad_list)
+	for(var/obj/machinery/mechpad/pad as anything in INSTANCES_OF(/obj/machinery/mechpad))
 		if(pad == connected_mechpad)
 			continue
 		if(pad.id != id)

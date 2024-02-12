@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: Added accessibility features to disable blur effects and pain flashes.
+  - balance: Walking on fractured legs causes pain
+  - balance: Reduced slowdown caused by pain directly. (pain / 15 to pain / 40)
+  - rscadd: Head fractures now give you a concussion status effect

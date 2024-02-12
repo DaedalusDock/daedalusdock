@@ -208,7 +208,7 @@
 
 		//Open the Armory doors
 		if(ertemplate.opendoors)
-			for(var/obj/machinery/door/poddoor/ert/door in GLOB.airlocks)
+			for(var/obj/machinery/door/poddoor/ert/door in INSTANCES_OF(/obj/machinery/door))
 				door.open()
 				CHECK_TICK
 		return TRUE

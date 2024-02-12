@@ -1,0 +1,9 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: Using the Observe verb now shows you action buttons of the target.
+  - qol: Using the Observe verb now allows you to see Tooltips like normal.
+  - qol: Using the Observe verb now makes you see and hear (almost) exactly what your
+      target does.
+  - tweak: The Orbit panel now uses Observe by default. You can still use Orbit by
+      changing the toggle in the top right.

@@ -24,9 +24,9 @@
 	robot_modules_background.icon_state = "block"
 	robot_modules_background.plane = HUD_PLANE
 
-	inv1 = new /atom/movable/screen/robot/module1()
-	inv2 = new /atom/movable/screen/robot/module2()
-	inv3 = new /atom/movable/screen/robot/module3()
+	inv1 = new /atom/movable/screen/robot/module1(null, hud_used)
+	inv2 = new /atom/movable/screen/robot/module2(null, hud_used)
+	inv3 = new /atom/movable/screen/robot/module3(null, hud_used)
 
 	ident = rand(1, 999)
 

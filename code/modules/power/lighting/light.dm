@@ -86,7 +86,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
-
+	SET_TRACKING(__TYPE__)
 	if(!mapload) //sync up nightshift lighting for player made lights
 		var/area/local_area = get_area(src)
 		var/obj/machinery/power/apc/temp_apc = local_area.apc
@@ -104,6 +104,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	my_area = get_area(src)
 	if(my_area)
 		LAZYADD(my_area.lights, src)
+
 	#ifdef LIGHTS_RANDOMLY_BROKEN
 	switch(fitting)
 		if("tube")
@@ -116,6 +117,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	if(my_area)
 		on = FALSE
 		LAZYREMOVE(my_area.lights, src)

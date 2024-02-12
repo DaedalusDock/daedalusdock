@@ -938,8 +938,9 @@
 		if(!G.handle_resist())
 			. = FALSE
 
+/// Attempt to break out of a buckle. Returns TRUE if successful.
 /mob/living/proc/resist_buckle()
-	buckled.user_unbuckle_mob(src,src)
+	return !!buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
 	return
@@ -2195,7 +2196,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	if(istype(A, /atom/movable/screen/movable/action_button))
 		var/atom/movable/screen/movable/action_button/action = A
-		if(action.can_use(src))
+		if(action.can_usr_use(src))
 			return MOUSE_ICON_HOVERING_INTERACTABLE
 		return
 

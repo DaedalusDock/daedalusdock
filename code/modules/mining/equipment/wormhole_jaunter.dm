@@ -10,7 +10,6 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
-	throw_speed = 3
 	throw_range = 5
 	slot_flags = ITEM_SLOT_BELT
 
@@ -30,7 +29,7 @@
 /obj/item/wormhole_jaunter/proc/get_destinations()
 	var/list/destinations = list()
 
-	for(var/obj/item/beacon/B in GLOB.teleportbeacons)
+	for(var/obj/item/beacon/B as anything in INSTANCES_OF(/obj/item/beacon))
 		var/turf/T = get_turf(B)
 		if(is_station_level(T.z))
 			destinations += B

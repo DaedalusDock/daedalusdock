@@ -25,7 +25,8 @@
 	return
 
 /mob/living/carbon/flash_pain(severity = PAIN_SMALL)
-	flick(severity, hud_used?.pain)
+	if(client && !client.prefs?.read_preference(/datum/preference/toggle/disable_pain_flash))
+		flick(severity, hud_used?.pain)
 
 /mob/living/carbon/apply_pain(amount, def_zone, message, ignore_cd, updating_health = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))
@@ -62,9 +63,13 @@
 			amount_remaining -= abs(used)
 		. = amount - amount_remaining
 	else
-		BP = get_bodypart(def_zone, TRUE)
+		if(isbodypart(def_zone))
+			BP = def_zone
+
+		BP ||= get_bodypart(def_zone, TRUE)
 		if(!BP)
 			return
+
 		. = BP.adjustPain(amount)
 
 
@@ -218,7 +223,7 @@
 	var/pain = getPain()
 
 	if(pain >= 15)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, min((pain / 15), 15))
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, min((pain / 40), 15))
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 

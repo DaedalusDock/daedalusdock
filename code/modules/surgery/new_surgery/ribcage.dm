@@ -43,7 +43,7 @@
 /datum/surgery_step/open_encased/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] has cut [target]'s [affected.encased] open with [tool]."))
-	affected.break_bones()
+	affected.break_bones(FALSE)
 	..()
 
 /datum/surgery_step/open_encased/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

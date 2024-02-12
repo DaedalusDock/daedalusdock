@@ -269,6 +269,7 @@
 		addtimer(CALLBACK(ability, PROC_REF(Activate), target), total_delay)
 		total_delay += initialized_actions[ability]
 	StartCooldown()
+	return TRUE
 
 /// Cancels melee attacks if they are on cooldown.
 /datum/action/cooldown/proc/handle_melee_attack(mob/source, mob/target)

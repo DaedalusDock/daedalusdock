@@ -170,7 +170,7 @@ GLOBAL_LIST_EMPTY(TabletMessengers) // a list of all active messengers, similar 
 		return card_slot.GetAccess()
 	return ..()
 
-/obj/item/modular_computer/GetID()
+/obj/item/modular_computer/GetID(bypass_wallet)
 	var/obj/item/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 	var/obj/item/computer_hardware/card_slot/card_slot2 = all_components[MC_CARD2]
 

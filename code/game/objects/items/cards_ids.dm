@@ -490,7 +490,7 @@
 /obj/item/card/id/GetAccess()
 	return access.Copy()
 
-/obj/item/card/id/GetID()
+/obj/item/card/id/GetID(bypass_wallet)
 	return src
 
 /obj/item/card/id/RemoveID()

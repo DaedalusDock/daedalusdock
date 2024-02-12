@@ -402,10 +402,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			spawn(0) //Race condition? I hardly knew her!
 				card.set_icon()
 
-	if(istype(H.wear_id, /obj/item/storage/wallet))
-		var/obj/item/storage/wallet/W = H.wear_id
-		W.close()
-
 	var/obj/item/modular_computer/tablet/pda/PDA = H.get_item_by_slot(pda_slot)
 	if(istype(PDA))
 		PDA.saved_identification = H.real_name

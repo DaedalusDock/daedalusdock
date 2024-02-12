@@ -85,8 +85,8 @@
 	if(front_id && is_open)
 		. += front_id.get_id_examine_strings(user)
 
-/obj/item/storage/wallet/GetID()
-	if(is_open)
+/obj/item/storage/wallet/GetID(bypass_wallet)
+	if(is_open || bypass_wallet)
 		return front_id
 
 /obj/item/storage/wallet/RemoveID()
@@ -95,11 +95,11 @@
 	. = front_id
 	front_id.forceMove(get_turf(src))
 
-/obj/item/storage/wallet/InsertID(obj/item/inserting_item)
+/obj/item/storage/wallet/InsertID(obj/item/inserting_item, force)
 	var/obj/item/card/inserting_id = inserting_item.RemoveID()
 	if(!inserting_id)
 		return FALSE
-	return atom_storage.attempt_insert(inserting_item)
+	return atom_storage.attempt_insert(inserting_item, force = force)
 
 /obj/item/storage/wallet/GetAccess()
 	if(is_open && front_id)

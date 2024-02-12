@@ -19,7 +19,6 @@ RLD
 	item_flags = NOBLUDGEON
 	force = 0
 	throwforce = 10
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron=100000)

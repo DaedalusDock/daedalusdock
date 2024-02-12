@@ -422,8 +422,8 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 
-	throw_speed = 3
 	throw_range = 5
+
 	stamina_damage = 5
 	stamina_cost = 5
 	stamina_critical_chance = 10

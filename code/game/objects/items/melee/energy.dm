@@ -135,9 +135,10 @@
 	attack_verb_continuous = list("attacks", "chops", "cleaves", "tears", "lacerates", "cuts")
 	attack_verb_simple = list("attack", "chop", "cleave", "tear", "lacerate", "cut")
 	force = 40
+
 	throwforce = 25
-	throw_speed = 3
 	throw_range = 5
+
 	armor_penetration = 100
 	sharpness = SHARP_EDGED
 	w_class = WEIGHT_CLASS_NORMAL
@@ -172,7 +173,6 @@
 	force = 3
 
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 5
 
 	armor_penetration = 35
@@ -294,7 +294,6 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	force = 30
 	throwforce = 1 // Throwing or dropping the item deletes it.
-	throw_speed = 3
 	throw_range = 1
 	sharpness = SHARP_EDGED
 	heat = 3500

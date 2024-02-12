@@ -52,6 +52,9 @@
 	///A lazylist of grab objects gripping us
 	var/tmp/list/grabbed_by
 
+	/// A ref to the throwing datum belonging to us.
+	var/tmp/datum/thrownthing/throwing = null
+
 	/// Look, we're defining this here so it doesn't need to be redefined 4 times, okay? Sorry.
 	var/tmp/germ_level = GERM_LEVEL_AMBIENT
 
@@ -59,10 +62,13 @@
 	var/move_resist = MOVE_RESIST_DEFAULT
 	var/move_force = MOVE_FORCE_DEFAULT
 	var/pull_force = PULL_FORCE_DEFAULT
-	var/datum/thrownthing/throwing = null
-	var/throw_speed = 2 //How many tiles to move per ds when being thrown. Float values are fully supported
+
+	//How many tiles to move per ds when being thrown. Float values are fully supported.
+	var/throw_speed = 1
 	var/throw_range = 7
+	/// How much damage the object deals when impacting something else.
 	var/throwforce = 0
+
 	///Max range this atom can be thrown via telekinesis
 	var/tk_throw_range = 10
 	var/initial_language_holder = /datum/language_holder
@@ -1017,7 +1023,7 @@
 	else
 		target_zone = thrower.zone_selected
 
-	var/datum/thrownthing/thrown_thing = new(src, target, get_dir(src, target), range, speed, thrower, diagonals_first, force, gentle, callback, target_zone)
+	var/datum/thrownthing/thrown_thing = new(src, target, get_dir(src, target), range, speed, thrower, diagonals_first, force, gentle, callback, target_zone, spin)
 
 	var/dist_x = abs(target.x - src.x)
 	var/dist_y = abs(target.y - src.y)
@@ -1048,7 +1054,7 @@
 		quickstart = FALSE
 	throwing = thrown_thing
 	if(spin)
-		SpinAnimation(5, 1)
+		SpinAnimation(2)
 
 	SEND_SIGNAL(src, COMSIG_MOVABLE_POST_THROW, thrown_thing, spin)
 	SSthrowing.processing[src] = thrown_thing

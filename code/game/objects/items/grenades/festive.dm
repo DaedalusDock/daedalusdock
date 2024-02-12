@@ -68,7 +68,6 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	inhand_icon_state = "flare"
-	throw_speed = 3
 	throw_range = 7
 	det_time = 30
 

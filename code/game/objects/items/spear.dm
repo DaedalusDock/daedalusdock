@@ -12,7 +12,7 @@
 	force = 7
 	force_wielded = 14
 	throwforce = 15
-	throw_speed = 4
+	throw_speed = 1.5
 
 	embedding = list("impact_pain_mult" = 2, "remove_pain_mult" = 4, "jostle_chance" = 2.5)
 	armor_penetration = 10

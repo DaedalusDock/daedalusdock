@@ -381,6 +381,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	return
 
 /turf/open/floor/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+	if(!adjacent)
+		return
+
 	var/dir_to = get_dir(src, adjacent)
 
 	for(var/obj/structure/window/W in src)

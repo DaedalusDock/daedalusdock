@@ -102,7 +102,7 @@
 	return ..()
 
 /datum/action/cooldown/is_action_active(atom/movable/screen/movable/action_button/current_button)
-	return click_to_activate && current_button.our_hud?.mymob?.click_intercept == src
+	return click_to_activate && current_button.hud?.mymob?.click_intercept == src
 
 /datum/action/cooldown/Destroy()
 	QDEL_LIST(initialized_actions)

@@ -1184,7 +1184,13 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/MouseEntered(location, control, params)
 	. = ..()
-	if(((get(src, /mob) == usr) || loc?.atom_storage || (src.item_flags & IN_STORAGE)) && !QDELETED(src))
+	var/mob/in_contents_of = get(src, /mob)
+	var/in_our_inventory = (in_contents_of == usr)
+	if(!in_our_inventory && isobserver(usr))
+		var/mob/dead/observer/O = usr
+		in_our_inventory = (O.observetarget == in_contents_of)
+
+	if((in_our_inventory || loc?.atom_storage || (src.item_flags & IN_STORAGE)) && !QDELETED(src))
 		var/mob/living/L = usr
 		if(usr.client.prefs.read_preference(/datum/preference/toggle/enable_tooltips))
 			var/timedelay = usr.client.prefs.read_preference(/datum/preference/numeric/tooltip_delay) / 100

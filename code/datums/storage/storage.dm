@@ -82,8 +82,8 @@
 	var/datum/weakref/modeswitch_action_ref
 
 /datum/storage/New(atom/parent, max_slots, max_specific_storage, max_total_storage, numerical_stacking, allow_quick_gather, allow_quick_empty, collection_mode, attack_hand_interact)
-	boxes = new(null, src)
-	closer = new(null, src)
+	boxes = new(null, null, src)
+	closer = new(null, null, src)
 
 	src.parent = WEAKREF(parent)
 	src.real_location = src.parent
@@ -953,7 +953,10 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return FALSE
 
 	if(isobserver(to_show))
-		show_contents(to_show)
+		if(to_show.active_storage == src)
+			hide_contents(to_show)
+		else
+			show_contents(to_show)
 		return FALSE
 
 	if(!to_show.CanReach(resolve_parent))

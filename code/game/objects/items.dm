@@ -1030,10 +1030,10 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/proc/open_flame(flame_heat=700)
 	var/turf/location = loc
-	if(ismob(location))
-		var/mob/M = location
+	if(isliving(location))
+		var/mob/living/M = location
 		var/success = FALSE
-		if(src == M.get_item_by_slot(ITEM_SLOT_MASK) || M.is_holding(src))
+		if(M.body_position == LYING_DOWN && (src == M.get_item_by_slot(ITEM_SLOT_MASK) || M.is_holding(src)))
 			success = TRUE
 		if(success)
 			location = get_turf(M)

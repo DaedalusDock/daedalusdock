@@ -1,6 +1,7 @@
 /obj/effect/decal/cleanable
 	gender = PLURAL
 	layer = ABOVE_NORMAL_TURF_LAYER
+
 	var/list/random_icon_states = null
 	///I'm sorry but cleanable/blood code is ass, and so is blood_DNA
 	var/blood_state = ""
@@ -83,7 +84,7 @@
 	else
 		return ..()
 
-/obj/effect/decal/cleanable/fire_act(exposed_temperature, exposed_volume)
+/obj/effect/decal/cleanable/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	if(reagents)
 		reagents.expose_temperature(exposed_temperature)
 	..()

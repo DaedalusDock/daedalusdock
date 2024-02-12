@@ -267,7 +267,7 @@
 	return ..()
 
 
-/obj/item/paper/fire_act(exposed_temperature, exposed_volume)
+/obj/item/paper/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	. = ..()
 	if(.)
 		info = "[stars(info)]"

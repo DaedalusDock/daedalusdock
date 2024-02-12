@@ -419,7 +419,7 @@
 
 	. += mutable_appearance('icons/obj/structures.dmi', "damage[ratio]", -(layer+0.1), appearance_flags = RESET_COLOR)
 
-/obj/structure/window/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/window/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	if (exposed_temperature > melting_point)
 		take_damage(round(exposed_volume / 100), BURN, 0, 0)
 

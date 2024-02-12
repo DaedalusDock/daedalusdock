@@ -433,7 +433,7 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 	else
 		return ..()
 
-/obj/item/stack/sheet/mineral/coal/fire_act(exposed_temperature, exposed_volume)
+/obj/item/stack/sheet/mineral/coal/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	var/turf/muhturf = get_turf(src)
 	muhturf.atmos_spawn_air(GAS_CO2, amount*10, exposed_temperature)
 	qdel(src)

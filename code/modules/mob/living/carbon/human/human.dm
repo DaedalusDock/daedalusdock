@@ -1168,3 +1168,45 @@
 		return FALSE
 
 	return ClimbUp(climbable)
+
+#warn TODO
+// /mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+// 	. = ..()
+// 	//Burns mobs due to fire. Respects heat transfer coefficients on various body parts.
+// 	//Due to TG reworking how fireprotection works, this is kinda less meaningful.
+
+// 	var/head_exposure = 1
+// 	var/chest_exposure = 1
+// 	var/groin_exposure = 1
+// 	var/legs_exposure = 1
+// 	var/arms_exposure = 1
+
+// 	//Get heat transfer coefficients for clothing.
+
+// 	for(var/obj/item/clothing/C in get_equipped_items())
+// 		if( C.max_heat_protection_temperature >= last_temperature )
+// 			if(C.body_parts_covered & HEAD)
+// 				head_exposure = 0
+// 			if(C.body_parts_covered & CHEST)
+// 				chest_exposure = 0
+// 			if(C.body_parts_covered & GROIN)
+// 				groin_exposure = 0
+// 			if(C.body_parts_covered & LEGS)
+// 				legs_exposure = 0
+// 			if(C.body_parts_covered & ARMS)
+// 				arms_exposure = 0
+
+// 	//minimize this for low-pressure environments
+// 	var/mx = 5 * firelevel / 25 * min(pressure / ONE_ATMOSPHERE, 1)
+
+// 	//Always check these damage procs first if fire damage isn't working. They're probably what's wrong.
+
+// 	apply_damage(0.9*mx*head_exposure, BURN, BODY_ZONE_HEAD)
+// 	apply_damage(2.5*mx*chest_exposure, BURN, BODY_ZONE_CHEST)
+// 	apply_damage(0.6*mx*legs_exposure, BURN, BODY_ZONE_L_LEG)
+// 	apply_damage(0.6*mx*legs_exposure, BURN, BODY_ZONE_R_LEG)
+// 	apply_damage(0.4*mx*arms_exposure, BURN, BODY_ZONE_L_ARM)
+// 	apply_damage(0.4*mx*arms_exposure, BURN, BODY_ZONE_R_ARM)
+
+// 	//return a truthy value of whether burning actually happened
+// 	return mx * (head_exposure + chest_exposure + groin_exposure + legs_exposure + arms_exposure)

@@ -41,7 +41,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	else
 		open_flame(heat)
 
-/obj/item/match/fire_act(exposed_temperature, exposed_volume)
+/obj/item/match/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	matchignite()
 
 /obj/item/match/proc/matchignite()
@@ -366,7 +366,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	else
 		cig.light(span_notice("[user] holds the [name] out for [M], and lights [M.p_their()] [cig.name]."))
 
-/obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume)
+/obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	light()
 
 /obj/item/clothing/mask/cigarette/get_temperature()

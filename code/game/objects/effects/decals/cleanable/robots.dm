@@ -96,12 +96,12 @@
 	return ..()
 
 
-/obj/effect/decal/cleanable/oil/fire_act(exposed_temperature, exposed_volume)
+/obj/effect/decal/cleanable/oil/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
 	if(exposed_temperature < 480)
 		return
 	if(isturf(loc))
 		var/turf/T = loc
-		if(!T.fire)
+		if(!T.active_hotspot)
 			visible_message(span_danger("[src] catches fire!"))
 			T.create_fire()
 

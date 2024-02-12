@@ -167,7 +167,7 @@
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1) //Item sounds are handled in the item itself
 	return ..()
 
-/mob/living/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+/mob/living/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	adjust_fire_stacks(3)
 	ignite_mob()

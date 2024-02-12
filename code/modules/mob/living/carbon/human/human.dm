@@ -1170,7 +1170,7 @@
 	return ClimbUp(climbable)
 
 #warn TODO
-// /mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+// /mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 // 	. = ..()
 // 	//Burns mobs due to fire. Respects heat transfer coefficients on various body parts.
 // 	//Due to TG reworking how fireprotection works, this is kinda less meaningful.

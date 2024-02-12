@@ -1033,10 +1033,11 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(ismob(location))
 		var/mob/M = location
 		var/success = FALSE
-		if(src == M.get_item_by_slot(ITEM_SLOT_MASK))
+		if(src == M.get_item_by_slot(ITEM_SLOT_MASK) || M.is_holding(src))
 			success = TRUE
 		if(success)
 			location = get_turf(M)
+
 	if(isturf(location))
 		location.hotspot_expose(flame_heat, 5)
 

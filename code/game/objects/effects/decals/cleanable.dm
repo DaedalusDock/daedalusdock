@@ -84,7 +84,7 @@
 	else
 		return ..()
 
-/obj/effect/decal/cleanable/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+/obj/effect/decal/cleanable/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(reagents)
 		reagents.expose_temperature(exposed_temperature)
 	..()

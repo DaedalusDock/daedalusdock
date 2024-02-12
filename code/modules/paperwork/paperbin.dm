@@ -64,7 +64,7 @@
 	LAZYNULL(papers)
 	update_appearance()
 
-/obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+/obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(LAZYLEN(papers))
 		LAZYNULL(papers)
 		update_appearance()
@@ -212,7 +212,7 @@
 	dump_contents()
 	return ..()
 
-/obj/item/paper_bin/bundlenatural/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+/obj/item/paper_bin/bundlenatural/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	qdel(src)
 
 /obj/item/paper_bin/bundlenatural/attackby(obj/item/W, mob/user)

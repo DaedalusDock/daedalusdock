@@ -260,7 +260,7 @@
 	if((exposed_temperature > T0C + (reinf ? 1600 : 800)))
 		take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
-/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume, exposed_pressure, turf/adjacent)
+/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)

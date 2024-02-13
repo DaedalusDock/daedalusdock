@@ -2845,6 +2845,7 @@
 #include "code\modules\debug_health\organ_debug.dm"
 #include "code\modules\detectivework\detective_work.dm"
 #include "code\modules\detectivework\evidence.dm"
+#include "code\modules\detectivework\fibers.dm"
 #include "code\modules\detectivework\scanner.dm"
 #include "code\modules\discord\discord_embed.dm"
 #include "code\modules\discord\discord_helpers.dm"

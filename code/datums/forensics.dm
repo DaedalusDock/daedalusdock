@@ -64,42 +64,41 @@
 
 	var/fibertext
 	var/item_multiplier = isitem(src)? 1.2 : 1
+
 	if(M.wear_suit)
-		fibertext = "Material from \a [M.wear_suit]."
-		if(prob(10*item_multiplier))
+		fibertext = M.wear_suit.get_fibers()
+		if(fibertext && prob(10*item_multiplier))
 			fibers[fibertext]++
 			. = TRUE
 
-		if(!(M.wear_suit.body_parts_covered & CHEST))
-			if(M.w_uniform)
-				fibertext = "Fibers from \a [M.w_uniform]."
-				if(prob(12*item_multiplier)) //Wearing a suit means less of the uniform exposed.
-					fibers[fibertext]++
-					. = TRUE
+		if(!(M.wear_suit.body_parts_covered & CHEST) && M.w_uniform)
+			fibertext = M.w_uniform.get_fibers()
+			if(fibertext && prob(12*item_multiplier)) //Wearing a suit means less of the uniform exposed.
+				fibers[fibertext]++
+				. = TRUE
 
-		if(!(M.wear_suit.body_parts_covered & HANDS))
-			if(M.gloves)
-				fibertext = "Material from a pair of [M.gloves.name]."
-				if(prob(20*item_multiplier))
-					fibers[fibertext]++
-					. = TRUE
+		if(!(M.wear_suit.body_parts_covered & HANDS) && M.gloves)
+			fibertext = M.gloves.get_fibers()
+			if(fibertext && prob(20*item_multiplier))
+				fibers[fibertext]++
+				. = TRUE
 
 	else if(M.w_uniform)
-		fibertext = "Fibers from \a [M.w_uniform]."
-		if(prob(15*item_multiplier))
+		fibertext = M.w_uniform.get_fibers()
+		if(fibertext && prob(15*item_multiplier))
 			fibers[fibertext]++
 			. = TRUE
 
 		if(!(M.w_uniform.body_parts_covered & HANDS) && M.gloves)
-			fibertext = "Material from a pair of [M.gloves.name]."
-			if(prob(20*item_multiplier))
+			fibertext = M.gloves.get_fibers()
+			if(fibertext && prob(20*item_multiplier))
 				fibers[fibertext]++
 				. = TRUE
 
 	else if(M.gloves)
-		fibertext = "Material from a pair of [M.gloves.name]."
-		if(prob(20*item_multiplier))
-			fibers[fibertext]++
+		fibertext = M.gloves.get_fibers()
+		if(fibertext && prob(20*item_multiplier))
+			fibers[fiber_text]++
 			. = TRUE
 
 	return .

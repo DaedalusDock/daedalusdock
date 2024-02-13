@@ -78,6 +78,8 @@
 #define CASTING_CLOTHES (1<<15)
 /// This head clothing can deliver air from an airtank
 #define HEADINTERNALS (1<<16)
+/// Does not leave fibers behind
+#define FIBERLESS (1<<17)
 
 /// Flags for the organ_flags var on /obj/item/organ
 

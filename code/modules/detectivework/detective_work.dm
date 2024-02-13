@@ -46,7 +46,6 @@
 		create_forensics()
 	forensics.add_fibers(M)
 
-
 /// For admins. Logs when mobs players with this thing.
 /atom/proc/log_touch(mob/M)
 	if(isnull(forensics))

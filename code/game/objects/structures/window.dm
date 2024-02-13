@@ -153,7 +153,7 @@
 /obj/structure/window/attack_tk(mob/user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_notice("Something knocks on [src]."))
-	add_fingerprint(user)
+	log_touch(user)
 	knock_on()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -174,7 +174,7 @@
 	if(!user.combat_mode)
 		user.visible_message(span_notice("[user] knocks on [src]."), \
 			span_notice("You knock on [src]."))
-		knock_on()
+		knock_on(user)
 	else
 		user.visible_message(span_warning("[user] bashes [src]!"), \
 			span_warning("You bash [src]!"))

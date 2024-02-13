@@ -122,7 +122,7 @@
 				return
 			M = ai_camera.ai
 
-	if(!M.key)
+	if(!M.ckey)
 		return
 
 	var/hasgloves = ""
@@ -139,7 +139,7 @@
 		var/laststamppos = findtext(LAZYACCESS(admin_log, M.ckey), "\nLast: ")
 		if(laststamppos)
 			LAZYSET(admin_log, M.ckey, copytext(admin_log[M.ckey], 1, laststamppos))
-		admin_log[M.key] += "\nLast: \[[current_time]\] \"[M.real_name]\"[hasgloves]. Ckey: [M.ckey]" //made sure to be existing by if(!LAZYACCESS);else
+		admin_log[M.ckey] += "\nLast: \[[current_time]\] \"[M.real_name]\"[hasgloves]. Ckey: [M.ckey]" //made sure to be existing by if(!LAZYACCESS);else
 
 	parent.fingerprintslast = M.ckey
 	return TRUE

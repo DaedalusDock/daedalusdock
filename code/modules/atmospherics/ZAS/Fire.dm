@@ -236,7 +236,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	var/gas_fuel = 0
 	var/total_fuel = 0
 	var/total_oxidizers = 0
-	var/liquid_fuel_amt = liquid_fuel?.reagents.total_volume * LIQUIDFUEL_AMOUNT_TO_MOL || 0
+	var/liquid_fuel_amt = LIQUIDFUEL_AMOUNT_TO_MOL(liquid_fuel?.reagents.total_volume) || 0
 
 	//*** Get the fuel and oxidizer amounts
 	for(var/g in gas)
@@ -302,7 +302,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(used_liquid_fuel)
 		adjustGas(GAS_CO2, firelevel * 0.07, FALSE)
 
-		var/fuel_to_remove = round(used_liquid_fuel/LIQUIDFUEL_AMOUNT_TO_MOL, CHEMICAL_QUANTISATION_LEVEL) //convert back to liquid volume units
+		var/fuel_to_remove = GASFUEL_AMOUNT_TO_LIQUID(used_liquid_fuel) //convert back to liquid volume units
 
 		liquid_fuel.reagents.remove_any(fuel_to_remove)
 		if(liquid_fuel.reagents.total_volume <= 0.1) //Precision loss kinda fucks with us here so

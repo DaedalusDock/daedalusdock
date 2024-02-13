@@ -119,8 +119,10 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 #define FIRE_GAS_MIN_BURNRATE			0.01
 #define FIRE_LIQUID_MIN_BURNRATE			0.0025
 
-//How many moles of fuel are contained within one solid/liquid fuel volume unit
-#define LIQUIDFUEL_AMOUNT_TO_MOL		0.45  //mol/volume unit
+// Converts liquid fuel units to mols
+#define LIQUIDFUEL_AMOUNT_TO_MOL(amount) round(amount * 0.45, ATMOS_PRECISION)
+// Converts gaseous fuel mols to reagent units
+#define GASFUEL_AMOUNT_TO_LIQUID(amount) round(amount / 0.45, CHEMICAL_QUANTISATION_LEVEL)
 
 #define TANK_LEAK_PRESSURE     (30 * ONE_ATMOSPHERE) // Tank starts leaking.
 #define TANK_RUPTURE_PRESSURE  (40 * ONE_ATMOSPHERE) // Tank spills all contents into atmosphere.

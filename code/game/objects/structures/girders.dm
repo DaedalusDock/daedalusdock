@@ -172,7 +172,7 @@
 				qdel(src)
 				return
 
-		add_hiddenprint(user)
+		log_touch(user)
 
 	else if(istype(W, /obj/item/pipe))
 		var/obj/item/pipe/P = W

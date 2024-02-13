@@ -16,6 +16,8 @@
 	var/tmp/datum/reagents/reagents = null
 	/// the datum handler for our contents - see create_storage() for creation method
 	var/tmp/datum/storage/atom_storage
+	/// Forensics datum, initialzed when needed.
+	var/tmp/datum/forensics/forensics
 
 	///This atom's HUD (med/sec, etc) images. Associative list.
 	var/tmp/list/image/hud_list = null
@@ -358,6 +360,11 @@
 		atom_storage.set_holdable(cloning.can_hold, cloning.cant_hold)
 
 	return atom_storage
+
+/// Creates our forensics datum
+/atom/proc/create_forensics()
+	ASSERT(isnull(forensics))
+	forensics = new(src)
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
 	var/turf/p_turf = get_turf(ricocheting_projectile)
@@ -1178,6 +1185,9 @@
 	. = FALSE
 	if(SEND_SIGNAL(src, COMSIG_COMPONENT_CLEAN_ACT, clean_types) & COMPONENT_CLEANED)
 		. = TRUE
+
+	if(forensics)
+		. = forensics.wash(clean_types) || .
 
 	// Basically "if has washable coloration"
 	if(length(atom_colours) >= WASHABLE_COLOUR_PRIORITY && atom_colours[WASHABLE_COLOUR_PRIORITY])

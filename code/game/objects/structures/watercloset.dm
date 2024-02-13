@@ -393,9 +393,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 				user.visible_message(span_notice("[user] washes and wrings out [S] in [src]."), blind_message = span_hear("You hear water running."))
 				add_blood_DNA(S.return_blood_DNA())
 				S.absorption_capacity = initial(S.absorption_capacity)
-				var/forensics = S.GetComponent(/datum/component/forensics)
-				if(forensics)
-					qdel(forensics)
+				S.remove_evidence()
 				return
 
 	if(istype(O, /obj/item/stack/sheet/cloth))

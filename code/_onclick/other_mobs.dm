@@ -137,7 +137,7 @@
 
 /atom/proc/interact(mob/user)
 	if(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_INTERACT)
-		add_hiddenprint(user)
+		log_touch(user)
 	else
 		add_fingerprint(user)
 

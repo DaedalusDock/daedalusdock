@@ -71,8 +71,10 @@
 	return ..()
 
 ///Returns a list of every item slot contents on the user.
-/mob/living/carbon/human/get_all_worn_items()
-	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots() + return_cuff_slots()
+/mob/living/carbon/human/get_all_worn_items(include_pockets = TRUE)
+	. = return_extra_wearables() + return_worn_clothing() + return_cuff_slots()
+	if(include_pockets)
+		. += return_pocket_slots()
 
 ///Bruteforce check for any type or subtype of an item.
 /mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)

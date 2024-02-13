@@ -218,7 +218,7 @@
 			victim.adjust_bodytemperature(5.5 * delta_time)
 			return
 
-	var/amount_to_heat = (BODYTEMP_HEATING_MAX + (stacks * 12)) * 0.5 * delta_time
+	var/amount_to_heat = (BODYTEMP_HEATING_MAX + (stacks * 12))
 	if(owner.bodytemperature > BODYTEMP_FIRE_TEMP_SOFTCAP)
 		// Apply dimishing returns upon temp beyond the soft cap
 		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / owner.bodytemperature)

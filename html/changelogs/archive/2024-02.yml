@@ -53,3 +53,8 @@
   - rscadd: Creates vox scutes
   - imageadd: Creates icons for vox arm, leg, and hand scutes
   - code_imp: Reorganized the sprites within the vox bodyparts.dmi
+2024-02-13:
+  Kapu1178:
+  - rscadd: Ghost vision is now monochrome. This can be disabled in preferences.
+  - bugfix: Damage from overheating would occasionally not update your health display.
+  - bugfix: Neon carpet works again

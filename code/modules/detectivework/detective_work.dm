@@ -13,6 +13,9 @@
 /atom/proc/return_fibers()
 	return forensics?.fibers
 
+/atom/proc/return_gunshot_residue()
+	return forensics?.gunshot_residue
+
 /atom/proc/remove_evidence()
 	return forensics?.remove_evidence()
 
@@ -53,16 +56,24 @@
 
 	forensics.log_touch(M)
 
-/atom/proc/add_fingerprint_list(list/fingerprints) //ASSOC LIST FINGERPRINT = FINGERPRINT
+/// Add a list of fingerprints
+/atom/proc/add_fingerprint_list(list/fingerprints)
 	if(isnull(forensics))
 		create_forensics()
 
 	forensics.add_fingerprint_list(fingerprints)
 
+/// Add a list of fibers
 /atom/proc/add_fiber_list(list/fibertext)
 	if(isnull(forensics))
 		create_forensics()
 	forensics.add_fiber_list(fibertext)
+
+/// Add a list of residues
+/atom/proc/add_gunshot_residue(residue)
+	if(isnull(forensics))
+		create_forensics()
+	forensics.add_gunshot_residue(residue)
 
 /atom/proc/log_touch_list(list/hiddenprints)
 	if(isnull(forensics))
@@ -117,6 +128,16 @@
 	update_worn_gloves() //handles bloody hands overlays and updating
 	return TRUE
 
+
+/*
+ * Transfer all forensic evidence from [src] to [transfer_to].
+ */
+/atom/proc/transfer_evidence_to(atom/transfer_to)
+	transfer_fingerprints_to(transfer_to)
+	transfer_fibers_to(transfer_to)
+	transfer_gunshot_residue_to(transfer_to)
+	transfer_to.add_blood_DNA(return_blood_DNA())
+
 /*
  * Transfer all the fingerprints and hidden prints from [src] to [transfer_to].
  */
@@ -130,3 +151,9 @@
  */
 /atom/proc/transfer_fibers_to(atom/transfer_to)
 	transfer_to.add_fiber_list(return_fibers())
+
+/*
+ * Transfer all the gunshot residue from [src] to [transfer_to].
+ */
+/atom/proc/transfer_gunshot_residue_to(atom/transfer_to)
+	transfer_to.add_gunshot_residue(return_gunshot_residue())

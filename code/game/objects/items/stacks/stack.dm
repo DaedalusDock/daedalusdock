@@ -498,7 +498,7 @@
 			qdel(G)
 			grabber.try_make_grab(target_stack)
 
-	target_stack.copy_evidences(src)
+	transfer_evidence_to(target_stack)
 	use(transfer, transfer = TRUE, check = FALSE)
 	target_stack.add(transfer)
 	if(target_stack.mats_per_unit != mats_per_unit) // We get the average value of mats_per_unit between two stacks getting merged
@@ -593,7 +593,7 @@
 
 	var/obj/item/stack/F = new type(spawn_loc, amount, FALSE, mats_per_unit, absorption_capacity)
 	. = F
-	F.copy_evidences(src)
+	transfer_evidence_to(F)
 	loc.atom_storage?.refresh_views()
 	if(user)
 		if(!user.put_in_hands(F, merge_stacks = FALSE))
@@ -610,12 +610,6 @@
 			to_chat(user, span_notice("Your [S.name] stack now contains [S.get_amount()] [S.singular_name]\s."))
 	else
 		. = ..()
-
-/obj/item/stack/proc/copy_evidences(obj/item/stack/from)
-	add_blood_DNA(from.return_blood_DNA())
-	add_fingerprint_list(from.return_fingerprints())
-	log_touch_list(from.return_touch_log())
-	fingerprintslast = from.fingerprintslast
 
 /obj/item/stack/microwave_act(obj/machinery/microwave/M)
 	if(istype(M) && M.dirty < 100)

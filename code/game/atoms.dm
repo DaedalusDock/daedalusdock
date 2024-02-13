@@ -1387,6 +1387,7 @@
 
 ///Where atoms should drop if taken from this atom
 /atom/proc/drop_location()
+	RETURN_TYPE(/atom)
 	var/atom/location = loc
 	if(!location)
 		return null

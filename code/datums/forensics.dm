@@ -7,7 +7,8 @@
 	var/list/blood_DNA
 	/// A k:v list of fibers : amount
 	var/list/fibers
-
+	/// A k:v FLAT list of residues
+	var/list/gunshot_residue
 	/// A k:v list of ckey : thing. For admins.
 	var/list/admin_log
 
@@ -98,10 +99,17 @@
 	else if(M.gloves)
 		fibertext = M.gloves.get_fibers()
 		if(fibertext && prob(20*item_multiplier))
-			fibers[fiber_text]++
+			fibers[fibertext]++
 			. = TRUE
 
 	return .
+
+/// Adds gunshot residue to our list
+/datum/forensics/proc/add_gunshot_residue(text)
+	if(!text)
+		return
+
+	LAZYOR(gunshot_residue, text)
 
 /// For admins. Logs when mobs players with this thing.
 /datum/forensics/proc/log_touch(mob/M)
@@ -130,7 +138,7 @@
 	else
 		var/laststamppos = findtext(LAZYACCESS(admin_log, M.ckey), "\nLast: ")
 		if(laststamppos)
-			LAZYSET(admin_log, M.key, copytext(admin_log[M.ckey], 1, laststamppos))
+			LAZYSET(admin_log, M.ckey, copytext(admin_log[M.ckey], 1, laststamppos))
 		admin_log[M.key] += "\nLast: \[[current_time]\] \"[M.real_name]\"[hasgloves]. Ckey: [M.ckey]" //made sure to be existing by if(!LAZYACCESS);else
 
 	parent.fingerprintslast = M.ckey
@@ -157,6 +165,16 @@
 		fibers[fiber] += _fibertext[fiber]
 	return TRUE
 
+/// Adds a list of gunshot residue
+/datum/forensics/proc/add_gunshot_residue_list(list/_gunshot_residue)
+	if(!length(_gunshot_residue))
+		return
+
+	LAZYINITLIST(gunshot_residue)
+
+	gunshot_residue |= _gunshot_residue
+	return TRUE
+
 /// see [datum/forensics/proc/log_touch]
 /datum/forensics/proc/log_touch_list(list/_hiddenprints)
 	if(!length(_hiddenprints))
@@ -180,6 +198,7 @@
 /datum/forensics/proc/wash(clean_types)
 	if(clean_types & CLEAN_TYPE_FINGERPRINTS)
 		wipe_fingerprints()
+		wipe_gunshot_residue()
 		. ||= TRUE
 
 	if(clean_types & CLEAN_TYPE_BLOOD)
@@ -205,8 +224,13 @@
 	LAZYNULL(fibers)
 	return TRUE
 
+/// Clear the gunshot residue list.
+/datum/forensics/proc/wipe_gunshot_residue()
+	LAZYNULL(gunshot_residue)
+
 /// Delete all non-admin evidence
 /datum/forensics/proc/remove_evidence()
 	wipe_fingerprints()
 	wipe_blood_DNA()
 	wipe_fibers()
+	wipe_gunshot_residue()

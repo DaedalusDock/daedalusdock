@@ -14,7 +14,8 @@
 	if(ispath(blood_type))
 		blood_type = GET_BLOOD_REF(blood_type)
 		reagents.add_reagent(unique_blood || /datum/reagent/blood, 200, list("viruses"=null,"blood_DNA"=null,"blood_type"=blood_type,"resistances"=null,"trace_chem"=null))
-	else
+		update_appearance(UPDATE_NAME)
+	else if(blood_type)
 		reagents.add_reagent(unique_blood, 200, list("viruses"=null,"blood_DNA"=null,"resistances"=null,"trace_chem"=null))
 		update_appearance(UPDATE_NAME)
 

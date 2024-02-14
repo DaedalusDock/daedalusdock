@@ -786,8 +786,9 @@
 	if(newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())
 		if(length(grabbed_by))
 			drag_damage(newloc, T, old_direction)
+
 		else if(leavesBloodTrail())
-			makeBloodTrail(newloc, T, old_direction, length(grabbed_by))
+			makeBloodTrail(newloc, T, old_direction)
 
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.

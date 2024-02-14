@@ -1170,7 +1170,7 @@
 	return ClimbUp(climbable)
 
 /mob/living/carbon/human/drag_damage(turf/new_loc, turf/old_loc, direction)
-	if(prob(getBruteLoss() / 2))
+	if(prob(getBruteLoss() * 0.6))
 		makeBloodTrail(new_loc, old_loc, direction, TRUE)
 
 	blood_volume = max(blood_volume - 1, 0)

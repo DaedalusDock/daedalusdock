@@ -1,33 +1,65 @@
+#define DRYING_TIME 5 * 60*10 //for 1 unit of depth in puddle (amount var)
+
+#define BLOOD_MERGE_SPLATTER (1<<0)
+#define BLOOD_MERGE_POOL (1<<1)
+#define BLOOD_MERGE_FOOTPRINTS (1<<2)
+#define BLOOD_MERGE_DRIP (1<<3)
+#define BLOOD_MERGE_SQUIRT (1<<4)
+
 /obj/effect/decal/cleanable/blood
 	name = "blood"
 	desc = "It's red and gooey. Perhaps it's the chef's cooking?"
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "floor1"
 	appearance_flags = TILE_BOUND|PIXEL_SCALE|LONG_GLIDE|NO_CLIENT_COLOR
+
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
 	blood_state = BLOOD_STATE_HUMAN
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	beauty = -100
+
 	clean_type = CLEAN_TYPE_BLOOD
+	mergeable_decal = FALSE //We handle this on our own.
+
+	/// What decals can merge into
+	var/blood_merge_self = BLOOD_MERGE_POOL
+	/// What decals can merge into us
+	var/blood_merge_other = BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+
+	var/spook_factor = SPOOK_AMT_BLOOD_SPLATTER
 
 	var/smell_intensity =  INTENSITY_STRONG
-	var/spook_factor = SPOOK_AMT_BLOOD_SPLATTER
+	var/smell_name = "blood"
 
 	var/should_dry = TRUE
 	/// How long should it take for blood to dry?
 	var/dry_duration = 10 MINUTES
 	var/dryname = "dried blood" //when the blood lasts long enough, it becomes dry and gets a new name
-	var/drydesc = "Looks like it's been here a while. Eew." //as above
+	var/drydesc = "It's dry and crusty. Someone isn't doing their job."
 	/// World.time + dry_duration
 	var/drytime = 0
 
-/obj/effect/decal/cleanable/blood/Initialize(mapload)
+/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/blood_dna)
 	. = ..()
-	if(!should_dry)
+	if((. == INITIALIZE_HINT_QDEL) || !should_dry)
 		return
+
+	if(isturf(loc))
+		for(var/obj/effect/decal/cleanable/blood/B in loc)
+			if(QDELETED(B) || B == src)
+				continue
+
+			if(can_merge_into(B))
+				merge_into(B)
+				return INITIALIZE_HINT_QDEL
+
+			if(B.can_merge_into(src))
+				B.merge_into(src)
+				qdel(B)
+
 	if(bloodiness)
 		start_drying()
-		AddComponent(/datum/component/smell, smell_intensity, SCENT_ODOR, "blood", 3)
+		AddComponent(/datum/component/smell, smell_intensity, SCENT_ODOR, smell_name, 3)
 	else
 		dry()
 
@@ -62,11 +94,20 @@
 			AddComponent(/datum/component/spook_factor, spook_factor)
 		return PROCESS_KILL
 
-/obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
-	C.add_blood_DNA(return_blood_DNA())
+/obj/effect/decal/cleanable/blood/can_merge_into(obj/effect/decal/cleanable/blood/other, force)
+	if(isnull(other.blood_merge_other) || isnull(blood_merge_self))
+		return FALSE
+
+	if(other.blood_merge_other & blood_merge_self)
+		return TRUE
+
+	return FALSE
+
+/obj/effect/decal/cleanable/blood/merge_into(obj/effect/decal/cleanable/merger)
+	. = ..()
+	merger.add_blood_DNA(return_blood_DNA())
 	if (bloodiness)
-		C.bloodiness = min((C.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
-	return ..()
+		merger.bloodiness = min((merger.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
 
 /obj/effect/decal/cleanable/blood/old
 	bloodiness = 0
@@ -80,23 +121,24 @@
 /obj/effect/decal/cleanable/blood/splatter
 	icon_state = "gibbl1"
 	random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")
-	///Absorb the /squirt subtype when it exists on the turf
-	var/absorb_squirts = TRUE
 
-/obj/effect/decal/cleanable/blood/splatter/Initialize(mapload)
-	. = ..()
-	var/obj/effect/decal/cleanable/blood/squirt/existing_squirt = locate() in loc
-	if(existing_squirt)
-		add_blood_DNA(existing_squirt.return_blood_DNA())
-		bloodiness = min((existing_squirt.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
-		qdel(existing_squirt)
+	blood_merge_self = BLOOD_MERGE_SPLATTER
+	blood_merge_other = ALL
 
 /obj/effect/decal/cleanable/blood/splatter/over_window // special layer/plane set to appear on windows
 	layer = ABOVE_WINDOW_LAYER
 	plane = GAME_PLANE
 	turf_loc_check = FALSE
 	alpha = 180
-	absorb_squirts = FALSE
+
+	blood_merge_self = null
+	blood_merge_other = null
+
+/obj/effect/decal/cleanable/blood/splatter/overwindow/can_merge_into(obj/effect/decal/cleanable/blood/other)
+	if(istype(other, /obj/effect/decal/cleanable/blood/splatter/overwindow))
+		return TRUE
+
+	return ..()
 
 /obj/effect/decal/cleanable/blood/tracks
 	icon_state = "tracks"
@@ -122,10 +164,10 @@
 	desc = "They look bloody and gruesome."
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "gib1"
+
 	layer = LOW_OBJ_LAYER
 	plane = GAME_PLANE
 	random_icon_states = list("gib1", "gib2", "gib3", "gib4", "gib5", "gib6")
-	mergeable_decal = FALSE
 	turf_loc_check = FALSE
 
 	dryname = "rotting gibs"
@@ -133,7 +175,12 @@
 	decal_reagent = /datum/reagent/liquidgibs
 	reagent_amount = 5
 
-	smell_intensity = INTENSITY_STRONG
+	smell_intensity = INTENSITY_OVERPOWERING
+	smell_name = "viscera"
+
+	blood_merge_self = null
+	blood_merge_other = null
+
 	///Information about the diseases our streaking spawns
 	var/list/streak_diseases
 
@@ -142,7 +189,7 @@
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
 	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_STREAK)
 
-/obj/effect/decal/cleanable/blood/gibs/replace_decal(obj/effect/decal/cleanable/C)
+/obj/effect/decal/cleanable/blood/gibs/can_merge_into(obj/effect/decal/cleanable/C)
 	return FALSE //Never fail to place us
 
 /obj/effect/decal/cleanable/blood/gibs/dry()
@@ -234,8 +281,15 @@
 /obj/effect/decal/cleanable/blood/drip
 	name = "drips of blood"
 	desc = "It's red."
-	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
-	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
+	icon = 'icons/effects/drip.dmi'
+	icon_state = "5" //using drip5 since the others tend to blend in with pipes & wires.
+	random_icon_states = list("1","2","3", "4","5")
+
+	color = "#a10808"
+
+	blood_merge_self = BLOOD_MERGE_DRIP
+	blood_merge_other = BLOOD_MERGE_DRIP | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+
 	bloodiness = BLOOD_AMOUNT_PER_DECAL / 10
 	dryname = "drips of blood"
 	drydesc = "It's red."
@@ -246,10 +300,30 @@
 	/// Keeps track of how many drops of blood this decal has. See blood.dm
 	var/drips = 1
 
+/obj/effect/decal/cleanable/blood/drip/merge_into(obj/effect/decal/cleanable/blood/other)
+	var/is_drip = istype(other, /obj/effect/decal/cleanable/blood/drip)
+
+	if(!is_drip)
+		return ..()
+
+	var/obj/effect/decal/cleanable/blood/drip/other_drip = other
+	if(other_drip.drips < 5)
+		other_drip.add_blood_DNA(return_blood_DNA())
+		other_drip.increment_drips()
+		return
+
+	var/temp_blood_dna = other_drip.return_blood_DNA()
+	var/spawn_loc = other.loc
+	qdel(other)//the drip is replaced by a biFgger splatter
+	new /obj/effect/decal/cleanable/blood/splatter(other, null, return_blood_DNA() + temp_blood_dna)
 
 /obj/effect/decal/cleanable/blood/drip/can_bloodcrawl_in()
 	return TRUE
 
+/obj/effect/decal/cleanable/blood/drip/proc/increment_drips()
+	PRIVATE_PROC(TRUE)
+	add_overlay(pick(random_icon_states))
+	drips++
 
 //BLOODY FOOTPRINTS
 /obj/effect/decal/cleanable/blood/footprints
@@ -258,7 +332,11 @@
 	icon = 'icons/effects/footprints.dmi'
 	icon_state = "blood1"
 	random_icon_states = null
+
 	blood_state = BLOOD_STATE_HUMAN //the icon state to load images from
+	blood_merge_self = BLOOD_MERGE_FOOTPRINTS
+	blood_merge_other = BLOOD_MERGE_FOOTPRINTS | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+
 	var/entered_dirs = 0
 	var/exited_dirs = 0
 
@@ -344,7 +422,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			else
 				. += "[icon2html('icons/mob/human_parts.dmi', user, "[species]_l_leg")] Some <B>[species] feet</B>."
 
-/obj/effect/decal/cleanable/blood/footprints/replace_decal(obj/effect/decal/cleanable/C)
+/obj/effect/decal/cleanable/blood/footprints/can_merge_into(obj/effect/decal/cleanable/C)
 	if(blood_state != C.blood_state) //We only replace footprints of the same type as us
 		return FALSE
 	return ..()
@@ -360,6 +438,10 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	icon_state = "hitsplatter1"
 	random_icon_states = list("hitsplatter1", "hitsplatter2", "hitsplatter3")
 	smell_intensity = INTENSITY_SUBTLE
+
+	blood_merge_self = null
+	blood_merge_other = null
+
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc
 	/// The cached info about the blood
@@ -371,7 +453,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	/// Insurance so that we don't keep moving once we hit a stoppoint
 	var/hit_endpoint = FALSE
 
-/obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, splatter_strength)
+/obj/effect/decal/cleanable/blood/hitsplatter/Initialize(mapload, splatter_strength, list/blood_dna_info)
 	. = ..()
 	prev_loc = loc //Just so we are sure prev_loc exists
 	if(splatter_strength)
@@ -410,6 +492,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 		if(isitem(iter_atom))
 			iter_atom.add_blood_DNA(blood_dna_info)
 			splatter_strength--
+
 		else if(ishuman(iter_atom))
 			var/mob/living/carbon/human/splashed_human = iter_atom
 			if(!splashed_human.is_eyes_covered())
@@ -447,6 +530,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 	hit_endpoint = TRUE
 	if(isturf(prev_loc))
+		var/turf/T = get_turf(bumped_atom)
+		new /obj/effect/decal/cleanable/blood/squirt(T, get_dir(prev_loc, T), blood_dna_info)
 		abstract_move(bumped_atom)
 		skip = TRUE
 		//Adjust pixel offset to make splatters appear on the wall
@@ -464,8 +549,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
 	if(!the_window.fulltile)
 		return
-	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new
-	final_splatter.forceMove(the_window)
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(the_window)
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE
 	qdel(src)
@@ -474,20 +558,17 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	name = "blood trail"
 	icon_state = "squirt"
 	random_icon_states = null
-	color = "#ff0000"
-	smell_intensity = INTENSITY_SUBTLE
+	color = "#a10808"
 
+	blood_merge_self = BLOOD_MERGE_SQUIRT
+	blood_merge_other = BLOOD_MERGE_SQUIRT | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+
+	smell_intensity = INTENSITY_SUBTLE
 	spook_factor = SPOOK_AMT_BLOOD_STREAK
 
 /obj/effect/decal/cleanable/blood/squirt/Initialize(mapload, direction, list/blood_dna)
 	. = ..()
-	dir = direction
-	var/obj/effect/decal/cleanable/blood/splatter/existing_blood = locate() in get_turf(src)
-	if(existing_blood?.absorb_squirts)
-		if(blood_dna)
-			existing_blood.add_blood_DNA(blood_dna)
-			existing_blood.bloodiness = min((existing_blood.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
-		return INITIALIZE_HINT_QDEL
+	setDir(direction)
 
 /obj/effect/decal/cleanable/blood/dry()
 	. = ..()

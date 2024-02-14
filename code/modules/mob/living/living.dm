@@ -783,7 +783,7 @@
 	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
 		active_storage.hide_contents(src)
 
-	if(body_position == LYING_DOWN && !buckled && prob(getBruteLoss()*200/maxHealth))
+	if(body_position == LYING_DOWN && !buckled && leavesBloodTrail())
 		makeTrail(newloc, T, old_direction)
 
 
@@ -801,18 +801,15 @@
 	if(!has_gravity() || !isturf(start) || !blood_volume)
 		return
 
-	var/blood_exists = locate(/obj/effect/decal/cleanable/trail_holder) in start
-
 	var/trail_type = getTrail()
 	if(!trail_type)
 		return
 
-	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL*(1 - brute_ratio * 0.25), 0))//don't leave trail if blood volume below a threshold
-		return
-
+	var/blood_exists = locate(/obj/effect/decal/cleanable/trail_holder) in start
 	var/bleed_amount = bleedDragAmount()
-	blood_volume = max(blood_volume - bleed_amount, 0) //that depends on our brute damage.
+
+	blood_volume = max(blood_volume - bleed_amount, 0)
+
 	var/newdir = get_dir(target_turf, start)
 	if(newdir != direction)
 		newdir = newdir | direction
@@ -820,8 +817,10 @@
 			newdir = NORTH
 		else if(newdir == (EAST|WEST))
 			newdir = EAST
-	if((newdir in GLOB.cardinals) && (prob(50)))
+
+	if((!(newdir & (newdir - 1))) && (prob(50))) // Cardinal move
 		newdir = turn(get_dir(target_turf, start), 180)
+
 	if(!blood_exists)
 		new /obj/effect/decal/cleanable/trail_holder(start, get_static_viruses())
 
@@ -831,58 +830,28 @@
 			TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
 			TH.transfer_mob_blood_dna(src)
 
-/mob/living/carbon/human/makeTrail(turf/T)
-	if((NOBLOOD in dna.species.species_traits) || !is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLEED))
-		return
-	..()
+/// Returns TRUE if we should try to leave a blood trail.
+/mob/living/proc/leavesBloodTrail()
+	if(!prob(getBruteLoss() * 1.5))
+		return FALSE
+
+	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL* (1 - brute_ratio * 0.25), 0))//don't leave trail if blood volume below a threshold
+		return FALSE
+
+	return TRUE
 
 ///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/makeTrail]
 /mob/living/proc/bleedDragAmount()
 	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
 	return max(1, brute_ratio * 2)
 
-/mob/living/carbon/bleedDragAmount()
-	var/bleed_amount = 0
-	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		bleed_amount += BP.get_modified_bleed_rate()
-	return bleed_amount
-
 /mob/living/proc/getTrail()
-	if(getBruteLoss() < 300)
+	if(getBruteLoss() < 75)
 		return pick("ltrails_1", "ltrails_2")
 	else
 		return pick("trails_1", "trails_2")
-/*
-/mob/living/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
-	playsound(src, 'sound/effects/space_wind.ogg', 50, TRUE)
-	if(buckled || mob_negates_gravity())
-		return
 
-	if(client && client.move_delay >= world.time + world.tick_lag*2)
-		pressure_resistance_prob_delta -= 30
-
-	var/list/turfs_to_check = list()
-
-	if(!has_limbs)
-		var/turf/T = get_step(src, angle2dir(dir2angle(direction)+90))
-		if (T)
-			turfs_to_check += T
-
-		T = get_step(src, angle2dir(dir2angle(direction)-90))
-		if(T)
-			turfs_to_check += T
-
-		for(var/t in turfs_to_check)
-			T = t
-			if(T.density)
-				pressure_resistance_prob_delta -= 20
-				continue
-			for (var/atom/movable/AM in T)
-				if (AM.density && AM.anchored)
-					pressure_resistance_prob_delta -= 20
-					break
-	..(pressure_difference, direction, pressure_resistance_prob_delta)
-*/
 /mob/living/can_resist()
 	if(next_move > world.time)
 		return FALSE

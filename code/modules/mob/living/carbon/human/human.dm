@@ -1168,3 +1168,19 @@
 		return FALSE
 
 	return ClimbUp(climbable)
+
+/mob/living/carbon/human/getTrail()
+	if(bleedDragAmount() < 3.5)
+		return pick("ltrails_1", "ltrails_2")
+	else
+		return pick("trails_1", "trails_2")
+
+/mob/living/carbon/human/leavesBloodTrail()
+	if(!is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLEED))
+		return FALSE
+
+	return ..()
+
+/mob/living/carbon/bleedDragAmount()
+	return get_bleed_rate()
+

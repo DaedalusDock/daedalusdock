@@ -102,12 +102,30 @@
 
 /// A helper to see how much blood we're losing per tick
 /mob/living/carbon/proc/get_bleed_rate()
-	if(!blood_volume)
-		return
+	if(NOBLOOD in dna.species.species_traits || HAS_TRAIT(src, TRAIT_NOBLEED) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
+		return 0
+
+	if(bodytemperature < TCRYO || (HAS_TRAIT(src, TRAIT_HUSK)))
+		return 0
+
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	if(!heart || (heart.pulse == PULSE_NONE && !(heart.organ_flags & ORGAN_SYNTHETIC)))
+		return 0
+
 	var/bleed_amt = 0
 	for(var/obj/item/bodypart/iter_bodypart as anything in bodyparts)
 		bleed_amt += iter_bodypart.get_modified_bleed_rate()
-	return bleed_amt
+
+	var/pulse_mod = 1
+	switch(heart.pulse)
+		if(PULSE_SLOW)
+			pulse_mod = 0.8
+		if(PULSE_FAST)
+			pulse_mod = 1.25
+		if(PULSE_2FAST, PULSE_THREADY)
+			pulse_mod = 1.5
+
+	return bleed_amt * pulse_mod
 
 /mob/living/carbon/human/get_bleed_rate()
 	if((NOBLOOD in dna.species.species_traits))
@@ -304,38 +322,23 @@
 /mob/living/proc/add_splatter_floor(turf/T, small_drip)
 	if(get_blood_id() != /datum/reagent/blood)
 		return
+
 	if(!T)
 		T = get_turf(src)
 
-	var/list/temp_blood_DNA
 	if(small_drip)
-		// Only a certain number of drips (or one large splatter) can be on a given turf.
-		var/obj/effect/decal/cleanable/blood/drip/drop = locate() in T
-		if(drop)
-			if(drop.drips < 5)
-				drop.drips++
-				drop.add_overlay(pick(drop.random_icon_states))
-				drop.transfer_mob_blood_dna(src)
-				return
-			else
-				temp_blood_DNA = drop.return_blood_DNA() //we transfer the dna from the drip to the splatter
-				qdel(drop)//the drip is replaced by a bigger splatter
-		else
-			drop = new(T, get_static_viruses())
-			if(!QDELETED(drop)) // Can be qdeleted if it merged with another blood decal.
-				drop.transfer_mob_blood_dna(src)
-				return
+		new /obj/effect/decal/cleanable/blood/drip(T, get_static_viruses(), get_blood_dna_list())
+		return
 
 	// Find a blood decal or create a new one.
 	var/obj/effect/decal/cleanable/blood/B = locate() in T
 	if(!B)
-		B = new /obj/effect/decal/cleanable/blood/splatter(T, get_static_viruses())
+		B = new /obj/effect/decal/cleanable/blood/splatter(T, get_static_viruses(), get_blood_dna_list())
+
 	if(QDELETED(B)) //Give it up
 		return
+
 	B.bloodiness = min((B.bloodiness + BLOOD_AMOUNT_PER_DECAL), BLOOD_POOL_MAX)
-	B.transfer_mob_blood_dna(src) //give blood info to the blood decal.
-	if(temp_blood_DNA)
-		B.add_blood_DNA(temp_blood_DNA)
 
 /mob/living/carbon/human/add_splatter_floor(turf/T, small_drip)
 	if(!(NOBLOOD in dna.species.species_traits))

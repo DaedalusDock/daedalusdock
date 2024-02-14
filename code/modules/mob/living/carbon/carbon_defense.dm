@@ -240,7 +240,6 @@
 	src.stamina_swing(STAMINA_DISARM_COST)
 
 	do_attack_animation(target, ATTACK_EFFECT_DISARM)
-	animate_interact(target, INTERACT_DISARM)
 	playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 
 	if (ishuman(target))

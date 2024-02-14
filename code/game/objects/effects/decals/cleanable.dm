@@ -16,18 +16,22 @@
 	///The amount of reagent this decal holds, if decal_reagent is defined
 	var/reagent_amount = 0
 
-/obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases, list/blood_dna)
 	. = ..()
 	if (random_icon_states && (icon_state == initial(icon_state)) && length(random_icon_states) > 0)
 		icon_state = pick(random_icon_states)
+
 	create_reagents(300)
+
 	if(decal_reagent)
 		reagents.add_reagent(decal_reagent, reagent_amount)
-	if(loc && isturf(loc))
+	if(blood_dna)
+		add_blood_DNA(blood_dna)
+	if(mergeable_decal && isturf(loc))
 		for(var/obj/effect/decal/cleanable/C in loc)
 			if(C != src && C.type == type && !QDELETED(C))
-				if (replace_decal(C))
-					handle_merge_decal(C)
+				if (can_merge_into(C))
+					merge_into(C)
 					return INITIALIZE_HINT_QDEL
 
 	if(LAZYLEN(diseases))
@@ -54,7 +58,7 @@
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 	return ..()
 
-/obj/effect/decal/cleanable/proc/replace_decal(obj/effect/decal/cleanable/C) // Returns true if we should give up in favor of the pre-existing decal
+/obj/effect/decal/cleanable/proc/can_merge_into(obj/effect/decal/cleanable/C) // Returns true if we should give up in favor of the pre-existing decal
 	if(mergeable_decal)
 		return TRUE
 
@@ -129,7 +133,7 @@
 
 	return null
 
-/obj/effect/decal/cleanable/proc/handle_merge_decal(obj/effect/decal/cleanable/merger)
+/obj/effect/decal/cleanable/proc/merge_into(obj/effect/decal/cleanable/merger)
 	if(!merger)
 		return
 	if(merger.reagents && reagents)

@@ -46,15 +46,15 @@
 				if(prob(25))
 					if(!IS_ORGANIC_LIMB(src))
 						owner.visible_message(
-							span_danger("The damage to \the [owner]'s [plaintext_zone] worsens."),
-							span_danger("The damage to your [name] worsens."),
+							span_warning("The damage to \the [owner]'s [plaintext_zone] worsens."),
+							span_warning("The damage to your [name] worsens."),
 							span_hear("You hear the screech of abused metal."),
 							COMBAT_MESSAGE_RANGE,
 						)
 					else
 						owner.visible_message(
-							span_danger("The wound on \the [owner]'s [plaintext_zone] widens with a nasty ripping noise."),
-							span_danger("The wound on your [plaintext_zone] widens with a nasty ripping noise."),
+							span_warning("The wound on \the [owner]'s [plaintext_zone] widens with a nasty ripping noise."),
+							span_warning("The wound on your [plaintext_zone] widens with a nasty ripping noise."),
 							span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
 							COMBAT_MESSAGE_RANGE,
 						)

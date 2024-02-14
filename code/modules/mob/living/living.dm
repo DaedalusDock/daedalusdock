@@ -783,11 +783,10 @@
 	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
 		active_storage.hide_contents(src)
 
-	if(newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())
+	if(!ISDIAGONALDIR(direct) && newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())
 		if(length(grabbed_by))
 			drag_damage(newloc, T, old_direction)
-
-		else if(leavesBloodTrail())
+		else
 			makeBloodTrail(newloc, T, old_direction)
 
 
@@ -812,7 +811,7 @@
 
 /// Creates a trail of blood on Start, facing Direction
 /mob/living/proc/makeBloodTrail(turf/target_turf, turf/start, direction, being_dragged)
-	if(!has_gravity() || !isturf(start) || !blood_volume)
+	if(!isturf(start) || !leavesBloodTrail())
 		return
 
 	var/trail_type = getTrail(being_dragged)
@@ -847,8 +846,8 @@
 			TH.transfer_mob_blood_dna(src)
 
 /// Returns TRUE if we should try to leave a blood trail.
-/mob/living/proc/leavesBloodTrail(being_dragged)
-	if(!blood_volume || !prob(getBruteLoss() / 2))
+/mob/living/proc/leavesBloodTrail()
+	if(!blood_volume)
 		return FALSE
 
 	return TRUE

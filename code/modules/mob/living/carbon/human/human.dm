@@ -1174,24 +1174,42 @@
 		makeBloodTrail(new_loc, old_loc, direction, TRUE)
 
 	blood_volume = max(blood_volume - 1, 0)
-	if(prob(10))
-		var/datum/wound/cut/C = locate() in shuffle_inplace(get_wounds())
-		if(C)
-			C.open_wound(5, TRUE)
-			if(!IS_ORGANIC_LIMB(C.parent))
-				visible_message(
-					span_danger("The damage to [src]'s [C.parent.plaintext_zone] worsens."),
-					span_danger("The damage to your [C.parent.plaintext_zone] worsens."),
-					span_hear("You hear the screech of abused metal."),
-					COMBAT_MESSAGE_RANGE,
-				)
-			else
-				visible_message(
-					span_danger("The [C.desc] on [src]'s [C.parent.plaintext_zone] widens with a nasty ripping noise."),
-					span_danger("The [C.desc] on your [C.parent.plaintext_zone] widens with a nasty ripping noise."),
-					span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
-					COMBAT_MESSAGE_RANGE,
-				)
+
+	if(!prob(10))
+		return
+
+	var/list/wounds = get_wounds()
+	shuffle_inplace(wounds)
+
+	var/datum/wound/cut/C = locate() in wounds
+	var/datum/wound/puncture/P = locate() in wounds
+
+	if(C && P)
+		if(prob(50))
+			C = null
+		else
+			P = null
+
+	var/datum/wound/W = C || P
+	if(!W)
+		return
+
+	W.open_wound(5)
+
+	if(!IS_ORGANIC_LIMB(W.parent))
+		visible_message(
+			span_warning("The damage to [src]'s [W.parent.plaintext_zone] worsens."),
+			span_warning("The damage to your [W.parent.plaintext_zone] worsens."),
+			span_hear("You hear the screech of abused metal."),
+			COMBAT_MESSAGE_RANGE,
+		)
+	else
+		visible_message(
+			span_warning("The [W.desc] on [src]'s [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_warning("The [W.desc] on your [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
+			COMBAT_MESSAGE_RANGE,
+		)
 
 
 /mob/living/carbon/human/getTrail(being_dragged)
@@ -1200,7 +1218,7 @@
 	else
 		return "bleedtrail_heavy"
 
-/mob/living/carbon/human/leavesBloodTrail(being_dragged)
+/mob/living/carbon/human/leavesBloodTrail()
 	if(!is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLEED))
 		return FALSE
 

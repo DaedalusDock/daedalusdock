@@ -39,7 +39,7 @@
 	/// World.time + dry_duration
 	var/drytime = 0
 
-/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/blood_dna)
+/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/blood_dna = list("Unknown DNA" = random_blood_type()))
 	. = ..()
 	if((. == INITIALIZE_HINT_QDEL) || !should_dry)
 		return

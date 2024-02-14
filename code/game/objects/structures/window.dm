@@ -453,6 +453,7 @@
 	var/obj/item/bodypart/BP = affecting_mob.get_bodypart(def_zone)
 	if(!BP)
 		return
+
 	var/blocked = affecting_mob.run_armor_check(def_zone, BLUNT)
 	if(grab.current_grab.damage_stage < GRAB_NECK)
 		affecting_mob.visible_message(span_danger("<b>[user]</b> bashes <b>[affecting_mob]</b>'s [BP.plaintext_zone] against \the [src]!"))
@@ -484,8 +485,7 @@
 		take_damage(20)
 		qdel(grab)
 
-	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src)
-	splatter.transfer_mob_blood_dna(victim)
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src, null, affecting_mob.get_blood_dna_list())
 	vis_contents += splatter
 	bloodied = TRUE
 	return TRUE

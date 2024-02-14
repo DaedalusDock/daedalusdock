@@ -14,12 +14,12 @@
 	appearance_flags = TILE_BOUND|PIXEL_SCALE|LONG_GLIDE|NO_CLIENT_COLOR
 
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
-	blood_state = BLOOD_STATE_HUMAN
-	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	beauty = -100
 
 	clean_type = CLEAN_TYPE_BLOOD
 	mergeable_decal = FALSE //We handle this on our own.
+
+	bloodiness = BLOOD_AMOUNT_PER_DECAL
 
 	/// What decals can we merge into
 	var/blood_merge_into_other = BLOOD_MERGE_POOL
@@ -31,6 +31,8 @@
 	var/smell_intensity =  INTENSITY_STRONG
 	var/smell_name = "blood"
 
+	var/blood_print = null
+
 	var/should_dry = TRUE
 	/// How long should it take for blood to dry?
 	var/dry_duration = 10 MINUTES
@@ -38,6 +40,7 @@
 	var/drydesc = "It's dry and crusty. Someone isn't doing their job."
 	/// World.time + dry_duration
 	var/drytime = 0
+	var/is_dry = FALSE
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases, list/blood_dna = list("Unknown DNA" = random_blood_type()))
 	. = ..()
@@ -63,6 +66,10 @@
 	else
 		dry()
 
+/obj/effect/decal/cleanable/blood/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/effect/decal/cleanable/blood/process()
 	if(world.time > drytime)
 		dry()
@@ -70,6 +77,13 @@
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
+
+/obj/effect/decal/cleanable/blood/add_blood_DNA(list/dna)
+	. = ..()
+	if(dna)
+		blood_color = get_blood_dna_color(dna)
+		if(!is_dry)
+			color = blood_color
 
 /obj/effect/decal/cleanable/blood/proc/get_timer()
 	drytime = world.time + dry_duration
@@ -80,18 +94,20 @@
 
 ///This is what actually "dries" the blood. Returns true if it's all out of blood to dry, and false otherwise
 /obj/effect/decal/cleanable/blood/proc/dry()
-	if(bloodiness > 20)
-		bloodiness -= BLOOD_AMOUNT_PER_DECAL
+	if(reagents.get_reagent_amount(/datum/reagent/blood) > 20)
+		reagents.remove_reagent(/datum/reagent/blood, BLOOD_AMOUNT_PER_DECAL)
 		get_timer()
 		return FALSE
 	else
 		name = dryname
 		desc = drydesc
-		bloodiness = 0
-		color = COLOR_GRAY //not all blood splatters have their own sprites... It still looks pretty nice
+		reagents.remove_all_type(/datum/reagent/blood, INFINITY)
+		var/temp_color = ReadHSV(RGBtoHSV(color || COLOR_WHITE))
+		color = HSVtoRGB(hsv(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0)))
 		qdel(GetComponent(/datum/component/smell))
 		if(spook_factor)
 			AddComponent(/datum/component/spook_factor, spook_factor)
+		is_dry = TRUE
 		return PROCESS_KILL
 
 /obj/effect/decal/cleanable/blood/can_merge_into(obj/effect/decal/cleanable/blood/other, force)
@@ -110,7 +126,7 @@
 		merger.bloodiness = min((merger.bloodiness + bloodiness), BLOOD_AMOUNT_PER_DECAL)
 
 /obj/effect/decal/cleanable/blood/old
-	bloodiness = 0
+	reagent_amount = 0
 	icon_state = "floor1-old"
 
 /obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
@@ -134,8 +150,8 @@
 	blood_merge_into_other = null
 	blood_merge_into_us = null
 
-/obj/effect/decal/cleanable/blood/splatter/overwindow/can_merge_into(obj/effect/decal/cleanable/blood/other)
-	if(istype(other, /obj/effect/decal/cleanable/blood/splatter/overwindow))
+/obj/effect/decal/cleanable/blood/splatter/over_window/can_merge_into(obj/effect/decal/cleanable/blood/other)
+	if(istype(other, /obj/effect/decal/cleanable/blood/splatter/over_window))
 		return TRUE
 
 	return ..()
@@ -191,6 +207,9 @@
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
 	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_STREAK)
+	var/image/gib_overlay = image(icon, "[icon_state]-overlay")
+	gib_overlay.appearance_flags = RESET_COLOR
+	add_overlay(gib_overlay)
 
 /obj/effect/decal/cleanable/blood/gibs/can_merge_into(obj/effect/decal/cleanable/C)
 	return FALSE //Never fail to place us
@@ -270,10 +289,11 @@
 	name = "old rotting gibs"
 	desc = "Space Jesus, why didn't anyone clean this up? They smell terrible."
 	icon_state = "gib1-old"
-	bloodiness = 0
 	should_dry = FALSE
 	dryname = "old rotting gibs"
 	drydesc = "Space Jesus, why didn't anyone clean this up? They smell terrible."
+
+	reagent_amount = 0
 
 /obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
@@ -299,7 +319,9 @@
 	smell_intensity = INTENSITY_SUBTLE
 	dry_duration = 4 MINUTES
 
+	reagent_amount = BLOOD_AMOUNT_PER_DECAL / 10
 	spook_factor = SPOOK_AMT_BLOOD_DROP
+
 	/// Keeps track of how many drops of blood this decal has. See blood.dm
 	var/drips = 1
 
@@ -337,8 +359,6 @@
 	icon_state = "blood1"
 	random_icon_states = null
 
-	blood_state = BLOOD_STATE_HUMAN //the icon state to load images from
-
 	blood_merge_into_us = BLOOD_MERGE_FOOTPRINTS
 	blood_merge_into_other = BLOOD_MERGE_FOOTPRINTS | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
 
@@ -355,8 +375,14 @@
 	drydesc = "HMM... SOMEONE WAS HERE!"
 	smell_intensity = INTENSITY_SUBTLE
 
-/obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
+/obj/effect/decal/cleanable/blood/footprints/Initialize(
+	mapload,
+	list/datum/disease/diseases,
+	list/blood_dna = list("Unknown DNA" = random_blood_type()),
+	blood_print
+	)
 	. = ..()
+	src.blood_print = blood_print
 	icon_state = "" //All of the footprint visuals come from overlays
 	if(mapload)
 		entered_dirs |= dir //Keep the same appearance as in the map editor
@@ -384,27 +410,28 @@
 
 /obj/effect/decal/cleanable/blood/footprints/update_icon()
 	. = ..()
-	alpha = min(BLOODY_FOOTPRINT_BASE_ALPHA + (255 - BLOODY_FOOTPRINT_BASE_ALPHA) * bloodiness / (BLOOD_ITEM_MAX / 2), 255)
-
-//Cache of bloody footprint images
-//Key:
-//"entered-[blood_state]-[dir_of_image]"
-//or: "exited-[blood_state]-[dir_of_image]"
-GLOBAL_LIST_EMPTY(bloody_footprints_cache)
+	color = blood_color
+	alpha = min(BLOODY_FOOTPRINT_BASE_ALPHA + (255 - BLOODY_FOOTPRINT_BASE_ALPHA) * reagents.get_reagent_amount(/datum/reagent/blood) / (BLOOD_ITEM_MAX / 2), 255)
 
 /obj/effect/decal/cleanable/blood/footprints/update_overlays()
 	. = ..()
+	//Cache of bloody footprint images
+	//Key:
+	//"entered-[blood_print]-[blood_color]-[dir_of_image]"
+	//or: "exited-[blood_print]-[blood_color]--[dir_of_image]"
+
+	var/static/list/bloody_footprints_cache = list()
 	for(var/Ddir in GLOB.cardinals)
 		if(entered_dirs & Ddir)
-			var/image/bloodstep_overlay = GLOB.bloody_footprints_cache["entered-[blood_state]-[Ddir]"]
+			var/image/bloodstep_overlay = bloody_footprints_cache["entered-[blood_print]-[blood_color]-[Ddir]"]
 			if(!bloodstep_overlay)
-				GLOB.bloody_footprints_cache["entered-[blood_state]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_state]1", dir = Ddir)
+				bloody_footprints_cache["entered-[blood_print]-[blood_color]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_print]1", dir = Ddir)
 			. += bloodstep_overlay
 
 		if(exited_dirs & Ddir)
-			var/image/bloodstep_overlay = GLOB.bloody_footprints_cache["exited-[blood_state]-[Ddir]"]
+			var/image/bloodstep_overlay = bloody_footprints_cache["exited-[blood_print]-[blood_color]-[Ddir]"]
 			if(!bloodstep_overlay)
-				GLOB.bloody_footprints_cache["exited-[blood_state]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_state]2", dir = Ddir)
+				bloody_footprints_cache["exited-[blood_print]-[blood_color]-[Ddir]"] = bloodstep_overlay = image(icon, "[blood_print]2", dir = Ddir)
 			. += bloodstep_overlay
 
 
@@ -428,14 +455,9 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 				. += "[icon2html('icons/mob/human_parts.dmi', user, "[species]_l_leg")] Some <B>[species] feet</B>."
 
 /obj/effect/decal/cleanable/blood/footprints/can_merge_into(obj/effect/decal/cleanable/C)
-	if(blood_state != C.blood_state) //We only replace footprints of the same type as us
+	if(blood_color != C.blood_color) //We only replace footprints of the same type as us
 		return FALSE
 	return ..()
-
-/obj/effect/decal/cleanable/blood/footprints/can_bloodcrawl_in()
-	if((blood_state != BLOOD_STATE_OIL) && (blood_state != BLOOD_STATE_NOT_BLOODY))
-		return TRUE
-	return FALSE
 
 /obj/effect/decal/cleanable/blood/hitsplatter
 	name = "blood splatter"
@@ -543,7 +565,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 		if(istype(bumped_atom, /obj/structure/window))
 			land_on_window(bumped_atom)
 		else
-			var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(prev_loc)
+			var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(prev_loc, null, blood_dna_info)
 			final_splatter.pixel_x = (dir == EAST ? 32 : (dir == WEST ? -32 : 0))
 			final_splatter.pixel_y = (dir == NORTH ? 32 : (dir == SOUTH ? -32 : 0))
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
@@ -554,7 +576,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
 	if(!the_window.fulltile)
 		return
-	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(the_window)
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/final_splatter = new(the_window, null, blood_dna_info)
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE
 	qdel(src)

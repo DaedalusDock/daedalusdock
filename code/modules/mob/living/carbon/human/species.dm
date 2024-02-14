@@ -48,8 +48,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/use_skintones = FALSE
 	///If your race bleeds something other than bog standard blood, change this to reagent id. For example, ethereals bleed liquid electricity.
 	var/datum/reagent/exotic_blood
-	///If your race uses a non standard bloodtype (A+, O-, AB-, etc). For example, lizards have L type blood.
-	var/exotic_bloodtype = ""
+
 	///What the species drops when gibbed by a gibber machine.
 	var/meat = /obj/item/food/meat/slab/human
 	///What skin the species drops when gibbed by a gibber machine.
@@ -492,8 +491,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	regenerate_organs(C, old_species, visual_only = C.visual_only_organs)
 
-	if(exotic_bloodtype && C.dna.blood_type != exotic_bloodtype)
-		C.dna.blood_type = exotic_bloodtype
+	C.dna.blood_type = get_random_blood_type()
 
 	if(old_species.mutanthands)
 		for(var/obj/item/I in C.held_items)
@@ -552,10 +550,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 /datum/species/proc/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	SHOULD_CALL_PARENT(TRUE)
-	if(C.dna.species.exotic_bloodtype)
-		C.dna.blood_type = random_blood_type()
 	for(var/X in inherent_traits)
 		REMOVE_TRAIT(C, X, SPECIES_TRAIT)
+
 	for(var/path in cosmetic_organs)
 		var/obj/item/organ/organ = locate(path) in C.organs
 		if(!organ)
@@ -2015,15 +2012,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make recieving medical treatment harder.",
 		))
 
-	// Otherwise otherwise, see if they have an exotic bloodtype set
-	else if(exotic_bloodtype)
-		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = "Exotic Blood",
-			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make recieving medical treatment harder.",
-		))
-
 	return to_add
 
 /**
@@ -2209,3 +2197,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /datum/species/proc/get_deathgasp_sound(mob/living/carbon/human/H)
 	return pick('goon/sounds/voice/death_1.ogg', 'goon/sounds/voice/death_2.ogg')
+
+/// Returns a random blood type for this species
+/datum/species/proc/get_random_blood_type()
+	return random_blood_type()

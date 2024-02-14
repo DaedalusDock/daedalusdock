@@ -233,7 +233,7 @@
 			C.ForceContractDisease(strain)
 
 	if(C.get_blood_id() == /datum/reagent/blood)
-		if(!data || !(data["blood_type"] in get_safe_blood(C.dna.blood_type)))
+		if(!data || !C.dna.blood_type.is_compatible(data["blood_type"]:type))
 			C.reagents.add_reagent(/datum/reagent/toxin, removed)
 		else
 			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
@@ -256,8 +256,11 @@
 
 /datum/reagent/blood/on_merge(list/mix_data)
 	if(data && mix_data)
+		if(data["blood_type"] != mix_data["blood_type"])
+			data["blood_type"] = /datum/blood/slurry
 		if(data["blood_DNA"] != mix_data["blood_DNA"])
 			data["cloneable"] = 0 //On mix, consider the genetic sampling unviable for pod cloning if the DNA sample doesn't match.
+
 		if(data["viruses"] || mix_data["viruses"])
 
 			var/list/mix1 = data["viruses"]

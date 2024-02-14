@@ -7,12 +7,14 @@
 	plane = GAME_PLANE
 	var/splatter_type = "splatter"
 
-/obj/effect/temp_visual/dir_setting/bloodsplatter/Initialize(mapload, set_dir)
+/obj/effect/temp_visual/dir_setting/bloodsplatter/Initialize(mapload, set_dir, set_color)
 	if(ISDIAGONALDIR(set_dir))
 		icon_state = "[splatter_type][pick(1, 2, 6)]"
 	else
 		icon_state = "[splatter_type][pick(3, 4, 5)]"
 	. = ..()
+	color = set_color
+
 	var/target_pixel_x = 0
 	var/target_pixel_y = 0
 	switch(set_dir)

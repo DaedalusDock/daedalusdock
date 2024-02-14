@@ -319,6 +319,15 @@
 		var/amt = list_reagents[r_id]
 		remove_reagent(r_id, amt)
 
+/// Adds a reagent up to a cap.
+/datum/reagents/proc/add_reagent_up_to(reagent, amount, cap)
+	var/existing = get_reagent_amount(reagent)
+	if(existing >= cap)
+		return
+
+	var/to_add = min(cap - amount, cap - existing, amount)
+	return add_reagent(reagent, to_add)
+
 /**
  * Check if this holder contains a reagent with a chemical_flags containing this flag
  * Reagent takes the bitflag to search for

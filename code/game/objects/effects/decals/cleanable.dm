@@ -1,13 +1,11 @@
 /obj/effect/decal/cleanable
 	gender = PLURAL
 	layer = ABOVE_NORMAL_TURF_LAYER
+
 	var/list/random_icon_states = null
-	///I'm sorry but cleanable/blood code is ass, and so is blood_DNA
-	var/blood_state = ""
-	///0-100, amount of blood in this decal, used for making footprints and affecting the alpha of bloody footprints
-	var/bloodiness = 0
-	///When two of these are on a same tile or do we need to merge them into just one?
+	/// If TRUE, this decal will attempt to merge with other of it's type.
 	var/mergeable_decal = TRUE
+
 	var/beauty = 0
 	///The type of cleaning required to clean the decal. See __DEFINES/cleaning.dm for the options
 	var/clean_type = CLEAN_TYPE_LIGHT_DECAL
@@ -15,6 +13,11 @@
 	var/datum/reagent/decal_reagent
 	///The amount of reagent this decal holds, if decal_reagent is defined
 	var/reagent_amount = 0
+
+	///I'm sorry but cleanable/blood code is ass, and so is blood_DNA
+	var/blood_color = ""
+	///0-100, amount of blood in this decal, used for making footprints and affecting the alpha of bloody footprints
+	var/bloodiness = 0
 
 /obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases, list/blood_dna)
 	. = ..()
@@ -25,8 +28,15 @@
 
 	if(decal_reagent)
 		reagents.add_reagent(decal_reagent, reagent_amount)
+
 	if(blood_dna)
 		add_blood_DNA(blood_dna)
+		if(!length(blood_dna))
+			stack_trace("Bad blood DNA sent")
+		else
+			var/datum/blood/path = blood_dna[blood_dna[1]]
+			blood_color = initial(path.color)
+
 	if(mergeable_decal && isturf(loc))
 		for(var/obj/effect/decal/cleanable/C in loc)
 			if(C != src && C.type == type && !QDELETED(C))
@@ -99,7 +109,7 @@
 	SIGNAL_HANDLER
 	if(AM == src)
 		return
-	if(iscarbon(AM) && blood_state && bloodiness >= 40)
+	if(iscarbon(AM) && blood_color && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 
@@ -114,24 +124,7 @@
  * Checks if this decal is a valid decal that can be blood crawled in.
  */
 /obj/effect/decal/cleanable/proc/can_bloodcrawl_in()
-	if((blood_state != BLOOD_STATE_OIL) && (blood_state != BLOOD_STATE_NOT_BLOODY))
-		return bloodiness
-
-	return FALSE
-
-/**
- * Gets the color associated with the any blood present on this decal. If there is no blood, returns null.
- */
-/obj/effect/decal/cleanable/proc/get_blood_color()
-	switch(blood_state)
-		if(BLOOD_STATE_HUMAN)
-			return rgb(149, 10, 10)
-		if(BLOOD_STATE_XENO)
-			return rgb(43, 186, 0)
-		if(BLOOD_STATE_OIL)
-			return rgb(22, 22, 22)
-
-	return null
+	return length(return_blood_DNA())
 
 /obj/effect/decal/cleanable/proc/merge_into(obj/effect/decal/cleanable/merger)
 	if(!merger)

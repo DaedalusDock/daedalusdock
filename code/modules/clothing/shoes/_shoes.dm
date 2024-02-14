@@ -56,13 +56,15 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedshoe")
-	if(HAS_BLOOD_DNA(src))
+
+	var/list/dna = return_blood_DNA()
+	if(length(dna))
 		if(istype(wearer))
 			var/obj/item/bodypart/leg = wearer.get_bodypart(BODY_ZONE_R_LEG) || wearer.get_bodypart(BODY_ZONE_L_LEG)
 			if(!leg?.icon_bloodycover)
 				return
 			var/image/bloody_overlay = image(leg.icon_bloodycover, "shoeblood")
-			bloody_overlay.color = COLOR_HUMAN_BLOOD
+			bloody_overlay.color = get_blood_dna_color(dna)
 			. += bloody_overlay
 		else
 			if(clothing_flags & LARGE_WORN_ICON)

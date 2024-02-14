@@ -621,6 +621,7 @@
 #include "code\datums\alarm.dm"
 #include "code\datums\armor.dm"
 #include "code\datums\beam.dm"
+#include "code\datums\blood_types.dm"
 #include "code\datums\browser.dm"
 #include "code\datums\callback.dm"
 #include "code\datums\cartesian_plane.dm"

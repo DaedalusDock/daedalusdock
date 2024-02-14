@@ -192,7 +192,7 @@
 	if(!length(blood_DNA))
 		return
 
-	parent.AddElement(/datum/element/decal/blood)
+	parent.AddElement(/datum/element/decal/blood, _color = get_blood_dna_color(blood_DNA))
 
 /// Called by [atom/proc/wash].
 /datum/forensics/proc/wash(clean_types)

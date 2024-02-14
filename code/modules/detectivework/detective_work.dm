@@ -32,6 +32,7 @@
 /// Adds the fibers of M to our fiber list.
 /atom/proc/add_fibers(mob/living/carbon/human/M)
 	var/old = 0
+
 	if(M.gloves && istype(M.gloves, /obj/item/clothing))
 		var/obj/item/clothing/gloves/G = M.gloves
 		old = length(G.return_blood_DNA())

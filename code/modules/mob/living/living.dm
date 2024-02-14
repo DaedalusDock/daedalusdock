@@ -839,10 +839,7 @@
 			continue
 		if(!(newdir in TH.existing_dirs) || trail_type == "bleedtrail_heavy")
 			TH.existing_dirs += newdir
-			var/image/I = image('icons/effects/blood.dmi', icon_state = trail_type, dir = newdir)
-			if(trail_type == "bleedtrail_heavy")
-				I.color = COLOR_HUMAN_BLOOD
-			TH.add_overlay(I)
+			TH.add_overlay(image('icons/effects/blood.dmi', icon_state = trail_type, dir = newdir))
 			TH.transfer_mob_blood_dna(src)
 
 /// Returns TRUE if we should try to leave a blood trail.
@@ -2197,3 +2194,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	animate(src, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
 	animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
+
+/mob/living/proc/get_blood_print()
+	return BLOOD_PRINT_PAWS

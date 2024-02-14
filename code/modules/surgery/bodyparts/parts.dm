@@ -279,6 +279,8 @@
 
 	minimum_break_damage = 30
 
+	/// Used by the bloodysoles component to make blood tracks
+	var/blood_print = BLOOD_PRINT_HUMAN
 	/// Can these legs be digitigrade? See digitigrade.dm
 	var/can_be_digitigrade = FALSE
 	///Set limb_id to this when in "digi mode". MUST BE UNIQUE LIKE ALL LIMB IDS

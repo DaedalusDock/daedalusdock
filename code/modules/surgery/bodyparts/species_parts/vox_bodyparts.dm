@@ -38,6 +38,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"
+	blood_print = BLOOD_PRINT_CLAWS
 
 /obj/item/bodypart/leg/left/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
@@ -61,6 +62,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"
+	blood_print = BLOOD_PRINT_CLAWS
 
 /obj/item/bodypart/leg/right/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()

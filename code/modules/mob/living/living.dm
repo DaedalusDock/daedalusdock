@@ -783,8 +783,11 @@
 	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
 		active_storage.hide_contents(src)
 
-	if(body_position == LYING_DOWN && !buckled && leavesBloodTrail())
-		makeTrail(newloc, T, old_direction)
+	if(newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())
+		if(length(grabbed_by))
+			drag_damage(newloc, T, old_direction)
+		else if(leavesBloodTrail())
+			makeBloodTrail(newloc, T, old_direction, length(grabbed_by))
 
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
@@ -797,18 +800,25 @@
 /mob/living/carbon/alien/humanoid/lying_angle_on_movement(direct)
 	return
 
-/mob/living/proc/makeTrail(turf/target_turf, turf/start, direction)
+/// Take damage from being dragged while prone. Or not. You decide.
+/mob/living/proc/drag_damage(turf/new_loc, turf/old_loc, direction)
+	if(prob(getBruteLoss() / 2))
+		makeBloodTrail(new_loc, old_loc, direction, TRUE)
+
+	if(prob(10))
+		visible_message(span_danger("[src]'s wounds worsen as they're dragged across the ground."))
+		adjustBruteLoss(2)
+
+/// Creates a trail of blood on Start, facing Direction
+/mob/living/proc/makeBloodTrail(turf/target_turf, turf/start, direction, being_dragged)
 	if(!has_gravity() || !isturf(start) || !blood_volume)
 		return
 
-	var/trail_type = getTrail()
+	var/trail_type = getTrail(being_dragged)
 	if(!trail_type)
 		return
 
-	var/blood_exists = locate(/obj/effect/decal/cleanable/trail_holder) in start
-	var/bleed_amount = bleedDragAmount()
-
-	blood_volume = max(blood_volume - bleed_amount, 0)
+	var/blood_exists = locate(/obj/effect/decal/cleanable/blood/trail_holder) in start
 
 	var/newdir = get_dir(target_turf, start)
 	if(newdir != direction)
@@ -822,35 +832,31 @@
 		newdir = turn(get_dir(target_turf, start), 180)
 
 	if(!blood_exists)
-		new /obj/effect/decal/cleanable/trail_holder(start, get_static_viruses())
+		new /obj/effect/decal/cleanable/blood/trail_holder(start, get_static_viruses())
 
-	for(var/obj/effect/decal/cleanable/trail_holder/TH in start)
-		if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
+	for(var/obj/effect/decal/cleanable/blood/trail_holder/TH in start)
+		if(TH.existing_dirs.len >= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
+			continue
+		if(!(newdir in TH.existing_dirs) || trail_type == "bleedtrail_heavy")
 			TH.existing_dirs += newdir
-			TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
+			var/image/I = image('icons/effects/blood.dmi', icon_state = trail_type, dir = newdir)
+			if(trail_type == "bleedtrail_heavy")
+				I.color = COLOR_HUMAN_BLOOD
+			TH.add_overlay(I)
 			TH.transfer_mob_blood_dna(src)
 
 /// Returns TRUE if we should try to leave a blood trail.
-/mob/living/proc/leavesBloodTrail()
-	if(!prob(getBruteLoss() * 1.5))
-		return FALSE
-
-	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL* (1 - brute_ratio * 0.25), 0))//don't leave trail if blood volume below a threshold
+/mob/living/proc/leavesBloodTrail(being_dragged)
+	if(!blood_volume || !prob(getBruteLoss() / 2))
 		return FALSE
 
 	return TRUE
 
-///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/makeTrail]
-/mob/living/proc/bleedDragAmount()
-	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
-	return max(1, brute_ratio * 2)
-
-/mob/living/proc/getTrail()
+/mob/living/proc/getTrail(being_dragged)
 	if(getBruteLoss() < 75)
-		return pick("ltrails_1", "ltrails_2")
+		return "bleedtrail_light_[rand(1,4)]"
 	else
-		return pick("trails_1", "trails_2")
+		return "bleedtrail_heavy"
 
 /mob/living/can_resist()
 	if(next_move > world.time)

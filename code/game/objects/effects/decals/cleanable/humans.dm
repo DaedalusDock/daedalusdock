@@ -21,10 +21,10 @@
 	clean_type = CLEAN_TYPE_BLOOD
 	mergeable_decal = FALSE //We handle this on our own.
 
-	/// What decals can merge into
-	var/blood_merge_self = BLOOD_MERGE_POOL
+	/// What decals can we merge into
+	var/blood_merge_into_other = BLOOD_MERGE_POOL
 	/// What decals can merge into us
-	var/blood_merge_other = BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+	var/blood_merge_into_us = BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
 
 	var/spook_factor = SPOOK_AMT_BLOOD_SPLATTER
 
@@ -95,10 +95,10 @@
 		return PROCESS_KILL
 
 /obj/effect/decal/cleanable/blood/can_merge_into(obj/effect/decal/cleanable/blood/other, force)
-	if(isnull(other.blood_merge_other) || isnull(blood_merge_self))
+	if(isnull(other.blood_merge_into_us) || isnull(blood_merge_into_other))
 		return FALSE
 
-	if(other.blood_merge_other & blood_merge_self)
+	if(other.blood_merge_into_us & blood_merge_into_other)
 		return TRUE
 
 	return FALSE
@@ -122,8 +122,8 @@
 	icon_state = "gibbl1"
 	random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")
 
-	blood_merge_self = BLOOD_MERGE_SPLATTER
-	blood_merge_other = ALL
+	blood_merge_into_other = BLOOD_MERGE_SPLATTER
+	blood_merge_into_us = ALL
 
 /obj/effect/decal/cleanable/blood/splatter/over_window // special layer/plane set to appear on windows
 	layer = ABOVE_WINDOW_LAYER
@@ -131,8 +131,8 @@
 	turf_loc_check = FALSE
 	alpha = 180
 
-	blood_merge_self = null
-	blood_merge_other = null
+	blood_merge_into_other = null
+	blood_merge_into_us = null
 
 /obj/effect/decal/cleanable/blood/splatter/overwindow/can_merge_into(obj/effect/decal/cleanable/blood/other)
 	if(istype(other, /obj/effect/decal/cleanable/blood/splatter/overwindow))
@@ -149,15 +149,18 @@
 	drydesc = "Some old bloody tracks left by wheels. Machines are evil, perhaps."
 	smell_intensity = INTENSITY_SUBTLE
 
-/obj/effect/decal/cleanable/trail_holder //not a child of blood on purpose
+/obj/effect/decal/cleanable/blood/trail_holder
 	name = "blood"
 	icon = 'icons/effects/blood.dmi'
+	icon_state = null
+	random_icon_states = null
 	desc = "Your instincts say you shouldn't be following these."
 	beauty = -50
-	var/list/existing_dirs = list()
 
-/obj/effect/decal/cleanable/trail_holder/can_bloodcrawl_in()
-	return TRUE
+	blood_merge_into_us = null
+	blood_merge_into_other = null
+
+	var/list/existing_dirs = list()
 
 /obj/effect/decal/cleanable/blood/gibs
 	name = "gibs"
@@ -178,8 +181,8 @@
 	smell_intensity = INTENSITY_OVERPOWERING
 	smell_name = "viscera"
 
-	blood_merge_self = null
-	blood_merge_other = null
+	blood_merge_into_other = null
+	blood_merge_into_us = null
 
 	///Information about the diseases our streaking spawns
 	var/list/streak_diseases
@@ -285,10 +288,10 @@
 	icon_state = "5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("1","2","3", "4","5")
 
-	color = "#a10808"
+	color = COLOR_HUMAN_BLOOD
 
-	blood_merge_self = BLOOD_MERGE_DRIP
-	blood_merge_other = BLOOD_MERGE_DRIP | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+	blood_merge_into_us = BLOOD_MERGE_DRIP
+	blood_merge_into_other = BLOOD_MERGE_DRIP | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
 
 	bloodiness = BLOOD_AMOUNT_PER_DECAL / 10
 	dryname = "drips of blood"
@@ -313,16 +316,17 @@
 		return
 
 	var/temp_blood_dna = other_drip.return_blood_DNA()
-	var/spawn_loc = other.loc
+	var/turf/spawn_loc = other.loc
 	qdel(other)//the drip is replaced by a biFgger splatter
-	new /obj/effect/decal/cleanable/blood/splatter(other, null, return_blood_DNA() + temp_blood_dna)
+	new /obj/effect/decal/cleanable/blood/splatter(spawn_loc, null, return_blood_DNA() + temp_blood_dna)
 
 /obj/effect/decal/cleanable/blood/drip/can_bloodcrawl_in()
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/drip/proc/increment_drips()
 	PRIVATE_PROC(TRUE)
-	add_overlay(pick(random_icon_states))
+	var/image/I = image(icon, pick(random_icon_states), pixel_x = rand(-5, 5), pixel_y = rand(-5, 5))
+	add_overlay(I)
 	drips++
 
 //BLOODY FOOTPRINTS
@@ -334,8 +338,9 @@
 	random_icon_states = null
 
 	blood_state = BLOOD_STATE_HUMAN //the icon state to load images from
-	blood_merge_self = BLOOD_MERGE_FOOTPRINTS
-	blood_merge_other = BLOOD_MERGE_FOOTPRINTS | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+
+	blood_merge_into_us = BLOOD_MERGE_FOOTPRINTS
+	blood_merge_into_other = BLOOD_MERGE_FOOTPRINTS | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
 
 	var/entered_dirs = 0
 	var/exited_dirs = 0
@@ -439,8 +444,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	random_icon_states = list("hitsplatter1", "hitsplatter2", "hitsplatter3")
 	smell_intensity = INTENSITY_SUBTLE
 
-	blood_merge_self = null
-	blood_merge_other = null
+	blood_merge_into_other = null
+	blood_merge_into_us = null
 
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc
@@ -558,10 +563,10 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	name = "blood trail"
 	icon_state = "squirt"
 	random_icon_states = null
-	color = "#a10808"
+	color = COLOR_HUMAN_BLOOD
 
-	blood_merge_self = BLOOD_MERGE_SQUIRT
-	blood_merge_other = BLOOD_MERGE_SQUIRT | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
+	blood_merge_into_us = BLOOD_MERGE_SQUIRT
+	blood_merge_into_other = BLOOD_MERGE_SQUIRT | BLOOD_MERGE_POOL | BLOOD_MERGE_SPLATTER
 
 	smell_intensity = INTENSITY_SUBTLE
 	spook_factor = SPOOK_AMT_BLOOD_STREAK

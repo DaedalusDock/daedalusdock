@@ -1169,18 +1169,40 @@
 
 	return ClimbUp(climbable)
 
-/mob/living/carbon/human/getTrail()
-	if(bleedDragAmount() < 3.5)
-		return pick("ltrails_1", "ltrails_2")
-	else
-		return pick("trails_1", "trails_2")
+/mob/living/carbon/human/drag_damage(turf/new_loc, turf/old_loc, direction)
+	if(prob(getBruteLoss() / 2))
+		makeBloodTrail(new_loc, old_loc, direction, TRUE)
 
-/mob/living/carbon/human/leavesBloodTrail()
+	blood_volume = max(blood_volume - 1, 0)
+	if(prob(10))
+		var/datum/wound/cut/C = locate() in shuffle_inplace(get_wounds())
+		if(C)
+			C.open_wound(5, TRUE)
+			if(!IS_ORGANIC_LIMB(C.parent))
+				visible_message(
+					span_danger("The damage to [src]'s [C.parent.plaintext_zone] worsens."),
+					span_danger("The damage to your [C.parent.plaintext_zone] worsens."),
+					span_hear("You hear the screech of abused metal."),
+					COMBAT_MESSAGE_RANGE,
+				)
+			else
+				visible_message(
+					span_danger("The [C.desc] on [src]'s [C.parent.plaintext_zone] widens with a nasty ripping noise."),
+					span_danger("The [C.desc] on your [C.parent.plaintext_zone] widens with a nasty ripping noise."),
+					span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
+					COMBAT_MESSAGE_RANGE,
+				)
+
+
+/mob/living/carbon/human/getTrail(being_dragged)
+	if(get_bleed_rate() < (being_dragged ? 1.5 : 2.5))
+		return "bleedtrail_light_[rand(1,4)]"
+	else
+		return "bleedtrail_heavy"
+
+/mob/living/carbon/human/leavesBloodTrail(being_dragged)
 	if(!is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLEED))
 		return FALSE
 
 	return ..()
-
-/mob/living/carbon/bleedDragAmount()
-	return get_bleed_rate()
 

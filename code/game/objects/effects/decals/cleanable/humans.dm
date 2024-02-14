@@ -368,9 +368,6 @@
 	/// List of shoe or other clothing that covers feet types that have made footprints here.
 	var/list/shoe_types = list()
 
-	/// List of species that have made footprints here.
-	var/list/species_types = list()
-
 	dryname = "dried footprints"
 	drydesc = "HMM... SOMEONE WAS HERE!"
 	smell_intensity = INTENSITY_SUBTLE
@@ -386,7 +383,7 @@
 	icon_state = "" //All of the footprint visuals come from overlays
 	if(mapload)
 		entered_dirs |= dir //Keep the same appearance as in the map editor
-		update_appearance()
+	update_appearance(mapload ? (ALL) : UPDATE_NAME)
 
 //Rotate all of the footprint directions too
 /obj/effect/decal/cleanable/blood/footprints/setDir(newdir)
@@ -406,6 +403,16 @@
 			exited_dirs |= angle2dir_cardinal(dir2angle(Ddir) + ang_change)
 
 	update_appearance()
+	return ..()
+
+/obj/effect/decal/cleanable/blood/footprints/update_name(updates)
+	switch(blood_print)
+		if(BLOOD_PRINT_CLAWS)
+			name = "bloody claw tracks"
+		if(BLOOD_PRINT_HUMAN)
+			name = "bloody feet tracks"
+		if(BLOOD_PRINT_PAWS)
+			name = "bloody paw tracks"
 	return ..()
 
 /obj/effect/decal/cleanable/blood/footprints/update_icon()
@@ -437,25 +444,17 @@
 
 /obj/effect/decal/cleanable/blood/footprints/examine(mob/user)
 	. = ..()
-	if((shoe_types.len + species_types.len) > 0)
-		. += "You recognise the footprints as belonging to:"
-		for(var/sole in shoe_types)
-			var/obj/item/clothing/item = sole
-			var/article = initial(item.gender) == PLURAL ? "Some" : "A"
-			. += "[icon2html(initial(item.icon), user, initial(item.icon_state))] [article] <B>[initial(item.name)]</B>."
-		for(var/species in species_types)
-			// god help me
-			if(species == "unknown")
-				. += "Some <B>feet</B>."
-			else if(species == SPECIES_MONKEY)
-				. += "[icon2html('icons/mob/human.dmi', user, "monkey")] Some <B>monkey feet</B>."
-			else if(species == SPECIES_HUMAN)
-				. += "[icon2html('icons/mob/human_parts.dmi', user, "default_human_l_leg")] Some <B>human feet</B>."
-			else
-				. += "[icon2html('icons/mob/human_parts.dmi', user, "[species]_l_leg")] Some <B>[species] feet</B>."
+	if(!shoe_types.len)
+		return
 
-/obj/effect/decal/cleanable/blood/footprints/can_merge_into(obj/effect/decal/cleanable/C)
-	if(blood_color != C.blood_color) //We only replace footprints of the same type as us
+	. += "You recognise the footprints as belonging to:"
+	for(var/sole in shoe_types)
+		var/obj/item/clothing/item = sole
+		var/article = initial(item.gender) == PLURAL ? "Some" : "A"
+		. += "[icon2html(initial(item.icon), user, initial(item.icon_state))] [article] <B>[initial(item.name)]</B>."
+
+/obj/effect/decal/cleanable/blood/footprints/can_merge_into(obj/effect/decal/cleanable/blood/C)
+	if(blood_color != C.blood_color || blood_print != C.blood_print) //We only replace footprints of the same type as us
 		return FALSE
 	return ..()
 

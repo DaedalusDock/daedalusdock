@@ -176,5 +176,3 @@
 
 /datum/species/lizard/get_random_blood_type()
 	return GET_BLOOD_REF(/datum/blood/lizard)
-
-#warn TODO - liz blood

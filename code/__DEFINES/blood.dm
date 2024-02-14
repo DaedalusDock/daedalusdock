@@ -6,9 +6,9 @@
 
 //Bloody shoes/footprints
 /// Minimum alpha of footprints
-#define BLOODY_FOOTPRINT_BASE_ALPHA 20
+#define BLOODY_FOOTPRINT_BASE_ALPHA 120
 /// How much blood a regular blood splatter contains
-#define BLOOD_AMOUNT_PER_DECAL      50
+#define BLOOD_AMOUNT_PER_DECAL      100
 /// How much blood an item can have stuck on it
 #define BLOOD_ITEM_MAX              200
 /// How much blood a blood decal can contain

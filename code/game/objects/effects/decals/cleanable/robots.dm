@@ -11,6 +11,9 @@
 	beauty = -50
 	clean_type = CLEAN_TYPE_BLOOD
 
+	blood_color = rgb(22, 22, 22)
+	bloodiness = BLOOD_AMOUNT_PER_DECAL
+
 	decal_reagent = /datum/reagent/fuel/oil
 	reagent_amount = BLOOD_AMOUNT_PER_DECAL
 
@@ -77,6 +80,10 @@
 	icon_state = "floor1"
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
 	beauty = -100
+
+	blood_color = rgb(22, 22, 22)
+	bloodiness = BLOOD_AMOUNT_PER_DECAL
+
 	clean_type = CLEAN_TYPE_BLOOD
 	decal_reagent = /datum/reagent/fuel/oil
 	reagent_amount = 10

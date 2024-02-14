@@ -59,12 +59,12 @@
 
 /datum/component/bloodysoles/proc/reset_bloody_shoes()
 	bloody_shoes = list()
-	on_changed_bloody_shoes(null)
+	on_changed_bloody_shoes()
 
 ///lowers bloody_shoes[index] by adjust_by
 /datum/component/bloodysoles/proc/adjust_bloody_shoes(index, adjust_by)
 	bloody_shoes[index] = max(bloody_shoes[index] - adjust_by, 0)
-	on_changed_bloody_shoes()
+	on_changed_bloody_shoes(index)
 
 /datum/component/bloodysoles/proc/set_bloody_shoes(index, new_value)
 	bloody_shoes[index] = new_value
@@ -100,6 +100,9 @@
 		return TRUE
 
 	parent_atom.add_blood_DNA(pool.return_blood_DNA())
+	if(pool.bloodiness <= 0)
+		qdel(pool)
+
 	update_icon()
 
 /**
@@ -285,18 +288,7 @@
 			human.update_worn_shoes()
 
 /datum/component/bloodysoles/feet/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/FP)
-	if(!ishuman(wielder))
-		FP.species_types |= "unknown"
-		return
-
-	// Find any leg of our human and add that to the footprint, instead of the default which is to just add the human type
-	for(var/X in wielder.bodyparts)
-		var/obj/item/bodypart/affecting = X
-		if(affecting.body_part == LEG_RIGHT || affecting.body_part == LEG_LEFT)
-			if(!affecting.bodypart_disabled)
-				FP.species_types |= affecting.limb_id
-				break
-
+	return
 
 /datum/component/bloodysoles/feet/is_obscured()
 	if(wielder.shoes)

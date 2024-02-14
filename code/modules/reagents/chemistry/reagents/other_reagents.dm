@@ -257,7 +257,7 @@
 /datum/reagent/blood/on_merge(list/mix_data)
 	if(data && mix_data)
 		if(data["blood_type"] != mix_data["blood_type"])
-			data["blood_type"] = /datum/blood/slurry
+			data["blood_type"] = GET_BLOOD_REF(/datum/blood/slurry)
 		if(data["blood_DNA"] != mix_data["blood_DNA"])
 			data["cloneable"] = 0 //On mix, consider the genetic sampling unviable for pod cloning if the DNA sample doesn't match.
 

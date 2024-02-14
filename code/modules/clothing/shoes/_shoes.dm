@@ -14,6 +14,7 @@
 	permeability_coefficient = 0.5
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
+
 	var/offset = 0
 	var/equipped_before_drop = FALSE
 	///Whether these shoes have laces that can be tied/untied
@@ -24,6 +25,11 @@
 	var/lace_time = 5 SECONDS
 	///An active alert
 	var/datum/weakref/our_alert_ref
+
+	/// The amount of blood on us
+	var/tmp/blood_on_feet
+	var/tmp/bloot_on_feet_color
+	var/tmp/list/feet_blood_DNA
 
 /obj/item/clothing/shoes/suicide_act(mob/living/carbon/user)
 	if(rand(2)>1)
@@ -55,7 +61,9 @@
 			var/obj/item/bodypart/leg = wearer.get_bodypart(BODY_ZONE_R_LEG) || wearer.get_bodypart(BODY_ZONE_L_LEG)
 			if(!leg?.icon_bloodycover)
 				return
-			. += image(leg.icon_bloodycover, "shoeblood")
+			var/image/bloody_overlay = image(leg.icon_bloodycover, "shoeblood")
+			bloody_overlay.color = COLOR_HUMAN_BLOOD
+			. += bloody_overlay
 		else
 			if(clothing_flags & LARGE_WORN_ICON)
 				. += mutable_appearance('icons/effects/64x64.dmi', "shoeblood_large")
@@ -279,3 +287,6 @@
 	if(do_after(user, src, lace_time,extra_checks = CALLBACK(src, PROC_REF(still_shoed), user)))
 		to_chat(user, span_notice("You [tied ? "untie" : "tie"] the laces on [src]."))
 		adjust_laces(tied ? SHOES_UNTIED : SHOES_TIED, user)
+
+
+/obj/item/clothing/shoes/proc/update_bloody_feet()

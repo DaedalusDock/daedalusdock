@@ -30,6 +30,9 @@
 			if(!chest?.icon_bloodycover)
 				return
 			. += image(chest.icon_bloodycover, "[blood_overlay_type]blood")
+			var/image/bloody_overlay = image(chest.icon_bloodycover, "[blood_overlay_type]blood")
+			bloody_overlay.color = COLOR_HUMAN_BLOOD
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "[blood_overlay_type]blood")
 

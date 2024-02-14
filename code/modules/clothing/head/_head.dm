@@ -71,7 +71,9 @@
 			var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
 			if(!head?.icon_bloodycover)
 				return
-			. += image(head.icon_bloodycover, "helmetblood")
+			var/image/bloody_overlay = image(head.icon_bloodycover, "helmetblood")
+			bloody_overlay.color = COLOR_HUMAN_BLOOD
+			. += bloody_overlay
 		else
 			if(clothing_flags & LARGE_WORN_ICON)
 				. += mutable_appearance('icons/effects/64x64.dmi', "helmetblood_large")

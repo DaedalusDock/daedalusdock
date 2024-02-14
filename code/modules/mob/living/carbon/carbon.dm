@@ -1144,6 +1144,10 @@
 		update_worn_gloves()
 		. = TRUE
 
+	if(shoes && !(obscured & ITEM_SLOT_FEET) && shoes.wash(clean_types))
+		update_worn_shoes()
+		. = TRUE
+
 	if(get_permeability_protection() > 0.5)
 		touching.clear_reagents()
 

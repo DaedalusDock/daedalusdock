@@ -21,7 +21,9 @@
 				var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
 				if(!head?.icon_bloodycover)
 					return
-				. += image(head.icon_bloodycover, "maskblood")
+				var/image/bloody_overlay = image(head.icon_bloodycover, "maskblood")
+				bloody_overlay.color = COLOR_HUMAN_BLOOD
+				. += bloody_overlay
 			else
 				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 

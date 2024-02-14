@@ -46,7 +46,9 @@
 			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
 			if(!chest?.icon_bloodycover)
 				return
-			. += image(chest.icon_bloodycover, "uniformblood")
+			var/image/bloody_overlay = image(chest.icon_bloodycover, "uniformblood")
+			bloody_overlay.color = COLOR_HUMAN_BLOOD
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 	if(accessory_overlay)

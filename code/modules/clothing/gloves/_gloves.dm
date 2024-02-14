@@ -40,7 +40,9 @@
 			var/obj/item/bodypart/arm = wearer.get_bodypart(BODY_ZONE_R_ARM) || wearer.get_bodypart(BODY_ZONE_L_ARM)
 			if(!arm?.icon_bloodycover)
 				return
-			. += image(arm.icon_bloodycover, "bloodyhands")
+			var/image/bloody_overlay = image(arm.icon_bloodycover, "bloodyhands")
+			bloody_overlay.color = COLOR_HUMAN_BLOOD
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "bloodyhands")
 

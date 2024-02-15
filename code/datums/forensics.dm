@@ -17,6 +17,10 @@
 /datum/forensics/New(parent)
 	src.parent = parent
 
+/datum/forensics/Destroy(force, ...)
+	parent = null
+	return ..()
+
 /datum/forensics/proc/add_blood_DNA(list/dna)
 	if(!length(dna))
 		return

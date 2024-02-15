@@ -308,6 +308,9 @@
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
 
+	if(forensics)
+		QDEL_NULL(forensics)
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	if(length(overlays))
@@ -941,7 +944,7 @@
 /mob/living/proc/get_blood_dna_list()
 	if(get_blood_id() != /datum/reagent/blood)
 		return
-	return list("ANIMAL DNA" = "Y-")
+	return list("ANIMAL DNA" = GET_BLOOD_REF(/datum/blood/animal))
 
 /mob/proc/get_trace_dna()
 	return

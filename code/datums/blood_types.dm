@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(blood_datums)
 
 /// Takes a blood typepath, returns TRUE if it's compatible with this type.
 /datum/blood/proc/is_compatible(other_type)
-	return other_type == /datum/blood/universal
+	return ispath(other_type, /datum/blood/universal) || other_type == type
 
 /datum/blood/universal
 	name = "U"
@@ -16,19 +16,16 @@ GLOBAL_LIST_EMPTY(blood_datums)
 /datum/blood/slurry
 	name = "??"
 
+/datum/blood/animal
+	name = "Y-"
+
 /datum/blood/lizard
 	name = "JN"
 	color = "#e2ae02"
 
-/datum/blood/lizard/is_compatible(other_type)
-	return ispath(other_type, /datum/blood/universal)
-
 /datum/blood/universal/vox
 	name = "VX"
 	color = "#009696"
-
-/datum/blood/universal/vox/is_compatible(other_type)
-	return other_type == type || ispath(other_type, /datum/blood/human) || ..()
 
 /datum/blood/human
 	abstract_type = /datum/blood/human

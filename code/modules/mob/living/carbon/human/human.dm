@@ -1252,7 +1252,10 @@
 		add_fingerprint(user)
 
 /// Takes a user and body_zone, if the body_zone is covered by clothing, add trace dna to it. Otherwise, add one to us.
-/mob/living/carbon/human/proc/add_trace_DNA_on_clothing_or_self(mob/user, body_zone)
+/mob/living/carbon/human/proc/add_trace_DNA_on_clothing_or_self(mob/living/carbon/human/user, body_zone)
+	if(!istype(user))
+		return
+
 	var/obj/item/I = get_item_covering_zone(body_zone)
 	if(I)
 		I.add_trace_DNA(user.get_trace_dna_list())

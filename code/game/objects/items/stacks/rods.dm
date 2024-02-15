@@ -19,7 +19,6 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 9
 	throwforce = 10
-	throw_speed = 3
 	throw_range = 7
 	mats_per_unit = list(/datum/material/iron=1000)
 	max_amount = 50

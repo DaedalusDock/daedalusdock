@@ -15,3 +15,7 @@
 #define SHOCK_TIER_5 80
 #define SHOCK_TIER_6 120
 #define SHOCK_TIER_7 150
+
+#define PAIN_AMT_LOW 10
+#define PAIN_AMT_MEDIUM 40
+#define PAIN_AMT_AGONIZING 70

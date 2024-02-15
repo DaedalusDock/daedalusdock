@@ -22,7 +22,6 @@
 	light_power = 0.75
 	light_color = LIGHT_COLOR_FIRE
 	light_on = FALSE
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
@@ -48,6 +47,10 @@
 	update_appearance()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
 	AddElement(/datum/element/tool_flash, 2)
+
+/obj/item/weldingtool/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/item/weldingtool/update_icon_state()
 	if(welding)
@@ -82,7 +85,7 @@
 		damtype = BRUTE
 		update_appearance()
 		if(!can_off_process)
-			STOP_PROCESSING(SSobj, src)
+			. = PROCESS_KILL
 		return
 
 	//This is to start fires. process() is only called if the welder is on.

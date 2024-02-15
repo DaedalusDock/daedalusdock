@@ -46,13 +46,17 @@
 	QDEL_IN(src, 10)
 
 /obj/effect/particle_effect/smoke/process()
+	SHOULD_CALL_PARENT(TRUE)
+	. = 1 || ..()
+	. = null
+
 	lifetime--
 	if(lifetime < 1)
 		kill_smoke()
-		return FALSE
+		return PROCESS_KILL
+
 	for(var/mob/living/L in range(0,src))
 		smoke_mob(L)
-	return TRUE
 
 /obj/effect/particle_effect/smoke/proc/smoke_mob(mob/living/carbon/C)
 	if(!istype(C))

@@ -34,8 +34,8 @@ To add a crossbreed:
 	var/effect_desc = "null"
 	force = 0
 	w_class = WEIGHT_CLASS_TINY
+
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 6
 
 /obj/item/slimecross/examine(mob/user)
@@ -89,6 +89,10 @@ To add a crossbreed:
 		if("adamantine")
 			itemcolor = "#008B8B"
 	add_atom_colour(itemcolor, FIXED_COLOUR_PRIORITY)
+
+/obj/item/slimecross/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/item/slimecrossbeaker //To be used as a result for extract reactions that make chemicals.
 	name = "result extract"

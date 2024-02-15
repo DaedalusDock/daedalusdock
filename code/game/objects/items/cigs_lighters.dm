@@ -30,6 +30,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/burnt = FALSE
 	/// How long the match lasts in seconds
 
+/obj/item/match/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/match/process(delta_time)
 	smoketime -= delta_time * (1 SECONDS)
 	if(smoketime <= 0)
@@ -255,6 +259,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		e.start(src)
 		qdel(src)
 		return
+
 	// allowing reagents to react after being lit
 	reagents.flags &= ~(NO_REACT)
 	reagents.handle_reactions()
@@ -269,6 +274,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		var/mob/M = loc
 		M.update_worn_mask()
 		M.update_held_items()
+
+	AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_PLUME, "nicotine", 5)
 
 /obj/item/clothing/mask/cigarette/extinguish()
 	if(!lit)
@@ -288,6 +295,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		to_chat(M, span_notice("Your [name] goes out."))
 		M.update_worn_mask()
 		M.update_held_items()
+
+	qdel(GetComponent(/datum/component/smell))
 
 /// Handles processing the reagents in the cigarette.
 /obj/item/clothing/mask/cigarette/proc/handle_reagents()
@@ -1048,7 +1057,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!reagents.total_volume)
 		if(ismob(loc))
 			to_chat(M, span_warning("[src] is empty!"))
-			STOP_PROCESSING(SSobj, src)
+			. = PROCESS_KILL
 			//it's reusable so it won't unequip when empty
 		return
 

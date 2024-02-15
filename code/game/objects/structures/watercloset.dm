@@ -759,12 +759,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	var/id = null
 
 /obj/structure/curtain/cloth/fancy/mechanical/Destroy()
-	GLOB.curtains -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/structure/curtain/cloth/fancy/mechanical/Initialize(mapload)
 	. = ..()
-	GLOB.curtains += src
+	SET_TRACKING(__TYPE__)
 
 /obj/structure/curtain/cloth/fancy/mechanical/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	id = "[port.id]_[id]"

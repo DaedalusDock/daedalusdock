@@ -1,0 +1,60 @@
+2024-02-01:
+  DTraitor:
+  - refactor: Removed unnecessary checks in mod suits code
+  Kapu1178:
+  - bugfix: Items with unique appearances for being wielded work again.
+  - bugfix: Throwing processes at the correct rate.
+  - bugfix: A code error of which it's impact I am unsure of.
+  - rscadd: The dual-port vent pump is now in the RCD
+  - bugfix: Looping sounds play again.
+  TiviPlus, LemonInTheDark, ChungusGamer666, Watermelon914, vinylspiders, tyeagg, Kapu1178:
+  - rscadd: Added new particle effects for being on fire or wet.
+  - rscadd: Added new particle effects for firing ballistic weapons.
+  - rscadd: Added new particle effects for bullets impacting surfaces.
+  - rscadd: Bullets are now illuminated.
+  - rscadd: Bullets leave behind impact holes on most surfaces.
+2024-02-05:
+  DTraitor:
+  - bugfix: Camera mobs (AI, Blob, etc) can move down on multi Z maps now
+  Kapu1178:
+  - bugfix: You can no longer use self-grabs to propel yourself at the speed of light.
+  - bugfix: You can no longer throw yourself.
+  francinum:
+  - bugfix: Corrected mousedrag hotspots on the fancy cursor.
+2024-02-06:
+  Kapu1178:
+  - bugfix: Fixed missing wire nodes on some APCs on Theseus
+  - bugfix: Fixed link scryers missing an icon.
+2024-02-07:
+  Ghommie:
+  - bugfix: Fixed text effects for runechat messages (the stuff enclosed in +, | and
+      _ characters) sometimes not working.
+2024-02-10:
+  Kapu1178:
+  - qol: Added an on-screen indicator for when you're unable to click.
+2024-02-12:
+  Kapu1178:
+  - qol: Thrown objects spin more naturally.
+  - tweak: Almost all objects have had their throw speed reduced.
+  - bugfix: Unbuckling from an object no longer locks you out of actions for 2 seconds.
+  - qol: Using the Observe verb now shows you action buttons of the target.
+  - qol: Using the Observe verb now allows you to see Tooltips like normal.
+  - qol: Using the Observe verb now makes you see and hear (almost) exactly what your
+      target does.
+  - tweak: The Orbit panel now uses Observe by default. You can still use Orbit by
+      changing the toggle in the top right.
+  - bugfix: An 8 year old bug with signallers you never noticed because you don't
+      use them.
+  - qol: Added accessibility features to disable blur effects and pain flashes.
+  - balance: Walking on fractured legs causes pain
+  - balance: Reduced slowdown caused by pain directly. (pain / 15 to pain / 40)
+  - rscadd: Head fractures now give you a concussion status effect
+  whataboutism-alos:
+  - rscadd: Creates vox scutes
+  - imageadd: Creates icons for vox arm, leg, and hand scutes
+  - code_imp: Reorganized the sprites within the vox bodyparts.dmi
+2024-02-13:
+  Kapu1178:
+  - rscadd: Ghost vision is now monochrome. This can be disabled in preferences.
+  - bugfix: Damage from overheating would occasionally not update your health display.
+  - bugfix: Neon carpet works again

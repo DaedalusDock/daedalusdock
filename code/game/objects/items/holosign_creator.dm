@@ -10,7 +10,6 @@
 	force = 0
 	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	item_flags = NOBLUDGEON
 	var/list/signs

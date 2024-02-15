@@ -7,7 +7,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	force = 8
 	throwforce = 10
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 7
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("mops", "bashes", "bludgeons", "whacks")

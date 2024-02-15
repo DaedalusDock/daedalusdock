@@ -7,7 +7,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
 
-	throw_speed = 3
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0
@@ -383,7 +382,7 @@
 		C.visible_message(span_suicide("[C] screws up like an idiot and still dies anyway!"))
 		return (BRUTELOSS)
 
-	C.emote("scream")
+	C.emote("agony")
 
 	for(var/i in C.bodyparts)
 		var/obj/item/bodypart/bone = i

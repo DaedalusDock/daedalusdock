@@ -293,6 +293,10 @@
 	. = ..()
 	fuel = rand(1600, 2000)
 
+/obj/item/flashlight/flare/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/flashlight/flare/process(delta_time)
 	open_flame(heat)
 	fuel = max(fuel -= delta_time, 0)
@@ -300,7 +304,7 @@
 		turn_off()
 		if(!fuel)
 			icon_state = "[initial(icon_state)]-empty"
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
 
 /obj/item/flashlight/flare/ignition_effect(atom/A, mob/user)
 	. = fuel && on ? span_notice("[user] lights [A] with [src] like a real badass.") : ""
@@ -328,6 +332,7 @@
 	if(fuel <= 0)
 		to_chat(user, span_warning("[src] is out of fuel!"))
 		return
+
 	if(on)
 		to_chat(user, span_warning("[src] is already on!"))
 		return
@@ -410,12 +415,13 @@
 
 /obj/item/flashlight/emp/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	. = ..()
+	return ..()
 
 /obj/item/flashlight/emp/process(delta_time)
 	charge_timer += delta_time
 	if(charge_timer < charge_delay)
 		return FALSE
+
 	charge_timer -= charge_delay
 	emp_cur_charges = min(emp_cur_charges+1, emp_max_charges)
 	return TRUE
@@ -480,13 +486,12 @@
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-
 /obj/item/flashlight/glowstick/process(delta_time)
 	fuel = max(fuel - delta_time, 0)
 	if(fuel <= 0)
 		turn_off()
-		STOP_PROCESSING(SSobj, src)
 		update_appearance()
+		return PROCESS_KILL
 
 /obj/item/flashlight/glowstick/proc/turn_off()
 	on = FALSE

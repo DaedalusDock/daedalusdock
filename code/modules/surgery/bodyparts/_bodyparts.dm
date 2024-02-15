@@ -206,7 +206,7 @@
 	/// what visual effect is used when this limb is used to strike someone.
 	var/unarmed_attack_effect = ATTACK_EFFECT_PUNCH
 	/// Sounds when this bodypart is used in an umarmed attack
-	var/sound/unarmed_attack_sound = 'sound/weapons/punch1.ogg'
+	var/sound/unarmed_attack_sound = SFX_PUNCH
 	var/sound/unarmed_miss_sound = 'sound/weapons/punchmiss.ogg'
 	///Lowest possible punch damage this bodypart can give. If this is set to 0, unarmed attacks will always miss.
 	var/unarmed_damage_low = 1
@@ -325,7 +325,7 @@
 			var/bone = encased ? encased : "bone"
 			if(bodypart_flags & BP_BROKEN_BONES)
 				bone = "broken [bone]"
-			wound_descriptors["a [bone] exposed"] = 1
+			wound_descriptors["[bone] exposed"] = 1
 
 			if(!encased || how_open() >= SURGERY_DEENCASED)
 				var/list/bits = list()
@@ -378,6 +378,11 @@
 
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage)
+
+/obj/item/bodypart/ex_act(severity, target)
+	if(owner) // Do not explode if we are attached to a person.
+		return
+	return ..()
 
 /obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
 	SHOULD_CALL_PARENT(TRUE)
@@ -433,7 +438,6 @@
 /obj/item/bodypart/setDir(newdir)
 	. = ..()
 	dir = SOUTH
-	return
 
 //empties the bodypart from its organs and other things inside it
 /obj/item/bodypart/proc/drop_contents(mob/user, violent_removal)
@@ -521,7 +525,7 @@
 //Applies brute and burn damage to the organ. Returns 1 if the damage-icon states changed at all.
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
-/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, breaks_bones = TRUE)
+/obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, required_status = null, sharpness = NONE, modifiers = DEFAULT_DAMAGE_FLAGS)
 	SHOULD_CALL_PARENT(TRUE)
 	var/hit_percent = (100-blocked)/100
 	if((!brute && !burn) || hit_percent <= 0)
@@ -557,11 +561,15 @@
 			if(spillover > 0)
 				burn = max(burn - spillover, 0)
 
+	var/can_dismember = modifiers & DAMAGE_CAN_DISMEMBER
+	var/can_jostle_bones = modifiers & DAMAGE_CAN_JOSTLE_BONES
+	var/can_break_bones = modifiers & DAMAGE_CAN_FRACTURE
+
 	#ifndef UNIT_TESTS
 	/*
 	// DISMEMBERMENT - Doesn't happen during unit tests due to fucking up damage.
 	*/
-	if(owner && breaks_bones)
+	if(owner && can_dismember)
 		var/total_damage = brute_dam + burn_dam + burn + brute + spillover
 		if(total_damage >= max_damage * LIMB_DISMEMBERMENT_PERCENT)
 			if(attempt_dismemberment(pure_brute, burn, sharpness, total_damage > max_damage * LIMB_AUTODISMEMBER_PERCENT))
@@ -570,15 +578,15 @@
 
 
 	//blunt damage is gud at fracturing
-	if(breaks_bones && brute)
+	if(brute && (can_break_bones || can_jostle_bones))
 		if(LAZYLEN(contained_organs))
 			brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), null, sharpness) // Absorb some brute damage
 			if(!IS_ORGANIC_LIMB(src))
 				burn -= damage_internal_organs(null, round(burn/2, DAMAGE_PRECISION))
 
-		if(bodypart_flags & BP_BROKEN_BONES)
+		if((bodypart_flags & BP_BROKEN_BONES) && can_jostle_bones)
 			jostle_bones(brute)
-		else if((brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
+		else if(can_break_bones && (brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))
 			break_bones()
 
 
@@ -617,9 +625,15 @@
 				W.disinfected = 0
 				W.salved = 0
 				disturbed += W.damage
+
 		if(disturbed)
 			to_chat(owner, span_warning("Ow! Your burns were disturbed."))
 			owner.apply_pain(0.5*burn, body_zone, updating_health = FALSE)
+
+		if(owner && can_break_bones && istype(src, /obj/item/bodypart/head) && (bodypart_flags & BP_HAS_BLOOD) && sharpness == NONE && (owner.stat == CONSCIOUS) && owner.has_mouth())
+			if(prob(8) && owner.bleed(5))
+				owner.spray_blood(pick(GLOB.alldirs), 1)
+				owner.visible_message(span_danger("Blood sprays from [owner]'s mouth!"))
 
 	/*
 	// END WOUND HANDLING
@@ -649,7 +663,7 @@
 	if(!LAZYLEN(contained_organs) || !(brute || burn))
 		return FALSE
 
-	var/organ_damage_threshold = 5
+	var/organ_damage_threshold = 10
 	if(sharpness & SHARP_POINTY)
 		organ_damage_threshold *= 0.5
 
@@ -811,7 +825,7 @@
 			last_maxed = FALSE
 		else
 			if(!last_maxed && owner.stat < UNCONSCIOUS)
-				INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+				INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "agony")
 			last_maxed = TRUE
 		set_disabled(FALSE) // we only care about the paralysis trait
 		return
@@ -820,7 +834,7 @@
 	if(total_damage >= max_damage * disable_threshold)
 		if(!last_maxed)
 			if(owner.stat < UNCONSCIOUS)
-				INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+				INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "agony")
 			last_maxed = TRUE
 		set_disabled(TRUE)
 		return
@@ -1275,7 +1289,7 @@
 		brute_damage *= 2
 		burn_damage *= 2
 
-	receive_damage(brute_damage, burn_damage, breaks_bones = FALSE)
+	receive_damage(brute_damage, burn_damage, modifiers = NONE)
 	do_sparks(number = 1, cardinal_only = FALSE, source = owner)
 	ADD_TRAIT(src, TRAIT_PARALYSIS, EMP_TRAIT)
 	addtimer(CALLBACK(src, PROC_REF(un_paralyze)), time_needed)
@@ -1447,3 +1461,32 @@
 	if(bodypart_flags & BP_DISLOCATED)
 		to_chat(user, span_warning("The [joint_name] is dislocated!"))
 	return TRUE
+
+/// Applies all bodypart traits to the target.
+/obj/item/bodypart/proc/apply_traits(mob/target)
+	if(isnull(target))
+		return
+
+	for(var/trait in bodypart_traits)
+		ADD_TRAIT(target, trait, bodypart_trait_source)
+
+/// Adds a trait to be applied by this bodypart.
+/obj/item/bodypart/proc/add_bodypart_trait(trait)
+	bodypart_traits |= trait
+	apply_traits(owner)
+
+/// Removes a trait applied by this bodypart.
+/obj/item/bodypart/proc/remove_bodypart_trait(trait)
+	bodypart_traits -= trait
+	if(owner)
+		REMOVE_TRAIT(owner, trait, bodypart_trait_source)
+
+/// Remove all bodypart traits this part grants.
+/obj/item/bodypart/proc/remove_traits_from(mob/target)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	PRIVATE_PROC(TRUE)
+	if(isnull(target))
+		return
+
+	for(var/trait in bodypart_traits)
+		REMOVE_TRAIT(target, trait, bodypart_trait_source)

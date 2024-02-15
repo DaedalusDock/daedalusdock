@@ -37,7 +37,7 @@
 	melee_damage_upper = 0
 	attack_verb_continuous = "chomps"
 	attack_verb_simple = "chomp"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	attack_vis_effect = ATTACK_EFFECT_BITE
 	throw_message = "is avoided by the"
 	aggro_vision_range = 9
@@ -51,6 +51,7 @@
 
 /mob/living/simple_animal/hostile/asteroid/fugu/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/seethrough_mob)
 	E = new
 	E.Grant(src)
 
@@ -157,6 +158,7 @@
 
 	ADD_TRAIT(animal, TRAIT_FUGU_GLANDED, type)
 
+	animal.AddComponent(/datum/component/seethrough_mob)
 	animal.maxHealth *= 1.5
 	animal.health = min(animal.maxHealth, animal.health * 1.5)
 	animal.melee_damage_lower = max((animal.melee_damage_lower * 2), 10)

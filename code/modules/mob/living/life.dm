@@ -59,6 +59,7 @@
 			return
 
 		if(stat != DEAD)
+			handle_smell()
 			//Random events (vomiting etc)
 			handle_random_events(delta_time, times_fired)
 
@@ -187,5 +188,17 @@
 
 	var/grav_strength = gravity - GRAVITY_DAMAGE_THRESHOLD
 	adjustBruteLoss(min(GRAVITY_DAMAGE_SCALING * grav_strength, GRAVITY_DAMAGE_MAXIMUM) * delta_time)
+
+/mob/living/proc/handle_smell()
+	if(!next_smell || !COOLDOWN_FINISHED(src, smell_time) || !can_smell())
+		return
+
+	var/datum/component/smell/S = next_smell.resolve()
+	next_smell = null
+	if(QDELETED(S) || (get_dist(get_turf(src), get_turf(S.parent)) > S.radius))
+		return
+
+	S.print_to(src)
+	COOLDOWN_START(src, smell_time, S.cooldown)
 
 #undef BODYTEMP_DIVISOR

@@ -32,7 +32,7 @@
 
 /datum/computer_file/program/supermatter_monitor/run_program(mob/living/user)
 	. = ..(user)
-	if(!(active in GLOB.machines))
+	if(!(active in INSTANCES_OF(/obj/machinery/power/supermatter)))
 		active = null
 	refresh()
 
@@ -50,7 +50,7 @@
 	var/turf/user_turf = get_turf(ui_host())
 	if(!user_turf)
 		return
-	for(var/obj/machinery/power/supermatter/crystal in GLOB.machines)
+	for(var/obj/machinery/power/supermatter/crystal as anything in INSTANCES_OF(/obj/machinery/power/supermatter))
 		//Exclude Syndicate owned, Delaminating, not within coverage, not on a tile.
 		if (!crystal.include_in_cims || !isturf(crystal.loc) || !(is_station_level(crystal.z) || is_mining_level(crystal.z) || crystal.z == user_turf.z))
 			continue

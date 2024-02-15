@@ -10,7 +10,68 @@
 	appearance_flags = TILE_BOUND|LONG_GLIDE
 
 	/// Has this atom's constructor ran?
-	var/initialized = FALSE
+	var/tmp/initialized = FALSE
+
+	///Reagents holder
+	var/tmp/datum/reagents/reagents = null
+	/// the datum handler for our contents - see create_storage() for creation method
+	var/tmp/datum/storage/atom_storage
+
+	///This atom's HUD (med/sec, etc) images. Associative list.
+	var/tmp/list/image/hud_list = null
+	///HUD images that this atom can provide.
+	var/tmp/list/hud_possible
+
+	/**
+	 * used to store the different colors on an atom
+	 *
+	 * its inherent color, the colored paint applied on it, special color effect etc...
+	 */
+	var/tmp/list/atom_colours
+
+	/// a very temporary list of overlays to remove
+	var/tmp/list/remove_overlays
+	/// a very temporary list of overlays to add
+	var/tmp/list/add_overlays
+
+	///vis overlays managed by SSvis_overlays to automaticaly turn them like other overlays.
+	var/tmp/list/managed_vis_overlays
+	///overlays managed by [update_overlays][/atom/proc/update_overlays] to prevent removing overlays that weren't added by the same proc. Single items are stored on their own, not in a list.
+	var/tmp/list/managed_overlays
+
+	///Cooldown tick timer for buckle messages
+	var/tmp/buckle_message_cooldown = 0
+	///Last fingerprints to touch this atom
+	var/tmp/fingerprintslast
+
+	var/tmp/list/filter_data //For handling persistent filters
+
+	//List of datums orbiting this atom
+	var/tmp/datum/component/orbiter/orbiters
+
+	///The custom materials this atom is made of, used by a lot of things like furniture, walls, and floors (if I finish the functionality, that is.)
+	///The list referenced by this var can be shared by multiple objects and should not be directly modified. Instead, use [set_custom_materials][/atom/proc/set_custom_materials].
+	var/tmp/list/datum/material/custom_materials
+
+	var/tmp/datum/wires/wires = null
+
+	var/tmp/list/alternate_appearances
+
+	/// Last name used to calculate a color for the chatmessage overlays
+	var/tmp/chat_color_name
+	/// Last color calculated for the the chatmessage overlays
+	var/tmp/chat_color
+	/// A luminescence-shifted value of the last color calculated for chatmessage overlays
+	var/tmp/chat_color_darkened
+
+	///Holds merger groups currently active on the atom. Do not access directly, use GetMergeGroup() instead.
+	var/tmp/list/datum/merger/mergers
+
+	///Reference to atom being orbited
+	var/tmp/atom/orbit_target
+
+	/// !DO NOT DIRECTLY EDIT! Can mobs "interact" with this item? THIS IS ONLY USED FOR MOUSE ICONS. SEE interactables.dm.
+	var/tmp/is_mouseover_interactable
 
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
@@ -33,62 +94,16 @@
 	///When a projectile ricochets off this atom, it deals the normal damage * this modifier to this atom
 	var/receive_ricochet_damage_coeff = 0.33
 
-	///Reagents holder
-	var/datum/reagents/reagents = null
-
-	///This atom's HUD (med/sec, etc) images. Associative list.
-	var/list/image/hud_list = null
-	///HUD images that this atom can provide.
-	var/list/hud_possible
-
 	///Value used to increment ex_act() if reactionary_explosions is on
 	var/explosion_block = 0
-
-	/**
-	 * used to store the different colors on an atom
-	 *
-	 * its inherent color, the colored paint applied on it, special color effect etc...
-	 */
-	var/list/atom_colours
-
-
-	/// a very temporary list of overlays to remove
-	var/list/remove_overlays
-	/// a very temporary list of overlays to add
-	var/list/add_overlays
-
-	///vis overlays managed by SSvis_overlays to automaticaly turn them like other overlays.
-	var/list/managed_vis_overlays
-	///overlays managed by [update_overlays][/atom/proc/update_overlays] to prevent removing overlays that weren't added by the same proc. Single items are stored on their own, not in a list.
-	var/list/managed_overlays
-
-	///Cooldown tick timer for buckle messages
-	var/buckle_message_cooldown = 0
-	///Last fingerprints to touch this atom
-	var/fingerprintslast
-
-	var/list/filter_data //For handling persistent filters
-
-	//List of datums orbiting this atom
-	var/datum/component/orbiter/orbiters
 
 	/// Radiation insulation types
 	var/rad_insulation = RAD_NO_INSULATION
 
-	/// The icon state intended to be used for the acid component. Used to override the default acid overlay icon state.
-	var/custom_acid_overlay = null
-
-	///The custom materials this atom is made of, used by a lot of things like furniture, walls, and floors (if I finish the functionality, that is.)
-	///The list referenced by this var can be shared by multiple objects and should not be directly modified. Instead, use [set_custom_materials][/atom/proc/set_custom_materials].
-	var/list/datum/material/custom_materials
 	///Bitfield for how the atom handles materials.
 	var/material_flags = NONE
 	///Modifier that raises/lowers the effect of the amount of a material, prevents small and easy to get items from being death machines.
 	var/material_modifier = 1
-
-	var/datum/wires/wires = null
-
-	var/list/alternate_appearances
 
 	///Light systems, both shouldn't be active at the same time.
 	var/light_system = STATIC_LIGHT
@@ -111,13 +126,6 @@
 	///Any light sources that are "inside" of us, for example, if src here was a mob that's carrying a flashlight, that flashlight's light source would be part of this list.
 	var/tmp/list/light_sources
 
-	/// Last name used to calculate a color for the chatmessage overlays
-	var/chat_color_name
-	/// Last color calculated for the the chatmessage overlays
-	var/chat_color
-	/// A luminescence-shifted value of the last color calculated for chatmessage overlays
-	var/chat_color_darkened
-
 	///Default pixel x shifting for the atom's icon.
 	var/base_pixel_x = 0
 	///Default pixel y shifting for the atom's icon.
@@ -130,27 +138,23 @@
 	///A string of hex format colors to be used by greyscale sprites, ex: "#0054aa#badcff"
 	var/greyscale_colors
 
-	///Holds merger groups currently active on the atom. Do not access directly, use GetMergeGroup() instead.
-	var/list/datum/merger/mergers
-
 	///Icon-smoothing behavior.
-	var/smoothing_flags = NONE
+	var/tmp/smoothing_flags = NONE
 	///What directions this is currently smoothing with. IMPORTANT: This uses the smoothing direction flags as defined in icon_smoothing.dm, instead of the BYOND flags.
-	var/smoothing_junction = null //This starts as null for us to know when it's first set, but after that it will hold a 8-bit mask ranging from 0 to 255.
+	var/tmp/smoothing_junction = null //This starts as null for us to know when it's first set, but after that it will hold a 8-bit mask ranging from 0 to 255.
 	///Smoothing variable
-	var/top_left_corner
+	var/tmp/top_left_corner
 	///Smoothing variable
-	var/top_right_corner
+	var/tmp/top_right_corner
 	///Smoothing variable
-	var/bottom_left_corner
+	var/tmp/bottom_left_corner
 	///Smoothing variable
-	var/bottom_right_corner
+	var/tmp/bottom_right_corner
 	///What smoothing groups does this atom belongs to, to match canSmoothWith. If null, nobody can smooth with it. Must be sorted.
-	var/list/smoothing_groups = null
+	var/tmp/list/smoothing_groups = null
 	///List of smoothing groups this atom can smooth with. If this is null and atom is smooth, it smooths only with itself. Must be sorted.
-	var/list/canSmoothWith = null
-	///Reference to atom being orbited
-	var/atom/orbit_target
+	var/tmp/list/canSmoothWith = null
+
 	///AI controller that controls this atom. type on init, then turned into an instance during runtime.
 	///Note: If you are for some reason giving this to a non-mob, it needs to create it's own in Initialize()
 	var/datum/ai_controller/ai_controller
@@ -159,7 +163,7 @@
 	var/uses_integrity = FALSE
 
 	///Atom armor. Use returnArmor()
-	var/datum/armor/armor
+	var/tmp/datum/armor/armor
 	VAR_PRIVATE/atom_integrity //defaults to max_integrity
 	var/max_integrity = 500
 	var/integrity_failure = 0 //0 if we have no special broken behavior, otherwise is a percentage of at what point the atom breaks. 0.5 being 50%
@@ -168,12 +172,8 @@
 
 	var/resistance_flags = NONE // INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ON_FIRE | UNACIDABLE | ACID_PROOF
 
-	/// the datum handler for our contents - see create_storage() for creation method
-	var/datum/storage/atom_storage
 	/// How this atom should react to having its astar blocking checked
 	var/can_astar_pass = CANASTARPASS_DENSITY
-	/// !DO NOT DIRECTLY EDIT! Can mobs "interact" with this item? THIS IS ONLY USED FOR MOUSE ICONS. SEE interactables.dm.
-	var/is_mouseover_interactable
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -277,7 +277,7 @@
  *  proc must return the hint
  * [INITIALIZE_HINT_LATELOAD] otherwise you will never be called.
  *
- * useful for doing things like finding other machines on GLOB.machines because you can guarantee
+ * useful for doing things like finding other machines using INSTANCES_OF() because you can guarantee
  * that all atoms will actually exist in the "WORLD" at this time and that all their Intialization
  * code has been run
  */
@@ -633,6 +633,7 @@
 	// only living mobs use armor to reduce damage, but on_hit() is going to need the value no matter what is shot.
 	var/visual_armor_check = check_projectile_armor(def_zone, hitting_projectile)
 	. = hitting_projectile.on_hit(src, visual_armor_check, def_zone, piercing_hit)
+	spawn_debris(hitting_projectile)
 
 ///Return true if we're inside the passed in atom
 /atom/proc/in_contents_of(container)//can take class or object instance as argument
@@ -705,7 +706,8 @@
 		var/list/materials_list = list()
 		for(var/datum/material/current_material as anything in custom_materials)
 			materials_list += "[current_material.name]"
-		. += "<u>It is made out of [english_list(materials_list)]</u>."
+		. += "It is made out of [english_list(materials_list)]."
+
 	if(reagents)
 		. += "<hr>" //PARIAH EDIT ADDITION
 		if(reagents.flags & TRANSPARENT)
@@ -2238,10 +2240,9 @@
 
 /// Makes this atom look like a "hologram"
 /// So transparent, blue and with a scanline
-/// The degree of the opacity is optional, based off the opacity arg (0 -> 1)
-/atom/proc/makeHologram(opacity = 0.5)
+/atom/proc/makeHologram(color = rgb(125,180,225, 0.5 * 255))
 	// First, we'll make things blue (roughly) and sorta transparent
-	add_filter("HOLO: Color and Transparent", 1, color_matrix_filter(rgb(125,180,225, opacity * 255)))
+	add_filter("HOLO: Color and Transparent", 1, color_matrix_filter(color))
 	// Now we're gonna do a scanline effect
 	// Gonna take this atom and give it a render target, then use it as a source for a filter
 	// (We use an atom because it seems as if setting render_target on an MA is just invalid. I hate this engine)

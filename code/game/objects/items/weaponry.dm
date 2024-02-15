@@ -95,7 +95,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	slot_flags = ITEM_SLOT_BACK
 	force = 30
 	throwforce = 20
-	throw_speed = 3
+	throw_speed = 1
 	throw_range = 5
 	armor_penetration = 35
 
@@ -282,7 +282,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
 	force = 2
 	throwforce = 10 //10 + 2 (WEIGHT_CLASS_SMALL) * 4 (EMBEDDED_IMPACT_PAIN_MULTIPLIER) = 18 damage on hit due to guaranteed embedding
-	throw_speed = 4
+	throw_speed = 1.5
 	embedding = list("pain_mult" = 4, "embed_chance" = 100, "fall_chance" = 0)
 	armor_penetration = 40
 
@@ -316,7 +316,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	force = 3
 	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 5
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 6
 	custom_materials = list(/datum/material/iron=12000)
 	hitsound = 'sound/weapons/genhit.ogg'
@@ -354,9 +354,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "red_phone"
 	force = 3
+
 	throwforce = 2
-	throw_speed = 3
 	throw_range = 4
+
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("calls", "rings")
 	attack_verb_simple = list("call", "ring")
@@ -393,7 +394,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/weapons/staves_righthand.dmi'
 	force = 3
 	throwforce = 5
-	throw_speed = 2
+	throw_speed = 1.5
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	armor_penetration = 100
@@ -418,7 +419,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	force = 3
 	throwforce = 5
-	throw_speed = 2
+	throw_speed = 1.5
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -629,15 +630,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	inhand_icon_state = "baseball_bat_metal"
 	force = 12
 	throwforce = 15
+	block_sound = list('sound/weapons/effects/batreflect1.ogg', 'sound/weapons/effects/batreflect2.ogg')
 
-/obj/item/melee/baseball_bat/ablative/IsReflect()//some day this will reflect thrown items instead of lasers
-	var/picksound = rand(1,2)
-	var/turf = get_turf(src)
-	if(picksound == 1)
-		playsound(turf, 'sound/weapons/effects/batreflect1.ogg', 50, TRUE)
-	if(picksound == 2)
-		playsound(turf, 'sound/weapons/effects/batreflect2.ogg', 50, TRUE)
-	return 1
+/obj/item/melee/baseball_bat/ablative/IsReflect() //some day this will reflect thrown items instead of lasers
+	return TRUE
 
 /obj/item/melee/flyswatter
 	name = "flyswatter"
@@ -760,14 +756,12 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	force = 10
 	throwforce = 25
-	throw_speed = 4
+	throw_speed = 1.5
 	embedding = list("embed_chance" = 100)
 	block_chance = 25
 	sharpness = SHARP_EDGED
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	/// Wielding status.
-	var/wielded = FALSE
 	/// The color of the slash we create
 	var/slash_color = COLOR_BLUE
 	/// Previous x position of where we clicked on the target's icon
@@ -779,25 +773,32 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/highfrequencyblade/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS)
-	AddComponent(/datum/component/two_handed)
 
 /obj/item/highfrequencyblade/update_icon_state()
 	icon_state = "hfrequency[wielded]"
 	return ..()
 
-/obj/item/highfrequencyblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(attack_type == PROJECTILE_ATTACK)
-		if(wielded || prob(final_block_chance))
-			owner.visible_message(span_danger("[owner] deflects [attack_text] with [src]!"))
-			playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, TRUE)
-			return TRUE
-		return FALSE
-	if(prob(final_block_chance * (wielded ? 2 : 1)))
-		owner.visible_message(span_danger("[owner] parries [attack_text] with [src]!"))
+/obj/item/highfrequencyblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	if((attack_type == PROJECTILE_ATTACK) && wielded)
 		return TRUE
+
+	. = ..()
+
+	if(wielded)
+		. *= 2
+
+/obj/item/highfrequencyblade/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		if(attack_type == PROJECTILE_ATTACK)
+			wielder.visible_message(span_danger("[wielder] deflects [attack_text] with [src]!"))
+			playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, TRUE)
+			return ..(do_message = FALSE)
+		else
+			wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
+			return ..(do_message = FALSE)
+
+	return ..()
 
 /obj/item/highfrequencyblade/attack(mob/living/target, mob/living/user, params)
 	if(!wielded)

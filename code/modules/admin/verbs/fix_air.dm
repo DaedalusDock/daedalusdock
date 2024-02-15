@@ -17,7 +17,7 @@
 	var/current_time = world.timeofday
 
 	// Depower the supermatter, as it would quickly blow up once we remove all gases from the pipes.
-	for(var/obj/machinery/power/supermatter/S in GLOB.machines)
+	for(var/obj/machinery/power/supermatter/S as anything in INSTANCES_OF(/obj/machinery/power/supermatter))
 		S.power = 0
 		S.damage = 0
 

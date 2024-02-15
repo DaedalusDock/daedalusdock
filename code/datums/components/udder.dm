@@ -79,9 +79,9 @@
 	. = ..()
 
 /obj/item/udder/Destroy()
-	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	udder_mob = null
+	return ..()
 
 /obj/item/udder/process(delta_time)
 	if(udder_mob.stat != DEAD)

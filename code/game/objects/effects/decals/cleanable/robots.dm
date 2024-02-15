@@ -84,7 +84,7 @@
 
 /obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
-	AddComponent(/datum/component/smell, SCENT_HAZE, "industrial lubricant", 3)
+	AddComponent(/datum/component/smell, INTENSITY_NORMAL, SCENT_HAZE, "industrial lubricant", 3)
 
 /obj/effect/decal/cleanable/oil/attackby(obj/item/I, mob/living/user)
 	var/attacked_by_hot_thing = I.get_temperature()

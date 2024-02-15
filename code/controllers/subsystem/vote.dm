@@ -42,6 +42,7 @@ SUBSYSTEM_DEF(vote)
 /datum/controller/subsystem/vote/proc/finish_vote()
 	current_vote.tally_votes()
 	announce_result()
+	current_vote.after_completion()
 	reset()
 
 /datum/controller/subsystem/vote/proc/announce_result()

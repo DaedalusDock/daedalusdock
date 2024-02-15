@@ -132,16 +132,16 @@
 	var/mob/living/carbon/human/target = G.get_affecting_mob()
 	var/mob/living/carbon/human/attacker = G.assailant
 	if(!istype(target) || !istype(attacker))
-		return
+		return TRUE
 
 	if(target.is_eyes_covered())
 		to_chat(attacker, "<span class='danger'>You're going to need to remove the eye covering first.</span>")
-		return
+		return TRUE
 
 	var/obj/item/organ/eyes/E = target.getorganslot(ORGAN_SLOT_EYES)
-	if(E)
+	if(!E)
 		to_chat(attacker, "<span class='danger'>You cannot locate any eyes on [target]!</span>")
-		return
+		return TRUE
 
 	log_combat(attacker, target, "attacked the eyes of (grab)")
 

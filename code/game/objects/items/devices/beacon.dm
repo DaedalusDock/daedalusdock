@@ -12,22 +12,22 @@
 /obj/item/beacon/Initialize(mapload)
 	. = ..()
 	if (enabled)
-		GLOB.teleportbeacons += src
+		SET_TRACKING(__TYPE__)
 	else
 		icon_state = "beacon-off"
 
 /obj/item/beacon/Destroy()
-	GLOB.teleportbeacons -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/item/beacon/attack_self(mob/user)
 	enabled = !enabled
 	if (enabled)
 		icon_state = "beacon"
-		GLOB.teleportbeacons += src
+		SET_TRACKING(__TYPE__)
 	else
 		icon_state = "beacon-off"
-		GLOB.teleportbeacons -= src
+		UNSET_TRACKING(__TYPE__)
 	to_chat(user, span_notice("You [enabled ? "enable" : "disable"] the beacon."))
 	return
 

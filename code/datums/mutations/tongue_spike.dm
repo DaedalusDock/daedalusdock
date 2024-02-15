@@ -46,7 +46,7 @@
 	icon_state = "tonguespike"
 	force = 2
 	throwforce = 15 //15 + 2 (WEIGHT_CLASS_SMALL) * 4 (EMBEDDED_IMPACT_PAIN_MULTIPLIER) = i didnt do the math
-	throw_speed = 4
+	throw_speed = 1.5
 	embedding = list(
 		"embedded_pain_multiplier" = 4,
 		"embed_chance" = 100,

@@ -23,7 +23,7 @@
 	return CHECKTENDON_OK
 
 
-/obj/item/bodypart/proc/break_bones()
+/obj/item/bodypart/proc/break_bones(painful = TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(check_bones() & (CHECKBONES_NONE|CHECKBONES_BROKEN))
@@ -37,8 +37,10 @@
 		)
 
 		jostle_bones()
-		if(!(bodypart_flags & BP_NO_PAIN))
-			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+		if(painful && !(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(owner, TRAIT_NO_PAINSHOCK))
+			spawn(-1)
+				owner.pain_emote(1000, TRUE) // We want broken bones to always do the agony scream, so we do it before applying pain.
+				owner.apply_pain(60, src)
 
 	playsound(loc, SFX_BREAK_BONE, 100, FALSE, -2)
 
@@ -55,8 +57,10 @@
 		apply_bone_break(owner)
 	return TRUE
 
+/// Applies the effect of a broken bone to the owner.
 /obj/item/bodypart/proc/apply_bone_break(mob/living/carbon/C)
 	SHOULD_CALL_PARENT(TRUE)
+	PROTECTED_PROC(TRUE)
 
 	SEND_SIGNAL(C, COMSIG_CARBON_BREAK_BONE, src)
 	return TRUE
@@ -69,6 +73,7 @@
 	C.apply_status_effect(/datum/status_effect/limp)
 
 /obj/item/bodypart/proc/heal_bones()
+	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!(check_bones() & CHECKBONES_BROKEN))
 		return FALSE
 
@@ -77,7 +82,17 @@
 	update_interaction_speed()
 
 	if(owner)
-		SEND_SIGNAL(owner, COMSIG_CARBON_HEAL_BONE, src)
+		apply_bone_heal(owner)
+
+	return TRUE
+
+/// Removes the effects of a broken bone from the owner.
+/obj/item/bodypart/proc/apply_bone_heal(mob/living/carbon/C)
+	SHOULD_CALL_PARENT(TRUE)
+	PROTECTED_PROC(TRUE)
+
+	SEND_SIGNAL(C, COMSIG_CARBON_HEAL_BONE, src)
+	return TRUE
 
 /obj/item/bodypart/proc/jostle_bones(force)
 	if(!(bodypart_flags & BP_BROKEN_BONES)) //intact bones stay still

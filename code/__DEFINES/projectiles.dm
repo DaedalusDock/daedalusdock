@@ -15,17 +15,19 @@
 /// The caliber used by the [security auto-rifle][/obj/item/gun/ballistic/automatic/wt550].
 #define CALIBER_46X30MM "4.6x30mm"
 /// The caliber used by the Nanotrasen Saber SMG, PP-95 SMG and Type U3 Uzi. Also used as the default caliber for pistols but only the stechkin APS machine pistol doesn't override it.
-#define CALIBER_9MM "9mm"
+#define CALIBER_9MM "9x19mm Parabellum"
 /// The caliber used as the default for ballistic guns. Only not overridden for the [surplus rifle][/obj/item/gun/ballistic/automatic/surplus].
-#define CALIBER_10MM "10mm"
+#define CALIBER_10MM "10mm Auto"
 /// The caliber used by most revolver variants.
-#define CALIBER_357 ".357"
+#define CALIBER_357 ".357 Smith & Wesson"
 /// The caliber used by the detective's revolver.
-#define CALIBER_38 ".38"
+#define CALIBER_38 ".38 Special"
 /// The caliber used by the C-20r SMG, the tommygun, and the M1911 pistol.
-#define CALIBER_45 ".45"
-/// The caliber used by sniper rifles and the desert eagle.
-#define CALIBER_50 ".50"
+#define CALIBER_45 ".45 ACP"
+/// The caliber used by the desert eagle.
+#define CALIBER_50_PISTOL ".50 Action Express"
+/// The caliber used by sniper rifles
+#define CALIBER_50_RIFLE ".50 BMG"
 /// The caliber used by the gyrojet pistol.
 #define CALIBER_75 ".75"
 /// The caliber used by [one revolver variant][/obj/item/gun/ballistic/revolver/nagant].
@@ -35,7 +37,7 @@
 /// The caliber used by bolt action rifles.
 #define CALIBER_A762 "a762"
 /// The caliber used by shotguns.
-#define CALIBER_SHOTGUN "shotgun"
+#define CALIBER_12GAUGE "12-gauge"
 /// The caliber used by grenade launchers.
 #define CALIBER_40MM "40mm"
 /// The caliber used by rocket launchers.

@@ -3,12 +3,16 @@
 	desc = "It's red and gooey. Perhaps it's the chef's cooking?"
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "floor1"
+	appearance_flags = TILE_BOUND|PIXEL_SCALE|LONG_GLIDE|NO_CLIENT_COLOR
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
 	blood_state = BLOOD_STATE_HUMAN
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	beauty = -100
 	clean_type = CLEAN_TYPE_BLOOD
-	var/smell_type =  /datum/component/smell/strong
+
+	var/smell_intensity =  INTENSITY_STRONG
+	var/spook_factor = SPOOK_AMT_BLOOD_SPLATTER
+
 	var/should_dry = TRUE
 	/// How long should it take for blood to dry?
 	var/dry_duration = 10 MINUTES
@@ -23,7 +27,7 @@
 		return
 	if(bloodiness)
 		start_drying()
-		AddComponent(smell_type, SCENT_ODOR, "blood", 3)
+		AddComponent(/datum/component/smell, smell_intensity, SCENT_ODOR, "blood", 3)
 	else
 		dry()
 
@@ -53,9 +57,10 @@
 		desc = drydesc
 		bloodiness = 0
 		color = COLOR_GRAY //not all blood splatters have their own sprites... It still looks pretty nice
-		STOP_PROCESSING(SSobj, src)
-		qdel(GetComponent(smell_type))
-		return TRUE
+		qdel(GetComponent(/datum/component/smell))
+		if(spook_factor)
+			AddComponent(/datum/component/spook_factor, spook_factor)
+		return PROCESS_KILL
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
 	C.add_blood_DNA(return_blood_DNA())
@@ -70,6 +75,7 @@
 /obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
 	add_blood_DNA(list("Non-human DNA" = random_blood_type())) // Needs to happen before ..()
 	. = ..()
+	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_SPLATTER)
 
 /obj/effect/decal/cleanable/blood/splatter
 	icon_state = "gibbl1"
@@ -99,7 +105,7 @@
 	beauty = -50
 	dryname = "dried tracks"
 	drydesc = "Some old bloody tracks left by wheels. Machines are evil, perhaps."
-	smell_type = /datum/component/smell/subtle
+	smell_intensity = INTENSITY_SUBTLE
 
 /obj/effect/decal/cleanable/trail_holder //not a child of blood on purpose
 	name = "blood"
@@ -126,13 +132,15 @@
 	drydesc = "They look bloody and gruesome while some terrible smell fills the air."
 	decal_reagent = /datum/reagent/liquidgibs
 	reagent_amount = 5
-	smell_type = /datum/component/smell/strong
+
+	smell_intensity = INTENSITY_STRONG
 	///Information about the diseases our streaking spawns
 	var/list/streak_diseases
 
 /obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
+	AddComponent(/datum/component/spook_factor, SPOOK_AMT_BLOOD_STREAK)
 
 /obj/effect/decal/cleanable/blood/gibs/replace_decal(obj/effect/decal/cleanable/C)
 	return FALSE //Never fail to place us
@@ -231,9 +239,10 @@
 	bloodiness = BLOOD_AMOUNT_PER_DECAL / 10
 	dryname = "drips of blood"
 	drydesc = "It's red."
-	smell_type = /datum/component/smell/subtle
+	smell_intensity = INTENSITY_SUBTLE
 	dry_duration = 4 MINUTES
 
+	spook_factor = SPOOK_AMT_BLOOD_DROP
 	/// Keeps track of how many drops of blood this decal has. See blood.dm
 	var/drips = 1
 
@@ -261,7 +270,7 @@
 
 	dryname = "dried footprints"
 	drydesc = "HMM... SOMEONE WAS HERE!"
-	smell_type = /datum/component/smell/subtle
+	smell_intensity = INTENSITY_SUBTLE
 
 /obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
 	. = ..()
@@ -350,7 +359,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	pass_flags = PASSTABLE | PASSGRILLE
 	icon_state = "hitsplatter1"
 	random_icon_states = list("hitsplatter1", "hitsplatter2", "hitsplatter3")
-	smell_type = /datum/component/smell/subtle
+	smell_intensity = INTENSITY_SUBTLE
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc
 	/// The cached info about the blood
@@ -466,7 +475,9 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	icon_state = "squirt"
 	random_icon_states = null
 	color = "#ff0000"
-	smell_type = /datum/component/smell/subtle
+	smell_intensity = INTENSITY_SUBTLE
+
+	spook_factor = SPOOK_AMT_BLOOD_STREAK
 
 /obj/effect/decal/cleanable/blood/squirt/Initialize(mapload, direction, list/blood_dna)
 	. = ..()

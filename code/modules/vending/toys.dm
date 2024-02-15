@@ -9,9 +9,9 @@
 	light_mask = "donksoft-light-mask"
 	circuit = /obj/item/circuitboard/machine/vending/donksofttoyvendor
 	products = list(
-		/obj/item/gun/ballistic/automatic/toy/unrestricted = 10,
+		/obj/item/gun/ballistic/automatic/toy = 10,
 		/obj/item/gun/ballistic/automatic/pistol/toy = 10,
-		/obj/item/gun/ballistic/shotgun/toy/unrestricted = 10,
+		/obj/item/gun/ballistic/shotgun/toy = 10,
 		/obj/item/toy/sword = 10,
 		/obj/item/ammo_box/foambox = 20,
 		/obj/item/toy/foamblade = 10,
@@ -21,8 +21,6 @@
 	)
 	contraband = list(
 		/obj/item/gun/ballistic/shotgun/toy/crossbow = 10,
-		/obj/item/gun/ballistic/automatic/c20r/toy/unrestricted = 10,
-		/obj/item/gun/ballistic/automatic/l6_saw/toy/unrestricted = 10,
 		/obj/item/toy/katana = 10,
 		/obj/item/dualsaber/toy = 5
 	)

@@ -397,7 +397,7 @@ SUBSYSTEM_DEF(shuttle)
 
 	var/callShuttle = TRUE
 
-	for(var/thing in GLOB.shuttle_caller_list)
+	for(var/thing in INSTANCES_OF(TRACKING_KEY_SHUTTLE_CALLER))
 		if(isAI(thing))
 			var/mob/living/silicon/ai/AI = thing
 			if(AI.deployed_shell && !AI.deployed_shell.client)
@@ -589,9 +589,14 @@ SUBSYSTEM_DEF(shuttle)
 	var/turf/midpoint = locate(transit_x, transit_y, bottomleft.z)
 	if(!midpoint)
 		return FALSE
+	var/area/old_area = midpoint.loc
+	old_area.turfs_to_uncontain += proposal.reserved_turfs
+
 	var/area/shuttle/transit/A = new()
 	A.parallax_movedir = travel_dir
 	A.contents = proposal.reserved_turfs
+	A.contained_turfs = proposal.reserved_turfs
+
 	var/obj/docking_port/stationary/transit/new_transit_dock = new(midpoint)
 	new_transit_dock.reserved_area = proposal
 	new_transit_dock.name = "Transit for [M.id]/[M.name]"
@@ -734,8 +739,7 @@ SUBSYSTEM_DEF(shuttle)
 	hidden_shuttle_turf_images -= remove_images
 	hidden_shuttle_turf_images += add_images
 
-	for(var/V in GLOB.navigation_computers)
-		var/obj/machinery/computer/camera_advanced/shuttle_docker/C = V
+	for(var/obj/machinery/computer/camera_advanced/shuttle_docker/C as anything in INSTANCES_OF(/obj/machinery/computer/camera_advanced/shuttle_docker))
 		C.update_hidden_docking_ports(remove_images, add_images)
 
 	QDEL_LIST(remove_images)

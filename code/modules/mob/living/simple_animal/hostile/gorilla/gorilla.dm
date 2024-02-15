@@ -29,7 +29,7 @@
 	environment_smash = ENVIRONMENT_SMASH_WALLS
 	attack_verb_continuous = "pummels"
 	attack_verb_simple = "pummel"
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	dextrous = TRUE
 	held_items = list(null, null)
 	faction = list("jungle")
@@ -89,8 +89,7 @@
 /mob/living/simple_animal/hostile/gorilla/gib(no_brain)
 	if(!no_brain)
 		var/mob/living/brain/B = new(drop_location())
-		B.name = real_name
-		B.real_name = real_name
+		B.set_real_name(real_name)
 		if(mind)
 			mind.transfer_to(B)
 	..()

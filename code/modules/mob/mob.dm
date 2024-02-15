@@ -901,7 +901,6 @@
 /mob/proc/swap_hand()
 	var/obj/item/held_item = get_active_held_item()
 	if(SEND_SIGNAL(src, COMSIG_MOB_SWAP_HANDS, held_item) & COMPONENT_BLOCK_SWAP)
-		to_chat(src, span_warning("Your other hand is too busy holding [held_item]."))
 		return FALSE
 	return TRUE
 
@@ -1054,6 +1053,21 @@
 	return FALSE
 
 
+/mob/update_name(updates)
+	name = get_visible_name()
+	return ..()
+
+/mob/proc/get_visible_name()
+	return name
+
+/// Sets the mob's real name, and normal name if desired.
+/mob/proc/set_real_name(new_name, change_name = TRUE, update_name = TRUE)
+	real_name = new_name
+	if(change_name)
+		name = real_name
+	if(update_name)
+		update_name()
+
 /**
  * Fully update the name of a mob
  *
@@ -1076,8 +1090,8 @@
 
 	log_played_names(ckey, newname)
 
-	real_name = newname
-	name = newname
+	set_real_name(newname)
+
 	if(mind)
 		mind.name = newname
 		if(mind.key)

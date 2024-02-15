@@ -8,7 +8,6 @@
 	force = 0
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 6
 	grind_results = list()
 	var/Uses = 1 ///uses before it goes inert
@@ -624,8 +623,7 @@
 
 	if (!newname)
 		newname = "Pet Slime"
-	M.name = newname
-	M.real_name = newname
+	M.set_real_name(newname)
 	qdel(src)
 
 /obj/item/slimepotion/slime/sentience
@@ -964,7 +962,6 @@
 	force = 6
 	mats_per_unit = list(/datum/material/iron=500)
 	throwforce = 10
-	throw_speed = 3
 	throw_range = 7
 	flags_1 = CONDUCT_1
 	max_amount = 60

@@ -268,7 +268,7 @@
 	// Calculate new position (searches through beacons in world)
 	var/obj/item/beacon/chosen
 	var/list/possible = list()
-	for(var/obj/item/beacon/W in GLOB.teleportbeacons)
+	for(var/obj/item/beacon/W as anything in INSTANCES_OF(/obj/item/beacon))
 		possible += W
 
 	if(possible.len > 0)

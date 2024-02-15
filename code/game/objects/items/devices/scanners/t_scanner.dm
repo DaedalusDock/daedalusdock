@@ -13,6 +13,10 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	custom_materials = list(/datum/material/iron=150)
 
+/obj/item/t_scanner/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/t_scanner/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to emit terahertz-rays into [user.p_their()] brain with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return TOXLOSS
@@ -35,8 +39,7 @@
 
 /obj/item/t_scanner/process()
 	if(!on)
-		STOP_PROCESSING(SSobj, src)
-		return null
+		return PROCESS_KILL
 	scan()
 
 /obj/item/t_scanner/proc/scan()

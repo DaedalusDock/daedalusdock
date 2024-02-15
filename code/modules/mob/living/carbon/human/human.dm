@@ -1258,6 +1258,6 @@
 
 	var/obj/item/I = get_item_covering_zone(body_zone)
 	if(I)
-		I.add_trace_DNA(user.get_trace_dna_list())
+		I.add_trace_DNA(user.get_trace_dna())
 	else
-		add_trace_DNA(user.get_trace_dna_list())
+		add_trace_DNA(user.get_trace_dna())

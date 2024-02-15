@@ -970,6 +970,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 
 /datum/species/proc/help(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	target.add_fingerprint_on_clothing_or_self(user, BODY_ZONE_CHEST)
+
 	if(target.body_position == STANDING_UP || (target.health >= 0 && !(HAS_TRAIT(target, TRAIT_FAKEDEATH) || target.undergoing_cardiac_arrest())))
 		target.help_shake_act(user)
 		if(target != user)
@@ -977,7 +979,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		return TRUE
 
 	user.do_cpr(target)
-
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style, list/params)
 	if(target.check_block())
@@ -1068,6 +1069,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		log_combat(user, target, "attempted to punch (missed)")
 		return FALSE
+
+	switch(atk_effect)
+		if(ATTACK_EFFECT_BITE)
+			target.add_trace_DNA_on_clothing_or_self(user, attacking_zone)
+		if(ATTACK_EFFECT_PUNCH, ATTACK_EFFECT_CLAW, ATTACK_EFFECT_SLASH)
+			target.add_fingerprint_on_clothing_or_self(user, attacking_zone)
 
 	var/armor_block = target.run_armor_check(affecting, BLUNT)
 

@@ -470,7 +470,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(.)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
 		to_chat(user, span_warning("There is no [fitting] in this light!"))

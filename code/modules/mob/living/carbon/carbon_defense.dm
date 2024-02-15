@@ -244,7 +244,7 @@
 
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
-		human_target.w_uniform?.add_fingerprint(src)
+		human_target.add_fingerprint_on_clothing_or_self(src, BODY_ZONE_CHEST)
 
 	SEND_SIGNAL(target, COMSIG_HUMAN_DISARM_HIT, src, zone_selected)
 

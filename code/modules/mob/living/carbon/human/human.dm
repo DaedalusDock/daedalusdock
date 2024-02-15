@@ -1241,3 +1241,20 @@
 		arm = get_bodypart(BODY_ZONE_R_ARM) || get_bodypart(BODY_ZONE_L_ARM)
 
 	return arm?.fingerprints
+
+/// Takes a user and body_zone, if the body_zone is covered by clothing, add a fingerprint to it. Otherwise, add one to us.
+/mob/living/carbon/human/proc/add_fingerprint_on_clothing_or_self(mob/user, body_zone)
+	var/obj/item/I = get_item_covering_zone(body_zone)
+	if(I)
+		I.add_fingerprint(user)
+		log_touch(user)
+	else
+		add_fingerprint(user)
+
+/// Takes a user and body_zone, if the body_zone is covered by clothing, add trace dna to it. Otherwise, add one to us.
+/mob/living/carbon/human/proc/add_trace_DNA_on_clothing_or_self(mob/user, body_zone)
+	var/obj/item/I = get_item_covering_zone(body_zone)
+	if(I)
+		I.add_trace_DNA(user.get_trace_dna_list())
+	else
+		add_trace_dna(user.get_trace_dna_list())

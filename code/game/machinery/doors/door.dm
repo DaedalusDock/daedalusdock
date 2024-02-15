@@ -19,7 +19,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	receive_ricochet_chance_mod = 0.8
 	damage_deflection = 10
 
-	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
@@ -299,12 +299,17 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return
 	return ..()
 
-/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	set waitfor = FALSE
 
-	add_fingerprint(user)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
+
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
+
 	if(access_bypass || (requiresID() && allowed(user)))
 		. = TRUE
 		if(density)
@@ -361,7 +366,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return TRUE
 	else if(I.item_flags & NOBLUDGEON || user.combat_mode)
 		return ..()
-	else if(try_to_activate_door(user))
+	else if(try_to_activate_door(user, attackedby = I))
 		return TRUE
 	return ..()
 

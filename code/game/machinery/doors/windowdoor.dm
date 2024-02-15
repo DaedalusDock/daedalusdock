@@ -357,7 +357,7 @@
 /obj/machinery/door/window/interact(mob/user) //for sillycones
 	try_to_activate_door(user)
 
-/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	if (..())
 		autoclose = FALSE
 

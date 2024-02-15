@@ -9,6 +9,7 @@
 	. = ..()
 	atom_storage.max_specific_storage = /obj/item/scene_card::w_class
 	atom_storage.max_total_storage = /obj/item/scene_card::w_class * 7
+	atom_storage.max_slots = 9
 
 /obj/item/storage/scene_cards/PopulateContents()
 	new /obj/item/scene_card/n1(src)

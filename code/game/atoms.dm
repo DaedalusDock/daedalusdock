@@ -943,7 +943,10 @@
 		return
 	return list("ANIMAL DNA" = "Y-")
 
-/mob/living/proc/get_trace_dna()
+/mob/proc/get_trace_dna()
+	return
+
+/mob/living/get_trace_dna()
 	return "ANIMAL DNA"
 
 /mob/living/carbon/get_trace_dna()

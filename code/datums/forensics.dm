@@ -51,7 +51,7 @@
 		return
 
 	var/mob/living/carbon/human/H = M
-	add_fibers(H)
+	parent.add_fibers(H)
 	var/obj/item/gloves = H.gloves
 
 	if(gloves) //Check if the gloves (if any) hide fingerprints

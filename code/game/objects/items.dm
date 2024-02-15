@@ -557,6 +557,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	. = FALSE
 	pickup(user)
 	add_fingerprint(user)
+
 	if(!user.put_in_active_hand(src, FALSE, was_in_storage))
 		user.dropItemToGround(src)
 		return TRUE

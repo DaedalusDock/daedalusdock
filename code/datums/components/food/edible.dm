@@ -303,7 +303,7 @@ Behavior that's still missing from this component that original food items had t
 	if(IsFoodGone(owner, feeder))
 		return
 
-	owner.add_trace_DNA(eater)
+	owner.add_trace_DNA(eater.get_trace_dna())
 
 	if(!CanConsume(eater, feeder))
 		return

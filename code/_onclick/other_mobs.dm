@@ -140,8 +140,6 @@
 		return FALSE
 
 /atom/proc/interact(mob/user)
-	if(ismachinery(src))
-		stack_trace()
 	if(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_INTERACT)
 		log_touch(user)
 	else

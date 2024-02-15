@@ -1260,4 +1260,4 @@
 	if(I)
 		I.add_trace_DNA(user.get_trace_dna_list())
 	else
-		add_trace_dna(user.get_trace_dna_list())
+		add_trace_DNA(user.get_trace_dna_list())

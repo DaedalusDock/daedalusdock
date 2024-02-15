@@ -102,7 +102,7 @@
 	..()
 
 /obj/structure/toilet/attackby(obj/item/I, mob/living/user, params)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	if(I.tool_behaviour == TOOL_CROWBAR)
 		to_chat(user, span_notice("You start to [cistern ? "replace the lid on the cistern" : "lift the lid off the cistern"]..."))
 		playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 50, TRUE)

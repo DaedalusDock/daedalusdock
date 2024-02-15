@@ -306,7 +306,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		G.fields["initial_rank"] = assignment
 		G.fields["age"] = H.age
 		G.fields["species"] = H.dna.species.name
-		G.fields["fingerprint"] = md5(H.dna.unique_identity)
+		G.fields["fingerprint"] = H.get_fingerprints(TRUE)
 		G.fields["p_stat"] = "Active"
 		G.fields["m_stat"] = "Stable"
 		G.fields["gender"] = H.gender

@@ -269,7 +269,8 @@
 	if(!can_be_reached(user))
 		return TRUE //skip the afterattack
 
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
+
 	return ..()
 
 /obj/structure/window/AltClick(mob/user)

@@ -1547,8 +1547,7 @@
 					else if(tgui_alert(user, "Use real fingerprint?", "Forge ID", list("Yes", "No")) == "Yes")
 						var/mob/living/carbon/human/H = user
 						if(istype(H))
-							fingerprint = md5(H.dna.unique_identity)
-
+							fingerprint = H.get_fingerprints(TRUE)
 
 					update_label()
 					update_icon()

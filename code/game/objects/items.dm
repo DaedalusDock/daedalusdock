@@ -1762,3 +1762,10 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(wielded)
 		. = wielded_hitsound
 	. ||= hitsound
+
+/// Leave evidence of a user on a target
+/obj/item/proc/leave_evidence(mob/user, atom/target)
+	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+		target.add_fingerprint(user)
+	else
+		target.log_touch(user)

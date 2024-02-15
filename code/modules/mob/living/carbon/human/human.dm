@@ -1227,3 +1227,17 @@
 /mob/living/carbon/human/get_blood_print()
 	var/obj/item/bodypart/leg/L = get_bodypart(BODY_ZONE_R_LEG) || get_bodypart(BODY_ZONE_L_LEG)
 	return L?.blood_print
+
+/mob/living/carbon/human/proc/get_fingerprints(ignore_gloves, hand)
+	if(ignore_gloves && (gloves || (check_obscured_slots() & ITEM_SLOT_GLOVES)))
+		return
+
+	var/obj/item/bodypart/arm/arm
+	if(hand)
+		if(isbodypart(hand))
+			arm = hand
+		arm ||= get_bodypart(hand)
+	else
+		arm = get_bodypart(BODY_ZONE_R_ARM) || get_bodypart(BODY_ZONE_L_ARM)
+
+	return arm?.fingerprints

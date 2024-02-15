@@ -9,13 +9,15 @@
 	var/list/fibers
 	/// A k:v FLAT list of residues
 	var/list/gunshot_residue
+	/// A list of DNA
+	var/list/trace_DNA
 	/// A k:v list of ckey : thing. For admins.
 	var/list/admin_log
 
 /datum/forensics/New(parent)
 	src.parent = parent
 
-/datum/forensics/proc/add_blood_DNA(list/dna) //list(dna_enzymes = type)
+/datum/forensics/proc/add_blood_DNA(list/dna)
 	if(!length(dna))
 		return
 
@@ -25,6 +27,12 @@
 
 	check_blood()
 	return TRUE
+
+/datum/forensics/proc/add_trace_DNA(list/dna)
+	if(!length(dna))
+		return
+	LAZYINITLIST(trace_DNA)
+	trace_DNA |= dna
 
 /// Adds the fingerprint of M to our fingerprint list
 /datum/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE)
@@ -55,7 +63,7 @@
 			return
 
 	LAZYINITLIST(fingerprints)
-	var/full_print = md5(H.dna.unique_identity)
+	var/full_print = H.get_fingerprints()
 	fingerprints[full_print]++
 	return TRUE
 
@@ -163,6 +171,7 @@
 
 	for(var/fiber in _fibertext) //We use an associative list, make sure we don't just merge a non-associative list into ours.
 		fibers[fiber] += _fibertext[fiber]
+
 	return TRUE
 
 /// Adds a list of gunshot residue

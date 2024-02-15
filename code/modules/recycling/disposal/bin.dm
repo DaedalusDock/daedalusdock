@@ -85,7 +85,7 @@
 	trunk_check()
 
 /obj/machinery/disposal/attackby(obj/item/I, mob/living/user, params)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	if(!pressure_charging && !full_pressure && !flush)
 		if(I.tool_behaviour == TOOL_SCREWDRIVER)
 			panel_open = !panel_open

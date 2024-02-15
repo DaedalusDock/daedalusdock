@@ -898,7 +898,8 @@
 	if(!issilicon(user) && !isAdminGhostAI(user))
 		if(isElectrified() && shock(user, 75))
 			return
-	add_fingerprint(user)
+
+	C.leave_evidence(user, src)
 
 	if(is_wire_tool(C) && panel_open)
 		attempt_wire_interaction(user)

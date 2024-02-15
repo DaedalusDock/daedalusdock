@@ -943,6 +943,14 @@
 		return
 	return list("ANIMAL DNA" = "Y-")
 
+/mob/living/proc/get_trace_dna()
+	return "ANIMAL DNA"
+
+/mob/living/carbon/get_trace_dna()
+	if(dna)
+		return dna.unique_enzymes
+	return "UNKNOWN DNA"
+
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
 	if(get_blood_id() != /datum/reagent/blood)

@@ -16,6 +16,9 @@
 /atom/proc/return_gunshot_residue()
 	return forensics?.gunshot_residue
 
+/atom/proc/return_trace_DNA()
+	return forensics?.trace_DNA
+
 /atom/proc/remove_evidence()
 	return forensics?.remove_evidence()
 
@@ -82,6 +85,12 @@
 
 	forensics.log_touch_list(hiddenprints)
 
+/atom/proc/add_trace_DNA(list/dna)
+	if(isnull(forensics))
+		create_forensics()
+
+	forensics.add_trace_DNA(dna)
+
 /atom/proc/add_blood_DNA(list/dna) //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
 
@@ -129,7 +138,6 @@
 	update_worn_gloves() //handles bloody hands overlays and updating
 	return TRUE
 
-
 /*
  * Transfer all forensic evidence from [src] to [transfer_to].
  */
@@ -138,6 +146,7 @@
 	transfer_fibers_to(transfer_to)
 	transfer_gunshot_residue_to(transfer_to)
 	transfer_to.add_blood_DNA(return_blood_DNA())
+	transfer_to.add_trace_DNA(return_trace_DNA())
 
 /*
  * Transfer all the fingerprints and hidden prints from [src] to [transfer_to].

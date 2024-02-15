@@ -129,7 +129,7 @@
 		coil.place_turf(loc, user, NONE, TRUE, src)
 
 
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 
 /obj/structure/cable/proc/get_power_info()

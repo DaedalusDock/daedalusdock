@@ -391,7 +391,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	if(!isturf(user.loc))
 		return //can't do this stuff whilst inside objects and such
 
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 	var/turf/T = user.loc //get user's location for delay checks
 

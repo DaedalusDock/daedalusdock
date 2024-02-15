@@ -212,7 +212,7 @@
 		return TRUE
 
 /obj/machinery/door/firedoor/wrench_act(mob/living/user, obj/item/tool)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	if(operating || !welded)
 		return FALSE
 

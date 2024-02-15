@@ -87,6 +87,13 @@
 
 	minimum_break_damage = 30
 
+	var/fingerprints = ""
+
+/obj/item/bodypart/arm/update_limb(dropping_limb, is_creating)
+	. = ..()
+	if(is_creating && owner?.has_dna())
+		fingerprints = md5(owner.dna.unique_identity)
+
 /obj/item/bodypart/arm/left
 	name = "left arm"
 	desc = "Did you know that the word 'sinister' stems originally from the \

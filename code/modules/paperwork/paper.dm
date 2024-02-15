@@ -216,7 +216,7 @@
 	if(user.is_holding(src)) //no TK shit here.
 		user.dropItemToGround(src)
 	user.visible_message(ignition_message)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	fire_act(I.get_temperature())
 
 /obj/item/paper/proc/add_info(text, color = DEFAULT_ADD_INFO_COLOR, font = DEFAULT_ADD_INFO_FONT, signature = DEFAULT_ADD_INFO_SIGN)

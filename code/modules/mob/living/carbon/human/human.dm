@@ -1229,7 +1229,7 @@
 	return L?.blood_print
 
 /mob/living/carbon/human/proc/get_fingerprints(ignore_gloves, hand)
-	if(ignore_gloves && (gloves || (check_obscured_slots() & ITEM_SLOT_GLOVES)))
+	if(!ignore_gloves && (gloves || (check_obscured_slots() & ITEM_SLOT_GLOVES)))
 		return
 
 	var/obj/item/bodypart/arm/arm

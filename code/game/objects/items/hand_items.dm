@@ -258,7 +258,7 @@
 	playsound(slapped, 'sound/weapons/slap.ogg', slap_volume, TRUE, -1)
 	return
 
-/obj/item/hand_item/slapper/attack_atom(obj/O, mob/living/user, params)
+/obj/item/hand_item/slapper/attack_obj(obj/O, mob/living/user, params)
 	if(!istype(O, /obj/structure/table))
 		return ..()
 

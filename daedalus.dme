@@ -2850,6 +2850,7 @@
 #include "code\modules\detectivework\fibers.dm"
 #include "code\modules\detectivework\samples.dm"
 #include "code\modules\detectivework\scanner.dm"
+#include "code\modules\detectivework\scene_cards.dm"
 #include "code\modules\detectivework\swab.dm"
 #include "code\modules\discord\discord_embed.dm"
 #include "code\modules\discord\discord_helpers.dm"

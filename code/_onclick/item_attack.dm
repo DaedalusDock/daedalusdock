@@ -146,7 +146,7 @@
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /obj/attackby(obj/item/attacking_item, mob/user, params)
-	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_atom(src, user, params))
+	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_obj(src, user, params))
 
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
@@ -231,15 +231,19 @@
 
 	return SECONDARY_ATTACK_CALL_NORMAL
 
-/// The equivalent of the standard version of [/obj/item/proc/attack] but for non mob targets.
-/obj/item/proc/attack_atom(atom/attacked_atom, mob/living/user, params)
-	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ, attacked_atom, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
+/// The equivalent of the standard version of [/obj/item/proc/attack] but for /obj targets.
+/obj/item/proc/attack_obj(obj/attacked_obj, mob/living/user, params)
+	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ, attacked_obj, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return
 	if(item_flags & NOBLUDGEON)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(attacked_atom)
-	attacked_atom.attacked_by(src, user)
+	user.do_attack_animation(attacked_obj)
+	attacked_obj.attacked_by(src, user)
+
+/// The equivalent of the standard version of [/obj/item/proc/attack] but for /turf targets.
+/obj/item/proc/attack_turf(turf/attacked_turf, mob/living/user, params)
+	return
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user)

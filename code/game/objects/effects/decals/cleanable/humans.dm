@@ -378,8 +378,8 @@
 	list/blood_dna = list("Unknown DNA" = random_blood_type()),
 	blood_print
 	)
-	. = ..()
 	src.blood_print = blood_print
+	. = ..()
 	icon_state = "" //All of the footprint visuals come from overlays
 	if(mapload)
 		entered_dirs |= dir //Keep the same appearance as in the map editor

@@ -1,25 +1,33 @@
 /atom/proc/return_fingerprints()
+	RETURN_TYPE(/list)
 	return forensics?.fingerprints
 
 /atom/proc/return_touch_log()
+	RETURN_TYPE(/list)
 	return forensics?.admin_log
 
 /atom/proc/return_blood_DNA()
+	RETURN_TYPE(/list)
 	return forensics?.blood_DNA
 
 /atom/proc/blood_DNA_length()
+	RETURN_TYPE(/list)
 	return length(forensics?.blood_DNA)
 
 /atom/proc/return_fibers()
+	RETURN_TYPE(/list)
 	return forensics?.fibers
 
 /atom/proc/return_gunshot_residue()
+	RETURN_TYPE(/list)
 	return forensics?.gunshot_residue
 
 /atom/proc/return_trace_DNA()
+	RETURN_TYPE(/list)
 	return forensics?.trace_DNA
 
 /atom/proc/remove_evidence()
+	RETURN_TYPE(/list)
 	return forensics?.remove_evidence()
 
 /// Adds the fingerprint of M to our fingerprint list. Ignoregloves will ignore any gloves they may be wearing.

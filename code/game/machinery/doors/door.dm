@@ -578,5 +578,6 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	user?.changeNext_move(CLICK_CD_MELEE)
 	playsound(src, knock_sound, 100, TRUE)
 	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
 
 #undef DOOR_CLOSE_WAIT

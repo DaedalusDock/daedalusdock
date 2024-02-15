@@ -1,7 +1,7 @@
 /datum/forensics
 	/// The object we belong to
 	var/atom/parent
-	/// A k:v list of fingerprint : amount
+	/// A k:v list of fingerprint : partial_or_full_print
 	var/list/fingerprints
 	/// A k:v list of dna : blood_type
 	var/list/blood_DNA
@@ -62,10 +62,47 @@
 			H.gloves.add_fingerprint(H, TRUE) //ignoregloves = 1 to avoid infinite loop.
 			return
 
-	LAZYINITLIST(fingerprints)
-	var/full_print = H.get_fingerprints()
-	fingerprints[full_print]++
+	add_partial_print(H.get_fingerprints())
 	return TRUE
+
+/datum/forensics/proc/add_partial_print(full_print)
+	PRIVATE_PROC(TRUE)
+	LAZYINITLIST(fingerprints)
+
+	if(!fingerprints[full_print])
+		fingerprints[full_print] = stars(full_print, rand(0, 20)) //Initial touch, not leaving much evidence the first time.
+		return
+
+	switch(max(stringcount(fingerprints[full_print]),0)) //tells us how many stars are in the current prints.
+		if(28 to 32)
+			if(prob(1))
+				fingerprints[full_print] = full_print // You rolled a one buddy.
+			else
+				fingerprints[full_print] = stars(full_print, rand(0,40)) // 24 to 32
+
+		if(24 to 27)
+			if(prob(3))
+				fingerprints[full_print] = full_print //Sucks to be you.
+			else
+				fingerprints[full_print] = stars(full_print, rand(15, 55)) // 20 to 29
+
+		if(20 to 23)
+			if(prob(5))
+				fingerprints[full_print] = full_print //Had a good run didn't ya.
+			else
+				fingerprints[full_print] = stars(full_print, rand(30, 70)) // 15 to 25
+
+		if(16 to 19)
+			if(prob(5))
+				fingerprints[full_print] = full_print //Welp.
+			else
+				fingerprints[full_print]  = stars(full_print, rand(40, 100)) // 0 to 21
+
+		if(0 to 15)
+			if(prob(5))
+				fingerprints[full_print] = stars(full_print, rand(0,50)) // small chance you can smudge.
+			else
+				fingerprints[full_print] = full_print
 
 /// Adds the fibers of M to our fiber list.
 /datum/forensics/proc/add_fibers(mob/living/carbon/human/M)
@@ -159,7 +196,10 @@
 
 	LAZYINITLIST(fingerprints)
 	for(var/print in _fingerprints) //We use an associative list, make sure we don't just merge a non-associative list into ours.
-		fingerprints[print] += _fingerprints[print]
+		if(!fingerprints[print])
+			fingerprints[print] = _fingerprints[print]
+		else
+			fingerprints[print] = stringmerge(fingerprints[print], _fingerprints[print])
 	return TRUE
 
 /// Adds a list of fibers.

@@ -419,7 +419,7 @@
 	id = "evidencebag"
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 100)
-	build_path = /obj/item/evidencebag
+	build_path = /obj/item/storage/evidencebag
 	category = list(DCAT_FORENSICS)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 

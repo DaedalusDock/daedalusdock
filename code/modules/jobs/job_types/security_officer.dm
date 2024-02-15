@@ -173,7 +173,7 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	suit = /obj/item/clothing/suit/armor/vest/alt
 	suit_store = /obj/item/gun/energy/disabler
 	backpack_contents = list(
-		/obj/item/evidencebag = 1,
+		/obj/item/storage/evidencebag = 1,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/security
 	ears = /obj/item/radio/headset/headset_sec/alt

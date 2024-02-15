@@ -224,7 +224,10 @@
 
 
 /datum/reagent/blood/affect_blood(mob/living/carbon/C, removed)
-	if(data?["viruses"])
+	if(isnull(data))
+		return
+
+	if(data["viruses"])
 		for(var/datum/disease/strain as anything in data["viruses"])
 
 			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
@@ -232,22 +235,24 @@
 
 			C.ForceContractDisease(strain)
 
-	if(C.get_blood_id() == /datum/reagent/blood)
-		if(!data || !C.dna.blood_type.is_compatible(data["blood_type"]:type))
-			C.reagents.add_reagent(/datum/reagent/toxin, removed)
-		else
-			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
+	if(!(C.get_blood_id() == /datum/reagent/blood))
+		return
+
+	var/datum/blood/blood_type = data["blood_type"]
+
+	if(isnull(blood_type) || !C.dna.blood_type.is_compatible(blood_type.type))
+		C.reagents.add_reagent(/datum/reagent/toxin, removed)
+	else
+		C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
-	if(data?["viruses"])
-		for(var/thing in data["viruses"])
-			var/datum/disease/strain = thing
+	for(var/datum/disease/strain as anything in data?["viruses"])
 
-			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
-				continue
+		if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+			continue
 
-			if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-				C.ContactContractDisease(strain)
+		if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+			C.ContactContractDisease(strain)
 
 /datum/reagent/blood/on_new(list/data)
 	. = ..()

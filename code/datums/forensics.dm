@@ -62,15 +62,9 @@
 			H.gloves.add_fingerprint(H, TRUE) //ignoregloves = 1 to avoid infinite loop.
 			return
 
-	#warn remove
-	if(M.debg)
-		stack_trace("Adding print to [parent].")
-		to_chat(world, "Adding print to [parent].")
-
 	add_partial_print(H.get_fingerprints(ignoregloves, H.get_active_hand()))
 	return TRUE
 
-/mob/var/debg
 /datum/forensics/proc/add_partial_print(full_print)
 	PRIVATE_PROC(TRUE)
 	LAZYINITLIST(fingerprints)

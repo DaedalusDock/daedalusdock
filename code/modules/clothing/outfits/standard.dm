@@ -481,3 +481,15 @@
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
+
+/datum/outfit/gamemaster
+	name = "Admin outfit (Gamemaster)"
+
+	suit = /obj/item/clothing/suit/hooded/gamemaster
+	shoes = /obj/item/clothing/shoes/sandal/gamemaster
+
+/datum/outfit/gamemaster/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	var/obj/item/clothing/suit/hooded/gamemaster/robe = H.wear_suit
+	robe.ToggleHood()
+
+	H.set_real_name("Gamemaster", TRUE)

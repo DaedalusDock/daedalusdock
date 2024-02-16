@@ -58,3 +58,6 @@
   - rscadd: Ghost vision is now monochrome. This can be disabled in preferences.
   - bugfix: Damage from overheating would occasionally not update your health display.
   - bugfix: Neon carpet works again
+2024-02-16:
+  francinum:
+  - server: BYOND 515.1630 is now required to compile.

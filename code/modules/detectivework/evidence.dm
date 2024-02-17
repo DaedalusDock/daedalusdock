@@ -13,6 +13,13 @@
 	atom_storage.max_total_storage = WEIGHT_CLASS_SMALL
 	atom_storage.set_holdable(null, list(type))
 
+/obj/item/storage/evidencebag/attack_obj(obj/attacked_obj, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
+
+	return atom_storage.attempt_insert(attacked_obj, user)
+
 /obj/item/storage/evidencebag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
 	var/obj/item/I = arrived
@@ -33,11 +40,3 @@
 	w_class = WEIGHT_CLASS_TINY
 	icon_state = "evidenceobj"
 	desc = "An empty evidence bag."
-
-/obj/item/storage/box/evidence
-	name = "evidence bag box"
-	desc = "A box claiming to contain evidence bags."
-
-/obj/item/storage/box/evidence/PopulateContents()
-	for(var/i in 1 to 6)
-		new /obj/item/storage/evidencebag(src)

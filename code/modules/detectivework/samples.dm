@@ -137,6 +137,11 @@
 	update_appearance(UPDATE_ICON_STATE)
 	return TRUE
 
+/obj/item/sample/print/copy_evidence(atom/supplied)
+	var/list/prints = supplied.return_fingerprints()
+	if(length(fibers))
+		evidence = prints.Copy()
+		return TRUE
 
 /obj/item/sample_kit
 	name = "fiber collection kit"

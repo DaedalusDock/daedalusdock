@@ -19,7 +19,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	pass_flags = PASSTABLE
 
 	///How large is the object, used for stuff like whether it can fit in backpacks or not
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_SMALL
 
 	///Items can by default thrown up to 10 tiles by TK users
 	tk_throw_range = 10

@@ -1,5 +1,5 @@
 /datum/forensics
-	/// The object we belong to
+	/// The object we belong to. This can be null.
 	var/atom/parent
 	/// A k:v list of fingerprint : partial_or_full_print
 	var/list/fingerprints
@@ -55,7 +55,7 @@
 		return
 
 	var/mob/living/carbon/human/H = M
-	parent.add_fibers(H)
+	parent?.add_fibers(H)
 	var/obj/item/gloves = H.gloves
 
 	if(gloves) //Check if the gloves (if any) hide fingerprints
@@ -190,7 +190,7 @@
 			LAZYSET(admin_log, M.ckey, copytext(admin_log[M.ckey], 1, laststamppos))
 		admin_log[M.ckey] += "\nLast: \[[current_time]\] \"[M.real_name]\"[hasgloves]. Ckey: [M.ckey]" //made sure to be existing by if(!LAZYACCESS);else
 
-	parent.fingerprintslast = M.ckey
+	parent?.fingerprintslast = M.ckey
 	return TRUE
 
 /// Add a list of fingerprints

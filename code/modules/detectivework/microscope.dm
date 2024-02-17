@@ -3,10 +3,8 @@
 	desc = "A highly advanced microscope capable of zooming up to 3000x."
 	icon = 'icons/obj/machines/forensics/microscope.dmi'
 	icon_state = "microscope"
-	density = TRUE
 
 	var/obj/item/sample
-	var/report_num = 0
 
 /obj/machinery/microscope/Destroy()
 	QDEL_NULL(sample)
@@ -53,10 +51,10 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/microscope/AltClick(mob/user)
-	remove_sample(user)
+	remove_sample(user) // This has canUseTopic() checks
 
 /obj/machinery/microscope/proc/remove_sample(mob/user)
-	if(user.incapacitated() || !Adjacent(user))
+	if(!user.canUseTopic(USE_CLOSE | USE_SILICON_REACH))
 		return
 
 	if(!sample)
@@ -93,28 +91,29 @@
 
 	if(istype(sample, /obj/item/swab))
 		var/obj/item/swab/swab = sample
-		evidence["gunshot_residue"] = swab.sample
+		evidence["gunshot_residue"] = swab.swabbed_forensics.gunshot_residue
 
 	else if(istype(sample, /obj/item/sample/fibers))
 		var/obj/item/sample/fibers/fibers = sample
 		scanned_object = fibers.label
-		evidence["fibers"] = fibers.evidence.Copy()
+		evidence["fibers"] = fibers.evidence
 
 	else if(istype(sample, /obj/item/sample/print))
 		var/obj/item/sample/print/card = sample
 		scanned_object = card.label || card.name
-		evidence["prints"] = card.evidence.Copy()
+		evidence["prints"] = card.evidence
 
 	else
 		if(length(sample.forensics?.fingerprints))
-			evidence["prints"] = sample.return_fingerprints().Copy()
+			evidence["prints"] = sample.return_fingerprints()
 		if(length(sample.forensics?.fibers))
-			evidence["fibers"] = sample.return_fibers().Copy()
+			evidence["fibers"] = sample.return_fibers()
 		if(length(sample.forensics?.gunshot_residue))
-			evidence["gunshot_residue"] = sample.return_gunshot_residue().Copy()
+			evidence["gunshot_residue"] = sample.return_gunshot_residue()
 
-	report.name = "Forensic report #[++report_num]: [sample.name]"
-	report.info = "<b>Scanned item:</b><br>[scanned_object]<br><br>"
+	report.name = "Forensic report: [sample.name] ([stationtime2text()()])"
+	report.info = "<b>Scanned item:</b><br>[scanned_object]<br>"
+	report.info = "<i>Taken at: [stationtime2text()()]</i><br><br>"
 
 	report.info += "<b>Gunpowder residue analysis</b><br>"
 	if(LAZYLEN(evidence["gunshot_residue"]))
@@ -146,4 +145,5 @@
 		report.info += "<i>No information available.</i><br>"
 
 	report.forceMove(drop_location())
+	report.update_appearance()
 	return TRUE

@@ -8,11 +8,19 @@
 
 	var/used = FALSE
 
-	var/sample_type
-	var/sample = ""
+	var/sample_name
+	var/datum/forensics/swabbed_forensics
+
+/obj/item/swab/Initialize(mapload)
+	. = ..()
+	swabbed_forensics = new()
+
+/obj/item/swab/Destroy(force)
+	QDEL_NULL(swabbed_forensics)
+	return ..()
 
 /obj/item/swab/update_name(updates)
-	name = "[initial(name)] ([sample_type])"
+	name = "[initial(name)] ([sample_name])"
 	return ..()
 
 /obj/item/swab/update_icon_state()
@@ -47,7 +55,8 @@
 			return TRUE
 
 		user.visible_message(span_notice("[user] swabs [target]'s mouth."))
-		set_used(SAMPLE_TRACE_DNA, target.get_trace_dna())
+		swabbed_forensics.add_trace_DNA(target.get_trace_dna())
+		set_used(target.get_face_name())
 		return TRUE
 
 	var/zone = deprecise_zone(user.zone_selected)
@@ -57,34 +66,12 @@
 		return TRUE
 
 	if(target.get_item_covering_bodypart(BP))
-		return
+		return FALSE
 
-	if(!target.forensics)
+	if(!is_valid_target(target))
 		to_chat(user, span_warning("[target] has nothing to swab on their body."))
 		return TRUE
 
-	var/list/choices = list()
-	if(target.forensics.blood_DNA)
-		choices += SAMPLE_BLOOD_DNA
-	if(target.forensics.trace_DNA)
-		choices += SAMPLE_TRACE_DNA
-	if(target.forensics.gunshot_residue)
-		choices += SAMPLE_RESIDUE
-
-	var/input = tgui_input_list(user, "What kind of evidence are you looking for?","Evidence Collection", choices)
-	if(!input)
-		return TRUE
-	if(!user.Adjacent(target) || !user.is_holding(src) || user.incapacitated())
-		return TRUE
-
-	user.visible_message(span_notice("[user] swabs [target]'s [BP.plaintext_zone]."))
-	switch(input)
-		if(SAMPLE_BLOOD_DNA)
-			set_used(input, target.return_blood_DNA())
-		if(SAMPLE_RESIDUE)
-			set_used(input, target.return_gunshot_residue())
-		if(SAMPLE_TRACE_DNA)
-			set_used(input, target.return_trace_DNA())
 	return TRUE
 
 /obj/item/swab/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
@@ -98,46 +85,25 @@
 		target = H.get_item_covering_zone(deprecise_zone(user.zone_selected))
 		if(!target)
 			return
-		if(!target.forensics)
+		if(!is_valid_target(target))
 			to_chat(user, span_warning("There is no evidence on [H]'s [target]."))
 			return
 
-	if(!target.forensics)
+	if(!is_valid_target(target))
 		to_chat(user, span_warning("There is no evidence on [target]."))
 		return
 
-	var/list/choices = list()
-
-	if(length(target.forensics.blood_DNA))
-		choices += SAMPLE_BLOOD_DNA
-	if(length(target.forensics.trace_DNA))
-		choices += SAMPLE_TRACE_DNA
-	if(length(target.forensics.gunshot_residue))
-		choices += SAMPLE_RESIDUE
-
-	var/input
-	if(length(choices) == 1)
-		input = choices[1]
-	else
-		input = tgui_input_list(user, "What kind of evidence are you looking for?","Evidence Collection", choices)
-
-	if(!input)
-		return
-	if(!user.Adjacent(target) || !user.is_holding(src) || user.incapacitated())
-		return
-
-	switch(input)
-		if(SAMPLE_BLOOD_DNA)
-			set_used(input, target.return_blood_DNA())
-		if(SAMPLE_RESIDUE)
-			set_used(input, target.return_gunshot_residue())
-		if(SAMPLE_TRACE_DNA)
-			set_used(input, target.return_trace_DNA())
-
+	swabbed_forensics.add_trace_DNA(target.return_trace_DNA())
+	swabbed_forensics.add_blood_DNA(target.return_blood_DNA())
+	swabbed_forensics.add_gunshot_residue_list(target.return_gunshot_residue())
+	set_used(target)
 	user.visible_message(span_notice("[user] swabs [target]."))
+	return TRUE
 
-/obj/item/swab/proc/set_used(sample_type, sample)
+/obj/item/swab/proc/set_used(sample_name)
 	used = TRUE
-	src.sample_type = sample_type
-	src.sample = sample
+	src.sample_name = "[sample_name]"
 	update_appearance()
+
+/obj/item/swab/proc/is_valid_target(atom/target)
+	return length(target.return_blood_DNA()) && length(target.return_trace_DNA()) && length(target.return_gunshot_residue())

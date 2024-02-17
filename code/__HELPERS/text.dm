@@ -334,22 +334,24 @@
 /// This proc replaces all instances of the "replace" character in "text" with the character in the same position within the "compare" string
 /// "***************FFFFFFFFFFFFFFFFF******************" and "FFFFFFFFFFFFFFF*****************FFFFFFFFFFFFFFFFFF"
 /// is "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-/proc/stringmerge(text, compare,replace = "*")
+/proc/stringmerge(text, compare, replace = "*")
 	if(length(text) != length(compare))
 		CRASH("Stringmerge received strings of differing lengths")
 
-	var/list/text_chars = splittext_char(text, "")
-	var/list/compare_chars = splittext_char(compare, "")
-	var/text_char
-	var/compare_char
-	for(var/i in 1 to length(text_chars))
-		text_char = text_chars[i]
-		compare_char = compare_chars[i]
-		if(text_char == compare_char)
-			continue
-		if(text_char == replace)
-			text_chars[i] = compare_char
-	return jointext(text_chars, "")
+	var/list/frags = list()
+	var/idx = 1
+	var/span
+	var/nonspan
+	while(idx <= length_char(text))
+		span = spantext_char(text, replace, idx)
+		if(span)
+		frags += copytext_char(compare, idx, idx + span)
+			idx += span
+		else
+			nonspan = nonspantext_char(text, replace, idx)
+			frags += copytext_char(text, idx, idx + nonspan)
+			idx += nonspan
+	return jointext(frags, "")
 
 //This proc returns the presence of the desired character
 /proc/stringcount(text, character = "*")

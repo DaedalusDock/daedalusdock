@@ -74,7 +74,7 @@
 	LAZYINITLIST(fingerprints)
 
 	if(!fingerprints[full_print])
-		fingerprints[full_print] = stars(full_print, rand(0, 20)) //Initial touch, not leaving much evidence the first time.
+		fingerprints[full_print] = stars(full_print, rand(0, 70)) //Initial touch, not leaving much evidence the first time.
 		return
 
 	switch(max(stringcount(fingerprints[full_print]), 0)) //tells us how many stars are in the current prints.

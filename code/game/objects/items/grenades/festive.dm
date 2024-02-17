@@ -11,7 +11,7 @@
 	var/burntime = 120
 	var/lit = FALSE
 
-/obj/item/sparkler/fire_act(exposed_temperature, exposed_volume)
+/obj/item/sparkler/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	light()
 
 /obj/item/sparkler/attackby(obj/item/item, mob/user, params)
@@ -82,7 +82,7 @@
 	else
 		return ..()
 
-/obj/item/grenade/firecracker/fire_act(exposed_temperature, exposed_volume)
+/obj/item/grenade/firecracker/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	detonate()
 
 /obj/item/grenade/firecracker/wirecutter_act(mob/living/user, obj/item/item)

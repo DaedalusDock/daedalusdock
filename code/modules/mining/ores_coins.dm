@@ -56,7 +56,7 @@
 
 	return TRUE
 
-/obj/item/stack/ore/fire_act(exposed_temperature, exposed_volume)
+/obj/item/stack/ore/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(isnull(refined_type))
 		return

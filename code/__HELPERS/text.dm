@@ -353,7 +353,7 @@
 
 //This proc returns the presence of the desired character
 /proc/stringcount(text, character = "*")
-  return length(splittext_char(text, character)) - 1
+	return length(splittext_char(text, character)) - 1
 
 /proc/reverse_text(text = "")
 	var/new_text = ""

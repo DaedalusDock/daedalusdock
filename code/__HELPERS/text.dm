@@ -345,7 +345,7 @@
 	while(idx <= length_char(text))
 		span = spantext_char(text, replace, idx)
 		if(span)
-		frags += copytext_char(compare, idx, idx + span)
+			frags += copytext_char(compare, idx, idx + span)
 			idx += span
 		else
 			nonspan = nonspantext_char(text, replace, idx)

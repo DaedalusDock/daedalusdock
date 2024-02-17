@@ -139,7 +139,7 @@
 
 /obj/item/sample/print/copy_evidence(atom/supplied)
 	var/list/prints = supplied.return_fingerprints()
-	if(length(fibers))
+	if(length(prints))
 		evidence = prints.Copy()
 		return TRUE
 

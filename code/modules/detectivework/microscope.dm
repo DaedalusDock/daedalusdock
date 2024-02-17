@@ -111,9 +111,9 @@
 		if(length(sample.forensics?.gunshot_residue))
 			evidence["gunshot_residue"] = sample.return_gunshot_residue()
 
-	report.name = "Forensic report: [sample.name] ([stationtime2text()()])"
+	report.name = "Forensic report: [sample.name] ([stationtime2text()])"
 	report.info = "<b>Scanned item:</b><br>[scanned_object]<br>"
-	report.info = "<i>Taken at: [stationtime2text()()]</i><br><br>"
+	report.info = "<i>Taken at: [stationtime2text()]</i><br><br>"
 
 	report.info += "<b>Gunpowder residue analysis</b><br>"
 	if(LAZYLEN(evidence["gunshot_residue"]))

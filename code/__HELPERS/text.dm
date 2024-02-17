@@ -331,39 +331,29 @@
 		. = t[1]
 		return uppertext(.) + copytext(t, 1 + length(.))
 
-//This proc fills in all spaces with the "replace" var (* by default) with whatever
-//is in the other string at the same spot (assuming it is not a replace char).
-//This is used for fingerprints
-/proc/stringmerge(text,compare,replace = "*")
-	var/newtext = text
+/// This proc replaces all instances of the "replace" character in "text" with the character in the same position within the "compare" string
+/// "***************FFFFFFFFFFFFFFFFF******************" and "FFFFFFFFFFFFFFF*****************FFFFFFFFFFFFFFFFFF"
+/// is "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+/proc/stringmerge(text, compare,replace = "*")
 	if(length(text) != length(compare))
-		return 0
-	for(var/i = 1, i < length(text), i++)
-		var/a = copytext(text,i,i+1)
-		var/b = copytext(compare,i,i+1)
-		//if it isn't both the same letter, or if they are both the replacement character
-		//(no way to know what it was supposed to be)
-		if(a != b)
-			if(a == replace) //if A is the replacement char
-				newtext = copytext(newtext,1,i) + b + copytext(newtext, i+1)
-			else if(b == replace) //if B is the replacement char
-				newtext = copytext(newtext,1,i) + a + copytext(newtext, i+1)
-			else //The lists disagree, Uh-oh!
-				return 0
-	return newtext
+		CRASH("Stringmerge received strings of differing lengths")
+
+	var/list/text_chars = splittext_char(text, "")
+	var/list/compare_chars = splittext_char(compare, "")
+	var/text_char
+	var/compare_char
+	for(var/i in 1 to length(text_chars))
+		text_char = text_chars[i]
+		compare_char = compare_chars[i]
+		if(text_char == compare_char)
+			continue
+		if(text_char == replace)
+			text_chars[i] = compare_char
+	return jointext(text_chars, "")
 
 //This proc returns the presence of the desired character
-/proc/stringcount(text,character = "*")
-	if(!text || !character)
-		return 0
-
-	var/count = 0
-	for(var/i = 1, i <= length(text), i++)
-		var/a = copytext(text,i,i+1)
-		if(a == character)
-			count++
-
-	return count
+/proc/stringcount(text, character = "*")
+  return length(splittext_char(text, character)) - 1
 
 /proc/reverse_text(text = "")
 	var/new_text = ""

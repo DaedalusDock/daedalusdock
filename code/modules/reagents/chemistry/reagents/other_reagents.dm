@@ -23,7 +23,7 @@
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.apply_water()
 
-	qdel(exposed_turf.fire)
+	qdel(exposed_turf.active_hotspot)
 	if(exposed_turf.simulated)
 		var/datum/gas_mixture/air = exposed_turf.return_air()
 		var/adjust_temp = abs(air.temperature - exposed_temperature) / air.group_multiplier

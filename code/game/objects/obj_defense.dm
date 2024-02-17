@@ -126,7 +126,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 //// FIRE
 
 ///Called when the obj is exposed to fire.
-/obj/fire_act(exposed_temperature, exposed_volume)
+/obj/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(isturf(loc))
 		var/turf/T = loc
 		if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(src, TRAIT_T_RAY_VISIBLE))

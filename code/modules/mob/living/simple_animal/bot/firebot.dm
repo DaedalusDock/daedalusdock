@@ -156,7 +156,7 @@
 
 	else if(isturf(target))
 		var/turf/open/T = target
-		if(T.fire)
+		if(T.active_hotspot)
 			return TRUE
 
 	return FALSE

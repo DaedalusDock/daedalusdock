@@ -14,7 +14,7 @@
 			return legcuffed
 	return ..()
 
-/mob/living/carbon/proc/get_all_worn_items()
+/mob/living/carbon/proc/get_all_worn_items(include_pockets = TRUE)
 	return list(
 		back,
 		wear_mask,

@@ -261,12 +261,10 @@
 	adjust_fire_stacks(-5)
 	Paralyze(60, ignore_canstun = TRUE)
 	spin(32,2)
-	visible_message(span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
-		span_notice("You stop, drop, and roll!"))
+	visible_message(
+		span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
+		span_danger("You hurl yourself to the floor, rolling frantically around!"))
 	sleep(30)
-	if(fire_stacks <= 0 && !QDELETED(src))
-		visible_message(span_danger("[src] successfully extinguishes [p_them()]self!"), \
-			span_notice("You extinguish yourself."))
 	return
 
 /mob/living/carbon/resist_restraints()

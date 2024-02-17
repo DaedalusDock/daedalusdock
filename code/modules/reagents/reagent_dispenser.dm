@@ -87,7 +87,7 @@
 /obj/structure/reagent_dispensers/fueltank/ex_act()
 	boom()
 
-/obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/zap_act(power, zap_flags)

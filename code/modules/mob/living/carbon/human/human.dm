@@ -1261,3 +1261,53 @@
 		I.add_trace_DNA(user.get_trace_dna())
 	else
 		add_trace_DNA(user.get_trace_dna())
+/mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
+	. = ..()
+	var/head_exposure = 1
+	var/chest_exposure = 1
+	var/groin_exposure = 1
+	var/legs_exposure = 1
+	var/arms_exposure = 1
+
+	//Get heat transfer coefficients for clothing.
+
+	for(var/obj/item/C in get_all_worn_items(FALSE))
+		if(C.max_heat_protection_temperature >= exposed_temperature)
+			if(C.heat_protection & HEAD)
+				head_exposure = 0
+			if(C.heat_protection & CHEST)
+				chest_exposure = 0
+			if(C.heat_protection & GROIN)
+				groin_exposure = 0
+			if( C.heat_protection & LEGS)
+				legs_exposure = 0
+			if(C.heat_protection & ARMS)
+				arms_exposure = 0
+		else
+			if((C.body_parts_covered | C.heat_protection) & HEAD)
+				head_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & CHEST)
+				chest_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & GROIN)
+				groin_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & LEGS)
+				legs_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & ARMS)
+				arms_exposure = 0.5
+
+	//minimize this for low-pressure environments
+	var/temp_multiplier = 2 * clamp(0, exposed_temperature / PHORON_MINIMUM_BURN_TEMPERATURE, 1)
+
+	//Always check these damage procs first if fire damage isn't working. They're probably what's wrong.
+	if(head_exposure)
+		apply_damage(0.9 * temp_multiplier * head_exposure, BURN, BODY_ZONE_HEAD)
+	if(chest_exposure || groin_exposure)
+		apply_damage(2.5 * temp_multiplier * chest_exposure, BURN, BODY_ZONE_CHEST)
+		apply_damage(2.0 * temp_multiplier * groin_exposure, BURN, BODY_ZONE_CHEST)
+	if(arms_exposure)
+		apply_damage(0.4 * temp_multiplier * arms_exposure, BURN, BODY_ZONE_L_ARM)
+		apply_damage(0.4 * temp_multiplier * arms_exposure, BURN, BODY_ZONE_R_ARM)
+	if(legs_exposure)
+		apply_damage(0.6 * temp_multiplier * legs_exposure, BURN, BODY_ZONE_L_LEG)
+		apply_damage(0.6 * temp_multiplier * legs_exposure, BURN, BODY_ZONE_R_LEG)
+

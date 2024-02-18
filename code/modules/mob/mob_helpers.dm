@@ -161,7 +161,7 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 
 	var/list/chars = splittext_char(html_decode(phrase), "")
 	for(var/i in 1 to length(chars))
-		if(chars[i] == " " || !prob(probability))
+		if(!prob(probability) || chars[i] == " ")
 			continue
 		chars[i] = "*"
 	return sanitize(jointext(chars, ""))

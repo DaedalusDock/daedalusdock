@@ -9,3 +9,5 @@
 #define EVACUATION_REASON_CREW_DEATH "crew_death"
 #define EVACUATION_REASON_LONG_ROUND "long_round"
 #define EVACUATION_REASON_VOTE "vote"
+#define EVACUATION_REASON_CONSOLE_DESTROYED "console_destroyed"
+#define EVACUATION_REASON_AI_DESTROYED "ai_destroyed"

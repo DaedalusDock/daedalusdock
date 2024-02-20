@@ -188,7 +188,7 @@ Burning extracts:
 	for(var/obj/machinery/light/L in A) //Shamelessly copied from the APC effect.
 		L.on = TRUE
 		L.break_light_tube()
-		stoplag()
+		CHECK_TICK
 	..()
 
 /obj/item/slimecross/burning/red

@@ -177,7 +177,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		//. -= round(H.shock_stage * 0.5)
+		. -= round(H.shock_stage / 2)
 		if(H.eye_blurry)
 			. -= 20
 		if(H.eye_blind)

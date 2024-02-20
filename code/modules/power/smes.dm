@@ -46,6 +46,7 @@
 
 /obj/machinery/power/smes/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	dir_loop:
 		for(var/d in GLOB.cardinals)
 			var/turf/T = get_step(src, d)
@@ -180,6 +181,8 @@
 		cell.charge = (charge / capacity) * cell.maxcharge
 
 /obj/machinery/power/smes/Destroy()
+	UNSET_TRACKING(__TYPE__)
+
 	if(SSticker.IsRoundInProgress())
 		var/turf/T = get_turf(src)
 		message_admins("[src] deleted at [ADMIN_VERBOSEJMP(T)]")

@@ -244,11 +244,16 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref)
 	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
-	bank_account.payday(STARTING_PAYCHECKS, TRUE)
 	account_id = bank_account.account_id
 	bank_account.replaceable = FALSE
 
 	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
+	var/obj/item/storage/wallet/W = wear_id
+	if(istype(W))
+		var/monero = round(equipping.paycheck * dna.species.payday_modifier * STARTING_PAYCHECKS, 10)
+		SSeconomy.spawn_cash_for_amount(monero, W)
+	else
+		bank_account.payday(STARTING_PAYCHECKS, TRUE)
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
@@ -321,6 +326,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	shoes = /obj/item/clothing/shoes/sneakers/black
 	box = /obj/item/storage/box/survival
 
+	id_in_wallet = TRUE
 	preload = TRUE // These are used by the prefs ui, and also just kinda could use the extra help at roundstart
 
 	var/backpack = /obj/item/storage/backpack
@@ -370,7 +376,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!J)
 		J = SSjob.GetJob(H.job)
 
-	var/obj/item/card/id/card = H.wear_id
+	var/obj/item/card/id/card = H.wear_id.GetID()
 	if(istype(card))
 		ADD_TRAIT(card, TRAIT_JOB_FIRST_ID_CARD, ROUNDSTART_TRAIT)
 		shuffle_inplace(card.access) // Shuffle access list to make NTNet passkeys less predictable
@@ -523,16 +529,18 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	else
 		var/is_antag = (player_client.mob.mind in GLOB.pre_setup_antags)
 		player_client.prefs.safe_transfer_prefs_to(src, TRUE, is_antag)
+
 		if(require_human && !ishumanbasic(src))
 			set_species(/datum/species/human)
 			dna.species.roundstart_changed = TRUE
 			apply_pref_name(/datum/preference/name/backup_human, player_client)
+
 		if(CONFIG_GET(flag/force_random_names))
 			var/species_type = player_client.prefs.read_preference(/datum/preference/choiced/species)
 			var/datum/species/species = new species_type
 
 			var/gender = player_client.prefs.read_preference(/datum/preference/choiced/gender)
-			real_name = species.random_name(gender, TRUE)
+			set_real_name(species.random_name(gender, TRUE))
 	dna.update_dna_identity()
 
 
@@ -565,8 +573,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		if(mmi.brain)
 			mmi.brain.name = "[organic_name]'s brain"
 		if(mmi.brainmob)
-			mmi.brainmob.real_name = organic_name //the name of the brain inside the cyborg is the robotized human's name.
-			mmi.brainmob.name = organic_name
+			mmi.brainmob.set_real_name(organic_name)//the name of the brain inside the cyborg is the robotized human's name.
+
 	// If this checks fails, then the name will have been handled during initialization.
 	if(!GLOB.current_anonymous_theme && player_client.prefs.read_preference(/datum/preference/name/cyborg) != DEFAULT_CYBORG_NAME)
 		apply_pref_name(/datum/preference/name/cyborg, player_client)

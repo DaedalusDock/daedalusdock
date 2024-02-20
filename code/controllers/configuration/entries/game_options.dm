@@ -266,8 +266,6 @@
 	min_val = 0
 	max_val = 100
 
-/datum/config_entry/flag/ghost_interaction
-
 /datum/config_entry/flag/near_death_experience //If carbons can hear ghosts when unconscious and very close to death
 
 /datum/config_entry/flag/silent_ai

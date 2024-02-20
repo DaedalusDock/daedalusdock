@@ -364,7 +364,7 @@
 
 ///Disable power in the station APCs
 /proc/power_fail(duration_min, duration_max)
-	for(var/obj/machinery/power/apc/current_apc as anything in GLOB.apcs_list)
+	for(var/obj/machinery/power/apc/current_apc as anything in INSTANCES_OF(/obj/machinery/power/apc))
 		if(!current_apc.cell || !SSmapping.level_trait(current_apc.z, ZTRAIT_STATION))
 			continue
 		var/area/apc_area = current_apc.area

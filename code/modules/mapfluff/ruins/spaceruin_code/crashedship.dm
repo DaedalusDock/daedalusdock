@@ -35,7 +35,7 @@
 	gloves = /obj/item/clothing/gloves/color/fyellow
 	head = /obj/item/clothing/head/hardhat
 	r_pocket = /obj/item/paper/fluff/ruins/crashedship/old_diary
-	l_pocket = /obj/item/stack/spacecash/c200
+	l_pocket = /obj/item/stack/spacecash/c100
 	mask = /obj/item/clothing/mask/breath
 	belt = /obj/item/tank/internals/emergency_oxygen/engi
 

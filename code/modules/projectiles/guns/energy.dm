@@ -176,6 +176,10 @@
 		update_chamber() // Ditto.
 	return ..()
 
+/obj/item/gun/energy/after_firing(mob/living/user, pointblank, atom/pbtarget, message)
+	. = ..()
+	AddComponent(/datum/component/smell, INTENSITY_NORMAL, SCENT_ODOR, "ozone", 1, 5 MINUTES)
+
 /obj/item/gun/energy/proc/select_fire(mob/living/user)
 	select++
 	if (select > ammo_type.len)

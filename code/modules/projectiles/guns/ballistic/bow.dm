@@ -5,6 +5,7 @@
 	icon = 'icons/obj/guns/ballistic.dmi'
 	icon_state = "bow"
 	inhand_icon_state = "bow"
+	smoking_gun = FALSE
 	load_sound = null
 	fire_sound = null
 	mag_type = /obj/item/ammo_box/magazine/internal/bow
@@ -14,8 +15,9 @@
 	w_class = WEIGHT_CLASS_BULKY
 	internal_magazine = TRUE
 	cartridge_wording = "arrow"
-	bolt_type = BOLT_TYPE_NO_BOLT
+	bolt = /datum/gun_bolt/no_bolt
 	recoil = 0 // Bows don't have recoil.
+	show_caliber_on_examine = FALSE
 
 	var/drawn = FALSE
 

@@ -13,7 +13,7 @@
 	labels_left = max(labels_left - 1, 0)
 
 	var/old_real_name = user.real_name
-	user.real_name += " (suicide)"
+	user.set_real_name("[old_real_name] (suicide)")
 	// no conflicts with their identification card
 	for(var/atom/A in user.get_all_contents())
 		if(istype(A, /obj/item/card/id))

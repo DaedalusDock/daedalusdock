@@ -8,7 +8,6 @@
 	visual = TRUE
 	color_source = ORGAN_COLOR_STATIC
 	draw_color = null
-	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
 	zone = BODY_ZONE_HEAD
@@ -121,8 +120,7 @@
 	if(!L.mind)
 		return
 	brainmob = new(src)
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
 	brainmob.timeofhostdeath = L.timeofdeath
 	brainmob.suiciding = suicided
 	if(L.has_dna())
@@ -388,7 +386,7 @@
 		owner.dropItemToGround(owner.get_active_held_item())
 
 	if(damage >= 0.6*maxHealth)
-		owner.set_slurring_if_lower(2 SECONDS)
+		owner.set_slurring_if_lower(10 SECONDS)
 
 	if(damage >= (maxHealth * high_threshold))
 		if(owner.body_position == STANDING_UP)

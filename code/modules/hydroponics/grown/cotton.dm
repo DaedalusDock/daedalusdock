@@ -26,7 +26,6 @@
 	force = 0
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 2
 	throw_range = 3
 	attack_verb_continuous = list("pomfs")
 	attack_verb_simple = list("pomf")
@@ -71,7 +70,6 @@
 	force = 5
 	throwforce = 5
 	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 2
 	throw_range = 3
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "whacks")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")

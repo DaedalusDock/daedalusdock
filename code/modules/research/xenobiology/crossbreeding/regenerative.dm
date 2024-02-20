@@ -247,7 +247,7 @@ Regenerative extracts:
 		var/mob/living/carbon/D = dummy
 		T.dna.transfer_identity(D)
 		D.updateappearance(mutcolor_update=1)
-		D.real_name = T.real_name
+		D.set_real_name(T.real_name)
 	dummy.adjustBruteLoss(target.getBruteLoss())
 	dummy.adjustFireLoss(target.getFireLoss())
 	dummy.adjustToxLoss(target.getToxLoss())

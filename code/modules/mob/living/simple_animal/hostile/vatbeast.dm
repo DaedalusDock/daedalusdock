@@ -51,7 +51,7 @@
 	ranged_mousepointer = 'icons/effects/mouse_pointers/supplypod_target.dmi'
 
 /datum/action/cooldown/tentacle_slap/update_button_name(atom/movable/screen/movable/action_button/button, force)
-	if(button.our_hud.mymob != owner)
+	if(button.hud.mymob != owner)
 		// For buttons given to mobs which are not our owner, give it this alt name
 		button.name = "Command Tentacle Slap"
 		button.desc = "Command your steed to slap a creature with its tentacles."

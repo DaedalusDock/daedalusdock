@@ -22,7 +22,6 @@
 	light_power = 0.75
 	light_color = LIGHT_COLOR_FIRE
 	light_on = FALSE
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)

@@ -226,7 +226,7 @@
 
 	SSevacuation.enable_evacuation(identifier)
 
-/client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in GLOB.nuke_list)
+/client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in INSTANCES_OF(/obj/machinery/nuclearbomb))
 	set category = "Admin.Events"
 	set name = "Toggle Nuke"
 	set popup_menu = FALSE

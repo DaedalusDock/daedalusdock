@@ -88,6 +88,8 @@
 
 /obj/machinery/computer/communications/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
+	SET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	AddComponent(/datum/component/gps, "Secured Communications Signal")
 
 /// Are we NOT a silicon, AND we're logged in as the captain?
@@ -742,6 +744,12 @@
 			status_signal.data["picture_state"] = data1
 
 	frequency.post_signal(status_signal)
+
+/obj/machinery/computer/communications/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	UNSET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
+	SSevacuation.trigger_auto_evac(EVACUATION_REASON_CONSOLE_DESTROYED)
+	return ..()
 
 /// Override the cooldown for special actions
 /// Used in places such as CentCom messaging back so that the crew can answer right away

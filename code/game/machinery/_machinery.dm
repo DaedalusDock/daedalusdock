@@ -184,8 +184,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	SETUP_SMOOTHING()
 	QUEUE_SMOOTH(src)
 
-	GLOB.machines += src
-
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
 		circuit.apply_default_parts(src)
@@ -223,7 +221,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 		link_to_jack()
 
 /obj/machinery/Destroy()
-	GLOB.machines.Remove(src)
 	end_processing()
 	dump_inventory_contents()
 	QDEL_LIST(component_parts)

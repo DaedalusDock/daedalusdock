@@ -48,7 +48,7 @@ SUBSYSTEM_DEF(nightshift)
 /datum/controller/subsystem/nightshift/proc/update_nightshift(active, announce = TRUE, resumed = FALSE)
 	set waitfor = FALSE
 	if(!resumed)
-		currentrun = GLOB.apcs_list.Copy()
+		currentrun = INSTANCES_OF_COPY(/obj/machinery/power/apc)
 		nightshift_active = active
 		if(announce)
 			if (active)

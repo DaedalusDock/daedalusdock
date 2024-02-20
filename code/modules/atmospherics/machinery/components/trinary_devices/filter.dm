@@ -206,7 +206,7 @@
 	icon_state = "filter_on-0"
 /obj/machinery/atmospherics/components/trinary/filter/atmos/n2
 	name = "nitrogen filter"
-	filter_type = list(GAS_N2O)
+	filter_type = list(GAS_NITROGEN)
 /obj/machinery/atmospherics/components/trinary/filter/atmos/o2
 	name = "oxygen filter"
 	filter_type = list(GAS_OXYGEN)

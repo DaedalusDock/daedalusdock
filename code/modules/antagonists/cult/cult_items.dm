@@ -3,7 +3,6 @@
 	desc = "An old, dusty tome with frayed edges and a sinister-looking cover."
 	icon = 'icons/obj/cult/items_and_weapons.dmi'
 	icon_state ="tome"
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -703,7 +702,7 @@ Striking a noncultist, however, will tear their flesh."}
 	force = 17
 	force_wielded = 24
 	throwforce = 40
-	throw_speed = 2
+	throw_speed = 1.5
 	armor_penetration = 30
 	block_chance = 30
 

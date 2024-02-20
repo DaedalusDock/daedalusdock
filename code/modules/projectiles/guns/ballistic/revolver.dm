@@ -10,8 +10,7 @@
 	dry_fire_sound = 'sound/weapons/gun/revolver/dry_fire.ogg'
 	casing_ejector = FALSE
 	internal_magazine = TRUE
-	bolt_type = BOLT_TYPE_NO_BOLT
-	tac_reloads = FALSE
+	bolt = /datum/gun_bolt/no_bolt
 	var/spin_delay = 10
 	var/recent_spin = 0
 	var/last_fire = 0

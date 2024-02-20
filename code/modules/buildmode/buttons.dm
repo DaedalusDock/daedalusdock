@@ -4,6 +4,9 @@
 	// If we don't do this, we get occluded by item action buttons
 	plane = ABOVE_HUD_PLANE
 
+/atom/movable/screen/buildmode/can_usr_use(mob/user)
+	return bd.holder == user.client
+
 /atom/movable/screen/buildmode/New(bld)
 	bd = bld
 	return ..()
@@ -18,6 +21,10 @@
 	screen_loc = "NORTH,WEST"
 
 /atom/movable/screen/buildmode/mode/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, LEFT_CLICK))
 		bd.toggle_modeswitch()
@@ -37,6 +44,10 @@
 	name = "Buildmode Help"
 
 /atom/movable/screen/buildmode/help/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	bd.mode.show_help(usr.client)
 	return 1
 
@@ -50,6 +61,10 @@
 	return ..()
 
 /atom/movable/screen/buildmode/bdir/Click()
+	. = ..()
+	if(.)
+		return FALSE
+
 	bd.toggle_dirswitch()
 	update_appearance()
 	return 1
@@ -65,6 +80,9 @@
 	return ..(bld)
 
 /atom/movable/screen/buildmode/modeswitch/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	bd.change_mode(modetype)
 	return 1
 
@@ -78,6 +96,9 @@
 	return ..(bld)
 
 /atom/movable/screen/buildmode/dirswitch/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	bd.change_dir(dir)
 	return 1
 
@@ -87,5 +108,8 @@
 	name = "Quit Buildmode"
 
 /atom/movable/screen/buildmode/quit/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	bd.quit()
 	return 1

@@ -6,7 +6,6 @@
 	worn_icon_state = "pen"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
 
@@ -35,16 +34,19 @@
 				M.dna.add_mutation(HM, MUT_EXTRA)
 		if(fields)
 			if(fields["name"] && fields["UE"] && fields["blood_type"])
-				M.real_name = fields["name"]
+				M.set_real_name(fields["name"])
 				M.dna.unique_enzymes = fields["UE"]
-				M.name = M.real_name
 				M.dna.blood_type = fields["blood_type"]
+
 			if(fields["UI"]) //UI+UE
 				M.dna.unique_identity = merge_text(M.dna.unique_identity, fields["UI"])
+
 			if(fields["UF"])
 				M.dna.unique_features = merge_text(M.dna.unique_features, fields["UF"])
+
 			if(fields["UI"] || fields["UF"])
 				M.updateappearance(mutcolor_update=1, mutations_overlay_update=1)
+
 		log_attack("[log_msg] [loc_name(user)]")
 		return TRUE
 	return FALSE
@@ -497,9 +499,8 @@
 					M.dna.previous["UE"] = M.dna.unique_enzymes
 				if(!M.dna.previous["blood_type"])
 					M.dna.previous["blood_type"] = M.dna.blood_type
-				M.real_name = fields["name"]
+				M.set_real_name( fields["name"])
 				M.dna.unique_enzymes = fields["UE"]
-				M.name = M.real_name
 				M.dna.blood_type = fields["blood_type"]
 				M.dna.temporary_mutations[UE_CHANGED] = endtime
 			if(fields["UI"]) //UI+UE

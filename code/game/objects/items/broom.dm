@@ -13,7 +13,7 @@
 	force = 8
 	force_wielded = 12
 	throwforce = 10
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 7
 
 	w_class = WEIGHT_CLASS_NORMAL
@@ -23,7 +23,7 @@
 
 /obj/item/pushbroom/Initialize(mapload)
 	. = ..()
-	icon_state_wielded = "base_icon_state[1]"
+	icon_state_wielded = "[base_icon_state][1]"
 
 /obj/item/pushbroom/update_icon_state()
 	icon_state = "[base_icon_state]0"

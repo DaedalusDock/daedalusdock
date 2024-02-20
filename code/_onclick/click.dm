@@ -28,6 +28,8 @@
 		adj += effect.nextmove_adjust()
 	next_move = world.time + ((num + adj)*mod)
 
+	SEND_SIGNAL(src, COMSIG_LIVING_CHANGENEXT_MOVE, next_move)
+
 /**
  * Before anything else, defer these calls to a per-mobtype handler.  This allows us to
  * remove istype() spaghetti code, but requires the addition of other handler procs to simplify it.
@@ -351,9 +353,12 @@
 
 /atom/proc/ShiftClick(mob/user)
 	var/flags = SEND_SIGNAL(user, COMSIG_CLICK_SHIFT, src)
-	if(user.client && (user.client.eye == user || user.client.eye == user.loc || flags & COMPONENT_ALLOW_EXAMINATE))
-		user.examinate(src)
-	return
+	if(!user.client)
+		return
+	if(!((user.client.eye == user) || (user.client.eye == user.loc) || isobserver(user)) && !(flags & COMPONENT_ALLOW_EXAMINATE))
+		return
+
+	user.examinate(src)
 
 /**
  * Ctrl click
@@ -546,6 +551,10 @@
 	transform = M
 
 /atom/movable/screen/click_catcher/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK) && iscarbon(usr))
 		var/mob/living/carbon/C = usr

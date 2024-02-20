@@ -121,7 +121,7 @@
 		return
 
 	var/target
-	for(var/obj/structure/ladder/lad in GLOB.ladders)
+	for(var/obj/structure/ladder/lad as anything in INSTANCES_OF(/obj/structure/ladder))
 		if(lad.z != z)
 			continue
 		if(direction == UP && !lad.up)
@@ -135,7 +135,7 @@
 			continue
 		target = lad
 
-	for(var/obj/structure/stairs/stairs_bro in GLOB.stairs)
+	for(var/obj/structure/stairs/stairs_bro as anything in INSTANCES_OF(/obj/structure/stairs))
 		if(direction == UP && stairs_bro.z != z) //if we're going up, we need to find stairs on our z level
 			continue
 		if(direction == DOWN && stairs_bro.z != z - 1) //if we're going down, we need to find stairs on the z level beneath us

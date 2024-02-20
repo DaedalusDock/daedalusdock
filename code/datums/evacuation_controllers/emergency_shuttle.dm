@@ -136,7 +136,7 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 			emergency.call_time = emergency_call_time
 			UnregisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED)
 			emergency.request(null)
-		if(EVACUATION_REASON_VOTE, EVACUATION_REASON_LONG_ROUND)
+		if(EVACUATION_REASON_VOTE, EVACUATION_REASON_LONG_ROUND, EVACUATION_REASON_CONSOLE_DESTROYED)
 			RegisterSignal(emergency, COMSIG_EMERGENCYSHUTTLE_ARRIVAL, PROC_REF(on_emergency_shuttle_arrived))
 			state = EVACUATION_STATE_INITIATED
 			emergency.request(null)

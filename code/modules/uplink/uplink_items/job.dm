@@ -53,24 +53,6 @@
 
 // Low progression cost
 
-/datum/uplink_item/role_restricted/clownpin
-	name = "Ultra Hilarious Firing Pin"
-	desc = "A firing pin that, when inserted into a gun, makes that gun only usable by clowns and clumsy people and makes that gun honk whenever anyone tries to fire it."
-	progression_minimum = 5 MINUTES
-	cost = 4
-	item = /obj/item/firing_pin/clown/ultra
-	restricted_roles = list(JOB_CLOWN)
-	illegal_tech = FALSE
-
-/datum/uplink_item/role_restricted/clownsuperpin
-	name = "Super Ultra Hilarious Firing Pin"
-	desc = "Like the ultra hilarious firing pin, except the gun you insert this pin into explodes when someone who isn't clumsy or a clown tries to fire it."
-	progression_minimum = 5 MINUTES
-	cost = 7
-	item = /obj/item/firing_pin/clown/ultra/selfdestruct
-	restricted_roles = list(JOB_CLOWN)
-	illegal_tech = FALSE
-
 /datum/uplink_item/role_restricted/syndimmi
 	name = "Syndicate Brand MMI"
 	desc = "An MMI modified to give cyborgs laws to serve the Syndicate without having their interface damaged by Cryptographic Sequencers, this will not unlock their hidden modules."

@@ -204,8 +204,11 @@
 /atom/movable/screen/fullscreen/cursor_catcher/lock_on
 
 /atom/movable/screen/fullscreen/cursor_catcher/lock_on/Click(location, control, params)
-	if(usr == owner)
-		calculate_params()
+	. = ..()
+	if(.)
+		return FALSE
+
+	calculate_params()
 	given_turf.Click(location, control, params)
 
 #undef LOCKON_IGNORE_RESULT

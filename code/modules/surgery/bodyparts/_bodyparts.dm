@@ -438,7 +438,6 @@
 /obj/item/bodypart/setDir(newdir)
 	. = ..()
 	dir = SOUTH
-	return
 
 //empties the bodypart from its organs and other things inside it
 /obj/item/bodypart/proc/drop_contents(mob/user, violent_removal)
@@ -664,7 +663,7 @@
 	if(!LAZYLEN(contained_organs) || !(brute || burn))
 		return FALSE
 
-	var/organ_damage_threshold = 5
+	var/organ_damage_threshold = 10
 	if(sharpness & SHARP_POINTY)
 		organ_damage_threshold *= 0.5
 
@@ -1462,3 +1461,32 @@
 	if(bodypart_flags & BP_DISLOCATED)
 		to_chat(user, span_warning("The [joint_name] is dislocated!"))
 	return TRUE
+
+/// Applies all bodypart traits to the target.
+/obj/item/bodypart/proc/apply_traits(mob/target)
+	if(isnull(target))
+		return
+
+	for(var/trait in bodypart_traits)
+		ADD_TRAIT(target, trait, bodypart_trait_source)
+
+/// Adds a trait to be applied by this bodypart.
+/obj/item/bodypart/proc/add_bodypart_trait(trait)
+	bodypart_traits |= trait
+	apply_traits(owner)
+
+/// Removes a trait applied by this bodypart.
+/obj/item/bodypart/proc/remove_bodypart_trait(trait)
+	bodypart_traits -= trait
+	if(owner)
+		REMOVE_TRAIT(owner, trait, bodypart_trait_source)
+
+/// Remove all bodypart traits this part grants.
+/obj/item/bodypart/proc/remove_traits_from(mob/target)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	PRIVATE_PROC(TRUE)
+	if(isnull(target))
+		return
+
+	for(var/trait in bodypart_traits)
+		REMOVE_TRAIT(target, trait, bodypart_trait_source)

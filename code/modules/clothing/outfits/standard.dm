@@ -236,7 +236,7 @@
 	gloves = /obj/item/clothing/gloves/color/black
 	glasses = /obj/item/clothing/glasses/sunglasses
 	shoes = /obj/item/clothing/shoes/sneakers/black
-	l_pocket = /obj/item/melee/energy/sword/saber
+	r_hand = /obj/item/melee/energy/sword/saber
 	l_hand = /obj/item/storage/secure/briefcase
 
 /datum/outfit/assassin/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
@@ -481,3 +481,15 @@
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
+
+/datum/outfit/gamemaster
+	name = "Admin outfit (Gamemaster)"
+
+	suit = /obj/item/clothing/suit/hooded/gamemaster
+	shoes = /obj/item/clothing/shoes/sandal/gamemaster
+
+/datum/outfit/gamemaster/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	var/obj/item/clothing/suit/hooded/gamemaster/robe = H.wear_suit
+	robe.ToggleHood()
+
+	H.set_real_name("Gamemaster", TRUE)

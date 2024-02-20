@@ -4,7 +4,6 @@
 GLOBAL_LIST_EMPTY(req_console_assistance)
 GLOBAL_LIST_EMPTY(req_console_supplies)
 GLOBAL_LIST_EMPTY(req_console_information)
-GLOBAL_LIST_EMPTY(allConsoles)
 GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 
@@ -112,7 +111,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 /obj/machinery/requests_console/Initialize(mapload)
 	. = ..()
 	name = "\improper [department] requests console"
-	GLOB.allConsoles += src
+
+	SET_TRACKING(__TYPE__)
 
 	if(departmentType)
 
@@ -132,7 +132,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 
 /obj/machinery/requests_console/Destroy()
 	QDEL_NULL(Radio)
-	GLOB.allConsoles -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/requests_console/ui_interact(mob/user)
@@ -188,7 +188,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 				dat += "<A href='?src=[REF(src)];setScreen=[REQ_SCREEN_MAIN]'><< Back</A><BR>"
 
 			if(REQ_SCREEN_VIEW_MSGS)
-				for (var/obj/machinery/requests_console/Console in GLOB.allConsoles)
+				for (var/obj/machinery/requests_console/Console as anything in INSTANCES_OF(/obj/machinery/requests_console))
 					if (Console.department == department)
 						Console.newmessagepriority = REQ_NO_NEW_MESSAGE
 						Console.update_appearance()

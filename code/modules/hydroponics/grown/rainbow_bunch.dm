@@ -29,7 +29,6 @@
 	force = 0
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 2
 	throw_range = 3
 	attack_verb_continuous = list("pompfs")
 	attack_verb_simple = list("pompf")

@@ -163,8 +163,8 @@
 
 	force = 10
 	force_wielded = 20
-	throwforce = 20
-	throw_speed = 2
+	throwforce = 2
+	throw_speed = 1.5
 
 	block_chance = 50
 
@@ -176,7 +176,7 @@
 
 /obj/item/staff/bostaff/Initialize(mapload)
 	. = ..()
-	icon_state_wielded = "base_icon_state[1]"
+	icon_state_wielded = "[base_icon_state][1]"
 
 /obj/item/staff/bostaff/update_icon_state()
 	icon_state = "[base_icon_state]0"

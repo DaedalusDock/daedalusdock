@@ -54,7 +54,7 @@ There are several things that need to be remembered:
 		update_worn_id()
 		update_worn_glasses()
 		update_worn_gloves()
-		update_inv_ears()
+		update_worn_ears()
 		update_worn_shoes()
 		update_suit_storage()
 		update_worn_mask()
@@ -272,7 +272,7 @@ There are several things that need to be remembered:
 	apply_overlay(GLASSES_LAYER)
 
 
-/mob/living/carbon/human/update_inv_ears()
+/mob/living/carbon/human/update_worn_ears()
 	remove_overlay(EARS_LAYER)
 
 	if(!get_bodypart(BODY_ZONE_HEAD)) //decapitated
@@ -320,7 +320,7 @@ There are several things that need to be remembered:
 
 	if(wear_neck)
 		var/obj/item/worn_item = wear_neck
-
+		update_hud_neck(wear_neck)
 		if(!(check_obscured_slots() & ITEM_SLOT_NECK))
 			var/mutable_appearance/neck_overlay
 			var/icon_file
@@ -347,7 +347,6 @@ There are several things that need to be remembered:
 				neck_overlay.pixel_x += dna.species.offset_features[OFFSET_NECK][1]
 				neck_overlay.pixel_y += dna.species.offset_features[OFFSET_NECK][2]
 			overlays_standing[NECK_LAYER] = neck_overlay
-		update_hud_neck(wear_neck)
 
 	apply_overlay(NECK_LAYER)
 
@@ -699,14 +698,13 @@ There are several things that need to be remembered:
 		if(client && hud_used && hud_used.hud_version != HUD_STYLE_NOHUD)
 			worn_item.screen_loc = ui_hand_position(get_held_index_of_item(worn_item))
 			client.screen += worn_item
-			if(observers?.len)
-				for(var/M in observers)
-					var/mob/dead/observe = M
+			if(LAZYLEN(observers))
+				for(var/mob/dead/observe as anything in observers)
 					if(observe.client && observe.client.eye == src)
 						observe.client.screen += worn_item
 					else
 						observers -= observe
-						if(!observers.len)
+						if(!length(observers))
 							observers = null
 							break
 

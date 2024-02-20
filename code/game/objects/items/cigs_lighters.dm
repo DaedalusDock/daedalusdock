@@ -41,7 +41,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	else
 		open_flame(heat)
 
-/obj/item/match/fire_act(exposed_temperature, exposed_volume)
+/obj/item/match/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	matchignite()
 
 /obj/item/match/proc/matchignite()
@@ -259,6 +259,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		e.start(src)
 		qdel(src)
 		return
+
 	// allowing reagents to react after being lit
 	reagents.flags &= ~(NO_REACT)
 	reagents.handle_reactions()
@@ -273,6 +274,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		var/mob/M = loc
 		M.update_worn_mask()
 		M.update_held_items()
+
+	AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_PLUME, "nicotine", 5)
 
 /obj/item/clothing/mask/cigarette/extinguish()
 	if(!lit)
@@ -292,6 +295,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		to_chat(M, span_notice("Your [name] goes out."))
 		M.update_worn_mask()
 		M.update_held_items()
+
+	qdel(GetComponent(/datum/component/smell))
 
 /// Handles processing the reagents in the cigarette.
 /obj/item/clothing/mask/cigarette/proc/handle_reagents()
@@ -361,7 +366,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	else
 		cig.light(span_notice("[user] holds the [name] out for [M], and lights [M.p_their()] [cig.name]."))
 
-/obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume)
+/obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	light()
 
 /obj/item/clothing/mask/cigarette/get_temperature()

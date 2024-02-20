@@ -22,7 +22,9 @@
 	casing_ejector = FALSE
 	bolt_wording = "pump"
 	cartridge_wording = "shell"
-	tac_reloads = FALSE
+
+	recoil = 1
+	unwielded_recoil = 4
 
 	pb_knockback = 2
 	unwielded_spread_bonus = 40
@@ -136,8 +138,6 @@
 	can_suppress = FALSE
 	burst_size = 1
 	fire_delay = 0
-
-	pin = /obj/item/firing_pin/implant/pindicate
 	fire_sound = 'sound/weapons/gun/shotgun/shot_alt.ogg'
 	actions_types = list()
 	mag_display = TRUE
@@ -147,7 +147,6 @@
 	mag_display_ammo = TRUE
 	semi_auto = TRUE
 	internal_magazine = FALSE
-	tac_reloads = TRUE
 	///the type of secondary magazine for the bulldog
 	var/secondary_magazine_type
 	///the secondary magazine
@@ -238,8 +237,6 @@
 	playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 	update_appearance()
 
-/obj/item/gun/ballistic/shotgun/bulldog/unrestricted
-	pin = /obj/item/firing_pin
 /////////////////////////////
 // DOUBLE BARRELED SHOTGUN //
 /////////////////////////////
@@ -258,22 +255,10 @@
 	sawn_desc = "Omar's coming!"
 	obj_flags = UNIQUE_RENAME
 	rack_sound_volume = 0
-	unique_reskin = list("Default" = "dshotgun",
-						"Dark Red Finish" = "dshotgun_d",
-						"Ash" = "dshotgun_f",
-						"Faded Grey" = "dshotgun_g",
-						"Maple" = "dshotgun_l",
-						"Rosewood" = "dshotgun_p"
-						)
 	semi_auto = TRUE
-	bolt_type = BOLT_TYPE_NO_BOLT
+	bolt = /datum/gun_bolt/no_bolt
 	can_be_sawn_off = TRUE
 	pb_knockback = 3 // it's a super shotgun!
-
-/obj/item/gun/ballistic/shotgun/doublebarrel/AltClick(mob/user)
-	. = ..()
-	if(unique_reskin && !current_skin && user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
-		reskin_obj(user)
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/slugs
 	name = "hunting shotgun"

@@ -225,16 +225,11 @@
 		var/obj/item/stack/spacecash/c = I
 		if(!user.temporarilyRemoveItemFromInventory(c))
 			return
-		credits += c.value
-		visible_message(span_info("[span_name("[user]")] inserts [c.value] cr into [src]."))
+		credits += c.get_item_credit_value()
+		visible_message(span_info("[span_name("[user]")] inserts [c.get_item_credit_value()] cr into [src]."))
 		qdel(c)
 		return
-	else if(istype(I, /obj/item/holochip))
-		var/obj/item/holochip/HC = I
-		credits += HC.credits
-		visible_message(span_info("[user] inserts a [HC.credits] cr holocredit chip into [src]."))
-		qdel(HC)
-		return
+
 	else if(istype(I, /obj/item/card/id))
 		if(state != 2)
 			return

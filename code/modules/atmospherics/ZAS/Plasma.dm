@@ -38,7 +38,7 @@ GLOBAL_DATUM_INIT(contamination_overlay, /image, image('modular_pariah/master_fi
 			if(E && !(E.organ_flags & ORGAN_SYNTHETIC))
 				if(prob(20))
 					to_chat(src, span_warning("Your eyes burn!"))
-				E.applyOrganDamage(2.5)
+				E.applyOrganDamage(1)
 				eye_blurry = min(eye_blurry+3,50)
 				if (prob(max(0, E.damage - 15) + 1) && !eye_blind)
 					to_chat(src, span_danger("You are blinded!"))

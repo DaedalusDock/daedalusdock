@@ -24,7 +24,7 @@
 	force = 4
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=80)
 	flags_1 = CONDUCT_1
@@ -106,7 +106,7 @@
 
 	force = 8
 	throwforce = 10
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 7
 	stamina_damage = 40
 	stamina_cost = 15
@@ -131,7 +131,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	flags_1 = CONDUCT_1
 	force = 2
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	attack_verb_simple = list("whack", "spoon", "tap")
 	attack_verb_continuous = list("whacks", "spoons", "taps")
@@ -160,7 +160,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	force = 2
 	custom_materials = list(/datum/material/iron = 80, /datum/material/plastic = 40)
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	attack_verb_simple = list("smack", "thwack", "slap")
 	attack_verb_continuous = list("smacks", "thwacks", "slaps")

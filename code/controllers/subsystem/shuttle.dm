@@ -637,7 +637,6 @@ SUBSYSTEM_DEF(shuttle)
 		if (M.mode != SHUTTLE_IDLE)
 			L["mode"] = capitalize(M.mode)
 		L["status"] = M.getDbgStatusText()
-		L["important"] = M.important
 		if(M == existing_shuttle)
 			data["existing_shuttle"] = L
 
@@ -716,7 +715,7 @@ SUBSYSTEM_DEF(shuttle)
 				shuttle_loading = FALSE
 
 		if("replace")
-			if(existing_shuttle.important)
+			if(existing_shuttle == GLOB.backup_shuttle)
 				WARNING("The shuttle to be replaced is marked as important. \
 					Replacing it may cause issues with the round.")
 			else if(S && !shuttle_loading)

@@ -240,7 +240,6 @@ export const ShuttleManipulatorModification = (props, context) => {
             <Button
               content="Replace"
               color="bad"
-              disabled={selected.important}
               onClick={() => act('replace', {
                 shuttle_id: selected.shuttle_id,
               })} />

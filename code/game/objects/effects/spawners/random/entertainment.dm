@@ -83,7 +83,6 @@
 		/obj/item/stack/spacecash/c1 = 10,
 		/obj/item/stack/spacecash/c10 = 5,
 		/obj/item/stack/spacecash/c20 = 3,
-		/obj/item/stack/spacecash/c50 = 2,
 		/obj/item/stack/spacecash/c100 = 1,
 	)
 
@@ -96,10 +95,7 @@
 		/obj/item/stack/spacecash/c1 = 100,
 		/obj/item/stack/spacecash/c10 = 80,
 		/obj/item/stack/spacecash/c20 = 60,
-		/obj/item/stack/spacecash/c50 = 40,
 		/obj/item/stack/spacecash/c100 = 30,
-		/obj/item/stack/spacecash/c200 = 20,
-		/obj/item/stack/spacecash/c500 = 10,
 		/obj/item/stack/spacecash/c1000 = 5,
 		/obj/item/stack/spacecash/c10000 = 1,
 	)

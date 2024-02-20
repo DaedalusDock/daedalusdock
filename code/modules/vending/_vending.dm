@@ -1267,16 +1267,19 @@ GLOBAL_LIST_EMPTY(vending_products)
 			break
 	if(!dispensed_item)
 		return FALSE
+
 	/// Charges the user if its not the owner
 	if(!compartmentLoadAccessCheck(user))
 		if(!payee.has_money(dispensed_item.custom_price))
 			balloon_alert(user, "insufficient funds")
 			return TRUE
+
 		/// Make the transaction
 		payee.adjust_money(-dispensed_item.custom_price)
 		linked_account.adjust_money(dispensed_item.custom_price)
 		linked_account.bank_card_talk("[payee.account_holder] made a [dispensed_item.custom_price] \
 		cr purchase at your custom vendor.")
+
 		/// Log the transaction
 		SSblackbox.record_feedback("amount", "vending_spent", dispensed_item.custom_price)
 		log_econ("[dispensed_item.custom_price] credits were spent on [src] buying a \

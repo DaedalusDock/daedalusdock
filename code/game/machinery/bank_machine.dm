@@ -26,10 +26,7 @@
 	var/value = 0
 	if(istype(I, /obj/item/stack/spacecash))
 		var/obj/item/stack/spacecash/C = I
-		value = C.value * C.amount
-	else if(istype(I, /obj/item/holochip))
-		var/obj/item/holochip/H = I
-		value = H.credits
+		value = C.get_item_credit_value()
 	if(value)
 		var/datum/bank_account/D = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 		if(D)
@@ -100,5 +97,5 @@
 
 /obj/machinery/computer/bank_machine/proc/end_syphon()
 	siphoning = FALSE
-	new /obj/item/holochip(drop_location(), syphoning_credits) //get the loot
+	SSeconomy.spawn_cash_for_amount(syphoning_credits, drop_location())
 	syphoning_credits = 0

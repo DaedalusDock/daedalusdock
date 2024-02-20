@@ -56,7 +56,7 @@
 				H.color = "#000000"
 		adjustHealth(-maxHealth*BLOBMOB_HEALING_MULTIPLIER)
 
-/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume)
+/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	..()
 	if(exposed_temperature)
 		adjustFireLoss(clamp(0.01 * exposed_temperature, 1, 5))

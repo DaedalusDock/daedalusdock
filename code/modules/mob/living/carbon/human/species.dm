@@ -1508,9 +1508,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	if(prob(5))
 		if(bodytemp < cold_discomfort_level)
-			to_chat(humi, span_danger(pick(cold_discomfort_strings)))
+			to_chat(humi, span_warning(pick(cold_discomfort_strings)))
 		else if(bodytemp > heat_discomfort_level)
-			to_chat(humi, span_danger(pick(heat_discomfort_strings)))
+			to_chat(humi, span_warning(pick(heat_discomfort_strings)))
 
 	// Store the old bodytemp for future checking
 	humi.old_bodytemperature = bodytemp

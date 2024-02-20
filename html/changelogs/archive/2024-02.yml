@@ -58,3 +58,16 @@
   - rscadd: Ghost vision is now monochrome. This can be disabled in preferences.
   - bugfix: Damage from overheating would occasionally not update your health display.
   - bugfix: Neon carpet works again
+2024-02-16:
+  francinum:
+  - server: BYOND 515.1630 is now required to compile.
+2024-02-18:
+  Kapu1178:
+  - refactor: Rewrote fires, please report any oddities using the bug report button.
+  - bugfix: You will now instantly ignite upon entering a fire.
+  - bugfix: Crawling over flammable liquid while holding a flammable object will ignite
+      the fuel.
+  - bugfix: You take damage in fire again.
+  - bugfix: Flamethrowers no longer spew plasma into the room (lol oops)
+  - rscdel: Deleted the "on fire" particle effect, as it looks REALLY BAD when you're
+      prone.

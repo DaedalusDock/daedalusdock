@@ -619,7 +619,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			R.hud_used.update_robot_modules_display()
 
 /obj/item/attackby(obj/item/item, mob/living/user, params)
-	if(user.try_slapcraft(src, item))
+	if(user?.try_slapcraft(src, item))
 		return TRUE
 	return ..()
 
@@ -1035,13 +1035,14 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/proc/open_flame(flame_heat=700)
 	var/turf/location = loc
-	if(ismob(location))
-		var/mob/M = location
+	if(isliving(location))
+		var/mob/living/M = location
 		var/success = FALSE
-		if(src == M.get_item_by_slot(ITEM_SLOT_MASK))
+		if(M.body_position == LYING_DOWN && (src == M.get_item_by_slot(ITEM_SLOT_MASK) || M.is_holding(src)))
 			success = TRUE
 		if(success)
 			location = get_turf(M)
+
 	if(isturf(location))
 		location.hotspot_expose(flame_heat, 5)
 

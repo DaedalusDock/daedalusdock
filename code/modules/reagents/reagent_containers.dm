@@ -164,7 +164,7 @@
 
 	return ..()
 
-/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume)
+/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	reagents.expose_temperature(exposed_temperature)
 	..()
 
@@ -217,7 +217,7 @@
 	reagents.expose_temperature(1000)
 	..()
 
-/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume)
+/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	reagents.expose_temperature(exposed_temperature)
 
 /// Updates the icon of the container when the reagents change. Eats signal args

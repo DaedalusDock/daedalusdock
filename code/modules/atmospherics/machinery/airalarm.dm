@@ -676,7 +676,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 	. += mutable_appearance(icon, state)
 	. += emissive_appearance(icon, state, alpha = src.alpha)
 
-/obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume)
+/obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(!danger_level)
 		check_air_dangerlevel(loc.unsafe_return_air())

@@ -89,7 +89,7 @@
 	else
 		overload()
 
-/obj/machinery/power/rtg/abductor/fire_act(exposed_temperature, exposed_volume)
+/obj/machinery/power/rtg/abductor/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	overload()
 
 /obj/machinery/power/rtg/abductor/zap_act(power, zap_flags)

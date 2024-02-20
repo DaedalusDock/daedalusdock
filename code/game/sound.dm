@@ -41,6 +41,8 @@
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff_exponent = SOUND_FALLOFF_EXPONENT, frequency = null, channel = 0, pressure_affected = TRUE, ignore_walls = TRUE, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, use_reverb = TRUE)
 	if(isarea(source))
 		CRASH("playsound(): source is an area")
+	if(isnull(vol))
+		CRASH("Playsound received a null volume, this is probably wrong!")
 
 	var/turf/turf_source = get_turf(source)
 

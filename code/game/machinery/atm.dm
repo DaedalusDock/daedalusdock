@@ -113,7 +113,7 @@
 
 	playsound(loc, 'sound/machines/cash_desert.ogg', 50)
 	reject_topic = TRUE
-	sleep(2 SECONDS)
+	sleep(1 SECONDS)
 	reject_topic = FALSE
 	visible_message(span_notice("[src] dispenses a wad of money."), vision_distance = COMBAT_MESSAGE_RANGE)
 

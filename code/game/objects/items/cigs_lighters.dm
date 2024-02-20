@@ -349,6 +349,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		new /obj/effect/decal/cleanable/ash(location)
 	else if(user)
 		to_chat(user, span_notice("Your [name] goes out."))
+	playsound(loc, 'sound/effects/cig_snuff.ogg', 100)
 	new type_butt(location)
 	qdel(src)
 

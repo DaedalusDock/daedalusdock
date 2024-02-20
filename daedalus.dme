@@ -1962,6 +1962,7 @@
 #include "code\modules\admin\team_panel.dm"
 #include "code\modules\admin\topic.dm"
 #include "code\modules\admin\whitelist.dm"
+#include "code\modules\admin\admin_clothing\gamemaster.dm"
 #include "code\modules\admin\callproc\callproc.dm"
 #include "code\modules\admin\smites\bad_luck.dm"
 #include "code\modules\admin\smites\berforate.dm"

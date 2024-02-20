@@ -561,6 +561,7 @@
 							"possibleAnswers" = message.possible_answers,
 						))
 			if (STATE_BUYING_SHUTTLE)
+				data["shuttleToReplace"] = SSevacuation.get_customizable_shuttles()
 				var/datum/bank_account/bank_account = SSeconomy.department_accounts_by_id[ACCOUNT_CAR]
 				var/list/shuttles = list()
 

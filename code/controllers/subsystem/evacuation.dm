@@ -111,6 +111,7 @@ SUBSYSTEM_DEF(evacuation)
 	if(controllers[controller_id])
 		controllers[controller_id].unblock_cancel()
 
+//Perhaps move it to SShuttle?
 /datum/controller/subsystem/evacuation/proc/get_customizable_shuttles()
 	var/list/shuttles = list()
 	for(var/identifier in controllers)

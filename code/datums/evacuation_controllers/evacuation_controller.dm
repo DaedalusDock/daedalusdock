@@ -211,3 +211,6 @@
 
 /datum/evacuation_controller/proc/panel_act(list/href_list)
 	return
+
+/datum/evacuation_controller/proc/escape_shuttle_replaced()
+	return

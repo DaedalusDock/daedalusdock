@@ -167,8 +167,8 @@
 
 	SSevacuation.request_evacuation(usr, null, identifier, admin = TRUE)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Call Shuttle") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	log_admin("[key_name(usr)] admin-called the emergency shuttle.")
-	message_admins(span_adminnotice("[key_name_admin(usr)] admin-called the emergency shuttle[confirm == "Yes (No Recall)" ? " (non-recallable)" : ""]."))
+	log_admin("[key_name(usr)] admin-started the evacuation.")
+	message_admins(span_adminnotice("[key_name_admin(usr)] admin-started the evacuation[confirm == "Yes (No Recall)" ? " (non-recallable)" : ""]."))
 	return
 
 /client/proc/admin_cancel_shuttle()

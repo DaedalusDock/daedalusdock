@@ -341,3 +341,6 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 		log_evacuation("[key_name(usr)] edited the Emergency Shuttle's timeleft to [timer] seconds.")
 		minor_announce("The emergency shuttle will reach its destination in [DisplayTimeText(timer SECONDS)].")
 		message_admins(span_adminnotice("[key_name_admin(usr)] edited the Emergency Shuttle's timeleft to [timer] seconds."))
+
+/datum/evacuation_controller/emergency_shuttle/escape_shuttle_replaced()
+	emergency = GLOB.emergency_shuttle

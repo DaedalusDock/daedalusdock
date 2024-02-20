@@ -220,4 +220,8 @@ SUBSYSTEM_DEF(evacuation)
 	usr << browse(dat.Join(), "window=evac_panel;size=500x500")
 	return
 
+/datum/controller/subsystem/evacuation/proc/escape_shuttle_replaced()
+	for(var/identifier in controllers)
+		controllers[identifier].escape_shuttle_replaced()
+
 #undef CREW_DEATH_MESSAGE

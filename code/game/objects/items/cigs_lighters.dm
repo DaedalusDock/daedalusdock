@@ -747,12 +747,14 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		attack_verb_continuous = string_list(list("burns", "singes"))
 		attack_verb_simple = string_list(list("burn", "singe"))
 		START_PROCESSING(SSobj, src)
+		playsound(loc, pick('sound/items/lighter1.ogg', 'sound/items/lighter2.ogg', 100))
 	else
 		hitsound = SFX_SWING_HIT
 		force = 0
 		attack_verb_continuous = null //human_defense.dm takes care of it
 		attack_verb_simple = null
 		STOP_PROCESSING(SSobj, src)
+
 	set_light_on(lit)
 	update_appearance()
 

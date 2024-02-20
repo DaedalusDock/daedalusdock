@@ -209,7 +209,7 @@
 		if(MOB_ATTACKEDBY_SUCCESS)
 			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
 		if(MOB_ATTACKEDBY_MISS)
-			playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 
 	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
 	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")

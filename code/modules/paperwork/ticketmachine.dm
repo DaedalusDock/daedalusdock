@@ -165,6 +165,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	if(ticket_number >= max_number)
 		to_chat(user,span_warning("Ticket supply depleted, please refill this unit with a hand labeller refill cartridge!"))
 		return
+
 	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 100, FALSE)
 	ticket_number++
 	to_chat(user, span_notice("You take a ticket from [src], looks like you're ticket number #[ticket_number]..."))

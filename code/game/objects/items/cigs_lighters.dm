@@ -242,6 +242,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		update_icon()
 		return
 
+	playsound(loc, 'sound/effects/cig_light.ogg', 100)
 	attack_verb_continuous = string_list(list("burns", "singes"))
 	attack_verb_simple = string_list(list("burn", "singe"))
 	hitsound = 'sound/items/welder.ogg'
@@ -280,6 +281,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/extinguish()
 	if(!lit)
 		return
+
+	playsound(loc, 'sound/effects/cig_snuff.ogg', 100)
 	attack_verb_continuous = null
 	attack_verb_simple = null
 	hitsound = null

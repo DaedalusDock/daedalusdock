@@ -1,6 +1,0 @@
-author: whataboutism-alos
-delete-after: true
-changes:
-  - rscadd: Creates vox scutes
-  - imageadd: Creates icons for vox arm, leg, and hand scutes
-  - code_imp: Reorganized the sprites within the vox bodyparts.dmi

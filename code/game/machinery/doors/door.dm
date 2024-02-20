@@ -575,7 +575,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	. = ..()
 
 /obj/machinery/door/proc/knock_on(mob/user)
-	user.changeNext_move(CLICK_CD_MELEE)
+	user?.changeNext_move(CLICK_CD_MELEE)
 	playsound(src, knock_sound, 100, TRUE)
 
 #undef DOOR_CLOSE_WAIT

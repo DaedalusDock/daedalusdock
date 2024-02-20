@@ -407,7 +407,7 @@
  * Argument:
  * * hand_firsts - boolean that checks the hands of the mob first if TRUE.
  */
-/mob/living/proc/get_idcard(hand_first)
+/mob/living/proc/get_idcard(hand_first, bypass_wallet)
 	RETURN_TYPE(/obj/item/card/id)
 
 	if(!length(held_items)) //Early return for mobs without hands.
@@ -415,11 +415,11 @@
 	//Check hands
 	var/obj/item/held_item = get_active_held_item()
 	if(held_item) //Check active hand
-		. = held_item.GetID()
+		. = held_item.GetID(bypass_wallet)
 	if(!.) //If there is no id, check the other hand
 		held_item = get_inactive_held_item()
 		if(held_item)
-			. = held_item.GetID()
+			. = held_item.GetID(bypass_wallet)
 
 /mob/living/proc/get_id_in_hand()
 	var/obj/item/held_item = get_active_held_item()
@@ -661,6 +661,9 @@
 	else if(admin_revive)
 		updatehealth()
 		get_up(TRUE)
+
+	if(.)
+		qdel(GetComponent(/datum/component/spook_factor))
 
 	// The signal is called after everything else so components can properly check the updated values
 	SEND_SIGNAL(src, COMSIG_LIVING_REVIVE, full_heal, admin_revive)

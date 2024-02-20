@@ -116,6 +116,7 @@
 		_layer,
 		_dir
 	)
+	pic.plane = _plane
 	pic.color = _color
 	pic.alpha = _alpha
 	return TRUE

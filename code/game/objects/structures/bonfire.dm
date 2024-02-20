@@ -119,7 +119,7 @@
 	particles = new /particles/bonfire()
 	START_PROCESSING(SSobj, src)
 
-/obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	start_burning()
 
 /obj/structure/bonfire/proc/on_entered(datum/source, atom/movable/entered)

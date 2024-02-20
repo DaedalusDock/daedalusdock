@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - qol: Thrown objects spin more naturally.
-  - tweak: Almost all objects have had their throw speed reduced.
-  - bugfix: Unbuckling from an object no longer locks you out of actions for 2 seconds.

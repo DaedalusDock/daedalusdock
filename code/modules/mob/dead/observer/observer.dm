@@ -48,7 +48,9 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	var/datum/spawners_menu/spawners_menu
 	var/datum/minigames_menu/minigames_menu
 
-/mob/dead/observer/Initialize(mapload)
+/mob/dead/observer/Initialize(mapload, started_as_observer = FALSE)
+	src.started_as_observer = started_as_observer
+
 	set_invisibility(GLOB.observer_default_invisibility)
 
 	add_verb(src, list(
@@ -115,6 +117,18 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	SSpoints_of_interest.make_point_of_interest(src)
 	ADD_TRAIT(src, TRAIT_HEAR_THROUGH_DARKNESS, ref(src))
 
+	if(!started_as_observer)
+		var/static/list/powers = list(
+			/datum/action/cooldown/ghost_whisper = SPOOK_LEVEL_WEAK_POWERS,
+			/datum/action/cooldown/flicker = SPOOK_LEVEL_WEAK_POWERS,
+			/datum/action/cooldown/knock_sound = SPOOK_LEVEL_WEAK_POWERS,
+			/datum/action/cooldown/ghost_light = SPOOK_LEVEL_MEDIUM_POWERS,
+			/datum/action/cooldown/chilling_presence = SPOOK_LEVEL_MEDIUM_POWERS,
+			/datum/action/cooldown/shatter_light = SPOOK_LEVEL_DESTRUCTIVE_POWERS,
+			/datum/action/cooldown/shatter_glass = SPOOK_LEVEL_DESTRUCTIVE_POWERS,
+		)
+		AddComponent(/datum/component/spooky_powers, powers)
+
 /mob/dead/observer/get_photo_description(obj/item/camera/camera)
 	if(!invisibility || camera.see_ghosts)
 		return "You can also see a g-g-g-g-ghooooost!"
@@ -180,7 +194,7 @@ Transfer_mind is there to check if mob is being deleted/not going to have a body
 Works together with spawning an observer, noted above.
 */
 
-/mob/proc/ghostize(can_reenter_corpse = TRUE)
+/mob/proc/ghostize(can_reenter_corpse = TRUE, admin_ghost)
 	if(!key)
 		return
 	if(key[1] == "@") // Skip aghosts.
@@ -197,7 +211,7 @@ Works together with spawning an observer, noted above.
 				ethereal_heart.stop_crystalization_process(crystal_fella) //stops the crystallization process
 
 	stop_sound_channel(CHANNEL_HEARTBEAT) //Stop heartbeat sounds because You Are A Ghost Now
-	var/mob/dead/observer/ghost = new(src, src) // Transfer safety to observer spawning proc.
+	var/mob/dead/observer/ghost = new(src) // Transfer safety to observer spawning proc.
 	SStgui.on_transfer(src, ghost) // Transfer NanoUIs.
 	ghost.can_reenter_corpse = can_reenter_corpse
 	ghost.key = key
@@ -205,9 +219,12 @@ Works together with spawning an observer, noted above.
 	if(!can_reenter_corpse)// Disassociates observer mind from the body mind
 		ghost.mind = null
 
+	if(!admin_ghost)
+		ghost.add_client_colour(/datum/client_colour/ghostmono)
+
 	return ghost
 
-/mob/living/ghostize(can_reenter_corpse = TRUE)
+/mob/living/ghostize(can_reenter_corpse = TRUE, admin_ghost)
 	. = ..()
 	if(. && can_reenter_corpse)
 		var/mob/dead/observer/ghost = .

@@ -34,7 +34,8 @@
 /obj/item/proc/GetAccess()
 	return list()
 
-/obj/item/proc/GetID()
+/// Get an /obj/item/card/id from this object. bypass_wallet will grab the ID from a wallet even if it's closed
+/obj/item/proc/GetID(bypass_wallet = FALSE)
 	return null
 
 /obj/item/proc/RemoveID()

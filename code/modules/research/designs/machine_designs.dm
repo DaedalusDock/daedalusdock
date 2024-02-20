@@ -512,13 +512,6 @@
 	build_path = /obj/item/circuitboard/machine/vendatray
 	mapload_design_flags = DESIGN_IMPRINTER
 
-/datum/design/board/bountypad
-	name = "Machine Board (Civilian Bounty Pad)"
-	desc = "The circuit board for a Civilian Bounty Pad."
-	id = "bounty_pad"
-	build_path = /obj/item/circuitboard/machine/bountypad
-	mapload_design_flags = DESIGN_IMPRINTER
-
 /datum/design/board/skill_station
 	name = "Machine Board (Skill station)"
 	desc = "The circuit board for Skill station."

@@ -89,9 +89,8 @@
 	to_chat(user, span_notice("You tear the manifest off of [src]."))
 	playsound(src, 'sound/items/poster_ripped.ogg', 75, TRUE)
 
-	manifest.forceMove(loc)
-	if(ishuman(user))
-		user.put_in_hands(manifest)
+	if(!user.put_in_hands(manifest))
+		manifest.forceMove(loc.drop_location())
 	manifest = null
 	update_appearance()
 

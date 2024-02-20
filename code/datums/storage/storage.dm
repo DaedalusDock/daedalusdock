@@ -368,6 +368,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 				to_chat(user, span_warning("[parent] cannot hold [to_insert] as it's a storage item of the same size!"))
 			return FALSE
 
+	if(SEND_SIGNAL(src, COMSIG_STORAGE_CAN_INSERT, to_insert, user, messages, force) & STORAGE_NO_INSERT)
+		return FALSE
+
 	return TRUE
 
 /**
@@ -388,7 +391,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	to_insert.item_flags |= IN_STORAGE
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
-	parent.update_appearance()
+	real_location.update_appearance()
+	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
 	return TRUE
 
 /// Checks if the item is allowed into storage based on it's weight class

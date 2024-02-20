@@ -71,3 +71,18 @@
   - bugfix: Flamethrowers no longer spew plasma into the room (lol oops)
   - rscdel: Deleted the "on fire" particle effect, as it looks REALLY BAD when you're
       prone.
+2024-02-20:
+  Kapu1178:
+  - rscadd: Everyone now spawns with a wallet, containing their ID and their starting
+      funds. You can close them to conceal the ID, but you won't be able to use the
+      ID's access until you open it. RFID blocking leather!
+  - rscadd: Everyone now receives a random bank PIN, viewable in the Memories menu
+      (IC tab if you forgot).
+  - rscadd: You can now access your bank account via a number of ATMs placed around
+      the station.
+  - balance: Crew marked as Deceased in records are no longer given a paycheck. Update
+      records for more money!
+  - rscdel: ID cards are no longer magic money dispensers/receptacles.
+  - rscdel: PDAs no longer take on the name of their owner.
+  - rscdel: Civilian bounties.
+  - rscadd: Added a new admin outfit

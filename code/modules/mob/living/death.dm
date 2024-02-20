@@ -102,6 +102,7 @@
 
 	if (client)
 		client.move_delay = initial(client.move_delay)
+		SEND_SOUND << sound('sound/effects/death_sound.ogg')
 
 	if(!gibbed)
 		AddComponent(/datum/component/spook_factor, SPOOK_AMT_CORPSE)

@@ -532,6 +532,10 @@
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 	screen_loc = "CENTER"
 
+/atom/movable/screen/click_catcher/can_usr_use(mob/user)
+	return TRUE // Owned by a client, not a mob. It's all safe anyways.
+
+
 #define MAX_SAFE_BYOND_ICON_SCALE_TILES (MAX_SAFE_BYOND_ICON_SCALE_PX / world.icon_size)
 #define MAX_SAFE_BYOND_ICON_SCALE_PX (33 * 32) //Not using world.icon_size on purpose.
 

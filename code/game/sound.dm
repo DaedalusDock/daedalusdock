@@ -265,5 +265,7 @@
 				soundin= pick('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
 			if(SFX_PAINT)
 				soundin= pick('sound/effects/paint_1.ogg','sound/effects/paint_2.ogg','sound/effects/paint_3.ogg')
+			if(SFX_BLOCK_BIG_METAL)
+				soundin = pick('sound/weapons/block/metal_block_01.ogg','sound/weapons/block/metal_block_02.ogg','sound/weapons/block/metal_block_03.ogg','sound/weapons/block/metal_block_04.ogg','sound/weapons/block/metal_block_05.ogg','sound/weapons/block/metal_block_06.ogg')
 
 	return soundin

@@ -102,7 +102,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Sound used when equipping the item into a valid slot
 	var/equip_sound
 	///Sound used when picking the item up (into your hands)
-	var/pickup_sound
+	var/pickup_sound = 'sound/items/handling/generic_pickup.ogg'
 	///Sound used when dropping the item, or when its thrown.
 	var/drop_sound = 'sound/items/handling/book_drop.ogg'
 	///Sound used when successfully blocking an attack. Can be a list!

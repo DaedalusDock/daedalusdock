@@ -86,3 +86,6 @@
   - rscdel: PDAs no longer take on the name of their owner.
   - rscdel: Civilian bounties.
   - rscadd: Added a new admin outfit
+2024-02-22:
+  francinum:
+  - bugfix: Click Catcher works again.

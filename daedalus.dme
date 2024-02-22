@@ -97,6 +97,7 @@
 #include "code\__DEFINES\generators.dm"
 #include "code\__DEFINES\ghost.dm"
 #include "code\__DEFINES\grab_defines.dm"
+#include "code\__DEFINES\gradient.dm"
 #include "code\__DEFINES\gravity.dm"
 #include "code\__DEFINES\greyscale.dm"
 #include "code\__DEFINES\hud.dm"

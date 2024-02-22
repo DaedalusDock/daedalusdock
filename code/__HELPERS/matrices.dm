@@ -210,21 +210,32 @@ round(cos_inv_third+sqrt3_sin, 0.001), round(cos_inv_third-sqrt3_sin, 0.001), ro
 			output[offset+x] = round(A[offset+1]*B[x] + A[offset+2]*B[x+4] + A[offset+3]*B[x+8] + A[offset+4]*B[x+12]+(y==5?B[x+16]:0), 0.001)
 	return output
 
-///Converts RGB shorthands into RGBA matrices complete of constants rows (ergo a 20 keys list in byond).
-/proc/color_to_full_rgba_matrix(color)
+/**
+ * Converts RGB shorthands into RGBA matrices complete of constants rows (ergo a 20 keys list in byond).
+ * if return_identity_on_fail is true, stack_trace is called instead of CRASH, and an identity is returned.
+ */
+/proc/color_to_full_rgba_matrix(color, return_identity_on_fail = TRUE)
+	if(!color)
+		return COLOR_MATRIX_IDENTITY
 	if(istext(color))
-		var/list/L = ReadRGB(color)
+		var/list/L = rgb2num(color)
 		if(!L)
-			CRASH("Invalid/unsupported color format argument in color_to_full_rgba_matrix()")
+			var/message = "Invalid/unsupported color ([color]) argument in color_to_full_rgba_matrix()"
+			if(return_identity_on_fail)
+				stack_trace(message)
+				return COLOR_MATRIX_IDENTITY
+			CRASH(message)
 		return list(L[1]/255,0,0,0, 0,L[2]/255,0,0, 0,0,L[3]/255,0, 0,0,0,L.len>3?L[4]/255:1, 0,0,0,0)
-	else if(!islist(color)) //invalid format
-		return color_matrix_identity()
+
+	if(!islist(color)) //invalid format
+		CRASH("Invalid/unsupported color ([color]) argument in color_to_full_rgba_matrix()")
+
 	var/list/L = color
 	switch(L.len)
 		if(3 to 5) // row-by-row hexadecimals
 			. = list()
 			for(var/a in 1 to L.len)
-				var/list/rgb = ReadRGB(L[a])
+				var/list/rgb = rgb2num(L[a])
 				for(var/b in rgb)
 					. += b/255
 				if(length(rgb) % 4) // RGB has no alpha instruction
@@ -244,17 +255,18 @@ round(cos_inv_third+sqrt3_sin, 0.001), round(cos_inv_third-sqrt3_sin, 0.001), ro
 				for(var/b in 1 to 20-L.len)
 					. += 0
 		else
-			CRASH("Invalid/unsupported color format argument in color_to_full_rgba_matrix()")
-
-//Returns an identity color matrix which does nothing
-/proc/color_identity()
-	return list(1,0,0, 0,1,0, 0,0,1)
+			var/message = "Invalid/unsupported color (list of length [L.len]) argument in color_to_full_rgba_matrix()"
+			if(return_identity_on_fail)
+				stack_trace(message)
+				return COLOR_MATRIX_IDENTITY
+			CRASH(message)
 
 //Moves all colors angle degrees around the color wheel while maintaining intensity of the color and not affecting whites
 //TODO: Need a version that only affects one color (ie shift red to blue but leave greens and blues alone)
 /proc/color_rotation(angle)
 	if(angle == 0)
-		return color_identity()
+		return COLOR_MATRIX_IDENTITY
+
 	angle = clamp(angle, -180, 180)
 	var/cos = cos(angle)
 	var/sin = sin(angle)
@@ -285,7 +297,7 @@ GLOBAL_REAL_VAR(list/delta_index) = list(
 /proc/color_contrast(value)
 	value = clamp(value, -100, 100)
 	if(value == 0)
-		return color_identity()
+		return COLOR_MATRIX_IDENTITY
 
 	var/x = 0
 	if (value < 0)
@@ -305,7 +317,7 @@ GLOBAL_REAL_VAR(list/delta_index) = list(
 //Exxagerates or removes colors
 /proc/color_saturation(value as num)
 	if(value == 0)
-		return color_identity()
+		return COLOR_MATRIX_IDENTITY
 	value = clamp(value, -100, 100)
 	if(value > 0)
 		value *= 3

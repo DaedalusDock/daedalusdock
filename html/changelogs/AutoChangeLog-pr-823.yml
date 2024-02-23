@@ -1,0 +1,4 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: Railings no longer duplicate rods.

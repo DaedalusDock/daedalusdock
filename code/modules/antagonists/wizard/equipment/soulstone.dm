@@ -231,7 +231,6 @@
 	to_chat(occupant, span_userdanger("[user] holds you up briefly, then forces you into [target_toolbox]!"))
 	to_chat(occupant, span_deadsay("<b>Your eternal soul has been sacrificed to restore the soul of a toolbox. Them's the breaks!</b>"))
 
-	occupant.client?.give_award(/datum/award/achievement/misc/toolbox_soul, occupant)
 	occupant.deathmessage = "shrieks out in unholy pain as [occupant.p_their()] soul is absorbed into [target_toolbox]!"
 	release_shades(user, TRUE)
 	occupant.death()

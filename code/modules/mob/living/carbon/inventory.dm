@@ -88,13 +88,14 @@
 			if(back)
 				return
 			back = I
-			update_worn_back()
+			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_MASK)
 			if(wear_mask)
 				return
 
 			wear_mask = I
+			update_slots_for_item(I, slot)
 			wear_mask_update(I, toggle_off = 0)
 
 		if(ITEM_SLOT_HEAD)
@@ -102,14 +103,14 @@
 				return
 
 			head = I
+			update_slots_for_item(I, slot)
 			SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_HAT, I)
-			head_update(I)
 
 		if(ITEM_SLOT_NECK)
 			if(wear_neck)
 				return
 			wear_neck = I
-			update_worn_neck(I)
+			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_HANDCUFFED)
 			set_handcuffed(I)
@@ -152,22 +153,23 @@
 		head = null
 		SEND_SIGNAL(src, COMSIG_CARBON_UNEQUIP_HAT, I, force, newloc, no_move, invdrop, silent)
 		if(!QDELETED(src))
-			head_update(I)
+			update_slots_for_item(I, ITEM_SLOT_HEAD)
 
 	else if(I == back)
 		back = null
 		if(!QDELETED(src))
-			update_worn_back()
+			update_slots_for_item(I, ITEM_SLOT_BACK)
 
 	else if(I == wear_mask)
 		wear_mask = null
 		if(!QDELETED(src))
+			update_slots_for_item(I, ITEM_SLOT_MASK)
 			wear_mask_update(I, toggle_off = 1)
 
 	else if(I == wear_neck)
 		wear_neck = null
 		if(!QDELETED(src))
-			update_worn_neck(I)
+			update_slots_for_item(I, ITEM_SLOT_NECK)
 
 	else if(I == handcuffed)
 		set_handcuffed(null)
@@ -179,7 +181,7 @@
 	else if(I == shoes)
 		shoes = null
 		if(!QDELETED(src))
-			update_worn_shoes()
+			update_slots_for_item(I, ITEM_SLOT_FEET)
 
 	else if(I == legcuffed)
 		legcuffed = null
@@ -203,17 +205,6 @@
 	if(istype(C) && (C.tint || initial(C.tint)))
 		update_tint()
 	update_worn_mask()
-
-//handle stuff to update when a mob equips/unequips a headgear.
-/mob/living/carbon/proc/head_update(obj/item/I, forced)
-	if(istype(I, /obj/item/clothing))
-		var/obj/item/clothing/C = I
-		if(C.tint || initial(C.tint))
-			update_tint()
-		update_sight()
-	if(I.flags_inv & HIDEMASK || forced)
-		update_worn_mask()
-	update_worn_head()
 
 /mob/living/carbon/proc/get_holding_bodypart_of_item(obj/item/I)
 	var/index = get_held_index_of_item(I)
@@ -338,3 +329,48 @@
 	for(var/obj/item/inv_item in get_all_worn_items())
 		if(zone & inv_item.body_parts_covered)
 			return inv_item
+
+/// Called by equip_to_slot() when equipping to a non-hand slot, or by tryUnequipItem() on success.
+/mob/living/carbon/proc/update_slots_for_item(obj/item/I, equipped_slot = get_slot_by_item(I))
+	var/old_obscured_slots = obscured_slots
+	var/slots_to_update = equipped_slot
+	var/need_bodypart_update = FALSE
+
+	if(I.flags_inv)
+		update_obscurity()
+		var/new_obscured_slots = obscured_slots //cache for sanic speed
+
+		// Update slots that we were obscuring/are going to obscure
+		slots_to_update |= check_obscured_slots(input_slots = I.flags_inv)
+
+		// Update name if we are changing face visibility
+		var/face_coverage_changed = (old_obscured_slots & HIDEFACE) != (new_obscured_slots & HIDEFACE)
+		if(face_coverage_changed)
+			update_name()
+
+		// Update body incase any bodyparts or organs changed visibility
+		var/bodypart_coverage_changed = (old_obscured_slots & (BODYPART_HIDE_FLAGS)) != (new_obscured_slots & (BODYPART_HIDE_FLAGS))
+		if(bodypart_coverage_changed)
+			need_bodypart_update = TRUE
+
+	switch(equipped_slot)
+		if(ITEM_SLOT_HEAD)
+			if(isclothing(I))
+				var/obj/item/clothing/clothing_item = I
+				if(clothing_item.tint || initial(clothing_item.tint))
+					update_tint()
+
+			update_sight()
+
+			if (invalid_internals())
+				cutoff_internals()
+
+			if(ishuman(src))
+				var/mob/living/carbon/human/H = src
+				H.sec_hud_set_security_status()
+
+	// Do the updates
+	if(need_bodypart_update)
+		update_body_parts()
+
+	update_clothing(slots_to_update)

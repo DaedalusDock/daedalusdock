@@ -508,7 +508,7 @@ BLIND     // can't see anything
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
-		C.head_update(src, forced = 1)
+		C.update_slots_for_item(src)
 	update_action_buttons()
 	return TRUE
 
@@ -524,6 +524,10 @@ BLIND     // can't see anything
 	if(visor_vars_to_toggle & VISOR_TINT)
 		tint ^= initial(tint)
 
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src)
+
 /obj/item/clothing/head/helmet/space/plasmaman/visor_toggling() //handles all the actual toggling of flags
 	up = !up
 	SEND_SIGNAL(src, COMSIG_CLOTHING_VISOR_TOGGLE, up)
@@ -534,6 +538,10 @@ BLIND     // can't see anything
 		flash_protect ^= initial(flash_protect)
 	if(visor_vars_to_toggle & VISOR_TINT)
 		tint ^= initial(tint)
+
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src)
 
 /obj/item/clothing/proc/can_use(mob/user)
 	if(user && ismob(user))

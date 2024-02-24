@@ -112,6 +112,7 @@
 		return
 
 	if(user.wear_mask == src)
+		user.update_slots_for_item(src, ITEM_SLOT_MASK)
 		user.wear_mask_update(src, toggle_off = mask_adjusted)
 
 	if(loc == user)

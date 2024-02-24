@@ -501,6 +501,14 @@ DEFINE_INTERACTABLE(/obj/item)
 		log_admin("[key_name(usr)] has added [picked_affix_name] fantasy affix to [before_name]")
 		message_admins(span_notice("[key_name(usr)] has added [picked_affix_name] fantasy affix to [before_name]"))
 
+/obj/item/vv_edit_var(vname, vval)
+	. = ..()
+	if(vname == NAMEOF(src, flags_inv) && iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		var/slot = C.get_slot_by_item(src)
+		if(slot)
+			C.update_slots_for_item(src, slot)
+
 /obj/item/attack_hand(mob/user, list/modifiers)
 	. = ..()
 	if(.)

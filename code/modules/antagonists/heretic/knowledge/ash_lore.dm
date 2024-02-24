@@ -209,6 +209,5 @@
 	var/datum/action/cooldown/spell/fire_cascade/big/screen_wide_fire_spell = new(user.mind)
 	screen_wide_fire_spell.Grant(user)
 
-	user.client?.give_award(/datum/award/achievement/misc/ash_ascension, user)
 	for(var/trait in traits_to_apply)
 		ADD_TRAIT(user, trait, MAGIC_TRAIT)

@@ -86,3 +86,10 @@
   - rscdel: PDAs no longer take on the name of their owner.
   - rscdel: Civilian bounties.
   - rscadd: Added a new admin outfit
+2024-02-22:
+  francinum:
+  - bugfix: Click Catcher works again.
+2024-02-24:
+  francinum:
+  - rscdel: A majority of existing achievements have been removed.
+  - bugfix: Railings no longer duplicate rods.

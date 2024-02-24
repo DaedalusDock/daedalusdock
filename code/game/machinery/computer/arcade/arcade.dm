@@ -91,11 +91,6 @@ GLOBAL_LIST_INIT(arcade_prize_pool, list(
 		say("CODE ACTIVATED: EXTRA PRIZES.")
 		prizes *= 2
 	for(var/i in 1 to prizes)
-		if(prob(0.0001)) //1 in a million
-			new /obj/item/gun/energy/pulse/prize(src)
-			visible_message(span_notice("[src] dispenses.. woah, a gun! Way past cool."), span_notice("You hear a chime and a shot."))
-			user.client.give_award(/datum/award/achievement/misc/pulse, user)
-			return
 
 		var/prizeselect
 		if(prize_override)

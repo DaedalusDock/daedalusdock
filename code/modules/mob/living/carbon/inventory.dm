@@ -332,6 +332,9 @@
 
 /// Called by equip_to_slot() when equipping to a non-hand slot, or by tryUnequipItem() on success.
 /mob/living/carbon/proc/update_slots_for_item(obj/item/I, equipped_slot = get_slot_by_item(I))
+	if(isnull(equipped_slot))
+		return
+
 	var/old_obscured_slots = obscured_slots
 	var/slots_to_update = equipped_slot
 	var/need_bodypart_update = FALSE

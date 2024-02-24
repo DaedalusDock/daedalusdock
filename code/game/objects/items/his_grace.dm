@@ -277,4 +277,3 @@
 		master.update_held_items()
 		master.visible_message("<span class='his_grace big bold'>Gods will be watching.</span>")
 		name = "[master]'s mythical toolbox of three powers"
-		master.client?.give_award(/datum/award/achievement/misc/ascension, master)

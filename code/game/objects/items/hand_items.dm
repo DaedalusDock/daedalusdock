@@ -86,8 +86,6 @@
 	to_chat(sucker, span_danger("<b>[owner] sees the fear in your eyes as you try to look away from [owner.p_their()] [src.name]!</b>"))
 
 	owner.face_atom(sucker)
-	if(owner.client)
-		owner.client.give_award(/datum/award/achievement/misc/gottem, owner) // then everybody clapped
 
 	playsound(get_turf(owner), 'sound/effects/hit_punch.ogg', 50, TRUE, -1)
 	owner.do_attack_animation(sucker)

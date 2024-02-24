@@ -536,7 +536,6 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 	//BEGIN THE SUMMONING
 	used = TRUE
-	var/datum/team/cult/cult_team = user_antag.cult_team
 	..()
 	sound_to_playing_players('sound/effects/dimensional_rend.ogg')
 	var/turf/rune_turf = get_turf(src)

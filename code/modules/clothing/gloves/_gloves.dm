@@ -44,12 +44,6 @@
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "bloodyhands")
 
-/obj/item/clothing/gloves/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_gloves()
-
 /obj/item/clothing/gloves/wirecutter_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(!cut_type)

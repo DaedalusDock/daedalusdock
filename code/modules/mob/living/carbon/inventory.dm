@@ -331,7 +331,12 @@
 			return inv_item
 
 /// Update any visuals relating to an item when it's equipped, unequipped, or it's flags_inv changes.
-/mob/living/carbon/proc/update_slots_for_item(obj/item/I, equipped_slot = get_slot_by_item(I), force_obscurity_update)
+/mob/living/carbon/proc/update_slots_for_item(obj/item/I, equipped_slot = null, force_obscurity_update)
+	if(isnull(equipped_slot))
+		equipped_slot = get_slot_by_item(I)
+		if(is_holding(I))
+			equipped_slot |= ITEM_SLOT_HANDS
+
 	if(isnull(equipped_slot))
 		return
 

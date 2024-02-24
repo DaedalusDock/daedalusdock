@@ -417,10 +417,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 				to_chat(splashed_human, span_alert("You're blinded by a spray of blood!"))
 			if(splashed_human.wear_suit)
 				splashed_human.wear_suit.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_oversuit()    //updates mob overlays to show the new blood (no refresh)
 			if(splashed_human.w_uniform)
 				splashed_human.w_uniform.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_undersuit()    //updates mob overlays to show the new blood (no refresh)
 			splatter_strength--
 
 	if(splatter_strength <= 0) // we used all the puff so we delete it.

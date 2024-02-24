@@ -101,12 +101,6 @@
 		restore_offsets(user)
 	. = ..()
 
-/obj/item/clothing/shoes/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_shoes()
-
 /**
  * adjust_laces adjusts whether our shoes (assuming they can_be_tied) and tied, untied, or knotted
  *

@@ -42,12 +42,6 @@
 		if(A.above_suit)
 			. += U.accessory_overlay
 
-/obj/item/clothing/suit/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_oversuit()
-
 /**
  * Wrapper proc to apply shielding through AddComponent().
  * Called in /obj/item/clothing/Initialize().

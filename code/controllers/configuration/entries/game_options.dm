@@ -340,6 +340,15 @@
 	if(.)
 		zas_settings.set_bomb_cap(text2num(str_val))
 
+/datum/config_entry/number/emergency_shuttle_autocall_threshold
+	min_val = 0
+	max_val = 1
+	integer = FALSE
+	deprecated_by = /datum/config_entry/number/evacuation_autocall_threshold
+
+/datum/config_entry/number/emergency_shuttle_autocall_threshold/DeprecationUpdate(value)
+	return value
+
 /datum/config_entry/number/evacuation_autocall_threshold
 	min_val = 0
 	max_val = 1

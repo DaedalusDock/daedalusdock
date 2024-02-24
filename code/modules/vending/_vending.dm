@@ -556,7 +556,6 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 	if(in_range(fatty, src))
 		for(var/mob/living/L in get_turf(fatty))
-			var/was_alive = (L.stat != DEAD)
 			var/mob/living/carbon/C = L
 
 			SEND_SIGNAL(L, COMSIG_ON_VENDOR_CRUSH)

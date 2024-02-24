@@ -206,30 +206,6 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 	)
 
 /datum/evacuation_controller/emergency_shuttle/disable_evacuation()
-	last_mode = emergency.mode
-	last_call_time = emergency.timeLeft(1)
-	emergency.setTimer(0)
-	emergency.mode = SHUTTLE_DISABLED
-	priority_announce(
-		"Warning: Emergency Shuttle uplink failure, shuttle disabled until further notice.",
-		"LRSV Icarus Announcement",
-		"Emergency Shuttle Uplink Alert",
-		'sound/misc/announce_dig.ogg'
-	)
-
-/datum/evacuation_controller/emergency_shuttle/enable_evacuation()
-	emergency.mode = last_mode
-	if(last_call_time < 10 SECONDS && last_mode != SHUTTLE_IDLE)
-		last_call_time = 10 SECONDS //Make sure no insta departures.
-	emergency.setTimer(last_call_time)
-	priority_announce(
-		"Warning: Emergency Shuttle uplink reestablished, shuttle enabled.",
-		"LRSV Icarus Announcement",
-		"Emergency Shuttle Uplink Alert",
-		'sound/misc/announce_dig.ogg'
-	)
-
-/datum/evacuation_controller/emergency_shuttle/disable_evacuation()
 	if(!..())
 		return FALSE
 	last_mode = emergency.mode

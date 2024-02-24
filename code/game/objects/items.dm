@@ -507,7 +507,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		var/mob/living/carbon/C = loc
 		var/slot = C.get_slot_by_item(src)
 		if(slot)
-			C.update_slots_for_item(src, slot)
+			C.update_slots_for_item(src, slot, TRUE)
 
 /obj/item/attack_hand(mob/user, list/modifiers)
 	. = ..()

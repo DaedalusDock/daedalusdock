@@ -138,7 +138,7 @@
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
-		C.update_slots_for_item(src, user.get_slot_by_item(src))
+		C.update_slots_for_item(src, user.get_slot_by_item(src), TRUE)
 
 /obj/item/clothing/head/helmet/justice
 	name = "helmet of justice"

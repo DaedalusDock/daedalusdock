@@ -330,8 +330,8 @@
 		if(zone & inv_item.body_parts_covered)
 			return inv_item
 
-/// Called by equip_to_slot() when equipping to a non-hand slot, or by tryUnequipItem() on success.
-/mob/living/carbon/proc/update_slots_for_item(obj/item/I, equipped_slot = get_slot_by_item(I))
+/// Update any visuals relating to an item when it's equipped, unequipped, or it's flags_inv changes.
+/mob/living/carbon/proc/update_slots_for_item(obj/item/I, equipped_slot = get_slot_by_item(I), force_obscurity_update)
 	if(isnull(equipped_slot))
 		return
 
@@ -339,20 +339,21 @@
 	var/slots_to_update = equipped_slot
 	var/need_bodypart_update = FALSE
 
-	if(I.flags_inv)
+	if(I.flags_inv || force_obscurity_update)
 		update_obscurity()
-		var/new_obscured_slots = obscured_slots //cache for sanic speed
+		var/new_obscured_slots = obscured_slots
+		var/updated_slots = old_obscured_slots ^ new_obscured_slots
 
 		// Update slots that we were obscuring/are going to obscure
-		slots_to_update |= check_obscured_slots(input_slots = I.flags_inv)
+		slots_to_update |= check_obscured_slots(input_slots = updated_slots)
 
 		// Update name if we are changing face visibility
-		var/face_coverage_changed = (old_obscured_slots & HIDEFACE) != (new_obscured_slots & HIDEFACE)
+		var/face_coverage_changed = updated_slots & HIDEFACE
 		if(face_coverage_changed)
 			update_name()
 
 		// Update body incase any bodyparts or organs changed visibility
-		var/bodypart_coverage_changed = (old_obscured_slots & (BODYPART_HIDE_FLAGS)) != (new_obscured_slots & (BODYPART_HIDE_FLAGS))
+		var/bodypart_coverage_changed = updated_slots & BODYPART_HIDE_FLAGS
 		if(bodypart_coverage_changed)
 			need_bodypart_update = TRUE
 

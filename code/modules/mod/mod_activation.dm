@@ -206,7 +206,7 @@
 		if (!seal && wearer?.invalid_internals())
 			wearer.cutoff_internals()
 
-	wearer.update_slots_for_item(src)
+	wearer.update_slots_for_item(part)
 
 /// Finishes the suit's activation, starts processing
 /obj/item/mod/control/proc/finish_activation(on)

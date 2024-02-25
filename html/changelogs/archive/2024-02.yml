@@ -93,3 +93,6 @@
   francinum:
   - rscdel: A majority of existing achievements have been removed.
   - bugfix: Railings no longer duplicate rods.
+2024-02-25:
+  francinum:
+  - rscadd: Hydrogen can now be purchased from cargo.

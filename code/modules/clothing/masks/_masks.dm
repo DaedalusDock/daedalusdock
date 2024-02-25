@@ -67,12 +67,16 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-		if(HAS_BLOOD_DNA(src))
+
+		var/list/dna = return_blood_DNA()
+		if(length(dna))
 			if(istype(wearer))
 				var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
 				if(!head?.icon_bloodycover)
 					return
-				. += image(head.icon_bloodycover, "maskblood")
+				var/image/bloody_overlay = image(head.icon_bloodycover, "maskblood")
+				bloody_overlay.color = get_blood_dna_color(dna)
+				. += bloody_overlay
 			else
 				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 

@@ -19,7 +19,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	pass_flags = PASSTABLE
 
 	///How large is the object, used for stuff like whether it can fit in backpacks or not
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_SMALL
 
 	///Items can by default thrown up to 10 tiles by TK users
 	tk_throw_range = 10
@@ -556,7 +556,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	. = FALSE
 	pickup(user)
-	add_fingerprint(user)
+
 	if(!user.put_in_active_hand(src, FALSE, was_in_storage))
 		user.dropItemToGround(src)
 		return TRUE
@@ -1763,3 +1763,10 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(wielded)
 		. = wielded_hitsound
 	. ||= hitsound
+
+/// Leave evidence of a user on a target
+/obj/item/proc/leave_evidence(mob/user, atom/target)
+	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+		target.add_fingerprint(user)
+	else
+		target.log_touch(user)

@@ -298,7 +298,7 @@
 	if(density || operating)
 		to_chat(user, span_warning("You need to open the door to access the maintenance panel!"))
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	tool.play_tool_sound(src)
 	panel_open = !panel_open
 	to_chat(user, span_notice("You [panel_open ? "open" : "close"] the maintenance panel."))
@@ -310,7 +310,7 @@
 		return
 	if(!panel_open || density || operating)
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	user.visible_message(span_notice("[user] removes the electronics from the [name]."), \
 	span_notice("You start to remove electronics from the [name]..."))
 	if(!tool.use_tool(src, user, 40, volume=50))
@@ -357,7 +357,7 @@
 /obj/machinery/door/window/interact(mob/user) //for sillycones
 	try_to_activate_door(user)
 
-/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	if (..())
 		autoclose = FALSE
 

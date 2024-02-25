@@ -27,7 +27,6 @@
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
 	mutant_bodyparts = list("wings" = "None")
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | ERT_SPAWN
-	exotic_bloodtype = "U"
 	use_skintones = TRUE
 
 	examine_limb_id = SPECIES_HUMAN
@@ -86,6 +85,9 @@
 	if(istype(weapon, /obj/item/nullrod/whip))
 		return 2 //Whips deal 2x damage to vampires. Vampire killer.
 	return 1
+
+/datum/species/vampire/get_random_blood_type()
+	return /datum/blood/universal
 
 /datum/species/vampire/get_species_description()
 	return "A classy Vampire! They descend upon Space Station Thirteen Every year to spook the crew! \"Bleeg!!\""

@@ -22,7 +22,7 @@
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
 	AddComponent(/datum/component/personal_crafting)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6, TRUE)
-	AddComponent(/datum/component/bloodysoles/feet)
+	AddComponent(/datum/component/bloodysoles/feet, BLOOD_PRINT_HUMAN)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
 	AddElement(/datum/element/strippable, GLOB.strippable_human_items, TYPE_PROC_REF(/mob/living/carbon/human, should_strip))
 	var/static/list/loc_connections = list(
@@ -1169,6 +1169,98 @@
 
 	return ClimbUp(climbable)
 
+/mob/living/carbon/human/drag_damage(turf/new_loc, turf/old_loc, direction)
+	if(prob(getBruteLoss() * 0.6))
+		makeBloodTrail(new_loc, old_loc, direction, TRUE)
+
+	blood_volume = max(blood_volume - 1, 0)
+
+	if(!prob(10))
+		return
+
+	var/list/wounds = get_wounds()
+	shuffle_inplace(wounds)
+
+	var/datum/wound/cut/C = locate() in wounds
+	var/datum/wound/puncture/P = locate() in wounds
+
+	if(C && P)
+		if(prob(50))
+			C = null
+		else
+			P = null
+
+	var/datum/wound/W = C || P
+	if(!W)
+		return
+
+	W.open_wound(5)
+
+	if(!IS_ORGANIC_LIMB(W.parent))
+		visible_message(
+			span_warning("The damage to [src]'s [W.parent.plaintext_zone] worsens."),
+			span_warning("The damage to your [W.parent.plaintext_zone] worsens."),
+			span_hear("You hear the screech of abused metal."),
+			COMBAT_MESSAGE_RANGE,
+		)
+	else
+		visible_message(
+			span_warning("The [W.desc] on [src]'s [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_warning("The [W.desc] on your [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
+			COMBAT_MESSAGE_RANGE,
+		)
+
+
+/mob/living/carbon/human/getTrail(being_dragged)
+	if(get_bleed_rate() < (being_dragged ? 1.5 : 2.5))
+		return "bleedtrail_light_[rand(1,4)]"
+	else
+		return "bleedtrail_heavy"
+
+/mob/living/carbon/human/leavesBloodTrail()
+	if(!is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLEED))
+		return FALSE
+
+	return ..()
+
+/mob/living/carbon/human/get_blood_print()
+	var/obj/item/bodypart/leg/L = get_bodypart(BODY_ZONE_R_LEG) || get_bodypart(BODY_ZONE_L_LEG)
+	return L?.blood_print
+
+/mob/living/carbon/human/proc/get_fingerprints(ignore_gloves, hand)
+	if(!ignore_gloves && (gloves || (check_obscured_slots() & ITEM_SLOT_GLOVES)))
+		return
+
+	var/obj/item/bodypart/arm/arm
+	if(hand)
+		if(isbodypart(hand))
+			arm = hand
+		arm ||= get_bodypart(hand)
+	else
+		arm = get_bodypart(BODY_ZONE_R_ARM) || get_bodypart(BODY_ZONE_L_ARM)
+
+	return arm?.fingerprints
+
+/// Takes a user and body_zone, if the body_zone is covered by clothing, add a fingerprint to it. Otherwise, add one to us.
+/mob/living/carbon/human/proc/add_fingerprint_on_clothing_or_self(mob/user, body_zone)
+	var/obj/item/I = get_item_covering_zone(body_zone)
+	if(I)
+		I.add_fingerprint(user)
+		log_touch(user)
+	else
+		add_fingerprint(user)
+
+/// Takes a user and body_zone, if the body_zone is covered by clothing, add trace dna to it. Otherwise, add one to us.
+/mob/living/carbon/human/proc/add_trace_DNA_on_clothing_or_self(mob/living/carbon/human/user, body_zone)
+	if(!istype(user))
+		return
+
+	var/obj/item/I = get_item_covering_zone(body_zone)
+	if(I)
+		I.add_trace_DNA(user.get_trace_dna())
+	else
+		add_trace_DNA(user.get_trace_dna())
 /mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	var/head_exposure = 1
@@ -1209,8 +1301,9 @@
 	//Always check these damage procs first if fire damage isn't working. They're probably what's wrong.
 	if(head_exposure)
 		apply_damage(0.9 * temp_multiplier * head_exposure, BURN, BODY_ZONE_HEAD)
-	if(chest_exposure)
+	if(chest_exposure || groin_exposure)
 		apply_damage(2.5 * temp_multiplier * chest_exposure, BURN, BODY_ZONE_CHEST)
+		apply_damage(2.0 * temp_multiplier * groin_exposure, BURN, BODY_ZONE_CHEST)
 	if(arms_exposure)
 		apply_damage(0.4 * temp_multiplier * arms_exposure, BURN, BODY_ZONE_L_ARM)
 		apply_damage(0.4 * temp_multiplier * arms_exposure, BURN, BODY_ZONE_R_ARM)

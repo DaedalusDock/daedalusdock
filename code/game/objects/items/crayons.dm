@@ -407,7 +407,7 @@
 					else
 						to_chat(user, span_warning("There isn't enough space to paint!"))
 						return
-			C.add_hiddenprint(user)
+			C.log_touch(user)
 			if(istagger)
 				C.AddElement(/datum/element/art, GOOD_ART)
 			else

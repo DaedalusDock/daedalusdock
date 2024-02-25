@@ -379,7 +379,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	user.changeNext_move(CLICK_CD_MELEE)
 	to_chat(user, span_notice("You push the wall but nothing happens!"))
 	playsound(src, 'sound/weapons/genhit.ogg', 25, TRUE)
-	add_fingerprint(user)
 
 /turf/closed/wall/attackby(obj/item/W, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -391,7 +390,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	if(!isturf(user.loc))
 		return //can't do this stuff whilst inside objects and such
 
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 	var/turf/T = user.loc //get user's location for delay checks
 

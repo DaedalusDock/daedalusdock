@@ -41,12 +41,16 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-	if(HAS_BLOOD_DNA(src))
+
+	var/list/dna = return_blood_DNA()
+	if(length(dna))
 		if(istype(wearer))
 			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
 			if(!chest?.icon_bloodycover)
 				return
-			. += image(chest.icon_bloodycover, "uniformblood")
+			var/image/bloody_overlay = image(chest.icon_bloodycover, "uniformblood")
+			bloody_overlay.color = get_blood_dna_color(dna)
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 	if(accessory_overlay)

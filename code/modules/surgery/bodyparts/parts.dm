@@ -87,6 +87,13 @@
 
 	minimum_break_damage = 30
 
+	var/fingerprints = ""
+
+/obj/item/bodypart/arm/update_limb(dropping_limb, is_creating)
+	. = ..()
+	if(is_creating && owner?.has_dna())
+		fingerprints = md5(owner.dna.unique_identity)
+
 /obj/item/bodypart/arm/left
 	name = "left arm"
 	desc = "Did you know that the word 'sinister' stems originally from the \
@@ -279,6 +286,8 @@
 
 	minimum_break_damage = 30
 
+	/// Used by the bloodysoles component to make blood tracks
+	var/blood_print = BLOOD_PRINT_HUMAN
 	/// Can these legs be digitigrade? See digitigrade.dm
 	var/can_be_digitigrade = FALSE
 	///Set limb_id to this when in "digi mode". MUST BE UNIQUE LIKE ALL LIMB IDS

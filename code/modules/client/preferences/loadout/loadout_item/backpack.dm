@@ -28,9 +28,6 @@
 /datum/loadout_item/backpack/cigarettes
 	path = /obj/item/storage/fancy/cigarettes
 
-/datum/loadout_item/backpack/wallet
-	path = /obj/item/storage/wallet
-
 /datum/loadout_item/backpack/flask
 	path = /obj/item/reagent_containers/food/drinks/flask
 	cost = 2

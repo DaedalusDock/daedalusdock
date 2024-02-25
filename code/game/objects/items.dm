@@ -617,7 +617,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			R.hud_used.update_robot_modules_display()
 
 /obj/item/attackby(obj/item/item, mob/living/user, params)
-	if(user.try_slapcraft(src, item))
+	if(user?.try_slapcraft(src, item))
 		return TRUE
 	return ..()
 

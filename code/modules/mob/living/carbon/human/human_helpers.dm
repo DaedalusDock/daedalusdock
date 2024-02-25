@@ -79,14 +79,14 @@
 		. = if_no_id //to prevent null-names making the mob unclickable
 	return
 
-/mob/living/carbon/human/get_idcard(hand_first = TRUE)
+/mob/living/carbon/human/get_idcard(hand_first = TRUE, bypass_wallet)
 	RETURN_TYPE(/obj/item/card/id)
 
 	. = ..()
 	if(. && hand_first)
 		return
 	//Check inventory slots
-	return (wear_id?.GetID() || belt?.GetID())
+	return (wear_id?.GetID(bypass_wallet) || belt?.GetID(bypass_wallet))
 
 /mob/living/carbon/human/can_track(mob/living/user)
 	if(istype(head, /obj/item/clothing/head))

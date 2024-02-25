@@ -1,5 +1,7 @@
 /// The chance for a manifest or crate to be created with errors
-#define MANIFEST_ERROR_CHANCE 5
+#define MANIFEST_BAD_CONTENTS_CHANCE 5
+#define MANIFEST_BAD_NAME_CHANCE 5
+#define MANIFEST_MISSING_CONTENTS_CHANCE 7
 
 // MANIFEST BITFLAGS
 /// Determines if the station name will be incorrect on the manifest
@@ -19,13 +21,15 @@
 	order_id = id
 	order_cost = cost
 
-	if(prob(MANIFEST_ERROR_CHANCE))
+	if(prob(MANIFEST_BAD_NAME_CHANCE))
 		errors |= MANIFEST_ERROR_NAME
 		investigate_log("Supply order #[order_id] generated a manifest with an incorrect station name.", INVESTIGATE_CARGO)
-	if(prob(MANIFEST_ERROR_CHANCE))
+
+	if(prob(MANIFEST_BAD_CONTENTS_CHANCE))
 		errors |= MANIFEST_ERROR_CONTENTS
 		investigate_log("Supply order #[order_id] generated a manifest missing listed contents.", INVESTIGATE_CARGO)
-	if(prob(MANIFEST_ERROR_CHANCE))
+
+	if(prob(MANIFEST_MISSING_CONTENTS_CHANCE))
 		errors |= MANIFEST_ERROR_ITEM
 		investigate_log("Supply order #[order_id] generated with incorrect contents shipped.", INVESTIGATE_CARGO)
 
@@ -95,22 +99,26 @@
 		P.info += "Item: [packname]<br/>"
 	P.info += "Contents: <br/>"
 	P.info += "<ul>"
-	for(var/atom/movable/AM in container.contents - P)
-		if((P.errors & MANIFEST_ERROR_CONTENTS))
+
+	for(var/atom/movable/AM as anything in container.contents)
+		if((P.errors & MANIFEST_ERROR_CONTENTS)) // Double or nothing. Literally.
 			if(prob(50))
 				P.info += "<li>[AM.name]</li>"
 			else
 				continue
+
 		P.info += "<li>[AM.name]</li>"
+
 	P.info += "</ul>"
 	P.info += "<h4>Stamp below to confirm receipt of goods:</h4>"
 
 	if(P.errors & MANIFEST_ERROR_ITEM)
-		if(istype(container, /obj/structure/closet/crate/secure) || istype(container, /obj/structure/closet/crate/large))
+		if(!pack.can_be_missing_contents)
 			P.errors &= ~MANIFEST_ERROR_ITEM
 		else
-			var/lost = max(round(container.contents.len / 10), 1)
-			while(--lost >= 0)
+			var/lost = max(ceil(container.contents.len * (rand(5, 15) / 100)), 1) // Missing between 5% and 15%
+			while(lost >= 1)
+				lost--
 				qdel(pick(container.contents))
 
 	P.update_appearance()
@@ -120,8 +128,6 @@
 		var/obj/structure/closet/crate/C = container
 		C.manifest = P
 		C.update_appearance()
-	else
-		container.contents += P
 
 	return P
 
@@ -143,7 +149,9 @@
 	generateManifest(miscbox, misc_own, "", misc_cost)
 	return
 
-#undef MANIFEST_ERROR_CHANCE
 #undef MANIFEST_ERROR_NAME
 #undef MANIFEST_ERROR_CONTENTS
 #undef MANIFEST_ERROR_ITEM
+#undef MANIFEST_BAD_CONTENTS_CHANCE
+#undef MANIFEST_BAD_NAME_CHANCE
+#undef MANIFEST_MISSING_CONTENTS_CHANCE

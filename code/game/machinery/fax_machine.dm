@@ -509,7 +509,11 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 50)
 		. = FALSE
 	else
-		new /obj/item/holochip(drop_location(), rand(15, 25))
+		if(prob(50))
+			new /obj/item/stack/spacecash/c10(drop_location())
+		else
+			new /obj/item/stack/spacecash/c20(drop_location())
+
 		playsound(src, 'sound/machines/ping.ogg', 60)
 		. = TRUE
 

@@ -38,7 +38,7 @@
 	icon_state = "wedding_dress"
 	inhand_icon_state = "wedding_dress"
 	body_parts_covered = CHEST|GROIN|LEGS
-	flags_cover = HIDESHOES
+	flags_inv = HIDESHOES
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/dress/redeveninggown

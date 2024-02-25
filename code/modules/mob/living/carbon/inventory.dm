@@ -113,7 +113,6 @@
 
 		if(ITEM_SLOT_HANDCUFFED)
 			set_handcuffed(I)
-			update_handcuffed()
 
 		if(ITEM_SLOT_LEGCUFFED)
 			legcuffed = I
@@ -171,10 +170,6 @@
 
 	else if(I == handcuffed)
 		set_handcuffed(null)
-		if(buckled?.buckle_requires_restraints)
-			buckled.unbuckle_mob(src)
-		if(!QDELETED(src))
-			update_handcuffed()
 
 	else if(I == shoes)
 		shoes = null

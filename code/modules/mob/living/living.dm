@@ -136,7 +136,7 @@
 				ContactContractDisease(D)
 
 		//Should stop you pushing a restrained person out of the way
-		if(LAZYLEN(L.grabbed_by) && !is_grabbing(L) && HAS_TRAIT(L, TRAIT_RESTRAINED))
+		if(LAZYLEN(L.grabbed_by) && !is_grabbing(L) && HAS_TRAIT(L, TRAIT_ARMS_RESTRAINED))
 			if(!(world.time % 5))
 				to_chat(src, span_warning("[L] is restrained, you cannot push past."))
 			return TRUE
@@ -146,7 +146,7 @@
 			for(var/obj/item/hand_item/grab/G in grabs)
 				if(ismob(G.affecting))
 					var/mob/P = G.affecting
-					if(HAS_TRAIT(P, TRAIT_RESTRAINED))
+					if(HAS_TRAIT(P, TRAIT_ARMS_RESTRAINED))
 						if(!(world.time % 5))
 							to_chat(src, span_warning("[L] is restraining [P], you cannot push past."))
 						return TRUE
@@ -166,8 +166,8 @@
 				mob_swap = TRUE
 			else if(
 				!(HAS_TRAIT(M, TRAIT_NOMOBSWAP) || HAS_TRAIT(src, TRAIT_NOMOBSWAP))&&\
-				((HAS_TRAIT(M, TRAIT_RESTRAINED) && !too_strong) || !their_combat_mode) &&\
-				(HAS_TRAIT(src, TRAIT_RESTRAINED) || !combat_mode)
+				((HAS_TRAIT(M, TRAIT_ARMS_RESTRAINED) && !too_strong) || !their_combat_mode) &&\
+				(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED) || !combat_mode)
 			)
 				mob_swap = TRUE
 		if(mob_swap)
@@ -350,7 +350,7 @@
 	if(HAS_TRAIT(src, TRAIT_INCAPACITATED))
 		return TRUE
 
-	if(!(flags & IGNORE_RESTRAINTS) && HAS_TRAIT(src, TRAIT_RESTRAINED))
+	if(!(flags & IGNORE_RESTRAINTS) && HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
 		return TRUE
 
 	if(!(flags & IGNORE_GRAB))
@@ -904,7 +904,7 @@
 
 	SEND_SIGNAL(src, COMSIG_LIVING_RESIST, src)
 	//resisting grabs (as if it helps anyone...)
-	if(!HAS_TRAIT(src, TRAIT_RESTRAINED) && LAZYLEN(grabbed_by))
+	if(!HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED) && LAZYLEN(grabbed_by))
 		resist_grab()
 		return
 

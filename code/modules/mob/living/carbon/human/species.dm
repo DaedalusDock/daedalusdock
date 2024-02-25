@@ -730,7 +730,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// Anything that's small or smaller can fit into a pocket by default
 		if((slot == ITEM_SLOT_RPOCKET || slot == ITEM_SLOT_LPOCKET) && I.w_class <= WEIGHT_CLASS_SMALL)
 			excused = TRUE
-		else if(slot == ITEM_SLOT_SUITSTORE || slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_HANDS)
+		else if(slot == ITEM_SLOT_SUITSTORE || slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_HANDS || slot == ITEM_SLOT_HANDCUFFED || slot == ITEM_SLOT_LEGCUFFED)
 			excused = TRUE
 		if(!excused)
 			return FALSE
@@ -876,6 +876,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			return FALSE
 
 		if(ITEM_SLOT_HANDCUFFED)
+			if(H.handcuffed)
+				return FALSE
 			if(!istype(I, /obj/item/restraints/handcuffs))
 				return FALSE
 			if(H.num_hands < 2)
@@ -883,6 +885,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			return TRUE
 
 		if(ITEM_SLOT_LEGCUFFED)
+			if(H.legcuffed)
+				return FALSE
 			if(!istype(I, /obj/item/restraints/legcuffs))
 				return FALSE
 			if(H.num_legs < 2)

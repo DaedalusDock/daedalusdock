@@ -846,7 +846,7 @@
 		return FALSE
 	if(notransform)
 		return FALSE
-	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
+	if(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_CANNOTFACE))
 		return FALSE

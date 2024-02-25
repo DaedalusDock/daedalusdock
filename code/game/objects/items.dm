@@ -320,7 +320,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		icon_state = icon_state_wielded
 	return ..()
 
-/obj/item/add_mob_blood(mob/living/injected_mob)
+/obj/item/add_blood_DNA(list/dna)
 	. = ..()
 	update_slot_icon()
 

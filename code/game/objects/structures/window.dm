@@ -129,6 +129,7 @@
 	return TRUE
 
 /obj/structure/window/proc/knock_on()
+	user?.animate_interact(src, INTERACT_GENERIC)
 	playsound(src, knock_sound, 100, TRUE)
 
 /obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)

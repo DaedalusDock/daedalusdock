@@ -100,7 +100,8 @@
 
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]. <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>"
+		var/id_topic = wear_id.GetID() ? " <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>" : ""
+		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)].[id_topic]"
 
 
 	//Status effects

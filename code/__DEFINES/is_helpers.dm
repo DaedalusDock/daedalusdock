@@ -223,7 +223,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define ismobholder(A) (istype(A, /obj/item/mob_holder))
 
-#define iscash(A) (istype(A, /obj/item/coin) || istype(A, /obj/item/stack/spacecash) || istype(A, /obj/item/holochip))
+#define iscash(A) (istype(A, /obj/item/coin) || istype(A, /obj/item/stack/spacecash))
 
 #define isbodypart(A) (istype(A, /obj/item/bodypart))
 

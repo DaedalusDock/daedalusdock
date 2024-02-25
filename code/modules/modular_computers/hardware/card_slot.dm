@@ -43,7 +43,7 @@
 		total_access |= card_slot2.stored_card.GetAccess()
 	return total_access
 
-/obj/item/computer_hardware/card_slot/GetID()
+/obj/item/computer_hardware/card_slot/GetID(bypass_wallet)
 	if(stored_card)
 		return stored_card
 	return ..()

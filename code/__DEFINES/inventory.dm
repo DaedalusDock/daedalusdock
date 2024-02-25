@@ -1,7 +1,7 @@
 /*ALL DEFINES RELATED TO INVENTORY OBJECTS, MANAGEMENT, ETC, GO HERE*/
 
 //ITEM INVENTORY WEIGHT, FOR w_class
-/// Usually items smaller then a human hand, (e.g. playing cards, lighter, scalpel, coins/holochips)
+/// Usually items smaller then a human hand, (e.g. playing cards, lighter, scalpel, coins)
 #define WEIGHT_CLASS_TINY 1
 /// Pockets can hold small and tiny items, (e.g. flashlight, multitool, grenades, GPS device)
 #define WEIGHT_CLASS_SMALL 2

@@ -116,8 +116,8 @@
 		if("Pay")
 			for(var/datum/data/crime/p in current.fields["citation"])
 				if(p.dataId == text2num(href_list["cdataid"]))
-					var/obj/item/holochip/C = M.is_holding_item_of_type(/obj/item/holochip)
-					if(C && istype(C))
+					var/obj/item/stack/spacecash/C = M.is_holding_item_of_type(/obj/item/stack/spacecash)
+					if(istype(C))
 						var/pay = C.get_item_credit_value()
 						if(!pay)
 							to_chat(M, span_warning("[C] doesn't seem to be worth anything!"))
@@ -128,6 +128,10 @@
 							if (pay == diff || pay > diff || pay >= diff)
 								investigate_log("Citation Paid off: <strong>[p.crimeName]</strong> Fine: [p.fine] | Paid off by [key_name(usr)]", INVESTIGATE_RECORDS)
 								to_chat(M, span_notice("The fine has been paid in full."))
+
+								var/overflow = pay - diff
+								if(overflow)
+									SSeconomy.spawn_cash_for_amount(overflow, drop_location())
 							SSblackbox.ReportCitation(text2num(href_list["cdataid"]),"","","","", 0, pay)
 							qdel(C)
 							playsound(src, SFX_TERMINAL_TYPE, 25, FALSE)

@@ -93,7 +93,6 @@ SUBSYSTEM_DEF(zas)
 	//Geometry updates lists
 	var/list/tiles_to_update = list()
 	var/list/zones_to_update = list()
-	var/list/active_fire_zones = list()
 	var/list/active_hotspots = list()
 	var/list/active_edges = list()
 	var/list/zones_with_sensitive_contents = list()
@@ -145,7 +144,6 @@ SUBSYSTEM_DEF(zas)
 	edges.Cut()
 	tiles_to_update.Cut()
 	zones_to_update.Cut()
-	active_fire_zones.Cut()
 	active_hotspots.Cut()
 	active_edges.Cut()
 
@@ -162,7 +160,6 @@ SUBSYSTEM_DEF(zas)
 	else
 		msg += "TtU: [length(tiles_to_update)] "
 		msg += "ZtU: [length(zones_to_update)] "
-		msg += "AFZ: [length(active_fire_zones)] "
 		msg += "AH: [length(active_hotspots)] "
 		msg += "AE: [length(active_edges)]"
 	return ..()
@@ -204,14 +201,12 @@ SUBSYSTEM_DEF(zas)
 	var/timer = TICK_USAGE_REAL
 	if (!resumed)
 		processing_edges = active_edges.Copy()
-		processing_fires = active_fire_zones.Copy()
 		processing_hotspots = active_hotspots.Copy()
 		processing_exposure = zones_with_sensitive_contents.Copy()
 
 	var/list/curr_tiles = tiles_to_update
 	var/list/curr_defer = deferred
 	var/list/curr_edges = processing_edges
-	var/list/curr_fire = processing_fires
 	var/list/curr_hotspot = processing_hotspots
 	var/list/curr_zones = zones_to_update
 	var/list/curr_zones_again = zones_to_update.Copy()
@@ -330,24 +325,6 @@ SUBSYSTEM_DEF(zas)
 	cached_cost += TICK_USAGE_REAL - timer
 	cost_edges = MC_AVERAGE(cost_edges, TICK_DELTA_TO_MS(cached_cost))
 
-//////////FIRES//////////
-	last_process = "ZONE FIRES"
-	timer = TICK_USAGE_REAL
-	cached_cost = 0
-	while (curr_fire.len)
-		var/zone/Z = curr_fire[curr_fire.len]
-		curr_fire.len--
-
-		Z.process_fire()
-
-		if (no_mc_tick)
-			CHECK_TICK
-		else if (MC_TICK_CHECK)
-			return
-
-	cached_cost += TICK_USAGE_REAL - timer
-	cost_fires= MC_AVERAGE(cost_fires, TICK_DELTA_TO_MS(cached_cost))
-
 //////////HOTSPOTS//////////
 	last_process = "HOTSPOTS"
 	timer = TICK_USAGE_REAL
@@ -418,8 +395,6 @@ SUBSYSTEM_DEF(zas)
 	zones -= z
 	zones_to_update -= z
 	zones_with_sensitive_contents -= z
-	if (processing_zones)
-		processing_zones -= z
 
 ///Checks to see if air can flow between A and B.
 /datum/controller/subsystem/zas/proc/air_blocked(turf/A, turf/B)

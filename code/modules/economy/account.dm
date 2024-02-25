@@ -11,20 +11,19 @@
 	var/datum/job/account_job
 	///List of the physical ID card objects that are associated with this bank_account
 	var/list/bank_cards = list()
-	///Should this ID be added to the global list of accounts? If true, will be subject to station-bound economy effects as well as income.
-	var/add_to_accounts = TRUE
+
 	///The Unique ID number code associated with the owner's bank account, assigned at round start.
 	var/account_id
-	///Is there a CRAB 17 on the station draining funds? Prevents manual fund transfer. pink levels are rising
-	var/being_dumped = FALSE
-	///Reference to the current civilian bounty that the account is working on.
-	var/datum/bounty/civilian_bounty
-	///If player is currently picking a civilian bounty to do, these options are held here to prevent soft-resetting through the UI.
-	var/list/datum/bounty/bounties
+	/// A randomly generated 5-digit pin to access the bank account. This is stored as a string!
+	var/account_pin
+
 	///Can this account be replaced? Set to true for default IDs not recognized by the station.
 	var/replaceable = FALSE
-	///Cooldown timer on replacing a civilain bounty. Bounties can only be replaced once every 5 minutes.
-	COOLDOWN_DECLARE(bounty_timer)
+	///Should this ID be added to the global list of accounts? If true, will be subject to station-bound economy effects as well as income.
+	var/add_to_accounts = TRUE
+
+	///Is there a CRAB 17 on the station draining funds? Prevents manual fund transfer. pink levels are rising
+	var/being_dumped = FALSE
 
 /datum/bank_account/New(newname, job, modifier = 1, player_account = TRUE)
 	account_holder = newname
@@ -32,6 +31,9 @@
 	payday_modifier = modifier
 	add_to_accounts = player_account
 	setup_unique_account_id()
+
+	for(var/i in 1 to 5)
+		account_pin = "[account_pin][rand(0, 9)]"
 
 /datum/bank_account/Destroy()
 	if(add_to_accounts)
@@ -122,7 +124,9 @@
 /datum/bank_account/proc/payday(amt_of_paychecks = 1, free = FALSE)
 	if(!account_job)
 		return
+
 	var/money_to_transfer = round(account_job.paycheck * payday_modifier * amt_of_paychecks)
+
 	if(free)
 		adjust_money(money_to_transfer)
 		SSblackbox.record_feedback("amount", "free_income", money_to_transfer)
@@ -131,9 +135,7 @@
 	else
 		var/datum/bank_account/D = SSeconomy.station_master
 		if(D && transfer_money(D, money_to_transfer))
-			bank_card_talk("Payday processed, account now holds [account_balance] cr.")
 			return TRUE
-	bank_card_talk("ERROR: Payday aborted, unable to contact departmental account.")
 	return FALSE
 
 /**
@@ -174,45 +176,6 @@
 				if(M.can_hear())
 					M.playsound_local(get_turf(sound_atom), 'sound/machines/twobeep_high.ogg', 50, TRUE)
 					to_chat(M, "[icon2html(icon_source, M)] [span_notice("[message]")]")
-
-/**
- * Returns a string with the civilian bounty's description on it.
- */
-/datum/bank_account/proc/bounty_text()
-	if(!civilian_bounty)
-		return FALSE
-	return civilian_bounty.description
-
-
-/**
- * Returns the required item count, or required chemical units required to submit a bounty.
- */
-/datum/bank_account/proc/bounty_num()
-	if(!civilian_bounty)
-		return FALSE
-	if(istype(civilian_bounty, /datum/bounty/item))
-		var/datum/bounty/item/item = civilian_bounty
-		return "[item.shipped_count]/[item.required_count]"
-	if(istype(civilian_bounty, /datum/bounty/reagent))
-		var/datum/bounty/reagent/chemical = civilian_bounty
-		return "[chemical.shipped_volume]/[chemical.required_volume] u"
-	if(istype(civilian_bounty, /datum/bounty/virus))
-		return "At least 1u"
-
-/**
- * Produces the value of the account's civilian bounty reward, if able.
- */
-/datum/bank_account/proc/bounty_value()
-	if(!civilian_bounty)
-		return FALSE
-	return civilian_bounty.reward
-
-/**
- * Performs house-cleaning on variables when a civilian bounty is replaced, or, when a bounty is claimed.
- */
-/datum/bank_account/proc/reset_bounty()
-	civilian_bounty = null
-	COOLDOWN_RESET(src, bounty_timer)
 
 /datum/bank_account/department
 	account_holder = "Guild Credit Agency"

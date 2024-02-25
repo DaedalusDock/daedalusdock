@@ -552,7 +552,6 @@
 "BI" = (
 /obj/structure/table,
 /obj/machinery/light/small/directional/west,
-/obj/item/stack/spacecash/c200,
 /turf/open/floor/iron/dark,
 /area/shuttle/caravan/pirate)
 "BL" = (

@@ -92,7 +92,7 @@ export const Orbit = (props, context) => {
   } = data;
 
   const [searchText, setSearchText] = useLocalState(context, "searchText", "");
-  const [autoObserve, setAutoObserve] = useLocalState(context, "autoObserve", false);
+  const [autoObserve, setAutoObserve] = useLocalState(context, "autoObserve", true);
 
   const collatedAntagonists = {};
   for (const antagonist of antagonists) {

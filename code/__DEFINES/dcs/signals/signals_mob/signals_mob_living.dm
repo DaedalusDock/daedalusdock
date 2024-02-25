@@ -102,3 +102,6 @@
 
 ///From mob/living/proc/set_combat_mode(): (mob/living/user, new_mode)
 #define COMSIG_LIVING_TOGGLE_COMBAT_MODE "living_toggle_combat_mode"
+
+/// from base of [/mob/living/changeNext_Move()] (next_move)
+#define COMSIG_LIVING_CHANGENEXT_MOVE "living_changenext_move"

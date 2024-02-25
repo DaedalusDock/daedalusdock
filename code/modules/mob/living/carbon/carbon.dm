@@ -236,31 +236,35 @@
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
 		var/buckle_cd = 60 SECONDS
+
 		if(handcuffed)
 			var/obj/item/restraints/O = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
 			buckle_cd = O.breakouttime
-		visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"), \
-					span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)"))
+
+		visible_message(
+			span_warning("[src] attempts to unbuckle [p_them()]self!"),
+			span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)")
+
+		)
+
 		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
-			buckled.user_unbuckle_mob(src,src)
+			return !!buckled.user_unbuckle_mob(src,src)
 		else
 			if(src && buckled)
 				to_chat(src, span_warning("You fail to unbuckle yourself!"))
 	else
-		buckled.user_unbuckle_mob(src,src)
+		return !!buckled.user_unbuckle_mob(src,src)
 
 /mob/living/carbon/resist_fire()
 	adjust_fire_stacks(-5)
 	Paralyze(60, ignore_canstun = TRUE)
 	spin(32,2)
-	visible_message(span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
-		span_notice("You stop, drop, and roll!"))
+	visible_message(
+		span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
+		span_danger("You hurl yourself to the floor, rolling frantically around!"))
 	sleep(30)
-	if(fire_stacks <= 0 && !QDELETED(src))
-		visible_message(span_danger("[src] successfully extinguishes [p_them()]self!"), \
-			span_notice("You extinguish yourself."))
 	return
 
 /mob/living/carbon/resist_restraints()
@@ -1438,7 +1442,7 @@
 		return FALSE
 	return TRUE
 
-/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop)
+/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop, animate = TRUE)
 	if(I && HAS_TRAIT(I, TRAIT_INSIDE_BODY))
 		stack_trace("Something tried to drop an organ or bodypart that isn't allowed to be dropped")
 		return FALSE

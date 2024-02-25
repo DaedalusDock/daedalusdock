@@ -39,7 +39,7 @@
 	..()
 
 	var/turf/open/T = get_turf(src)
-	var/obj/effect/hotspot/hotspot = T.fire
+	var/obj/effect/hotspot/hotspot = T.active_hotspot
 	if(hotspot && istype(T) && T.zone)
 		qdel(hotspot)
 		var/datum/gas_mixture/G = T.return_air()
@@ -320,7 +320,7 @@
 		O.ClearWet()
 		var/datum/gas_mixture/G = O.return_air()
 		G.temperature = 293.15
-		QDEL_NULL(O.fire)
+		QDEL_NULL(O.active_hotspot)
 		var/list/G_gases = G.gas
 		for(var/I in G_gases)
 			if(I == GAS_OXYGEN || I == GAS_NITROGEN)

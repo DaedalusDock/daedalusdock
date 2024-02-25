@@ -2,7 +2,7 @@
 	update_z(null)
 
 	if(observetarget && ismob(observetarget))
-		cleanup_observe()
+		stop_observing()
 	..()
 	// This is one of very few spawn()s left in our codebase
 	// Yes it needs to be like this

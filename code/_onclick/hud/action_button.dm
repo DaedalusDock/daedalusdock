@@ -1,7 +1,6 @@
 DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 /atom/movable/screen/movable/action_button
 	var/datum/action/linked_action
-	var/datum/hud/our_hud
 	var/actiontooltipstyle = ""
 	screen_loc = null
 
@@ -21,31 +20,30 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 	var/datum/weakref/last_hovored_ref
 
 /atom/movable/screen/movable/action_button/Destroy()
-	if(our_hud)
-		var/mob/viewer = our_hud.mymob
-		our_hud.hide_action(src)
+	if(hud)
+		var/mob/viewer = hud.mymob
+		hud.hide_action(src)
 		viewer?.client?.screen -= src
-		linked_action.viewers -= our_hud
+		linked_action.viewers -= hud
 		viewer.update_action_buttons()
-		our_hud = null
 	linked_action = null
 	return ..()
 
-/atom/movable/screen/movable/action_button/proc/can_use(mob/user)
+/atom/movable/screen/movable/action_button/can_usr_use(mob/user)
+	// Observers can only click on action buttons if they're not observing something
 	if(isobserver(user))
-		var/mob/dead/observer/dead_mob = user
-		if(dead_mob.observetarget) // Observers can only click on action buttons if they're not observing something
+		var/mob/dead/observer/O = user
+		if(O.observetarget)
 			return FALSE
 
 	if(linked_action)
 		if(linked_action.viewers[user.hud_used])
 			return TRUE
-		return FALSE
-
-	return TRUE
+	return FALSE
 
 /atom/movable/screen/movable/action_button/Click(location,control,params)
-	if (!can_use(usr))
+	. = ..()
+	if(.)
 		return FALSE
 
 	var/list/modifiers = params2list(params)
@@ -55,6 +53,7 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 		return TRUE
 	if(usr.next_click > world.time)
 		return
+
 	usr.next_click = world.time + 1
 	var/trigger_flags
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -66,7 +65,7 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 // Very much byond logic, but I want nice behavior, so we fake it with drag
 /atom/movable/screen/movable/action_button/MouseDrag(atom/over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()
-	if(!can_use(usr))
+	if(!can_usr_use(usr))
 		return
 	if(IS_WEAKREF_OF(over_object, last_hovored_ref))
 		return
@@ -95,7 +94,7 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 
 /atom/movable/screen/movable/action_button/MouseDrop(over_object)
 	last_hovored_ref = null
-	if(!can_use(usr))
+	if(!can_usr_use(usr))
 		return
 	var/datum/hud/our_hud = usr.hud_used
 	if(over_object == src)
@@ -123,7 +122,7 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 	save_position()
 
 /atom/movable/screen/movable/action_button/proc/save_position()
-	var/mob/user = our_hud.mymob
+	var/mob/user = hud.mymob
 	if(!user?.client)
 		return
 	var/position_info = ""
@@ -138,14 +137,14 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 	user.client.prefs.action_buttons_screen_locs["[name]_[id]"] = position_info
 
 /atom/movable/screen/movable/action_button/proc/load_position()
-	var/mob/user = our_hud.mymob
+	var/mob/user = hud.mymob
 	if(!user)
 		return
 	var/position_info = user.client?.prefs?.action_buttons_screen_locs["[name]_[id]"] || SCRN_OBJ_DEFAULT
 	user.hud_used.position_action(src, position_info)
 
 /atom/movable/screen/movable/action_button/proc/dump_save()
-	var/mob/user = our_hud.mymob
+	var/mob/user = hud.mymob
 	if(!user?.client)
 		return
 	user.client.prefs.action_buttons_screen_locs -= "[name]_[id]"
@@ -253,12 +252,12 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 
 /atom/movable/screen/button_palette/Destroy()
 	if(our_hud)
-		our_hud.mymob?.client?.screen -= src
+		our_hud.mymob?.canon_client?.screen -= src
 		our_hud.toggle_palette = null
 		our_hud = null
 	return ..()
 
-/atom/movable/screen/button_palette/Initialize(mapload)
+/atom/movable/screen/button_palette/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	update_appearance()
 
@@ -318,15 +317,10 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	color_timer_id = null
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, to_remove)
 
-/atom/movable/screen/button_palette/proc/can_use(mob/user)
-	if (isobserver(user))
-		var/mob/dead/observer/O = user
-		return !O.observetarget
-	return TRUE
-
 /atom/movable/screen/button_palette/Click(location, control, params)
-	if(!can_use(usr))
-		return
+	. = ..()
+	if(.)
+		return FALSE
 
 	var/list/modifiers = params2list(params)
 
@@ -376,7 +370,8 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	var/scroll_direction = 0
 	var/datum/hud/our_hud
 
-/atom/movable/screen/palette_scroll/proc/can_use(mob/user)
+/atom/movable/screen/palette_scroll/can_usr_use(mob/user)
+	. = ..()
 	if (isobserver(user))
 		var/mob/dead/observer/O = user
 		return !O.observetarget
@@ -395,8 +390,10 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	icon = settings["bg_icon"]
 
 /atom/movable/screen/palette_scroll/Click(location, control, params)
-	if(!can_use(usr))
-		return
+	. = ..()
+	if(.)
+		return FALSE
+
 	our_hud.palette_actions.scroll(scroll_direction)
 
 /atom/movable/screen/palette_scroll/MouseEntered(location, control, params)
@@ -417,7 +414,7 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 
 /atom/movable/screen/palette_scroll/down/Destroy()
 	if(our_hud)
-		our_hud.mymob?.client?.screen -= src
+		our_hud.mymob?.canon_client?.screen -= src
 		our_hud.palette_down = null
 		our_hud = null
 	return ..()
@@ -430,7 +427,7 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 
 /atom/movable/screen/palette_scroll/up/Destroy()
 	if(our_hud)
-		our_hud.mymob?.client?.screen -= src
+		our_hud.mymob?.canon_client?.screen -= src
 		our_hud.palette_up = null
 		our_hud = null
 	return ..()
@@ -448,7 +445,7 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 /atom/movable/screen/action_landing/Destroy()
 	if(owner)
 		owner.landing = null
-		owner?.owner?.mymob?.client?.screen -= src
+		owner?.owner?.mymob?.canon_client?.screen -= src
 		owner.refresh_actions()
 		owner = null
 	return ..()

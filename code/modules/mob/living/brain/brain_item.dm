@@ -8,7 +8,6 @@
 	visual = TRUE
 	color_source = ORGAN_COLOR_STATIC
 	draw_color = null
-	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
 	zone = BODY_ZONE_HEAD

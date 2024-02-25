@@ -95,7 +95,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	slot_flags = ITEM_SLOT_BACK
 	force = 30
 	throwforce = 20
-	throw_speed = 3
+	throw_speed = 1
 	throw_range = 5
 	armor_penetration = 35
 
@@ -282,7 +282,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/equipment/shields_righthand.dmi'
 	force = 2
 	throwforce = 10 //10 + 2 (WEIGHT_CLASS_SMALL) * 4 (EMBEDDED_IMPACT_PAIN_MULTIPLIER) = 18 damage on hit due to guaranteed embedding
-	throw_speed = 4
+	throw_speed = 1.5
 	embedding = list("pain_mult" = 4, "embed_chance" = 100, "fall_chance" = 0)
 	armor_penetration = 40
 
@@ -316,7 +316,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	force = 3
 	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 5
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 6
 	custom_materials = list(/datum/material/iron=12000)
 	hitsound = 'sound/weapons/genhit.ogg'
@@ -354,9 +354,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "red_phone"
 	force = 3
+
 	throwforce = 2
-	throw_speed = 3
 	throw_range = 4
+
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("calls", "rings")
 	attack_verb_simple = list("call", "ring")
@@ -393,7 +394,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/weapons/staves_righthand.dmi'
 	force = 3
 	throwforce = 5
-	throw_speed = 2
+	throw_speed = 1.5
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	armor_penetration = 100
@@ -418,7 +419,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	force = 3
 	throwforce = 5
-	throw_speed = 2
+	throw_speed = 1.5
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -755,7 +756,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	force = 10
 	throwforce = 25
-	throw_speed = 4
+	throw_speed = 1.5
 	embedding = list("embed_chance" = 100)
 	block_chance = 25
 	sharpness = SHARP_EDGED

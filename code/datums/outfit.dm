@@ -107,6 +107,8 @@
 	///ID of the slot containing a gas tank
 	var/internals_slot = null
 
+	/// If TRUE, will spawn their ID in a wallet.
+	var/id_in_wallet = FALSE
 	/**
 	  * Any skillchips the mob should have in their brain.
 	  *
@@ -192,10 +194,18 @@
 		EQUIP_OUTFIT_ITEM(glasses, ITEM_SLOT_EYES)
 	if(back)
 		EQUIP_OUTFIT_ITEM(back, ITEM_SLOT_BACK)
+
 	if(id)
-		EQUIP_OUTFIT_ITEM(id, ITEM_SLOT_ID)
+		if(id_in_wallet && ispath(id, /obj/item/card/id))
+			var/obj/item/storage/wallet/W = /obj/item/storage/wallet
+			EQUIP_OUTFIT_ITEM(W, ITEM_SLOT_ID)
+			W = H.wear_id
+			INVOKE_ASYNC(W, TYPE_PROC_REF(/obj/item, InsertID), SSwardrobe.provide_type(id), TRUE)
+		else
+			EQUIP_OUTFIT_ITEM(id, ITEM_SLOT_ID)
+
 	if(!visualsOnly && id_trim && H.wear_id)
-		var/obj/item/card/id/id_card = H.wear_id
+		var/obj/item/card/id/id_card = H.wear_id.GetID(TRUE)
 		id_card.registered_age = H.age
 		if(id_trim)
 			if(!SSid_access.apply_trim_to_card(id_card, id_trim))

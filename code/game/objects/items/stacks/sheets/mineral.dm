@@ -34,7 +34,6 @@ GLOBAL_LIST_INIT(sandstone_recipes, list ( \
 	singular_name = "sandstone brick"
 	icon_state = "sheet-sandstone"
 	inhand_icon_state = "sheet-sandstone"
-	throw_speed = 3
 	throw_range = 5
 	mats_per_unit = list(/datum/material/sandstone=MINERAL_MATERIAL_AMOUNT)
 	sheettype = "sandstone"
@@ -434,7 +433,7 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 	else
 		return ..()
 
-/obj/item/stack/sheet/mineral/coal/fire_act(exposed_temperature, exposed_volume)
+/obj/item/stack/sheet/mineral/coal/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	var/turf/muhturf = get_turf(src)
 	muhturf.atmos_spawn_air(GAS_CO2, amount*10, exposed_temperature)
 	qdel(src)

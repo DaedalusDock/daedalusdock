@@ -56,7 +56,7 @@
 
 ///Initializes airlock links.
 /obj/machinery/computer/vaultcontroller/proc/find_airlocks()
-	for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
+	for(var/obj/machinery/door/airlock/A in INSTANCES_OF(/obj/machinery/door))
 		if(A.id_tag == "derelictvault")
 			if(!door1)
 				door1 = A

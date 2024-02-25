@@ -11,7 +11,6 @@
 	worn_icon_state = null
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	throw_speed = 3
 	throw_range = 7
 	force = 6
 	base_pixel_x = -4

@@ -100,6 +100,12 @@
 ///Useful for measuring performance of specific systems with more reliability.
 //#define DISABLE_RUINS
 
+/// Uncomment this to assert INSTANCES_OF() is running on valid lists.
+//#define DEBUG_ATLAS
+
+/// Uncomment this to enable debugging tools for map making.
+//#define DEBUG_MAPS
+
 /////////////////////// REFERENCE TRACKING
 
 ///Used to find the sources of harddels, quite laggy, don't be surpised if it freezes your client for a good while

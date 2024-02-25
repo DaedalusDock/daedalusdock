@@ -26,7 +26,7 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
-	throw_speed = 1
+	throw_speed = 0.7
 	stamina_cost = 0
 	stamina_damage = 0
 
@@ -267,7 +267,7 @@
 	return ..()
 
 
-/obj/item/paper/fire_act(exposed_temperature, exposed_volume)
+/obj/item/paper/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(.)
 		info = "[stars(info)]"

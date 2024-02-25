@@ -22,7 +22,6 @@ effective or pretty fucking useless.
 	icon_state = "batterer"
 	throwforce = 5
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 7
 	flags_1 = CONDUCT_1
 	inhand_icon_state = "electronic"

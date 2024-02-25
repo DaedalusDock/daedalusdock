@@ -128,6 +128,9 @@
 
 	return TRUE
 
+/obj/structure/window/proc/knock_on()
+	playsound(src, knock_sound, 50, TRUE)
+
 /obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
 
@@ -151,7 +154,7 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_notice("Something knocks on [src]."))
 	add_fingerprint(user)
-	playsound(src, knock_sound, 50, TRUE)
+	knock_on()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 
@@ -171,7 +174,7 @@
 	if(!user.combat_mode)
 		user.visible_message(span_notice("[user] knocks on [src]."), \
 			span_notice("You knock on [src]."))
-		playsound(src, knock_sound, 50, TRUE)
+		knock_on()
 	else
 		user.visible_message(span_warning("[user] bashes [src]!"), \
 			span_warning("You bash [src]!"))
@@ -416,7 +419,7 @@
 
 	. += mutable_appearance('icons/obj/structures.dmi', "damage[ratio]", -(layer+0.1), appearance_flags = RESET_COLOR)
 
-/obj/structure/window/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if (exposed_temperature > melting_point)
 		take_damage(round(exposed_volume / 100), BURN, 0, 0)
 

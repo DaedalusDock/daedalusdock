@@ -46,10 +46,6 @@ Class Procs:
 	///If a zone is "invalid" it will not process
 	var/invalid = 0
 	var/list/contents = list()
-	///All fire tiles in this zone
-	var/list/fire_tiles = list()
-	///All physical sources of fire fuel in this zone
-	var/list/fuel_objs = list()
 	///Does SSzas need to update this zone? (SSzas.mark_zone_update(zone))
 	var/needs_update = 0
 	///An associative list of edge_source = edge. Will contain instantiated turfs and zones.
@@ -85,13 +81,6 @@ Class Procs:
 	add_tile_air(turf_air)
 	T.zone = src
 	contents.Add(T)
-	if(T.fire)
-		var/obj/effect/decal/cleanable/oil/fuel = locate() in T
-		fire_tiles.Add(T)
-		SSzas.active_fire_zones |= src
-		if(fuel)
-			fuel_objs += fuel
-			RegisterSignal(fuel, COMSIG_PARENT_QDELETING, PROC_REF(handle_fuel_del))
 
 	if(air.graphic)
 		T.vis_contents += air.graphic
@@ -126,11 +115,6 @@ Class Procs:
 		other?.open_directions &= ~reverse_dir[d]
 
 	contents.Remove(T)
-	fire_tiles.Remove(T)
-
-	if(T.fire)
-		var/obj/effect/decal/cleanable/oil/fuel = locate() in T
-		fuel_objs -= fuel
 
 	T.zone = null
 
@@ -180,8 +164,6 @@ Class Procs:
 	invalid = 1
 	SSzas.remove_zone(src)
 	atmos_sensitive_contents = null
-	fire_tiles = null
-	fuel_objs = null
 	#ifdef ZASDBG
 	for(var/turf/T as anything in contents)
 		if(!T.simulated)
@@ -224,24 +206,7 @@ Class Procs:
 
 ///Zone's process proc.
 /zone/proc/tick()
-
-	#ifdef ZASDBG
-	var/clock = TICK_USAGE
-	#endif
-
-	// Update fires.
-	if(air.temperature >= PHORON_FLASHPOINT && !length(fire_tiles) && length(contents) && !(src in SSzas.active_fire_zones) && air.check_combustability())
-		var/turf/T = pick(contents)
-		T.create_fire(zas_settings.fire_firelevel_multiplier)
-
-	#ifdef ZASDBG
-	SSzas.zonetime["update fires"] = TICK_USAGE_TO_MS(clock)
-	clock = TICK_USAGE
-	#endif
-
 	// Anything below this check only needs to be run if the zone's gas composition has changed.
-
-
 	if(!isnull(last_gas_list) && (last_gas_list ~= air.gas) && (last_air_temperature == air.temperature))
 		return
 
@@ -265,12 +230,6 @@ Class Procs:
 				if(length(graphic_remove))
 					T.vis_contents -= graphic_remove
 				CHECK_TICK
-
-	#ifdef ZASDBG
-	SSzas.zonetime["tile graphic"] = TICK_USAGE_TO_MS(clock)
-	clock = TICK_USAGE
-	#endif
-
 
 ///Prints debug information to the given mob. Used by the "Zone Info" verb. Does not require ZASDBG compile define.
 /zone/proc/dbg_data(mob/M)
@@ -296,7 +255,3 @@ Class Procs:
 
 	to_chat(M, "Zone Edges: [zone_edges]")
 	to_chat(M, "Unsimulated Edges: [space_edges] ([space_coefficient] connections)\n")
-
-///If fuel disappears from anything that isn't a fire burning it out, we gotta clear it's ref
-/zone/proc/handle_fuel_del(datum/source)
-	fuel_objs -= source

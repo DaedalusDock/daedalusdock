@@ -1508,9 +1508,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	if(prob(5))
 		if(bodytemp < cold_discomfort_level)
-			to_chat(humi, span_danger(pick(cold_discomfort_strings)))
+			to_chat(humi, span_warning(pick(cold_discomfort_strings)))
 		else if(bodytemp > heat_discomfort_level)
-			to_chat(humi, span_danger(pick(heat_discomfort_strings)))
+			to_chat(humi, span_warning(pick(heat_discomfort_strings)))
 
 	// Store the old bodytemp for future checking
 	humi.old_bodytemperature = bodytemp
@@ -1536,10 +1536,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		// 40% for level 3 damage on humans to scream in pain
 		if (humi.stat < UNCONSCIOUS && (prob(burn_damage) * 10) / 4)
-			humi.emote("scream")
+			humi.pain_emote(1000, TRUE) //AGONY!!!!
 
 		// Apply the damage to all body parts
 		humi.adjustFireLoss(burn_damage, FALSE)
+		. = TRUE
 
 	if(humi.coretemperature < cold_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTCOLD) && !CHEM_EFFECT_MAGNITUDE(humi, CE_CRYO))
 		var/damage_mod = coldmod * humi.physiology.cold_mod

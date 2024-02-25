@@ -397,7 +397,7 @@ SUBSYSTEM_DEF(shuttle)
 
 	var/callShuttle = TRUE
 
-	for(var/thing in GLOB.shuttle_caller_list)
+	for(var/thing in INSTANCES_OF(TRACKING_KEY_SHUTTLE_CALLER))
 		if(isAI(thing))
 			var/mob/living/silicon/ai/AI = thing
 			if(AI.deployed_shell && !AI.deployed_shell.client)
@@ -739,8 +739,7 @@ SUBSYSTEM_DEF(shuttle)
 	hidden_shuttle_turf_images -= remove_images
 	hidden_shuttle_turf_images += add_images
 
-	for(var/V in GLOB.navigation_computers)
-		var/obj/machinery/computer/camera_advanced/shuttle_docker/C = V
+	for(var/obj/machinery/computer/camera_advanced/shuttle_docker/C as anything in INSTANCES_OF(/obj/machinery/computer/camera_advanced/shuttle_docker))
 		C.update_hidden_docking_ports(remove_images, add_images)
 
 	QDEL_LIST(remove_images)

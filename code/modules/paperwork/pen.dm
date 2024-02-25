@@ -21,7 +21,7 @@
 
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0
@@ -49,7 +49,7 @@
 	desc = "It's a normal red ink pen."
 	icon_state = "pen_red"
 	colour = "#FF0000"
-	throw_speed = 4 // red ones go faster (in this case, fast enough to embed!)
+	throw_speed = 2 // red ones go faster (in this case, fast enough to embed!)
 
 /obj/item/pen/invisible
 	desc = "It's an invisible pen marker."
@@ -110,7 +110,7 @@
 	icon_state = "pen-fountain-o"
 	force = 5
 	throwforce = 5
-	throw_speed = 4
+	throw_speed = 1.5
 	colour = "#DC143C"
 	custom_materials = list(/datum/material/gold = 750)
 	sharpness = SHARP_EDGED

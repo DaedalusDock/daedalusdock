@@ -6,7 +6,7 @@
 	inhand_icon_state = "stamp"
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
+	throw_speed = 0.6
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=60)
 	//pressure_resistance = 2

@@ -34,16 +34,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 	var/datum/proximity_monitor/proximity_monitor
 
 /obj/machinery/flasher/Initialize(mapload, ndir = 0, built = 0)
-	. = ..() // ..() is EXTREMELY IMPORTANT, never forget to add it
+	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(!built)
 		bulb = new(src)
-
 
 /obj/machinery/flasher/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	id = "[port.id]_[id]"
 
 /obj/machinery/flasher/Destroy()
 	QDEL_NULL(bulb)
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/flasher/powered()

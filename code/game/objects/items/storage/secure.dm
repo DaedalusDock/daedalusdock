@@ -145,7 +145,6 @@
 	desc = "A large briefcase with a digital locking system."
 	force = 8
 	hitsound = SFX_SWING_HIT
-	throw_speed = 2
 	throw_range = 4
 	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")

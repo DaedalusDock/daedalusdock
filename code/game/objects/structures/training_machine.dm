@@ -355,7 +355,6 @@
 	flags_1 = CONDUCT_1
 	force = 0
 	throwforce = 0
-	throw_speed = 2
 	throw_range = 7
 	w_class = WEIGHT_CLASS_BULKY
 	///Total number of hits made against a valid target

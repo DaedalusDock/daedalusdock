@@ -40,7 +40,12 @@
 
 /obj/machinery/igniter/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	icon_state = "igniter[on]"
+
+/obj/machinery/igniter/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/igniter/update_icon_state()
 	icon_state = "[base_icon_state][(machine_stat & NOPOWER) ? 0 : on]"
@@ -70,11 +75,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/sparker, 26)
 
 /obj/machinery/sparker/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 	spark_system.attach(src)
 
 /obj/machinery/sparker/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	QDEL_NULL(spark_system)
 	return ..()
 

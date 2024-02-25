@@ -303,10 +303,10 @@
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Initialize(mapload)
 	. = ..()
-	GLOB.syndicate_shuttle_boards += src
+	SET_TRACKING(__TYPE__)
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Destroy()
-	GLOB.syndicate_shuttle_boards -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/item/circuitboard/computer/syndicatedoor
@@ -331,10 +331,6 @@
 /obj/item/circuitboard/computer/white_ship/pod/recall
 	name = "Salvage Pod Recall (Computer Board)"
 	build_path = /obj/machinery/computer/shuttle/white_ship/pod/recall
-
-/obj/item/circuitboard/computer/bountypad
-	name = "Bounty Pad (Computer Board)"
-	build_path = /obj/machinery/computer/piratepad_control/civilian
 
 /obj/item/circuitboard/computer/tram_controls
 	name = "Tram Controls (Computer Board)"

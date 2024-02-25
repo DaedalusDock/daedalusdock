@@ -52,6 +52,8 @@
 	"THE CURIOUS CASE OF [uppr_name]", "ONE HELL OF A PARTY", "FOR YOUR CONSIDERATION", "PRESS YOUR LUCK", "A STATION CALLED [uppr_name]", "CRIME AND PUNISHMENT", "MY DINNER WITH [uppr_name]", "UNFINISHED BUSINESS", "THE ONLY STATION THAT'S NOT ON FIRE (YET)", "SOMEONE'S GOTTA DO IT", "THE [uppr_name] MIX-UP", "PILOT", "PROLOGUE", "FINALE", "UNTITLED", "THE END")]")
 	episode_names += new /datum/episode_name("[pick("SPACE", "SEXY", "DRAGON", "WARLOCK", "LAUNDRY", "GUN", "ADVERTISING", "DOG", "CARBON MONOXIDE", "NINJA", "WIZARD", "SOCRATIC", "JUVENILE DELIQUENCY", "POLITICALLY MOTIVATED", "RADTACULAR SICKNASTY", "CORPORATE", "MEGA")] [pick("QUEST", "FORCE", "ADVENTURE")]", weight=25)
 
+	draft_spooky_episodes()
+
 	switch(GLOB.start_state.score(GLOB.end_state))
 		if(-INFINITY to -2000)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S PUNISHMENT", "A PUBLIC RELATIONS NIGHTMARE", "[uppr_name]: A NATIONAL CONCERN", "WITH APOLOGIES TO THE CREW", "THE CREW BITES THE DUST", "THE CREW BLOWS IT", "THE CREW GIVES UP THE DREAM", "THE CREW IS DONE FOR", "THE CREW SHOULD NOT BE ALLOWED ON TV", "THE END OF [uppr_name] AS WE KNOW IT")]", "Extremely low score of [GLOB.start_state.score(GLOB.end_state)].", 250)
@@ -301,7 +303,7 @@
 
 	if(human_escapees == 2)
 		if(lawyercount == 2)
-			episode_names += new /datum/episode_name/rare("DOUBLE JEOPARDY", "The only two survivors were IAAs or lawyers.", 2500)
+			episode_names += new /datum/episode_name/rare("DOUBLE JEOPARDY", "The only two survivors were lawyers.", 2500)
 		if(chefcount == 2)
 			episode_names += new /datum/episode_name/rare("CHEF WARS", "The only two survivors were chefs.", 2500)
 		if(minercount == 2)
@@ -346,10 +348,35 @@
 		break
 	*/
 
+/datum/controller/subsystem/credits/proc/draft_spooky_episodes()
+	var/list/areas_spooked = BLACKBOX_FEEDBACK_NESTED_TALLY("ghost_power_used")
+	if(!length(areas_spooked))
+		return
+
+	var/uppr_name = uppertext(station_name())
+	var/did_general_spooky
+	for(var/area_name in areas_spooked)
+		if(length(areas_spooked[area_name]) > 10)
+			did_general_spooky = TRUE
+			episode_names += new /datum/episode_name("THE HAUNTED [uppertext(area_name)]", "Large amounts of paranormal activity present.", 500)
+
+
+	if(did_general_spooky)
+		var/list/spooky_names = list(
+			"CARMEN MIRANDA'S GHOST IS HAUNTING [uppr_name]",
+			"DON'T CROSS THE STREAMS",
+			"BAD TO THE BONE",
+			"NIGHTMARE ON [uppr_name]",
+		)
+		episode_names += new /datum/episode_name(pick(spooky_names), "Large amounts of paranormal activity present.", 250)
+
+		if(findtext(uppr_name, "13"))
+			episode_names += new /datum/episode_name/rare("UNLUCKY NUMBERS", "The station's name contained \"13\".", 1000)
+
 /proc/get_station_avg_temp()
 	var/avg_temp = 0
 	var/avg_divide = 0
-	for(var/obj/machinery/airalarm/alarm in GLOB.machines)
+	for(var/obj/machinery/airalarm/alarm as anything in INSTANCES_OF(/obj/machinery/airalarm))
 		var/turf/location = alarm.loc
 		if(!istype(location) || !is_station_level(alarm.z))
 			continue

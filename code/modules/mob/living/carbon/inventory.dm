@@ -14,7 +14,7 @@
 			return legcuffed
 	return ..()
 
-/mob/living/carbon/proc/get_all_worn_items()
+/mob/living/carbon/proc/get_all_worn_items(include_pockets = TRUE)
 	return list(
 		back,
 		wear_mask,
@@ -73,10 +73,8 @@
 	I.screen_loc = null
 	if(client)
 		client.screen -= I
-
-	if(observers?.len)
-		for(var/M in observers)
-			var/mob/dead/observe = M
+	if(LAZYLEN(observers))
+		for(var/mob/dead/observe as anything in observers)
 			if(observe.client)
 				observe.client.screen -= I
 

@@ -29,7 +29,6 @@
  */
 /obj/item/toy
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	force = 0
 
@@ -123,7 +122,6 @@
 	righthand_file = 'icons/mob/inhands/balloons_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	force = 0
 	var/random_color = TRUE
@@ -517,7 +515,6 @@
 	force = 0
 	force_wielded = 0
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 5
 
 	attack_verb_continuous = list("attacks", "strikes", "hits")
@@ -572,7 +569,7 @@
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 	qdel(src)
 
-/obj/item/toy/snappop/fire_act(exposed_temperature, exposed_volume)
+/obj/item/toy/snappop/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	pop_burst()
 
 /obj/item/toy/snappop/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)

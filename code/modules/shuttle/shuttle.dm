@@ -680,7 +680,7 @@
 	return ripple_turfs
 
 /obj/docking_port/mobile/proc/check_poddoors()
-	for(var/obj/machinery/door/poddoor/shuttledock/pod in GLOB.airlocks)
+	for(var/obj/machinery/door/poddoor/shuttledock/pod in INSTANCES_OF(/obj/machinery/door))
 		pod.check()
 
 /obj/docking_port/mobile/proc/dock_id(id)

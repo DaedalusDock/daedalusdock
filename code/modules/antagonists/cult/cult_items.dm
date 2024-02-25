@@ -3,7 +3,6 @@
 	desc = "An old, dusty tome with frayed edges and a sinister-looking cover."
 	icon = 'icons/obj/cult/items_and_weapons.dmi'
 	icon_state ="tome"
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -584,9 +583,6 @@ Striking a noncultist, however, will tear their flesh."}
 		if(totalcurses >= MAX_SHUTTLE_CURSES && (world.time < first_curse_time + SHUTTLE_CURSE_OMFG_TIMESPAN))
 			var/omfg_message = pick_list(CULT_SHUTTLE_CURSE, "omfg_announce") || "LEAVE US ALONE!"
 			addtimer(CALLBACK(GLOBAL_PROC,PROC_REF(priority_announce),omfg_message,"Daedalus Industries Shuttle Dispatch","FUCK OFF",'sound/misc/notice1.ogg'), rand(2 SECONDS, 6 SECONDS))
-			for(var/mob/iter_player as anything in GLOB.player_list)
-				if(IS_CULTIST(iter_player))
-					iter_player.client?.give_award(/datum/award/achievement/misc/cult_shuttle_omfg, iter_player)
 
 		qdel(src)
 
@@ -712,7 +708,7 @@ Striking a noncultist, however, will tear their flesh."}
 	force = 17
 	force_wielded = 24
 	throwforce = 40
-	throw_speed = 2
+	throw_speed = 1.5
 	armor_penetration = 30
 	block_chance = 30
 

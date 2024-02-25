@@ -29,7 +29,7 @@
 
 		if(!home)
 			var/list/consoles = list()
-			for(var/obj/machinery/abductor/console/C in GLOB.machines)
+			for(var/obj/machinery/abductor/console/C in INSTANCES_OF(/obj/machinery/abductor))
 				consoles += C
 			console = pick(consoles)
 			home = console.pad

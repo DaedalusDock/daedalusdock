@@ -18,7 +18,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 
-	throw_speed = 3
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0

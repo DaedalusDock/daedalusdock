@@ -332,12 +332,16 @@
 /obj/machinery/door/firedoor/open()
 	if(welded)
 		return
-	return ..()
+	. = ..()
+	if(.)
+		playsound(loc, 'sound/machines/doors/blastdoor_open.ogg', 60, TRUE)
 
 /obj/machinery/door/firedoor/close()
 	if(HAS_TRAIT(loc, TRAIT_FIREDOOR_STOP))
 		return
-	return ..()
+	. = ..()
+	if(.)
+		playsound(loc, 'sound/machines/doors/blastdoor_close.ogg', 60, TRUE)
 
 
 /obj/machinery/door/firedoor/deconstruct(disassembled = TRUE)

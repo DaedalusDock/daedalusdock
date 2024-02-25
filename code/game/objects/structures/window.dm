@@ -128,9 +128,8 @@
 
 	return TRUE
 
-/obj/structure/window/proc/knock_on(mob/user)
-	user?.animate_interact(src, INTERACT_GENERIC)
-	playsound(src, knock_sound, 50, TRUE)
+/obj/structure/window/proc/knock_on()
+	playsound(src, knock_sound, 100, TRUE)
 
 /obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER

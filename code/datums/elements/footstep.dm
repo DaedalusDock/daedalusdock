@@ -25,31 +25,41 @@
 	src.e_range = e_range
 	src.footstep_type = footstep_type
 	src.sound_vary = sound_vary
+
 	switch(footstep_type)
 		if(FOOTSTEP_MOB_HUMAN)
 			if(!ishuman(target))
 				return ELEMENT_INCOMPATIBLE
+
 			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_humanstep))
 			steps_for_living[target] = 0
 			return
+
 		if(FOOTSTEP_MOB_CLAW)
 			footstep_sounds = GLOB.clawfootstep
+
 		if(FOOTSTEP_MOB_BAREFOOT)
 			footstep_sounds = GLOB.barefootstep
+
 		if(FOOTSTEP_MOB_HEAVY)
 			footstep_sounds = GLOB.heavyfootstep
+
 		if(FOOTSTEP_MOB_SHOE)
 			footstep_sounds = GLOB.footstep
+
 		if(FOOTSTEP_MOB_SLIME)
 			footstep_sounds = 'sound/effects/footstep/slime1.ogg'
+
 		if(FOOTSTEP_OBJ_MACHINE)
 			footstep_sounds = 'sound/effects/bang.ogg'
 			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_simplestep_machine))
 			return
+
 		if(FOOTSTEP_OBJ_ROBOT)
 			footstep_sounds = 'sound/effects/tank_treads.ogg'
 			RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_simplestep_machine))
 			return
+
 	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(play_simplestep))
 	steps_for_living[target] = 0
 
@@ -100,9 +110,11 @@
 	var/turf/open/source_loc = prepare_step(source)
 	if(!source_loc)
 		return
+
 	if(isfile(footstep_sounds) || istext(footstep_sounds))
 		playsound(source_loc, footstep_sounds, volume, falloff_distance = 1, vary = sound_vary)
 		return
+
 	var/turf_footstep
 	switch(footstep_type)
 		if(FOOTSTEP_MOB_CLAW)
@@ -113,9 +125,11 @@
 			turf_footstep = source_loc.heavyfootstep
 		if(FOOTSTEP_MOB_SHOE)
 			turf_footstep = source_loc.footstep
+
 	if(!turf_footstep)
 		return
-	playsound(source_loc, pick(footstep_sounds[turf_footstep][1]), footstep_sounds[turf_footstep][2] * volume, TRUE, footstep_sounds[turf_footstep][3] + e_range, falloff_distance = 1, vary = sound_vary)
+
+	playsound(source_loc, pick(footstep_sounds[turf_footstep][STEP_IDX_SOUNDS]), footstep_sounds[turf_footstep][STEP_IDX_VOL] * volume, TRUE, footstep_sounds[turf_footstep][STEP_IDX_RANGE] + e_range, falloff_distance = 1, vary = sound_vary)
 
 /datum/element/footstep/proc/play_humanstep(mob/living/carbon/human/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
 	SIGNAL_HANDLER
@@ -144,10 +158,10 @@
 
 		heard_clients = playsound(
 			source_loc,
-			pick(footstep_sounds[source_loc.footstep][1]),
-			footstep_sounds[source_loc.footstep][2] * volume * volume_multiplier,
+			pick(footstep_sounds[source_loc.footstep][STEP_IDX_SOUNDS]),
+			footstep_sounds[source_loc.footstep][STEP_IDX_VOL] * volume * volume_multiplier,
 			TRUE,
-			footstep_sounds[source_loc.footstep][3] + e_range + range_adjustment,
+			footstep_sounds[source_loc.footstep][STEP_IDX_RANGE] + e_range + range_adjustment,
 			falloff_distance = 1,
 			vary = sound_vary)
 	else
@@ -164,10 +178,10 @@
 
 			heard_clients = playsound(
 				source_loc,
-				pick(bare_footstep_sounds[source_loc.barefootstep][1]),
-				bare_footstep_sounds[source_loc.barefootstep][2] * volume * volume_multiplier,
+				pick(bare_footstep_sounds[source_loc.barefootstep][STEP_IDX_SOUNDS]),
+				bare_footstep_sounds[source_loc.barefootstep][STEP_IDX_VOL] * volume * volume_multiplier,
 				TRUE,
-				bare_footstep_sounds[source_loc.barefootstep][3] + e_range + range_adjustment,
+				bare_footstep_sounds[source_loc.barefootstep][STEP_IDX_RANGE] + e_range + range_adjustment,
 				falloff_distance = 1,
 				vary = sound_vary)
 

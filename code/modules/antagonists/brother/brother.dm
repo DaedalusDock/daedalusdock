@@ -47,13 +47,13 @@
 
 	var/icon/brother1_icon = render_preview_outfit(/datum/outfit/job/quartermaster, brother1)
 	var/icon/blood_overlay = icon('icons/effects/blood.dmi', "maskblood")
-	blood_overlay.Blend(COLOR_HUMAN_BLOOD)
+	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
 	brother1_icon.Blend(blood_overlay, ICON_OVERLAY)
 	brother1_icon.Shift(WEST, 8)
 
 	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/scientist/consistent, brother2)
 	blood_overlay = icon('icons/effects/blood.dmi', "uniformblood")
-	blood_overlay.Blend(COLOR_HUMAN_BLOOD)
+	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
 	brother2_icon.Blend(blood_overlay, ICON_OVERLAY)
 	brother2_icon.Shift(EAST, 8)
 

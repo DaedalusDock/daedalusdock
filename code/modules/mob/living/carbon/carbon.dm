@@ -1193,7 +1193,6 @@
 /// Modifies the handcuffed value if a different value is passed, returning FALSE otherwise. The variable should only be changed through this proc.
 /mob/living/carbon/proc/set_handcuffed(new_value)
 	PRIVATE_PROC(TRUE)
-	stack_trace("[new_value || "NULL"]")
 	if(handcuffed == new_value)
 		return FALSE
 

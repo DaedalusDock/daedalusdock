@@ -7,7 +7,7 @@
 	if(!holder)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_danger("Error: Admin-PM-Context: Only administrators may use this command."),
+			html = span_alert("Error: Admin-PM-Context: Only administrators may use this command."),
 			confidential = TRUE)
 		return
 	if(!ismob(M) || !M.client)
@@ -22,7 +22,7 @@
 	if(!holder)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_danger("Error: Admin-PM-Panel: Only administrators may use this command."),
+			html = span_alert("Error: Admin-PM-Panel: Only administrators may use this command."),
 			confidential = TRUE)
 		return
 
@@ -45,7 +45,7 @@
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_danger("Error: Admin-PM: You are unable to use admin PM-s (muted)."),
+			html = span_alert("Error: Admin-PM: You are unable to use admin PM-s (muted)."),
 			confidential = TRUE)
 		return
 	var/client/C
@@ -59,7 +59,7 @@
 		if(holder)
 			to_chat(src,
 				type = MESSAGE_TYPE_ADMINPM,
-				html = span_danger("Error: Admin-PM: Client not found."),
+				html = span_alert("Error: Admin-PM: Client not found."),
 				confidential = TRUE)
 		return
 
@@ -87,11 +87,11 @@
 		else
 			to_chat(src,
 				type = MESSAGE_TYPE_ADMINPM,
-				html = span_danger("Error: Admin-PM: Client not found."),
+				html = span_alert("Error: Admin-PM: Client not found."),
 				confidential = TRUE)
 			to_chat(src,
 				type = MESSAGE_TYPE_ADMINPM,
-				html = "[span_danger("<b>Message not sent:</b>")]<br>[msg]",
+				html = "[span_alert("<b>Message not sent:</b>")]<br>[msg]",
 				confidential = TRUE)
 			AH.AddInteraction("<b>No client found, message not sent:</b><br>[msg]")
 			return
@@ -103,14 +103,14 @@
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_danger("Error: Admin-PM: You are unable to use admin PM-s (muted)."),
+			html = span_alert("Error: Admin-PM: You are unable to use admin PM-s (muted)."),
 			confidential = TRUE)
 		return
 
 	if(!holder && !current_ticket) //no ticket? https://www.youtube.com/watch?v=iHSPf6x1Fdo
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_danger("You can no longer reply to this ticket, please open another one by using the Adminhelp verb if need be."),
+			html = span_alert("You can no longer reply to this ticket, please open another one by using the Adminhelp verb if need be."),
 			confidential = TRUE)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
@@ -135,7 +135,7 @@
 	if(!recipient)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_danger("Error: Admin-PM: Client not found."),
+			html = span_alert("Error: Admin-PM: Client not found."),
 			confidential = TRUE)
 		return
 
@@ -153,7 +153,7 @@
 		if(holder)
 			to_chat(src,
 				type = MESSAGE_TYPE_ADMINPM,
-				html = span_danger("Error: Use the admin IRC/Discord channel, nerd."),
+				html = span_alert("Error: Use the admin IRC/Discord channel, nerd."),
 				confidential = TRUE)
 			return
 
@@ -173,11 +173,11 @@
 				if(holder)
 					to_chat(src,
 						type = MESSAGE_TYPE_ADMINPM,
-						html = span_danger("Error: Admin-PM: Client not found."),
+						html = span_alert("Error: Admin-PM: Client not found."),
 						confidential = TRUE)
 					to_chat(src,
 						type = MESSAGE_TYPE_ADMINPM,
-						html = "[span_danger("<b>Message not sent:</b>")]<br>[msg]",
+						html = "[span_alert("<b>Message not sent:</b>")]<br>[msg]",
 						confidential = TRUE)
 					if(recipient_ticket)
 						recipient_ticket.AddInteraction("<b>No client found, message not sent:</b><br>[msg]")
@@ -190,7 +190,7 @@
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src,
 			type = MESSAGE_TYPE_ADMINPM,
-			html = span_danger("Error: Admin-PM: You are unable to use admin PM-s (muted)."),
+			html = span_alert("Error: Admin-PM: You are unable to use admin PM-s (muted)."),
 			confidential = TRUE)
 		return
 
@@ -239,7 +239,7 @@
 			if(holder)
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_danger("[tag_in] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
+					html = span_alert("[tag_in] <b>[key_name(src, TRUE, TRUE)]</b>: <span class='linkify'>[keywordparsedmsg]</span>"),
 					confidential = TRUE
 				)
 
@@ -264,7 +264,7 @@
 
 				to_chat(recipient,
 					type = MESSAGE_TYPE_ADMINPM,
-					html = span_danger("[tag_in] [replymsg]"),
+					html = span_alert("[tag_in] [replymsg]"),
 					confidential = TRUE
 				)
 
@@ -332,13 +332,13 @@
 				if(!current_ticket)
 					to_chat(src,
 						type = MESSAGE_TYPE_ADMINPM,
-						html = span_danger("Error: Admin-PM: Non-admin to non-admin PM communication is forbidden."),
+						html = span_alert("Error: Admin-PM: Non-admin to non-admin PM communication is forbidden."),
 						confidential = TRUE
 					)
 
 					to_chat(src,
 						type = MESSAGE_TYPE_ADMINPM,
-						html = "[span_danger("<b>Message not sent:</b>")]<br>[msg]",
+						html = "[span_alert("<b>Message not sent:</b>")]<br>[msg]",
 						confidential = TRUE
 					)
 					return

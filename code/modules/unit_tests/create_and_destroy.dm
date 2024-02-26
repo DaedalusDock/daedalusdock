@@ -29,6 +29,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		/obj/item/bodypart,
 		//Merge conflict marker. It doesn't runtime, but it's not a real object either
 		/obj/merge_conflict_marker,
+		// Haha, no
+		/obj/item/hand_item/grab,
 	)
 	//Say it with me now, type template
 	ignore += typesof(/obj/effect/mapping_helpers)

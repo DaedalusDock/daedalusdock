@@ -2,7 +2,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()

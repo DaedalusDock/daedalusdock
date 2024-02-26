@@ -138,6 +138,8 @@
 		return
 
 	if(href_list["eject_id"])
+		if(isnull(inserted_card))
+			return TRUE
 		inserted_card.forceMove(drop_location())
 		inserted_card = null
 		playsound(src, 'sound/machines/terminal_eject.ogg')

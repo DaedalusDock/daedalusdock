@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed IDs being broken
+  - bugfix: Fixed a missing wire node in engine monitoring
+  - bugfix: Fixed admin chat using the wrong css class

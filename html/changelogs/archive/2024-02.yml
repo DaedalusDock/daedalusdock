@@ -96,3 +96,22 @@
 2024-02-25:
   francinum:
   - rscadd: Hydrogen can now be purchased from cargo.
+2024-02-26:
+  Jacquerel, MrMelbert:
+  - bugfix: Stabilized slime extracts will now once again work from inside modsuit
+      storage.
+  - bugfix: When placing an item into storage (such as backpacks), all nearby mobs
+      now get a message, rather than just the first mob.
+  - bugfix: TGC decks of cards should act a bit less odd when looking inside.
+  - refactor: Refactored a bit of storage, cleaned up a fair bit of its code. Let
+      me know if you notice anything funky about storage (like backpacks).
+  Kapu1178:
+  - bugfix: Fixed IDs being broken
+  - bugfix: Fixed a missing wire node in engine monitoring
+  - bugfix: Fixed admin chat using the wrong css class
+  LemonInTheDark:
+  - refactor: Lighting should be faster now
+  - rscdel: Multi-Z lighting, for now.
+  MrMelbert:
+  - bugfix: Chasms no longer break your verbs
+  - bugfix: Maps loaded in after roundstart will no longer have broken smoothing

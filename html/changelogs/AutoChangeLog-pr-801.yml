@@ -1,0 +1,5 @@
+author: LemonInTheDark
+delete-after: true
+changes:
+  - refactor: Lighting should be faster now
+  - rscdel: Multi-Z lighting, for now.

@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - soundadd: Alot of sounds have been added or replaced.
+  - rscadd: You can now take a drag off a cigarette by clicking yourself while holding
+      it.
+  - rscadd: Cigarettes now leave tiny smoke particles sometimes.

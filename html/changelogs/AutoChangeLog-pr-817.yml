@@ -1,5 +1,0 @@
-author: MrMelbert
-delete-after: true
-changes:
-  - bugfix: Chasms no longer break your verbs
-  - bugfix: Maps loaded in after roundstart will no longer have broken smoothing

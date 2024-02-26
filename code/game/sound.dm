@@ -41,6 +41,8 @@
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff_exponent = SOUND_FALLOFF_EXPONENT, frequency = null, channel = 0, pressure_affected = TRUE, ignore_walls = TRUE, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, use_reverb = TRUE)
 	if(isarea(source))
 		CRASH("playsound(): source is an area")
+	if(isnull(vol))
+		CRASH("Playsound received a null volume, this is probably wrong!")
 
 	var/turf/turf_source = get_turf(source)
 
@@ -210,7 +212,7 @@
 			if (SFX_BODYFALL)
 				soundin = pick('sound/effects/bodyfall1.ogg','sound/effects/bodyfall2.ogg','sound/effects/bodyfall3.ogg','sound/effects/bodyfall4.ogg')
 			if (SFX_PUNCH)
-				soundin = pick('sound/effects/attack/punch.ogg','sound/effects/attack/punch_2.ogg')
+				soundin = pick('sound/weapons/attack/punch.ogg','sound/weapons/attack/punch_2.ogg', 'sound/weapons/attack/punch_3.ogg', 'sound/weapons/attack/punch_4.ogg')
 			if (SFX_CLOWN_STEP)
 				soundin = pick('sound/effects/clownstep1.ogg','sound/effects/clownstep2.ogg')
 			if (SFX_SUIT_STEP)
@@ -263,5 +265,7 @@
 				soundin= pick('sound/effects/bonebreak1.ogg','sound/effects/bonebreak2.ogg','sound/effects/bonebreak3.ogg','sound/effects/bonebreak4.ogg')
 			if(SFX_PAINT)
 				soundin= pick('sound/effects/paint_1.ogg','sound/effects/paint_2.ogg','sound/effects/paint_3.ogg')
+			if(SFX_BLOCK_BIG_METAL)
+				soundin = pick('sound/weapons/block/metal_block_01.ogg','sound/weapons/block/metal_block_02.ogg','sound/weapons/block/metal_block_03.ogg','sound/weapons/block/metal_block_04.ogg','sound/weapons/block/metal_block_05.ogg','sound/weapons/block/metal_block_06.ogg')
 
 	return soundin

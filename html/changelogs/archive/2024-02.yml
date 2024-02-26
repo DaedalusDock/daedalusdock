@@ -71,3 +71,47 @@
   - bugfix: Flamethrowers no longer spew plasma into the room (lol oops)
   - rscdel: Deleted the "on fire" particle effect, as it looks REALLY BAD when you're
       prone.
+2024-02-20:
+  Kapu1178:
+  - rscadd: Everyone now spawns with a wallet, containing their ID and their starting
+      funds. You can close them to conceal the ID, but you won't be able to use the
+      ID's access until you open it. RFID blocking leather!
+  - rscadd: Everyone now receives a random bank PIN, viewable in the Memories menu
+      (IC tab if you forgot).
+  - rscadd: You can now access your bank account via a number of ATMs placed around
+      the station.
+  - balance: Crew marked as Deceased in records are no longer given a paycheck. Update
+      records for more money!
+  - rscdel: ID cards are no longer magic money dispensers/receptacles.
+  - rscdel: PDAs no longer take on the name of their owner.
+  - rscdel: Civilian bounties.
+  - rscadd: Added a new admin outfit
+2024-02-22:
+  francinum:
+  - bugfix: Click Catcher works again.
+2024-02-24:
+  francinum:
+  - rscdel: A majority of existing achievements have been removed.
+  - bugfix: Railings no longer duplicate rods.
+2024-02-25:
+  francinum:
+  - rscadd: Hydrogen can now be purchased from cargo.
+2024-02-26:
+  Jacquerel, MrMelbert:
+  - bugfix: Stabilized slime extracts will now once again work from inside modsuit
+      storage.
+  - bugfix: When placing an item into storage (such as backpacks), all nearby mobs
+      now get a message, rather than just the first mob.
+  - bugfix: TGC decks of cards should act a bit less odd when looking inside.
+  - refactor: Refactored a bit of storage, cleaned up a fair bit of its code. Let
+      me know if you notice anything funky about storage (like backpacks).
+  Kapu1178:
+  - bugfix: Fixed IDs being broken
+  - bugfix: Fixed a missing wire node in engine monitoring
+  - bugfix: Fixed admin chat using the wrong css class
+  LemonInTheDark:
+  - refactor: Lighting should be faster now
+  - rscdel: Multi-Z lighting, for now.
+  MrMelbert:
+  - bugfix: Chasms no longer break your verbs
+  - bugfix: Maps loaded in after roundstart will no longer have broken smoothing

@@ -128,7 +128,7 @@
 
 		var/crewmember_name = "Unknown"
 		if(H.wear_id)
-			var/obj/item/card/id/I = H.wear_id.GetID()
+			var/obj/item/card/id/I = H.wear_id.GetID(TRUE)
 			if(I?.registered_name)
 				crewmember_name = I.registered_name
 

@@ -780,7 +780,7 @@
 
 	. = ..()
 
-	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
+	if(active_storage && !((active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent,view_only = TRUE)))
 		active_storage.hide_contents(src)
 
 	if(body_position == LYING_DOWN && !buckled && prob(getBruteLoss()*200/maxHealth))
@@ -2184,7 +2184,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/needs_organ(slot)
 	return FALSE
 
-/mob/living/proc/has_mouth()
+/mob/proc/has_mouth()
+	return FALSE
+
+/mob/living/has_mouth()
 	return TRUE
 
 /mob/living/get_mouse_pointer_icon(check_sustained)

@@ -97,6 +97,7 @@
 	name = "reinforced rock"
 	desc = "It has metal struts that need to be welded away before it can be mined."
 	icon = 'icons/turf/walls/legacy/reinforced_rock.dmi'
+	stripe_icon = null
 	icon_state = "porous_rock-0"
 	base_icon_state = "porous_rock"
 	turf_flags = NO_RUST

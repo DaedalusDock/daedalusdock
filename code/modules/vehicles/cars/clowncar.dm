@@ -9,7 +9,7 @@
 	movedelay = 0.6
 	car_traits = CAN_KIDNAP
 	key_type = /obj/item/bikehorn
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_outer_range = 8
 	light_power = 2
 	light_on = FALSE
@@ -17,8 +17,6 @@
 	var/headlight_colors = list(COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_LIME, COLOR_BRIGHT_BLUE, COLOR_CYAN, COLOR_PURPLE)
 	///Cooldown time inbetween [/obj/vehicle/sealed/car/clowncar/proc/roll_the_dice()] usages
 	var/dice_cooldown_time = 150
-	///How many times kidnappers in the clown car said thanks
-	var/thankscount = 0
 	///Current status of the cannon, alternates between CLOWN_CANNON_INACTIVE, CLOWN_CANNON_BUSY and CLOWN_CANNON_READY
 	var/cannonmode = CLOWN_CANNON_INACTIVE
 
@@ -38,7 +36,6 @@
 	. = ..()
 	initialize_controller_action_type(/datum/action/vehicle/sealed/horn, VEHICLE_CONTROL_DRIVE)
 	initialize_controller_action_type(/datum/action/vehicle/sealed/headlights, VEHICLE_CONTROL_DRIVE)
-	initialize_controller_action_type(/datum/action/vehicle/sealed/thank, VEHICLE_CONTROL_KIDNAPPED)
 
 /obj/vehicle/sealed/car/clowncar/auto_assign_occupant_flags(mob/M)
 	if(ishuman(M))
@@ -67,12 +64,6 @@
 /obj/vehicle/sealed/car/clowncar/proc/irish_car_bomb()
 	dump_mobs()
 	explosion(src, light_impact_range = 1)
-
-/obj/vehicle/sealed/car/clowncar/after_add_occupant(mob/M, control_flags)
-	. = ..()
-	if(return_controllers_with_flag(VEHICLE_CONTROL_KIDNAPPED).len >= 30)
-		for(var/mob/voreman as anything in return_drivers())
-			voreman.client.give_award(/datum/award/achievement/misc/round_and_full, voreman)
 
 /obj/vehicle/sealed/car/clowncar/attack_animal(mob/living/simple_animal/user, list/modifiers)
 	if((user.loc != src) || user.environment_smash & (ENVIRONMENT_SMASH_WALLS|ENVIRONMENT_SMASH_RWALLS))
@@ -251,11 +242,3 @@
 	unlucky_sod.throw_at(target, 10, 2)
 	log_combat(user, unlucky_sod, "fired", src, "towards [target]") //this doesn't catch if the mob hits something between the car and the target
 	return COMSIG_MOB_CANCEL_CLICKON
-
-///Increments the thanks counter every time someone thats been kidnapped thanks the driver
-/obj/vehicle/sealed/car/clowncar/proc/increment_thanks_counter()
-	thankscount++
-	if(thankscount < 100)
-		return
-	for(var/mob/busdriver as anything in return_drivers())
-		busdriver.client.give_award(/datum/award/achievement/misc/the_best_driver, busdriver)

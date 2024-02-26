@@ -132,7 +132,7 @@ Striking a noncultist, however, will tear their flesh."}
 	throw_speed = 1
 	throw_range = 3
 	sharpness = SHARP_EDGED
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 4
 	light_color = COLOR_RED
 	attack_verb_continuous = list("cleaves", "slashes", "tears", "lacerates", "hacks", "rips", "dices", "carves")
@@ -583,9 +583,6 @@ Striking a noncultist, however, will tear their flesh."}
 		if(totalcurses >= MAX_SHUTTLE_CURSES && (world.time < first_curse_time + SHUTTLE_CURSE_OMFG_TIMESPAN))
 			var/omfg_message = pick_list(CULT_SHUTTLE_CURSE, "omfg_announce") || "LEAVE US ALONE!"
 			addtimer(CALLBACK(GLOBAL_PROC,PROC_REF(priority_announce),omfg_message,"Daedalus Industries Shuttle Dispatch","FUCK OFF",'sound/misc/notice1.ogg'), rand(2 SECONDS, 6 SECONDS))
-			for(var/mob/iter_player as anything in GLOB.player_list)
-				if(IS_CULTIST(iter_player))
-					iter_player.client?.give_award(/datum/award/achievement/misc/cult_shuttle_omfg, iter_player)
 
 		qdel(src)
 
@@ -1002,7 +999,7 @@ Striking a noncultist, however, will tear their flesh."}
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "at_shield2"
 	layer = FLY_LAYER
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 2
 	duration = 8
 	var/target

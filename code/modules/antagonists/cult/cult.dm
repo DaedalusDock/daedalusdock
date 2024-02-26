@@ -264,9 +264,6 @@
 	///Has the cult asceneded, and gotten halos?
 	var/cult_ascendent = FALSE
 
-	///Has narsie been summoned yet?
-	var/narsie_summoned = FALSE
-
 /datum/team/cult/proc/check_size()
 	if(cult_ascendent)
 		return

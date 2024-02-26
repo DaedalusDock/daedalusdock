@@ -536,13 +536,6 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 	//BEGIN THE SUMMONING
 	used = TRUE
-	var/datum/team/cult/cult_team = user_antag.cult_team
-	if (cult_team.narsie_summoned)
-		for (var/datum/mind/cultist_mind in cult_team.members)
-			var/mob/living/cultist_mob = cultist_mind.current
-			cultist_mob.client?.give_award(/datum/award/achievement/misc/narsupreme, cultist_mob)
-
-	cult_team.narsie_summoned = TRUE
 	..()
 	sound_to_playing_players('sound/effects/dimensional_rend.ogg')
 	var/turf/rune_turf = get_turf(src)

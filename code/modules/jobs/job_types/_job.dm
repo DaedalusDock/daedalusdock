@@ -376,7 +376,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!J)
 		J = SSjob.GetJob(H.job)
 
-	var/obj/item/card/id/card = H.wear_id.GetID()
+	var/obj/item/card/id/card = H.wear_id.GetID(TRUE)
 	if(istype(card))
 		ADD_TRAIT(card, TRAIT_JOB_FIRST_ID_CARD, ROUNDSTART_TRAIT)
 		shuffle_inplace(card.access) // Shuffle access list to make NTNet passkeys less predictable

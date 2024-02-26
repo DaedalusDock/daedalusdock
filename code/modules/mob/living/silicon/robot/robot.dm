@@ -471,7 +471,7 @@
 	if(!lamp_functional)
 		return
 	lamp_functional = FALSE
-	playsound(src, 'sound/effects/glass_step.ogg', 50)
+	playsound(src, 'sound/effects/small_glass_break.ogg', 50)
 	toggle_headlamp(TRUE)
 	to_chat(src, span_danger("Your headlamp is broken! You'll need a human to help replace it."))
 

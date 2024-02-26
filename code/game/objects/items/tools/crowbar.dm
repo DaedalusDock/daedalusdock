@@ -32,6 +32,9 @@
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1)
 	return (BRUTELOSS)
 
+/obj/item/crowbar/get_misssound()
+	return pick('sound/weapons/swing/swing_crowbar.ogg', 'sound/weapons/swing/swing_crowbar2.ogg', 'sound/weapons/swing/swing_crowbar3.ogg')
+
 /obj/item/crowbar/red
 	icon_state = "crowbar_red"
 	force = 8

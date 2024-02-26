@@ -172,6 +172,7 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_ROCK_TAP "rock_tap"
 #define SFX_BREAK_BONE "break_bone"
 #define SFX_PAINT "paint"
+#define SFX_BLOCK_BIG_METAL "big_metal_block"
 
 
 #define LOOPING_SOUND_DIRECT 1

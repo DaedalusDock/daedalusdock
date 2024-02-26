@@ -128,8 +128,9 @@
 
 	return TRUE
 
-/obj/structure/window/proc/knock_on()
-	playsound(src, knock_sound, 50, TRUE)
+/obj/structure/window/proc/knock_on(mob/user)
+	user?.animate_interact(src, INTERACT_GENERIC)
+	playsound(src, knock_sound, 100, TRUE)
 
 /obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
@@ -174,7 +175,7 @@
 	if(!user.combat_mode)
 		user.visible_message(span_notice("[user] knocks on [src]."), \
 			span_notice("You knock on [src]."))
-		knock_on()
+		knock_on(user)
 	else
 		user.visible_message(span_warning("[user] bashes [src]!"), \
 			span_warning("You bash [src]!"))

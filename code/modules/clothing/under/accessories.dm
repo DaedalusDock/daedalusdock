@@ -44,7 +44,7 @@
 	return TRUE
 
 /obj/item/clothing/accessory/proc/detach(obj/item/clothing/under/U, user)
-	if(U.atom_storage && U.atom_storage.real_location?.resolve() == src)
+	if(U.atom_storage && (U.atom_storage.get_real_location() == src))
 		QDEL_NULL(U.atom_storage)
 
 	U.setArmor(U.returnArmor().detachArmor(src.returnArmor()))

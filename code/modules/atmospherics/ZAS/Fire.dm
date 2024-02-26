@@ -71,7 +71,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	icon_state = "1"
 	layer = GASFIRE_LAYER
 	blend_mode = BLEND_ADD
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = LIGHT_RANGE_FIRE
 	light_power = 1
 	light_color = LIGHT_COLOR_FIRE

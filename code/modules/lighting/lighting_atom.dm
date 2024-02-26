@@ -39,7 +39,7 @@
 	if (QDELETED(src))
 		return
 
-	if(light_system != STATIC_LIGHT)
+	if(light_system != COMPLEX_LIGHT)
 		CRASH("update_light() for [src] with following light_system value: [light_system]")
 
 	if (!light_power || !light_outer_range || !light_on) // We won't emit light anyways, destroy the light source.

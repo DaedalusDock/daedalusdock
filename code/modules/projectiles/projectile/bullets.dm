@@ -12,7 +12,7 @@
 	embedding = list(embed_chance=20, fall_chance=0, jostle_chance=0, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.5, pain_mult=3, rip_time=10)
 	embed_adjustment_tile = 3
 
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1.5
 	light_power = 2
 	light_color = COLOR_VERY_SOFT_YELLOW

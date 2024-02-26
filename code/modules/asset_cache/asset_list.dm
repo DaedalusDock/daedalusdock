@@ -340,6 +340,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 // LOOK INTO USING THE MUTABLE APPEARANCE PATTERN HERE
 /datum/asset/spritesheet/proc/queuedInsert(sprite_name, icon/I, icon_state="", dir=SOUTH, frame=1, moving=FALSE)
 	I = icon(I, icon_state=icon_state, dir=dir, frame=frame, moving=moving)
+	ICON_CRASH_LOG()
 	if (!I || !length(icon_states(I)))  // that direction or state doesn't exist
 		return
 	//any sprite modifications we want to do (aka, coloring a greyscaled asset)
@@ -379,6 +380,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	if (!directions)
 		directions = list(SOUTH)
 
+	ICON_CRASH_LOG()
 	for (var/icon_state_name in icon_states(I))
 		for (var/direction in directions)
 			var/prefix2 = (directions.len > 1) ? "[dir2text(direction)]-" : ""
@@ -462,6 +464,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/generic_icon_names = FALSE //generate icon filenames using generate_asset_name() instead the above format
 
 /datum/asset/simple/icon_states/register(_icon = icon)
+	ICON_CRASH_LOG()
 	for(var/icon_state_name in icon_states(_icon))
 		for(var/direction in directions)
 			var/asset = icon(_icon, icon_state_name, direction, frame, movement_states)

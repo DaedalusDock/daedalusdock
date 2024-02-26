@@ -713,6 +713,7 @@ world
 ///
 /// Only the first argument is required.
 /proc/getFlatIcon(image/appearance, defdir, deficon, defstate, defblend, start = TRUE, no_anim = FALSE)
+	ICON_CRASH_LOG("getFlatIcon called with [appearance.type]")
 	// Loop through the underlays, then overlays, sorting them into the layers list
 	#define PROCESS_OVERLAYS_OR_UNDERLAYS(flat, process, base_layer) \
 		for (var/i in 1 to process.len) { \
@@ -1229,7 +1230,9 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		if(isnull(y))
 			y = icon_heights[key] = I.Height()
 
+		ICON_CRASH_LOG("Returned OK")
 		return "<img class='[extra_classes] icon icon-[icon_state]' style='width:[x]px;height:[y]px;min-height:[y]px' src='[SSassets.transport.get_asset_url(key)]'>"
+	ICON_CRASH_LOG("Returned OK")
 	return "<img class='[extra_classes] icon icon-[icon_state]' src='[SSassets.transport.get_asset_url(key)]'>"
 
 /proc/icon2base64html(thing)
@@ -1396,8 +1399,18 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 	if(isnull(file) || isnull(state))
 		return FALSE //This is common enough that it shouldn't panic, imo.
 
+	// If it isnt an RSC reference, don't cache it.
+	if (!isfile(file) || !length("[file]"))
+		if(isicon(file))
+			var/icon/I = file
+			ICON_CRASH_LOG("Requested icon states for DDMI [I:icon], seeking [state]")
+		else
+			ICON_CRASH_LOG("Requested icon states for DDMI of unknown type, what the fuck?")
+		return (state in icon_states(file))
+
 	if(isnull(icon_states_cache[file]))
 		icon_states_cache[file] = list()
+		ICON_CRASH_LOG("Requested icon states for file: [file]")
 		for(var/istate in icon_states(file))
 			icon_states_cache[file][istate] = TRUE
 

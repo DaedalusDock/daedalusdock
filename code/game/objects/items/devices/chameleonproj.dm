@@ -65,6 +65,7 @@
 	saved_appearance = temp.appearance
 
 /obj/item/chameleon/proc/check_sprite(atom/target)
+	ICON_CRASH_LOG()
 	if(target.icon_state in icon_states(target.icon))
 		return TRUE
 	return FALSE

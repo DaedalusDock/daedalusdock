@@ -94,6 +94,7 @@
 /datum/greyscale_layer/icon_state/Initialize(icon_file)
 	. = ..()
 	src.icon_file = icon_file
+	ICON_CRASH_LOG()
 	var/list/icon_states = icon_states(icon_file)
 	var/state_to_check
 	if(bitmask)

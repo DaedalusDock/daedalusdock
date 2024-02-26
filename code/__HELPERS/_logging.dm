@@ -338,6 +338,14 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 		entry += "\n[message]"
 	WRITE_LOG(GLOB.tgui_log, entry)
 
+/proc/log_crash(log, file, line)
+	var/static/log_num = 0
+	log_num++
+	log = "CRASH LOG #[log_num]: [file] Ln [line][log ? " [log]": ""]"
+	WRITE_LOG(GLOB.crash_log, log)
+
+#define ICON_CRASH_LOG(text...) log_crash(##text, __FILE__, __LINE__)
+
 /* For logging round startup. */
 /proc/start_log(log)
 	WRITE_LOG(log, "Starting up round ID [GLOB.round_id].\n-------------------------")
@@ -495,3 +503,4 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 		return "([AREACOORD(T)])"
 	else if(A.loc)
 		return "(UNKNOWN (?, ?, ?))"
+

@@ -233,6 +233,10 @@
 #define COMSIG_ITEM_SPLIT_PROFIT "item_split_profits"
 ///called when getting the item's exact ratio for cargo's profit, without selling the item.
 #define COMSIG_ITEM_SPLIT_PROFIT_DRY "item_split_profits_dry"
+///from base of /atom/movable/proc/on_enter_storage(): (datum/storage/storage)
+#define COMSIG_ITEM_STORED "item_stored"
+///from base of /atom/movable/proc/on_exit_storage(): (datum/storage/storage)
+#define COMSIG_ITEM_UNSTORED "item_unstored"
 
 // /obj/item/clothing signals
 

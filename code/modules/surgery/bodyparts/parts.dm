@@ -20,7 +20,7 @@
 
 	minimum_break_damage = 35
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST
+	bodypart_flags = (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY | BP_CAN_BE_DISLOCATED)
 
 	///The bodytype(s) allowed to attach to this chest.
 	var/acceptable_bodytype = BODYTYPE_HUMANOID
@@ -80,7 +80,7 @@
 	unarmed_stun_threshold = 10
 	body_zone = BODY_ZONE_L_ARM
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS
+	bodypart_flags = (BP_IS_GRABBY_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON | BP_HAS_ARTERY | BP_CAN_BE_DISLOCATED)
 
 	artery_name = "basilic vein"
 	tendon_name = "palmaris longus tendon"
@@ -279,7 +279,7 @@
 	unarmed_damage_high = 12
 	unarmed_stun_threshold = 10
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS
+	bodypart_flags = (BP_IS_MOVEMENT_LIMB | BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_TENDON | BP_HAS_ARTERY| BP_CAN_BE_DISLOCATED)
 
 	artery_name = "femoral artery"
 	tendon_name = "cruciate ligament"

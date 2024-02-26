@@ -134,10 +134,11 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 			overlays.len = 0
 			var/list/new_overlays = list()
 
-			var/image/smoothed_stripe = image(stripe_icon, icon_state)
-			smoothed_stripe.appearance_flags = RESET_COLOR
-			smoothed_stripe.color = stripe_color
-			new_overlays += smoothed_stripe
+			if(stripe_icon)
+				var/image/smoothed_stripe = image(stripe_icon, icon_state)
+				smoothed_stripe.appearance_flags = RESET_COLOR
+				smoothed_stripe.color = stripe_color
+				new_overlays += smoothed_stripe
 
 			if(neighbor_stripe)
 				var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")

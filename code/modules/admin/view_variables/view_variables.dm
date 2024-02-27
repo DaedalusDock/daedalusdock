@@ -26,16 +26,19 @@
 	var/type = islist? /list : thing.type
 	var/no_icon = FALSE
 
-	if(isatom(thing))
-		sprite = getFlatIcon(thing)
-		if(!sprite)
-			no_icon = TRUE
+	if(!GLOB.debug_disable_vv_icon_render)
+		if(isatom(thing))
+			sprite = getFlatIcon(thing)
+			if(!sprite)
+				no_icon = TRUE
 
-	else if(isimage(thing))
-		var/image/image_object = thing
-		sprite = icon(image_object.icon, image_object.icon_state)
+		else if(isimage(thing))
+			var/image/image_object = thing
+			sprite = icon(image_object.icon, image_object.icon_state)
 
 	var/sprite_text
+	if(GLOB.debug_disable_vv_icon_render)
+		sprite_text = "\[RENDER DISABLED\]"
 	if(sprite)
 		hash = md5(sprite)
 		src << browse_rsc(sprite, "vv[hash].png")

@@ -26,7 +26,7 @@
 	var/type = islist? /list : thing.type
 	var/no_icon = FALSE
 
-	if(!GLOB.debug_disable_vv_icon_render)
+	if(!SSlag_switch.measures[DISABLE_RUNECHAT])
 		if(isatom(thing))
 			sprite = getFlatIcon(thing)
 			if(!sprite)
@@ -37,7 +37,7 @@
 			sprite = icon(image_object.icon, image_object.icon_state)
 
 	var/sprite_text
-	if(GLOB.debug_disable_vv_icon_render)
+	if(SSlag_switch.measures[DISABLE_RUNECHAT])
 		sprite_text = "\[RENDER DISABLED\]"
 	if(sprite)
 		hash = md5(sprite)

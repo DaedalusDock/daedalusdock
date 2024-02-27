@@ -80,12 +80,6 @@
 			else
 				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 
-/obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_mask()
-
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
 /obj/item/clothing/mask/proc/adjustmask(mob/living/carbon/user)
 	if(user?.incapacitated())
@@ -116,6 +110,7 @@
 		return
 
 	if(user.wear_mask == src)
+		user.update_slots_for_item(src, ITEM_SLOT_MASK, TRUE)
 		user.wear_mask_update(src, toggle_off = mask_adjusted)
 
 	if(loc == user)

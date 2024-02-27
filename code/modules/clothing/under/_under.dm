@@ -76,9 +76,6 @@
 
 /obj/item/clothing/under/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_undersuit()
 	if(damaged_state == CLOTHING_SHREDDED && has_sensor > NO_SENSORS)
 		has_sensor = BROKEN_SENSORS
 	else if(damaged_state == CLOTHING_PRISTINE && has_sensor == BROKEN_SENSORS)
@@ -186,8 +183,7 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
+	holder.update_slots_for_item(src)
 	holder.fan_hud_set_fandom()
 
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
@@ -213,10 +209,8 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
+	holder.update_slots_for_item(src)
 	holder.fan_hud_set_fandom()
-
 
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
@@ -310,10 +304,10 @@
 		to_chat(usr, span_notice("You adjust the suit to wear it more casually."))
 	else
 		to_chat(usr, span_notice("You adjust the suit back to normal."))
+
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		H.update_worn_undersuit()
-		H.update_body()
+		H.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 /obj/item/clothing/under/proc/toggle_jumpsuit_adjust()
 	if(adjusted == DIGITIGRADE_STYLE)

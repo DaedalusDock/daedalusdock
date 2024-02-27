@@ -322,6 +322,10 @@ DEFINE_INTERACTABLE(/obj/item)
 		icon_state = icon_state_wielded
 	return ..()
 
+/obj/item/add_blood_DNA(list/dna)
+	. = ..()
+	update_slot_icon()
+
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
 	SIGNAL_HANDLER
@@ -502,6 +506,14 @@ DEFINE_INTERACTABLE(/obj/item)
 		to_chat(usr, span_notice("[before_name] now has [picked_affix_name]!"))
 		log_admin("[key_name(usr)] has added [picked_affix_name] fantasy affix to [before_name]")
 		message_admins(span_notice("[key_name(usr)] has added [picked_affix_name] fantasy affix to [before_name]"))
+
+/obj/item/vv_edit_var(vname, vval)
+	. = ..()
+	if(vname == NAMEOF(src, flags_inv) && iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		var/slot = C.get_slot_by_item(src)
+		if(slot)
+			C.update_slots_for_item(src, slot, TRUE)
 
 /obj/item/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -996,31 +1008,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!ismob(loc))
 		return
 	var/mob/owner = loc
-	var/flags = slot_flags
-	if(flags & ITEM_SLOT_OCLOTHING)
-		owner.update_worn_oversuit()
-	if(flags & ITEM_SLOT_ICLOTHING)
-		owner.update_worn_undersuit()
-	if(flags & ITEM_SLOT_GLOVES)
-		owner.update_worn_gloves()
-	if(flags & ITEM_SLOT_EYES)
-		owner.update_worn_glasses()
-	if(flags & ITEM_SLOT_EARS)
-		owner.update_worn_ears()
-	if(flags & ITEM_SLOT_MASK)
-		owner.update_worn_mask()
-	if(flags & ITEM_SLOT_HEAD)
-		owner.update_worn_head()
-	if(flags & ITEM_SLOT_FEET)
-		owner.update_worn_shoes()
-	if(flags & ITEM_SLOT_ID)
-		owner.update_worn_id()
-	if(flags & ITEM_SLOT_BELT)
-		owner.update_worn_belt()
-	if(flags & ITEM_SLOT_BACK)
-		owner.update_worn_back()
-	if(flags & ITEM_SLOT_NECK)
-		owner.update_worn_neck()
+	owner.update_clothing(slot_flags | ITEM_SLOT_HANDS)
 
 ///Returns the temperature of src. If you want to know if an item is hot use this proc.
 /obj/item/proc/get_temperature()

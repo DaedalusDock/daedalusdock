@@ -1256,15 +1256,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(bloody) //Apply blood
 					if(H.wear_mask)
 						H.wear_mask.add_mob_blood(H)
-						H.update_worn_mask()
 
 					if(H.head)
 						H.head.add_mob_blood(H)
-						H.update_worn_head()
 
 					if(H.glasses && prob(33))
 						H.glasses.add_mob_blood(H)
-						H.update_worn_glasses()
 
 			if(BODY_ZONE_CHEST)
 				if(H.stat == CONSCIOUS && !I.sharpness && armor_block < 50)
@@ -1276,11 +1273,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				if(bloody)
 					if(H.wear_suit)
 						H.wear_suit.add_mob_blood(H)
-						H.update_worn_oversuit()
 
 					if(H.w_uniform)
 						H.w_uniform.add_mob_blood(H)
-						H.update_worn_undersuit()
 
 	return MOB_ATTACKEDBY_SUCCESS
 

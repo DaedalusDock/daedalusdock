@@ -281,94 +281,98 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 /datum/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
 	set waitfor = FALSE
 	var/static/list/show_directions = list(SOUTH, WEST)
-	if(H.mind?.assigned_role.job_flags & JOB_CREW_MANIFEST)
-		var/assignment = H.mind.assigned_role.title
-		//PARIAH EDIT ADDITION
-		// The alt job title, if user picked one, or the default
-		var/chosen_assignment = C?.prefs.alt_job_titles[assignment] || assignment
-		//PARIAH EDIT END
+	if(!(H.mind?.assigned_role.job_flags & JOB_CREW_MANIFEST))
+		return
 
-		var/static/record_id_num = 1001
-		var/id = num2hex(record_id_num++,6)
-		if(!C)
-			C = H.client
+	var/assignment = H.mind.assigned_role.title
+	//PARIAH EDIT ADDITION
+	// The alt job title, if user picked one, or the default
+	var/chosen_assignment = C?.prefs.alt_job_titles[assignment] || assignment
+	//PARIAH EDIT END
 
-		var/mutable_appearance/character_appearance = new(H.appearance)
+	var/static/record_id_num = 1001
+	var/id = num2hex(record_id_num++,6)
+	if(!C)
+		C = H.client
 
-		//These records should ~really~ be merged or something
-		//General Record
-		var/datum/data/record/G = new()
-		G.fields["id"] = id
-		G.fields["name"] = H.real_name
-		// G.fields["rank"] = assignment //ORIGINAL
-		G.fields["rank"] = chosen_assignment //PARIAH EDIT
-		G.fields["trim"] = assignment
-		G.fields["initial_rank"] = assignment
-		G.fields["age"] = H.age
-		G.fields["species"] = H.dna.species.name
-		G.fields["fingerprint"] = md5(H.dna.unique_identity)
-		G.fields["p_stat"] = "Active"
-		G.fields["m_stat"] = "Stable"
-		G.fields["gender"] = H.gender
-		if(H.gender == "male")
-			G.fields["gender"] = "Male"
-		else if(H.gender == "female")
-			G.fields["gender"] = "Female"
-		else
-			G.fields["gender"] = "Other"
-		G.fields["character_appearance"] = character_appearance
-		general += G
+	var/mutable_appearance/character_appearance = new(H.appearance)
 
-		//Medical Record
-		var/datum/data/record/M = new()
-		M.fields["id"] = id
-		M.fields["name"] = H.real_name
-		M.fields["blood_type"] = H.dna.blood_type
-		M.fields["b_dna"] = H.dna.unique_enzymes
-		M.fields["mi_dis"] = H.get_quirk_string(!medical, CAT_QUIRK_MINOR_DISABILITY)
-		M.fields["mi_dis_d"] = H.get_quirk_string(medical, CAT_QUIRK_MINOR_DISABILITY)
-		M.fields["ma_dis"] = H.get_quirk_string(!medical, CAT_QUIRK_MAJOR_DISABILITY)
-		M.fields["ma_dis_d"] = H.get_quirk_string(medical, CAT_QUIRK_MAJOR_DISABILITY)
-		M.fields["cdi"] = "None"
-		M.fields["cdi_d"] = "No diseases have been diagnosed at the moment."
-		M.fields["notes"] = H.get_quirk_string(!medical, CAT_QUIRK_NOTES)
-		M.fields["notes_d"] = H.get_quirk_string(medical, CAT_QUIRK_NOTES)
-		medical += M
+	//These records should ~really~ be merged or something
+	//General Record
+	var/datum/data/record/G = new()
+	G.fields["id"] = id
+	G.fields["name"] = H.real_name
+	// G.fields["rank"] = assignment //ORIGINAL
+	G.fields["rank"] = chosen_assignment //PARIAH EDIT
+	G.fields["trim"] = assignment
+	G.fields["initial_rank"] = assignment
+	G.fields["age"] = H.age
+	G.fields["species"] = H.dna.species.name
+	G.fields["fingerprint"] = H.get_fingerprints(TRUE)
+	G.fields["p_stat"] = "Active"
+	G.fields["m_stat"] = "Stable"
+	G.fields["gender"] = H.gender
+	if(H.gender == "male")
+		G.fields["gender"] = "Male"
+	else if(H.gender == "female")
+		G.fields["gender"] = "Female"
+	else
+		G.fields["gender"] = "Other"
+	G.fields["character_appearance"] = character_appearance
+	general += G
 
-		//Security Record
-		var/datum/data/record/S = new()
-		S.fields["id"] = id
-		S.fields["name"] = H.real_name
-		S.fields["criminal"] = CRIMINAL_NONE
-		S.fields["citation"] = list()
-		S.fields["crim"] = list()
-		S.fields["notes"] = "No notes."
-		security += S
+	//Medical Record
+	var/datum/data/record/M = new()
+	M.fields["id"] = id
+	M.fields["name"] = H.real_name
+	M.fields["blood_type"] = H.dna.blood_type.name
+	M.fields["b_dna"] = H.dna.unique_enzymes
+	M.fields["mi_dis"] = H.get_quirk_string(!medical, CAT_QUIRK_MINOR_DISABILITY)
+	M.fields["mi_dis_d"] = H.get_quirk_string(medical, CAT_QUIRK_MINOR_DISABILITY)
+	M.fields["ma_dis"] = H.get_quirk_string(!medical, CAT_QUIRK_MAJOR_DISABILITY)
+	M.fields["ma_dis_d"] = H.get_quirk_string(medical, CAT_QUIRK_MAJOR_DISABILITY)
+	M.fields["cdi"] = "None"
+	M.fields["cdi_d"] = "No diseases have been diagnosed at the moment."
+	M.fields["notes"] = H.get_quirk_string(!medical, CAT_QUIRK_NOTES)
+	M.fields["notes_d"] = H.get_quirk_string(medical, CAT_QUIRK_NOTES)
+	medical += M
 
-		//Locked Record
-		var/datum/data/record/L = new()
-		L.fields["id"] = md5("[H.real_name][assignment]") //surely this should just be id, like the others?
-		L.fields["name"] = H.real_name
-		// L.fields["rank"] = assignment //ORIGINAL
-		L.fields["rank"] = chosen_assignment  //PARIAH EDIT
-		L.fields["trim"] = assignment
-		G.fields["initial_rank"] = assignment
-		L.fields["age"] = H.age
-		L.fields["gender"] = H.gender
-		if(H.gender == "male")
-			G.fields["gender"] = "Male"
-		else if(H.gender == "female")
-			G.fields["gender"] = "Female"
-		else
-			G.fields["gender"] = "Other"
-		L.fields["blood_type"] = H.dna.blood_type
-		L.fields["b_dna"] = H.dna.unique_enzymes
-		L.fields["identity"] = H.dna.unique_identity
-		L.fields["species"] = H.dna.species.type
-		L.fields["features"] = H.dna.features
-		L.fields["character_appearance"] = character_appearance
-		L.fields["mindref"] = H.mind
-		locked += L
+	//Security Record
+	var/datum/data/record/S = new()
+	S.fields["id"] = id
+	S.fields["name"] = H.real_name
+	S.fields["criminal"] = CRIMINAL_NONE
+	S.fields["citation"] = list()
+	S.fields["crim"] = list()
+	S.fields["notes"] = "No notes."
+	security += S
+
+	//Locked Record
+	var/datum/data/record/L = new()
+	L.fields["id"] = md5("[H.real_name][assignment]") //surely this should just be id, like the others?
+	L.fields["name"] = H.real_name
+	// L.fields["rank"] = assignment //ORIGINAL
+	L.fields["rank"] = chosen_assignment  //PARIAH EDIT
+	L.fields["trim"] = assignment
+	G.fields["initial_rank"] = assignment
+	L.fields["age"] = H.age
+	L.fields["gender"] = H.gender
+	if(H.gender == "male")
+		G.fields["gender"] = "Male"
+	else if(H.gender == "female")
+		G.fields["gender"] = "Female"
+	else
+		G.fields["gender"] = "Other"
+	L.fields["blood_type"] = H.dna.blood_type
+	L.fields["b_dna"] = H.dna.unique_enzymes
+	L.fields["identity"] = H.dna.unique_identity
+	L.fields["species"] = H.dna.species.type
+	L.fields["features"] = H.dna.features
+	L.fields["character_appearance"] = character_appearance
+	L.fields["mindref"] = H.mind
+	locked += L
+
+	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MANIFEST_INJECT, G, M, S, L)
 	return
 
 /**

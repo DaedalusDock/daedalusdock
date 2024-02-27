@@ -595,7 +595,6 @@ There are several things that need to be remembered:
 			suit_overlay.pixel_x += dna.species.offset_features[OFFSET_SUIT][1]
 			suit_overlay.pixel_y += dna.species.offset_features[OFFSET_SUIT][2]
 		overlays_standing[SUIT_LAYER] = suit_overlay
-	update_body_parts()
 
 	apply_overlay(SUIT_LAYER)
 
@@ -674,7 +673,6 @@ There are several things that need to be remembered:
 		overlays_standing[FACEMASK_LAYER] = mask_overlay
 
 	apply_overlay(FACEMASK_LAYER)
-	update_body_parts() //Snoots
 
 /mob/living/carbon/human/update_worn_back()
 	remove_overlay(BACK_LAYER)

@@ -294,7 +294,7 @@
 	. = ..()
 	update_ant_damage()
 
-/obj/effect/decal/cleanable/ants/handle_merge_decal(obj/effect/decal/cleanable/merger)
+/obj/effect/decal/cleanable/ants/merge_into(obj/effect/decal/cleanable/merger)
 	. = ..()
 	var/obj/effect/decal/cleanable/ants/ants = merger
 	ants.update_ant_damage()

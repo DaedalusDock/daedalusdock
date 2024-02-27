@@ -78,8 +78,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 		return
 	return attack_hand(user)
 
-/obj/structure/bodycontainer/attackby(obj/P, mob/user, params)
-	add_fingerprint(user)
+/obj/structure/bodycontainer/attackby(obj/item/P, mob/user, params)
+	P.leave_evidence(user, src)
 	if(istype(P, /obj/item/pen))
 		if(!user.is_literate())
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))

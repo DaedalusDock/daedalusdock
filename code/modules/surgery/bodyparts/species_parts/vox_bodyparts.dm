@@ -38,6 +38,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"
+	blood_print = BLOOD_PRINT_CLAWS
 
 /obj/item/bodypart/leg/left/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
@@ -50,7 +51,7 @@
 		if((!human_owner.wear_suit) || (human_owner.wear_suit.supports_variations_flags & CLOTHING_VOX_VARIATION) || !(human_owner.wear_suit.body_parts_covered & LEGS)) //Checks suit compatability
 			suit_compatible = TRUE
 
-		if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
+		if((uniform_compatible && suit_compatible) || (suit_compatible && (human_owner.obscured_slots & HIDEJUMPSUIT))) //If the uniform is hidden, it doesnt matter if its compatible
 			limb_id = "vox_digitigrade"
 
 		else
@@ -61,6 +62,7 @@
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_VOX_LEGS
 	icon_greyscale = 'icons/mob/species/vox/bodyparts.dmi'
 	limb_id = "vox_digitigrade"
+	blood_print = BLOOD_PRINT_CLAWS
 
 /obj/item/bodypart/leg/right/vox/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
@@ -73,7 +75,7 @@
 		if((!human_owner.wear_suit) || (human_owner.wear_suit.supports_variations_flags & CLOTHING_VOX_VARIATION) || !(human_owner.wear_suit.body_parts_covered & LEGS)) //Checks suit compatability
 			suit_compatible = TRUE
 
-		if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
+		if((uniform_compatible && suit_compatible) || (suit_compatible && (human_owner.obscured_slots & HIDEJUMPSUIT))) //If the uniform is hidden, it doesnt matter if its compatible
 			limb_id = "vox_digitigrade"
 
 		else

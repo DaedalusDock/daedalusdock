@@ -165,7 +165,7 @@
 	return SHAME
 
 /obj/item/tank/attackby(obj/item/W, mob/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(istype(W, /obj/item/assembly_holder))
 		bomb_assemble(W, user)
 		return TRUE

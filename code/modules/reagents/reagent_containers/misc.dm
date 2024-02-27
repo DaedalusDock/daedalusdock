@@ -72,7 +72,7 @@
 	update_appearance()
 
 /obj/item/reagent_containers/glass/maunamug/attackby(obj/item/I, mob/user, params)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	if(!istype(I, /obj/item/stock_parts/cell))
 		return ..()
 	if(!open)

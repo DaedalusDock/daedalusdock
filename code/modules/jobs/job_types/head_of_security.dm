@@ -62,7 +62,7 @@
 	suit = /obj/item/clothing/suit/armor/hos/trenchcoat
 	suit_store = /obj/item/gun/energy/e_gun
 	backpack_contents = list(
-		/obj/item/evidencebag = 1,
+		/obj/item/storage/evidencebag = 1,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/heads/hos
 	ears = /obj/item/radio/headset/heads/hos/alt

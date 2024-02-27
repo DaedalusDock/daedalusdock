@@ -691,12 +691,6 @@
 		if(checked_datum.vars[varname] == value)
 			return checked_datum
 
-///remove all nulls from a list
-/proc/remove_nulls_from_list(list/inserted_list)
-	while(inserted_list.Remove(null))
-		continue
-	return inserted_list
-
 ///Copies a list, and all lists inside it recusively
 ///Does not copy any other reference type
 /proc/deep_copy_list(list/inserted_list)

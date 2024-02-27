@@ -472,7 +472,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 	if(displaymessage)
 		if(user)
 			visible_message(span_danger("[user] [change_msg] [src]!"))
-			add_hiddenprint(user)
+			log_touch(user)
 		else
 			visible_message(span_danger("\The [src] [change_msg]!"))
 

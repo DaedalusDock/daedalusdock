@@ -41,12 +41,16 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-	if(HAS_BLOOD_DNA(src))
+
+	var/list/dna = return_blood_DNA()
+	if(length(dna))
 		if(istype(wearer))
 			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
 			if(!chest?.icon_bloodycover)
 				return
-			. += image(chest.icon_bloodycover, "uniformblood")
+			var/image/bloody_overlay = image(chest.icon_bloodycover, "uniformblood")
+			bloody_overlay.color = get_blood_dna_color(dna)
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 	if(accessory_overlay)
@@ -72,9 +76,6 @@
 
 /obj/item/clothing/under/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_undersuit()
 	if(damaged_state == CLOTHING_SHREDDED && has_sensor > NO_SENSORS)
 		has_sensor = BROKEN_SENSORS
 	else if(damaged_state == CLOTHING_PRISTINE && has_sensor == BROKEN_SENSORS)
@@ -182,8 +183,7 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
+	holder.update_slots_for_item(src)
 	holder.fan_hud_set_fandom()
 
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
@@ -209,10 +209,8 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
+	holder.update_slots_for_item(src)
 	holder.fan_hud_set_fandom()
-
 
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
@@ -306,10 +304,10 @@
 		to_chat(usr, span_notice("You adjust the suit to wear it more casually."))
 	else
 		to_chat(usr, span_notice("You adjust the suit back to normal."))
+
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		H.update_worn_undersuit()
-		H.update_body()
+		H.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 /obj/item/clothing/under/proc/toggle_jumpsuit_adjust()
 	if(adjusted == DIGITIGRADE_STYLE)

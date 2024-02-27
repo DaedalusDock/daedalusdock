@@ -67,20 +67,18 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-		if(HAS_BLOOD_DNA(src))
+
+		var/list/dna = return_blood_DNA()
+		if(length(dna))
 			if(istype(wearer))
 				var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
 				if(!head?.icon_bloodycover)
 					return
-				. += image(head.icon_bloodycover, "maskblood")
+				var/image/bloody_overlay = image(head.icon_bloodycover, "maskblood")
+				bloody_overlay.color = get_blood_dna_color(dna)
+				. += bloody_overlay
 			else
 				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
-
-/obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_mask()
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
 /obj/item/clothing/mask/proc/adjustmask(mob/living/carbon/user)
@@ -112,6 +110,7 @@
 		return
 
 	if(user.wear_mask == src)
+		user.update_slots_for_item(src, ITEM_SLOT_MASK, TRUE)
 		user.wear_mask_update(src, toggle_off = mask_adjusted)
 
 	if(loc == user)

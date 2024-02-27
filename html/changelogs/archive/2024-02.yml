@@ -115,3 +115,9 @@
   MrMelbert:
   - bugfix: Chasms no longer break your verbs
   - bugfix: Maps loaded in after roundstart will no longer have broken smoothing
+2024-02-27:
+  Kapu1178:
+  - soundadd: Alot of sounds have been added or replaced.
+  - rscadd: You can now take a drag off a cigarette by clicking yourself while holding
+      it.
+  - rscadd: Cigarettes now leave tiny smoke particles sometimes.

@@ -172,7 +172,7 @@
 
 /obj/structure/grille/attackby(obj/item/W, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(istype(W, /obj/item/stack/rods) && broken)
 		if(shock(user, 90))
 			return

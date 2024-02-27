@@ -94,7 +94,7 @@
 
 /obj/structure/windoor_assembly/attackby(obj/item/W, mob/user, params)
 	//I really should have spread this out across more states but thin little windoors are hard to sprite.
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	switch(state)
 		if("01")
 			if(W.tool_behaviour == TOOL_WELDER && !anchored)

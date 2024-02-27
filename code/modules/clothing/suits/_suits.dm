@@ -24,12 +24,16 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damaged[blood_overlay_type]")
-	if(HAS_BLOOD_DNA(src))
+	var/list/dna = return_blood_DNA()
+	if(length(dna))
 		if(istype(wearer))
 			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
 			if(!chest?.icon_bloodycover)
 				return
 			. += image(chest.icon_bloodycover, "[blood_overlay_type]blood")
+			var/image/bloody_overlay = image(chest.icon_bloodycover, "[blood_overlay_type]blood")
+			bloody_overlay.color = get_blood_dna_color(dna)
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "[blood_overlay_type]blood")
 
@@ -41,12 +45,6 @@
 		var/obj/item/clothing/accessory/A = U.attached_accessory
 		if(A.above_suit)
 			. += U.accessory_overlay
-
-/obj/item/clothing/suit/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_oversuit()
 
 /**
  * Wrapper proc to apply shielding through AddComponent().

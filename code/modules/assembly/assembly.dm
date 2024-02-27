@@ -18,6 +18,7 @@
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
 
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_ATTACK_HAND
 	/**
 	 * Set to true if the device has different icons for each position.
 	 * This will prevent things such as visible lasers from facing the incorrect direction when transformed by assembly_holder's update_appearance()

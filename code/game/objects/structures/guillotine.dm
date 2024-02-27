@@ -171,7 +171,7 @@
 
 /obj/structure/guillotine/attackby(obj/item/W, mob/user, params)
 	if (istype(W, /obj/item/sharpener))
-		add_fingerprint(user)
+		W.leave_evidence(user, src)
 		if (blade_status == GUILLOTINE_BLADE_SHARPENING)
 			return
 

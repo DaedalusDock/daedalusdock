@@ -41,6 +41,8 @@
 #define IGNORE_DIGITIGRADE (1<<18)
 /// Has contextual screentips when HOVERING OVER OTHER objects
 #define ITEM_HAS_CONTEXTUAL_SCREENTIPS (1 << 19)
+/// Does not leave fingerprints or fibers on attack
+#define NO_EVIDENCE_ON_ATTACK (1<<20)
 
 // Flags for the clothing_flags var on /obj/item/clothing
 /// SUIT and HEAD items which stop lava from hurting the wearer
@@ -78,6 +80,8 @@
 #define CASTING_CLOTHES (1<<15)
 /// This head clothing can deliver air from an airtank
 #define HEADINTERNALS (1<<16)
+/// Does not leave fibers behind
+#define FIBERLESS (1<<17)
 
 /// Flags for the organ_flags var on /obj/item/organ
 

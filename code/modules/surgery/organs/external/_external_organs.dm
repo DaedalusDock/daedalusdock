@@ -86,7 +86,7 @@
 	dna_block = DNA_HORNS_BLOCK
 
 /obj/item/organ/horns/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 
@@ -111,7 +111,7 @@
 	dna_block = DNA_FRILLS_BLOCK
 
 /obj/item/organ/frills/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEEARS))
+	if(!(human.obscured_slots & HIDEEARS))
 		return TRUE
 	return FALSE
 
@@ -202,7 +202,7 @@
 	color_source = ORGAN_COLOR_OVERRIDE
 
 /obj/item/organ/pod_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 
@@ -232,7 +232,7 @@
 	color_source = ORGAN_COLOR_HAIR
 
 /obj/item/organ/teshari_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	return TRUE
 
@@ -257,7 +257,7 @@
 	dna_block = DNA_TESHARI_EARS_BLOCK
 
 /obj/item/organ/teshari_ears/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	return TRUE
 
@@ -301,7 +301,7 @@
 /obj/item/organ/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!human)
 		return TRUE
-	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
+	if(human.obscured_slots & HIDEJUMPSUIT)
 		return FALSE
 	return TRUE
 

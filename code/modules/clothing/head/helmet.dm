@@ -136,10 +136,9 @@
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
 	to_chat(user, span_notice("[up ? alt_toggle_message : toggle_message] \the [src]."))
 
-	user.update_worn_head()
 	if(iscarbon(user))
-		var/mob/living/carbon/carbon_user = user
-		carbon_user.head_update(src, forced = TRUE)
+		var/mob/living/carbon/C = user
+		C.update_slots_for_item(src, user.get_slot_by_item(src), TRUE)
 
 /obj/item/clothing/head/helmet/justice
 	name = "helmet of justice"

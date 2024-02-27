@@ -212,7 +212,7 @@
 		return TRUE
 
 /obj/machinery/door/firedoor/wrench_act(mob/living/user, obj/item/tool)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	if(operating || !welded)
 		return FALSE
 
@@ -239,7 +239,7 @@
 	boltslocked = !boltslocked
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/door/firedoor/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/firedoor/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	return
 
 /obj/machinery/door/firedoor/try_to_weld(obj/item/weldingtool/W, mob/user)

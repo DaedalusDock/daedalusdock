@@ -413,7 +413,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(weapon.sharpness)
-		add_fingerprint(user)
+		weapon.leave_evidence(user, src)
 		if(!contents.len)
 			to_chat(user, span_warning("There is nothing left inside [src]!"))
 			return

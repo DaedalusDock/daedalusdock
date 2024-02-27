@@ -187,6 +187,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
+/obj/item/clothing/mask/cigarette/equipped(mob/M, slot)
+	. = ..()
+	if(slot != ITEM_SLOT_MASK)
+		return
+
+	add_trace_DNA(M.get_trace_dna())
+
 /obj/item/clothing/mask/cigarette/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is huffing [src] as quickly as [user.p_they()] can! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer."))
 	return (TOXLOSS|OXYLOSS)
@@ -274,11 +281,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		T.visible_message(flavor_text)
 	START_PROCESSING(SSobj, src)
 
-	//can't think of any other way to update the overlays :<
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_mask()
-		M.update_held_items()
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src)
 
 	AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_PLUME, "nicotine", 5)
 	COOLDOWN_START(src, smoke_cooldown, 20 SECONDS)
@@ -362,8 +367,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		new /obj/effect/decal/cleanable/ash(location)
 	else if(user)
 		to_chat(user, span_notice("Your [name] goes out."))
+
 	playsound(loc, 'sound/effects/cig_snuff.ogg', 100)
-	new type_butt(location)
+
+	var/obj/item/cigbutt/butt = new type_butt(location)
+	transfer_evidence_to(butt)
 	qdel(src)
 
 /obj/item/clothing/mask/cigarette/attack(mob/living/carbon/M, mob/living/carbon/user)
@@ -1048,6 +1056,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(screw)
 		to_chat(user, span_warning("You need to close the cap first!"))
 		return
+
+	add_trace_DNA(user.get_trace_dna())
 
 	to_chat(user, span_notice("You start puffing on the vape."))
 	reagents.flags &= ~(NO_REACT)

@@ -74,6 +74,8 @@
 
 ///Global signal sent when the Datacore's initial manifest is complete
 #define COMSIG_GLOB_DATACORE_READY "!datacore_ready"
+///Global signal sent when the datacore is added to via manifest_inject() (datum/data/record/general, datum/data/record/medical, datum/data/record/security, datum/data/record/locked)
+#define COMSIG_GLOB_MANIFEST_INJECT "!manifest_inject"
 
 ///Global signal sent when someone is marked as wanted.
 #define COMSIG_GLOB_WANTED_CRIMINAL "!wanted_crew"

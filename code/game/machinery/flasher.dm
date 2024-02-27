@@ -58,7 +58,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/flasher, 26)
 
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/attackby(obj/item/W, mob/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
+
 	if (W.tool_behaviour == TOOL_WIRECUTTER)
 		if (bulb)
 			user.visible_message(span_notice("[user] begins to disconnect [src]'s flashbulb."), span_notice("You begin to disconnect [src]'s flashbulb..."))

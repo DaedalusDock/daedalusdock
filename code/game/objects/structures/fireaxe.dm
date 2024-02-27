@@ -116,7 +116,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 			user.put_in_hands(fireaxe)
 			fireaxe = null
 			to_chat(user, span_notice("You take the fire axe from the [name]."))
-			src.add_fingerprint(user)
+			add_fingerprint(user)
 			update_appearance()
 			return
 	if(locked)

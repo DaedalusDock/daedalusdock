@@ -536,28 +536,29 @@
 /// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
 /obj/item/card/id/proc/set_icon(datum/data/record/R, mutable_appearance/mob_appearance)
 	set waitfor = FALSE
-	if(ismob(mob_appearance))
-		mob_appearance = new(mob_appearance)
+	return
+	// if(ismob(mob_appearance))
+	// 	mob_appearance = new(mob_appearance)
 
-	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
-	if(R)
-		var/obj/item/photo/side = R.get_side_photo()
-		CHECK_TICK
-		var/obj/item/photo/front = R.get_front_photo()
+	// CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
+	// if(R)
+	// 	var/obj/item/photo/side = R.get_side_photo()
+	// 	CHECK_TICK
+	// 	var/obj/item/photo/front = R.get_front_photo()
 
-		side_image = side.picture.picture_image
-		front_image = front.picture.picture_image
-	else
-		if(!mob_appearance)
-			var/mob/M = src
-			while(M && !ismob(M))
-				M = M.loc
-			if(!M)
-				return
-			mob_appearance = new(M)
-		front_image = getFlatIcon(mob_appearance, WEST)
-		CHECK_TICK
-		side_image = getFlatIcon(mob_appearance, SOUTH)
+	// 	side_image = side.picture.picture_image
+	// 	front_image = front.picture.picture_image
+	// else
+	// 	if(!mob_appearance)
+	// 		var/mob/M = src
+	// 		while(M && !ismob(M))
+	// 			M = M.loc
+	// 		if(!M)
+	// 			return
+	// 		mob_appearance = new(M)
+	// 	front_image = getFlatIcon(mob_appearance, WEST)
+	// 	CHECK_TICK
+	// 	side_image = getFlatIcon(mob_appearance, SOUTH)
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()

@@ -35,7 +35,7 @@
 	H.eye_color_left = random_eye_color
 	H.eye_color_right = random_eye_color
 
-	H.dna.blood_type = random_blood_type()
+	H.dna.blood_type = H.dna.species.get_random_blood_type()
 
 	// Mutant randomizing, doesn't affect the mob appearance unless it's the specific mutant.
 	H.dna.mutant_colors = random_mutant_colors()

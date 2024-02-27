@@ -283,7 +283,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		if(status == LIGHT_OK)
 			to_chat(user, span_warning("There is a [fitting] already inserted!"))
 			return TRUE
-		add_fingerprint(user)
+		tool.leave_evidence(user, src)
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
 			to_chat(user, span_warning("This type of light requires a [fitting]!"))
@@ -291,7 +291,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		if(!user.temporarilyRemoveItemFromInventory(light_object))
 			return TRUE
 
-		add_fingerprint(user)
+		tool.leave_evidence(user, src)
 		if(status != LIGHT_EMPTY)
 			drop_light_tube(user)
 			to_chat(user, span_notice("You replace [light_object]."))
@@ -470,7 +470,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(.)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
 		to_chat(user, span_warning("There is no [fitting] in this light!"))

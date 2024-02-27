@@ -43,7 +43,9 @@
 	victim_dummy.update_body_parts()
 
 	var/icon/obsessed_icon = render_preview_outfit(preview_outfit, victim_dummy)
-	obsessed_icon.Blend(icon('icons/effects/blood.dmi', "uniformblood"), ICON_OVERLAY)
+	var/icon/blood_overlay = icon('icons/effects/blood.dmi', "uniformblood")
+	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
+	obsessed_icon.Blend(blood_overlay, ICON_OVERLAY)
 
 	var/icon/final_icon = finish_preview_icon(obsessed_icon)
 

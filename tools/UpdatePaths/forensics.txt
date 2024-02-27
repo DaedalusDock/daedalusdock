@@ -1,0 +1,2 @@
+/obj/item/evidencebag : /obj/item/storage/evidencebag
+/obj/item/detective_scanner : @DELETE

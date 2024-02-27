@@ -805,7 +805,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		return ..()
 	slash(target, user, params)
 
-/obj/item/highfrequencyblade/attack_atom(atom/target, mob/living/user, params)
+/obj/item/highfrequencyblade/attack_obj(atom/target, mob/living/user, params)
 	if(wielded)
 		return
 	return ..()

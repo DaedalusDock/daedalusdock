@@ -32,8 +32,11 @@
 /obj/machinery/door/password/BumpedBy(atom/movable/AM)
 	return !density && ..()
 
-/obj/machinery/door/password/try_to_activate_door(mob/user, access_bypass = FALSE)
-	add_fingerprint(user)
+/obj/machinery/door/password/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
 	if(operating)
 		return
 	if(density)

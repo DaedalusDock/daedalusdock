@@ -36,7 +36,7 @@
 
 /obj/structure/railing/attackby(obj/item/I, mob/living/user, params)
 	..()
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 
 	if(I.tool_behaviour == TOOL_WELDER && !user.combat_mode)
 		if(atom_integrity < max_integrity)

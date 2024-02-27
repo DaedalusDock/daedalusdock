@@ -315,6 +315,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	throw_range = 3
 	hitsound = 'sound/items/trayhit1.ogg'
 	custom_materials = list(/datum/material/iron = 2000)
+
+	block_sound = SFX_BLOCK_BIG_METAL
+
 	var/break_chance = 5 //Likely hood of smashing the chair.
 	var/obj/structure/chair/origin_type = /obj/structure/chair
 

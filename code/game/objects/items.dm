@@ -19,7 +19,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	pass_flags = PASSTABLE
 
 	///How large is the object, used for stuff like whether it can fit in backpacks or not
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_SMALL
 
 	///Items can by default thrown up to 10 tiles by TK users
 	tk_throw_range = 10
@@ -102,11 +102,13 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Sound used when equipping the item into a valid slot
 	var/equip_sound
 	///Sound used when picking the item up (into your hands)
-	var/pickup_sound
+	var/pickup_sound = 'sound/items/handling/generic_pickup.ogg'
 	///Sound used when dropping the item, or when its thrown.
-	var/drop_sound
-	///Sound used when successfully blocking an attack.
+	var/drop_sound = 'sound/items/handling/book_drop.ogg'
+	///Sound used when successfully blocking an attack. Can be a list!
 	var/block_sound
+	///Sound used when used as a weapon, but the attacked missed. Can be a list!
+	var/miss_sound
 
 	///Whether or not we use stealthy audio levels for this item's attack sounds
 	var/stealthy_audio = FALSE
@@ -568,7 +570,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	. = FALSE
 	pickup(user)
-	add_fingerprint(user)
+
 	if(!user.put_in_active_hand(src, FALSE, was_in_storage))
 		user.dropItemToGround(src)
 		return TRUE
@@ -686,8 +688,11 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Plays the block sound effect
 /obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)
 	var/block_sound = src.block_sound
+
 	if(islist(block_sound))
 		block_sound = pick(block_sound)
+	else if(isnull(block_sound))
+		block_sound = pick('sound/weapons/block/block1.ogg', 'sound/weapons/block/block2.ogg', 'sound/weapons/block/block3.ogg')
 	playsound(wielder, block_sound, 70, TRUE)
 
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
@@ -942,8 +947,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/on_exit_storage(datum/storage/master_storage)
 	. = ..()
-	var/atom/location = master_storage.real_location?.resolve()
-	do_drop_animation(location)
+	do_drop_animation(master_storage.parent)
 
 /obj/item/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(hit_atom && !QDELETED(hit_atom))
@@ -1751,3 +1755,19 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(wielded)
 		. = wielded_hitsound
 	. ||= hitsound
+
+/// Leave evidence of a user on a target
+/obj/item/proc/leave_evidence(mob/user, atom/target)
+	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+		target.add_fingerprint(user)
+	else
+		target.log_touch(user)
+
+/// Returns the sound the item makes when used as a weapon, but missing.
+/obj/item/proc/get_misssound()
+	. = src.miss_sound
+	if(islist(.))
+		. = pick(miss_sound)
+	else if(isnull(.))
+		. = pick('sound/weapons/swing/swing_01.ogg', 'sound/weapons/swing/swing_02.ogg', 'sound/weapons/swing/swing_03.ogg')
+	return .

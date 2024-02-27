@@ -409,7 +409,6 @@
 
 	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art, params))
 		human_user.changeNext_move(CLICK_CD_MELEE)
-		human_user.animate_interact(src, INTERACT_GRAB)
 		return TRUE
 
 	return ..()

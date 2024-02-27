@@ -85,6 +85,7 @@
 
 		inserted_card = I
 		updateUsrDialog()
+		playsound(loc, 'sound/machines/cardreader_insert.ogg', 50)
 		to_chat(user, span_notice("You insert [I] into [src]."))
 		return TRUE
 
@@ -102,6 +103,7 @@
 
 		to_chat(user, span_notice("You deposit [value] into [src]."))
 		updateUsrDialog()
+		playsound(loc, 'sound/machines/cash_insert.ogg', 50)
 		return TRUE
 
 /// Dispense the given amount of cash and give feedback.
@@ -109,9 +111,9 @@
 	if(!amt)
 		return
 
-	playsound(src, 'sound/machines/ping.ogg')
+	playsound(loc, 'sound/machines/cash_desert.ogg', 50)
 	reject_topic = TRUE
-	sleep(2 SECONDS)
+	sleep(1 SECONDS)
 	reject_topic = FALSE
 	visible_message(span_notice("[src] dispenses a wad of money."), vision_distance = COMBAT_MESSAGE_RANGE)
 
@@ -142,7 +144,7 @@
 			return TRUE
 		inserted_card.forceMove(drop_location())
 		inserted_card = null
-		playsound(src, 'sound/machines/terminal_eject.ogg')
+		playsound(loc, 'sound/machines/cardreader_desert.ogg', 50)
 		updateUsrDialog()
 		return TRUE
 
@@ -156,6 +158,7 @@
 			if("E")
 				if(try_authenticate(entered_pin))
 					entered_pin = ""
+					playsound(loc, 'sound/machines/cardreader_read.ogg', 50)
 					updateUsrDialog()
 					sleep(world.tick_lag)
 					usr << browse(null, "window=atm-pinpad")

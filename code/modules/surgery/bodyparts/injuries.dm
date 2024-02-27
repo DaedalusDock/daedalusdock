@@ -166,6 +166,7 @@
 		bodypart_flags |= BP_TENDON_CUT
 	else
 		bodypart_flags &= ~BP_TENDON_CUT
+		playsound(loc, pick('sound/effects/wounds/tendon_snap1.ogg', 'sound/effects/wounds/tendon_snap2.ogg', 'sound/effects/wounds/tendon_snap3.ogg'), 50)
 
 	update_disabled()
 	return TRUE

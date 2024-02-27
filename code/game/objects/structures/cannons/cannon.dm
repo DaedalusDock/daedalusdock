@@ -65,7 +65,7 @@
 		else
 			var/obj/item/stack/cannonball/cannoneers_balls = used_item
 			loaded_cannonball = new cannoneers_balls.type(src, 1)
-			loaded_cannonball.copy_evidences(cannoneers_balls)
+			cannoneers_balls.transfer_evidence_to(loaded_cannonball)
 			balloon_alert(user, "loaded a [cannoneers_balls.singular_name]")
 			cannoneers_balls.use(1, transfer = TRUE)
 		return

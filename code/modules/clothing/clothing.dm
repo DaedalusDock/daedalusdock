@@ -10,6 +10,8 @@
 	stamina_cost = 0
 	stamina_critical_chance = 0
 
+	/// An alternative name to be used for fibers, forensics stuffs
+	var/fiber_name = ""
 	var/damaged_clothes = CLOTHING_PRISTINE //similar to machine's BROKEN stat and structure's broken var
 
 	///What level of bright light protection item has.
@@ -29,6 +31,7 @@
 	var/toggle_cooldown = null
 	var/cooldown = 0
 
+	/// Flags for clothing
 	var/clothing_flags = NONE
 
 	var/can_be_bloody = TRUE

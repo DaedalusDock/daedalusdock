@@ -84,7 +84,7 @@ at the cost of risking a vicious bite.**/
 /obj/structure/moisture_trap/attackby(obj/item/I, mob/user, params)
 	if(iscyborg(user) || isalien(user) || !CanReachInside(user))
 		return ..()
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	if(istype(I, /obj/item/reagent_containers))
 		if(istype(I, /obj/item/food/monkeycube))
 			var/obj/item/food/monkeycube/cube = I

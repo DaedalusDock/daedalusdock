@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - admin: GLOB.debug_disable_vv_icon_render can be used to disable VV's usage of
+      GetFlatIcon at runtime.

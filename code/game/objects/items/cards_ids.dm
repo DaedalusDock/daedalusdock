@@ -539,11 +539,21 @@
 	if(ismob(mob_appearance))
 		mob_appearance = new(mob_appearance)
 
-	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
+	if(TICK_CHECK)
+		ICON_CRASH_LOG("Tick check triggered at the head of set_icon")
+		stoplag()
+		//Lots of GFI calls happen at once during roundstart, stagger them out a bit
+
 	if(R)
 		var/obj/item/photo/side = R.get_side_photo()
-		CHECK_TICK
+		if(TICK_CHECK)
+			ICON_CRASH_LOG("Tick check triggered after side photo")
+			stoplag()
+
 		var/obj/item/photo/front = R.get_front_photo()
+		if(TICK_CHECK)
+			ICON_CRASH_LOG("Tick check triggered after front photo")
+			stoplag()
 
 		side_image = side.picture.picture_image
 		front_image = front.picture.picture_image
@@ -555,9 +565,15 @@
 			if(!M)
 				return
 			mob_appearance = new(M)
+
 		front_image = getFlatIcon(mob_appearance, WEST)
-		CHECK_TICK
+		if(TICK_CHECK)
+			ICON_CRASH_LOG("Tick check triggered after front photo ")
+			stoplag()
 		side_image = getFlatIcon(mob_appearance, SOUTH)
+		if(TICK_CHECK)
+			ICON_CRASH_LOG("Tick check triggered after front photo ")
+			stoplag()
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()

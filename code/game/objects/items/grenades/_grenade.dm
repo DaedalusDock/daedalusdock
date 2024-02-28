@@ -18,7 +18,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 
-	throw_speed = 3
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0
@@ -186,7 +185,7 @@
 	var/newtime = tgui_input_list(user, "Please enter a new detonation time", "Detonation Timer", list("Instant", 3, 4, 5))
 	if (isnull(newtime))
 		return
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	if(newtime == "Instant" && change_det_time(0))
 		to_chat(user, span_notice("You modify the time delay. It's set to be instantaneous."))
@@ -214,18 +213,33 @@
 /obj/item/grenade/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/obj/item/grenade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/grenade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	var/obj/projectile/hit_projectile = hitby
-	if(damage && attack_type == PROJECTILE_ATTACK && hit_projectile.damage_type != STAMINA && prob(15))
-		owner.visible_message(span_danger("[attack_text] hits [owner]'s [src], setting it off! What a shot!"))
-		var/turf/source_turf = get_turf(src)
-		log_game("A projectile ([hitby]) detonated a grenade held by [key_name(owner)] at [COORD(source_turf)]")
-		message_admins("A projectile ([hitby]) detonated a grenade held by [key_name_admin(owner)] at [ADMIN_COORDJMP(source_turf)]")
-		detonate()
+	if(!istype(hitby))
+		return FALSE
 
-		if(!QDELETED(src)) // some grenades don't detonate but we want them destroyed
-			qdel(src)
-		return TRUE //It hit the grenade, not them
+	if(damage && attack_type == PROJECTILE_ATTACK && hit_projectile.damage_type != STAMINA && prob(15))
+		return TRUE
+
+/obj/item/grenade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK)
+	. = ..()
+	if(!.)
+		return
+
+	owner.visible_message(span_danger("[attack_text] hits [owner]'s [src], setting it off! What a shot!"))
+	var/turf/source_turf = get_turf(src)
+	log_game("A projectile ([hitby]) detonated a grenade held by [key_name(owner)] at [COORD(source_turf)]")
+	message_admins("A projectile ([hitby]) detonated a grenade held by [key_name_admin(owner)] at [ADMIN_COORDJMP(source_turf)]")
+	detonate()
+
+	if(!QDELETED(src)) // some grenades don't detonate but we want them destroyed
+		qdel(src)
+
+/obj/item/grenade/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		wielder.visible_message(span_danger("[attack_text] hits [wielder]'s [src], setting it off! What a shot!"))
+		return ..(do_message = FALSE, do_sound = FALSE)
+	return ..(do_sound = FALSE)
 
 /obj/item/grenade/afterattack(atom/target, mob/user)
 	. = ..()

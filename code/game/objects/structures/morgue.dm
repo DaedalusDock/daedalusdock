@@ -78,8 +78,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 		return
 	return attack_hand(user)
 
-/obj/structure/bodycontainer/attackby(obj/P, mob/user, params)
-	add_fingerprint(user)
+/obj/structure/bodycontainer/attackby(obj/item/P, mob/user, params)
+	P.leave_evidence(user, src)
 	if(istype(P, /obj/item/pen))
 		if(!user.is_literate())
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
@@ -87,7 +87,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 		var/t = tgui_input_text(user, "What would you like the label to be?", name, null)
 		if (user.get_active_held_item() != P)
 			return
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if (t)
 			name = "[initial(name)]- '[t]'"
@@ -160,8 +160,13 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	connected = new/obj/structure/tray/m_tray(src)
 	connected.connected = src
+
+/obj/structure/bodycontainer/morgue/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/structure/bodycontainer/morgue/examine(mob/user)
 	. = ..()
@@ -169,7 +174,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/AltClick(mob/user)
 	..()
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	beeper = !beeper
 	to_chat(user, span_notice("You turn the speaker function [beeper ? "on" : "off"]."))
@@ -262,7 +267,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 
 		for(var/mob/living/M in conts)
 			if (M.stat != DEAD)
-				M.emote("scream")
+				M.emote("agony")
 			if(user)
 				log_combat(user, M, "cremated")
 			else

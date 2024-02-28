@@ -130,7 +130,7 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/proc/throw_wrassle(mob/living/A, mob/living/D)
 	if(!D)
 		return
-	if(!A.pulling || A.pulling != D)
+	if(!A.is_grabbing(D))
 		to_chat(A, span_warning("You need to have [D] in a cinch!"))
 		return
 	D.forceMove(A.loc)
@@ -214,7 +214,7 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/proc/slam(mob/living/A, mob/living/D)
 	if(!D)
 		return
-	if(!A.pulling || A.pulling != D)
+	if(!A.is_grabbing(D))
 		to_chat(A, span_warning("You need to have [D] in a cinch!"))
 		return
 	D.forceMove(A.loc)
@@ -452,9 +452,10 @@ If you make a derivative work from this code, you must include this notification
 /datum/martial_art/wrestling/grab_act(mob/living/A, mob/living/D)
 	if(check_streak(A,D))
 		return 1
-	if(A.pulling == D)
+	if(A.is_grabbing(D))
 		return 1
-	A.start_pulling(D)
+	if(!A.try_make_grab(D))
+		return 1
 	D.visible_message(span_danger("[A] gets [D] in a cinch!"), \
 					span_userdanger("You're put into a cinch by [A]!"), span_hear("You hear aggressive shuffling!"), COMBAT_MESSAGE_RANGE, A)
 	to_chat(A, span_danger("You get [D] in a cinch!"))

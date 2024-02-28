@@ -60,10 +60,11 @@
 			if(!isalien(owner))
 				heal_amt *= 0.2
 			owner.adjustPlasma(0.5 * plasma_rate * delta_time)
-			owner.adjustBruteLoss(-heal_amt * delta_time)
-			owner.adjustFireLoss(-heal_amt * delta_time)
-			owner.adjustOxyLoss(-heal_amt * delta_time)
-			owner.adjustCloneLoss(-heal_amt * delta_time)
+			owner.adjustBruteLoss(-heal_amt * delta_time, FALSE)
+			owner.adjustFireLoss(-heal_amt * delta_time, FALSE)
+			owner.adjustOxyLoss(-heal_amt * delta_time, FALSE)
+			owner.adjustCloneLoss(-heal_amt * delta_time, FALSE)
+			return TRUE
 	else
 		owner.adjustPlasma(0.1 * plasma_rate * delta_time)
 
@@ -114,12 +115,12 @@
 	if(isalien(owner)) //Different effects for aliens than humans
 		to_chat(owner, span_userdanger("Your Queen has been struck down!"))
 		to_chat(owner, span_danger("You are struck with overwhelming agony! You feel confused, and your connection to the hivemind is severed."))
-		owner.emote("roar")
+		owner.emote("agony")
 		owner.Stun(200) //Actually just slows them down a bit.
 
 	else if(ishuman(owner)) //Humans, being more fragile, are more overwhelmed by the mental backlash.
 		to_chat(owner, span_danger("You feel a splitting pain in your head, and are struck with a wave of nausea. You cannot hear the hivemind anymore!"))
-		owner.emote("scream")
+		owner.emote("pain")
 		owner.Paralyze(100)
 
 	owner.adjust_timed_status_effect(1 MINUTES, /datum/status_effect/jitter)
@@ -155,7 +156,7 @@
 	icon_state = "acid"
 	zone = BODY_ZONE_PRECISE_MOUTH
 	slot = ORGAN_SLOT_XENO_ACIDGLAND
-	actions_types =list(/datum/action/cooldown/alien/acid)
+	actions_types =list(/datum/action/cooldown/alien/acid/corrosion)
 
 
 /obj/item/organ/alien/neurotoxin

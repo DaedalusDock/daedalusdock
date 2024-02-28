@@ -21,6 +21,8 @@
 ///A modifier applied to wound auto healing
 #define WOUND_REGENERATION_MODIFIER 0.25
 
+#define WOUND_BLEED_RATE(wound) (round(wound.damage / 40, DAMAGE_PRECISION))
+
 // ~wound damage/rolling defines
 /// the cornerstone of the wound threshold system, your base wound roll for any attack is rand(1, damage^this), after armor reduces said damage. See [/obj/item/bodypart/proc/check_wounding]
 #define WOUND_DAMAGE_EXPONENT 1.4
@@ -39,4 +41,6 @@
 #define BLEEDING_MESSAGE_BASE_CD 10 SECONDS
 
 ///The percentage of damage at which a bodypart can start to be dismembered.
-#define LIMB_DISMEMBERMENT_PERCENT 0.8
+#define LIMB_DISMEMBERMENT_PERCENT 0.9
+///The percentage of max_damage that a limb will automatically be dismembered at
+#define LIMB_AUTODISMEMBER_PERCENT 6 // 600%

@@ -72,7 +72,7 @@
 	custom_materials = list(/datum/material/iron = 4000, /datum/material/glass = 2000, /datum/material/plasma = 2000, /datum/material/uranium = 3000, /datum/material/titanium = 3000)
 	hitsound = 'sound/items/welder.ogg'
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1
 	light_color = COLOR_SOFT_RED
 
@@ -154,7 +154,7 @@
 
 	force = 10
 	throwforce = 5
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
 	stamina_damage = 5
 	stamina_cost = 5
@@ -197,7 +197,6 @@
 	force = 15
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 9
-	throw_speed = 2
 	throw_range = 5
 	stamina_damage = 5
 	stamina_cost = 5
@@ -228,7 +227,7 @@
 	hitsound = 'sound/weapons/blade1.ogg'
 	force = 16
 	toolspeed = 0.7
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 1
 	light_color = LIGHT_COLOR_GREEN
 	sharpness = SHARP_EDGED
@@ -314,7 +313,6 @@
 	force = 12
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 6
-	throw_speed = 2
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=8000, /datum/material/titanium=6000)
 	attack_verb_continuous = list("shears", "snips")
@@ -347,7 +345,7 @@
 		candidate_name = tail_snip_candidate.name
 
 	else
-		limb_snip_candidate = patient.get_bodypart(check_zone(user.zone_selected))
+		limb_snip_candidate = patient.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!limb_snip_candidate)
 			to_chat(user, span_warning("[patient] is already missing that limb, what more do you want?"))
 			return

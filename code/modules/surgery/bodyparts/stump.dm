@@ -20,6 +20,8 @@
 	ADD_TRAIT(stump, TRAIT_PARALYSIS, STUMP_TRAIT)
 	stump.update_disabled()
 	stump.bodypart_flags = IS_ORGANIC_LIMB(src) ? BP_HAS_BLOOD|BP_HAS_ARTERY : NONE
+	if(bodypart_flags & BP_NO_PAIN)
+		stump.bodypart_flags |= BP_NO_PAIN
 	stump.is_stump = TRUE
 
 	stump.held_index = held_index
@@ -32,11 +34,11 @@
 	stump.body_zone = body_zone
 	stump.bodytype = bodytype
 	stump.body_part = body_part
-	stump.dismemberable = FALSE
 	stump.amputation_point = amputation_point
 
 
 	stump.name = "stump of \a [name]"
+	stump.plaintext_zone = "stump of \a [plaintext_zone]"
 	stump.artery_name = "mangled [artery_name]"
 	return stump
 

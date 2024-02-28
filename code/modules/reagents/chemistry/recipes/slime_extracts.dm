@@ -423,17 +423,6 @@
 	new /obj/item/slimepotion/slime/renaming(holder.my_atom.drop_location())
 	..()
 
-
-//Adamantine
-/datum/chemical_reaction/slime/adamantine
-	required_reagents = list(/datum/reagent/toxin/plasma = 1)
-	required_container = /obj/item/slime_extract/adamantine
-	required_other = TRUE
-
-/datum/chemical_reaction/slime/adamantine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/stack/sheet/mineral/adamantine(get_turf(holder.my_atom))
-	..()
-
 //Bluespace
 /datum/chemical_reaction/slime/slimefloor2
 	required_reagents = list(/datum/reagent/blood = 1)
@@ -453,15 +442,6 @@
 /datum/chemical_reaction/slime/slimecrystal/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/obj/item/stack/ore/bluespace_crystal/BC = new (get_turf(holder.my_atom))
 	BC.visible_message(span_notice("The [BC.name] appears out of thin air!"))
-	..()
-
-/datum/chemical_reaction/slime/slimeradio
-	required_reagents = list(/datum/reagent/water = 1)
-	required_container = /obj/item/slime_extract/bluespace
-	required_other = TRUE
-
-/datum/chemical_reaction/slime/slimeradio/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/slimepotion/slime/slimeradio(get_turf(holder.my_atom))
 	..()
 
 //Cerulean
@@ -588,13 +568,4 @@
 
 /datum/chemical_reaction/slime/slime_transfer/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	new /obj/item/slimepotion/transference(get_turf(holder.my_atom))
-	..()
-
-/datum/chemical_reaction/slime/flight_potion
-	required_reagents = list(/datum/reagent/water/holywater = 5, /datum/reagent/uranium = 5)
-	required_other = TRUE
-	required_container = /obj/item/slime_extract/rainbow
-
-/datum/chemical_reaction/slime/flight_potion/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/reagent_containers/glass/bottle/potion/flight(get_turf(holder.my_atom))
 	..()

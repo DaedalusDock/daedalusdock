@@ -11,7 +11,6 @@
 
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	throw_speed = 3
 	throw_range = 7
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=75, /datum/material/glass=25)
@@ -228,7 +227,7 @@
 		if(talking_carbon.handcuffed)// If we're handcuffed, we can't press the button
 			to_chat(talking_carbon, span_warning("You can't use the radio while handcuffed!"))
 			return ITALICS | REDUCE_RANGE
-		if(talking_carbon.pulledby?.grab_state)
+		if(HAS_TRAIT(talking_carbon, TRAIT_AGGRESSIVE_GRAB))
 			to_chat(talking_carbon, span_warning("You can't use the radio while aggressively grabbed!"))
 			return ITALICS | REDUCE_RANGE
 

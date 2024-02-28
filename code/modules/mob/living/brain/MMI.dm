@@ -5,15 +5,23 @@
 	icon_state = "mmi_off"
 	base_icon_state = "mmi"
 	w_class = WEIGHT_CLASS_NORMAL
+
 	var/braintype = "Cyborg"
-	var/obj/item/radio/radio = null //Let's give it a radio.
-	var/mob/living/brain/brainmob = null //The current occupant.
-	var/mob/living/silicon/robot = null //Appears unused.
-	var/obj/vehicle/sealed/mecha = null //This does not appear to be used outside of reference in mecha.dm.
+
+	/// Internal radio object so the thing has a radio
+	var/obj/item/radio/radio = null
+	/// The current occupant.
+	var/mob/living/brain/brainmob = null
+	/// Reference to a mecha we may or may not be in. Only used for garbage collection.
+	var/obj/vehicle/sealed/mecha = null
+	/// The actual brain contained in the MMI
 	var/obj/item/organ/brain/brain = null //The actual brain
+
 	var/datum/ai_laws/laws = new()
+
 	var/force_replace_ai_name = FALSE
-	var/overrides_aicore_laws = FALSE // Whether the laws on the MMI, if any, override possible pre-existing laws loaded on the AI core.
+	/// Whether the laws on the MMI, if any, override possible pre-existing laws loaded on the AI core.
+	var/overrides_aicore_laws = FALSE
 
 /obj/item/mmi/Initialize(mapload)
 	. = ..()
@@ -66,17 +74,18 @@
 			return
 		var/mob/living/brain/B = newbrain.brainmob
 		if(!B.key)
-			B.notify_ghost_cloning("Someone has put your brain in a MMI!", source = src)
+			B.notify_ghost_revival("Someone has put your brain in a MMI!", source = src)
 		user.visible_message(span_notice("[user] sticks \a [newbrain] into [src]."), span_notice("[src]'s indicator light turn on as you insert [newbrain]."))
 
 		set_brainmob(newbrain.brainmob)
 		newbrain.brainmob = null
 		brainmob.forceMove(src)
 		brainmob.container = src
+
 		var/fubar_brain = newbrain.suicided || brainmob.suiciding //brain is from a suicider
-		if(!fubar_brain && !(newbrain.organ_flags & ORGAN_FAILING)) // the brain organ hasn't been beaten to death, nor was from a suicider.
+		if(!fubar_brain && !(newbrain.organ_flags & ORGAN_DEAD)) // the brain organ hasn't been beaten to death, nor was from a suicider.
 			brainmob.set_stat(CONSCIOUS) //we manually revive the brain mob
-		else if(!fubar_brain && newbrain.organ_flags & ORGAN_FAILING) // the brain is damaged, but not from a suicider
+		else if(!fubar_brain && newbrain.organ_flags & ORGAN_DEAD) // the brain is damaged, but not from a suicider
 			to_chat(user, span_warning("[src]'s indicator light turns yellow and its brain integrity alarm beeps softly. Perhaps you should check [newbrain] for damage."))
 			playsound(src, 'sound/machines/synth_no.ogg', 5, TRUE)
 		else
@@ -126,18 +135,20 @@
 	if(Adjacent(user))
 		user.put_in_hands(brain)
 	brain.organ_flags &= ~ORGAN_FROZEN
+
 	brain = null //No more brain in here
 
 /obj/item/mmi/proc/transfer_identity(mob/living/L) //Same deal as the regular brain proc. Used for human-->robot people.
 	if(!brainmob)
 		set_brainmob(new /mob/living/brain(src))
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
+	brainmob.timeofdeath = L.timeofdeath
 	if(L.has_dna())
 		var/mob/living/carbon/C = L
 		if(!brainmob.stored_dna)
 			brainmob.stored_dna = new /datum/dna/stored(brainmob)
 		C.dna.copy_dna(brainmob.stored_dna)
+
 	brainmob.container = src
 
 	if(ishuman(L))
@@ -145,13 +156,16 @@
 		var/obj/item/organ/brain/newbrain = H.getorgan(/obj/item/organ/brain)
 		newbrain.forceMove(src)
 		brain = newbrain
+
 	else if(!brain)
 		brain = new(src)
 		brain.name = "[L.real_name]'s brain"
+
 	brain.organ_flags |= ORGAN_FROZEN
 
 	name = "[initial(name)]: [brainmob.real_name]"
 	update_appearance()
+
 	if(istype(brain, /obj/item/organ/brain/alien))
 		braintype = "Xenoborg" //HISS....Beep.
 	else
@@ -271,7 +285,7 @@
 		if(user)
 			to_chat(user, span_warning("\The [src] indicates that the brain is dead!"))
 		return FALSE
-	if(brain?.organ_flags & ORGAN_FAILING)
+	if(brain?.organ_flags & ORGAN_DEAD)
 		if(user)
 			to_chat(user, span_warning("\The [src] indicates that the brain is damaged!"))
 		return FALSE

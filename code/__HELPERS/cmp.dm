@@ -198,3 +198,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 /// Orders designs by name
 /proc/cmp_design_name(datum/design/A, datum/design/B)
 	return sorttext(B.name, A.name)
+
+/// Orders lists by the size of lists in their contents
+/proc/cmp_list_length(list/A, list/B)
+	return length(A) - length(B)

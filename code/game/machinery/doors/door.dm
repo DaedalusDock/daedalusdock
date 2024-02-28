@@ -1,4 +1,5 @@
 #define DOOR_CLOSE_WAIT 60 ///Default wait until doors autoclose
+DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door
 	name = "door"
 	desc = "It opens and closes."
@@ -12,13 +13,13 @@
 	power_channel = AREA_USAGE_ENVIRON
 	pass_flags_self = PASSDOORS
 	max_integrity = 350
-	armor = list(MELEE = 30, BULLET = 30, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
 	can_atmos_pass = CANPASS_PROC
 	flags_1 = PREVENT_CLICK_UNDER_1
 	receive_ricochet_chance_mod = 0.8
 	damage_deflection = 10
 
-	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
@@ -58,10 +59,12 @@
 
 /obj/machinery/door/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
+
 	set_init_door_layer()
 	update_freelook_sight()
 	register_context()
-	GLOB.airlocks += src
+
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 	if(density)
@@ -172,8 +175,9 @@
 		layer = initial(layer)
 
 /obj/machinery/door/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	update_freelook_sight()
-	GLOB.airlocks -= src
+
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
@@ -295,12 +299,17 @@
 		return
 	return ..()
 
-/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	set waitfor = FALSE
 
-	add_fingerprint(user)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
+
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
+
 	if(access_bypass || (requiresID() && allowed(user)))
 		. = TRUE
 		if(density)
@@ -357,7 +366,7 @@
 		return TRUE
 	else if(I.item_flags & NOBLUDGEON || user.combat_mode)
 		return ..()
-	else if(try_to_activate_door(user))
+	else if(try_to_activate_door(user, attackedby = I))
 		return TRUE
 	return ..()
 
@@ -500,7 +509,7 @@
 			L.emote("roar")
 		else if(ishuman(L)) //For humans
 			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
-			L.emote("scream")
+			L.emote("agony")
 			L.Paralyze(100)
 		else //for simple_animals & borgs
 			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
@@ -571,7 +580,9 @@
 	. = ..()
 
 /obj/machinery/door/proc/knock_on(mob/user)
-	user.changeNext_move(CLICK_CD_MELEE)
+	user?.changeNext_move(CLICK_CD_MELEE)
 	playsound(src, knock_sound, 100, TRUE)
+	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
 
 #undef DOOR_CLOSE_WAIT

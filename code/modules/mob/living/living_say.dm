@@ -63,11 +63,11 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
  * Associated values are their maximum allowed mob stats.
  */
 GLOBAL_LIST_INIT(message_modes_stat_limits, list(
-	MODE_INTERCOM = HARD_CRIT,
-	MODE_ALIEN = HARD_CRIT,
-	MODE_BINARY = HARD_CRIT, //extra stat check on human/binarycheck()
-	MODE_MONKEY = HARD_CRIT,
-	MODE_MAFIA = HARD_CRIT
+	MODE_INTERCOM = UNCONSCIOUS,
+	MODE_ALIEN = UNCONSCIOUS,
+	MODE_BINARY = UNCONSCIOUS, //extra stat check on human/binarycheck()
+	MODE_MONKEY = UNCONSCIOUS,
+	MODE_MAFIA = UNCONSCIOUS
 ))
 
 /mob/living/proc/Ellipsis(original_msg, chance = 50, keep_words)
@@ -92,7 +92,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	return new_msg
 
-/mob/living/say(message, bubble_type,list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof)
+/mob/living/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	var/list/filter_result
 	var/list/soft_filter_result
 	if(client && !forced && !filterproof)
@@ -159,13 +159,13 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		SEND_SIGNAL(src, COMSIG_LIVING_USE_RADIO)
 
 	switch(stat)
-		if(SOFT_CRIT)
-			message_mods[WHISPER_MODE] = MODE_WHISPER
+		if(CONSCIOUS)
+			if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
+				message_mods[WHISPER_MODE] = MODE_WHISPER
+
 		if(UNCONSCIOUS)
 			return
-		if(HARD_CRIT)
-			if(!message_mods[WHISPER_MODE])
-				return
+
 		if(DEAD)
 			say_dead(original_message)
 			return
@@ -198,8 +198,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	var/message_range = 7
 
-	var/succumbed = FALSE
-
 	// If there's a custom say emote it gets logged differently.
 	if(message_mods[MODE_CUSTOM_SAY_EMOTE])
 		log_message(message_mods[MODE_CUSTOM_SAY_EMOTE], LOG_RADIO_EMOTE)
@@ -209,15 +207,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(message_mods[WHISPER_MODE] == MODE_WHISPER)
 			message_range = 1
 			log_talk(message, LOG_WHISPER, forced_by = forced, custom_say_emote = message_mods[MODE_CUSTOM_SAY_EMOTE])
-			if(stat == HARD_CRIT)
-				var/health_diff = round(-HEALTH_THRESHOLD_DEAD + health)
-				// If we cut our message short, abruptly end it with a-..
-				var/message_len = length_char(message)
-				message = copytext_char(message, 1, health_diff) + "[message_len > health_diff ? "-.." : "..."]"
-				message = Ellipsis(message, 10, 1)
-				last_words = message
-				message_mods[WHISPER_MODE] = MODE_WHISPER_CRIT
-				succumbed = TRUE
 		else
 			log_talk(message, LOG_SAY, forced_by = forced, custom_say_emote = message_mods[MODE_CUSTOM_SAY_EMOTE])
 
@@ -239,8 +228,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	if (sigreturn & COMPONENT_UPPERCASE_SPEECH)
 		message = uppertext(message)
 	if(!message)
-		if(succumbed)
-			succumb()
 		return
 
 	//This is before anything that sends say a radio message, and after all important message type modifications, so you can scumb in alien chat or something
@@ -288,15 +275,15 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			speak_sound = voice_type2sound[voice_type][voice_type]
 		playsound(src, speak_sound, 300, 1, SHORT_RANGE_SOUND_EXTRARANGE-2, falloff_exponent = 0, pressure_affected = FALSE, ignore_walls = FALSE, use_reverb = FALSE)
 
-	if(succumbed)
-		succumb(TRUE)
-		to_chat(src, compose_message(src, language, message, , spans, message_mods))
-
 	talkcount++
 	return TRUE
 
 /mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
+	if(LAZYLEN(observers))
+		for(var/mob/dead/observer/O as anything in observers)
+			O.Hear(arglist(args))
+
 	if(!client)
 		return
 
@@ -323,7 +310,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			deaf_type = 2
 
 		// Create map text prior to modifying message for goonchat, sign lang edition
-		if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(stat == UNCONSCIOUS || stat == HARD_CRIT || is_blind(src)) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
+		if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(stat == UNCONSCIOUS || is_blind(src)) && (client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs) || ismob(speaker)))
 			if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 				create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE, sound_loc = sound_loc)
 			else
@@ -347,7 +334,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		deaf_type = 2 // Since you should be able to hear yourself without looking
 
 	// Create map text prior to modifying message for goonchat
-	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(stat == UNCONSCIOUS || stat == HARD_CRIT) && (ismob(speaker) || client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)) && can_hear())
+	if (client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) && !(stat == UNCONSCIOUS) && (ismob(speaker) || client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)) && can_hear())
 		if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 			create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE, sound_loc = sound_loc)
 		else
@@ -395,6 +382,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			if(QDELETED(player_mob)) //Some times nulls and deleteds stay in this list. This is a workaround to prevent ic chat breaking for everyone when they do.
 				continue //Remove if underlying cause (likely byond issue) is fixed. See TG PR #49004.
 			if(player_mob.stat != DEAD) //not dead, not important
+				continue
+			if(!player_mob.z) //Observing ghosts are in nullspace, pretend they don't exist
 				continue
 			if(player_mob.z != z || get_dist(player_mob, src) > 7) //they're out of range of normal hearing
 				if(eavesdrop_range)
@@ -510,8 +499,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 /mob/living/say_mod(input, list/message_mods = list())
 	if(message_mods[WHISPER_MODE] == MODE_WHISPER)
 		. = verb_whisper
-	else if(message_mods[WHISPER_MODE] == MODE_WHISPER_CRIT)
-		. = "[verb_whisper] in [p_their()] last breath"
 	else if(message_mods[MODE_SING])
 		. = verb_sing
 	else if(has_status_effect(/datum/status_effect/speech/stutter))

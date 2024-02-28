@@ -11,7 +11,6 @@
 		TRAIT_CAN_STRIP,
 		TRAIT_TOXINLOVER,
 	)
-	mutantlungs = /obj/item/organ/lungs/slime
 	meat = /obj/item/food/meat/slab/human/mutant/slime
 	exotic_blood = /datum/reagent/toxin/slimejelly
 	var/datum/action/innate/regenerate_limbs/regenerate_limbs
@@ -33,6 +32,18 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly,
+	)
+
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = /obj/item/organ/heart,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/slime,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach,
+		ORGAN_SLOT_APPENDIX = /obj/item/organ/appendix,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver,
 	)
 
 /datum/species/jelly/on_species_loss(mob/living/carbon/old_jellyperson)
@@ -269,8 +280,7 @@
 	H.dna.transfer_identity(spare, transfer_SE=1)
 	spare.dna.mutant_colors = random_mutant_colors()
 	spare.dna.update_uf_block(DNA_MUTANT_COLOR_BLOCK)
-	spare.real_name = spare.dna.real_name
-	spare.name = spare.dna.real_name
+	spare.set_real_name(spare.dna.real_name)
 	spare.updateappearance(mutcolor_update=1)
 	spare.domutcheck()
 	spare.Move(get_step(H.loc, pick(NORTH,SOUTH,EAST,WEST)))
@@ -340,7 +350,7 @@
 		switch(body.stat)
 			if(CONSCIOUS)
 				stat = "Conscious"
-			if(SOFT_CRIT to HARD_CRIT) // Also includes UNCONSCIOUS
+			if(UNCONSCIOUS)
 				stat = "Unconscious"
 			if(DEAD)
 				stat = "Dead"
@@ -508,7 +518,7 @@
 	name = "luminescent glow"
 	desc = "Tell a coder if you're seeing this."
 	icon_state = "nothing"
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = LUMINESCENT_DEFAULT_GLOW
 	light_power = 2.5
 	light_color = COLOR_WHITE
@@ -735,11 +745,13 @@
 	return TRUE
 
 /datum/action/innate/link_minds/Activate()
-	if(!isliving(owner.pulling) || owner.grab_state < GRAB_AGGRESSIVE)
+	var/mob/living/L = owner
+	var/obj/item/hand_item/grab/G = L.get_active_grab()
+	if(!isliving(G?.affecting) || G.current_grab.damage_stage < GRAB_AGGRESSIVE)
 		to_chat(owner, span_warning("You need to aggressively grab someone to link minds!"))
 		return
 
-	var/mob/living/living_target = owner.pulling
+	var/mob/living/living_target = G.affecting
 	if(living_target.stat == DEAD)
 		to_chat(owner, span_warning("They're dead!"))
 		return
@@ -768,11 +780,9 @@
 /datum/action/innate/link_minds/proc/while_link_callback(mob/living/linkee)
 	if(!is_species(owner, req_species))
 		return FALSE
-	if(!owner.pulling)
-		return FALSE
-	if(owner.pulling != linkee)
-		return FALSE
-	if(owner.grab_state < GRAB_AGGRESSIVE)
+	var/mob/living/L = owner
+	var/obj/item/hand_item/grab/G = L.is_grabbing(linkee)
+	if(!G || G.current_grab.damage_stage < GRAB_AGGRESSIVE)
 		return FALSE
 	if(linkee.stat == DEAD)
 		return FALSE

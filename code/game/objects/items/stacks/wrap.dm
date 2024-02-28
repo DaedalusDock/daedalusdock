@@ -38,7 +38,7 @@
 /obj/item/stack/wrapping_paper/attack_hand_secondary(mob/user, modifiers)
 	var/new_base = input(user, "", "Select a base color", color) as color
 	var/new_ribbon = input(user, "", "Select a ribbon color", color) as color
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 	set_greyscale(colors = list(new_base, new_ribbon))
 	return TRUE
@@ -176,5 +176,4 @@
 	icon_state = "c_tube"
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 5

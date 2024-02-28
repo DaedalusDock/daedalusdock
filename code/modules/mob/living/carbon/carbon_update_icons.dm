@@ -14,7 +14,7 @@
 	if(slot_flags & ITEM_SLOT_ID)
 		update_worn_id()
 	if(slot_flags & ITEM_SLOT_EARS)
-		update_inv_ears()
+		update_worn_ears()
 	if(slot_flags & ITEM_SLOT_EYES)
 		update_worn_glasses()
 	if(slot_flags & ITEM_SLOT_GLOVES)
@@ -29,8 +29,11 @@
 		update_worn_undersuit()
 	if(slot_flags & ITEM_SLOT_SUITSTORE)
 		update_suit_storage()
-	if(slot_flags & ITEM_SLOT_LPOCKET || slot_flags & ITEM_SLOT_RPOCKET)
+	if(slot_flags & (ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET))
 		update_pockets()
+	if(slot_flags & ITEM_SLOT_HANDS)
+		update_held_items()
+
 
 //IMPORTANT: Multiple animate() calls do not stack well, so try to do them all at once if you can.
 /mob/living/carbon/perform_update_transform()
@@ -65,20 +68,17 @@
 /mob/living/carbon/proc/apply_overlay(cache_index)
 	if((. = overlays_standing[cache_index]))
 		add_overlay(.)
+	SEND_SIGNAL(src, COMSIG_CARBON_APPLY_OVERLAY, cache_index, .)
 
 /mob/living/carbon/proc/remove_overlay(cache_index)
 	var/I = overlays_standing[cache_index]
 	if(I)
 		cut_overlay(I)
 		overlays_standing[cache_index] = null
-
-//used when putting/removing clothes that hide certain mutant body parts to just update those and not update the whole body.
-/mob/living/carbon/human/proc/update_mutant_bodyparts()
-	dna.species.handle_mutant_bodyparts(src)
-	update_body_parts()
+	SEND_SIGNAL(src, COMSIG_CARBON_REMOVE_OVERLAY, cache_index, I)
 
 /mob/living/carbon/update_body(is_creating = FALSE)
-	dna.species.handle_body(src) //This calls `handle_mutant_bodyparts` which calls `update_mutant_bodyparts()`. Don't double call!
+	dna.species.handle_body(src)
 	update_body_parts(is_creating)
 
 /mob/living/carbon/regenerate_icons()
@@ -102,13 +102,13 @@
 		if(client && hud_used && hud_used.hud_version != HUD_STYLE_NOHUD)
 			I.screen_loc = ui_hand_position(get_held_index_of_item(I))
 			client.screen += I
-			if(length(observers))
+			if(LAZYLEN(observers))
 				for(var/mob/dead/observe as anything in observers)
 					if(observe.client && observe.client.eye == src)
 						observe.client.screen += I
 					else
 						observers -= observe
-						if(!observers.len)
+						if(!length(observers))
 							observers = null
 							break
 

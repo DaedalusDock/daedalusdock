@@ -25,7 +25,7 @@
 	if(T)
 		rally_spores(T)
 
-/mob/camera/blob/CtrlClickOn(atom/A) //Create a shield
+/mob/camera/blob/CtrlClickOn(atom/A, list/params) //Create a shield
 	var/turf/T = get_turf(A)
 	if(T)
 		create_shield(T)

@@ -156,6 +156,16 @@ export const NtosMain = (props, context) => {
                       })} />
                   )}
                 </Table.Cell>
+                <Table.Cell collapsing width="18px">
+                  <Button
+                    color={program.autorun ? 'yellow' : null}
+                    content="A"
+                    tooltip="Set Autorun"
+                    tooltipPosition="left"
+                    onClick={() => act('PC_setautorun', {
+                      name: program.name,
+                    })} />
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table>
@@ -198,6 +208,16 @@ export const NtosMain = (props, context) => {
                           name: program.name,
                         })} />
                     )}
+                  </Table.Cell>
+                  <Table.Cell collapsing width="18px">
+                    <Button
+                      color={program.autorun ? 'yellow' : null}
+                      content="A"
+                      tooltip="Set Autorun"
+                      tooltipPosition="left"
+                      onClick={() => act('PC_setautorun', {
+                        name: program.name,
+                      })} />
                   </Table.Cell>
                 </Table.Row>
               ))}

@@ -1,0 +1,10 @@
+/obj/item/stack/spacecash/c50 : @DELETE
+/obj/item/stack/spacecash/c200 : @DELETE
+/obj/item/stack/spacecash/c500 : @DELETE
+/obj/machinery/piratepad/civilian : @DELETE
+/obj/machinery/computer/piratepad_control/civilian : @DELETE
+/obj/item/bounty_cube : @DELETE
+/obj/item/circuitboard/computer/bountypad : @DELETE
+/obj/item/circuitboard/machine/bountypad : @DELETE
+/datum/design/board/bountypad_control : @DELETE
+/obj/item/holochip/@SUBTYPES : @DELETE

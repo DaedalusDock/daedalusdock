@@ -13,17 +13,25 @@
 	/// Only SSpackets should be touching this.
 	var/list/current_packet_queue = list()
 
-	var/load = 0 // the current load on the powernet, increased by each machine at processing
-	var/newavail = 0 // what available power was gathered last tick, then becomes...
-	var/avail = 0 //...the current available power in the powernet
-	var/viewavail = 0 // the available power as it appears on the power console (gradually updated)
-	var/viewload = 0 // the load as it appears on the power console (gradually updated)
-	var/netexcess = 0 // excess power on the powernet (typically avail-load)///////
-	var/delayedload = 0 // load applied to powernet between power ticks.
+	/// The current load on the power net.
+	var/load = 0
+	/// The current amount of power in the network
+	var/avail = 0
+	/// The amount of power gathered this tick. Will become avail on reset()
+	var/newavail = 0
+
+	/// The amount of power visible to power consoles. This is a smoothed out value, so it is not 100% correct.
+	var/viewavail = 0
+	/// The amount of load visible to power consoles. This is a smoothed out value, so it is not 100% correct.
+	var/viewload = 0
+
+	/// The amount of excess power from the LAST tick, typically avail - load. SMES units will subtract from this as they store the power.
+	var/netexcess = 0
+	/// Load applied outside of machine processing, "between" ticks of power.
+	var/delayedload = 0
 
 /datum/powernet/New()
 	SSmachines.powernets += src
-	SSpackets.queued_networks += src
 
 /datum/powernet/Destroy()
 	//Go away references, you suck!
@@ -38,6 +46,7 @@
 	SSpackets.queued_networks -= src
 	return ..()
 
+/// Returns TRUE if there are no cables and no nodes belonging to the network.
 /datum/powernet/proc/is_empty()
 	return !cables.len && !nodes.len
 
@@ -85,8 +94,7 @@
 		data_nodes[M] = M
 	nodes[M] = M
 
-//handles the power changes in the powernet
-//called every ticks by the powernet controller
+/// Cycles the powernet's status, called by SSmachines, do not manually call.
 /datum/powernet/proc/reset()
 	//see if there's a surplus of power remaining in the powernet and stores unused power in the SMES
 	netexcess = avail - load
@@ -119,5 +127,7 @@
 
 /// Pass a signal through a powernet to all connected data equipment.
 // SSpackets does this for us!
+// We just need to inform them we have something to deal with.
 /datum/powernet/proc/queue_signal(datum/signal/signal)
 	next_packet_queue += signal
+	SSpackets.queued_networks |= src

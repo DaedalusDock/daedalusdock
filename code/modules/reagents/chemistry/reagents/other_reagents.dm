@@ -23,7 +23,7 @@
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.apply_water()
 
-	qdel(exposed_turf.fire)
+	qdel(exposed_turf.active_hotspot)
 	if(exposed_turf.simulated)
 		var/datum/gas_mixture/air = exposed_turf.return_air()
 		var/adjust_temp = abs(air.temperature - exposed_temperature) / air.group_multiplier
@@ -195,7 +195,7 @@
 	name = "Blood"
 	description = "A suspension of organic cells necessary for the transport of oxygen. Keep inside at all times."
 	color = "#C80000" // rgb: 200, 0, 0
-	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
+	metabolization_rate = 5 //fast rate so it disappears fast.
 	taste_description = "iron"
 	taste_mult = 1.3
 	glass_icon_state = "glass_red"
@@ -224,7 +224,10 @@
 
 
 /datum/reagent/blood/affect_blood(mob/living/carbon/C, removed)
-	if(data?["viruses"])
+	if(isnull(data))
+		return
+
+	if(data["viruses"])
 		for(var/datum/disease/strain as anything in data["viruses"])
 
 			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
@@ -232,22 +235,24 @@
 
 			C.ForceContractDisease(strain)
 
-	if(C.get_blood_id() == /datum/reagent/blood && C.dna && C.dna.species && (DRINKSBLOOD in C.dna.species.species_traits))
-		if(!data || !(data["blood_type"] in get_safe_blood(C.dna.blood_type)))
-			C.reagents.add_reagent(/datum/reagent/toxin, removed)
-		else
-			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAXIMUM)
+	if(!(C.get_blood_id() == /datum/reagent/blood))
+		return
+
+	var/datum/blood/blood_type = data["blood_type"]
+
+	if(isnull(blood_type) || !C.dna.blood_type.is_compatible(blood_type.type))
+		C.reagents.add_reagent(/datum/reagent/toxin, removed)
+	else
+		C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
-	if(data?["viruses"])
-		for(var/thing in data["viruses"])
-			var/datum/disease/strain = thing
+	for(var/datum/disease/strain as anything in data?["viruses"])
 
-			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
-				continue
+		if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+			continue
 
-			if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-				C.ContactContractDisease(strain)
+		if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+			C.ContactContractDisease(strain)
 
 /datum/reagent/blood/on_new(list/data)
 	. = ..()
@@ -256,8 +261,11 @@
 
 /datum/reagent/blood/on_merge(list/mix_data)
 	if(data && mix_data)
+		if(data["blood_type"] != mix_data["blood_type"])
+			data["blood_type"] = GET_BLOOD_REF(/datum/blood/slurry)
 		if(data["blood_DNA"] != mix_data["blood_DNA"])
 			data["cloneable"] = 0 //On mix, consider the genetic sampling unviable for pod cloning if the DNA sample doesn't match.
+
 		if(data["viruses"] || mix_data["viruses"])
 
 			var/list/mix1 = data["viruses"]
@@ -648,7 +656,7 @@
 		if(drinker.blood_volume < BLOOD_VOLUME_NORMAL)
 			drinker.blood_volume += 3 * removed
 	else
-		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 		drinker.adjustToxLoss(2 * removed, FALSE)
 		drinker.adjustFireLoss(2 * removed, FALSE)
 		drinker.adjustOxyLoss(2 * removed, FALSE)
@@ -733,7 +741,7 @@
 		if(ishuman(C) && C.blood_volume < BLOOD_VOLUME_NORMAL)
 			C.blood_volume += 3 * removed
 	else  // Will deal about 90 damage when 50 units are thrown
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 		C.adjustToxLoss(1 * removed, 0)
 		C.adjustFireLoss(1 * removed, 0)
 		C.adjustOxyLoss(1 * removed, 0)
@@ -934,9 +942,10 @@
 	var/obj/item/organ/brain/B = C.getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		if (B.damage < 60)
-			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 14 * removed)
+			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 14 * removed, updating_health = FALSE)
 		else
-			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 7 * removed)
+			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 7 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
 	REMOVE_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))

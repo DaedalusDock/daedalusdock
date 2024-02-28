@@ -5,6 +5,9 @@
 	check_flags = NONE
 	transparent_when_unavailable = FALSE
 
+	/// If TRUE, will log action usage to the owner's action log.
+	var/write_log = FALSE
+
 	/// The actual next time this ability can be used
 	var/next_use_time = 0
 	/// The stat panel this action shows up in the stat panel in. If null, will not show up.
@@ -102,7 +105,7 @@
 	return ..()
 
 /datum/action/cooldown/is_action_active(atom/movable/screen/movable/action_button/current_button)
-	return click_to_activate && current_button.our_hud?.mymob?.click_intercept == src
+	return click_to_activate && current_button.hud?.mymob?.click_intercept == src
 
 /datum/action/cooldown/Destroy()
 	QDEL_LIST(initialized_actions)
@@ -216,13 +219,20 @@
 
 /// Intercepts client owner clicks to activate the ability
 /datum/action/cooldown/proc/InterceptClickOn(mob/living/caller, params, atom/target)
-	if(!IsAvailable(feedback = TRUE))
-		return FALSE
-	if(!target)
-		return FALSE
+	. = TRUE
+	if(istext(params))
+		params = params2list(params)
+
+	if(params?[RIGHT_CLICK])
+		unset_click_ability(caller, TRUE)
+		return
+
+	if(!target || !IsAvailable(feedback = TRUE))
+		return
+
 	// The actual action begins here
 	if(!PreActivate(target))
-		return FALSE
+		return TRUE
 
 	// And if we reach here, the action was complete successfully
 	if(unset_after_click)
@@ -235,12 +245,20 @@
 /datum/action/cooldown/proc/PreActivate(atom/target)
 	if(SEND_SIGNAL(owner, COMSIG_MOB_ABILITY_STARTED, src) & COMPONENT_BLOCK_ABILITY_START)
 		return
+
+	if(!is_valid_target(target))
+		return
+
 	// Note, that PreActivate handles no cooldowns at all by default.
 	// Be sure to call StartCooldown() in Activate() where necessary.
 	. = Activate(target)
+
 	// There is a possibility our action (or owner) is qdeleted in Activate().
 	if(!QDELETED(src) && !QDELETED(owner))
 		SEND_SIGNAL(owner, COMSIG_MOB_ABILITY_FINISHED, src)
+
+	if(owner?.ckey)
+		owner.log_message("used action [name][target != owner ? " on / at [target]":""].", LOG_ATTACK)
 
 /// To be implemented by subtypes (if not generic)
 /datum/action/cooldown/proc/Activate(atom/target)
@@ -251,6 +269,7 @@
 		addtimer(CALLBACK(ability, PROC_REF(Activate), target), total_delay)
 		total_delay += initialized_actions[ability]
 	StartCooldown()
+	return TRUE
 
 /// Cancels melee attacks if they are on cooldown.
 /datum/action/cooldown/proc/handle_melee_attack(mob/source, mob/target)
@@ -330,3 +349,13 @@
 	SEND_SIGNAL(src, COMSIG_ACTION_SET_STATPANEL, stat_panel_data)
 
 	return stat_panel_data
+
+/**
+ * Check if the target we're casting on is a valid target.
+ * For no-target (self cast) actions, the target being checked (cast_on) is the caster.
+ * For click_to_activate actions, the target being checked is the clicked atom.
+ *
+ * Return TRUE if cast_on is valid, FALSE otherwise
+ */
+/datum/action/cooldown/proc/is_valid_target(atom/cast_on)
+	return TRUE

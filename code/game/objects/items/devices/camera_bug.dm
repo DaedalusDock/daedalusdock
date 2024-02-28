@@ -12,7 +12,7 @@
 	icon_state = "camera_bug"
 	w_class = WEIGHT_CLASS_TINY
 	inhand_icon_state = "camera_bug"
-	throw_speed = 4
+	throw_speed = 1.5
 	throw_range = 20
 	item_flags = NOBLUDGEON
 

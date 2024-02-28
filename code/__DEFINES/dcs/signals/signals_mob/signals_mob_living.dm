@@ -75,11 +75,15 @@
 #define COMSIG_LIVING_POST_FULLY_HEAL "living_post_fully_heal"
 /// from start of /mob/living/handle_breathing(): (delta_time, times_fired)
 #define COMSIG_LIVING_HANDLE_BREATHING "living_handle_breathing"
-///from /obj/item/hand_item/slapper/attack_atom(): (source=mob/living/slammer, obj/structure/table/slammed_table)
+///from /obj/item/hand_item/slapper/attack_obj(): (source=mob/living/slammer, obj/structure/table/slammed_table)
 #define COMSIG_LIVING_SLAM_TABLE "living_slam_table"
 ///from /obj/item/hand_item/slapper/attack(): (source=mob/living/slapper, mob/living/slapped)
 #define COMSIG_LIVING_SLAP_MOB "living_slap_mob"
-///(NOT on humans) from mob/living/*/UnarmedAttack(): (atom/target, proximity, modifiers)
+/// from /mob/living/*/UnarmedAttack(), before sending [COMSIG_LIVING_UNARMED_ATTACK]: (mob/living/source, atom/target, proximity, modifiers)
+/// The only reason this exists is so hulk can fire before Fists of the North Star.
+/// Note that this is called before [/mob/living/proc/can_unarmed_attack] is called, so be wary of that.
+#define COMSIG_LIVING_EARLY_UNARMED_ATTACK "human_pre_attack_hand"
+/// from mob/living/*/UnarmedAttack(): (mob/living/source, atom/target, proximity, modifiers)
 #define COMSIG_LIVING_UNARMED_ATTACK "living_unarmed_attack"
 ///From base of mob/living/MobBump() (mob/living)
 #define COMSIG_LIVING_MOB_BUMP "living_mob_bump"
@@ -98,3 +102,6 @@
 
 ///From mob/living/proc/set_combat_mode(): (mob/living/user, new_mode)
 #define COMSIG_LIVING_TOGGLE_COMBAT_MODE "living_toggle_combat_mode"
+
+/// from base of [/mob/living/changeNext_Move()] (next_move)
+#define COMSIG_LIVING_CHANGENEXT_MOVE "living_changenext_move"

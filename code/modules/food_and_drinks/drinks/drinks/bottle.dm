@@ -66,11 +66,11 @@
 
 		var/mob/living/carbon/human/H = target
 		var/headarmor = 0 // Target's head armor
-		armor_block = H.run_armor_check(affecting, MELEE,"","",armour_penetration) // For normal attack damage
+		armor_block = H.run_armor_check(affecting, BLUNT,"","", armor_penetration) // For normal attack damage
 
 		//If they have a hat/helmet and the user is targeting their head.
 		if(istype(H.head, /obj/item/clothing/head) && affecting == BODY_ZONE_HEAD)
-			headarmor = H.head.returnArmor().melee
+			headarmor = H.head.returnArmor().getRating(BLUNT)
 		else
 			headarmor = 0
 
@@ -79,9 +79,10 @@
 
 	else
 		//Only humans can have armor, right?
-		armor_block = living_target.run_armor_check(affecting, MELEE)
+		armor_block = living_target.run_armor_check(affecting, BLUNT)
 		if(affecting == BODY_ZONE_HEAD)
 			armor_duration = bottle_knockdown_duration + force
+
 	//Apply the damage!
 	armor_block = min(90,armor_block)
 	living_target.apply_damage(force, BRUTE, affecting, armor_block)
@@ -117,7 +118,6 @@
 	icon_state = "broken_bottle"
 	force = 9
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
 	inhand_icon_state = "broken_beer"
@@ -131,7 +131,7 @@
 
 /obj/item/broken_bottle/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/caltrop, min_damage = force)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4)
 	AddComponent(/datum/component/butchering, 200, 55)
 
 /// Mimics the appearance and properties of the passed in bottle.
@@ -370,13 +370,6 @@
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe/premium/redact()
 	return
-
-/obj/item/reagent_containers/food/drinks/bottle/lizardwine
-	name = "bottle of unathi wine"
-	desc = "An alcoholic beverage from Space China, made by infusing unathi tails in ethanol. Inexplicably popular among command staff."
-	icon_state = "lizardwine"
-	list_reagents = list(/datum/reagent/consumable/ethanol/lizardwine = 100)
-	foodtype = FRUIT | ALCOHOL
 
 /obj/item/reagent_containers/food/drinks/bottle/hcider
 	name = "Jian Hard Cider"

@@ -205,6 +205,13 @@
 		GLOB.pre_setup_antags -= changeling
 	return TRUE
 
+/datum/dynamic_ruleset/roundstart/changeling/trim_candidates()
+	..()
+	for(var/mob/dead/new_player/candidate_player as anything in candidates)
+		var/datum/preferences/prefs = candidate_player.client?.prefs
+		if(!prefs || ispath(prefs.read_preference(/datum/preference/choiced/species), /datum/species/ipc))
+			candidates -= candidate_player
+
 //////////////////////////////////////////////
 //                                          //
 //                 HERETICS                 //
@@ -659,7 +666,7 @@
 /datum/dynamic_ruleset/roundstart/nuclear/clown_ops/pre_execute()
 	. = ..()
 	if(.)
-		var/obj/machinery/nuclearbomb/syndicate/syndicate_nuke = locate() in GLOB.nuke_list
+		var/obj/machinery/nuclearbomb/syndicate/syndicate_nuke = locate() in INSTANCES_OF(/obj/machinery/nuclearbomb)
 		if(syndicate_nuke)
 			var/turf/nuke_turf = get_turf(syndicate_nuke)
 			if(nuke_turf)

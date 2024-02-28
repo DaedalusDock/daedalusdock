@@ -19,17 +19,14 @@
 	var/cooldown = 50
 	var/ready = TRUE
 	var/id = "ticket_machine_default" //For buttons
-	var/list/ticket_holders = list()
-	var/list/obj/item/ticket_machine_ticket/tickets = list()
 
 /obj/machinery/ticket_machine/Initialize(mapload)
 	. = ..()
 	update_appearance()
+	SET_TRACKING(__TYPE__)
 
 /obj/machinery/ticket_machine/Destroy()
-	for(var/obj/item/ticket_machine_ticket/ticket in tickets)
-		ticket.source = null
-	tickets.Cut()
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
@@ -49,26 +46,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	ticket_number = rand(0,max_number)
 	current_number = ticket_number
 	obj_flags |= EMAGGED
-	if(tickets.len)
-		for(var/obj/item/ticket_machine_ticket/ticket in tickets)
-			ticket.audible_message(span_notice("\the [ticket] disperses!"))
-			qdel(ticket)
-		tickets.Cut()
 	update_appearance()
 
 /obj/machinery/ticket_machine/proc/increment()
 	if(current_number > ticket_number)
 		return
-	if(current_number && !(obj_flags & EMAGGED) && tickets[current_number])
-		tickets[current_number].audible_message(span_notice("\the [tickets[current_number]] disperses!"))
-		qdel(tickets[current_number])
 	if(current_number < ticket_number)
 		current_number ++ //Increment the one we're serving.
 		playsound(src, 'sound/misc/announce_dig.ogg', 50, FALSE)
 		say("Now serving ticket #[current_number]!")
-		if(!(obj_flags & EMAGGED) && tickets[current_number])
-			tickets[current_number].audible_message(span_notice("\the [tickets[current_number]] vibrates!"))
-		update_appearance() //Update our icon here rather than when they take a ticket to show the current ticket number being served
+		update_appearance()
 
 /obj/machinery/button/ticket_machine
 	name = "increment ticket counter"
@@ -108,7 +95,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	find_machine()
 
 /obj/item/assembly/control/ticket_machine/proc/find_machine() //Locate the one to which we're linked
-	for(var/obj/machinery/ticket_machine/ticketsplease in GLOB.machines)
+	for(var/obj/machinery/ticket_machine/ticketsplease as anything in INSTANCES_OF(/obj/machinery/ticket_machine))
 		if(ticketsplease.id == id)
 			linked = WEAKREF(ticketsplease)
 	if(linked)
@@ -143,7 +130,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	return ..()
 
 /obj/machinery/ticket_machine/proc/handle_maptext()
-	switch(ticket_number) //This is here to handle maptext offsets so that the numbers align.
+	switch(current_number) //This is here to handle maptext offsets so that the numbers align.
 		if(0 to 9)
 			maptext_x = 13
 		if(10 to 99)
@@ -156,20 +143,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	..()
 	if(istype(I, /obj/item/hand_labeler_refill))
 		if(!(ticket_number >= max_number))
-			to_chat(user, span_notice("[src] refuses [I]! There [max_number-ticket_number==1 ? "is" : "are"] still [max_number-ticket_number] ticket\s left!"))
-			return
-		to_chat(user, span_notice("You start to refill [src]'s ticket holder (doing this will reset its ticket count!)."))
+			if(tgui_alert(user, "[src] still has [max_number-ticket_number] ticket[max_number-ticket_number==1 ? null : "s"] left, are you sure you want to refill it?", "Tactical Refill", list("Refill", "Cancel")) != "Refill")
+				return //If the user still wants to refill it...
+		to_chat(user, span_notice("You start to refill [src]'s ticket holder."))
 		if(do_after(user, src, 30))
 			to_chat(user, span_notice("You insert [I] into [src] as it whirs nondescriptly."))
 			qdel(I)
 			ticket_number = 0
 			current_number = 0
-			if(tickets.len)
-				for(var/obj/item/ticket_machine_ticket/ticket in tickets)
-					ticket.audible_message(span_notice("\the [ticket] disperses!"))
-					qdel(ticket)
-				tickets.Cut()
-			max_number = initial(max_number)
 			update_appearance()
 			return
 
@@ -184,10 +165,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	if(ticket_number >= max_number)
 		to_chat(user,span_warning("Ticket supply depleted, please refill this unit with a hand labeller refill cartridge!"))
 		return
-	var/user_ref = REF(user)
-	if((user_ref in ticket_holders) && !(obj_flags & EMAGGED))
-		to_chat(user, span_warning("You already have a ticket!"))
-		return
+
 	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 100, FALSE)
 	ticket_number++
 	to_chat(user, span_notice("You take a ticket from [src], looks like you're ticket number #[ticket_number]..."))
@@ -195,11 +173,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	theirticket.name = "Ticket #[ticket_number]"
 	theirticket.maptext = MAPTEXT(ticket_number)
 	theirticket.saved_maptext = MAPTEXT(ticket_number)
-	theirticket.source = src
-	theirticket.owner_ref = user_ref
 	user.put_in_hands(theirticket)
-	ticket_holders += user_ref
-	tickets += theirticket
+	update_appearance()
 	if(obj_flags & EMAGGED) //Emag the machine to destroy the HOP's life.
 		ready = FALSE
 		addtimer(CALLBACK(src, PROC_REF(reset_cooldown)), cooldown)//Small cooldown to prevent piles of flaming tickets
@@ -220,8 +195,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
 	var/saved_maptext = null
-	var/owner_ref // A ref to our owner. Doesn't need to be weak because mobs have unique refs
-	var/obj/machinery/ticket_machine/source
 
 /obj/item/ticket_machine_ticket/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -230,16 +203,4 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 /obj/item/ticket_machine_ticket/attackby(obj/item/P, mob/living/carbon/human/user, params) //Stolen from papercode
 	if(burn_paper_product_attackby_check(P, user))
 		return
-
-	return ..()
-
-/obj/item/paper/extinguish()
-	..()
-	update_appearance()
-
-/obj/item/ticket_machine_ticket/Destroy()
-	if(source)
-		source.ticket_holders -= owner_ref
-		source.tickets -= src
-		source = null
 	return ..()

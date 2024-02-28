@@ -104,7 +104,7 @@ Borg Hypospray
 	if(!istype(M))
 		return
 	if(R.total_volume && M.try_inject(user, user.zone_selected, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE | (bypass_protection ? INJECT_CHECK_PENETRATE_THICK : 0)))
-		to_chat(M, span_warning("You feel a tiny prick!"))
+		M.apply_pain(1, user.zone_selected, "You feel a tiny prick!")
 		to_chat(user, span_notice("You inject [M] with the injector."))
 		if(M.reagents)
 			var/trans = R.trans_to(M, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
@@ -124,7 +124,7 @@ Borg Hypospray
 	var/chosen_reagent = modes[reagent_names[choice]]
 	mode = chosen_reagent
 	playsound(loc, 'sound/effects/pop.ogg', 50, FALSE)
-	var/datum/reagent/R = GLOB.chemical_reagents_list[reagent_ids[mode]]
+	var/datum/reagent/R = SSreagents.chemical_reagents_list[reagent_ids[mode]]
 	to_chat(user, span_notice("[src] is now dispensing '[R.name]'."))
 	return
 

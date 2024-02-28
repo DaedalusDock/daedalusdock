@@ -74,6 +74,9 @@
 		mytray.adjust_pestlevel(-rand(1,2))
 
 /datum/reagent/drug/nicotine/affect_blood(mob/living/carbon/C, removed)
+	if(prob(volume * 20))
+		APPLY_CHEM_EFFECT(C, CE_PULSE, 1)
+
 	if(prob(0.5))
 		var/smoke_message = pick("You feel relaxed.", "You feel calmed.","You feel alert.","You feel rugged.")
 		to_chat(C, span_notice("[smoke_message]"))
@@ -87,9 +90,8 @@
 	. = TRUE
 
 /datum/reagent/drug/nicotine/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(0.1, 0)
-	C.adjustOxyLoss(1.1, 0)
-	. = TRUE
+	. = ..()
+	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 
 /datum/reagent/drug/krokodil
 	name = "Krokodil"
@@ -105,19 +107,8 @@
 	if(prob(5))
 		to_chat(C, span_notice("[high_message]"))
 
-	if(current_cycle == 35)
-		if(!istype(C.dna.species, /datum/species/human/krokodil_addict))
-			to_chat(C, span_userdanger("Your skin falls off easily!"))
-			var/mob/living/carbon/human/H = C
-			H.facial_hairstyle = "Shaved"
-			H.hairstyle = "Bald"
-			H.update_body_parts() // makes you loose hair as well
-			C.set_species(/datum/species/human/krokodil_addict)
-			C.adjustBruteLoss(50, 0) // holy shit your skin just FELL THE FUCK OFF
-			return TRUE
-
 /datum/reagent/drug/krokodil/overdose_process(mob/living/carbon/C)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.25, updating_health = FALSE)
 	C.adjustToxLoss(0.25, 0)
 	. = TRUE
 
@@ -153,7 +144,7 @@
 	C.AdjustImmobilized(-40 * removed)
 	C.stamina.adjust(20 * removed)
 	C.set_jitter_if_lower(10 SECONDS)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 4) * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 4) * removed, updating_health = FALSE)
 	if(prob(5))
 		spawn(-1)
 			C.emote(pick("twitch", "shiver"))
@@ -172,7 +163,7 @@
 		C.drop_all_held_items()
 
 	C.adjustToxLoss(1, 0)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, (rand(5, 10) / 10))
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, (rand(5, 10) / 10), updating_health = FALSE)
 	. = TRUE
 
 /datum/reagent/drug/bath_salts
@@ -209,7 +200,7 @@
 		to_chat(C, span_notice("[high_message]"))
 
 	C.stamina.adjust(5 * removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 4 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 4 * removed, updating_health = FALSE)
 	C.hallucination += 5 * removed
 	if(!HAS_TRAIT(C, TRAIT_IMMOBILIZED) && !ismovable(C.loc))
 		step(C, pick(GLOB.cardinals))
@@ -313,19 +304,21 @@
 	addiction_types = list(/datum/addiction/maintenance_drugs = 14)
 
 /datum/reagent/drug/maint/powder/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.2 * removed, updating_health = FALSE)
 
 	// 5x if you want to OD, you can potentially go higher, but good luck managing the brain damage.
 	var/amt = max(round(volume/3, 0.1), 1)
 	C?.mind?.experience_multiplier_reasons |= type
 	C?.mind?.experience_multiplier_reasons[type] = amt
+	return TRUE
 
 /datum/reagent/drug/maint/powder/on_mob_end_metabolize(mob/living/carbon/C)
 	C?.mind?.experience_multiplier_reasons[type] = null
 	C?.mind?.experience_multiplier_reasons -= type
 
 /datum/reagent/drug/maint/powder/overdose_process(mob/living/carbon/C)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 6)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 6, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/drug/maint/sludge
 	name = "Maintenance Sludge"
@@ -374,11 +367,12 @@
 	C.AdjustUnconscious(-10 * removed)
 	C.AdjustParalyzed(-10 * removed)
 	C.AdjustImmobilized(-10 * removed)
-	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 1.5 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 1.5 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/drug/maint/tar/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(5)
-	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 3)
+	C.adjustToxLoss(5, FALSE)
+	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 3, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/drug/mushroomhallucinogen
@@ -506,19 +500,21 @@
 	dancer.sound_environment_override = NONE
 
 /datum/reagent/drug/blastoff/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3 * removed, updating_health = FALSE)
 	C.AdjustKnockdown(-20 * removed)
 
 	if(prob(BLASTOFF_DANCE_MOVE_CHANCE_PER_UNIT * volume))
 		spawn(-1)
 			C.emote("flip")
+	return TRUE
 
 /datum/reagent/drug/blastoff/overdose_process(mob/living/carbon/C)
-	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3)
+	C.adjustOrganLoss(ORGAN_SLOT_LUNGS, 0.3, updating_health = FALSE)
 
 	if(prob(BLASTOFF_DANCE_MOVE_CHANCE_PER_UNIT * volume))
 		spawn(-1)
 			C.emote("spin")
+	return TRUE
 
 ///This proc listens to the flip signal and throws the mob every third flip
 /datum/reagent/drug/blastoff/proc/on_flip()
@@ -553,16 +549,17 @@
 	dancer.spin(30, 2)
 	if(dancer.disgust < 40)
 		dancer.adjust_disgust(10)
-	if(!dancer.pulledby)
+	if(!LAZYLEN(dancer.grabbed_by))
 		return
 	var/dancer_turf = get_turf(dancer)
-	var/atom/movable/dance_partner = dancer.pulledby
-	dance_partner.visible_message(span_danger("[dance_partner] tries to hold onto [dancer], but is thrown back!"), span_danger("You try to hold onto [dancer], but you are thrown back!"), null, COMBAT_MESSAGE_RANGE)
-	var/throwtarget = get_edge_target_turf(dancer_turf, get_dir(dancer_turf, get_step_away(dance_partner, dancer_turf)))
-	if(overdosed)
-		dance_partner.throw_at(target = throwtarget, range = 7, speed = 4)
-	else
-		dance_partner.throw_at(target = throwtarget, range = 4, speed = 1) //superspeed
+	for(var/obj/item/hand_item/grab/G in dancer.grabbed_by)
+		var/atom/movable/dance_partner = G.assailant
+		dance_partner.visible_message(span_danger("[dance_partner] tries to hold onto [dancer], but is thrown back!"), span_danger("You try to hold onto [dancer], but you are thrown back!"), null, COMBAT_MESSAGE_RANGE)
+		var/throwtarget = get_edge_target_turf(dancer_turf, get_dir(dancer_turf, get_step_away(dance_partner, dancer_turf)))
+		if(overdosed)
+			dance_partner.throw_at(target = throwtarget, range = 7, speed = 4)
+		else
+			dance_partner.throw_at(target = throwtarget, range = 4, speed = 1) //superspeed
 
 /datum/reagent/drug/saturnx
 	name = "SaturnX"
@@ -576,7 +573,8 @@
 	addiction_types = list(/datum/addiction/maintenance_drugs = 20)
 
 /datum/reagent/drug/saturnx/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/drug/saturnx/on_mob_metabolize(mob/living/invisible_man, class)
 	if(class != CHEM_BLOOD)
@@ -664,4 +662,5 @@
 	if(prob(10))
 		spawn(-1)
 			invisible_man.emote("laugh")
-	invisible_man.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.4)
+	invisible_man.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.4, updating_health = FALSE)
+	return TRUE

@@ -58,7 +58,7 @@
 			return TRUE
 		else if(isAdminGhostAI(user))
 			attack_ai(user)
-		else if(user.client.prefs.read_preference(/datum/preference/toggle/inquisitive_ghost))
+		else if(user.client.prefs.read_preference(/datum/preference/toggle/inquisitive_ghost) && !user.observetarget)
 			user.examinate(src)
 	return FALSE
 

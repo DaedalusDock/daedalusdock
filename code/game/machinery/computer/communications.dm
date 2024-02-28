@@ -88,7 +88,8 @@
 
 /obj/machinery/computer/communications/Initialize(mapload)
 	. = ..()
-	GLOB.shuttle_caller_list += src
+	SET_TRACKING(__TYPE__)
+	SET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	AddComponent(/datum/component/gps, "Secured Communications Signal")
 
 /// Are we NOT a silicon, AND we're logged in as the captain?
@@ -720,7 +721,7 @@
 		to_chat(user, span_alert("Intercomms recharging. Please stand by."))
 		return
 	var/input = tgui_input_text(user, "Message to announce to the station crew", "Announcement")
-	if(!input || !user.canUseTopic(src, !issilicon(usr)))
+	if(!input || !user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	if(!(user.can_speak())) //No more cheating, mime/random mute guy!
 		input = "..."
@@ -752,7 +753,8 @@
 	frequency.post_signal(status_signal)
 
 /obj/machinery/computer/communications/Destroy()
-	GLOB.shuttle_caller_list -= src
+	UNSET_TRACKING(__TYPE__)
+	UNSET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	SSshuttle.autoEvac()
 	return ..()
 

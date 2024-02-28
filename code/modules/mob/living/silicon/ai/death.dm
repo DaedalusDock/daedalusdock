@@ -30,7 +30,7 @@
 		set_eyeobj_visible(FALSE)
 
 
-	GLOB.shuttle_caller_list -= src
+	UNSET_TRACKING(TRACKING_KEY_SHUTTLE_CALLER)
 	SSshuttle.autoEvac()
 
 	ShutOffDoomsdayDevice()

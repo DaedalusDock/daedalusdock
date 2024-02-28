@@ -238,7 +238,6 @@
 	new /datum/rust_spread(loc)
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	RegisterSignal(user, COMSIG_LIVING_LIFE, PROC_REF(on_life))
-	user.client?.give_award(/datum/award/achievement/misc/rust_ascension, user)
 
 /**
  * Signal proc for [COMSIG_MOVABLE_MOVED].

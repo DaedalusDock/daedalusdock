@@ -18,7 +18,7 @@
 
 /datum/action/cooldown/alien/evolve_to_praetorian
 	name = "Evolve to Praetorian"
-	desc = "Praetorian"
+	desc = "Become a Praetorian."
 	button_icon_state = "alien_evolve_drone"
 	plasma_cost = 500
 

@@ -39,12 +39,18 @@
 	areas = list()
 
 	var/list/new_latejoin = list()
-	for(var/area/shuttle/arrival/A in GLOB.sortedAreas)
-		for(var/obj/structure/chair/C in A)
-			new_latejoin += C
-		if(!console)
-			console = locate(/obj/machinery/requests_console) in A
+	for(var/area/shuttle/arrival/A in GLOB.areas)
 		areas += A
+
+	for(var/obj/structure/chair/C as anything in INSTANCES_OF(/obj/structure/chair))
+		if(get_area(C) in areas)
+			new_latejoin += C
+
+	if(!console)
+		for(var/obj/machinery/requests_console/RQ as anything in INSTANCES_OF(/obj/machinery/requests_console))
+			if(get_area(RQ) in areas)
+				console = RQ
+				break
 
 	if(SSjob.latejoin_trackers.len)
 		log_mapping("Map contains predefined latejoin spawn points and an arrivals shuttle. Using the arrivals shuttle.")

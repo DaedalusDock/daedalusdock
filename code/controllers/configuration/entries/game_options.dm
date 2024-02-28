@@ -84,10 +84,6 @@
 	integer = FALSE
 	min_val = 0
 
-/datum/config_entry/number/traitor_objectives_amount
-	default = 2
-	min_val = 0
-
 /datum/config_entry/number/brother_objectives_amount
 	default = 2
 	min_val = 0
@@ -270,8 +266,6 @@
 	min_val = 0
 	max_val = 100
 
-/datum/config_entry/flag/ghost_interaction
-
 /datum/config_entry/flag/near_death_experience //If carbons can hear ghosts when unconscious and very close to death
 
 /datum/config_entry/flag/silent_ai
@@ -308,20 +302,18 @@
 /datum/config_entry/flag/starlight
 /datum/config_entry/flag/grey_assistants
 
-/datum/config_entry/number/lavaland_budget
-	default = 60
-	integer = FALSE
-	min_val = 0
-
-/datum/config_entry/number/icemoon_budget
-	default = 90
-	integer = FALSE
-	min_val = 0
-
 /datum/config_entry/number/space_budget
 	default = 16
 	integer = FALSE
 	min_val = 0
+
+#ifdef DISABLE_RUINS
+
+/datum/config_entry/number/space_budget
+	max_val = 0
+	default = 0
+
+#endif
 
 /datum/config_entry/flag/allow_random_events // Enables random events mid-round when set
 

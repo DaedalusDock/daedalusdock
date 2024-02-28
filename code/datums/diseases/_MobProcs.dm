@@ -54,7 +54,7 @@
 	if(!target_zone)
 		target_zone = pick(head_ch;BODY_ZONE_HEAD,body_ch;BODY_ZONE_CHEST,hands_ch;BODY_ZONE_L_ARM,feet_ch;BODY_ZONE_L_LEG)
 	else
-		target_zone = check_zone(target_zone)
+		target_zone = deprecise_zone(target_zone)
 
 
 
@@ -143,9 +143,12 @@
 	return ..()
 
 /mob/living/proc/CanSpreadAirborneDisease()
-	return !is_mouth_covered()
+	return has_mouth() && !is_mouth_covered()
 
 /mob/living/carbon/CanSpreadAirborneDisease()
+	if(!has_mouth() || losebreath)
+		return FALSE
+
 	if(head && (head.flags_cover & HEADCOVERSMOUTH) && head.returnArmor().getRating(BIO) >= 25)
 		return FALSE
 

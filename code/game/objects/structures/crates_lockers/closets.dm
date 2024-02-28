@@ -1,5 +1,6 @@
 #define LOCKER_FULL -1
 
+DEFINE_INTERACTABLE(/obj/structure/closet)
 /obj/structure/closet
 	name = "closet"
 	desc = "It's a basic storage unit."
@@ -9,7 +10,7 @@
 	drag_slowdown = 1.5 // Same as a prone mob
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(MELEE = 20, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
+	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 70, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 60)
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSSTRUCTURE|LETPASSCLICKS
 	zmm_flags = ZMM_MANGLE_PLANES
@@ -212,7 +213,8 @@
 	if(welded || locked)
 		return FALSE
 	if(strong_grab)
-		to_chat(user, span_danger("[pulledby] has an incredibly strong grip on [src], preventing it from opening."))
+		var/obj/item/hand_item/grab/G = grabbed_by[1]
+		to_chat(user, span_danger("[G.assailant] has an incredibly strong grip on [src], preventing it from opening."))
 		return FALSE
 	var/turf/T = get_turf(src)
 	for(var/mob/living/L in T)
@@ -248,6 +250,9 @@
 	if(!location)
 		return
 	for(var/atom/movable/AM as anything in location)
+		if(iseffect(AM))
+			continue
+
 		if(AM != src && insert(AM, mapload) == LOCKER_FULL) // limit reached
 			if(mapload) // Yea, it's a mapping issue. Blame mappers.
 				log_mapping("Closet storage capacity of [type] exceeded on mapload at [AREACOORD(src)]")
@@ -309,7 +314,7 @@
 			for(var/mob/living/M in contents)
 				if(++mobs_stored >= mob_storage_capacity)
 					return FALSE
-		L.stop_pulling()
+		L.release_all_grabs()
 
 	else if(istype(AM, /obj/structure/closet))
 		return FALSE
@@ -572,7 +577,7 @@
 	set category = "Object"
 	set name = "Toggle Open"
 
-	if(!usr.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!usr.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(iscarbon(usr) || issilicon(usr) || isdrone(usr))
@@ -584,15 +589,10 @@
 // and due to an oversight in turf/Enter() were going through walls.  That
 // should be independently resolved, but this is also an interesting twist.
 /obj/structure/closet/Exit(atom/movable/leaving, direction)
-	. = ..()
-	return FALSE
-
-/obj/structure/closet/Exited(atom/movable/gone, direction)
-	. = ..()
-	if(QDELETED(gone)) //If an object in our contents was qdeleted, don't open as a result of moveToNullspace()
-		return
-
 	open()
+	if(leaving.loc == src)
+		return FALSE
+	return TRUE
 
 /obj/structure/closet/container_resist_act(mob/living/user)
 	if(isstructure(loc))
@@ -640,7 +640,7 @@
 /obj/structure/closet/attack_hand_secondary(mob/user, modifiers)
 	. = ..()
 
-	if(!user.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!user.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 
 	if(!opened && secure)

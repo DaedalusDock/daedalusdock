@@ -18,7 +18,7 @@
 	if(!istype(projectile.firer, /obj/machinery/power/emitter))
 		investigate_log("has been hit by [projectile] fired by [key_name(projectile.firer)]", INVESTIGATE_ENGINE)
 
-	if(projectile.armor_flag != BULLET || kiss_power) //This is a beam.
+	if(projectile.armor_flag != PUNCTURE || kiss_power) //This is a beam.
 		power += ((projectile.damage * SUPERMATTER_BULLET_ENERGY + kiss_power) * charging_factor) / power_factor
 
 		if(!has_been_powered)
@@ -121,7 +121,7 @@
 		dust_mob(user, cause = "hand")
 		return
 
-	if(!user.is_mouth_covered())
+	if(user.has_mouth() && !user.is_mouth_covered())
 		if(user.combat_mode)
 			dust_mob(user,
 				span_danger("As [user] tries to take a bite out of [src] everything goes silent before [user.p_their()] body starts to glow and burst into flames before flashing to ash."),

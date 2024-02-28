@@ -74,10 +74,10 @@
 /obj/machinery/chem_recipe_debug/proc/setup_reactions()
 	cached_reactions = list()
 	if(process_all)
-		for(var/reaction in GLOB.chemical_reactions_list_reactant_index)
-			if(is_type_in_list(GLOB.chemical_reactions_list_reactant_index[reaction], cached_reactions))
+		for(var/reaction in SSreagents.chemical_reactions_list_reactant_index)
+			if(is_type_in_list(SSreagents.chemical_reactions_list_reactant_index[reaction], cached_reactions))
 				continue
-			cached_reactions += GLOB.chemical_reactions_list_reactant_index[reaction]
+			cached_reactions += SSreagents.chemical_reactions_list_reactant_index[reaction]
 	else
 		cached_reactions = reaction_names
 	reagents.clear_reagents()
@@ -288,7 +288,7 @@
 				if(!reagent)
 					say("Could not find [name]")
 					continue
-				var/datum/chemical_reaction/reaction = GLOB.chemical_reactions_list_product_index[reagent.type]
+				var/datum/chemical_reaction/reaction = SSreagents.chemical_reactions_list_product_index[reagent.type]
 				if(!reaction)
 					say("Could not find [name] reaction!")
 					continue
@@ -322,7 +322,7 @@
 			if(!reagent)
 				say("Could not find [name]")
 				return
-			var/datum/chemical_reaction/reaction = GLOB.chemical_reactions_list_product_index[reagent.type]
+			var/datum/chemical_reaction/reaction = SSreagents.chemical_reactions_list_product_index[reagent.type]
 			if(!reaction)
 				say("Could not find [name] reaction!")
 				return

@@ -11,6 +11,8 @@
 	integrity_failure = 0.1
 	custom_materials = list(/datum/material/iron = 2000)
 	layer = OBJ_LAYER
+	mouse_drop_pointer = TRUE
+
 	var/buildstacktype = /obj/item/stack/sheet/iron
 	var/buildstackamount = 1
 	var/item_chair = /obj/item/chair // if null it can't be picked up
@@ -24,6 +26,7 @@
 
 /obj/structure/chair/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(prob(0.2))
 		name = "tactical [name]"
 	MakeRotate()
@@ -34,6 +37,7 @@
 
 /obj/structure/chair/Destroy()
 	SSjob.latejoin_trackers -= src //These may be here due to the arrivals shuttle
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/structure/chair/deconstruct(disassembled)
@@ -267,7 +271,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool, 0)
 	if(over_object == usr && Adjacent(usr))
 		if(!item_chair || has_buckled_mobs() || src.flags_1 & NODECONSTRUCT_1)
 			return
-		if(!usr.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+		if(!usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
 			return
 		usr.visible_message(span_notice("[usr] grabs \the [src.name]."), span_notice("You grab \the [src.name]."))
 		var/obj/item/C = new item_chair(loc)
@@ -310,14 +314,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	throwforce = 10
 	throw_range = 3
 	hitsound = 'sound/items/trayhit1.ogg'
-	hit_reaction_chance = 50
 	custom_materials = list(/datum/material/iron = 2000)
+
+	block_sound = SFX_BLOCK_BIG_METAL
+
 	var/break_chance = 5 //Likely hood of smashing the chair.
 	var/obj/structure/chair/origin_type = /obj/structure/chair
 
 /obj/item/chair/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins hitting [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	playsound(src,hitsound,50,TRUE)
+	playsound(src, get_hitsound(), 50,TRUE)
 	return BRUTELOSS
 
 /obj/item/chair/narsie_act()
@@ -361,14 +367,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 		new /obj/item/stack/rods(get_turf(loc), 2)
 	qdel(src)
 
-
-
-
-/obj/item/chair/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	if(attack_type == UNARMED_ATTACK && prob(hit_reaction_chance))
-		owner.visible_message(span_danger("[owner] fends off [attack_text] with [src]!"))
+/obj/item/chair/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	. = ..()
+	if(prob(50) && ((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
 		return TRUE
-	return FALSE
+
+/obj/item/chair/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
+	if(do_message)
+		if(((attack_type == UNARMED_ATTACK) || (attack_type == LEAP_ATTACK)))
+			wielder.visible_message(span_danger("[wielder] fends off [attack_text] with [src]!"))
+			return ..(do_sound = FALSE)
+	return ..()
+
 
 /obj/item/chair/afterattack(atom/target, mob/living/carbon/user, proximity)
 	. = ..()
@@ -462,7 +472,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 
 /obj/structure/chair/bronze/AltClick(mob/user)
 	turns = 0
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	if(!(datum_flags & DF_ISPROCESSING))
 		user.visible_message(span_notice("[user] spins [src] around, and the last vestiges of Ratvarian technology keeps it spinning FOREVER."), \

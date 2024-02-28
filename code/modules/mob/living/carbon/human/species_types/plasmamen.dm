@@ -5,7 +5,7 @@
 	say_mod = "rattles"
 	sexes = 0
 	meat = /obj/item/stack/sheet/mineral/plasma
-	species_traits = list(NOBLOOD, NOTRANSSTING, HAS_BONE, BODY_RESIZABLE)
+	species_traits = list(NOBLOOD, NOTRANSSTING, BODY_RESIZABLE)
 	// plasmemes get hard to wound since they only need a severe bone wound to dismember, but unlike skellies, they can't pop their bones back into place
 	inherent_traits = list(
 		TRAIT_ADVANCEDTOOLUSER,
@@ -18,13 +18,11 @@
 	)
 
 	inherent_biotypes = MOB_HUMANOID|MOB_MINERAL
-	mutantlungs = /obj/item/organ/lungs/plasmaman
-	mutanttongue = /obj/item/organ/tongue/bone/plasmaman
-	mutantliver = /obj/item/organ/liver/plasmaman
-	mutantstomach = /obj/item/organ/stomach/bone/plasmaman
+
 	burnmod = 1.5
 	heatmod = 1.5
 	brutemod = 1.5
+
 	payday_modifier = 0.75
 	breathid = GAS_PLASMA
 	disliked_food = FRUIT | CLOTH
@@ -43,14 +41,33 @@
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/plasmaman,
 	)
 
-	// Body temperature for Plasmen is much lower human as they can handle colder environments
-	bodytemp_normal = (BODYTEMP_NORMAL - 40)
+	organs = list(
+		ORGAN_SLOT_BRAIN = /obj/item/organ/brain,
+		ORGAN_SLOT_HEART = null,
+		ORGAN_SLOT_LUNGS = /obj/item/organ/lungs/plasmaman,
+		ORGAN_SLOT_EYES = /obj/item/organ/eyes,
+		ORGAN_SLOT_EARS =  /obj/item/organ/ears,
+		ORGAN_SLOT_TONGUE = /obj/item/organ/tongue/bone/plasmaman,
+		ORGAN_SLOT_STOMACH = /obj/item/organ/stomach/bone/plasmaman,
+		ORGAN_SLOT_APPENDIX = null,
+		ORGAN_SLOT_LIVER = /obj/item/organ/liver/plasmaman,
+		ORGAN_SLOT_KIDNEYS = /obj/item/organ/kidneys,
+	)
+
+	//* BODY TEMPERATURE THINGS *//
+	cold_level_3 = 80
+	cold_level_2 = 130
+	cold_level_1 = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
+	cold_discomfort_level = 255
+
+	bodytemp_normal = BODYTEMP_NORMAL - 40
 	// The minimum amount they stabilize per tick is reduced making hot areas harder to deal with
 	bodytemp_autorecovery_min = 2
-	// They are hurt at hot temps faster as it is harder to hold their form
-	bodytemp_heat_damage_limit = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
-	// This effects how fast body temp stabilizes, also if cold resit is lost on the mob
-	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 50) // about -50c
+
+	heat_discomfort_level = 300
+	heat_level_1 = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
+	heat_level_2 = 400
+	heat_level_3 = 1000
 
 	ass_image = 'icons/ass/assplasma.png'
 
@@ -123,15 +140,17 @@
 			equipping.put_in_l_hand(tank)
 		else
 			equipping.put_in_r_hand(tank)
-		equipping.internal = tank
+		equipping.open_internals(tank)
 
 /datum/species/plasmaman/give_important_for_life(mob/living/carbon/human/human_to_equip)
 	. = ..()
-	human_to_equip.internal = human_to_equip.get_item_for_held_index(2)
-	if(!human_to_equip.internal)
+	var/obj/item/I = human_to_equip.get_item_for_held_index(2)
+	if(I)
+		human_to_equip.open_internals(I)
+	else
 		var/obj/item/tank/internals/plasmaman/belt/new_tank = new(null)
 		if(human_to_equip.equip_to_slot_or_del(new_tank, ITEM_SLOT_BELT))
-			human_to_equip.internal = human_to_equip.belt
+			human_to_equip.open_internals(human_to_equip.belt)
 		else
 			stack_trace("Plasmaman going without internals. Uhoh.")
 

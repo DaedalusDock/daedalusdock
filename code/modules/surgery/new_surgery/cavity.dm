@@ -8,7 +8,7 @@
 //	 generic implant surgery step datum
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/cavity
-	shock_level = 40
+	pain_given =40
 	delicate = 1
 	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 	abstract_type = /datum/surgery_step/cavity

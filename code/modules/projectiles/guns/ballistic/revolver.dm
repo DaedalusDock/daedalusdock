@@ -10,13 +10,12 @@
 	dry_fire_sound = 'sound/weapons/gun/revolver/dry_fire.ogg'
 	casing_ejector = FALSE
 	internal_magazine = TRUE
-	bolt_type = BOLT_TYPE_NO_BOLT
-	tac_reloads = FALSE
+	bolt = /datum/gun_bolt/no_bolt
 	var/spin_delay = 10
 	var/recent_spin = 0
 	var/last_fire = 0
 
-/obj/item/gun/ballistic/revolver/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+/obj/item/gun/ballistic/revolver/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	..()
 	last_fire = world.time
 
@@ -37,7 +36,7 @@
 	..()
 	spin()
 
-/obj/item/gun/ballistic/revolver/fire_sounds()
+/obj/item/gun/ballistic/revolver/play_fire_sound()
 	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo(TRUE, FALSE)) // fucking REVOLVERS
 	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
 	var/play_click = sqrt(magazine?.max_ammo) > get_ammo(TRUE, FALSE)
@@ -175,7 +174,7 @@
 		return
 	..()
 
-/obj/item/gun/ballistic/revolver/russian/fire_gun(atom/target, mob/living/user, flag, params)
+/obj/item/gun/ballistic/revolver/russian/try_fire_gun(atom/target, mob/living/user, flag, params)
 	. = ..(null, user, flag, params)
 
 	if(flag)
@@ -201,7 +200,7 @@
 
 		spun = FALSE
 
-		var/zone = check_zone(user.zone_selected)
+		var/zone = deprecise_zone(user.zone_selected)
 		var/obj/item/bodypart/affecting = H.get_bodypart(zone)
 		var/is_target_face = zone == BODY_ZONE_HEAD || zone == BODY_ZONE_PRECISE_EYES || zone == BODY_ZONE_PRECISE_MOUTH
 
@@ -245,8 +244,8 @@
 		return FALSE
 	if(HAS_TRAIT(user, TRAIT_CLUMSY) || is_clown_job(user.mind?.assigned_role))
 		return ..()
-	if(process_fire(user, user, FALSE, null, BODY_ZONE_HEAD))
+	if(do_fire_gun(user, user, FALSE, null, BODY_ZONE_HEAD))
 		user.visible_message(span_warning("[user] somehow manages to shoot [user.p_them()]self in the face!"), span_userdanger("You somehow shoot yourself in the face! How the hell?!"))
-		user.emote("scream")
+		user.emote("agony")
 		user.drop_all_held_items()
 		user.Paralyze(80)

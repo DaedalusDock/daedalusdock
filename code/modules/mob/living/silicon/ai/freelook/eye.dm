@@ -101,11 +101,6 @@
 		if(ai.master_multicam)
 			ai.master_multicam.refresh_view()
 
-/mob/camera/ai_eye/zMove(dir, turf/target, z_move_flags = NONE, recursions_left = 1, list/falling_movs)
-	. = ..()
-	if(.)
-		setLoc(loc, force_update = TRUE)
-
 /mob/camera/ai_eye/Move()
 	return
 
@@ -187,8 +182,7 @@
 	all_eyes += eyeobj
 	eyeobj.ai = src
 	eyeobj.setLoc(loc)
-	eyeobj.name = "[name] (AI Eye)"
-	eyeobj.real_name = eyeobj.name
+	eyeobj.set_real_name("[name] (AI Eye)")
 	set_eyeobj_visible(TRUE)
 
 /mob/living/silicon/ai/proc/set_eyeobj_visible(state = TRUE)

@@ -5,7 +5,7 @@
 	desc = "A 12 gauge lead slug."
 	icon_state = "blshell"
 	worn_icon_state = "shell"
-	caliber = CALIBER_SHOTGUN
+	caliber = CALIBER_12GAUGE
 	custom_materials = list(/datum/material/iron=4000)
 	projectile_type = /obj/projectile/bullet/shotgun_slug
 

@@ -6,7 +6,6 @@
 	icon_state = "chemgun"
 	inhand_icon_state = "chemgun"
 	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 3
 	throw_range = 7
 	force = 4
 	custom_materials = list(/datum/material/iron=2000)
@@ -24,13 +23,13 @@
 	create_reagents(90, OPENCONTAINER)
 
 /obj/item/gun/chem/Destroy()
-	. = ..()
 	STOP_PROCESSING(SSobj, src)
+	return ..()
 
-/obj/item/gun/chem/can_shoot()
+/obj/item/gun/chem/can_fire()
 	return syringes_left
 
-/obj/item/gun/chem/handle_chamber()
+/obj/item/gun/chem/do_chamber_update()
 	if(chambered && !chambered.loaded_projectile && syringes_left)
 		chambered.newshot()
 

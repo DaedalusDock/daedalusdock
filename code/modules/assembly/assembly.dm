@@ -14,11 +14,11 @@
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=100)
 	throwforce = 2
-	throw_speed = 3
 	throw_range = 7
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
 
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_ATTACK_HAND
 	/**
 	 * Set to true if the device has different icons for each position.
 	 * This will prevent things such as visible lasers from facing the incorrect direction when transformed by assembly_holder's update_appearance()
@@ -76,8 +76,10 @@
 	if(connected && wire_type)
 		connected.pulse_assembly(src)
 		return TRUE
+
 	if(holder && (wire_type & WIRE_PULSE))
 		holder.process_activation(src, 1, 0)
+
 	if(holder && (wire_type & WIRE_PULSE_SPECIAL))
 		holder.process_activation(src, 0, 1)
 	return TRUE

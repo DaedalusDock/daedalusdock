@@ -22,15 +22,17 @@
 	casing_ejector = FALSE
 	bolt_wording = "pump"
 	cartridge_wording = "shell"
-	tac_reloads = FALSE
-	weapon_weight = WEAPON_HEAVY
+
+	recoil = 1
+	unwielded_recoil = 4
 
 	pb_knockback = 2
+	unwielded_spread_bonus = 40
 
 /obj/item/gun/ballistic/shotgun/blow_up(mob/user)
 	. = 0
 	if(chambered?.loaded_projectile)
-		process_fire(user, user, FALSE)
+		do_fire_gun(user, user, FALSE)
 		. = 1
 
 /obj/item/gun/ballistic/shotgun/lethal
@@ -50,7 +52,7 @@
 
 // Automatic Shotguns//
 
-/obj/item/gun/ballistic/shotgun/automatic/shoot_live_shot(mob/living/user)
+/obj/item/gun/ballistic/shotgun/automatic/after_firing(mob/living/user)
 	..()
 	rack()
 
@@ -114,7 +116,7 @@
 		to_chat(user, span_notice("You switch to tube A."))
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/AltClick(mob/living/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
 		return
 	rack()
 
@@ -130,12 +132,12 @@
 	righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
 	inhand_x_dimension = 32
 	inhand_y_dimension = 32
-	weapon_weight = WEAPON_MEDIUM
+
+	gun_flags = NO_AKIMBO
 	mag_type = /obj/item/ammo_box/magazine/m12g
 	can_suppress = FALSE
 	burst_size = 1
 	fire_delay = 0
-	pin = /obj/item/firing_pin/implant/pindicate
 	fire_sound = 'sound/weapons/gun/shotgun/shot_alt.ogg'
 	actions_types = list()
 	mag_display = TRUE
@@ -145,7 +147,6 @@
 	mag_display_ammo = TRUE
 	semi_auto = TRUE
 	internal_magazine = FALSE
-	tac_reloads = TRUE
 	///the type of secondary magazine for the bulldog
 	var/secondary_magazine_type
 	///the secondary magazine
@@ -182,7 +183,7 @@
 	else
 		. += "[icon_state]_no_secondary_mag"
 
-/obj/item/gun/ballistic/shotgun/bulldog/handle_chamber()
+/obj/item/gun/ballistic/shotgun/bulldog/do_chamber_update()
 	if(!secondary_magazine)
 		return ..()
 	var/secondary_shells_left = LAZYLEN(secondary_magazine.stored_ammo)
@@ -236,8 +237,6 @@
 	playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
 	update_appearance()
 
-/obj/item/gun/ballistic/shotgun/bulldog/unrestricted
-	pin = /obj/item/firing_pin
 /////////////////////////////
 // DOUBLE BARRELED SHOTGUN //
 /////////////////////////////
@@ -248,7 +247,7 @@
 	icon_state = "dshotgun"
 	inhand_icon_state = "shotgun_db"
 	w_class = WEIGHT_CLASS_BULKY
-	weapon_weight = WEAPON_MEDIUM
+	gun_flags = NO_AKIMBO
 	force = 10
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BACK
@@ -256,27 +255,10 @@
 	sawn_desc = "Omar's coming!"
 	obj_flags = UNIQUE_RENAME
 	rack_sound_volume = 0
-	unique_reskin = list("Default" = "dshotgun",
-						"Dark Red Finish" = "dshotgun_d",
-						"Ash" = "dshotgun_f",
-						"Faded Grey" = "dshotgun_g",
-						"Maple" = "dshotgun_l",
-						"Rosewood" = "dshotgun_p"
-						)
 	semi_auto = TRUE
-	bolt_type = BOLT_TYPE_NO_BOLT
+	bolt = /datum/gun_bolt/no_bolt
 	can_be_sawn_off = TRUE
 	pb_knockback = 3 // it's a super shotgun!
-
-/obj/item/gun/ballistic/shotgun/doublebarrel/AltClick(mob/user)
-	. = ..()
-	if(unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
-		reskin_obj(user)
-
-/obj/item/gun/ballistic/shotgun/doublebarrel/sawoff(mob/user)
-	. = ..()
-	if(.)
-		weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/slugs
 	name = "hunting shotgun"
@@ -294,7 +276,7 @@
 	inhand_x_dimension = 32
 	inhand_y_dimension = 32
 	mag_type = /obj/item/ammo_box/magazine/internal/shot/bounty
-	weapon_weight = WEAPON_MEDIUM
+	gun_flags = NO_AKIMBO
 	semi_auto = TRUE
 	flags_1 = CONDUCT_1
 	force = 18 //it has a hook on it

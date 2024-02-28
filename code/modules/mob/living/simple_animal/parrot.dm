@@ -130,6 +130,11 @@
 	AddElement(/datum/element/strippable, GLOB.strippable_parrot_items, TYPE_PROC_REF(/mob/living, should_strip))
 	AddElement(/datum/element/simple_flying)
 
+
+/mob/living/simple_animal/parrot/Destroy()
+	QDEL_NULL(ears)
+	return ..()
+
 /mob/living/simple_animal/parrot/examine(mob/user)
 	. = ..()
 	if(stat)
@@ -377,7 +382,7 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 	..()
 
 	//Sprite update for when a parrot gets pulled
-	if(pulledby && !stat && parrot_state != PARROT_WANDER)
+	if(LAZYLEN(grabbed_by) && !stat && parrot_state != PARROT_WANDER)
 		if(buckled)
 			buckled.unbuckle_mob(src, TRUE)
 			buckled = null

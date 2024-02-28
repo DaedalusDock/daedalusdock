@@ -18,7 +18,7 @@
 		if(prob(Ceil(damage/4)) && set_sever_tendon(TRUE))
 			internal_damage = TRUE
 		if(internal_damage)
-			to_chat(owner, span_danger("You feel something rip in your [plaintext_zone]!"))
+			owner?.apply_pain(50, body_zone, "You feel something rip in your [plaintext_zone]!")
 
 	//Burn damage can cause fluid loss due to blistering and cook-off
 	if(owner && !surgical && (damage > FLUIDLOSS_BURN_REQUIRED) && (bodypart_flags & BP_HAS_BLOOD) && (wound_type in fluid_wounds_check))
@@ -37,7 +37,7 @@
 			//we need to make sure that the wound we are going to worsen is compatible with the type of damage...
 			var/list/compatible_wounds = list()
 			for (var/datum/wound/W as anything in wounds)
-				if (W.can_worsen(type, damage))
+				if (W.can_worsen(wound_type, damage))
 					compatible_wounds += W
 
 			if(length(compatible_wounds))
@@ -46,15 +46,17 @@
 				if(prob(25))
 					if(!IS_ORGANIC_LIMB(src))
 						owner.visible_message(
-							span_danger("The damage to \the [owner]'s [plaintext_zone] worsens."),\
-							span_danger("The damage to your [name] worsens."),\
-							span_danger("You hear the screech of abused metal.")
+							span_warning("The damage to \the [owner]'s [plaintext_zone] worsens."),
+							span_warning("The damage to your [name] worsens."),
+							span_hear("You hear the screech of abused metal."),
+							COMBAT_MESSAGE_RANGE,
 						)
 					else
 						owner.visible_message(
-							span_danger("The wound on \the [owner]'s [plaintext_zone] widens with a nasty ripping noise."),\
-							span_danger("The wound on your [plaintext_zone] widens with a nasty ripping noise."),\
-							span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
+							span_warning("The wound on \the [owner]'s [plaintext_zone] widens with a nasty ripping noise."),
+							span_warning("The wound on your [plaintext_zone] widens with a nasty ripping noise."),
+							span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
+							COMBAT_MESSAGE_RANGE,
 						)
 				return W
 

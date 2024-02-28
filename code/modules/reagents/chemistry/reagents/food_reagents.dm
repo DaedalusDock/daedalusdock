@@ -256,20 +256,12 @@
 	switch(current_cycle)
 		if(1 to 15)
 			heating = 5
-			if(isslime(C))
-				heating = rand(5, 20)
 		if(15 to 25)
 			heating = 10
-			if(isslime(C))
-				heating = rand(10, 20)
 		if(25 to 35)
 			heating = 15
-			if(isslime(C))
-				heating = rand(15, 20)
 		if(35 to INFINITY)
 			heating = 20
-			if(isslime(C))
-				heating = rand(20, 25)
 	C.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
 	return ..()
 
@@ -445,7 +437,7 @@
 	if(!istype(exposed_turf))
 		return
 	exposed_turf.MakeSlippery(TURF_WET_LUBE, min_wet_time = 10 SECONDS, wet_time_to_add = reac_volume*2 SECONDS)
-	var/obj/effect/hotspot/hotspot = exposed_turf.fire
+	var/obj/effect/hotspot/hotspot = exposed_turf.active_hotspot
 	if(hotspot)
 		var/datum/gas_mixture/lowertemp = exposed_turf.remove_air(exposed_turf.return_air().total_moles)
 		lowertemp.temperature = max( min(lowertemp.temperature-2000,lowertemp.temperature / 2) ,0)
@@ -645,9 +637,10 @@
 	if(!(methods & INGEST) || !((methods & (TOUCH|VAPOR)) && (exposed_mob.is_mouth_covered() || exposed_mob.is_eyes_covered())))
 		return
 
-	if(!exposed_mob.getorganslot(ORGAN_SLOT_EYES)) //can't blind somebody with no eyes
+	var/obj/item/organ/eyes/E = exposed_mob.getorganslot(ORGAN_SLOT_EYES)
+	if(!E && !(E.organ_flags & ORGAN_SYNTHETIC)) //can't blind somebody with no eyes
 		to_chat(exposed_mob, span_notice("Your eye sockets feel wet."))
-	else
+	else if(!(E.organ_flags & ORGAN_SYNTHETIC))
 		if(!exposed_mob.eye_blurry)
 			to_chat(exposed_mob, span_warning("Tears well up in your eyes!"))
 		exposed_mob.blind_eyes(2)
@@ -674,43 +667,6 @@
 	if(C.nutrition > NUTRITION_LEVEL_FULL - 25)
 		C.adjust_nutrition(-3 * nutriment_factor * removed)
 	return ..()
-
-////Lavaland Flora Reagents////
-
-
-/datum/reagent/consumable/entpoly
-	name = "Entropic Polypnium"
-	description = "An ichor, derived from a certain mushroom, makes for a bad time."
-	color = "#1d043d"
-	taste_description = "bitter mushroom"
-
-
-/datum/reagent/consumable/entpoly/affect_ingest(mob/living/carbon/C, removed)
-	if(current_cycle >= 10)
-		C.Unconscious(40 * removed, FALSE)
-	if(prob(10))
-		C.losebreath += 4 * removed
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, 150)
-		C.adjustToxLoss(3 * removed,0)
-		C.stamina.adjust(-10 * removed)
-		C.blur_eyes(5)
-		. = TRUE
-	return ..() || .
-
-/datum/reagent/consumable/vitfro
-	name = "Vitrium Froth"
-	description = "A bubbly paste that heals wounds of the skin."
-	color = "#d3a308"
-	nutriment_factor = 3 * REAGENTS_METABOLISM
-	taste_description = "fruity mushroom"
-
-
-/datum/reagent/consumable/vitfro/affect_ingest(mob/living/carbon/C, removed)
-	if(prob(55))
-		C.adjustBruteLoss(-1 * removed, 0)
-		C.adjustFireLoss(-1 * removed, 0)
-		. = TRUE
-	return ..() || .
 
 /datum/reagent/consumable/clownstears
 	name = "Clown's Tears"

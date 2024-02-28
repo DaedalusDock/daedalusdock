@@ -19,12 +19,11 @@ RLD
 	item_flags = NOBLUDGEON
 	force = 0
 	throwforce = 10
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron=100000)
 	req_access_txt = "11"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	var/datum/effect_system/spark_spread/spark_system
 	var/matter = 0
@@ -370,7 +369,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	set category = "Object"
 	set src in view(1)
 
-	if(!usr.canUseTopic(src, BE_CLOSE))
+	if(!usr.canUseTopic(src, USE_CLOSE))
 		return
 
 	toggle_window_glass(usr)
@@ -380,7 +379,7 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	set category = "Object"
 	set src in view(1)
 
-	if(!usr.canUseTopic(src, BE_CLOSE))
+	if(!usr.canUseTopic(src, USE_CLOSE))
 		return
 
 	toggle_window_size(usr)
@@ -688,11 +687,11 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	airlock_electronics = new(src)
 	airlock_electronics.name = "Access Control"
 	airlock_electronics.holder = src
-	GLOB.rcd_list += src
+	SET_TRACKING(TRACKING_KEY_RCD)
 
 /obj/item/construction/rcd/Destroy()
 	QDEL_NULL(airlock_electronics)
-	GLOB.rcd_list -= src
+	UNSET_TRACKING(TRACKING_KEY_RCD)
 	. = ..()
 
 /obj/item/construction/rcd/attack_self(mob/user)

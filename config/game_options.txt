@@ -192,11 +192,6 @@ MINIMAL_ACCESS_THRESHOLD 20
 ## Comment this out this to make security officers spawn in departmental security posts
 #SEC_START_BRIG
 
-
-## GHOST INTERACTION ###
-## Uncomment to let ghosts spin chairs. You may be wondering why this is a config option. Don't ask.
-#GHOST_INTERACTION
-
 ## NEAR-DEATH EXPERIENCE ###
 ## Comment this out to disable mobs hearing ghosts when unconscious and very close to death
 NEAR_DEATH_EXPERIENCE
@@ -306,6 +301,8 @@ ROUNDSTART_RACES moth
 ROUNDSTART_RACES plasmaman
 #ROUNDSTART_RACES shadow
 ROUNDSTART_RACES teshari
+ROUNDSTART_RACES ipc
+ROUNDSTART_RACES saurian
 
 ## Races that are better than humans in some ways, but worse in others
 ROUNDSTART_RACES ethereal
@@ -369,7 +366,7 @@ OVERFLOW_CAP -1
 #STARLIGHT
 
 ## Uncomment to bring back old grey suit assistants instead of the now default rainbow colored assistants.
-#GREY_ASSISTANTS
+GREY_ASSISTANTS
 
 ##Limit Spell Choices##
 ## Uncomment to disallow wizards from using certain spells that may be too chaotic/fun for your playerbase

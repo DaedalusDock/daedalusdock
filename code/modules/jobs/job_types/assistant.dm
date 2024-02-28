@@ -70,6 +70,9 @@ Assistant
 	return
 
 /datum/outfit/job/assistant/proc/give_jumpsuit(mob/living/carbon/human/target)
+	if(uniform != initial(uniform)) //Loadout editted, let them have what the new uniform is.
+		return
+
 	var/static/jumpsuit_number = 0
 	jumpsuit_number += 1
 

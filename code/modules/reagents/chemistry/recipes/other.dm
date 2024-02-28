@@ -33,6 +33,10 @@
 	required_catalysts = list(/datum/reagent/stabilizing_agent = 1)
 
 
+/datum/chemical_reaction/unstable_mutagen
+	results = list(/datum/reagent/toxin/mutagen = 1)
+	required_reagents = list(/datum/reagent/chlorine = 1, /datum/reagent/toxin/plasma = 1, /datum/reagent/uranium/radium = 1)
+
 /datum/chemical_reaction/plasma_solidification
 	required_reagents = list(/datum/reagent/iron = 5, /datum/reagent/consumable/frostoil = 5, /datum/reagent/toxin/plasma = 20)
 	mob_react = FALSE
@@ -84,7 +88,7 @@
 		new /obj/item/soap/homemade(location)
 
 /datum/chemical_reaction/omegasoapification
-	required_reagents = list(/datum/reagent/consumable/potato_juice = 10, /datum/reagent/consumable/ethanol/lizardwine = 10, /datum/reagent/monkey_powder = 10, /datum/reagent/drug/krokodil = 10, /datum/reagent/toxin/acid/nitracid = 10, /datum/reagent/consumable/ethanol/hooch = 10, /datum/reagent/drug/pumpup = 10, /datum/reagent/consumable/space_cola = 10)
+	required_reagents = list(/datum/reagent/consumable/potato_juice = 10, /datum/reagent/monkey_powder = 10, /datum/reagent/drug/krokodil = 10, /datum/reagent/toxin/acid/nitracid = 10, /datum/reagent/consumable/ethanol/hooch = 10, /datum/reagent/drug/pumpup = 10, /datum/reagent/consumable/space_cola = 10)
 	required_temp = 999
 	optimal_temp = 999
 	overheat_temp = 1200
@@ -279,7 +283,7 @@
 			D.Devolve()
 
 /datum/chemical_reaction/mix_virus/neuter_virus
-	required_reagents = list(/datum/reagent/toxin/formaldehyde = 1)
+	required_reagents = list(/datum/reagent/space_cleaner = 1)
 	required_catalysts = list(/datum/reagent/blood = 1)
 
 /datum/chemical_reaction/mix_virus/neuter_virus/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
@@ -363,103 +367,6 @@
 /datum/chemical_reaction/acetone
 	results = list(/datum/reagent/acetone = 3)
 	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/fuel = 1, /datum/reagent/oxygen = 1)
-
-
-/datum/chemical_reaction/carpet
-	results = list(/datum/reagent/carpet = 2)
-	required_reagents = list(/datum/reagent/drug/space_drugs = 1, /datum/reagent/blood = 1)
-
-
-/datum/chemical_reaction/carpet/black
-	results = list(/datum/reagent/carpet/black = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/fuel/oil = 1)
-
-/datum/chemical_reaction/carpet/blue
-	results = list(/datum/reagent/carpet/blue = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/medicine/cryoxadone = 1)
-
-/datum/chemical_reaction/carpet/cyan
-	results = list(/datum/reagent/carpet/cyan = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/toxin/cyanide = 1)
-	//cyan = cyanide get it huehueuhuehuehheuhe
-
-/datum/chemical_reaction/carpet/green
-	results = list(/datum/reagent/carpet/green = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/ethanol/beer/green = 1)
-	//make green beer by grinding up green crayons and mixing with beer
-
-/datum/chemical_reaction/carpet/orange
-	results = list(/datum/reagent/carpet/orange = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/orangejuice = 1)
-
-/datum/chemical_reaction/carpet/purple
-	results = list(/datum/reagent/carpet/purple = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/medicine/regen_jelly = 1)
-	//slimes only party
-
-/datum/chemical_reaction/carpet/red
-	results = list(/datum/reagent/carpet/red = 2)
-	required_reagents = list(/datum/reagent/carpet/ = 1, /datum/reagent/liquidgibs = 1)
-
-/datum/chemical_reaction/carpet/royalblack
-	results = list(/datum/reagent/carpet/royal/black = 2)
-	required_reagents = list(/datum/reagent/carpet/black = 1, /datum/reagent/royal_bee_jelly = 1)
-
-/datum/chemical_reaction/carpet/royalblue
-	results = list(/datum/reagent/carpet/royal/blue = 2)
-	required_reagents = list(/datum/reagent/carpet/blue = 1, /datum/reagent/royal_bee_jelly = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_white
-	results = list(/datum/reagent/carpet/neon/simple_white = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/sodium = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_red
-	results = list(/datum/reagent/carpet/neon/simple_red = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/toxin/mindbreaker = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_orange
-	results = list(/datum/reagent/carpet/neon/simple_orange = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/consumable/vitfro = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_yellow
-	results = list(/datum/reagent/carpet/neon/simple_yellow = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/stabilizing_agent = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_lime
-	results = list(/datum/reagent/carpet/neon/simple_lime = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/consumable/limejuice = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_green
-	results = list(/datum/reagent/carpet/neon/simple_green = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/toxin/mutagen = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_cyan
-	results = list(/datum/reagent/carpet/neon/simple_cyan = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/medicine/dexalin = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_teal
-	results = list(/datum/reagent/carpet/neon/simple_teal = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/drug/nicotine = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_blue
-	results = list(/datum/reagent/carpet/neon/simple_blue = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/medicine/clonexadone = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_purple
-	results = list(/datum/reagent/carpet/neon/simple_purple = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/toxin/plasma = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_violet
-	results = list(/datum/reagent/carpet/neon/simple_violet = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/medicine/meralyne = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_pink
-	results = list(/datum/reagent/carpet/neon/simple_pink = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/impedrezene = 1)
-
-/datum/chemical_reaction/carpet/simple_neon_black
-	results = list(/datum/reagent/carpet/neon/simple_black = 2)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/consumable/tinlux = 1, /datum/reagent/medicine/dylovene = 1)
 
 /datum/chemical_reaction/oil
 	results = list(/datum/reagent/fuel/oil = 3)
@@ -551,7 +458,7 @@
 	..()
 //scream powder
 /datum/chemical_reaction/scream
-	required_reagents = list(/datum/reagent/medicine/strange_reagent = 1, /datum/reagent/consumable/cream = 5, /datum/reagent/consumable/ethanol/lizardwine = 5 )
+	required_reagents = list(/datum/reagent/medicine/strange_reagent = 1, /datum/reagent/consumable/cream = 5)
 	required_temp = 374
 	reaction_flags = REACTION_INSTANT
 
@@ -562,11 +469,6 @@
 /datum/chemical_reaction/hair_dye
 	results = list(/datum/reagent/hair_dye = 5)
 	required_reagents = list(/datum/reagent/colorful_reagent = 1, /datum/reagent/uranium/radium = 1, /datum/reagent/drug/space_drugs = 1)
-
-
-/datum/chemical_reaction/barbers_aid
-	results = list(/datum/reagent/barbers_aid = 5)
-	required_reagents = list(/datum/reagent/carpet = 1, /datum/reagent/uranium/radium = 1, /datum/reagent/drug/space_drugs = 1)
 
 /datum/chemical_reaction/saltpetre
 	results = list(/datum/reagent/saltpetre = 3)
@@ -718,3 +620,13 @@
 	for(var/i in rand(1, created_volume) to created_volume)
 		new /mob/living/simple_animal/hostile/ant(location)
 	..()
+
+/datum/chemical_reaction/plastic_polymers
+	required_reagents = list(/datum/reagent/fuel/oil = 5, /datum/reagent/toxin/acid = 2, /datum/reagent/ash = 3)
+	required_temp = 374 //lazily consistent with soap & other crafted objects generically created with heat.
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/plastic_polymers/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	var/location = get_turf(holder.my_atom)
+	for(var/i in 1 to created_volume)
+		new /obj/item/stack/sheet/plastic(location)

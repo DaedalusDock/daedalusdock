@@ -22,7 +22,7 @@
 	//Last power draw, for the progress bar in the UI
 	var/last_power_draw = 0
 
-/obj/machinery/atmospherics/components/trinary/filter/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/trinary/filter/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		on = !on
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -206,7 +206,7 @@
 	icon_state = "filter_on-0"
 /obj/machinery/atmospherics/components/trinary/filter/atmos/n2
 	name = "nitrogen filter"
-	filter_type = list(GAS_N2O)
+	filter_type = list(GAS_NITROGEN)
 /obj/machinery/atmospherics/components/trinary/filter/atmos/o2
 	name = "oxygen filter"
 	filter_type = list(GAS_OXYGEN)

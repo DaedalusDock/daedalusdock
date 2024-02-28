@@ -1,6 +1,6 @@
 /datum/surgery_step/generic_organic
 	can_infect = 1
-	shock_level = 10
+	pain_given =10
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP
 	abstract_type = /datum/surgery_step/generic_organic
 
@@ -264,6 +264,7 @@
 	min_duration = 11 SECONDS
 	max_duration = 16 SECONDS
 	surgery_candidate_flags = NONE
+	pain_given = PAIN_AMT_AGONIZING + 30
 
 	preop_sound = list(
 		/obj/item/circular_saw = 'sound/surgery/saw.ogg',
@@ -279,18 +280,18 @@
 		return affected
 
 /datum/surgery_step/generic_organic/amputate/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)
 	user.visible_message(span_notice("[user] begins to amputate [target]'s [affected.plaintext_zone] with [tool]."))
 	..()
 
 /datum/surgery_step/generic_organic/amputate/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)
 	user.visible_message(span_notice("[user] amputates [target]'s [affected.name] at the [affected.amputation_point] with [tool]."))
 	affected.dismember(DROPLIMB_EDGE, clean = TRUE)
 	..()
 
 /datum/surgery_step/generic_organic/amputate/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)
 	user.visible_message(span_warning("[user]'s hand slips, sawing through the bone in [target]'s [affected.plaintext_zone] with [tool]!"))
 	affected.receive_damage(30, sharpness = SHARP_EDGED|SHARP_POINTY)
 	affected.break_bones()

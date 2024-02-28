@@ -39,6 +39,7 @@
 	///List of items that have been returned to the vending machine.
 	var/list/returned_products
 
+DEFINE_INTERACTABLE(/obj/machinery/vending)
 /**
  * # vending machines
  *
@@ -56,7 +57,7 @@
 	verb_exclaim = "beeps"
 	max_integrity = 300
 	integrity_failure = 0.33
-	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
 	payment_department = ACCOUNT_STATION_MASTER
 	light_power = 0.5
@@ -188,6 +189,7 @@
  * * TRUE - all other cases
  */
 /obj/machinery/vending/Initialize(mapload)
+	SET_TRACKING(__TYPE__)
 	var/build_inv = FALSE
 	if(!refill_canister)
 		circuit = null
@@ -220,6 +222,7 @@
 	Radio.set_listening(FALSE, TRUE)
 
 /obj/machinery/vending/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	QDEL_NULL(wires)
 	QDEL_NULL(coin)
 	QDEL_NULL(bill)
@@ -553,7 +556,6 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 	if(in_range(fatty, src))
 		for(var/mob/living/L in get_turf(fatty))
-			var/was_alive = (L.stat != DEAD)
 			var/mob/living/carbon/C = L
 
 			SEND_SIGNAL(L, COMSIG_ON_VENDOR_CRUSH)
@@ -624,11 +626,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 				L.apply_damage(squish_damage, forced=TRUE)
 				if(crit_case)
 					L.apply_damage(squish_damage, forced=TRUE)
-			if(was_alive && L.stat == DEAD && L.client)
-				L.client.give_award(/datum/award/achievement/misc/vendor_squish, L) // good job losing a fight with an inanimate object idiot
 
 			L.Paralyze(60)
-			L.emote("scream")
+			L.emote("agony")
 			. = TRUE
 			playsound(L, 'sound/effects/blobattack.ogg', 40, TRUE)
 			playsound(L, 'sound/effects/splat.ogg', 50, TRUE)
@@ -1264,16 +1264,19 @@ GLOBAL_LIST_EMPTY(vending_products)
 			break
 	if(!dispensed_item)
 		return FALSE
+
 	/// Charges the user if its not the owner
 	if(!compartmentLoadAccessCheck(user))
 		if(!payee.has_money(dispensed_item.custom_price))
 			balloon_alert(user, "insufficient funds")
 			return TRUE
+
 		/// Make the transaction
 		payee.adjust_money(-dispensed_item.custom_price)
 		linked_account.adjust_money(dispensed_item.custom_price)
 		linked_account.bank_card_talk("[payee.account_holder] made a [dispensed_item.custom_price] \
 		cr purchase at your custom vendor.")
+
 		/// Log the transaction
 		SSblackbox.record_feedback("amount", "vending_spent", dispensed_item.custom_price)
 		log_econ("[dispensed_item.custom_price] credits were spent on [src] buying a \
@@ -1316,7 +1319,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 		to_chat(user, span_warning("You must be holding the price tagger to continue!"))
 		return
 	var/chosen_price = tgui_input_number(user, "Set price", "Price", price)
-	if(!chosen_price || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK) || loc != user)
+	if(!chosen_price || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK) || loc != user)
 		return
 	price = chosen_price
 	to_chat(user, span_notice(" The [src] will now give things a [price] cr tag."))

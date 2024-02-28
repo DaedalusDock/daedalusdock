@@ -7,6 +7,8 @@ SUBSYSTEM_DEF(mouse_entered)
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/hovers = list()
+	/// Keep track of what clients are hovering over. This is used for mouse icon logic.
+	var/list/sustained_hovers = list()
 
 /datum/controller/subsystem/mouse_entered/fire()
 	for (var/hovering_client in hovers)

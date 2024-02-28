@@ -192,6 +192,7 @@
 		/datum/design/board/odysseus_peri,
 		/datum/design/board/gygax_main,
 		/datum/design/board/gygax_peri,
+		/datum/design/board/gygax_targ,
 		/datum/design/board/durand_main,
 		/datum/design/board/durand_peri,
 		/datum/design/board/durand_targ,

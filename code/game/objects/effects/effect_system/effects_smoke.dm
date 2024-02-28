@@ -46,13 +46,17 @@
 	QDEL_IN(src, 10)
 
 /obj/effect/particle_effect/smoke/process()
+	SHOULD_CALL_PARENT(TRUE)
+	. = 1 || ..()
+	. = null
+
 	lifetime--
 	if(lifetime < 1)
 		kill_smoke()
-		return FALSE
+		return PROCESS_KILL
+
 	for(var/mob/living/L in range(0,src))
 		smoke_mob(L)
-	return TRUE
 
 /obj/effect/particle_effect/smoke/proc/smoke_mob(mob/living/carbon/C)
 	if(!istype(C))
@@ -124,7 +128,13 @@
 
 /obj/effect/particle_effect/smoke/bad
 	lifetime = 8
-	loc_procs = CROSSED
+
+/obj/effect/particle_effect/smoke/bad/Initialize(mapload)
+	. = ..()
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/particle_effect/smoke/bad/smoke_mob(mob/living/carbon/M)
 	. = ..()
@@ -134,9 +144,12 @@
 		M.emote("cough")
 		return TRUE
 
-/obj/effect/particle_effect/smoke/bad/Crossed(atom/movable/crossed_by, oldloc)
-	if(istype(crossed_by, /obj/projectile/beam))
-		var/obj/projectile/beam/beam = crossed_by
+/obj/effect/particle_effect/smoke/bad/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	SIGNAL_HANDLER
+	if(arrived == src)
+		return
+	if(istype(arrived, /obj/projectile/beam))
+		var/obj/projectile/beam/beam = arrived
 		beam.damage *= 0.5
 
 /datum/effect_system/smoke_spread/bad
@@ -166,7 +179,7 @@
 			if(!distcheck || get_dist(T, location) < blast) // Otherwise we'll get silliness like people using Nanofrost to kill people through walls with cold air
 				G.temperature = temperature
 			//T.air_update_turf(FALSE, FALSE)
-			QDEL_NULL(T.fire)
+			QDEL_NULL(T.active_hotspot)
 			if(G.getGroupGas(GAS_PLASMA))
 				G.adjustGas(GAS_NITROGEN, G.gas[GAS_PLASMA])
 				G.adjustGas(GAS_PLASMA, -G.gas[GAS_PLASMA])

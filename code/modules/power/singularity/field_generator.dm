@@ -34,7 +34,7 @@ no power level overlay is currently in the overlays list.
 	max_integrity = 500
 	can_atmos_pass = CANPASS_ALWAYS
 	//100% immune to lasers and energy projectiles since it absorbs their energy.
-	armor = list(MELEE = 25, BULLET = 10, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	///Amount of energy stored, used for visual overlays (over 9000?)
 	var/power_level = 0
 	///Current power mode of the machine, between FG_OFFLINE, FG_CHARGING, FG_ONLINE
@@ -173,7 +173,7 @@ no power level overlay is currently in the overlays list.
 		return ..()
 
 /obj/machinery/field/generator/bullet_act(obj/projectile/considered_bullet)
-	if(considered_bullet.armor_flag != BULLET)
+	if(considered_bullet.armor_flag != PUNCTURE)
 		power = min(power + considered_bullet.damage, field_generator_max_power)
 		check_power_level()
 	. = ..()

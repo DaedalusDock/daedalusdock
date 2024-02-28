@@ -246,7 +246,7 @@
 	SSshuttle.emergency.setTimer(SSshuttle.last_call_time)
 	priority_announce("Warning: Emergency Shuttle uplink reestablished, shuttle enabled.", "LRSV Icarus Announcement", "Emergency Shuttle Uplink Alert", 'sound/misc/announce_dig.ogg')
 
-/client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in GLOB.nuke_list)
+/client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in INSTANCES_OF(/obj/machinery/nuclearbomb))
 	set category = "Admin.Events"
 	set name = "Toggle Nuke"
 	set popup_menu = FALSE

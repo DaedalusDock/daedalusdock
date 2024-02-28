@@ -6,13 +6,15 @@
 	amount = 1
 	max_amount = INFINITY
 	throwforce = 0
-	throw_speed = 2
+	throw_speed = 0.7
 	throw_range = 2
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
-	var/value = 0
 	grind_results = list(/datum/reagent/cellulose = 10)
+
+	/// How much money one "amount" of this is worth. Use get_item_credit_value().
+	VAR_PROTECTED/value = 0
 
 /obj/item/stack/spacecash/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
@@ -33,6 +35,11 @@
 /obj/item/stack/spacecash/use(used, transfer = FALSE, check = TRUE)
 	. = ..()
 	update_desc()
+
+/// Like use(), but for financial amounts. use_cash(20) on a stack of 10s will use 2. use_cash(22) on a stack of 10s will use 3.
+/obj/item/stack/spacecash/proc/use_cash(value_to_pay)
+	var/amt = ceil(value_to_pay / value)
+	return use(amt)
 
 /obj/item/stack/spacecash/update_icon_state()
 	. = ..()
@@ -64,29 +71,11 @@
 	value = 20
 	merge_type = /obj/item/stack/spacecash/c20
 
-/obj/item/stack/spacecash/c50
-	icon_state = "spacecash50"
-	singular_name = "fifty credit bill"
-	value = 50
-	merge_type = /obj/item/stack/spacecash/c50
-
 /obj/item/stack/spacecash/c100
 	icon_state = "spacecash100"
 	singular_name = "one hundred credit bill"
 	value = 100
 	merge_type = /obj/item/stack/spacecash/c100
-
-/obj/item/stack/spacecash/c200
-	icon_state = "spacecash200"
-	singular_name = "two hundred credit bill"
-	value = 200
-	merge_type = /obj/item/stack/spacecash/c200
-
-/obj/item/stack/spacecash/c500
-	icon_state = "spacecash500"
-	singular_name = "five hundred credit bill"
-	value = 500
-	merge_type = /obj/item/stack/spacecash/c500
 
 /obj/item/stack/spacecash/c1000
 	icon_state = "spacecash1000"

@@ -7,7 +7,21 @@
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
 /proc/random_blood_type()
-	return pick(4;"O-", 36;"O+", 3;"A-", 28;"A+", 1;"B-", 20;"B+", 1;"AB-", 5;"AB+")
+	var/datum/blood/path = pick(\
+		4;/datum/blood/human/omin, \
+		36;/datum/blood/human/opos, \
+		3;/datum/blood/human/amin, \
+		28;/datum/blood/human/apos, \
+		1;/datum/blood/human/bmin, \
+		20;/datum/blood/human/bpos, \
+		1;/datum/blood/human/abmin, \
+		5;/datum/blood/human/abpos\
+	)
+	return GET_BLOOD_REF(path)
+
+/proc/get_blood_dna_color(list/blood_dna)
+	var/datum/blood/blood_type = blood_dna[blood_dna[length(blood_dna)]]
+	return blood_type.color
 
 /proc/random_eye_color()
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
@@ -59,52 +73,6 @@
 	return pick(GLOB.backpacklist)
 
 /proc/random_features()
-	if(!GLOB.tails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails, GLOB.tails_list,  add_blank = TRUE)
-	if(!GLOB.tails_list_human.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human)
-	if(!GLOB.tails_list_lizard.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
-	if(!GLOB.snouts_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
-	if(!GLOB.horns_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/horns, GLOB.horns_list)
-	if(!GLOB.ears_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
-	if(!GLOB.frills_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
-	if(!GLOB.spines_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
-	if(!GLOB.legs_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
-	if(!GLOB.wings_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
-	if(!GLOB.moth_wings_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
-	if(!GLOB.moth_antennae_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
-	if(!GLOB.moth_markings_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	if(!GLOB.pod_hair_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
-	if(!GLOB.teshari_feathers_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_feathers, GLOB.teshari_feathers_list)
-	if(!GLOB.teshari_ears_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_ears, GLOB.teshari_ears_list)
-	if(!GLOB.teshari_body_feathers_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/teshari_body_feathers, GLOB.teshari_body_feathers_list)
-	if(!GLOB.teshari_tails_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/teshari, GLOB.teshari_tails_list)
-
-	if(!GLOB.vox_hair_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_hair, GLOB.vox_hair_list)
-	if(!GLOB.vox_facial_hair_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/facial_vox_hair, GLOB.vox_facial_hair_list)
-	if(!GLOB.tails_list_vox.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/vox, GLOB.tails_list_vox)
-	if(!GLOB.vox_snouts_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/vox_snouts, GLOB.vox_snouts_list)
-
 	//For now we will always return none for tail_human and ears. | "For now" he says.
 	return(list(
 		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
@@ -131,6 +99,12 @@
 		"teshari_ears" = pick(GLOB.teshari_ears_list),
 		"teshari_body_feathers" = pick(GLOB.teshari_body_feathers_list),
 		"tail_teshari" = pick(GLOB.teshari_tails_list),
+		"ipc_screen" = pick(GLOB.ipc_screens_list),
+		"ipc_antenna" = pick(GLOB.ipc_antenna_list),
+		"saurian_screen" = pick(GLOB.saurian_screens_list),
+		"saurian_tail" = pick(GLOB.saurian_tails_list),
+		"saurian_scutes" = pick(GLOB.saurian_scutes_list),
+		"saurian_antenna" = pick(GLOB.saurian_antenna_list),
 	))
 
 /proc/random_mutant_colors()
@@ -808,26 +782,6 @@ GLOBAL_LIST_EMPTY(species_list)
 			return "groin"
 		else
 			return zone
-
-///Takes a zone and returns it's "parent" zone, if it has one.
-/proc/deprecise_zone(precise_zone)
-	switch(precise_zone)
-		if(BODY_ZONE_PRECISE_GROIN)
-			return BODY_ZONE_CHEST
-		if(BODY_ZONE_PRECISE_EYES)
-			return BODY_ZONE_HEAD
-		if(BODY_ZONE_PRECISE_MOUTH)
-			return BODY_ZONE_HEAD
-		if(BODY_ZONE_PRECISE_R_HAND)
-			return BODY_ZONE_R_ARM
-		if(BODY_ZONE_PRECISE_L_HAND)
-			return BODY_ZONE_L_ARM
-		if(BODY_ZONE_PRECISE_L_FOOT)
-			return BODY_ZONE_L_LEG
-		if(BODY_ZONE_PRECISE_R_FOOT)
-			return BODY_ZONE_R_LEG
-		else
-			return precise_zone
 
 ///Returns the direction that the initiator and the target are facing
 /proc/check_target_facings(mob/living/initiator, mob/living/target)

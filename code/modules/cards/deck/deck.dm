@@ -8,9 +8,13 @@
 	icon_state = "deck_nanotrasen_full"
 	w_class = WEIGHT_CLASS_SMALL
 	worn_icon_state = "card"
+
 	hitsound = null
+	wielded_hitsound = 'sound/items/cardflip.ogg'
+
 	attack_verb_continuous = list("attacks")
 	attack_verb_simple = list("attack")
+
 	/// The amount of time it takes to shuffle
 	var/shuffle_time = DECK_SHUFFLE_TIME
 	/// Deck shuffling cooldown.
@@ -21,8 +25,6 @@
 	var/decksize = INFINITY
 	/// The description of the cardgame that is played with this deck (used for memories)
 	var/cardgame_desc = "card game"
-	/// Wielding status for holding with two hands
-	var/wielded = FALSE
 	/// The holodeck computer used to spawn a holographic deck (see /obj/item/toy/cards/deck/syndicate/holographic)
 	var/obj/machinery/computer/holodeck/holodeck
 	/// If the cards in the deck have different card faces icons (blank and CAS decks do not)
@@ -33,9 +35,6 @@
 /obj/item/toy/cards/deck/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/drag_pickup)
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
-	AddComponent(/datum/component/two_handed, attacksound='sound/items/cardflip.ogg')
 	register_context()
 
 	if(!is_standard_deck)
@@ -146,7 +145,7 @@
 
 
 /obj/item/toy/cards/deck/attack_hand(mob/living/user, list/modifiers, flip_card = FALSE)
-	if(!ishuman(user) || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(!ishuman(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		return
 
 	var/obj/item/toy/singlecard/card = draw(user)
@@ -163,7 +162,7 @@
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/toy/cards/deck/AltClick(mob/living/user)
-	if(user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		if(wielded)
 			shuffle_cards(user)
 		else

@@ -29,6 +29,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		/obj/item/bodypart,
 		//Merge conflict marker. It doesn't runtime, but it's not a real object either
 		/obj/merge_conflict_marker,
+		// Haha, no
+		/obj/item/hand_item/grab,
 	)
 	//Say it with me now, type template
 	ignore += typesof(/obj/effect/mapping_helpers)
@@ -74,10 +76,6 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/mob/living/silicon/robot/model)
 	//This lad also sleeps
 	ignore += typesof(/obj/item/hilbertshotel)
-	//this boi spawns turf changing stuff, and it stacks and causes pain. Let's just not
-	ignore += typesof(/obj/effect/sliding_puzzle)
-	//Stacks baseturfs, can't be tested here
-	ignore += typesof(/obj/effect/temp_visual/lava_warning)
 	//Stacks baseturfs, can't be tested here
 	ignore += typesof(/obj/effect/landmark/ctf)
 	//Our system doesn't support it without warning spam from unregister calls on things that never registered
@@ -96,6 +94,10 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/obj/machinery/computer/holodeck)
 	//runtimes if not paired with a landmark
 	ignore += typesof(/obj/structure/industrial_lift)
+	//throws garbage to the log if it spawns without neighbors. It's a mapping helper anyways.
+	ignore += typesof(/obj/structure/cable/smart_cable)
+			// Throws a warning due to passing a zero-duration argument after mapload
+	ignore += typesof(/obj/effect/abstract/smell_holder)
 
 	var/list/cached_contents = spawn_at.contents.Copy()
 	var/original_turf_type = spawn_at.type
@@ -132,33 +134,45 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	GLOB.running_create_and_destroy = FALSE
 	//Hell code, we're bound to have ended the round somehow so let's stop if from ending while we work
 	SSticker.delay_end = TRUE
-	//Prevent the garbage subsystem from harddeling anything, if only to save time
-	SSgarbage.collection_timeout[GC_QUEUE_HARDDELETE] = 10000 HOURS
+	SSgarbage.collection_timeout[GC_QUEUE_CHECK] = 1 MINUTE
 	//Clear it, just in case
 	cached_contents.Cut()
 
+	var/list/queues_we_care_about = list()
+	// All up to harddel
+	for(var/i in 1 to GC_QUEUE_HARDDELETE - 1)
+		queues_we_care_about += i
+
 	//Now that we've qdel'd everything, let's sleep until the gc has processed all the shit we care about
-	var/time_needed = SSgarbage.collection_timeout[GC_QUEUE_CHECK]
+	// + 2 seconds to ensure that everything gets in the queue.
+	var/time_needed = 2 SECONDS
+	for(var/index in queues_we_care_about)
+		time_needed += SSgarbage.collection_timeout[index]
+
 	var/start_time = world.time
+	var/real_start_time = REALTIMEOFDAY
 	var/garbage_queue_processed = FALSE
 
 	sleep(time_needed)
 	while(!garbage_queue_processed)
-		var/list/queue_to_check = SSgarbage.queues[GC_QUEUE_CHECK]
-		//How the hell did you manage to empty this? Good job!
-		if(!length(queue_to_check))
-			garbage_queue_processed = TRUE
-			break
+		var/oldest_packet_creation = INFINITY
+		for(var/index in queues_we_care_about)
+			var/list/queue_to_check = SSgarbage.queues[index]
+			if(!length(queue_to_check))
+				continue
 
-		var/list/oldest_packet = queue_to_check[1]
-		//Pull out the time we deld at
-		var/qdeld_at = oldest_packet[1]
+			var/list/oldest_packet = queue_to_check[1]
+			//Pull out the time we inserted at
+			var/qdeld_at = oldest_packet[GC_QUEUE_ITEM_GCD_DESTROYED]
+
+			oldest_packet_creation = min(qdeld_at, oldest_packet_creation)
+
 		//If we've found a packet that got del'd later then we finished, then all our shit has been processed
-		if(qdeld_at > start_time)
+		if(oldest_packet_creation > start_time && !length(SSgarbage.queues[GC_QUEUE_HARDDELETE]))
 			garbage_queue_processed = TRUE
 			break
 
-		if(world.time > start_time + time_needed + 30 MINUTES) //If this gets us gitbanned I'm going to laugh so hard
+		if(REALTIMEOFDAY > real_start_time + time_needed + 50 MINUTES) //If this gets us gitbanned I'm going to laugh so hard
 			TEST_FAIL("Something has gone horribly wrong, the garbage queue has been processing for well over 30 minutes. What the hell did you do")
 			break
 
@@ -182,12 +196,12 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	for(var/path in cache_for_sonic_speed)
 		var/fails = cache_for_sonic_speed[path]
 		if(fails & BAD_INIT_NO_HINT)
-			TEST_FAIL("[path] didn't return an Initialize hint")
+			TEST_FAIL("[path] didn't return an Initialize() hint")
 		if(fails & BAD_INIT_QDEL_BEFORE)
-			TEST_FAIL("[path] qdel'd in New()")
+			TEST_FAIL("[path] qdeleted before Initialize()")
 		if(fails & BAD_INIT_SLEPT)
 			TEST_FAIL("[path] slept during Initialize()")
 
 	SSticker.delay_end = FALSE
 	//This shouldn't be needed, but let's be polite
-	SSgarbage.collection_timeout[GC_QUEUE_HARDDELETE] = 10 SECONDS
+	SSgarbage.collection_timeout[GC_QUEUE_CHECK] = GC_CHECK_QUEUE

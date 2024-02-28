@@ -118,7 +118,7 @@
 	//If the product/reactants are able to occur
 	for(var/datum/reagent/reagent as anything in holder.reagent_list)
 		//this is done this way to reduce processing compared to holder.has_reagent(P)
-		if(reagent in reaction.required_catalysts)
+		if(reagent.type in reaction.required_catalysts)
 			total_matching_catalysts++
 
 	if(!(total_matching_catalysts == reaction.required_catalysts.len))
@@ -302,12 +302,11 @@
 		message_admins("<span class='warning'>Reaction vars: PreReacted:[reacted_vol] of [step_target_vol] of total [target_vol]. delta_t [delta_t], multiplier [multiplier], delta_chem_factor [delta_chem_factor] Pfactor [product_ratio]. DeltaTime: [delta_time]</span>")
 	#endif
 
-	//Apply thermal output of reaction to beaker
-	if(reaction.reaction_flags & REACTION_HEAT_ARBITARY)
-		holder.chem_temp += clamp((reaction.thermic_constant* total_step_added*thermic_mod), 0, CHEMICAL_MAXIMUM_TEMPERATURE) //old method - for every bit added, the whole temperature is adjusted
-	else //Standard mechanics
-		var/heat_energy = reaction.thermic_constant * total_step_added * thermic_mod * SPECIFIC_HEAT_DEFAULT
-		holder.adjust_thermal_energy(heat_energy, 0, CHEMICAL_MAXIMUM_TEMPERATURE, handle_reactions = FALSE) //heat is relative to the beaker conditions
+	var/heat_energy = reaction.thermic_constant * total_step_added * thermic_mod
+	if(reaction.reaction_flags & REACTION_HEAT_ARBITARY) //old method - for every bit added, the whole temperature is adjusted
+		holder.set_temperature(clamp(holder.chem_temp + heat_energy, 0, CHEMICAL_MAXIMUM_TEMPERATURE))
+	else //Standard mechanics - heat is relative to the beaker conditions
+		holder.adjust_thermal_energy(heat_energy * SPECIFIC_HEAT_DEFAULT, 0, CHEMICAL_MAXIMUM_TEMPERATURE)
 
 	//Give a chance of sounds
 	if(prob(5))

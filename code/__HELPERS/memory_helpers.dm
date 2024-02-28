@@ -60,8 +60,9 @@
 /datum/mind/proc/build_story_mob(mob/living/target)
 	if(isanimal(target))
 		return "\the [target]"
-	if(target.mind?.assigned_role)
-		return  "\the [lowertext(initial(target.mind?.assigned_role.title))]"
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = target
+		return H.get_face_name()
 	return target
 
 ///returns the story name of anything

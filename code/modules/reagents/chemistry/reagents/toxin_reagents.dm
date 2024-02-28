@@ -38,7 +38,7 @@
 	toxpwr = 0.5
 	taste_description = "slime"
 	taste_mult = 0.9
-
+	show_in_codex = TRUE
 
 /datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
@@ -560,23 +560,6 @@
 	C.adjustToxLoss(2, FALSE)
 	. = TRUE
 
-/datum/reagent/toxin/formaldehyde
-	name = "Formaldehyde"
-	description = "Formaldehyde, on its own, is a fairly weak toxin. It contains trace amounts of Histamine, very rarely making it decay into Histamine."
-	silent_toxin = TRUE
-	reagent_state = LIQUID
-	color = "#B4004B"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	toxpwr = 1
-
-
-/datum/reagent/toxin/formaldehyde/affect_blood(mob/living/carbon/C, removed)
-	if(prob(5))
-		holder.add_reagent(/datum/reagent/toxin/histamine, pick(5,15))
-		holder.remove_reagent(/datum/reagent/toxin/formaldehyde, 1.2)
-	else
-		return ..()
-
 /datum/reagent/toxin/venom
 	name = "Venom"
 	description = "An exotic poison extracted from highly toxic fauna. Causes scaling amounts of toxin damage and bruising depending and dosage. Often decays into Histamine."
@@ -622,7 +605,7 @@
 	addiction_types = list(/datum/addiction/opiods = 25)
 
 /datum/reagent/toxin/fentanyl/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 	if(C.getToxLoss() <= 60)
 		C.adjustToxLoss(1 * removed, 0)
 	if(current_cycle >= 18)
@@ -727,9 +710,8 @@
 				C.adjustOxyLoss(rand(5,25), 0)
 				. = TRUE
 			if(3)
-				if(!C.undergoing_cardiac_arrest() && C.can_heartattack())
-					C.set_heartattack(TRUE)
-					if(C.stat <= SOFT_CRIT)
+				if(C.set_heartattack(TRUE))
+					if(C.stat < UNCONSCIOUS)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest!"))
 				else
 					C.losebreath += 10
@@ -1039,7 +1021,7 @@
 
 /datum/reagent/toxin/bungotoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	C.adjustOrganLoss(ORGAN_SLOT_HEART, 3 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_HEART, 3 * removed, updating_health = FALSE)
 
 	// If our mob's currently dizzy from anything else, we will also gain confusion
 	var/mob_dizziness = C.get_timed_status_effect_duration(/datum/status_effect/confusion)
@@ -1050,6 +1032,8 @@
 	if(current_cycle >= 12 && prob(8))
 		var/tox_message = pick("You feel your heart spasm in your chest.", "You feel faint.","You feel you need to catch your breath.","You feel a prickle of pain in your chest.")
 		to_chat(C, span_warning("[tox_message]"))
+
+	return TRUE
 /datum/reagent/toxin/leadacetate
 	name = "Lead Acetate"
 	description = "Used hundreds of years ago as a sweetener, before it was realized that it's incredibly poisonous."
@@ -1061,9 +1045,9 @@
 
 
 /datum/reagent/toxin/leadacetate/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_EARS, 1 * removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_EARS, 1 * removed, updating_health = FALSE)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed, updating_health = FALSE)
 	if(prob(1))
 		to_chat(C, span_notice("What was that? Did I hear something?"))
 		C.adjust_timed_status_effect(5 SECONDS, /datum/status_effect/confusion)
-	return ..()
+	return ..() || TRUE

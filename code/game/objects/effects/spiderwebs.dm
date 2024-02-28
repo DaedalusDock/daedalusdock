@@ -21,7 +21,7 @@
 		playsound(loc, 'sound/items/welder.ogg', 100, TRUE)
 
 /obj/structure/spider/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
-	if(damage_flag == MELEE)
+	if(damage_flag == BLUNT)
 		switch(damage_type)
 			if(BURN)
 				damage_amount *= 2
@@ -67,8 +67,9 @@
 	if(istype(mover, /mob/living/simple_animal/hostile/giant_spider))
 		return TRUE
 	else if(isliving(mover))
-		if(istype(mover.pulledby, /mob/living/simple_animal/hostile/giant_spider))
-			return TRUE
+		for(var/obj/item/hand_item/grab/G in mover.grabbed_by)
+			if(istype(G.assailant, /mob/living/simple_animal/hostile/giant_spider))
+				return TRUE
 		if(prob(50))
 			to_chat(mover, span_danger("You get stuck in \the [src] for a moment."))
 			return FALSE
@@ -95,7 +96,7 @@
 	if(mover == allowed_mob)
 		return TRUE
 	else if(isliving(mover)) //we change the spider to not be able to go through here
-		if(mover.pulledby == allowed_mob)
+		if(allowed_mob.is_grabbing(mover))
 			return TRUE
 		if(prob(50))
 			to_chat(mover, span_danger("You get stuck in \the [src] for a moment."))
@@ -119,7 +120,8 @@
 
 /obj/structure/spider/spiderling/Destroy()
 	new/obj/item/food/spiderling(get_turf(src))
-	. = ..()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/structure/spider/spiderling/Initialize(mapload)
 	. = ..()

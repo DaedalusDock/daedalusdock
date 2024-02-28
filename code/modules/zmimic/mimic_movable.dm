@@ -40,7 +40,7 @@
 /atom/movable/openspace/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	return
 
-/atom/movable/openspace/fire_act(exposed_temperature, exposed_volume)
+/atom/movable/openspace/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	return
 
 /atom/movable/openspace/acid_act()
@@ -98,8 +98,8 @@
 	blend_mode = BLEND_MULTIPLY
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/turf/Tloc = loc
-	if (Tloc.ao_overlays_mimic)
-		overlays += Tloc.ao_overlays_mimic
+	if (Tloc.ao_overlay_mimic)
+		overlays += Tloc.ao_overlay_mimic
 	invisibility = 0
 
 	if (islist(color))

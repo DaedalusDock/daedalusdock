@@ -36,7 +36,7 @@
 /// probability that the pawn should try resisting out of restraints
 #define RESIST_SUBTREE_PROB 50
 ///macro for whether it's appropriate to resist right now, used by resist subtree
-#define SHOULD_RESIST(source) (source.on_fire || source.buckled || HAS_TRAIT(source, TRAIT_RESTRAINED) || (source.pulledby && source.pulledby.grab_state > GRAB_PASSIVE))
+#define SHOULD_RESIST(source) (source.on_fire || source.buckled || HAS_TRAIT(source, TRAIT_RESTRAINED) || HAS_TRAIT(source, TRAIT_AGGRESSIVE_GRAB))
 ///macro for whether the pawn can act, used generally to prevent some horrifying ai disasters
 #define IS_DEAD_OR_INCAP(source) (source.incapacitated() || source.stat)
 
@@ -46,6 +46,8 @@
 #define BB_NEXT_HUNGRY "BB_NEXT_HUNGRY"
 ///what we're going to eat next
 #define BB_FOOD_TARGET "bb_food_target"
+///Path we should use next time we use the JPS movement datum
+#define BB_PATH_TO_USE "BB_path_to_use"
 
 //for songs
 

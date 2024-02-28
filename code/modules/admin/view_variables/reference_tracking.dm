@@ -23,12 +23,13 @@
 		usr.client.running_find_references = type
 
 	log_reftracker("Beginning search for references to a [type].")
+	var/additional_info = dump_harddel_info()
+	if(additional_info)
+		log_reftracker("Additional information: [additional_info]")
 
 	var/starting_time = world.time
 
-#if DM_VERSION >= 515
 	log_reftracker("Refcount for [type]: [refcount(src)]")
-#endif
 
 	//Time to search the whole game for our ref
 	DoSearchVar(GLOB, "GLOB", search_time = starting_time) //globals
@@ -92,6 +93,7 @@
 			return
 
 		datum_container.last_find_references = search_time
+		var/container_print = datum_container.ref_search_details()
 		var/list/vars_list = datum_container.vars
 
 		for(var/varname in vars_list)
@@ -108,11 +110,11 @@
 					found_refs[varname] = TRUE
 					continue //End early, don't want these logging
 				#endif
-				log_reftracker("Found [type] \ref[src] in [datum_container.type]'s \ref[datum_container] [varname] var. [container_name]")
+				log_reftracker("Found [type] [ref(src)] in [datum_container.type]'s [container_print] [varname] var. [container_name]")
 				continue
 
 			if(islist(variable))
-				DoSearchVar(variable, "[container_name] \ref[datum_container] -> [varname] (list)", recursive_limit - 1, search_time)
+				DoSearchVar(variable, "[container_name] [container_print] -> [varname] (list)", recursive_limit - 1, search_time)
 
 	else if(islist(potential_container))
 		var/normal = IS_NORMAL_LIST(potential_container)
@@ -159,3 +161,13 @@
 	qdel(src, force)
 
 #endif
+
+// Kept outside the ifdef so overrides are easy to implement
+
+/// Return info about us for reference searching purposes
+/// Will be logged as a representation of this datum if it's a part of a search chain
+/datum/proc/ref_search_details()
+	return ref(src)
+
+/datum/callback/ref_search_details()
+	return "[ref(src)] (obj: [object] proc: [delegate] args: [json_encode(arguments)] user: [user?.resolve() || "null"])"

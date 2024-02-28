@@ -20,6 +20,10 @@
 	if(start_lit)
 		light()
 
+/obj/item/candle/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/candle/update_icon_state()
 	icon_state = "candle[(wax > 800) ? ((wax > 1500) ? 1 : 2) : 3][lit ? "_lit" : ""]"
 	return ..()
@@ -31,7 +35,7 @@
 	else
 		return ..()
 
-/obj/item/candle/fire_act(exposed_temperature, exposed_volume)
+/obj/item/candle/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(!lit)
 		light() //honk
 	return ..()
@@ -51,6 +55,7 @@
 /obj/item/candle/proc/put_out_candle()
 	if(!lit)
 		return
+
 	lit = FALSE
 	update_appearance()
 	set_light(0)
@@ -63,11 +68,15 @@
 /obj/item/candle/process(delta_time)
 	if(!lit)
 		return PROCESS_KILL
+
 	if(!infinite)
 		wax -= delta_time
+
 	if(wax <= 0)
 		new /obj/item/trash/candle(loc)
 		qdel(src)
+		return
+
 	update_appearance()
 	open_flame()
 

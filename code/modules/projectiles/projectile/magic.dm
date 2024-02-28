@@ -4,7 +4,7 @@
 	damage = 0
 	damage_type = OXY
 	nodamage = TRUE
-	armour_penetration = 100
+	armor_penetration = 100
 	armor_flag = NONE
 	/// determines what type of antimagic can block the spell projectile
 	var/antimagic_flags = MAGIC_RESISTANCE
@@ -249,10 +249,10 @@
 
 /obj/projectile/magic/locker/Destroy()
 	locker_suck = FALSE
-	loc_procs &= ~CROSSED //We do this manually so the forcemoves don't "hit" us. This behavior is kinda dumb, someone refactor this
+	RemoveElement(/datum/element/connect_loc, projectile_connections) //We do this manually so the forcemoves don't "hit" us. This behavior is kinda dumb, someone refactor this
 	for(var/atom/movable/AM in contents)
 		AM.forceMove(get_turf(src))
-	return ..()
+	. = ..()
 
 /obj/structure/closet/decay
 	breakout_time = 600
@@ -565,7 +565,7 @@
 		if(istype(adjacent_object, /obj/structure/destructible/cult))
 			continue
 
-		adjacent_object.take_damage(90, BRUTE, MELEE, 0)
+		adjacent_object.take_damage(90, BRUTE, BLUNT, 0)
 		new /obj/effect/temp_visual/cult/turf/floor(get_turf(adjacent_object))
 
 //still magic related, but a different path
@@ -576,7 +576,7 @@
 	damage = 0
 	damage_type = BURN
 	nodamage = FALSE
-	armour_penetration = 100
+	armor_penetration = 100
 	adj_temperature = -200 // Cools you down greatly per hit
 
 /obj/projectile/magic/nothing

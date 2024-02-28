@@ -9,7 +9,7 @@
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 
-	force = 7
+	force = 14
 	throwforce = 7
 	stamina_damage = 35
 	stamina_cost = 12
@@ -24,13 +24,16 @@
 	attack_verb_simple = list("attack", "bash", "batter", "bludgeon", "whack")
 	tool_behaviour = TOOL_CROWBAR
 	toolspeed = 1
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	var/force_opens = FALSE
 
 /obj/item/crowbar/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1)
 	return (BRUTELOSS)
+
+/obj/item/crowbar/get_misssound()
+	return pick('sound/weapons/swing/swing_crowbar.ogg', 'sound/weapons/swing/swing_crowbar2.ogg', 'sound/weapons/swing/swing_crowbar3.ogg')
 
 /obj/item/crowbar/red
 	icon_state = "crowbar_red"
@@ -57,7 +60,6 @@
 	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
 	force = 12
 	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 3
 	throw_range = 3
 	custom_materials = list(/datum/material/iron=70)
 	icon_state = "crowbar_large"
@@ -75,7 +77,7 @@
 	name = "old crowbar"
 	desc = "It's an old crowbar. Much larger than the pocket sized ones, carrying a lot more heft. They don't make 'em like they used to."
 	throwforce = 10
-	throw_speed = 2
+	throw_speed = 1.5
 
 /obj/item/crowbar/large/old/Initialize()
 	. = ..()

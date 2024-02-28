@@ -20,7 +20,7 @@
 	layer = BELOW_OPEN_DOOR_LAYER
 	closingLayer = CLOSED_FIREDOOR_LAYER
 	assemblytype = /obj/structure/firelock_frame
-	armor = list(MELEE = 10, BULLET = 30, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 100, FIRE = 95, ACID = 70)
+	armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 30, BIO = 100, FIRE = 95, ACID = 70)
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
 	door_align_type = /obj/machinery/door/firedoor
 
@@ -212,7 +212,7 @@
 		return TRUE
 
 /obj/machinery/door/firedoor/wrench_act(mob/living/user, obj/item/tool)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	if(operating || !welded)
 		return FALSE
 
@@ -239,7 +239,7 @@
 	boltslocked = !boltslocked
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/door/firedoor/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/firedoor/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	return
 
 /obj/machinery/door/firedoor/try_to_weld(obj/item/weldingtool/W, mob/user)
@@ -332,12 +332,16 @@
 /obj/machinery/door/firedoor/open()
 	if(welded)
 		return
-	return ..()
+	. = ..()
+	if(.)
+		playsound(loc, 'sound/machines/doors/blastdoor_open.ogg', 60, TRUE)
 
 /obj/machinery/door/firedoor/close()
 	if(HAS_TRAIT(loc, TRAIT_FIREDOOR_STOP))
 		return
-	return ..()
+	. = ..()
+	if(.)
+		playsound(loc, 'sound/machines/doors/blastdoor_close.ogg', 60, TRUE)
 
 
 /obj/machinery/door/firedoor/deconstruct(disassembled = TRUE)
@@ -366,7 +370,6 @@
 	flags_1 = ON_BORDER_1
 	can_atmos_pass = CANPASS_PROC
 	auto_dir_align = FALSE
-	loc_procs = EXIT
 
 /obj/machinery/door/firedoor/border_only/closed
 	icon_state = "door_closed"
@@ -376,6 +379,12 @@
 /obj/machinery/door/firedoor/border_only/Initialize(mapload)
 	. = ..()
 	adjust_lights_starting_offset()
+
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit)
+	)
+
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/door/firedoor/border_only/adjust_lights_starting_offset()
 	light_xoffset = 0
@@ -403,14 +412,16 @@
 /obj/machinery/door/firedoor/border_only/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
 	return !density || (dir != to_dir)
 
-/obj/machinery/door/firedoor/border_only/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/machinery/door/firedoor/border_only/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
 	if(leaving.movement_type & PHASING)
 		return
+	if(leaving == src)
+		return // Let's not block ourselves.
 
 	if(direction == dir && density)
 		leaving.Bump(src)
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/machinery/door/firedoor/border_only/zas_canpass(turf/T)
 	if(QDELETED(src))

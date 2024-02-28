@@ -9,7 +9,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/glass=100)
 	grind_results = list(/datum/reagent/silicon = 5, /datum/reagent/nitrogen = 10) //Nitrogen is used as a cheaper alternative to argon in incandescent lighbulbs
-	loc_procs = CROSSED
 	///True if rigged to explode
 	var/rigged = FALSE
 	///How much light it gives off
@@ -82,16 +81,20 @@
 	create_reagents(LIGHT_REAGENT_CAPACITY, INJECTABLE | DRAINABLE)
 	AddComponent(/datum/component/caltrop, min_damage = force)
 	update()
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/item/light/Crossed(atom/movable/crossed_by, oldloc)
-	if(!isliving(crossed_by))
+/obj/item/light/proc/on_entered(datum/source, atom/movable/moving_atom)
+	SIGNAL_HANDLER
+	if(moving_atom == src)
 		return
-	if(!isturf(loc))
+	if(!isliving(moving_atom))
 		return
-
-	var/mob/living/moving_mob = crossed_by
+	var/mob/living/moving_mob = moving_atom
 	if(!(moving_mob.movement_type & (FLYING|FLOATING)) || moving_mob.buckled)
-		playsound(src, 'sound/effects/glass_step.ogg', HAS_TRAIT(moving_mob, TRAIT_LIGHT_STEP) ? 30 : 50, TRUE)
+		playsound(src, 'sound/effects/small_glass_break.ogg', HAS_TRAIT(moving_mob, TRAIT_LIGHT_STEP) ? 30 : 50, TRUE)
 		if(status == LIGHT_BURNED || status == LIGHT_OK)
 			shatter()
 
@@ -126,7 +129,7 @@
 	..()
 	shatter()
 
-/obj/item/light/attack_atom(obj/O, mob/living/user, params)
+/obj/item/light/attack_obj(obj/O, mob/living/user, params)
 	..()
 	shatter()
 

@@ -306,7 +306,7 @@ SUBSYSTEM_DEF(zcopy)
 			TO.mouse_opacity = initial(TO.mouse_opacity)
 			TO.underlays = underlay_copy
 
-		T.queue_ao(T.ao_neighbors_mimic == null)	// If ao_neighbors hasn't been set yet, we need to do a rebuild
+		T.queue_ao(T.ao_junction_mimic == null)	// If ao_junction hasn't been set yet, we need to do a rebuild
 
 		// Explicitly copy turf delegates so they show up properly on below levels.
 		//   I think it's possible to get this to work without discrete delegate copy objects, but I'd rather this just work.
@@ -613,10 +613,10 @@ SUBSYSTEM_DEF(zcopy)
 
 GLOBAL_REAL_VAR(zmimic_fixed_planes) = list(
 	"0" = "World plane (Non-Z)",
-	"-6" = "Game plane (Non-Z)",
-	"-7" = "Floor plane (Non-Z)",
-	"-11" = "Gravity pulse plane (Non-Z)",
-	"-12" = "Heat plane (Non-Z)"
+	STRINGIFY(GAME_PLANE) = "Game plane (Non-Z)",
+	STRINGIFY(FLOOR_PLANE) = "Floor plane (Non-Z)",
+	STRINGIFY(GRAVITY_PULSE_PLANE) = "Gravity pulse plane (Non-Z)",
+	STRINGIFY(HEAT_PLANE) = "Heat plane (Non-Z)"
 )
 
 /client/proc/analyze_openturf(turf/T)

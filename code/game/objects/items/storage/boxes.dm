@@ -153,7 +153,7 @@
 
 // Mining survival box
 /obj/item/storage/box/survival/mining
-	mask_type = /obj/item/clothing/mask/gas/explorer
+	mask_type = /obj/item/clothing/mask/breath
 
 /obj/item/storage/box/survival/mining/PopulateContents()
 	..()
@@ -1325,7 +1325,6 @@
 		/obj/item/slimecross/stabilized/oil=1,\
 		/obj/item/slimecross/stabilized/black=1,\
 		/obj/item/slimecross/stabilized/lightpink=1,\
-		/obj/item/slimecross/stabilized/adamantine=1,\
 		/obj/item/slimecross/stabilized/rainbow=1,\
 		)
 	generate_items_inside(items_inside,src)

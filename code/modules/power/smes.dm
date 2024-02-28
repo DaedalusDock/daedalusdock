@@ -22,7 +22,7 @@
 	use_power = NO_POWER_USE
 	circuit = /obj/item/circuitboard/machine/smes
 
-	var/capacity = 5e6 // maximum charge
+	var/capacity = 10e6 // maximum charge
 	var/charge = 0 // actual charge
 
 	var/input_attempt = TRUE // TRUE = attempting to charge, FALSE = not attempting to charge
@@ -46,6 +46,7 @@
 
 /obj/machinery/power/smes/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	dir_loop:
 		for(var/d in GLOB.cardinals)
 			var/turf/T = get_step(src, d)
@@ -72,9 +73,9 @@
 	for(var/obj/item/stock_parts/cell/PC in component_parts)
 		MC += PC.maxcharge
 		C += PC.charge
-	capacity = MC / (15000) * 1e6
+	capacity = MC * 100 // 1 Kilowatt to 0.1 megawatts
 	if(!initial(charge) && !charge)
-		charge = C / 15000 * 1e6
+		charge = C * 100 // 1 Kilowatt to 0.1 megawatts
 
 /obj/machinery/power/smes/should_have_node()
 	return TRUE
@@ -180,6 +181,8 @@
 		cell.charge = (charge / capacity) * cell.maxcharge
 
 /obj/machinery/power/smes/Destroy()
+	UNSET_TRACKING(__TYPE__)
+
 	if(SSticker.IsRoundInProgress())
 		var/turf/T = get_turf(src)
 		message_admins("[src] deleted at [ADMIN_VERBOSEJMP(T)]")
@@ -409,8 +412,8 @@
 
 /obj/machinery/power/smes/engineering
 	input_attempt = FALSE //Don't drain the private loop by default
-	charge = 5e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.
-	output_level = 90000
+	charge = 10e6 // Engineering starts with some charge for singulo //sorry little one, singulo as engine is gone //ZAS supermatter takes longer to set up so you get max.
+	output_level = 180000
 
 /obj/machinery/power/smes/magical
 	name = "magical power storage unit"

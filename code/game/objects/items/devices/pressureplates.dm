@@ -5,8 +5,6 @@
 	inhand_icon_state = "flash"
 	icon_state = "pressureplate"
 	layer = LOW_OBJ_LAYER
-	loc_procs = CROSSED
-
 	var/trigger_mob = TRUE
 	var/trigger_item = FALSE
 	var/specific_item = null
@@ -36,14 +34,21 @@
 	if(undertile_pressureplate)
 		AddElement(/datum/element/undertile, tile_overlay = tile_overlay, use_anchor = TRUE)
 	RegisterSignal(src, COMSIG_OBJ_HIDE, PROC_REF(ToggleActive))
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/item/pressure_plate/Crossed(atom/movable/crossed_by, oldloc)
+/obj/item/pressure_plate/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
 	if(!can_trigger || !active)
 		return
-	if(trigger_item && !istype(crossed_by, specific_item))
+	if(trigger_item && !istype(AM, specific_item))
 		return
-	if(trigger_mob && isliving(crossed_by))
-		var/mob/living/L = crossed_by
+	if(trigger_mob && isliving(AM))
+		var/mob/living/L = AM
 		to_chat(L, span_warning("You feel something click beneath you!"))
 	else if(!trigger_item)
 		return
@@ -69,7 +74,7 @@
 		sigdev = null
 	return ..()
 
-/obj/item/pressure_plate/CtrlClick(mob/user)
+/obj/item/pressure_plate/CtrlClick(mob/user, list/params)
 	if(protected)
 		to_chat(user, span_warning("You can't quite seem to turn this pressure plate off..."))
 		return

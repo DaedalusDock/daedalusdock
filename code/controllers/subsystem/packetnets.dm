@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(packets)
 	name = "Packets"
 	wait = 0
 	priority = FIRE_PRIORITY_PACKETS
-	flags = SS_NO_INIT | SS_HIBERNATE
+	flags = SS_HIBERNATE
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 	var/list/saymodes = list()
@@ -12,8 +12,6 @@ SUBSYSTEM_DEF(packets)
 	var/list/datum/powernet/queued_networks = list()
 	///Radio packets to process
 	var/list/queued_radio_packets = list()
-	///Tablet messages to process
-	var/list/queued_tablet_messages = list()
 	///Subspace/vocal packets to process
 	var/list/queued_subspace_vocals = list()
 
@@ -27,7 +25,6 @@ SUBSYSTEM_DEF(packets)
 	///The current processing lists
 	var/list/current_networks = list()
 	var/list/current_radio_packets = list()
-	var/list/current_tablet_messages = list()
 	var/list/current_subspace_vocals = list()
 
 	///Tick usage
@@ -39,6 +36,23 @@ SUBSYSTEM_DEF(packets)
 
 	///What processing stage we're at
 	var/stage = SSPACKETS_POWERNETS
+
+	//Storage Data Vars
+	// -Because bloating GLOB is a crime.
+
+	/// Fancy field name to use for virus packets. Randomly picked for flavor and obscurity.
+	var/pda_exploitable_register
+	/// Magic command sent by the Detomatix to cause PDAs to explode
+	var/detomatix_magic_packet
+	/// Magic command sent by the Clown Virus to honkify PDAs
+	var/clownvirus_magic_packet
+	/// Magic command sent by the Mime virus to mute PDAs
+	var/mimevirus_magic_packet
+	/// Magic command sent by the FRAME virus to install an uplink.
+	/// Mostly a formality as this packet MUST be obfuscated.
+	var/framevirus_magic_packet
+	/// @everyone broadcast key
+	var/gprs_broadcast_packet
 
 /// Generates a unique (at time of read) ID for an atom, It just plays silly with the ref.
 /// Pass the target atom in as arg[1]
@@ -52,11 +66,9 @@ SUBSYSTEM_DEF(packets)
 	hibernate_checks = list(
 		NAMEOF(src, queued_networks),
 		NAMEOF(src, queued_radio_packets),
-		NAMEOF(src, queued_tablet_messages),
 		NAMEOF(src, queued_subspace_vocals),
 		NAMEOF(src, current_networks),
 		NAMEOF(src, current_radio_packets),
-		NAMEOF(src, current_tablet_messages),
 		NAMEOF(src, current_subspace_vocals)
 	)
 
@@ -65,9 +77,32 @@ SUBSYSTEM_DEF(packets)
 		saymodes[SM.key] = SM
 	return ..()
 
+/datum/controller/subsystem/packets/Initialize(start_timeofday)
+	detomatix_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	clownvirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	mimevirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	framevirus_magic_packet = random_string(rand(16,32), GLOB.hex_characters)
+	gprs_broadcast_packet = random_string(rand(16,32), GLOB.hex_characters)
+	pda_exploitable_register = pick_list(PACKET_STRING_FILE, "packet_field_names")
+	. = ..()
+
+/datum/controller/subsystem/packets/Recover()
+	. = ..()
+	//Functional vars first
+	frequencies = SSpackets.frequencies
+	queued_radio_packets = SSpackets.queued_radio_packets
+	queued_subspace_vocals = SSpackets.queued_subspace_vocals
+	//Data vars
+	pda_exploitable_register = SSpackets.pda_exploitable_register
+	detomatix_magic_packet = SSpackets.detomatix_magic_packet
+	clownvirus_magic_packet = SSpackets.clownvirus_magic_packet
+	mimevirus_magic_packet = SSpackets.mimevirus_magic_packet
+	framevirus_magic_packet = SSpackets.framevirus_magic_packet
+	gprs_broadcast_packet = SSpackets.gprs_broadcast_packet
+
 /datum/controller/subsystem/packets/stat_entry(msg)
 	msg += "RP: [length(queued_radio_packets)]{[last_processed_radio_packets]}|"
-	msg += "TM: [length(queued_tablet_messages)]{[last_processed_tablet_message_packets]}|"
+	// msg += "TM: [length(queued_tablet_messages)]{[last_processed_tablet_message_packets]}|"
 	msg += "SSV: [length(queued_subspace_vocals)]{[last_processed_ssv_packets]}|"
 	msg += "C:{"
 	msg += "CN:[round(cost_networks, 1)]|"
@@ -81,7 +116,7 @@ SUBSYSTEM_DEF(packets)
 	if(!resumed)
 		current_networks = queued_networks.Copy()
 		current_radio_packets = queued_radio_packets.Copy()
-		current_tablet_messages = queued_tablet_messages.Copy()
+		// current_tablet_messages = queued_tablet_messages.Copy()
 		current_subspace_vocals = queued_subspace_vocals.Copy()
 
 	var/timer = TICK_USAGE_REAL
@@ -109,6 +144,7 @@ SUBSYSTEM_DEF(packets)
 			///No packets no problem
 			if(!length(net.current_packet_queue))
 				current_networks.len--
+				queued_networks -= net
 				continue
 
 			for(var/datum/signal/signal as anything in net.current_packet_queue)
@@ -130,6 +166,9 @@ SUBSYSTEM_DEF(packets)
 
 			// Only cut it from the current run when it's done
 			current_networks.len--
+			// We may have generated more packets in the course of rs calls, If so, don't dequeue it.
+			if(!length(net.next_packet_queue))
+				queued_networks -= net
 
 		cost_networks = MC_AVERAGE(cost_networks, TICK_DELTA_TO_MS(cached_cost))
 		resumed = FALSE
@@ -156,35 +195,35 @@ SUBSYSTEM_DEF(packets)
 
 		cost_radios = MC_AVERAGE(cost_radios, TICK_DELTA_TO_MS(cached_cost))
 		resumed = FALSE
-		stage = SSPACKETS_TABLETS
+		// stage = SSPACKETS_TABLETS
 
-	if(stage == SSPACKETS_TABLETS)
-		timer = TICK_USAGE_REAL
-		if(!resumed)
-			cached_cost = 0
-			last_processed_tablet_message_packets = 0
+	// if(stage == SSPACKETS_TABLETS)
+	// 	timer = TICK_USAGE_REAL
+	// 	if(!resumed)
+	// 		cached_cost = 0
+	// 		last_processed_tablet_message_packets = 0
 
-		var/datum/signal/subspace/messaging/tablet_msg/packet
-		while(length(current_tablet_messages))
-			packet = current_tablet_messages[1]
-			current_tablet_messages.Cut(1,2)
-			queued_tablet_messages -= packet
+	// 	var/datum/signal/subspace/messaging/tablet_msg/packet
+	// 	while(length(current_tablet_messages))
+	// 		packet = current_tablet_messages[1]
+	// 		current_tablet_messages.Cut(1,2)
+	// 		queued_tablet_messages -= packet
 
-			if (!packet.logged)  // Can only go through if a message server logs it
-				continue
+	// 		if (!packet.logged)  // Can only go through if a message server logs it
+	// 			continue
 
-			for (var/obj/item/modular_computer/comp in packet.data["targets"])
-				var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
-				for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-					app.receive_message(packet)
+	// 		for (var/obj/item/modular_computer/comp in packet.data["targets"])
+	// 			var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
+	// 			for(var/datum/computer_file/program/messenger/app in drive.stored_files)
+	// 				app.receive_message(packet)
 
-			cached_cost += TICK_USAGE_REAL - timer
-			last_processed_tablet_message_packets++
-			if(MC_TICK_CHECK)
-				return
+	// 		cached_cost += TICK_USAGE_REAL - timer
+	// 		last_processed_tablet_message_packets++
+	// 		if(MC_TICK_CHECK)
+	// 			return
 
-		cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
-		resumed = FALSE
+	// 	cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
+	// 	resumed = FALSE
 		stage = SSPACKETS_SUBSPACE_VOCAL
 
 	if(stage == SSPACKETS_SUBSPACE_VOCAL)
@@ -233,9 +272,8 @@ SUBSYSTEM_DEF(packets)
 			return
 		//Spatial Grids don't like being asked for negative ranges. -1 is valid and doesn't care about range anyways.
 		if(packet.frequency == FREQ_ATMOS_CONTROL && packet.range > 0)
-			_irps_spatialgrid(packet,source,start_point) //heehoo big list.
+			_irps_spatialgrid_atmos(packet,source,start_point) //heehoo big list.
 			return
-
 	var/datum/radio_frequency/freq = packet.frequency_datum
 	//Send the data
 	for(var/current_filter in packet.filter_list)
@@ -254,15 +292,38 @@ SUBSYSTEM_DEF(packets)
 					continue
 			device.receive_signal(packet)
 
-
-
-/datum/controller/subsystem/packets/proc/_irps_spatialgrid(datum/signal/packet, datum/source, turf/start_point)
+/// Do Spatial Grid handling for IRPS, Atmos Radio group.
+/// These are separate to save just that little bit more overhead.
+/datum/controller/subsystem/packets/proc/_irps_spatialgrid_atmos(datum/signal/packet, datum/source, turf/start_point)
 	PRIVATE_PROC(TRUE) //Touch this and I eat your legs.
 
 	var/datum/radio_frequency/freq = packet.frequency_datum
 	//Send the data
 
 	var/list/spatial_grid_results = SSspatial_grid.orthogonal_range_search(start_point, SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS, packet.range)
+
+	for(var/obj/listener as anything in spatial_grid_results - source)
+		var/found = FALSE
+		for(var/filter in packet.filter_list)
+		//This is safe because to be in a radio list, an object MUST already have a weakref.
+			if(listener.weak_reference in freq.devices[filter])
+				found = TRUE
+				break
+		if(!found)
+			continue
+		if((get_dist(start_point, listener) > packet.range))
+			continue
+		listener.receive_signal(packet)
+
+/// Do Spatial Grid handling for IRPS, Non-Atmos Radio group.
+/// These are separate to save just that little bit more overhead.
+/datum/controller/subsystem/packets/proc/_irps_spatialgrid_everyone_else(datum/signal/packet, datum/source, turf/start_point)
+	PRIVATE_PROC(TRUE) //Touch this and I eat your arms.
+
+	var/datum/radio_frequency/freq = packet.frequency_datum
+	//Send the data
+
+	var/list/spatial_grid_results = SSspatial_grid.orthogonal_range_search(start_point, SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS, packet.range)
 
 	for(var/obj/listener as anything in spatial_grid_results - source)
 		var/found = FALSE
@@ -334,7 +395,7 @@ SUBSYSTEM_DEF(packets)
 
 	// Add observers who have ghost radio enabled.
 	for(var/mob/dead/observer/ghost in GLOB.player_list)
-		if(ghost.client.prefs?.chat_toggles & CHAT_GHOSTRADIO)
+		if(!ghost.observetarget && (ghost.client.prefs?.chat_toggles & CHAT_GHOSTRADIO))
 			globally_receiving |= ghost
 
 	// Render the message and have everybody hear it.

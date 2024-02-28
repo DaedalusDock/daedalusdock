@@ -50,11 +50,3 @@
 	has_alert = FALSE
 	if(length(alert_control.listener.alarms))
 		has_alert = TRUE
-
-/datum/computer_file/program/alarm_monitor/run_program(mob/user)
-	. = ..(user)
-	GLOB.alarmdisplay += src
-
-/datum/computer_file/program/alarm_monitor/kill_program(forced = FALSE)
-	GLOB.alarmdisplay -= src
-	return ..()

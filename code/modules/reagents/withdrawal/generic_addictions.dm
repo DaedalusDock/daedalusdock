@@ -208,7 +208,7 @@
 		return
 	if(DT_PROB(65, delta_time))
 		return
-	if(affected_carbon.stat >= SOFT_CRIT)
+	if(affected_carbon.stat != CONSCIOUS)
 		return
 
 	var/obj/item/organ/organ = pick(affected_carbon.processing_organs)

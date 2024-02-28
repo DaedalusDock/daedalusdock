@@ -1,5 +1,5 @@
 /datum/crafting_recipe/food/tiziran_sausage
-	name = "Raw Tiziran blood sausage"
+	name = "Raw Jitan blood sausage"
 	reqs = list(
 		/obj/item/food/meat/rawcutlet = 1,
 		/obj/item/food/meat/rawbacon = 1,
@@ -262,17 +262,6 @@
 	result = /obj/item/food/pizza/imperial_flatbread
 	subcategory = CAT_LIZARD
 
-/datum/crafting_recipe/food/emperor_roll
-	name = "Emperor roll"
-	reqs = list(
-		/obj/item/food/rootroll = 1,
-		/obj/item/food/liver_pate = 1,
-		/obj/item/food/headcheese_slice = 2,
-		/obj/item/food/moonfish_caviar = 1
-	)
-	result = /obj/item/food/emperor_roll
-	subcategory = CAT_LIZARD
-
 /datum/crafting_recipe/food/honey_sweetroll
 	name = "Honey sweetroll"
 	reqs = list(
@@ -312,7 +301,7 @@
 	subcategory = CAT_LIZARD
 
 /datum/crafting_recipe/food/black_broth
-	name = "Tiziran black broth"
+	name = "Jitarai black broth"
 	reqs = list(
 		/obj/item/reagent_containers/glass/bowl = 1,
 		/obj/item/food/tiziran_sausage = 1,
@@ -413,19 +402,10 @@
 	subcategory = CAT_LIZARD
 
 /datum/crafting_recipe/food/lizard_dumplings
-	name = "Tiziran dumplings"
+	name = "Jitarai dumplings"
 	reqs = list(
 		/obj/item/food/grown/potato = 1,
 		/datum/reagent/consumable/korta_flour = 5
 	)
 	result = /obj/item/food/lizard_dumplings
-	subcategory = CAT_LIZARD
-
-/datum/crafting_recipe/food/steeped_mushrooms
-	name = "Steeped mushrooms"
-	reqs = list(
-		/obj/item/food/grown/ash_flora/seraka = 1,
-		/datum/reagent/lye = 5
-	)
-	result = /obj/item/food/steeped_mushrooms
 	subcategory = CAT_LIZARD

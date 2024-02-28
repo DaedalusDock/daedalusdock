@@ -11,7 +11,7 @@
 	var/burntime = 120
 	var/lit = FALSE
 
-/obj/item/sparkler/fire_act(exposed_temperature, exposed_volume)
+/obj/item/sparkler/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	light()
 
 /obj/item/sparkler/attackby(obj/item/item, mob/user, params)
@@ -68,7 +68,6 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	inhand_icon_state = "flare"
-	throw_speed = 3
 	throw_range = 7
 	det_time = 30
 
@@ -83,7 +82,7 @@
 	else
 		return ..()
 
-/obj/item/grenade/firecracker/fire_act(exposed_temperature, exposed_volume)
+/obj/item/grenade/firecracker/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	detonate()
 
 /obj/item/grenade/firecracker/wirecutter_act(mob/living/user, obj/item/item)

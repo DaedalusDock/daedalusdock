@@ -121,35 +121,66 @@
  * Security Record Cabinets
  */
 /obj/structure/filingcabinet/security
-	var/virgin = TRUE
+	name = "security records filing cabinet"
+	desc = "A cabinet containing a paper copy of all of the station security records."
 
-/obj/structure/filingcabinet/security/proc/populate()
-	if(virgin)
-		for(var/datum/data/record/G in GLOB.data_core.general)
-			var/datum/data/record/S = find_record("name", G.fields["name"], GLOB.data_core.security)
-			if(!S)
-				continue
-			var/obj/item/paper/P = new /obj/item/paper(src)
-			P.info = "<CENTER><B>Security Record</B></CENTER><BR>"
-			P.info += "Name: [G.fields["name"]] ID: [G.fields["id"]]<BR>\nGender: [G.fields["gender"]]<BR>\nAge: [G.fields["age"]]<BR>\nFingerprint: [G.fields["fingerprint"]]<BR>\nPhysical Status: [G.fields["p_stat"]]<BR>\nMental Status: [G.fields["m_stat"]]<BR>"
-			P.info += "<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\nCriminal Status: [S.fields["criminal"]]<BR>\n<BR>\nCrimes: [S.fields["crim"]]<BR>\nDetails: [S.fields["crim_d"]]<BR>\n<BR>\nImportant Notes:<BR>\n\t[S.fields["notes"]]<BR>\n<BR>\n<CENTER><B>Comments/Log</B></CENTER><BR>"
-			var/counter = 1
-			while(S.fields["com_[counter]"])
-				P.info += "[S.fields["com_[counter]"]]<BR>"
-				counter++
-			P.info += "</TT>"
-			P.name = "paper - '[G.fields["name"]]'"
-			virgin = FALSE //tabbing here is correct- it's possible for people to try and use it
-						//before the records have been generated, so we do this inside the loop.
+/obj/structure/filingcabinet/security/Initialize(mapload)
+	. = ..()
+	if(SSticker.IsRoundInProgress())
+		INVOKE_ASYNC(src, PROC_REF(generate_all))
+	RegisterSignal(SSdcs, COMSIG_GLOB_MANIFEST_INJECT, PROC_REF(on_manifest_add))
 
-/obj/structure/filingcabinet/security/attack_hand(mob/user, list/modifiers)
-	populate()
-	return ..()
+/obj/structure/filingcabinet/security/proc/add_entry(datum/data/record/general, datum/data/record/security)
+	var/obj/item/paper/P = new /obj/item/paper(src)
+	P.name = "paper - '[general.fields["name"]]'"
 
-/obj/structure/filingcabinet/security/attack_tk()
-	populate()
-	return ..()
+	P.info = {"<TT>
+		<CENTER><B>Security Record</B></CENTER><BR>
+		Name: [general.fields["name"]]<br>
+		ID: [general.fields["id"]]<BR>
+		Gender: [general.fields["gender"]]<BR>
+		Age: [general.fields["age"]]<BR>
+		Fingerprint: [general.fields["fingerprint"]]<BR>
+		Physical Status: [general.fields["p_stat"]]<BR>
+		Mental Status: [general.fields["m_stat"]]<BR>
+		<BR>
+		<CENTER><B>Security Data</B></CENTER><BR>
+		Criminal Status: [security.fields["criminal"]]<BR>
+		<BR>
+		Crimes:<br>
+	"}
+	// Crimes
+	if(length(security.fields["crim"]))
+		for(var/datum/data/crime/C in security.fields["crim"])
+			P.info += "[FOURSPACES][C.crimeName] - [C.crimeDetails]<br>"
+	else
+		P.info += "[FOURSPACES]None<br>"
 
+	P.info += {"
+		<BR>
+		Important Notes:<BR>
+		[FOURSPACES][security.fields["notes"]]<BR>
+		<BR>
+		<CENTER><B>Comments/Log</B></CENTER><BR>
+	"}
+	// Notes
+	var/counter = 1
+	while(security.fields["com_[counter]"])
+		P.info += "[security.fields["com_[counter]"]]<BR>"
+		counter++
+	P.info += "</TT>"
+
+/obj/structure/filingcabinet/security/proc/on_manifest_add(datum/source, datum/data/record/general, datum/data/record/medical, datum/data/record/security)
+	SIGNAL_HANDLER
+	add_entry(general, security)
+
+/obj/structure/filingcabinet/security/proc/generate_all()
+	for(var/datum/data/record/G in GLOB.data_core.general)
+		var/datum/data/record/S = find_record("name", G.fields["name"], GLOB.data_core.security)
+		if(!S)
+			continue
+		add_entry(G, S)
+		CHECK_TICK
 /*
  * Medical Record Cabinets
  */

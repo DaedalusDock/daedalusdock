@@ -39,7 +39,7 @@
 	. = ..()
 	if(!can_interact(user))
 		return
-	if(world.time >= stasis_can_toggle && user.canUseTopic(src, !issilicon(user)))
+	if(world.time >= stasis_can_toggle && user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		stasis_enabled = !stasis_enabled
 		stasis_can_toggle = world.time + STASIS_TOGGLE_COOLDOWN
 		playsound(src, 'sound/machines/click.ogg', 60, TRUE)

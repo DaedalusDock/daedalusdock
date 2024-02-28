@@ -4,7 +4,7 @@
 	icon_state = "hardsuit-hop"
 	inhand_icon_state = "eng_hardsuit"
 	max_integrity = 300
-	armor = list(MELEE = 25, BULLET = 5, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75, WOUND = 10)
+	armor = list(BLUNT = 25, PUNCTURE = 5, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/hop
 
 /obj/item/clothing/head/helmet/space/hardsuit/hop
@@ -13,6 +13,6 @@
 	icon_state = "hardsuit0-hop"
 	inhand_icon_state = "eng_helm"
 	max_integrity = 300
-	armor = list(MELEE = 25, BULLET = 5, LASER = 10, ENERGY = 30, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75)
+	armor = list(BLUNT = 25, PUNCTURE = 5, SLASH = 0, LASER = 10, ENERGY = 30, BOMB = 10, BIO = 100, FIRE = 50, ACID = 75)
 	hardsuit_type = "hop"
 

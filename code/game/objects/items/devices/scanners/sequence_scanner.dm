@@ -12,7 +12,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=200)
 	var/list/discovered = list() //hit a dna console to update the scanners database
@@ -56,7 +55,7 @@
 	var/answer = tgui_input_list(user, "Analyze Potential", "Sequence Analyzer", sort_list(options))
 	if(isnull(answer))
 		return
-	if(ready && user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(ready && user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		var/sequence
 		for(var/A in buffer) //this physically hurts but i dont know what anything else short of an assoc list
 			if(get_display_name(A) == answer)

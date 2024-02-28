@@ -37,6 +37,7 @@
 		return wear_mask
 	if(check_glasses && glasses && (glasses.flags_cover & GLASSESCOVERSEYES))
 		return glasses
+
 /mob/living/carbon/is_pepper_proof(check_head = TRUE, check_mask = TRUE)
 	if(check_head &&(head?.flags_cover & PEPPERPROOF))
 		return head
@@ -73,7 +74,7 @@
 /mob/living/carbon/attacked_by(obj/item/I, mob/living/user)
 	var/obj/item/bodypart/affecting
 	if(user == src)
-		affecting = get_bodypart(check_zone(user.zone_selected)) //we're self-mutilating! yay!
+		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //we're self-mutilating! yay!
 	else
 		var/zone_hit_chance = 80
 		if(body_position == LYING_DOWN) // half as likely to hit a different zone if they're on the ground
@@ -81,27 +82,35 @@
 		affecting = get_bodypart(ran_zone(user.zone_selected, zone_hit_chance))
 	if(!affecting) //missing limb? we select the first bodypart (you can never have zero, because of chest)
 		affecting = bodyparts[1]
+
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
 	send_item_attack_message(I, user, affecting.plaintext_zone, affecting)
 	if(I.stamina_damage)
 		stamina.adjust(-1 * (I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1)))
+
 	if(I.force)
 		var/attack_direction = get_dir(user, src)
+
 		apply_damage(I.force, I.damtype, affecting, sharpness = I.sharpness, attack_direction = attack_direction)
+
 		if(I.damtype == BRUTE && IS_ORGANIC_LIMB(affecting))
 			if(prob(33))
 				I.add_mob_blood(src)
 				var/turf/location = get_turf(src)
 				add_splatter_floor(location)
+
 				if(get_dist(user, src) <= 1) //people with TK won't get smeared with blood
 					user.add_mob_blood(src)
+
 				if(affecting.body_zone == BODY_ZONE_HEAD)
 					if(wear_mask)
 						wear_mask.add_mob_blood(src)
 						update_worn_mask()
+
 					if(wear_neck)
 						wear_neck.add_mob_blood(src)
 						update_worn_neck()
+
 					if(head)
 						head.add_mob_blood(src)
 						update_worn_head()
@@ -149,7 +158,7 @@
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	return FALSE
+	return . || FALSE
 
 
 /mob/living/carbon/attack_paw(mob/living/carbon/human/user, list/modifiers)
@@ -231,22 +240,17 @@
 	src.stamina_swing(STAMINA_DISARM_COST)
 
 	do_attack_animation(target, ATTACK_EFFECT_DISARM)
-	animate_interact(target, INTERACT_DISARM)
 	playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
-		human_target.w_uniform?.add_fingerprint(src)
+		human_target.add_fingerprint_on_clothing_or_self(src, BODY_ZONE_CHEST)
 
 	SEND_SIGNAL(target, COMSIG_HUMAN_DISARM_HIT, src, zone_selected)
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
-	var/state_modifier = get_melee_inaccuracy() - target.get_melee_inaccuracy()
-	var/stimulants = CHEM_EFFECT_MAGNITUDE(target, CE_STIMULANT)
-	var/disarm_chance = 25 - (stimulants * 2)
-	var/shove_chance = 12 - stimulants
-	if(!target.combat_mode)
-		state_modifier -= 30
+
+	var/roll = stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, target.gurps_stats.get_skill(SKILL_MELEE_COMBAT))
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)
@@ -254,9 +258,7 @@
 		if(prob(hurt_prob) && I.on_disarm_attempt(target, src))
 			return
 
-	var/shove_roll = rand(1, 100) + state_modifier
-	if(shove_roll <= shove_chance)
-
+	if(roll == CRIT_SUCCESS)
 		var/shove_dir = get_dir(loc, target.loc)
 		var/turf/target_shove_turf = get_step(target.loc, shove_dir)
 		var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
@@ -281,13 +283,11 @@
 			COMBAT_MESSAGE_RANGE,
 		)
 		log_combat(src, target, "shoved", "knocking them down")
-		target.pulledby?.stop_pulling()
-		target.stop_pulling()
+		target.release_all_grabs()
 		return
 
 	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
 		target.apply_damage(STAMINA_DISARM_DMG * 4, STAMINA, BODY_ZONE_CHEST)
-		target.adjustOxyLoss(10) //Knock the wind right out of his sails
 		target.visible_message(
 			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
 			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
@@ -307,9 +307,8 @@
 	)
 
 	var/append_message = ""
-	//Roll disarm chance based on the target's missing stamina
-	var/disarm_roll = rand(1, 100) + state_modifier
-	if(disarm_roll <= disarm_chance && length(target.held_items))
+
+	if(roll >= SUCCESS && length(target.held_items))
 		var/list/dropped = list()
 		for(var/obj/item/I in target.held_items)
 			if(target.dropItemToGround(I))
@@ -354,10 +353,9 @@
 		if(undergoing_cardiac_arrest())
 			set_heartattack(FALSE)
 		var/list/shocking_queue = list()
-		if(iscarbon(pulling) && source != pulling)
-			shocking_queue += pulling
-		if(iscarbon(pulledby) && source != pulledby)
-			shocking_queue += pulledby
+		shocking_queue += get_all_grabbed_movables()
+		shocking_queue -= source
+
 		if(iscarbon(buckled) && source != buckled)
 			shocking_queue += buckled
 		for(var/mob/living/carbon/carried in buckled_mobs)
@@ -403,7 +401,7 @@
 						null, span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE, list(helper, src))
 		to_chat(helper, span_notice("You shake [src] trying to pick [p_them()] up!"))
 		to_chat(src, span_notice("[helper] shakes you to get you up!"))
-	else if(check_zone(helper.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD)) //Headpats!
+	else if(deprecise_zone(helper.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD)) //Headpats!
 		helper.visible_message(span_notice("[helper] gives [src] a pat on the head to make [p_them()] feel better!"), \
 					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
 		to_chat(helper, span_notice("You give [src] a pat on the head to make [p_them()] feel better!"))
@@ -577,115 +575,20 @@
 
 /mob/living/carbon/can_hear()
 	. = FALSE
+	if(HAS_TRAIT(src, TRAIT_NOEARS) && !HAS_TRAIT(src, TRAIT_DEAF))
+		return TRUE
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	if(ears && !HAS_TRAIT(src, TRAIT_DEAF))
 		. = TRUE
-	if(health <= hardcrit_threshold)
-		. = FALSE
-
-
-/mob/living/carbon/adjustOxyLoss(amount, updating_health = TRUE, forced = FALSE)
-	. = ..()
-	check_passout(.)
 
 /mob/living/carbon/proc/get_interaction_efficiency(zone)
 	var/obj/item/bodypart/limb = get_bodypart(zone)
 	if(!limb)
 		return
 
-/mob/living/carbon/setOxyLoss(amount, updating_health = TRUE, forced = FALSE)
-	. = ..()
-	check_passout(.)
-
-/**
-* Check to see if we should be passed out from oyxloss
-*/
-/mob/living/carbon/proc/check_passout(oxyloss)
-	if(!isnum(oxyloss))
-		return
-	if(oxyloss <= 100)
-		if(getOxyLoss() > 100)
-			ADD_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
-	else if(getOxyLoss() <= 100)
-		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
-
 /mob/living/carbon/get_organic_health()
 	. = health
 	for (var/_limb in bodyparts)
 		var/obj/item/bodypart/limb = _limb
 		if (!IS_ORGANIC_LIMB(limb))
-			. += (limb.brute_dam * limb.body_damage_coeff) + (limb.burn_dam * limb.body_damage_coeff)
-
-/mob/living/carbon/grabbedby(mob/living/carbon/user, supress_message = FALSE)
-	if(user != src)
-		return ..()
-
-	var/obj/item/bodypart/grasped_part = get_bodypart(zone_selected)
-	if(!grasped_part?.get_modified_bleed_rate())
-		return
-	var/starting_hand_index = active_hand_index
-	if(starting_hand_index == grasped_part.held_index)
-		to_chat(src, span_danger("You can't grasp your [grasped_part.name] with itself!"))
-		return
-
-	to_chat(src, span_warning("You try grasping at your [grasped_part.name], trying to stop the bleeding..."))
-	if(!do_after(src, time = 0.75 SECONDS))
-		to_chat(src, span_danger("You fail to grasp your [grasped_part.name]."))
-		return
-
-	var/obj/item/hand_item/self_grasp/grasp = new
-	if(starting_hand_index != active_hand_index || !put_in_active_hand(grasp))
-		to_chat(src, span_danger("You fail to grasp your [grasped_part.name]."))
-		QDEL_NULL(grasp)
-		return
-	grasp.grasp_limb(grasped_part)
-
-/// an abstract item representing you holding your own limb to staunch the bleeding, see [/mob/living/carbon/proc/grabbedby] will probably need to find somewhere else to put this.
-/obj/item/hand_item/self_grasp
-	name = "self-grasp"
-	desc = "Sometimes all you can do is slow the bleeding."
-	icon_state = "latexballon"
-	inhand_icon_state = "nothing"
-	slowdown = 0.5
-	item_flags = DROPDEL | ABSTRACT | NOBLUDGEON | SLOWS_WHILE_IN_HAND | HAND_ITEM
-	/// The bodypart we're staunching bleeding on, which also has a reference to us in [/obj/item/bodypart/var/grasped_by]
-	var/obj/item/bodypart/grasped_part
-	/// The carbon who owns all of this mess
-	var/mob/living/carbon/user
-
-/obj/item/hand_item/self_grasp/Destroy()
-	if(user)
-		to_chat(user, span_warning("You stop holding onto your[grasped_part ? " [grasped_part.name]" : "self"]."))
-		UnregisterSignal(user, COMSIG_PARENT_QDELETING)
-	if(grasped_part)
-		UnregisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING))
-		grasped_part.grasped_by = null
-		grasped_part.refresh_bleed_rate()
-	grasped_part = null
-	user = null
-	return ..()
-
-/// The limb or the whole damn person we were grasping got deleted or dismembered, so we don't care anymore
-/obj/item/hand_item/self_grasp/proc/qdel_void()
-	SIGNAL_HANDLER
-	qdel(src)
-
-/// We've already cleared that the bodypart in question is bleeding in [the place we create this][/mob/living/carbon/proc/grabbedby], so set up the connections
-/obj/item/hand_item/self_grasp/proc/grasp_limb(obj/item/bodypart/grasping_part)
-	user = grasping_part.owner
-	if(!istype(user))
-		stack_trace("[src] attempted to try_grasp() with [istype(user, /datum) ? user.type : isnull(user) ? "null" : user] user")
-		qdel(src)
-		return
-
-	grasped_part = grasping_part
-	grasped_part.grasped_by = src
-	grasped_part.refresh_bleed_rate()
-	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(qdel_void))
-	RegisterSignal(grasped_part, list(COMSIG_CARBON_REMOVED_LIMB, COMSIG_PARENT_QDELETING), PROC_REF(qdel_void))
-
-	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.name], trying to stop the bleeding."), span_notice("You grab hold of your [grasped_part.name] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
-	playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
-	return TRUE
-
-#undef SHAKE_ANIMATION_OFFSET
+			. += (limb.brute_dam) + (limb.burn_dam)

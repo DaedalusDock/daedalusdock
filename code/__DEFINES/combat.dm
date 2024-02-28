@@ -19,10 +19,12 @@
 #define BRAIN "brain"
 
 //Damage flag defines //
-/// Involves a melee attack or a thrown object.
-#define MELEE "melee"
-/// Involves a solid projectile.
-#define BULLET "bullet"
+/// Involves a blunt object.
+#define BLUNT "blunt"
+/// Involves a weapon with a point, or bullets.
+#define PUNCTURE "puncture"
+/// Involves a weapon with a sharp edge, like a knife.
+#define SLASH "slash"
 /// Involves a laser.
 #define LASER "laser"
 /// Involves an EMP or energy-based projectile.
@@ -35,10 +37,6 @@
 #define FIRE "fire"
 /// Involves corrosive substances.
 #define ACID "acid"
-/// Involved in checking the likelyhood of applying a wound to a mob.
-#define WOUND "wound"
-/// Involves being eaten
-#define CONSUME "consume"
 
 //bitflag damage defines used for suicide_act
 #define BRUTELOSS (1<<0)
@@ -92,9 +90,9 @@
 #define BASE_GRAB_RESIST_CHANCE 60 //base chance for whether or not you can escape from a grab
 
 //slowdown when in softcrit. Note that crawling slowdown will also apply at the same time!
-#define SOFTCRIT_ADD_SLOWDOWN 4
+#define SOFTCRIT_ADD_SLOWDOWN 3
 //slowdown when crawling
-#define CRAWLING_ADD_SLOWDOWN 4
+#define CRAWLING_ADD_SLOWDOWN 6
 
 //Attack types for checking shields/hit reactions
 #define MELEE_ATTACK 1
@@ -117,7 +115,7 @@
 
 //the define for visible message range in combat
 #define SAMETILE_MESSAGE_RANGE 1
-#define COMBAT_MESSAGE_RANGE 3
+#define COMBAT_MESSAGE_RANGE 4
 #define DEFAULT_MESSAGE_RANGE 7
 
 //Shove knockdown lengths (deciseconds)
@@ -167,29 +165,10 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 #define EMBED_POINTY list("ignore_throwspeed_threshold" = TRUE)
 #define EMBED_POINTY_SUPERIOR list("embed_chance" = 100, "ignore_throwspeed_threshold" = TRUE)
 
-//Gun weapon weight
-#define WEAPON_LIGHT 1
-#define WEAPON_MEDIUM 2
-#define WEAPON_HEAVY 3
 //Gun trigger guards
 #define TRIGGER_GUARD_ALLOW_ALL -1
 #define TRIGGER_GUARD_NONE 0
 #define TRIGGER_GUARD_NORMAL 1
-//Gun bolt types
-///Gun has a bolt, it stays closed while not cycling. The gun must be racked to have a bullet chambered when a mag is inserted.
-///  Example: c20, shotguns, m90
-#define BOLT_TYPE_STANDARD 1
-///Gun has a bolt, it is open when ready to fire. The gun can never have a chambered bullet with no magazine, but the bolt stays ready when a mag is removed.
-///  Example: Some SMGs, the L6
-#define BOLT_TYPE_OPEN 2
-///Gun has no moving bolt mechanism, it cannot be racked. Also dumps the entire contents when emptied instead of a magazine.
-///  Example: Break action shotguns, revolvers
-#define BOLT_TYPE_NO_BOLT 3
-///Gun has a bolt, it locks back when empty. It can be released to chamber a round if a magazine is in.
-///  Example: Pistols with a slide lock, some SMGs
-#define BOLT_TYPE_LOCKING 4
-///This is effectively BOLT_TYPE_STANDARD and NO_BOLT in one.
-#define BOLT_TYPE_NO_BOLT_PLUS 5
 
 //Sawn off nerfs
 ///accuracy penalty of sawn off guns
@@ -295,5 +274,8 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 /// Martial arts attack happened and succeeded, do not allow a check for a regular attack.
 #define MARTIAL_ATTACK_SUCCESS TRUE
 
-/// IF an object is weak against armor, this is the value that any present armor is multiplied by
-#define ARMOR_WEAKENED_MULTIPLIER 2
+// Used by attack chain
+/// Continue the attack chain
+#define ATTACK_CHAIN_CONTINUE 0
+/// Attack was a success, stop any further chain procs
+#define ATTACK_CHAIN_SUCCESS 1

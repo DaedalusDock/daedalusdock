@@ -31,7 +31,6 @@
 	held_w_class = WEIGHT_CLASS_TINY
 	held_state = "mouse_gray"
 	faction = list("rat")
-	loc_procs = CROSSED
 
 /mob/living/simple_animal/mouse/Initialize(mapload)
 	. = ..()
@@ -41,6 +40,10 @@
 	AddComponent(/datum/component/squeak, list('sound/effects/mousesqueek.ogg' = 1), 100, extrarange = SHORT_RANGE_SOUND_EXTRARANGE) //as quiet as a mouse or whatever
 
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /mob/living/simple_animal/mouse/proc/splat()
 	src.health = 0
@@ -71,14 +74,17 @@
 	if(.)
 		SSmobs.cheeserats += src
 
-/mob/living/simple_animal/mouse/Crossed(atom/movable/crossed_by, oldloc)
-	if(ishuman(crossed_by))
+/mob/living/simple_animal/mouse/proc/on_entered(datum/source, AM as mob|obj)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	if(ishuman(AM))
 		if(!stat)
-			var/mob/M = crossed_by
+			var/mob/M = AM
 			to_chat(M, span_notice("[icon2html(src, M)] Squeak!"))
-	if(istype(crossed_by, /obj/item/food/cheese/royal))
+	if(istype(AM, /obj/item/food/cheese/royal))
 		evolve()
-		qdel(crossed_by)
+		qdel(AM)
 
 /mob/living/simple_animal/mouse/handle_automated_action()
 	if(prob(chew_probability))
@@ -111,7 +117,7 @@
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		return
 	. = ..()
-	if(istype(A, /obj/item/food/cheese) && canUseTopic(A, BE_CLOSE, NO_DEXTERITY))
+	if(istype(A, /obj/item/food/cheese) && canUseTopic(A, USE_CLOSE|USE_DEXTERITY))
 		if(health == maxHealth)
 			to_chat(src,span_warning("You don't need to eat or heal."))
 			return
@@ -186,7 +192,7 @@
 
 /obj/item/food/deadmouse
 	name = "dead mouse"
-	desc = "They look like somebody dropped the bass on it. A unathi's favorite meal."
+	desc = "They look like somebody dropped the bass on it."
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "mouse_gray_dead"
 	bite_consumption = 3
@@ -228,7 +234,7 @@
 
 /obj/item/food/deadmouse/moldy
 	name = "moldy dead mouse"
-	desc = "A dead rodent, consumed by mold and rot. There is a slim chance that a unathi might still eat it."
+	desc = "A dead rodent, consumed by mold and rot. There is a slim chance that a Jinan might still eat it."
 	icon_state = "mouse_gray_dead"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 3, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/consumable/mold = 10)
 	grind_results = list(/datum/reagent/blood = 20, /datum/reagent/liquidgibs = 5, /datum/reagent/consumable/mold = 10)

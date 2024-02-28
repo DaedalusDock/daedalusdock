@@ -51,7 +51,6 @@
 		/obj/item/ammo_box/c38/iceblox = 5,
 		/obj/item/ammo_box/c38/match = 5,
 		/obj/item/ammo_box/c38/trac = 5,
-		/obj/item/storage/belt/holster/detective/full = 1
 	)
 
 	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/bottle/whiskey)
@@ -66,20 +65,17 @@
 	id_trim = /datum/id_trim/job/detective
 	uniform = /obj/item/clothing/under/rank/security/detective
 	suit = /obj/item/clothing/suit/det_suit
-	backpack_contents = list(
-		/obj/item/detective_scanner = 1,
-		/obj/item/melee/baton = 1,
-		/obj/item/storage/box/evidence = 1,
-		)
 	belt = /obj/item/modular_computer/tablet/pda/detective
 	ears = /obj/item/radio/headset/headset_sec/alt
-	gloves = /obj/item/clothing/gloves/color/black
+	gloves = /obj/item/clothing/gloves/forensic
 	head = /obj/item/clothing/head/fedora/det_hat
 	mask = /obj/item/clothing/mask/cigarette
 	neck = /obj/item/clothing/neck/tie/detective
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	l_pocket = /obj/item/toy/crayon/white
 	r_pocket = /obj/item/lighter
+
+	l_hand = /obj/item/storage/briefcase/crimekit
 
 	chameleon_extras = list(
 		/obj/item/clothing/glasses/sunglasses,

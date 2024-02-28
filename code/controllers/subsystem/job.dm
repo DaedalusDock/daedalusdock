@@ -545,16 +545,9 @@ SUBSYSTEM_DEF(job)
 			handle_auto_deadmin_roles(player_client, job.title)
 
 	if(player_client)
-		to_chat(player_client, examine_block(span_infoplain("You are the <span style='color:[job.selection_color]'>[chosen_title]</span>.<br><br>As the <span style='color:[job.selection_color]'>[chosen_title == job.title ? chosen_title : "[chosen_title] ([job.title])"]</span> you answer directly to [job.supervisors]. Special circumstances may change this.")))
-
-	job.radio_help_message(equipping)
+		job.on_join_message(player_client, chosen_title)
 
 	if(player_client)
-		// We agreed it's safe to remove this, but commented out instead of fully removed incase we want to reverse that decision.
-		/*if(job.req_admin_notify)
-			to_chat(player_client, "<span class='infoplain'><b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b></span>")
-		*/
-
 		var/related_policy = get_policy(job.title)
 		if(related_policy)
 			to_chat(player_client, related_policy)
@@ -564,7 +557,10 @@ SUBSYSTEM_DEF(job)
 
 	if(ishuman(equipping))
 		var/mob/living/carbon/human/wageslave = equipping
-		wageslave.mind.add_memory(MEMORY_ACCOUNT, list(DETAIL_ACCOUNT_ID = wageslave.account_id), story_value = STORY_VALUE_SHIT, memory_flags = MEMORY_FLAG_NOLOCATION)
+		var/datum/bank_account/bank = SSeconomy.bank_accounts_by_id["[wageslave.account_id]"]
+
+		wageslave.mind.add_memory(MEMORY_ACCOUNT, list(DETAIL_ACCOUNT_ID = wageslave.account_id, DETAIL_ACCOUNT_PIN = bank.account_pin), story_value = STORY_VALUE_SHIT, memory_flags = MEMORY_FLAG_NOLOCATION)
+		to_chat(player_client, span_obviousnotice("Your bank account pin is: <b>[bank.account_pin]</b>"))
 
 		setup_alt_job_items(wageslave, job, player_client) //PARIAH EDIT ADDITION
 
@@ -848,8 +844,8 @@ SUBSYSTEM_DEF(job)
 	// Force-give their ID card bridge access.
 	var/obj/item/id_slot = new_captain.get_item_by_slot(ITEM_SLOT_ID)
 	if(id_slot)
-		var/obj/item/card/id/id_card = id_slot.GetID()
-		if(!(ACCESS_HEADS in id_card.access))
+		var/obj/item/card/id/id_card = id_slot.GetID() || locate() in id_slot
+		if(id_card && !(ACCESS_HEADS in id_card.access))
 			id_card.add_wildcards(list(ACCESS_HEADS), mode=FORCE_ADD_ALL)
 
 	assigned_captain = TRUE

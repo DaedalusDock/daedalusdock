@@ -188,7 +188,7 @@ Burning extracts:
 	for(var/obj/machinery/light/L in A) //Shamelessly copied from the APC effect.
 		L.on = TRUE
 		L.break_light_tube()
-		stoplag()
+		CHECK_TICK
 	..()
 
 /obj/item/slimecross/burning/red
@@ -293,15 +293,6 @@ Burning extracts:
 	user.visible_message(span_danger("[src] lets off a hypnotizing pink glow!"))
 	for(var/mob/living/carbon/C in view(7, get_turf(user)))
 		C.reagents.add_reagent(/datum/reagent/medicine/haloperidol, 10)
-	..()
-
-/obj/item/slimecross/burning/adamantine
-	colour = "adamantine"
-	effect_desc = "Creates a mighty adamantine shield."
-
-/obj/item/slimecross/burning/adamantine/do_effect(mob/user)
-	user.visible_message(span_notice("[src] crystallizes into a large shield!"))
-	new /obj/item/shield/adamantineshield(get_turf(user))
 	..()
 
 /obj/item/slimecross/burning/rainbow

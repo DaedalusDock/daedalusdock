@@ -54,8 +54,8 @@
 
 /datum/uplink_item/stealthy_weapons/holster
 	name = "Syndicate Holster"
-	desc = "A useful little device that allows for inconspicuous carrying of guns using chameleon technology. It also allows for badass gun-spinning."
-	item = /obj/item/storage/belt/holster/chameleon
+	desc = "A useful little device that allows for inconspicuous carrying of small arms using chameleon technology. It also allows for badass gun-spinning."
+	item = /obj/item/storage/belt/holster/shoulder/chameleon
 	cost = 1
 
 /datum/uplink_item/stealthy_weapons/sleepy_pen

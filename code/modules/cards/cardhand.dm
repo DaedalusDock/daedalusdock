@@ -61,7 +61,7 @@
 	return NONE
 
 /obj/item/toy/cards/cardhand/attack_self(mob/living/user)
-	if(!isliving(user) || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK))
+	if(!isliving(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		return
 
 	var/list/handradial = list()

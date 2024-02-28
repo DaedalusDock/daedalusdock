@@ -51,13 +51,13 @@
 	//Hands
 	for(var/obj/item/I in held_items)
 		if(!(I.item_flags & ABSTRACT) && !(I.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_is] holding [I.get_examine_string(user)] in [t_his] [get_held_index_name(get_held_index_of_item(I))]."
+			. += "[t_He] [t_is] holding [I.get_examine_string(user)] in [t_his] [I.wielded ? "hands" : get_held_index_name(get_held_index_of_item(I))]."
 
-	var/datum/component/forensics/FR = GetComponent(/datum/component/forensics)
 	//gloves
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && !(gloves.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
-	else if(FR && length(FR.blood_DNA))
+
+	else if(length(forensics?.blood_DNA))
 		if(num_hands)
 			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
 
@@ -100,7 +100,8 @@
 
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]. <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>"
+		var/id_topic = wear_id.GetID() ? " <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>" : ""
+		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)].[id_topic]"
 
 
 	//Status effects
@@ -126,7 +127,7 @@
 
 			. += generate_death_examine_text()
 
-	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/brain))
+	if(get_bodypart(BODY_ZONE_HEAD) && needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
 
 	var/list/msg = list()
@@ -208,8 +209,13 @@
 		msg += "[t_He] look[p_s()] a little soaked.\n"
 
 
-	if(pulledby?.grab_state)
-		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
+	for(var/obj/item/hand_item/grab/G in grabbed_by)
+		if(G.assailant == src)
+			msg += "[t_He] [t_is] gripping [t_His] [G.get_targeted_bodypart().plaintext_zone].\n"
+			continue
+		if(!G.current_grab.stop_move)
+			continue
+		msg += "[t_He] [t_is] restrained by [G.assailant]'s grip.\n"
 
 	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
 		msg += "[t_He] [t_is] severely malnourished.\n"
@@ -237,17 +243,6 @@
 		if(-INFINITY to BLOOD_VOLUME_BAD)
 			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
 
-	if(is_bleeding())
-		var/list/obj/item/bodypart/grasped_limbs = list()
-
-		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(body_part.grasped_by)
-				grasped_limbs += body_part
-
-		for(var/i in grasped_limbs)
-			var/obj/item/bodypart/grasped_part = i
-			msg += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
-
 	if(islist(stun_absorption))
 		for(var/i in stun_absorption)
 			if(stun_absorption[i]["end_time"] > world.time && stun_absorption[i]["examine_message"])
@@ -269,9 +264,9 @@
 					msg += "[t_He] appear[p_s()] to be staring off into space.\n"
 				if (HAS_TRAIT(src, TRAIT_DEAF))
 					msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
-				if (bodytemperature > dna.species.bodytemp_heat_damage_limit)
+				if (bodytemperature > dna.species.heat_level_1)
 					msg += "[t_He] [t_is] flushed and wheezing.\n"
-				if (bodytemperature < dna.species.bodytemp_cold_damage_limit)
+				if (bodytemperature < dna.species.cold_level_1)
 					msg += "[t_He] [t_is] shivering.\n"
 
 			msg += "</span>"
@@ -280,13 +275,14 @@
 				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
 
 		switch(stat)
-			if(UNCONSCIOUS, HARD_CRIT)
+			if(UNCONSCIOUS)
 				msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
-			if(SOFT_CRIT)
-				msg += "[t_He] [t_is] barely conscious.\n"
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
+				if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
+					msg += "[t_He] [t_is] barely conscious.\n"
+
 		if(getorgan(/obj/item/organ/brain))
 			if(ai_controller?.ai_status == AI_STATUS_ON)
 				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
@@ -343,7 +339,19 @@
 	else if(isobserver(user))
 		. += span_info("<b>Traits:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
 
-	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
+	var/flavor_text_link
+	/// The first 1-FLAVOR_PREVIEW_LIMIT characters in the mob's "examine_text" variable. FLAVOR_PREVIEW_LIMIT is defined in flavor_defines.dm.
+	var/preview_text = trim(copytext_char((examine_text), 1, FLAVOR_PREVIEW_LIMIT))
+	if(preview_text)
+		if (!(skipface))
+			if(length_char(examine_text) <= FLAVOR_PREVIEW_LIMIT)
+				flavor_text_link += "[preview_text]"
+			else
+				flavor_text_link += "[preview_text]... [button_element(src, "Look Closer?", "open_examine_panel=1")]"
+		else
+			flavor_text_link = span_notice("...?")
+		if (flavor_text_link)
+			. += span_notice(flavor_text_link)
 
 /**
  * Shows any and all examine text related to any status effects the user has.

@@ -1,13 +1,13 @@
 ///Object doesn't use any of the light systems. Should be changed to add a light source to the object.
 #define NO_LIGHT_SUPPORT 0
 ///Light made with the lighting datums, applying a matrix.
-#define STATIC_LIGHT 1
+#define COMPLEX_LIGHT 1
 ///Light made by masking the lighting darkness plane.
-#define MOVABLE_LIGHT 2
+#define OVERLAY_LIGHT 2
 ///Light made by masking the lighting darkness plane, and is directional.
-#define MOVABLE_LIGHT_DIRECTIONAL 3
+#define OVERLAY_LIGHT_DIRECTIONAL 3
 
-///Is a movable light source attached to another movable (its loc), meaning that the lighting component should go one level deeper.
+/// Is our overlay light source attached to another movable (its loc), meaning that the lighting component should go one level deeper.
 #define LIGHT_ATTACHED (1<<0)
 
 //Bay lighting engine shit, not in /code/modules/lighting because BYOND is being shit about it
@@ -66,7 +66,7 @@ GLOBAL_LIST_INIT(emissive_color, EMISSIVE_COLOR)
 /// A globaly cached version of [EM_BLOCK_COLOR] for quick access.
 GLOBAL_LIST_INIT(em_block_color, EM_BLOCK_COLOR)
 /// A set of appearance flags applied to all emissive and emissive blocker overlays.
-#define EMISSIVE_APPEARANCE_FLAGS (KEEP_APART|KEEP_TOGETHER|RESET_COLOR|RESET_TRANSFORM)
+#define EMISSIVE_APPEARANCE_FLAGS (KEEP_APART|KEEP_TOGETHER|RESET_COLOR)
 /// The color matrix used to mask out emissive blockers on the emissive plane. Alpha should default to zero, be solely dependent on the RGB value of [EMISSIVE_COLOR], and be independant of the RGB value of [EM_BLOCK_COLOR].
 #define EM_MASK_MATRIX list(0,0,0,1/3, 0,0,0,1/3, 0,0,0,1/3, 0,0,0,0, 1,1,1,0)
 /// A globaly cached version of [EM_MASK_MATRIX] for quick access.
@@ -97,7 +97,7 @@ do { \
 } while (FALSE)
 
 /// The default falloff curve for all atoms. It's a magic number you should adjust until it looks good.
-#define LIGHTING_DEFAULT_FALLOFF_CURVE 2.36
+#define LIGHTING_DEFAULT_FALLOFF_CURVE 2
 
 /// Include this to have lights randomly break on initialize.
 #define LIGHTS_RANDOMLY_BROKEN

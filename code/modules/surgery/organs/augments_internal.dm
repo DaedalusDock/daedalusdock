@@ -128,11 +128,11 @@
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/on_signal(datum/source, amount)
 	SIGNAL_HANDLER
-	if(!(organ_flags & (ORGAN_FAILING|ORGAN_CUT_AWAY)) && amount > 0)
+	if(!(organ_flags & (ORGAN_DEAD|ORGAN_CUT_AWAY)) && amount > 0)
 		addtimer(CALLBACK(src, PROC_REF(clear_stuns)), stun_cap_amount, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/clear_stuns()
-	if(owner || !(organ_flags & (ORGAN_FAILING|ORGAN_CUT_AWAY)))
+	if(owner || !(organ_flags & (ORGAN_DEAD|ORGAN_CUT_AWAY)))
 		owner.SetStun(0)
 		owner.SetKnockdown(0)
 		owner.SetImmobilized(0)
@@ -140,13 +140,13 @@
 
 /obj/item/organ/cyberimp/brain/anti_stun/emp_act(severity)
 	. = ..()
-	if((organ_flags & (ORGAN_FAILING|ORGAN_CUT_AWAY)) || . & EMP_PROTECT_SELF)
+	if((organ_flags & (ORGAN_DEAD|ORGAN_CUT_AWAY)) || . & EMP_PROTECT_SELF)
 		return
-	set_organ_failing(TRUE)
+	set_organ_dead(TRUE)
 	addtimer(CALLBACK(src, PROC_REF(reboot)), 90 / severity)
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/reboot()
-	set_organ_failing(FALSE)
+	set_organ_dead(FALSE)
 
 //[[[[MOUTH]]]]
 /obj/item/organ/cyberimp/mouth

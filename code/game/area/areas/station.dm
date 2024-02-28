@@ -935,6 +935,8 @@
 	min_ambience_cooldown = 90 SECONDS
 	max_ambience_cooldown = 180 SECONDS
 
+	spook_level = SPOOK_AMT_CORPSE * -2 // We can expect like two dudes to be dead in here at all times.
+
 /area/station/medical/abandoned
 	name = "\improper Abandoned Medbay"
 	icon_state = "abandoned_medbay"
@@ -1010,6 +1012,8 @@
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 	lightswitch = FALSE
 
+	spook_level = SPOOK_AMT_CORPSE * -10 // The morgue lays spirits to rest or something
+
 /area/station/medical/chemistry
 	name = "Chemistry"
 	icon_state = "chem"
@@ -1064,7 +1068,6 @@
 	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
 
 //Security
-///When adding a new area to the security areas, make sure to add it to /datum/bounty/item/security/paperwork as well!
 
 /area/station/security
 	name = "Security"
@@ -1293,6 +1296,25 @@
 /area/station/cargo/miningoffice
 	name = "\improper Mining Office"
 	icon_state = "mining"
+
+/area/station/cargo/mining/asteroid_magnet
+	name = "\improper Asteroid Magnet"
+	icon_state = "mining"
+	requires_power = TRUE
+	always_unpowered = TRUE
+
+	static_lighting = FALSE
+	base_lighting_alpha = 255
+	base_lighting_color = "#FFFFFF"
+
+	power_light = FALSE
+	power_equip = FALSE
+	power_environ = FALSE
+	area_flags = NO_ALERTS
+	outdoors = TRUE
+	ambience_index = AMBIENCE_SPACE
+	flags_1 = CAN_BE_DIRTY_1
+	sound_environment = SOUND_AREA_SPACE
 
 //Science
 

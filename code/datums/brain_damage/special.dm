@@ -170,18 +170,17 @@
 
 /datum/brain_trauma/special/quantum_alignment/proc/try_entangle()
 	//Check for pulled mobs
-	if(ismob(owner.pulling))
-		entangle(owner.pulling)
+	var/list/grabs = owner.active_grabs
+	if(length(grabs))
+		for(var/obj/item/hand_item/grab/G in grabs)
+			entangle(G.affecting)
 		return
+
 	//Check for adjacent mobs
 	for(var/mob/living/L in oview(1, owner))
 		if(owner.Adjacent(L))
 			entangle(L)
 			return
-	//Check for pulled objects
-	if(isobj(owner.pulling))
-		entangle(owner.pulling)
-		return
 
 	//Check main hand
 	var/obj/item/held_item = owner.get_active_held_item()

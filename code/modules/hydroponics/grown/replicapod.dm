@@ -164,7 +164,7 @@
 			return result
 
 		// Make sure they can still interact with the parent hydroponics tray.
-		if(!user.canUseTopic(parent, BE_CLOSE))
+		if(!user.canUseTopic(parent, USE_CLOSE))
 			to_chat(user, text = "You are no longer able to harvest the seeds from [parent]!", type = MESSAGE_TYPE_INFO)
 			return result
 
@@ -183,9 +183,10 @@
 	var/mob/living/carbon/human/podman = new /mob/living/carbon/human(parent.loc)
 
 	if(realName)
-		podman.real_name = realName
+		podman.set_real_name(realName)
 	else
-		podman.real_name = "Pod Person ([rand(1,999)])"
+		podman.set_real_name("Pod Person ([rand(1,999)])")
+
 	mind.transfer_to(podman)
 	if(ckey)
 		podman.ckey = ckey

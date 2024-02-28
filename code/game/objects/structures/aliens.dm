@@ -12,7 +12,7 @@
 	max_integrity = 100
 
 /obj/structure/alien/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
-	if(damage_flag == MELEE)
+	if(damage_flag == BLUNT)
 		switch(damage_type)
 			if(BRUTE)
 				damage_amount *= 0.25
@@ -92,7 +92,7 @@
 /obj/structure/alien/resin/wall/block_superconductivity()
 	return 1
 
-/// meant for one lavaland ruin or anywhere that has simplemobs who can push aside structures
+/// meant for anywhere that has simplemobs who can push aside structures
 /obj/structure/alien/resin/wall/immovable
 	desc = "Dense resin solidified into a wall."
 	move_resist = MOVE_FORCE_VERY_STRONG

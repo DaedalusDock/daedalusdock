@@ -29,8 +29,9 @@
 
 	custom_materials = list(/datum/material/iron = 500)
 	actions_types = list(/datum/action/item_action/set_internals)
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 80, ACID = 30)
 	integrity_failure = 0.5
+
 	/// The gases this tank contains. Don't modify this directly, use return_air() to get it instead
 	var/datum/gas_mixture/air_contents = null
 	/// The volume of this tank. Among other things gas tank explosions (including TTVs) scale off of this. Be sure to account for that if you change this or you will break ~~toxins~~ordinance.
@@ -48,36 +49,8 @@
 	/// List containing reactions happening inside our tank.
 	var/list/reaction_info
 
-/obj/item/tank/ui_action_click(mob/user)
-	toggle_internals(user)
-
-/obj/item/tank/proc/toggle_internals(mob/user)
-	var/mob/living/carbon/human/H = user
-	if(!istype(H))
-		return
-
-	if(H.internal == src)
-		to_chat(H, span_notice("You close [src] valve."))
-		H.internal = null
-	else
-		if(!H.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-			if(!H.wear_mask)
-				to_chat(H, span_warning("You need a mask!"))
-				return
-			var/is_clothing = isclothing(H.wear_mask)
-			if(is_clothing && H.wear_mask.mask_adjusted)
-				H.wear_mask.adjustmask(H)
-			if(!is_clothing || !(H.wear_mask.clothing_flags & MASKINTERNALS))
-				to_chat(H, span_warning("[H.wear_mask] can't use [src]!"))
-				return
-
-		if(H.internal)
-			to_chat(H, span_notice("You switch your internals to [src]."))
-		else
-			to_chat(H, span_notice("You open [src] valve."))
-		H.internal = src
-	H?.update_mob_action_buttons()
-
+	/// Mob that is currently breathing from the tank.
+	var/mob/living/carbon/breathing_mob = null
 
 /obj/item/tank/Initialize(mapload)
 	. = ..()
@@ -146,6 +119,39 @@
 		playsound(location, 'sound/effects/spray.ogg', 10, TRUE, -3)
 	return ..()
 
+/obj/item/tank/ui_action_click(mob/user)
+	toggle_internals(user)
+
+/// Attempts to toggle the mob's internals on or off using this tank. Returns TRUE if successful.
+/obj/item/tank/proc/toggle_internals(mob/living/carbon/mob_target)
+	return mob_target.toggle_internals(src)
+
+/// Closes the tank if dropped while open.
+/obj/item/tank/dropped(mob/living/user, silent)
+	. = ..()
+	// Close open air tank if its current user got sent to the shadowrealm.
+	if (QDELETED(breathing_mob))
+		breathing_mob = null
+		return
+	// Close open air tank if it got dropped by it's current user.
+	if (loc != breathing_mob)
+		breathing_mob.cutoff_internals()
+
+/// Closes the tank if given to another mob while open.
+/obj/item/tank/equipped(mob/living/user, slot, initial)
+	. = ..()
+	// Close open air tank if it was equipped by a mob other than the current user.
+	if (breathing_mob && (user != breathing_mob))
+		breathing_mob.cutoff_internals()
+
+/// Called by carbons after they connect the tank to their breathing apparatus.
+/obj/item/tank/proc/after_internals_opened(mob/living/carbon/carbon_target)
+	breathing_mob = carbon_target
+
+/// Called by carbons after they disconnect the tank from their breathing apparatus.
+/obj/item/tank/proc/after_internals_closed(mob/living/carbon/carbon_target)
+	breathing_mob = null
+
 /obj/item/tank/suicide_act(mob/user)
 	var/mob/living/carbon/human/H = user
 	user.visible_message(span_suicide("[user] is putting [src]'s valve to [user.p_their()] lips! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -159,7 +165,7 @@
 	return SHAME
 
 /obj/item/tank/attackby(obj/item/W, mob/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(istype(W, /obj/item/assembly_holder))
 		bomb_assemble(W, user)
 		return TRUE
@@ -189,10 +195,10 @@
 		"releasePressure" = round(distribute_pressure)
 	)
 
-	var/mob/living/carbon/C = user
-	if(!istype(C))
-		C = loc.loc
-	if(istype(C) && C.internal == src)
+	var/mob/living/carbon/carbon_user = user
+	if(!istype(carbon_user))
+		carbon_user = loc
+	if(istype(carbon_user) && (carbon_user.external == src || carbon_user.internal == src))
 		.["connected"] = TRUE
 
 /obj/item/tank/ui_act(action, params)
@@ -269,7 +275,7 @@
 	excited = (excited | leaking)
 
 	if(!excited)
-		STOP_PROCESSING(SSobj, src)
+		. = PROCESS_KILL
 	excited = FALSE
 
 	if(QDELETED(src) || !leaking || !air_contents)

@@ -21,6 +21,10 @@
 /obj/effect/spawner
 	name = "object spawner"
 
+// Brief explanation:
+// Rather then setting up and then deleting spawners, we block all atomlike setup
+// and do the absolute bare minimum
+// This is with the intent of optimizing mapload
 /obj/effect/spawner/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)
 	if(initialized)
@@ -31,7 +35,7 @@
 
 /obj/effect/spawner/Destroy(force)
 	SHOULD_CALL_PARENT(FALSE)
-	loc = null
+	moveToNullspace()
 	return QDEL_HINT_QUEUE
 
 /obj/effect/list_container
@@ -87,7 +91,7 @@
 	name = "lighting fx obj"
 	desc = "Tell a coder if you're seeing this."
 	icon_state = "nothing"
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 	light_color = COLOR_WHITE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT

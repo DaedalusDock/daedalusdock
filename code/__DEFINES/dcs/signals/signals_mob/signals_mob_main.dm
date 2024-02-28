@@ -44,6 +44,11 @@
 #define COMSIG_MOB_CLIENT_CHANGE_VIEW "mob_client_change_view"
 /// From base of /mob/proc/reset_perspective() (mob/source)
 #define COMSIG_MOB_RESET_PERSPECTIVE "mob_reset_perspective"
+/// from base of /client/proc/set_eye() : (atom/old_eye, atom/new_eye)
+#define COMSIG_CLIENT_SET_EYE "client_set_eye"
+/// from base of /datum/view_data/proc/afterViewChange() : (view)
+#define COMSIG_VIEWDATA_UPDATE "viewdata_update"
+
 
 ///from mind/transfer_to. Sent to the receiving mob.
 #define COMSIG_MOB_MIND_TRANSFERRED_INTO "mob_mind_transferred_into"
@@ -120,7 +125,7 @@
 #define COMSIG_MOB_CREAMED "mob_creamed"
 ///From /obj/item/gun/proc/check_botched()
 #define COMSIG_MOB_CLUMSY_SHOOT_FOOT "mob_clumsy_shoot_foot"
-///from /obj/item/hand_item/slapper/attack_atom(): (source=obj/structure/table/slammed_table, mob/living/slammer)
+///from /obj/item/hand_item/slapper/attack_obj(): (source=obj/structure/table/slammed_table, mob/living/slammer)
 #define COMSIG_TABLE_SLAMMED "table_slammed"
 ///from base of atom/attack_hand(): (mob/user, modifiers)
 #define COMSIG_MOB_ATTACK_HAND "mob_attack_hand"
@@ -147,3 +152,6 @@
 #define COMSIG_MOB_AUTOMUTE_CHECK "client_automute_check" // The check is performed by the client.
 	/// Prevents the automute system checking this client for repeated messages.
 	#define WAIVE_AUTOMUTE_CHECK (1<<0)
+
+/// from base of [/datum/preference/toggle/motion_sickness] (new_value)
+#define COMSIG_MOB_MOTION_SICKNESS_UPDATE "client_prefs_motion_sickness_change"

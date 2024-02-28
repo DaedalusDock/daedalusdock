@@ -122,6 +122,14 @@
 	///chat client installed on this computer, just helpful for linking all the computers
 	var/datum/computer_file/program/chatclient/chatprogram
 
+/obj/machinery/modular_computer/console/preset/cargochat/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/modular_computer/console/preset/cargochat/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
+
 /obj/machinery/modular_computer/console/preset/cargochat/install_programs()
 	var/obj/item/computer_hardware/hard_drive/hard_drive = cpu.all_components[MC_HDD]
 	chatprogram = new
@@ -159,7 +167,7 @@
 /obj/machinery/modular_computer/console/preset/cargochat/cargo/LateInitialize()
 	. = ..()
 	var/datum/ntnet_conversation/cargochat = SSnetworks.station_network.get_chat_channel_by_id(chatprogram.active_channel)
-	for(var/obj/machinery/modular_computer/console/preset/cargochat/cargochat_console in GLOB.machines)
+	for(var/obj/machinery/modular_computer/console/preset/cargochat/cargochat_console as anything in INSTANCES_OF(/obj/machinery/modular_computer/console/preset/cargochat))
 		if(cargochat_console == src)
 			continue
 		cargochat_console.chatprogram.active_channel = chatprogram.active_channel

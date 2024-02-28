@@ -84,7 +84,7 @@
 	///how much damage this simple animal does to objects, if any.
 	var/obj_damage = 0
 	///How much armour they ignore, as a flat reduction from the targets armour value.
-	var/armour_penetration = 0
+	var/armor_penetration = 0
 	///Damage type of a simple mob's melee attack, should it do damage.
 	var/melee_damage_type = BRUTE
 	/// 1 for full damage , 0 for none , -1 for 1:1 heal from that source.
@@ -171,7 +171,7 @@
 	if(gender == PLURAL)
 		gender = pick(MALE,FEMALE)
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 	if(!loc)
 		stack_trace("Simple animal being instantiated in nullspace")
 	update_simplemob_varspeed()
@@ -263,7 +263,7 @@
 	turns_since_move++
 	if(turns_since_move < turns_per_move)
 		return TRUE
-	if(stop_automated_movement_when_pulled && pulledby) //Some animals don't move when pulled
+	if(stop_automated_movement_when_pulled && LAZYLEN(grabbed_by)) //Some animals don't move when pulled
 		return TRUE
 	var/anydir = pick(GLOB.cardinals)
 	if(Process_Spacemove(anydir))
@@ -309,7 +309,7 @@
 /mob/living/simple_animal/proc/environment_air_is_safe()
 	. = TRUE
 
-	if(pulledby && pulledby.grab_state >= GRAB_KILL && atmos_requirements["min_oxy"])
+	if(HAS_TRAIT(src, TRAIT_KILL_GRAB) && atmos_requirements["min_oxy"])
 		. = FALSE //getting choked
 
 	if(isturf(loc) && isopenturf(loc))
@@ -591,10 +591,13 @@
 		return
 	if(!dextrous)
 		return
+
 	if(!hand_index)
 		hand_index = (active_hand_index % held_items.len)+1
+
 	var/oindex = active_hand_index
 	active_hand_index = hand_index
+
 	if(hud_used)
 		var/atom/movable/screen/inventory/hand/H
 		H = hud_used.hand_slots["[hand_index]"]
@@ -603,6 +606,8 @@
 		H = hud_used.hand_slots["[oindex]"]
 		if(H)
 			H.update_appearance()
+
+	update_mouse_pointer()
 
 /mob/living/simple_animal/put_in_hands(obj/item/I, del_on_fail = FALSE, merge_stacks = TRUE, ignore_animation = TRUE)
 	. = ..()
@@ -648,7 +653,7 @@
 			stack_trace("Something attempted to set simple animals AI to an invalid state: [togglestatus]")
 
 /mob/living/simple_animal/proc/consider_wakeup()
-	if (pulledby || shouldwakeup)
+	if (LAZYLEN(grabbed_by) || shouldwakeup)
 		toggle_ai(AI_ON)
 
 /mob/living/simple_animal/on_changed_z_level(turf/old_turf, turf/new_turf)

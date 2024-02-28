@@ -122,6 +122,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(codex_topic(href, href_list))
 		return
 
+	if(href_list["show_slapcraft_hints"])
+		var/path = text2path(href_list["show_slapcraft_hints"])
+		if(ispath(path, /obj/item))
+			show_slapcraft_hints(path)
+		return
+
 	switch(href_list["action"])
 		if("openLink")
 			src << link(href_list["link"])
@@ -401,6 +407,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	// Initialize stat panel
 	stat_panel.initialize(
+		assets = list(get_asset_datum(/datum/asset/simple/namespaced/cursors)),
 		inline_html = file2text('html/statbrowser.html'),
 		inline_js = file2text('html/statbrowser.js'),
 		inline_css = file2text('html/statbrowser.css'),
@@ -624,6 +631,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	active_mousedown_item = null
 	SSambience.remove_ambience_client(src)
 	SSmouse_entered.hovers -= src
+	SSmouse_entered.sustained_hovers -= src
 	SSping.currentrun -= src
 	QDEL_NULL(view_size)
 	QDEL_NULL(void)
@@ -957,9 +965,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/list/modifiers = params2list(params)
 
 	var/button_clicked = LAZYACCESS(modifiers, "button")
-	
+
 	var/dragged = LAZYACCESS(modifiers, DRAG)
-	if(dragged && button_clicked != dragged) 
+	if(dragged && button_clicked != dragged)
 		return
 
 	if (object && IS_WEAKREF_OF(object, middle_drag_atom_ref) && button_clicked == LEFT_CLICK)
@@ -1021,7 +1029,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		winset(src, null, "input.background-color=[COLOR_INPUT_DISABLED]")
 
 	else
-		winset(src, null, "input.focus=true input.background-color=[COLOR_INPUT_ENABLED]")
+		winset(src, null, "input.background-color=[COLOR_INPUT_ENABLED]")
 
 	SEND_SIGNAL(src, COMSIG_CLIENT_CLICK, object, location, control, params, usr)
 
@@ -1110,6 +1118,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	movement_keys = list()
 	for(var/kb_name in D.key_bindings)
 		for(var/key in D.key_bindings[kb_name])
+			if(!hotkeys && !SSinput.unprintables_cache[key])
+				continue
 			switch(kb_name)
 				if("North")
 					movement_keys[key] = NORTH
@@ -1229,16 +1239,21 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		holder.filteriffic = new /datum/filter_editor(in_atom)
 		holder.filteriffic.ui_interact(mob)
 
+///opens the particle editor UI for the in_atom object for this client
+/client/proc/open_particle_editor(atom/movable/in_atom)
+	if(holder)
+		holder.particle_test = new /datum/particle_editor(in_atom)
+		holder.particle_test.ui_interact(mob)
 
 /client/proc/set_right_click_menu_mode(shift_only)
 	if(shift_only)
 		winset(src, "mapwindow.map", "right-click=true")
-		winset(src, "ShiftUp", "is-disabled=false")
-		winset(src, "Shift", "is-disabled=false")
+		winset(src, "default.PROTECTED-Shift", "command=\".winset :map.right-click=false\nKeyDown Shift\"")
+		winset(src, "default.PROTECTED-ShiftUp", "command=\".winset :map.right-click=true\nKeyUp Shift\"")
 	else
 		winset(src, "mapwindow.map", "right-click=false")
-		winset(src, "default.Shift", "is-disabled=true")
-		winset(src, "default.ShiftUp", "is-disabled=true")
+		winset(src, "default.PROTECTED-Shift", "command=\"KeyDown Shift\"")
+		winset(src, "default.PROTECTED-ShiftUp", "command=\"KeyUp Shift\"")
 
 /client/proc/update_ambience_pref()
 	if(prefs.toggles & SOUND_AMBIENCE)
@@ -1301,3 +1316,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	SEND_SOUND(usr, sound(null))
 	tgui_panel?.stop_music()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Stop Self Sounds"))
+
+/client/proc/show_slapcraft_hints(given_type)
+	var/list/hints = slapcraft_examine_hints_for_type(given_type)
+	if(!length(hints))
+		return
+	hints.Insert(1, "<div style='text-align: center;font-size: 200%;font-weight: bold'>Craftables<hr></div>")
+
+	to_chat(mob, examine_block("<span class='notice'>[jointext(hints, "<br>")]</span>"))

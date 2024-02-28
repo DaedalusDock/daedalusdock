@@ -35,6 +35,20 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 ///Should we override the loop's glide?
 #define MOVEMENT_LOOP_IGNORE_GLIDE (1<<2)
 
+// Movement loop status flags
+/// Has the loop been paused, soon to be resumed?
+#define MOVELOOP_STATUS_PAUSED (1<<0)
+/// Is the loop running? (Is true even when paused)
+#define MOVELOOP_STATUS_RUNNING (1<<1)
+/// Is the loop queued in a subsystem?
+#define MOVELOOP_STATUS_QUEUED (1<<2)
+
+/**
+ * Returns a bitfield containing flags both present in `flags` arg and the `processing_move_loop_flags` move_packet variable.
+ * Has no use outside of procs called within the movement proc chain.
+ */
+#define CHECK_MOVE_LOOP_FLAGS(movable, flags) (movable.move_packet ? (movable.move_packet.processing_move_loop_flags & (flags)) : NONE)
+
 //Index defines for movement bucket data packets
 #define MOVEMENT_BUCKET_TIME 1
 #define MOVEMENT_BUCKET_LIST 2
@@ -61,7 +75,7 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 /// Used when the grip on a pulled object shouldn't be broken.
 #define FALL_RETAIN_PULL (1<<3)
 
-/// Runs check_pulling() by the end of [/atom/movable/proc/zMove] for every movable that's pulling something. Should be kept enabled unless you know what you are doing.
+/// Runs recheck_grabs() by the end of [/atom/movable/proc/zMove] for every movable that's pulling something. Should be kept enabled unless you know what you are doing.
 #define ZMOVE_CHECK_PULLING (1<<0)
 /// Checks if pulledby is nearby. if not, stop being pulled.
 #define ZMOVE_CHECK_PULLEDBY (1<<1)
@@ -79,6 +93,8 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define ZMOVE_INCLUDE_PULLED (1<<8)
 /// Skips check for whether the moving atom is anchored or not.
 #define ZMOVE_ALLOW_ANCHORED (1<<9)
+/// Skip CanMoveOnto() checks
+#define ZMOVE_SKIP_CANMOVEONTO (1<<10)
 
 #define ZMOVE_CHECK_PULLS (ZMOVE_CHECK_PULLING|ZMOVE_CHECK_PULLEDBY)
 
@@ -107,3 +123,8 @@ GLOBAL_VAR_INIT(glide_size_multiplier, 1.0)
 #define TELEPORT_CHANNEL_CULT "cult"
 /// Anything else
 #define TELEPORT_CHANNEL_FREE "free"
+
+///Return values for moveloop Move()
+#define MOVELOOP_FAILURE 0
+#define MOVELOOP_SUCCESS 1
+#define MOVELOOP_NOT_READY 2

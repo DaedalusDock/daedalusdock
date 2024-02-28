@@ -70,7 +70,7 @@
 /datum/plant_gene/reagent/proc/set_reagent(new_reagent_id)
 	reagent_id = new_reagent_id
 
-	var/datum/reagent/found_reagent = GLOB.chemical_reagents_list[new_reagent_id]
+	var/datum/reagent/found_reagent = SSreagents.chemical_reagents_list[new_reagent_id]
 	if(found_reagent?.type == reagent_id)
 		name = found_reagent.name
 
@@ -362,7 +362,7 @@
 		return
 
 	var/obj/item/seeds/our_seed = our_plant.get_plant_seed()
-	our_plant.light_system = MOVABLE_LIGHT
+	our_plant.light_system = OVERLAY_LIGHT
 	our_plant.AddComponent(/datum/component/overlay_lighting, glow_range(our_seed), glow_power(our_seed), glow_color)
 
 /*

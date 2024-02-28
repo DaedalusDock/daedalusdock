@@ -87,7 +87,7 @@
 
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/ready_projectile(obj/projectile/to_launch, atom/target, mob/user, iteration)
 	. = ..()
-	to_launch.def_zone = check_zone(user.zone_selected)
+	to_launch.aimed_def_zone = deprecise_zone(user.zone_selected)
 
 /// If our blade status effect is deleted, clear our refs and deactivate
 /datum/action/cooldown/spell/pointed/projectile/furious_steel/proc/on_status_effect_deleted(datum/status_effect/protective_blades/source)
@@ -102,7 +102,7 @@
 	icon_state = "knife"
 	speed = 2
 	damage = 25
-	armour_penetration = 100
+	armor_penetration = 100
 	sharpness = SHARP_EDGED
 	pass_flags = PASSTABLE | PASSFLAPS
 

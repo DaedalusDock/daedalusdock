@@ -109,8 +109,7 @@
 
 /mob/camera/imaginary_friend/proc/setup_friend()
 	var/gender = pick(MALE, FEMALE)
-	real_name = random_unique_name(gender)
-	name = real_name
+	set_real_name(random_unique_name(gender))
 	human_image = get_flat_human_icon(null, pick(SSjob.joinable_occupations))
 
 /**
@@ -125,8 +124,7 @@
 		setup_friend()
 		return
 
-	real_name = appearance_from_prefs.read_preference(/datum/preference/name/real_name)
-	name = real_name
+	set_real_name(appearance_from_prefs.read_preference(/datum/preference/name/real_name))
 
 	// Determine what job is marked as 'High' priority.
 	var/datum/job/appearance_job
@@ -181,7 +179,7 @@
 		client.images.Remove(human_image)
 	return ..()
 
-/mob/camera/imaginary_friend/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null)
+/mob/camera/imaginary_friend/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	if (!message)
 		return
 
@@ -317,6 +315,5 @@
 	to_chat(src, span_notice("You cannot directly influence the world around you, but you can see what the host cannot."))
 
 /mob/camera/imaginary_friend/trapped/setup_friend()
-	real_name = "[owner.real_name]?"
-	name = real_name
+	set_real_name("[owner.real_name]?")
 	human_image = icon('icons/mob/lavaland/lavaland_monsters.dmi', icon_state = "curseblob")

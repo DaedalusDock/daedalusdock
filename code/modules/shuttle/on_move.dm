@@ -28,9 +28,7 @@ All ShuttleMove procs go here
 				var/mob/living/M = thing
 				if(M.buckled)
 					M.buckled.unbuckle_mob(M, 1)
-				if(M.pulledby)
-					M.pulledby.stop_pulling()
-				M.stop_pulling()
+				M.release_all_grabs()
 				M.visible_message(span_warning("[shuttle] slams into [M]!"))
 				SSblackbox.record_feedback("tally", "shuttle_gib", 1, M.type)
 				log_attack("[key_name(M)] was shuttle gibbed by [shuttle].")
@@ -152,17 +150,13 @@ All ShuttleMove procs go here
 	if(newT == oldT) // In case of in place shuttle rotation shenanigans.
 		return TRUE
 
-	contents -= oldT
-	underlying_old_area.contents += oldT
-	oldT.transfer_area_lighting(src, underlying_old_area)
+	oldT.change_area(src, underlying_old_area)
 	//The old turf has now been given back to the area that turf originaly belonged to
 
 	var/area/old_dest_area = newT.loc
 	parallax_movedir = old_dest_area.parallax_movedir
+	newT.change_area(old_dest_area, src)
 
-	old_dest_area.contents -= newT
-	contents += newT
-	newT.transfer_area_lighting(old_dest_area, src)
 	return TRUE
 
 // Called on areas after everything has been moved
@@ -329,10 +323,11 @@ All ShuttleMove procs go here
 /obj/structure/cable/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
 	cut_cable_from_powernet(FALSE)
+	var/clockwise_rotation_amount = round(rotation / 90)
+	rotate_clockwise_amount(clockwise_rotation_amount)
 
 /obj/structure/cable/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()
-	Connect_cable(TRUE)
 	propagate_if_no_network()
 
 /obj/structure/shuttle/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)

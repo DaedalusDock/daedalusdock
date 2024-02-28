@@ -12,7 +12,6 @@
 	var/static/list/delete_atoms = zebra_typecacheof(list(
 		/obj/effect = TRUE,
 		/obj/effect/dummy/chameleon = FALSE,
-		/obj/effect/wisp = FALSE,
 		/obj/effect/mob_spawn = FALSE,
 		/obj/effect/immovablerod = FALSE,
 	))

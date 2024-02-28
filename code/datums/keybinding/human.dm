@@ -1,6 +1,5 @@
 /datum/keybinding/human
 	category = CATEGORY_HUMAN
-	weight = WEIGHT_MOB
 
 /datum/keybinding/human/can_use(client/user)
 	return ishuman(user.mob)
@@ -56,3 +55,25 @@
 	slot_type = ITEM_SLOT_SUITSTORE
 	slot_item_name = "suit storage slot item"
 	keybind_signal = COMSIG_KB_HUMAN_SUITEQUIP_DOWN
+
+/datum/keybinding/human/wield
+	hotkey_keys = list("V")
+	name = "wield_item"
+	full_name = "Wield/Unwield item"
+	description = "Wield your held item with both hands."
+	keybind_signal = COMSIG_KB_HUMAN_WIELD_DOWN
+
+/datum/keybinding/human/wield/down(client/user)
+	. = ..()
+	if(.)
+		return
+
+	var/mob/living/carbon/human/H = user.mob
+	var/obj/item/I = H.get_active_held_item()
+	if(!I)
+		return
+
+	if(I.wielded)
+		I.unwield(H)
+	else
+		return I.wield(H)

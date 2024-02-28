@@ -103,7 +103,7 @@
 
 /obj/item/reagent_containers/food/condiment/enzyme/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
+	var/datum/chemical_reaction/recipe = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
 	var/milk_required = recipe.required_reagents[/datum/reagent/consumable/milk]
 	var/enzyme_required = recipe.required_catalysts[/datum/reagent/consumable/enzyme]
 	. += span_notice("[milk_required] milk, [enzyme_required] enzyme and you got cheese.")
@@ -121,7 +121,7 @@
 
 /obj/item/reagent_containers/food/condiment/sugar/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
+	var/datum/chemical_reaction/recipe = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
 	var/flour_required = recipe.required_reagents[/datum/reagent/consumable/flour]
 	var/eggyolk_required = recipe.required_reagents[/datum/reagent/consumable/eggyolk]
 	var/sugar_required = recipe.required_reagents[/datum/reagent/consumable/sugar]
@@ -138,13 +138,12 @@
 	volume = 20
 	list_reagents = list(/datum/reagent/consumable/salt = 20)
 	fill_icon_thresholds = null
+	drop_sound = 'sound/items/handling/drinkglass_drop.ogg'
 
 /obj/item/reagent_containers/food/condiment/saltshaker/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] begins to swap forms with the salt shaker! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/newname = "[name]"
-	name = "[user.name]"
-	user.name = newname
-	user.real_name = newname
+	user.set_real_name(newname)
 	desc = "Salt. From dead crew, presumably."
 	return (TOXLOSS)
 
@@ -172,6 +171,7 @@
 	volume = 20
 	list_reagents = list(/datum/reagent/consumable/blackpepper = 20)
 	fill_icon_thresholds = null
+	drop_sound = 'sound/items/handling/drinkglass_drop.ogg'
 
 /obj/item/reagent_containers/food/condiment/milk
 	name = "space milk"
@@ -185,7 +185,7 @@
 
 /obj/item/reagent_containers/food/condiment/milk/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
+	var/datum/chemical_reaction/recipe = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cheesewheel]
 	var/milk_required = recipe.required_reagents[/datum/reagent/consumable/milk]
 	var/enzyme_required = recipe.required_catalysts[/datum/reagent/consumable/enzyme]
 	. += span_notice("[milk_required] milk, [enzyme_required] enzyme and you got cheese.")
@@ -203,8 +203,8 @@
 
 /obj/item/reagent_containers/food/condiment/flour/examine(mob/user)
 	. = ..()
-	var/datum/chemical_reaction/recipe_dough = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/dough]
-	var/datum/chemical_reaction/recipe_cakebatter = GLOB.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
+	var/datum/chemical_reaction/recipe_dough = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/dough]
+	var/datum/chemical_reaction/recipe_cakebatter = SSreagents.chemical_reactions_list[/datum/chemical_reaction/food/cakebatter]
 	var/dough_flour_required = recipe_dough.required_reagents[/datum/reagent/consumable/flour]
 	var/dough_water_required = recipe_dough.required_reagents[/datum/reagent/water]
 	var/cakebatter_flour_required = recipe_cakebatter.required_reagents[/datum/reagent/consumable/flour]

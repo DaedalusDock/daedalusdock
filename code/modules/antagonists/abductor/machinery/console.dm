@@ -1,5 +1,5 @@
 /proc/get_abductor_console(team_number)
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in INSTANCES_OF(/obj/machinery/abductor/console))
 		if(C.team_number == team_number)
 			return C
 
@@ -9,6 +9,14 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	use_power = NO_POWER_USE
 	var/team_number = 0
+
+/obj/machinery/abductor/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/abductor/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 //Console
 
@@ -206,18 +214,18 @@
 	if(!team_number)
 		return
 
-	for(var/obj/machinery/abductor/pad/p in GLOB.machines)
+	for(var/obj/machinery/abductor/pad/p in INSTANCES_OF(/obj/machinery/abductor/console))
 		if(p.team_number == team_number)
 			pad = p
 			pad.console = src
 			break
 
-	for(var/obj/machinery/abductor/experiment/e in GLOB.machines)
+	for(var/obj/machinery/abductor/experiment/e in INSTANCES_OF(/obj/machinery/abductor/console))
 		if(e.team_number == team_number)
 			experiment = e
 			e.console = src
 
-	for(var/obj/machinery/computer/camera_advanced/abductor/c in GLOB.machines)
+	for(var/obj/machinery/computer/camera_advanced/abductor/c as anything in INSTANCES_OF(/obj/machinery/computer/camera_advanced/abductor))
 		if(c.team_number == team_number)
 			camera = c
 			c.console = src
@@ -252,7 +260,7 @@
 	if(vest == V)
 		return FALSE
 
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in INSTANCES_OF(/obj/machinery/abductor))
 		if(C.vest == V)
 			C.vest = null
 			break

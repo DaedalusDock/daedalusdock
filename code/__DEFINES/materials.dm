@@ -57,7 +57,7 @@
 #define MATERIAL_GREYSCALE (1<<4)
 
 /// Wrapper for fetching material references. Exists exclusively so that people don't need to wrap everything in a list every time.
-#define GET_MATERIAL_REF(arguments...) SSmaterials._GetMaterialRef(list(##arguments))
+#define GET_MATERIAL_REF(arguments...) SSmaterials._GetMaterialRef(##arguments)
 
 #define MATERIAL_SOURCE(mat) "[mat.name]_material"
 
@@ -68,8 +68,3 @@
 #define MATERIAL_SLOWDOWN_PLASTEEL (0.05)
 /// The slowdown value of one [MINERAL_MATERIAL_AMOUNT] of alien alloy.
 #define MATERIAL_SLOWDOWN_ALIEN_ALLOY (0.1)
-
-// Flags for wall shine
-#define WALL_SHINE_PLATING (1<<0)
-#define WALL_SHINE_REINFORCED (1<<1)
-#define WALL_SHINE_BOTH (WALL_SHINE_REINFORCED|WALL_SHINE_PLATING)

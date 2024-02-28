@@ -23,7 +23,7 @@
 	sharpness = SHARP_EDGED
 	max_integrity = 200
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_GREYSCALE //doesn't affect stats of the weapon as to avoid gamering your opponent with a dope weapon
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/ceremonial_blade/Initialize(mapload)
@@ -42,13 +42,14 @@
 	force = old_force
 	throwforce = old_throwforce
 
-/obj/item/ceremonial_blade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/ceremonial_blade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type != MELEE_ATTACK || !ishuman(hitby.loc))
 		return ..()
+
+	. = ..()
 	if(HAS_TRAIT(hitby.loc, TRAIT_SPARRING))
 		//becomes 30 block
-		final_block_chance *= 10
-	. = ..()
+		. *= 10
 
 /obj/item/ceremonial_blade/proc/block_sharpening(datum/source, increment, max)
 	SIGNAL_HANDLER

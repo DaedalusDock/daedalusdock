@@ -79,7 +79,8 @@
 	SIGNAL_HANDLER
 	last_pipe = loc
 
-/obj/structure/disposalholder/proc/try_expel(datum/move_loop/source, succeed, visual_delay)
+/// Handles the postprocess check signal, tries to leave the pipe
+/obj/structure/disposalholder/proc/try_expel(datum/move_loop/source, result, visual_delay)
 	SIGNAL_HANDLER
 	if(current_pipe || !active)
 		return

@@ -37,6 +37,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 /mob/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
+	if(LAZYLEN(observers))
+		for(var/mob/dead/observer/O as anything in observers)
+			O.Hear(arglist(args))
+
 	if(client && radio_freq)
 		var/atom/movable/virtualspeaker/V = speaker
 		if(isAI(V.source))
@@ -63,25 +67,37 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * * `face_name` - Do we use the "name" of the speaker, or get it's `real_name`, Used solely for hallucinations.
 */
 /atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), face_name = FALSE)
+
+	var/voice = "[speaker.GetVoice()]"
+	var/alt_name = speaker.get_alt_name()
+
 	//Basic span
-	var/spanpart1 = "<span class='[radio_freq ? get_radio_span(radio_freq) : "game say"]'>"
-	//Start name span.
-	var/spanpart2 = "<span class='name'>"
+	var/wrapper_span = "<span class='[radio_freq ? get_radio_span(radio_freq) : "game say"]'>"
 	//Radio freq/name display
 	var/freqpart = radio_freq ? "\[[get_radio_name(radio_freq)]\] " : ""
 	//Speaker name
-	var/namepart = "[speaker.GetVoice()][speaker.get_alt_name()]"
+	var/namepart = "[voice][alt_name]"
 	if(face_name && ishuman(speaker))
 		var/mob/living/carbon/human/H = speaker
 		namepart = "[H.get_face_name()]" //So "fake" speaking like in hallucinations does not give the speaker away if disguised
+	else
+		speaker.update_name_chat_color(voice)
+
+	//Start name span.
+	var/name_span = "<span class='name'>"
 	//End name span.
-	var/endspanpart = "</span>"
+	var/end_name_span = "</span>"
+
+	//href for AI tracking
+	var/ai_track_href = compose_track_href(speaker, namepart)
+	//shows the speaker's job to AIs
+	var/ai_job_display = compose_job(speaker, message_language, raw_message, radio_freq)
 
 	//Message
 	var/messagepart
 	var/languageicon = ""
 	if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
-		messagepart = message_mods[MODE_CUSTOM_SAY_EMOTE]
+		messagepart = "<span class='emote'>[message_mods[MODE_CUSTOM_SAY_EMOTE]]</span>"
 	else
 		messagepart = lang_treat(speaker, message_language, raw_message, spans, message_mods)
 
@@ -89,9 +105,9 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		if(istype(D) && D.display_icon(src))
 			languageicon = "[D.get_icon()] "
 
-	messagepart = " <span class='message'>[speaker.say_emphasis(messagepart)]</span></span>"
+	messagepart = " <span class='message'>[speaker.say_emphasis(messagepart)]</span></span>" //These close the wrapper_span and the "message" class span
 
-	return "[spanpart1][spanpart2][freqpart][languageicon][compose_track_href(speaker, namepart)][namepart][compose_job(speaker, message_language, raw_message, radio_freq)][endspanpart][messagepart]"
+	return "[wrapper_span][freqpart][name_span][languageicon][ai_track_href][namepart][ai_job_display][end_name_span][messagepart]"
 
 /atom/movable/proc/compose_track_href(atom/movable/speaker, message_langs, raw_message, radio_freq)
 	return ""
@@ -124,12 +140,12 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		spans |= SPAN_YELL
 
 	var/spanned = attach_spans(input, spans)
-	return "[say_mod], \"[spanned]\""
+	return "<span class='sayverb'>[say_mod],</span> \"[spanned]\""
 
 /// Transforms the speech emphasis mods from [/atom/movable/proc/say_emphasis] into the appropriate HTML tags. Includes escaping.
 #define ENCODE_HTML_EMPHASIS(input, char, html, varname) \
 	var/static/regex/##varname = regex("(?<!\\\\)[char](.+?)(?<!\\\\)[char]", "g");\
-	input = varname.Replace_char(input, "<[html]>$1</[html]>")
+	input = varname.Replace_char(input, "<[html]>$1</[html]>&#8203;") //zero-width space to force maptext to respect closing tags.
 
 /// Scans the input sentence for speech emphasis modifiers, notably |italics|, +bold+, and _underline_ -mothblocks
 /atom/movable/proc/say_emphasis(input)
@@ -146,10 +162,12 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/atom/movable/source = speaker.GetSource() || speaker //is the speaker virtual
 	if(has_language(language))
 		return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods)
+
 	else if(language)
 		var/datum/language/D = GLOB.language_datum_instances[language]
 		raw_message = D.scramble(raw_message)
 		return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods)
+
 	else
 		return "makes a strange sound."
 

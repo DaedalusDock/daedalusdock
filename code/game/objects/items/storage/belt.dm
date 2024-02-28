@@ -270,6 +270,7 @@
 		/obj/item/cautery,
 		/obj/item/hemostat,
 		/obj/item/blood_filter,
+		/obj/item/fixovein,
 		/obj/item/geiger_counter,
 		/obj/item/clothing/neck/stethoscope,
 		/obj/item/stamp,
@@ -300,7 +301,6 @@
 	SSwardrobe.provide_type(/obj/item/reagent_containers/syringe, src)
 	SSwardrobe.provide_type(/obj/item/stack/medical/bone_gel, src)
 	SSwardrobe.provide_type(/obj/item/stack/sticky_tape/surgical, src)
-	SSwardrobe.provide_type(/obj/item/reagent_containers/glass/bottle/formaldehyde, src)
 	update_appearance()
 
 /obj/item/storage/belt/medical/paramedic/get_types_to_preload()
@@ -311,7 +311,6 @@
 	to_preload += /obj/item/reagent_containers/syringe
 	to_preload += /obj/item/stack/medical/bone_gel
 	to_preload += /obj/item/stack/sticky_tape/surgical
-	to_preload += /obj/item/reagent_containers/glass/bottle/formaldehyde
 	return to_preload
 
 /obj/item/storage/belt/security
@@ -429,7 +428,6 @@
 		/obj/item/wormhole_jaunter,
 		/obj/item/stack/marker_beacon,
 		/obj/item/key/lasso,
-		/obj/item/skeleton_key
 		))
 
 
@@ -827,7 +825,7 @@
 		. += span_notice("Alt-click it to quickly draw the blade.")
 
 /obj/item/storage/belt/sabre/AltClick(mob/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
 		return
 	if(length(contents))
 		var/obj/item/I = contents[1]

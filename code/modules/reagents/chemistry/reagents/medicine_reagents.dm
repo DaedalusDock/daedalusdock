@@ -8,7 +8,7 @@
 
 /datum/reagent/medicine
 	taste_description = "bitterness"
-	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SCANNABLE
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE
 	abstract_type = /datum/reagent/medicine
 	show_in_codex = TRUE
 
@@ -36,8 +36,9 @@
 				mytray.mutateweed()
 			if(1   to 32)
 				mytray.mutatepest(user)
-			else if(prob(20))
-				mytray.visible_message(span_warning("Nothing happens..."))
+			else
+				if(prob(20))
+					mytray.visible_message(span_warning("Nothing happens..."))
 
 /datum/reagent/medicine/adminordrazine/affect_blood(mob/living/carbon/C, removed)
 	C.heal_bodypart_damage(2 * removed, 2 * removed, FALSE)
@@ -100,19 +101,15 @@
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
 		ADD_TRAIT(C, TRAIT_STABLEHEART, type)
-		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,type)
 
 /datum/reagent/medicine/inaprovaline/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, type)
 		REMOVE_TRAIT(C, TRAIT_STABLEHEART, type)
-		REMOVE_TRAIT(C, TRAIT_NOSOFTCRIT, type)
 
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	if(C.has_reagent(/datum/reagent/medicine/epinephrine))
-		C.set_heartattack(TRUE)
 
 /datum/reagent/medicine/inaprovaline/overdose_start(mob/living/carbon/C)
 	C.add_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
@@ -139,7 +136,8 @@
 	value = 4.9
 
 /datum/reagent/medicine/bicaridine/affect_blood(mob/living/carbon/C, removed)
-	C.adjustBruteLoss(-3 * removed, updating_health = FALSE)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	C.adjustBruteLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/bicaridine/overdose_process(mob/living/M)
@@ -159,7 +157,7 @@
 	overdose_threshold = 20
 
 /datum/reagent/medicine/meralyne/affect_blood(mob/living/carbon/C, removed)
-	C.adjustBruteLoss(-6 * removed, updating_health = FALSE)
+	C.adjustBruteLoss(-12 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/meralyne/overdose_process(mob/living/carbon/C)
@@ -181,7 +179,7 @@
 	value = 2.9
 
 /datum/reagent/medicine/kelotane/affect_blood(mob/living/carbon/C, removed)
-	C.adjustFireLoss(3 * removed, updating_health = FALSE)
+	C.adjustFireLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/dermaline
@@ -195,20 +193,7 @@
 	value = 3.9
 
 /datum/reagent/medicine/dermaline/affect_blood(mob/living/carbon/C, removed)
-	C.adjustFireLoss(-6 * removed, updating_health = FALSE)
-	return TRUE
-
-/datum/reagent/medicine/dylovene
-	name = "Dylovene"
-	description = "Dylovene is a broad-spectrum antitoxin used to neutralize poisons before they can do significant harm."
-	taste_description = "a roll of gauze"
-	reagent_state = LIQUID
-	color = "#00a000"
-	value = 2.1
-
-/datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_ANTITOX, 1)
-	C.adjustToxLoss(-1.5 * removed, FALSE)
+	C.adjustFireLoss(-12 * removed, updating_health = FALSE)
 	return TRUE
 
 /datum/reagent/medicine/dexalin
@@ -222,8 +207,9 @@
 	value = 2.4
 
 /datum/reagent/medicine/dexalin/affect_blood(mob/living/carbon/C, removed)
+	APPLY_CHEM_EFFECT(C, CE_OXYGENATED, 1)
 	C.adjustOxyLoss(-10 * removed, FALSE)
-	holder.remove_reagent(/datum/reagent/toxin/lexorin, 2 * removed)
+	holder.remove_reagent(/datum/reagent/toxin/lexorin, 10 * removed)
 	return TRUE
 
 /datum/reagent/medicine/tricordrazine
@@ -259,8 +245,8 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/omnizine/affect_blood(mob/living/carbon/C, removed)
-	C.heal_overall_damage(0.5 * removed, 0.5 * removed, updating_health = FALSE)
-	C.adjustToxLoss(-0.5 * removed, FALSE)
+	C.heal_overall_damage(12 * removed, 12 * removed, updating_health = FALSE)
+	C.adjustToxLoss(-12 * removed, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/cryoxadone
@@ -274,7 +260,7 @@
 
 /datum/reagent/medicine/cryoxadone/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_CRYO, 1)
-	if(!(C.bodytemperature < 170))
+	if(!(C.bodytemperature < TCRYO))
 		return
 
 	C.adjustCloneLoss(-100 * removed, FALSE)
@@ -386,9 +372,10 @@
 	description = "An effective and very addictive painkiller. Don't mix with alcohol."
 	taste_description = "bitterness"
 	color = "#800080"
-	overdose_threshold =20
+	overdose_threshold = 20
 	pain_power = 200
 	effective_cycle = 2
+	addiction_types = list(/datum/addiction/opiods = 10)
 
 /datum/reagent/medicine/morphine
 	name = "Morphine"
@@ -459,33 +446,27 @@
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
 
-/datum/reagent/medicine/venaxilin
-	name = "Venaxilin"
-	description = "Venixalin is a strong, specialised antivenom for dealing with advanced toxins and venoms."
-	taste_description = "overpowering sweetness"
+/datum/reagent/medicine/dylovene
+	name = "Dylovene"
+	description = "Dylovene is a broad-spectrum antitoxin used to neutralize poisons before they can do significant harm."
+	taste_description = "a roll of gauze"
 	color = "#dadd98"
-	metabolization_rate = 0.4
+	metabolization_rate = 0.2
 
-	var/remove_generic = 1
-	var/list/remove_toxins = list(
-		/datum/reagent/toxin/venom,
-		/datum/reagent/toxin/carpotoxin,
-	)
-
-/datum/reagent/medicine/venaxilin/affect_blood(mob/living/carbon/C, removed)
-	if(remove_generic)
-		C.drowsyness = max(0, C.drowsyness - 6 * removed)
-		//C.adjust_hallucination(-9 * removed)
-		SET_CHEM_EFFECT_IF_LOWER(C, CE_ANTITOX, 1)
+/datum/reagent/medicine/dylovene/affect_blood(mob/living/carbon/C, removed)
+	C.adjust_drowsyness(-6 * removed)
+	SET_CHEM_EFFECT_IF_LOWER(C, CE_ANTITOX, 1)
 
 	var/removing = (4 * removed)
 	var/datum/reagents/ingested = C.get_ingested_reagents()
+
 	for(var/datum/reagent/R in ingested.reagent_list)
-		if((remove_generic && istype(R, /datum/reagent/toxin)) || (R.type in remove_toxins))
+		if(istype(R, /datum/reagent/toxin))
 			ingested.remove_reagent(R.type, removing)
 			return
+
 	for(var/datum/reagent/R in C.reagents.reagent_list)
-		if((remove_generic && istype(R, /datum/reagent/toxin)) || (R.type in remove_toxins))
+		if(istype(R, /datum/reagent/toxin))
 			C.reagents.remove_reagent(R.type, removing)
 			return
 
@@ -495,19 +476,22 @@
 	taste_description = "bitterness"
 	reagent_state = LIQUID
 	color = "#ffff66"
+	metabolization_rate = 0.05
 	overdose_threshold = 30
 	value = 5.9
 
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed)
+	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed, updating_health = FALSE)
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		H.adjust_confusion(2 SECONDS)
 		H.drowsyness++
 
-	if(prob(15))
+	if(prob(10))
 		C.cure_trauma_type(resilience = TRAUMA_RESILIENCE_BASIC)
+	return TRUE
 
 /datum/reagent/medicine/imidazoline
 	name = "Imidazoline"
@@ -522,7 +506,8 @@
 /datum/reagent/medicine/imidazoline/affect_blood(mob/living/carbon/C, removed)
 	C.eye_blurry = max(C.eye_blurry - 5, 0)
 	C.eye_blind = max(C.eye_blind - 5, 0)
-	C.adjustOrganLoss(ORGAN_SLOT_EYES, -5 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_EYES, -5 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/medicine/peridaxon
 	name = "Peridaxon"
@@ -539,7 +524,7 @@
 		return
 
 	var/mob/living/carbon/human/H = C
-	for(var/obj/item/organ/I in H.processing_organs)
+	for(var/obj/item/organ/I as anything in H.processing_organs)
 		if(!(I.organ_flags & ORGAN_SYNTHETIC))
 			if(istype(I, /obj/item/organ/brain))
 				// if we have located an organic brain, apply side effects
@@ -548,7 +533,8 @@
 				// peridaxon only heals minor brain damage
 				if(I.damage >= I.maxHealth * 0.75)
 					continue
-			I.applyOrganDamage(-3 * removed)
+			I.applyOrganDamage(-3 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/medicine/hyperzine
 	name = "Hyperzine"
@@ -603,9 +589,12 @@
 				W.bleed_timer = 0
 				W.clamp_wound()
 
+/datum/reagent/medicine/coagulant/overdose_process(mob/living/carbon/C)
+	APPLY_CHEM_EFFECT(C, CE_BLOCKAGE, 1)
+
 /datum/reagent/medicine/epinephrine
 	name = "Epinephrine"
-	description = "Adrenaline is a hormone used as a drug to treat cardiac arrest and other cardiac dysrhythmias resulting in diminished or absent cardiac output."
+	description = "Adrenaline is a hormone used as a drug to treat cardiac arrest, and as a performance enhancer."
 	taste_description = "rush"
 	reagent_state = LIQUID
 	color = "#c8a5dc"
@@ -616,10 +605,13 @@
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
+		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,CHEM_TRAIT_SOURCE(class))
+		to_chat(C, span_danger("Energy rushes through your veins!"))
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
+		REMOVE_TRAIT(C, TRAIT_NOSOFTCRIT,CHEM_TRAIT_SOURCE(class))
 
 /datum/reagent/medicine/epinephrine/affect_blood(mob/living/carbon/C, removed)
 	if(volume < 0.2)	//not that effective after initial rush
@@ -630,19 +622,15 @@
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
 
-	if(C.has_reagent(/datum/reagent/medicine/inaprovaline))
-		C.set_heartattack(TRUE)
-		return
+	if(volume >= 4 && C.undergoing_cardiac_arrest())
+		holder.remove_reagent(src, 4)
+		if(C.resuscitate())
+			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
+			heart.applyOrganDamage(heart.maxHealth * 0.075)
+			to_chat(C, span_userdanger("Adrenaline rushes through your body, you refuse to give up!"))
 
 	if(volume > 10)
 		C.set_timed_status_effect(5 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
-
-	holder.remove_reagent(/datum/reagent/toxin/histamine, 10 * removed)
-	if(volume >= 4 && C.undergoing_cardiac_arrest())
-		holder.remove_reagent(type, 4)
-		if(C.set_heartattack(FALSE))
-			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
-			heart.applyOrganDamage(heart.maxHealth * 0.075)
 
 	C.AdjustAllImmobility(-2 * removed)
 
@@ -701,6 +689,9 @@
 	color = "#E1F2E6"
 	metabolization_rate = 0.02
 
+/datum/reagent/medicine/spaceacillin/affect_blood(mob/living/carbon/C, removed)
+	APPLY_CHEM_EFFECT(C, CE_ANTIBIOTIC, 1)
+
 /datum/reagent/medicine/haloperidol
 	name = "Haloperidol"
 	description = "A powerful antipsychotic and sedative. Will help control psychiatric problems, but may cause brain damage."
@@ -730,7 +721,7 @@
 		C.hallucination -= 5 * removed
 
 	if(prob(20))
-		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, 50)
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, 50, updating_health = FALSE)
 
 	if(prob(10))
 		spawn(-1)
@@ -946,7 +937,6 @@
 	color = "#FFFFF0"
 	metabolization_rate = 0.1
 
-
 /datum/reagent/medicine/insulin/affect_blood(mob/living/carbon/C, removed)
 	holder.remove_reagent(/datum/reagent/consumable/sugar, 3 * removed)
 
@@ -971,7 +961,7 @@
 
 /datum/reagent/medicine/activated_charcoal
 	name = "Activated Charcoal"
-	description = "Helps the body filter out toxins from the blood."
+	description = "Helps the body purge reagents."
 	reagent_state = SOLID
 	color = "#252525"
 	metabolization_rate = 1
@@ -980,4 +970,7 @@
 	for(var/datum/reagent/R in holder.reagent_list)
 		if(R.type == type)
 			continue
-		holder.remove_reagent(R.type, 2.5 * removed)
+		holder.remove_reagent(R.type, 8 * removed)
+
+	if(prob(3))
+		C.vomit(50, FALSE, FALSE, 1, purge_ratio = 0.2)

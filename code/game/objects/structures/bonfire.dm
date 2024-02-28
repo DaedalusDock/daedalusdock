@@ -17,7 +17,6 @@
 	anchored = TRUE
 	buckle_lying = 0
 	pass_flags_self = PASSTABLE | LETPASSTHROW
-	loc_procs = CROSSED
 	///is the bonfire lit?
 	var/burning = FALSE
 	///icon for the bonfire while on. for a softer more burning embers icon, use "bonfire_warm"
@@ -31,6 +30,17 @@
 /obj/structure/bonfire/prelit/Initialize(mapload)
 	. = ..()
 	start_burning()
+
+/obj/structure/bonfire/Initialize(mapload)
+	. = ..()
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/structure/bonfire/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/structure/bonfire/attackby(obj/item/used_item, mob/living/user, params)
 	if(istype(used_item, /obj/item/stack/rods) && !can_buckle && !grill)
@@ -109,25 +119,29 @@
 	particles = new /particles/bonfire()
 	START_PROCESSING(SSobj, src)
 
-/obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	start_burning()
 
-/obj/structure/bonfire/Crossed(atom/movable/crossed_by, oldloc)
+/obj/structure/bonfire/proc/on_entered(datum/source, atom/movable/entered)
+	SIGNAL_HANDLER
+	if(entered == src)
+		return
+
 	if(burning)
 		if(!grill)
 			bonfire_burn()
 		return
 
 	//Not currently burning, let's see if we can ignite it.
-	if(isliving(crossed_by))
-		var/mob/living/burning_body = crossed_by
+	if(isliving(entered))
+		var/mob/living/burning_body = entered
 		if(burning_body.on_fire)
 			start_burning()
-			visible_message(span_notice("[crossed_by] runs over [src], starting its fire!"))
+			visible_message(span_notice("[entered] runs over [src], starting its fire!"))
 
-	else if(crossed_by.resistance_flags & ON_FIRE)
+	else if(entered.resistance_flags & ON_FIRE)
 		start_burning()
-		visible_message(span_notice("[crossed_by]'s fire speads to [src], setting it ablaze!"))
+		visible_message(span_notice("[entered]'s fire speads to [src], setting it ablaze!"))
 
 /obj/structure/bonfire/proc/bonfire_burn(delta_time = 2)
 	var/turf/current_location = get_turf(src)
@@ -181,9 +195,9 @@
 	fade = 1 SECONDS
 	grow = -0.01
 	velocity = list(0, 0)
-	position = generator("circle", 0, 16, NORMAL_RAND)
-	drift = generator("vector", list(0, -0.2), list(0, 0.2))
+	position = generator(GEN_CIRCLE, 0, 16, NORMAL_RAND)
+	drift = generator(GEN_VECTOR, list(0, -0.2), list(0, 0.2))
 	gravity = list(0, 0.95)
-	scale = generator("vector", list(0.3, 0.3), list(1,1), NORMAL_RAND)
+	scale = generator(GEN_VECTOR, list(0.3, 0.3), list(1,1), NORMAL_RAND)
 	rotation = 30
-	spin = generator("num", -20, 20)
+	spin = generator(GEN_NUM, -20, 20)

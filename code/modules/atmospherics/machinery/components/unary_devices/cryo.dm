@@ -69,7 +69,7 @@
 	icon_state = "pod-off"
 	density = TRUE
 	max_integrity = 350
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 30, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 30, ACID = 30)
 	layer = MOB_LAYER
 	state_open = FALSE
 	circuit = /obj/item/circuitboard/machine/cryo_tube
@@ -393,12 +393,13 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 		data["occupant"]["name"] = mob_occupant.name
 		switch(mob_occupant.stat)
 			if(CONSCIOUS)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "good"
-			if(SOFT_CRIT)
-				data["occupant"]["stat"] = "Conscious"
-				data["occupant"]["statstate"] = "average"
-			if(UNCONSCIOUS, HARD_CRIT)
+				if(!HAS_TRAIT(mob_occupant, TRAIT_SOFT_CRITICAL_CONDITION))
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "good"
+				else
+					data["occupant"]["stat"] = "Conscious"
+					data["occupant"]["statstate"] = "average"
+			if(UNCONSCIOUS)
 				data["occupant"]["stat"] = "Unconscious"
 				data["occupant"]["statstate"] = "average"
 			if(DEAD)
@@ -458,7 +459,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 /obj/machinery/atmospherics/components/unary/cryo_cell/can_interact(mob/user)
 	return ..() && user.loc != src
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/unary/cryo_cell/CtrlClick(mob/user, list/params)
 	if(can_interact(user) && !state_open)
 		set_on(!on)
 	return ..()

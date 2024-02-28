@@ -12,25 +12,29 @@
 	custom_materials = list(/datum/material/iron = 30000)
 	throwforce = 2
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 7
 	override_notes = TRUE
+
+	///String, used for checking if ammo of different types but still fits can fit inside it; generally used for magazines
+	var/caliber
+
 	///list containing the actual ammo within the magazine
 	var/list/stored_ammo = list()
 	///type that the magazine will be searching for, rejects if not a subtype of
 	var/ammo_type = /obj/item/ammo_casing
 	///maximum amount of ammo in the magazine
 	var/max_ammo = 7
+
 	///Controls how sprites are updated for the ammo box; see defines in combat.dm: AMMO_BOX_ONE_SPRITE; AMMO_BOX_PER_BULLET; AMMO_BOX_FULL_EMPTY
 	var/multiple_sprites = AMMO_BOX_ONE_SPRITE
 	///For sprite updating, do we use initial(icon_state) or base_icon_state?
 	var/multiple_sprite_use_base = FALSE
-	///String, used for checking if ammo of different types but still fits can fit inside it; generally used for magazines
-	var/caliber
-	///Allows multiple bullets to be loaded in from one click of another box/magazine
-	var/multiload = TRUE
+
+	///Delay for loading bullets in.
+	var/load_delay = 0.5 SECONDS
 	///Whether the magazine should start with nothing in it
 	var/start_empty = FALSE
+
 	///cost of all the bullets in the magazine/box
 	var/list/bullet_cost
 	///cost of the materials in the magazine/box itself
@@ -41,6 +45,7 @@
 	if(!bullet_cost)
 		base_cost = SSmaterials.FindOrCreateMaterialCombo(custom_materials, 0.1)
 		bullet_cost = SSmaterials.FindOrCreateMaterialCombo(custom_materials, 0.9 / max_ammo)
+
 	if(!start_empty)
 		top_off(starting=TRUE)
 
@@ -102,35 +107,8 @@
 /obj/item/ammo_box/proc/can_load(mob/user)
 	return TRUE
 
-/obj/item/ammo_box/attackby(obj/item/A, mob/user, params, silent = FALSE, replace_spent = 0)
-	var/num_loaded = 0
-	if(!can_load(user))
-		return
-	if(istype(A, /obj/item/ammo_box))
-		var/obj/item/ammo_box/AM = A
-		for(var/obj/item/ammo_casing/AC in AM.stored_ammo)
-			var/did_load = give_round(AC, replace_spent)
-			if(did_load)
-				AM.stored_ammo -= AC
-				num_loaded++
-			if(!did_load || !multiload)
-				break
-		if(num_loaded)
-			AM.update_ammo_count()
-	if(isammocasing(A))
-		var/obj/item/ammo_casing/AC = A
-		if(give_round(AC, replace_spent))
-			user.transferItemToLoc(AC, src, TRUE)
-			num_loaded++
-			AC.update_appearance()
-
-	if(num_loaded)
-		if(!silent)
-			to_chat(user, span_notice("You load [num_loaded] shell\s into \the [src]!"))
-			playsound(src, 'sound/weapons/gun/general/mag_bullet_insert.ogg', 60, TRUE)
-		update_ammo_count()
-
-	return num_loaded
+/obj/item/ammo_box/attackby(obj/item/A, mob/user, params)
+	return attempt_load_round(A, user)
 
 /obj/item/ammo_box/attack_self(mob/user)
 	var/obj/item/ammo_casing/A = get_round()
@@ -144,15 +122,52 @@
 	to_chat(user, span_notice("You remove a round from [src]!"))
 	update_ammo_count()
 
+/// Attempts to load a given item into this ammo box
+/obj/item/ammo_box/proc/attempt_load_round(obj/item/I, mob/user, silent = FALSE, replace_spent = FALSE)
+	var/num_loaded = 0
+	if(!can_load(user))
+		return FALSE
+
+	if(istype(I, /obj/item/ammo_box))
+		var/obj/item/ammo_box/AM = I
+		for(var/obj/item/ammo_casing/AC in AM.stored_ammo)
+			if(user && load_delay && !do_after(user, src, load_delay, IGNORE_USER_LOC_CHANGE, FALSE, interaction_key = "load_round"))
+				break
+
+			var/did_load = give_round(AC, replace_spent)
+			if(!did_load)
+				break
+
+			AM.stored_ammo -= AC
+			num_loaded++
+			if(!silent)
+				user?.visible_message(
+					span_notice("[user] loads a round into [src]."),
+					vision_distance = COMBAT_MESSAGE_RANGE,
+				)
+				playsound(src, 'sound/weapons/gun/general/mag_bullet_insert.ogg', 60, TRUE)
+			update_ammo_count()
+			AM.update_ammo_count()
+
+	if(isammocasing(I))
+		var/obj/item/ammo_casing/AC = I
+		if(give_round(AC, replace_spent))
+			user.transferItemToLoc(AC, src, TRUE)
+			num_loaded++
+			if(!silent)
+				playsound(src, 'sound/weapons/gun/general/mag_bullet_insert.ogg', 60, TRUE)
+			update_ammo_count()
+
+	return num_loaded
+
 /// Updates the materials and appearance of this ammo box
 /obj/item/ammo_box/proc/update_ammo_count()
 	update_custom_materials()
 	update_appearance()
 
-/obj/item/ammo_box/update_desc(updates)
+/obj/item/ammo_box/examine(mob/user)
 	. = ..()
-	var/shells_left = LAZYLEN(stored_ammo)
-	desc = "[initial(desc)] There [(shells_left == 1) ? "is" : "are"] [shells_left] shell\s left!"
+	. += span_notice(get_ammo_desc())
 
 /obj/item/ammo_box/update_icon_state()
 	var/shells_left = LAZYLEN(stored_ammo)
@@ -170,8 +185,33 @@
 		temp_materials[material] = (bullet_cost[material] * stored_ammo.len) + base_cost[material]
 	set_custom_materials(temp_materials)
 
+/// Returns a string that describes the amount of ammo in the magazine.
+/obj/item/ammo_box/proc/get_ammo_desc(exact)
+	if(exact)
+		return "There are [ammo_count(TRUE)] rounds in [src]."
+
+	var/ammo_count = ammo_count(TRUE)
+	if(ammo_count == 1)
+		return "There is one round left."
+
+	var/ammo_percent = ceil(((ammo_count / max_ammo) * 100))
+
+	switch(ammo_percent)
+		if(0)
+			return "It is empty."
+		if(1 to 20)
+			return "It rattles when you shake it."
+		if(21 to 40)
+			return "It is running low on rounds."
+		if(41 to 69)
+			return "It is about half full."
+		if(70 to 99)
+			return "It is mostly full."
+		if(100)
+			return "It is fully loaded."
+
 ///Count of number of bullets in the magazine
-/obj/item/ammo_box/magazine/proc/ammo_count(countempties = TRUE)
+/obj/item/ammo_box/proc/ammo_count(countempties = TRUE)
 	var/boolets = 0
 	for(var/obj/item/ammo_casing/bullet in stored_ammo)
 		if(bullet && (bullet.loaded_projectile || countempties))

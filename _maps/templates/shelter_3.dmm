@@ -155,7 +155,7 @@
 /turf/open/floor/carpet/black,
 /area/misc/survivalpod)
 "z" = (
-/obj/machinery/vending/cigarette/beach,
+/obj/machinery/vending/cigarette,
 /turf/open/floor/carpet/black,
 /area/misc/survivalpod)
 "A" = (

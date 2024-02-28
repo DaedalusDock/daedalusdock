@@ -60,7 +60,7 @@
 	for(var/entry in logs)
 		data["logs"] += list(list("entry" = entry))
 
-	for(var/apc in GLOB.apcs_list)
+	for(var/apc in INSTANCES_OF(/obj/machinery/power/apc))
 		if(check_apc(apc))
 			var/obj/machinery/power/apc/A = apc
 			var/has_cell = (A.cell) ? TRUE : FALSE
@@ -121,7 +121,7 @@
 		if("access-apc")
 			var/ref = params["ref"]
 			playsound(src, SFX_TERMINAL_TYPE, 50, FALSE)
-			var/obj/machinery/power/apc/APC = locate(ref) in GLOB.apcs_list
+			var/obj/machinery/power/apc/APC = locate(ref) in INSTANCES_OF(/obj/machinery/power/apc)
 			if(!APC)
 				return
 			if(active_apc)
@@ -153,7 +153,7 @@
 			var/ref = params["ref"]
 			var/type = params["type"]
 			var/value = params["value"]
-			var/obj/machinery/power/apc/target = locate(ref) in GLOB.apcs_list
+			var/obj/machinery/power/apc/target = locate(ref) in INSTANCES_OF(/obj/machinery/power/apc)
 			if(!target)
 				return
 
@@ -182,7 +182,7 @@
 			log_game("[key_name(operator)] Set APC [target.area.name] [type] to [setTo]]")
 		if("breaker")
 			var/ref = params["ref"]
-			var/obj/machinery/power/apc/target = locate(ref) in GLOB.apcs_list
+			var/obj/machinery/power/apc/target = locate(ref) in INSTANCES_OF(/obj/machinery/power/apc)
 			target.toggle_breaker()
 			var/setTo = target.operating ? "On" : "Off"
 			log_activity("Turned APC [target.area.name]'s breaker [setTo]")

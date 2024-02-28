@@ -193,7 +193,7 @@
 		id_tag = "[port.id]_[id_tag]"
 
 /obj/machinery/door/airlock/proc/update_other_id()
-	for(var/obj/machinery/door/airlock/Airlock in GLOB.airlocks)
+	for(var/obj/machinery/door/airlock/Airlock in INSTANCES_OF(/obj/machinery/door))
 		if(Airlock.closeOtherId == closeOtherId && Airlock != src)
 			if(!(Airlock in close_others))
 				close_others += Airlock
@@ -290,7 +290,7 @@
 			otherlock.close_others -= src
 		close_others.Cut()
 	if(id_tag)
-		for(var/obj/machinery/door_buttons/D in GLOB.machines)
+		for(var/obj/machinery/door_buttons/D as anything in INSTANCES_OF(/obj/machinery/door_buttons))
 			D.removeMe(src)
 	QDEL_NULL(note)
 	QDEL_NULL(seal)
@@ -898,7 +898,8 @@
 	if(!issilicon(user) && !isAdminGhostAI(user))
 		if(isElectrified() && shock(user, 75))
 			return
-	add_fingerprint(user)
+
+	C.leave_evidence(user, src)
 
 	if(is_wire_tool(C) && panel_open)
 		attempt_wire_interaction(user)
@@ -1347,7 +1348,7 @@
 				message = "temp shocked for [secondsElectrified] seconds"
 		LAZYADD(shockedby, "\[[time_stamp()]\] [key_name(user)] - ([uppertext(message)])")
 		log_combat(user, src, message)
-		add_hiddenprint(user)
+		log_touch(user)
 
 /obj/machinery/door/airlock/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	if((damage_amount >= atom_integrity) && (damage_flag == BOMB))

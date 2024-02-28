@@ -12,6 +12,8 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/desc = "its..stuff."
 	/// What the material is indexed by in the SSmaterials.materials list. Defaults to the type of the material.
 	var/id
+	///If set to TRUE, this material doesn't generate at roundstart, and generates unique instances based on the variables passed to GET_MATERIAL_REF
+	var/bespoke = FALSE
 
 	///Base color of the material, is used for greyscale. Item isn't changed in color if this is null.
 	///Deprecated, use greyscale_color instead.
@@ -20,8 +22,6 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/greyscale_colors
 	///Base alpha of the material, is used for greyscale icons.
 	var/alpha = 255
-	///Bitflags that influence how SSmaterials handles this material.
-	var/init_flags = MATERIAL_INIT_MAPLOAD
 	///Materials "Traits". its a map of key = category | Value = Bool. Used to define what it can be used for
 	var/list/categories = list()
 	///The type of sheet this material creates. This should be replaced as soon as possible by greyscale sheets
@@ -33,7 +33,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 	///This is the amount of value per 1 unit of the material
 	var/value_per_unit = 0
 	///Armor modifiers, multiplies an items normal armor vars by these amounts.
-	var/armor_modifiers = list(MELEE = 1, BULLET = 1, LASER = 1, ENERGY = 1, BOMB = 1, BIO = 1, FIRE = 1, ACID = 1)
+	var/armor_modifiers = list(BLUNT = 1, PUNCTURE = 1, SLASH = 0, LASER = 1, ENERGY = 1, BOMB = 1, BIO = 1, FIRE = 1, ACID = 1)
 	///How beautiful is this material per unit.
 	var/beauty_modifier = 0
 	///Can be used to override the sound items make, lets add some SLOSHing.
@@ -46,9 +46,6 @@ Simple datum which is instanced once per type and is used for every object of sa
 	var/cached_texture_filter_icon
 	///What type of shard the material will shatter to
 	var/obj/item/shard_type
-
-	///Snowflake for walls. Will be removed when materials are redone
-	var/wall_shine = WALL_SHINE_PLATING
 
 	///Icon for walls which are plated with this material
 	var/wall_icon = 'icons/turf/walls/solid_wall.dmi'
@@ -161,7 +158,9 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 	if(!item_sound_override)
 		return
+
 	item.hitsound = item_sound_override
+	item.wielded_hitsound = item_sound_override
 	item.usesound = item_sound_override
 	item.mob_throw_hit_sound = item_sound_override
 	item.equip_sound = item_sound_override

@@ -73,19 +73,17 @@
 		doMove(destination)
 	else if (istype(destination, /obj/item/mmi))
 		doMove(destination)
+	else if (istype(destination, /obj/item/organ/posibrain))
+		doMove(destination)
 	else
-		CRASH("Brainmob without a container [src] attempted to move to [destination].")
+		CRASH("Brainmob without a container [src] attempted to move to destination of type [destination.type].")
 
-/mob/living/brain/update_mouse_pointer()
-	if (!client)
-		return
-	client.mouse_pointer_icon = initial(client.mouse_pointer_icon)
-	if(!container)
-		return
-	if (container.mecha)
-		var/obj/vehicle/sealed/mecha/M = container.mecha
-		if(M.mouse_pointer)
-			client.mouse_pointer_icon = M.mouse_pointer
+/mob/living/brain/get_mouse_pointer_icon(check_sustained)
+	var/obj/vehicle/sealed/mecha/M = container?.mecha
+	if(M?.mouse_pointer)
+		return M.mouse_pointer
+
+	return ..()
 
 /mob/living/brain/proc/get_traumas()
 	. = list()

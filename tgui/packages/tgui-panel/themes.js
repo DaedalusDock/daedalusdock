@@ -4,11 +4,11 @@
  * @license MIT
  */
 
-export const THEMES = ['light', 'dark'];
+import { THEME_LIGHT, THEME_DARK } from "./settings/constants";
 
-const COLOR_DARK_BG = '#23272a';
+const COLOR_DARK_BG = '#222020';
 const COLOR_DARK_BG_DARKER = '#171717';
-const COLOR_DARK_TEXT = '#dfdfcf';
+const COLOR_DARK_TEXT = '#ABC7A2';
 
 let setClientThemeTimer = null;
 
@@ -31,7 +31,7 @@ export const setClientTheme = name => {
     Byond.command(`.output statbrowser:set_theme ${name}`);
   }, 1500);
 
-  if (name === 'light') {
+  if (name === THEME_LIGHT) {
     return Byond.winset({
       // Main windows
       'infowindow.background-color': 'none',
@@ -81,7 +81,7 @@ export const setClientTheme = name => {
       'tooltip.text-color': '#000000',
     });
   }
-  if (name === 'dark') {
+  if (name === THEME_DARK) {
     Byond.winset({
       // Main windows
       'infowindow.background-color': COLOR_DARK_BG,

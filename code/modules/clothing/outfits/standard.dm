@@ -19,7 +19,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -198,7 +198,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -236,7 +236,7 @@
 	gloves = /obj/item/clothing/gloves/color/black
 	glasses = /obj/item/clothing/glasses/sunglasses
 	shoes = /obj/item/clothing/shoes/sneakers/black
-	l_pocket = /obj/item/melee/energy/sword/saber
+	r_hand = /obj/item/melee/energy/sword/saber
 	l_hand = /obj/item/storage/secure/briefcase
 
 /datum/outfit/assassin/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
@@ -261,7 +261,7 @@
 	pda.saved_identification = H.real_name
 	pda.saved_job = "Reaper"
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -288,7 +288,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -376,7 +376,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 
 	W.registered_name = H.real_name
 	W.update_label()
@@ -400,7 +400,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -445,7 +445,7 @@
 	internals_slot = ITEM_SLOT_SUITSTORE
 
 /datum/outfit/debug/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -477,7 +477,19 @@
 	internals_slot = ITEM_SLOT_SUITSTORE
 
 /datum/outfit/admin/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
+
+/datum/outfit/gamemaster
+	name = "Admin outfit (Gamemaster)"
+
+	suit = /obj/item/clothing/suit/hooded/gamemaster
+	shoes = /obj/item/clothing/shoes/sandal/gamemaster
+
+/datum/outfit/gamemaster/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	var/obj/item/clothing/suit/hooded/gamemaster/robe = H.wear_suit
+	robe.ToggleHood()
+
+	H.set_real_name("Gamemaster", TRUE)

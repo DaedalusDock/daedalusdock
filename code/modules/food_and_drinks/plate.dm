@@ -71,7 +71,7 @@
 /obj/item/plate/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(.)
 		return
-	var/generator/scatter_gen = generator("circle", 0, 48, NORMAL_RAND)
+	var/generator/scatter_gen = generator(GEN_CIRCLE, 0, 48, NORMAL_RAND)
 	var/scatter_turf = get_turf(hit_atom)
 
 	for(var/obj/item/scattered_item as anything in contents)
@@ -116,4 +116,4 @@
 
 /obj/item/plate_shard/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/caltrop, min_damage = force)
+	AddComponent(/datum/component/caltrop, min_damage = force, probability = 4)

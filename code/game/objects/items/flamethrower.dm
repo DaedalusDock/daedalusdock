@@ -15,7 +15,7 @@
 	custom_materials = list(/datum/material/iron=500)
 	resistance_flags = FIRE_PROOF
 	trigger_guard = TRIGGER_GUARD_NORMAL
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_on = FALSE
 	var/status = FALSE
 	var/lit = FALSE //on or off
@@ -46,8 +46,8 @@
 
 /obj/item/flamethrower/process()
 	if(!lit || !igniter)
-		STOP_PROCESSING(SSobj, src)
-		return null
+		return PROCESS_KILL
+
 	var/turf/location = loc
 	if(istype(location, /mob/))
 		var/mob/M = location
@@ -55,7 +55,6 @@
 			location = M.loc
 	if(isturf(location)) //start a fire if possible
 		igniter.flamethrower_process(location)
-
 
 /obj/item/flamethrower/update_icon_state()
 	inhand_icon_state = "flamethrower_[lit]"
@@ -152,7 +151,7 @@
 	toggle_igniter(user)
 
 /obj/item/flamethrower/AltClick(mob/user)
-	if(ptank && isliving(user) && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(ptank && isliving(user) && user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS|USE_DEXTERITY))
 		user.put_in_hands(ptank)
 		ptank = null
 		to_chat(user, span_notice("You remove the plasma tank from [src]!"))
@@ -219,10 +218,19 @@
 	//Transfer 5% of current tank air contents to turf
 	var/datum/gas_mixture/ptank_mix = ptank.return_air()
 	var/datum/gas_mixture/air_transfer = ptank_mix.removeRatio(release_amount)
-	//air_transfer.toxins = air_transfer.toxins * 5 // This is me not comprehending the air system. I realize this is retarded and I could probably make it work without fucking it up like this, but there you have it. -- TLE
-	var/obj/effect/decal/cleanable/oil/l_fuel = new(target,air_transfer.getByFlag(XGM_GAS_FUEL),get_dir(loc,target))
-	l_fuel.reagent_amount = release_amount
-	air_transfer.removeByFlag(XGM_GAS_FUEL, 0)
+
+	// Find or make the ignitable decal
+	var/obj/effect/decal/cleanable/oil/l_fuel = locate() in target
+	if(!l_fuel)
+		l_fuel = new(target)
+		l_fuel.reagents.clear_reagents()
+
+	// Add the reagents to the fuel
+	l_fuel.reagents.add_reagent(/datum/reagent/fuel/oil, LIQUIDFUEL_AMOUNT_TO_MOL(release_amount))
+
+	// Remove the actual fuel, we don't want to dump plasma into the air
+	air_transfer.removeByFlag(XGM_GAS_FUEL, INFINITY)
+	//Transfer the removed air to the turf
 	target.assume_air(air_transfer)
 	//Burn it based on transfered gas
 	target.hotspot_expose((ptank.air_contents.temperature*2) + 380,500) // -- More of my "how do I shot fire?" dickery. -- TLE
@@ -248,7 +256,11 @@
 /obj/item/flamethrower/full/tank
 	create_with_tank = TRUE
 
-/obj/item/flamethrower/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/flamethrower/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK, block_success = TRUE)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/projectile/P = hitby
 	if(damage && attack_type == PROJECTILE_ATTACK && P.damage_type != STAMINA && prob(15))
 		owner.visible_message(span_danger("\The [attack_text] hits the fuel tank on [owner]'s [name], rupturing it! What a shot!"))

@@ -65,7 +65,7 @@
 	var/datum/reagent/R = null
 	if(random_reagent)
 		R = pick(subtypesof(/datum/reagent))
-		R = GLOB.chemical_reagents_list[R]
+		R = SSreagents.chemical_reagents_list[R]
 
 	queen_bee = new(src)
 	queen_bee.beehome = src
@@ -214,7 +214,7 @@
 			visible_message(span_danger("[user] disturbs the [name] to no effect!"))
 	else
 		var/option = tgui_alert(user, "Which piece do you wish to remove?", "Apiary Adjustment", list("Honey Frame", "Queen Bee"))
-		if(!option || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, BE_CLOSE, FALSE))
+		if(!option || QDELETED(user) || QDELETED(src) || !user.canUseTopic(src, USE_CLOSE))
 			return
 		switch(option)
 			if("Honey Frame")

@@ -5,8 +5,6 @@
 /datum/wound
 	///The bodypart this wound is on
 	var/obj/item/bodypart/parent
-	///The mob this wound belongs to
-	var/mob/living/carbon/mob_parent
 
 	///Number representing the current stage
 	var/current_stage = 0
@@ -71,29 +69,14 @@
 
 	if(istype(BP))
 		parent = BP
-		if(parent.owner)
-			register_to_mob(parent.owner)
 
 /datum/wound/Destroy()
-	if(mob_parent)
-		unregister_from_mob()
 	if(parent)
 		LAZYREMOVE(parent.wounds, src)
 		parent = null
 
 	LAZYCLEARLIST(embedded_objects)
 	return ..()
-
-/datum/wound/proc/register_to_mob(mob/living/carbon/C)
-	if(mob_parent)
-		unregister_from_mob()
-	mob_parent = C
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_GAIN_WOUND, src, parent)
-
-/datum/wound/proc/unregister_from_mob()
-	SEND_SIGNAL(mob_parent, COMSIG_CARBON_LOSE_WOUND, src, parent)
-	mob_parent = null
-
 
 ///Returns 1 if there's a next stage, 0 otherwise
 /datum/wound/proc/init_stage(initial_damage)
@@ -206,11 +189,13 @@
 // heal the given amount of damage, and if the given amount of damage was more
 // than what needed to be healed, return how much heal was left
 /datum/wound/proc/heal_damage(amount)
+	/* UNREPAIRABLE DAMAGE
 	if(parent)
 		if (wound_type == WOUND_BURN && parent.burn_ratio > 1)
 			return amount	//We don't want to heal wounds on irreparable organs.
 		else if(parent.brute_ratio > 1)
 			return amount
+	*/
 
 	var/healed_damage = min(src.damage, amount)
 	amount -= healed_damage
@@ -348,13 +333,22 @@
 					return /datum/wound/burn/moderate
 	return null //no wound
 
-/obj/item/bodypart/proc/attempt_dismemberment(brute as num, burn as num, sharpness)
-	if((sharpness & SHARP_EDGED) && (brute + src.brute_dam) >= max_damage * DROPLIMB_THRESHOLD_EDGE)
+/obj/item/bodypart/proc/attempt_dismemberment(brute as num, burn as num, sharpness, force_dismember)
+	if(force_dismember)
+		if(burn)
+			return dismember(DROPLIMB_BURN)
+		if(brute)
+			return dismember(sharpness & SHARP_EDGED ? DROPLIMB_EDGE : DROPLIMB_BLUNT)
+
+	if(sharpness & SHARP_POINTY)
+		brute *= 0.5
+
+	if((sharpness & SHARP_EDGED) && (brute) >= max_damage * DROPLIMB_THRESHOLD_EDGE)
 		if(prob(brute))
 			return dismember(DROPLIMB_EDGE, FALSE, FALSE)
 
 	else if(burn >= max_damage * DROPLIMB_THRESHOLD_DESTROY)
-		if(prob(burn))
+		if(prob(burn/3))
 			return dismember(DROPLIMB_BURN, FALSE, FALSE)
 
 	else if(brute >= max_damage * DROPLIMB_THRESHOLD_DESTROY)
@@ -362,5 +356,35 @@
 			return dismember(DROPLIMB_BLUNT, FALSE, FALSE)
 
 	else if(brute >= max_damage * DROPLIMB_THRESHOLD_TEAROFF)
-		if(prob(brute))
+		if(prob(brute/3))
 			return dismember(DROPLIMB_EDGE, FALSE, FALSE)
+
+/obj/item/bodypart/proc/violent_dismember_messages(droptype, clean)
+	var/gore
+	var/gore_sound
+	switch(droptype)
+		if(DROPLIMB_EDGE)
+			if(!clean)
+				gore_sound = "[!IS_ORGANIC_LIMB(src) ? "tortured metal" : "ripping tendons and flesh"]"
+				return list(
+						"\The [owner]'s [src.plaintext_zone] flies off in an arc!",
+						"Your [src.plaintext_zone] goes flying off!",
+						"You hear a terrible sound of [gore_sound]."
+					)
+
+		if(DROPLIMB_BURN)
+			gore = "[!IS_ORGANIC_LIMB(src) ? "": " of burning flesh"]"
+			return list(
+					"\The [owner]'s [src.plaintext_zone] flashes away into ashes!",
+					"Your [src.plaintext_zone] flashes away into ashes!",
+					"You hear a crackling sound[gore]."
+				)
+
+		if(DROPLIMB_BLUNT)
+			gore = "[!IS_ORGANIC_LIMB(src) ? "": " in shower of gore"]"
+			gore_sound = "[!IS_ORGANIC_LIMB(src) ? "rending sound of tortured metal" : "sickening splatter of gore"]"
+			return list(
+					"\The [owner]'s [src.plaintext_zone] explodes[gore]!",
+					"Your [src.plaintext_zone] explodes[gore]!",
+					"You hear the [gore_sound]."
+				)

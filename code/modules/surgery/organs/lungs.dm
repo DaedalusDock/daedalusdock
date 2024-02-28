@@ -7,7 +7,11 @@
 	gender = PLURAL
 	w_class = WEIGHT_CLASS_SMALL
 
-	healing_factor = STANDARD_ORGAN_HEALING
+	maxHealth = 70
+	high_threshold = 0.5
+	low_threshold = 0.35
+	relative_size = 60
+
 	decay_factor = STANDARD_ORGAN_DECAY * 0.9 // fails around 16.5 minutes, lungs are one of the last organs to die (of the ones we have)
 
 	low_threshold_passed = "<span class='warning'>You feel short of breath.</span>"
@@ -16,7 +20,6 @@
 	low_threshold_cleared = "<span class='info'>You can breathe normally again.</span>"
 	high_threshold_cleared = "<span class='info'>The constriction around your chest loosens as your breathing calms down.</span>"
 
-	var/failed = FALSE
 	var/operated = FALSE //whether we can still have our damages fixed through surgery
 
 
@@ -94,13 +97,8 @@
 	. = BREATH_OKAY
 
 	if(!breath || (breath.total_moles == 0))
-		if(CHEM_EFFECT_MAGNITUDE(breather, CE_STABLE))
-			return BREATH_OKAY
-
-		if(breather.health >= breather.crit_threshold)
+		if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
 			breather.adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
-		else if(!HAS_TRAIT(breather, TRAIT_NOCRITDAMAGE))
-			breather.adjustOxyLoss(HUMAN_CRIT_FAILBREATH_OXYLOSS)
 
 		breather.failed_last_breath = TRUE
 		if(safe_oxygen_min)
@@ -350,19 +348,26 @@
 
 /obj/item/organ/lungs/on_life(delta_time, times_fired)
 	. = ..()
-	if(failed && !(organ_flags & ORGAN_FAILING))
-		failed = FALSE
-		return
-	if(damage >= low_threshold)
-		var/do_i_cough = DT_PROB((damage < high_threshold) ? 2.5 : 5, delta_time) // between : past high
-		if(do_i_cough)
-			owner.emote("cough")
-	if(organ_flags & ORGAN_FAILING && owner.stat == CONSCIOUS)
-		owner.visible_message(span_danger("[owner] grabs [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe!"))
-		failed = TRUE
+	if (germ_level > INFECTION_LEVEL_ONE)
+		if(prob(5))
+			spawn(-1)
+				owner.emote("cough")		//respitory tract infection
 
-/obj/item/organ/lungs/get_availability(datum/species/owner_species)
-	return !(TRAIT_NOBREATH in owner_species.inherent_traits)
+	if(damage >= low_threshold)
+		if(prob(2) && owner.blood_volume)
+			owner.visible_message("[owner] coughs up blood!", span_warning("You cough up blood."), span_hear("You hear someone coughing."))
+			owner.bleed(1)
+
+		else if(prob(4))
+			to_chat(owner, span_warning(pick("I can't breathe...", "Air!", "It's getting hard to breathe.")))
+			spawn(-1)
+				owner.emote("gasp")
+			owner.losebreath = max(round(damage/2), owner.losebreath)
+
+/obj/item/organ/lungs/check_damage_thresholds(mob/organ_owner)
+	. = ..()
+	if(. == high_threshold_passed && owner)
+		owner.visible_message(span_danger("[owner] grabs at [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe."))
 
 /obj/item/organ/lungs/plasmaman
 	name = "plasma filter"
@@ -398,7 +403,6 @@
 	desc = "A basic cybernetic version of the lungs found in traditional humanoid entities."
 	icon_state = "lungs-c"
 	organ_flags = ORGAN_SYNTHETIC
-	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.5
 
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
@@ -406,7 +410,7 @@
 	name = "cybernetic lungs"
 	desc = "A cybernetic version of the lungs found in traditional humanoid entities. Allows for greater intakes of oxygen than organic lungs, requiring slightly less pressure."
 	icon_state = "lungs-c-u"
-	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 100
 	safe_oxygen_min = 13
 	emp_vulnerability = 40
 
@@ -416,7 +420,7 @@
 	icon_state = "lungs-c-u2"
 	safe_plasma_max = 20
 	safe_co2_max = 20
-	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 140
 	safe_oxygen_min = 13
 	emp_vulnerability = 20
 
@@ -433,53 +437,6 @@
 		COOLDOWN_START(src, severe_cooldown, 30 SECONDS)
 	if(prob(emp_vulnerability/severity)) //Chance of permanent effects
 		organ_flags |= ORGAN_SYNTHETIC_EMP //Starts organ faliure - gonna need replacing soon.
-
-
-/obj/item/organ/lungs/ashwalker
-	name = "blackened frilled lungs" // blackened from necropolis exposure
-	desc = "Exposure to the necropolis has mutated these lungs to breathe the air of Indecipheres, the lava-covered moon."
-	icon_state = "lungs-ashwalker"
-
-// Normal oxygen is 21 kPa partial pressure, but SS13 humans can tolerate down
-// to 16 kPa. So it follows that ashwalkers, as humanoids, follow the same rules.
-#define GAS_TOLERANCE 5
-
-/obj/item/organ/lungs/ashwalker/Initialize(mapload)
-	. = ..()
-
-	var/datum/gas_mixture/mix = SSzas.lavaland_atmos
-
-	if(!mix?.total_moles) // this typically means we didn't load lavaland, like if we're using #define LOWMEMORYMODE
-		return
-
-	// Take a "breath" of the air
-	var/datum/gas_mixture/breath = mix.remove(mix.total_moles * BREATH_PERCENTAGE)
-
-	var/list/breath_gases = breath.gas
-	var/O2_moles = breath_gases[GAS_OXYGEN]
-	var/N2_moles = breath_gases[GAS_NITROGEN]
-	var/plasma_moles = breath_gases[GAS_PLASMA]
-	var/CO2_moles = breath_gases[GAS_CO2]
-
-	//Partial pressures in our breath
-	var/O2_pp = breath.getBreathPartialPressure(O2_moles)
-	var/N2_pp = breath.getBreathPartialPressure(N2_moles)
-	var/Plasma_pp = breath.getBreathPartialPressure(plasma_moles)
-	var/CO2_pp = breath.getBreathPartialPressure(CO2_moles)
-
-	safe_oxygen_min = max(0, O2_pp - GAS_TOLERANCE)
-	safe_nitro_min = max(0, N2_pp - GAS_TOLERANCE)
-	safe_plasma_min = max(0, Plasma_pp - GAS_TOLERANCE)
-
-	// Increase plasma tolerance based on amount in base air
-	safe_plasma_max += Plasma_pp
-
-	// CO2 is always a waste gas, so none is required, but ashwalkers
-	// tolerate the base amount plus tolerance*2 (humans tolerate only 10 pp)
-
-	safe_co2_max = CO2_pp + GAS_TOLERANCE * 2
-
-#undef GAS_TOLERANCE
 
 /obj/item/organ/lungs/ethereal
 	name = "aeration reticulum"
@@ -501,7 +458,7 @@
 /obj/item/organ/lungs/vox
 	name = "Vox lungs"
 	desc = "They're filled with dust....wow."
-	icon_state = "vox-lungs"
+	icon_state = "lungs-vox"
 
 	safe_oxygen_min = 0 //We don't breathe this
 	safe_oxygen_max = 0.05 //This is toxic to us

@@ -60,7 +60,7 @@
 				to_chat(usr, span_notice("Reconstruction in progress. This will take several minutes."))
 				playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 25, FALSE)
 				restoring = TRUE
-				occupier.notify_ghost_cloning("Your core files are being restored!", source = src)
+				occupier.notify_ghost_revival("Your core files are being restored!", source = src)
 				. = TRUE
 
 /obj/machinery/computer/aifixer/proc/Fix()
@@ -98,7 +98,7 @@
 	switch(occupier.stat)
 		if(CONSCIOUS)
 			. += "ai-fixer-full"
-		if(UNCONSCIOUS, HARD_CRIT)
+		if(UNCONSCIOUS)
 			. += "ai-fixer-404"
 
 /obj/machinery/computer/aifixer/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/aicard/card)

@@ -24,6 +24,7 @@
 	category = list(DCAT_FRAME)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_ENGINEERING
 
+DEFINE_INTERACTABLE(/obj/machinery/light_switch)
 /obj/machinery/light_switch
 	name = "light switch"
 	icon = 'modular_pariah/modules/aesthetics/lightswitch/icons/lightswitch.dmi'
@@ -44,6 +45,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 /obj/machinery/light_switch/Initialize(mapload)
 	. = ..()
 
+	SET_TRACKING(__TYPE__)
 	AddComponent(/datum/component/usb_port, list(
 		/obj/item/circuit_component/light_switch,
 	))
@@ -62,6 +64,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	update_appearance()
 
 /obj/machinery/light_switch/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	area.light_switches -= src
 	if(!length(area.light_switches))
 		set_lights(TRUE)

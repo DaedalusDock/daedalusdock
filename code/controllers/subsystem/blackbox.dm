@@ -80,8 +80,6 @@ SUBSYSTEM_DEF(blackbox)
 /datum/controller/subsystem/blackbox/proc/FinalFeedback()
 	record_feedback("tally", "ahelp_stats", GLOB.ahelp_tickets.active_tickets.len, "unresolved")
 	for (var/obj/machinery/telecomms/message_server/MS in GLOB.telecomms_list)
-		if (MS.pda_msgs.len)
-			record_feedback("tally", "radio_usage", MS.pda_msgs.len, "PDA")
 		if (MS.rc_msgs.len)
 			record_feedback("tally", "radio_usage", MS.rc_msgs.len, "request console")
 
@@ -235,27 +233,35 @@ Versioning
 				return
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
+
 			if(overwrite)
 				FV.json["data"] = data
 			else
 				FV.json["data"] |= data
+
 		if("amount")
 			FV.json["data"] += increment
+
 		if("tally")
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
 			FV.json["data"]["[data]"] += increment
+
 		if("nested tally")
 			if(!islist(data))
 				return
+
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
 			FV.json["data"] = record_feedback_recurse_list(FV.json["data"], data, increment)
+
 		if("associative")
 			if(!islist(data))
 				return
+
 			if(!islist(FV.json["data"]))
 				FV.json["data"] = list()
+
 			var/pos = length(FV.json["data"]) + 1
 			FV.json["data"]["[pos]"] = list() //in 512 "pos" can be replaced with "[FV.json["data"].len+1]"
 			for(var/i in data)

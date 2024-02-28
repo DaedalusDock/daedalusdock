@@ -66,8 +66,7 @@
 
 /obj/structure/life_candle/process()
 	if(!linked_minds.len)
-		STOP_PROCESSING(SSobj, src)
-		return
+		return PROCESS_KILL
 
 	for(var/m in linked_minds)
 		var/datum/mind/mind = m

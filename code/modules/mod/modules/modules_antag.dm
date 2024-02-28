@@ -21,7 +21,7 @@
 	/// Slowdown added to the suit.
 	var/added_slowdown = -0.5
 	/// Armor values added to the suit parts.
-	var/list/armor_values = list(MELEE = 25, BULLET = 30, LASER = 15, ENERGY = 15)
+	var/list/armor_values = list(BLUNT = 25, PUNCTURE = 30, LASER = 15, ENERGY = 15)
 	/// List of parts of the suit that are spaceproofed, for giving them back the pressure protection.
 	var/list/spaceproofed = list()
 
@@ -122,8 +122,8 @@
 	qdel(shield)
 	UnregisterSignal(mod.wearer, COMSIG_HUMAN_CHECK_SHIELDS)
 
-/obj/item/mod/module/energy_shield/proc/shield_reaction(mob/living/carbon/human/owner, atom/movable/hitby, damage = 0, attack_text = "the attack", attack_type = MELEE_ATTACK, armour_penetration = 0)
-	if(SEND_SIGNAL(mod, COMSIG_ITEM_HIT_REACT, owner, hitby, attack_text, 0, damage, attack_type) & COMPONENT_HIT_REACTION_BLOCK)
+/obj/item/mod/module/energy_shield/proc/shield_reaction(mob/living/carbon/human/owner, atom/movable/hitby, damage = 0, attack_text = "the attack", attack_type = MELEE_ATTACK, armor_penetration = 0)
+	if(SEND_SIGNAL(mod, COMSIG_ITEM_CHECK_BLOCK, owner, hitby, attack_text, 0, damage, attack_type) & COMPONENT_CHECK_BLOCK_BLOCKED)
 		drain_power(use_power_cost)
 		return SHIELD_BLOCK
 	return NONE
@@ -414,7 +414,7 @@
 
 /// Contractor armor booster - Slows you down, gives you armor, makes you lose spaceworthiness
 /obj/item/mod/module/armor_booster/contractor // Much flatter distribution because contractor suit gets a shitton of armor already
-	armor_values = list(MELEE = 20, BULLET = 20, LASER = 20, ENERGY = 20)
+	armor_values = list(BLUNT = 20, PUNCTURE = 20, LASER = 20, ENERGY = 20)
 	added_slowdown = 0.5 //Bulky as shit
 	desc = "An embedded set of armor plates, allowing the suit's already extremely high protection \
 		to be increased further. However, the plating, while deployed, will slow down the user \

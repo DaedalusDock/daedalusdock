@@ -61,7 +61,7 @@
 	for(var/mob/living/carbon/human/H in mobs)
 		if(!mobnames)
 			break
-		H.real_name = mobnames[mobnames.len]
+		H.set_real_name(mobnames[mobnames.len])
 		mobnames.len -= 1
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)

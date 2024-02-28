@@ -5,7 +5,7 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "ladder11"
 	anchored = TRUE
-	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN
+	obj_flags = CAN_BE_HIT
 	var/obj/structure/ladder/down   //the ladder below this one
 	var/obj/structure/ladder/up     //the ladder above this one
 	var/crafted = FALSE
@@ -15,7 +15,7 @@
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
 	..()
-	GLOB.ladders += src
+	SET_TRACKING(__TYPE__)
 	if (up)
 		src.up = up
 		up.down = src
@@ -29,7 +29,7 @@
 /obj/structure/ladder/Destroy(force)
 	if ((resistance_flags & INDESTRUCTIBLE) && !force)
 		return QDEL_HINT_LETMELIVE
-	GLOB.ladders -= src
+	UNSET_TRACKING(__TYPE__)
 	disconnect()
 	return ..()
 
@@ -89,7 +89,7 @@
 		if(!do_after(user, src, travel_time, DO_PUBLIC))
 			return
 
-	if(!user.zMove(target = target, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED|ZMOVE_INCLUDE_PULLED|ZMOVE_IGNORE_OBSTACLES))
+	if(!zstep(user, going_up ? UP : DOWN, ZMOVE_INCAPACITATED_CHECKS))
 		return
 
 	if(!is_ghost)
@@ -185,7 +185,7 @@
 		update_appearance()
 		return
 
-	for(var/obj/structure/ladder/unbreakable/unbreakable_ladder in GLOB.ladders)
+	for(var/obj/structure/ladder/unbreakable/unbreakable_ladder in INSTANCES_OF(/obj/structure/ladder))
 		if (unbreakable_ladder.id != id)
 			continue  // not one of our pals
 		if (!down && unbreakable_ladder.height == height - 1)

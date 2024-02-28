@@ -12,7 +12,6 @@
 	attack_verb_simple = list("gore", "squish", "slap", "digest")
 	desc = "Onaka ga suite imasu."
 
-	healing_factor = STANDARD_ORGAN_HEALING
 	decay_factor = STANDARD_ORGAN_DECAY * 1.15 // ~13 minutes, the stomach is one of the first organs to die
 
 	low_threshold_passed = "<span class='info'>Your stomach flashes with pain before subsiding. Food doesn't seem like a good idea right now.</span>"
@@ -53,11 +52,11 @@
 		human_owner.clear_alert(ALERT_NUTRITION)
 	return ..()
 
-/obj/item/organ/stomach/set_organ_failing(failing)
+/obj/item/organ/stomach/set_organ_dead(failing)
 	if(!.)
 		return
 
-	if(organ_flags & ORGAN_FAILING && owner)
+	if(organ_flags & ORGAN_DEAD && owner)
 		reagents.end_metabolization(owner)
 
 /obj/item/organ/stomach/on_life(delta_time, times_fired)
@@ -66,7 +65,7 @@
 	//Manage species digestion
 	if(istype(owner, /mob/living/carbon/human))
 		var/mob/living/carbon/human/humi = owner
-		if(!(organ_flags & ORGAN_FAILING))
+		if(!(organ_flags & ORGAN_DEAD))
 			handle_hunger(humi, delta_time, times_fired)
 
 	var/mob/living/carbon/body = owner
@@ -102,7 +101,7 @@
 		return
 
 	// the change of vomit is now high
-	if(damage > high_threshold && DT_PROB(0.05 * damage * nutri_vol * nutri_vol, delta_time))
+	if(damage > (high_threshold * maxHealth) && DT_PROB(0.05 * damage * nutri_vol * nutri_vol, delta_time))
 		body.vomit(damage)
 		to_chat(body, span_warning("Your stomach reels in pain as you're incapable of holding down all that food!"))
 
@@ -191,9 +190,6 @@
 	else
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/hunger)
 
-/obj/item/organ/stomach/get_availability(datum/species/owner_species)
-	return !(NOSTOMACH in owner_species.inherent_traits)
-
 /obj/item/organ/stomach/proc/handle_disgust(mob/living/carbon/human/disgusted, delta_time, times_fired)
 	var/old_disgust = disgusted.old_disgust
 	var/disgust = disgusted.disgust
@@ -268,14 +264,13 @@
 	icon_state = "stomach-c"
 	desc = "A basic device designed to mimic the functions of a human stomach"
 	organ_flags = ORGAN_SYNTHETIC
-	maxHealth = STANDARD_ORGAN_THRESHOLD * 0.5
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/stomach/cybernetic/tier2
 	name = "cybernetic stomach"
 	icon_state = "stomach-c-u"
 	desc = "An electronic device designed to mimic the functions of a human stomach. Handles disgusting food a bit better."
-	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 45
 	disgust_metabolism = 2
 	emp_vulnerability = 40
 
@@ -283,7 +278,7 @@
 	name = "upgraded cybernetic stomach"
 	icon_state = "stomach-c-u2"
 	desc = "An upgraded version of the cybernetic stomach, designed to improve further upon organic stomachs. Handles disgusting food very well."
-	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
+	maxHealth = 60
 	disgust_metabolism = 3
 	emp_vulnerability = 20
 

@@ -54,7 +54,7 @@
 	if(!open || !ismob(M))
 		return
 
-	if(!ishuman(M))
+	if(!ishuman(M) || !M:has_mouth())
 		to_chat(user, span_warning("Where are the lips on that?"))
 		return
 
@@ -138,7 +138,7 @@
 					if (H == user)
 						to_chat(user, span_warning("You need a mirror to properly style your own facial hair!"))
 						return
-					if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+					if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 						return
 					var/new_style = tgui_input_list(user, "Select a facial hairstyle", "Grooming", GLOB.facial_hairstyles_list)
 					if(isnull(new_style))
@@ -186,7 +186,7 @@
 				if (H == user)
 					to_chat(user, span_warning("You need a mirror to properly style your own hair!"))
 					return
-				if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+				if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 					return
 				var/new_style = tgui_input_list(user, "Select a hairstyle", "Grooming", GLOB.hairstyles_list)
 				if(isnull(new_style))

@@ -230,7 +230,7 @@
 		return
 	if(isplasmaman(H))
 		H.equipOutfit(plasmaman_outfit)
-		H.internal = H.get_item_for_held_index(2)
+		H.open_internals(H.get_item_for_held_index(2))
 	H.equipOutfit(outfit)
 
 
@@ -262,7 +262,7 @@
 	var/mob/living/M = mob_override || owner.current
 	if(M.hud_used)
 		var/datum/hud/H = M.hud_used
-		var/atom/movable/screen/wanted/giving_wanted_lvl = new /atom/movable/screen/wanted()
+		var/atom/movable/screen/wanted/giving_wanted_lvl = new /atom/movable/screen/wanted(null, M.hud_used)
 		H.wanted_lvl = giving_wanted_lvl
 		giving_wanted_lvl.hud = H
 		H.infodisplay += giving_wanted_lvl

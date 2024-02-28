@@ -20,7 +20,8 @@
 	force = 30
 	throwforce = 30
 	block_chance = 50
-	armour_penetration = 50
+	block_sound = 'sound/weapons/block/block_energy.ogg'
+	armor_penetration = 50
 	w_class = WEIGHT_CLASS_NORMAL
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")

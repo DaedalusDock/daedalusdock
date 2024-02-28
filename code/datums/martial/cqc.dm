@@ -69,7 +69,7 @@
 		D.visible_message(span_danger("[A] kicks [D]'s head, knocking [D.p_them()] out!"), \
 						span_userdanger("You're knocked unconscious by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
 		to_chat(A, span_danger("You kick [D]'s head, knocking [D.p_them()] out!"))
-		playsound(get_turf(A), 'sound/weapons/genhit1.ogg', 50, TRUE, -1)
+		playsound(get_turf(A), SFX_PUNCH, 50, TRUE, -1)
 		D.SetSleeping(300)
 		D.adjustOrganLoss(ORGAN_SLOT_BRAIN, 15, 150)
 		. = TRUE
@@ -122,11 +122,17 @@
 		add_to_streak("G",D)
 		if(check_streak(A,D)) //if a combo is made no grab upgrade is done
 			return TRUE
-		old_grab_state = A.grab_state
-		D.grabbedby(A, 1)
+		var/obj/item/hand_item/grab/G = A.is_grabbing(D)
+		if(G)
+			old_grab_state = G?.current_grab.damage_stage
+			if(old_grab_state == GRAB_PASSIVE)
+				G.upgrade()
+
+		else
+			A.try_make_grab(D, /datum/grab/normal/aggressive)
+
 		if(old_grab_state == GRAB_PASSIVE)
 			D.drop_all_held_items()
-			A.setGrabState(GRAB_AGGRESSIVE) //Instant aggressive grab if on grab intent
 			log_combat(A, D, "grabbed", addition="aggressively")
 			D.visible_message(span_warning("[A] violently grabs [D]!"), \
 							span_userdanger("You're grabbed violently by [A]!"), span_hear("You hear sounds of aggressive fondling!"), COMBAT_MESSAGE_RANGE, A)
@@ -191,15 +197,17 @@
 		to_chat(A, span_warning("You fail to disarm [D]!"))
 		playsound(D, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
 	log_combat(A, D, "disarmed (CQC)", "[I ? " grabbing \the [I]" : ""]")
-	if(restraining && A.pulling == D)
+
+	var/obj/item/hand_item/grab/G = A.is_grabbing(D)
+	if(restraining && G)
 		log_combat(A, D, "knocked out (Chokehold)(CQC)")
 		D.visible_message(span_danger("[A] puts [D] into a chokehold!"), \
 						span_userdanger("You're put into a chokehold by [A]!"), span_hear("You hear shuffling and a muffled groan!"), null, A)
 		to_chat(A, span_danger("You put [D] into a chokehold!"))
 		D.SetSleeping(400)
 		restraining = FALSE
-		if(A.grab_state < GRAB_NECK && !HAS_TRAIT(A, TRAIT_PACIFISM))
-			A.setGrabState(GRAB_NECK)
+		if(G.current_grab.damage_stage < GRAB_NECK && !HAS_TRAIT(A, TRAIT_PACIFISM))
+			G.upgrade()
 	else
 		restraining = FALSE
 		return FALSE

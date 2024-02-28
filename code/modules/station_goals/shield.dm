@@ -30,7 +30,7 @@
 
 /datum/station_goal/proc/get_coverage()
 	var/list/coverage = list()
-	for(var/obj/machinery/satellite/meteor_shield/A in GLOB.machines)
+	for(var/obj/machinery/satellite/meteor_shield/A in INSTANCES_OF(/obj/machinery/satellite))
 		if(!A.active || !is_station_level(A.z))
 			continue
 		coverage |= view(A.kill_range,A)
@@ -60,7 +60,7 @@
 			. = TRUE
 
 /obj/machinery/computer/sat_control/proc/toggle(id)
-	for(var/obj/machinery/satellite/S in GLOB.machines)
+	for(var/obj/machinery/satellite/S as anything in INSTANCES_OF(/obj/machinery/satellite))
 		if(S.id == id && S.z == z)
 			S.toggle()
 
@@ -68,7 +68,7 @@
 	var/list/data = list()
 
 	data["satellites"] = list()
-	for(var/obj/machinery/satellite/S in GLOB.machines)
+	for(var/obj/machinery/satellite/S as anything in INSTANCES_OF(/obj/machinery/satellite))
 		data["satellites"] += list(list(
 			"id" = S.id,
 			"active" = S.active,
@@ -101,7 +101,12 @@
 
 /obj/machinery/satellite/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	id = gid++
+
+/obj/machinery/satellite/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/satellite/interact(mob/user)
 	toggle(user)

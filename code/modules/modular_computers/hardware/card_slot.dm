@@ -43,7 +43,7 @@
 		total_access |= card_slot2.stored_card.GetAccess()
 	return total_access
 
-/obj/item/computer_hardware/card_slot/GetID()
+/obj/item/computer_hardware/card_slot/GetID(bypass_wallet)
 	if(stored_card)
 		return stored_card
 	return ..()
@@ -77,7 +77,7 @@
 
 	stored_card = I
 	to_chat(user, span_notice("You insert \the [I] into \the [expansion_hw ? "secondary":"primary"] [src]."))
-	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, FALSE)
+	playsound(src, 'sound/machines/cardreader_insert.ogg', 50, FALSE)
 	holder.update_appearance()
 
 	current_identification = stored_card.registered_name
@@ -104,7 +104,7 @@
 		stored_card.forceMove(drop_location())
 
 	to_chat(user, span_notice("You remove the card from \the [src]."))
-	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, FALSE)
+	playsound(src, 'sound/machines/cardreader_desert.ogg', 50, FALSE)
 	holder.update_appearance()
 
 	stored_card = null

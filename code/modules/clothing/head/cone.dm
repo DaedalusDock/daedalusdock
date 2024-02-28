@@ -7,7 +7,6 @@
 	inhand_icon_state = "cone"
 	force = 1
 	throwforce = 3
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("warns", "cautions", "smashes")

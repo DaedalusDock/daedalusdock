@@ -39,7 +39,7 @@
 		/obj/item/circuit_component/atmos_pump,
 	))
 
-/obj/machinery/atmospherics/components/binary/pump/CtrlClick(mob/user)
+/obj/machinery/atmospherics/components/binary/pump/CtrlClick(mob/user, list/params)
 	if(can_interact(user))
 		set_on(!on)
 		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
@@ -153,6 +153,10 @@
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
+	if("status" in signal.data)
+		broadcast_status()
+		return
+
 	var/old_on = on //for logging
 
 	if("power" in signal.data)
@@ -166,10 +170,6 @@
 
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)
-
-	if("status" in signal.data)
-		broadcast_status()
-		return
 
 	broadcast_status()
 	update_appearance()

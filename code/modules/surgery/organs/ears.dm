@@ -7,13 +7,12 @@
 	visual = FALSE
 	gender = PLURAL
 
-	healing_factor = STANDARD_ORGAN_HEALING
-	decay_factor = STANDARD_ORGAN_DECAY
-
 	low_threshold_passed = "<span class='info'>Your ears begin to resonate with an internal ring.</span>"
 	now_failing = "<span class='warning'>You are unable to hear at all!</span>"
 	now_fixed = "<span class='info'>Noise slowly begins filling your ears once more.</span>"
 	low_threshold_cleared = "<span class='info'>The ringing in your ears has died down.</span>"
+
+	relative_size = 5
 
 	// `deaf` measures "ticks" of deafness. While > 0, the person is unable
 	// to hear anything.
@@ -30,7 +29,7 @@
 
 /obj/item/organ/ears/on_life(delta_time, times_fired)
 	// only inform when things got worse, needs to happen before we heal
-	if((damage > low_threshold && prev_damage < low_threshold) || (damage > high_threshold && prev_damage < high_threshold))
+	if((damage > (low_threshold * maxHealth) && prev_damage < (low_threshold * maxHealth)) || (damage > (high_threshold * maxHealth) && prev_damage < (high_threshold * maxHealth)))
 		to_chat(owner, span_warning("The ringing in your ears grows louder, blocking out any external noises for a moment."))
 
 	. = ..()
@@ -38,7 +37,7 @@
 	if(HAS_TRAIT_NOT_FROM(owner, TRAIT_DEAF, EAR_DAMAGE))
 		return
 
-	if((organ_flags & ORGAN_FAILING))
+	if((organ_flags & ORGAN_DEAD))
 		deaf = max(deaf, 1) // if we're failing we always have at least 1 deaf stack (and thus deafness)
 	else // only clear deaf stacks if we're not failing
 		deaf = max(deaf - (0.5 * delta_time), 0)

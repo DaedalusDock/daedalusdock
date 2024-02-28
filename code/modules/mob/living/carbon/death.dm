@@ -30,9 +30,9 @@
 	add_memory_in_range(src, 7, MEMORY_GIBBED, list(DETAIL_PROTAGONIST = src), STORY_VALUE_AMAZING, memory_flags = MEMORY_CHECK_BLINDNESS)
 	if(safe_gib) // If you want to keep all the mob's items and not have them deleted
 		for(var/obj/item/W in src)
-			dropItemToGround(W)
-			if(prob(50))
-				step(W, pick(GLOB.alldirs))
+			if(dropItemToGround(W))
+				if(prob(50))
+					step(W, pick(GLOB.alldirs))
 	var/atom/Tsec = drop_location()
 	for(var/mob/M in src)
 		M.forceMove(Tsec)
@@ -51,7 +51,7 @@
 				if(no_brain && istype(organs, /obj/item/organ/brain))
 					qdel(organs) //so the brain isn't transfered to the head when the head drops.
 					continue
-				var/org_zone = check_zone(organs.zone) //both groin and chest organs.
+				var/org_zone = deprecise_zone(organs.zone) //both groin and chest organs.
 				if(org_zone == BODY_ZONE_CHEST)
 					organs.Remove(src)
 					organs.forceMove(Tsec)

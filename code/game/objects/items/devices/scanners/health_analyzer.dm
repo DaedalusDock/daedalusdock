@@ -20,7 +20,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=200)
 	var/mode = SCANNER_VERBOSE
@@ -30,8 +29,7 @@
 
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()
-	if(advanced)
-		register_item_context()
+	register_item_context()
 
 /obj/item/healthanalyzer/examine(mob/user)
 	. = ..()
@@ -42,15 +40,6 @@
 	return BRUTELOSS
 
 /obj/item/healthanalyzer/attack_self(mob/user)
-	if(!advanced)
-		scanmode = (scanmode + 1) % (SCANMODE_COUNT - 1)
-		switch(scanmode)
-			if(SCANMODE_HEALTH)
-				to_chat(user, span_notice("You switch the health analyzer to check physical health."))
-			if(SCANMODE_SURGERY)
-				to_chat(user, span_notice("You switch the health analyzer to output surgerical information."))
-		return
-
 	scanmode = (scanmode + 1) % SCANMODE_COUNT
 	switch(scanmode)
 		if(SCANMODE_HEALTH)
@@ -98,7 +87,7 @@
 	list/context,
 	atom/target,
 )
-	if (!isliving(target) || !advanced)
+	if (!isliving(target))
 		return NONE
 
 	switch (scanmode)
@@ -106,6 +95,8 @@
 			context[SCREENTIP_CONTEXT_LMB] = "Scan health"
 		if (SCANMODE_CHEM)
 			context[SCREENTIP_CONTEXT_LMB] = "Scan chemicals"
+		if (SCANMODE_SURGERY)
+			context[SCREENTIP_CONTEXT_LMB] = "Surgical status"
 
 	return CONTEXTUAL_SCREENTIP_SET
 
@@ -132,11 +123,26 @@
 	if(target.getToxLoss() > 50)
 		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_TOXIN]'>Severe bloodstream intoxicification detected.</span>\n"
 
-	if(target.blood_volume < BLOOD_VOLUME_SAFE)
-		data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>Severe bloodloss detected.</span>\n"
 
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target
+		// Blood pressure. Based on the idea of a normal blood pressure being 120 over 80.
+		if(target.needs_organ(ORGAN_SLOT_HEART))
+			if((target.blood_volume / BLOOD_VOLUME_NORMAL * 100) <= 70)
+				data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Severe blood loss detected.</span>\n"
+			var/oxygenation_string = "[carbon_target.get_blood_oxygenation()]% blood oxygenation"
+			switch(carbon_target.get_blood_oxygenation())
+				if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
+					oxygenation_string = "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL]'>[oxygenation_string]</span>"
+				if(BLOOD_CIRC_SURVIVE to BLOOD_CIRC_OKAY)
+					oxygenation_string = "<span style='font-weight: bold; color: #e0d000'>[oxygenation_string]</span>"
+				if(-(INFINITY) to BLOOD_CIRC_SURVIVE)
+					oxygenation_string = "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>[oxygenation_string]</span>"
+			data_string_list += "Blood pressure: [carbon_target.get_blood_pressure()] ([oxygenation_string])\n"
+		else
+			data_string_list += "Blood pressure: N/A\n"
+
+
 		if(carbon_target.undergoing_cardiac_arrest())
 			data_string_list += "<span style='font-weight: bold; color: [COLOR_MEDICAL_INTERNAL_DANGER]'>Patient is suffering from cardiovascular shock. Administer CPR immediately.</span>\n"
 
@@ -293,7 +299,7 @@
 /obj/item/healthanalyzer/AltClick(mob/user)
 	..()
 
-	if(!user.canUseTopic(src, BE_CLOSE))
+	if(!user.canUseTopic(src, USE_CLOSE))
 		return
 
 	mode = !mode

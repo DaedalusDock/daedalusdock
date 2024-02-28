@@ -192,6 +192,8 @@
 					to_chat(user, span_warning("Terminal connection conflict, something is already connected!"))
 				if(NETJACK_CONNECT_NOTSAMETURF)
 					to_chat(user, span_boldwarning("Reconnect failed! Your terminal is somehow not on the same tile??? Call a coder!"))
+				if(NETJACK_CONNECT_NOT_FOUND)
+					to_chat(user, span_warning("No terminal found!"))
 				else
 					to_chat(user, span_boldwarning("Reconnect failed, Invalid error code, call a coder!"))
 
@@ -588,7 +590,7 @@
 
 	//Bundle up what we care about.
 	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
-	v_signal.has_magic_data = TRUE //We're sending a virtual speaker. This packet MUST be discarded.
+	v_signal.has_magic_data = MAGIC_DATA_INVIOLABLE //We're sending a virtual speaker. This packet MUST be discarded.
 	v_signal.data[PACKET_SOURCE_ADDRESS] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
 	v_signal.data[PACKET_DESTINATION_ADDRESS] = callstation.active_caller[CALLER_NETID]
 	v_signal.data["command"] = "tel_voicedata"

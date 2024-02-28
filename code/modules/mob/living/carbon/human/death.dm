@@ -6,6 +6,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	new /obj/effect/temp_visual/dust_animation(loc, dna.species.dust_anim)
 
 /mob/living/carbon/human/spawn_gibs(with_bodyparts)
+	if(isipc(src))
+		new /obj/effect/gibspawner/robot(drop_location(), src)
+		return
 	if(with_bodyparts)
 		new /obj/effect/gibspawner/human(drop_location(), src, get_static_viruses())
 	else

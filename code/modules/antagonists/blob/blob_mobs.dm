@@ -56,7 +56,7 @@
 				H.color = "#000000"
 		adjustHealth(-maxHealth*BLOBMOB_HEALING_MULTIPLIER)
 
-/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume)
+/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	..()
 	if(exposed_temperature)
 		adjustFireLoss(clamp(0.01 * exposed_temperature, 1, 5))
@@ -85,7 +85,7 @@
 		return 1
 	return ..()
 
-/mob/living/simple_animal/hostile/blob/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null)
+/mob/living/simple_animal/hostile/blob/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	if(sanitize)
 		message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 	var/spanned_message = say_quote(message)
@@ -172,7 +172,8 @@
 	is_zombie = 1
 	if(H.wear_suit)
 		var/obj/item/clothing/suit/armor/A = H.wear_suit
-		maxHealth += A.returnArmor().melee //That zombie's got armor, I want armor!
+		maxHealth += A.returnArmor().getRating(BLUNT) //That zombie's got armor, I want armor!
+
 	maxHealth += 40
 	health = maxHealth
 	name = "blob zombie"

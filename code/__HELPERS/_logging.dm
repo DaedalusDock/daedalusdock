@@ -338,13 +338,13 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 		entry += "\n[message]"
 	WRITE_LOG(GLOB.tgui_log, entry)
 
-/proc/log_crash(log, file, line)
+/proc/log_crash(log, file, line, trace = TRUE)
 	var/static/log_num = 0
 	log_num++
-	log = "CRASH LOG #[log_num]: [file] Ln [line][log ? " [log]": ""]. CALLSTACK: [jointext(gib_stack_trace(), "\n")]"
-	WRITE_LOG(GLOB.crash_log, log)
+	log = "CRASH LOG #[log_num]: [file] Ln [line][log ? " [log]": ""]. [trace ? CALLSTACK: [jointext(gib_stack_trace(), "\n")] : ""]"
 
 #define ICON_CRASH_LOG(text...) log_crash(##text, __FILE__, __LINE__)
+#define ICON_CRASH_LOG_TRACELESS(text...) log_crash(##text, __FILE__, __LINE__, FALSE)
 
 /* For logging round startup. */
 /proc/start_log(log)

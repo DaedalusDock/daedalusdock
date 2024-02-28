@@ -285,7 +285,7 @@ em {
 .ooc {
   color: #cca300;
   font-weight: bold;
-  text-shadow: 0 0 2px #db7900;
+  text-shadow: 0 0 0.15em #db7900;
 }
 
 .looc {
@@ -418,6 +418,7 @@ em {
 
 .bolddanger {
   color: #dd3535;
+  text-shadow: 0 0 0.3em #FF0000;
   font-weight: bold;
 }
 

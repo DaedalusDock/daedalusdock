@@ -283,6 +283,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		QDEL_NULL(modeswitch_action)
 		return
 
+	if(!isnull(modeswitch_action))
+		return
+
 	if(!isitem(parent))
 		return
 

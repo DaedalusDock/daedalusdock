@@ -341,7 +341,7 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 /proc/log_crash(log, file, line, trace = TRUE)
 	var/static/log_num = 0
 	log_num++
-	log = "CRASH LOG #[log_num]: [file] Ln [line][log ? " [log]": ""]. [trace ? CALLSTACK: [jointext(gib_stack_trace(), "\n")] : ""]"
+	log = "CRASH LOG #[log_num]: [file] Ln [line][log ? " [log]": ""]. [trace ? "CALLSTACK: [jointext(gib_stack_trace(), "\n")]" : ""]"
 
 #define ICON_CRASH_LOG(text...) log_crash(##text, __FILE__, __LINE__)
 #define ICON_CRASH_LOG_TRACELESS(text...) log_crash(##text, __FILE__, __LINE__, FALSE)

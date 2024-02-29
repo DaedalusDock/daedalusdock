@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Storage objects no longer infinitely add action buttons.
-  - bugfix: Some text effects scale with font size.

@@ -9,6 +9,7 @@
  */
 
 /turf/open/floor/wood
+	name = "wooden floor"
 	desc = "A welcoming wooden floor."
 	icon = 'icons/turf/wood.dmi'
 	icon_state = "wood"

@@ -1,7 +1,7 @@
 /datum/codex_entry/item
 	abstract_type = /datum/codex_entry/item
 	use_typesof = TRUE
-	disambiguator = "(item)"
+	disambiguator = "item"
 
 /datum/codex_entry/item/id_card
 	name = "Identification Card"
@@ -13,14 +13,3 @@
 	name = "Fire Extinguisher"
 	associated_paths = list(/obj/item/extinguisher)
 	controls_text = "Alt Click - Empty contents."
-
-/datum/codex_entry/item/gas_analyzer
-	name = "Gas Analyzer"
-	associated_paths = list(/obj/item/analyzer)
-	controls_text = {"
-	Alt Click - Activate barometer.
-	Right Click - Open gas reference.
-	"}
-
-
-

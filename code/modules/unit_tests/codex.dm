@@ -18,9 +18,9 @@
 			var/clean_other_string = lowertext(other_string)
 			if(clean_other_string != clean_check_string && SScodex.entries_by_string[other_string] != SScodex.entries_by_string[check_string])
 				if(findtext(clean_check_string, clean_other_string))
-					TEST_FAIL("Codex Overlap: [check_string], [other_string]")
+					TEST_FAIL("Codex Overlap: [check_string] ([SScodex.entries_by_string[check_string]:type]), [other_string] ([SScodex.entries_by_string[other_string]:type])")
 				else if(findtext(clean_other_string, clean_check_string))
-					TEST_FAIL("Codex Overlap: [other_string], [check_string]")
+					TEST_FAIL("Codex Overlap: [other_string] ([SScodex.entries_by_string[other_string]:type]), ([SScodex.entries_by_string[check_string]:type])")
 
 
 /datum/unit_test/codex_links

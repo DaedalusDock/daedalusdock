@@ -96,4 +96,9 @@
 		additional output data; Moles and volume shows the moles per gas in the mixture and the total moles and volume; Gas
 		traits and data describes the traits per gas, how it interacts with the world, and some of its property constants.
 	"}
+	controls_text = {"
+	Alt Click - Activate barometer.
+	Right Click - Open gas reference.
+	"}
+
 	disambiguator = "equipment"

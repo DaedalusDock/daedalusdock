@@ -1,5 +1,6 @@
 /datum/codex_entry/floor
 	abstract_type = /datum/codex_entry/floor
+	disambiguator = "floor"
 
 /datum/codex_entry/floor/iron
 	name = "Iron Floor"

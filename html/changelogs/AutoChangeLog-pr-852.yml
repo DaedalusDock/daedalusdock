@@ -1,0 +1,4 @@
+author: pitaden
+delete-after: true
+changes:
+  - bugfix: plasma sprites now change with stack size

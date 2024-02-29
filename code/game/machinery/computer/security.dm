@@ -673,7 +673,7 @@ Age: [active1.fields["age"]]<BR>"}
 					counter++
 				active2.fields["com_[counter]"] = "Made by [src.authenticated] ([src.rank]) on [stationtime2text()] [stationdate2text()]<BR>[t1]"
 
-				investigate_log("[key_name(usr)] created a new comment for [active2.fields["name"]]: [html_encode(t1)].")
+				investigate_log("[key_name(usr)] created a new comment for [active2.fields["name"]]: [html_encode(t1)].", INVESTIGATE_RECORDS)
 
 			if("Delete Record (ALL)")
 				if(active1)

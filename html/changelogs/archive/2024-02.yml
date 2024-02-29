@@ -153,3 +153,7 @@
         used for trace DNA and blood DNA samples.
   francinum:
   - admin: A Lag Switch has been added to disable VV Icon Previews.
+2024-02-29:
+  Kapu1178:
+  - bugfix: Storage objects no longer infinitely add action buttons.
+  - bugfix: Some text effects scale with font size.

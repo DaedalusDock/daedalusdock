@@ -254,7 +254,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 			. += span_alert("The [fitting] has been smashed.")
 
 	if(cell)
-		. += span_notice()"Its backup power charge meter reads: [round((cell.charge / cell.maxcharge) * 100, 0.1)]%.")
+		. += span_notice("Its backup power charge meter reads: [round((cell.charge / cell.maxcharge) * 100, 0.1)]%.")
 
 	if(constant_flickering)
 		. += span_alert("The lighting ballast appears to be damaged, this could be fixed with a multitool.")

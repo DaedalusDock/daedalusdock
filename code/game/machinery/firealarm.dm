@@ -408,7 +408,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 /obj/machinery/firealarm/examine(mob/user)
 	. = ..()
 	if((alert_type))
-		. += "The local area hazard light is flashing."
+		. += span_alert("The local area hazard light is flashing.")
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)

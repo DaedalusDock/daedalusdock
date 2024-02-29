@@ -8,6 +8,10 @@
 	To join three or more pipe segments, you can use a pipe manifold."
 	disambiguator = "atmospherics"
 
+	controls_text = {"
+	Right Click - Adjust the layer of the pipe.
+	"}
+
 /datum/codex_entry/atmos_pipe/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text)
 
 /datum/codex_entry/atmos_valve

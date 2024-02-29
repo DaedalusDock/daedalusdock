@@ -27,10 +27,6 @@
 	. = ..()
 	register_item_context()
 
-/obj/item/stack/sticky_tape/examine(mob/user)
-	. = ..()
-	. += span_notice("<b>Left-click</b> to restrain someone. Target mouth to gag.")
-
 /obj/item/stack/sticky_tape/add_item_context(
 	obj/item/source,
 	list/context,

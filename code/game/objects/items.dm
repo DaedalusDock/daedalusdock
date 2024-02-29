@@ -439,8 +439,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/examine(mob/user) //This might be spammy. Remove?
 	. = ..()
-
-	. += "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] object."
+	. += span_notice("[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] object.")
 
 /obj/item/interact(mob/user)
 	add_fingerprint(user)

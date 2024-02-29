@@ -9,7 +9,7 @@
  */
 
 /turf/open/floor/wood
-	desc = "Stylish dark wood."
+	desc = "A welcoming wooden floor."
 	icon = 'icons/turf/wood.dmi'
 	icon_state = "wood"
 	floor_tile = /obj/item/stack/tile/wood
@@ -29,10 +29,6 @@
 
 /turf/open/floor/wood/setup_burnt_states()
 	return list("floorscorched1", "floorscorched2")
-
-/turf/open/floor/wood/examine(mob/user)
-	. = ..()
-	. += span_notice("There's a few <b>screws</b> and a <b>small crack</b> visible.")
 
 /turf/open/floor/wood/screwdriver_act(mob/living/user, obj/item/I)
 	if(..())
@@ -213,10 +209,6 @@
 	clawfootstep = FOOTSTEP_CARPET_BAREFOOT
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	tiled_dirt = FALSE
-
-/turf/open/floor/carpet/examine(mob/user)
-	. = ..()
-	. += span_notice("There's a <b>small crack</b> on the edge of it.")
 
 /turf/open/floor/carpet/Initialize(mapload)
 	. = ..()

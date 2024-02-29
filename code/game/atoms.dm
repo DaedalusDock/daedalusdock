@@ -666,6 +666,7 @@
 	if(article)
 		. = "[article] [src]"
 		override[EXAMINE_POSITION_ARTICLE] = article
+
 	if(SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override) & COMPONENT_EXNAME_CHANGED)
 		. = override.Join("")
 
@@ -696,51 +697,59 @@
  * Produces a signal [COMSIG_PARENT_EXAMINE]
  */
 /atom/proc/examine(mob/user)
-	. = list("[get_examine_string(user, TRUE)].<hr>") //PARIAH EDIT CHANGE
-	if(SScodex.get_codex_entry(get_codex_value(user)))
-		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
-
-	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
-		. += "<span class='notice'><b><a href='?src=\ref[user.client];show_slapcraft_hints=[type];'>You could craft [(length(slapcraft_examine_hints_for_type(type)) > 1) ? "several things" : "something"] with it.</a><b></span>"
-
+	. = list("[get_examine_string(user, TRUE)].") //PARIAH EDIT CHANGE
 	. += get_name_chaser(user)
+
 	if(desc)
 		. += desc
+
+	. += "<hr>"
+
+	var/place_linebreak = FALSE
+	if(SScodex.get_codex_entry(get_codex_value(user)))
+		. += "<span class='obviousnotice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span>"
+		place_linebreak = TRUE
+
+	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
+		. += "<span class='obviousnotice'><b><a href='?src=\ref[user.client];show_slapcraft_hints=[type];'>You could craft [(length(slapcraft_examine_hints_for_type(type)) > 1) ? "several things" : "something"] with it.</a><b></span>"
+		place_linebreak = TRUE
+
+	if(place_linebreak)
+		. += ""
 
 	if(z && user.z && user.z != z)
 		var/diff = abs(user.z - z)
 		. += span_notice("<b>[p_theyre(TRUE)] [diff] level\s below you.</b>")
 
 	if(custom_materials)
-		. += "<hr>" //PARIAH EDIT ADDITION
 		var/list/materials_list = list()
 		for(var/datum/material/current_material as anything in custom_materials)
 			materials_list += "[current_material.name]"
-		. += "It is made out of [english_list(materials_list)]."
+		. += span_notice("It is made out of [english_list(materials_list)].")
 
 	if(reagents)
-		. += "<hr>" //PARIAH EDIT ADDITION
 		if(reagents.flags & TRANSPARENT)
-			. += "It contains:"
-			if(length(reagents.reagent_list))
-				if(user.can_see_reagents()) //Show each individual reagent
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						. += "[round(current_reagent.volume, 0.01)] units of [current_reagent.name]"
-					if(reagents.is_reacting)
-						. += span_warning("It is currently reacting!")
-					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
-				else //Otherwise, just show the total volume
-					var/total_volume = 0
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						total_volume += current_reagent.volume
-					. += "[total_volume] units of various reagents"
+			if(!length(reagents.reagent_list))
+				. += span_alert("It looks empty.")
 			else
-				. += "Nothing."
+				if(user.can_see_reagents()) //Show each individual reagent
+					. += span_notice("You see the following reagents:")
+					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
+						. += span_notice("* [round(current_reagent.volume, 0.01)] units of [current_reagent.name].")
+
+					if(reagents.is_reacting)
+						. += span_alert("A chemical reaction is taking place.")
+
+					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
+
+				else //Otherwise, just show the total volume
+					. += span_notice("It looks about [reagents.total_volume / reagents.maximum_volume * 100]% full.")
+
 		else if(reagents.flags & AMOUNT_VISIBLE)
 			if(reagents.total_volume)
-				. += span_notice("It has [reagents.total_volume] unit\s left.")
+				. += span_notice("It looks about [reagents.total_volume / reagents.maximum_volume * 100]% full.")
 			else
-				. += span_danger("It's empty.")
+				. += span_alert("It looks empty.")
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 

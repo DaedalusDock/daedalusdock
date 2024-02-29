@@ -704,7 +704,7 @@ Age: [active1.fields["age"]]<BR>"}
 					GLOB.data_core.security += R
 					active2 = R
 					screen = 3
-					investigate_log("[key_name(usr)] created a new security record.")
+					investigate_log("[key_name(usr)] created a new security record.", INVESTIGATE_RECORDS)
 
 			if("New Record (General)")
 				//General Record

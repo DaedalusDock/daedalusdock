@@ -67,7 +67,7 @@
 	else if(LAZYLEN(occupants))
 		. += span_notice("[occupants[1]] is riding it.")
 
-/obj/vehicle/ridden/trolley/MouseDrop_T(atom/dropped_atom, mob/living/user)
+/obj/vehicle/ridden/trolley/MouseDroppedOn(atom/dropped_atom, mob/living/user)
 	if(isliving(dropped_atom))
 		var/mob/living/buckling_mob = dropped_atom
 		return ..(buckling_mob, user)

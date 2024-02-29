@@ -54,9 +54,10 @@
 		else
 			return user_unbuckle_mob(buckled_mobs[1], user)
 
-/atom/movable/MouseDrop_T(mob/living/M, mob/living/user)
+/atom/movable/MouseDroppedOn(atom/dropped, mob/living/user)
 	. = ..()
-	return mouse_buckle_handling(M, user)
+	if(isliving(dropped))
+		return mouse_buckle_handling(dropped, user)
 
 /**
  * Does some typechecks and then calls user_buckle_mob

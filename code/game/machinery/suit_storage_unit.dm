@@ -341,7 +341,7 @@
 	image.color = COLOR_RED
 	return image
 
-/obj/machinery/suit_storage_unit/MouseDrop_T(atom/A, mob/living/user)
+/obj/machinery/suit_storage_unit/MouseDroppedOn(atom/A, mob/living/user)
 	if(!istype(user) || user.stat || !Adjacent(user) || !Adjacent(A) || !isliving(A))
 		return
 	if(isliving(user))

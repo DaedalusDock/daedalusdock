@@ -323,7 +323,7 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	else
 		. += "[src] seems empty."
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/atmospherics/components/unary/cryo_cell/MouseDroppedOn(mob/target, mob/user)
 	if(user.incapacitated() || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !ISADVANCEDTOOLUSER(user))
 		return
 	if(isliving(target))

@@ -187,7 +187,7 @@
 		usr.update_held_items()
 	return TRUE
 
-/atom/movable/screen/inventory/MouseDrop_T(atom/dropped, mob/user, params)
+/atom/movable/screen/inventory/MouseDroppedOn(atom/dropped, mob/user, params)
 	if(user != hud?.mymob || !slot_id)
 		return TRUE
 	if(!isitem(dropped))
@@ -298,7 +298,7 @@
 		user.swap_hand(held_index)
 	return TRUE
 
-/atom/movable/screen/inventory/hand/MouseDrop_T(atom/dropping, mob/user, params)
+/atom/movable/screen/inventory/hand/MouseDroppedOn(atom/dropping, mob/user, params)
 	if(!isitem(dropping))
 		return TRUE
 
@@ -543,7 +543,7 @@
 
 	return TRUE
 
-/atom/movable/screen/storage/MouseDrop_T(atom/dropping, mob/user, params)
+/atom/movable/screen/storage/MouseDroppedOn(atom/dropping, mob/user, params)
 	var/datum/storage/storage_master = master_ref?.resolve()
 
 	if(!istype(storage_master))

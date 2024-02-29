@@ -753,7 +753,7 @@ Age: [active1.fields["age"]]<BR>"}
 				M.fields["notes"] = "No notes."
 				GLOB.data_core.medical += M
 
-				investigate_log("[key_name(usr)] created a new record of each type.")
+				investigate_log("[key_name(usr)] created a new record of each type.", INVESTIGATE_RECORDS)
 
 
 

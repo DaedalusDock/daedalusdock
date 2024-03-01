@@ -263,7 +263,7 @@ div.notice
 	padding: 4px;
 	margin: 3px 0;
 	text-align: center;
-	text-shadow: 0 0 5px #FFCC00;
+	text-shadow: 0 0 0.417em #FFCC00;
 	overflow: hidden;
 	font-size: 15px;
 	font-family: monospace;
@@ -286,7 +286,7 @@ div.notice
 }
 
 .computerText{
-	text-shadow: 0 0 5px #C8C8C8;
+	text-shadow: 0 0 0.417em #C8C8C8;
 	color: #ffffff;
 }
 

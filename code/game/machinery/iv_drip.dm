@@ -159,7 +159,7 @@
 		reagent_container = W
 		to_chat(user, span_notice("You attach [W] to [src]."))
 		user.log_message("attached a [W] to [src] at [AREACOORD(src)] containing ([reagent_container.reagents.get_reagent_log_string()])", LOG_ATTACK)
-		add_fingerprint(user)
+		W.leave_evidence(user, src)
 		update_appearance()
 		return
 	else

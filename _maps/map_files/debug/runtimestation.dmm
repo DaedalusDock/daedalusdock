@@ -2021,9 +2021,7 @@
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "BG" = (
-/obj/structure/table,
-/obj/item/ammo_box/c10mm,
-/obj/item/gun/ballistic/automatic/pistol,
+/obj/structure/filingcabinet/security,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "BU" = (

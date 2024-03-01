@@ -152,7 +152,6 @@
 	..()
 	new /obj/item/storage/box/evidence(src)
 	new /obj/item/radio/headset/headset_sec(src)
-	new /obj/item/detective_scanner(src)
 	new /obj/item/flashlight/seclite(src)
 	new /obj/item/holosign_creator/security(src)
 	new /obj/item/reagent_containers/spray/pepper(src)
@@ -161,6 +160,7 @@
 	new /obj/item/pinpointer/crew(src)
 	new /obj/item/binoculars(src)
 	new /obj/item/storage/box/rxglasses/spyglasskit(src)
+	new /obj/item/storage/scene_cards(src)
 
 /obj/structure/closet/secure_closet/injection
 	name = "lethal injections"

@@ -35,20 +35,18 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
-	if(HAS_BLOOD_DNA(src))
+
+	var/list/dna = return_blood_DNA()
+	if(length(dna))
 		if(istype(wearer))
 			var/obj/item/bodypart/arm = wearer.get_bodypart(BODY_ZONE_R_ARM) || wearer.get_bodypart(BODY_ZONE_L_ARM)
 			if(!arm?.icon_bloodycover)
 				return
-			. += image(arm.icon_bloodycover, "bloodyhands")
+			var/image/bloody_overlay = image(arm.icon_bloodycover, "bloodyhands")
+			bloody_overlay.color = get_blood_dna_color(dna)
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "bloodyhands")
-
-/obj/item/clothing/gloves/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
-	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_gloves()
 
 /obj/item/clothing/gloves/wirecutter_act(mob/living/user, obj/item/I)
 	. = ..()

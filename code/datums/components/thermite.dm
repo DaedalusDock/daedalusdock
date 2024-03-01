@@ -97,7 +97,8 @@
 	var/turf/master = parent
 	delete_fire()
 	if(user)
-		master.add_hiddenprint(user)
+		master.log_touch(user)
+
 	if(amount >= burn_require)
 		master = master.Melt()
 		master.burn_tile()

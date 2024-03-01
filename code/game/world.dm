@@ -162,7 +162,7 @@ GLOBAL_VAR(restart_counter)
 
 	GLOB.demo_log = "[GLOB.log_directory]/demo.log"
 
-	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
+	//Config Error Log must be set later to ensure that we move the files over.
 
 #ifdef UNIT_TESTS
 	GLOB.test_log = "[GLOB.log_directory]/tests.log"
@@ -189,10 +189,14 @@ GLOBAL_VAR(restart_counter)
 
 	var/latest_changelog = file("[global.config.directory]/../html/changelogs/archive/" + time2text(world.timeofday, "YYYY-MM") + ".yml")
 	GLOB.changelog_hash = fexists(latest_changelog) ? md5(latest_changelog) : 0 //for telling if the changelog has changed recently
+
+	// Okay, we have a properly constructed log directory and we're all clean and safe. Sort the config error log properly.
 	if(fexists(GLOB.config_error_log))
 		fcopy(GLOB.config_error_log, "[GLOB.log_directory]/config_error.log")
 		fdel(GLOB.config_error_log)
 
+	// NOW we can change the write directory handle over.
+	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
 
 	if(GLOB.round_id)
 		log_game("Round ID: [GLOB.round_id]")

@@ -79,10 +79,14 @@
 /// Return TRUE to cancel other attack hand effects that respect it. Modifiers is the assoc list for click info such as if it was a right click.
 /atom/proc/attack_hand(mob/user, list/modifiers)
 	. = FALSE
-	if(!(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND))
+	if(!(interaction_flags_atom & (INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND | INTERACT_ATOM_ATTACK_HAND)))
 		add_fingerprint(user)
+	else
+		log_touch(user)
+
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		. = TRUE
+
 	if(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
 		. = _try_interact(user)
 
@@ -137,7 +141,7 @@
 
 /atom/proc/interact(mob/user)
 	if(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_INTERACT)
-		add_hiddenprint(user)
+		log_touch(user)
 	else
 		add_fingerprint(user)
 

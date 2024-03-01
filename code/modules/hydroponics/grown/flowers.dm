@@ -293,10 +293,10 @@
 	. = ..()
 	if(slot == ITEM_SLOT_MASK)
 		worn_icon_state = "[base_icon_state]_mouth"
-		user.update_worn_mask()
 	else
 		worn_icon_state = base_icon_state
-		user.update_worn_head()
+
+	update_slot_icon()
 
 // Carbon Rose
 /obj/item/seeds/carbon_rose

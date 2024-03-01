@@ -22,7 +22,7 @@
 	R.set_frequency(FREQ_CENTCOM)
 	R.freqlock = TRUE
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	if(W)
 		W.registered_name = H.real_name
 		W.update_label()
@@ -208,7 +208,7 @@
 	pda.saved_identification = H.real_name
 	pda.saved_job = "CentCom Official"
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -377,7 +377,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -532,7 +532,7 @@
 	var/obj/item/radio/R = H.ears
 	R.set_frequency(FREQ_CENTCOM)
 	R.freqlock = TRUE
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()

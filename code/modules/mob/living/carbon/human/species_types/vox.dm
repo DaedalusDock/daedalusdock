@@ -164,3 +164,6 @@
 	)
 
 	return to_add
+
+/datum/species/vox/get_random_blood_type()
+	return /datum/blood/universal/vox

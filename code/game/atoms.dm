@@ -16,6 +16,8 @@
 	var/tmp/datum/reagents/reagents = null
 	/// the datum handler for our contents - see create_storage() for creation method
 	var/tmp/datum/storage/atom_storage
+	/// Forensics datum, initialzed when needed.
+	var/tmp/datum/forensics/forensics
 
 	///This atom's HUD (med/sec, etc) images. Associative list.
 	var/tmp/list/image/hud_list = null
@@ -106,7 +108,7 @@
 	var/material_modifier = 1
 
 	///Light systems, both shouldn't be active at the same time.
-	var/light_system = STATIC_LIGHT
+	var/light_system = COMPLEX_LIGHT
 	///Range of the maximum brightness of light in tiles. Zero means no light.
 	var/light_inner_range = 0
 	///Range where light begins to taper into darkness in tiles.
@@ -250,7 +252,7 @@
 	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
+	if (light_system == COMPLEX_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
 	if(uses_integrity)
@@ -306,6 +308,9 @@
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
 
+	if(forensics)
+		QDEL_NULL(forensics)
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	if(length(overlays))
@@ -358,6 +363,11 @@
 		atom_storage.set_holdable(cloning.can_hold, cloning.cant_hold)
 
 	return atom_storage
+
+/// Creates our forensics datum
+/atom/proc/create_forensics()
+	ASSERT(isnull(forensics))
+	forensics = new(src)
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
 	var/turf/p_turf = get_turf(ricocheting_projectile)
@@ -934,7 +944,18 @@
 /mob/living/proc/get_blood_dna_list()
 	if(get_blood_id() != /datum/reagent/blood)
 		return
-	return list("ANIMAL DNA" = "Y-")
+	return list("ANIMAL DNA" = GET_BLOOD_REF(/datum/blood/animal))
+
+/mob/proc/get_trace_dna()
+	return
+
+/mob/living/get_trace_dna()
+	return "ANIMAL DNA"
+
+/mob/living/carbon/get_trace_dna()
+	if(dna)
+		return dna.unique_enzymes
+	return "UNKNOWN DNA"
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
@@ -1179,6 +1200,9 @@
 	if(SEND_SIGNAL(src, COMSIG_COMPONENT_CLEAN_ACT, clean_types) & COMPONENT_CLEANED)
 		. = TRUE
 
+	if(forensics)
+		. = forensics.wash(clean_types) || .
+
 	// Basically "if has washable coloration"
 	if(length(atom_colours) >= WASHABLE_COLOUR_PRIORITY && atom_colours[WASHABLE_COLOUR_PRIORITY])
 		remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -1198,23 +1222,23 @@
 /atom/vv_edit_var(var_name, var_value)
 	switch(var_name)
 		if(NAMEOF(src, light_inner_range))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_inner_range = var_value)
 				. = TRUE
 		if(NAMEOF(src, light_outer_range))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_outer_range = var_value)
 			else
 				set_light_range(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_power))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_power = var_value)
 			else
 				set_light_power(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_color))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_color = var_value)
 			else
 				set_light_color(var_value)
@@ -1377,6 +1401,7 @@
 
 ///Where atoms should drop if taken from this atom
 /atom/proc/drop_location()
+	RETURN_TYPE(/atom)
 	var/atom/location = loc
 	if(!location)
 		return null

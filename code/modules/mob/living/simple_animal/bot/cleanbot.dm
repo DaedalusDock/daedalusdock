@@ -121,9 +121,6 @@
 		return
 	. += "[span_warning("Is that \a [weapon] taped to it...?")]"
 
-	if(ascended && user.stat == CONSCIOUS && user.client)
-		user.client.give_award(/datum/award/achievement/misc/cleanboss, user)
-
 /mob/living/simple_animal/bot/cleanbot/update_icon_state()
 	. = ..()
 	switch(mode)
@@ -308,7 +305,7 @@
 		target_types += list(
 			/obj/effect/decal/cleanable/xenoblood,
 			/obj/effect/decal/cleanable/blood,
-			/obj/effect/decal/cleanable/trail_holder,
+			/obj/effect/decal/cleanable/blood/trail_holder,
 		)
 
 	if(janitor_mode_flags & CLEANBOT_CLEAN_PESTS)

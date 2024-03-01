@@ -26,16 +26,19 @@
 	var/type = islist? /list : thing.type
 	var/no_icon = FALSE
 
-	if(isatom(thing))
-		sprite = getFlatIcon(thing)
-		if(!sprite)
-			no_icon = TRUE
+	if(!SSlag_switch.measures[DISABLE_VV_ICON_PREVIEW])
+		if(isatom(thing))
+			sprite = getFlatIcon(thing)
+			if(!sprite)
+				no_icon = TRUE
 
-	else if(isimage(thing))
-		var/image/image_object = thing
-		sprite = icon(image_object.icon, image_object.icon_state)
+		else if(isimage(thing))
+			var/image/image_object = thing
+			sprite = icon(image_object.icon, image_object.icon_state)
 
 	var/sprite_text
+	if(SSlag_switch.measures[DISABLE_VV_ICON_PREVIEW])
+		sprite_text = span_redtext("\[RENDER DISABLED\]")
 	if(sprite)
 		hash = md5(sprite)
 		src << browse_rsc(sprite, "vv[hash].png")

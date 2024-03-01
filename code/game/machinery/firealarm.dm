@@ -269,7 +269,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 	return attack_hand_secondary(user)
 
 /obj/machinery/firealarm/attackby(obj/item/tool, mob/living/user, params)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 
 	if(tool.tool_behaviour == TOOL_SCREWDRIVER && buildstage == 2)
 		tool.play_tool_sound(src)

@@ -12,23 +12,31 @@
 /obj/item/clothing/under/rank/security
 	icon = 'icons/obj/clothing/under/security.dmi'
 	worn_icon = 'icons/mob/clothing/under/security.dmi'
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 30, ACID = 30)
-	strip_delay = 50
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
 
+//these two are for Mars Executive Outcomes
 /obj/item/clothing/under/rank/security/officer
+	name = "mars security uniform"
+	desc = "A freshly ironed security uniform with Mars-Red slacks. Wearing this almost makes you look professional."
+	icon_state = "security"
+	inhand_icon_state = "suitsec"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+/obj/item/clothing/under/rank/security/officer/garrison
+	name = "mars garrison uniform"
+	desc = "An old military outfit, based on the uniforms of the now defunct Martian republic. A bold fashion statement, and a political one!"
+	icon_state = "security_garrison"
+	inhand_icon_state = "r_suit"
+	can_adjust = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+//these are old, could be used for non-station roles
+/obj/item/clothing/under/rank/security/oldred
 	name = "security jumpsuit"
-	desc = "A tactical security jumpsuit for officers complete with Mars belt buckle."
+	desc = "A tactical-looking red jumpsuit for corporate security."
 	icon_state = "rsecurity"
 	inhand_icon_state = "r_suit"
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
-
-/obj/item/clothing/under/rank/security/officer/grey
-	name = "grey security jumpsuit"
-	desc = "A tactical relic of years past before Mars Executive Outcomes decided it was cheaper to dye the suits red instead of washing out the blood."
-	icon_state = "security"
-	inhand_icon_state = "gy_suit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/security/officer/skirt
@@ -140,6 +148,14 @@
 /*
  * security marshal
  */
+/obj/item/clothing/under/rank/security/marshal
+	name = "security marshal's uniform"
+	desc = "A crisp mars-red marshal's uniform. Comes with gold trimmed sholder pads and a massive belt buckle to show everyone who's in charge."
+	icon_state = "marshal"
+	inhand_icon_state = "r_suit"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+//old hos stuff
 /obj/item/clothing/under/rank/security/head_of_security
 	name = "security marshal's jumpsuit"
 	desc = "A security jumpsuit decorated for those few with the dedication to achieve the position of Security Marshal."

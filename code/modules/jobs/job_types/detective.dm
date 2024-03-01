@@ -1,14 +1,12 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
-	description = "Investigate crimes, gather evidence, perform interrogations, \
-		look badass, smoke cigarettes."
-	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
-	department_head = list(JOB_SECURITY_MARSHAL)
+	description = "Help security solve crimes, take on private cases for wealthy clients, \
+		look badass and abuse every substance."
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "nobody"
-	selection_color = "#601c1c"
+	selection_color = "#36302b"
 	minimal_player_age = 7
 	exp_requirements = 300
 	exp_required_type = EXP_TYPE_CREW
@@ -26,21 +24,15 @@
 			SPECIES_VOX = /datum/outfit/job/detective,
 			SPECIES_PLASMAMAN = /datum/outfit/job/detective/plasmaman,
 		),
-		"Forensic Technician" = list(
-			SPECIES_HUMAN = /datum/outfit/job/detective/forensic,
-			SPECIES_TESHARI = /datum/outfit/job/detective/forensic,
-			SPECIES_PLASMAMAN = /datum/outfit/job/detective/forensic/plasmaman,
-		),
 	)
 
 	departments_list = list(
-		/datum/job_department/security,
+		/datum/job_department/service,
 		)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 
 	mail_goodies = list(
@@ -70,13 +62,11 @@
 		/obj/item/storage/box/evidence = 1,
 	)
 	belt = /obj/item/modular_computer/tablet/pda/detective
-	gloves = /obj/item/clothing/gloves/color/black
 	head = /obj/item/clothing/head/fedora/det_hat
-	mask = /obj/item/clothing/mask/cigarette
 	neck = /obj/item/clothing/neck/tie/detective
-	shoes = /obj/item/clothing/shoes/sneakers/brown
+	shoes = /obj/item/clothing/shoes/laceup
 	l_pocket = /obj/item/toy/crayon/white
-	r_pocket = /obj/item/lighter
+	r_pocket = /obj/item/storage/fancy/cigarettes/dromedaryco
 
 	chameleon_extras = list(
 		/obj/item/clothing/glasses/sunglasses,

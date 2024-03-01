@@ -9,7 +9,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the security marshal"
-	selection_color = "#601c1c"
+	selection_color = "#602f1c"
 	minimal_player_age = 7
 	exp_requirements = 300
 	exp_required_type = EXP_TYPE_CREW

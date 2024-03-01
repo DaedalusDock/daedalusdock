@@ -136,8 +136,6 @@
 	desc = "It's a robust baseball hat in tasteful red colour."
 	icon_state = "secsoft"
 	soft_type = "sec"
-	armor = list(MELEE = 30, BULLET = 25, LASER = 25, ENERGY = 35, BOMB = 25, BIO = 0, FIRE = 20, ACID = 50)
-	strip_delay = 60
 	dog_fashion = null
 	supports_variations_flags = NONE
 

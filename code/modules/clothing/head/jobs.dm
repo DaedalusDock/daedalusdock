@@ -141,6 +141,22 @@
 
 //Security
 
+//Mars-Exec hats
+/obj/item/clothing/head/garrison_cap
+	name = "mars garrison cap"
+	desc = "A folded garrison cap for Mars-Exec officers. Fancy, but it won't do much to protect your noggin."
+	icon_state = "garrison_sec"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+/obj/item/clothing/head/marshal_hat
+	name = "marshal's hat"
+	desc = "A wide-brimmed campaign hat with a thin kevlar lining. Don't be a fool, marshal."
+	//Only protects from ballistics, and still worse then a helmet.
+	armor = list(MELEE = 0, BULLET = 20, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	icon_state = "marshalhat"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+//old sec hats
 /obj/item/clothing/head/hos
 	name = "security marshal cap"
 	desc = "The robust standard-issue cap of the Security Marshal. For showing the officers who's in charge."
@@ -266,7 +282,6 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#972A2A#F2F2F2"
-	armor = list(MELEE = 35, BULLET = 30, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 20, ACID = 50)
 	strip_delay = 60
 	dog_fashion = null
 	flags_1 = NONE

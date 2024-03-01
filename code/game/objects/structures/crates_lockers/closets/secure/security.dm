@@ -52,7 +52,6 @@
 
 	new /obj/item/computer_hardware/hard_drive/role/hos(src)
 	new /obj/item/radio/headset/heads/hos(src)
-	new /obj/item/storage/bag/garment/hos(src)
 	new /obj/item/storage/lockbox/medal/sec(src)
 	new /obj/item/megaphone/sec(src)
 	new /obj/item/holosign_creator/security(src)
@@ -139,7 +138,7 @@
 	new /obj/item/encryptionkey/headset_med(src)
 
 /obj/structure/closet/secure_closet/detective
-	name = "\improper private investigator's cabinet"
+	name = "\improper investigator's cabinet"
 	req_access = list(ACCESS_FORENSICS)
 	icon_state = "cabinet"
 	resistance_flags = FLAMMABLE

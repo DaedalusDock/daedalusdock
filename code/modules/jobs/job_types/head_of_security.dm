@@ -1,7 +1,7 @@
 /datum/job/head_of_security
 	title = JOB_SECURITY_MARSHAL
-	description = "Coordinate security personnel, ensure they are not corrupt, \
-		make sure every department is protected."
+	description = "Coordinate security personnel, ensure sector regulation is followed, \
+		make sure the station is protected."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list(RADIO_CHANNEL_SECURITY)
@@ -9,7 +9,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the captain"
-	selection_color = "#8e2929"
+	selection_color = "#8e3d29"
 	req_admin_notify = 1
 	minimal_player_age = 14
 	exp_requirements = 300
@@ -58,8 +58,8 @@
 
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/head_of_security
-	uniform = /obj/item/clothing/under/rank/security/head_of_security
-	suit = /obj/item/clothing/suit/armor/hos/trenchcoat
+	uniform = /obj/item/clothing/under/rank/security/marshal
+	suit = /obj/item/clothing/suit/armor/vest/ballistic
 	suit_store = /obj/item/gun/energy/e_gun
 	backpack_contents = list(
 		/obj/item/evidencebag = 1,
@@ -68,7 +68,7 @@
 	ears = /obj/item/radio/headset/heads/hos/alt
 	glasses = /obj/item/clothing/glasses/hud/security/sunglasses
 	gloves = /obj/item/clothing/gloves/color/black
-	head = /obj/item/clothing/head/hos/beret
+	head = /obj/item/clothing/head/marshal_hat
 	shoes = /obj/item/clothing/shoes/jackboots
 	l_pocket = /obj/item/restraints/handcuffs
 	r_pocket = /obj/item/assembly/flash/handheld

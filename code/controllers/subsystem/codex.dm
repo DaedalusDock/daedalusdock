@@ -96,7 +96,7 @@ SUBSYSTEM_DEF(codex)
 /// Presents a list of codex entries to a mob.
 /datum/controller/subsystem/codex/proc/present_codex_search(mob/presenting_to, list/entries, search_query)
 	var/list/codex_data = list()
-	codex_data += "<h3><b>[all_entries.len] matches</b>[search_query ? "for '[search_query]'" : ""]:</h3>"
+	codex_data += "<h3><b>[all_entries.len] matches</b>[search_query ? " for '[search_query]'" : ""]:</h3>"
 
 	if(LAZYLEN(entries) > CODEX_ENTRY_LIMIT)
 		codex_data += "Showing first <b>[CODEX_ENTRY_LIMIT]</b> entries. <b>[all_entries.len - 5] result\s</b> omitted.</br>"

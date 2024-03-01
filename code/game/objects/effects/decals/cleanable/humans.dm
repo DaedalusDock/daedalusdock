@@ -103,7 +103,7 @@
 		desc = drydesc
 		reagents.remove_all_type(/datum/reagent/blood, INFINITY)
 		var/list/temp_color = rgb2hsv(color || COLOR_WHITE)
-		color = hsv2rgb(hsv(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0)))
+		color = hsv2rgb(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0))
 		qdel(GetComponent(/datum/component/smell))
 		if(spook_factor)
 			AddComponent(/datum/component/spook_factor, spook_factor)

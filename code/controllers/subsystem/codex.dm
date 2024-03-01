@@ -126,17 +126,23 @@ SUBSYSTEM_DEF(codex)
 	if(!searching)
 		return list()
 
-	if(!search_cache[searching])
-		var/list/results = list()
-		if(entries_by_string[searching])
-			results = entries_by_string[searching]
-		else
-			for(var/datum/codex_entry/entry as anything in all_entries)
-				if(findtext(entry.name, searching) || findtext(entry.lore_text, searching) || findtext(entry.mechanics_text, searching) || findtext(entry.antag_text, searching))
-					results += entry
+	. = search_cache[searching]
+	if(.)
+		return .
 
-		search_cache[searching] = sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
-	return search_cache[searching]
+	var/list/results = list()
+	if(entries_by_string[searching])
+		results = entries_by_string[searching]
+	else
+		for(var/datum/codex_entry/entry as anything in all_entries)
+			if(findtext(entry.name, searching))
+				results.Insert(1, entry) // If it's in the name, put it at the front of the list.
+
+			else if(findtext(entry.lore_text, searching) || findtext(entry.mechanics_text, searching) || findtext(entry.antag_text, searching))
+				results += entry
+
+	search_cache[searching] = sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
+	. = search_cache[searching]
 
 /datum/controller/subsystem/codex/Topic(href, href_list)
 	. = ..()

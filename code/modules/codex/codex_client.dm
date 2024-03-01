@@ -28,12 +28,6 @@
 			if(entry.antag_text && !entry.mechanics_text && !entry.lore_text)
 				found_entries -= entry
 
-	//Put entries with match in the name first
-	for(var/datum/codex_entry/entry as anything in found_entries)
-		if(findtext(entry.name, searching))
-			found_entries -= entry
-			found_entries.Insert(1, entry)
-
 	switch(LAZYLEN(found_entries))
 		if(null)
 			to_chat(src, span_alert("The codex reports <b>no matches</b> for '[searching]'."))

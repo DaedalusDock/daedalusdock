@@ -78,7 +78,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/chemical_flags = NONE
 
 	/// Does this reagent and its recipe appear in the Codex?
-	var/show_in_codex = FALSE
+	var/show_in_codex = TRUE
 
 	///Thermodynamic vars
 	///How hot this reagent burns when it's on fire - null means it can't burn

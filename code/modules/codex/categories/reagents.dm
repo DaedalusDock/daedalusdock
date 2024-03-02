@@ -50,6 +50,6 @@
 				entry.mechanics_text += "<br><br>It can be produced as follows:<br>"
 			entry.mechanics_text += jointext(production_strings, "<br>")
 
-		items += entry.name
+		items += entry
 
 	return ..()

@@ -103,6 +103,7 @@
 	if(!istype(T))
 		return
 
+	holder.my_atom.visible_message(span_danger("[holder.my_atom] emits a shriek as hot plasma fills the air."))
 	T.assume_gas(GAS_PLASMA, volume / REAGENT_GAS_EXCHANGE_FACTOR, holder.chem_temp)
 	holder.del_reagent(type)
 

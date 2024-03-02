@@ -32,7 +32,7 @@
 			var/datum/reagent/unstable_min = null
 			var/datum/reagent/unstable_max = null
 
-			for(var/datum/reagent/chemical as anything in reaction.required_catalysts + reaction.required_reagents)
+			for(var/datum/reagent/chemical as anything in reaction.required_catalysts + reaction.required_reagents + reaction.results)
 				if(chemical.unstable_temperature)
 					if(!chemical.unstable_cold && (!unstable_min || unstable_min.unstable_temperature > chemical.unstable_temperature))
 						unstable_min = chemical

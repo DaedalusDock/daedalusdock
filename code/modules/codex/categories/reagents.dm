@@ -46,7 +46,7 @@
 
 			production_strings += "- Optimal temperature: [KELVIN_TO_CELSIUS(reaction.optimal_temp)]C ([reaction.optimal_temp]K)"
 
-			if (unstable_min)
+			if (unstable_min && unstable_min.unstable_temperature < reaction.overheat_temp)
 				production_strings += "- Overheat temperature: [KELVIN_TO_CELSIUS(unstable_min.unstable_temperature)]C ([unstable_min.unstable_temperature]K)"
 			else if (reaction.overheat_temp < NO_OVERHEAT)
 				production_strings += "- Overheat temperature: [KELVIN_TO_CELSIUS(reaction.overheat_temp)]C ([reaction.overheat_temp]K)"

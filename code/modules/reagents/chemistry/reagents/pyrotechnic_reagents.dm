@@ -45,6 +45,7 @@
 	description = "Nitroglycerin is a heavy, colorless, oily, explosive liquid obtained by nitrating glycerol."
 	color = "#808080" // rgb: 128, 128, 128
 	taste_description = "oil"
+	unstable_temperature = 474
 
 
 /datum/reagent/stabilizing_agent
@@ -102,12 +103,15 @@
 	exposed_mob.adjust_fire_stacks(min(reac_volume/5, 10))
 	var/turf/T = get_turf(exposed_mob)
 	T.create_fire(1, 10)
+
+
 /datum/reagent/liquid_dark_matter
 	name = "Liquid Dark Matter"
 	description = "Sucks everything into the detonation point."
 	reagent_state = LIQUID
 	color = "#210021"
 	taste_description = "compressed bitterness"
+	unstable_temperature = 474
 
 
 /datum/reagent/gunpowder
@@ -117,7 +121,7 @@
 	color = "#000000"
 	metabolization_rate = 0.125 * REAGENTS_METABOLISM
 	taste_description = "salt"
-
+	unstable_temperature = 474
 
 /datum/reagent/gunpowder/on_new(data)
 	. = ..()
@@ -153,6 +157,7 @@
 	reagent_state = SOLID
 	color = "#FFFFFF"
 	taste_description = "salt"
+	unstable_temperature = 474
 
 
 /datum/reagent/tatp
@@ -161,6 +166,7 @@
 	reagent_state = SOLID
 	color = "#FFFFFF"
 	taste_description = "death"
+	unstable_temperature = 501 // technically it goes from 501 to 599
 
 
 /datum/reagent/flash_powder
@@ -169,6 +175,7 @@
 	reagent_state = LIQUID
 	color = "#C8C8C8"
 	taste_description = "salt"
+	unstable_temperature = 374
 
 
 /datum/reagent/smoke_powder
@@ -177,6 +184,7 @@
 	reagent_state = LIQUID
 	color = "#C8C8C8"
 	taste_description = "smoke"
+	unstable_temperature = 374
 
 
 /datum/reagent/sonic_powder
@@ -185,6 +193,7 @@
 	reagent_state = LIQUID
 	color = "#C8C8C8"
 	taste_description = "loud noises"
+	unstable_temperature = 374
 
 
 /datum/reagent/napalm
@@ -281,3 +290,4 @@
 	reagent_state = LIQUID
 	color = "#5A64C8"
 	taste_description = "air and bitterness"
+	unstable_temperature = 474

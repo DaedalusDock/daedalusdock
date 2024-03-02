@@ -44,3 +44,8 @@
 	mechanics_text = "&nbsp;&nbsp;&nbsp;&nbsp;The welder is used for repairing damaged windows and walls; alongside welding shut doors, firelocks and vents. \
 	Not just being a repair-tool, it is a potent melee weapon if it’s lit. Just don’t forget fuel."
 
+/datum/codex_entry/tool/screwdriver
+	name = "Screwdriver"
+	associated_paths = list(/obj/item/screwdriver)
+	use_typesof = TRUE
+	mechanics_text = "&nbsp;&nbsp;&nbsp;&nbsp;A screwdriver is a versitile tool, though it will most often be used to remove panels or unsecure objects from others."

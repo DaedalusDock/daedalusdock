@@ -96,10 +96,10 @@ SUBSYSTEM_DEF(codex)
 /// Presents a list of codex entries to a mob.
 /datum/controller/subsystem/codex/proc/present_codex_search(mob/presenting_to, list/entries, search_query)
 	var/list/codex_data = list()
-	codex_data += "<h3><b>[all_entries.len] matches</b>[search_query ? " for '[search_query]'" : ""]:</h3>"
+	codex_data += "<h3><b>[entries.len] matches</b>[search_query ? " for '[search_query]'" : ""]:</h3>"
 
 	if(LAZYLEN(entries) > CODEX_ENTRY_LIMIT)
-		codex_data += "Showing first <b>[CODEX_ENTRY_LIMIT]</b> entries. <b>[all_entries.len - 5] result\s</b> omitted.</br>"
+		codex_data += "Showing first <b>[CODEX_ENTRY_LIMIT]</b> entries. <b>[entries.len - 5] result\s</b> omitted.</br>"
 	codex_data += "<table width = 100%>"
 
 	for(var/i = 1 to min(entries.len, CODEX_ENTRY_LIMIT))
@@ -131,17 +131,21 @@ SUBSYSTEM_DEF(codex)
 		return .
 
 	var/list/results = list()
+	var/list/priority_results = list()
 	if(entries_by_string[searching])
 		results = entries_by_string[searching]
 	else
 		for(var/datum/codex_entry/entry as anything in all_entries)
 			if(findtext(entry.name, searching))
-				results.Insert(1, entry) // If it's in the name, put it at the front of the list.
+				priority_results += entry
 
 			else if(findtext(entry.lore_text, searching) || findtext(entry.mechanics_text, searching) || findtext(entry.antag_text, searching))
 				results += entry
 
-	search_cache[searching] = sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
+	sortTim(priority_results, GLOBAL_PROC_REF(cmp_name_asc))
+	sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
+	priority_results += results
+	search_cache[searching] = priority_results
 	. = search_cache[searching]
 
 /datum/controller/subsystem/codex/Topic(href, href_list)

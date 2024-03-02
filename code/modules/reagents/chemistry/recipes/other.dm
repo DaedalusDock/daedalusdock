@@ -32,7 +32,6 @@
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 	required_catalysts = list(/datum/reagent/stabilizing_agent = 1)
 
-
 /datum/chemical_reaction/unstable_mutagen
 	results = list(/datum/reagent/toxin/mutagen = 1)
 	required_reagents = list(/datum/reagent/chlorine = 1, /datum/reagent/toxin/plasma = 1, /datum/reagent/uranium/radium = 1)
@@ -169,12 +168,12 @@
 /datum/chemical_reaction/virus_food_plasma
 	results = list(/datum/reagent/toxin/plasma/plasmavirusfood = 1)
 	required_reagents = list(/datum/reagent/toxin/plasma = 1, /datum/reagent/consumable/virus_food = 1)
-	thermic_constant = 20 // To avoid the plasma boiling
+	thermic_constant = 20 // Harder to ignite plasma
 
 /datum/chemical_reaction/virus_food_plasma_synaptizine
 	results = list(/datum/reagent/toxin/plasma/plasmavirusfood/weak = 2)
 	required_reagents = list(/datum/reagent/medicine/synaptizine = 1, /datum/reagent/toxin/plasma/plasmavirusfood = 1)
-	thermic_constant = 20 // To avoid the plasma boiling
+	thermic_constant = 20 // Harder to ignite plasma
 
 /datum/chemical_reaction/virus_food_mutagen_sugar
 	results = list(/datum/reagent/toxin/mutagen/mutagenvirusfood/sugar = 2)

@@ -9,7 +9,8 @@
 
 		var/datum/codex_entry/entry = new(
 			_display_name = "[initial(R.name)] (chemical)",
-			_lore_text = "&nbsp;&nbsp;&nbsp;&nbsp;[initial(R.description)] It apparently tastes of [initial(R.taste_description)]."
+			_lore_text = "&nbsp;&nbsp;&nbsp;&nbsp;[initial(R.description)] It apparently tastes of [initial(R.taste_description)].",
+			_mechanics_text = initial(R.codex_mechanics)
 		)
 
 		var/list/production_strings = list()
@@ -19,6 +20,7 @@
 			if(!length(reaction.required_reagents))
 				continue
 
+			var/list/reaction_info = list()
 			var/list/reactant_values = list()
 
 			for(var/datum/reagent/reactant as anything in reaction.required_reagents)
@@ -32,16 +34,18 @@
 
 
 			if(length(catalysts))
-				production_strings += "- [jointext(reactant_values, " + ")] (catalysts: [jointext(catalysts, ", ")]): [reaction.results[R]]u [lowertext(initial(R.name))]"
+				reaction_info += "- [jointext(reactant_values, " + ")] (catalysts: [jointext(catalysts, ", ")]): [reaction.results[R]]u [lowertext(initial(R.name))]"
 			else
-				production_strings += "- [jointext(reactant_values, " + ")]: [reaction.results[R]]u [lowertext(initial(R.name))]"
+				reaction_info += "- [jointext(reactant_values, " + ")]: [reaction.results[R]]u [lowertext(initial(R.name))]"
 
-			production_strings += "- Optimal temperature: [KELVIN_TO_CELSIUS(reaction.optimal_temp)]C ([reaction.optimal_temp]K)"
+			reaction_info += "- Optimal temperature: [KELVIN_TO_CELSIUS(reaction.optimal_temp)]C ([reaction.optimal_temp]K)"
 
 			if (reaction.overheat_temp < NO_OVERHEAT)
-				production_strings += "- Overheat temperature: [KELVIN_TO_CELSIUS(reaction.overheat_temp)]C ([reaction.overheat_temp]K)"
+				reaction_info += "- Overheat temperature: [KELVIN_TO_CELSIUS(reaction.overheat_temp)]C ([reaction.overheat_temp]K)"
 			if (reaction.required_temp > 0)
-				production_strings += "- Required temperature: [KELVIN_TO_CELSIUS(reaction.required_temp)]C ([reaction.required_temp]K)"
+				reaction_info += "- Required temperature: [KELVIN_TO_CELSIUS(reaction.required_temp)]C ([reaction.required_temp]K)"
+
+			production_strings += jointext(reaction_info, "<br>")
 
 			if(reaction.thermic_constant != 0)
 				// lifted outta modules/reagents/chemistry/holder.dm
@@ -81,7 +85,7 @@
 				entry.mechanics_text = "It can be produced as follows:<br>"
 			else
 				entry.mechanics_text += "<br><br>It can be produced as follows:<br>"
-			entry.mechanics_text += jointext(production_strings, "<br>")
+			entry.mechanics_text += jointext(production_strings, "<hr>")
 
 		items += entry
 

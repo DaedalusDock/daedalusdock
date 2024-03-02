@@ -71,7 +71,7 @@
 	penetrates_skin = NONE
 	burning_temperature = 4500//plasma is hot!!
 	burning_volume = 0.3//But burns fast
-
+	codex_mechanics = "Plasma will ignite at 519.15 K, take care when handling."
 
 /datum/reagent/toxin/plasma/on_new(data)
 	. = ..()

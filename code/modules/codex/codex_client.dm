@@ -7,7 +7,7 @@
 	set category = "IC"
 	set src = usr
 
-	if(!mob || !SScodex)
+	if(!SScodex.initialized)
 		return
 
 	if(codex_cooldown >= world.time)

@@ -45,8 +45,6 @@
 			if (reaction.required_temp > 0)
 				reaction_info += "- Required temperature: [KELVIN_TO_CELSIUS(reaction.required_temp)]C ([reaction.required_temp]K)"
 
-			production_strings += jointext(reaction_info, "<br>")
-
 			if(reaction.thermic_constant != 0)
 				// lifted outta modules/reagents/chemistry/holder.dm
 				var/thermic_string = ""
@@ -78,7 +76,9 @@
 						thermic_string = "extremely exothermic"
 					if(1500 to INFINITY)
 						thermic_string = "overwhelmingly exothermic"
-				production_strings += "- The reaction is [thermic_string]"
+				reaction_info += "- The reaction is [thermic_string]"
+
+			production_strings += jointext(reaction_info, "<br>")
 
 		if(length(production_strings))
 			if(!entry.mechanics_text)

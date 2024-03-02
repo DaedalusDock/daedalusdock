@@ -202,3 +202,7 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 /// Orders lists by the size of lists in their contents
 /proc/cmp_list_length(list/A, list/B)
 	return length(A) - length(B)
+
+/// Orders codex entries by name alphabetically
+/proc/cmp_codex_name(datum/codex_entry/a, datum/codex_entry/b)
+	return sorttext(b.name, a.name)

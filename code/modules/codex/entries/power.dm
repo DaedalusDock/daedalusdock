@@ -5,7 +5,7 @@
 
 /datum/codex_entry/power/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
 	. = ..()
-	GLOB.power_codex_entries += name
+	GLOB.power_codex_entries += src
 
 /datum/codex_entry/power/supermatter
 	name = "Supermatter Engine"

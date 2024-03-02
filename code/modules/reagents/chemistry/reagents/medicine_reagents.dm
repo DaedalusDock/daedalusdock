@@ -10,7 +10,6 @@
 	taste_description = "bitterness"
 	chemical_flags = REAGENT_IGNORE_MOB_SIZE
 	abstract_type = /datum/reagent/medicine
-	show_in_codex = TRUE
 
 /datum/reagent/medicine/adminordrazine //An OP chemical for admins
 	name = "Adminordrazine"

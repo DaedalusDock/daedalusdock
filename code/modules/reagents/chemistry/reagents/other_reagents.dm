@@ -8,6 +8,8 @@
 	glass_desc = "The father of all refreshments."
 	shot_glass_icon_state = "shotglassclear"
 	chemical_flags = REAGENT_CLEANS
+	unstable_temperature = WATER_MATTERSTATE_CHANGE_TEMP-0.5
+	unstable_cold = TRUE
 
 	metabolization_rate = 2
 	ingest_met = 2

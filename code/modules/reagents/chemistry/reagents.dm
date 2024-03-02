@@ -86,6 +86,11 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	///How much is consumed when it is burnt per second
 	var/burning_volume = 0.5
 
+	///The highest temperature this reagent can exist at. Currently only used by codex entries.
+	var/unstable_temperature = null
+	///If true, unstable_temperature is the /lowest/ temperature this reagent can exist at. Currently only used by codex entries.
+	var/unstable_cold = FALSE
+
 	///Assoc list with key type of addiction this reagent feeds, and value amount of addiction points added per unit of reagent metabolzied (which means * REAGENTS_METABOLISM every life())
 	var/list/addiction_types = null
 

@@ -74,6 +74,7 @@
 	penetrates_skin = NONE
 	burning_temperature = 4500//plasma is hot!!
 	burning_volume = 0.3//But burns fast
+	unstable_temperature = LIQUID_PLASMA_BP
 
 
 /datum/reagent/toxin/plasma/on_new(data)
@@ -97,7 +98,7 @@
 /// Handles plasma boiling.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)
 	SIGNAL_HANDLER
-	if(holder.chem_temp < LIQUID_PLASMA_BP)
+	if(holder.chem_temp < unstable_temperature)
 		return
 	if(!holder.my_atom)
 		return
@@ -113,7 +114,7 @@
 	if(!istype(exposed_turf))
 		return
 
-	if(exposed_temperature >= LIQUID_PLASMA_BP)
+	if(exposed_temperature >= unstable_temperature)
 		exposed_turf.assume_gas(GAS_PLASMA, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, exposed_temperature)
 
 /datum/reagent/toxin/plasma/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)

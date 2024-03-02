@@ -655,6 +655,7 @@
 	glass_icon_state = "iceglass"
 	glass_name = "glass of ice"
 	glass_desc = "Generally, you're supposed to put something else in there too..."
+	unstable_temperature = WATER_MATTERSTATE_CHANGE_TEMP+0.5
 
 
 /datum/reagent/consumable/ice/affect_ingest(mob/living/carbon/C, removed)

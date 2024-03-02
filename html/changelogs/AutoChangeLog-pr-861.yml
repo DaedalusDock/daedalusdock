@@ -1,0 +1,10 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Changed plasma vaporization temperature from 323K to 519K (Plasma will
+      ignite at this temperature!)
+  - balance: Reduced heat produced by Dexalin reaction.
+  - bugfix: Codex searches prioritize results where the query was found in the name
+      again.
+  - qol: Improved readability of reagent codex entries with multiple reactions.
+  - qol: Added plasma ignition temperature to the codex.

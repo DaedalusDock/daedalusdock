@@ -144,7 +144,6 @@
 	var/meltdose = 20 // How much is needed to melt
 	var/max_damage = 40
 	value = DISPENSER_REAGENT_VALUE
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/acid/affect_blood(mob/living/carbon/C, removed)
 	C.adjustFireLoss(removed * acidpwr, FALSE)

@@ -38,7 +38,6 @@
 	toxpwr = 0.5
 	taste_description = "slime"
 	taste_mult = 0.9
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
@@ -805,7 +804,6 @@
 	color = "#F0FFF0"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 0
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/lipolicide/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

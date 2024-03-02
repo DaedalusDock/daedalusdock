@@ -88,6 +88,6 @@
 			_mechanics_text = jointext(info, null)
 		)
 
-		items |= entry.name
+		items += entry
 
 	return ..()

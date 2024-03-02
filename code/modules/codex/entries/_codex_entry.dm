@@ -62,6 +62,9 @@
 				stack_trace("Trying to save codex entry for [name] by path [associated_path] but one already exists!")
 			SScodex.entries_by_path[associated_path] = src
 
+	/// We always point to our own entry. Duh.
+	SScodex.entries_by_path[type] = src
+
 	if(!name)
 		if(length(associated_strings))
 			name = associated_strings[1]
@@ -74,12 +77,18 @@
 		if(!clean_string)
 			associated_strings -= associated_string
 			continue
+
 		if(clean_string != associated_string)
 			associated_strings -= associated_string
 			associated_strings |= clean_string
-		if(SScodex.entries_by_string[clean_string])
-			stack_trace("Trying to save codex entry for [name] by string [clean_string] but one already exists!")
-		SScodex.entries_by_string[clean_string] = src
+
+		var/existing_entry = SScodex.entries_by_string[clean_string]
+		if(islist(existing_entry))
+			existing_entry += src
+		else if(existing_entry)
+			SScodex.entries_by_string[clean_string] = list(existing_entry, src)
+		else
+			SScodex.entries_by_string[clean_string] = src
 
 	..()
 
@@ -92,7 +101,7 @@
 
 	. = list()
 	if(presenting_to)
-		var/datum/codex_entry/linked_entry = SScodex.get_entry_by_string("nexus")
+		var/datum/codex_entry/linked_entry = SScodex.get_codex_entry(/datum/codex_entry/nexus)
 		. += "<a href='?src=\ref[SScodex];show_examined_info=\ref[linked_entry];show_to=\ref[presenting_to]'>Home</a>"
 		if(presenting_to.client)
 			. += "<a href='?src=\ref[presenting_to.client];codex_search=1'>Search Codex</a>"

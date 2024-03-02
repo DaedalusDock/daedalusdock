@@ -4,7 +4,7 @@
 
 /datum/codex_entry/machine/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
 	. = ..()
-	GLOB.machine_codex_entries += name
+	GLOB.machine_codex_entries += src
 
 /datum/codex_entry/machine/airlock
 	name = "Airlock"

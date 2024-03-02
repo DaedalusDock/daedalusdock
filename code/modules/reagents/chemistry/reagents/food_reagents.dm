@@ -356,7 +356,6 @@
 	color = "#FFFFFF" // rgb: 255,255,255
 	taste_description = "salt"
 	penetrates_skin = NONE
-	show_in_codex = TRUE
 
 /datum/reagent/consumable/salt/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()

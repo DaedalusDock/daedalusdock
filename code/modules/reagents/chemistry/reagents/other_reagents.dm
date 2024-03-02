@@ -99,7 +99,6 @@
 	chemical_flags = REAGENT_CLEANS | REAGENT_IGNORE_MOB_SIZE
 	touch_met = INFINITY
 	ingest_met = INFINITY
-	show_in_codex = TRUE
 	metabolization_rate = 1
 
 	// Holy water. Mostly the same as water, it also heals the plant a little with the power of the spirits. Also ALSO increases instability.
@@ -572,7 +571,6 @@
 	name = "Technetium 99"
 	description = "A radioactive tracer agent that can improve a scanner's ability to detect internal organ damage. Will poison the patient when present very slowly, purging or using a low dose is recommended after use."
 	metabolization_rate = 0.2
-	show_in_codex = TRUE
 
 /datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
 	if(!(current_cycle % 8))
@@ -921,7 +919,6 @@
 	color = "#c8a5dc"
 	overdose_threshold = 30
 	value = 1.8
-	show_in_codex = TRUE
 
 /datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))
@@ -1067,16 +1064,12 @@
 	color = "#D3B913"
 	taste_description = "sweetness"
 
-	show_in_codex = TRUE
-
 /datum/reagent/cryptobiolin
 	name = "Cryptobiolin"
 	description = "Cryptobiolin causes confusion and dizziness."
 	color = "#ADB5DB" //i hate default violets and 'crypto' keeps making me think of cryo so it's light blue now
 	metabolization_rate = 0.3
 	taste_description = "sourness"
-
-	show_in_codex = TRUE
 
 /datum/reagent/cryptobiolin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

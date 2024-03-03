@@ -281,12 +281,10 @@
 	pixel_y = 32
 	},
 /obj/machinery/button/door/directional/north{
-	custom_acid_overlay = "onehalf_drone2int";
 	name = "Drone 2 Internal Hatch Override";
 	pixel_x = 8
 	},
 /obj/machinery/button/door/directional/north{
-	custom_acid_overlay = "onehalf_drone1int";
 	name = "Drone 1 Internal Hatch Override";
 	pixel_x = -8
 	},
@@ -315,12 +313,10 @@
 	pixel_y = 32
 	},
 /obj/machinery/button/door/directional/north{
-	custom_acid_overlay = "onehalf_drone4int";
 	name = "Drone 4 Internal Hatch Override";
 	pixel_x = 8
 	},
 /obj/machinery/button/door/directional/north{
-	custom_acid_overlay = "onehalf_drone3int";
 	name = "Drone 3 Internal Hatch Override";
 	pixel_x = -8
 	},

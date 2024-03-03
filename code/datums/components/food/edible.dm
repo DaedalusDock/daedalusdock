@@ -161,11 +161,11 @@ Behavior that's still missing from this component that original food items had t
 			if (0)
 				return
 			if(1)
-				examine_list += "[parent] was bitten by someone!"
+				examine_list += span_alert("Something has taken a bite out of it.")
 			if(2,3)
-				examine_list += "[parent] was bitten [bitecount] times!"
+				examine_list += span_alert("Something has taken a couple of bites out of it.")
 			else
-				examine_list += "[parent] was bitten multiple times!"
+				examine_list += span_alert("Something has taken a several of bites out of it.")
 
 /datum/component/edible/proc/UseFromHand(obj/item/source, mob/living/M, mob/living/user)
 	SIGNAL_HANDLER
@@ -302,6 +302,8 @@ Behavior that's still missing from this component that original food items had t
 
 	if(IsFoodGone(owner, feeder))
 		return
+
+	owner.add_trace_DNA(eater.get_trace_dna())
 
 	if(!CanConsume(eater, feeder))
 		return
@@ -523,6 +525,7 @@ Behavior that's still missing from this component that original food items had t
 
 	var/datum/component/edible/E = ingredient
 	if (LAZYLEN(E.tastes))
+		LAZYINITLIST(tastes)
 		tastes = tastes.Copy()
 		for (var/t in E.tastes)
 			tastes[t] += E.tastes[t]

@@ -73,3 +73,19 @@
 	clothing_traits = list(TRAIT_DOUBLE_TAP)
 	icon_state = "black"
 	inhand_icon_state = "blackgloves"
+
+/obj/item/clothing/gloves/forensic
+	name = "forensic gloves"
+	desc = "Specially made gloves with a distinct luminescent threading."
+	inhand_icon_state = "black"
+	icon_state = "forensic"
+	worn_icon_state = "black"
+
+	siemens_coefficient = 0.5
+	permeability_coefficient = 0.05
+
+	heat_protection = HANDS
+	cold_protection = HANDS
+
+	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
+	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT

@@ -538,7 +538,7 @@ LINEN BINS
 			icon_state = "linenbin-full"
 	return ..()
 
-/obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(amount)
 		amount = 0
 		update_appearance()

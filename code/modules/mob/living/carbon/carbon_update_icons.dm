@@ -14,7 +14,7 @@
 	if(slot_flags & ITEM_SLOT_ID)
 		update_worn_id()
 	if(slot_flags & ITEM_SLOT_EARS)
-		update_inv_ears()
+		update_worn_ears()
 	if(slot_flags & ITEM_SLOT_EYES)
 		update_worn_glasses()
 	if(slot_flags & ITEM_SLOT_GLOVES)
@@ -29,8 +29,11 @@
 		update_worn_undersuit()
 	if(slot_flags & ITEM_SLOT_SUITSTORE)
 		update_suit_storage()
-	if(slot_flags & ITEM_SLOT_LPOCKET || slot_flags & ITEM_SLOT_RPOCKET)
+	if(slot_flags & (ITEM_SLOT_LPOCKET|ITEM_SLOT_RPOCKET))
 		update_pockets()
+	if(slot_flags & ITEM_SLOT_HANDS)
+		update_held_items()
+
 
 //IMPORTANT: Multiple animate() calls do not stack well, so try to do them all at once if you can.
 /mob/living/carbon/perform_update_transform()
@@ -99,13 +102,13 @@
 		if(client && hud_used && hud_used.hud_version != HUD_STYLE_NOHUD)
 			I.screen_loc = ui_hand_position(get_held_index_of_item(I))
 			client.screen += I
-			if(length(observers))
+			if(LAZYLEN(observers))
 				for(var/mob/dead/observe as anything in observers)
 					if(observe.client && observe.client.eye == src)
 						observe.client.screen += I
 					else
 						observers -= observe
-						if(!observers.len)
+						if(!length(observers))
 							observers = null
 							break
 

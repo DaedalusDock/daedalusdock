@@ -59,6 +59,7 @@ SUBSYSTEM_DEF(codex)
 		string = replacetextEx(string, linkRegex.match, replacement)
 	return string
 
+/// Returns a codex entry for the given query. May return a list if multiple are found, or null if none.
 /datum/controller/subsystem/codex/proc/get_codex_entry(entry)
 	if(isatom(entry))
 		var/atom/entity = entry
@@ -66,6 +67,9 @@ SUBSYSTEM_DEF(codex)
 		if(.)
 			return
 		return entries_by_path[entity.type] || get_entry_by_string(entity.name)
+
+	if(isdatum(entry))
+		entry = entry:type
 	if(ispath(entry))
 		return entries_by_path[entry]
 	if(istext(entry))
@@ -74,13 +78,40 @@ SUBSYSTEM_DEF(codex)
 /datum/controller/subsystem/codex/proc/get_entry_by_string(string)
 	return entries_by_string[codex_sanitize(string)]
 
+/// Presents a codex entry to a mob. If it receives a list of entries, it will prompt them to choose one.
 /datum/controller/subsystem/codex/proc/present_codex_entry(mob/presenting_to, datum/codex_entry/entry)
-	if(entry && istype(presenting_to) && presenting_to.client)
-		var/datum/browser/popup = new(presenting_to, "codex", "Codex", nheight=425) //"codex\ref[entry]"
-		var/entry_data = entry.get_codex_body(presenting_to)
-		popup.set_content(parse_links(jointext(entry_data, null), presenting_to))
-		popup.open()
+	if(!entry || !istype(presenting_to) || !presenting_to.client)
+		return
 
+	if(islist(entry))
+		present_codex_search(presenting_to, entry)
+		return
+
+	var/datum/browser/popup = new(presenting_to, "codex", "Codex", nheight=425) //"codex\ref[entry]"
+	var/entry_data = entry.get_codex_body(presenting_to)
+	popup.set_content(parse_links(jointext(entry_data, null), presenting_to))
+	popup.open()
+
+#define CODEX_ENTRY_LIMIT 10
+/// Presents a list of codex entries to a mob.
+/datum/controller/subsystem/codex/proc/present_codex_search(mob/presenting_to, list/entries, search_query)
+	var/list/codex_data = list()
+	codex_data += "<h3><b>[entries.len] matches</b>[search_query ? " for '[search_query]'" : ""]:</h3>"
+
+	if(LAZYLEN(entries) > CODEX_ENTRY_LIMIT)
+		codex_data += "Showing first <b>[CODEX_ENTRY_LIMIT]</b> entries. <b>[entries.len - 5] result\s</b> omitted.</br>"
+	codex_data += "<table width = 100%>"
+
+	for(var/i = 1 to min(entries.len, CODEX_ENTRY_LIMIT))
+		var/datum/codex_entry/entry = entries[i]
+		codex_data += "<tr><td>[entry.name]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[entry];show_to=\ref[presenting_to]'>View</a></td></tr>"
+	codex_data += "</table>"
+
+	var/datum/browser/popup = new(presenting_to, "codex-search", "Codex Search") //"codex-search"
+	popup.set_content(codex_data.Join())
+	popup.open()
+
+#undef CODEX_ENTRY_LIMIT
 /datum/controller/subsystem/codex/proc/get_guide(category)
 	var/datum/codex_category/cat = codex_categories[category]
 	. = cat?.guide_html
@@ -91,25 +122,36 @@ SUBSYSTEM_DEF(codex)
 		return list()
 
 	searching = codex_sanitize(searching)
+
 	if(!searching)
 		return list()
-	if(!search_cache[searching])
-		var/list/results
-		if(entries_by_string[searching])
-			results = list(entries_by_string[searching])
-		else
-			results = list()
-			for(var/entry_title in entries_by_string)
-				var/datum/codex_entry/entry = entries_by_string[entry_title]
-				if(findtext(entry.name, searching) || findtext(entry.lore_text, searching) || findtext(entry.mechanics_text, searching) || findtext(entry.antag_text, searching))
-					results |= entry
-		search_cache[searching] = sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
-	return search_cache[searching]
+
+	. = search_cache[searching]
+	if(.)
+		return .
+
+	var/list/results = list()
+	var/list/priority_results = list()
+	if(entries_by_string[searching])
+		results = entries_by_string[searching]
+	else
+		for(var/datum/codex_entry/entry as anything in all_entries)
+			if(findtext(entry.name, searching))
+				priority_results += entry
+
+			else if(findtext(entry.lore_text, searching) || findtext(entry.mechanics_text, searching) || findtext(entry.antag_text, searching))
+				results += entry
+
+	sortTim(priority_results, GLOBAL_PROC_REF(cmp_name_asc))
+	sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
+	priority_results += results
+	search_cache[searching] = priority_results
+	. = search_cache[searching]
 
 /datum/controller/subsystem/codex/Topic(href, href_list)
 	. = ..()
 	if(!. && href_list["show_examined_info"] && href_list["show_to"])
-		var/mob/showing_mob =   locate(href_list["show_to"])
+		var/mob/showing_mob = locate(href_list["show_to"])
 		if(!istype(showing_mob))
 			return
 		var/atom/showing_atom = locate(href_list["show_examined_info"])

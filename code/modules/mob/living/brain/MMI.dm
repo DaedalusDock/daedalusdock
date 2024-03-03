@@ -74,7 +74,7 @@
 			return
 		var/mob/living/brain/B = newbrain.brainmob
 		if(!B.key)
-			B.notify_ghost_cloning("Someone has put your brain in a MMI!", source = src)
+			B.notify_ghost_revival("Someone has put your brain in a MMI!", source = src)
 		user.visible_message(span_notice("[user] sticks \a [newbrain] into [src]."), span_notice("[src]'s indicator light turn on as you insert [newbrain]."))
 
 		set_brainmob(newbrain.brainmob)
@@ -141,8 +141,7 @@
 /obj/item/mmi/proc/transfer_identity(mob/living/L) //Same deal as the regular brain proc. Used for human-->robot people.
 	if(!brainmob)
 		set_brainmob(new /mob/living/brain(src))
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
 	brainmob.timeofdeath = L.timeofdeath
 	if(L.has_dna())
 		var/mob/living/carbon/C = L

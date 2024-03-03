@@ -11,7 +11,7 @@
 	icon_state = "blackbox"
 	name = "Blackbox Recorder"
 	density = TRUE
-	armor = list(MELEE = 25, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
+	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 90, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 70)
 	var/obj/item/stored
 
 /obj/machinery/blackbox_recorder/Initialize(mapload)
@@ -207,7 +207,7 @@
 	if (!logged)  // Like /pda, only if logged
 		return
 	var/rec_dpt = ckey(data["rec_dpt"])
-	for (var/obj/machinery/requests_console/Console in GLOB.allConsoles)
+	for (var/obj/machinery/requests_console/Console as anything in INSTANCES_OF(/obj/machinery/requests_console))
 		if(ckey(Console.department) == rec_dpt || (data["ore_update"] && Console.receive_ore_updates))
 			Console.createmessage(data["sender"], data["send_dpt"], data["message"], data["verified"], data["stamped"], data["priority"], data["notify_freq"])
 

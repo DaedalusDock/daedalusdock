@@ -132,7 +132,7 @@
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if(user.real_name != H.dna.real_name)
-			user.real_name = H.dna.real_name
+			user.set_real_name(H.dna.real_name)
 			H.dna.transfer_identity(user, transfer_SE=1)
 			user.updateappearance(mutcolor_update=1)
 			user.domutcheck()

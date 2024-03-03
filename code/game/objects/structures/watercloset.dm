@@ -61,7 +61,6 @@
 			if(open)
 				GM.visible_message(span_danger("[user] starts to give [GM] a swirlie!"), span_userdanger("[user] starts to give you a swirlie..."))
 				swirlie = GM
-				var/was_alive = (swirlie.stat != DEAD)
 				if(do_after(user, src, 3 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
 					GM.visible_message(span_danger("[user] gives [GM] a swirlie!"), span_userdanger("[user] gives you a swirlie!"), span_hear("You hear a toilet flushing."))
 					if(iscarbon(GM))
@@ -72,8 +71,6 @@
 					else
 						log_combat(user, GM, "swirlied (oxy)")
 						GM.adjustOxyLoss(5)
-				if(was_alive && swirlie.stat == DEAD && swirlie.client)
-					swirlie.client.give_award(/datum/award/achievement/misc/swirlie, swirlie) // just like space high school all over again!
 				swirlie = null
 				return TRUE
 			else
@@ -102,7 +99,7 @@
 	..()
 
 /obj/structure/toilet/attackby(obj/item/I, mob/living/user, params)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	if(I.tool_behaviour == TOOL_CROWBAR)
 		to_chat(user, span_notice("You start to [cistern ? "replace the lid on the cistern" : "lift the lid off the cistern"]..."))
 		playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 50, TRUE)
@@ -393,9 +390,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 				user.visible_message(span_notice("[user] washes and wrings out [S] in [src]."), blind_message = span_hear("You hear water running."))
 				add_blood_DNA(S.return_blood_DNA())
 				S.absorption_capacity = initial(S.absorption_capacity)
-				var/forensics = S.GetComponent(/datum/component/forensics)
-				if(forensics)
-					qdel(forensics)
+				S.remove_evidence()
 				return
 
 	if(istype(O, /obj/item/stack/sheet/cloth))
@@ -759,12 +754,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/urinal, 32)
 	var/id = null
 
 /obj/structure/curtain/cloth/fancy/mechanical/Destroy()
-	GLOB.curtains -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/structure/curtain/cloth/fancy/mechanical/Initialize(mapload)
 	. = ..()
-	GLOB.curtains += src
+	SET_TRACKING(__TYPE__)
 
 /obj/structure/curtain/cloth/fancy/mechanical/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	id = "[port.id]_[id]"

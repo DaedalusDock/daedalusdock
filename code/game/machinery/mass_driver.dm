@@ -21,8 +21,13 @@
 /obj/machinery/mass_driver/shack
 	id = MASSDRIVER_SHACK
 
+/obj/machinery/mass_driver/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
 /obj/machinery/mass_driver/Destroy()
-	for(var/obj/machinery/computer/pod/control in GLOB.machines)
+	UNSET_TRACKING(__TYPE__)
+	for(var/obj/machinery/computer/pod/control as anything in INSTANCES_OF(/obj/machinery/computer/pod))
 		if(control.id == id)
 			control.connected = null
 	return ..()

@@ -1,0 +1,159 @@
+2024-02-01:
+  DTraitor:
+  - refactor: Removed unnecessary checks in mod suits code
+  Kapu1178:
+  - bugfix: Items with unique appearances for being wielded work again.
+  - bugfix: Throwing processes at the correct rate.
+  - bugfix: A code error of which it's impact I am unsure of.
+  - rscadd: The dual-port vent pump is now in the RCD
+  - bugfix: Looping sounds play again.
+  TiviPlus, LemonInTheDark, ChungusGamer666, Watermelon914, vinylspiders, tyeagg, Kapu1178:
+  - rscadd: Added new particle effects for being on fire or wet.
+  - rscadd: Added new particle effects for firing ballistic weapons.
+  - rscadd: Added new particle effects for bullets impacting surfaces.
+  - rscadd: Bullets are now illuminated.
+  - rscadd: Bullets leave behind impact holes on most surfaces.
+2024-02-05:
+  DTraitor:
+  - bugfix: Camera mobs (AI, Blob, etc) can move down on multi Z maps now
+  Kapu1178:
+  - bugfix: You can no longer use self-grabs to propel yourself at the speed of light.
+  - bugfix: You can no longer throw yourself.
+  francinum:
+  - bugfix: Corrected mousedrag hotspots on the fancy cursor.
+2024-02-06:
+  Kapu1178:
+  - bugfix: Fixed missing wire nodes on some APCs on Theseus
+  - bugfix: Fixed link scryers missing an icon.
+2024-02-07:
+  Ghommie:
+  - bugfix: Fixed text effects for runechat messages (the stuff enclosed in +, | and
+      _ characters) sometimes not working.
+2024-02-10:
+  Kapu1178:
+  - qol: Added an on-screen indicator for when you're unable to click.
+2024-02-12:
+  Kapu1178:
+  - qol: Thrown objects spin more naturally.
+  - tweak: Almost all objects have had their throw speed reduced.
+  - bugfix: Unbuckling from an object no longer locks you out of actions for 2 seconds.
+  - qol: Using the Observe verb now shows you action buttons of the target.
+  - qol: Using the Observe verb now allows you to see Tooltips like normal.
+  - qol: Using the Observe verb now makes you see and hear (almost) exactly what your
+      target does.
+  - tweak: The Orbit panel now uses Observe by default. You can still use Orbit by
+      changing the toggle in the top right.
+  - bugfix: An 8 year old bug with signallers you never noticed because you don't
+      use them.
+  - qol: Added accessibility features to disable blur effects and pain flashes.
+  - balance: Walking on fractured legs causes pain
+  - balance: Reduced slowdown caused by pain directly. (pain / 15 to pain / 40)
+  - rscadd: Head fractures now give you a concussion status effect
+  whataboutism-alos:
+  - rscadd: Creates vox scutes
+  - imageadd: Creates icons for vox arm, leg, and hand scutes
+  - code_imp: Reorganized the sprites within the vox bodyparts.dmi
+2024-02-13:
+  Kapu1178:
+  - rscadd: Ghost vision is now monochrome. This can be disabled in preferences.
+  - bugfix: Damage from overheating would occasionally not update your health display.
+  - bugfix: Neon carpet works again
+2024-02-16:
+  francinum:
+  - server: BYOND 515.1630 is now required to compile.
+2024-02-18:
+  Kapu1178:
+  - refactor: Rewrote fires, please report any oddities using the bug report button.
+  - bugfix: You will now instantly ignite upon entering a fire.
+  - bugfix: Crawling over flammable liquid while holding a flammable object will ignite
+      the fuel.
+  - bugfix: You take damage in fire again.
+  - bugfix: Flamethrowers no longer spew plasma into the room (lol oops)
+  - rscdel: Deleted the "on fire" particle effect, as it looks REALLY BAD when you're
+      prone.
+2024-02-20:
+  Kapu1178:
+  - rscadd: Everyone now spawns with a wallet, containing their ID and their starting
+      funds. You can close them to conceal the ID, but you won't be able to use the
+      ID's access until you open it. RFID blocking leather!
+  - rscadd: Everyone now receives a random bank PIN, viewable in the Memories menu
+      (IC tab if you forgot).
+  - rscadd: You can now access your bank account via a number of ATMs placed around
+      the station.
+  - balance: Crew marked as Deceased in records are no longer given a paycheck. Update
+      records for more money!
+  - rscdel: ID cards are no longer magic money dispensers/receptacles.
+  - rscdel: PDAs no longer take on the name of their owner.
+  - rscdel: Civilian bounties.
+  - rscadd: Added a new admin outfit
+2024-02-22:
+  francinum:
+  - bugfix: Click Catcher works again.
+2024-02-24:
+  francinum:
+  - rscdel: A majority of existing achievements have been removed.
+  - bugfix: Railings no longer duplicate rods.
+2024-02-25:
+  francinum:
+  - rscadd: Hydrogen can now be purchased from cargo.
+2024-02-26:
+  Jacquerel, MrMelbert:
+  - bugfix: Stabilized slime extracts will now once again work from inside modsuit
+      storage.
+  - bugfix: When placing an item into storage (such as backpacks), all nearby mobs
+      now get a message, rather than just the first mob.
+  - bugfix: TGC decks of cards should act a bit less odd when looking inside.
+  - refactor: Refactored a bit of storage, cleaned up a fair bit of its code. Let
+      me know if you notice anything funky about storage (like backpacks).
+  Kapu1178:
+  - bugfix: Fixed IDs being broken
+  - bugfix: Fixed a missing wire node in engine monitoring
+  - bugfix: Fixed admin chat using the wrong css class
+  LemonInTheDark:
+  - refactor: Lighting should be faster now
+  - rscdel: Multi-Z lighting, for now.
+  MrMelbert:
+  - bugfix: Chasms no longer break your verbs
+  - bugfix: Maps loaded in after roundstart will no longer have broken smoothing
+2024-02-27:
+  Kapu1178:
+  - soundadd: Alot of sounds have been added or replaced.
+  - rscadd: You can now take a drag off a cigarette by clicking yourself while holding
+      it.
+  - rscadd: Cigarettes now leave tiny smoke particles sometimes.
+2024-02-28:
+  Kapu1178:
+  - bugfix: Items hide other items EVEN BETTER.
+  ? Kapu1178, Fikou, Tau-Ceti, Baystation12, Aurorastation, with help from Lohikar,
+    Ter, and Lummox. Hitsplatter sprites modified by 13spacemen.
+  : - bugfix: Fingerprints are now applied in more situations. Did you know that punching
+        someone didn't apply fingerprints?
+    - bugfix: Fingerprints are now applied more realistically, attempting to add to
+        clothing first where applicable.
+    - bugfix: Blood is now left on items you touch if your hands or gloves are bloody.
+    - bugfix: Tracking blood on feet/shoes works correctly.
+    - refactor: Rewrote the forensics component into a datum.
+    - rscadd: Two new forensic information classes, Trace DNA and Gunshot Residue.
+        Trace DNA is left by doing things such as biting, smoking a cigarette, or
+        drinking. Gunshot Residue is left by ballistic firearms.
+    - rscadd: Fingerprints are now only partially left, sometimes requiring multiple
+        touches to give full clarity to the print.
+    - rscadd: Blood can now be colors other than red.
+    - rscadd: There is more blood.
+    - rscadd: Detective now gets a filing cabinet that contains a paper copy of each
+        crew member's record when they joined.
+    - qol: Cleaned up evidence bag behavior to be in line with other storage objects.
+    - rscadd: Added sample kits for different forensic information. Fingerprint cards
+        for fingerprints, swabs for trace DNA or blood DNA, a fiber kit for material
+        fibers, and finger print powder for finding fingerprints on objects.
+    - rscadd: Scene cards to mark crime scenes.
+    - rscadd: Detective now gets an Electron Microscope, to analyze fingerprints,
+        fibers, and residue.
+    - refactor: Rewrote the Forensic Scanner into the DNA Scanner. It is now only
+        used for trace DNA and blood DNA samples.
+  francinum:
+  - admin: A Lag Switch has been added to disable VV Icon Previews.
+2024-02-29:
+  Kapu1178:
+  - bugfix: Storage objects no longer infinitely add action buttons.
+  - bugfix: Some text effects scale with font size.

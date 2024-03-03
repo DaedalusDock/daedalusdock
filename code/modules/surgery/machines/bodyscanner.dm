@@ -57,7 +57,7 @@
 	setDir(turn(dir, 180))
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/bodyscanner/MouseDrop_T(mob/living/carbon/human/target, mob/user)
+/obj/machinery/bodyscanner/MouseDroppedOn(mob/living/carbon/human/target, mob/user)
 	if(!istype(target) || !can_interact(user) || HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user, mover = target) || target.buckled || target.has_buckled_mobs())
 		return
 

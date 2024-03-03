@@ -216,6 +216,18 @@
 /datum/client_colour/rave
 	priority = PRIORITY_LOW
 
+/datum/client_colour/ghostmono
+	colour = list(
+		0.3,0.3,0.3,0,
+		0.3,0.3,0.3,0,
+		0.3,0.3,0.3,0,
+		0.0,0.0,0.0,1,
+	)
+	priority = PRIORITY_ABSOLUTE
+	override = TRUE
+	fade_in = 20
+	fade_out = 20
+
 #undef PRIORITY_ABSOLUTE
 #undef PRIORITY_HIGH
 #undef PRIORITY_NORMAL

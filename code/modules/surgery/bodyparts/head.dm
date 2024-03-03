@@ -25,7 +25,7 @@
 	unarmed_stun_threshold = 4
 	bodypart_trait_source = HEAD_TRAIT
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD
+	bodypart_flags = (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY | BP_CAN_BE_DISLOCATED)
 
 	amputation_point = "neck"
 	encased = "skull"
@@ -33,7 +33,7 @@
 	cavity_name = "cranial"
 	joint_name = "jaw"
 
-	minimum_break_damage = 30
+	minimum_break_damage = 60 //It's really high because of how crippling the effect is.
 
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/brain/brain //The brain organ
@@ -176,6 +176,16 @@
 	tongue = null
 
 	return ..()
+
+/obj/item/bodypart/head/apply_bone_break(mob/living/carbon/C)
+	. = ..()
+	//add_bodypart_trait(TRAIT_BLURRY_VISION)
+	C.apply_status_effect(/datum/status_effect/concussion)
+
+/obj/item/bodypart/head/apply_bone_heal(mob/living/carbon/C)
+	. = ..()
+	//remove_bodypart_trait(TRAIT_BLURRY_VISION)
+	C.remove_status_effect(/datum/status_effect/concussion)
 
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()

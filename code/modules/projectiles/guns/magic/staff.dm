@@ -92,7 +92,7 @@
 /obj/item/gun/magic/staff/healing/on_intruder_use(mob/living/user, atom/target)
 	if(target == user)
 		return FALSE
-	healing_beam.process_fire(target, user)
+	healing_beam.do_fire_gun(target, user)
 	return FALSE
 
 /obj/item/gun/magic/staff/healing/dropped(mob/user)
@@ -122,7 +122,7 @@
 /obj/item/gun/magic/staff/chaos/unrestricted
 	allow_intruder_use = TRUE
 
-/obj/item/gun/magic/staff/chaos/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/magic/staff/chaos/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	chambered.projectile_type = pick(allowed_projectile_types)
 	. = ..()
 
@@ -135,7 +135,7 @@
 		return TRUE
 	balloon_alert(user, "chaos!")
 	user.dropItemToGround(src, TRUE)
-	process_fire(user, user, FALSE)
+	do_fire_gun(user, user, FALSE)
 	return FALSE
 
 /obj/item/gun/magic/staff/door
@@ -172,7 +172,7 @@
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	hitsound = 'sound/weapons/rapierhit.ogg'
 	force = 20
-	armour_penetration = 75
+	armor_penetration = 75
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_charges = 4
@@ -182,9 +182,10 @@
 	. = ..()
 	AddComponent(/datum/component/butchering, 15, 125, 0, hitsound)
 
-/obj/item/gun/magic/staff/spellblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+/obj/item/gun/magic/staff/spellblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if(attack_type == PROJECTILE_ATTACK)
-		final_block_chance = 0
+		return FALSE
+
 	return ..()
 
 /obj/item/gun/magic/staff/locker

@@ -17,10 +17,15 @@
 
 /obj/machinery/computer/pod/Initialize(mapload)
 	. = ..()
-	for(var/obj/machinery/mass_driver/M in range(range, src))
+	SET_TRACKING(__TYPE__)
+	for(var/obj/machinery/mass_driver/M as anything in INSTANCES_OF(/obj/machinery/mass_driver))
 		if(M.id == id)
 			connected = M
 			break
+
+/obj/machinery/computer/pod/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/computer/pod/process(delta_time)
 	if(COOLDOWN_FINISHED(src, massdriver_countdown))

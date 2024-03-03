@@ -73,7 +73,7 @@
 
 /obj/effect/portal/Initialize(mapload, _lifespan = 0, obj/effect/portal/_linked, automatic_link = FALSE, turf/hard_target_override)
 	. = ..()
-	GLOB.portals += src
+	SET_TRACKING(__TYPE__)
 	if(!istype(_linked) && automatic_link)
 		. = INITIALIZE_HINT_QDEL
 		CRASH("Somebody fucked up.")
@@ -94,7 +94,7 @@
 	linked = newlink
 
 /obj/effect/portal/Destroy()
-	GLOB.portals -= src
+	UNSET_TRACKING(__TYPE__)
 	if(hardlinked && !QDELETED(linked))
 		QDEL_NULL(linked)
 	else
@@ -150,7 +150,7 @@
 /obj/effect/portal/permanent/proc/set_linked()
 	if(!id)
 		return
-	for(var/obj/effect/portal/permanent/P in GLOB.portals - src)
+	for(var/obj/effect/portal/permanent/P in INSTANCES_OF(/obj/effect/portal) - src)
 		if(P.id == id)
 			P.linked = src
 			linked = P

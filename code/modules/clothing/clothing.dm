@@ -10,6 +10,8 @@
 	stamina_cost = 0
 	stamina_critical_chance = 0
 
+	/// An alternative name to be used for fibers, forensics stuffs
+	var/fiber_name = ""
 	var/damaged_clothes = CLOTHING_PRISTINE //similar to machine's BROKEN stat and structure's broken var
 
 	///What level of bright light protection item has.
@@ -29,6 +31,7 @@
 	var/toggle_cooldown = null
 	var/cooldown = 0
 
+	/// Flags for clothing
 	var/clothing_flags = NONE
 
 	var/can_be_bloody = TRUE
@@ -117,7 +120,7 @@
 /obj/item/food/clothing/proc/after_eat(mob/eater)
 	var/obj/item/clothing/resolved_clothing = clothing.resolve()
 	if (resolved_clothing)
-		resolved_clothing.take_damage(MOTH_EATING_CLOTHING_DAMAGE, sound_effect = FALSE, damage_flag = BOMB, armour_penetration = 100) //This leaves clothing shreds.
+		resolved_clothing.take_damage(MOTH_EATING_CLOTHING_DAMAGE, sound_effect = FALSE, damage_flag = BOMB, armor_penetration = 100) //This leaves clothing shreds.
 	else
 		qdel(src)
 
@@ -179,16 +182,16 @@
  * * def_zone: The bodypart zone in question
  * * damage_amount: Incoming damage
  * * damage_type: BRUTE or BURN
- * * armour_penetration: If the attack had armour_penetration
+ * * armor_penetration: If the attack had armor_penetration
  */
-/obj/item/clothing/proc/take_damage_zone(def_zone, damage_amount, damage_type, armour_penetration)
+/obj/item/clothing/proc/take_damage_zone(def_zone, damage_amount, damage_type, armor_penetration)
 	if(!def_zone || !limb_integrity || (initial(body_parts_covered) in GLOB.bitflags)) // the second check sees if we only cover one bodypart anyway and don't need to bother with this
 		return
 	var/list/covered_limbs = cover_flags2body_zones(body_parts_covered) // what do we actually cover?
 	if(!(def_zone in covered_limbs))
 		return
 
-	var/damage_dealt = take_damage(damage_amount * 0.1, damage_type, armour_penetration, FALSE) * 10 // only deal 10% of the damage to the general integrity damage, then multiply it by 10 so we know how much to deal to limb
+	var/damage_dealt = take_damage(damage_amount * 0.1, damage_type, armor_penetration, FALSE) * 10 // only deal 10% of the damage to the general integrity damage, then multiply it by 10 so we know how much to deal to limb
 	LAZYINITLIST(damage_by_parts)
 	damage_by_parts[def_zone] += damage_dealt
 	if(damage_by_parts[def_zone] > limb_integrity)
@@ -223,7 +226,7 @@
 		body_parts_covered &= ~i
 
 	if(body_parts_covered == NONE) // if there are no more parts to break then the whole thing is kaput
-		atom_destruction((damage_type == BRUTE ? MELEE : LASER)) // melee/laser is good enough since this only procs from direct attacks anyway and not from fire/bombs
+		atom_destruction((damage_type == BRUTE ? BLUNT : LASER)) // melee/laser is good enough since this only procs from direct attacks anyway and not from fire/bombs
 		return
 
 	switch(zones_disabled)
@@ -316,7 +319,7 @@
 		. += how_cool_are_your_threads.Join()
 
 	returnArmor() //Ensure armor exists
-	if(armor.bio || armor.bomb || armor.bullet || armor.energy || armor.laser || armor.melee || armor.fire || armor.acid || flags_cover & HEADCOVERSMOUTH || flags_cover & PEPPERPROOF)
+	if(armor.bio || armor.bomb || armor.puncture || armor.energy || armor.laser || armor.blunt || armor.slash || armor.fire || armor.acid || (flags_cover & (HEADCOVERSMOUTH|PEPPERPROOF)))
 		. += span_notice("It has a <a href='?src=[REF(src)];list_armor=1'>tag</a> listing its protection classes.")
 
 /**
@@ -359,26 +362,30 @@
 	if(href_list["list_armor"])
 		returnArmor() //Ensure armor exists
 		var/list/readout = list("<span class='notice'><u><b>PROTECTION CLASSES</u></b>")
-		if(armor.bio || armor.bomb || armor.bullet || armor.energy || armor.laser || armor.melee)
+		if(armor.bio || armor.bomb || armor.puncture || armor.energy || armor.laser || armor.blunt || armor.slash)
 			readout += "\n<b>ARMOR (I-X)</b>"
 			if(armor.bio)
 				readout += "\nTOXIN [armor_to_protection_class(armor.bio)]"
 			if(armor.bomb)
 				readout += "\nEXPLOSIVE [armor_to_protection_class(armor.bomb)]"
-			if(armor.bullet)
-				readout += "\nBULLET [armor_to_protection_class(armor.bullet)]"
 			if(armor.energy)
 				readout += "\nENERGY [armor_to_protection_class(armor.energy)]"
 			if(armor.laser)
 				readout += "\nLASER [armor_to_protection_class(armor.laser)]"
-			if(armor.melee)
-				readout += "\nMELEE [armor_to_protection_class(armor.melee)]"
+			if(armor.blunt)
+				readout += "\nBLUNT [armor_to_protection_class(armor.blunt)]"
+			if(armor.puncture)
+				readout += "\nPUNCTURE [armor_to_protection_class(armor.puncture)]"
+			if(armor.slash)
+				readout += "\nSLASH [armor_to_protection_class(armor.slash)]"
+
 		if(armor.fire || armor.acid)
 			readout += "\n<b>DURABILITY (I-X)</b>"
 			if(armor.fire)
 				readout += "\nFIRE [armor_to_protection_class(armor.fire)]"
 			if(armor.acid)
 				readout += "\nACID [armor_to_protection_class(armor.acid)]"
+
 		if(flags_cover & HEADCOVERSMOUTH || flags_cover & PEPPERPROOF)
 			var/list/things_blocked = list()
 			if(flags_cover & HEADCOVERSMOUTH)
@@ -419,6 +426,7 @@
 //This mostly exists so subtypes can call appriopriate update icon calls on the wearer.
 /obj/item/clothing/proc/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	damaged_clothes = damaged_state
+	update_slot_icon()
 
 /obj/item/clothing/update_overlays()
 	. = ..()
@@ -504,7 +512,7 @@ BLIND     // can't see anything
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
-		C.head_update(src, forced = 1)
+		C.update_slots_for_item(src, force_obscurity_update = TRUE)
 	update_action_buttons()
 	return TRUE
 
@@ -520,6 +528,10 @@ BLIND     // can't see anything
 	if(visor_vars_to_toggle & VISOR_TINT)
 		tint ^= initial(tint)
 
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src, force_obscurity_update = TRUE)
+
 /obj/item/clothing/head/helmet/space/plasmaman/visor_toggling() //handles all the actual toggling of flags
 	up = !up
 	SEND_SIGNAL(src, COMSIG_CLOTHING_VISOR_TOGGLE, up)
@@ -530,6 +542,10 @@ BLIND     // can't see anything
 		flash_protect ^= initial(flash_protect)
 	if(visor_vars_to_toggle & VISOR_TINT)
 		tint ^= initial(tint)
+
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 /obj/item/clothing/proc/can_use(mob/user)
 	if(user && ismob(user))

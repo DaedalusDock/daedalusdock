@@ -131,7 +131,7 @@
 		return
 
 	if(ipc.revive())
-		ipc.notify_ghost_cloning("Your chassis power has been restored!")
+		ipc.notify_ghost_revival("Your chassis power has been restored!")
 		ipc.grab_ghost()
 	else
 		return

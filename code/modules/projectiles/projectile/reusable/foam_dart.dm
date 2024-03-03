@@ -35,11 +35,3 @@
 /obj/projectile/bullet/reusable/foam_dart/Destroy()
 	pen = null
 	return ..()
-
-/obj/projectile/bullet/reusable/foam_dart/riot
-	name = "riot foam dart"
-	icon_state = "foamdart_riot_proj"
-	base_icon_state = "foamdart_riot_proj"
-	ammo_type = /obj/item/ammo_casing/caseless/foam_dart/riot
-	nodamage = FALSE
-	stamina = 25

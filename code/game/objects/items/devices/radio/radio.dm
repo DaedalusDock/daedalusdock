@@ -11,7 +11,6 @@
 
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	throw_speed = 3
 	throw_range = 7
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=75, /datum/material/glass=25)
@@ -448,12 +447,11 @@
 
 /obj/item/radio/examine(mob/user)
 	. = ..()
-	if (frequency && in_range(src, user))
+	if (frequency && (in_range(src, user) || isobserver(user)))
 		. += span_notice("It is set to broadcast over the [frequency/10] frequency.")
+
 	if (unscrewed)
-		. += span_notice("It can be attached and modified.")
-	else
-		. += span_notice("It cannot be modified or attached.")
+		. += span_notice("It can be attached to assemblies and modified.")
 
 /obj/item/radio/screwdriver_act(mob/living/user, obj/item/tool)
 	add_fingerprint(user)

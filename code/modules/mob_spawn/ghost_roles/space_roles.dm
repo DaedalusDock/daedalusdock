@@ -232,7 +232,6 @@
 
 /datum/outfit/syndicate_empty/battlecruiser/assault/captain
 	name = "Syndicate Battlecruiser Captain"
-	l_pocket = /obj/item/melee/energy/sword/saber/red
 	r_pocket = /obj/item/melee/baton/telescopic
 	suit = /obj/item/clothing/suit/armor/vest/capcarapace/syndicate
 	suit_store = /obj/item/gun/ballistic/revolver/mateba
@@ -243,3 +242,7 @@
 	glasses = /obj/item/clothing/glasses/thermal/eyepatch
 	id = /obj/item/card/id/advanced/black/syndicate_command/captain_id
 	id_trim = /datum/id_trim/battlecruiser/captain
+
+	backpack_contents = list(
+		/obj/item/melee/energy/sword/saber/red,
+	)

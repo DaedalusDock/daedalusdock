@@ -403,23 +403,13 @@
 	category = list(DCAT_SECURITY)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 
-/datum/design/detective_scanner
-	name = "Forensic Scanner"
-	desc = "Used to remotely scan objects and biomass for DNA and fingerprints. Can print a report of the findings."
-	id = "detective_scanner"
-	build_type = FABRICATOR
-	materials = list(/datum/material/iron = 5000, /datum/material/glass = 1000, /datum/material/gold = 2500, /datum/material/silver = 2000)
-	build_path = /obj/item/detective_scanner
-	category = list(DCAT_FORENSICS)
-	mapload_design_flags = DESIGN_FAB_SECURITY
-
 /datum/design/evidencebag
 	name = "Evidence Bag"
 	desc = "An empty evidence bag."
 	id = "evidencebag"
 	build_type = FABRICATOR
 	materials = list(/datum/material/plastic = 100)
-	build_path = /obj/item/evidencebag
+	build_path = /obj/item/storage/evidencebag
 	category = list(DCAT_FORENSICS)
 	mapload_design_flags = DESIGN_FAB_SECURITY
 

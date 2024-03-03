@@ -161,7 +161,7 @@
 		else
 			H.apply_damage(15 * blade_sharpness, BRUTE, head)
 			log_combat(user, H, "dropped the blade on", src, " non-fatally")
-			H.emote("scream")
+			H.emote("agony")
 
 		if (blade_sharpness > 1)
 			blade_sharpness -= 1
@@ -171,7 +171,7 @@
 
 /obj/structure/guillotine/attackby(obj/item/W, mob/user, params)
 	if (istype(W, /obj/item/sharpener))
-		add_fingerprint(user)
+		W.leave_evidence(user, src)
 		if (blade_status == GUILLOTINE_BLADE_SHARPENING)
 			return
 

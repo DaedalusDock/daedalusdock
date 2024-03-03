@@ -463,6 +463,7 @@
 	if(.)
 		var/mob/living/L = user
 		COOLDOWN_RESET(L, smell_time)
+		L.handle_smell()
 
 /datum/emote/living/snore
 	key = "snore"

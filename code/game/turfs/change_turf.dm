@@ -91,7 +91,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/old_dynamic_lumcount = dynamic_lumcount
 	var/old_rcd_memory = rcd_memory
 	var/old_above = above
-	var/old_fire = fire
+	var/old_fire = active_hotspot
 
 	var/old_bp = blueprint_data
 	blueprint_data = null
@@ -146,7 +146,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	dynamic_lumcount = old_dynamic_lumcount
 
 	above = old_above
-	fire = old_fire
+	active_hotspot = old_fire
 
 	if(SSlighting.initialized)
 		if(!always_lit)

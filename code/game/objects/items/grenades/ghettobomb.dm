@@ -9,7 +9,6 @@
 	inhand_icon_state = "flashbang"
 	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
-	throw_speed = 3
 	throw_range = 7
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT

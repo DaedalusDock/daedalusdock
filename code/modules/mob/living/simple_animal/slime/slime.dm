@@ -100,7 +100,6 @@
 	else
 		var/datum/action/innate/slime/evolve/E = new
 		E.Grant(src)
-	create_reagents(100)
 	set_colour(new_colour)
 	. = ..()
 	set_nutrition(700)
@@ -117,16 +116,6 @@
 	clear_friends()
 	return ..()
 
-/mob/living/simple_animal/slime/create_reagents(max_vol, flags)
-	. = ..()
-	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_DEL_REAGENT), PROC_REF(on_reagent_change))
-	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
-
-/// Handles removing signal hooks incase someone is crazy enough to reset the reagents datum.
-/mob/living/simple_animal/slime/proc/on_reagents_del(datum/reagents/reagents)
-	SIGNAL_HANDLER
-	UnregisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_PARENT_QDELETING))
-	return NONE
 
 /mob/living/simple_animal/slime/proc/set_colour(new_colour)
 	colour = new_colour
@@ -139,8 +128,7 @@
 /mob/living/simple_animal/slime/update_name()
 	if(slime_name_regex.Find(name))
 		number = rand(1, 1000)
-		name = "[colour] [is_adult ? "adult" : "baby"] slime ([number])"
-		real_name = name
+		set_real_name("[colour] [is_adult ? "adult" : "baby"] slime ([number])", update_name = FALSE)
 	return ..()
 
 /mob/living/simple_animal/slime/proc/random_colour()
@@ -158,22 +146,6 @@
 		icon_state = icon_dead
 	..()
 
-/**
- * Snowflake handling of reagent movespeed modifiers
- *
- * Should be moved to the reagents at some point in the future. As it is I'm in a hurry.
- */
-/mob/living/simple_animal/slime/proc/on_reagent_change(datum/reagents/holder, ...)
-	SIGNAL_HANDLER
-	remove_movespeed_modifier(/datum/movespeed_modifier/slime_reagentmod)
-	var/amount = 0
-	if(reagents.has_reagent(/datum/reagent/medicine/morphine)) // morphine slows slimes down
-		amount = 2
-	if(reagents.has_reagent(/datum/reagent/consumable/frostoil)) // Frostoil also makes them move VEEERRYYYYY slow
-		amount = 5
-	if(amount)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_reagentmod, multiplicative_slowdown = amount)
-	return NONE
 
 /mob/living/simple_animal/slime/updatehealth()
 	. = ..()
@@ -267,7 +239,7 @@
 			Feedon(Food)
 	return ..()
 
-/mob/living/simple_animal/slime/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/slime/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	return
 
 /mob/living/simple_animal/slime/try_make_grab(atom/movable/target, grab_type)

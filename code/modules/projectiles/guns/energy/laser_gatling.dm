@@ -46,7 +46,7 @@
 					to_chat(user, span_warning("You need a free hand to hold the gun!"))
 					return
 				update_appearance()
-				user.update_worn_back()
+				update_slot_icon()
 		else
 			to_chat(user, span_warning("You are already holding the gun!"))
 	else
@@ -94,7 +94,7 @@
 	else
 		src.visible_message(span_warning("The [gun.name] snaps back onto the [name]!"))
 	update_appearance()
-	user.update_worn_back()
+	update_slot_icon()
 
 
 /obj/item/gun/energy/minigun
@@ -107,7 +107,8 @@
 	slot_flags = null
 	w_class = WEIGHT_CLASS_HUGE
 	custom_materials = null
-	weapon_weight = WEAPON_HEAVY
+
+	unwielded_spread_bonus = 120
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/minigun)
 	cell_type = /obj/item/stock_parts/cell/crap
 	item_flags = NEEDS_PERMIT | SLOWS_WHILE_IN_HAND
@@ -138,7 +139,7 @@
 	else
 		qdel(src)
 
-/obj/item/gun/energy/minigun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
+/obj/item/gun/energy/minigun/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(ammo_pack && ammo_pack.overheat >= ammo_pack.overheat_max)
 		to_chat(user, span_warning("The gun's heat sensor locked the trigger to prevent lens damage!"))
 		return

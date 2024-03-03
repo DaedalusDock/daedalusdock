@@ -112,7 +112,7 @@
 			Paralyze(2 SECONDS)
 			visible_message(span_danger("[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!"),\
 				span_userdanger("You violently crash into [victim][extra_speed ? " extra hard" : ""]!"))
-		playsound(src,'sound/weapons/punch1.ogg',50,TRUE)
+		playsound(src, SFX_PUNCH ,50,TRUE)
 		log_combat(src, victim, "crashed into")
 
 //Throwing stuff
@@ -167,7 +167,7 @@
 				return
 			release_grabs(I)
 		else
-			if(!G.current_grab.can_throw || !isliving(G.affecting))
+			if(!G.current_grab.can_throw || !isliving(G.affecting) || G.affecting == src)
 				return
 
 			var/mob/living/throwable_mob = G.affecting
@@ -190,6 +190,7 @@
 		var/turf/end_T = get_turf(target)
 		if(start_T && end_T)
 			log_combat(src, thrown_thing, "thrown", addition="grab from tile in [AREACOORD(start_T)] towards tile at [AREACOORD(end_T)]")
+
 	var/power_throw = 0
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		power_throw++
@@ -199,6 +200,7 @@
 		power_throw++
 	if(neckgrab_throw)
 		power_throw++
+
 	do_attack_animation(target, no_effect = TRUE) //PARIAH EDIT ADDITION - AESTHETICS
 	playsound(loc, 'sound/weapons/punchmiss.ogg', 50, TRUE, -1) //PARIAH EDIT ADDITION - AESTHETICS
 	visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
@@ -234,31 +236,35 @@
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
 		var/buckle_cd = 60 SECONDS
+
 		if(handcuffed)
 			var/obj/item/restraints/O = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
 			buckle_cd = O.breakouttime
-		visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"), \
-					span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)"))
+
+		visible_message(
+			span_warning("[src] attempts to unbuckle [p_them()]self!"),
+			span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)")
+
+		)
+
 		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
-			buckled.user_unbuckle_mob(src,src)
+			return !!buckled.user_unbuckle_mob(src,src)
 		else
 			if(src && buckled)
 				to_chat(src, span_warning("You fail to unbuckle yourself!"))
 	else
-		buckled.user_unbuckle_mob(src,src)
+		return !!buckled.user_unbuckle_mob(src,src)
 
 /mob/living/carbon/resist_fire()
 	adjust_fire_stacks(-5)
 	Paralyze(60, ignore_canstun = TRUE)
 	spin(32,2)
-	visible_message(span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
-		span_notice("You stop, drop, and roll!"))
+	visible_message(
+		span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
+		span_danger("You hurl yourself to the floor, rolling frantically around!"))
 	sleep(30)
-	if(fire_stacks <= 0 && !QDELETED(src))
-		visible_message(span_danger("[src] successfully extinguishes [p_them()]self!"), \
-			span_notice("You extinguish yourself."))
 	return
 
 /mob/living/carbon/resist_restraints()
@@ -893,7 +899,6 @@
 	for(var/obj/item/bodypart/bodypart_path as anything in bodyparts)
 		var/real_body_part_path = overrides?[initial(bodypart_path.body_zone)] || bodypart_path
 		var/obj/item/bodypart/bodypart_instance = new real_body_part_path()
-		bodypart_instance.set_owner(src)
 		bodyparts.Remove(bodypart_path)
 		add_bodypart(bodypart_instance)
 		switch(bodypart_instance.body_part)
@@ -916,6 +921,7 @@
 	new_bodypart.set_owner(src)
 	new_bodypart.forceMove(src)
 	new_bodypart.item_flags |= ABSTRACT
+	ADD_TRAIT(new_bodypart, TRAIT_INSIDE_BODY, REF(src))
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)
@@ -931,6 +937,7 @@
 /mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
+	REMOVE_TRAIT(old_bodypart, TRAIT_INSIDE_BODY, REF(src))
 	bodyparts -= old_bodypart
 	old_bodypart.item_flags &= ~ABSTRACT
 	if(old_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
@@ -1120,7 +1127,7 @@
 		. = TRUE
 
 	if(ears && !(obscured & ITEM_SLOT_EARS) && ears.wash(clean_types))
-		update_inv_ears()
+		update_worn_ears()
 		. = TRUE
 
 	if(wear_neck && !(obscured & ITEM_SLOT_NECK) && wear_neck.wash(clean_types))
@@ -1133,6 +1140,10 @@
 
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && gloves.wash(clean_types))
 		update_worn_gloves()
+		. = TRUE
+
+	if(shoes && !(obscured & ITEM_SLOT_FEET) && shoes.wash(clean_types))
+		update_worn_shoes()
 		. = TRUE
 
 	if(get_permeability_protection() > 0.5)
@@ -1349,7 +1360,7 @@
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 
@@ -1429,18 +1440,14 @@
 /mob/living/carbon/proc/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
 
-/mob/living/carbon/get_melee_inaccuracy()
-	. = ..()
-	if(getPain() > 100)
-		. += 10
-
-	if(shock_stage > 30)
-		. += 30
-	else if(shock_stage > 10)
-		. += 10
-
 /mob/living/carbon/has_mouth()
 	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)
 	if(!H?.can_ingest_reagents)
 		return FALSE
 	return TRUE
+
+/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop, animate = TRUE)
+	if(I && HAS_TRAIT(I, TRAIT_INSIDE_BODY))
+		stack_trace("Something tried to drop an organ or bodypart that isn't allowed to be dropped")
+		return FALSE
+	return ..()

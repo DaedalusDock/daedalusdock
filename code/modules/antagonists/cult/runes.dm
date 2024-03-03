@@ -536,13 +536,6 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 	//BEGIN THE SUMMONING
 	used = TRUE
-	var/datum/team/cult/cult_team = user_antag.cult_team
-	if (cult_team.narsie_summoned)
-		for (var/datum/mind/cultist_mind in cult_team.members)
-			var/mob/living/cultist_mob = cultist_mind.current
-			cultist_mob.client?.give_award(/datum/award/achievement/misc/narsupreme, cultist_mob)
-
-	cult_team.narsie_summoned = TRUE
 	..()
 	sound_to_playing_players('sound/effects/dimensional_rend.ogg')
 	var/turf/rune_turf = get_turf(src)
@@ -846,7 +839,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 			return list()
 		var/mob/dead/observer/ghost_to_spawn = pick(ghosts_on_rune)
 		var/mob/living/carbon/human/cult_ghost/new_human = new(T)
-		new_human.real_name = ghost_to_spawn.real_name
+
+		new_human.set_real_name(ghost_to_spawn.real_name)
 		new_human.alpha = 150 //Makes them translucent
 		new_human.equipOutfit(/datum/outfit/ghost_cultist) //give them armor
 		new_human.apply_status_effect(/datum/status_effect/cultghost) //ghosts can't summon more ghosts

@@ -21,13 +21,14 @@
 	var/announcement = "<h1 class='alert'>[html_encode(super_title)]</h1>"
 
 	if(sub_title)
-		announcement += "<h2 class='alert'>[html_encode(sub_title)]</h2><br>"
+		announcement += "<h2 class='alert'>[html_encode(sub_title)]</h2>"
 
 	///If the announcer overrides alert messages, use that message.
 	if(SSstation.announcer.custom_alert_message && !do_not_modify)
 		announcement += SSstation.announcer.custom_alert_message
 	else
-		announcement += "<br>[span_alert("[html_encode(text)]")]<br>"
+		announcement += "<br><span style='font-size:120%'>[span_alert("[html_encode(text)]")]</span>"
+
 	announcement += "<br>"
 
 	var/sound/sound2use = SSstation.announcer.event_sounds[sound_type]
@@ -41,6 +42,8 @@
 				sound2use = SSstation.announcer.get_rand_report_sound()
 			if(ANNOUNCER_ATTENTION)
 				sound2use = SSstation.announcer.get_rand_alert_sound()
+			if(ANNOUNCER_ALERT)
+				sound2use = 'sound/misc/notice1.ogg'
 			else
 				sound2use = 'goon/sounds/announcement_1.ogg'
 
@@ -49,7 +52,7 @@
 
 	for(var/mob/target in players)
 		if(!isnewplayer(target) && target.can_hear())
-			to_chat(target, announcement)
+			to_chat(target, examine_block(announcement))
 			if(target.client.prefs.toggles & SOUND_ANNOUNCEMENTS)
 				SEND_SOUND(target, sound2use)
 
@@ -125,7 +128,7 @@
 
 	for(var/mob/target in players)
 		if(!isnewplayer(target) && target.can_hear())
-			to_chat(target, span_minorannounce(message))
+			to_chat(target, examine_block(span_minorannounce(message)))
 			if(target.client.prefs.toggles & SOUND_ANNOUNCEMENTS)
 				if(alert)
 					SEND_SOUND(target, sound('sound/misc/notice1.ogg'))

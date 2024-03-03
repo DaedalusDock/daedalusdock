@@ -23,6 +23,11 @@
 /obj/machinery/ticket_machine/Initialize(mapload)
 	. = ..()
 	update_appearance()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/ticket_machine/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 
@@ -90,7 +95,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	find_machine()
 
 /obj/item/assembly/control/ticket_machine/proc/find_machine() //Locate the one to which we're linked
-	for(var/obj/machinery/ticket_machine/ticketsplease in GLOB.machines)
+	for(var/obj/machinery/ticket_machine/ticketsplease as anything in INSTANCES_OF(/obj/machinery/ticket_machine))
 		if(ticketsplease.id == id)
 			linked = WEAKREF(ticketsplease)
 	if(linked)
@@ -160,6 +165,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/ticket_machine, 32)
 	if(ticket_number >= max_number)
 		to_chat(user,span_warning("Ticket supply depleted, please refill this unit with a hand labeller refill cartridge!"))
 		return
+
 	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 100, FALSE)
 	ticket_number++
 	to_chat(user, span_notice("You take a ticket from [src], looks like you're ticket number #[ticket_number]..."))

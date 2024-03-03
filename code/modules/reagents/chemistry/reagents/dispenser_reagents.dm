@@ -144,7 +144,6 @@
 	var/meltdose = 20 // How much is needed to melt
 	var/max_damage = 40
 	value = DISPENSER_REAGENT_VALUE
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/acid/affect_blood(mob/living/carbon/C, removed)
 	C.adjustFireLoss(removed * acidpwr, FALSE)
@@ -169,7 +168,7 @@
 			// Body is handled by affect_touch()
 			exposed_mob.acid_act(acidpwr, reac_volume, affect_body = FALSE)
 		spawn(-1)
-			exposed_mob.emote("scream")
+			exposed_mob.emote("agony")
 
 /datum/reagent/toxin/acid/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()

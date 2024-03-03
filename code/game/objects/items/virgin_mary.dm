@@ -37,7 +37,7 @@
 		new_name = "[copytext(joe.real_name, 1, space_position)] \"[nickname]\" [copytext(joe.real_name, space_position)]"
 	else //Append otherwise
 		new_name = "[joe.real_name] \"[nickname]\""
-	joe.real_name = new_name
+	joe.set_real_name(new_name)
 	used_up = TRUE
 	mob_mobs += joe
 	joe.say("My soul will burn like this saint if I betray my family. I enter alive and I will have to get out dead.", forced = /obj/item/virgin_mary)

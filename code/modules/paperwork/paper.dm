@@ -26,7 +26,7 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
-	throw_speed = 1
+	throw_speed = 0.7
 	stamina_cost = 0
 	stamina_damage = 0
 
@@ -72,7 +72,6 @@
 	stamps = null
 	stamped = null
 	form_fields = null
-	stamped = null
 	. = ..()
 
 /**
@@ -216,7 +215,7 @@
 	if(user.is_holding(src)) //no TK shit here.
 		user.dropItemToGround(src)
 	user.visible_message(ignition_message)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 	fire_act(I.get_temperature())
 
 /obj/item/paper/proc/add_info(text, color = DEFAULT_ADD_INFO_COLOR, font = DEFAULT_ADD_INFO_FONT, signature = DEFAULT_ADD_INFO_SIGN)
@@ -267,7 +266,7 @@
 	return ..()
 
 
-/obj/item/paper/fire_act(exposed_temperature, exposed_volume)
+/obj/item/paper/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(.)
 		info = "[stars(info)]"

@@ -261,28 +261,6 @@
 	var/obj/vehicle/sealed/car/clowncar/C = vehicle_entered_target
 	C.toggle_cannon(owner)
 
-
-/datum/action/vehicle/sealed/thank
-	name = "Thank the Clown Car Driver"
-	desc = "They're just doing their job."
-	button_icon_state = "car_thanktheclown"
-	COOLDOWN_DECLARE(thank_time_cooldown)
-
-
-/datum/action/vehicle/sealed/thank/Trigger(trigger_flags)
-	if(!istype(vehicle_entered_target, /obj/vehicle/sealed/car/clowncar))
-		return
-	if(!COOLDOWN_FINISHED(src, thank_time_cooldown))
-		return
-	COOLDOWN_START(src, thank_time_cooldown, 6 SECONDS)
-	var/obj/vehicle/sealed/car/clowncar/clown_car = vehicle_entered_target
-	var/mob/living/carbon/human/clown = pick(clown_car.return_drivers())
-	if(!clown)
-		return
-	owner.say("Thank you for the fun ride, [clown.name]!")
-	clown_car.increment_thanks_counter()
-
-
 /datum/action/vehicle/ridden/scooter/skateboard/ollie
 	name = "Ollie"
 	desc = "Get some air! Land on a table to do a gnarly grind."
@@ -309,8 +287,6 @@
 		vehicle.visible_message(span_danger("[rider] misses the landing and falls on [rider.p_their()] face!"))
 		return
 	if((locate(/obj/structure/table) in landing_turf) || (locate(/obj/structure/fluff/tram_rail) in landing_turf))
-		if(locate(/obj/structure/fluff/tram_rail) in vehicle.loc.contents)
-			rider.client.give_award(/datum/award/achievement/misc/tram_surfer, rider)
 		vehicle.grinding = TRUE
 		vehicle.icon_state = "[initial(vehicle.icon_state)]-grind"
 		addtimer(CALLBACK(vehicle, TYPE_PROC_REF(/obj/vehicle/ridden/scooter/skateboard, grind)), 2)

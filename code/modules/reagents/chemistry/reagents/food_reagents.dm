@@ -256,20 +256,12 @@
 	switch(current_cycle)
 		if(1 to 15)
 			heating = 5
-			if(isslime(C))
-				heating = rand(5, 20)
 		if(15 to 25)
 			heating = 10
-			if(isslime(C))
-				heating = rand(10, 20)
 		if(25 to 35)
 			heating = 15
-			if(isslime(C))
-				heating = rand(15, 20)
 		if(35 to INFINITY)
 			heating = 20
-			if(isslime(C))
-				heating = rand(20, 25)
 	C.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT * removed)
 	return ..()
 
@@ -364,7 +356,6 @@
 	color = "#FFFFFF" // rgb: 255,255,255
 	taste_description = "salt"
 	penetrates_skin = NONE
-	show_in_codex = TRUE
 
 /datum/reagent/consumable/salt/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
@@ -445,7 +436,7 @@
 	if(!istype(exposed_turf))
 		return
 	exposed_turf.MakeSlippery(TURF_WET_LUBE, min_wet_time = 10 SECONDS, wet_time_to_add = reac_volume*2 SECONDS)
-	var/obj/effect/hotspot/hotspot = exposed_turf.fire
+	var/obj/effect/hotspot/hotspot = exposed_turf.active_hotspot
 	if(hotspot)
 		var/datum/gas_mixture/lowertemp = exposed_turf.remove_air(exposed_turf.return_air().total_moles)
 		lowertemp.temperature = max( min(lowertemp.temperature-2000,lowertemp.temperature / 2) ,0)

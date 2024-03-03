@@ -61,7 +61,7 @@
 	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
 
 	var/obj/item/bodypart/BP = patient.get_bodypart(BODY_ZONE_CHEST)
-	BP.receive_damage(BP.max_damage, breaks_bones = FALSE)
+	BP.receive_damage(BP.max_damage, modifiers = NONE)
 	TEST_ASSERT(BP.get_damage() == BP.max_damage, "Patient did not take [BP.max_damage] damage, took [BP.get_damage()]")
 
 	patient.set_lying_down()

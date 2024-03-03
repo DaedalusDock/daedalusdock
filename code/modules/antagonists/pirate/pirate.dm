@@ -56,11 +56,12 @@
 /datum/team/pirate/proc/forge_objectives()
 	var/datum/objective/loot/getbooty = new()
 	getbooty.team = src
-	for(var/obj/machinery/computer/piratepad_control/P in GLOB.machines)
+	for(var/obj/machinery/computer/piratepad_control/P as anything in INSTANCES_OF(/obj/machinery/computer/piratepad_control))
 		var/area/A = get_area(P)
 		if(istype(A,/area/shuttle/pirate))
 			getbooty.cargo_hold = P
 			break
+
 	getbooty.update_explanation_text()
 	objectives += getbooty
 	for(var/datum/mind/M in members)

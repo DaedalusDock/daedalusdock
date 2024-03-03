@@ -23,7 +23,7 @@
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.apply_water()
 
-	qdel(exposed_turf.fire)
+	qdel(exposed_turf.active_hotspot)
 	if(exposed_turf.simulated)
 		var/datum/gas_mixture/air = exposed_turf.return_air()
 		var/adjust_temp = abs(air.temperature - exposed_temperature) / air.group_multiplier
@@ -99,7 +99,6 @@
 	chemical_flags = REAGENT_CLEANS | REAGENT_IGNORE_MOB_SIZE
 	touch_met = INFINITY
 	ingest_met = INFINITY
-	show_in_codex = TRUE
 	metabolization_rate = 1
 
 	// Holy water. Mostly the same as water, it also heals the plant a little with the power of the spirits. Also ALSO increases instability.
@@ -224,7 +223,10 @@
 
 
 /datum/reagent/blood/affect_blood(mob/living/carbon/C, removed)
-	if(data?["viruses"])
+	if(isnull(data))
+		return
+
+	if(data["viruses"])
 		for(var/datum/disease/strain as anything in data["viruses"])
 
 			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
@@ -232,22 +234,24 @@
 
 			C.ForceContractDisease(strain)
 
-	if(C.get_blood_id() == /datum/reagent/blood)
-		if(!data || !(data["blood_type"] in get_safe_blood(C.dna.blood_type)))
-			C.reagents.add_reagent(/datum/reagent/toxin, removed)
-		else
-			C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
+	if(!(C.get_blood_id() == /datum/reagent/blood))
+		return
+
+	var/datum/blood/blood_type = data["blood_type"]
+
+	if(isnull(blood_type) || !C.dna.blood_type.is_compatible(blood_type.type))
+		C.reagents.add_reagent(/datum/reagent/toxin, removed)
+	else
+		C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
-	if(data?["viruses"])
-		for(var/thing in data["viruses"])
-			var/datum/disease/strain = thing
+	for(var/datum/disease/strain as anything in data?["viruses"])
 
-			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
-				continue
+		if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+			continue
 
-			if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-				C.ContactContractDisease(strain)
+		if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+			C.ContactContractDisease(strain)
 
 /datum/reagent/blood/on_new(list/data)
 	. = ..()
@@ -256,8 +260,11 @@
 
 /datum/reagent/blood/on_merge(list/mix_data)
 	if(data && mix_data)
+		if(data["blood_type"] != mix_data["blood_type"])
+			data["blood_type"] = GET_BLOOD_REF(/datum/blood/slurry)
 		if(data["blood_DNA"] != mix_data["blood_DNA"])
 			data["cloneable"] = 0 //On mix, consider the genetic sampling unviable for pod cloning if the DNA sample doesn't match.
+
 		if(data["viruses"] || mix_data["viruses"])
 
 			var/list/mix1 = data["viruses"]
@@ -564,7 +571,6 @@
 	name = "Technetium 99"
 	description = "A radioactive tracer agent that can improve a scanner's ability to detect internal organ damage. Will poison the patient when present very slowly, purging or using a low dose is recommended after use."
 	metabolization_rate = 0.2
-	show_in_codex = TRUE
 
 /datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
 	if(!(current_cycle % 8))
@@ -913,7 +919,6 @@
 	color = "#c8a5dc"
 	overdose_threshold = 30
 	value = 1.8
-	show_in_codex = TRUE
 
 /datum/reagent/impedrezene/on_mob_metabolize(mob/living/carbon/C, class)
 	ADD_TRAIT(C, TRAIT_IMPEDREZENE, CHEM_TRAIT_SOURCE(class))
@@ -1059,16 +1064,12 @@
 	color = "#D3B913"
 	taste_description = "sweetness"
 
-	show_in_codex = TRUE
-
 /datum/reagent/cryptobiolin
 	name = "Cryptobiolin"
 	description = "Cryptobiolin causes confusion and dizziness."
 	color = "#ADB5DB" //i hate default violets and 'crypto' keeps making me think of cryo so it's light blue now
 	metabolization_rate = 0.3
 	taste_description = "sourness"
-
-	show_in_codex = TRUE
 
 /datum/reagent/cryptobiolin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

@@ -31,6 +31,9 @@
 	flags_1 = BUMP_PRIORITY_1
 	mouse_drop_pointer = TRUE
 
+	/// A url-encoded list defining the bounds that objects can be placed on. Just a visual enhancement
+	var/placable_bounds = "x1=6&y1=11&x2=27&y2=27"
+
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods
 	var/buildstack = /obj/item/stack/sheet/iron
@@ -122,11 +125,11 @@
 		flip(L, get_cardinal_dir(src, over))
 		return
 
-/obj/structure/table/MouseDrop_T(atom/dropping, mob/living/user)
+/obj/structure/table/MouseDroppedOn(atom/dropping, mob/living/user, list/params)
 	. = ..()
 	if(ishuman(dropping))
 		if(dropping != user)
-			try_place_pulled_onto_table(user)
+			try_place_pulled_onto_table(user, dropping)
 			return
 		var/mob/living/carbon/human/H = user
 		if(H.incapacitated() || H.body_position == LYING_DOWN || !H.combat_mode)
@@ -135,6 +138,7 @@
 			return FALSE
 		if(!H.Enter(get_turf(src), TRUE))
 			return
+
 		H.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
 		H.apply_pain(80, BODY_ZONE_HEAD, "Your head screams with pain!")
 		H.Paralyze(1 SECOND)
@@ -145,6 +149,34 @@
 			span_hear("You hear a metallic clang.")
 
 		)
+		return
+
+	if(isitem(dropping))
+		if(!LAZYACCESS(params, ICON_X) || !LAZYACCESS(params, ICON_Y))
+			return
+
+		var/obj/item/I = dropping
+		if(!user.can_equip(I, ITEM_SLOT_HANDS, TRUE, TRUE))
+			return
+
+		if(!(I.loc == loc))
+			return
+
+		var/list/center = I.get_icon_center()
+		var/half_icon_width = world.icon_size / 2
+
+		var/x_offset = center["x"] - half_icon_width
+		var/y_offset = center["y"] - half_icon_width
+
+		var/x_diff = (text2num(params[ICON_X]) - half_icon_width)
+		var/y_diff = (text2num(params[ICON_Y]) - half_icon_width)
+
+		var/list/bounds = get_placable_bounds()
+		var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
+		var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+
+		animate(I, pixel_x = new_x + x_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
+		animate(pixel_y = new_y + y_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
 		return
 
 /obj/structure/table/CanAllowThrough(atom/movable/mover, border_dir)
@@ -248,7 +280,8 @@
 		if(pushed_mob.buckled)
 			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 			return
-		if(user.combat_mode)
+
+		if(user.combat_mode && grab)
 			switch(grab.current_grab.damage_stage)
 				if(GRAB_PASSIVE)
 					to_chat(user, span_warning("You need a better grip to do that!"))
@@ -314,7 +347,7 @@
 	if(!banged_limb)
 		return
 
-	var/blocked = pushed_mob.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	var/blocked = pushed_mob.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 	pushed_mob.apply_damage(30, BRUTE, BODY_ZONE_HEAD, blocked)
 	if (prob(30 * ((100-blocked)/100)))
 		pushed_mob.Knockdown(10 SECONDS)
@@ -400,9 +433,22 @@
 			//Center the icon where the user clicked.
 			if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
 				return
-			//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
-			I.pixel_x = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
-			I.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
+
+			var/list/center = I.get_icon_center()
+			var/half_icon_width = world.icon_size / 2
+
+			var/x_offset = center["x"] - half_icon_width
+			var/y_offset = center["y"] - half_icon_width
+
+			var/x_diff = (text2num(modifiers[ICON_X]) - half_icon_width)
+			var/y_diff = (text2num(modifiers[ICON_Y]) - half_icon_width)
+
+			var/list/bounds = get_placable_bounds()
+			var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
+			var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+
+			I.pixel_x = new_x + x_offset
+			I.pixel_y = new_y + y_offset
 			AfterPutItemOnTable(I, user)
 			return TRUE
 
@@ -473,6 +519,13 @@
 	log_combat(src, target, "shoved", "onto [src] (table)")
 	return COMSIG_CARBON_SHOVE_HANDLED
 
+/// Returns a list of placable bounds, see placable_bounds
+/obj/structure/table/proc/get_placable_bounds()
+	var/list/bounds = params2list(placable_bounds)
+	for(var/key in bounds)
+		bounds[key] = text2num(bounds[key])
+	return bounds
+
 /obj/structure/table/greyscale
 	icon = 'icons/obj/smooth_structures/table_greyscale.dmi'
 	icon_state = "table_greyscale-0"
@@ -530,7 +583,7 @@
 	canSmoothWith = SMOOTH_GROUP_GLASS_TABLES
 	max_integrity = 70
 	resistance_flags = ACID_PROOF
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
 	var/glass_shard_type = /obj/item/shard
 
 /obj/structure/table/glass/CanAllowThrough(atom/movable/mover, border_dir)
@@ -720,7 +773,7 @@
 	buildstack = /obj/item/stack/sheet/plasteel
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(MELEE = 10, BULLET = 30, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
+	armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
 	flipped = -1
 
 /obj/structure/table/reinforced/deconstruction_hints(mob/user)
@@ -832,7 +885,7 @@
 		connected_monitor = null
 	return ..()
 
-/obj/structure/table/optable/MouseDrop_T(atom/dropping, mob/living/user)
+/obj/structure/table/optable/MouseDroppedOn(atom/dropping, mob/living/user)
 	if(!iscarbon(dropping))
 		return ..()
 
@@ -915,7 +968,7 @@
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
 		return TRUE
 
-/obj/structure/rack/MouseDrop_T(obj/O, mob/user)
+/obj/structure/rack/MouseDroppedOn(obj/O, mob/user)
 	. = ..()
 	if ((!( istype(O, /obj/item) ) || user.get_active_held_item() != O))
 		return
@@ -947,7 +1000,7 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_KICK)
 	user.visible_message(span_danger("[user] kicks [src]."), null, null, COMBAT_MESSAGE_RANGE)
-	take_damage(rand(4,8), BRUTE, MELEE, 1)
+	take_damage(rand(4,8), BRUTE, BLUNT, 1)
 
 /obj/structure/rack/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)

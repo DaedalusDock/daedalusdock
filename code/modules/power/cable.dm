@@ -21,7 +21,7 @@
 /obj/structure/cable/Initialize(mapload)
 	. = ..()
 
-	GLOB.cable_list += src //add it to the global cable list
+	::cable_list += src //add it to the global cable list
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE)
 	RegisterSignal(src, COMSIG_RAT_INTERACT, PROC_REF(on_rat_eat))
 	if(isturf(loc))
@@ -78,7 +78,7 @@
 
 /obj/structure/cable/Destroy() // called when a cable is deleted
 	cut_cable_from_powernet() // update the powernets
-	GLOB.cable_list -= src //remove it from global cable list
+	::cable_list -= src //remove it from global cable list
 
 	return ..() // then go ahead and delete the cable
 
@@ -129,7 +129,7 @@
 		coil.place_turf(loc, user, NONE, TRUE, src)
 
 
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 
 /obj/structure/cable/proc/get_power_info()
@@ -170,36 +170,43 @@
 // Machines should use add_load(), surplus(), avail()
 // Non-machines should use add_delayedload(), delayed_surplus(), newavail()
 
+/// Adds power to the power net next tick.
 /obj/structure/cable/proc/add_avail(amount)
 	if(powernet)
 		powernet.newavail += amount
 
+/// Adds load to the power net this tick.
 /obj/structure/cable/proc/add_load(amount)
 	if(powernet)
 		powernet.load += amount
 
+/// How much extra power is in the power net this tick
 /obj/structure/cable/proc/surplus()
 	if(powernet)
 		return clamp(powernet.avail-powernet.load, 0, powernet.avail)
 	else
 		return 0
 
+/// How much power is available this tick.
 /obj/structure/cable/proc/avail(amount)
 	if(powernet)
 		return amount ? powernet.avail >= amount : powernet.avail
 	else
 		return 0
 
+/// Add delayed load to the power net. This should be used outside of machine/process()
 /obj/structure/cable/proc/add_delayedload(amount)
 	if(powernet)
 		powernet.delayedload += amount
 
+/// How much surpless is in the network next tick.
 /obj/structure/cable/proc/delayed_surplus()
 	if(powernet)
 		return clamp(powernet.newavail - powernet.delayedload, 0, powernet.newavail)
 	else
 		return 0
 
+/// How much power the network will contain next tick.
 /obj/structure/cable/proc/newavail()
 	if(powernet)
 		return powernet.newavail
@@ -415,8 +422,8 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 
-	throw_speed = 3
 	throw_range = 5
+
 	stamina_damage = 5
 	stamina_cost = 5
 	stamina_critical_chance = 10
@@ -703,6 +710,9 @@
 
 /obj/item/stack/cable_coil/five
 	amount = 5
+
+/obj/item/stack/cable_coil/ten
+	amount = 10
 
 /obj/item/stack/cable_coil/cut
 	amount = null

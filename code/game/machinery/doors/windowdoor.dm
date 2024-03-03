@@ -9,7 +9,7 @@
 	var/base_state = "left"
 	max_integrity = 150 //If you change this, consider changing ../door/window/brigdoor/ max_integrity at the bottom of this .dm file
 	integrity_failure = 0
-	armor = list(MELEE = 20, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
+	armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
 	visible = FALSE
 	flags_1 = ON_BORDER_1
 	opacity = FALSE
@@ -260,7 +260,7 @@
 	if((exposed_temperature > T0C + (reinf ? 1600 : 800)))
 		take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
-/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume)
+/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
@@ -298,7 +298,7 @@
 	if(density || operating)
 		to_chat(user, span_warning("You need to open the door to access the maintenance panel!"))
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	tool.play_tool_sound(src)
 	panel_open = !panel_open
 	to_chat(user, span_notice("You [panel_open ? "open" : "close"] the maintenance panel."))
@@ -310,7 +310,7 @@
 		return
 	if(!panel_open || density || operating)
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	user.visible_message(span_notice("[user] removes the electronics from the [name]."), \
 	span_notice("You start to remove electronics from the [name]..."))
 	if(!tool.use_tool(src, user, 40, volume=50))
@@ -357,7 +357,7 @@
 /obj/machinery/door/window/interact(mob/user) //for sillycones
 	try_to_activate_door(user)
 
-/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	if (..())
 		autoclose = FALSE
 

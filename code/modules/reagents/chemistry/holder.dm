@@ -151,13 +151,6 @@
 		handle_reactions()
 	return TRUE
 
-/// Like add_reagent but you can enter a list. Format it like this: list(/datum/reagent/toxin = 10, "beer" = 15)
-/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data=null)
-	for(var/r_id in list_reagents)
-		var/amt = list_reagents[r_id]
-		add_reagent(r_id, amt, data)
-
-
 /// Remove a specific reagent
 /datum/reagents/proc/remove_reagent(reagent, amount, safety = TRUE)//Added a safety check for the trans_id_to
 	if(isnull(amount))
@@ -306,6 +299,35 @@
 					return holder_reagent
 	return FALSE
 
+/// Like has_reagent but you can enter a list.
+/datum/reagents/proc/has_reagent_list(list/list_reagents)
+	for(var/r_id in list_reagents)
+		var/amt = list_reagents[r_id]
+		if(!has_reagent(r_id, amt))
+			return FALSE
+	return TRUE
+
+/// Like add_reagent but you can enter a list. Format it like this: list(/datum/reagent/toxin = 10, "beer" = 15)
+/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data)
+	for(var/r_id in list_reagents)
+		var/amt = list_reagents[r_id]
+		add_reagent(r_id, amt, data)
+
+/// Like remove_reagent but you can enter a list.
+/datum/reagents/proc/remove_reagent_list(list/list_reagents)
+	for(var/r_id in list_reagents)
+		var/amt = list_reagents[r_id]
+		remove_reagent(r_id, amt)
+
+/// Adds a reagent up to a cap.
+/datum/reagents/proc/add_reagent_up_to(reagent, amount, cap)
+	var/existing = get_reagent_amount(reagent)
+	if(existing >= cap)
+		return
+
+	var/to_add = min(cap - amount, cap - existing, amount)
+	return add_reagent(reagent, to_add)
+
 /**
  * Check if this holder contains a reagent with a chemical_flags containing this flag
  * Reagent takes the bitflag to search for
@@ -435,7 +457,7 @@
 			transfer_log[reagent.type] = reagent_qualities
 
 	if(transfered_by && target_atom)
-		target_atom.add_hiddenprint(transfered_by) //log prints so admins can figure out who touched it last.
+		target_atom.log_touch(transfered_by) //log prints so admins can figure out who touched it last.
 		log_combat(transfered_by, target_atom, "transferred reagents ([get_external_reagent_log_string(transfer_log)]) from [my_atom] to")
 
 	update_total()

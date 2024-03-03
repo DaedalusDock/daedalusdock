@@ -26,6 +26,9 @@
 /obj/item/hand_item/grab/Initialize(mapload, atom/movable/target, datum/grab/grab_type, use_offhand)
 	. = ..()
 	current_grab = GLOB.all_grabstates[grab_type]
+	if(isnull(current_grab))
+		stack_trace("Bad grab type requested: [grab_type || "NULL"]")
+		return INITIALIZE_HINT_QDEL
 
 	assailant = loc
 	if(!istype(assailant))
@@ -252,8 +255,12 @@
 	update_appearance()
 	leave_forensic_traces()
 
+	if(QDELETED(src))
+		return
+
 	if(!current_grab.enter_as_up(src, silent))
 		return
+
 	if(is_grab_unique(current_grab))
 		current_grab.apply_unique_grab_effects(src)
 

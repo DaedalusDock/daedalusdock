@@ -8,17 +8,23 @@
 	var/access = FALSE
 	var/access_view = FALSE
 	var/access_any = FALSE
+
 	var/list/contains = null
 	var/crate_name = "crate"
 	var/id
 	var/desc = ""//no desc by default
 	var/crate_type = /obj/structure/closet/crate
+
+	/// If TRUE, can spawn with missing contents due to MANIFEST_ERROR_ITEM occuring.
+	var/can_be_missing_contents = TRUE
 	var/dangerous = FALSE // Should we message admins?
 	var/special = FALSE //Event/Station Goals/Admin enabled packs
 	var/special_enabled = FALSE
+
 	var/DropPodOnly = FALSE //only usable by the Bluespace Drop Pod via the express cargo console
 	var/special_pod //If this pack comes shipped in a specific pod when launched from the express console
 	var/admin_spawned = FALSE
+
 	var/goody = FALSE //Goodies can only be purchased by private accounts and can have coupons apply to them. They also come in a lockbox instead of a full crate, so the 700 min doesn't apply
 
 /datum/supply_pack/New()
@@ -323,7 +329,7 @@
 	desc = "Stay hot on the criminal's heels with Mars' Detective Essentials(tm). Contains a forensics scanner, six evidence bags, camera, tape recorder, white crayon, and of course, a fedora. Requires Security access to open."
 	cost = CARGO_CRATE_VALUE * 2.5
 	access_view = ACCESS_MORGUE
-	contains = list(/obj/item/detective_scanner,
+	contains = list(/obj/item/storage/scene_cards,
 					/obj/item/storage/box/evidence,
 					/obj/item/camera,
 					/obj/item/taperecorder,
@@ -2384,16 +2390,6 @@
 					/obj/item/ammo_box/magazine/toy/pistol)
 	crate_name = "foam force crate"
 
-/datum/supply_pack/costumes_toys/riot_foam
-	name = "Riot Foam Darts Crate"
-	desc = "Lock and load your foam force arsenal to floor your opponents with 120 of our new and improved high density foam darts! Remember, it's Donk or Die!"
-	contraband = TRUE
-	cost = CARGO_CRATE_VALUE * 4
-	contains = list(/obj/item/ammo_box/foambox/riot,
-					/obj/item/ammo_box/foambox/riot,
-					/obj/item/ammo_box/foambox/riot)
-	crate_name = "riot foam darts crate"
-
 /datum/supply_pack/costumes_toys/formalwear
 	name = "Formalwear Crate"
 	desc = "You're gonna like the way you look, I guaranteed it. Contains an asston of fancy clothing."
@@ -2425,15 +2421,6 @@
 					/obj/item/clothing/under/suit/tan,
 					/obj/item/lipstick/random)
 	crate_name = "formalwear crate"
-	crate_type = /obj/structure/closet/crate/wooden
-
-/datum/supply_pack/costumes_toys/clownpin
-	name = "Hilarious Firing Pin Crate"
-	desc = "I uh... I'm not really sure what this does. Wanna buy it?"
-	cost = CARGO_CRATE_VALUE * 10
-	contraband = TRUE
-	contains = list(/obj/item/firing_pin/clown)
-	crate_name = "toy crate" // It's /technically/ a toy. For the clown, at least.
 	crate_type = /obj/structure/closet/crate/wooden
 
 /datum/supply_pack/costumes_toys/lasertag

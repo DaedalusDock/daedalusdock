@@ -74,7 +74,7 @@
 		if(next_beep <= world.time)
 			next_beep = world.time + 10
 			playsound(src, 'sound/machines/clockcult/integration_cog_install.ogg', 50, TRUE)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 	if(istype(W, /obj/item/gun/energy/plasmacutter))
 		to_chat(user, span_notice("You start slicing apart the girder..."))
@@ -172,7 +172,7 @@
 				qdel(src)
 				return
 
-		add_hiddenprint(user)
+		log_touch(user)
 
 	else if(istype(W, /obj/item/pipe))
 		var/obj/item/pipe/P = W
@@ -294,7 +294,7 @@
 	can_displace = FALSE
 
 /obj/structure/girder/cult/attackby(obj/item/W, mob/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(istype(W, /obj/item/melee/cultblade/dagger) && IS_CULTIST(user)) //Cultists can demolish cult girders instantly with their tomes
 		user.visible_message(span_warning("[user] strikes [src] with [W]!"), span_notice("You demolish [src]."))
 		new /obj/item/stack/sheet/runed_metal(drop_location(), 1)
@@ -370,7 +370,7 @@
 	can_displace = FALSE
 
 /obj/structure/girder/bronze/attackby(obj/item/W, mob/living/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(W.tool_behaviour == TOOL_WELDER)
 		if(!W.tool_start_check(user, amount = 0))
 			return

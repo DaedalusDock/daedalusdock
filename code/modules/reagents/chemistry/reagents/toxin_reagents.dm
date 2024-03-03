@@ -38,7 +38,6 @@
 	toxpwr = 0.5
 	taste_description = "slime"
 	taste_mult = 0.9
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
@@ -60,8 +59,6 @@
 	if(chems.has_reagent(type, 1))
 		mytray.adjust_toxic(3) //It is still toxic, mind you, but not to the same degree.
 
-#define LIQUID_PLASMA_BP (50+T0C)
-
 /datum/reagent/toxin/plasma
 	name = "Plasma"
 	description = "Plasma in its liquid form."
@@ -74,7 +71,7 @@
 	penetrates_skin = NONE
 	burning_temperature = 4500//plasma is hot!!
 	burning_volume = 0.3//But burns fast
-
+	codex_mechanics = "Plasma will ignite at 519.15 K, take care when handling."
 
 /datum/reagent/toxin/plasma/on_new(data)
 	. = ..()
@@ -94,18 +91,20 @@
 			for(var/obj/item/bodypart/BP as anything in C.bodyparts)
 				BP.heal_bones()
 
-/// Handles plasma boiling.
+// Plasma will attempt to ignite at the ignition temperature.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)
 	SIGNAL_HANDLER
-	if(holder.chem_temp < LIQUID_PLASMA_BP)
+	if(holder.chem_temp < PHORON_FLASHPOINT)
 		return
-	if(!holder.my_atom)
+	if(!holder.my_atom || !(holder.flags & OPENCONTAINER))
 		return
 
 	var/turf/open/T = get_turf(holder.my_atom)
 	if(!istype(T))
 		return
-	T.assume_gas(GAS_PLASMA, volume, holder.chem_temp)
+
+	holder.my_atom.visible_message(span_danger("[holder.my_atom] emits a shriek as hot plasma fills the air."))
+	T.assume_gas(GAS_PLASMA, volume / REAGENT_GAS_EXCHANGE_FACTOR, holder.chem_temp)
 	holder.del_reagent(type)
 
 /datum/reagent/toxin/plasma/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
@@ -113,7 +112,7 @@
 	if(!istype(exposed_turf))
 		return
 
-	if(exposed_temperature >= LIQUID_PLASMA_BP)
+	if(exposed_temperature >= PHORON_FLASHPOINT)
 		exposed_turf.assume_gas(GAS_PLASMA, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, exposed_temperature)
 
 /datum/reagent/toxin/plasma/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
@@ -805,7 +804,6 @@
 	color = "#F0FFF0"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 0
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/lipolicide/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

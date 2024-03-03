@@ -189,25 +189,24 @@
 		part.heat_protection = NONE
 		part.cold_protection = NONE
 		part.alternate_worn_layer = mod_parts[part]
+
 	if(part == boots)
 		boots.icon_state = "[skin]-boots[seal ? "-sealed" : ""]"
-		wearer.update_worn_shoes()
+
 	if(part == gauntlets)
 		gauntlets.icon_state = "[skin]-gauntlets[seal ? "-sealed" : ""]"
-		wearer.update_worn_gloves()
+
 	if(part == chestplate)
 		chestplate.icon_state = "[skin]-chestplate[seal ? "-sealed" : ""]"
-		wearer.update_worn_oversuit()
-		wearer.update_worn_undersuit()
+
 	if(part == helmet)
 		helmet.icon_state = "[skin]-helmet[seal ? "-sealed" : ""]"
-		wearer.update_worn_head()
-		wearer.update_worn_mask()
-		wearer.update_worn_glasses()
-		wearer.update_body_parts()
+
 		// Close internal air tank if MOD helmet is unsealed and was the only breathing apparatus.
 		if (!seal && wearer?.invalid_internals())
 			wearer.cutoff_internals()
+
+	wearer.update_slots_for_item(part)
 
 /// Finishes the suit's activation, starts processing
 /obj/item/mod/control/proc/finish_activation(on)

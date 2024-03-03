@@ -666,7 +666,7 @@
 /datum/dynamic_ruleset/roundstart/nuclear/clown_ops/pre_execute()
 	. = ..()
 	if(.)
-		var/obj/machinery/nuclearbomb/syndicate/syndicate_nuke = locate() in GLOB.nuke_list
+		var/obj/machinery/nuclearbomb/syndicate/syndicate_nuke = locate() in INSTANCES_OF(/obj/machinery/nuclearbomb)
 		if(syndicate_nuke)
 			var/turf/nuke_turf = get_turf(syndicate_nuke)
 			if(nuke_turf)

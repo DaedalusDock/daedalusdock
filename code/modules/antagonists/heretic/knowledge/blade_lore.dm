@@ -123,7 +123,7 @@
 	damage = 0,
 	attack_text = "the attack",
 	attack_type = MELEE_ATTACK,
-	armour_penetration = 0,
+	armor_penetration = 0,
 )
 
 	SIGNAL_HANDLER
@@ -171,7 +171,7 @@
 	addtimer(CALLBACK(src, PROC_REF(reset_riposte), source), BLADE_DANCE_COOLDOWN)
 
 /datum/heretic_knowledge/blade_dance/proc/counter_attack(mob/living/carbon/human/source, mob/living/target, obj/item/melee/sickly_blade/weapon, attack_text)
-	playsound(get_turf(source), 'sound/weapons/parry.ogg', 100, TRUE)
+	playsound(get_turf(source), 'sound/weapons/block/parry_metal.ogg', 100, TRUE)
 	source.balloon_alert(source, "riposte used")
 	source.visible_message(
 		span_warning("[source] leans into [attack_text] and delivers a sudden riposte back at [target]!"),
@@ -359,7 +359,6 @@
 /datum/heretic_knowledge/final/blade_final/on_finished_recipe(mob/living/user, list/selected_atoms, turf/loc)
 	. = ..()
 	priority_announce("[generate_heretic_text()] Master of blades, the Colonel's disciple, [user.real_name] has ascended! Their steel is that which will cut reality in a maelstom of silver! [generate_heretic_text()]","[generate_heretic_text()]", sound_type = ANNOUNCER_SPANOMALIES)
-	user.client?.give_award(/datum/award/achievement/misc/blade_ascension, user)
 	ADD_TRAIT(user, TRAIT_STUNIMMUNE, name)
 	ADD_TRAIT(user, TRAIT_NEVER_WOUNDED, name)
 	RegisterSignal(user, COMSIG_HERETIC_BLADE_ATTACK, PROC_REF(on_eldritch_blade))

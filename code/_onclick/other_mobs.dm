@@ -9,51 +9,84 @@
 	else if (secondary_result != SECONDARY_ATTACK_CALL_NORMAL)
 		CRASH("attack_hand_secondary did not return a SECONDARY_ATTACK_* define.")
 
-/*
-	Humans:
-	Adds an exception for gloves, to allow special glove types like the ninja ones.
+/**
+ * Checks if this mob is in a valid state to punch someone.
+ */
+/mob/living/proc/can_unarmed_attack()
+	return !HAS_TRAIT(src, TRAIT_HANDS_BLOCKED)
 
-	Otherwise pretty standard.
-*/
-/mob/living/carbon/human/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
-	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
-		if(src == A)
-			check_self_for_injuries()
+/mob/living/carbon/can_unarmed_attack()
+	. = ..()
+	if(!.)
 		return
+
+	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+		return FALSE
+
 	if(!has_active_hand()) //can't attack without a hand.
 		var/obj/item/bodypart/check_arm = get_active_hand()
 		if(check_arm?.bodypart_disabled)
 			to_chat(src, span_warning("Your [check_arm.name] is in no condition to be used."))
-			return
+			return FALSE
 
 		to_chat(src, span_notice("You look at your arm and sigh."))
-		return
+		return FALSE
 
-	// Special glove functions:
-	// If the gloves do anything, have them return 1 to stop
-	// normal attack_hand() here.
-	var/obj/item/clothing/gloves/G = gloves // not typecast specifically enough in defines
-	if(proximity_flag && istype(G) && G.Touch(A,1,modifiers))
-		return
+
+	return TRUE
+
+/mob/living/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
 	//This signal is needed to prevent gloves of the north star + hulk.
-	if(SEND_SIGNAL(src, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, A, proximity_flag, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
-		return
-	SEND_SIGNAL(src, COMSIG_HUMAN_MELEE_UNARMED_ATTACK, A, proximity_flag, modifiers)
+	var/sig_return = SEND_SIGNAL(src, COMSIG_LIVING_EARLY_UNARMED_ATTACK, attack_target, proximity_flag, modifiers)
+	if(sig_return & COMPONENT_CANCEL_ATTACK_CHAIN)
+		return ATTACK_CHAIN_SUCCESS
 
-	if(!right_click_attack_chain(A, modifiers) && !dna?.species?.spec_unarmedattack(src, A, modifiers)) //Because species like monkeys dont use attack hand
-		. = A.attack_hand(src, modifiers)
-		if(.)
-			animate_interact(A, INTERACT_GENERIC)
+	if(sig_return & COMPONENT_SKIP_ATTACK_STEP)
+		return ATTACK_CHAIN_CONTINUE
 
+	if(!can_unarmed_attack())
+		return ATTACK_CHAIN_CONTINUE
 
+	sig_return = SEND_SIGNAL(src, COMSIG_LIVING_UNARMED_ATTACK, attack_target, proximity_flag, modifiers)
+	if(sig_return & COMPONENT_CANCEL_ATTACK_CHAIN)
+		return ATTACK_CHAIN_SUCCESS
+
+	if(sig_return & COMPONENT_SKIP_ATTACK_STEP)
+		return ATTACK_CHAIN_CONTINUE
+
+	if(!right_click_attack_chain(attack_target, modifiers))
+		resolve_unarmed_attack(attack_target, modifiers)
+
+/mob/living/carbon/human/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
+	if(src == attack_target && !combat_mode && !HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+		check_self_for_injuries()
+		return ATTACK_CHAIN_SUCCESS
+
+	return ..()
+
+/mob/living/carbon/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	return attack_target.attack_paw(src, modifiers)
+
+/mob/living/carbon/human/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	if(!ISADVANCEDTOOLUSER(src))
+		return ..()
+
+	. = attack_target.attack_hand(src, modifiers)
+
+	if(. == ATTACK_CHAIN_SUCCESS)
+		animate_interact(attack_target, INTERACT_GENERIC)
 
 /// Return TRUE to cancel other attack hand effects that respect it. Modifiers is the assoc list for click info such as if it was a right click.
 /atom/proc/attack_hand(mob/user, list/modifiers)
 	. = FALSE
-	if(!(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND))
+	if(!(interaction_flags_atom & (INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND | INTERACT_ATOM_ATTACK_HAND)))
 		add_fingerprint(user)
+	else
+		log_touch(user)
+
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		. = TRUE
+
 	if(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
 		. = _try_interact(user)
 
@@ -68,16 +101,20 @@
 /atom/proc/_try_interact(mob/user)
 	if(isAdminGhostAI(user)) //admin abuse
 		return interact(user)
+
 	if(can_interact(user))
 		return interact(user)
+
 	return FALSE
 
 /atom/proc/can_interact(mob/user)
 	if(!user.can_interact_with(src))
 		return FALSE
+
 	if((interaction_flags_atom & INTERACT_ATOM_REQUIRES_DEXTERITY) && !ISADVANCEDTOOLUSER(user))
 		to_chat(user, span_warning("You don't have the dexterity to do this!"))
 		return FALSE
+
 	if(!(interaction_flags_atom & INTERACT_ATOM_IGNORE_INCAPACITATED))
 		var/ignore_flags = NONE
 		if(interaction_flags_atom & INTERACT_ATOM_IGNORE_RESTRAINED)
@@ -87,6 +124,7 @@
 
 		if(user.incapacitated(ignore_flags))
 			return FALSE
+
 	return TRUE
 
 /atom/ui_status(mob/user)
@@ -103,12 +141,14 @@
 
 /atom/proc/interact(mob/user)
 	if(interaction_flags_atom & INTERACT_ATOM_NO_FINGERPRINT_INTERACT)
-		add_hiddenprint(user)
+		log_touch(user)
 	else
 		add_fingerprint(user)
+
 	if(interaction_flags_atom & INTERACT_ATOM_UI_INTERACT)
 		SEND_SIGNAL(src, COMSIG_ATOM_UI_INTERACT, user)
 		return ui_interact(user)
+
 	return FALSE
 
 
@@ -116,27 +156,19 @@
 	. = ..()
 	if(.)
 		return
-	if(gloves)
-		var/obj/item/clothing/gloves/G = gloves
-		if(istype(G) && G.Touch(A,0,modifiers)) // for magic gloves
-			return TRUE
 
 	if(isturf(A) && get_dist(src,A) <= 1)
 		move_grabbed_atoms_towards(A)
 		return TRUE
 
+
+/// Called by UnarmedAttack(), directs the proc to a type-specified child proc.
+/mob/living/proc/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	attack_target.attack_animal(src, modifiers)
+
 /*
 	Animals & All Unspecified
 */
-
-// If the UnarmedAttack chain is blocked
-#define LIVING_UNARMED_ATTACK_BLOCKED(target_atom) (HAS_TRAIT(src, TRAIT_HANDS_BLOCKED) \
-	|| SEND_SIGNAL(src, COMSIG_LIVING_UNARMED_ATTACK, target_atom, proximity_flag, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
-
-/mob/living/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
-	attack_target.attack_animal(src, modifiers)
 
 /atom/proc/attack_animal(mob/user, list/modifiers)
 	SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_ANIMAL, user)
@@ -155,9 +187,7 @@
 	Aliens
 	Defaults to same as monkey in most places
 */
-/mob/living/carbon/alien/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
+/mob/living/carbon/alien/resolve_unarmed_attack(atom/attack_target, list/modifiers)
 	attack_target.attack_alien(src, modifiers)
 
 /atom/proc/attack_alien(mob/living/carbon/alien/user, list/modifiers)
@@ -166,9 +196,7 @@
 
 
 // Babby aliens
-/mob/living/carbon/alien/larva/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
+/mob/living/carbon/alien/larva/resolve_unarmed_attack(atom/attack_target, list/modifiers)
 	attack_target.attack_larva(src)
 
 /atom/proc/attack_larva(mob/user)
@@ -179,12 +207,11 @@
 	Slimes
 	Nothing happening here
 */
-/mob/living/simple_animal/slime/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
+/mob/living/simple_animal/slime/resolve_unarmed_attack(atom/attack_target, list/modifiers)
 	if(isturf(attack_target))
 		return ..()
-	attack_target.attack_slime(src)
+
+	return attack_target.attack_slime(src)
 
 /atom/proc/attack_slime(mob/user)
 	return
@@ -193,10 +220,8 @@
 /*
 	Drones
 */
-/mob/living/simple_animal/drone/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
-	attack_target.attack_drone(src, modifiers)
+/mob/living/simple_animal/drone/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	return attack_target.attack_drone(src, modifiers)
 
 /// Defaults to attack_hand or attack_hand_secondary. Override it when you don't want drones to do same stuff as humans.
 /atom/proc/attack_drone(mob/living/simple_animal/drone/user, list/modifiers)
@@ -224,9 +249,7 @@
 	Simple animals
 */
 
-/mob/living/simple_animal/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
+/mob/living/simple_animal/resolve_unarmed_attack(atom/attack_target, list/modifiers)
 	if(dextrous && (isitem(attack_target) || !combat_mode))
 		attack_target.attack_hand(src, modifiers)
 		update_held_items()
@@ -237,16 +260,12 @@
 	Hostile animals
 */
 
-/mob/living/simple_animal/hostile/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
+/mob/living/simple_animal/hostile/resolve_unarmed_attack(atom/attack_target, list/modifiers)
 	GiveTarget(attack_target)
 	if(dextrous && (isitem(attack_target) || !combat_mode))
 		..()
 	else
 		AttackingTarget(attack_target)
-
-#undef LIVING_UNARMED_ATTACK_BLOCKED
 
 /*
 	New Players:

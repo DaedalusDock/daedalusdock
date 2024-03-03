@@ -66,7 +66,7 @@
 /mob/living/simple_animal/bot/firebot/UnarmedAttack(atom/A, proximity_flag, list/modifiers)
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
-	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+	if(!can_unarmed_attack())
 		return
 	if(internal_ext)
 		internal_ext.afterattack(A, src)
@@ -156,7 +156,7 @@
 
 	else if(isturf(target))
 		var/turf/open/T = target
-		if(T.fire)
+		if(T.active_hotspot)
 			return TRUE
 
 	return FALSE

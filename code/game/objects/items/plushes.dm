@@ -218,7 +218,6 @@
 	else if(Kisser.partner == src && !plush_child) //the one advancing does not take ownership of the child and we have a one child policy in the toyshop
 		user.visible_message(span_notice("[user] is going to break [Kisser] and [src] by bashing them like that."),
 									span_notice("[Kisser] passionately embraces [src] in your hands. Look away you perv!"))
-		user.client.give_award(/datum/award/achievement/misc/rule8, user)
 		if(plop(Kisser))
 			user.visible_message(span_notice("Something drops at the feet of [user]."),
 							span_notice("The miracle of oh god did that just come out of [src]?!"))
@@ -595,7 +594,7 @@
 	name = "strange goat plushie"
 	icon_state = "goat"
 	desc = "Despite its cuddly appearance and plush nature, it will beat you up all the same. Goats never change."
-	squeak_override = list('sound/weapons/punch1.ogg'=1)
+	squeak_override = list(SFX_PUNCH=1)
 	/// Whether or not this goat is currently taking in a monsterous doink
 	var/going_hard = FALSE
 	/// Whether or not this goat has been flattened like a funny pancake

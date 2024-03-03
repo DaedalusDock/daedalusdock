@@ -383,7 +383,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/vodka,
 /obj/item/reagent_containers/food/drinks/bottle/vodka,
 /obj/item/reagent_containers/food/drinks/bottle/vodka,
-/obj/item/crowbar/large/old,
+/obj/item/crowbar/old,
 /obj/item/lighter/greyscale,
 /turf/open/floor/pod/dark,
 /area/shuttle/hunter/russian)

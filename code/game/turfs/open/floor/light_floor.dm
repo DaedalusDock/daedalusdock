@@ -33,7 +33,7 @@
 
 /turf/open/floor/light/examine(mob/user)
 	. = ..()
-	. += span_notice("There's a <b>small crack</b> on the edge of it.")
+	. += span_notice("It looks like you could <b>pry</b> it up.")
 	. += span_notice("Use a multitool on it to change colors.")
 	. += span_notice("Use a screwdriver to turn it off or on.")
 	if(state) ///check if broken

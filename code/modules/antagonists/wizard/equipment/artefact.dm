@@ -52,6 +52,10 @@
 	src.spawn_fast = spawn_fast
 	START_PROCESSING(SSobj, src)
 
+/obj/effect/rend/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/effect/rend/process()
 	if(!spawn_fast)
 		if(locate(/mob) in loc)
@@ -161,7 +165,6 @@
 	desc = "An incandescent orb of otherworldly energy, merely holding it gives you vision and hearing beyond mortal means, and staring into it lets you see the entire universe."
 	icon = 'icons/obj/guns/projectiles.dmi'
 	icon_state ="bluespace"
-	throw_speed = 3
 	throw_range = 7
 	throwforce = 15
 	damtype = BURN

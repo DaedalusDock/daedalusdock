@@ -42,7 +42,7 @@
 
 
 //pod insertion
-/obj/structure/transit_tube/station/MouseDrop_T(obj/structure/c_transit_tube_pod/R, mob/user)
+/obj/structure/transit_tube/station/MouseDroppedOn(obj/structure/c_transit_tube_pod/R, mob/user)
 	if(isliving(user))
 		var/mob/living/L = user
 		if(L.incapacitated())

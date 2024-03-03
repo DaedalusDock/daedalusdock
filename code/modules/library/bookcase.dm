@@ -12,7 +12,7 @@
 	opacity = FALSE
 	resistance_flags = FLAMMABLE
 	max_integrity = 200
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
 	var/state = BOOKCASE_UNANCHORED
 	/// When enabled, books_to_load number of random books will be generated for this bookcase
 	var/load_random_books = FALSE
@@ -57,14 +57,14 @@
 /obj/structure/bookcase/examine(mob/user)
 	. = ..()
 	if(!anchored)
-		. += span_notice("The <i>bolts</i> on the bottom are unsecured.")
+		. += span_notice("The <b>bolts</b> on the bottom are unsecured.")
 	else
 		. += span_notice("It's secured in place with <b>bolts</b>.")
 	switch(state)
 		if(BOOKCASE_UNANCHORED)
 			. += span_notice("There's a <b>small crack</b> visible on the back panel.")
 		if(BOOKCASE_ANCHORED)
-			. += span_notice("There's space inside for a <i>wooden</i> shelf.")
+			. += span_notice("There's space inside for a wooden shelf.")
 		if(BOOKCASE_FINISHED)
 			. += span_notice("There's a <b>small crack</b> visible on the shelf.")
 

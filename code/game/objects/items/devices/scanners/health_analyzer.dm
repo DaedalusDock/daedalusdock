@@ -20,7 +20,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=200)
 	var/mode = SCANNER_VERBOSE
@@ -31,10 +30,6 @@
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()
 	register_item_context()
-
-/obj/item/healthanalyzer/examine(mob/user)
-	. = ..()
-	. += span_notice("Alt-click [src] to toggle the limb damage readout.")
 
 /obj/item/healthanalyzer/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to analyze [user.p_them()]self with [src]! The display shows that [user.p_theyre()] dead!"))

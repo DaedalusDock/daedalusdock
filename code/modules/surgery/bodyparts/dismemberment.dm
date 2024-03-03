@@ -18,11 +18,13 @@
 	if(!silent)
 		var/list/messages = violent_dismember_messages(dismember_type, clean)
 		if(length(messages))
-			owner.visible_message(
+			limb_owner.visible_message(
 				span_danger("[messages[1]]"),
 				span_userdanger("[messages[2]]"),
 				span_hear("[messages[3]]")
 			)
+		if(!(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(limb_owner, TRAIT_NO_PAINSHOCK) && prob(80))
+			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob/living/carbon, pain_emote), PAIN_AMT_AGONIZING, TRUE)
 
 	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
 	var/obj/item/bodypart/stump
@@ -37,8 +39,8 @@
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
 
 	// At this point the limb has been removed from it's parent mob.
+	limb_owner.apply_pain(60, body_zone, "OH GOD MY [uppertext(plaintext_zone)]!!!", TRUE)
 	drop_limb()
-	adjustPain(60)
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
 	var/turf/owner_location = limb_owner.loc
@@ -86,13 +88,11 @@
 
 	if(dismember_type == DROPLIMB_BLUNT)
 		limb_owner.spray_blood(direction, 2)
-		var/obj/effect/decal/cleanable/gore
 		if(IS_ORGANIC_LIMB(src))
-			gore = new /obj/effect/decal/cleanable/blood/gibs(get_turf(limb_owner))
+			new /obj/effect/decal/cleanable/blood/gibs(get_turf(limb_owner))
 		else
-			gore = new /obj/effect/decal/cleanable/robot_debris(get_turf(limb_owner))
+			new /obj/effect/decal/cleanable/robot_debris(get_turf(limb_owner))
 
-		gore.throw_at(get_edge_target_turf(src, direction), rand(1,3), 5)
 		drop_contents()
 		qdel(src)
 
@@ -180,13 +180,13 @@
 		O.Remove(phantom_owner, special)
 		add_organ(O) //Remove() removes it from the limb as well.
 
-	for(var/trait in bodypart_traits)
-		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)
+	remove_traits_from(phantom_owner)
 
 	remove_splint()
 
 	update_icon_dropped()
 	synchronize_bodytypes(phantom_owner)
+
 	phantom_owner.update_health_hud() //update the healthdoll
 	phantom_owner.update_body()
 
@@ -218,6 +218,7 @@
 /obj/item/bodypart/proc/add_organ(obj/item/organ/O)
 	O.ownerlimb = src
 	contained_organs |= O
+	ADD_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
 
 	if(O.visual)
 		if(owner && O.external_bodytypes)
@@ -228,6 +229,7 @@
 /obj/item/bodypart/proc/remove_organ(obj/item/organ/O)
 	contained_organs -= O
 
+	REMOVE_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
 	if(owner && O.visual && O.external_bodytypes)
 		synchronize_bodytypes(owner)
 
@@ -320,7 +322,10 @@
 
 	name = "[owner.real_name]'s head"
 
+	var/mob/living/carbon/human/old_owner = owner
 	. = ..()
+
+	old_owner.update_name()
 
 	if(!special)
 		if(brain?.brainmob)
@@ -404,8 +409,7 @@
 
 	update_disabled()
 
-	for(var/trait in bodypart_traits)
-		ADD_TRAIT(owner, trait, bodypart_trait_source)
+	apply_traits()
 
 	// Bodyparts need to be sorted for leg masking to be done properly. It also will allow for some predictable
 	// behavior within said bodyparts list. We sort it here, as it's the only place we make changes to bodyparts.
@@ -425,7 +429,8 @@
 		return .
 
 	if(real_name)
-		new_head_owner.real_name = real_name
+		new_head_owner.set_real_name(real_name)
+
 	real_name = ""
 
 	//Handle dental implants

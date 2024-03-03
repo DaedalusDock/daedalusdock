@@ -967,16 +967,6 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/briefing)
-"cL" = (
-/obj/item/gun/energy/pulse/carbine/loyalpin,
-/obj/item/flashlight/seclite,
-/obj/structure/table/reinforced,
-/obj/machinery/airalarm/directional/south,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/iron,
-/area/centcom/central_command_areas/admin/storage)
 "cN" = (
 /obj/effect/turf_decal/siding/wood,
 /obj/effect/turf_decal/siding/wood{
@@ -1379,6 +1369,19 @@
 	},
 /turf/open/floor/iron,
 /area/centcom/tdome/observation)
+"dY" = (
+/obj/effect/turf_decal/siding/thinplating_new/dark{
+	dir = 8
+	},
+/obj/structure/table/glass/plasmaglass,
+/obj/item/folder/white,
+/obj/item/pen{
+	pixel_x = 6;
+	pixel_y = 5
+	},
+/obj/machinery/light/cold/directional/west,
+/turf/open/floor/mineral/plastitanium,
+/area/centcom/syndicate_mothership/control)
 "dZ" = (
 /obj/item/kirbyplants{
 	icon_state = "plant-21"
@@ -4811,7 +4814,6 @@
 "nO" = (
 /obj/item/clipboard,
 /obj/structure/table/reinforced,
-/obj/item/detective_scanner,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -5644,6 +5646,16 @@
 	},
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/supplypod/loading/ert)
+"pY" = (
+/obj/item/gun/energy/pulse/carbine,
+/obj/item/flashlight/seclite,
+/obj/structure/table/reinforced,
+/obj/machinery/airalarm/directional/south,
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/centcom/central_command_areas/admin/storage)
 "pZ" = (
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -8114,6 +8126,17 @@
 /obj/machinery/vending/snack,
 /turf/open/floor/engine/cult,
 /area/centcom/wizard_station)
+"xy" = (
+/obj/structure/table/reinforced,
+/obj/item/paper/fluff/stations/centcom/disk_memo{
+	pixel_x = -6;
+	pixel_y = -7
+	},
+/obj/item/taperecorder{
+	pixel_y = 15
+	},
+/turf/open/floor/carpet,
+/area/centcom/syndicate_mothership/control)
 "xz" = (
 /obj/structure/table/wood/fancy,
 /obj/item/storage/photo_album,
@@ -10863,18 +10886,6 @@
 /obj/item/pen,
 /turf/open/floor/iron/dark/textured_large,
 /area/centcom/syndicate_mothership/control)
-"Ft" = (
-/obj/structure/table/reinforced,
-/obj/item/paper/fluff/stations/centcom/disk_memo{
-	pixel_x = -6;
-	pixel_y = -7
-	},
-/obj/item/taperecorder{
-	pixel_y = 15
-	},
-/obj/item/stack/spacecash/c50,
-/turf/open/floor/carpet,
-/area/centcom/syndicate_mothership/control)
 "Fv" = (
 /obj/machinery/door/airlock/centcom{
 	name = "CentCom"
@@ -13265,22 +13276,6 @@
 /obj/structure/sign/nanotrasen,
 /turf/closed/indestructible/reinforced/centcom,
 /area/centcom/central_command_areas/briefing)
-"MZ" = (
-/obj/effect/turf_decal/siding/thinplating_new/dark{
-	dir = 8
-	},
-/obj/structure/table/glass/plasmaglass,
-/obj/item/folder/white,
-/obj/item/pen{
-	pixel_x = 6;
-	pixel_y = 5
-	},
-/obj/machinery/light/cold/directional/west,
-/obj/item/stack/spacecash/c200{
-	pixel_y = 17
-	},
-/turf/open/floor/mineral/plastitanium,
-/area/centcom/syndicate_mothership/control)
 "Na" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark/corner,
 /turf/open/floor/mineral/plastitanium/red,
@@ -25617,7 +25612,7 @@ ng
 VX
 XE
 od
-MZ
+dY
 Sr
 nz
 br
@@ -37188,7 +37183,7 @@ nz
 HN
 gJ
 dy
-Ft
+xy
 nt
 HJ
 VJ
@@ -58516,7 +58511,7 @@ XA
 Sx
 Nn
 yi
-cL
+pY
 YU
 vb
 oe

@@ -60,7 +60,7 @@
 
 	expand(current_size)
 
-	for (var/obj/machinery/power/singularity_beacon/singu_beacon in GLOB.machines)
+	for (var/obj/machinery/power/singularity_beacon/singu_beacon as anything in INSTANCES_OF(/obj/machinery/power/singularity_beacon))
 		if (singu_beacon.active)
 			new_component.target = singu_beacon
 			break

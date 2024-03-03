@@ -613,10 +613,10 @@ SUBSYSTEM_DEF(zcopy)
 
 GLOBAL_REAL_VAR(zmimic_fixed_planes) = list(
 	"0" = "World plane (Non-Z)",
-	"-6" = "Game plane (Non-Z)",
-	"-7" = "Floor plane (Non-Z)",
-	"-11" = "Gravity pulse plane (Non-Z)",
-	"-12" = "Heat plane (Non-Z)"
+	STRINGIFY(GAME_PLANE) = "Game plane (Non-Z)",
+	STRINGIFY(FLOOR_PLANE) = "Floor plane (Non-Z)",
+	STRINGIFY(GRAVITY_PULSE_PLANE) = "Gravity pulse plane (Non-Z)",
+	STRINGIFY(HEAT_PLANE) = "Heat plane (Non-Z)"
 )
 
 /client/proc/analyze_openturf(turf/T)

@@ -98,9 +98,16 @@
 		G.refresh_updown()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+
 	init_loadout_references()
 	init_augment_references()
+
 	init_magnet_error_codes()
+
+	init_slapcraft_steps()
+	init_slapcraft_recipes()
+
+	init_blood_types()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -144,7 +151,6 @@ GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
 	/obj/item/radio/intercom,
 	/obj/item/storage/secure/safe,
 	/obj/machinery/airalarm,
-	///obj/machinery/bluespace_vendor,
 	/obj/machinery/newscaster,
 	/obj/machinery/button,
 	/obj/machinery/computer/security/telescreen,
@@ -239,3 +245,9 @@ GLOBAL_LIST_INIT(magnet_error_codes, list(
 				GLOB.magnet_error_codes[key] = code
 				existing_codes += code
 		while(isnull(GLOB.magnet_error_codes[key]))
+
+/proc/init_blood_types()
+	for(var/datum/blood/path as anything in typesof(/datum/blood))
+		if(isabstract(path))
+			continue
+		GLOB.blood_datums[path] = new path()

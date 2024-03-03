@@ -10,8 +10,9 @@
 	righthand_file = 'icons/mob/inhands/misc/sheets_righthand.dmi'
 	throwforce = 0
 	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 3
+
 	throw_range = 7
+
 	//pressure_resistance = 8
 	var/papertype = /obj/item/paper
 	var/total_paper = 30
@@ -63,7 +64,7 @@
 	LAZYNULL(papers)
 	update_appearance()
 
-/obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume)
+/obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(LAZYLEN(papers))
 		LAZYNULL(papers)
 		update_appearance()
@@ -211,7 +212,7 @@
 	dump_contents()
 	return ..()
 
-/obj/item/paper_bin/bundlenatural/fire_act(exposed_temperature, exposed_volume)
+/obj/item/paper_bin/bundlenatural/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	qdel(src)
 
 /obj/item/paper_bin/bundlenatural/attackby(obj/item/W, mob/user)

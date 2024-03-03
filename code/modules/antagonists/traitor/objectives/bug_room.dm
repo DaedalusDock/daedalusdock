@@ -146,8 +146,7 @@
 	if(!do_after(user, deploy_time, src))
 		return
 	var/obj/structure/traitor_bug/new_bug = new(location)
-	transfer_fingerprints_to(new_bug)
-	transfer_fibers_to(new_bug)
+	transfer_evidence_to(new_bug)
 	SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PLANTED_GROUND, location)
 	qdel(src)
 

@@ -53,7 +53,7 @@
 /datum/station_goal/dna_vault/check_completion()
 	if(..())
 		return TRUE
-	for(var/obj/machinery/dna_vault/V in GLOB.machines)
+	for(var/obj/machinery/dna_vault/V as anything in INSTANCES_OF(/obj/machinery/dna_vault))
 		if(V.animals.len >= animal_count && V.plants.len >= plant_count && V.dna.len >= human_count)
 			return TRUE
 	return FALSE
@@ -87,6 +87,7 @@
 	var/list/obj/structure/fillers = list()
 
 /obj/machinery/dna_vault/Initialize(mapload)
+	SET_TRACKING(__TYPE__)
 	//TODO: Replace this,bsa and gravgen with some big machinery datum
 	var/list/occupied = list()
 	for(var/direct in list(EAST,WEST,SOUTHEAST,SOUTHWEST))
@@ -112,6 +113,8 @@
 		var/obj/structure/filler/filler = V
 		filler.parent = null
 		qdel(filler)
+
+	UNSET_TRACKING(__TYPE__)
 	. = ..()
 
 /obj/machinery/dna_vault/ui_interact(mob/user, datum/tgui/ui)

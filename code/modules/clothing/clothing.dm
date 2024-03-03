@@ -161,6 +161,7 @@
 /obj/item/clothing/get_mechanics_info()
 	. = ..()
 	var/pronoun = gender == PLURAL ? "They" : "It"
+	var/pronoun_s = p_s()
 
 	var/static/list/armor_to_descriptive_term = list(
 		BLUNT = "blunt force",
@@ -180,19 +181,19 @@
 
 		switch(armor_value)
 			if(1 to 20)
-				. += "[FOURSPACES]- [pronoun] barely protects against [armor_to_descriptive_term[armor_type]]."
+				. += "[FOURSPACES]- [pronoun] barely protect[pronoun_s] against [armor_to_descriptive_term[armor_type]]."
 			if(21 to 30)
-				. += "[FOURSPACES]- [pronoun] provides a very small defense against [armor_to_descriptive_term[armor_type]]."
+				. += "[FOURSPACES]- [pronoun] provide[pronoun_s] a very small defense against [armor_to_descriptive_term[armor_type]]."
 			if(31 to 40)
 				. += "[FOURSPACES]- [pronoun] offers a small amount of protection against [armor_to_descriptive_term[armor_type]]."
 			if(41 to 50)
 				. += "[FOURSPACES]- [pronoun] offers a moderate defense against [armor_to_descriptive_term[armor_type]]."
 			if(51 to 60)
-				. += "[FOURSPACES]- [pronoun] provides a strong defense against [armor_to_descriptive_term[armor_type]]."
+				. += "[FOURSPACES]- [pronoun] provide[pronoun_s] a strong defense against [armor_to_descriptive_term[armor_type]]."
 			if(61 to 70)
 				. += "[FOURSPACES]- [pronoun] is very strong against [armor_to_descriptive_term[armor_type]]."
 			if(71 to 80)
-				. += "[FOURSPACES]- [gender == PLURAL ? "These give" : "It gives"] a very robust defense against [armor_to_descriptive_term[armor_type]]."
+				. += "[FOURSPACES]- [gender == PLURAL ? "These provide" : "It provides"] a very robust defense against [armor_to_descriptive_term[armor_type]]."
 			if(81 to 100)
 				. += "[FOURSPACES]- Wearing [gender == PLURAL ? "these" : "it"] would make you nigh-invulerable against [armor_to_descriptive_term[armor_type]]."
 
@@ -207,15 +208,15 @@
 		. += "- The material is exceptionally thick."
 
 	if(!isnull(min_cold_protection_temperature) && min_cold_protection_temperature >= SPACE_SUIT_MIN_TEMP_PROTECT)
-		. += "- [pronoun] provides very good protection against very cold temperatures."
+		. += "- [pronoun] provide[pronoun_s] very good protection against very cold temperatures."
 
 	switch (max_heat_protection_temperature)
 		if (400 to 1000)
-			. += "- [pronoun] offers the wearer limited protection from fire."
+			. += "- [pronoun] offer[pronoun_s] the wearer limited protection from fire."
 		if (1001 to 1600)
-			. += "- [pronoun] offers the wearer some protection from fire."
+			. += "- [pronoun] offer[pronoun_s] the wearer some protection from fire."
 		if (1601 to 35000)
-			. += "- [pronoun] offers the wearer robust protection from fire."
+			. += "- [pronoun] offer[pronoun_s] the wearer robust protection from fire."
 
 
 

@@ -333,6 +333,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	. = ..()
 	var/pronoun = gender == PLURAL ? "They" : "It"
 	var/pronoun_is = gender == PLURAL ? "They are" : "It is"
+
 	. += "- [pronoun_is] a [weight_class_to_text(w_class)] object."
 
 	if(atom_storage)
@@ -376,7 +377,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			slots += name
 
 	if(length(covers))
-		. += "- [pronoun] covers the [english_list(covers)]."
+		. += "- [pronoun] cover[p_s()] the [english_list(covers)]."
 
 	if(length(slots))
 		. += "- [pronoun] can be worn on your [english_list(slots)]."

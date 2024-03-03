@@ -382,7 +382,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		. += "- [pronoun] can be worn on your [english_list(slots)]."
 
 	if(siemens_coefficient == 0)
-		. += "- [pronoun] does not conduct electricity."
+		. += "- [gender == PLURAL ? "They do not" : "It does not"] conduct electricity."
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)

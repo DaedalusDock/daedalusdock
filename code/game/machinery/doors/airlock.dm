@@ -91,6 +91,7 @@
 
 /obj/machinery/door/airlock
 	name = "airlock"
+	desc = "An air-tight mechanical door."
 	icon = 'icons/obj/doors/airlocks/station/airlock.dmi'
 	icon_state = "closed"
 
@@ -541,39 +542,39 @@
 	. = ..()
 	if(closeOtherId)
 		. += span_warning("This airlock cycles on ID: [sanitize(closeOtherId)].")
-	else if(!closeOtherId)
-		. += span_warning("This airlock does not cycle.")
+
 	if(obj_flags & EMAGGED)
 		. += span_warning("Its access panel is smoking slightly.")
+
 	if(note)
-		if(!in_range(user, src))
-			. += "There's a [note.name] pinned to the front. You can't read it from here."
+		if(!in_range(user, src) && !isobserver(user))
+			. += span_notice("There's a [note.name] pinned to the front. You can't read it from here.")
 		else
-			. += "There's a [note.name] pinned to the front..."
+			. += span_notice("There's a [note.name] pinned to the front...")
 			. += note.examine(user)
 	if(seal)
-		. += "It's been braced with \a [seal]."
+		. += span_notice("It's been braced with \a [seal].")
+
 	if(panel_open)
 		switch(security_level)
 			if(AIRLOCK_SECURITY_NONE)
-				. += "Its wires are exposed!"
+				. += span_notice("Its wires are exposed.")
 			if(AIRLOCK_SECURITY_IRON)
-				. += "Its wires are hidden behind a welded iron cover."
+				. += span_notice("Its wires are hidden behind a welded iron cover.")
 			if(AIRLOCK_SECURITY_PLASTEEL_I_S)
-				. += "There is some shredded plasteel inside."
+				. += span_notice("There is some shredded plasteel inside.")
 			if(AIRLOCK_SECURITY_PLASTEEL_I)
-				. += "Its wires are behind an inner layer of plasteel."
+				. += span_notice("Its wires are behind an inner layer of plasteel.")
 			if(AIRLOCK_SECURITY_PLASTEEL_O_S)
-				. += "There is some shredded plasteel inside."
+				. += span_notice("There is some shredded plasteel inside.")
 			if(AIRLOCK_SECURITY_PLASTEEL_O)
-				. += "There is a welded plasteel cover hiding its wires."
+				. += span_notice("There is a welded plasteel cover hiding its wires.")
 			if(AIRLOCK_SECURITY_PLASTEEL)
-				. += "There is a protective grille over its panel."
+				. += span_notice("There is a protective grille over its panel.")
+
 	else if(security_level)
 		if(security_level == AIRLOCK_SECURITY_IRON)
-			. += "It looks a bit stronger."
-		else
-			. += "It looks very robust."
+			. += span_notice("There is a sheet of iron <b>welded</b> over the access panel.")
 
 	if(issilicon(user) && !(machine_stat & BROKEN))
 		. += span_notice("Shift-click [src] to [ density ? "open" : "close"] it.")

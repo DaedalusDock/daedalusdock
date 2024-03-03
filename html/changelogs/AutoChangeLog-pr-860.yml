@@ -1,0 +1,4 @@
+author: pitaden
+delete-after: true
+changes:
+  - qol: reactions in the codex now show if they're exothermic/endothermic

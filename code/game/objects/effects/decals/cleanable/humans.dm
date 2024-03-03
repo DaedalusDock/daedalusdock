@@ -447,11 +447,11 @@
 	if(!shoe_types.len)
 		return
 
-	. += "You recognise the footprints as belonging to:"
+	. += span_notice("You recognise the footprints as belonging to:")
 	for(var/sole in shoe_types)
 		var/obj/item/clothing/item = sole
 		var/article = initial(item.gender) == PLURAL ? "Some" : "A"
-		. += "[icon2html(initial(item.icon), user, initial(item.icon_state))] [article] <B>[initial(item.name)]</B>."
+		. += span_notice("* [icon2html(initial(item.icon), user, initial(item.icon_state))] [article] <B>[initial(item.name)]</B>.")
 
 /obj/effect/decal/cleanable/blood/footprints/can_merge_into(obj/effect/decal/cleanable/blood/C)
 	if(blood_color != C.blood_color || blood_print != C.blood_print) //We only replace footprints of the same type as us

@@ -57,14 +57,14 @@
 /obj/structure/bookcase/examine(mob/user)
 	. = ..()
 	if(!anchored)
-		. += span_notice("The <i>bolts</i> on the bottom are unsecured.")
+		. += span_notice("The <b>bolts</b> on the bottom are unsecured.")
 	else
 		. += span_notice("It's secured in place with <b>bolts</b>.")
 	switch(state)
 		if(BOOKCASE_UNANCHORED)
 			. += span_notice("There's a <b>small crack</b> visible on the back panel.")
 		if(BOOKCASE_ANCHORED)
-			. += span_notice("There's space inside for a <i>wooden</i> shelf.")
+			. += span_notice("There's space inside for a wooden shelf.")
 		if(BOOKCASE_FINISHED)
 			. += span_notice("There's a <b>small crack</b> visible on the shelf.")
 

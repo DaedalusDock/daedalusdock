@@ -40,7 +40,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount/loaded, 28)
 /obj/machinery/defibrillator_mount/examine(mob/user)
 	. = ..()
 	if(defib)
-		. += span_notice("There is a defib unit hooked up. Alt-click to remove it.")
 		if(SSsecurity_level.current_level >= SEC_LEVEL_RED)
 			. += span_notice("Due to a security situation, its locking clamps can be toggled by swiping any ID.")
 		else

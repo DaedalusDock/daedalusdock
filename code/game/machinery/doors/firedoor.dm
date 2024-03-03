@@ -69,11 +69,13 @@
 	. = ..()
 	if(!density)
 		. += span_notice("It is open, but could be <b>pried</b> closed.")
+
 	else if(!welded)
 		. += span_notice("It is closed, but could be <b>pried</b> open.")
 		. += span_notice("Hold the firelock temporarily open by prying it with <i>left-click</i> and standing next to it.")
 		. += span_notice("Prying by <i>right-clicking</i> the firelock will open it permanently.")
 		. += span_notice("Deconstruction would require it to be <b>welded</b> shut.")
+
 	else if(boltslocked)
 		. += span_notice("It is <i>welded</i> shut. The floor bolts have been locked by <b>screws</b>.")
 	else

@@ -182,11 +182,6 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	var/obj/item/color_source
 	var/max_wash_capacity = 5
 
-/obj/machinery/washing_machine/examine(mob/user)
-	. = ..()
-	if(!busy)
-		. += span_notice("<b>Right-click</b> with an empty hand to start a wash cycle.")
-
 /obj/machinery/washing_machine/process(delta_time)
 	if(!busy)
 		animate(src, transform=matrix(), time=2)

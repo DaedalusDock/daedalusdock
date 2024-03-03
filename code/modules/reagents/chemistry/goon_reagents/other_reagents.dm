@@ -58,7 +58,6 @@
 	burning_volume = 0.05 //but has a lot of hydrocarbons
 
 	addiction_types = null
-	show_in_codex = TRUE
 
 /datum/reagent/stable_plasma
 	name = "Stable Plasma"
@@ -105,7 +104,6 @@
 	touch_met = 2
 	var/clean_types = CLEAN_WASH
 	chemical_flags = REAGENT_CLEANS
-	show_in_codex = TRUE
 
 /datum/reagent/space_cleaner/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
@@ -322,7 +320,6 @@
 	reagent_state = LIQUID
 	color = "#E7EA91"
 	taste_description = "acid"
-	show_in_codex = TRUE
 
 /datum/reagent/acetone
 	name = "Acetone"
@@ -332,7 +329,6 @@
 	color = "#808080"
 	metabolization_rate = 0.04
 	value = DISPENSER_REAGENT_VALUE
-	show_in_codex = TRUE
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(removed * 3, FALSE)

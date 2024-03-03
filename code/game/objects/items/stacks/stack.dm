@@ -164,26 +164,29 @@
 	var/plural = get_amount()>1
 	if(is_cyborg)
 		if(singular_name)
-			. += "There is enough energy for [get_amount()] [singular_name]\s."
+			. += span_notice("There is enough energy for [get_amount()] [singular_name]\s.")
 		else
-			. += "There is enough energy for [get_amount()]."
+			. += span_notice("There is enough energy for [get_amount()].")
 		return
+
 	if(singular_name)
 		if(plural)
-			. += "There are [get_amount()] [singular_name]\s in the stack."
+			. += span_notice("There are [get_amount()] [singular_name]\s in the stack.")
 		else
-			. += "There is [get_amount()] [singular_name] in the stack."
+			. += span_notice("There is [get_amount()] [singular_name] in the stack.")
+
 	else if(plural)
-		. += "There are [get_amount()] in the stack."
+		. += span_notice("There are [get_amount()] in the stack.")
 	else
-		. += "There is [get_amount()] in the stack."
+		. += span_notice("There is [get_amount()] in the stack.")
+
 	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
 
 	if(absorption_capacity < initial(absorption_capacity))
 		if(absorption_capacity == 0)
-			. += span_warning("[plural ? "They are" : "It is"] drenched in blood, this won't be a suitable bandage.")
+			. += span_alert("[plural ? "They are" : "It is"] drenched in blood, this won't be a suitable bandage.")
 		else
-			. += span_warning("[plural ? "They are" : "It is"] covered in blood.")
+			. += span_notice("[plural ? "They are" : "It is"] covered in blood.")
 
 /obj/item/stack/proc/get_amount()
 	if(is_cyborg)

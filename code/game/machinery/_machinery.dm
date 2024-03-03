@@ -982,18 +982,20 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/examine(mob/user)
 	. = ..()
 	if(machine_stat & BROKEN)
-		. += span_notice("It looks broken and non-functional.")
+		. += span_alert("It looks broken, it likely will not operate.")
+
 	if(!(resistance_flags & INDESTRUCTIBLE))
 		if(resistance_flags & ON_FIRE)
-			. += span_warning("It's on fire!")
+			. += span_alert("FIRE!!")
+
 		var/healthpercent = (atom_integrity/max_integrity) * 100
 		switch(healthpercent)
 			if(50 to 99)
-				. += "It looks slightly damaged."
+				. += span_notice("It looks slightly damaged.")
 			if(25 to 50)
-				. += "It appears heavily damaged."
+				. += span_alert("It appears heavily damaged.")
 			if(0 to 25)
-				. += span_warning("It's falling apart!")
+				. += span_alert("It appears to be barely in one piece.")
 
 /obj/machinery/examine_more(mob/user)
 	. = ..()

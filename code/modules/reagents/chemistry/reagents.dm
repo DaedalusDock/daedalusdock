@@ -18,6 +18,8 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/name = ""
 	/// nor do they have descriptions
 	var/description = ""
+	/// Text to insert into the "mechanics" section of the codex.
+	var/codex_mechanics = ""
 	///J/(K*mol)
 	var/specific_heat = SPECIFIC_HEAT_DEFAULT
 	/// used by taste messages
@@ -78,7 +80,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/chemical_flags = NONE
 
 	/// Does this reagent and its recipe appear in the Codex?
-	var/show_in_codex = FALSE
+	var/show_in_codex = TRUE
 
 	///Thermodynamic vars
 	///How hot this reagent burns when it's on fire - null means it can't burn

@@ -127,14 +127,6 @@ export const RecipeLookup = (props, context) => {
       )}
       <LabeledList.Item bold label="Purity">
         <LabeledList>
-          <LabeledList.Item label="Optimal pH range">
-            <Box position="relative">
-              <Tooltip
-                content="If your reaction is kept within these bounds then the purity of your product will be 100%">
-                {recipe.lowerpH + "-" + recipe.upperpH}
-              </Tooltip>
-            </Box>
-          </LabeledList.Item>
           {!!recipe.inversePurity && (
             <LabeledList.Item label="Inverse purity">
               <Box position="relative">

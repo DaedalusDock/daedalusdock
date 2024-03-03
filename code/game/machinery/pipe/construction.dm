@@ -301,7 +301,6 @@ Buildable meters
 /obj/item/pipe/examine(mob/user)
 	. = ..()
 	. += span_notice("The pipe layer is set to [piping_layer].")
-	. += span_notice("You can change the pipe layer by Right-Clicking the device.")
 
 /obj/item/pipe/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()

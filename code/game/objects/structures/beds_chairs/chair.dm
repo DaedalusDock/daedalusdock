@@ -20,9 +20,7 @@
 
 /obj/structure/chair/examine(mob/user)
 	. = ..()
-	. += span_notice("It's held together by a couple of <b>bolts</b>.")
-	if(!has_buckled_mobs() && can_buckle)
-		. += span_notice("While standing on [src], drag and drop your sprite onto [src] to buckle to it.")
+	. += span_notice("It's held together by a handful of <b>bolts</b>.")
 
 /obj/structure/chair/Initialize(mapload)
 	. = ..()

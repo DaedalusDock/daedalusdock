@@ -1,0 +1,10 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Engineers start with insulated gloves.
+  - rscadd: You can now click-drag items on tables to shuffles them around.
+  - rscadd: Added many new codex entries.
+  - tweak: Cleaned up a ton of examine text to remove meta information.
+  - tweak: Extinguisher cabinets can now be opened/closed with right click, in addition
+      to alt click.
+  - balance: Crowbars are now normal sized objects (up from small).

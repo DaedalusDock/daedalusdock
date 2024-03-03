@@ -87,7 +87,7 @@
 		var/obj/O = highest
 		if(!O.uses_integrity)
 			return
-		O.take_damage(80 * levels)
+		O.take_damage(10 * levels)
 
 	if(ismob(highest))
 		var/mob/living/L = highest

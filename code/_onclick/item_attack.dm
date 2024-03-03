@@ -10,7 +10,8 @@
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, params)
 	var/is_right_clicking = LAZYACCESS(params2list(params), RIGHT_CLICK)
 
-	if(tool_behaviour && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
+	var/mob/living/L = user
+	if((!istype(L) || !L.combat_mode)) && tool_behaviour && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
 		return TRUE
 
 	var/pre_attack_result
@@ -253,9 +254,13 @@
 	var/damage = take_damage(attacking_item.force, attacking_item.damtype, BLUNT, 1)
 
 	//only witnesses close by and the victim see a hit message.
-	user.visible_message(span_danger("[user] hits [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), \
-		span_danger("You hit [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), null, COMBAT_MESSAGE_RANGE)
-	log_combat(user, src, "attacked", attacking_item)
+	user.visible_message(
+		span_danger("[user] hits [src] with [attacking_item][damage ? "." : ", without leaving a mark."]"),
+		null,
+		COMBAT_MESSAGE_RANGE
+	)
+
+	log_combat(user, src, "attacked ([damage] damage)", attacking_item)
 
 /area/attacked_by(obj/item/attacking_item, mob/living/user)
 	CRASH("areas are NOT supposed to have attacked_by() called on them!")

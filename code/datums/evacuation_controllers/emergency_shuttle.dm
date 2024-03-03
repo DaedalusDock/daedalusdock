@@ -27,40 +27,32 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 
 	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(sec_level_updated))
 
-	emergency.call_time = emergency_call_time
+	emergency.call_time = emergency_call_time * get_sec_level_modifier()
 	emergency.escape_time = emergency_escape_time
 	emergency.dock_time = emergency_dock_time
 
 /datum/evacuation_controller/emergency_shuttle/proc/on_emergency_shuttle_deleted()
 	log_evacuation("Emergency shuttle has been deleted. Using backup shuttle.")
 	emergency = backup
-	emergency.call_time = emergency_call_time
+	emergency.call_time = emergency_call_time * get_sec_level_modifier()
 	emergency.escape_time = emergency_escape_time
 	emergency.dock_time = emergency_dock_time
 
+/datum/evacuation_controller/emergency_shuttle/proc/get_sec_level_modifier(level = null)
+	if(isnull(level))
+		level = SSsecurity_level.current_level
+
+	switch(level)
+		if(SEC_LEVEL_GREEN)
+			return 2
+		if(SEC_LEVEL_BLUE)
+			return 1
+		if(SEC_LEVEL_RED, SEC_LEVEL_DELTA)
+			return 0.5
+
 /datum/evacuation_controller/emergency_shuttle/proc/sec_level_updated(datum/source, old_level, new_level)
-	var/modifier_old = 1
-	var/modifier_new = 1
-
-	switch(old_level)
-		if(SEC_LEVEL_GREEN)
-			modifier_old = 1
-		if(SEC_LEVEL_BLUE)
-			modifier_old = 2
-		if(SEC_LEVEL_RED, SEC_LEVEL_DELTA)
-			modifier_old = 4
-
-	switch(new_level)
-		if(SEC_LEVEL_GREEN)
-			modifier_new = 1
-		if(SEC_LEVEL_BLUE)
-			modifier_new = 2
-		if(SEC_LEVEL_RED, SEC_LEVEL_DELTA)
-			modifier_new = 4
-
-	var/modifier_result = modifier_old / modifier_new
+	var/modifier_result = get_sec_level_modifier(new_level) / get_sec_level_modifier(old_level)
 	if(modifier_result != 1)
-		emergency_call_time *= modifier_result
 		emergency.call_time *= modifier_result
 		emergency.modTimer(modifier_result)
 
@@ -132,9 +124,8 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 		if(EVACUATION_REASON_CREW_DEATH)
 			RegisterSignal(emergency, COMSIG_EMERGENCYSHUTTLE_ARRIVAL, PROC_REF(on_emergency_shuttle_arrived))
 			state = EVACUATION_STATE_INITIATED
-			emergency_call_time *= 0.5
-			emergency.call_time = emergency_call_time
 			UnregisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED)
+			emergency.call_time = emergency_call_time * 0.5
 			emergency.request(null)
 		if(EVACUATION_REASON_VOTE, EVACUATION_REASON_LONG_ROUND, EVACUATION_REASON_CONSOLE_DESTROYED)
 			RegisterSignal(emergency, COMSIG_EMERGENCYSHUTTLE_ARRIVAL, PROC_REF(on_emergency_shuttle_arrived))
@@ -166,6 +157,9 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 	UnregisterSignal(emergency, COMSIG_EMERGENCYSHUTTLE_RETURNED)
 
 /datum/evacuation_controller/emergency_shuttle/can_cancel(mob/user)
+	// Point of no return after 50% of the time has passed
+	if(emergency.timeLeft(1) < emergency_call_time * get_sec_level_modifier() * 0.5)
+		return
 	return ..()
 
 /datum/evacuation_controller/emergency_shuttle/cancel_evacuation(mob/user)

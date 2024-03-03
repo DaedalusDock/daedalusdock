@@ -28,7 +28,7 @@
 			SSblackbox.record_feedback("tally", "station_mess_created", 1, CB.name)
 
 	if (num_unloaded)
-		to_chat(user, span_notice("You unload [num_unloaded] [parent.cartridge_wording]\s from [src]."))
+		to_chat(user, span_notice("You unload [num_unloaded] [parent.cartridge_wording]\s from [parent]."))
 		playsound(parent, parent.eject_sound, parent.eject_sound_volume, parent.eject_sound_vary)
 		parent.update_appearance()
 	else

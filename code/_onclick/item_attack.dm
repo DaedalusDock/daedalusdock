@@ -11,7 +11,7 @@
 	var/is_right_clicking = LAZYACCESS(params2list(params), RIGHT_CLICK)
 
 	var/mob/living/L = user
-	if((!istype(L) || !L.combat_mode)) && tool_behaviour && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
+	if(tool_behaviour && (!istype(L) || !L.combat_mode) && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
 		return TRUE
 
 	var/pre_attack_result

@@ -68,7 +68,7 @@
 	return GLOB.ipc_antenna_list
 
 /obj/item/organ/ipc_antenna/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 
@@ -92,7 +92,7 @@
 	return GLOB.saurian_screens_list
 
 /obj/item/organ/saurian_screen/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
+	if(!(human.obscured_slots & HIDESNOUT))
 		return TRUE
 	return FALSE
 
@@ -174,7 +174,7 @@
 	return GLOB.saurian_screens_list
 
 /obj/item/organ/saurian_screen/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
+	if(!(human.obscured_slots & HIDESNOUT))
 		return TRUE
 	return FALSE
 
@@ -223,7 +223,7 @@
 	return GLOB.saurian_antenna_list
 
 /obj/item/organ/saurian_antenna/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 

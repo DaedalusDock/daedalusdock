@@ -365,18 +365,23 @@
 	if(hand_index)
 		held_items[hand_index] = null
 		update_held_items()
+
 	if(I)
 		if(client)
 			client.screen -= I
+
 		I.layer = initial(I.layer)
 		I.plane = initial(I.plane)
 		I.appearance_flags &= ~NO_CLIENT_COLOR
+
 		if(!no_move && !(I.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
 			if (isnull(newloc))
 				I.moveToNullspace()
 			else
 				I.forceMove(newloc)
+
 		I.dropped(src, silent)
+
 	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)
 	return TRUE
@@ -437,14 +442,21 @@
 		dropItemToGround(I)
 	drop_all_held_items()
 
-///Returns a bitfield of covered item slots.
-/mob/living/carbon/proc/check_obscured_slots(transparent_protection)
-	var/obscured = NONE
-	var/hidden_slots = NONE
+/// Compiles all flags_inv vars of worn items.
+/mob/living/carbon/proc/update_obscurity()
+	PROTECTED_PROC(TRUE)
 
-	for(var/obj/item/I in get_all_worn_items()) //This contains nulls
-		hidden_slots |= I.flags_inv
-		if(transparent_protection)
+	obscured_slots = NONE
+	for(var/obj/item/I in get_all_worn_items())
+		obscured_slots |= I.flags_inv
+
+///Returns a bitfield of covered item slots.
+/mob/living/carbon/proc/check_obscured_slots(transparent_protection, input_slots)
+	var/obscured = NONE
+	var/hidden_slots = !isnull(input_slots) ? input_slots : src.obscured_slots
+
+	if(transparent_protection)
+		for(var/obj/item/I in get_all_worn_items())
 			hidden_slots |= I.transparent_protection
 
 	if(hidden_slots & HIDENECK)

@@ -81,7 +81,7 @@
 	else if(istype(P, /obj/item/stamp)) //we don't randomize stamps on a paperplane
 		internalPaper.attackby(P, user) //spoofed attack to update internal paper.
 		update_appearance()
-		add_fingerprint(user)
+		P.leave_evidence(user, src)
 		return
 
 	return ..()

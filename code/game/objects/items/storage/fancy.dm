@@ -49,9 +49,9 @@
 	if(!is_open)
 		return
 	if(length(contents) == 1)
-		. += "There is one [contents_tag] left."
+		. += span_notice("There is one [contents_tag] left.")
 	else
-		. += "There are [contents.len <= 0 ? "no" : "[contents.len]"] [contents_tag]s left."
+		. += span_notice("There are [contents.len <= 0 ? "no" : "[contents.len]"] [contents_tag]s left.")
 
 /obj/item/storage/fancy/attack_self(mob/user)
 	is_open = !is_open
@@ -221,7 +221,6 @@
 /obj/item/storage/fancy/cigarettes/examine(mob/user)
 	. = ..()
 
-	. += span_notice("Alt-click to extract contents.")
 	if(spawn_coupon)
 		. += span_notice("There's a coupon on the back of the pack! You can tear it off once it's empty.")
 

@@ -20,9 +20,7 @@
 
 /obj/structure/chair/examine(mob/user)
 	. = ..()
-	. += span_notice("It's held together by a couple of <b>bolts</b>.")
-	if(!has_buckled_mobs() && can_buckle)
-		. += span_notice("While standing on [src], drag and drop your sprite onto [src] to buckle to it.")
+	. += span_notice("It's held together by a handful of <b>bolts</b>.")
 
 /obj/structure/chair/Initialize(mapload)
 	. = ..()
@@ -315,6 +313,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	throw_range = 3
 	hitsound = 'sound/items/trayhit1.ogg'
 	custom_materials = list(/datum/material/iron = 2000)
+
+	block_sound = SFX_BLOCK_BIG_METAL
+
 	var/break_chance = 5 //Likely hood of smashing the chair.
 	var/obj/structure/chair/origin_type = /obj/structure/chair
 

@@ -7,7 +7,7 @@
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/chest/plasmaman
 	icon = 'icons/mob/species/plasmaman/bodyparts.dmi'
@@ -18,7 +18,7 @@
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/arm/left/plasmaman
 	icon = 'icons/mob/species/plasmaman/bodyparts.dmi'
@@ -28,7 +28,7 @@
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/arm/right/plasmaman
 	icon = 'icons/mob/species/plasmaman/bodyparts.dmi'
@@ -38,7 +38,7 @@
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/leg/left/plasmaman
 	icon = 'icons/mob/species/plasmaman/bodyparts.dmi'
@@ -47,7 +47,7 @@
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/leg/right/plasmaman
 	icon = 'icons/mob/species/plasmaman/bodyparts.dmi'
@@ -56,4 +56,4 @@
 	limb_id = SPECIES_PLASMAMAN
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)

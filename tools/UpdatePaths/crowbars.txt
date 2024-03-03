@@ -1,0 +1,4 @@
+/obj/item/crowbar/large : /obj/item/crowbar
+/obj/item/crowbar/large/heavy : /obj/item/crowbar/heavy
+/obj/item/crowbar/large/old : /obj/item/crowbar/old
+/obj/item/storage/box/hero/mothpioneer : @DELETE

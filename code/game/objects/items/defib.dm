@@ -474,7 +474,7 @@
 		return
 
 	if(H.stat != DEAD)
-		H.notify_ghost_cloning("Your heart is being defibrillated!")
+		H.notify_ghost_revival("Your heart is being defibrillated!")
 		H.grab_ghost() // Shove them back in their body.
 
 	do_help(H, user)

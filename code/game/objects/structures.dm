@@ -41,9 +41,10 @@
 	. = ..()
 	if(!(resistance_flags & INDESTRUCTIBLE))
 		if(resistance_flags & ON_FIRE)
-			. += span_warning("It's on fire!")
+			. += span_alert("FIRE!!")
 		if(broken)
-			. += span_notice("It appears to be broken.")
+			. += span_alert("It appears to be broken.")
+
 		var/examine_status = examine_status(user)
 		if(examine_status)
 			. += examine_status

@@ -780,11 +780,14 @@
 
 	. = ..()
 
-	if(active_storage && !((active_storage.parent?.resolve() in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent?.resolve(),view_only = TRUE)))
+	if(active_storage && !((active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent,view_only = TRUE)))
 		active_storage.hide_contents(src)
 
-	if(body_position == LYING_DOWN && !buckled && prob(getBruteLoss()*200/maxHealth))
-		makeTrail(newloc, T, old_direction)
+	if(!ISDIAGONALDIR(direct) && newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())
+		if(length(grabbed_by))
+			drag_damage(newloc, T, old_direction)
+		else
+			makeBloodTrail(newloc, T, old_direction)
 
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
@@ -797,22 +800,26 @@
 /mob/living/carbon/alien/humanoid/lying_angle_on_movement(direct)
 	return
 
-/mob/living/proc/makeTrail(turf/target_turf, turf/start, direction)
-	if(!has_gravity() || !isturf(start) || !blood_volume)
+/// Take damage from being dragged while prone. Or not. You decide.
+/mob/living/proc/drag_damage(turf/new_loc, turf/old_loc, direction)
+	if(prob(getBruteLoss() / 2))
+		makeBloodTrail(new_loc, old_loc, direction, TRUE)
+
+	if(prob(10))
+		visible_message(span_danger("[src]'s wounds worsen as they're dragged across the ground."))
+		adjustBruteLoss(2)
+
+/// Creates a trail of blood on Start, facing Direction
+/mob/living/proc/makeBloodTrail(turf/target_turf, turf/start, direction, being_dragged)
+	if(!isturf(start) || !leavesBloodTrail())
 		return
 
-	var/blood_exists = locate(/obj/effect/decal/cleanable/trail_holder) in start
-
-	var/trail_type = getTrail()
+	var/trail_type = getTrail(being_dragged)
 	if(!trail_type)
 		return
 
-	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL*(1 - brute_ratio * 0.25), 0))//don't leave trail if blood volume below a threshold
-		return
+	var/blood_exists = locate(/obj/effect/decal/cleanable/blood/trail_holder) in start
 
-	var/bleed_amount = bleedDragAmount()
-	blood_volume = max(blood_volume - bleed_amount, 0) //that depends on our brute damage.
 	var/newdir = get_dir(target_turf, start)
 	if(newdir != direction)
 		newdir = newdir | direction
@@ -820,69 +827,34 @@
 			newdir = NORTH
 		else if(newdir == (EAST|WEST))
 			newdir = EAST
-	if((newdir in GLOB.cardinals) && (prob(50)))
-		newdir = turn(get_dir(target_turf, start), 180)
-	if(!blood_exists)
-		new /obj/effect/decal/cleanable/trail_holder(start, get_static_viruses())
 
-	for(var/obj/effect/decal/cleanable/trail_holder/TH in start)
-		if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
+	if((!(newdir & (newdir - 1))) && (prob(50))) // Cardinal move
+		newdir = turn(get_dir(target_turf, start), 180)
+
+	if(!blood_exists)
+		new /obj/effect/decal/cleanable/blood/trail_holder(start, get_static_viruses())
+
+	for(var/obj/effect/decal/cleanable/blood/trail_holder/TH in start)
+		if(TH.existing_dirs.len >= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
+			continue
+		if(!(newdir in TH.existing_dirs) || trail_type == "bleedtrail_heavy")
 			TH.existing_dirs += newdir
-			TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
+			TH.add_overlay(image('icons/effects/blood.dmi', icon_state = trail_type, dir = newdir))
 			TH.transfer_mob_blood_dna(src)
 
-/mob/living/carbon/human/makeTrail(turf/T)
-	if((NOBLOOD in dna.species.species_traits) || !is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLEED))
-		return
-	..()
+/// Returns TRUE if we should try to leave a blood trail.
+/mob/living/proc/leavesBloodTrail()
+	if(!blood_volume)
+		return FALSE
 
-///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/makeTrail]
-/mob/living/proc/bleedDragAmount()
-	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
-	return max(1, brute_ratio * 2)
+	return TRUE
 
-/mob/living/carbon/bleedDragAmount()
-	var/bleed_amount = 0
-	for(var/obj/item/bodypart/BP as anything in bodyparts)
-		bleed_amount += BP.get_modified_bleed_rate()
-	return bleed_amount
-
-/mob/living/proc/getTrail()
-	if(getBruteLoss() < 300)
-		return pick("ltrails_1", "ltrails_2")
+/mob/living/proc/getTrail(being_dragged)
+	if(getBruteLoss() < 75)
+		return "bleedtrail_light_[rand(1,4)]"
 	else
-		return pick("trails_1", "trails_2")
-/*
-/mob/living/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
-	playsound(src, 'sound/effects/space_wind.ogg', 50, TRUE)
-	if(buckled || mob_negates_gravity())
-		return
+		return "bleedtrail_heavy"
 
-	if(client && client.move_delay >= world.time + world.tick_lag*2)
-		pressure_resistance_prob_delta -= 30
-
-	var/list/turfs_to_check = list()
-
-	if(!has_limbs)
-		var/turf/T = get_step(src, angle2dir(dir2angle(direction)+90))
-		if (T)
-			turfs_to_check += T
-
-		T = get_step(src, angle2dir(dir2angle(direction)-90))
-		if(T)
-			turfs_to_check += T
-
-		for(var/t in turfs_to_check)
-			T = t
-			if(T.density)
-				pressure_resistance_prob_delta -= 20
-				continue
-			for (var/atom/movable/AM in T)
-				if (AM.density && AM.anchored)
-					pressure_resistance_prob_delta -= 20
-					break
-	..(pressure_difference, direction, pressure_resistance_prob_delta)
-*/
 /mob/living/can_resist()
 	if(next_move > world.time)
 		return FALSE
@@ -1512,7 +1484,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	..()
 	update_z(new_turf?.z)
 
-/mob/living/MouseDrop_T(atom/dropping, atom/user)
+/mob/living/MouseDroppedOn(atom/dropping, atom/user)
 	var/mob/living/U = user
 	if(isliving(dropping))
 		var/mob/living/M = dropping
@@ -2184,7 +2156,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/needs_organ(slot)
 	return FALSE
 
-/mob/living/proc/has_mouth()
+/mob/proc/has_mouth()
+	return FALSE
+
+/mob/living/has_mouth()
 	return TRUE
 
 /mob/living/get_mouse_pointer_icon(check_sustained)
@@ -2222,3 +2197,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	animate(src, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
 	animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
+
+/mob/living/proc/get_blood_print()
+	return BLOOD_PRINT_PAWS

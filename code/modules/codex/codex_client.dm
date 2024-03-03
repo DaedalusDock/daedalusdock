@@ -1,6 +1,5 @@
 /client
 	var/codex_cooldown = FALSE
-	var/const/max_codex_entries_shown = 10
 
 /client/verb/search_codex(searching as text)
 
@@ -8,7 +7,7 @@
 	set category = "IC"
 	set src = usr
 
-	if(!mob || !SScodex)
+	if(!SScodex.initialized)
 		return
 
 	if(codex_cooldown >= world.time)
@@ -22,36 +21,20 @@
 
 	codex_cooldown = world.time + 1 SECONDS
 
-	var/list/all_entries = SScodex.retrieve_entries_for_string(searching)
+	var/list/found_entries = SScodex.retrieve_entries_for_string(searching)
 	if(mob && mob.mind && !length(mob.mind.antag_datums))
-		all_entries = all_entries.Copy() // So we aren't messing with the codex search cache.
-		for(var/datum/codex_entry/entry in all_entries)
+		found_entries = found_entries.Copy() // So we aren't messing with the codex search cache.
+		for(var/datum/codex_entry/entry in found_entries)
 			if(entry.antag_text && !entry.mechanics_text && !entry.lore_text)
-				all_entries -= entry
+				found_entries -= entry
 
-	//Put entries with match in the name first
-	for(var/datum/codex_entry/entry in all_entries)
-		if(findtext(entry.name, searching))
-			all_entries -= entry
-			all_entries.Insert(1, entry)
-
-	if(LAZYLEN(all_entries) == 1)
-		SScodex.present_codex_entry(mob, all_entries[1])
-	else
-		if(LAZYLEN(all_entries) > 1)
-			var/list/codex_data = list("<h3><b>[all_entries.len] matches</b> for '[searching]':</h3>")
-			if(LAZYLEN(all_entries) > max_codex_entries_shown)
-				codex_data += "Showing first <b>[max_codex_entries_shown]</b> entries. <b>[all_entries.len - 5] result\s</b> omitted.</br>"
-			codex_data += "<table width = 100%>"
-			for(var/i = 1 to min(all_entries.len, max_codex_entries_shown))
-				var/datum/codex_entry/entry = all_entries[i]
-				codex_data += "<tr><td>[entry.name]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[entry];show_to=\ref[mob]'>View</a></td></tr>"
-			codex_data += "</table>"
-			var/datum/browser/popup = new(mob, "codex-search", "Codex Search") //"codex-search"
-			popup.set_content(codex_data.Join())
-			popup.open()
-		else
+	switch(LAZYLEN(found_entries))
+		if(null)
 			to_chat(src, span_alert("The codex reports <b>no matches</b> for '[searching]'."))
+		if(1)
+			SScodex.present_codex_entry(mob, found_entries[1])
+		else
+			SScodex.present_codex_search(mob, found_entries, searching)
 
 /client/verb/list_codex_entries()
 
@@ -69,7 +52,7 @@
 	codex_cooldown = world.time + 1 SECONDS
 
 	var/datum/browser/popup = new(mob, "codex", "Codex Index") //"codex-index"
-	var/datum/codex_entry/nexus = SScodex.get_entry_by_string("nexus")
+	var/datum/codex_entry/nexus = SScodex.get_codex_entry(/datum/codex_entry/nexus)
 	var/list/codex_data = list(nexus.get_codex_header(mob).Join(), "<h2>Codex Entries</h2>")
 	codex_data += "<table width = 100%>"
 

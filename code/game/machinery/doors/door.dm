@@ -19,7 +19,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	receive_ricochet_chance_mod = 0.8
 	damage_deflection = 10
 
-	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
@@ -143,10 +143,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door/examine(mob/user)
 	. = ..()
 	if(red_alert_access)
-		if(SSsecurity_level.current_level >= SEC_LEVEL_RED)
-			. += span_notice("Due to a security threat, its access requirements have been lifted!")
-		else
-			. += span_notice("In the event of a red alert, its access requirements will automatically lift.")
+		. += span_notice("In the event of a red alert, its access requirements will automatically lift.")
 	. += span_notice("Its maintenance panel is [panel_open ? "open" : "<b>screwed</b> in place"].")
 
 /obj/machinery/door/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -299,12 +296,17 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return
 	return ..()
 
-/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	set waitfor = FALSE
 
-	add_fingerprint(user)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
+
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
+
 	if(access_bypass || (requiresID() && allowed(user)))
 		. = TRUE
 		if(density)
@@ -361,7 +363,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return TRUE
 	else if(I.item_flags & NOBLUDGEON || user.combat_mode)
 		return ..()
-	else if(try_to_activate_door(user))
+	else if(try_to_activate_door(user, attackedby = I))
 		return TRUE
 	return ..()
 
@@ -577,5 +579,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door/proc/knock_on(mob/user)
 	user?.changeNext_move(CLICK_CD_MELEE)
 	playsound(src, knock_sound, 100, TRUE)
+	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
 
 #undef DOOR_CLOSE_WAIT

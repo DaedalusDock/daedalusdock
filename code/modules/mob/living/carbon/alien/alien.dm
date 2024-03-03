@@ -74,7 +74,7 @@
 	. = ..()
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
 
-/mob/living/carbon/alien/getTrail()
+/mob/living/carbon/alien/getTrail(being_dragged)
 	if(getBruteLoss() < 200)
 		return pick (list("xltrails_1", "xltrails2"))
 	else

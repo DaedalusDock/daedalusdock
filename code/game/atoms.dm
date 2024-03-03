@@ -16,6 +16,8 @@
 	var/tmp/datum/reagents/reagents = null
 	/// the datum handler for our contents - see create_storage() for creation method
 	var/tmp/datum/storage/atom_storage
+	/// Forensics datum, initialzed when needed.
+	var/tmp/datum/forensics/forensics
 
 	///This atom's HUD (med/sec, etc) images. Associative list.
 	var/tmp/list/image/hud_list = null
@@ -106,7 +108,7 @@
 	var/material_modifier = 1
 
 	///Light systems, both shouldn't be active at the same time.
-	var/light_system = STATIC_LIGHT
+	var/light_system = COMPLEX_LIGHT
 	///Range of the maximum brightness of light in tiles. Zero means no light.
 	var/light_inner_range = 0
 	///Range where light begins to taper into darkness in tiles.
@@ -250,7 +252,7 @@
 	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
+	if (light_system == COMPLEX_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
 	if(uses_integrity)
@@ -306,6 +308,9 @@
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
 
+	if(forensics)
+		QDEL_NULL(forensics)
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	if(length(overlays))
@@ -358,6 +363,11 @@
 		atom_storage.set_holdable(cloning.can_hold, cloning.cant_hold)
 
 	return atom_storage
+
+/// Creates our forensics datum
+/atom/proc/create_forensics()
+	ASSERT(isnull(forensics))
+	forensics = new(src)
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
 	var/turf/p_turf = get_turf(ricocheting_projectile)
@@ -656,6 +666,7 @@
 	if(article)
 		. = "[article] [src]"
 		override[EXAMINE_POSITION_ARTICLE] = article
+
 	if(SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override) & COMPONENT_EXNAME_CHANGED)
 		. = override.Join("")
 
@@ -686,51 +697,59 @@
  * Produces a signal [COMSIG_PARENT_EXAMINE]
  */
 /atom/proc/examine(mob/user)
-	. = list("[get_examine_string(user, TRUE)].<hr>") //PARIAH EDIT CHANGE
-	if(SScodex.get_codex_entry(get_codex_value(user)))
-		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
-
-	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
-		. += "<span class='notice'><b><a href='?src=\ref[user.client];show_slapcraft_hints=[type];'>You could craft [(length(slapcraft_examine_hints_for_type(type)) > 1) ? "several things" : "something"] with it.</a><b></span>"
-
+	. = list("[get_examine_string(user, TRUE)].") //PARIAH EDIT CHANGE
 	. += get_name_chaser(user)
+
 	if(desc)
 		. += desc
+
+	. += "<hr>"
+
+	var/place_linebreak = FALSE
+	if(SScodex.get_codex_entry(get_codex_value(user)))
+		. += "<span class='obviousnotice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span>"
+		place_linebreak = TRUE
+
+	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
+		. += "<span class='obviousnotice'><b><a href='?src=\ref[user.client];show_slapcraft_hints=[type];'>You could craft [(length(slapcraft_examine_hints_for_type(type)) > 1) ? "several things" : "something"] with it.</a><b></span>"
+		place_linebreak = TRUE
+
+	if(place_linebreak)
+		. += ""
 
 	if(z && user.z && user.z != z)
 		var/diff = abs(user.z - z)
 		. += span_notice("<b>[p_theyre(TRUE)] [diff] level\s below you.</b>")
 
 	if(custom_materials)
-		. += "<hr>" //PARIAH EDIT ADDITION
 		var/list/materials_list = list()
 		for(var/datum/material/current_material as anything in custom_materials)
 			materials_list += "[current_material.name]"
-		. += "It is made out of [english_list(materials_list)]."
+		. += span_notice("It is made out of [english_list(materials_list)].")
 
 	if(reagents)
-		. += "<hr>" //PARIAH EDIT ADDITION
 		if(reagents.flags & TRANSPARENT)
-			. += "It contains:"
-			if(length(reagents.reagent_list))
-				if(user.can_see_reagents()) //Show each individual reagent
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						. += "[round(current_reagent.volume, 0.01)] units of [current_reagent.name]"
-					if(reagents.is_reacting)
-						. += span_warning("It is currently reacting!")
-					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
-				else //Otherwise, just show the total volume
-					var/total_volume = 0
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						total_volume += current_reagent.volume
-					. += "[total_volume] units of various reagents"
+			if(!length(reagents.reagent_list))
+				. += span_alert("It looks empty.")
 			else
-				. += "Nothing."
+				if(user.can_see_reagents()) //Show each individual reagent
+					. += span_notice("You see the following reagents:")
+					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
+						. += span_notice("* [round(current_reagent.volume, 0.01)] units of [current_reagent.name].")
+
+					if(reagents.is_reacting)
+						. += span_alert("A chemical reaction is taking place.")
+
+					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
+
+				else //Otherwise, just show the total volume
+					. += span_notice("It looks about [reagents.total_volume / reagents.maximum_volume * 100]% full.")
+
 		else if(reagents.flags & AMOUNT_VISIBLE)
 			if(reagents.total_volume)
-				. += span_notice("It has [reagents.total_volume] unit\s left.")
+				. += span_notice("It looks about [reagents.total_volume / reagents.maximum_volume * 100]% full.")
 			else
-				. += span_danger("It's empty.")
+				. += span_alert("It looks empty.")
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
@@ -934,7 +953,18 @@
 /mob/living/proc/get_blood_dna_list()
 	if(get_blood_id() != /datum/reagent/blood)
 		return
-	return list("ANIMAL DNA" = "Y-")
+	return list("ANIMAL DNA" = GET_BLOOD_REF(/datum/blood/animal))
+
+/mob/proc/get_trace_dna()
+	return
+
+/mob/living/get_trace_dna()
+	return "ANIMAL DNA"
+
+/mob/living/carbon/get_trace_dna()
+	if(dna)
+		return dna.unique_enzymes
+	return "UNKNOWN DNA"
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
@@ -1179,6 +1209,9 @@
 	if(SEND_SIGNAL(src, COMSIG_COMPONENT_CLEAN_ACT, clean_types) & COMPONENT_CLEANED)
 		. = TRUE
 
+	if(forensics)
+		. = forensics.wash(clean_types) || .
+
 	// Basically "if has washable coloration"
 	if(length(atom_colours) >= WASHABLE_COLOUR_PRIORITY && atom_colours[WASHABLE_COLOUR_PRIORITY])
 		remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -1198,23 +1231,23 @@
 /atom/vv_edit_var(var_name, var_value)
 	switch(var_name)
 		if(NAMEOF(src, light_inner_range))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_inner_range = var_value)
 				. = TRUE
 		if(NAMEOF(src, light_outer_range))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_outer_range = var_value)
 			else
 				set_light_range(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_power))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_power = var_value)
 			else
 				set_light_power(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_color))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_color = var_value)
 			else
 				set_light_color(var_value)
@@ -1377,6 +1410,7 @@
 
 ///Where atoms should drop if taken from this atom
 /atom/proc/drop_location()
+	RETURN_TYPE(/atom)
 	var/atom/location = loc
 	if(!location)
 		return null

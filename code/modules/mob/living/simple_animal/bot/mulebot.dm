@@ -363,7 +363,7 @@
 
 // mousedrop a crate to load the bot
 // can load anything if hacked
-/mob/living/simple_animal/bot/mulebot/MouseDrop_T(atom/movable/AM, mob/user)
+/mob/living/simple_animal/bot/mulebot/MouseDroppedOn(atom/movable/AM, mob/user)
 	var/mob/living/L = user
 
 	if (!istype(L))
@@ -784,7 +784,7 @@
 	base_icon = "paranormalmulebot"
 
 
-/mob/living/simple_animal/bot/mulebot/paranormal/MouseDrop_T(atom/movable/AM, mob/user)
+/mob/living/simple_animal/bot/mulebot/paranormal/MouseDroppedOn(atom/movable/AM, mob/user)
 	var/mob/living/L = user
 
 	if(user.incapacitated() || (istype(L) && L.body_position == LYING_DOWN))

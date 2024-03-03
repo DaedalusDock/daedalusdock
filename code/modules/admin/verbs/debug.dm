@@ -110,7 +110,7 @@
 		return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/obj/item/worn = H.wear_id
+		var/obj/item/worn = H.wear_id.GetID(TRUE)
 		var/obj/item/card/id/id = null
 
 		if(worn)

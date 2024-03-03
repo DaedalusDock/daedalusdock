@@ -225,8 +225,9 @@
 	inhand_icon_state = "latex"
 	siemens_coefficient = 0.3
 	permeability_coefficient = 0.01
-	clothing_traits = list(TRAIT_QUICK_CARRY, TRAIT_FINGERPRINT_PASSTHROUGH)
+	clothing_traits = list(TRAIT_QUICK_CARRY)
 	resistance_flags = NONE
+	clothing_flags = parent_type::clothing_flags | FIBERLESS
 	// Just as the doctor ordered
 	germ_level = 0
 

@@ -141,15 +141,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/light_switch, 26)
 	. = ..()
 	if(panel_open)
 		if(has_wires)
-			. += "The wires are visible and could be <i>screwed</i> in place."
+			. += span_notice("The wires are visible and could be <i>screwed</i> in place.")
 		else
-			. += "The circuitry needs to be <i>wired</i> to be functional."
+			. += span_notice("The circuitry needs to be <i>wired</i> to be functional.")
 		return .
 
-	if(is_operational)
-		. += "It is [area.lightswitch ? "on" : "off"]."
-	else
-		. += "It doesn't appear to be functional."
+	. += span_notice("It is in the [area.lightswitch ? "on" : "off"] position.")
 
 /obj/machinery/light_switch/interact(mob/user)
 	. = ..()

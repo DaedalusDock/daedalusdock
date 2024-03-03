@@ -36,8 +36,8 @@
 		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your left eye."))
 	else if(current_eye == "_R")
 		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your right eye."))
-	usr.update_worn_glasses()
-	usr.update_overlays()
+
+	update_slot_icon()
 
 /obj/item/clothing/glasses/proc/eyepatch_do_switch()
 	if(current_eye == "_L")

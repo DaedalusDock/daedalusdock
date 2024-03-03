@@ -1178,9 +1178,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/crowbar/large{
-	pixel_y = 4
-	},
+/obj/item/crowbar,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "AI" = (

@@ -60,6 +60,9 @@
 	///only used by humans.
 	var/obj/item/clothing/ears = null
 
+	/// A compilation of all equipped items 'flags_inv' vars.
+	var/obscured_slots = NONE
+
 	/// Carbon
 	var/datum/dna/dna = null
 	///last mind to control this mob, for blood-based cloning

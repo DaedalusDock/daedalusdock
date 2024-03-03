@@ -442,6 +442,11 @@
 	change_head_color(rgb(rand(0, 255), rand(0, 255), rand(0, 255)))
 	AddElement(/datum/element/chewable)
 
+/obj/item/food/lollipop/equipped(mob/user, slot, initial)
+	. = ..()
+	if(slot != ITEM_SLOT_MASK)
+		add_trace_DNA(user.get_trace_dna())
+
 /obj/item/food/lollipop/proc/change_head_color(C)
 	head_color = C
 	cut_overlay(head)
@@ -479,6 +484,13 @@
 /obj/item/food/bubblegum/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/chewable, metabolization_amount = metabolization_amount)
+
+/obj/item/food/bubblegum/equipped(mob/user, slot, initial)
+	. = ..()
+	if(slot != ITEM_SLOT_MASK)
+		return
+
+	add_trace_DNA(user.get_trace_dna())
 
 /obj/item/food/bubblegum/nicotine
 	name = "nicotine gum"

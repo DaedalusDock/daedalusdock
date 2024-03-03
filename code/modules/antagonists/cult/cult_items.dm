@@ -132,7 +132,7 @@ Striking a noncultist, however, will tear their flesh."}
 	throw_speed = 1
 	throw_range = 3
 	sharpness = SHARP_EDGED
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 4
 	light_color = COLOR_RED
 	attack_verb_continuous = list("cleaves", "slashes", "tears", "lacerates", "hacks", "rips", "dices", "carves")
@@ -990,7 +990,7 @@ Striking a noncultist, however, will tear their flesh."}
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "at_shield2"
 	layer = FLY_LAYER
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 2
 	duration = 8
 	var/target

@@ -25,16 +25,16 @@
 	var/datum/lighting_corner/L
 	L = lighting_corner_NE
 	if (L)
-		totallums += L.sum_r + L.sum_b + L.sum_g
+		totallums += L.lum_r + L.lum_b + L.lum_g
 	L = lighting_corner_SE
 	if (L)
-		totallums += L.sum_r + L.sum_b + L.sum_g
+		totallums += L.lum_r + L.lum_b + L.lum_g
 	L = lighting_corner_SW
 	if (L)
-		totallums += L.sum_r + L.sum_b + L.sum_g
+		totallums += L.lum_r + L.lum_b + L.lum_g
 	L = lighting_corner_NW
 	if (L)
-		totallums += L.sum_r + L.sum_b + L.sum_g
+		totallums += L.lum_r + L.lum_b + L.lum_g
 
 
 	totallums /= 12 // 4 corners, each with 3 channels, get the average.
@@ -99,18 +99,3 @@
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()
-
-/turf/proc/generate_missing_corners()
-	if (!lighting_corner_NE)
-		lighting_corner_NE = new/datum/lighting_corner(src, NORTH|EAST)
-
-	if (!lighting_corner_SE)
-		lighting_corner_SE = new/datum/lighting_corner(src, SOUTH|EAST)
-
-	if (!lighting_corner_SW)
-		lighting_corner_SW = new/datum/lighting_corner(src, SOUTH|WEST)
-
-	if (!lighting_corner_NW)
-		lighting_corner_NW = new/datum/lighting_corner(src, NORTH|WEST)
-
-	lighting_corners_initialised = TRUE

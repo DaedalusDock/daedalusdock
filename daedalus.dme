@@ -2814,6 +2814,8 @@
 #include "code\modules\codex\entries\_codex_entry.dm"
 #include "code\modules\codex\entries\atmospherics.dm"
 #include "code\modules\codex\entries\codex.dm"
+#include "code\modules\codex\entries\floors.dm"
+#include "code\modules\codex\entries\items.dm"
 #include "code\modules\codex\entries\machinery.dm"
 #include "code\modules\codex\entries\mechcomp.dm"
 #include "code\modules\codex\entries\power.dm"

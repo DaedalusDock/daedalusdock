@@ -22,7 +22,7 @@
 	if(!Adjacent(usr) || !over.Adjacent(usr) && !istype(over, /atom/movable/screen))
 		return // should stop you from dragging through windows
 
-	over.MouseDrop_T(src,usr, params)
+	over.MouseDroppedOn(src, usr, params2list(params))
 	return TRUE
 
 /// Handles treating drags as clicks if they're within some conditions
@@ -84,7 +84,7 @@
 	return TRUE
 
 // receive a mousedrop
-/atom/proc/MouseDrop_T(atom/dropping, mob/user, params)
+/atom/proc/MouseDroppedOn(atom/dropping, mob/user, params)
 	SEND_SIGNAL(src, COMSIG_MOUSEDROPPED_ONTO, dropping, user, params)
 
 

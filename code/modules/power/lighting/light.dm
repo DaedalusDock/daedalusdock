@@ -244,20 +244,20 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
-			. += "It is turned [on? "on" : "off"]."
+			if(!on)
+				. += span_notice("It is turned off.")
 		if(LIGHT_EMPTY)
-			. += "The [fitting] has been removed."
+			. += span_notice("The [fitting] has been removed.")
 		if(LIGHT_BURNED)
-			. += "The [fitting] is burnt out."
+			. += span_notice("The [fitting] is burnt out.")
 		if(LIGHT_BROKEN)
-			. += "The [fitting] has been smashed."
-	if(cell)
-		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
-	//PARIAH EDIT ADDITION
-	if(constant_flickering)
-		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
-	//PARIAH EDIT END
+			. += span_alert("The [fitting] has been smashed.")
 
+	if(cell)
+		. += span_notice("Its backup power charge meter reads: [round((cell.charge / cell.maxcharge) * 100, 0.1)]%.")
+
+	if(constant_flickering)
+		. += span_alert("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 
 
 // attack with item - insert light (if right type), otherwise try to break the light

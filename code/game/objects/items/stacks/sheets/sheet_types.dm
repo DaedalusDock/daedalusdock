@@ -147,10 +147,6 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 	source = /datum/robot_energy_storage/iron
 	tram_wall_type = /obj/structure/tramwall
 
-/obj/item/stack/sheet/iron/examine(mob/user)
-	. = ..()
-	. += span_notice("You can build a wall girder (unanchored) by right clicking on an empty floor.")
-
 /obj/item/stack/sheet/iron/narsie_act()
 	new /obj/item/stack/sheet/runed_metal(loc, amount)
 	qdel(src)

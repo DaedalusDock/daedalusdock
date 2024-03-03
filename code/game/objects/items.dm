@@ -70,6 +70,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	///The config type to use for greyscaled belt overlays. Both this and greyscale_colors must be assigned to work.
 	var/greyscale_config_belt
 
+	/// A url-encoded string that is the center pixel of an icon (or close enough). Use get_icon_center().
+	var/icon_center = "x=16&y=16"
+
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 		IF YOU ADD MORE ICON CRAP TO THIS
 		ENSURE YOU ALSO ADD THE NEW VARS TO CHAMELEON ITEM_ACTION'S update_item() PROC (/datum/action/item_action/chameleon/change/proc/update_item())
@@ -436,8 +439,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/examine(mob/user) //This might be spammy. Remove?
 	. = ..()
-
-	. += "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] object."
+	. += span_notice("[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] object.")
 
 /obj/item/interact(mob/user)
 	add_fingerprint(user)
@@ -1771,3 +1773,10 @@ DEFINE_INTERACTABLE(/obj/item)
 	else if(isnull(.))
 		. = pick('sound/weapons/swing/swing_01.ogg', 'sound/weapons/swing/swing_02.ogg', 'sound/weapons/swing/swing_03.ogg')
 	return .
+
+/// Returns [obj/item/var/icon_center] as a list.
+/obj/item/proc/get_icon_center()
+	var/list/center = params2list(icon_center)
+	center["x"] = text2num(center["x"])
+	center["y"] = text2num(center["y"])
+	return center

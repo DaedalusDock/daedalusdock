@@ -5,6 +5,12 @@
 	icon_state = "dnakit"
 	illustration = null
 
+/obj/item/storage/box/swabs/Initialize(mapload)
+	. = ..()
+	atom_storage.set_holdable(/obj/item/swab)
+	atom_storage.max_slots = 14
+	atom_storage.max_total_storage = /obj/item/swab::w_class * 14
+
 /obj/item/storage/box/swabs/PopulateContents()
 	for(var/i in 1 to 14)
 		new /obj/item/swab(src)
@@ -16,6 +22,12 @@
 	icon_state = "dnakit"
 	illustration = null
 
+/obj/item/storage/box/evidence/Initialize(mapload)
+	. = ..()
+	atom_storage.set_holdable(/obj/item/storage/evidencebag)
+	atom_storage.max_slots = 7
+	atom_storage.max_total_storage = /obj/item/storage/evidencebag::w_class * 7
+
 /obj/item/storage/box/evidence/PopulateContents()
 	for(var/i in 1 to 7)
 		new /obj/item/storage/evidencebag(src)
@@ -26,6 +38,12 @@
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "dnakit"
 	illustration = null
+
+/obj/item/storage/box/fingerprints/Initialize(mapload)
+	. = ..()
+	atom_storage.set_holdable(/obj/item/sample/print)
+	atom_storage.max_slots = 14
+	atom_storage.max_total_storage = /obj/item/sample/print::w_class * 14
 
 /obj/item/storage/box/fingerprints/PopulateContents()
 	for(var/i in 1 to 14)

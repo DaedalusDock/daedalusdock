@@ -1,0 +1,9 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Many objects that were previously borderline indestructible to players
+      are now destructible. Most notably, Airlocks and Firedoors can now be destroyed
+      with weapons as strong as a wrench. It will take a while though.
+  - balance: Firedoor health reduced substantially.
+  - rscadd: You can now shimmy through airlock assemblies by clicking on them with
+      an empty hand.

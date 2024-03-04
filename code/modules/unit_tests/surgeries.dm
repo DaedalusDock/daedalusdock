@@ -77,7 +77,7 @@
 	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
 	var/obj/structure/table/table = allocate(/obj/structure/table/optable)
 	var/obj/item/scalpel/scalpel = allocate(__IMPLIED_TYPE__)
-	var/obj/item/hemostat/hemostat = allocate(__IMPLIED_TYPE__)
+	var/obj/item/retractor/retractor = allocate(__IMPLIED_TYPE__)
 	var/obj/item/circular_saw/saw = allocate(__IMPLIED_TYPE__)
 
 	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
@@ -95,8 +95,8 @@
 
 		user.desired_surgery = /datum/surgery_step/generic_organic/retract_skin
 		user.drop_all_held_items()
-		user.put_in_active_hand(hemostat)
-		hemostat.melee_attack_chain(user, patient)
+		user.put_in_active_hand(retractor)
+		retractor.melee_attack_chain(user, patient)
 
 		TEST_ASSERT(BP.how_open() == SURGERY_RETRACTED, "[parse_zone(zone)]'s incision was not widened (Openness: [BP.how_open()]).")
 

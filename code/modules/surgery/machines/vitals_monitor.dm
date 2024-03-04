@@ -2,6 +2,8 @@
 #define BRAIN_ALERT 2
 #define LUNGS_ALERT 3
 
+DEFINE_INTERACTABLE(/obj/machinery/vitals_monitor)
+
 /obj/machinery/vitals_monitor
 	name = "vitals monitor"
 	desc = "A bulky yet mobile machine, showing some odd graphs."
@@ -101,11 +103,11 @@
 				if (read_alerts)
 					alerts[PULSE_ALERT] = "Cardiac flatline detected!"
 
-			if (PULSE_SLOW, PULSE_NORM,)
+			if (PULSE_SLOW, PULSE_NORM)
 				. += emissive_appearance(icon, "pulse_normal")
 				. += image(icon, icon_state = "pulse_normal")
 				if (beep)
-					playsound(src, 'sound/machines/quiet_beep.ogg', 40)
+					playsound(src, 'sound/machines/quiet_beep.ogg', 30)
 
 			if (PULSE_FAST, PULSE_2FAST)
 				. += emissive_appearance(icon, "pulse_veryfast")

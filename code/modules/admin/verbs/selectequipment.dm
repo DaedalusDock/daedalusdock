@@ -217,7 +217,7 @@
 		qdel(item)
 
 	var/obj/item/organ/brain/human_brain = human_target.getorganslot(BRAIN)
-	human_brain.destroy_all_skillchips() // get rid of skillchips to prevent runtimes
+	human_brain?.destroy_all_skillchips() // get rid of skillchips to prevent runtimes
 
 	if(dresscode != "Naked")
 		human_target.equipOutfit(dresscode)

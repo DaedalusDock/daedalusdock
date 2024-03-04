@@ -397,7 +397,7 @@
 	updating_health = FALSE // Brainloss isn't apart of tox loss, so never update health here.
 	. = ..()
 	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
-		var/damage_secondary = . * 0.2
+		var/damage_secondary = min(. * 0.2, 20)
 		if (owner)
 			owner.flash_act(visual = TRUE)
 			owner.blur_eyes(.)
@@ -420,10 +420,8 @@
 	else
 		if(owner)
 			owner.revive()
-			owner.grab_ghost()
 		else if(brainmob)
 			brainmob.revive()
-			brainmob.grab_ghost()
 		return
 
 /obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)

@@ -1725,6 +1725,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		var/obj/O = highest
 		if(!O.uses_integrity)
 			return
+
 		O.take_damage((w_class * 5) * levels)
 
 	if(ismob(highest))

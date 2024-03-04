@@ -160,7 +160,6 @@
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY_SECONDARY, PROC_REF(open_storage_attackby_secondary))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(close_distance))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(update_actions))
-	RegisterSignal(parent, COMSIG_TOPIC, PROC_REF(topic_handle))
 
 /datum/storage/proc/on_deconstruct()
 	SIGNAL_HANDLER
@@ -227,15 +226,6 @@
 	SIGNAL_HANDLER
 
 	set_real_location(null)
-
-/datum/storage/proc/topic_handle(datum/source, user, href_list)
-	SIGNAL_HANDLER
-
-	if(href_list["show_valid_pocket_items"])
-		handle_show_valid_items(source, user)
-
-/datum/storage/proc/handle_show_valid_items(datum/source, user)
-	to_chat(user, span_notice("[source] can hold: [can_hold_description]"))
 
 /// Almost 100% of the time the lists passed into set_holdable are reused for each instance
 /// Just fucking cache it 4head

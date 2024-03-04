@@ -153,24 +153,40 @@
 	var/mob/living/old_current = current
 	if(current)
 		current.transfer_observers_to(new_character) //transfer anyone observing the old character to the new one
+
 	set_current(new_character) //associate ourself with our new body
 	QDEL_NULL(antag_hud)
+
 	new_character.mind = src //and associate our new body with ourself
+
 	antag_hud = new_character.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/antagonist_hud, "combo_hud", src)
+
 	for(var/a in antag_datums) //Makes sure all antag datums effects are applied in the new body
 		var/datum/antagonist/A = a
 		A.on_body_transfer(old_current, current)
+
 	if(iscarbon(new_character))
 		var/mob/living/carbon/C = new_character
 		C.last_mind = src
+
 	transfer_martial_arts(new_character)
+
+	// If the new mob is immune to addictions, cure them all.
+	if(HAS_TRAIT(new_character, TRAIT_NO_ADDICTION))
+		for(var/addiction_type in subtypesof(/datum/addiction))
+			remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS)
+
 	RegisterSignal(new_character, COMSIG_LIVING_DEATH, PROC_REF(set_death_time))
+
 	if(active || force_key_move)
 		new_character.key = key //now transfer the key to link the client to our new body
+
 	if(new_character.client)
 		LAZYCLEARLIST(new_character.client.recent_examines)
 		new_character.client.init_verbs() // re-initialize character specific verbs
+
 	current.update_atom_languages()
+
 	SEND_SIGNAL(src, COMSIG_MIND_TRANSFERRED, old_current)
 	SEND_SIGNAL(current, COMSIG_MOB_MIND_TRANSFERRED_INTO)
 
@@ -849,6 +865,8 @@
 
 ///Adds addiction points to the specified addiction
 /datum/mind/proc/add_addiction_points(type, amount)
+	if(current && HAS_TRAIT(current, TRAIT_NO_ADDICTION))
+		return
 	LAZYSET(addiction_points, type, min(LAZYACCESS(addiction_points, type) + amount, MAX_ADDICTION_POINTS))
 	var/datum/addiction/affected_addiction = SSaddiction.all_addictions[type]
 	return affected_addiction.on_gain_addiction_points(src)

@@ -32,9 +32,7 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	if(!G)
 		return TRUE
 
-	if (G.current_grab.damage_stage != GRAB_AGGRESSIVE) // Do not conflict with fireman carrying
-		return TRUE
-	else
+	if ((G.current_grab.damage_stage == GRAB_AGGRESSIVE) && !combat_mode) // Do not conflict with fireman carrying
 		return FALSE
 
 /datum/strippable_item/mob_item_slot/eyes

@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Items now autogenerate codex information.
+  - qol: Improved grammar of examine text.

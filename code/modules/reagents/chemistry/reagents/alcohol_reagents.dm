@@ -66,22 +66,20 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	APPLY_CHEM_EFFECT(C, CE_ALCOHOL, 1)
 	var/effective_dose = boozepwr * (1 + volume/60) //drinking a LOT will make you go down faster
 
-	to_chat(world, "Current dose: [effective_dose] | Power: [boozepwr]")
-
 	if(effective_dose >= 25) // Early warning
 		C.set_timed_status_effect(2 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 
 	if(effective_dose >= 50) // Slurring
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
 	if(effective_dose >= 75) // Confusion - walking in random directions
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
 	if(effective_dose >= 100) // Blurry vision
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
 	if(effective_dose >= 125) // Drowsyness - periodically falling asleep
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
 	if(effective_dose >= 150) // Toxic dose
 		APPLY_CHEM_EFFECT(C, CE_ALCOHOL_TOXIC, toxicity)

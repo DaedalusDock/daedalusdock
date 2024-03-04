@@ -507,10 +507,8 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		return TRUE
 
 	if(organ_flags & ORGAN_DEAD)
-		return FALSE
-
-	if(world.time <= (time_of_death + ORGAN_RECOVERY_THRESHOLD))
-		return FALSE
+		if(world.time >= (time_of_death + ORGAN_RECOVERY_THRESHOLD))
+			return FALSE
 
 	return TRUE
 

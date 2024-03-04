@@ -1,0 +1,14 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Admins can use equip outfit on IPCs.
+  - bugfix: Vox blood, like, works.
+  - bugfix: Retract Skin surgery works correctly on heads.
+  - qol: Brain Revival surgery can now be done with most reagent containers, and only
+      requires 5 units.
+  - qol: Stripping is now able to be performed any time, unless you are in an aggressive
+      grab and dont have combat mode turned on. In this case, you will attempt a fireman
+      carry.
+  - bugfix: Tables function correctly again. Notably, operating tables will turn off
+      their vitals monitor if the patient leaves the table.
+  - balance: Nicotine addiction builds 50% as fast as it used to.

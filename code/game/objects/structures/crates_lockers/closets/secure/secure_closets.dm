@@ -6,4 +6,4 @@
 	max_integrity = 250
 	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 100, LASER = 50, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
 	secure = TRUE
-	damage_deflection = 20
+	damage_deflection = 18

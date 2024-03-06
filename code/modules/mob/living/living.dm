@@ -652,6 +652,7 @@
 		update_eye_blur()
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 		reload_fullscreen()
+		to_chat(src, span_obviousnotice("A rapidly growing speck of white floods your vision as the spark of life returns!"))
 		. = TRUE
 
 		if(excess_healing)

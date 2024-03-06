@@ -661,18 +661,19 @@
  * [COMSIG_ATOM_GET_EXAMINE_NAME] signal
  */
 /atom/proc/get_examine_name(mob/user)
-	. = "\a [src]"
-	var/list/override = list(gender == PLURAL ? "some" : "a", " ", "[name]")
-	if(article)
-		. = "[article] [src]"
-		override[EXAMINE_POSITION_ARTICLE] = article
+	var/list/name_list = list(name)
 
-	if(SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override) & COMPONENT_EXNAME_CHANGED)
-		. = override.Join("")
+	SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, name_list)
+	if(gender == PLURAL)
+		return jointext(name_list, " ")
+
+	else
+		return "\a [jointext(name_list, " ")]"
 
 ///Generate the full examine string of this atom (including icon for goonchat)
 /atom/proc/get_examine_string(mob/user, thats = FALSE)
-	return "[icon2html(src, user)] [thats? "That's ":""][get_examine_name(user)]"
+	var/that_string = gender == PLURAL ? "Those are " : "That is "
+	return "[icon2html(src, user)] [thats? that_string :""][get_examine_name(user)]"
 
 /**
  * Returns an extended list of examine strings for any contained ID cards.

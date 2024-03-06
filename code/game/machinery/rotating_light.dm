@@ -84,8 +84,9 @@
 		spinning_lights_cache["[color]"] = new /obj/effect/spinning_light()
 	spin_effect = spinning_lights_cache["[color]"]
 	alarm_light_color = color
-	var/HSV = RGBtoHSV(alarm_light_color)
-	var/RGB = HSVtoRGB(RotateHue(HSV, angle))
+
+	var/RGB = RotateHue(alarm_light_color, angle)
+
 	alarm_light_color = RGB
 	spin_effect.set_color(color)
 	if (on)

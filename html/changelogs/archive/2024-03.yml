@@ -21,3 +21,29 @@
   - bugfix: Vox players with Leg Scutes no longer crash the server.
   pitaden:
   - qol: reactions in the codex now show if they're exothermic/endothermic
+2024-03-05:
+  Kapu1178:
+  - rscadd: Items now autogenerate codex information.
+  - qol: Improved grammar of examine text.
+  - bugfix: Admins can use equip outfit on IPCs.
+  - bugfix: Vox blood, like, works.
+  - bugfix: Retract Skin surgery works correctly on heads.
+  - qol: Brain Revival surgery can now be done with most reagent containers, and only
+      requires 5 units.
+  - qol: Stripping is now able to be performed any time, unless you are in an aggressive
+      grab and dont have combat mode turned on. In this case, you will attempt a fireman
+      carry.
+  - bugfix: Tables function correctly again. Notably, operating tables will turn off
+      their vitals monitor if the patient leaves the table.
+  - balance: Nicotine addiction builds 50% as fast as it used to.
+  - balance: Many objects that were previously borderline indestructible to players
+      are now destructible. Most notably, Airlocks and Firedoors can now be destroyed
+      with weapons as strong as a wrench. It will take a while though.
+  - balance: Firedoor health reduced substantially.
+  - rscadd: You can now shimmy through airlock assemblies by clicking on them with
+      an empty hand.
+2024-03-06:
+  Kapu1178:
+  - bugfix: Addictive reagents scale with the amount of reagent consumed properly.
+  - bugfix: IPCs can no longer get addicted to substances.
+  - bugfix: Rescaled alcohol effects

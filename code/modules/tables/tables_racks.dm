@@ -54,7 +54,7 @@
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(table_carbon),
 		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
 		COMSIG_ATOM_EXIT = PROC_REF(check_exit),
-		COMSIG_ATOM_EXITTED = PROC_REF(on_uncrossed),
+		COMSIG_ATOM_EXITED = PROC_REF(on_uncrossed),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -251,7 +251,7 @@
 		if(!HAS_TRAIT(crossed_by, TRAIT_TABLE_RISEN))
 			ADD_TRAIT(crossed_by, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
 
-/obj/structure/table/proc/on_uncrossed(atom/movable/gone, direction)
+/obj/structure/table/proc/on_uncrossed(datum/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
 	if(!isliving(gone))
 		return
@@ -894,7 +894,7 @@
 	else
 		return ..()
 
-/obj/structure/table/optable/on_uncrossed(atom/movable/gone, direction)
+/obj/structure/table/optable/on_uncrossed(datum/source, atom/movable/gone, direction)
 	. = ..()
 	if(gone == patient)
 		set_patient(null)

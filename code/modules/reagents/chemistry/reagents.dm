@@ -121,7 +121,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	return
 
 /// Called from [/datum/reagents/proc/metabolize]
-/datum/reagent/proc/on_mob_life(mob/living/carbon/M, location)
+/datum/reagent/proc/on_mob_life(mob/living/carbon/M, location, do_addiction)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 
@@ -134,6 +134,10 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 	removed *= M.metabolism_efficiency
 	removed = min(removed, volume)
+
+	if(do_addiction && length(addiction_types))
+		for(var/addiction in addiction_types)
+			M.mind?.add_addiction_points(addiction, addiction_types[addiction] * removed)
 
 	//adjust effective amounts - removed, dose, and max_dose - for mob size
 	var/effective = removed

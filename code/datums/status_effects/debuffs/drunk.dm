@@ -183,17 +183,16 @@
 	// Over 81, we will gain constant toxloss
 	if(drunk_value >= 81)
 		owner.adjustToxLoss(1)
-		if(owner.stat != CONSCIOUS && prob(5))
+		if(owner.stat == CONSCIOUS && prob(5))
 			to_chat(owner, span_warning("Maybe you should lie down for a bit..."))
 
 	// Over 91, we gain even more toxloss, brain damage, and have a chance of dropping into a long sleep
 	if(drunk_value >= 91)
 		owner.adjustToxLoss(1)
-		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.4)
-		if(owner.stat != CONSCIOUS && prob(20))
-			// Don't put us in a deep sleep if evac is in process. QoL, mainly.
+		if(owner.stat == CONSCIOUS && prob(20))
+			// Don't put us in a deep sleep if the shuttle's here. QoL, mainly.
 			if(SSevacuation.evacuation_in_progress() && is_station_level(owner.z))
-				to_chat(owner, span_warning("You're so tired... but you can't miss the evacuation..."))
+				to_chat(owner, span_warning("You're so tired... but you can't miss that shuttle..."))
 
 			else
 				to_chat(owner, span_warning("Just a quick nap..."))

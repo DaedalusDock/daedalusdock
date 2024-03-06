@@ -520,15 +520,13 @@
 		. += "The [bolt_wording] is locked."
 
 	if (suppressed)
-		. += "It has a suppressor attached that can be removed with <b>alt+click</b>."
+		. += "It has a suppressor attached."
 
 	if(magazine && internal_magazine)
 		. += span_notice(magazine.get_ammo_desc())
 
 	if(can_misfire)
 		. += span_danger("You get the feeling this might explode if you fire it....")
-		if(misfire_probability > 0)
-			. += span_danger("Given the state of the gun, there is a [misfire_probability]% chance it'll misfire.")
 
 ///Gets the number of bullets in the gun
 /obj/item/gun/ballistic/proc/get_ammo(countchambered = TRUE)

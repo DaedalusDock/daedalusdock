@@ -10,7 +10,7 @@
 	integrity_failure = 0.4
 	light_color = COLOR_WHITE
 	light_power = FLASH_LIGHT_POWER
-	damage_deflection = 10
+	damage_deflection = 5
 	var/obj/item/assembly/flash/handheld/bulb
 	var/id = null
 	var/range = 2 //this is roughly the size of brig cell

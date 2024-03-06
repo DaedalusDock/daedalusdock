@@ -60,12 +60,6 @@
 	var/current_color
 	var/EMPeffect = FALSE
 	var/emageffect = FALSE
-	var/r1
-	var/g1
-	var/b1
-	var/static/r2 = 237
-	var/static/g2 = 164
-	var/static/b2 = 149
 	var/obj/effect/dummy/lighting_obj/ethereal_light
 
 
@@ -81,10 +75,9 @@
 	if(!ishuman(C))
 		return
 	var/mob/living/carbon/human/ethereal = C
+
 	default_color = ethereal.dna.features["ethcolor"]
-	r1 = GETREDPART(default_color)
-	g1 = GETGREENPART(default_color)
-	b1 = GETBLUEPART(default_color)
+
 	RegisterSignal(ethereal, COMSIG_ATOM_EMAG_ACT, PROC_REF(on_emag_act))
 	RegisterSignal(ethereal, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp_act))
 	RegisterSignal(ethereal, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
@@ -127,13 +120,19 @@
 	if(H.stat != DEAD && !EMPeffect)
 		var/healthpercent = max(H.health, 0) / 100
 		if(!emageffect)
-			current_color = rgb(r2 + ((r1-r2)*healthpercent), g2 + ((g1-g2)*healthpercent), b2 + ((b1-b2)*healthpercent))
+			var/static/list/skin_color = rgb2num("#eda495")
+			var/list/colors = rgb2num(H.dna.features["ethcolor"])
+			var/list/built_color = list()
+			for(var/i in 1 to 3)
+				built_color += skin_color[i] + ((colors[i] - skin_color[i]) * healthpercent)
+			current_color = rgb(built_color[1], built_color[2], built_color[3])
 		ethereal_light.set_light_range_power_color(1 + (2 * healthpercent), 1 + (1 * healthpercent), current_color)
 		ethereal_light.set_light_on(TRUE)
 		fixed_mut_color = current_color
 	else
 		ethereal_light.set_light_on(FALSE)
 		fixed_mut_color = rgb(128,128,128)
+
 	H.hair_color = current_color
 	H.facial_hair_color = current_color
 	H.update_body()

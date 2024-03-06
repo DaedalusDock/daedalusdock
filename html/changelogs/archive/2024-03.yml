@@ -42,3 +42,8 @@
   - balance: Firedoor health reduced substantially.
   - rscadd: You can now shimmy through airlock assemblies by clicking on them with
       an empty hand.
+2024-03-06:
+  Kapu1178:
+  - bugfix: Addictive reagents scale with the amount of reagent consumed properly.
+  - bugfix: IPCs can no longer get addicted to substances.
+  - bugfix: Rescaled alcohol effects

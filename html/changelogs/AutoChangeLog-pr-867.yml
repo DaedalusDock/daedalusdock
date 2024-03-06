@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Addictive reagents scale with the amount of reagent consumed properly.
-  - bugfix: IPCs can no longer get addicted to substances.
-  - bugfix: Rescaled alcohol effects

@@ -17,7 +17,7 @@
 
 		TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
 
-		if(istype(the_grab.current_grab), /datum/grab/normal/struggle)
+		if(istype(the_grab.current_grab, /datum/grab/normal/struggle))
 			// Struggle grabs are special and need to be treated as such.
 			var/slept = world.time
 			UNTIL(the_grab.done_struggle || world.time > slept + 10 SECONDS)

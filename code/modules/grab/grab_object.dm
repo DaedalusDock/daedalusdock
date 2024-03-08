@@ -251,8 +251,6 @@
 
 	COOLDOWN_START(src, upgrade_cd, current_grab.upgrade_cooldown)
 
-	adjust_position()
-	update_appearance()
 	leave_forensic_traces()
 
 	if(QDELETED(src))
@@ -263,6 +261,9 @@
 
 	if(is_grab_unique(current_grab))
 		current_grab.apply_unique_grab_effects(src)
+
+	adjust_position()
+	update_appearance()
 
 /obj/item/hand_item/grab/proc/downgrade(silent)
 	var/datum/grab/downgrab = current_grab.downgrade(src)

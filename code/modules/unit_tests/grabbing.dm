@@ -43,10 +43,8 @@
 
 			expected_grab_level = the_grab.current_grab.downgrab
 		else
-			TEST_ASSERT(QDELETED(the_grab), "Grab object was not qdeleted after attempting to downgrade to nothing.")
+			QDEL_NULL(the_grab)
 			break
-
-	the_grab = null
 
 /datum/unit_test/grab_contest/Run()
 	var/mob/living/carbon/human/assailant = allocate(__IMPLIED_TYPE__)

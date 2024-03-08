@@ -272,6 +272,7 @@
 	var/datum/grab/downgrab = current_grab.downgrade(src)
 	if(!downgrab)
 		return
+
 	if(is_grab_unique(current_grab))
 		current_grab.remove_unique_grab_effects(src)
 

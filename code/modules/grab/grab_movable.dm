@@ -52,6 +52,11 @@
 	var/list/grabbed_by = list()
 
 	grabbed_by += src.grabbed_by
+
+	if(length(buckled_mobs))
+		for(var/mob/M as anything in buckled_mobs)
+			M.update_offsets()
+
 	if(isliving(src))
 		var/mob/living/L = src
 		if(L.buckled)

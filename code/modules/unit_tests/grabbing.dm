@@ -13,10 +13,6 @@
 	assailant.set_combat_mode(TRUE)
 
 	while(expected_grab_level)
-		the_grab.attack_self(assailant)
-
-		TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
-
 		if(istype(the_grab.current_grab, /datum/grab/normal/struggle))
 			// Struggle grabs are special and need to be treated as such.
 			var/slept = world.time
@@ -24,12 +20,15 @@
 			if(world.time > slept + 10 SECONDS)
 				TEST_FAIL("Struggle grab resolution took timed out")
 				return
+		else
+			the_grab.attack_self(assailant)
 
-		TEST_ASSERT(the_grab.current_grab == expected_grab_level, "Grab is not at the expected grab level, expected: [expected_grab_level] | got: [the_grab.current_grab || "NULL"]")
+		TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
+
+		TEST_ASSERT(the_grab.current_grab == expected_grab_level, "Upgraded grab is not at the expected grab level, expected: [expected_grab_level] | got: [the_grab.current_grab || "NULL"]")
 
 		expected_grab_level = the_grab.current_grab.upgrab
 		COOLDOWN_RESET(the_grab, upgrade_cd)
-
 
 	// Test downgrading works
 	assailant.set_combat_mode(FALSE)
@@ -40,7 +39,7 @@
 
 		if(expected_grab_level)
 			TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
-			TEST_ASSERT(the_grab.current_grab == expected_grab_level, "Grab is not at the expected grab level, expected: [expected_grab_level] | got: [the_grab.current_grab || "NULL"]")
+			TEST_ASSERT(the_grab.current_grab == expected_grab_level, "Downgraded grab is not at the expected grab level, expected: [expected_grab_level] | got: [the_grab.current_grab || "NULL"]")
 
 			expected_grab_level = the_grab.current_grab.upgrab
 		else

@@ -17,12 +17,13 @@
 
 		TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
 
-		// Struggle grabs are special and need to be treated as such.
-		var/slept = world.time
-		UNTIL(!the_grab.done_struggle || world.time > slept + 10 SECONDS)
-		if(world.time > slept + 10 SECONDS)
-			TEST_FAIL("Struggle grab resolution took timed out")
-			return
+		if(istype(the_grab.current_grab), /datum/grab/normal/struggle)
+			// Struggle grabs are special and need to be treated as such.
+			var/slept = world.time
+			UNTIL(the_grab.done_struggle || world.time > slept + 10 SECONDS)
+			if(world.time > slept + 10 SECONDS)
+				TEST_FAIL("Struggle grab resolution took timed out")
+				return
 
 		TEST_ASSERT(the_grab.current_grab == expected_grab_level, "Grab is not at the expected grab level, expected: [expected_grab_level] | got: [the_grab.current_grab || "NULL"]")
 

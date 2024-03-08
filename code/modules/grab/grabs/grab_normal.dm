@@ -44,7 +44,6 @@
 			affecting.visible_message(span_danger("\The [assailant] pins \the [affecting] to the ground!"))
 			affecting.Paralyze(1 SECOND) // This can only be performed with an aggressive grab, which ensures that once someone is knocked down, they stay down.
 			affecting.move_from_pull(G.assailant, get_turf(G.assailant))
-			affecting.update_offsets() // Re-center the target
 			return TRUE
 
 		affecting.visible_message(span_warning("\The [assailant] fails to pin \the [affecting] to the ground."))

@@ -102,11 +102,14 @@
 	if(affecting)
 		LAZYREMOVE(affecting.grabbed_by, src)
 		affecting.update_offsets()
+
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
+
 	if(assailant)
 		LAZYREMOVE(assailant.active_grabs, src)
 		assailant.after_grab_release(affecting)
+
 	affecting = null
 	assailant = null
 	return ..()
@@ -369,3 +372,28 @@
 
 	affecting.update_offsets()
 	affecting.reset_plane_and_layer()
+
+/obj/item/hand_item/grab/proc/move_victim_towards(atom/destination)
+	if(current_grab.same_tile)
+		return
+
+	if(affecting.anchored || affecting.move_resist > assailant.move_force || !affecting.Adjacent(assailant, assailant, affecting))
+		qdel(src)
+		return
+
+	if(isliving(assailant))
+		var/mob/living/pulling_mob = assailant
+		if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
+			qdel(src)
+			return
+
+	var/move_dir = get_dir(affecting.loc, destination)
+
+	// Don't move people in space, that's fucking cheating
+	if(!Process_Spacemove(move_dir))
+		return
+
+	// Okay, now actually try to move
+	. = affecting.Move(get_step(affecting.loc, move_dir), move_dir, glide_size)
+	if(.)
+		affecting.update_offsets()

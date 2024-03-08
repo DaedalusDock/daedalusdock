@@ -225,7 +225,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(grab.current_grab.same_tile)
 		return
 
-	user.move_grabbed_atoms_towards(src)
+	grab.move_victim_towards(src)
 
 
 /**

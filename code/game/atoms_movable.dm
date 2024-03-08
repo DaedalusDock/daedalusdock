@@ -509,6 +509,8 @@
 	moving_from_pull = FALSE
 	forcemove_should_maintain_grab = FALSE
 
+	update_offsets()
+
 /**
  * Called after a successful Move(). By this point, we've already moved.
  * Arguments:

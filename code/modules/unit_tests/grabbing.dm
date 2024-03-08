@@ -15,9 +15,11 @@
 	while(expected_grab_level)
 		if(istype(the_grab.current_grab, /datum/grab/normal/struggle))
 			// Struggle grabs are special and need to be treated as such.
-			var/slept = world.time
-			UNTIL(the_grab.done_struggle || world.time > slept + 10 SECONDS)
-			if(world.time > slept + 10 SECONDS)
+			var/slept = REALTIMEOFDAY
+			while(!(the_grab.done_struggle || REALTIMEOFDAY > slept + 10 SECONDS))
+				sleep(world.tick_lag)
+
+			if(REALTIMEOFDAY > slept + 10 SECONDS)
 				TEST_FAIL("Struggle grab resolution timed out")
 				return
 		else

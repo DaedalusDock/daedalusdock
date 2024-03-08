@@ -9,21 +9,11 @@
 	TEST_ASSERT(!isnull(the_grab), "Assailant failed to grab victim.")
 
 	// Test upgrading works
-	var/expected_grab_level = the_grab.current_grab.upgrab
+	var/expected_grab_level = GLOB.all_grabstates[/datum/grab/normal/aggressive]
 	assailant.set_combat_mode(TRUE)
 
 	while(expected_grab_level)
-		if(istype(the_grab.current_grab, /datum/grab/normal/struggle))
-			// Struggle grabs are special and need to be treated as such.
-			var/slept = REALTIMEOFDAY
-			while(!(the_grab.done_struggle || REALTIMEOFDAY > slept + 10 SECONDS))
-				sleep(world.tick_lag)
-
-			if(REALTIMEOFDAY > slept + 10 SECONDS)
-				TEST_FAIL("Struggle grab resolution timed out")
-				return
-		else
-			the_grab.attack_self(assailant)
+		the_grab.attack_self(assailant)
 
 		TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
 

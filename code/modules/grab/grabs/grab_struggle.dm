@@ -43,6 +43,7 @@
 
 	#ifdef UNIT_TESTS
 	var/upgrade_cooldown = 0
+	sleep(world.tick_lag)
 	#endif
 
 	var/datum/callback/user_incapacitated_callback = CALLBACK(src, PROC_REF(resolve_struggle_check), G)

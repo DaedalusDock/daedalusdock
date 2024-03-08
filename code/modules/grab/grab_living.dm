@@ -81,7 +81,7 @@
 		return null
 
 	for(var/obj/item/hand_item/grab/competing_grab in target.grabbed_by)
-		if(competing_grab.assailant.move_force < move_force)
+		if(competing_grab.assailant.pull_force < pull_force)
 			to_chat(competing_grab.assailant, span_alert("[target] is ripped from your grip by [src]."))
 			qdel(competing_grab)
 

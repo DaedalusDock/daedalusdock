@@ -2,6 +2,7 @@
 	var/mob/living/carbon/human/assailant = allocate(__IMPLIED_TYPE__)
 	var/mob/living/carbon/human/victim = allocate(__IMPLIED_TYPE__)
 
+	victim.set_combat_mode(TRUE)
 	assailant.try_make_grab(victim)
 
 	var/obj/item/hand_item/grab/the_grab = assailant.is_grabbing(victim)

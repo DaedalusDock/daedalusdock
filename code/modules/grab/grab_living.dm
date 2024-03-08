@@ -21,7 +21,7 @@
 
 	for(var/obj/item/hand_item/grab/G in target.grabbed_by)
 		if(G.assailant != src)
-			if(G.assailant.move_force > move_force || (G.assailant.move_force == move_force && G.current_grab.damage_stage >= AGGRESSIVE_GRAB))
+			if(G.assailant.pull_force > pull_force || (G.assailant.pull_force == pull_force && G.current_grab.damage_stage > GRAB_PASSIVE))
 				to_chat(src, span_warning("[G.assailant]'s grip is too strong."))
 				return FALSE
 

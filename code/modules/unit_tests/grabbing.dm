@@ -16,6 +16,11 @@
 		the_grab.attack_self(assailant)
 
 		TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
+
+		// Struggle grabs are special and need to be treated as such.
+		if(istype(the_grab.current_grab, /datum/grab/normal/struggle))
+			sleep(2) // Give the struggle a chance to resolve
+
 		TEST_ASSERT(the_grab.current_grab == expected_grab_level, "Grab is not at the expected grab level, expected: [expected_grab_level] | got: [the_grab.current_grab || "NULL"]")
 
 		expected_grab_level = the_grab.current_grab.upgrab
@@ -39,7 +44,6 @@
 			break
 
 	the_grab = null
-
 
 /datum/unit_test/grab_contest/Run()
 	var/mob/living/carbon/human/assailant = allocate(__IMPLIED_TYPE__)

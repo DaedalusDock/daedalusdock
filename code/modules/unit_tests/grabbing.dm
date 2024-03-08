@@ -18,7 +18,7 @@
 			var/slept = world.time
 			UNTIL(the_grab.done_struggle || world.time > slept + 10 SECONDS)
 			if(world.time > slept + 10 SECONDS)
-				TEST_FAIL("Struggle grab resolution took timed out")
+				TEST_FAIL("Struggle grab resolution timed out")
 				return
 		else
 			the_grab.attack_self(assailant)
@@ -41,7 +41,7 @@
 			TEST_ASSERT(!QDELETED(the_grab), "Grab object qdeleted unexpectedly.")
 			TEST_ASSERT(the_grab.current_grab == expected_grab_level, "Downgraded grab is not at the expected grab level, expected: [expected_grab_level] | got: [the_grab.current_grab || "NULL"]")
 
-			expected_grab_level = the_grab.current_grab.upgrab
+			expected_grab_level = the_grab.current_grab.downgrab
 		else
 			TEST_ASSERT(QDELETED(the_grab), "Grab object was not qdeleted after attempting to downgrade to nothing.")
 			break

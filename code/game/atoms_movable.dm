@@ -400,11 +400,11 @@
 	if(QDELING(src))
 		CRASH("Illegal Move()! on [type]")
 
-	if(!moving_from_pull)
-		recheck_grabs(z_allowed = TRUE)
-
 	if(!loc || !newloc)
 		return FALSE
+
+	if(!moving_from_pull)
+		recheck_grabs(z_allowed = TRUE)
 
 	if(direct & (UP|DOWN))
 		if(!can_z_move(direct, null, z_movement_flags))
@@ -1338,3 +1338,14 @@
 /atom/movable/wash(clean_types)
 	. = ..()
 	germ_level = 0
+
+/atom/movable/proc/add_passmob(source)
+	if(!source)
+		return
+	ADD_TRAIT(src, TRAIT_PASSMOB, source)
+	pass_flags |= PASSMOB
+
+/atom/movable/proc/remove_passmob(source)
+	REMOVE_TRAIT(src, TRAIT_PASSMOB, source)
+	if(!HAS_TRAIT(src, TRAIT_PASSMOB))
+		pass_flags &= ~PASSMOB

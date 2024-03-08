@@ -397,3 +397,9 @@
 	. = affecting.Move(get_step(affecting.loc, move_dir), move_dir, glide_size)
 	if(.)
 		affecting.update_offsets()
+
+/// Removes any grabs applied to the affected movable that aren't src
+/obj/item/hand_item/grab/proc/remove_competing_grabs()
+	for(var/obj/item/hand_item/grab/other_grab in affecting.grabbed_by - src)
+		to_chat(other_grab.assailant, span_alert("[affecting] is ripped from your grip by [assailant]."))
+		qdel(other_grab)

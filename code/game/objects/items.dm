@@ -622,12 +622,9 @@ DEFINE_INTERACTABLE(/obj/item)
 		if(!allow_attack_hand_drop(user) || !user.temporarilyRemoveItemFromInventory(src))
 			return
 
-	. = FALSE
-	pickup(user)
 
-	if(!user.put_in_active_hand(src, FALSE, was_in_storage))
-		user.dropItemToGround(src)
-		return TRUE
+	// Return FALSE if the item is picked up.
+	return !user.pickup_item(src, ignore_anim = was_in_storage)
 
 /obj/item/proc/allow_attack_hand_drop(mob/user)
 	return TRUE
@@ -921,9 +918,9 @@ DEFINE_INTERACTABLE(/obj/item)
 			else if(slot)
 				user.update_clothing(slot)
 
-			// if the item requires two handed, drop the item on unwield
-			if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
-				user.dropItemToGround(src, force=TRUE)
+		// if the item requires two handed, drop the item on unwield
+		if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+			user.dropItemToGround(src, force=TRUE)
 
 		// Show message if requested
 		if(show_message)

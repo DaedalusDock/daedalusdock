@@ -95,9 +95,9 @@
 		if(isitem(grabbed_atom) && (mod.wearer in next_turf))
 			var/obj/item/grabbed_item = grabbed_atom
 			clear_grab()
-			grabbed_item.pickup(mod.wearer)
-			mod.wearer.put_in_hands(grabbed_item)
+			mod.wearer.pickup_item(grabbed_item)
 		return
+
 	var/pixel_x_change = 0
 	var/pixel_y_change = 0
 	var/direction = get_dir(grabbed_atom, next_turf)

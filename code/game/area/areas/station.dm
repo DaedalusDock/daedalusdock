@@ -1080,9 +1080,21 @@
 	name = "\improper Security Office"
 	icon_state = "security"
 
+/area/station/security/office/hall
+	name = "\improper Security Office Hall"
+	icon_state = "security"
+
 /area/station/security/lockers
 	name = "\improper Security Locker Room"
 	icon_state = "securitylockerroom"
+
+/area/station/security/deck
+	name = "\improper Security Observation Deck"
+	icon_state = "security"
+
+/area/station/security/pig
+	name = "\improper Security Pig Pen"
+	icon_state = "security"
 
 /area/station/security/brig
 	name = "\improper Brig"
@@ -1090,6 +1102,10 @@
 
 /area/station/security/holding_cell
 	name = "\improper Holding Cell"
+	icon_state = "holding_cell"
+
+/area/station/security/isolation_cells
+	name = "\improper Isolation Cells"
 	icon_state = "holding_cell"
 
 /area/station/security/medical

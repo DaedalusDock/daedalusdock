@@ -79,7 +79,7 @@
 	. = istype(C)
 	if(.)
 		C.spin()
-		chamber_round(from_firing = FALSE)
+		chamber_round(spin_cylinder = FALSE)
 
 /obj/item/gun/ballistic/revolver/get_ammo(countchambered = FALSE, countempties = TRUE)
 	var/boolets = 0 //mature var names for mature people

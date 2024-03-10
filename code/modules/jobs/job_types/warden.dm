@@ -1,8 +1,8 @@
 /datum/job/warden
 	title = JOB_WARDEN
-	description = "Watch over the Brig and Prison Wing, release prisoners when \
-		their time is up, issue equipment to security, be a security officer when \
-		they all eventually die."
+	description = "Watch over the Brig and Prison Wing, manage prisoners, \
+		issue equipment to security, work with the Security Marshal \
+		to organize security."
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_SECURITY_MARSHAL)
 	faction = FACTION_STATION
@@ -52,7 +52,7 @@
 
 
 /datum/outfit/job/warden
-	name = "Warden"
+	name = "Brig Lieutenant"
 	jobtype = /datum/job/warden
 
 	id_trim = /datum/id_trim/job/warden
@@ -79,7 +79,7 @@
 	implants = list(/obj/item/implant/mindshield)
 
 /datum/outfit/job/warden/plasmaman
-	name = "Warden (Plasmaman)"
+	name = "Brig Lieutenant (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/security/warden
 	gloves = /obj/item/clothing/gloves/color/plasmaman/black

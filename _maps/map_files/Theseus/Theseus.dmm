@@ -33232,12 +33232,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
-"kIW" = (
-/obj/structure/lattice,
-/obj/effect/spawner/random/structure/grille,
-/obj/structure/lattice,
-/turf/open/space/basic,
-/area/space/nearstation)
 "kJc" = (
 /obj/effect/decal/cleanable/blood/gibs/limb,
 /obj/structure/rack,
@@ -93873,7 +93867,7 @@ aaa
 aaa
 aaa
 wBf
-kIW
+rrt
 rrt
 rrt
 tzJ

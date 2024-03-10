@@ -217,16 +217,16 @@
 	),src)
 
 /// Security sidearm + gear belt.
-/obj/item/storage/belt/holster/sec
+/obj/item/storage/belt/holster/security
 	name = "tactical holster belt"
 	desc = "A security belt with small gear pouches and a hip-holster for a sidearm."
-	icon_state = "holster"
-	inhand_icon_state = "holster"
-	worn_icon_state = "holster"
+	icon_state = "security"
+	inhand_icon_state = "security"
+	worn_icon_state = "security"
 	alternate_worn_layer = UNDER_SUIT_LAYER
 	w_class = WEIGHT_CLASS_BULKY
 
-/obj/item/storage/belt/holster/shoulder/Initialize()
+/obj/item/storage/belt/holster/security/Initialize()
 	. = ..()
 	var/datum/storage/holster/storage = atom_storage
 	storage.holster_slots = 1

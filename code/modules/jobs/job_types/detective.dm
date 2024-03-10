@@ -1,7 +1,7 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
-	description = "Help security solve crimes, take on private cases for wealthy clients, \
-		look badass and abuse every substance."
+	description = "Help security solve crimes or take on private cases for wealthy clients. \
+		Look badass and abuse every substance."
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1

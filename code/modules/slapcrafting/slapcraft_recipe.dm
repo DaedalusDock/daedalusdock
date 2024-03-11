@@ -196,7 +196,9 @@
 		item.forceMove(first_item)
 
 	for(var/obj/item/item as anything in (results - assembly.items_to_place_in_result))
-		assembly.finished_items += WEAKREF(item)
+		var/datum/weakref/W = WEAKREF(item)
+		if(W)
+			assembly.finished_items += W
 
 	after_create_items(results, assembly)
 	dispose_assembly(assembly)

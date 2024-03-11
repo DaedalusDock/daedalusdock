@@ -141,6 +141,7 @@ SUBSYSTEM_DEF(codex)
 				priority_results += entry
 
 			else if(findtext(entry.lore_text, searching) || findtext(entry.mechanics_text, searching) || findtext(entry.antag_text, searching))
+				results += entry
 
 	sortTim(priority_results, GLOBAL_PROC_REF(cmp_name_asc))
 	sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))

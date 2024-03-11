@@ -209,7 +209,7 @@
 
 		if(isitem(A))
 			var/obj/item/I = A
-			if(A.item_flags & ABSTRACT)
+			if(I.item_flags & ABSTRACT)
 				continue
 
 		return A
@@ -238,7 +238,6 @@
 			continue
 		food_candidates += held_candidate
 
-	var/list/local_results = list()
 	for(var/obj/item/I in oview(search_range, controller.pawn))
 		if(!IsEdible(I))
 			continue

@@ -114,13 +114,13 @@
 					found_refs[varname] = TRUE
 					continue //End early, don't want these logging
 				else
-					log_reftracker("Found [type] [text_ref(src)] in [datum_container.type]'s [datum_container.ref_search_details()] [varname] var. [container_name]")
+					log_reftracker("Found [type] [ref(src)] in [datum_container.type]'s [datum_container.ref_search_details()] [varname] var. [container_name]")
 				#else
-				log_reftracker("Found [type] [text_ref(src)] in [datum_container.type]'s [datum_container.ref_search_details()] [varname] var. [container_name]")
+				log_reftracker("Found [type] [ref(src)] in [datum_container.type]'s [datum_container.ref_search_details()] [varname] var. [container_name]")
 				#endif
 				references_to_clear -= 1
 				if(references_to_clear == 0)
-					log_reftracker("All references to [type] [text_ref(src)] found, exiting.")
+					log_reftracker("All references to [type] [ref(src)] found, exiting.")
 					return
 				continue
 
@@ -140,9 +140,9 @@
 					found_refs[potential_cache] = TRUE
 					continue
 				else
-					log_reftracker("Found [type] [text_ref(src)] in list [container_name].")
+					log_reftracker("Found [type] [ref(src)] in list [container_name].")
 				#else
-				log_reftracker("Found [type] [text_ref(src)] in list [container_name].")
+				log_reftracker("Found [type] [ref(src)] in list [container_name].")
 				#endif
 
 				// This is dumb as hell I'm sorry
@@ -159,7 +159,7 @@
 				else
 					references_to_clear -= 1
 				if(references_to_clear == 0)
-					log_reftracker("All references to [type] [text_ref(src)] found, exiting.")
+					log_reftracker("All references to [type] [ref(src)] found, exiting.")
 					return
 
 			if(!isnum(element_in_list) && !is_special_list)
@@ -180,13 +180,13 @@
 							found_refs[potential_cache] = TRUE
 							continue
 						else
-							log_reftracker("Found [type] [text_ref(src)] in list [container_name]\[[element_in_list]\]")
+							log_reftracker("Found [type] [ref(src)] in list [container_name]\[[element_in_list]\]")
 						#else
-						log_reftracker("Found [type] [text_ref(src)] in list [container_name]\[[element_in_list]\]")
+						log_reftracker("Found [type] [ref(src)] in list [container_name]\[[element_in_list]\]")
 						#endif
 						references_to_clear -= 1
 						if(references_to_clear == 0)
-							log_reftracker("All references to [type] [text_ref(src)] found, exiting.")
+							log_reftracker("All references to [type] [ref(src)] found, exiting.")
 							return
 				catch
 					// So if it goes wrong we kill it

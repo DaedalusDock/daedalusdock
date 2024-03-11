@@ -329,6 +329,62 @@ DEFINE_INTERACTABLE(/obj/item)
 	. = ..()
 	update_slot_icon()
 
+/obj/item/get_mechanics_info()
+	. = ..()
+	var/pronoun = gender == PLURAL ? "They" : "It"
+	var/pronoun_is = gender == PLURAL ? "They are" : "It is"
+
+	. += "- [pronoun_is] a [weight_class_to_text(w_class)] object."
+
+	if(atom_storage)
+		. += "- [pronoun] can store items."
+		if(!length(atom_storage.can_hold))
+			. += "- [pronoun] can store [atom_storage.max_slots] item\s that are [weight_class_to_text(atom_storage.max_specific_storage)] or smaller."
+
+	var/static/list/string_part_flags = list(
+		"head" = HEAD,
+		"torso" = CHEST,
+		"legs" = LEGS,
+		"feet" = FEET,
+		"arms" = ARMS,
+		"hands" = HANDS
+	)
+
+	// Strings which corraspond to slot flags, useful for outputting what slot something is.
+	var/static/list/string_slot_flags = list(
+		"back" = ITEM_SLOT_BACK,
+		"face" = ITEM_SLOT_MASK,
+		"waist" = ITEM_SLOT_BELT,
+		"ID slot" = ITEM_SLOT_ID,
+		"ears" = ITEM_SLOT_EARS,
+		"eyes" = ITEM_SLOT_EYES,
+		"hands" = ITEM_SLOT_GLOVES,
+		"head" = ITEM_SLOT_HEAD,
+		"feet" = ITEM_SLOT_FEET,
+		"over body" = ITEM_SLOT_OCLOTHING,
+		"body" = ITEM_SLOT_ICLOTHING,
+		"neck" = ITEM_SLOT_NECK,
+	)
+
+	var/list/covers = list()
+	var/list/slots = list()
+	for(var/name in string_part_flags)
+		if(body_parts_covered & string_part_flags[name])
+			covers += name
+
+	for(var/name in string_slot_flags)
+		if(slot_flags & string_slot_flags[name])
+			slots += name
+
+	if(length(covers))
+		. += "- [pronoun] cover[p_s()] the [english_list(covers)]."
+
+	if(length(slots))
+		. += "- [pronoun] can be worn on your [english_list(slots)]."
+
+	if(siemens_coefficient == 0)
+		. += "- [gender == PLURAL ? "They do not" : "It does not"] conduct electricity."
+
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
 	SIGNAL_HANDLER
@@ -436,10 +492,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/turf/T = loc
 	abstract_move(null)
 	forceMove(T)
-
-/obj/item/examine(mob/user) //This might be spammy. Remove?
-	. = ..()
-	. += span_notice("[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] object.")
 
 /obj/item/interact(mob/user)
 	add_fingerprint(user)
@@ -570,12 +622,9 @@ DEFINE_INTERACTABLE(/obj/item)
 		if(!allow_attack_hand_drop(user) || !user.temporarilyRemoveItemFromInventory(src))
 			return
 
-	. = FALSE
-	pickup(user)
 
-	if(!user.put_in_active_hand(src, FALSE, was_in_storage))
-		user.dropItemToGround(src)
-		return TRUE
+	// Return FALSE if the item is picked up.
+	return !user.pickup_item(src, ignore_anim = was_in_storage)
 
 /obj/item/proc/allow_attack_hand_drop(mob/user)
 	return TRUE
@@ -869,9 +918,9 @@ DEFINE_INTERACTABLE(/obj/item)
 			else if(slot)
 				user.update_clothing(slot)
 
-			// if the item requires two handed, drop the item on unwield
-			if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
-				user.dropItemToGround(src, force=TRUE)
+		// if the item requires two handed, drop the item on unwield
+		if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+			user.dropItemToGround(src, force=TRUE)
 
 		// Show message if requested
 		if(show_message)
@@ -1725,6 +1774,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		var/obj/O = highest
 		if(!O.uses_integrity)
 			return
+
 		O.take_damage((w_class * 5) * levels)
 
 	if(ismob(highest))

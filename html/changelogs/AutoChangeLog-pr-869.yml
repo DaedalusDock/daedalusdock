@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Two-handed items function better.
+  - bugfix: Fixed a sound not playing from fabricators.
+  - bugfix: Cleanbots no longer get stuck spraying acid on specific blood decals.
+  - bugfix: The monochrome ghost vision pref actually works (lol).

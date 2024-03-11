@@ -131,6 +131,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	if(mymob.hud_used == src)
 		mymob.hud_used = null
 
+	QDEL_LIST(hand_slots)
+	QDEL_NULL(rest_icon)
 	QDEL_NULL(toggle_palette)
 	QDEL_NULL(palette_down)
 	QDEL_NULL(palette_up)

@@ -173,8 +173,7 @@
 
 		if(!isturf(loc)) // make a cardhand in our active hand
 			user.temporarilyRemoveItemFromInventory(src, TRUE)
-			new_cardhand.pickup(user)
-			user.put_in_active_hand(new_cardhand)
+			user.pickup_item(new_cardhand)
 		return
 
 	if(istype(item, /obj/item/toy/cards/cardhand)) // insert into cardhand

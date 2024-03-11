@@ -564,16 +564,13 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 
 	color = color_matrix
 
-	var/HSV = RGBtoHSV(base_color)
-	var/RGB = HSVtoRGB(RotateHue(HSV, angle))
+	var/RGB = RotateHue(base_color, angle)
 	base_color = RGB
 
-	HSV = RGBtoHSV(warning_color)
-	RGB = HSVtoRGB(RotateHue(HSV, angle))
+	RGB = RotateHue(warning_color, angle)
 	warning_color = RGB
 
-	HSV = RGBtoHSV(emergency_color)
-	RGB = HSVtoRGB(RotateHue(HSV, angle))
+	RGB = RotateHue(emergency_color, angle)
 	emergency_color = RGB
 
 /obj/machinery/power/supermatter/inert

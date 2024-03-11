@@ -109,7 +109,8 @@
 
 /obj/item/storage/wallet/get_examine_string(mob/user, thats = FALSE)
 	if(front_id && is_open)
-		return "[icon2html(get_cached_flat_icon(), user)] [thats? "That's ":""][get_examine_name(user)]" //displays all overlays in chat
+		var/that_string = gender == PLURAL ? "Those are " : "That is "
+		return "[icon2html(get_cached_flat_icon(), user)] [thats? that_string : ""][get_examine_name(user)]" //displays all overlays in chat
 	return ..()
 
 /obj/item/storage/wallet/proc/open()

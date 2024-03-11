@@ -250,6 +250,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NOCRITDAMAGE "no_crit"
 /// Cannot experience Shock (pain version, not electrical)
 #define TRAIT_NO_PAINSHOCK "no_painshock"
+/// Does not get addicted
+#define TRAIT_NO_ADDICTION "no_addiction"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"
@@ -330,6 +332,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Is a medbot healing you
 #define TRAIT_MEDIBOTCOMINGTHROUGH "medbot"
 #define TRAIT_PASSTABLE "passtable"
+#define TRAIT_PASSMOB "passmob"
 /// Makes you immune to flashes
 #define TRAIT_NOFLASH "noflash"
 /// prevents xeno huggies implanting skeletons

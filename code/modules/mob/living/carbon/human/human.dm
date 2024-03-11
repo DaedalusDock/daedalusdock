@@ -869,6 +869,9 @@
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
 	var/obj/item/hand_item/grab/G = is_grabbing(M)
+	if(combat_mode)
+		return FALSE
+
 	if(!G || G.current_grab.damage_stage != GRAB_AGGRESSIVE || stat != CONSCIOUS)
 		return FALSE
 

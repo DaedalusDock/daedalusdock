@@ -236,11 +236,12 @@
 		to_chat(src, span_warning("Not a valid color, please try again."))
 		color_selection()
 		return
-	var/temp_hsv = RGBtoHSV(chosen_color)
-	if(ReadHSV(temp_hsv)[3] < DARKNESS_THRESHOLD)
+	var/list/temp_hsv = rgb2hsv(chosen_color)
+	if(temp_hsv[3] < DARKNESS_THRESHOLD)
 		to_chat(src, span_danger("Invalid color. Your color is not bright enough."))
 		color_selection()
 		return
+
 	add_atom_colour(chosen_color, FIXED_COLOUR_PRIORITY)
 	add_dragon_overlay()
 

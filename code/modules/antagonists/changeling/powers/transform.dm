@@ -131,7 +131,8 @@
 	return cached_flat_icon
 
 /obj/item/changeling/id/get_examine_string(mob/user, thats = FALSE)
-	return "[icon2html(get_cached_flat_icon(), user)] [thats? "That's ":""][get_examine_name(user)]" //displays all overlays in chat
+	var/that_string = gender == PLURAL ? "Those are " : "That is "
+	return "[icon2html(get_cached_flat_icon(), user)] [thats? that_string : ""][get_examine_name(user)]" //displays all overlays in chat
 
 //Change our DNA to that of somebody we've absorbed.
 /datum/action/changeling/transform/sting_action(mob/living/carbon/human/user)

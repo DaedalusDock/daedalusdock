@@ -41,6 +41,11 @@
 /datum/grab/normal/struggle/proc/resolve_struggle(obj/item/hand_item/grab/G)
 	set waitfor = FALSE
 
+	#ifdef UNIT_TESTS
+	var/upgrade_cooldown = 0
+	sleep(world.tick_lag)
+	#endif
+
 	var/datum/callback/user_incapacitated_callback = CALLBACK(src, PROC_REF(resolve_struggle_check), G)
 	if(do_after(G.assailant, G.affecting, upgrade_cooldown, DO_PUBLIC|IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE, extra_checks = user_incapacitated_callback))
 		G.done_struggle = TRUE

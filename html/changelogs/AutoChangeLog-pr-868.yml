@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Neck-level grabs correctly move the victim.
+  - bugfix: You can no longer move neck-level grab victims off your tile.
+  - bugfix: Mobs buckled to a grabbed object now inherit the offset
+  - qol: Cleaned up how repositioning grabbed movables works.

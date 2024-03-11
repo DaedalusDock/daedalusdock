@@ -193,6 +193,7 @@
 			// Don't put us in a deep sleep if the shuttle's here. QoL, mainly.
 			if(SSevacuation.evacuation_in_progress() && is_station_level(owner.z))
 				to_chat(owner, span_warning("You're so tired... but you can't miss that shuttle..."))
+
 			else
 				to_chat(owner, span_warning("Just a quick nap..."))
 				owner.Sleeping(90 SECONDS)

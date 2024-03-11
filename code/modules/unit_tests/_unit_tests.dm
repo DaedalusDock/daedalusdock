@@ -104,6 +104,7 @@
 #include "gas_transfer.dm"
 #include "gas_validation.dm"
 #include "get_turf_pixel.dm"
+#include "grabbing.dm"
 #include "greyscale_config.dm"
 #include "heretic_knowledge.dm"
 #include "heretic_rituals.dm"

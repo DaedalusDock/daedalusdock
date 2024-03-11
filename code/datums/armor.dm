@@ -45,8 +45,10 @@
 	GenerateTag()
 
 /datum/armor/Destroy(force, ...)
-	stack_trace("Some mf tried to delete an armor datum, KILL THIS MAN")
-	return QDEL_HINT_LETMELIVE
+	if(!force)
+		stack_trace("Some mf tried to delete an armor datum, KILL THIS MAN")
+		return QDEL_HINT_LETMELIVE
+	return ..()
 
 /datum/armor/proc/modifyRating(blunt = 0, puncture = 0, slash = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0)
 	return getArmor(

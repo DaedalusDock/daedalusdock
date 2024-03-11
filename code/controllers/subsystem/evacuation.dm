@@ -55,6 +55,7 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/can_evac(mob/caller, controller_id)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
+		stack_trace("Invalid controller ID")
 		return "Error 500. Please contact your system administrator."
 	for(var/identifier in controllers)
 		if(controllers[identifier].state >= EVACUATION_STATE_AWAITING)
@@ -64,7 +65,7 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/request_evacuation(mob/caller, reason, controller_id, admin = FALSE)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
-		return
+		CRASH("Invalid controller ID")
 	for(var/identifier in controllers)
 		if(controllers[identifier].state >= EVACUATION_STATE_AWAITING)
 			to_chat(caller, "Evacuation is already in progress.")
@@ -74,13 +75,13 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/can_cancel(mob/caller, controller_id)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
-		return FALSE
+		CRASH("Invalid controller ID")
 	return controller.can_cancel(caller)
 
 /datum/controller/subsystem/evacuation/proc/request_cancel(mob/caller, controller_id)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
-		return
+		CRASH("Invalid controller ID")
 	controller.trigger_cancel_evacuation(caller)
 
 /datum/controller/subsystem/evacuation/proc/add_evacuation_blocker(datum/bad)
@@ -96,20 +97,24 @@ SUBSYSTEM_DEF(evacuation)
 			controllers[identifier].evacuation_unblocked()
 
 /datum/controller/subsystem/evacuation/proc/disable_evacuation(controller_id)
-	if(controllers[controller_id])
-		controllers[controller_id].disable_evacuation()
+	if(!controllers[controller_id])
+		CRASH("Invalid controller ID")
+	controllers[controller_id].disable_evacuation()
 
 /datum/controller/subsystem/evacuation/proc/enable_evacuation(controller_id)
-	if(controllers[controller_id])
-		controllers[controller_id].enable_evacuation()
+	if(!controllers[controller_id])
+		CRASH("Invalid controller ID")
+	controllers[controller_id].enable_evacuation()
 
 /datum/controller/subsystem/evacuation/proc/block_cancel(controller_id)
-	if(controllers[controller_id])
-		controllers[controller_id].block_cancel()
+	if(!controllers[controller_id])
+		CRASH("Invalid controller ID")
+	controllers[controller_id].block_cancel()
 
 /datum/controller/subsystem/evacuation/proc/unblock_cancel(controller_id)
-	if(controllers[controller_id])
-		controllers[controller_id].unblock_cancel()
+	if(!controllers[controller_id])
+		CRASH("Invalid controller ID")
+	controllers[controller_id].unblock_cancel()
 
 //Perhaps move it to SShuttle?
 /datum/controller/subsystem/evacuation/proc/get_customizable_shuttles()
@@ -123,7 +128,7 @@ SUBSYSTEM_DEF(evacuation)
 	for(var/identifier in controllers)
 		var/datum/evacuation_controller/controller = controllers[identifier]
 		// We only want to add the areas if the controller is in a state where evacuation has finished
-		if(controller.state >= EVACUATION_STATE_NORETURN)
+		if(controller.state >= EVACUATION_STATE_EVACUATED)
 			areas += controller.get_endgame_areas()
 	return areas
 
@@ -145,15 +150,22 @@ SUBSYSTEM_DEF(evacuation)
 			return TRUE
 	return FALSE
 
+/datum/controller/subsystem/evacuation/proc/evacuation_can_be_cancelled()
+	for(var/identifier in controllers)
+		if(!controllers[identifier].can_cancel(null))
+			return FALSE
+	return TRUE
+
 /datum/controller/subsystem/evacuation/proc/station_evacuated()
 	for(var/identifier in controllers)
-		if(controllers[identifier].state >= EVACUATION_STATE_NORETURN)
+		if(controllers[identifier].state >= EVACUATION_STATE_EVACUATED)
 			return TRUE
 	return FALSE
 
 /datum/controller/subsystem/evacuation/proc/delay_evacuation(identifier, delay)
-	if(controllers[identifier])
-		controllers[identifier].delay_evacuation(delay)
+	if(!controllers[identifier])
+		CRASH("Invalid controller ID")
+	controllers[identifier].delay_evacuation(delay)
 
 /datum/controller/subsystem/evacuation/proc/get_controllers_names(active_only = FALSE)
 	var/list/names = list()

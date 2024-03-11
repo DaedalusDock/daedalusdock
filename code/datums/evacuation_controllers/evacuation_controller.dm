@@ -26,7 +26,7 @@
 			return "Initiadited"
 		if(EVACUATION_STATE_AWAITING)
 			return "Awaiting crew"
-		if(EVACUATION_STATE_NORETURN)
+		if(EVACUATION_STATE_EVACUATED)
 			return "Past point of no return"
 		if(EVACUATION_STATE_FINISHED)
 			return "Finished"
@@ -78,7 +78,7 @@
 		return FALSE
 	if(delayed_until > world.time)
 		return FALSE
-	if(state == EVACUATION_STATE_IDLE || state >= EVACUATION_STATE_NORETURN)
+	if(state == EVACUATION_STATE_IDLE || state >= EVACUATION_STATE_EVACUATED)
 		return FALSE
 	return TRUE
 

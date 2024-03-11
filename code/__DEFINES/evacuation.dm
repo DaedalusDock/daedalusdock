@@ -2,7 +2,7 @@
 #define EVACUATION_STATE_IDLE 0
 #define EVACUATION_STATE_INITIATED 1 // Evacuation has begun, but it can be cancelled
 #define EVACUATION_STATE_AWAITING 2 // Awaiting players to board the shuttle/pods/etc, can't be cancelled but can be delayed
-#define EVACUATION_STATE_NORETURN 3 // Shuttle/pods/etc have departed, can't be cancelled nor delayed
+#define EVACUATION_STATE_EVACUATED 3 // Shuttle/pods/etc have departed, can't be cancelled nor delayed
 #define EVACUATION_STATE_FINISHED 4
 
 // Reasons for automatic evacuation

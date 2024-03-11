@@ -64,7 +64,7 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 			return "Emergency shuttle is on the way to the station. ETA: [emergency.getTimerStr()]"
 		if(EVACUATION_STATE_AWAITING)
 			return "Emergency shuttle is docked at the station. Awaiting crew. ETD: [emergency.getTimerStr()]"
-		if(EVACUATION_STATE_NORETURN)
+		if(EVACUATION_STATE_EVACUATED)
 			return "Emergency shuttle has left the station. ETA: [emergency.getTimerStr()]"
 		if(EVACUATION_STATE_FINISHED)
 			return "Emergency shuttle has arrived at CentCom"
@@ -145,7 +145,7 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 	priority_announce("Engines spooling up. Prepare for resonance jump.", "LRSV Icarus Announcement", do_not_modify = TRUE)
 
 /datum/evacuation_controller/emergency_shuttle/proc/on_emergency_shuttle_departed(datum/source)
-	state = EVACUATION_STATE_NORETURN
+	state = EVACUATION_STATE_EVACUATED
 	UnregisterSignal(emergency, list(COMSIG_EMERGENCYSHUTTLE_DEPARTING, COMSIG_EMERGENCYSHUTTLE_ANNOUNCE))
 	RegisterSignal(emergency, COMSIG_EMERGENCYSHUTTLE_RETURNED, PROC_REF(on_emergency_shuttle_returned))
 	priority_announce("The Icarus has entered the resonance gate and is enroute to it's destination. Estimate [emergency.timeLeft(600)] minutes until the shuttle docks at Sector Control.", "LRSV Icarus Announcement")
@@ -159,7 +159,7 @@ GLOBAL_DATUM(backup_shuttle, /obj/docking_port/mobile/emergency)
 /datum/evacuation_controller/emergency_shuttle/can_cancel(mob/user)
 	// Point of no return after 50% of the time has passed
 	if(emergency.timeLeft(1) < emergency_call_time * get_sec_level_modifier() * 0.5)
-		return
+		return FALSE
 	return ..()
 
 /datum/evacuation_controller/emergency_shuttle/cancel_evacuation(mob/user)

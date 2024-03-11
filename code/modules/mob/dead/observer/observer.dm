@@ -220,7 +220,8 @@ Works together with spawning an observer, noted above.
 		ghost.mind = null
 
 	if(!admin_ghost)
-		ghost.add_client_colour(/datum/client_colour/ghostmono)
+		if(!ghost.client?.prefs || ghost.client.prefs.read_preference(/datum/preference/toggle/monochrome_ghost))
+			ghost.add_client_colour(/datum/client_colour/ghostmono)
 
 	return ghost
 

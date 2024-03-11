@@ -73,14 +73,12 @@
 		return FALSE
 
 	var/obj/item/toy/singlecard/selected_card = draw(user, choice)
-	selected_card.pickup(user)
-	user.put_in_hands(selected_card)
+	user.pickup_item(selected_card)
 
 	if(cards.len == 1)
 		user.temporarilyRemoveItemFromInventory(src, TRUE)
 		var/obj/item/toy/singlecard/last_card = draw(user)
-		last_card.pickup(user)
-		user.put_in_hands(last_card)
+		user.pickup_item(last_card)
 		qdel(src) // cardhand is empty now so delete it
 
 /obj/item/toy/cards/cardhand/proc/check_menu(mob/living/user)

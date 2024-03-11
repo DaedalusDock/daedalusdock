@@ -146,6 +146,9 @@ SUBSYSTEM_DEF(garbage)
 			fail_counts[i] = 0
 
 
+// 1 from the hard reference in the queue, and 1 from the variable used before this
+#define REFS_WE_EXPECT 2
+
 /datum/controller/subsystem/garbage/proc/HandleQueue(level = GC_QUEUE_FILTER)
 	if (level == GC_QUEUE_FILTER)
 		delslasttick = 0
@@ -181,7 +184,7 @@ SUBSYSTEM_DEF(garbage)
 
 		// 1 from the hard reference in the queue, and 1 from the variable used before this
 		// If that's all we've got, send er off
-		if (refcount(D) == 2)
+		if (refcount(D) == REFS_WE_EXPECT)
 			++gcedlasttick
 			++totalgcs
 			pass_counts[level]++
@@ -202,12 +205,15 @@ SUBSYSTEM_DEF(garbage)
 		switch (level)
 			if (GC_QUEUE_CHECK)
 				#ifdef REFERENCE_TRACKING
+				// Decides how many refs to look for (potentially)
+				// Based off the remaining and the ones we can account for
+				var/remaining_refs = refcount(D) - REFS_WE_EXPECT
 				if(reference_find_on_fail[ref(D)])
-					INVOKE_ASYNC(D, TYPE_PROC_REF(/datum,find_references))
+					INVOKE_ASYNC(D, TYPE_PROC_REF(/datum,find_references), remaining_refs)
 					ref_searching = TRUE
 				#ifdef GC_FAILURE_HARD_LOOKUP
 				else
-					INVOKE_ASYNC(D, TYPE_PROC_REF(/datum,find_references))
+					INVOKE_ASYNC(D, TYPE_PROC_REF(/datum,find_references), remaining_refs)
 					ref_searching = TRUE
 				#endif
 				reference_find_on_fail -= ref(D)
@@ -255,6 +261,8 @@ SUBSYSTEM_DEF(garbage)
 	if (count)
 		queue.Cut(1,count+1)
 		count = 0
+
+#undef REFS_WE_EXPECT
 
 /datum/controller/subsystem/garbage/proc/Queue(datum/D, level = GC_QUEUE_FILTER)
 	if (isnull(D))

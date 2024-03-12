@@ -1,273 +1,27 @@
-#define PAI_MISSING_SOFTWARE_MESSAGE span_warning("You must download the required software to use this.")
-
-/atom/movable/screen/pai
-	icon = 'icons/hud/screen_pai.dmi'
-	var/required_software
-
-/atom/movable/screen/pai/Click()
+/datum/hud/pai/initialize_screens()
 	. = ..()
-	if(.)
-		return FALSE
-	if(usr.incapacitated())
-		return FALSE
+	add_screen_object(/atom/movable/screen/language_menu{screen_loc = ui_pai_language_menu}, HUDKEY_MOB_LANGUAGE_MENU, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/navigate{screen_loc = ui_pai_navigate_menu}, HUDKEY_MOB_NAVIGATE_MENU, HUDGROUP_STATIC_INVENTORY)
 
-	var/mob/living/silicon/pai/pAI = usr
-	if(required_software && !pAI.software.Find(required_software))
-		to_chat(pAI, PAI_MISSING_SOFTWARE_MESSAGE)
-		return FALSE
-	return TRUE
+	add_screen_object(/atom/movable/screen/pai/software, HUDKEY_PAI_SOFTWARE, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/shell, HUDKEY_PAI_SHELL, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/chassis, HUDKEY_PAI_CHASSIS, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/rest, HUDKEY_MOB_REST, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/light, HUDKEY_CYBORG_LAMP, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/newscaster, HUDKEY_PAI_NEWSCASTER, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/host_monitor, HUDKEY_PAI_HOST_MONITOR, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/crew_manifest, HUDKEY_AI_CREW_MANIFEST, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/state_laws, HUDKEY_AI_STATE_LAWS, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/internal_gps, HUDKEY_PAI_GPS, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/image_take, HUDKEY_AI_TAKE_IMAGE, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/image_view, HUDKEY_AI_IMAGE_VIEW, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pai/radio, HUDKEY_CYBORG_RADIO, HUDGROUP_STATIC_INVENTORY)
 
-/atom/movable/screen/pai/software
-	name = "Software Interface"
-	icon_state = "pai"
 
-/atom/movable/screen/pai/software/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.ui_interact(pAI)
-
-/atom/movable/screen/pai/shell
-	name = "Toggle Holoform"
-	icon_state = "pai_holoform"
-
-/atom/movable/screen/pai/shell/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	if(pAI.holoform)
-		pAI.fold_in(0)
-	else
-		pAI.fold_out()
-
-/atom/movable/screen/pai/chassis
-	name = "Holochassis Appearance Composite"
-	icon_state = "pai_chassis"
-
-/atom/movable/screen/pai/chassis/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.choose_chassis()
-
-/atom/movable/screen/pai/rest
-	name = "Rest"
-	icon_state = "pai_rest"
-
-/atom/movable/screen/pai/rest/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.toggle_resting()
-
-/atom/movable/screen/pai/light
-	name = "Toggle Integrated Lights"
-	icon_state = "light"
-
-/atom/movable/screen/pai/light/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.toggle_integrated_light()
-
-/atom/movable/screen/pai/newscaster
-	name = "pAI Newscaster"
-	icon_state = "newscaster"
-	required_software = "newscaster"
-
-/atom/movable/screen/pai/newscaster/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.newscaster.ui_interact(usr)
-
-/atom/movable/screen/pai/host_monitor
-	name = "Host Health Scan"
-	icon_state = "host_monitor"
-	required_software = "host scan"
-
-/atom/movable/screen/pai/host_monitor/Click(location, control, params)
-	. = ..()
-	if(!.)
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	var/list/modifiers = params2list(params)
-	var/mob/living/carbon/holder = get(pAI.card.loc, /mob/living/carbon)
-	if(holder)
-		if (LAZYACCESS(modifiers, CTRL_CLICK)) //This is a UI element so I don't care about the interaction overlap.
-			pAI.hostscan.attack_self(pAI)
-		else
-			pAI.hostscan.attack(holder, pAI)
-	else
-		to_chat(usr, span_warning("You are not being carried by anyone!"))
-		return FALSE
-
-/atom/movable/screen/pai/crew_manifest
-	name = "Crew Manifest"
-	icon_state = "manifest"
-	required_software = "crew manifest"
-
-/atom/movable/screen/pai/crew_manifest/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.ai_roster()
-
-/atom/movable/screen/pai/state_laws
-	name = "State Laws"
-	icon_state = "state_laws"
-
-/atom/movable/screen/pai/state_laws/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.checklaws()
-
-/atom/movable/screen/pai/modpc
-	name = "Messenger"
-	icon_state = "pda_send"
-	var/mob/living/silicon/pai/pAI
-
-/atom/movable/screen/pai/modpc/Click()
-	. = ..()
-	if(!.) // this works for some reason.
-		return
-	pAI.modularInterface?.interact(pAI)
-
-/atom/movable/screen/pai/internal_gps
-	name = "Internal GPS"
-	icon_state = "internal_gps"
-	required_software = "internal gps"
-
-/atom/movable/screen/pai/internal_gps/Click()
-	. = ..()
-	if(!.)
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	if(!pAI.internal_gps)
-		pAI.internal_gps = new(pAI)
-	pAI.internal_gps.attack_self(pAI)
-
-/atom/movable/screen/pai/image_take
-	name = "Take Image"
-	icon_state = "take_picture"
-	required_software = "photography module"
-
-/atom/movable/screen/pai/image_take/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.aicamera.toggle_camera_mode(usr)
-
-/atom/movable/screen/pai/image_view
-	name = "View Images"
-	icon_state = "view_images"
-	required_software = "photography module"
-
-/atom/movable/screen/pai/image_view/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.aicamera.viewpictures(usr)
-
-/atom/movable/screen/pai/radio
-	name = "radio"
-	icon = 'icons/hud/screen_cyborg.dmi'
-	icon_state = "radio"
-
-/atom/movable/screen/pai/radio/Click()
-	if(!..())
-		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.radio.interact(usr)
-
-/datum/hud/pai/New(mob/living/silicon/pai/owner)
-	..()
-	var/atom/movable/screen/using
 	var/mob/living/silicon/pai/mypai = mymob
-#warn pai
-// // Software menu
-// 	using = new /atom/movable/screen/pai/software(null, src)
-// 	using.screen_loc = ui_pai_software
-// 	static_inventory += using
-
-// // Holoform
-// 	using = new /atom/movable/screen/pai/shell(null, src)
-// 	using.screen_loc = ui_pai_shell
-// 	static_inventory += using
-
-// // Chassis Select Menu
-// 	using = new /atom/movable/screen/pai/chassis(null, src)
-// 	using.screen_loc = ui_pai_chassis
-// 	static_inventory += using
-
-// // Rest
-// 	using = new /atom/movable/screen/pai/rest(null, src)
-// 	using.screen_loc = ui_pai_rest
-// 	static_inventory += using
-
-// // Integrated Light
-// 	using = new /atom/movable/screen/pai/light(null, src)
-// 	using.screen_loc = ui_pai_light
-// 	static_inventory += using
-
-// // Newscaster
-// 	using = new /atom/movable/screen/pai/newscaster(null, src)
-// 	using.screen_loc = ui_pai_newscaster
-// 	static_inventory += using
-
-// // Language menu
-// 	using = new /atom/movable/screen/language_menu(null, src)
-// 	using.screen_loc = ui_pai_language_menu
-// 	static_inventory += using
-
-// // Navigation
-// 	using = new /atom/movable/screen/navigate(null, src)
-// 	using.screen_loc = ui_pai_navigate_menu
-// 	static_inventory += using
-
-// // Host Monitor
-// 	using = new /atom/movable/screen/pai/host_monitor(null, src)
-// 	using.screen_loc = ui_pai_host_monitor
-// 	static_inventory += using
-
-// // Crew Manifest
-// 	using = new /atom/movable/screen/pai/crew_manifest(null, src)
-// 	using.screen_loc = ui_pai_crew_manifest
-// 	static_inventory += using
-
-// // Laws
-// 	using = new /atom/movable/screen/pai/state_laws(null, src)
-// 	using.screen_loc = ui_pai_state_laws
-// 	static_inventory += using
-
-// // Modular Interface
-// 	using = new /atom/movable/screen/pai/modpc(null, src)
-// 	using.screen_loc = ui_pai_mod_int
-// 	static_inventory += using
-// 	mypai.interfaceButton = using
-// 	var/atom/movable/screen/pai/modpc/tabletbutton = using
-// 	tabletbutton.pAI = mypai
-
-// // Internal GPS
-// 	using = new /atom/movable/screen/pai/internal_gps(null, src)
-// 	using.screen_loc = ui_pai_internal_gps
-// 	static_inventory += using
-
-// // Take image
-// 	using = new /atom/movable/screen/pai/image_take(null, src)
-// 	using.screen_loc = ui_pai_take_picture
-// 	static_inventory += using
-
-// // View images
-// 	using = new /atom/movable/screen/pai/image_view(null, src)
-// 	using.screen_loc = ui_pai_view_images
-// 	static_inventory += using
-
-// // Radio
-// 	using = new /atom/movable/screen/pai/radio(null, src)
-// 	using.screen_loc = ui_pai_radio
-// 	static_inventory += using
+	var/atom/movable/screen/pai/modpc/tabletbutton = add_screen_object(__IMPLIED_TYPE__, HUDKEY_SILICON_TABLET, HUDGROUP_STATIC_INVENTORY)
+	mypai.interfaceButton = tabletbutton
+	tabletbutton.pAI = mypai
 
 	update_software_buttons()
 
@@ -277,4 +31,3 @@
 		if(button.required_software)
 			button.color = owner.software.Find(button.required_software) ? null : "#808080"
 
-#undef PAI_MISSING_SOFTWARE_MESSAGE

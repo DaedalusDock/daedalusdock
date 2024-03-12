@@ -312,6 +312,13 @@
 #define HUDKEY_CYBORG_HANDS "cyborgmodule"
 #define HUDKEY_CYBORG_STORE "cyborgstore"
 
+#define HUDKEY_PAI_SOFTWARE "paisoftware"
+#define HUDKEY_PAI_SHELL "paishell"
+#define HUDKEY_PAI_CHASSIS "paichassis"
+#define HUDKEY_PAI_NEWSCASTER "painewscaster"
+#define HUDKEY_PAI_HOST_MONITOR "paimonitor"
+#define HUDKEY_PAI_GPS "paigps"
+
 #define HUDKEY_GHOST_SPAWNERS "ghostspawners"
 #define HUDKEY_GHOST_ORBIT "ghostorbit"
 #define HUDKEY_GHOST_REENTER_CORPSE "ghostcorpse"

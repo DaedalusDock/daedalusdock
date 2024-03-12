@@ -486,6 +486,7 @@
 #include "code\_onclick\hud\screen_objects\ghost.dm"
 #include "code\_onclick\hud\screen_objects\guardian.dm"
 #include "code\_onclick\hud\screen_objects\human.dm"
+#include "code\_onclick\hud\screen_objects\pai.dm"
 #include "code\_onclick\hud\screen_objects\picture_in_picture.dm"
 #include "code\_onclick\hud\screen_objects\robot.dm"
 #include "code\_onclick\hud\screen_objects\screen_objects.dm"

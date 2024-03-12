@@ -1362,9 +1362,6 @@
 			. += I.slowdown
 
 /mob/proc/set_stat(new_stat)
-	if(new_stat < 0)
-		CRASH("WTF")
-
 	if(new_stat == stat)
 		return
 	. = stat

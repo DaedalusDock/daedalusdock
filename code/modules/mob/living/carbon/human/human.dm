@@ -719,7 +719,7 @@
 	var/list/new_overlays = list()
 	healthdoll.cut_overlays()
 
-	if(stat -= DEAD)
+	if(stat == DEAD)
 		healthdoll.icon_state = "healthdoll_OVERLAY"
 		for(var/obj/item/bodypart/body_part as anything in bodyparts)
 			var/icon_num = 0

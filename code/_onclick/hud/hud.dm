@@ -139,11 +139,12 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	if(ispath(new_object))
 		new_object = new new_object(null, src)
 
+	if(isnull(hud_key))
+		hud_key = ref(new_object)
+
 	if(new_ui_style)
 		new_object.icon = new_ui_style
 
-	if(isnull(hud_key))
-		hud_key = ref(new_object)
 
 	new_object.hud_key = hud_key
 	screen_objects[hud_key] = new_object
@@ -321,7 +322,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 			item.icon = new_ui_style
 
 	ui_style = new_ui_style
-	build_hand_slots()
+	build_hand_slots(TRUE)
 
 //Triggered when F12 is pressed (Unless someone changed something in the DMF)
 /mob/verb/button_pressed_F12()
@@ -338,7 +339,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 //(re)builds the hand ui slots, throwing away old ones
 //not really worth jugglying existing ones so we just scrap+rebuild
 //9/10 this is only called once per mob and only for 2 hands
-/datum/hud/proc/build_hand_slots()
+/datum/hud/proc/build_hand_slots(update_hud)
 	QDEL_LIST(hand_slots)
 	hand_slots = new /list(length(mymob.held_items))
 
@@ -361,7 +362,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	for(var/atom/movable/screen/human/equip/E in screen_groups[HUDGROUP_STATIC_INVENTORY])
 		E.screen_loc = ui_equip_position(mymob)
 
-	if(mymob?.hud_used == src)
+	if(update_hud && mymob?.hud_used == src)
 		show_hud(hud_version)
 
 /datum/hud/proc/update_locked_slots()

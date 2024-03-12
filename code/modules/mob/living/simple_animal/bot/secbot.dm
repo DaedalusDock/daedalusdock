@@ -290,9 +290,7 @@
 		return FALSE
 	if(!Adjacent(current_target))
 		return FALSE
-	if(!current_target.handcuffed)
-		current_target.set_handcuffed(new cuff_type(current_target))
-		current_target.update_handcuffed()
+	if(!current_target.handcuffed && current_target.equip_to_slot_if_possible(new cuff_type(current_target), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
 		playsound(src, SFX_LAW, 50, FALSE)
 		back_to_idle()
 

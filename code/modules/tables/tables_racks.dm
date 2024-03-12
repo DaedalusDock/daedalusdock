@@ -302,7 +302,7 @@
 		user.release_grabs(pushed_mob)
 
 	else if(target.pass_flags & PASSTABLE)
-		user.move_grabbed_atoms_towards(src)
+		grab.move_victim_towards(src)
 		if (target.loc == loc)
 			user.visible_message(span_notice("[user] places [target] onto [src]."),
 				span_notice("You place [target] onto [src]."))

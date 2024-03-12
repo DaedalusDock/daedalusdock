@@ -124,7 +124,7 @@
 		return ..()
 
 	if(!Adjacent(L))
-		user.move_grabbed_atoms_towards(get_turf(src))
+		grab.move_victim_towards(get_turf(src))
 		return ..()
 
 	if(user.combat_mode)

@@ -26,7 +26,8 @@
 	invisibility = 0
 	set_species(/datum/species/monkey)
 	SEND_SIGNAL(src, COMSIG_HUMAN_MONKEYIZE)
-	uncuff()
+	remove_handcuffs()
+	remove_legcuffs()
 	return src
 
 //////////////////////////           Humanize               //////////////////////////////

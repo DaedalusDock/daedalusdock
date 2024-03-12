@@ -47,3 +47,13 @@
   - bugfix: Addictive reagents scale with the amount of reagent consumed properly.
   - bugfix: IPCs can no longer get addicted to substances.
   - bugfix: Rescaled alcohol effects
+2024-03-12:
+  Kapu1178:
+  - bugfix: Neck-level grabs correctly move the victim.
+  - bugfix: You can no longer move neck-level grab victims off your tile.
+  - bugfix: Mobs buckled to a grabbed object now inherit the offset
+  - qol: Cleaned up how repositioning grabbed movables works.
+  - bugfix: Two-handed items function better.
+  - bugfix: Fixed a sound not playing from fabricators.
+  - bugfix: Cleanbots no longer get stuck spraying acid on specific blood decals.
+  - bugfix: The monochrome ghost vision pref actually works (lol).

@@ -400,11 +400,11 @@
 	if(QDELING(src))
 		CRASH("Illegal Move()! on [type]")
 
-	if(!moving_from_pull)
-		recheck_grabs(z_allowed = TRUE)
-
 	if(!loc || !newloc)
 		return FALSE
+
+	if(!moving_from_pull)
+		recheck_grabs(z_allowed = TRUE)
 
 	if(direct & (UP|DOWN))
 		if(!can_z_move(direct, null, z_movement_flags))
@@ -508,6 +508,8 @@
 	. = Move(target_turf, get_dir(src, target_turf), glide_size_override)
 	moving_from_pull = FALSE
 	forcemove_should_maintain_grab = FALSE
+
+	update_offsets()
 
 /**
  * Called after a successful Move(). By this point, we've already moved.
@@ -1336,3 +1338,14 @@
 /atom/movable/wash(clean_types)
 	. = ..()
 	germ_level = 0
+
+/atom/movable/proc/add_passmob(source)
+	if(!source)
+		return
+	ADD_TRAIT(src, TRAIT_PASSMOB, source)
+	pass_flags |= PASSMOB
+
+/atom/movable/proc/remove_passmob(source)
+	REMOVE_TRAIT(src, TRAIT_PASSMOB, source)
+	if(!HAS_TRAIT(src, TRAIT_PASSMOB))
+		pass_flags &= ~PASSMOB

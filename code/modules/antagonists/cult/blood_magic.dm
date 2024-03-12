@@ -496,16 +496,11 @@
 		playsound(loc, 'sound/weapons/cablecuff.ogg', 30, TRUE, -2)
 		C.visible_message(span_danger("[user] begins restraining [C] with dark magic!"), \
 								span_userdanger("[user] begins shaping dark magic shackles around your wrists!"))
-		if(do_after(user, C, 30))
-			if(!C.handcuffed)
-				C.set_handcuffed(new /obj/item/restraints/handcuffs/energy/cult/used(C))
-				C.update_handcuffed()
-				C.silent += 5
-				to_chat(user, span_notice("You shackle [C]."))
-				log_combat(user, C, "shackled")
-				uses--
-			else
-				to_chat(user, span_warning("[C] is already bound."))
+		if(do_after(user, C, 30) && C.equip_to_slot_if_possible(new /obj/item/restraints/handcuffs/energy/cult/used(C), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
+			C.silent += 5
+			to_chat(user, span_notice("You shackle [C]."))
+			log_combat(user, C, "shackled")
+			uses--
 		else
 			to_chat(user, span_warning("You fail to shackle [C]."))
 	else

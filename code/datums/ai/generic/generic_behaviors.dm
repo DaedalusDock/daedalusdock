@@ -169,11 +169,9 @@
 	var/obj/item/target = target_ref.resolve()
 
 	if(!(target in living_pawn.held_items))
-		if(!living_pawn.put_in_hand_check(target))
+		if(!living_pawn.put_in_hands(target))
 			finish_action(controller, FALSE, target, hunger_timer_key)
 			return
-
-		living_pawn.put_in_hands(target)
 
 	target.melee_attack_chain(living_pawn, living_pawn)
 

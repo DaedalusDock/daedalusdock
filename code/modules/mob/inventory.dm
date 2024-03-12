@@ -143,27 +143,40 @@
 
 
 //Returns if a certain item can be equipped to a certain slot.
-// Currently invalid for two-handed items - call obj/item/mob_can_equip() instead.
 /mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
 	return FALSE
 
-/mob/proc/can_put_in_hand(I, hand_index)
-	if(hand_index > held_items.len)
-		return FALSE
-	if(!put_in_hand_check(I))
-		return FALSE
-	if(!has_hand_for_held_index(hand_index))
-		return FALSE
-	return !held_items[hand_index]
+/mob/proc/can_put_in_hand(obj/item/I, hand_index)
+	return FALSE
+
+/// A helper for picking up an item.
+/mob/proc/pickup_item(obj/item/I, hand_index = active_hand_index, ignore_anim)
+	if(QDELETED(I))
+		return
+
+	if(!can_put_in_hand(I, hand_index))
+		return
+
+	I.pickup(src)
+	. = put_in_hand(I, hand_index, ignore_anim = ignore_anim)
+
+	if(!.)
+		stack_trace("Somehow, someway, pickup_item failed put_in_hand().")
+		dropItemToGround(I, silent = TRUE)
 
 /mob/proc/put_in_hand(obj/item/I, hand_index, forced = FALSE, ignore_anim = TRUE)
-	if(hand_index == null || (!forced && !can_put_in_hand(I, hand_index)))
+	if(hand_index == null)
+		return FALSE
+
+	if(!forced && !can_put_in_hand(I, hand_index))
 		return FALSE
 
 	if(isturf(I.loc) && !ignore_anim)
 		I.do_pickup_animation(src)
+
 	if(get_item_for_held_index(hand_index))
 		dropItemToGround(get_item_for_held_index(hand_index), force = TRUE)
+
 	I.forceMove(src)
 	held_items[hand_index] = I
 	I.plane = ABOVE_HUD_PLANE
@@ -191,14 +204,30 @@
 /mob/proc/put_in_r_hand(obj/item/I)
 	return put_in_hand(I, get_empty_held_index_for_side(RIGHT_HANDS))
 
-/mob/proc/put_in_hand_check(obj/item/I)
-	return FALSE //nonliving mobs don't have hands
+/mob/living/can_put_in_hand(obj/item/I, hand_index)
+	if(!istype(I))
+		return FALSE
 
-/mob/living/put_in_hand_check(obj/item/I)
-	if(istype(I) && ((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)) \
-		&& !(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND))
-		return TRUE
-	return FALSE
+	if(hand_index > held_items.len)
+		return FALSE
+
+	if(!((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)))
+		return FALSE
+
+	if(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND)
+		return FALSE
+
+	if(!has_hand_for_held_index(hand_index))
+		return FALSE
+
+	return !held_items[hand_index]
+
+/mob/living/carbon/human/can_put_in_hand(obj/item/I, hand_index)
+	. = ..()
+	if(!.)
+		return
+
+	return dna.species.can_equip(I, ITEM_SLOT_HANDS, TRUE, src)
 
 //Puts the item into our active hand if possible. returns TRUE on success.
 /mob/proc/put_in_active_hand(obj/item/I, forced = FALSE, ignore_animation = TRUE)

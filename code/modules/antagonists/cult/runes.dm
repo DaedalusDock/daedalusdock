@@ -277,7 +277,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	</b></span>")
 	if(ishuman(convertee))
 		var/mob/living/carbon/human/H = convertee
-		H.uncuff()
+		H.remove_legcuffs()
+		H.remove_handcuffs()
 		H.remove_status_effect(/datum/status_effect/speech/slurring/cult)
 		H.remove_status_effect(/datum/status_effect/speech/stutter)
 

@@ -168,10 +168,14 @@
  * Called by client/Move()
  */
 /client/proc/check_can_move()
+	if(!length(mob.grabbed_by))
+		return TRUE
+
 	if(HAS_TRAIT(mob, TRAIT_INCAPACITATED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		return FALSE
-	else if(HAS_TRAIT(mob, TRAIT_RESTRAINED))
+
+	else if(HAS_TRAIT(mob, TRAIT_ARMS_RESTRAINED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		to_chat(src, span_warning("You're restrained! You can't move!"))
 		return FALSE

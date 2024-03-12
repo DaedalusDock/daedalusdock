@@ -1,6 +1,7 @@
 /mob/living/proc/can_grab(atom/movable/target, target_zone, use_offhand)
 	if(throwing || !(mobility_flags & MOBILITY_PULL))
 		return FALSE
+
 	if(!ismob(target) && target.anchored)
 		to_chat(src, span_warning("\The [target] won't budge!"))
 		return FALSE
@@ -20,10 +21,16 @@
 
 	for(var/obj/item/hand_item/grab/G in target.grabbed_by)
 		if(G.assailant != src)
+			if(G.assailant.pull_force > pull_force || (G.assailant.pull_force == pull_force && G.current_grab.damage_stage > GRAB_PASSIVE))
+				to_chat(src, span_warning("[G.assailant]'s grip is too strong."))
+				return FALSE
+
 			continue
+
 		if(!target_zone || !ismob(target))
 			to_chat(src, span_warning("You already have a grip on \the [target]!"))
 			return FALSE
+
 		if(G.target_zone == target_zone)
 			var/obj/item/bodypart/BP = G.get_targeted_bodypart()
 			if(BP)
@@ -72,6 +79,11 @@
 		if(original_target != src && ismob(original_target))
 			to_chat(original_target, span_warning("\The [src] tries to grab you, but fails!"))
 		return null
+
+	for(var/obj/item/hand_item/grab/competing_grab in target.grabbed_by)
+		if(competing_grab.assailant.pull_force < pull_force)
+			to_chat(competing_grab.assailant, span_alert("[target] is ripped from your grip by [src]."))
+			qdel(competing_grab)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_START_GRAB, target, grab)
 	SEND_SIGNAL(target, COMSIG_ATOM_GET_GRABBED, src, grab)

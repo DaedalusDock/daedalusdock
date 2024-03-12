@@ -244,7 +244,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	if(!(D in internal_disk.read(DATA_IDX_DESIGNS)))
 		CRASH("Tried to print a design we don't have! Potential exploit?")
 
-	playsound(src, 'goon/sounds/button.ogg')
+	playsound(src, 'goon/sounds/button.ogg', 100)
 	update_appearance(UPDATE_OVERLAYS)
 	add_to_queue(D, amount, D.dangerous_construction)
 	return TRUE

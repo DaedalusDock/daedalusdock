@@ -278,10 +278,7 @@
 	var/mob/living/carbon/arm_owner = owner
 	if(arm_owner && !special)
 		if(arm_owner.handcuffed)
-			arm_owner.handcuffed.forceMove(drop_location())
-			arm_owner.handcuffed.dropped(arm_owner)
-			arm_owner.set_handcuffed(null)
-			arm_owner.update_handcuffed()
+			arm_owner.remove_handcuffs()
 		if(arm_owner.hud_used)
 			var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
 			if(associated_hand)
@@ -294,10 +291,7 @@
 /obj/item/bodypart/leg/drop_limb(special)
 	if(owner && !special)
 		if(owner.legcuffed)
-			owner.legcuffed.forceMove(owner.drop_location()) //At this point bodypart is still in nullspace
-			owner.legcuffed.dropped(owner)
-			owner.legcuffed = null
-			owner.update_worn_legcuffs()
+			owner.remove_legcuffs()
 		if(owner.shoes)
 			owner.dropItemToGround(owner.shoes, TRUE)
 	return ..()

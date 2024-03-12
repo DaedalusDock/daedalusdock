@@ -185,95 +185,95 @@
 	..()
 	var/atom/movable/screen/using
 	var/mob/living/silicon/pai/mypai = mymob
+#warn pai
+// // Software menu
+// 	using = new /atom/movable/screen/pai/software(null, src)
+// 	using.screen_loc = ui_pai_software
+// 	static_inventory += using
 
-// Software menu
-	using = new /atom/movable/screen/pai/software(null, src)
-	using.screen_loc = ui_pai_software
-	static_inventory += using
+// // Holoform
+// 	using = new /atom/movable/screen/pai/shell(null, src)
+// 	using.screen_loc = ui_pai_shell
+// 	static_inventory += using
 
-// Holoform
-	using = new /atom/movable/screen/pai/shell(null, src)
-	using.screen_loc = ui_pai_shell
-	static_inventory += using
+// // Chassis Select Menu
+// 	using = new /atom/movable/screen/pai/chassis(null, src)
+// 	using.screen_loc = ui_pai_chassis
+// 	static_inventory += using
 
-// Chassis Select Menu
-	using = new /atom/movable/screen/pai/chassis(null, src)
-	using.screen_loc = ui_pai_chassis
-	static_inventory += using
+// // Rest
+// 	using = new /atom/movable/screen/pai/rest(null, src)
+// 	using.screen_loc = ui_pai_rest
+// 	static_inventory += using
 
-// Rest
-	using = new /atom/movable/screen/pai/rest(null, src)
-	using.screen_loc = ui_pai_rest
-	static_inventory += using
+// // Integrated Light
+// 	using = new /atom/movable/screen/pai/light(null, src)
+// 	using.screen_loc = ui_pai_light
+// 	static_inventory += using
 
-// Integrated Light
-	using = new /atom/movable/screen/pai/light(null, src)
-	using.screen_loc = ui_pai_light
-	static_inventory += using
+// // Newscaster
+// 	using = new /atom/movable/screen/pai/newscaster(null, src)
+// 	using.screen_loc = ui_pai_newscaster
+// 	static_inventory += using
 
-// Newscaster
-	using = new /atom/movable/screen/pai/newscaster(null, src)
-	using.screen_loc = ui_pai_newscaster
-	static_inventory += using
+// // Language menu
+// 	using = new /atom/movable/screen/language_menu(null, src)
+// 	using.screen_loc = ui_pai_language_menu
+// 	static_inventory += using
 
-// Language menu
-	using = new /atom/movable/screen/language_menu(null, src)
-	using.screen_loc = ui_pai_language_menu
-	static_inventory += using
+// // Navigation
+// 	using = new /atom/movable/screen/navigate(null, src)
+// 	using.screen_loc = ui_pai_navigate_menu
+// 	static_inventory += using
 
-// Navigation
-	using = new /atom/movable/screen/navigate(null, src)
-	using.screen_loc = ui_pai_navigate_menu
-	static_inventory += using
+// // Host Monitor
+// 	using = new /atom/movable/screen/pai/host_monitor(null, src)
+// 	using.screen_loc = ui_pai_host_monitor
+// 	static_inventory += using
 
-// Host Monitor
-	using = new /atom/movable/screen/pai/host_monitor(null, src)
-	using.screen_loc = ui_pai_host_monitor
-	static_inventory += using
+// // Crew Manifest
+// 	using = new /atom/movable/screen/pai/crew_manifest(null, src)
+// 	using.screen_loc = ui_pai_crew_manifest
+// 	static_inventory += using
 
-// Crew Manifest
-	using = new /atom/movable/screen/pai/crew_manifest(null, src)
-	using.screen_loc = ui_pai_crew_manifest
-	static_inventory += using
+// // Laws
+// 	using = new /atom/movable/screen/pai/state_laws(null, src)
+// 	using.screen_loc = ui_pai_state_laws
+// 	static_inventory += using
 
-// Laws
-	using = new /atom/movable/screen/pai/state_laws(null, src)
-	using.screen_loc = ui_pai_state_laws
-	static_inventory += using
+// // Modular Interface
+// 	using = new /atom/movable/screen/pai/modpc(null, src)
+// 	using.screen_loc = ui_pai_mod_int
+// 	static_inventory += using
+// 	mypai.interfaceButton = using
+// 	var/atom/movable/screen/pai/modpc/tabletbutton = using
+// 	tabletbutton.pAI = mypai
 
-// Modular Interface
-	using = new /atom/movable/screen/pai/modpc(null, src)
-	using.screen_loc = ui_pai_mod_int
-	static_inventory += using
-	mypai.interfaceButton = using
-	var/atom/movable/screen/pai/modpc/tabletbutton = using
-	tabletbutton.pAI = mypai
+// // Internal GPS
+// 	using = new /atom/movable/screen/pai/internal_gps(null, src)
+// 	using.screen_loc = ui_pai_internal_gps
+// 	static_inventory += using
 
-// Internal GPS
-	using = new /atom/movable/screen/pai/internal_gps(null, src)
-	using.screen_loc = ui_pai_internal_gps
-	static_inventory += using
+// // Take image
+// 	using = new /atom/movable/screen/pai/image_take(null, src)
+// 	using.screen_loc = ui_pai_take_picture
+// 	static_inventory += using
 
-// Take image
-	using = new /atom/movable/screen/pai/image_take(null, src)
-	using.screen_loc = ui_pai_take_picture
-	static_inventory += using
+// // View images
+// 	using = new /atom/movable/screen/pai/image_view(null, src)
+// 	using.screen_loc = ui_pai_view_images
+// 	static_inventory += using
 
-// View images
-	using = new /atom/movable/screen/pai/image_view(null, src)
-	using.screen_loc = ui_pai_view_images
-	static_inventory += using
-
-// Radio
-	using = new /atom/movable/screen/pai/radio(null, src)
-	using.screen_loc = ui_pai_radio
-	static_inventory += using
+// // Radio
+// 	using = new /atom/movable/screen/pai/radio(null, src)
+// 	using.screen_loc = ui_pai_radio
+// 	static_inventory += using
 
 	update_software_buttons()
 
 /datum/hud/pai/proc/update_software_buttons()
 	var/mob/living/silicon/pai/owner = mymob
-	for(var/atom/movable/screen/pai/button in static_inventory)
+	for(var/atom/movable/screen/pai/button in screen_groups[HUDGROUP_STATIC_INVENTORY])
 		if(button.required_software)
 			button.color = owner.software.Find(button.required_software) ? null : "#808080"
 

@@ -1,65 +1,31 @@
 //Used for normal mobs that have hands.
-/datum/hud/dextrous/New(mob/living/owner)
-	..()
+/datum/hud/dextrous/initialize_screens()
+	. = ..()
 	var/atom/movable/screen/using
 
-	using = new /atom/movable/screen/drop(null, src)
-	using.icon = ui_style
-	using.screen_loc = ui_drone_drop
-	static_inventory += using
+	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_1, HUDGROUP_STATIC_INVENTORY, ui_style)
+	using.icon_state = "swap_1"
+	using.screen_loc = ui_swaphand_position(mymob,1)
 
-	pull_icon = new /atom/movable/screen/pull(null, src)
-	pull_icon.icon = ui_style
-	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_drone_pull
-	static_inventory += pull_icon
-
-	build_hand_slots()
-
-	using = new /atom/movable/screen/swap_hand(null, src)
-	using.icon = ui_style
-	using.icon_state = "swap_1_m"
-	using.screen_loc = ui_swaphand_position(owner,1)
-	static_inventory += using
-
-	using = new /atom/movable/screen/swap_hand(null, src)
-	using.icon = ui_style
+	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_2, HUDGROUP_STATIC_INVENTORY, ui_style)
 	using.icon_state = "swap_2"
-	using.screen_loc = ui_swaphand_position(owner,2)
-	static_inventory += using
+	using.screen_loc = ui_swaphand_position(mymob, 2)
 
-	action_intent = new /atom/movable/screen/combattoggle/flashy(null, src)
-	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
-
-
-	zone_select = new /atom/movable/screen/zone_sel(null, src)
-	zone_select.icon = ui_style
-	zone_select.update_appearance()
-	static_inventory += zone_select
-
-	using = new /atom/movable/screen/area_creator(null, src)
-	using.icon = ui_style
-	static_inventory += using
+	add_screen_object(/atom/movable/screen/drop, HUDKEY_MOB_DROP, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/pull, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY, ui_style)
 
 	mymob.canon_client.screen = list()
 
-	gun_setting_icon = new /atom/movable/screen/gun_mode(null, src)
-	gun_setting_icon.icon = ui_style
+	build_hand_slots()
 
-	var/atom/movable/screen/gun_option = new /atom/movable/screen/gun_radio(null, src)
-	gun_option.icon = ui_style
-	gunpoint_options += gun_option
+	add_screen_object(/atom/movable/screen/combattoggle/flashy, HUDKEY_MOB_INTENTS, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/zone_sel, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/area_creator, HUDKEY_HUMAN_AREA_CREATOR, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/gun_mode, HUDKEY_MOB_GUN_MODE, HUDGROUP_INFO_DISPLAY, ui_style)
 
-	gun_option = new /atom/movable/screen/gun_item(null, src)
-	gun_option.icon = ui_style
-	gunpoint_options += gun_option
-
-	gun_option = new /atom/movable/screen/gun_move(null, src)
-	gun_option.icon = ui_style
-	gunpoint_options += gun_option
-
+	add_screen_object(/atom/movable/screen/gun_item, HUDKEY_MOB_GUN_ITEM, HUDGROUP_GUN_OPTIONS, ui_style)
+	add_screen_object(/atom/movable/screen/gun_move, HUDKEY_MOB_GUN_MOVE, HUDGROUP_GUN_OPTIONS, ui_style)
+	add_screen_object(/atom/movable/screen/gun_radio, HUDKEY_MOB_GUN_RADIO, HUDGROUP_GUN_OPTIONS, ui_style)
 
 /datum/hud/dextrous/persistent_inventory_update()
 	if(!mymob)

@@ -586,7 +586,7 @@
 /mob/living/update_health_hud()
 	var/severity = 0
 	var/healthpercent = (health/maxHealth) * 100
-	var/atom/movable/screen/healthdoll/livingdoll = hud_used?.screen_objects[HUDKEY_MOB_HEALTH]
+	var/atom/movable/screen/healthdoll/living/livingdoll = hud_used?.screen_objects[HUDKEY_MOB_HEALTH]
 
 	if(livingdoll) //to really put you in the boots of a simplemob
 		switch(healthpercent)

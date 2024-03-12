@@ -1,73 +1,3 @@
-/atom/movable/screen/human
-	icon = 'icons/hud/screen_midnight.dmi'
-
-/atom/movable/screen/human/toggle
-	name = "toggle"
-	icon_state = "toggle"
-	screen_loc = ui_inventory
-	private_screen = FALSE // We handle cases where usr != owner.
-
-/atom/movable/screen/human/toggle/Click()
-	. = ..()
-	if(.)
-		return FALSE
-
-	var/mob/targetmob = usr
-
-	if(isobserver(usr))
-		if(ishuman(usr.client.eye) && (usr.client.eye != usr))
-			var/mob/M = usr.client.eye
-			targetmob = M
-
-	if(usr.hud_used.inventory_shown && targetmob.hud_used)
-		usr.hud_used.inventory_shown = FALSE
-		usr.client.screen -= targetmob.hud_used.screen_groups[HUDGROUP_TOGGLEABLE_INVENTORY]
-	else
-		usr.hud_used.inventory_shown = TRUE
-		usr.client.screen += targetmob.hud_used.screen_groups[HUDGROUP_TOGGLEABLE_INVENTORY]
-
-	targetmob.hud_used.hidden_inventory_update(usr)
-
-/atom/movable/screen/human/equip
-	name = "equip"
-	icon_state = "act_equip"
-
-/atom/movable/screen/human/equip/Initialize(mapload, datum/hud/hud_owner)
-	. = ..()
-	if(hud_owner)
-		screen_loc = ui_equip_position(hud_owner.mymob)
-
-/atom/movable/screen/human/equip/Click()
-	. = ..()
-	if(.)
-		return FALSE
-	if(ismecha(usr.loc)) // stops inventory actions in a mech
-		return TRUE
-
-	var/mob/living/carbon/human/H = usr
-	H.quick_equip()
-
-/atom/movable/screen/ling
-	icon = 'icons/hud/screen_changeling.dmi'
-
-/atom/movable/screen/ling/chems
-	name = "chemical storage"
-	icon_state = "power_display"
-	screen_loc = ui_lingchemdisplay
-
-/atom/movable/screen/ling/sting
-	name = "current sting"
-	screen_loc = ui_lingstingdisplay
-	invisibility = INVISIBILITY_ABSTRACT
-
-/atom/movable/screen/ling/sting/Click()
-	. = ..()
-	if(.)
-		return FALSE
-
-	var/mob/living/carbon/carbon_user = hud.mymob
-	carbon_user.unset_sting()
-
 /datum/hud/human/initialize_screens()
 	. = ..()
 
@@ -107,11 +37,11 @@
 	var/atom/movable/screen/inventory/inv_box
 	var/atom/movable/screen/using
 
-	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_1, HUDGROUP_STATIC_INVENTORY)
+	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_1, HUDGROUP_STATIC_INVENTORY, ui_style)
 	using.icon_state = "swap_1"
 	using.screen_loc = ui_swaphand_position(mymob,1)
 
-	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_2, HUDGROUP_STATIC_INVENTORY)
+	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_2, HUDGROUP_STATIC_INVENTORY, ui_style)
 	using.icon_state = "swap_2"
 	using.screen_loc = ui_swaphand_position(mymob, 2)
 
@@ -344,8 +274,8 @@
 	set desc = "This disables or enables the user interface buttons which can be used with hotkeys."
 
 	if(hud_used.hotkey_ui_hidden)
-		client.screen += hud_used.hotkeybuttons
+		client.screen += hud_used.screen_groups[HUDGROUP_HOTKEY_BUTTONS]
 		hud_used.hotkey_ui_hidden = FALSE
 	else
-		client.screen -= hud_used.hotkeybuttons
+		client.screen -= hud_used.screen_groups[HUDGROUP_HOTKEY_BUTTONS]
 		hud_used.hotkey_ui_hidden = TRUE

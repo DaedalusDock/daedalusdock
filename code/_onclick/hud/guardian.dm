@@ -1,87 +1,53 @@
 /datum/hud/guardian
 	ui_style = 'icons/hud/guardian.dmi'
 
-/datum/hud/guardian/New(mob/living/simple_animal/hostile/guardian/owner)
-	..()
-	var/atom/movable/screen/using
+/datum/hud/guardian/initialize_screens()
+	. = ..()
 
-	pull_icon = new /atom/movable/screen/pull(null, src)
-	pull_icon.icon = ui_style
-	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_living_pull
-	static_inventory += pull_icon
+	add_screen_object(/atom/movable/screen/pull{icon = 'icons/hud/guardian.dmi'}, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/guardian/manifest, HUDKEY_GUARDIAN_MANIFEST, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/guardian/recall, HUDKEY_GUARDIAN_RECALL, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/guardian/toggle_light, HUDKEY_GUARDIAN_LIGHT, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/guardian/communicate, HUDKEY_GUARDIAN_COMMUNICATE, HUDGROUP_STATIC_INVENTORY)
 
-	healths = new /atom/movable/screen/healths/guardian(null, src)
-	infodisplay += healths
+	add_screen_object(/atom/movable/screen/healths/guardian, HUDKEY_MOB_HEALTH, HUDGROUP_INFO_DISPLAY)
 
-	using = new /atom/movable/screen/guardian/manifest(null, src)
-	using.screen_loc = ui_hand_position(2)
-	static_inventory += using
-
-	using = new /atom/movable/screen/guardian/recall(null, src)
-	using.screen_loc = ui_hand_position(1)
-	static_inventory += using
-
-	using = new owner.toggle_button_type(null, src)
+	var/mob/living/simple_animal/hostile/guardian/owner = mymob
+	var/atom/movable/screen/using = add_screen_object(owner.toggle_button_type, HUDKEY_GUARDIAN_TOGGLE, HUDGROUP_STATIC_INVENTORY)
 	using.screen_loc = ui_storage1
-	static_inventory += using
 
-	using = new /atom/movable/screen/guardian/toggle_light(null, src)
-	using.screen_loc = ui_inventory
-	static_inventory += using
+/datum/hud/dextrous/guardian/initialize_screens()
+	. = ..()
 
-	using = new /atom/movable/screen/guardian/communicate(null, src)
-	using.screen_loc = ui_back
-	static_inventory += using
-
-/datum/hud/dextrous/guardian/New(mob/living/simple_animal/hostile/guardian/owner) //for a dextrous guardian
-	..()
 	var/atom/movable/screen/using
-	if(istype(owner, /mob/living/simple_animal/hostile/guardian/dextrous))
+	if(istype(mymob, /mob/living/simple_animal/hostile/guardian/dextrous))
 		var/atom/movable/screen/inventory/inv_box
 
-		inv_box = new /atom/movable/screen/inventory(null, src)
+		inv_box = add_screen_object(/atom/movable/screen/inventory, HUDKEY_ITEM_SLOT_CONST(ITEM_SLOT_DEX_STORAGE), HUDGROUP_STATIC_INVENTORY, ui_style)
 		inv_box.name = "internal storage"
 		inv_box.icon = ui_style
 		inv_box.icon_state = "suit_storage"
 		inv_box.screen_loc = ui_id
 		inv_box.slot_id = ITEM_SLOT_DEX_STORAGE
-		static_inventory += inv_box
 
-		using = new /atom/movable/screen/guardian/communicate(null, src)
+		using = add_screen_object(/atom/movable/screen/guardian/communicate, HUDKEY_GUARDIAN_COMMUNICATE, HUDGROUP_STATIC_INVENTORY)
 		using.screen_loc = ui_sstore1
-		static_inventory += using
 
 	else
 
-		using = new /atom/movable/screen/guardian/communicate(null, src)
+		using = add_screen_object(/atom/movable/screen/guardian/communicate, HUDKEY_GUARDIAN_COMMUNICATE, HUDGROUP_STATIC_INVENTORY)
 		using.screen_loc = ui_id
-		static_inventory += using
 
-	pull_icon = new /atom/movable/screen/pull(null, src)
-	pull_icon.icon = 'icons/hud/guardian.dmi'
-	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_living_pull
-	static_inventory += pull_icon
+	add_screen_object(/atom/movable/screen/pull{icon = 'icons/hud/guardian.dmi'}, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/guardian/manifest{screen_loc = ui_belt}, HUDKEY_GUARDIAN_MANIFEST, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/guardian/recall{screen_loc = ui_back}, HUDKEY_GUARDIAN_RECALL, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/guardian/toggle_light{screen_loc = ui_inventory}, HUDKEY_GUARDIAN_LIGHT, HUDGROUP_STATIC_INVENTORY)
 
-	healths = new /atom/movable/screen/healths/guardian(null, src)
-	infodisplay += healths
+	add_screen_object(/atom/movable/screen/healths/guardian, HUDKEY_MOB_HEALTH, HUDGROUP_INFO_DISPLAY)
 
-	using = new /atom/movable/screen/guardian/manifest(null, src)
-	using.screen_loc = ui_belt
-	static_inventory += using
-
-	using = new /atom/movable/screen/guardian/recall(null, src)
-	using.screen_loc = ui_back
-	static_inventory += using
-
-	using = new owner.toggle_button_type(null, src)
+	var/mob/living/simple_animal/hostile/guardian/owner = mymob
+	using = add_screen_object(owner.toggle_button_type, HUDKEY_GUARDIAN_TOGGLE, HUDGROUP_STATIC_INVENTORY)
 	using.screen_loc = ui_storage2
-	static_inventory += using
-
-	using = new /atom/movable/screen/guardian/toggle_light(null, src)
-	using.screen_loc = ui_inventory
-	static_inventory += using
 
 /datum/hud/dextrous/guardian/persistent_inventory_update()
 	if(!mymob)
@@ -107,6 +73,10 @@
 	name = "Manifest"
 	desc = "Spring forth into battle!"
 
+/atom/movable/screen/guardian/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	screen_loc = ui_hand_position(2)
+
 /atom/movable/screen/guardian/manifest/Click()
 	. = ..()
 	if(.)
@@ -120,6 +90,10 @@
 	icon_state = "recall"
 	name = "Recall"
 	desc = "Return to your user."
+
+/atom/movable/screen/guardian/recall/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	screen_loc = ui_hand_position(1)
 
 /atom/movable/screen/guardian/recall/Click()
 	. = ..()
@@ -153,6 +127,7 @@
 	icon_state = "communicate"
 	name = "Communicate"
 	desc = "Communicate telepathically with your user."
+	screen_loc = ui_back
 
 /atom/movable/screen/guardian/communicate/Click()
 	. = ..()
@@ -166,6 +141,7 @@
 	icon_state = "light"
 	name = "Toggle Light"
 	desc = "Glow like star dust."
+	screen_loc = ui_inventory
 
 /atom/movable/screen/guardian/toggle_light/Click()
 	. = ..()

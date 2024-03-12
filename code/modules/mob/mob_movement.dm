@@ -518,7 +518,7 @@
  */
 /mob/proc/set_move_intent(new_state)
 	m_intent = new_state
-	mob.hud_used?.screen_objects[HUDKEY_MOB_MOVE_INTENT].update_appearance()
+	hud_used?.screen_objects[HUDKEY_MOB_MOVE_INTENT].update_appearance()
 
 ///Moves a mob upwards in z level
 /mob/verb/up()

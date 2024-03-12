@@ -4,6 +4,7 @@
 /atom/movable/screen/alien/leap
 	name = "toggle leap"
 	icon_state = "leap_off"
+	screen_loc = ui_alien_storage_r
 
 /atom/movable/screen/alien/leap/Click()
 	. = ..()
@@ -30,81 +31,35 @@
 	..()
 
 	var/atom/movable/screen/using
-
-//equippable shit
-
-//hands
 	build_hand_slots()
 
-//begin buttons
-
-	using = new /atom/movable/screen/swap_hand(null, src)
-	using.icon = ui_style
+	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_1, HUDGROUP_STATIC_INVENTORY, ui_style)
 	using.icon_state = "swap_1"
-	using.screen_loc = ui_swaphand_position(owner,1)
-	static_inventory += using
+	using.screen_loc = ui_swaphand_position(mymob,1)
 
-	using = new /atom/movable/screen/swap_hand(null, src)
-	using.icon = ui_style
+	using = add_screen_object(/atom/movable/screen/swap_hand, HUDKEY_MOB_SWAPHAND_2, HUDGROUP_STATIC_INVENTORY, ui_style)
 	using.icon_state = "swap_2"
-	using.screen_loc = ui_swaphand_position(owner,2)
-	static_inventory += using
+	using.screen_loc = ui_swaphand_position(mymob, 2)
 
-	action_intent = new /atom/movable/screen/combattoggle/flashy(null, src)
-	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
+	add_screen_object(/atom/movable/screen/combattoggle/flashy, HUDKEY_MOB_INTENTS, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/pull{icon = 'icons/hud/screen_alien.dmi'}, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/language_menu{screen_loc = ui_alien_language_menu}, HUDKEY_MOB_LANGUAGE_MENU, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/navigate{screen_loc = ui_alien_navigate_menu}, HUDKEY_MOB_NAVIGATE_MENU, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/zone_sel/alien, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/drop, HUDKEY_MOB_DROP, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/pull, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY, ui_style)
+
+	add_screen_object(/atom/movable/screen/resist, HUDKEY_MOB_RESIST, HUDGROUP_HOTKEY_BUTTONS, ui_style)
+	add_screen_object(/atom/movable/screen/throw_catch, HUDKEY_MOB_THROW, HUDGROUP_HOTKEY_BUTTONS, ui_style)
+
+	add_screen_object(/atom/movable/screen/healths/alien, HUDKEY_MOB_HEALTH, HUDGROUP_INFO_DISPLAY)
+	add_screen_object(/atom/movable/screen/alien/plasma_display, HUDKEY_ALIEN_PLASMA_DISPLAY, HUDGROUP_INFO_DISPLAY)
 
 	if(isalienhunter(mymob))
-		var/mob/living/carbon/alien/humanoid/hunter/H = mymob
-		H.leap_icon = new /atom/movable/screen/alien/leap(null, src)
-		H.leap_icon.screen_loc = ui_alien_storage_r
-		static_inventory += H.leap_icon
-
-	using = new/atom/movable/screen/language_menu(null, src)
-	using.screen_loc = ui_alien_language_menu
-	static_inventory += using
-
-	using = new /atom/movable/screen/navigate(null, src)
-	using.screen_loc = ui_alien_navigate_menu
-	static_inventory += using
-
-	using = new /atom/movable/screen/drop(null, src)
-	using.icon = ui_style
-	using.screen_loc = ui_drop_throw
-	static_inventory += using
-
-	using = new /atom/movable/screen/resist(null, src)
-	using.icon = ui_style
-	using.screen_loc = ui_above_movement
-	hotkeybuttons += using
-
-	throw_icon = new /atom/movable/screen/throw_catch(null, src)
-	throw_icon.icon = ui_style
-	throw_icon.screen_loc = ui_drop_throw
-	hotkeybuttons += throw_icon
-
-	pull_icon = new /atom/movable/screen/pull(null, src)
-	pull_icon.icon = ui_style
-	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_above_movement
-	static_inventory += pull_icon
-
-//begin indicators
-
-	healths = new /atom/movable/screen/healths/alien(null, src)
-	infodisplay += healths
-
-	alien_plasma_display = new /atom/movable/screen/alien/plasma_display(null, src)
-	infodisplay += alien_plasma_display
+		add_screen_object(/atom/movable/screen/alien/leap, HUDKEY_ALIEN_HUNTER_LEAP, HUDGROUP_STATIC_INVENTORY, ui_style)
 
 	if(!isalienqueen(mymob))
-		alien_queen_finder = new /atom/movable/screen/alien/alien_queen_finder(null, src)
-		infodisplay += alien_queen_finder
-
-	zone_select = new /atom/movable/screen/zone_sel/alien(null, src)
-	zone_select.update_appearance()
-	static_inventory += zone_select
+		add_screen_object(/atom/movable/screen/alien/plasma_display, HUDKEY_ALIEN_QUEEN_FINDER, HUDGROUP_INFO_DISPLAY)
 
 /datum/hud/alien/persistent_inventory_update()
 	if(!mymob)

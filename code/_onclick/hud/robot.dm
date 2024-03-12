@@ -27,17 +27,17 @@
 	add_screen_object(/atom/movable/screen/ai/image_take{screen_loc = ui_borg_camera}, HUDKEY_SILICON_TAKE_IMAGE, HUDGROUP_STATIC_INVENTORY)
 
 	//Borg Integrated Tablet
-	var/atom/movable/screen/robot/modpc/tablet = add_screen_object(/atom/movable/screen/robot/modpc, HUDKEY_CYBORG_TABLET, HUDGROUP_STATIC_INVENTORY)
+	var/atom/movable/screen/robot/modpc/tablet = add_screen_object(/atom/movable/screen/robot/modpc, HUDKEY_SILICON_TABLET, HUDGROUP_STATIC_INVENTORY)
 	tablet.robot = robit
 	robit.interfaceButton = tablet
 	if(robit.modularInterface)
 		tablet.vis_contents += robit.modularInterface
 
 	//Alerts
-	add_screen_object(/atom/movable/screen/robot/alerts, HUDKEY_CYBORG_ALERTS, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/robot/alerts, HUDKEY_SILICON_ALERTS, HUDGROUP_STATIC_INVENTORY)
 
 	//Combat Mode
-	var/atom/movable/screen/combattoggle/robot/action_intent = add_screen_object(__IMPLIED_TYPE__, HUDKEY_CYBORG_ALERTS, HUDGROUP_STATIC_INVENTORY)
+	var/atom/movable/screen/combattoggle/robot/action_intent = add_screen_object(__IMPLIED_TYPE__, HUDKEY_SILICON_ALERTS, HUDGROUP_STATIC_INVENTORY)
 	action_intent.icon = ui_style
 
 	//Health

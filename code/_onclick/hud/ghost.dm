@@ -9,6 +9,7 @@
 /atom/movable/screen/ghost/spawners_menu
 	name = "Spawners menu"
 	icon_state = "spawners"
+	screen_loc = ui_ghost_spawners_menu
 
 /atom/movable/screen/ghost/spawners_menu/Click()
 	. = ..()
@@ -20,6 +21,7 @@
 /atom/movable/screen/ghost/orbit
 	name = "Orbit"
 	icon_state = "orbit"
+	screen_loc = ui_ghost_orbit
 
 /atom/movable/screen/ghost/orbit/Click()
 	. = ..()
@@ -31,6 +33,7 @@
 /atom/movable/screen/ghost/reenter_corpse
 	name = "Reenter corpse"
 	icon_state = "reenter_corpse"
+	screen_loc = ui_ghost_reenter_corpse
 
 /atom/movable/screen/ghost/reenter_corpse/Click()
 	. = ..()
@@ -42,6 +45,7 @@
 /atom/movable/screen/ghost/teleport
 	name = "Teleport"
 	icon_state = "teleport"
+	screen_loc = ui_ghost_teleport
 
 /atom/movable/screen/ghost/teleport/Click()
 	. = ..()
@@ -54,6 +58,7 @@
 /atom/movable/screen/ghost/pai
 	name = "pAI Candidate"
 	icon_state = "pai"
+	screen_loc = ui_ghost_pai
 
 /atom/movable/screen/ghost/pai/Click()
 	. = ..()
@@ -66,6 +71,7 @@
 /atom/movable/screen/ghost/minigames_menu
 	name ="Minigames"
 	icon_state = "minigames"
+	screen_loc = ui_ghost_minigames
 
 /atom/movable/screen/ghost/minigames_menu/Click()
 	. = ..()
@@ -75,38 +81,16 @@
 	var/mob/dead/observer/observer = usr
 	observer.open_minigames_menu()
 
-/datum/hud/ghost/New(mob/owner)
-	..()
-	var/atom/movable/screen/using
+/datum/hud/ghost/initialize_screens()
+	. = ..()
 
-	using = new /atom/movable/screen/ghost/spawners_menu(null, src)
-	using.screen_loc = ui_ghost_spawners_menu
-	static_inventory += using
-
-	using = new /atom/movable/screen/ghost/orbit(null, src)
-	using.screen_loc = ui_ghost_orbit
-	static_inventory += using
-
-	using = new /atom/movable/screen/ghost/reenter_corpse(null, src)
-	using.screen_loc = ui_ghost_reenter_corpse
-	static_inventory += using
-
-	using = new /atom/movable/screen/ghost/teleport(null, src)
-	using.screen_loc = ui_ghost_teleport
-	static_inventory += using
-
-	using = new /atom/movable/screen/ghost/pai(null, src)
-	using.screen_loc = ui_ghost_pai
-	static_inventory += using
-
-	using = new /atom/movable/screen/ghost/minigames_menu(null, src)
-	using.screen_loc = ui_ghost_minigames
-	static_inventory += using
-
-	using = new /atom/movable/screen/language_menu(null, src)
-	using.screen_loc = 	ui_ghost_language_menu
-	using.icon = ui_style
-	static_inventory += using
+	add_screen_object(/atom/movable/screen/ghost/spawners_menu, HUDKEY_GHOST_SPAWNERS, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/ghost/orbit, HUDKEY_GHOST_ORBIT, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/ghost/reenter_corpse, HUDKEY_GHOST_REENTER_CORPSE, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/ghost/teleport, HUDKEY_GHOST_TELEPORT, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/ghost/pai, HUDKEY_GHOST_PAI, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/ghost/minigames_menu, HUDKEY_GHOST_MINIGAMES, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/language_menu{screen_loc = ui_ghost_language_menu}, HUDKEY_MOB_LANGUAGE_MENU, HUDGROUP_STATIC_INVENTORY, ui_style)
 
 /datum/hud/ghost/show_hud(version = 0, mob/viewmob)
 	// don't show this HUD if observing; show the HUD of the observee
@@ -118,11 +102,12 @@
 	. = ..()
 	if(!.)
 		return
+
 	var/mob/screenmob = viewmob || mymob
 	if(screenmob.client.prefs.read_preference(/datum/preference/toggle/ghost_hud))
-		screenmob.client.screen += static_inventory
+		screenmob.client.screen += screen_groups[HUDGROUP_STATIC_INVENTORY]
 	else
-		screenmob.client.screen -= static_inventory
+		screenmob.client.screen -= screen_groups[HUDGROUP_STATIC_INVENTORY]
 
 //We should only see observed mob alerts.
 /datum/hud/ghost/reorganize_alerts(mob/viewmob)

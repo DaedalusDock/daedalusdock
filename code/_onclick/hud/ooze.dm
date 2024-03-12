@@ -2,10 +2,7 @@
 /datum/hud/ooze/New(mob/living/owner)
 	. = ..()
 
-	var/atom/movable/screen/zone_sel/zone_select = add_screen_object(__IMPLIED_TYPE__, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY)
-	zone_select.icon = ui_style
-	zone_select.update_appearance()
-
+	add_screen_object(/atom/movable/screen/zone_sel, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY, ui_style)
 	add_screen_object(/atom/movable/screen/ooze_nutrition_display, HUDKEY_MOB_NUTRITION, HUDGROUP_INFO_DISPLAY)
 
 /atom/movable/screen/ooze_nutrition_display

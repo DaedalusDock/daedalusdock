@@ -920,10 +920,10 @@
 
 	if(!user.use_gunpoint)
 		icon_state = "gun0"
-		user.client.screen -= hud.gunpoint_options
+		user.client.screen -= hud.screen_groups[HUDGROUP_GUN_OPTIONS]
 	else
 		icon_state = "gun1"
-		user.client.screen += hud.gunpoint_options
+		user.client.screen += hud.screen_groups[HUDGROUP_GUN_OPTIONS]
 
 /atom/movable/screen/gun_radio
 	name = "Disallow Radio Use"

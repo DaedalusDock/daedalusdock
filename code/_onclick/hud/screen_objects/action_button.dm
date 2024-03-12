@@ -262,9 +262,6 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 		name = "Show Buttons"
 
 /atom/movable/screen/button_palette/proc/refresh_owner()
-	if(!hud)
-		return
-
 	var/mob/viewer = hud.mymob
 	if(viewer.client)
 		viewer.client.screen |= src
@@ -363,6 +360,8 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 
 /atom/movable/screen/palette_scroll/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
+	if(isnull(hud))
+		CRASH("null hud")
 	refresh_owner()
 
 /atom/movable/screen/palette_scroll/can_usr_use(mob/user)
@@ -374,6 +373,7 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 
 
 /atom/movable/screen/palette_scroll/proc/refresh_owner()
+
 	var/mob/viewer = hud.mymob
 	if(viewer.client)
 		viewer.client.screen |= src

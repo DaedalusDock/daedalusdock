@@ -286,21 +286,42 @@
 #define HUDKEY_HUMAN_EQUIP_ITEM "humanequipitem"
 
 #define HUDKEY_SILICON_TAKE_IMAGE "siliconcamera"
+#define HUDKEY_SILICON_TABLET "silicontablet"
+#define HUDKEY_SILICON_ALERTS "siliconalerts"
+
+#define HUDKEY_AI_AICORE
+#define HUDKEY_AI_CAMERA_LIST
+#define HUDKEY_AI_CAMERA_TRACK
+#define HUDKEY_AI_CAMERA_LIGHT
+#define HUDKEY_AI_CREW_MONITOR
+#define HUDKEY_AI_CREW_MANIFEST
+#define HUDKEY_AI_ANNOUNCEMENT
+#define HUDKEY_AI_CALL_SHUTTLE
+#define HUDKEY_AI_STATE_LAWS
+#define HUDKEY_AI_TAKE_IMAGE
+#define HUDKEY_AI_IMAGE_VIEW
+#define HUDKEY_AI_SENSORS
+#define HUDKEY_AI_MULTICAM
+#define HUDKEY_AI_ADD_MULTICAM
 
 #define HUDKEY_CYBORG_RADIO "cyborgradio"
 #define HUDKEY_CYBORG_MODULE_1 "cyborgmodule1"
 #define HUDKEY_CYBORG_MODULE_2 "cyborgmodule2"
 #define HUDKEY_CYBORG_MODULE_3 "cyborgmodule3"
 #define HUDKEY_CYBORG_LAMP "cyborglamp"
-#define HUDKEY_CYBORG_TABLET "cyborgtablet"
-#define HUDKEY_CYBORG_ALERTS "cyborgalerts"
 #define HUDKEY_CYBORG_HANDS "cyborgmodule"
 #define HUDKEY_CYBORG_STORE "cyborgstore"
 
-#define HUDKEY_DRONE_STORAGE "dronestorage"
-#define HUDKEY_DRONE_MASK "dronemask"
+#define HUDKEY_GHOST_SPAWNERS "ghostspawners"
+#define HUDKEY_GHOST_ORBIT "ghostorbit"
+#define HUDKEY_GHOST_REENTER_CORPSE "ghostcorpse"
+#define HUDKEY_GHOST_TELEPORT "ghostteleport"
+#define HUDKEY_GHOST_PAI "ghostpai"
+#define HUDKEY_GHOST_MINIGAMES "ghostminigames"
 
 #define HUDKEY_ALIEN_QUEEN_FINDER "alienqueenfinder"
+#define HUDKEY_ALIEN_PLASMA_DISPLAY "alienplasmadisplay"
+#define HUDKEY_ALIEN_HUNTER_LEAP "alienhunterleap"
 
 #define HUDKEY_BLOB_POWER_DISPLAY "blobpwrdisplay"
 #define HUDKEY_BLOB_HELP "blobhelp"
@@ -312,3 +333,14 @@
 #define HUDKEY_BLOB_FACTORY "blobfactory"
 #define HUDKEY_BLOB_READAPT "blobreadapt"
 #define HUDKEY_BLOB_RELOCATE "blobrelocate"
+
+#define HUDKEY_GUARDIAN_MANIFEST "guardianmanifest"
+#define HUDKEY_GUARDIAN_RECALL "guardianrecall"
+#define HUDKEY_GUARDIAN_LIGHT "guardianlight"
+#define HUDKEY_GUARDIAN_COMMUNICATE "guardiancommunicate"
+#define HUDKEY_GUARDIAN_TOGGLE "guardiantoggle"
+
+#define HUDKEY_ERT_WANTEDLEVEL "ertwantedlevel"
+
+#define HUDKEY_CHANGELING_CHEMS "changelingchems"
+#define HUDKEY_CHANGELING_STING "changelingsting"

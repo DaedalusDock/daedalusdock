@@ -246,13 +246,13 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		summoner.dust()
 
 /mob/living/simple_animal/hostile/guardian/update_health_hud()
-	if(summoner && hud_used?.healths)
+	if(summoner && hud_used?.screen_objects[HUDKEY_MOB_HEALTH])
 		var/resulthealth
 		if(iscarbon(summoner))
 			resulthealth = round((abs(HEALTH_THRESHOLD_DEAD - summoner.health) / abs(HEALTH_THRESHOLD_DEAD - summoner.maxHealth)) * 100)
 		else
 			resulthealth = round((summoner.health / summoner.maxHealth) * 100, 0.5)
-		hud_used.healths.maptext = MAPTEXT("<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#efeeef'>[resulthealth]%</font></div>")
+		hud_used.screen_objects[HUDKEY_MOB_HEALTH].maptext = MAPTEXT("<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#efeeef'>[resulthealth]%</font></div>")
 
 /mob/living/simple_animal/hostile/guardian/adjustHealth(amount, updating_health = TRUE, forced = FALSE) //The spirit is invincible, but passes on damage to the summoner
 	. = amount

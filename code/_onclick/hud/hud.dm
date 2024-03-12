@@ -65,6 +65,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /datum/hud/New(mob/owner)
 	mymob = owner
+	mymob.hud_used = src
 
 	if (!ui_style)
 		// will fall back to the default if any of these are null
@@ -99,6 +100,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	update_inventory_slots()
 	update_locked_slots()
+	build_action_groups()
 
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
@@ -126,25 +128,22 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 /mob/proc/create_mob_hud()
 	if(!client || hud_used)
 		return
-	set_hud_used(new hud_type(src))
+
+	new hud_type(src)
+
 	update_sight()
 	SEND_SIGNAL(src, COMSIG_MOB_HUD_CREATED)
 
-/mob/proc/set_hud_used(datum/hud/new_hud)
-	hud_used = new_hud
-	new_hud.build_action_groups()
-
-/// Adds an internally-managed screen object.
-/datum/hud/proc/add_screen_object(atom/movable/screen/new_object, hud_key, group_key, new_ui_style, update_screen = FALSE)
-	PROTECTED_PROC(TRUE)
-	if(isnull(hud_key))
-		CRASH("Bad hud key.")
-
+/// Add a managed screen object.
+/datum/hud/proc/add_screen_object(atom/movable/screen/new_object, hud_key, group_key = HUDGROUP_STATIC_INVENTORY, new_ui_style, update_screen = FALSE)
 	if(ispath(new_object))
-		new_object = new(null, src)
+		new_object = new new_object(null, src)
 
 	if(new_ui_style)
 		new_object.icon = new_ui_style
+
+	if(isnull(hud_key))
+		hud_key = ref(new_object)
 
 	new_object.hud_key = hud_key
 	screen_objects[hud_key] = new_object

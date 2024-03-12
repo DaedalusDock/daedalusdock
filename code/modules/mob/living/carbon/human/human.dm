@@ -712,60 +712,54 @@
 	if(!client || !hud_used)
 		return
 
-	if(hud_used.healths) // Kapu note: We don't use this on humans due to human health being brain health. It'd be confusing.
-		if(..()) //not dead
-			switch(hal_screwyhud)
-				if(SCREWYHUD_CRIT)
-					hud_used.healths.icon_state = "health6"
-				if(SCREWYHUD_DEAD)
-					hud_used.healths.icon_state = "health7"
-				if(SCREWYHUD_HEALTHY)
-					hud_used.healths.icon_state = "health0"
+	var/atom/movable/screen/healthdoll/healthdoll = hud_used.screen_objects[HUDKEY_MOB_HEALTH]
+	if(!healthdoll)
+		return
 
-	if(hud_used.healthdoll)
-		var/list/new_overlays = list()
-		hud_used.healthdoll.cut_overlays()
-		if(stat != DEAD)
-			hud_used.healthdoll.icon_state = "healthdoll_OVERLAY"
-			for(var/obj/item/bodypart/body_part as anything in bodyparts)
-				var/icon_num = 0
+	var/list/new_overlays = list()
+	healthdoll.cut_overlays()
 
-				//Hallucinations
-				if(body_part.type in hal_screwydoll)
-					icon_num = hal_screwydoll[body_part.type]
-					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]")
-					continue
+	if(stat -= DEAD)
+		healthdoll.icon_state = "healthdoll_OVERLAY"
+		for(var/obj/item/bodypart/body_part as anything in bodyparts)
+			var/icon_num = 0
 
-				if(hal_screwyhud == SCREWYHUD_HEALTHY)
-					icon_num = 0
-				//Not hallucinating
-				else
-					var/dam_state = min(1,((body_part.brute_dam + body_part.burn_dam) / max(1,body_part.max_damage)))
-					if(dam_state)
-						icon_num = max(1, min(Ceil(dam_state * 6), 6))
+			//Hallucinations
+			if(body_part.type in hal_screwydoll)
+				icon_num = hal_screwydoll[body_part.type]
+				new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]")
+				continue
 
-				if(icon_num)
-					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]")
+			if(hal_screwyhud == SCREWYHUD_HEALTHY)
+				icon_num = 0
+			//Not hallucinating
+			else
+				var/dam_state = min(1,((body_part.brute_dam + body_part.burn_dam) / max(1,body_part.max_damage)))
+				if(dam_state)
+					icon_num = max(1, min(Ceil(dam_state * 6), 6))
 
-				if(body_part.getPain() > 20)
-					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone]pain")
+			if(icon_num)
+				new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone][icon_num]")
 
-				if(body_part.bodypart_disabled) //Disabled limb
-					new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone]7")
+			if(body_part.getPain() > 20)
+				new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone]pain")
 
-			for(var/t in get_missing_limbs()) //Missing limbs
-				new_overlays += image('icons/hud/screen_gen.dmi', "[t]6")
+			if(body_part.bodypart_disabled) //Disabled limb
+				new_overlays += image('icons/hud/screen_gen.dmi', "[body_part.body_zone]7")
 
-			if(undergoing_cardiac_arrest())
-				new_overlays += image('icons/hud/screen_gen.dmi', "softcrit")
+		for(var/t in get_missing_limbs()) //Missing limbs
+			new_overlays += image('icons/hud/screen_gen.dmi', "[t]6")
 
-			if(on_fire)
-				new_overlays += image('icons/hud/screen_gen.dmi', "burning")
+		if(undergoing_cardiac_arrest())
+			new_overlays += image('icons/hud/screen_gen.dmi', "softcrit")
 
-			//Add all the overlays at once, more performant!
-			hud_used.healthdoll.add_overlay(new_overlays)
-		else
-			hud_used.healthdoll.icon_state = "healthdoll_DEAD"
+		if(on_fire)
+			new_overlays += image('icons/hud/screen_gen.dmi', "burning")
+
+		//Add all the overlays at once, more performant!
+		healthdoll.add_overlay(new_overlays)
+	else
+		healthdoll.icon_state = "healthdoll_DEAD"
 
 /mob/living/carbon/human/fully_heal(admin_revive = FALSE)
 	dna?.species.spec_fully_heal(src)

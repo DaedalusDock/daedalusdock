@@ -878,7 +878,7 @@
 			owner.set_usable_hands(owner.usable_hands + 1)
 
 		if(owner.hud_used)
-			var/atom/movable/screen/inventory/hand/hand_screen_object = owner.hud_used.hand_slots["[held_index]"]
+			var/atom/movable/screen/inventory/hand/hand_screen_object = owner.hud_used.hand_slots[held_index]
 			hand_screen_object?.update_appearance()
 
 	owner.update_health_hud() //update the healthdoll

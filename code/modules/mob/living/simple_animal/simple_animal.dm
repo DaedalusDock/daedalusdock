@@ -600,10 +600,10 @@
 
 	if(hud_used)
 		var/atom/movable/screen/inventory/hand/H
-		H = hud_used.hand_slots["[hand_index]"]
+		H = hud_used.hand_slots[hand_index]
 		if(H)
 			H.update_appearance()
-		H = hud_used.hand_slots["[oindex]"]
+		H = hud_used.hand_slots[oindex]
 		if(H)
 			H.update_appearance()
 

@@ -1,14 +1,11 @@
 /datum/hud/revenant
 	ui_style = 'icons/hud/screen_gen.dmi'
 
-/datum/hud/revenant/New(mob/owner)
-	..()
+/datum/hud/revenant/initialize_screens()
+	. = ..()
 
-	pull_icon = new /atom/movable/screen/pull(null, src)
+	var/atom/movable/screen/pull_icon = add_screen_object(/atom/movable/screen/pull, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY)
 	pull_icon.icon = ui_style
 	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_living_pull
-	static_inventory += pull_icon
 
-	healths = new /atom/movable/screen/healths/revenant(null, src)
-	infodisplay += healths
+	add_screen_object(/atom/movable/screen/healths/revenant, HUDKEY_MOB_HEALTH, HUDGROUP_INFO_DISPLAY)

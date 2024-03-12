@@ -1,168 +1,57 @@
-/atom/movable/screen/robot
-	icon = 'icons/hud/screen_cyborg.dmi'
-
-/atom/movable/screen/robot/module
-	name = "cyborg module"
-	icon_state = "nomod"
-
-/atom/movable/screen/robot/module/Click()
-	if(..())
-		return
-	var/mob/living/silicon/robot/R = usr
-	if(R.model.type != /obj/item/robot_model)
-		R.hud_used.toggle_show_robot_modules()
-		return 1
-	R.pick_model()
-
-/atom/movable/screen/robot/module1
-	name = "module1"
-	icon_state = "inv1"
-
-/atom/movable/screen/robot/module1/Click()
-	if(..())
-		return
-	var/mob/living/silicon/robot/R = usr
-	R.toggle_module(1)
-
-/atom/movable/screen/robot/module2
-	name = "module2"
-	icon_state = "inv2"
-
-/atom/movable/screen/robot/module2/Click()
-	if(..())
-		return
-	var/mob/living/silicon/robot/R = usr
-	R.toggle_module(2)
-
-/atom/movable/screen/robot/module3
-	name = "module3"
-	icon_state = "inv3"
-
-/atom/movable/screen/robot/module3/Click()
-	if(..())
-		return
-	var/mob/living/silicon/robot/R = usr
-	R.toggle_module(3)
-
-/atom/movable/screen/robot/radio
-	name = "radio"
-	icon_state = "radio"
-
-/atom/movable/screen/robot/radio/Click()
-	if(..())
-		return
-	var/mob/living/silicon/robot/R = usr
-	R.radio.interact(R)
-
-/atom/movable/screen/robot/store
-	name = "store"
-	icon_state = "store"
-
-/atom/movable/screen/robot/store/Click()
-	if(..())
-		return
-	var/mob/living/silicon/robot/R = usr
-	R.uneq_active()
-
 /datum/hud/robot
 	ui_style = 'icons/hud/screen_cyborg.dmi'
 
-/datum/hud/robot/New(mob/owner)
-	..()
+/datum/hud/robot/initialize_screens()
+
+	add_screen_object(/atom/movable/screen/language_menu{screen_loc = ui_borg_language_menu}, HUDKEY_MOB_LANGUAGE_MENU, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/navigate{screen_loc = ui_borg_navigate_menu}, HUDKEY_MOB_NAVIGATE_MENU, HUDGROUP_STATIC_INVENTORY)
+
+	//Radio
+	add_screen_object(/atom/movable/screen/robot/radio, HUDKEY_CYBORG_RADIO, HUDGROUP_STATIC_INVENTORY)
+
+	//Module select
 	// i, Robit
 	var/mob/living/silicon/robot/robit = mymob
-	var/atom/movable/screen/using
-
-	using = new/atom/movable/screen/language_menu(null, src)
-	using.screen_loc = ui_borg_language_menu
-	static_inventory += using
-
-// Navigation
-	using = new /atom/movable/screen/navigate(null, src)
-	using.screen_loc = ui_borg_navigate_menu
-	static_inventory += using
-
-//Radio
-	using = new /atom/movable/screen/robot/radio(null, src)
-	using.screen_loc = ui_borg_radio
-	static_inventory += using
-
-//Module select
 	if(!robit.inv1)
-		robit.inv1 = new /atom/movable/screen/robot/module1(null, src)
-
-	robit.inv1.screen_loc = ui_inv1
-	static_inventory += robit.inv1
-
-	if(!robit.inv2)
-		robit.inv2 = new /atom/movable/screen/robot/module2(null, src)
-
-	robit.inv2.screen_loc = ui_inv2
-	static_inventory += robit.inv2
-
+		robit.inv1 = add_screen_object(/atom/movable/screen/robot/module1, HUDKEY_CYBORG_MODULE_1, HUDGROUP_STATIC_INVENTORY)
+	if(!robit.inv1)
+		robit.inv2 = add_screen_object(/atom/movable/screen/robot/module2, HUDKEY_CYBORG_MODULE_2, HUDGROUP_STATIC_INVENTORY)
 	if(!robit.inv3)
-		robit.inv3 = new /atom/movable/screen/robot/module3(null, src)
+		robit.inv3 = add_screen_object(/atom/movable/screen/robot/module3, HUDKEY_CYBORG_MODULE_3, HUDGROUP_STATIC_INVENTORY)
 
-	robit.inv3.screen_loc = ui_inv3
-	static_inventory += robit.inv3
-
-//End of module select
-	using = new /atom/movable/screen/robot/lamp(null, src)
-	using.screen_loc = ui_borg_lamp
-	static_inventory += using
-	robit.lampButton = using
-	var/atom/movable/screen/robot/lamp/lampscreen = using
+	var/atom/movable/screen/robot/lamp/lampscreen = add_screen_object(__IMPLIED_TYPE__, HUDKEY_CYBORG_LAMP, HUDGROUP_STATIC_INVENTORY)
+	robit.lampButton = lampscreen
 	lampscreen.robot = robit
 
-//Photography stuff
-	using = new /atom/movable/screen/ai/image_take(null, src)
-	using.screen_loc = ui_borg_camera
-	static_inventory += using
+	//Photography stuff
+	add_screen_object(/atom/movable/screen/ai/image_take{screen_loc = ui_borg_camera}, HUDKEY_SILICON_TAKE_IMAGE, HUDGROUP_STATIC_INVENTORY)
 
-//Borg Integrated Tablet
-	using = new /atom/movable/screen/robot/modpc(null, src)
-	using.screen_loc = ui_borg_tablet
-	static_inventory += using
-	robit.interfaceButton = using
+	//Borg Integrated Tablet
+	var/atom/movable/screen/robot/modpc/tablet = add_screen_object(/atom/movable/screen/robot/modpc, HUDKEY_CYBORG_TABLET, HUDGROUP_STATIC_INVENTORY)
+	tablet.robot = robit
+	robit.interfaceButton = tablet
 	if(robit.modularInterface)
-		using.vis_contents += robit.modularInterface
-	var/atom/movable/screen/robot/modpc/tabletbutton = using
-	tabletbutton.robot = robit
+		tablet.vis_contents += robit.modularInterface
 
-//Alerts
-	using = new /atom/movable/screen/robot/alerts(null, src)
-	using.screen_loc = ui_borg_alerts
-	static_inventory += using
+	//Alerts
+	add_screen_object(/atom/movable/screen/robot/alerts, HUDKEY_CYBORG_ALERTS, HUDGROUP_STATIC_INVENTORY)
 
 	//Combat Mode
-	action_intent = new /atom/movable/screen/combattoggle/robot(null, src)
+	var/atom/movable/screen/combattoggle/robot/action_intent = add_screen_object(__IMPLIED_TYPE__, HUDKEY_CYBORG_ALERTS, HUDGROUP_STATIC_INVENTORY)
 	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
 
-//Health
-	healths = new /atom/movable/screen/healths/robot(null, src)
-	infodisplay += healths
+	//Health
+	add_screen_object(/atom/movable/screen/healths/robot, HUDKEY_MOB_HEALTH, HUDGROUP_INFO_DISPLAY)
 
-//Installed Module
-	robit.hands = new /atom/movable/screen/robot/module(null, src)
-	robit.hands.screen_loc = ui_borg_module
-	static_inventory += robit.hands
-
-//Store
-	module_store_icon = new /atom/movable/screen/robot/store(null, src)
-	module_store_icon.screen_loc = ui_borg_store
-
-	pull_icon = new /atom/movable/screen/pull/robot(null, src)
-	pull_icon.screen_loc = ui_borg_pull
-	pull_icon.update_appearance()
-	hotkeybuttons += pull_icon
+	//Installed Module
+	robit.hands = add_screen_object(/atom/movable/screen/robot/module, HUDKEY_CYBORG_HANDS, HUDGROUP_STATIC_INVENTORY)
 
 
-	zone_select = new /atom/movable/screen/zone_sel/robot(null, src)
-	zone_select.update_appearance()
-	static_inventory += zone_select
+	//Store
+	add_screen_object(/atom/movable/screen/robot/store, HUDKEY_CYBORG_STORE)
 
+	add_screen_object(/atom/movable/screen/pull/robot, HUDKEY_MOB_PULL, HUDGROUP_HOTKEY_BUTTONS)
+	add_screen_object(/atom/movable/screen/zone_sel/robot, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY)
 
 /datum/hud/proc/toggle_show_robot_modules()
 	if(!iscyborg(mymob))
@@ -189,7 +78,7 @@
 
 	if(R.shown_robot_modules && screenmob.hud_used.hud_shown)
 		//Modules display is shown
-		screenmob.client.screen += module_store_icon //"store" icon
+		screenmob.client.screen += screen_objects[HUDKEY_CYBORG_STORE] //"store" icon
 
 		if(!R.model.modules)
 			to_chat(usr, span_warning("Selected model has no modules to select!"))
@@ -221,7 +110,7 @@
 
 	else
 		//Modules display is hidden
-		screenmob.client.screen -= module_store_icon //"store" icon
+		screenmob.client.screen -= screen_objects[HUDKEY_CYBORG_STORE] //"store" icon
 
 		for(var/atom/A in R.model.get_inactive_modules())
 			//Module is not currently active
@@ -254,55 +143,3 @@
 		else
 			for(var/obj/item/I in R.held_items)
 				screenmob.client.screen -= I
-
-/atom/movable/screen/robot/lamp
-	name = "headlamp"
-	icon_state = "lamp_off"
-	base_icon_state = "lamp"
-	var/mob/living/silicon/robot/robot
-
-/atom/movable/screen/robot/lamp/Click()
-	. = ..()
-	if(.)
-		return
-	robot?.toggle_headlamp()
-	update_appearance()
-
-/atom/movable/screen/robot/lamp/update_icon_state()
-	icon_state = "[base_icon_state]_[robot?.lamp_enabled ? "on" : "off"]"
-	return ..()
-
-/atom/movable/screen/robot/lamp/Destroy()
-	if(robot)
-		robot.lampButton = null
-		robot = null
-	return ..()
-
-/atom/movable/screen/robot/modpc
-	name = "Modular Interface"
-	icon_state = "template"
-	var/mob/living/silicon/robot/robot
-
-/atom/movable/screen/robot/modpc/Click()
-	. = ..()
-	if(.)
-		return
-	robot.modularInterface?.interact(robot)
-
-/atom/movable/screen/robot/modpc/Destroy()
-	if(robot)
-		robot.interfaceButton = null
-		robot = null
-	return ..()
-
-/atom/movable/screen/robot/alerts
-	name = "Alert Panel"
-	icon = 'icons/hud/screen_ai.dmi'
-	icon_state = "alerts"
-
-/atom/movable/screen/robot/alerts/Click()
-	. = ..()
-	if(.)
-		return
-	var/mob/living/silicon/robot/borgo = usr
-	borgo.alert_control.ui_interact(borgo)

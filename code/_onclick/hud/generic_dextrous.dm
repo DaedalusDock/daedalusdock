@@ -45,11 +45,6 @@
 
 	mymob.canon_client.screen = list()
 
-	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
-		if(inv.slot_id)
-			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
-			inv.update_appearance()
-
 	gun_setting_icon = new /atom/movable/screen/gun_mode(null, src)
 	gun_setting_icon.icon = ui_style
 

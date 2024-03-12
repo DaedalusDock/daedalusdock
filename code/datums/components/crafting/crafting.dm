@@ -1,16 +1,16 @@
-/datum/component/personal_crafting/Initialize()
-	if(ismob(parent))
-		RegisterSignal(parent, COMSIG_MOB_CLIENT_LOGIN, PROC_REF(create_mob_button))
+/datum/component/personal_crafting/RegisterWithParent()
+	if(!ismob(parent))
+		return
 
-/datum/component/personal_crafting/proc/create_mob_button(mob/user, client/CL)
-	SIGNAL_HANDLER
-
-	var/datum/hud/H = user.hud_used
-	var/atom/movable/screen/craft/C = new(null, H)
-	C.icon = H.ui_style
-	H.static_inventory += C
-	CL.screen += C
+	var/mob/user = parent
+	var/atom/movable/screen/craft/C = user.hud_used.add_screen_object(/atom/movable/screen/craft, HUDKEY_MOB_CRAFTING_MENU, HUDGROUP_STATIC_INVENTORY, user.hud_used.ui_style, TRUE)
 	RegisterSignal(C, COMSIG_CLICK, PROC_REF(component_ui_interact))
+
+/datum/component/personal_crafting/UnregisterFromParent()
+	if(!ismob(parent))
+		return
+	var/mob/user = parent
+	qdel(user.hud_used?.screen_objects?[HUDKEY_MOB_CRAFTING_MENU])
 
 /datum/component/personal_crafting
 	var/busy

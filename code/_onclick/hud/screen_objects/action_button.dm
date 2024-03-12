@@ -103,7 +103,7 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 	if(istype(over_object, /atom/movable/screen/action_landing))
 		var/atom/movable/screen/action_landing/reserve = over_object
 		reserve.hit_by(src)
-		our_hud.hide_landings()
+		hud.hide_landings()
 		save_position()
 		return
 
@@ -245,25 +245,14 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 	icon = 'icons/hud/64x16_actions.dmi'
 	icon_state = "screen_gen_palette"
 	screen_loc = ui_action_palette
-	var/datum/hud/our_hud
 	var/expanded = FALSE
 	/// Id of any currently running timers that set our color matrix
 	var/color_timer_id
 
-/atom/movable/screen/button_palette/Destroy()
-	if(our_hud)
-		our_hud.mymob?.canon_client?.screen -= src
-		our_hud.toggle_palette = null
-		our_hud = null
-	return ..()
-
 /atom/movable/screen/button_palette/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	update_appearance()
-
-/atom/movable/screen/button_palette/proc/set_hud(datum/hud/our_hud)
-	src.our_hud = our_hud
 	refresh_owner()
+	update_appearance()
 
 /atom/movable/screen/button_palette/update_name(updates)
 	. = ..()
@@ -273,11 +262,14 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 		name = "Show Buttons"
 
 /atom/movable/screen/button_palette/proc/refresh_owner()
-	var/mob/viewer = our_hud.mymob
+	if(!hud)
+		return
+
+	var/mob/viewer = hud.mymob
 	if(viewer.client)
 		viewer.client.screen |= src
 
-	var/list/settings = our_hud.get_action_buttons_icons()
+	var/list/settings = hud.get_action_buttons_icons()
 	var/ui_icon = "[settings["bg_icon"]]"
 	var/list/ui_segments = splittext(ui_icon, ".")
 	var/list/ui_paths = splittext(ui_segments[1], "/")
@@ -342,7 +334,7 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 		UnregisterSignal(source, COMSIG_CLIENT_CLICK)
 
 /atom/movable/screen/button_palette/proc/set_expanded(new_expanded)
-	var/datum/action_group/our_group = our_hud.palette_actions
+	var/datum/action_group/our_group = hud.palette_actions
 	if(!length(our_group.actions)) //Looks dumb, trust me lad
 		new_expanded = FALSE
 	if(expanded == new_expanded)
@@ -368,7 +360,10 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	/// How should we move the palette's actions?
 	/// Positive scrolls down the list, negative scrolls back
 	var/scroll_direction = 0
-	var/datum/hud/our_hud
+
+/atom/movable/screen/palette_scroll/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	refresh_owner()
 
 /atom/movable/screen/palette_scroll/can_usr_use(mob/user)
 	. = ..()
@@ -377,16 +372,13 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 		return !O.observetarget
 	return TRUE
 
-/atom/movable/screen/palette_scroll/proc/set_hud(datum/hud/our_hud)
-	src.our_hud = our_hud
-	refresh_owner()
 
 /atom/movable/screen/palette_scroll/proc/refresh_owner()
-	var/mob/viewer = our_hud.mymob
+	var/mob/viewer = hud.mymob
 	if(viewer.client)
 		viewer.client.screen |= src
 
-	var/list/settings = our_hud.get_action_buttons_icons()
+	var/list/settings = hud.get_action_buttons_icons()
 	icon = settings["bg_icon"]
 
 /atom/movable/screen/palette_scroll/Click(location, control, params)
@@ -394,7 +386,7 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	if(.)
 		return FALSE
 
-	our_hud.palette_actions.scroll(scroll_direction)
+	hud.palette_actions.scroll(scroll_direction)
 
 /atom/movable/screen/palette_scroll/MouseEntered(location, control, params)
 	. = ..()
@@ -412,25 +404,11 @@ GLOBAL_LIST_INIT(palette_removed_matrix, list(1.4,0,0,0, 0.7,0.4,0,0, 0.4,0,0.6,
 	icon_state = "scroll_down"
 	scroll_direction = 1
 
-/atom/movable/screen/palette_scroll/down/Destroy()
-	if(our_hud)
-		our_hud.mymob?.canon_client?.screen -= src
-		our_hud.palette_down = null
-		our_hud = null
-	return ..()
-
 /atom/movable/screen/palette_scroll/up
 	name = "Scroll Up"
 	desc = "<b>Click</b> on this to scroll the actions above up"
 	icon_state = "scroll_up"
 	scroll_direction = -1
-
-/atom/movable/screen/palette_scroll/up/Destroy()
-	if(our_hud)
-		our_hud.mymob?.canon_client?.screen -= src
-		our_hud.palette_up = null
-		our_hud = null
-	return ..()
 
 /// Exists so you have a place to put your buttons when you move them around
 /atom/movable/screen/action_landing

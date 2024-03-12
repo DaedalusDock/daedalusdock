@@ -37,22 +37,23 @@
 /mob/living/silicon/robot/update_health_hud()
 	if(!client || !hud_used)
 		return
-	if(hud_used.healths)
+	var/atom/movable/screen/healths = hud_used.screen_objects[HUDKEY_MOB_HEALTH]
+	if(healths)
 		if(stat != DEAD)
 			if(health >= maxHealth)
-				hud_used.healths.icon_state = "health0"
+				healths.icon_state = "health0"
 			else if(health > maxHealth*0.6)
-				hud_used.healths.icon_state = "health2"
+				healths.icon_state = "health2"
 			else if(health > maxHealth*0.2)
-				hud_used.healths.icon_state = "health3"
+				healths.icon_state = "health3"
 			else if(health > -maxHealth*0.2)
-				hud_used.healths.icon_state = "health4"
+				healths.icon_state = "health4"
 			else if(health > -maxHealth*0.6)
-				hud_used.healths.icon_state = "health5"
+				healths.icon_state = "health5"
 			else
-				hud_used.healths.icon_state = "health6"
+				healths.icon_state = "health6"
 		else
-			hud_used.healths.icon_state = "health7"
+			healths.icon_state = "health7"
 
 /mob/living/silicon/robot/proc/update_cell_hud_icon()
 	if(cell)

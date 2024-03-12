@@ -26,31 +26,19 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/inventory_shown = FALSE //Equipped item inventory
 	var/hotkey_ui_hidden = FALSE //This is to hide the buttons that can be used via hotkeys. (hotkeybuttons list of buttons)
 
-	var/atom/movable/screen/blobpwrdisplay
+	// subtypes can override this to force a specific UI style
+	var/ui_style
 
-	var/atom/movable/screen/alien_plasma_display
-	var/atom/movable/screen/alien_queen_finder
+	var/list/atom/movable/screen/screen_objects = list()
 
-	var/atom/movable/screen/combo/combo_display
+	var/list/screen_groups[SCREEN_GROUP_AMT]
 
-	var/atom/movable/screen/action_intent
-	var/atom/movable/screen/zone_select
-	var/atom/movable/screen/pull_icon
-	var/atom/movable/screen/rest_icon
-	var/atom/movable/screen/throw_icon
-	var/atom/movable/screen/module_store_icon
+	/// A list of ///atom/movable/screen/inventory objects, ordered by their slot ID.
+	var/list/inv_slots[SLOTS_AMT]
 
-	// On my way to double the amount of non-inventory hud elements for gunpoint-ing.
-	var/atom/movable/screen/gun_setting_icon
-	var/list/atom/movable/screen/gunpoint_options = list()
+	/// A list of ///atom/movable/screen/inventory/hand objects
+	var/list/hand_slots
 
-	var/list/static_inventory = list() //the screen objects which are static
-	var/list/toggleable_inventory = list() //the screen objects which can be hidden
-	var/list/atom/movable/screen/hotkeybuttons = list() //the buttons that can be used via hotkeys
-	var/list/infodisplay = list() //the screen objects that display mob info (health, alien plasma, etc...)
-	var/list/screenoverlays = list() //the screen objects used as whole screen overlays (flash, damageoverlay, etc...)
-	var/list/inv_slots[SLOTS_AMT] // /atom/movable/screen/inventory objects, ordered by their slot ID.
-	var/list/hand_slots // /atom/movable/screen/inventory/hand objects, assoc list of "[held_index]" = object
 	var/list/atom/movable/screen/plane_master/plane_masters = list() // see "appearance_flags" in the ref, assoc list of "[plane]" = object
 	///Assoc list of controller groups, associated with key string group name with value of the plane master controller ref
 	var/list/atom/movable/plane_master_controller/plane_master_controllers = list()
@@ -71,25 +59,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	/// game (MouseEntered).
 	var/screentip_color
 
-	var/atom/movable/screen/button_palette/toggle_palette
-	var/atom/movable/screen/palette_scroll/down/palette_down
-	var/atom/movable/screen/palette_scroll/up/palette_up
-
 	var/datum/action_group/palette/palette_actions
 	var/datum/action_group/listed/listed_actions
 	var/list/floating_actions
-
-	var/atom/movable/screen/healths
-	var/atom/movable/screen/stamina
-	var/atom/movable/screen/healthdoll
-	var/atom/movable/screen/wanted/wanted_lvl
-	var/atom/movable/screen/spacesuit
-
-	var/atom/movable/screen/pain/pain
-
-	var/atom/movable/screen/progbar_container/use_timer
-	// subtypes can override this to force a specific UI style
-	var/ui_style
 
 /datum/hud/New(mob/owner)
 	mymob = owner
@@ -98,12 +70,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		// will fall back to the default if any of these are null
 		ui_style = ui_style2icon(owner.client?.prefs?.read_preference(/datum/preference/choiced/ui_style))
 
-	toggle_palette = new()
-	toggle_palette.set_hud(src)
-	palette_down = new()
-	palette_down.set_hud(src)
-	palette_up = new()
-	palette_up.set_hud(src)
+	add_screen_object(/atom/movable/screen/button_palette, HUDKEY_MOB_TOGGLE_PALETTE)
+	add_screen_object(/atom/movable/screen/palette_scroll/down, HUDKEY_MOB_PALETTE_DOWN)
+	add_screen_object(/atom/movable/screen/palette_scroll/up, HUDKEY_MOB_PALETTE_UP)
 
 	hand_slots = list()
 
@@ -115,8 +84,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/datum/preferences/preferences = owner?.client?.prefs
 	screentip_color = preferences?.read_preference(/datum/preference/color/screentip_color)
 	screentips_enabled = preferences?.read_preference(/datum/preference/choiced/enable_screentips)
-	screentip_text = new(null, src)
-	static_inventory += screentip_text
+
+	screentip_text = add_screen_object(/atom/movable/screen/screentip, HUDKEY_MOB_SCREENTIP, HUDGROUP_STATIC_INVENTORY)
 
 	for(var/mytype in subtypesof(/atom/movable/plane_master_controller))
 		var/atom/movable/plane_master_controller/controller_instance = new mytype(null,src)
@@ -126,57 +95,28 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	RegisterSignal(mymob, COMSIG_VIEWDATA_UPDATE, PROC_REF(on_viewdata_update))
 
+	initialize_screens()
+
+	update_inventory_slots()
+	update_locked_slots()
 
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
 		mymob.hud_used = null
 
-	QDEL_LIST(hand_slots)
-	QDEL_NULL(rest_icon)
-	QDEL_NULL(toggle_palette)
-	QDEL_NULL(palette_down)
-	QDEL_NULL(palette_up)
-	QDEL_NULL(palette_actions)
-	QDEL_NULL(listed_actions)
-	QDEL_LIST(floating_actions)
-
-	QDEL_NULL(module_store_icon)
-	QDEL_LIST(static_inventory)
-
-	QDEL_NULL(gun_setting_icon)
-	QDEL_LIST(gunpoint_options)
+	screen_groups = null
+	QDEL_LIST_ASSOC_VAL(screen_objects)
 
 	inv_slots.Cut()
-	action_intent = null
-	zone_select = null
-	pull_icon = null
-	gun_setting_icon = null
-
-	QDEL_LIST(toggleable_inventory)
-	QDEL_LIST(hotkeybuttons)
-	throw_icon = null
-	QDEL_LIST(infodisplay)
-
-	healths = null
-	stamina = null
-	healthdoll = null
-	wanted_lvl = null
-	spacesuit = null
-	blobpwrdisplay = null
-	alien_plasma_display = null
-	alien_queen_finder = null
-	combo_display = null
 
 	QDEL_LIST_ASSOC_VAL(plane_masters)
 	QDEL_LIST_ASSOC_VAL(plane_master_controllers)
-	QDEL_LIST(screenoverlays)
 	mymob = null
-
-	QDEL_NULL(screentip_text)
-	QDEL_NULL(pain)
-	QDEL_NULL(use_timer)
-
 	return ..()
+
+/// Called in New() to create default screen objects
+/datum/hud/proc/initialize_screens()
+	return
 
 /datum/hud/proc/on_viewdata_update(datum/source, view)
 	SIGNAL_HANDLER
@@ -194,10 +134,34 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	hud_used = new_hud
 	new_hud.build_action_groups()
 
+/// Adds an internally-managed screen object.
+/datum/hud/proc/add_screen_object(atom/movable/screen/new_object, hud_key, group_key, new_ui_style, update_screen = FALSE)
+	PROTECTED_PROC(TRUE)
+	if(isnull(hud_key))
+		CRASH("Bad hud key.")
+
+	if(ispath(new_object))
+		new_object = new(null, src)
+
+	if(new_ui_style)
+		new_object.icon = new_ui_style
+
+	new_object.hud_key = hud_key
+	screen_objects[hud_key] = new_object
+
+	if(group_key)
+		LAZYADD(screen_groups[group_key], new_object)
+		new_object.hud_group_key = group_key
+
+	if(update_screen)
+		show_hud(hud_version)
+	return new_object
+
 //Version denotes which style should be displayed. blank or 0 means "next version"
 /datum/hud/proc/show_hud(version = 0, mob/viewmob)
 	if(!ismob(mymob))
 		return FALSE
+
 	var/mob/screenmob = viewmob || mymob
 	if(!screenmob.client)
 		return FALSE
@@ -210,55 +174,73 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/display_hud_version = version
 	if(!display_hud_version) //If 0 or blank, display the next hud version
 		display_hud_version = hud_version + 1
+
 	if(display_hud_version > HUD_VERSIONS) //If the requested version number is greater than the available versions, reset back to the first version
 		display_hud_version = 1
+
+	var/list/static_inventory = screen_groups[HUDGROUP_STATIC_INVENTORY]
+	var/list/toggleable_inventory = screen_groups[HUDGROUP_TOGGLEABLE_INVENTORY]
+	var/list/hotkeybuttons = screen_groups[HUDGROUP_HOTKEY_BUTTONS]
+	var/list/infodisplay = screen_groups[HUDGROUP_INFO_DISPLAY]
+	var/list/gunoptions = screen_groups[HUDGROUP_GUN_OPTIONS]
+
+	var/atom/movable/screen/button_palette/palette = screen_objects[HUDKEY_MOB_TOGGLE_PALETTE]
+	var/atom/movable/screen/action_intent = screen_objects[HUDKEY_MOB_INTENTS]
+	var/atom/movable/screen/pain = screen_objects[HUDKEY_MOB_PAIN]
 
 	switch(display_hud_version)
 		if(HUD_STYLE_STANDARD) //Default HUD
 			hud_shown = TRUE //Governs behavior of other procs
-			if(static_inventory.len)
+			if(length(static_inventory))
 				screenmob.client.screen += static_inventory
-			if(toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.inventory_shown)
+
+			if(length(toggleable_inventory) && screenmob.hud_used && screenmob.hud_used.inventory_shown)
 				screenmob.client.screen += toggleable_inventory
-			if(hotkeybuttons.len && !hotkey_ui_hidden)
+
+			if(length(hotkeybuttons) && !hotkey_ui_hidden)
 				screenmob.client.screen += hotkeybuttons
-			if(infodisplay.len)
+
+			if(length(infodisplay))
 				screenmob.client.screen += infodisplay
 
-			screenmob.client.screen += toggle_palette
+			if(length(gunoptions))
+				var/mob/living/L = mymob
+				if(L.use_gunpoint)
+					screenmob.client.screen += gunoptions
+
+			screenmob.client.screen += palette
 
 			if(action_intent)
 				action_intent.screen_loc = initial(action_intent.screen_loc) //Restore intent selection to the original position
 
 		if(HUD_STYLE_REDUCED) //Reduced HUD
 			hud_shown = FALSE //Governs behavior of other procs
-			if(static_inventory.len)
+			if(length(static_inventory))
 				screenmob.client.screen -= static_inventory
-			if(toggleable_inventory.len)
+			if(length(toggleable_inventory))
 				screenmob.client.screen -= toggleable_inventory
-			if(hotkeybuttons.len)
+			if(length(hotkeybuttons))
 				screenmob.client.screen -= hotkeybuttons
-			if(infodisplay.len)
+			if(length(infodisplay))
 				screenmob.client.screen += infodisplay
 
 			//These ones are a part of 'static_inventory', 'toggleable_inventory' or 'hotkeybuttons' but we want them to stay
-			for(var/h in hand_slots)
-				var/atom/movable/screen/hand = hand_slots[h]
-				if(hand)
-					screenmob.client.screen += hand
+			for(var/atom/movable/screen/hand in hand_slots)
+				screenmob.client.screen += hand
+
 			if(action_intent)
 				screenmob.client.screen += action_intent //we want the intent switcher visible
 				action_intent.screen_loc = ui_acti_alt //move this to the alternative position, where zone_select usually is.
 
 		if(HUD_STYLE_NOHUD) //No HUD
 			hud_shown = FALSE //Governs behavior of other procs
-			if(static_inventory.len)
+			if(length(static_inventory))
 				screenmob.client.screen -= static_inventory
-			if(toggleable_inventory.len)
+			if(length(toggleable_inventory))
 				screenmob.client.screen -= toggleable_inventory
-			if(hotkeybuttons.len)
+			if(length(hotkeybuttons))
 				screenmob.client.screen -= hotkeybuttons
-			if(infodisplay.len)
+			if(length(infodisplay))
 				screenmob.client.screen -= infodisplay
 
 	if(pain)
@@ -277,6 +259,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		plane_masters_update()
 		for(var/M in mymob.observers)
 			show_hud(hud_version, M)
+
 	else if (viewmob.hud_used)
 		viewmob.hud_used.plane_masters_update()
 		viewmob.show_other_mob_action_buttons(mymob)
@@ -314,17 +297,19 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	var/mob/living/L = mymob
 	if(!istype(screenmob) || !istype(L))
 		return
-	if(!mymob.hud_used.gun_setting_icon)
+	var/atom/movable/screen/gun_mode = screen_objects[HUDKEY_MOB_GUN_MODE]
+	if(!gun_mode)
 		return
 
-	screenmob.client.screen -= gun_setting_icon
-	screenmob.client.screen -= gunpoint_options
+	screenmob.client.screen -= gun_mode
+	screenmob.client.screen -= screen_groups[HUDGROUP_GUN_OPTIONS]
 	if(hud_version != HUD_STYLE_STANDARD)
 		return
 
-	screenmob.client.screen += gun_setting_icon
+	screenmob.client.screen += gun_mode
+
 	if(L.use_gunpoint || screenmob != L)
-		screenmob.client.screen += gunpoint_options
+		screenmob.client.screen += screen_groups[HUDGROUP_GUN_OPTIONS]
 
 
 /datum/hud/proc/update_ui_style(new_ui_style)
@@ -332,7 +317,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	if (initial(ui_style) || ui_style == new_ui_style)
 		return
 
-	for(var/atom/item in static_inventory + toggleable_inventory + hotkeybuttons + infodisplay + screenoverlays + inv_slots + gunpoint_options + gun_setting_icon)
+	for(var/atom/item in screen_objects)
 		if (item.icon == ui_style)
 			item.icon = new_ui_style
 
@@ -355,35 +340,39 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 //not really worth jugglying existing ones so we just scrap+rebuild
 //9/10 this is only called once per mob and only for 2 hands
 /datum/hud/proc/build_hand_slots()
-	for(var/h in hand_slots)
-		var/atom/movable/screen/inventory/hand/H = hand_slots[h]
-		if(H)
-			static_inventory -= H
-	hand_slots = list()
+	QDEL_LIST(hand_slots)
+	hand_slots = new /list(length(mymob.held_items))
+
 	var/atom/movable/screen/inventory/hand/hand_box
-	for(var/i in 1 to mymob.held_items.len)
-		hand_box = new /atom/movable/screen/inventory/hand(null, src)
+	for(var/i in 1 to length(mymob.held_items))
+		hand_box = add_screen_object(/atom/movable/screen/inventory/hand, HUDKEY_HAND_SLOT(i), HUDGROUP_STATIC_INVENTORY, ui_style)
 		hand_box.name = mymob.get_held_index_name(i)
-		hand_box.icon = ui_style
 		hand_box.icon_state = "hand_[mymob.held_index_to_dir(i)]"
 		hand_box.screen_loc = ui_hand_position(i)
 		hand_box.held_index = i
-		hand_slots["[i]"] = hand_box
-		static_inventory += hand_box
 		hand_box.update_appearance()
 
+		hand_slots[i] = hand_box
+
 	var/i = 1
-	for(var/atom/movable/screen/swap_hand/SH in static_inventory)
+	for(var/atom/movable/screen/swap_hand/SH in screen_groups[HUDGROUP_STATIC_INVENTORY])
 		SH.screen_loc = ui_swaphand_position(mymob,!(i % 2) ? 2: 1)
 		i++
-	for(var/atom/movable/screen/human/equip/E in static_inventory)
+
+	for(var/atom/movable/screen/human/equip/E in screen_groups[HUDGROUP_STATIC_INVENTORY])
 		E.screen_loc = ui_equip_position(mymob)
 
-	if(ismob(mymob) && mymob.hud_used == src)
+	if(mymob?.hud_used == src)
 		show_hud(hud_version)
 
 /datum/hud/proc/update_locked_slots()
 	return
+
+/datum/hud/proc/update_inventory_slots()
+	for(var/atom/movable/screen/inventory/inv in screen_groups[HUDGROUP_STATIC_INVENTORY] + screen_groups[HUDGROUP_TOGGLEABLE_INVENTORY])
+		if(inv.slot_id)
+			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
+			inv.update_appearance()
 
 /datum/hud/proc/position_action(atom/movable/screen/movable/action_button/button, position)
 	// This is kinda a hack, I'm sorry.
@@ -455,9 +444,14 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 // Updates any existing "owned" visuals, ensures they continue to be visible
 /datum/hud/proc/update_our_owner()
-	toggle_palette.refresh_owner()
-	palette_down.refresh_owner()
-	palette_up.refresh_owner()
+	var/atom/movable/screen/button_palette/palette = screen_objects[HUDKEY_MOB_TOGGLE_PALETTE]
+	var/atom/movable/screen/palette_scroll/scroll_down = screen_objects[HUDKEY_MOB_PALETTE_DOWN]
+	var/atom/movable/screen/palette_scroll/scroll_up = screen_objects[HUDKEY_MOB_PALETTE_UP]
+
+	palette.refresh_owner()
+	scroll_down.refresh_owner()
+	scroll_up.refresh_owner()
+
 	listed_actions.update_landing()
 	palette_actions.update_landing()
 
@@ -641,20 +635,20 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 /datum/action_group/palette/insert_action(atom/movable/screen/action, index)
 	. = ..()
-	var/atom/movable/screen/button_palette/palette = owner.toggle_palette
+	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUDKEY_MOB_TOGGLE_PALETTE]
 	palette.play_item_added()
 
 /datum/action_group/palette/remove_action(atom/movable/screen/action)
 	. = ..()
-	var/atom/movable/screen/button_palette/palette = owner.toggle_palette
+	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUDKEY_MOB_TOGGLE_PALETTE]
 	palette.play_item_removed()
 	if(!length(actions))
 		palette.set_expanded(FALSE)
 
 /datum/action_group/palette/refresh_actions()
-	var/atom/movable/screen/button_palette/palette = owner.toggle_palette
-	var/atom/movable/screen/palette_scroll/scroll_down = owner.palette_down
-	var/atom/movable/screen/palette_scroll/scroll_up = owner.palette_up
+	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUDKEY_MOB_TOGGLE_PALETTE]
+	var/atom/movable/screen/palette_scroll/scroll_down = owner.screen_objects[HUDKEY_MOB_PALETTE_DOWN]
+	var/atom/movable/screen/palette_scroll/scroll_up = owner.screen_objects[HUDKEY_MOB_PALETTE_UP]
 
 	var/actions_above = round((owner.listed_actions.size() - 1) / owner.listed_actions.column_max)
 	north_offset = initial(north_offset) + actions_above
@@ -675,7 +669,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	return ..()
 
 /datum/action_group/palette/ButtonNumberToScreenCoords(number, landing)
-	var/atom/movable/screen/button_palette/palette = owner.toggle_palette
+	var/atom/movable/screen/button_palette/palette = owner.screen_objects[HUDKEY_MOB_TOGGLE_PALETTE]
 	if(palette.expanded)
 		return ..()
 

@@ -674,11 +674,11 @@
 
 ///Update the pulling hud icon
 /mob/proc/update_pull_hud_icon()
-	hud_used?.pull_icon?.update_appearance()
+	hud_used?.screen_objects?[HUDKEY_MOB_PULL].update_appearance()
 
 ///Update the resting hud icon
 /mob/proc/update_rest_hud_icon()
-	hud_used?.rest_icon?.update_appearance()
+	hud_used?.screen_objects?[HUDKEY_MOB_REST].update_appearance()
 
 /**
  * Verb to activate the object in your held hand

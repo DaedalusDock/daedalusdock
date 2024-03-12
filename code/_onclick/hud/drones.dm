@@ -1,30 +1,20 @@
-/datum/hud/dextrous/drone/New(mob/owner)
-	..()
+/datum/hud/dextrous/drone/initialize_screens()
+	. = ..()
 	var/atom/movable/screen/inventory/inv_box
 
-	inv_box = new /atom/movable/screen/inventory(null, src)
+	inv_box = add_screen_object(/atom/movable/screen/inventory, HUDKEY_DRONE_STORAGE, HUDGROUP_STATIC_INVENTORY)
 	inv_box.name = "internal storage"
 	inv_box.icon = ui_style
 	inv_box.icon_state = "suit_storage"
-// inv_box.icon_full = "template"
 	inv_box.screen_loc = ui_drone_storage
 	inv_box.slot_id = ITEM_SLOT_DEX_STORAGE
-	static_inventory += inv_box
 
-	inv_box = new /atom/movable/screen/inventory(null, src)
+	inv_box = add_screen_object(/atom/movable/screen/inventory, HUDKEY_DRONE_MASK, HUDGROUP_STATIC_INVENTORY)
 	inv_box.name = "head/mask"
 	inv_box.icon = ui_style
 	inv_box.icon_state = "mask"
-// inv_box.icon_full = "template"
 	inv_box.screen_loc = ui_drone_head
 	inv_box.slot_id = ITEM_SLOT_HEAD
-	static_inventory += inv_box
-
-	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
-		if(inv.slot_id)
-			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
-			inv.update_appearance()
-
 
 /datum/hud/dextrous/drone/persistent_inventory_update()
 	if(!mymob)

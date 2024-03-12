@@ -18,6 +18,11 @@
 	var/datum/weakref/master_ref = null
 	/// A reference to the owner HUD, if any.
 	var/datum/hud/hud = null
+
+	/// A key for cleaning up references in hud datums
+	var/hud_group_key
+	var/hud_key
+
 	/**
 	 * Map name assigned to this object.
 	 * Automatically set by /client/proc/add_obj_to_map.
@@ -41,6 +46,10 @@
 		hud = hud_owner
 
 /atom/movable/screen/Destroy()
+	if(!QDELETED(hud))
+		hud.screen_groups?[hud_group_key] -= src
+		hud.screen_objects -= hud_key
+
 	master_ref = null
 	hud = null
 	return ..()
@@ -250,6 +259,11 @@
 	var/static/mutable_appearance/blocked_overlay = mutable_appearance('icons/hud/screen_gen.dmi', "blocked")
 	var/held_index = 0
 
+/atom/movable/screen/inventory/hand/Destroy()
+	if(hud)
+		hud.hand_slots?[hud.hand_slots.Find(src)] = null // This should never really happen, but admins gonna admin
+	return ..()
+
 /atom/movable/screen/inventory/hand/update_overlays()
 	. = ..()
 
@@ -355,7 +369,7 @@
 	name = "drop"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_drop"
-	plane = HUD_PLANE
+	screen_loc = ui_drop_throw
 
 /atom/movable/screen/drop/Click()
 	. = ..()
@@ -422,6 +436,11 @@
 	name = "run/walk toggle"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "running"
+	screen_loc = ui_movi
+
+/atom/movable/screen/mov_intent/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	update_appearance(UPDATE_ICON_STATE)
 
 /atom/movable/screen/mov_intent/Click()
 	. = ..()
@@ -448,6 +467,11 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "pull"
 	base_icon_state = "pull"
+	screen_loc = ui_living_pull
+
+/atom/movable/screen/pull/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	update_appearance(UPDATE_ICON_STATE)
 
 /atom/movable/screen/pull/Click()
 	. = ..()
@@ -463,6 +487,7 @@
 
 /atom/movable/screen/pull/robot
 	icon = 'icons/hud/screen_cyborg.dmi'
+	screen_loc = ui_borg_pull
 
 /atom/movable/screen/pull/robot/update_icon_state()
 	. = ..()
@@ -476,6 +501,7 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_resist"
 	plane = HUD_PLANE
+	screen_loc = ui_above_intent
 
 /atom/movable/screen/resist/Click()
 	. = ..()
@@ -489,7 +515,11 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_rest"
 	base_icon_state = "act_rest"
-	plane = HUD_PLANE
+	screen_loc = ui_above_movement
+
+/atom/movable/screen/rest/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	update_appearance(UPDATE_ICON_STATE)
 
 /atom/movable/screen/rest/Click()
 	. = ..()
@@ -576,6 +606,7 @@
 	name = "throw/catch"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_throw_off"
+	screen_loc = ui_drop_throw
 
 /atom/movable/screen/throw_catch/Click()
 	. = ..()
@@ -592,6 +623,10 @@
 	var/overlay_icon = 'icons/hud/screen_gen.dmi'
 	var/static/list/hover_overlays_cache = list()
 	var/hovering
+
+/atom/movable/screen/zone_sel/Initialize(mapload, datum/hud/hud_owner)
+	. = ..()
+	update_appearance()
 
 /atom/movable/screen/zone_sel/Click(location, control,params)
 	. = ..()
@@ -874,7 +909,7 @@
 		return
 	user.use_gunpoint = !user.use_gunpoint
 
-	hud.gun_setting_icon.update_icon_state()
+	update_appearance(UPDATE_ICON_STATE)
 	hud.update_gunpoint(user)
 
 /atom/movable/screen/gun_mode/update_icon_state()
@@ -982,8 +1017,11 @@
 	var/datum/world_progressbar/progbar
 	var/iteration = 0
 
-/atom/movable/screen/progbar_container/Initialize(mapload)
+/atom/movable/screen/progbar_container/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
+	if(hud_owner)
+		RegisterSignal(hud_owner.mymob, COMSIG_LIVING_CHANGENEXT_MOVE, PROC_REF(on_changenext))
+
 	progbar = new(src)
 	progbar.qdel_when_done = FALSE
 	progbar.bar.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE

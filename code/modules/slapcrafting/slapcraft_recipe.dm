@@ -196,9 +196,7 @@
 		item.forceMove(first_item)
 
 	for(var/obj/item/item as anything in (results - assembly.items_to_place_in_result))
-		var/datum/weakref/W = WEAKREF(item)
-		if(W)
-			assembly.finished_items += W
+		assembly.finished_items += WEAKREF(item)
 
 	after_create_items(results, assembly)
 	dispose_assembly(assembly)
@@ -236,7 +234,7 @@
 
 /// Creates and returns a new item. This gets called for every item that is supposed to be created in the recipe.
 /datum/slapcraft_recipe/proc/create_item(item_path, obj/item/slapcraft_assembly/assembly)
-	return new item_path(assembly.drop_location())
+	return new item_path()
 
 /// Behaviour after the item is created, and before the slapcrafting assembly is disposed.
 /// Here you can move the components into the item if you wish, or do other stuff with them.

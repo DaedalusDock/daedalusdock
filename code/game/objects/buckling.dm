@@ -255,7 +255,7 @@
 		return FALSE
 
 	// If the buckle requires restraints, make sure the target is actually restrained.
-	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_RESTRAINED))
+	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_ARMS_RESTRAINED))
 		return FALSE
 
 	//If buckling is forbidden for the target, cancel

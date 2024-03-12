@@ -569,9 +569,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			C.visible_message(span_danger("[user] begins restraining [C] with [src]!"), \
 									span_userdanger("[user] begins shaping an energy field around your hands!"))
 			if(do_after(user, C, time_to_cuff) && C.canBeHandcuffed())
-				if(!C.handcuffed)
-					C.set_handcuffed(new /obj/item/restraints/handcuffs/energy/used(C))
-					C.update_handcuffed()
+				if(C.equip_to_slot_if_possible(new /obj/item/restraints/handcuffs/energy/used(C), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
 					to_chat(user, span_notice("You restrain [C]."))
 					log_combat(user, C, "handcuffed")
 			else

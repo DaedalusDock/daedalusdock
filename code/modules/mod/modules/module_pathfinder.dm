@@ -117,6 +117,7 @@
 	if(module.z != z || get_dist(imp_in, module.mod) > MOD_AI_RANGE)
 		balloon_alert(imp_in, "too far away!")
 		return FALSE
+
 	var/datum/ai_controller/mod_ai = new /datum/ai_controller/mod(module.mod)
 	module.mod.ai_controller = mod_ai
 	mod_ai.current_movement_target = imp_in
@@ -134,6 +135,7 @@
 /obj/item/implant/mod/proc/end_recall(successful = TRUE)
 	if(!module?.mod)
 		return
+
 	QDEL_NULL(module.mod.ai_controller)
 	module.mod.interaction_flags_item |= INTERACT_ITEM_ATTACK_HAND_PICKUP
 	REMOVE_TRAIT(module.mod, TRAIT_MOVE_FLYING, MOD_TRAIT)

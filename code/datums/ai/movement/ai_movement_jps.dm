@@ -2,7 +2,7 @@
  * This movement datum represents smart-pathing
  */
 /datum/ai_movement/jps
-	max_pathing_attempts = 4
+	max_pathing_attempts = 20
 
 /datum/ai_movement/jps/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance)
 	. = ..()
@@ -12,8 +12,8 @@
 	var/datum/move_loop/loop = SSmove_manager.jps_move(moving,
 		current_movement_target,
 		delay,
-		repath_delay = 2 SECONDS,
-		max_path_length = AI_MAX_PATH_LENGTH,
+		repath_delay = 0.5 SECONDS,
+		max_path_length = max_path_length,
 		minimum_distance = controller.get_minimum_distance(),
 		id = controller.get_access(),
 		subsystem = SSai_movement,
@@ -30,3 +30,6 @@
 
 	source.id = controller.get_access()
 	source.minimum_distance = controller.get_minimum_distance()
+
+/datum/ai_movement/jps/modsuit
+	max_path_length = MOD_AI_RANGE

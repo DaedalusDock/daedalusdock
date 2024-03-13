@@ -374,7 +374,7 @@
 	src.simulated_only = simulated_only
 	src.avoid = avoid
 	src.skip_first = skip_first
-	movement_path = initial_path.Copy()
+	movement_path = initial_path?.Copy()
 
 	if(istype(id, /obj/item/card/id))
 		RegisterSignal(id, COMSIG_PARENT_QDELETING, PROC_REF(handle_no_id)) //I prefer erroring to harddels. If this breaks anything consider making id info into a datum or something
@@ -428,7 +428,8 @@
 	var/atom/old_loc = moving.loc
 	//KAPU NOTE: WE DO NOT HAVE THIS
 	//moving.Move(next_step, get_dir(moving, next_step), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
-	moving.Move(next_step, get_dir(moving, next_step))
+	var/movement_dir = get_dir(moving, next_step)
+	moving.Move(next_step, movement_dir)
 	. = (old_loc != moving?.loc) ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 	// this check if we're on exactly the next tile may be overly brittle for dense objects who may get bumped slightly
@@ -438,7 +439,6 @@
 	else
 		INVOKE_ASYNC(src, PROC_REF(recalculate_path))
 		return MOVELOOP_FAILURE
-
 
 ///Base class of move_to and move_away, deals with the distance and target aspect of things
 /datum/move_loop/has_target/dist_bound

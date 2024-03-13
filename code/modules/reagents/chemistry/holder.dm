@@ -681,30 +681,6 @@
 			reagent.metabolizing = FALSE
 			reagent.on_mob_end_metabolize(C, metabolism_class)
 
-
-/**
- * Calls [/datum/reagent/proc/on_move] on every reagent in this holder
- *
- * Arguments:
- * * atom/A - passed to on_move
- * * Running - passed to on_move
- */
-/datum/reagents/proc/conditional_update_move(atom/A, Running = 0)
-	for(var/datum/reagent/reagent as anything in reagent_list)
-		reagent.on_move(A, Running)
-	update_total()
-
-/**
- * Calls [/datum/reagent/proc/on_update] on every reagent in this holder
- *
- * Arguments:
- * * atom/A - passed to on_update
- */
-/datum/reagents/proc/conditional_update(atom/A)
-	for(var/datum/reagent/reagent as anything in reagent_list)
-		reagent.on_update(A)
-	update_total()
-
 /// Handle any reactions possible in this holder
 /// Also UPDATES the reaction list
 /// High potential for infinite loopsa if you're editing this.

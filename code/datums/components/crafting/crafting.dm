@@ -290,7 +290,6 @@
 						if(RG.volume > amt)
 							RG.volume -= amt
 							data = RG.data
-							RC.reagents.conditional_update(RC)
 							RG = locate(RG.type) in Deletion
 							RG.volume = amt
 							RG.data += data
@@ -299,7 +298,6 @@
 							surroundings -= RC
 							amt -= RG.volume
 							RC.reagents.reagent_list -= RG
-							RC.reagents.conditional_update(RC)
 							RGNT = locate(RG.type) in Deletion
 							RGNT.volume += RG.volume
 							RGNT.data += RG.data

@@ -57,3 +57,6 @@
   - bugfix: Fixed a sound not playing from fabricators.
   - bugfix: Cleanbots no longer get stuck spraying acid on specific blood decals.
   - bugfix: The monochrome ghost vision pref actually works (lol).
+2024-03-13:
+  Kapu1178:
+  - bugfix: Handcuffs no longer immobilize you.

@@ -173,10 +173,6 @@
 /obj/item/implant/mod/proc/on_move(atom/movable/source, atom/old_loc, dir, forced)
 	SIGNAL_HANDLER
 
-	var/matrix/mod_matrix = matrix()
-	mod_matrix.Turn(get_angle(source, imp_in))
-	source.transform = mod_matrix
-
 	var/distance = get_dist(source, imp_in)
 	if(!(distance %% 20))
 		to_chat(imp_in, "[src] pings, \"Suit is [distance] meters away.\"")

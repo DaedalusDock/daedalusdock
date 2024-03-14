@@ -33,3 +33,17 @@
 
 /datum/ai_movement/jps/modsuit
 	max_path_length = MOD_AI_RANGE
+
+/datum/ai_movement/jps/modsuit/pre_move(datum/move_loop/source)
+	. = ..()
+	if(.)
+		return
+	var/datum/move_loop/has_target/jps/moveloop = source
+	if(!length(moveloop.movement_path))
+		return
+
+	var/datum/ai_controller/controller = source.extra_info
+	var/obj/item/mod = controller.pawn
+	var/angle = get_angle(mod, moveloop.movement_path[1])
+	mod.transform = matrix().Turn(angle)
+

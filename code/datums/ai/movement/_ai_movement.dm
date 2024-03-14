@@ -50,7 +50,7 @@
 ///Anything to do before moving; any checks if the pawn should be able to move should be placed in allowed_to_move() and called by this proc
 /datum/ai_movement/proc/pre_move(datum/move_loop/source)
 	SIGNAL_HANDLER
-	SHOULD_NOT_OVERRIDE(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
 
 	var/datum/ai_controller/controller = source.extra_info
 
@@ -70,6 +70,8 @@
 //Anything to do post movement
 /datum/ai_movement/proc/post_move(datum/move_loop/source, succeeded)
 	SIGNAL_HANDLER
+	SHOULD_CALL_PARENT(TRUE)
+
 	var/datum/ai_controller/controller = source.extra_info
 	if(succeeded != MOVELOOP_FAILURE)
 		reset_pathing_failures(controller)

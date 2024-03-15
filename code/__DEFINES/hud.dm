@@ -289,20 +289,20 @@
 #define HUDKEY_SILICON_TABLET "silicontablet"
 #define HUDKEY_SILICON_ALERTS "siliconalerts"
 
-#define HUDKEY_AI_AICORE
-#define HUDKEY_AI_CAMERA_LIST
-#define HUDKEY_AI_CAMERA_TRACK
-#define HUDKEY_AI_CAMERA_LIGHT
-#define HUDKEY_AI_CREW_MONITOR
-#define HUDKEY_AI_CREW_MANIFEST
-#define HUDKEY_AI_ANNOUNCEMENT
-#define HUDKEY_AI_CALL_SHUTTLE
-#define HUDKEY_AI_STATE_LAWS
-#define HUDKEY_AI_TAKE_IMAGE
-#define HUDKEY_AI_IMAGE_VIEW
-#define HUDKEY_AI_SENSORS
-#define HUDKEY_AI_MULTICAM
-#define HUDKEY_AI_ADD_MULTICAM
+#define HUDKEY_AI_AICORE "aicore"
+#define HUDKEY_AI_CAMERA_LIST "aicameralist"
+#define HUDKEY_AI_CAMERA_TRACK "aicameratrack"
+#define HUDKEY_AI_CAMERA_LIGHT "aicameralight"
+#define HUDKEY_AI_CREW_MONITOR "aicrewmonitor"
+#define HUDKEY_AI_CREW_MANIFEST "aicrewmanifest"
+#define HUDKEY_AI_ANNOUNCEMENT "aiannounce"
+#define HUDKEY_AI_CALL_SHUTTLE "aishuttke"
+#define HUDKEY_AI_STATE_LAWS "aistatelaws"
+#define HUDKEY_AI_TAKE_IMAGE "aitakeimage"
+#define HUDKEY_AI_IMAGE_VIEW "aivewimage"
+#define HUDKEY_AI_SENSORS "aisensors"
+#define HUDKEY_AI_MULTICAM "aiviewmulticam"
+#define HUDKEY_AI_ADD_MULTICAM "aiaddmulticam"
 
 #define HUDKEY_CYBORG_RADIO "cyborgradio"
 #define HUDKEY_CYBORG_MODULE_1 "cyborgmodule1"

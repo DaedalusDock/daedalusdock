@@ -171,7 +171,7 @@
 	if(!I || !user)
 		return MOB_ATTACKEDBY_FAIL
 
-	var/target_area = parse_zone(deprecise_zone(user.zone_selected)) //our intended target
+	var/target_zone = deprecise_zone(user.zone_selected) //our intended target
 
 	var/obj/item/bodypart/affecting = get_bodypart(deprecise_zone(user.zone_selected))
 	if (!affecting || affecting.is_stump)
@@ -179,9 +179,9 @@
 		return MOB_ATTACKEDBY_FAIL
 
 	if(user == src)
-		affecting = get_bodypart(target_area) //stabbing yourself always hits the right target
+		affecting = get_bodypart(target_zone) //stabbing yourself always hits the right target
 	else
-		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_area]
+		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
 		var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
 		var/hit_zone
 		switch(roll)
@@ -192,14 +192,14 @@
 			if(FAILURE)
 				hit_zone = get_random_valid_zone()
 			else
-				hit_zone = target_area
+				hit_zone = target_zone
 
-		affecting = get_bodypart(hit_zone)
+		affecting = get_bodypart(target_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
 
 	SSblackbox.record_feedback("nested tally", "item_used_for_combat", 1, list("[I.force]", "[I.type]"))
-	SSblackbox.record_feedback("tally", "zone_targeted", 1, target_area)
+	SSblackbox.record_feedback("tally", "zone_targeted", 1, parse_zone(target_zone))
 
 	// the attacked_by code varies among species
 	return dna.species.spec_attacked_by(I, user, affecting, src)

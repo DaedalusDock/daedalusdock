@@ -646,6 +646,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 			continue
 		if(istype(AM, /obj/item))
 			var/obj/item/I = AM
+			if(I.item_flags & ABSTRACT)
+				continue
 			if(I.w_class < WEIGHT_CLASS_SMALL)
 				item = I
 		else if(iscarbon(AM))

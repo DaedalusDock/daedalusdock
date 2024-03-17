@@ -65,12 +65,23 @@
 	SEND_SIGNAL(C, COMSIG_CARBON_BREAK_BONE, src)
 	return TRUE
 
+/obj/item/bodypart/arm/apply_bone_break(mob/living/carbon/C)
+	. = ..()
+	if(!.)
+		return
+
+	if(C.legcuffed && prob(25))
+		C.remove_legcuffs(C.drop_location(), silent = TRUE)
+
 /obj/item/bodypart/leg/apply_bone_break(mob/living/carbon/C)
 	. = ..()
 	if(!.)
 		return
 
 	C.apply_status_effect(/datum/status_effect/limp)
+
+	if(C.handcuffed && prob(25))
+		C.remove_handcuffs(C.drop_location(), silent = TRUE)
 
 /obj/item/bodypart/proc/heal_bones()
 	SHOULD_NOT_OVERRIDE(TRUE)

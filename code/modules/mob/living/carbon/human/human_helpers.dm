@@ -2,6 +2,8 @@
 /mob/living/carbon/human/canBeHandcuffed()
 	if(num_hands < 2)
 		return FALSE
+	if(handcuffed)
+		return FALSE
 	return TRUE
 
 

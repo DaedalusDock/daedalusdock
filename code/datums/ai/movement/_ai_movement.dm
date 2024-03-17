@@ -4,23 +4,27 @@
 	var/list/moving_controllers = list()
 	///How many times a given controller can fail on their route before they just give up
 	var/max_pathing_attempts
+	var/max_path_length = AI_MAX_PATH_LENGTH
 
 //Override this to setup the moveloop you want to use
 /datum/ai_movement/proc/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance)
 	SHOULD_CALL_PARENT(TRUE)
-	controller.pathing_attempts = 0
+	controller.consecutive_pathing_attempts = 0
 	controller.blackboard[BB_CURRENT_MIN_MOVE_DISTANCE] = min_distance
 	moving_controllers[controller] = current_movement_target
 
 /datum/ai_movement/proc/stop_moving_towards(datum/ai_controller/controller)
-	controller.pathing_attempts = 0
+	controller.consecutive_pathing_attempts = 0
 	moving_controllers -= controller
 	SSmove_manager.stop_looping(controller.pawn, SSai_movement)
 
 /datum/ai_movement/proc/increment_pathing_failures(datum/ai_controller/controller)
-	controller.pathing_attempts++
-	if(controller.pathing_attempts >= max_pathing_attempts)
+	controller.consecutive_pathing_attempts++
+	if(controller.consecutive_pathing_attempts >= max_pathing_attempts)
 		controller.CancelActions()
+
+/datum/ai_movement/proc/reset_pathing_failures(datum/ai_controller/controller)
+	controller.consecutive_pathing_attempts = 0
 
 ///Should the movement be allowed to happen? return TRUE if it can, FALSE otherwise
 /datum/ai_movement/proc/allowed_to_move(datum/move_loop/source)
@@ -46,7 +50,7 @@
 ///Anything to do before moving; any checks if the pawn should be able to move should be placed in allowed_to_move() and called by this proc
 /datum/ai_movement/proc/pre_move(datum/move_loop/source)
 	SIGNAL_HANDLER
-	SHOULD_NOT_OVERRIDE(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
 
 	var/datum/ai_controller/controller = source.extra_info
 
@@ -66,7 +70,10 @@
 //Anything to do post movement
 /datum/ai_movement/proc/post_move(datum/move_loop/source, succeeded)
 	SIGNAL_HANDLER
-	if(succeeded != FALSE)
-		return
+	SHOULD_CALL_PARENT(TRUE)
+
 	var/datum/ai_controller/controller = source.extra_info
+	if(succeeded != MOVELOOP_FAILURE)
+		reset_pathing_failures(controller)
+		return
 	increment_pathing_failures(controller)

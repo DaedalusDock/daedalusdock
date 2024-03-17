@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - tweak: Roundstart wallets start open
+  - bugfix: SecHUDs correctly display jobs again.

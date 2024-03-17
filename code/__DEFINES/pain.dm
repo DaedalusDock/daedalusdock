@@ -16,11 +16,17 @@
 #define SHOCK_TIER_6 120
 #define SHOCK_TIER_7 150
 
-#define PAIN_NUM_TO_PASSOUT 200
+/// The amount of pain where the mob is rendered unconscious
+#define PAIN_AMT_PASSOUT 200
 
-#define PAIN_AMT_LOW (PAIN_NUM_TO_PASSOUT * 0.05)
-#define PAIN_AMT_MEDIUM (PAIN_NUM_TO_PASSOUT * 0.35)
-#define PAIN_AMT_AGONIZING (PAIN_NUM_TO_PASSOUT * 0.85)
+/// The amount of pain where movement slowdown beings
+#define PAIN_AMT_BEGIN_SLOWDOWN (PAIN_AMT_PASSOUT * 0.075)
+#define PAIN_MAX_SLOWDOWN 5
+#define PAIN_SLOWDOWN_FACTOR (PAIN_MAX_SLOWDOWN / PAIN_AMT_PASSOUT)
+
+#define PAIN_AMT_LOW (PAIN_AMT_PASSOUT * 0.05)
+#define PAIN_AMT_MEDIUM (PAIN_AMT_PASSOUT * 0.35)
+#define PAIN_AMT_AGONIZING (PAIN_AMT_PASSOUT * 0.85)
 
 /// max_damage * this value is the amount of pain constantly applied when the limb bone is broken
 #define BROKEN_BONE_PAIN_FACTOR 0.1

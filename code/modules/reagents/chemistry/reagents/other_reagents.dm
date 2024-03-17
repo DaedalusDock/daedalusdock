@@ -1103,13 +1103,13 @@
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 		ADD_TRAIT(C, TRAIT_STUNRESISTANCE, type)
-		C.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+		C.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/pain)
 
 /datum/reagent/medicine/changelingadrenaline/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 		REMOVE_TRAIT(C, TRAIT_STUNRESISTANCE, type)
-		C.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+		C.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/pain)
 		C.remove_status_effect(/datum/status_effect/dizziness)
 		C.remove_status_effect(/datum/status_effect/jitter)
 

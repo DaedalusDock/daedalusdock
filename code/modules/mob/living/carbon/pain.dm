@@ -242,12 +242,13 @@
 
 	var/pain = getPain()
 
-	if(pain >= 15)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, min((pain / 40), 15))
+	if(pain >= (PAIN_AMT_PASSOUT * 0.075))
+		var/slowdown = min(pain * PAIN_SLOWDOWN_FACTOR, PAIN_MAX_SLOWDOWN)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, slowdown)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 
-	if(pain >= PAIN_NUM_TO_PASSOUT)
+	if(pain >= PAIN_AMT_PASSOUT)
 		if(!stat && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			visible_message(
 				span_danger("<b>[src]</b> slumps over, too weak to continue fighting..."),

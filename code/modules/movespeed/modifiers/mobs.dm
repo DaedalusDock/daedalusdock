@@ -19,15 +19,8 @@
 /datum/movespeed_modifier/resonance
 	multiplicative_slowdown = 0.75
 
-/datum/movespeed_modifier/damage_slowdown
-	blacklisted_movetypes = FLOATING|FLYING
-	variable = TRUE
-
-/datum/movespeed_modifier/damage_slowdown_flying
-	movetypes = FLYING
-	variable = TRUE
-
 /datum/movespeed_modifier/pain
+	blacklisted_movetypes = FLOATING
 	variable = TRUE
 
 /datum/movespeed_modifier/shock

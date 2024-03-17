@@ -599,10 +599,8 @@ Pass a positive integer as an argument to override a bot's default speed.
 /mob/living/simple_animal/bot/proc/call_bot(caller, turf/waypoint, message = TRUE)
 	bot_reset() //Reset a bot before setting it to call mode.
 
-	//For giving the bot temporary all-access. This method is bad and makes me feel bad. Refactoring access to a component is for another PR.
-	var/obj/item/card/id/all_access = new /obj/item/card/id/advanced/gold/captains_spare()
-	set_path(get_path_to(src, waypoint, max_distance=200, id = all_access))
-	qdel(all_access)
+	var/list/access = SSid_access.accesses_by_region[REGION_ALL_STATION]
+	set_path(get_path_to(src, waypoint, max_distance=200, access = access.Copy()))
 	calling_ai = caller //Link the AI to the bot!
 	ai_waypoint = waypoint
 
@@ -817,12 +815,12 @@ Pass a positive integer as an argument to override a bot's default speed.
 // given an optional turf to avoid
 /mob/living/simple_animal/bot/proc/calc_path(turf/avoid)
 	check_bot_access()
-	set_path(get_path_to(src, patrol_target, max_distance=120, id=access_card, exclude=avoid))
+	set_path(get_path_to(src, patrol_target, max_distance=120, access = access_card?.GetAccess(), exclude=avoid))
 
 /mob/living/simple_animal/bot/proc/calc_summon_path(turf/avoid)
 	check_bot_access()
 	var/datum/callback/path_complete = CALLBACK(src, PROC_REF(on_summon_path_finish))
-	SSpathfinder.pathfind(src, summon_target, max_distance=150, id=access_card, exclude=avoid, on_finish = path_complete)
+	SSpathfinder.pathfind(src, summon_target, max_distance=150, access = access_card?.GetAccess(), exclude=avoid, on_finish = path_complete)
 
 /mob/living/simple_animal/bot/proc/on_summon_path_finish(list/path)
 	set_path(path)

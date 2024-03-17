@@ -115,7 +115,7 @@
 	O.applyOrganDamage(rand(3,5))
 
 	if(owner)
-		owner.apply_pain(50, body_zone, "You feel something moving in your [plaintext_zone]!")
+		owner.notify_pain(max_damage * BROKEN_BONE_PAIN_FACTOR, "You feel something moving in your [plaintext_zone]!", TRUE)
 
 /// Updates the interaction speed modifier of this limb, used by Limping and similar to determine delay.
 /obj/item/bodypart/proc/update_interaction_speed()
@@ -189,7 +189,7 @@
 	if(val)
 		bodypart_flags |= BP_DISLOCATED
 		if(!painless)
-			owner?.apply_pain(20, body_zone, "A surge of pain shoots through your [plaintext_zone].")
+			owner?.apply_pain(max_damage * DISLOCATED_LIMB_PAIN_FACTOR, body_zone, "A surge of pain shoots through your [plaintext_zone].")
 	else
 		bodypart_flags &= BP_DISLOCATED
 

@@ -108,7 +108,7 @@
 
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 30)
 
 /datum/reagent/medicine/inaprovaline/overdose_start(mob/living/carbon/C)
 	C.add_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
@@ -135,7 +135,7 @@
 	value = 4.9
 
 /datum/reagent/medicine/bicaridine/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 20)
 	C.adjustBruteLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
@@ -301,7 +301,7 @@
 	taste_description = "sourness"
 	reagent_state = LIQUID
 	color = "#cb68fc"
-	overdose_threshold =30
+	overdose_threshold = 30
 	metabolization_rate = 0.05
 	ingest_met = 0.02
 	value = 3.1
@@ -396,7 +396,7 @@
 	C.remove_movespeed_modifier(/datum/movespeed_modifier/morphine)
 
 /datum/reagent/medicine/morphine/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 80)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 120)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	if(prob(75))
 		C.drowsyness++
@@ -405,7 +405,7 @@
 
 /datum/reagent/medicine/morphine/overdose_process(mob/living/carbon/C)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 50)
 
 /datum/reagent/medicine/tramadol/oxycodone
 	name = "Oxycodone"
@@ -441,7 +441,7 @@
 	holder.remove_reagent(/datum/reagent/toxin/mindbreaker, 5)
 
 	C.adjustToxLoss(3 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 20)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 70)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
 
@@ -480,7 +480,7 @@
 	value = 5.9
 
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 30)
 	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed, updating_health = FALSE)
 	if(ishuman(C))
@@ -617,7 +617,7 @@
 		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(30*volume, 80))
 		APPLY_CHEM_EFFECT(C, CE_PULSE, 1)
 	else if(volume < 1)
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(10*volume, 20))
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(15*volume, 20))
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
 

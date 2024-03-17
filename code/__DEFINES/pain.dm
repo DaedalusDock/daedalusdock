@@ -16,6 +16,15 @@
 #define SHOCK_TIER_6 120
 #define SHOCK_TIER_7 150
 
-#define PAIN_AMT_LOW 10
-#define PAIN_AMT_MEDIUM 40
-#define PAIN_AMT_AGONIZING 70
+#define PAIN_NUM_TO_PASSOUT 200
+
+#define PAIN_AMT_LOW (PAIN_NUM_TO_PASSOUT * 0.05)
+#define PAIN_AMT_MEDIUM (PAIN_NUM_TO_PASSOUT * 0.35)
+#define PAIN_AMT_AGONIZING (PAIN_NUM_TO_PASSOUT * 0.85)
+
+/// max_damage * this value is the amount of pain constantly applied when the limb bone is broken
+#define BROKEN_BONE_PAIN_FACTOR 0.1
+/// max_damage * this value is the amount of pain constantly applied when the limb is dislocated
+#define DISLOCATED_LIMB_PAIN_FACTOR 0.05
+/// The amount of pain applied immediately when a bone breaks
+#define BONE_BREAK_APPLICATION_PAIN 60

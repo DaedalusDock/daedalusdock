@@ -617,7 +617,9 @@
 		create_wound(WOUND_BURN, burn, update_damage = FALSE)
 
 	//Initial pain spike
-	owner?.notify_pain(getPain())
+	if(owner)
+		var/pain_reduction = CHEM_EFFECT_MAGNITUDE(owner, CE_PAINKILLER) / length(owner.bodyparts)
+		owner?.notify_pain(getPain() - pain_reduction)
 
 	if(owner && total > 15 && prob(total*4) && !(bodypart_flags & BP_NO_PAIN))
 		owner.bloodstream.add_reagent(/datum/reagent/medicine/epinephrine, round(total/10))

@@ -194,7 +194,7 @@
 			else
 				hit_zone = target_zone
 
-		affecting = get_bodypart(target_zone)
+		affecting = get_bodypart(hit_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
 

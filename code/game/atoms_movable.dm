@@ -826,6 +826,7 @@
 	var/atom/oldloc = loc
 	var/is_multi_tile = bound_width > world.icon_size || bound_height > world.icon_size
 
+	SET_ACTIVE_MOVEMENT(oldloc, NONE, TRUE, null)
 	if(destination)
 		var/same_loc = oldloc == destination
 		var/area/old_area = get_area(oldloc)
@@ -834,7 +835,6 @@
 
 		moving_diagonally = 0
 
-		SET_ACTIVE_MOVEMENT(oldloc, NONE, TRUE, null)
 		loc = destination
 
 		if(!same_loc)
@@ -873,7 +873,6 @@
 		. = TRUE
 
 		if (oldloc)
-			SET_ACTIVE_MOVEMENT(oldloc, NONE, TRUE, null)
 			loc = null
 			var/area/old_area = get_area(oldloc)
 			if(is_multi_tile && isturf(oldloc))

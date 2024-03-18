@@ -873,6 +873,7 @@
 		. = TRUE
 
 		if (oldloc)
+			SET_ACTIVE_MOVEMENT(oldloc, NONE, TRUE, null)
 			loc = null
 			var/area/old_area = get_area(oldloc)
 			if(is_multi_tile && isturf(oldloc))

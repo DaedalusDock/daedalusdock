@@ -523,12 +523,12 @@
 		var/obj/item/I = examined
 		if((I.item_flags & IN_STORAGE))
 			if(get(I, /mob/living) == src)
-				loc_str = "inside thier [I.loc.name]..."
+				loc_str = "inside [p_their()] [I.loc.name]..."
 			else
 				loc_str = "inside [I.loc]..."
 
 		else if(I.loc == src)
-			loc_str = "at their [I.name]."
+			loc_str = "at [p_their()] [I.name]."
 			examining_worn_item = TRUE
 
 	var/can_see_str = span_subtle("\The [src] looks at [examined].")

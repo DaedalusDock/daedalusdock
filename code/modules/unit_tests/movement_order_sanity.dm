@@ -6,11 +6,11 @@
 
 	step(test_obj, EAST)
 
-	TEST_ASSERT(length(movement_cache) == 4, "Movement order was not the expected value of 4, got: [length(movement_cache)].\n[jointext(movement_cache, "\n")]")
-	TEST_ASSERT(findtext(movement_cache[1], "Moving from"),"Movement did not begin with a Move attempt.\n[jointext(movement_cache, "\n")]")
-	TEST_ASSERT(findtext(movement_cache[2], "Moved from"),"Movement step 2 was not a Moved() call.\n[jointext(movement_cache, "\n")]")
-	TEST_ASSERT(findtext(movement_cache[3], "Moving from"),"Movement step 3 was a Move attempt.\n[jointext(movement_cache, "\n")]")
-	TEST_ASSERT(findtext(movement_cache[4], "Moved from"),"Movement step 4 was not a Moved() call.\n[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(length(movement_cache) == 4, "Movement order was not the expected value of 4, got: [length(movement_cache)].\nMovement Log[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(findtext(movement_cache[1], "Moving from"),"Movement did not begin with a Move attempt.\nMovement Log[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(findtext(movement_cache[2], "Moved from"),"Movement step 2 was not a Moved() call.\nMovement Log[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(findtext(movement_cache[3], "Moving from"),"Movement step 3 was a Move attempt.\nMovement Log[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(findtext(movement_cache[4], "Moved from"),"Movement step 4 was not a Moved() call.\nMovement Log[jointext(movement_cache, "\n")]")
 
 /obj/movement_tester
 	name = "movement debugger"
@@ -29,7 +29,7 @@
 
 /obj/movement_interceptor/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/connect_loc, list(COMSIG_ATOM_ENTERED, PROC_REF(on_crossed)))
+	AddElement(/datum/element/connect_loc, list(COMSIG_ATOM_ENTERED = PROC_REF(on_crossed)))
 
 /obj/movement_interceptor/proc/on_crossed(datum/source, atom/movable/arrived)
 	SIGNAL_HANDLER

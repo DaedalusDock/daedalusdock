@@ -152,7 +152,7 @@
 #define SHOCK_STRING_MINOR \
 	pick("It hurts...",\
 		"Uaaaghhhh...",\
-		""\
+		"Agh..."\
 	)
 
 #define SHOCK_STRING_MAJOR \

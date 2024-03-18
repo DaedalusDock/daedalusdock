@@ -149,7 +149,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 		switch(location)
 			if(CHEM_BLOOD)
 				if(type == M.dna?.species.exotic_blood)
-					M.blood_volume = min(M.blood_volume + round(volume, 0.1), BLOOD_VOLUME_MAXIMUM)
+					M.adjustBloodVolumeUpTo(round(volume, 0.1), BLOOD_VOLUME_MAXIMUM)
 					holder.del_reagent(type)
 					return
 				else
@@ -162,7 +162,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 			if(CHEM_INGEST)
 				if(type == M.dna?.species.exotic_blood)
-					M.blood_volume = min(M.blood_volume + round(volume/5, 0.1), BLOOD_VOLUME_MAXIMUM)
+					M.adjustBloodVolumeUpTo(round(volume / 5, 0.1), BLOOD_VOLUME_MAXIMUM)
 					holder.del_reagent(type)
 					return
 				else

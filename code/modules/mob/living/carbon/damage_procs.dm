@@ -85,9 +85,10 @@
 		if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
 			amount = min(amount, 0)
 		if(!heal)
-			blood_volume = max(blood_volume - (5*amount), 0)
+			adjustBloodVolume(-5 * amount)
 		else
-			blood_volume = max(blood_volume - amount, 0)
+			adjustBloodVolume(-amount)
+
 	else if(HAS_TRAIT(src, TRAIT_TOXIMMUNE)) //Prevents toxin damage, but not healing
 		amount = min(amount, 0)
 

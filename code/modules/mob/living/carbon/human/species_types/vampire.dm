@@ -216,8 +216,8 @@
 		to_chat(H, span_notice("You drain some blood!"))
 		playsound(H, 'sound/items/drink.ogg', 30, TRUE, -2)
 
-		victim.blood_volume = clamp(victim.blood_volume - drained_blood, 0, BLOOD_VOLUME_MAXIMUM)
-		H.blood_volume = clamp(H.blood_volume + drained_blood, 0, BLOOD_VOLUME_MAXIMUM)
+		victim.adjustBloodVolume(-drained_blood)
+		H.adjustBloodVolumeUpTo(drained_blood, BLOOD_VOLUME_MAXIMUM)
 		if(!victim.blood_volume)
 			to_chat(H, span_notice("You finish off [victim]'s blood supply."))
 

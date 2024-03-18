@@ -1165,8 +1165,7 @@
 	if(prob(getBruteLoss() * 0.6))
 		makeBloodTrail(new_loc, old_loc, direction, TRUE)
 
-	blood_volume = max(blood_volume - 1, 0)
-
+	adjustBloodVolume(-1)
 	if(!prob(10))
 		return
 

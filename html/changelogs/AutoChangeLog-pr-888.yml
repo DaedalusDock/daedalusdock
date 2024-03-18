@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Attacking with an item will no longer always hit the chest.

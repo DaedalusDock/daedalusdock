@@ -531,9 +531,6 @@
 			loc_str = "at their [I.name]."
 			examining_worn_item = TRUE
 
-		else
-			loc_str = "at something off in the distance..."
-
 	var/can_see_str = span_subtle("\The [src] looks at [examined].")
 	if(examining_worn_item)
 		can_see_str = span_subtle("\The [src] looks [loc_str]")

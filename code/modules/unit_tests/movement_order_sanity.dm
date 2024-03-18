@@ -11,9 +11,9 @@
 	TEST_ASSERT(QDELETED(test_obj), "Object was not qdeleted.")
 	TEST_ASSERT(length(movement_cache) == 4, "Movement order length was not the expected value of 4, got: [length(movement_cache)].\nMovement Log\n[jointext(movement_cache, "\n")]")
 
-	TEST_ASSERT(findtext(movement_cache[1], "Moving from"),"Movement did not begin with a Move attempt.\nMovement Log\n[jointext(movement_cache, "\n")]")
-	TEST_ASSERT(findtext(movement_cache[2], "Moved from"),"Movement step 2 was not a Moved() call.\nMovement Log\n[jointext(movement_cache, "\n")]")
-	TEST_ASSERT(findtext(movement_cache[3], "Moving from"),"Movement step 3 was a Move attempt.\nMovement Log\n[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(findtext(movement_cache[1], "Moving from"),"Movement step 1 was not a Move attempt.\nMovement Log\n[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(findtext(movement_cache[2], "Moving from"),"Movement step 2 was not a Move attempt.\nMovement Log\n[jointext(movement_cache, "\n")]")
+	TEST_ASSERT(findtext(movement_cache[3], "Moved from"),"Movement step 3 was not a Moved() call.\nMovement Log\n[jointext(movement_cache, "\n")]")
 	TEST_ASSERT(findtext(movement_cache[4], "Moved from"),"Movement step 4 was not a Moved() call.\nMovement Log\n[jointext(movement_cache, "\n")]")
 
 /obj/movement_tester

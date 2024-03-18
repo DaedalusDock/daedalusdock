@@ -246,7 +246,7 @@
 	/// Blood circulation scales the pain passout modifier with an importance of 40%
 	var/blood_circulation_factor = 1 + (get_blood_circulation() / 100 - 1) * 0.4
 
-	var/pain_passout = min(PAIN_AMT_PASSOUT * brain_health_delta * blood_circulation_factor, PAIN_AMT_PASSOUT)
+	var/pain_passout = min(PAIN_AMT_PASSOUT * brain_health_factor * blood_circulation_factor, PAIN_AMT_PASSOUT)
 
 	if(pain <= max((pain_passout * 0.075), 10))
 		var/slowdown = min(pain * (PAIN_MAX_SLOWDOWN / pain_passout), PAIN_MAX_SLOWDOWN)

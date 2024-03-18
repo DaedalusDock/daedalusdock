@@ -928,7 +928,7 @@
 	// Handle movespeed stuff
 	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
 	if(speed_change)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, multiplicative_slowdown=speed_change)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, slowdown=speed_change)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
 
@@ -1855,7 +1855,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		var/limbless_slowdown = (default_num_legs - usable_legs) * 3
 		if(!usable_legs && usable_hands < default_num_hands)
 			limbless_slowdown += (default_num_hands - usable_hands) * 3
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, multiplicative_slowdown = limbless_slowdown)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, slowdown = limbless_slowdown)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
 

@@ -1220,7 +1220,7 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/freezing_blast, update = TRUE)
 
 /datum/movespeed_modifier/freezing_blast
-	multiplicative_slowdown = 1
+	slowdown = 1
 
 /datum/status_effect/discoordinated
 	id = "discoordinated"

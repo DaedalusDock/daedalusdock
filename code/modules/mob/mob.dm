@@ -1352,7 +1352,7 @@
 	if(!speedies)
 		remove_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod)
 	else
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, multiplicative_slowdown = speedies)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, slowdown = speedies)
 
 /// Gets the combined speed modification of all worn items
 /// Except base mob type doesnt really wear items
@@ -1397,16 +1397,16 @@
 		datum_flags |= DF_VAR_EDITED
 		return
 
-	var/slowdown_edit = (var_name == NAMEOF(src, cached_multiplicative_slowdown))
+	var/slowdown_edit = (var_name == NAMEOF(src, movement_delay))
 	var/diff
-	if(slowdown_edit && isnum(cached_multiplicative_slowdown) && isnum(var_value))
+	if(slowdown_edit && isnum(movement_delay) && isnum(var_value))
 		remove_movespeed_modifier(/datum/movespeed_modifier/admin_varedit)
-		diff = var_value - cached_multiplicative_slowdown
+		diff = var_value - movement_delay
 
 	. = ..()
 
 	if(. && slowdown_edit && isnum(diff))
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/admin_varedit, multiplicative_slowdown = diff)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/admin_varedit, slowdown = diff)
 
 /mob/proc/set_active_storage(new_active_storage)
 	if(active_storage)

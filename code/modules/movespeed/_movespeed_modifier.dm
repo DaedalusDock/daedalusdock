@@ -36,7 +36,7 @@ Key procs
 	var/priority = 0
 	var/flags = NONE
 
-	/// How many deciseconds of delay to ad between each movement. Can be negative
+	/// How many deciseconds of delay to add between each movement. Can be negative.
 	var/slowdown = 0
 
 	/// Movetypes this applies to

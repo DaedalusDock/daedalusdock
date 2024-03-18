@@ -17,7 +17,7 @@
 #define SHOCK_TIER_7 150
 
 /// The amount of pain where the mob is rendered unconscious
-#define PAIN_AMT_PASSOUT 200
+#define PAIN_AMT_PASSOUT (200)
 
 /// The amount of pain where movement slowdown beings
 #define PAIN_AMT_BEGIN_SLOWDOWN (PAIN_AMT_PASSOUT * 0.075)

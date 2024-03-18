@@ -5,6 +5,8 @@
 
 	/// The last direction we moved in.
 	var/tmp/last_move = null
+	var/tmp/list/active_movement
+
 	///Are we moving with inertia? Mostly used as an optimization
 	var/tmp/inertia_moving = FALSE
 	///The last time we pushed off something
@@ -325,6 +327,9 @@
 	if(!newloc || newloc == loc)
 		return
 
+	// A mid-movement... movement... occured, resolve that first.
+	RESOLVE_ACTIVE_MOVEMENT
+
 	if(!direction)
 		direction = get_dir(src, newloc)
 
@@ -369,6 +374,7 @@
 	var/area/oldarea = get_area(oldloc)
 	var/area/newarea = get_area(newloc)
 
+	SET_active_movement(oldloc, direction, FALSE, old_locs)
 	loc = newloc
 
 	. = TRUE
@@ -386,13 +392,11 @@
 			entered_loc.Entered(src, oldloc, old_locs)
 	else
 		newloc.Entered(src, oldloc, old_locs)
+
 	if(oldarea != newarea)
 		newarea.Entered(src, oldarea)
 
-	if(loc != newloc) // Something moved us out of where we just moved to, Abort!!!
-		return
-
-	Moved(oldloc, direction, FALSE, old_locs)
+	RESOLVE_ACTIVE_MOVEMENT
 
 ////////////////////////////////////////
 
@@ -830,6 +834,7 @@
 
 		moving_diagonally = 0
 
+		SET_MOVEMENT_INFO(oldloc, NONE, TRUE, null)
 		loc = destination
 
 		if(!same_loc)
@@ -879,7 +884,7 @@
 			if(old_area)
 				old_area.Exited(src, NONE)
 
-	Moved(oldloc, NONE, TRUE)
+	RESOLVE_ACTIVE_MOVEMENT
 
 /**
  * Called when a movable changes z-levels.

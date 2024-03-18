@@ -241,14 +241,20 @@
 		return
 
 	var/pain = getPain()
+	/// Brain health scales the pain passout modifier with an importance of 80%
+	var/brain_health_factor = 1 + ((maxHealth - getBrainLoss()) / maxHealth - 1) * 0.8
+	/// Blood circulation scales the pain passout modifier with an importance of 40%
+	var/blood_circulation_factor = 1 + (get_blood_circulation() / 100 - 1) * 0.4
 
-	if(pain >= (PAIN_AMT_PASSOUT * 0.075))
-		var/slowdown = min(pain * PAIN_SLOWDOWN_FACTOR, PAIN_MAX_SLOWDOWN)
+	var/pain_passout = min(PAIN_AMT_PASSOUT * brain_health_delta * blood_circulation_factor, PAIN_AMT_PASSOUT)
+
+	if(pain <= max((pain_passout * 0.075), 10))
+		var/slowdown = min(pain * (PAIN_MAX_SLOWDOWN / pain_passout), PAIN_MAX_SLOWDOWN)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, slowdown)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 
-	if(pain >= PAIN_AMT_PASSOUT)
+	if(pain >= pain_passout)
 		if(!stat && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			visible_message(
 				span_danger("<b>[src]</b> slumps over, too weak to continue fighting..."),

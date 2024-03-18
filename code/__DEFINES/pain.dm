@@ -22,7 +22,6 @@
 /// The amount of pain where movement slowdown beings
 #define PAIN_AMT_BEGIN_SLOWDOWN (PAIN_AMT_PASSOUT * 0.075)
 #define PAIN_MAX_SLOWDOWN 5
-#define PAIN_SLOWDOWN_FACTOR (PAIN_MAX_SLOWDOWN / PAIN_AMT_PASSOUT)
 
 #define PAIN_AMT_LOW (PAIN_AMT_PASSOUT * 0.05)
 #define PAIN_AMT_MEDIUM (PAIN_AMT_PASSOUT * 0.35)

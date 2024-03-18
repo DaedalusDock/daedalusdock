@@ -517,7 +517,7 @@
 
 	// If TRUE, the usr's view() for the examined object too
 	var/examining_worn_item = FALSE
-	var/loc_str = "at something in the distance"
+	var/loc_str = "at something in the distance."
 
 	if(isitem(examined))
 		var/obj/item/I = examined

@@ -2,6 +2,10 @@
 	var/obj/movement_tester/test_obj = allocate(__IMPLIED_TYPE__, run_loc_floor_bottom_left)
 	var/list/movement_cache = test_obj.movement_order
 
+	var/obj/movement_interceptor = allocate(__IMPLIED_TYPE__, locate(run_loc_floor_bottom_left.x + 1, run_loc_floor_bottom_left.y, run_loc_floor_bottom_left.z))
+
+	step(test_obj, EAST)
+
 	TEST_ASSERT(length(movement_cache) == 4, "Movement order was not the expected value of 4, got: [length(movement_cache)].\n[jointext(movement_cache, "\n")]")
 	TEST_ASSERT(findtext(movement_cache[1], "Moving from"),"Movement did not begin with a Move attempt.\n[jointext(movement_cache, "\n")]")
 	TEST_ASSERT(findtext(movement_cache[2], "Moved from"),"Movement step 2 was not a Moved() call.\n[jointext(movement_cache, "\n")]")

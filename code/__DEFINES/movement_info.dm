@@ -5,10 +5,10 @@
 
 #define SET_ACTIVE_MOVEMENT(_old_loc, _direction, _forced, _oldlocs) \
 	active_movement = list( \
-		ACTIVE_MOVEMENT_OLDLOC = _old_loc, \
-		ACTIVE_MOVEMENT_DIRECTION = _direction, \
-		ACTIVE_MOVEMENT_FORCED = _forced, \
-		ACTIVE_MOVEMENT_OLDLOCS = _oldlocs, \
+		_old_loc, \
+		_direction, \
+		_forced, \
+		_oldlocs, \
 	)
 
 #define RESOLVE_ACTIVE_MOVEMENT \

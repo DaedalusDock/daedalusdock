@@ -834,7 +834,7 @@
 
 		moving_diagonally = 0
 
-		SET_MOVEMENT_INFO(oldloc, NONE, TRUE, null)
+		SET_ACTIVE_MOVEMENT(oldloc, NONE, TRUE, null)
 		loc = destination
 
 		if(!same_loc)

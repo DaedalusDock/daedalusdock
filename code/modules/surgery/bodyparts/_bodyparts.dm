@@ -581,13 +581,12 @@
 				return update_damage() || .
 	#endif
 
+	if(can_break_bones || can_jostle_bones)
+		brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), null, sharpness) // Absorb some brute damage
+		burn -= damage_internal_organs(null, round(burn/2, DAMAGE_PRECISION))
 
 	//blunt damage is gud at fracturing
 	if(brute && (can_break_bones || can_jostle_bones))
-		if(LAZYLEN(contained_organs))
-			brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), null, sharpness) // Absorb some brute damage
-			burn -= damage_internal_organs(null, round(burn/2, DAMAGE_PRECISION))
-
 		if((bodypart_flags & BP_BROKEN_BONES) && can_jostle_bones)
 			jostle_bones(brute)
 		else if(can_break_bones && (brute_dam + brute > minimum_break_damage) && prob((brute_dam + brute * (1 + !sharpness)) * BODYPART_BONES_BREAK_CHANCE_MOD))

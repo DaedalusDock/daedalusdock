@@ -107,9 +107,9 @@
 			. = TRUE
 
 	// Now pulse mod is impacted by shock stage and other things too
-	if(owner.shock_stage > 30)
+	if(owner.shock_stage > SHOCK_TIER_2)
 		pulse_mod++
-	if(owner.shock_stage > 80)
+	if(owner.shock_stage > SHOCK_TIER_5)
 		pulse_mod++
 
 	var/blood_oxygenation = owner.get_blood_oxygenation()
@@ -157,7 +157,7 @@
 		pulse = clamp(PULSE_NORM + pulse_mod, PULSE_SLOW, PULSE_THREADY)
 
 	// If fibrillation, then it can be PULSE_THREADY
-	var/fibrillation = blood_oxygenation <= BLOOD_CIRC_SURVIVE || (prob(30) && owner.shock_stage > 120)
+	var/fibrillation = blood_oxygenation <= BLOOD_CIRC_SURVIVE || (prob(30) && SHOCK_AMT_FOR_FIBRILLATION > 120)
 
 	if(pulse && fibrillation) //I SAID MOAR OXYGEN
 		pulse = PULSE_THREADY

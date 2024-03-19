@@ -16,6 +16,9 @@
 #define SHOCK_TIER_6 120
 #define SHOCK_TIER_7 150
 
+/// The amount of shock required for someone to be elligible for shock-induced fibrillation
+#define SHOCK_AMT_FOR_FIBRILLATION 120
+
 /// The amount of pain where the mob is rendered unconscious
 #define PAIN_AMT_PASSOUT (200)
 

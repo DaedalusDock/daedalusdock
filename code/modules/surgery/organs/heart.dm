@@ -34,6 +34,9 @@
 	/// Data containing information about a pump that just occured.
 	var/list/external_pump
 
+	/// A grace period applied upon being resuscitated, so bad RNG wont immediately stop the heart.
+	COOLDOWN_DECLARE(arrhythmia_grace_period)
+
 /obj/item/organ/heart/update_icon_state()
 	icon_state = "[base_icon_state]-[pulse ? "on" : "off"]"
 	return ..()
@@ -109,10 +112,10 @@
 	if(owner.shock_stage > 80)
 		pulse_mod++
 
-	var/oxy = owner.get_blood_oxygenation()
-	if(oxy < BLOOD_CIRC_BAD + 10) //brain wants us to get MOAR OXY
+	var/blood_oxygenation = owner.get_blood_oxygenation()
+	if(blood_oxygenation < BLOOD_CIRC_BAD + 10) //brain wants us to get MOAR OXY
 		pulse_mod++
-	if(oxy < BLOOD_CIRC_BAD) //MOAR
+	if(blood_oxygenation < BLOOD_CIRC_BAD) //MOAR
 		pulse_mod++
 
 	//If heart is stopped, it isn't going to restart itself randomly.
@@ -120,12 +123,29 @@
 		return
 
 	else if(can_heartattack)//and if it's beating, let's see if it should
-		var/should_stop = prob(80) && owner.get_blood_circulation() < BLOOD_CIRC_SURVIVE //cardiovascular shock, not enough liquid to pump
-		should_stop ||= prob(max(0, owner.getBrainLoss() - owner.maxHealth * 0.75)) //brain failing to work heart properly
-		should_stop ||= (prob(5) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
-		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
+		// Cardiovascular shock, not enough liquid to pump
+		var/blood_circulation = owner.get_blood_circulation()
+		var/should_stop = prob(80) && (blood_circulation < BLOOD_CIRC_SURVIVE)
+		if(should_stop)
+			log_health(owner, "Heart stopped due to poor blood circulation: [blood_circulation]%")
+
+		// Severe brain damage, unable to operate the heart.
+		if(!should_stop)
+			var/brainloss_stop_chance = max(0, owner.getBrainLoss() - owner.maxHealth * 0.75)
+			should_stop = prob(brainloss_stop_chance)
+			if(should_stop)
+				log_health(owner, "Heart stopped due to brain damage: [brainloss_stop_chance]% chance. ")
+
+		// Erratic heart patterns, usually caused by oxyloss.
+		if(!should_stop && COOLDOWN_FINISHED(src, arrhythmia_grace_period))
+			should_stop = (prob(5) && pulse == PULSE_THREADY)
+			if(should_stop)
+				log_health(owner, "Heart stopped due to cardiac arrhythmia. Oxyloss: [owner.getOxyLoss()]")
+
+		// The heart has stopped due to going into traumatic or cardiovascular shock.
+		if(should_stop)
 			if(owner.stat != DEAD)
-				to_chat(owner, span_danger("Your heart has stopped!"))
+				to_chat(owner, span_alert("Your heart has stopped."))
 			if(pulse != NONE)
 				Stop()
 				return
@@ -137,9 +157,9 @@
 		pulse = clamp(PULSE_NORM + pulse_mod, PULSE_SLOW, PULSE_THREADY)
 
 	// If fibrillation, then it can be PULSE_THREADY
-	var/fibrillation = oxy <= BLOOD_CIRC_SURVIVE || (prob(30) && owner.shock_stage > 120)
+	var/fibrillation = blood_oxygenation <= BLOOD_CIRC_SURVIVE || (prob(30) && owner.shock_stage > 120)
 
-	if(pulse && fibrillation)	//I SAID MOAR OXYGEN
+	if(pulse && fibrillation) //I SAID MOAR OXYGEN
 		pulse = PULSE_THREADY
 
 	// Stablising chemicals pull the heartbeat towards the center

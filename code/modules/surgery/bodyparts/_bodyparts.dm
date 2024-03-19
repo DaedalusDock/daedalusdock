@@ -586,8 +586,7 @@
 	if(brute && (can_break_bones || can_jostle_bones))
 		if(LAZYLEN(contained_organs))
 			brute -= damage_internal_organs(round(brute/2, DAMAGE_PRECISION), null, sharpness) // Absorb some brute damage
-			if(!IS_ORGANIC_LIMB(src))
-				burn -= damage_internal_organs(null, round(burn/2, DAMAGE_PRECISION))
+			burn -= damage_internal_organs(null, round(burn/2, DAMAGE_PRECISION))
 
 		if((bodypart_flags & BP_BROKEN_BONES) && can_jostle_bones)
 			jostle_bones(brute)

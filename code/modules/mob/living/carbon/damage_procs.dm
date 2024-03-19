@@ -289,5 +289,6 @@
 		return 0
 	var/obj/item/organ/lungs/L = getorganslot(ORGAN_SLOT_LUNGS)
 	if(!L || (L.organ_flags & ORGAN_DEAD))
-		return maxHealth / 2
+		return maxHealth
+
 	return ..()

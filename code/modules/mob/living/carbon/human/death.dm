@@ -23,6 +23,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 /mob/living/carbon/human/death(gibbed)
 	if(stat == DEAD)
 		return
+
+	log_health(src, "Died. BRUTE: [getBruteLoss()] | BURN: [getFireLoss()] | TOX: [getFireLoss()] | OXY:[getOxyLoss()] | BLOOD: [blood_volume] | BLOOD OXY: [get_blood_oxygenation()]% | PAIN:[getPain()]")
+
 	stop_sound_channel(CHANNEL_HEARTBEAT)
 	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
 	if(H)

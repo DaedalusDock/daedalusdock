@@ -81,6 +81,9 @@
 
 /// Flashes the pain overlay and provides a chat message.
 /mob/living/carbon/proc/notify_pain(amount, message, ignore_cd)
+	if(stat != CONSCIOUS)
+		return
+
 	if(amount >= PAIN_AMT_AGONIZING)
 		flash_pain(PAIN_LARGE)
 		shake_camera(src, 3, 4)
@@ -95,7 +98,7 @@
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE
-	if(!amount)
+	if(!amount || (stat != CONSCIOUS))
 		return FALSE
 
 	. = COOLDOWN_FINISHED(src, pain_cd)
@@ -260,10 +263,11 @@
 				span_danger("<b>[src]</b> slumps over, too weak to continue fighting..."),
 				span_danger("You give into the pain.")
 			)
+			log_health(src, "Passed out due to excessive pain: [pain] | Threshold: [pain_passout]")
 		Unconscious(10 SECONDS)
 		return
 
-	if(stat == UNCONSCIOUS)
+	if(stat != CONSCIOUS)
 		return
 
 	var/pain_timeleft = COOLDOWN_TIMELEFT(src, pain_cd)
@@ -288,7 +292,7 @@
 			AdjustSleeping(-(highest_damage / 5) SECONDS)
 		if(highest_damage > PAIN_THRESHOLD_DROP_ITEM && prob(highest_damage / 5))
 			var/obj/item/I = get_active_held_item()
-			if(dropItemToGround(I))
+			if(I && dropItemToGround(I))
 				visible_message(span_alert("[src] twitches, dropping their [I]."))
 
 		var/burning = damaged_part.burn_dam > damaged_part.brute_dam
@@ -306,6 +310,9 @@
 
 	// Damage to internal organs hurts a lot.
 	for(var/obj/item/organ/I as anything in organs)
+		if(istype(I, /obj/item/organ/brain))
+			continue
+
 		if(prob(1) && (!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 5))
 			var/obj/item/bodypart/parent = I.ownerlimb
 			if(parent.bodypart_flags & BP_NO_PAIN)

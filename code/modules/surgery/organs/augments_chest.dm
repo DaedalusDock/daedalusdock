@@ -108,9 +108,10 @@
 	var/mob/living/carbon/human/human_owner = owner
 	if(!istype(human_owner))
 		return
-	human_owner.set_heartattack(FALSE)
-	if(human_owner.stat == CONSCIOUS)
-		to_chat(human_owner, span_notice("You feel your heart beating again!"))
+	if(human_owner.resuscitate())
+		log_health(human_owner, "Heart restarted due to reviver implant.")
+		if(human_owner.stat == CONSCIOUS)
+			to_chat(human_owner, span_notice("You feel your heart beating again!"))
 
 
 /obj/item/organ/cyberimp/chest/thrusters

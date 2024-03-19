@@ -514,13 +514,8 @@
 	cpr_image.plane = ABOVE_HUD_PLANE
 	add_overlay(cpr_image)
 
-	var/panicking = FALSE
-	do
-		if (!do_after(src, target, panicking ? CPR_PANIC_SPEED : (3 SECONDS), DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
-			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			break
-
-		if (target.health > target.crit_threshold)
+	while (TRUE)
+		if (!do_after(src, target, 3 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
 			break
 
 		visible_message(
@@ -531,26 +526,20 @@
 		log_combat(src, target, "CPRed")
 
 		if(target.breathe(TRUE) == BREATH_OKAY)
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs. It feels good."))
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
+			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs."))
+			target.adjustOxyLoss(-8)
 
-		if (target.health <= target.crit_threshold)
-			if (!panicking)
-				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
-			panicking = TRUE
-		else
-			panicking = FALSE
-
-	while (panicking)
 
 	cut_overlay(cpr_image)
 
 #undef CPR_PANIC_SPEED
 
 /mob/living/carbon/human/proc/can_perform_cpr(mob/living/carbon/target, silent = TRUE)
-	if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-		if(!silent)
-			to_chat(src, span_warning("[target.name] is dead!"))
+	if(target.body_position != LYING_DOWN)
+		return FALSE
+
+	if(!target.getorganslot(ORGAN_SLOT_LUNGS))
+		to_chat(src, span_warning("[target.p_they()] [target.p_dont()] have lungs."))
 		return FALSE
 
 	return TRUE
@@ -767,7 +756,15 @@
 		else
 			hud_used.healthdoll.icon_state = "healthdoll_DEAD"
 
+/mob/living/carbon/human/revive(full_heal, admin_revive, excess_healing)
+	. = ..()
+	if(!.)
+		return
+
+	log_health(src, "Brought back to life.")
+
 /mob/living/carbon/human/fully_heal(admin_revive = FALSE)
+	log_health(src, "Received an adminheal.")
 	dna?.species.spec_fully_heal(src)
 	if(admin_revive)
 		regenerate_limbs()

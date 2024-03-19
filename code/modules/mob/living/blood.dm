@@ -151,8 +151,9 @@
  * * forced-
  */
 /mob/living/carbon/proc/bleed_warn(bleed_amt = 0, forced = FALSE)
-	if(!blood_volume || !client)
+	if(!blood_volume || !client || stat != CONSCIOUS)
 		return
+
 	if(!COOLDOWN_FINISHED(src, bleeding_message_cd) && !forced)
 		return
 
@@ -392,7 +393,7 @@
 	else
 		blood_volume_percent = 100
 
-	var/blood_volume_mod = max(0, 1 - getOxyLoss()/(maxHealth/2))
+	var/blood_volume_mod = max(0, 1 - getOxyLoss()/ maxHealth)
 	var/oxygenated_mult = 0
 	if(chem_effects[CE_OXYGENATED] == 1) // Dexalin.
 		oxygenated_mult = 0.5

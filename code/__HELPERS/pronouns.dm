@@ -32,6 +32,9 @@
 /datum/proc/p_do(temp_gender)
 	. = "does"
 
+/datum/proc/p_dont(temp_gender)
+	. = "doesnt"
+
 /datum/proc/p_theyve(capitalized, temp_gender)
 	. = p_they(capitalized, temp_gender) + "'" + copytext_char(p_have(temp_gender), 3)
 
@@ -136,6 +139,14 @@
 	if(temp_gender == PLURAL || temp_gender == NEUTER)
 		. = "do"
 
+/client/p_dont(temp_gender)
+	if(!temp_gender)
+		temp_gender = gender
+
+	. = "doesn't"
+	if(temp_gender == PLURAL || temp_gender == NEUTER)
+		. = "don't"
+
 /client/p_s(temp_gender)
 	if(!temp_gender)
 		temp_gender = gender
@@ -233,6 +244,14 @@
 	if(temp_gender == PLURAL)
 		. = "do"
 
+/mob/p_dont(temp_gender)
+	if(!temp_gender)
+		temp_gender = gender
+
+	. = "doesn't"
+	if(temp_gender == PLURAL || temp_gender == NEUTER)
+		. = "don't"
+
 /mob/p_s(temp_gender)
 	if(!temp_gender)
 		temp_gender = gender
@@ -296,6 +315,13 @@
 	return ..()
 
 /mob/living/carbon/human/p_do(temp_gender)
+	var/obscured = check_obscured_slots()
+	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
+	if((obscured & ITEM_SLOT_ICLOTHING) && skipface)
+		temp_gender = PLURAL
+	return ..()
+
+/mob/living/carbon/human/p_dont(temp_gender)
 	var/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((obscured & ITEM_SLOT_ICLOTHING) && skipface)

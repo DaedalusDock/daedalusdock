@@ -623,6 +623,7 @@
 
 	if(volume >= 4 && C.undergoing_cardiac_arrest())
 		if(C.resuscitate())
+			log_health(C, "Resuscitated due to epinephrine.")
 			holder.remove_reagent(type, 4)
 			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
 			heart.applyOrganDamage(heart.maxHealth * 0.075)

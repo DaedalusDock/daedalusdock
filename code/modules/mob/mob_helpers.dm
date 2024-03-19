@@ -463,6 +463,8 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 			colored_message = "(EMOTE) [colored_message]"
 		if(LOG_RADIO_EMOTE)
 			colored_message = "(RADIOEMOTE) [colored_message]"
+		if(LOG_HEALTH)
+			colored_message = "(HEALTH) [colored_message]"
 
 	var/list/timestamped_message = list("\[[time_stamp(format = "YYYY-MM-DD hh:mm:ss")]\] [key_name(src)] [loc_name(src)] (Event #[LAZYLEN(logging[smessage_type])])" = colored_message)
 

@@ -350,8 +350,9 @@
 		return
 	//Propagation through pulling, fireman carry
 	if(!(flags & SHOCK_ILLUSION))
-		if(undergoing_cardiac_arrest())
-			set_heartattack(FALSE)
+		if(undergoing_cardiac_arrest() && resuscitate())
+			log_health(src, "Heart restarted due to elecrocution.")
+
 		var/list/shocking_queue = list()
 		shocking_queue += get_all_grabbed_movables()
 		shocking_queue -= source

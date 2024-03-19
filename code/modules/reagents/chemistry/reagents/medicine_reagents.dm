@@ -605,7 +605,7 @@
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
 		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,CHEM_TRAIT_SOURCE(class))
-		to_chat(C, span_danger("Energy rushes through your veins!"))
+		to_chat(C, span_alert("Energy rushes through your veins!"))
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
@@ -622,8 +622,8 @@
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
 
 	if(volume >= 4 && C.undergoing_cardiac_arrest())
-		holder.remove_reagent(src, 4)
 		if(C.resuscitate())
+			holder.remove_reagent(type, 4)
 			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
 			heart.applyOrganDamage(heart.maxHealth * 0.075)
 			to_chat(C, span_userdanger("Adrenaline rushes through your body, you refuse to give up!"))

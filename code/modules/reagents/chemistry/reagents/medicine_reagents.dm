@@ -690,7 +690,7 @@
 	metabolization_rate = 0.02
 
 /datum/reagent/medicine/spaceacillin/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_ANTIBIOTIC, 1)
+	APPLY_CHEM_EFFECT(C, CE_ANTIBIOTIC, volume)
 
 /datum/reagent/medicine/haloperidol
 	name = "Haloperidol"

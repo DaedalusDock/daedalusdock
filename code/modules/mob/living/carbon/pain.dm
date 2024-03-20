@@ -216,10 +216,12 @@
 
 	if(shock_stage >= SHOCK_TIER_4 && prob(5))
 		message = SHOCK_STRING_MAJOR
+		manual_emote("stumbles over [p_them()]self.")
 		Knockdown(2 SECONDS)
 
-	if(shock_stage >= SHOCK_TIER_5 && prob(10))
+	else if(shock_stage >= SHOCK_TIER_5 && prob(10))
 		message = SHOCK_STRING_MAJOR
+		manual_emote("stumbles over [p_them()]self.")
 		Knockdown(2 SECONDS)
 
 	if(shock_stage >= SHOCK_TIER_6)

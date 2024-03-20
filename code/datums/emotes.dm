@@ -321,7 +321,7 @@
 
 	var/origin_turf = get_turf(src)
 	if(client)
-		for(var/mob/ghost as anything in GLOB.dead_mob_list - viewers(origin_turf, null))
+		for(var/mob/ghost as anything in GLOB.dead_mob_list - viewers(origin_turf))
 			if(!ghost.client || isnewplayer(ghost))
 				continue
 

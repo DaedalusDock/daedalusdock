@@ -317,7 +317,7 @@
 
 	log_message(text, LOG_EMOTE)
 
-	var/ghost_text = "<b>[src]</b> [text]"
+	var/ghost_text = "<span class='emote'>[src]</span> [text]"
 
 	var/origin_turf = get_turf(src)
 	if(client)

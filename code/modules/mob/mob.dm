@@ -224,7 +224,7 @@
 		if(!msg)
 			continue
 
-		if(visible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
+		if((visible_message_flags & EMOTE_MESSAGE) && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
 			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = visible_message_flags)
 
 		M.show_message(msg, msg_type, blind_message, MSG_AUDIBLE)

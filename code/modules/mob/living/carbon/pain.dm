@@ -201,9 +201,9 @@
 	if(shock_stage == SHOCK_TIER_1)
 		message = SHOCK_STRING_MINOR
 
-	if(shock_stage >= SHOCK_TIER_2 && prob(shock_stage - 10))
+	if((shock_stage > SHOCK_TIER_2 && prob(2)) || shock_stage == SHOCK_TIER_2)
 		if(shock_stage == SHOCK_TIER_2 && organs_by_slot[ORGAN_SLOT_EYES])
-			visible_message("<b>[src]</b> is having trouble keeping [p_their()] eyes open.")
+			manual_emote("is having trouble keeping [p_their()] eyes open.")
 		blur_eyes(5)
 		set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
@@ -214,18 +214,18 @@
 		if(prob(20))
 			set_timed_status_effect(5 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
-	if(shock_stage >= SHOCK_TIER_4 && prob(5))
+	if((shock_stage > SHOCK_TIER_4 && prob(5)) || shock_stage == SHOCK_TIER_4)
 		message = SHOCK_STRING_MAJOR
 		manual_emote("stumbles over [p_them()]self.")
 		Knockdown(2 SECONDS)
 
-	else if(shock_stage >= SHOCK_TIER_5 && prob(10))
+	else if((shock_stage > SHOCK_TIER_5 && prob(10)) || shock_stage == SHOCK_TIER_5)
 		message = SHOCK_STRING_MAJOR
 		manual_emote("stumbles over [p_them()]self.")
 		Knockdown(2 SECONDS)
 
-	if(shock_stage >= SHOCK_TIER_6)
-		if (stat == CONSCIOUS && prob(2))
+	if((shock_stage > SHOCK_TIER_6 && prob(2)) || shock_stage == SHOCK_TIER_6)
+		if (stat == CONSCIOUS)
 			pain_message(pick("You black out.", "I feel like I could die any moment now.", "I can't go on anymore."), shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 			Unconscious(10 SECONDS)
 			return // We'll be generous
@@ -233,7 +233,7 @@
 	if(shock_stage >= SHOCK_TIER_7)
 		if(shock_stage == SHOCK_TIER_7)
 			visible_message("<b>[src]</b> falls limp!")
-		Unconscious(40 SECONDS)
+		Unconscious(20 SECONDS)
 
 	if(message)
 		pain_message(message, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)

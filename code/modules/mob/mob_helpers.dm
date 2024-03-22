@@ -476,7 +476,7 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 	..()
 
 ///Can the mob hear
-/mob/proc/can_hear()
+/mob/proc/can_hear(ignore_stat)
 	. = TRUE
 
 /**

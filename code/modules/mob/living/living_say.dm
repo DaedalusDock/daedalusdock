@@ -519,3 +519,21 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	if(get_minds && mind)
 		return mind.get_language_holder()
 	. = ..()
+
+/mob/living/proc/hear_sleeping(message)
+	var/heard = ""
+	if(prob(15))
+		var/list/punctuation = list(",", "!", ".", ";", "?")
+		var/list/messages = splittext(message, " ")
+		var/R = rand(1, length(messages))
+		var/heardword = messages[R]
+		if(copytext(heardword,1, 1) in punctuation)
+			heardword = copytext(heardword,2)
+		if(copytext(heardword,-1) in punctuation)
+			heardword = copytext(heardword,1,length(heardword))
+		heard = "<span class = 'game say obviousnotice'>...You hear something about...[heardword]</span>"
+
+	else
+		heard = "<span class = 'game say obviousnotice'><i>...You almost hear someone talking...</i></span>"
+
+	to_chat(src, heard)

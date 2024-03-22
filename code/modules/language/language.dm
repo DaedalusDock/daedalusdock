@@ -145,15 +145,20 @@
 	return (flags & TONGUELESS_SPEECH)
 
 /// Returns TRUE if the movable can even "see" or "hear" the language. This does not check it knows the language.
-/datum/language/proc/can_receive_language(atom/movable/hearer)
+/datum/language/proc/can_receive_language(atom/movable/hearer, ignore_stat)
 	if(ismob(hearer))
 		var/mob/M = hearer
-		return M.can_hear()
+		return M.can_hear(ignore_stat)
 	return TRUE
 
 /// Called by Hear() to process a language and display it to the hearer.
 /datum/language/proc/hear_speech(mob/living/hearer, atom/movable/speaker, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
 	if(!istype(hearer))
+		return
+
+	if(hearer.stat == UNCONSCIOUS && can_receive_language(hearer, ignore_stat = TRUE))
+		var/sleep_message = hearer.process_received_speech(speaker, src, raw_message, no_quote = TRUE)
+		hearer.hear_sleeping(sleep_message)
 		return
 
 	var/avoid_highlight = FALSE

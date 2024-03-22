@@ -1,7 +1,7 @@
 /datum/language/visual
 	abstract_type = /datum/language/visual
 
-/datum/language/visual/can_receive_language(atom/movable/hearer)
+/datum/language/visual/can_receive_language(atom/movable/hearer, ignore_stat)
 	if(!ismob(hearer))
 		return TRUE
 

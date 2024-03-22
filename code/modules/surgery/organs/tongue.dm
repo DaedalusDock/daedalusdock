@@ -385,7 +385,6 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/calcic
 	))
 
 /obj/item/organ/tongue/bone/Initialize(mapload)

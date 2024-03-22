@@ -1,10 +1,11 @@
 /datum/language/visual/sign
 	name = "Universal Sign Language"
 	desc = "The universally understood sign language format."
-	key = "-"
+	key = "s"
 	default_priority = 90
 	spans = list("emote")
 	icon_state = "sign"
+	flags = parent_type::flags | (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND)
 
 /datum/language/visual/sign/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
 	spans |= "italics"

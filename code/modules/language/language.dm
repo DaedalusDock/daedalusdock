@@ -9,7 +9,7 @@
 	var/desc = "A language."          // Short description for 'Check Languages'.
 	var/key                           // Character used to speak in language
 	// If key is null, then the language isn't real or learnable.
-	var/flags                         // Various language flags.
+	var/flags = NONE // Various language flags.
 	var/list/syllables                // Used when scrambling text for a non-speaker.
 	var/sentence_chance = 5      // Likelihood of making a new sentence after each syllable.
 	var/space_chance = 55        // Likelihood of getting a space in the random scramble string

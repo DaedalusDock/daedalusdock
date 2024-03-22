@@ -1837,11 +1837,9 @@ GLOBAL_LIST_EMPTY(species_perks)
 /datum/species/proc/get_constant_data()
 	. = new /list(2)
 
-	var/list/species_perks = list()
-	var/list/languages_spoken = list()
-
-	.[SPECIES_DATA_PERKS] = get_perk_data() //Set later
+	.[SPECIES_DATA_PERKS] = get_perk_data()
 	.[SPECIES_DATA_LANGUAGES] = get_innate_languages()
+
 	return .
 
 /// Returns a list of each language we know innately.

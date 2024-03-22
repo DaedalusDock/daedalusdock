@@ -814,3 +814,7 @@ GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
 #define MOB_ATTACKEDBY_FAIL 0
 #define MOB_ATTACKEDBY_SUCCESS 1
 #define MOB_ATTACKEDBY_NO_DAMAGE 2
+
+#define BLIND_NOT_BLIND 0
+#define BLIND_PHYSICAL 1
+#define BLIND_SLEEPING 2

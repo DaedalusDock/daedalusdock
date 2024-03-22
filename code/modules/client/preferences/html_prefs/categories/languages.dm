@@ -24,8 +24,7 @@
 
 	var/list/all_languages = GLOB.preference_language_types
 	var/list/user_languages = prefs.read_preference(P.type)
-	var/datum/species/S = prefs.read_preference(/datum/preference/choiced/species)
-	var/datum/language/innate_language = S.innate_language
+	var/list/datum/language/innate_languages = get_species_constant_data(prefs.read_preference(/datum/preference/choiced/species))[SPECIES_DATA_LANGUAGES]
 	var/remaining_points = 3 - P.tally_points(user_languages)
 	var/afford_speak = remaining_points >= 2
 	var/afford_understand = remaining_points >= 1
@@ -41,12 +40,7 @@
 	"}
 
 
-	for(var/datum/language/language_path as anything in all_languages)
-		if(language_path == innate_language)
-			continue
-		if(language_path in user_languages)
-			continue
-
+	for(var/datum/language/language_path as anything in all_languages - innate_languages - user_languages)
 		var/can_understand = initial(language_path.flags) & LANGUAGE_SELECTABLE_UNDERSTAND
 		var/can_speak = initial(language_path.flags) & LANGUAGE_SELECTABLE_SPEAK
 
@@ -72,7 +66,7 @@
 	<table class='zebraTable' style='min-width:100%;height: 560px;display: block;overflow-y: scroll'>
 	"}
 
-	if(innate_language)
+	for(var/datum/language/innate_language as anything in innate_languages)
 		. += {"
 		<tr>
 			<td>

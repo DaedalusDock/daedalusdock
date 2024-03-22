@@ -35,7 +35,6 @@
 	inert_mutation = /datum/mutation/human/firebreath
 	wings_icons = list("Dragon")
 	species_language_holder = /datum/language_holder/lizard
-	innate_language = /datum/language/draconic
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
 	// Lizards are coldblooded and can stand a greater temperature range than humans

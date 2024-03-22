@@ -15,6 +15,8 @@
 		armor = getArmor(arglist(armor))
 		return armor
 
+	CRASH("Armor is not a datum or a list, what the fuck?")
+
 ///Setter for armor
 /atom/proc/setArmor(datum/new_armor)
 	armor = new_armor
@@ -41,6 +43,12 @@
 	src.fire = fire
 	src.acid = acid
 	GenerateTag()
+
+/datum/armor/Destroy(force, ...)
+	if(!force)
+		stack_trace("Some mf tried to delete an armor datum, KILL THIS MAN")
+		return QDEL_HINT_LETMELIVE
+	return ..()
 
 /datum/armor/proc/modifyRating(blunt = 0, puncture = 0, slash = 0, laser = 0, energy = 0, bomb = 0, bio = 0, fire = 0, acid = 0)
 	return getArmor(

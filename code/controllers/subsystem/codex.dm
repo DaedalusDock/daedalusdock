@@ -132,8 +132,9 @@ SUBSYSTEM_DEF(codex)
 
 	var/list/results = list()
 	var/list/priority_results = list()
+
 	if(entries_by_string[searching])
-		results = entries_by_string[searching]
+		results += entries_by_string[searching]
 	else
 		for(var/datum/codex_entry/entry as anything in all_entries)
 			if(findtext(entry.name, searching))
@@ -144,6 +145,7 @@ SUBSYSTEM_DEF(codex)
 
 	sortTim(priority_results, GLOBAL_PROC_REF(cmp_name_asc))
 	sortTim(results, GLOBAL_PROC_REF(cmp_name_asc))
+
 	priority_results += results
 	search_cache[searching] = priority_results
 	. = search_cache[searching]

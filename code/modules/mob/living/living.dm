@@ -170,6 +170,7 @@
 				(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED) || !combat_mode)
 			)
 				mob_swap = TRUE
+
 		if(mob_swap)
 			//switch our position with M
 			if(loc && !loc.MultiZAdjacent(M.loc))
@@ -189,15 +190,18 @@
 	//not if he's not CANPUSH of course
 	if(!(M.status_flags & CANPUSH))
 		return TRUE
+
 	if(isliving(M))
 		var/mob/living/L = M
 		if(HAS_TRAIT(L, TRAIT_PUSHIMMUNE))
 			return TRUE
+
 	//If they're a human, and they're not in help intent, block pushing
 	if(ishuman(M))
 		var/mob/living/carbon/human/human = M
 		if(human.combat_mode)
 			return TRUE
+
 	//if they are a cyborg, and they're alive and in combat mode, block pushing
 	if(iscyborg(M))
 		var/mob/living/silicon/robot/borg = M
@@ -255,9 +259,11 @@
 	if((AM.move_resist * MOVE_FORCE_CRUSH_RATIO) <= force)
 		if(move_crush(AM, move_force, dir_to_target))
 			push_anchored = TRUE
+
 	if((AM.move_resist * MOVE_FORCE_FORCEPUSH_RATIO) <= force) //trigger move_crush and/or force_push regardless of if we can push it normally
 		if(force_push(AM, move_force, dir_to_target, push_anchored))
 			push_anchored = TRUE
+
 	if(ismob(AM))
 		var/mob/mob_to_push = AM
 		var/atom/movable/mob_buckle = mob_to_push.buckled
@@ -266,9 +272,11 @@
 		if(mob_buckle && (mob_buckle.buckle_prevents_pull || (force < (mob_buckle.move_resist * MOVE_FORCE_PUSH_RATIO))))
 			now_pushing = FALSE
 			return
+
 	if((AM.anchored && !push_anchored) || (force < (AM.move_resist * MOVE_FORCE_PUSH_RATIO)))
 		now_pushing = FALSE
 		return
+
 	if(istype(AM, /obj/structure/window))
 		var/obj/structure/window/W = AM
 		if(W.fulltile)
@@ -771,8 +779,9 @@
 	if(lying_angle != 0)
 		lying_angle_on_movement(direct)
 	if (buckled && buckled.loc != newloc) //not updating position
-		if (!buckled.anchored)
-			return buckled.move_from_pull(newloc, buckled, glide_size)
+		if (buckled.anchored)
+			return FALSE
+		return buckled.move_from_pull(newloc, buckled, glide_size)
 
 	var/old_direction = dir
 	var/turf/T = loc

@@ -256,7 +256,6 @@
 			brainmob.container = null
 			B.brainmob = brainmob
 			brainmob = null
-			B.brainmob.forceMove(B)
 		brain = null
 
 	else if(O == tongue)

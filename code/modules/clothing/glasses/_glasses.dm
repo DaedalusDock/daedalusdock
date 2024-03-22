@@ -53,6 +53,7 @@
 		user.update_sight()
 		if(iscarbon(user))
 			var/mob/living/carbon/carbon_user = user
+			carbon_user.update_tint()
 			carbon_user.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 //called when thermal glasses are emped.

@@ -28,8 +28,8 @@
 				fluid_loss_severity = FLUIDLOSS_BURN_WIDE
 			if (WOUND_LASER)
 				fluid_loss_severity = FLUIDLOSS_BURN_CONCENTRATED
-		var/fluid_loss = (damage/(owner.maxHealth)) * BLOOD_VOLUME_NORMAL * fluid_loss_severity
-		owner.bleed(fluid_loss)
+		var/fluid_loss = (damage / (owner.maxHealth)) * BLOOD_VOLUME_NORMAL * fluid_loss_severity
+		owner.adjustBloodVolume(-fluid_loss)
 
 	//Check whether we can widen an existing wound
 	if(!surgical && LAZYLEN(wounds) && prob(max(50+(real_wound_count-1)*10,90)))

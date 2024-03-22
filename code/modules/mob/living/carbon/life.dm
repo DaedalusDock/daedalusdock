@@ -20,8 +20,12 @@
 		if(stat != DEAD)
 			handle_brain_damage(delta_time, times_fired)
 
-		if(handle_bodyparts(delta_time, times_fired))
+		var/bodyparts_action = handle_bodyparts(delta_time, times_fired)
+		if(bodyparts_action & BODYPART_LIFE_UPDATE_HEALTH)
 			updatehealth()
+
+		else if(bodyparts_action & BODYPART_LIFE_UPDATE_HEALTH_HUD)
+			update_health_hud()
 
 	if(stat == DEAD)
 		stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -135,12 +139,13 @@
 					breath.adjustGas(gasname, -breath.gas[gasname], update = 0) //update after
 
 	. = check_breath(breath, forced)
+
 	if(breath?.total_moles)
 		AIR_UPDATE_VALUES(breath)
 		loc.assume_air(breath)
 
 	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50, channel = CHANNEL_BREATHING)
-	if(shock_stage >= 10 || (!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE))
+	if((!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE))
 		src << breathing
 		COOLDOWN_START(src, breath_sound_cd, 3.5 SECONDS)
 

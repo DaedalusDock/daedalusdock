@@ -72,7 +72,13 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/alt_name = speaker.get_alt_name()
 
 	//Basic span
-	var/wrapper_span = "<span class='[radio_freq ? get_radio_span(radio_freq) : "game say"]'>"
+	var/wrapper_span = "<span class = 'game say'>"
+	if(radio_freq)
+		wrapper_span = "<span class = '[get_radio_span(radio_freq)]'>"
+
+	else if(message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
+		wrapper_span = "<span class = 'emote'>"
+
 	//Radio freq/name display
 	var/freqpart = radio_freq ? "\[[get_radio_name(radio_freq)]\] " : ""
 	//Speaker name

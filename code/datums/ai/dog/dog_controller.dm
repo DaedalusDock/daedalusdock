@@ -20,7 +20,7 @@
 /datum/ai_controller/dog/process(delta_time)
 	if(ismob(pawn))
 		var/mob/living/living_pawn = pawn
-		movement_delay = living_pawn.cached_multiplicative_slowdown
+		movement_delay = living_pawn.movement_delay
 	return ..()
 
 /datum/ai_controller/dog/TryPossessPawn(atom/new_pawn)

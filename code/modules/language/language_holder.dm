@@ -160,6 +160,9 @@ Key procs
 
 /// Checks if you have the language. If spoken is true, only checks if you can speak the language.
 /datum/language_holder/proc/has_language(datum/language/language, spoken = FALSE)
+	if(isnull(language))
+		return FALSE
+
 	if(!ispath(language))
 		language = language.type
 

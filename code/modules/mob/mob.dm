@@ -494,16 +494,8 @@
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
+			broadcast_examine(examinify)
 
-			if(!isdead(usr) && !(usr == examinify))
-				var/list/can_see_target = viewers(usr)
-				for(var/mob/M as anything in viewers(4, usr))
-					if(!M.client)
-						continue
-					if(M in can_see_target)
-						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]."))
-					else
-						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else
 		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
 
@@ -518,6 +510,45 @@
 	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
+/// Tells nearby mobs about our examination.
+/mob/proc/broadcast_examine(atom/examined)
+	if(examined == src)
+		return
+
+	// If TRUE, the usr's view() for the examined object too
+	var/examining_worn_item = FALSE
+	var/loc_str = "at something off in the distance."
+
+	if(isitem(examined))
+		var/obj/item/I = examined
+		if((I.item_flags & IN_STORAGE))
+			if(get(I, /mob/living) == src)
+				loc_str = "inside [p_their()] [I.loc.name]..."
+			else
+				loc_str = "inside [I.loc]..."
+
+		else if(I.loc == src)
+			loc_str = "at [p_their()] [I.name]."
+			examining_worn_item = TRUE
+
+	var/can_see_str = span_subtle("\The [src] looks at [examined].")
+	if(examining_worn_item)
+		can_see_str = span_subtle("\The [src] looks [loc_str]")
+
+	var/cannot_see_str = span_subtle("\The [src] looks [loc_str]")
+
+	var/list/can_see_target = viewers(examined)
+	for(var/mob/M as anything in viewers(4, src))
+		if(!M.client || M.is_blind())
+			continue
+
+		if(examining_worn_item || (M == src) || (M in can_see_target))
+			to_chat(M, can_see_str)
+		else
+			to_chat(M, cannot_see_str)
+
+/mob/dead/broadcast_examine(atom/examined)
+	return //Observers arent real the government is lying to you
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.

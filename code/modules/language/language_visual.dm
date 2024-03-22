@@ -45,7 +45,7 @@
 		hearer.create_chat_message(speaker, src, raw_message, spans, sound_loc = sound_loc)
 
 	if(!can_receive_language)
-		return FALSE
+		return
 
 	var/parsed_message = hearer.compose_message(speaker, src, raw_message, radio_freq, spans, message_mods)
 

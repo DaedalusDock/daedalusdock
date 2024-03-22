@@ -576,11 +576,19 @@ span.color_holder_box{
 	border: 1px solid rgba(255, 183, 0, 0.5);
 }
 
-.zebraTable div:nth-child(2n) tr:nth-child(even){
+.zebraTable div:nth-child(2n){
 	background-color: #7c5500;
 }
 
-.zebraTable div:nth-child(2n+1) tr:nth-child(odd){
+.zebraTable div:nth-child(2n+1){
+	background-color: #533200;
+}
+
+.zebraTable tr:nth-child(even){
+	background-color: #7c5500;
+}
+
+.zebraTable tr:nth-child(odd){
 	background-color: #533200;
 }
 

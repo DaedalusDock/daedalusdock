@@ -3,8 +3,9 @@
 	desc = "The universally understood sign language format."
 	key = "-"
 	default_priority = 90
-
-	icon_state = "galcom"
+	spans = list("emote")
+	icon_state = "sign"
 
 /datum/language/visual/sign/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
-	return "makes weird gestures with [source.p_their()] hands."
+	spans |= "italics"
+	return span_emote("makes weird gestures with [source.p_their()] hands.")

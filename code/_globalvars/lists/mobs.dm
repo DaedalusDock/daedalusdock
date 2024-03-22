@@ -55,7 +55,7 @@ GLOBAL_LIST_EMPTY(current_observers_list)
 ///underages who have been reported to security for trying to buy things they shouldn't, so they can't spam
 GLOBAL_LIST_EMPTY(narcd_underages)
 
-#define GET_LANGUAGE_DATUM(lang )(istype(lang, /datum/language) ? lang : GLOB.language_datum_instances[lang])
+#define GET_LANGUAGE_DATUM(lang) (istype(lang, /datum/language) ? lang : GLOB.language_datum_instances[lang])
 
 GLOBAL_LIST_EMPTY(language_datum_instances)
 GLOBAL_LIST_EMPTY(all_languages)

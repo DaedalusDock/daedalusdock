@@ -105,6 +105,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	if(sanitize)
 		message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
+
 	if(!message || message == "")
 		return
 
@@ -132,7 +133,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	message = get_message_mods(message, message_mods)
 
 	var/datum/saymode/saymode = SSpackets.saymodes[message_mods[RADIO_KEY]]
-	if (!forced)
+	if (!forced && !saymode)
 		message = check_for_custom_say_emote(message, message_mods)
 
 	if(!message)
@@ -235,7 +236,10 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	if(saymode && !saymode.handle_message(src, message, language))
 		return
 
-	if(!is_visual_language)
+	if(is_visual_language)
+		if(message_mods[MODE_HEADSET] || message_mods[RADIO_KEY])
+			return
+	else
 		var/radio_message = message
 		if(message_mods[WHISPER_MODE])
 			// radios don't pick up whispers very well
@@ -412,16 +416,20 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
  * Treats the passed message with things that may modify speech (stuttering, slurring etc).
  *
  * message - The message to treat.
- * capitalize_message - Whether we run capitalize() on the message after we're done.
+ * correct_grammar - Whether or not to capitalize the first letter and add punctuation.
  */
-/mob/living/proc/treat_message(message, capitalize_message = TRUE)
+/mob/living/proc/treat_message(message, correct_grammar = TRUE)
 	if(HAS_TRAIT(src, TRAIT_UNINTELLIGIBLE_SPEECH))
 		message = unintelligize(message)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_TREAT_MESSAGE, args)
 
-	if(capitalize_message)
+	if(correct_grammar)
 		message = capitalize(message)
+
+		var/static/regex/ends_with_punctuation = regex("\[?!-.\]")
+		if((!client || client.prefs.read_preference(/datum/preference/toggle/auto_punctuation)) && !ends_with_punctuation.Find(message, length(message)))
+			message += "."
 
 	return message
 

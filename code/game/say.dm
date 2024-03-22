@@ -168,7 +168,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 	// Understands the language?
 	if(has_language(language))
-		return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods, language)
+		return language.speech_understood(source, raw_message, spans, message_mods, no_quote)
 
 	else if(language)
 		return language.speech_not_understood(source, raw_message, spans, message_mods, no_quote)

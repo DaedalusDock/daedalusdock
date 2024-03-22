@@ -2549,6 +2549,7 @@
 #include "code\modules\client\preferences\antagonists.dm"
 #include "code\modules\client\preferences\assets.dm"
 #include "code\modules\client\preferences\auto_fit_viewport.dm"
+#include "code\modules\client\preferences\auto_punctuation.dm"
 #include "code\modules\client\preferences\binary_radials.dm"
 #include "code\modules\client\preferences\bloom.dm"
 #include "code\modules\client\preferences\body_size.dm"

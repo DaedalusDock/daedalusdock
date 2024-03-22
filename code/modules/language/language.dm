@@ -65,9 +65,13 @@
 	if(scramble_cache.len > SCRAMBLE_CACHE_LEN)
 		scramble_cache.Cut(1, scramble_cache.len-SCRAMBLE_CACHE_LEN-1)
 
-/// Called by lang_treat() when the hearer does not understand the language.
+/// Called by process_received_message() when the hearer does not understand the language.
 /datum/language/proc/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
 	raw_message = scramble(raw_message)
+	return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods, src)
+
+/// Called by process_received_message() when the hearer does understand the language.
+/datum/language/proc/speech_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
 	return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods, src)
 
 /datum/language/proc/scramble(input)
@@ -142,6 +146,9 @@
 
 /// Returns TRUE if the movable can even "see" or "hear" the language. This does not check it knows the language.
 /datum/language/proc/can_receive_language(atom/movable/hearer)
+	if(ismob(hearer))
+		var/mob/M = hearer
+		return M.can_hear()
 	return TRUE
 
 /// Called by Hear() to process a language and display it to the hearer.

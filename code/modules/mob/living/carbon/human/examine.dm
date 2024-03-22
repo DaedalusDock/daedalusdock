@@ -26,6 +26,23 @@
 
 	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text]!</EM><hr>")
 
+	if(!skipface)
+		var/age_text
+		switch(age)
+			if(-INFINITY to 25) //what
+				age_text = "very young"
+			if(26 to 35)
+				age_text = "of adult age"
+			if(36 to 55)
+				age_text = "middle-aged"
+			if(56 to 75)
+				age_text = "rather old"
+			if(76 to 100)
+				age_text = "very old"
+			if(101 to INFINITY)
+				age_text = "withering away"
+		. += span_notice("[t_He] appear[t_s] to be [age_text].")
+
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
 		//accessory
@@ -103,23 +120,6 @@
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
 		var/id_topic = wear_id.GetID() ? " <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>" : ""
 		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)].[id_topic]"
-
-	if(!skipface)
-		var/age_text
-		switch(age)
-			if(-INFINITY to 25) //what
-				age_text = "very young"
-			if(26 to 35)
-				age_text = "of adult age"
-			if(36 to 55)
-				age_text = "middle-aged"
-			if(56 to 75)
-				age_text = "rather old"
-			if(76 to 100)
-				age_text = "very old"
-			if(101 to INFINITY)
-				age_text = "withering away"
-		. += span_notice("[t_He] appear[t_s] to be [age_text].")
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()

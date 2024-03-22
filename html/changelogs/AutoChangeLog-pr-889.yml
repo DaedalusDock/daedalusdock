@@ -1,0 +1,20 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Pain is now tied to wounds, healing wounds will heal any non-temporary
+      pain.
+  - balance: Increased potency of morphine's painkiller effect.
+  - bugfix: Removed the old damage-based slowdown, it's now purely pain based
+  - bugfix: Re-added Burn damage causing internal organ damage. The removal of this
+      made it so burn damage wasn't lethal, even in obscene amounts.
+  - balance: "Brainloss-induced knockout no longer stacks. It's now spurts of unconsciousness.\
+      \ (Note: This is not the case for knockout caused by having no oxygen in the\
+      \ brain)"
+  - balance: Added a grace period to hearts after a resuscitation, a heart now has
+      a 10 second window where it will not be stopped by arrhythmia (the heart pumping
+      too hard as a result of poor oxygenation).
+  - balance: Increased the grace period for shock-induced fibrillation after resuscitation
+      from ~20 ticks to ~25 ticks.
+  - balance: Increased the oxyloss recovery caused by a defibrillator, effectively
+      extending the time to stabilize a patient after restarting their heart.
+  - bugfix: Germs actually increase, meaning infection can occur properly.

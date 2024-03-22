@@ -204,11 +204,11 @@ Key procs
 
 /// Gets a random understood language, useful for hallucinations and such.
 /datum/language_holder/proc/get_random_understood_language()
-	return pick(understood_languages)
+	return GET_LANGUAGE_DATUM(pick(understood_languages))
 
 /// Gets a random spoken language, useful for forced speech and such.
 /datum/language_holder/proc/get_random_spoken_language()
-	return pick(spoken_languages)
+	return GET_LANGUAGE_DATUM(pick(spoken_languages))
 
 /// Opens a language menu reading from the language holder.
 /datum/language_holder/proc/open_language_menu(mob/user)

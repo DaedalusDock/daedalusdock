@@ -211,8 +211,9 @@
 			if(high_stress)
 				if(prob(15) && ishuman(owner))
 					var/mob/living/carbon/human/H = owner
-					H.set_heartattack(TRUE)
-					to_chat(H, span_userdanger("You feel a stabbing pain in your heart!"))
+					if(H.set_heartattack(TRUE))
+						log_health(H, "Heart stopped due to monophobia quirk.")
+						to_chat(H, span_userdanger("You feel a stabbing pain in your heart!"))
 				else
 					to_chat(owner, span_userdanger("You feel your heart lurching in your chest..."))
 					owner.adjustOxyLoss(8)

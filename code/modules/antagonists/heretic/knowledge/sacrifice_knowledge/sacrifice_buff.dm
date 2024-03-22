@@ -94,8 +94,7 @@
 		return
 
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
-		owner.blood_volume = owner.blood_volume + 2
-
+		owner.adjustBloodVolume(2)
 
 	var/mob/living/carbon/carbon_owner = owner
 	var/datum/wound/bloodiest_wound

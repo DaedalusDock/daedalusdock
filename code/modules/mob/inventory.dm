@@ -150,15 +150,27 @@
 	return FALSE
 
 /// A helper for picking up an item.
-/mob/proc/pickup_item(obj/item/I, hand_index = active_hand_index, ignore_anim)
+/mob/proc/pickup_item(obj/item/I, hand_index = active_hand_index, ignore_anim = FALSE)
 	if(QDELETED(I))
 		return
 
 	if(!can_put_in_hand(I, hand_index))
 		return
 
+	//If the item is in a storage item, take it out
+	var/was_in_storage = !!I.loc.atom_storage?.attempt_remove(I, src, silent = TRUE)
+	if(QDELETED(src)) //moving it out of the storage destroyed it.
+		return
+
+	if(I.throwing)
+		I.throwing.finalize(FALSE)
+
+	if(I.loc == src)
+		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I))
+			return
+
 	I.pickup(src)
-	. = put_in_hand(I, hand_index, ignore_anim = ignore_anim)
+	. = put_in_hand(I, hand_index, ignore_anim = ignore_anim || was_in_storage)
 
 	if(!.)
 		stack_trace("Somehow, someway, pickup_item failed put_in_hand().")

@@ -2,7 +2,7 @@
  * This movement datum represents smart-pathing
  */
 /datum/ai_movement/jps
-	max_pathing_attempts = 4
+	max_pathing_attempts = 20
 
 /datum/ai_movement/jps/start_moving_towards(datum/ai_controller/controller, atom/current_movement_target, min_distance)
 	. = ..()
@@ -12,10 +12,10 @@
 	var/datum/move_loop/loop = SSmove_manager.jps_move(moving,
 		current_movement_target,
 		delay,
-		repath_delay = 2 SECONDS,
-		max_path_length = AI_MAX_PATH_LENGTH,
+		repath_delay = 0.5 SECONDS,
+		max_path_length = max_path_length,
 		minimum_distance = controller.get_minimum_distance(),
-		id = controller.get_access(),
+		access = controller.get_access(),
 		subsystem = SSai_movement,
 		extra_info = controller,
 		initial_path = controller.blackboard[BB_PATH_TO_USE])
@@ -28,5 +28,22 @@
 	SIGNAL_HANDLER
 	var/datum/ai_controller/controller = source.extra_info
 
-	source.id = controller.get_access()
+	source.access = controller.get_access()
 	source.minimum_distance = controller.get_minimum_distance()
+
+/datum/ai_movement/jps/modsuit
+	max_path_length = MOD_AI_RANGE
+
+/datum/ai_movement/jps/modsuit/pre_move(datum/move_loop/source)
+	. = ..()
+	if(.)
+		return
+	var/datum/move_loop/has_target/jps/moveloop = source
+	if(!length(moveloop.movement_path))
+		return
+
+	var/datum/ai_controller/controller = source.extra_info
+	var/obj/item/mod = controller.pawn
+	var/angle = get_angle(mod, moveloop.movement_path[1])
+	mod.transform = matrix().Turn(angle)
+

@@ -496,16 +496,11 @@
 		playsound(loc, 'sound/weapons/cablecuff.ogg', 30, TRUE, -2)
 		C.visible_message(span_danger("[user] begins restraining [C] with dark magic!"), \
 								span_userdanger("[user] begins shaping dark magic shackles around your wrists!"))
-		if(do_after(user, C, 30))
-			if(!C.handcuffed)
-				C.set_handcuffed(new /obj/item/restraints/handcuffs/energy/cult/used(C))
-				C.update_handcuffed()
-				C.silent += 5
-				to_chat(user, span_notice("You shackle [C]."))
-				log_combat(user, C, "shackled")
-				uses--
-			else
-				to_chat(user, span_warning("[C] is already bound."))
+		if(do_after(user, C, 30) && C.equip_to_slot_if_possible(new /obj/item/restraints/handcuffs/energy/cult/used(C), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
+			C.silent += 5
+			to_chat(user, span_notice("You shackle [C]."))
+			log_combat(user, C, "shackled")
+			uses--
 		else
 			to_chat(user, span_warning("You fail to shackle [C]."))
 	else
@@ -685,9 +680,10 @@
 						uses = 0
 						return ..()
 					else
-						H.blood_volume = BLOOD_VOLUME_SAFE
+						H.setBloodVolume(BLOOD_VOLUME_SAFE)
 						uses -= round(restore_blood/2)
 						to_chat(user,span_warning("Your blood rites have restored [H == user ? "your" : "[H.p_their()]"] blood to safe levels!"))
+
 				var/overall_damage = H.getBruteLoss() + H.getFireLoss() + H.getToxLoss() + H.getOxyLoss()
 				if(overall_damage == 0)
 					to_chat(user,span_cult("That cultist doesn't require healing!"))

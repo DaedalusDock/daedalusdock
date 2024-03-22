@@ -133,3 +133,12 @@
 	internals_slot = ITEM_SLOT_SUITSTORE
 	backpack_contents = null
 	box = null
+
+/datum/outfit/job/captain/mod/post_equip(mob/living/carbon/human/equipped, visualsOnly)
+	. = ..()
+	if(visualsOnly)
+		return
+
+	var/obj/item/mod/control/modsuit = equipped.back
+	var/obj/item/mod/module/pathfinder/module = locate() in modsuit.modules
+	module.implant.implant(equipped, silent = TRUE)

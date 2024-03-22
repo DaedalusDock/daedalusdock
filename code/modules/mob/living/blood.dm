@@ -4,6 +4,20 @@
 				BLOOD SYSTEM
 ****************************************************/
 
+/// Adjusts blood volume, returning the difference.
+/mob/living/proc/adjustBloodVolume(adj)
+	var/old_blood_volume = blood_volume
+	blood_volume = clamp(blood_volume + adj, 0, BLOOD_VOLUME_ABSOLUTE_MAX)
+	return old_blood_volume - blood_volume
+
+/mob/living/proc/adjustBloodVolumeUpTo(adj, max)
+	if(blood_volume >= max)
+		return 0
+	return adjustBloodVolume(min(max-blood_volume, adj))
+
+/mob/living/proc/setBloodVolume(amt)
+	return adjustBloodVolume(amt - blood_volume)
+
 // Takes care blood loss and regeneration
 /mob/living/carbon/human/handle_blood(delta_time, times_fired)
 
@@ -84,11 +98,7 @@
 	if(!blood_volume)
 		return
 
-	var/old_blood_volume = blood_volume
-	blood_volume = max(blood_volume - amt, 0)
-
-	// Return the difference
-	. = old_blood_volume - blood_volume
+	. = adjustBloodVolume(-amt)
 
 	//Blood loss still happens in locker, floor stays clean
 	if(isturf(loc) && prob(sqrt(amt)*BLOOD_DRIP_RATE_MOD))
@@ -141,8 +151,9 @@
  * * forced-
  */
 /mob/living/carbon/proc/bleed_warn(bleed_amt = 0, forced = FALSE)
-	if(!blood_volume || !client)
+	if(!blood_volume || !client || stat != CONSCIOUS)
 		return
+
 	if(!COOLDOWN_FINISHED(src, bleeding_message_cd) && !forced)
 		return
 
@@ -182,12 +193,11 @@
 		return ..()
 
 /mob/living/proc/restore_blood()
-	blood_volume = initial(blood_volume)
+	setBloodVolume(initial(blood_volume))
 
 /mob/living/carbon/restore_blood()
-	blood_volume = BLOOD_VOLUME_NORMAL
-	for(var/i in bodyparts)
-		var/obj/item/bodypart/BP = i
+	setBloodVolume(BLOOD_VOLUME_NORMAL)
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
 		BP.setBleedStacks(0)
 
 /****************************************************
@@ -226,7 +236,7 @@
 					C.reagents.add_reagent(/datum/reagent/toxin, amount * 0.5)
 					return TRUE
 
-			C.blood_volume = min(C.blood_volume + round(amount, 0.1), BLOOD_VOLUME_MAX_LETHAL)
+			C.adjustBloodVolumeUpTo(0.1)
 			return TRUE
 
 	AM.reagents.add_reagent(blood_id, amount, blood_data, bodytemperature)
@@ -383,7 +393,7 @@
 	else
 		blood_volume_percent = 100
 
-	var/blood_volume_mod = max(0, 1 - getOxyLoss()/(maxHealth/2))
+	var/blood_volume_mod = max(0, 1 - getOxyLoss()/ maxHealth)
 	var/oxygenated_mult = 0
 	if(chem_effects[CE_OXYGENATED] == 1) // Dexalin.
 		oxygenated_mult = 0.5

@@ -508,7 +508,7 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_speed_boost, update = TRUE)
 
 /datum/movespeed_modifier/status_speed_boost
-	multiplicative_slowdown = -1
+	slowdown = -1
 
 ///this buff provides a max health buff and a heal.
 /datum/status_effect/limited_buff/health_buff

@@ -2,7 +2,8 @@
 	COOLDOWN_DECLARE(pain_cd)
 	COOLDOWN_DECLARE(pain_emote_cd)
 
-/mob/living/carbon/var/shock_stage
+/mob/living/carbon
+	var/shock_stage
 
 /mob/living/carbon/getPain()
 	. = 0
@@ -10,9 +11,6 @@
 		. += BP.getPain()
 
 	. -= CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)
-
-	if(stat == UNCONSCIOUS)
-		. *= 0.6
 
 	return max(0, .)
 
@@ -25,8 +23,10 @@
 	return
 
 /mob/living/carbon/flash_pain(severity = PAIN_SMALL)
-	if(client && !client.prefs?.read_preference(/datum/preference/toggle/disable_pain_flash))
-		flick(severity, hud_used?.screen_objects[HUDKEY_MOB_PAIN])
+	if(!client || client.prefs?.read_preference(/datum/preference/toggle/disable_pain_flash))
+		return
+
+	flick(severity, hud_used?.screen_objects[HUDKEY_MOB_PAIN])
 
 /mob/living/carbon/apply_pain(amount, def_zone, message, ignore_cd, updating_health = TRUE)
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NO_PAINSHOCK))
@@ -74,24 +74,31 @@
 
 
 	if(. && !is_healing)
-		switch(.)
-			if(1 to 20)
-				flash_pain(PAIN_SMALL)
-			if(20 to PAIN_AMT_MEDIUM)
-				flash_pain(PAIN_MEDIUM)
-				shake_camera(src, 1, 2)
-			if(PAIN_AMT_MEDIUM to INFINITY)
-				flash_pain(PAIN_LARGE)
-				shake_camera(src, 3, 4)
-
-		pain_message(message, amount, ignore_cd)
+		notify_pain(amount, message, ignore_cd)
 
 	if(updating_health && .)
-		updatehealth()
+		update_health_hud()
+
+/// Flashes the pain overlay and provides a chat message.
+/mob/living/carbon/proc/notify_pain(amount, message, ignore_cd)
+	if(stat != CONSCIOUS)
+		return
+
+	if(amount >= PAIN_AMT_AGONIZING)
+		flash_pain(PAIN_LARGE)
+		shake_camera(src, 3, 4)
+	else if(amount >= PAIN_AMT_MEDIUM)
+		flash_pain(PAIN_MEDIUM)
+		shake_camera(src, 1, 2)
+	else if(amount >= PAIN_AMT_LOW)
+		flash_pain(PAIN_SMALL)
+
+	if(message)
+		pain_message(message, amount, ignore_cd)
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE
-	if(!amount)
+	if(!amount || (stat != CONSCIOUS))
 		return FALSE
 
 	. = COOLDOWN_FINISHED(src, pain_cd)
@@ -139,12 +146,22 @@
 		return
 
 	COOLDOWN_START(src, pain_emote_cd, 5 SECONDS)
-	emote(dna.species.get_pain_emote(amount))
+	var/emote = dna.species.get_pain_emote(amount)
+	if(findtext(emote, "me ", 1, 4))
+		manual_emote(copytext(emote, 4))
+	else
+		emote(emote)
 
-#define PAIN_STRING \
+#define SHOCK_STRING_MINOR \
+	pick("It hurts...",\
+		"Uaaaghhhh...",\
+		"Agh..."\
+	)
+
+#define SHOCK_STRING_MAJOR \
 	pick("The pain is excruciating!",\
 		"Please, just end the pain!",\
-		"Your whole body is going numb!"\
+		"I can't feel anything!"\
 	)
 
 /mob/living/carbon/proc/handle_shock()
@@ -180,63 +197,79 @@
 	if(stat)
 		return
 
+	var/message = ""
 	if(shock_stage == SHOCK_TIER_1)
-		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+		message = SHOCK_STRING_MINOR
 
-	if(shock_stage >= SHOCK_TIER_2 && prob(shock_stage - 10))
+	if((shock_stage > SHOCK_TIER_2 && prob(2)) || shock_stage == SHOCK_TIER_2)
 		if(shock_stage == SHOCK_TIER_2 && organs_by_slot[ORGAN_SLOT_EYES])
-			visible_message("<b>[src]</b> is having trouble keeping [p_their()] eyes open.")
+			manual_emote("is having trouble keeping [p_their()] eyes open.")
 		blur_eyes(5)
 		set_timed_status_effect(10 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
 	if(shock_stage == SHOCK_TIER_3)
-		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+		message = SHOCK_STRING_MAJOR
 
 	else if(shock_stage >= SHOCK_TIER_3)
 		if(prob(20))
 			set_timed_status_effect(5 SECONDS, /datum/status_effect/speech/stutter, only_if_higher = TRUE)
 
-	if(shock_stage >= SHOCK_TIER_4 && prob(5))
-		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+	if((shock_stage > SHOCK_TIER_4 && prob(5)) || shock_stage == SHOCK_TIER_4)
+		message = SHOCK_STRING_MAJOR
+		manual_emote("stumbles over [p_them()]self.")
 		Knockdown(2 SECONDS)
 
-	if(shock_stage >= SHOCK_TIER_5 && prob(10))
-		pain_message(PAIN_STRING, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+	else if((shock_stage > SHOCK_TIER_5 && prob(10)) || shock_stage == SHOCK_TIER_5)
+		message = SHOCK_STRING_MAJOR
+		manual_emote("stumbles over [p_them()]self.")
 		Knockdown(2 SECONDS)
 
-	if(shock_stage >= SHOCK_TIER_6)
-		if (prob(2))
-			pain_message(pick("You black out!", "You feel like you could die any moment now!", "You're about to lose consciousness!"), shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+	if((shock_stage > SHOCK_TIER_6 && prob(2)) || shock_stage == SHOCK_TIER_6)
+		if (stat == CONSCIOUS)
+			pain_message(pick("You black out.", "I feel like I could die any moment now.", "I can't go on anymore."), shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
 			Unconscious(10 SECONDS)
+			return // We'll be generous
 
 	if(shock_stage >= SHOCK_TIER_7)
 		if(shock_stage == SHOCK_TIER_7)
 			visible_message("<b>[src]</b> falls limp!")
-		Knockdown(40 SECONDS)
+		Unconscious(20 SECONDS)
 
-#undef PAIN_STRING
+	if(message)
+		pain_message(message, shock_stage - CHEM_EFFECT_MAGNITUDE(src, CE_PAINKILLER)/3)
+
+#undef SHOCK_STRING_MINOR
+#undef SHOCK_STRING_MAJOR
 
 /mob/living/carbon/proc/handle_pain()
 	if(stat == DEAD)
 		return
 
 	var/pain = getPain()
+	/// Brain health scales the pain passout modifier with an importance of 80%
+	var/brain_health_factor = 1 + ((maxHealth - getBrainLoss()) / maxHealth - 1) * 0.8
+	/// Blood circulation scales the pain passout modifier with an importance of 40%
+	var/blood_circulation_factor = 1 + (get_blood_circulation() / 100 - 1) * 0.4
 
-	if(pain >= 15)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, min((pain / 40), 15))
+	var/pain_passout = min(PAIN_AMT_PASSOUT * brain_health_factor * blood_circulation_factor, PAIN_AMT_PASSOUT)
+
+	if(pain <= max((pain_passout * 0.075), 10))
+		var/slowdown = min(pain * (PAIN_MAX_SLOWDOWN / pain_passout), PAIN_MAX_SLOWDOWN)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, slowdown)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/pain)
 
-	if(pain >= maxHealth)
+	if(pain >= pain_passout)
 		if(!stat && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 			visible_message(
 				span_danger("<b>[src]</b> slumps over, too weak to continue fighting..."),
 				span_danger("You give into the pain.")
 			)
+			log_health(src, "Passed out due to excessive pain: [pain] | Threshold: [pain_passout]")
 		Unconscious(10 SECONDS)
 		return
 
-	if(stat == UNCONSCIOUS)
+	if(stat != CONSCIOUS)
 		return
 
 	var/pain_timeleft = COOLDOWN_TIMELEFT(src, pain_cd)
@@ -260,7 +293,9 @@
 		if(highest_damage > PAIN_THRESHOLD_REDUCE_PARALYSIS)
 			AdjustSleeping(-(highest_damage / 5) SECONDS)
 		if(highest_damage > PAIN_THRESHOLD_DROP_ITEM && prob(highest_damage / 5))
-			dropItemToGround(get_active_held_item())
+			var/obj/item/I = get_active_held_item()
+			if(I && dropItemToGround(I))
+				visible_message(span_alert("[src] twitches, dropping their [I]."))
 
 		var/burning = damaged_part.burn_dam > damaged_part.brute_dam
 		var/msg
@@ -277,6 +312,9 @@
 
 	// Damage to internal organs hurts a lot.
 	for(var/obj/item/organ/I as anything in organs)
+		if(istype(I, /obj/item/organ/brain))
+			continue
+
 		if(prob(1) && (!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 5))
 			var/obj/item/bodypart/parent = I.ownerlimb
 			if(parent.bodypart_flags & BP_NO_PAIN)

@@ -31,7 +31,7 @@
 
 	if(blood_dna)
 		add_blood_DNA(blood_dna)
-		if(!length(blood_dna))
+		if(!islist(blood_dna) || !length(blood_dna))
 			stack_trace("Bad blood DNA sent")
 		else
 			var/datum/blood/path = blood_dna[blood_dna[1]]

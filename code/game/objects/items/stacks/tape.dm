@@ -118,10 +118,8 @@
 	victim.visible_message(span_danger("[user] is trying to restrain [victim] with [src]!"), \
 							span_userdanger("[user] begins wrapping [src] around your wrists!"))
 	if(do_after(user, victim, handcuff_delay, DO_PUBLIC, display = src))
-		if(!victim.handcuffed)
+		if(victim.equip_to_slot_if_possible(new /obj/item/restraints/handcuffs/tape(victim), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
 			use(1)
-			victim.set_handcuffed(new /obj/item/restraints/handcuffs/tape(victim))
-			victim.update_handcuffed()
 			victim.visible_message("<span class='notice'>[user] binds [victim]'s hands.</span>", \
 								"<span class='userdanger'>[user] handcuffs you.</span>")
 			log_combat(user, victim, "tapecuffed")

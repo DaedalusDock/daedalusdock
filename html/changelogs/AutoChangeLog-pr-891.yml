@@ -1,0 +1,10 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: When you examine an object, mobs that cannot see the object you examined
+      see a different message.
+  - rscadd: When you examine an object you're wearing, nearby mobs are told that item
+      is yours.
+  - rscadd: When you examine an object inside of a storage container, nearby mobs
+      are told you examined something inside of the storage container, but are not
+      told what.

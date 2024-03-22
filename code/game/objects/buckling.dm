@@ -158,7 +158,7 @@
 	buckled_mob.set_buckled(null)
 	buckled_mob.set_anchored(initial(buckled_mob.anchored))
 	buckled_mob.clear_alert(ALERT_BUCKLED)
-	buckled_mob.set_glide_size(DELAY_TO_GLIDE_SIZE(buckled_mob.total_multiplicative_slowdown()))
+	buckled_mob.set_glide_size(DELAY_TO_GLIDE_SIZE(buckled_mob.total_slowdown()))
 	buckled_mobs -= buckled_mob
 
 	if(anchored)
@@ -255,7 +255,7 @@
 		return FALSE
 
 	// If the buckle requires restraints, make sure the target is actually restrained.
-	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_RESTRAINED))
+	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_ARMS_RESTRAINED))
 		return FALSE
 
 	//If buckling is forbidden for the target, cancel

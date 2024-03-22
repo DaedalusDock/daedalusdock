@@ -6,6 +6,7 @@
 	///The bodypart this wound is on
 	var/obj/item/bodypart/parent
 
+	var/pain_factor = 0
 	///Number representing the current stage
 	var/current_stage = 0
 	///Description of the wound.

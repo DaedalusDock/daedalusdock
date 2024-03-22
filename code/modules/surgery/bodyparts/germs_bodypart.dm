@@ -18,36 +18,41 @@ INFECTION_LEVEL_THREE	above this germ level the player will take additional toxi
 Note that amputating the affected organ does in fact remove the infection from the player's body.
 */
 /obj/item/bodypart/proc/update_germs()
-
 	if(!IS_ORGANIC_LIMB(src)) //Robotic limbs shouldn't be infected, nor should nonexistant limbs.
 		germ_level = 0
 		return
 
 	if(owner.bodytemperature > TCRYO)	//cryo stops germs from moving and doing their bad stuffs
-		if(!CHEM_EFFECT_MAGNITUDE(owner, CE_ANTIBIOTIC))
-			// Syncing germ levels with external wounds
-			handle_germ_sync()
+		// Syncing germ levels with external wounds
+		handle_germ_sync()
 
+		if(germ_level && CHEM_EFFECT_MAGNITUDE(owner, CE_ANTIBIOTIC))
 			// Handle antibiotics and curing infections
 			handle_antibiotics()
 
-		// Handle the effects of infections
-		. = handle_germ_effects()
+		if(germ_level)
+			// Handle the effects of infections
+			. = handle_germ_effects()
 
 /// Syncing germ levels with external wounds
 /obj/item/bodypart/proc/handle_germ_sync()
+	if(!length(wounds))
+		return
+
+	// Infection can occur even while on anti biotics
 	for(var/datum/wound/W as anything in wounds)
-		//Open wounds can become infected
 		if((2*owner.germ_level > W.germ_level) && W.infection_check())
 			W.germ_level++
-		if (W.germ_level > germ_level || prob(min(W.germ_level, 30)))
-			germ_level++
+
+	if(!CHEM_EFFECT_MAGNITUDE(owner, CE_ANTIBIOTIC))
+		// Spread germs from wounds to bodypart
+		for(var/datum/wound/W as anything in wounds)
+			if (W.germ_level > germ_level || prob(min(W.germ_level, 30)))
+				germ_level++
+				break // max 1 germ per cycle
 
 /// Handle antibiotics and curing infections
 /obj/item/bodypart/proc/handle_antibiotics()
-	if(!germ_level)
-		return
-
 	if (germ_level < INFECTION_LEVEL_ONE)
 		germ_level = 0	//cure instantly
 	else if (germ_level < INFECTION_LEVEL_TWO)
@@ -60,7 +65,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 /// Handle the effects of infections
 /obj/item/bodypart/proc/handle_germ_effects()
-	var/antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/medicine/spaceacillin)
+	var/antibiotics = CHEM_EFFECT_MAGNITUDE(owner, CE_ANTIBIOTIC)
 	//** Handle the effects of infections
 	if(germ_level < INFECTION_LEVEL_TWO)
 		if(isnull(owner) || owner.stat != DEAD)
@@ -123,4 +128,5 @@ Note that amputating the affected organ does in fact remove the infection from t
 			update_disabled()
 
 		germ_level++
-		return owner.adjustToxLoss(1, FALSE)
+		if(owner.adjustToxLoss(1, FALSE))
+			return BODYPART_LIFE_UPDATE_HEALTH

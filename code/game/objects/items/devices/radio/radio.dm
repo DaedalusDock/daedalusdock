@@ -323,8 +323,12 @@
 
 /obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
 	. = ..()
+	if(istype(message_lang, /datum/language/visual))
+		return
+
 	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
 		return
+
 	var/filtered_mods = list()
 	if (message_mods[MODE_CUSTOM_SAY_EMOTE])
 		filtered_mods[MODE_CUSTOM_SAY_EMOTE] = message_mods[MODE_CUSTOM_SAY_EMOTE]

@@ -1250,7 +1250,6 @@
 		AddComponent(/datum/component/rot, 6 MINUTES, 10 MINUTES, 1)
 
 // Checks to see how many hands this person has to sign with.
-#warn use this
 /mob/living/carbon/proc/check_signables_state()
 	var/obj/item/bodypart/left_arm = get_bodypart(BODY_ZONE_L_ARM)
 	var/obj/item/bodypart/right_arm = get_bodypart(BODY_ZONE_R_ARM)
@@ -1260,12 +1259,16 @@
 	var/exit_left = (!left_arm || left_arm.bodypart_disabled)
 	if(length(empty_indexes) == 0 || (length(empty_indexes) < 2 && (exit_left || exit_right)))//All existing hands full, can't sign
 		return SIGN_HANDS_FULL // These aren't booleans
+
 	if(exit_left && exit_right)//Can't sign with no arms!
 		return SIGN_ARMLESS
+
 	if(handcuffed) // Cuffed, usually will show visual effort to sign
 		return SIGN_CUFFED
+
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED) || HAS_TRAIT(src, TRAIT_EMOTEMUTE))
 		return SIGN_TRAIT_BLOCKED
+
 	if(length(empty_indexes) == 1 || exit_left || exit_right) // One arm gone
 		return SIGN_ONE_HAND
 

@@ -747,6 +747,12 @@ DEFINE_INTERACTABLE(/obj/item)
 	playsound(wielder, block_sound, 70, TRUE)
 
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = M?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	return ITALICS | REDUCE_RANGE
 
 /// Called when a mob drops an item.

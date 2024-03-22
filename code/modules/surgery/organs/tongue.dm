@@ -56,6 +56,9 @@
 
 /obj/item/organ/tongue/proc/handle_speech(datum/source, list/speech_args)
 	SIGNAL_HANDLER
+	var/datum/language/language = speech_args[SPEECH_LANGUAGE]
+	if(istype(language, /datum/language/visual))
+		return FALSE
 	if(speech_args[SPEECH_LANGUAGE] in languages_native)
 		return FALSE //no changes
 	modify_speech(source, speech_args)
@@ -472,31 +475,6 @@
 /obj/item/organ/tongue/ethereal/Initialize(mapload)
 	. = ..()
 	languages_possible = languages_possible_ethereal
-
-//Sign Language Tongue - yep, that's how you speak sign language.
-/obj/item/organ/tongue/tied
-	name = "tied tongue"
-	desc = "If only one had a sword so we may finally untie this knot."
-	icon_state = "tonguetied"
-	modifies_speech = TRUE
-
-	tongue_say_verb = "signs"
-	tongue_exclaim_verb = "signs"
-	tongue_whisper_verb = "subtly signs"
-	tongue_sing_verb = "rythmically signs"
-	tongue_yell_verb = "emphatically signs"
-
-/obj/item/organ/tongue/tied/Insert(mob/living/carbon/signer)
-	. = ..()
-	if(!.)
-		return
-
-	ADD_TRAIT(signer, TRAIT_SIGN_LANG, ORGAN_TRAIT)
-	REMOVE_TRAIT(signer, TRAIT_MUTE, ORGAN_TRAIT)
-
-/obj/item/organ/tongue/tied/Remove(mob/living/carbon/speaker, special = 0)
-	..()
-	REMOVE_TRAIT(speaker, TRAIT_SIGN_LANG, ORGAN_TRAIT)
 
 //Thank you Jwapplephobia for helping me with the literal hellcode below
 

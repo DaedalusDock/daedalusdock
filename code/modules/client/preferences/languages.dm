@@ -44,7 +44,7 @@
 
 		var/value = user_languages[language_path]
 		if(value & LANGUAGE_SPEAK)
-			value &= NONE
+			value &= ~(LANGUAGE_SPEAK)
 		else
 			value |= (LANGUAGE_UNDERSTAND|LANGUAGE_SPEAK)
 

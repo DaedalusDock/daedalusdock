@@ -468,30 +468,31 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	else if(message_mods[MODE_SING])
 		. = verb_sing
 
+	var/signs = pick("signs", "gestures")
 	// Any subtype of slurring in our status effects make us "slur"
 	if(has_status_effect(/datum/status_effect/speech/slurring))
 		if (istype(language, /datum/language/visual/sign))
-			return "loosely signs"
+			return "loosely [signs]"
 		else
 			return "slurs"
 
 	else if(has_status_effect(/datum/status_effect/speech/stutter))
 		if(istype(language, /datum/language/visual/sign))
-			. = "shakily signs"
+			. = "shakily [signs]"
 		else
 			. = "stammers"
 
 	else if(has_status_effect(/datum/status_effect/speech/stutter/derpspeech))
 		if(istype(language, /datum/language/visual/sign))
-			. = "incoherently signs"
+			. = "incoherently [signs]"
 		else
 			. = "gibbers"
 
 	else if(istype(language, /datum/language/visual/sign))
 		if(combat_mode)
-			. = "aggressively signs with their hands"
+			. = "aggressively [signs] with their hands"
 		else
-			. = "signs with their hands"
+			. = "[signs] with their hands"
 	else
 		. = ..()
 

@@ -47,6 +47,7 @@
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
 		/datum/language/schechi,
+		/datum/language/spacer,
 		/datum/language/vox,
 	))
 
@@ -385,6 +386,7 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
+		/datum/language/spacer,
 	))
 
 /obj/item/organ/tongue/bone/Initialize(mapload)

@@ -3204,6 +3204,7 @@
 #include "code\modules\language\languages\shadowtongue.dm"
 #include "code\modules\language\languages\sign.dm"
 #include "code\modules\language\languages\slime.dm"
+#include "code\modules\language\languages\spacer.dm"
 #include "code\modules\language\languages\sylvan.dm"
 #include "code\modules\language\languages\terrum.dm"
 #include "code\modules\language\languages\uncommon.dm"

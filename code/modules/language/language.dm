@@ -65,8 +65,12 @@
 	if(scramble_cache.len > SCRAMBLE_CACHE_LEN)
 		scramble_cache.Cut(1, scramble_cache.len-SCRAMBLE_CACHE_LEN-1)
 
-/datum/language/proc/scramble(input)
+/// Called by lang_treat() when the hearer does not understand the language.
+/datum/language/proc/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
+	raw_message = scramble(raw_message)
+	return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods, src)
 
+/datum/language/proc/scramble(input)
 	if(!syllables || !syllables.len)
 		return stars(input)
 
@@ -105,3 +109,80 @@
 	return scrambled_text
 
 #undef SCRAMBLE_CACHE_LEN
+
+/// Returns TRUE if the movable can speak the language. This does not check it knows the language.
+/datum/language/proc/can_speak_language(atom/movable/speaker, silent = TRUE)
+	if(!isliving(speaker))
+		return TRUE
+
+	var/mob/living/L = speaker
+	. = L.can_speak_vocal()
+	if(!.)
+		if(!silent)
+			to_chat(speaker, span_warning("You find yourself unable to speak!"))
+		return
+
+	if(!ishuman(speaker))
+		return TRUE
+
+	var/mob/living/carbon/human/H = speaker
+	if(H.mind?.miming)
+		if(!silent)
+			to_chat(speaker, span_green("Your vow of silence prevents you from speaking!"))
+		return FALSE
+
+	var/obj/item/organ/tongue/T = H.getorganslot(ORGAN_SLOT_TONGUE)
+	if(T)
+		. = T.can_physically_speak_language(type)
+		if(!. && !silent)
+			to_chat(speaker, span_warning("You do not have the biology required to speak that language!"))
+		return .
+
+	return (flags & TONGUELESS_SPEECH)
+
+/// Returns TRUE if the movable can even "see" or "hear" the language. This does not check it knows the language.
+/datum/language/proc/can_receive_language(atom/movable/hearer)
+	return TRUE
+
+/// Called by Hear() to process a language and display it to the hearer.
+/datum/language/proc/hear_speech(mob/living/hearer, atom/movable/speaker, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
+	if(!istype(hearer))
+		return
+
+	var/avoid_highlight = FALSE
+	if(istype(speaker, /atom/movable/virtualspeaker))
+		var/atom/movable/virtualspeaker/virt = speaker
+		avoid_highlight = hearer == virt.source
+	else
+		avoid_highlight = hearer == speaker
+
+	var/deaf_message
+	var/deaf_type
+	if(speaker != hearer)
+		if(!radio_freq) //These checks have to be separate, else people talking on the radio will make "You can't hear yourself!" appear when hearing people over the radio while deaf.
+			deaf_message = "[span_name("[speaker]")] [speaker.verb_say] something but you cannot hear [speaker.p_them()]."
+			deaf_type = MSG_VISUAL
+	else
+		deaf_message = span_notice("You can't hear yourself!")
+		deaf_type = MSG_AUDIBLE // Since you should be able to hear yourself without looking
+
+	var/enable_runechat = FALSE
+	if(ismob(speaker))
+		enable_runechat = hearer.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat)
+	else
+		enable_runechat = hearer.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)
+
+	var/can_receive_language = can_receive_language(hearer)
+
+	// Create map text prior to modifying message for goonchat
+	if (enable_runechat && !(hearer.stat == UNCONSCIOUS) && can_receive_language)
+		if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
+			hearer.create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE, sound_loc = sound_loc)
+		else
+			hearer.create_chat_message(speaker, src, raw_message, spans, sound_loc = sound_loc)
+
+	// Recompose message for AI hrefs, language incomprehension.
+	var/parsed_message = hearer.compose_message(speaker, src, raw_message, radio_freq, spans, message_mods)
+
+	hearer.show_message(parsed_message, MSG_AUDIBLE, deaf_message, deaf_type, avoid_highlight)
+	return parsed_message

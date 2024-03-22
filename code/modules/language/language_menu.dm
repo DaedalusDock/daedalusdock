@@ -27,11 +27,10 @@
 		data["is_living"] = FALSE
 
 	data["languages"] = list()
-	for(var/lang in GLOB.all_languages)
-		var/result = language_holder.has_language(lang) || language_holder.has_language(lang, TRUE)
+	for(var/datum/language/language as anything in GLOB.all_languages)
+		var/result = language_holder.has_language(language) || language_holder.has_language(language, TRUE)
 		if(!result)
 			continue
-		var/datum/language/language = lang
 		var/list/L = list()
 
 		L["name"] = initial(language.name)
@@ -46,18 +45,17 @@
 
 	if(check_rights_for(user.client, R_ADMIN) || isobserver(AM))
 		data["admin_mode"] = TRUE
-		data["omnitongue"] = language_holder.omnitongue
+		data["omnitongue"] = language_holder.bypass_speaking_limitations
 
 		data["unknown_languages"] = list()
-		for(var/lang in GLOB.all_languages)
-			if(language_holder.has_language(lang) || language_holder.has_language(lang, TRUE))
+		for(var/datum/language/language as anything in GLOB.all_languages)
+			if(language_holder.has_language(language) || language_holder.has_language(language, TRUE))
 				continue
-			var/datum/language/language = lang
 			var/list/L = list()
 
-			L["name"] = initial(language.name)
-			L["desc"] = initial(language.desc)
-			L["key"] = initial(language.key)
+			L["name"] = language.name
+			L["desc"] = language.desc
+			L["key"] = language.key
 
 			data["unknown_languages"] += list(L)
 	return data
@@ -71,10 +69,11 @@
 
 	var/language_name = params["language_name"]
 	var/datum/language/language_datum
-	for(var/lang in GLOB.all_languages)
-		var/datum/language/language = lang
-		if(language_name == initial(language.name))
+
+	for(var/datum/language/language as anything in GLOB.all_languages)
+		if(language_name == language.name)
 			language_datum = language
+
 	var/is_admin = check_rights_for(user.client, R_ADMIN)
 
 	switch(action)
@@ -130,8 +129,8 @@
 				. = TRUE
 		if("toggle_omnitongue")
 			if(is_admin || isobserver(AM))
-				language_holder.omnitongue = !language_holder.omnitongue
+				language_holder.bypass_speaking_limitations = !language_holder.bypass_speaking_limitations
 				if(is_admin)
-					message_admins("[key_name_admin(user)] [language_holder.omnitongue ? "enabled" : "disabled"] the ability to speak all languages (that they know) of [key_name_admin(AM)].")
-					log_admin("[key_name(user)] [language_holder.omnitongue ? "enabled" : "disabled"] the ability to speak all languages (that_they know) of [key_name(AM)].")
+					message_admins("[key_name_admin(user)] [language_holder.bypass_speaking_limitations ? "enabled" : "disabled"] the ability to speak all languages (that they know) of [key_name_admin(AM)].")
+					log_admin("[key_name(user)] [language_holder.bypass_speaking_limitations ? "enabled" : "disabled"] the ability to speak all languages (that_they know) of [key_name(AM)].")
 				. = TRUE

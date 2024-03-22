@@ -99,11 +99,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 		messagepart = "<span class='emote'>[message_mods[MODE_CUSTOM_SAY_EMOTE]]</span>"
 	else
-		messagepart = lang_treat(speaker, message_language, raw_message, spans, message_mods)
+		messagepart = process_received_speech(speaker, message_language, raw_message, spans, message_mods)
 
-		var/datum/language/D = GLOB.language_datum_instances[message_language]
-		if(istype(D) && D.display_icon(src))
-			languageicon = "[D.get_icon()] "
+		if(message_language?.display_icon(src))
+			languageicon = "[message_language.get_icon()] "
 
 	messagepart = " <span class='message'>[speaker.say_emphasis(messagepart)]</span></span>" //These close the wrapper_span and the "message" class span
 
@@ -115,26 +114,30 @@ GLOBAL_LIST_INIT(freqtospan, list(
 /atom/movable/proc/compose_job(atom/movable/speaker, message_langs, raw_message, radio_freq)
 	return ""
 
-/atom/movable/proc/say_mod(input, list/message_mods = list())
+/atom/movable/proc/say_mod(input, list/message_mods = list(), datum/language/language)
 	var/ending = copytext_char(input, -1)
 	if(copytext_char(input, -2) == "!!")
 		return verb_yell
+
 	else if(message_mods[MODE_SING])
 		. = verb_sing
+
 	else if(ending == "?")
 		return verb_ask
+
 	else if(ending == "!")
 		return verb_exclaim
+
 	else
 		return verb_say
 
-/atom/movable/proc/say_quote(input, list/spans=list(speech_span), list/message_mods = list())
+/atom/movable/proc/say_quote(input, list/spans=list(speech_span), list/message_mods = list(), datum/language/language)
 	if(!input)
 		input = "..."
 
 	var/say_mod = message_mods[MODE_CUSTOM_SAY_EMOTE]
 	if (!say_mod)
-		say_mod = say_mod(input, message_mods)
+		say_mod = say_mod(input, message_mods, language)
 
 	if(copytext_char(input, -2) == "!!")
 		spans |= SPAN_YELL
@@ -158,15 +161,17 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 #undef ENCODE_HTML_EMPHASIS
 
-/atom/movable/proc/lang_treat(atom/movable/speaker, datum/language/language, raw_message, list/spans, list/message_mods = list(), no_quote = FALSE)
+/// Processes a spoken message's language based on if the hearer can understand it.
+/atom/movable/proc/process_received_speech(atom/movable/speaker, datum/language/language, raw_message, list/spans, list/message_mods = list(), no_quote = FALSE)
+	SHOULD_NOT_OVERRIDE(TRUE)
 	var/atom/movable/source = speaker.GetSource() || speaker //is the speaker virtual
+
+	// Understands the language?
 	if(has_language(language))
-		return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods)
+		return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods, language)
 
 	else if(language)
-		var/datum/language/D = GLOB.language_datum_instances[language]
-		raw_message = D.scramble(raw_message)
-		return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods)
+		return language.speech_not_understood(source, raw_message, spans, message_mods, no_quote)
 
 	else
 		return "makes a strange sound."

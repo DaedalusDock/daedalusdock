@@ -112,7 +112,7 @@
 	tongue_owner.verb_sing = initial(tongue_owner.verb_sing)
 	tongue_owner.verb_yell = initial(tongue_owner.verb_yell)
 
-/obj/item/organ/tongue/could_speak_language(language)
+/obj/item/organ/tongue/proc/can_physically_speak_language(language)
 	return is_type_in_typecache(language, languages_possible)
 
 /obj/item/organ/tongue/lizard
@@ -423,9 +423,8 @@
 /obj/item/organ/tongue/robot/can_speak_language(language)
 	return TRUE // THE MAGIC OF ELECTRONICS
 
-/obj/item/organ/tongue/robot/could_speak_language(language)
+/obj/item/organ/tongue/robot/can_physically_speak_language(language)
 	return TRUE
-
 
 /obj/item/organ/tongue/robot/modify_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_SPANS] |= SPAN_ROBOT

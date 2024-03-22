@@ -1250,9 +1250,11 @@
 		AddComponent(/datum/component/rot, 6 MINUTES, 10 MINUTES, 1)
 
 // Checks to see how many hands this person has to sign with.
+#warn use this
 /mob/living/carbon/proc/check_signables_state()
 	var/obj/item/bodypart/left_arm = get_bodypart(BODY_ZONE_L_ARM)
 	var/obj/item/bodypart/right_arm = get_bodypart(BODY_ZONE_R_ARM)
+
 	var/empty_indexes = get_empty_held_indexes()
 	var/exit_right = (!right_arm || right_arm.bodypart_disabled)
 	var/exit_left = (!left_arm || left_arm.bodypart_disabled)

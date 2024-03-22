@@ -231,20 +231,15 @@
 			to_chat(talking_carbon, span_warning("You can't use the radio while aggressively grabbed!"))
 			return ITALICS | REDUCE_RANGE
 
-	if(HAS_TRAIT(talking_movable, TRAIT_SIGN_LANG)) //Forces Sign Language users to wear the translation gloves to speak over radios
-		var/mob/living/carbon/mute = talking_movable
-		if(istype(mute))
-			if(!HAS_TRAIT(talking_movable, TRAIT_CAN_SIGN_ON_COMMS))
-				return FALSE
-			switch(mute.check_signables_state())
-				if(SIGN_ONE_HAND) // One hand full
-					message = stars(message)
-				if(SIGN_HANDS_FULL to SIGN_CUFFED)
-					return FALSE
 	if(!spans)
 		spans = list(talking_movable.speech_span)
+
 	if(!language)
 		language = talking_movable.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return FALSE
+
 	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, spans.Copy(), language, message_mods)
 	return ITALICS | REDUCE_RANGE
 

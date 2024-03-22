@@ -111,13 +111,12 @@
 	src.frequency = frequency
 	src.language = language
 	virt = speaker
-	var/datum/language/lang_instance = GLOB.language_datum_instances[language]
 	data = list(
 		"name" = speaker.name,
 		"job" = speaker.job,
 		"message" = message,
 		"compression" = rand(35, 65),
-		"language" = lang_instance.name,
+		"language" = language.name,
 		"spans" = spans,
 		"mods" = message_mods
 	)

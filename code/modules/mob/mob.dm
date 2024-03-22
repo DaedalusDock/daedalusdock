@@ -139,20 +139,20 @@
 	msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
 
 	if(type)
-		if(type & MSG_VISUAL && is_blind() )//Vision related
+		if((type & MSG_VISUAL) && is_blind() )//Vision related
 			if(!alt_msg)
 				return
 			else
 				msg = alt_msg
 				type = alt_type
 
-		if(type & MSG_AUDIBLE && !can_hear())//Hearing related
+		if((type & MSG_AUDIBLE) && !can_hear())//Hearing related
 			if(!alt_msg)
 				return
 			else
 				msg = alt_msg
 				type = alt_type
-				if(type & MSG_VISUAL && is_blind())
+				if((type & MSG_VISUAL) && is_blind())
 					return
 	// voice muffling
 	if(stat == UNCONSCIOUS)

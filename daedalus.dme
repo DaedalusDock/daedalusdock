@@ -4723,7 +4723,6 @@
 #include "modular_pariah\modules\hyposprays\code\hyposprays_II.dm"
 #include "modular_pariah\modules\hyposprays\code\hypovials.dm"
 #include "modular_pariah\modules\hyposprays\code\vending_hypospray.dm"
-#include "modular_pariah\modules\indicators\code\ssd_indicator.dm"
 #include "modular_pariah\modules\indicators\code\typing_indicator.dm"
 #include "modular_pariah\modules\pixel_shift\code\pixel_shift.dm"
 #include "modular_pariah\modules\radiosound\code\headset.dm"

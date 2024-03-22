@@ -1427,11 +1427,13 @@
 		else
 			visible_message("\The [src] twitches a bit as \his heart restarts!")
 
-		shock_stage = min(shock_stage, 100) // 120 is the point at which the heart stops.
+		shock_stage = min(shock_stage, SHOCK_AMT_FOR_FIBRILLATION - 25)
 
-		if(getOxyLoss() >= 75)
-			setOxyLoss(75)
+		// Clamp oxy loss to 70 for 200 health mobs. This is a 0.65 modifier for blood oxygenation.
+		if(getOxyLoss() >= maxHealth * 0.35)
+			setOxyLoss(maxHealth * 0.35)
 
+		COOLDOWN_START(heart, arrhythmia_grace_period, 10 SECONDS)
 		heart.Restart()
 		heart.handle_pulse()
 		return TRUE

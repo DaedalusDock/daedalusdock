@@ -32,7 +32,7 @@
 	return ..()
 
 /obj/item/organ/stomach/ethereal/handle_hunger_slowdown(mob/living/carbon/human/human)
-	human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, multiplicative_slowdown = (1.5 * (1 - crystal_charge / 100)))
+	human.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/hunger, slowdown = (1.5 * (1 - crystal_charge / 100)))
 
 /obj/item/organ/stomach/ethereal/proc/charge(datum/source, amount, repairs)
 	SIGNAL_HANDLER

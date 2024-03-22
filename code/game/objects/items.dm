@@ -599,32 +599,19 @@ DEFINE_INTERACTABLE(/obj/item)
 			affecting?.receive_damage( 0, 5 ) // 5 burn damage
 			return
 
-	if(!(interaction_flags_item & INTERACT_ITEM_ATTACK_HAND_PICKUP)) //See if we're supposed to auto pickup.
+	if(!(interaction_flags_item & INTERACT_ITEM_ATTACK_HAND_PICKUP))
 		return
 
 	//Heavy gravity makes picking up things very slow.
 	var/grav = user.has_gravity()
 	if(grav > STANDARD_GRAVITY)
-		var/grav_power = min(3,grav - STANDARD_GRAVITY)
-		to_chat(user,span_notice("You start picking up [src]..."))
-		if(!do_after(user,src,30*grav_power))
+		var/grav_power = min(3, grav - STANDARD_GRAVITY)
+		to_chat(user, span_notice("You start picking up [src]..."))
+		if(!do_after(user, src, 30*grav_power))
 			return
-
-
-	//If the item is in a storage item, take it out
-	var/was_in_storage = loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE)
-	if(QDELETED(src)) //moving it out of the storage to the floor destroyed it.
-		return
-
-	if(throwing)
-		throwing.finalize(FALSE)
-	if(loc == user)
-		if(!allow_attack_hand_drop(user) || !user.temporarilyRemoveItemFromInventory(src))
-			return
-
 
 	// Return FALSE if the item is picked up.
-	return !user.pickup_item(src, ignore_anim = was_in_storage)
+	return !user.pickup_item(src)
 
 /obj/item/proc/allow_attack_hand_drop(mob/user)
 	return TRUE

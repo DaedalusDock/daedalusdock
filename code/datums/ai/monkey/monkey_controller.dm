@@ -60,7 +60,7 @@ have ways of interacting with a specific mob and control it.
 	RegisterSignal(new_pawn, COMSIG_CARBON_CUFF_ATTEMPTED, PROC_REF(on_attempt_cuff))
 	RegisterSignal(new_pawn, COMSIG_MOB_MOVESPEED_UPDATED, PROC_REF(update_movespeed))
 
-	movement_delay = living_pawn.cached_multiplicative_slowdown
+	movement_delay = living_pawn.movement_delay
 	return ..() //Run parent at end
 
 /datum/ai_controller/monkey/UnpossessPawn(destroy)
@@ -215,7 +215,7 @@ have ways of interacting with a specific mob and control it.
 
 /datum/ai_controller/monkey/proc/update_movespeed(mob/living/pawn)
 	SIGNAL_HANDLER
-	movement_delay = pawn.cached_multiplicative_slowdown
+	movement_delay = pawn.movement_delay
 
 /datum/ai_controller/monkey/proc/target_del(target)
 	SIGNAL_HANDLER

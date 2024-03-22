@@ -295,7 +295,7 @@ Buildable meters
 			if(prob(20))
 				C.spew_organ()
 			sleep(5)
-		C.blood_volume = 0
+		C.setBloodVolume(0)
 	return(OXYLOSS|BRUTELOSS)
 
 /obj/item/pipe/examine(mob/user)

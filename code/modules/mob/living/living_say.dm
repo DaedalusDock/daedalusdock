@@ -301,7 +301,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(isAI(V.source))
 			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, 0, 0, pressure_affected = FALSE, use_reverb = FALSE)
 
-	var/what_i_heard
 	// Message has a language, the language handles it.
 	if(message_language)
 		raw_message = message_language.hear_speech(src, speaker, raw_message, radio_freq, spans, message_mods, sound_loc, message_range)

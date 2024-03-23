@@ -210,8 +210,6 @@
 	TEST_ASSERT(speaker_radio_heard_message, "Speaker's radio did not hear them speak (radio test)")
 	TEST_ASSERT_EQUAL(speaker_radio.get_frequency(), listener_radio.get_frequency(), "Radio frequencies were not equal (radio test)")
 
-	SSpackets.fire()
-
 	TEST_ASSERT(listener_radio_received_message, "Listener's radio did not receive the broadcast (radio test)")
 	TEST_ASSERT(islist(handle_hearing_result), "Listener failed to hear radio message (radio test)")
 
@@ -222,7 +220,6 @@
 
 	speaker_radio.set_frequency(FREQ_CTF_RED)
 	speaker.say(pangram_quote)
-	SSpackets.fire()
 
 	TEST_ASSERT(handle_speech_result, "Handle speech signal was not fired (radio test)")
 	TEST_ASSERT_NULL(handle_hearing_result, "Listener erroneously heard radio message (radio test)")

@@ -134,4 +134,9 @@
 
 /// This is the meat function for making radios hear vocal transmissions.
 /datum/signal/subspace/vocal/broadcast()
+	// Life is alot easier if we don't bother with queueing during unit tests.
+	#ifndef UNIT_TESTS
 	SSpackets.queued_subspace_vocals += src
+	#else
+	SSpackets.ImmediateSubspaceVocalSend(src)
+	#endif

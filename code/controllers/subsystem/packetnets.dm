@@ -195,35 +195,6 @@ SUBSYSTEM_DEF(packets)
 
 		cost_radios = MC_AVERAGE(cost_radios, TICK_DELTA_TO_MS(cached_cost))
 		resumed = FALSE
-		// stage = SSPACKETS_TABLETS
-
-	// if(stage == SSPACKETS_TABLETS)
-	// 	timer = TICK_USAGE_REAL
-	// 	if(!resumed)
-	// 		cached_cost = 0
-	// 		last_processed_tablet_message_packets = 0
-
-	// 	var/datum/signal/subspace/messaging/tablet_msg/packet
-	// 	while(length(current_tablet_messages))
-	// 		packet = current_tablet_messages[1]
-	// 		current_tablet_messages.Cut(1,2)
-	// 		queued_tablet_messages -= packet
-
-	// 		if (!packet.logged)  // Can only go through if a message server logs it
-	// 			continue
-
-	// 		for (var/obj/item/modular_computer/comp in packet.data["targets"])
-	// 			var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
-	// 			for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-	// 				app.receive_message(packet)
-
-	// 		cached_cost += TICK_USAGE_REAL - timer
-	// 		last_processed_tablet_message_packets++
-	// 		if(MC_TICK_CHECK)
-	// 			return
-
-	// 	cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
-	// 	resumed = FALSE
 		stage = SSPACKETS_SUBSPACE_VOCAL
 
 	if(stage == SSPACKETS_SUBSPACE_VOCAL)

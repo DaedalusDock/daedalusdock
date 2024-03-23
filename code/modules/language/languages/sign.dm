@@ -9,6 +9,7 @@
 
 /datum/language/visual/sign/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
 	spans |= "italics"
+	message_mods[MODE_NO_QUOTE] = TRUE
 	return span_emote("makes weird gestures with [source.p_their()] hands.")
 
 /datum/language/visual/sign/speech_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)

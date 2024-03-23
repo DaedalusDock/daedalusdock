@@ -106,7 +106,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 		messagepart = "<span class='emote'>[message_mods[MODE_CUSTOM_SAY_EMOTE]]</span>"
 	else
-		messagepart = say_quote(translated_message, spans, message_mods, message_language)
+		if(message_mods[MODE_NO_QUOTE])
+			messagepart = translated_message
+		else
+			messagepart = say_quote(translated_message, spans, message_mods, message_language)
 
 		if(message_language?.display_icon(src))
 			languageicon = "[message_language.get_icon()] "

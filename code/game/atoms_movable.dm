@@ -312,6 +312,8 @@
 	if(QDELING(src))
 		CRASH("Illegal abstract_move() on [type]!")
 
+	RESOLVE_ACTIVE_MOVEMENT
+
 	var/atom/old_loc = loc
 	var/direction = get_dir(old_loc, new_loc)
 	loc = new_loc

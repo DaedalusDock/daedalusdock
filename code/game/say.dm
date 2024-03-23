@@ -57,7 +57,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
-		hearing_movable.Hear(rendered, src, message_language, message, , spans, message_mods)
+		hearing_movable.Hear(rendered, src, message_language, message, null, spans, message_mods, message_range = range)
 
 /**  The core proc behind say as a concept. Terrifyingly horrible. Called twice for no good reason.
  * Arguments:

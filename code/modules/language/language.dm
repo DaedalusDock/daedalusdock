@@ -159,7 +159,7 @@
 	// if someone is whispering we make an extra type of message that is obfuscated for people out of range
 	// Less than or equal to 0 means normal hearing. More than 0 and less than or equal to EAVESDROP_EXTRA_RANGE means
 	// partial hearing. More than EAVESDROP_EXTRA_RANGE means no hearing. Exception for GOOD_HEARING trait
-	var/dist = get_dist(speaker, src) - message_range
+	var/dist = get_dist(speaker, hearer) - message_range
 	var/is_observer = isobserver(hearer)
 	var/mangle_message = FALSE
 	if (message_range != INFINITY && dist > EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(src, TRAIT_GOOD_HEARING) && !is_observer)

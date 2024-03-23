@@ -25,10 +25,10 @@
 	if(!istype(hearer))
 		return
 
-	var/dist = get_dist(speaker, src) - message_range
+	var/dist = get_dist(speaker, hearer) - message_range
 	var/is_observer = isobserver(hearer)
 	if (message_range != INFINITY && dist > 0 && !is_observer)
-		return // Too far away and don't have good hearing, you can't hear anything
+		return
 
 	var/avoid_highlight = FALSE
 	if(istype(speaker, /atom/movable/virtualspeaker))

@@ -392,7 +392,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
 
-		listening_movable.Hear(rendered, src, message_language, message, null, spans, message_mods, message_range)
+		listening_movable.Hear(rendered, src, message_language, message, null, spans, message_mods, message_range = message_range)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_LIVING_SAY_SPECIAL, src, message)
 

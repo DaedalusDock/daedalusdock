@@ -27,3 +27,27 @@
 	// Remove capital letters except the first.
 	raw_message = capitalize(lowertext(raw_message))
 	return ..()
+
+/datum/language/visual/sign/before_speaking(atom/movable/speaker, message)
+	if(!iscarbon(speaker))
+		return message
+
+	var/mob/living/carbon/mute = speaker
+	switch(mute.check_signables_state())
+		if(SIGN_ONE_HAND, SIGN_CUFFED) // One arm
+			return stars(message)
+
+		if(SIGN_HANDS_FULL) // Full hands
+			to_chat(mute, span_warning("Your hands are full."))
+			return
+
+		if(SIGN_ARMLESS) // No arms
+			to_chat(mute, span_warning("You can't sign with no hands."))
+			return
+
+		if(SIGN_TRAIT_BLOCKED) // Hands Blocked or Emote Mute traits
+			to_chat(mute, span_warning("You can't sign at the moment."))
+			return
+
+		else
+			return message

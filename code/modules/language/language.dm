@@ -65,6 +65,9 @@
 	if(scramble_cache.len > SCRAMBLE_CACHE_LEN)
 		scramble_cache.Cut(1, scramble_cache.len-SCRAMBLE_CACHE_LEN-1)
 
+/datum/language/proc/before_speaking(atom/movable/speaker, message)
+	return message
+
 /// Called by process_received_message() when the hearer does not understand the language.
 /datum/language/proc/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
 	raw_message = scramble(raw_message)

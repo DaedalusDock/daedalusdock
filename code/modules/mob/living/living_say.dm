@@ -273,6 +273,11 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(pressure < ONE_ATMOSPHERE*0.4) //Thin air, let's italicise the message
 			spans |= SPAN_ITALICS
 
+	if(language)
+		message = language.before_speaking(src, message)
+		if(isnull(message))
+			return FALSE
+
 	send_speech(message, range, src, bubble_type, spans, language, message_mods)//roughly 58% of living/say()'s total cost
 
 	///Play a sound to indicate we just spoke
@@ -354,21 +359,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	#endif
 
 	var/list/the_dead = list()
-	if(istype(message_language, /datum/language/visual/sign))
-		var/mob/living/carbon/mute = src
-		if(istype(mute))
-			switch(mute.check_signables_state())
-				if(SIGN_ONE_HAND, SIGN_CUFFED) // One arm
-					message = stars(message)
-				if(SIGN_HANDS_FULL) // Full hands
-					to_chat(src, span_warning("Your hands are full."))
-					return FALSE
-				if(SIGN_ARMLESS) // No arms
-					to_chat(src, span_warning("You can't sign with no hands."))
-					return FALSE
-				if(SIGN_TRAIT_BLOCKED) // Hands Blocked or Emote Mute traits
-					to_chat(src, span_warning("You can't sign at the moment."))
-					return FALSE
 
 	if(client) //client is so that ghosts don't have to listen to mice
 		for(var/mob/player_mob as anything in GLOB.player_list)
@@ -496,6 +486,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	else if(message_mods[MODE_SING])
 		. = verb_sing
+
+	if(.)
+		return
 
 	var/signs = pick("signs", "gestures")
 	// Any subtype of slurring in our status effects make us "slur"

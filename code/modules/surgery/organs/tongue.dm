@@ -77,14 +77,14 @@
 		tongue_owner.dna?.species.say_mod = tongue_say_verb
 	if(tongue_ask_verb)
 		tongue_owner.verb_ask = tongue_ask_verb
-	if(verb_exclaim)
-		tongue_owner.verb_exclaim = verb_exclaim
-	if(verb_whisper)
-		tongue_owner.verb_whisper = verb_whisper
-	if(verb_sing)
-		tongue_owner.verb_sing = verb_sing
-	if(verb_yell)
-		tongue_owner.verb_sing = verb_yell
+	if(tongue_exclaim_verb)
+		tongue_owner.verb_exclaim = tongue_exclaim_verb
+	if(tongue_whisper_verb)
+		tongue_owner.verb_whisper = tongue_whisper_verb
+	if(tongue_sing_verb)
+		tongue_owner.verb_sing = tongue_sing_verb
+	if(tongue_yell_verb)
+		tongue_owner.verb_sing = tongue_yell_verb
 
 
 	if (modifies_speech)
@@ -124,6 +124,7 @@
 	desc = "A thin and long muscle typically found in reptilian races, apparently moonlights as a nose."
 	icon_state = "tonguelizard"
 	tongue_say_verb = "hisses"
+	tongue_whisper_verb = "hisses quietly"
 	taste_sensitivity = 10 // combined nose + tongue, extra sensitive
 	modifies_speech = TRUE
 	languages_native = list(/datum/language/draconic)
@@ -418,6 +419,7 @@
 	tongue_say_verb = "whistles"
 	tongue_ask_verb = "chirps"
 	tongue_exclaim_verb = "whistles loudly"
+	tongue_whisper_verb = "whistles quietly"
 
 	attack_verb_continuous = list("beeps", "boops")
 	attack_verb_simple = list("beep", "boop")

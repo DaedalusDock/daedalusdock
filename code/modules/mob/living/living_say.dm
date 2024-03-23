@@ -301,9 +301,10 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(isAI(V.source))
 			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, 0, 0, pressure_affected = FALSE, use_reverb = FALSE)
 
+	var/what_i_heard
 	// Message has a language, the language handles it.
 	if(message_language)
-		message = message_language.hear_speech(src, speaker, raw_message, radio_freq, spans, message_mods, sound_loc, message_range)
+		what_i_heard = message_language.hear_speech(src, speaker, raw_message, radio_freq, spans, message_mods, sound_loc, message_range)
 
 	//Language-less snowflake
 	else
@@ -323,18 +324,24 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		else
 			enable_runechat = client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)
 
-		message = translate_speech(speaker, null, raw_message, spans, message_mods)
+		what_i_heard = translate_speech(speaker, null, raw_message, spans, message_mods)
 
 		if(enable_runechat)
-			create_chat_message(speaker, null, message, sound_loc = sound_loc, runechat_flags = EMOTE_MESSAGE)
+			create_chat_message(speaker, null, what_i_heard, sound_loc = sound_loc, runechat_flags = EMOTE_MESSAGE)
 
-		message = compose_message(speaker, null, message, radio_freq)
-		var/shown = show_message(message, MSG_AUDIBLE, avoid_highlighting = avoid_highlight)
+		var/chat_message = compose_message(speaker, null, what_i_heard, radio_freq)
+		var/shown = show_message(chat_message, MSG_AUDIBLE, avoid_highlighting = avoid_highlight)
 		if(shown && LAZYLEN(observers))
 			for(var/mob/dead/observer/O in observers)
 				to_chat(O, shown)
 
-	return message
+	// Hear() is expensive so let's not copy the args list if we can help it.
+	if(comp_lookup?[COMSIG_LIVING_HEAR_POST_TRANSLATION])
+		var/list/arguments = args.Copy()
+		arguments[HEARING_RAW_MESSAGE] = what_i_heard
+		_SendSignal(COMSIG_LIVING_HEAR_POST_TRANSLATION, arguments)
+
+	return what_i_heard
 
 /mob/living/send_speech(message, message_range = 6, obj/source = src, bubble_type = bubble_icon, list/spans, datum/language/message_language=null, list/message_mods = list())
 	var/is_whispering = 0

@@ -31,27 +31,6 @@
 	lose_text = "<span class='notice'>You can taste again!</span>"
 	medical_record_text = "Patient suffers from ageusia and is incapable of tasting food or reagents."
 
-/datum/quirk/foreigner
-	name = "Foreigner"
-	desc = "You're not from around here. You don't know Galactic Common!"
-	icon = "language"
-	value = 0
-	gain_text = "<span class='notice'>The words being spoken around you don't make any sense."
-	lose_text = "<span class='notice'>You've developed fluency in Galactic Common."
-	medical_record_text = "Patient does not speak Galactic Common and may require an interpreter."
-
-/datum/quirk/foreigner/add(client/client_source)
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.add_blocked_language(/datum/language/common)
-	if(ishumanbasic(human_holder))
-		human_holder.grant_language(/datum/language/uncommon)
-
-/datum/quirk/foreigner/remove()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.remove_blocked_language(/datum/language/common)
-	if(ishumanbasic(human_holder))
-		human_holder.remove_language(/datum/language/uncommon)
-
 /datum/quirk/vegetarian
 	name = "Vegetarian"
 	desc = "You find the idea of eating meat morally and physically repulsive."

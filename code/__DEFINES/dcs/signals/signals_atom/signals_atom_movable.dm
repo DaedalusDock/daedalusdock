@@ -61,6 +61,8 @@
 	#define HEARING_SOUND_LOC 8
 	#define HEARING_MESSAGE_RANGE 9
 
+#define COMSIG_LIVING_HEAR_POST_TRANSLATION "living_hear_after_translate"
+
 ///called when the movable is added to a disposal holder object for disposal movement: (obj/structure/disposalholder/holder, obj/machinery/disposal/source)
 #define COMSIG_MOVABLE_DISPOSING "movable_disposing"
 // called when movable is expelled from a disposal pipe, bin or outlet on obj/pipe_eject: (direction)

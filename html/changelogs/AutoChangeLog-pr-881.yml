@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Welding goggles' nearsight effect no longer gets stuck.
-  - bugfix: AI-controlled mobs will now exclude abstract objects from their search
-      pools.

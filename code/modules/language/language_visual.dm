@@ -25,6 +25,9 @@
 	if(!istype(hearer))
 		return
 
+	if(!isturf(speaker.loc) && hearer.loc != speaker.loc)
+		return
+
 	var/dist = get_dist(speaker, hearer) - message_range
 	var/is_observer = isobserver(hearer)
 	if (message_range != INFINITY && dist > 0 && !is_observer)

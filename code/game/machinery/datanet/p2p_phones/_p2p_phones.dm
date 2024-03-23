@@ -625,7 +625,8 @@
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
-		hearing_movable.Hear(rendered, v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"], speaker_location())
+
+		hearing_movable.Hear(rendered, v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"], speaker_location(), message_range = INFINITY)
 
 
 #undef STATE_WAITING

@@ -59,8 +59,8 @@
 	var/parsed_message = hearer.compose_message(speaker, src, translated_message, radio_freq, spans, message_mods)
 
 	to_chat(hearer, parsed_message, avoid_highlighting = avoid_highlight)
-	if(LAZYLEN(observers))
-		for(var/mob/dead/observer/O in observers)
+	if(LAZYLEN(hearer.observers))
+		for(var/mob/dead/observer/O in hearer.observers)
 			to_chat(O, parsed_message)
 
 	return parsed_message

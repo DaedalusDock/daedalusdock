@@ -124,7 +124,7 @@
 		return FALSE
 
 	//We are now going to move
-	var/add_delay = mob.cached_multiplicative_slowdown
+	var/add_delay = mob.movement_delay
 	var/new_glide_size = DELAY_TO_GLIDE_SIZE(add_delay * ( (NSCOMPONENT(direct) && EWCOMPONENT(direct)) ? 2 : 1 ) )
 	mob.set_glide_size(new_glide_size) // set it now in case of pulled objects
 	//If the move was recent, count using old_move_delay

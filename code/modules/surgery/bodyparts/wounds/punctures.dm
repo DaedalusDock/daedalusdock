@@ -1,5 +1,6 @@
 /** PUNCTURES **/
 /datum/wound/puncture
+	pain_factor = 1.25
 	bleed_threshold = 10
 	wound_type = WOUND_PIERCE
 

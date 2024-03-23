@@ -248,12 +248,12 @@
 		if(speed_right == 1)
 			C.remove_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm)
 		else
-			C.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm, multiplicative_slowdown = speed_right)
+			C.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm, slowdown = speed_right)
 	else if(hand == BODY_ZONE_L_ARM)
 		if(speed_left == 1)
 			C.remove_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm)
 		else
-			C.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm, multiplicative_slowdown = speed_left)
+			C.add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/broken_arm, slowdown = speed_left)
 
 /datum/status_effect/arm_slowdown/proc/on_hand_swap()
 	SIGNAL_HANDLER

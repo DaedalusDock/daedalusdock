@@ -12,7 +12,7 @@ GLOBAL_LIST(gang_tags)
 	var/rotation = 0
 	var/paint_colour = "#FFFFFF"
 
-/obj/effect/decal/cleanable/crayon/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
+/obj/effect/decal/cleanable/crayon/Initialize(mapload, list/datum/disease/diseases, list/blood_dna, main, type, e_name, graf_rot, alt_icon = null)
 	. = ..()
 	if(e_name)
 		name = e_name
@@ -30,6 +30,7 @@ GLOBAL_LIST(gang_tags)
 	if(main)
 		paint_colour = main
 	add_atom_colour(paint_colour, FIXED_COLOUR_PRIORITY)
+
 /obj/effect/decal/cleanable/crayon/NeverShouldHaveComeHere(turf/T)
 	return isgroundlessturf(T)
 
@@ -40,7 +41,7 @@ GLOBAL_LIST(gang_tags)
 	layer = BELOW_MOB_LAYER
 	var/datum/team/gang/my_gang
 
-/obj/effect/decal/cleanable/crayon/gang/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
+/obj/effect/decal/cleanable/crayon/gang/Initialize(mapload, list/datum/disease/diseases, list/blood_dna, main, type, e_name, graf_rot, alt_icon = null)
 	. = ..()
 	LAZYADD(GLOB.gang_tags, src)
 

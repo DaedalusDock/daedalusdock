@@ -1,5 +1,6 @@
 /** CUTS **/
 /datum/wound/cut
+	pain_factor = 1.25
 	bleed_threshold = 5
 	wound_type = WOUND_CUT
 

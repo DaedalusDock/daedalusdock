@@ -151,7 +151,7 @@
 		return M.can_hear(ignore_stat)
 	return TRUE
 
-/// Called by Hear() to process a language and display it to the hearer.
+/// Called by Hear() to process a language and display it to the hearer. Returns NULL if cannot hear, otherwise returns the translated raw_message.
 /datum/language/proc/hear_speech(mob/living/hearer, atom/movable/speaker, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc, message_range)
 	if(!istype(hearer))
 		return
@@ -162,7 +162,7 @@
 	var/dist = get_dist(speaker, hearer) - message_range
 	var/is_observer = isobserver(hearer)
 	var/mangle_message = FALSE
-	if (message_range != INFINITY && dist > EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(src, TRAIT_GOOD_HEARING) && !is_observer)
+	if (message_range != INFINITY && dist > EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(hearer, TRAIT_GOOD_HEARING) && !is_observer)
 		return // Too far away and don't have good hearing, you can't hear anything
 
 	if(dist > 0 && dist <= EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(hearer, TRAIT_GOOD_HEARING) && !is_observer) // ghosts can hear all messages clearly
@@ -217,4 +217,5 @@
 	if(LAZYLEN(hearer.observers))
 		for(var/mob/dead/observer/O in hearer.observers)
 			to_chat(O, shown)
-	return parsed_message
+
+	return translated_message

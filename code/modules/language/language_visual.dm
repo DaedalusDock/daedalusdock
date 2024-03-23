@@ -63,4 +63,4 @@
 		for(var/mob/dead/observer/O in hearer.observers)
 			to_chat(O, parsed_message)
 
-	return parsed_message
+	return translated_message

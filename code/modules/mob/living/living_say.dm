@@ -304,7 +304,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	var/what_i_heard
 	// Message has a language, the language handles it.
 	if(message_language)
-		what_i_heard = message_language.hear_speech(src, speaker, raw_message, radio_freq, spans, message_mods, sound_loc, message_range)
+		raw_message = message_language.hear_speech(src, speaker, raw_message, radio_freq, spans, message_mods, sound_loc, message_range)
 
 	//Language-less snowflake
 	else
@@ -324,24 +324,20 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		else
 			enable_runechat = client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)
 
-		what_i_heard = translate_speech(speaker, null, raw_message, spans, message_mods)
+		raw_message = translate_speech(speaker, null, raw_message, spans, message_mods)
 
 		if(enable_runechat)
-			create_chat_message(speaker, null, what_i_heard, sound_loc = sound_loc, runechat_flags = EMOTE_MESSAGE)
+			create_chat_message(speaker, null, raw_message, sound_loc = sound_loc, runechat_flags = EMOTE_MESSAGE)
 
-		var/chat_message = compose_message(speaker, null, what_i_heard, radio_freq)
+		var/chat_message = compose_message(speaker, null, raw_message, radio_freq)
 		var/shown = show_message(chat_message, MSG_AUDIBLE, avoid_highlighting = avoid_highlight)
 		if(shown && LAZYLEN(observers))
 			for(var/mob/dead/observer/O in observers)
 				to_chat(O, shown)
 
-	// Hear() is expensive so let's not copy the args list if we can help it.
-	if(comp_lookup?[COMSIG_LIVING_HEAR_POST_TRANSLATION])
-		var/list/arguments = args.Copy()
-		arguments[HEARING_RAW_MESSAGE] = what_i_heard
-		_SendSignal(COMSIG_LIVING_HEAR_POST_TRANSLATION, arguments)
-
-	return what_i_heard
+	if(raw_message) // If this is null, we didn't hear shit.
+		SEND_SIGNAL(src, COMSIG_LIVING_HEAR_POST_TRANSLATION, args)
+	return raw_message
 
 /mob/living/send_speech(message, message_range = 6, obj/source = src, bubble_type = bubble_icon, list/spans, datum/language/message_language=null, list/message_mods = list())
 	var/is_whispering = 0

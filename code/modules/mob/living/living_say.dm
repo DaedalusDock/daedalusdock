@@ -163,9 +163,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		return
 
 	var/is_visual_language = istype(language, /datum/language/visual)
-	var/can_whisper = language && (language.flags & LANGUAGE_CAN_WHISPER)
 
-	if(!can_whisper)
+	if(is_visual_language)
 		message_mods -= WHISPER_MODE
 
 	// Checks if the saymode or channel extension can be used even if not totally conscious.
@@ -182,7 +181,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	switch(stat)
 		if(CONSCIOUS)
-			if(can_whisper && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
+			if(!is_visual_language && HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 				message_mods[WHISPER_MODE] = MODE_WHISPER
 
 		if(UNCONSCIOUS)
@@ -199,8 +198,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 		COOLDOWN_START(client, say_slowmode, SSlag_switch.slowmode_cooldown)
 
-	var/message_range = 7
-
 	// If there's a custom say emote it gets logged differently.
 	if(message_mods[MODE_CUSTOM_SAY_EMOTE])
 		log_message(message_mods[MODE_CUSTOM_SAY_EMOTE], LOG_RADIO_EMOTE)
@@ -208,7 +205,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	// If it's not erasing the input portion, then something is being said and this isn't a pure custom say emote.
 	if(!message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 		if(message_mods[WHISPER_MODE] == MODE_WHISPER)
-			message_range = 1
+			range = 1
 			log_talk(message, LOG_WHISPER, forced_by = forced, custom_say_emote = message_mods[MODE_CUSTOM_SAY_EMOTE])
 		else
 			log_talk(message, LOG_SAY, forced_by = forced, custom_say_emote = message_mods[MODE_CUSTOM_SAY_EMOTE])
@@ -225,10 +222,17 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		message = "[randomnote] [message] [randomnote]"
 		spans |= SPAN_SINGING
 
+	#ifdef UNIT_TESTS
+	// Saves a ref() to our arglist specifically.
+	// We do this because we need to check that COMSIG_MOB_SAY is getting EXACTLY this list.
+	last_say_args_ref = REF(args)
+	#endif
+
 	// Leaving this here so that anything that handles speech this way will be able to have spans affecting it and all that.
-	var/sigreturn = SEND_SIGNAL(src, COMSIG_MOB_SAY, args, message_range)
+	var/sigreturn = SEND_SIGNAL(src, COMSIG_MOB_SAY, args)
 	if (sigreturn & COMPONENT_UPPERCASE_SPEECH)
 		message = uppertext(message)
+
 	if(!message)
 		return
 
@@ -252,7 +256,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(radio_return & ITALICS)
 			spans |= SPAN_ITALICS
 		if(radio_return & REDUCE_RANGE)
-			message_range = 1
+			range = 1
 			if(!message_mods[WHISPER_MODE])
 				message_mods[WHISPER_MODE] = MODE_WHISPER
 		if(radio_return & NOPASS)
@@ -264,12 +268,12 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		var/datum/gas_mixture/environment = T.unsafe_return_air()
 		var/pressure = (environment)? environment.returnPressure() : 0
 		if(pressure < SOUND_MINIMUM_PRESSURE)
-			message_range = 1
+			range = 1
 
 		if(pressure < ONE_ATMOSPHERE*0.4) //Thin air, let's italicise the message
 			spans |= SPAN_ITALICS
 
-	send_speech(message, message_range, src, bubble_type, spans, language, message_mods)//roughly 58% of living/say()'s total cost
+	send_speech(message, range, src, bubble_type, spans, language, message_mods)//roughly 58% of living/say()'s total cost
 
 	///Play a sound to indicate we just spoke
 	if(client && !is_visual_language)
@@ -286,13 +290,10 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	talkcount++
 	return TRUE
 
-/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
-	if(LAZYLEN(observers))
-		for(var/mob/dead/observer/O as anything in observers)
-			O.Hear(arglist(args))
 
-	if(!client)
+	if(!GET_CLIENT(src) && !LAZYLEN(observers))
 		return
 
 	if(radio_freq && can_hear())
@@ -300,19 +301,54 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(isAI(V.source))
 			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, 0, 0, pressure_affected = FALSE, use_reverb = FALSE)
 
-	message = message_language.hear_speech(src, speaker, raw_message, radio_freq, spans, message_mods, sound_loc)
+	// Message has a language, the language handles it.
+	if(message_language)
+		message = message_language.hear_speech(src, speaker, raw_message, radio_freq, spans, message_mods, sound_loc, message_range)
+
+	//Language-less snowflake
+	else
+		if(!can_hear())
+			return
+
+		var/avoid_highlight = FALSE
+		if(istype(speaker, /atom/movable/virtualspeaker))
+			var/atom/movable/virtualspeaker/virt = speaker
+			avoid_highlight = speaker == virt.source
+		else
+			avoid_highlight = src == speaker
+
+		var/enable_runechat
+		if(ismob(speaker))
+			enable_runechat = client.prefs.read_preference(/datum/preference/toggle/enable_runechat)
+		else
+			enable_runechat = client.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)
+
+		message = translate_speech(speaker, null, raw_message, spans, message_mods)
+
+		if(enable_runechat)
+			create_chat_message(speaker, null, message, sound_loc = sound_loc, runechat_flags = EMOTE_MESSAGE)
+
+		message = compose_message(speaker, null, message, radio_freq)
+		var/shown = show_message(message, MSG_AUDIBLE, avoid_highlighting = avoid_highlight)
+		if(shown && LAZYLEN(observers))
+			for(var/mob/dead/observer/O in observers)
+				to_chat(O, shown)
+
 	return message
 
 /mob/living/send_speech(message, message_range = 6, obj/source = src, bubble_type = bubble_icon, list/spans, datum/language/message_language=null, list/message_mods = list())
-	var/eavesdrop_range = 0
+	var/is_whispering = 0
+	var/whisper_range = 0
 	if(message_mods[WHISPER_MODE]) //If we're whispering
-		eavesdrop_range = EAVESDROP_EXTRA_RANGE
+		// Needed for good hearing trait. The actual filtering for whispers happens at the /mob/living/Hear proc
+		whisper_range = MESSAGE_RANGE - WHISPER_RANGE
+		is_whispering = TRUE
 
-	var/list/listening = get_hearers_in_view(message_range+eavesdrop_range, source)
+	var/list/listening = get_hearers_in_view(message_range + whisper_range, source)
 
 	#ifdef ZMIMIC_MULTIZ_SPEECH
 	if(bound_overlay)
-		listening += get_hearers_in_view(message_range+eavesdrop_range, bound_overlay)
+		listening += get_hearers_in_view(message_range + whisper_range, bound_overlay)
 	#endif
 
 	var/list/the_dead = list()
@@ -341,7 +377,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			if(!player_mob.z) //Observing ghosts are in nullspace, pretend they don't exist
 				continue
 			if(player_mob.z != z || get_dist(player_mob, src) > 7) //they're out of range of normal hearing
-				if(eavesdrop_range)
+				if(is_whispering)
 					if(!(player_mob.client?.prefs.chat_toggles & CHAT_GHOSTWHISPER)) //they're whispering and we have hearing whispers at any range off
 						continue
 				else if(!(player_mob.client?.prefs.chat_toggles & CHAT_GHOSTEARS)) //they're talking normally and we have hearing at any range off
@@ -350,22 +386,13 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 			listening |= player_mob
 			the_dead[player_mob] = TRUE
 
-	var/eavesdropping
-	var/eavesrendered
-	if(eavesdrop_range)
-		eavesdropping = stars(message)
-		eavesrendered = compose_message(src, message_language, eavesdropping, , spans, message_mods)
-
 	var/rendered = compose_message(src, message_language, message, , spans, message_mods)
 	for(var/atom/movable/listening_movable as anything in listening)
 		if(!listening_movable)
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
 
-		if(eavesdrop_range && get_dist(source, listening_movable) > message_range && !(the_dead[listening_movable]))
-			listening_movable.Hear(eavesrendered, src, message_language, eavesdropping, , spans, message_mods)
-		else
-			listening_movable.Hear(rendered, src, message_language, message, , spans, message_mods)
+		listening_movable.Hear(rendered, src, message_language, message, null, spans, message_mods, message_range)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_LIVING_SAY_SPECIAL, src, message)
 

@@ -518,7 +518,7 @@
  * Audio Data Bullshit
  */
 
-/obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), sound_loc)
+/obj/item/p2p_phone_handset/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), sound_loc, message_range)
 	if(callstation.state != STATE_CONNECTED || speaker == src) //Either disconnected, or we're hearing ourselves.
 		return //This is far cheaper than a range check.
 	var/atom/movable/checked_thing = sound_loc || speaker //If we have a location, we care about that, otherwise we're speaking directly from something.

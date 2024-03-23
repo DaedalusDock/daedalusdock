@@ -32,10 +32,11 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		language = get_selected_language()
 	send_speech(message, range, src, , spans, message_language=language)
 
-/atom/movable/proc/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/atom/movable/proc/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_HEAR, args)
+	return TRUE
 
-/mob/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/mob/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
 	if(LAZYLEN(observers))
 		for(var/mob/dead/observer/O as anything in observers)
@@ -62,11 +63,11 @@ GLOBAL_LIST_INIT(freqtospan, list(
  * Arguments:
  * * `speaker` - Either the mob speaking, or a virtualspeaker if this is a remote message of some kind.
  * * `message_language` - The language the message is ICly in. For understanding.
- * * `raw_message` - The actual text of the message.
+ * * `translated_message` - The actual text of the message, after being translated across languages.
  * * `radio_freq` - can be either a numeric radio frequency, or an assoc list of `span` and `name`, to directly override them.
  * * `face_name` - Do we use the "name" of the speaker, or get it's `real_name`, Used solely for hallucinations.
 */
-/atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), face_name = FALSE)
+/atom/movable/proc/compose_message(atom/movable/speaker, datum/language/message_language, translated_message, radio_freq, list/spans, list/message_mods = list(), face_name = FALSE)
 
 	var/voice = "[speaker.GetVoice()]"
 	var/alt_name = speaker.get_alt_name()
@@ -97,7 +98,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	//href for AI tracking
 	var/ai_track_href = compose_track_href(speaker, namepart)
 	//shows the speaker's job to AIs
-	var/ai_job_display = compose_job(speaker, message_language, raw_message, radio_freq)
+	var/ai_job_display = compose_job(speaker, message_language, translated_message, radio_freq)
 
 	//Message
 	var/messagepart
@@ -105,7 +106,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 		messagepart = "<span class='emote'>[message_mods[MODE_CUSTOM_SAY_EMOTE]]</span>"
 	else
-		messagepart = process_received_speech(speaker, message_language, raw_message, spans, message_mods)
+		messagepart = say_quote(translated_message, spans, message_mods, message_language)
 
 		if(message_language?.display_icon(src))
 			languageicon = "[message_language.get_icon()] "
@@ -168,19 +169,21 @@ GLOBAL_LIST_INIT(freqtospan, list(
 #undef ENCODE_HTML_EMPHASIS
 
 /// Processes a spoken message's language based on if the hearer can understand it.
-/atom/movable/proc/process_received_speech(atom/movable/speaker, datum/language/language, raw_message, list/spans, list/message_mods = list(), no_quote = FALSE)
+/atom/movable/proc/translate_speech(atom/movable/speaker, datum/language/language, raw_message, list/spans, list/message_mods = list(), quote = FALSE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/atom/movable/source = speaker.GetSource() || speaker //is the speaker virtual
 
 	// Understands the language?
 	if(has_language(language))
-		return language.speech_understood(source, raw_message, spans, message_mods, no_quote)
+		return language.speech_understood(source, raw_message, spans, message_mods, quote)
 
 	else if(language)
-		return language.speech_not_understood(source, raw_message, spans, message_mods, no_quote)
+		return language.speech_not_understood(source, raw_message, spans, message_mods, quote)
 
 	else
-		return "makes a strange sound."
+		. = "makes a strange sound."
+		if(quote)
+			. = source.say_quote(.)
 
 /proc/get_radio_span(freq)
 	if(islist(freq)) //Heehoo hijack bullshit

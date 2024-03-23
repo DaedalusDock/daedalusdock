@@ -130,7 +130,6 @@
 #include "paintings.dm"
 #include "pills.dm"
 #include "plantgrowth_tests.dm"
-#include "preference_species.dm"
 #include "preferences.dm"
 #include "projectiles.dm"
 #include "quirks.dm"

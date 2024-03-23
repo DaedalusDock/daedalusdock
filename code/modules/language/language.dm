@@ -66,13 +66,13 @@
 		scramble_cache.Cut(1, scramble_cache.len-SCRAMBLE_CACHE_LEN-1)
 
 /// Called by process_received_message() when the hearer does not understand the language.
-/datum/language/proc/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
+/datum/language/proc/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
 	raw_message = scramble(raw_message)
-	return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods, src)
+	return !quote ? raw_message : source.say_quote(raw_message, spans, message_mods, src)
 
 /// Called by process_received_message() when the hearer does understand the language.
-/datum/language/proc/speech_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
-	return no_quote ? raw_message : source.say_quote(raw_message, spans, message_mods, src)
+/datum/language/proc/speech_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
+	return !quote ? raw_message : source.say_quote(raw_message, spans, message_mods, src)
 
 /datum/language/proc/scramble(input)
 	if(!syllables || !syllables.len)
@@ -152,12 +152,26 @@
 	return TRUE
 
 /// Called by Hear() to process a language and display it to the hearer.
-/datum/language/proc/hear_speech(mob/living/hearer, atom/movable/speaker, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
+/datum/language/proc/hear_speech(mob/living/hearer, atom/movable/speaker, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc, message_range)
 	if(!istype(hearer))
 		return
 
+	// if someone is whispering we make an extra type of message that is obfuscated for people out of range
+	// Less than or equal to 0 means normal hearing. More than 0 and less than or equal to EAVESDROP_EXTRA_RANGE means
+	// partial hearing. More than EAVESDROP_EXTRA_RANGE means no hearing. Exception for GOOD_HEARING trait
+	var/dist = get_dist(speaker, src) - message_range
+	var/is_observer = isobserver(hearer)
+	var/mangle_message = FALSE
+	if (message_range != INFINITY && dist > EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(src, TRAIT_GOOD_HEARING) && !is_observer)
+		return // Too far away and don't have good hearing, you can't hear anything
+
+	if(dist > 0 && dist <= EAVESDROP_EXTRA_RANGE && !HAS_TRAIT(hearer, TRAIT_GOOD_HEARING) && !is_observer) // ghosts can hear all messages clearly
+		mangle_message = TRUE
+
 	if(hearer.stat == UNCONSCIOUS && can_receive_language(hearer, ignore_stat = TRUE))
-		var/sleep_message = hearer.process_received_speech(speaker, src, raw_message, no_quote = TRUE)
+		var/sleep_message = hearer.translate_speech(speaker, src, raw_message)
+		if(mangle_message)
+			sleep_message = stars(sleep_message)
 		hearer.hear_sleeping(sleep_message)
 		return
 
@@ -185,16 +199,23 @@
 		enable_runechat = hearer.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)
 
 	var/can_receive_language = can_receive_language(hearer)
+	var/translated_message = hearer.translate_speech(speaker, src, raw_message, spans, message_mods)
+	if(mangle_message)
+		translated_message = stars(translated_message)
 
 	// Create map text prior to modifying message for goonchat
 	if (enable_runechat && !(hearer.stat == UNCONSCIOUS) && can_receive_language)
 		if (message_mods[MODE_CUSTOM_SAY_ERASE_INPUT])
 			hearer.create_chat_message(speaker, null, message_mods[MODE_CUSTOM_SAY_EMOTE], spans, EMOTE_MESSAGE, sound_loc = sound_loc)
 		else
-			hearer.create_chat_message(speaker, src, raw_message, spans, sound_loc = sound_loc)
+			hearer.create_chat_message(speaker, src, translated_message, spans, sound_loc = sound_loc)
 
 	// Recompose message for AI hrefs, language incomprehension.
-	var/parsed_message = hearer.compose_message(speaker, src, raw_message, radio_freq, spans, message_mods)
+	var/parsed_message = hearer.compose_message(speaker, src, translated_message, radio_freq, spans, message_mods)
 
-	hearer.show_message(parsed_message, MSG_AUDIBLE, deaf_message, deaf_type, avoid_highlight)
+	var/shown = hearer.show_message(parsed_message, MSG_AUDIBLE, deaf_message, deaf_type, avoid_highlight)
+	if(shown && LAZYLEN(observers))
+		for(var/mob/dead/observer/O in observers)
+			to_chat(O, shown)
+
 	return parsed_message

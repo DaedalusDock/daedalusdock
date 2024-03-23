@@ -290,9 +290,11 @@
 	owner.remove_status_effect(/datum/status_effect/trance)
 
 /datum/brain_trauma/severe/hypnotic_trigger/handle_hearing(datum/source, list/hearing_args)
-	if(!owner.can_hear())
-		return
 	if(owner == hearing_args[HEARING_SPEAKER])
+		return
+
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(istype(L, /datum/language/visual) || !L?.can_receive_language(owner) || !owner.has_language(L))
 		return
 
 	var/regex/reg = new("(\\b[REGEX_QUOTE(trigger_phrase)]\\b)","ig")

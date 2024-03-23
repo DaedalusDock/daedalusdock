@@ -160,7 +160,9 @@
 		if(type & MSG_AUDIBLE) //audio
 			to_chat(src, span_obviousnotice("<I>... You can almost hear something ...</I>"))
 		return
+
 	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
+	return msg
 
 /**
  * Generate a visible message from this atom

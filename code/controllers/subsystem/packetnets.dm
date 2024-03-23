@@ -405,7 +405,7 @@ SUBSYSTEM_DEF(packets)
 	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
 
 	for(var/obj/item/radio/radio as anything in receive)
-		SEND_SIGNAL(radio, COMSIG_RADIO_RECEIVE, virt.source, message, frequency)
+		SEND_SIGNAL(radio, COMSIG_RADIO_RECEIVE, virt.source, message, frequency, data)
 		for(var/atom/movable/hearer as anything in receive[radio])
 			if(!hearer)
 				stack_trace("null found in the hearers list returned by the spatial grid. this is bad")

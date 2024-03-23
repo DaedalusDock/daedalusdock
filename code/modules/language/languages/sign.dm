@@ -7,11 +7,11 @@
 	icon_state = "sign"
 	flags = parent_type::flags | (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND)
 
-/datum/language/visual/sign/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
+/datum/language/visual/sign/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
 	spans |= "italics"
 	return span_emote("makes weird gestures with [source.p_their()] hands.")
 
-/datum/language/visual/sign/speech_understood(atom/movable/source, raw_message, spans, list/message_mods, no_quote)
+/datum/language/visual/sign/speech_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
 	var/static/regex/remove_tone = regex("\[?!\]", "g")
 	// Replace all tonal indicators with periods.
 	raw_message = remove_tone.Replace(raw_message, ".")

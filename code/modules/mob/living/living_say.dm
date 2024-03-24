@@ -481,6 +481,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	return 0
 
 /mob/living/say_mod(input, list/message_mods = list(), datum/language/language)
+	if(language && (language.flags & LANGUAGE_OVERRIDE_SAY_MOD))
+		return language.get_say_mod(src)
+
 	if(message_mods[WHISPER_MODE] == MODE_WHISPER)
 		. = verb_whisper
 
@@ -490,31 +493,15 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	if(.)
 		return
 
-	var/signs = pick("signs", "gestures")
 	// Any subtype of slurring in our status effects make us "slur"
 	if(has_status_effect(/datum/status_effect/speech/slurring))
-		if (istype(language, /datum/language/visual/sign))
-			return "loosely [signs]"
-		else
-			return "slurs"
+		return "slurs"
 
 	else if(has_status_effect(/datum/status_effect/speech/stutter))
-		if(istype(language, /datum/language/visual/sign))
-			. = "shakily [signs]"
-		else
-			. = "stammers"
+		. = "stammers"
 
 	else if(has_status_effect(/datum/status_effect/speech/stutter/derpspeech))
-		if(istype(language, /datum/language/visual/sign))
-			. = "incoherently [signs]"
-		else
-			. = "gibbers"
-
-	else if(istype(language, /datum/language/visual/sign))
-		if(combat_mode)
-			. = "aggressively [signs] with their hands"
-		else
-			. = "[signs] with their hands"
+		. = "gibbers"
 	else
 		. = ..()
 

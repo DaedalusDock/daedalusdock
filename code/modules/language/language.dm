@@ -33,6 +33,10 @@
 	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
 	return sheet.icon_tag("language-[icon_state]")
 
+/// Called by /atom/proc/say_mod if LANGUAGE_OVERRIDE_SAY_MOD is present.
+/datum/language/proc/get_say_mod(mob/living/speaker)
+	return
+
 /datum/language/proc/get_random_name(gender, name_count=2, syllable_count=4, syllable_divisor=2)
 	if(!syllables || !syllables.len)
 		if(gender==FEMALE)

@@ -5,6 +5,7 @@
 #define LANGUAGE_CAN_WHISPER (1<<4)
 #define LANGUAGE_SELECTABLE_SPEAK (1<<5)
 #define LANGUAGE_SELECTABLE_UNDERSTAND (1<<6)
+#define LANGUAGE_OVERRIDE_SAY_MOD (1<<7)
 
 // LANGUAGE SOURCE DEFINES
 #define LANGUAGE_ALL "all" // For use in full removal only.

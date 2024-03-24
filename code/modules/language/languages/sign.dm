@@ -5,7 +5,7 @@
 	default_priority = 90
 	spans = list("emote")
 	icon_state = "sign"
-	flags = parent_type::flags | (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND)
+	flags = parent_type::flags | (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND | LANGUAGE_OVERRIDE_SAY_MOD)
 
 /datum/language/visual/sign/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
 	spans |= "italics"
@@ -51,3 +51,22 @@
 
 		else
 			return message
+
+/datum/language/visual/sign/get_say_mod(mob/living/speaker)
+	var/signs = pick("signs", "gestures")
+
+	// Any subtype of slurring in our status effects make us "slur"
+	if(speaker.has_status_effect(/datum/status_effect/speech/slurring))
+		return "loosely [signs]"
+
+	else if(speaker.has_status_effect(/datum/status_effect/speech/stutter))
+		. = "shakily [signs]"
+
+	else if(speaker.has_status_effect(/datum/status_effect/speech/stutter/derpspeech))
+		. = "incoherently [signs]"
+
+	else
+		if(speaker.combat_mode)
+			return "aggressively [signs] with their hands"
+		else
+			return "[signs] with their hands"

@@ -65,7 +65,7 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/request_evacuation(mob/caller, reason, controller_id, admin = FALSE)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
-		CRASH("Invalid controller ID")
+		CRASH("Evacuaton was requested with an invalid controller ID")
 	for(var/identifier in controllers)
 		if(controllers[identifier].state >= EVACUATION_STATE_AWAITING)
 			to_chat(caller, "Evacuation is already in progress.")
@@ -75,13 +75,14 @@ SUBSYSTEM_DEF(evacuation)
 /datum/controller/subsystem/evacuation/proc/can_cancel(mob/caller, controller_id)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
-		CRASH("Invalid controller ID")
+		stack_trace("can_cancel() was passed an invalid controller ID")
+		return "Error 500. Please contact your system administrator."
 	return controller.can_cancel(caller)
 
 /datum/controller/subsystem/evacuation/proc/request_cancel(mob/caller, controller_id)
 	var/datum/evacuation_controller/controller = controllers[controller_id]
 	if(!controller)
-		CRASH("Invalid controller ID")
+		CRASH("Evacuaton cancel was requested with an invalid controller ID")
 	controller.trigger_cancel_evacuation(caller)
 
 /datum/controller/subsystem/evacuation/proc/add_evacuation_blocker(datum/bad)
@@ -98,22 +99,22 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/disable_evacuation(controller_id)
 	if(!controllers[controller_id])
-		CRASH("Invalid controller ID")
+		CRASH("Tried to disable evacuation of an invalid controller ID")
 	controllers[controller_id].disable_evacuation()
 
 /datum/controller/subsystem/evacuation/proc/enable_evacuation(controller_id)
 	if(!controllers[controller_id])
-		CRASH("Invalid controller ID")
+		CRASH("Tried to enable evacuation of an invalid controller ID")
 	controllers[controller_id].enable_evacuation()
 
 /datum/controller/subsystem/evacuation/proc/block_cancel(controller_id)
 	if(!controllers[controller_id])
-		CRASH("Invalid controller ID")
+		CRASH("Tried to block cancel of an invalid controller ID")
 	controllers[controller_id].block_cancel()
 
 /datum/controller/subsystem/evacuation/proc/unblock_cancel(controller_id)
 	if(!controllers[controller_id])
-		CRASH("Invalid controller ID")
+		CRASH("Tried to unblock cancel of an invalid controller ID")
 	controllers[controller_id].unblock_cancel()
 
 //Perhaps move it to SShuttle?
@@ -164,7 +165,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/delay_evacuation(identifier, delay)
 	if(!controllers[identifier])
-		CRASH("Invalid controller ID")
+		CRASH("Tried to delay evacuation of an invalid controller ID")
 	controllers[identifier].delay_evacuation(delay)
 
 /datum/controller/subsystem/evacuation/proc/get_controllers_names(active_only = FALSE)

@@ -19,7 +19,8 @@
 
 	var/mob/mob_parent = parent
 
-	mob_parent.hud_used.add_screen_object(/atom/movable/screen/craft, HUDKEY_MOB_CRAFTING_MENU, HUDGROUP_STATIC_INVENTORY, mob_parent.hud_used.ui_style, TRUE)
+	var/atom/movable/screen/screen_obj = mob_parent.hud_used.add_screen_object(/atom/movable/screen/craft, HUDKEY_MOB_CRAFTING_MENU, HUDGROUP_STATIC_INVENTORY, mob_parent.hud_used.ui_style, TRUE)
+	RegisterSignal(screen_obj, COMSIG_CLICK, PROC_REF(component_ui_interact))
 
 /datum/component/personal_crafting
 	var/busy

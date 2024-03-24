@@ -3,12 +3,12 @@
 	desc = "The universally understood sign language format."
 	key = "s"
 	default_priority = 90
-	spans = list("emote")
 	icon_state = "sign"
 	flags = parent_type::flags | (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND | LANGUAGE_OVERRIDE_SAY_MOD)
 
 /datum/language/visual/sign/speech_not_understood(atom/movable/source, raw_message, spans, list/message_mods, quote)
 	spans |= "italics"
+	spans |= "emote"
 	message_mods[MODE_NO_QUOTE] = TRUE
 	return span_emote("makes weird gestures with [source.p_their()] hands.")
 

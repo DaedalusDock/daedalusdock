@@ -59,6 +59,7 @@
 			// You are blind why should you be able to make out details like color, only shapes near you
 			add_client_colour(/datum/client_colour/monochrome/blind)
 		if(BLIND_PHYSICAL)
+			clear_fullscreen("completely_blind")
 			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
 			// You are blind why should you be able to make out details like color, only shapes near you
 			add_client_colour(/datum/client_colour/monochrome/blind)

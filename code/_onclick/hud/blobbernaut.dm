@@ -1,5 +1,3 @@
-/datum/hud/living/blobbernaut/New(mob/living/owner)
+/datum/hud/living/blobbernaut/initialize_screens()
 	. = ..()
-
-	blobpwrdisplay = new /atom/movable/screen/healths/blob/overmind(null, src)
-	infodisplay += blobpwrdisplay
+	add_screen_object(/atom/movable/screen/healths/blob/overmind, HUDKEY_BLOB_POWER_DISPLAY, HUDGROUP_INFO_DISPLAY)

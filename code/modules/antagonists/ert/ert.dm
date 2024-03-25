@@ -262,19 +262,13 @@
 	var/mob/living/M = mob_override || owner.current
 	if(M.hud_used)
 		var/datum/hud/H = M.hud_used
-		var/atom/movable/screen/wanted/giving_wanted_lvl = new /atom/movable/screen/wanted(null, M.hud_used)
-		H.wanted_lvl = giving_wanted_lvl
-		giving_wanted_lvl.hud = H
-		H.infodisplay += giving_wanted_lvl
-		H.mymob.client.screen += giving_wanted_lvl
-
+		H.add_screen_object(/atom/movable/screen/wanted, HUDKEY_ERT_WANTEDLEVEL, HUDGROUP_INFO_DISPLAY, update_screen = TRUE)
 
 /datum/antagonist/ert/families/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/M = mob_override || owner.current
 	if(M.hud_used)
 		var/datum/hud/H = M.hud_used
-		H.infodisplay -= H.wanted_lvl
-		QDEL_NULL(H.wanted_lvl)
+		qdel(H.screen_objects[HUDKEY_ERT_WANTEDLEVEL])
 	..()
 
 /datum/antagonist/ert/families/greet()

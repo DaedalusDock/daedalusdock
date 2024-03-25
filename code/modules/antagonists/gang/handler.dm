@@ -248,14 +248,14 @@ GLOBAL_VAR(families_override_theme)
 	else if (newlevel < wanted_level)
 		on_lower_wanted_level(newlevel)
 	wanted_level = newlevel
-	for(var/i in GLOB.player_list)
-		var/mob/M = i
-		if(!M.hud_used?.wanted_lvl)
+	for(var/mob/M as anything in GLOB.player_list)
+		var/atom/movable/screen/wanted/W = M.hud_used?.screen_objects[HUDKEY_ERT_WANTEDLEVEL]
+		if(!W)
 			continue
-		var/datum/hud/H = M.hud_used
-		H.wanted_lvl.level = newlevel
-		H.wanted_lvl.cops_arrived = cops_arrived
-		H.wanted_lvl.update_appearance()
+
+		W.level = newlevel
+		W.cops_arrived = cops_arrived
+		W.update_appearance()
 
 /// Internal. Updates the end_time and sends out an announcement if the wanted level has increased. Called by update_wanted_level().
 /datum/gang_handler/proc/on_gain_wanted_level(newlevel)

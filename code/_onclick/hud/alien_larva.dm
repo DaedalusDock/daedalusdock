@@ -1,35 +1,13 @@
 /datum/hud/larva
 	ui_style = 'icons/hud/screen_alien.dmi'
 
-/datum/hud/larva/New(mob/owner)
-	..()
-	var/atom/movable/screen/using
+/datum/hud/larva/initialize_screens()
+	. = ..()
+	add_screen_object(/atom/movable/screen/combattoggle/flashy, HUDKEY_MOB_INTENTS, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/pull{icon = 'icons/hud/screen_alien.dmi'}, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/language_menu{screen_loc = ui_alien_language_menu}, HUDKEY_MOB_LANGUAGE_MENU, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/navigate{screen_loc = ui_alien_navigate_menu}, HUDKEY_MOB_NAVIGATE_MENU, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/zone_sel/alien, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY)
 
-	action_intent = new /atom/movable/screen/combattoggle/flashy(null, src)
-	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
-
-	healths = new /atom/movable/screen/healths/alien(null, src)
-	infodisplay += healths
-
-	alien_queen_finder = new /atom/movable/screen/alien/alien_queen_finder(null, src)
-	infodisplay += alien_queen_finder
-
-	pull_icon = new /atom/movable/screen/pull(null, src)
-	pull_icon.icon = 'icons/hud/screen_alien.dmi'
-	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_above_movement
-	hotkeybuttons += pull_icon
-
-	using = new/atom/movable/screen/language_menu(null, src)
-	using.screen_loc = ui_alien_language_menu
-	static_inventory += using
-
-	using = new /atom/movable/screen/navigate(null, src)
-	using.screen_loc = ui_alien_navigate_menu
-	static_inventory += using
-
-	zone_select = new /atom/movable/screen/zone_sel/alien(null, src)
-	zone_select.update_appearance()
-	static_inventory += zone_select
+	add_screen_object(/atom/movable/screen/healths/alien, HUDKEY_MOB_HEALTH, HUDGROUP_INFO_DISPLAY)
+	add_screen_object(/atom/movable/screen/alien/alien_queen_finder, HUDKEY_ALIEN_QUEEN_FINDER, HUDGROUP_INFO_DISPLAY)

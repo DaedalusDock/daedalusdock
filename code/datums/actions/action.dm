@@ -329,7 +329,7 @@
 
 /// Creates an action button movable for the passed mob, and returns it.
 /datum/action/proc/create_button()
-	var/atom/movable/screen/movable/action_button/button = new()
+	var/atom/movable/screen/movable/action_button/button = owner.hud_used.add_screen_object(__IMPLIED_TYPE__)
 	button.linked_action = src
 	build_button_icon(button, ALL, TRUE)
 	return button

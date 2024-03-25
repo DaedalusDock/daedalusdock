@@ -1,14 +1,9 @@
 ///Hud type with targetting dol and a nutrition bar
-/datum/hud/ooze/New(mob/living/owner)
+/datum/hud/ooze/initialize_screens()
 	. = ..()
 
-	zone_select = new /atom/movable/screen/zone_sel(null, src)
-	zone_select.icon = ui_style
-	zone_select.update_appearance()
-	static_inventory += zone_select
-
-	alien_plasma_display = new /atom/movable/screen/ooze_nutrition_display(null, src) //Just going to use the alien plasma display because making new vars for each object is braindead.
-	infodisplay += alien_plasma_display
+	add_screen_object(/atom/movable/screen/zone_sel, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/ooze_nutrition_display, HUDKEY_MOB_NUTRITION, HUDGROUP_INFO_DISPLAY)
 
 /atom/movable/screen/ooze_nutrition_display
 	icon = 'icons/hud/screen_alien.dmi'

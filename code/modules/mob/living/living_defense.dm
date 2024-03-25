@@ -108,8 +108,7 @@
 	else
 		gurps_stats.remove_skill(SKILL_MELEE_COMBAT, SKILL_SOURCE_COMBAT_MODE)
 
-	if(hud_used?.action_intent)
-		hud_used.action_intent.update_appearance()
+	hud_used?.screen_objects[HUDKEY_MOB_INTENTS].update_appearance()
 
 	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))
 		return

@@ -280,7 +280,7 @@
 		if(arm_owner.handcuffed)
 			arm_owner.remove_handcuffs()
 		if(arm_owner.hud_used)
-			var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
+			var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots[held_index]
 			if(associated_hand)
 				associated_hand.update_appearance()
 		if(arm_owner.gloves)

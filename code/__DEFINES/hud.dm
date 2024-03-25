@@ -234,3 +234,120 @@
 
 ///The default see_in_dark given to mobs
 #define NIGHTVISION_FOV_RANGE 2
+
+// Hud group keys
+#define HUDGROUP_STATIC_INVENTORY 1
+#define HUDGROUP_TOGGLEABLE_INVENTORY 2
+#define HUDGROUP_INFO_DISPLAY 3
+#define HUDGROUP_SCREEN_OVERLAYS 4
+#define HUDGROUP_SCREEN_GROUP_AMT 4
+#define HUDGROUP_HOTKEY_BUTTONS 5
+#define HUDGROUP_GUN_OPTIONS 6
+#define SCREEN_GROUP_AMT 6
+
+// Hud keys for accessing hud objects
+#define HUDKEY_MOB_TOGGLE_PALETTE "mobtogglepalette"
+#define HUDKEY_MOB_PALETTE_UP "mobpaletteup"
+#define HUDKEY_MOB_PALETTE_DOWN "mobpalettedown"
+#define HUDKEY_MOB_SCREENTIP "screentips"
+#define HUDKEY_MOB_HEALTH "mobhealth"
+#define HUDKEY_MOB_LANGUAGE_MENU "moblanguage"
+#define HUDKEY_MOB_NAVIGATE_MENU "mobnavigate"
+#define HUDKEY_MOB_INTENTS "mobintents"
+#define HUDKEY_MOB_MOVE_INTENT "mobmoveintent"
+#define HUDKEY_MOB_ZONE_SELECTOR "mobzonesel"
+#define HUDKEY_MOB_PULL "mobpull"
+#define HUDKEY_MOB_DROP "mobdrop"
+#define HUDKEY_MOB_THROW "mobthrow"
+#define HUDKEY_MOB_NUTRITION "mobnutrition"
+#define HUDKEY_MOB_RESIST "mobresist"
+#define HUDKEY_MOB_REST "mobrest"
+#define HUDKEY_MOB_SPACESUIT "mobspacesuit"
+#define HUDKEY_MOB_STAMINA "mobstamina"
+#define HUDKEY_MOB_COMBO "mobcombo"
+#define HUDKEY_MOB_PAIN "mobpain"
+#define HUDKEY_MOB_USE_TIMER "mobusetimer"
+#define HUDKEY_MOB_SWAPHAND_1 "mobswaphand1"
+#define HUDKEY_MOB_SWAPHAND_2 "mobswaphand2"
+#define HUDKEY_MOB_GUN_ITEM "mobgunitem"
+#define HUDKEY_MOB_GUN_MOVE "mobgunmove"
+#define HUDKEY_MOB_GUN_RADIO "mobgunradio"
+#define HUDKEY_MOB_GUN_MODE "mobgunmode"
+#define HUDKEY_MOB_CRAFTING_MENU "mobcrafting"
+
+#define HUDKEY_ITEM_SLOT(slot) "item_slot:[slot]"
+/// Converts item slots to hud keys as a compiler constant
+#define HUDKEY_ITEM_SLOT_CONST(slot) "item_slot:" + #slot
+/// Hand2hudkey
+#define HUDKEY_HAND_SLOT(slot) "hand_slot:[slot]"
+
+#define HUDKEY_HUMAN_AREA_CREATOR "humanareacreator"
+#define HUDKEY_HUMAN_TOGGLE_INVENTORY "humantoggleinventory"
+#define HUDKEY_HUMAN_EQUIP_ITEM "humanequipitem"
+
+#define HUDKEY_SILICON_TAKE_IMAGE "siliconcamera"
+#define HUDKEY_SILICON_TABLET "silicontablet"
+#define HUDKEY_SILICON_ALERTS "siliconalerts"
+
+#define HUDKEY_AI_AICORE "aicore"
+#define HUDKEY_AI_CAMERA_LIST "aicameralist"
+#define HUDKEY_AI_CAMERA_TRACK "aicameratrack"
+#define HUDKEY_AI_CAMERA_LIGHT "aicameralight"
+#define HUDKEY_AI_CREW_MONITOR "aicrewmonitor"
+#define HUDKEY_AI_CREW_MANIFEST "aicrewmanifest"
+#define HUDKEY_AI_ANNOUNCEMENT "aiannounce"
+#define HUDKEY_AI_CALL_SHUTTLE "aishuttke"
+#define HUDKEY_AI_STATE_LAWS "aistatelaws"
+#define HUDKEY_AI_TAKE_IMAGE "aitakeimage"
+#define HUDKEY_AI_IMAGE_VIEW "aivewimage"
+#define HUDKEY_AI_SENSORS "aisensors"
+#define HUDKEY_AI_MULTICAM "aiviewmulticam"
+#define HUDKEY_AI_ADD_MULTICAM "aiaddmulticam"
+
+#define HUDKEY_CYBORG_RADIO "cyborgradio"
+#define HUDKEY_CYBORG_MODULE_1 "cyborgmodule1"
+#define HUDKEY_CYBORG_MODULE_2 "cyborgmodule2"
+#define HUDKEY_CYBORG_MODULE_3 "cyborgmodule3"
+#define HUDKEY_CYBORG_LAMP "cyborglamp"
+#define HUDKEY_CYBORG_HANDS "cyborgmodule"
+#define HUDKEY_CYBORG_STORE "cyborgstore"
+
+#define HUDKEY_PAI_SOFTWARE "paisoftware"
+#define HUDKEY_PAI_SHELL "paishell"
+#define HUDKEY_PAI_CHASSIS "paichassis"
+#define HUDKEY_PAI_NEWSCASTER "painewscaster"
+#define HUDKEY_PAI_HOST_MONITOR "paimonitor"
+#define HUDKEY_PAI_GPS "paigps"
+
+#define HUDKEY_GHOST_SPAWNERS "ghostspawners"
+#define HUDKEY_GHOST_ORBIT "ghostorbit"
+#define HUDKEY_GHOST_REENTER_CORPSE "ghostcorpse"
+#define HUDKEY_GHOST_TELEPORT "ghostteleport"
+#define HUDKEY_GHOST_PAI "ghostpai"
+#define HUDKEY_GHOST_MINIGAMES "ghostminigames"
+
+#define HUDKEY_ALIEN_QUEEN_FINDER "alienqueenfinder"
+#define HUDKEY_ALIEN_PLASMA_DISPLAY "alienplasmadisplay"
+#define HUDKEY_ALIEN_HUNTER_LEAP "alienhunterleap"
+
+#define HUDKEY_BLOB_POWER_DISPLAY "blobpwrdisplay"
+#define HUDKEY_BLOB_HELP "blobhelp"
+#define HUDKEY_BLOB_JUMP_TO_CORE "blobjumptocore"
+#define HUDKEY_BLOB_JUMP_TO_NODE "blobjumptonode"
+#define HUDKEY_BLOB_BLOBBERNAUT "blobblobbernaut"
+#define HUDKEY_BLOB_RESOURCES "blobresources"
+#define HUDKEY_BLOB_NODE "blobnode"
+#define HUDKEY_BLOB_FACTORY "blobfactory"
+#define HUDKEY_BLOB_READAPT "blobreadapt"
+#define HUDKEY_BLOB_RELOCATE "blobrelocate"
+
+#define HUDKEY_GUARDIAN_MANIFEST "guardianmanifest"
+#define HUDKEY_GUARDIAN_RECALL "guardianrecall"
+#define HUDKEY_GUARDIAN_LIGHT "guardianlight"
+#define HUDKEY_GUARDIAN_COMMUNICATE "guardiancommunicate"
+#define HUDKEY_GUARDIAN_TOGGLE "guardiantoggle"
+
+#define HUDKEY_ERT_WANTEDLEVEL "ertwantedlevel"
+
+#define HUDKEY_CHANGELING_CHEMS "changelingchems"
+#define HUDKEY_CHANGELING_STING "changelingsting"

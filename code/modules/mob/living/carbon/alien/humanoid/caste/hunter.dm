@@ -4,7 +4,6 @@
 	maxHealth = 125
 	health = 125
 	icon_state = "alienh"
-	var/atom/movable/screen/leap_icon = null
 
 /mob/living/carbon/alien/humanoid/hunter/create_internal_organs()
 	organs += new /obj/item/organ/alien/plasmavessel/small
@@ -14,7 +13,7 @@
 
 /mob/living/carbon/alien/humanoid/hunter/proc/toggle_leap(message = 1)
 	leap_on_click = !leap_on_click
-	leap_icon.icon_state = "leap_[leap_on_click ? "on":"off"]"
+	hud_used?.screen_objects[HUDKEY_ALIEN_HUNTER_LEAP]?.icon_state = "leap_[leap_on_click ? "on":"off"]"
 	update_icons()
 	if(message)
 		to_chat(src, span_noticealien("You will now [leap_on_click ? "leap at":"slash at"] enemies!"))

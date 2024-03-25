@@ -187,7 +187,6 @@
 	antag_flag_override = ROLE_TRAITOR
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
 		JOB_HEAD_OF_SECURITY,
 		JOB_PRISONER,
@@ -510,7 +509,6 @@
 	antag_flag_override = ROLE_BLOB
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_SECURITY,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,

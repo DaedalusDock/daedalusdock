@@ -124,6 +124,7 @@
 #include "mob_spawn.dm"
 #include "modsuit.dm"
 #include "modular_map_loader.dm"
+#include "movement_order_sanity.dm"
 #include "novaflower_burn.dm"
 #include "objectives.dm"
 #include "outfit_sanity.dm"

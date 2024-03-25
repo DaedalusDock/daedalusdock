@@ -72,7 +72,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 		return TRUE
 	if(SSticker.force_ending || GLOB.station_was_nuked) // Just let them win.
 		return TRUE
-	if(SSevacuation.station_evacuated())
+	if(SSevacuation.evacuation_finished())
 		return FALSE
 	var/area/current_area = get_area(M.current)
 	if(!current_area || istype(current_area, /area/shuttle/escape/brig)) // Fails if they are in the shuttle brig

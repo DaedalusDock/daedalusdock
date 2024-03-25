@@ -163,6 +163,12 @@ SUBSYSTEM_DEF(evacuation)
 			return TRUE
 	return FALSE
 
+/datum/controller/subsystem/evacuation/proc/evacuation_finished()
+	for(var/identifier in controllers)
+		if(controllers[identifier].state >= EVACUATION_STATE_FINISHED)
+			return TRUE
+	return FALSE
+
 /datum/controller/subsystem/evacuation/proc/delay_evacuation(identifier, delay)
 	if(!controllers[identifier])
 		CRASH("Tried to delay evacuation for an invalid controller \"[identifier]\"")

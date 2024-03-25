@@ -417,7 +417,7 @@
 	var/mob/M = C.mob
 	if(M.mind && !isnewplayer(M))
 		if(M.stat != DEAD && !isbrain(M))
-			if(SSevacuation.station_evacuated())
+			if(SSevacuation.evacuation_finished())
 				var/list/area/evac_areas = SSevacuation.get_endgame_areas()
 				if(!M.onCentCom() && !M.onSyndieBase() && !evac_areas[get_area(M)])
 					parts += "<div class='panel stationborder'>"

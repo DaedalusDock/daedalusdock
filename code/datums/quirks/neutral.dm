@@ -31,27 +31,6 @@
 	lose_text = "<span class='notice'>You can taste again!</span>"
 	medical_record_text = "Patient suffers from ageusia and is incapable of tasting food or reagents."
 
-/datum/quirk/foreigner
-	name = "Foreigner"
-	desc = "You're not from around here. You don't know Galactic Common!"
-	icon = "language"
-	value = 0
-	gain_text = "<span class='notice'>The words being spoken around you don't make any sense."
-	lose_text = "<span class='notice'>You've developed fluency in Galactic Common."
-	medical_record_text = "Patient does not speak Galactic Common and may require an interpreter."
-
-/datum/quirk/foreigner/add(client/client_source)
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.add_blocked_language(/datum/language/common)
-	if(ishumanbasic(human_holder))
-		human_holder.grant_language(/datum/language/uncommon)
-
-/datum/quirk/foreigner/remove()
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	human_holder.remove_blocked_language(/datum/language/common)
-	if(ishumanbasic(human_holder))
-		human_holder.remove_language(/datum/language/uncommon)
-
 /datum/quirk/vegetarian
 	name = "Vegetarian"
 	desc = "You find the idea of eating meat morally and physically repulsive."
@@ -263,31 +242,22 @@
 	medical_record_text = "Fucking creep kept staring at me the whole damn checkup. I'm only diagnosing this because it's less awkward than thinking it was on purpose."
 	mob_trait = TRAIT_SHIFTY_EYES
 
-/datum/quirk/item_quirk/tongue_tied
+/datum/quirk/tongue_tied
 	name = "Tongue Tied"
-	desc = "Due to a past incident, your ability to communicate has been relegated to your hands."
+	desc = "Your ability to communicate has been relegated to your hands."
 	icon = "sign-language"
 	value = 0
-	medical_record_text = "During physical examination, patient's tongue was found to be uniquely damaged."
+	medical_record_text = "Patient is unable to communicate verbally."
 
-/datum/quirk/item_quirk/tongue_tied/add_unique(client/client_source)
+/datum/quirk/tongue_tied/add_unique(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/obj/item/organ/tongue/old_tongue = human_holder.getorganslot(ORGAN_SLOT_TONGUE)
-	old_tongue.Remove(human_holder)
-	qdel(old_tongue)
+	human_holder.grant_language(/datum/language/visual/sign, TRUE, TRUE, LANGUAGE_MIND)
+	ADD_TRAIT(human_holder, TRAIT_MUTE, QUIRK_TRAIT)
 
-	var/obj/item/organ/tongue/tied/new_tongue = new(get_turf(human_holder))
-	new_tongue.Insert(human_holder)
-	// Only tongues of people with this quirk can't be removed. Manually spawned or found tongues can be.
-	new_tongue.organ_flags |= ORGAN_UNREMOVABLE
-
-	var/obj/item/clothing/gloves/gloves_type = /obj/item/clothing/gloves/radio
-	if(isplasmaman(human_holder))
-		gloves_type = /obj/item/clothing/gloves/color/plasmaman/radio
-	give_item_to_holder(gloves_type, list(LOCATION_GLOVES = ITEM_SLOT_GLOVES, LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-
-/datum/quirk/item_quirk/tongue_tied/post_add()
-	to_chat(quirk_holder, span_boldannounce("Because you speak with your hands, having them full hinders your ability to communicate!"))
+/datum/quirk/tongue_tied/remove()
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	human_holder.remove_language(/datum/language/visual/sign, TRUE, TRUE, LANGUAGE_MIND)
+	REMOVE_TRAIT(human_holder, TRAIT_MUTE, QUIRK_TRAIT)
 
 /datum/quirk/item_quirk/photographer
 	name = "Photographer"

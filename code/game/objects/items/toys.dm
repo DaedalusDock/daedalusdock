@@ -1154,6 +1154,12 @@
 	name = "[initial(name)] - [doll_name]"
 
 /obj/item/toy/dummy/talk_into(atom/movable/A, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = A?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	var/mob/M = A
 	if (istype(M))
 		M.log_talk(message, LOG_SAY, tag="dummy toy")

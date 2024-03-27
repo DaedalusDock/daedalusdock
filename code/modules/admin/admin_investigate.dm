@@ -1,8 +1,14 @@
 /atom/proc/investigate_log(message, subject)
 	if(!message || !subject)
 		return
-	var/F = file("[GLOB.log_directory]/[subject].html")
-	WRITE_FILE(F, "[time_stamp()] [REF(src)] ([x],[y],[z]) || [src] [message]<br>")
+
+	var/source = "[src]"
+
+	if(isliving(src))
+		var/mob/living/source_mob = src
+		source += " ([source_mob.ckey ? source_mob.ckey : "*no key*"])"
+
+	rustg_file_append("[time_stamp("YYYY-MM-DD hh:mm:ss")] [REF(src)] ([x],[y],[z]) || [source] [message]<br>", "[GLOB.log_directory]/[subject].html")
 
 /client/proc/investigate_show()
 	set name = "Investigate"

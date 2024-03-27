@@ -36,7 +36,7 @@
 			<b>All Languages</b>
 			<span class='tooltiptext'>I'm gettin' quirked up tonight.</span>
 		</legend>
-	<table class='zebraTable' style='min-width:100%;height: 560px;display: block;overflow-y: scroll'>
+	<div class='zebraTable' style='display: flex; flex-direction: column; height: 560px;display: block;overflow-y: scroll'>
 	"}
 
 
@@ -45,17 +45,15 @@
 		var/can_speak = initial(language_path.flags) & LANGUAGE_SELECTABLE_SPEAK
 
 		. += {"
-		<tr style='min-width=100%'>
-			<td>
-				[initial(language_path.name)] - [button_element(prefs, "?", "pref_act=[P.type];info=[language_path]")] -
-				[can_speak && afford_speak ? button_element(prefs, "SPEAK", "pref_act=[P.type];set_speak=[language_path]") : "<span class='linkOff'>SPEAK</span>"] -
-				[can_understand && afford_understand ? button_element(prefs, "UNDERSTAND", "pref_act=[P.type];set_understand=[language_path]") : "<span class='linkOff'>UNDERSTAND</span>"]
-			</td>
-		</tr>
+		<div>
+			[initial(language_path.name)] - [button_element(prefs, "?", "pref_act=[P.type];info=[language_path]")] -
+			[can_speak && afford_speak ? button_element(prefs, "SPEAK", "pref_act=[P.type];set_speak=[language_path]") : "<span class='linkOff'>SPEAK</span>"] -
+			[can_understand && afford_understand ? button_element(prefs, "UNDERSTAND", "pref_act=[P.type];set_understand=[language_path]") : "<span class='linkOff'>UNDERSTAND</span>"]
+		</div>
 		"}
 
 
-	. += "</table></fieldset>"
+	. += "</div></fieldset>"
 
 	. += {"
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:40%;max-width:40%;margin-left: auto;margin-right: auto'>
@@ -63,18 +61,16 @@
 			<b>Known Languages</b>
 			<span class='tooltiptext'>I'm gettin' quirked up tonight.</span>
 		</legend>
-	<table class='zebraTable' style='min-width:100%;height: 560px;display: block;overflow-y: scroll'>
+	<div class='zebraTable' style='display: flex; flex-direction: column; height: 560px;display: block;overflow-y: scroll'>
 	"}
 
 	for(var/datum/language/innate_language as anything in innate_languages)
 		. += {"
-		<tr>
-			<td>
-				<b>[initial(innate_language.name)]</b> - <span class='linkOff'>INNATE</span>
-				<br>
-				[initial(innate_language.desc)]
-			</td>
-		</tr>
+		<div>
+			<b>[initial(innate_language.name)]</b> - <span class='linkOff'>INNATE</span>
+			<br>
+			[initial(innate_language.desc)]
+		</div>
 		"}
 
 	for(var/datum/language/language_path as anything in user_languages)
@@ -96,16 +92,14 @@
 
 
 		. += {"
-		<tr>
-			<td>
-				<b>[initial(language_path.name)]</b> -
-				[button_element(prefs, "REMOVE", "pref_act=[P.type];remove=[language_path]")] -
-				[speak_button] -
-				[understand_button]
-				<br>
-				[initial(language_path.desc)]
-			</td>
-		</tr>
+		<div>
+			<b>[initial(language_path.name)]</b> -
+			[button_element(prefs, "REMOVE", "pref_act=[P.type];remove=[language_path]")] -
+			[speak_button] -
+			[understand_button]
+			<br>
+			[initial(language_path.desc)]
+		</div>
 		"}
 
-	. += "</table></fieldset>"
+	. += "</div></fieldset>"

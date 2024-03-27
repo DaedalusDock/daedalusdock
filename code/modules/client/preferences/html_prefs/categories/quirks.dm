@@ -41,7 +41,7 @@
 				quirk_type = "<span style='color: #AAAAFF'>Neutral</span>"
 
 		. += {"
-		<div>
+		<div class='flexItem'>
 			[button_element(prefs, "[quirk]", "pref_act=[P.type];toggle_quirk=[quirk]")] - [button_element(prefs, "?", "pref_act=[P.type];info=[quirk]")] - [quirk_type]
 		</div>
 		"}
@@ -60,7 +60,7 @@
 
 	for(var/quirk in user_quirks)
 		. += {"
-		<div>
+		<div class='flexItem'>
 			<b>[quirk]</b> -
 			[button_element(prefs, "REMOVE", "pref_act=[P.type];toggle_quirk=[quirk]")]
 			<br>

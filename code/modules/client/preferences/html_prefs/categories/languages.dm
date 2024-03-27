@@ -45,7 +45,7 @@
 		var/can_speak = initial(language_path.flags) & LANGUAGE_SELECTABLE_SPEAK
 
 		. += {"
-		<div>
+		<div class='flexItem'>
 			[initial(language_path.name)] - [button_element(prefs, "?", "pref_act=[P.type];info=[language_path]")] -
 			[can_speak && afford_speak ? button_element(prefs, "SPEAK", "pref_act=[P.type];set_speak=[language_path]") : "<span class='linkOff'>SPEAK</span>"] -
 			[can_understand && afford_understand ? button_element(prefs, "UNDERSTAND", "pref_act=[P.type];set_understand=[language_path]") : "<span class='linkOff'>UNDERSTAND</span>"]
@@ -66,7 +66,7 @@
 
 	for(var/datum/language/innate_language as anything in innate_languages)
 		. += {"
-		<div>
+		<div class='flexItem'>
 			<b>[initial(innate_language.name)]</b> - <span class='linkOff'>INNATE</span>
 			<br>
 			[initial(innate_language.desc)]
@@ -92,7 +92,7 @@
 
 
 		. += {"
-		<div>
+		<div class='flexItem'>
 			<b>[initial(language_path.name)]</b> -
 			[button_element(prefs, "REMOVE", "pref_act=[P.type];remove=[language_path]")] -
 			[speak_button] -

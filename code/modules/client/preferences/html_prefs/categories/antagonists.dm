@@ -25,14 +25,23 @@
 			[button_element(prefs, "Select All", "pref_act=[/datum/preference/blob/antagonists];select_all=1")]
 			[button_element(prefs, "Deselect All", "pref_act=[/datum/preference/blob/antagonists];deselect_all=1")]
 		</div>
-	<table style='width:100%'>
+	<div class='flexColumn' style='height: 560px;display: block;overflow-y: scroll'>
 	"}
-	var/list/client_antags = prefs.read_preference(/datum/preference/blob/antagonists)
+	var/list/client_antags = sort_list(prefs.read_preference(/datum/preference/blob/antagonists))
+
+	var/i = 0
+	var/background_color = "#7c5500"
 	for(var/antagonist in client_antags)
+		i++
+		background_color = i %% 2 ? "#7c5500" : "#533200"
 		. += {"
-		<tr>
-			<td><span class='computerText'>[antagonist]</span><td>
-			<td>[button_element(prefs, client_antags[antagonist] ? "ENABLED" : "DISABLED", "pref_act=[/datum/preference/blob/antagonists];toggle_antag=[antagonist]")]</td>
-		</tr>
+		<div class='flexRow' style='justify-content: space-between; background-color:[background_color]'>
+			<div style='padding-left: 0.5em;padding-right: 0.5em'>
+				<span class='computerText'>[antagonist]</span>
+			</div>
+			<div>
+				[button_element(prefs, client_antags[antagonist] ? "ENABLED" : "DISABLED", "pref_act=[/datum/preference/blob/antagonists];toggle_antag=[antagonist]", style = "margin-right: 0.5em")]</td>
+			</div>
+		</div>
 		"}
-	. += "</table></fieldset>"
+	. += "</div></fieldset>"

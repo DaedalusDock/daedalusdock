@@ -13,7 +13,6 @@
 	minimum_required_age = 0
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_SECURITY,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
@@ -109,7 +108,7 @@
 	antag_datum = /datum/antagonist/brother
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
+		JOB_DETECTIVE, // The detective works alone.
 		JOB_HEAD_OF_SECURITY,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
@@ -224,7 +223,6 @@
 	antag_datum = /datum/antagonist/heretic
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_SECURITY,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,

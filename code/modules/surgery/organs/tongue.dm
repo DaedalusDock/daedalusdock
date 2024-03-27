@@ -47,6 +47,7 @@
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
 		/datum/language/schechi,
+		/datum/language/spacer,
 		/datum/language/vox,
 	))
 
@@ -56,6 +57,9 @@
 
 /obj/item/organ/tongue/proc/handle_speech(datum/source, list/speech_args)
 	SIGNAL_HANDLER
+	var/datum/language/language = speech_args[SPEECH_LANGUAGE]
+	if(istype(language, /datum/language/visual))
+		return FALSE
 	if(speech_args[SPEECH_LANGUAGE] in languages_native)
 		return FALSE //no changes
 	modify_speech(source, speech_args)
@@ -73,14 +77,14 @@
 		tongue_owner.dna?.species.say_mod = tongue_say_verb
 	if(tongue_ask_verb)
 		tongue_owner.verb_ask = tongue_ask_verb
-	if(verb_exclaim)
-		tongue_owner.verb_exclaim = verb_exclaim
-	if(verb_whisper)
-		tongue_owner.verb_whisper = verb_whisper
-	if(verb_sing)
-		tongue_owner.verb_sing = verb_sing
-	if(verb_yell)
-		tongue_owner.verb_sing = verb_yell
+	if(tongue_exclaim_verb)
+		tongue_owner.verb_exclaim = tongue_exclaim_verb
+	if(tongue_whisper_verb)
+		tongue_owner.verb_whisper = tongue_whisper_verb
+	if(tongue_sing_verb)
+		tongue_owner.verb_sing = tongue_sing_verb
+	if(tongue_yell_verb)
+		tongue_owner.verb_sing = tongue_yell_verb
 
 
 	if (modifies_speech)
@@ -112,7 +116,7 @@
 	tongue_owner.verb_sing = initial(tongue_owner.verb_sing)
 	tongue_owner.verb_yell = initial(tongue_owner.verb_yell)
 
-/obj/item/organ/tongue/could_speak_language(language)
+/obj/item/organ/tongue/proc/can_physically_speak_language(language)
 	return is_type_in_typecache(language, languages_possible)
 
 /obj/item/organ/tongue/lizard
@@ -120,6 +124,7 @@
 	desc = "A thin and long muscle typically found in reptilian races, apparently moonlights as a nose."
 	icon_state = "tonguelizard"
 	tongue_say_verb = "hisses"
+	tongue_whisper_verb = "hisses quietly"
 	taste_sensitivity = 10 // combined nose + tongue, extra sensitive
 	modifies_speech = TRUE
 	languages_native = list(/datum/language/draconic)
@@ -382,7 +387,7 @@
 		/datum/language/sylvan,
 		/datum/language/shadowtongue,
 		/datum/language/terrum,
-		/datum/language/calcic
+		/datum/language/spacer,
 	))
 
 /obj/item/organ/tongue/bone/Initialize(mapload)
@@ -414,6 +419,7 @@
 	tongue_say_verb = "whistles"
 	tongue_ask_verb = "chirps"
 	tongue_exclaim_verb = "whistles loudly"
+	tongue_whisper_verb = "whistles quietly"
 
 	attack_verb_continuous = list("beeps", "boops")
 	attack_verb_simple = list("beep", "boop")
@@ -423,9 +429,8 @@
 /obj/item/organ/tongue/robot/can_speak_language(language)
 	return TRUE // THE MAGIC OF ELECTRONICS
 
-/obj/item/organ/tongue/robot/could_speak_language(language)
+/obj/item/organ/tongue/robot/can_physically_speak_language(language)
 	return TRUE
-
 
 /obj/item/organ/tongue/robot/modify_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_SPANS] |= SPAN_ROBOT
@@ -473,31 +478,6 @@
 /obj/item/organ/tongue/ethereal/Initialize(mapload)
 	. = ..()
 	languages_possible = languages_possible_ethereal
-
-//Sign Language Tongue - yep, that's how you speak sign language.
-/obj/item/organ/tongue/tied
-	name = "tied tongue"
-	desc = "If only one had a sword so we may finally untie this knot."
-	icon_state = "tonguetied"
-	modifies_speech = TRUE
-
-	tongue_say_verb = "signs"
-	tongue_exclaim_verb = "signs"
-	tongue_whisper_verb = "subtly signs"
-	tongue_sing_verb = "rythmically signs"
-	tongue_yell_verb = "emphatically signs"
-
-/obj/item/organ/tongue/tied/Insert(mob/living/carbon/signer)
-	. = ..()
-	if(!.)
-		return
-
-	ADD_TRAIT(signer, TRAIT_SIGN_LANG, ORGAN_TRAIT)
-	REMOVE_TRAIT(signer, TRAIT_MUTE, ORGAN_TRAIT)
-
-/obj/item/organ/tongue/tied/Remove(mob/living/carbon/speaker, special = 0)
-	..()
-	REMOVE_TRAIT(speaker, TRAIT_SIGN_LANG, ORGAN_TRAIT)
 
 //Thank you Jwapplephobia for helping me with the literal hellcode below
 

@@ -130,6 +130,7 @@
 	set_current(null)
 
 /datum/mind/proc/get_language_holder()
+	RETURN_TYPE(/datum/language_holder)
 	if(!language_holder)
 		language_holder = new (src)
 	return language_holder

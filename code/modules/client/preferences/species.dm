@@ -35,7 +35,7 @@
 		var/datum/species/S = prefs.read_preference(type)
 		S = new S
 		var/list/diet = S.get_species_diet()
-		var/list/perks = S.get_species_perks()
+		var/list/perks = get_species_constant_data(S.type)?[SPECIES_DATA_PERKS]
 		var/list/content = list("<div style='text-align:center'>")
 		content += S.get_species_description()
 		content += {"

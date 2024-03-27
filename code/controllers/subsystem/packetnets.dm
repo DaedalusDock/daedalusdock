@@ -195,35 +195,6 @@ SUBSYSTEM_DEF(packets)
 
 		cost_radios = MC_AVERAGE(cost_radios, TICK_DELTA_TO_MS(cached_cost))
 		resumed = FALSE
-		// stage = SSPACKETS_TABLETS
-
-	// if(stage == SSPACKETS_TABLETS)
-	// 	timer = TICK_USAGE_REAL
-	// 	if(!resumed)
-	// 		cached_cost = 0
-	// 		last_processed_tablet_message_packets = 0
-
-	// 	var/datum/signal/subspace/messaging/tablet_msg/packet
-	// 	while(length(current_tablet_messages))
-	// 		packet = current_tablet_messages[1]
-	// 		current_tablet_messages.Cut(1,2)
-	// 		queued_tablet_messages -= packet
-
-	// 		if (!packet.logged)  // Can only go through if a message server logs it
-	// 			continue
-
-	// 		for (var/obj/item/modular_computer/comp in packet.data["targets"])
-	// 			var/obj/item/computer_hardware/hard_drive/drive = comp.all_components[MC_HDD]
-	// 			for(var/datum/computer_file/program/messenger/app in drive.stored_files)
-	// 				app.receive_message(packet)
-
-	// 		cached_cost += TICK_USAGE_REAL - timer
-	// 		last_processed_tablet_message_packets++
-	// 		if(MC_TICK_CHECK)
-	// 			return
-
-	// 	cost_tablets = MC_AVERAGE(cost_tablets, TICK_DELTA_TO_MS(cached_cost))
-	// 	resumed = FALSE
 		stage = SSPACKETS_SUBSPACE_VOCAL
 
 	if(stage == SSPACKETS_SUBSPACE_VOCAL)
@@ -405,17 +376,17 @@ SUBSYSTEM_DEF(packets)
 	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
 
 	for(var/obj/item/radio/radio as anything in receive)
-		SEND_SIGNAL(radio, COMSIG_RADIO_RECEIVE, virt.source, message, frequency)
+		SEND_SIGNAL(radio, COMSIG_RADIO_RECEIVE, virt.source, message, frequency, data)
 		for(var/atom/movable/hearer as anything in receive[radio])
 			if(!hearer)
 				stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
 				continue
 
-			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio.speaker_location())
+			hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, sound_loc = radio.speaker_location(), message_range = INFINITY)
 
 	// Let the global hearers (ghosts, etc) hear this message
 	for(var/atom/movable/hearer as anything in globally_receiving)
-		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods)
+		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, message_range = INFINITY)
 
 	// This following recording is intended for research and feedback in the use of department radio channels
 	if(length(receive))

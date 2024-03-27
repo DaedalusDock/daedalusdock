@@ -44,7 +44,7 @@ Key procs
 	/// A list of blocked languages. Used to prevent understanding and speaking certain languages, ie for certain mobs, mutations etc.
 	var/list/blocked_languages = list()
 	/// If true, overrides tongue limitations.
-	var/omnitongue = FALSE
+	var/bypass_speaking_limitations = FALSE
 	/// Handles displaying the language menu UI.
 	var/datum/language_menu/language_menu
 	/// Currently spoken language
@@ -72,7 +72,10 @@ Key procs
 	return ..()
 
 /// Grants the supplied language.
-/datum/language_holder/proc/grant_language(language, understood = TRUE, spoken = TRUE, source = LANGUAGE_MIND)
+/datum/language_holder/proc/grant_language(datum/language/language, understood = TRUE, spoken = TRUE, source = LANGUAGE_MIND)
+	if(istype(language))
+		language = language.type
+
 	if(understood)
 		if(!understood_languages[language])
 			understood_languages[language] = list()
@@ -88,12 +91,16 @@ Key procs
 /datum/language_holder/proc/grant_all_languages(understood = TRUE, spoken = TRUE, grant_omnitongue = TRUE, source = LANGUAGE_MIND)
 	for(var/language in GLOB.all_languages)
 		grant_language(language, understood, spoken, source)
+
 	if(grant_omnitongue) // Overrides tongue limitations.
-		omnitongue = TRUE
+		bypass_speaking_limitations = TRUE
 	return TRUE
 
 /// Removes a single language or source, removing all sources returns the pre-removal state of the language.
-/datum/language_holder/proc/remove_language(language, understood = TRUE, spoken = TRUE, source = LANGUAGE_ALL)
+/datum/language_holder/proc/remove_language(datum/language/language, understood = TRUE, spoken = TRUE, source = LANGUAGE_ALL)
+	if(istype(language))
+		language = language.type
+
 	if(understood && understood_languages[language])
 		if(source == LANGUAGE_ALL)
 			understood_languages -= language
@@ -116,47 +123,63 @@ Key procs
 /datum/language_holder/proc/remove_all_languages(source = LANGUAGE_ALL, remove_omnitongue = FALSE)
 	for(var/language in GLOB.all_languages)
 		remove_language(language, TRUE, TRUE, source)
+
 	if(remove_omnitongue)
-		omnitongue = FALSE
+		bypass_speaking_limitations = FALSE
+
 	return TRUE
 
 /// Adds a single language or list of languages to the blocked language list.
 /datum/language_holder/proc/add_blocked_language(languages, source = LANGUAGE_MIND)
 	if(!islist(languages))
 		languages = list(languages)
+
 	for(var/language in languages)
 		if(!blocked_languages[language])
 			blocked_languages[language] = list()
 		blocked_languages[language] |= source
+
 	return TRUE
 
 /// Removes a single language or list of languages from the blocked language list.
-/datum/language_holder/proc/remove_blocked_language(languages, source = LANGUAGE_MIND)
-	if(!islist(languages))
-		languages = list(languages)
-	for(var/language in languages)
-		if(blocked_languages[language])
-			if(source == LANGUAGE_ALL)
+/datum/language_holder/proc/remove_blocked_language(languages_to_remove, source = LANGUAGE_MIND)
+	if(!islist(languages_to_remove))
+		languages_to_remove = list(languages_to_remove)
+
+	for(var/language in languages_to_remove)
+		if(!blocked_languages[language])
+			continue
+
+		if(source == LANGUAGE_ALL)
+			blocked_languages -= language
+		else
+			blocked_languages[language] -= source
+			if(!length(blocked_languages[language]))
 				blocked_languages -= language
-			else
-				blocked_languages[language] -= source
-				if(!length(blocked_languages[language]))
-					blocked_languages -= language
 	return TRUE
 
 /// Checks if you have the language. If spoken is true, only checks if you can speak the language.
-/datum/language_holder/proc/has_language(language, spoken = FALSE)
+/datum/language_holder/proc/has_language(datum/language/language, spoken = FALSE)
+	if(isnull(language))
+		return FALSE
+
+	if(!ispath(language))
+		language = language.type
+
 	if(language in blocked_languages)
 		return FALSE
+
 	if(spoken)
 		return language in spoken_languages
+
 	return language in understood_languages
 
 /// Checks if you can speak the language. Tongue limitations should be supplied as an argument.
-/datum/language_holder/proc/can_speak_language(language)
+/datum/language_holder/proc/can_speak_language(datum/language/language)
 	var/atom/movable/ouratom = get_atom()
-	var/tongue = ouratom.could_speak_language(language)
-	if((omnitongue || tongue) && has_language(language, TRUE))
+	var/can_speak_language = language.can_speak_language(ouratom)
+
+	if((bypass_speaking_limitations || can_speak_language) && has_language(language, TRUE))
 		return TRUE
 	return FALSE
 
@@ -164,24 +187,28 @@ Key procs
 /datum/language_holder/proc/get_selected_language()
 	if(selected_language && can_speak_language(selected_language))
 		return selected_language
+
 	selected_language = null
 	var/highest_priority
-	for(var/lang in spoken_languages)
-		var/datum/language/language = lang
-		var/priority = initial(language.default_priority)
-		if((!highest_priority || (priority > highest_priority)) && !(language in blocked_languages))
+
+	for(var/datum/language/language as anything in spoken_languages)
+		language = GET_LANGUAGE_DATUM(language)
+		var/priority = language.default_priority
+
+		if((!highest_priority || (priority > highest_priority)) && !(language.type in blocked_languages))
 			if(can_speak_language(language))
 				selected_language = language
 				highest_priority = priority
+
 	return selected_language
 
 /// Gets a random understood language, useful for hallucinations and such.
 /datum/language_holder/proc/get_random_understood_language()
-	return pick(understood_languages)
+	return GET_LANGUAGE_DATUM(pick(understood_languages))
 
 /// Gets a random spoken language, useful for forced speech and such.
 /datum/language_holder/proc/get_random_spoken_language()
-	return pick(spoken_languages)
+	return GET_LANGUAGE_DATUM(pick(spoken_languages))
 
 /// Opens a language menu reading from the language holder.
 /datum/language_holder/proc/open_language_menu(mob/user)
@@ -191,22 +218,28 @@ Key procs
 
 /// Gets the atom, since we some times need to check if the tongue has limitations.
 /datum/language_holder/proc/get_atom()
-	if(owner)
-		if(istype(owner, /datum/mind))
-			var/datum/mind/M = owner
-			return M.current
-		return owner
-	return FALSE
+	if(!owner)
+		return FALSE
+
+	if(istype(owner, /datum/mind))
+		var/datum/mind/M = owner
+		return M.current
+
+	return owner
+
 
 /// Empties out the atom specific languages and updates them according to the supplied atoms language holder.
 /datum/language_holder/proc/update_atom_languages(atom/movable/thing)
 	var/datum/language_holder/from_atom = thing.get_language_holder(FALSE) //Gets the atoms language holder
 	if(from_atom == src) //This could happen if called on an atom without a mind.
 		return FALSE
+
 	for(var/language in understood_languages)
 		remove_language(language, TRUE, FALSE, LANGUAGE_ATOM)
+
 	for(var/language in spoken_languages)
 		remove_language(language, FALSE, TRUE, LANGUAGE_ATOM)
+
 	for(var/language in blocked_languages)
 		remove_blocked_language(language, LANGUAGE_ATOM)
 
@@ -220,15 +253,20 @@ Key procs
 	if(source_override) //No blocked languages here, for now only used by ling absorb.
 		for(var/language in from_holder.understood_languages)
 			grant_language(language, TRUE, FALSE, source_override)
+
 		for(var/language in from_holder.spoken_languages)
 			grant_language(language, FALSE, TRUE, source_override)
+
 	else
 		for(var/language in from_holder.understood_languages)
 			grant_language(language, TRUE, FALSE, from_holder.understood_languages[language])
+
 		for(var/language in from_holder.spoken_languages)
 			grant_language(language, FALSE, TRUE, from_holder.spoken_languages[language])
+
 		for(var/language in from_holder.blocked_languages)
 			add_blocked_language(language, from_holder.blocked_languages[language])
+
 	return TRUE
 
 
@@ -289,12 +327,6 @@ Key procs
 								/datum/language/monkey = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/monkey = list(LANGUAGE_ATOM))
 
-/datum/language_holder/mushroom
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/mushroom = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/mushroom = list(LANGUAGE_ATOM))
-
 /datum/language_holder/slime
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 								/datum/language/slime = list(LANGUAGE_ATOM))
@@ -316,14 +348,12 @@ Key procs
 								/datum/language/machine = list(LANGUAGE_ATOM),
 								/datum/language/draconic = list(LANGUAGE_ATOM),
 								/datum/language/moffic = list(LANGUAGE_ATOM),
-								/datum/language/calcic = list(LANGUAGE_ATOM),
 								/datum/language/voltaic = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/uncommon = list(LANGUAGE_ATOM),
 							/datum/language/machine = list(LANGUAGE_ATOM),
 							/datum/language/draconic = list(LANGUAGE_ATOM),
 							/datum/language/moffic = list(LANGUAGE_ATOM),
-							/datum/language/calcic = list(LANGUAGE_ATOM),
 							/datum/language/voltaic = list(LANGUAGE_ATOM))
 
 /datum/language_holder/moth
@@ -331,12 +361,6 @@ Key procs
 								/datum/language/moffic = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/moffic = list(LANGUAGE_ATOM))
-
-/datum/language_holder/skeleton
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/calcic = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/calcic = list(LANGUAGE_ATOM))
 
 /datum/language_holder/ethereal
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
@@ -349,14 +373,6 @@ Key procs
 								/datum/language/terrum = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
 							/datum/language/terrum = list(LANGUAGE_ATOM))
-
-/datum/language_holder/golem/bone
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/terrum = list(LANGUAGE_ATOM),
-								/datum/language/calcic = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-							/datum/language/terrum = list(LANGUAGE_ATOM),
-							/datum/language/calcic = list(LANGUAGE_ATOM))
 
 /datum/language_holder/golem/runic
 	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),

@@ -1,4 +1,4 @@
-#define LINKIFY_READY(string, value) "<a href='byond://?src=[REF(src)];ready=[value]'>[string]</a>"
+#define LINKIFY_READY(string, value) "<a class='genericLink' href='byond://?src=[REF(src)];ready=[value]'>[string]</a>"
 /mob/dead/new_player
 	flags_1 = NONE
 	invisibility = INVISIBILITY_ABSTRACT
@@ -138,13 +138,13 @@
 	output += {"
 	<center>
 		<div>
-			<a href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
+			<a class='genericLink' href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
 		</div>
 		<hr>
 		<p>
 			<b>Playing As</b>
 			<br>
-			<a href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
+			<a class='genericLink' href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
 		</p>
 		<hr>
 	"}
@@ -160,10 +160,10 @@
 	else
 		output += {"
 		<p>
-			<a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
+			<a class='genericLink' href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
 		</p>
 		<p>
-			<a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
+			<a class='genericLink' href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
 		</p>
 		<p>
 			[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]

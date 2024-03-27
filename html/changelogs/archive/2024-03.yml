@@ -95,3 +95,7 @@
   - balance: Increased the oxyloss recovery caused by a defibrillator, effectively
       extending the time to stabilize a patient after restarting their heart.
   - bugfix: Germs actually increase, meaning infection can occur properly.
+2024-03-27:
+  Kapu1178, timothymtorres:
+  - qol: Greatly improved sign language. It is now it's own language.
+  - rscdel: Radio signing gloves.

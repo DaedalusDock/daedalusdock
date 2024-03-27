@@ -222,3 +222,7 @@
 /obj/structure/low_wall/prepainted/daedalus
 	wall_paint = PAINT_WALL_DAEDALUS
 	stripe_paint = PAINT_STRIPE_DAEDALUS
+
+/obj/structure/low_wall/prepainted/marsexec
+	wall_paint = PAINT_WALL_MARSEXECUTIVE
+	stripe_paint = PAINT_WALL_MARSEXECUTIVE

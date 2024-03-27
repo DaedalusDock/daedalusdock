@@ -725,19 +725,19 @@
 
 /obj/structure/sign/painting/library_secure
 	name = "\improper Curated Painting Exhibit mounting"
-	desc = "For masterpieces hand-picked by the curator."
-	desc_with_canvas = "A masterpiece hand-picked by the curator, supposedly."
+	desc = "For masterpieces hand-picked by the archivist."
+	desc_with_canvas = "A masterpiece hand-picked by the archivist, supposedly."
 	persistence_id = "library_secure"
 
 /obj/structure/sign/painting/library_private // keep your smut away from prying eyes, or non-librarians at least
 	name = "\improper Private Painting Exhibit mounting"
-	desc = "For art pieces deemed too subversive or too illegal to be shared outside of curators."
+	desc = "For art pieces deemed too subversive or too illegal to be shared outside of archivists."
 	desc_with_canvas = "A painting hung away from lesser minds."
 	persistence_id = "library_private"
 
 /obj/structure/sign/painting/large/library
 	name = "\improper Large Painting Exhibit mounting"
-	desc = "For the bulkier art pieces, hand-picked by the curator."
+	desc = "For the bulkier art pieces, hand-picked by the archivist."
 	desc_with_canvas = "A curated, large piece of art (or \"art\"). Hopefully the price of the canvas was worth it."
 	persistence_id = "library_large"
 

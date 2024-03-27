@@ -22,7 +22,7 @@
 			/mob/living/simple_animal/pet/dog/corgi/puppy/ian
 		),
 		JOB_CAPTAIN = /mob/living/simple_animal/pet/fox/renault,
-		JOB_CHIEF_MEDICAL_OFFICER = /mob/living/simple_animal/pet/cat/runtime,
+		JOB_MEDICAL_DIRECTOR = /mob/living/simple_animal/pet/cat/runtime,
 		JOB_CHIEF_ENGINEER = /mob/living/simple_animal/parrot/poly,
 	)
 	/// The head that we are targetting
@@ -44,7 +44,7 @@
 
 	limited_to_department_head = FALSE
 	possible_heads = list(
-		JOB_HEAD_OF_SECURITY = list(
+		JOB_SECURITY_MARSHAL = list(
 			/mob/living/simple_animal/hostile/carp/lia,
 			/mob/living/simple_animal/hostile/retaliate/bat/sgt_araneus
 		),

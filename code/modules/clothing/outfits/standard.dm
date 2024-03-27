@@ -164,7 +164,7 @@
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/pirate/silverscale
 	uniform = /obj/item/clothing/under/syndicate/sniper
-	suit = /obj/item/clothing/suit/armor/vest/alt
+	suit = /obj/item/clothing/suit/armor/vest
 	glasses = /obj/item/clothing/glasses/monocle
 	gloves = /obj/item/clothing/gloves/color/black
 	head = /obj/item/clothing/head/collectable/tophat

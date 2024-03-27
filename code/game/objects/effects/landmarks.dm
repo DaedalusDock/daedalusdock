@@ -71,7 +71,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Janitor"
 
 /obj/effect/landmark/start/cargo_technician
-	name = "Cargo Technician"
+	name = JOB_DECKHAND
 	icon_state = "Cargo Technician"
 
 /obj/effect/landmark/start/bartender
@@ -111,7 +111,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Botanist"
 
 /obj/effect/landmark/start/head_of_security
-	name = "Head of Security"
+	name = JOB_SECURITY_MARSHAL
 	icon_state = "Head of Security"
 
 /obj/effect/landmark/start/captain
@@ -127,7 +127,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Warden"
 
 /obj/effect/landmark/start/chief_engineer
-	name = "Chief Engineer"
+	name = JOB_CHIEF_ENGINEER
 	icon_state = "Chief Engineer"
 
 /obj/effect/landmark/start/head_of_personnel
@@ -135,7 +135,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Head of Personnel"
 
 /obj/effect/landmark/start/librarian
-	name = "Curator"
+	name = JOB_ARCHIVIST
 	icon_state = "Curator"
 
 /obj/effect/landmark/start/lawyer
@@ -147,7 +147,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = "Station Engineer"
 
 /obj/effect/landmark/start/medical_doctor
-	name = "Medical Doctor"
+	name = JOB_MEDICAL_DOCTOR
 	icon_state = "Medical Doctor"
 
 /obj/effect/landmark/start/paramedic
@@ -581,7 +581,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	location = "Security"
 
 /obj/effect/landmark/navigate_destination/det
-	location = "Detective's Office"
+	location = "Private Investigator's Office"
 
 /obj/effect/landmark/navigate_destination/research
 	location = "Research"

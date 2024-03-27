@@ -399,7 +399,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 		if(!GLOB.data_core.finished_setup)
 			card.RegisterSignal(SSdcs, COMSIG_GLOB_DATACORE_READY, TYPE_PROC_REF(/obj/item/card/id, datacore_ready))
 		else
-			spawn(0) //Race condition? I hardly knew her!
+			spawn(5 SECONDS) //Race condition? I hardly knew her!
 				card.set_icon()
 
 	var/obj/item/modular_computer/tablet/pda/PDA = H.get_item_by_slot(pda_slot)

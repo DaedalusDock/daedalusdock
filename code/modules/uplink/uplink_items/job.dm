@@ -16,7 +16,7 @@
 			Be warned, that spirits are often capricious or just little assholes. To use, simply speak your question aloud, then begin shaking."
 	item = /obj/item/toy/eightball/haunted
 	cost = 2
-	restricted_roles = list(JOB_CURATOR)
+	restricted_roles = list(JOB_ARCHIVIST)
 	limited_stock = 1 //please don't spam deadchat
 
 /datum/uplink_item/role_restricted/bureaucratic_error_remote
@@ -59,7 +59,7 @@
 	progression_minimum = 10 MINUTES
 	item = /obj/item/mmi/syndie
 	cost = 2
-	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_MEDICAL_DOCTOR, JOB_CHIEF_MEDICAL_OFFICER)
+	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_MEDICAL_DOCTOR, JOB_MEDICAL_DIRECTOR)
 	surplus = 0
 
 /datum/uplink_item/role_restricted/explosive_hot_potato
@@ -172,7 +172,7 @@
 	progression_minimum = 30 MINUTES
 	item = /obj/item/gun/chem
 	cost = 12
-	restricted_roles = list(JOB_CHEMIST, JOB_CHIEF_MEDICAL_OFFICER, JOB_BOTANIST)
+	restricted_roles = list(JOB_CHEMIST, JOB_MEDICAL_DIRECTOR, JOB_BOTANIST)
 
 /datum/uplink_item/role_restricted/pie_cannon
 	name = "Banana Cream Pie Cannon"

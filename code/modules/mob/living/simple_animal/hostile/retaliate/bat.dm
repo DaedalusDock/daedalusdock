@@ -42,7 +42,7 @@
 /mob/living/simple_animal/hostile/retaliate/bat/sgt_araneus //Despite being a bat for... reasons, this is now a spider, and is one of the HoS' pets.
 	name = "Sergeant Araneus"
 	real_name = "Sergeant Araneus"
-	desc = "A fierce companion of the Head of Security, this spider has been carefully trained by Nanotrasen specialists. Its beady, staring eyes send shivers down your spine."
+	desc = "A fierce companion of the Security Marshal, this spider has been carefully trained by Nanotrasen specialists. Its beady, staring eyes send shivers down your spine."
 	emote_hear = list("chitters")
 	faction = list("spiders")
 	harm_intent_damage = 3

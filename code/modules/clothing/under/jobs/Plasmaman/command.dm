@@ -14,8 +14,8 @@
 	inhand_icon_state = "hop_envirosuit"
 
 /obj/item/clothing/under/plasmaman/security/head_of_security
-	name = "head of security's envirosuit"
-	desc = "A plasmaman containment suit decorated for those few with the dedication to achieve the position of Head of Security."
+	name = "security marshal's envirosuit"
+	desc = "A plasmaman containment suit decorated for those few with the dedication to achieve the position of Security Marshal."
 	icon_state = "hos_envirosuit"
 	inhand_icon_state = "hos_envirosuit"
 	armor = list(BLUNT = 10, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 95, ACID = 95)

@@ -38,7 +38,7 @@
 	dye_color = DYE_HOP
 
 /obj/item/stamp/hos
-	name = "head of security's rubber stamp"
+	name = "security marshal's rubber stamp"
 	icon_state = "stamp-hos"
 	dye_color = DYE_HOS
 

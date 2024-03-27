@@ -176,7 +176,7 @@
 	icon_state = "cargo"
 
 /obj/item/clothing/accessory/medal/ribbon/cargo
-	name = "\"cargo tech of the shift\" award"
+	name = "\"deckhand of the shift\" award"
 	desc = "An award bestowed only upon those cargotechs who have exhibited devotion to their duty in keeping with the highest traditions of Cargonia."
 
 /obj/item/clothing/accessory/medal/silver

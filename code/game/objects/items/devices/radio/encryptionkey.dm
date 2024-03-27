@@ -93,7 +93,7 @@
 	channels = list(RADIO_CHANNEL_SCIENCE = 1, RADIO_CHANNEL_COMMAND = 1)
 
 /obj/item/encryptionkey/heads/hos
-	name = "\proper the head of security's encryption key"
+	name = "\proper the security marshal's encryption key"
 	icon_state = "hos_cypherkey"
 	channels = list(RADIO_CHANNEL_SECURITY = 1, RADIO_CHANNEL_COMMAND = 1)
 
@@ -103,7 +103,7 @@
 	channels = list(RADIO_CHANNEL_ENGINEERING = 1, RADIO_CHANNEL_COMMAND = 1)
 
 /obj/item/encryptionkey/heads/cmo
-	name = "\proper the Medical Director's encryption key"
+	name = "\proper the medical director's encryption key"
 	icon_state = "cmo_cypherkey"
 	channels = list(RADIO_CHANNEL_MEDICAL = 1, RADIO_CHANNEL_COMMAND = 1)
 

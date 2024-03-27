@@ -401,7 +401,7 @@
 	icon_state = "hop_office"
 
 /area/station/command/heads_quarters/hos
-	name = "\improper Head of Security's Office"
+	name = "\improper Security Marshal's Office"
 	icon_state = "hos_office"
 
 /area/station/command/heads_quarters/rd
@@ -1080,9 +1080,21 @@
 	name = "\improper Security Office"
 	icon_state = "security"
 
+/area/station/security/office/hall
+	name = "\improper Security Office Hall"
+	icon_state = "security"
+
 /area/station/security/lockers
 	name = "\improper Security Locker Room"
 	icon_state = "securitylockerroom"
+
+/area/station/security/deck
+	name = "\improper Security Observation Deck"
+	icon_state = "security"
+
+/area/station/security/pig
+	name = "\improper Security Pig Pen"
+	icon_state = "security"
 
 /area/station/security/brig
 	name = "\improper Brig"
@@ -1090,6 +1102,10 @@
 
 /area/station/security/holding_cell
 	name = "\improper Holding Cell"
+	icon_state = "holding_cell"
+
+/area/station/security/isolation_cells
+	name = "\improper Isolation Cells"
 	icon_state = "holding_cell"
 
 /area/station/security/medical
@@ -1170,12 +1186,11 @@
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 /area/station/security/detectives_office
-	name = "\improper Detective's Office"
+	name = "\improper Private Investigator's Office"
 	icon_state = "detective"
 	ambientsounds = list('sound/ambience/ambidet1.ogg','sound/ambience/ambidet2.ogg')
 
 /area/station/security/detectives_office/private_investigators_office
-	name = "\improper Private Investigator's Office"
 	icon_state = "investigate_office"
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 

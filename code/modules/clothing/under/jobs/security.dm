@@ -12,22 +12,31 @@
 /obj/item/clothing/under/rank/security
 	icon = 'icons/obj/clothing/under/security.dmi'
 	worn_icon = 'icons/mob/clothing/under/security.dmi'
-	strip_delay = 50
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
 
+//these two are for Mars Executive Outcomes
 /obj/item/clothing/under/rank/security/officer
+	name = "mars security uniform"
+	desc = "A freshly ironed security uniform with Mars-Red slacks. Wearing this almost makes you look professional."
+	icon_state = "security"
+	inhand_icon_state = "suitsec"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+/obj/item/clothing/under/rank/security/officer/garrison
+	name = "mars garrison uniform"
+	desc = "An old military outfit, based on the uniforms of the now defunct Martian republic. A bold fashion statement, and a political one!"
+	icon_state = "security_garrison"
+	inhand_icon_state = "r_suit"
+	can_adjust = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+//these are old, could be used for non-station roles
+/obj/item/clothing/under/rank/security/oldred
 	name = "security jumpsuit"
-	desc = "A tactical security jumpsuit for officers complete with Mars belt buckle."
+	desc = "A tactical-looking red jumpsuit for corporate security."
 	icon_state = "rsecurity"
 	inhand_icon_state = "r_suit"
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
-
-/obj/item/clothing/under/rank/security/officer/grey
-	name = "grey security jumpsuit"
-	desc = "A tactical relic of years past before Mars Executive Outcomes decided it was cheaper to dye the suits red instead of washing out the blood."
-	icon_state = "security"
-	inhand_icon_state = "gy_suit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/security/officer/skirt
@@ -108,7 +117,7 @@
 	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/security/detective/skirt
-	name = "detective's suitskirt"
+	name = "private investigator's suitskirt"
 	desc = "Someone who wears this means business."
 	icon_state = "detective_skirt"
 	inhand_icon_state = "det"
@@ -137,19 +146,27 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /*
- * Head of Security
+ * security marshal
  */
+/obj/item/clothing/under/rank/security/marshal
+	name = "security marshal's uniform"
+	desc = "A crisp mars-red marshal's uniform. Comes with gold trimmed sholder pads and a massive belt buckle to show everyone who's in charge."
+	icon_state = "marshal"
+	inhand_icon_state = "r_suit"
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+//old hos stuff
 /obj/item/clothing/under/rank/security/head_of_security
-	name = "head of security's jumpsuit"
-	desc = "A security jumpsuit decorated for those few with the dedication to achieve the position of Head of Security."
+	name = "security marshal's jumpsuit"
+	desc = "A security jumpsuit decorated for those few with the dedication to achieve the position of Security Marshal."
 	icon_state = "rhos"
 	inhand_icon_state = "r_suit"
 	strip_delay = 60
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/security/head_of_security/skirt
-	name = "head of security's jumpskirt"
-	desc = "A security jumpskirt decorated for those few with the dedication to achieve the position of Head of Security."
+	name = "security marshal's jumpskirt"
+	desc = "A security jumpskirt decorated for those few with the dedication to achieve the position of Security Marshal."
 	icon_state = "rhos_skirt"
 	inhand_icon_state = "r_suit"
 	body_parts_covered = CHEST|GROIN|ARMS
@@ -158,22 +175,22 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/security/head_of_security/grey
-	name = "head of security's grey jumpsuit"
+	name = "security marshal's grey jumpsuit"
 	desc = "There are old men, and there are bold men, but there are very few old, bold men."
 	icon_state = "hos"
 	inhand_icon_state = "gy_suit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/security/head_of_security/alt
-	name = "head of security's turtleneck"
-	desc = "A stylish alternative to the normal head of security jumpsuit, complete with tactical pants."
+	name = "security marshal's turtleneck"
+	desc = "A stylish alternative to the normal Security Marshal jumpsuit, complete with tactical pants."
 	icon_state = "hosalt"
 	inhand_icon_state = "bl_suit"
 	alt_covers_chest = TRUE
 
 /obj/item/clothing/under/rank/security/head_of_security/alt/skirt
-	name = "head of security's turtleneck skirt"
-	desc = "A stylish alternative to the normal head of security jumpsuit, complete with a tactical skirt."
+	name = "security marshal's turtleneck skirt"
+	desc = "A stylish alternative to the normal Security Marshal jumpsuit, complete with a tactical skirt."
 	icon_state = "hosalt_skirt"
 	inhand_icon_state = "bl_suit"
 	body_parts_covered = CHEST|GROIN|ARMS
@@ -183,24 +200,24 @@
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/security/head_of_security/parade
-	name = "head of security's parade uniform"
-	desc = "A male head of security's luxury-wear, for special occasions."
+	name = "security marshal's parade uniform"
+	desc = "A male Security Marshal's luxury-wear, for special occasions."
 	icon_state = "hos_parade_male"
 	inhand_icon_state = "r_suit"
 	can_adjust = FALSE
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/under/rank/security/head_of_security/parade/female
-	name = "head of security's parade uniform"
-	desc = "A female head of security's luxury-wear, for special occasions."
+	name = "security marshal's parade uniform"
+	desc = "A female Security Marshal's luxury-wear, for special occasions."
 	icon_state = "hos_parade_fem"
 	inhand_icon_state = "r_suit"
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/security/head_of_security/formal
-	desc = "The insignia on this uniform tells you that this uniform belongs to the Head of Security."
-	name = "head of security's formal uniform"
+	desc = "The insignia on this uniform tells you that this uniform belongs to the Security Marshal."
+	name = "security marshal's formal uniform"
 	icon_state = "hosblueclothes"
 	inhand_icon_state = "hosblueclothes"
 	alt_covers_chest = TRUE

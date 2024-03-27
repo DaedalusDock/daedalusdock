@@ -1,8 +1,8 @@
 // This is for all the berets that /tg/ didn't want. You're welcome, they should look better.
 
 /obj/item/clothing/head/hos/beret
-	name = "head of security beret"
-	desc = "A robust beret for the Head of Security, for looking stylish while not sacrificing protection."
+	name = "security marshal beret"
+	desc = "A robust beret for the Security Marshal, for looking stylish while not sacrificing protection."
 	icon_state = "beret_badge"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
@@ -90,13 +90,13 @@
 	greyscale_colors = "#FFFFFF#00FF00"
 
 /obj/item/clothing/head/beret/medical/cmo
-	name = "chief medical officer's beret"
-	desc = "A beret custom-fit to the Chief Medical Officer, repaired once or twice after Runtime got a hold of it."
+	name = "medical director's beret"
+	desc = "A beret custom-fit to the Medical Director, repaired once or twice after Runtime got a hold of it."
 	greyscale_colors = "#3299CC#34CCEE"
 
 /obj/item/clothing/head/beret/medical/cmo/alt
-	name = "chief medical officer's beret"
-	desc = "A beret custom-fit to the Chief Medical Officer, repaired once or twice after Runtime got a hold of it. This one is made out of white fabric. Fancy."
+	name = "medical director's beret"
+	desc = "A beret custom-fit to the Medical Director, repaired once or twice after Runtime got a hold of it. This one is made out of white fabric. Fancy."
 	greyscale_colors = "#FFFFFF#34CCEE"
 
 /obj/item/clothing/head/beret/science/fancy/robo

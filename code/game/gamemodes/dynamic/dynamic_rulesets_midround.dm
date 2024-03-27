@@ -189,7 +189,7 @@
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -272,7 +272,7 @@
 		JOB_CYBORG,
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -342,7 +342,7 @@
 	enemy_roles = list(
 		JOB_CHEMIST,
 		JOB_CHIEF_ENGINEER,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_RESEARCH_DIRECTOR,
 		JOB_SCIENTIST,
 		JOB_SECURITY_OFFICER,
@@ -402,7 +402,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -441,7 +441,7 @@
 		JOB_CYBORG,
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(3,3,3,3,3,2,1,1,0,0)
@@ -488,7 +488,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -511,7 +511,7 @@
 	protected_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -524,7 +524,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -567,7 +567,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -619,7 +619,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -670,7 +670,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -719,7 +719,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -762,7 +762,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -806,7 +806,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -829,7 +829,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -899,7 +899,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
@@ -931,7 +931,7 @@
 	enemy_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 	)
 	required_enemies = list(2,2,1,1,1,1,1,0,0,0)

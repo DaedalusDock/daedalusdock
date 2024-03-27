@@ -19,19 +19,15 @@
 					/obj/item/storage/backpack/security = 3,
 					/obj/item/storage/backpack/satchel/sec = 3,
 					/obj/item/storage/backpack/duffelbag/sec = 3,
-					/obj/item/clothing/under/rank/security/officer = 3,
 					/obj/item/clothing/shoes/jackboots = 3,
-					/obj/item/clothing/head/beret/sec = 3,
+					/obj/item/clothing/under/rank/security/officer = 3,
+					/obj/item/clothing/under/rank/security/officer/garrison = 3,
+					/obj/item/clothing/head/garrison_cap = 3,
 					/obj/item/clothing/head/soft/sec = 3,
 					/obj/item/clothing/mask/bandana/striped/security = 3,
 					/obj/item/clothing/gloves/color/black = 3,
-					/obj/item/clothing/under/rank/security/officer/skirt = 3,
-					/obj/item/clothing/under/rank/security/officer/grey = 3,
 					/obj/item/clothing/under/pants/khaki = 3,
 					/obj/item/clothing/under/rank/security/officer/blueshirt = 3)
-	premium = list(/obj/item/clothing/under/rank/security/officer/formal = 3,
-					/obj/item/clothing/suit/security/officer = 3,
-					/obj/item/clothing/head/beret/sec/navyofficer = 3)
 	refill_canister = /obj/item/vending_refill/wardrobe/sec_wardrobe
 	payment_department = ACCOUNT_SEC
 	light_color = COLOR_MOSTLY_PURE_RED
@@ -294,7 +290,7 @@
 					/obj/item/clothing/shoes/sneakers/black = 2,
 					/obj/item/reagent_containers/glass/rag = 2,
 					/obj/item/storage/box/beanbag = 1,
-					/obj/item/clothing/suit/armor/vest/alt = 1,
+					/obj/item/clothing/suit/armor/vest/ballistic = 1,
 					/obj/item/circuitboard/machine/dish_drive = 1,
 					/obj/item/clothing/glasses/sunglasses/reagent = 1,
 					/obj/item/clothing/neck/petcollar = 1,

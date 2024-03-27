@@ -17,7 +17,7 @@
 	return(OXYLOSS)
 
 /obj/item/clothing/neck/cloak/hos
-	name = "head of security's cloak"
+	name = "security marshal's cloak"
 	desc = "Worn by Securistan, ruling the station with an iron fist."
 	icon_state = "hoscloak"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION

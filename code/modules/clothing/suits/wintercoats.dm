@@ -155,9 +155,9 @@
 	armor = list(BLUNT = 25, PUNCTURE = 15, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 0, ACID = 45)
 	supports_variations_flags = NONE
 
-// Head of Security
+// Security Marshal
 /obj/item/clothing/suit/hooded/wintercoat/security/hos
-	name = "head of security's winter coat"
+	name = "security marshal's winter coat"
 	desc = "A red, armour-padded winter coat, lovingly woven with a Kevlar interleave and reinforced with semi-ablative polymers and a silver azide fill material. The zipper tab looks like a tiny replica of Beepsky."
 	icon_state = "coathos"
 	inhand_icon_state = "coathos"

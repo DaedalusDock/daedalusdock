@@ -95,6 +95,8 @@
 
 	///length between individual racks
 	var/rack_delay = 5
+	/// Can you rack this weapon with one hand?
+	var/one_hand_rack = FALSE
 	///time of the most recent rack, used for cooldown purposes
 	var/recent_rack = 0
 	///Whether the gun can be sawn off by sawing tools
@@ -485,7 +487,7 @@
 			return
 
 	// They need two hands on the gun, or a free hand in general.
-	if(!wielded && !user.get_empty_held_index())
+	if(!one_hand_rack && !(wielded || user.get_empty_held_index()))
 		to_chat(user, span_warning("You need a free hand to do that!"))
 		return
 
@@ -677,7 +679,6 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 				can_misfire = FALSE
 			fire_sound = initial_fire_sound
 			to_chat(user, span_notice("You reset [src]. Now it will fire [initial_caliber] rounds."))
-
 
 ///used for sawing guns, causes the gun to fire without the input of the user
 /obj/item/gun/ballistic/proc/blow_up(mob/user)

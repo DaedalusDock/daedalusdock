@@ -253,21 +253,15 @@
 
 	if(!appears_dead)
 		if(src != user)
-			if(HAS_TRAIT(user, TRAIT_EMPATH))
-				if (combat_mode)
-					msg += "[t_He] seem[p_s()] to be on guard.\n"
-				if (getOxyLoss() >= 10)
-					msg += "[t_He] seem[p_s()] winded.\n"
-				if (getToxLoss() >= 10)
-					msg += "[t_He] seem[p_s()] sickly.\n"
-				if (is_blind())
-					msg += "[t_He] appear[p_s()] to be staring off into space.\n"
-				if (HAS_TRAIT(src, TRAIT_DEAF))
-					msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
-				if (bodytemperature > dna.species.heat_level_1)
-					msg += "[t_He] [t_is] flushed and wheezing.\n"
-				if (bodytemperature < dna.species.cold_level_1)
-					msg += "[t_He] [t_is] shivering.\n"
+			if (combat_mode)
+				msg += "[t_He] appear[p_s()] to be on guard.\n"
+			if (getOxyLoss() >= 10)
+				msg += "[t_He] appear[p_s()] winded.\n"
+			if (getToxLoss() >= 10)
+				msg += "[t_He] appear[p_s()] sickly.\n"
+
+			if (bodytemperature < dna.species.cold_discomfort_level)
+				msg += "[t_He] [t_is] shivering.\n"
 
 			msg += "</span>"
 

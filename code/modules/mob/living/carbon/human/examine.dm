@@ -262,7 +262,7 @@
 			if(stun_absorption[i]["end_time"] > world.time && stun_absorption[i]["examine_message"])
 				msg += "[t_He] [t_is][stun_absorption[i]["examine_message"]]\n"
 
-	if(src != user)
+	if(!appears_dead)
 		if (combat_mode)
 			msg += "[t_He] appear[p_s()] to be on guard.\n"
 		if (getOxyLoss() >= 10)

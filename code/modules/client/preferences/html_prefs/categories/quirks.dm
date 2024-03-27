@@ -19,6 +19,7 @@
 		)
 
 	. += {"
+	</script>
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:40%;max-width:40%;margin-left: auto;margin-right: auto'>
 		<legend class='computerLegend tooltip'>
 			<b>All Traits</b>
@@ -41,8 +42,13 @@
 				quirk_type = "<span style='color: #AAAAFF'>Neutral</span>"
 
 		. += {"
-		<div class='flexItem'>
-			[button_element(prefs, "[quirk]", "pref_act=[P.type];toggle_quirk=[quirk]")] - [button_element(prefs, "?", "pref_act=[P.type];info=[quirk]")] - [quirk_type]
+		[clickable_element("div", "flexItem flexRow highlighter", "justify-content: space-between;", prefs, "pref_act=[P.type];toggle_quirk=[quirk]")]
+			<span style='display: block'>
+				<b>[quirk]</b> - <b>[quirk_type]</b>
+			</span>
+			<span style='display: block'>
+				[button_element(prefs, "?", "pref_act=[P.type];info=[quirk]")]
+			</span>
 		</div>
 		"}
 
@@ -60,9 +66,8 @@
 
 	for(var/quirk in user_quirks)
 		. += {"
-		<div class='flexItem'>
-			<b>[quirk]</b> -
-			[button_element(prefs, "REMOVE", "pref_act=[P.type];toggle_quirk=[quirk]")]
+		[clickable_element("div", "flexItem highlighter", "", prefs, "pref_act=[P.type];toggle_quirk=[quirk]")]
+			<b><u>[quirk]</b></u>
 			<br>
 			[quirk_info[quirk]["description"]]
 		</div>

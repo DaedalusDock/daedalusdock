@@ -24,7 +24,7 @@
 			<b>All Traits</b>
 			<span class='tooltiptext'>I'm gettin' quirked up tonight.</span>
 		</legend>
-	<table class='zebraTable' style='min-width:100%;height: 560px;display: block;overflow-y: scroll'>
+	<div class='zebraTable' style='display: flex; flex-direction: column; height: 560px;display: block;overflow-y: scroll'>
 	"}
 
 	for(var/quirk in all_quirks)
@@ -41,15 +41,13 @@
 				quirk_type = "<span style='color: #AAAAFF'>Neutral</span>"
 
 		. += {"
-		<tr style='min-width=100%'>
-			<td>
-				[button_element(prefs, "[quirk]", "pref_act=[P.type];toggle_quirk=[quirk]")] - [button_element(prefs, "?", "pref_act=[P.type];info=[quirk]")] - [quirk_type]
-			</td>
-		</tr>
+		<div>
+			[button_element(prefs, "[quirk]", "pref_act=[P.type];toggle_quirk=[quirk]")] - [button_element(prefs, "?", "pref_act=[P.type];info=[quirk]")] - [quirk_type]
+		</div>
 		"}
 
 
-	. += "</table></fieldset>"
+	. += "</div></fieldset>"
 
 	. += {"
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:40%;max-width:40%;margin-left: auto;margin-right: auto'>
@@ -57,19 +55,17 @@
 			<b>My Traits</b>
 			<span class='tooltiptext'>I'm gettin' quirked up tonight.</span>
 		</legend>
-	<table class='zebraTable' style='min-width:100%;height: 560px;display: block;overflow-y: scroll'>
+	<div class='zebraTable' style='display: flex; flex-direction: column; height: 560px;display: block;overflow-y: scroll'>
 	"}
 
 	for(var/quirk in user_quirks)
 		. += {"
-		<tr>
-			<td>
-				<b>[quirk]</b> -
-				[button_element(prefs, "REMOVE", "pref_act=[P.type];toggle_quirk=[quirk]")]
-				<br>
-				[quirk_info[quirk]["description"]]
-			</td>
-		</tr>
+		<div>
+			<b>[quirk]</b> -
+			[button_element(prefs, "REMOVE", "pref_act=[P.type];toggle_quirk=[quirk]")]
+			<br>
+			[quirk_info[quirk]["description"]]
+		</div>
 		"}
 
-	. += "</table></fieldset>"
+	. += "</div></fieldset>"

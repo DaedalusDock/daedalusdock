@@ -296,6 +296,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		C = H.client
 
 	var/mutable_appearance/character_appearance = new(H.appearance)
+	remove_non_canon_overlays(character_appearance)
 
 	//These records should ~really~ be merged or something
 	//General Record

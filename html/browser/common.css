@@ -30,6 +30,8 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 	cursor: default;
 	white-space: nowrap !important;
 	text-shadow: none !important;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 

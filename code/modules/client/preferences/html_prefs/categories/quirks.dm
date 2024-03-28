@@ -65,9 +65,18 @@
 	"}
 
 	for(var/quirk in user_quirks)
+		var/quirk_type
+		switch(quirk_info[quirk]["genre"])
+			if(QUIRK_GENRE_BOON)
+				quirk_type = "<span style='color: #AAFFAA'>Boon</span>"
+			if(QUIRK_GENRE_BANE)
+				quirk_type = "<span style='color: #FFAAAA'>Bane</span>"
+			else
+				quirk_type = "<span style='color: #AAAAFF'>Neutral</span>"
+
 		. += {"
 		[clickable_element("div", "flexItem highlighter", "", prefs, "pref_act=[P.type];toggle_quirk=[quirk]")]
-			<b><u>[quirk]</b></u>
+			<b><u>[quirk]</b></u> - <b>[quirk_type]</b>
 			<br>
 			[quirk_info[quirk]["description"]]
 		</div>

@@ -296,3 +296,19 @@
 	if(DT_PROB(10, delta_time))
 		carbon_quirk_holder.vomit()
 		carbon_quirk_holder.adjustOrganLoss(pick(ORGAN_SLOT_BRAIN,ORGAN_SLOT_APPENDIX,ORGAN_SLOT_LUNGS,ORGAN_SLOT_HEART,ORGAN_SLOT_LIVER,ORGAN_SLOT_STOMACH),10)
+
+/datum/quirk/insanity
+	name = "Schizophrenia"
+	desc = "You suffer from a severe disorder that causes vivid audio-visual hallucinations. Mindbreaker Toxin can be used to suppress the effects temporarily."
+	icon = "grin-tongue-wink"
+	quirk_genre = QUIRK_GENRE_BANE
+	mob_trait = TRAIT_INSANITY
+	medical_record_text = "Patient suffers from schizophrenia and experiences vivid audio-visual hallucinations."
+	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_PROCESSES
+
+/datum/quirk/insanity/process(delta_time)
+	if(quirk_holder.stat >= UNCONSCIOUS || quirk_holder.IsSleeping() || quirk_holder.IsUnconscious())
+		return
+
+	if(DT_PROB(2, delta_time))
+		quirk_holder.hallucination += rand(10, 25)

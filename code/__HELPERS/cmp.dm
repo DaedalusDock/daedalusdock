@@ -99,14 +99,8 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 	return A.totalResistance() - B.totalResistance()
 
 /proc/cmp_quirk_asc(datum/quirk/A, datum/quirk/B)
-	var/a_sign = SIGN(initial(A.value) * -1)
-	var/b_sign = SIGN(initial(B.value) * -1)
-
-	// Neutral traits go last.
-	if(a_sign == 0)
-		a_sign = 2
-	if(b_sign == 0)
-		b_sign = 2
+	var/a_sign = SIGN(initial(A.quirk_genre) * -1)
+	var/b_sign = SIGN(initial(B.quirk_genre) * -1)
 
 	var/a_name = initial(A.name)
 	var/b_name = initial(B.name)

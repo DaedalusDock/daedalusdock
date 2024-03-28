@@ -117,8 +117,6 @@
 	var/list/viable_minds = list() //The first list, which excludes hijinks
 	var/list/possible_targets = list() //The second list, which filters out silicons and simplemobs
 	var/static/list/trait_obsessions = list(
-		JOB_MIME = TRAIT_MIME_FAN,
-		JOB_CLOWN = TRAIT_CLOWN_ENJOYER,
 		JOB_CHAPLAIN = TRAIT_SPIRITUAL,
 	) // Jobs and their corresponding quirks
 	var/list/special_pool = list() //The special list, for quirk-based
@@ -130,6 +128,7 @@
 		if(!(player.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
 			continue
 		viable_minds += player.mind
+
 	for(var/datum/mind/possible_target as anything in viable_minds)
 		if(possible_target != owner && ishuman(possible_target.current))
 			var/job = possible_target.assigned_role.title

@@ -1,8 +1,11 @@
 //Medical Categories for quirks
 #define CAT_QUIRK_ALL 0
 #define CAT_QUIRK_NOTES 1
-#define CAT_QUIRK_MINOR_DISABILITY 2
-#define CAT_QUIRK_MAJOR_DISABILITY 3
+#define CAT_QUIRK_DISABILITIES 2
+
+#define QUIRK_GENRE_BANE -1
+#define QUIRK_GENRE_NEUTRAL 0
+#define QUIRK_GENRE_BOON 1
 
 /// This quirk can only be applied to humans
 #define QUIRK_HUMAN_ONLY (1<<0)

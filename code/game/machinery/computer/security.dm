@@ -737,10 +737,8 @@ Age: [active1.fields["age"]]<BR>"}
 				M.fields["name"] = active1.fields["name"]
 				M.fields["blood_type"] = "?"
 				M.fields["b_dna"] = "?????"
-				M.fields["mi_dis"] = "None"
-				M.fields["mi_dis_d"] = "No minor disabilities have been declared."
-				M.fields["ma_dis"] = "None"
-				M.fields["ma_dis_d"] = "No major disabilities have been diagnosed."
+				M.fields["disabilities"] = "None"
+				M.fields["disabilities_details"] = "No disabilities have been declared."
 				M.fields["alg"] = "None"
 				M.fields["alg_d"] = "No allergies have been detected in this patient."
 				M.fields["cdi"] = "None"

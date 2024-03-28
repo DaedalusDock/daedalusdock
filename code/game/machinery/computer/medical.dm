@@ -122,10 +122,8 @@
 					if(active2 in GLOB.data_core.medical)
 						dat += "<tr><td>Blood Type:</td><td><A href='?src=[REF(src)];field=blood_type'>&nbsp;[active2.fields["blood_type"]]&nbsp;</A></td></tr>"
 						dat += "<tr><td>DNA:</td><td><A href='?src=[REF(src)];field=b_dna'>&nbsp;[active2.fields["b_dna"]]&nbsp;</A></td></tr>"
-						dat += "<tr><td><br>Minor Disabilities:</td><td><br><A href='?src=[REF(src)];field=mi_dis'>&nbsp;[active2.fields["mi_dis"]]&nbsp;</A></td></tr>"
-						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=mi_dis_d'>&nbsp;[active2.fields["mi_dis_d"]]&nbsp;</A></td></tr>"
-						dat += "<tr><td><br>Major Disabilities:</td><td><br><A href='?src=[REF(src)];field=ma_dis'>&nbsp;[active2.fields["ma_dis"]]&nbsp;</A></td></tr>"
-						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=ma_dis_d'>&nbsp;[active2.fields["ma_dis_d"]]&nbsp;</A></td></tr>"
+						dat += "<tr><td><br>Disabilities:</td><td><br><A href='?src=[REF(src)];field=disabilities'>&nbsp;[active2.fields["disabilities"]]&nbsp;</A></td></tr>"
+						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=disabilities_details'>&nbsp;[active2.fields["disabilities_details"]]&nbsp;</A></td></tr>"
 						dat += "<tr><td><br>Current Diseases:</td><td><br><A href='?src=[REF(src)];field=cdi'>&nbsp;[active2.fields["cdi"]]&nbsp;</A></td></tr>" //(per disease info placed in log/comment section)
 						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=cdi_d'>&nbsp;[active2.fields["cdi_d"]]&nbsp;</A></td></tr>"
 						dat += "<tr><td><br>Important Notes:</td><td><br><A href='?src=[REF(src)];field=notes'>&nbsp;[active2.fields["notes"]]&nbsp;</A></td></tr>"
@@ -302,30 +300,18 @@
 							if(!canUseMedicalRecordsConsole(usr, t1, a1))
 								return
 							active1.fields["species"] = t1
-					if("mi_dis")
+					if("disabilities")
 						if(active2)
-							var/t1 = stripped_input("Please input minor disabilities list:", "Med. records", active2.fields["mi_dis"], null)
+							var/t1 = stripped_input("Please input disabilities list:", "Med. records", active2.fields["disabilities"], null)
 							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 								return
-							active2.fields["mi_dis"] = t1
-					if("mi_dis_d")
+							active2.fields["disabilities"] = t1
+					if("disabilities_details")
 						if(active2)
-							var/t1 = stripped_input("Please summarize minor dis.:", "Med. records", active2.fields["mi_dis_d"], null)
+							var/t1 = stripped_input("Please summarize dis.:", "Med. records", active2.fields["disabilities_details"], null)
 							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 								return
-							active2.fields["mi_dis_d"] = t1
-					if("ma_dis")
-						if(active2)
-							var/t1 = stripped_input("Please input major disabilities list:", "Med. records", active2.fields["ma_dis"], null)
-							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
-								return
-							active2.fields["ma_dis"] = t1
-					if("ma_dis_d")
-						if(active2)
-							var/t1 = stripped_input("Please summarize major dis.:", "Med. records", active2.fields["ma_dis_d"], null)
-							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
-								return
-							active2.fields["ma_dis_d"] = t1
+							active2.fields["disabilities_details"] = t1
 					if("alg")
 						if(active2)
 							var/t1 = stripped_input("Please state allergies:", "Med. records", active2.fields["alg"], null)
@@ -459,10 +445,8 @@
 					R.fields["name"] = active1.fields["name"]
 					R.fields["blood_type"] = "Unknown"
 					R.fields["b_dna"] = "Unknown"
-					R.fields["mi_dis"] = "None"
-					R.fields["mi_dis_d"] = "No minor disabilities have been diagnosed."
-					R.fields["ma_dis"] = "None"
-					R.fields["ma_dis_d"] = "No major disabilities have been diagnosed."
+					R.fields["disabilities"] = "None"
+					R.fields["disabilities_details"] = "No disabilities have been diagnosed."
 					R.fields["alg"] = "None"
 					R.fields["alg_d"] = "No allergies have been detected in this patient."
 					R.fields["cdi"] = "None"
@@ -540,10 +524,8 @@ Mental Status: [active1.fields["m_stat"]]<BR>
 Blood Type: [active2.fields["blood_type"]]<BR>
 DNA: [active2.fields["b_dna"]]<BR>
 <BR>
-Minor Disabilities: [active2.fields["mi_dis"]]<BR>
-Details: [active2.fields["mi_dis_d"]]<BR><BR>
-Major Disabilities: [active2.fields["ma_dis"]]<BR>
-Details: [active2.fields["ma_dis_d"]]<BR><BR>
+Minor Disabilities: [active2.fields["disabilities"]]<BR>
+Details: [active2.fields["disabilities_details"]]<BR><BR>
 Allergies: [active2.fields["alg"]]<BR>
 Details: [active2.fields["alg_d"]]<BR><BR>
 Current Diseases: [active2.fields["cdi"]] (per disease info placed in log/comment section)<BR>

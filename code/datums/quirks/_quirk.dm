@@ -1,10 +1,12 @@
 //every quirk in this folder should be coded around being applied on spawn
 //these are NOT "mob quirks" like GOTTAGOFAST, but exist as a medium to apply them and other different effects
 /datum/quirk
+	abstract_type = /datum/quirk
+
 	var/name = "Test Quirk"
 	var/desc = "This is a test quirk."
-	/// What the quirk is worth in preferences, zero = neutral / free
-	var/value = 0
+	/// If the quirk is a Boon, Bane, or Neutral
+	var/quirk_genre = QUIRK_GENRE_NEUTRAL
 	/// Flags related to this quirk.
 	var/quirk_flags = QUIRK_HUMAN_ONLY
 	/// Reference to the mob currently tied to this quirk datum. Quirks are not singletons.
@@ -16,10 +18,6 @@
 	/// This text will appear on medical records for the trait. Not yet implemented
 	var/medical_record_text
 	var/mob_trait //if applicable, apply and remove this mob trait
-	/// Amount of points this trait is worth towards the hardcore character mode; minus points implies a positive quirk, positive means its hard. This is used to pick the quirks assigned to a hardcore character. 0 means its not available to hardcore draws.
-	var/hardcore_value = 0
-	/// When making an abstract quirk (in OOP terms), don't forget to set this var to the type path for that abstract quirk.
-	var/abstract_parent_type = /datum/quirk
 	/// The icon to show in the preferences menu.
 	/// This references a tgui icon, so it can be FontAwesome or a tgfont (with a tg- prefix).
 	var/icon
@@ -143,7 +141,7 @@
 	var/list/where_items_spawned
 	/// If true, the backpack automatically opens on post_add(). Usually set to TRUE when an item is equipped inside the player's backpack.
 	var/open_backpack = FALSE
-	abstract_parent_type = /datum/quirk/item_quirk
+	abstract_type = /datum/quirk/item_quirk
 
 /**
  * Handles inserting an item in any of the valid slots provided, then allows for post_add notification.
@@ -193,29 +191,30 @@
 	var/list/dat = list()
 	switch(category)
 		if(CAT_QUIRK_ALL)
-			for(var/V in quirks)
-				var/datum/quirk/T = V
+			for(var/datum/quirk/T as anything in quirks)
+				if(medical && !T.medical_record_text)
+					continue
 				dat += medical ? T.medical_record_text : T.name
-		//Major Disabilities
-		if(CAT_QUIRK_MAJOR_DISABILITY)
-			for(var/V in quirks)
-				var/datum/quirk/T = V
-				if(T.value < -4)
+
+		//Disabilities (negative quirks)
+		if(CAT_QUIRK_DISABILITIES)
+			for(var/datum/quirk/T as anything in quirks)
+				if(medical && !T.medical_record_text)
+					continue
+				if(T.quirk_genre == QUIRK_GENRE_BANE)
 					dat += medical ? T.medical_record_text : T.name
-		//Minor Disabilities
-		if(CAT_QUIRK_MINOR_DISABILITY)
-			for(var/V in quirks)
-				var/datum/quirk/T = V
-				if(T.value >= -4 && T.value < 0)
-					dat += medical ? T.medical_record_text : T.name
+
 		//Neutral and Positive quirks
 		if(CAT_QUIRK_NOTES)
-			for(var/V in quirks)
-				var/datum/quirk/T = V
-				if(T.value > -1)
+			for(var/datum/quirk/T as anything in quirks)
+				if(medical && !T.medical_record_text)
+					continue
+				if(T.quirk_genre != QUIRK_GENRE_BOON)
 					dat += medical ? T.medical_record_text : T.name
+
 	if(!dat.len)
 		return medical ? "No issues have been declared." : "None"
+
 	return medical ?  dat.Join("<br>") : dat.Join(", ")
 
 /mob/living/proc/cleanse_quirk_datums() //removes all trait datums

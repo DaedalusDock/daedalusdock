@@ -95,9 +95,6 @@
 		vow.Grant(H)
 		H.mind.miming = TRUE
 
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.add_hud_to(H)
-
 /obj/item/book/mimery
 	name = "Guide to Dank Mimery"
 	desc = "Teaches one of three classic pantomime routines, allowing a practiced mime to conjure invisible objects into corporeal existence. One use only."

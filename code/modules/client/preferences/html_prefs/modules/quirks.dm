@@ -15,7 +15,7 @@
 	. += {"
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
-			<b>Quirks</b>
+			<b>Traits</b>
 			<span class='tooltiptext'>Getting a little quirky.</span>
 		</legend>
 	<table style='width:100%'>

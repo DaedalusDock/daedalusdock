@@ -320,9 +320,10 @@ Behavior that's still missing from this component that original food items had t
 		var/message_to_consumer = ""
 		var/message_to_blind_consumer = ""
 
-		if(junkiness && eater.satiety < -150 && eater.nutrition > NUTRITION_LEVEL_STARVING + 50 && !HAS_TRAIT(eater, TRAIT_VORACIOUS))
+		if(junkiness && eater.satiety < -150 && eater.nutrition > NUTRITION_LEVEL_STARVING + 50)
 			to_chat(eater, span_warning("You don't feel like eating any more junk food at the moment!"))
 			return
+
 		else if(fullness > (600 * (1 + eater.overeatduration / (4000 SECONDS)))) // The more you eat - the more you can eat
 			message_to_nearby_audience = span_warning("[eater] cannot force any more of \the [parent] to go down [eater.p_their()] throat!")
 			message_to_consumer = span_warning("You cannot force any more of \the [parent] to go down your throat!")
@@ -331,9 +332,11 @@ Behavior that's still missing from this component that original food items had t
 			eater.visible_message(message_to_nearby_audience, ignored_mobs = eater)
 			//if we're too full, return because we can't eat whatever it is we're trying to eat
 			return
+
 		else if(fullness > 500)
 			message_to_nearby_audience = span_notice("[eater] unwillingly [eatverb]s a bit of \the [parent].")
 			message_to_consumer = span_notice("You unwillingly [eatverb] a bit of \the [parent].")
+
 		else if(fullness > 150)
 			message_to_nearby_audience = span_notice("[eater] [eatverb]s \the [parent].")
 			message_to_consumer = span_notice("You [eatverb] \the [parent].")

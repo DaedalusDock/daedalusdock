@@ -1,11 +1,11 @@
 //predominantly negative traits
 /datum/quirk/item_quirk/blindness
 	name = "Blind"
-	desc = "You are completely blind, nothing can counteract this."
+	desc = "You have completely lost your sight."
 	icon = "eye-slash"
 	quirk_genre = QUIRK_GENRE_BANE
-	gain_text = "<span class='danger'>You can't see anything.</span>"
-	lose_text = "<span class='notice'>You miraculously gain back your vision.</span>"
+	gain_text = "<span class='obviousnotice'>You can't see anything.</span>"
+	lose_text = "<span class='obviousnotice'>You miraculously gain back your vision.</span>"
 	medical_record_text = "Patient has permanent blindness."
 	quirk_flags = 	QUIRK_HUMAN_ONLY|QUIRK_CHANGES_APPEARANCE
 
@@ -20,40 +20,30 @@
 
 /datum/quirk/deafness
 	name = "Deaf"
-	desc = "You are incurably deaf."
+	desc = "You have completely lost your hearing."
 	icon = "deaf"
 	quirk_genre = QUIRK_GENRE_BANE
 	mob_trait = TRAIT_DEAF
-	gain_text = "<span class='danger'>You can't hear anything.</span>"
-	lose_text = "<span class='notice'>You're able to hear again!</span>"
-	medical_record_text = "Patient's cochlear nerve is incurably damaged."
-
-/datum/quirk/heavy_sleeper
-	name = "Heavy Sleeper"
-	desc = "You sleep like a rock! Whenever you're put to sleep or knocked unconscious, you take a little bit longer to wake up."
-	icon = "bed"
-	mob_trait = TRAIT_HEAVY_SLEEPER
-	gain_text = "<span class='danger'>You feel sleepy.</span>"
-	lose_text = "<span class='notice'>You feel awake again.</span>"
-	medical_record_text = "Patient has abnormal sleep study results and is difficult to wake up."
+	gain_text = "<span class='obviousnotice'>You can't hear anything.</span>"
+	lose_text = "<span class='obviousnotice'>You're able to hear again!</span>"
+	medical_record_text = "Patient has total hearing loss."
 
 /datum/quirk/light_drinker
-	name = "Light Drinker"
+	name = "Alcohol Intolerance"
 	desc = "You just can't handle your drinks and get drunk very quickly."
 	icon = "cocktail"
 	quirk_genre = QUIRK_GENRE_BANE
 	mob_trait = TRAIT_LIGHT_DRINKER
-	gain_text = "<span class='notice'>Just the thought of drinking alcohol makes your head spin.</span>"
-	lose_text = "<span class='danger'>You're no longer severely affected by alcohol.</span>"
-	medical_record_text = "Patient demonstrates a low tolerance for alcohol. (Wimp)"
+	gain_text = "<span class='obviousnotice'>Just the thought of drinking alcohol makes your head spin.</span>"
+	lose_text = "<span class='obviousnotice'>You're no longer severely affected by alcohol.</span>"
 
 /datum/quirk/item_quirk/nearsighted
 	name = "Nearsighted"
-	desc = "You are nearsighted without prescription glasses, but spawn with a pair."
+	desc = "You are nearsighted without prescription glasses, which you carry on your person."
 	icon = "glasses"
 	quirk_genre = QUIRK_GENRE_BANE
-	gain_text = "<span class='danger'>Things far away from you start looking blurry.</span>"
-	lose_text = "<span class='notice'>You start seeing faraway things normally again.</span>"
+	gain_text = "<span class='obviousnotice'>Things far away from you start looking blurry.</span>"
+	lose_text = "<span class='obviousnotice'>You start seeing faraway things normally again.</span>"
 	medical_record_text = "Patient requires prescription glasses in order to counteract nearsightedness."
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_CHANGES_APPEARANCE
 	var/glasses
@@ -80,13 +70,13 @@
 
 /datum/quirk/paraplegic
 	name = "Paraplegic"
-	desc = "Your legs do not function. Nothing will ever fix this. But hey, free wheelchair!"
+	desc = "You suffer from paralysis from the waist down."
 	icon = "wheelchair"
 	quirk_genre = QUIRK_GENRE_BANE
 	quirk_flags = QUIRK_HUMAN_ONLY
 	gain_text = null // Handled by trauma.
 	lose_text = null
-	medical_record_text = "Patient has an untreatable impairment in motor function in the lower extremities."
+	medical_record_text = "Patient has an untreatable impairment to motor function in the lower extremities."
 
 /datum/quirk/paraplegic/add_unique(client/client_source)
 	if(quirk_holder.buckled) // Handle late joins being buckled to arrival shuttle chairs.
@@ -120,12 +110,12 @@
 	human_holder.cure_trauma_type(/datum/brain_trauma/severe/paralysis/paraplegic, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /datum/quirk/item_quirk/junkie
-	name = "Junkie"
-	desc = "You can't get enough of hard drugs."
+	name = "Drug Addict"
+	desc = "You have an addiction to a hard drug."
 	icon = "pills"
 	quirk_genre = QUIRK_GENRE_BANE
-	gain_text = "<span class='danger'>You suddenly feel the craving for drugs.</span>"
-	medical_record_text = "Patient has a history of hard drugs."
+	gain_text = "<span class='obviousnotice'>You suddenly feel the craving for drugs.</span>"
+	medical_record_text = "Patient has an addiction."
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_PROCESSES
 	var/drug_list = list(/datum/reagent/drug/blastoff, /datum/reagent/drug/krokodil, /datum/reagent/medicine/morphine, /datum/reagent/drug/methamphetamine) //List of possible IDs
 	var/datum/reagent/reagent_type //!If this is defined, reagent_id will be unused and the defined reagent type will be instead.
@@ -145,6 +135,8 @@
 		reagent_type = pick(drug_list)
 
 	reagent_instance = new reagent_type()
+
+	medical_record_text = "Patient suffers from an addiction to [reagent_instance.name]."
 
 	for(var/addiction in reagent_instance.addiction_types)
 		human_holder.last_mind?.add_addiction_points(addiction, 1000)
@@ -212,12 +204,11 @@
 				human_holder.last_mind?.add_addiction_points(addiction, 1000) ///Max that shit out
 
 /datum/quirk/item_quirk/junkie/smoker
-	name = "Smoker"
-	desc = "Sometimes you just really want a smoke. Probably not great for your lungs."
+	name = "Nicotine Addict"
+	desc = "You have an addiction to nicotine."
 	icon = "smoking"
 	quirk_genre = QUIRK_GENRE_BANE
-	gain_text = "<span class='danger'>You could really go for a smoke right about now.</span>"
-	medical_record_text = "Patient is a current smoker."
+	gain_text = "<span class='obviousnotice'>You could really go for a smoke right about now.</span>"
 	reagent_type = /datum/reagent/drug/nicotine
 	accessory_type = /obj/item/lighter/greyscale
 	mob_trait = TRAIT_SMOKER
@@ -244,11 +235,11 @@
 
 /datum/quirk/item_quirk/allergic
 	name = "Medicine Allergy"
-	desc = "Ever since you were a kid, you've been allergic to a drug."
+	desc = "You are highly allergic to a medical drug."
 	icon = "prescription-bottle"
 	quirk_genre = QUIRK_GENRE_BANE
-	gain_text = "<span class='danger'>You feel your immune system shift.</span>"
-	lose_text = "<span class='notice'>You feel your immune system phase back into perfect shape.</span>"
+	gain_text = "<span class='obviousnotice'>You feel your immune system shift.</span>"
+	lose_text = "<span class='obviousnotice'>You feel your immune system phase back into perfect shape.</span>"
 	medical_record_text = "Patient's immune system responds poorly to certain chemicals."
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_PROCESSES
 	/// Typepath of the reagent we're allergic to
@@ -312,3 +303,69 @@
 
 	if(DT_PROB(2, delta_time))
 		quirk_holder.hallucination += rand(10, 25)
+
+/datum/quirk/monochromatic
+	name = "Monochromacy"
+	desc = "You are unable to perceive color."
+	icon = "adjust"
+	quirk_genre = QUIRK_GENRE_BANE
+	medical_record_text = "Patient is afflicted with almost complete color blindness."
+
+/datum/quirk/monochromatic/add(client/client_source)
+	quirk_holder.add_client_colour(/datum/client_colour/monochrome)
+
+/datum/quirk/monochromatic/post_add()
+	if(is_detective_job(quirk_holder.mind.assigned_role))
+		to_chat(quirk_holder, span_obviousnotice("Mmm. Nothing's ever clear on this station."))
+		quirk_holder.playsound_local(quirk_holder, 'sound/ambience/ambidet1.ogg', 50, FALSE)
+
+/datum/quirk/monochromatic/remove()
+	quirk_holder.remove_client_colour(/datum/client_colour/monochrome)
+
+/datum/quirk/no_taste
+	name = "Ageusia"
+	desc = "You have no sense of taste."
+	icon = "meh-blank"
+	quirk_genre = QUIRK_GENRE_BANE
+	mob_trait = TRAIT_AGEUSIA
+	gain_text = "<span class='obviousnotice'>You can't taste anything!</span>"
+	lose_text = "<span class='obviousnotice'>You can taste again!</span>"
+	medical_record_text = "Patient suffers from ageusia and is incapable of tasting food or reagents."
+
+/datum/quirk/vegetarian
+	name = "Vegetarian"
+	desc = "You are physically repulsed by consuming meat."
+	icon = "carrot"
+	quirk_genre = QUIRK_GENRE_BANE
+	gain_text = "<span class='obviousnotice'>You feel repulsion at the idea of eating meat.</span>"
+	lose_text = "<span class='obviousnotice'>You feel like eating meat isn't that bad.</span>"
+
+/datum/quirk/vegetarian/add(client/client_source)
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	var/datum/species/species = human_holder.dna.species
+	species.liked_food &= ~MEAT
+	species.disliked_food |= MEAT
+	RegisterSignal(human_holder, COMSIG_SPECIES_GAIN, PROC_REF(on_species_gain))
+
+/datum/quirk/vegetarian/proc/on_species_gain(datum/source, datum/species/new_species, datum/species/old_species)
+	SIGNAL_HANDLER
+	new_species.liked_food &= ~MEAT
+	new_species.disliked_food |= MEAT
+
+/datum/quirk/vegetarian/remove()
+	var/mob/living/carbon/human/human_holder = quirk_holder
+
+	var/datum/species/species = human_holder.dna.species
+	if(initial(species.liked_food) & MEAT)
+		species.liked_food |= MEAT
+	if(!(initial(species.disliked_food) & MEAT))
+		species.disliked_food &= ~MEAT
+	UnregisterSignal(human_holder, COMSIG_SPECIES_GAIN)
+
+/datum/quirk/shifty_eyes
+	name = "Shifty Eyes"
+	desc = "Your eyes tend to wander all over the place, whether you mean to or not, causing people to sometimes think you're looking directly at them when you aren't."
+	icon = "far fa-eye"
+	quirk_genre = QUIRK_GENRE_BANE
+	medical_record_text = "Fucking creep kept staring at me the whole damn checkup. I'm only diagnosing this because it's less awkward than thinking it was on purpose."
+	mob_trait = TRAIT_SHIFTY_EYES

@@ -192,17 +192,23 @@
 	switch(category)
 		if(CAT_QUIRK_ALL)
 			for(var/datum/quirk/T as anything in quirks)
+				if(medical && !T.medical_record_text)
+					continue
 				dat += medical ? T.medical_record_text : T.name
 
 		//Disabilities (negative quirks)
 		if(CAT_QUIRK_DISABILITIES)
 			for(var/datum/quirk/T as anything in quirks)
+				if(medical && !T.medical_record_text)
+					continue
 				if(T.quirk_genre == QUIRK_GENRE_BANE)
 					dat += medical ? T.medical_record_text : T.name
 
 		//Neutral and Positive quirks
 		if(CAT_QUIRK_NOTES)
 			for(var/datum/quirk/T as anything in quirks)
+				if(medical && !T.medical_record_text)
+					continue
 				if(T.quirk_genre != QUIRK_GENRE_BOON)
 					dat += medical ? T.medical_record_text : T.name
 

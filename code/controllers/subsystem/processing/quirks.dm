@@ -11,7 +11,10 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 	runlevels = RUNLEVEL_GAME
 	wait = 1 SECONDS
 
-	var/list/quirks = list() //Assoc. list of all roundstart quirk datum types; "name" = /path/
+	/// Associative list of "name" = /path/ of quirks
+	var/list/quirks = list()
+	/// Same as the above but sorted by the quirk cmp
+	var/list/sorted_quirks
 
 	/// A list of quirks that can not be used with each other.
 	var/list/quirk_blacklist = list(
@@ -33,14 +36,16 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 	return quirks
 
 /datum/controller/subsystem/processing/quirks/proc/SetupQuirks()
-	// Sort by Positive, Negative, Neutral; and then by name
-	var/list/quirk_list = sort_list(subtypesof(/datum/quirk), GLOBAL_PROC_REF(cmp_quirk_asc))
-
-	for(var/datum/quirk/quirk_type as anything in quirk_list)
+	for(var/datum/quirk/quirk_type as anything in subtypesof(/datum/quirk))
 		if(isabstract(quirk_type))
 			continue
 
 		quirks[initial(quirk_type.name)] = quirk_type
+
+	sortTim(quirks, GLOBAL_PROC_REF(cmp_text_asc))
+
+	// Sort by Positive, Negative, Neutral; and then by name within those groups
+	sorted_quirks = sort_list(quirks, GLOBAL_PROC_REF(cmp_quirk_asc))
 
 /datum/controller/subsystem/processing/quirks/proc/AssignQuirks(mob/living/user, client/applied_client)
 	var/badquirk = FALSE

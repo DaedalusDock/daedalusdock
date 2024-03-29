@@ -13,9 +13,7 @@
 		var/datum/quirk/quirk = all_quirks[quirk_name]
 		quirk_info[quirk_name] = list(
 			"description" = initial(quirk.desc),
-			"icon" = initial(quirk.icon),
 			"name" = quirk_name,
-			"genre" = initial(quirk.quirk_genre),
 		)
 
 	. += {"
@@ -32,19 +30,10 @@
 		if(quirk in user_quirks)
 			continue
 
-		var/quirk_type
-		switch(quirk_info[quirk]["genre"])
-			if(QUIRK_GENRE_BOON)
-				quirk_type = "<span style='color: #AAFFAA'>Boon</span>"
-			if(QUIRK_GENRE_BANE)
-				quirk_type = "<span style='color: #FFAAAA'>Bane</span>"
-			else
-				quirk_type = "<span style='color: #AAAAFF'>Neutral</span>"
-
 		. += {"
 		[clickable_element("div", "flexItem flexRow highlighter", "justify-content: space-between;", prefs, "pref_act=[P.type];toggle_quirk=[quirk]")]
 			<span style='display: block'>
-				<b>[quirk]</b> - <b>[quirk_type]</b>
+				<b>[quirk]</b>
 			</span>
 			<span style='display: block'>
 				[button_element(prefs, "?", "pref_act=[P.type];info=[quirk]")]
@@ -65,18 +54,9 @@
 	"}
 
 	for(var/quirk in user_quirks)
-		var/quirk_type
-		switch(quirk_info[quirk]["genre"])
-			if(QUIRK_GENRE_BOON)
-				quirk_type = "<span style='color: #AAFFAA'>Boon</span>"
-			if(QUIRK_GENRE_BANE)
-				quirk_type = "<span style='color: #FFAAAA'>Bane</span>"
-			else
-				quirk_type = "<span style='color: #AAAAFF'>Neutral</span>"
-
 		. += {"
 		[clickable_element("div", "flexItem highlighter", "", prefs, "pref_act=[P.type];toggle_quirk=[quirk]")]
-			<b><u>[quirk]</b></u> - <b>[quirk_type]</b>
+			<b><u>[quirk]</b></u>
 			<br>
 			[quirk_info[quirk]["description"]]
 		</div>

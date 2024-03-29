@@ -508,7 +508,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!player_client)
 		return // Disconnected while checking for the appearance ban.
 
-	var/require_human = CONFIG_GET(flag/enforce_human_authority) && (job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+	var/require_human = FALSE
 
 	src.job = job.title
 

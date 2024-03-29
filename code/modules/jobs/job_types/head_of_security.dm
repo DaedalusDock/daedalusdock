@@ -30,8 +30,8 @@
 
 	departments_list = list(
 		/datum/job_department/security,
-		/datum/job_department/command,
-		)
+		/datum/job_department/company_leader,
+	)
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_ROYAL_METABOLISM)

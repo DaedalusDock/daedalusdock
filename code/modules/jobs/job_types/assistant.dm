@@ -32,7 +32,9 @@ Assistant
 
 	paycheck = PAYCHECK_ASSISTANT // Get a job. Job reassignment changes your paycheck now. Get over it.
 
-	department_for_prefs = /datum/job_department/assistant
+	departments_list = list(
+		/datum/job_department/assistant,
+	)
 
 	family_heirlooms = list(/obj/item/storage/toolbox/mechanical/old/heirloom, /obj/item/clothing/gloves/cut/heirloom)
 

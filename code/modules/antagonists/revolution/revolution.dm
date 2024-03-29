@@ -20,10 +20,12 @@
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
 	. = ..()
 	if(.)
-		if(new_owner.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT))
 			return FALSE
+
 		if(new_owner.unconvertable)
 			return FALSE
+
 		if(new_owner.current && HAS_TRAIT(new_owner.current, TRAIT_MINDSHIELD))
 			return FALSE
 
@@ -446,6 +448,7 @@
 				break
 			if(!headrev_mind.current || headrev_mind.current.stat != CONSCIOUS)
 				continue
+
 			charter_given = TRUE
 			podspawn(list(
 				"target" = get_turf(headrev_mind.current),
@@ -455,13 +458,14 @@
 			to_chat(headrev_mind.current, span_hear("You hear something crackle in your ears for a moment before a voice speaks. \
 				\"Please stand by for a message from your benefactor. Message as follows, provocateur. \
 				<b>You have been chosen out of your fellow provocateurs to rename the station. Choose wisely.</b> Message ends.\""))
+
 		for (var/mob/living/player as anything in GLOB.player_list)
 			var/datum/mind/player_mind = player.mind
 
 			if (isnull(player_mind))
 				continue
 
-			if (!(player_mind.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_COMMAND)))
+			if (!(player_mind.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY | DEPARTMENT_BITFLAG_MANAGEMENT)))
 				continue
 
 			if (player_mind in ex_revs + ex_headrevs)
@@ -472,13 +476,14 @@
 			if (!istype(player))
 				continue
 
-			if(player_mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+			if(player_mind.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT))
 				ADD_TRAIT(player, TRAIT_DEFIB_BLACKLISTED, REF(src))
 				player.med_hud_set_status()
 
 		for(var/datum/job/job as anything in SSjob.joinable_occupations)
-			if(!(job.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_COMMAND)))
+			if(!(job.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_MANAGEMENT)))
 				continue
+
 			job.allow_bureaucratic_error = FALSE
 			job.total_positions = 0
 
@@ -575,9 +580,9 @@
 	parts += antag_listing_footer()
 	common_part = parts.Join()
 
-	var/heads_report = "<b>Heads of Staff</b><br>"
+	var/heads_report = "<b>Management</b><br>"
 	heads_report += "<table cellspacing=5>"
-	for(var/datum/mind/N in SSjob.get_living_heads())
+	for(var/datum/mind/N in SSjob.get_living_heads(TRUE))
 		var/mob/M = N.current
 		if(M)
 			heads_report += "<tr><td><a href='?_src_=holder;[HrefToken()];adminplayeropts=[REF(M)]'>[M.real_name]</a>[M.client ? "" : " <i>(No Client)</i>"][M.stat == DEAD ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"

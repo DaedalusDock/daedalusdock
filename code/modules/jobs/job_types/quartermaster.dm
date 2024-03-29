@@ -32,7 +32,9 @@
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,
-		)
+		/datum/job_department/company_leader,
+	)
+
 	family_heirlooms = list(/obj/item/stamp, /obj/item/stamp/denied)
 	mail_goodies = list(
 		/obj/item/circuitboard/machine/emitter = 3

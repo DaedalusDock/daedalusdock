@@ -108,8 +108,3 @@
 
 /datum/job/lawyer
 	alt_titles = list("Lawyer", "Human Resources Agent", "Defence Attorney", "Public Defender", "Prosecutor")
-
-// Misc
-
-/datum/job/assistant
-	alt_titles = list("Assistant", "Civilian", "Businessman", "Trader", "Off-Duty Crew")

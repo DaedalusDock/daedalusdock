@@ -34,8 +34,10 @@
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
 
 	department_for_prefs = /datum/job_department/captain
+
 	departments_list = list(
 		/datum/job_department/command,
+		/datum/job_department/company_leader
 	)
 
 

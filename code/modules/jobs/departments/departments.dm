@@ -19,6 +19,7 @@
 	/// For separatists, what independent name prefix does their nation get named?
 	var/list/nation_prefixes = list()
 
+	var/exclude_from_latejoin = FALSE
 
 /// Handles adding jobs to the department and setting up the job bitflags.
 /datum/job_department/proc/add_job(datum/job/job)
@@ -29,13 +30,6 @@
 /datum/job_department/proc/generate_nation_name()
 	var/static/list/nation_suffixes = list("stan", "topia", "land", "nia", "ca", "tova", "dor", "ador", "tia", "sia", "ano", "tica", "tide", "cis", "marea", "co", "taoide", "slavia", "stotzka")
 	return pick(nation_prefixes) + pick(nation_suffixes)
-
-/// A special assistant only department, primarily for use by the preferences menu
-/datum/job_department/assistant
-	department_name = DEPARTMENT_ASSISTANT
-	department_bitflags = DEPARTMENT_BITFLAG_ASSISTANT
-	nation_prefixes = list("Assa", "Mainte", "Tunnel", "Gris", "Grey", "Liath", "Grigio", "Ass", "Assi")
-	// Don't add department_head! Assistants names should not be in bold.
 
 /datum/job_department/assistant/generate_nation_name()
 	var/nomadic_name = pick("roving clans", "barbaric tribes", "tides", "bandit kingdom", "tribal society", "marauder clans", "horde")
@@ -48,14 +42,13 @@
 	department_head = /datum/job/captain
 
 /datum/job_department/command
-	department_name = DEPARTMENT_COMMAND
-	department_bitflags = DEPARTMENT_BITFLAG_COMMAND
+	department_name = DEPARTMENT_MANAGEMENT
+	department_bitflags = DEPARTMENT_BITFLAG_MANAGEMENT
 	department_head = /datum/job/captain
 	department_experience_type = EXP_TYPE_COMMAND
 	display_order = 1
 	label_class = "command"
 	latejoin_color = "#ccccff"
-
 
 /datum/job_department/security
 	department_name = DEPARTMENT_SECURITY
@@ -88,7 +81,6 @@
 	latejoin_color = "#ffddf0"
 	nation_prefixes = list("Mede", "Healtha", "Recova", "Chemi", "Viro", "Psych")
 
-
 /datum/job_department/science
 	department_name = DEPARTMENT_SCIENCE
 	department_bitflags = DEPARTMENT_BITFLAG_SCIENCE
@@ -98,7 +90,6 @@
 	label_class = "science"
 	latejoin_color = "#ffddff"
 	nation_prefixes = list("Sci", "Griffa", "Geneti", "Explosi", "Mecha", "Xeno", "Nani", "Cyto")
-
 
 /datum/job_department/cargo
 	department_name = DEPARTMENT_CARGO
@@ -110,30 +101,41 @@
 	latejoin_color = "#ddddff"
 	nation_prefixes = list("Cargo", "Guna", "Suppli", "Mule", "Crate", "Ore", "Mini", "Shaf")
 
-
-/datum/job_department/service
-	department_name = DEPARTMENT_SERVICE
-	department_bitflags = DEPARTMENT_BITFLAG_SERVICE
-	department_head = /datum/job/head_of_personnel
-	department_experience_type = EXP_TYPE_SERVICE
-	display_order = 7
-	label_class = "service"
-	latejoin_color = "#bbe291"
-	nation_prefixes = list("Honka", "Boozo", "Fatu", "Danka", "Mimi", "Libra", "Jani", "Religi")
-
-
 /datum/job_department/silicon
 	department_name = DEPARTMENT_SILICON
 	department_bitflags = DEPARTMENT_BITFLAG_SILICON
 	department_head = /datum/job/ai
 	department_experience_type = EXP_TYPE_SILICON
-	display_order = 8
+	display_order = 7
 	label_class = "silicon"
 	latejoin_color = "#ccffcc"
 
 /datum/job_department/silicon/generate_nation_name()
 	return "United Nations" //For nations ruleset specifically, because all other sources of nation creation cannot choose silicons
 
+/datum/job_department/service
+	department_name = DEPARTMENT_SERVICE
+	department_bitflags = DEPARTMENT_BITFLAG_SERVICE
+	department_head = /datum/job/head_of_personnel
+	department_experience_type = EXP_TYPE_SERVICE
+	display_order = 8
+	label_class = "service"
+	latejoin_color = "#bbe291"
+	nation_prefixes = list("Honka", "Boozo", "Fatu", "Danka", "Mimi", "Libra", "Jani", "Religi")
+
+/// A special assistant only department, primarily for use by the preferences menu
+/datum/job_department/assistant
+	department_name = DEPARTMENT_ASSISTANT
+	department_bitflags = DEPARTMENT_BITFLAG_ASSISTANT
+	display_order = 9
+	nation_prefixes = list("Assa", "Mainte", "Tunnel", "Gris", "Grey", "Liath", "Grigio", "Ass", "Assi")
+	// Don't add department_head! Assistants names should not be in bold.
+
 /// Catch-all department for undefined jobs.
 /datum/job_department/undefined
 	display_order = 10
+
+/datum/job_department/company_leader
+	department_name = DEPARTMENT_COMPANY_LEADER
+	department_bitflags = DEPARTMENT_BITFLAG_COMPANY_LEADER
+	exclude_from_latejoin = TRUE

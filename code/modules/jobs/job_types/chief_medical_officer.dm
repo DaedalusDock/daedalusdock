@@ -30,8 +30,8 @@
 
 	departments_list = list(
 		/datum/job_department/medical,
-		/datum/job_department/command,
-		)
+		/datum/job_department/company_leader,
+	)
 
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_STATION_MASTER

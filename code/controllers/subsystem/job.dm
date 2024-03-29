@@ -118,35 +118,44 @@ SUBSYSTEM_DEF(job)
 		var/datum/job/job = new job_type()
 		if(!job.config_check())
 			continue
+
 		if(!job.map_check()) //Even though we initialize before mapping, this is fine because the config is loaded at new
 			testing("Removed [job.type] due to map config")
 			continue
+
 		new_all_occupations += job
 		name_occupations[job.title] = job
 		type_occupations[job_type] = job
+
 		if(job.job_flags & JOB_NEW_PLAYER_JOINABLE)
 			new_joinable_occupations += job
+
 			if(!LAZYLEN(job.departments_list))
 				var/datum/job_department/department = new_joinable_departments_by_type[/datum/job_department/undefined]
 				if(!department)
 					department = new /datum/job_department/undefined()
 					new_joinable_departments_by_type[/datum/job_department/undefined] = department
+
 				department.add_job(job)
 				continue
+
 			for(var/department_type in job.departments_list)
 				var/datum/job_department/department = new_joinable_departments_by_type[department_type]
 				if(!department)
 					department = new department_type()
 					new_joinable_departments_by_type[department_type] = department
+
 				department.add_job(job)
 
 	sortTim(new_all_occupations, GLOBAL_PROC_REF(cmp_job_display_asc))
+
 	for(var/datum/job/job as anything in new_all_occupations)
 		if(!job.exp_granted_type)
 			continue
 		new_experience_jobs_map[job.exp_granted_type] += list(job)
 
 	sortTim(new_joinable_departments_by_type, GLOBAL_PROC_REF(cmp_department_display_asc), associative = TRUE)
+
 	for(var/department_type in new_joinable_departments_by_type)
 		var/datum/job_department/department = new_joinable_departments_by_type[department_type]
 		sortTim(department.department_jobs, GLOBAL_PROC_REF(cmp_job_display_asc))
@@ -262,8 +271,8 @@ SUBSYSTEM_DEF(job)
 			JobDebug("GRJ skipping overflow role, Player: [player], Job: [job]")
 			continue
 
-		if(job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND) //If you want a command position, select it!
-			JobDebug("GRJ skipping command role, Player: [player], Job: [job]")
+		if(job.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER) //If you want a leadership position, select it!
+			JobDebug("GRJ skipping leadership role, Player: [player], Job: [job]")
 			continue
 
 		/*
@@ -753,20 +762,31 @@ SUBSYSTEM_DEF(job)
 ///////////////////////////////////
 //Keeps track of all living heads//
 ///////////////////////////////////
-/datum/controller/subsystem/job/proc/get_living_heads()
+/datum/controller/subsystem/job/proc/get_living_heads(management_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
-		if(player.stat != DEAD && (player.mind?.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND))
+		if(player.stat == DEAD || !player.mind?.assigned_role)
+			continue
+
+		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
 			. += player.mind
 
+		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
+			. += player.mind
 
 ////////////////////////////
 //Keeps track of all heads//
 ////////////////////////////
-/datum/controller/subsystem/job/proc/get_all_heads()
+/datum/controller/subsystem/job/proc/get_all_heads(management_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
-		if(player.mind?.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(!player.mind?.assigned_role)
+			continue
+
+		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
+			. += player.mind
+
+		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			. += player.mind
 
 //////////////////////////////////////////////

@@ -28,7 +28,7 @@
  */
 
 //No department
-#define JOB_ASSISTANT "Assistant"
+#define JOB_ASSISTANT "Civilian"
 #define JOB_PRISONER "Prisoner"
 //Command
 #define JOB_CAPTAIN "Captain"
@@ -102,25 +102,27 @@
 #define DEPARTMENT_UNASSIGNED "No department assigned"
 
 #define DEPARTMENT_BITFLAG_SECURITY (1<<0)
-#define DEPARTMENT_SECURITY "Security"
-#define DEPARTMENT_BITFLAG_COMMAND (1<<1)
-#define DEPARTMENT_COMMAND "Command"
+#define DEPARTMENT_SECURITY "Mars Private Security"
+#define DEPARTMENT_BITFLAG_MANAGEMENT (1<<1)
+#define DEPARTMENT_MANAGEMENT "Management"
 #define DEPARTMENT_BITFLAG_SERVICE (1<<2)
-#define DEPARTMENT_SERVICE "Service"
+#define DEPARTMENT_SERVICE "Independant"
 #define DEPARTMENT_BITFLAG_CARGO (1<<3)
-#define DEPARTMENT_CARGO "Cargo"
+#define DEPARTMENT_CARGO "Hermes Galactic Freight"
 #define DEPARTMENT_BITFLAG_ENGINEERING (1<<4)
-#define DEPARTMENT_ENGINEERING "Engineering"
+#define DEPARTMENT_ENGINEERING "Daedalus Industries"
 #define DEPARTMENT_BITFLAG_SCIENCE (1<<5)
 #define DEPARTMENT_SCIENCE "Science"
 #define DEPARTMENT_BITFLAG_MEDICAL (1<<6)
-#define DEPARTMENT_MEDICAL "Medical"
+#define DEPARTMENT_MEDICAL "Aether Pharmaceuticals"
 #define DEPARTMENT_BITFLAG_SILICON (1<<7)
 #define DEPARTMENT_SILICON "Silicon"
 #define DEPARTMENT_BITFLAG_ASSISTANT (1<<8)
-#define DEPARTMENT_ASSISTANT "Assistant"
+#define DEPARTMENT_ASSISTANT "Civilian"
 #define DEPARTMENT_BITFLAG_CAPTAIN (1<<9)
 #define DEPARTMENT_CAPTAIN "Captain"
+#define DEPARTMENT_BITFLAG_COMPANY_LEADER (1<<10)
+#define DEPARTMENT_COMPANY_LEADER "Company Leader"
 
 /* Job datum job_flags */
 /// Whether the mob is announced on arrival.

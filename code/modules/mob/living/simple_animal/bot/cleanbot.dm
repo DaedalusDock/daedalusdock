@@ -42,7 +42,6 @@
 		JOB_CAPTAIN,
 		JOB_HEAD_OF_PERSONNEL,
 		JOB_HEAD_OF_SECURITY,
-		JOB_RESEARCH_DIRECTOR,
 	)
 	var/static/list/command_titles = list(
 		JOB_CAPTAIN = "Cpt.",
@@ -64,12 +63,6 @@
 		JOB_MEDICAL_DOCTOR = "M.D.",
 		JOB_CHEMIST = "Pharm.D.",
 	)
-	var/static/list/research_titles = list(
-		JOB_RESEARCH_DIRECTOR = "Ph.D.",
-		JOB_ROBOTICIST = "M.S.",
-		JOB_SCIENTIST = "B.S.",
-		JOB_GENETICIST = "Gene B.S.",
-	)
 	var/static/list/legal_titles = list(
 		JOB_LAWYER = "Esq.",
 	)
@@ -82,7 +75,6 @@
 	)
 	///What ranks are suffixes to the name.
 	var/static/list/suffixes = list(
-		research_titles,
 		medical_titles,
 		legal_titles,
 	)

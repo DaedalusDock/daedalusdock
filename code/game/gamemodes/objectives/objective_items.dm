@@ -257,21 +257,6 @@
 	special_equipment += /obj/item/storage/box/syndie_kit/nuke
 	..()
 
-/datum/objective_item/steal/hdd_extraction
-	name = "the source code for Project Goon from the master R&D server mainframe"
-	targetitem = /obj/item/computer_hardware/hard_drive/cluster/hdd_theft
-	difficulty = 10
-	excludefromjob = list(JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_ROBOTICIST, JOB_GENETICIST)
-	exists_on_map = TRUE
-
-/obj/item/computer_hardware/hard_drive/cluster/hdd_theft/add_stealing_item_objective()
-	ADD_STEAL_ITEM(src, /obj/item/computer_hardware/hard_drive/cluster/hdd_theft)
-
-/datum/objective_item/steal/hdd_extraction/New()
-	special_equipment += /obj/item/paper/guides/antag/hdd_extraction
-	return ..()
-
-
 /datum/objective_item/steal/supermatter
 	name = "a sliver of a supermatter crystal"
 	targetitem = /obj/item/nuke_core/supermatter_sliver

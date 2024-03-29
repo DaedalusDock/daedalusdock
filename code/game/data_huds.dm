@@ -273,10 +273,10 @@ Security HUDs! Basic mode shows only the job.
 	var/image/holder = hud_list[WANTED_HUD]
 	holder.pixel_y = get_hud_pixel_y()
 	var/perpname = get_face_name(get_id_name(""))
-	if(perpname && GLOB.data_core)
-		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
+	if(perpname && GLOB.datacore)
+		var/datum/data/record/security/R = GLOB.datacore.get_record_by_name(name, DATACORE_RECORDS_SECURITY)
 		if(R)
-			switch(R.fields["criminal"])
+			switch(R.fields[DATACORE_CRIMINAL_STATUS])
 				if(CRIMINAL_WANTED)
 					holder.icon_state = "hudwanted"
 					return

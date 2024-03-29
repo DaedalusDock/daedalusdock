@@ -110,9 +110,9 @@ GLOBAL_LIST_INIT(construct_radial_images, list(
 
 /proc/get_crewmember_minds()
 	var/list/minds = list()
-	for(var/data in GLOB.data_core.locked)
+	for(var/data in GLOB.datacore.locked)
 		var/datum/data/record/record = data
-		var/datum/mind/mind = record.fields["mindref"]
+		var/datum/mind/mind = record.fields[DATACORE_MINDREF]
 		if(mind)
 			minds += mind
 	return minds

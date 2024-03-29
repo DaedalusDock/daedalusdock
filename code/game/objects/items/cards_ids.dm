@@ -511,15 +511,15 @@
 	label = "[name_string], [assignment_string]"
 
 /obj/item/card/id/proc/set_data_by_record(datum/data/record/R, set_access, visual)
-	registered_name = R.fields["name"]
-	registered_age = R.fields["age"] || "UNSET"
-	dna_hash = R.fields["identity"] || "UNSET"
-	fingerprint = md5(R.fields["identity"]) || "UNSET"
-	blood_type = R.fields["blood_type"] || "UNSET"
-	assignment = R.fields["trim"] || "UNSET"
+	registered_name = R.fields[DATACORE_NAME]
+	registered_age = R.fields[DATACORE_AGE] || "UNSET"
+	dna_hash = R.fields[DATACORE_DNA_IDENTITY] || "UNSET"
+	fingerprint = md5(R.fields[DATACORE_DNA_IDENTITY]) || "UNSET"
+	blood_type = R.fields[DATACORE_BLOOD_TYPE] || "UNSET"
+	assignment = R.fields[DATACORE_TRIM] || "UNSET"
 	for(var/datum/id_trim/trim as anything in SSid_access.trim_singletons_by_path)
 		trim = SSid_access.trim_singletons_by_path[trim]
-		if(trim.assignment == R.fields["trim"])
+		if(trim.assignment == R.fields[DATACORE_TRIM])
 			if(visual)
 				SSid_access.apply_trim_to_chameleon_card(src, trim.type)
 			else
@@ -529,7 +529,7 @@
 
 /obj/item/card/id/proc/datacore_ready(datum/source, datum/datacore/datacore)
 	SIGNAL_HANDLER
-	set_icon(find_record("name", registered_name, GLOB.data_core.locked))
+	set_icon(GLOB.datacore.get_record_by_name(registered_name, DATACORE_RECORDS_LOCKED))
 	UnregisterSignal(src, COMSIG_GLOB_DATACORE_READY)
 
 /// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
@@ -1337,12 +1337,12 @@
 
 			if("Impersonate Crew")
 				var/list/options = list()
-				for(var/datum/data/record/R as anything in GLOB.data_core.general)
-					options += R.fields["name"]
+				for(var/datum/data/record/R as anything in GLOB.datacore.general)
+					options += R.fields[DATACORE_NAME]
 				var/choice = tgui_input_list(user, "Select a crew member", "Impersonate Crew", options)
 				if(!choice)
 					return
-				var/datum/data/record/R = find_record("name", choice, GLOB.data_core.locked)
+				var/datum/data/record/R = GLOB.datacore.get_record_by_name(choice, DATACORE_RECORDS_LOCKED)
 				set_data_by_record(R, visual = TRUE)
 				set_icon(R)
 				return

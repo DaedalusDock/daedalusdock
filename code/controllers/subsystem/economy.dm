@@ -98,9 +98,9 @@ SUBSYSTEM_DEF(economy)
 	var/list/dead_people = list()
 
 	//Dead people don't get money.
-	for(var/datum/data/record/medical_record in GLOB.data_core.general) //dont ask
+	for(var/datum/data/record/medical_record in GLOB.datacore.general) //dont ask
 		if(medical_record.fields["status"] == "*Deceased*")
-			dead_people += medical_record.fields["name"]
+			dead_people += medical_record.fields[DATACORE_NAME]
 
 	for(var/account in bank_accounts_by_id)
 		var/datum/bank_account/bank_account = bank_accounts_by_id[account]

@@ -137,10 +137,10 @@ GLOBAL_LIST_INIT(orion_events, generate_orion_events())
 		gamers[gamer] = ORION_GAMER_PAMPHLET //next report send a pamph
 
 
-		if(!isnull(GLOB.data_core.general))
-			for(var/datum/data/record/insanity_records in GLOB.data_core.general)
-				if(insanity_records.fields["name"] == gamer.name)
-					insanity_records.fields["m_stat"] = "*Unstable*"
+		if(!isnull(GLOB.datacore.general))
+			for(var/datum/data/record/insanity_records in GLOB.datacore.general)
+				if(insanity_records.fields[DATACORE_NAME] == gamer.name)
+					insanity_records.fields[DATACORE_MENTAL_HEALTH] = "*Unstable*"
 					return
 
 /obj/machinery/computer/arcade/orion_trail/ui_interact(mob/user, datum/tgui/ui)

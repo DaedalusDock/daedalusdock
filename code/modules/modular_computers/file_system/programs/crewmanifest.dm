@@ -12,7 +12,7 @@
 
 /datum/computer_file/program/crew_manifest/ui_static_data(mob/user)
 	var/list/data = list()
-	data["manifest"] = GLOB.data_core.get_manifest()
+	data["manifest"] = GLOB.datacore.get_manifest()
 	return data
 
 /datum/computer_file/program/crew_manifest/ui_data(mob/user)
@@ -42,7 +42,7 @@
 			if(computer && printer) //This option should never be called if there is no printer
 				var/contents = {"<h4>Crew Manifest</h4>
 								<br>
-								[GLOB.data_core ? GLOB.data_core.get_manifest_html(0) : ""]
+								[GLOB.datacore ? GLOB.datacore.get_manifest_html(0) : ""]
 								"}
 				if(!printer.print_text(contents,text("crew manifest ([])", stationtime2text())))
 					to_chat(usr, span_notice("Hardware error: Printer was unable to print the file. It may be out of paper."))

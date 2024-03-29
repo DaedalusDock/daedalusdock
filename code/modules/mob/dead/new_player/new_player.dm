@@ -362,7 +362,7 @@
 
 	if(humanc) //These procs all expect humans
 		var/chosen_rank = humanc.client?.prefs.alt_job_titles[rank] || rank
-		GLOB.data_core.manifest_inject(humanc, humanc.client)
+		GLOB.datacore.manifest_inject(humanc, humanc.client)
 		if(SSshuttle.arrivals)
 			SSshuttle.arrivals.QueueAnnounce(humanc, chosen_rank)
 		else

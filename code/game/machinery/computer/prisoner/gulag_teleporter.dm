@@ -37,12 +37,12 @@
 		prisoner_list["name"] = prisoner.real_name
 		if(contained_id)
 			can_teleport = TRUE
-		if(!isnull(GLOB.data_core.general))
-			for(var/r in GLOB.data_core.security)
+		if(!isnull(GLOB.datacore.general))
+			for(var/r in GLOB.datacore.security)
 				var/datum/data/record/R = r
-				if(R.fields["name"] == prisoner_list["name"])
+				if(R.fields[DATACORE_NAME] == prisoner_list["name"])
 					temporary_record = R
-					prisoner_list["crimstat"] = temporary_record.fields["criminal"]
+					prisoner_list["crimstat"] = temporary_record.fields[DATACORE_CRIMINAL_STATUS]
 
 	data["prisoner"] = prisoner_list
 

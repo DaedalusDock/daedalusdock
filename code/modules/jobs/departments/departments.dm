@@ -96,6 +96,7 @@
 	label_class = "science"
 	latejoin_color = "#ffddff"
 	nation_prefixes = list("Sci", "Griffa", "Geneti", "Explosi", "Mecha", "Xeno", "Nani", "Cyto")
+	exclude_from_latejoin = TRUE
 
 /datum/job_department/cargo
 	department_name = DEPARTMENT_CARGO
@@ -142,6 +143,7 @@
 /// Catch-all department for undefined jobs.
 /datum/job_department/undefined
 	display_order = 10
+	exclude_from_latejoin = TRUE
 
 /datum/job_department/company_leader
 	department_name = DEPARTMENT_COMPANY_LEADER

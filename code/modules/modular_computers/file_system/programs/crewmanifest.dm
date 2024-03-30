@@ -1,18 +1,20 @@
 /datum/computer_file/program/crew_manifest
 	filename = "plexagoncrew"
-	filedesc = "Plexagon Crew List"
+	filedesc = "Staff List"
 	category = PROGRAM_CATEGORY_CREW
 	program_icon_state = "id"
-	extended_desc = "Program for viewing and printing the current crew manifest"
+	extended_desc = "Program for viewing and printing the current staff manifest"
 	transfer_access = list(ACCESS_HEADS)
 	requires_ntnet = TRUE
 	size = 4
 	tgui_id = "NtosCrewManifest"
 	program_icon = "clipboard-list"
 
+	var/manifest_key = DATACORE_RECORDS_STATION
+
 /datum/computer_file/program/crew_manifest/ui_static_data(mob/user)
 	var/list/data = list()
-	data["manifest"] = SSdatacore.get_manifest()
+	data["manifest"] = SSdatacore.get_manifest(manifest_key)
 	return data
 
 /datum/computer_file/program/crew_manifest/ui_data(mob/user)
@@ -40,11 +42,11 @@
 	switch(action)
 		if("PRG_print")
 			if(computer && printer) //This option should never be called if there is no printer
-				var/contents = {"<h4>Crew Manifest</h4>
+				var/contents = {"<h4>Staff Manifest</h4>
 								<br>
-								[SSdatacore ? SSdatacore.get_manifest_html(0) : ""]
+								[SSdatacore.get_manifest_html(manifest_key)]
 								"}
-				if(!printer.print_text(contents,text("crew manifest ([])", stationtime2text())))
+				if(!printer.print_text(contents, "staff manifest ([stationtime2text()])"))
 					to_chat(usr, span_notice("Hardware error: Printer was unable to print the file. It may be out of paper."))
 					return
 				else

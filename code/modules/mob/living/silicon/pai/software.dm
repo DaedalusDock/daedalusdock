@@ -85,7 +85,7 @@
 				to_chat(src, span_warning("You are not being carried by anyone!"))
 				return FALSE
 		if("crew_manifest")
-			ai_roster()
+			show_crew_manifest(src)
 		if("door_jack")
 			if(params["jack"] == "jack")
 				if(hacking_cable?.machine)

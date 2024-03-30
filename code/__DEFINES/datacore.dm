@@ -32,3 +32,8 @@
 #define DATACORE_RECORDS_SECURITY "security"
 #define DATACORE_RECORDS_MEDICAL "medical"
 #define DATACORE_RECORDS_LOCKED "locked"
+
+#define DATACORE_RECORDS_AETHER "aether"
+#define DATACORE_RECORDS_DAEDALUS "daedalus"
+#define DATACORE_RECORDS_HERMES "hermes"
+#define DATACORE_RECORDS_MARS "mars"

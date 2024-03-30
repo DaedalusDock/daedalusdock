@@ -8,7 +8,16 @@ SUBSYSTEM_DEF(datacore)
 	init_order = INIT_ORDER_DATACORE
 
 	/// A list of data libraries keyed by DATACORE_RECORDS_*
-	var/list/datum/data_library/library = list()
+	var/list/datum/data_library/library = list(
+		DATACORE_RECORDS_STATION,
+		DATACORE_RECORDS_SECURITY,
+		DATACORE_RECORDS_MEDICAL,
+		DATACORE_RECORDS_LOCKED,
+		DATACORE_RECORDS_DAEDALUS,
+		DATACORE_RECORDS_AETHER,
+		DATACORE_RECORDS_HERMES,
+		DATACORE_RECORDS_MARS
+	)
 
 	var/securityPrintCount = 0
 	var/securityCrimeCounter = 0
@@ -18,10 +27,8 @@ SUBSYSTEM_DEF(datacore)
 	var/finished_setup = FALSE
 
 /datum/controller/subsystem/datacore/Initialize(start_timeofday)
-	library[DATACORE_RECORDS_STATION] = new /datum/data_library
-	library[DATACORE_RECORDS_SECURITY] = new /datum/data_library
-	library[DATACORE_RECORDS_MEDICAL] = new /datum/data_library
-	library[DATACORE_RECORDS_LOCKED] = new /datum/data_library
+	for(var/id in library)
+		library[id] = new /datum/data_library
 	return ..()
 
 /// Returns a data record or null.
@@ -81,21 +88,26 @@ SUBSYSTEM_DEF(datacore)
 		foundrecord.fields[DATACORE_RANK] = assignment
 		foundrecord.fields[DATACORE_TRIM] = trim
 
-/datum/controller/subsystem/datacore/proc/get_manifest()
+/datum/controller/subsystem/datacore/proc/get_manifest(record_type = DATACORE_RECORDS_STATION)
 	// First we build up the order in which we want the departments to appear in.
 	var/list/manifest_out = list()
-	for(var/datum/job_department/department as anything in SSjob.joinable_departments)
+	for(var/datum/job_department/department as anything in SSjob.departments)
+		if(department.exclude_from_latejoin)
+			continue
 		manifest_out[department.department_name] = list()
 
 	manifest_out[DEPARTMENT_UNASSIGNED] = list()
 
-	var/list/departments_by_type = SSjob.joinable_departments_by_type
-	for(var/datum/data/record/record as anything in SSdatacore.get_records(DATACORE_RECORDS_STATION))
+	var/list/departments_by_type = SSjob.departments_by_type
+
+	for(var/datum/data/record/record as anything in SSdatacore.get_records(record_type))
 		var/name = record.fields[DATACORE_NAME]
 		var/rank = record.fields[DATACORE_RANK] // user-visible job
 		var/trim = record.fields[DATACORE_TRIM] // internal jobs by trim type
 		var/datum/job/job = SSjob.GetJob(trim)
-		if(!job || !(job.job_flags & JOB_CREW_MANIFEST) || !LAZYLEN(job.departments_list)) // In case an unlawful custom rank is added.
+
+		// Filter out jobs that aren't on the manifest, move them to "unassigned"
+		if(!job || !(job.job_flags & JOB_CREW_MANIFEST) || !LAZYLEN(job.departments_list))
 			var/list/misc_list = manifest_out[DEPARTMENT_UNASSIGNED]
 			misc_list[++misc_list.len] = list(
 				"name" = name,
@@ -106,14 +118,20 @@ SUBSYSTEM_DEF(datacore)
 
 		for(var/department_type as anything in job.departments_list)
 			var/datum/job_department/department = departments_by_type[department_type]
+
 			if(!department)
 				stack_trace("get_manifest() failed to get job department for [department_type] of [job.type]")
 				continue
+
+			if(department.is_not_real_department)
+				continue
+
 			var/list/entry = list(
 				"name" = name,
 				"rank" = rank,
 				"trim" = trim,
 				)
+
 			var/list/department_list = manifest_out[department.department_name]
 			if(istype(job, department.department_head))
 				department_list.Insert(1, null)
@@ -128,8 +146,8 @@ SUBSYSTEM_DEF(datacore)
 
 	return manifest_out
 
-/datum/controller/subsystem/datacore/proc/get_manifest_html(monochrome = FALSE)
-	var/list/manifest = get_manifest()
+/datum/controller/subsystem/datacore/proc/get_manifest_html(record_key = DATACORE_RECORDS_STATION, monochrome = FALSE)
+	var/list/manifest = get_manifest(record_key)
 	var/dat = {"
 	<head><style>
 		.manifest {border-collapse:collapse;}
@@ -162,7 +180,9 @@ SUBSYSTEM_DEF(datacore)
 	if(!(H.mind?.assigned_role.job_flags & JOB_CREW_MANIFEST))
 		return
 
+	var/datum/job/job = H.mind.assigned_role
 	var/assignment = H.mind.assigned_role.title
+
 	//PARIAH EDIT ADDITION
 	// The alt job title, if user picked one, or the default
 	var/chosen_assignment = C?.prefs.alt_job_titles[assignment] || assignment
@@ -197,6 +217,11 @@ SUBSYSTEM_DEF(datacore)
 		G.fields[DATACORE_GENDER] = "Other"
 	G.fields[DATACORE_APPEARANCE] = character_appearance
 	library[DATACORE_RECORDS_STATION].inject_record(G)
+
+	// Add to company-specific manifests
+	var/datum/job_department/department = SSjob.departments_by_type[job.departments_list?[1]]
+	if(department?.manifest_key)
+		library[department.manifest_key].inject_record(G)
 
 	//Medical Record
 	var/datum/data/record/medical/M = new()

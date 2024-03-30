@@ -14,6 +14,12 @@
 		library.records_by_name -= fields["name"]
 	return ..()
 
+/// Creates a copy of the record, without it's library.
+/datum/data/record/proc/Copy()
+	var/datum/data/record/new_record = new type()
+	new_record.fields = fields.Copy()
+	return new_record
+
 /// A helper proc to get the front photo of a character from the record.
 /// Handles calling `get_photo()`, read its documentation for more information.
 /datum/data/record/proc/get_front_photo()

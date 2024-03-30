@@ -74,7 +74,7 @@
 		new_player_panel()
 
 	if(href_list["manifest"])
-		ViewManifest()
+		show_crew_manifest(src)
 		return
 
 	if(href_list["late_join"]) //This still exists for queue messages in chat
@@ -421,7 +421,7 @@
 	dat += "<table><tr><td valign='top'>"
 	var/column_counter = 0
 
-	for(var/datum/job_department/department as anything in SSjob.joinable_departments)
+	for(var/datum/job_department/department as anything in SSjob.departments)
 		if(department.exclude_from_latejoin)
 			continue
 
@@ -492,19 +492,6 @@
 		joined_area.on_joining_game(new_character)
 	new_character = null
 	qdel(src)
-
-
-/mob/dead/new_player/proc/ViewManifest()
-	if(!client)
-		return
-	if(world.time < client.crew_manifest_delay)
-		return
-	client.crew_manifest_delay = world.time + (1 SECONDS)
-
-	if(!GLOB.crew_manifest_tgui)
-		GLOB.crew_manifest_tgui = new /datum/crew_manifest(src)
-
-	GLOB.crew_manifest_tgui.ui_interact(src)
 
 /mob/dead/new_player/Move()
 	return 0

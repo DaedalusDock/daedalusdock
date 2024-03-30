@@ -15,10 +15,10 @@ SUBSYSTEM_DEF(job)
 	/// Dictionary of jobs indexed by the experience type they grant.
 	var/list/experience_jobs_map = list()
 
-	/// List of all departments with joinable jobs.
-	var/list/datum/job_department/joinable_departments = list()
-	/// List of all joinable departments indexed by their typepath, sorted by their own display order.
-	var/list/datum/job_department/joinable_departments_by_type = list()
+	/// List of all departments.
+	var/list/datum/job_department/departments = list()
+	/// List of all departments indexed by their typepath, sorted by their own display order.
+	var/list/datum/job_department/departments_by_type = list()
 
 	var/list/unassigned = list() //Players who need jobs
 	var/initial_players_to_assign = 0 //used for checking against population caps
@@ -102,16 +102,16 @@ SUBSYSTEM_DEF(job)
 	if(!length(all_jobs))
 		all_occupations = list()
 		joinable_occupations = list()
-		joinable_departments = list()
-		joinable_departments_by_type = list()
+		departments = list()
+		departments_by_type = list()
 		experience_jobs_map = list()
 		to_chat(world, span_boldannounce("Error setting up jobs, no job datums found"))
 		return FALSE
 
 	var/list/new_all_occupations = list()
 	var/list/new_joinable_occupations = list()
-	var/list/new_joinable_departments = list()
-	var/list/new_joinable_departments_by_type = list()
+	var/list/new_departments = list()
+	var/list/new_departments_by_type = list()
 	var/list/new_experience_jobs_map = list()
 
 	for(var/job_type in all_jobs)
@@ -130,22 +130,22 @@ SUBSYSTEM_DEF(job)
 		if(job.job_flags & JOB_NEW_PLAYER_JOINABLE)
 			new_joinable_occupations += job
 
-			if(!LAZYLEN(job.departments_list))
-				var/datum/job_department/department = new_joinable_departments_by_type[/datum/job_department/undefined]
-				if(!department)
-					department = new /datum/job_department/undefined()
-					new_joinable_departments_by_type[/datum/job_department/undefined] = department
+		if(!LAZYLEN(job.departments_list))
+			var/datum/job_department/department = new_departments_by_type[/datum/job_department/undefined]
+			if(!department)
+				department = new /datum/job_department/undefined()
+				new_departments_by_type[/datum/job_department/undefined] = department
 
-				department.add_job(job)
-				continue
+			department.add_job(job)
+			continue
 
-			for(var/department_type in job.departments_list)
-				var/datum/job_department/department = new_joinable_departments_by_type[department_type]
-				if(!department)
-					department = new department_type()
-					new_joinable_departments_by_type[department_type] = department
+		for(var/department_type in job.departments_list)
+			var/datum/job_department/department = new_departments_by_type[department_type]
+			if(!department)
+				department = new department_type()
+				new_departments_by_type[department_type] = department
 
-				department.add_job(job)
+			department.add_job(job)
 
 	sortTim(new_all_occupations, GLOBAL_PROC_REF(cmp_job_display_asc))
 
@@ -154,19 +154,19 @@ SUBSYSTEM_DEF(job)
 			continue
 		new_experience_jobs_map[job.exp_granted_type] += list(job)
 
-	sortTim(new_joinable_departments_by_type, GLOBAL_PROC_REF(cmp_department_display_asc), associative = TRUE)
+	sortTim(new_departments_by_type, GLOBAL_PROC_REF(cmp_department_display_asc), associative = TRUE)
 
-	for(var/department_type in new_joinable_departments_by_type)
-		var/datum/job_department/department = new_joinable_departments_by_type[department_type]
+	for(var/department_type in new_departments_by_type)
+		var/datum/job_department/department = new_departments_by_type[department_type]
 		sortTim(department.department_jobs, GLOBAL_PROC_REF(cmp_job_display_asc))
-		new_joinable_departments += department
+		new_departments += department
 		if(department.department_experience_type)
 			new_experience_jobs_map[department.department_experience_type] = department.department_jobs.Copy()
 
 	all_occupations = new_all_occupations
 	joinable_occupations = sortTim(new_joinable_occupations, GLOBAL_PROC_REF(cmp_job_display_asc))
-	joinable_departments = new_joinable_departments
-	joinable_departments_by_type = new_joinable_departments_by_type
+	departments = new_departments
+	departments_by_type = new_departments_by_type
 	experience_jobs_map = new_experience_jobs_map
 
 	return TRUE
@@ -191,7 +191,7 @@ SUBSYSTEM_DEF(job)
 /datum/controller/subsystem/job/proc/get_department_type(department_type)
 	if(!length(all_occupations))
 		SetupOccupations()
-	return joinable_departments_by_type[department_type]
+	return departments_by_type[department_type]
 
 /datum/controller/subsystem/job/proc/GetEmployer(datum/employer/E)
 	RETURN_TYPE(/datum/employer)

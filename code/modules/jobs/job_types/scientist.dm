@@ -37,7 +37,7 @@
 
 	departments_list = list(
 		/datum/job_department/science,
-		)
+	)
 
 	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
 

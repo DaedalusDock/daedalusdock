@@ -18,8 +18,11 @@
 	var/list/department_jobs = list()
 	/// For separatists, what independent name prefix does their nation get named?
 	var/list/nation_prefixes = list()
+	/// What manifest to start in besides the generic ones. Can be null.
+	var/manifest_key = null
 
 	var/exclude_from_latejoin = FALSE
+	var/is_not_real_department = FALSE
 
 /// Handles adding jobs to the department and setting up the job bitflags.
 /datum/job_department/proc/add_job(datum/job/job)
@@ -40,6 +43,7 @@
 	department_name = DEPARTMENT_CAPTAIN
 	department_bitflags = DEPARTMENT_BITFLAG_CAPTAIN
 	department_head = /datum/job/captain
+	is_not_real_department = TRUE
 
 /datum/job_department/command
 	department_name = DEPARTMENT_MANAGEMENT
@@ -58,6 +62,7 @@
 	display_order = 2
 	label_class = "security"
 	latejoin_color = "#ffdddd"
+	manifest_key = DATACORE_RECORDS_MARS
 	nation_prefixes = list("Securi", "Beepski", "Shitcuri", "Red", "Stunba", "Flashbango", "Flasha", "Stanfordi")
 
 /datum/job_department/engineering
@@ -69,7 +74,7 @@
 	label_class = "engineering"
 	latejoin_color = "#ffeeaa"
 	nation_prefixes = list("Atomo", "Engino", "Power", "Teleco")
-
+	manifest_key = DATACORE_RECORDS_DAEDALUS
 
 /datum/job_department/medical
 	department_name = DEPARTMENT_MEDICAL
@@ -80,6 +85,7 @@
 	label_class = "medical"
 	latejoin_color = "#ffddf0"
 	nation_prefixes = list("Mede", "Healtha", "Recova", "Chemi", "Viro", "Psych")
+	manifest_key = DATACORE_RECORDS_AETHER
 
 /datum/job_department/science
 	department_name = DEPARTMENT_SCIENCE
@@ -100,6 +106,7 @@
 	label_class = "supply"
 	latejoin_color = "#ddddff"
 	nation_prefixes = list("Cargo", "Guna", "Suppli", "Mule", "Crate", "Ore", "Mini", "Shaf")
+	manifest_key = DATACORE_RECORDS_HERMES
 
 /datum/job_department/silicon
 	department_name = DEPARTMENT_SILICON
@@ -130,6 +137,7 @@
 	display_order = 9
 	nation_prefixes = list("Assa", "Mainte", "Tunnel", "Gris", "Grey", "Liath", "Grigio", "Ass", "Assi")
 	// Don't add department_head! Assistants names should not be in bold.
+	is_not_real_department = TRUE
 
 /// Catch-all department for undefined jobs.
 /datum/job_department/undefined
@@ -139,3 +147,4 @@
 	department_name = DEPARTMENT_COMPANY_LEADER
 	department_bitflags = DEPARTMENT_BITFLAG_COMPANY_LEADER
 	exclude_from_latejoin = TRUE
+	is_not_real_department = TRUE

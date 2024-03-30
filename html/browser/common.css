@@ -30,6 +30,8 @@ a, button, a:link, a:visited, a:active, .linkOn, .linkOff
 	cursor: default;
 	white-space: nowrap !important;
 	text-shadow: none !important;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 
@@ -631,10 +633,30 @@ span.color_holder_box{
 	color: #ff0000;
 }
 
+/* Highlights the element on hover. For use with onClick events. */
 .highlighter:hover {
-	background-color: #f0c400 !important;
+	/*background-color: #f0c400 !important;*/
+	background-color: #aa8136 !important;
 }
 
 .paragraph {
 	text-indent: 2em;
+}
+
+/* Used for vertical lists of elements. */
+.flexColumn {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Used for horizontal lists of elements. */
+.flexRow {
+	display: flex;
+	flex-direction: row;
+}
+
+/* Standard flex item */
+.flexItem {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }

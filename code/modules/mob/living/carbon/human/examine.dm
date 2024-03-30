@@ -126,12 +126,13 @@
 	if (length(status_examines))
 		. += status_examines
 
+	var/appears_dead = FALSE
 	var/adjacent = get_dist(user, src) <= 1
 	if(stat != CONSCIOUS || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		if(!adjacent)
 			. += span_alert("[t_He] is not moving.")
 		else
-			if(stat == UNCONSCIOUS)
+			if(stat == UNCONSCIOUS && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
 				. += span_notice("[t_He] [t_is] unconsious.")
 				if(failed_last_breath)
 					. += span_alert("[t_He] isn't breathing.")
@@ -261,20 +262,16 @@
 			if(stun_absorption[i]["end_time"] > world.time && stun_absorption[i]["examine_message"])
 				msg += "[t_He] [t_is][stun_absorption[i]["examine_message"]]\n"
 
-	if(src != user)
-		if(HAS_TRAIT(user, TRAIT_EMPATH))
-			if(stat == CONSCIOUS)
-				if (bodytemperature > dna.species.heat_level_1)
-					msg += "[t_He] [t_is] flushed and wheezing.\n"
-				if (bodytemperature < dna.species.cold_level_1)
-					msg += "[t_He] [t_is] shivering.\n"
-				if (getOxyLoss() >= 10)
-					msg += "[t_He] seem[t_s] winded.\n"
-				if (combat_mode)
-					msg += "[t_He] seem[t_s] to be on guard.\n"
+	if(!appears_dead)
+		if (combat_mode)
+			msg += "[t_He] appear[p_s()] to be on guard.\n"
+		if (getOxyLoss() >= 10)
+			msg += "[t_He] appear[p_s()] winded.\n"
+		if (getToxLoss() >= 10)
+			msg += "[t_He] appear[p_s()] sickly.\n"
 
-			if (getToxLoss() >= 10)
-				msg += "[t_He] appear[t_s] sickly.\n"
+		if (bodytemperature < dna.species.cold_discomfort_level)
+			msg += "[t_He] [t_is] shivering.\n"
 
 		msg += "</span>"
 

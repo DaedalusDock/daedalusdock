@@ -7,7 +7,6 @@
 	siemens_coeff = 0.5 //They thrive on energy
 	brutemod = 1.25 //They're weak to punches
 
-	payday_modifier = 0.75
 	job_outfit_type = SPECIES_HUMAN
 
 	species_traits = list(DYNCOLORS, AGENDER, NO_UNDERWEAR, HAIR, FACEHAIR, HAIRCOLOR, FACEHAIRCOLOR) // i mean i guess they have blood so they can have wounds too

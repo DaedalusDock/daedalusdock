@@ -243,14 +243,14 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	return
 
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref)
-	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
+	var/datum/bank_account/bank_account = new(real_name, equipping)
 	account_id = bank_account.account_id
 	bank_account.replaceable = FALSE
 
 	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
 	var/obj/item/storage/wallet/W = wear_id
 	if(istype(W))
-		var/monero = round(equipping.paycheck * dna.species.payday_modifier * STARTING_PAYCHECKS, 10)
+		var/monero = round(equipping.paycheck * STARTING_PAYCHECKS, 10)
 		SSeconomy.spawn_cash_for_amount(monero, W)
 	else
 		bank_account.payday(STARTING_PAYCHECKS, TRUE)

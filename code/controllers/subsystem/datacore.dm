@@ -216,6 +216,12 @@ SUBSYSTEM_DEF(datacore)
 	else
 		G.fields[DATACORE_GENDER] = "Other"
 	G.fields[DATACORE_APPEARANCE] = character_appearance
+	var/obj/item/modular_computer/tablet/pda/pda = locate() in H
+	if(pda)
+		var/obj/item/computer_hardware/network_card/packetnet/rfcard = pda.all_components[MC_NET]
+		if(istype(rfcard))
+			G.fields[DATACORE_PDA_ID] = rfcard.hardware_id
+
 	library[DATACORE_RECORDS_STATION].inject_record(G)
 
 	// Add to company-specific manifests

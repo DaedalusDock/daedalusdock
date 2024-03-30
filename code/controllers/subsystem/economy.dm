@@ -5,23 +5,20 @@ SUBSYSTEM_DEF(economy)
 	runlevels = RUNLEVEL_GAME
 	///How many paychecks should players start out the round with?
 	var/roundstart_paychecks = 5
-	///How many credits does the in-game economy have in circulation at round start? Divided up by 6 of the 7 department budgets evenly, where cargo starts with nothing.
-	var/budget_pool = 52500
+
+	var/payday_interval = 8 // How many fires between paydays
+
+	///How many credits does the in-game economy have in circulation at round start? Divided up by 4 of the 5 department budgets evenly, where cargo starts with nothing.
+	var/budget_pool = 16000
 	var/list/department_id2name = list(
 		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
-		ACCOUNT_SCI = ACCOUNT_SCI_NAME,
 		ACCOUNT_MED = ACCOUNT_MED_NAME,
-		ACCOUNT_SRV = ACCOUNT_SRV_NAME,
 		ACCOUNT_CAR = ACCOUNT_CAR_NAME,
 		ACCOUNT_SEC = ACCOUNT_SEC_NAME,
 		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME
 	)
 	///The station's master account, used for splitting up funds and pooling money.
 	var/datum/bank_account/department/station_master
-	///Used to not spam the payroll announcement
-	var/run_dry = FALSE
-	///Payroll boolean
-	var/payroll_active = TRUE
 
 	///Departmental account datums by ID
 	var/list/department_accounts_by_id = list()
@@ -40,16 +37,17 @@ SUBSYSTEM_DEF(economy)
 	var/list/bank_accounts_by_id = list()
 	///List of the departmental budget cards in existance.
 	var/list/dep_cards = list()
+
 	/// A var that collects the total amount of credits owned in player accounts on station, reset and recounted on fire()
 	var/station_total = 0
-	/// How many civilain bounties have been completed so far this shift? Affects civilian budget payout values.
-	var/civ_bounty_tracker = 0
+
 	/// Contains the message to send to newscasters about price inflation and earnings, updated on price_update()
 	var/earning_report
 	///The modifier multiplied to the value of bounties paid out.
 	var/bounty_modifier = 1
 	///The modifier multiplied to the value of cargo pack prices.
 	var/pack_price_modifier = 1
+
 	/**
 	 * A list of strings containing a basic transaction history of purchases on the station.
 	 * Added to any time when player accounts purchase something.
@@ -88,13 +86,14 @@ SUBSYSTEM_DEF(economy)
 	if(!times_fired)
 		return
 
-	var/delta_time = wait / (5 MINUTES)
+	if(times_fired %% payday_interval == 0)
+		payday()
 
-	//Split the station budget amongst the departments
-	departmental_payouts()
+	update_mail()
+	send_fax_paperwork()
 
+/datum/controller/subsystem/economy/proc/payday()
 	//See if we even have enough money to pay these idiots
-	var/required_funds = 0
 	var/list/dead_people = list()
 
 	//Dead people don't get money.
@@ -102,61 +101,79 @@ SUBSYSTEM_DEF(economy)
 		if(medical_record.fields["status"] == "*Deceased*")
 			dead_people += medical_record.fields[DATACORE_NAME]
 
-	for(var/account in bank_accounts_by_id)
-		var/datum/bank_account/bank_account = bank_accounts_by_id[account]
-		if(bank_account.account_holder in dead_people)
+	for(var/datum/job_department/department as anything in SSjob.departments)
+		if(!department.budget_id)
 			continue
-		required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
 
-	if(payroll_active)
-		if(required_funds > station_master.account_balance)
-			if(!run_dry)
-				minor_announce("The station budget appears to have run dry. We regret to inform you that no further wage payments are possible until this situation is rectified.","Payroll Announcement")
-				run_dry = TRUE
-		else
-			if(run_dry)
-				run_dry = FALSE
-			for(var/account in bank_accounts_by_id)
-				var/datum/bank_account/bank_account = bank_accounts_by_id[account]
-				if(bank_account.account_holder in dead_people)
-					continue
+		var/datum/bank_account/department_account = department_accounts_by_id[department.budget_id]
+		// How much money we need to be able to give paychecks
+		var/required_funds = 0
+		// The accounts to pay out to
+		var/list/datum/bank_account/to_pay = list()
+
+		for(var/account in bank_accounts_by_id)
+			var/datum/bank_account/bank_account = bank_accounts_by_id[account]
+			if(!bank_account.account_job || !(bank_account.account_job in department.department_jobs) || (bank_account.account_holder in dead_people))
+				continue
+
+			required_funds += round(bank_account.account_job.paycheck * bank_account.payday_modifier)
+			to_pay += bank_account
+
+		if(required_funds <= department_account.account_balance)
+			department_account.adjust_money(-required_funds)
+
+			for(var/datum/bank_account/bank_account in to_pay)
 				bank_account.payday()
 
-			priority_announce(
-				"Attention staff of [station_name()], you have received payment for this period. You may withdraw funds from your nearest ATM.",
-				"Station Announcement",
-				"Staff Update",
-			)
+			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+			if(!announcer)
+				continue //sucks to suck lmao
 
-	//price_update() This doesn't need to fire every 5 minutes. The only current use is market crash, which handles it on its own.
-	var/effective_mailcount = round(living_player_count())
-	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * delta_time)
-	send_fax_paperwork()
+			for(var/datum/bank_account/bank_account in to_pay)
+				var/datum/data/record/general/record = SSdatacore.get_record_by_name(bank_account.account_holder, DATACORE_RECORDS_STATION)
+				if(!record)
+					continue
 
-/**
- * Departmental income payments are kept static and linear for every department, and paid out once every 5 minutes.
- * Iterates over every department account for the same payment.
- */
-/datum/controller/subsystem/economy/proc/departmental_payouts()
-	var/payout_pool = (station_master.account_balance - ECON_STATION_PAYOUT) < 0 ? station_master.account_balance : ECON_STATION_PAYOUT
-	if(payout_pool < ECON_STATION_PAYOUT_REQUIREMENT)
-		return
+				var/target_id = record.fields[DATACORE_PDA_ID]
+				if(!target_id)
+					continue
 
-	var/split = round(payout_pool / (length(department_accounts_by_id) - 1))
+				var/datum/signal/outgoing = announcer.create_signal(target_id, list(
+					PACKET_CMD = NETCMD_PDAMESSAGE,
+					"name" = "Automated Announcement System",
+					"message" = "Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
+					"automated" = TRUE,
+				))
 
-	for(var/iteration in department_id2name - ACCOUNT_STATION_MASTER)
-		var/datum/bank_account/dept_account = department_accounts_by_id[iteration]
-		if(dept_account.account_balance >= ECON_STATION_PAYOUT_MAX)
-			continue
-
-		var/real_split = min(ECON_STATION_PAYOUT_MAX - dept_account.account_balance, split)
-
-		if(!dept_account.transfer_money(station_master, real_split))
-			dept_account.transfer_money(station_master, payout_pool)
-			break
+				outgoing.transmission_method = TRANSMISSION_RADIO
+				announcer.common_freq.post_signal(outgoing, RADIO_PDAMESSAGE)
 		else
-			payout_pool -= real_split
+			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
+			if(!announcer)
+				continue //sucks to suck lmao
 
+			for(var/datum/bank_account/bank_account in to_pay)
+				var/datum/data/record/general/record = SSdatacore.get_record_by_name(bank_account.account_holder, DATACORE_RECORDS_STATION)
+				if(!record)
+					continue
+
+				var/target_id = record.fields[DATACORE_PDA_ID]
+				if(!target_id)
+					continue
+
+				var/datum/signal/outgoing = announcer.create_signal(target_id, list(
+					PACKET_CMD = NETCMD_PDAMESSAGE,
+					"name" = "Automated Announcement System",
+					"message" = "The company's funding has run dry. Your payment for this quarter has not been processed.",
+					"automated" = TRUE,
+				))
+
+				outgoing.transmission_method = TRANSMISSION_RADIO
+				announcer.common_freq.post_signal(outgoing, RADIO_PDAMESSAGE)
+
+/datum/controller/subsystem/economy/proc/update_mail()
+	var/effective_mailcount = round(living_player_count())
+	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * (wait / (1 MINUTE)))
 
 /**
  * Updates the prices of all station vendors.

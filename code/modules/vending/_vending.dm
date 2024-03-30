@@ -969,6 +969,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)
 			SSeconomy.track_purchase(account, price_to_use, name)
 			log_econ("[price_to_use] credits were inserted into [src] by [account.account_holder] to buy [R].")
+
 	if(last_shopper != REF(usr) || purchase_message_cooldown < world.time)
 		say("Thank you for shopping with [src]!")
 		purchase_message_cooldown = world.time + 5 SECONDS

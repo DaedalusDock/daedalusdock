@@ -6,7 +6,7 @@
 	///How many credits are currently held in the bank account.
 	var/account_balance = 0
 	///If there are things effecting how much income a player will get, it's reflected here 1 is standard for humans.
-	var/payday_modifier
+	var/payday_modifier = 1
 	///The job datum of the account owner.
 	var/datum/job/account_job
 	///List of the physical ID card objects that are associated with this bank_account
@@ -25,10 +25,9 @@
 	///Is there a CRAB 17 on the station draining funds? Prevents manual fund transfer. pink levels are rising
 	var/being_dumped = FALSE
 
-/datum/bank_account/New(newname, job, modifier = 1, player_account = TRUE)
+/datum/bank_account/New(newname, job, player_account = TRUE)
 	account_holder = newname
 	account_job = job
-	payday_modifier = modifier
 	add_to_accounts = player_account
 	setup_unique_account_id()
 

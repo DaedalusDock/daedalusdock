@@ -20,6 +20,8 @@
 	var/list/nation_prefixes = list()
 	/// What manifest to start in besides the generic ones. Can be null.
 	var/manifest_key = null
+	/// Account ID for the budget
+	var/budget_id = null
 
 	var/exclude_from_latejoin = FALSE
 	var/is_not_real_department = FALSE
@@ -64,6 +66,7 @@
 	latejoin_color = "#ffdddd"
 	manifest_key = DATACORE_RECORDS_MARS
 	nation_prefixes = list("Securi", "Beepski", "Shitcuri", "Red", "Stunba", "Flashbango", "Flasha", "Stanfordi")
+	budget_id = ACCOUNT_SEC
 
 /datum/job_department/engineering
 	department_name = DEPARTMENT_ENGINEERING
@@ -75,6 +78,7 @@
 	latejoin_color = "#ffeeaa"
 	nation_prefixes = list("Atomo", "Engino", "Power", "Teleco")
 	manifest_key = DATACORE_RECORDS_DAEDALUS
+	budget_id = ACCOUNT_ENG
 
 /datum/job_department/medical
 	department_name = DEPARTMENT_MEDICAL
@@ -86,6 +90,7 @@
 	latejoin_color = "#ffddf0"
 	nation_prefixes = list("Mede", "Healtha", "Recova", "Chemi", "Viro", "Psych")
 	manifest_key = DATACORE_RECORDS_AETHER
+	budget_id = ACCOUNT_MED
 
 /datum/job_department/science
 	department_name = DEPARTMENT_SCIENCE
@@ -108,6 +113,7 @@
 	latejoin_color = "#ddddff"
 	nation_prefixes = list("Cargo", "Guna", "Suppli", "Mule", "Crate", "Ore", "Mini", "Shaf")
 	manifest_key = DATACORE_RECORDS_HERMES
+	budget_id = ACCOUNT_CAR
 
 /datum/job_department/silicon
 	department_name = DEPARTMENT_SILICON

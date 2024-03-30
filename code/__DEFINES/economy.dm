@@ -1,7 +1,7 @@
 /// Number of paychecks jobs start with at the creation of a new bank account for a player (So at shift-start or game join, but not a blank new account.)
-#define STARTING_PAYCHECKS 7
+#define STARTING_PAYCHECKS 2
 /// How much mail the Economy SS will create per minute, regardless of firing time.
-#define MAX_MAIL_PER_MINUTE 3
+#define MAX_MAIL_PER_MINUTE 0.05
 /// Probability of using letters of envelope sprites on all letters.
 #define FULL_CRATE_LETTER_ODDS 70
 
@@ -27,25 +27,18 @@
 //A multiplier for when you buy from your department.
 #define VENDING_DISCOUNT 0
 
-///NOT USED FOR ECONOMY
-#define ACCOUNT_CIV "CIV"
-
-
 #define ACCOUNT_ENG "ENG"
-#define ACCOUNT_ENG_NAME "Engineering Budget"
-#define ACCOUNT_SCI "SCI"
-#define ACCOUNT_SCI_NAME "Scientific Budget"
+#define ACCOUNT_ENG_NAME "Daedalus Industries Funds"
 #define ACCOUNT_MED "MED"
-#define ACCOUNT_MED_NAME "Medical Budget"
+#define ACCOUNT_MED_NAME "Aether Pharmaceuticals Funds"
 #define ACCOUNT_SRV "SRV"
-#define ACCOUNT_SRV_NAME "Service Budget"
 #define ACCOUNT_CAR "CAR"
-#define ACCOUNT_CAR_NAME "Cargo Budget"
+#define ACCOUNT_CAR_NAME "Hermes Galactic Freight Funds"
 #define ACCOUNT_SEC "SEC"
-#define ACCOUNT_SEC_NAME "Defense Budget"
+#define ACCOUNT_SEC_NAME "Mars Executive Outcomes Budget"
 
 /// The number of departmental accounts for the economy. DOES NOT INCLUDE STATION MASTER.
-#define ECON_NUM_DEPARTMENT_ACCOUNTS 6
+#define ECON_NUM_DEPARTMENT_ACCOUNTS 4
 
 #define ACCOUNT_STATION_MASTER "STA"
 #define ACCOUNT_STATION_MASTER_NAME "Station Budget"

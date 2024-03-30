@@ -50,10 +50,6 @@
 	dust_anim = "dust-m"
 	gib_anim = "gibbed-m"
 
-	payday_modifier = 1.5
-
-
-
 /datum/species/monkey/random_name(gender,unique,lastname)
 	var/randname = "monkey ([rand(1,999)])"
 

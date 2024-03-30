@@ -32,6 +32,7 @@
 	premium = list(/obj/item/clothing/under/rank/security/officer/formal = 3,
 					/obj/item/clothing/suit/security/officer = 3,
 					/obj/item/clothing/head/beret/sec/navyofficer = 3)
+
 	refill_canister = /obj/item/vending_refill/wardrobe/sec_wardrobe
 	payment_department = ACCOUNT_SEC
 	light_color = COLOR_MOSTLY_PURE_RED
@@ -186,7 +187,7 @@
 					  /obj/item/organ/tongue/robot = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/robo_wardrobe
 	extra_price = PAYCHECK_HARD * 1.2
-	payment_department = ACCOUNT_SCI
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_ROBOTICS
 /obj/item/vending_refill/wardrobe/robo_wardrobe
@@ -214,7 +215,7 @@
 					/obj/item/radio/headset/headset_sci = 3,
 					/obj/item/clothing/mask/gas = 3)
 	refill_canister = /obj/item/vending_refill/wardrobe/science_wardrobe
-	payment_department = ACCOUNT_SCI
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_RESEARCH
 /obj/item/vending_refill/wardrobe/science_wardrobe
@@ -238,7 +239,7 @@
 					/obj/item/clothing/mask/bandana/striped/botany = 3,
 					/obj/item/clothing/accessory/armband/hydro = 3)
 	refill_canister = /obj/item/vending_refill/wardrobe/hydro_wardrobe
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_color = LIGHT_COLOR_ELECTRIC_GREEN
 
 	discount_access = ACCESS_HYDROPONICS
@@ -269,7 +270,7 @@
 					/obj/item/clothing/glasses/regular/jamjar = 1,
 					/obj/item/storage/bag/books = 1)
 	refill_canister = /obj/item/vending_refill/wardrobe/curator_wardrobe
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_LIBRARY
 
@@ -303,7 +304,7 @@
 					/obj/item/storage/bag/money = 2)
 	premium = list(/obj/item/storage/box/dishdrive = 1)
 	refill_canister = /obj/item/vending_refill/wardrobe/bar_wardrobe
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	extra_price = PAYCHECK_HARD
 
 	discount_access = ACCESS_BAR
@@ -333,7 +334,7 @@
 					/obj/item/reagent_containers/glass/rag = 1,
 					/obj/item/clothing/suit/hooded/wintercoat = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/chef_wardrobe
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_KITCHEN
 
@@ -367,7 +368,7 @@
 	refill_canister = /obj/item/vending_refill/wardrobe/jani_wardrobe
 	default_price = PAYCHECK_EASY
 	extra_price = PAYCHECK_HARD * 0.8
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 	light_color = COLOR_STRONG_MAGENTA
 
 	discount_access = ACCESS_JANITOR
@@ -403,7 +404,7 @@
 					/obj/item/clothing/shoes/laceup = 2,
 					/obj/item/clothing/accessory/lawyers_badge = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/law_wardrobe
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_LAWYER
 
@@ -441,7 +442,7 @@
 	premium = list(/obj/item/clothing/suit/chaplainsuit/bishoprobe = 1,
 					/obj/item/clothing/head/bishopmitre = 1)
 	refill_canister = /obj/item/vending_refill/wardrobe/chap_wardrobe
-	payment_department = ACCOUNT_SRV
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_CHAPEL_OFFICE
 
@@ -492,7 +493,7 @@
 		/obj/item/storage/backpack/duffelbag/genetics = 2
 	)
 	refill_canister = /obj/item/vending_refill/wardrobe/gene_wardrobe
-	payment_department = ACCOUNT_SCI
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_GENETICS
 

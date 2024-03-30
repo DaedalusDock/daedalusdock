@@ -120,7 +120,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 		if("manifest")
 			var/dat = "<B>Showing Crew Manifest.</B><HR>"
 			dat += "<table cellspacing=5><tr><th>Name</th><th>Position</th></tr>"
-			for(var/datum/data/record/t in GLOB.datacore.general)
+			for(var/datum/data/record/t in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
 				dat += "<tr><td>[t.fields[DATACORE_NAME]]</td><td>[t.fields[DATACORE_RANK]][t.fields[DATACORE_RANK] != t.fields[DATACORE_TRIM] ? " ([t.fields[DATACORE_TRIM]])" : ""]</td></tr>"
 			dat += "</table>"
 			holder << browse(dat, "window=manifest;size=440x410")

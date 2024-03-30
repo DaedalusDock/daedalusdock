@@ -175,8 +175,8 @@
 	add_entry(general, security)
 
 /obj/structure/filingcabinet/security/proc/generate_all()
-	for(var/datum/data/record/G in GLOB.datacore.general)
-		var/datum/data/record/S = GLOB.datacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_SECURITY)
+	for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+		var/datum/data/record/S = SSdatacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_SECURITY)
 		if(!S)
 			continue
 		add_entry(G, S)
@@ -190,8 +190,8 @@
 
 /obj/structure/filingcabinet/medical/proc/populate()
 	if(virgin)
-		for(var/datum/data/record/G in GLOB.datacore.general)
-			var/datum/data/record/M = GLOB.datacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_MEDICAL)
+		for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+			var/datum/data/record/M = SSdatacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_MEDICAL)
 			if(!M)
 				continue
 			var/obj/item/paper/P = new /obj/item/paper(src)
@@ -237,10 +237,7 @@ GLOBAL_LIST_EMPTY(employmentCabinets)
 
 /obj/structure/filingcabinet/employment/proc/fillCurrent()
 	//This proc fills the cabinet with the current crew.
-	for(var/record in GLOB.datacore.locked)
-		var/datum/data/record/G = record
-		if(!G)
-			continue
+	for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_LOCKED))
 		var/datum/mind/M = G.fields[DATACORE_MINDREF]
 		if(M && ishuman(M.current))
 			addFile(M.current)

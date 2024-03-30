@@ -27,7 +27,7 @@
 #define DATACORE_CRIMINAL_STATUS "criminal"
 #define DATACORE_CITATIONS "citation"
 
-/// Record types for get_record_by_name()
+/// Keys for SSdatacore.library
 #define DATACORE_RECORDS_GENERAL "general"
 #define DATACORE_RECORDS_SECURITY "security"
 #define DATACORE_RECORDS_MEDICAL "medical"

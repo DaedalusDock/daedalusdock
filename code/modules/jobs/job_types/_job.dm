@@ -396,7 +396,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			B.bank_cards += card
 
 		H.sec_hud_set_ID()
-		if(!GLOB.datacore.finished_setup)
+		if(!SSdatacore.finished_setup)
 			card.RegisterSignal(SSdcs, COMSIG_GLOB_DATACORE_READY, TYPE_PROC_REF(/obj/item/card/id, datacore_ready))
 		else
 			spawn(0) //Race condition? I hardly knew her!

@@ -605,7 +605,7 @@
 				if("Station Member")
 					var/list/personnel_list = list()
 
-					for(var/datum/data/record/record_datum in GLOB.datacore.locked)//Look in data core locked.
+					for(var/datum/data/record/record_datum in SSdatacore.get_records(DATACORE_RECORDS_LOCKED))//Look in data core locked.
 						personnel_list["[record_datum.fields[DATACORE_NAME]]: [record_datum.fields[DATACORE_RANK]]"] = record_datum.fields[DATACORE_APPEARANCE]//Pull names, rank, and image.
 
 					if(!length(personnel_list))

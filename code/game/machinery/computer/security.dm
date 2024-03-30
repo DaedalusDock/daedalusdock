@@ -74,14 +74,14 @@
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return
 
-	if(isnull(GLOB.datacore.general))
+	if(isnull(SSdatacore.get_records(DATACORE_RECORDS_GENERAL)))
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return
 
 	var/list/new_table = list()
-	for(var/datum/data/record/player_record as anything in GLOB.datacore.general)
+	for(var/datum/data/record/player_record as anything in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
 		var/list/entry = list()
-		var/datum/data/record/player_security_record = find_record("id", player_record.fields[DATACORE_ID], GLOB.datacore.security)
+		var/datum/data/record/player_security_record = SSdatacore.find_record("id", player_record.fields[DATACORE_ID], DATACORE_RECORDS_SECURITY)
 		if(player_security_record)
 			entry["arrest_status"] = player_security_record.fields[DATACORE_CRIMINAL_STATUS]
 			entry["security_record"] = player_security_record
@@ -280,10 +280,10 @@
 <th><A href='?src=[REF(src)];choice=Sorting;sort=fingerprint'>Fingerprints</A></th>
 <th>Criminal Status</th>
 </tr>"}
-					if(!isnull(GLOB.datacore.general))
-						for(var/datum/data/record/R in sort_record(GLOB.datacore.general, sortBy, order))
+					if(!isnull(SSdatacore.get_records(DATACORE_RECORDS_GENERAL)))
+						for(var/datum/data/record/R in sort_record(SSdatacore.get_records(DATACORE_RECORDS_GENERAL), sortBy, order))
 							var/crimstat = ""
-							for(var/datum/data/record/E in GLOB.datacore.security)
+							for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
 								if((E.fields[DATACORE_NAME] == R.fields[DATACORE_NAME]) && (E.fields[DATACORE_ID] == R.fields[DATACORE_ID]))
 									crimstat = E.fields[DATACORE_CRIMINAL_STATUS]
 							var/background
@@ -323,7 +323,7 @@
 					dat += "<BR><A href='?src=[REF(src)];choice=Delete All Records'>Delete All Records</A><BR><BR><A href='?src=[REF(src)];choice=Return'>Back</A>"
 				if(3)
 					dat += "<font size='4'><b>Security Record</b></font><br>"
-					if(istype(active1, /datum/data/record) && GLOB.datacore.general.Find(active1))
+					if(istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1))
 						var/front_photo = active1.get_front_photo()
 						if(istype(front_photo, /obj/item/photo))
 							var/obj/item/photo/photo_front = front_photo
@@ -353,7 +353,7 @@
 						</td></tr></table></td></tr></table>"}
 					else
 						dat += "<br>General Record Lost!<br>"
-					if((istype(active2, /datum/data/record) && GLOB.datacore.security.Find(active2)))
+					if((istype(active2, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2)))
 						dat += "<font size='4'><b>Security Data</b></font>"
 						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields[DATACORE_CRIMINAL_STATUS]]</A>"
 						if(active2.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED)
@@ -437,9 +437,9 @@ What a mess.*/
 	. = ..()
 	if(.)
 		return .
-	if(!( GLOB.datacore.general.Find(active1) ))
+	if(!( SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1) ))
 		active1 = null
-	if(!( GLOB.datacore.security.Find(active2) ))
+	if(!( SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2) ))
 		active2 = null
 	if(!authenticated && href_list["choice"] != "Log In") // logging in is the only action you can do if not logged in
 		return
@@ -502,7 +502,7 @@ What a mess.*/
 				playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
 
 			if("broadcast_criminal")
-				var/datum/data/record/R = locate(href_list["criminal"]) in GLOB.datacore.security
+				var/datum/data/record/R = locate(href_list["criminal"]) in SSdatacore.get_records(DATACORE_RECORDS_SECURITY)
 				if(!R)
 					return
 				if(!(R.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED))
@@ -517,12 +517,12 @@ What a mess.*/
 				active2 = null
 
 			if("Browse Record")
-				var/datum/data/record/R = locate(href_list["d_rec"]) in GLOB.datacore.general
+				var/datum/data/record/R = locate(href_list["d_rec"]) in SSdatacore.get_records(DATACORE_RECORDS_GENERAL)
 				if(!R)
 					temp = "Record Not Found!"
 				else
 					active1 = active2 = R
-					for(var/datum/data/record/E in GLOB.datacore.security)
+					for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
 						if((E.fields[DATACORE_NAME] == R.fields[DATACORE_NAME] || E.fields[DATACORE_ID] == R.fields[DATACORE_ID]))
 							active2 = E
 					screen = 3
@@ -560,12 +560,12 @@ What a mess.*/
 			if("Print Record")
 				if(!( printing ))
 					printing = 1
-					GLOB.datacore.securityPrintCount++
+					SSdatacore.securityPrintCount++
 					playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 					sleep(30)
 					var/obj/item/paper/P = new /obj/item/paper( loc )
-					P.info = "<CENTER><B>Security Record - (SR-[GLOB.datacore.securityPrintCount])</B></CENTER><BR>"
-					if((istype(active1, /datum/data/record) && GLOB.datacore.general.Find(active1)))
+					P.info = "<CENTER><B>Security Record - (SR-[SSdatacore.securityPrintCount])</B></CENTER><BR>"
+					if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1)))
 
 						P.info += {"
 Name: [active1.fields[DATACORE_NAME]] ID: [active1.fields[DATACORE_ID]]<BR>
@@ -576,7 +576,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 						P.info += "\nFingerprint: [active1.fields[DATACORE_FINGERPRINT]]<BR>\nPhysical Status: [active1.fields[DATACORE_PHYSICAL_HEALTH]]<BR>\nMental Status: [active1.fields[DATACORE_MENTAL_HEALTH]]<BR>"
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
-					if((istype(active2, /datum/data/record) && GLOB.datacore.security.Find(active2)))
+					if((istype(active2, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2)))
 						P.info += "<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\nCriminal Status: [active2.fields[DATACORE_CRIMINAL_STATUS]]"
 
 						P.info += "<BR>\n<BR>\nCrimes:<BR>\n"
@@ -600,10 +600,10 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 						while(active2.fields["com_[counter]"])
 							P.info += "[active2.fields["com_[counter]"]]<BR>"
 							counter++
-						P.name = "SR-[GLOB.datacore.securityPrintCount] '[active1.fields[DATACORE_NAME]]'"
+						P.name = "SR-[SSdatacore.securityPrintCount] '[active1.fields[DATACORE_NAME]]'"
 					else
 						P.info += "<B>Security Record Lost!</B><BR>"
-						P.name = "SR-[GLOB.datacore.securityPrintCount] 'Record Lost'"
+						P.name = "SR-[SSdatacore.securityPrintCount] 'Record Lost'"
 					P.info += "</TT>"
 					P.update_appearance()
 					printing = null
@@ -626,7 +626,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 							printing = 1
 							sleep(30)
-							if((istype(active1, /datum/data/record) && GLOB.datacore.general.Find(active1)))//make sure the record still exists.
+							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1)))//make sure the record still exists.
 								var/obj/item/photo/photo = active1.get_front_photo()
 								new /obj/item/poster/wanted(loc, photo.picture.picture_image, wanted_name, info, headerText)
 							printing = 0
@@ -643,7 +643,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 							printing = 1
 							sleep(30)
-							if((istype(active1, /datum/data/record) && GLOB.datacore.general.Find(active1)))//make sure the record still exists.
+							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1)))//make sure the record still exists.
 								var/obj/item/photo/photo = active1.get_front_photo()
 								new /obj/item/poster/wanted/missing(loc, photo.picture.picture_image, missing_name, info, headerText)
 							printing = 0
@@ -657,9 +657,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 
 			if("Purge All Records")
 				investigate_log("[key_name(usr)] has purged all the security records.", INVESTIGATE_RECORDS)
-				for(var/datum/data/record/R in GLOB.datacore.security)
-					qdel(R)
-				GLOB.datacore.security.Cut()
+				SSdatacore.wipe_records(DATACORE_RECORDS_SECURITY)
 				temp = "All Security records deleted."
 
 			if("Add Entry")
@@ -699,7 +697,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 					R.set_criminal_status(CRIMINAL_NONE)
 					R.fields[DATACORE_CRIMES] = list()
 					R.fields[DATACORE_NOTES] = "No notes."
-					GLOB.datacore.inject_record(R, DATACORE_RECORDS_SECURITY)
+					SSdatacore.inject_record(R, DATACORE_RECORDS_SECURITY)
 					active2 = R
 					screen = 3
 
@@ -719,7 +717,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				G.fields[DATACORE_FINGERPRINT] = "?????"
 				G.fields[DATACORE_PHYSICAL_HEALTH] = "Active"
 				G.fields[DATACORE_MENTAL_HEALTH] = "Stable"
-				GLOB.datacore.inject_record(G, DATACORE_RECORDS_GENERAL)
+				SSdatacore.inject_record(G, DATACORE_RECORDS_GENERAL)
 				active1 = G
 
 				//Security Record
@@ -730,7 +728,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				R.fields[DATACORE_CRIMINAL_STATUS] = CRIMINAL_NONE
 				R.fields[DATACORE_CRIMES] = list()
 				R.fields[DATACORE_NOTES] = "No notes."
-				GLOB.datacore.inject_record(R, DATACORE_RECORDS_SECURITY)
+				SSdatacore.inject_record(R, DATACORE_RECORDS_SECURITY)
 				active2 = R
 
 				//Medical Record
@@ -748,7 +746,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				M.fields[DATACORE_DISEASES] = "None"
 				M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
 				M.fields[DATACORE_NOTES] = "No notes."
-				GLOB.datacore.inject_record(M, DATACORE_RECORDS_MEDICAL)
+				SSdatacore.inject_record(M, DATACORE_RECORDS_MEDICAL)
 
 
 
@@ -865,7 +863,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							return
 
 						var/datum/data/record/security/security_record = active1
-						var/crime = GLOB.datacore.new_crime_entry(t1, t2, authenticated, stationtime2text())
+						var/crime = SSdatacore.new_crime_entry(t1, t2, authenticated, stationtime2text())
 						security_record.add_crime(crime)
 
 						investigate_log("New Crime: <strong>[t1]</strong>: [t2] | Added to [active1.fields[DATACORE_NAME]] by [key_name(usr)]", INVESTIGATE_RECORDS)
@@ -907,7 +905,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 						if (!fine || QDELETED(usr) || QDELETED(src) || !canUseSecurityRecordsConsole(usr, t1, null, a2))
 							return
 
-						var/datum/data/crime/crime = GLOB.datacore.new_crime_entry(t1, "", authenticated, stationtime2text(), fine)
+						var/datum/data/crime/crime = SSdatacore.new_crime_entry(t1, "", authenticated, stationtime2text(), fine)
 						var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
 						if(announcer)
 							announcer.notify_citation(active1.fields[DATACORE_NAME], t1, fine)
@@ -1013,7 +1011,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 					if("Delete Record (ALL) Execute")
 						if(active1)
 							investigate_log("[key_name(usr)] has deleted all records for [active1.fields[DATACORE_NAME]].", INVESTIGATE_RECORDS)
-							for(var/datum/data/record/R in GLOB.datacore.medical)
+							for(var/datum/data/record/R in SSdatacore.get_records(DATACORE_RECORDS_MEDICAL))
 								if((R.fields[DATACORE_NAME] == active1.fields[DATACORE_NAME] || R.fields[DATACORE_ID] == active1.fields[DATACORE_ID]))
 									qdel(R)
 									break
@@ -1059,7 +1057,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 	if(machine_stat & (BROKEN|NOPOWER) || . & EMP_PROTECT_SELF)
 		return
 
-	for(var/datum/data/record/security/R in GLOB.datacore.security)
+	for(var/datum/data/record/security/R in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
 		if(prob(10/severity))
 			switch(rand(1,8))
 				if(1)
@@ -1080,7 +1078,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				if(7)
 					R.fields[DATACORE_SPECIES] = pick(get_selectable_species())
 				if(8)
-					var/datum/data/record/G = pick(GLOB.datacore.general)
+					var/datum/data/record/G = pick(SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
 					R.fields["photo_front"] = G.fields["photo_front"]
 					R.fields["photo_side"] = G.fields["photo_side"]
 			continue

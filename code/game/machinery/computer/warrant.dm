@@ -106,7 +106,7 @@
 					return
 				authenticated = scan.registered_name
 				if(authenticated)
-					current = GLOB.datacore.get_record_by_name(authenticated, DATACORE_RECORDS_SECURITY)
+					current = SSdatacore.get_record_by_name(authenticated, DATACORE_RECORDS_SECURITY)
 					playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
 
 		if("Logout")

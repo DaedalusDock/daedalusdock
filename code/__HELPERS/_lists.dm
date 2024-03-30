@@ -587,14 +587,6 @@
 			i++
 	return i
 
-/// Returns datum/data/record
-/proc/find_record(field, value, list/inserted_list)
-	for(var/datum/data/record/record_to_check in inserted_list)
-		if(record_to_check.fields[field] == value)
-			return record_to_check
-	return null
-
-
 /**
  * Move a single element from position from_index within a list, to position to_index
  * All elements in the range [1,to_index) before the move will be before the pivot afterwards

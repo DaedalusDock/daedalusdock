@@ -249,7 +249,7 @@ SUBSYSTEM_DEF(ticker)
 	collect_minds()
 	equip_characters()
 
-	GLOB.datacore.manifest()
+	SSdatacore.manifest()
 
 	transfer_characters() //transfer keys to the new mobs
 

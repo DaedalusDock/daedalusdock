@@ -1,21 +1,14 @@
+
 ///Dummy mob reserve slot for manifest
 #define DUMMY_HUMAN_SLOT_MANIFEST "dummy_manifest_generation"
 
-GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
+SUBSYSTEM_DEF(datacore)
+	name = "Data Core"
+	flags = SS_NO_FIRE
+	init_order = INIT_ORDER_DATACORE
 
-//TODO: someone please get rid of this shit
-/datum/datacore
-	var/list/datum/data/record/medical/medical = list()
-	var/list/datum/data/record/general/general = list()
-	var/list/datum/data/record/security/security = list()
-
-	var/list/datum/data/record/medical/medical_by_name = list()
-	var/list/datum/data/record/general/general_by_name = list()
-	var/list/datum/data/record/security/security_by_name = list()
-
-	///This list tracks characters spawned in the world and cannot be modified in-game. Currently referenced by respawn_character().
-	var/list/locked = list()
-	var/list/locked_by_name = list()
+	/// A list of data libraries keyed by DATACORE_RECORDS_*
+	var/list/datum/data_library/library = list()
 
 	var/securityPrintCount = 0
 	var/securityCrimeCounter = 0
@@ -24,55 +17,55 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	/// Set to TRUE when the initial roundstart manifest is complete
 	var/finished_setup = FALSE
 
-/// Inject an existing record datum into the datacore.
-/datum/datacore/proc/inject_record(datum/data/record/new_record, record_type)
-	if(!istype(new_record))
-		CRASH("You fucked it this time!!!")
-
-	if(!new_record.fields["name"])
-		CRASH("Cannot inject a record with no name!")
-
-	var/list/inject_to
-	var/list/inject_name
-	switch(record_type)
-		if(DATACORE_RECORDS_GENERAL)
-			inject_to = general
-			inject_name = general_by_name
-		if(DATACORE_RECORDS_SECURITY)
-			inject_to = security
-			inject_name = security_by_name
-		if(DATACORE_RECORDS_MEDICAL)
-			inject_to = medical
-			inject_name = medical_by_name
-		if(DATACORE_RECORDS_LOCKED)
-			inject_to = locked
-			inject_name = locked_by_name
-
-	inject_to += new_record
-	inject_name[new_record.fields["name"]] = new_record
+/datum/controller/subsystem/datacore/Initialize(start_timeofday)
+	library[DATACORE_RECORDS_GENERAL] = new /datum/data_library
+	library[DATACORE_RECORDS_SECURITY] = new /datum/data_library
+	library[DATACORE_RECORDS_MEDICAL] = new /datum/data_library
+	library[DATACORE_RECORDS_LOCKED] = new /datum/data_library
+	return ..()
 
 /// Returns a data record or null.
-/datum/datacore/proc/get_record_by_name(name, record_type = DATACORE_RECORDS_GENERAL)
+/datum/controller/subsystem/datacore/proc/get_record_by_name(name, record_type = DATACORE_RECORDS_GENERAL)
 	RETURN_TYPE(/datum/data/record)
-	var/list/to_search
 
-	switch(record_type)
-		if(DATACORE_RECORDS_GENERAL)
-			to_search = general_by_name
-		if(DATACORE_RECORDS_SECURITY)
-			to_search = security_by_name
-		if(DATACORE_RECORDS_MEDICAL)
-			to_search = medical_by_name
-		if(DATACORE_RECORDS_LOCKED)
-			to_search = locked_by_name
+	return library[record_type].get_record_by_name(name)
 
-	return to_search[name]
+/// Returns a data library's records list
+/datum/controller/subsystem/datacore/proc/get_records(record_type = DATACORE_RECORDS_GENERAL)
+	RETURN_TYPE(/list)
+	return library[record_type].records
+
+/datum/controller/subsystem/datacore/proc/find_record(field, needle, haystack)
+	RETURN_TYPE(/datum/data/record)
+	for(var/datum/data/record/record_to_check in get_records(haystack))
+		if(record_to_check.fields[field] == needle)
+			return record_to_check
+
+/// Empties out a library
+/datum/controller/subsystem/datacore/proc/wipe_records(record_type)
+	var/datum/data_library/to_wipe = library[record_type]
+	if(!to_wipe)
+		return
+
+	QDEL_LIST(to_wipe.records)
+
+/// Removes a person from history. Except locked. That's permanent history.
+/datum/controller/subsystem/datacore/proc/demanifest(name)
+	for(var/id in library - DATACORE_RECORDS_LOCKED)
+		var/datum/data/record/R = get_record_by_name(name, id)
+		qdel(R)
+
+/datum/controller/subsystem/datacore/proc/inject_record(datum/data/record/R, record_type)
+	if(isnull(record_type))
+		CRASH("inject_record() called with no record type")
+
+	library[record_type].inject_record(R)
 
 /// Create the roundstart manifest using the newplayer list.
-/datum/datacore/proc/manifest()
+/datum/controller/subsystem/datacore/proc/manifest()
 	for(var/mob/dead/new_player/N as anything in GLOB.new_player_list)
 		if(N.new_character)
-			log_manifest(N.ckey,N.new_character.mind,N.new_character)
+			log_manifest(N.ckey, N.new_character.mind, N.new_character)
 
 		if(ishuman(N.new_character))
 			manifest_inject(N.new_character, N.client)
@@ -82,21 +75,22 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	finished_setup = TRUE
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_DATACORE_READY, src)
 
-/datum/datacore/proc/manifest_modify(name, assignment, trim)
-	var/datum/data/record/foundrecord = get_record_by_name(name, DATACORE_RECORDS_GENERAL)
+/datum/controller/subsystem/datacore/proc/manifest_modify(name, assignment, trim)
+	var/datum/data/record/foundrecord = library[DATACORE_RECORDS_GENERAL].get_record_by_name(name)
 	if(foundrecord)
 		foundrecord.fields[DATACORE_RANK] = assignment
 		foundrecord.fields[DATACORE_TRIM] = trim
 
-/datum/datacore/proc/get_manifest()
+/datum/controller/subsystem/datacore/proc/get_manifest()
 	// First we build up the order in which we want the departments to appear in.
 	var/list/manifest_out = list()
 	for(var/datum/job_department/department as anything in SSjob.joinable_departments)
 		manifest_out[department.department_name] = list()
+
 	manifest_out[DEPARTMENT_UNASSIGNED] = list()
 
 	var/list/departments_by_type = SSjob.joinable_departments_by_type
-	for(var/datum/data/record/record as anything in GLOB.datacore.general)
+	for(var/datum/data/record/record as anything in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
 		var/name = record.fields[DATACORE_NAME]
 		var/rank = record.fields[DATACORE_RANK] // user-visible job
 		var/trim = record.fields[DATACORE_TRIM] // internal jobs by trim type
@@ -133,7 +127,7 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 
 	return manifest_out
 
-/datum/datacore/proc/get_manifest_html(monochrome = FALSE)
+/datum/controller/subsystem/datacore/proc/get_manifest_html(monochrome = FALSE)
 	var/list/manifest = get_manifest()
 	var/dat = {"
 	<head><style>
@@ -161,7 +155,7 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	dat = replacetext(dat, "\t", "")
 	return dat
 
-/datum/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
+/datum/controller/subsystem/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
 	SHOULD_NOT_SLEEP(TRUE)
 	var/static/list/show_directions = list(SOUTH, WEST)
 	if(!(H.mind?.assigned_role.job_flags & JOB_CREW_MANIFEST))
@@ -201,8 +195,7 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	else
 		G.fields[DATACORE_GENDER] = "Other"
 	G.fields[DATACORE_APPEARANCE] = character_appearance
-	general_by_name[G.fields[DATACORE_NAME]] = G
-	general += G
+	library[DATACORE_RECORDS_GENERAL].inject_record(G)
 
 	//Medical Record
 	var/datum/data/record/medical/M = new()
@@ -210,16 +203,15 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	M.fields[DATACORE_NAME] = H.real_name
 	M.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	M.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
-	M.fields["mi_dis"] = H.get_quirk_string(!medical, CAT_QUIRK_MINOR_DISABILITY)
-	M.fields["mi_dis_d"] = H.get_quirk_string(medical, CAT_QUIRK_MINOR_DISABILITY)
-	M.fields["ma_dis"] = H.get_quirk_string(!medical, CAT_QUIRK_MAJOR_DISABILITY)
-	M.fields["ma_dis_d"] = H.get_quirk_string(medical, CAT_QUIRK_MAJOR_DISABILITY)
+	M.fields["mi_dis"] = H.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY)
+	M.fields["mi_dis_d"] = H.get_quirk_string(TRUE, CAT_QUIRK_MINOR_DISABILITY)
+	M.fields["ma_dis"] = H.get_quirk_string(FALSE, CAT_QUIRK_MAJOR_DISABILITY)
+	M.fields["ma_dis_d"] = H.get_quirk_string(TRUE, CAT_QUIRK_MAJOR_DISABILITY)
 	M.fields[DATACORE_DISEASES] = "None"
 	M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
-	M.fields[DATACORE_NOTES] = H.get_quirk_string(!medical, CAT_QUIRK_NOTES)
-	M.fields[DATACORE_NOTES_DETAILS] = H.get_quirk_string(medical, CAT_QUIRK_NOTES)
-	medical_by_name[M.fields[DATACORE_NAME]] = M
-	medical += M
+	M.fields[DATACORE_NOTES] = H.get_quirk_string(FALSE, CAT_QUIRK_NOTES)
+	M.fields[DATACORE_NOTES_DETAILS] = H.get_quirk_string(TRUE, CAT_QUIRK_NOTES)
+	library[DATACORE_RECORDS_MEDICAL].inject_record(M)
 
 	//Security Record
 	var/datum/data/record/security/S = new()
@@ -229,8 +221,7 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	S.fields[DATACORE_CITATIONS] = list()
 	S.fields[DATACORE_CRIMES] = list()
 	S.fields[DATACORE_NOTES] = "No notes."
-	security_by_name[S.fields[DATACORE_NAME]] = S
-	security += S
+	library[DATACORE_RECORDS_SECURITY].inject_record(S)
 
 	//Locked Record
 	var/datum/data/record/locked/L = new()
@@ -255,8 +246,7 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	L.fields[DATACORE_DNA_FEATURES] = H.dna.features
 	L.fields[DATACORE_APPEARANCE] = character_appearance
 	L.fields[DATACORE_MINDREF] = H.mind
-	locked += L
-	locked_by_name[L.fields[DATACORE_NAME]] = L
+	library[DATACORE_RECORDS_LOCKED].inject_record(L)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MANIFEST_INJECT, G, M, S, L)
 	return
@@ -269,12 +259,13 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
  *
  * @return - list(general_records_out)
  */
-/datum/datacore/proc/get_general_records()
-	if(!GLOB.datacore.general)
+/datum/controller/subsystem/datacore/proc/get_general_records()
+	if(!get_records(DATACORE_RECORDS_GENERAL))
 		return list()
+
 	/// The array of records
 	var/list/general_records_out = list()
-	for(var/datum/data/record/gen_record as anything in GLOB.datacore.general)
+	for(var/datum/data/record/gen_record as anything in get_records(DATACORE_RECORDS_GENERAL))
 		/// The object containing the crew info
 		var/list/crew_record = list()
 		crew_record["ref"] = REF(gen_record)
@@ -291,12 +282,13 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
  *
  * @return - list(security_records_out)
  */
-/datum/datacore/proc/get_security_records()
-	if(!GLOB.datacore.security)
+/datum/controller/subsystem/datacore/proc/get_security_records()
+	if(!get_records(DATACORE_RECORDS_SECURITY))
 		return list()
+
 	/// The array of records
 	var/list/security_records_out = list()
-	for(var/datum/data/record/sec_record as anything in GLOB.datacore.security)
+	for(var/datum/data/record/sec_record as anything in get_records(DATACORE_RECORDS_SECURITY))
 		/// The object containing the crew info
 		var/list/crew_record = list()
 		crew_record["ref"] = REF(sec_record)
@@ -307,7 +299,7 @@ GLOBAL_DATUM_INIT(datacore, /datum/datacore, new)
 	return security_records_out
 
 /// Creates a new crime entry and hands it back.
-/datum/datacore/proc/new_crime_entry(cname = "", cdetails = "", author = "", time = "", fine = 0)
+/datum/controller/subsystem/datacore/proc/new_crime_entry(cname = "", cdetails = "", author = "", time = "", fine = 0)
 	var/datum/data/crime/c = new /datum/data/crime
 	c.crimeName = cname
 	c.crimeDetails = cdetails

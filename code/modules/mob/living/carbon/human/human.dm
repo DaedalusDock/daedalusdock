@@ -117,7 +117,7 @@
 		if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD) && !HAS_TRAIT(H, TRAIT_MEDICAL_HUD))
 			return
 
-		var/datum/data/record/general_record = GLOB.datacore.get_record_by_name(perpname, DATACORE_RECORDS_GENERAL)
+		var/datum/data/record/general_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_GENERAL)
 
 		if(href_list["photo_front"] || href_list["photo_side"])
 			if(!general_record)
@@ -241,7 +241,7 @@
 				to_chat(H, span_warning("ERROR: Can not identify target."))
 				return
 
-			var/datum/data/record/security/security_record = GLOB.datacore.security[perpname]
+			var/datum/data/record/security/security_record = SSdatacore.get_records(DATACORE_RECORDS_SECURITY)[perpname]
 
 			if(!security_record)
 				to_chat(usr, span_warning("ERROR: Unable to locate data core entry for target."))
@@ -291,7 +291,7 @@
 				if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 					return
 
-				var/datum/data/crime/crime = GLOB.datacore.new_crime_entry(t1, "", allowed_access, stationtime2text(), fine)
+				var/datum/data/crime/crime = SSdatacore.new_crime_entry(t1, "", allowed_access, stationtime2text(), fine)
 				var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
 				if(announcer)
 					announcer.notify_citation(security_record.fields[DATACORE_NAME], t1, fine)
@@ -321,7 +321,7 @@
 				if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD))
 					return
 
-				var/crime = GLOB.datacore.new_crime_entry(t1, null, allowed_access, stationtime2text())
+				var/crime = SSdatacore.new_crime_entry(t1, null, allowed_access, stationtime2text())
 				security_record.add_crime(crime)
 				investigate_log("New Crime: <strong>[t1]</strong> | Added to [security_record.fields[DATACORE_NAME]] by [key_name(usr)]", INVESTIGATE_RECORDS)
 				to_chat(usr, span_notice("Successfully added a crime."))
@@ -451,7 +451,7 @@
 	//Check for arrest warrant
 	if(judgement_criteria & JUDGE_RECORDCHECK)
 		var/perpname = get_face_name(get_id_name())
-		var/datum/data/record/security/R = GLOB.datacore.get_record_by_name(perpname, DATACORE_RECORDS_SECURITY)
+		var/datum/data/record/security/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_SECURITY)
 		if(R?.fields[DATACORE_CRIMINAL_STATUS])
 			switch(R.fields[DATACORE_CRIMINAL_STATUS])
 				if(CRIMINAL_WANTED)
@@ -694,12 +694,12 @@
 		return TRUE
 
 /mob/living/carbon/human/replace_records_name(oldname,newname) // Only humans have records right now, move this up if changed.
-	for(var/list/L in list(GLOB.datacore.general_by_name, GLOB.datacore.medical_by_name,GLOB.datacore.security_by_name,GLOB.datacore.locked_by_name))
-		var/datum/data/record/R = L[oldname]
+	for(var/id as anything in SSdatacore.library)
+		var/datum/data/record/R = SSdatacore.get_record_by_name(old_name, id)
 		if(R)
 			R.fields[DATACORE_NAME] = newname
-			L -= oldname
-			L[newname] = R
+			library.records_by_name -= oldname
+			library.records_by_name[newname] = R
 
 /mob/living/carbon/human/get_total_tint()
 	. = ..()

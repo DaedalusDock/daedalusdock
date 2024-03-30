@@ -527,9 +527,9 @@
 	update_label()
 	update_icon()
 
-/obj/item/card/id/proc/datacore_ready(datum/source, datum/datacore/datacore)
+/obj/item/card/id/proc/datacore_ready(datum/source)
 	SIGNAL_HANDLER
-	set_icon(GLOB.datacore.get_record_by_name(registered_name, DATACORE_RECORDS_LOCKED))
+	set_icon(SSdatacore.get_record_by_name(registered_name, DATACORE_RECORDS_LOCKED))
 	UnregisterSignal(src, COMSIG_GLOB_DATACORE_READY)
 
 /// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
@@ -1337,12 +1337,12 @@
 
 			if("Impersonate Crew")
 				var/list/options = list()
-				for(var/datum/data/record/R as anything in GLOB.datacore.general)
+				for(var/datum/data/record/R as anything in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
 					options += R.fields[DATACORE_NAME]
 				var/choice = tgui_input_list(user, "Select a crew member", "Impersonate Crew", options)
 				if(!choice)
 					return
-				var/datum/data/record/R = GLOB.datacore.get_record_by_name(choice, DATACORE_RECORDS_LOCKED)
+				var/datum/data/record/R = SSdatacore.get_record_by_name(choice, DATACORE_RECORDS_LOCKED)
 				set_data_by_record(R, visual = TRUE)
 				set_icon(R)
 				return

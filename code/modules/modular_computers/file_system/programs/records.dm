@@ -34,8 +34,8 @@
 
 	switch(mode)
 		if("security")
-			for(var/datum/data/record/person in GLOB.datacore.general)
-				var/datum/data/record/security_person = find_record("id", person.fields[DATACORE_ID], GLOB.datacore.security)
+			for(var/datum/data/record/person in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+				var/datum/data/record/security_person = SSdatacore.find_record("id", person.fields[DATACORE_ID], DATACORE_RECORDS_SECURITY)
 				var/list/current_record = list()
 
 				if(security_person)
@@ -51,7 +51,7 @@
 
 				all_records += list(current_record)
 		if("medical")
-			for(var/datum/data/record/person in GLOB.datacore.medical)
+			for(var/datum/data/record/person in SSdatacore.get_records(DATACORE_RECORDS_MEDICAL))
 				var/list/current_record = list()
 
 				current_record["name"] = person.fields[DATACORE_NAME]

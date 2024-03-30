@@ -3,9 +3,16 @@
 
 /datum/data/record
 	name = "record"
-
+	/// A ref to the library we're contained in.
+	var/datum/data_library/library
 	/// The data
 	var/list/fields = list()
+
+/datum/data/record/Destroy(force, ...)
+	if(library)
+		library.records -= src
+		library.records_by_name -= fields["name"]
+	return ..()
 
 /// A helper proc to get the front photo of a character from the record.
 /// Handles calling `get_photo()`, read its documentation for more information.
@@ -58,31 +65,11 @@
 
 /datum/data/record/general
 
-/datum/data/record/general/Destroy()
-	GLOB.datacore.general -= src
-	GLOB.datacore.general_by_name -= fields[DATACORE_NAME]
-	return ..()
-
 /datum/data/record/medical
-
-/datum/data/record/medical/Destroy()
-	GLOB.datacore.medical -= src
-	GLOB.datacore.medical_by_name -= fields[DATACORE_NAME]
-	return ..()
 
 /datum/data/record/locked
 
-/datum/data/record/locked/Destroy()
-	GLOB.datacore.locked -= src
-	GLOB.datacore.locked_by_name -= fields[DATACORE_NAME]
-	return ..()
-
 /datum/data/record/security
-
-/datum/data/record/security/Destroy()
-	GLOB.datacore.security -= src
-	GLOB.datacore.security_by_name -= fields[DATACORE_NAME]
-	return ..()
 
 /// Set the criminal status of a crew member in the security records.
 /datum/data/record/security/proc/set_criminal_status(new_status)

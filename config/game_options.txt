@@ -460,3 +460,9 @@ MAXFINE 2000
 
 ## Enabling this shows all players the job estimates for the round during the lobby phase.
 SHOW_JOB_ESTIMATION
+
+## Enabling this will require a captain to be selected to be able to start the round.
+REQUIRE_CAPTAIN
+
+## Enabling this will require all departments to have atleast one staff member to start the round
+REQUIRE_DEPARTMENTS_STAFFED

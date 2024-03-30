@@ -942,7 +942,7 @@ SUBSYSTEM_DEF(job)
 
 	id_card.add_access(trim.access, mode=FORCE_ADD_ALL)
 
-	SSdatacore.OnReady(CALLBACK(assigned_job, TYPE_PROC_REF(/datum/job, roundstart_pda_message), new_head.real_name, "Your boss called out of work today, and you have been granted elevated access in their absence."))
+	SSdatacore.OnReady(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_pda_message_department), department.manifest_key, "Your boss called out of work today, and [new_head.real_name] [new_head.p_have()] been granted elevated access in their absence.", "Staff Notice"))
 	temporary_heads_by_dep[department.type] = new_head.real_name
 
 	return department.department_bitflags

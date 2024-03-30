@@ -112,6 +112,8 @@ SUBSYSTEM_DEF(datacore)
 	for(var/datum/callback/CB as anything in datacore_ready_callbacks)
 		CB.InvokeAsync()
 
+	datacore_ready_callbacks.Cut()
+
 /datum/controller/subsystem/datacore/proc/manifest_modify(name, assignment, trim)
 	var/datum/data/record/foundrecord = library[DATACORE_RECORDS_STATION].get_record_by_name(name)
 	if(foundrecord)

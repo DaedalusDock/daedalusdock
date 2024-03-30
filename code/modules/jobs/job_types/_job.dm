@@ -233,17 +233,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(head_announce)
 		announce_head(joining_mob, head_announce)
 
-/datum/job/proc/roundstart_pda_message(name, message)
-	var/datum/data/record/R = SSdatacore.get_record_by_name(name, DATACORE_RECORDS_STATION)
-	if(!R)
-		return
-
-	var/target_id = R.fields[DATACORE_PDA_ID]
-	if(!target_id)
-		return
-
-	aas_pda_message(target_id, message)
-
 //Used for a special check of whether to allow a client to latejoin as this job.
 /datum/job/proc/special_check_latejoin(client/latejoin)
 	return TRUE

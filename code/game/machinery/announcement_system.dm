@@ -294,3 +294,21 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		return FALSE
 
 	return AAS.mass_pda_message(arglist(args))
+
+/// Send an ASS pda message to a given name
+/proc/aas_pda_message_name(name, record_type, message, reason)
+	var/datum/data/record/R = SSdatacore.get_record_by_name(name, record_type)
+	if(!R || !R.fields[DATACORE_PDA_ID])
+		return FALSE
+
+	return aas_pda_message(R.fields[DATACORE_PDA_ID], message)
+
+/// Send an ASS pda message to an entire department
+/proc/aas_pda_message_department(department, message, reason)
+	. = list()
+	for(var/datum/data/record/R as anything in SSdatacore.get_records(department))
+		var/id = R.fields[DATACORE_PDA_ID]
+		if(id)
+			. += id
+
+	return aas_mass_pda_message(., message, reason)

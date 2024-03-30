@@ -34,7 +34,7 @@
 
 	switch(mode)
 		if("security")
-			for(var/datum/data/record/person in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+			for(var/datum/data/record/person in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 				var/datum/data/record/security_person = SSdatacore.find_record("id", person.fields[DATACORE_ID], DATACORE_RECORDS_SECURITY)
 				var/list/current_record = list()
 

@@ -175,7 +175,7 @@
 	add_entry(general, security)
 
 /obj/structure/filingcabinet/security/proc/generate_all()
-	for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+	for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 		var/datum/data/record/S = SSdatacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_SECURITY)
 		if(!S)
 			continue
@@ -190,7 +190,7 @@
 
 /obj/structure/filingcabinet/medical/proc/populate()
 	if(virgin)
-		for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+		for(var/datum/data/record/G in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 			var/datum/data/record/M = SSdatacore.get_record_by_name(G.fields[DATACORE_NAME], DATACORE_RECORDS_MEDICAL)
 			if(!M)
 				continue

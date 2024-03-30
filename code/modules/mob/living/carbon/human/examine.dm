@@ -300,7 +300,7 @@
 
 	var/perpname = get_face_name(get_id_name(""))
 	if(perpname && (HAS_TRAIT(user, TRAIT_SECURITY_HUD) || HAS_TRAIT(user, TRAIT_MEDICAL_HUD)))
-		var/datum/data/record/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_GENERAL)
+		var/datum/data/record/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_STATION)
 		if(R)
 			. += "<span class='deptradio'>Rank:</span> [R.fields[DATACORE_RANK]]\n<a href='?src=[REF(src)];hud=1;photo_front=1'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1'>\[Side photo\]</a>"
 		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD))

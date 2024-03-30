@@ -18,20 +18,20 @@ SUBSYSTEM_DEF(datacore)
 	var/finished_setup = FALSE
 
 /datum/controller/subsystem/datacore/Initialize(start_timeofday)
-	library[DATACORE_RECORDS_GENERAL] = new /datum/data_library
+	library[DATACORE_RECORDS_STATION] = new /datum/data_library
 	library[DATACORE_RECORDS_SECURITY] = new /datum/data_library
 	library[DATACORE_RECORDS_MEDICAL] = new /datum/data_library
 	library[DATACORE_RECORDS_LOCKED] = new /datum/data_library
 	return ..()
 
 /// Returns a data record or null.
-/datum/controller/subsystem/datacore/proc/get_record_by_name(name, record_type = DATACORE_RECORDS_GENERAL)
+/datum/controller/subsystem/datacore/proc/get_record_by_name(name, record_type = DATACORE_RECORDS_STATION)
 	RETURN_TYPE(/datum/data/record)
 
 	return library[record_type].get_record_by_name(name)
 
 /// Returns a data library's records list
-/datum/controller/subsystem/datacore/proc/get_records(record_type = DATACORE_RECORDS_GENERAL)
+/datum/controller/subsystem/datacore/proc/get_records(record_type = DATACORE_RECORDS_STATION)
 	RETURN_TYPE(/list)
 	return library[record_type].records
 
@@ -62,7 +62,7 @@ SUBSYSTEM_DEF(datacore)
 	library[record_type].inject_record(R)
 
 /// Create the roundstart manifest using the newplayer list.
-/datum/controller/subsystem/datacore/proc/manifest()
+/datum/controller/subsystem/datacore/proc/generate_manifest()
 	for(var/mob/dead/new_player/N as anything in GLOB.new_player_list)
 		if(N.new_character)
 			log_manifest(N.ckey, N.new_character.mind, N.new_character)
@@ -76,7 +76,7 @@ SUBSYSTEM_DEF(datacore)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_DATACORE_READY, src)
 
 /datum/controller/subsystem/datacore/proc/manifest_modify(name, assignment, trim)
-	var/datum/data/record/foundrecord = library[DATACORE_RECORDS_GENERAL].get_record_by_name(name)
+	var/datum/data/record/foundrecord = library[DATACORE_RECORDS_STATION].get_record_by_name(name)
 	if(foundrecord)
 		foundrecord.fields[DATACORE_RANK] = assignment
 		foundrecord.fields[DATACORE_TRIM] = trim
@@ -90,7 +90,7 @@ SUBSYSTEM_DEF(datacore)
 	manifest_out[DEPARTMENT_UNASSIGNED] = list()
 
 	var/list/departments_by_type = SSjob.joinable_departments_by_type
-	for(var/datum/data/record/record as anything in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+	for(var/datum/data/record/record as anything in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 		var/name = record.fields[DATACORE_NAME]
 		var/rank = record.fields[DATACORE_RANK] // user-visible job
 		var/trim = record.fields[DATACORE_TRIM] // internal jobs by trim type
@@ -103,6 +103,7 @@ SUBSYSTEM_DEF(datacore)
 				"trim" = trim,
 				)
 			continue
+
 		for(var/department_type as anything in job.departments_list)
 			var/datum/job_department/department = departments_by_type[department_type]
 			if(!department)
@@ -195,7 +196,7 @@ SUBSYSTEM_DEF(datacore)
 	else
 		G.fields[DATACORE_GENDER] = "Other"
 	G.fields[DATACORE_APPEARANCE] = character_appearance
-	library[DATACORE_RECORDS_GENERAL].inject_record(G)
+	library[DATACORE_RECORDS_STATION].inject_record(G)
 
 	//Medical Record
 	var/datum/data/record/medical/M = new()
@@ -260,12 +261,12 @@ SUBSYSTEM_DEF(datacore)
  * @return - list(general_records_out)
  */
 /datum/controller/subsystem/datacore/proc/get_general_records()
-	if(!get_records(DATACORE_RECORDS_GENERAL))
+	if(!get_records(DATACORE_RECORDS_STATION))
 		return list()
 
 	/// The array of records
 	var/list/general_records_out = list()
-	for(var/datum/data/record/gen_record as anything in get_records(DATACORE_RECORDS_GENERAL))
+	for(var/datum/data/record/gen_record as anything in get_records(DATACORE_RECORDS_STATION))
 		/// The object containing the crew info
 		var/list/crew_record = list()
 		crew_record["ref"] = REF(gen_record)

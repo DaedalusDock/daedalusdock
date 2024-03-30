@@ -63,8 +63,8 @@
 </tr>"}
 
 
-					if(!isnull(SSdatacore.get_records(DATACORE_RECORDS_GENERAL)))
-						for(var/datum/data/record/R in sort_record(SSdatacore.get_records(DATACORE_RECORDS_GENERAL), sortBy, order))
+					if(!isnull(SSdatacore.get_records(DATACORE_RECORDS_STATION)))
+						for(var/datum/data/record/R in sort_record(SSdatacore.get_records(DATACORE_RECORDS_STATION), sortBy, order))
 							var/blood_type = ""
 							var/b_dna = ""
 							for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_MEDICAL))
@@ -96,7 +96,7 @@
 				if(4)
 
 					dat += "<table><tr><td><b><font size='4'>Medical Record</font></b></td></tr>"
-					if(active1 in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+					if(active1 in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 						var/front_photo = active1.get_front_photo()
 						if(istype(front_photo, /obj/item/photo))
 							var/obj/item/photo/photo_front = front_photo
@@ -182,7 +182,7 @@
 	. = ..()
 	if(.)
 		return .
-	if(!(active1 in SSdatacore.get_records(DATACORE_RECORDS_GENERAL)))
+	if(!(active1 in SSdatacore.get_records(DATACORE_RECORDS_STATION)))
 		active1 = null
 	if(!(active2 in SSdatacore.get_records(DATACORE_RECORDS_MEDICAL)))
 		active2 = null
@@ -442,7 +442,7 @@
 					active2 = null
 
 			else if(href_list["d_rec"])
-				active1 = SSdatacore.find_record("id", href_list["d_rec"], DATACORE_RECORDS_GENERAL)
+				active1 = SSdatacore.find_record("id", href_list["d_rec"], DATACORE_RECORDS_STATION)
 				if(active1)
 					active2 = SSdatacore.find_record("id", href_list["d_rec"], DATACORE_RECORDS_MEDICAL)
 				if(!active2)
@@ -504,7 +504,7 @@
 				if(!( active2 ))
 					temp = "Could not locate record [sanitize(t1)]."
 				else
-					for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+					for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 						if((E.fields[DATACORE_NAME] == active2.fields[DATACORE_NAME] || E.fields[DATACORE_ID] == active2.fields[DATACORE_ID]))
 							active1 = E
 						else
@@ -519,7 +519,7 @@
 					sleep(30)
 					var/obj/item/paper/P = new /obj/item/paper( loc )
 					P.info = "<CENTER><B>Medical Record - (MR-[SSdatacore.medicalPrintCount])</B></CENTER><BR>"
-					if(active1 in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+					if(active1 in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 
 						P.info +={"
 Name: [active1.fields[DATACORE_NAME]]

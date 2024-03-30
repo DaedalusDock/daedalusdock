@@ -136,7 +136,7 @@ GLOBAL_LIST_INIT(orion_events, generate_orion_events())
 
 		gamers[gamer] = ORION_GAMER_PAMPHLET //next report send a pamph
 
-		var/datum/data/record/R = SSdatacore.get_record_by_name(gamer.name, DATACORE_RECORDS_GENERAL)
+		var/datum/data/record/R = SSdatacore.get_record_by_name(gamer.name, DATACORE_RECORDS_STATION)
 		R?.fields[DATACORE_MENTAL_HEALTH] = "*Unstable*"
 
 /obj/machinery/computer/arcade/orion_trail/ui_interact(mob/user, datum/tgui/ui)

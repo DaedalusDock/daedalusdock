@@ -74,12 +74,12 @@
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return
 
-	if(isnull(SSdatacore.get_records(DATACORE_RECORDS_GENERAL)))
+	if(isnull(SSdatacore.get_records(DATACORE_RECORDS_STATION)))
 		on_fail.set_output(COMPONENT_SIGNAL)
 		return
 
 	var/list/new_table = list()
-	for(var/datum/data/record/player_record as anything in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+	for(var/datum/data/record/player_record as anything in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 		var/list/entry = list()
 		var/datum/data/record/player_security_record = SSdatacore.find_record("id", player_record.fields[DATACORE_ID], DATACORE_RECORDS_SECURITY)
 		if(player_security_record)
@@ -280,8 +280,8 @@
 <th><A href='?src=[REF(src)];choice=Sorting;sort=fingerprint'>Fingerprints</A></th>
 <th>Criminal Status</th>
 </tr>"}
-					if(!isnull(SSdatacore.get_records(DATACORE_RECORDS_GENERAL)))
-						for(var/datum/data/record/R in sort_record(SSdatacore.get_records(DATACORE_RECORDS_GENERAL), sortBy, order))
+					if(!isnull(SSdatacore.get_records(DATACORE_RECORDS_STATION)))
+						for(var/datum/data/record/R in sort_record(SSdatacore.get_records(DATACORE_RECORDS_STATION), sortBy, order))
 							var/crimstat = ""
 							for(var/datum/data/record/E in SSdatacore.get_records(DATACORE_RECORDS_SECURITY))
 								if((E.fields[DATACORE_NAME] == R.fields[DATACORE_NAME]) && (E.fields[DATACORE_ID] == R.fields[DATACORE_ID]))
@@ -323,7 +323,7 @@
 					dat += "<BR><A href='?src=[REF(src)];choice=Delete All Records'>Delete All Records</A><BR><BR><A href='?src=[REF(src)];choice=Return'>Back</A>"
 				if(3)
 					dat += "<font size='4'><b>Security Record</b></font><br>"
-					if(istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1))
+					if(istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1))
 						var/front_photo = active1.get_front_photo()
 						if(istype(front_photo, /obj/item/photo))
 							var/obj/item/photo/photo_front = front_photo
@@ -437,7 +437,7 @@ What a mess.*/
 	. = ..()
 	if(.)
 		return .
-	if(!( SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1) ))
+	if(!( SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1) ))
 		active1 = null
 	if(!( SSdatacore.get_records(DATACORE_RECORDS_SECURITY).Find(active2) ))
 		active2 = null
@@ -517,7 +517,7 @@ What a mess.*/
 				active2 = null
 
 			if("Browse Record")
-				var/datum/data/record/R = locate(href_list["d_rec"]) in SSdatacore.get_records(DATACORE_RECORDS_GENERAL)
+				var/datum/data/record/R = locate(href_list["d_rec"]) in SSdatacore.get_records(DATACORE_RECORDS_STATION)
 				if(!R)
 					temp = "Record Not Found!"
 				else
@@ -565,7 +565,7 @@ What a mess.*/
 					sleep(30)
 					var/obj/item/paper/P = new /obj/item/paper( loc )
 					P.info = "<CENTER><B>Security Record - (SR-[SSdatacore.securityPrintCount])</B></CENTER><BR>"
-					if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1)))
+					if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1)))
 
 						P.info += {"
 Name: [active1.fields[DATACORE_NAME]] ID: [active1.fields[DATACORE_ID]]<BR>
@@ -626,7 +626,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 							printing = 1
 							sleep(30)
-							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1)))//make sure the record still exists.
+							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1)))//make sure the record still exists.
 								var/obj/item/photo/photo = active1.get_front_photo()
 								new /obj/item/poster/wanted(loc, photo.picture.picture_image, wanted_name, info, headerText)
 							printing = 0
@@ -643,7 +643,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							playsound(loc, 'sound/items/poster_being_created.ogg', 100, TRUE)
 							printing = 1
 							sleep(30)
-							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_GENERAL).Find(active1)))//make sure the record still exists.
+							if((istype(active1, /datum/data/record) && SSdatacore.get_records(DATACORE_RECORDS_STATION).Find(active1)))//make sure the record still exists.
 								var/obj/item/photo/photo = active1.get_front_photo()
 								new /obj/item/poster/wanted/missing(loc, photo.picture.picture_image, missing_name, info, headerText)
 							printing = 0
@@ -717,7 +717,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				G.fields[DATACORE_FINGERPRINT] = "?????"
 				G.fields[DATACORE_PHYSICAL_HEALTH] = "Active"
 				G.fields[DATACORE_MENTAL_HEALTH] = "Stable"
-				SSdatacore.inject_record(G, DATACORE_RECORDS_GENERAL)
+				SSdatacore.inject_record(G, DATACORE_RECORDS_STATION)
 				active1 = G
 
 				//Security Record
@@ -1078,7 +1078,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				if(7)
 					R.fields[DATACORE_SPECIES] = pick(get_selectable_species())
 				if(8)
-					var/datum/data/record/G = pick(SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+					var/datum/data/record/G = pick(SSdatacore.get_records(DATACORE_RECORDS_STATION))
 					R.fields["photo_front"] = G.fields["photo_front"]
 					R.fields["photo_side"] = G.fields["photo_side"]
 			continue

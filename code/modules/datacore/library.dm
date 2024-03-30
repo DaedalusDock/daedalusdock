@@ -17,5 +17,5 @@
 		CRASH("Cannot inject a record with no name!")
 
 	records += new_record
-	records[new_record.fields["name"]] = new_record
+	records_by_name[new_record.fields["name"]] = new_record
 	new_record.library = src

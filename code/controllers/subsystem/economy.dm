@@ -98,7 +98,7 @@ SUBSYSTEM_DEF(economy)
 	var/list/dead_people = list()
 
 	//Dead people don't get money.
-	for(var/datum/data/record/medical_record in SSdatacore.get_records(DATACORE_RECORDS_GENERAL)) //dont ask
+	for(var/datum/data/record/medical_record in SSdatacore.get_records(DATACORE_RECORDS_STATION)) //dont ask
 		if(medical_record.fields["status"] == "*Deceased*")
 			dead_people += medical_record.fields[DATACORE_NAME]
 

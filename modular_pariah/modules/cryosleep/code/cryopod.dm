@@ -273,7 +273,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 		crew_member["job"] = "N/A"
 
 	// Delete them from datacore.
-	var/announce_rank = SSdatacore.get_record_by_name(mob_occupant.real_name, DATACORE_RECORDS_GENERAL)?[DATACORE_RANK]
+	var/announce_rank = SSdatacore.get_record_by_name(mob_occupant.real_name, DATACORE_RECORDS_STATION)?[DATACORE_RANK]
 	SSdatacore.demanifest(mob_occupant.real_name)
 
 	var/obj/machinery/computer/cryopod/control_computer = control_computer_weakref?.resolve()

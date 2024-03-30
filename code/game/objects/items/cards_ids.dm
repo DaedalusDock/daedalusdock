@@ -1337,7 +1337,7 @@
 
 			if("Impersonate Crew")
 				var/list/options = list()
-				for(var/datum/data/record/R as anything in SSdatacore.get_records(DATACORE_RECORDS_GENERAL))
+				for(var/datum/data/record/R as anything in SSdatacore.get_records(DATACORE_RECORDS_STATION))
 					options += R.fields[DATACORE_NAME]
 				var/choice = tgui_input_list(user, "Select a crew member", "Impersonate Crew", options)
 				if(!choice)

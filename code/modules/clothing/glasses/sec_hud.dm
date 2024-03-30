@@ -198,7 +198,7 @@
 	var/mob/living/carbon/human/H = clicked_on
 	var/name_to_search = H.get_idcard()?.registered_name
 
-	var/datum/data/record/general_record = SSdatacore.get_record_by_name(name_to_search, DATACORE_RECORDS_GENERAL)
+	var/datum/data/record/general_record = SSdatacore.get_record_by_name(name_to_search, DATACORE_RECORDS_STATION)
 	var/datum/data/record/security_record = SSdatacore.get_record_by_name(name_to_search, DATACORE_RECORDS_SECURITY)
 
 	scan_record(general_record, security_record)
@@ -302,7 +302,7 @@
 	if(hud_obj || !owner)
 		return
 
-	var/datum/data/record/general_record = SSdatacore.find_record("id", R.fields[DATACORE_ID], DATACORE_RECORDS_GENERAL)
+	var/datum/data/record/general_record = SSdatacore.find_record("id", R.fields[DATACORE_ID], DATACORE_RECORDS_STATION)
 	UNLINT(scan_record(general_record, R, FALSE)) //IT DOESNT SLEEP STUPID LINTER!!!
 
 	addtimer(CALLBACK(hud_obj, TYPE_PROC_REF(/atom/movable/screen/text/screen_text/atom_hud, fade_out)), 7 SECONDS)

@@ -117,7 +117,7 @@
 		if(!HAS_TRAIT(H, TRAIT_SECURITY_HUD) && !HAS_TRAIT(H, TRAIT_MEDICAL_HUD))
 			return
 
-		var/datum/data/record/general_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_GENERAL)
+		var/datum/data/record/general_record = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_STATION)
 
 		if(href_list["photo_front"] || href_list["photo_side"])
 			if(!general_record)
@@ -695,7 +695,8 @@
 
 /mob/living/carbon/human/replace_records_name(oldname,newname) // Only humans have records right now, move this up if changed.
 	for(var/id as anything in SSdatacore.library)
-		var/datum/data/record/R = SSdatacore.get_record_by_name(old_name, id)
+		var/datum/data_library/library = SSdatacore.library[id]
+		var/datum/data/record/R = library.get_record_by_name(oldname)
 		if(R)
 			R.fields[DATACORE_NAME] = newname
 			library.records_by_name -= oldname

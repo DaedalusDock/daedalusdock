@@ -366,11 +366,18 @@
 	if(humanc) //These procs all expect humans
 		var/chosen_rank = humanc.client?.prefs.alt_job_titles[rank] || rank
 		SSdatacore.manifest_inject(humanc, humanc.client)
+
 		if(SSshuttle.arrivals)
 			SSshuttle.arrivals.QueueAnnounce(humanc, chosen_rank)
 		else
 			announce_arrival(humanc, chosen_rank)
+
 		AddEmploymentContract(humanc)
+
+		var/datum/job_department/department = job.departments_list?[1]
+		if(department?.department_head == job.type && SSjob.temporary_heads_by_dep[department])
+			var/message = "Greetings, [job.title] [humanc.real_name], in your absense, your employee \"[SSjob.temporary_heads_by_dep[department]]\" was granted elevated access to perform your duties."
+			job.roundstart_pda_message(humanc.real_name, message)
 
 		if(GLOB.curse_of_madness_triggered)
 			give_madness(humanc, GLOB.curse_of_madness_triggered)

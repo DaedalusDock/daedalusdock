@@ -26,10 +26,18 @@ SUBSYSTEM_DEF(datacore)
 	/// Set to TRUE when the initial roundstart manifest is complete
 	var/finished_setup = FALSE
 
+	var/list/datum/callback/datacore_ready_callbacks = list()
+
 /datum/controller/subsystem/datacore/Initialize(start_timeofday)
 	for(var/id in library)
 		library[id] = new /datum/data_library
 	return ..()
+
+/datum/controller/subsystem/datacore/Recover()
+	library = SSdatacore.library
+	securityCrimeCounter = SSdatacore.securityCrimeCounter
+	medicalPrintCount = SSdatacore.medicalPrintCount
+	finished_setup = SSdatacore.finished_setup
 
 /// Returns a data record or null.
 /datum/controller/subsystem/datacore/proc/get_record_by_name(name, record_type = DATACORE_RECORDS_STATION)
@@ -91,6 +99,18 @@ SUBSYSTEM_DEF(datacore)
 
 	finished_setup = TRUE
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_DATACORE_READY, src)
+	invoke_datacore_callbacks()
+
+/// Add a callback to execute when the datacore has loaded
+/datum/controller/subsystem/datacore/proc/OnReady(datum/callback/CB)
+	if(finished_setup)
+		CB.InvokeAsync()
+	else
+		datacore_ready_callbacks += CB
+
+/datum/controller/subsystem/datacore/proc/invoke_datacore_callbacks()
+	for(var/datum/callback/CB as anything in datacore_ready_callbacks)
+		CB.InvokeAsync()
 
 /datum/controller/subsystem/datacore/proc/manifest_modify(name, assignment, trim)
 	var/datum/data/record/foundrecord = library[DATACORE_RECORDS_STATION].get_record_by_name(name)

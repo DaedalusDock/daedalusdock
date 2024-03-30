@@ -67,6 +67,9 @@ SUBSYSTEM_DEF(job)
 
 	var/list/department_has_atleast_one_player
 
+	/// A k:v list of department_path : name, where name is the name of the player who was given head access at roundstart
+	var/list/temporary_heads_by_dep = list()
+
 /datum/controller/subsystem/job/Initialize(timeofday)
 	setup_job_lists()
 	if(!length(all_occupations))
@@ -938,7 +941,10 @@ SUBSYSTEM_DEF(job)
 	var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[initial(outfit_prototype.id_trim)]
 
 	id_card.add_access(trim.access, mode=FORCE_ADD_ALL)
-	to_chat(new_head, span_obviousnotice("Your boss called out of work today, and you have been given elevated access in their absence."))
+
+	SSdatacore.OnReady(CALLBACK(assigned_job, TYPE_PROC_REF(/datum/job, roundstart_pda_message), new_head.real_name, "Your boss called out of work today, and you have been granted elevated access in their absence."))
+	temporary_heads_by_dep[department.type] = new_head.real_name
+
 	return department.department_bitflags
 
 /// Send a drop pod containing a piece of paper with the spare ID safe code to loc

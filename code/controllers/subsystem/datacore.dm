@@ -56,6 +56,16 @@ SUBSYSTEM_DEF(datacore)
 
 	QDEL_LIST(to_wipe.records)
 
+/// Grab all PDA network IDs by department.
+/datum/controller/subsystem/datacore/proc/get_pda_netids(record_type = DATACORE_RECORDS_STATION)
+	RETURN_TYPE(/list)
+	. = list()
+
+	for(var/datum/data/record/R as anything in get_records(record_type))
+		var/id = R.fields[DATACORE_PDA_ID]
+		if(id)
+			. += id
+
 /// Removes a person from history. Except locked. That's permanent history.
 /datum/controller/subsystem/datacore/proc/demanifest(name)
 	for(var/id in library - DATACORE_RECORDS_LOCKED)

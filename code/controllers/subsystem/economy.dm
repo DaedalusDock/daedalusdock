@@ -138,15 +138,11 @@ SUBSYSTEM_DEF(economy)
 				if(!target_id)
 					continue
 
-				var/datum/signal/outgoing = announcer.create_signal(target_id, list(
-					PACKET_CMD = NETCMD_PDAMESSAGE,
-					"name" = "Automated Announcement System",
-					"message" = "Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
-					"automated" = TRUE,
-				))
+				announcer.pda_message(
+					target_id,
+					"Your payroll for this quarter has been processed. A sum of [round(bank_account.account_job.paycheck * bank_account.payday_modifier)] has been deposited into your account.",
+				)
 
-				outgoing.transmission_method = TRANSMISSION_RADIO
-				announcer.common_freq.post_signal(outgoing, RADIO_PDAMESSAGE)
 		else
 			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
 			if(!announcer)
@@ -161,15 +157,7 @@ SUBSYSTEM_DEF(economy)
 				if(!target_id)
 					continue
 
-				var/datum/signal/outgoing = announcer.create_signal(target_id, list(
-					PACKET_CMD = NETCMD_PDAMESSAGE,
-					"name" = "Automated Announcement System",
-					"message" = "The company's funding has run dry. Your payment for this quarter has not been processed.",
-					"automated" = TRUE,
-				))
-
-				outgoing.transmission_method = TRANSMISSION_RADIO
-				announcer.common_freq.post_signal(outgoing, RADIO_PDAMESSAGE)
+				announcer.pda_message(target_id, "The company's funding has run dry. Your payment for this quarter has not been processed.")
 
 /datum/controller/subsystem/economy/proc/update_mail()
 	var/effective_mailcount = round(living_player_count())

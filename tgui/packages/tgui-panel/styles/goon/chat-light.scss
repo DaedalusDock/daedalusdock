@@ -980,7 +980,45 @@ h1.alert, h2.alert {
 
 .debug {
   color: #5ce43d;
+	background-color: black;
   font-weight: bold;
+	font-family: monospace;
+	border: 1px groove grey;
+	width: 80ch;
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+
+.debug_trace{
+  border-color: grey;
+}
+.debug_trace::before {
+  content: "TRACE|";
+  color:grey;
+}
+
+.debug_info {
+	border-color: cyan;
+}
+.debug_info::before {
+  content: "INFO|";
+  color:cyan;
+}
+
+.debug_warn {
+	border-color: orange;
+}
+.debug_warn::before {
+  content: "WARN|";
+  color:orange;
+}
+
+.debug_error {
+	border-color: red;
+}
+.debug_error::before {
+  content: "ERROR|";
+  color:red;
 }
 
 .adminpmbox {

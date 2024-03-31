@@ -229,7 +229,10 @@ SUBSYSTEM_DEF(ticker)
 			SSjob.ResetOccupations()
 			return FALSE
 	else
-		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+		if(can_continue)
+			message_debug(DBG_INFO, "SSTicker/setup", "Roundstart checks were skipped, but would have passed anyways.")
+		else
+			message_debug(DBG_WARN, "SSTicket/setup", "Roundstart checks failed. Bypassing due to live debugging.")
 
 	CHECK_TICK
 

@@ -845,7 +845,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 						if (tile)
 							var/mob/living/carbon/human/hooman = new(tile)
 							hooman.equipOutfit(pick(subtypesof(/datum/outfit)))
-							testing("Spawned test mob at [COORD(tile)]")
+							message_debug(DBG_TRACE, "PopulateWorld", "Spawned test mob at [COORD(tile)]")
 			while (!area && --j > 0)
 
 /client/proc/toggle_AI_interact()

@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - tweak: Renamed Quirks to Traits.
-  - rscdel: Removed several Traits.
-  - balance: Medicine Allergy bane is now only 1 reagent instead of 5.

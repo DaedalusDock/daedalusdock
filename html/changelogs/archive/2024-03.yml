@@ -102,3 +102,8 @@
 2024-03-28:
   Kapu1178:
   - tweak: Restyled UI buttons.
+2024-03-31:
+  Kapu1178:
+  - tweak: Renamed Quirks to Traits.
+  - rscdel: Removed several Traits.
+  - balance: Medicine Allergy bane is now only 1 reagent instead of 5.

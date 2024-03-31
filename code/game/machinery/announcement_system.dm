@@ -21,7 +21,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	var/datum/radio_frequency/common_freq
 
 	var/obj/item/radio/headset/radio
-	var/arrival = "%PERSON has signed up as %RANK"
+	var/arrival = "%PERSON, %RANK has boarded the station."
 	var/arrivalToggle = 1
 	var/newhead = "%PERSON, %RANK, is the department head."
 	var/newheadToggle = 1

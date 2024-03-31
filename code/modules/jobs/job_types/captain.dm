@@ -57,8 +57,7 @@
 
 
 /datum/job/captain/get_captaincy_announcement(mob/living/captain)
-	return "Captain [captain.real_name] on deck!"
-
+	return "[title] [captain.real_name] will be overseeing operations today."
 
 /datum/outfit/job/captain
 	name = "Captain"

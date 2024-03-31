@@ -164,13 +164,16 @@
 					console.say("Launch cancelled, [cancel_reason].")
 				return
 		force_depart = FALSE
+
 	. = ..()
+
 	if(!. && !docked && !damaged)
 		if(console)
 			console.say("Welcome to [station_name()], have a safe and productive day!")
 			playsound(console, 'sound/voice/ApproachingDaedalus.ogg', 50, FALSE, extrarange = 4)
+
 		for(var/datum/callback/C in on_arrival_callbacks)
-			C.Invoke()
+			C.InvokeAsync()
 		LAZYCLEARLIST(on_arrival_callbacks)
 
 /obj/docking_port/mobile/arrivals/check_effects()
@@ -227,7 +230,14 @@
 	if(mode != SHUTTLE_CALL)
 		announce_arrival(mob, rank)
 	else
-		LAZYADD(on_arrival_callbacks, CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(announce_arrival), mob, rank))
+		OnDock(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(announce_arrival), mob, rank))
+
+/// Add a callback to execute when the shuttle is not in transit.
+/obj/docking_port/mobile/arrivals/proc/OnDock(datum/callback/cb)
+	if(mode != SHUTTLE_CALL)
+		cb.InvokeAsync()
+	else
+		LAZYADD(on_arrival_callbacks, cb)
 
 /obj/docking_port/mobile/arrivals/vv_edit_var(var_name, var_value)
 	switch(var_name)

@@ -350,7 +350,7 @@
 		is_captain = IS_ACTING_CAPTAIN
 
 	if(is_captain != IS_NOT_CAPTAIN)
-		minor_announce(job.get_captaincy_announcement(character))
+		SSshuttle.arrivals?.OnDock(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(priority_announce), job.get_captaincy_announcement(character), null, null, null, null, FALSE))
 		SSjob.promote_to_captain(character, is_captain == IS_ACTING_CAPTAIN)
 
 	#undef IS_NOT_CAPTAIN

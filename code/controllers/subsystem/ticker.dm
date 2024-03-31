@@ -398,7 +398,7 @@ SUBSYSTEM_DEF(ticker)
 		if(picked_spare_id_candidate == new_player_mob)
 			var/acting_captain = !is_captain_job(player_assigned_role)
 			SSjob.promote_to_captain(new_player_living, acting_captain)
-			OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(minor_announce), player_assigned_role.get_captaincy_announcement(new_player_living), ""))
+			SSshuttle.arrivals?.OnDock(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(priority_announce), player_assigned_role.get_captaincy_announcement(new_player_living), null, null, null, null, FALSE))
 
 		if(departments_without_heads && (player_assigned_role.departments_bitflags & departments_without_heads))
 			departments_without_heads &= ~SSjob.promote_to_department_head(new_player_living, player_assigned_role)

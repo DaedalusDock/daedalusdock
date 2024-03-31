@@ -985,39 +985,39 @@ em {
 	font-family: monospace;
 	border: 1px groove grey;
 	width: 80ch;
-	margin-top: 1px;
-	margin-bottom: 1px;
+	padding: 1px 4px 1px 4px;
+	margin: 0 2px 0 0;
 }
 
-.debug_trace{
+.debugTrace{
   border-color: grey;
 }
-.debug_trace::before {
-  content: "TRACE|";
+.debugTrace::before {
+  content: "TRACE |";
   color:grey;
 }
 
-.debug_info {
+.debugInfo {
 	border-color: cyan;
 }
-.debug_info::before {
-  content: "INFO|";
+.debugInfo::before {
+  content: "INFO |";
   color:cyan;
 }
 
-.debug_warn {
+.debugWarn {
 	border-color: orange;
 }
-.debug_warn::before {
-  content: "WARN|";
+.debugWarn::before {
+  content: "WARN |";
   color:orange;
 }
 
-.debug_error {
+.debugError {
 	border-color: red;
 }
-.debug_error::before {
-  content: "ERROR|";
+.debugError::before {
+  content: "ERROR |";
   color:red;
 }
 

@@ -248,7 +248,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			current_initializing_subsystem = subsystem
 
 			if(GLOB.is_debug_server)
-				message_debug(DBG_INFO, "MC/Initialize","Initializing [subsystem.name]")
+				to_chat(world, span_boldnotice("Initializing [subsystem.name]..."))
 
 			subsystem.Initialize(REALTIMEOFDAY)
 			CHECK_TICK

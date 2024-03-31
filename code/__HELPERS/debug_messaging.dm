@@ -46,24 +46,24 @@
 	var/severity_class
 	switch(level)
 		if(DBG_TRACE)
-			severity_class = "debug_trace"
+			severity_class = "debugTrace"
 		if(DBG_INFO)
-			severity_class = "debug_info"
+			severity_class = "debugInfo"
 		if(DBG_WARN)
-			severity_class = "debug_warn"
+			severity_class = "debugWarn"
 		if(DBG_ERROR)
-			severity_class = "debug_error"
+			severity_class = "debugError"
 		else
 			message_debug(DBG_ERROR, "DebugMessage/Severity", "Invalid severity level [level]. Setting to error.", DBG_STACK_TRACE)
 			level = DBG_ERROR
-			severity_class = "debug_error"
+			severity_class = "debugError"
 
 	// Check if we throw a stack trace.
 	if(additional & DBG_STACK_TRACE)
-		stack_trace("[level]| [built_message]")
+		stack_trace("[level] | [built_message]")
 	// Log to world.
 	if(additional & DBG_LOG_WORLD)
-		log_world("[level]| [built_message]")
+		log_world("[level] | [built_message]")
 
 	//Do we sent this, and to who?
 	//Trace requires Debug2 explicitly.

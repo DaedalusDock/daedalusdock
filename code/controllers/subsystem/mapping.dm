@@ -294,7 +294,7 @@ Used by the AI doomsday and the self-destruct nuke.
 	z_list = SSmapping.z_list
 	multiz_levels = SSmapping.multiz_levels
 
-#define INIT_ANNOUNCE(X) to_chat(world, X); log_world(X)
+#define INIT_ANNOUNCE(X) to_chat(world, span_debug_legacy("[X]")); log_world(X)
 /datum/controller/subsystem/mapping/proc/LoadGroup(list/errorList, name, path, files, list/traits, list/default_traits, silent = FALSE)
 	. = list()
 	var/start_time = REALTIMEOFDAY
@@ -342,7 +342,7 @@ Used by the AI doomsday and the self-destruct nuke.
 			errorList |= pm.original_path
 
 	if(!silent)
-		INIT_ANNOUNCE(span_debug_info("Loaded [name] in [(REALTIMEOFDAY - start_time)/10]s!"))
+		INIT_ANNOUNCE("Loaded [name] in [(REALTIMEOFDAY - start_time)/10]s!")
 	return parsed_maps
 
 /datum/controller/subsystem/mapping/proc/loadWorld()
@@ -354,7 +354,7 @@ Used by the AI doomsday and the self-destruct nuke.
 
 	// load the station
 	station_start = world.maxz + 1
-	INIT_ANNOUNCE(span_debug_info("Loading [config.map_name]..."))
+	INIT_ANNOUNCE("Loading [config.map_name]...")
 	LoadGroup(FailedZs, "Station", config.map_path, config.map_file, config.traits, ZTRAITS_STATION)
 
 	if(SSdbcore.Connect())
@@ -377,7 +377,7 @@ Used by the AI doomsday and the self-destruct nuke.
 			for(var/I in 2 to FailedZs.len)
 				msg += ", [FailedZs[I]]"
 		msg += ". Yell at your server host!"
-		INIT_ANNOUNCE(span_debug_error(msg))
+		INIT_ANNOUNCE(msg)
 #undef INIT_ANNOUNCE
 
 	// Custom maps are removed after station loading so the map files does not persist for no reason.

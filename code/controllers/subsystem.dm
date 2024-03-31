@@ -277,9 +277,8 @@
 	var/time = (REALTIMEOFDAY - start_timeofday) / 10
 	var/msg = "Initialized [name] subsystem within [time] second[time == 1 ? "" : "s"]!"
 	if(GLOB.is_debug_server)
-		message_debug(DBG_INFO, "MC/Initialize", msg)
-	else
-		log_world(msg)
+		to_chat(world, span_debug_legacy("[msg]"))
+	log_world(msg)
 	return time
 
 /datum/controller/subsystem/stat_entry(msg)

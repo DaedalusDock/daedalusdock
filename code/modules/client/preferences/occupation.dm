@@ -40,9 +40,27 @@
 		if(!istext(thing))
 			input -= thing
 			continue
+
 		if(!isnum(input[thing]) || !(input[thing] in list(1, 2, 3)))
 			input -= thing
+
 	return input
+
+/datum/preference/blob/job_priority/proc/can_play_job(datum/preferences/prefs, job_title)
+	var/datum/job/J = SSjob.GetJob(job_title)
+	if(!J)
+		return FALSE
+
+	if(is_banned_from(prefs.parent.ckey, job_title))
+		return FALSE
+
+	if(J.required_playtime_remaining(prefs.parent))
+		return FALSE
+
+	if(!J.player_old_enough(prefs.parent))
+		return FALSE
+
+	return TRUE
 
 /datum/preference/blob/job_priority/user_edit(mob/user, datum/preferences/prefs, list/params)
 	var/datum/job/job = SSjob.GetJob(params["job"])
@@ -50,6 +68,9 @@
 		return
 
 	if (job.faction != FACTION_STATION)
+		return FALSE
+
+	if(!can_play_job(prefs, job.title))
 		return FALSE
 
 	var/list/job_prefs = prefs.read_preference(type)

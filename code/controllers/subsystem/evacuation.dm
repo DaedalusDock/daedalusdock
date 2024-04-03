@@ -169,10 +169,10 @@ SUBSYSTEM_DEF(evacuation)
 			return TRUE
 	return FALSE
 
-/datum/controller/subsystem/evacuation/proc/delay_evacuation(identifier, delay)
-	if(!controllers[identifier])
-		CRASH("Tried to delay evacuation for an invalid controller \"[identifier]\"")
-	controllers[identifier].delay_evacuation(delay)
+/datum/controller/subsystem/evacuation/proc/delay_evacuation(controller_id, delay)
+	if(!controllers[controller_id])
+		CRASH("Tried to delay evacuation for an invalid controller \"[controller_id]\"")
+	controllers[controller_id].delay_evacuation(delay)
 
 /datum/controller/subsystem/evacuation/proc/get_controllers_names(active_only = FALSE)
 	var/list/names = list()

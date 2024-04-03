@@ -114,7 +114,7 @@ SUBSYSTEM_DEF(evacuation)
 
 /datum/controller/subsystem/evacuation/proc/unblock_cancel(controller_id)
 	if(!controllers[controller_id])
-		CRASH("Tried to unblock cancel for an invalid controller \"[controller_id\"")
+		CRASH("Tried to unblock cancel for an invalid controller \"[controller_id]\"")
 	controllers[controller_id].unblock_cancel()
 
 //Perhaps move it to SShuttle?

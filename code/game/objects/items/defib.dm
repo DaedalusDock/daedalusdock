@@ -552,6 +552,7 @@
 			H.emote("scream")
 			shock_pulling(45, H)
 			if(H.set_heartattack(TRUE))
+				log_health(H, "Heart stopped due to offensive defibrillator use.")
 				if(!H.stat)
 					H.visible_message(span_warning("[H] thrashes wildly, clutching at [H.p_their()] chest!"),
 						span_userdanger("You feel a horrible agony in your chest!"))
@@ -619,7 +620,10 @@
 		return
 
 	user.audible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Resuscitation successful."))
-	H.resuscitate()
+
+	if(H.resuscitate())
+		log_health(H, "Resuscitated due to defibrillator shock.")
+
 	H.AdjustSleeping(-60 SECONDS) //WAKEY WAKEY YOUR HEART IS SHOCKY
 
 /obj/item/shockpaddles/cyborg

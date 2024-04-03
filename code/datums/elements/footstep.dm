@@ -174,7 +174,7 @@
 				falloff_distance = 1,
 				vary = sound_vary)
 		else
-			var/static/list/bare_footstep_sounds = GLOB.barefootstep
+			var/list/bare_footstep_sounds = GLOB.barefootstep
 
 			heard_clients = playsound(
 				source_loc,
@@ -186,7 +186,7 @@
 				vary = sound_vary)
 
 	if(heard_clients)
-		play_fov_effect(source, 5, "footstep", direction, ignore_self = TRUE, override_list = heard_clients)
+		play_fov_effect(source, 5, "footstep", REVERSE_DIR(direction), ignore_self = TRUE, override_list = heard_clients)
 
 ///Prepares a footstep for machine walking
 /datum/element/footstep/proc/play_simplestep_machine(atom/movable/source)

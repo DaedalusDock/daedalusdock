@@ -1421,6 +1421,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, updating_health = FALSE)
 			if(current_cycle > 50 && prob(15))
 				if(C.set_heartattack(TRUE))
+					log_health(C, "Heart stopped due to ethanol (neurotoxin) consumption.")
 					if(C.stat == CONSCIOUS)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest as if [C.p_their()] heart stopped!"))
 	. = TRUE

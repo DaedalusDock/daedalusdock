@@ -392,7 +392,7 @@
 		else
 			switch(paint_mode)
 				if(PAINT_NORMAL)
-					C = new(target, paint_color, drawing, temp, graf_rot)
+					C = new(target, null, null, paint_color, drawing, temp, graf_rot)
 					C.pixel_x = clickx
 					C.pixel_y = clicky
 					affected_turfs += target

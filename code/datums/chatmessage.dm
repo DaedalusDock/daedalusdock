@@ -148,11 +148,10 @@
 		LAZYADD(prefixes, "\icon[r_icon]")
 
 	// Append language icon if the language uses one
-	var/datum/language/language_instance = GLOB.language_datum_instances[language]
-	if (language_instance?.display_icon(owner))
+	if (language?.display_icon(owner))
 		var/icon/language_icon = LAZYACCESS(language_icons, language)
 		if (isnull(language_icon))
-			language_icon = icon(language_instance.icon, icon_state = language_instance.icon_state)
+			language_icon = icon(language.icon, icon_state = language.icon_state)
 			language_icon.Scale(CHAT_MESSAGE_ICON_SIZE, CHAT_MESSAGE_ICON_SIZE)
 			LAZYSET(language_icons, language, language_icon)
 		LAZYADD(prefixes, "\icon[language_icon]")
@@ -293,8 +292,7 @@
 	if(runechat_flags & EMOTE_MESSAGE)
 		new /datum/chatmessage(raw_message, sound_loc || speaker, src, message_language, list("emote", "italics"))
 	else
-		new /datum/chatmessage(lang_treat(speaker, message_language, raw_message, spans, null, TRUE), sound_loc || speaker, src, message_language, spans)
-
+		new /datum/chatmessage(raw_message, sound_loc || speaker, src, message_language, spans)
 
 // Tweak these defines to change the available color ranges
 #define CM_COLOR_SAT_MIN 0.6

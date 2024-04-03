@@ -216,6 +216,9 @@ GLOBAL_LIST_INIT(organ_process_order, list(
 	ORGAN_SLOT_XENO_EGGSAC,
 	ORGAN_SLOT_BRAIN))
 
+#define SPECIES_DATA_PERKS 1
+#define SPECIES_DATA_LANGUAGES 2
+
 // Defines for used in creating "perks" for the species preference pages.
 /// A key that designates UI icon displayed on the perk.
 #define SPECIES_PERK_ICON "ui_icon"

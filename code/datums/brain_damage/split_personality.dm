@@ -216,8 +216,13 @@
 	return //no random switching
 
 /datum/brain_trauma/severe/split_personality/brainwashing/handle_hearing(datum/source, list/hearing_args)
-	if(HAS_TRAIT(owner, TRAIT_DEAF) || owner == hearing_args[HEARING_SPEAKER])
+	if(owner == hearing_args[HEARING_SPEAKER])
 		return
+
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(istype(L, /datum/language/visual) || !L?.can_receive_language(owner) || !owner.has_language(L))
+		return
+
 	var/message = hearing_args[HEARING_RAW_MESSAGE]
 	if(findtext(message, codeword))
 		hearing_args[HEARING_RAW_MESSAGE] = replacetext(message, codeword, span_warning("[codeword]"))

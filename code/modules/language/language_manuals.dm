@@ -66,7 +66,6 @@
 		/datum/language/voltaic,
 		/datum/language/draconic,
 		/datum/language/moffic,
-		/datum/language/calcic,
 		/datum/language/schechi,
 		/datum/language/vox,
 	)

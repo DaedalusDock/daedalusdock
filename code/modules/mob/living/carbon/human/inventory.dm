@@ -199,7 +199,7 @@
 			update_slots_for_item(I, slot)
 
 			if(wear_suit.breakouttime) //when equipping a straightjacket
-				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+				ADD_TRAIT(src, TRAIT_ARMS_RESTRAINED, SUIT_TRAIT)
 				release_all_grabs() //can't pull if restrained
 				update_mob_action_buttons() //certain action buttons will no longer be usable
 
@@ -259,7 +259,7 @@
 			dropItemToGround(s_store, TRUE) //It makes no sense for your suit storage to stay on you if you drop your suit.
 
 		if(wear_suit.breakouttime) //when unequipping a straightjacket
-			REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_ARMS_RESTRAINED, SUIT_TRAIT)
 			drop_all_held_items() //suit is restraining
 			update_mob_action_buttons() //certain action buttons may be usable again.
 

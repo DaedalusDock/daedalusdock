@@ -38,7 +38,7 @@
 #define WOUND_DETERMINATION_BLEED_MOD 0.85
 
 /// How often can we annoy the player about their bleeding? This duration is extended if it's not serious bleeding
-#define BLEEDING_MESSAGE_BASE_CD 10 SECONDS
+#define BLEEDING_MESSAGE_BASE_CD (10 SECONDS)
 
 ///The percentage of damage at which a bodypart can start to be dismembered.
 #define LIMB_DISMEMBERMENT_PERCENT 0.9

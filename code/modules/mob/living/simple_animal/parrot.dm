@@ -164,7 +164,7 @@
 	. += "Held Item: [held_item]"
 	. += "Combat mode: [combat_mode ? "On" : "Off"]"
 
-/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
 	if(speaker != src && prob(50)) //Dont imitate ourselves
 		if(!radio_freq || prob(10))
@@ -646,6 +646,8 @@ GLOBAL_LIST_INIT(strippable_parrot_items, create_strippable_list(list(
 			continue
 		if(istype(AM, /obj/item))
 			var/obj/item/I = AM
+			if(I.item_flags & ABSTRACT)
+				continue
 			if(I.w_class < WEIGHT_CLASS_SMALL)
 				item = I
 		else if(iscarbon(AM))

@@ -199,7 +199,7 @@
 	if(flipped == TRUE && !(border_dir & dir))
 		return TRUE
 
-/obj/structure/table/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/table/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	. = !density
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))

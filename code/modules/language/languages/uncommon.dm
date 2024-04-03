@@ -2,7 +2,6 @@
 	name = "Galactic Uncommon"
 	desc = "The second-most spoken Human language."
 	key = "!"
-	flags = TONGUELESS_SPEECH
 	space_chance = 50
 	syllables = list(
 "ba", "be", "bo", "ca", "ce", "co", "da", "de", "do",
@@ -14,3 +13,4 @@
 	)
 	icon_state = "galuncom"
 	default_priority = 90
+	flags = parent_type::flags | (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND)

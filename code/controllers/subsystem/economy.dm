@@ -126,6 +126,7 @@ SUBSYSTEM_DEF(economy)
 				"Attention staff of [station_name()], you have received payment for this period. You may withdraw funds from your nearest ATM.",
 				"Station Announcement",
 				"Staff Update",
+				do_not_modify = TRUE,
 			)
 
 	//price_update() This doesn't need to fire every 5 minutes. The only current use is market crash, which handles it on its own.

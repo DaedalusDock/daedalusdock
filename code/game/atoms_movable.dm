@@ -5,6 +5,8 @@
 
 	/// The last direction we moved in.
 	var/tmp/last_move = null
+	var/tmp/list/active_movement
+
 	///Are we moving with inertia? Mostly used as an optimization
 	var/tmp/inertia_moving = FALSE
 	///The last time we pushed off something
@@ -310,6 +312,8 @@
 	if(QDELING(src))
 		CRASH("Illegal abstract_move() on [type]!")
 
+	RESOLVE_ACTIVE_MOVEMENT
+
 	var/atom/old_loc = loc
 	var/direction = get_dir(old_loc, new_loc)
 	loc = new_loc
@@ -324,6 +328,9 @@
 
 	if(!newloc || newloc == loc)
 		return
+
+	// A mid-movement... movement... occured, resolve that first.
+	RESOLVE_ACTIVE_MOVEMENT
 
 	if(!direction)
 		direction = get_dir(src, newloc)
@@ -369,6 +376,7 @@
 	var/area/oldarea = get_area(oldloc)
 	var/area/newarea = get_area(newloc)
 
+	SET_ACTIVE_MOVEMENT(oldloc, direction, FALSE, old_locs)
 	loc = newloc
 
 	. = TRUE
@@ -386,13 +394,11 @@
 			entered_loc.Entered(src, oldloc, old_locs)
 	else
 		newloc.Entered(src, oldloc, old_locs)
+
 	if(oldarea != newarea)
 		newarea.Entered(src, oldarea)
 
-	if(loc != newloc) // Something moved us out of where we just moved to, Abort!!!
-		return
-
-	Moved(oldloc, direction, FALSE, old_locs)
+	RESOLVE_ACTIVE_MOVEMENT
 
 ////////////////////////////////////////
 
@@ -819,9 +825,12 @@
 
 /atom/movable/proc/doMove(atom/destination)
 	. = FALSE
+	RESOLVE_ACTIVE_MOVEMENT
+
 	var/atom/oldloc = loc
 	var/is_multi_tile = bound_width > world.icon_size || bound_height > world.icon_size
 
+	SET_ACTIVE_MOVEMENT(oldloc, NONE, TRUE, null)
 	if(destination)
 		var/same_loc = oldloc == destination
 		var/area/old_area = get_area(oldloc)
@@ -879,7 +888,7 @@
 			if(old_area)
 				old_area.Exited(src, NONE)
 
-	Moved(oldloc, NONE, TRUE)
+	RESOLVE_ACTIVE_MOVEMENT
 
 /**
  * Called when a movable changes z-levels.
@@ -995,7 +1004,7 @@
 
 	//They are moving! Wouldn't it be cool if we calculated their momentum and added it to the throw?
 	if (thrower && thrower.last_move && thrower.client && thrower.client.move_delay >= world.time + world.tick_lag*2)
-		var/user_momentum = thrower.cached_multiplicative_slowdown
+		var/user_momentum = thrower.movement_delay
 		if (!user_momentum) //no movement_delay, this means they move once per byond tick, lets calculate from that instead.
 			user_momentum = world.tick_lag
 
@@ -1182,68 +1191,54 @@
 
 /// Gets or creates the relevant language holder. For mindless atoms, gets the local one. For atom with mind, gets the mind one.
 /atom/movable/proc/get_language_holder(get_minds = TRUE)
+	RETURN_TYPE(/datum/language_holder)
 	if(!language_holder)
 		language_holder = new initial_language_holder(src)
 	return language_holder
 
 /// Grants the supplied language and sets omnitongue true.
 /atom/movable/proc/grant_language(language, understood = TRUE, spoken = TRUE, source = LANGUAGE_ATOM)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.grant_language(language, understood, spoken, source)
+	return get_language_holder().grant_language(language, understood, spoken, source)
 
 /// Grants every language.
 /atom/movable/proc/grant_all_languages(understood = TRUE, spoken = TRUE, grant_omnitongue = TRUE, source = LANGUAGE_MIND)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.grant_all_languages(understood, spoken, grant_omnitongue, source)
+	return get_language_holder().grant_all_languages(understood, spoken, grant_omnitongue, source)
 
 /// Removes a single language.
 /atom/movable/proc/remove_language(language, understood = TRUE, spoken = TRUE, source = LANGUAGE_ALL)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.remove_language(language, understood, spoken, source)
+	return get_language_holder().remove_language(language, understood, spoken, source)
 
 /// Removes every language and sets omnitongue false.
 /atom/movable/proc/remove_all_languages(source = LANGUAGE_ALL, remove_omnitongue = FALSE)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.remove_all_languages(source, remove_omnitongue)
+	return get_language_holder().remove_all_languages(source, remove_omnitongue)
 
 /// Adds a language to the blocked language list. Use this over remove_language in cases where you will give languages back later.
 /atom/movable/proc/add_blocked_language(language, source = LANGUAGE_ATOM)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.add_blocked_language(language, source)
+	return get_language_holder().add_blocked_language(language, source)
 
 /// Removes a language from the blocked language list.
 /atom/movable/proc/remove_blocked_language(language, source = LANGUAGE_ATOM)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.remove_blocked_language(language, source)
+	return get_language_holder().remove_blocked_language(language, source)
 
 /// Checks if atom has the language. If spoken is true, only checks if atom can speak the language.
 /atom/movable/proc/has_language(language, spoken = FALSE)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.has_language(language, spoken)
+	return get_language_holder().has_language(language, spoken)
 
 /// Checks if atom can speak the language.
 /atom/movable/proc/can_speak_language(language)
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.can_speak_language(language)
-
-/// Returns the result of tongue specific limitations on spoken languages.
-/atom/movable/proc/could_speak_language(language)
-	return TRUE
+	return get_language_holder().can_speak_language(language)
 
 /// Returns selected language, if it can be spoken, or finds, sets and returns a new selected language if possible.
 /atom/movable/proc/get_selected_language()
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.get_selected_language()
+	return get_language_holder().get_selected_language()
 
 /// Gets a random understood language, useful for hallucinations and such.
 /atom/movable/proc/get_random_understood_language()
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.get_random_understood_language()
+	return get_language_holder().get_random_understood_language()
 
 /// Gets a random spoken language, useful for forced speech and such.
 /atom/movable/proc/get_random_spoken_language()
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.get_random_spoken_language()
+	return get_language_holder().get_random_spoken_language()
 
 /// Copies all languages into the supplied atom/language holder. Source should be overridden when you
 /// do not want the language overwritten by later atom updates or want to avoid blocked languages.
@@ -1251,14 +1246,13 @@
 	if(isatom(from_holder))
 		var/atom/movable/thing = from_holder
 		from_holder = thing.get_language_holder()
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.copy_languages(from_holder, source_override)
+
+	return get_language_holder().copy_languages(from_holder, source_override)
 
 /// Empties out the atom specific languages and updates them according to the current atoms language holder.
 /// As a side effect, it also creates missing language holders in the process.
 /atom/movable/proc/update_atom_languages()
-	var/datum/language_holder/language_holder = get_language_holder()
-	return language_holder.update_atom_languages(src)
+	return get_language_holder().update_atom_languages(src)
 
 /* End language procs */
 

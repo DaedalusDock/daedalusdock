@@ -186,7 +186,8 @@
 	bodies -= C // This means that the other bodies maintain a link
 	// so if someone mindswapped into them, they'd still be shared.
 	bodies = null
-	C.blood_volume = min(C.blood_volume, BLOOD_VOLUME_NORMAL)
+	if(C.blood_volume < BLOOD_VOLUME_NORMAL)
+		C.setBloodVolume(BLOOD_VOLUME_NORMAL)
 	..()
 
 /datum/species/jelly/slime/on_species_gain(mob/living/carbon/C, datum/species/old_species)

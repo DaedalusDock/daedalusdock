@@ -175,4 +175,4 @@
 		to_chat(src, "Map ID Missing from config.")
 	if(length(world.TgsTestMerges()))
 		alert(src, "Notice: Test Merges are active, this map may not be fully accurate!", "Testmerge Notice", "OK")
-	src << link("https://affectedarc07.github.io/SS13WebMap/[CONFIG_GET(string/webmap_community)]/[SSmapping.config.webmap_id]")
+	src << link("https://webmap.affectedarc07.co.uk/[CONFIG_GET(string/webmap_community)]/[SSmapping.config.webmap_id]")

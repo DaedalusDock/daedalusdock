@@ -429,9 +429,9 @@
 			if(job_datum.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
 				command_bold = " command"
 			if(job_datum in SSjob.prioritized_jobs)
-				dept_data += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
+				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
 			else
-				dept_data += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
+				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
 		if(!length(dept_data))
 			dept_data += "<span class='nopositions'>No positions open.</span>"
 		dat += dept_data.Join()

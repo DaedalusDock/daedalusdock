@@ -57,21 +57,16 @@
 	}
 
 #define PROCESS_AO(TARGET, AO_VAR, NEIGHBORS, ALPHA, SHADOWER) \
-	if (permit_ao && NEIGHBORS != AO_ALL_NEIGHBORS) { \
-		if (NEIGHBORS != AO_ALL_NEIGHBORS) { \
-			var/image/I = cache["ao-[NEIGHBORS]|[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]|[ALPHA]|[SHADOWER]"]; \
-			if (!I) { \
-				/* This will also add the image to the cache. */ \
-				I = make_ao_image(NEIGHBORS, TARGET.pixel_x, TARGET.pixel_y, TARGET.pixel_z, TARGET.pixel_w, ALPHA, SHADOWER) \
-			} \
-			AO_VAR = I; \
+	if (!permit_ao || NEIGHBORS == AO_ALL_NEIGHBORS) { \
+		AO_VAR = null; \
+	} else { \
+		var/image/I = cache["ao-[NEIGHBORS]|[pixel_x]/[pixel_y]/[pixel_z]/[pixel_w]|[ALPHA]|[SHADOWER]"]; \
+		if (isnull(I)) { \
+			/* This will also add the image to the cache. */ \
+			I = make_ao_image(NEIGHBORS, TARGET.pixel_x, TARGET.pixel_y, TARGET.pixel_z, TARGET.pixel_w, ALPHA, SHADOWER); \
 		} \
-	} \
-	TARGET.add_overlay(AO_VAR, TRUE);
-
-#define CUT_AO(TARGET, AO_VAR) \
-	if (AO_VAR) { \
-		TARGET.cut_overlay(AO_VAR, TRUE); \
+		AO_VAR = I; \
+		TARGET.add_overlay(AO_VAR); \
 	}
 
 /proc/make_ao_image(corner, px = 0, py = 0, pz = 0, pw = 0, alpha, shadower)
@@ -133,6 +128,7 @@
 	var/turf/T
 	if (z_flags & Z_MIMIC_BELOW)
 		CALCULATE_JUNCTIONS(src, ao_junction_mimic, T, (T.z_flags & Z_MIMIC_BELOW))
+
 	if (AO_SELF_CHECK(src) && !(z_flags & Z_MIMIC_NO_AO))
 		CALCULATE_JUNCTIONS(src, ao_junction, T, AO_TURF_CHECK(T))
 
@@ -152,10 +148,16 @@
 
 /turf/proc/update_ao()
 	var/list/cache = SSao.image_cache
-	CUT_AO(shadower, ao_overlay_mimic)
-	CUT_AO(src, ao_overlay)
+
+	if(ao_overlay_mimic)
+		shadower.cut_overlay(ao_overlay_mimic)
+
+	if(ao_overlay)
+		cut_overlay(ao_overlay)
+
 	if (z_flags & Z_MIMIC_BELOW)
 		PROCESS_AO(shadower, ao_overlay_mimic, ao_junction_mimic, Z_AO_ALPHA, TRUE)
+
 	if (AO_TURF_CHECK(src) && !(z_flags & Z_MIMIC_NO_AO))
 		PROCESS_AO(src, ao_overlay, ao_junction, WALL_AO_ALPHA, FALSE)
 

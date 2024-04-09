@@ -1,6 +1,6 @@
 /datum/language/moffic
 	name = "Moffic"
-	desc = "Also known as 'Gamuid' among its native speakers, the language of the Gamuioda borders on complete unintelligibility."
+	desc = "Bordering on complete unintelligibility, Moffic the language of %PLACEHOLDER."
 	key = "m"
 	space_chance = 10
 	syllables = list(

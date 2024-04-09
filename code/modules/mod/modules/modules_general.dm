@@ -567,20 +567,3 @@
 	mod.helmet.flags_cover = former_flags
 	mod.helmet.visor_flags_cover = former_visor_flags
 	mod.wearer.update_worn_back()
-
-///Sign Language Translator - allows people to sign over comms using the modsuit's gloves.
-/obj/item/mod/module/signlang_radio
-	name = "MOD glove translator module"
-	desc = "A module that adds motion sensors into the suit's gloves, \
-		which works in tandem with a short-range subspace transmitter, \
-		letting the audibly impaired use sign language over comms."
-	icon_state = "signlang_radio"
-	complexity = 1
-	idle_power_cost = DEFAULT_CHARGE_DRAIN * 0.3
-	incompatible_modules = list(/obj/item/mod/module/signlang_radio)
-
-/obj/item/mod/module/signlang_radio/on_suit_activation()
-	ADD_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, MOD_TRAIT)
-
-/obj/item/mod/module/signlang_radio/on_suit_deactivation(deleting = FALSE)
-	REMOVE_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, MOD_TRAIT)

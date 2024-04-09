@@ -36,8 +36,8 @@
 
 /obj/item/offhand/proc/deleteme(datum/source, mob/user)
 	SIGNAL_HANDLER
-
-	qdel(src)
+	if(!QDELETED(src))
+		qdel(src)
 
 /obj/item/offhand/proc/try_swap_hands(datum/source, obj/item/held_item)
 	SIGNAL_HANDLER

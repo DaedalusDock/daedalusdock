@@ -710,6 +710,7 @@
 				. = TRUE
 			if(3)
 				if(C.set_heartattack(TRUE))
+					log_health(C, "Heart stopped due to initropidil.")
 					if(C.stat < UNCONSCIOUS)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest!"))
 				else

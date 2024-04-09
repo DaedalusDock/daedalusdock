@@ -185,7 +185,7 @@
 /atom/movable/openspace/mimic/set_glide_size(target)
 	return
 
-/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
+/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc, message_range)
 	if(speaker.z != src.z)
 		return
 

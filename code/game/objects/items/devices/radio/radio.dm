@@ -222,6 +222,12 @@
 		set_listening(FALSE, actual_setting = FALSE)
 
 /obj/item/radio/talk_into(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(!language)
+		language = talking_movable.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	if(iscarbon(talking_movable) && (message_mods[MODE_HEADSET] || message_mods[RADIO_EXTENSION]) && !handsfree)
 		var/mob/living/carbon/talking_carbon = talking_movable
 		if(talking_carbon.handcuffed)// If we're handcuffed, we can't press the button
@@ -231,20 +237,11 @@
 			to_chat(talking_carbon, span_warning("You can't use the radio while aggressively grabbed!"))
 			return ITALICS | REDUCE_RANGE
 
-	if(HAS_TRAIT(talking_movable, TRAIT_SIGN_LANG)) //Forces Sign Language users to wear the translation gloves to speak over radios
-		var/mob/living/carbon/mute = talking_movable
-		if(istype(mute))
-			if(!HAS_TRAIT(talking_movable, TRAIT_CAN_SIGN_ON_COMMS))
-				return FALSE
-			switch(mute.check_signables_state())
-				if(SIGN_ONE_HAND) // One hand full
-					message = stars(message)
-				if(SIGN_HANDS_FULL to SIGN_CUFFED)
-					return FALSE
+	SEND_SIGNAL(src, COMSIG_RADIO_NEW_MESSAGE, talking_movable, message, channel)
+
 	if(!spans)
 		spans = list(talking_movable.speech_span)
-	if(!language)
-		language = talking_movable.get_selected_language()
+
 	INVOKE_ASYNC(src, PROC_REF(talk_into_impl), talking_movable, message, channel, spans.Copy(), language, message_mods)
 	return ITALICS | REDUCE_RANGE
 
@@ -326,10 +323,14 @@
 	signal.levels = list(T.z)
 	signal.broadcast()
 
-/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
+	if(istype(message_language, /datum/language/visual))
+		return
+
 	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
 		return
+
 	var/filtered_mods = list()
 	if (message_mods[MODE_CUSTOM_SAY_EMOTE])
 		filtered_mods[MODE_CUSTOM_SAY_EMOTE] = message_mods[MODE_CUSTOM_SAY_EMOTE]

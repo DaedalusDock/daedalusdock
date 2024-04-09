@@ -428,7 +428,7 @@
 /obj/structure/window/get_dumping_location()
 	return null
 
-/obj/structure/window/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/window/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(!density)
 		return TRUE
 	if(fulltile || (dir == to_dir))
@@ -578,7 +578,7 @@
 	heat_resistance = 50000
 	armor = list(BLUNT = 80, PUNCTURE = 20, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 60, BIO = 100, FIRE = 99, ACID = 100)
 	max_integrity = 500
-	damage_deflection = 21
+	damage_deflection = 18
 	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/plasmarglass
 	melting_point = 25000

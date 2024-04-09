@@ -54,7 +54,7 @@
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(table_carbon),
 		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
 		COMSIG_ATOM_EXIT = PROC_REF(check_exit),
-		COMSIG_ATOM_EXITTED = PROC_REF(on_uncrossed),
+		COMSIG_ATOM_EXITED = PROC_REF(on_uncrossed),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -199,7 +199,7 @@
 	if(flipped == TRUE && !(border_dir & dir))
 		return TRUE
 
-/obj/structure/table/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/table/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	. = !density
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
@@ -251,7 +251,7 @@
 		if(!HAS_TRAIT(crossed_by, TRAIT_TABLE_RISEN))
 			ADD_TRAIT(crossed_by, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
 
-/obj/structure/table/proc/on_uncrossed(atom/movable/gone, direction)
+/obj/structure/table/proc/on_uncrossed(datum/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
 	if(!isliving(gone))
 		return
@@ -302,7 +302,7 @@
 		user.release_grabs(pushed_mob)
 
 	else if(target.pass_flags & PASSTABLE)
-		user.move_grabbed_atoms_towards(src)
+		grab.move_victim_towards(src)
 		if (target.loc == loc)
 			user.visible_message(span_notice("[user] places [target] onto [src]."),
 				span_notice("You place [target] onto [src]."))
@@ -894,7 +894,7 @@
 	else
 		return ..()
 
-/obj/structure/table/optable/on_uncrossed(atom/movable/gone, direction)
+/obj/structure/table/optable/on_uncrossed(datum/source, atom/movable/gone, direction)
 	. = ..()
 	if(gone == patient)
 		set_patient(null)

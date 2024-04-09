@@ -19,7 +19,7 @@
 #define DROPLIMB_THRESHOLD_DESTROY 1
 
 /// The amount of time an organ has to be dead for it to be unrecoverable
-#define ORGAN_RECOVERY_THRESHOLD (5 MINUTES)
+#define ORGAN_RECOVERY_THRESHOLD (10 MINUTES)
 
 //Bodypart flags
 #define BP_BLEEDING (1<<0)

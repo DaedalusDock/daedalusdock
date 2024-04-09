@@ -228,6 +228,9 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 #define BODY_ZONE_PRECISE_L_FOOT "l_foot"
 #define BODY_ZONE_PRECISE_R_FOOT "r_foot"
 
+/// The max damage capacity of the average human. Used for balance purposes.
+#define CARBON_BODYPART_HEALTH_SUM (/obj/item/bodypart/head::max_damage + /obj/item/bodypart/chest::max_damage + /obj/item/bodypart/leg::max_damage + /obj/item/bodypart/arm::max_damage)
+
 //We will round to this value in damage calculations.
 #define DAMAGE_PRECISION 0.1
 

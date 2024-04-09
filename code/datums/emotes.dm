@@ -317,14 +317,15 @@
 
 	log_message(text, LOG_EMOTE)
 
-	var/ghost_text = "<b>[src]</b> [text]"
+	var/ghost_text = "<span class='emote'>[src]</span> [text]"
 
 	var/origin_turf = get_turf(src)
 	if(client)
-		for(var/mob/ghost as anything in GLOB.dead_mob_list)
+		for(var/mob/ghost as anything in GLOB.dead_mob_list - viewers(origin_turf))
 			if(!ghost.client || isnewplayer(ghost))
 				continue
-			if(ghost.client.prefs.chat_toggles & CHAT_GHOSTSIGHT && !(ghost in viewers(origin_turf, null)))
+
+			if(ghost.client.prefs.chat_toggles & CHAT_GHOSTSIGHT)
 				ghost.show_message("[FOLLOW_LINK(ghost, src)] [ghost_text]")
 
 	visible_message(text, visible_message_flags = EMOTE_MESSAGE)

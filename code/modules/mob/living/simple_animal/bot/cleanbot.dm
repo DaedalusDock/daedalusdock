@@ -264,7 +264,7 @@
 				return
 
 		if(target && path.len == 0 && (get_dist(src,target) > 1))
-			path = get_path_to(src, target, max_distance=30, mintargetdist=1, id=access_card)
+			path = get_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
 			mode = BOT_MOVING
 			if(length(path) == 0)
 				add_to_ignore(target)
@@ -330,7 +330,7 @@
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		return
 	. = ..()
-	if(ismopable(attack_target))
+	if(ismopable(attack_target) || istype(attack_target, /obj/effect/decal/cleanable/blood))
 		mode = BOT_CLEANING
 		update_icon_state()
 		var/turf/T = get_turf(attack_target)
@@ -346,6 +346,7 @@
 		playsound(src, 'sound/effects/spray2.ogg', 50, TRUE, -6)
 		attack_target.acid_act(75, 10)
 		target = null
+
 	else if(istype(attack_target, /mob/living/basic/cockroach) || ismouse(attack_target))
 		var/mob/living/living_target = attack_target
 		if(!living_target.stat)

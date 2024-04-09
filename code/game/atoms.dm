@@ -513,7 +513,6 @@
 			if(!reagents)
 				reagents = new()
 			reagents.reagent_list.Add(part)
-			reagents.conditional_update()
 		else if(ismovable(part))
 			var/atom/movable/object = part
 			if(isliving(object.loc))
@@ -661,18 +660,19 @@
  * [COMSIG_ATOM_GET_EXAMINE_NAME] signal
  */
 /atom/proc/get_examine_name(mob/user)
-	. = "\a [src]"
-	var/list/override = list(gender == PLURAL ? "some" : "a", " ", "[name]")
-	if(article)
-		. = "[article] [src]"
-		override[EXAMINE_POSITION_ARTICLE] = article
+	var/list/name_list = list(name)
 
-	if(SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override) & COMPONENT_EXNAME_CHANGED)
-		. = override.Join("")
+	SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, name_list)
+	if(gender == PLURAL)
+		return jointext(name_list, " ")
+
+	else
+		return "\a [jointext(name_list, " ")]"
 
 ///Generate the full examine string of this atom (including icon for goonchat)
 /atom/proc/get_examine_string(mob/user, thats = FALSE)
-	return "[icon2html(src, user)] [thats? "That's ":""][get_examine_name(user)]"
+	var/that_string = gender == PLURAL ? "Those are " : "That is "
+	return "[icon2html(src, user)] [thats? that_string :""][get_examine_name(user)]"
 
 /**
  * Returns an extended list of examine strings for any contained ID cards.
@@ -2251,7 +2251,7 @@
  * For turfs this will only be used if pathing_pass_method is TURF_PATHING_PASS_PROC
  *
  * Arguments:
- * * ID- An ID card representing what access we have (and thus if we can open things like airlocks or windows to pass through them). The ID card's physical location does not matter, just the reference
+ * * access- A list representing what access we have (and thus if we can open things like airlocks or windows to pass through them).
  * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
  * * caller- The movable we're checking pass flags for, if we're making any such checks
  * * no_id: When true, doors with public access will count as impassible
@@ -2259,7 +2259,7 @@
  * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/atom/proc/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density

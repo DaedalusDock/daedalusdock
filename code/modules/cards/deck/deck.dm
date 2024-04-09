@@ -153,8 +153,8 @@
 		return
 	if(flip_card)
 		card.Flip()
-	card.pickup(user)
-	user.put_in_hands(card)
+
+	user.pickup_item(card)
 	user.balloon_alert_to_viewers("draws a card")
 
 /obj/item/toy/cards/deck/attack_hand_secondary(mob/living/user, list/modifiers)

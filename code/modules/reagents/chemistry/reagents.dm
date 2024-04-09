@@ -121,7 +121,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	return
 
 /// Called from [/datum/reagents/proc/metabolize]
-/datum/reagent/proc/on_mob_life(mob/living/carbon/M, location)
+/datum/reagent/proc/on_mob_life(mob/living/carbon/M, location, do_addiction)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 
@@ -135,6 +135,10 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	removed *= M.metabolism_efficiency
 	removed = min(removed, volume)
 
+	if(do_addiction && length(addiction_types))
+		for(var/addiction in addiction_types)
+			M.mind?.add_addiction_points(addiction, addiction_types[addiction] * removed)
+
 	//adjust effective amounts - removed, dose, and max_dose - for mob size
 	var/effective = removed
 	if(!(chemical_flags & REAGENT_IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
@@ -145,7 +149,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 		switch(location)
 			if(CHEM_BLOOD)
 				if(type == M.dna?.species.exotic_blood)
-					M.blood_volume = min(M.blood_volume + round(volume, 0.1), BLOOD_VOLUME_MAXIMUM)
+					M.adjustBloodVolumeUpTo(round(volume, 0.1), BLOOD_VOLUME_MAXIMUM)
 					holder.del_reagent(type)
 					return
 				else
@@ -158,7 +162,7 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 
 			if(CHEM_INGEST)
 				if(type == M.dna?.species.exotic_blood)
-					M.blood_volume = min(M.blood_volume + round(volume/5, 0.1), BLOOD_VOLUME_MAXIMUM)
+					M.adjustBloodVolumeUpTo(round(volume / 5, 0.1), BLOOD_VOLUME_MAXIMUM)
 					holder.del_reagent(type)
 					return
 				else
@@ -220,10 +224,6 @@ Primarily used in reagents/reaction_agents
 	SHOULD_NOT_SLEEP(TRUE)
 	return
 
-/// Called by [/datum/reagents/proc/conditional_update_move]
-/datum/reagent/proc/on_move(mob/M)
-	return
-
 /// Called after add_reagents creates a new reagent.
 /datum/reagent/proc/on_new(data)
 	if(data)
@@ -231,10 +231,6 @@ Primarily used in reagents/reaction_agents
 
 /// Called when two reagents of the same are mixing.
 /datum/reagent/proc/on_merge(data, amount)
-	return
-
-/// Called by [/datum/reagents/proc/conditional_update]
-/datum/reagent/proc/on_update(atom/A)
 	return
 
 /// Called if the reagent has passed the overdose threshold and is set to be triggering overdose effects

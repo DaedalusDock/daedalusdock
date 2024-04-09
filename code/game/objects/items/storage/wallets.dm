@@ -24,6 +24,7 @@
 	RegisterSignal(atom_storage, COMSIG_STORAGE_CAN_INSERT, PROC_REF(can_insert_item))
 	RegisterSignal(atom_storage, COMSIG_STORAGE_ATTEMPT_OPEN, PROC_REF(on_attempt_open_storage))
 	register_context()
+	update_appearance()
 
 /obj/item/storage/wallet/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
@@ -109,7 +110,8 @@
 
 /obj/item/storage/wallet/get_examine_string(mob/user, thats = FALSE)
 	if(front_id && is_open)
-		return "[icon2html(get_cached_flat_icon(), user)] [thats? "That's ":""][get_examine_name(user)]" //displays all overlays in chat
+		var/that_string = gender == PLURAL ? "Those are " : "That is "
+		return "[icon2html(get_cached_flat_icon(), user)] [thats? that_string : ""][get_examine_name(user)]" //displays all overlays in chat
 	return ..()
 
 /obj/item/storage/wallet/proc/open()
@@ -119,13 +121,24 @@
 
 	is_open = TRUE
 	update_appearance()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		H.sec_hud_set_ID()
 
 /obj/item/storage/wallet/proc/close()
 	if(!is_open)
 		return
+
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		H.sec_hud_set_ID()
+
 	is_open = FALSE
 	atom_storage.close_all()
 	update_appearance()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		H.sec_hud_set_ID()
 
 /obj/item/storage/wallet/proc/get_cached_flat_icon()
 	if(!cached_flat_icon)
@@ -193,3 +206,6 @@
 /obj/item/storage/wallet/random/PopulateContents()
 	SSeconomy.spawn_cash_for_amount(rand(5, 30), src)
 	new /obj/effect/spawner/random/entertainment/wallet_storage(src)
+
+/obj/item/storage/wallet/open
+	is_open = TRUE

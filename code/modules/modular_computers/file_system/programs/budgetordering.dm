@@ -64,7 +64,7 @@
 
 	return FALSE
 
-/datum/computer_file/program/budgetorders/ui_data()
+/datum/computer_file/program/budgetorders/ui_data(mob/user)
 	. = ..()
 	var/list/data = get_header_data()
 	data["location"] = SSshuttle.supply.getStatusText()
@@ -89,7 +89,7 @@
 	data["supplies"] = list()
 	for(var/pack in SSshuttle.supply_packs)
 		var/datum/supply_pack/P = SSshuttle.supply_packs[pack]
-		if(!is_visible_pack(usr, P.access_view , null, P.contraband) || P.hidden)
+		if(!is_visible_pack(user, P.access_view , null, P.contraband) || P.hidden)
 			continue
 		if(!data["supplies"][P.group])
 			data["supplies"][P.group] = list(

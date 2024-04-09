@@ -3,9 +3,9 @@
 	if(bodypart_flags & BP_NO_PAIN)
 		return
 
-	var/last_pain = pain
-	pain = clamp(pain + amount, 0, max_damage)
-	return pain - last_pain
+	var/last_pain = temporary_pain
+	temporary_pain = clamp(temporary_pain + amount, 0, max_damage)
+	return temporary_pain - last_pain
 
 /// Returns the amount of pain this bodypart is contributing
 /obj/item/bodypart/proc/getPain()
@@ -14,10 +14,10 @@
 
 	var/lasting_pain = 0
 	if(bodypart_flags & BP_BROKEN_BONES)
-		lasting_pain += 10
+		lasting_pain += max_damage * BROKEN_BONE_PAIN_FACTOR
 
-	else if(bodypart_flags & BP_DISLOCATED)
-		lasting_pain += 5
+	if(bodypart_flags & BP_DISLOCATED)
+		lasting_pain += max_damage * DISLOCATED_LIMB_PAIN_FACTOR
 
 	var/organ_dam = 0
 	for(var/obj/item/organ/O as anything in contained_organs)
@@ -26,4 +26,4 @@
 
 		organ_dam += min(O.damage, O.maxHealth)
 
-	return pain + lasting_pain + (0.7 * brute_dam) + (0.8 * burn_dam) + (0.3 * organ_dam)
+	return min(wound_pain + temporary_pain + lasting_pain + (0.3 * organ_dam), max_damage)

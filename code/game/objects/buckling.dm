@@ -112,8 +112,10 @@
 
 	if(anchored)
 		ADD_TRAIT(M, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
+
 	if(!length(buckled_mobs))
 		RegisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED, PROC_REF(on_set_anchored))
+
 	M.set_buckled(src)
 	buckled_mobs |= M
 	M.throw_alert(ALERT_BUCKLED, /atom/movable/screen/alert/buckled)
@@ -123,6 +125,7 @@
 	M.setDir(dir)
 
 	post_buckle_mob(M)
+	M.update_offsets()
 
 	SEND_SIGNAL(src, COMSIG_MOVABLE_BUCKLE, M, force)
 	return TRUE
@@ -149,16 +152,21 @@
 		CRASH("[buckled_mob] called unbuckle_mob() for source while having buckled as [buckled_mob.buckled].")
 	if(!force && !buckled_mob.can_buckle_to)
 		return
+
 	. = buckled_mob
+
 	buckled_mob.set_buckled(null)
 	buckled_mob.set_anchored(initial(buckled_mob.anchored))
 	buckled_mob.clear_alert(ALERT_BUCKLED)
-	buckled_mob.set_glide_size(DELAY_TO_GLIDE_SIZE(buckled_mob.total_multiplicative_slowdown()))
+	buckled_mob.set_glide_size(DELAY_TO_GLIDE_SIZE(buckled_mob.total_slowdown()))
 	buckled_mobs -= buckled_mob
+
 	if(anchored)
 		REMOVE_TRAIT(buckled_mob, TRAIT_NO_FLOATING_ANIM, BUCKLED_TRAIT)
+
 	if(!length(buckled_mobs))
 		UnregisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED)
+
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UNBUCKLE, buckled_mob, force)
 
 	if(can_fall)
@@ -166,6 +174,7 @@
 			buckled_mob.zFall()
 
 	post_unbuckle_mob(.)
+	buckled_mob.update_offsets()
 
 	if(!QDELETED(buckled_mob) && !buckled_mob.currently_z_moving && isturf(buckled_mob.loc)) // In the case they unbuckled to a flying movable midflight.
 		buckled_mob.zFall()
@@ -246,7 +255,7 @@
 		return FALSE
 
 	// If the buckle requires restraints, make sure the target is actually restrained.
-	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_RESTRAINED))
+	if(buckle_requires_restraints && !HAS_TRAIT(target, TRAIT_ARMS_RESTRAINED))
 		return FALSE
 
 	//If buckling is forbidden for the target, cancel

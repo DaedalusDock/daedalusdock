@@ -242,7 +242,7 @@
 	if(isnull(blood_type) || !C.dna.blood_type.is_compatible(blood_type.type))
 		C.reagents.add_reagent(/datum/reagent/toxin, removed)
 	else
-		C.blood_volume = min(C.blood_volume + round(removed, 0.1), BLOOD_VOLUME_MAX_LETHAL)
+		C.adjustBloodVolume(round(removed, 0.1))
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
 	for(var/datum/disease/strain as anything in data?["viruses"])
@@ -1103,13 +1103,13 @@
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 		ADD_TRAIT(C, TRAIT_STUNRESISTANCE, type)
-		C.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+		C.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/pain)
 
 /datum/reagent/medicine/changelingadrenaline/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
 		REMOVE_TRAIT(C, TRAIT_SLEEPIMMUNE, type)
 		REMOVE_TRAIT(C, TRAIT_STUNRESISTANCE, type)
-		C.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
+		C.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/pain)
 		C.remove_status_effect(/datum/status_effect/dizziness)
 		C.remove_status_effect(/datum/status_effect/jitter)
 
@@ -1168,7 +1168,8 @@
 	C.adjust_drowsyness(2 * removed)
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
-		H.blood_volume = max(H.blood_volume - (10 * removed), 0)
+		H.adjustBloodVolume(-10 * removed)
+
 	if(prob(20))
 		C.losebreath += 2
 		C.adjust_timed_status_effect(2 SECONDS, /datum/status_effect/confusion, max_duration = 5 SECONDS)

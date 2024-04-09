@@ -99,7 +99,6 @@
 //air filled floors; used in atmos pressure chambers
 
 /turf/open/floor/engine/n2o
-	article = "an"
 	name = "\improper N2O floor"
 	initial_gas = ATMOSTANK_NITROUSOXIDE
 
@@ -116,12 +115,10 @@
 	initial_gas = ATMOSTANK_OXYGEN
 
 /turf/open/floor/engine/n2
-	article = "an"
 	name = "\improper N2 floor"
 	initial_gas = ATMOSTANK_NITROGEN
 
 /turf/open/floor/engine/h2
-	article = "an"
 	name = "\improper H2 floor"
 	initial_gas = ATMOSTANK_HYDROGEN
 

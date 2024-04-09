@@ -73,8 +73,8 @@
 	/// Registered owner's blood type.
 	var/blood_type = "UNSET"
 	// Images to store in the ID, based on the datacore.
-	var/icon/front_image
-	var/icon/side_image
+	var/mutable_appearance/front_image
+	var/mutable_appearance/side_image
 
 	/// The job name registered on the card (for example: Assistant). Set by trim usually.
 	var/assignment
@@ -130,7 +130,8 @@
 	return cached_flat_icon
 
 /obj/item/card/id/get_examine_string(mob/user, thats = FALSE)
-	return "[icon2html(get_cached_flat_icon(), user)] [thats? "That's ":""][get_examine_name(user)]"
+	var/that_string = gender == PLURAL ? "Those are " : "That is "
+	return "[icon2html(get_cached_flat_icon(), user)] [thats ? that_string :""][get_examine_name(user)]"
 
 /**
  * Helper proc, checks whether the ID card can hold any given set of wildcards.
@@ -472,13 +473,9 @@
 	content += "Fingerprint: [fingerprint]<br>"
 	content += "DNA Hash: [dna_hash]<br>"
 	if(front_image && side_image)
-		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=front.png height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=side.png height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"
+		content +="<td style='text-align:center; vertical-align:top'>Photo:<br><img src=\ref[front_image.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'><img src=\ref[side_image.appearance] height=128 width=128 border=4 style='image-rendering: pixelated;-ms-interpolation-mode: nearest-neighbor'></td>"
 	content += "</tr></table>"
 	content = jointext(content, null)
-
-	if(front_image && side_image)
-		user << browse_rsc(front_image, "front.png")
-		user << browse_rsc(side_image, "side.png")
 
 	var/datum/browser/popup = new(user, "idcard", name, 660, 270)
 	popup.set_content(content)
@@ -533,18 +530,15 @@
 
 /// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
 /obj/item/card/id/proc/set_icon(datum/data/record/R, mutable_appearance/mob_appearance)
-	set waitfor = FALSE
 	if(ismob(mob_appearance))
 		mob_appearance = new(mob_appearance)
 
-	CHECK_TICK //Lots of GFI calls happen at once during roundstart, stagger them out a bit
 	if(R)
-		var/obj/item/photo/side = R.get_side_photo()
-		CHECK_TICK
-		var/obj/item/photo/front = R.get_front_photo()
+		side_image = new(R.fields["character_appearance"])
+		side_image.dir = WEST
+		front_image = new(side_image)
+		front_image.dir = SOUTH
 
-		side_image = side.picture.picture_image
-		front_image = front.picture.picture_image
 	else
 		if(!mob_appearance)
 			var/mob/M = src
@@ -553,9 +547,14 @@
 			if(!M)
 				return
 			mob_appearance = new(M)
-		front_image = getFlatIcon(mob_appearance, WEST)
-		CHECK_TICK
-		side_image = getFlatIcon(mob_appearance, SOUTH)
+
+		remove_non_canon_overlays(mob_appearance)
+
+		mob_appearance.dir = SOUTH
+		front_image = mob_appearance
+
+		side_image = new(front_image)
+		side_image.dir = WEST
 
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()

@@ -499,11 +499,18 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Can this organ be revived from the dead?
 /obj/item/organ/proc/can_recover()
+	if(maxHealth < 0)
+		return FALSE
+
 	// You can always repair a cyber organ
 	if((organ_flags & ORGAN_SYNTHETIC))
 		return TRUE
 
-	return ((maxHealth > 0) && (!(organ_flags & ORGAN_DEAD) || time_of_death >= (world.time - ORGAN_RECOVERY_THRESHOLD)))
+	if(organ_flags & ORGAN_DEAD)
+		if(world.time >= (time_of_death + ORGAN_RECOVERY_THRESHOLD))
+			return FALSE
+
+	return TRUE
 
 /// Called by Insert() if the organ is vital and the target is dead.
 /obj/item/organ/proc/attempt_vital_organ_revival(mob/living/carbon/human/owner)

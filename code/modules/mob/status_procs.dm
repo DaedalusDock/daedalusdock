@@ -43,25 +43,31 @@
 		if(CONSCIOUS)
 			if(HAS_TRAIT(src, TRAIT_BLIND) || eye_blind)
 				throw_alert(ALERT_BLIND, /atom/movable/screen/alert/blind)
-				do_set_blindness(TRUE)
+				do_set_blindness(BLIND_PHYSICAL)
 			else
-				do_set_blindness(FALSE)
+				do_set_blindness(BLIND_NOT_BLIND)
 		if(UNCONSCIOUS)
-			do_set_blindness(TRUE)
+			do_set_blindness(BLIND_SLEEPING)
 		if(DEAD)
-			do_set_blindness(FALSE)
-
+			do_set_blindness(BLIND_NOT_BLIND)
 
 ///Proc that handles adding and removing the blindness overlays.
-/mob/proc/do_set_blindness(now_blind)
-	if(now_blind)
-		overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
-		// You are blind why should you be able to make out details like color, only shapes near you
-		add_client_colour(/datum/client_colour/monochrome/blind)
-	else
-		clear_alert(ALERT_BLIND)
-		clear_fullscreen("blind")
-		remove_client_colour(/datum/client_colour/monochrome/blind)
+/mob/proc/do_set_blindness(blindness_level)
+	switch(blindness_level)
+		if(BLIND_SLEEPING)
+			overlay_fullscreen("completely_blind", /atom/movable/screen/fullscreen/blind/blinder)
+			// You are blind why should you be able to make out details like color, only shapes near you
+			add_client_colour(/datum/client_colour/monochrome/blind)
+		if(BLIND_PHYSICAL)
+			clear_fullscreen("completely_blind")
+			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
+			// You are blind why should you be able to make out details like color, only shapes near you
+			add_client_colour(/datum/client_colour/monochrome/blind)
+		else
+			clear_alert(ALERT_BLIND)
+			clear_fullscreen("completely_blind")
+			clear_fullscreen("blind")
+			remove_client_colour(/datum/client_colour/monochrome/blind)
 
 
 /**

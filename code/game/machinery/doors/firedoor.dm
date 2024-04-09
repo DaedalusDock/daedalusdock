@@ -10,7 +10,7 @@
 	icon_state = "door_open"
 	opacity = FALSE
 	density = FALSE
-	max_integrity = 300
+	max_integrity = 50
 	resistance_flags = FIRE_PROOF
 	heat_proof = TRUE
 	glass = FALSE
@@ -411,7 +411,7 @@
 	if(!(border_dir == dir)) //Make sure looking at appropriate border
 		return TRUE
 
-/obj/machinery/door/firedoor/border_only/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
+/obj/machinery/door/firedoor/border_only/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	return !density || (dir != to_dir)
 
 /obj/machinery/door/firedoor/border_only/proc/on_exit(datum/source, atom/movable/leaving, direction)

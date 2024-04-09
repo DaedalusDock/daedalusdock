@@ -92,7 +92,7 @@
 /mob/living/proc/update_turf_movespeed(turf/open/T)
 	if(isopenturf(T))
 		if(T.slowdown != current_turf_slowdown)
-			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown, multiplicative_slowdown = T.slowdown)
+			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown, slowdown = T.slowdown)
 			current_turf_slowdown = T.slowdown
 	else if(current_turf_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/turf_slowdown)
@@ -116,7 +116,7 @@
 			var/obj/structure/S = pulling
 			slowdown_total += S.drag_slowdown
 
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/grabbing, multiplicative_slowdown = slowdown_total)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/grabbing, slowdown = slowdown_total)
 
 /mob/living/can_z_move(direction, turf/start, z_move_flags, mob/living/rider)
 	// Check physical climbing ability

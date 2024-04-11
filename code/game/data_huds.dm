@@ -9,11 +9,11 @@
 
 /atom/proc/add_to_all_human_data_huds()
 	for(var/datum/atom_hud/data/human/hud in GLOB.huds)
-		hud.add_to_hud(src)
+		hud.add_atom_to_hud(src)
 
 /atom/proc/remove_from_all_data_huds()
 	for(var/datum/atom_hud/data/hud in GLOB.huds)
-		hud.remove_from_hud(src)
+		hud.remove_atom_from_hud(src)
 
 /datum/atom_hud/data
 
@@ -32,12 +32,12 @@
 		return FALSE
 	return TRUE
 
-/datum/atom_hud/data/human/medical/basic/add_to_single_hud(mob/M, mob/living/carbon/H)
+/datum/atom_hud/data/human/medical/basic/add_atom_to_single_mob_hud(mob/M, mob/living/carbon/H)
 	if(check_sensors(H))
 		..()
 
 /datum/atom_hud/data/human/medical/basic/proc/update_suit_sensors(mob/living/carbon/H)
-	check_sensors(H) ? add_to_hud(H) : remove_from_hud(H)
+	check_sensors(H) ? add_atom_to_hud(H) : remove_atom_from_hud(H)
 
 /datum/atom_hud/data/human/medical/advanced
 
@@ -61,6 +61,7 @@
 	hud_icons = list(DIAG_HUD, DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_BOT_HUD, DIAG_CIRCUIT_HUD, DIAG_TRACK_HUD, DIAG_AIRLOCK_HUD, DIAG_LAUNCHPAD_HUD, DIAG_PATH_HUD)
 
 /datum/atom_hud/data/bot_path
+	uses_global_hud_category = FALSE
 	hud_icons = list(DIAG_PATH_HUD)
 
 /datum/atom_hud/abductor
@@ -72,12 +73,13 @@
 /datum/atom_hud/ai_detector
 	hud_icons = list(AI_DETECT_HUD)
 
-/datum/atom_hud/ai_detector/add_hud_to(mob/M)
+/datum/atom_hud/ai_detector/show_to(mob/M)
 	..()
-	if(M && (hudusers.len == 1))
-		for(var/V in GLOB.aiEyes)
-			var/mob/camera/ai_eye/E = V
-			E.update_ai_detect_hud()
+	if(!M || hud_users.len != 1)
+		return
+
+	for(var/mob/camera/ai_eye/eye as anything in GLOB.aiEyes)
+		eye.update_ai_detect_hud()
 
 /* MED/SEC/DIAG HUD HOOKS */
 
@@ -229,11 +231,19 @@ FAN HUDs! For identifying other fans on-sight.
 	holder.pixel_y = get_hud_pixel_y()
 	holder.icon_state = "hudfan_no"
 	var/obj/item/clothing/under/U = get_item_by_slot(ITEM_SLOT_ICLOTHING)
-	if(U)
-		if(istype(U.attached_accessory, /obj/item/clothing/accessory/mime_fan_pin))
-			holder.icon_state = "mime_fan_pin"
-		else if(istype(U.attached_accessory, /obj/item/clothing/accessory/clown_enjoyer_pin))
-			holder.icon_state = "clown_enjoyer_pin"
+
+	if(!U)
+		set_hud_image_inactive(FAN_HUD)
+		return
+
+	if(istype(U.attached_accessory, /obj/item/clothing/accessory/mime_fan_pin))
+		holder.icon_state = "mime_fan_pin"
+
+	else if(istype(U.attached_accessory, /obj/item/clothing/accessory/clown_enjoyer_pin))
+		holder.icon_state = "clown_enjoyer_pin"
+
+	set_hud_image_active(FAN_HUD)
+
 
 /***********************************************
 Security HUDs! Basic mode shows only the job.
@@ -255,19 +265,26 @@ Security HUDs! Basic mode shows only the job.
 	for(var/i in list(IMPTRACK_HUD, IMPLOYAL_HUD, IMPCHEM_HUD))
 		holder = hud_list[i]
 		holder.icon_state = null
+		set_hud_image_inactive(i)
+
 	for(var/obj/item/implant/I in implants)
 		if(istype(I, /obj/item/implant/tracking))
 			holder = hud_list[IMPTRACK_HUD]
 			holder.pixel_y = get_hud_pixel_y()
 			holder.icon_state = "hud_imp_tracking"
+			set_hud_image_active(IMPTRACK_HUD)
+
 		else if(istype(I, /obj/item/implant/chem))
 			holder = hud_list[IMPCHEM_HUD]
 			holder.pixel_y = get_hud_pixel_y()
 			holder.icon_state = "hud_imp_chem"
+			set_hud_image_active(IMPCHEM_HUD)
+
 	if(HAS_TRAIT(src, TRAIT_MINDSHIELD))
 		holder = hud_list[IMPLOYAL_HUD]
 		holder.pixel_y = get_hud_pixel_y()
 		holder.icon_state = "hud_imp_loyal"
+		set_hud_image_active(IMPLOYAL_HUD)
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
 	var/image/holder = hud_list[WANTED_HUD]
@@ -276,23 +293,27 @@ Security HUDs! Basic mode shows only the job.
 	if(perpname && GLOB.data_core)
 		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
 		if(R)
+			var/has_criminal_entry = TRUE
 			switch(R.fields["criminal"])
 				if(CRIMINAL_WANTED)
 					holder.icon_state = "hudwanted"
-					return
 				if(CRIMINAL_INCARCERATED)
 					holder.icon_state = "hudincarcerated"
-					return
 				if(CRIMINAL_SUSPECT)
 					holder.icon_state = "hudsuspected"
-					return
 				if(CRIMINAL_PAROLE)
 					holder.icon_state = "hudparolled"
-					return
 				if(CRIMINAL_DISCHARGED)
 					holder.icon_state = "huddischarged"
-					return
+				else
+					has_criminal_entry = FALSE
+
+			if(has_criminal_entry)
+				set_hud_image_active(WANTED_HUD)
+				return
+
 	holder.icon_state = null
+	set_hud_image_inactive(WANTED_HUD)
 
 /***********************************************
 Diagnostic HUDs!
@@ -371,10 +392,14 @@ Diagnostic HUDs!
 	holder.pixel_y = get_hud_pixel_y()
 	if(!shell) //Not an AI shell
 		holder.icon_state = null
-	else if(deployed) //AI shell in use by an AI
+		set_hud_image_inactive(DIAG_TRACK_HUD)
+		return
+
+	if(deployed) //AI shell in use by an AI
 		holder.icon_state = "hudtrackingai"
 	else //Empty AI shell
 		holder.icon_state = "hudtracking"
+	set_hud_image_active(DIAG_TRACK_HUD)
 
 //AI side tracking of AI shell control
 /mob/living/silicon/ai/proc/diag_hud_set_deployed() //Shows tracking beacons on the mech
@@ -382,8 +407,10 @@ Diagnostic HUDs!
 	holder.pixel_y = get_hud_pixel_y()
 	if(!deployed_shell)
 		holder.icon_state = null
+		set_hud_image_inactive(DIAG_TRACK_HUD)
 	else //AI is currently controlling a shell
 		holder.icon_state = "hudtrackingai"
+		set_hud_image_active(DIAG_TRACK_HUD)
 
 /*~~~~~~~~~~~~~~~~~~~~
 	BIG STOMPY MECHS
@@ -407,11 +434,16 @@ Diagnostic HUDs!
 /obj/vehicle/sealed/mecha/proc/diag_hud_set_mechstat()
 	var/image/holder = hud_list[DIAG_STAT_HUD]
 	holder.pixel_y = get_hud_pixel_y()
-	holder.icon_state = null
 	if(internal_damage)
 		holder.icon_state = "hudwarn"
+		set_hud_image_active(DIAG_STAT_HUD)
+		return
 
-/obj/vehicle/sealed/mecha/proc/diag_hud_set_mechtracking() //Shows tracking beacons on the mech
+	holder.icon_state = null
+	set_hud_image_inactive(DIAG_STAT_HUD)
+
+///Shows tracking beacons on the mech
+/obj/vehicle/sealed/mecha/proc/diag_hud_set_mechtracking()
 	var/image/holder = hud_list[DIAG_TRACK_HUD]
 	holder.pixel_y = get_hud_pixel_y()
 	var/new_icon_state //This var exists so that the holder's icon state is set only once in the event of multiple mech beacons.
@@ -475,8 +507,10 @@ Diagnostic HUDs!
 	Airlocks!
 ~~~~~~~~~~~~~*/
 /obj/machinery/door/airlock/proc/diag_hud_set_electrified()
+	if(secondsElectrified == MACHINE_NOT_ELECTRIFIED)
+		set_hud_image_inactive(DIAG_AIRLOCK_HUD)
+		return
+
 	var/image/holder = hud_list[DIAG_AIRLOCK_HUD]
-	if(secondsElectrified != MACHINE_NOT_ELECTRIFIED)
-		holder.icon_state = "electrified"
-	else
-		holder.icon_state = ""
+	holder.icon_state = "electrified"
+	set_hud_image_active(DIAG_AIRLOCK_HUD)

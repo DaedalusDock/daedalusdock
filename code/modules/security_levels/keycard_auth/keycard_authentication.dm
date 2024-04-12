@@ -34,7 +34,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/keycard_auth, 26)
 /obj/machinery/keycard_auth/ui_state(mob/user)
 	return GLOB.physical_state
 
-/obj/machinery/keycard_auth/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/keycard_auth/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "KeycardAuth", name)

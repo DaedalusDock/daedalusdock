@@ -1,5 +1,5 @@
 // Opens TGUI interface
-/mob/living/silicon/pai/ui_interact(mob/user, datum/tgui/ui)
+/mob/living/silicon/pai/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PaiInterface", name)
@@ -36,7 +36,7 @@
 	return data
 
 // Actions received from TGUI
-/mob/living/silicon/pai/ui_act(action, list/params, datum/tgui/ui)
+/mob/living/silicon/pai/ui_act(action, list/params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

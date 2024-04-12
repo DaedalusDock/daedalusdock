@@ -13,7 +13,7 @@
 /datum/spawners_menu/ui_state(mob/user)
 	return GLOB.observer_state
 
-/datum/spawners_menu/ui_interact(mob/user, datum/tgui/ui)
+/datum/spawners_menu/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SpawnersMenu")
@@ -46,7 +46,7 @@
 			data["spawners"] += list(this)
 	return data
 
-/datum/spawners_menu/ui_act(action, params, datum/tgui/ui)
+/datum/spawners_menu/ui_act(action, params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

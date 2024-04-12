@@ -22,7 +22,7 @@
 		return UI_CLOSE
 	return UI_INTERACTIVE
 
-/datum/cellular_emporium/ui_interact(mob/user, datum/tgui/ui)
+/datum/cellular_emporium/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CellularEmporium", name)

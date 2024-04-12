@@ -246,7 +246,7 @@
 		stored_id_card = null
 		update_appearance(UPDATE_ICON)
 
-/obj/machinery/pdapainter/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/pdapainter/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PaintingMachine", name)

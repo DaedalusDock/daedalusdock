@@ -190,7 +190,7 @@
 	toggle_power()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/space_heater/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/space_heater/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SpaceHeater", name)

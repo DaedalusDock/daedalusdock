@@ -270,7 +270,7 @@ GLOBAL_VAR(station_nuke_source)
 
 	ui_mode = NUKEUI_AWAIT_TIMER
 
-/obj/machinery/nuclearbomb/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/nuclearbomb/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "NuclearBomb", name)

@@ -887,7 +887,7 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 	say_verb = owner.verb_say
 	say_span = owner.speech_span
 
-/obj/machinery/ai_voicechanger/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/ai_voicechanger/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AiVoiceChanger")

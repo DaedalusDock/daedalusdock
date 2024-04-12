@@ -321,7 +321,7 @@
 		var/obj/machinery/piratepad/pad = locate() in range(4, src)
 		pad_ref = WEAKREF(pad)
 
-/obj/machinery/computer/piratepad_control/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/piratepad_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

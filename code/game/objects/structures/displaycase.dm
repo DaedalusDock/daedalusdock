@@ -417,7 +417,7 @@
 	if(!broken && !open)
 		. += "[initial(icon_state)]_overlay"
 
-/obj/structure/displaycase/forsale/ui_interact(mob/user, datum/tgui/ui)
+/obj/structure/displaycase/forsale/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Vendatray", name)

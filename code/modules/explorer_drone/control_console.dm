@@ -6,7 +6,7 @@
 	/// Have we lost contact with the drone without disconnecting. Unset on user confirmation.
 	var/signal_lost = FALSE
 
-/obj/machinery/computer/exodrone_control_console/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/exodrone_control_console/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

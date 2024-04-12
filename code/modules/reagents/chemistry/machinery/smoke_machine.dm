@@ -115,7 +115,7 @@
 	reagents.clear_reagents()
 	return ..()
 
-/obj/machinery/smoke_machine/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/smoke_machine/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SmokeMachine", name)

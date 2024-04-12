@@ -274,7 +274,7 @@
 	else
 		. += mutable_appearance(icon, "[base_icon_state]-cables")
 
-/obj/machinery/atmospherics/components/binary/tank_compressor/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/atmospherics/components/binary/tank_compressor/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

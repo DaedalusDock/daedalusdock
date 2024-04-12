@@ -121,7 +121,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		save_preferences()
 	save_character() //let's save this new random character so it doesn't keep generating new ones.
 
-/datum/preferences/ui_interact(mob/user, datum/tgui/ui)
+/datum/preferences/ui_interact(mob/user, datum/tgui/managed/ui)
 	// If you leave and come back, re-register the character preview
 	if (!isnull(character_preview_view) && !(character_preview_view in user.client?.screen))
 		user.client?.register_map_obj(character_preview_view)
@@ -198,7 +198,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	return assets
 
-/datum/preferences/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/preferences/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if (.)
 		return

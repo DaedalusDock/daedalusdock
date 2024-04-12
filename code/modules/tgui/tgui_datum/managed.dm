@@ -6,15 +6,23 @@
 //Note to self, Hire a lawyer and figure out the legality of my changes here -Francinum, 4/11/24
 
 /*
- * TGUI Managed UI Holder. Impliments the UI Holder Interface, with support for Managed (Inferno/React/Etc.) TGUI Interfaces.
+ * TGUI Compiled UI Holder. Impliments the UI Holder Interface, with support for Compiled (Inferno/React/Etc.) TGUI Interfaces.
  */
 
 /**
- * Managed tgui datum (represents a UI).
+ * Compiled tgui datum (represents a UI).
  */
 /datum/tgui/managed
 
 	allow_suspend = TRUE
+	/// The interface (template) to be used for this UI.
+	var/interface
+	/// Key that is used for remembering the window geometry.
+	var/window_key
+	/// Deprecated: Window size.
+	var/window_size
+
+/* Moved to base type, Refactor out later.
 	/// The mob who opened/is using the UI.
 	// var/mob/user
 	/// The object which owns the UI.
@@ -23,12 +31,8 @@
 	// var/title
 	/// The window_id for browse() and onclose().
 	// var/datum/tgui_window/window
-	/// Key that is used for remembering the window geometry.
-	var/window_key
-	/// Deprecated: Window size.
-	var/window_size
-	/// The interface (template) to be used for this UI.
-	var/interface
+
+
 	/// Update the UI every MC tick.
 	// var/autoupdate = TRUE
 	/// If the UI has been initialized yet.
@@ -44,6 +48,7 @@
 
 	/// Rate limit client refreshes to prevent DoS.
 	// COOLDOWN_DECLARE(refresh_cooldown)
+*/
 
 /**
  * public
@@ -183,8 +188,8 @@
  * ..() == TRUE means that a ui_act message has been passed to the source object.
  *
  */
-/datum/tgui/managed/proc/on_message(type, list/payload, list/href_list)
-	if(..())
+/datum/tgui/managed/on_message(type, list/payload, list/href_list)
+	if(!..())
 		return
 	switch(type)
 		if("ready")

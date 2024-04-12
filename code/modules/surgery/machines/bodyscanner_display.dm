@@ -62,7 +62,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/body_scan_display, 32)
 		updateUsrDialog()
 		return TRUE
 
-/obj/machinery/body_scan_display/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/body_scan_display/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	var/datum/browser/popup = new(user, "bodyscanner", "Body Scanner", 600, 800)
 	popup.set_content(get_content())

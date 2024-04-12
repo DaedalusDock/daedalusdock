@@ -41,7 +41,7 @@
 		return
 	target_mob = target
 
-/datum/select_equipment/ui_interact(mob/user, datum/tgui/ui)
+/datum/select_equipment/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SelectEquipment", "Select Equipment")

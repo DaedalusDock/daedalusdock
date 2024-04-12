@@ -30,7 +30,7 @@
 	user.client?.screen -= ui_view.plane_masters
 	user.client?.clear_map(ui_view.assigned_map)
 
-/obj/vehicle/sealed/mecha/ui_interact(mob/user, datum/tgui/ui)
+/obj/vehicle/sealed/mecha/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Mecha", name, ui_x, ui_y)
@@ -196,7 +196,7 @@
 		))
 	return data
 
-/obj/vehicle/sealed/mecha/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/obj/vehicle/sealed/mecha/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

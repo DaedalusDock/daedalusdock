@@ -245,7 +245,7 @@
 /obj/item/airlock_painter/decal/proc/update_decal_path()
 	stored_decal_total = get_decal_path(stored_decal, stored_color, stored_dir)
 
-/obj/item/airlock_painter/decal/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/airlock_painter/decal/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DecalPainter", name)

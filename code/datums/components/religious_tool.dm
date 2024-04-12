@@ -64,7 +64,7 @@
 		easy_access_sect.on_sacrifice(the_item,user)
 		return COMPONENT_NO_AFTERATTACK
 
-/datum/component/religious_tool/ui_interact(mob/user, datum/tgui/ui)
+/datum/component/religious_tool/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ReligiousTool")
@@ -105,7 +105,7 @@
 	data["can_sacrifice_item"] = (operation_flags & RELIGION_TOOL_SACRIFICE)
 	return data
 
-/datum/component/religious_tool/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/component/religious_tool/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	switch(action)
 		if("sect_select")

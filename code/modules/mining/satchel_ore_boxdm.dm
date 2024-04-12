@@ -54,7 +54,7 @@
 			stoplag()
 			drop = drop_location()
 
-/obj/structure/ore_box/ui_interact(mob/user, datum/tgui/ui)
+/obj/structure/ore_box/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OreBox", name)

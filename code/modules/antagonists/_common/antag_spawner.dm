@@ -28,7 +28,7 @@
 		balloon_alert(user, "already calling an apprentice!")
 		return FALSE
 
-/obj/item/antag_spawner/contract/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/antag_spawner/contract/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ApprenticeContract", name)

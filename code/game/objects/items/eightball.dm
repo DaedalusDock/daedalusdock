@@ -198,7 +198,7 @@
 /obj/item/toy/eightball/haunted/ui_state(mob/user)
 	return GLOB.observer_state
 
-/obj/item/toy/eightball/haunted/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/toy/eightball/haunted/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(!isobserver(user))
 		return
 	ui = SStgui.try_update_ui(user, src, ui)

@@ -72,7 +72,7 @@
 /obj/structure/tank_dispenser/ui_state(mob/user)
 	return GLOB.physical_state
 
-/obj/structure/tank_dispenser/ui_interact(mob/user, datum/tgui/ui)
+/obj/structure/tank_dispenser/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TankDispenser", name)

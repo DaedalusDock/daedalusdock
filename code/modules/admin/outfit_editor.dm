@@ -40,7 +40,7 @@
 	generate_dummy_lookalike(dummy_key, owner.mob)
 	unset_busy_human_dummy(dummy_key)
 
-/datum/outfit_editor/ui_interact(mob/user, datum/tgui/ui)
+/datum/outfit_editor/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OutfitEditor", OUTFIT_EDITOR_NAME)
@@ -84,7 +84,7 @@
 	return data
 
 
-/datum/outfit_editor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/outfit_editor/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	if(..())
 		return
 	. = TRUE

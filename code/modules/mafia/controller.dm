@@ -654,7 +654,7 @@
 		get_asset_datum(/datum/asset/spritesheet/mafia),
 	)
 
-/datum/mafia_controller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/mafia_controller/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
@@ -802,7 +802,7 @@
 /datum/mafia_controller/ui_state(mob/user)
 	return GLOB.always_state
 
-/datum/mafia_controller/ui_interact(mob/user, datum/tgui/ui)
+/datum/mafia_controller/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, null)
 	if(!ui)
 		ui = new(user, src, "MafiaPanel")

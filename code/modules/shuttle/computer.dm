@@ -30,7 +30,7 @@
 	UNSET_TRACKING(__TYPE__)
 	return ..()
 
-/obj/machinery/computer/shuttle/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/shuttle/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

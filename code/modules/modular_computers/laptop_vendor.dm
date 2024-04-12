@@ -209,7 +209,7 @@
 			return TRUE
 	return FALSE
 
-/obj/machinery/lapvend/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/lapvend/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(machine_stat & (BROKEN | NOPOWER | MAINT))
 		if(ui)
 			ui.close()

@@ -62,7 +62,7 @@
 	QDEL_NULL(cam_background)
 	return ..()
 
-/datum/computer_file/program/secureye/ui_interact(mob/user, datum/tgui/ui)
+/datum/computer_file/program/secureye/ui_interact(mob/user, datum/tgui/managed/ui)
 	// Update UI
 	ui = SStgui.try_update_ui(user, src, ui)
 

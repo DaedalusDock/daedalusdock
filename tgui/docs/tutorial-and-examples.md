@@ -5,7 +5,7 @@
 Basic tgui backend code consists of the following vars and procs:
 
 ```
-ui_interact(mob/user, datum/tgui/ui)
+ui_interact(mob/user, datum/tgui/managed/ui)
 ui_data(mob/user)
 ui_act(action, params)
 ui_state()
@@ -37,7 +37,7 @@ powerful interactions for embedded objects or remote access.
 Let's start with a very basic hello world.
 
 ```dm
-/obj/machinery/my_machine/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/my_machine/ui_interact(mob/user, datum/tgui/managed/ui)
   ui = SStgui.try_update_ui(user, src, ui)
   if(!ui)
     ui = new(user, src, "MyMachine")
@@ -300,7 +300,7 @@ here's what you need (note that you'll probably be forced to clean your shit up
 upon code review):
 
 ```dm
-/obj/copypasta/ui_interact(mob/user, datum/tgui/ui)
+/obj/copypasta/ui_interact(mob/user, datum/tgui/managed/ui)
   ui = SStgui.try_update_ui(user, src, ui)
   if(!ui)
     ui = new(user, src, "copypasta")

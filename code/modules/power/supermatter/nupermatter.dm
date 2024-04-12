@@ -469,7 +469,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	message_admins("WARN: Explosion near the Supermatter ([ADMIN_LOOKUPFLW(src)]! New EER: [power].")
 
 // SupermatterMonitor UI for ghosts only. Inherited attack_ghost will call this.
-/obj/machinery/power/supermatter/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/power/supermatter/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(!isobserver(user))
 		return FALSE
 	. = ..()

@@ -58,7 +58,7 @@
 	category = DEFAULT_SEARCH_CATAGORY
 	INVOKE_ASYNC(src, PROC_REF(update_db_info))
 
-/obj/machinery/computer/libraryconsole/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/libraryconsole/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -715,7 +715,7 @@
 	if(gone == held_book)
 		held_book = null
 
-/obj/machinery/libraryscanner/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/libraryscanner/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LibraryScanner")
@@ -733,7 +733,7 @@
 
 	return data
 
-/obj/machinery/libraryscanner/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+/obj/machinery/libraryscanner/ui_act(action, params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

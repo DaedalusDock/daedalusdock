@@ -153,7 +153,7 @@
 /obj/item/toy/crayon/ui_state(mob/user)
 	return GLOB.hands_state
 
-/obj/item/toy/crayon/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/toy/crayon/ui_interact(mob/user, datum/tgui/managed/ui)
 	// tgui is a plague upon this codebase
 	// no u
 	ui = SStgui.try_update_ui(user, src, ui)

@@ -84,7 +84,7 @@
 		SSnetworks.add_log("Relay [uid]: Health check normal, Servicing requests.")
 	..()
 
-/obj/machinery/ntnet_relay/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/ntnet_relay/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "NtnetRelay")

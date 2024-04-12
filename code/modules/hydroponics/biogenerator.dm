@@ -285,7 +285,7 @@
 		get_asset_datum(/datum/asset/spritesheet/biogenerator_designs),
 	)
 
-/obj/machinery/biogenerator/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/biogenerator/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Biogenerator", name)

@@ -16,7 +16,7 @@
 /datum/paintings_manager/ui_close(mob/user)
 	qdel(src)
 
-/datum/paintings_manager/ui_interact(mob/user, datum/tgui/ui)
+/datum/paintings_manager/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PaintingAdminPanel")
@@ -31,7 +31,7 @@
 	. = list()
 	.["paintings"] = SSpersistent_paintings.painting_ui_data(filter = NONE, admin = TRUE)
 
-/datum/paintings_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/paintings_manager/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	if(..())
 		return
 	if (!check_rights(R_ADMIN))

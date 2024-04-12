@@ -6,7 +6,7 @@
 	circuit = /obj/item/circuitboard/computer/accounting
 	light_color = LIGHT_COLOR_GREEN
 
-/obj/machinery/computer/accounting/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/accounting/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)

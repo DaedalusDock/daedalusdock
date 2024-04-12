@@ -137,7 +137,7 @@
 		possible_entry.set_spell_info() //loads up things for the entry that require checking spell instance.
 		entries |= possible_entry
 
-/obj/item/spellbook/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/spellbook/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Spellbook")

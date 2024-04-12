@@ -759,7 +759,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 		get_asset_datum(/datum/asset/spritesheet/vending),
 	)
 
-/obj/machinery/vending/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/vending/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Vending", name)

@@ -38,7 +38,7 @@
 	if(action == "configure")
 		interact(user)
 
-/obj/item/circuit_component/proccall/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/circuit_component/proccall/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ProcCallMenu", "ProcCall Configuration Menu")

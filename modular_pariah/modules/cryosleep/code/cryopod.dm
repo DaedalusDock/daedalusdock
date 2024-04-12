@@ -46,7 +46,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 	icon_state = "cellconsole_1"
 	return ..()
 
-/obj/machinery/computer/cryopod/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/cryopod/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return

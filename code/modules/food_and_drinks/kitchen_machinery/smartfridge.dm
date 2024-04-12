@@ -170,7 +170,7 @@
 		adjust_item_drop_location(O)
 	use_power(active_power_usage)
 
-/obj/machinery/smartfridge/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/smartfridge/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SmartVend", name)

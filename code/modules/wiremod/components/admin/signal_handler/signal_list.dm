@@ -69,14 +69,14 @@ GLOBAL_LIST_INIT(integrated_circuit_global_signal_ids, generate_global_circuit_s
 	.["global_port_types"] = GLOB.wiremod_fundamental_types
 
 
-/obj/item/circuit_component/signal_handler/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/circuit_component/signal_handler/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CircuitSignalHandler", name)
 		ui.open()
 		ui.set_autoupdate(FALSE)
 
-/obj/item/circuit_component/signal_handler/ui_act(action, list/params, datum/tgui/ui)
+/obj/item/circuit_component/signal_handler/ui_act(action, list/params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

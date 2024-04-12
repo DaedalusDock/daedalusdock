@@ -31,7 +31,7 @@
 		mat_container_flags = BREAKDOWN_FLAGS_LATHE, \
 	)
 
-/obj/machinery/component_printer/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/component_printer/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ComponentPrinter", name)
@@ -200,7 +200,7 @@
 				"categories" = categories,
 			)
 
-/obj/machinery/debug_component_printer/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/debug_component_printer/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ComponentPrinter", name)
@@ -268,7 +268,7 @@
 		mat_container_flags = BREAKDOWN_FLAGS_LATHE, \
 	)
 
-/obj/machinery/module_duplicator/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/module_duplicator/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ComponentPrinter", name)

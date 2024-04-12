@@ -66,7 +66,7 @@ SUBSYSTEM_DEF(pai)
 /datum/controller/subsystem/pai/ui_state(mob/user)
 	return GLOB.observer_state
 
-/datum/controller/subsystem/pai/ui_interact(mob/user, datum/tgui/ui)
+/datum/controller/subsystem/pai/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

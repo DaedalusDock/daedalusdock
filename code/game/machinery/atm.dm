@@ -129,7 +129,7 @@
 	authenticated_account = inserted_card.registered_account
 	return TRUE
 
-/obj/machinery/atm/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/atm/ui_interact(mob/user, datum/tgui/managed/ui)
 	var/datum/browser/popup = new(user, "atm", name, 460, 270)
 	popup.set_content(jointext(get_content(), ""))
 	popup.open()

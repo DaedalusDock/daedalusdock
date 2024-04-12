@@ -47,7 +47,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 /obj/structure/noticeboard/ui_state(mob/user)
 	return GLOB.physical_state
 
-/obj/structure/noticeboard/ui_interact(mob/user, datum/tgui/ui)
+/obj/structure/noticeboard/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "NoticeBoard", name)

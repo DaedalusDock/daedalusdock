@@ -41,6 +41,9 @@
  *
  * Open this UI (and initialize it with data).
  *
+ * This should create and assign a tgui_window datum.
+ *
+ *
  */
 /datum/tgui/proc/open()
 	CRASH("TGUI Handler of type [type] does not impliment open()")

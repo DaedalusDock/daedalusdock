@@ -414,7 +414,7 @@
 	/// Assoc list of chem ids to names, used for deciding which chems to filter when used for surgery
 	var/list/whitelist = list()
 
-/obj/item/blood_filter/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/blood_filter/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BloodFilter", name)

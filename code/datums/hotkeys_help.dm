@@ -4,7 +4,7 @@
 /datum/hotkeys_help/ui_state()
 	return GLOB.always_state
 
-/datum/hotkeys_help/ui_interact(mob/user, datum/tgui/ui)
+/datum/hotkeys_help/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "HotkeysHelp")

@@ -49,7 +49,7 @@
 	ui_interact(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/item/mod/paint/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/mod/paint/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(!editing_mod)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)

@@ -39,7 +39,7 @@
 	var/group_name = "a bunch of giant spiders"
 	var/effect_range = 3
 
-/obj/effect/fun_balloon/sentience/ui_interact(mob/user, datum/tgui/ui)
+/obj/effect/fun_balloon/sentience/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SentienceFunBalloon", name)

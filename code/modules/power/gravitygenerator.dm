@@ -249,7 +249,7 @@ GLOBAL_LIST_EMPTY(gravity_generators)
 					return
 	return ..()
 
-/obj/machinery/gravity_generator/main/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/gravity_generator/main/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GravityGenerator", name)

@@ -1458,7 +1458,7 @@
 	else if(istype(note, /obj/item/photo))
 		return "photo_[frame_state]"
 
-/obj/machinery/door/airlock/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/door/airlock/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AiAirlock", name)

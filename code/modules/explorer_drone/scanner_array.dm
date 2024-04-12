@@ -82,7 +82,7 @@ GLOBAL_LIST_INIT(scan_conditions,init_scan_conditions())
 	/// Site we're configuring targeted scans for.
 	var/datum/exploration_site/selected_site
 
-/obj/machinery/computer/exoscanner_control/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/exoscanner_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

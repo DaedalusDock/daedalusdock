@@ -118,7 +118,7 @@
 	else if(on && holding && direction == PUMP_OUT)
 		investigate_log("[key_name(user)] started a transfer into [holding].", INVESTIGATE_ATMOS)
 
-/obj/machinery/portable_atmospherics/pump/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/portable_atmospherics/pump/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortablePump", name)

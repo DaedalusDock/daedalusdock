@@ -96,7 +96,7 @@ GLOBAL_LIST_EMPTY(GPS_list)
 		to_chat(user, span_notice("[parent] is now tracking, and visible to other GPS devices."))
 		tracking = TRUE
 
-/datum/component/gps/item/ui_interact(mob/user, datum/tgui/ui)
+/datum/component/gps/item/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(emped)
 		to_chat(user, span_hear("[parent] fizzles weakly."))
 		return

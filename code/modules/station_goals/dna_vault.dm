@@ -117,7 +117,7 @@
 	UNSET_TRACKING(__TYPE__)
 	. = ..()
 
-/obj/machinery/dna_vault/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/dna_vault/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		roll_powers(user)

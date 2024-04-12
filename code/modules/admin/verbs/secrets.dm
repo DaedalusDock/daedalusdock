@@ -30,7 +30,7 @@ GLOBAL_DATUM(everyone_a_traitor, /datum/everyone_is_a_traitor_controller)
 /datum/secrets_menu/ui_close()
 	qdel(src)
 
-/datum/secrets_menu/ui_interact(mob/user, datum/tgui/ui)
+/datum/secrets_menu/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Secrets")

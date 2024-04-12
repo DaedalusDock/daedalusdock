@@ -173,7 +173,7 @@
  *
  * optional ui /datum/tgui
  */
-/datum/tgui_window/proc/acquire_lock(datum/tgui/ui)
+/datum/tgui_window/proc/acquire_lock(datum/tgui/managed/ui)
 	locked = TRUE
 	locked_by = ui
 

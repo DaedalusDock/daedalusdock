@@ -122,7 +122,7 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 
 	return TRUE
 
-/obj/machinery/computer/atmos_control/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/atmos_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

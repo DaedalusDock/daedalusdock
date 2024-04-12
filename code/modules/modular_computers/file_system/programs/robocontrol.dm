@@ -93,7 +93,7 @@
 
 	return data
 
-/datum/computer_file/program/robocontrol/ui_act(action, list/params, datum/tgui/ui)
+/datum/computer_file/program/robocontrol/ui_act(action, list/params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

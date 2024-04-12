@@ -202,7 +202,7 @@
 		generate_network_log("Connection closed -- Program ID: [filename] User:[ID?"[ID.registered_name]":"None"]")
 	return 1
 
-/datum/computer_file/program/ui_interact(mob/user, datum/tgui/ui)
+/datum/computer_file/program/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui && tgui_id)
 		ui = new(user, src, tgui_id, filedesc)
@@ -214,7 +214,7 @@
 // Calls beginning with "PRG_" are reserved for programs handling.
 // Calls beginning with "PC_" are reserved for computer handling (by whatever runs the program)
 // ALWAYS INCLUDE PARENT CALL ..() OR DIE IN FIRE.
-/datum/computer_file/program/ui_act(action,list/params,datum/tgui/ui)
+/datum/computer_file/program/ui_act(action,list/params,datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

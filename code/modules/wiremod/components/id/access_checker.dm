@@ -66,7 +66,7 @@
 		return
 	interact(user)
 
-/obj/item/circuit_component/compare/access/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/circuit_component/compare/access/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CircuitAccessChecker", display_name)

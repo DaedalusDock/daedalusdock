@@ -105,7 +105,7 @@
 		recharge_port.recharge_console = null
 	return ..()
 
-/obj/machinery/computer/mech_bay_power_console/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/mech_bay_power_console/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

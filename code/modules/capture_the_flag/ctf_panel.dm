@@ -5,7 +5,7 @@ GLOBAL_DATUM_INIT(ctf_panel, /datum/ctf_panel, new())
 /datum/ctf_panel/ui_state(mob/user)
 	return GLOB.observer_state
 
-/datum/ctf_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/ctf_panel/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CTFPanel")
@@ -40,7 +40,7 @@ GLOBAL_DATUM_INIT(ctf_panel, /datum/ctf_panel, new())
 	return data
 
 
-/datum/ctf_panel/ui_act(action, params, datum/tgui/ui)
+/datum/ctf_panel/ui_act(action, params, datum/tgui/managed/ui)
 	.= ..()
 	if(.)
 		return

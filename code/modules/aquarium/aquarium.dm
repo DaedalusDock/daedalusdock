@@ -218,7 +218,7 @@
 					inside.forceMove(get_turf(src))
 				to_chat(user,span_notice("You take out [inside] from [src]."))
 
-/obj/structure/aquarium/ui_interact(mob/user, datum/tgui/ui)
+/obj/structure/aquarium/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

@@ -341,7 +341,7 @@
 /obj/item/launchpad_remote/ui_state(mob/user)
 	return GLOB.inventory_state
 
-/obj/item/launchpad_remote/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/launchpad_remote/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LaunchpadRemote")

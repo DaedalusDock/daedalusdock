@@ -227,7 +227,7 @@
 /obj/machinery/power/port_gen/pacman/attack_paw(mob/user, list/modifiers)
 	interact(user)
 
-/obj/machinery/power/port_gen/pacman/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/power/port_gen/pacman/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortableGenerator", name)

@@ -301,7 +301,7 @@
 	combined_gasmix = null
 	return ..()
 
-/obj/machinery/research/anomaly_refinery/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/research/anomaly_refinery/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

@@ -313,7 +313,7 @@
 	return
 
 
-/obj/machinery/power/smes/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/power/smes/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Smes", name)

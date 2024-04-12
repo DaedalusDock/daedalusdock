@@ -35,7 +35,7 @@
 	for(var/datum/orderable_item/item as anything in grocery_list)
 		. += grocery_list[item] * item.cost_per_order
 
-/obj/machinery/computer/chef_order/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/chef_order/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

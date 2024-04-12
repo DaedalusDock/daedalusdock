@@ -25,7 +25,7 @@
 /datum/colorblind_tester/ui_state(mob/user)
 	return GLOB.admin_state
 
-/datum/colorblind_tester/ui_interact(mob/user, datum/tgui/ui)
+/datum/colorblind_tester/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ColorBlindTester")
@@ -37,7 +37,7 @@
 	data["selected"] = selected_type
 	return data
 
-/datum/colorblind_tester/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/colorblind_tester/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

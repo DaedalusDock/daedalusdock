@@ -6,13 +6,13 @@
 /datum/crew_manifest/ui_status(mob/user, datum/ui_state/state)
 	return (isnewplayer(user) || isobserver(user) || isAI(user) || ispAI(user)) ? UI_INTERACTIVE : UI_CLOSE
 
-/datum/crew_manifest/ui_interact(mob/user, datum/tgui/ui)
+/datum/crew_manifest/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "CrewManifest")
 		ui.open()
 
-/datum/crew_manifest/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/crew_manifest/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

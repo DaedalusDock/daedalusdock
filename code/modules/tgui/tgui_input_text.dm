@@ -136,7 +136,7 @@
 	while (!entry && !closed && !QDELETED(src))
 		stoplag(1)
 
-/datum/tgui_input_text/ui_interact(mob/user, datum/tgui/ui)
+/datum/tgui_input_text/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TextInputModal")

@@ -141,7 +141,7 @@
 			var/atom/movable/screen/inventory/hand/H = over_object
 			M.putItemFromInventoryInHandIfPossible(src, H.held_index)
 
-/obj/item/storage/portable_chem_mixer/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/storage/portable_chem_mixer/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortableChemMixer", name)

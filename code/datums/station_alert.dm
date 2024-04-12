@@ -24,7 +24,7 @@
 	QDEL_NULL(listener)
 	return ..()
 
-/datum/station_alert/ui_interact(mob/user, datum/tgui/ui)
+/datum/station_alert/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "StationAlertConsole", title)

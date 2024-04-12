@@ -85,7 +85,7 @@ SUBSYSTEM_DEF(pai)
 	data["name"] = candidate.name
 	return data
 
-/datum/controller/subsystem/pai/ui_act(action, list/params, datum/tgui/ui)
+/datum/controller/subsystem/pai/ui_act(action, list/params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

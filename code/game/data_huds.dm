@@ -199,8 +199,6 @@ Medical HUD! Basic mode needs suit sensors on.
 
 	if(HAS_TRAIT(src, TRAIT_XENO_HOST))
 		new_state = "hudxeno"
-	if(undergoing_cardiac_arrest() && stat == UNCONSCIOUS)
-		new_state = "huddefib"
 	else if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		new_state = "huddead"
 	else

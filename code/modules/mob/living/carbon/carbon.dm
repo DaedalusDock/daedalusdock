@@ -505,9 +505,9 @@
 		return
 
 	set_health(round(maxHealth - getBrainLoss(), DAMAGE_PRECISION))
+	update_damage_hud()
+	update_health_hud()
 	update_stat()
-	med_hud_set_health()
-	#warn REMOVE
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
 /mob/living/carbon/on_stamina_update()
@@ -775,17 +775,14 @@
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)
 		return
+
 	if(stat != DEAD)
 		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 			set_stat(UNCONSCIOUS)
 		else
 			set_stat(CONSCIOUS)
 
-	update_damage_hud()
-	update_health_hud()
-	update_stamina_hud()
 	med_hud_set_status()
-
 
 //called when we get cuffed/uncuffed
 /mob/living/carbon/proc/update_handcuffed()

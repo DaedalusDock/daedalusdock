@@ -22,8 +22,7 @@
 	prepare_data_huds()
 
 /mob/living/proc/prepare_data_huds()
-	med_hud_set_health()
-	med_hud_set_status()
+	update_med_hud()
 
 /mob/living/Destroy()
 	QDEL_NULL(z_eye)
@@ -587,8 +586,7 @@
 		return
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss())
 	update_stat()
-	med_hud_set_health()
-	med_hud_set_status()
+	update_med_hud()
 	update_health_hud()
 
 /mob/living/update_health_hud()

@@ -52,8 +52,6 @@
 	var/miming = FALSE // Mime's vow of silence
 
 	var/list/antag_datums
-	///this mind's ANTAG_HUD should have this icon_state
-	var/antag_hud_icon_state = null
 	///this mind's antag HUD
 	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null
 

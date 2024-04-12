@@ -49,9 +49,6 @@
 /datum/atom_hud/data/human/security/advanced
 	hud_icons = list(ID_HUD, IMPTRACK_HUD, IMPLOYAL_HUD, IMPCHEM_HUD, WANTED_HUD)
 
-/datum/atom_hud/data/human/fan_hud
-	hud_icons = list(FAN_HUD)
-
 /datum/atom_hud/data/diagnostic
 
 /datum/atom_hud/data/diagnostic/basic
@@ -166,9 +163,25 @@ Medical HUD! Basic mode needs suit sensors on.
 	var/datum/atom_hud/data/human/medical/basic/B = GLOB.huds[DATA_HUD_MEDICAL_BASIC]
 	B.update_suit_sensors(src)
 
+/// Updates both the Health and Status huds. ATOM HUDS, NOT SCREEN HUDS.
+/mob/living/proc/update_med_hud()
+	med_hud_set_health()
+	med_hud_set_status()
+
 //called when a living mob changes health
 /mob/living/proc/med_hud_set_health()
 	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(src)]", get_hud_pixel_y())
+
+/mob/living/carbon/med_hud_set_health()
+	var/new_state = ""
+	if(stat == DEAD || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		new_state = "0"
+	else if(undergoing_cardiac_arrest())
+		new_state = "flatline"
+	else
+		new_state = "[pulse()]"
+
+	set_hud_image_vars(HEALTH_HUD, new_state, get_hud_pixel_y())
 
 //called when a carbon changes stat, virus or XENO_HOST
 /mob/living/proc/med_hud_set_status()
@@ -211,29 +224,6 @@ Medical HUD! Basic mode needs suit sensors on.
 
 	set_hud_image_vars(STATUS_HUD, new_state, get_hud_pixel_y())
 
-
-/***********************************************
-FAN HUDs! For identifying other fans on-sight.
-************************************************/
-
-//HOOKS
-
-/mob/living/carbon/human/proc/fan_hud_set_fandom()
-	var/obj/item/clothing/under/U = get_item_by_slot(ITEM_SLOT_ICLOTHING)
-	if(!U)
-		set_hud_image_inactive(FAN_HUD)
-		set_hud_image_vars(FAN_HUD, "hudfan_no", get_hud_pixel_y())
-		return
-
-	if(istype(U.attached_accessory, /obj/item/clothing/accessory/mime_fan_pin))
-		set_hud_image_vars(FAN_HUD, "mime_fan_pin", get_hud_pixel_y())
-
-	else if(istype(U.attached_accessory, /obj/item/clothing/accessory/clown_enjoyer_pin))
-		set_hud_image_vars(FAN_HUD, "clown_enjoyer_pin", get_hud_pixel_y())
-
-	set_hud_image_active(FAN_HUD)
-
-
 /***********************************************
 Security HUDs! Basic mode shows only the job.
 ************************************************/
@@ -246,7 +236,7 @@ Security HUDs! Basic mode shows only the job.
 		sechud_icon_state = "hudno_id"
 
 	sec_hud_set_security_status()
-	set_hud_image_vars(FAN_HUD, "sechud_icon_state", get_hud_pixel_y())
+	set_hud_image_vars(ID_HUD, sechud_icon_state, get_hud_pixel_y())
 
 /mob/living/proc/sec_hud_set_implants()
 	for(var/i in list(IMPTRACK_HUD, IMPLOYAL_HUD, IMPCHEM_HUD))

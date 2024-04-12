@@ -33,7 +33,12 @@
 	light_on = FALSE
 	light_outer_range = 8
 	generic_canpass = FALSE
-	hud_possible = list(DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_TRACK_HUD)
+	hud_possible = list(
+		DIAG_STAT_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_BATT_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_MECH_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_TRACK_HUD = 'icons/mob/huds/hud.dmi'
+	)
 	///What direction will the mech face when entered/powered on? Defaults to South.
 	var/dir_in = SOUTH
 	///How much energy the mech will consume each time it moves. This variable is a backup for when leg actuators affect the energy drain.

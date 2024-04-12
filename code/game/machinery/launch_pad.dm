@@ -6,7 +6,7 @@
 	icon = 'icons/obj/telescience.dmi'
 	icon_state = "lpad-idle"
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 2.5
-	hud_possible = list(DIAG_LAUNCHPAD_HUD)
+	hud_possible = list(DIAG_LAUNCHPAD_HUD = 'icons/mob/huds/hud.dmi')
 	circuit = /obj/item/circuitboard/machine/launchpad
 	var/icon_teleport = "lpad-beam"
 	var/stationary = TRUE //to prevent briefcase pad deconstruction and such

@@ -40,8 +40,7 @@
 			H.color = guardiancolor
 		if(C == summoner)
 			update_health_hud()
-			med_hud_set_health()
-			med_hud_set_status()
+			update_med_hud()
 
 /mob/living/simple_animal/hostile/guardian/healer/ToggleMode()
 	if(src.loc == summoner)

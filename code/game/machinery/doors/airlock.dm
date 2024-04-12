@@ -106,7 +106,7 @@
 	assemblytype = /obj/structure/door_assembly
 	normalspeed = 1
 	explosion_block = 1
-	hud_possible = list(DIAG_AIRLOCK_HUD)
+	hud_possible = list(DIAG_AIRLOCK_HUD = 'icons/mob/huds/hud.dmi')
 	zmm_flags = ZMM_MANGLE_PLANES
 	smoothing_groups = SMOOTH_GROUP_AIRLOCK
 

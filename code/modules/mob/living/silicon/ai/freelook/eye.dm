@@ -8,7 +8,9 @@
 	icon_state = "ai_camera"
 	icon = 'icons/mob/cameramob.dmi'
 	invisibility = INVISIBILITY_MAXIMUM
-	hud_possible = list(ANTAG_HUD, AI_DETECT_HUD = HUD_LIST_LIST)
+	hud_possible = list(
+		AI_DETECT_HUD = HUD_LIST_LIST
+	)
 	var/list/visibleCameraChunks = list()
 	var/mob/living/silicon/ai/ai = null
 	var/relay_speech = FALSE

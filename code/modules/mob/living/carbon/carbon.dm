@@ -507,6 +507,7 @@
 	set_health(round(maxHealth - getBrainLoss(), DAMAGE_PRECISION))
 	update_stat()
 	med_hud_set_health()
+	#warn REMOVE
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
 /mob/living/carbon/on_stamina_update()

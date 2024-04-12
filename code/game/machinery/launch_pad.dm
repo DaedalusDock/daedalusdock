@@ -98,6 +98,7 @@
 	var/turf/target_turf
 	if(isAvailable())
 		target_turf = locate(x + x_offset, y + y_offset, z)
+
 	if(target_turf)
 		holder.icon_state = indicator_icon
 		holder.loc = target_turf

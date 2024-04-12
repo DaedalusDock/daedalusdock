@@ -158,6 +158,21 @@
 
 	return ..()
 
+/// Copies the atom_huds of the given atom.
+/atom/movable/openspace/mimic/proc/copy_huds(atom/movable/target)
+	hud_list = target.hud_list.Copy()
+	for(var/hud_key as anything in hud_list)
+		var/image/target_hud_image = target.hud_list[hud_key]
+		var/image/new_hud_image = image(target_hud_image.icon, src, target_hud_image.icon_state)
+		new_hud_image.appearance_flags = RESET_COLOR|RESET_TRANSFORM
+		hud_list[hud_key] = new_hud_image
+
+	for(var/datum/atom_hud/hud as anything in target.in_atom_huds)
+		hud.add_atom_to_hud(src)
+
+	for(var/hud_category in target.active_hud_list)
+		set_hud_image_active(hud_category)
+
 /atom/movable/openspace/mimic/attackby(obj/item/W, mob/user)
 	to_chat(user, span_notice("\The [src] is too far away."))
 	return TRUE

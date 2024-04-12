@@ -57,15 +57,13 @@
 
 /mob/living/simple_animal/hostile/morph/med_hud_set_health()
 	if(morphed && !isliving(form))
-		var/image/holder = hud_list[HEALTH_HUD]
-		holder.icon_state = null
+		set_hud_image_vars(HEALTH_HUD, null)
 		return //we hide medical hud while morphed
 	..()
 
 /mob/living/simple_animal/hostile/morph/med_hud_set_status()
 	if(morphed && !isliving(form))
-		var/image/holder = hud_list[STATUS_HUD]
-		holder.icon_state = null
+		set_hud_image_vars(STATUS_HUD, null)
 		return //we hide medical hud while morphed
 	..()
 

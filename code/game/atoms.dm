@@ -25,8 +25,11 @@
 	var/tmp/list/image/hud_list = null
 	///all of this atom's HUD images which can actually be seen by players with that hud
 	var/tmp/list/image/active_hud_list = null
+	/// A list of atom huds this object is within
+	var/tmp/list/in_atom_huds = null
+
 	///HUD images that this atom can provide.
-	var/tmp/list/hud_possible
+	var/list/hud_possible
 
 	/**
 	 * used to store the different colors on an atom

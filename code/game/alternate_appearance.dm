@@ -19,6 +19,14 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	var/list/arguments = args.Copy(2)
 	return new type(arglist(arguments))
 
+// /atom/movable/add_alt_appearance(type, key, ...)
+// 	. = ..()
+// 	if(!.)
+// 		return
+
+// 	if(bound_overlay)
+// 		bound_overlay.add_alt_appearance(arglist(args))
+
 /datum/atom_hud/alternate_appearance
 	var/appearance_key
 	var/transfer_overlays = FALSE

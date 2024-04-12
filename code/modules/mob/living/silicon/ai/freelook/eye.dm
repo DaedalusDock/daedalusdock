@@ -53,13 +53,16 @@
 
 	var/list/new_images = list()
 	var/list/turfs = get_visible_turfs()
+
 	for(var/T in turfs)
 		var/image/I = (old_images.len > new_images.len) ? old_images[new_images.len + 1] : image(null, T)
 		I.loc = T
 		I.vis_contents += hud_obj
 		new_images += I
+
 	for(var/i in (new_images.len + 1) to old_images.len)
 		qdel(old_images[i])
+
 	hud_list[AI_DETECT_HUD] = new_images
 	hud.add_atom_to_hud(src)
 

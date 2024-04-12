@@ -94,21 +94,7 @@ GLOBAL_LIST_INIT(huds, list(
 	. = list()
 	. += hud_atoms[z_level]
 
-	var/max_number_of_linked_z_levels_i_care_to_support_here = 10
-
-	while(max_number_of_linked_z_levels_i_care_to_support_here)
-		var/lower_z_level_exists = SSmapping.level_trait(z_level, ZTRAIT_DOWN)
-
-		if(lower_z_level_exists)
-			z_level--
-			. += hud_atoms[z_level]
-			max_number_of_linked_z_levels_i_care_to_support_here--
-			continue
-
-		else
-			break
-
-///returns a list of all hud users in the given z level and linked upper z levels (because hud users in higher z levels can see below)
+///returns a list of all hud users in the given z level.
 /datum/atom_hud/proc/get_hud_users_for_z_level(z_level)
 	if(z_level > length(hud_users) || z_level <= 0)
 		stack_trace("get_hud_atoms_for_z_level() was given a z level index [z_level] out of bounds 1->[length(hud_users)] of hud_atoms!")
@@ -116,20 +102,6 @@ GLOBAL_LIST_INIT(huds, list(
 
 	. = list()
 	. += hud_users[z_level]
-
-	var/max_number_of_linked_z_levels_i_care_to_support_here = 10
-
-	while(max_number_of_linked_z_levels_i_care_to_support_here)
-		var/upper_level_exists = SSmapping.level_trait(z_level, ZTRAIT_UP)
-
-		if(upper_level_exists)
-			z_level++
-			. += hud_users[z_level]
-			max_number_of_linked_z_levels_i_care_to_support_here--
-			continue
-
-		else
-			break
 
 ///show this hud to the passed in user
 /datum/atom_hud/proc/show_to(mob/new_viewer)
@@ -193,6 +165,8 @@ GLOBAL_LIST_INIT(huds, list(
 	if(!new_hud_atom)
 		return FALSE
 
+	LAZYDISTINCTADD(new_hud_atom.in_atom_huds, src)
+
 	// No matter where or who you are, you matter to me :)
 	RegisterSignal(new_hud_atom, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_atom_or_user_z_level_changed), override = TRUE)
 	RegisterSignal(new_hud_atom, COMSIG_PARENT_QDELETING, PROC_REF(unregister_atom), override = TRUE) //both hud atoms and hud users use these signals
@@ -207,12 +181,20 @@ GLOBAL_LIST_INIT(huds, list(
 	for(var/mob/mob_to_show as anything in get_hud_users_for_z_level(atom_turf.z))
 		if(!queued_to_see[mob_to_show])
 			add_atom_to_single_mob_hud(mob_to_show, new_hud_atom)
+
+	if(ismovable(new_hud_atom))
+		var/atom/movable/new_hud_movable = new_hud_atom
+		for(var/atom/movable/AM as anything in new_hud_movable.get_associated_mimics())
+			add_atom_to_hud(AM)
+
 	return TRUE
 
 /// remove this atom from this hud completely
 /datum/atom_hud/proc/remove_atom_from_hud(atom/hud_atom_to_remove)
 	if(!hud_atom_to_remove || !hud_atoms_all_z_levels[hud_atom_to_remove])
 		return FALSE
+
+	LAZYREMOVE(hud_atom_to_remove.in_atom_huds, src)
 
 	//make sure we arent unregistering a hud atom thats also a hud user mob
 	if(!hud_users_all_z_levels[hud_atom_to_remove])
@@ -230,12 +212,23 @@ GLOBAL_LIST_INIT(huds, list(
 
 	hud_atoms[atom_turf.z] -= hud_atom_to_remove
 
+	if(ismovable(hud_atom_to_remove))
+		var/atom/movable/movable_to_remove = hud_atom_to_remove
+		for(var/atom/movable/AM as anything in movable_to_remove.get_associated_mimics())
+			remove_atom_from_hud(AM)
 	return TRUE
 
 ///adds a newly active hud category's image on a hud atom to every mob that could see it
 /datum/atom_hud/proc/add_single_hud_category_on_atom(atom/hud_atom, hud_category_to_add)
 	if(!hud_atom?.active_hud_list?[hud_category_to_add] || QDELING(hud_atom) || !(hud_category_to_add in hud_icons))
 		return FALSE
+
+	if(ismovable(hud_atom))
+		var/atom/movable/hud_movable = hud_atom
+		for(var/atom/movable/AM as anything in hud_movable.get_associated_mimics())
+			var/list/arguments = args.Copy(2)
+			arguments.Insert(1, AM)
+			add_single_hud_category_on_atom(arglist(arguments))
 
 	if(!hud_atoms_all_z_levels[hud_atom])
 		add_atom_to_hud(hud_atom)
@@ -259,6 +252,13 @@ GLOBAL_LIST_INIT(huds, list(
 	if(QDELETED(hud_atom) || !(hud_category_to_remove in hud_icons) || !hud_atoms_all_z_levels[hud_atom])
 		return FALSE
 
+	if(ismovable(hud_atom))
+		var/atom/movable/hud_movable = hud_atom
+		for(var/atom/movable/AM as anything in hud_movable.get_associated_mimics())
+			var/list/arguments = args.Copy(2)
+			arguments.Insert(1, AM)
+			remove_single_hud_category_on_atom(arglist(arguments))
+
 	if(!hud_atom.active_hud_list)
 		remove_atom_from_hud(hud_atom)
 		return TRUE
@@ -277,6 +277,8 @@ GLOBAL_LIST_INIT(huds, list(
 ///when a hud atom or hud user changes z levels this makes sure it gets the images it needs and removes the images it doesnt need.
 ///because of how signals work we need the same proc to handle both use cases because being a hud atom and being a hud user arent mutually exclusive
 /datum/atom_hud/proc/on_atom_or_user_z_level_changed(atom/movable/moved_atom, turf/old_turf, turf/new_turf)
+	PROTECTED_PROC(TRUE)
+
 	SIGNAL_HANDLER
 	if(old_turf)
 		if(hud_users_all_z_levels[moved_atom])
@@ -349,16 +351,21 @@ GLOBAL_LIST_INIT(huds, list(
 
 /// remove every hud image for this hud on atom_to_remove from client_mob's client.images list
 /datum/atom_hud/proc/remove_atom_from_single_hud(mob/client_mob, atom/atom_to_remove)
+	PROTECTED_PROC(TRUE)
 	if(!client_mob || !client_mob.client || !atom_to_remove?.active_hud_list)
 		return
+
 	for(var/hud_image in hud_icons)
 		client_mob.client.images -= atom_to_remove.active_hud_list[hud_image]
 
 /// remove every hud image for this hud pulled from atoms_to_remove from client_mob's client.images list
 /// optimization of [/datum/atom_hud/proc/remove_atom_from_single_hud] for hot cases, we assert that no nulls will be passed in via the list
 /datum/atom_hud/proc/remove_all_atoms_from_single_hud(mob/client_mob, list/atom/atoms_to_remove)
+	PROTECTED_PROC(TRUE)
+
 	if(!client_mob || !client_mob.client)
 		return
+
 	for(var/hud_image in hud_icons)
 		for(var/atom/atom_to_remove as anything in atoms_to_remove)
 			client_mob.client.images -= atom_to_remove.active_hud_list?[hud_image]
@@ -366,6 +373,8 @@ GLOBAL_LIST_INIT(huds, list(
 /// remove every hud image for this hud on atom_to_remove from client_mobs's client.images list
 /// optimization of [/datum/atom_hud/proc/remove_atom_from_single_hud] for hot cases, we assert that no nulls will be passed in via the list
 /datum/atom_hud/proc/remove_atom_from_all_huds(list/mob/client_mobs, atom/atom_to_remove)
+	PROTECTED_PROC(TRUE)
+
 	if(!atom_to_remove?.active_hud_list)
 		return
 

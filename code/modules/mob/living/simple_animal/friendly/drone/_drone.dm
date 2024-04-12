@@ -193,21 +193,18 @@
 	listener.RegisterSignal(src, COMSIG_LIVING_REVIVE, TYPE_PROC_REF(/datum/alarm_listener, allow_alarm_changes))
 
 /mob/living/simple_animal/drone/med_hud_set_health()
-	var/image/holder = hud_list[DIAG_HUD]
-	var/icon/I = icon(icon, icon_state, dir)
-	holder.pixel_y = I.Height() - world.icon_size
-	holder.icon_state = "huddiag[RoundDiagBar(health/maxHealth)]"
+	set_hud_image_vars(DIAG_HUD, "huddiag[RoundDiagBar(health/maxHealth)]", get_hud_pixel_y())
 
 /mob/living/simple_animal/drone/med_hud_set_status()
-	var/image/holder = hud_list[DIAG_STAT_HUD]
-	var/icon/I = icon(icon, icon_state, dir)
-	holder.pixel_y = I.Height() - world.icon_size
+	var/new_state
 	if(stat == DEAD)
-		holder.icon_state = "huddead2"
+		new_state = "huddead2"
 	else if(incapacitated())
-		holder.icon_state = "hudoffline"
+		new_state = "hudoffline"
 	else
-		holder.icon_state = "hudstat"
+		new_state = "hudstat"
+
+	set_hud_image_vars(DIAG_STAT_HUD, new_state, get_hud_pixel_y())
 
 /mob/living/simple_animal/drone/Destroy()
 	GLOB.drones_list -= src

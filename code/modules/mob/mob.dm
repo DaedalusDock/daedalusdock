@@ -119,6 +119,11 @@
 
 	LAZYSET(active_hud_list, hud_category, hud_list[hud_category])
 
+	if(ismovable(src))
+		var/atom/movable/AM = src
+		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+			mimic.set_hud_image_active(arglist(args))
+
 	if(!update_huds)
 		return TRUE
 
@@ -136,6 +141,11 @@
 		return FALSE
 
 	LAZYREMOVE(active_hud_list, hud_category)
+
+	if(ismovable(src))
+		var/atom/movable/AM = src
+		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+			mimic.set_hud_image_active(arglist(args))
 
 	if(!update_huds)
 		return TRUE
@@ -170,6 +180,21 @@
 			hud_list[hud] = I
 		set_hud_image_active(hud, update_huds = FALSE) //by default everything is active. but dont add it to huds to keep control.
 
+/// Update the icon_state of an atom hud image.
+/atom/proc/set_hud_image_vars(hud_key, new_state = null, new_pixel_y = 0)
+	if(isnull(hud_list))
+		return
+
+	var/image/I = hud_list[hud_key]
+	if(isnull(I))
+		return
+
+	I.icon_state = new_state
+	I.pixel_y = new_pixel_y
+
+	if(!isarea(src) && !isturf(src))
+		var/atom/movable/AM = src
+		AM.bound_overlay?.set_hud_image_vars(hud_key, new_state, new_pixel_y)
 /**
  * Return the desc of this mob for a photo
  */

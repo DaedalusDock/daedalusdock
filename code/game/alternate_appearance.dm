@@ -19,14 +19,6 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	var/list/arguments = args.Copy(2)
 	return new type(arglist(arguments))
 
-// /atom/movable/add_alt_appearance(type, key, ...)
-// 	. = ..()
-// 	if(!.)
-// 		return
-
-// 	if(bound_overlay)
-// 		bound_overlay.add_alt_appearance(arglist(args))
-
 /datum/atom_hud/alternate_appearance
 	var/appearance_key
 	var/transfer_overlays = FALSE
@@ -67,6 +59,17 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 
 /datum/atom_hud/alternate_appearance/proc/copy_overlays(atom/other, cut_old)
 	return
+
+/obj/alt_appearance_tester
+	name = "wrench"
+	desc = "A wrench with common uses. Can be found in your hand."
+	icon = 'icons/obj/tools.dmi'
+	icon_state = "wrench"
+
+/obj/alt_appearance_tester/Initialize(mapload)
+	. = ..()
+	var/image/I = image('icons/obj/tools.dmi', src, "wrench_brass")
+	add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "gold_wrench", I)
 
 //an alternate appearance that attaches a single image to a single atom
 /datum/atom_hud/alternate_appearance/basic

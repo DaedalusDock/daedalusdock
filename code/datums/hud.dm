@@ -181,7 +181,7 @@ GLOBAL_LIST_INIT(huds, list(
 		if(!queued_to_see[mob_to_show])
 			add_atom_to_single_mob_hud(mob_to_show, new_hud_atom)
 
-	if(ismovable(new_hud_atom))
+	if(ismovable(new_hud_atom) && !istype(new_hud_atom, /atom/movable/openspace/mimic))
 		var/atom/movable/new_hud_movable = new_hud_atom
 		for(var/atom/movable/AM as anything in new_hud_movable.get_associated_mimics())
 			add_atom_to_hud(AM)
@@ -211,7 +211,7 @@ GLOBAL_LIST_INIT(huds, list(
 
 	hud_atoms[atom_turf.z] -= hud_atom_to_remove
 
-	if(ismovable(hud_atom_to_remove))
+	if(ismovable(hud_atom_to_remove) && !istype(hud_atom_to_remove, /atom/movable/openspace/mimic))
 		var/atom/movable/movable_to_remove = hud_atom_to_remove
 		for(var/atom/movable/AM as anything in movable_to_remove.get_associated_mimics())
 			remove_atom_from_hud(AM)
@@ -222,7 +222,7 @@ GLOBAL_LIST_INIT(huds, list(
 	if(!hud_atom?.active_hud_list?[hud_category_to_add] || QDELING(hud_atom) || !(hud_category_to_add in hud_icons))
 		return FALSE
 
-	if(ismovable(hud_atom))
+	if(ismovable(hud_atom) && !istype(hud_atom, /atom/movable/openspace/mimic))
 		var/atom/movable/hud_movable = hud_atom
 		for(var/atom/movable/AM as anything in hud_movable.get_associated_mimics())
 			var/list/arguments = args.Copy(2)
@@ -251,7 +251,7 @@ GLOBAL_LIST_INIT(huds, list(
 	if(QDELETED(hud_atom) || !(hud_category_to_remove in hud_icons) || !hud_atoms_all_z_levels[hud_atom])
 		return FALSE
 
-	if(ismovable(hud_atom))
+	if(ismovable(hud_atom) && !istype(hud_atom, /atom/movable/openspace/mimic))
 		var/atom/movable/hud_movable = hud_atom
 		for(var/atom/movable/AM as anything in hud_movable.get_associated_mimics())
 			var/list/arguments = args.Copy(2)

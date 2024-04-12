@@ -161,6 +161,7 @@
 /// Copies the atom_huds of the given atom.
 /atom/movable/openspace/mimic/proc/copy_huds(atom/movable/target)
 	hud_list = target.hud_list.Copy()
+
 	for(var/hud_key as anything in hud_list)
 		var/image/target_hud_image = target.hud_list[hud_key]
 		var/image/new_hud_image = image(target_hud_image.icon, src, target_hud_image.icon_state)

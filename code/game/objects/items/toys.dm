@@ -971,7 +971,7 @@
 	toysay = "Any heads of staff?"
 
 /obj/item/toy/figure/cargotech
-	name = "\improper Cargo Technician action figure"
+	name = "\improper" + JOB_DECKHAND + "action figure"
 	icon_state = "cargotech"
 	toysay = "For Cargonia!"
 
@@ -1007,7 +1007,7 @@
 	toysay = "Arf!"
 
 /obj/item/toy/figure/detective
-	name = "\improper Detective action figure"
+	name = "\improper Private Investigator action figure"
 	icon_state = "detective"
 	toysay = "This airlock has grey jumpsuit and insulated glove fibers on it."
 
@@ -1032,7 +1032,7 @@
 	toysay = "Giving out all access!"
 
 /obj/item/toy/figure/hos
-	name = "\improper Head of Security action figure"
+	name = "\improper Security Marshal action figure"
 	icon_state = "hos"
 	toysay = "Go ahead, make my day."
 
@@ -1052,12 +1052,12 @@
 	toysay = "My client is a dirty traitor!"
 
 /obj/item/toy/figure/curator
-	name = "\improper Curator action figure"
+	name = "\improper Archivist action figure"
 	icon_state = "curator"
 	toysay = "One day while..."
 
 /obj/item/toy/figure/md
-	name = "\improper Medical Doctor action figure"
+	name = "\improper " + JOB_MEDICAL_DOCTOR + "action figure"
 	icon_state = "md"
 	toysay = "The patient is already dead!"
 
@@ -1154,6 +1154,12 @@
 	name = "[initial(name)] - [doll_name]"
 
 /obj/item/toy/dummy/talk_into(atom/movable/A, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = A?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	var/mob/M = A
 	if (istype(M))
 		M.log_talk(message, LOG_SAY, tag="dummy toy")

@@ -56,8 +56,7 @@
 
 				current_record["name"] = person.fields["name"]
 				current_record["bloodtype"] = person.fields["blood_type"]
-				current_record["mi_dis"] = person.fields["mi_dis"]
-				current_record["ma_dis"] = person.fields["ma_dis"]
+				current_record["disabilities"] = person.fields["disabilities"]
 				current_record["notes"] = person.fields["notes"]
 				current_record["cnotes"] = person.fields["notes_d"]
 

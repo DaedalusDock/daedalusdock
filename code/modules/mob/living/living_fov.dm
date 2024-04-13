@@ -1,9 +1,8 @@
 /// Is `observed_atom` in a mob's field of view? This takes blindness, nearsightness and FOV into consideration
-/mob/living/proc/in_fov(atom/observed_atom, ignore_self = FALSE)
-	if(ignore_self && observed_atom == src)
-		return TRUE
+/mob/living/proc/in_fov(atom/observed_atom)
 	if(is_blind())
-		return FALSE
+		return TRUE
+
 	// Handling nearsightnedness
 	if(HAS_TRAIT(src, TRAIT_NEARSIGHT))
 		//Checking if our dude really is suffering from nearsightness! (very nice nearsightness code)
@@ -12,22 +11,23 @@
 			if(carbon_me.glasses)
 				var/obj/item/clothing/glasses/glass = carbon_me.glasses
 				if(!glass.vision_correction)
-					return FALSE
-
-	return TRUE
+					return TRUE
 
 /// Plays a visual effect representing a sound cue for people with vision obstructed by FOV or blindness
-/proc/play_fov_effect(atom/center, range, icon_state, dir = SOUTH, ignore_self = FALSE, angle = 0, list/override_list)
+/proc/play_fov_effect(atom/center, range, icon_state, dir = SOUTH, ignore_self = FALSE, angle, list/override_list)
 	var/turf/anchor_point = get_turf(center)
 	var/image/fov_image
 	for(var/mob/living/living_mob in override_list || get_hearers_in_view(range, center))
 		var/client/mob_client = living_mob.client
 		if(!mob_client)
 			continue
-		if(HAS_TRAIT(living_mob, TRAIT_DEAF)) //Deaf people can't hear sounds so no sound indicators
+
+		if(ignore_self && living_mob == center)
 			continue
-		if(living_mob.in_fov(center, ignore_self))
+
+		if(!living_mob.can_hear() || !living_mob.in_fov(center, ignore_self))
 			continue
+
 		if(!fov_image) //Make the image once we found one recipient to receive it
 			fov_image = image(icon = 'icons/effects/fov_effects.dmi', icon_state = icon_state, loc = anchor_point)
 			fov_image.plane = FULLSCREEN_PLANE

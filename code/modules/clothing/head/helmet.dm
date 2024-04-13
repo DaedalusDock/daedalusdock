@@ -12,6 +12,7 @@
 	clothing_flags = SNUG_FIT | STACKABLE_HELMET_EXEMPT
 	flags_cover = HEADCOVERSEYES
 	flags_inv = HIDEHAIR
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 	dog_fashion = /datum/dog_fashion/head/helmet
 
@@ -54,7 +55,6 @@
 	inhand_icon_state = "helmetalt"
 	armor = list(BLUNT = 20, PUNCTURE = 60, SLASH = 25, LASER = 10, ENERGY = 10, BOMB = 40, BIO = 0, FIRE = 50, ACID = 50)
 	dog_fashion = null
-	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
 /obj/item/clothing/head/helmet/alt/Initialize(mapload)
 	. = ..()

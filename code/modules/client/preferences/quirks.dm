@@ -8,26 +8,10 @@
 
 	input = SSquirks.filter_invalid_quirks(input)
 
-	if(GetQuirkBalance(input) < 0)
-		return create_default_value()
-
 	return input
 
 /datum/preference/blob/quirks/create_default_value()
 	return list()
-
-/datum/preference/blob/quirks/proc/GetQuirkBalance(list/all_quirks)
-	var/bal = 0
-	for(var/V in all_quirks)
-		var/datum/quirk/T = SSquirks.quirks[V]
-		bal -= initial(T.value)
-	return bal
-
-/datum/preference/blob/quirks/proc/GetPositiveQuirkCount(list/all_quirks)
-	. = 0
-	for(var/q in all_quirks)
-		if(SSquirks.quirk_points[q] > 0)
-			.++
 
 /datum/preference/blob/quirks/user_edit(mob/user, datum/preferences/prefs, list/params)
 	if(params["info"])
@@ -45,8 +29,5 @@
 		if(quirk in user_quirks)
 			user_quirks -= quirk
 		else
-			if(!(GetQuirkBalance(user_quirks) >= SSquirks.quirk_points[quirk]))
-				to_chat(user, span_warning("You do not have enough points to take this quirk!"))
-				return FALSE
 			user_quirks += quirk
 		return prefs.update_preference(src, user_quirks)

@@ -15,7 +15,7 @@
 	head = /obj/item/clothing/head/helmet/space/plasmaman/security
 
 /datum/outfit/plasmaman/detective
-	name = "Detective Plasmaman"
+	name = "Private Investigator Plasmaman"
 
 	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white
@@ -134,7 +134,7 @@
 	head = /obj/item/clothing/head/helmet/space/plasmaman/white
 
 /datum/outfit/plasmaman/curator
-	name = "Curator Plasmaman"
+	name = "Archivist Plasmaman"
 
 	uniform = /obj/item/clothing/under/plasmaman/curator
 	gloves = /obj/item/clothing/gloves/color/plasmaman/prototype
@@ -192,7 +192,7 @@
 	head = /obj/item/clothing/head/helmet/space/plasmaman/head_of_personnel
 
 /datum/outfit/plasmaman/head_of_security
-	name = "Head of Security Plasmaman"
+	name = JOB_SECURITY_MARSHAL + " Plasmaman"
 
 	uniform = /obj/item/clothing/under/plasmaman/security/head_of_security
 	gloves = /obj/item/clothing/gloves/color/plasmaman/black

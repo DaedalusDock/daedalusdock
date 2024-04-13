@@ -1,14 +1,12 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
-	description = "Investigate crimes, gather evidence, perform interrogations, \
-		look badass, smoke cigarettes."
-	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
-	department_head = list(JOB_HEAD_OF_SECURITY)
+	description = "Help security solve crimes or take on private cases for wealthy clients. \
+		Look badass and abuse every substance."
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of security"
-	selection_color = "#601c1c"
+	supervisors = "nobody"
+	selection_color = "#22201e"
 	minimal_player_age = 7
 	exp_requirements = 300
 	exp_required_type = EXP_TYPE_CREW
@@ -26,21 +24,15 @@
 			SPECIES_VOX = /datum/outfit/job/detective,
 			SPECIES_PLASMAMAN = /datum/outfit/job/detective/plasmaman,
 		),
-		"Forensic Technician" = list(
-			SPECIES_HUMAN = /datum/outfit/job/detective/forensic,
-			SPECIES_TESHARI = /datum/outfit/job/detective/forensic,
-			SPECIES_PLASMAMAN = /datum/outfit/job/detective/forensic/plasmaman,
-		),
 	)
 
 	departments_list = list(
-		/datum/job_department/security,
+		/datum/job_department/service,
 		)
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 
 	mail_goodies = list(
@@ -59,21 +51,19 @@
 
 
 /datum/outfit/job/detective
-	name = "Detective"
+	name = JOB_DETECTIVE
 	jobtype = /datum/job/detective
 
 	id_trim = /datum/id_trim/job/detective
 	uniform = /obj/item/clothing/under/rank/security/detective
 	suit = /obj/item/clothing/suit/det_suit
 	belt = /obj/item/modular_computer/tablet/pda/detective
-	ears = /obj/item/radio/headset/headset_sec/alt
 	gloves = /obj/item/clothing/gloves/forensic
 	head = /obj/item/clothing/head/fedora/det_hat
-	mask = /obj/item/clothing/mask/cigarette
 	neck = /obj/item/clothing/neck/tie/detective
-	shoes = /obj/item/clothing/shoes/sneakers/brown
+	shoes = /obj/item/clothing/shoes/laceup
 	l_pocket = /obj/item/toy/crayon/white
-	r_pocket = /obj/item/lighter
+	r_pocket = /obj/item/storage/fancy/cigarettes/dromedaryco
 
 	l_hand = /obj/item/storage/briefcase/crimekit
 
@@ -81,10 +71,10 @@
 		/obj/item/clothing/glasses/sunglasses,
 		/obj/item/gun/ballistic/revolver/detective,
 		)
-	implants = list(/obj/item/implant/mindshield)
+
 
 /datum/outfit/job/detective/plasmaman
-	name = "Detective (Plasmaman)"
+	name = JOB_DETECTIVE + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
 	gloves = /obj/item/clothing/gloves/color/plasmaman/white

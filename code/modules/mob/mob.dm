@@ -121,7 +121,7 @@
 
 	if(ismovable(src))
 		var/atom/movable/AM = src
-		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+		FOR_MIMIC_OF(AM)
 			mimic.set_hud_image_active(arglist(args))
 
 	if(!update_huds)
@@ -144,7 +144,7 @@
 
 	if(ismovable(src))
 		var/atom/movable/AM = src
-		for(var/atom/movable/mimic as anything in AM.get_associated_mimics())
+		FOR_MIMIC_OF(AM)
 			mimic.set_hud_image_active(arglist(args))
 
 	if(!update_huds)

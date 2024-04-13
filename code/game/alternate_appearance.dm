@@ -112,7 +112,7 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 	if(ghost_appearance)
 		QDEL_NULL(ghost_appearance)
 
-/datum/atom_hud/alternate_appearance/basic/proc/mimic(atom/movable/openspace/mimic)
+/datum/atom_hud/alternate_appearance/basic/proc/mimic(atom/movable/openspace/mimic/mimic)
 	var/image/mimic_image = image(image.icon, mimic, image.icon_state, image.layer)
 	mimic_image.plane = image.plane
 	var/datum/atom_hud/alternate_appearance/basic/mimic_appearance = new type(appearance_key, mimic_image)

@@ -59,7 +59,6 @@
 	new /obj/item/clothing/under/suit/black/skirt(src)
 	new /obj/item/clothing/shoes/laceup(src)
 	new /obj/item/storage/backpack/medic(src)
-	new /obj/item/radio/headset/headset_srvmed(src)
 	new /obj/item/clipboard(src)
 	new /obj/item/clothing/suit/straight_jacket(src)
 	new /obj/item/clothing/ears/earmuffs(src)

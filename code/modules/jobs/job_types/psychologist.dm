@@ -56,7 +56,7 @@
 		/obj/item/storage/pill_bottle/haloperidol,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/medical
-	ears = /obj/item/radio/headset/headset_srvmed
+	ears = /obj/item/radio/headset/headset_med
 	shoes = /obj/item/clothing/shoes/laceup
 	l_hand = /obj/item/clipboard
 

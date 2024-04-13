@@ -2588,7 +2588,6 @@
 #include "code\modules\client\preferences\runechat.dm"
 #include "code\modules\client\preferences\scaling_method.dm"
 #include "code\modules\client\preferences\screentips.dm"
-#include "code\modules\client\preferences\security_department.dm"
 #include "code\modules\client\preferences\see_credits.dm"
 #include "code\modules\client\preferences\skin_tone.dm"
 #include "code\modules\client\preferences\species.dm"

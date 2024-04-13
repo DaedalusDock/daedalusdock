@@ -109,7 +109,6 @@
 	..()
 	new /obj/item/storage/belt/security/full(src)
 
-#warn REMOVE DEPARTMENTAL SEC
 /obj/structure/closet/secure_closet/security/cargo
 
 /obj/structure/closet/secure_closet/security/cargo/PopulateContents()

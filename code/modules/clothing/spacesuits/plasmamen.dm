@@ -187,8 +187,8 @@
 	inhand_icon_state = "warden_envirohelm"
 
 /obj/item/clothing/head/helmet/space/plasmaman/security/head_of_security
-	name = "head of security's plasma envirosuit helmet"
-	desc = "A special containment helmet designed for the Head of Security. A pair of gold stripes are added to differentiate them from other members of security."
+	name = "security marshal's plasma envirosuit helmet"
+	desc = "A special containment helmet designed for the Security Marshal. A pair of gold stripes are added to differentiate them from other members of security."
 	icon_state = "hos_envirohelm"
 	inhand_icon_state = "hos_envirohelm"
 	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 100, FIRE = 100, ACID = 75)
@@ -303,7 +303,7 @@
 	inhand_icon_state = "white_envirohelm"
 
 /obj/item/clothing/head/helmet/space/plasmaman/curator
-	name = "curator's plasma envirosuit helmet"
+	name = "archivist's plasma envirosuit helmet"
 	desc = "A slight modification on a traditional voidsuit helmet, this helmet was Daedalus' first solution to the *logistical problems* that come with employing plasmamen. Despite their limitations, these helmets still see use by historians and old-school plasmamen alike."
 	icon_state = "prototype_envirohelm"
 	inhand_icon_state = "prototype_envirohelm"

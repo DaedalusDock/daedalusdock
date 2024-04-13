@@ -20,17 +20,26 @@
 
 /obj/item/clothing/suit/armor/vest
 	name = "armor vest"
-	desc = "A slim Type I armored vest that provides decent protection against most types of damage."
-	icon_state = "armoralt"
-	inhand_icon_state = "armoralt"
-	blood_overlay_type = "armor"
-	dog_fashion = /datum/dog_fashion/back
-	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
-
-/obj/item/clothing/suit/armor/vest/alt
-	desc = "A Type I armored vest that provides decent protection against most types of damage."
+	desc = "A tough armored vest made with hard composite plates. Great for stopping blunt force and cutting."
 	icon_state = "armor"
 	inhand_icon_state = "armor"
+	blood_overlay_type = "armor"
+	dog_fashion = /datum/dog_fashion/back
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+	armor = list(MELEE = 35, BULLET = 20, LASER = 20, ENERGY = 30, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+
+/obj/item/clothing/suit/armor/vest/sec
+	name = "martian armor vest"
+	desc = "An old composite vest with a faded corporate logo. While outdated, it will still protect your chest from heavy blows and cuts."
+	icon_state = "armorsec"
+	inhand_icon_state = "armor"
+
+/obj/item/clothing/suit/armor/vest/ballistic
+	name = "ballistic vest"
+	desc = "A thick, flexible kevlar vest. Keeps your chest protected from stabbings and shootings, but it won't do much against blunt force."
+	icon_state = "armoralt"
+	inhand_icon_state = "armoralt"
+	armor = list(MELEE = 15, BULLET = 40, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 0, FIRE = 50, ACID = 50)
 
 /obj/item/clothing/suit/armor/vest/marine
 	name = "tactical armor vest"
@@ -103,7 +112,7 @@
 	strip_delay = 80
 
 /obj/item/clothing/suit/armor/hos/hos_formal
-	name = "\improper Head of Security's parade jacket"
+	name = "\improper Security Marshal's parade jacket"
 	desc = "For when an armoured vest isn't fashionable enough."
 	icon_state = "hosformal"
 	inhand_icon_state = "hostrench"
@@ -224,9 +233,10 @@
 		return TRUE
 
 /obj/item/clothing/suit/armor/vest/det_suit
-	name = "detective's armor vest"
-	desc = "An armored vest with a detective's badge on it."
+	name = "private investigator's armor vest"
+	desc = "An armored vest with a private investigator's badge on it."
 	icon_state = "detective-armor"
+	armor = list(MELEE = 25, BULLET = 30, LASER = 20, ENERGY = 30, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	resistance_flags = FLAMMABLE
 	dog_fashion = null
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

@@ -1,3 +1,7 @@
 2024-04-05:
   francinum:
   - bugfix: Updates webmap url
+2024-04-12:
+  Kapu1178:
+  - bugfix: AO overlays no longer get stuck when turfs change. This was most obvious
+      with the stellar body magnet.

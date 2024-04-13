@@ -692,8 +692,10 @@
 /datum/status_effect/trance/proc/hypnotize(datum/source, list/hearing_args)
 	SIGNAL_HANDLER
 
-	if(!owner.can_hear())
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(!L?.can_receive_language(owner) || !owner.has_language(L))
 		return
+
 	var/mob/hearing_speaker = hearing_args[HEARING_SPEAKER]
 	if(hearing_speaker == owner)
 		return

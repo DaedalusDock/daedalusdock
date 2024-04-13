@@ -737,10 +737,8 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				M.fields[DATACORE_NAME] = active1.fields[DATACORE_NAME]
 				M.fields[DATACORE_BLOOD_TYPE] = "?"
 				M.fields[DATACORE_BLOOD_DNA] = "?????"
-				M.fields["mi_dis"] = "None"
-				M.fields["mi_dis_d"] = "No minor disabilities have been declared."
-				M.fields["ma_dis"] = "None"
-				M.fields["ma_dis_d"] = "No major disabilities have been diagnosed."
+				M.fields[DATACORE_DISABILITIES] = "None"
+				M.fields[DATACORE_DISABILITIES_DETAILS] = "No disabilities have been declared."
 				M.fields["alg"] = "None"
 				M.fields["alg_d"] = "No allergies have been detected in this patient."
 				M.fields[DATACORE_DISEASES] = "None"

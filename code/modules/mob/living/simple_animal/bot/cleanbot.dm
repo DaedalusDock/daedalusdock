@@ -41,14 +41,14 @@
 	var/static/list/officers_titles = list(
 		JOB_CAPTAIN,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 	)
 	var/static/list/command_titles = list(
 		JOB_CAPTAIN = "Cpt.",
 		JOB_HEAD_OF_PERSONNEL = "Lt.",
 	)
 	var/static/list/security_titles = list(
-		JOB_HEAD_OF_SECURITY = "Maj.",
+		JOB_SECURITY_MARSHAL = "Maj.",
 		JOB_WARDEN = "Sgt.",
 		JOB_DETECTIVE = "Det.",
 		JOB_SECURITY_OFFICER = "Officer",
@@ -59,7 +59,7 @@
 		JOB_ATMOSPHERIC_TECHNICIAN = "Technician",
 	)
 	var/static/list/medical_titles = list(
-		JOB_CHIEF_MEDICAL_OFFICER = "C.M.O.",
+		JOB_MEDICAL_DIRECTOR = "C.M.O.",
 		JOB_MEDICAL_DOCTOR = "M.D.",
 		JOB_CHEMIST = "Pharm.D.",
 	)

@@ -848,7 +848,7 @@
 		for(var/type in subtypesof(/datum/quirk))
 			var/datum/quirk/quirk_type = type
 
-			if(initial(quirk_type.abstract_parent_type) == type)
+			if(isabstract(quirk_type))
 				continue
 
 			var/qname = initial(quirk_type.name)

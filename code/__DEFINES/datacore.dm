@@ -15,6 +15,8 @@
 #define DATACORE_BLOOD_DNA "b_dna"
 #define DATACORE_DISEASES "cdi"
 #define DATACORE_DISEASES_DETAILS "cdi_d"
+#define DATACORE_DISABILITIES "ma_dis"
+#define DATACORE_DISABILITIES_DETAILS "ma_dis_d"
 
 #define DATACORE_NOTES "notes"
 #define DATACORE_NOTES_DETAILS "notes_d"

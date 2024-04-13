@@ -60,7 +60,6 @@
 #define DATA_HUD_ABDUCTOR 7
 #define DATA_HUD_SENTIENT_DISEASE 8
 #define DATA_HUD_AI_DETECT 9
-#define DATA_HUD_FAN 10
 
 // Notification action types
 #define NOTIFY_JUMP "jump"

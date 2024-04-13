@@ -122,10 +122,8 @@
 					if(active2 in SSdatacore.get_records(DATACORE_RECORDS_MEDICAL))
 						dat += "<tr><td>Blood Type:</td><td><A href='?src=[REF(src)];field=blood_type'>&nbsp;[active2.fields[DATACORE_BLOOD_TYPE]]&nbsp;</A></td></tr>"
 						dat += "<tr><td>DNA:</td><td><A href='?src=[REF(src)];field=b_dna'>&nbsp;[active2.fields[DATACORE_BLOOD_DNA]]&nbsp;</A></td></tr>"
-						dat += "<tr><td><br>Minor Disabilities:</td><td><br><A href='?src=[REF(src)];field=mi_dis'>&nbsp;[active2.fields["mi_dis"]]&nbsp;</A></td></tr>"
-						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=mi_dis_d'>&nbsp;[active2.fields["mi_dis_d"]]&nbsp;</A></td></tr>"
-						dat += "<tr><td><br>Major Disabilities:</td><td><br><A href='?src=[REF(src)];field=ma_dis'>&nbsp;[active2.fields["ma_dis"]]&nbsp;</A></td></tr>"
-						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=ma_dis_d'>&nbsp;[active2.fields["ma_dis_d"]]&nbsp;</A></td></tr>"
+						dat += "<tr><td><br>Disabilities:</td><td><br><A href='?src=[REF(src)];field=disabilities'>&nbsp;[active2.fields[DATACORE_DISABILITIES]]&nbsp;</A></td></tr>"
+						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=disabilities_details'>&nbsp;[active2.fields[DATACORE_DISABILITIES_DETAILS]]&nbsp;</A></td></tr>"
 						dat += "<tr><td><br>Current Diseases:</td><td><br><A href='?src=[REF(src)];field=cdi'>&nbsp;[active2.fields[DATACORE_DISEASES]]&nbsp;</A></td></tr>" //(per disease info placed in log/comment section)
 						dat += "<tr><td>Details:</td><td><A href='?src=[REF(src)];field=cdi_d'>&nbsp;[active2.fields[DATACORE_DISEASES_DETAILS]]&nbsp;</A></td></tr>"
 						dat += "<tr><td><br>Important Notes:</td><td><br><A href='?src=[REF(src)];field=notes'>&nbsp;[active2.fields[DATACORE_NOTES]]&nbsp;</A></td></tr>"
@@ -302,30 +300,18 @@
 							if(!canUseMedicalRecordsConsole(usr, t1, a1))
 								return
 							active1.fields[DATACORE_SPECIES] = t1
-					if("mi_dis")
+					if(DATACORE_DISABILITIES)
 						if(active2)
-							var/t1 = stripped_input("Please input minor disabilities list:", "Med. records", active2.fields["mi_dis"], null)
+							var/t1 = stripped_input("Please input disabilities list:", "Med. records", active2.fields["disabilities"], null)
 							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 								return
-							active2.fields["mi_dis"] = t1
-					if("mi_dis_d")
+							active2.fields[DATACORE_DISABILITIES] = t1
+					if(DATACORE_DISABILITIES_DETAILS)
 						if(active2)
-							var/t1 = stripped_input("Please summarize minor dis.:", "Med. records", active2.fields["mi_dis_d"], null)
+							var/t1 = stripped_input("Please summarize dis.:", "Med. records", active2.fields["disabilities_details"], null)
 							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
 								return
-							active2.fields["mi_dis_d"] = t1
-					if("ma_dis")
-						if(active2)
-							var/t1 = stripped_input("Please input major disabilities list:", "Med. records", active2.fields["ma_dis"], null)
-							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
-								return
-							active2.fields["ma_dis"] = t1
-					if("ma_dis_d")
-						if(active2)
-							var/t1 = stripped_input("Please summarize major dis.:", "Med. records", active2.fields["ma_dis_d"], null)
-							if(!canUseMedicalRecordsConsole(usr, t1, null, a2))
-								return
-							active2.fields["ma_dis_d"] = t1
+							active2.fields[DATACORE_DISABILITIES_DETAILS] = t1
 					if("alg")
 						if(active2)
 							var/t1 = stripped_input("Please state allergies:", "Med. records", active2.fields["alg"], null)
@@ -459,10 +445,8 @@
 					R.fields[DATACORE_NAME] = active1.fields[DATACORE_NAME]
 					R.fields[DATACORE_BLOOD_TYPE] = "Unknown"
 					R.fields[DATACORE_BLOOD_DNA] = "Unknown"
-					R.fields["mi_dis"] = "None"
-					R.fields["mi_dis_d"] = "No minor disabilities have been diagnosed."
-					R.fields["ma_dis"] = "None"
-					R.fields["ma_dis_d"] = "No major disabilities have been diagnosed."
+					R.fields[DATACORE_DISABILITIES] = "None"
+					R.fields[DATACORE_DISABILITIES_DETAILS] = "No disabilities have been diagnosed."
 					R.fields["alg"] = "None"
 					R.fields["alg_d"] = "No allergies have been detected in this patient."
 					R.fields[DATACORE_DISEASES] = "None"
@@ -541,10 +525,8 @@ Mental Status: [active1.fields[DATACORE_MENTAL_HEALTH]]<BR>
 Blood Type: [active2.fields[DATACORE_BLOOD_TYPE]]<BR>
 DNA: [active2.fields[DATACORE_BLOOD_DNA]]<BR>
 <BR>
-Minor Disabilities: [active2.fields["mi_dis"]]<BR>
-Details: [active2.fields["mi_dis_d"]]<BR><BR>
-Major Disabilities: [active2.fields["ma_dis"]]<BR>
-Details: [active2.fields["ma_dis_d"]]<BR><BR>
+Minor Disabilities: [active2.fields["disabilities"]]<BR>
+Details: [active2.fields["disabilities_details"]]<BR><BR>
 Allergies: [active2.fields["alg"]]<BR>
 Details: [active2.fields["alg_d"]]<BR><BR>
 Current Diseases: [active2.fields[DATACORE_DISEASES]] (per disease info placed in log/comment section)<BR>

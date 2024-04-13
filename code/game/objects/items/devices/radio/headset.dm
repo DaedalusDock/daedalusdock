@@ -202,13 +202,13 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	keyslot = new /obj/item/encryptionkey/heads/rd
 
 /obj/item/radio/headset/heads/hos
-	name = "\proper the head of security's headset"
+	name = "\proper the security marshal's headset"
 	desc = "The headset of the man in charge of keeping order and protecting the station."
 	icon_state = "com_headset"
 	keyslot = new /obj/item/encryptionkey/heads/hos
 
 /obj/item/radio/headset/heads/hos/alt
-	name = "\proper the head of security's bowman headset"
+	name = "\proper the security marshal's bowman headset"
 	desc = "The headset of the man in charge of keeping order and protecting the station. Protects ears from flashbangs."
 	icon_state = "com_headset_alt"
 	inhand_icon_state = "com_headset_alt"

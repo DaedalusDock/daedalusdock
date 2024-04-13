@@ -226,6 +226,7 @@ SUBSYSTEM_DEF(datacore)
 		C = H.client
 
 	var/mutable_appearance/character_appearance = new(H.appearance)
+	remove_non_canon_overlays(character_appearance)
 
 	//General Record
 	var/datum/data/record/general/G = new()
@@ -267,10 +268,8 @@ SUBSYSTEM_DEF(datacore)
 	M.fields[DATACORE_NAME] = H.real_name
 	M.fields[DATACORE_BLOOD_TYPE] = H.dna.blood_type.name
 	M.fields[DATACORE_BLOOD_DNA] = H.dna.unique_enzymes
-	M.fields["mi_dis"] = H.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY)
-	M.fields["mi_dis_d"] = H.get_quirk_string(TRUE, CAT_QUIRK_MINOR_DISABILITY)
-	M.fields["ma_dis"] = H.get_quirk_string(FALSE, CAT_QUIRK_MAJOR_DISABILITY)
-	M.fields["ma_dis_d"] = H.get_quirk_string(TRUE, CAT_QUIRK_MAJOR_DISABILITY)
+	M.fields[DATACORE_DISABILITIES] = H.get_quirk_string(FALSE, CAT_QUIRK_DISABILITIES)
+	M.fields[DATACORE_DISABILITIES_DETAILS] = H.get_quirk_string(TRUE, CAT_QUIRK_DISABILITIES)
 	M.fields[DATACORE_DISEASES] = "None"
 	M.fields[DATACORE_DISEASES_DETAILS] = "No diseases have been diagnosed at the moment."
 	M.fields[DATACORE_NOTES] = H.get_quirk_string(FALSE, CAT_QUIRK_NOTES)

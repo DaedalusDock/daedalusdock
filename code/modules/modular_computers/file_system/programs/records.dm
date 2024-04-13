@@ -56,8 +56,7 @@
 
 				current_record["name"] = person.fields[DATACORE_NAME]
 				current_record["bloodtype"] = person.fields[DATACORE_BLOOD_TYPE]
-				current_record["mi_dis"] = person.fields["mi_dis"]
-				current_record["ma_dis"] = person.fields["ma_dis"]
+				current_record["ma_dis"] = person.fields[DATACORE_DISABILITIES]
 				current_record["notes"] = person.fields[DATACORE_NOTES]
 				current_record["cnotes"] = person.fields[DATACORE_NOTES_DETAILS]
 

@@ -94,7 +94,6 @@
 
 	release_all_grabs()
 
-	set_ssd_indicator(FALSE)
 	set_typing_indicator(FALSE)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_DEATH, gibbed)

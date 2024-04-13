@@ -1,6 +1,6 @@
 /datum/job/quartermaster
 	title = JOB_QUARTERMASTER
-	description = "Coordinate cargo technicians and shaft miners, assist with \
+	description = "Manage your Deckhands and Prospectors, assist with \
 		economical purchasing."
 	faction = FACTION_STATION
 	total_positions = 1

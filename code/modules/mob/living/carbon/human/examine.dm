@@ -7,6 +7,7 @@
 	var/t_has = p_have()
 	var/t_is = p_are()
 	var/t_es = p_es()
+	var/t_s = p_s()
 	var/obscure_name
 
 	if(isliving(user))
@@ -24,6 +25,23 @@
 			species_text += span_notice(" \[<a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>?</a>\]")
 
 	. = list("<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"][species_text]!</EM><hr>")
+
+	if(!skipface)
+		var/age_text
+		switch(age)
+			if(-INFINITY to 25) //what
+				age_text = "very young"
+			if(26 to 35)
+				age_text = "of adult age"
+			if(36 to 55)
+				age_text = "middle-aged"
+			if(56 to 75)
+				age_text = "rather old"
+			if(76 to 100)
+				age_text = "very old"
+			if(101 to INFINITY)
+				age_text = "withering away"
+		. += span_notice("[t_He] appear[t_s] to be [age_text].")
 
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
@@ -103,29 +121,25 @@
 		var/id_topic = wear_id.GetID() ? " <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>" : ""
 		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)].[id_topic]"
 
-
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()
 	if (length(status_examines))
 		. += status_examines
 
 	var/appears_dead = FALSE
-	var/just_sleeping = FALSE
-
-	if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
-		appears_dead = TRUE
-
-		var/obj/item/clothing/glasses/G = get_item_by_slot(ITEM_SLOT_EYES)
-		var/are_we_in_weekend_at_bernies = G?.tint && buckled && istype(buckled, /obj/vehicle/ridden/wheelchair)
-
-		if(isliving(user) && (HAS_TRAIT(user, TRAIT_NAIVE) || are_we_in_weekend_at_bernies))
-			just_sleeping = TRUE
-
-		if(!just_sleeping)
-			if(suiciding)
-				. += span_warning("[t_He] appear[p_s()] to have committed suicide... there is no hope of recovery.")
-
-			. += generate_death_examine_text()
+	var/adjacent = get_dist(user, src) <= 1
+	if(stat != CONSCIOUS || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
+		if(!adjacent)
+			. += span_alert("[t_He] is not moving.")
+		else
+			if(stat == UNCONSCIOUS && !HAS_TRAIT(src, TRAIT_FAKEDEATH))
+				. += span_notice("[t_He] [t_is] unconsious.")
+				if(failed_last_breath)
+					. += span_alert("[t_He] isn't breathing.")
+			else
+				. += span_danger("The spark of life has left [t_him].")
+				if(suiciding)
+					. += span_warning("[t_He] appear[t_s] to have committed suicide.")
 
 	if(get_bodypart(BODY_ZONE_HEAD) && needs_organ(ORGAN_SLOT_BRAIN) && !getorgan(/obj/item/organ/brain))
 		. += span_deadsay("It appears that [t_his] brain is missing...")
@@ -184,7 +198,7 @@
 		msg += "<B>[capitalize(t_his)] [parse_zone(t)] is missing!</B>\n"
 
 	if(l_limbs_missing >= 2 && r_limbs_missing == 0)
-		msg += "[t_He] look[p_s()] all right now.\n"
+		msg += "[t_He] look[t_s] all right now.\n"
 	else if(l_limbs_missing == 0 && r_limbs_missing >= 2)
 		msg += "[t_He] really keeps to the left.\n"
 	else if(l_limbs_missing >= 2 && r_limbs_missing >= 2)
@@ -206,7 +220,7 @@
 	if(locate(/datum/reagent/toxin/acid) in touching?.reagent_list)
 		msg += span_warning("[t_He] is covered in burning acid! \n")
 	else if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks) || length(touching?.reagent_list))
-		msg += "[t_He] look[p_s()] a little soaked.\n"
+		msg += "[t_He] look[t_s] a little soaked.\n"
 
 
 	for(var/obj/item/hand_item/grab/G in grabbed_by)
@@ -226,11 +240,11 @@
 			msg += "[t_He] [t_is] quite chubby.\n"
 	switch(disgust)
 		if(DISGUST_LEVEL_GROSS to DISGUST_LEVEL_VERYGROSS)
-			msg += "[t_He] look[p_s()] a bit grossed out.\n"
+			msg += "[t_He] look[t_s] a bit grossed out.\n"
 		if(DISGUST_LEVEL_VERYGROSS to DISGUST_LEVEL_DISGUSTED)
-			msg += "[t_He] look[p_s()] really grossed out.\n"
+			msg += "[t_He] look[t_s] really grossed out.\n"
 		if(DISGUST_LEVEL_DISGUSTED to INFINITY)
-			msg += "[t_He] look[p_s()] extremely disgusted.\n"
+			msg += "[t_He] look[t_s] extremely disgusted.\n"
 
 	var/apparent_blood_volume = blood_volume
 	if(skin_tone == "albino")
@@ -239,57 +253,43 @@
 		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 			msg += "[t_He] [t_has] pale skin.\n"
 		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-			msg += "<b>[t_He] look[p_s()] like pale death.</b>\n"
+			msg += "<b>[t_He] look[t_s] like pale death.</b>\n"
 		if(-INFINITY to BLOOD_VOLUME_BAD)
-			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
+			msg += "[span_deadsay("<b>[t_He] resemble[t_s] a crushed, empty juice pouch.</b>")]\n"
 
 	if(islist(stun_absorption))
 		for(var/i in stun_absorption)
 			if(stun_absorption[i]["end_time"] > world.time && stun_absorption[i]["examine_message"])
 				msg += "[t_He] [t_is][stun_absorption[i]["examine_message"]]\n"
 
-	if(just_sleeping)
-		msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
-
 	if(!appears_dead)
-		if(src != user)
-			if(HAS_TRAIT(user, TRAIT_EMPATH))
-				if (combat_mode)
-					msg += "[t_He] seem[p_s()] to be on guard.\n"
-				if (getOxyLoss() >= 10)
-					msg += "[t_He] seem[p_s()] winded.\n"
-				if (getToxLoss() >= 10)
-					msg += "[t_He] seem[p_s()] sickly.\n"
-				if (is_blind())
-					msg += "[t_He] appear[p_s()] to be staring off into space.\n"
-				if (HAS_TRAIT(src, TRAIT_DEAF))
-					msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
-				if (bodytemperature > dna.species.heat_level_1)
-					msg += "[t_He] [t_is] flushed and wheezing.\n"
-				if (bodytemperature < dna.species.cold_level_1)
-					msg += "[t_He] [t_is] shivering.\n"
+		if (combat_mode)
+			msg += "[t_He] appear[p_s()] to be on guard.\n"
+		if (getOxyLoss() >= 10)
+			msg += "[t_He] appear[p_s()] winded.\n"
+		if (getToxLoss() >= 10)
+			msg += "[t_He] appear[p_s()] sickly.\n"
 
-			msg += "</span>"
+		if (bodytemperature < dna.species.cold_discomfort_level)
+			msg += "[t_He] [t_is] shivering.\n"
 
-			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
-				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
+		msg += "</span>"
+
+		if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
+			msg += "[t_He] [t_has] a holy aura about [t_him].\n"
 
 		switch(stat)
-			if(UNCONSCIOUS)
-				msg += "[t_He] [t_is]n't responding to anything around [t_him] and seem[p_s()] to be asleep.\n"
 			if(CONSCIOUS)
 				if(HAS_TRAIT(src, TRAIT_DUMB))
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
 				if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 					msg += "[t_He] [t_is] barely conscious.\n"
 
-		if(getorgan(/obj/item/organ/brain))
-			if(ai_controller?.ai_status == AI_STATUS_ON)
-				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
-			else if(!key)
-				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
-			else if(!client)
-				msg += "[t_He] [t_has] a blank, absent-minded stare and appears completely unresponsive to anything. [t_He] may snap out of it soon.\n"
+	if(getorgan(/obj/item/organ/brain))
+		if(ai_controller?.ai_status == AI_STATUS_ON)
+			msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
+		else if(!key)
+			msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 
 	if (length(msg))
 		. += span_warning("[msg.Join("")]")
@@ -370,26 +370,6 @@
 		return
 
 	return examine_list.Join("\n")
-
-/mob/living/carbon/human/examine_more(mob/user)
-	. = ..()
-	if ((wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE)))
-		return
-	var/age_text
-	switch(age)
-		if(-INFINITY to 25)
-			age_text = "very young"
-		if(26 to 35)
-			age_text = "of adult age"
-		if(36 to 55)
-			age_text = "middle-aged"
-		if(56 to 75)
-			age_text = "rather old"
-		if(76 to 100)
-			age_text = "very old"
-		if(101 to INFINITY)
-			age_text = "withering away"
-	. += list(span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text]."))
 
 ///This proc expects to be passed a list of covered zones, for optimization in loops. Use get_covered_body_zones(exact_only = TRUE) for that..
 /mob/living/carbon/proc/is_bodypart_visibly_covered(obj/item/bodypart/BP, covered_zones)

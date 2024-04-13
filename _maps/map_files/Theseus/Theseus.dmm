@@ -514,6 +514,7 @@
 	pixel_y = -1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/power/data_terminal,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hos)
 "ahK" = (
@@ -2115,6 +2116,9 @@
 	pixel_y = -2
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/tape{
+	pixel_x = -10
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/interrogation)
 "aGW" = (
@@ -6938,6 +6942,11 @@
 /obj/effect/turf_decal/trimline/red/filled/corner,
 /obj/effect/turf_decal/stripes/white/corner{
 	dir = 8
+	},
+/obj/machinery/button/door/directional/west{
+	id = "cell1genpop";
+	name = "Genpop Shutters";
+	req_access_txt = "2"
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
@@ -12370,6 +12379,11 @@
 /obj/effect/turf_decal/stripes/white/corner{
 	dir = 8
 	},
+/obj/machinery/button/door/directional/west{
+	id = "cell2genpop";
+	name = "Genpop Shutters";
+	req_access_txt = "2"
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "dMq" = (
@@ -12791,15 +12805,15 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
 "dUJ" = (
-/obj/machinery/door/airlock/security/glass{
-	name = "Brig Access";
-	req_access_txt = "1"
-	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
 	cycle_id = "brig-access"
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
+	},
+/obj/machinery/door/airlock/security/glass{
+	name = "Brig Access";
+	req_access_txt = "2"
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/prison/rec)
@@ -19601,6 +19615,9 @@
 "ghh" = (
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/obj/structure/cable/yellow{
 	icon_state = "2"
 	},
 /turf/open/floor/iron/grimy,
@@ -19614,6 +19631,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/starboard)
+"ghD" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/machinery/door/airlock/security{
+	name = "Forensics Room";
+	req_access_txt = "4"
+	},
+/turf/open/floor/plating,
+/area/station/security/detectives_office/private_investigators_office)
 "ghG" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,
@@ -23178,6 +23205,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "4"
 	},
+/obj/machinery/power/data_terminal,
 /turf/open/floor/iron,
 /area/station/security/office)
 "htC" = (
@@ -26468,10 +26496,6 @@
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "ivZ" = (
-/obj/machinery/door/airlock/security/glass{
-	name = "Brig Access";
-	req_access_txt = "1"
-	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
 	cycle_id = "brig-access"
 	},
@@ -26479,6 +26503,10 @@
 	icon_state = "12"
 	},
 /obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/security/glass{
+	name = "Brig Access";
+	req_access_txt = "2"
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "iwa" = (
@@ -26510,15 +26538,15 @@
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "iwe" = (
-/obj/machinery/door/airlock/security/glass{
-	name = "Brig Access";
-	req_access_txt = "1"
-	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
 	cycle_id = "brig-access"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/airlock/security/glass{
+	name = "Brig Access";
+	req_access_txt = "2"
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/prison/rec)
 "iwj" = (
@@ -27891,7 +27919,7 @@
 "iSf" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Access";
-	req_access_txt = "1"
+	req_access_txt = "2"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
 	cycle_id = "brig-access"
@@ -28089,11 +28117,17 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "iVS" = (
-/obj/structure/cable/yellow{
-	icon_state = "8"
+/obj/machinery/door/airlock/security/glass{
+	name = "Genpop Brig";
+	req_access_txt = "1"
 	},
-/turf/open/floor/plating,
-/area/station/security/detectives_office/private_investigators_office)
+/obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/shutters{
+	id = "cell1genpop";
+	name = "Genpop Shutter"
+	},
+/turf/open/floor/iron/dark,
+/area/station/security/brig)
 "iVV" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 8
@@ -34911,13 +34945,10 @@
 /area/station/commons/locker)
 "ljI" = (
 /obj/structure/table/wood,
-/obj/item/tape{
-	pixel_y = -3;
-	pixel_x = -4
-	},
-/obj/item/book/manual/wiki/security_space_law{
-	pixel_x = 6;
-	pixel_y = 11
+/obj/machinery/telephone/security,
+/obj/machinery/power/data_terminal,
+/obj/structure/cable/yellow{
+	icon_state = "2"
 	},
 /turf/open/floor/iron/grimy,
 /area/station/security/interrogation)
@@ -40438,15 +40469,6 @@
 /area/station/maintenance/starboard/fore)
 "mSD" = (
 /obj/structure/rack,
-/obj/item/gun/energy/disabler{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/gun/energy/disabler,
-/obj/item/gun/energy/disabler{
-	pixel_x = 3;
-	pixel_y = -3
-	},
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory/upper)
 "mSE" = (
@@ -41924,11 +41946,11 @@
 	pixel_y = 8;
 	pixel_x = -5
 	},
-/obj/item/taperecorder{
-	pixel_x = 9;
-	pixel_y = 3
-	},
 /obj/structure/table/wood,
+/obj/item/book/manual/wiki/security_space_law{
+	pixel_x = 7;
+	pixel_y = -1
+	},
 /turf/open/floor/iron/grimy,
 /area/station/security/interrogation)
 "nqV" = (
@@ -44800,6 +44822,7 @@
 	icon_state = "1"
 	},
 /obj/machinery/telephone/security,
+/obj/machinery/power/data_terminal,
 /turf/open/floor/iron,
 /area/station/security/prison/workout)
 "ooy" = (
@@ -48220,19 +48243,17 @@
 /turf/open/floor/iron/white,
 /area/station/science/xenobiology)
 "psq" = (
-/obj/item/gun/ballistic/revolver/single_action/juno{
-	pixel_y = -2
-	},
-/obj/item/gun/ballistic/revolver/single_action/juno{
-	pixel_y = -2;
-	pixel_x = 5
-	},
-/obj/item/gun/ballistic/revolver/single_action/juno{
-	pixel_y = 2;
-	pixel_x = 4
-	},
 /obj/structure/closet/secure_closet{
 	name = "secure weapons locker"
+	},
+/obj/item/gun/energy/disabler{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/gun/energy/disabler,
+/obj/item/gun/energy/disabler{
+	pixel_x = 3;
+	pixel_y = -3
 	},
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory)
@@ -49485,9 +49506,6 @@
 /turf/open/floor/carpet/cyan,
 /area/station/medical/psychology)
 "pOd" = (
-/obj/structure/cable/yellow{
-	icon_state = "5"
-	},
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -54537,6 +54555,11 @@
 /obj/effect/turf_decal/stripes/white/corner{
 	dir = 8
 	},
+/obj/machinery/button/door/directional/west{
+	id = "cell3genpop";
+	name = "Genpop Shutters";
+	req_access_txt = "2"
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig/upper)
 "rwm" = (
@@ -55649,6 +55672,10 @@
 	req_access_txt = "1"
 	},
 /obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/shutters{
+	id = "cell3genpop";
+	name = "Genpop Shutter"
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "rPk" = (
@@ -62538,6 +62565,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "8"
 	},
+/obj/machinery/power/data_terminal,
 /turf/open/floor/iron,
 /area/station/security/warden)
 "uiP" = (
@@ -66277,11 +66305,22 @@
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
 "vAQ" = (
-/obj/effect/turf_decal/tile/red/half/contrasted{
-	dir = 8
+/obj/item/gun/ballistic/revolver/single_action/juno{
+	pixel_y = -2
+	},
+/obj/item/gun/ballistic/revolver/single_action/juno{
+	pixel_y = -2;
+	pixel_x = 5
+	},
+/obj/item/gun/ballistic/revolver/single_action/juno{
+	pixel_y = 2;
+	pixel_x = 4
 	},
 /obj/structure/closet/secure_closet{
 	name = "secure weapons locker"
+	},
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory/upper)
@@ -68947,6 +68986,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
+/obj/machinery/door/poddoor/shutters{
+	id = "cell2genpop";
+	name = "Genpop Shutter"
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "wpE" = (
@@ -96991,7 +97034,7 @@ aaa
 dey
 dey
 dey
-oEg
+ghD
 dey
 tPR
 tPR
@@ -98532,7 +98575,7 @@ rFP
 tPR
 ouL
 dey
-iVS
+dey
 dey
 dey
 dey
@@ -99551,7 +99594,7 @@ wpl
 rQz
 rQz
 rQz
-rPe
+iVS
 rQz
 rQz
 lMJ

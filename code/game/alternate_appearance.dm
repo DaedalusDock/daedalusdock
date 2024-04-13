@@ -69,6 +69,7 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /obj/alt_appearance_tester/Initialize(mapload)
 	. = ..()
 	var/image/I = image('icons/obj/tools.dmi', src, "wrench_brass")
+	I.layer = layer
 	add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "gold_wrench", I)
 
 //an alternate appearance that attaches a single image to a single atom
@@ -99,12 +100,23 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 		ghost_image.alpha = 128
 		ghost_appearance = new /datum/atom_hud/alternate_appearance/basic/observers(key + "_observer", ghost_image, NONE)
 
+	if(ismovable(target))
+		var/atom/movable/AM = target
+		if(AM.bound_overlay)
+			mimic(AM.bound_overlay)
+
 /datum/atom_hud/alternate_appearance/basic/Destroy()
 	. = ..()
 	QDEL_NULL(image)
 	target = null
 	if(ghost_appearance)
 		QDEL_NULL(ghost_appearance)
+
+/datum/atom_hud/alternate_appearance/basic/proc/mimic(atom/movable/openspace/mimic)
+	var/image/mimic_image = image(image.icon, mimic, image.icon_state, image.layer)
+	mimic_image.plane = image.plane
+	var/datum/atom_hud/alternate_appearance/basic/mimic_appearance = new type(appearance_key, mimic_image)
+	return mimic_appearance
 
 /datum/atom_hud/alternate_appearance/basic/add_atom_to_hud(atom/A)
 	LAZYINITLIST(A.hud_list)
@@ -121,11 +133,16 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /datum/atom_hud/alternate_appearance/basic/copy_overlays(atom/other, cut_old)
 	image.copy_overlays(other, cut_old)
 
-/datum/atom_hud/alternate_appearance/basic/everyone
+/datum/atom_hud/alternate_appearance/basic/living
 	add_ghost_version = TRUE
 
-/datum/atom_hud/alternate_appearance/basic/everyone/mobShouldSee(mob/M)
+/datum/atom_hud/alternate_appearance/basic/living/mobShouldSee(mob/M)
 	return !isdead(M)
+
+/datum/atom_hud/alternate_appearance/basic/everyone
+
+/datum/atom_hud/alternate_appearance/basic/everyone/mobShouldSee(mob/M)
+	return TRUE
 
 /datum/atom_hud/alternate_appearance/basic/silicons
 
@@ -176,5 +193,9 @@ GLOBAL_LIST_EMPTY(active_alternate_appearances)
 /datum/atom_hud/alternate_appearance/basic/one_person/New(key, image/I, mob/living/M)
 	..(key, I, FALSE)
 	seer = M
+
+/datum/atom_hud/alternate_appearance/basic/one_person/mimic(atom/movable/openspace/mimic/mimic)
+	var/datum/atom_hud/alternate_appearance/basic/one_person/alt_appearance = ..()
+	alt_appearance.seer = seer
 
 /datum/atom_hud/alternate_appearance/basic/food_demands

@@ -57,6 +57,7 @@
 		/datum/atom_hud/alternate_appearance/basic/one_person,
 		"bar_overlay_[REF(src)]",
 		cool_overlay,
+		null,
 		owner,
 	)
 	alt_appearance.show_to(owner)

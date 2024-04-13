@@ -26,7 +26,7 @@
 	blood_overlay_type = "armor"
 	dog_fashion = /datum/dog_fashion/back
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
-	armor = list(MELEE = 35, BULLET = 20, LASER = 20, ENERGY = 30, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 35, PUNCTURE = 20, SLASH = 35, LASER = 20, ENERGY = 30, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 
 /obj/item/clothing/suit/armor/vest/sec
 	name = "martian armor vest"
@@ -39,7 +39,7 @@
 	desc = "A thick, flexible kevlar vest. Keeps your chest protected from stabbings and shootings, but it won't do much against blunt force."
 	icon_state = "armoralt"
 	inhand_icon_state = "armoralt"
-	armor = list(MELEE = 15, BULLET = 40, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 15, PUNCTURE = 40, SLASH = 10, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 0, FIRE = 50, ACID = 50)
 
 /obj/item/clothing/suit/armor/vest/marine
 	name = "tactical armor vest"
@@ -236,7 +236,7 @@
 	name = "private investigator's armor vest"
 	desc = "An armored vest with a private investigator's badge on it."
 	icon_state = "detective-armor"
-	armor = list(MELEE = 25, BULLET = 30, LASER = 20, ENERGY = 30, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 20, PUNCTURE = 30, SLASH = 10, LASER = 20, ENERGY = 30, BOMB = 25, BIO = 0, FIRE = 50, ACID = 50)
 	resistance_flags = FLAMMABLE
 	dog_fashion = null
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

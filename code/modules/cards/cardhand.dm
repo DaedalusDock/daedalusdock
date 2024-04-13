@@ -64,6 +64,10 @@
 	if(!isliving(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		return
 
+	if(!user.get_empty_held_index())
+		to_chat(user, span_warning("You need an empty hand to draw from the pile."))
+		return FALSE
+
 	var/list/handradial = list()
 	for(var/obj/item/toy/singlecard/card in cards)
 		handradial[card] = image(icon = src.icon, icon_state = card.icon_state)
@@ -73,7 +77,8 @@
 		return FALSE
 
 	var/obj/item/toy/singlecard/selected_card = draw(user, choice)
-	user.pickup_item(selected_card)
+	if(!user.pickup_item(selected_card, user.get_empty_held_index()))
+		selected_card.forceMove(user.drop_location())
 
 	if(cards.len == 1)
 		user.temporarilyRemoveItemFromInventory(src, TRUE)

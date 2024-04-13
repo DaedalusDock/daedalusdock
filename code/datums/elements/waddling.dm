@@ -21,11 +21,10 @@
 		return
 	Waddle(target)
 
-
 /datum/element/waddling/proc/Waddle(atom/movable/target)
 	SIGNAL_HANDLER
-
-	animate(target, pixel_z = 4, time = 0)
-	var/prev_trans = matrix(target.transform)
-	animate(pixel_z = 0, transform = turn(target.transform, pick(-12, 0, 12)), time=2)
-	animate(pixel_z = 0, transform = prev_trans, time = 0)
+	for(var/atom/movable/AM as anything in target.get_associated_mimics() + target)
+		animate(AM, pixel_z = 4, time = 0)
+		var/prev_trans = matrix(AM.transform)
+		animate(pixel_z = 0, transform = turn(AM.transform, pick(-12, 0, 12)), time=2)
+		animate(pixel_z = 0, transform = prev_trans, time = 0)

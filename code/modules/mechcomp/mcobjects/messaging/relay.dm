@@ -24,7 +24,7 @@
 	. += span_notice("Message Replacement is [replace_message ? "on" : "off"].")
 
 /obj/item/mcobject/messaging/relay/proc/relay(datum/mcmessage/input)
-	flick("[anchored ? "u":""]comp_relay1", src)
+	z_flick("[anchored ? "u":""]comp_relay1", src)
 	if(replace_message)
 		fire(stored_message, input)
 	else

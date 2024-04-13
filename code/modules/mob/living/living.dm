@@ -2204,8 +2204,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/offset_x = pixel_x + pick(-3, -2, -1, 1, 2, 3)
 	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
 
-	animate(src, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
-	animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
+	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
+		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+		animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
 
 /mob/living/proc/get_blood_print()
 	return BLOOD_PRINT_PAWS

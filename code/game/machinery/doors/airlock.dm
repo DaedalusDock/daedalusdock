@@ -420,7 +420,7 @@
 	if(!state)
 		state = density ? AIRLOCK_CLOSED : AIRLOCK_OPEN
 	airlock_state = state
-
+	UPDATE_OO_IF_PRESENT
 	. = ..()
 
 /obj/machinery/door/airlock/update_icon_state()

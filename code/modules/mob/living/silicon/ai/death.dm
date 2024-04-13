@@ -16,7 +16,7 @@
 	else
 		icon_state = "ai_dead"
 	if("[old_icon]_death_transition" in icon_states(icon))
-		flick("[old_icon]_death_transition", src)
+		z_flick("[old_icon]_death_transition", src)
 
 	cameraFollow = null
 

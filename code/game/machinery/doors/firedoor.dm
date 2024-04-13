@@ -304,9 +304,9 @@
 /obj/machinery/door/firedoor/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("[base_icon_state]_opening", src)
+			z_flick("[base_icon_state]_opening", src)
 		if("closing")
-			flick("[base_icon_state]_closing", src)
+			z_flick("[base_icon_state]_closing", src)
 
 /obj/machinery/door/firedoor/update_icon_state()
 	. = ..()

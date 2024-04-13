@@ -413,7 +413,7 @@
 		status_report += "Nothing"
 
 	pad.visible_message(span_notice("[pad] activates!"))
-	flick(pad.sending_state,pad)
+	z_flick(pad.sending_state,pad)
 	pad.icon_state = pad.idle_state
 	sending = FALSE
 

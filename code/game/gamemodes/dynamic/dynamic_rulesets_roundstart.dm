@@ -13,7 +13,6 @@
 	minimum_required_age = 0
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
@@ -109,7 +108,7 @@
 	antag_datum = /datum/antagonist/brother
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
+		JOB_DETECTIVE, // The detective works alone
 		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
@@ -224,7 +223,7 @@
 	antag_datum = /datum/antagonist/heretic
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
+		JOB_DETECTIVE, // It's up to him to investigate eldritch evil.
 		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,

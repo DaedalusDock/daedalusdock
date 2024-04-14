@@ -507,6 +507,7 @@ What a mess.*/
 					return
 				if(!(R.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED))
 					return
+				investigate_log("[key_name(usr)] send a security status broadcast for [R.fields[DATACORE_NAME]].", INVESTIGATE_RECORDS)
 
 				SEND_GLOBAL_SIGNAL(COMSIG_GLOB_WANTED_CRIMINAL, R)
 
@@ -670,7 +671,9 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				var/counter = 1
 				while(active2.fields["com_[counter]"])
 					counter++
-				active2.fields["com_[counter]"] = "Made by [src.authenticated] ([src.rank]) on [stationtime2text()] [time2text(world.realtime, "MMM DD")], [CURRENT_STATION_YEAR]<BR>[t1]"
+				active2.fields["com_[counter]"] = "Made by [src.authenticated] ([src.rank]) on [stationtime2text()] [stationdate2text()]<BR>[t1]"
+
+				investigate_log("[key_name(usr)] created a new comment for [active2.fields[DATACORE_NAME]]: [html_encode(t1)].", INVESTIGATE_RECORDS)
 
 			if("Delete Record (ALL)")
 				if(active1)
@@ -687,6 +690,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 			if("Delete Entry")
 				if((istype(active2, /datum/data/record) && active2.fields["com_[href_list["del_c"]]"]))
 					active2.fields["com_[href_list["del_c"]]"] = "<B>Deleted</B>"
+					investigate_log("[key_name(usr)] deleted a record entry: [active2.fields[DATACORE_NAME]].", INVESTIGATE_RECORDS)
 //RECORD CREATE
 			if("New Record (Security)")
 				if((istype(active1, /datum/data/record) && !(istype(active2, /datum/data/record))))
@@ -700,6 +704,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 					SSdatacore.inject_record(R, DATACORE_RECORDS_SECURITY)
 					active2 = R
 					screen = 3
+					investigate_log("[key_name(usr)] created a new security record.", INVESTIGATE_RECORDS)
 
 			if("New Record (General)")
 				//General Record
@@ -746,6 +751,8 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 				M.fields[DATACORE_NOTES] = "No notes."
 				SSdatacore.inject_record(M, DATACORE_RECORDS_MEDICAL)
 
+				investigate_log("[key_name(usr)] created a new record of each type.", INVESTIGATE_RECORDS)
+
 
 
 //FIELD FUNCTIONS
@@ -760,32 +767,49 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
 							if(istype(active1, /datum/data/record))
+								investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: name | Old value:[active1.fields[DATACORE_NAME]] | New value: [t1].", INVESTIGATE_RECORDS)
 								active1.fields[DATACORE_NAME] = t1
+
 							if(istype(active2, /datum/data/record))
+								investigate_log("[key_name(usr)] updated [active2.fields[DATACORE_NAME]]'s record: Var: name | Old value:[active2.fields[DATACORE_NAME]] | New value: [t1].", INVESTIGATE_RECORDS)
 								active2.fields[DATACORE_NAME] = t1
+
 					if("id")
 						if(istype(active2, /datum/data/record) || istype(active1, /datum/data/record))
 							var/t1 = tgui_input_text(usr, "Input an id", "Security Records", active1.fields[DATACORE_ID])
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
 							if(istype(active1, /datum/data/record))
+								investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: id | Old value:[active1.fields[DATACORE_ID]] | New value: [t1].", INVESTIGATE_RECORDS)
 								active1.fields[DATACORE_ID] = t1
+
 							if(istype(active2, /datum/data/record))
+								investigate_log("[key_name(usr)] updated [active2.fields[DATACORE_NAME]]'s record: Var: id | Old value:[active2.fields[DATACORE_ID]] | New value: [t1].", INVESTIGATE_RECORDS)
 								active2.fields[DATACORE_ID] = t1
+
 					if("fingerprint")
 						if(istype(active1, /datum/data/record))
 							var/t1 = tgui_input_text(usr, "Input a fingerprint hash", "Security Records", active1.fields[DATACORE_FINGERPRINT])
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
+
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: fingerprint | Old value:[active1.fields[DATACORE_FINGERPRINT]] | New value: [t1].", INVESTIGATE_RECORDS)
 							active1.fields[DATACORE_FINGERPRINT] = t1
+
+
 					if("gender")
 						if(istype(active1, /datum/data/record))
+							var/new_gender
 							if(active1.fields[DATACORE_GENDER] == "Male")
-								active1.fields[DATACORE_GENDER] = "Female"
+								new_gender = "Female"
 							else if(active1.fields[DATACORE_GENDER] == "Female")
-								active1.fields[DATACORE_GENDER] = "Other"
+								new_gender = "Other"
 							else
-								active1.fields[DATACORE_GENDER] = "Male"
+								new_gender = "Male"
+
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: gender | Old value:[active1.fields[DATACORE_GENDER]] | New value: [new_gender].", INVESTIGATE_RECORDS)
+							active1.fields[DATACORE_GENDER] = new_gender
+
 					if("age")
 						if(istype(active1, /datum/data/record))
 							var/t1 = tgui_input_number(usr, "Input age", "Security records", active1.fields[DATACORE_AGE], AGE_MAX, AGE_MIN)
@@ -793,7 +817,10 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 								return
 							if(!canUseSecurityRecordsConsole(usr, "age", a1))
 								return
+
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: age | Old value:[active1.fields[DATACORE_AGE]] | New value: [t1].", INVESTIGATE_RECORDS)
 							active1.fields[DATACORE_AGE] = t1
+
 					if("species")
 						if(istype(active1, /datum/data/record))
 							var/t1 = tgui_input_list(usr, "Select a species", "Species Selection", get_selectable_species())
@@ -801,13 +828,16 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 								return
 							if(!canUseSecurityRecordsConsole(usr, t1, a1))
 								return
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: species | Old value:[active1.fields[DATACORE_SPECIES]] | New value: [t1].", INVESTIGATE_RECORDS)
 							active1.fields[DATACORE_SPECIES] = t1
+
 					if("show_photo_front")
 						if(active1)
 							var/front_photo = active1.get_front_photo()
 							if(istype(front_photo, /obj/item/photo))
 								var/obj/item/photo/photo = front_photo
 								photo.show(usr)
+
 					if("upd_photo_front")
 						var/obj/item/photo/photo = get_photo(usr)
 						if(photo)
@@ -820,18 +850,22 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							var/dh = w - 32
 							I.Crop(dw/2, dh/2, w - dw/2, h - dh/2)
 							active1.fields["photo_front"] = photo
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s front photo.", INVESTIGATE_RECORDS)
+
 					if("print_photo_front")
 						if(active1)
 							var/front_photo = active1.get_front_photo()
 							if(istype(front_photo, /obj/item/photo))
 								var/obj/item/photo/photo_front = front_photo
 								print_photo(photo_front.picture.picture_image, active1.fields[DATACORE_NAME])
+
 					if("show_photo_side")
 						if(active1)
 							var/side_photo = active1.get_side_photo()
 							if(istype(side_photo, /obj/item/photo))
 								var/obj/item/photo/photo = side_photo
 								photo.show(usr)
+
 					if("upd_photo_side")
 						var/obj/item/photo/photo = get_photo(usr)
 						if(photo)
@@ -844,6 +878,8 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							var/dh = w - 32
 							I.Crop(dw/2, dh/2, w - dw/2, h - dh/2)
 							active1.fields["photo_side"] = photo
+							investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s front photo.", INVESTIGATE_RECORDS)
+
 					if("print_photo_side")
 						if(active1)
 							var/side_photo = active1.get_side_photo()
@@ -873,7 +909,17 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 						if(!canUseSecurityRecordsConsole(usr, "delete", null, a2))
 							return
 
+						var/crime_name
+						var/crime_details
 						var/datum/data/record/security/security_record = active1
+						var/list/crimes = security_record.fields[DATACORE_CRIMES]
+						for(var/datum/data/crime/crime in crimes)
+							if(crime.dataId == text2num(href_list["cdataid"]))
+								crime_name = crime.crimeName
+								crime_details = crime.crimeDetails
+								break
+
+						investigate_log("[key_name(usr)] deleted a crime from [active1.fields[DATACORE_NAME]]: ([crime_name]) | Details: [crime_details]", INVESTIGATE_RECORDS)
 						security_record.remove_crime(href_list["cdataid"])
 
 					if("add_details")
@@ -920,6 +966,17 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 
 						if(!canUseSecurityRecordsConsole(usr, "delete", null, a2))
 							return
+
+						var/crime_name = ""
+						var/crime_details = ""
+						var/list/crimes = active1.fields[DATACORE_CITATIONS]
+						for(var/datum/data/crime/crime in crimes)
+							if(crime.dataId == text2num(href_list["cdataid"]))
+								crime_name = crime.crimeName
+								crime_details = crime.crimeDetails
+								break
+
+						investigate_log("[key_name(usr)] deleted a citation from [active1.fields[DATACORE_NAME]]: ([crime_name]) | Details: [crime_details]", INVESTIGATE_RECORDS)
 						var/datum/data/record/security/security_record = active1
 						security_record.remove_citation(href_list["cdataid"])
 
@@ -928,7 +985,10 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 							var/t1 = tgui_input_text(usr, "Please summarize notes", "Security Records", active2.fields[DATACORE_NOTES])
 							if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
 								return
+
 							active2.fields[DATACORE_NOTES] = t1
+							investigate_log("[key_name(usr)] updated [active2.fields[DATACORE_NAME]]'s notes to: [t1]", INVESTIGATE_RECORDS)
+
 					if("criminal")
 						if(istype(active2, /datum/data/record))
 							temp = "<h5>Criminal Status:</h5>"
@@ -971,6 +1031,7 @@ Age: [active1.fields[DATACORE_AGE]]<BR>"}
 								if(rank)
 									active1.fields[DATACORE_RANK] = rank
 									active1.fields[DATACORE_TRIM] = active1.fields[DATACORE_RANK]
+									investigate_log("[key_name(usr)] updated [active1.fields[DATACORE_NAME]]'s record: Var: rank | Old value:[active1.fields[DATACORE_RANK]] | New value: [rank].", INVESTIGATE_RECORDS)
 								else
 									message_admins("Warning: possible href exploit by [key_name(usr)] - attempted to set change a crew member rank to an invalid path: [path]")
 									log_game("Warning: possible href exploit by [key_name(usr)] - attempted to set change a crew member rank to an invalid path: [path]")

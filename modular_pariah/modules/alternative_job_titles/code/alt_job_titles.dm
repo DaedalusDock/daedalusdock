@@ -10,10 +10,6 @@
 	var/list/alt_titles = null
 
 // Heads
-
-/datum/job/research_director
-	alt_titles = list(JOB_RESEARCH_DIRECTOR)
-
 /datum/job/chief_engineer
 	alt_titles = list(JOB_CHIEF_ENGINEER)
 
@@ -56,17 +52,6 @@
 
 /datum/job/psychologist
 	alt_titles = list(JOB_PSYCHOLOGIST)
-
-// Science
-
-/datum/job/roboticist
-	alt_titles = list(JOB_ROBOTICIST)
-
-/datum/job/scientist
-	alt_titles = list(JOB_SCIENTIST,  "Xenobiologist", "Ordnance Technician")
-
-/datum/job/geneticist
-	alt_titles = list(JOB_GENETICIST)
 
 // Engineering
 

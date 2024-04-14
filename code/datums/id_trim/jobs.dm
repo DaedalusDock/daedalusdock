@@ -267,16 +267,6 @@
 	if(CONFIG_GET(flag/security_has_maint_access))
 		access |= list(ACCESS_MAINT_TUNNELS)
 
-/datum/id_trim/job/geneticist
-	assignment = "Geneticist"
-	trim_state = "trim_geneticist"
-	sechud_icon_state = SECHUD_GENETICIST
-	extra_access = list(ACCESS_ROBOTICS, ACCESS_TECH_STORAGE, ACCESS_XENOBIOLOGY)
-	minimal_access = list(ACCESS_GENETICS, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_RESEARCH, ACCESS_RND)
-	config_job = "geneticist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
-	job = /datum/job/geneticist
-
 /datum/id_trim/job/head_of_personnel
 	assignment = "Head of Personnel"
 	intern_alt_name = "Head of Personnel-in-Training"
@@ -445,28 +435,6 @@
 	config_job = "research_director"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/research_director
-
-/datum/id_trim/job/roboticist
-	assignment = "Roboticist"
-	trim_state = "trim_roboticist"
-	sechud_icon_state = SECHUD_ROBOTICIST
-	extra_access = list(ACCESS_GENETICS, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_XENOBIOLOGY)
-	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_RESEARCH, ACCESS_RND,
-					ACCESS_ROBOTICS, ACCESS_TECH_STORAGE)
-	config_job = "roboticist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
-	job = /datum/job/roboticist
-
-/datum/id_trim/job/scientist
-	assignment = "Scientist"
-	trim_state = "trim_scientist"
-	sechud_icon_state = SECHUD_SCIENTIST
-	extra_access = list(ACCESS_GENETICS, ACCESS_ROBOTICS)
-	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE,
-					ACCESS_RESEARCH, ACCESS_RND, ACCESS_XENOBIOLOGY)
-	config_job = "scientist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
-	job = /datum/job/scientist
 
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
 /datum/id_trim/job/security_officer

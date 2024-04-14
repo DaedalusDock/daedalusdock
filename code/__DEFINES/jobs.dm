@@ -34,7 +34,6 @@
 #define JOB_CAPTAIN "Captain"
 #define JOB_HEAD_OF_PERSONNEL "Head of Personnel"
 #define JOB_SECURITY_MARSHAL "Security Marshal"
-#define JOB_RESEARCH_DIRECTOR "Research Director"
 #define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_MEDICAL_DIRECTOR "Medical Director"
 //Silicon
@@ -57,10 +56,6 @@
 #define JOB_PARAMEDIC "Paramedic"
 #define JOB_CHEMIST "Chemist"
 #define JOB_VIROLOGIST "Virologist"
-//Science
-#define JOB_SCIENTIST "Scientist"
-#define JOB_ROBOTICIST "Roboticist"
-#define JOB_GENETICIST "Geneticist"
 //Supply
 #define JOB_QUARTERMASTER "Quartermaster"
 #define JOB_DECKHAND "Deckhand"

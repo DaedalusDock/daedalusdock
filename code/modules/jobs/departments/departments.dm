@@ -92,17 +92,6 @@
 	manifest_key = DATACORE_RECORDS_AETHER
 	budget_id = ACCOUNT_MED
 
-/datum/job_department/science
-	department_name = DEPARTMENT_SCIENCE
-	department_bitflags = DEPARTMENT_BITFLAG_SCIENCE
-	department_head = /datum/job/research_director
-	department_experience_type = EXP_TYPE_SCIENCE
-	display_order = 5
-	label_class = "science"
-	latejoin_color = "#ffddff"
-	nation_prefixes = list("Sci", "Griffa", "Geneti", "Explosi", "Mecha", "Xeno", "Nani", "Cyto")
-	exclude_from_latejoin = TRUE
-
 /datum/job_department/cargo
 	department_name = DEPARTMENT_CARGO
 	department_bitflags = DEPARTMENT_BITFLAG_CARGO

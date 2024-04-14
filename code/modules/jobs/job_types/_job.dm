@@ -17,11 +17,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/chemist,
 	/datum/job/virologist,
 	/datum/job/psychologist,
-	// Science
-	/datum/job/research_director,
-	/datum/job/scientist,
-	/datum/job/roboticist,
-	/datum/job/geneticist,
 	// Supply
 	/datum/job/quartermaster,
 	/datum/job/cargo_technician,

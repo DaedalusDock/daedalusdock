@@ -176,12 +176,6 @@ SUBSYSTEM_DEF(id_access)
 			"templates" = list(),
 			"pdas" = list(),
 		),
-		"[ACCESS_RD]" = list(
-			"regions" = list(REGION_RESEARCH),
-			"head" = JOB_RESEARCH_DIRECTOR,
-			"templates" = list(),
-			"pdas" = list(),
-		),
 		"[ACCESS_CE]" = list(
 			"regions" = list(REGION_ENGINEERING),
 			"head" = JOB_CHIEF_ENGINEER,

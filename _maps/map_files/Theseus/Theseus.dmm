@@ -3697,7 +3697,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
-/obj/effect/landmark/start/scientist,
 /turf/open/floor/iron,
 /area/station/science/research)
 "bim" = (
@@ -12316,7 +12315,6 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos/storage/gas)
 "dNV" = (
-/obj/effect/landmark/start/scientist,
 /obj/effect/turf_decal/siding/purple{
 	dir = 4
 	},
@@ -14293,7 +14291,6 @@
 /turf/open/floor/wood,
 /area/station/service/bar)
 "etG" = (
-/obj/effect/landmark/start/geneticist,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
@@ -16838,10 +16835,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/service)
-"fkK" = (
-/obj/effect/landmark/start/roboticist,
-/turf/open/floor/iron/white,
-/area/station/science/robotics/lab)
 "fkN" = (
 /obj/effect/turf_decal/trimline/yellow/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -21681,10 +21674,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/office/hall)
-"gRv" = (
-/obj/effect/landmark/start/scientist,
-/turf/open/floor/iron/white,
-/area/station/science/mixing/launch)
 "gRz" = (
 /obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/stripes/line,
@@ -23772,7 +23761,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
-/obj/effect/landmark/start/roboticist,
 /obj/effect/spawner/random/engineering/tracking_beacon,
 /turf/open/floor/circuit/green,
 /area/station/science/robotics/mechbay)
@@ -26634,7 +26622,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
-/obj/effect/landmark/start/geneticist,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
@@ -29176,7 +29163,6 @@
 /turf/closed/wall/r_wall/prepainted/daedalus,
 /area/station/security/medical)
 "jnH" = (
-/obj/effect/landmark/start/scientist,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
@@ -31287,7 +31273,6 @@
 /area/station/maintenance/department/medical/central)
 "jXY" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/landmark/start/scientist,
 /turf/open/floor/engine,
 /area/station/science/misc_lab/range)
 "jYa" = (
@@ -43981,7 +43966,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "ocv" = (
-/obj/effect/landmark/start/scientist,
 /obj/machinery/light/floor/has_bulb,
 /turf/open/floor/iron/dark,
 /area/station/science/lab)
@@ -45767,7 +45751,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/holopad,
-/obj/effect/landmark/start/scientist,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -53123,7 +53106,6 @@
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "qZN" = (
-/obj/effect/landmark/start/scientist,
 /turf/open/floor/iron/white,
 /area/station/science/mixing)
 "rah" = (
@@ -53926,7 +53908,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
-/obj/effect/landmark/start/roboticist,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/science/robotics/lab)
@@ -54599,7 +54580,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
-/obj/effect/landmark/start/roboticist,
 /turf/open/floor/iron,
 /area/station/science/robotics/lab)
 "rzQ" = (
@@ -71261,7 +71241,6 @@
 /obj/effect/turf_decal/siding{
 	dir = 4
 	},
-/obj/effect/landmark/start/research_director,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/rd)
 "xev" = (
@@ -104570,7 +104549,7 @@ prk
 sGU
 vfl
 hae
-fkK
+uCb
 uCb
 mtF
 sGU
@@ -109211,7 +109190,7 @@ oRg
 oRg
 xvs
 gip
-gRv
+jnU
 jFj
 umW
 gpy

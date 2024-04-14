@@ -152,7 +152,7 @@
 	name = "marshal's hat"
 	desc = "A wide-brimmed campaign hat with a thin kevlar lining. Don't be a fool, marshal."
 	//Only protects from ballistics, and still worse then a helmet.
-	armor = list(MELEE = 0, BULLET = 20, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 20, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	icon_state = "marshalhat"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
 

@@ -1,7 +1,7 @@
 /datum/preference_group/quirks
 	var/list/quirk_prefs = list(
 		"Nearsighted" = /datum/preference/choiced/glasses,
-		"Heterochromia" = /datum/preference/color/heterochromatic,
+		"Heterochromia Iridum" = /datum/preference/color/heterochromatic,
 		"Phobia" = /datum/preference/choiced/phobia
 	)
 

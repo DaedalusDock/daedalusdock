@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Heterochromia works again.
+  - bugfix: The "Fingerprints" field of ID cards now uses the correct value.

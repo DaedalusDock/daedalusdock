@@ -7,13 +7,13 @@
 				. += 1
 			if(incapacitated())
 				. -= 10 //lol fucked
-			if(get_timed_status_effect_duration(/datum/status_effect/confusion))
+			if(has_status_effect(/datum/status_effect/confusion))
 				. -= -1
 			if(IsKnockdown())
 				. -= -2
 			if(eye_blurry)
 				. -= -1
-			if(eye_blind)
+			if(is_blind())
 				. -= -4
 			if(HAS_TRAIT(src, TRAIT_CLUMSY))
 				. -= -1

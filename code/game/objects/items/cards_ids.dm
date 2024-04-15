@@ -510,7 +510,7 @@
 	registered_name = R.fields["name"]
 	registered_age = R.fields["age"] || "UNSET"
 	dna_hash = R.fields["identity"] || "UNSET"
-	fingerprint = md5(R.fields["identity"]) || "UNSET"
+	fingerprint = R.fields["fingerprint"] || "UNSET"
 	blood_type = R.fields["blood_type"] || "UNSET"
 	assignment = R.fields["trim"] || "UNSET"
 	for(var/datum/id_trim/trim as anything in SSid_access.trim_singletons_by_path)

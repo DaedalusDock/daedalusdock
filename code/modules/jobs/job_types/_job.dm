@@ -386,7 +386,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			card.registered_age = H.age
 		card.blood_type = H.dna.blood_type
 		card.dna_hash = H.dna.unique_identity
-		card.fingerprint = md5(H.dna.unique_identity)
+		card.fingerprint = H.get_fingerprints(TRUE)
 		card.update_label()
 		card.update_icon()
 

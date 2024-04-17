@@ -284,9 +284,10 @@ SUBSYSTEM_DEF(explosions)
 
 	var/turf_tally = 0
 	var/movable_tally = 0
-	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally)
+	var/list/throw_callbacks = list()
+	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally, after_explosion_callbacks)
+	throw_movables(throw_callbacks)
 
-	var/total_time_spent = (REALTIMEOFDAY - start_time) / 10
 	var/took = (REALTIMEOFDAY - time) / 10
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, \
 		epicenter, \
@@ -301,7 +302,7 @@ SUBSYSTEM_DEF(explosions)
 		explosion_index \
 	)
 	log_game("iexpl: (EX [explosion_num]) Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
-	log_game("iexpl: (EX [explosion_num]) All phases completed in [total_time_spent] seconds.")
+	log_game("iexpl: (EX [explosion_num]) All phases completed in [(REALTIMEOFDAY - start_time) / 10] seconds.")
 
 	active_explosions -= explosion_cause
 
@@ -509,7 +510,7 @@ SUBSYSTEM_DEF(explosions)
 
 		CHECK_TICK
 
-/datum/controller/subsystem/explosions/proc/perform_explosion(epicenter, list/act_turfs, heavy_power, dev_power, flame_power, turf_tally_ptr, movable_tally_ptr)
+/datum/controller/subsystem/explosions/proc/perform_explosion(epicenter, list/act_turfs, heavy_power, dev_power, flame_power, turf_tally_ptr, movable_tally_ptr, list/throw_callbacks)
 	var/turf_tally = 0
 	var/movable_tally = 0
 	for (var/turf/T as anything in act_turfs)
@@ -534,7 +535,7 @@ SUBSYSTEM_DEF(explosions)
 		//One third because there are three power levels and I
 		//want each one to take up a third of the crater
 		var/throw_target = get_edge_target_turf(T, get_dir(epicenter,T))
-		var/throw_dist = 9 / turf_power
+		var/throw_dist = 3 / turf_power
 		if (T.simulated)
 			T.ex_act(severity)
 
@@ -542,8 +543,17 @@ SUBSYSTEM_DEF(explosions)
 			for (var/atom/movable/AM as anything in T)
 				if (AM.simulated)
 					EX_ACT(AM, severity)
-					if(!QDELETED(AM) && !AM.anchored)
-						addtimer(CALLBACK(AM, TYPE_PROC_REF(/atom/movable, throw_at), throw_target, throw_dist, throw_dist), 0)
+					if(QDELETED(AM) || AM.anchored || AM.move_resist == INFINITY || throw_dist < 1)
+						continue
+
+					var/datum/callback/CB = CALLBACK(
+						AM,
+						TYPE_PROC_REF(/atom/movable, throw_at),
+						throw_target,
+						throw_dist,
+						EXPLOSION_THROW_SPEED
+					)
+					throw_callbacks += CB
 
 				movable_tally++
 				CHECK_TICK
@@ -554,6 +564,17 @@ SUBSYSTEM_DEF(explosions)
 
 	*turf_tally_ptr = turf_tally
 	*movable_tally_ptr = movable_tally
+
+/datum/controller/subsystem/explosions/proc/throw_movables(list/callbacks)
+	for(var/datum/callback/CB as anything in callbacks)
+		throw_exploded_movable(CB)
+		CHECK_TICK
+
+/datum/controller/subsystem/explosions/proc/throw_exploded_movable(datum/callback/CB)
+	if(QDELETED(CB.object))
+		return
+
+	addtimer(CB, 0)
 
 /client/proc/check_bomb_impacts()
 	set name = "Check Bomb Impact"

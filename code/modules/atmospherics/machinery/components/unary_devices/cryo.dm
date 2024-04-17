@@ -174,7 +174,7 @@
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/contents_explosion(severity, target)
 	. = ..()
-	if(!QDELETED(beaker))
+	if(QDELETED(beaker))
 		return
 
 	switch(severity)

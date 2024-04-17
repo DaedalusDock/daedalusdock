@@ -117,7 +117,7 @@
 				src.break_tile()
 				src.hotspot_expose(1000,CELL_VOLUME)
 
-	if(prob(33) && istype(src, __TYPE__)) //ChangeTurf can change us into space during ScrapeAway()
+	if(prob(33) && istype(src, /turf/open/floor)) //ChangeTurf can change us into space during ScrapeAway()
 		shake_animation((severity * 1.5) +1)
 
 /turf/open/floor/is_shielded()

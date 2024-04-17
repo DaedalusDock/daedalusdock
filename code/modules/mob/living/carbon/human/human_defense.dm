@@ -430,8 +430,6 @@
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			if(bomb_armor < EXPLODE_GIB_THRESHOLD) //gibs the mob if their bomb armor is lower than EXPLODE_GIB_THRESHOLD
-				for(var/atom/movable/thing as anything in contents)
-					EX_ACT(thing, severity)
 				gib()
 				return
 
@@ -482,8 +480,8 @@
 			if(EXPLODE_DEVASTATE)
 				max_limb_loss = 4
 				probability = 50
-		for(var/X in bodyparts)
-			var/obj/item/bodypart/BP = X
+
+		for(var/obj/item/bodypart/BP as anything in bodyparts)
 			if(prob(probability) && !prob(getarmor(BP, BOMB)) && BP.body_zone != BODY_ZONE_HEAD && BP.body_zone != BODY_ZONE_CHEST)
 				BP.receive_damage(INFINITY) //Capped by proc
 				BP.dismember()

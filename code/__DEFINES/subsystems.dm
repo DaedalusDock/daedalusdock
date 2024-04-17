@@ -181,7 +181,7 @@
 // If the subsystem isn't listed here it's either DEFAULT or PROCESS (if it's a processing subsystem child)
 
 /*	Ticker bucket	*/
-#define FIRE_PRIORITY_INPUT 100- // This must always always be the max highest priority. Player input must never be lost.
+#define FIRE_PRIORITY_INPUT 1000 // This must always always be the max highest priority. Player input must never be lost.
 #define FIRE_PRIORITY_DELAYED_VERBS 950
 #define FIRE_PRIORITY_TIMER 900
 #define FIRE_PRIORITY_SOUND_LOOPS 600

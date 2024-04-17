@@ -336,7 +336,7 @@
 
 	awaiting_rebuild = TRUE
 	var/slept = FALSE
-	while(SSexplosions.is_exploding() && !QDELETED(src))
+	while(!QDELETED(src) && SSexplosions.is_exploding())
 		slept = TRUE
 		sleep(world.tick_lag)
 

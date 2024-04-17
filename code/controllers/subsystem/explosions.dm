@@ -487,11 +487,11 @@ SUBSYSTEM_DEF(explosions)
 			CHECK_TICK
 			continue
 
-		if (istype(T, /turf/open/space) || istype(T, /turf/open/openspace))
-			reception = EXPLFX_NONE
 
+		if (isspaceturf(T))
+			reception = NONE
 			for (var/turf/neighbor as anything in RANGE_TURFS(1, M))
-				if(!(istype(neighbor, /turf/open/space) || istype(neighbor, /turf/open/openspace)))
+				if(!(isspaceturf(neighbor)))
 					reception |= EXPLFX_SHAKE
 					break
 

@@ -484,12 +484,12 @@
 
 		for(var/obj/item/bodypart/BP as anything in bodyparts)
 			if(prob(probability) && !prob(getarmor(BP, BOMB)) && BP.body_zone != BODY_ZONE_HEAD && BP.body_zone != BODY_ZONE_CHEST)
-				BP.receive_damage(INFINITY) //Capped by proc
-				BP.dismember()
+				BP.receive_damage(BP.max_damage)
+				if(BP.owner)
+					BP.dismember()
 				max_limb_loss--
 				if(!max_limb_loss)
 					break
-
 
 /mob/living/carbon/human/blob_act(obj/structure/blob/B)
 	if(stat == DEAD)

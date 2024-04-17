@@ -286,7 +286,8 @@ SUBSYSTEM_DEF(explosions)
 	var/movable_tally = 0
 	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally)
 
-	var/took = (REALTIMEOFDAY - start_time) / 10
+	var/total_time_spent = (REALTIMEOFDAY - start_time) / 10
+	var/took = (REALTIMEOFDAY - time) / 10
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, \
 		epicenter, \
 		devastation_range, \
@@ -300,6 +301,7 @@ SUBSYSTEM_DEF(explosions)
 		explosion_index \
 	)
 	log_game("iexpl: (EX [explosion_num]) Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
+	log_game("iexpl: (EX [explosion_num]) All phases completed in [total_time_spent] seconds.")
 
 	active_explosions -= explosion_cause
 

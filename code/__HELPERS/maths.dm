@@ -270,7 +270,7 @@
 	Chunks of the input value above cap, are reduced more and more with each successive one and added to the output
 	A higher input value always makes a higher output value. but the rate of growth slows
 */
-/proc/soft_cap(var/input, var/cap = 0, var/groupsize = 1, var/groupmult = 0.9)
+/proc/soft_cap(input, cap = 0, groupsize = 1, groupmult = 0.9)
 
 	//The cap is a ringfenced amount. If we're below that, just return the input
 	if (input <= cap)

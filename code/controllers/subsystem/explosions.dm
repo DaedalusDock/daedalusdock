@@ -17,7 +17,6 @@ SUBSYSTEM_DEF(explosions)
 
 	var/iterative_explosions_z_threshold = INFINITY
 	var/iterative_explosions_z_multiplier = INFINITY
-	var/using_iterative = FALSE
 
 /datum/controller/subsystem/explosions/Initialize(start_timeofday)
 	. = ..()
@@ -238,6 +237,8 @@ SUBSYSTEM_DEF(explosions)
 	if(!epicenter)
 		return
 
+	explosion_index++
+	var/explosion_num = explosion_index
 	active_explosions += explosion_cause
 
 	// Archive the uncapped explosion for the doppler array
@@ -262,7 +263,7 @@ SUBSYSTEM_DEF(explosions)
 	if(devastation_range)
 		SSblackbox.record_feedback("amount", "devastating_booms", 1)
 
-	log_game("iexpl: Beginning discovery phase.")
+	log_game("iexpl: (EX [explosion_num]) Beginning discovery phase.")
 	var/time = REALTIMEOFDAY
 	var/start_time = REALTIMEOFDAY
 
@@ -271,14 +272,14 @@ SUBSYSTEM_DEF(explosions)
 
 	discover_turfs(epicenter, power, act_turfs)
 
-	log_game("iexpl: Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
-	log_game("iexpl: Beginning SFX phase.")
+	log_game("iexpl: (EX [explosion_num]) Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	log_game("iexpl: (EX [explosion_num]) Beginning SFX phase.")
 	time = REALTIMEOFDAY
 
 	perform_special_effects(epicenter, power, flash_range, heavy_impact_range, smoke, silent)
 
-	log_game("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
-	log_game("iexpl: Beginning application phase.")
+	log_game("iexpl: (EX [explosion_num]) SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
+	log_game("iexpl: (EX [explosion_num]) Beginning application phase.")
 	time = REALTIMEOFDAY
 
 	var/turf_tally = 0
@@ -298,7 +299,7 @@ SUBSYSTEM_DEF(explosions)
 		explosion_cause, \
 		explosion_index \
 	)
-	log_game("iexpl: Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
+	log_game("iexpl: (EX [explosion_num]) Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 
 	active_explosions -= explosion_cause
 

@@ -19,10 +19,9 @@
 	if(hit_target == firer)
 		forceMove(hit_target.loc)
 		return
-	if(isobj(hit_target))
-		SSexplosions.med_mov_atom += hit_target
-	if(isturf(hit_target))
-		SSexplosions.medturf += hit_target
+	if(isobj(hit_target) || isturf(hit_target))
+		EX_ACT(hit_target, EXPLODE_HEAVY)
+
 	playsound(src.loc, 'sound/effects/meteorimpact.ogg', 40, TRUE)
 	for(var/mob/onlookers_in_range in urange(10, src))
 		if(!onlookers_in_range.stat)

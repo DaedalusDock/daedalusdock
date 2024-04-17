@@ -174,13 +174,7 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust=1)) //for space dust eve
 		thing.visible_message(span_warning("[src] slams into [thing]."), span_userdanger("[src] slams into you!."))
 
 	//then, ram the turf
-	switch(hitpwr)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.highturf += T
-		if(EXPLODE_HEAVY)
-			SSexplosions.medturf += T
-		if(EXPLODE_LIGHT)
-			SSexplosions.lowturf += T
+	EX_ACT(T, hitpwr)
 
 //process getting 'hit' by colliding with a dense object
 //or randomly when ramming turfs

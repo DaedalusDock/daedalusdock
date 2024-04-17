@@ -1212,7 +1212,7 @@
 
 	var/obj/structure/window/killthis = (locate(/obj/structure/window) in get_turf(src))
 	if(killthis)
-		SSexplosions.med_mov_atom += killthis
+		EX_ACT(killthis, EXPLODE_HEAVY)
 	SEND_SIGNAL(src, COMSIG_AIRLOCK_CLOSE, forced)
 	operating = TRUE
 	update_icon(ALL, AIRLOCK_CLOSING, 1)

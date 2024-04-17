@@ -208,7 +208,7 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 			target = tile
 			break
 		else
-			SSexplosions.highturf += tile //also fucks everything else on the turf
+			EX_ACT(tile, EXPLODE_DEVASTATE) //also fucks everything else on the turf
 	point.Beam(target, icon_state = "bsa_beam", time = 5 SECONDS, maxdistance = world.maxx) //ZZZAP
 	new /obj/effect/temp_visual/bsa_splash(point, dir)
 

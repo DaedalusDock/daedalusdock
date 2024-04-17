@@ -34,6 +34,6 @@
 			explosion(P, light_impact_range = 2, explosion_cause = src)
 			// Only a level 1 explosion actually damages the machine
 			// at all
-			SSexplosions.high_mov_atom += P
+			EX_ACT(P, EXPLODE_DEVASTATE)
 		else
 			P.emp_act(EMP_HEAVY)

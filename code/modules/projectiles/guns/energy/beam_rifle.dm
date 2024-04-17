@@ -459,14 +459,16 @@
 				var/turf/closed/wall/W = A
 				W.dismantle_wall(TRUE, TRUE)
 			else
-				SSexplosions.medturf += A
+				EX_ACT(A, EXPLODE_HEAVY)
 		++wall_pierce
 		return PROJECTILE_PIERCE_PHASE // yeah this gun is a snowflakey piece of garbage
+
 	if(isobj(A) && (structure_pierce < structure_pierce_amount))
 		++structure_pierce
 		var/obj/O = A
 		O.take_damage((impact_structure_damage + aoe_structure_damage) * structure_bleed_coeff * get_damage_coeff(A), BURN, ENERGY, FALSE)
 		return PROJECTILE_PIERCE_PHASE // ditto and this could be refactored to on_hit honestly
+
 	return ..()
 
 /obj/projectile/beam/beam_rifle/proc/get_damage_coeff(atom/target)

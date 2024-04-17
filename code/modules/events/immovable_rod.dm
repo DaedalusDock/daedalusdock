@@ -224,7 +224,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 	// If we Bump into a turf, turf go boom.
 	if(isturf(clong))
-		SSexplosions.highturf += clong
+		EX_ACT(clong, EXPLODE_DEVASTATE)
 		return ..()
 
 	if(isobj(clong))
@@ -239,7 +239,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 	// If we Bump into anything else, anything goes boom.
 	if(isatom(clong))
-		SSexplosions.high_mov_atom += clong
+		EX_ACT(clong, EXPLODE_DEVASTATE)
 		return ..()
 
 	CRASH("[src] Bump()ed into non-atom thing [clong] ([clong.type])")

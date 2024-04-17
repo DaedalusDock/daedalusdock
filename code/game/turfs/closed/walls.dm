@@ -20,7 +20,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	icon_state = "wall-0"
 	base_icon_state = "wall"
 
-	explosion_block = 1
+	explosion_block = 3
 	blocks_air = AIR_BLOCKED
 	baseturfs = /turf/open/floor/plating
 

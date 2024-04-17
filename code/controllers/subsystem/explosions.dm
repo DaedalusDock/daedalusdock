@@ -238,6 +238,8 @@ SUBSYSTEM_DEF(explosions)
 	if(!epicenter)
 		return
 
+	active_explosions += explosion_cause
+
 	// Archive the uncapped explosion for the doppler array
 	var/orig_dev_range = devastation_range
 	var/orig_heavy_range = heavy_impact_range
@@ -459,6 +461,7 @@ SUBSYSTEM_DEF(explosions)
 	)
 	log_game("iexpl: Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 
+	active_explosions -= explosion_cause
 
 #undef EXPLFX_BOTH
 #undef EXPLFX_SOUND

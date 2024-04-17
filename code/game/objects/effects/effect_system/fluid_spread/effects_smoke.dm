@@ -7,12 +7,15 @@
 	icon_state = "smoke"
 	pixel_x = -32
 	pixel_y = -32
-	opacity = TRUE
+	opacity = FALSE
+	alpha = 0
 	plane = GAME_PLANE
 	layer = FLY_LAYER
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	animate_movement = FALSE
+
+	var/make_opaque = TRUE
 	/// How long the smoke sticks around before it dissipates.
 	var/lifetime = 10 SECONDS
 	/// Makes the smoke react to changes on/of its turf.
@@ -26,6 +29,8 @@
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/connect_loc, loc_connections)
 	SSsmoke.start_processing(src)
+
+	fade_in(min(lifetime - (0.8 SECONDS), 0.8 SECONDS))
 
 /obj/effect/particle_effect/fluid/smoke/Destroy()
 	SSsmoke.stop_processing(src)
@@ -43,6 +48,33 @@
 		SSsmoke.cancel_spread(src)
 	INVOKE_ASYNC(src, PROC_REF(fade_out))
 	QDEL_IN(src, 1 SECONDS)
+
+/**
+ * Animates the smoke gradually fading into visibility.
+ * Also makes the smoke turf opaque as it passes 160 alpha.
+ *
+ * Arguments:
+ * - frames = 0.8 [SECONDS]: The amount of time the smoke should fade in over.
+ */
+/obj/effect/particle_effect/fluid/smoke/proc/fade_in(frames = 0.8 SECONDS)
+	if(alpha > 0) //Handle already opaque case
+		if(make_opaque)
+			set_opacity(TRUE)
+		return
+
+	if(make_opaque)
+		if(frames == 0)
+			set_opacity(TRUE)
+			alpha = 255
+			return
+
+		var/time_to_opaque = round(((alpha - 160) / alpha) * frames)
+		if(time_to_opaque >= 1)
+			addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, set_opacity), TRUE), time_to_opaque)
+		else
+			set_opacity(TRUE)
+
+	animate(src, time = frames, alpha = 255)
 
 /**
  * Animates the smoke gradually fading out of visibility.
@@ -155,7 +187,7 @@
 
 /// Same as the base type, but is not opaque.
 /obj/effect/particle_effect/fluid/smoke/transparent
-	opacity = FALSE
+	make_opaque = FALSE
 
 /**
  * A helper proc used to spawn small puffs of smoke.
@@ -179,7 +211,7 @@
 /// Smoke that dissipates as quickly as possible.
 /obj/effect/particle_effect/fluid/smoke/quick
 	lifetime = 1 SECONDS
-	opacity = FALSE
+	make_opaque = FALSE
 
 /// A factory which produces smoke that dissipates as quickly as possible.
 /datum/effect_system/fluid_spread/smoke/quick
@@ -236,7 +268,7 @@
 /obj/effect/particle_effect/fluid/smoke/bad/green
 	name = "green smoke"
 	color = "#00FF00"
-	opacity = FALSE
+	make_opaque = FALSE
 
 /// A factory which produces green smoke that makes you cough.
 /datum/effect_system/fluid_spread/smoke/bad/green
@@ -246,7 +278,7 @@
 /obj/effect/particle_effect/fluid/smoke/bad/black
 	name = "black smoke"
 	color = "#383838"
-	opacity = FALSE
+	make_opaque = FALSE
 
 /// A factory which produces black smoke that makes you cough.
 /datum/effect_system/fluid_spread/smoke/bad/black
@@ -260,7 +292,7 @@
 /obj/effect/particle_effect/fluid/smoke/freezing
 	name = "nanofrost smoke"
 	color = "#B2FFFF"
-	opacity = FALSE
+	make_opaque = FALSE
 
 /// A factory which produces light blue, transparent smoke and a blast that chills every turf in the area.
 /datum/effect_system/fluid_spread/smoke/freezing
@@ -460,7 +492,7 @@
  */
 /obj/effect/particle_effect/fluid/smoke/chem/quick
 	lifetime = 4 SECONDS
-	opacity = FALSE
+	make_opaque = FALSE
 	alpha = 100
 
 /datum/effect_system/fluid_spread/smoke/chem/quick

@@ -562,8 +562,15 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			if(range_devastation > zas_settings.maxex_devastation_range || range_heavy > zas_settings.maxex_heavy_range || range_light > zas_settings.maxex_light_range || range_flash > zas_settings.maxex_flash_range || range_flame > zas_settings.maxex_fire_range)
 				if(tgui_alert(usr, "Bomb is bigger than the maxcap. Continue?",,list("Yes","No")) != "Yes")
 					return
+
 			epicenter = mob.loc //We need to reupdate as they may have moved again
-			explosion(epicenter, devastation_range = range_devastation, heavy_impact_range = range_heavy, light_impact_range = range_light, flash_range = range_flash, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+			var/smoke = tgui_alert(usr, "Create smoke?", "Drop Bomb", list("Yes", "No"))
+			if(smoke == "Yes")
+				smoke = TRUE
+			else
+				smoke = FALSE
+
+			explosion(epicenter, devastation_range = range_devastation, heavy_impact_range = range_heavy, light_impact_range = range_light, flame_range = range_flame, flash_range = range_flash, adminlog = TRUE, ignorecap = TRUE, smoke = smoke, explosion_cause = mob)
 	message_admins("[ADMIN_LOOKUPFLW(usr)] creating an admin explosion at [epicenter.loc].")
 	log_admin("[key_name(usr)] created an admin explosion at [epicenter.loc].")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Bomb") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

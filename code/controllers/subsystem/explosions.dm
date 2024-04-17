@@ -394,12 +394,6 @@ SUBSYSTEM_DEF(explosions)
 
 		CHECK_TICK
 
-
-	// Spawn the shockwave effect
-	#warn shockwave
-	// if(power >= 5) //It's only really visible above 4.
-	// 	new /obj/effect/temp_visual/shockwave(epicenter, min(power, 20)) //Lets be reasonable here.
-
 	log_game("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
 	log_game("iexpl: Beginning application phase.")
 	time = REALTIMEOFDAY

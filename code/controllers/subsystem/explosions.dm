@@ -317,9 +317,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/turf_tally = 0
 	var/movable_tally = 0
-	var/list/throw_callbacks = list()
-	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally, throw_callbacks)
-	throw_movables(throw_callbacks)
+	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally)
 
 	var/took = (REALTIMEOFDAY - time) / 10
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, \
@@ -334,7 +332,13 @@ SUBSYSTEM_DEF(explosions)
 		explosion_cause, \
 		explosion_index \
 	)
-	log_game("iexpl: (EX [explosion_num]) Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
+	log_game("iexpl: (EX [explosion_num]) Ex_act() phase completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
+	log_game("iexpl: (EX [explosion_num]) Beginning throw phase.")
+	time = REALTIMEOFDAY
+
+	throw_movables(epicenter, act_turfs)
+
+	log_game("iexpl: (EX [explosion_num]) Throwing phase completed in [(REALTIMEOFDAY - time) / 10] seconds.")
 	log_game("iexpl: (EX [explosion_num]) All phases completed in [(REALTIMEOFDAY - start_time) / 10] seconds.")
 
 	stop_exploding(explosion_cause)
@@ -501,7 +505,7 @@ SUBSYSTEM_DEF(explosions)
 		far_dist += devastation_range * 20
 		shake_the_room(epicenter, original_max_distance, far_dist, devastation_range, heavy_impact_range)
 
-/datum/controller/subsystem/explosions/proc/perform_explosion(epicenter, list/act_turfs, heavy_power, dev_power, flame_power, turf_tally_ptr, movable_tally_ptr, list/throw_callbacks)
+/datum/controller/subsystem/explosions/proc/perform_explosion(epicenter, list/act_turfs, heavy_power, dev_power, flame_power, turf_tally_ptr, movable_tally_ptr)
 	var/turf_tally = 0
 	var/movable_tally = 0
 	for (var/turf/T as anything in act_turfs)
@@ -510,7 +514,6 @@ SUBSYSTEM_DEF(explosions)
 			CHECK_TICK
 			continue
 
-		//var/severity = ceil(clamp(((act_turfs[T] - GET_ITERATIVE_EXPLOSION_BLOCK(T)) / (max(3,(power/3)))), 1, 3))
 		var/severity
 		if(turf_power >= dev_power)
 			severity = EXPLODE_DEVASTATE
@@ -522,11 +525,6 @@ SUBSYSTEM_DEF(explosions)
 		if(flame_power && turf_power > flame_power)
 			T.create_fire(2, rand(2, 10))
 
-		//sanity effective power on tile divided by either 3 or one third the total explosion power
-		//One third because there are three power levels and I
-		//want each one to take up a third of the crater
-		var/throw_target = get_edge_target_turf(T, get_dir(epicenter,T))
-		var/throw_dist = 3 / turf_power
 		if (T.simulated)
 			T.ex_act(severity)
 
@@ -534,31 +532,41 @@ SUBSYSTEM_DEF(explosions)
 			for (var/atom/movable/AM as anything in T)
 				if (AM.simulated)
 					EX_ACT(AM, severity)
-					if(QDELETED(AM) || AM.anchored || AM.move_resist == INFINITY || throw_dist < 1)
-						continue
-
-					var/datum/callback/CB = CALLBACK(
-						AM,
-						TYPE_PROC_REF(/atom/movable, throw_at),
-						throw_target,
-						throw_dist,
-						EXPLOSION_THROW_SPEED
-					)
-					throw_callbacks += CB
-
-				movable_tally++
+					movable_tally++
 				CHECK_TICK
-		else
-			CHECK_TICK
+
+		var/throw_range = min(turf_power, 10)
+		if(T.explosion_throw_details < throw_range)
+			T.explosion_throw_details = throw_range
 
 		turf_tally++
+		CHECK_TICK
 
 	*turf_tally_ptr = turf_tally
 	*movable_tally_ptr = movable_tally
 
-/datum/controller/subsystem/explosions/proc/throw_movables(list/callbacks)
-	for(var/datum/callback/CB as anything in callbacks)
-		throw_exploded_movable(CB)
+/datum/controller/subsystem/explosions/proc/throw_movables(turf/epicenter, list/act_turfs)
+	for(var/turf/T as anything in act_turfs)
+		var/throw_range = T.explosion_throw_details
+		if(isnull(throw_range))
+			CHECK_TICK
+			continue
+
+		T.explosion_throw_details = null
+		if(throw_range < 1)
+			CHECK_TICK
+			continue
+
+		for(var/atom/movable/AM as anything in T)
+			if(QDELETED(AM) || AM.anchored || !AM.simulated)
+				CHECK_TICK
+				continue
+
+			if(AM.move_resist != INFINITY)
+				var/turf/throw_target = get_ranged_target_turf_direct(AM, epicenter, throw_range, 180)
+				AM.throw_at(throw_target, throw_range, EXPLOSION_THROW_SPEED)
+			CHECK_TICK
+
 		CHECK_TICK
 
 /datum/controller/subsystem/explosions/proc/throw_exploded_movable(datum/callback/CB)

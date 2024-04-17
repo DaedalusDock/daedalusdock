@@ -35,7 +35,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	/// For the station blueprints, images of objects eg: pipes
 	var/tmp/list/image/blueprint_data
-	var/tmp/list/explosion_throw_details
+	/// Contains the throw range for explosions. You won't need this, stop looking at it.
+	var/tmp/explosion_throw_details
 
 	///Lazylist of movable atoms providing opacity sources.
 	var/tmp/list/atom/movable/opacity_sources

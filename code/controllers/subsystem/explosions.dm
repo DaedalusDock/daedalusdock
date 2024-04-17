@@ -285,7 +285,7 @@ SUBSYSTEM_DEF(explosions)
 	var/turf_tally = 0
 	var/movable_tally = 0
 	var/list/throw_callbacks = list()
-	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally, after_explosion_callbacks)
+	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally, throw_callbacks)
 	throw_movables(throw_callbacks)
 
 	var/took = (REALTIMEOFDAY - time) / 10

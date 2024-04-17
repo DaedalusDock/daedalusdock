@@ -26,6 +26,13 @@ SUBSYSTEM_DEF(explosions)
 #define SSEX_TURF "turf"
 #define SSEX_OBJ "obj"
 
+/datum/controller/subsystem/explosions/proc/begin_exploding(atom/source)
+	explosion_index++
+	active_explosions += source
+
+/datum/controller/subsystem/explosions/proc/stop_exploding(atom/source)
+	active_explosions -= source
+
 /datum/controller/subsystem/explosions/proc/is_exploding()
 	return length(active_explosions)
 
@@ -237,9 +244,8 @@ SUBSYSTEM_DEF(explosions)
 	if(!epicenter)
 		return
 
-	explosion_index++
+	begin_exploding(explosion_cause)
 	var/explosion_num = explosion_index
-	active_explosions += explosion_cause
 
 	// Archive the uncapped explosion for the doppler array
 	var/orig_dev_range = devastation_range
@@ -304,7 +310,7 @@ SUBSYSTEM_DEF(explosions)
 	log_game("iexpl: (EX [explosion_num]) Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 	log_game("iexpl: (EX [explosion_num]) All phases completed in [(REALTIMEOFDAY - start_time) / 10] seconds.")
 
-	active_explosions -= explosion_cause
+	stop_exploding(explosion_cause)
 
 /datum/controller/subsystem/explosions/proc/find_and_log_explosion_source(turf/epicenter, atom/explosion_cause, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, orig_dev_range, orig_heavy_range, orig_light_range)
 	// Now begins a bit of a logic train to find out whodunnit.

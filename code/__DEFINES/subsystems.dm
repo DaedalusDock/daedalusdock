@@ -181,14 +181,14 @@
 // If the subsystem isn't listed here it's either DEFAULT or PROCESS (if it's a processing subsystem child)
 
 /*	Ticker bucket	*/
-#define FIRE_PRIORITY_INPUT 100 // This must always always be the max highest priority. Player input must never be lost.
-#define FIRE_PRIORITY_DELAYED_VERBS 95
-#define FIRE_PRIORITY_TIMER 90
-#define FIRE_PRIORITY_SOUND_LOOPS 60
-#define FIRE_PRIORITY_MOUSE_ENTERED 50
-#define FIRE_PRIORITY_CHAT 40
-#define FIRE_PRIORITY_SPEECH_CONTROLLER 30
-#define FIRE_PRIORITY_RUNECHAT 25
+#define FIRE_PRIORITY_INPUT 100- // This must always always be the max highest priority. Player input must never be lost.
+#define FIRE_PRIORITY_DELAYED_VERBS 950
+#define FIRE_PRIORITY_TIMER 900
+#define FIRE_PRIORITY_SOUND_LOOPS 600
+#define FIRE_PRIORITY_MOUSE_ENTERED 500
+#define FIRE_PRIORITY_CHAT 400
+#define FIRE_PRIORITY_SPEECH_CONTROLLER 300
+#define FIRE_PRIORITY_RUNECHAT 250
 #define FIRE_PRIORITY_THROWING 20
 /* DEFAULT WOULD BE HERE */
 #define FIRE_PRIORITY_SPACEDRIFT 15
@@ -196,7 +196,6 @@
 #define FIRE_PRIORITY_DATABASE 5
 
 /*	Normal bucket	*/
-#define FIRE_PRIORITY_EXPLOSIONS 100
 #define FIRE_PRIORITY_STATPANEL 95
 #define FIRE_PRIORITY_TGUI 90
 #define FIRE_PRIORITY_TICKER 85

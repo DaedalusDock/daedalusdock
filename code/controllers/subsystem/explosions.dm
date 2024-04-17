@@ -385,13 +385,10 @@ SUBSYSTEM_DEF(explosions)
 			else
 				volume = M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', volume, 1, frequency, falloff_exponent = 1000)
 
-		#warn disabled shake
-		/*
 		if ((reception & EXPLFX_SHAKE) && volume > 0)
 			//Maximum duration is 3 seconds, and max strength is 3.5
 			//Becuse values higher than those just get really silly
 			shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
-		*/
 
 		CHECK_TICK
 

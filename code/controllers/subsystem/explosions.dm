@@ -205,7 +205,7 @@ SUBSYSTEM_DEF(explosions)
 /datum/controller/subsystem/explosions/proc/iterative_explode(atom/epicenter, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, admin_log, ignorecap, silent, smoke, atom/explosion_cause)
 	set waitfor = FALSE
 
-	var/power = max(devastation_range, heavy_impact_range, light_impact_range, flame_range)
+	var/power = max(devastation_range, heavy_impact_range, light_impact_range, flame_range) + 1
 	if(power <= 0)
 		return
 
@@ -589,45 +589,9 @@ SUBSYSTEM_DEF(explosions)
 	var/heavy_power = power - heavy
 
 	var/list/wipe_colors = list()
-
-	// These three lists must always be the same length.
-	var/list/turf_queue = list(epicenter, epicenter, epicenter, epicenter)
-	var/list/dir_queue = list(NORTH, SOUTH, EAST, WEST)
-	var/list/power_queue = list(power, power, power, power)
 	var/list/act_turfs = list()
 
-	var/turf/current_turf
-	var/turf/search_turf
-	var/origin_direction
-	var/search_direction
-	var/current_power
-	var/index = 1
-	while (index <= turf_queue.len)
-		current_turf = turf_queue[index]
-		origin_direction = dir_queue[index]
-		current_power = power_queue[index]
-		++index
-
-		if (!istype(current_turf) || current_power <= 0)
-			continue
-
-		if (act_turfs[current_turf] >= current_power && current_turf != epicenter)
-			continue
-
-		act_turfs[current_turf] = current_power
-		current_power -= GET_EXPLOSION_BLOCK(current_turf)
-
-		// Attempt to shortcut on empty tiles: if a turf only has a LO on it, we don't need to check object resistance. Some turfs might not have LOs, so we need to check it actually has one.
-		if (length(current_turf.contents))
-			for (var/obj/O as obj in current_turf)
-				current_power -= GET_EXPLOSION_BLOCK(O)
-
-		if (current_power <= 0)
-			continue
-
-		SEARCH_DIR(origin_direction)
-		SEARCH_DIR(turn(origin_direction, 90))
-		SEARCH_DIR(turn(origin_direction, -90))
+	SSexplosions.discover_turfs(epicenter, power, act_turfs)
 
 	for (var/turf/T as anything in act_turfs)
 		var/turf_power = act_turfs[T]

@@ -70,13 +70,13 @@
 		SSreagents.chemical_reactions_list_reactant_index[rid] -= R
 
 //see build_chemical_reactions_list in holder.dm for explanations
-/proc/add_chemical_reaction(datum/chemical_reaction/R)
-	if(!SSreagents.chemical_reactions_list_reactant_index || !R.required_reagents || !R.required_reagents.len)
+/proc/add_chemical_reaction(datum/chemical_reaction/add)
+	if(!SSreagents.chemical_reactions_list_reactant_index || !add.required_reagents || !add.required_reagents.len)
 		return
-	var/primary_reagent = R.required_reagents[1]
-	if(!SSreagents.chemical_reactions_list_reactant_index[primary_reagent])
-		SSreagents.chemical_reactions_list_reactant_index[primary_reagent] = list()
-	SSreagents.chemical_reactions_list_reactant_index[primary_reagent] += R
+	var/rand_reagent = pick(add.required_reagents)
+	if(!SSreagents.chemical_reactions_list_reactant_index[rand_reagent])
+		SSreagents.chemical_reactions_list_reactant_index[rand_reagent] = list()
+	SSreagents.chemical_reactions_list_reactant_index[rand_reagent] += add
 
 //Creates foam from the reagent. Metaltype is for metal foam, notification is what to show people in textbox
 /datum/reagents/proc/create_foam(foamtype, foam_volume, result_type = null, notification = null, log = FALSE)

@@ -265,134 +265,17 @@ SUBSYSTEM_DEF(explosions)
 	log_game("iexpl: Beginning discovery phase.")
 	var/time = REALTIMEOFDAY
 	var/start_time = REALTIMEOFDAY
+
 	var/list/act_turfs = list()
 	act_turfs[epicenter] = power
 
-	power -= GET_EXPLOSION_BLOCK(epicenter)
-	for (var/obj/O as obj in epicenter)
-		GET_EXPLOSION_BLOCK(O)
-
-	if (power >= iterative_explosions_z_threshold)
-		var/turf/above = GetAbove(epicenter)
-		if(!isnull(above))
-			iterative_explode(above, power * iterative_explosions_z_multiplier, UP)
-
-		var/turf/below = GetBelow(epicenter)
-		if(!isnull(below))
-			iterative_explode(below, power * iterative_explosions_z_multiplier, DOWN)
-
-	// These three lists must always be the same length.
-	var/list/turf_queue = list(epicenter, epicenter, epicenter, epicenter)
-	var/list/dir_queue = list(NORTH, SOUTH, EAST, WEST)
-	var/list/power_queue = list(power, power, power, power)
-
-	var/turf/current_turf
-	var/turf/search_turf
-	var/origin_direction
-	var/search_direction
-	var/current_power
-	var/index = 1
-	while (index <= turf_queue.len)
-		current_turf = turf_queue[index]
-		origin_direction = dir_queue[index]
-		current_power = power_queue[index]
-		++index
-
-		if (!istype(current_turf) || current_power <= 0)
-			CHECK_TICK
-			continue
-
-		if (act_turfs[current_turf] >= current_power && current_turf != epicenter)
-			CHECK_TICK
-			continue
-
-		act_turfs[current_turf] = current_power
-		current_power -= GET_EXPLOSION_BLOCK(current_turf)
-
-		// Attempt to shortcut on empty tiles: if a turf only has a LO on it, we don't need to check object resistance. Some turfs might not have LOs, so we need to check it actually has one.
-		if (length(current_turf.contents))
-			for (var/obj/O as obj in current_turf)
-				if (O.explosion_block)
-					current_power -= GET_EXPLOSION_BLOCK(O)
-
-		if (current_power <= 0)
-			CHECK_TICK
-			continue
-
-		SEARCH_DIR(origin_direction)
-		SEARCH_DIR(turn(origin_direction, 90))
-		SEARCH_DIR(turn(origin_direction, -90))
-
-		CHECK_TICK
+	discover_turfs(epicenter, power, act_turfs)
 
 	log_game("iexpl: Discovery completed in [(REALTIMEOFDAY-time)/10] seconds.")
 	log_game("iexpl: Beginning SFX phase.")
 	time = REALTIMEOFDAY
 
-	var/volume = 10 + (power * 20)
-
-	var/frequency = get_rand_frequency()
-	var/close_dist = round(power + world.view - 2, 1)
-
-	var/sound/explosion_sound = sound(get_sfx(SFX_EXPLOSION))
-
-	//flash mobs
-	if(flash_range)
-		for(var/mob/living/L in viewers(flash_range, epicenter))
-			L.flash_act()
-
-	//Explosion effects
-	if(heavy_impact_range > 1)
-		var/datum/effect_system/explosion/E
-		if(smoke)
-			E = new /datum/effect_system/explosion/smoke
-		else
-			E = new /datum/effect_system/explosion
-
-		E.set_up(epicenter)
-		E.start()
-
-	if(power >= 5)
-		new /obj/effect/temp_visual/shockwave(epicenter, min(power, 20)) //Lets be reasonable here.
-
-	for (var/mob/M as anything in GLOB.player_list)
-		var/reception = EXPLFX_BOTH
-		var/turf/T = isturf(M.loc) ? M.loc : get_turf(M)
-
-		if (!T)
-			CHECK_TICK
-			continue
-
-		if (!SSmapping.are_same_zstack(T.z, epicenter.z))
-			CHECK_TICK
-			continue
-
-		if (istype(T, /turf/open/space) || istype(T, /turf/open/openspace))
-			reception = EXPLFX_NONE
-
-			for (var/turf/neighbor as anything in RANGE_TURFS(1, M))
-				if(!(istype(neighbor, /turf/open/space) || istype(neighbor, /turf/open/openspace)))
-					reception |= EXPLFX_SHAKE
-					break
-
-			if (!reception)
-				CHECK_TICK
-				continue
-
-		var/dist = get_dist(M, epicenter) || 1
-		if ((reception & EXPLFX_SOUND) && M.can_hear() && !isnull(silent))
-			if (dist <= close_dist)
-				M.playsound_local(epicenter, explosion_sound, min(100, volume), 1, frequency, falloff_exponent = 5)
-				//You hear a far explosion if you're outside the blast radius. Small bombs shouldn't be heard all over the station.
-			else
-				volume = M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', volume, 1, frequency, falloff_exponent = 1000)
-
-		if ((reception & EXPLFX_SHAKE) && volume > 0)
-			//Maximum duration is 3 seconds, and max strength is 3.5
-			//Becuse values higher than those just get really silly
-			shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
-
-		CHECK_TICK
+	perform_special_effects(epicenter, power, flash_range, heavy_impact_range, smoke, silent)
 
 	log_game("iexpl: SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
 	log_game("iexpl: Beginning application phase.")
@@ -400,45 +283,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/turf_tally = 0
 	var/movable_tally = 0
-	for (var/turf/T as anything in act_turfs)
-		var/turf_power = act_turfs[T]
-		if (turf_power <= 0)
-			CHECK_TICK
-			continue
-
-		//var/severity = ceil(clamp(((act_turfs[T] - GET_ITERATIVE_EXPLOSION_BLOCK(T)) / (max(3,(power/3)))), 1, 3))
-		var/severity
-		if(turf_power >= dev_power)
-			severity = EXPLODE_DEVASTATE
-		else if(turf_power >= heavy_power)
-			severity = EXPLODE_HEAVY
-		else
-			severity = EXPLODE_LIGHT
-
-		if(flame_power && turf_power > flame_power)
-			T.create_fire(2, rand(2, 10))
-
-		//sanity effective power on tile divided by either 3 or one third the total explosion power
-		//One third because there are three power levels and I
-		//want each one to take up a third of the crater
-		var/throw_target = get_edge_target_turf(T, get_dir(epicenter,T))
-		var/throw_dist = 9 / turf_power
-		if (T.simulated)
-			T.ex_act(severity)
-
-		if (length(T.contents))
-			for (var/atom/movable/AM as anything in T)
-				if (AM.simulated)
-					EX_ACT(AM, severity)
-					if(!QDELETED(AM) && !AM.anchored)
-						addtimer(CALLBACK(AM, TYPE_PROC_REF(/atom/movable, throw_at), throw_target, throw_dist, throw_dist), 0)
-
-				movable_tally++
-				CHECK_TICK
-		else
-			CHECK_TICK
-
-		turf_tally++
+	perform_explosion(epicenter, act_turfs, heavy_power, dev_power, flame_power, &turf_tally, &movable_tally)
 
 	var/took = (REALTIMEOFDAY - start_time) / 10
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPLOSION, \
@@ -456,11 +301,6 @@ SUBSYSTEM_DEF(explosions)
 	log_game("iexpl: Application completed in [took] seconds; processed [turf_tally] turfs and [movable_tally] movables.")
 
 	active_explosions -= explosion_cause
-
-#undef EXPLFX_BOTH
-#undef EXPLFX_SOUND
-#undef EXPLFX_SHAKE
-#undef EXPLFX_NONE
 
 /datum/controller/subsystem/explosions/proc/find_and_log_explosion_source(turf/epicenter, atom/explosion_cause, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, orig_dev_range, orig_heavy_range, orig_light_range)
 	// Now begins a bit of a logic train to find out whodunnit.
@@ -539,6 +379,176 @@ SUBSYSTEM_DEF(explosions)
 	var/area/epicenter_area = get_area(location)
 	if(SEND_SIGNAL(epicenter_area, COMSIG_AREA_INTERNAL_EXPLOSION, arguments) & COMSIG_CANCEL_EXPLOSION)
 		return COMSIG_CANCEL_EXPLOSION
+
+/datum/controller/subsystem/explosions/proc/discover_turfs(turf/epicenter, power, list/act_turfs)
+	power -= GET_EXPLOSION_BLOCK(epicenter)
+	for (var/obj/O as obj in epicenter)
+		GET_EXPLOSION_BLOCK(O)
+
+	if (power >= iterative_explosions_z_threshold)
+		var/turf/above = GetAbove(epicenter)
+		if(!isnull(above))
+			iterative_explode(above, power * iterative_explosions_z_multiplier, UP)
+
+		var/turf/below = GetBelow(epicenter)
+		if(!isnull(below))
+			iterative_explode(below, power * iterative_explosions_z_multiplier, DOWN)
+
+	// These three lists must always be the same length.
+	var/list/turf_queue = list(epicenter, epicenter, epicenter, epicenter)
+	var/list/dir_queue = list(NORTH, SOUTH, EAST, WEST)
+	var/list/power_queue = list(power, power, power, power)
+
+	var/turf/current_turf
+	var/turf/search_turf
+	var/origin_direction
+	var/search_direction
+	var/current_power
+	var/index = 1
+	while (index <= turf_queue.len)
+		current_turf = turf_queue[index]
+		origin_direction = dir_queue[index]
+		current_power = power_queue[index]
+		++index
+
+		if (!istype(current_turf) || current_power <= 0)
+			CHECK_TICK
+			continue
+
+		if (act_turfs[current_turf] >= current_power && current_turf != epicenter)
+			CHECK_TICK
+			continue
+
+		act_turfs[current_turf] = current_power
+		current_power -= GET_EXPLOSION_BLOCK(current_turf)
+
+		// Attempt to shortcut on empty tiles: if a turf only has a LO on it, we don't need to check object resistance. Some turfs might not have LOs, so we need to check it actually has one.
+		if (length(current_turf.contents))
+			for (var/obj/O as obj in current_turf)
+				if (O.explosion_block)
+					current_power -= GET_EXPLOSION_BLOCK(O)
+
+		if (current_power <= 0)
+			CHECK_TICK
+			continue
+
+		SEARCH_DIR(origin_direction)
+		SEARCH_DIR(turn(origin_direction, 90))
+		SEARCH_DIR(turn(origin_direction, -90))
+
+		CHECK_TICK
+
+/datum/controller/subsystem/explosions/proc/perform_special_effects(turf/epicenter, power, flash_range, heavy_impact_range, smoke, silent)
+	var/volume = 10 + (power * 20)
+
+	var/frequency = get_rand_frequency()
+	var/close_dist = round(power + world.view - 2, 1)
+
+	var/sound/explosion_sound = sound(get_sfx(SFX_EXPLOSION))
+
+	//flash mobs
+	if(flash_range)
+		for(var/mob/living/L in viewers(flash_range, epicenter))
+			L.flash_act()
+
+	//Explosion effects
+	if(heavy_impact_range > 1)
+		var/datum/effect_system/explosion/E
+		if(smoke)
+			E = new /datum/effect_system/explosion/smoke
+		else
+			E = new /datum/effect_system/explosion
+
+		E.set_up(epicenter)
+		E.start()
+
+	if(power >= 5)
+		new /obj/effect/temp_visual/shockwave(epicenter, min(power, 20)) //Lets be reasonable here.
+
+	for (var/mob/M as anything in GLOB.player_list)
+		var/reception = EXPLFX_BOTH
+		var/turf/T = isturf(M.loc) ? M.loc : get_turf(M)
+
+		if (!T)
+			CHECK_TICK
+			continue
+
+		if (!SSmapping.are_same_zstack(T.z, epicenter.z))
+			CHECK_TICK
+			continue
+
+		if (istype(T, /turf/open/space) || istype(T, /turf/open/openspace))
+			reception = EXPLFX_NONE
+
+			for (var/turf/neighbor as anything in RANGE_TURFS(1, M))
+				if(!(istype(neighbor, /turf/open/space) || istype(neighbor, /turf/open/openspace)))
+					reception |= EXPLFX_SHAKE
+					break
+
+			if (!reception)
+				CHECK_TICK
+				continue
+
+		var/dist = get_dist(M, epicenter) || 1
+		if ((reception & EXPLFX_SOUND) && M.can_hear() && !isnull(silent))
+			if (dist <= close_dist)
+				M.playsound_local(epicenter, explosion_sound, min(100, volume), 1, frequency, falloff_exponent = 5)
+				//You hear a far explosion if you're outside the blast radius. Small bombs shouldn't be heard all over the station.
+			else
+				volume = M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', volume, 1, frequency, falloff_exponent = 1000)
+
+		if ((reception & EXPLFX_SHAKE) && volume > 0)
+			//Maximum duration is 3 seconds, and max strength is 3.5
+			//Becuse values higher than those just get really silly
+			shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
+
+		CHECK_TICK
+
+/datum/controller/subsystem/explosions/proc/perform_explosion(epicenter, list/act_turfs, heavy_power, dev_power, flame_power, turf_tally_ptr, movable_tally_ptr)
+	var/turf_tally = 0
+	var/movable_tally = 0
+	for (var/turf/T as anything in act_turfs)
+		var/turf_power = act_turfs[T]
+		if (turf_power <= 0)
+			CHECK_TICK
+			continue
+
+		//var/severity = ceil(clamp(((act_turfs[T] - GET_ITERATIVE_EXPLOSION_BLOCK(T)) / (max(3,(power/3)))), 1, 3))
+		var/severity
+		if(turf_power >= dev_power)
+			severity = EXPLODE_DEVASTATE
+		else if(turf_power >= heavy_power)
+			severity = EXPLODE_HEAVY
+		else
+			severity = EXPLODE_LIGHT
+
+		if(flame_power && turf_power > flame_power)
+			T.create_fire(2, rand(2, 10))
+
+		//sanity effective power on tile divided by either 3 or one third the total explosion power
+		//One third because there are three power levels and I
+		//want each one to take up a third of the crater
+		var/throw_target = get_edge_target_turf(T, get_dir(epicenter,T))
+		var/throw_dist = 9 / turf_power
+		if (T.simulated)
+			T.ex_act(severity)
+
+		if (length(T.contents))
+			for (var/atom/movable/AM as anything in T)
+				if (AM.simulated)
+					EX_ACT(AM, severity)
+					if(!QDELETED(AM) && !AM.anchored)
+						addtimer(CALLBACK(AM, TYPE_PROC_REF(/atom/movable, throw_at), throw_target, throw_dist, throw_dist), 0)
+
+				movable_tally++
+				CHECK_TICK
+		else
+			CHECK_TICK
+
+		turf_tally++
+
+	*turf_tally_ptr = turf_tally
+	*movable_tally_ptr = movable_tally
 
 /client/proc/check_bomb_impacts()
 	set name = "Check Bomb Impact"
@@ -644,3 +654,7 @@ SUBSYSTEM_DEF(explosions)
 		A.maptext = ""
 
 #undef SEARCH_DIR
+#undef EXPLFX_BOTH
+#undef EXPLFX_SOUND
+#undef EXPLFX_SHAKE
+#undef EXPLFX_NONE

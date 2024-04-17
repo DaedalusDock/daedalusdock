@@ -146,7 +146,8 @@ SUBSYSTEM_DEF(explosions)
 		var/distance = get_dist(epicenter, listener_turf)
 		if(epicenter == listener_turf)
 			distance = 0
-		var/base_shake_amount = sqrt(near_distance / (distance + 1))
+
+		var/base_shake_amount = isobserver(listener) ? 0 : sqrt(near_distance / (distance + 1))
 
 		if(distance <= round(near_distance + world.view - 2, 1)) // If you are close enough to see the effects of the explosion first-hand (ignoring walls)
 			listener.playsound_local(epicenter, null, 100, TRUE, frequency, sound_to_use = near_sound)
@@ -282,7 +283,7 @@ SUBSYSTEM_DEF(explosions)
 	log_game("iexpl: (EX [explosion_num]) Beginning SFX phase.")
 	time = REALTIMEOFDAY
 
-	perform_special_effects(epicenter, power, flash_range, heavy_impact_range, smoke, silent)
+	perform_special_effects(epicenter, power, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, smoke, silent)
 
 	log_game("iexpl: (EX [explosion_num]) SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
 	log_game("iexpl: (EX [explosion_num]) Beginning application phase.")
@@ -446,14 +447,7 @@ SUBSYSTEM_DEF(explosions)
 
 		CHECK_TICK
 
-/datum/controller/subsystem/explosions/proc/perform_special_effects(turf/epicenter, power, flash_range, heavy_impact_range, smoke, silent)
-	var/volume = 10 + (power * 20)
-
-	var/frequency = get_rand_frequency()
-	var/close_dist = round(power + world.view - 2, 1)
-
-	var/sound/explosion_sound = sound(get_sfx(SFX_EXPLOSION))
-
+/datum/controller/subsystem/explosions/proc/perform_special_effects(turf/epicenter, power, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, smoke, silent)
 	//flash mobs
 	if(flash_range)
 		for(var/mob/living/L in viewers(flash_range, epicenter))
@@ -475,44 +469,12 @@ SUBSYSTEM_DEF(explosions)
 	if(power >= 5)
 		new /obj/effect/temp_visual/shockwave(epicenter, min(power, 20)) //Lets be reasonable here.
 
-	for (var/mob/M as anything in GLOB.player_list)
-		var/reception = EXPLFX_BOTH
-		var/turf/T = isturf(M.loc) ? M.loc : get_turf(M)
-
-		if (!T)
-			CHECK_TICK
-			continue
-
-		if (!SSmapping.are_same_zstack(T.z, epicenter.z))
-			CHECK_TICK
-			continue
-
-
-		if (isspaceturf(T))
-			reception = NONE
-			for (var/turf/neighbor as anything in RANGE_TURFS(1, M))
-				if(!(isspaceturf(neighbor)))
-					reception |= EXPLFX_SHAKE
-					break
-
-			if (!reception)
-				CHECK_TICK
-				continue
-
-		var/dist = get_dist(M, epicenter) || 1
-		if ((reception & EXPLFX_SOUND) && M.can_hear() && !isnull(silent))
-			if (dist <= close_dist)
-				M.playsound_local(epicenter, explosion_sound, min(100, volume), 1, frequency, falloff_exponent = 5)
-				//You hear a far explosion if you're outside the blast radius. Small bombs shouldn't be heard all over the station.
-			else
-				volume = M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', volume, 1, frequency, falloff_exponent = 1000)
-
-		if ((reception & EXPLFX_SHAKE) && volume > 0)
-			//Maximum duration is 3 seconds, and max strength is 3.5
-			//Becuse values higher than those just get really silly
-			shake_camera(M, min(30, max(2,(power*2) / dist)), min(3.5, ((power/3) / dist)),0.05)
-
-		CHECK_TICK
+	if(!silent)
+		var/far_dist = 0
+		far_dist += heavy_impact_range * 15
+		far_dist += devastation_range * 20
+		var/orig_max_distance = max(devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range)
+		shake_the_room(epicenter, orig_max_distance, far_dist, devastation_range, heavy_impact_range)
 
 /datum/controller/subsystem/explosions/proc/perform_explosion(epicenter, list/act_turfs, heavy_power, dev_power, flame_power, turf_tally_ptr, movable_tally_ptr, list/throw_callbacks)
 	var/turf_tally = 0

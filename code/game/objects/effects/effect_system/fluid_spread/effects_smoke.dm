@@ -68,7 +68,7 @@
 			alpha = 255
 			return
 
-		var/time_to_opaque = round(((alpha - 160) / alpha) * frames)
+		var/time_to_opaque = round((160 / 255) * frames)
 		if(time_to_opaque >= 1)
 			addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, set_opacity), TRUE), time_to_opaque)
 		else

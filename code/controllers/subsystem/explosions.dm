@@ -213,14 +213,6 @@ SUBSYSTEM_DEF(explosions)
 /datum/controller/subsystem/explosions/proc/iterative_explode(atom/epicenter, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, admin_log, ignorecap, silent, smoke, atom/explosion_cause)
 	set waitfor = FALSE
 
-	var/power = max(devastation_range, heavy_impact_range, light_impact_range, flame_range) + 1
-	if(power <= 0)
-		return
-
-	var/dev_power = power - devastation_range
-	var/heavy_power = power - heavy_impact_range
-	var/flame_power = power - flame_range
-
 	explosion_cause ||= epicenter
 
 	var/list/arguments = list(
@@ -252,6 +244,28 @@ SUBSYSTEM_DEF(explosions)
 	var/orig_dev_range = devastation_range
 	var/orig_heavy_range = heavy_impact_range
 	var/orig_light_range = light_impact_range
+	var/orig_max_distance = max(devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range) + 1
+
+	// Bomb cap
+	if(!ignorecap)
+		//Zlevel specific bomb cap multiplier
+		var/cap_multiplier = SSmapping.level_trait(epicenter.z, ZTRAIT_BOMBCAP_MULTIPLIER)
+		if (isnull(cap_multiplier))
+			cap_multiplier = 1
+
+		devastation_range = min(zas_settings.maxex_devastation_range * cap_multiplier, devastation_range)
+		heavy_impact_range = min(zas_settings.maxex_heavy_range * cap_multiplier, heavy_impact_range)
+		light_impact_range = min(zas_settings.maxex_light_range * cap_multiplier, light_impact_range)
+		flash_range = min(zas_settings.maxex_flash_range * cap_multiplier, flash_range)
+		flame_range = min(zas_settings.maxex_fire_range * cap_multiplier, flame_range)
+
+	var/power = max(devastation_range, heavy_impact_range, light_impact_range, flame_range) + 1
+	if(power <= 0)
+		return
+
+	var/dev_power = power - devastation_range
+	var/heavy_power = power - heavy_impact_range
+	var/flame_power = power - flame_range
 
 	if(admin_log)
 		find_and_log_explosion_source(
@@ -270,6 +284,18 @@ SUBSYSTEM_DEF(explosions)
 	if(devastation_range)
 		SSblackbox.record_feedback("amount", "devastating_booms", 1)
 
+	//Zlevel specific bomb cap multiplier
+	var/cap_multiplier = SSmapping.level_trait(epicenter.z, ZTRAIT_BOMBCAP_MULTIPLIER)
+	if (isnull(cap_multiplier))
+		cap_multiplier = 1
+
+	if(!ignorecap)
+		devastation_range = min(zas_settings.maxex_devastation_range * cap_multiplier, devastation_range)
+		heavy_impact_range = min(zas_settings.maxex_heavy_range * cap_multiplier, heavy_impact_range)
+		light_impact_range = min(zas_settings.maxex_light_range * cap_multiplier, light_impact_range)
+		flash_range = min(zas_settings.maxex_flash_range * cap_multiplier, flash_range)
+		flame_range = min(zas_settings.maxex_fire_range * cap_multiplier, flame_range)
+
 	log_game("iexpl: (EX [explosion_num]) Beginning discovery phase.")
 	var/time = REALTIMEOFDAY
 	var/start_time = REALTIMEOFDAY
@@ -283,7 +309,7 @@ SUBSYSTEM_DEF(explosions)
 	log_game("iexpl: (EX [explosion_num]) Beginning SFX phase.")
 	time = REALTIMEOFDAY
 
-	perform_special_effects(epicenter, power, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, smoke, silent)
+	perform_special_effects(epicenter, power, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, smoke, silent, orig_max_distance)
 
 	log_game("iexpl: (EX [explosion_num]) SFX phase completed in [(REALTIMEOFDAY-time)/10] seconds.")
 	log_game("iexpl: (EX [explosion_num]) Beginning application phase.")
@@ -447,7 +473,7 @@ SUBSYSTEM_DEF(explosions)
 
 		CHECK_TICK
 
-/datum/controller/subsystem/explosions/proc/perform_special_effects(turf/epicenter, power, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, smoke, silent)
+/datum/controller/subsystem/explosions/proc/perform_special_effects(turf/epicenter, power, devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range, smoke, silent, original_max_distance)
 	//flash mobs
 	if(flash_range)
 		for(var/mob/living/L in viewers(flash_range, epicenter))
@@ -473,8 +499,7 @@ SUBSYSTEM_DEF(explosions)
 		var/far_dist = 0
 		far_dist += heavy_impact_range * 15
 		far_dist += devastation_range * 20
-		var/orig_max_distance = max(devastation_range, heavy_impact_range, light_impact_range, flame_range, flash_range)
-		shake_the_room(epicenter, orig_max_distance, far_dist, devastation_range, heavy_impact_range)
+		shake_the_room(epicenter, original_max_distance, far_dist, devastation_range, heavy_impact_range)
 
 /datum/controller/subsystem/explosions/proc/perform_explosion(epicenter, list/act_turfs, heavy_power, dev_power, flame_power, turf_tally_ptr, movable_tally_ptr, list/throw_callbacks)
 	var/turf_tally = 0

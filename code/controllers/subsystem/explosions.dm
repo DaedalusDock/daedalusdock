@@ -459,6 +459,8 @@ SUBSYSTEM_DEF(explosions)
 		var/datum/effect_system/explosion/E
 		if(smoke)
 			E = new /datum/effect_system/explosion/smoke
+			var/datum/effect_system/explosion/smoke/smoke_dispenser = E
+			smoke_dispenser.smoke_range = heavy_impact_range
 		else
 			E = new /datum/effect_system/explosion
 

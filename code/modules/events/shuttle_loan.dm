@@ -1,6 +1,5 @@
 #define HIJACK_SYNDIE 1
 #define RUSKY_PARTY 2
-#define SPIDER_GIFT 3
 #define DEPARTMENT_RESUPPLY 4
 #define ANTIDOTE_NEEDED 5
 #define PIZZA_DELIVERY 6
@@ -24,7 +23,7 @@
 	var/loan_type //for logging
 
 /datum/round_event/shuttle_loan/setup()
-	dispatch_type = pick(HIJACK_SYNDIE, RUSKY_PARTY, SPIDER_GIFT, DEPARTMENT_RESUPPLY, ANTIDOTE_NEEDED, PIZZA_DELIVERY, ITS_HIP_TO, MY_GOD_JC)
+	dispatch_type = pick(HIJACK_SYNDIE, RUSKY_PARTY, DEPARTMENT_RESUPPLY, ANTIDOTE_NEEDED, PIZZA_DELIVERY, ITS_HIP_TO, MY_GOD_JC)
 
 /datum/round_event/shuttle_loan/announce(fake)
 	SSshuttle.shuttle_loan = src
@@ -33,8 +32,6 @@
 			priority_announce("Cargo: The syndicate are trying to infiltrate your station. If you let them hijack your cargo shuttle, you'll save us a headache.",PA_TITLE_COMMAND_REPORT, sound_type = ANNOUNCER_CENTCOM)
 		if(RUSKY_PARTY)
 			priority_announce("Cargo: A group of angry Russians want to have a party. Can you send them your cargo shuttle then make them disappear?",PA_TITLE_COMMAND_REPORT, sound_type = ANNOUNCER_CENTCOM)
-		if(SPIDER_GIFT)
-			priority_announce("Cargo: The Spider Clan has sent us a mysterious gift. Can we ship it to you to see what's inside?",PA_TITLE_COMMAND_REPORT, sound_type = ANNOUNCER_CENTCOM)
 		if(DEPARTMENT_RESUPPLY)
 			priority_announce("Cargo: Seems we've ordered doubles of our department resupply packages this month. Can we send them to you?",PA_TITLE_COMMAND_REPORT, sound_type = ANNOUNCER_CENTCOM)
 			thanks_msg = "The cargo shuttle should return in five minutes."
@@ -73,9 +70,6 @@
 		if(RUSKY_PARTY)
 			SSshuttle.centcom_message += "Partying Russians incoming."
 			loan_type = "Russian party squad"
-		if(SPIDER_GIFT)
-			SSshuttle.centcom_message += "Spider Clan gift incoming."
-			loan_type = "Shuttle full of spiders"
 		if(DEPARTMENT_RESUPPLY)
 			SSshuttle.centcom_message += "Department resupply incoming."
 			loan_type = "Resupply packages"
@@ -141,26 +135,6 @@
 					shuttle_spawns.Add(/mob/living/simple_animal/hostile/russian)
 				if(prob(50))
 					shuttle_spawns.Add(/mob/living/simple_animal/hostile/bear/russian)
-
-			if(SPIDER_GIFT)
-				var/datum/supply_pack/pack = SSshuttle.supply_packs[/datum/supply_pack/emergency/specialops]
-				pack.generate(pick_n_take(empty_shuttle_turfs))
-
-				shuttle_spawns.Add(/mob/living/simple_animal/hostile/giant_spider)
-				shuttle_spawns.Add(/mob/living/simple_animal/hostile/giant_spider)
-				shuttle_spawns.Add(/mob/living/simple_animal/hostile/giant_spider/nurse)
-				if(prob(50))
-					shuttle_spawns.Add(/mob/living/simple_animal/hostile/giant_spider/hunter)
-
-				var/turf/T = pick_n_take(empty_shuttle_turfs)
-
-				new /obj/effect/decal/remains/human(T)
-				new /obj/item/clothing/shoes/space_ninja(T)
-				new /obj/item/clothing/mask/balaclava(T)
-
-				for(var/i in 1 to 5)
-					T = pick_n_take(empty_shuttle_turfs)
-					new /obj/structure/spider/stickyweb(T)
 
 			if(ANTIDOTE_NEEDED)
 				var/obj/effect/mob_spawn/corpse/human/assistant/infected_assistant = pick(/obj/effect/mob_spawn/corpse/human/assistant/beesease_infection, /obj/effect/mob_spawn/corpse/human/assistant/brainrot_infection, /obj/effect/mob_spawn/corpse/human/assistant/spanishflu_infection)
@@ -274,7 +248,6 @@
 
 #undef HIJACK_SYNDIE
 #undef RUSKY_PARTY
-#undef SPIDER_GIFT
 #undef DEPARTMENT_RESUPPLY
 #undef ANTIDOTE_NEEDED
 #undef PIZZA_DELIVERY

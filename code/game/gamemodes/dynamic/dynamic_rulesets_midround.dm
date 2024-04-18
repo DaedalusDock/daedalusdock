@@ -792,34 +792,6 @@
 	log_game("DYNAMIC: [key_name(ninja)] was spawned as a Space Ninja by the midround ruleset.")
 	return ninja
 
-//////////////////////////////////////////////
-//                                          //
-//            SPIDERS     (GHOST)           //
-//                                          //
-//////////////////////////////////////////////
-
-/datum/dynamic_ruleset/midround/spiders
-	name = "Spiders"
-	antag_flag = ROLE_SPIDER
-	required_type = /mob/dead/observer
-	enemy_roles = list(
-		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_SECURITY_MARSHAL,
-		JOB_SECURITY_OFFICER,
-	)
-	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
-	required_candidates = 0
-	weight = 3
-	cost = 10
-	requirements = list(101,101,101,80,60,50,30,20,10,10)
-	repeatable = TRUE
-	var/spawncount = 2
-
-/datum/dynamic_ruleset/midround/spiders/execute()
-	create_midwife_eggs(spawncount)
-	return ..()
-
 /// Revenant ruleset
 /datum/dynamic_ruleset/midround/from_ghosts/revenant
 	name = "Revenant"
@@ -889,33 +861,6 @@
 	message_admins("[ADMIN_LOOKUPFLW(virus)] has been made into a sentient disease by the midround ruleset.")
 	log_game("[key_name(virus)] was spawned as a sentient disease by the midround ruleset.")
 	return virus
-
-/// Space Pirates ruleset
-/datum/dynamic_ruleset/midround/pirates
-	name = "Space Pirates"
-	antag_flag = "Space Pirates"
-	required_type = /mob/dead/observer
-	enemy_roles = list(
-		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_SECURITY_MARSHAL,
-		JOB_SECURITY_OFFICER,
-	)
-	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
-	required_candidates = 0
-	weight = 4
-	cost = 10
-	requirements = list(101,101,101,80,60,50,30,20,10,10)
-	repeatable = TRUE
-
-/datum/dynamic_ruleset/midround/pirates/acceptable(population=0, threat=0)
-	if (!SSmapping.empty_space)
-		return FALSE
-	return ..()
-
-/datum/dynamic_ruleset/midround/pirates/execute()
-	send_pirate_threat()
-	return ..()
 
 /// Obsessed ruleset
 /datum/dynamic_ruleset/midround/obsessed

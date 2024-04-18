@@ -380,9 +380,9 @@
 
 ///Setup signals for the antagonist's mind and mob. Make sure it gets cleared in handle_antagonist_mind_transfer.
 /datum/game_mode/proc/init_mob_signals(mob/M)
-	RegisterSignal(M, COMSIG_LIVING_DEATH, .proc/handle_antagonist_death)
-	RegisterSignal(M, COMSIG_LIVING_REVIVE, .proc/handle_antagonist_revival)
-	RegisterSignal(M, COMSIG_PARENT_PREQDELETED, .proc/handle_antagonist_qdel)
+	RegisterSignal(M, COMSIG_LIVING_DEATH, PROC_REF(handle_antagonist_death))
+	RegisterSignal(M, COMSIG_LIVING_REVIVE, PROC_REF(handle_antagonist_revival))
+	RegisterSignal(M, COMSIG_PARENT_PREQDELETED, PROC_REF(handle_antagonist_qdel))
 
 /datum/game_mode/proc/handle_antagonist_death(mob/source)
 	SIGNAL_HANDLER

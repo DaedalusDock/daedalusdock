@@ -7,7 +7,7 @@
 	name = "Blood Brothers"
 
 	weight = GAMEMODE_WEIGHT_RARE
-	required_enemies = 2
+	required_enemies = BROTHER_MINIMUM_TEAM_SIZE
 
 	restricted_jobs = list(JOB_CYBORG, JOB_AI)
 	protected_jobs = list(
@@ -28,21 +28,23 @@
 /datum/game_mode/brothers/pre_setup()
 	. = ..()
 
-	var/num_teams = 1
-
-	num_teams = max(1, round(length(SSticker.ready_players) * BROTHER_SCALING_COEFF))
+	var/num_teams = max(1, round((length(SSticker.ready_players) * BROTHER_SCALING_COEFF) / BROTHER_MINIMUM_TEAM_SIZE))
 
 	for(var/j in 1 to num_teams)
-		if(length(SSticker.ready_players) < 2 || length(SSticker.ready_players) < required_enemies)
+		if(length(possible_antags) < BROTHER_MINIMUM_TEAM_SIZE) //This shouldn't ever happen but, just in case
 			break
+
 		var/datum/team/brother_team/team = new
-		var/team_size = prob(10) ? min(3, length(SSticker.ready_players)) : 2
+		// 10% chance to add 1 more member
+		var/team_size = prob(10) ? min(BROTHER_MINIMUM_TEAM_SIZE + 1, possible_antags) : BROTHER_MINIMUM_TEAM_SIZE
+
 		for(var/k in 1 to team_size)
 			var/mob/bro = pick_n_take(possible_antags)
 			team.add_member(bro.mind)
-			bro.mind.special_role = "brother"
+			bro.mind.special_role = ROLE_BROTHER
 			bro.mind.restricted_roles = restricted_jobs
 			GLOB.pre_setup_antags += bro.mind
+
 		pre_brother_teams += team
 
 /datum/game_mode/brothers/setup_antags()

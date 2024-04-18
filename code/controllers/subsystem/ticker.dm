@@ -228,6 +228,8 @@ SUBSYSTEM_DEF(ticker)
 		return FALSE
 
 	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]"))
+	if(mode_display_name)
+		message_admins("The real gamemode is: [get_mode_name(TRUE)]")
 	to_chat(world, "<br><hr><br>")
 
 	CHECK_TICK

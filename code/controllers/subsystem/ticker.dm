@@ -802,6 +802,9 @@ SUBSYSTEM_DEF(ticker)
 			mode = new mode
 
 	else
+		if(istype(mode, /datum/game_mode/extended) && GLOB.is_debug_server)
+			message_admins("Using Extended gamemode during debugging. Use Set Gamemode to change this.")
+
 		var/potential_error = mode.check_for_errors()
 		if(potential_error)
 			if(mode_display_name)

@@ -756,7 +756,6 @@
 	LAZYADD(messages, new_message)
 
 /// Defines for the various hack results.
-#define HACK_FUGITIVES "Fugitives"
 #define HACK_SLEEPER "Sleeper Agents"
 #define HACK_THREAT "Threat Boost"
 
@@ -782,9 +781,6 @@
 	// If we have a certain amount of ghosts, we'll add some more !!fun!! options to the list
 	var/num_ghosts = length(GLOB.current_observers_list) + length(GLOB.dead_player_list)
 
-	// Fugitives require empty space for the hunter's ship, and ghosts for both fugitives and hunters (Please no waldo)
-	if(SSmapping.empty_space && (num_ghosts >= MIN_GHOSTS_FOR_FUGITIVES))
-		hack_options += HACK_FUGITIVES
 	// If less than a certain percent of the population is ghosts, consider sleeper agents
 	if(num_ghosts < (length(GLOB.clients) * MAX_PERCENT_GHOSTS_FOR_SLEEPER))
 		hack_options += HACK_SLEEPER
@@ -793,19 +789,6 @@
 	message_admins("[ADMIN_LOOKUPFLW(hacker)] hacked a [name] located at [ADMIN_VERBOSEJMP(src)], resulting in: [picked_option]!")
 	hacker.log_message("hacked a communications console, resulting in: [picked_option].", LOG_GAME, log_globally = TRUE)
 	switch(picked_option)
-
-		if(HACK_FUGITIVES) // Triggers fugitives, which can cause confusion / chaos as the crew decides which side help
-			priority_announce(
-					"Attention crew, it appears that someone on your station has established an unexpected orbit with an unmarked ship in nearby space.",
-					"[command_name()] High-Priority Update",
-					sound_type = ANNOUNCER_CENTCOM
-				)
-
-			var/datum/round_event_control/fugitives/fugitive_event = locate() in SSevents.control
-			if(!fugitive_event)
-				CRASH("hack_console() attempted to run fugitives, but could not find an event controller!")
-			addtimer(CALLBACK(fugitive_event, TYPE_PROC_REF(/datum/round_event_control, runEvent)), rand(20 SECONDS, 1 MINUTES))
-
 		if(HACK_THREAT) // Adds a flat amount of threat to buy a (probably) more dangerous antag later
 			priority_announce(
 					"Attention crew, it appears that someone on your station has shifted your orbit into more dangerous territory.",
@@ -848,7 +831,6 @@
 							sound_type = ANNOUNCER_CENTCOM
 						)
 
-#undef HACK_FUGITIVES
 #undef HACK_SLEEPER
 #undef HACK_THREAT
 

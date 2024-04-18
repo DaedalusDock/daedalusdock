@@ -406,7 +406,7 @@
 			to_chat(user, span_danger("Access denied."))
 
 	else
-		add_fingerprint(user)
+		W.leave_evidence(user, src)
 		return ..()
 
 /obj/machinery/power/shieldwallgen/interact(mob/user)

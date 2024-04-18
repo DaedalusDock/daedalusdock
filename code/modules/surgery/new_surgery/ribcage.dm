@@ -18,7 +18,7 @@
 	blood_level = 1
 	min_duration = 5 SECONDS
 	max_duration = 7 SECONDS
-	shock_level = 60
+	pain_given = PAIN_AMT_AGONIZING
 	delicate = 1
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED
 	strict_access_requirement = TRUE
@@ -43,7 +43,7 @@
 /datum/surgery_step/open_encased/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] has cut [target]'s [affected.encased] open with [tool]."))
-	affected.break_bones()
+	affected.break_bones(FALSE)
 	..()
 
 /datum/surgery_step/open_encased/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

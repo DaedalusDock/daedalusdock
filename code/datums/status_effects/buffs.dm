@@ -381,7 +381,7 @@
 	damage = 0,
 	attack_text = "the attack",
 	attack_type = MELEE_ATTACK,
-	armour_penetration = 0,
+	armor_penetration = 0,
 )
 	SIGNAL_HANDLER
 
@@ -390,7 +390,7 @@
 
 	var/obj/effect/floating_blade/to_remove = blades[1]
 
-	playsound(get_turf(source), 'sound/weapons/parry.ogg', 100, TRUE)
+	playsound(get_turf(source), 'sound/weapons/block/parry_metal.ogg', 100, TRUE)
 	source.visible_message(
 		span_warning("[to_remove] orbiting [source] snaps in front of [attack_text], blocking it before vanishing!"),
 		span_warning("[to_remove] orbiting you snaps in front of [attack_text], blocking it before vanishing!"),
@@ -508,7 +508,7 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_speed_boost, update = TRUE)
 
 /datum/movespeed_modifier/status_speed_boost
-	multiplicative_slowdown = -1
+	slowdown = -1
 
 ///this buff provides a max health buff and a heal.
 /datum/status_effect/limited_buff/health_buff

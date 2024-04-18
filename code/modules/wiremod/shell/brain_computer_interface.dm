@@ -25,7 +25,7 @@
 	// Organs are put in nullspace, but this breaks circuit interactions
 	forceMove(reciever)
 
-/obj/item/organ/cyberimp/bci/say(message, bubble_type, list/spans, sanitize, datum/language/language, ignore_spam, forced)
+/obj/item/organ/cyberimp/bci/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	if (owner)
 		// Otherwise say_dead will be called.
 		// It's intentional that a circuit for a dead person does not speak from the shell.

@@ -56,7 +56,7 @@
 
 	return TRUE
 
-/obj/item/stack/ore/fire_act(exposed_temperature, exposed_volume)
+/obj/item/stack/ore/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(isnull(refined_type))
 		return
@@ -223,7 +223,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 
 /obj/item/gibtonite/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
+	ADD_TRAIT(src, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 
 /obj/item/gibtonite/Destroy()
 	qdel(wires)

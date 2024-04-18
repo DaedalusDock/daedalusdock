@@ -431,7 +431,6 @@
 	max_integrity = 150
 	force = 8
 	hitsound = SFX_SWING_HIT
-	throw_speed = 2
 	throw_range = 4
 	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4)
 

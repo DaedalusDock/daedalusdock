@@ -116,7 +116,7 @@ DEFINE_INTERACTABLE(/obj/machinery/power/apc)
 	/// Offsets the object by APC_PIXEL_OFFSET (defined in apc_defines.dm) pixels in the direction we want it placed in. This allows the APC to be embedded in a wall, yet still inside an area (like mapping).
 	var/offset_old
 
-GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, ENERGY = 100, BOMB = 30, BIO = 100, FIRE = 90, ACID = 50)
+GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, LASER = 10, ENERGY = 100, BOMB = 30, BIO = 100, FIRE = 90, ACID = 50)
 
 /obj/machinery/power/apc/New(turf/loc, ndir, building=0)
 	if(!req_access)
@@ -124,7 +124,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, E
 	if(!armor)
 		armor = global.default_apc_armor
 	..()
-	GLOB.apcs_list += src
+	SET_TRACKING(__TYPE__)
 
 	wires = new /datum/wires/apc(src)
 
@@ -196,7 +196,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, E
 		log_mapping("APC: ([src]) at [AREACOORD(src)] with dir ([dir] | [uppertext(dir2text(dir))]) has pixel_[dir & (WEST|EAST) ? "x" : "y"] value [offset_old] - should be [dir & (SOUTH|EAST) ? "-" : ""][APC_PIXEL_OFFSET]. Use the directional/ helpers!")
 
 /obj/machinery/power/apc/Destroy()
-	GLOB.apcs_list -= src
+	UNSET_TRACKING(__TYPE__)
 
 	if(malfai && operating)
 		malfai.malf_picker.processing_time = clamp(malfai.malf_picker.processing_time - 10,0,1000)
@@ -566,10 +566,14 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(MELEE = 20, BULLET = 20, LASER = 10, E
 		INVOKE_ASYNC(src, PROC_REF(break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
-	for(var/obj/machinery/light/breaked_light in area)
+	var/area/A = get_area(src)
+	for(var/obj/machinery/light/breaked_light in INSTANCES_OF(/obj/machinery/light))
+		if(A != get_area(breaked_light))
+			continue
+
 		breaked_light.on = TRUE
 		breaked_light.break_light_tube()
-		stoplag()
+		CHECK_TICK
 
 /obj/machinery/power/apc/atmos_expose(datum/gas_mixture/air, exposed_temperature)
 	if(exposed_temperature > 2000)

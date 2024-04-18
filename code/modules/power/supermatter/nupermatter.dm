@@ -118,6 +118,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 
 /obj/machinery/power/supermatter/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	uid = gl_uid++
 	investigate_log("has been created.", INVESTIGATE_ENGINE)
 	SSairmachines.start_processing_machine(src)
@@ -135,9 +136,10 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	radio.recalculateChannels()
 
 	AddElement(/datum/element/lateral_bound, TRUE)
-
+	AddComponent(/datum/component/smell, INTENSITY_SUBTLE, SCENT_FRAGRANCE, "weird", 2)
 
 /obj/machinery/power/supermatter/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	investigate_log("has been destroyed.", INVESTIGATE_ENGINE)
 	SSairmachines.stop_processing_machine(src)
 	QDEL_NULL(radio)
@@ -228,7 +230,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	var/list/affected_z = SSmapping.get_zstack(TS.z, TRUE)
 
 	// Effect 1: Z-level wide electrical pulse
-	for(var/obj/machinery/power/apc/A in GLOB.machines)
+	for(var/obj/machinery/power/apc/A as anything in INSTANCES_OF(/obj/machinery/power/apc))
 		CHECK_TICK
 		if(!(A.z in affected_z))
 			continue
@@ -242,7 +244,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 
 	// Effect 2: Break solar arrays
 
-	for(var/obj/machinery/power/solar/S in GLOB.machines)
+	for(var/obj/machinery/power/solar/S as anything in INSTANCES_OF(/obj/machinery/power/solar))
 		CHECK_TICK
 		if(!(S.z in affected_z))
 			continue
@@ -562,16 +564,13 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 
 	color = color_matrix
 
-	var/HSV = RGBtoHSV(base_color)
-	var/RGB = HSVtoRGB(RotateHue(HSV, angle))
+	var/RGB = RotateHue(base_color, angle)
 	base_color = RGB
 
-	HSV = RGBtoHSV(warning_color)
-	RGB = HSVtoRGB(RotateHue(HSV, angle))
+	RGB = RotateHue(warning_color, angle)
 	warning_color = RGB
 
-	HSV = RGBtoHSV(emergency_color)
-	RGB = HSVtoRGB(RotateHue(HSV, angle))
+	RGB = RotateHue(emergency_color, angle)
 	emergency_color = RGB
 
 /obj/machinery/power/supermatter/inert

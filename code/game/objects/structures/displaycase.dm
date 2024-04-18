@@ -6,7 +6,7 @@
 	density = TRUE
 	anchored = TRUE
 	resistance_flags = ACID_PROOF
-	armor = list(MELEE = 30, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
+	armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 70, ACID = 100)
 	max_integrity = 200
 	integrity_failure = 0.25
 	var/obj/item/showpiece = null
@@ -322,7 +322,7 @@
 		return
 
 	if(is_locked)
-		to_chat(user, span_warning("The case is shut tight with an old-fashioned physical lock. Maybe you should ask the curator for the key?"))
+		to_chat(user, span_warning("The case is shut tight with an old-fashioned physical lock. Maybe you should ask the archivist for the key?"))
 		return
 
 	if(!added_roundstart)
@@ -380,7 +380,7 @@
 
 /obj/item/key/displaycase
 	name = "display case key"
-	desc = "The key to the curator's display cases."
+	desc = "The key to the archivist's display cases."
 
 /obj/item/showpiece_dummy
 	name = "Cheap replica"

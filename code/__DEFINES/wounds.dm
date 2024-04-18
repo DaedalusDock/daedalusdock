@@ -21,6 +21,8 @@
 ///A modifier applied to wound auto healing
 #define WOUND_REGENERATION_MODIFIER 0.25
 
+#define WOUND_BLEED_RATE(wound) (round(wound.damage / 40, DAMAGE_PRECISION))
+
 // ~wound damage/rolling defines
 /// the cornerstone of the wound threshold system, your base wound roll for any attack is rand(1, damage^this), after armor reduces said damage. See [/obj/item/bodypart/proc/check_wounding]
 #define WOUND_DAMAGE_EXPONENT 1.4
@@ -36,7 +38,7 @@
 #define WOUND_DETERMINATION_BLEED_MOD 0.85
 
 /// How often can we annoy the player about their bleeding? This duration is extended if it's not serious bleeding
-#define BLEEDING_MESSAGE_BASE_CD 10 SECONDS
+#define BLEEDING_MESSAGE_BASE_CD (10 SECONDS)
 
 ///The percentage of damage at which a bodypart can start to be dismembered.
 #define LIMB_DISMEMBERMENT_PERCENT 0.9

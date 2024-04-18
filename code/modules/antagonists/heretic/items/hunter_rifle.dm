@@ -20,7 +20,6 @@
 	ammo_type = /obj/item/ammo_casing/a762/lionhunter
 	caliber = CALIBER_A762
 	max_ammo = 3
-	multiload = TRUE
 
 /obj/item/ammo_casing/a762/lionhunter
 	projectile_type = /obj/projectile/bullet/a762/lionhunter

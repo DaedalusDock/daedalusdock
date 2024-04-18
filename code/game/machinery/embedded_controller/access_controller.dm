@@ -20,7 +20,12 @@
 
 /obj/machinery/door_buttons/Initialize(mapload)
 	..()
+	SET_TRACKING(__TYPE__)
 	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/door_buttons/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/door_buttons/LateInitialize()
 	findObjsByTag()
@@ -49,11 +54,11 @@
 	var/busy
 
 /obj/machinery/door_buttons/access_button/findObjsByTag()
-	for(var/obj/machinery/door_buttons/airlock_controller/A in GLOB.machines)
+	for(var/obj/machinery/door_buttons/airlock_controller/A in INSTANCES_OF(/obj/machinery/door_buttons))
 		if(A.idSelf == idSelf)
 			controller = A
 			break
-	for(var/obj/machinery/door/airlock/I in GLOB.airlocks)
+	for(var/obj/machinery/door/airlock/I in INSTANCES_OF(/obj/machinery/door))
 		if(I.id_tag == idDoor)
 			door = I
 			break
@@ -119,7 +124,7 @@
 		exteriorAirlock = null
 
 /obj/machinery/door_buttons/airlock_controller/Destroy()
-	for(var/obj/machinery/door_buttons/access_button/A in GLOB.machines)
+	for(var/obj/machinery/door_buttons/access_button/A in INSTANCES_OF(/obj/machinery/door_buttons))
 		if(A.controller == src)
 			A.controller = null
 	return ..()
@@ -240,7 +245,7 @@
 			lostPower = FALSE
 
 /obj/machinery/door_buttons/airlock_controller/findObjsByTag()
-	for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
+	for(var/obj/machinery/door/airlock/A in INSTANCES_OF(/obj/machinery/door))
 		if(A.id_tag == idInterior)
 			interiorAirlock = A
 		else if(A.id_tag == idExterior)

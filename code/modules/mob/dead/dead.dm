@@ -12,7 +12,6 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	initialized = TRUE
-	tag = "mob_[next_mob_id++]"
 	add_to_mob_list()
 
 	prepare_huds()
@@ -119,5 +118,5 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	..()
 	update_z(new_turf?.z)
 
-/mob/dead/can_smell(intensity)
+/mob/dead/can_smell()
 	return FALSE

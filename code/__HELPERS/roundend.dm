@@ -223,10 +223,6 @@
 		roundend_callbacks.InvokeAsync()
 	LAZYCLEARLIST(round_end_events)
 
-	var/speed_round = FALSE
-	if(world.time - SSticker.round_start_time <= 300 SECONDS)
-		speed_round = TRUE
-
 	popcount = gather_roundend_feedback()
 	INVOKE_ASYNC(SScredits, TYPE_PROC_REF(/datum/controller/subsystem/credits, draft)) //Must always come after popcount is set
 	for(var/client/C in GLOB.clients)
@@ -239,8 +235,6 @@
 	CHECK_TICK
 
 	for(var/client/C in GLOB.clients)
-		if(speed_round)
-			C?.give_award(/datum/award/achievement/misc/speed_round, C?.mob)
 		HandleRandomHardcoreScore(C)
 
 	// Add AntagHUD to everyone, see who was really evil the whole time!

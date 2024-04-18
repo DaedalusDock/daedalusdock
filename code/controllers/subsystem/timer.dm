@@ -4,8 +4,6 @@
 #define BUCKET_POS(timer) (((round((timer.timeToRun - timer.timer_subsystem.head_offset) / world.tick_lag)+1) % BUCKET_LEN)||BUCKET_LEN)
 /// Gets the maximum time at which timers will be invoked from buckets, used for deferring to secondary queue
 #define TIMER_MAX(timer_ss) (timer_ss.head_offset + TICKS2DS(BUCKET_LEN + timer_ss.practical_offset - 1))
-/// Max float with integer precision
-#define TIMER_ID_MAX (2**24)
 
 /**
  * # Timer Subsystem
@@ -373,8 +371,9 @@ SUBSYSTEM_DEF(timer)
 	var/list/flags
 	/// Time at which the timer was invoked or destroyed
 	var/spent = 0
-	/// An informative name generated for the timer as its representation in strings, useful for debugging
-	var/name
+	/// Holds info about this timer, stored from the moment it was created
+	/// Used to create a visible "name" whenever the timer is stringified
+	var/list/timer_info
 	/// Next timed event in the bucket
 	var/datum/timedevent/next
 	/// Previous timed event in the bucket
@@ -452,6 +451,21 @@ SUBSYSTEM_DEF(timer)
 	prev = null
 	return QDEL_HINT_IWILLGC
 
+/datum/timedevent/proc/operator""()
+	if(!length(timer_info))
+		return "Event not filled"
+	var/static/list/bitfield_flags = list("TIMER_UNIQUE", "TIMER_OVERRIDE", "TIMER_CLIENT_TIME", "TIMER_STOPPABLE", "TIMER_NO_HASH_WAIT", "TIMER_LOOP")
+#if defined(TIMER_DEBUG)
+	var/list/callback_args = timer_info[10]
+	return "Timer: [timer_info[1]] ([ref(src)]), TTR: [timer_info[2]], wait:[timer_info[3]] Flags: [jointext(bitfield_to_list(timer_info[4], bitfield_flags), ", ")], \
+		callBack: [ref(timer_info[5])], callBack.object: [timer_info[6]][timer_info[7]]([timer_info[8]]), \
+		callBack.delegate:[timer_info[9]]([callback_args ? callback_args.Join(", ") : ""]), source: [timer_info[11]]"
+#else
+	return "Timer: [timer_info[1]] ([ref(src)]), TTR: [timer_info[2]], wait:[timer_info[3]] Flags: [jointext(bitfield_to_list(timer_info[4], bitfield_flags), ", ")], \
+		callBack: [ref(timer_info[5])], callBack.object: [timer_info[6]]([timer_info[7]]), \
+		callBack.delegate:[timer_info[8]], source: [timer_info[9]]"
+#endif
+
 /**
  * Removes this timed event from any relevant buckets, or the secondary queue
  */
@@ -500,20 +514,37 @@ SUBSYSTEM_DEF(timer)
  */
 /datum/timedevent/proc/bucketJoin()
 #if defined(TIMER_DEBUG)
-	// Generate debug-friendly name for timer, more complex but also more expensive
-	var/static/list/bitfield_flags = list("TIMER_UNIQUE", "TIMER_OVERRIDE", "TIMER_CLIENT_TIME", "TIMER_STOPPABLE", "TIMER_NO_HASH_WAIT", "TIMER_LOOP")
-	name = "Timer: [id] (\ref[src]), TTR: [timeToRun], wait:[wait] Flags: [jointext(bitfield_to_list(flags, bitfield_flags), ", ")], \
-		callBack: \ref[callBack], callBack.object: [callBack.object]\ref[callBack.object]([getcallingtype()]), \
-		callBack.delegate:[callBack.delegate]([callBack.arguments ? callBack.arguments.Join(", ") : ""]), source: [source]"
+	// Generate debug-friendly list for timer, more complex but also more expensive
+	timer_info = list(
+		1 = id,
+		2 = timeToRun,
+		3 = wait,
+		4 = flags,
+		5 = callBack, /* Safe to hold this directly becasue it's never del'd */
+		6 = "[callBack.object]",
+		7 = ref(callBack.object),
+		8 = getcallingtype(),
+		9 = callBack.delegate,
+		10 = callBack.arguments ? callBack.arguments.Copy() : null,
+		11 = "[source]"
+	)
 #else
 	// Generate a debuggable name for the timer, simpler but wayyyy cheaper, string generation is a bitch and this saves a LOT of time
-	name = "Timer: [id] ([text_ref(src)]), TTR: [timeToRun], wait:[wait] Flags: [flags], \
-		callBack: [text_ref(callBack)], callBack.object: [callBack.object]([getcallingtype()]), \
-		callBack.delegate:[callBack.delegate], source: [source]"
+	timer_info = list(
+		1 = id,
+		2 = timeToRun,
+		3 = wait,
+		4 = flags,
+		5 = callBack, /* Safe to hold this directly becasue it's never del'd */
+		6 = "[callBack.object]",
+		7 = getcallingtype(),
+		8 = callBack.delegate,
+		9 = "[source]"
+	)
 #endif
 
 	if (bucket_joined)
-		stack_trace("Bucket already joined! [name]")
+		stack_trace("Bucket already joined! [src]")
 
 	// Check if this timed event should be diverted to the client time bucket, or the secondary queue
 	var/list/L
@@ -533,7 +564,7 @@ SUBSYSTEM_DEF(timer)
 
 	if (bucket_pos < timer_subsystem.practical_offset && timeToRun < (timer_subsystem.head_offset + TICKS2DS(BUCKET_LEN)))
 		WARNING("Bucket pos in past: bucket_pos = [bucket_pos] < practical_offset = [timer_subsystem.practical_offset] \
-			&& timeToRun = [timeToRun] < [timer_subsystem.head_offset + TICKS2DS(BUCKET_LEN)], Timer: [name]")
+			&& timeToRun = [timeToRun] < [timer_subsystem.head_offset + TICKS2DS(BUCKET_LEN)], Timer: [src]")
 		bucket_pos = timer_subsystem.practical_offset // Recover bucket_pos to avoid timer blocking queue
 
 	var/datum/timedevent/bucket_head = bucket_list[bucket_pos]
@@ -572,6 +603,7 @@ SUBSYSTEM_DEF(timer)
  * * callback the callback to call on timer finish
  * * wait deciseconds to run the timer for
  * * flags flags for this timer, see: code\__DEFINES\subsystems.dm
+ * * timer_subsystem the subsystem to insert this timer into
  */
 /proc/_addtimer(datum/callback/callback, wait = 0, flags = 0, datum/controller/subsystem/timer/timer_subsystem, file, line)
 	if (!callback)
@@ -664,4 +696,3 @@ SUBSYSTEM_DEF(timer)
 #undef BUCKET_LEN
 #undef BUCKET_POS
 #undef TIMER_MAX
-#undef TIMER_ID_MAX

@@ -13,7 +13,8 @@
 #define MOVE_INTENT_SPRINT "sprint"
 
 //Blood levels
-#define BLOOD_VOLUME_MAX_LETHAL 2150
+#define BLOOD_VOLUME_ABSOLUTE_MAX 2150
+#define BLOOD_VOLUME_MAX_LETHAL BLOOD_VOLUME_ABSOLUTE_MAX
 #define BLOOD_VOLUME_EXCESS 2100
 #define BLOOD_VOLUME_MAXIMUM 2000
 #define BLOOD_VOLUME_SLIME_SPLIT 1120
@@ -34,6 +35,14 @@
 #define PAIN_SMALL "weakest_pain"
 #define PAIN_MEDIUM "weak_pain"
 #define PAIN_LARGE "pain"
+
+//Germs and infections.
+#define GERM_LEVEL_AMBIENT  275 // Maximum germ level you can reach by standing still.
+#define GERM_LEVEL_MOVE_CAP 300 // Maximum germ level you can reach by running around.
+
+#define INFECTION_LEVEL_ONE   250
+#define INFECTION_LEVEL_TWO   500  // infections grow from ambient to two in ~5 minutes
+#define INFECTION_LEVEL_THREE 1000 // infections grow from two to three in ~10 minutes
 
 //Sizes of mobs, used by mob/living/var/mob_size
 #define MOB_SIZE_TINY 1
@@ -186,9 +195,6 @@
 #define BRAIN_DAMAGE_SEVERE 100
 #define BRAIN_DAMAGE_CRITICAL 150
 #define BRAIN_DAMAGE_DEATH 200
-
-#define BRAIN_DECAY_RATE 0.5
-#define ORGAN_DECAY_RATE 0.002
 
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild
 #define BRAIN_TRAUMA_SEVERE /datum/brain_trauma/severe
@@ -440,8 +446,6 @@
 //CHEMICAL EFFECTS
 /// Prevents damage from freezing. Boolean.
 #define CE_CRYO "cryo"
-/// Organ preservation effects like formaldehyde. Boolean.
-#define CE_ORGAN_PRESERVATION "formaldehyde"
 /// Inaprovaline
 #define CE_STABLE "stable"
 /// Breathing depression, makes you need more air
@@ -496,6 +500,9 @@
 #define FLASH_PROTECTION_FLASH 1
 #define FLASH_PROTECTION_WELDER 2
 
+// If a mob has a higher threshold than this, the icon shown will be increased to the big fire icon.
+#define MOB_BIG_FIRE_STACK_THRESHOLD 3
+
 // Roundstart trait system
 
 #define MAX_QUIRKS 6 //The maximum amount of quirks one character can have at roundstart
@@ -506,7 +513,8 @@
 
 // /obj/item/bodypart on_mob_life() retval flag
 #define BODYPART_LIFE_UPDATE_HEALTH (1<<0)
-#define BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS (1<<1)
+#define BODYPART_LIFE_UPDATE_HEALTH_HUD (1<<1)
+#define BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS (1<<2)
 
 #define MAX_REVIVE_FIRE_DAMAGE 180
 #define MAX_REVIVE_BRUTE_DAMAGE 180
@@ -806,3 +814,7 @@ GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
 #define MOB_ATTACKEDBY_FAIL 0
 #define MOB_ATTACKEDBY_SUCCESS 1
 #define MOB_ATTACKEDBY_NO_DAMAGE 2
+
+#define BLIND_NOT_BLIND 0
+#define BLIND_PHYSICAL 1
+#define BLIND_SLEEPING 2

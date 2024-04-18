@@ -122,6 +122,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(codex_topic(href, href_list))
 		return
 
+	if(href_list["show_slapcraft_hints"])
+		var/path = text2path(href_list["show_slapcraft_hints"])
+		if(ispath(path, /obj/item))
+			show_slapcraft_hints(path)
+		return
+
 	switch(href_list["action"])
 		if("openLink")
 			src << link(href_list["link"])
@@ -1233,6 +1239,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		holder.filteriffic = new /datum/filter_editor(in_atom)
 		holder.filteriffic.ui_interact(mob)
 
+///opens the particle editor UI for the in_atom object for this client
+/client/proc/open_particle_editor(atom/movable/in_atom)
+	if(holder)
+		holder.particle_test = new /datum/particle_editor(in_atom)
+		holder.particle_test.ui_interact(mob)
 
 /client/proc/set_right_click_menu_mode(shift_only)
 	if(shift_only)
@@ -1305,3 +1316,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	SEND_SOUND(usr, sound(null))
 	tgui_panel?.stop_music()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Stop Self Sounds"))
+
+/client/proc/show_slapcraft_hints(given_type)
+	var/list/hints = slapcraft_examine_hints_for_type(given_type)
+	if(!length(hints))
+		return
+	hints.Insert(1, "<div style='text-align: center;font-size: 200%;font-weight: bold'>Craftables<hr></div>")
+
+	to_chat(mob, examine_block("<span class='notice'>[jointext(hints, "<br>")]</span>"))

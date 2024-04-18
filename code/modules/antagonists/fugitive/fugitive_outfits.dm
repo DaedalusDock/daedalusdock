@@ -86,7 +86,7 @@
 /datum/outfit/spacepol/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)
 		return
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.assignment = "Police Officer"
 	W.registered_name = H.real_name
 	W.update_label()
@@ -176,7 +176,7 @@
 /datum/outfit/bountyarmor/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)
 		return
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -201,7 +201,7 @@
 /datum/outfit/bountyhook/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)
 		return
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()

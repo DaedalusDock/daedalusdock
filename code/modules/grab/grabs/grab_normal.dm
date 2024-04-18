@@ -42,7 +42,8 @@
 		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "harm")))
 			G.action_used()
 			affecting.visible_message(span_danger("\The [assailant] pins \the [affecting] to the ground!"))
-			affecting.Knockdown(1 SECOND) // This can only be performed with an aggressive grab, which ensures that once someone is knocked down, they stay down/
+			affecting.Paralyze(1 SECOND) // This can only be performed with an aggressive grab, which ensures that once someone is knocked down, they stay down.
+			affecting.move_from_pull(G.assailant, get_turf(G.assailant))
 			return TRUE
 
 		affecting.visible_message(span_warning("\The [assailant] fails to pin \the [affecting] to the ground."))
@@ -115,7 +116,7 @@
 	return FALSE
 
 /datum/grab/normal/resolve_openhand_attack(obj/item/hand_item/grab/G)
-	if(!G.assailant.combat_mode)
+	if(!G.assailant.combat_mode || G.assailant == G.affecting)
 		return FALSE
 	if(G.target_zone == BODY_ZONE_HEAD)
 		if(G.assailant.zone_selected == BODY_ZONE_PRECISE_EYES)
@@ -132,16 +133,16 @@
 	var/mob/living/carbon/human/target = G.get_affecting_mob()
 	var/mob/living/carbon/human/attacker = G.assailant
 	if(!istype(target) || !istype(attacker))
-		return
+		return TRUE
 
 	if(target.is_eyes_covered())
 		to_chat(attacker, "<span class='danger'>You're going to need to remove the eye covering first.</span>")
-		return
+		return TRUE
 
 	var/obj/item/organ/eyes/E = target.getorganslot(ORGAN_SLOT_EYES)
-	if(E)
+	if(!E)
 		to_chat(attacker, "<span class='danger'>You cannot locate any eyes on [target]!</span>")
-		return
+		return TRUE
 
 	log_combat(attacker, target, "attacked the eyes of (grab)")
 
@@ -180,7 +181,7 @@
 	else
 		attacker.visible_message(span_danger("\The <b>[attacker]</b> thrusts [attacker.p_their()] head into \the <b>[target]</b>'s skull!"))
 
-	var/armor = target.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	var/armor = target.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 	target.apply_damage(damage, BRUTE, BODY_ZONE_HEAD, armor, sharpness = sharpness)
 	attacker.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 
@@ -268,7 +269,7 @@
 	//presumably, if they are wearing a helmet that stops pressure effects, then it probably covers the throat as well
 	for(var/obj/item/clothing/equipped in affecting.get_equipped_items())
 		if((equipped.body_parts_covered & HEAD) && (equipped.clothing_flags & STOPSPRESSUREDAMAGE))
-			armor = affecting.run_armor_check(BODY_ZONE_HEAD, MELEE, silent = TRUE)
+			armor = affecting.run_armor_check(BODY_ZONE_HEAD, BLUNT, silent = TRUE)
 			break
 
 	var/total_damage = 0

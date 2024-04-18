@@ -40,11 +40,6 @@
 	/// Datum level flags
 	var/datum_flags = NONE
 
-	/// A cached version of our \ref
-	/// The brunt of \ref costs are in creating entries in the string tree (a tree of immutable strings)
-	/// This avoids doing that more then once per datum by ensuring ref strings always have a reference to them after they're first pulled
-	var/cached_ref
-
 	/// A weak reference to another datum
 	var/datum/weakref/weak_reference
 
@@ -63,8 +58,12 @@
 
 
 #ifdef REFERENCE_TRACKING
-	var/running_find_references
+	/// When was this datum last touched by a reftracker?
+	/// If this value doesn't match with the start of the search
+	/// We know this datum has never been seen before, and we should check it
 	var/last_find_references = 0
+	/// How many references we're trying to find when searching
+	var/references_to_clear = 0
 	#ifdef REFERENCE_TRACKING_DEBUG
 	///Stores info about where refs are found, used for sanity checks and testing
 	var/list/found_refs
@@ -284,3 +283,7 @@
 /datum/proc/GenerateTag()
 	datum_flags |= DF_USE_TAG
 
+/// Return text from this proc to provide extra context to hard deletes that happen to it
+/// Optional, you should use this for cases where replication is difficult and extra context is required
+/datum/proc/dump_harddel_info()
+	return

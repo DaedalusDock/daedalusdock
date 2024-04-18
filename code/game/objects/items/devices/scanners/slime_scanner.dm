@@ -9,7 +9,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = CONDUCT_1
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=30, /datum/material/glass=20)
 

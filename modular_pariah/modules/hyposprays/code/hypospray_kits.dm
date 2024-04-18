@@ -6,8 +6,8 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	slot_flags = ITEM_SLOT_BELT
-	throw_speed = 3
 	throw_range = 7
+
 	var/empty = FALSE
 	var/current_case = "firstaid"
 	var/static/list/case_designs

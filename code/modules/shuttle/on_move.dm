@@ -120,8 +120,6 @@ All ShuttleMove procs go here
 	if(rotation)
 		shuttleRotate(rotation)
 
-	update_parallax_contents()
-
 	return TRUE
 
 /atom/movable/proc/lateShuttleMove(turf/oldT, list/movement_force, move_dir)
@@ -150,17 +148,13 @@ All ShuttleMove procs go here
 	if(newT == oldT) // In case of in place shuttle rotation shenanigans.
 		return TRUE
 
-	contents -= oldT
-	underlying_old_area.contents += oldT
-	oldT.transfer_area_lighting(src, underlying_old_area)
+	oldT.change_area(src, underlying_old_area)
 	//The old turf has now been given back to the area that turf originaly belonged to
 
 	var/area/old_dest_area = newT.loc
 	parallax_movedir = old_dest_area.parallax_movedir
+	newT.change_area(old_dest_area, src)
 
-	old_dest_area.contents -= newT
-	contents += newT
-	newT.transfer_area_lighting(old_dest_area, src)
 	return TRUE
 
 // Called on areas after everything has been moved
@@ -327,10 +321,11 @@ All ShuttleMove procs go here
 /obj/structure/cable/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)
 	. = ..()
 	cut_cable_from_powernet(FALSE)
+	var/clockwise_rotation_amount = round(rotation / 90)
+	rotate_clockwise_amount(clockwise_rotation_amount)
 
 /obj/structure/cable/afterShuttleMove(turf/oldT, list/movement_force, shuttle_dir, shuttle_preferred_direction, move_dir, rotation)
 	. = ..()
-	Connect_cable(TRUE)
 	propagate_if_no_network()
 
 /obj/structure/shuttle/beforeShuttleMove(turf/newT, rotation, move_mode, obj/docking_port/mobile/moving_dock)

@@ -136,8 +136,7 @@
 /mob/living/split_personality/Initialize(mapload, _trauma)
 	if(iscarbon(loc))
 		body = loc
-		name = body.real_name
-		real_name = body.real_name
+		set_real_name(body.real_name)
 		trauma = _trauma
 	return ..()
 
@@ -163,7 +162,7 @@
 	to_chat(src, span_notice("As a split personality, you cannot do anything but observe. However, you will eventually gain control of your body, switching places with the current personality."))
 	to_chat(src, span_warning("<b>Do not commit suicide or put the body in a deadly position. Behave like you care about it as much as the owner.</b>"))
 
-/mob/living/split_personality/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null)
+/mob/living/split_personality/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	to_chat(src, span_warning("You cannot speak, your other self is controlling your body!"))
 	return FALSE
 
@@ -217,8 +216,13 @@
 	return //no random switching
 
 /datum/brain_trauma/severe/split_personality/brainwashing/handle_hearing(datum/source, list/hearing_args)
-	if(HAS_TRAIT(owner, TRAIT_DEAF) || owner == hearing_args[HEARING_SPEAKER])
+	if(owner == hearing_args[HEARING_SPEAKER])
 		return
+
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(istype(L, /datum/language/visual) || !L?.can_receive_language(owner) || !owner.has_language(L))
+		return
+
 	var/message = hearing_args[HEARING_RAW_MESSAGE]
 	if(findtext(message, codeword))
 		hearing_args[HEARING_RAW_MESSAGE] = replacetext(message, codeword, span_warning("[codeword]"))

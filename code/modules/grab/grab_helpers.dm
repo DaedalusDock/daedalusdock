@@ -1,23 +1,18 @@
-/mob/living/proc/get_active_grabs()
-	. = list()
-	for(var/obj/item/hand_item/grab/G in held_items)
-		. += G
-
 /// Returns TRUE if src is grabbing hold of the target
 /mob/living/proc/is_grabbing(atom/movable/AM)
 	RETURN_TYPE(/obj/item/hand_item/grab)
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		if(G.affecting == AM)
 			return G
 
 /// Release all grabs we have
 /mob/living/proc/release_all_grabs()
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		qdel(G)
 
 /// Release the given movable from a grab
 /mob/living/proc/release_grabs(atom/movable/AM)
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		if(G.affecting == AM)
 			qdel(G)
 
@@ -41,14 +36,16 @@
 /// Returns a list of every movable we are grabbing
 /mob/living/proc/get_all_grabbed_movables()
 	. = list()
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		. |= G.affecting
 
 /// Frees src from all grabs.
 /atom/movable/proc/free_from_all_grabs()
-	grabbed_by?.len = 0
-	grabbed_by = null
+	if(!LAZYLEN(grabbed_by))
+		return
 
+	for(var/obj/item/hand_item/grab/G in grabbed_by)
+		qdel(G)
 
 /// Gets every grabber of this atom, and every grabber of those grabbers, repeat
 /atom/movable/proc/recursively_get_all_grabbers()
@@ -62,7 +59,7 @@
 /mob/living/proc/recursively_get_all_grabbed_movables()
 	RETURN_TYPE(/list)
 	. = list()
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		. |= G.affecting
 		var/mob/living/L = G.get_affecting_mob()
 		if(L)
@@ -72,7 +69,7 @@
 /mob/living/proc/recursively_get_conga_line()
 	RETURN_TYPE(/list)
 	. = list()
-	for(var/obj/item/hand_item/grab/G in get_active_grabs())
+	for(var/obj/item/hand_item/grab/G in active_grabs)
 		. |= G
 		var/mob/living/L = G.get_affecting_mob()
 		if(L)

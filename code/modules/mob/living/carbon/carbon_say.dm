@@ -11,20 +11,15 @@
 
 /mob/living/carbon/can_speak_vocal(message)
 	if(silent)
-		if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			return ..()
-		else
-			return FALSE
+		return FALSE
+
 	if(HAS_TRAIT(src, TRAIT_EXHAUSTED))
 		return FALSE
+
 	return ..()
 
-/mob/living/carbon/could_speak_language(datum/language/language)
-	var/obj/item/organ/tongue/T = getorganslot(ORGAN_SLOT_TONGUE)
-	if(T)
-		return T.could_speak_language(language)
-	else
-		return initial(language.flags) & TONGUELESS_SPEECH
+/mob/living/carbon/can_speak_sign()
+	return usable_hands > 0
 
 /mob/living/carbon/get_message_mods(message, list/mods)
 	. = ..()

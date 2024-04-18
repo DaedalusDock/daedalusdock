@@ -348,12 +348,18 @@
 
 /obj/item/organ/lungs/on_life(delta_time, times_fired)
 	. = ..()
+	if (germ_level > INFECTION_LEVEL_ONE)
+		if(prob(5))
+			spawn(-1)
+				owner.emote("cough")		//respitory tract infection
+
 	if(damage >= low_threshold)
 		if(prob(2) && owner.blood_volume)
 			owner.visible_message("[owner] coughs up blood!", span_warning("You cough up blood."), span_hear("You hear someone coughing."))
 			owner.bleed(1)
 
 		else if(prob(4))
+			to_chat(owner, span_warning(pick("I can't breathe...", "Air!", "It's getting hard to breathe.")))
 			spawn(-1)
 				owner.emote("gasp")
 			owner.losebreath = max(round(damage/2), owner.losebreath)

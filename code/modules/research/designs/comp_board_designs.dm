@@ -206,11 +206,6 @@
 	id = "advanced_camera"
 	build_path = /obj/item/circuitboard/computer/advanced_camera
 
-/datum/design/board/bountypad_control
-	name = "Circuit Board (Civilian Bounty Pad Control)"
-	desc = "Allows for the construction of circuit boards used to build a new civilian bounty pad console."
-	id = "bounty_pad_control"
-	build_path = /obj/item/circuitboard/computer/bountypad
 /datum/design/board/exoscanner_console
 	name = "Circuit Board (Scanner Array Control Console)"
 	desc = "Allows for the construction of circuit boards used to build a new scanner array control console."

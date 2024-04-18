@@ -151,13 +151,6 @@
 		handle_reactions()
 	return TRUE
 
-/// Like add_reagent but you can enter a list. Format it like this: list(/datum/reagent/toxin = 10, "beer" = 15)
-/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data=null)
-	for(var/r_id in list_reagents)
-		var/amt = list_reagents[r_id]
-		add_reagent(r_id, amt, data)
-
-
 /// Remove a specific reagent
 /datum/reagents/proc/remove_reagent(reagent, amount, safety = TRUE)//Added a safety check for the trans_id_to
 	if(isnull(amount))
@@ -194,9 +187,8 @@
 
 	current_list_element = rand(1, cached_reagents.len)
 
-	while(total_removed != amount)
-		if(total_removed >= amount)
-			break
+	while(total_removed < amount)
+		// There's nothing left in the container
 		if(total_volume <= 0 || !cached_reagents.len)
 			break
 
@@ -205,7 +197,9 @@
 
 		var/datum/reagent/R = cached_reagents[current_list_element]
 		var/remove_amt = min(amount-total_removed,round(amount/rand(2,initial_list_length),round(amount/10,0.01))) //double round to keep it at a somewhat even spread relative to amount without getting funky numbers.
-		//min ensures we don't go over amount.
+		// If the logic above means removing really tiny amounts (or even zero if it's a remove amount of 10) instead choose a sensible smallish number
+		// so this proc will actually finish instead of looping forever
+		remove_amt = max(CHEMICAL_VOLUME_ROUNDING, remove_amt)
 		remove_reagent(R.type, remove_amt)
 
 		current_list_element++
@@ -305,6 +299,35 @@
 						return FALSE
 					return holder_reagent
 	return FALSE
+
+/// Like has_reagent but you can enter a list.
+/datum/reagents/proc/has_reagent_list(list/list_reagents)
+	for(var/r_id in list_reagents)
+		var/amt = list_reagents[r_id]
+		if(!has_reagent(r_id, amt))
+			return FALSE
+	return TRUE
+
+/// Like add_reagent but you can enter a list. Format it like this: list(/datum/reagent/toxin = 10, "beer" = 15)
+/datum/reagents/proc/add_reagent_list(list/list_reagents, list/data)
+	for(var/r_id in list_reagents)
+		var/amt = list_reagents[r_id]
+		add_reagent(r_id, amt, data)
+
+/// Like remove_reagent but you can enter a list.
+/datum/reagents/proc/remove_reagent_list(list/list_reagents)
+	for(var/r_id in list_reagents)
+		var/amt = list_reagents[r_id]
+		remove_reagent(r_id, amt)
+
+/// Adds a reagent up to a cap.
+/datum/reagents/proc/add_reagent_up_to(reagent, amount, cap)
+	var/existing = get_reagent_amount(reagent)
+	if(existing >= cap)
+		return
+
+	var/to_add = min(cap - amount, cap - existing, amount)
+	return add_reagent(reagent, to_add)
 
 /**
  * Check if this holder contains a reagent with a chemical_flags containing this flag
@@ -435,7 +458,7 @@
 			transfer_log[reagent.type] = reagent_qualities
 
 	if(transfered_by && target_atom)
-		target_atom.add_hiddenprint(transfered_by) //log prints so admins can figure out who touched it last.
+		target_atom.log_touch(transfered_by) //log prints so admins can figure out who touched it last.
 		log_combat(transfered_by, target_atom, "transferred reagents ([get_external_reagent_log_string(transfer_log)]) from [my_atom] to")
 
 	update_total()
@@ -639,13 +662,10 @@
 					need_mob_update += reagent.overdose_start(owner)
 					log_game("[key_name(owner)] has started overdosing on [reagent.name] at [reagent.volume] units.")
 
-			for(var/addiction in reagent.addiction_types)
-				owner.mind?.add_addiction_points(addiction, reagent.addiction_types[addiction] * 0.2)
-
 			if(reagent.overdosed)
 				need_mob_update += reagent.overdose_process(owner)
 
-		need_mob_update += reagent.on_mob_life(owner, metabolism_class)
+		need_mob_update += reagent.on_mob_life(owner, metabolism_class, can_overdose)
 	return need_mob_update
 
 /// Signals that metabolization has stopped, triggering the end of trait-based effects
@@ -660,30 +680,6 @@
 		if(reagent.metabolizing)
 			reagent.metabolizing = FALSE
 			reagent.on_mob_end_metabolize(C, metabolism_class)
-
-
-/**
- * Calls [/datum/reagent/proc/on_move] on every reagent in this holder
- *
- * Arguments:
- * * atom/A - passed to on_move
- * * Running - passed to on_move
- */
-/datum/reagents/proc/conditional_update_move(atom/A, Running = 0)
-	for(var/datum/reagent/reagent as anything in reagent_list)
-		reagent.on_move(A, Running)
-	update_total()
-
-/**
- * Calls [/datum/reagent/proc/on_update] on every reagent in this holder
- *
- * Arguments:
- * * atom/A - passed to on_update
- */
-/datum/reagents/proc/conditional_update(atom/A)
-	for(var/datum/reagent/reagent as anything in reagent_list)
-		reagent.on_update(A)
-	update_total()
 
 /// Handle any reactions possible in this holder
 /// Also UPDATES the reaction list

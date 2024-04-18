@@ -121,7 +121,7 @@
 
 /obj/item/reagent_containers/glass/bottle/traitor/Initialize(mapload)
 	. = ..()
-	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/formaldehyde, /datum/reagent/toxin/venom, /datum/reagent/toxin/fentanyl, /datum/reagent/toxin/cyanide)
+	extra_reagent = pick(/datum/reagent/toxin/polonium, /datum/reagent/toxin/histamine, /datum/reagent/toxin/venom, /datum/reagent/toxin/fentanyl, /datum/reagent/toxin/cyanide)
 	reagents.add_reagent(extra_reagent, 3)
 
 /obj/item/reagent_containers/glass/bottle/polonium
@@ -138,11 +138,6 @@
 	name = "fentanyl bottle"
 	desc = "A small bottle. Contains Fentanyl."
 	list_reagents = list(/datum/reagent/toxin/fentanyl = 30)
-
-/obj/item/reagent_containers/glass/bottle/formaldehyde
-	name = "formaldehyde bottle"
-	desc = "A small bottle. Contains formaldehyde, a chemical that prevents organs from decaying."
-	list_reagents = list(/datum/reagent/toxin/formaldehyde = 30)
 
 /obj/item/reagent_containers/glass/bottle/initropidril
 	name = "initropidril bottle"
@@ -409,3 +404,8 @@
 	name = "bottle of caramel"
 	desc = "A bottle containing caramalized sugar, also known as caramel. Do not lick."
 	list_reagents = list(/datum/reagent/consumable/caramel = 30)
+
+/obj/item/reagent_containers/glass/bottle/space_cleaner
+	name = "bottle of space cleaner"
+	desc = "A small bottle. Contains space cleaner."
+	list_reagents = list(/datum/reagent/space_cleaner = 30)

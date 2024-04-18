@@ -36,7 +36,7 @@
 	set name = "Move Down"
 	set category = "IC"
 
-	if(zstep(src, UP, ZMOVE_FEEDBACK))
+	if(zstep(src, DOWN, ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
 
 /mob/camera/can_z_move(direction, turf/start, z_move_flags = NONE, mob/living/rider)

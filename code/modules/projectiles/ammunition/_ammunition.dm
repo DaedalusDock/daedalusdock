@@ -10,6 +10,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = 500)
 	override_notes = TRUE
+
 	///What sound should play when this ammo is fired
 	var/fire_sound = null
 	///Which kind of guns it can be loaded into
@@ -33,6 +34,8 @@
 	var/heavy_metal = TRUE
 	///pacifism check for boolet, set to FALSE if bullet is non-lethal
 	var/harmful = TRUE
+	/// Forensics!
+	var/leaves_residue = TRUE
 
 /obj/item/ammo_casing/spent
 	name = "spent bullet casing"

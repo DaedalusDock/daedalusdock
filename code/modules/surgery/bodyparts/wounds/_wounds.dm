@@ -6,6 +6,7 @@
 	///The bodypart this wound is on
 	var/obj/item/bodypart/parent
 
+	var/pain_factor = 0
 	///Number representing the current stage
 	var/current_stage = 0
 	///Description of the wound.
@@ -367,16 +368,16 @@
 			if(!clean)
 				gore_sound = "[!IS_ORGANIC_LIMB(src) ? "tortured metal" : "ripping tendons and flesh"]"
 				return list(
-						"\The [owner]'s [src.name] flies off in an arc!",
-						"Your [src.name] goes flying off!",
+						"\The [owner]'s [src.plaintext_zone] flies off in an arc!",
+						"Your [src.plaintext_zone] goes flying off!",
 						"You hear a terrible sound of [gore_sound]."
 					)
 
 		if(DROPLIMB_BURN)
 			gore = "[!IS_ORGANIC_LIMB(src) ? "": " of burning flesh"]"
 			return list(
-					"\The [owner]'s [src.name] flashes away into ashes!",
-					"Your [src.name] flashes away into ashes!",
+					"\The [owner]'s [src.plaintext_zone] flashes away into ashes!",
+					"Your [src.plaintext_zone] flashes away into ashes!",
 					"You hear a crackling sound[gore]."
 				)
 
@@ -384,7 +385,7 @@
 			gore = "[!IS_ORGANIC_LIMB(src) ? "": " in shower of gore"]"
 			gore_sound = "[!IS_ORGANIC_LIMB(src) ? "rending sound of tortured metal" : "sickening splatter of gore"]"
 			return list(
-					"\The [owner]'s [src.name] explodes[gore]!",
-					"Your [src.name] explodes[gore]!",
+					"\The [owner]'s [src.plaintext_zone] explodes[gore]!",
+					"Your [src.plaintext_zone] explodes[gore]!",
 					"You hear the [gore_sound]."
 				)

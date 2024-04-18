@@ -16,12 +16,15 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-		if(HAS_BLOOD_DNA(src))
+		var/list/dna = return_blood_DNA()
+		if(length(dna))
 			if(istype(wearer))
 				var/obj/item/bodypart/head = wearer.get_bodypart(BODY_ZONE_HEAD)
 				if(!head?.icon_bloodycover)
 					return
-				. += image(head.icon_bloodycover, "maskblood")
+				var/image/bloody_overlay = image(head.icon_bloodycover, "maskblood")
+				bloody_overlay.color = get_blood_dna_color(dna)
+				. += bloody_overlay
 			else
 				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 
@@ -235,7 +238,7 @@
 		var/true_price = round(price*profit_scaling)
 		to_chat(user, span_notice("[selling ? "Sold" : "Getting the price of"] [I], value: <b>[true_price]</b> credits[I.contents.len ? " (exportable contents included)" : ""].[profit_scaling < 1 && selling ? "<b>[round(price-true_price)]</b> credit\s taken as processing fee\s." : ""]"))
 		if(selling)
-			new /obj/item/holochip(get_turf(user),true_price)
+			SSeconomy.spawn_cash_for_amount(true_price, get_turf(user))
 	else
 		to_chat(user, span_warning("There is no export value for [I] or any items within it."))
 

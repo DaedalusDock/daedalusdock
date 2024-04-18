@@ -69,7 +69,7 @@
 		D.visible_message(span_danger("[A] kicks [D]'s head, knocking [D.p_them()] out!"), \
 						span_userdanger("You're knocked unconscious by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
 		to_chat(A, span_danger("You kick [D]'s head, knocking [D.p_them()] out!"))
-		playsound(get_turf(A), 'sound/weapons/genhit1.ogg', 50, TRUE, -1)
+		playsound(get_turf(A), SFX_PUNCH, 50, TRUE, -1)
 		D.SetSleeping(300)
 		D.adjustOrganLoss(ORGAN_SLOT_BRAIN, 15, 150)
 		. = TRUE

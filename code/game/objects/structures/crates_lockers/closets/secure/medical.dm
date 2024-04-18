@@ -31,7 +31,7 @@
 		new /obj/item/clothing/mask/muzzle/breath(src)
 
 /obj/structure/closet/secure_closet/medical3
-	name = "medical doctor's locker"
+	name = "'s locker"
 	req_access = list(ACCESS_SURGERY)
 	icon_state = "med_secure"
 
@@ -131,3 +131,18 @@
 	new /obj/item/storage/box/syringes/variety(src)
 	new /obj/item/storage/box/beakers/variety(src)
 	new /obj/item/clothing/glasses/science(src)
+
+/obj/structure/closet/secure_closet/chemical/cartridge
+	name = "cartridge closet"
+	desc = "Store dangerous chemical cartridges in here."
+	req_access = list(ACCESS_PHARMACY)
+	icon_door = "chemical"
+
+/obj/structure/closet/secure_closet/chemical/cartridge/PopulateContents()
+	var/list/spawn_cartridges = GLOB.cartridge_list_chems
+
+	for(var/datum/reagent/chem_type as anything in spawn_cartridges)
+		var/obj/item/reagent_containers/chem_cartridge/chem_cartridge = spawn_cartridges[chem_type]
+		chem_cartridge = new chem_cartridge(src)
+		chem_cartridge.reagents.add_reagent(chem_type, chem_cartridge.volume)
+		chem_cartridge.setLabel(initial(chem_type.name))

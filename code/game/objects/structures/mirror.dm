@@ -163,8 +163,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 				return TRUE
 			if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 				return TRUE
-			amazed_human.real_name = newname
-			amazed_human.name = newname
+
+			amazed_human.set_real_name(newname)
 			if(amazed_human.dna)
 				amazed_human.dna.real_name = newname
 			if(amazed_human.mind)
@@ -198,9 +198,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 					return TRUE
 
 				if(new_mutantcolor)
-					var/temp_hsv = RGBtoHSV(new_mutantcolor)
+					var/list/temp_hsv = rgb2hsv(new_mutantcolor)
 
-					if(ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // mutantcolors must be bright
+					if(temp_hsv[3] >= 50) // mutantcolors must be bright
 						amazed_human.dna.features[mutcolor2change] = sanitize_hexcolor(new_mutantcolor)
 						amazed_human.dna.update_uf_block(DNA_MUTANT_COLOR_BLOCK)
 

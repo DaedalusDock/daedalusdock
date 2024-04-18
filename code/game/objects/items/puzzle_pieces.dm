@@ -40,7 +40,7 @@
 	explosion_block = 3
 	heat_proof = TRUE
 	max_integrity = 600
-	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	damage_deflection = 70
 	/// Make sure that the puzzle has the same puzzle_id as the keycard door!
@@ -58,8 +58,11 @@
 /obj/machinery/door/puzzle/ex_act(severity, target)
 	return FALSE
 
-/obj/machinery/door/puzzle/try_to_activate_door(mob/user, access_bypass = FALSE)
-	add_fingerprint(user)
+/obj/machinery/door/puzzle/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
 	if(operating)
 		return
 
@@ -173,7 +176,7 @@
 	icon_state = "light_puzzle"
 	anchored = TRUE
 	explosion_block = 3
-	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	light_outer_range = MINIMUM_USEFUL_LIGHT_RANGE
 	light_power = 3

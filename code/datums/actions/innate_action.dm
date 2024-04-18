@@ -72,7 +72,7 @@
 	if(!clicked_on)
 		return FALSE
 
-	return do_ability(caller, clicked_on)
+	return do_ability(caller, clicked_on, params2list(params))
 
 /// Actually goes through and does the click ability
 /datum/action/innate/proc/do_ability(mob/living/caller, atom/clicked_on)

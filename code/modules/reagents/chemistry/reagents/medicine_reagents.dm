@@ -8,9 +8,8 @@
 
 /datum/reagent/medicine
 	taste_description = "bitterness"
-	chemical_flags = REAGENT_IGNORE_MOB_SIZE | REAGENT_SCANNABLE
+	chemical_flags = REAGENT_IGNORE_MOB_SIZE
 	abstract_type = /datum/reagent/medicine
-	show_in_codex = TRUE
 
 /datum/reagent/medicine/adminordrazine //An OP chemical for admins
 	name = "Adminordrazine"
@@ -36,8 +35,9 @@
 				mytray.mutateweed()
 			if(1   to 32)
 				mytray.mutatepest(user)
-			else if(prob(20))
-				mytray.visible_message(span_warning("Nothing happens..."))
+			else
+				if(prob(20))
+					mytray.visible_message(span_warning("Nothing happens..."))
 
 /datum/reagent/medicine/adminordrazine/affect_blood(mob/living/carbon/C, removed)
 	C.heal_bodypart_damage(2 * removed, 2 * removed, FALSE)
@@ -67,7 +67,7 @@
 	REMOVE_TRAITS_NOT_IN(C, list(SPECIES_TRAIT, ROUNDSTART_TRAIT, ORGAN_TRAIT))
 	C.reagents.remove_all_type(/datum/reagent/toxin, 2 * removed, FALSE, TRUE)
 	if(C.blood_volume < BLOOD_VOLUME_NORMAL)
-		C.blood_volume = BLOOD_VOLUME_NORMAL
+		C.setBloodVolume(BLOOD_VOLUME_NORMAL)
 
 	C.cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
 	for(var/obj/item/organ/organ as anything in C.processing_organs)
@@ -108,9 +108,7 @@
 
 /datum/reagent/medicine/inaprovaline/affect_blood(mob/living/carbon/C, removed)
 	APPLY_CHEM_EFFECT(C, CE_STABLE, 1)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
-	if(C.has_reagent(/datum/reagent/medicine/epinephrine))
-		C.set_heartattack(TRUE)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 30)
 
 /datum/reagent/medicine/inaprovaline/overdose_start(mob/living/carbon/C)
 	C.add_movespeed_modifier(/datum/movespeed_modifier/inaprovaline)
@@ -137,7 +135,7 @@
 	value = 4.9
 
 /datum/reagent/medicine/bicaridine/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 20)
 	C.adjustBruteLoss(-6 * removed, updating_health = FALSE)
 	return TRUE
 
@@ -303,7 +301,7 @@
 	taste_description = "sourness"
 	reagent_state = LIQUID
 	color = "#cb68fc"
-	overdose_threshold =30
+	overdose_threshold = 30
 	metabolization_rate = 0.05
 	ingest_met = 0.02
 	value = 3.1
@@ -398,7 +396,7 @@
 	C.remove_movespeed_modifier(/datum/movespeed_modifier/morphine)
 
 /datum/reagent/medicine/morphine/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 80)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 120)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 	if(prob(75))
 		C.drowsyness++
@@ -407,7 +405,7 @@
 
 /datum/reagent/medicine/morphine/overdose_process(mob/living/carbon/C)
 	C.set_timed_status_effect(4 SECONDS, /datum/status_effect/drugginess, only_if_higher = TRUE)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 50)
 
 /datum/reagent/medicine/tramadol/oxycodone
 	name = "Oxycodone"
@@ -442,8 +440,8 @@
 
 	holder.remove_reagent(/datum/reagent/toxin/mindbreaker, 5)
 
-	C.adjustToxLoss(5 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 20)
+	C.adjustToxLoss(3 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 70)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
 
@@ -482,7 +480,7 @@
 	value = 5.9
 
 /datum/reagent/medicine/alkysine/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 10)
+	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 30)
 	APPLY_CHEM_EFFECT(C, CE_BRAIN_REGEN, 1)
 	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, -10 * removed, updating_health = FALSE)
 	if(ishuman(C))
@@ -607,7 +605,7 @@
 	if(class == CHEM_BLOOD)
 		ADD_TRAIT(C, TRAIT_NOCRITDAMAGE, CHEM_TRAIT_SOURCE(class))
 		ADD_TRAIT(C, TRAIT_NOSOFTCRIT,CHEM_TRAIT_SOURCE(class))
-		to_chat(C, span_danger("Energy rushes through your veins!"))
+		to_chat(C, span_alert("Energy rushes through your veins!"))
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class == CHEM_BLOOD)
@@ -619,17 +617,14 @@
 		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(30*volume, 80))
 		APPLY_CHEM_EFFECT(C, CE_PULSE, 1)
 	else if(volume < 1)
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(10*volume, 20))
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, min(15*volume, 20))
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 2)
 
-	if(C.has_reagent(/datum/reagent/medicine/inaprovaline))
-		C.set_heartattack(TRUE)
-		return
-
 	if(volume >= 4 && C.undergoing_cardiac_arrest())
-		holder.remove_reagent(src, 4)
 		if(C.resuscitate())
+			log_health(C, "Resuscitated due to epinephrine.")
+			holder.remove_reagent(type, 4)
 			var/obj/item/organ/heart = C.getorganslot(ORGAN_SLOT_HEART)
 			heart.applyOrganDamage(heart.maxHealth * 0.075)
 			to_chat(C, span_userdanger("Adrenaline rushes through your body, you refuse to give up!"))
@@ -695,7 +690,7 @@
 	metabolization_rate = 0.02
 
 /datum/reagent/medicine/spaceacillin/affect_blood(mob/living/carbon/C, removed)
-	APPLY_CHEM_EFFECT(C, CE_ANTIBIOTIC, 1)
+	APPLY_CHEM_EFFECT(C, CE_ANTIBIOTIC, volume)
 
 /datum/reagent/medicine/haloperidol
 	name = "Haloperidol"
@@ -776,7 +771,7 @@
 
 /datum/reagent/medicine/saline_glucose
 	name = "Saline-Glucose"
-	description = "Promotes blood rejuvination in living creatures."
+	description = "Promotes blood rejuvenation in living creatures."
 	reagent_state = LIQUID
 	color = "#DCDCDC"
 	metabolization_rate = 0.1
@@ -784,20 +779,19 @@
 	taste_description = "sweetness and salt"
 	var/last_added = 0
 	var/maximum_reachable = BLOOD_VOLUME_NORMAL - 10 //So that normal blood regeneration can continue with salglu active
-	var/extra_regen = 0.25 // in addition to acting as temporary blood, also add about half this much to their actual blood per second
-
+	/// In addition to acting as temporary blood, this much blood is fully regenerated per unit used.
+	var/extra_regen = 1
 
 /datum/reagent/medicine/saline_glucose/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
 	if(last_added)
-		C.blood_volume -= last_added
+		C.adjustBloodVolume(-last_added)
 		last_added = 0
 
 	if(C.blood_volume < maximum_reachable) //Can only up to double your effective blood level.
 		var/amount_to_add = min(C.blood_volume, 5*volume)
-		var/new_blood_level = min(C.blood_volume + amount_to_add, maximum_reachable)
-		last_added = new_blood_level - C.blood_volume
-		C.blood_volume = new_blood_level + (extra_regen * removed)
+		last_added = C.adjustBloodVolumeUpTo(amount_to_add + maximum_reachable)
+		C.adjustBloodVolume(extra_regen * removed)
 
 /datum/reagent/medicine/synthflesh
 	name = "Synthflesh"

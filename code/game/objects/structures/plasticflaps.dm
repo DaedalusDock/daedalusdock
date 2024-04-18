@@ -4,7 +4,7 @@
 	gender = PLURAL
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "plasticflaps"
-	armor = list(MELEE = 100, BULLET = 80, LASER = 80, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 100, PUNCTURE = 80, SLASH = 100, LASER = 80, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 50, ACID = 50)
 	density = FALSE
 	anchored = TRUE
 	can_atmos_pass = CANPASS_NEVER
@@ -63,7 +63,7 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/plasticflaps/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/plasticflaps/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(isliving(caller))
 		if(isbot(caller))
 			return TRUE
@@ -75,9 +75,9 @@
 
 	if(isliving(caller))
 		var/mob/living/L = caller
-		var/list/grabs = L.get_active_grabs()
+		var/list/grabs = L.active_grabs
 		for(var/obj/item/hand_item/grab/G in grabs)
-			if(!CanAStarPass(ID, to_dir, G.affecting, no_id = no_id))
+			if(!CanAStarPass(access, to_dir, G.affecting, no_id = no_id))
 				return FALSE
 	return TRUE //diseases, stings, etc can pass
 

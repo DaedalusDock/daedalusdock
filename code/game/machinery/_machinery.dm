@@ -184,8 +184,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	SETUP_SMOOTHING()
 	QUEUE_SMOOTH(src)
 
-	GLOB.machines += src
-
 	if(ispath(circuit, /obj/item/circuitboard))
 		circuit = new circuit(src)
 		circuit.apply_default_parts(src)
@@ -223,7 +221,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 		link_to_jack()
 
 /obj/machinery/Destroy()
-	GLOB.machines.Remove(src)
 	end_processing()
 	dump_inventory_contents()
 	QDEL_LIST(component_parts)
@@ -605,15 +602,6 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	if(.)
 		return
 
-	if(LAZYACCESS(modifiers, RIGHT_CLICK) && inserted_disk) //grumble grumble click code grumble grumble
-		var/obj/item/disk/disk = eject_disk(user)
-		if(disk)
-			user.visible_message(
-				span_notice("You remove [disk] from [src]."),
-				span_notice("A floppy disk ejects from [src].")
-			)
-		return TRUE
-
 	if(iscarbon(user))
 		var/brainloss = user.getBrainLoss()
 		if(brainloss > 120)
@@ -652,7 +640,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 		return attack_hand(user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
-	var/damage = take_damage(4, BRUTE, MELEE, 1)
+	var/damage = take_damage(4, BRUTE, BLUNT, 1)
 	user.visible_message(span_danger("[user] smashes [src] with [user.p_their()] paws[damage ? "." : ", without leaving a mark!"]"), null, null, COMBAT_MESSAGE_RANGE)
 
 /obj/machinery/attack_hulk(mob/living/carbon/user)
@@ -706,7 +694,22 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	. = ..()
 	if(.)
 		return
+
 	update_last_used(user)
+
+/obj/machinery/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	if(inserted_disk)
+		var/obj/item/disk/disk = eject_disk(user)
+		if(disk)
+			user.visible_message(
+				span_notice("You remove [disk] from [src]."),
+				span_notice("A floppy disk ejects from [src].")
+			)
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/tool_act(mob/living/user, obj/item/tool, tool_type)
 	if(SEND_SIGNAL(user, COMSIG_TRY_USE_MACHINE, src) & COMPONENT_CANT_USE_MACHINE_TOOLS)
@@ -979,18 +982,20 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 /obj/machinery/examine(mob/user)
 	. = ..()
 	if(machine_stat & BROKEN)
-		. += span_notice("It looks broken and non-functional.")
+		. += span_alert("It looks broken, it likely will not operate.")
+
 	if(!(resistance_flags & INDESTRUCTIBLE))
 		if(resistance_flags & ON_FIRE)
-			. += span_warning("It's on fire!")
+			. += span_alert("FIRE!!")
+
 		var/healthpercent = (atom_integrity/max_integrity) * 100
 		switch(healthpercent)
 			if(50 to 99)
-				. += "It looks slightly damaged."
+				. += span_notice("It looks slightly damaged.")
 			if(25 to 50)
-				. += "It appears heavily damaged."
+				. += span_alert("It appears heavily damaged.")
 			if(0 to 25)
-				. += span_warning("It's falling apart!")
+				. += span_alert("It appears to be barely in one piece.")
 
 /obj/machinery/examine_more(mob/user)
 	. = ..()
@@ -1035,7 +1040,7 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 	dropped_atom.pixel_y = -8 + (round( . / 3)*8)
 
 /obj/machinery/rust_heretic_act()
-	take_damage(500, BRUTE, MELEE, 1)
+	take_damage(500, BRUTE, BLUNT, 1)
 
 /obj/machinery/vv_edit_var(vname, vval)
 	if(vname == NAMEOF(src, occupant))

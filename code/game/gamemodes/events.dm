@@ -1,6 +1,6 @@
 /proc/power_failure()
 	priority_announce("Abnormal activity detected in [station_name()]'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", sound_type = ANNOUNCER_POWEROFF)
-	for(var/obj/machinery/power/smes/S in GLOB.machines)
+	for(var/obj/machinery/power/smes/S as anything in INSTANCES_OF(/obj/machinery/power/smes))
 		if(istype(get_area(S), /area/station/ai_monitored/turret_protected) || !is_station_level(S.z))
 			continue
 		S.charge = 0
@@ -20,7 +20,7 @@
 		A.power_environ = FALSE
 		A.power_change()
 
-	for(var/obj/machinery/power/apc/C in GLOB.apcs_list)
+	for(var/obj/machinery/power/apc/C as anything in INSTANCES_OF(/obj/machinery/power/apc))
 		if(C.cell && is_station_level(C.z))
 			var/area/A = C.area
 			if(GLOB.typecache_powerfailure_safe_areas[A.type])
@@ -31,11 +31,12 @@
 /proc/power_restore()
 
 	priority_announce("Power has been restored to [station_name()]. We apologize for the inconvenience.", sound_type = ANNOUNCER_POWERON)
-	for(var/obj/machinery/power/apc/C in GLOB.machines)
+	for(var/obj/machinery/power/apc/C as anything in INSTANCES_OF(/obj/machinery/power/apc))
 		if(C.cell && is_station_level(C.z))
 			C.cell.charge = C.cell.maxcharge
 			COOLDOWN_RESET(C, failure_timer)
-	for(var/obj/machinery/power/smes/S in GLOB.machines)
+
+	for(var/obj/machinery/power/smes/S as anything in INSTANCES_OF(/obj/machinery/power/smes))
 		if(!is_station_level(S.z))
 			continue
 		S.charge = S.capacity
@@ -55,7 +56,7 @@
 /proc/power_restore_quick()
 
 	priority_announce("All SMESs on [station_name()] have been recharged. We apologize for the inconvenience.", sound_type = ANNOUNCER_POWERON)
-	for(var/obj/machinery/power/smes/S in GLOB.machines)
+	for(var/obj/machinery/power/smes/S as anything in INSTANCES_OF(/obj/machinery/power/smes))
 		if(!is_station_level(S.z))
 			continue
 		S.charge = S.capacity

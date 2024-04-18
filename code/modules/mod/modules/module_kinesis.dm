@@ -95,9 +95,9 @@
 		if(isitem(grabbed_atom) && (mod.wearer in next_turf))
 			var/obj/item/grabbed_item = grabbed_atom
 			clear_grab()
-			grabbed_item.pickup(mod.wearer)
-			mod.wearer.put_in_hands(grabbed_item)
+			mod.wearer.pickup_item(grabbed_item)
 		return
+
 	var/pixel_x_change = 0
 	var/pixel_y_change = 0
 	var/direction = get_dir(grabbed_atom, next_turf)
@@ -244,9 +244,9 @@
 		var/mob/living/living_atom = hit_atom
 		living_atom.apply_damage(damage, BRUTE)
 	else if(hit_atom.uses_integrity)
-		hit_atom.take_damage(damage, BRUTE, MELEE)
+		hit_atom.take_damage(damage, BRUTE, BLUNT)
 	if(damage_self && source.uses_integrity)
-		source.take_damage(source.max_integrity/5, BRUTE, MELEE)
+		source.take_damage(source.max_integrity/5, BRUTE, BLUNT)
 
 /atom/movable/screen/fullscreen/cursor_catcher/kinesis
 	icon_state = "kinesis"

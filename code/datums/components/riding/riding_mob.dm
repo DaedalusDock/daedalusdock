@@ -54,10 +54,10 @@
 	if(living_parent.body_position != STANDING_UP) // if we move while on the ground, the rider falls off
 		. = FALSE
 	// for piggybacks and (redundant?) borg riding, check if the rider is stunned/restrained
-	else if((ride_check_flags & RIDER_NEEDS_ARMS) && (HAS_TRAIT(rider, TRAIT_RESTRAINED) || rider.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
+	else if((ride_check_flags & RIDER_NEEDS_ARMS) && (HAS_TRAIT(rider, TRAIT_ARMS_RESTRAINED) || rider.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
 		. = FALSE
 	// for fireman carries, check if the ridden is stunned/restrained
-	else if((ride_check_flags & CARRIER_NEEDS_ARM) && (HAS_TRAIT(living_parent, TRAIT_RESTRAINED) || living_parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
+	else if((ride_check_flags & CARRIER_NEEDS_ARM) && (HAS_TRAIT(living_parent, TRAIT_ARMS_RESTRAINED) || living_parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)))
 		. = FALSE
 
 	if(. || !consequences)
@@ -186,7 +186,7 @@
 
 /datum/component/riding/creature/human/RegisterWithParent()
 	. = ..()
-	RegisterSignal(parent, COMSIG_HUMAN_EARLY_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
+	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_host_unarmed_melee))
 	RegisterSignal(parent, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(check_carrier_fall_over))
 
 /datum/component/riding/creature/human/log_riding(mob/living/living_parent, mob/living/rider)
@@ -402,7 +402,10 @@
 /datum/component/riding/creature/hog/ride_check(mob/living/user, consequences = TRUE)
 	var/mob/living/simple_animal/hostile/retaliate/hog/hog_ridden = parent
 	if(hog_ridden.client)
-		. = ..()
+		return ..()
+
 	if(prob(15))
 		hog_ridden.flingRider(user)
-	. = ..()
+		return FALSE
+
+	return ..()

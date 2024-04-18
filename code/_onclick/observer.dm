@@ -14,7 +14,6 @@
 	// Otherwise jump
 	else if(A.loc)
 		abstract_move(get_turf(A))
-		update_parallax_contents()
 
 /mob/dead/observer/ClickOn(atom/A, params)
 	if(check_click_intercept(params,A))
@@ -58,7 +57,7 @@
 			return TRUE
 		else if(isAdminGhostAI(user))
 			attack_ai(user)
-		else if(user.client.prefs.read_preference(/datum/preference/toggle/inquisitive_ghost))
+		else if(user.client.prefs.read_preference(/datum/preference/toggle/inquisitive_ghost) && !user.observetarget)
 			user.examinate(src)
 	return FALSE
 

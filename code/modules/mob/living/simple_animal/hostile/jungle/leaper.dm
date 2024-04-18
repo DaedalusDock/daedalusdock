@@ -140,6 +140,7 @@
 
 /mob/living/simple_animal/hostile/jungle/leaper/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/seethrough_mob)
 	remove_verb(src, /mob/living/verb/pulled)
 
 /mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A, list/params)
@@ -207,7 +208,7 @@
 		return
 	hopping = TRUE
 	set_density(FALSE)
-	pass_flags |= PASSMOB
+	add_passmob(REF(src))
 	notransform = TRUE
 	var/turf/new_turf = locate((target.x + rand(-3,3)),(target.y + rand(-3,3)),target.z)
 	if(player_hop)
@@ -221,7 +222,7 @@
 /mob/living/simple_animal/hostile/jungle/leaper/proc/FinishHop()
 	set_density(TRUE)
 	notransform = FALSE
-	pass_flags &= ~PASSMOB
+	remove_passmob(REF(src))
 	hopping = FALSE
 	playsound(src.loc, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 	if(target && AIStatus == AI_ON && projectile_ready && !ckey)

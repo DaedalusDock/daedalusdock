@@ -17,13 +17,17 @@
 	if(!category || QDELETED(src))
 		return
 
+	var/datum/weakref/master_ref
+	if(isdatum(new_master))
+		master_ref = WEAKREF(new_master)
 	var/atom/movable/screen/alert/thealert
 	if(alerts[category])
 		thealert = alerts[category]
 		if(thealert.override_alerts)
 			return thealert
-		if(new_master && new_master != thealert.master)
-			WARNING("[src] threw alert [category] with new_master [new_master] while already having that alert with master [thealert.master]")
+		if(master_ref && thealert.master_ref && master_ref != thealert.master_ref)
+			var/datum/current_master = thealert.master_ref.resolve()
+			WARNING("[src] threw alert [category] with new_master [new_master] while already having that alert with master [current_master]")
 
 			clear_alert(category)
 			return .()
@@ -52,7 +56,7 @@
 		new_master.layer = old_layer
 		new_master.plane = old_plane
 		thealert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
-		thealert.master = new_master
+		thealert.master_ref = master_ref
 	else
 		thealert.icon_state = "[initial(thealert.icon_state)][severity]"
 		thealert.severity = severity
@@ -60,8 +64,9 @@
 	alerts[category] = thealert
 	if(client && hud_used)
 		hud_used.reorganize_alerts()
-	thealert.transform = matrix(32, 6, MATRIX_TRANSLATE)
-	animate(thealert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
+
+	thealert.transform = matrix(32, 0, MATRIX_TRANSLATE)
+	animate(thealert, transform = matrix(), time = 1 SECONDS, easing = ELASTIC_EASING)
 
 	if(thealert.timeout)
 		addtimer(CALLBACK(src, PROC_REF(alert_timeout), thealert, category), thealert.timeout)
@@ -105,6 +110,8 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/alert/can_usr_use(mob/user)
+	return owner == usr
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
@@ -717,13 +724,13 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 //GHOSTS
 //TODO: expand this system to replace the pollCandidates/CheckAntagonist/"choose quickly"/etc Yes/No messages
-/atom/movable/screen/alert/notify_cloning
+/atom/movable/screen/alert/notify_revival
 	name = "Revival"
 	desc = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!"
 	icon_state = "template"
 	timeout = 300
 
-/atom/movable/screen/alert/notify_cloning/Click()
+/atom/movable/screen/alert/notify_revival/Click()
 	. = ..()
 	if(!.)
 		return
@@ -734,15 +741,16 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Body created"
 	desc = "A body was created. You can enter it."
 	icon_state = "template"
-	timeout = 300
-	var/atom/target = null
+	timeout = 30 SECONDS
+	/// Weakref to the target atom to use the action on
+	var/datum/weakref/target_ref
+	/// Which on click action to use
 	var/action = NOTIFY_JUMP
 
 /atom/movable/screen/alert/notify_action/Click()
 	. = ..()
-	if(!.)
-		return
-	if(!target)
+	var/atom/target = target_ref?.resolve()
+	if(isnull(target))
 		return
 	var/mob/dead/observer/ghost_owner = owner
 	if(!istype(ghost_owner))
@@ -797,9 +805,11 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 	if(!living_owner.can_resist())
 		return
-	living_owner.changeNext_move(CLICK_CD_RESIST)
+
 	if(living_owner.last_special <= world.time)
-		return living_owner.resist_buckle()
+		. = living_owner.resist_buckle()
+		if(!.)
+			living_owner.changeNext_move(CLICK_CD_RESIST)
 
 /atom/movable/screen/alert/shoes/untied
 	name = "Untied Shoes"
@@ -866,22 +876,25 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	return 1
 
 /atom/movable/screen/alert/Click(location, control, params)
-	if(!usr || !usr.client)
+	. = ..()
+	if(.)
 		return FALSE
+
 	if(usr != owner)
 		return FALSE
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, SHIFT_CLICK)) // screen objects don't do the normal Click() stuff so we'll cheat
 		to_chat(usr, span_boldnotice("[name]</span> - <span class='info'>[desc]"))
 		return FALSE
-	if(master && click_master)
-		return usr.client.Click(master, location, control, params)
+	var/datum/our_master = master_ref?.resolve()
+	if(our_master && click_master)
+		return usr.client.Click(our_master, location, control, params)
 
 	return TRUE
 
 /atom/movable/screen/alert/Destroy()
 	severity = 0
-	master = null
+	master_ref = null
 	owner = null
 	screen_loc = ""
 	return ..()

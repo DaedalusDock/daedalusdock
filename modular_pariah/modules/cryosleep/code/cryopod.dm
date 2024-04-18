@@ -314,7 +314,7 @@ GLOBAL_LIST_EMPTY(cryopod_computers)
 	open_machine()
 	name = initial(name)
 
-/obj/machinery/cryopod/MouseDrop_T(mob/living/target, mob/user)
+/obj/machinery/cryopod/MouseDroppedOn(mob/living/target, mob/user)
 	if(!istype(target) || !can_interact(user) || !target.Adjacent(user) || !ismob(target) || isanimal(target) || !istype(user.loc, /turf) || target.buckled)
 		return
 

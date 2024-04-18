@@ -14,10 +14,10 @@
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_CAPTAIN,
 		JOB_CHIEF_ENGINEER,
-		JOB_CHIEF_MEDICAL_OFFICER
+		JOB_MEDICAL_DIRECTOR
 	)
 
 	force_pre_setup_check = TRUE
@@ -58,7 +58,8 @@
 			if (is_banned_from(candidate_player.ckey, list(role, ROLE_SYNDICATE)))
 				continue
 
-			if(role in candidate_client.prefs.be_special)
+			var/list/antag_prefs = candidate_client.prefs.read_preference(/datum/preference/blob/antagonists)
+			if(antag_prefs[role])
 				role_to_players_map[role] += candidate_player
 				continue
 

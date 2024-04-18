@@ -4,7 +4,7 @@
 
 /datum/codex_entry/machine/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
 	. = ..()
-	GLOB.machine_codex_entries += name
+	GLOB.machine_codex_entries += src
 
 /datum/codex_entry/machine/airlock
 	name = "Airlock"
@@ -40,3 +40,19 @@
 		<h1>[GLOB.magnet_error_codes[MAGNET_ERROR_KEY_NO_COORD]]</h1>
 		There are no selected coordinates.
 	"}
+
+/datum/codex_entry/machine/washing_machine
+	name = "Washing Machine"
+	use_typesof = TRUE
+	associated_paths = list(/obj/machinery/washing_machine)
+
+	controls_text = {"
+	Right Click with empty hand - Begin a wash cycle.
+	"}
+
+/datum/codex_entry/machine/chem_dispenser
+	name = "Chem Dispenser"
+	use_typesof = TRUE
+	associated_paths = list(/obj/machinery/chem_dispenser)
+
+	controls_text = "Right Click - Eject contained beaker"

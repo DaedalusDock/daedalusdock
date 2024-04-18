@@ -16,7 +16,7 @@
 	throwforce = 6
 	w_class = WEIGHT_CLASS_BULKY
 	actions_types = list(/datum/action/item_action/toggle_paddles)
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 
 	var/obj/item/shockpaddles/paddle_type = /obj/item/shockpaddles
 	var/on = FALSE //if the paddles are equipped (1) or on the defib (0)
@@ -59,10 +59,10 @@
 	else
 		. += span_warning("It has no power cell!")
 
-/obj/item/defibrillator/fire_act(exposed_temperature, exposed_volume)
+/obj/item/defibrillator/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(paddles?.loc == src)
-		paddles.fire_act(exposed_temperature, exposed_volume)
+		paddles.fire_act(exposed_temperature, exposed_volume, adjacent)
 
 /obj/item/defibrillator/extinguish()
 	. = ..()
@@ -327,7 +327,9 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 
 	force = 0
+	force_wielded = 8
 	throwforce = 6
+
 	w_class = WEIGHT_CLASS_BULKY
 	resistance_flags = INDESTRUCTIBLE
 	base_icon_state = "defibpaddles"
@@ -339,24 +341,10 @@
 	var/req_defib = TRUE // Whether or not the paddles require a defibrilator object
 	var/recharge_time = 6 SECONDS // Only applies to defibs that do not require a defibrilator. See: .proc/do_success
 	var/combat = FALSE //If it penetrates armor and gives additional functionality
-	var/wielded = FALSE // track wielded status on item
 
 /obj/item/shockpaddles/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS|ITEM_SLOT_BACK)
-	AddComponent(/datum/component/two_handed, force_unwielded=8, force_wielded=12)
-
-/// triggered on wield of two handed item
-/obj/item/shockpaddles/proc/on_wield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = TRUE
-
-/// triggered on unwield of two handed item
-/obj/item/shockpaddles/proc/on_unwield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = FALSE
 
 /obj/item/shockpaddles/Destroy()
 	defib = null
@@ -372,10 +360,10 @@
 	. = ..()
 	check_range()
 
-/obj/item/shockpaddles/fire_act(exposed_temperature, exposed_volume)
+/obj/item/shockpaddles/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if((req_defib && defib) && loc != defib)
-		defib.fire_act(exposed_temperature, exposed_volume)
+		defib.fire_act(exposed_temperature, exposed_volume, adjacent)
 
 /obj/item/shockpaddles/proc/check_range()
 	SIGNAL_HANDLER
@@ -405,8 +393,6 @@
 /obj/item/shockpaddles/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC) //stops shockpaddles from being inserted in BoH
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
 	if(!req_defib)
 		return //If it doesn't need a defib, just say it exists
 	if (!loc || !istype(loc, /obj/item/defibrillator)) //To avoid weird issues from admin spawns
@@ -488,7 +474,7 @@
 		return
 
 	if(H.stat != DEAD)
-		H.notify_ghost_cloning("Your heart is being defibrillated!")
+		H.notify_ghost_revival("Your heart is being defibrillated!")
 		H.grab_ghost() // Shove them back in their body.
 
 	do_help(H, user)
@@ -566,6 +552,7 @@
 			H.emote("scream")
 			shock_pulling(45, H)
 			if(H.set_heartattack(TRUE))
+				log_health(H, "Heart stopped due to offensive defibrillator use.")
 				if(!H.stat)
 					H.visible_message(span_warning("[H] thrashes wildly, clutching at [H.p_their()] chest!"),
 						span_userdanger("You feel a horrible agony in your chest!"))
@@ -633,7 +620,10 @@
 		return
 
 	user.audible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Resuscitation successful."))
-	H.resuscitate()
+
+	if(H.resuscitate())
+		log_health(H, "Resuscitated due to defibrillator shock.")
+
 	H.AdjustSleeping(-60 SECONDS) //WAKEY WAKEY YOUR HEART IS SHOCKY
 
 /obj/item/shockpaddles/cyborg

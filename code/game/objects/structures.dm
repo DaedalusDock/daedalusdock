@@ -41,9 +41,10 @@
 	. = ..()
 	if(!(resistance_flags & INDESTRUCTIBLE))
 		if(resistance_flags & ON_FIRE)
-			. += span_warning("It's on fire!")
+			. += span_alert("FIRE!!")
 		if(broken)
-			. += span_notice("It appears to be broken.")
+			. += span_alert("It appears to be broken.")
+
 		var/examine_status = examine_status(user)
 		if(examine_status)
 			. += examine_status
@@ -60,7 +61,7 @@
 				return  span_warning("It's falling apart!")
 
 /obj/structure/rust_heretic_act()
-	take_damage(500, BRUTE, "melee", 1)
+	take_damage(500, BRUTE, SLASH, 1)
 
 /obj/structure/zap_act(power, zap_flags)
 	if(zap_flags & ZAP_OBJ_DAMAGE)
@@ -87,11 +88,11 @@
 		var/obj/O = highest
 		if(!O.uses_integrity)
 			return
-		O.take_damage(80 * levels)
+		O.take_damage(10 * levels)
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage(80 * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 
@@ -113,7 +114,7 @@
 		return TRUE
 
 	// Slam their face against the table.
-	var/blocked = affecting_mob.run_armor_check(BODY_ZONE_HEAD, MELEE)
+	var/blocked = affecting_mob.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 	if (prob(30 * ((100-blocked)/100)))
 		affecting_mob.Knockdown(10 SECONDS)
 

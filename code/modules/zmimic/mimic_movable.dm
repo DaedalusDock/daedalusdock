@@ -40,7 +40,7 @@
 /atom/movable/openspace/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	return
 
-/atom/movable/openspace/fire_act(exposed_temperature, exposed_volume)
+/atom/movable/openspace/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	return
 
 /atom/movable/openspace/acid_act()
@@ -185,7 +185,7 @@
 /atom/movable/openspace/mimic/set_glide_size(target)
 	return
 
-/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
+/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc, message_range)
 	if(speaker.z != src.z)
 		return
 

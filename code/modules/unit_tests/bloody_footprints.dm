@@ -15,13 +15,13 @@
 	var/obj/effect/decal/cleanable/blood/pool = allocate(/obj/effect/decal/cleanable/blood)
 
 	//Max out the pools blood, so each step will make things stained enough to matter
-	pool.bloodiness = BLOOD_POOL_MAX
+	pool.reagents.add_reagent_up_to(/datum/reagent/blood, BLOOD_POOL_MAX, BLOOD_POOL_MAX)
 
 	pool.forceMove(run_loc_floor_bottom_left)
 	blood_master.forceMove(run_loc_floor_bottom_left)
 
 	var/datum/component/bloodysoles/soles = holds_blood.GetComponent(/datum/component/bloodysoles)
-	var/blood_type = pool.blood_state
+	var/blood_type = pool.blood_color
 
 	TEST_ASSERT(soles.bloody_shoes[blood_type], "Shoes didn't become stained after stepping in a pool of [blood_type]")
 
@@ -39,7 +39,7 @@
 
 	var/footprint_total = 0
 	for(var/obj/effect/decal/cleanable/blood/footprints/print_set in move_to)
-		if(print_set.blood_state == blood_type)
+		if(print_set.blood_color == blood_type)
 			footprint_total += 1
 
 	TEST_ASSERT(footprint_total, "The floor didn't get covered in [blood_type] after being walked over")
@@ -54,7 +54,7 @@
 
 	footprint_total = 0
 	for(var/obj/effect/decal/cleanable/blood/footprints/print_set in move_to)
-		if(print_set.blood_state == blood_type)
+		if(print_set.blood_color == blood_type)
 			footprint_total += 1
 
 	TEST_ASSERT(footprint_total, "The floor somehow lost its footprints after being walked over")

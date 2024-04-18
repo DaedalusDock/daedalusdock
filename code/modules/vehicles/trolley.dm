@@ -6,7 +6,7 @@
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "trolley"
 	max_integrity = 150
-	armor = list(MELEE = 0, BULLET = 0, LASER = 20, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
 	var/cargo_limit = MAX_CARGO_LIMIT
 	var/amount_of_cargo = 0
 
@@ -67,7 +67,7 @@
 	else if(LAZYLEN(occupants))
 		. += span_notice("[occupants[1]] is riding it.")
 
-/obj/vehicle/ridden/trolley/MouseDrop_T(atom/dropped_atom, mob/living/user)
+/obj/vehicle/ridden/trolley/MouseDroppedOn(atom/dropped_atom, mob/living/user)
 	if(isliving(dropped_atom))
 		var/mob/living/buckling_mob = dropped_atom
 		return ..(buckling_mob, user)

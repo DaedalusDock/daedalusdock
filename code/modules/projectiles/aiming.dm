@@ -38,7 +38,7 @@
 	RegisterSignal(
 		user,
 		list(
-			SIGNAL_ADDTRAIT(TRAIT_RESTRAINED),
+			SIGNAL_ADDTRAIT(TRAIT_ARMS_RESTRAINED),
 			SIGNAL_ADDTRAIT(TRAIT_HANDS_BLOCKED),
 			SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED),
 			SIGNAL_ADDTRAIT(TRAIT_FLOORED)
@@ -173,7 +173,7 @@
 	if(!locked)
 		return
 
-	tool.fire_gun(target, user)
+	tool.try_fire_gun(target, user)
 	qdel(src)
 
 /obj/effect/abstract/aim_overlay/proc/cancel()

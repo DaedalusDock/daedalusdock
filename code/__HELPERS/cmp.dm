@@ -99,14 +99,8 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 	return A.totalResistance() - B.totalResistance()
 
 /proc/cmp_quirk_asc(datum/quirk/A, datum/quirk/B)
-	var/a_sign = SIGN(initial(A.value) * -1)
-	var/b_sign = SIGN(initial(B.value) * -1)
-
-	// Neutral traits go last.
-	if(a_sign == 0)
-		a_sign = 2
-	if(b_sign == 0)
-		b_sign = 2
+	var/a_sign = SIGN(initial(A.quirk_genre) * -1)
+	var/b_sign = SIGN(initial(B.quirk_genre) * -1)
 
 	var/a_name = initial(A.name)
 	var/b_name = initial(B.name)
@@ -198,3 +192,11 @@ GLOBAL_VAR_INIT(cmp_field, "name")
 /// Orders designs by name
 /proc/cmp_design_name(datum/design/A, datum/design/B)
 	return sorttext(B.name, A.name)
+
+/// Orders lists by the size of lists in their contents
+/proc/cmp_list_length(list/A, list/B)
+	return length(A) - length(B)
+
+/// Orders codex entries by name alphabetically
+/proc/cmp_codex_name(datum/codex_entry/a, datum/codex_entry/b)
+	return sorttext(b.name, a.name)

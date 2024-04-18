@@ -112,7 +112,7 @@
 			Paralyze(2 SECONDS)
 			visible_message(span_danger("[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!"),\
 				span_userdanger("You violently crash into [victim][extra_speed ? " extra hard" : ""]!"))
-		playsound(src,'sound/weapons/punch1.ogg',50,TRUE)
+		playsound(src, SFX_PUNCH ,50,TRUE)
 		log_combat(src, victim, "crashed into")
 
 //Throwing stuff
@@ -167,7 +167,7 @@
 				return
 			release_grabs(I)
 		else
-			if(!G.current_grab.can_throw || !isliving(G.affecting))
+			if(!G.current_grab.can_throw || !isliving(G.affecting) || G.affecting == src)
 				return
 
 			var/mob/living/throwable_mob = G.affecting
@@ -190,6 +190,7 @@
 		var/turf/end_T = get_turf(target)
 		if(start_T && end_T)
 			log_combat(src, thrown_thing, "thrown", addition="grab from tile in [AREACOORD(start_T)] towards tile at [AREACOORD(end_T)]")
+
 	var/power_throw = 0
 	if(HAS_TRAIT(src, TRAIT_HULK))
 		power_throw++
@@ -199,6 +200,7 @@
 		power_throw++
 	if(neckgrab_throw)
 		power_throw++
+
 	do_attack_animation(target, no_effect = TRUE) //PARIAH EDIT ADDITION - AESTHETICS
 	playsound(loc, 'sound/weapons/punchmiss.ogg', 50, TRUE, -1) //PARIAH EDIT ADDITION - AESTHETICS
 	visible_message(span_danger("[src] throws [thrown_thing][power_throw ? " really hard!" : "."]"), \
@@ -230,53 +232,62 @@
 		return FALSE
 
 /mob/living/carbon/resist_buckle()
-	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
+	if(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
 		var/buckle_cd = 60 SECONDS
+
 		if(handcuffed)
 			var/obj/item/restraints/O = src.get_item_by_slot(ITEM_SLOT_HANDCUFFED)
 			buckle_cd = O.breakouttime
-		visible_message(span_warning("[src] attempts to unbuckle [p_them()]self!"), \
-					span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)"))
+
+		visible_message(
+			span_warning("[src] attempts to unbuckle [p_them()]self!"),
+			span_notice("You attempt to unbuckle yourself... (This will take around [round(buckle_cd/600,1)] minute\s, and you need to stay still.)")
+
+		)
+
 		if(do_after(src, src, buckle_cd, timed_action_flags = IGNORE_HELD_ITEM))
 			if(!buckled)
 				return
-			buckled.user_unbuckle_mob(src,src)
+			return !!buckled.user_unbuckle_mob(src,src)
 		else
 			if(src && buckled)
 				to_chat(src, span_warning("You fail to unbuckle yourself!"))
 	else
-		buckled.user_unbuckle_mob(src,src)
+		return !!buckled.user_unbuckle_mob(src,src)
 
 /mob/living/carbon/resist_fire()
 	adjust_fire_stacks(-5)
 	Paralyze(60, ignore_canstun = TRUE)
 	spin(32,2)
-	visible_message(span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
-		span_notice("You stop, drop, and roll!"))
+	visible_message(
+		span_danger("[src] rolls on the floor, trying to put [p_them()]self out!"), \
+		span_danger("You hurl yourself to the floor, rolling frantically around!"))
 	sleep(30)
-	if(fire_stacks <= 0 && !QDELETED(src))
-		visible_message(span_danger("[src] successfully extinguishes [p_them()]self!"), \
-			span_notice("You extinguish yourself."))
 	return
 
 /mob/living/carbon/resist_restraints()
 	var/obj/item/I = null
 	var/type = 0
+
 	if(handcuffed)
 		I = handcuffed
 		type = 1
+
 	else if(legcuffed)
 		I = legcuffed
 		type = 2
+
 	if(I)
 		if(type == 1)
 			changeNext_move(CLICK_CD_BREAKOUT)
 			last_special = world.time + CLICK_CD_BREAKOUT
+
 		if(type == 2)
 			changeNext_move(CLICK_CD_RANGE)
 			last_special = world.time + CLICK_CD_RANGE
+
 		cuff_resist(I)
 
 
@@ -284,11 +295,17 @@
 	if(I.item_flags & BEING_REMOVED)
 		to_chat(src, span_warning("You're already attempting to remove [I]!"))
 		return
+	if(buckled)
+		to_chat(src, span_warning("There is no hope for escape."))
+		return
+
 	I.item_flags |= BEING_REMOVED
 	breakouttime = I.breakouttime
+
 	if(!cuff_break)
 		visible_message(span_warning("[src] attempts to remove [I]!"))
 		to_chat(src, span_notice("You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
+
 		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
@@ -298,6 +315,7 @@
 		breakouttime = 50
 		visible_message(span_warning("[src] is trying to break [I]!"))
 		to_chat(src, span_notice("You attempt to break [I]... (This will take around 5 seconds and you need to stand still.)"))
+
 		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
@@ -305,67 +323,47 @@
 
 	else if(cuff_break == INSTANT_CUFFBREAK)
 		. = clear_cuffs(I, cuff_break)
+
 	I.item_flags &= ~BEING_REMOVED
 
-/mob/living/carbon/proc/uncuff()
-	if (handcuffed)
-		var/obj/item/W = handcuffed
-		set_handcuffed(null)
-		if (buckled?.buckle_requires_restraints)
-			buckled.unbuckle_mob(src)
-		update_handcuffed()
-		if (client)
-			client.screen -= W
-		if (W)
-			W.forceMove(drop_location())
-			W.dropped(src)
-			if (W)
-				W.layer = initial(W.layer)
-				W.plane = initial(W.plane)
-		changeNext_move(0)
-	if (legcuffed)
-		var/obj/item/W = legcuffed
-		legcuffed = null
-		update_worn_legcuffs()
-		if (client)
-			client.screen -= W
-		if (W)
-			W.forceMove(drop_location())
-			W.dropped(src)
-			if (W)
-				W.layer = initial(W.layer)
-				W.plane = initial(W.plane)
-		changeNext_move(0)
-	update_equipment_speed_mods() // In case cuffs ever change speed
+/mob/living/carbon/proc/remove_handcuffs(new_location, cuff_break, silent)
+	if(!handcuffed)
+		return FALSE
+
+	if(!silent)
+		visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [handcuffed]!"))
+
+	if(cuff_break)
+		qdel(handcuffed)
+	else
+		transferItemToLoc(handcuffed, new_location, TRUE)
+	return TRUE
+
+/mob/living/carbon/proc/remove_legcuffs(new_location, cuff_break, silent)
+	if(!legcuffed)
+		return FALSE
+
+	if(!silent)
+		visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [legcuffed]!"))
+
+	if(cuff_break)
+		qdel(legcuffed)
+	else
+		transferItemToLoc(legcuffed, new_location, TRUE)
+	return TRUE
 
 /mob/living/carbon/proc/clear_cuffs(obj/item/I, cuff_break)
 	if(!I.loc || buckled)
 		return FALSE
+
 	if(I != handcuffed && I != legcuffed)
 		return FALSE
-	visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [I]!"))
-	to_chat(src, span_notice("You successfully [cuff_break ? "break" : "remove"] [I]."))
 
-	if(cuff_break)
-		. = !((I == handcuffed) || (I == legcuffed))
-		qdel(I)
-		return TRUE
+	if(I == handcuffed)
+		return remove_handcuffs(drop_location(), cuff_break)
 
-	else
-		if(I == handcuffed)
-			handcuffed.forceMove(drop_location())
-			set_handcuffed(null)
-			I.dropped(src)
-			if(buckled?.buckle_requires_restraints)
-				buckled.unbuckle_mob(src)
-			update_handcuffed()
-			return TRUE
-		if(I == legcuffed)
-			legcuffed.forceMove(drop_location())
-			legcuffed = null
-			I.dropped(src)
-			update_worn_legcuffs()
-			return TRUE
+	if(I == legcuffed)
+		return remove_legcuffs(drop_location(), cuff_break)
 
 /mob/living/carbon/proc/accident(obj/item/I)
 	if(!I || (I.item_flags & ABSTRACT) || HAS_TRAIT(I, TRAIT_NODROP))
@@ -790,12 +788,18 @@
 
 //called when we get cuffed/uncuffed
 /mob/living/carbon/proc/update_handcuffed()
+	PRIVATE_PROC(TRUE)
+
 	if(handcuffed)
 		drop_all_held_items()
 		release_all_grabs()
 		throw_alert(ALERT_HANDCUFFED, /atom/movable/screen/alert/restrained/handcuffed, new_master = src.handcuffed)
+		ADD_TRAIT(src, TRAIT_ARMS_RESTRAINED, HANDCUFFED_TRAIT)
 	else
+		REMOVE_TRAIT(src, TRAIT_ARMS_RESTRAINED, HANDCUFFED_TRAIT)
 		clear_alert(ALERT_HANDCUFFED)
+		if(buckled?.buckle_requires_restraints)
+			buckled.unbuckle_mob(src)
 
 	update_mob_action_buttons() //some of our action buttons might be unusable when we're handcuffed.
 	update_worn_handcuffs()
@@ -843,10 +847,8 @@
 		suiciding = FALSE
 		regenerate_limbs()
 		regenerate_organs()
-		QDEL_NULL(handcuffed)
-		QDEL_NULL(legcuffed)
-		set_handcuffed(null)
-		update_handcuffed()
+		remove_handcuffs()
+		remove_legcuffs()
 		client?.prefs?.apply_prefs_to(src)
 
 	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
@@ -893,7 +895,6 @@
 	for(var/obj/item/bodypart/bodypart_path as anything in bodyparts)
 		var/real_body_part_path = overrides?[initial(bodypart_path.body_zone)] || bodypart_path
 		var/obj/item/bodypart/bodypart_instance = new real_body_part_path()
-		bodypart_instance.set_owner(src)
 		bodyparts.Remove(bodypart_path)
 		add_bodypart(bodypart_instance)
 		switch(bodypart_instance.body_part)
@@ -916,6 +917,7 @@
 	new_bodypart.set_owner(src)
 	new_bodypart.forceMove(src)
 	new_bodypart.item_flags |= ABSTRACT
+	ADD_TRAIT(new_bodypart, TRAIT_INSIDE_BODY, REF(src))
 
 	if(new_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
 		set_num_legs(num_legs + 1)
@@ -931,6 +933,7 @@
 /mob/living/carbon/proc/remove_bodypart(obj/item/bodypart/old_bodypart)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
+	REMOVE_TRAIT(old_bodypart, TRAIT_INSIDE_BODY, REF(src))
 	bodyparts -= old_bodypart
 	old_bodypart.item_flags &= ~ABSTRACT
 	if(old_bodypart.bodypart_flags & BP_IS_MOVEMENT_LIMB)
@@ -1120,7 +1123,7 @@
 		. = TRUE
 
 	if(ears && !(obscured & ITEM_SLOT_EARS) && ears.wash(clean_types))
-		update_inv_ears()
+		update_worn_ears()
 		. = TRUE
 
 	if(wear_neck && !(obscured & ITEM_SLOT_NECK) && wear_neck.wash(clean_types))
@@ -1133,6 +1136,10 @@
 
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && gloves.wash(clean_types))
 		update_worn_gloves()
+		. = TRUE
+
+	if(shoes && !(obscured & ITEM_SLOT_FEET) && shoes.wash(clean_types))
+		update_worn_shoes()
 		. = TRUE
 
 	if(get_permeability_protection() > 0.5)
@@ -1189,16 +1196,14 @@
 
 /// Modifies the handcuffed value if a different value is passed, returning FALSE otherwise. The variable should only be changed through this proc.
 /mob/living/carbon/proc/set_handcuffed(new_value)
+	PRIVATE_PROC(TRUE)
 	if(handcuffed == new_value)
 		return FALSE
+
 	. = handcuffed
 	handcuffed = new_value
-	if(.)
-		if(!handcuffed)
-			REMOVE_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
-	else if(handcuffed)
-		ADD_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
 
+	update_handcuffed()
 
 /mob/living/carbon/on_lying_down(new_lying_angle)
 	. = ..()
@@ -1248,17 +1253,22 @@
 /mob/living/carbon/proc/check_signables_state()
 	var/obj/item/bodypart/left_arm = get_bodypart(BODY_ZONE_L_ARM)
 	var/obj/item/bodypart/right_arm = get_bodypart(BODY_ZONE_R_ARM)
+
 	var/empty_indexes = get_empty_held_indexes()
 	var/exit_right = (!right_arm || right_arm.bodypart_disabled)
 	var/exit_left = (!left_arm || left_arm.bodypart_disabled)
 	if(length(empty_indexes) == 0 || (length(empty_indexes) < 2 && (exit_left || exit_right)))//All existing hands full, can't sign
 		return SIGN_HANDS_FULL // These aren't booleans
+
 	if(exit_left && exit_right)//Can't sign with no arms!
 		return SIGN_ARMLESS
+
 	if(handcuffed) // Cuffed, usually will show visual effort to sign
 		return SIGN_CUFFED
+
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED) || HAS_TRAIT(src, TRAIT_EMOTEMUTE))
 		return SIGN_TRAIT_BLOCKED
+
 	if(length(empty_indexes) == 1 || exit_left || exit_right) // One arm gone
 		return SIGN_ONE_HAND
 
@@ -1349,7 +1359,7 @@
 
 	if(ismob(highest))
 		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, MELEE)
+		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
 		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
 		L.Paralyze(10 SECONDS)
 
@@ -1417,11 +1427,13 @@
 		else
 			visible_message("\The [src] twitches a bit as \his heart restarts!")
 
-		shock_stage = min(shock_stage, 100) // 120 is the point at which the heart stops.
+		shock_stage = min(shock_stage, SHOCK_AMT_FOR_FIBRILLATION - 25)
 
-		if(getOxyLoss() >= 75)
-			setOxyLoss(75)
+		// Clamp oxy loss to 70 for 200 health mobs. This is a 0.65 modifier for blood oxygenation.
+		if(getOxyLoss() >= maxHealth * 0.35)
+			setOxyLoss(maxHealth * 0.35)
 
+		COOLDOWN_START(heart, arrhythmia_grace_period, 10 SECONDS)
 		heart.Restart()
 		heart.handle_pulse()
 		return TRUE
@@ -1429,18 +1441,14 @@
 /mob/living/carbon/proc/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.75
 
-/mob/living/carbon/get_melee_inaccuracy()
-	. = ..()
-	if(getPain() > 100)
-		. += 10
-
-	if(shock_stage > 30)
-		. += 30
-	else if(shock_stage > 10)
-		. += 10
-
 /mob/living/carbon/has_mouth()
 	var/obj/item/bodypart/head/H = get_bodypart(BODY_ZONE_HEAD)
 	if(!H?.can_ingest_reagents)
 		return FALSE
 	return TRUE
+
+/mob/living/carbon/dropItemToGround(obj/item/I, force, silent, invdrop, animate = TRUE)
+	if(I && HAS_TRAIT(I, TRAIT_INSIDE_BODY))
+		stack_trace("Something tried to drop an organ or bodypart that isn't allowed to be dropped")
+		return FALSE
+	return ..()

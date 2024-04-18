@@ -175,8 +175,9 @@
 //Do not override this proc, instead use the appropiate procs.
 //This proc will handle the calls to the appropiate procs.
 /datum/round_event/proc/process_event()
-	SHOULD_NOT_SLEEP(TRUE)
+	set waitfor = FALSE
 	SHOULD_NOT_OVERRIDE(TRUE)
+
 	if(!processing)
 		return
 

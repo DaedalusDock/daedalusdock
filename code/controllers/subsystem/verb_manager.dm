@@ -21,7 +21,7 @@
  */
 SUBSYSTEM_DEF(verb_manager)
 	name = "Verb Manager"
-	wait = 0
+	wait = 1
 	flags = SS_TICKER | SS_HIBERNATE
 	priority = FIRE_PRIORITY_DELAYED_VERBS
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
@@ -89,12 +89,14 @@ SUBSYSTEM_DEF(verb_manager)
 		incoming_callback.user = WEAKREF(incoming_callback.object)
 		var/datum/callback/new_us = CALLBACK(arglist(list(GLOBAL_PROC, GLOBAL_PROC_REF(_queue_verb)) + args.Copy()))
 		return world.push_usr(incoming_callback.object, new_us)
-#endif
 
-	//debatable whether this is needed, this is just to try and ensure that you dont use this to queue stuff that isnt from player input.
-	if(QDELETED(usr))
+#else
+
+	if(QDELETED(usr) || isnull(usr.client))
 		stack_trace("_queue_verb() returned false because it wasnt called from player input!")
 		return FALSE
+
+#endif
 
 	if(!istype(subsystem_to_use))
 		stack_trace("_queue_verb() returned false because it was given an invalid subsystem to queue for!")

@@ -86,6 +86,7 @@
 	init_keybindings()
 
 	GLOB.emote_list = init_emote_list()
+	GLOB.mod_themes = setup_mod_themes()
 
 	for(var/datum/grab/G as anything in subtypesof(/datum/grab))
 		if(isabstract(G))
@@ -97,9 +98,18 @@
 		G.refresh_updown()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+
 	init_loadout_references()
 	init_augment_references()
+
 	init_magnet_error_codes()
+
+	init_slapcraft_steps()
+	init_slapcraft_recipes()
+
+	init_blood_types()
+
+	init_language_datums()
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -143,7 +153,6 @@ GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
 	/obj/item/radio/intercom,
 	/obj/item/storage/secure/safe,
 	/obj/machinery/airalarm,
-	///obj/machinery/bluespace_vendor,
 	/obj/machinery/newscaster,
 	/obj/machinery/button,
 	/obj/machinery/computer/security/telescreen,
@@ -238,3 +247,21 @@ GLOBAL_LIST_INIT(magnet_error_codes, list(
 				GLOB.magnet_error_codes[key] = code
 				existing_codes += code
 		while(isnull(GLOB.magnet_error_codes[key]))
+
+/proc/init_blood_types()
+	for(var/datum/blood/path as anything in typesof(/datum/blood))
+		if(isabstract(path))
+			continue
+		GLOB.blood_datums[path] = new path()
+
+/proc/init_language_datums()
+	for(var/datum/language/language as anything in subtypesof(/datum/language))
+		if(isabstract(language) || !initial(language.key))
+			continue
+
+		var/datum/language/instance = new language
+		GLOB.all_languages += instance
+		GLOB.language_datum_instances[language] = instance
+
+		if(instance.flags & (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND))
+			GLOB.preference_language_types += language

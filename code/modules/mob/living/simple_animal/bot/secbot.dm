@@ -257,7 +257,7 @@
 /mob/living/simple_animal/bot/secbot/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
 	if(!(bot_mode_flags & BOT_MODE_ON))
 		return
-	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
+	if(!can_unarmed_attack())
 		return
 	if(!iscarbon(attack_target))
 		return ..()
@@ -290,9 +290,7 @@
 		return FALSE
 	if(!Adjacent(current_target))
 		return FALSE
-	if(!current_target.handcuffed)
-		current_target.set_handcuffed(new cuff_type(current_target))
-		current_target.update_handcuffed()
+	if(!current_target.handcuffed && current_target.equip_to_slot_if_possible(new cuff_type(current_target), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
 		playsound(src, SFX_LAW, 50, FALSE)
 		back_to_idle()
 

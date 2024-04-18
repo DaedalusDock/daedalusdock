@@ -162,7 +162,7 @@ GLOBAL_VAR(restart_counter)
 
 	GLOB.demo_log = "[GLOB.log_directory]/demo.log"
 
-	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
+	//Config Error Log must be set later to ensure that we move the files over.
 
 #ifdef UNIT_TESTS
 	GLOB.test_log = "[GLOB.log_directory]/tests.log"
@@ -189,10 +189,14 @@ GLOBAL_VAR(restart_counter)
 
 	var/latest_changelog = file("[global.config.directory]/../html/changelogs/archive/" + time2text(world.timeofday, "YYYY-MM") + ".yml")
 	GLOB.changelog_hash = fexists(latest_changelog) ? md5(latest_changelog) : 0 //for telling if the changelog has changed recently
+
+	// Okay, we have a properly constructed log directory and we're all clean and safe. Sort the config error log properly.
 	if(fexists(GLOB.config_error_log))
 		fcopy(GLOB.config_error_log, "[GLOB.log_directory]/config_error.log")
 		fdel(GLOB.config_error_log)
 
+	// NOW we can change the write directory handle over.
+	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
 
 	if(GLOB.round_id)
 		log_game("Round ID: [GLOB.round_id]")
@@ -349,6 +353,37 @@ GLOBAL_VAR(restart_counter)
 		hub_password = "kMZy3U5jJHSiBQjr"
 	else
 		hub_password = "SORRYNOPASSWORD"
+
+/**
+ * Handles incresing the world's maxx var and intializing the new turfs and assigning them to the global area.
+ * If map_load_z_cutoff is passed in, it will only load turfs up to that z level, inclusive.
+ * This is because maploading will handle the turfs it loads itself.
+ */
+/world/proc/increase_max_x(new_maxx, map_load_z_cutoff = maxz)
+	if(new_maxx <= maxx)
+		return
+	var/old_max = world.maxx
+	maxx = new_maxx
+	if(!map_load_z_cutoff)
+		return
+	var/area/global_area = GLOB.areas_by_type[world.area] // We're guaranteed to be touching the global area, so we'll just do this
+	var/list/to_add = block(
+		locate(old_max + 1, 1, 1),
+		locate(maxx, maxy, map_load_z_cutoff))
+	global_area.contained_turfs += to_add
+
+/world/proc/increase_max_y(new_maxy, map_load_z_cutoff = maxz)
+	if(new_maxy <= maxy)
+		return
+	var/old_maxy = maxy
+	maxy = new_maxy
+	if(!map_load_z_cutoff)
+		return
+	var/area/global_area = GLOB.areas_by_type[world.area] // We're guarenteed to be touching the global area, so we'll just do this
+	var/list/to_add = block(
+		locate(1, old_maxy + 1, 1),
+		locate(maxx, maxy, map_load_z_cutoff))
+	global_area.contained_turfs += to_add
 
 /world/proc/incrementMaxZ()
 	maxz++

@@ -150,7 +150,7 @@
 
 /obj/machinery/shuttle_scrambler/proc/dump_loot(mob/user)
 	if(credits_stored) // Prevents spamming empty holochips
-		new /obj/item/holochip(drop_location(), credits_stored)
+		SSeconomy.spawn_cash_for_amount(credits_stored, drop_location())
 		to_chat(user,span_notice("You retrieve the siphoned credits!"))
 		credits_stored = 0
 	else
@@ -248,6 +248,14 @@
 	///This is the cargo hold ID used by the piratepad_control. Match these two to link them together.
 	var/cargo_hold_id
 
+/obj/machinery/piratepad/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
+/obj/machinery/piratepad/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
+
 /obj/machinery/piratepad/multitool_act(mob/living/user, obj/item/multitool/I)
 	. = ..()
 	if (istype(I))
@@ -288,7 +296,12 @@
 
 /obj/machinery/computer/piratepad_control/Initialize(mapload)
 	..()
+	SET_TRACKING(__TYPE__)
 	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/computer/piratepad_control/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/machinery/computer/piratepad_control/multitool_act(mob/living/user, obj/item/multitool/I)
 	. = ..()
@@ -300,7 +313,7 @@
 /obj/machinery/computer/piratepad_control/LateInitialize()
 	. = ..()
 	if(cargo_hold_id)
-		for(var/obj/machinery/piratepad/P in GLOB.machines)
+		for(var/obj/machinery/piratepad/P as anything in INSTANCES_OF(/obj/machinery/piratepad))
 			if(P.cargo_hold_id == cargo_hold_id)
 				pad_ref = WEAKREF(P)
 				return
@@ -479,13 +492,4 @@
 
 /datum/export/pirate/cash/get_amount(obj/O)
 	var/obj/item/stack/spacecash/C = O
-	return ..() * C.amount * C.value
-
-/datum/export/pirate/holochip
-	cost = 1
-	unit_name = "holochip"
-	export_types = list(/obj/item/holochip)
-
-/datum/export/pirate/holochip/get_cost(atom/movable/AM)
-	var/obj/item/holochip/H = AM
-	return H.credits
+	return ..() * C.get_item_credit_value()

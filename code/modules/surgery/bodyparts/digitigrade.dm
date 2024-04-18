@@ -35,7 +35,7 @@
 	if((!human_owner.wear_suit) || (human_owner.wear_suit.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)) || !(human_owner.wear_suit.body_parts_covered & LEGS)) //Checks suit compatability
 		suit_compatible = TRUE
 
-	if((uniform_compatible && suit_compatible) || (suit_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
+	if((uniform_compatible && suit_compatible) || (suit_compatible && (human_owner.obscured_slots & HIDEJUMPSUIT))) //If the uniform is hidden, it doesnt matter if its compatible
 		if(limb_id != digitigrade_id)
 			old_limb_id = limb_id
 		limb_id = digitigrade_id

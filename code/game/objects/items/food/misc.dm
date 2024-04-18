@@ -16,7 +16,7 @@
 
 /obj/item/food/cheese/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/smell/subtle, SCENT_SMELL, "cheese", 4)
+	AddComponent(/datum/component/smell, INTENSITY_SUBTLE, SCENT_SMELL, "cheese", 4)
 
 /obj/item/food/cheese/wedge
 	name = "cheese wedge"
@@ -211,7 +211,7 @@
 /obj/item/food/badrecipe/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_ITEM_GRILLED, PROC_REF(OnGrill))
-	AddComponent(/datum/component/smell/strong, SCENT_HAZE, "burned garbage", 4)
+	AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_HAZE, "burned garbage", 4)
 
 /obj/item/food/badrecipe/moldy
 	name = "moldy mess"
@@ -224,7 +224,7 @@
 
 /obj/item/food/badrecipe/moldy/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/smell/strong, SCENT_SMELL, "moldy waste", 4)
+	AddComponent(/datum/component/smell, INTENSITY_OVERPOWERING, SCENT_SMELL, "moldy waste", 4)
 
 /obj/item/food/badrecipe/moldy/bacteria
 	name = "bacteria rich moldy mess"
@@ -412,7 +412,8 @@
 	force = 30
 	throwforce = 15
 	block_chance = 55
-	armour_penetration = 80
+	block_sound = 'sound/weapons/block/parry.ogg'
+	armor_penetration = 80
 	attack_verb_continuous = list("slaps", "slathers")
 	attack_verb_simple = list("slap", "slather")
 	w_class = WEIGHT_CLASS_BULKY
@@ -440,6 +441,11 @@
 	head = mutable_appearance('icons/obj/lollipop.dmi', "lollipop_head")
 	change_head_color(rgb(rand(0, 255), rand(0, 255), rand(0, 255)))
 	AddElement(/datum/element/chewable)
+
+/obj/item/food/lollipop/equipped(mob/user, slot, initial)
+	. = ..()
+	if(slot != ITEM_SLOT_MASK)
+		add_trace_DNA(user.get_trace_dna())
 
 /obj/item/food/lollipop/proc/change_head_color(C)
 	head_color = C
@@ -478,6 +484,13 @@
 /obj/item/food/bubblegum/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/chewable, metabolization_amount = metabolization_amount)
+
+/obj/item/food/bubblegum/equipped(mob/user, slot, initial)
+	. = ..()
+	if(slot != ITEM_SLOT_MASK)
+		return
+
+	add_trace_DNA(user.get_trace_dna())
 
 /obj/item/food/bubblegum/nicotine
 	name = "nicotine gum"
@@ -946,7 +959,7 @@
 
 /obj/item/food/ready_donk/warm/mac_n_cheese/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/smell/strong, "scent", "nostalgia", 2)
+	AddComponent(/datum/component/smell, INTENSITY_STRONG, "scent", "nostalgia", 2)
 
 /obj/item/food/ready_donk/donkhiladas
 	name = "\improper Ready-Donk: Donkhiladas"

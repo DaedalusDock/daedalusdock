@@ -145,7 +145,7 @@
 
 		if(KIT_NUKEOPS_METAGAME)
 			new /obj/item/mod/control/pre_equipped/nuclear(src) // 8 tc
-			new /obj/item/gun/ballistic/shotgun/bulldog/unrestricted(src) // 8 tc
+			new /obj/item/gun/ballistic/shotgun/bulldog(src) // 8 tc
 			new /obj/item/implanter/explosive(src) // 2 tc
 			new /obj/item/ammo_box/magazine/m12g(src) // 2 tc
 			new /obj/item/ammo_box/magazine/m12g(src) // 2 tc
@@ -300,13 +300,6 @@
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/syringe/bioterror(src)
 
-/obj/item/storage/box/syndie_kit/clownpins
-	name = "ultra hilarious firing pin box"
-
-/obj/item/storage/box/syndie_kit/clownpins/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/firing_pin/clown/ultra(src)
-
 /obj/item/storage/box/syndie_kit/imp_storage
 	name = "storage implant box"
 
@@ -361,7 +354,6 @@
 	new /obj/item/reagent_containers/glass/bottle/polonium(src)
 	new /obj/item/reagent_containers/glass/bottle/venom(src)
 	new /obj/item/reagent_containers/glass/bottle/fentanyl(src)
-	new /obj/item/reagent_containers/glass/bottle/formaldehyde(src)
 	new /obj/item/reagent_containers/glass/bottle/cyanide(src)
 	new /obj/item/reagent_containers/glass/bottle/histamine(src)
 	new /obj/item/reagent_containers/glass/bottle/initropidril(src)

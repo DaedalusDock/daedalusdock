@@ -1,4 +1,4 @@
 PROCESSING_SUBSYSTEM_DEF(kinesis)
 	name = "Kinesis"
-	wait = 0
+	wait = 1
 	stat_tag = "KN"

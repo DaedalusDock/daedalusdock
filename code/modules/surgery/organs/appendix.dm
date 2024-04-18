@@ -12,7 +12,6 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5, /datum/reagent/toxin/bad_food = 5)
 	grind_results = list(/datum/reagent/toxin/bad_food = 5)
 
-	decay_factor = STANDARD_ORGAN_DECAY
 	relative_size = 5
 
 	now_failing = "<span class='warning'>An explosion of pain erupts in your lower right abdomen!</span>"

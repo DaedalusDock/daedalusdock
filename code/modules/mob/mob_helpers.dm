@@ -48,6 +48,15 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 	BODY_ZONE_L_LEG = 15
 ))
 
+GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
+	BODY_ZONE_HEAD = 3,
+	BODY_ZONE_CHEST = 0,
+	BODY_ZONE_R_ARM = 1,
+	BODY_ZONE_L_ARM = 1,
+	BODY_ZONE_R_LEG = 1,
+	BODY_ZONE_L_LEG = 1
+))
+
 /**
  * Return the zone or randomly, another valid zone
  *
@@ -69,13 +78,10 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 // Emulates targetting a specific body part, and miss chances
 // May return null if missed
 // miss_chance_mod may be negative.
-/proc/get_zone_with_miss_chance(zone, mob/living/carbon/target, miss_chance_mod = 0, ranged_attack)
+/proc/get_zone_with_miss_chance(zone, mob/living/carbon/target, miss_chance_mod = 0, ranged_attack, can_truly_miss = TRUE)
 	zone = deprecise_zone(zone)
 
 	if(!ranged_attack)
-		// target isn't trying to fight
-		if(!target.combat_mode)
-			return zone
 		// you cannot miss if your target is prone or restrained
 		if(target.buckled || target.body_position == LYING_DOWN)
 			return zone
@@ -88,7 +94,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 	var/miss_chance = GLOB.bodyzone_miss_chance[zone]
 	miss_chance = max(miss_chance + miss_chance_mod, 0)
 	if(prob(miss_chance))
-		if(ranged_attack || prob(miss_chance)) // Ranged attacks cannot ever fully miss.
+		if(!can_truly_miss || ranged_attack || !prob(miss_chance)) // Ranged attacks cannot ever fully miss.
 			return target.get_random_valid_zone()
 		return null
 	else
@@ -150,19 +156,15 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
  * This proc is dangerously laggy, avoid it or die
  */
 /proc/stars(phrase, probability = 25)
-	if(probability <= 0)
-		return phrase
-	phrase = html_decode(phrase)
-	var/leng = length(phrase)
-	. = ""
-	var/char = ""
-	for(var/i = 1, i <= leng, i += length(char))
-		char = phrase[i]
-		if(char == " " || !prob(probability))
-			. += char
-		else
-			. += "*"
-	return sanitize(.)
+	if(length(phrase) == 0)
+		return
+
+	var/list/chars = splittext_char(html_decode(phrase), "")
+	for(var/i in 1 to length(chars))
+		if(!prob(probability) || chars[i] == " ")
+			continue
+		chars[i] = "*"
+	return sanitize(jointext(chars, ""))
 
 /**
  * Turn text into complete gibberish!
@@ -324,7 +326,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 					A.name = header
 				A.desc = message
 				A.action = action
-				A.target = source
+				A.target_ref = WEAKREF(source)
 				if(!alert_overlay)
 					alert_overlay = new(source)
 					var/icon/size_check = icon(source.icon, source.icon_state)
@@ -461,6 +463,8 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 			colored_message = "(EMOTE) [colored_message]"
 		if(LOG_RADIO_EMOTE)
 			colored_message = "(RADIOEMOTE) [colored_message]"
+		if(LOG_HEALTH)
+			colored_message = "(HEALTH) [colored_message]"
 
 	var/list/timestamped_message = list("\[[time_stamp(format = "YYYY-MM-DD hh:mm:ss")]\] [key_name(src)] [loc_name(src)] (Event #[LAZYLEN(logging[smessage_type])])" = colored_message)
 
@@ -472,7 +476,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 	..()
 
 ///Can the mob hear
-/mob/proc/can_hear()
+/mob/proc/can_hear(ignore_stat)
 	. = TRUE
 
 /**
@@ -515,7 +519,7 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 	return initial(lighting_alpha)
 
 /// Can this mob SMELL THE SMELLY SMELLS?
-/mob/proc/can_smell(intensity)
+/mob/proc/can_smell()
 	return FALSE
 
 //returns the number of size categories between two mob_sizes, rounded. Positive means A is larger than B

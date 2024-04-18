@@ -109,7 +109,7 @@
 /area/shuttle/caravan/pirate)
 "hI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/caravan/pirate)
 "hS" = (
@@ -133,7 +133,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 6
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/caravan/pirate)
 "js" = (
@@ -410,7 +410,7 @@
 "vW" = (
 /obj/machinery/light/small/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/caravan/pirate)
 "wL" = (
@@ -552,7 +552,6 @@
 "BI" = (
 /obj/structure/table,
 /obj/machinery/light/small/directional/west,
-/obj/item/stack/spacecash/c200,
 /turf/open/floor/iron/dark,
 /area/shuttle/caravan/pirate)
 "BL" = (
@@ -569,7 +568,7 @@
 	dir = 4;
 	pixel_x = 24
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/west,
 /turf/open/floor/plating,
 /area/shuttle/caravan/pirate)
@@ -607,7 +606,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/caravan/pirate)
 "Gh" = (
@@ -798,7 +797,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/structure/cable,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/shuttle/caravan/pirate)
 "Sc" = (

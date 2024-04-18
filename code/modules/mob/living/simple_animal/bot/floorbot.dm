@@ -57,9 +57,9 @@
 			var/iterations = round(tilestack.amount/tilestack.max_amount) //round() without second arg floors the value
 			for(var/a in 1 to iterations)
 				if(a == iterations)
-					tilestack.split_stack(null, tilestack.amount - tilestack.max_amount)
+					tilestack.split_stack(null, tilestack.amount - tilestack.max_amount, tilestack.drop_location())
 				else
-					tilestack.split_stack(null, tilestack.max_amount)
+					tilestack.split_stack(null, tilestack.max_amount, tilestack.drop_location())
 		tilestack = null
 
 /mob/living/simple_animal/bot/floorbot/turn_on()
@@ -92,7 +92,7 @@
 			tiles.merge(tilestack, maxtiles)
 		else
 			if(tiles.amount > maxtiles)
-				tilestack = tilestack.split_stack(null, maxtiles)
+				tilestack = tilestack.split_stack(null, maxtiles, null)
 			else
 				tilestack = W
 			tilestack.forceMove(src)
@@ -248,9 +248,9 @@
 		if(!length(path))
 			if(!isturf(target))
 				var/turf/TL = get_turf(target)
-				path = get_path_to(src, TL, max_distance=30, id=access_card,simulated_only = FALSE)
+				path = get_path_to(src, TL, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 			else
-				path = get_path_to(src, target, max_distance=30, id=access_card,simulated_only = FALSE)
+				path = get_path_to(src, target, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 
 			if(!bot_move(target))
 				add_to_ignore(target)

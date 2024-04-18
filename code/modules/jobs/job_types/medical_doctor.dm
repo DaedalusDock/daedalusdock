@@ -2,7 +2,7 @@
 	title = JOB_MEDICAL_DOCTOR
 	description = "Save lives, run around the station looking for victims, \
 		scan everyone in sight"
-	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
+	department_head = list(JOB_MEDICAL_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 5
 	spawn_positions = 3
@@ -38,7 +38,7 @@
 		/obj/item/scalpel/advanced = 6,
 		/obj/item/retractor/advanced = 6,
 		/obj/item/cautery/advanced = 6,
-		/obj/item/reagent_containers/glass/bottle/formaldehyde = 6,
+		/obj/item/reagent_containers/glass/bottle/space_cleaner = 6,
 		/obj/effect/spawner/random/medical/organs = 5,
 		/obj/effect/spawner/random/medical/memeorgans = 1
 	)
@@ -47,7 +47,7 @@
 
 
 /datum/outfit/job/doctor
-	name = "Medical Doctor"
+	name = JOB_MEDICAL_DOCTOR
 	jobtype = /datum/job/doctor
 
 	id_trim = /datum/id_trim/job/medical_doctor

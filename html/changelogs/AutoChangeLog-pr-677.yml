@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - balance: Hitting someone with a thrown body now only knocks them down briefly
-      instead of stunning + knocking down for 2 seconds

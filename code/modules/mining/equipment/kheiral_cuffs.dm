@@ -10,7 +10,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	gender = PLURAL
-	throw_speed = 3
 	throw_range = 5
 	attack_verb_continuous = list("connects")
 	attack_verb_simple = list("connect")

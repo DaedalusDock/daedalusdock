@@ -104,7 +104,7 @@
 	if(isAI(mob))
 		return AIMove(new_loc,direct,mob)
 
-	if(Process_Grabs()) //are we restrained by someone's grip?
+	if(!check_can_move()) //are we restrained by someone's grip?
 		return
 
 	if(mob.buckled) //if we're buckled to something, tell it we moved.
@@ -124,7 +124,7 @@
 		return FALSE
 
 	//We are now going to move
-	var/add_delay = mob.cached_multiplicative_slowdown
+	var/add_delay = mob.movement_delay
 	var/new_glide_size = DELAY_TO_GLIDE_SIZE(add_delay * ( (NSCOMPONENT(direct) && EWCOMPONENT(direct)) ? 2 : 1 ) )
 	mob.set_glide_size(new_glide_size) // set it now in case of pulled objects
 	//If the move was recent, count using old_move_delay
@@ -163,19 +163,23 @@
 		SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_MOVED)
 
 /**
- * Checks to see if you're being grabbed and if so attempts to break it
+ * Checks to see if an external factor is preventing movement, mainly grabbing.
  *
  * Called by client/Move()
  */
-/client/proc/Process_Grabs()
+/client/proc/check_can_move()
+	if(!length(mob.grabbed_by))
+		return TRUE
+
 	if(HAS_TRAIT(mob, TRAIT_INCAPACITATED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		return FALSE
-	else if(HAS_TRAIT(mob, TRAIT_RESTRAINED))
+
+	else if(HAS_TRAIT(mob, TRAIT_ARMS_RESTRAINED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		to_chat(src, span_warning("You're restrained! You can't move!"))
 		return FALSE
-	return !mob.resist_grab(TRUE)
+	return mob.resist_grab(TRUE)
 
 
 /**

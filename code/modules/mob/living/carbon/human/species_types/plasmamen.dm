@@ -30,7 +30,6 @@
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
 	species_cookie = /obj/item/reagent_containers/food/condiment/milk
 	outfit_important_for_life = /datum/outfit/plasmaman
-	species_language_holder = /datum/language_holder/skeleton
 
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/plasmaman,

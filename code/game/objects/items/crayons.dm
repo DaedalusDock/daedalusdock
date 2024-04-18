@@ -392,7 +392,7 @@
 		else
 			switch(paint_mode)
 				if(PAINT_NORMAL)
-					C = new(target, paint_color, drawing, temp, graf_rot)
+					C = new(target, null, null, paint_color, drawing, temp, graf_rot)
 					C.pixel_x = clickx
 					C.pixel_y = clicky
 					affected_turfs += target
@@ -407,7 +407,7 @@
 					else
 						to_chat(user, span_warning("There isn't enough space to paint!"))
 						return
-			C.add_hiddenprint(user)
+			C.log_touch(user)
 			if(istagger)
 				C.AddElement(/datum/element/art, GOOD_ART)
 			else

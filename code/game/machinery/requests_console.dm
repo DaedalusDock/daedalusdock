@@ -4,7 +4,6 @@
 GLOBAL_LIST_EMPTY(req_console_assistance)
 GLOBAL_LIST_EMPTY(req_console_supplies)
 GLOBAL_LIST_EMPTY(req_console_information)
-GLOBAL_LIST_EMPTY(allConsoles)
 GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 
@@ -71,7 +70,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	var/emergency //If an emergency has been called by this device. Acts as both a cooldown and lets the responder know where it the emergency was triggered from
 	var/receive_ore_updates = FALSE //If ore redemption machines will send an update when it receives new ores.
 	max_integrity = 300
-	armor = list(MELEE = 70, BULLET = 30, LASER = 30, ENERGY = 30, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
+	armor = list(BLUNT = 70, PUNCTURE = 30, SLASH = 90, LASER = 30, ENERGY = 30, BOMB = 0, BIO = 0, FIRE = 90, ACID = 90)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 
@@ -112,7 +111,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 /obj/machinery/requests_console/Initialize(mapload)
 	. = ..()
 	name = "\improper [department] requests console"
-	GLOB.allConsoles += src
+
+	SET_TRACKING(__TYPE__)
 
 	if(departmentType)
 
@@ -132,7 +132,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 
 /obj/machinery/requests_console/Destroy()
 	QDEL_NULL(Radio)
-	GLOB.allConsoles -= src
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/requests_console/ui_interact(mob/user)
@@ -188,7 +188,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 				dat += "<A href='?src=[REF(src)];setScreen=[REQ_SCREEN_MAIN]'><< Back</A><BR>"
 
 			if(REQ_SCREEN_VIEW_MSGS)
-				for (var/obj/machinery/requests_console/Console in GLOB.allConsoles)
+				for (var/obj/machinery/requests_console/Console as anything in INSTANCES_OF(/obj/machinery/requests_console))
 					if (Console.department == department)
 						Console.newmessagepriority = REQ_NO_NEW_MESSAGE
 						Console.update_appearance()
@@ -281,6 +281,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 		if(isliving(usr))
 			var/mob/living/L = usr
 			message = L.treat_message(message)
+
 		minor_announce(message, "[department] Announcement:", html_encode = FALSE)
 		GLOB.news_network.submit_article(message, department, "Station Announcements", null)
 		usr.log_talk(message, LOG_SAY, tag="station announcement from [src]")

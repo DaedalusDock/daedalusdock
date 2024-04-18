@@ -180,10 +180,12 @@
 	if(!diode)
 		recharging = FALSE
 		return PROCESS_KILL
+
+
 	if(DT_PROB(10 + diode.rating*10 - recharge_locked*1, delta_time)) //t1 is 20, 2 40
 		energy += 1
 		if(energy >= max_energy)
 			energy = max_energy
 			recharging = FALSE
 			recharge_locked = FALSE
-			return ..()
+			return PROCESS_KILL

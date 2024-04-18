@@ -1,4 +1,4 @@
-#define LINKIFY_READY(string, value) "<a href='byond://?src=[REF(src)];ready=[value]'>[string]</a>"
+#define LINKIFY_READY(string, value) "<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];ready=[value]'>[string]</a>"
 /mob/dead/new_player
 	flags_1 = NONE
 	invisibility = INVISIBILITY_ABSTRACT
@@ -138,13 +138,13 @@
 	output += {"
 	<center>
 		<div>
-			<a href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
 		</div>
 		<hr>
 		<p>
 			<b>Playing As</b>
 			<br>
-			<a href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
 		</p>
 		<hr>
 	"}
@@ -160,10 +160,10 @@
 	else
 		output += {"
 		<p>
-			<a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
 		</p>
 		<p>
-			<a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
 		</p>
 		<p>
 			[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]
@@ -202,10 +202,9 @@
 		new_player_panel()
 		return FALSE
 
-	var/mob/dead/observer/observer = new
+	var/mob/dead/observer/observer = new(null, TRUE)
 	spawning = TRUE
 
-	observer.started_as_observer = TRUE
 	close_spawn_windows()
 	var/obj/effect/landmark/observer_start/O = locate(/obj/effect/landmark/observer_start) in GLOB.landmarks_list
 	to_chat(src, span_notice("Now teleporting."))
@@ -218,8 +217,7 @@
 	observer.client = client
 	observer.restore_ghost_appearance()
 	if(observer.client && observer.client.prefs)
-		observer.real_name = observer.client.prefs.read_preference(/datum/preference/name/real_name)
-		observer.name = observer.real_name
+		observer.set_real_name(observer.client.prefs.read_preference(/datum/preference/name/real_name))
 		observer.client.init_verbs()
 	observer.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 	deadchat_broadcast(" has observed.", "<b>[observer.real_name]</b>", follow_target = observer, turf_target = get_turf(observer), message_type = DEADCHAT_DEATHRATTLE)
@@ -431,9 +429,9 @@
 			if(job_datum.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
 				command_bold = " command"
 			if(job_datum in SSjob.prioritized_jobs)
-				dept_data += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
+				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
 			else
-				dept_data += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
+				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
 		if(!length(dept_data))
 			dept_data += "<span class='nopositions'>No positions open.</span>"
 		dat += dept_data.Join()
@@ -473,7 +471,7 @@
 		return
 	new_character.key = key //Manually transfer the key to log them in,
 	new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
-	new_character?.client.show_location_blurb()
+	new_character.client?.show_location_blurb()
 	var/area/joined_area = get_area(new_character.loc)
 	if(joined_area)
 		joined_area.on_joining_game(new_character)

@@ -27,7 +27,7 @@
 	return TRUE
 
 /obj/structure/kitchenspike_frame/attackby(obj/item/attacking_item, mob/user, params)
-	add_fingerprint(user)
+	attacking_item.leave_evidence(user, src)
 	if(!istype(attacking_item, /obj/item/stack/rods))
 		return ..()
 	var/obj/item/stack/rods/used_rods = attacking_item

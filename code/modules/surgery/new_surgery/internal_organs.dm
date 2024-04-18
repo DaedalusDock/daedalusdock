@@ -5,7 +5,7 @@
 /datum/surgery_step/internal
 	can_infect = 1
 	blood_level = 1
-	shock_level = 40
+	pain_given =40
 	delicate = 1
 	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 	abstract_type = /datum/surgery_step/internal
@@ -17,11 +17,12 @@
 	name = "Repair internal organ"
 	desc = "Repairs damage to a patient's internal organ."
 	allowed_tools = list(
+		/obj/item/stack/medical/suture = 100,
 		/obj/item/stack/medical/bruise_pack = 100,
 		/obj/item/stack/sticky_tape = 20
 	)
-	min_duration = 70
-	max_duration = 90
+	min_duration = 3 SECONDS
+	max_duration = 5 SECONDS
 
 /datum/surgery_step/internal/fix_organ/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -31,19 +32,35 @@
 	for(var/obj/item/organ/I in affected.contained_organs)
 		if(istype(I, /obj/item/organ/brain))
 			continue
-		if(!(I.organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD)) && I.damage > 0)
+		if(!(I.organ_flags & (ORGAN_SYNTHETIC)) && I.damage > 0)
 			return TRUE
 
 /datum/surgery_step/internal/fix_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/organs = list()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	for(var/obj/item/organ/I in affected.contained_organs)
-		if(!(I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
+		if(istype(I, /obj/item/organ/brain))
+			continue
+		if(!(I.organ_flags & (ORGAN_SYNTHETIC)) && I.damage > 0)
 			organs[I.name] = I.slot
 
-	var/organ_to_replace = input(user, "Which organ do you want to repair?") as null|anything in organs
-	if(organ_to_replace)
-		return list(organ_to_replace, organs[organ_to_replace])
+	var/obj/item/organ/O
+	var/organ_to_replace = -1
+	while(organ_to_replace == -1)
+		organ_to_replace = input(user, "Which organ do you want to repair?") as null|anything in organs
+		if(!organ_to_replace)
+			break
+		O = organs[organ_to_replace]
+		if(!O.can_recover())
+			to_chat(user, span_warning("[O] is too far gone, it cannot be salvaged."))
+			organ_to_replace = -1
+			continue
+		// You need to treat the necrotization, bro
+		if(O.organ_flags & ORGAN_DEAD)
+			to_chat(user, span_warning("[O] is decayed, you must replace it or perform <b>Treat Necrosis</b>."))
+			continue
+
+		return list(organ_to_replace, O)
 
 /datum/surgery_step/internal/fix_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/tool_name = "\the [tool]"
@@ -61,6 +78,10 @@
 	var/obj/item/organ/O = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
 	if(!O)
 		return
+	if(!O.can_recover())
+		to_chat(user, span_warning("[O] is too far gone, it cannot be salvaged."))
+		return ..()
+
 	O.surgically_fix(user)
 	user.visible_message(span_notice("[user] finishes treating damage to [target]'s [(LAZYACCESS(target.surgeries_in_progress, target_zone))[1]] with [tool_name]."))
 	..()
@@ -313,7 +334,7 @@
 	name = "Brain revival"
 	desc = "Utilizes the incredible power of Alkysine to restore the spark of life."
 	allowed_tools = list(
-		/obj/item/reagent_containers/glass/beaker = 100,
+		/obj/item/reagent_containers/glass = 100,
 	)
 	min_duration = 100
 	max_duration = 150
@@ -333,7 +354,8 @@
 
 /datum/surgery_step/internal/brain_revival/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = FALSE
-	var/obj/item/reagent_containers/glass/beaker/S = tool
+
+	var/obj/item/reagent_containers/glass/S = tool
 	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
 		to_chat(user, span_warning("\The [S] doesn't contain enough alkysine!"))
 		return
@@ -352,7 +374,7 @@
 
 /datum/surgery_step/internal/brain_revival/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/reagent_containers/glass/beaker/S = tool
-	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
+	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 5))
 		return
 
 	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
@@ -360,6 +382,112 @@
 	if(!head || !brain)
 		return
 
-	S.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 10)
+	S.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 5)
 	brain.setOrganDamage(0)
+	..()
+
+//////////////////////////////////////////////////////////////////
+//	 Peridaxon necrosis treatment surgery step
+//////////////////////////////////////////////////////////////////
+/datum/surgery_step/internal/treat_necrosis
+	name = "Treat necrosis"
+	desc = "Utilizes the restorative power of even the slightest amount of Peridaxon to restore functionality to an organ."
+	allowed_tools = list(
+		/obj/item/reagent_containers/dropper = 100,
+		/obj/item/reagent_containers/glass/bottle = 75,
+		/obj/item/reagent_containers/glass/beaker = 75,
+		/obj/item/reagent_containers/spray = 50,
+		/obj/item/reagent_containers/glass/bucket = 50,
+	)
+
+	can_infect = FALSE
+	blood_level = 0
+
+	min_duration = 5 SECONDS
+	max_duration = 6 SECONDS
+
+/datum/surgery_step/internal/treat_necrosis/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = ..()
+	if(!affected)
+		return
+
+	for(var/obj/item/organ/O as anything in affected.contained_organs)
+		if((O.organ_flags & ORGAN_DEAD) && !(O.organ_flags & ORGAN_SYNTHETIC))
+			return affected
+
+
+/datum/surgery_step/internal/treat_necrosis/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/reagent_containers/container = tool
+	if(!istype(container) || !container.reagents.has_reagent(/datum/reagent/medicine/peridaxon) || !..())
+		return FALSE
+
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+	var/list/obj/item/organ/dead_organs = list()
+
+	for(var/obj/item/organ/I in affected.contained_organs)
+		if(!(I.organ_flags & (ORGAN_CUT_AWAY|ORGAN_SYNTHETIC)) && (I.organ_flags & ORGAN_DEAD))
+			dead_organs[I.name] = I
+
+	if(!length(dead_organs))
+		return FALSE
+
+	var/obj/item/organ/O
+	var/organ_to_fix = -1
+	while(organ_to_fix == -1)
+		organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in dead_organs
+		if(!organ_to_fix)
+			break
+		O = dead_organs[organ_to_fix]
+
+		if(!O.can_recover())
+			to_chat(user, span_warning("The [organ_to_fix] is necrotic and can't be saved, it will need to be replaced."))
+			organ_to_fix = -1
+			continue
+
+		if(O.damage >= O.maxHealth)
+			to_chat(user, span_warning("The [organ_to_fix] needs to be repaired before it is regenerated."))
+			organ_to_fix = -1
+			continue
+
+	if(organ_to_fix)
+		return list(organ_to_fix, dead_organs[organ_to_fix])
+
+/datum/surgery_step/internal/treat_necrosis/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	user.visible_message(
+		span_notice("[user] starts applying medication to the affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool]."),
+		span_notice("You start applying medication to the affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool].")
+	)
+	target.apply_pain(50, target_zone)
+	..()
+
+/datum/surgery_step/internal/treat_necrosis/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/organ/affected = LAZYACCESS(target.surgeries_in_progress, target_zone)[2]
+	var/obj/item/reagent_containers/container = tool
+
+	var/rejuvenate = container.reagents.has_reagent(/datum/reagent/medicine/peridaxon)
+	var/transered_amount = container.reagents.trans_to(target, container.amount_per_transfer_from_this, methods = INJECT)
+	if(transered_amount > 0)
+		if(rejuvenate)
+			affected.set_organ_dead(FALSE)
+
+		user.visible_message(
+			span_notice("[user] applies [transered_amount] unit\s of the solution to affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]]."),
+			span_notice("You apply [transered_amount] unit\s of the solution to affected tissue in [target]'s [LAZYACCESS(target.surgeries_in_progress, target_zone)[1]] with \the [tool].")
+		)
+	..()
+
+/datum/surgery_step/internal/treat_necrosis/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
+
+	if (!istype(tool, /obj/item/reagent_containers))
+		return
+
+	var/obj/item/reagent_containers/container = tool
+
+	var/trans = container.reagents.trans_to(target, container.amount_per_transfer_from_this, methods = INJECT)
+
+	user.visible_message(
+		span_warning("[user]'s hand slips, applying [trans] units of the solution to the wrong place in [target]'s [affected.name] with the [tool]!"),
+		span_warning("Your hand slips, applying [trans] units of the solution to the wrong place in [target]'s [affected.name] with the [tool]!")
+	)
 	..()

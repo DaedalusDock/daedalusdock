@@ -291,11 +291,6 @@
 
 			if(length(picked_materials))
 				new_item.set_custom_materials(picked_materials, 1 / multiplier) //Ensure we get the non multiplied amount
-				for(var/x in picked_materials)
-					var/datum/material/M = x
-					if(!istype(M, /datum/material/glass) && !istype(M, /datum/material/iron))
-						user.client.give_award(/datum/award/achievement/misc/getting_an_upgrade, user)
-
 
 	icon_state = "autolathe"
 	busy = FALSE
@@ -317,7 +312,9 @@
 	. += ..()
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	if(in_range(user, src) || isobserver(user))
-		. += span_notice("The status display reads: Storing up to <b>[materials.max_amount]</b> material units.<br>Material consumption at <b>[creation_efficiency*100]%</b>.")
+		. += span_notice("The status display reads:")
+		. += span_notice("[FOURSPACES]Storing up to <b>[materials.max_amount]</b> material units.")
+		. += span_notice("[FOURSPACES]Material consumption at <b>[creation_efficiency*100]%</b>.")
 
 /obj/machinery/autolathe/proc/can_build(datum/design/D, amount = 1)
 	if(length(D.make_reagents))

@@ -25,6 +25,7 @@
  * Parent call
  */
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
+	unset_machine()
 	remove_from_mob_list()
 	remove_from_dead_mob_list()
 	remove_from_alive_mob_list()
@@ -138,27 +139,30 @@
 	msg = copytext_char(msg, 1, MAX_MESSAGE_LEN)
 
 	if(type)
-		if(type & MSG_VISUAL && is_blind() )//Vision related
+		if((type & MSG_VISUAL) && is_blind() )//Vision related
 			if(!alt_msg)
 				return
 			else
 				msg = alt_msg
 				type = alt_type
 
-		if(type & MSG_AUDIBLE && !can_hear())//Hearing related
+		if((type & MSG_AUDIBLE) && !can_hear())//Hearing related
 			if(!alt_msg)
 				return
 			else
 				msg = alt_msg
 				type = alt_type
-				if(type & MSG_VISUAL && is_blind())
+				if((type & MSG_VISUAL) && is_blind())
 					return
+
 	// voice muffling
 	if(stat == UNCONSCIOUS)
 		if(type & MSG_AUDIBLE) //audio
-			to_chat(src, "<I>... You can almost hear something ...</I>")
+			to_chat(src, span_obviousnotice("<I>... You can almost hear something ...</I>"))
 		return
+
 	to_chat(src, msg, avoid_highlighting = avoid_highlighting)
+	return msg
 
 /**
  * Generate a visible message from this atom
@@ -200,7 +204,7 @@
 
 	var/raw_msg = message
 	if(visible_message_flags & EMOTE_MESSAGE)
-		message = "<b>[src]</b><span class='emote'>[separation][message]</span>"
+		message = "<span class='emote'><b>[src]</b>[separation][message]</span>"
 
 	for(var/mob/M in hearers)
 		if(!M.client)
@@ -223,7 +227,7 @@
 		if(!msg)
 			continue
 
-		if(visible_message_flags & EMOTE_MESSAGE && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
+		if((visible_message_flags & EMOTE_MESSAGE) && runechat_prefs_check(M, visible_message_flags) && !M.is_blind())
 			M.create_chat_message(src, raw_message = raw_msg, runechat_flags = visible_message_flags)
 
 		M.show_message(msg, msg_type, blind_message, MSG_AUDIBLE)
@@ -493,16 +497,8 @@
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
+			broadcast_examine(examinify)
 
-			if(!isdead(usr) && !(usr == examinify))
-				var/list/can_see_target = viewers(usr)
-				for(var/mob/M as anything in viewers(4, usr))
-					if(!M.client)
-						continue
-					if(M in can_see_target)
-						to_chat(M, span_subtle("\The [usr] looks at \the [examinify]."))
-					else
-						to_chat(M, span_subtle("\The [usr] intently looks at something..."))
 	else
 		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
 
@@ -517,6 +513,45 @@
 	to_chat(src, "<div class='examine_block'><span class='infoplain'>[result.Join()]</span></div>") //PARIAH EDIT CHANGE
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
+/// Tells nearby mobs about our examination.
+/mob/proc/broadcast_examine(atom/examined)
+	if(examined == src)
+		return
+
+	// If TRUE, the usr's view() for the examined object too
+	var/examining_worn_item = FALSE
+	var/loc_str = "at something off in the distance."
+
+	if(isitem(examined))
+		var/obj/item/I = examined
+		if((I.item_flags & IN_STORAGE))
+			if(get(I, /mob/living) == src)
+				loc_str = "inside [p_their()] [I.loc.name]..."
+			else
+				loc_str = "inside [I.loc]..."
+
+		else if(I.loc == src)
+			loc_str = "at [p_their()] [I.name]."
+			examining_worn_item = TRUE
+
+	var/can_see_str = span_subtle("\The [src] looks at [examined].")
+	if(examining_worn_item)
+		can_see_str = span_subtle("\The [src] looks [loc_str]")
+
+	var/cannot_see_str = span_subtle("\The [src] looks [loc_str]")
+
+	var/list/can_see_target = viewers(examined)
+	for(var/mob/M as anything in viewers(4, src))
+		if(!M.client || M.is_blind())
+			continue
+
+		if(examining_worn_item || (M == src) || (M in can_see_target))
+			to_chat(M, can_see_str)
+		else
+			to_chat(M, cannot_see_str)
+
+/mob/dead/broadcast_examine(atom/examined)
+	return //Observers arent real the government is lying to you
 
 /mob/proc/blind_examine_check(atom/examined_thing)
 	return TRUE //The non-living will always succeed at this check.
@@ -845,7 +880,7 @@
 		return FALSE
 	if(notransform)
 		return FALSE
-	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
+	if(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_CANNOTFACE))
 		return FALSE
@@ -900,7 +935,6 @@
 /mob/proc/swap_hand()
 	var/obj/item/held_item = get_active_held_item()
 	if(SEND_SIGNAL(src, COMSIG_MOB_SWAP_HANDS, held_item) & COMPONENT_BLOCK_SWAP)
-		to_chat(src, span_warning("Your other hand is too busy holding [held_item]."))
 		return FALSE
 	return TRUE
 
@@ -921,10 +955,10 @@
 		return mind.grab_ghost(force = force)
 
 ///Notify a ghost that it's body is being cloned
-/mob/proc/notify_ghost_cloning(message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!", sound = 'sound/effects/genetics.ogg', atom/source = null, flashwindow)
+/mob/proc/notify_ghost_revival(message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!", sound = 'sound/effects/genetics.ogg', atom/source = null, flashwindow)
 	var/mob/dead/observer/ghost = get_ghost()
 	if(ghost)
-		ghost.notify_cloning(message, sound, source, flashwindow)
+		ghost.notify_revival(message, sound, source, flashwindow)
 		return ghost
 
 /**
@@ -1053,6 +1087,21 @@
 	return FALSE
 
 
+/mob/update_name(updates)
+	name = get_visible_name()
+	return ..()
+
+/mob/proc/get_visible_name()
+	return name
+
+/// Sets the mob's real name, and normal name if desired.
+/mob/proc/set_real_name(new_name, change_name = TRUE, update_name = TRUE)
+	real_name = new_name
+	if(change_name)
+		name = real_name
+	if(update_name)
+		update_name()
+
 /**
  * Fully update the name of a mob
  *
@@ -1075,8 +1124,8 @@
 
 	log_played_names(ckey, newname)
 
-	real_name = newname
-	name = newname
+	set_real_name(newname)
+
 	if(mind)
 		mind.name = newname
 		if(mind.key)
@@ -1161,19 +1210,33 @@
 				return
 			LA.alpha = lighting_alpha
 
-///Update the mouse pointer of the attached client in this mob
+///Update the mouse pointer of the attached client in this mob. Red hot proc!
 /mob/proc/update_mouse_pointer()
 	set waitfor = FALSE
 	if(!client)
 		return
 
-	if(client.mouse_override_icon)
-		if(client.mouse_pointer_icon != client.mouse_override_icon)
-			client.mouse_pointer_icon = client.mouse_override_icon
-		return
+	// First, mouse down icons
+	if((client.mouse_down == TRUE) && client.mouse_down_icon)
+		. = client.mouse_down_icon
 
-	. = get_mouse_pointer_icon()
-	. ||= 'icons/effects/mouse_pointers/default.dmi'
+	// Second, mouse up icons
+	if(isnull(.) && (client.mouse_down == FALSE) && client.mouse_up_icon)
+		. = client.mouse_up_icon
+
+	// Third, mouse override icons
+	if(isnull(.) && client.mouse_override_icon)
+		. = client.mouse_override_icon
+
+	// Fourth, examine icon
+	if(isnull(.) && examine_cursor_icon && client.keys_held["Shift"])
+		. = examine_cursor_icon
+
+	// Last, the mob decides.
+	if(isnull(.))
+		. = get_mouse_pointer_icon()
+		. ||= 'icons/effects/mouse_pointers/default.dmi'
+
 	if(. != client.mouse_pointer_icon)
 		client.mouse_pointer_icon = .
 
@@ -1323,7 +1386,7 @@
 	if(!speedies)
 		remove_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod)
 	else
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, multiplicative_slowdown = speedies)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/equipment_speedmod, slowdown = speedies)
 
 /// Gets the combined speed modification of all worn items
 /// Except base mob type doesnt really wear items
@@ -1368,16 +1431,16 @@
 		datum_flags |= DF_VAR_EDITED
 		return
 
-	var/slowdown_edit = (var_name == NAMEOF(src, cached_multiplicative_slowdown))
+	var/slowdown_edit = (var_name == NAMEOF(src, movement_delay))
 	var/diff
-	if(slowdown_edit && isnum(cached_multiplicative_slowdown) && isnum(var_value))
+	if(slowdown_edit && isnum(movement_delay) && isnum(var_value))
 		remove_movespeed_modifier(/datum/movespeed_modifier/admin_varedit)
-		diff = var_value - cached_multiplicative_slowdown
+		diff = var_value - movement_delay
 
 	. = ..()
 
 	if(. && slowdown_edit && isnum(diff))
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/admin_varedit, multiplicative_slowdown = diff)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/admin_varedit, slowdown = diff)
 
 /mob/proc/set_active_storage(new_active_storage)
 	if(active_storage)

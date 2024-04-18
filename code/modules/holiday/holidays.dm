@@ -727,7 +727,7 @@
 	)
 
 /datum/holiday/xmas/proc/roundstart_celebrate()
-	for(var/obj/machinery/computer/security/telescreen/entertainment/Monitor in GLOB.machines)
+	for(var/obj/machinery/computer/security/telescreen/entertainment/Monitor as anything in INSTANCES_OF(/obj/machinery/computer/security/telescreen/entertainment))
 		Monitor.icon_state_on = "entertainment_xmas"
 
 	for(var/mob/living/simple_animal/pet/dog/corgi/ian/Ian in GLOB.mob_living_list)

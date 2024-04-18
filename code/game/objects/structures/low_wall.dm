@@ -15,7 +15,7 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = SMOOTH_GROUP_LOW_WALL
 	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_LOW_WALL + SMOOTH_GROUP_WALLS
-	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
+	armor = list(BLUNT = 20, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
 
 	/// Material used in construction
 	var/plating_material = /datum/material/iron
@@ -222,3 +222,7 @@
 /obj/structure/low_wall/prepainted/daedalus
 	wall_paint = PAINT_WALL_DAEDALUS
 	stripe_paint = PAINT_STRIPE_DAEDALUS
+
+/obj/structure/low_wall/prepainted/marsexec
+	wall_paint = PAINT_WALL_MARSEXECUTIVE
+	stripe_paint = PAINT_WALL_MARSEXECUTIVE

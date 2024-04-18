@@ -54,4 +54,8 @@ SUBSYSTEM_DEF(processing)
  */
 /datum/proc/process(delta_time)
 	set waitfor = FALSE
+	var/static/list/fuckups = list()
+	if(!(type in fuckups))
+		stack_trace("[type] called datum process, this is wasting CPU time.")
+		fuckups += type
 	return PROCESS_KILL

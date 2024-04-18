@@ -29,7 +29,7 @@
 	species_cookie = /obj/item/food/meat/slab
 	meat = /obj/item/food/meat/slab/human/mutant/lizard
 	skinned_type = /obj/item/stack/sheet/animalhide/lizard
-	exotic_bloodtype = "L"
+
 	disliked_food = GRAIN | DAIRY | CLOTH
 	liked_food = GROSS | MEAT | SEAFOOD | NUTS
 	inert_mutation = /datum/mutation/human/firebreath
@@ -86,22 +86,17 @@
 
 	pain_emotes = list(
 		list(
-			"grunt" = 1,
-			"groan" = 1,
-			"hiss" = 1
-		) = 20,
+			"groans in pain." = 1,
+			"hisses in pain." = 1
+		) = (PAIN_AMT_LOW + 10),
 		list(
-			"grunt" = 1,
-			"groan" = 1,
-			"wheeze" = 1,
-			"hiss" = 1,
-		) = 50,
+			"screams in pain!" = 1,
+		) = (PAIN_AMT_MEDIUM + 10),
 		list(
-			"wheeze" = 1,
-			"scream" = 1,
-			"bellow" = 1,
-			"howl" = 1
-		) = 80
+			"me wheezes in pain!" = 1,
+			"me bellows in pain!" = 1,
+			"me howls in pain!" = 1
+		) = PAIN_AMT_AGONIZING
 	)
 
 /datum/species/lizard/get_deathgasp_sound(mob/living/carbon/human/H)
@@ -178,3 +173,6 @@
 	))
 
 	return to_add
+
+/datum/species/lizard/get_random_blood_type()
+	return GET_BLOOD_REF(/datum/blood/lizard)

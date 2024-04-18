@@ -240,22 +240,17 @@
 	src.stamina_swing(STAMINA_DISARM_COST)
 
 	do_attack_animation(target, ATTACK_EFFECT_DISARM)
-	animate_interact(target, INTERACT_DISARM)
 	playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
-		human_target.w_uniform?.add_fingerprint(src)
+		human_target.add_fingerprint_on_clothing_or_self(src, BODY_ZONE_CHEST)
 
 	SEND_SIGNAL(target, COMSIG_HUMAN_DISARM_HIT, src, zone_selected)
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
-	var/state_modifier = get_melee_inaccuracy() - target.get_melee_inaccuracy()
-	var/stimulants = CHEM_EFFECT_MAGNITUDE(target, CE_STIMULANT)
-	var/disarm_chance = 25 - (stimulants * 2)
-	var/shove_chance = 12 - stimulants
-	if(!target.combat_mode)
-		state_modifier -= 30
+
+	var/roll = stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, target.gurps_stats.get_skill(SKILL_MELEE_COMBAT))
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)
@@ -263,9 +258,7 @@
 		if(prob(hurt_prob) && I.on_disarm_attempt(target, src))
 			return
 
-	var/shove_roll = rand(1, 100) + state_modifier
-	if(shove_roll <= shove_chance)
-
+	if(roll == CRIT_SUCCESS)
 		var/shove_dir = get_dir(loc, target.loc)
 		var/turf/target_shove_turf = get_step(target.loc, shove_dir)
 		var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
@@ -295,7 +288,6 @@
 
 	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
 		target.apply_damage(STAMINA_DISARM_DMG * 4, STAMINA, BODY_ZONE_CHEST)
-		target.adjustOxyLoss(10) //Knock the wind right out of his sails
 		target.visible_message(
 			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
 			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
@@ -315,9 +307,8 @@
 	)
 
 	var/append_message = ""
-	//Roll disarm chance based on the target's missing stamina
-	var/disarm_roll = rand(1, 100) + state_modifier
-	if(disarm_roll <= disarm_chance && length(target.held_items))
+
+	if(roll >= SUCCESS && length(target.held_items))
 		var/list/dropped = list()
 		for(var/obj/item/I in target.held_items)
 			if(target.dropItemToGround(I))
@@ -359,8 +350,9 @@
 		return
 	//Propagation through pulling, fireman carry
 	if(!(flags & SHOCK_ILLUSION))
-		if(undergoing_cardiac_arrest())
-			set_heartattack(FALSE)
+		if(undergoing_cardiac_arrest() && resuscitate())
+			log_health(src, "Heart restarted due to elecrocution.")
+
 		var/list/shocking_queue = list()
 		shocking_queue += get_all_grabbed_movables()
 		shocking_queue -= source
@@ -582,12 +574,15 @@
 		if(hit_clothes)
 			hit_clothes.take_damage(damage_amount, damage_type, damage_flag, 0)
 
-/mob/living/carbon/can_hear()
+/mob/living/carbon/can_hear(ignore_stat)
 	. = FALSE
-	if(HAS_TRAIT(src, TRAIT_NOEARS) && !HAS_TRAIT(src, TRAIT_DEAF))
+	var/has_deaf_trait = ignore_stat ? HAS_TRAIT_NOT_FROM(src, TRAIT_DEAF, STAT_TRAIT) : HAS_TRAIT(src, TRAIT_DEAF)
+
+	if(HAS_TRAIT(src, TRAIT_NOEARS) && !has_deaf_trait)
 		return TRUE
+
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
-	if(ears && !HAS_TRAIT(src, TRAIT_DEAF))
+	if(ears && !has_deaf_trait)
 		. = TRUE
 
 /mob/living/carbon/proc/get_interaction_efficiency(zone)

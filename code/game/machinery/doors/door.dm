@@ -13,13 +13,12 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	power_channel = AREA_USAGE_ENVIRON
 	pass_flags_self = PASSDOORS
 	max_integrity = 350
-	armor = list(MELEE = 30, BULLET = 30, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
 	can_atmos_pass = CANPASS_PROC
 	flags_1 = PREVENT_CLICK_UNDER_1
 	receive_ricochet_chance_mod = 0.8
-	damage_deflection = 10
 
-	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT
+	interaction_flags_atom = INTERACT_ATOM_UI_INTERACT | INTERACT_ATOM_NO_FINGERPRINT_ATTACK_HAND
 	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
@@ -59,10 +58,12 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 
 /obj/machinery/door/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
+
 	set_init_door_layer()
 	update_freelook_sight()
 	register_context()
-	GLOB.airlocks += src
+
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 	if(density)
@@ -141,10 +142,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 /obj/machinery/door/examine(mob/user)
 	. = ..()
 	if(red_alert_access)
-		if(SSsecurity_level.current_level >= SEC_LEVEL_RED)
-			. += span_notice("Due to a security threat, its access requirements have been lifted!")
-		else
-			. += span_notice("In the event of a red alert, its access requirements will automatically lift.")
+		. += span_notice("In the event of a red alert, its access requirements will automatically lift.")
 	. += span_notice("Its maintenance panel is [panel_open ? "open" : "<b>screwed</b> in place"].")
 
 /obj/machinery/door/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -173,8 +171,9 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		layer = initial(layer)
 
 /obj/machinery/door/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	update_freelook_sight()
-	GLOB.airlocks -= src
+
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
@@ -296,12 +295,17 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 		return
 	return ..()
 
-/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/proc/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	set waitfor = FALSE
 
-	add_fingerprint(user)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
+
 	if(operating || (obj_flags & EMAGGED) || !can_open_with_hands)
 		return
+
 	if(access_bypass || (requiresID() && allowed(user)))
 		. = TRUE
 		if(density)
@@ -353,13 +357,16 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/door/attackby(obj/item/I, mob/living/user, params)
-	if(!user.combat_mode && istype(I, /obj/item/fireaxe))
+	if((I.item_flags & NOBLUDGEON) || user.combat_mode)
+		return ..()
+
+	if(istype(I, /obj/item/fireaxe))
 		try_to_crowbar(I, user, FALSE)
 		return TRUE
-	else if(I.item_flags & NOBLUDGEON || user.combat_mode)
-		return ..()
-	else if(try_to_activate_door(user))
+
+	if(try_to_activate_door(user, attackedby = I))
 		return TRUE
+
 	return ..()
 
 /obj/machinery/door/welder_act_secondary(mob/living/user, obj/item/tool)
@@ -501,7 +508,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 			L.emote("roar")
 		else if(ishuman(L)) //For humans
 			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
-			L.emote("scream")
+			L.emote("agony")
 			L.Paralyze(100)
 		else //for simple_animals & borgs
 			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE)
@@ -572,7 +579,9 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	. = ..()
 
 /obj/machinery/door/proc/knock_on(mob/user)
-	user.changeNext_move(CLICK_CD_MELEE)
+	user?.changeNext_move(CLICK_CD_MELEE)
 	playsound(src, knock_sound, 100, TRUE)
+	add_fingerprint(user)
+	user?.animate_interact(src, INTERACT_GENERIC)
 
 #undef DOOR_CLOSE_WAIT

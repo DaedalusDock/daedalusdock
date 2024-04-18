@@ -45,7 +45,6 @@
 	color = "#B77D31" //To display in mapping softwares
 
 /turf/closed/wall/mineral/uranium
-	article = "a"
 	name = "uranium wall"
 	desc = "A wall with uranium plating. This is probably a bad idea."
 	plating_material = /datum/material/uranium

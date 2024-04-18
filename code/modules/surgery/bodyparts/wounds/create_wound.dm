@@ -28,8 +28,8 @@
 				fluid_loss_severity = FLUIDLOSS_BURN_WIDE
 			if (WOUND_LASER)
 				fluid_loss_severity = FLUIDLOSS_BURN_CONCENTRATED
-		var/fluid_loss = (damage/(owner.maxHealth)) * BLOOD_VOLUME_NORMAL * fluid_loss_severity
-		owner.bleed(fluid_loss)
+		var/fluid_loss = (damage / (owner.maxHealth)) * BLOOD_VOLUME_NORMAL * fluid_loss_severity
+		owner.adjustBloodVolume(-fluid_loss)
 
 	//Check whether we can widen an existing wound
 	if(!surgical && LAZYLEN(wounds) && prob(max(50+(real_wound_count-1)*10,90)))
@@ -46,15 +46,17 @@
 				if(prob(25))
 					if(!IS_ORGANIC_LIMB(src))
 						owner.visible_message(
-							span_danger("The damage to \the [owner]'s [plaintext_zone] worsens."),\
-							span_danger("The damage to your [name] worsens."),\
-							span_danger("You hear the screech of abused metal.")
+							span_warning("The damage to \the [owner]'s [plaintext_zone] worsens."),
+							span_warning("The damage to your [name] worsens."),
+							span_hear("You hear the screech of abused metal."),
+							COMBAT_MESSAGE_RANGE,
 						)
 					else
 						owner.visible_message(
-							span_danger("The wound on \the [owner]'s [plaintext_zone] widens with a nasty ripping noise."),\
-							span_danger("The wound on your [plaintext_zone] widens with a nasty ripping noise."),\
-							span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
+							span_warning("The wound on \the [owner]'s [plaintext_zone] widens with a nasty ripping noise."),
+							span_warning("The wound on your [plaintext_zone] widens with a nasty ripping noise."),
+							span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
+							COMBAT_MESSAGE_RANGE,
 						)
 				return W
 

@@ -86,7 +86,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
-
+	SET_TRACKING(__TYPE__)
 	if(!mapload) //sync up nightshift lighting for player made lights
 		var/area/local_area = get_area(src)
 		var/obj/machinery/power/apc/temp_apc = local_area.apc
@@ -104,6 +104,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	my_area = get_area(src)
 	if(my_area)
 		LAZYADD(my_area.lights, src)
+
 	#ifdef LIGHTS_RANDOMLY_BROKEN
 	switch(fitting)
 		if("tube")
@@ -116,6 +117,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	if(my_area)
 		on = FALSE
 		LAZYREMOVE(my_area.lights, src)
@@ -242,20 +244,20 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
-			. += "It is turned [on? "on" : "off"]."
+			if(!on)
+				. += span_notice("It is turned off.")
 		if(LIGHT_EMPTY)
-			. += "The [fitting] has been removed."
+			. += span_notice("The [fitting] has been removed.")
 		if(LIGHT_BURNED)
-			. += "The [fitting] is burnt out."
+			. += span_notice("The [fitting] is burnt out.")
 		if(LIGHT_BROKEN)
-			. += "The [fitting] has been smashed."
-	if(cell)
-		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
-	//PARIAH EDIT ADDITION
-	if(constant_flickering)
-		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
-	//PARIAH EDIT END
+			. += span_alert("The [fitting] has been smashed.")
 
+	if(cell)
+		. += span_notice("Its backup power charge meter reads: [round((cell.charge / cell.maxcharge) * 100, 0.1)]%.")
+
+	if(constant_flickering)
+		. += span_alert("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 
 
 // attack with item - insert light (if right type), otherwise try to break the light
@@ -281,7 +283,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		if(status == LIGHT_OK)
 			to_chat(user, span_warning("There is a [fitting] already inserted!"))
 			return TRUE
-		add_fingerprint(user)
+		tool.leave_evidence(user, src)
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
 			to_chat(user, span_warning("This type of light requires a [fitting]!"))
@@ -289,7 +291,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 		if(!user.temporarilyRemoveItemFromInventory(light_object))
 			return TRUE
 
-		add_fingerprint(user)
+		tool.leave_evidence(user, src)
 		if(status != LIGHT_EMPTY)
 			drop_light_tube(user)
 			to_chat(user, span_notice("You replace [light_object]."))
@@ -438,6 +440,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	set waitfor = FALSE
 	if(flickering)
 		return
+
 	flickering = TRUE
 	if(on && status == LIGHT_OK)
 		for(var/i in 1 to amount)
@@ -467,7 +470,6 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	if(.)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
 		to_chat(user, span_warning("There is no [fitting] in this light!"))

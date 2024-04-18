@@ -22,7 +22,6 @@ effective or pretty fucking useless.
 	icon_state = "batterer"
 	throwforce = 5
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
 	throw_range = 7
 	flags_1 = CONDUCT_1
 	inhand_icon_state = "electronic"
@@ -237,6 +236,7 @@ effective or pretty fucking useless.
 	if(user.get_item_by_slot(ITEM_SLOT_BELT) != src)
 		Deactivate()
 		return
+
 	var/turf/T = get_turf(src)
 	if(on)
 		var/lumcount = T.get_lumcount()

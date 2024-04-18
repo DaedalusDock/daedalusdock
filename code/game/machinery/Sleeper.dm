@@ -95,7 +95,7 @@
 		open_machine()
 
 
-/obj/machinery/sleeper/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/sleeper/MouseDroppedOn(mob/target, mob/user)
 	if(HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !ISADVANCEDTOOLUSER(user))
 		return
 
@@ -203,7 +203,7 @@
 		data["occupant"]["reagents"] = list()
 		if(mob_occupant.reagents && mob_occupant.reagents.reagent_list.len)
 			for(var/datum/reagent/R in mob_occupant.reagents.reagent_list)
-				if(R.chemical_flags & (REAGENT_SCANNABLE|REAGENT_INVISIBLE)) //Don't show hidden chems
+				if((R.chemical_flags & REAGENT_INVISIBLE)) //
 					continue
 				data["occupant"]["reagents"] += list(list("name" = R.name, "volume" = R.volume))
 	return data

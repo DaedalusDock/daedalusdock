@@ -9,7 +9,7 @@
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
 	permeability_coefficient = 0.05
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 95, ACID = 95)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 95, ACID = 95)
 
 /obj/item/clothing/gloves/color/plasmaman/black
 	name = "black envirogloves"
@@ -65,7 +65,7 @@
 	icon_state = "botanyplasma"
 	inhand_icon_state = "botanyplasma"
 	permeability_coefficient = 0.05
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 95, ACID = 95)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 95, ACID = 95)
 
 /obj/item/clothing/gloves/color/plasmaman/prototype
 	name = "prototype envirogloves"
@@ -115,11 +115,3 @@
 	name = "CentCom intern envirogloves"
 	icon_state = "internplasma"
 	inhand_icon_state = "internplasma"
-
-/obj/item/clothing/gloves/color/plasmaman/radio
-	name = "translation envirogloves"
-	desc = "Allows the less vocally-capable plasmamen to use sign language over comms."
-	icon_state = "radio_gplasma"
-	inhand_icon_state = "radio_gplasma"
-	worn_icon_state = "radio_g"
-	clothing_traits = list(TRAIT_CAN_SIGN_ON_COMMS)

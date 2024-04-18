@@ -46,13 +46,17 @@
 	QDEL_IN(src, 10)
 
 /obj/effect/particle_effect/smoke/process()
+	SHOULD_CALL_PARENT(TRUE)
+	. = 1 || ..()
+	. = null
+
 	lifetime--
 	if(lifetime < 1)
 		kill_smoke()
-		return FALSE
+		return PROCESS_KILL
+
 	for(var/mob/living/L in range(0,src))
 		smoke_mob(L)
-	return TRUE
 
 /obj/effect/particle_effect/smoke/proc/smoke_mob(mob/living/carbon/C)
 	if(!istype(C))
@@ -175,7 +179,7 @@
 			if(!distcheck || get_dist(T, location) < blast) // Otherwise we'll get silliness like people using Nanofrost to kill people through walls with cold air
 				G.temperature = temperature
 			//T.air_update_turf(FALSE, FALSE)
-			QDEL_NULL(T.fire)
+			QDEL_NULL(T.active_hotspot)
 			if(G.getGroupGas(GAS_PLASMA))
 				G.adjustGas(GAS_NITROGEN, G.gas[GAS_PLASMA])
 				G.adjustGas(GAS_PLASMA, -G.gas[GAS_PLASMA])

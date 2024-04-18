@@ -6,7 +6,7 @@
 	explosion_block = 3
 	heat_proof = TRUE
 	max_integrity = 600
-	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 100, LASER = 100, ENERGY = 100, BOMB = 100, BIO = 100, FIRE = 100, ACID = 100)
 	resistance_flags = INDESTRUCTIBLE | FIRE_PROOF | ACID_PROOF | LAVA_PROOF
 	damage_deflection = 70
 	var/password = "Swordfish"
@@ -22,7 +22,7 @@
 	if(voice_activated)
 		become_hearing_sensitive()
 
-/obj/machinery/door/password/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/obj/machinery/door/password/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
 	if(!density || !voice_activated || radio_freq)
 		return
@@ -32,8 +32,11 @@
 /obj/machinery/door/password/BumpedBy(atom/movable/AM)
 	return !density && ..()
 
-/obj/machinery/door/password/try_to_activate_door(mob/user, access_bypass = FALSE)
-	add_fingerprint(user)
+/obj/machinery/door/password/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
 	if(operating)
 		return
 	if(density)

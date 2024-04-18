@@ -73,6 +73,8 @@
 		set_mats_per_unit(custom_materials, amount ? 1/amount : 1)
 
 	. = ..()
+	// HELLO THIS IS KAPU. THIS IS BROKEN.
+	// BECAUSE ON DAEDALUS ALL MOVABLES CALL LOC.ENTERED(SRC) POST-INITIALIZE, STACKS WILL ALWAYS MERGE.
 	if(merge)
 		for(var/obj/item/stack/item_stack in loc)
 			if(item_stack == src)
@@ -162,26 +164,29 @@
 	var/plural = get_amount()>1
 	if(is_cyborg)
 		if(singular_name)
-			. += "There is enough energy for [get_amount()] [singular_name]\s."
+			. += span_notice("There is enough energy for [get_amount()] [singular_name]\s.")
 		else
-			. += "There is enough energy for [get_amount()]."
+			. += span_notice("There is enough energy for [get_amount()].")
 		return
+
 	if(singular_name)
 		if(plural)
-			. += "There are [get_amount()] [singular_name]\s in the stack."
+			. += span_notice("There are [get_amount()] [singular_name]\s in the stack.")
 		else
-			. += "There is [get_amount()] [singular_name] in the stack."
+			. += span_notice("There is [get_amount()] [singular_name] in the stack.")
+
 	else if(plural)
-		. += "There are [get_amount()] in the stack."
+		. += span_notice("There are [get_amount()] in the stack.")
 	else
-		. += "There is [get_amount()] in the stack."
+		. += span_notice("There is [get_amount()] in the stack.")
+
 	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
 
 	if(absorption_capacity < initial(absorption_capacity))
 		if(absorption_capacity == 0)
-			. += span_warning("[plural ? "They are" : "It is"] drenched in blood, this won't be a suitable bandage.")
+			. += span_alert("[plural ? "They are" : "It is"] drenched in blood, this won't be a suitable bandage.")
 		else
-			. += span_warning("[plural ? "They are" : "It is"] covered in blood.")
+			. += span_notice("[plural ? "They are" : "It is"] covered in blood.")
 
 /obj/item/stack/proc/get_amount()
 	if(is_cyborg)
@@ -496,7 +501,7 @@
 			qdel(G)
 			grabber.try_make_grab(target_stack)
 
-	target_stack.copy_evidences(src)
+	transfer_evidence_to(target_stack)
 	use(transfer, transfer = TRUE, check = FALSE)
 	target_stack.add(transfer)
 	if(target_stack.mats_per_unit != mats_per_unit) // We get the average value of mats_per_unit between two stacks getting merged
@@ -557,7 +562,7 @@
 	if(user.get_inactive_held_item() == src)
 		if(is_zero_amount(delete_if_zero = TRUE))
 			return
-		return split_stack(user, 1)
+		return split_stack(user, 1, user)
 	else
 		. = ..()
 
@@ -574,7 +579,7 @@
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
 	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	split_stack(user, stackmaterial)
+	split_stack(user, stackmaterial, user)
 	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
@@ -583,13 +588,15 @@
  * Arguments:
  * - [user][/mob]: The mob splitting the stack.
  * - amount: The number of units to split from this stack.
+ * - spawn_loc: The place to spawn the new stack, accepts null.
  */
-/obj/item/stack/proc/split_stack(mob/user, amount)
+/obj/item/stack/proc/split_stack(mob/user, amount, spawn_loc)
 	if(!use(amount, TRUE, FALSE))
 		return null
-	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE, mats_per_unit, absorption_capacity)
+
+	var/obj/item/stack/F = new type(spawn_loc, amount, FALSE, mats_per_unit, absorption_capacity)
 	. = F
-	F.copy_evidences(src)
+	transfer_evidence_to(F)
 	loc.atom_storage?.refresh_views()
 	if(user)
 		if(!user.put_in_hands(F, merge_stacks = FALSE))
@@ -606,13 +613,6 @@
 			to_chat(user, span_notice("Your [S.name] stack now contains [S.get_amount()] [S.singular_name]\s."))
 	else
 		. = ..()
-
-/obj/item/stack/proc/copy_evidences(obj/item/stack/from)
-	add_blood_DNA(from.return_blood_DNA())
-	add_fingerprint_list(from.return_fingerprints())
-	add_hiddenprint_list(from.return_hiddenprints())
-	fingerprintslast = from.fingerprintslast
-	//TODO bloody overlay
 
 /obj/item/stack/microwave_act(obj/machinery/microwave/M)
 	if(istype(M) && M.dirty < 100)

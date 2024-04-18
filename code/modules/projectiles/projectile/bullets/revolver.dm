@@ -7,7 +7,7 @@
 // .50AE (Desert Eagle)
 
 /obj/projectile/bullet/a50ae
-	name = ".50AE bullet"
+	name = ".50 AE bullet"
 	damage = 60
 
 // .38 (Detective's Gun)
@@ -36,7 +36,7 @@
 	name = ".38 Rubber bullet"
 	damage = 10
 	stamina = 30
-	weak_against_armour = TRUE
+	weak_against_armor = 5
 	ricochets_max = 6
 	ricochet_incidence_leeway = 0
 	ricochet_chance = 130
@@ -49,7 +49,7 @@
 /obj/projectile/bullet/c38/dumdum
 	name = ".38 DumDum bullet"
 	damage = 15
-	weak_against_armour = TRUE
+	weak_against_armor = 5
 	ricochets_max = 0
 	sharpness = SHARP_EDGED
 	embedding = list(embed_chance=75, fall_chance=0, jostle_chance=4, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=5, jostle_pain_mult=6, rip_time=1 SECONDS)
@@ -97,7 +97,7 @@
 		var/mob/living/M = target
 		M.adjust_bodytemperature(((100-blocked)/100)*(temperature - M.bodytemperature))
 
-// .357 (Syndie Revolver)
+// .357 (Revolver)
 
 /obj/projectile/bullet/a357
 	name = ".357 bullet"

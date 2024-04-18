@@ -342,8 +342,9 @@
 			candidates.Remove(candidate_player)
 			continue
 
+		var/list/antag_prefs = candidate_client.prefs.read_preference(/datum/preference/blob/antagonists)
 		if(antag_flag || antag_preference)
-			if (!((antag_preference || antag_flag) in candidate_client.prefs.be_special))
+			if (!antag_prefs[antag_preference || antag_flag])
 				candidates.Remove(candidate_player)
 				continue
 
@@ -359,7 +360,7 @@
 			for(var/role in exclusive_roles)
 				var/datum/job/job = SSjob.GetJob(role)
 
-				if((role in candidate_client.prefs.job_preferences) && SSjob.check_job_eligibility(candidate_player, job, "Gamemode Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
+				if((role in candidate_client.prefs.read_preference(/datum/preference/blob/job_priority)) && SSjob.check_job_eligibility(candidate_player, job, "Gamemode Roundstart TC", add_job_to_log = TRUE)==JOB_AVAILABLE)
 					exclusive_candidate = TRUE
 					break
 

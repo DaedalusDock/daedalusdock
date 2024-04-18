@@ -78,6 +78,13 @@
 	if(organ_flags & ORGAN_DEAD || HAS_TRAIT(liver_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
 		return
 
+	if (germ_level > INFECTION_LEVEL_ONE)
+		if(prob(1))
+			to_chat(owner, span_danger("Your skin itches."))
+	if (germ_level > INFECTION_LEVEL_TWO)
+		if(prob(1))
+			owner.vomit(50, TRUE)
+
 	//Detox can heal small amounts of damage
 	if (damage < maxHealth && !owner.chem_effects[CE_TOXIN])
 		applyOrganDamage(-0.2 * owner.chem_effects[CE_ANTITOX], updating_health = FALSE)
@@ -101,8 +108,8 @@
 			owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]))
 
 	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
-		applyOrganDamage(owner.chem_effects[CE_ALCOHOL_TOXIC])
-
+		applyOrganDamage(owner.chem_effects[CE_ALCOHOL_TOXIC], updating_health = FALSE)
+		. = TRUE
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
 	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !HAS_TRAIT(owner, TRAIT_IRRADIATED) && damage > 0)
 		if(damage < low_threshold * maxHealth)
@@ -112,13 +119,13 @@
 			applyOrganDamage(-0.2, updating_health = FALSE)
 			. = TRUE
 
-	if(damage > 10 && DT_PROB(damage/6, delta_time)) //the higher the damage the higher the probability
+	if(damage > 10 && DT_PROB(damage/4, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
 
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		if(!HAS_TRAIT(owner, TRAIT_NOHUNGER))
 			owner.adjust_nutrition(-0.1 * HUNGER_DECAY)
-		owner.blood_volume = min(owner.blood_volume + 0.1, BLOOD_VOLUME_NORMAL)
+		owner.adjustBloodVolumeUpTo(0.1, BLOOD_VOLUME_NORMAL)
 
 //We got it covered in on_life() with more detailed thing
 /obj/item/organ/liver/handle_regeneration()

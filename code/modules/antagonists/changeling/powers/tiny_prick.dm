@@ -103,7 +103,7 @@
 	var/mob/living/carbon/C = target
 	. = TRUE
 	if(istype(C))
-		C.real_name = NewDNA.real_name
+		C.set_real_name(NewDNA.real_name)
 		NewDNA.transfer_identity(C)
 		C.updateappearance(mutcolor_update=1)
 

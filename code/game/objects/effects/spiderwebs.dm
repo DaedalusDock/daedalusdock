@@ -21,7 +21,7 @@
 		playsound(loc, 'sound/items/welder.ogg', 100, TRUE)
 
 /obj/structure/spider/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
-	if(damage_flag == MELEE)
+	if(damage_flag == BLUNT)
 		switch(damage_type)
 			if(BURN)
 				damage_amount *= 2
@@ -120,7 +120,8 @@
 
 /obj/structure/spider/spiderling/Destroy()
 	new/obj/item/food/spiderling(get_turf(src))
-	. = ..()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/structure/spider/spiderling/Initialize(mapload)
 	. = ..()

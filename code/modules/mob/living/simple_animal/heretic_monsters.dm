@@ -5,7 +5,7 @@
 	icon = 'icons/mob/eldritch_mobs.dmi'
 	gender = NEUTER
 	mob_biotypes = NONE
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	response_help_continuous = "thinks better of touching"
 	response_help_simple = "think better of touching"
 	response_disarm_continuous = "flails at"
@@ -259,6 +259,7 @@
 		front.icon_state = "armsy_end"
 		front.icon_living = "armsy_end"
 		front.back = null
+		front = null
 	if(back)
 		QDEL_NULL(back) // chain destruction baby
 	return ..()

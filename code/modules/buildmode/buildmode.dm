@@ -65,13 +65,13 @@
 
 /datum/buildmode/proc/create_buttons()
 	// keep a reference so we can update it upon mode switch
-	modebutton = new /atom/movable/screen/buildmode/mode(src)
+	modebutton = new /atom/movable/screen/buildmode/mode(src, holder.mob.hud_used)
 	buttons += modebutton
-	buttons += new /atom/movable/screen/buildmode/help(src)
+	buttons += new /atom/movable/screen/buildmode/help(src, holder.mob.hud_used)
 	// keep a reference so we can update it upon dir switch
-	dirbutton = new /atom/movable/screen/buildmode/bdir(src)
+	dirbutton = new /atom/movable/screen/buildmode/bdir(src, holder.mob.hud_used)
 	buttons += dirbutton
-	buttons += new /atom/movable/screen/buildmode/quit(src)
+	buttons += new /atom/movable/screen/buildmode/quit(src, holder.mob.hud_used)
 	// build the lists of switching buttons
 	build_options_grid(subtypesof(/datum/buildmode_mode), modeswitch_buttons, /atom/movable/screen/buildmode/modeswitch)
 	build_options_grid(GLOB.alldirs, dirswitch_buttons, /atom/movable/screen/buildmode/dirswitch)

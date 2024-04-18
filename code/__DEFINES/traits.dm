@@ -139,7 +139,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Inability to pull things. Turned into a trait from [MOBILITY_PULL] to be able to track sources.
 #define TRAIT_PULL_BLOCKED "pullblocked"
 /// Abstract condition that prevents movement if being pulled and might be resisted against. Handcuffs and straight jackets, basically.
-#define TRAIT_RESTRAINED "restrained"
+#define TRAIT_ARMS_RESTRAINED "restrained"
 /// Doesn't miss attacks
 #define TRAIT_PERFECT_ATTACKER "perfect_attacker"
 #define TRAIT_INCAPACITATED "incapacitated"
@@ -153,6 +153,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NO_SPRINT "no_sprint"
 /// In softcrit.
 #define TRAIT_SOFT_CRITICAL_CONDITION "soft-critical-condition"
+/// Has blurry vision until removed
+#define TRAIT_BLURRY_VISION "blurry_vision"
 /// Whitelist for mobs that can read or write
 #define TRAIT_LITERATE "literate"
 /// Blacklist for mobs that can't read or write
@@ -227,7 +229,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_EASYDISMEMBER "easy_dismember"
 #define TRAIT_LIMBATTACHMENT "limb_attach"
 #define TRAIT_NOLIMBDISABLE "no_limb_disable"
-#define TRAIT_EASILY_WOUNDED "easy_limb_wound"
 #define TRAIT_HARDLY_WOUNDED "hard_limb_wound"
 #define TRAIT_NEVER_WOUNDED "never_wounded"
 #define TRAIT_TOXINLOVER "toxinlover"
@@ -248,6 +249,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NOCRITDAMAGE "no_crit"
 /// Cannot experience Shock (pain version, not electrical)
 #define TRAIT_NO_PAINSHOCK "no_painshock"
+/// Does not get addicted
+#define TRAIT_NO_ADDICTION "no_addiction"
+/// Makes whispers clearly heard from seven tiles away, the full hearing range
+#define TRAIT_GOOD_HEARING "good_hearing"
 
 // Stops the mob from slipping on water, or banana peels, or pretty much anything that doesn't have [GALOSHES_DONT_HELP] set
 #define TRAIT_NO_SLIP_WATER "NO_SLIP_WATER"
@@ -328,6 +333,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Is a medbot healing you
 #define TRAIT_MEDIBOTCOMINGTHROUGH "medbot"
 #define TRAIT_PASSTABLE "passtable"
+#define TRAIT_PASSMOB "passmob"
 /// Makes you immune to flashes
 #define TRAIT_NOFLASH "noflash"
 /// prevents xeno huggies implanting skeletons
@@ -352,10 +358,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_TUMOR_SUPPRESSED "brain_tumor_suppressed"
 /// overrides the update_fire proc to always add fire (for lava)
 #define TRAIT_PERMANENTLY_ONFIRE "permanently_onfire"
-/// Galactic Common Sign Language
-#define TRAIT_SIGN_LANG "sign_language"
-/// This mob is able to use sign language over the radio.
-#define TRAIT_CAN_SIGN_ON_COMMS "can_sign_on_comms"
 /// nobody can use martial arts on this mob
 #define TRAIT_MARTIAL_ARTS_IMMUNE "martial_arts_immune"
 /// You've been cursed with a living duffelbag, and can't have more added
@@ -605,9 +607,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_NIGHT_VISION "night_vision"
 #define TRAIT_LIGHT_STEP "light_step"
 #define TRAIT_SPIRITUAL "spiritual"
-#define TRAIT_CLOWN_ENJOYER "clown_enjoyer"
-#define TRAIT_MIME_FAN "mime_fan"
-#define TRAIT_VORACIOUS "voracious"
 #define TRAIT_SELF_AWARE "self_aware"
 #define TRAIT_FREERUNNING "freerunning"
 #define TRAIT_SKITTISH "skittish"
@@ -617,7 +616,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PHOTOGRAPHER "photographer"
 #define TRAIT_MUSICIAN "musician"
 #define TRAIT_LIGHT_DRINKER "light_drinker"
-#define TRAIT_EMPATH "empath"
 #define TRAIT_FRIENDLY "friendly"
 #define TRAIT_GRABWEAKNESS "grab_weakness"
 #define TRAIT_BALD "bald"
@@ -681,6 +679,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// trait denoting something is being risen up by a table
 #define TRAIT_TABLE_RISEN "table_risen"
+
+/// Whether or not the user is in a MODlink call, prevents making more calls
+#define TRAIT_IN_CALL "in_call"
 
 // common trait sources
 #define TRAIT_GENERIC "generic"
@@ -904,9 +905,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Traits granted to items due to their chameleon properties.
 #define CHAMELEON_ITEM_TRAIT "chameleon_item_trait"
 
-/// This human wants to see the color of their glasses, for some reason
-#define TRAIT_SEE_GLASS_COLORS "see_glass_colors"
-
 /// this mob is under the effects of the power chord
 #define TRAIT_POWER_CHORD "power_chord"
 
@@ -974,3 +972,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HALOPERIDOL "haloperidol"
 #define TRAIT_STIMULANTS "stimulants"
 #define TRAIT_IMPEDREZENE "impedrezene"
+
+/// Given to items that are bodyparts attached to a mob, organs attached to a mob or inside a bodypart
+#define TRAIT_INSIDE_BODY "inside_body"

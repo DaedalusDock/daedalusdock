@@ -27,7 +27,6 @@
 	inherent_biotypes = MOB_UNDEAD|MOB_HUMANOID
 	mutant_bodyparts = list("wings" = "None")
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | ERT_SPAWN
-	exotic_bloodtype = "U"
 	use_skintones = TRUE
 
 	examine_limb_id = SPECIES_HUMAN
@@ -87,6 +86,9 @@
 		return 2 //Whips deal 2x damage to vampires. Vampire killer.
 	return 1
 
+/datum/species/vampire/get_random_blood_type()
+	return /datum/blood/universal
+
 /datum/species/vampire/get_species_description()
 	return "A classy Vampire! They descend upon Space Station Thirteen Every year to spook the crew! \"Bleeg!!\""
 
@@ -96,34 +98,6 @@
 		The Thirst requires them to feast on blood to stay alive, and in return it gives them many bonuses. \
 		Because of this, Vampires have split into two clans, one that embraces their powers as a blessing and one that rejects it.",
 	)
-
-/datum/species/vampire/create_pref_unique_perks()
-	var/list/to_add = list()
-
-	to_add += list(
-		list(
-			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-			SPECIES_PERK_ICON = "bed",
-			SPECIES_PERK_NAME = "Coffin Brooding",
-			SPECIES_PERK_DESC = "Vampires can delay The Thirst and heal by resting in a coffin. So THAT'S why they do that!",
-		),
-		list(
-			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-			SPECIES_PERK_ICON = "book-dead",
-			SPECIES_PERK_NAME = "Vampire Clans",
-			SPECIES_PERK_DESC = "Vampires belong to one of two clans - the Inoculated, and the Outcast. The Outcast \
-				don't follow many vampiric traditions, while the Inoculated are given unique names and flavor.",
-		),
-		list(
-			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-			SPECIES_PERK_ICON = "cross",
-			SPECIES_PERK_NAME = "Against God and Nature",
-			SPECIES_PERK_DESC = "Almost all higher powers are disgusted by the existence of \
-				Vampires, and entering the Chapel is essentially suicide. Do not do it!",
-		),
-	)
-
-	return to_add
 
 // Vampire blood is special, so it needs to be handled with its own entry.
 /datum/species/vampire/create_pref_blood_perks()
@@ -214,8 +188,8 @@
 		to_chat(H, span_notice("You drain some blood!"))
 		playsound(H, 'sound/items/drink.ogg', 30, TRUE, -2)
 
-		victim.blood_volume = clamp(victim.blood_volume - drained_blood, 0, BLOOD_VOLUME_MAXIMUM)
-		H.blood_volume = clamp(H.blood_volume + drained_blood, 0, BLOOD_VOLUME_MAXIMUM)
+		victim.adjustBloodVolume(-drained_blood)
+		H.adjustBloodVolumeUpTo(drained_blood, BLOOD_VOLUME_MAXIMUM)
 		if(!victim.blood_volume)
 			to_chat(H, span_notice("You finish off [victim]'s blood supply."))
 

@@ -30,7 +30,7 @@
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/Initialize(mapload)
 	. = ..()
-	GLOB.navigation_computers += src
+	SET_TRACKING(__TYPE__)
 	actions += new /datum/action/innate/shuttledocker_rotate(src)
 	actions += new /datum/action/innate/shuttledocker_place(src)
 
@@ -52,7 +52,7 @@
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/Destroy()
 	. = ..()
-	GLOB.navigation_computers -= src
+	UNSET_TRACKING(__TYPE__)
 
 	if(my_port?.get_docked())
 		my_port.delete_after = TRUE

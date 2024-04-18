@@ -1,5 +1,5 @@
 /datum/movespeed_modifier/obesity
-	multiplicative_slowdown = 1.5
+	slowdown = 1.5
 
 /datum/movespeed_modifier/monkey_reagent_speedmod
 	variable = TRUE
@@ -14,27 +14,20 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/slaughter
-	multiplicative_slowdown = -1
+	slowdown = -1
 
 /datum/movespeed_modifier/resonance
-	multiplicative_slowdown = 0.75
-
-/datum/movespeed_modifier/damage_slowdown
-	blacklisted_movetypes = FLOATING|FLYING
-	variable = TRUE
-
-/datum/movespeed_modifier/damage_slowdown_flying
-	movetypes = FLYING
-	variable = TRUE
+	slowdown = 0.75
 
 /datum/movespeed_modifier/pain
+	blacklisted_movetypes = FLOATING
 	variable = TRUE
 
 /datum/movespeed_modifier/shock
-	multiplicative_slowdown = 3
+	slowdown = 3
 
 /datum/movespeed_modifier/asystole
-	multiplicative_slowdown = 10
+	slowdown = 10
 
 /datum/movespeed_modifier/equipment_speedmod
 	variable = TRUE
@@ -45,13 +38,13 @@
 	blacklisted_movetypes = FLOATING
 
 /datum/movespeed_modifier/grab_slowdown/aggressive
-	multiplicative_slowdown = 3
+	slowdown = 3
 
 /datum/movespeed_modifier/grab_slowdown/neck
-	multiplicative_slowdown = 6
+	slowdown = 6
 
 /datum/movespeed_modifier/grab_slowdown/kill
-	multiplicative_slowdown = 9
+	slowdown = 9
 
 /datum/movespeed_modifier/slime_reagentmod
 	variable = TRUE
@@ -60,7 +53,7 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/config_walk_run
-	multiplicative_slowdown = 1
+	slowdown = 1
 	id = MOVESPEED_ID_MOB_WALK_RUN
 	flags = IGNORE_NOSLOW
 
@@ -68,15 +61,15 @@
 
 /datum/movespeed_modifier/config_walk_run/walk/sync()
 	var/mod = CONFIG_GET(number/movedelay/walk_delay)
-	multiplicative_slowdown = isnum(mod)? mod : initial(multiplicative_slowdown)
+	slowdown = isnum(mod)? mod : initial(slowdown)
 
 /datum/movespeed_modifier/config_walk_run/run/sync()
 	var/mod = CONFIG_GET(number/movedelay/run_delay)
-	multiplicative_slowdown = isnum(mod)? mod : initial(multiplicative_slowdown)
+	slowdown = isnum(mod)? mod : initial(slowdown)
 
 /datum/movespeed_modifier/config_walk_run/sprint/sync()
 	var/mod = CONFIG_GET(number/movedelay/sprint_delay)
-	multiplicative_slowdown = isnum(mod) ? mod : initial(multiplicative_slowdown)
+	slowdown = isnum(mod) ? mod : initial(slowdown)
 
 /datum/movespeed_modifier/turf_slowdown
 	movetypes = GROUND
@@ -91,10 +84,10 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/shove
-	multiplicative_slowdown = SHOVE_SLOWDOWN_STRENGTH
+	slowdown = SHOVE_SLOWDOWN_STRENGTH
 
 /datum/movespeed_modifier/human_carry
-	multiplicative_slowdown = HUMAN_CARRY_SLOWDOWN
+	slowdown = HUMAN_CARRY_SLOWDOWN
 
 /datum/movespeed_modifier/limbless
 	variable = TRUE
@@ -106,7 +99,7 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/tarantula_web
-	multiplicative_slowdown = 5
+	slowdown = 5
 
 /datum/movespeed_modifier/gravity
 	blacklisted_movetypes = FLOATING
@@ -114,17 +107,17 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/carbon_softcrit
-	multiplicative_slowdown = SOFTCRIT_ADD_SLOWDOWN
+	slowdown = SOFTCRIT_ADD_SLOWDOWN
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/slime_tempmod
 	variable = TRUE
 
 /datum/movespeed_modifier/living_exhaustion
-	multiplicative_slowdown = STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN
+	slowdown = STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN
 	flags = IGNORE_NOSLOW
 /datum/movespeed_modifier/carbon_crawling
-	multiplicative_slowdown = CRAWLING_ADD_SLOWDOWN
+	slowdown = CRAWLING_ADD_SLOWDOWN
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/mob_config_speedmod
@@ -132,21 +125,21 @@
 	flags = IGNORE_NOSLOW
 
 /datum/movespeed_modifier/metabolicboost
-	multiplicative_slowdown = -1.5
+	slowdown = -1.5
 
 /datum/movespeed_modifier/dragon_rage
-	multiplicative_slowdown = -0.5
+	slowdown = -0.5
 
 /datum/movespeed_modifier/dragon_depression
-	multiplicative_slowdown = 5
+	slowdown = 5
 
 /datum/movespeed_modifier/morph_disguised
-	multiplicative_slowdown = 1
+	slowdown = 1
 
 /datum/movespeed_modifier/auto_wash
-	multiplicative_slowdown = 3
+	slowdown = 3
 
 /datum/movespeed_modifier/atmos_pressure
-	multiplicative_slowdown = 3
+	slowdown = 3
 	id = MOVESPEED_ID_MOB_ATMOS_AFFLICTION
 	variable = TRUE

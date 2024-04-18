@@ -1,4 +1,5 @@
 #define BRAIN_DAMAGE_THRESHOLDS 10
+#define BRAIN_DECAY_RATE 1
 
 /obj/item/organ/brain
 	name = "brain"
@@ -7,7 +8,6 @@
 	visual = TRUE
 	color_source = ORGAN_COLOR_STATIC
 	draw_color = null
-	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER
 	zone = BODY_ZONE_HEAD
@@ -120,8 +120,7 @@
 	if(!L.mind)
 		return
 	brainmob = new(src)
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
 	brainmob.timeofhostdeath = L.timeofdeath
 	brainmob.suiciding = suicided
 	if(L.has_dna())
@@ -287,8 +286,11 @@
 		oxygen_reserve = min(initial(oxygen_reserve), oxygen_reserve+1)
 
 	if(!oxygen_reserve) //(hardcrit)
-		add_organ_trait(TRAIT_KNOCKEDOUT)
-	else
+		if(!(TRAIT_KNOCKEDOUT in organ_traits))
+			add_organ_trait(TRAIT_KNOCKEDOUT)
+			log_health(owner, "Passed out due to brain oxygen reaching zero. BLOOD OXY: [blood_percent]%")
+	else if(TRAIT_KNOCKEDOUT in organ_traits)
+		log_health(owner, "Brain now has enough oxygen.")
 		remove_organ_trait(TRAIT_KNOCKEDOUT)
 
 	var/can_heal = damage && damage < maxHealth && (damage % damage_threshold_value || CHEM_EFFECT_MAGNITUDE(owner, CE_BRAIN_REGEN) || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
@@ -297,32 +299,34 @@
 	switch(blood_percent)
 		if(BLOOD_CIRC_SAFE to INFINITY)
 			if(can_heal)
-				. = applyOrganDamage(-1)
+				. |= applyOrganDamage(-1, updating_health = FALSE)
 
 		if(BLOOD_CIRC_OKAY to BLOOD_CIRC_SAFE)
-			if(prob(1))
+			if(owner.stat == CONSCIOUS && prob(1))
 				to_chat(owner, span_warning("You feel [pick("dizzy","woozy","faint")]..."))
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 30 : 60
 			if(!past_damage_threshold(2) && prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 
 		if(BLOOD_CIRC_BAD to BLOOD_CIRC_OKAY)
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 40 : 80
 			if(!past_damage_threshold(4) && prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 
-			if(prob(10))
-				owner.Unconscious(rand(1,3) SECONDS)
+			if(owner.stat == CONSCIOUS && prob(10))
+				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
 				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
+				owner.Unconscious(rand(1,3) SECONDS)
 
 		if(BLOOD_CIRC_SURVIVE to BLOOD_CIRC_BAD)
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
 			if(!past_damage_threshold(6) && prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 
-			if(prob(15))
+			if(owner.stat == CONSCIOUS && prob(15))
+				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
 				owner.Unconscious(rand(3,5) SECONDS)
 				to_chat(owner, span_warning("You feel extremely [pick("dizzy","woozy","faint")]..."))
 
@@ -330,10 +334,10 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
 			if(prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
 			if(prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE)
-	..()
+				. |= applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE)
+	. = ..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)
 	. = ..()
@@ -387,7 +391,7 @@
 		owner.dropItemToGround(owner.get_active_held_item())
 
 	if(damage >= 0.6*maxHealth)
-		owner.set_slurring_if_lower(2 SECONDS)
+		owner.set_slurring_if_lower(10 SECONDS)
 
 	if(damage >= (maxHealth * high_threshold))
 		if(owner.body_position == STANDING_UP)
@@ -398,7 +402,7 @@
 	updating_health = FALSE // Brainloss isn't apart of tox loss, so never update health here.
 	. = ..()
 	if(. >= 20) //This probably won't be triggered by oxyloss or mercury. Probably.
-		var/damage_secondary = . * 0.2
+		var/damage_secondary = min(. * 0.2, 20)
 		if (owner)
 			owner.flash_act(visual = TRUE)
 			owner.blur_eyes(.)
@@ -421,10 +425,8 @@
 	else
 		if(owner)
 			owner.revive()
-			owner.grab_ghost()
 		else if(brainmob)
 			brainmob.revive()
-			brainmob.grab_ghost()
 		return
 
 /obj/item/organ/brain/before_organ_replacement(obj/item/organ/replacement)
@@ -617,9 +619,11 @@
 /// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
 /obj/item/organ/brain/proc/get_attacking_limb(mob/living/carbon/human/target)
 	var/obj/item/bodypart/arm/active_hand = owner.get_active_hand()
+
 	if(target.body_position == LYING_DOWN && owner.usable_legs)
 		var/obj/item/bodypart/found_bodypart = owner.get_bodypart((active_hand.held_index % 2) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG)
 		return found_bodypart || active_hand
+
 	return active_hand
 
 /obj/item/organ/brain/get_scan_results(tag)
@@ -644,3 +648,6 @@
 		trauma_desc += trauma.scan_desc
 		trauma_text += trauma_desc
 	. += tag ? "<span style='font-weight: bold; color:#ff9933'>Cerebral traumas detected: [english_list(trauma_text)]</span>" : "Cerebral traumas detected: [english_list(trauma_text)]"
+
+#undef BRAIN_DAMAGE_THRESHOLDS
+#undef BRAIN_DECAY_RATE

@@ -21,7 +21,7 @@
 		console = null
 	return ..()
 
-/obj/machinery/abductor/experiment/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/abductor/experiment/MouseDroppedOn(mob/target, mob/user)
 	if(user.stat != CONSCIOUS || HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user) || !target.Adjacent(user) || !ishuman(target))
 		return
 	if(isabductor(target))
@@ -180,7 +180,8 @@
  */
 /obj/machinery/abductor/experiment/proc/send_back(mob/living/carbon/human/H)
 	H.Sleeping(160)
-	H.uncuff()
+	H.remove_legcuffs()
+	H.remove_handcuffs()
 	if(console && console.pad && console.pad.teleport_target)
 		H.forceMove(console.pad.teleport_target)
 		return

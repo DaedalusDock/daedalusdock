@@ -135,7 +135,7 @@
 		"%MEMORIZER %MOOD as they wipe their nose."
 	],
 	"account_names":[
-		"The bank ID of %PROTAGONIST, %ACCOUNT_ID."
+		"The bank information of %PROTAGONIST, ID: %ACCOUNT_ID, PIN: %ACCOUNT_PIN."
 	],
 	"account_starts":[
 		"%PROTAGONIST flexing their last brain cells, proudly showing their lucky numbers %ACCOUNT_ID.",

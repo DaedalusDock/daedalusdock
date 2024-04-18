@@ -51,11 +51,6 @@ Slimecrossing Armor
 
 /obj/structure/light_prism/Initialize(mapload, newcolor)
 	. = ..()
-	#if DM_VERSION < 515
-	newcolor ||= COLOR_WHITE // If you're reading this and developing on 515 or later, you can remove this line
-	#else
-	#warn This bug is fixed in 515.
-	#endif
 	color = newcolor
 	set_light_color(newcolor)
 	set_light(5)
@@ -112,6 +107,7 @@ Slimecrossing Armor
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 1
 	throw_range = 3
+
 /obj/item/clothing/head/peaceflower/proc/at_peace_check(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/carbon_user = user

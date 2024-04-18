@@ -29,7 +29,6 @@
  */
 /obj/item/toy
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	force = 0
 
@@ -123,7 +122,6 @@
 	righthand_file = 'icons/mob/inhands/balloons_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	force = 0
 	var/random_color = TRUE
@@ -513,16 +511,17 @@
 /obj/item/dualsaber/toy
 	name = "double-bladed toy sword"
 	desc = "A cheap, plastic replica of TWO energy swords.  Double the fun!"
+
 	force = 0
+	force_wielded = 0
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 5
-	two_hand_force = 0
+
 	attack_verb_continuous = list("attacks", "strikes", "hits")
 	attack_verb_simple = list("attack", "strike", "hit")
 
-/obj/item/dualsaber/toy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	return 0
+/obj/item/dualsaber/toy/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
+	return FALSE
 
 /obj/item/dualsaber/toy/IsReflect() //Stops Toy Dualsabers from reflecting energy projectiles
 	return 0
@@ -570,7 +569,7 @@
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 	qdel(src)
 
-/obj/item/toy/snappop/fire_act(exposed_temperature, exposed_volume)
+/obj/item/toy/snappop/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	pop_burst()
 
 /obj/item/toy/snappop/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
@@ -972,7 +971,7 @@
 	toysay = "Any heads of staff?"
 
 /obj/item/toy/figure/cargotech
-	name = "\improper Cargo Technician action figure"
+	name = "\improper" + JOB_DECKHAND + "action figure"
 	icon_state = "cargotech"
 	toysay = "For Cargonia!"
 
@@ -1008,7 +1007,7 @@
 	toysay = "Arf!"
 
 /obj/item/toy/figure/detective
-	name = "\improper Detective action figure"
+	name = "\improper Private Investigator action figure"
 	icon_state = "detective"
 	toysay = "This airlock has grey jumpsuit and insulated glove fibers on it."
 
@@ -1033,7 +1032,7 @@
 	toysay = "Giving out all access!"
 
 /obj/item/toy/figure/hos
-	name = "\improper Head of Security action figure"
+	name = "\improper Security Marshal action figure"
 	icon_state = "hos"
 	toysay = "Go ahead, make my day."
 
@@ -1053,12 +1052,12 @@
 	toysay = "My client is a dirty traitor!"
 
 /obj/item/toy/figure/curator
-	name = "\improper Curator action figure"
+	name = "\improper Archivist action figure"
 	icon_state = "curator"
 	toysay = "One day while..."
 
 /obj/item/toy/figure/md
-	name = "\improper Medical Doctor action figure"
+	name = "\improper " + JOB_MEDICAL_DOCTOR + "action figure"
 	icon_state = "md"
 	toysay = "The patient is already dead!"
 
@@ -1155,6 +1154,12 @@
 	name = "[initial(name)] - [doll_name]"
 
 /obj/item/toy/dummy/talk_into(atom/movable/A, message, channel, list/spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = A?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	var/mob/M = A
 	if (istype(M))
 		M.log_talk(message, LOG_SAY, tag="dummy toy")

@@ -19,3 +19,55 @@
 2023-11-20:
   Kapu1178:
   - tweak: The Codex now supports nicer formatting.
+2023-11-21:
+  Kapu1178:
+  - bugfix: Airlock codex entry works.
+  - rscadd: Asteroid Magnet codex entry.
+  - rscadd: The magnet now has a 60 second cooldown between uses.
+  - bugfix: Summoned asteroids are removed from the list of available asteroids.
+  - bugfix: Fixed a bug that allowed you to summon multiple asteroids at once.
+  - balance: Hitting someone with a thrown body now only knocks them down briefly
+      instead of stunning + knocking down for 2 seconds
+2023-11-23:
+  Kapu1178:
+  - bugfix: IPCs can remove shackles in their preferences menu
+  - rscdel: Health indicator due to being confusing.
+  - balance: Adjusted rate of slowdown from pain.
+  - tweak: Added healthdoll indicator for pain.
+  - bugfix: Tackling works again.
+  - bugfix: Hogs no longer shit runtimes, they just shit.
+  - rscdel: Removed feedback on trying to grab an anchored object.
+  - bugfix: Being restrained or incapacitated prevents movement again.
+  - tweak: Changes event bounds from 3-10 minutes to 20-30 minutes.
+  Spyroshark:
+  - rscdel: Removed Anomaly events, Wisdom Cow event, and the Space Dragon spawning
+      event.
+  - rscadd: New Solar Flare event to replace the niche of pyro anomalies.
+  - balance: Spontaneous Brain Trauma events are much less common. Wormholes and Hostile
+      Mob Infestations are slightly more common.
+  Time-Green:
+  - bugfix: AI controlled mobs can no longer disembowel or delimb people randomly.
+  francinum:
+  - qol: The new mouse cursors are more pleasant to use
+  - imageadd: An arrow has been added at the top left which identifies the actual
+      position of the target pixel.
+  - bugfix: PDA server now logs messages again
+2023-11-25:
+  Kapu1178:
+  - bugfix: Inaprovaline will no longer "randomly" stop your heart (specific interaction
+      that wasn't super rare)
+2023-11-28:
+  Kapu1178:
+  - bugfix: Fixed a runtime with hog riding
+  - bugfix: Fixed titanium being replaced with bananium in asteroids
+  - bugfix: Fixed a runtime in the credits episode draft sequence
+  - tweak: Adjusted volume of breathing in space.
+  - bugfix: Fixed an issue where you could hear breathing in space even if you couldn't
+      actually breathe (no internals, etc).
+  - qol: The jukebox now works SIGNIFICANTLY better.
+  KylerAce:
+  - code_imp: verb callbacks will no longer execute if the original client disconnected
+2023-11-29:
+  MrStonedOne:
+  - bugfix: Fixed a bug with subsystems that caused some subsystems to fire faster
+      than intended after having no work for some time.

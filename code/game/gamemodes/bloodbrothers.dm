@@ -51,9 +51,11 @@
 	for(var/datum/team/brother_team/team in pre_brother_teams)
 		team.pick_meeting_area()
 		team.forge_brother_objectives()
-		for(var/datum/mind/M in team.members)
-			M.add_antag_datum(/datum/antagonist/brother, team)
-			GLOB.pre_setup_antags -= M
 		team.update_name()
+
 	return ..()
 
+/datum/game_mode/brothers/give_antag_datums()
+	for(var/datum/team/brother_team/team in pre_brother_teams)
+		for(var/datum/mind/M in team.members)
+			M.add_antag_datum(/datum/antagonist/brother, team)

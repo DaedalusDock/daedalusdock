@@ -49,17 +49,19 @@
 
 /datum/game_mode/revolution/setup_antags()
 	revolution = new()
-	for(var/datum/mind/M in GLOB.pre_setup_antags)
+	. = ..()
+
+	revolution.update_objectives()
+	revolution.update_heads()
+	SSshuttle.registerHostileEnvironment(revolution)
+
+/datum/game_mode/revolution/give_antag_datums()
+	for(var/datum/mind/M in antagonists)
 		var/datum/antagonist/rev/head/new_head = new antag_datum()
 		new_head.give_flash = TRUE
 		new_head.give_hud = TRUE
 		new_head.remove_clumsy = TRUE
 		M.add_antag_datum(new_head,revolution)
-
-	revolution.update_objectives()
-	revolution.update_heads()
-	SSshuttle.registerHostileEnvironment(revolution)
-	return ..()
 
 /// Checks for revhead loss conditions and other antag datums.
 /datum/game_mode/revolution/proc/check_eligible(datum/mind/M)

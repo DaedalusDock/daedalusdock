@@ -102,13 +102,12 @@
 			M.mind.special_role = ROLE_WIZARD
 			player2datum[M.mind] = /datum/antagonist/wizard
 
-/datum/game_mode/mixed/setup_antags()
-	for(var/datum/mind/M in GLOB.pre_setup_antags)
+/datum/game_mode/mixed/give_antag_datums()
+	for(var/datum/mind/M in antagonists)
 		M.add_antag_datum(player2datum[M])
-		GLOB.pre_setup_antags -= M
+
 		if(player2datum[M] == /datum/antagonist/wizard)
 			M.current.forceMove(pick(GLOB.wizardstart))
-	return ..()
 
 
 

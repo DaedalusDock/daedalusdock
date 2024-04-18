@@ -84,6 +84,7 @@
 		return FALSE
 
 	antagonists = GLOB.pre_setup_antags.Copy()
+	GLOB.pre_setup_antags.Cut()
 	var/number_of_antags = length(antagonists)
 	if(number_of_antags < required_enemies)
 		setup_error = "Not enough antagonists selected. Required [required_enemies], got [number_of_antags]."
@@ -113,17 +114,20 @@
 		return FALSE
 	return TRUE
 
-///Actually send out the antag datums, called after pre_setup
+/// The absolute last thing called before the round starts. Setup gamemode info/antagonists.
 /datum/game_mode/proc/setup_antags()
 	SHOULD_CALL_PARENT(TRUE)
-	for(var/datum/mind/M as anything in GLOB.pre_setup_antags)
-		M.add_antag_datum(antag_datum)
-		GLOB.pre_setup_antags -= M
+
+	give_antag_datums()
 
 	for(var/datum/mind/M as anything in antagonists)
 		RegisterSignal(M, COMSIG_MIND_TRANSFERRED, .proc/handle_antagonist_mind_transfer)
 		init_mob_signals(M.current)
-	return TRUE
+
+/// Actually send out the antag datums
+/datum/game_mode/proc/give_antag_datums()
+	for(var/datum/mind/M as anything in antagonists)
+		M.add_antag_datum(antag_datum)
 
 ///Clean up a mess we may have made during set up.
 /datum/game_mode/proc/on_failed_execute()

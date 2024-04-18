@@ -61,17 +61,20 @@
 	///A list of names of antagonists who are permanantly. This list will be cut down to spend on midrounds.
 	var/list/permadead_antag_pool = list()
 
-///Pass in a list of players about to participate in roundstart, receive TRUE or FALSE if this round type is valid for this round.
-/datum/game_mode/proc/can_run_this_round()
+///Pass in a list of players about to participate in roundstart, returns an error as a string if the round cannot start.
+/datum/game_mode/proc/check_for_errors()
 	SHOULD_CALL_PARENT(TRUE)
-	if(length(SSticker.ready_players) < min_pop || length(SSticker.ready_players) > max_pop) //Population is too high or too low to run
-		return FALSE
+	if(length(SSticker.ready_players) < min_pop) //Population is too high or too low to run
+		return "Not enough players, [min_pop] players needed."
+
+	else if(length(SSticker.ready_players) > max_pop)
+		return "Too many players, less than [max_pop + 1] players needed."
 
 	var/list/antag_candidates = trim_candidates(SSticker.ready_players.Copy())
 	if(length(antag_candidates) < required_enemies) //Not enough antags
-		return FALSE
+		return "Not enough eligible players, [required_enemies] antagonists needed."
 
-	return TRUE
+	return null
 
 ///Try to start this gamemode, called by SSticker. Returns FALSE if it fails.
 /datum/game_mode/proc/execute_roundstart()

@@ -107,6 +107,10 @@ SUBSYSTEM_DEF(ticker)
 		gametime_offset = rand(0, 23) HOURS
 	else if(CONFIG_GET(flag/shift_time_realtime))
 		gametime_offset = world.timeofday
+
+	if(GLOB.is_debug_server)
+		mode = new /datum/game_mode/extended
+
 	return ..()
 
 /datum/controller/subsystem/ticker/fire()
@@ -775,7 +779,7 @@ SUBSYSTEM_DEF(ticker)
 	var/list/datum/game_mode/runnable_modes = list()
 	for(var/path in subtypesof(/datum/game_mode))
 		var/datum/game_mode/M = new path()
-		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && M.can_run_this_round(SSticker.ready_players.Copy()))
+		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
 			runnable_modes[path] = M.weight
 	return runnable_modes
 
@@ -797,16 +801,18 @@ SUBSYSTEM_DEF(ticker)
 			mode = pick_weight(runnable_modes)
 			mode = new mode
 
-	else if(!mode.can_run_this_round())
-		if(mode_display_name)
-			message_admins(span_adminnotice("Unable to force secret [get_mode_name(TRUE)]. [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed."))
-			to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
-		else
-			to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> Not enough players, [mode.min_pop] players and [mode.required_enemies] eligible antagonists needed. Reverting to pre-game lobby.")
+	else
+		var/potential_error = mode.check_for_errors()
+		if(potential_error)
+			if(mode_display_name)
+				message_admins(span_adminnotice("Unable to force secret [get_mode_name(TRUE)]. [potential_error]"))
+				to_chat(world, "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby.")
+			else
+				to_chat(world, "<B>Unable to start [get_mode_name(TRUE)].</B> [potential_error] Reverting to pre-game lobby.")
 
-		QDEL_NULL(mode)
-		SSjob.ResetOccupations()
-		return FALSE
+			QDEL_NULL(mode)
+			SSjob.ResetOccupations()
+			return FALSE
 
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff

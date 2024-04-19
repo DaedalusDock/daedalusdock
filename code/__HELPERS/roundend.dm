@@ -363,6 +363,9 @@
 		parts += "[FOURSPACES]Executed rules:"
 		for(var/datum/dynamic_ruleset/rule in mode.executed_rules)
 			parts += "[FOURSPACES][FOURSPACES][rule.ruletype] - <b>[rule.name]</b>: -[rule.cost + rule.scaled_times * rule.scaling_cost] threat"
+	else
+		parts += "[FOURSPACES]The gamemode was: [mode.name]."
+
 	return parts.Join("<br>")
 
 /client/proc/roundend_report_file()

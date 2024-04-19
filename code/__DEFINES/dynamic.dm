@@ -22,4 +22,4 @@
 
 #define GAMEMODE_WAS_REVS (istype(SSticker.mode, /datum/game_mode/revolution) || (GAMEMODE_WAS_DYNAMIC && (locate(/datum/dynamic_ruleset/roundstart/revs) in SSticker.mode:executed_rules) || locate(/datum/dynamic_ruleset/latejoin/provocateur) in SSticker.mode:executed_rules))
 
-#define GAMEMODE_WAS_NUCLEAR_EMERGENCY ((GAMEMODE_WAS_DYNAMIC && (locate(/datum/dynamic_ruleset/roundstart/nuclear) in SSticker.mode:executed_rules) || (locate(/datum/dynamic_ruleset/midround/from_ghosts/nuclear) in SSticker.mode:executed_rules)))
+#define GAMEMODE_WAS_NUCLEAR_EMERGENCY (istype(SSticker.mode, /datum/game_mode/nuclear_emergency) || (GAMEMODE_WAS_DYNAMIC && (locate(/datum/dynamic_ruleset/roundstart/nuclear) in SSticker.mode:executed_rules) || (locate(/datum/dynamic_ruleset/midround/from_ghosts/nuclear) in SSticker.mode:executed_rules)))

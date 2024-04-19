@@ -94,6 +94,18 @@
 
 	return TRUE
 
+///Add a mind to pre_setup_antags and perform any work on it.
+/datum/game_mode/proc/select_antagonist(datum/mind/M, datum/antagonist/antag_path = src.antag_datum)
+	GLOB.pre_setup_antags[M] = antag_path
+
+	M.restricted_roles = restricted_jobs
+
+	if(initial(antag_path.job_rank))
+		M.special_role = initial(antag_path.job_rank)
+
+	if(initial(antag_path.assign_job))
+		M.set_assigned_role(SSjob.GetJobType(initial(antag_path.assign_job)))
+
 ///Populate the possible_antags list of minds, and any child behavior.
 /datum/game_mode/proc/pre_setup()
 	SHOULD_CALL_PARENT(TRUE)
@@ -123,13 +135,13 @@
 	give_antag_datums()
 
 	for(var/datum/mind/M as anything in antagonists)
-		RegisterSignal(M, COMSIG_MIND_TRANSFERRED, .proc/handle_antagonist_mind_transfer)
+		RegisterSignal(M, COMSIG_MIND_TRANSFERRED, PROC_REF(handle_antagonist_mind_transfer))
 		init_mob_signals(M.current)
 
 /// Actually send out the antag datums
 /datum/game_mode/proc/give_antag_datums()
 	for(var/datum/mind/M as anything in antagonists)
-		M.add_antag_datum(antag_datum)
+		M.add_antag_datum(antagonists[M])
 
 ///Clean up a mess we may have made during set up.
 /datum/game_mode/proc/on_failed_execute()

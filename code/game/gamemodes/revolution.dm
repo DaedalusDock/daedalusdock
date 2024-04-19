@@ -43,9 +43,7 @@
 		if(possible_antags.len <= 0)
 			break
 		var/mob/M = pick_n_take(possible_antags)
-		M.mind.restricted_roles = restricted_jobs
-		M.mind.special_role = antag_flag
-		GLOB.pre_setup_antags += M.mind
+		select_antagonist(M.mind)
 
 /datum/game_mode/revolution/setup_antags()
 	revolution = new()

@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(events)
 		if(!E.typepath)
 			continue //don't want this one! leave it for the garbage collector
 		control += E //add it to the list of all events (controls)
-	RegisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING, .proc/reschedule)
+	RegisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING, PROC_REF(reschedule))
 	getHoliday()
 	return ..()
 

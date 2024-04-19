@@ -1,5 +1,5 @@
 #define MIXED_WEIGHT_TRAITOR 100
-#define MIXED_WEIGHT_CHANGELING 40
+#define MIXED_WEIGHT_CHANGELING 0
 #define MIXED_WEIGHT_HERETIC 20
 #define MIXED_WEIGHT_WIZARD 1
 
@@ -28,8 +28,6 @@
 		ROLE_HERETIC = MIXED_WEIGHT_HERETIC,
 		ROLE_WIZARD = MIXED_WEIGHT_WIZARD
 	)
-
-	var/list/player2datum = list()
 
 /datum/game_mode/mixed/pre_setup()
 	. = ..()
@@ -68,40 +66,25 @@
 			if(!length(role_to_players_map[ROLE_TRAITOR]))
 				break
 			var/mob/M = pick_n_take(role_to_players_map[ROLE_TRAITOR])
-			M.mind.special_role = ROLE_TRAITOR
-			M.mind.restricted_roles = restricted_jobs
-			GLOB.pre_setup_antags += M.mind
-			player2datum[M.mind] = /datum/antagonist/traitor
+			select_antagonist(M.mind, /datum/antagonist/traitor)
 
 	if(antag_pool[ROLE_CHANGELING])
 		for(var/i in 1 to antag_pool[ROLE_CHANGELING])
 			if(!length(role_to_players_map[ROLE_CHANGELING]))
 				break
 			var/mob/M = pick_n_take(role_to_players_map[ROLE_CHANGELING])
-			M.mind.special_role = ROLE_CHANGELING
-			M.mind.restricted_roles = restricted_jobs
-			GLOB.pre_setup_antags += M.mind
-			player2datum[M.mind] = /datum/antagonist/changeling
+			select_antagonist(M.mind, /datum/antagonist/changeling)
 
 	if(antag_pool[ROLE_HERETIC])
 		for(var/i in 1 to antag_pool[ROLE_HERETIC])
 			if(!length(role_to_players_map[ROLE_HERETIC]))
 				break
 			var/mob/M = pick_n_take(role_to_players_map[ROLE_HERETIC])
-			M.mind.special_role = ROLE_HERETIC
-			M.mind.restricted_roles = restricted_jobs
-			GLOB.pre_setup_antags += M.mind
-			player2datum[M.mind] = /datum/antagonist/heretic
+			select_antagonist(M.mind, /datum/antagonist/heretic)
 
 	if(length(GLOB.wizardstart) && antag_pool[ROLE_WIZARD])
 		for(var/i in 1 to antag_pool[ROLE_WIZARD])
 			if(!length(role_to_players_map[ROLE_WIZARD]))
 				break
 			var/mob/M = pick_n_take(role_to_players_map[ROLE_WIZARD])
-			M.mind.set_assigned_role(SSjob.GetJobType(/datum/job/space_wizard))
-			M.mind.special_role = ROLE_WIZARD
-			player2datum[M.mind] = /datum/antagonist/wizard
-
-/datum/game_mode/mixed/give_antag_datums()
-	for(var/datum/mind/M in antagonists)
-		M.add_antag_datum(player2datum[M])
+			select_antagonist(M.mind, /datum/antagonist/wizard)

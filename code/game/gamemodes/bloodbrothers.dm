@@ -41,9 +41,7 @@
 		for(var/k in 1 to team_size)
 			var/mob/bro = pick_n_take(possible_antags)
 			team.add_member(bro.mind)
-			bro.mind.special_role = ROLE_BROTHER
-			bro.mind.restricted_roles = restricted_jobs
-			GLOB.pre_setup_antags += bro.mind
+			select_antagonist(bro.mind)
 
 		pre_brother_teams += team
 

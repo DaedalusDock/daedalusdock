@@ -20,7 +20,4 @@
 	. = ..()
 
 	var/mob/M = pick_n_take(possible_antags)
-	M.mind.special_role = ROLE_MALF
-	M.mind.restricted_roles = restricted_jobs
-	M.mind.set_assigned_role(SSjob.GetJobType(/datum/job/ai))
-	GLOB.pre_setup_antags += M.mind
+	select_antagonist(M.mind)

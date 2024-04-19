@@ -30,9 +30,7 @@
 			break
 
 		var/mob/M = pick_n_take(possible_antags)
-		GLOB.pre_setup_antags += M.mind
-		M.mind.set_assigned_role(SSjob.GetJobType(/datum/job/nuclear_operative))
-		M.mind.special_role = ROLE_NUCLEAR_OPERATIVE
+		select_antagonist(M.mind)
 
 /datum/game_mode/nuclear_emergency/give_antag_datums()
 	var/chosen_leader = FALSE

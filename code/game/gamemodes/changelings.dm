@@ -4,7 +4,7 @@
 /datum/game_mode/changeling
 	name = "Changeling"
 
-	weight = GAMEMODE_WEIGHT_RARE
+	weight = GAMEMODE_WEIGHT_NEVER
 	restricted_jobs = list(JOB_CYBORG, JOB_AI)
 	protected_jobs = list(
 		JOB_SECURITY_OFFICER,
@@ -30,6 +30,4 @@
 		if(possible_antags.len <= 0)
 			break
 		var/mob/M = pick_n_take(possible_antags)
-		M.mind.special_role = ROLE_CHANGELING
-		M.mind.restricted_roles = restricted_jobs
-		GLOB.pre_setup_antags += M.mind
+		select_antagonist(M.mind)

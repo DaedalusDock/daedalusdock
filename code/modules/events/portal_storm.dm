@@ -1,7 +1,7 @@
 /datum/round_event_control/portal_storm_syndicate
 	name = "Portal Storm: Syndicate Shocktroops"
 	typepath = /datum/round_event/portal_storm/syndicate_shocktroop
-	weight = 2
+	weight = 0
 	min_players = 15
 	earliest_start = 30 MINUTES
 
@@ -56,7 +56,6 @@
 	next_boss_spawn = startWhen + CEILING(2 * number_of_hostiles / number_of_bosses, 1)
 
 /datum/round_event/portal_storm/announce(fake)
-	set waitfor = 0
 	sound_to_playing_players('sound/magic/lightning_chargeup.ogg')
 	sleep(80)
 	priority_announce("Massive bluespace anomaly detected en route to [station_name()]. Brace for impact.", FLAVOR_ANANKE_STATION)

@@ -262,21 +262,17 @@
 	SSshuttle.lockdown = FALSE
 	INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(cult_ending_helper), 2)
 
-///Helper to set the round to end asap. Current usage Cult round end code
-/proc/ending_helper()
-	SSticker.force_ending = 1
-
 /**
  * Selects cinematic to play as part of the cult end depending on the outcome then ends the round afterward
  * called either when narsie eats everyone, or when [/proc/begin_the_end()] reaches it's conclusion
  */
 /proc/cult_ending_helper(ending_type = 0)
 	if(ending_type == 2) //narsie fukkin died
-		Cinematic(CINEMATIC_CULT_FAIL,world,CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ending_helper)))
+		Cinematic(CINEMATIC_CULT_FAIL,world,CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, end_round)))
 	else if(ending_type) //no explosion
-		Cinematic(CINEMATIC_CULT,world,CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ending_helper)))
+		Cinematic(CINEMATIC_CULT,world,CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, end_round)))
 	else // explosion
-		Cinematic(CINEMATIC_CULT_NUKE,world,CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(ending_helper)))
+		Cinematic(CINEMATIC_CULT_NUKE,world,CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, end_round)))
 
 #undef NARSIE_CHANCE_TO_PICK_NEW_TARGET
 #undef NARSIE_CONSUME_RANGE

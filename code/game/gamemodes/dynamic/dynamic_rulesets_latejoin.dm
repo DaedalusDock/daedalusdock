@@ -150,12 +150,15 @@
 		return FALSE
 
 /datum/dynamic_ruleset/latejoin/provocateur/rule_process()
-	var/winner = revolution.process_victory(revs_win_threat_injection)
+	var/winner = revolution.check_completion()
 	if (isnull(winner))
 		return
 
 	finished = winner
 	return RULESET_STOP_PROCESSING
+
+/datum/dynamic_ruleset/latejoin/provocateur/check_finished()
+	return !!finished
 
 /// Checks for revhead loss conditions and other antag datums.
 /datum/dynamic_ruleset/latejoin/provocateur/proc/check_eligible(datum/mind/M)

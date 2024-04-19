@@ -106,7 +106,7 @@ GLOBAL_VAR(restart_counter)
 #ifdef UNIT_TESTS
 	cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(RunUnitTests))
 #else
-	cb = VARSET_CALLBACK(SSticker, force_ending, TRUE)
+	cb = CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, end_round))
 #endif
 	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), cb, 10 SECONDS))
 

@@ -82,9 +82,6 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/hunter/russian)
 "eQ" = (
-/obj/effect/mob_spawn/ghost_role/human/fugitive/russian{
-	dir = 1
-	},
 /obj/effect/turf_decal/bot_red,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/pod/dark,
@@ -266,7 +263,6 @@
 /obj/effect/turf_decal/bot_red,
 /obj/effect/turf_decal/siding/red,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/mob_spawn/ghost_role/human/fugitive/russian/leader,
 /turf/open/floor/pod/dark,
 /area/shuttle/hunter/russian)
 "xd" = (
@@ -300,9 +296,6 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/hunter/russian)
 "yr" = (
-/obj/effect/mob_spawn/ghost_role/human/fugitive/russian{
-	dir = 1
-	},
 /obj/effect/turf_decal/bot_red,
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/pod/dark,
@@ -615,9 +608,6 @@
 /turf/open/floor/pod/dark,
 /area/shuttle/hunter/russian)
 "Th" = (
-/obj/effect/mob_spawn/ghost_role/human/fugitive/russian{
-	dir = 1
-	},
 /obj/effect/turf_decal/bot_red,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/poster/contraband/kss13{

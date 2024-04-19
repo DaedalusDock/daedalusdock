@@ -510,7 +510,7 @@
 	registered_name = R.fields[DATACORE_NAME]
 	registered_age = R.fields[DATACORE_AGE] || "UNSET"
 	dna_hash = R.fields[DATACORE_DNA_IDENTITY] || "UNSET"
-	fingerprint = md5(R.fields[DATACORE_DNA_IDENTITY]) || "UNSET"
+	fingerprint = R.fields[DATACORE_FINGERPRINT] || "UNSET"
 	blood_type = R.fields[DATACORE_BLOOD_TYPE] || "UNSET"
 	assignment = R.fields[DATACORE_TRIM] || "UNSET"
 	for(var/datum/id_trim/trim as anything in SSid_access.trim_singletons_by_path)

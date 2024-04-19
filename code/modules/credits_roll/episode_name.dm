@@ -60,7 +60,7 @@
 		if(4500 to INFINITY)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S DAY OUT", "THIS SIDE OF PARADISE", "[uppr_name]: A SITUATION COMEDY", "THE CREW'S LUNCH BREAK", "THE CREW'S BACK IN BUSINESS", "THE CREW'S BIG BREAK", "THE CREW SAVES THE DAY", "THE CREW RULES THE WORLD", "THE ONE WITH ALL THE SCIENCE AND PROGRESS AND PROMOTIONS AND ALL THE COOL AND GOOD THINGS", "THE TURNING POINT")]", "High score of [GLOB.start_state.score(GLOB.end_state)].", 250)
 
-	if(IS_DYNAMIC_GAME_MODE)
+	if(GAMEMODE_WAS_DYNAMIC)
 		var/datum/game_mode/dynamic/dynameme = SSticker.mode
 		switch(dynameme.threat_level)
 			if(0 to 35)
@@ -81,33 +81,37 @@
 					episode_names += new /datum/episode_name/rare("RUSH HOUR", "High threat level of [dynameme.threat_level]%, and the round lasted just about an hour.", 500)
 				if(get_station_avg_temp() < T0C)
 					episode_names += new /datum/episode_name/rare("A COLD DAY IN HELL", "Station temperature was below 0C this round and threat was high", 1000)
-		if(locate(/datum/dynamic_ruleset/roundstart/malf_ai) in dynameme.executed_rules)
-			episode_names += new /datum/episode_name/rare("[pick("I'M SORRY [uppr_name], I'M AFRAID I CAN'T LET YOU DO THAT", "A STRANGE GAME", "THE AI GOES ROGUE", "RISE OF THE MACHINES")]", "Round included a malfunctioning AI.", 300)
-		if(locate(/datum/dynamic_ruleset/roundstart/revs) in dynameme.executed_rules)
-			episode_names += new /datum/episode_name/rare("[pick("THE CREW STARTS A REVOLUTION", "HELL IS OTHER SPESSMEN", "INSURRECTION", "THE CREW RISES UP", 25;"FUN WITH FRIENDS")]", "Round included roundstart revs.", 350)
-			if(copytext(uppr_name,1,2) == "V")
-				episode_names += new /datum/episode_name/rare("V FOR [uppr_name]", "Round included roundstart revs... and the station's name starts with V.", 1500)
+
 		if(locate(/datum/dynamic_ruleset/midround/from_ghosts/blob) in dynameme.executed_rules)
 			episode_names += new /datum/episode_name/rare("[pick("MARRIED TO THE BLOB", "THE CREW GETS QUARANTINED")]", "Round included a roundstart blob.", 350)
-		/*if(GLOB.station_was_nuked)
-			episode_names += new /datum/episode_name/rare("[pick("THE CREW GETS NUKED", "THE CREW IS THE BOMB", "THE CREW GOES NUCLEAR", "THE CREW BLASTS OFF AGAIN!", "THE 'BOOM' HEARD 'ROUND THE WORLD", 25;"THE BIG BANG THEORY")]", "The station was nuked!", 450)
-			if((locate(/datum/dynamic_ruleset/roundstart/nuclear) in mode.executed_rules) || (locate(/datum/dynamic_ruleset/midround/from_ghosts/nuclear) in mode.executed_rules))
-				theme = "syndie" //This really should use the nukeop's check_win(), but the newcops gamemode wasn't coded like that.
-		else
-			if((locate(/datum/dynamic_ruleset/roundstart/nuclear) in mode.executed_rules) || (locate(/datum/dynamic_ruleset/midround/from_ghosts/nuclear) in mode.executed_rules))
-				episode_names += new /datum/episode_name/rare("[pick("THE CREW SOLVES THE NUCLEAR CRISIS", "BLAST, FOILED AGAIN", "FISSION MAILED", 50;"I OPENED THE WINDOW, AND IN FLEW COPS")]", "The crew defeated the nuclear operatives.", 350)
-			if(score.nukedefuse < 30)
-				episode_names += new /datum/episode_name/rare("[score.nukedefuse] SECOND[score.nukedefuse == 1 ? "" : "S"] TO MIDNIGHT", "The nuke was defused with [score.nukedefuse] seconds remaining.", (30 - score.nukedefuse) * 100)
-			*/
+
+	if(GAMEMODE_WAS_MALF_AI)
+		episode_names += new /datum/episode_name/rare("[pick("I'M SORRY [uppr_name], I'M AFRAID I CAN'T LET YOU DO THAT", "A STRANGE GAME", "THE AI GOES ROGUE", "RISE OF THE MACHINES")]", "Round included a malfunctioning AI.", 300)
+
+	if(GAMEMODE_WAS_REVS)
+		episode_names += new /datum/episode_name/rare("[pick("THE CREW STARTS A REVOLUTION", "HELL IS OTHER SPESSMEN", "INSURRECTION", "THE CREW RISES UP", 25;"FUN WITH FRIENDS")]", "Round included roundstart revs.", 350)
+		if(copytext(uppr_name,1,2) == "V")
+			episode_names += new /datum/episode_name/rare("V FOR [uppr_name]", "Round included roundstart revs... and the station's name starts with V.", 1500)
+
+	if(GLOB.station_was_nuked)
+		episode_names += new /datum/episode_name/rare("[pick("THE CREW GETS NUKED", "THE CREW IS THE BOMB", "THE CREW GOES NUCLEAR", "THE CREW BLASTS OFF AGAIN!", "THE 'BOOM' HEARD 'ROUND THE WORLD", 25;"THE BIG BANG THEORY")]", "The station was nuked!", 450)
+		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
+			theme = "syndie" //This really should use the nukeop's check_win(), but the newcops gamemode wasn't coded like that.
+	else
+		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
+			episode_names += new /datum/episode_name/rare("[pick("THE CREW SOLVES THE NUCLEAR CRISIS", "BLAST, FOILED AGAIN", "FISSION MAILED", 50;"I OPENED THE WINDOW, AND IN FLEW COPS")]", "The crew defeated the nuclear operatives.", 350)
+		if(GLOB.nuke_time_left < 30)
+			episode_names += new /datum/episode_name/rare("[GLOB.nuke_time_left] SECOND[GLOB.nuke_time_left == 1 ? "" : "S"] TO MIDNIGHT", "The nuke was defused with [GLOB.nuke_time_left] seconds remaining.", (30 - GLOB.nuke_time_left) * 100)
+
 
 	if(BLACKBOX_FEEDBACK_NUM("narsies_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("NAR-SIE'S DAY OUT", "NAR-SIE'S VACATION", "THE CREW LEARNS ABOUT SACRED GEOMETRY", "REALM OF THE MAD GOD", "THE ONE WITH THE ELDRITCH HORROR", 50;"STUDY HARD, BUT PART-SIE HARDER")]", "Nar-Sie is loose!", 500)
 	if(locate(/datum/holiday/xmas) in SSevents.holidays)
-		episode_names += new /datum/episode_name("A VERY [pick("DAEDALUS", "NANOTRASEN", "EXPEDITIONARY", "SECURE", "PLASMA", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
+		episode_names += new /datum/episode_name("A VERY [pick("DAEDALUS", "SPACE", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
 	if(BLACKBOX_FEEDBACK_NUM("guns_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("GUNS, GUNS EVERYWHERE", "THUNDER GUN EXPRESS", "THE CREW GOES AMERICA ALL OVER EVERYBODY'S ASS")]", "[BLACKBOX_FEEDBACK_NUM("guns_spawned")] guns were spawned this round.", min(750, BLACKBOX_FEEDBACK_NUM("guns_spawned")*25))
 	if(BLACKBOX_FEEDBACK_NUM("heartattacks") > 2)
-		episode_names += new /datum/episode_name/rare("MY HEART WILL GO ON", "[BLACKBOX_FEEDBACK_NUM("heartattacks")] hearts were reanimated and burst out of someone's chest this round.", min(1500, BLACKBOX_FEEDBACK_NUM("heartattacks")*250))
+		episode_names += new /datum/episode_name/rare("MY HEART WILL GO ON", "There were [BLACKBOX_FEEDBACK_NUM("heartattacks")] heartattacks this round", min(1500, BLACKBOX_FEEDBACK_NUM("heartattacks")*250))
 
 	var/datum/bank_account/mr_moneybags
 	var/static/list/typecache_bank = typecacheof(list(/datum/bank_account/department, /datum/bank_account/remote))

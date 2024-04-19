@@ -1,6 +1,7 @@
 /datum/gurps_stats
 	var/mob/living/owner
 
+	// Higher is better with stats. 10 is the baseline.
 	VAR_PRIVATE/strength = 10
 	VAR_PRIVATE/dexterity = 10
 	VAR_PRIVATE/intelligence = 10
@@ -14,12 +15,14 @@
 		ENDURANCE = list()
 	)
 
+	// Higher is better with skills. 0 is the baseline.
 	VAR_PRIVATE/list/skills = list(
 	)
 
 /datum/gurps_stats/New(owner)
 	. = ..()
 	src.owner = owner
+
 /datum/gurps_stats/Destroy()
 	owner = null
 	return ..()

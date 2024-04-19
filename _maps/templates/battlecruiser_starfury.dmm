@@ -1845,9 +1845,6 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
-/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser{
-	dir = 8
-	},
 /turf/open/floor/iron/dark,
 /area/shuttle/sbc_starfury)
 "gA" = (
@@ -2697,16 +2694,6 @@
 /obj/machinery/microwave,
 /turf/open/floor/iron/dark,
 /area/shuttle/sbc_starfury)
-"ir" = (
-/obj/effect/turf_decal/tile/red,
-/obj/effect/turf_decal/tile/red{
-	dir = 4
-	},
-/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/assault{
-	dir = 8
-	},
-/turf/open/floor/iron/dark,
-/area/shuttle/sbc_starfury)
 "it" = (
 /obj/effect/turf_decal/siding/thinplating/dark/corner{
 	dir = 4
@@ -2832,9 +2819,6 @@
 /turf/open/floor/iron,
 /area/shuttle/sbc_starfury)
 "iE" = (
-/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/captain{
-	dir = 4
-	},
 /turf/open/floor/carpet,
 /area/shuttle/sbc_starfury)
 "iF" = (
@@ -3407,9 +3391,6 @@
 "kw" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 4
-	},
-/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/assault{
-	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue,
 /turf/open/floor/iron/dark,
@@ -4224,18 +4205,6 @@
 	},
 /turf/open/floor/pod/dark,
 /area/shuttle/sbc_starfury)
-"sh" = (
-/obj/effect/turf_decal/tile/red{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/red{
-	dir = 8
-	},
-/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser/assault{
-	dir = 4
-	},
-/turf/open/floor/iron/dark,
-/area/shuttle/sbc_starfury)
 "sB" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -4558,9 +4527,6 @@
 	},
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
-	},
-/obj/effect/mob_spawn/ghost_role/human/syndicate/battlecruiser{
-	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/sbc_starfury)
@@ -6264,14 +6230,14 @@ eO
 eR
 fe
 ae
-sh
-sh
+gO
+gO
 ae
 hh
 hG
 ae
-sh
-sh
+gO
+gO
 ae
 iV
 SI
@@ -6402,8 +6368,8 @@ AQ
 eR
 wc
 ae
-ir
-ir
+hW
+hW
 ae
 hj
 hI

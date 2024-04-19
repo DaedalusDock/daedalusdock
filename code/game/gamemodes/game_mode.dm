@@ -138,6 +138,9 @@
 		M.special_role = null
 		M.restricted_roles = null
 
+	// Just to be sure
+	GLOB.pre_setup_antags.Cut()
+
 ///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
 /datum/game_mode/proc/post_setup(report) //Gamemodes can override the intercept report. Passing TRUE as the argument will force a report.
 	SHOULD_CALL_PARENT(TRUE)

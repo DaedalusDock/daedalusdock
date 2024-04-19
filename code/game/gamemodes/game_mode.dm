@@ -134,11 +134,9 @@
 ///Clean up a mess we may have made during set up.
 /datum/game_mode/proc/on_failed_execute()
 	SHOULD_CALL_PARENT(TRUE)
-	for(var/datum/mind/M in GLOB.pre_setup_antags)
+	for(var/datum/mind/M in antagonists)
 		M.special_role = null
 		M.restricted_roles = null
-
-	GLOB.pre_setup_antags.Cut()
 
 ///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
 /datum/game_mode/proc/post_setup(report) //Gamemodes can override the intercept report. Passing TRUE as the argument will force a report.

@@ -530,7 +530,6 @@
 		if(check_eligible(M))
 			var/datum/antagonist/rev/head/new_head = new antag_datum()
 			new_head.give_flash = TRUE
-			new_head.give_hud = TRUE
 			new_head.remove_clumsy = TRUE
 			M.add_antag_datum(new_head,revolution)
 		else

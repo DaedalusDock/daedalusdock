@@ -13,6 +13,8 @@
 	///when this antagonist is being de-antagged, this is why
 	var/deconversion_reason
 
+	var/victory_message
+
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
 	. = ..()
 	if(.)
@@ -28,11 +30,13 @@
 /datum/antagonist/rev/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/M = mob_override || owner.current
 	handle_clown_mutation(M, mob_override ? null : "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself.")
-	add_team_hud(M, /datum/antagonist/rev)
+
+	M.AddComponent(/datum/component/codeword_hearing, GLOB.syndicate_code_phrase_regex, "blue", src)
 
 /datum/antagonist/rev/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/M = mob_override || owner.current
 	handle_clown_mutation(M, removing = FALSE)
+	qdel(M.GetComponent(/datum/component/codeword_hearing))
 
 /datum/antagonist/rev/on_mindshield(mob/implanter)
 	remove_revolutionary(FALSE, implanter)
@@ -51,10 +55,10 @@
 	remove_objectives()
 	. = ..()
 
-/datum/antagonist/rev/greet()
+/datum/antagonist/rev/build_greeting()
 	. = ..()
-	to_chat(owner, span_userdanger("Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them destroy the government to win the revolution!"))
-	owner.announce_objectives()
+	. += "Help your cause. Do not harm your fellow freedom fighters. You can identify them using memorized <span class='blue'>code words</span>. Help them destroy the government to win the revolution!"
+	. += "Your companions have devised this list of words to identify eachother: <span class='blue'>[jointext(GLOB.revolution_code_phrase, ", ")]</span>"
 
 /datum/antagonist/rev/create_team(datum/team/revolution/new_team)
 	if(!new_team)
@@ -106,7 +110,6 @@
 
 /datum/antagonist/rev/head/admin_add(datum/mind/new_owner,mob/admin)
 	give_flash = TRUE
-	give_hud = TRUE
 	remove_clumsy = TRUE
 	new_owner.add_antag_datum(src)
 	message_admins("[key_name_admin(admin)] has head-rev'ed [key_name_admin(new_owner)].")
@@ -132,14 +135,11 @@
 /datum/antagonist/rev/head/proc/admin_give_flash(mob/admin)
 	//This is probably overkill but making these impact state annoys me
 	var/old_give_flash = give_flash
-	var/old_give_hud = give_hud
 	var/old_remove_clumsy = remove_clumsy
 	give_flash = TRUE
-	give_hud = FALSE
 	remove_clumsy = FALSE
 	equip_rev()
 	give_flash = old_give_flash
-	give_hud = old_give_hud
 	remove_clumsy = old_remove_clumsy
 
 /datum/antagonist/rev/head/proc/admin_repair_flash(mob/admin)
@@ -157,7 +157,7 @@
 	demote()
 
 /datum/antagonist/rev/head
-	name = "\improper Head Revolutionary"
+	name = "\improper Head Mutineer"
 	antag_hud_name = "rev_head"
 	job_rank = ROLE_REV_HEAD
 
@@ -165,18 +165,9 @@
 
 	var/remove_clumsy = FALSE
 	var/give_flash = FALSE
-	var/give_hud = TRUE
 
 /datum/antagonist/rev/head/pre_mindshield(mob/implanter, mob/living/mob_override)
 	return COMPONENT_MINDSHIELD_RESISTED
-
-/datum/antagonist/rev/head/on_removal()
-	if(give_hud)
-		var/mob/living/carbon/C = owner.current
-		var/obj/item/organ/cyberimp/eyes/hud/security/syndicate/S = C.getorganslot(ORGAN_SLOT_HUD)
-		if(S)
-			S.Remove(C)
-	return ..()
 
 /datum/antagonist/rev/head/antag_listing_name()
 	return ..() + "(Leader)"

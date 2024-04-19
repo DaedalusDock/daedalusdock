@@ -137,7 +137,6 @@
 		revolution = new()
 		var/datum/antagonist/rev/head/new_head = new()
 		new_head.give_flash = TRUE
-		new_head.give_hud = TRUE
 		new_head.remove_clumsy = TRUE
 		new_head = M.mind.add_antag_datum(new_head, revolution)
 		revolution.update_objectives()

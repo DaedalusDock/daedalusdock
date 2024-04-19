@@ -151,13 +151,16 @@ GLOBAL_VAR(command_name)
 	return name
 
 
-//Traitors and traitor silicons will get these. Revs will not.
+//Traitors and traitor silicons will get these.
 GLOBAL_VAR(syndicate_code_phrase) //Code phrase for traitors.
 GLOBAL_VAR(syndicate_code_response) //Code response for traitors.
 
 //Cached regex search - for checking if codewords are used.
 GLOBAL_DATUM(syndicate_code_phrase_regex, /regex)
 GLOBAL_DATUM(syndicate_code_response_regex, /regex)
+
+GLOBAL_VAR(revolution_code_phrase) //Code phrase for traitors.
+GLOBAL_DATUM(revolution_code_phrase_regex, /regex)
 
 	/*
 	Should be expanded.

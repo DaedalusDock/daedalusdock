@@ -352,7 +352,7 @@
 			//ignore this comment, it fixes the broken sytax parsing caused by the " above
 			else
 				parts += "[FOURSPACES]<i>Nobody died this shift!</i>"
-	if(IS_DYNAMIC_GAME_MODE)
+	if(GAMEMODE_WAS_DYNAMIC)
 		var/datum/game_mode/dynamic/mode = SSticker.mode
 		parts += "[FOURSPACES]Threat level: [mode.threat_level]"
 		parts += "[FOURSPACES]Threat left: [mode.mid_round_budget]"
@@ -363,6 +363,9 @@
 		parts += "[FOURSPACES]Executed rules:"
 		for(var/datum/dynamic_ruleset/rule in mode.executed_rules)
 			parts += "[FOURSPACES][FOURSPACES][rule.ruletype] - <b>[rule.name]</b>: -[rule.cost + rule.scaled_times * rule.scaling_cost] threat"
+	else
+		parts += "[FOURSPACES]The gamemode was: [mode.name]."
+
 	return parts.Join("<br>")
 
 /client/proc/roundend_report_file()

@@ -201,7 +201,7 @@
 		if(tgui_alert(usr, "This will end the round, are you SURE you want to do this?", "Confirmation", list("Yes", "No")) == "Yes")
 			if(tgui_alert(usr, "Final Confirmation: End the round NOW?", "Confirmation", list("Yes", "No")) == "Yes")
 				message_admins(span_adminnotice("[key_name_admin(usr)] has ended the round."))
-				SSticker.force_ending = 1 //Yeah there we go APC destroyed mission accomplished
+				SSticker.end_round()//Yeah there we go APC destroyed mission accomplished
 				return
 			else
 				message_admins(span_adminnotice("[key_name_admin(usr)] decided against ending the round."))
@@ -439,7 +439,7 @@
 	else if(href_list["f_dynamic_roundstart"])
 		if(!check_rights(R_ADMIN))
 			return
-		if(SSticker?.mode)
+		if(Master.current_runlevel > RUNLEVEL_LOBBY)
 			return tgui_alert(usr, "The game has already started.")
 		var/roundstart_rules = list()
 		for (var/rule in subtypesof(/datum/dynamic_ruleset/roundstart))
@@ -473,7 +473,7 @@
 		if(!check_rights(R_ADMIN))
 			return
 
-		if(SSticker?.mode)
+		if(Master.current_runlevel > RUNLEVEL_LOBBY)
 			return tgui_alert(usr, "The game has already started.")
 
 		dynamic_mode_options(usr)
@@ -507,7 +507,7 @@
 		if(!check_rights(R_ADMIN))
 			return
 
-		if(SSticker?.mode)
+		if(Master.current_runlevel > RUNLEVEL_LOBBY)
 			return tgui_alert(usr, "The game has already started.")
 
 		var/new_value = input(usr, "Enter the forced threat level for dynamic mode.", "Forced threat level") as num

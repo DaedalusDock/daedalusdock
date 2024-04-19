@@ -6,6 +6,7 @@
 	roundend_category = "traitors"
 	antagpanel_category = "Malf AI"
 	job_rank = ROLE_MALF
+	assign_job = /datum/job/ai
 	antag_hud_name = "traitor"
 	ui_name = "AntagInfoMalf"
 	///the name of the antag flavor this traitor has.

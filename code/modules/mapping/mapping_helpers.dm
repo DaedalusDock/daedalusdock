@@ -854,6 +854,10 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	name = "lights-out helper"
 	icon_state = "lightsout"
 
+/obj/effect/mapping_helpers/lightsout/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
 /obj/effect/mapping_helpers/lightsout/LateInitialize()
 	var/obj/machinery/power/apc/gaypc = locate() in loc
 	if(!gaypc)

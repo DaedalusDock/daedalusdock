@@ -237,10 +237,18 @@ GLOBAL_LIST_EMPTY(antagonists)
  */
 /datum/antagonist/proc/greet()
 	var/list/greeting = "[greeting_header()]<br>[jointext(build_greeting(), "<br>")]"
-	var/objective_tally = 0
-	for(var/datum/objective/O as anything in objectives)
-		objective_tally++
-		greeting += "<b>[objective_tally].) [O.objective_name]</b>: [O.explanation_text]"
+
+	if(length(objectives))
+		greeting += "You have the following objectives:<br>"
+
+		var/list/objective_strings = list()
+		var/objective_tally = 0
+		for(var/datum/objective/O as anything in objectives)
+			objective_tally++
+			objective_strings += "<b>[objective_tally].) [O.objective_name]</b>: [O.explanation_text]"
+
+		greeting += jointext(objective_strings, "<br><br>")
+
 	to_chat(owner.current, examine_block(jointext(greeting, "")))
 
 /datum/antagonist/proc/greeting_header()

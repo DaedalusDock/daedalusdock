@@ -80,7 +80,7 @@
 /datum/antagonist/brother/apply_innate_effects(mob/living/mob_override)
 	. = ..()
 	var/mob/living/M = mob_override || owner.current
-	if(!M.current || !team || !team.meeting_area)
+	if(!M.mind?.current || !team || !team.meeting_area)
 		return
 
 	antag_memory += "<b>Meeting Area</b>: [team.meeting_area]<br>"

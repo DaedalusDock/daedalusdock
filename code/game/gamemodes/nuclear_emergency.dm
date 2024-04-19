@@ -2,7 +2,7 @@
 #define NUKIE_SCALING_COEFF 0.0555 // About 1 in 18 crew
 
 /datum/game_mode/nuclear_emergency
-	name = "Traitor"
+	name = "Nuclear Emergency"
 
 	weight = GAMEMODE_WEIGHT_EPIC
 	restricted_jobs = list(

@@ -57,6 +57,11 @@
 
 /datum/game_mode/revolution/give_antag_datums()
 	for(var/datum/mind/M in antagonists)
+		if(!check_eligible(M))
+			antagonists -= M
+			log_game("Revolution: discarded [M.name] from head revolutionary due to ineligibility.")
+			continue
+
 		var/datum/antagonist/rev/head/new_head = new antag_datum()
 		new_head.give_flash = TRUE
 		new_head.give_hud = TRUE

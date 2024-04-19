@@ -260,6 +260,15 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 			return rule.round_result()
 	return ..()
 
+/datum/game_mode/dynamic/check_finished(force_ending)
+	. = ..()
+	if(.)
+		return
+
+	for(var/datum/dynamic_ruleset/ruleset as anything in executed_rules)
+		if(ruleset.check_finished())
+			return TRUE
+
 /datum/game_mode/dynamic/proc/send_intercept()
 	. = "<b><i>Central Command Status Summary</i></b><hr>"
 	switch(round(shown_threat))

@@ -76,10 +76,16 @@
 	return FALSE
 
 /datum/game_mode/revolution/process(delta_time)
+	round_winner = revolution.check_completion()
 	if(round_winner)
+		datum_flags &= ~DF_ISPROCESSING
+
+/datum/game_mode/revolution/check_finished()
+	. = ..()
+	if(.)
 		return
-	round_winner = revolution.process_victory()
+	return !!round_winner
 
 /datum/game_mode/revolution/set_round_result()
 	. = ..()
-	revolution.round_result()
+	revolution.round_result(round_winner)

@@ -9,7 +9,10 @@ SUBSYSTEM_DEF(ticker)
 	runlevels = RUNLEVEL_LOBBY | RUNLEVEL_SETUP | RUNLEVEL_GAME
 
 	var/current_state = GAME_STATE_STARTUP //state of current round (used by process()) Use the defines GAME_STATE_* !
-	var/force_ending = 0 //Round was ended by admin intervention
+
+	/// When TRUE, the round will end next tick or has already ended. Use SSticker.end_round() instead. This var is used by non-gamemodes to end the round.
+	VAR_PRIVATE/force_ending = FALSE
+
 	// If true, there is no lobby phase, the game starts immediately.
 	#ifndef LOWMEMORYMODE
 	var/start_immediately = FALSE
@@ -205,10 +208,11 @@ SUBSYSTEM_DEF(ticker)
 				SEND_SIGNAL(src, COMSIG_TICKER_ERROR_SETTING_UP)
 
 		if(GAME_STATE_PLAYING)
-			mode.process(wait * 0.1)
+			if(mode.datum_flags & DF_ISPROCESSING)
+				mode.process(wait * 0.1)
 			check_queue()
 
-			if(!roundend_check_paused && mode.check_finished(force_ending) || force_ending)
+			if(force_ending || (!roundend_check_paused && mode.check_finished()))
 				current_state = GAME_STATE_FINISHED
 				toggle_ooc(TRUE) // Turn it on
 				toggle_dooc(TRUE)
@@ -231,9 +235,9 @@ SUBSYSTEM_DEF(ticker)
 	if(!initialize_gamemode())
 		return FALSE
 
-	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]"))
+	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]."))
 	if(mode_display_name)
-		message_admins("The real gamemode is: [get_mode_name(TRUE)]")
+		message_admins("The real gamemode is: [get_mode_name(TRUE)].")
 	to_chat(world, "<br><hr><br>")
 
 	CHECK_TICK
@@ -318,6 +322,9 @@ SUBSYSTEM_DEF(ticker)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
 		else
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score)] hardcore random points if you survive this round!"))
+
+/datum/controller/subsystem/ticker/proc/end_round()
+	force_ending = TRUE
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)

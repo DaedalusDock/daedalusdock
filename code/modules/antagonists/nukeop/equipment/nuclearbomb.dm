@@ -1,6 +1,7 @@
 /// TRUE only if the station was actually hit by the nuke, otherwise FALSE
 GLOBAL_VAR_INIT(station_was_nuked, FALSE)
 GLOBAL_VAR(station_nuke_source)
+GLOBAL_VAR(nuke_time_left)
 
 /obj/machinery/nuclearbomb
 	name = "nuclear fission explosive"
@@ -44,6 +45,7 @@ GLOBAL_VAR(station_nuke_source)
 	update_appearance()
 	SSpoints_of_interest.make_point_of_interest(src)
 	previous_level = get_security_level()
+	GLOB.nuke_time_left = get_time_left()
 
 /obj/machinery/nuclearbomb/Destroy()
 	UNSET_TRACKING(__TYPE__)
@@ -449,6 +451,7 @@ GLOBAL_VAR(station_nuke_source)
 			S.switch_mode_to(initial(S.mode))
 			S.alert = FALSE
 		countdown.stop()
+		GLOB.nuke_time_left = get_time_left()
 
 		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NUKE_DEVICE_DISARMED, src)
 

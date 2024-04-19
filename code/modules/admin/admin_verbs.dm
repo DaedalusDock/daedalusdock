@@ -1019,6 +1019,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 
 	SSticker.mode = new gamemode_path
 	if(announce == "Yes")
-		to_chat(world, span_boldannounce("The gamemode is now [fake_name ? SSticker.mode_display_name : SSticker.mode.name]"))
+		to_chat(world, span_boldannounce("The gamemode is now: [fake_name ? SSticker.mode_display_name : SSticker.mode.name]."))
 
 	message_admins("[key_name_admin(usr)] has set the gamemode to [SSticker.mode.type].")

@@ -550,12 +550,15 @@
 	..()
 
 /datum/dynamic_ruleset/roundstart/revs/rule_process()
-	var/winner = revolution.process_victory(revs_win_threat_injection)
+	var/winner = revolution.check_completion()
 	if (isnull(winner))
 		return
 
 	finished = winner
 	return RULESET_STOP_PROCESSING
+
+/datum/dynamic_ruleset/roundstart/revs/check_finished()
+	return !!finished
 
 /// Checks for revhead loss conditions and other antag datums.
 /datum/dynamic_ruleset/roundstart/revs/proc/check_eligible(datum/mind/M)

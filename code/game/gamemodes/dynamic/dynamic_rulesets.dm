@@ -184,6 +184,10 @@
 /datum/dynamic_ruleset/proc/trim_candidates()
 	return
 
+/// Returns TRUE if the round should end.
+/datum/dynamic_ruleset/proc/check_finished()
+	return FALSE
+
 /// Set mode result and news report here.
 /// Only called if ruleset is flagged as HIGH_IMPACT_RULESET
 /datum/dynamic_ruleset/proc/round_result()

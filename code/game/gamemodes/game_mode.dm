@@ -13,6 +13,8 @@
 
 
 /datum/game_mode
+	datum_flags = DF_ISPROCESSING
+
 	var/name = "oh god oh fuck what did you do"
 	/// This is a WEIGHT not a PROBABILITY
 	var/weight = GAMEMODE_WEIGHT_NEVER
@@ -180,14 +182,16 @@
 /datum/game_mode/proc/make_antag_chance(mob/living/carbon/human/character)
 	return
 
-/datum/game_mode/proc/check_finished(force_ending) //to be called by SSticker
+/datum/game_mode/proc/check_finished() //to be called by SSticker
+	SHOULD_CALL_PARENT(TRUE)
+	. = FALSE
+
 	if(!SSticker.setup_done)
-		return FALSE
+		return
+
 	if(SSshuttle.emergency && (SSshuttle.emergency.mode == SHUTTLE_ENDGAME))
 		return TRUE
 	if(GLOB.station_was_nuked)
-		return TRUE
-	if(force_ending)
 		return TRUE
 
 /*
@@ -380,7 +384,7 @@
 
 ///Stub for reference that gamemodes do infact, process.
 /datum/game_mode/process(delta_time)
-	return
+	datum_flags &= ~DF_ISPROCESSING
 
 ///Setup signals for the antagonist's mind and mob. Make sure it gets cleared in handle_antagonist_mind_transfer.
 /datum/game_mode/proc/init_mob_signals(mob/M)

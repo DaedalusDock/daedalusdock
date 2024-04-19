@@ -405,77 +405,11 @@
 
 /// Updates the state of the world depending on if revs won or loss.
 /// Returns who won, at which case this method should no longer be called.
-/// If revs_win_injection_amount is passed, then that amount of threat will be added if the revs win.
-/datum/team/revolution/proc/process_victory(revs_win_injection_amount)
+/datum/team/revolution/proc/check_completion()
 	if (check_rev_victory())
-		. = REVOLUTION_VICTORY
+		return REVOLUTION_VICTORY
 	else if (check_heads_victory())
-		. = STATION_VICTORY
-	else
-		return
-
-	SSshuttle.clearHostileEnvironment(src)
-	save_members()
-
-	// Remove everyone as a revolutionary
-	for (var/_rev_mind in members)
-		var/datum/mind/rev_mind = _rev_mind
-		if (rev_mind.has_antag_datum(/datum/antagonist/rev))
-			var/datum/antagonist/rev/rev_antag = rev_mind.has_antag_datum(/datum/antagonist/rev)
-			rev_antag.remove_revolutionary(FALSE, . == STATION_VICTORY ? DECONVERTER_STATION_WIN : DECONVERTER_REVS_WIN)
-			if(!(rev_mind in ex_headrevs))
-				LAZYADD(rev_mind.special_statuses, "<span class='bad'>Former revolutionary</span>")
-			else
-				LAZYADD(rev_mind.special_statuses, "<span class='bad'>Former head revolutionary</span>")
-				add_memory_in_range(rev_mind.current, 7, MEMORY_WON_REVOLUTION, list(DETAIL_PROTAGONIST = rev_mind.current, DETAIL_STATION_NAME = station_name()), story_value = STORY_VALUE_LEGENDARY, memory_flags = MEMORY_FLAG_NOSTATIONNAME|MEMORY_CHECK_BLIND_AND_DEAF, protagonist_memory_flags = MEMORY_FLAG_NOSTATIONNAME)
-
-	if (. == STATION_VICTORY)
-		// If the revolution was quelled, make rev heads unable to be revived through pods
-		for (var/datum/mind/rev_head as anything in ex_headrevs)
-			if(!isnull(rev_head.current))
-				ADD_TRAIT(rev_head.current, TRAIT_DEFIB_BLACKLISTED, REF(src))
-				rev_head.current.med_hud_set_status()
-
-		priority_announce("We've noticed abnormal vitals patterns reporting from your waystation. \
-		We're dispatching a shuttle to your location, if nothing is wrong, please initiate a recall from your bridge.", "Daedalus Industries Transmission", sound_type = ANNOUNCER_SHUTTLECALLED)
-		SSshuttle.emergency.request(set_coefficient = 1, silent = TRUE)
-
-	else
-		for (var/mob/living/player as anything in GLOB.player_list)
-			var/datum/mind/player_mind = player.mind
-
-			if (isnull(player_mind))
-				continue
-
-			if (!(player_mind.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_COMMAND)))
-				continue
-
-			if (player_mind in ex_revs + ex_headrevs)
-				continue
-
-			player_mind.add_antag_datum(/datum/antagonist/enemy_of_the_revolution)
-
-			if (!istype(player))
-				continue
-
-			if(player_mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
-				ADD_TRAIT(player, TRAIT_DEFIB_BLACKLISTED, REF(src))
-				player.med_hud_set_status()
-
-		for(var/datum/job/job as anything in SSjob.joinable_occupations)
-			if(!(job.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_COMMAND)))
-				continue
-			job.allow_bureaucratic_error = FALSE
-			job.total_positions = 0
-
-		if (revs_win_injection_amount && IS_DYNAMIC_GAME_MODE)
-			var/datum/game_mode/dynamic/dynamic = SSticker.mode
-			dynamic.create_threat(revs_win_injection_amount, list(dynamic.threat_log, dynamic.roundend_threat_log), "[worldtime2text()]: Revolution victory")
-
-		priority_announce("We've noticed abnormal vitals patterns reporting from your waystation. \
-		We're dispatching a shuttle to your location incase something as gone wrong.", "Daedalus Industries Transmission", sound_type = ANNOUNCER_SHUTTLECALLED)
-		SSshuttle.emergency.request(set_coefficient = 0.5, silent = TRUE)
-		SSshuttle.emergency_no_recall = TRUE
+		return STATION_VICTORY
 
 /// Mutates the ticker to report that the revs have won
 /datum/team/revolution/proc/round_result(finished)

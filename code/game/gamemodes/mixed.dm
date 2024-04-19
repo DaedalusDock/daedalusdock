@@ -105,11 +105,3 @@
 /datum/game_mode/mixed/give_antag_datums()
 	for(var/datum/mind/M in antagonists)
 		M.add_antag_datum(player2datum[M])
-
-		if(player2datum[M] == /datum/antagonist/wizard)
-			M.current.forceMove(pick(GLOB.wizardstart))
-
-
-
-
-

@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Gamemodes are back!
+  - rscdel: Dynamic has been disabled.
+  - rscdel: Removed all ghost roles.

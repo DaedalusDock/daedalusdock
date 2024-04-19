@@ -93,7 +93,7 @@
 		new_malf.mind.special_role = ROLE_MALF
 		GLOB.pre_setup_antags += new_malf.mind
 		// We need an AI for the malf roundstart ruleset to execute. This means that players who get selected as malf AI get priority, because antag selection comes before role selection.
-		LAZYADDASSOC(SSjob.dynamic_forced_occupations, new_malf, "AI")
+		LAZYADDASSOC(SSjob.dynamic_forced_occupations, new_malf, JOB_AI)
 	return TRUE
 
 //////////////////////////////////////////

@@ -168,7 +168,7 @@
 				// Did we try to flash them from behind?
 				if(deviation == DEVIATION_FULL)
 					// Headrevs can use a tacticool leaning technique so that they don't have to worry about facing for their conversions.
-					to_chat(user, span_notice("You use the tacticool tier, lean over the shoulder technique to blind [flashed] with a flash!"))
+					to_chat(user, span_notice("You use the tacticool tech, lean over the shoulder technique to blind [flashed] with a flash!"))
 					deviation = DEVIATION_PARTIAL
 				// Convert them. Terribly.
 				terrible_conversion_proc(flashed, user)
@@ -291,6 +291,9 @@
 	if(victim.stat != CONSCIOUS)
 		to_chat(aggressor, span_warning("They must be conscious before you can convert [victim.p_them()]!"))
 		return
+	if(!victim.mind || victim.mind.has_antag_datum(/datum/antagonist/rev) || victim.mind.has_antag_datum(/datum/antagonist/rev/head))
+		return
+
 	//If this proc fires the mob must be a revhead
 	var/datum/antagonist/rev/head/converter = aggressor.mind.has_antag_datum(/datum/antagonist/rev/head)
 	if(converter.add_revolutionary(victim.mind))
@@ -298,8 +301,7 @@
 			victim.say("You son of a bitch! I'm in.", forced = "That son of a bitch! They're in.")
 		times_used -- //Flashes less likely to burn out for headrevs when used for conversion
 	else
-		to_chat(aggressor, span_warning("This mind seems resistant to the flash!"))
-
+		to_chat(aggressor, span_warning("[victim.p_they(TRUE)] [victim.p_are()] unwilling to revolt!"))
 
 /obj/item/assembly/flash/cyborg
 

@@ -843,6 +843,18 @@ SUBSYSTEM_DEF(job)
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			. += player.mind
 
+/////////////////////////////////
+//Keeps track of all management//
+/////////////////////////////////
+/datum/controller/subsystem/job/proc/get_all_management(management_only)
+	. += list()
+	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
+		if(!player.mind?.assigned_role)
+			continue
+
+		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT)
+			. += player.mind
+
 //////////////////////////////////////////////
 //Keeps track of all living security members//
 //////////////////////////////////////////////

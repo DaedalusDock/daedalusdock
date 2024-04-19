@@ -20,7 +20,7 @@
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
 	. = ..()
 	if(.)
-		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT))
+		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT|DEPARTMENT_BITFLAG_SECURITY))
 			return FALSE
 
 		if(new_owner.unconvertable)
@@ -307,6 +307,7 @@
 		. = ..()
 		if(re_antag)
 			old_owner.add_antag_datum(/datum/antagonist/enemy_of_the_state) //needs to be post ..() so old antag status is cleaned up
+
 /datum/antagonist/rev/head/equip_rev()
 	var/mob/living/carbon/C = owner.current
 	if(!ishuman(C))
@@ -321,14 +322,9 @@
 		)
 		var/where = C.equip_in_one_of_slots(T, slots)
 		if (!where)
-			to_chat(C, "The Syndicate were unfortunately unable to get you a flash.")
+			to_chat(C, "Your benefactors were unfortunately unable to get you a flash.")
 		else
 			to_chat(C, "The flash in your [where] will help you to persuade the crew to join your cause.")
-
-	if(give_hud)
-		var/obj/item/organ/cyberimp/eyes/hud/security/syndicate/S = new()
-		S.Insert(C)
-		to_chat(C, "Your eyes have been implanted with a cybernetic security HUD which will help you keep track of who is mindshield-implanted, and therefore unable to be recruited.")
 
 /datum/team/revolution
 	name = "Revolution"
@@ -337,15 +333,17 @@
 	var/list/ex_revs = list()
 
 /datum/team/revolution/proc/update_objectives(initial = FALSE)
-	var/untracked_heads = SSjob.get_all_heads()
+	var/untracked_heads = SSjob.get_all_management()
 	for(var/datum/objective/mutiny/O in objectives)
 		untracked_heads -= O.target
+
 	for(var/datum/mind/M in untracked_heads)
 		var/datum/objective/mutiny/new_target = new()
 		new_target.team = src
 		new_target.target = M
 		new_target.update_explanation_text()
 		objectives += new_target
+
 	for(var/datum/mind/M in members)
 		var/datum/antagonist/rev/R = M.has_antag_datum(/datum/antagonist/rev)
 		R.objectives |= objectives
@@ -361,13 +359,14 @@
 /datum/team/revolution/proc/update_heads()
 	if(SSticker.HasRoundStarted())
 		var/list/datum/mind/head_revolutionaries = head_revolutionaries()
-		var/list/datum/mind/heads = SSjob.get_all_heads()
+		var/list/datum/mind/heads = SSjob.get_all_management()
 		var/list/sec = SSjob.get_all_sec()
 
 		if(head_revolutionaries.len < max_headrevs && head_revolutionaries.len < round(heads.len - ((8 - sec.len) / 3)))
 			var/list/datum/mind/non_heads = members - head_revolutionaries
 			var/list/datum/mind/promotable = list()
 			var/list/datum/mind/nonhuman_promotable = list()
+
 			for(var/datum/mind/khrushchev in non_heads)
 				if(khrushchev.current && !khrushchev.current.incapacitated() && !HAS_TRAIT(khrushchev.current, TRAIT_ARMS_RESTRAINED) && khrushchev.current.client)
 					var/list/client_antags = khrushchev.current.client.prefs.read_preference(/datum/preference/blob/antagonists)
@@ -376,8 +375,10 @@
 							promotable += khrushchev
 						else
 							nonhuman_promotable += khrushchev
+
 			if(!promotable.len && nonhuman_promotable.len) //if only nonhuman revolutionaries remain, promote one of them to the leadership.
 				promotable = nonhuman_promotable
+
 			if(promotable.len)
 				var/datum/mind/new_leader = pick(promotable)
 				var/datum/antagonist/rev/rev = new_leader.has_antag_datum(/datum/antagonist/rev)
@@ -396,8 +397,8 @@
 			return FALSE
 	return TRUE
 
-/// Checks if heads have won
-/datum/team/revolution/proc/check_heads_victory()
+/// Checks if the government has won
+/datum/team/revolution/proc/check_management_victory()
 	for(var/datum/mind/rev_mind in head_revolutionaries())
 		var/turf/rev_turf = get_turf(rev_mind.current)
 		if(!considered_afk(rev_mind) && considered_alive(rev_mind) && is_station_level(rev_turf.z))
@@ -410,7 +411,7 @@
 /datum/team/revolution/proc/check_completion()
 	if (check_rev_victory())
 		return REVOLUTION_VICTORY
-	else if (check_heads_victory())
+	else if (check_management_victory())
 		return STATION_VICTORY
 
 /// Mutates the ticker to report that the revs have won

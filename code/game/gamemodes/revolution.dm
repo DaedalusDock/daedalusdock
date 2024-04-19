@@ -1,6 +1,6 @@
 #define REVOLUTION_SCALING_COEFF 0.1
 ///The absolute cap of headrevs.
-#define REVOLUTION_MAX_HEADREVS 4
+#define REVOLUTION_MAX_HEADREVS 3
 
 /datum/game_mode/revolution
 	name = "Revolution"
@@ -20,12 +20,11 @@
 
 	restricted_jobs = list(
 		JOB_CAPTAIN,
+		JOB_HEAD_OF_PERSONNEL,
 		JOB_AI,
 		JOB_CYBORG,
-		JOB_CHIEF_ENGINEER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
-		JOB_MEDICAL_DIRECTOR,
 	)
 
 	antag_flag = ROLE_REV_HEAD

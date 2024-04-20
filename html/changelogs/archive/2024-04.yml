@@ -12,3 +12,8 @@
   Kapu1178:
   - bugfix: Heterochromia works again.
   - bugfix: The "Fingerprints" field of ID cards now uses the correct value.
+2024-04-20:
+  Kapu1178:
+  - rscadd: Gamemodes are back!
+  - rscdel: Dynamic has been disabled.
+  - rscdel: Removed all ghost roles.

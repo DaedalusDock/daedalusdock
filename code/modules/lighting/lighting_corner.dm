@@ -116,9 +116,9 @@
 
 /datum/lighting_corner/proc/update_objects()
 	// Cache these values ahead of time so 4 individual lighting objects don't all calculate them individually.
-	var/lum_r = src.lum_r
-	var/lum_g = src.lum_g
-	var/lum_b = src.lum_b
+	var/lum_r = src.lum_r > 0 ? 0.9 * sqrt(src.lum_r) : src.lum_r
+	var/lum_g = src.lum_g > 0 ? 0.9 * sqrt(src.lum_g) : src.lum_g
+	var/lum_b = src.lum_b > 0 ? 0.9 * sqrt(src.lum_b) : src.lum_b
 	var/largest_color_luminosity = max(lum_r, lum_g, lum_b) // Scale it so one of them is the strongest lum, if it is above 1.
 
 	. = 1 // factor

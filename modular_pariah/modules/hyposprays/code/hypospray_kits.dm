@@ -34,7 +34,7 @@
 	return ..()
 
 /obj/item/storage/hypospraykit/proc/case_menu(mob/user)
-	var/casetype = case_designs = list(
+	var/casetype = list(
 		"firstaid" = image(icon = src.icon, icon_state = "firstaid-mini"),
 		"brute" = image(icon = src.icon, icon_state = "brute-mini"),
 		"burn" = image(icon = src.icon, icon_state = "burn-mini"),

@@ -37,6 +37,8 @@
 	///Interface name for the ui_interact call for different subtypes.
 	var/interface_type = "Cargo"
 
+	var/government_order = FALSE
+
 /obj/machinery/computer/cargo/request
 	name = "supply request console"
 	desc = "Used to request supplies from cargo."

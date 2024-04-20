@@ -103,13 +103,12 @@
 	for(var/i in 1 to 4)
 		new /obj/item/storage/hypospraykit/empty(src)
 
-/obj/item/storage/box/hypospraykit/experimental
+/obj/item/storage/hypospraykit/experimental
 	name = "experimental hypospray kit"
 	desc = "A kit containing an experimental hypospray and pre-loaded vials."
 	icon_state = "tactical-mini"
-	current_case = "tactical"
 
-/obj/item/storage/box/hypospraykit/PopulateContents()
+/obj/item/storage/hypospraykit/PopulateContents()
 	new /obj/item/hypospray/mkii/cmo(src)
 	new /obj/item/reagent_containers/glass/vial/large/dylovene(src)
 	new /obj/item/reagent_containers/glass/vial/large/salglu(src)

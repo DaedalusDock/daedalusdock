@@ -3,7 +3,7 @@
 	desc = "Contains an experimental rechargable auto injector."
 	cost = 500
 	contains = list(
-		/obj/item/storage/box/hypospraykit/experimental,
+		/obj/item/storage/hypospraykit/experimental,
 
 	)
 	crate_name = "experimental hypospray crate"

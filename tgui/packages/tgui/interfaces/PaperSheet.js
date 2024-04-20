@@ -30,12 +30,15 @@ const textWidth = (text, font, fontsize) => {
   return width;
 };
 
-const setFontinText = (text, font, color, bold=false) => {
+const setFontinText = (text, font, color, bold=false, italics=false) => {
   return "<span style=\""
     + "color:" + color + ";"
     + "font-family:'" + font + "';"
     + ((bold)
       ? "font-weight: bold;"
+      : "")
+    + ((italics)
+      ? "font-style: italic;"
       : "")
     + "\">" + text + "</span>";
 };
@@ -80,7 +83,7 @@ const createFields = (txt, font, fontsize, color, counter) => {
 
 const signDocument = (txt, color, user) => {
   return txt.replace(sign_regex, () => {
-    return setFontinText(user, "Times New Roman", color, true);
+    return setFontinText(user, "Times New Roman", color, true, true);
   });
 };
 
@@ -388,7 +391,7 @@ const createPreview = (
     // Fifth, we wrap the created text in the pin color, and font.
     // crayon is bold (<b> tags), maybe make fountain pin italic?
     const fonted_text = setFontinText(
-      formatted_text, font, color, is_crayon);
+      formatted_text, font, color, is_crayon, false);
     out.text += fonted_text;
     out.field_counter = fielded_text.counter;
   }
@@ -607,9 +610,6 @@ export const PaperSheet = (props, context) => {
       values.text = processing.text;
       values.field_counter = processing.field_counter;
     }
-  }
-  else {
-    values.text = sanitizeText(text);
   }
   const stamp_list = !stamps
     ? []

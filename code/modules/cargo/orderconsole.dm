@@ -102,6 +102,7 @@
 	var/datum/bank_account/D = SSeconomy.department_accounts_by_id[cargo_account]
 	if(D)
 		data["points"] = D.account_balance
+
 	data["grocery"] = SSshuttle.chef_groceries.len
 	data["away"] = SSshuttle.supply.getDockedId() == docking_away
 	data["self_paid"] = self_paid
@@ -110,13 +111,16 @@
 	data["loan_dispatched"] = SSshuttle.shuttle_loan && SSshuttle.shuttle_loan.dispatched
 	data["can_send"] = can_send
 	data["can_approve_requests"] = can_approve_requests
+
 	var/message = "Remember to stamp and send back the supply manifests."
 	if(SSshuttle.centcom_message)
 		message = SSshuttle.centcom_message
 	if(SSshuttle.supply_blocked)
 		message = blockade_warning
+
 	data["message"] = message
 	data["cart"] = list()
+
 	for(var/datum/supply_order/SO in SSshuttle.shopping_list)
 		data["cart"] += list(list(
 			"object" = SO.pack.name,
@@ -141,17 +145,26 @@
 
 /obj/machinery/computer/cargo/ui_static_data(mob/user)
 	var/list/data = list()
-	data["supplies"] = list()
+	data["supplies"] = get_buyable_supply_packs()
+	return data
+
+/obj/machinery/computer/cargo/proc/get_buyable_supply_packs()
+	RETURN_TYPE(/list)
+	. = list()
 	for(var/pack in SSshuttle.supply_packs)
 		var/datum/supply_pack/P = SSshuttle.supply_packs[pack]
-		if(!data["supplies"][P.group])
-			data["supplies"][P.group] = list(
+		if(P.government_order && !government_order)
+			continue
+
+		if(!.[P.group])
+			.[P.group] = list(
 				"name" = P.group,
 				"packs" = list()
 			)
 		if((P.hidden && !(obj_flags & EMAGGED)) || (P.contraband && !contraband) || (P.special && !P.special_enabled) || P.DropPodOnly)
 			continue
-		data["supplies"][P.group]["packs"] += list(list(
+
+		.[P.group]["packs"] += list(list(
 			"name" = P.name,
 			"cost" = P.get_cost(),
 			"id" = pack,
@@ -159,7 +172,6 @@
 			"goody" = P.goody,
 			"access" = P.access
 		))
-	return data
 
 /obj/machinery/computer/cargo/ui_act(action, params, datum/tgui/ui)
 	. = ..()

@@ -81,8 +81,7 @@
 	new /obj/item/megaphone/command(src)
 	new /obj/item/defibrillator/compact/loaded(src)
 	new /obj/item/assembly/flash/handheld(src)
-	// new /obj/item/reagent_containers/hypospray/cmo(src) //ORIGINAL
-	new /obj/item/storage/hypospraykit/cmo(src) //PARIAH EDIT
+	new /obj/item/reagent_containers/hypospray/cmo(src)
 	new /obj/item/autosurgeon/organ/cmo(src)
 	new /obj/item/clothing/neck/petcollar(src)
 	new /obj/item/pet_carrier(src)

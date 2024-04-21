@@ -18,6 +18,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/list/typecache_datum_blacklist = list()
 	///The define string we use to identify the role for bans/player polls to spawn a random new one in.
 	var/job_rank
+	/// A job path to give if the player is this antagonist at roundstart.
+	var/assign_job
 	///Should replace jobbanned player with ghosts if granted.
 	var/replace_banned = TRUE
 	///List of the objective datums that this role currently has, completing all objectives at round-end will cause this antagonist to greentext.

@@ -21,7 +21,7 @@
 
 /datum/spellbook_entry/summon/guns/can_be_purchased()
 	// Summon Guns requires 100 threat.
-	if(IS_DYNAMIC_GAME_MODE)
+	if(GAMEMODE_WAS_DYNAMIC)
 		var/datum/game_mode/dynamic/mode = SSticker.mode
 		if(mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
 			return FALSE
@@ -40,7 +40,7 @@
 
 /datum/spellbook_entry/summon/magic/can_be_purchased()
 	// Summon Magic requires 100 threat.
-	if(IS_DYNAMIC_GAME_MODE)
+	if(GAMEMODE_WAS_DYNAMIC)
 		var/datum/game_mode/dynamic/mode = SSticker.mode
 		if(mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
 			return FALSE
@@ -62,7 +62,7 @@
 
 /datum/spellbook_entry/summon/events/can_be_purchased()
 	// Summon Events requires 100 threat.
-	if(IS_DYNAMIC_GAME_MODE)
+	if(GAMEMODE_WAS_DYNAMIC)
 		var/datum/game_mode/dynamic/mode = SSticker.mode
 		if(mode.threat_level < MINIMUM_THREAT_FOR_RITUALS)
 			return FALSE

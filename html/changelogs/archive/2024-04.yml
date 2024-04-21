@@ -5,3 +5,15 @@
   Kapu1178:
   - bugfix: AO overlays no longer get stuck when turfs change. This was most obvious
       with the stellar body magnet.
+2024-04-14:
+  Kapu1178:
+  - bugfix: Security armor is armor again.
+2024-04-15:
+  Kapu1178:
+  - bugfix: Heterochromia works again.
+  - bugfix: The "Fingerprints" field of ID cards now uses the correct value.
+2024-04-20:
+  Kapu1178:
+  - rscadd: Gamemodes are back!
+  - rscdel: Dynamic has been disabled.
+  - rscdel: Removed all ghost roles.

@@ -505,9 +505,10 @@
 // Doing so would previously allow you to roll for antag, then send you back to lobby if you didn't get an antag role
 // This also does some admin notification and logging as well, as well as some extra logic to make sure things don't go wrong
 /mob/dead/new_player/proc/check_preferences()
-	if(!client)
+	var/client/mob_client = GET_CLIENT(src)
+	if(!mob_client)
 		return FALSE //Not sure how this would get run without the mob having a client, but let's just be safe.
-	if(client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
+	if(mob_client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
 		return TRUE
 
 	// If they have antags enabled, they're potentially doing this on purpose instead of by accident. Notify admins if so.

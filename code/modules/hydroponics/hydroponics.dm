@@ -738,20 +738,6 @@
 					myseed.reagents_from_genes()
 					continue
 
-/**
- * Pest Mutation Proc.
- * When a tray is mutated with high pest values, it will spawn spiders.
- * * User - Person who last added chemicals to the tray for logging purposes.
- */
-/obj/machinery/hydroponics/proc/mutatepest(mob/user)
-	if(pestlevel > 5)
-		message_admins("[ADMIN_LOOKUPFLW(user)] last altered a hydro tray's contents which spawned spiderlings")
-		log_game("[key_name(user)] last altered a hydro tray, which spiderlings spawned from.")
-		visible_message(span_warning("The pests seem to behave oddly..."))
-		spawn_atom_to_turf(/obj/structure/spider/spiderling/hunter, src, 3, FALSE)
-	else if(myseed)
-		visible_message(span_warning("The pests seem to behave oddly in [myseed.name] tray, but quickly settle down..."))
-
 /obj/machinery/hydroponics/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)

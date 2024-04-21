@@ -70,7 +70,3 @@
 /obj/effect/mob_spawn/corpse/human/assistant/spanishflu_infection/special(mob/living/spawned_mob)
 	. = ..()
 	spawned_mob.ForceContractDisease(new /datum/disease/fluspanish)
-
-/obj/effect/mob_spawn/corpse/human/bartender
-	name = "Bartender"
-	outfit = /datum/outfit/spacebartender

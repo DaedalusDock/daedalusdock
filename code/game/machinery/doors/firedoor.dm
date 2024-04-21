@@ -265,7 +265,7 @@
 			span_notice("You press your crowbar between the door and begin to pry it open..."),
 			span_hear("You hear a metal clang, followed by metallic groans.")
 		)
-		if(!do_after(user, src, 3 SECONDS))
+		if(!do_after(user, src, 3 SECONDS, DO_PUBLIC))
 			return
 		user.visible_message(
 			span_danger("[user] forces [src] open with a crowbar!"),

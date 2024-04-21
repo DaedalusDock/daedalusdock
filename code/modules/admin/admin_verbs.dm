@@ -135,7 +135,8 @@ GLOBAL_PROTECT(admin_verbs_server)
 	/client/proc/toggle_interviews,
 	/client/proc/toggle_require_discord,
 	/client/proc/toggle_hub,
-	/client/proc/toggle_cdn
+	/client/proc/toggle_cdn,
+	/client/proc/set_game_mode
 	)
 GLOBAL_LIST_INIT(admin_verbs_debug, world.AVerbsDebug())
 GLOBAL_PROTECT(admin_verbs_debug)
@@ -1001,3 +1002,30 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	var/datum/browser/popup = new(mob, "spellreqs", "Spell Requirements", 600, 400)
 	popup.set_content(page_contents)
 	popup.open()
+
+/client/proc/set_game_mode()
+	set name = "Set Gamemode"
+	set category = "Debug"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	if(Master.current_runlevel > RUNLEVEL_LOBBY)
+		to_chat(usr, span_adminnotice("You cannot set the gamemode after the round has started!"))
+		return
+
+	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in subtypesof(/datum/game_mode)
+	if(!gamemode_path)
+		return
+
+	var/fake_name = input(usr, "Fake Gamemode name?", "Set Gamemode") as null|text
+	if(fake_name)
+		SSticker.mode_display_name = fake_name
+
+	var/announce = alert(usr, "Announce to players?", "Set Gamemode", "Yes", "No")
+
+	SSticker.mode = new gamemode_path
+	if(announce == "Yes")
+		to_chat(world, span_boldannounce("The gamemode is now: [fake_name ? SSticker.mode_display_name : SSticker.mode.name]."))
+
+	message_admins("[key_name_admin(usr)] has set the gamemode to [SSticker.mode.type].")

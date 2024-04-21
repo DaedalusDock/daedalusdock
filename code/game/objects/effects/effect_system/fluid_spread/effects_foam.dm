@@ -59,7 +59,7 @@
 	if (spread_bucket)
 		SSfoam.cancel_spread(src)
 	make_result()
-	flick("[icon_state]-disolve", src)
+	z_flick("[icon_state]-disolve", src)
 	QDEL_IN(src, 0.5 SECONDS)
 
 /**

@@ -117,9 +117,10 @@
 		/datum/atom_hud/alternate_appearance/basic/one_person,
 		"object_overlay_[REF(src)]",
 		cool_overlay,
+		null,
 		owner,
 	)
-	alt_appearance.add_hud_to(owner)
+	alt_appearance.show_to(owner)
 
 	active_overlays[target_atom] = WEAKREF(alt_appearance)
 

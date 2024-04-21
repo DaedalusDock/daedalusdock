@@ -211,7 +211,7 @@
 				playsound(src, 'sound/voice/firebot/extinguishing.ogg', 50, FALSE)
 			speech_cooldown = world.time
 
-			flick("firebot1_use", src)
+			z_flick("firebot1_use", src)
 			spray_water(target_fire, src)
 
 		soft_reset()
@@ -272,9 +272,9 @@
 
 /mob/living/simple_animal/bot/firebot/proc/spray_water(atom/target, mob/user)
 	if(stationary_mode)
-		flick("firebots_use", user)
+		z_flick("firebots_use", user)
 	else
-		flick("firebot1_use", user)
+		z_flick("firebot1_use", user)
 	internal_ext.afterattack(target, user, null)
 
 /mob/living/simple_animal/bot/firebot/update_icon_state()

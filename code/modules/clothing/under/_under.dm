@@ -119,7 +119,6 @@
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		attached_accessory.on_uniform_equip(src, user)
-		H.fan_hud_set_fandom()
 		if(attached_accessory.above_suit)
 			H.update_worn_oversuit()
 
@@ -133,7 +132,6 @@
 		attached_accessory.on_uniform_dropped(src, user)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
-			H.fan_hud_set_fandom()
 			if(attached_accessory.above_suit)
 				H.update_worn_oversuit()
 	..()
@@ -184,7 +182,6 @@
 
 	var/mob/living/carbon/human/holder = loc
 	holder.update_slots_for_item(src)
-	holder.fan_hud_set_fandom()
 
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
 	. = FALSE
@@ -210,7 +207,6 @@
 
 	var/mob/living/carbon/human/holder = loc
 	holder.update_slots_for_item(src)
-	holder.fan_hud_set_fandom()
 
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()

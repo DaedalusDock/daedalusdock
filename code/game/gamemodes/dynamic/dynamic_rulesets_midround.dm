@@ -748,78 +748,6 @@
 
 #undef ABDUCTOR_MAX_TEAMS
 
-//////////////////////////////////////////////
-//                                          //
-//            SPACE NINJA (GHOST)           //
-//                                          //
-//////////////////////////////////////////////
-
-/datum/dynamic_ruleset/midround/from_ghosts/space_ninja
-	name = "Space Ninja"
-	antag_datum = /datum/antagonist/ninja
-	antag_flag = ROLE_NINJA
-	enemy_roles = list(
-		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_SECURITY_MARSHAL,
-		JOB_SECURITY_OFFICER,
-	)
-	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
-	required_candidates = 1
-	weight = 4
-	cost = 10
-	requirements = list(101,101,101,80,60,50,30,20,10,10)
-	repeatable = TRUE
-	var/list/spawn_locs = list()
-
-/datum/dynamic_ruleset/midround/from_ghosts/space_ninja/execute()
-	for(var/obj/effect/landmark/carpspawn/carp_spawn in GLOB.landmarks_list)
-		if(!isturf(carp_spawn.loc))
-			stack_trace("Carp spawn found not on a turf: [carp_spawn.type] on [isnull(carp_spawn.loc) ? "null" : carp_spawn.loc.type]")
-			continue
-		spawn_locs += carp_spawn.loc
-	if(!spawn_locs.len)
-		message_admins("No valid spawn locations found, aborting...")
-		return MAP_ERROR
-	return ..()
-
-/datum/dynamic_ruleset/midround/from_ghosts/space_ninja/generate_ruleset_body(mob/applicant)
-	var/mob/living/carbon/human/ninja = create_space_ninja(pick(spawn_locs))
-	ninja.key = applicant.key
-	ninja.mind.add_antag_datum(/datum/antagonist/ninja)
-
-	message_admins("[ADMIN_LOOKUPFLW(ninja)] has been made into a Space Ninja by the midround ruleset.")
-	log_game("DYNAMIC: [key_name(ninja)] was spawned as a Space Ninja by the midround ruleset.")
-	return ninja
-
-//////////////////////////////////////////////
-//                                          //
-//            SPIDERS     (GHOST)           //
-//                                          //
-//////////////////////////////////////////////
-
-/datum/dynamic_ruleset/midround/spiders
-	name = "Spiders"
-	antag_flag = ROLE_SPIDER
-	required_type = /mob/dead/observer
-	enemy_roles = list(
-		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_SECURITY_MARSHAL,
-		JOB_SECURITY_OFFICER,
-	)
-	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
-	required_candidates = 0
-	weight = 3
-	cost = 10
-	requirements = list(101,101,101,80,60,50,30,20,10,10)
-	repeatable = TRUE
-	var/spawncount = 2
-
-/datum/dynamic_ruleset/midround/spiders/execute()
-	create_midwife_eggs(spawncount)
-	return ..()
-
 /// Revenant ruleset
 /datum/dynamic_ruleset/midround/from_ghosts/revenant
 	name = "Revenant"
@@ -889,33 +817,6 @@
 	message_admins("[ADMIN_LOOKUPFLW(virus)] has been made into a sentient disease by the midround ruleset.")
 	log_game("[key_name(virus)] was spawned as a sentient disease by the midround ruleset.")
 	return virus
-
-/// Space Pirates ruleset
-/datum/dynamic_ruleset/midround/pirates
-	name = "Space Pirates"
-	antag_flag = "Space Pirates"
-	required_type = /mob/dead/observer
-	enemy_roles = list(
-		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_SECURITY_MARSHAL,
-		JOB_SECURITY_OFFICER,
-	)
-	required_enemies = list(2,2,1,1,1,1,1,0,0,0)
-	required_candidates = 0
-	weight = 4
-	cost = 10
-	requirements = list(101,101,101,80,60,50,30,20,10,10)
-	repeatable = TRUE
-
-/datum/dynamic_ruleset/midround/pirates/acceptable(population=0, threat=0)
-	if (!SSmapping.empty_space)
-		return FALSE
-	return ..()
-
-/datum/dynamic_ruleset/midround/pirates/execute()
-	send_pirate_threat()
-	return ..()
 
 /// Obsessed ruleset
 /datum/dynamic_ruleset/midround/obsessed

@@ -505,8 +505,9 @@
 		return
 
 	set_health(round(maxHealth - getBrainLoss(), DAMAGE_PRECISION))
+	update_damage_hud()
+	update_health_hud()
 	update_stat()
-	med_hud_set_health()
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
 /mob/living/carbon/on_stamina_update()
@@ -550,7 +551,7 @@
 		if(!isnull(E.lighting_alpha))
 			lighting_alpha = E.lighting_alpha
 
-	if(client.eye != src)
+	if(client.eye && client.eye != src)
 		var/atom/A = client.eye
 		if(A.update_remote_sight(src)) //returns 1 if we override all other sight updates.
 			return
@@ -774,17 +775,14 @@
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)
 		return
+
 	if(stat != DEAD)
 		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 			set_stat(UNCONSCIOUS)
 		else
 			set_stat(CONSCIOUS)
 
-	update_damage_hud()
-	update_health_hud()
-	update_stamina_hud()
 	med_hud_set_status()
-
 
 //called when we get cuffed/uncuffed
 /mob/living/carbon/proc/update_handcuffed()

@@ -89,8 +89,7 @@
 	update_mob_action_buttons()
 	update_damage_hud()
 	update_health_hud()
-	med_hud_set_health()
-	med_hud_set_status()
+	update_med_hud()
 
 	release_all_grabs()
 

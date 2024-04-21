@@ -204,6 +204,7 @@
 	icon_state ="[base_state]open"
 	sleep(10)
 	set_density(FALSE)
+	update_appearance(UPDATE_ICON_STATE)
 	update_freelook_sight()
 
 	if(operating == 1) //emag again
@@ -225,6 +226,7 @@
 	icon_state = base_state
 
 	set_density(TRUE)
+	update_appearance(UPDATE_ICON_STATE)
 	update_freelook_sight()
 	sleep(10)
 
@@ -284,7 +286,7 @@
 	if(!operating && density && !(obj_flags & EMAGGED))
 		obj_flags |= EMAGGED
 		operating = TRUE
-		flick("[base_state]spark", src)
+		z_flick("[base_state]spark", src)
 		playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		sleep(6)
 		operating = FALSE
@@ -378,12 +380,11 @@
 /obj/machinery/door/window/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("[base_state]opening", src)
+			z_flick("[base_state]opening", src)
 		if("closing")
-			flick("[base_state]closing", src)
+			z_flick("[base_state]closing", src)
 		if("deny")
-			flick("[base_state]deny", src)
-
+			z_flick("[base_state]deny", src)
 
 /obj/machinery/door/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)

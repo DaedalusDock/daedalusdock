@@ -236,7 +236,7 @@
 /obj/item/robot_model/proc/do_transform_delay()
 	var/mob/living/silicon/robot/cyborg = loc
 	sleep(1)
-	flick("[cyborg_base_icon]_transform", cyborg)
+	z_flick("[cyborg_base_icon]_transform", cyborg)
 	cyborg.notransform = TRUE
 	if(locked_transform)
 		cyborg.SetLockdown(TRUE)

@@ -139,7 +139,7 @@
 	))
 
 	radio_connection.post_signal(signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
-	flick("airlock_sensor_cycle", src)
+	z_flick("airlock_sensor_cycle", src)
 
 /obj/machinery/airlock_sensor/process()
 	if(on)

@@ -6,6 +6,7 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 	roundend_category = "wizards/witches"
 	antagpanel_category = "Wizard"
 	job_rank = ROLE_WIZARD
+	assign_job = /datum/job/space_wizard
 	antag_hud_name = "wizard"
 	hijack_speed = 0.5
 	ui_name = "AntagInfoWizard"

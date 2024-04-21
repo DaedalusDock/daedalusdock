@@ -70,7 +70,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 		return FALSE
 	if(M.force_escaped)
 		return TRUE
-	if(SSticker.force_ending || GLOB.station_was_nuked) // Just let them win.
+	if(UNLINT(SSticker.force_ending) || GLOB.station_was_nuked) // Just let them win.
 		return TRUE
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return FALSE

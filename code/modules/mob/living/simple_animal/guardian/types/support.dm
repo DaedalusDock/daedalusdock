@@ -20,7 +20,7 @@
 /mob/living/simple_animal/hostile/guardian/healer/Initialize(mapload)
 	. = ..()
 	var/datum/atom_hud/medsensor = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	medsensor.add_hud_to(src)
+	medsensor.show_to(src)
 
 /mob/living/simple_animal/hostile/guardian/healer/get_status_tab_items()
 	. = ..()
@@ -40,8 +40,7 @@
 			H.color = guardiancolor
 		if(C == summoner)
 			update_health_hud()
-			med_hud_set_health()
-			med_hud_set_status()
+			update_med_hud()
 
 /mob/living/simple_animal/hostile/guardian/healer/ToggleMode()
 	if(src.loc == summoner)

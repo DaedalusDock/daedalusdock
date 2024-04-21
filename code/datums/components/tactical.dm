@@ -30,7 +30,7 @@
 	var/image/I = image(icon = master.icon, icon_state = master.icon_state, loc = user)
 	I.copy_overlays(master)
 	I.override = TRUE
-	source.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "sneaking_mission", I)
+	source.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/living, "sneaking_mission", I)
 	I.layer = ABOVE_MOB_LAYER
 
 /datum/component/tactical/proc/unmodify(obj/item/source, mob/user)

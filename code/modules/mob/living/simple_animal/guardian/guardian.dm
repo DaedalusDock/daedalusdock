@@ -71,19 +71,22 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	. = ..()
 
 /mob/living/simple_animal/hostile/guardian/med_hud_set_health()
-	if(summoner)
-		var/image/holder = hud_list[HEALTH_HUD]
-		holder.icon_state = "hud[RoundHealth(summoner)]"
+	if(!summoner)
+		return
+
+	set_hud_image_vars(HEALTH_HUD, "hud[RoundHealth(summoner)]", get_hud_pixel_y())
 
 /mob/living/simple_animal/hostile/guardian/med_hud_set_status()
-	if(summoner)
-		var/image/holder = hud_list[STATUS_HUD]
-		var/icon/I = icon(icon, icon_state, dir)
-		holder.pixel_y = I.Height() - world.icon_size
-		if(summoner.stat == DEAD)
-			holder.icon_state = "huddead"
-		else
-			holder.icon_state = "hudhealthy"
+	if(!summoner)
+		return
+
+	var/new_state
+	if(summoner.stat == DEAD)
+		new_state = "huddead"
+	else
+		new_state = "hudhealthy"
+
+	set_hud_image_vars(STATUS_HUD, new_state, get_hud_pixel_y())
 
 /mob/living/simple_animal/hostile/guardian/Destroy()
 	GLOB.parasites -= src
@@ -92,6 +95,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 /mob/living/simple_animal/hostile/guardian/proc/updatetheme(theme) //update the guardian's theme
 	if(!theme)
 		theme = pick("magic", "tech", "carp", "miner")
+
 	switch(theme)//should make it easier to create new stand designs in the future if anyone likes that
 		if("magic")
 			name = "Guardian Spirit"
@@ -174,8 +178,7 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 /mob/living/simple_animal/hostile/guardian/Life(delta_time = SSMOBS_DT, times_fired) //Dies if the summoner dies
 	. = ..()
 	update_health_hud() //we need to update all of our health displays to match our summoner and we can't practically give the summoner a hook to do it
-	med_hud_set_health()
-	med_hud_set_status()
+	update_med_hud()
 	if(!QDELETED(summoner))
 		if(summoner.stat == DEAD)
 			forceMove(summoner.loc)

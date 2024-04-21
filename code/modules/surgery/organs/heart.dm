@@ -41,18 +41,29 @@
 	icon_state = "[base_icon_state]-[pulse ? "on" : "off"]"
 	return ..()
 
+/obj/item/organ/heart/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
+	. = ..()
+	if(!.)
+		return
+
+	owner.med_hud_set_health()
+
 /obj/item/organ/heart/Remove(mob/living/carbon/heartless, special = 0)
 	..()
 	if(!special)
 		addtimer(CALLBACK(src, PROC_REF(stop_if_unowned)), 120)
 
+	heartless.med_hud_set_health()
+
 /obj/item/organ/heart/proc/Restart()
 	pulse = PULSE_NORM
 	update_appearance(UPDATE_ICON_STATE)
+	owner?.med_hud_set_health()
 
 /obj/item/organ/heart/proc/Stop()
 	pulse = PULSE_NONE
 	update_appearance(UPDATE_ICON_STATE)
+	owner?.med_hud_set_health()
 
 /obj/item/organ/heart/proc/stop_if_unowned()
 	if(!owner)
@@ -92,6 +103,8 @@
 		if(pulse != PULSE_NONE)
 			Stop()	//that's it, you're dead (or your metal heart is), nothing can influence your pulse
 		return
+
+	var/starting_pulse = pulse
 
 	// pulse mod starts out as just the chemical effect amount
 	var/pulse_mod = CHEM_EFFECT_MAGNITUDE(owner, CE_PULSE)
@@ -168,6 +181,9 @@
 			pulse--
 		else
 			pulse++
+
+	if(pulse != starting_pulse)
+		owner.med_hud_set_health()
 
 /obj/item/organ/heart/proc/handle_heartbeat()
 	var/can_hear_heart = owner.shock_stage >= SHOCK_TIER_3 || get_step(owner, 0)?.is_below_sound_pressure() || owner.has_status_effect(owner.has_status_effect(/datum/status_effect/jitter))

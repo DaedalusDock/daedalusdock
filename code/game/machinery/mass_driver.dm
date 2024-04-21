@@ -51,7 +51,7 @@
 				break
 			use_power(active_power_usage)
 			O.throw_at(target, drive_range * power, power, spin = FALSE)
-	flick("mass_driver1", src)
+	z_flick("mass_driver1", src)
 
 /obj/machinery/mass_driver/emp_act(severity)
 	. = ..()

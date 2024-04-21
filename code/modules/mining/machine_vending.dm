@@ -112,16 +112,16 @@
 				I = L.get_idcard(TRUE)
 			if(!istype(I))
 				to_chat(usr, span_alert("Error: An ID is required!"))
-				flick(icon_deny, src)
+				z_flick(icon_deny, src)
 				return
 			var/datum/data/mining_equipment/prize = locate(params["ref"]) in prize_list
 			if(!prize || !(prize in prize_list))
 				to_chat(usr, span_alert("Error: Invalid choice!"))
-				flick(icon_deny, src)
+				z_flick(icon_deny, src)
 				return
 			if(prize.cost > I.mining_points)
 				to_chat(usr, span_alert("Error: Insufficient points for [prize.equipment_name] on [I]!"))
-				flick(icon_deny, src)
+				z_flick(icon_deny, src)
 				return
 			I.mining_points -= prize.cost
 			to_chat(usr, span_notice("[src] clanks to life briefly before vending [prize.equipment_name]!"))

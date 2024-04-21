@@ -175,8 +175,9 @@
 		var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
 		var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
 
-		animate(I, pixel_x = new_x + x_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
-		animate(pixel_y = new_y + y_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
+		for(var/atom/movable/AM as anything in I.get_associated_mimics() + I)
+			animate(AM, pixel_x = new_x + x_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
+			animate(pixel_y = new_y + y_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
 		return
 
 /obj/structure/table/CanAllowThrough(atom/movable/mover, border_dir)

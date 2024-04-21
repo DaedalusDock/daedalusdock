@@ -65,7 +65,7 @@
 		update_appearance()
 	else
 		to_chat(user, span_alert("Maintenance Access Denied."))
-		flick("[skin]-denied", src)
+		z_flick("[skin]-denied", src)
 
 	return TRUE
 
@@ -168,7 +168,7 @@
 
 	if(!allowed(user))
 		to_chat(user, span_alert("Access Denied."))
-		flick("[skin]-denied", src)
+		z_flick("[skin]-denied", src)
 		return
 
 	use_power(5)

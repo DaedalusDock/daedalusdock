@@ -52,10 +52,10 @@
 /obj/machinery/door/password/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			z_flick("opening", src)
 			playsound(src, 'sound/machines/doors/blastdoor_open.ogg', 30, TRUE)
 		if("closing")
-			flick("closing", src)
+			z_flick("closing", src)
 			playsound(src, 'sound/machines/doors/blastdoor_close.ogg', 30, TRUE)
 		if("deny")
 			//Deny animation would be nice to have.

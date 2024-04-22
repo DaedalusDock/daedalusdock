@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Multi-Z now supports things such as med huds and antag huds
-  - rscadd: Alot of animations now play across Z levels

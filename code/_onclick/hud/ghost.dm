@@ -77,6 +77,7 @@
 
 /datum/hud/ghost/New(mob/owner)
 	..()
+
 	var/atom/movable/screen/using
 
 	using = new /atom/movable/screen/ghost/spawners_menu(null, src)

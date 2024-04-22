@@ -18,6 +18,10 @@
 		target = mob_target.client
 	else if(!istype(target, /client))
 		CRASH("add_verb called on a non-mob and non-client")
+
+	if(target.restricted_mode)
+		return
+
 	var/list/verbs_list = list()
 	if(!islist(verb_or_list_to_add))
 		verbs_list += verb_or_list_to_add

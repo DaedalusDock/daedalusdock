@@ -401,10 +401,6 @@
 /// Flag to enable the whitelist, only allowing registered players to enter the server
 /datum/config_entry/flag/panic_bunker_discord_require
 
-/// String to show the user if they were denied access due to the WAS
-/datum/config_entry/string/panic_bunker_discord_register_message
-	default = "Sorry but this server requires players to link their Discord account before playing! Please enter the following command, including the token, into this Server's Discord Guild."
-
 /datum/config_entry/string/panic_bunker_message
 	default = "Sorry but the server is currently not accepting connections from never before seen players."
 

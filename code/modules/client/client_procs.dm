@@ -339,8 +339,57 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		player_details.byond_version = full_version
 		GLOB.player_details[ckey] = player_details
 
+	if(CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_discord_require))
+		if(!SSdbcore.Connect())
+			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
+
+			if(!CONFIG_GET(flag/sql_enabled))
+				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
+
+			log_world(msg)
+			message_admins(msg)
+		else
+			if(!discord_is_link_valid(ckey))
+				if(connecting_admin)
+					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
+					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
+					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
+
+				else
+					var/kick = SSlag_switch?.measures[KICK_GUESTS]
+					log_access("Failed Login: [key] - No valid Discord account link registered. [kick ? "" : "They have been permitted to connect as a guest."]")
+					if(kick)
+						restricted_mode = TRUE // Don't bother removing their verbs, theyre about to be booted anyway and verb altering is expensive.
+						var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
+						var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
+						//These need to be immediate because we're disposing of the client the second we're done with this.
+						usr << browse(
+							{"
+								<center>
+								<span style='color:red'>Your One-Time-Password is:<br> [discord_otp]</span>
+								<br><br>
+								To link your Discord account, head to the Discord Server and make an entry ticket if you have not already. Then, paste the following into any channel:
+								<hr/>
+								</center>
+								<code>
+									[discord_prefix]verify [discord_otp]
+								</code>
+								<hr/>
+								discord.daedalus13.net (We are unable to embed this link for security reasons.)
+								<br>
+							"},
+							"window=discordauth;can_close=0;can_resize=0;can_minimize=0",
+						)
+						to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
+						to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
+						to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server (discord.daedalus13.net) and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
+						qdel(src)
+					else
+						set_restricted()
+
 
 	. = ..() //calls mob.Login()
+
 	if (length(GLOB.stickybanadminexemptions))
 		GLOB.stickybanadminexemptions -= ckey
 		if (!length(GLOB.stickybanadminexemptions))
@@ -363,44 +412,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			else
 				qdel(src)
 				return
-
-	if(CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_discord_require))
-		if(!SSdbcore.Connect())
-			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
-
-			if(!CONFIG_GET(flag/sql_enabled))
-				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
-
-			log_world(msg)
-			message_admins(msg)
-		else
-			if(!discord_is_link_valid(ckey))
-				restricted_mode = TRUE
-				var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
-				var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
-				//These need to be immediate because we're disposing of the client the second we're done with this.
-				usr << browse(
-					"<center>[("[CONFIG_GET(string/panic_bunker_discord_register_message)]")] \
-					<br><br><span style='color:red'>Your One-Time-Password is: [discord_otp]</span> \
-					<br><br>To link your Discord account, head to the Discord Server and paste the following message:<hr/></center><code> \
-					[discord_prefix]verify [discord_otp]</code><hr/> \
-					<center><span style='color:red'>discord.daedalus13.net</span> \
-					<br>Due to technical limitations, we cannot embed this link. Love byond.",
-					"window=discordauth;can_resize=0;can_minimize=0",
-				)
-				to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
-				to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
-				to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
-
-				if(connecting_admin)
-					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
-					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
-					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
-
-				else
-					log_access("Failed Login: [key] - No valid Discord account link registered.")
-					qdel(src)
-					return
 
 	if(SSinput.initialized)
 		set_macros()
@@ -481,6 +492,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		if(memo_message)
 			to_chat(src, memo_message)
 		adminGreet()
+
 	if (mob && reconnecting)
 		var/stealth_admin = mob.client?.holder?.fakekey
 		var/announce_leave = mob.client?.prefs?.read_preference(/datum/preference/toggle/broadcast_login_logout)
@@ -504,11 +516,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/cached_player_age = set_client_age_from_db(tdata) //we have to cache this because other shit may change it and we need it's current value now down below.
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
 		player_age = 0
-		var/msg = "<b>This server changes default TG preference values to better fit the feel of our server.</b><br>"
-		msg += "We encourage you to try it out to see if you like it.<br>"
-		msg += "You may re-enable modern visuals in the preference menu.<br><br>"
-		msg += "<b>You will only see this message once</b>"
-		src << browse(msg, "window=warning_popup")
+		spawn(0)
+			if(!QDELETED(src))
+				show_soul_message()
 
 	var/nnpa = CONFIG_GET(number/notify_new_player_age)
 	if (isnum(cached_player_age) && cached_player_age == -1) //first connection
@@ -1324,3 +1334,39 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	hints.Insert(1, "<div style='text-align: center;font-size: 200%;font-weight: bold'>Craftables<hr></div>")
 
 	to_chat(mob, examine_block("<span class='notice'>[jointext(hints, "<br>")]</span>"))
+
+/// Sets a client to restricted status, this cannot be undone, they must reconnect.
+/client/proc/set_restricted()
+	if(restricted_mode)
+		return
+
+	restricted_mode = TRUE
+
+	for (var/v in verbs)
+		var/procpath/verb_path = v
+		remove_verb(src, verb_path)
+
+	for (var/v in mob.verbs)
+		var/procpath/verb_path = v
+		remove_verb(mob, verb_path)
+
+/client/proc/show_soul_message()
+	var/content = {"
+		<div style='width:100%;height:100%'>
+			<fieldset class='computerPane' style='height:100%'>
+				<div class='computerLegend' style='margin: auto;height: 100%'>
+				Welcome to Olympus Outpost, traveler.<br><br>
+
+				You may notice that the station is not run like other stations, and you may have some difficulty adjusting.
+				There's no need to fear, as we provide <b><i>Graphics and Accessibility</i></b> settings in the <b><i>Options</i></b> menu.
+				<br><br>
+				Please enjoy your stay.
+				</div>
+			</fieldset>
+		</div>
+	"}
+
+	var/datum/browser/popup = new(src, "soulnotice", "Notice of Modification", 660, 270)
+	popup.set_window_options("can_close=1;can_resize=0")
+	popup.set_content(content)
+	popup.open()

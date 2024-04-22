@@ -49,9 +49,6 @@
 	SHOULD_CALL_PARENT(TRUE)
 	. = !(TRUE || ..())
 
-	if(!usr.client || usr.client.restricted_mode)
-		return TRUE
-
 	if(!can_usr_use(usr))
 		return TRUE
 

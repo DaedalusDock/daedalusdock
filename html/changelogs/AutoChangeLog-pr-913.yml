@@ -1,0 +1,5 @@
+author: Lohikar, LemonInTheDark, TemporalOroboros, Kapu1178
+delete-after: true
+changes:
+  - refactor: Rewrote explosions
+  - refactor: Smoke and Foam now use a light fluid sim to spread.

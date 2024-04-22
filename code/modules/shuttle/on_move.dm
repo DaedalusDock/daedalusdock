@@ -71,7 +71,6 @@ All ShuttleMove procs go here
 	//Dealing with the turf we left behind
 	oldT.TransferComponents(src)
 
-	SSexplosions.wipe_turf(src)
 	var/shuttle_boundary = baseturfs.Find(/turf/baseturf_skipover/shuttle)
 
 	if(shuttle_boundary)

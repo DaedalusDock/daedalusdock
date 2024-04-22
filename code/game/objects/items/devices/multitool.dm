@@ -105,8 +105,8 @@
 		var/atom/movable/screen/plane_master/camera_static/ai_detect_plane = user.hud_used.plane_masters["[CAMERA_STATIC_PLANE]"]
 		ai_detect_plane.alpha = 64
 		var/datum/atom_hud/hud = GLOB.huds[hud_type]
-		if(!hud.hudusers[user])
-			hud.add_hud_to(user)
+		if(!hud.hud_users[user])
+			hud.show_to(user)
 		eye.eye_user = user
 		eye.setLoc(get_turf(src))
 
@@ -115,7 +115,7 @@
 		var/atom/movable/screen/plane_master/camera_static/ai_detect_plane = user.hud_used.plane_masters["[CAMERA_STATIC_PLANE]"]
 		ai_detect_plane.alpha = 255
 		var/datum/atom_hud/hud = GLOB.huds[hud_type]
-		hud.remove_hud_from(user)
+		hud.hide_from(user)
 		if(eye)
 			eye.setLoc(null)
 			eye.eye_user = null

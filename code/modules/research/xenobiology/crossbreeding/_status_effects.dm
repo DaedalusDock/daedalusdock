@@ -356,7 +356,7 @@
 /datum/status_effect/spookcookie/on_apply()
 	var/image/I = image(icon = 'icons/mob/simple_human.dmi', icon_state = "skeleton", layer = ABOVE_MOB_LAYER, loc = owner)
 	I.override = 1
-	owner.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "spookyscary", I)
+	owner.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/living, "spookyscary", I)
 	return ..()
 
 /datum/status_effect/spookcookie/on_remove()

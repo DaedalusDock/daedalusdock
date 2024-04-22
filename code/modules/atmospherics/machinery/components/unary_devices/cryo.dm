@@ -174,16 +174,16 @@
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/contents_explosion(severity, target)
 	. = ..()
-	if(!beaker)
+	if(QDELETED(beaker))
 		return
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_LIGHT)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/handle_atom_del(atom/A)
 	..()
@@ -290,13 +290,13 @@ GLOBAL_VAR_INIT(cryo_overlay_cover_off, mutable_appearance('icons/obj/cryogenics
 	for(var/mob/M in contents) //only drop mobs
 		M.forceMove(get_turf(src))
 	set_occupant(null)
-	flick("pod-open-anim", src)
+	z_flick("pod-open-anim", src)
 	..()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/close_machine(mob/living/carbon/user)
 	treating_wounds = FALSE
 	if((isnull(user) || istype(user)) && state_open && !panel_open)
-		flick("pod-close-anim", src)
+		z_flick("pod-close-anim", src)
 		..(user)
 		return occupant
 

@@ -13,7 +13,7 @@ import { classes } from 'common/react';
 import { Component } from 'inferno';
 import { marked } from 'marked';
 import { useBackend } from '../backend';
-import { Box, Flex, Tabs, TextArea } from '../components';
+import { Box, Flex, Tabs, TextArea, Table } from '../components';
 import { Window } from '../layouts';
 import { clamp } from 'common/math';
 import { sanitizeText } from '../sanitize';
@@ -30,12 +30,15 @@ const textWidth = (text, font, fontsize) => {
   return width;
 };
 
-const setFontinText = (text, font, color, bold=false) => {
+const setFontinText = (text, font, color, bold=false, italics=false) => {
   return "<span style=\""
     + "color:" + color + ";"
     + "font-family:'" + font + "';"
     + ((bold)
       ? "font-weight: bold;"
+      : "")
+    + ((italics)
+      ? "font-style: italic;"
       : "")
     + "\">" + text + "</span>";
 };
@@ -80,7 +83,7 @@ const createFields = (txt, font, fontsize, color, counter) => {
 
 const signDocument = (txt, color, user) => {
   return txt.replace(sign_regex, () => {
-    return setFontinText(user, "Times New Roman", color, true);
+    return setFontinText(user, "Times New Roman", color, true, true);
   });
 };
 
@@ -388,7 +391,7 @@ const createPreview = (
     // Fifth, we wrap the created text in the pin color, and font.
     // crayon is bold (<b> tags), maybe make fountain pin italic?
     const fonted_text = setFontinText(
-      formatted_text, font, color, is_crayon);
+      formatted_text, font, color, is_crayon, false);
     out.text += fonted_text;
     out.field_counter = fielded_text.counter;
   }
@@ -416,6 +419,7 @@ class PaperSheetEdit extends Component {
       counter: props.counter || 0,
       textarea_text: "",
       combined_text: props.value || "",
+      showingHelpTip: false,
     };
   }
 
@@ -482,7 +486,8 @@ class PaperSheetEdit extends Component {
         direction="column"
         fillPositionedParent>
         <Flex.Item>
-          <Tabs>
+          <Tabs
+            size="100%">
             <Tabs.Tab
               key="marked_edit"
               textColor={'black'}
@@ -542,6 +547,19 @@ class PaperSheetEdit extends Component {
               }}>
               {this.state.previewSelected === "confirm" ? "Confirm" : "Save"}
             </Tabs.Tab>
+            <Tabs.Tab
+              key="marked_help"
+              textColor={'black'}
+              backgroundColor="white"
+              icon="question-circle-o"
+              onmouseover={() => {
+                this.setState({ showingHelpTip: true });
+              }}
+              onmouseout={() => {
+                this.setState({ showingHelpTip: false });
+              }}>
+              Help
+            </Tabs.Tab>
           </Tabs>
         </Flex.Item>
         <Flex.Item
@@ -563,6 +581,9 @@ class PaperSheetEdit extends Component {
               textColor={textColor} />
           )}
         </Flex.Item>
+        {this.state.showingHelpTip && (
+          <HelpToolip />
+        )}
       </Flex>
     );
   }
@@ -607,9 +628,6 @@ export const PaperSheet = (props, context) => {
       values.text = processing.text;
       values.field_counter = processing.field_counter;
     }
-  }
-  else {
-    values.text = sanitizeText(text);
   }
   const stamp_list = !stamps
     ? []
@@ -661,5 +679,190 @@ export const PaperSheet = (props, context) => {
         </Box>
       </Window.Content>
     </Window>
+  );
+};
+
+const HelpToolip = () => {
+  const signature_text = {
+    __html: '<span style="color:#000000;font-family:\'Verdana\';"><span style="color:#000000;font-family:\'Times New Roman\';font-weight: bold;font-style: italic;">Your Name Here</span></span>',
+  };
+  const input_field = {
+    __html: '<input></input>',
+  };
+  return (
+    <Box
+      position="absolute"
+      left="10px"
+      top="25px"
+      width="300px"
+      height="370px"
+      backgroundColor="#E8E4C9" // offset from paper color
+      textAlign="center">
+      <h3>
+        Papercode Syntax
+      </h3>
+      <Table>
+        <Table.Row>
+          <Table.Cell>
+            Signature: %s
+          </Table.Cell>
+          <Table.Cell
+            dangerouslySetInnerHTML={signature_text}
+          />
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            {'[_____]'}
+          </Table.Cell>
+          <Table.Cell
+            dangerouslySetInnerHTML={input_field}
+          />
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            <Box>
+              Heading
+            </Box>
+            =====
+          </Table.Cell>
+          <Table.Cell>
+            <h2>
+              Heading
+            </h2>
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            <Box>
+              Sub Heading
+            </Box>
+            ------
+          </Table.Cell>
+          <Table.Cell>
+            <h4>
+              Sub Heading
+            </h4>
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            _Italic Text_
+          </Table.Cell>
+          <Table.Cell>
+            <i>
+              Italic Text
+            </i>
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            **Bold Text**
+          </Table.Cell>
+          <Table.Cell>
+            <b>
+              Bold Text
+            </b>
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            `Code Text`
+          </Table.Cell>
+          <Table.Cell>
+            <code>
+              Code Text
+            </code>
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            ~~Strikethrough Text~~
+          </Table.Cell>
+          <Table.Cell>
+            <s>
+              Strikethrough Text
+            </s>
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            <Box>
+              Horizontal Rule
+            </Box>
+            ---
+          </Table.Cell>
+          <Table.Cell>
+            Horizontal Rule
+            <hr />
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            <Table>
+              <Table.Row>
+                * List Element 1
+              </Table.Row>
+              <Table.Row>
+                * List Element 2
+              </Table.Row>
+              <Table.Row>
+                * Etc...
+              </Table.Row>
+            </Table>
+          </Table.Cell>
+          <Table.Cell>
+            <ul>
+              <li>
+                List Element 1
+              </li>
+              <li>
+                List Element 2
+              </li>
+              <li>
+                Etc...
+              </li>
+            </ul>
+          </Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>
+            <Table>
+              <Table.Row>
+                1. List Element 1
+              </Table.Row>
+              <Table.Row>
+                2. List Element 2
+              </Table.Row>
+              <Table.Row>
+                3. Etc...
+              </Table.Row>
+            </Table>
+          </Table.Cell>
+          <Table.Cell>
+            <ol>
+              <li>
+                List Element 1
+              </li>
+              <li>
+                List Element 2
+              </li>
+              <li>
+                Etc...
+              </li>
+            </ol>
+          </Table.Cell>
+        </Table.Row>
+      </Table>
+    </Box>
   );
 };

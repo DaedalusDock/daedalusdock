@@ -12,3 +12,13 @@
   Kapu1178:
   - bugfix: Heterochromia works again.
   - bugfix: The "Fingerprints" field of ID cards now uses the correct value.
+2024-04-20:
+  Kapu1178:
+  - rscadd: Gamemodes are back!
+  - rscdel: Dynamic has been disabled.
+  - rscdel: Removed all ghost roles.
+2024-04-22:
+  Kapu1178:
+  - rscadd: Multi-Z now supports things such as med huds and antag huds
+  - rscadd: Alot of animations now play across Z levels
+  - bugfix: Progress bars show up again.

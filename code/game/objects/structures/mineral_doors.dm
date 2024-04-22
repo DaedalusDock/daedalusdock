@@ -92,7 +92,7 @@
 	isSwitchingStates = TRUE
 	playsound(src, openSound, 100, TRUE)
 	set_opacity(FALSE)
-	flick("[initial(icon_state)]opening",src)
+	z_flick("[initial(icon_state)]opening",src)
 	sleep(10)
 	set_density(FALSE)
 	door_opened = TRUE
@@ -112,7 +112,7 @@
 		return
 	isSwitchingStates = TRUE
 	playsound(src, closeSound, 100, TRUE)
-	flick("[initial(icon_state)]closing",src)
+	z_flick("[initial(icon_state)]closing",src)
 	sleep(10)
 	set_density(TRUE)
 	set_opacity(TRUE)

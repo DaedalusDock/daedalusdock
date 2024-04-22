@@ -216,8 +216,8 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	// they ALSO collapse into a singulo.
 	if(istype(clong, /obj/effect/immovablerod))
 		visible_message(span_danger("[src] collides with [clong]! This cannot end well."))
-		var/datum/effect_system/smoke_spread/smoke = new
-		smoke.set_up(2, get_turf(src))
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(2, location = get_turf(src))
 		smoke.start()
 		var/obj/singularity/bad_luck = new(get_turf(src))
 		bad_luck.energy = 800
@@ -227,7 +227,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 	// If we Bump into a turf, turf go boom.
 	if(isturf(clong))
-		SSexplosions.highturf += clong
+		EX_ACT(clong, EXPLODE_DEVASTATE)
 		return ..()
 
 	if(isobj(clong))
@@ -242,7 +242,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 	// If we Bump into anything else, anything goes boom.
 	if(isatom(clong))
-		SSexplosions.high_mov_atom += clong
+		EX_ACT(clong, EXPLODE_DEVASTATE)
 		return ..()
 
 	CRASH("[src] Bump()ed into non-atom thing [clong] ([clong.type])")

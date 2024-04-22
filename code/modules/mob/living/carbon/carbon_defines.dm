@@ -3,7 +3,11 @@
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	//pressure_resistance = 15
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD,GLAND_HUD)
+	hud_possible = list(
+		HEALTH_HUD = 'icons/mob/huds/med_hud.dmi',
+		STATUS_HUD = 'icons/mob/huds/hud.dmi',
+		GLAND_HUD = 'icons/mob/huds/hud.dmi',
+	)
 	has_limbs = TRUE
 	held_items = list(null, null)
 	num_legs = 0 //Populated on init through list/bodyparts

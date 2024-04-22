@@ -1,0 +1,5 @@
+author: Kapu1178, PowerfulBacon
+delete-after: true
+changes:
+  - bugfix: Papercode featureset
+  - rscadd: Paper now has a help tab.

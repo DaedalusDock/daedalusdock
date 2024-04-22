@@ -250,7 +250,7 @@
 
 /obj/structure/inflatable/door/proc/Open()
 	isSwitchingStates = 1
-	flick("door_opening",src)
+	z_flick("door_opening",src)
 	addtimer(CALLBACK(src, PROC_REF(FinishOpen)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishOpen()
@@ -269,7 +269,7 @@
 				return
 
 	isSwitchingStates = 1
-	flick("door_closing",src)
+	z_flick("door_closing",src)
 	addtimer(CALLBACK(src, PROC_REF(FinishClose)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishClose()

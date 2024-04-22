@@ -386,7 +386,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 						qdel(src)
 					else
 						set_restricted()
-						add_verb(src, /client/verb/ooc)
+						add_verb(src, /client/verb/ooc, bypass_restricted = TRUE)
 
 
 	. = ..() //calls mob.Login()

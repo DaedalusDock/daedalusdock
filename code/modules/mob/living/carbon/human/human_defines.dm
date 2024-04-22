@@ -5,6 +5,8 @@
 	icon = 'icons/mob/human.dmi'
 	icon_state = "human_basic"
 	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
+	flags_1 = parent_type::flags_1 | PREVENT_CONTENTS_EXPLOSION_1
+
 	hud_possible = list(
 		HEALTH_HUD = 'icons/mob/huds/med_hud.dmi',
 		STATUS_HUD = 'icons/mob/huds/hud.dmi',

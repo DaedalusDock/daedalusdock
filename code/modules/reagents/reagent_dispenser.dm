@@ -78,8 +78,9 @@
 		icon_state = "fuel_fools"
 
 /obj/structure/reagent_dispensers/fueltank/boom()
-	explosion(src, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
+	var/turf/explode_turf = get_turf(src)
 	qdel(src)
+	explosion(explode_turf, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
 
 /obj/structure/reagent_dispensers/fueltank/blob_act(obj/structure/blob/B)
 	boom()
@@ -130,6 +131,8 @@
 	tank_volume = 5000
 
 /obj/structure/reagent_dispensers/fueltank/large/boom()
+	if(QDELETED(src))
+		return
 	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 7, flame_range = 12)
 	qdel(src)
 

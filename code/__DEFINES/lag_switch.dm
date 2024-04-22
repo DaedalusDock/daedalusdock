@@ -21,4 +21,4 @@
 /// Kick and prevent connections from unverified users
 #define KICK_GUESTS 10
 
-#define MEASURES_AMOUNT 9 // The total number of switches defined above
+#define MEASURES_AMOUNT 10 // The total number of switches defined above

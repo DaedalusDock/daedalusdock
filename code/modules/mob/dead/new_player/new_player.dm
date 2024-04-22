@@ -51,7 +51,9 @@
 			return TRUE
 
 		if(href_list["link_to_discord"])
-			src << link("https://discord.daedalus13.net/")
+			var/_link = CONFIG_GET(string/panic_bunker_discord_link)
+			if(_link)
+				src << link("https://discord.daedalus13.net/")
 			return TRUE
 
 		return TRUE

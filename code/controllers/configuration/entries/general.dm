@@ -296,6 +296,8 @@
 /datum/config_entry/string/discordbotcommandprefix
 	default = "?"
 
+/datum/config_entry/string/panic_bunker_discord_link
+
 /datum/config_entry/string/roundstatsurl
 
 /datum/config_entry/string/gamelogurl

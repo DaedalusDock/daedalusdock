@@ -375,6 +375,9 @@ NOTIFY_NEW_PLAYER_ACCOUNT_AGE 1
 ##  Requires database and PANIC_BUNKER
 #PANIC_BUNKER_DISCORD_REQUIRE
 
+## Discord link for the panic bunker
+#PANIC_BUNKER_DISCORD_LINK
+
 ## Uncomment to enable the interview system for players who are below the living hour requirement instead of explicitly blocking them from the server
 ## Note this requires the PANIC_BUNKER to be enabled to do anything.
 #PANIC_BUNKER_INTERVIEW

@@ -822,11 +822,11 @@ GLOBAL_REAL_VAR(machinery_default_armor) = list()
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += occupant
+			EX_ACT(occupant, EXPLODE_LIGHT)
 
 /obj/machinery/handle_atom_del(atom/deleting_atom)
 	if(deleting_atom == occupant)

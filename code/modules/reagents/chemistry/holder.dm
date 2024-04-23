@@ -543,10 +543,8 @@
 		// pass over previous ongoing reactions before handle_reactions is called
 		transfer_reactions(target_holder)
 
-		src.update_total()
 		target_holder.update_total()
 		target_holder.handle_reactions()
-		src.handle_reactions()
 
 	return amount
 

@@ -901,6 +901,17 @@
 
 /// Handle what happens when your contents are exploded by a bomb
 /atom/proc/contents_explosion(severity, target)
+	for(var/atom/movable/movable_thing as anything in contents)
+		if(QDELETED(movable_thing))
+			continue
+
+		switch(severity)
+			if(EXPLODE_DEVASTATE)
+				EX_ACT(movable_thing, EXPLODE_DEVASTATE)
+			if(EXPLODE_HEAVY)
+				EX_ACT(movable_thing, EXPLODE_HEAVY)
+			if(EXPLODE_LIGHT)
+				EX_ACT(movable_thing, EXPLODE_LIGHT)
 	return //For handling the effects of explosions on contents that would not normally be effected
 
 /**
@@ -2302,3 +2313,7 @@
 /atom/proc/reset_plane_and_layer()
 	plane = initial(plane)
 	layer = initial(layer)
+
+///returns how much the object blocks an explosion. Used by subtypes.
+/atom/proc/GetExplosionBlock()
+	CRASH("Unimplemented GetExplosionBlock()")

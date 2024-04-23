@@ -13,10 +13,13 @@
 	layer = WIRE_LAYER //Above hidden pipes, GAS_PIPE_HIDDEN_LAYER
 	anchored = TRUE
 	obj_flags = CAN_BE_HIT
+
 	/// What cable directions does this cable connect to. Uses a 0-255 bitmasking defined in 'globalvars\lists\cables.dm', with translation lists there aswell
 	var/linked_dirs = NONE
 	/// The powernet the cable is connected to
-	var/datum/powernet/powernet
+	var/tmp/datum/powernet/powernet
+	/// If TRUE, auto_propogate_cut_cable() is sleeping
+	var/tmp/awaiting_rebuild = FALSE
 
 /obj/structure/cable/Initialize(mapload)
 	. = ..()
@@ -326,11 +329,28 @@
 
 	set_directions(current_links, FALSE)
 
-/obj/structure/cable/proc/auto_propagate_cut_cable(obj/O)
-	if(O && !QDELETED(O))
-		var/datum/powernet/newPN = new()// creates a new powernet...
-		//NOTE: If packets are acting weird during very high SSpackets load (if you somehow manage to overload it to the point that you're losing packets from powernet rebuilds...), start looking here.
-		propagate_network(O, newPN)//... and propagates it to the other side of the cable
+/obj/structure/cable/proc/auto_propagate_cut_cable()
+	set waitfor = FALSE
+	if(awaiting_rebuild)
+		return
+
+	awaiting_rebuild = TRUE
+	var/slept = FALSE
+	while(!QDELETED(src) && SSexplosions.is_exploding())
+		slept = TRUE
+		sleep(world.tick_lag)
+
+	if(QDELETED(src))
+		return
+
+	awaiting_rebuild = FALSE
+
+	//NOTE: If packets are acting weird during very high SSpackets load (if you somehow manage to overload it to the point that you're losing packets from powernet rebuilds...), start looking here.
+	var/datum/powernet/newPN = new()// creates a new powernet...
+	if(slept)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(propagate_network), src, newPN), 0)
+	else
+		propagate_network(src, newPN)
 
 //Makes a new network for the cable and propgates it. If we already have one, just die
 /obj/structure/cable/proc/propagate_if_no_network()
@@ -360,11 +380,13 @@
 	powernet.remove_cable(src) //remove the cut cable from its powernet
 
 	var/first = TRUE
-	for(var/obj/O in P_list)
+	for(var/obj/structure/cable/cable in P_list)
 		if(first)
 			first = FALSE
 			continue
-		addtimer(CALLBACK(O, PROC_REF(auto_propagate_cut_cable), O), 0) //so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
+		//so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
+		cable.auto_propagate_cut_cable()
+		//addtimer(CALLBACK(O, PROC_REF(auto_propagate_cut_cable), O), 0)
 
 ///////////////////////////////////////////////
 // Cable variants for mapping

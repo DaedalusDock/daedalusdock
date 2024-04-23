@@ -55,6 +55,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(create_own_fuel)
 		if(!fuel)
 			fuel = new /obj/effect/decal/cleanable/oil(src)
+			if(QDELETED(fuel))
+				qdel(active_hotspot)
+				return
 			fuel.reagents.add_reagent(/datum/reagent/fuel/oil, create_own_fuel)
 		else
 			fuel.reagents.add_reagent(/datum/reagent/fuel/oil, create_own_fuel)

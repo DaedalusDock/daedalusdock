@@ -549,7 +549,7 @@
 
 	reagents.expose(our_turf, TOUCH, min(1, 10 / reagents.total_volume))
 	// We use more water doing this then mopping
-	reagents.remove_any(2) //reaction() doesn't use up the reagents
+	reagents.remove_all(2) //reaction() doesn't use up the reagents
 
 /datum/action/toggle_buffer/build_all_button_icons(status_only = FALSE, force = FALSE)
 	if(buffer_on)

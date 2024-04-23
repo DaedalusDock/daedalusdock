@@ -324,12 +324,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	var/to_smoke = smoke_all ? (reagents.total_volume * (dragtime / smoketime)) : REAGENTS_METABOLISM
 	if(!istype(user) || ((src != user.wear_mask) && !drag))
-		reagents.remove_any(to_smoke)
+		reagents.remove_all(to_smoke)
 		return
 
 	reagents.expose(user, INJECT, min(to_smoke / reagents.total_volume, 1))
 	if(!reagents.trans_to(user, to_smoke, methods = INJECT))
-		reagents.remove_any(to_smoke)
+		reagents.remove_all(to_smoke)
 
 	if(drag || COOLDOWN_FINISHED(src, smoke_cooldown))
 		new /obj/effect/temp_visual/cig_smoke(drop_location())
@@ -1075,7 +1075,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	var/mob/living/carbon/vaper = loc
 	if(!iscarbon(vaper) || src != vaper.wear_mask)
-		reagents.remove_any(REAGENTS_METABOLISM)
+		reagents.remove_all(REAGENTS_METABOLISM)
 		return
 
 	if(reagents.get_reagent_amount(/datum/reagent/fuel))
@@ -1090,7 +1090,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		qdel(src)
 
 	if(!reagents.trans_to(vaper, REAGENTS_METABOLISM, methods = INJECT)) //Going right into the bloodstream
-		reagents.remove_any(REAGENTS_METABOLISM)
+		reagents.remove_all(REAGENTS_METABOLISM)
 
 /obj/item/clothing/mask/vape/process(delta_time)
 	var/mob/living/M = loc

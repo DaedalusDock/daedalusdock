@@ -9,10 +9,10 @@
 	C.set_drowsyness(0)
 	C.remove_status_effect(/datum/status_effect/speech/slurring/drunk)
 	C.remove_status_effect(/datum/status_effect/confusion)
-	holder.remove_all_type(/datum/reagent/consumable/ethanol, 3 * removed, FALSE, TRUE)
+	holder.remove_reagent(/datum/reagent/consumable/ethanol, 3 * removed, include_subtypes = TRUE)
 	var/obj/item/organ/stomach = C.getorganslot(ORGAN_SLOT_STOMACH)
 	if(stomach)
-		stomach.reagents.remove_all_type(/datum/reagent/consumable/ethanol, 3 * removed, FALSE, TRUE)
+		stomach.reagents.remove_reagent(/datum/reagent/consumable/ethanol, 3 * removed, include_subtypes = TRUE)
 	C.adjustToxLoss(-0.2 * removed, 0)
 	C.adjust_drunk_effect(-10 * removed)
 	. = TRUE

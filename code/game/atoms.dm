@@ -742,7 +742,7 @@
 				if(user.can_see_reagents()) //Show each individual reagent
 					. += span_notice("You see the following reagents:")
 					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						. += span_notice("* [round(current_reagent.volume, 0.01)] units of [current_reagent.name].")
+						. += span_notice("* [round(current_reagent.volume, CHEMICAL_VOLUME_ROUNDING)] units of [current_reagent.name].")
 
 					if(reagents.is_reacting)
 						. += span_alert("A chemical reaction is taking place.")

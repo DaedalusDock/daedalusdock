@@ -1080,8 +1080,8 @@
 			if(isliving(my_atom))
 				if(reagent.metabolizing)
 					reagent.metabolizing = FALSE
-					reagent.on_mob_end_metabolize(my_atom)
-				reagent.on_mob_delete(my_atom)
+					reagent.on_mob_end_metabolize(my_atom, metabolism_class)
+				reagent.on_mob_delete(my_atom, metabolism_class)
 
 			//removing it and store in a seperate list for processing later
 			cached_reagents -= reagent

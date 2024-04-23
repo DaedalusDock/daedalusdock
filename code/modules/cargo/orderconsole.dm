@@ -175,6 +175,8 @@
 			"access" = P.access
 		))
 
+	sortTim(., GLOBAL_PROC_REF(cmp_text_asc))
+
 /obj/machinery/computer/cargo/ui_act(action, params, datum/tgui/ui)
 	. = ..()
 	if(.)

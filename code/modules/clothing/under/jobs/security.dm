@@ -71,7 +71,7 @@
 	icon_state = "constable"
 	inhand_icon_state = "constable"
 	can_adjust = FALSE
-	custom_price = PAYCHECK_HARD
+	custom_price = PAYCHECK_ASSISTANT * 5.6
 
 
 /obj/item/clothing/under/rank/security/warden

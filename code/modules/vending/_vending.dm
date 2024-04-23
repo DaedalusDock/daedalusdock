@@ -142,9 +142,9 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	///Bills we accept?
 	var/obj/item/stack/spacecash/bill
 	///Default price of items if not overridden
-	var/default_price = 25
-	///Default price of premium items if not overridden
-	var/extra_price = 50
+	var/default_price = PAYCHECK_ASSISTANT * 0.4
+	/// Default price ADDED to the default price of premium items if they don't have one set.
+	var/extra_price = PAYCHECK_ASSISTANT * 1.5
 	///Whether our age check is currently functional
 	var/age_restrictions = TRUE
 	/**

@@ -52,6 +52,7 @@
 /datum/supply_pack/proc/get_cost()
 	. = cost
 	. *= SSeconomy.pack_price_modifier
+	return floor(.)
 
 /datum/supply_pack/proc/fill(obj/structure/closet/crate/C)
 	if (admin_spawned)
@@ -1019,16 +1020,16 @@
 	dangerous = TRUE
 
 //////////////////////////////////////////////////////////////////////////////
-/////////////////////// Canisters & Materials ////////////////////////////////
+/////////////////////// Materials ////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 /datum/supply_pack/materials
-	group = "Canisters & Materials"
+	group = "Materials"
 
 /datum/supply_pack/materials/cardboard50
 	name = "50 Cardboard Sheets"
 	desc = "Create a bunch of boxes."
-	cost = CARGO_CRATE_VALUE * 2
+	cost = CARGO_CRATE_VALUE + (/datum/material/cardboard::value_per_unit * MINERAL_MATERIAL_AMOUNT * 50)
 	contains = list(/obj/item/stack/sheet/cardboard/fifty)
 	crate_name = "cardboard sheets crate"
 
@@ -1043,49 +1044,35 @@
 /datum/supply_pack/materials/glass50
 	name = "50 Glass Sheets"
 	desc = "Let some nice light in with fifty glass sheets!"
-	cost = CARGO_CRATE_VALUE * 2
+	cost = CARGO_CRATE_VALUE + (/datum/material/glass::value_per_unit * MINERAL_MATERIAL_AMOUNT * 50)
 	contains = list(/obj/item/stack/sheet/glass/fifty)
 	crate_name = "glass sheets crate"
 
 /datum/supply_pack/materials/iron50
 	name = "50 Iron Sheets"
 	desc = "Any construction project begins with a good stack of fifty iron sheets!"
-	cost = CARGO_CRATE_VALUE * 2
+	cost = CARGO_CRATE_VALUE + (/datum/material/iron::value_per_unit * MINERAL_MATERIAL_AMOUNT * 50)
 	contains = list(/obj/item/stack/sheet/iron/fifty)
 	crate_name = "iron sheets crate"
 
 /datum/supply_pack/materials/plasteel20
 	name = "20 Plasteel Sheets"
 	desc = "Reinforce the station's integrity with twenty plasteel sheets!"
-	cost = CARGO_CRATE_VALUE * 15
+	cost = CARGO_CRATE_VALUE + (/datum/material/alloy/plasteel::value_per_unit * MINERAL_MATERIAL_AMOUNT * 20)
 	contains = list(/obj/item/stack/sheet/plasteel/twenty)
-	crate_name = "plasteel sheets crate"
-
-/datum/supply_pack/materials/plasteel50
-	name = "50 Plasteel Sheets"
-	desc = "For when you REALLY have to reinforce something."
-	cost = CARGO_CRATE_VALUE * 33
-	contains = list(/obj/item/stack/sheet/plasteel/fifty)
 	crate_name = "plasteel sheets crate"
 
 /datum/supply_pack/materials/plastic50
 	name = "50 Plastic Sheets"
 	desc = "Build a limitless amount of toys with fifty plastic sheets!"
-	cost = CARGO_CRATE_VALUE * 2
+	cost = CARGO_CRATE_VALUE + (/datum/material/plastic::value_per_unit * MINERAL_MATERIAL_AMOUNT * 50)
 	contains = list(/obj/item/stack/sheet/plastic/fifty)
 	crate_name = "plastic sheets crate"
-
-/datum/supply_pack/materials/sandstone30
-	name = "30 Sandstone Blocks"
-	desc = "Neither sandy nor stoney, these thirty blocks will still get the job done."
-	cost = CARGO_CRATE_VALUE * 2
-	contains = list(/obj/item/stack/sheet/mineral/sandstone/thirty)
-	crate_name = "sandstone blocks crate"
 
 /datum/supply_pack/materials/wood50
 	name = "50 Wood Planks"
 	desc = "Turn cargo's boring metal groundwork into beautiful panelled flooring and much more with fifty wooden planks!"
-	cost = CARGO_CRATE_VALUE * 4
+	cost = CARGO_CRATE_VALUE + (/datum/material/wood::value_per_unit * MINERAL_MATERIAL_AMOUNT * 50)
 	contains = list(/obj/item/stack/sheet/mineral/wood/fifty)
 	crate_name = "wood planks crate"
 
@@ -1141,7 +1128,7 @@
 	crate_type = /obj/structure/closet/crate/large
 
 /datum/supply_pack/materials/gas_canisters
-	cost = CARGO_CRATE_VALUE * 0.05
+	cost = CARGO_CRATE_VALUE
 	contains = list(/obj/machinery/portable_atmospherics/canister)
 	crate_type = /obj/structure/closet/crate/large
 
@@ -1157,7 +1144,7 @@
 		if(!xgm_gas_data.purchaseable[gasType])
 			continue
 		var/datum/supply_pack/materials/pack = new
-		pack.name = "[name] Canister"
+		pack.name = "Canister ([name])"
 		pack.desc = "Contains a canister of [name]."
 		if(xgm_gas_data.flags[gasType] & XGM_GAS_FUEL)
 			pack.desc = "[pack.desc] Requires Atmospherics access to open."
@@ -1166,7 +1153,7 @@
 		pack.crate_name = "[name] canister crate"
 		pack.id = "[type]([name])"
 
-		pack.cost = cost + moleCount * xgm_gas_data.base_value[gasType] * 1.6
+		pack.cost = cost + (moleCount * xgm_gas_data.base_value[gasType])
 		pack.cost = CEILING(pack.cost, 10)
 
 		pack.contains = list(GLOB.gas_id_to_canister[gasType])
@@ -1177,11 +1164,11 @@
 
 	////AIRMIX SPECIAL BABY
 	var/datum/supply_pack/materials/airpack = new
-	airpack.name = "Airmix Canister"
+	airpack.name = "Canister (Airmix)"
 	airpack.desc = "Contains a canister of breathable air."
 	airpack.crate_name = "airmix canister crate"
 	airpack.id = "[type](airmix)"
-	airpack.cost = 3000
+	airpack.cost = 200
 	airpack.contains = list(/obj/machinery/portable_atmospherics/canister/air)
 	airpack.crate_type = crate_type
 	canister_packs += airpack
@@ -1256,7 +1243,7 @@
 //////////////////////////// Reagent /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 /datum/supply_pack/reagent
-	group = "Reagent"
+	group = "Reagents"
 	crate_type = /obj/structure/closet/crate/medical
 
 /datum/supply_pack/reagent/chemical_carts
@@ -1332,15 +1319,13 @@
 		pack.crate_name = "reagent crate ([name])"
 		pack.id = "[type]([name])"
 
-		pack.cost = round(base_cost + (initial(reagent_path.value) * volume), 10)
+		pack.cost = round(base_cost + (initial(reagent_path.value) * volume), 5)
 
 		pack.contains = list(reagent_path)
 
 		pack.crate_type = crate_type
 
 		. += pack
-
-	sortTim(., GLOBAL_PROC_REF(cmp_name_dsc))
 
 /datum/supply_pack/reagent/individual_chem_cart/fill(obj/structure/closet/crate/crate)
 	var/datum/reagent/reagent_path = contains[1]

@@ -79,6 +79,9 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 			"id" = pack.id,
 			"desc" = pack.desc || pack.name, // If there is a description, use it. Otherwise use the pack's name.
 		))
+
+	sortTim(data["supplies"], GLOBAL_PROC_REF(cmp_text_asc))
+
 	data["supplies"] = supply_data
 	return data
 
@@ -177,7 +180,7 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	department_delivery_areas = list(/area/station/engineering/main)
 	override_access = ACCESS_CE
 	req_one_access = REGION_ACCESS_ENGINEERING
-	dep_groups = list("Engineering", "Engine Construction", "Canisters & Materials")
+	dep_groups = list("Engineering", "Engine Construction", "Materials")
 
 /obj/machinery/computer/department_orders/science
 	name = "science order console"
@@ -201,4 +204,4 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 	department_delivery_areas = list(/area/station/medical/medbay/central)
 	override_access = ACCESS_CMO
 	req_one_access = REGION_ACCESS_MEDBAY
-	dep_groups = list("Medical")
+	dep_groups = list("Medical", "Reagents")

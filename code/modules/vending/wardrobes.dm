@@ -2,7 +2,7 @@
 	icon_state = "refill_clothes"
 
 /obj/machinery/vending/wardrobe
-	default_price = PAYCHECK_ASSISTANT
+	default_price = PAYCHECK_ASSISTANT * 0.8
 	extra_price = PAYCHECK_HARD
 	payment_department = NO_FREEBIES
 	input_display_header = "Returned Clothing"
@@ -360,7 +360,7 @@
 					/obj/item/watertank/janitor = 1,
 					/obj/item/storage/belt/janitor = 2)
 	refill_canister = /obj/item/vending_refill/wardrobe/jani_wardrobe
-	default_price = PAYCHECK_EASY
+	default_price = PAYCHECK_ASSISTANT * 0.8
 	extra_price = PAYCHECK_HARD * 0.8
 	payment_department = ACCOUNT_STATION_MASTER
 	light_color = COLOR_STRONG_MAGENTA
@@ -552,7 +552,7 @@
 					/obj/item/storage/fancy/cigarettes = 5)
 	premium = list(/obj/item/clothing/head/flatcap = 1)
 	refill_canister = /obj/item/vending_refill/wardrobe/det_wardrobe
-	extra_price = PAYCHECK_COMMAND * 1.75
+	extra_price = PAYCHECK_ASSISTANT * 4
 	payment_department = ACCOUNT_SEC
 
 	discount_access = ACCESS_FORENSICS

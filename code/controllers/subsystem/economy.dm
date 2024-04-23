@@ -123,6 +123,7 @@ SUBSYSTEM_DEF(economy)
 			department_account.adjust_money(-required_funds)
 
 			for(var/datum/bank_account/bank_account in to_pay)
+				/// We don't use transfering, because we already know there's enough money.
 				bank_account.payday()
 
 			var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)

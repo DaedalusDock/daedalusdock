@@ -1,28 +1,19 @@
-/// Number of paychecks jobs start with at the creation of a new bank account for a player (So at shift-start or game join, but not a blank new account.)
-#define STARTING_PAYCHECKS 2
 /// How much mail the Economy SS will create per minute, regardless of firing time.
 #define MAX_MAIL_PER_MINUTE 0.05
 /// Probability of using letters of envelope sprites on all letters.
 #define FULL_CRATE_LETTER_ODDS 70
 
-//
-#define PAYCHECK_PRISONER 25
-#define PAYCHECK_ASSISTANT 50
-#define PAYCHECK_MINIMAL 55
-#define PAYCHECK_EASY 60
-#define PAYCHECK_MEDIUM 75
-#define PAYCHECK_HARD 100
-#define PAYCHECK_COMMAND 200
+
+/// The baseline cost for basically everything in the game
+#define PAYCHECK_ASSISTANT 10
+
+#define PAYCHECK_MINIMAL (PAYCHECK_ASSISTANT * 2)
+#define PAYCHECK_EASY (PAYCHECK_ASSISTANT * 2.5)
+#define PAYCHECK_MEDIUM (PAYCHECK_ASSISTANT * 4)
+#define PAYCHECK_HARD (PAYCHECK_ASSISTANT * 7)
+#define PAYCHECK_COMMAND (PAYCHECK_ASSISTANT * 20)
 
 #define PAYCHECK_ZERO 0
-
-///The amount of money taken from station master and distributed to all departments every 5 minutes.
-#define ECON_STATION_PAYOUT 6000
-///The amount of money in a department account where station master will stop filling it up.
-#define ECON_STATION_PAYOUT_MAX 5000
-
-///The minimum amount of money in the station master account required for a departmental payout
-#define ECON_STATION_PAYOUT_REQUIREMENT 600
 
 //A multiplier for when you buy from your department.
 #define VENDING_DISCOUNT 0

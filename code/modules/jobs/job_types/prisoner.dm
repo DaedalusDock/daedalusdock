@@ -8,7 +8,7 @@
 	supervisors = "the security team"
 	selection_color = "#bd630a"
 	exp_granted_type = EXP_TYPE_CREW
-	paycheck = PAYCHECK_PRISONER
+	paycheck = PAYCHECK_ZERO //This doesnt actually do anything since prisoners have no department
 
 	outfits = list(
 		"Default" = list(

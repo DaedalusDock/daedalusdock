@@ -130,7 +130,7 @@
 	junkiness = 25
 	foodtypes = JUNKFOOD | GRAIN | SUGAR
 	food_flags = FOOD_FINGER_FOOD
-	custom_price = PAYCHECK_PRISONER
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/food/candy_trash

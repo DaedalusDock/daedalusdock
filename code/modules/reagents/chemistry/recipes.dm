@@ -127,10 +127,11 @@
  */
 /datum/chemical_reaction/proc/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	for(var/id in results)
-		var/datum/reagent/reagent = holder.get_reagent(id)
+		var/datum/reagent/reagent = holder.has_reagent(id)
 		if(!reagent)
 			return
-		reagent.volume = round((reagent.volume*0.98), 0.01) //Slowly lower yield per tick
+		reagent.volume *= 0.98 //Slowly lower yield per tick
+	holder.update_total()
 
 /**
  * Magical mob spawning when chemicals react

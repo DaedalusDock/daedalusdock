@@ -88,7 +88,6 @@
 		stack_trace("[my_atom] attempted to add a reagent called '[reagent]' which doesn't exist. ([usr])")
 		return FALSE
 
-	update_total()
 	var/cached_total = total_volume
 	if(cached_total + amount > maximum_volume)
 		amount = maximum_volume - cached_total //Doesnt fit in. Make it disappear. shouldn't happen. Will happen.
@@ -974,6 +973,36 @@
 	for(var/datum/reagent/reagent as anything in reagent_list)
 		LAZYADD(previous_reagent_list, reagent.type)
 
+/// Returns TRUE if this container's temp would overheat a reaction.
+/datum/reagents/proc/is_reaction_overheating(datum/chemical_reaction/reaction)
+	if(reaction.is_cold_recipe)
+		if(chem_temp < reaction.overheat_temp && reaction.overheat_temp != NO_OVERHEAT)
+			return TRUE
+
+	else if(chem_temp > reaction.overheat_temp)
+		return TRUE
+
+	return FALSE
+
+/// Gives feedback that a reaction is occuring. Returns an icon2html string.
+/datum/reagents/proc/reaction_message(datum/chemical_reaction/reaction, is_overheating = is_reaction_overheating(reaction), atom/display_atom = my_atom)
+	var/turf/T = get_turf(display_atom)
+	if(isnull(T))
+		return
+
+	var/list/seen = viewers(4, display_atom)
+	var/iconhtml = icon2html(display_atom, seen)
+
+	if(is_overheating)
+		display_atom.audible_message(span_alert("[iconhtml] [display_atom] sizzles as the solution boils off."))
+		playsound(T, 'sound/effects/wounds/sizzle1.ogg', 80, TRUE)
+		return
+
+	display_atom.audible_message(span_notice("[iconhtml] [reaction.mix_message]"))
+	if(reaction.mix_sound)
+		playsound(T, reaction.mix_sound, 80, TRUE)
+
+
 ///Old reaction mechanics, edited to work on one only
 ///This is changed from the old - purity of the reagents will affect yield
 /datum/reagents/proc/instant_react(datum/chemical_reaction/selected_reaction)
@@ -999,20 +1028,17 @@
 		SSblackbox.record_feedback("tally", "chemical_reaction", yield, product)
 		add_reagent(product, yield, null, chem_temp,)
 
-	var/list/seen = viewers(4, get_turf(my_atom))
-	var/iconhtml = icon2html(cached_my_atom, seen)
 	if(cached_my_atom)
 		if(!ismob(cached_my_atom)) // No bubbling mobs
-			if(selected_reaction.mix_sound)
-				playsound(get_turf(cached_my_atom), selected_reaction.mix_sound, 80, TRUE)
-
-			my_atom.audible_message(span_notice("[iconhtml] [selected_reaction.mix_message]"))
+			reaction_message(selected_reaction, display_atom = cached_my_atom)
 
 		if(istype(cached_my_atom, /obj/item/slime_extract))
-			var/obj/item/slime_extract/extract = my_atom
+			var/list/seen = viewers(4, cached_my_atom)
+			var/iconhtml = icon2html(cached_my_atom, seen)
+			var/obj/item/slime_extract/extract = cached_my_atom
 			extract.Uses--
 			if(extract.Uses <= 0) // give the notification that the slime core is dead
-				my_atom.visible_message(span_notice("[iconhtml] \The [my_atom]'s power is consumed in the reaction."))
+				my_atom.visible_message(span_notice("[iconhtml] \The [cached_my_atom]'s power is consumed in the reaction."))
 				extract.name = "used slime extract"
 				extract.desc = "This extract has been used up."
 

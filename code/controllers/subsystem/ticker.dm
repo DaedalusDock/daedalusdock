@@ -732,7 +732,7 @@ SUBSYSTEM_DEF(ticker)
 	///The full datum of the last song used.
 	var/datum/media/old_login_music
 
-	if(rustg_file_exists("data/last_round_lobby_music.txt")) //The define isn't truthy
+	if(rustg_file_exists("data/last_round_lobby_music.txt"))
 		old_login_music_t = rustg_file_read("data/last_round_lobby_music.txt")
 	var/list/music_tracks = title_music_data + rare_music_data
 	//Filter map-specific tracks
@@ -802,7 +802,7 @@ SUBSYSTEM_DEF(ticker)
 	if(!mode)
 		var/list/datum/game_mode/runnable_modes = draft_gamemodes()
 		if(!runnable_modes.len)
-			message_admins(world, "<B>No viable gamemodes to play.</B> Running Extended.")
+			message_debug(DBG_WARN, "Ticker/init_gamemode", "<u>No valid gamemodes.</u> Extended has been forced.", DBG_ALWAYS | DBG_LOG_WORLD)
 			mode = new /datum/game_mode/extended
 		else
 			mode = pick_weight(runnable_modes)
@@ -842,7 +842,10 @@ SUBSYSTEM_DEF(ticker)
 			SSjob.ResetOccupations()
 			return FALSE
 	else
-		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+		if(can_continue)
+			message_debug(DBG_TRACE, "Ticker/init_gamemode", "Roundstart execution and occupation division were skipped, and would have passed anyways.")
+		else
+			message_debug(DBG_ERROR, "Ticker/init_gamemode", "Roundstart execution and occupation division were skipped, and at least one failed!")
 
 	log_game("Gamemode successfully initialized, chose: [mode.name]")
 	return TRUE

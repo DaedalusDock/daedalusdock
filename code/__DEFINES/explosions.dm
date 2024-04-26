@@ -23,11 +23,16 @@
 
 /// A wrapper for [/atom/proc/ex_act] to ensure that the explosion propagation and attendant signal are always handled.
 #define EX_ACT(target, args...)\
-	if(!(target.flags_1 & PREVENT_CONTENTS_EXPLOSION_1)) { \
+	if(length(target.contents) && !(target.flags_1 & PREVENT_CONTENTS_EXPLOSION_1)) { \
 		target.contents_explosion(##args);\
 	};\
 	SEND_SIGNAL(target, COMSIG_ATOM_EX_ACT, ##args);\
 	target.ex_act(##args);
+
+#define EX_ACT_LIST(target, args...) \
+	for(var/atom/movable/AM as anything in target) { \
+		EX_ACT(AM, ##args) \
+	}
 
 // Internal explosion argument list keys.
 // Must match the arguments to [/datum/controller/subsystem/explosions/proc/propagate_blastwave]

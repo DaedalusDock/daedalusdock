@@ -14,17 +14,17 @@
  * * end: What we're trying to path to. It doesn't matter if this is a turf or some other atom, we're gonna just path to the turf it's on anyway
  * * max_distance: The maximum number of steps we can take in a given path to search (default: 30, 0 = infinite)
  * * mintargetdistance: Minimum distance to the target before path returns, could be used to get near a target, but not right to it - for an AI mob with a gun, for example.
- * * id: An ID card representing what access we have and what doors we can open. Its location relative to the pathing atom is irrelevant
+ * * access: A list representing what access we have and what doors we can open.
  * * simulated_only: Whether we consider turfs without atmos simulation (AKA do we want to ignore space)
  * * exclude: If we want to avoid a specific turf, like if we're a mulebot who already got blocked by some turf
  * * skip_first: Whether or not to delete the first item in the path. This would be done because the first item is the starting tile, which can break movement for some creatures.
  * * diagonal_safety: ensures diagonal moves won't use invalid midstep turfs by splitting them into two orthogonal moves if necessary
  */
-/proc/get_path_to(atom/movable/caller, atom/end, max_distance = 30, mintargetdist, id=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_safety=TRUE)
+/proc/get_path_to(atom/movable/caller, atom/end, max_distance = 30, mintargetdist, list/access, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_safety=TRUE)
 	var/list/path = list()
 	// We're guarenteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
 	var/datum/callback/await = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), path)
-	if(!SSpathfinder.pathfind(caller, end, max_distance, mintargetdist, id, simulated_only, exclude, skip_first, diagonal_safety, await))
+	if(!SSpathfinder.pathfind(caller, end, max_distance, mintargetdist, access, simulated_only, exclude, skip_first, diagonal_safety, await))
 		return list()
 
 	UNTIL(length(path))
@@ -44,7 +44,7 @@
  * If you really want to optimize things, optimize this, cuz this gets called a lot.
  * We do early next.density check despite it being already checked in LinkBlockedWithAccess for short-circuit performance
  */
-#define CAN_STEP(cur_turf, next) (next && !next.density && !(simulated_only && isspaceturf(next)) && !cur_turf.LinkBlockedWithAccess(next,caller, id) && (next != avoid))
+#define CAN_STEP(cur_turf, next) (next && !next.density && !(simulated_only && isspaceturf(next)) && !cur_turf.LinkBlockedWithAccess(next, caller, access) && (next != avoid))
 /// Another helper macro for JPS, for telling when a node has forced neighbors that need expanding
 #define STEP_NOT_HERE_BUT_THERE(cur_turf, dirA, dirB) ((!CAN_STEP(cur_turf, get_step(cur_turf, dirA)) && CAN_STEP(cur_turf, get_step(cur_turf, dirB))))
 
@@ -110,8 +110,8 @@
 	var/list/path
 
 	// general pathfinding vars/args
-	/// An ID card representing what access we have and what doors we can open. Its location relative to the pathing atom is irrelevant
-	var/obj/item/card/id/id
+	/// A list representing what access we have and what doors we can open.
+	var/list/access
 	/// How far away we have to get to the end target before we can call it quits
 	var/mintargetdist = 0
 	/// I don't know what this does vs , but they limit how far we can search before giving up on a path
@@ -127,12 +127,12 @@
 	/// The callback to invoke when we're done working, passing in the completed var/list/path
 	var/datum/callback/on_finish
 
-/datum/pathfind/New(atom/movable/caller, atom/goal, id, max_distance, mintargetdist, simulated_only, avoid, skip_first, diagonal_safety, datum/callback/on_finish)
+/datum/pathfind/New(atom/movable/caller, atom/goal, access, max_distance, mintargetdist, simulated_only, avoid, skip_first, diagonal_safety, datum/callback/on_finish)
 	src.caller = caller
 	end = get_turf(goal)
 	open = new /datum/heap(GLOBAL_PROC_REF(HeapPathWeightCompare))
 	sources = new()
-	src.id = id
+	src.access = access
 	src.max_distance = max_distance
 	src.mintargetdist = mintargetdist
 	src.simulated_only = simulated_only
@@ -407,11 +407,11 @@
  *
  * Arguments:
  * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
- * * ID: An ID card that decides if we can gain access to doors that would otherwise block a turf
+ * * access: A list that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
  * * no_id: When true, doors with public access will count as impassible
 */
-/turf/proc/LinkBlockedWithAccess(turf/destination_turf, atom/movable/caller, ID, no_id = FALSE)
+/turf/proc/LinkBlockedWithAccess(turf/destination_turf, atom/movable/caller, list/access, no_id = FALSE)
 	if(destination_turf.x != x && destination_turf.y != y) //diagonal
 		var/in_dir = get_dir(destination_turf,src) // eg. northwest (1+8) = 9 (00001001)
 		var/first_step_direction_a = in_dir & 3 // eg. north   (1+8)&3 (0000 0011) = 1 (0000 0001)
@@ -419,7 +419,7 @@
 
 		for(var/first_step_direction in list(first_step_direction_a,first_step_direction_b))
 			var/turf/midstep_turf = get_step(destination_turf,first_step_direction)
-			var/way_blocked = midstep_turf.density || LinkBlockedWithAccess(midstep_turf,caller,ID, no_id = no_id) || midstep_turf.LinkBlockedWithAccess(destination_turf,caller,ID, no_id = no_id)
+			var/way_blocked = midstep_turf.density || LinkBlockedWithAccess(midstep_turf,caller, access, no_id = no_id) || midstep_turf.LinkBlockedWithAccess(destination_turf,caller,access, no_id = no_id)
 			if(!way_blocked)
 				return FALSE
 		return TRUE
@@ -432,7 +432,7 @@
 		//	if(destination_turf.density)
 		//		return TRUE
 		if(TURF_PATHING_PASS_PROC)
-			if(!destination_turf.CanAStarPass(ID, actual_dir , caller, no_id = no_id))
+			if(!destination_turf.CanAStarPass(access, actual_dir , caller, no_id = no_id))
 				return TRUE
 		if(TURF_PATHING_PASS_NO)
 			return TRUE
@@ -444,7 +444,7 @@
 			continue
 		if(!border.density && border.can_astar_pass == CANASTARPASS_DENSITY)
 			continue
-		if(!border.CanAStarPass(ID, actual_dir, no_id = no_id))
+		if(!border.CanAStarPass(access, actual_dir, no_id = no_id))
 			return TRUE
 
 	// Destination blockers check
@@ -453,6 +453,6 @@
 		// This is an optimization because of the massive call count of this code
 		if(!iter_object.density && iter_object.can_astar_pass == CANASTARPASS_DENSITY)
 			continue
-		if(!iter_object.CanAStarPass(ID, reverse_dir, caller, no_id))
+		if(!iter_object.CanAStarPass(access, reverse_dir, caller, no_id))
 			return TRUE
 	return FALSE

@@ -22,7 +22,7 @@
 	if(voice_activated)
 		become_hearing_sensitive()
 
-/obj/machinery/door/password/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc)
+/obj/machinery/door/password/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
 	if(!density || !voice_activated || radio_freq)
 		return
@@ -52,10 +52,10 @@
 /obj/machinery/door/password/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			z_flick("opening", src)
 			playsound(src, 'sound/machines/doors/blastdoor_open.ogg', 30, TRUE)
 		if("closing")
-			flick("closing", src)
+			z_flick("closing", src)
 			playsound(src, 'sound/machines/doors/blastdoor_close.ogg', 30, TRUE)
 		if("deny")
 			//Deny animation would be nice to have.

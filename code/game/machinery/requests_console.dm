@@ -281,6 +281,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 		if(isliving(usr))
 			var/mob/living/L = usr
 			message = L.treat_message(message)
+
 		minor_announce(message, "[department] Announcement:", html_encode = FALSE)
 		GLOB.news_network.submit_article(message, department, "Station Announcements", null)
 		usr.log_talk(message, LOG_SAY, tag="station announcement from [src]")

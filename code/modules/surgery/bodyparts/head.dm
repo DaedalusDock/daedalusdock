@@ -307,6 +307,12 @@
 	return gradient_overlay
 
 /obj/item/bodypart/head/talk_into(mob/holder, message, channel, spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = holder?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	var/mob/headholder = holder
 	if(istype(headholder))
 		headholder.log_talk(message, LOG_SAY, tag = "beheaded talk")

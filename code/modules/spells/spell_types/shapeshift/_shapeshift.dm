@@ -163,11 +163,11 @@
 	stored.forceMove(src)
 	stored.notransform = TRUE
 	if(source.convert_damage)
-		var/damage_percent = (stored.maxHealth - stored.health) / stored.maxHealth;
-		var/damapply = damage_percent * shape.maxHealth;
+		var/damage_percent = (stored.maxHealth - stored.health) / stored.maxHealth
+		var/damapply = damage_percent * shape.maxHealth
 
-		shape.apply_damage(damapply, source.convert_damage_type, forced = TRUE);
-		shape.blood_volume = stored.blood_volume;
+		shape.apply_damage(damapply, source.convert_damage_type, forced = TRUE)
+		shape.setBloodVolume(stored.blood_volume)
 
 	RegisterSignal(shape, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(shape_death))
 	RegisterSignal(stored, list(COMSIG_PARENT_QDELETING, COMSIG_LIVING_DEATH), PROC_REF(caster_death))
@@ -234,7 +234,7 @@
 
 		stored.apply_damage(damapply, source.convert_damage_type, forced = TRUE)
 	if(source.convert_damage)
-		stored.blood_volume = shape.blood_volume;
+		stored.setBloodVolume(shape.blood_volume)
 
 	// This guard is important because restore() can also be called on COMSIG_PARENT_QDELETING for shape, as well as on death.
 	// This can happen in, for example, [/proc/wabbajack] where the mob hit is qdel'd.

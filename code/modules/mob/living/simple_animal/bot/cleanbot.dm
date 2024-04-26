@@ -41,7 +41,7 @@
 	var/static/list/officers_titles = list(
 		JOB_CAPTAIN,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_RESEARCH_DIRECTOR,
 	)
 	var/static/list/command_titles = list(
@@ -49,7 +49,7 @@
 		JOB_HEAD_OF_PERSONNEL = "Lt.",
 	)
 	var/static/list/security_titles = list(
-		JOB_HEAD_OF_SECURITY = "Maj.",
+		JOB_SECURITY_MARSHAL = "Maj.",
 		JOB_WARDEN = "Sgt.",
 		JOB_DETECTIVE = "Det.",
 		JOB_SECURITY_OFFICER = "Officer",
@@ -60,7 +60,7 @@
 		JOB_ATMOSPHERIC_TECHNICIAN = "Technician",
 	)
 	var/static/list/medical_titles = list(
-		JOB_CHIEF_MEDICAL_OFFICER = "C.M.O.",
+		JOB_MEDICAL_DIRECTOR = "C.M.O.",
 		JOB_MEDICAL_DOCTOR = "M.D.",
 		JOB_CHEMIST = "Pharm.D.",
 	)
@@ -264,7 +264,7 @@
 				return
 
 		if(target && path.len == 0 && (get_dist(src,target) > 1))
-			path = get_path_to(src, target, max_distance=30, mintargetdist=1, id=access_card)
+			path = get_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
 			mode = BOT_MOVING
 			if(length(path) == 0)
 				add_to_ignore(target)
@@ -387,7 +387,7 @@
 					current_floor.MakeSlippery(TURF_WET_WATER, min_wet_time = 20 SECONDS, wet_time_to_add = 15 SECONDS)
 			else
 				visible_message(span_danger("[src] whirs and bubbles violently, before releasing a plume of froth!"))
-				new /obj/effect/particle_effect/foam(loc)
+				new /obj/effect/particle_effect/fluid/foam(loc)
 
 /mob/living/simple_animal/bot/cleanbot/explode()
 	var/atom/drop_loc = drop_location()

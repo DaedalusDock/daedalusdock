@@ -170,7 +170,7 @@
 
 			busy = TRUE
 			use_power(power)
-			flick("limbgrower_fill",src)
+			z_flick("limbgrower_fill",src)
 			icon_state = "limbgrower_idleon"
 			selected_category = params["active_tab"]
 			addtimer(CALLBACK(src, PROC_REF(build_item), consumed_reagents_list), production_speed * production_coefficient)

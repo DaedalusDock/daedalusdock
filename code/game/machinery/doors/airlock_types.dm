@@ -307,6 +307,7 @@
 /obj/machinery/door/airlock/public/glass
 	opacity = FALSE
 	glass = TRUE
+	explosion_block = 0 //:)
 
 /obj/machinery/door/airlock/public/glass/incinerator
 	autoclose = FALSE

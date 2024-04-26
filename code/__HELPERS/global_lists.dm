@@ -109,6 +109,8 @@
 
 	init_blood_types()
 
+	init_language_datums()
+
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
 	for(var/path in subtypesof(/datum/crafting_recipe))
@@ -251,3 +253,15 @@ GLOBAL_LIST_INIT(magnet_error_codes, list(
 		if(isabstract(path))
 			continue
 		GLOB.blood_datums[path] = new path()
+
+/proc/init_language_datums()
+	for(var/datum/language/language as anything in subtypesof(/datum/language))
+		if(isabstract(language) || !initial(language.key))
+			continue
+
+		var/datum/language/instance = new language
+		GLOB.all_languages += instance
+		GLOB.language_datum_instances[language] = instance
+
+		if(instance.flags & (LANGUAGE_SELECTABLE_SPEAK | LANGUAGE_SELECTABLE_UNDERSTAND))
+			GLOB.preference_language_types += language

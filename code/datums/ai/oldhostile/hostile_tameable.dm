@@ -19,7 +19,7 @@
 /datum/ai_controller/hostile_friend/process(delta_time)
 	if(isliving(pawn))
 		var/mob/living/living_pawn = pawn
-		movement_delay = living_pawn.cached_multiplicative_slowdown
+		movement_delay = living_pawn.movement_delay
 	return ..()
 
 /datum/ai_controller/hostile_friend/TryPossessPawn(atom/new_pawn)
@@ -62,7 +62,7 @@
 	if(!istype(simple_pawn))
 		return
 
-	return simple_pawn.access_card
+	return simple_pawn.access_card.GetAccess()
 
 /datum/ai_controller/hostile_friend/proc/on_ridden_driver_move(atom/movable/movable_parent, mob/living/user, direction)
 	SIGNAL_HANDLER

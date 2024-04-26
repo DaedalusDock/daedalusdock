@@ -53,6 +53,7 @@
 		user.update_sight()
 		if(iscarbon(user))
 			var/mob/living/carbon/carbon_user = user
+			carbon_user.update_tint()
 			carbon_user.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 //called when thermal glasses are emped.
@@ -569,7 +570,7 @@
 	if(ishuman(user))
 		for(var/hud in hudlist)
 			var/datum/atom_hud/H = GLOB.huds[hud]
-			H.add_hud_to(user)
+			H.show_to(user)
 		ADD_TRAIT(user, TRAIT_MEDICAL_HUD, GLASSES_TRAIT)
 		ADD_TRAIT(user, TRAIT_SECURITY_HUD, GLASSES_TRAIT)
 		if(xray)
@@ -583,7 +584,7 @@
 	if(ishuman(user))
 		for(var/hud in hudlist)
 			var/datum/atom_hud/H = GLOB.huds[hud]
-			H.remove_hud_from(user)
+			H.hide_from(user)
 
 /obj/item/clothing/glasses/debug/AltClick(mob/user)
 	. = ..()

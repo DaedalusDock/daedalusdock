@@ -100,6 +100,10 @@
 	controller.queue_loop(src)
 
 /datum/move_loop/process()
+	if(isnull(controller))
+		qdel(src)
+		return
+
 	var/old_delay = delay //The signal can sometimes change delay
 
 	if(SEND_SIGNAL(src, COMSIG_MOVELOOP_PREPROCESS_CHECK) & MOVELOOP_SKIP_STEP) //Chance for the object to react
@@ -308,7 +312,7 @@
 	repath_delay,
 	max_path_length,
 	minimum_distance,
-	obj/item/card/id/id,
+	list/access,
 	simulated_only,
 	turf/avoid,
 	skip_first,
@@ -329,7 +333,7 @@
 		repath_delay,
 		max_path_length,
 		minimum_distance,
-		id,
+		access,
 		simulated_only,
 		avoid,
 		skip_first,
@@ -342,8 +346,8 @@
 	var/max_path_length
 	///Minimum distance to the target before path returns
 	var/minimum_distance
-	///An ID card representing what access we have and what doors we can open. Kill me
-	var/obj/item/card/id/id
+	///A list representing what access we have and what doors we can open.
+	var/list/access
 	///Whether we consider turfs without atmos simulation (AKA do we want to ignore space)
 	var/simulated_only
 	///A perticular turf to avoid
@@ -363,24 +367,21 @@
 	. = ..()
 	on_finish_callback = CALLBACK(src, PROC_REF(on_finish_pathing))
 
-/datum/move_loop/has_target/jps/setup(delay, timeout, atom/chasing, repath_delay, max_path_length, minimum_distance, obj/item/card/id/id, simulated_only, turf/avoid, skip_first, list/initial_path)
+/datum/move_loop/has_target/jps/setup(delay, timeout, atom/chasing, repath_delay, max_path_length, minimum_distance, list/access, simulated_only, turf/avoid, skip_first, list/initial_path)
 	. = ..()
 	if(!.)
 		return
 	src.repath_delay = repath_delay
 	src.max_path_length = max_path_length
 	src.minimum_distance = minimum_distance
-	src.id = id
+	src.access = access
 	src.simulated_only = simulated_only
 	src.avoid = avoid
 	src.skip_first = skip_first
-	movement_path = initial_path.Copy()
-
-	if(istype(id, /obj/item/card/id))
-		RegisterSignal(id, COMSIG_PARENT_QDELETING, PROC_REF(handle_no_id)) //I prefer erroring to harddels. If this breaks anything consider making id info into a datum or something
+	movement_path = initial_path?.Copy()
 
 /datum/move_loop/has_target/jps/compare_loops(datum/move_loop/loop_type, priority, flags, extra_info, delay, timeout, atom/chasing, repath_delay, max_path_length, minimum_distance, obj/item/card/id/id, simulated_only, turf/avoid, skip_first, initial_path)
-	if(..() && repath_delay == src.repath_delay && max_path_length == src.max_path_length && minimum_distance == src.minimum_distance && id == src.id && simulated_only == src.simulated_only && avoid == src.avoid)
+	if(..() && repath_delay == src.repath_delay && max_path_length == src.max_path_length && minimum_distance == src.minimum_distance && access ~= src.access && simulated_only == src.simulated_only && avoid == src.avoid)
 		return TRUE
 	return FALSE
 
@@ -394,20 +395,15 @@
 	movement_path = null
 
 /datum/move_loop/has_target/jps/Destroy()
-	id = null //Kill me
 	avoid = null
 	return ..()
-
-/datum/move_loop/has_target/jps/proc/handle_no_id()
-	SIGNAL_HANDLER
-	id = null
 
 ///Tries to calculate a new path for this moveloop.
 /datum/move_loop/has_target/jps/proc/recalculate_path()
 	if(!COOLDOWN_FINISHED(src, repath_cooldown))
 		return
 	COOLDOWN_START(src, repath_cooldown, repath_delay)
-	if(SSpathfinder.pathfind(moving, target, max_path_length, minimum_distance, id, simulated_only, avoid, skip_first, on_finish = on_finish_callback))
+	if(SSpathfinder.pathfind(moving, target, max_path_length, minimum_distance, access, simulated_only, avoid, skip_first, on_finish = on_finish_callback))
 		is_pathing = TRUE
 		SEND_SIGNAL(src, COMSIG_MOVELOOP_JPS_REPATH)
 
@@ -428,17 +424,18 @@
 	var/atom/old_loc = moving.loc
 	//KAPU NOTE: WE DO NOT HAVE THIS
 	//moving.Move(next_step, get_dir(moving, next_step), FALSE, !(flags & MOVEMENT_LOOP_NO_DIR_UPDATE))
-	moving.Move(next_step, get_dir(moving, next_step))
+	var/movement_dir = get_dir(moving, next_step)
+	moving.Move(next_step, movement_dir)
 	. = (old_loc != moving?.loc) ? MOVELOOP_SUCCESS : MOVELOOP_FAILURE
 
 	// this check if we're on exactly the next tile may be overly brittle for dense objects who may get bumped slightly
 	// to the side while moving but could maybe still follow their path without needing a whole new path
 	if(get_turf(moving) == next_step)
-		movement_path.Cut(1,2)
+		if(length(movement_path))
+			movement_path.Cut(1,2)
 	else
 		INVOKE_ASYNC(src, PROC_REF(recalculate_path))
 		return MOVELOOP_FAILURE
-
 
 ///Base class of move_to and move_away, deals with the distance and target aspect of things
 /datum/move_loop/has_target/dist_bound

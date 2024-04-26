@@ -158,6 +158,34 @@
 
 	return ..()
 
+/// Copies the atom_huds of the given atom.
+/atom/movable/openspace/mimic/proc/copy_huds(atom/movable/target)
+	if(length(hud_list))
+		for(var/datum/atom_hud/hud as anything in in_atom_huds)
+			hud.remove_atom_from_hud(src)
+
+	hud_list = target.hud_list.Copy()
+
+	for(var/hud_key as anything in hud_list)
+		var/image/target_hud_image = target.hud_list[hud_key]
+		var/image/new_hud_image = image(target_hud_image.icon, src, target_hud_image.icon_state, target_hud_image.layer)
+		new_hud_image.plane = target_hud_image.plane
+		new_hud_image.appearance_flags = RESET_COLOR|RESET_TRANSFORM
+		hud_list[hud_key] = new_hud_image
+
+	for(var/datum/atom_hud/hud as anything in target.in_atom_huds)
+		if(istype(hud, /datum/atom_hud/alternate_appearance))
+			continue
+		hud.add_atom_to_hud(src)
+
+	if(length(target.alternate_appearances))
+		for(var/key in target.alternate_appearances)
+			var/datum/atom_hud/alternate_appearance/basic/alt_appearance = target.alternate_appearances[key]
+			alt_appearance.mimic(src)
+
+	for(var/hud_category in target.active_hud_list)
+		set_hud_image_active(hud_category)
+
 /atom/movable/openspace/mimic/attackby(obj/item/W, mob/user)
 	to_chat(user, span_notice("\The [src] is too far away."))
 	return TRUE
@@ -185,7 +213,7 @@
 /atom/movable/openspace/mimic/set_glide_size(target)
 	return
 
-/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc)
+/atom/movable/openspace/mimic/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods, atom/sound_loc, message_range)
 	if(speaker.z != src.z)
 		return
 

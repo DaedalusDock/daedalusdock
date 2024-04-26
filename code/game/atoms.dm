@@ -19,10 +19,17 @@
 	/// Forensics datum, initialzed when needed.
 	var/tmp/datum/forensics/forensics
 
-	///This atom's HUD (med/sec, etc) images. Associative list.
+	///all of this atom's HUD (med/sec, etc) images. Associative list of the form: list(hud category = hud image or images for that category).
+	///most of the time hud category is associated with a single image, sometimes its associated with a list of images.
+	///not every hud in this list is actually used. for ones available for others to see, look at active_hud_list.
 	var/tmp/list/image/hud_list = null
+	///all of this atom's HUD images which can actually be seen by players with that hud
+	var/tmp/list/image/active_hud_list = null
+	/// A list of atom huds this object is within
+	var/tmp/list/in_atom_huds = null
+
 	///HUD images that this atom can provide.
-	var/tmp/list/hud_possible
+	var/list/hud_possible
 
 	/**
 	 * used to store the different colors on an atom
@@ -300,7 +307,7 @@
 	if(alternate_appearances)
 		for(var/current_alternate_appearance in alternate_appearances)
 			var/datum/atom_hud/alternate_appearance/selected_alternate_appearance = alternate_appearances[current_alternate_appearance]
-			selected_alternate_appearance.remove_from_hud(src)
+			selected_alternate_appearance.remove_atom_from_hud(src)
 
 	if(reagents)
 		QDEL_NULL(reagents)
@@ -513,7 +520,6 @@
 			if(!reagents)
 				reagents = new()
 			reagents.reagent_list.Add(part)
-			reagents.conditional_update()
 		else if(ismovable(part))
 			var/atom/movable/object = part
 			if(isliving(object.loc))
@@ -895,6 +901,17 @@
 
 /// Handle what happens when your contents are exploded by a bomb
 /atom/proc/contents_explosion(severity, target)
+	for(var/atom/movable/movable_thing as anything in contents)
+		if(QDELETED(movable_thing))
+			continue
+
+		switch(severity)
+			if(EXPLODE_DEVASTATE)
+				EX_ACT(movable_thing, EXPLODE_DEVASTATE)
+			if(EXPLODE_HEAVY)
+				EX_ACT(movable_thing, EXPLODE_HEAVY)
+			if(EXPLODE_LIGHT)
+				EX_ACT(movable_thing, EXPLODE_LIGHT)
 	return //For handling the effects of explosions on contents that would not normally be effected
 
 /**
@@ -2252,7 +2269,7 @@
  * For turfs this will only be used if pathing_pass_method is TURF_PATHING_PASS_PROC
  *
  * Arguments:
- * * ID- An ID card representing what access we have (and thus if we can open things like airlocks or windows to pass through them). The ID card's physical location does not matter, just the reference
+ * * access- A list representing what access we have (and thus if we can open things like airlocks or windows to pass through them).
  * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
  * * caller- The movable we're checking pass flags for, if we're making any such checks
  * * no_id: When true, doors with public access will count as impassible
@@ -2260,7 +2277,7 @@
  * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/atom/proc/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density
@@ -2296,3 +2313,7 @@
 /atom/proc/reset_plane_and_layer()
 	plane = initial(plane)
 	layer = initial(layer)
+
+///returns how much the object blocks an explosion. Used by subtypes.
+/atom/proc/GetExplosionBlock()
+	CRASH("Unimplemented GetExplosionBlock()")

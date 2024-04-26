@@ -232,7 +232,7 @@
 		return FALSE
 
 /mob/living/carbon/resist_buckle()
-	if(HAS_TRAIT(src, TRAIT_RESTRAINED))
+	if(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
 		var/buckle_cd = 60 SECONDS
@@ -270,19 +270,24 @@
 /mob/living/carbon/resist_restraints()
 	var/obj/item/I = null
 	var/type = 0
+
 	if(handcuffed)
 		I = handcuffed
 		type = 1
+
 	else if(legcuffed)
 		I = legcuffed
 		type = 2
+
 	if(I)
 		if(type == 1)
 			changeNext_move(CLICK_CD_BREAKOUT)
 			last_special = world.time + CLICK_CD_BREAKOUT
+
 		if(type == 2)
 			changeNext_move(CLICK_CD_RANGE)
 			last_special = world.time + CLICK_CD_RANGE
+
 		cuff_resist(I)
 
 
@@ -290,11 +295,17 @@
 	if(I.item_flags & BEING_REMOVED)
 		to_chat(src, span_warning("You're already attempting to remove [I]!"))
 		return
+	if(buckled)
+		to_chat(src, span_warning("There is no hope for escape."))
+		return
+
 	I.item_flags |= BEING_REMOVED
 	breakouttime = I.breakouttime
+
 	if(!cuff_break)
 		visible_message(span_warning("[src] attempts to remove [I]!"))
 		to_chat(src, span_notice("You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)"))
+
 		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
@@ -304,6 +315,7 @@
 		breakouttime = 50
 		visible_message(span_warning("[src] is trying to break [I]!"))
 		to_chat(src, span_notice("You attempt to break [I]... (This will take around 5 seconds and you need to stand still.)"))
+
 		if(do_after(src, src, breakouttime, timed_action_flags = IGNORE_HELD_ITEM))
 			. = clear_cuffs(I, cuff_break)
 		else
@@ -311,67 +323,47 @@
 
 	else if(cuff_break == INSTANT_CUFFBREAK)
 		. = clear_cuffs(I, cuff_break)
+
 	I.item_flags &= ~BEING_REMOVED
 
-/mob/living/carbon/proc/uncuff()
-	if (handcuffed)
-		var/obj/item/W = handcuffed
-		set_handcuffed(null)
-		if (buckled?.buckle_requires_restraints)
-			buckled.unbuckle_mob(src)
-		update_handcuffed()
-		if (client)
-			client.screen -= W
-		if (W)
-			W.forceMove(drop_location())
-			W.dropped(src)
-			if (W)
-				W.layer = initial(W.layer)
-				W.plane = initial(W.plane)
-		changeNext_move(0)
-	if (legcuffed)
-		var/obj/item/W = legcuffed
-		legcuffed = null
-		update_worn_legcuffs()
-		if (client)
-			client.screen -= W
-		if (W)
-			W.forceMove(drop_location())
-			W.dropped(src)
-			if (W)
-				W.layer = initial(W.layer)
-				W.plane = initial(W.plane)
-		changeNext_move(0)
-	update_equipment_speed_mods() // In case cuffs ever change speed
+/mob/living/carbon/proc/remove_handcuffs(new_location, cuff_break, silent)
+	if(!handcuffed)
+		return FALSE
+
+	if(!silent)
+		visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [handcuffed]!"))
+
+	if(cuff_break)
+		qdel(handcuffed)
+	else
+		transferItemToLoc(handcuffed, new_location, TRUE)
+	return TRUE
+
+/mob/living/carbon/proc/remove_legcuffs(new_location, cuff_break, silent)
+	if(!legcuffed)
+		return FALSE
+
+	if(!silent)
+		visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [legcuffed]!"))
+
+	if(cuff_break)
+		qdel(legcuffed)
+	else
+		transferItemToLoc(legcuffed, new_location, TRUE)
+	return TRUE
 
 /mob/living/carbon/proc/clear_cuffs(obj/item/I, cuff_break)
 	if(!I.loc || buckled)
 		return FALSE
+
 	if(I != handcuffed && I != legcuffed)
 		return FALSE
-	visible_message(span_danger("[src] manages to [cuff_break ? "break" : "remove"] [I]!"))
-	to_chat(src, span_notice("You successfully [cuff_break ? "break" : "remove"] [I]."))
 
-	if(cuff_break)
-		. = !((I == handcuffed) || (I == legcuffed))
-		qdel(I)
-		return TRUE
+	if(I == handcuffed)
+		return remove_handcuffs(drop_location(), cuff_break)
 
-	else
-		if(I == handcuffed)
-			handcuffed.forceMove(drop_location())
-			set_handcuffed(null)
-			I.dropped(src)
-			if(buckled?.buckle_requires_restraints)
-				buckled.unbuckle_mob(src)
-			update_handcuffed()
-			return TRUE
-		if(I == legcuffed)
-			legcuffed.forceMove(drop_location())
-			legcuffed = null
-			I.dropped(src)
-			update_worn_legcuffs()
-			return TRUE
+	if(I == legcuffed)
+		return remove_legcuffs(drop_location(), cuff_break)
 
 /mob/living/carbon/proc/accident(obj/item/I)
 	if(!I || (I.item_flags & ABSTRACT) || HAS_TRAIT(I, TRAIT_NODROP))
@@ -513,8 +505,9 @@
 		return
 
 	set_health(round(maxHealth - getBrainLoss(), DAMAGE_PRECISION))
+	update_damage_hud()
+	update_health_hud()
 	update_stat()
-	med_hud_set_health()
 	SEND_SIGNAL(src, COMSIG_CARBON_HEALTH_UPDATE)
 
 /mob/living/carbon/on_stamina_update()
@@ -558,7 +551,7 @@
 		if(!isnull(E.lighting_alpha))
 			lighting_alpha = E.lighting_alpha
 
-	if(client.eye != src)
+	if(client.eye && client.eye != src)
 		var/atom/A = client.eye
 		if(A.update_remote_sight(src)) //returns 1 if we override all other sight updates.
 			return
@@ -782,26 +775,29 @@
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)
 		return
+
 	if(stat != DEAD)
 		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 			set_stat(UNCONSCIOUS)
 		else
 			set_stat(CONSCIOUS)
 
-	update_damage_hud()
-	update_health_hud()
-	update_stamina_hud()
 	med_hud_set_status()
-
 
 //called when we get cuffed/uncuffed
 /mob/living/carbon/proc/update_handcuffed()
+	PRIVATE_PROC(TRUE)
+
 	if(handcuffed)
 		drop_all_held_items()
 		release_all_grabs()
 		throw_alert(ALERT_HANDCUFFED, /atom/movable/screen/alert/restrained/handcuffed, new_master = src.handcuffed)
+		ADD_TRAIT(src, TRAIT_ARMS_RESTRAINED, HANDCUFFED_TRAIT)
 	else
+		REMOVE_TRAIT(src, TRAIT_ARMS_RESTRAINED, HANDCUFFED_TRAIT)
 		clear_alert(ALERT_HANDCUFFED)
+		if(buckled?.buckle_requires_restraints)
+			buckled.unbuckle_mob(src)
 
 	update_mob_action_buttons() //some of our action buttons might be unusable when we're handcuffed.
 	update_worn_handcuffs()
@@ -849,10 +845,8 @@
 		suiciding = FALSE
 		regenerate_limbs()
 		regenerate_organs()
-		QDEL_NULL(handcuffed)
-		QDEL_NULL(legcuffed)
-		set_handcuffed(null)
-		update_handcuffed()
+		remove_handcuffs()
+		remove_legcuffs()
 		client?.prefs?.apply_prefs_to(src)
 
 	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
@@ -1200,16 +1194,14 @@
 
 /// Modifies the handcuffed value if a different value is passed, returning FALSE otherwise. The variable should only be changed through this proc.
 /mob/living/carbon/proc/set_handcuffed(new_value)
+	PRIVATE_PROC(TRUE)
 	if(handcuffed == new_value)
 		return FALSE
+
 	. = handcuffed
 	handcuffed = new_value
-	if(.)
-		if(!handcuffed)
-			REMOVE_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
-	else if(handcuffed)
-		ADD_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
 
+	update_handcuffed()
 
 /mob/living/carbon/on_lying_down(new_lying_angle)
 	. = ..()
@@ -1259,17 +1251,22 @@
 /mob/living/carbon/proc/check_signables_state()
 	var/obj/item/bodypart/left_arm = get_bodypart(BODY_ZONE_L_ARM)
 	var/obj/item/bodypart/right_arm = get_bodypart(BODY_ZONE_R_ARM)
+
 	var/empty_indexes = get_empty_held_indexes()
 	var/exit_right = (!right_arm || right_arm.bodypart_disabled)
 	var/exit_left = (!left_arm || left_arm.bodypart_disabled)
 	if(length(empty_indexes) == 0 || (length(empty_indexes) < 2 && (exit_left || exit_right)))//All existing hands full, can't sign
 		return SIGN_HANDS_FULL // These aren't booleans
+
 	if(exit_left && exit_right)//Can't sign with no arms!
 		return SIGN_ARMLESS
+
 	if(handcuffed) // Cuffed, usually will show visual effort to sign
 		return SIGN_CUFFED
+
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED) || HAS_TRAIT(src, TRAIT_EMOTEMUTE))
 		return SIGN_TRAIT_BLOCKED
+
 	if(length(empty_indexes) == 1 || exit_left || exit_right) // One arm gone
 		return SIGN_ONE_HAND
 
@@ -1428,11 +1425,13 @@
 		else
 			visible_message("\The [src] twitches a bit as \his heart restarts!")
 
-		shock_stage = min(shock_stage, 100) // 120 is the point at which the heart stops.
+		shock_stage = min(shock_stage, SHOCK_AMT_FOR_FIBRILLATION - 25)
 
-		if(getOxyLoss() >= 75)
-			setOxyLoss(75)
+		// Clamp oxy loss to 70 for 200 health mobs. This is a 0.65 modifier for blood oxygenation.
+		if(getOxyLoss() >= maxHealth * 0.35)
+			setOxyLoss(maxHealth * 0.35)
 
+		COOLDOWN_START(heart, arrhythmia_grace_period, 10 SECONDS)
 		heart.Restart()
 		heart.handle_pulse()
 		return TRUE

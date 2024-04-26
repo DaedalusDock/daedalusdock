@@ -33,7 +33,8 @@
 	goal = goal_number
 	bar_loc = target
 	bar = image('icons/effects/progessbar.dmi', bar_loc, "prog_bar_0")
-	bar.plane = ABOVE_HUD_PLANE
+	bar.plane = GAME_PLANE
+	bar.layer = FLY_LAYER
 	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 	user = User
 

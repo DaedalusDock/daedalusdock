@@ -4,12 +4,15 @@ SUBSYSTEM_DEF(events)
 	runlevels = RUNLEVEL_GAME
 
 	var/list/control = list() //list of all datum/round_event_control. Used for selecting events based on weight and occurrences.
-	var/list/running = list() //list of all existing /datum/round_event
+	///List of all existing /datum/round_event
+	var/list/running = list()
 	var/list/currentrun = list()
 
 	var/scheduled = 0 //The next world.time that a naturally occuring random event can be selected.
-	var/frequency_lower = 12000 //20 minutes lower bound.
-	var/frequency_upper = 18000 //30 minutes upper bound. Basically an event will happen every 20 to 30 minutes.
+	///The minimum time between random events
+	var/frequency_lower = 3 MINUTES
+	///The maximum time between random events
+	var/frequency_upper = 10 MINUTES
 
 	var/list/holidays //List of all holidays occuring today or null if no holidays
 	var/wizardmode = FALSE
@@ -20,7 +23,7 @@ SUBSYSTEM_DEF(events)
 		if(!E.typepath)
 			continue //don't want this one! leave it for the garbage collector
 		control += E //add it to the list of all events (controls)
-	reschedule()
+	RegisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING, PROC_REF(reschedule))
 	getHoliday()
 	return ..()
 
@@ -34,10 +37,10 @@ SUBSYSTEM_DEF(events)
 	var/list/currentrun = src.currentrun
 
 	while(currentrun.len)
-		var/datum/thing = currentrun[currentrun.len]
+		var/datum/round_event/thing = currentrun[currentrun.len]
 		currentrun.len--
 		if(thing)
-			thing.process(wait * 0.1)
+			thing.process_event()
 		else
 			running.Remove(thing)
 		if (MC_TICK_CHECK)
@@ -51,6 +54,7 @@ SUBSYSTEM_DEF(events)
 
 //decides which world.time we should select another random event at.
 /datum/controller/subsystem/events/proc/reschedule()
+	SIGNAL_HANDLER
 	scheduled = world.time + rand(frequency_lower, max(frequency_lower,frequency_upper))
 
 //selects a random event based on whether it can occur and it's 'weight'(probability)
@@ -63,7 +67,7 @@ SUBSYSTEM_DEF(events)
 	// Only alive, non-AFK human players count towards this.
 
 	var/sum_of_weights = 0
-	for(var/datum/round_event_control/E in control)
+	for(var/datum/round_event_control/E as anything in control)
 		if(!E.canSpawnEvent(players_amt))
 			continue
 		if(E.weight < 0) //for round-start events etc.

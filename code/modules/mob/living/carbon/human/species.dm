@@ -532,7 +532,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		fly = new
 		fly.Grant(C)
 
-	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species, multiplicative_slowdown=speedmod)
+	C.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species, slowdown=speedmod)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_GAIN, src, old_species)
 
@@ -727,7 +727,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		// Anything that's small or smaller can fit into a pocket by default
 		if((slot == ITEM_SLOT_RPOCKET || slot == ITEM_SLOT_LPOCKET) && I.w_class <= WEIGHT_CLASS_SMALL)
 			excused = TRUE
-		else if(slot == ITEM_SLOT_SUITSTORE || slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_HANDS)
+		else if(slot == ITEM_SLOT_SUITSTORE || slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_HANDS || slot == ITEM_SLOT_HANDCUFFED || slot == ITEM_SLOT_LEGCUFFED)
 			excused = TRUE
 		if(!excused)
 			return FALSE
@@ -873,6 +873,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			return FALSE
 
 		if(ITEM_SLOT_HANDCUFFED)
+			if(H.handcuffed)
+				return FALSE
 			if(!istype(I, /obj/item/restraints/handcuffs))
 				return FALSE
 			if(H.num_hands < 2)
@@ -880,6 +882,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			return TRUE
 
 		if(ITEM_SLOT_LEGCUFFED)
+			if(H.legcuffed)
+				return FALSE
 			if(!istype(I, /obj/item/restraints/legcuffs))
 				return FALSE
 			if(H.num_legs < 2)
@@ -1487,7 +1491,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	else if(bodytemp < cold_level_1 && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
 		// clear any hot moods and apply cold mood
 		// Apply cold slow down
-		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((cold_level_1 - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
+		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, slowdown = ((cold_level_1 - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
 		// Display alerts based how cold it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
 		if(bodytemp in cold_level_1 to cold_level_2)
@@ -1818,8 +1822,36 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		"toxic_food" = bitfield_to_list(toxic_food, food_flags),
 	)
 
+GLOBAL_LIST_EMPTY(species_perks)
+/proc/get_species_constant_data(datum/species/path)
+	RETURN_TYPE(/list)
+	. = GLOB.species_perks[path]
+	if(.)
+		return
+
+	path = new path
+	GLOB.species_perks[path.type] = path.get_constant_data()
+	return GLOB.species_perks[path.type]
+
+/// Generates nested lists of constant data for UIs.
+/datum/species/proc/get_constant_data()
+	. = new /list(2)
+
+	.[SPECIES_DATA_PERKS] = get_perk_data()
+	.[SPECIES_DATA_LANGUAGES] = get_innate_languages()
+
+	return .
+
+/// Returns a list of each language we know innately.
+/datum/species/proc/get_innate_languages()
+	. = list()
+
+	var/datum/language_holder/temp_holder = new species_language_holder()
+	for(var/datum/language/path as anything in temp_holder.understood_languages | temp_holder.spoken_languages)
+		. += path
+
 /**
- * Generates a list of "perks" related to this species
+ * Perks of varying types.
  * (Postives, neutrals, and negatives)
  * in the format of a list of lists.
  * Used in the preference menu.
@@ -1827,7 +1859,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * "Perk" format is as followed:
  * list(
  *   SPECIES_PERK_TYPE = type of perk (postiive, negative, neutral - use the defines)
- *   SPECIES_PERK_ICON = icon shown within the UI
+ *   SPECIES_PERK_ICON = icon used, unused due to no longer being on tgui prefs
  *   SPECIES_PERK_NAME = name of the perk on hover
  *   SPECIES_PERK_DESC = description of the perk on hover
  * )
@@ -1836,9 +1868,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
  * The outer list is an assoc list of [perk type]s to a list of perks.
  * The innter list is a list of perks. Can be empty, but won't be null.
  */
-/datum/species/proc/get_species_perks()
+/datum/species/proc/get_perk_data()
 	var/list/species_perks = list()
-
 	// Let us get every perk we can concieve of in one big list.
 	// The order these are called (kind of) matters.
 	// Species unique perks first, as they're more important than genetic perks,
@@ -1861,6 +1892,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		SPECIES_NEGATIVE_PERK =  list(),
 	)
 
+	// Filter invalid perks
 	for(var/list/perk as anything in species_perks)
 		var/perk_type = perk[SPECIES_PERK_TYPE]
 		// If we find a perk that isn't postiive, negative, or neutral,
@@ -2039,14 +2071,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_ICON = "user-times",
 			SPECIES_PERK_NAME = "Limbs Easily Dismembered",
 			SPECIES_PERK_DESC = "[plural_form] limbs are not secured well, and as such they are easily dismembered.",
-		))
-
-	if(TRAIT_EASILY_WOUNDED in inherent_traits)
-		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-			SPECIES_PERK_ICON = "user-times",
-			SPECIES_PERK_NAME = "Easily Wounded",
-			SPECIES_PERK_DESC = "[plural_form] skin is very weak and fragile. They are much easier to apply serious wounds to.",
 		))
 
 	if(TRAIT_TOXINLOVER in inherent_traits)

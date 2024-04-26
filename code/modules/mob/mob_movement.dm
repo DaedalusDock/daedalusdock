@@ -124,7 +124,7 @@
 		return FALSE
 
 	//We are now going to move
-	var/add_delay = mob.cached_multiplicative_slowdown
+	var/add_delay = mob.movement_delay
 	var/new_glide_size = DELAY_TO_GLIDE_SIZE(add_delay * ( (NSCOMPONENT(direct) && EWCOMPONENT(direct)) ? 2 : 1 ) )
 	mob.set_glide_size(new_glide_size) // set it now in case of pulled objects
 	//If the move was recent, count using old_move_delay
@@ -168,10 +168,14 @@
  * Called by client/Move()
  */
 /client/proc/check_can_move()
+	if(!length(mob.grabbed_by))
+		return TRUE
+
 	if(HAS_TRAIT(mob, TRAIT_INCAPACITATED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		return FALSE
-	else if(HAS_TRAIT(mob, TRAIT_RESTRAINED))
+
+	else if(HAS_TRAIT(mob, TRAIT_ARMS_RESTRAINED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		to_chat(src, span_warning("You're restrained! You can't move!"))
 		return FALSE

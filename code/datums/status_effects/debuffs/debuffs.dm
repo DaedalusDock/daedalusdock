@@ -692,8 +692,10 @@
 /datum/status_effect/trance/proc/hypnotize(datum/source, list/hearing_args)
 	SIGNAL_HANDLER
 
-	if(!owner.can_hear())
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(!L?.can_receive_language(owner) || !owner.has_language(L))
 		return
+
 	var/mob/hearing_speaker = hearing_args[HEARING_SPEAKER]
 	if(hearing_speaker == owner)
 		return
@@ -1220,7 +1222,7 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/freezing_blast, update = TRUE)
 
 /datum/movespeed_modifier/freezing_blast
-	multiplicative_slowdown = 1
+	slowdown = 1
 
 /datum/status_effect/discoordinated
 	id = "discoordinated"

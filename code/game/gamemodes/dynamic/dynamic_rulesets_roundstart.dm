@@ -13,8 +13,7 @@
 	minimum_required_age = 0
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -109,8 +108,8 @@
 	antag_datum = /datum/antagonist/brother
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_DETECTIVE, // The detective works alone
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -169,7 +168,7 @@
 	protected_roles = list(
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -224,8 +223,8 @@
 	antag_datum = /datum/antagonist/heretic
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_DETECTIVE, // It's up to him to investigate eldritch evil.
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -282,7 +281,7 @@
 	minimum_required_age = 14
 	restricted_roles = list(
 		JOB_CAPTAIN,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 	) // Just to be sure that a wizard getting picked won't ever imply a Captain or HoS not getting drafted
 	required_candidates = 1
 	weight = 2
@@ -333,7 +332,7 @@
 		JOB_CYBORG,
 		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
@@ -397,7 +396,7 @@
 	minimum_required_age = 14
 	restricted_roles = list(
 		JOB_CAPTAIN,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 	) // Just to be sure that a nukie getting picked won't ever imply a Captain or HoS not getting drafted
 	required_candidates = 5
 	weight = 3
@@ -487,11 +486,11 @@
 		JOB_AI,
 		JOB_CAPTAIN,
 		JOB_CHIEF_ENGINEER,
-		JOB_CHIEF_MEDICAL_OFFICER,
+		JOB_MEDICAL_DIRECTOR,
 		JOB_CYBORG,
 		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
@@ -551,12 +550,15 @@
 	..()
 
 /datum/dynamic_ruleset/roundstart/revs/rule_process()
-	var/winner = revolution.process_victory(revs_win_threat_injection)
+	var/winner = revolution.check_completion()
 	if (isnull(winner))
 		return
 
 	finished = winner
 	return RULESET_STOP_PROCESSING
+
+/datum/dynamic_ruleset/roundstart/revs/check_finished()
+	return !!finished
 
 /// Checks for revhead loss conditions and other antag datums.
 /datum/dynamic_ruleset/roundstart/revs/proc/check_eligible(datum/mind/M)
@@ -588,7 +590,7 @@
 		JOB_CAPTAIN,
 		JOB_CYBORG,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,

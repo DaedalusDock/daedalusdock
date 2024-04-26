@@ -195,7 +195,7 @@
 	if(!(bot_cover_flags & BOT_COVER_OPEN))
 		bot_cover_flags ^= BOT_COVER_LOCKED
 		to_chat(user, span_notice("You [bot_cover_flags & BOT_COVER_LOCKED ? "lock" : "unlock"] [src]'s controls!"))
-	flick("[base_icon]-emagged", src)
+	z_flick("[base_icon]-emagged", src)
 	playsound(src, SFX_SPARKS, 100, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /mob/living/simple_animal/bot/mulebot/update_icon_state() //if you change the icon_state names, please make sure to update /datum/wires/mulebot/on_pulse() as well. <3
@@ -358,7 +358,7 @@
 		if(CHIME)
 			audible_message(span_hear("[src] makes a chiming sound!"))
 			playsound(src, 'sound/machines/chime.ogg', 50, FALSE)
-	flick("[base_icon]1", src)
+	z_flick("[base_icon]1", src)
 
 
 // mousedrop a crate to load the bot
@@ -582,7 +582,7 @@
 // calculates a path to the current destination
 // given an optional turf to avoid
 /mob/living/simple_animal/bot/mulebot/calc_path(turf/avoid = null)
-	path = get_path_to(src, target, max_distance=250, id=access_card, exclude=avoid)
+	path = get_path_to(src, target, max_distance=250, access = access_card?.GetAccess(), exclude=avoid)
 
 // sets the current destination
 // signals all beacons matching the delivery code

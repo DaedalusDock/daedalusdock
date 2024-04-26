@@ -196,8 +196,8 @@
 		EQUIP_OUTFIT_ITEM(back, ITEM_SLOT_BACK)
 
 	if(id)
-		if(id_in_wallet && ispath(id, /obj/item/card/id))
-			var/obj/item/storage/wallet/W = /obj/item/storage/wallet
+		if(!visualsOnly && id_in_wallet && ispath(id, /obj/item/card/id))
+			var/obj/item/storage/wallet/W = /obj/item/storage/wallet/open
 			EQUIP_OUTFIT_ITEM(W, ITEM_SLOT_ID)
 			W = H.wear_id
 			INVOKE_ASYNC(W, TYPE_PROC_REF(/obj/item, InsertID), SSwardrobe.provide_type(id), TRUE)

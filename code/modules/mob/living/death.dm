@@ -89,12 +89,10 @@
 	update_mob_action_buttons()
 	update_damage_hud()
 	update_health_hud()
-	med_hud_set_health()
-	med_hud_set_status()
+	update_med_hud()
 
 	release_all_grabs()
 
-	set_ssd_indicator(FALSE)
 	set_typing_indicator(FALSE)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_DEATH, gibbed)

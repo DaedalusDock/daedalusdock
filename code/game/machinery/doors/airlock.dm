@@ -106,7 +106,7 @@
 	assemblytype = /obj/structure/door_assembly
 	normalspeed = 1
 	explosion_block = 1
-	hud_possible = list(DIAG_AIRLOCK_HUD)
+	hud_possible = list(DIAG_AIRLOCK_HUD = 'icons/mob/huds/hud.dmi')
 	zmm_flags = ZMM_MANGLE_PLANES
 	smoothing_groups = SMOOTH_GROUP_AIRLOCK
 
@@ -185,7 +185,7 @@
 
 	prepare_huds()
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_to_hud(src)
+		diag_hud.add_atom_to_hud(src)
 	diag_hud_set_electrified()
 
 	RegisterSignal(src, COMSIG_MACHINERY_BROKEN, PROC_REF(on_break))
@@ -305,7 +305,7 @@
 	QDEL_NULL(note)
 	QDEL_NULL(seal)
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_from_hud(src)
+		diag_hud.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/door/airlock/handle_atom_del(atom/A)
@@ -420,7 +420,7 @@
 	if(!state)
 		state = density ? AIRLOCK_CLOSED : AIRLOCK_OPEN
 	airlock_state = state
-
+	UPDATE_OO_IF_PRESENT
 	. = ..()
 
 /obj/machinery/door/airlock/update_icon_state()
@@ -1212,7 +1212,7 @@
 
 	var/obj/structure/window/killthis = (locate(/obj/structure/window) in get_turf(src))
 	if(killthis)
-		SSexplosions.med_mov_atom += killthis
+		EX_ACT(killthis, EXPLODE_HEAVY)
 	SEND_SIGNAL(src, COMSIG_AIRLOCK_CLOSE, forced)
 	operating = TRUE
 	update_icon(ALL, AIRLOCK_CLOSING, 1)
@@ -1279,9 +1279,9 @@
 	assemblytype = initial(airlock.assemblytype)
 	update_appearance()
 
-/obj/machinery/door/airlock/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/machinery/door/airlock/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	//Airlock is passable if it is open (!density), bot has access, and is not bolted shut or powered off)
-	return !density || (check_access(ID) && !locked && hasPower() && !no_id)
+	return !density || (check_access_list(access) && !locked && hasPower() && !no_id)
 
 /obj/machinery/door/airlock/emag_act(mob/user, obj/item/card/emag/doorjack/D)
 	if(!operating && density && hasPower() && !(obj_flags & EMAGGED))

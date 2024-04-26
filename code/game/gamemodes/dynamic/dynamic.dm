@@ -18,6 +18,9 @@ GLOBAL_LIST_EMPTY(dynamic_forced_roundstart_ruleset)
 GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 
 /datum/game_mode/dynamic
+	name = "Dynamic"
+	required_enemies = 0
+
 	// Threat logging vars
 	/// The "threat cap", threat shouldn't normally go above this and is used in ruleset calculations
 	var/threat_level = 0
@@ -73,19 +76,19 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 	var/latejoin_injection_cooldown = 0
 
 	/// The minimum time the recurring latejoin ruleset timer is allowed to be.
-	var/latejoin_delay_min = (5 MINUTES)
+	var/latejoin_delay_min = (30 MINUTES)
 
 	/// The maximum time the recurring latejoin ruleset timer is allowed to be.
-	var/latejoin_delay_max = (25 MINUTES)
+	var/latejoin_delay_max = (60 MINUTES)
 
 	/// When world.time is over this number the mode tries to inject a midround ruleset.
 	var/midround_injection_cooldown = 0
 
 	/// The minimum time the recurring midround ruleset timer is allowed to be.
-	var/midround_delay_min = (15 MINUTES)
+	var/midround_delay_min = (60 MINUTES)
 
 	/// The maximum time the recurring midround ruleset timer is allowed to be.
-	var/midround_delay_max = (35 MINUTES)
+	var/midround_delay_max = (90 MINUTES)
 
 	/// If above this threat, increase the chance of injection
 	var/higher_injection_chance_minimum_threat = 70
@@ -102,30 +105,30 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 	/// A number between -5 and +5.
 	/// A negative value will give a more peaceful round and
 	/// a positive value will give a round with higher threat.
-	var/threat_curve_centre = 0
+	var/threat_curve_centre = -2.5
 
 	/// A number between 0.5 and 4.
 	/// Higher value will favour extreme rounds and
 	/// lower value rounds closer to the average.
-	var/threat_curve_width = 1.8
+	var/threat_curve_width = 1
 
 	/// A number between -5 and +5.
 	/// Equivalent to threat_curve_centre, but for the budget split.
 	/// A negative value will weigh towards midround rulesets, and a positive
 	/// value will weight towards roundstart ones.
-	var/roundstart_split_curve_centre = 1
+	var/roundstart_split_curve_centre = 3.8
 
 	/// A number between 0.5 and 4.
 	/// Equivalent to threat_curve_width, but for the budget split.
 	/// Higher value will favour more variance in splits and
 	/// lower value rounds closer to the average.
-	var/roundstart_split_curve_width = 1.8
+	var/roundstart_split_curve_width = 0.5
 
 	/// The minimum amount of time for antag random events to be hijacked.
-	var/random_event_hijack_minimum = 10 MINUTES
+	var/random_event_hijack_minimum = 20 MINUTES
 
 	/// The maximum amount of time for antag random events to be hijacked.
-	var/random_event_hijack_maximum = 18 MINUTES
+	var/random_event_hijack_maximum = 40 MINUTES
 
 	/// A list of recorded "snapshots" of the round, stored in the dynamic.json log
 	var/list/datum/dynamic_snapshot/snapshots
@@ -257,6 +260,15 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 			return rule.round_result()
 	return ..()
 
+/datum/game_mode/dynamic/check_finished(force_ending)
+	. = ..()
+	if(.)
+		return
+
+	for(var/datum/dynamic_ruleset/ruleset as anything in executed_rules)
+		if(ruleset.check_finished())
+			return TRUE
+
 /datum/game_mode/dynamic/proc/send_intercept()
 	. = "<b><i>Central Command Status Summary</i></b><hr>"
 	switch(round(shown_threat))
@@ -366,6 +378,7 @@ GLOBAL_VAR_INIT(dynamic_forced_threat_level, -1)
 	midround_injection_cooldown = round(clamp(EXP_DISTRIBUTION(midround_injection_cooldown_middle), midround_delay_min, midround_delay_max)) + world.time
 
 /datum/game_mode/dynamic/pre_setup()
+	. = ..()
 	if(CONFIG_GET(flag/dynamic_config_enabled))
 		var/json_file = rustg_file_read("[global.config.directory]/dynamic.json")
 		if(json_file)

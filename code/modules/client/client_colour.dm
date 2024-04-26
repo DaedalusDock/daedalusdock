@@ -61,6 +61,10 @@
 	if(!ispath(colour_type, /datum/client_colour) || QDELING(src))
 		return
 
+	for(var/datum/client_colour/existing_color as anything in client_colours)
+		if(existing_color.type == colour_type)
+			return
+
 	var/datum/client_colour/colour = new colour_type(src)
 	BINARY_INSERT(colour, client_colours, /datum/client_colour, colour, priority, COMPARE_KEY)
 	if(colour.fade_in)

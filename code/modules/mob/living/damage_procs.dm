@@ -183,7 +183,7 @@
 		return
 
 	. = oxyloss
-	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth/2)
+	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth)
 	if(updating_health)
 		updatehealth()
 
@@ -191,10 +191,9 @@
 	if(!forced && status_flags & GODMODE)
 		return
 	. = oxyloss
-	oxyloss = clamp(amount, 0, maxHealth/2)
+	oxyloss = clamp(amount, 0, maxHealth)
 	if(updating_health)
 		updatehealth()
-
 
 /mob/living/proc/getToxLoss()
 	return toxloss

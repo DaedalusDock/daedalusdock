@@ -81,7 +81,7 @@
 	inhand_icon_state = "chap_envirosuit"
 
 /obj/item/clothing/under/plasmaman/curator
-	name = "curator's plasma envirosuit"
+	name = "archivist's plasma envirosuit"
 	desc = "Made out of a modified voidsuit, this suit was Nanotrasen's first solution to the *logistical problems* that come with employing plasmamen. Due to the modifications, the suit is no longer space-worthy. Despite their limitations, these suits are still in used by historian and old-styled plasmamen alike."
 	icon_state = "prototype_envirosuit"
 	inhand_icon_state = "prototype_envirosuit"
@@ -131,4 +131,4 @@
 			extinguishes_left--
 			H.visible_message(span_warning("[H]'s suit spews space lube everywhere!"),span_warning("Your suit spews space lube everywhere!"))
 			H.extinguish_mob()
-			new /obj/effect/particle_effect/foam(loc) //Truely terrifying.
+			new /obj/effect/particle_effect/fluid/foam(loc) //Truely terrifying.

@@ -1,4 +1,4 @@
-#define LINKIFY_READY(string, value) "<a href='byond://?src=[REF(src)];ready=[value]'>[string]</a>"
+#define LINKIFY_READY(string, value) "<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];ready=[value]'>[string]</a>"
 /mob/dead/new_player
 	flags_1 = NONE
 	invisibility = INVISIBILITY_ABSTRACT
@@ -138,13 +138,13 @@
 	output += {"
 	<center>
 		<div>
-			<a href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];show_preferences=1'>Options</a>
 		</div>
 		<hr>
 		<p>
 			<b>Playing As</b>
 			<br>
-			<a href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];character_setup=1'>[client?.prefs.read_preference(/datum/preference/name/real_name)]</a>
 		</p>
 		<hr>
 	"}
@@ -160,10 +160,10 @@
 	else
 		output += {"
 		<p>
-			<a href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];manifest=1'>View the Crew Manifest</a>
 		</p>
 		<p>
-			<a href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
+			<a class='genericLink' style='cursor: pointer' href='byond://?src=[REF(src)];late_join=1'>Join Game!</a>
 		</p>
 		<p>
 			[LINKIFY_READY("Observe", PLAYER_READY_TO_OBSERVE)]
@@ -429,9 +429,9 @@
 			if(job_datum.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
 				command_bold = " command"
 			if(job_datum in SSjob.prioritized_jobs)
-				dept_data += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
+				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
 			else
-				dept_data += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
+				dept_data += "<a class='genericLink job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
 		if(!length(dept_data))
 			dept_data += "<span class='nopositions'>No positions open.</span>"
 		dat += dept_data.Join()
@@ -505,9 +505,10 @@
 // Doing so would previously allow you to roll for antag, then send you back to lobby if you didn't get an antag role
 // This also does some admin notification and logging as well, as well as some extra logic to make sure things don't go wrong
 /mob/dead/new_player/proc/check_preferences()
-	if(!client)
+	var/client/mob_client = GET_CLIENT(src)
+	if(!mob_client)
 		return FALSE //Not sure how this would get run without the mob having a client, but let's just be safe.
-	if(client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
+	if(mob_client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
 		return TRUE
 
 	// If they have antags enabled, they're potentially doing this on purpose instead of by accident. Notify admins if so.

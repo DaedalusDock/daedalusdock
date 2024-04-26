@@ -1,5 +1,5 @@
 /datum/job/chief_medical_officer
-	title = JOB_CHIEF_MEDICAL_OFFICER
+	title = JOB_MEDICAL_DIRECTOR
 	description = "Coordinate doctors and other medbay employees, ensure they \
 		know how to save lives, check for injuries on the crew monitor."
 	department_head = list(JOB_CAPTAIN)

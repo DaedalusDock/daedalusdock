@@ -64,8 +64,6 @@
 	sec_hud_set_ID()
 	sec_hud_set_implants()
 	sec_hud_set_security_status()
-	//...fan gear
-	fan_hud_set_fandom()
 	//...and display them.
 	add_to_all_human_data_huds()
 
@@ -514,13 +512,8 @@
 	cpr_image.plane = ABOVE_HUD_PLANE
 	add_overlay(cpr_image)
 
-	var/panicking = FALSE
-	do
-		if (!do_after(src, target, panicking ? CPR_PANIC_SPEED : (3 SECONDS), DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
-			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			break
-
-		if (target.health > target.crit_threshold)
+	while (TRUE)
+		if (!do_after(src, target, 3 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
 			break
 
 		visible_message(
@@ -531,26 +524,20 @@
 		log_combat(src, target, "CPRed")
 
 		if(target.breathe(TRUE) == BREATH_OKAY)
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs. It feels good."))
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
+			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs."))
+			target.adjustOxyLoss(-8)
 
-		if (target.health <= target.crit_threshold)
-			if (!panicking)
-				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
-			panicking = TRUE
-		else
-			panicking = FALSE
-
-	while (panicking)
 
 	cut_overlay(cpr_image)
 
 #undef CPR_PANIC_SPEED
 
 /mob/living/carbon/human/proc/can_perform_cpr(mob/living/carbon/target, silent = TRUE)
-	if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-		if(!silent)
-			to_chat(src, span_warning("[target.name] is dead!"))
+	if(target.body_position != LYING_DOWN)
+		return FALSE
+
+	if(!target.getorganslot(ORGAN_SLOT_LUNGS))
+		to_chat(src, span_warning("[target.p_they()] [target.p_dont()] have lungs."))
 		return FALSE
 
 	return TRUE
@@ -767,7 +754,15 @@
 		else
 			hud_used.healthdoll.icon_state = "healthdoll_DEAD"
 
+/mob/living/carbon/human/revive(full_heal, admin_revive, excess_healing)
+	. = ..()
+	if(!.)
+		return
+
+	log_health(src, "Brought back to life.")
+
 /mob/living/carbon/human/fully_heal(admin_revive = FALSE)
+	log_health(src, "Received an adminheal.")
 	dna?.species.spec_fully_heal(src)
 	if(admin_revive)
 		regenerate_limbs()
@@ -841,7 +836,7 @@
 		for(var/type in subtypesof(/datum/quirk))
 			var/datum/quirk/quirk_type = type
 
-			if(initial(quirk_type.abstract_parent_type) == type)
+			if(isabstract(quirk_type))
 				continue
 
 			var/qname = initial(quirk_type.name)
@@ -948,17 +943,6 @@
 /mob/living/carbon/human/updatehealth()
 	. = ..()
 	dna?.species.spec_updatehealth(src)
-	if(HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
-		return
-	var/health_deficiency = maxHealth - health
-	if(health_deficiency >= 40)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 25)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
-	else
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
 
 /mob/living/carbon/human/pre_stamina_change(diff as num, forced)
 	if(diff < 0) //Taking damage, not healing
@@ -1176,8 +1160,7 @@
 	if(prob(getBruteLoss() * 0.6))
 		makeBloodTrail(new_loc, old_loc, direction, TRUE)
 
-	blood_volume = max(blood_volume - 1, 0)
-
+	adjustBloodVolume(-1)
 	if(!prob(10))
 		return
 

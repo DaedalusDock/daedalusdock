@@ -63,7 +63,7 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/plasticflaps/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/plasticflaps/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(isliving(caller))
 		if(isbot(caller))
 			return TRUE
@@ -77,7 +77,7 @@
 		var/mob/living/L = caller
 		var/list/grabs = L.active_grabs
 		for(var/obj/item/hand_item/grab/G in grabs)
-			if(!CanAStarPass(ID, to_dir, G.affecting, no_id = no_id))
+			if(!CanAStarPass(access, to_dir, G.affecting, no_id = no_id))
 				return FALSE
 	return TRUE //diseases, stings, etc can pass
 

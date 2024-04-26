@@ -54,9 +54,8 @@
 	antag_flag_override = ROLE_TRAITOR
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -86,11 +85,11 @@
 		JOB_AI,
 		JOB_CAPTAIN,
 		JOB_CHIEF_ENGINEER,
-		JOB_CHIEF_MEDICAL_OFFICER,
+		JOB_MEDICAL_DIRECTOR,
 		JOB_CYBORG,
 		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
@@ -101,7 +100,7 @@
 		JOB_CYBORG,
 		JOB_CAPTAIN,
 		JOB_DETECTIVE,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -151,12 +150,15 @@
 		return FALSE
 
 /datum/dynamic_ruleset/latejoin/provocateur/rule_process()
-	var/winner = revolution.process_victory(revs_win_threat_injection)
+	var/winner = revolution.check_completion()
 	if (isnull(winner))
 		return
 
 	finished = winner
 	return RULESET_STOP_PROCESSING
+
+/datum/dynamic_ruleset/latejoin/provocateur/check_finished()
+	return !!finished
 
 /// Checks for revhead loss conditions and other antag datums.
 /datum/dynamic_ruleset/latejoin/provocateur/proc/check_eligible(datum/mind/M)
@@ -181,9 +183,8 @@
 	antag_flag_override = ROLE_HERETIC
 	protected_roles = list(
 		JOB_CAPTAIN,
-		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_HEAD_OF_SECURITY,
+		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,

@@ -47,3 +47,63 @@
   - bugfix: Addictive reagents scale with the amount of reagent consumed properly.
   - bugfix: IPCs can no longer get addicted to substances.
   - bugfix: Rescaled alcohol effects
+2024-03-12:
+  Kapu1178:
+  - bugfix: Neck-level grabs correctly move the victim.
+  - bugfix: You can no longer move neck-level grab victims off your tile.
+  - bugfix: Mobs buckled to a grabbed object now inherit the offset
+  - qol: Cleaned up how repositioning grabbed movables works.
+  - bugfix: Two-handed items function better.
+  - bugfix: Fixed a sound not playing from fabricators.
+  - bugfix: Cleanbots no longer get stuck spraying acid on specific blood decals.
+  - bugfix: The monochrome ghost vision pref actually works (lol).
+2024-03-13:
+  Kapu1178:
+  - bugfix: Handcuffs no longer immobilize you.
+2024-03-18:
+  Kapu1178:
+  - bugfix: Greatly improved functionality of MODsuit 'Pathfinder' module, renamed
+      to Recall module.
+  - bugfix: Attacking with an item will no longer always hit the chest.
+  - tweak: Roundstart wallets start open
+  - bugfix: SecHUDs correctly display jobs again.
+2024-03-23:
+  Kapu1178:
+  - bugfix: Welding goggles' nearsight effect no longer gets stuck.
+  - bugfix: AI-controlled mobs will now exclude abstract objects from their search
+      pools.
+  - bugfix: When you examine an object, mobs that cannot see the object you examined
+      see a different message.
+  - rscadd: When you examine an object you're wearing, nearby mobs are told that item
+      is yours.
+  - rscadd: When you examine an object inside of a storage container, nearby mobs
+      are told you examined something inside of the storage container, but are not
+      told what.
+  - balance: Pain is now tied to wounds, healing wounds will heal any non-temporary
+      pain.
+  - balance: Increased potency of morphine's painkiller effect.
+  - bugfix: Removed the old damage-based slowdown, it's now purely pain based
+  - bugfix: Re-added Burn damage causing internal organ damage. The removal of this
+      made it so burn damage wasn't lethal, even in obscene amounts.
+  - balance: 'Brainloss-induced knockout no longer stacks. It''s now spurts of unconsciousness.
+      (Note: This is not the case for knockout caused by having no oxygen in the brain)'
+  - balance: Added a grace period to hearts after a resuscitation, a heart now has
+      a 10 second window where it will not be stopped by arrhythmia (the heart pumping
+      too hard as a result of poor oxygenation).
+  - balance: Increased the grace period for shock-induced fibrillation after resuscitation
+      from ~20 ticks to ~25 ticks.
+  - balance: Increased the oxyloss recovery caused by a defibrillator, effectively
+      extending the time to stabilize a patient after restarting their heart.
+  - bugfix: Germs actually increase, meaning infection can occur properly.
+2024-03-27:
+  Kapu1178, timothymtorres:
+  - qol: Greatly improved sign language. It is now it's own language.
+  - rscdel: Radio signing gloves.
+2024-03-28:
+  Kapu1178:
+  - tweak: Restyled UI buttons.
+2024-03-31:
+  Kapu1178:
+  - tweak: Renamed Quirks to Traits.
+  - rscdel: Removed several Traits.
+  - balance: Medicine Allergy bane is now only 1 reagent instead of 5.

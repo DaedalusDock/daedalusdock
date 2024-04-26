@@ -5,6 +5,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	icon = 'icons/turf/floors.dmi'
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 	luminosity = 1
+	explosion_block = 1
 
 	// baseturfs can be either a list or a single turf type.
 	// In class definition like here it should always be a single type.
@@ -34,7 +35,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	/// For the station blueprints, images of objects eg: pipes
 	var/tmp/list/image/blueprint_data
-	var/tmp/list/explosion_throw_details
+	/// Contains the throw range for explosions. You won't need this, stop looking at it.
+	var/tmp/explosion_throw_details
 
 	///Lazylist of movable atoms providing opacity sources.
 	var/tmp/list/atom/movable/opacity_sources
@@ -534,20 +536,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/is_shielded()
 	return
-
-/turf/contents_explosion(severity, target)
-	for(var/thing in contents)
-		var/atom/movable/movable_thing = thing
-		if(QDELETED(movable_thing))
-			continue
-		switch(severity)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.high_mov_atom += movable_thing
-			if(EXPLODE_HEAVY)
-				SSexplosions.med_mov_atom += movable_thing
-			if(EXPLODE_LIGHT)
-				SSexplosions.low_mov_atom += movable_thing
-
 
 /turf/narsie_act(force, ignore_mobs, probability = 20)
 	. = (prob(probability) || force)

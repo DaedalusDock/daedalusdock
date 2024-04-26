@@ -11,6 +11,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	z_eventually_space = TRUE
 	temperature = TCMB
 	simulated = FALSE
+	explosion_block = 0.5
 
 	var/destination_z
 	var/destination_x

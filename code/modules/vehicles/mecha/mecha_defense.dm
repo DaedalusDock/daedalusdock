@@ -146,25 +146,25 @@
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(flat_equipment)
-				SSexplosions.high_mov_atom += flat_equipment
+				EX_ACT_LIST(flat_equipment, EXPLODE_DEVASTATE)
 			if(trackers)
-				SSexplosions.high_mov_atom += trackers
+				EX_ACT_LIST(trackers, EXPLODE_DEVASTATE)
 			if(occupants)
-				SSexplosions.high_mov_atom += occupants
+				EX_ACT_LIST(occupants, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
 			if(flat_equipment)
-				SSexplosions.med_mov_atom += flat_equipment
+				EX_ACT_LIST(flat_equipment, EXPLODE_HEAVY)
 			if(trackers)
-				SSexplosions.med_mov_atom += trackers
+				EX_ACT_LIST(trackers, EXPLODE_HEAVY)
 			if(occupants)
-				SSexplosions.med_mov_atom += occupants
+				EX_ACT_LIST(occupants, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
 			if(flat_equipment)
-				SSexplosions.low_mov_atom += flat_equipment
+				EX_ACT_LIST(flat_equipment, EXPLODE_LIGHT)
 			if(trackers)
-				SSexplosions.low_mov_atom += trackers
+				EX_ACT_LIST(trackers, EXPLODE_LIGHT)
 			if(occupants)
-				SSexplosions.low_mov_atom += occupants
+				EX_ACT_LIST(occupants, EXPLODE_LIGHT)
 
 /obj/vehicle/sealed/mecha/handle_atom_del(atom/A)
 	if(A in occupants) //todo does not work and in wrong file

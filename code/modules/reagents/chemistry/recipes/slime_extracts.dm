@@ -120,15 +120,6 @@
 	T.visible_message(span_danger("The slime extract begins to vibrate adorably!"))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 1, "Friendly Gold Slime", FRIENDLY_SPAWN, "neutral"), 50)
 
-/datum/chemical_reaction/slime/slimemobspawn/spider
-	required_reagents = list(/datum/reagent/spider_extract = 1)
-
-
-/datum/chemical_reaction/slime/slimemobspawn/spider/summon_mobs(datum/reagents/holder, turf/T)
-	T.visible_message(span_danger("The slime extract begins to vibrate crikey-ingly!"))
-	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 3, "Traitor Spider Slime", /mob/living/simple_animal/hostile/giant_spider/midwife, "neutral", FALSE), 50)
-
-
 //Silver
 /datum/chemical_reaction/slime/slimebork
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
@@ -190,7 +181,7 @@
 	required_other = TRUE
 
 /datum/chemical_reaction/slime/slimefoam/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	holder.create_foam(/datum/effect_system/foam_spread,80, span_danger("[src] spews out foam!"))
+	holder.create_foam(/datum/effect_system/fluid_spread/foam, 80, span_danger("[src] spews out foam!"))
 
 //Dark Blue
 /datum/chemical_reaction/slime/slimefreeze

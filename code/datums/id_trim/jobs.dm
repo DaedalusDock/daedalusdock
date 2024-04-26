@@ -148,7 +148,7 @@
 	return ..()
 
 /datum/id_trim/job/cargo_technician
-	assignment = "Cargo Technician"
+	assignment = JOB_DECKHAND
 	trim_state = "trim_cargotechnician"
 	sechud_icon_state = SECHUD_CARGO_TECHNICIAN
 	extra_access = list(ACCESS_QM, ACCESS_MINING, ACCESS_MINING_STATION)
@@ -178,8 +178,8 @@
 	job = /datum/job/chemist
 
 /datum/id_trim/job/chief_engineer
-	assignment = "Chief Engineer"
-	intern_alt_name = "Chief Engineer-in-Training"
+	assignment = JOB_CHIEF_ENGINEER
+	intern_alt_name = JOB_CHIEF_ENGINEER + "-in-Training"
 	trim_state = "trim_chiefengineer"
 	sechud_icon_state = SECHUD_CHIEF_ENGINEER
 	extra_access = list(ACCESS_TELEPORTER)
@@ -232,7 +232,7 @@
 	sechud_icon_state = SECHUD_CHEF
 
 /datum/id_trim/job/curator
-	assignment = "Curator"
+	assignment = JOB_ARCHIVIST
 	trim_state = "trim_curator"
 	sechud_icon_state = SECHUD_CURATOR
 	extra_access = list()
@@ -242,12 +242,17 @@
 	job = /datum/job/curator
 
 /datum/id_trim/job/detective
-	assignment = "Detective"
+	assignment = JOB_DETECTIVE
 	trim_state = "trim_detective"
 	sechud_icon_state = SECHUD_DETECTIVE
 	extra_access = list()
-	minimal_access = list(ACCESS_BRIG, ACCESS_COURT, ACCESS_FORENSICS, ACCESS_BRIG_ENTRANCE,ACCESS_MAINT_TUNNELS, ACCESS_MORGUE,
-					ACCESS_MECH_SECURITY, ACCESS_MINERAL_STOREROOM, ACCESS_WEAPONS)
+	minimal_access = list(
+		ACCESS_FORENSICS,
+		ACCESS_MAINT_TUNNELS,
+		ACCESS_MORGUE,
+		ACCESS_MINERAL_STOREROOM,
+		ACCESS_WEAPONS
+	)
 	config_job = "detective"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/detective
@@ -291,8 +296,8 @@
 	job = /datum/job/head_of_personnel
 
 /datum/id_trim/job/head_of_security
-	assignment = "Head of Security"
-	intern_alt_name = "Head of Security-in-Training"
+	assignment = JOB_SECURITY_MARSHAL
+	intern_alt_name = JOB_SECURITY_MARSHAL + "-in-Training"
 	trim_state = "trim_headofsecurity"
 	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
 	extra_access = list(ACCESS_TELEPORTER)
@@ -337,7 +342,7 @@
 	job = /datum/job/lawyer
 
 /datum/id_trim/job/medical_doctor
-	assignment = "Medical Doctor"
+	assignment = JOB_MEDICAL_DOCTOR
 	trim_state = "trim_medicaldoctor"
 	sechud_icon_state = SECHUD_MEDICAL_DOCTOR
 	extra_access = list(ACCESS_CHEMISTRY, ACCESS_VIROLOGY)

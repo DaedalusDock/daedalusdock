@@ -33,7 +33,12 @@
 	light_on = FALSE
 	light_outer_range = 8
 	generic_canpass = FALSE
-	hud_possible = list(DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_TRACK_HUD)
+	hud_possible = list(
+		DIAG_STAT_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_BATT_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_MECH_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_TRACK_HUD = 'icons/mob/huds/hud.dmi'
+	)
 	///What direction will the mech face when entered/powered on? Defaults to South.
 	var/dir_in = SOUTH
 	///How much energy the mech will consume each time it moves. This variable is a backup for when leg actuators affect the energy drain.
@@ -146,7 +151,7 @@
 	///Currently ejecting, and unable to do things
 	var/is_currently_ejecting = FALSE
 
-	var/datum/effect_system/smoke_spread/smoke_system = new
+	var/datum/effect_system/fluid_spread/smoke/smoke_system = new
 
 	////Action vars
 	///Ref to any active thrusters we might have
@@ -224,7 +229,7 @@
 	SET_TRACKING(__TYPE__)
 	prepare_huds()
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_to_hud(src)
+		diag_hud.add_atom_to_hud(src)
 	diag_hud_set_mechhealth()
 	diag_hud_set_mechcell()
 	diag_hud_set_mechstat()
@@ -270,7 +275,7 @@
 
 	UNSET_TRACKING(__TYPE__)
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_from_hud(src) //YEET
+		diag_hud.remove_atom_from_hud(src) //YEET
 	lose_atmos_sensitivity()
 	return ..()
 
@@ -312,7 +317,7 @@
 	if(!phasing || get_charge() <= phasing_energy_drain || throwing)
 		return ..()
 	if(phase_state)
-		flick(phase_state, src)
+		z_flick(phase_state, src)
 	var/turf/destination_turf = get_step(loc, movement_dir)
 	var/area/destination_area = destination_turf.loc
 	if(destination_area.area_flags & NOTELEPORT || SSmapping.level_trait(destination_turf.z, ZTRAIT_NOPHASE))

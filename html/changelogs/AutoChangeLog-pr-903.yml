@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: AO overlays no longer get stuck when turfs change. This was most obvious
-      with the stellar body magnet.

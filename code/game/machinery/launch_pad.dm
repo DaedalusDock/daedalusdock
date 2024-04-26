@@ -6,7 +6,7 @@
 	icon = 'icons/obj/telescience.dmi'
 	icon_state = "lpad-idle"
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 2.5
-	hud_possible = list(DIAG_LAUNCHPAD_HUD)
+	hud_possible = list(DIAG_LAUNCHPAD_HUD = 'icons/mob/huds/hud.dmi')
 	circuit = /obj/item/circuitboard/machine/launchpad
 	var/icon_teleport = "lpad-beam"
 	var/stationary = TRUE //to prevent briefcase pad deconstruction and such
@@ -35,7 +35,7 @@
 	. = ..()
 	prepare_huds()
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_to_hud(src)
+		diag_hud.add_atom_to_hud(src)
 
 	var/image/holder = hud_list[DIAG_LAUNCHPAD_HUD]
 	var/mutable_appearance/MA = new /mutable_appearance()
@@ -49,7 +49,7 @@
 
 /obj/machinery/launchpad/Destroy()
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_from_hud(src)
+		diag_hud.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/launchpad/examine(mob/user)
@@ -98,6 +98,7 @@
 	var/turf/target_turf
 	if(isAvailable())
 		target_turf = locate(x + x_offset, y + y_offset, z)
+
 	if(target_turf)
 		holder.icon_state = indicator_icon
 		holder.loc = target_turf

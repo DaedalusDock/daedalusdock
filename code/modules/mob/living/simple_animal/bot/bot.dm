@@ -9,7 +9,13 @@
 	healable = FALSE
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	hud_possible = list(DIAG_STAT_HUD, DIAG_BOT_HUD, DIAG_HUD, DIAG_BATT_HUD, DIAG_PATH_HUD = HUD_LIST_LIST)
+	hud_possible = list(
+		DIAG_STAT_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_BOT_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_BATT_HUD = 'icons/mob/huds/hud.dmi',
+		DIAG_PATH_HUD = HUD_LIST_LIST
+	)
 	maxbodytemp = INFINITY
 	minbodytemp = 0
 	has_unlimited_silicon_privilege = TRUE
@@ -100,7 +106,7 @@
 	var/beacon_freq = FREQ_NAV_BEACON
 	///The type of data HUD the bot uses. Diagnostic by default.
 	var/data_hud_type = DATA_HUD_DIAGNOSTIC_BASIC
-	var/datum/atom_hud/data/bot_path/path_hud = new /datum/atom_hud/data/bot_path()
+	var/datum/atom_hud/data/bot_path/path_hud
 	var/path_image_icon = 'icons/mob/aibots.dmi'
 	var/path_image_icon_state = "path_indicator"
 	var/path_image_color = "#FFFFFF"
@@ -160,6 +166,11 @@
 /mob/living/simple_animal/bot/Initialize(mapload)
 	. = ..()
 	GLOB.bots_list += src
+
+	path_hud = new /datum/atom_hud/data/bot_path()
+	for(var/hud in path_hud.hud_icons) // You get to see your own path
+		set_hud_image_active(hud, exclusive_hud = path_hud)
+
 	// Give bots a fancy new ID card that can hold any access.
 	access_card = new /obj/item/card/id/advanced/simple_bot(src)
 	// This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
@@ -174,7 +185,7 @@
 	//Adds bot to the diagnostic HUD system
 	prepare_huds()
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_to_hud(src)
+		diag_hud.add_atom_to_hud(src)
 	diag_hud_set_bothealth()
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()
@@ -182,10 +193,10 @@
 	//If a bot has its own HUD (for player bots), provide it.
 	if(!isnull(data_hud_type))
 		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
-		datahud.add_hud_to(src)
+		datahud.show_to(src)
 	if(path_hud)
-		path_hud.add_to_hud(src)
-		path_hud.add_hud_to(src)
+		path_hud.add_atom_to_hud(src)
+		path_hud.show_to(src)
 
 
 /mob/living/simple_animal/bot/Destroy()
@@ -1023,11 +1034,12 @@ Pass a positive integer as an argument to override a bot's default speed.
 	var/list/path_huds_watching_me = list(GLOB.huds[DATA_HUD_DIAGNOSTIC_ADVANCED])
 	if(path_hud)
 		path_huds_watching_me += path_hud
-	for(var/V in path_huds_watching_me)
-		var/datum/atom_hud/H = V
-		H.remove_from_hud(src)
 
-	var/list/path_images = hud_list[DIAG_PATH_HUD]
+	for(var/datum/atom_hud/hud as anything in path_huds_watching_me)
+		hud.remove_atom_from_hud(src)
+
+	var/list/path_images = active_hud_list[DIAG_PATH_HUD]
+
 	QDEL_LIST(path_images)
 	if(length(newpath))
 		var/mutable_appearance/path_image = new /mutable_appearance()
@@ -1066,9 +1078,8 @@ Pass a positive integer as an argument to override a bot's default speed.
 			path[T] = I
 			path_images += I
 
-	for(var/V in path_huds_watching_me)
-		var/datum/atom_hud/H = V
-		H.add_to_hud(src)
+	for(var/datum/atom_hud/hud as anything in path_huds_watching_me)
+		hud.add_atom_to_hud(src)
 
 /mob/living/simple_animal/bot/proc/increment_path()
 	if(!length(path))

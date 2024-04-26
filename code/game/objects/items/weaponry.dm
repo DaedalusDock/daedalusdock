@@ -615,7 +615,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	if(homerun_ready)
 		user.visible_message(span_userdanger("It's a home run!"))
 		target.throw_at(throw_target, rand(8,10), 14, user)
-		SSexplosions.medturf += throw_target
+		EX_ACT(throw_target, EXPLODE_HEAVY)
 		playsound(get_turf(src), 'sound/weapons/homerun.ogg', 100, TRUE)
 		homerun_ready = 0
 		return
@@ -659,7 +659,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		/mob/living/simple_animal/butterfly,
 		/mob/living/basic/cockroach,
 		/obj/item/queen_bee,
-		/obj/structure/spider/spiderling,
 		/mob/living/simple_animal/hostile/ant,
 		/obj/effect/decal/cleanable/ants,
 	))

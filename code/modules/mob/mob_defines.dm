@@ -11,7 +11,6 @@
 	layer = MOB_LAYER
 	plane = GAME_PLANE
 	animate_movement = SLIDE_STEPS
-	hud_possible = list(ANTAG_HUD)
 	//pressure_resistance = 8
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 	throwforce = 10

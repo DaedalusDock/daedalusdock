@@ -215,3 +215,60 @@
 		/obj/item/gun/energy/laser/thermal/inferno = 1,
 		/obj/item/gun/energy/laser/thermal/cryo = 1,
 	),src)
+
+/// Security sidearm + gear belt.
+/obj/item/storage/belt/holster/security
+	name = "tactical holster belt"
+	desc = "A security belt with small gear pouches and a hip-holster for a sidearm."
+	icon_state = "security"
+	inhand_icon_state = "security"
+	worn_icon_state = "security"
+	alternate_worn_layer = UNDER_SUIT_LAYER
+	w_class = WEIGHT_CLASS_BULKY
+
+/obj/item/storage/belt/holster/security/Initialize()
+	. = ..()
+	var/datum/storage/holster/storage = atom_storage
+	storage.holster_slots = 1
+	storage.max_slots = 5
+	storage.max_specific_storage = WEIGHT_CLASS_TINY
+	storage.set_holsterable(list(
+		/obj/item/gun/ballistic/automatic/pistol,
+		/obj/item/gun/ballistic/revolver,
+		/obj/item/gun/energy/disabler,
+	))
+	//LIST DIRECTLY COPIED FROM SEC BELT!! REVIEW LATER
+	storage.set_holdable(list(
+		/obj/item/ammo_box,
+		/obj/item/ammo_casing/shotgun,
+		/obj/item/assembly/flash/handheld,
+		/obj/item/clothing/glasses,
+		/obj/item/clothing/gloves,
+		/obj/item/flashlight/seclite,
+		/obj/item/food/donut,
+		/obj/item/grenade,
+		/obj/item/holosign_creator/security,
+		/obj/item/knife/combat,
+		/obj/item/melee/baton,
+		/obj/item/grenade,
+		/obj/item/reagent_containers/spray/pepper,
+		/obj/item/restraints/handcuffs,
+		/obj/item/clothing/glasses,
+		/obj/item/ammo_casing/shotgun,
+		/obj/item/ammo_box,
+		/obj/item/food/donut,
+		/obj/item/knife/combat,
+		/obj/item/flashlight/seclite,
+		/obj/item/radio,
+		/obj/item/clothing/gloves,
+		/obj/item/restraints/legcuffs/bola,
+		/obj/item/holosign_creator/security,
+		))
+
+/obj/item/storage/belt/holster/security/full/PopulateContents()
+	new /obj/item/reagent_containers/spray/pepper(src)
+	new /obj/item/restraints/handcuffs(src)
+	new /obj/item/grenade/flashbang(src)
+	new /obj/item/assembly/flash/handheld(src)
+	new /obj/item/melee/baton/security/loaded(src)
+	update_appearance()

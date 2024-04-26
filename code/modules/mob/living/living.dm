@@ -7,9 +7,9 @@
 	if(unique_name)
 		give_unique_name()
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
-	medhud.add_to_hud(src)
+	medhud.add_atom_to_hud(src)
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_to_hud(src)
+		diag_hud.add_atom_to_hud(src)
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
@@ -22,8 +22,7 @@
 	prepare_data_huds()
 
 /mob/living/proc/prepare_data_huds()
-	med_hud_set_health()
-	med_hud_set_status()
+	update_med_hud()
 
 /mob/living/Destroy()
 	QDEL_NULL(z_eye)
@@ -585,11 +584,11 @@
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
 		return
+
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss())
-	update_stat()
 	med_hud_set_health()
-	med_hud_set_status()
 	update_health_hud()
+	update_stat()
 
 /mob/living/update_health_hud()
 	var/severity = 0
@@ -1185,8 +1184,6 @@
 				/mob/living/simple_animal/hostile/retaliate/bat,
 				/mob/living/simple_animal/hostile/retaliate/goat,
 				/mob/living/simple_animal/hostile/killertomato,
-				/mob/living/simple_animal/hostile/giant_spider,
-				/mob/living/simple_animal/hostile/giant_spider/hunter,
 				/mob/living/simple_animal/hostile/blob/blobbernaut/independent,
 				/mob/living/simple_animal/hostile/carp/ranged,
 				/mob/living/simple_animal/hostile/carp/ranged/chaos,
@@ -2205,8 +2202,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/offset_x = pixel_x + pick(-3, -2, -1, 1, 2, 3)
 	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
 
-	animate(src, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
-	animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
+	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
+		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+		animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
 
 /mob/living/proc/get_blood_print()
 	return BLOOD_PRINT_PAWS

@@ -38,7 +38,8 @@
 	drop_sound = 'sound/items/handling/paper_drop.ogg'
 	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	grind_results = list(/datum/reagent/cellulose = 3)
-	color = "white"
+
+	color = "#ffffe1"
 	/// What's actually written on the paper.
 	var/info = ""
 	/**
@@ -304,7 +305,7 @@
 			.["add_sign"] += style[ADD_INFO_SIGN]
 
 	.["max_length"] = MAX_PAPER_LENGTH
-	.["paper_color"] = !color || color == "white" ? "#FFFFFF" : color // color might not be set
+	.["paper_color"] = !color || color == "white" ? "#ffffff" : color // color might not be set
 	.["paper_state"] = icon_state /// TODO: show the sheet will bloodied or crinkling?
 	.["stamps"] = stamps
 

@@ -38,15 +38,6 @@
 
 	qdel(src)
 
-/obj/item/delivery/contents_explosion(severity, target)
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += contents
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += contents
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += contents
-
 /obj/item/delivery/deconstruct()
 	unwrap_contents()
 	post_unwrap_contents()

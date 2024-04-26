@@ -18,6 +18,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/list/typecache_datum_blacklist = list()
 	///The define string we use to identify the role for bans/player polls to spawn a random new one in.
 	var/job_rank
+	/// A job path to give if the player is this antagonist at roundstart.
+	var/assign_job
 	///Should replace jobbanned player with ghosts if granted.
 	var/replace_banned = TRUE
 	///List of the objective datums that this role currently has, completing all objectives at round-end will cause this antagonist to greentext.
@@ -217,7 +219,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/mob/living/current = owner.current
 	for (var/datum/atom_hud/alternate_appearance/basic/has_antagonist/antag_hud as anything in GLOB.has_antagonist_huds)
 		if (!antag_hud.mobShouldSee(current))
-			antag_hud.remove_hud_from(current)
+			antag_hud.hide_from(current)
 
 	qdel(src)
 
@@ -407,7 +409,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 	// Add HUDs that they couldn't see before
 	for (var/datum/atom_hud/alternate_appearance/basic/has_antagonist/antag_hud as anything in GLOB.has_antagonist_huds)
 		if (antag_hud.mobShouldSee(owner.current))
-			antag_hud.add_hud_to(owner.current)
+			antag_hud.show_to(owner.current)
 
 //This one is created by admin tools for custom objectives
 /datum/antagonist/custom

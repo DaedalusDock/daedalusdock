@@ -5,7 +5,20 @@
 	icon = 'icons/mob/human.dmi'
 	icon_state = "human_basic"
 	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE|LONG_GLIDE
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ID_HUD,WANTED_HUD,IMPLOYAL_HUD,IMPCHEM_HUD,IMPTRACK_HUD,ANTAG_HUD,GLAND_HUD,SENTIENT_DISEASE_HUD,FAN_HUD)
+	flags_1 = parent_type::flags_1 | PREVENT_CONTENTS_EXPLOSION_1
+
+	hud_possible = list(
+		HEALTH_HUD = 'icons/mob/huds/med_hud.dmi',
+		STATUS_HUD = 'icons/mob/huds/hud.dmi',
+		ID_HUD = 'icons/mob/huds/hud.dmi',
+		WANTED_HUD = 'icons/mob/huds/hud.dmi',
+		IMPLOYAL_HUD = 'icons/mob/huds/hud.dmi',
+		IMPCHEM_HUD = 'icons/mob/huds/hud.dmi',
+		IMPTRACK_HUD = 'icons/mob/huds/hud.dmi',
+		GLAND_HUD = 'icons/mob/huds/hud.dmi',
+		SENTIENT_DISEASE_HUD = 'icons/mob/huds/hud.dmi',
+	)
+
 	hud_type = /datum/hud/human
 	//pressure_resistance = 25
 	can_buckle = TRUE

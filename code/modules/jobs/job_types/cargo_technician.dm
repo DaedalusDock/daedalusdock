@@ -1,5 +1,5 @@
 /datum/job/cargo_technician
-	title = JOB_CARGO_TECHNICIAN
+	title = JOB_DECKHAND
 	description = "Distribute supplies to the departments that ordered them, \
 		collect empty crates, load and unload the supply shuttle, \
 		ship bounty cubes."
@@ -44,7 +44,7 @@
 
 
 /datum/outfit/job/cargo_tech
-	name = "Cargo Technician"
+	name = JOB_DECKHAND
 	jobtype = /datum/job/cargo_technician
 
 	id_trim = /datum/id_trim/job/cargo_technician
@@ -54,7 +54,7 @@
 	l_hand = /obj/item/export_scanner
 
 /datum/outfit/job/cargo_tech/plasmaman
-	name = "Cargo Technician (Plasmaman)"
+	name = JOB_DECKHAND + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/cargo
 	gloves = /obj/item/clothing/gloves/color/plasmaman/cargo
@@ -63,6 +63,6 @@
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/cargo_tech/mod
-	name = "Cargo Technician (MODsuit)"
+	name = JOB_DECKHAND + " (MODsuit)"
 
 	back = /obj/item/mod/control/pre_equipped/loader

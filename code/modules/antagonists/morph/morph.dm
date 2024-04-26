@@ -57,15 +57,13 @@
 
 /mob/living/simple_animal/hostile/morph/med_hud_set_health()
 	if(morphed && !isliving(form))
-		var/image/holder = hud_list[HEALTH_HUD]
-		holder.icon_state = null
+		set_hud_image_vars(HEALTH_HUD, null)
 		return //we hide medical hud while morphed
 	..()
 
 /mob/living/simple_animal/hostile/morph/med_hud_set_status()
 	if(morphed && !isliving(form))
-		var/image/holder = hud_list[STATUS_HUD]
-		holder.icon_state = null
+		set_hud_image_vars(STATUS_HUD, null)
 		return //we hide medical hud while morphed
 	..()
 
@@ -111,8 +109,7 @@
 	melee_damage_upper = melee_damage_disguised
 	add_movespeed_modifier(/datum/movespeed_modifier/morph_disguised)
 
-	med_hud_set_health()
-	med_hud_set_status() //we're an object honest
+	update_med_hud()
 	return
 
 /mob/living/simple_animal/hostile/morph/proc/restore()
@@ -139,8 +136,7 @@
 	melee_damage_upper = initial(melee_damage_upper)
 	remove_movespeed_modifier(/datum/movespeed_modifier/morph_disguised)
 
-	med_hud_set_health()
-	med_hud_set_status() //we are not an object
+	update_med_hud()
 
 /mob/living/simple_animal/hostile/morph/death(gibbed)
 	if(morphed)
@@ -201,37 +197,3 @@
 				eat(I)
 			return
 	return ..()
-
-//Spawn Event
-
-/datum/round_event_control/morph
-	name = "Spawn Morph"
-	typepath = /datum/round_event/ghost_role/morph
-	weight = 0 //Admin only
-	max_occurrences = 1
-
-/datum/round_event/ghost_role/morph
-	minimum_required = 1
-	role_name = "morphling"
-
-/datum/round_event/ghost_role/morph/spawn_role()
-	var/list/candidates = get_candidates(ROLE_ALIEN, ROLE_ALIEN)
-	if(!candidates.len)
-		return NOT_ENOUGH_PLAYERS
-
-	var/mob/dead/selected = pick_n_take(candidates)
-
-	var/datum/mind/player_mind = new /datum/mind(selected.key)
-	player_mind.active = TRUE
-	if(!GLOB.xeno_spawn)
-		return MAP_ERROR
-	var/mob/living/simple_animal/hostile/morph/S = new /mob/living/simple_animal/hostile/morph(pick(GLOB.xeno_spawn))
-	player_mind.transfer_to(S)
-	player_mind.set_assigned_role(SSjob.GetJobType(/datum/job/morph))
-	player_mind.special_role = ROLE_MORPH
-	player_mind.add_antag_datum(/datum/antagonist/morph)
-	SEND_SOUND(S, sound('sound/magic/mutate.ogg'))
-	message_admins("[ADMIN_LOOKUPFLW(S)] has been made into a morph by an event.")
-	log_game("[key_name(S)] was spawned as a morph by an event.")
-	spawned_mobs += S
-	return SUCCESSFUL_SPAWN

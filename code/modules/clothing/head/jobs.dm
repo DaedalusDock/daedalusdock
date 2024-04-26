@@ -94,7 +94,7 @@
 
 //Detective
 /obj/item/clothing/head/fedora/det_hat
-	name = "detective's fedora"
+	name = "private investigator's fedora"
 	desc = "There's only one man who can sniff out the dirty stench of crime, and he's likely wearing this hat."
 	armor = list(BLUNT = 25, PUNCTURE = 5, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 0, BIO = 0, FIRE = 30, ACID = 50)
 	icon_state = "detective"
@@ -141,9 +141,25 @@
 
 //Security
 
+//Mars-Exec hats
+/obj/item/clothing/head/garrison_cap
+	name = "mars garrison cap"
+	desc = "A folded garrison cap for Mars-Exec officers. Fancy, but it won't do much to protect your noggin."
+	icon_state = "garrison_sec"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+/obj/item/clothing/head/marshal_hat
+	name = "marshal's hat"
+	desc = "A wide-brimmed campaign hat with a thin kevlar lining. Don't be a fool, marshal."
+	//Only protects from ballistics, and still worse then a helmet.
+	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 20, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	icon_state = "marshalhat"
+	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION //need to do these
+
+//old sec hats
 /obj/item/clothing/head/hos
-	name = "head of security cap"
-	desc = "The robust standard-issue cap of the Head of Security. For showing the officers who's in charge."
+	name = "security marshal cap"
+	desc = "The robust standard-issue cap of the Security Marshal. For showing the officers who's in charge."
 	icon_state = "hoscap"
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -153,16 +169,16 @@
 	desc = "A black cap fit for a high ranking syndicate officer."
 
 /obj/item/clothing/head/hos/beret
-	name = "head of security's beret"
-	desc = "A robust beret for the Head of Security, for looking stylish while not sacrificing protection."
+	name = "security marshal's beret"
+	desc = "A robust beret for the Security Marshal, for looking stylish while not sacrificing protection."
 	icon_state = "beret_badge"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#3F3C40#FFCE5B"
 
 /obj/item/clothing/head/hos/beret/navyhos
-	name = "head of security's formal beret"
-	desc = "A special beret with the Head of Security's insignia emblazoned on it. A symbol of excellence, a badge of courage, a mark of distinction."
+	name = "security marshal's formal beret"
+	desc = "A special beret with the Security Marshal's insignia emblazoned on it. A symbol of excellence, a badge of courage, a mark of distinction."
 	greyscale_colors = "#3C485A#FFCE5B"
 
 /obj/item/clothing/head/hos/beret/syndicate
@@ -264,8 +280,6 @@
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
 	greyscale_colors = "#972A2A#F2F2F2"
-	armor = list(BLUNT = 35, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 40, BOMB = 25, BIO = 0, FIRE = 20, ACID = 50)
-	strip_delay = 60
 	dog_fashion = null
 	flags_1 = NONE
 
@@ -274,7 +288,6 @@
 	name = "warden's beret"
 	desc = "A special beret with the Warden's insignia emblazoned on it. For wardens with class."
 	greyscale_colors = "#3C485A#00AEEF"
-	strip_delay = 60
 
 /obj/item/clothing/head/beret/sec/navyofficer
 	desc = "A special beret with the security insignia emblazoned on it. For officers with class."

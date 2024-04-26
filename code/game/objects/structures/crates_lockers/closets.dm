@@ -691,15 +691,6 @@ DEFINE_INTERACTABLE(/obj/structure/closet)
 				req_access = list()
 				req_access += pick(SSid_access.get_region_access_list(list(REGION_ALL_STATION)))
 
-/obj/structure/closet/contents_explosion(severity, target)
-	switch(severity)
-		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += contents
-		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += contents
-		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += contents
-
 /obj/structure/closet/singularity_act()
 	dump_contents()
 	..()

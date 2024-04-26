@@ -135,7 +135,8 @@ GLOBAL_PROTECT(admin_verbs_server)
 	/client/proc/toggle_interviews,
 	/client/proc/toggle_require_discord,
 	/client/proc/toggle_hub,
-	/client/proc/toggle_cdn
+	/client/proc/toggle_cdn,
+	/client/proc/set_game_mode
 	)
 GLOBAL_LIST_INIT(admin_verbs_debug, world.AVerbsDebug())
 GLOBAL_PROTECT(admin_verbs_debug)
@@ -562,8 +563,15 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			if(range_devastation > zas_settings.maxex_devastation_range || range_heavy > zas_settings.maxex_heavy_range || range_light > zas_settings.maxex_light_range || range_flash > zas_settings.maxex_flash_range || range_flame > zas_settings.maxex_fire_range)
 				if(tgui_alert(usr, "Bomb is bigger than the maxcap. Continue?",,list("Yes","No")) != "Yes")
 					return
+
 			epicenter = mob.loc //We need to reupdate as they may have moved again
-			explosion(epicenter, devastation_range = range_devastation, heavy_impact_range = range_heavy, light_impact_range = range_light, flash_range = range_flash, adminlog = TRUE, ignorecap = TRUE, explosion_cause = mob)
+			var/smoke = tgui_alert(usr, "Create smoke?", "Drop Bomb", list("Yes", "No"))
+			if(smoke == "Yes")
+				smoke = TRUE
+			else
+				smoke = FALSE
+
+			explosion(epicenter, devastation_range = range_devastation, heavy_impact_range = range_heavy, light_impact_range = range_light, flame_range = range_flame, flash_range = range_flash, adminlog = TRUE, ignorecap = TRUE, smoke = smoke, explosion_cause = mob)
 	message_admins("[ADMIN_LOOKUPFLW(usr)] creating an admin explosion at [epicenter.loc].")
 	log_admin("[key_name(usr)] created an admin explosion at [epicenter.loc].")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Bomb") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -994,3 +1002,30 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	var/datum/browser/popup = new(mob, "spellreqs", "Spell Requirements", 600, 400)
 	popup.set_content(page_contents)
 	popup.open()
+
+/client/proc/set_game_mode()
+	set name = "Set Gamemode"
+	set category = "Debug"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	if(Master.current_runlevel > RUNLEVEL_LOBBY)
+		to_chat(usr, span_adminnotice("You cannot set the gamemode after the round has started!"))
+		return
+
+	var/gamemode_path = input(usr, "Select Gamemode", "Set Gamemode") as null|anything in subtypesof(/datum/game_mode)
+	if(!gamemode_path)
+		return
+
+	var/fake_name = input(usr, "Fake Gamemode name?", "Set Gamemode") as null|text
+	if(fake_name)
+		SSticker.mode_display_name = fake_name
+
+	var/announce = alert(usr, "Announce to players?", "Set Gamemode", "Yes", "No")
+
+	SSticker.mode = new gamemode_path
+	if(announce == "Yes")
+		to_chat(world, span_boldannounce("The gamemode is now: [fake_name ? SSticker.mode_display_name : SSticker.mode.name]."))
+
+	message_admins("[key_name_admin(usr)] has set the gamemode to [SSticker.mode.type].")

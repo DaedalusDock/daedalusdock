@@ -406,5 +406,14 @@
 			adjacent_turfs += get_step(src, direct)
 	return length(adjacent_turfs) ? adjacent_turfs : null
 
+/turf/open/space/get_atmos_adjacent_turfs()
+	. = list()
+	for(var/direct in GLOB.cardinals)
+		var/turf/T = get_step(src, direct)
+		var/canpass
+		ATMOS_CANPASS_TURF(canpass, T, src)
+		if(!(canpass & (AIR_BLOCKED)))
+			. += T
+
 /turf/open/return_analyzable_air()
 	return unsafe_return_air()

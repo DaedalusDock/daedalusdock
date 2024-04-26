@@ -66,19 +66,19 @@
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
 			if(beaker)
-				SSexplosions.high_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_DEVASTATE)
 			if(bottle)
-				SSexplosions.high_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
 			if(beaker)
-				SSexplosions.med_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_HEAVY)
 			if(bottle)
-				SSexplosions.med_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
 			if(beaker)
-				SSexplosions.low_mov_atom += beaker
+				EX_ACT(beaker, EXPLODE_LIGHT)
 			if(bottle)
-				SSexplosions.low_mov_atom += bottle
+				EX_ACT(bottle, EXPLODE_LIGHT)
 
 /obj/machinery/chem_master/handle_atom_del(atom/A)
 	..()

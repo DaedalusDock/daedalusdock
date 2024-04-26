@@ -322,7 +322,7 @@
 		return
 
 	if(is_locked)
-		to_chat(user, span_warning("The case is shut tight with an old-fashioned physical lock. Maybe you should ask the curator for the key?"))
+		to_chat(user, span_warning("The case is shut tight with an old-fashioned physical lock. Maybe you should ask the archivist for the key?"))
 		return
 
 	if(!added_roundstart)
@@ -380,7 +380,7 @@
 
 /obj/item/key/displaycase
 	name = "display case key"
-	desc = "The key to the curator's display cases."
+	desc = "The key to the archivist's display cases."
 
 /obj/item/showpiece_dummy
 	name = "Cheap replica"
@@ -477,7 +477,7 @@
 				usr.put_in_hands(showpiece)
 				to_chat(usr, span_notice("You purchase [showpiece] for [sale_price] credits."))
 				playsound(src, 'sound/effects/cashregister.ogg', 40, TRUE)
-				flick("[initial(icon_state)]_vend", src)
+				z_flick("[initial(icon_state)]_vend", src)
 				showpiece = null
 				update_appearance()
 				SStgui.update_uis(src)

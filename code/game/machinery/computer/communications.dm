@@ -82,7 +82,7 @@
 /obj/machinery/computer/communications/syndicate/get_communication_players()
 	var/list/targets = list()
 	for(var/mob/target in GLOB.player_list)
-		if(target.stat == DEAD || target.z == z || target.mind?.has_antag_datum(/datum/antagonist/battlecruiser))
+		if(target.stat == DEAD || target.z == z)
 			targets += target
 	return targets
 
@@ -117,25 +117,14 @@
 		return ..()
 
 /obj/machinery/computer/communications/emag_act(mob/user, obj/item/card/emag/emag_card)
-	if(istype(emag_card, /obj/item/card/emag/battlecruiser))
-		if(!user.mind?.has_antag_datum(/datum/antagonist/traitor))
-			to_chat(user, span_danger("You get the feeling this is a bad idea."))
-			return
-		var/obj/item/card/emag/battlecruiser/caller_card = emag_card
-		if(battlecruiser_called)
-			to_chat(user, span_danger("The card reports a long-range message already sent to the Syndicate fleet...?"))
-			return
-		battlecruiser_called = TRUE
-		caller_card.use_charge(user)
-		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(summon_battlecruiser), caller_card.team), rand(20 SECONDS, 1 MINUTES))
-		playsound(src, 'sound/machines/terminal_alert.ogg', 50, FALSE)
-		return
-
 	if(obj_flags & EMAGGED)
 		return
+
 	obj_flags |= EMAGGED
+
 	if (authenticated)
 		authorize_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
+
 	to_chat(user, span_danger("You scramble the communication routing circuits!"))
 	playsound(src, 'sound/machines/terminal_alert.ogg', 50, FALSE)
 
@@ -767,13 +756,9 @@
 	LAZYADD(messages, new_message)
 
 /// Defines for the various hack results.
-#define HACK_PIRATE "Pirates"
-#define HACK_FUGITIVES "Fugitives"
 #define HACK_SLEEPER "Sleeper Agents"
 #define HACK_THREAT "Threat Boost"
 
-/// The minimum number of ghosts / observers to have the chance of spawning pirates.
-#define MIN_GHOSTS_FOR_PIRATES 4
 /// The minimum number of ghosts / observers to have the chance of spawning fugitives.
 #define MIN_GHOSTS_FOR_FUGITIVES 6
 /// The maximum percentage of the population to be ghosts before we no longer have the chance of spawning Sleeper Agents.
@@ -796,12 +781,6 @@
 	// If we have a certain amount of ghosts, we'll add some more !!fun!! options to the list
 	var/num_ghosts = length(GLOB.current_observers_list) + length(GLOB.dead_player_list)
 
-	// Pirates require empty space for the ship, and ghosts for the pirates obviously
-	if(SSmapping.empty_space && (num_ghosts >= MIN_GHOSTS_FOR_PIRATES))
-		hack_options += HACK_PIRATE
-	// Fugitives require empty space for the hunter's ship, and ghosts for both fugitives and hunters (Please no waldo)
-	if(SSmapping.empty_space && (num_ghosts >= MIN_GHOSTS_FOR_FUGITIVES))
-		hack_options += HACK_FUGITIVES
 	// If less than a certain percent of the population is ghosts, consider sleeper agents
 	if(num_ghosts < (length(GLOB.clients) * MAX_PERCENT_GHOSTS_FOR_SLEEPER))
 		hack_options += HACK_SLEEPER
@@ -810,30 +789,6 @@
 	message_admins("[ADMIN_LOOKUPFLW(hacker)] hacked a [name] located at [ADMIN_VERBOSEJMP(src)], resulting in: [picked_option]!")
 	hacker.log_message("hacked a communications console, resulting in: [picked_option].", LOG_GAME, log_globally = TRUE)
 	switch(picked_option)
-		if(HACK_PIRATE) // Triggers pirates, which the crew may be able to pay off to prevent
-			priority_announce(
-					"Attention crew, it appears that someone on your station has made unexpected communication with a Syndicate ship in nearby space.",
-					"[command_name()] High-Priority Update",
-					sound_type = ANNOUNCER_CENTCOM
-				)
-
-			var/datum/round_event_control/pirates/pirate_event = locate() in SSevents.control
-			if(!pirate_event)
-				CRASH("hack_console() attempted to run pirates, but could not find an event controller!")
-			addtimer(CALLBACK(pirate_event, TYPE_PROC_REF(/datum/round_event_control, runEvent)), rand(20 SECONDS, 1 MINUTES))
-
-		if(HACK_FUGITIVES) // Triggers fugitives, which can cause confusion / chaos as the crew decides which side help
-			priority_announce(
-					"Attention crew, it appears that someone on your station has established an unexpected orbit with an unmarked ship in nearby space.",
-					"[command_name()] High-Priority Update",
-					sound_type = ANNOUNCER_CENTCOM
-				)
-
-			var/datum/round_event_control/fugitives/fugitive_event = locate() in SSevents.control
-			if(!fugitive_event)
-				CRASH("hack_console() attempted to run fugitives, but could not find an event controller!")
-			addtimer(CALLBACK(fugitive_event, TYPE_PROC_REF(/datum/round_event_control, runEvent)), rand(20 SECONDS, 1 MINUTES))
-
 		if(HACK_THREAT) // Adds a flat amount of threat to buy a (probably) more dangerous antag later
 			priority_announce(
 					"Attention crew, it appears that someone on your station has shifted your orbit into more dangerous territory.",
@@ -846,12 +801,12 @@
 					continue
 				shake_camera(crew_member, 15, 1)
 
-			if(IS_DYNAMIC_GAME_MODE)
+			if(GAMEMODE_WAS_DYNAMIC)
 				var/datum/game_mode/dynamic/dynamic = SSticker.mode
 				dynamic.create_threat(HACK_THREAT_INJECTION_AMOUNT, list(dynamic.threat_log, dynamic.roundend_threat_log), "[worldtime2text()]: Communications console hacked by [hacker]")
 
 		if(HACK_SLEEPER) // Trigger one or multiple sleeper agents with the crew (or for latejoining crew)
-			if(IS_DYNAMIC_GAME_MODE)
+			if(GAMEMODE_WAS_DYNAMIC)
 				var/datum/game_mode/dynamic/dynamic = SSticker.mode
 				var/datum/dynamic_ruleset/midround/sleeper_agent_type = /datum/dynamic_ruleset/midround/autotraitor
 				var/max_number_of_sleepers = clamp(round(length(GLOB.alive_player_list) / 20), 1, 3)
@@ -876,12 +831,9 @@
 							sound_type = ANNOUNCER_CENTCOM
 						)
 
-#undef HACK_PIRATE
-#undef HACK_FUGITIVES
 #undef HACK_SLEEPER
 #undef HACK_THREAT
 
-#undef MIN_GHOSTS_FOR_PIRATES
 #undef MIN_GHOSTS_FOR_FUGITIVES
 #undef MAX_PERCENT_GHOSTS_FOR_SLEEPER
 #undef HACK_THREAT_INJECTION_AMOUNT

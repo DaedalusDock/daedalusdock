@@ -76,12 +76,12 @@
 
 /obj/machinery/sleeper/open_machine()
 	if(!state_open && !panel_open)
-		flick("[initial(icon_state)]-anim", src)
+		z_flick("[initial(icon_state)]-anim", src)
 		..()
 
 /obj/machinery/sleeper/close_machine(mob/user)
 	if((isnull(user) || istype(user)) && state_open && !panel_open)
-		flick("[initial(icon_state)]-anim", src)
+		z_flick("[initial(icon_state)]-anim", src)
 		..(user)
 		var/mob/living/mob_occupant = occupant
 		if(mob_occupant && mob_occupant.stat != DEAD)

@@ -265,7 +265,7 @@
 			span_notice("You press your crowbar between the door and begin to pry it open..."),
 			span_hear("You hear a metal clang, followed by metallic groans.")
 		)
-		if(!do_after(user, src, 3 SECONDS))
+		if(!do_after(user, src, 3 SECONDS, DO_PUBLIC))
 			return
 		user.visible_message(
 			span_danger("[user] forces [src] open with a crowbar!"),
@@ -304,9 +304,9 @@
 /obj/machinery/door/firedoor/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("[base_icon_state]_opening", src)
+			z_flick("[base_icon_state]_opening", src)
 		if("closing")
-			flick("[base_icon_state]_closing", src)
+			z_flick("[base_icon_state]_closing", src)
 
 /obj/machinery/door/firedoor/update_icon_state()
 	. = ..()

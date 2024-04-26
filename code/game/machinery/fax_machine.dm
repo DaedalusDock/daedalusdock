@@ -533,7 +533,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	inserted_paper.forceMove(src)
 	LAZYADD(received_paperwork, inserted_paper)
-	flick("fax_send", src)
+	z_flick("fax_send", src)
 	to_chat(user, span_notice("You insert [inserted_paper] into [src], readying it for processing."))
 
 /*
@@ -549,7 +549,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	else
 		to_chat(user, span_notice("You insert [inserted_paper] into [src]."))
 
-	flick("fax_send", src)
+	z_flick("fax_send", src)
 	stored_paper = inserted_paper
 
 /*
@@ -597,7 +597,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		paper.forceMove(drop_location())
 	LAZYREMOVE(received_paperwork, paper)
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		playsound(src, 'sound/machines/ding.ogg', 50)
 		use_power(active_power_usage)
 
@@ -621,7 +621,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return
 
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [stored_paper]")
 	if(user && user.CanReach(src))
 		user.put_in_hands(stored_paper)
@@ -641,7 +641,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return
 
 	if(!silent)
-		flick("fax_receive", src)
+		z_flick("fax_receive", src)
 		balloon_alert_to_viewers("removed [received_paper]")
 	if(user && user.CanReach(src))
 		user.put_in_hands(received_paper)

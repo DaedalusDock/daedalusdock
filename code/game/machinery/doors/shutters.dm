@@ -18,10 +18,10 @@
 /obj/machinery/door/poddoor/shutters/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			z_flick("opening", src)
 			playsound(src, 'sound/machines/doors/shutters_open.ogg', 100, TRUE)
 		if("closing")
-			flick("closing", src)
+			z_flick("closing", src)
 			playsound(src, 'sound/machines/doors/shutters_close.ogg', 100, TRUE)
 
 /obj/machinery/door/poddoor/shutters/indestructible

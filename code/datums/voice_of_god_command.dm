@@ -150,7 +150,7 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	for(var/mob/living/carbon/target in listeners)
 		target.vomit(10 * power_multiplier, distance = power_multiplier, stun = FALSE)
 
-/// This command silences the listeners. Thrice as effective is the user is a mime or curator.
+/// This command silences the listeners. Thrice as effective is the user is a mime or archivist.
 /datum/voice_of_god_command/silence
 	trigger = "shut\\s*up|silence|be\\s*silent|ssh|quiet|hush"
 	cooldown = COOLDOWN_STUN

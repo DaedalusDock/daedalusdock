@@ -208,7 +208,7 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 			target = tile
 			break
 		else
-			SSexplosions.highturf += tile //also fucks everything else on the turf
+			EX_ACT(tile, EXPLODE_DEVASTATE) //also fucks everything else on the turf
 	point.Beam(target, icon_state = "bsa_beam", time = 5 SECONDS, maxdistance = world.maxx) //ZZZAP
 	new /obj/effect/temp_visual/bsa_splash(point, dir)
 
@@ -348,8 +348,8 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 	if(notice)
 		return null
 	//Totally nanite construction system not an immersion breaking spawning
-	var/datum/effect_system/smoke_spread/s = new
-	s.set_up(4,get_turf(centerpiece))
+	var/datum/effect_system/fluid_spread/smoke/s = new
+	s.set_up(4, location = get_turf(centerpiece))
 	s.start()
 	var/obj/machinery/bsa/full/cannon = new(get_turf(centerpiece),centerpiece.get_cannon_direction())
 	QDEL_NULL(centerpiece.front_ref)

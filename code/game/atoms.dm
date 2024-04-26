@@ -19,10 +19,17 @@
 	/// Forensics datum, initialzed when needed.
 	var/tmp/datum/forensics/forensics
 
-	///This atom's HUD (med/sec, etc) images. Associative list.
+	///all of this atom's HUD (med/sec, etc) images. Associative list of the form: list(hud category = hud image or images for that category).
+	///most of the time hud category is associated with a single image, sometimes its associated with a list of images.
+	///not every hud in this list is actually used. for ones available for others to see, look at active_hud_list.
 	var/tmp/list/image/hud_list = null
+	///all of this atom's HUD images which can actually be seen by players with that hud
+	var/tmp/list/image/active_hud_list = null
+	/// A list of atom huds this object is within
+	var/tmp/list/in_atom_huds = null
+
 	///HUD images that this atom can provide.
-	var/tmp/list/hud_possible
+	var/list/hud_possible
 
 	/**
 	 * used to store the different colors on an atom
@@ -300,7 +307,7 @@
 	if(alternate_appearances)
 		for(var/current_alternate_appearance in alternate_appearances)
 			var/datum/atom_hud/alternate_appearance/selected_alternate_appearance = alternate_appearances[current_alternate_appearance]
-			selected_alternate_appearance.remove_from_hud(src)
+			selected_alternate_appearance.remove_atom_from_hud(src)
 
 	if(reagents)
 		QDEL_NULL(reagents)
@@ -894,6 +901,17 @@
 
 /// Handle what happens when your contents are exploded by a bomb
 /atom/proc/contents_explosion(severity, target)
+	for(var/atom/movable/movable_thing as anything in contents)
+		if(QDELETED(movable_thing))
+			continue
+
+		switch(severity)
+			if(EXPLODE_DEVASTATE)
+				EX_ACT(movable_thing, EXPLODE_DEVASTATE)
+			if(EXPLODE_HEAVY)
+				EX_ACT(movable_thing, EXPLODE_HEAVY)
+			if(EXPLODE_LIGHT)
+				EX_ACT(movable_thing, EXPLODE_LIGHT)
 	return //For handling the effects of explosions on contents that would not normally be effected
 
 /**
@@ -2295,3 +2313,7 @@
 /atom/proc/reset_plane_and_layer()
 	plane = initial(plane)
 	layer = initial(layer)
+
+///returns how much the object blocks an explosion. Used by subtypes.
+/atom/proc/GetExplosionBlock()
+	CRASH("Unimplemented GetExplosionBlock()")

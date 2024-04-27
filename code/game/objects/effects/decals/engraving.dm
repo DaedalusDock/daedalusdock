@@ -50,3 +50,7 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 
+/obj/effect/decal/writing/examine(mob/user)
+	. = ..()
+	to_chat(user,span_info("Can be removed with a welder, or another could be scratched in with a sharp object"))
+

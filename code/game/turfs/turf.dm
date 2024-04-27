@@ -360,9 +360,12 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return FALSE
 
 /turf/attackby_secondary(obj/item/weapon, mob/user, params)
-	if(weapon.sharpness)
-		try_graffiti(user, weapon)
 	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	if(weapon.sharpness && try_graffiti(user, weapon))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 
 //There's a lot of QDELETED() calls here if someone can figure out how to optimize this but not runtime when something gets deleted by a Bump/CanPass/Cross call, lemme know or go ahead and fix this mess - kevinz000
@@ -742,7 +745,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return FALSE
 
 	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, INNATE_TRAIT))
-		to_chat(vandal, span_warning("wall cannot be engraved!"))
+		to_chat(vandal, span_warning("[src] cannot be engraved!"))
 		return FALSE
 
 	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, TRAIT_GENERIC))
@@ -753,19 +756,17 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!message)
 		return FALSE
 
-	if(!vandal || vandal.incapacitated() || !Adjacent(vandal) || !tool.loc == vandal)
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
 		return FALSE
 
 	vandal.visible_message(span_warning("\The [vandal] begins carving something into \the [src]."))
 
-	if(!do_after(vandal, src, max(20, length(message))))
+	if(!do_after(vandal, src, max(2 SECONDS, length(message)), DO_PUBLIC, display = tool))
 		return FALSE
 
-	vandal.visible_message(span_danger("\The [vandal] carves some graffiti into \the [src]."))
+	vandal.visible_message(span_obviousnotice("[vandal] carves some graffiti into [src]."))
 	log_graffiti(message, vandal)
 	AddComponent(/datum/component/engraved, message, TRUE)
 
-	if(lowertext(message) == "elbereth")
-		to_chat(vandal, span_danger("You feel much safer."))
 
 	return TRUE

@@ -749,7 +749,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return FALSE
 
 	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, TRAIT_GENERIC))
-		to_chat(vandal, span_warning("The wall has already been engraved!"))
+		to_chat(vandal, span_warning("[src] already has an engraving."))
 		return FALSE
 
 	var/message = stripped_input(vandal, "Enter a message to engrave.", "Engraving", null ,64, TRUE)

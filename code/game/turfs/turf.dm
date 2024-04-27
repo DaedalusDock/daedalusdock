@@ -741,14 +741,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!tool.sharpness)
 		return FALSE
 
-	var/too_much_graffiti = 0
-	for(var/obj/effect/decal/writing/W in src)
-		too_much_graffiti++
-	if(too_much_graffiti >= 5)
-		to_chat(vandal, span_warning("There's too much graffiti here to add more."))
+	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, INNATE_TRAIT))
+		to_chat(vandal, span_warning("wall cannot be engraved!"))
 		return FALSE
 
-	var/message = sanitize(stripped_input(vandal, "Enter a message to engrave.", "Engraving", null ,64))
+	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, TRAIT_GENERIC))
+		to_chat(vandal, span_warning("The wall has already been engraved!"))
+		return FALSE
+
+	var/message = stripped_input(vandal, "Enter a message to engrave.", "Engraving", null ,64, TRUE)
 	if(!message)
 		return FALSE
 
@@ -762,10 +763,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	vandal.visible_message(span_danger("\The [vandal] carves some graffiti into \the [src]."))
 	log_graffiti(message, vandal)
-	var/obj/effect/decal/writing/graffiti = new(src)
-	graffiti.message = message
-	graffiti.desc += "\nIt reads \"[message]\"."
-	graffiti.author = vandal.ckey
+	AddComponent(/datum/component/engraved, message, TRUE)
 
 	if(lowertext(message) == "elbereth")
 		to_chat(vandal, span_danger("You feel much safer."))

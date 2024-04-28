@@ -1,0 +1,5 @@
+author: ToasterBan
+delete-after: true
+changes:
+  - rscadd: Added bay-style engraving, a wall or floor can be engraved with any sharp
+      object

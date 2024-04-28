@@ -758,6 +758,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/message = stripped_input(vandal, "Enter a message to engrave.", "Engraving", null ,64, TRUE)
 	if(!message)
 		return FALSE
+	if(is_ic_filtered_for_pdas(message))
+		REPORT_CHAT_FILTER_TO_USER(vandal, message)
 
 	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
 		return TRUE

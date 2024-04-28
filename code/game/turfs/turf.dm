@@ -760,15 +760,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		return FALSE
 
 	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
-		return FALSE
+		return TRUE
 
 	vandal.visible_message(span_warning("\The [vandal] begins carving something into \the [src]."))
 
 	if(!do_after(vandal, src, max(2 SECONDS, length(message)), DO_PUBLIC, display = tool))
-		return FALSE
+		return TRUE
 
 	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
-		return FALSE
+		return TRUE
 	vandal.visible_message(span_obviousnotice("[vandal] carves some graffiti into [src]."))
 	log_graffiti(message, vandal)
 	AddComponent(/datum/component/engraved, message, TRUE)

@@ -58,3 +58,9 @@ GLOBAL_LIST_INIT(podstyles, list(\
 	list(POD_SHAPE_OTHER, "gondola",     FALSE, FALSE, FALSE,   RUBBLE_NONE,     "gondola",     "The silent walker. This one seems to be part of a delivery agency."),\
 	list(POD_SHAPE_OTHER, FALSE,         FALSE,    FALSE,            FALSE,   RUBBLE_NONE,         FALSE,      FALSE,      "rl_click", "give_po")\
 ))
+
+// Supply pack flags
+#define SUPPLY_PACK_EMAG (1<<0)
+#define SUPPLY_PACK_CONTRABAND (1<<1)
+#define SUPPLY_PACK_DROPPOD_ONLY (1<<2)
+#define SUPPLY_PACK_GOVERNMENT (1<<3)

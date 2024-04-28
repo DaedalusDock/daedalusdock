@@ -118,7 +118,7 @@ const CargoStatus = (props, context) => {
               onClick={() => act('send')} />
           ) || location}
         </LabeledList.Item>
-        <LabeledList.Item label="CentCom Message">
+        <LabeledList.Item label="Notice">
           {message}
         </LabeledList.Item>
         {!!loan && !requestonly && (
@@ -200,7 +200,7 @@ export const CargoCatalog = (props, context) => {
         </>
       )}>
       <Flex>
-        <Flex.Item ml={-1} mr={1}>
+        <Flex.Item minWidth="30%" ml={-1} mr={1}>
           <Tabs vertical>
             <Tabs.Tab
               key="search_results"

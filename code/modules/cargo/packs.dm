@@ -1,8 +1,10 @@
 /datum/supply_pack
 	var/name = "Crate"
 	var/group = ""
-	var/hidden = FALSE
-	var/contraband = FALSE
+
+	// See cargo.dm
+	var/supply_flags = NONE
+
 	/// Cost of the crate. DO NOT GO ANY LOWER THAN X1.4 the "CARGO_CRATE_VALUE" value if using regular crates, or infinite profit will be possible!
 	var/cost = CARGO_CRATE_VALUE * 1.4
 	var/access = FALSE
@@ -21,12 +23,8 @@
 	var/special = FALSE //Event/Station Goals/Admin enabled packs
 	var/special_enabled = FALSE
 
-	var/DropPodOnly = FALSE //only usable by the Bluespace Drop Pod via the express cargo console
 	var/special_pod //If this pack comes shipped in a specific pod when launched from the express console
 	var/admin_spawned = FALSE
-
-	// Fuck this code
-	var/government_order = FALSE
 
 	var/goody = FALSE //Goodies can only be purchased by private accounts and can have coupons apply to them. They also come in a lockbox instead of a full crate, so the 700 min doesn't apply
 
@@ -80,7 +78,7 @@
 	name = "Biker Gang Kit" //TUNNEL SNAKES OWN THIS TOWN
 	desc = "TUNNEL SNAKES OWN THIS TOWN. Contains an unbranded All Terrain Vehicle, and a complete gang outfit -- consists of black gloves, a menacing skull bandanna, and a SWEET leather overcoat!"
 	cost = CARGO_CRATE_VALUE * 4
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	contains = list(/obj/vehicle/ridden/atv,
 					/obj/item/key/atv,
 					/obj/item/clothing/suit/jacket/leather/overcoat,
@@ -250,7 +248,7 @@
 /datum/supply_pack/emergency/specialops
 	name = "Special Ops Supplies"
 	desc = "(*!&@#SAD ABOUT THAT NULL_ENTRY, HUH OPERATIVE? WELL, THIS LITTLE ORDER CAN STILL HELP YOU OUT IN A PINCH. CONTAINS A BOX OF FIVE EMP GRENADES, THREE SMOKEBOMBS, AN INCENDIARY GRENADE, AND A \"SLEEPY PEN\" FULL OF NICE TOXINS!#@*$"
-	hidden = TRUE
+	supply_flags = parent_type::supply_flags | SUPPLY_PACK_EMAG
 	cost = CARGO_CRATE_VALUE * 4
 	contains = list(/obj/item/storage/box/emps,
 					/obj/item/grenade/smokebomb,
@@ -434,7 +432,7 @@
 	name = "Standard Justice Enforcer Crate"
 	desc = "This is it. The Bee's Knees. The Creme of the Crop. The Pick of the Litter. The best of the best of the best. The Crown Jewel of Marks. The Alpha and the Omega of security headwear. Guaranteed to strike fear into the hearts of each and every criminal aboard the station. Also comes with a security gasmask. Requires Security access to open."
 	cost = CARGO_CRATE_VALUE * 6 //justice comes at a price. An expensive, noisy price.
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	contains = list(/obj/item/clothing/head/helmet/justice,
 					/obj/item/clothing/mask/gas/sechailer)
 	crate_name = "security clothing crate"
@@ -463,7 +461,7 @@
 	name = "Traditional Equipment Crate"
 	desc = "Spare equipment found in a warehouse."
 	cost = CARGO_CRATE_VALUE * 2.2
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	contains = list(/obj/item/clothing/under/rank/security/constable,
 					/obj/item/clothing/head/helmet/constable,
 					/obj/item/clothing/gloves/color/white,
@@ -622,7 +620,7 @@
 	name = "Russian Surplus Crate"
 	desc = "Hello Comrade, we have the most modern russian military equipment the black market can offer, for the right price of course. Sadly we couldnt remove the lock so it requires Armory access to open."
 	cost = CARGO_CRATE_VALUE * 12
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	contains = list(/obj/item/food/rationpack,
 					/obj/item/ammo_box/a762,
 					/obj/item/storage/toolbox/ammo,
@@ -1994,7 +1992,7 @@
 	cost = CARGO_CRATE_VALUE * 12
 	contains = list(/obj/item/storage/backpack/duffelbag/clown/cream_pie)
 	crate_name = "party equipment crate"
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	access = ACCESS_THEATRE
 	access_view = ACCESS_THEATRE
 	crate_type = /obj/structure/closet/crate/secure
@@ -2201,7 +2199,7 @@
 /datum/supply_pack/critter/butterfly
 	name = "Butterflies Crate"
 	desc = "Not a very dangerous insect, but they do give off a better image than, say, flies or cockroaches."//is that a motherfucking worm reference
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	cost = CARGO_CRATE_VALUE * 5
 	access_view = ACCESS_THEATRE
 	contains = list(/mob/living/simple_animal/butterfly)
@@ -2269,7 +2267,7 @@
 	access_view = ACCESS_HOS
 	contains = list(/mob/living/simple_animal/crab)
 	crate_name = "look sir free crabs"
-	DropPodOnly = TRUE
+	supply_flags = SUPPLY_PACK_DROPPOD_ONLY
 
 /datum/supply_pack/critter/crab/generate()
 	. = ..()
@@ -2374,7 +2372,7 @@
 /datum/supply_pack/costumes_toys/randomised/contraband
 	name = "Contraband Crate"
 	desc = "Psst.. bud... want some contraband? I can get you a poster, some nice cigs, dank, even some sponsored items...you know, the good stuff. Just keep it away from the cops, kay?"
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	cost = CARGO_CRATE_VALUE * 6
 	num_contained = 7
 	contains = list(/obj/item/poster/random_contraband,
@@ -2415,7 +2413,7 @@
 /datum/supply_pack/costumes_toys/foamforce/bonus
 	name = "Foam Force Pistols Crate"
 	desc = "Psst.. hey bud... remember those old foam force pistols that got discontinued for being too cool? Well I got two of those right here with your name on em. I'll even throw in a spare mag for each, waddya say?"
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	cost = CARGO_CRATE_VALUE * 8
 	contains = list(/obj/item/gun/ballistic/automatic/pistol/toy,
 					/obj/item/gun/ballistic/automatic/pistol/toy,
@@ -2484,7 +2482,7 @@
 	name = "Laser Tag Firing Pins Crate"
 	desc = "Three laser tag firing pins used in laser-tag units to ensure users are wearing their vests."
 	cost = CARGO_CRATE_VALUE * 3.5
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	contains = list(/obj/item/storage/box/lasertagpins)
 	crate_name = "laser tag crate"
 
@@ -2580,7 +2578,7 @@
 	desc = "This crate contains everything you need to set up your own ethnicity-based racketeering operation."
 	cost = CARGO_CRATE_VALUE * 4
 	contains = list()
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 
 /datum/supply_pack/costumes_toys/mafia/fill(obj/structure/closet/crate/C)
 	for(var/i in 1 to 4)
@@ -2811,7 +2809,7 @@
 	desc = "Presenting the New Nanotrasen-Brand Bluespace Supplypod! Transport cargo with grace and ease! Call today and we'll shoot over a demo unit for just 300 credits!"
 	cost = CARGO_CRATE_VALUE * 0.6 //Empty pod, so no crate refund
 	contains = list()
-	DropPodOnly = TRUE
+	supply_flags = SUPPLY_PACK_DROPPOD_ONLY
 	crate_type = null
 	special_pod = /obj/structure/closet/supplypod/bluespacepod
 
@@ -2868,7 +2866,7 @@
 	name = "Black Market LTSRBT"
 	desc = "Need a faster and better way of transporting your illegal goods from and to the station? Fear not, the Long-To-Short-Range-Bluespace-Transceiver (LTSRBT for short) is here to help. Contains a LTSRBT circuit, two bluespace crystals, and one ansible."
 	cost = CARGO_CRATE_VALUE * 20
-	contraband = TRUE
+	supply_flags = SUPPLY_PACK_CONTRABAND
 	contains = list(
 		/obj/item/circuitboard/machine/ltsrbt,
 		/obj/item/stack/ore/bluespace_crystal/artificial,

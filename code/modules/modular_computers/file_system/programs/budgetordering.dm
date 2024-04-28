@@ -64,6 +64,20 @@
 
 	return FALSE
 
+/datum/computer_file/program/budgetorders/proc/can_purchase_pack(datum/supply_pack/pack)
+	. = TRUE
+	if(pack.supply_flags & SUPPLY_PACK_DROPPOD_ONLY)
+		return FALSE
+
+	if((pack.supply_flags & SUPPLY_PACK_EMAG))
+		return FALSE
+
+	if(pack.special && !pack.special_enabled)
+		return FALSE
+
+	if((pack.supply_flags & SUPPLY_PACK_CONTRABAND) && !contraband)
+		return FALSE
+
 /datum/computer_file/program/budgetorders/ui_data(mob/user)
 	. = ..()
 	var/list/data = get_header_data()
@@ -89,15 +103,18 @@
 	data["supplies"] = list()
 	for(var/pack in SSshuttle.supply_packs)
 		var/datum/supply_pack/P = SSshuttle.supply_packs[pack]
-		if(!is_visible_pack(user, P.access_view , null, P.contraband) || P.hidden)
+		if(!is_visible_pack(user, P.access_view , null, (P.supply_flags & SUPPLY_PACK_CONTRABAND)))
 			continue
+
+		if(!can_purchase_pack(P))
+			continue
+
 		if(!data["supplies"][P.group])
 			data["supplies"][P.group] = list(
 				"name" = P.group,
 				"packs" = list()
 			)
-		if((P.hidden && (P.contraband && !contraband) || (P.special && !P.special_enabled) || P.DropPodOnly))
-			continue
+
 		data["supplies"][P.group]["packs"] += list(list(
 			"name" = P.name,
 			"cost" = P.get_cost(),
@@ -190,7 +207,7 @@
 			var/datum/supply_pack/pack = SSshuttle.supply_packs[id]
 			if(!istype(pack))
 				return
-			if(pack.hidden || pack.contraband || pack.DropPodOnly || (pack.special && !pack.special_enabled))
+			if(!can_purchase_pack(pack))
 				return
 
 			var/name = "*None Provided*"

@@ -2510,6 +2510,7 @@
 #include "code\modules\cargo\expressconsole.dm"
 #include "code\modules\cargo\gondolapod.dm"
 #include "code\modules\cargo\goodies.dm"
+#include "code\modules\cargo\govt_supply.dm"
 #include "code\modules\cargo\order.dm"
 #include "code\modules\cargo\orderconsole.dm"
 #include "code\modules\cargo\packs.dm"

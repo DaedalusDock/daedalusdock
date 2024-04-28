@@ -28,11 +28,11 @@
 #define ACCOUNT_SEC "SEC"
 #define ACCOUNT_SEC_NAME "Mars Executive Outcomes Budget"
 
-/// The number of departmental accounts for the economy. DOES NOT INCLUDE STATION MASTER.
-#define ECON_NUM_DEPARTMENT_ACCOUNTS 4
-
 #define ACCOUNT_STATION_MASTER "STA"
 #define ACCOUNT_STATION_MASTER_NAME "Station Budget"
+
+#define ACCOUNT_GOV "GOV"
+#define ACCOUNT_GOV_NAME "Special Order Budget"
 
 #define NO_FREEBIES "commies go home"
 

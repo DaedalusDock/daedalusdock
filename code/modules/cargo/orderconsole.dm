@@ -37,7 +37,8 @@
 	///Interface name for the ui_interact call for different subtypes.
 	var/interface_type = "Cargo"
 
-	var/government_order = FALSE
+	/// Matches supply pack flags
+	var/supply_flags = NONE
 
 /obj/machinery/computer/cargo/request
 	name = "supply request console"
@@ -64,13 +65,6 @@
 	else
 		return ..()
 
-/obj/machinery/computer/cargo/proc/get_export_categories()
-	. = EXPORT_CARGO
-	if(contraband)
-		. |= EXPORT_CONTRABAND
-	if(obj_flags & EMAGGED)
-		. |= EXPORT_EMAG
-
 /obj/machinery/computer/cargo/emag_act(mob/user)
 	if(obj_flags & EMAGGED)
 		return
@@ -79,17 +73,50 @@
 		span_notice("You adjust [src]'s routing and receiver spectrum, unlocking special supplies and contraband."))
 
 	obj_flags |= EMAGGED
-	contraband = TRUE
+	supply_flags |= SUPPLY_PACK_CONTRABAND|SUPPLY_PACK_EMAG
 
 	// This also permanently sets this on the circuit board
 	var/obj/item/circuitboard/computer/cargo/board = circuit
-	board.contraband = TRUE
+	board.supply_flags |= SUPPLY_PACK_CONTRABAND|SUPPLY_PACK_EMAG
 	board.obj_flags |= EMAGGED
 	update_static_data(user)
 
 /obj/machinery/computer/cargo/on_construction()
 	. = ..()
 	circuit.configure_machine(src)
+
+/obj/item/circuitboard/computer/cargo/multitool_act(mob/living/user)
+	. = ..()
+	if(!(obj_flags & EMAGGED))
+		supply_flags ^= SUPPLY_PACK_CONTRABAND
+		to_chat(user, span_notice("Receiver spectrum set to [(supply_flags & SUPPLY_PACK_CONTRABAND) ? "Broad" : "Standard"]."))
+	else
+		to_chat(user, span_alert("The spectrum chip is unresponsive."))
+
+/obj/machinery/computer/cargo/proc/get_export_categories()
+	. = EXPORT_CARGO
+	if(supply_flags & SUPPLY_PACK_CONTRABAND)
+		. |= EXPORT_CONTRABAND
+	if(supply_flags & SUPPLY_PACK_EMAG)
+		. |= EXPORT_EMAG
+
+/// Returns TRUE if the pack can be purchased.
+/obj/machinery/computer/cargo/proc/can_purchase_pack(datum/supply_pack/pack)
+	. = TRUE
+	if((pack.supply_flags & SUPPLY_PACK_EMAG) && !(supply_flags & SUPPLY_PACK_EMAG))
+		return FALSE
+
+	if((pack.supply_flags & SUPPLY_PACK_CONTRABAND) && !(supply_flags & SUPPLY_PACK_CONTRABAND))
+		return FALSE
+
+	if((pack.supply_flags & SUPPLY_PACK_DROPPOD_ONLY) && !is_express)
+		return FALSE
+
+	if(pack.special && !pack.special_enabled)
+		return FALSE
+
+	if((pack.supply_flags & SUPPLY_PACK_GOVERNMENT) && !(supply_flags & SUPPLY_PACK_GOVERNMENT))
+		return FALSE
 
 /obj/machinery/computer/cargo/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
@@ -155,7 +182,7 @@
 	. = list()
 	for(var/pack in SSshuttle.supply_packs)
 		var/datum/supply_pack/P = SSshuttle.supply_packs[pack]
-		if(P.government_order && !government_order)
+		if(!can_purchase_pack(P))
 			continue
 
 		if(!.[P.group])
@@ -163,8 +190,6 @@
 				"name" = P.group,
 				"packs" = list()
 			)
-		if((P.hidden && !(obj_flags & EMAGGED)) || (P.contraband && !contraband) || (P.special && !P.special_enabled) || P.DropPodOnly)
-			continue
 
 		.[P.group]["packs"] += list(list(
 			"name" = P.name,
@@ -186,22 +211,28 @@
 			if(!SSshuttle.supply.canMove())
 				say(safety_warning)
 				return
+
 			if(SSshuttle.supply_blocked)
 				say(blockade_warning)
 				return
+
 			if(SSshuttle.supply.getDockedId() == docking_home)
 				SSshuttle.supply.export_categories = get_export_categories()
 				SSshuttle.moveShuttle(cargo_shuttle, docking_away, TRUE)
 				say("The supply shuttle is departing.")
 				investigate_log("[key_name(usr)] sent the supply shuttle away.", INVESTIGATE_CARGO)
+
 			else
 				investigate_log("[key_name(usr)] called the supply shuttle.", INVESTIGATE_CARGO)
 				say("The supply shuttle has been called and will arrive in [SSshuttle.supply.timeLeft(600)] minutes.")
 				SSshuttle.moveShuttle(cargo_shuttle, docking_home, TRUE)
+
 			. = TRUE
+
 		if("loan")
 			if(!SSshuttle.shuttle_loan)
 				return
+
 			if(SSshuttle.supply_blocked)
 				say(blockade_warning)
 				return
@@ -217,15 +248,18 @@
 				investigate_log("[key_name(usr)] accepted a shuttle loan event.", INVESTIGATE_CARGO)
 				log_game("[key_name(usr)] accepted a shuttle loan event.")
 				. = TRUE
+
 		if("add")
 			if(is_express)
 				return
+
 			var/id = params["id"]
 			id = text2path(id) || id
 			var/datum/supply_pack/pack = SSshuttle.supply_packs[id]
 			if(!istype(pack))
 				CRASH("Unknown supply pack id given by order console ui. ID: [params["id"]]")
-			if((pack.hidden && !(obj_flags & EMAGGED)) || (pack.contraband && !contraband) || pack.DropPodOnly || (pack.special && !pack.special_enabled))
+
+			if(!can_purchase_pack(pack))
 				return
 
 			var/name = "*None Provided*"
@@ -235,6 +269,7 @@
 				var/mob/living/carbon/human/H = usr
 				name = H.get_authentification_name()
 				rank = H.get_assignment(hand_first = TRUE)
+
 			else if(issilicon(usr))
 				name = usr.real_name
 				rank = "Silicon"
@@ -246,9 +281,11 @@
 				if(!istype(id_card))
 					say("No ID card detected.")
 					return
+
 				if(istype(id_card, /obj/item/card/id/departmental_budget))
 					say("The [src] rejects [id_card].")
 					return
+
 				account = id_card.registered_account
 				if(!istype(account))
 					say("Invalid bank account.")

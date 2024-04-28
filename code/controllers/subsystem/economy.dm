@@ -8,20 +8,26 @@ SUBSYSTEM_DEF(economy)
 
 	var/payday_interval = 8 // How many fires between paydays
 
-	///How many credits does the in-game economy have in circulation at round start? Divided up by 4 of the 5 department budgets evenly, where cargo starts with nothing.
-	var/budget_pool = 16000
+	/// How many credits to give to each department at round start.
+	var/roundstart_budget_amt = 4000
+
 	var/list/department_id2name = list(
 		ACCOUNT_ENG = ACCOUNT_ENG_NAME,
 		ACCOUNT_MED = ACCOUNT_MED_NAME,
 		ACCOUNT_CAR = ACCOUNT_CAR_NAME,
 		ACCOUNT_SEC = ACCOUNT_SEC_NAME,
-		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME
+		ACCOUNT_STATION_MASTER = ACCOUNT_STATION_MASTER_NAME,
+		ACCOUNT_GOV = ACCOUNT_GOV_NAME, // THIS IS FOR THE SPECIAL ORDER CONSOLE, NOT THEIR PAYCHECKS!
 	)
+
 	///The station's master account, used for splitting up funds and pooling money.
 	var/datum/bank_account/department/station_master
 
+	/// Govt Bux, for the government supply console
+	var/datum/bank_account/department/government_budget
+
 	///Departmental account datums by ID
-	var/list/department_accounts_by_id = list()
+	var/list/datum/bank_account/department/department_accounts_by_id = list()
 	var/list/generated_accounts = list()
 
 	/**
@@ -64,16 +70,12 @@ SUBSYSTEM_DEF(economy)
 	var/mail_blocked = FALSE
 
 /datum/controller/subsystem/economy/Initialize(timeofday)
-	///The master account gets 50% of the roundstart budget
-	var/reserved_for_master = round(budget_pool / 2)
-	station_master = new(ACCOUNT_STATION_MASTER, ACCOUNT_STATION_MASTER_NAME, reserved_for_master)
-	department_accounts_by_id[ACCOUNT_STATION_MASTER] = station_master
-	budget_pool = round(budget_pool/2)
+	for(var/dep_id in department_id2name)
+		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], roundstart_budget_amt)
 
-	var/budget_to_hand_out = round(budget_pool / ECON_NUM_DEPARTMENT_ACCOUNTS)
+	department_accounts_by_id[ACCOUNT_GOV].account_balance = 1000
 
-	for(var/dep_id in department_id2name - ACCOUNT_STATION_MASTER)
-		department_accounts_by_id[dep_id] = new /datum/bank_account/department(dep_id, department_id2name[dep_id], budget_to_hand_out)
+	station_master = department_accounts_by_id[ACCOUNT_STATION_MASTER]
 	return ..()
 
 /datum/controller/subsystem/economy/Recover()

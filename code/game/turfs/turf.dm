@@ -738,10 +738,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/on_change_area(area/old_area, area/new_area)
 	transfer_area_lighting(old_area, new_area)
 
-//a check to see if graffiti should happen
+//A check to see if graffiti should happen
 /turf/proc/try_graffiti(mob/vandal, obj/item/tool)
 
 	if(!tool.sharpness)
+		return FALSE
+
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
 		return FALSE
 
 	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, INNATE_TRAIT))
@@ -764,6 +767,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!do_after(vandal, src, max(2 SECONDS, length(message)), DO_PUBLIC, display = tool))
 		return FALSE
 
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
+		return FALSE
 	vandal.visible_message(span_obviousnotice("[vandal] carves some graffiti into [src]."))
 	log_graffiti(message, vandal)
 	AddComponent(/datum/component/engraved, message, TRUE)

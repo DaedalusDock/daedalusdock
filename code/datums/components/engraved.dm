@@ -18,7 +18,7 @@
 	src.engraved_description = engraved_description
 	src.persistent_save = persistent_save
 
-	icon_state_append = rand(1, 5)
+	icon_state_append = rand(1, 4)
 	//must be here to allow overlays to be updated
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
 	engraved_turf.update_appearance()

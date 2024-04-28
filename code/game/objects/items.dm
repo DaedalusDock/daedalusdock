@@ -939,7 +939,8 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
 	if(!M)
 		return FALSE
-
+	if((item_flags & HAND_ITEM) && slot != ITEM_SLOT_HANDS)
+		return FALSE
 	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self)
 
 /obj/item/verb/verb_pickup()

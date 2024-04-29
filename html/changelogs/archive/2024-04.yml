@@ -29,3 +29,7 @@
   Lohikar, LemonInTheDark, TemporalOroboros, Kapu1178:
   - refactor: Rewrote explosions
   - refactor: Smoke and Foam now use a light fluid sim to spread.
+2024-04-29:
+  ToasterBan:
+  - rscadd: Added bay-style engraving, a wall or floor can be engraved with any sharp
+      object

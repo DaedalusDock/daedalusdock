@@ -158,7 +158,7 @@
 			if(!ismopable(movable_content)) // Mopables will be cleaned anyways by the turf wash above
 				wash_atom(movable_content) // Reagent exposure is handled in wash_atom
 
-		reagents.remove_any(SHOWER_SPRAY_VOLUME)
+		reagents.remove_all(SHOWER_SPRAY_VOLUME)
 		return
 	on = FALSE
 	soundloop.stop()

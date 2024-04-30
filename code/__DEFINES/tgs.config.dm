@@ -10,3 +10,4 @@
 #define TGS_NOTIFY_ADMINS(event) message_admins(##event)
 #define TGS_CLIENT_COUNT GLOB.clients.len
 #define TGS_PROTECT_DATUM(Path) GENERAL_PROTECT_DATUM(##Path)
+#define TGS_DEBUG_LOG(message) log_world("TGS Debug: [##message]")

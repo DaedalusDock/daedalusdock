@@ -63,7 +63,7 @@
 	C.remove_status_effect(/datum/status_effect/jitter)
 	C.hallucination = 0
 	REMOVE_TRAITS_NOT_IN(C, list(SPECIES_TRAIT, ROUNDSTART_TRAIT, ORGAN_TRAIT))
-	C.reagents.remove_all_type(/datum/reagent/toxin, 2 * removed, FALSE, TRUE)
+	C.reagents.remove_reagent(/datum/reagent/toxin, 2 * removed, include_subtypes = TRUE)
 	if(C.blood_volume < BLOOD_VOLUME_NORMAL)
 		C.setBloodVolume(BLOOD_VOLUME_NORMAL)
 

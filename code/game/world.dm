@@ -136,6 +136,7 @@ GLOBAL_VAR(restart_counter)
 	GLOB.world_game_log = "[GLOB.log_directory]/game.log"
 	GLOB.world_silicon_log = "[GLOB.log_directory]/silicon.log"
 	GLOB.world_tool_log = "[GLOB.log_directory]/tools.log"
+	GLOB.world_graffiti_log = "[GLOB.log_directory]/graffiti.log"
 	GLOB.world_suspicious_login_log = "[GLOB.log_directory]/suspicious_logins.log"
 	GLOB.world_mecha_log = "[GLOB.log_directory]/mecha.log"
 	GLOB.world_virus_log = "[GLOB.log_directory]/virus.log"
@@ -309,14 +310,15 @@ GLOBAL_VAR(restart_counter)
 			shutdown_logging() // See comment below.
 			TgsEndProcess()
 
-
-	log_world("Awaiting TGS reboot")
-	TgsReboot()
-	log_world("TGS reboot successful.")
+	log_world("Attempting world reboot at [time_stamp()].")
 
 	log_world("Awaiting rust_g shutdown.")
-	shutdown_logging() // Past this point, no logging procs can be used, at risk of data loss. This is a lie, world log can be used safely.
+	shutdown_logging() // Past this point, no logging procs can be used besides log_world() at risk of data loss.
 	log_world("rust_g shutdown successful.")
+
+	log_world("Awaiting TGS reboot")
+	TgsReboot() // TGS can decide to kill us right here, so it's important to do it last
+	log_world("TGS reboot successful.")
 
 	log_world("World rebooted at [time_stamp()].")
 	..()

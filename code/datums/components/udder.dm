@@ -141,4 +141,4 @@
 		return
 	slug_turf.wash(CLEAN_SCRUB)
 	reagents.expose(slug_turf, TOUCH, 5)
-	reagents.remove_any(5)
+	reagents.remove_all(5)

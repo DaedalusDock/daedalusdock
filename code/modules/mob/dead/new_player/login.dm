@@ -14,6 +14,10 @@
 	if(!. || !client)
 		return FALSE
 
+	if(restricted_mode)
+		for(var/procpath/verb as anything in verbs)
+			remove_verb(src, verb)
+
 	var/motd = global.config.motd
 	if(motd)
 		to_chat(src, "<div class=\"motd\">[motd]</div>", handle_whitespace=FALSE)

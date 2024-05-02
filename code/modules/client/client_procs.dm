@@ -391,6 +391,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	. = ..() //calls mob.Login()
 
+	if(restricted_mode)
+
 	if (length(GLOB.stickybanadminexemptions))
 		GLOB.stickybanadminexemptions -= ckey
 		if (!length(GLOB.stickybanadminexemptions))
@@ -1347,7 +1349,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		var/procpath/verb_path = v
 		remove_verb(src, verb_path)
 
-	for (var/v in mob.verbs)
+	for (var/v in mob?.verbs)
 		var/procpath/verb_path = v
 		remove_verb(mob, verb_path)
 

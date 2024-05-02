@@ -14,7 +14,7 @@
 	if(!. || !client)
 		return FALSE
 
-	if(restricted_mode)
+	if(client.restricted_mode)
 		for(var/procpath/verb as anything in verbs)
 			remove_verb(src, verb)
 

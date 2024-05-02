@@ -1369,7 +1369,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		</div>
 	"}
 
-	var/datum/browser/popup = new(src, "soulnotice", "Notice of Modification", 660, 270)
+	var/datum/browser/popup = new(mob, "soulnotice", "Notice of Modification", 660, 270)
 	popup.set_window_options("can_close=1;can_resize=0")
 	popup.set_content(content)
 	popup.open()

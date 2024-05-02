@@ -205,7 +205,7 @@
 		</div>
 	"}
 
-	var/datum/browser/popup = new(mob, "playersetup", "<center><div>Welcome, New Player!</div></center>", 660, 270)
+	var/datum/browser/popup = new(src, "playersetup", "<center><div>Welcome, New Player!</div></center>", 660, 270)
 	popup.set_window_options("can_close=0;focus=false;can_resize=0")
 	popup.set_content(content)
 	popup.open(FALSE)

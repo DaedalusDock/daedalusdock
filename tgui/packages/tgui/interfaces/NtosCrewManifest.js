@@ -16,6 +16,7 @@ export const NtosCrewManifest = (props, context) => {
   const {
     have_printer,
     manifest = {},
+    manifest_key,
   } = data;
   return (
     <NtosWindow
@@ -31,29 +32,31 @@ export const NtosCrewManifest = (props, context) => {
               disabled={!have_printer}
               onClick={() => act('PRG_print')} />
           )}>
-          {map((entries, department) => (
-            <Section
-              key={department}
-              level={2}
-              title={department}>
-              <Table>
-                {entries.map(entry => (
-                  <Table.Row
-                    key={entry.name}
-                    className="candystripe">
-                    <Table.Cell bold>
-                      {entry.name}
-                    </Table.Cell>
-                    <Table.Cell>
-                      {entry.rank === entry.trim // PARIAH EDIT
-                        ? entry.rank
-                        : <>{entry.rank} ({entry.trim})</>}
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table>
-            </Section>
-          ))(manifest)}
+          {!!manifest_key
+            && map((entries, department) => (
+              <Section
+                key={department}
+                level={2}
+                title={department}>
+                <Table>
+                  {entries.map(entry => (
+                    <Table.Row
+                      key={entry.name}
+                      className="candystripe">
+                      <Table.Cell bold>
+                        {entry.name}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {entry.rank === entry.trim // PARIAH EDIT
+                          ? entry.rank
+                          : <>{entry.rank} ({entry.trim})</>}
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table>
+              </Section>
+            ))(manifest)
+            || "ERROR - NO IDENTIFICATION FOUND."}
         </Section>
       </NtosWindow.Content>
     </NtosWindow>

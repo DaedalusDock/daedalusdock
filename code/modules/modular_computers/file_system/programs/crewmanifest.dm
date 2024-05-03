@@ -28,6 +28,8 @@
 		data["have_printer"] = !!printer
 	else
 		data["have_printer"] = FALSE
+
+	data["manifest_key"] = manifest_key || FALSE
 	return data
 
 /datum/computer_file/program/crew_manifest/ui_act(action, params, datum/tgui/ui)
@@ -51,3 +53,67 @@
 					return
 				else
 					computer.visible_message(span_notice("\The [computer] prints out a paper."))
+
+/datum/computer_file/program/crew_manifest/event_id_removed(background, device_type)
+	. = ..()
+	if(background)
+		return
+
+	update_manifest_key()
+
+/datum/computer_file/program/crew_manifest/event_id_inserted(background, device_type)
+	. = ..()
+	if(background)
+		return
+
+	update_manifest_key()
+
+/datum/computer_file/program/crew_manifest/run_program(mob/living/user)
+	. = ..()
+	if(.)
+		update_manifest_key()
+
+/datum/computer_file/program/crew_manifest/proc/update_manifest_key()
+	. = manifest_key
+
+	var/obj/item/modular_computer/parent = holder?.holder
+	if(!parent)
+		manifest_key = null
+		if(. != manifest_key)
+			update_static_data_for_all()
+		return
+
+	if(istype(parent, /obj/item/modular_computer/tablet/integrated))
+		manifest_key = DATACORE_RECORDS_STATION
+		if(. != manifest_key)
+			update_static_data_for_all()
+		return
+
+	var/obj/item/computer_hardware/card_slot/card_slot = parent.all_components[MC_CARD] || parent.all_components[MC_CARD2]
+	var/list/access = card_slot?.GetAccess()
+	if(!length(access))
+		manifest_key = null
+		if(. != manifest_key)
+			update_static_data_for_all()
+		return
+
+	if(ACCESS_HEADS in access)
+		manifest_key = DATACORE_RECORDS_STATION
+
+	else if(ACCESS_MEDICAL in access)
+		manifest_key = DATACORE_RECORDS_AETHER
+
+	else if(ACCESS_ENGINE in access)
+		manifest_key = DATACORE_RECORDS_DAEDALUS
+
+	else if(ACCESS_CARGO in access)
+		manifest_key = DATACORE_RECORDS_HERMES
+
+	else if(ACCESS_SECURITY in access)
+		manifest_key = DATACORE_RECORDS_MARS
+
+	else
+		manifest_key = null
+
+	if(. != manifest_key)
+		update_static_data_for_all()

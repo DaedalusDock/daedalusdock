@@ -90,7 +90,7 @@
 	board.supply_flags |= SUPPLY_PACK_CONTRABAND|SUPPLY_PACK_EMAG
 
 	buyable_supply_packs = get_buyable_supply_packs()
-	update_static_data()
+	update_static_data_for_all()
 
 /obj/machinery/computer/cargo/express/get_buyable_supply_packs()
 	var/meme_pack_data = list()

@@ -56810,7 +56810,7 @@
 "vjW" = (
 /obj/machinery/door/airlock/medical{
 	name = "Medical Storage";
-	stripe_paint = s;
+	stripe_paint = "#52B4E9";
 	req_access_txt = "5"
 	},
 /obj/machinery/door/firedoor,

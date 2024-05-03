@@ -4,7 +4,7 @@
 	category = PROGRAM_CATEGORY_CREW
 	program_icon_state = "id"
 	extended_desc = "Program for viewing and printing the current staff manifest"
-	transfer_access = list(ACCESS_HEADS)
+	transfer_access = list(ACCESS_MANAGEMENT)
 	requires_ntnet = TRUE
 	size = 4
 	tgui_id = "NtosCrewManifest"
@@ -97,7 +97,7 @@
 			update_static_data_for_all()
 		return
 
-	if(ACCESS_HEADS in access)
+	if(ACCESS_MANAGEMENT in access)
 		manifest_key = DATACORE_RECORDS_STATION
 
 	else if(ACCESS_MEDICAL in access)

@@ -71,7 +71,7 @@ a.white:hover
 
 .linkOff, a.linkOff:link, a.linkOff:visited, a.linkOff:active, a.linkOff:hover
 {
-	color: #ffffff;
+	color: #000000;
 	background: #999999;
 	border-color: #666666;
 }

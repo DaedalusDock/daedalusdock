@@ -12,6 +12,10 @@
 #define DEBUG
 // END_PREFERENCES
 
+#if !defined(SPACEMAN_DMM) && defined(OPENDREAM)
+#include "tools/ci/od_lints.dme"
+#endif
+
 // BEGIN_INCLUDE
 #include "_maps\_basemap.dm"
 #include "code\_byond_version_compact.dm"

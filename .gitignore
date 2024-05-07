@@ -207,3 +207,7 @@ libprof.so
 
 # Screenshot tests
 /artifacts
+
+
+# Running OpenDream locally
+daedalus.json

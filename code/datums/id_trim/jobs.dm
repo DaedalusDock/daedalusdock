@@ -130,7 +130,7 @@
 	job = /datum/job/botanist
 
 /datum/id_trim/job/captain
-	assignment = "Captain"
+	assignment = JOB_CAPTAIN
 	intern_alt_name = "Captain-in-Training"
 	trim_state = "trim_captain"
 	sechud_icon_state = SECHUD_CAPTAIN

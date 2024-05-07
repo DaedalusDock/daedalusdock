@@ -35,7 +35,8 @@
 
 	/// The name of the user who logged in
 	var/authorize_name
-
+	/// The name of the job of the user who logged in
+	var/authorize_job
 	/// The access that the card had on login
 	var/list/authorize_access
 
@@ -220,7 +221,9 @@
 		if ("makePriorityAnnouncement")
 			if (!authenticated_as_silicon_or_captain(usr) && !syndicate)
 				return
+
 			make_announcement(usr)
+
 		if ("messageAssociates")
 			if (!authenticated_as_non_silicon_captain(usr))
 				return
@@ -368,6 +371,7 @@
 				authenticated = FALSE
 				authorize_access = null
 				authorize_name = null
+				authorize_job = null
 				playsound(src, 'sound/machines/terminal_off.ogg', 50, FALSE)
 				return
 
@@ -375,6 +379,7 @@
 				authenticated = TRUE
 				authorize_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 				authorize_name = "Unknown"
+				authorize_job = null
 				to_chat(usr, span_warning("[src] lets out a quiet alarm as its login is overridden."))
 				playsound(src, 'sound/machines/terminal_alert.ogg', 25, FALSE)
 			else if(isliving(usr))
@@ -383,7 +388,8 @@
 				if (check_access(id_card))
 					authenticated = TRUE
 					authorize_access = id_card.access.Copy()
-					authorize_name = "[id_card.registered_name] - [id_card.assignment]"
+					authorize_name = id_card.registered_name
+					authorize_job = id_card.assignment
 
 			state = STATE_MAIN
 			playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
@@ -709,16 +715,27 @@
 	if(!SScommunications.can_announce(user, is_ai))
 		to_chat(user, span_alert("Intercomms recharging. Please stand by."))
 		return
+
 	var/input = tgui_input_text(user, "Message to announce to the station crew", "Announcement")
 	if(!input || !user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
-	if(!(user.can_speak())) //No more cheating, mime/random mute guy!
-		input = "..."
+
+	var/can_speak = user.can_speak()
+	if(isliving(user) && can_speak)
+		can_speak = !istype(user.get_selected_language(), /datum/language/visual)
+
+	if(!user.can_speak()) //No more cheating, mime/random mute guy!
 		to_chat(user, span_warning("You find yourself unable to speak."))
-	else
-		input = user.treat_message(input) //Adds slurs and so on. Someone should make this use languages too.
+		return
+
+	input = user.treat_message(input) //Adds slurs and so on. Someone should make this use languages too.
+
+	var/sender = authorize_name
+	if(authorize_job)
+		sender = "[sender] ([authorize_job])"
+
 	var/list/players = get_communication_players()
-	SScommunications.make_announcement(user, is_ai, input, syndicate || (obj_flags & EMAGGED), players)
+	SScommunications.make_announcement(user, is_ai, input, syndicate || (obj_flags & EMAGGED), players, sender)
 	deadchat_broadcast(" made a priority announcement from [span_name("[get_area_name(usr, TRUE)]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)
 
 /obj/machinery/computer/communications/proc/get_communication_players()

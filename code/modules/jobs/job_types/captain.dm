@@ -1,14 +1,12 @@
 /datum/job/captain
 	title = JOB_CAPTAIN
-	description = "Be responsible for the station, manage your Heads of Staff, \
-		keep the crew alive, be prepared to do anything and everything or die \
-		horribly trying."
+	description = "The middle-man between the big man at home and the station's inhabitants. Ensure that quotas are met and the population is \
+	compliant."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
-	department_head = list("Daedalus Industries")
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "Daedalus Industries executives & the local regulations."
+	supervisors = "The government."
 	selection_color = "#2f2f7f"
 	req_admin_notify = 1
 	minimal_player_age = 14
@@ -18,7 +16,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/daedalus //Captains cannot be contracted.
+		/datum/employer/government
 	)
 
 	outfits = list(
@@ -60,7 +58,7 @@
 	return "[title] [captain.real_name] will be overseeing operations today."
 
 /datum/outfit/job/captain
-	name = "Captain"
+	name = JOB_CAPTAIN
 	jobtype = /datum/job/captain
 
 	id = /obj/item/card/id/advanced/gold

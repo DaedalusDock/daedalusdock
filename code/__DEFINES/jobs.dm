@@ -31,7 +31,7 @@
 #define JOB_ASSISTANT "Civilian"
 #define JOB_PRISONER "Prisoner"
 //Command
-#define JOB_CAPTAIN "Captain"
+#define JOB_CAPTAIN "Superintendent"
 #define JOB_HEAD_OF_PERSONNEL "Head of Personnel"
 #define JOB_SECURITY_MARSHAL "Security Marshal"
 #define JOB_CHIEF_ENGINEER "Chief Engineer"

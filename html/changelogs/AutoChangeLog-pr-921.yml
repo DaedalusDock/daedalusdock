@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Special items like the representation of grabbing can no longer be put
+      into your pocket.

@@ -4639,7 +4639,6 @@
 #include "modular_pariah\master_files\code\_globalvars\lists\chat.dm"
 #include "modular_pariah\master_files\code\controllers\configuration\entries\pariah_config_entries.dm"
 #include "modular_pariah\master_files\code\game\sound.dm"
-#include "modular_pariah\master_files\code\game\gamemodes\objective.dm"
 #include "modular_pariah\master_files\code\modules\antagonist\_common\antag_datum.dm"
 #include "modular_pariah\master_files\code\modules\mob\living\emote_popup.dm"
 #include "modular_pariah\master_files\code\modules\mod\mod_clothes.dm"

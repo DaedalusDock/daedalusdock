@@ -13,7 +13,6 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SECURITY
 	exp_granted_type = EXP_TYPE_CREW
-	allow_jumpskirt = FALSE
 
 	employers = list(
 		/datum/employer/government
@@ -50,6 +49,7 @@
 /datum/outfit/job/security_consultant
 	name = JOB_SECURITY_CONSULTANT
 	jobtype = /datum/job/security_consultant
+	allow_jumpskirt = FALSE
 
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/head_of_personnel

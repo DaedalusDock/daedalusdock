@@ -58,6 +58,7 @@
 /datum/outfit/job/captain
 	name = JOB_CAPTAIN
 	jobtype = /datum/job/captain
+	allow_jumpskirt = FALSE
 
 	id = /obj/item/card/id/advanced/gold
 	id_trim = /datum/id_trim/job/captain

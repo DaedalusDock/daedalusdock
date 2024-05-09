@@ -356,8 +356,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(allow_jumpskirt && H.jumpsuit_style == PREF_SKIRT)
 		uniform = text2path("[uniform]/skirt") || uniform
 
-	uniform = text2path(holder)
-
 	var/client/client = GLOB.directory[ckey(H.mind?.key)]
 
 	if(client?.is_veteran() && client?.prefs.read_preference(/datum/preference/toggle/playtime_reward_cloak))

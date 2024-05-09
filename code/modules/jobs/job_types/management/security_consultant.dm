@@ -11,8 +11,9 @@
 	minimal_player_age = 10
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
-	exp_required_type_department = EXP_TYPE_SERVICE
+	exp_required_type_department = EXP_TYPE_SECURITY
 	exp_granted_type = EXP_TYPE_CREW
+	allow_jumpskirt = FALSE
 
 	employers = list(
 		/datum/employer/government
@@ -20,8 +21,8 @@
 
 	outfits = list(
 		"Default" = list(
-			SPECIES_HUMAN = /datum/outfit/job/hop,
-			SPECIES_PLASMAMAN = /datum/outfit/job/hop/plasmaman,
+			SPECIES_HUMAN = /datum/outfit/job/security_consultant,
+			SPECIES_PLASMAMAN = /datum/outfit/job/security_consultant/plasmaman,
 		),
 	)
 
@@ -45,3 +46,25 @@
 
 /datum/job/security_consultant/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
+
+/datum/outfit/job/security_consultant
+	name = JOB_SECURITY_CONSULTANT
+	jobtype = /datum/job/security_consultant
+
+	id = /obj/item/card/id/advanced/silver
+	id_trim = /datum/id_trim/job/head_of_personnel
+	uniform = /obj/item/clothing/under/suit/black
+	suit = /obj/item/clothing/suit/armor/vest/ballistic
+	belt = /obj/item/modular_computer/tablet/pda
+	ears = /obj/item/radio/headset/heads/captain
+	glasses = /obj/item/clothing/glasses/sunglasses
+	shoes = /obj/item/clothing/shoes/laceup
+
+/datum/outfit/job/security_consultant/plasmaman
+	name = JOB_SECURITY_CONSULTANT + " (Plasmaman)"
+
+	uniform = /obj/item/clothing/under/plasmaman/head_of_personnel
+	gloves = /obj/item/clothing/gloves/color/plasmaman/head_of_personnel
+	head = /obj/item/clothing/head/helmet/space/plasmaman/head_of_personnel
+	mask = /obj/item/clothing/mask/breath
+	r_hand = /obj/item/tank/internals/plasmaman/belt/full

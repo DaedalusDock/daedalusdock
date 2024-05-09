@@ -1,6 +1,6 @@
 /datum/job/head_of_personnel
 	title = JOB_HEAD_OF_PERSONNEL
-	description = "The Superintendent's right hand, and Management's workhorse. Follows directives from the Superintendent."
+	description = "The Superintendent's right hand, and Management's workhorse. Completes tasks on behalf of the Superintendent."
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -9,9 +9,6 @@
 	selection_color = "#1d1d4f"
 	req_admin_notify = 1
 	minimal_player_age = 10
-	exp_requirements = 180
-	exp_required_type = EXP_TYPE_CREW
-	exp_required_type_department = EXP_TYPE_SERVICE
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(

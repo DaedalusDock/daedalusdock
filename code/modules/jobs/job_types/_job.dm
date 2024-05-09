@@ -2,7 +2,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	// Management
 	/datum/job/captain,
 	/datum/job/head_of_personnel,
-	///datum/job/security_consultant,
+	/datum/job/security_consultant,
 	///datum/job/bureaucrat,
 	// Security
 	/datum/job/head_of_security,
@@ -315,7 +315,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	name = "Standard Gear"
 
 	var/jobtype = null
-
+	/// If this job uses the Jumpskirt/Jumpsuit pref
+	var/allow_jumpskirt = TRUE
 	uniform = /obj/item/clothing/under/color/grey
 	id = /obj/item/card/id/advanced
 	ears = /obj/item/radio/headset
@@ -351,14 +352,10 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			else
 				back = backpack //Department backpack
 
-	//converts the uniform string into the path we'll wear, whether it's the skirt or regular variant
-	var/holder
-	if(H.jumpsuit_style == PREF_SKIRT)
-		holder = "[uniform]/skirt"
-		if(!text2path(holder))
-			holder = "[uniform]"
-	else
-		holder = "[uniform]"
+	/// Handles jumpskirt pref
+	if(allow_jumpskirt && H.jumpsuit_style == PREF_SKIRT)
+		uniform = text2path("[uniform]/skirt") || uniform
+
 	uniform = text2path(holder)
 
 	var/client/client = GLOB.directory[ckey(H.mind?.key)]

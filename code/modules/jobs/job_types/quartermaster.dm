@@ -27,7 +27,6 @@
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
 
-	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,
 		/datum/job_department/company_leader,
@@ -38,7 +37,7 @@
 		/obj/item/circuitboard/machine/emitter = 3
 	)
 	rpg_title = "Steward"
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 
 /datum/outfit/job/quartermaster

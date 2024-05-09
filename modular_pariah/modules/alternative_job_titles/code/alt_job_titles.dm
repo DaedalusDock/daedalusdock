@@ -16,9 +16,6 @@
 /datum/job/chief_medical_officer
 	alt_titles = list(JOB_MEDICAL_DIRECTOR)
 
-/datum/job/head_of_personnel
-	alt_titles = list(JOB_HEAD_OF_PERSONNEL)
-
 /datum/job/head_of_security
 	alt_titles = list(JOB_SECURITY_MARSHAL)
 

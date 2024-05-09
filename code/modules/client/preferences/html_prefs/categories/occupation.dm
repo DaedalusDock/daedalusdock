@@ -1,4 +1,4 @@
-#define JOBS_PER_COLUMN 15
+#define JOBS_PER_COLUMN 16
 
 /datum/preference_group/category/occupation
 	name = "Occupation"

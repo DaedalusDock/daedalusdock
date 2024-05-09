@@ -1,15 +1,11 @@
 /datum/job/head_of_personnel
 	title = JOB_HEAD_OF_PERSONNEL
-	// description = "Alter access on ID cards, manage civil and supply departments, \ //ORIGINAL
-	description = "Alter access on ID cards, manage the civil departments, \
-		protect Ian, run the station when the captain dies." //PARIAH EDIT
-	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
+	description = "The Superintendent's right hand, and Management's workhorse. Follows directives from the Superintendent."
 	department_head = list(JOB_CAPTAIN)
-	head_announce = list(RADIO_CHANNEL_SUPPLY, RADIO_CHANNEL_SERVICE)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the captain"
+	supervisors = "the superintendent"
 	selection_color = "#1d1d4f"
 	req_admin_notify = 1
 	minimal_player_age = 10
@@ -19,7 +15,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/daedalus
+		/datum/employer/government
 	)
 
 	outfits = list(
@@ -30,13 +26,11 @@
 	)
 
 	departments_list = list(
-		/datum/job_department/service,
 		/datum/job_department/command,
-		)
+	)
 
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_STATION_MASTER
-	bounty_types = CIV_JOB_RANDOM
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
 
@@ -47,7 +41,7 @@
 
 	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/trophy/silver_cup)
 	rpg_title = "Guild Questgiver"
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
@@ -57,28 +51,26 @@
 
 
 /datum/outfit/job/hop
-	name = "Head of Personnel"
+	name = JOB_HEAD_OF_PERSONNEL
 	jobtype = /datum/job/head_of_personnel
 
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/head_of_personnel
-	uniform = /obj/item/clothing/under/rank/civilian/head_of_personnel
-	backpack_contents = list(
-		/obj/item/storage/box/ids = 1,
-		/obj/item/assembly/flash/handheld
-	)
+	uniform = /obj/item/clothing/under/suit/navy
+	suit = /obj/item/clothing/suit/toggle/lawyer
+	gloves = /obj/item/clothing/gloves/color/black
 	belt = /obj/item/modular_computer/tablet/pda/heads/hop
 	ears = /obj/item/radio/headset/heads/hop
 	head = /obj/item/clothing/head/hopcap
-	shoes = /obj/item/clothing/shoes/sneakers/brown
+	shoes = /obj/item/clothing/shoes/laceup
 
 	chameleon_extras = list(
 		/obj/item/gun/energy/e_gun,
 		/obj/item/stamp/hop,
-		)
+	)
 
 /datum/outfit/job/hop/plasmaman
-	name = "Head of Personnel (Plasmaman)"
+	name = JOB_HEAD_OF_PERSONNEL + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/head_of_personnel
 	gloves = /obj/item/clothing/gloves/color/plasmaman/head_of_personnel

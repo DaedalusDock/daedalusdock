@@ -31,7 +31,6 @@
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 
-	bounty_types = CIV_JOB_SEC
 	departments_list = list(
 		/datum/job_department/security,
 		)

@@ -42,7 +42,6 @@
 
 	liver_traits = list(TRAIT_CULINARY_METABOLISM)
 
-	bounty_types = CIV_JOB_CHEF
 	departments_list = list(
 		/datum/job_department/service,
 		)

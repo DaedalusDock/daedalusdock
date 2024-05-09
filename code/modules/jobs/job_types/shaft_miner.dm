@@ -23,7 +23,6 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_STATION_MASTER
 
-	bounty_types = CIV_JOB_MINE
 	departments_list = list(
 		/datum/job_department/cargo,
 		)

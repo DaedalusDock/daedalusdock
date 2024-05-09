@@ -29,7 +29,6 @@
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM)
 
-	bounty_types = CIV_JOB_VIRO
 	departments_list = list(
 		/datum/job_department/medical,
 		)

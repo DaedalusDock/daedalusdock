@@ -25,7 +25,7 @@
 		)
 
 	random_spawns_possible = FALSE
-	job_flags = JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK | JOB_BOLD_SELECT_TEXT
+	job_flags = JOB_NEW_PLAYER_JOINABLE | JOB_EQUIP_RANK
 	var/do_special_check = TRUE
 
 /datum/job/ai/after_spawn(mob/living/spawned, client/player_client)

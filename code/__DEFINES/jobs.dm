@@ -32,15 +32,14 @@
 #define JOB_PRISONER "Prisoner"
 //Command
 #define JOB_CAPTAIN "Superintendent"
-#define JOB_HEAD_OF_PERSONNEL "Head of Personnel"
-#define JOB_SECURITY_MARSHAL "Security Marshal"
-#define JOB_CHIEF_ENGINEER "Chief Engineer"
-#define JOB_MEDICAL_DIRECTOR "Medical Director"
+#define JOB_HEAD_OF_PERSONNEL "Envoy"
+#define JOB_SECURITY_CONSULTANT "Security Consultant"
 //Silicon
 #define JOB_AI "AI"
 #define JOB_CYBORG "Cyborg"
 #define JOB_PERSONAL_AI "Personal AI"
 //Security
+#define JOB_SECURITY_MARSHAL "Security Marshal"
 #define JOB_WARDEN "Brig Lieutenant"
 #define JOB_DETECTIVE "Private Investigator"
 #define JOB_SECURITY_OFFICER "Security Officer"
@@ -49,9 +48,11 @@
 #define JOB_SECURITY_OFFICER_SCIENCE "Security Officer (Science)"
 #define JOB_SECURITY_OFFICER_SUPPLY "Security Officer (Cargo)"
 //Engineering
+#define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_STATION_ENGINEER "Station Engineer"
 #define JOB_ATMOSPHERIC_TECHNICIAN "Atmospheric Technician"
 //Medical
+#define JOB_MEDICAL_DIRECTOR "Medical Director"
 #define JOB_MEDICAL_DOCTOR "General Practitioner"
 #define JOB_PARAMEDIC "Paramedic"
 #define JOB_CHEMIST "Chemist"
@@ -130,15 +131,12 @@
 #define JOB_CREW_MEMBER (1<<3)
 /// Whether this job can be joined through the new_player menu.
 #define JOB_NEW_PLAYER_JOINABLE (1<<4)
-/// Whether this job appears in bold in the job menu.
-#define JOB_BOLD_SELECT_TEXT (1<<5)
 /// Reopens this position if we lose the player at roundstart.
-#define JOB_REOPEN_ON_ROUNDSTART_LOSS (1<<6)
+#define JOB_REOPEN_ON_ROUNDSTART_LOSS (1<<5)
 /// If the player with this job can have quirks assigned to him or not. Relevant for new player joinable jobs and roundstart antags.
-#define JOB_ASSIGN_QUIRKS (1<<7)
+#define JOB_ASSIGN_QUIRKS (1<<6)
 /// Whether this job can be an intern.
-#define JOB_CAN_BE_INTERN (1<<8)
-
+#define JOB_CAN_BE_INTERN (1<<7)
 
 #define FACTION_NONE "None"
 #define FACTION_STATION "Station"

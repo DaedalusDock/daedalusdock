@@ -31,8 +31,6 @@
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
 
-	department_for_prefs = /datum/job_department/captain
-
 	departments_list = list(
 		/datum/job_department/command,
 		/datum/job_department/company_leader
@@ -48,7 +46,7 @@
 		/obj/item/toy/captainsaid/collector = 20
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Star Duke"
 
 	voice_of_god_power = 1.4 //Command staff has authority
@@ -63,25 +61,20 @@
 
 	id = /obj/item/card/id/advanced/gold
 	id_trim = /datum/id_trim/job/captain
-	uniform = /obj/item/clothing/under/rank/captain
-	suit = /obj/item/clothing/suit/armor/vest/capcarapace
+	uniform = /obj/item/clothing/under/suit/charcoal
 	backpack_contents = list(
-		/obj/item/station_charter = 1,
-		/obj/item/assembly/flash/handheld
-		)
+		/obj/item/assembly/flash/handheld = 1
+	)
 	belt = /obj/item/modular_computer/tablet/pda/captain
-	ears = /obj/item/radio/headset/heads/captain/alt
+	ears = /obj/item/radio/headset/heads/captain
 	glasses = /obj/item/clothing/glasses/sunglasses
-	gloves = /obj/item/clothing/gloves/color/captain
-	head = /obj/item/clothing/head/caphat
-	shoes = /obj/item/clothing/shoes/sneakers/brown
+	gloves = /obj/item/clothing/gloves/color/white
+	shoes = /obj/item/clothing/shoes/laceup
 
-
-	backpack = /obj/item/storage/backpack/captain
+	backpack = /obj/item/storage/backpack
 	satchel = /obj/item/storage/backpack/satchel/cap
 	duffelbag = /obj/item/storage/backpack/duffelbag/captain
 
-	accessory = /obj/item/clothing/accessory/medal/gold/captain
 	chameleon_extras = list(
 		/obj/item/gun/energy/e_gun,
 		/obj/item/stamp/captain,
@@ -113,7 +106,7 @@
 	celestial_charter.name_type = special_charter
 
 /datum/outfit/job/captain/plasmaman
-	name = "Captain (Plasmaman)"
+	name = JOB_CAPTAIN + " (Plasmaman)"
 
 	uniform = /obj/item/clothing/under/plasmaman/captain
 	gloves = /obj/item/clothing/gloves/color/captain

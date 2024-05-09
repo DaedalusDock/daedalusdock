@@ -1,10 +1,13 @@
 GLOBAL_LIST_INIT(job_display_order, list(
+	// Management
 	/datum/job/captain,
 	/datum/job/head_of_personnel,
+	///datum/job/security_consultant,
+	///datum/job/bureaucrat,
+	// Security
 	/datum/job/head_of_security,
 	/datum/job/warden,
 	/datum/job/security_officer,
-	/datum/job/detective,
 	/datum/job/prisoner,
 	// Engineeering
 	/datum/job/chief_engineer,
@@ -22,6 +25,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/cargo_technician,
 	/datum/job/shaft_miner,
 	// Other
+	/datum/job/detective,
 	/datum/job/bartender,
 	/datum/job/botanist,
 	/datum/job/cook,
@@ -113,8 +117,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
 
-	var/bounty_types = CIV_JOB_BASIC
-
 	/// Goodies that can be received via the mail system.
 	// this is a weighted list.
 	/// Keep the _job definition for this empty and use /obj/item/mail to define general gifts.
@@ -144,7 +146,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// List of family heirlooms this job can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
 
-	/// All values = (JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN)
+	/// All values = (JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN)
 	var/job_flags = NONE
 
 	/// Multiplier for general usage of the voice of god.

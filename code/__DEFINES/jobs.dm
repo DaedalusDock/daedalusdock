@@ -32,7 +32,7 @@
 #define JOB_PRISONER "Prisoner"
 //Command
 #define JOB_CAPTAIN "Superintendent"
-#define JOB_HEAD_OF_PERSONNEL "Envoy"
+#define JOB_HEAD_OF_PERSONNEL "Delegate"
 #define JOB_SECURITY_CONSULTANT "Security Consultant"
 //Silicon
 #define JOB_AI "AI"

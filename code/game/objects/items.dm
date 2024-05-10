@@ -1216,7 +1216,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	. += "<img src='stamcost.png'>Stamina Cost: [staminacost2text()]<br>"
 
 /obj/item/proc/openTip(location, control, params, user)
-	var/content = jointext(tooltipContent(""))
+	var/content = jointext(tooltipContent(), "")
 	openToolTip(user,src,params,title = name,content = content,theme = "")
 
 /obj/item/MouseEntered(location, control, params)

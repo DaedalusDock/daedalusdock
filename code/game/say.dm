@@ -81,7 +81,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 		wrapper_span = "<span class = 'emote'>"
 
 	//Radio freq/name display
-	var/freqpart = radio_freq ? "\[[get_radio_name(radio_freq)]\] " : ""
+	var/freqpart = ""
+	if(radio_freq)
+		freqpart = "<img class='radio_tag' src='[get_radio_icon(radio_freq)]'>\[[get_radio_name(radio_freq)]\] "
+
 	//Speaker name
 	var/namepart = "[voice][alt_name]"
 	if(face_name && ishuman(speaker))
@@ -99,6 +102,10 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	var/ai_track_href = compose_track_href(speaker, namepart)
 	//shows the speaker's job to AIs
 	var/ai_job_display = compose_job(speaker, message_language, translated_message, radio_freq)
+	//AI smiley face :)
+	var/ai_snowflake
+	if(radio_freq && isAI(speaker.GetSource()))
+		ai_snowflake = "<img class='radio_tag' src='ai.png'>"
 
 	//Message
 	var/messagepart
@@ -116,7 +123,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 	messagepart = " <span class='message'>[speaker.say_emphasis(messagepart)]</span></span>" //These close the wrapper_span and the "message" class span
 
-	return "[wrapper_span][freqpart][name_span][languageicon][ai_track_href][namepart][ai_job_display][end_name_span][messagepart]"
+	return "[wrapper_span][freqpart][ai_snowflake][name_span][languageicon][ai_track_href][namepart][ai_job_display][end_name_span][messagepart]"
 
 /atom/movable/proc/compose_track_href(atom/movable/speaker, message_langs, raw_message, radio_freq)
 	return ""
@@ -203,6 +210,11 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	if(returntext)
 		return returntext
 	return "[copytext_char("[freq]", 1, 4)].[copytext_char("[freq]", 4, 5)]"
+
+/// Pass in a frequency, get a file name. See chat_icons.dm
+/proc/get_radio_icon(freq)
+	. = GLOB.freq2icon["[freq]"]
+	. ||= "unknown.png"
 
 /proc/attach_spans(input, list/spans)
 	return "[message_spans_start(spans)][input]</span>"

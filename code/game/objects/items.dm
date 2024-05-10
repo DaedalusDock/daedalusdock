@@ -1212,8 +1212,8 @@ DEFINE_INTERACTABLE(/obj/item)
 		. += "<img src='attack.png'>Lethality: [force_string]<br>"
 	else
 		. += "<img src='attack.png'>Lethality: [force2text()], type: [damagetype2text()]<br>"
-	. += "<img src='stamina.png"'>Stamina: [staminadamage2text()]<br>"
-	. += "<img src='stamcost.png"'>Stamina Cost: [staminacost2text()]<br>"
+	. += "<img src='stamina.png'>Stamina: [staminadamage2text()]<br>"
+	. += "<img src='stamcost.png'>Stamina Cost: [staminacost2text()]<br>"
 
 /obj/item/proc/openTip(location, control, params, user)
 	var/content = jointext(tooltipContent(""))

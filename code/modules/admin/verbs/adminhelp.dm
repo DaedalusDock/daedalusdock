@@ -418,7 +418,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	//show it to the person adminhelping too
 	to_chat(initiator,
 		type = MESSAGE_TYPE_ADMINPM,
-		html = span_adminnotice("<img class='chat_tag' src='help.png'> <b>[key_name(initiator)]</b>:<span class='linkify'>[msg]</span>"),
+		html = span_adminnotice("[CHAT_TAG("help.png")] <b>[key_name(initiator)]</b>:<span class='linkify'>[msg]</span>"),
 		confidential = TRUE
 	)
 	SSblackbox.LogAhelp(id, "Ticket Opened", msg, null, initiator.ckey, urgent = urgent)

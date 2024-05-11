@@ -557,7 +557,7 @@ world
 		else
 			return icon(flat, "", SOUTH)
 	else if (render_icon) // There's no overlays.
-		var/icon/final_icon = icon(icon(curicon, curstate, base_icon_dir), "", SOUTH, no_anim ? TRUE : null)
+		var/icon/final_icon = icon(icon(curicon, curstate, base_icon_dir), "", SOUTH, no_anim ? 1 : null)
 
 		if (appearance.alpha < 255)
 			final_icon.Blend(rgb(255,255,255, appearance.alpha), ICON_MULTIPLY)

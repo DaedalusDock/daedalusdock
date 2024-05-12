@@ -29,10 +29,11 @@
 /mob/living/carbon/gib(no_brain, no_organs, no_bodyparts, safe_gib = FALSE)
 	add_memory_in_range(src, 7, MEMORY_GIBBED, list(DETAIL_PROTAGONIST = src), STORY_VALUE_AMAZING, memory_flags = MEMORY_CHECK_BLINDNESS)
 	if(safe_gib) // If you want to keep all the mob's items and not have them deleted
-		for(var/obj/item/W in src)
+		for(var/obj/item/W in get_equipped_items(TRUE) | held_items)
 			if(dropItemToGround(W))
 				if(prob(50))
 					step(W, pick(GLOB.alldirs))
+
 	var/atom/Tsec = drop_location()
 	for(var/mob/M in src)
 		M.forceMove(Tsec)

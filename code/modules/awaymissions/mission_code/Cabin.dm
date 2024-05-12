@@ -80,7 +80,7 @@
 		active = FALSE
 		toggleFirepit()
 
-/obj/structure/firepit/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/firepit/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(!active)
 		active = TRUE
 		toggleFirepit()

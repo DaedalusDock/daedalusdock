@@ -52,13 +52,15 @@
 	"THE CURIOUS CASE OF [uppr_name]", "ONE HELL OF A PARTY", "FOR YOUR CONSIDERATION", "PRESS YOUR LUCK", "A STATION CALLED [uppr_name]", "CRIME AND PUNISHMENT", "MY DINNER WITH [uppr_name]", "UNFINISHED BUSINESS", "THE ONLY STATION THAT'S NOT ON FIRE (YET)", "SOMEONE'S GOTTA DO IT", "THE [uppr_name] MIX-UP", "PILOT", "PROLOGUE", "FINALE", "UNTITLED", "THE END")]")
 	episode_names += new /datum/episode_name("[pick("SPACE", "SEXY", "DRAGON", "WARLOCK", "LAUNDRY", "GUN", "ADVERTISING", "DOG", "CARBON MONOXIDE", "NINJA", "WIZARD", "SOCRATIC", "JUVENILE DELIQUENCY", "POLITICALLY MOTIVATED", "RADTACULAR SICKNASTY", "CORPORATE", "MEGA")] [pick("QUEST", "FORCE", "ADVENTURE")]", weight=25)
 
+	draft_spooky_episodes()
+
 	switch(GLOB.start_state.score(GLOB.end_state))
 		if(-INFINITY to -2000)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S PUNISHMENT", "A PUBLIC RELATIONS NIGHTMARE", "[uppr_name]: A NATIONAL CONCERN", "WITH APOLOGIES TO THE CREW", "THE CREW BITES THE DUST", "THE CREW BLOWS IT", "THE CREW GIVES UP THE DREAM", "THE CREW IS DONE FOR", "THE CREW SHOULD NOT BE ALLOWED ON TV", "THE END OF [uppr_name] AS WE KNOW IT")]", "Extremely low score of [GLOB.start_state.score(GLOB.end_state)].", 250)
 		if(4500 to INFINITY)
 			episode_names += new /datum/episode_name("[pick("THE CREW'S DAY OUT", "THIS SIDE OF PARADISE", "[uppr_name]: A SITUATION COMEDY", "THE CREW'S LUNCH BREAK", "THE CREW'S BACK IN BUSINESS", "THE CREW'S BIG BREAK", "THE CREW SAVES THE DAY", "THE CREW RULES THE WORLD", "THE ONE WITH ALL THE SCIENCE AND PROGRESS AND PROMOTIONS AND ALL THE COOL AND GOOD THINGS", "THE TURNING POINT")]", "High score of [GLOB.start_state.score(GLOB.end_state)].", 250)
 
-	if(IS_DYNAMIC_GAME_MODE)
+	if(GAMEMODE_WAS_DYNAMIC)
 		var/datum/game_mode/dynamic/dynameme = SSticker.mode
 		switch(dynameme.threat_level)
 			if(0 to 35)
@@ -79,33 +81,37 @@
 					episode_names += new /datum/episode_name/rare("RUSH HOUR", "High threat level of [dynameme.threat_level]%, and the round lasted just about an hour.", 500)
 				if(get_station_avg_temp() < T0C)
 					episode_names += new /datum/episode_name/rare("A COLD DAY IN HELL", "Station temperature was below 0C this round and threat was high", 1000)
-		if(locate(/datum/dynamic_ruleset/roundstart/malf_ai) in dynameme.executed_rules)
-			episode_names += new /datum/episode_name/rare("[pick("I'M SORRY [uppr_name], I'M AFRAID I CAN'T LET YOU DO THAT", "A STRANGE GAME", "THE AI GOES ROGUE", "RISE OF THE MACHINES")]", "Round included a malfunctioning AI.", 300)
-		if(locate(/datum/dynamic_ruleset/roundstart/revs) in dynameme.executed_rules)
-			episode_names += new /datum/episode_name/rare("[pick("THE CREW STARTS A REVOLUTION", "HELL IS OTHER SPESSMEN", "INSURRECTION", "THE CREW RISES UP", 25;"FUN WITH FRIENDS")]", "Round included roundstart revs.", 350)
-			if(copytext(uppr_name,1,2) == "V")
-				episode_names += new /datum/episode_name/rare("V FOR [uppr_name]", "Round included roundstart revs... and the station's name starts with V.", 1500)
+
 		if(locate(/datum/dynamic_ruleset/midround/from_ghosts/blob) in dynameme.executed_rules)
 			episode_names += new /datum/episode_name/rare("[pick("MARRIED TO THE BLOB", "THE CREW GETS QUARANTINED")]", "Round included a roundstart blob.", 350)
-		/*if(GLOB.station_was_nuked)
-			episode_names += new /datum/episode_name/rare("[pick("THE CREW GETS NUKED", "THE CREW IS THE BOMB", "THE CREW GOES NUCLEAR", "THE CREW BLASTS OFF AGAIN!", "THE 'BOOM' HEARD 'ROUND THE WORLD", 25;"THE BIG BANG THEORY")]", "The station was nuked!", 450)
-			if((locate(/datum/dynamic_ruleset/roundstart/nuclear) in mode.executed_rules) || (locate(/datum/dynamic_ruleset/midround/from_ghosts/nuclear) in mode.executed_rules))
-				theme = "syndie" //This really should use the nukeop's check_win(), but the newcops gamemode wasn't coded like that.
-		else
-			if((locate(/datum/dynamic_ruleset/roundstart/nuclear) in mode.executed_rules) || (locate(/datum/dynamic_ruleset/midround/from_ghosts/nuclear) in mode.executed_rules))
-				episode_names += new /datum/episode_name/rare("[pick("THE CREW SOLVES THE NUCLEAR CRISIS", "BLAST, FOILED AGAIN", "FISSION MAILED", 50;"I OPENED THE WINDOW, AND IN FLEW COPS")]", "The crew defeated the nuclear operatives.", 350)
-			if(score.nukedefuse < 30)
-				episode_names += new /datum/episode_name/rare("[score.nukedefuse] SECOND[score.nukedefuse == 1 ? "" : "S"] TO MIDNIGHT", "The nuke was defused with [score.nukedefuse] seconds remaining.", (30 - score.nukedefuse) * 100)
-			*/
+
+	if(GAMEMODE_WAS_MALF_AI)
+		episode_names += new /datum/episode_name/rare("[pick("I'M SORRY [uppr_name], I'M AFRAID I CAN'T LET YOU DO THAT", "A STRANGE GAME", "THE AI GOES ROGUE", "RISE OF THE MACHINES")]", "Round included a malfunctioning AI.", 300)
+
+	if(GAMEMODE_WAS_REVS)
+		episode_names += new /datum/episode_name/rare("[pick("THE CREW STARTS A REVOLUTION", "HELL IS OTHER SPESSMEN", "INSURRECTION", "THE CREW RISES UP", 25;"FUN WITH FRIENDS")]", "Round included roundstart revs.", 350)
+		if(copytext(uppr_name,1,2) == "V")
+			episode_names += new /datum/episode_name/rare("V FOR [uppr_name]", "Round included roundstart revs... and the station's name starts with V.", 1500)
+
+	if(GLOB.station_was_nuked)
+		episode_names += new /datum/episode_name/rare("[pick("THE CREW GETS NUKED", "THE CREW IS THE BOMB", "THE CREW GOES NUCLEAR", "THE CREW BLASTS OFF AGAIN!", "THE 'BOOM' HEARD 'ROUND THE WORLD", 25;"THE BIG BANG THEORY")]", "The station was nuked!", 450)
+		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
+			theme = "syndie" //This really should use the nukeop's check_win(), but the newcops gamemode wasn't coded like that.
+	else
+		if(GAMEMODE_WAS_NUCLEAR_EMERGENCY)
+			episode_names += new /datum/episode_name/rare("[pick("THE CREW SOLVES THE NUCLEAR CRISIS", "BLAST, FOILED AGAIN", "FISSION MAILED", 50;"I OPENED THE WINDOW, AND IN FLEW COPS")]", "The crew defeated the nuclear operatives.", 350)
+		if(GLOB.nuke_time_left < 30)
+			episode_names += new /datum/episode_name/rare("[GLOB.nuke_time_left] SECOND[GLOB.nuke_time_left == 1 ? "" : "S"] TO MIDNIGHT", "The nuke was defused with [GLOB.nuke_time_left] seconds remaining.", (30 - GLOB.nuke_time_left) * 100)
+
 
 	if(BLACKBOX_FEEDBACK_NUM("narsies_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("NAR-SIE'S DAY OUT", "NAR-SIE'S VACATION", "THE CREW LEARNS ABOUT SACRED GEOMETRY", "REALM OF THE MAD GOD", "THE ONE WITH THE ELDRITCH HORROR", 50;"STUDY HARD, BUT PART-SIE HARDER")]", "Nar-Sie is loose!", 500)
 	if(locate(/datum/holiday/xmas) in SSevents.holidays)
-		episode_names += new /datum/episode_name("A VERY [pick("DAEDALUS", "NANOTRASEN", "EXPEDITIONARY", "SECURE", "PLASMA", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
+		episode_names += new /datum/episode_name("A VERY [pick("DAEDALUS", "SPACE", "MARTIAN")] CHRISTMAS", "'Tis the season.", 1000)
 	if(BLACKBOX_FEEDBACK_NUM("guns_spawned") > 0)
 		episode_names += new /datum/episode_name/rare("[pick("GUNS, GUNS EVERYWHERE", "THUNDER GUN EXPRESS", "THE CREW GOES AMERICA ALL OVER EVERYBODY'S ASS")]", "[BLACKBOX_FEEDBACK_NUM("guns_spawned")] guns were spawned this round.", min(750, BLACKBOX_FEEDBACK_NUM("guns_spawned")*25))
 	if(BLACKBOX_FEEDBACK_NUM("heartattacks") > 2)
-		episode_names += new /datum/episode_name/rare("MY HEART WILL GO ON", "[BLACKBOX_FEEDBACK_NUM("heartattacks")] hearts were reanimated and burst out of someone's chest this round.", min(1500, BLACKBOX_FEEDBACK_NUM("heartattacks")*250))
+		episode_names += new /datum/episode_name/rare("MY HEART WILL GO ON", "There were [BLACKBOX_FEEDBACK_NUM("heartattacks")] heartattacks this round", min(1500, BLACKBOX_FEEDBACK_NUM("heartattacks")*250))
 
 	var/datum/bank_account/mr_moneybags
 	var/static/list/typecache_bank = typecacheof(list(/datum/bank_account/department, /datum/bank_account/remote))
@@ -192,7 +198,7 @@
 			chefcount++
 		if(H.is_wearing_item_of_type(/obj/item/clothing/under/rank/civilian/lawyer))
 			lawyercount++
-		if(H.mind && H.mind.assigned_role.title == "Shaft Miner")
+		if(H.mind && H.mind.assigned_role.title == JOB_PROSPECTOR)
 			minercount++
 		if(H.mind && H.mind.assigned_role.title == "Chaplain")
 			chaplaincount++
@@ -261,7 +267,7 @@
 					theme = "clown"
 				if("Detective")
 					var/chance = 250
-					if(H.is_wearing_item_of_type(/obj/item/storage/belt/holster/detective))
+					if(H.is_wearing_item_of_type(/obj/item/storage/belt/holster/shoulder))
 						chance += 1000
 					if(H.is_wearing_item_of_type(/obj/item/clothing/head/fedora/det_hat))
 						chance += 500
@@ -270,13 +276,13 @@
 					if(H.is_wearing_item_of_type(/obj/item/clothing/under/rank/security/detective))
 						chance += 250
 					episode_names += new /datum/episode_name/rare("[uppertext(H.real_name)]: LOOSE CANNON", "The Detective was the only survivor in the shuttle.", chance)
-				if("Shaft Miner")
+				if(JOB_PROSPECTOR)
 					var/chance = 250
 					if(H.is_wearing_item_of_type(/obj/item/pickaxe))
 						chance += 1000
 					if(H.is_wearing_item_of_type(/obj/item/storage/backpack/explorer))
 						chance += 500
-					if(H.is_wearing_item_of_type(/obj/item/clothing/suit/hooded/explorer))
+					if(H.is_wearing_item_of_type(/obj/item/clothing/suit/space/nasavoid/old))
 						chance += 250
 					episode_names += new /datum/episode_name/rare("[pick("YOU KNOW THE DRILL", "CAN YOU DIG IT?", "JOURNEY TO THE CENTER OF THE ASTEROI", "CAVE STORY", "QUARRY ON")]", "The Miner was the only survivor in the shuttle.", chance)
 				if("Librarian")
@@ -301,7 +307,7 @@
 
 	if(human_escapees == 2)
 		if(lawyercount == 2)
-			episode_names += new /datum/episode_name/rare("DOUBLE JEOPARDY", "The only two survivors were IAAs or lawyers.", 2500)
+			episode_names += new /datum/episode_name/rare("DOUBLE JEOPARDY", "The only two survivors were lawyers.", 2500)
 		if(chefcount == 2)
 			episode_names += new /datum/episode_name/rare("CHEF WARS", "The only two survivors were chefs.", 2500)
 		if(minercount == 2)
@@ -318,7 +324,7 @@
 		var/all_braindamaged = TRUE
 		for(var/mob/living/carbon/human/H as anything in SSticker.popcount["human_escapees_list"])
 			var/obj/item/organ/brain/hbrain = H.getorganslot(ORGAN_SLOT_BRAIN)
-			if(hbrain.damage < 60)
+			if(hbrain && hbrain.damage < 60)
 				all_braindamaged = FALSE
 				braindamage_total += hbrain.damage
 		var/average_braindamage = braindamage_total / human_escapees
@@ -346,10 +352,35 @@
 		break
 	*/
 
+/datum/controller/subsystem/credits/proc/draft_spooky_episodes()
+	var/list/areas_spooked = BLACKBOX_FEEDBACK_NESTED_TALLY("ghost_power_used")
+	if(!length(areas_spooked))
+		return
+
+	var/uppr_name = uppertext(station_name())
+	var/did_general_spooky
+	for(var/area_name in areas_spooked)
+		if(length(areas_spooked[area_name]) > 10)
+			did_general_spooky = TRUE
+			episode_names += new /datum/episode_name("THE HAUNTED [uppertext(area_name)]", "Large amounts of paranormal activity present.", 500)
+
+
+	if(did_general_spooky)
+		var/list/spooky_names = list(
+			"CARMEN MIRANDA'S GHOST IS HAUNTING [uppr_name]",
+			"DON'T CROSS THE STREAMS",
+			"BAD TO THE BONE",
+			"NIGHTMARE ON [uppr_name]",
+		)
+		episode_names += new /datum/episode_name(pick(spooky_names), "Large amounts of paranormal activity present.", 250)
+
+		if(findtext(uppr_name, "13"))
+			episode_names += new /datum/episode_name/rare("UNLUCKY NUMBERS", "The station's name contained \"13\".", 1000)
+
 /proc/get_station_avg_temp()
 	var/avg_temp = 0
 	var/avg_divide = 0
-	for(var/obj/machinery/airalarm/alarm in GLOB.machines)
+	for(var/obj/machinery/airalarm/alarm as anything in INSTANCES_OF(/obj/machinery/airalarm))
 		var/turf/location = alarm.loc
 		if(!istype(location) || !is_station_level(alarm.z))
 			continue

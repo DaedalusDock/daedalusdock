@@ -119,7 +119,7 @@
 		return
 	return ..()
 
-/mob/living/basic/proc/attack_threshold_check(damage, damagetype = BRUTE, armorcheck = MELEE, actuallydamage = TRUE)
+/mob/living/basic/proc/attack_threshold_check(damage, damagetype = BRUTE, armorcheck = BLUNT, actuallydamage = TRUE)
 	var/temp_damage = damage
 	if(!damage_coeff[damagetype])
 		temp_damage = 0
@@ -180,11 +180,13 @@
 /mob/living/basic/update_stat()
 	if(status_flags & GODMODE)
 		return
+
 	if(stat != DEAD)
 		if(health <= 0)
 			death()
 		else
 			set_stat(CONSCIOUS)
+
 	med_hud_set_status()
 
 /mob/living/basic/emp_act(severity)

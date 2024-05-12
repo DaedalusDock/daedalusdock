@@ -6,7 +6,6 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	throwforce = 5
 	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 2
 	throw_range = 4
 	flags_1 = CONDUCT_1
 	var/status = FALSE   //0 - not readied //1 - bomb finished with welder
@@ -122,11 +121,11 @@
 	if(LAZYLEN(assembly.assemblies) == igniter_count)
 		return
 
-	if((src in user.get_equipped_items(TRUE)) && !user.canUnEquip(src))
+	if((src in user.get_equipped_items(TRUE)) && !user.canUnequipItem(src))
 		to_chat(user, span_warning("[src] is stuck to you!"))
 		return
 
-	if(!user.canUnEquip(assembly))
+	if(!user.canUnequipItem(assembly))
 		to_chat(user, span_warning("[assembly] is stuck to your hand!"))
 		return
 

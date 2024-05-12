@@ -19,6 +19,7 @@
 	openToolTip(usr,src,params,title = name,content = desc, theme = "alerttooltipstyle")
 
 /atom/movable/screen/wanted/MouseExited()
+	. = ..()
 	closeToolTip(usr)
 
 /atom/movable/screen/wanted/update_icon_state()

@@ -43,8 +43,12 @@
 	return ..()
 
 /obj/Destroy(force)
-	if(!ismachinery(src))
-		STOP_PROCESSING(SSobj, src) // TODO: Have a processing bitflag to reduce on unnecessary loops through the processing lists
+	if((datum_flags & DF_ISPROCESSING))
+		if(ismachinery(src))
+			STOP_PROCESSING(SSmachines, src)
+		else
+			STOP_PROCESSING(SSobj, src)
+		stack_trace("Obj of type [type] processing after Destroy(), please fix this.")
 	SStgui.close_uis(src)
 	return ..()
 
@@ -146,6 +150,9 @@
 	return
 
 /mob/proc/set_machine(obj/O)
+	if(QDELETED(src) || QDELETED(O))
+		return
+
 	if(machine)
 		unset_machine()
 	machine = O
@@ -196,16 +203,20 @@
 		if (islist(result))
 			if (result["button"] != 2) // If the user pressed the cancel button
 				// text2num conveniently returns a null on invalid values
-				setArmor(returnArmor().setRating(melee = text2num(result["values"][MELEE]),\
-			                  bullet = text2num(result["values"][BULLET]),\
-			                  laser = text2num(result["values"][LASER]),\
-			                  energy = text2num(result["values"][ENERGY]),\
-			                  bomb = text2num(result["values"][BOMB]),\
-			                  bio = text2num(result["values"][BIO]),\
-			                  fire = text2num(result["values"][FIRE]),\
-			                  acid = text2num(result["values"][ACID])))
-				log_admin("[key_name(usr)] modified the armor on [src] ([type]) to melee: [armor.melee], bullet: [armor.bullet], laser: [armor.laser], energy: [armor.energy], bomb: [armor.bomb], bio: [armor.bio], fire: [armor.fire], acid: [armor.acid]")
-				message_admins(span_notice("[key_name_admin(usr)] modified the armor on [src] ([type]) to melee: [armor.melee], bullet: [armor.bullet], laser: [armor.laser], energy: [armor.energy], bomb: [armor.bomb], bio: [armor.bio], fire: [armor.fire], acid: [armor.acid]"))
+				setArmor(returnArmor().setRating(
+						blunt = text2num(result["values"][BLUNT]),
+						puncture = text2num(result["values"][PUNCTURE]),
+						slash = text2num(result["values"][SLASH]),
+						laser = text2num(result["values"][LASER]),
+						energy = text2num(result["values"][ENERGY]),
+						bomb = text2num(result["values"][BOMB]),
+						bio = text2num(result["values"][BIO]),
+						fire = text2num(result["values"][FIRE]),
+						acid = text2num(result["values"][ACID])
+					)
+				)
+				log_admin("[key_name(usr)] modified the armor on [src] ([type]) to blunt: [armor.blunt], puncture: [armor.puncture], slash: [armor.slash], laser: [armor.laser], energy: [armor.energy], bomb: [armor.bomb], bio: [armor.bio], fire: [armor.fire], acid: [armor.acid]")
+				message_admins(span_notice("[key_name_admin(usr)] modified the armor on [src] ([type]) to blunt: [armor.blunt], puncture: [armor.puncture], slash: [armor.slash], laser: [armor.laser], energy: [armor.energy], bomb: [armor.bomb], bio: [armor.bio], fire: [armor.fire], acid: [armor.acid]"))
 	if(href_list[VV_HK_MASS_DEL_TYPE])
 		if(check_rights(R_DEBUG|R_SERVER))
 			var/action_type = tgui_alert(usr, "Strict type ([type]) or type and all subtypes?",,list("Strict type","Type and subtypes","Cancel"))
@@ -249,10 +260,6 @@
 	. = ..()
 	if(desc_controls)
 		. += span_notice(desc_controls)
-	if(obj_flags & UNIQUE_RENAME)
-		. += span_notice("Use a pen on it to rename it or change its description.")
-	if(unique_reskin && !current_skin)
-		. += span_notice("Alt-click it to reskin it.")
 
 /obj/AltClick(mob/user)
 	. = ..()
@@ -316,7 +323,7 @@
 /obj/handle_ricochet(obj/projectile/P)
 	. = ..()
 	if(. && receive_ricochet_damage_coeff)
-		take_damage(P.damage * receive_ricochet_damage_coeff, P.damage_type, P.armor_flag, 0, turn(P.dir, 180), P.armour_penetration) // pass along receive_ricochet_damage_coeff damage to the structure for the ricochet
+		take_damage(P.damage * receive_ricochet_damage_coeff, P.damage_type, P.armor_flag, 0, turn(P.dir, 180), P.armor_penetration) // pass along receive_ricochet_damage_coeff damage to the structure for the ricochet
 
 /obj/update_overlays()
 	. = ..()

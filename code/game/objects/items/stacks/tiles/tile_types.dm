@@ -11,9 +11,8 @@
 	righthand_file = 'icons/mob/inhands/misc/tiles_righthand.dmi'
 	icon = 'icons/obj/tiles.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
-	force = 1
-	throwforce = 1
-	throw_speed = 3
+	force = 6
+	throwforce = 15
 	throw_range = 7
 	max_amount = 60
 	novariants = TRUE
@@ -134,33 +133,7 @@
 	turf_type = /turf/open/floor/wood
 	resistance_flags = FLAMMABLE
 	merge_type = /obj/item/stack/tile/wood
-	tile_reskin_types = list(
-		/obj/item/stack/tile/wood,
-		/obj/item/stack/tile/wood/large,
-		/obj/item/stack/tile/wood/tile,
-		/obj/item/stack/tile/wood/parquet,
-	)
 
-/obj/item/stack/tile/wood/parquet
-	name = "parquet wood floor tile"
-	singular_name = "parquet wood floor tile"
-	icon_state = "tile-wood_parquet"
-	turf_type = /turf/open/floor/wood/parquet
-	merge_type = /obj/item/stack/tile/wood/parquet
-
-/obj/item/stack/tile/wood/large
-	name = "large wood floor tile"
-	singular_name = "large wood floor tile"
-	icon_state = "tile-wood_large"
-	turf_type = /turf/open/floor/wood/large
-	merge_type = /obj/item/stack/tile/wood/large
-
-/obj/item/stack/tile/wood/tile
-	name = "tiled wood floor tile"
-	singular_name = "tiled wood floor tile"
-	icon_state = "tile-wood_tile"
-	turf_type = /turf/open/floor/wood/tile
-	merge_type = /obj/item/stack/tile/wood/tile
 
 //Bamboo
 /obj/item/stack/tile/bamboo

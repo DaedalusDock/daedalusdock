@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(credits)
 	name = "Credits"
 	flags = SS_NO_FIRE|SS_NO_INIT
 
-	var/scroll_speed = 1 //Lower is faster.
+	var/pixels_per_second = 50
 	var/splash_time = 2750 //Time in miliseconds that each head of staff/star/production staff etc splash screen gets before displaying the next one.
 
 	var/control = "mapwindow.credits" //if updating this, update in credits.html as well
@@ -90,7 +90,7 @@ SUBSYSTEM_DEF(credits)
 	var/scrollytext = ss_string + episode_string + cast_string + disclaimers_string + fallen_string
 	var/splashytext = producers_string + star_string
 
-	js_args = list(scrollytext, splashytext, theme, scroll_speed, splash_time) //arguments for the makeCredits function back in the javascript
+	js_args = list(scrollytext, splashytext, theme, pixels_per_second, splash_time) //arguments for the makeCredits function back in the javascript
 	finalized = TRUE
 
 /*
@@ -117,22 +117,23 @@ SUBSYSTEM_DEF(credits)
 	if(customized_name)
 		episode_name = customized_name
 		return
+
 	var/list/drafted_names = list()
-	var/list/name_reasons = list()
-	var/list/is_rare_assoc_list = list()
+
 	for(var/datum/episode_name/N as anything in episode_names)
-		drafted_names["[N.thename]"] = N.weight
-		name_reasons["[N.thename]"] = N.reason
-		is_rare_assoc_list["[N.thename]"] = N.rare
-	episode_name = pick_weight(drafted_names)
-	episode_reason = name_reasons[episode_name]
-	if(is_rare_assoc_list[episode_name] == TRUE)
+		drafted_names[N] = N.weight
+
+	var/datum/episode_name/chosen = pick_weight(drafted_names)
+	episode_name = chosen.thename
+	episode_reason = chosen.reason
+	if(chosen.rare)
 		rare_episode_name = TRUE
 
 /datum/controller/subsystem/credits/proc/finalize_episodestring()
 	var/season = time2text(world.timeofday,"YY")
 	var/episodenum = GLOB.round_id || 1
-	episode_string = "<h1><span id='episodenumber'>SEASON [season] EPISODE [episodenum]</span><br><span id='episodename' title='[episode_reason]'>[episode_name]</span></h1><br><div style='padding-bottom: 75px;'></div>"
+	var/reason = episode_reason ? "<br><h3>[episode_reason]</h3>" : ""
+	episode_string = "<h1><span id='episodenumber'>SEASON [season] EPISODE [episodenum]</span><br><span id='episodename'>[episode_name]</span></h1>[reason]<br><div style='padding-bottom: 75px;'></div>"
 	log_game("So ends [is_rerun() ? "another rerun of " : ""]SEASON [season] EPISODE [episodenum] - [episode_name] ... [customized_ss]")
 
 /datum/controller/subsystem/credits/proc/finalize_disclaimerstring()
@@ -200,6 +201,9 @@ SUBSYSTEM_DEF(credits)
 	var/list/dead_names = list()
 	var/cast_count
 	for(var/datum/mind/M as anything in SSticker.minds)
+		if(isobserver(M.current))
+			continue
+
 		if(M.key && M.name)
 			if(!M.current || (M.current.stat == DEAD)) //Their body was destroyed or they are simply dead
 				dead_names += M.name
@@ -223,21 +227,15 @@ SUBSYSTEM_DEF(credits)
 			cast_string += "[name]<br>"
 	cast_string += "</div><br>"
 
-/mob/living/proc/get_credits_entry()
+/mob/proc/get_credits_entry()
 	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
-	/// initial(name) is used over this now.
-	/*var/gender_text
-	switch(gender)
-		if("male")
-			gender_text = "Himself"
-		if("female")
-			gender_text = "Herself"
-		if("neuter")
-			gender_text = "Themself"
-		if("plural")
-			gender_text = "Themselves"
-		else
-			gender_text = "Itself"*/
+	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
+		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"
+	else
+		return "<tr><td class='actorname'>[uppertext(name)]</td><td class='actorsegue'> as </td><td class='actorrole'>[initial(name)]</td></tr>"
+
+/mob/living/get_credits_entry()
+	var/datum/preferences/prefs = GLOB.preferences_datums[ckey(mind.key)]
 
 	if(prefs.read_preference(/datum/preference/toggle/credits_uses_ckey))
 		return "<tr><td class='actorname'>[uppertext(ckey(mind.key))]</td><td class='actorsegue'> as </td><td class='actorrole'>[name]</td></tr>"

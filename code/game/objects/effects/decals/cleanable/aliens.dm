@@ -6,14 +6,14 @@
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "xfloor1"
 	random_icon_states = list("xfloor1", "xfloor2", "xfloor3", "xfloor4", "xfloor5", "xfloor6", "xfloor7")
-	bloodiness = BLOOD_AMOUNT_PER_DECAL
-	blood_state = BLOOD_STATE_XENO
 	beauty = -250
 	clean_type = CLEAN_TYPE_BLOOD
+	decal_reagent = /datum/reagent/blood
+	reagent_amount = BLOOD_AMOUNT_PER_DECAL
 
 /obj/effect/decal/cleanable/xenoblood/Initialize(mapload)
+	add_blood_DNA(list("UNKNOWN DNA" = GET_BLOOD_REF(/datum/blood/xenomorph)))
 	. = ..()
-	add_blood_DNA(list("UNKNOWN DNA" = "X*"))
 
 /obj/effect/decal/cleanable/xenoblood/xsplatter
 	random_icon_states = list("xgibbl1", "xgibbl2", "xgibbl3", "xgibbl4", "xgibbl5")
@@ -45,7 +45,7 @@
 				break
 		return
 
-	var/datum/move_loop/loop = SSmove_manager.move_to_dir(src, get_step(src, direction), delay = delay, timeout = range * delay, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
+	var/datum/move_loop/loop = SSmove_manager.move(src, direction, delay = delay, timeout = range * delay, priority = MOVEMENT_ABOVE_SPACE_PRIORITY)
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(spread_movement_effects))
 
 /obj/effect/decal/cleanable/xenoblood/xgibs/proc/spread_movement_effects(datum/move_loop/has_target/source)
@@ -104,4 +104,4 @@
 
 /obj/effect/decal/cleanable/blood/xtracks/Initialize(mapload)
 	. = ..()
-	add_blood_DNA(list("Unknown DNA" = "X*"))
+	add_blood_DNA(list("Unknown DNA" = GET_BLOOD_REF(/datum/blood/xenomorph)))

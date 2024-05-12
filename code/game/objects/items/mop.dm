@@ -7,7 +7,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/custodial_righthand.dmi'
 	force = 8
 	throwforce = 10
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 7
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("mops", "bashes", "bludgeons", "whacks")
@@ -44,7 +44,7 @@
 	var/val2remove = 1
 	if(cleaner?.mind)
 		val2remove = round(cleaner.mind.get_skill_modifier(/datum/skill/cleaning, SKILL_SPEED_MODIFIER),0.1)
-	reagents.remove_any(val2remove) //reaction() doesn't use up the reagents
+	reagents.remove_all(val2remove) //reaction() doesn't use up the reagents
 
 
 /obj/item/mop/afterattack(atom/A, mob/user, proximity)

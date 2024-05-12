@@ -28,8 +28,11 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = SMOOTH_GROUP_TABLES
 	canSmoothWith = SMOOTH_GROUP_TABLES
-	loc_procs = CROSSED|UNCROSSED|EXIT
 	flags_1 = BUMP_PRIORITY_1
+	mouse_drop_pointer = TRUE
+
+	/// A url-encoded list defining the bounds that objects can be placed on. Just a visual enhancement
+	var/placable_bounds = "x1=6&y1=11&x2=27&y2=27"
 
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods
@@ -49,6 +52,9 @@
 
 	var/static/list/loc_connections = list(
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(table_carbon),
+		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
+		COMSIG_ATOM_EXIT = PROC_REF(check_exit),
+		COMSIG_ATOM_EXITED = PROC_REF(on_uncrossed),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -96,10 +102,6 @@
 /obj/structure/table/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/obj/structure/table/attack_hand(mob/living/user, list/modifiers)
-	try_place_pulled_onto_table(user)
-	return ..()
-
 /obj/structure/table/attack_tk(mob/user)
 	return
 
@@ -123,11 +125,11 @@
 		flip(L, get_cardinal_dir(src, over))
 		return
 
-/obj/structure/table/MouseDrop_T(atom/dropping, mob/living/user)
+/obj/structure/table/MouseDroppedOn(atom/dropping, mob/living/user, list/params)
 	. = ..()
 	if(ishuman(dropping))
 		if(dropping != user)
-			try_place_pulled_onto_table(user)
+			try_place_pulled_onto_table(user, dropping)
 			return
 		var/mob/living/carbon/human/H = user
 		if(H.incapacitated() || H.body_position == LYING_DOWN || !H.combat_mode)
@@ -136,14 +138,46 @@
 			return FALSE
 		if(!H.Enter(get_turf(src), TRUE))
 			return
-		H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)
+
+		H.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
+		H.apply_pain(80, BODY_ZONE_HEAD, "Your head screams with pain!")
 		H.Paralyze(1 SECOND)
 		playsound(H, 'sound/items/trayhit1.ogg', 50, 1)
 		H.visible_message(
 			span_danger("[H] bangs [H.p_their()] head on [src]."),
 			span_danger("You bang your head on [src]."),
 			span_hear("You hear a metallic clang.")
+
 		)
+		return
+
+	if(isitem(dropping))
+		if(!LAZYACCESS(params, ICON_X) || !LAZYACCESS(params, ICON_Y))
+			return
+
+		var/obj/item/I = dropping
+		if(!user.can_equip(I, ITEM_SLOT_HANDS, TRUE, TRUE))
+			return
+
+		if(!(I.loc == loc))
+			return
+
+		var/list/center = I.get_icon_center()
+		var/half_icon_width = world.icon_size / 2
+
+		var/x_offset = center["x"] - half_icon_width
+		var/y_offset = center["y"] - half_icon_width
+
+		var/x_diff = (text2num(params[ICON_X]) - half_icon_width)
+		var/y_diff = (text2num(params[ICON_Y]) - half_icon_width)
+
+		var/list/bounds = get_placable_bounds()
+		var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
+		var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+
+		for(var/atom/movable/AM as anything in I.get_associated_mimics() + I)
+			animate(AM, pixel_x = new_x + x_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
+			animate(pixel_y = new_y + y_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
 		return
 
 /obj/structure/table/CanAllowThrough(atom/movable/mover, border_dir)
@@ -166,22 +200,22 @@
 	if(flipped == TRUE && !(border_dir & dir))
 		return TRUE
 
-/obj/structure/table/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/table/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	. = !density
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
 
-/obj/structure/table/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/structure/table/proc/check_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
 	if(!density)
 		return
 
 	if(isprojectile(leaving) && !check_cover(leaving, get_turf(leaving)))
 		leaving.Bump(src)
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 	if(flipped == TRUE && (direction & dir))
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 //checks if projectile 'P' from turf 'from' can hit whatever is behind the table. Returns 1 if it can, 0 if bullet stops.
 /obj/structure/table/proc/check_cover(obj/projectile/P, turf/from)
@@ -209,7 +243,8 @@
 		return FALSE //blocked
 	return TRUE
 
-/obj/structure/table/Crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+/obj/structure/table/proc/on_crossed(atom/movable/crossed_by, oldloc, list/old_locs)
+	SIGNAL_HANDLER
 	if(!isliving(crossed_by))
 		return
 
@@ -217,7 +252,8 @@
 		if(!HAS_TRAIT(crossed_by, TRAIT_TABLE_RISEN))
 			ADD_TRAIT(crossed_by, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
 
-/obj/structure/table/Uncrossed(atom/movable/gone, direction)
+/obj/structure/table/proc/on_uncrossed(datum/source, atom/movable/gone, direction)
+	SIGNAL_HANDLER
 	if(!isliving(gone))
 		return
 
@@ -227,29 +263,36 @@
 
 /obj/structure/table/setDir(ndir)
 	. = ..()
-	if(dir != NORTH && dir != 0)
+	if(dir != NORTH && dir != 0 && (flipped > 0))
 		layer = ABOVE_MOB_LAYER
 	else
 		layer = TABLE_LAYER
 
-/obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user)
-	if(!Adjacent(user) || !user.pulling)
+/obj/structure/table/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	try_place_pulled_onto_table(user, victim, grab)
+	return TRUE
+
+/obj/structure/table/proc/try_place_pulled_onto_table(mob/living/user, atom/movable/target, obj/item/hand_item/grab/grab)
+	if(!Adjacent(user))
 		return
 
-	if(isliving(user.pulling))
-		var/mob/living/pushed_mob = user.pulling
+	if(isliving(target))
+		var/mob/living/pushed_mob = target
 		if(pushed_mob.buckled)
 			to_chat(user, span_warning("[pushed_mob] is buckled to [pushed_mob.buckled]!"))
 			return
-		if(user.combat_mode)
-			switch(user.grab_state)
+
+		if(user.combat_mode && grab)
+			switch(grab.current_grab.damage_stage)
 				if(GRAB_PASSIVE)
 					to_chat(user, span_warning("You need a better grip to do that!"))
 					return
-				if(GRAB_AGGRESSIVE)
+
+				if(GRAB_NECK, GRAB_KILL)
 					tablepush(user, pushed_mob)
-				if(GRAB_NECK to GRAB_KILL)
-					tablelimbsmash(user, pushed_mob)
+				else
+					if(grab.target_zone == BODY_ZONE_HEAD)
+						tablelimbsmash(user, pushed_mob)
 		else
 			pushed_mob.visible_message(span_notice("[user] begins to place [pushed_mob] onto [src]..."), \
 								span_userdanger("[user] begins to place [pushed_mob] onto [src]..."))
@@ -257,13 +300,15 @@
 				tableplace(user, pushed_mob)
 			else
 				return
-		user.stop_pulling()
-	else if(user.pulling.pass_flags & PASSTABLE)
-		user.Move_Pulled(src)
-		if (user.pulling.loc == loc)
-			user.visible_message(span_notice("[user] places [user.pulling] onto [src]."),
-				span_notice("You place [user.pulling] onto [src]."))
-			user.stop_pulling()
+		user.release_grabs(pushed_mob)
+
+	else if(target.pass_flags & PASSTABLE)
+		grab.move_victim_towards(src)
+		if (target.loc == loc)
+			user.visible_message(span_notice("[user] places [target] onto [src]."),
+				span_notice("You place [target] onto [src]."))
+
+			user.release_grabs(target)
 
 /obj/structure/table/proc/tableplace(mob/living/user, mob/living/pushed_mob)
 	pushed_mob.forceMove(loc)
@@ -299,16 +344,24 @@
 	log_combat(user, pushed_mob, "tabled", null, "onto [src]")
 
 /obj/structure/table/proc/tablelimbsmash(mob/living/user, mob/living/pushed_mob)
-	pushed_mob.Knockdown(30)
-	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(user.zone_selected) || pushed_mob.get_bodypart(BODY_ZONE_HEAD)
-	banged_limb?.receive_damage(30)
+	var/obj/item/bodypart/banged_limb = pushed_mob.get_bodypart(BODY_ZONE_HEAD)
+	if(!banged_limb)
+		return
+
+	var/blocked = pushed_mob.run_armor_check(BODY_ZONE_HEAD, BLUNT)
+	pushed_mob.apply_damage(30, BRUTE, BODY_ZONE_HEAD, blocked)
+	if (prob(30 * ((100-blocked)/100)))
+		pushed_mob.Knockdown(10 SECONDS)
+
 	pushed_mob.stamina.adjust(-60)
 	take_damage(50)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
 		deconstruct(FALSE)
-	playsound(pushed_mob, 'sound/effects/bang.ogg', 90, TRUE)
-	pushed_mob.visible_message(span_danger("[user] smashes [pushed_mob]'s [banged_limb.name] against \the [src]!"),
-								span_userdanger("[user] smashes your [banged_limb.name] against \the [src]"))
+
+	playsound(pushed_mob, 'sound/items/trayhit1.ogg', 70, TRUE)
+	pushed_mob.visible_message(
+		span_danger("<b>[user]</b> smashes <b>[pushed_mob]</b>'s [banged_limb.plaintext_zone] against \the [src]!"),
+	)
 	log_combat(user, pushed_mob, "head slammed", null, "against [src]")
 
 /obj/structure/table/screwdriver_act_secondary(mob/living/user, obj/item/tool)
@@ -381,9 +434,22 @@
 			//Center the icon where the user clicked.
 			if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
 				return
-			//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
-			I.pixel_x = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
-			I.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
+
+			var/list/center = I.get_icon_center()
+			var/half_icon_width = world.icon_size / 2
+
+			var/x_offset = center["x"] - half_icon_width
+			var/y_offset = center["y"] - half_icon_width
+
+			var/x_diff = (text2num(modifiers[ICON_X]) - half_icon_width)
+			var/y_diff = (text2num(modifiers[ICON_Y]) - half_icon_width)
+
+			var/list/bounds = get_placable_bounds()
+			var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
+			var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+
+			I.pixel_x = new_x + x_offset
+			I.pixel_y = new_y + y_offset
 			AfterPutItemOnTable(I, user)
 			return TRUE
 
@@ -454,6 +520,13 @@
 	log_combat(src, target, "shoved", "onto [src] (table)")
 	return COMSIG_CARBON_SHOVE_HANDLED
 
+/// Returns a list of placable bounds, see placable_bounds
+/obj/structure/table/proc/get_placable_bounds()
+	var/list/bounds = params2list(placable_bounds)
+	for(var/key in bounds)
+		bounds[key] = text2num(bounds[key])
+	return bounds
+
 /obj/structure/table/greyscale
 	icon = 'icons/obj/smooth_structures/table_greyscale.dmi'
 	icon_state = "table_greyscale-0"
@@ -511,7 +584,7 @@
 	canSmoothWith = SMOOTH_GROUP_GLASS_TABLES
 	max_integrity = 70
 	resistance_flags = ACID_PROOF
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
 	var/glass_shard_type = /obj/item/shard
 
 /obj/structure/table/glass/CanAllowThrough(atom/movable/mover, border_dir)
@@ -521,14 +594,14 @@
 	if(mover.pass_flags & PASSGLASS)
 		return TRUE
 
-/obj/structure/table/glass/Exit(atom/movable/leaving, direction)
+/obj/structure/table/glass/check_exit(datum/source, atom/movable/leaving, direction)
 	. = ..()
 	if(. || !flipped)
 		return
 	if(leaving.pass_flags & PASSGLASS)
-		return TRUE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
-/obj/structure/table/glass/Crossed(atom/movable/crossed_by, oldloc)
+/obj/structure/table/glass/on_crossed(atom/movable/crossed_by, oldloc)
 	. = ..()
 	if(flags_1 & NODECONSTRUCT_1)
 		return
@@ -632,70 +705,61 @@
 	framestack = /obj/item/stack/rods
 	buildstack = /obj/item/stack/tile/carpet
 	smoothing_groups = SMOOTH_GROUP_FANCY_WOOD_TABLES //Don't smooth with SMOOTH_GROUP_TABLES or SMOOTH_GROUP_WOOD_TABLES
-	canSmoothWith = SMOOTH_GROUP_FANCY_WOOD_TABLES
-	var/smooth_icon = 'icons/obj/smooth_structures/fancy_table.dmi' // see Initialize()
-
-/obj/structure/table/wood/fancy/Initialize(mapload)
-	. = ..()
-	// Needs to be set dynamically because table smooth sprites are 32x34,
-	// which the editor treats as a two-tile-tall object. The sprites are that
-	// size so that the north/south corners look nice - examine the detail on
-	// the sprites in the editor to see why.
-	icon = smooth_icon
+	canSmoothWith = SMOOTH_GROUP_FANCY_WOOD_TABLES // see Initialize()
 
 /obj/structure/table/wood/fancy/black
-	icon_state = "fancy_table_black"
+	icon_state = "fancy_table_black-0"
 	base_icon_state = "fancy_table_black"
 	buildstack = /obj/item/stack/tile/carpet/black
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_black.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_black.dmi'
 
 /obj/structure/table/wood/fancy/blue
-	icon_state = "fancy_table_blue"
+	icon_state = "fancy_table_blue-0"
 	base_icon_state = "fancy_table_blue"
 	buildstack = /obj/item/stack/tile/carpet/blue
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_blue.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_blue.dmi'
 
 /obj/structure/table/wood/fancy/cyan
-	icon_state = "fancy_table_cyan"
+	icon_state = "fancy_table_cyan-0"
 	base_icon_state = "fancy_table_cyan"
 	buildstack = /obj/item/stack/tile/carpet/cyan
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_cyan.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_cyan.dmi'
 
 /obj/structure/table/wood/fancy/green
-	icon_state = "fancy_table_green"
+	icon_state = "fancy_table_green-0"
 	base_icon_state = "fancy_table_green"
 	buildstack = /obj/item/stack/tile/carpet/green
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_green.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_green.dmi'
 
 /obj/structure/table/wood/fancy/orange
-	icon_state = "fancy_table_orange"
+	icon_state = "fancy_table_orange-0"
 	base_icon_state = "fancy_table_orange"
 	buildstack = /obj/item/stack/tile/carpet/orange
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_orange.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_orange.dmi'
 
 /obj/structure/table/wood/fancy/purple
-	icon_state = "fancy_table_purple"
+	icon_state = "fancy_table_purple-0"
 	base_icon_state = "fancy_table_purple"
 	buildstack = /obj/item/stack/tile/carpet/purple
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_purple.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_purple.dmi'
 
 /obj/structure/table/wood/fancy/red
-	icon_state = "fancy_table_red"
+	icon_state = "fancy_table_red-0"
 	base_icon_state = "fancy_table_red"
 	buildstack = /obj/item/stack/tile/carpet/red
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_red.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_red.dmi'
 
 /obj/structure/table/wood/fancy/royalblack
-	icon_state = "fancy_table_royalblack"
+	icon_state = "fancy_table_royalblack-0"
 	base_icon_state = "fancy_table_royalblack"
 	buildstack = /obj/item/stack/tile/carpet/royalblack
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_royalblack.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_royalblack.dmi'
 
 /obj/structure/table/wood/fancy/royalblue
-	icon_state = "fancy_table_royalblue"
+	icon_state = "fancy_table_royalblue-0"
 	base_icon_state = "fancy_table_royalblue"
 	buildstack = /obj/item/stack/tile/carpet/royalblue
-	smooth_icon = 'icons/obj/smooth_structures/fancy_table_royalblue.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table_royalblue.dmi'
 
 /*
  * Reinforced tables
@@ -710,7 +774,7 @@
 	buildstack = /obj/item/stack/sheet/plasteel
 	max_integrity = 200
 	integrity_failure = 0.25
-	armor = list(MELEE = 10, BULLET = 30, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
+	armor = list(BLUNT = 10, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 100, BOMB = 20, BIO = 0, FIRE = 80, ACID = 70)
 	flipped = -1
 
 /obj/structure/table/reinforced/deconstruction_hints(mob/user)
@@ -799,6 +863,7 @@
 	name = "operating table"
 	desc = "Used for advanced medical procedures."
 	icon = 'icons/obj/surgery.dmi'
+	base_icon_state = "optable"
 	icon_state = "optable"
 	buildstack = /obj/item/stack/sheet/mineral/silver
 	smoothing_flags = NONE
@@ -808,12 +873,32 @@
 	buckle_lying = NO_BUCKLE_LYING
 	buckle_requires_restraints = TRUE
 	custom_materials = list(/datum/material/silver = 2000)
+	flipped = -1
+
+	var/obj/machinery/vitals_monitor/connected_monitor
 	var/mob/living/carbon/human/patient = null
 
 /obj/structure/table/optable/Destroy()
 	if(patient)
 		set_patient(null)
+	if(connected_monitor)
+		connected_monitor.set_optable(null)
+		connected_monitor = null
 	return ..()
+
+/obj/structure/table/optable/MouseDroppedOn(atom/dropping, mob/living/user)
+	if(!iscarbon(dropping))
+		return ..()
+
+	if(dropping.loc == loc)
+		set_patient(dropping)
+	else
+		return ..()
+
+/obj/structure/table/optable/on_uncrossed(datum/source, atom/movable/gone, direction)
+	. = ..()
+	if(gone == patient)
+		set_patient(null)
 
 /obj/structure/table/optable/tableplace(mob/living/user, mob/living/pushed_mob)
 	. = ..()
@@ -838,11 +923,14 @@
 		REMOVE_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		UnregisterSignal(patient, COMSIG_PARENT_QDELETING)
 	patient = new_patient
-	patient.set_lying_angle(90)
-	patient.setDir(SOUTH)
-	ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 	if(patient)
+		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
+		patient.set_lying_angle(90)
+		patient.setDir(SOUTH)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
+
+	if(connected_monitor)
+		connected_monitor.update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/table/optable/proc/patient_deleted(datum/source)
 	SIGNAL_HANDLER
@@ -881,7 +969,7 @@
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
 		return TRUE
 
-/obj/structure/rack/MouseDrop_T(obj/O, mob/user)
+/obj/structure/rack/MouseDroppedOn(obj/O, mob/user)
 	. = ..()
 	if ((!( istype(O, /obj/item) ) || user.get_active_held_item() != O))
 		return
@@ -913,7 +1001,7 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_KICK)
 	user.visible_message(span_danger("[user] kicks [src]."), null, null, COMBAT_MESSAGE_RANGE)
-	take_damage(rand(4,8), BRUTE, MELEE, 1)
+	take_damage(rand(4,8), BRUTE, BLUNT, 1)
 
 /obj/structure/rack/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)

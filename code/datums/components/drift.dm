@@ -34,7 +34,7 @@
 	RegisterSignal(drifting_loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(after_move))
 	RegisterSignal(drifting_loop, COMSIG_PARENT_QDELETING, PROC_REF(loop_death))
 	RegisterSignal(movable_parent, COMSIG_MOVABLE_NEWTONIAN_MOVE, PROC_REF(newtonian_impulse))
-	if(drifting_loop.running)
+	if(drifting_loop.status & MOVELOOP_STATUS_RUNNING)
 		drifting_start(drifting_loop) // There's a good chance it'll autostart, gotta catch that
 
 	var/visual_delay = movable_parent.inertia_move_delay
@@ -92,14 +92,14 @@
 	// This way you can't ride two movements at once while drifting, since that'd be dumb as fuck
 	RegisterSignal(movable_parent, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, PROC_REF(handle_glidesize_update))
 	// If you stop pulling something mid drift, I want it to retain that momentum
-	RegisterSignal(movable_parent, COMSIG_ATOM_NO_LONGER_PULLING, PROC_REF(stopped_pulling))
+	RegisterSignal(movable_parent, COMSIG_LIVING_NO_LONGER_GRABBING, PROC_REF(stopped_pulling))
 
 /datum/component/drift/proc/drifting_stop()
 	SIGNAL_HANDLER
 	var/atom/movable/movable_parent = parent
 	movable_parent.inertia_moving = FALSE
 	ignore_next_glide = FALSE
-	UnregisterSignal(movable_parent, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, COMSIG_ATOM_NO_LONGER_PULLING))
+	UnregisterSignal(movable_parent, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVABLE_UPDATE_GLIDE_SIZE, COMSIG_LIVING_NO_LONGER_GRABBING))
 
 /datum/component/drift/proc/before_move(datum/source)
 	SIGNAL_HANDLER
@@ -108,9 +108,9 @@
 	old_dir = movable_parent.dir
 	delayed = FALSE
 
-/datum/component/drift/proc/after_move(datum/source, succeeded, visual_delay)
+/datum/component/drift/proc/after_move(datum/source, result, visual_delay)
 	SIGNAL_HANDLER
-	if(!succeeded)
+	if(result == MOVELOOP_FAILURE)
 		qdel(src)
 		return
 

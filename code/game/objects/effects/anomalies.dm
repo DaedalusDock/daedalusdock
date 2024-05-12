@@ -79,7 +79,7 @@
 		qdel(src)
 
 /obj/effect/anomaly/proc/anomalyNeutralize()
-	new /obj/effect/particle_effect/smoke/bad(loc)
+	new /obj/effect/particle_effect/fluid/smoke/bad(loc)
 
 	if(drops_core)
 		aSignal.forceMove(drop_location())
@@ -111,13 +111,16 @@
 	icon_state = "shield2"
 	density = FALSE
 	aSignal = /obj/item/assembly/signaler/anomaly/grav
-	loc_procs = CROSSED
 	var/boing = 0
 	///Warp effect holder for displacement filter to "pulse" the anomaly
 	var/atom/movable/warp_effect/warp
 
 /obj/effect/anomaly/grav/Initialize(mapload, new_lifespan, drops_core)
 	. = ..()
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 	warp = new(src)
 	vis_contents += warp
@@ -152,8 +155,11 @@
 	animate(warp, time = delta_time*3, transform = matrix().Scale(0.5,0.5))
 	animate(time = delta_time*7, transform = matrix())
 
-/obj/effect/anomaly/grav/Crossed(atom/movable/crossed_by, oldloc)
-	gravShock(crossed_by)
+/obj/effect/anomaly/grav/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	gravShock(AM)
 
 /obj/effect/anomaly/grav/Bump(atom/A)
 	gravShock(A)
@@ -190,7 +196,6 @@
 	density = TRUE
 	aSignal = /obj/item/assembly/signaler/anomaly/flux
 	zmm_flags = ZMM_MANGLE_PLANES
-	loc_procs = CROSSED
 	var/canshock = FALSE
 	var/shockdamage = 20
 	var/explosive = TRUE
@@ -198,6 +203,10 @@
 /obj/effect/anomaly/flux/Initialize(mapload, new_lifespan, drops_core = TRUE, _explosive = TRUE)
 	. = ..()
 	explosive = _explosive
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/anomaly/flux/anomalyEffect()
 	..()
@@ -209,8 +218,11 @@
 	. = ..()
 	. += emissive_appearance(icon, icon_state, alpha=src.alpha)
 
-/obj/effect/anomaly/flux/Crossed(atom/movable/crossed_by, oldloc)
-	mobShock(crossed_by)
+/obj/effect/anomaly/flux/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	mobShock(AM)
 
 /obj/effect/anomaly/flux/Bump(atom/A)
 	mobShock(A)
@@ -256,7 +268,7 @@
 	// Calculate new position (searches through beacons in world)
 	var/obj/item/beacon/chosen
 	var/list/possible = list()
-	for(var/obj/item/beacon/W in GLOB.teleportbeacons)
+	for(var/obj/item/beacon/W as anything in INSTANCES_OF(/obj/item/beacon))
 		possible += W
 
 	if(possible.len > 0)
@@ -374,7 +386,7 @@
 			if(target && !target.stat)
 				O.throw_at(target, 7, 5)
 		else
-			SSexplosions.med_mov_atom += O
+			EX_ACT(O, EXPLODE_HEAVY)
 
 /obj/effect/anomaly/bhole/proc/grav(r, ex_act_force, pull_chance, turf_removal_chance)
 	for(var/t = -r, t < r, t++)
@@ -395,11 +407,11 @@
 			if(O.anchored)
 				switch(ex_act_force)
 					if(EXPLODE_DEVASTATE)
-						SSexplosions.high_mov_atom += O
+						EX_ACT(O, EXPLODE_DEVASTATE)
 					if(EXPLODE_HEAVY)
-						SSexplosions.med_mov_atom += O
+						EX_ACT(O, EXPLODE_HEAVY)
 					if(EXPLODE_LIGHT)
-						SSexplosions.low_mov_atom += O
+						EX_ACT(O, EXPLODE_LIGHT)
 			else
 				step_towards(O,src)
 		for(var/mob/living/M in T.contents)
@@ -407,12 +419,6 @@
 
 	//Damaging the turf
 	if( T && prob(turf_removal_chance) )
-		switch(ex_act_force)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.highturf += T
-			if(EXPLODE_HEAVY)
-				SSexplosions.medturf += T
-			if(EXPLODE_LIGHT)
-				SSexplosions.lowturf += T
+		EX_ACT(T, ex_act_force)
 
 #undef ANOMALY_MOVECHANCE

@@ -13,7 +13,7 @@
 	name = "space heater"
 	desc = "Made by Space Amish using traditional space techniques, this heater/cooler is guaranteed not to set the station on fire. Warranty void if used in engines."
 	max_integrity = 250
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 80, ACID = 10)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 80, ACID = 10)
 	circuit = /obj/item/circuitboard/machine/space_heater
 	//We don't use area power, we always use the cell
 	use_power = NO_POWER_USE
@@ -158,7 +158,7 @@
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
 /obj/machinery/space_heater/attackby(obj/item/I, mob/user, params)
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 
 	if(default_deconstruction_screwdriver(user, icon_state, icon_state, I))
 		user.visible_message(span_notice("\The [user] [panel_open ? "opens" : "closes"] the hatch on \the [src]."), span_notice("You [panel_open ? "open" : "close"] the hatch on \the [src]."))
@@ -178,7 +178,7 @@
 		if(!user.transferItemToLoc(I, src))
 			return
 		cell = I
-		I.add_fingerprint(usr)
+		I.add_fingerprint(user)
 		user.visible_message(span_notice("\The [user] inserts a power cell into \the [src]."), span_notice("You insert the power cell into \the [src]."))
 		SStgui.update_uis(src)
 		return TRUE
@@ -338,7 +338,8 @@
 
 ///Slightly modified to ignore the open_hatch - it's always open, we hacked it.
 /obj/machinery/space_heater/improvised_chem_heater/attackby(obj/item/item, mob/user, params)
-	add_fingerprint(user)
+	item.leave_evidence(user, src)
+
 	if(default_deconstruction_crowbar(item))
 		return
 	if(istype(item, /obj/item/stock_parts/cell))
@@ -396,7 +397,7 @@
 
 /obj/machinery/space_heater/improvised_chem_heater/AltClick(mob/living/user)
 	. = ..()
-	if(!can_interact(user) || !user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	replace_beaker(user)
 

@@ -199,7 +199,7 @@ GLOBAL_LIST_EMPTY(silo_access_logs)
 		logs.Insert(1, entry)
 
 	updateUsrDialog()
-	flick("silo_active", src)
+	z_flick("silo_active", src)
 
 /obj/machinery/ore_silo/examine(mob/user)
 	. = ..()

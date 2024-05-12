@@ -1,8 +1,13 @@
 /mob/living/carbon
+	maxHealth = 200
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
 	//pressure_resistance = 15
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD,GLAND_HUD)
+	hud_possible = list(
+		HEALTH_HUD = 'icons/mob/huds/med_hud.dmi',
+		STATUS_HUD = 'icons/mob/huds/hud.dmi',
+		GLAND_HUD = 'icons/mob/huds/hud.dmi',
+	)
 	has_limbs = TRUE
 	held_items = list(null, null)
 	num_legs = 0 //Populated on init through list/bodyparts
@@ -46,6 +51,8 @@
 	var/obj/item/clothing/mask/wear_mask = null
 	var/obj/item/clothing/neck/wear_neck = null
 	var/obj/item/tank/internal = null
+	/// "External" air tank. Never set this manually. Not required to stay directly equipped on the mob (i.e. could be a machine or MOD suit module).
+	var/obj/item/tank/external = null
 	var/obj/item/clothing/head = null
 
 	///only used by humans
@@ -56,6 +63,9 @@
 	var/obj/item/clothing/glasses/glasses = null
 	///only used by humans.
 	var/obj/item/clothing/ears = null
+
+	/// A compilation of all equipped items 'flags_inv' vars.
+	var/obscured_slots = NONE
 
 	/// Carbon
 	var/datum/dna/dna = null
@@ -118,6 +128,9 @@
 	var/sprinting = FALSE
 	///How many tiles we have continuously moved in the same direction
 	var/sustained_moves = 0
-
+	//stores flavor text here.
+	var/examine_text = ""
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
+	COOLDOWN_DECLARE(blood_spray_cd)
+	COOLDOWN_DECLARE(breath_sound_cd)

@@ -576,13 +576,6 @@
 	foodtypes = VEGETABLES
 	venue_value = FOOD_PRICE_CHEAP
 
-/obj/item/food/kebab/tail
-	name = "unathi-tail kebab"
-	desc = "Severed unathi tail on a stick."
-	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 30, /datum/reagent/consumable/nutriment/vitamin = 4)
-	tastes = list("meat" = 8, "metal" = 4, "scales" = 1)
-	foodtypes = MEAT
-
 /obj/item/food/kebab/rat
 	name = "rat-kebab"
 	desc = "Not so delicious rat meat, on a stick."
@@ -662,11 +655,6 @@
 	tastes = list("rock" = 1)
 	foodtypes = MEAT | RAW | GROSS
 	venue_value = FOOD_MEAT_MUTANT_RARE
-
-/obj/item/food/meat/slab/human/mutant/golem/adamantine
-	icon_state = "agolemmeat"
-	desc = "From the slime pen to the rune to the kitchen, science."
-	foodtypes = MEAT | RAW | GROSS
 
 /obj/item/food/meat/slab/human/mutant/lizard
 	icon_state = "lizardmeat"
@@ -1024,7 +1012,7 @@
 	tastes = list("chicken" = 1)
 
 /obj/item/food/meat/steak/plain/human/lizard
-	name = "unathi steak"
+	name = "jinan steak"
 	icon_state = "birdsteak"
 	tastes = list("juicy chicken" = 3, "scales" = 1)
 	foodtypes = MEAT

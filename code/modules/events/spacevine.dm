@@ -39,7 +39,7 @@
 /datum/round_event_control/spacevine
 	name = "Space Vines"
 	typepath = /datum/round_event/spacevine
-	weight = 15
+	weight = 4
 	max_occurrences = 3
 	min_players = 10
 
@@ -51,9 +51,9 @@
 
 	var/obj/structure/spacevine/vine = new()
 
-	for(var/area/station/hallway/area in world)
-		for(var/turf/floor in area)
-			if(floor.Enter(vine))
+	for(var/area/station/hallway/area in GLOB.areas)
+		for(var/turf/floor in area.get_contained_turfs())
+			if(floor.Enter(vine, TRUE))
 				turfs += floor
 
 	qdel(vine)
@@ -212,7 +212,7 @@
 	var/mob/living/carbon/victim = living_mob //If the mob is carbon then it now also exists as a victim, and not just an living mob.
 	if(istype(victim)) //If the mob (M) is a carbon subtype (C) we move on to pick a more complex damage proc, with damage zones, wounds and armor mitigation.
 		var/obj/item/bodypart/limb = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG, BODY_ZONE_HEAD, BODY_ZONE_CHEST) //Picks a random bodypart. Does not runtime even if it's missing.
-		var/armor = victim.run_armor_check(limb, MELEE, null, null) //armor = the armor value of that randomly chosen bodypart. Nulls to not print a message, because it would still print on pierce.
+		var/armor = victim.run_armor_check(limb, BLUNT, null, null) //armor = the armor value of that randomly chosen bodypart. Nulls to not print a message, because it would still print on pierce.
 		var/datum/spacevine_mutation/thorns/thorn = locate() in vine.mutations //Searches for the thorns mutation in the "mutations"-list inside obj/structure/spacevine, and defines T if it finds it.
 		if(thorn && (prob(40))) //If we found the thorns mutation there is now a chance to get stung instead of lashed or smashed.
 			victim.apply_damage(50, BRUTE, def_zone = limb, sharpness = SHARP_POINTY) //This one gets a bit lower damage because it ignores armor.
@@ -374,7 +374,6 @@
 	mouse_opacity = MOUSE_OPACITY_OPAQUE //Clicking anywhere on the turf is good enough
 	pass_flags = PASSTABLE | PASSGRILLE
 	max_integrity = 50
-	loc_procs = CROSSED
 	var/energy = 0
 	var/can_spread = TRUE //Can this kudzu spread?
 	var/datum/spacevine_controller/master = null
@@ -385,6 +384,10 @@
 /obj/structure/spacevine/Initialize(mapload)
 	. = ..()
 	add_atom_colour("#ffffff", FIXED_COLOUR_PRIORITY)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 	become_atmos_sensitive()
 
 /obj/structure/spacevine/examine(mob/user)
@@ -436,7 +439,7 @@
 
 	for(var/datum/spacevine_mutation/mutation in mutations)
 		damage_dealt = mutation.on_hit(src, user, item, damage_dealt) //on_hit now takes override damage as arg and returns new value for other mutations to permutate further
-	take_damage(damage_dealt, item.damtype, MELEE, 1)
+	take_damage(damage_dealt, item.damtype, BLUNT, 1)
 
 /obj/structure/spacevine/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)
@@ -448,11 +451,14 @@
 		if(BURN)
 			playsound(src.loc, 'sound/items/welder.ogg', 100, TRUE)
 
-/obj/structure/spacevine/Crossed(atom/movable/crossed_by, oldloc)
-	if(!isliving(crossed_by))
+/obj/structure/spacevine/proc/on_entered(datum/source, atom/movable/movable)
+	SIGNAL_HANDLER
+	if(movable == src)
+		return
+	if(!isliving(movable))
 		return
 	for(var/datum/spacevine_mutation/mutation in mutations)
-		mutation.on_cross(src, crossed_by)
+		mutation.on_cross(src, movable)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/structure/spacevine/attack_hand(mob/user, list/modifiers)

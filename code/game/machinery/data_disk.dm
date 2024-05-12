@@ -29,7 +29,7 @@
 
 /obj/item/disk/data/examine(mob/user)
 	. = ..()
-	. += "The write-protect tab is set to [read_only ? "protected" : "unprotected"]."
+	. += span_notice("The write-protect tab is set to [read_only ? "protected" : "unprotected"].")
 
 /obj/item/disk/data/update_overlays()
 	. = ..()
@@ -192,6 +192,7 @@
 		/datum/design/board/odysseus_peri,
 		/datum/design/board/gygax_main,
 		/datum/design/board/gygax_peri,
+		/datum/design/board/gygax_targ,
 		/datum/design/board/durand_main,
 		/datum/design/board/durand_peri,
 		/datum/design/board/durand_targ,

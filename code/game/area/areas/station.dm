@@ -401,7 +401,7 @@
 	icon_state = "hop_office"
 
 /area/station/command/heads_quarters/hos
-	name = "\improper Head of Security's Office"
+	name = "\improper Security Marshal's Office"
 	icon_state = "hos_office"
 
 /area/station/command/heads_quarters/rd
@@ -935,6 +935,8 @@
 	min_ambience_cooldown = 90 SECONDS
 	max_ambience_cooldown = 180 SECONDS
 
+	spook_level = SPOOK_AMT_CORPSE * -2 // We can expect like two dudes to be dead in here at all times.
+
 /area/station/medical/abandoned
 	name = "\improper Abandoned Medbay"
 	icon_state = "abandoned_medbay"
@@ -1010,6 +1012,8 @@
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 	lightswitch = FALSE
 
+	spook_level = SPOOK_AMT_CORPSE * -10 // The morgue lays spirits to rest or something
+
 /area/station/medical/chemistry
 	name = "Chemistry"
 	icon_state = "chem"
@@ -1064,7 +1068,6 @@
 	ambientsounds = list('sound/ambience/aurora_caelus_short.ogg')
 
 //Security
-///When adding a new area to the security areas, make sure to add it to /datum/bounty/item/security/paperwork as well!
 
 /area/station/security
 	name = "Security"
@@ -1077,9 +1080,21 @@
 	name = "\improper Security Office"
 	icon_state = "security"
 
+/area/station/security/office/hall
+	name = "\improper Security Office Hall"
+	icon_state = "security"
+
 /area/station/security/lockers
 	name = "\improper Security Locker Room"
 	icon_state = "securitylockerroom"
+
+/area/station/security/deck
+	name = "\improper Security Observation Deck"
+	icon_state = "security"
+
+/area/station/security/pig
+	name = "\improper Security Pig Pen"
+	icon_state = "security"
 
 /area/station/security/brig
 	name = "\improper Brig"
@@ -1087,6 +1102,10 @@
 
 /area/station/security/holding_cell
 	name = "\improper Holding Cell"
+	icon_state = "holding_cell"
+
+/area/station/security/isolation_cells
+	name = "\improper Isolation Cells"
 	icon_state = "holding_cell"
 
 /area/station/security/medical
@@ -1167,12 +1186,11 @@
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 /area/station/security/detectives_office
-	name = "\improper Detective's Office"
+	name = "\improper Private Investigator's Office"
 	icon_state = "detective"
 	ambientsounds = list('sound/ambience/ambidet1.ogg','sound/ambience/ambidet2.ogg')
 
 /area/station/security/detectives_office/private_investigators_office
-	name = "\improper Private Investigator's Office"
 	icon_state = "investigate_office"
 	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
@@ -1293,6 +1311,25 @@
 /area/station/cargo/miningoffice
 	name = "\improper Mining Office"
 	icon_state = "mining"
+
+/area/station/cargo/mining/asteroid_magnet
+	name = "\improper Asteroid Magnet"
+	icon_state = "mining"
+	requires_power = TRUE
+	always_unpowered = TRUE
+
+	static_lighting = FALSE
+	base_lighting_alpha = 255
+	base_lighting_color = "#FFFFFF"
+
+	power_light = FALSE
+	power_equip = FALSE
+	power_environ = FALSE
+	area_flags = NO_ALERTS
+	outdoors = TRUE
+	ambience_index = AMBIENCE_SPACE
+	flags_1 = CAN_BE_DIRTY_1
+	sound_environment = SOUND_AREA_SPACE
 
 //Science
 

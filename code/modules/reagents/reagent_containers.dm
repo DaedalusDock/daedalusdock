@@ -29,6 +29,10 @@
 
 	add_initial_reagents()
 
+/obj/item/reagent_containers/Destroy(force)
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/item/reagent_containers/examine()
 	. = ..()
 	if(possible_transfer_amounts.len > 1)
@@ -136,6 +140,9 @@
 		return FALSE
 	var/mob/living/carbon/C = eater
 	var/covered = ""
+	if(!C.has_mouth())
+		to_chat(user, span_warning("You don't have a mouth."))
+		return FALSE
 	if(C.is_mouth_covered(head_only = 1))
 		covered = "headgear"
 	else if(C.is_mouth_covered(mask_only = 1))
@@ -157,7 +164,7 @@
 
 	return ..()
 
-/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume)
+/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	reagents.expose_temperature(exposed_temperature)
 	..()
 
@@ -210,7 +217,7 @@
 	reagents.expose_temperature(1000)
 	..()
 
-/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume)
+/obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	reagents.expose_temperature(exposed_temperature)
 
 /// Updates the icon of the container when the reagents change. Eats signal args

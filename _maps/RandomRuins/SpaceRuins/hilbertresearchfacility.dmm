@@ -284,12 +284,6 @@
 /obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"ha" = (
-/obj/structure/statue/bone/rib{
-	dir = 1
-	},
-/turf/open/floor/cult,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "he" = (
 /obj/structure/flora/rock/pile,
 /turf/open/misc/asteroid/airless,
@@ -1184,9 +1178,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced/plastitaniumglass,
-/obj/item/crowbar/large{
-	pixel_y = 4
-	},
+/obj/item/crowbar,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "AI" = (
@@ -1973,10 +1965,6 @@
 "RL" = (
 /obj/structure/grille,
 /turf/open/floor/plating,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"RN" = (
-/obj/structure/statue/bone/rib,
-/turf/open/floor/cult,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "RX" = (
 /obj/machinery/door/poddoor/shutters,
@@ -3762,7 +3750,7 @@ wo
 Wt
 yO
 HK
-ha
+wo
 iO
 MX
 ow
@@ -3800,7 +3788,7 @@ el
 ZV
 Wt
 KC
-RN
+wo
 hW
 KC
 dJ

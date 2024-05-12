@@ -2,7 +2,7 @@
 	name = "ablative hood"
 	desc = "Hood hopefully belonging to an ablative trenchcoat. Includes a visor for cool-o-vision."
 	icon_state = "ablativehood"
-	armor = list(MELEE = 10, BULLET = 10, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	strip_delay = 30
 	var/hit_reflect_chance = 50
 
@@ -18,7 +18,7 @@
 	icon_state = "ablativecoat"
 	inhand_icon_state = "ablativecoat"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	armor = list(MELEE = 10, BULLET = 10, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 60, ENERGY = 60, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	hoodtype = /obj/item/clothing/head/hooded/ablative
 	strip_delay = 30
 	equip_delay_other = 40
@@ -40,7 +40,7 @@
 	var/mob/living/carbon/user = loc
 	var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
 	ADD_TRAIT(user, TRAIT_SECURITY_HUD, HELMET_TRAIT)
-	hud.add_hud_to(user)
+	hud.show_to(user)
 	balloon_alert(user, "you put on the hood, and enable the hud")
 	return ..()
 
@@ -50,6 +50,6 @@
 	var/mob/living/carbon/user = loc
 	var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
 	REMOVE_TRAIT(user, TRAIT_SECURITY_HUD, HELMET_TRAIT)
-	hud.remove_hud_from(user)
+	hud.hide_from(user)
 	balloon_alert(user, "you take off the hood, and disable the hud")
 	return ..()

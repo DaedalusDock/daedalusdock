@@ -44,6 +44,7 @@
 	results = list(/datum/reagent/medicine/dexalin = 1)
 	required_reagents = list(/datum/reagent/acetone = 2, /datum/reagent/toxin/plasma = 0.1)
 	inhibitors = list(/datum/reagent/water = 1) // Messes with cryox
+	thermic_constant = 20 // Harder to ignite plasma
 
 /datum/chemical_reaction/tricordrazine
 	results =  list(/datum/reagent/medicine/tricordrazine = 5)
@@ -81,14 +82,6 @@
 	results = list(/datum/reagent/medicine/tramadol/oxycodone = 1)
 	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/tramadol = 1)
 	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
-
-/datum/chemical_reaction/venaxilin
-	results = list(/datum/reagent/medicine/venaxilin = 1)
-	required_reagents = list(/datum/reagent/medicine/dylovene = 1, /datum/reagent/medicine/spaceacillin = 1, /datum/reagent/toxin/venom = 1)
-	required_temp = 50 CELSIUS
-	optimal_temp = 75 CELSIUS
-	overheat_temp = 100 CELSIUS
-	mix_message = "The solution steams and becomes cloudy."
 
 /datum/chemical_reaction/spaceacillin
 	results = list(/datum/reagent/medicine/spaceacillin = 2)
@@ -193,3 +186,14 @@
 	required_reagents = list(/datum/reagent/ash = 1, /datum/reagent/consumable/salt = 1)
 	mix_message = "The mixture yields a fine black powder."
 	mix_sound = 'sound/effects/fuse.ogg'
+
+/datum/chemical_reaction/antihol
+	results = list(/datum/reagent/medicine/antihol = 2)
+	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/activated_charcoal = 1)
+	mix_message = "A minty and refreshing smell drifts from the effervescent mixture."
+
+/datum/chemical_reaction/diphenhydramine
+	results = list(/datum/reagent/medicine/diphenhydramine = 4)
+	// Chlorine is a good enough substitute for bromine right?
+	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/carbon = 1, /datum/reagent/chlorine = 1, /datum/reagent/diethylamine = 1, /datum/reagent/consumable/ethanol = 1)
+	mix_message = "The mixture fizzes gently."

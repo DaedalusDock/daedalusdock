@@ -1,0 +1,2 @@
+/obj/effect/mob_spawn/ghost_role/@SUBTYPES : @DELETE
+/mob/living/simple_animal/hostile/giant_spider/@SUBTYPES : @DELETE

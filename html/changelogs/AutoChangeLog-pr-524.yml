@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Ambience automatically plays again.
-  - tweak: Increased the volume of ambience (except lavaland)

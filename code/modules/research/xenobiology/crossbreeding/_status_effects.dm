@@ -28,35 +28,6 @@
 	owner.visible_message(span_notice("[owner] stops glowing, the rainbow light fading away."),
 		span_warning("You no longer feel protected..."))
 
-/atom/movable/screen/alert/status_effect/slimeskin
-	name = "Adamantine Slimeskin"
-	desc = "You are covered in a thick, non-neutonian gel."
-	icon_state = "slime_stoneskin"
-
-/datum/status_effect/slimeskin
-	id = "slimeskin"
-	duration = 300
-	alert_type = /atom/movable/screen/alert/status_effect/slimeskin
-	var/originalcolor
-
-/datum/status_effect/slimeskin/on_apply()
-	originalcolor = owner.color
-	owner.color = "#3070CC"
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance += 10
-	owner.visible_message(span_warning("[owner] is suddenly covered in a strange, blue-ish gel!"),
-		span_notice("You are covered in a thick, rubbery gel."))
-	return ..()
-
-/datum/status_effect/slimeskin/on_remove()
-	owner.color = originalcolor
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance -= 10
-	owner.visible_message(span_warning("[owner]'s gel coating liquefies and dissolves away."),
-		span_notice("Your gel second-skin dissolves!"))
-
 /datum/status_effect/slimerecall
 	id = "slime_recall"
 	duration = -1 //Will be removed by the extract.
@@ -136,7 +107,7 @@
 	var/mob/living/carbon/O = owner
 	var/mob/living/carbon/C = clone
 	if(istype(C) && istype(O))
-		C.real_name = O.real_name
+		C.set_real_name(O.real_name)
 		O.dna.transfer_identity(C)
 		C.updateappearance(mutcolor_update=1)
 	if(owner.mind)
@@ -385,7 +356,7 @@
 /datum/status_effect/spookcookie/on_apply()
 	var/image/I = image(icon = 'icons/mob/simple_human.dmi', icon_state = "skeleton", layer = ABOVE_MOB_LAYER, loc = owner)
 	I.override = 1
-	owner.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "spookyscary", I)
+	owner.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/living, "spookyscary", I)
 	return ..()
 
 /datum/status_effect/spookcookie/on_remove()
@@ -414,22 +385,6 @@
 /datum/status_effect/plur/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, "peacecookie")
 
-/datum/status_effect/adamantinecookie
-	id = "adamantinecookie"
-	status_type = STATUS_EFFECT_REFRESH
-	alert_type = null
-	duration = 100
-
-/datum/status_effect/adamantinecookie/on_apply()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.burn_mod *= 0.9
-	return ..()
-
-/datum/status_effect/adamantinecookie/on_remove()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.burn_mod /= 0.9
 
 ///////////////////////////////////////////////////////
 //////////////////STABILIZED EXTRACTS//////////////////
@@ -439,38 +394,29 @@
 	id = "stabilizedbase"
 	duration = -1
 	alert_type = null
+	/// Item which provides this buff
 	var/obj/item/slimecross/stabilized/linked_extract
+	/// Colour of the extract providing the buff
 	var/colour = "null"
 
-/datum/status_effect/stabilized/proc/location_check()
-	if(linked_extract.loc == owner)
-		return TRUE
-	if(linked_extract.loc.loc == owner)
-		return TRUE
-	for(var/atom/storage_loc as anything in get_storage_locs(linked_extract))
-		if(storage_loc == owner)
-			return TRUE
-		if(storage_loc.loc == owner)
-			return TRUE
-		for(var/atom/storage_loc_storage_loc as anything in get_storage_locs(storage_loc))
-			if(storage_loc_storage_loc == owner)
-				return TRUE
-	for(var/atom/loc_storage_loc as anything in get_storage_locs(linked_extract.loc))
-		if(loc_storage_loc == owner)
-			return TRUE
-	return FALSE
+/datum/status_effect/stabilized/on_creation(mob/living/new_owner, obj/item/slimecross/stabilized/linked_extract)
+	src.linked_extract = linked_extract
+	return ..()
 
 /datum/status_effect/stabilized/tick()
-	if(!linked_extract || !linked_extract.loc) //Sanity checking
+	if(isnull(linked_extract)) //Sanity checking
 		qdel(src)
 		return
-	if(linked_extract && !location_check())
-		linked_extract.linked_effect = null
-		if(!QDELETED(linked_extract))
-			linked_extract.owner = null
-			START_PROCESSING(SSobj,linked_extract)
-		qdel(src)
-	return ..()
+
+	if(linked_extract.get_held_mob() == owner)
+		return
+
+	to_chat(owner, "The [colour] extract fades away.")
+
+	if(!QDELETED(linked_extract))
+		START_PROCESSING(SSobj,linked_extract)
+
+	qdel(src)
 
 /datum/status_effect/stabilized/null //This shouldn't ever happen, but just in case.
 	id = "stabilizednull"
@@ -722,11 +668,11 @@
 /datum/status_effect/stabilized/sepia/tick()
 	if(prob(50) && mod > -1)
 		mod--
-		owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/status_effect/sepia, multiplicative_slowdown = -0.5)
+		owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/status_effect/sepia, slowdown = -0.5)
 	else if(mod < 1)
 		mod++
 		// yeah a value of 0 does nothing but replacing the trait in place is cheaper than removing and adding repeatedly
-		owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/status_effect/sepia, multiplicative_slowdown = 0)
+		owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/status_effect/sepia, slowdown = 0)
 	return ..()
 
 /datum/status_effect/stabilized/sepia/on_remove()
@@ -743,7 +689,7 @@
 	var/mob/living/carbon/O = owner
 	var/mob/living/carbon/C = clone
 	if(istype(C) && istype(O))
-		C.real_name = O.real_name
+		C.set_real_name(O.real_name)
 		O.dna.transfer_identity(C)
 		C.updateappearance(mutcolor_update=1)
 	return ..()
@@ -825,7 +771,7 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		originalDNA.transfer_identity(H)
-		H.real_name = originalname
+		H.set_real_name(originalname)
 		H.updateappearance(mutcolor_update=1)
 
 /datum/status_effect/brokenpeace
@@ -848,48 +794,73 @@
 /datum/status_effect/stabilized/pink
 	id = "stabilizedpink"
 	colour = "pink"
+	/// List of weakrefs to mobs we have pacified
 	var/list/mobs = list()
+	/// Name of our faction
 	var/faction_name
 
 /datum/status_effect/stabilized/pink/on_apply()
-	faction_name = REF(owner)
+	faction_name = "pink_[REF(owner)]"
+	owner.faction |= faction_name
 	return ..()
 
 /datum/status_effect/stabilized/pink/tick()
-	for(var/mob/living/simple_animal/M in view(7,get_turf(owner)))
-		if(!(M in mobs))
-			mobs += M
-			M.apply_status_effect(/datum/status_effect/pinkdamagetracker)
-			M.faction |= faction_name
-	for(var/mob/living/simple_animal/M in mobs)
-		if(!(M in view(7,get_turf(owner))))
-			M.faction -= faction_name
-			M.remove_status_effect(/datum/status_effect/pinkdamagetracker)
-			mobs -= M
-		var/datum/status_effect/pinkdamagetracker/C = M.has_status_effect(/datum/status_effect/pinkdamagetracker)
-		if(istype(C) && C.damage > 0)
-			C.damage = 0
-			owner.apply_status_effect(/datum/status_effect/brokenpeace)
-	var/HasFaction = FALSE
-	for(var/i in owner.faction)
-		if(i == faction_name)
-			HasFaction = TRUE
+	update_nearby_mobs()
+	var/has_faction = FALSE
+	for (var/check_faction in owner.faction)
+		if(check_faction != faction_name)
+			continue
+		has_faction = TRUE
+		break
 
-	if(HasFaction && owner.has_status_effect(/datum/status_effect/brokenpeace))
-		owner.faction -= faction_name
-		to_chat(owner, span_userdanger("The peace has been broken! Hostile creatures will now react to you!"))
-	if(!HasFaction && !owner.has_status_effect(/datum/status_effect/brokenpeace))
+	if(has_faction)
+		if(owner.has_status_effect(/datum/status_effect/brokenpeace))
+			owner.faction -= faction_name
+			to_chat(owner, span_userdanger("The peace has been broken! Hostile creatures will now react to you!"))
+	else if(!owner.has_status_effect(/datum/status_effect/brokenpeace))
 		to_chat(owner, span_notice("[linked_extract] pulses, generating a fragile aura of peace."))
 		owner.faction |= faction_name
 	return ..()
 
+/// Pacifies mobs you can see and unpacifies mobs you no longer can
+/datum/status_effect/stabilized/pink/proc/update_nearby_mobs()
+	var/list/visible_things = view(7, get_turf(owner))
+	// Unpacify far away or offended mobs
+	for(var/datum/weakref/weak_mob as anything in mobs)
+		var/mob/living/beast = weak_mob.resolve()
+		if(isnull(beast))
+			mobs -= weak_mob
+			continue
+		var/datum/status_effect/pinkdamagetracker/damage_tracker = beast.has_status_effect(/datum/status_effect/pinkdamagetracker)
+		if(istype(damage_tracker) && damage_tracker.damage > 0)
+			damage_tracker.damage = 0
+			owner.apply_status_effect(/datum/status_effect/brokenpeace)
+			return // No point continuing from here if we're going to end the effect
+		if(beast in visible_things)
+			continue
+		beast.faction -= faction_name
+		beast.remove_status_effect(/datum/status_effect/pinkdamagetracker)
+		mobs -= weak_mob
+
+	// Pacify nearby mobs
+	for(var/mob/living/beast in visible_things)
+		if(!isanimal_or_basicmob(beast))
+			continue
+		var/datum/weakref/weak_mob = WEAKREF(beast)
+		if(weak_mob in mobs)
+			continue
+		mobs += weak_mob
+		beast.apply_status_effect(/datum/status_effect/pinkdamagetracker)
+		beast.faction |= faction_name
+
 /datum/status_effect/stabilized/pink/on_remove()
-	for(var/mob/living/simple_animal/M in mobs)
-		M.faction -= faction_name
-		M.remove_status_effect(/datum/status_effect/pinkdamagetracker)
-	for(var/i in owner.faction)
-		if(i == faction_name)
-			owner.faction -= faction_name
+	for(var/datum/weakref/weak_mob as anything in mobs)
+		var/mob/living/beast = weak_mob.resolve()
+		if(isnull(beast))
+			continue
+		beast.faction -= faction_name
+		beast.remove_status_effect(/datum/status_effect/pinkdamagetracker)
+	owner.faction -= faction_name
 
 /datum/status_effect/stabilized/oil
 	id = "stabilizedoil"
@@ -927,11 +898,11 @@
 /datum/status_effect/stabilized/black/proc/on_grab(mob/living/source, new_state)
 	SIGNAL_HANDLER
 
-	if(new_state < GRAB_KILL || !isliving(source.pulling))
+	if(new_state < GRAB_KILL || !isliving(source.get_active_grab()?.affecting))
 		draining_ref = null
 		return
 
-	var/mob/living/draining = source.pulling
+	var/mob/living/draining = source.get_active_grab()?.affecting
 	if(draining.stat == DEAD)
 		return
 
@@ -947,7 +918,11 @@
 	return span_warning("[owner.p_they(TRUE)] [owner.p_are()] draining health from [draining]!")
 
 /datum/status_effect/stabilized/black/tick()
-	if(owner.grab_state < GRAB_KILL || !IS_WEAKREF_OF(owner.pulling, draining_ref))
+	var/obj/item/hand_item/grab/G = owner.get_active_grab()
+	if(!G)
+		return
+
+	if(G.current_grab.damage_stage < GRAB_KILL || !IS_WEAKREF_OF(G.affecting, draining_ref))
 		return
 
 	var/mob/living/drained = draining_ref.resolve()
@@ -995,13 +970,6 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/lightpink)
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, STABILIZED_LIGHT_PINK_TRAIT)
 
-/datum/status_effect/stabilized/adamantine
-	id = "stabilizedadamantine"
-	colour = "adamantine"
-
-/datum/status_effect/stabilized/adamantine/get_examine_text()
-	return span_warning("[owner.p_they(TRUE)] [owner.p_have()] strange metallic coating on [owner.p_their()] skin.")
-
 /datum/status_effect/stabilized/gold
 	id = "stabilizedgold"
 	colour = "gold"
@@ -1026,17 +994,6 @@
 /datum/status_effect/stabilized/gold/on_remove()
 	if(familiar)
 		qdel(familiar)
-
-/datum/status_effect/stabilized/adamantine/on_apply()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance += 5
-	return ..()
-
-/datum/status_effect/stabilized/adamantine/on_remove()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance -= 5
 
 /datum/status_effect/stabilized/rainbow
 	id = "stabilizedrainbow"

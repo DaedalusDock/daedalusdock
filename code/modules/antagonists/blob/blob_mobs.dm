@@ -56,7 +56,7 @@
 				H.color = "#000000"
 		adjustHealth(-maxHealth*BLOBMOB_HEALING_MULTIPLIER)
 
-/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume)
+/mob/living/simple_animal/hostile/blob/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	..()
 	if(exposed_temperature)
 		adjustFireLoss(clamp(0.01 * exposed_temperature, 1, 5))
@@ -85,7 +85,7 @@
 		return 1
 	return ..()
 
-/mob/living/simple_animal/hostile/blob/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null)
+/mob/living/simple_animal/hostile/blob/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	if(sanitize)
 		message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 	var/spanned_message = say_quote(message)
@@ -172,7 +172,8 @@
 	is_zombie = 1
 	if(H.wear_suit)
 		var/obj/item/clothing/suit/armor/A = H.wear_suit
-		maxHealth += A.returnArmor().melee //That zombie's got armor, I want armor!
+		maxHealth += A.returnArmor().getRating(BLUNT) //That zombie's got armor, I want armor!
+
 	maxHealth += 40
 	health = maxHealth
 	name = "blob zombie"
@@ -197,7 +198,7 @@
 
 /mob/living/simple_animal/hostile/blob/blobspore/death(gibbed)
 	// On death, create a small smoke of harmful gas (s-Acid)
-	var/datum/effect_system/smoke_spread/chem/S = new
+	var/datum/effect_system/fluid_spread/smoke/chem/S = new
 	var/turf/location = get_turf(src)
 
 	// Create the reagents to put into the air
@@ -212,7 +213,7 @@
 
 	// Attach the smoke spreader and setup/start it.
 	S.attach(location)
-	S.set_up(reagents, death_cloud_size, location, silent = TRUE)
+	S.set_up(death_cloud_size, location = location, carry = reagents, silent = TRUE)
 	S.start()
 	if(factory)
 		factory.spore_delay = world.time + factory.spore_cooldown //put the factory on cooldown
@@ -338,7 +339,7 @@
 	if(factory)
 		factory.naut = null //remove this naut from its factory
 		factory.max_integrity = initial(factory.max_integrity)
-	flick("blobbernaut_death", src)
+	z_flick("blobbernaut_death", src)
 
 /mob/living/simple_animal/hostile/blob/blobbernaut/independent
 	independent = TRUE

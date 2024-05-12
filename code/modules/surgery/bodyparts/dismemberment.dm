@@ -4,8 +4,8 @@
 		return TRUE
 
 ///Remove target limb from it's owner, with side effects.
-/obj/item/bodypart/proc/dismember(dismember_type = DROPLIMB_EDGE, silent=TRUE, clean = FALSE)
-	if(!owner || !dismemberable)
+/obj/item/bodypart/proc/dismember(dismember_type = DROPLIMB_EDGE, silent=FALSE, clean = FALSE)
+	if(!owner || !dismemberable || (is_stump && !clean))
 		return FALSE
 
 	var/mob/living/carbon/limb_owner = owner
@@ -15,19 +15,31 @@
 	if(HAS_TRAIT(limb_owner, TRAIT_NODISMEMBER))
 		return FALSE
 
-	var/obj/item/bodypart/affecting = limb_owner.get_bodypart(BODY_ZONE_CHEST)
-
-	affecting.receive_damage(clamp(brute_dam/2 * affecting.body_damage_coeff, 15, 50), clamp(burn_dam/2 * affecting.body_damage_coeff, 0, 50)) //Damage the chest based on limb's existing damage
 	if(!silent)
-		limb_owner.visible_message(span_danger("<B>[limb_owner]'s [name] is violently dismembered!</B>"))
+		var/list/messages = violent_dismember_messages(dismember_type, clean)
+		if(length(messages))
+			limb_owner.visible_message(
+				span_danger("[messages[1]]"),
+				span_userdanger("[messages[2]]"),
+				span_hear("[messages[3]]")
+			)
+		if(!(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(limb_owner, TRAIT_NO_PAINSHOCK) && prob(80))
+			INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob/living/carbon, pain_emote), PAIN_AMT_AGONIZING, TRUE)
 
-	INVOKE_ASYNC(limb_owner, TYPE_PROC_REF(/mob, emote), "scream")
-	playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
+	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
+	var/obj/item/bodypart/stump
+
+	if(!clean)
+		playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
+		limb_owner.shock_stage += minimum_break_damage
+		if(bodypart_flags & BP_HAS_BLOOD)
+			limb_owner.bleed(rand(20, 40))
+		stump = create_stump()
 
 	limb_owner.mind?.add_memory(MEMORY_DISMEMBERED, list(DETAIL_LOST_LIMB = src, DETAIL_PROTAGONIST = limb_owner), story_value = STORY_VALUE_AMAZING)
 
-	// We need to create a stump *now* incase the limb being dropped destroys it or otherwise changes it.
-	var/obj/item/bodypart/stump = create_stump()
+	// At this point the limb has been removed from it's parent mob.
+	limb_owner.apply_pain(60, body_zone, "OH GOD MY [uppertext(plaintext_zone)]!!!", TRUE)
 	drop_limb()
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
@@ -36,11 +48,20 @@
 		limb_owner.add_splatter_floor(owner_location)
 
 	// * Stumpty Dumpty *//
-	var/obj/item/bodypart/chest/parent_chest = limb_owner.get_bodypart(BODY_ZONE_CHEST)
-	if(!QDELETED(parent_chest) && !QDELETED(limb_owner))
-		var/datum/wound/lost_limb/W = new(stump, dismember_type, clean)
-		LAZYADD(stump.wounds, W)
-		stump.attach_limb(limb_owner)
+	var/obj/item/bodypart/parent_bodypart = limb_owner.get_bodypart(BODY_ZONE_CHEST)
+	var/obj/item/bodypart/damaged_bodypart = stump || parent_bodypart
+	if(!QDELETED(parent_bodypart) && !QDELETED(limb_owner))
+		var/datum/wound/lost_limb/W = new(src, dismember_type, clean)
+		if(stump)
+			damaged_bodypart = stump
+			stump.attach_limb(limb_owner)
+			stump.adjustPain(max_damage)
+			if(dismember_type != DROPLIMB_BURN)
+				stump.set_sever_artery(TRUE)
+
+		LAZYADD(damaged_bodypart.wounds, W)
+		W.parent = damaged_bodypart
+		damaged_bodypart.update_damage()
 
 	if(QDELETED(src)) //Could have dropped into lava/explosion/chasm/whatever
 		return TRUE
@@ -50,10 +71,10 @@
 		return TRUE
 
 	add_mob_blood(limb_owner)
-	limb_owner.bleed(rand(20, 40))
-	var/direction = pick(GLOB.cardinals)
 
-	if(!clean)
+	var/direction = pick(GLOB.alldirs)
+
+	if(dismember_type == DROPLIMB_EDGE && !clean)
 		var/t_range = rand(2,max(throw_range/2, 2))
 		var/turf/target_turf = get_turf(src)
 		for(var/i in 1 to t_range-1)
@@ -65,8 +86,15 @@
 				break
 		throw_at(target_turf, throw_range, throw_speed)
 
-		if(dismember_type == DROPLIMB_BLUNT)
-			limb_owner.spray_blood(direction, 2)
+	if(dismember_type == DROPLIMB_BLUNT)
+		limb_owner.spray_blood(direction, 2)
+		if(IS_ORGANIC_LIMB(src))
+			new /obj/effect/decal/cleanable/blood/gibs(get_turf(limb_owner))
+		else
+			new /obj/effect/decal/cleanable/robot_debris(get_turf(limb_owner))
+
+		drop_contents()
+		qdel(src)
 
 	return TRUE
 
@@ -91,7 +119,7 @@
 	playsound(get_turf(chest_owner), 'sound/misc/splort.ogg', 80, TRUE)
 
 	for(var/obj/item/organ/organ as anything in chest_owner.processing_organs)
-		var/org_zone = check_zone(organ.zone)
+		var/org_zone = deprecise_zone(organ.zone)
 		if(org_zone != BODY_ZONE_CHEST)
 			continue
 		organ.Remove(chest_owner)
@@ -139,10 +167,6 @@
 	if(!phantom_owner.has_embedded_objects())
 		phantom_owner.clear_alert(ALERT_EMBEDDED_OBJECT)
 
-	// * Unregister wounds from parent * //
-	for(var/datum/wound/W as anything in wounds)
-		W.unregister_from_mob(phantom_owner)
-
 	bodypart_flags |= BP_CUT_AWAY
 
 	if(!special)
@@ -156,13 +180,13 @@
 		O.Remove(phantom_owner, special)
 		add_organ(O) //Remove() removes it from the limb as well.
 
-	for(var/trait in bodypart_traits)
-		REMOVE_TRAIT(phantom_owner, trait, bodypart_trait_source)
+	remove_traits_from(phantom_owner)
 
 	remove_splint()
 
 	update_icon_dropped()
 	synchronize_bodytypes(phantom_owner)
+
 	phantom_owner.update_health_hud() //update the healthdoll
 	phantom_owner.update_body()
 
@@ -194,6 +218,8 @@
 /obj/item/bodypart/proc/add_organ(obj/item/organ/O)
 	O.ownerlimb = src
 	contained_organs |= O
+	ADD_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
+
 	if(O.visual)
 		if(owner && O.external_bodytypes)
 			synchronize_bodytypes(owner)
@@ -203,6 +229,7 @@
 /obj/item/bodypart/proc/remove_organ(obj/item/organ/O)
 	contained_organs -= O
 
+	REMOVE_TRAIT(O, TRAIT_INSIDE_BODY, bodypart_trait_source)
 	if(owner && O.visual && O.external_bodytypes)
 		synchronize_bodytypes(owner)
 
@@ -229,7 +256,6 @@
 			brainmob.container = null
 			B.brainmob = brainmob
 			brainmob = null
-			B.brainmob.forceMove(B)
 		brain = null
 
 	else if(O == tongue)
@@ -252,10 +278,7 @@
 	var/mob/living/carbon/arm_owner = owner
 	if(arm_owner && !special)
 		if(arm_owner.handcuffed)
-			arm_owner.handcuffed.forceMove(drop_location())
-			arm_owner.handcuffed.dropped(arm_owner)
-			arm_owner.set_handcuffed(null)
-			arm_owner.update_handcuffed()
+			arm_owner.remove_handcuffs()
 		if(arm_owner.hud_used)
 			var/atom/movable/screen/inventory/hand/associated_hand = arm_owner.hud_used.hand_slots["[held_index]"]
 			if(associated_hand)
@@ -268,10 +291,7 @@
 /obj/item/bodypart/leg/drop_limb(special)
 	if(owner && !special)
 		if(owner.legcuffed)
-			owner.legcuffed.forceMove(owner.drop_location()) //At this point bodypart is still in nullspace
-			owner.legcuffed.dropped(owner)
-			owner.legcuffed = null
-			owner.update_worn_legcuffs()
+			owner.remove_legcuffs()
 		if(owner.shoes)
 			owner.dropItemToGround(owner.shoes, TRUE)
 	return ..()
@@ -295,7 +315,10 @@
 
 	name = "[owner.real_name]'s head"
 
+	var/mob/living/carbon/human/old_owner = owner
 	. = ..()
+
+	old_owner.update_name()
 
 	if(!special)
 		if(brain?.brainmob)
@@ -339,10 +362,15 @@
 
 	SEND_SIGNAL(src, COMSIG_LIMB_ATTACH, new_limb_owner, special)
 
+	if((!existing || existing.is_stump) && mob_chest)
+		var/datum/wound/lost_limb/W = locate() in mob_chest.wounds
+		if(W)
+			qdel(W)
+			mob_chest.update_damage()
+
 	if(existing?.is_stump)
 		qdel(existing)
 
-	//moveToNullspace()
 	set_owner(new_limb_owner)
 	new_limb_owner.add_bodypart(src)
 	if(held_index)
@@ -364,9 +392,6 @@
 	for(var/obj/item/organ/limb_organ as anything in contained_organs)
 		limb_organ.Insert(new_limb_owner, special)
 
-	for(var/datum/wound/W as anything in wounds)
-		W.register_to_mob(new_limb_owner)
-
 	if(check_bones() & CHECKBONES_BROKEN)
 		apply_bone_break(new_limb_owner)
 
@@ -377,8 +402,7 @@
 
 	update_disabled()
 
-	for(var/trait in bodypart_traits)
-		ADD_TRAIT(owner, trait, bodypart_trait_source)
+	apply_traits()
 
 	// Bodyparts need to be sorted for leg masking to be done properly. It also will allow for some predictable
 	// behavior within said bodyparts list. We sort it here, as it's the only place we make changes to bodyparts.
@@ -398,7 +422,8 @@
 		return .
 
 	if(real_name)
-		new_head_owner.real_name = real_name
+		new_head_owner.set_real_name(real_name)
+
 	real_name = ""
 
 	//Handle dental implants

@@ -6,7 +6,7 @@
 	anchored = TRUE
 	layer = WALL_OBJ_LAYER
 	max_integrity = 200
-	armor = list(MELEE = 50, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
+	armor = list(BLUNT = 50, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
 
 	///Light construction stage (LIGHT_CONSTRUCT_EMPTY, LIGHT_CONSTRUCT_WIRED, LIGHT_CONSTRUCT_CLOSED)
 	var/stage = LIGHT_CONSTRUCT_EMPTY
@@ -69,7 +69,7 @@
 	return cell_reference.attack_tk(user)
 
 /obj/structure/light_construct/attackby(obj/item/tool, mob/user, params)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	if(istype(tool, /obj/item/stock_parts/cell))
 		if(!cell_connectors)
 			to_chat(user, span_warning("This [name] can't support a power cell!"))
@@ -86,7 +86,7 @@
 			playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 			tool.forceMove(src)
 			cell = tool
-			add_fingerprint(user)
+			tool.add_fingerprint(user)
 			return
 	if(istype(tool, /obj/item/light))
 		to_chat(user, span_warning("This [name] isn't finished being setup!"))

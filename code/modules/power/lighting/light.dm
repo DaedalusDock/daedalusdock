@@ -1,4 +1,5 @@
 // the standard tube light fixture
+DEFINE_INTERACTABLE(/obj/machinery/light)
 /obj/machinery/light
 	name = "light fixture"
 	icon = 'icons/obj/lighting.dmi'
@@ -21,16 +22,16 @@
 	///Amount of power used
 	var/static_power_used = 0
 	///The outer radius of the light's... light.
-	var/bulb_outer_range = 7
+	var/bulb_outer_range = 9
 	///The inner radius of the bulb's light, where it is at maximum brightness
-	var/bulb_inner_range = 1.5
+	var/bulb_inner_range = 1.8
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 0.85
+	var/bulb_power = 0.6
 	///The falloff of the emitted light. Adjust until it looks good.
-	var/bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/bulb_falloff = 1.85
 
 	///Default colour of the light.
-	var/bulb_colour = "#f0fafa"
+	var/bulb_colour = "#dfac72"
 	///LIGHT_OK, _EMPTY, _BURNED or _BROKEN
 	var/status = LIGHT_OK
 	///Should we flicker?
@@ -56,10 +57,10 @@
 	///Inner, brightest radius of the nightshift light
 	var/nightshift_inner_range = 1.5
 	///Alpha of the nightshift light
-	var/nightshift_light_power = 0.7
+	var/nightshift_light_power = 0.5
 	///Basecolor of the nightshift light
-	var/nightshift_light_color = "#FFDDCC"
-	var/nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE
+	var/nightshift_light_color = "#dfac72"
+	var/nightshift_falloff = 1.85
 
 	///If true, the light is in emergency mode
 	var/emergency_mode = FALSE
@@ -85,7 +86,7 @@
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload)
 	. = ..()
-
+	SET_TRACKING(__TYPE__)
 	if(!mapload) //sync up nightshift lighting for player made lights
 		var/area/local_area = get_area(src)
 		var/obj/machinery/power/apc/temp_apc = local_area.apc
@@ -103,6 +104,7 @@
 	my_area = get_area(src)
 	if(my_area)
 		LAZYADD(my_area.lights, src)
+
 	#ifdef LIGHTS_RANDOMLY_BROKEN
 	switch(fitting)
 		if("tube")
@@ -115,6 +117,7 @@
 	update(FALSE, TRUE, FALSE)
 
 /obj/machinery/light/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	if(my_area)
 		on = FALSE
 		LAZYREMOVE(my_area.lights, src)
@@ -241,20 +244,20 @@
 	. = ..()
 	switch(status)
 		if(LIGHT_OK)
-			. += "It is turned [on? "on" : "off"]."
+			if(!on)
+				. += span_notice("It is turned off.")
 		if(LIGHT_EMPTY)
-			. += "The [fitting] has been removed."
+			. += span_notice("The [fitting] has been removed.")
 		if(LIGHT_BURNED)
-			. += "The [fitting] is burnt out."
+			. += span_notice("The [fitting] is burnt out.")
 		if(LIGHT_BROKEN)
-			. += "The [fitting] has been smashed."
-	if(cell)
-		. += "Its backup power charge meter reads [round((cell.charge / cell.maxcharge) * 100, 0.1)]%."
-	//PARIAH EDIT ADDITION
-	if(constant_flickering)
-		. += span_danger("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
-	//PARIAH EDIT END
+			. += span_alert("The [fitting] has been smashed.")
 
+	if(cell)
+		. += span_notice("Its backup power charge meter reads: [round((cell.charge / cell.maxcharge) * 100, 0.1)]%.")
+
+	if(constant_flickering)
+		. += span_alert("The lighting ballast appears to be damaged, this could be fixed with a multitool.")
 
 
 // attack with item - insert light (if right type), otherwise try to break the light
@@ -280,7 +283,7 @@
 		if(status == LIGHT_OK)
 			to_chat(user, span_warning("There is a [fitting] already inserted!"))
 			return TRUE
-		add_fingerprint(user)
+		tool.leave_evidence(user, src)
 		var/obj/item/light/light_object = tool
 		if(!istype(light_object, light_type))
 			to_chat(user, span_warning("This type of light requires a [fitting]!"))
@@ -288,7 +291,7 @@
 		if(!user.temporarilyRemoveItemFromInventory(light_object))
 			return TRUE
 
-		add_fingerprint(user)
+		tool.leave_evidence(user, src)
 		if(status != LIGHT_EMPTY)
 			drop_light_tube(user)
 			to_chat(user, span_notice("You replace [light_object]."))
@@ -437,6 +440,7 @@
 	set waitfor = FALSE
 	if(flickering)
 		return
+
 	flickering = TRUE
 	if(on && status == LIGHT_OK)
 		for(var/i in 1 to amount)
@@ -466,7 +470,6 @@
 	if(.)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	add_fingerprint(user)
 
 	if(status == LIGHT_EMPTY)
 		to_chat(user, span_warning("There is no [fitting] in this light!"))

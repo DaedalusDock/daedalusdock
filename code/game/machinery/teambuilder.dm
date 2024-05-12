@@ -10,7 +10,6 @@
 	can_buckle = FALSE
 	resistance_flags = INDESTRUCTIBLE // Just to be safe.
 	use_power = NO_POWER_USE
-	loc_procs = CROSSED
 	///Are non-humans allowed to use this?
 	var/humans_only = FALSE
 	///What color is your mob set to when crossed?
@@ -21,20 +20,27 @@
 /obj/machinery/teambuilder/Initialize(mapload)
 	. = ..()
 	add_filter("teambuilder", 2, list("type" = "outline", "color" = team_color, "size" = 2))
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/teambuilder/examine_more(mob/user)
 	. = ..()
 	. += span_notice("You see a hastily written note on the side, it says '1215-1217, PICK A SIDE'.")
 
-/obj/machinery/teambuilder/Crossed(atom/movable/crossed_by, oldloc)
-	if(!ishuman(crossed_by) && humans_only)
+/obj/machinery/teambuilder/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
 		return
-	if(crossed_by.get_filter("teambuilder"))
+	if(!ishuman(AM) && humans_only)
 		return
-	if(isliving(crossed_by) && team_color)
-		crossed_by.add_filter("teambuilder", 2, list("type" = "outline", "color" = team_color, "size" = 2))
-	if(ishuman(crossed_by) && team_radio)
-		var/mob/living/carbon/human/human = crossed_by
+	if(AM.get_filter("teambuilder"))
+		return
+	if(isliving(AM) && team_color)
+		AM.add_filter("teambuilder", 2, list("type" = "outline", "color" = team_color, "size" = 2))
+	if(ishuman(AM) && team_radio)
+		var/mob/living/carbon/human/human = AM
 		var/obj/item/radio/Radio = human.ears
 		if(!Radio)
 			return

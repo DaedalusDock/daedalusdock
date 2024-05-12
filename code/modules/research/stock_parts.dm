@@ -105,6 +105,9 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 	atom_storage.max_total_storage = 800
 	atom_storage.max_specific_storage = WEIGHT_CLASS_GIGANTIC
 
+	RegisterSignal(src, COMSIG_ATOM_ENTERED, PROC_REF(on_part_entered))
+	RegisterSignal(src, COMSIG_ATOM_EXITED, PROC_REF(on_part_exited))
+
 /**
  * Signal handler for when a part has been inserted into the BRPED.
  *
@@ -114,19 +117,19 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
  * reagents being added and registers clean up signals on inserted item's removal from
  * the BRPED.
  */
-/obj/item/storage/part_replacer/bluespace/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	if(arrived.reagents)
-		if(length(arrived.reagents.reagent_list))
-			arrived.reagents.clear_reagents()
-			to_chat(usr, span_notice("[src] churns as [arrived] has its reagents emptied into bluespace."))
-		RegisterSignal(arrived.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT, PROC_REF(on_insered_component_reagent_pre_add))
+/obj/item/storage/part_replacer/bluespace/proc/on_part_entered(datum/source, obj/item/inserted_component)
+	SIGNAL_HANDLER
+	if(inserted_component.reagents)
+		if(length(inserted_component.reagents.reagent_list))
+			inserted_component.reagents.clear_reagents()
+			to_chat(usr, span_notice("[src] churns as [inserted_component] has its reagents emptied into bluespace."))
+		RegisterSignal(inserted_component.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT, PROC_REF(on_insered_component_reagent_pre_add))
 
 
-	if(!istype(arrived, /obj/item/stock_parts/cell))
+	if(!istype(inserted_component, /obj/item/stock_parts/cell))
 		return
 
-	var/obj/item/stock_parts/cell/inserted_cell = arrived
+	var/obj/item/stock_parts/cell/inserted_cell = inserted_component
 
 	if(inserted_cell.rigged || inserted_cell.corrupted)
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has inserted rigged/corrupted [inserted_cell] into [src].")
@@ -152,10 +155,12 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
  *
  * Does signal registration cleanup on its reagents, if it has any.
  */
-/obj/item/storage/part_replacer/bluespace/Exited(atom/movable/gone, direction)
-	. = ..()
-	if(gone.reagents)
-		UnregisterSignal(gone.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT)
+/obj/item/storage/part_replacer/bluespace/proc/on_part_exited(datum/source, obj/item/removed_component)
+	SIGNAL_HANDLER
+
+	if(removed_component.reagents)
+		UnregisterSignal(removed_component.reagents, COMSIG_REAGENTS_PRE_ADD_REAGENT)
+
 
 /obj/item/storage/part_replacer/bluespace/tier1
 

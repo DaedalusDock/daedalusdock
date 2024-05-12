@@ -7,7 +7,6 @@
 	flags_1 = CONDUCT_1
 
 	hitsound = SFX_SWING_HIT
-	throw_speed = 2
 	throw_range = 4
 	force = 8
 	stamina_cost = 17
@@ -58,7 +57,7 @@
 		var/turf/turf_to_throw_at = prob(20) ? item_loc : get_ranged_target_turf(item_loc, pick(GLOB.alldirs))
 		paper.throw_at(turf_to_throw_at, 2)
 
-	stoplag(1 SECONDS)
+	sleep(1 SECONDS)
 	user.say("ARGGHH, HOW WILL I GET THIS WORK DONE NOW?!!")
 	user.visible_message(span_suicide("[user] looks overwhelmed with paperwork! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return OXYLOSS

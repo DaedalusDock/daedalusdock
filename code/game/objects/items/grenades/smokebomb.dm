@@ -26,11 +26,11 @@
 
 	update_mob()
 	playsound(src, 'sound/effects/smoke.ogg', 50, TRUE, -3)
-	var/datum/effect_system/smoke_spread/bad/smoke = new
-	smoke.set_up(4, src)
+	var/datum/effect_system/fluid_spread/smoke/bad/smoke = new
+	smoke.set_up(4, location = src)
 	smoke.start()
 	qdel(smoke) //And deleted again. Sad really.
 	for(var/obj/structure/blob/blob in view(8, src))
 		var/damage = round(30/(get_dist(blob, src) + 1))
-		blob.take_damage(damage, BURN, MELEE, 0)
+		blob.take_damage(damage, BURN, BLUNT, 0)
 	qdel(src)

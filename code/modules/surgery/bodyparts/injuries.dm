@@ -23,7 +23,7 @@
 	return CHECKTENDON_OK
 
 
-/obj/item/bodypart/proc/break_bones()
+/obj/item/bodypart/proc/break_bones(painful = TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(check_bones() & (CHECKBONES_NONE|CHECKBONES_BROKEN))
@@ -37,7 +37,10 @@
 		)
 
 		jostle_bones()
-		INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob, emote), "scream")
+		if(painful && !(bodypart_flags & BP_NO_PAIN) && !HAS_TRAIT(owner, TRAIT_NO_PAINSHOCK))
+			spawn(-1)
+				owner.pain_emote(1000, TRUE) // We want broken bones to always do the agony scream, so we do it before applying pain.
+				owner.apply_pain(60, src)
 
 	playsound(loc, SFX_BREAK_BONE, 100, FALSE, -2)
 
@@ -54,11 +57,21 @@
 		apply_bone_break(owner)
 	return TRUE
 
+/// Applies the effect of a broken bone to the owner.
 /obj/item/bodypart/proc/apply_bone_break(mob/living/carbon/C)
 	SHOULD_CALL_PARENT(TRUE)
+	PROTECTED_PROC(TRUE)
 
 	SEND_SIGNAL(C, COMSIG_CARBON_BREAK_BONE, src)
 	return TRUE
+
+/obj/item/bodypart/arm/apply_bone_break(mob/living/carbon/C)
+	. = ..()
+	if(!.)
+		return
+
+	if(C.legcuffed && prob(25))
+		C.remove_legcuffs(C.drop_location(), silent = TRUE)
 
 /obj/item/bodypart/leg/apply_bone_break(mob/living/carbon/C)
 	. = ..()
@@ -67,7 +80,11 @@
 
 	C.apply_status_effect(/datum/status_effect/limp)
 
+	if(C.handcuffed && prob(25))
+		C.remove_handcuffs(C.drop_location(), silent = TRUE)
+
 /obj/item/bodypart/proc/heal_bones()
+	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!(check_bones() & CHECKBONES_BROKEN))
 		return FALSE
 
@@ -76,7 +93,17 @@
 	update_interaction_speed()
 
 	if(owner)
-		SEND_SIGNAL(owner, COMSIG_CARBON_HEAL_BONE, src)
+		apply_bone_heal(owner)
+
+	return TRUE
+
+/// Removes the effects of a broken bone from the owner.
+/obj/item/bodypart/proc/apply_bone_heal(mob/living/carbon/C)
+	SHOULD_CALL_PARENT(TRUE)
+	PROTECTED_PROC(TRUE)
+
+	SEND_SIGNAL(C, COMSIG_CARBON_HEAL_BONE, src)
+	return TRUE
 
 /obj/item/bodypart/proc/jostle_bones(force)
 	if(!(bodypart_flags & BP_BROKEN_BONES)) //intact bones stay still
@@ -99,8 +126,7 @@
 	O.applyOrganDamage(rand(3,5))
 
 	if(owner)
-		to_chat(owner, span_warning("You feel something moving in your [plaintext_zone]!"))
-
+		owner.notify_pain(max_damage * BROKEN_BONE_PAIN_FACTOR, "You feel something moving in your [plaintext_zone]!", TRUE)
 
 /// Updates the interaction speed modifier of this limb, used by Limping and similar to determine delay.
 /obj/item/bodypart/proc/update_interaction_speed()
@@ -151,9 +177,35 @@
 		bodypart_flags |= BP_TENDON_CUT
 	else
 		bodypart_flags &= ~BP_TENDON_CUT
+		playsound(loc, pick('sound/effects/wounds/tendon_snap1.ogg', 'sound/effects/wounds/tendon_snap2.ogg', 'sound/effects/wounds/tendon_snap3.ogg'), 50)
 
 	update_disabled()
 	return TRUE
+
+/obj/item/bodypart/proc/can_be_dislocated()
+	if(!(bodypart_flags & BP_CAN_BE_DISLOCATED))
+		return FALSE
+	if(bodypart_flags & BP_DISLOCATED)
+		return FALSE
+	return TRUE
+
+/obj/item/bodypart/proc/set_dislocated(val, painless)
+	if(val)
+		if(!can_be_dislocated())
+			return FALSE
+	else
+		if(can_be_dislocated())
+			return FALSE
+
+	if(val)
+		bodypart_flags |= BP_DISLOCATED
+		if(!painless)
+			owner?.apply_pain(max_damage * DISLOCATED_LIMB_PAIN_FACTOR, body_zone, "A surge of pain shoots through your [plaintext_zone].")
+	else
+		bodypart_flags &= BP_DISLOCATED
+
+	return TRUE
+
 
 /obj/item/bodypart/proc/clamp_wounds()
 	for(var/datum/wound/W as anything in wounds)
@@ -185,11 +237,16 @@
 
 	var/smol_threshold = minimum_break_damage * 0.4
 	var/beeg_threshold = minimum_break_damage * 0.6
+	// Clamp it to the largest that the wound can be
+	beeg_threshold = min(beeg_threshold, incision.damage_list[1])
+
 	if(!(incision.autoheal_cutoff == 0)) //not clean incision
 		smol_threshold *= 1.5
 		beeg_threshold = max(beeg_threshold, min(beeg_threshold * 1.5, incision.damage_list[1])) //wounds can't achieve bigger
+
 	if(incision.damage >= smol_threshold) //smol incision
 		. = SURGERY_OPEN
+
 	if(incision.damage >= beeg_threshold) //beeg incision
 		. = SURGERY_RETRACTED
 		if(encased && (bodypart_flags & BP_BROKEN_BONES))
@@ -223,3 +280,14 @@
 	if(!W)
 		return
 	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
+
+/obj/item/bodypart/proc/jointlock(mob/living/user)
+	if(!IS_ORGANIC_LIMB(src))
+		return
+
+	var/armor = owner.run_armor_check(body_zone, BLUNT, silent = TRUE)
+	if(armor > 70)
+		return
+
+	var/max_halloss = round(owner.maxHealth * 0.8 * ((100 - armor) / 100)) //up to 80% of passing out, further reduced by armour
+	owner.apply_pain(max(30, max_halloss - owner.getPain()), body_zone, "your [plaintext_zone] is in excruciating pain")

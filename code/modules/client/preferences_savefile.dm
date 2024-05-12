@@ -5,7 +5,7 @@
 // You do not need to raise this if you are adding new values that have sane defaults.
 // Only raise this value when changing the meaning/format/name/layout of an existing value
 // where you would want the updater procs below to run
-#define SAVEFILE_VERSION_MAX 43
+#define SAVEFILE_VERSION_MAX 44
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -45,6 +45,24 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return
 
 /datum/preferences/proc/update_character(current_version, savefile/savefile)
+	// Job name update 1
+	if(current_version < 44)
+		var/list/migrate_jobs = list(
+			"Head of Security" = JOB_SECURITY_MARSHAL,
+			"Detective" = JOB_DETECTIVE,
+			"Medical Doctor" = JOB_MEDICAL_DOCTOR,
+			"Curator" = JOB_ARCHIVIST,
+			"Cargo Technician" = JOB_DECKHAND,
+		)
+
+		var/list/job_prefs = read_preference(/datum/preference/blob/job_priority)
+		for(var/job in job_prefs)
+			if(job in migrate_jobs)
+				var/old_value = job_prefs[job]
+				job_prefs -= job
+				job_prefs[migrate_jobs[job]] = old_value
+		write_preference(/datum/preference/blob/job_priority, job_prefs)
+
 	return
 
 /// Called when reading preferences if a savefile update is detected. This proc is for
@@ -169,7 +187,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	//Sanitize
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
 	default_slot = sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
-	toggles = sanitize_integer(toggles, 0, (2**24)-1, initial(toggles))
+	toggles = sanitize_integer(toggles, 0, SHORT_REAL_LIMIT-1, initial(toggles))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
 

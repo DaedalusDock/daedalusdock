@@ -22,6 +22,7 @@
 
 /turf/open/floor/circuit/Destroy()
 	SSmapping.nuke_tiles -= src
+	UnregisterSignal(loc, COMSIG_AREA_POWER_CHANGE)
 	return ..()
 
 /turf/open/floor/circuit/update_appearance(updates)
@@ -192,14 +193,6 @@
 /turf/open/floor/bronze/filled
 	icon_state = "clockwork_floor_filled"
 	floor_tile = /obj/item/stack/tile/bronze/filled
-
-/turf/open/floor/bronze/filled/lavaland
-
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
-/turf/open/floor/bronze/filled/icemoon
-
-	initial_gas = ICEMOON_DEFAULT_ATMOS
 
 /turf/open/floor/white
 	name = "white floor"

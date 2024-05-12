@@ -41,6 +41,8 @@
 #define IGNORE_DIGITIGRADE (1<<18)
 /// Has contextual screentips when HOVERING OVER OTHER objects
 #define ITEM_HAS_CONTEXTUAL_SCREENTIPS (1 << 19)
+/// Does not leave fingerprints or fibers on attack
+#define NO_EVIDENCE_ON_ATTACK (1<<20)
 
 // Flags for the clothing_flags var on /obj/item/clothing
 /// SUIT and HEAD items which stop lava from hurting the wearer
@@ -73,15 +75,19 @@
 /// Clothes that block speech (i.e the muzzle). Can be applied to any clothing piece.
 #define BLOCKS_SPEECH (1<<13)
 /// prevents from placing on plasmaman helmet
-#define PLASMAMAN_HELMET_EXEMPT (1<<14)
+#define STACKABLE_HELMET_EXEMPT (1<<14)
 /// Usable as casting clothes by wizards (only matters for suits and headwear)
 #define CASTING_CLOTHES (1<<15)
+/// This head clothing can deliver air from an airtank
+#define HEADINTERNALS (1<<16)
+/// Does not leave fibers behind
+#define FIBERLESS (1<<17)
 
 /// Flags for the organ_flags var on /obj/item/organ
 
 #define ORGAN_SYNTHETIC (1<<0) //Synthetic organs, or cybernetic organs. Reacts to EMPs and don't deteriorate or heal
 #define ORGAN_FROZEN (1<<1) //Frozen organs, don't deteriorate
-#define ORGAN_FAILING (1<<2) //Failing organs perform damaging effects until replaced or fixed
+#define ORGAN_DEAD (1<<2) //Failing organs perform damaging effects until replaced or fixed
 #define ORGAN_EXTERNAL (1<<3) //Was this organ implanted/inserted/etc, if true will not be removed during species change.
 #define ORGAN_VITAL (1<<4) //Currently only the brain
 #define ORGAN_EDIBLE (1<<5) //is a snack? :D
@@ -101,6 +107,8 @@
 #define TOY_FIREARM_OVERLAY (1<<0) // If update_overlay would add some indicator that the gun is a toy, like a plastic cap on a pistol
 /// Currently used to identify valid guns to steal
 #define NOT_A_REAL_GUN (1<<1)
+/// Can't fire with akimbo
+#define NO_AKIMBO (1<<2)
 
 /// Flags for sharpness in obj/item
 #define SHARP_EDGED (1<<0)

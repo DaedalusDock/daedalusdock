@@ -8,20 +8,27 @@
 	icon_state = "bullet"
 	density = FALSE
 	anchored = TRUE
+	animate_movement = NO_STEPS //Use SLIDE_STEPS in conjunction with legacy
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	movement_type = FLYING
 	generic_canpass = FALSE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
 	simulated = FALSE
-	loc_procs = CROSSED
 
 	//The sound this plays on impact.
 	var/hitsound = 'sound/weapons/pierce.ogg'
 	var/hitsound_wall = ""
 
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-	var/def_zone = "" //Aiming at
+	/// The body_zone the firer aimed at. May be overriden by some casings using zone_override
+	var/aimed_def_zone = BODY_ZONE_CHEST
+	/// The body_zone the projectile is about to hit, taking into account randomness. Don't set directly, will not do anything.
+	var/def_zone = ""
+
+	/// Can this projectile miss it's def_zone?
+	var/can_miss_zone = TRUE
+
 	var/atom/movable/firer = null//Who shot it
 	var/datum/fired_from = null // the thing that the projectile was fired from (gun, turret, spell)
 	var/suppressed = FALSE //Attack message
@@ -90,7 +97,6 @@
 	var/original_angle = 0 //Angle at firing
 	var/nondirectional_sprite = FALSE //Set TRUE to prevent projectiles from having their sprites rotated based on firing angle
 	var/spread = 0 //amount (in degrees) of projectile spread
-	animate_movement = NO_STEPS //Use SLIDE_STEPS in conjunction with legacy
 	/// how many times we've ricochet'd so far (instance variable, not a stat)
 	var/ricochets = 0
 	/// how many times we can ricochet max
@@ -148,14 +154,18 @@
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE are the only things that should be in here
 	var/nodamage = FALSE //Determines if the projectile will skip any damage inflictions
 	///Defines what armor to use when it hits things.  Must be set to bullet, laser, energy, or bomb
-	var/armor_flag = BULLET
+	var/armor_flag = PUNCTURE
 	///How much armor this projectile pierces.
-	var/armour_penetration = 0
-	///Whether or not our bullet lacks penetrative power, and is easily stopped by armor.
-	var/weak_against_armour = FALSE
+	var/armor_penetration = 0
+	/// A multiplier applied to the defender's armor, making it more effective against this projectile.
+	var/weak_against_armor = null
 	var/projectile_type = /obj/projectile
-	var/range = 50 //This will de-increment every step. When 0, it will deletze the projectile.
-	var/decayedRange //stores original range
+	///Sets the max range of the projectile, This will de-increment every step. When 0, it will deletze the object.
+	var/range = 50
+	///Archive of original range value.
+	var/decayedRange
+	///Total distance traveled.
+	var/distance_traveled
 	var/reflect_range_decrease = 5 //amount of original range that falls off when reflecting, so it doesn't go forever
 	var/reflectable = NONE // Can it be reflected or not?
 	// Status effects applied on hit
@@ -200,21 +210,29 @@
 	var/sharpness = NONE
 	///How much we want to drop both wound_bonus and bare_wound_bonus (to a minimum of 0 for the latter) per tile, for falloff purposes
 	var/wound_falloff_tile
-	///How much we want to drop the embed_chance value, if we can embed, per tile, for falloff purposes
-	var/embed_falloff_tile
+	///How much we want to adjust the embed_chance value, if we can embed, per tile, for falloff purposes
+	var/embed_adjustment_tile
+	///How many tiles must the projectile travel until embedding odds start being adjusted
+	var/embed_min_distance = 0
 	/// If true directly targeted turfs can be hit
 	var/can_hit_turfs = FALSE
+
+	var/static/list/projectile_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
 
 /obj/projectile/Initialize(mapload)
 	. = ..()
 	decayedRange = range
 	if(embedding)
 		updateEmbedding()
+	AddElement(/datum/element/connect_loc, projectile_connections)
 
 /obj/projectile/proc/Range()
 	range--
-	if(embedding)
-		embedding["embed_chance"] += embed_falloff_tile
+	distance_traveled++
+	if((embed_min_distance > distance_traveled) && embedding && embed_adjustment_tile)
+		embedding["embed_chance"] += embed_adjustment_tile
 	if(range <= 0 && loc)
 		on_range()
 
@@ -249,8 +267,8 @@
 	var/obj/item/bodypart/hit_limb
 	if(isliving(target))
 		var/mob/living/L = target
-		hit_limb = L.check_limb_hit(def_zone)
-	SEND_SIGNAL(src, COMSIG_PROJECTILE_SELF_ON_HIT, firer, target, Angle, hit_limb)
+		hit_limb = L.get_bodypart(def_zone)
+	SEND_SIGNAL(src, COMSIG_PROJECTILE_SELF_ON_HIT, firer, target, Angle, def_zone)
 
 	if(QDELETED(src)) // in case one of the above signals deleted the projectile for whatever reason
 		return
@@ -290,28 +308,34 @@
 	var/mob/living/L = target
 
 	if(blocked != 100) // not completely blocked
-		if(damage && L.blood_volume && damage_type == BRUTE)
+		if(damage && L.blood_volume && damage_type == BRUTE && (!hit_limb || (hit_limb.bodypart_flags & BP_HAS_BLOOD)))
 			var/splatter_dir = dir
 			if(starting)
 				splatter_dir = get_dir(starting, target_loca)
 			if(isalien(L))
 				new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(target_loca, splatter_dir)
 			else
-				new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_loca, splatter_dir)
+				var/splatter_color
+				if(iscarbon(L))
+					var/mob/living/carbon/C = L
+					splatter_color = C.dna.blood_type.color
+				new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_loca, splatter_dir, splatter_color)
 			if(prob(33))
 				L.add_splatter_floor(target_loca)
 		else if(impact_effect_type && !hitscan)
 			new impact_effect_type(target_loca, hitx, hity)
 
 		var/organ_hit_text = ""
-		var/limb_hit = hit_limb
-		if(limb_hit)
-			organ_hit_text = " in \the [parse_zone(limb_hit)]"
+		if(hit_limb)
+			organ_hit_text = " in \the [hit_limb.plaintext_zone]"
+
 		if(suppressed == SUPPRESSED_VERY)
 			playsound(loc, hitsound, 5, TRUE, -1)
+
 		else if(suppressed)
 			playsound(loc, hitsound, 5, TRUE, -1)
 			to_chat(L, span_userdanger("You're shot by \a [src][organ_hit_text]!"))
+
 		else
 			if(hitsound)
 				var/volume = vol_by_damage()
@@ -413,10 +437,9 @@
 				store_hitscan_collision(point_cache)
 			return TRUE
 
-	var/distance = get_dist(T, starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
-	def_zone = ran_zone(def_zone, max(100-(7*distance), 5)) //Lower accurancy/longer range tradeoff. 7 is a balanced number to use.
+	var/target = select_target(T, A, A)
 
-	return process_hit(T, select_target(T, A, A), A) // SELECT TARGET FIRST!
+	return process_hit(T, target, A) // SELECT TARGET FIRST!
 
 /**
  * The primary workhorse proc of projectile impacts.
@@ -445,30 +468,49 @@
 	// 1.
 	if(QDELETED(src) || !T || !target)
 		return
+
 	// 2.
 	impacted[target] = TRUE //hash lookup > in for performance in hit-checking
+
 	// 3.
 	var/mode = prehit_pierce(target)
 	if(mode == PROJECTILE_DELETE_WITHOUT_HITTING)
 		qdel(src)
 		return hit_something
+
 	else if(mode == PROJECTILE_PIERCE_PHASE)
 		if(!(movement_type & PHASING))
 			temporary_unstoppable_movement = TRUE
 			movement_type |= PHASING
+
 		return process_hit(T, select_target(T, target, bumped), bumped, hit_something) // try to hit something else
+
 	// at this point we are going to hit the thing
 	// in which case send signal to it
+	var/distance = get_dist(T, starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
+	if(iscarbon(target))
+		var/distance_mult = 7
+		if(istype(fired_from, /obj/item/gun))
+			var/obj/item/gun/G = fired_from
+			distance_mult = G.accuracy_falloff
+
+		def_zone = can_miss_zone ? get_zone_with_miss_chance(aimed_def_zone, target, clamp(distance * distance_mult, 0, 100), TRUE) : aimed_def_zone
+	else
+		def_zone = aimed_def_zone
+
 	SEND_SIGNAL(target, COMSIG_PROJECTILE_PREHIT, args)
 	if(mode == PROJECTILE_PIERCE_HIT)
 		++pierces
+
 	hit_something = TRUE
+
 	var/result = target.bullet_act(src, def_zone, mode == PROJECTILE_PIERCE_HIT)
 	if((result == BULLET_ACT_FORCE_PIERCE) || (mode == PROJECTILE_PIERCE_HIT))
 		if(!(movement_type & PHASING))
 			temporary_unstoppable_movement = TRUE
 			movement_type |= PHASING
 		return process_hit(T, select_target(T, target, bumped), bumped, TRUE)
+
 	qdel(src)
 	return hit_something
 
@@ -477,7 +519,7 @@
  *
  * @params
  * T - The turf
- * target - The "preferred" atom to hit, usually what we Bumped() first.
+ * target - The "preferred" atom to hit, usually what we BumpedBy() first.
  * bumped - used to track if something is the reason we impacted in the first place.
  *    If set, this atom is always treated as dense by can_hit_target.
  *
@@ -598,8 +640,11 @@
 /**
  * Projectile crossed: When something enters a projectile's tile, make sure the projectile hits it if it should be hitting it.
  */
-/obj/projectile/Crossed(atom/movable/crossed_by, oldloc)
-	scan_crossed_hit(crossed_by)
+/obj/projectile/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+	scan_crossed_hit(AM)
 
 /**
  * Projectile can pass through
@@ -621,9 +666,11 @@
 	. = ..()
 	if(!fired)
 		return
+
 	if(temporary_unstoppable_movement)
 		temporary_unstoppable_movement = FALSE
 		movement_type &= ~PHASING
+
 	scan_moved_turf() //mostly used for making sure we can hit a non-dense object the user directly clicked on, and for penetrating projectiles that don't bump
 
 /**
@@ -633,9 +680,9 @@
  * Return PROJECTILE_DELETE_WITHOUT_HITTING to delete projectile without hitting at all!
  */
 /obj/projectile/proc/prehit_pierce(atom/A)
-	if((projectile_phasing & A.pass_flags_self) && (phasing_ignore_direct_target || original != A))
+	if((projectile_phasing & (A.pass_flags_self & ~LETPASSCLICKS)) && (phasing_ignore_direct_target || original != A))
 		return PROJECTILE_PIERCE_PHASE
-	if(projectile_piercing & A.pass_flags_self)
+	if(projectile_piercing & (A.pass_flags_self & ~LETPASSCLICKS))
 		return PROJECTILE_PIERCE_HIT
 	if(ismovable(A))
 		var/atom/movable/AM = A
@@ -655,7 +702,7 @@
 	if((armor_flag in list(ENERGY, LASER)) && (A.flags_ricochet & RICOCHET_SHINY))
 		return TRUE
 
-	if((armor_flag in list(BOMB, BULLET)) && (A.flags_ricochet & RICOCHET_HARD))
+	if((armor_flag in list(BOMB, PUNCTURE)) && (A.flags_ricochet & RICOCHET_HARD))
 		return TRUE
 
 	return FALSE
@@ -683,9 +730,11 @@
 	if(!loc || !fired || !trajectory)
 		fired = FALSE
 		return PROCESS_KILL
+
 	if(paused || !isturf(loc))
 		last_projectile_move += world.time - last_process //Compensates for pausing, so it doesn't become a hitscan projectile when unpaused from charged up ticks.
 		return
+
 	var/elapsed_time_deciseconds = (world.time - last_projectile_move) + time_offset
 	time_offset = 0
 	var/required_moves = speed > 0? FLOOR(elapsed_time_deciseconds / speed, 1) : MOVES_HITSCAN //Would be better if a 0 speed made hitscan but everyone hates those so I can't make it a universal system :<
@@ -705,45 +754,59 @@
 	LAZYINITLIST(impacted)
 	if(fired_from)
 		SEND_SIGNAL(fired_from, COMSIG_PROJECTILE_BEFORE_FIRE, src, original)
+
 	//If no angle needs to resolve it from xo/yo!
 	if(shrapnel_type && LAZYLEN(embedding))
 		AddElement(/datum/element/embed, projectile_payload = shrapnel_type)
+
 	if(!log_override && firer && original)
 		log_combat(firer, original, "fired at", src, "from [get_area_name(src, TRUE)]")
 			//note: mecha projectile logging is handled in /obj/item/mecha_parts/mecha_equipment/weapon/action(). try to keep these messages roughly the sameish just for consistency's sake.
+
 	if(direct_target && (get_dist(direct_target, get_turf(src)) <= 1)) // point blank shots
 		process_hit(get_turf(direct_target), direct_target)
 		if(QDELETED(src))
 			return
+
 	if(isnum(angle))
 		set_angle(angle)
+
 	if(spread)
 		set_angle(Angle + ((rand() - 0.5) * spread))
+
 	var/turf/starting = get_turf(src)
 	if(isnull(Angle)) //Try to resolve through offsets if there's no angle set.
 		if(isnull(xo) || isnull(yo))
 			stack_trace("WARNING: Projectile [type] deleted due to being unable to resolve a target after angle was null!")
 			qdel(src)
 			return
+
 		var/turf/target = locate(clamp(starting + xo, 1, world.maxx), clamp(starting + yo, 1, world.maxy), starting.z)
 		set_angle(get_angle(src, target))
+
 	original_angle = Angle
+
 	if(!nondirectional_sprite)
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+
 	trajectory_ignore_forcemove = TRUE
 	forceMove(starting)
 	trajectory_ignore_forcemove = FALSE
 	trajectory = new(starting.x, starting.y, starting.z, pixel_x, pixel_y, Angle, SSprojectiles.global_pixel_speed)
+
 	last_projectile_move = world.time
 	fired = TRUE
 	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = Angle)
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_FIRE)
+
 	if(hitscan)
 		process_hitscan()
+
 	if(!(datum_flags & DF_ISPROCESSING))
 		START_PROCESSING(SSprojectiles, src)
+
 	pixel_move(pixel_speed_multiplier, FALSE) //move it now!
 
 /obj/projectile/proc/set_angle(new_angle) //wrapper for overrides.
@@ -752,8 +815,11 @@
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+		UPDATE_OO_IF_PRESENT
+
 	if(trajectory)
 		trajectory.set_angle(new_angle)
+
 	if(fired && hitscan && isloc(loc) && (loc != last_angle_set_hitscan_store))
 		last_angle_set_hitscan_store = loc
 		var/datum/point/point_cache = new (src)
@@ -768,6 +834,8 @@
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+		UPDATE_OO_IF_PRESENT
+
 	if(trajectory)
 		trajectory.set_angle(new_angle)
 
@@ -844,22 +912,28 @@
 /obj/projectile/proc/pixel_move(trajectory_multiplier, hitscanning = FALSE)
 	if(!loc || !trajectory)
 		return
+
 	last_projectile_move = world.time
+
 	if(!nondirectional_sprite && !hitscanning)
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+
 	if(homing)
 		process_homing()
+
 	var/forcemoved = FALSE
 	for(var/i in 1 to SSprojectiles.global_iterations_per_move)
 		if(QDELETED(src))
 			return
+
 		trajectory.increment(trajectory_multiplier)
 		var/turf/T = trajectory.return_turf()
 		if(!istype(T))
 			qdel(src)
 			return
+
 		if(T.z != loc.z)
 			var/old = loc
 			before_z_change(loc, T)
@@ -867,25 +941,31 @@
 			forceMove(T)
 			trajectory_ignore_forcemove = FALSE
 			after_z_change(old, loc)
+
 			if(!hitscanning)
 				pixel_x = trajectory.return_px()
 				pixel_y = trajectory.return_py()
 			forcemoved = TRUE
 			hitscan_last = loc
+
 		else if(T != loc)
 			step_towards(src, T)
 			hitscan_last = loc
+
 	if(QDELETED(src)) //deleted on last move
 		return
+
 	if(!hitscanning && !forcemoved)
 		pixel_x = trajectory.return_px() - trajectory.mpx * trajectory_multiplier * SSprojectiles.global_iterations_per_move
 		pixel_y = trajectory.return_py() - trajectory.mpy * trajectory_multiplier * SSprojectiles.global_iterations_per_move
-		animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+		z_animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+
 	Range()
 
 /obj/projectile/proc/process_homing() //may need speeding up in the future performance wise.
 	if(!homing_target)
 		return FALSE
+
 	var/datum/point/PT = RETURN_PRECISE_POINT(homing_target)
 	PT.x += clamp(homing_offset_x, 1, world.maxx)
 	PT.y += clamp(homing_offset_y, 1, world.maxy)
@@ -1006,8 +1086,10 @@
 /obj/projectile/Destroy()
 	if(hitscan)
 		finalize_hitscan_and_generate_tracers()
+
 	STOP_PROCESSING(SSprojectiles, src)
 	cleanup_beam_segments()
+
 	if(trajectory)
 		QDEL_NULL(trajectory)
 	return ..()
@@ -1026,10 +1108,12 @@
 /obj/projectile/proc/generate_hitscan_tracers(cleanup = TRUE, duration = 3, impacting = TRUE)
 	if(!length(beam_segments))
 		return
+
 	if(tracer_type)
 		var/tempref = REF(src)
 		for(var/datum/point/p in beam_segments)
 			generate_tracer_between_points(p, beam_segments[p], tracer_type, color, duration, hitscan_light_range, hitscan_light_color_override, hitscan_light_intensity, tempref)
+
 	if(muzzle_type && duration > 0)
 		var/datum/point/p = beam_segments[1]
 		var/atom/movable/thing = new muzzle_type
@@ -1039,7 +1123,9 @@
 		thing.transform = matrix
 		thing.color = color
 		thing.set_light(l_inner_range = muzzle_flash_range, l_outer_range = muzzle_flash_range, l_power = muzzle_flash_intensity, l_color = muzzle_flash_color_override || color)
+		thing.update_above()
 		QDEL_IN(thing, duration)
+
 	if(impacting && impact_type && duration > 0)
 		var/datum/point/p = beam_segments[beam_segments[beam_segments.len]]
 		var/atom/movable/thing = new impact_type
@@ -1049,7 +1135,9 @@
 		thing.transform = matrix
 		thing.color = color
 		thing.set_light(l_inner_range = impact_light_range, l_outer_range = impact_light_range, l_power = impact_light_intensity, l_color = impact_light_color_override || color)
+		thing.update_above()
 		QDEL_IN(thing, duration)
+
 	if(cleanup)
 		cleanup_beam_segments()
 

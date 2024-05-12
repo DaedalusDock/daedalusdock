@@ -210,7 +210,7 @@
 		return
 	var/sniped_amount = painting_metadata.credit_value
 	var/offer_amount = tgui_input_number(user, "How much do you want to offer?", "Patronage Amount", (painting_metadata.credit_value + 1), account.account_balance, painting_metadata.credit_value)
-	if(!offer_amount || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!offer_amount || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(sniped_amount != painting_metadata.credit_value)
 		return
@@ -327,7 +327,7 @@
 	if(painting_metadata.loaded_from_json) // No renaming old paintings
 		return
 	var/new_name = tgui_input_text(user, "What do you want to name the painting?", "Title Your Masterpiece")
-	if(new_name != painting_metadata.title && new_name && user.canUseTopic(src, BE_CLOSE))
+	if(new_name != painting_metadata.title && new_name && user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		painting_metadata.title = new_name
 	var/sign_choice = tgui_alert(user, "Do you want to sign it or remain anonymous?", "Sign painting?", list("Yes", "No"))
 	if(sign_choice != "Yes")
@@ -725,19 +725,19 @@
 
 /obj/structure/sign/painting/library_secure
 	name = "\improper Curated Painting Exhibit mounting"
-	desc = "For masterpieces hand-picked by the curator."
-	desc_with_canvas = "A masterpiece hand-picked by the curator, supposedly."
+	desc = "For masterpieces hand-picked by the archivist."
+	desc_with_canvas = "A masterpiece hand-picked by the archivist, supposedly."
 	persistence_id = "library_secure"
 
 /obj/structure/sign/painting/library_private // keep your smut away from prying eyes, or non-librarians at least
 	name = "\improper Private Painting Exhibit mounting"
-	desc = "For art pieces deemed too subversive or too illegal to be shared outside of curators."
+	desc = "For art pieces deemed too subversive or too illegal to be shared outside of archivists."
 	desc_with_canvas = "A painting hung away from lesser minds."
 	persistence_id = "library_private"
 
 /obj/structure/sign/painting/large/library
 	name = "\improper Large Painting Exhibit mounting"
-	desc = "For the bulkier art pieces, hand-picked by the curator."
+	desc = "For the bulkier art pieces, hand-picked by the archivist."
 	desc_with_canvas = "A curated, large piece of art (or \"art\"). Hopefully the price of the canvas was worth it."
 	persistence_id = "library_large"
 

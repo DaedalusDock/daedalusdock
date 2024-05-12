@@ -153,7 +153,7 @@
 
 // Mining survival box
 /obj/item/storage/box/survival/mining
-	mask_type = /obj/item/clothing/mask/gas/explorer
+	mask_type = /obj/item/clothing/mask/breath
 
 /obj/item/storage/box/survival/mining/PopulateContents()
 	..()
@@ -1325,7 +1325,6 @@
 		/obj/item/slimecross/stabilized/oil=1,\
 		/obj/item/slimecross/stabilized/black=1,\
 		/obj/item/slimecross/stabilized/lightpink=1,\
-		/obj/item/slimecross/stabilized/adamantine=1,\
 		/obj/item/slimecross/stabilized/rainbow=1,\
 		)
 	generate_items_inside(items_inside,src)
@@ -1530,20 +1529,6 @@
 	new /obj/item/clothing/mask/gas/carp(src)
 	new /obj/item/knife/hunting(src)
 	new /obj/item/storage/box/papersack/meat(src)
-
-/obj/item/storage/box/hero/mothpioneer
-	name = "Mothic Fleet Pioneer - 2100's."
-	desc = "Some claim that the fleet engineers are directly responsible for most modern advancement in spacefaring design. Although the exact details of their past contributions are somewhat fuzzy, their ingenuity remains unmatched and unquestioned to this day."
-
-/obj/item/storage/box/hero/mothpioneer/PopulateContents()
-	new /obj/item/clothing/suit/mothcoat/original(src)
-	new /obj/item/clothing/head/mothcap(src)
-	new /obj/item/flashlight/lantern(src)
-	new /obj/item/screwdriver(src)
-	new /obj/item/wrench(src)
-	new /obj/item/crowbar(src)
-	new /obj/item/stack/sheet/iron/fifty(src)
-	new /obj/item/stack/sheet/glass/fifty(src)
 
 /obj/item/storage/box/holy/clock
 	name = "Forgotten kit"

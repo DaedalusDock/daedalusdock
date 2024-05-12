@@ -170,7 +170,7 @@
 
 	if(istype(item, /obj/item/inducer))
 		var/obj/item/inducer/inducer = item
-		INVOKE_ASYNC(inducer, TYPE_PROC_REF(/obj/item, attack_atom), attached_circuit, attacker, list())
+		INVOKE_ASYNC(inducer, TYPE_PROC_REF(/obj/item, attack_obj), attached_circuit, attacker, list())
 		return COMPONENT_NO_AFTERATTACK
 
 	if(attached_circuit)
@@ -339,7 +339,7 @@
 		COMSIG_CIRCUIT_ADD_COMPONENT_MANUALLY,
 		COMSIG_CIRCUIT_PRE_POWER_USAGE,
 	))
-	if(attached_circuit.loc == parent || (!QDELETED(attached_circuit) && attached_circuit.loc == null))
+	if(!QDELETED(attached_circuit) && (attached_circuit.loc == parent || (attached_circuit.loc == null)))
 		var/atom/parent_atom = parent
 		attached_circuit.forceMove(parent_atom.drop_location())
 

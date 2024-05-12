@@ -360,17 +360,6 @@
 		if (isnull(.[cached_path]))
 			. -= cached_path
 
-
-/**
- * Removes any null entries from the list
- * Returns TRUE if the list had nulls, FALSE otherwise
-**/
-/proc/list_clear_nulls(list/list_to_clear)
-	var/start_len = list_to_clear.len
-	var/list/new_list = new(start_len)
-	list_to_clear -= new_list
-	return list_to_clear.len < start_len
-
 /*
  * Returns list containing all the entries from first list that are not present in second.
  * If skiprep = 1, repeated elements are treated as one.
@@ -421,7 +410,7 @@
 			list_to_pick[item] = 0
 		total += list_to_pick[item]
 
-	total = rand(0, total)
+	total = rand(1, total)
 	for(item in list_to_pick)
 		total -= list_to_pick[item]
 		if(total <= 0 && list_to_pick[item])
@@ -701,12 +690,6 @@
 			continue
 		if(checked_datum.vars[varname] == value)
 			return checked_datum
-
-///remove all nulls from a list
-/proc/remove_nulls_from_list(list/inserted_list)
-	while(inserted_list.Remove(null))
-		continue
-	return inserted_list
 
 ///Copies a list, and all lists inside it recusively
 ///Does not copy any other reference type

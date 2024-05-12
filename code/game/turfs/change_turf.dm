@@ -58,7 +58,10 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 // Creates a new turf
 // new_baseturfs can be either a single type or list of types, formated the same as baseturfs. see turf.dm
-/turf/proc/ChangeTurf(path, list/new_baseturfs, flags)
+/turf/proc/ChangeTurf(turf/path, list/new_baseturfs, flags)
+	if(flags & CHANGETURF_DEFAULT_BASETURF)
+		new_baseturfs = initial(path.baseturfs)
+
 	switch(path)
 		if(null)
 			return
@@ -88,6 +91,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/old_dynamic_lumcount = dynamic_lumcount
 	var/old_rcd_memory = rcd_memory
 	var/old_above = above
+	var/old_fire = active_hotspot
+	var/old_explosion_details = explosion_throw_details
 
 	var/old_bp = blueprint_data
 	blueprint_data = null
@@ -133,6 +138,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	W.blueprint_data = old_bp
 	W.rcd_memory = old_rcd_memory
+	W.explosion_throw_details = old_explosion_details
 
 	lighting_corner_NE = old_lighting_corner_NE
 	lighting_corner_SE = old_lighting_corner_SE
@@ -142,6 +148,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	dynamic_lumcount = old_dynamic_lumcount
 
 	above = old_above
+	active_hotspot = old_fire
 
 	if(SSlighting.initialized)
 		if(!always_lit)
@@ -164,22 +171,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	return W
 
-/*
-/turf/open/ChangeTurf(path, list/new_baseturfs, flags) //Resist the temptation to make this default to keeping air.
-	if ((flags & CHANGETURF_INHERIT_AIR) && ispath(path, /turf/open))
-		var/datum/gas_mixture/stashed_air = new()
-		stashed_air.copyFrom(air)
-		. = ..() //If path == type this will return us, don't bank on making a new type
-		if (!.) // changeturf failed or didn't do anything
-			return
-		var/turf/open/newTurf = .
-		newTurf.air.copyFrom(stashed_air)
-		SSzas.mark_for_update(newTurf)
-	else
-		if(ispath(path,/turf/closed) || ispath(path,/turf/cordon))
-			flags |= CHANGETURF_RECALC_ADJACENT
-		return ..()
-*/
 /// Take off the top layer turf and replace it with the next baseturf down
 /turf/proc/ScrapeAway(amount=1, flags)
 	if(!amount)

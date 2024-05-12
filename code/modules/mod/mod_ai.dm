@@ -74,7 +74,7 @@
 #define AI_FALL_TIME 1 SECONDS
 
 /obj/item/mod/control/relaymove(mob/user, direction)
-	if((!active && wearer) || get_charge() < CHARGE_PER_STEP  || user != ai || !COOLDOWN_FINISHED(src, cooldown_mod_move) || (wearer?.pulledby?.grab_state > GRAB_PASSIVE))
+	if((!active && wearer) || get_charge() < CHARGE_PER_STEP  || user != ai || !COOLDOWN_FINISHED(src, cooldown_mod_move) || HAS_TRAIT(wearer, TRAIT_AGGRESSIVE_GRAB))
 		return FALSE
 	var/timemodifier = MOVE_DELAY * (ISDIAGONALDIR(direction) ? 2 : 1) * (wearer ? WEARER_DELAY : LONE_DELAY)
 	if(wearer && !wearer.Process_Spacemove(direction))
@@ -144,6 +144,6 @@
 	icon_state = "minicard"
 	ai.forceMove(card)
 	card.AI = ai
-	ai.notify_ghost_cloning("You have been recovered from the wreckage!", source = card)
+	ai.notify_ghost_revival("You have been recovered from the wreckage!", source = card)
 	balloon_alert(user, "AI transferred to card")
 	stored_ai = null

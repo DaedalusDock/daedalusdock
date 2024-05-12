@@ -309,40 +309,6 @@
 	if(owner.reagents)
 		owner.reagents.del_reagent(/datum/reagent/water/holywater) //can't be deconverted
 
-/datum/status_effect/crusher_mark
-	id = "crusher_mark"
-	duration = 300 //if you leave for 30 seconds you lose the mark, deal with it
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
-	var/mutable_appearance/marked_underlay
-	var/obj/item/kinetic_crusher/hammer_synced
-
-
-/datum/status_effect/crusher_mark/on_creation(mob/living/new_owner, obj/item/kinetic_crusher/new_hammer_synced)
-	. = ..()
-	if(.)
-		hammer_synced = new_hammer_synced
-
-/datum/status_effect/crusher_mark/on_apply()
-	if(owner.mob_size >= MOB_SIZE_LARGE)
-		marked_underlay = mutable_appearance('icons/effects/effects.dmi', "shield2")
-		marked_underlay.pixel_x = -owner.pixel_x
-		marked_underlay.pixel_y = -owner.pixel_y
-		owner.underlays += marked_underlay
-		return TRUE
-	return FALSE
-
-/datum/status_effect/crusher_mark/Destroy()
-	hammer_synced = null
-	if(owner)
-		owner.underlays -= marked_underlay
-	QDEL_NULL(marked_underlay)
-	return ..()
-
-/datum/status_effect/crusher_mark/be_replaced()
-	owner.underlays -= marked_underlay //if this is being called, we should have an owner at this point.
-	..()
-
 /datum/status_effect/eldritch
 	id = "heretic_mark"
 	duration = 15 SECONDS
@@ -726,8 +692,10 @@
 /datum/status_effect/trance/proc/hypnotize(datum/source, list/hearing_args)
 	SIGNAL_HANDLER
 
-	if(!owner.can_hear())
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(!L?.can_receive_language(owner) || !owner.has_language(L))
 		return
+
 	var/mob/hearing_speaker = hearing_args[HEARING_SPEAKER]
 	if(hearing_speaker == owner)
 		return
@@ -1033,7 +1001,7 @@
 	)
 
 /datum/status_effect/ants/on_creation(mob/living/new_owner, amount_left)
-	if(isnum(amount_left) && new_owner.stat < HARD_CRIT)
+	if(isnum(amount_left) && new_owner.stat < DEAD)
 		if(new_owner.stat < UNCONSCIOUS) // Unconcious people won't get messages
 			to_chat(new_owner, span_userdanger("You're covered in ants!"))
 		ants_remaining += amount_left
@@ -1042,7 +1010,7 @@
 
 /datum/status_effect/ants/refresh(effect, amount_left)
 	var/mob/living/carbon/human/victim = owner
-	if(isnum(amount_left) && ants_remaining >= 1 && victim.stat < HARD_CRIT)
+	if(isnum(amount_left) && ants_remaining >= 1 && victim.stat < DEAD)
 		if(victim.stat < UNCONSCIOUS) // Unconcious people won't get messages
 			if(!prob(1)) // 99%
 				to_chat(victim, span_userdanger("You're covered in MORE ants!"))
@@ -1068,7 +1036,7 @@
 /datum/status_effect/ants/tick()
 	var/mob/living/carbon/human/victim = owner
 	victim.adjustBruteLoss(max(0.1, round((ants_remaining * 0.004),0.1))) //Scales with # of ants (lowers with time). Roughly 10 brute over 50 seconds.
-	if(victim.stat <= SOFT_CRIT) //Makes sure people don't scratch at themselves while they're in a critical condition
+	if(victim.stat != CONSCIOUS && !HAS_TRAIT(victim, TRAIT_SOFT_CRITICAL_CONDITION)) //Makes sure people don't scratch at themselves while they're in a critical condition
 		if(prob(15))
 			switch(rand(1,2))
 				if(1)
@@ -1094,7 +1062,7 @@
 					victim.blur_eyes(3)
 					ants_remaining -= 5 // To balance out the blindness, it'll be a little shorter.
 	ants_remaining--
-	if(ants_remaining <= 0 || victim.stat >= HARD_CRIT)
+	if(ants_remaining <= 0 || victim.stat == DEAD)
 		victim.remove_status_effect(/datum/status_effect/ants) //If this person has no more ants on them or are dead, they are no longer affected.
 
 /atom/movable/screen/alert/status_effect/ants
@@ -1103,8 +1071,11 @@
 	icon_state = "antalert"
 
 /atom/movable/screen/alert/status_effect/ants/Click()
+	. = ..()
+	if(.)
+		return FALSE
 	var/mob/living/living = owner
-	if(!istype(living) || !living.can_resist() || living != owner)
+	if(!istype(living) || !living.can_resist())
 		return
 	to_chat(living, span_notice("You start to shake the ants off!"))
 	if(!do_after(living, time = 2 SECONDS))
@@ -1251,7 +1222,7 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/freezing_blast, update = TRUE)
 
 /datum/movespeed_modifier/freezing_blast
-	multiplicative_slowdown = 1
+	slowdown = 1
 
 /datum/status_effect/discoordinated
 	id = "discoordinated"

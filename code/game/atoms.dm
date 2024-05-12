@@ -10,19 +10,80 @@
 	appearance_flags = TILE_BOUND|LONG_GLIDE
 
 	/// Has this atom's constructor ran?
-	var/initialized = FALSE
+	var/tmp/initialized = FALSE
+
+	///Reagents holder
+	var/tmp/datum/reagents/reagents = null
+	/// the datum handler for our contents - see create_storage() for creation method
+	var/tmp/datum/storage/atom_storage
+	/// Forensics datum, initialzed when needed.
+	var/tmp/datum/forensics/forensics
+
+	///all of this atom's HUD (med/sec, etc) images. Associative list of the form: list(hud category = hud image or images for that category).
+	///most of the time hud category is associated with a single image, sometimes its associated with a list of images.
+	///not every hud in this list is actually used. for ones available for others to see, look at active_hud_list.
+	var/tmp/list/image/hud_list = null
+	///all of this atom's HUD images which can actually be seen by players with that hud
+	var/tmp/list/image/active_hud_list = null
+	/// A list of atom huds this object is within
+	var/tmp/list/in_atom_huds = null
+
+	///HUD images that this atom can provide.
+	var/list/hud_possible
+
+	/**
+	 * used to store the different colors on an atom
+	 *
+	 * its inherent color, the colored paint applied on it, special color effect etc...
+	 */
+	var/tmp/list/atom_colours
+
+	/// a very temporary list of overlays to remove
+	var/tmp/list/remove_overlays
+	/// a very temporary list of overlays to add
+	var/tmp/list/add_overlays
+
+	///vis overlays managed by SSvis_overlays to automaticaly turn them like other overlays.
+	var/tmp/list/managed_vis_overlays
+	///overlays managed by [update_overlays][/atom/proc/update_overlays] to prevent removing overlays that weren't added by the same proc. Single items are stored on their own, not in a list.
+	var/tmp/list/managed_overlays
+
+	///Cooldown tick timer for buckle messages
+	var/tmp/buckle_message_cooldown = 0
+	///Last fingerprints to touch this atom
+	var/tmp/fingerprintslast
+
+	var/tmp/list/filter_data //For handling persistent filters
+
+	//List of datums orbiting this atom
+	var/tmp/datum/component/orbiter/orbiters
+
+	///The custom materials this atom is made of, used by a lot of things like furniture, walls, and floors (if I finish the functionality, that is.)
+	///The list referenced by this var can be shared by multiple objects and should not be directly modified. Instead, use [set_custom_materials][/atom/proc/set_custom_materials].
+	var/tmp/list/datum/material/custom_materials
+
+	var/tmp/datum/wires/wires = null
+
+	var/tmp/list/alternate_appearances
+
+	/// Last name used to calculate a color for the chatmessage overlays
+	var/tmp/chat_color_name
+	/// Last color calculated for the the chatmessage overlays
+	var/tmp/chat_color
+	/// A luminescence-shifted value of the last color calculated for chatmessage overlays
+	var/tmp/chat_color_darkened
+
+	///Holds merger groups currently active on the atom. Do not access directly, use GetMergeGroup() instead.
+	var/tmp/list/datum/merger/mergers
+
+	///Reference to atom being orbited
+	var/tmp/atom/orbit_target
+
+	/// !DO NOT DIRECTLY EDIT! Can mobs "interact" with this item? THIS IS ONLY USED FOR MOUSE ICONS. SEE interactables.dm.
+	var/tmp/is_mouseover_interactable
 
 	/// pass_flags that we are. If any of this matches a pass_flag on a moving thing, by default, we let them through.
 	var/pass_flags_self = NONE
-
-	/// Informs our loc if we need Crossed and/or Uncrossed() called
-	var/loc_procs = NONE
-	///Atoms in our contents that want Crossed() called.
-	var/list/crossers
-	///Atoms in our contents that want Uncrossed() called.
-	var/list/uncrossers
-	///Atoms in our contents that want Exit() called.
-	var/list/check_exit
 
 	///If non-null, overrides a/an/some in all cases
 	var/article
@@ -42,65 +103,19 @@
 	///When a projectile ricochets off this atom, it deals the normal damage * this modifier to this atom
 	var/receive_ricochet_damage_coeff = 0.33
 
-	///Reagents holder
-	var/datum/reagents/reagents = null
-
-	///This atom's HUD (med/sec, etc) images. Associative list.
-	var/list/image/hud_list = null
-	///HUD images that this atom can provide.
-	var/list/hud_possible
-
 	///Value used to increment ex_act() if reactionary_explosions is on
 	var/explosion_block = 0
-
-	/**
-	 * used to store the different colors on an atom
-	 *
-	 * its inherent color, the colored paint applied on it, special color effect etc...
-	 */
-	var/list/atom_colours
-
-
-	/// a very temporary list of overlays to remove
-	var/list/remove_overlays
-	/// a very temporary list of overlays to add
-	var/list/add_overlays
-
-	///vis overlays managed by SSvis_overlays to automaticaly turn them like other overlays.
-	var/list/managed_vis_overlays
-	///overlays managed by [update_overlays][/atom/proc/update_overlays] to prevent removing overlays that weren't added by the same proc. Single items are stored on their own, not in a list.
-	var/list/managed_overlays
-
-	///Cooldown tick timer for buckle messages
-	var/buckle_message_cooldown = 0
-	///Last fingerprints to touch this atom
-	var/fingerprintslast
-
-	var/list/filter_data //For handling persistent filters
-
-	//List of datums orbiting this atom
-	var/datum/component/orbiter/orbiters
 
 	/// Radiation insulation types
 	var/rad_insulation = RAD_NO_INSULATION
 
-	/// The icon state intended to be used for the acid component. Used to override the default acid overlay icon state.
-	var/custom_acid_overlay = null
-
-	///The custom materials this atom is made of, used by a lot of things like furniture, walls, and floors (if I finish the functionality, that is.)
-	///The list referenced by this var can be shared by multiple objects and should not be directly modified. Instead, use [set_custom_materials][/atom/proc/set_custom_materials].
-	var/list/datum/material/custom_materials
 	///Bitfield for how the atom handles materials.
 	var/material_flags = NONE
 	///Modifier that raises/lowers the effect of the amount of a material, prevents small and easy to get items from being death machines.
 	var/material_modifier = 1
 
-	var/datum/wires/wires = null
-
-	var/list/alternate_appearances
-
 	///Light systems, both shouldn't be active at the same time.
-	var/light_system = STATIC_LIGHT
+	var/light_system = COMPLEX_LIGHT
 	///Range of the maximum brightness of light in tiles. Zero means no light.
 	var/light_inner_range = 0
 	///Range where light begins to taper into darkness in tiles.
@@ -120,13 +135,6 @@
 	///Any light sources that are "inside" of us, for example, if src here was a mob that's carrying a flashlight, that flashlight's light source would be part of this list.
 	var/tmp/list/light_sources
 
-	/// Last name used to calculate a color for the chatmessage overlays
-	var/chat_color_name
-	/// Last color calculated for the the chatmessage overlays
-	var/chat_color
-	/// A luminescence-shifted value of the last color calculated for chatmessage overlays
-	var/chat_color_darkened
-
 	///Default pixel x shifting for the atom's icon.
 	var/base_pixel_x = 0
 	///Default pixel y shifting for the atom's icon.
@@ -139,27 +147,23 @@
 	///A string of hex format colors to be used by greyscale sprites, ex: "#0054aa#badcff"
 	var/greyscale_colors
 
-	///Holds merger groups currently active on the atom. Do not access directly, use GetMergeGroup() instead.
-	var/list/datum/merger/mergers
-
 	///Icon-smoothing behavior.
-	var/smoothing_flags = NONE
+	var/tmp/smoothing_flags = NONE
 	///What directions this is currently smoothing with. IMPORTANT: This uses the smoothing direction flags as defined in icon_smoothing.dm, instead of the BYOND flags.
-	var/smoothing_junction = null //This starts as null for us to know when it's first set, but after that it will hold a 8-bit mask ranging from 0 to 255.
+	var/tmp/smoothing_junction = null //This starts as null for us to know when it's first set, but after that it will hold a 8-bit mask ranging from 0 to 255.
 	///Smoothing variable
-	var/top_left_corner
+	var/tmp/top_left_corner
 	///Smoothing variable
-	var/top_right_corner
+	var/tmp/top_right_corner
 	///Smoothing variable
-	var/bottom_left_corner
+	var/tmp/bottom_left_corner
 	///Smoothing variable
-	var/bottom_right_corner
+	var/tmp/bottom_right_corner
 	///What smoothing groups does this atom belongs to, to match canSmoothWith. If null, nobody can smooth with it. Must be sorted.
-	var/list/smoothing_groups = null
+	var/tmp/list/smoothing_groups = null
 	///List of smoothing groups this atom can smooth with. If this is null and atom is smooth, it smooths only with itself. Must be sorted.
-	var/list/canSmoothWith = null
-	///Reference to atom being orbited
-	var/atom/orbit_target
+	var/tmp/list/canSmoothWith = null
+
 	///AI controller that controls this atom. type on init, then turned into an instance during runtime.
 	///Note: If you are for some reason giving this to a non-mob, it needs to create it's own in Initialize()
 	var/datum/ai_controller/ai_controller
@@ -168,7 +172,7 @@
 	var/uses_integrity = FALSE
 
 	///Atom armor. Use returnArmor()
-	var/datum/armor/armor
+	var/tmp/datum/armor/armor
 	VAR_PRIVATE/atom_integrity //defaults to max_integrity
 	var/max_integrity = 500
 	var/integrity_failure = 0 //0 if we have no special broken behavior, otherwise is a percentage of at what point the atom breaks. 0.5 being 50%
@@ -177,8 +181,6 @@
 
 	var/resistance_flags = NONE // INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ON_FIRE | UNACIDABLE | ACID_PROOF
 
-	/// the datum handler for our contents - see create_storage() for creation method
-	var/datum/storage/atom_storage
 	/// How this atom should react to having its astar blocking checked
 	var/can_astar_pass = CANASTARPASS_DENSITY
 
@@ -250,14 +252,14 @@
 
 	initialized = TRUE
 
-	if(!isnull(greyscale_config) && !isnull(greyscale_colors))
+	if(greyscale_config && greyscale_colors)
 		update_greyscale()
 
 	//atom color stuff
-	if(!isnull(color))
+	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (light_system == STATIC_LIGHT && light_power && (light_inner_range || light_outer_range))
+	if (light_system == COMPLEX_LIGHT && light_power && (light_inner_range || light_outer_range))
 		update_light()
 
 	if(uses_integrity)
@@ -284,7 +286,7 @@
  *  proc must return the hint
  * [INITIALIZE_HINT_LATELOAD] otherwise you will never be called.
  *
- * useful for doing things like finding other machines on GLOB.machines because you can guarantee
+ * useful for doing things like finding other machines using INSTANCES_OF() because you can guarantee
  * that all atoms will actually exist in the "WORLD" at this time and that all their Intialization
  * code has been run
  */
@@ -305,7 +307,7 @@
 	if(alternate_appearances)
 		for(var/current_alternate_appearance in alternate_appearances)
 			var/datum/atom_hud/alternate_appearance/selected_alternate_appearance = alternate_appearances[current_alternate_appearance]
-			selected_alternate_appearance.remove_from_hud(src)
+			selected_alternate_appearance.remove_atom_from_hud(src)
 
 	if(reagents)
 		QDEL_NULL(reagents)
@@ -313,18 +315,19 @@
 	if(atom_storage)
 		QDEL_NULL(atom_storage)
 
-	crossers = null
-	uncrossers = null
-	check_exit = null
+	if(forensics)
+		QDEL_NULL(forensics)
+
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	if(length(overlays))
 		overlays.Cut()
 
-	LAZYNULL(managed_overlays)
-
 	QDEL_NULL(light)
 	QDEL_NULL(ai_controller)
+	LAZYNULL(managed_overlays)
+	if(length(light_sources))
+		light_sources.len = 0
 
 	if(smoothing_flags & SMOOTH_QUEUED)
 		SSicon_smooth.remove_from_queues(src)
@@ -368,6 +371,11 @@
 
 	return atom_storage
 
+/// Creates our forensics datum
+/atom/proc/create_forensics()
+	ASSERT(isnull(forensics))
+	forensics = new(src)
+
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)
 	var/turf/p_turf = get_turf(ricocheting_projectile)
 	var/face_direction = get_dir(src, p_turf)
@@ -376,7 +384,7 @@
 	var/a_incidence_s = abs(incidence_s)
 	if(a_incidence_s > 90 && a_incidence_s < 270)
 		return FALSE
-	if((ricocheting_projectile.armor_flag in list(BULLET, BOMB)) && ricocheting_projectile.ricochet_incidence_leeway)
+	if((ricocheting_projectile.armor_flag in list(PUNCTURE, BOMB)) && ricocheting_projectile.ricochet_incidence_leeway)
 		if((a_incidence_s < 90 && a_incidence_s < 90 - ricocheting_projectile.ricochet_incidence_leeway) || (a_incidence_s > 270 && a_incidence_s -270 > ricocheting_projectile.ricochet_incidence_leeway))
 			return FALSE
 	var/new_angle_s = SIMPLIFY_DEGREES(face_angle + incidence_s)
@@ -512,7 +520,6 @@
 			if(!reagents)
 				reagents = new()
 			reagents.reagent_list.Add(part)
-			reagents.conditional_update()
 		else if(ismovable(part))
 			var/atom/movable/object = part
 			if(isliving(object.loc))
@@ -602,7 +609,7 @@
 	for(var/datum/reagent/current_reagent as anything in reagents)
 		. |= current_reagent.expose_atom(src, reagents[current_reagent], exposed_temperature)
 
-/// Are you allowed to drop items into this atom's contents
+/// Are you allowed to drop this atom
 /atom/proc/AllowDrop()
 	return FALSE
 
@@ -642,6 +649,7 @@
 	// only living mobs use armor to reduce damage, but on_hit() is going to need the value no matter what is shot.
 	var/visual_armor_check = check_projectile_armor(def_zone, hitting_projectile)
 	. = hitting_projectile.on_hit(src, visual_armor_check, def_zone, piercing_hit)
+	spawn_debris(hitting_projectile)
 
 ///Return true if we're inside the passed in atom
 /atom/proc/in_contents_of(container)//can take class or object instance as argument
@@ -659,17 +667,19 @@
  * [COMSIG_ATOM_GET_EXAMINE_NAME] signal
  */
 /atom/proc/get_examine_name(mob/user)
-	. = "\a [src]"
-	var/list/override = list(gender == PLURAL ? "some" : "a", " ", "[name]")
-	if(article)
-		. = "[article] [src]"
-		override[EXAMINE_POSITION_ARTICLE] = article
-	if(SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override) & COMPONENT_EXNAME_CHANGED)
-		. = override.Join("")
+	var/list/name_list = list(name)
+
+	SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, name_list)
+	if(gender == PLURAL)
+		return jointext(name_list, " ")
+
+	else
+		return "\a [jointext(name_list, " ")]"
 
 ///Generate the full examine string of this atom (including icon for goonchat)
 /atom/proc/get_examine_string(mob/user, thats = FALSE)
-	return "[icon2html(src, user)] [thats? "That's ":""][get_examine_name(user)]"
+	var/that_string = gender == PLURAL ? "Those are " : "That is "
+	return "[icon2html(src, user)] [thats? that_string :""][get_examine_name(user)]"
 
 /**
  * Returns an extended list of examine strings for any contained ID cards.
@@ -694,47 +704,59 @@
  * Produces a signal [COMSIG_PARENT_EXAMINE]
  */
 /atom/proc/examine(mob/user)
-	. = list("[get_examine_string(user, TRUE)].<hr>") //PARIAH EDIT CHANGE
-	if(SScodex.get_codex_entry(get_codex_value(user)))
-		. += "<span class='notice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span><br>"
-
+	. = list("[get_examine_string(user, TRUE)].") //PARIAH EDIT CHANGE
 	. += get_name_chaser(user)
+
 	if(desc)
 		. += desc
+
+	. += "<hr>"
+
+	var/place_linebreak = FALSE
+	if(SScodex.get_codex_entry(get_codex_value(user)))
+		. += "<span class='obviousnotice'>The codex has <b><a href='?src=\ref[SScodex];show_examined_info=\ref[src];show_to=\ref[user]'>relevant information</a></b> available.</span>"
+		place_linebreak = TRUE
+
+	if(isitem(src) && length(slapcraft_examine_hints_for_type(type)))
+		. += "<span class='obviousnotice'><b><a href='?src=\ref[user.client];show_slapcraft_hints=[type];'>You could craft [(length(slapcraft_examine_hints_for_type(type)) > 1) ? "several things" : "something"] with it.</a><b></span>"
+		place_linebreak = TRUE
+
+	if(place_linebreak)
+		. += ""
 
 	if(z && user.z && user.z != z)
 		var/diff = abs(user.z - z)
 		. += span_notice("<b>[p_theyre(TRUE)] [diff] level\s below you.</b>")
 
 	if(custom_materials)
-		. += "<hr>" //PARIAH EDIT ADDITION
 		var/list/materials_list = list()
 		for(var/datum/material/current_material as anything in custom_materials)
 			materials_list += "[current_material.name]"
-		. += "<u>It is made out of [english_list(materials_list)]</u>."
+		. += span_notice("It is made out of [english_list(materials_list)].")
+
 	if(reagents)
-		. += "<hr>" //PARIAH EDIT ADDITION
 		if(reagents.flags & TRANSPARENT)
-			. += "It contains:"
-			if(length(reagents.reagent_list))
-				if(user.can_see_reagents()) //Show each individual reagent
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						. += "[round(current_reagent.volume, 0.01)] units of [current_reagent.name]"
-					if(reagents.is_reacting)
-						. += span_warning("It is currently reacting!")
-					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
-				else //Otherwise, just show the total volume
-					var/total_volume = 0
-					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
-						total_volume += current_reagent.volume
-					. += "[total_volume] units of various reagents"
+			if(!length(reagents.reagent_list))
+				. += span_alert("It looks empty.")
 			else
-				. += "Nothing."
+				if(user.can_see_reagents()) //Show each individual reagent
+					. += span_notice("You see the following reagents:")
+					for(var/datum/reagent/current_reagent as anything in reagents.reagent_list)
+						. += span_notice("* [round(current_reagent.volume, CHEMICAL_VOLUME_ROUNDING)] units of [current_reagent.name].")
+
+					if(reagents.is_reacting)
+						. += span_alert("A chemical reaction is taking place.")
+
+					. += span_notice("The solution's temperature is [reagents.chem_temp]K.")
+
+				else //Otherwise, just show the total volume
+					. += span_notice("It looks about [reagents.total_volume / reagents.maximum_volume * 100]% full.")
+
 		else if(reagents.flags & AMOUNT_VISIBLE)
 			if(reagents.total_volume)
-				. += span_notice("It has [reagents.total_volume] unit\s left.")
+				. += span_notice("It looks about [reagents.total_volume / reagents.maximum_volume * 100]% full.")
 			else
-				. += span_danger("It's empty.")
+				. += span_alert("It looks empty.")
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
@@ -879,6 +901,17 @@
 
 /// Handle what happens when your contents are exploded by a bomb
 /atom/proc/contents_explosion(severity, target)
+	for(var/atom/movable/movable_thing as anything in contents)
+		if(QDELETED(movable_thing))
+			continue
+
+		switch(severity)
+			if(EXPLODE_DEVASTATE)
+				EX_ACT(movable_thing, EXPLODE_DEVASTATE)
+			if(EXPLODE_HEAVY)
+				EX_ACT(movable_thing, EXPLODE_HEAVY)
+			if(EXPLODE_LIGHT)
+				EX_ACT(movable_thing, EXPLODE_LIGHT)
 	return //For handling the effects of explosions on contents that would not normally be effected
 
 /**
@@ -902,7 +935,7 @@
 		return FALSE
 	return TRUE
 
-/atom/proc/fire_act(exposed_temperature, exposed_volume)
+/atom/proc/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	SEND_SIGNAL(src, COMSIG_ATOM_FIRE_ACT, exposed_temperature, exposed_volume)
 	return
 
@@ -938,7 +971,18 @@
 /mob/living/proc/get_blood_dna_list()
 	if(get_blood_id() != /datum/reagent/blood)
 		return
-	return list("ANIMAL DNA" = "Y-")
+	return list("ANIMAL DNA" = GET_BLOOD_REF(/datum/blood/animal))
+
+/mob/proc/get_trace_dna()
+	return
+
+/mob/living/get_trace_dna()
+	return "ANIMAL DNA"
+
+/mob/living/carbon/get_trace_dna()
+	if(dna)
+		return dna.unique_enzymes
+	return "UNKNOWN DNA"
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
@@ -1183,6 +1227,9 @@
 	if(SEND_SIGNAL(src, COMSIG_COMPONENT_CLEAN_ACT, clean_types) & COMPONENT_CLEANED)
 		. = TRUE
 
+	if(forensics)
+		. = forensics.wash(clean_types) || .
+
 	// Basically "if has washable coloration"
 	if(length(atom_colours) >= WASHABLE_COLOUR_PRIORITY && atom_colours[WASHABLE_COLOUR_PRIORITY])
 		remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -1202,23 +1249,23 @@
 /atom/vv_edit_var(var_name, var_value)
 	switch(var_name)
 		if(NAMEOF(src, light_inner_range))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_inner_range = var_value)
 				. = TRUE
 		if(NAMEOF(src, light_outer_range))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_outer_range = var_value)
 			else
 				set_light_range(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_power))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_power = var_value)
 			else
 				set_light_power(var_value)
 			. = TRUE
 		if(NAMEOF(src, light_color))
-			if(light_system == STATIC_LIGHT)
+			if(light_system == COMPLEX_LIGHT)
 				set_light(l_color = var_value)
 			else
 				set_light_color(var_value)
@@ -1381,6 +1428,7 @@
 
 ///Where atoms should drop if taken from this atom
 /atom/proc/drop_location()
+	RETURN_TYPE(/atom)
 	var/atom/location = loc
 	if(!location)
 		return null
@@ -1395,36 +1443,22 @@
  * Default behaviour is to send the [COMSIG_ATOM_ENTERED]
  */
 /atom/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	SHOULD_CALL_PARENT(TRUE)
-
-	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 	SEND_SIGNAL(src, COMSIG_ATOM_ENTERED, arrived, old_loc, old_locs)
 	SEND_SIGNAL(arrived, COMSIG_ATOM_ENTERING, src, old_loc, old_locs)
-
-	if(LAZYLEN(crossers))
-		for(var/atom/movable/crossed as anything in crossers)
-			if(!QDELING(crossed))
-				crossed.Crossed(arrived, old_loc, old_locs)
-
-	if(arrived.loc_procs & CROSSED)
-		LAZYADD(crossers, arrived)
-	if(arrived.loc_procs & UNCROSSED)
-		LAZYADD(uncrossers, arrived)
-	if(arrived.loc_procs & EXIT)
-		LAZYADD(check_exit, arrived)
 
 /**
  * An atom is attempting to exit this atom's contents
  *
  * Default behaviour is to send the [COMSIG_ATOM_EXIT]
  */
-/atom/Exit(atom/movable/leaving, direction)
-	SHOULD_CALL_PARENT(TRUE)
-
+/atom/Exit(atom/movable/leaving, direction, no_side_effects)
 	// Don't call `..()` here, otherwise `Uncross()` gets called.
 	// See the doc comment on `Uncross()` to learn why this is bad.
-	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 
+	if(SEND_SIGNAL(src, COMSIG_ATOM_EXIT, leaving, direction, no_side_effects) & COMPONENT_ATOM_BLOCK_EXIT)
+		return FALSE
+
+	return TRUE
 
 /**
  * An atom has exited this atom's contents
@@ -1432,22 +1466,7 @@
  * Default behaviour is to send the [COMSIG_ATOM_EXITED]
  */
 /atom/Exited(atom/movable/gone, direction)
-	SHOULD_CALL_PARENT(TRUE)
-
-	. = (1 || ..()) //Linter defeat device, does not actually call parent.
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
-
-	if(gone.loc_procs & CROSSED)
-		LAZYREMOVE(crossers, gone)
-	if(gone.loc_procs & UNCROSSED)
-		LAZYREMOVE(uncrossers, gone)
-	if(gone.loc_procs & EXIT)
-		LAZYREMOVE(check_exit, gone)
-
-	if(LAZYLEN(uncrossers))
-		for(var/atom/movable/uncrossed as anything in uncrossers)
-			if(!QDELING(uncrossed))
-				uncrossed.Uncrossed(gone, direction)
 
 ///Return atom temperature
 /atom/proc/return_temperature()
@@ -1829,21 +1848,19 @@
 
 /// Sets the custom materials for an item.
 /atom/proc/set_custom_materials(list/materials, multiplier = 1)
-	if(custom_materials && material_flags & MATERIAL_EFFECTS) //Only runs if custom materials existed at first and affected src.
-		for(var/current_material in custom_materials)
-			var/datum/material/custom_material = GET_MATERIAL_REF(current_material)
-			custom_material.on_removed(src, custom_materials[current_material] * material_modifier, material_flags) //Remove the current materials
+	if(length(custom_materials) && istype(custom_materials[1], /datum/material) && (material_flags & MATERIAL_EFFECTS)) //Only runs if custom materials existed at first and affected src.
+		for(var/datum/material/material as anything in custom_materials)
+			material.on_removed(src, custom_materials[material] * material_modifier, material_flags) //Remove the current materials
 
 	if(!length(materials))
 		custom_materials = null
 		return
 
-	if(material_flags & MATERIAL_EFFECTS)
-		for(var/current_material in materials)
-			var/datum/material/custom_material = GET_MATERIAL_REF(current_material)
-			custom_material.on_applied(src, materials[current_material] * multiplier * material_modifier, material_flags)
-
 	custom_materials = SSmaterials.FindOrCreateMaterialCombo(materials, multiplier)
+
+	if(material_flags & MATERIAL_EFFECTS)
+		for(var/datum/material/material as anything in custom_materials)
+			material.on_applied(src, materials[material] * multiplier * material_modifier, material_flags)
 
 /**
  * Returns the material composition of the atom.
@@ -2137,7 +2154,15 @@
 	return TRUE
 
 /atom/MouseEntered(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	. = !(1 || ..())
 	SSmouse_entered.hovers[usr.client] = src
+	SSmouse_entered.sustained_hovers[usr.client] = src
+
+/atom/MouseExited(location, control, params)
+	SHOULD_CALL_PARENT(TRUE)
+	. = !(1 || ..())
+	SSmouse_entered.sustained_hovers[usr.client] = null
 
 /// Fired whenever this atom is the most recent to be hovered over in the tick.
 /// Preferred over MouseEntered if you do not need information such as the position of the mouse.
@@ -2148,6 +2173,9 @@
 	var/mob/user = client?.mob
 	if (isnull(user))
 		return
+
+	if(is_mouseover_interactable)
+		user.update_mouse_pointer()
 
 	// Screentips
 	var/datum/hud/active_hud = user.hud_used
@@ -2241,7 +2269,7 @@
  * For turfs this will only be used if pathing_pass_method is TURF_PATHING_PASS_PROC
  *
  * Arguments:
- * * ID- An ID card representing what access we have (and thus if we can open things like airlocks or windows to pass through them). The ID card's physical location does not matter, just the reference
+ * * access- A list representing what access we have (and thus if we can open things like airlocks or windows to pass through them).
  * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
  * * caller- The movable we're checking pass flags for, if we're making any such checks
  * * no_id: When true, doors with public access will count as impassible
@@ -2249,7 +2277,7 @@
  * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/atom/proc/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && (caller.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density
@@ -2261,3 +2289,31 @@
 //Currently only changed by Observers to be hearing through their orbit target.
 /atom/proc/hear_location()
 	return src
+
+/// Makes this atom look like a "hologram"
+/// So transparent, blue and with a scanline
+/atom/proc/makeHologram(color = rgb(125,180,225, 0.5 * 255))
+	// First, we'll make things blue (roughly) and sorta transparent
+	add_filter("HOLO: Color and Transparent", 1, color_matrix_filter(color))
+	// Now we're gonna do a scanline effect
+	// Gonna take this atom and give it a render target, then use it as a source for a filter
+	// (We use an atom because it seems as if setting render_target on an MA is just invalid. I hate this engine)
+	var/atom/movable/scanline = new /atom/movable{icon = 'icons/effects/effects.dmi'; icon_state = "scanline"}(null)
+	scanline.appearance_flags |= RESET_TRANSFORM
+	// * so it doesn't render
+	var/static/uid_scan = 0
+	scanline.render_target = "*HoloScanline [uid_scan]"
+	uid_scan++
+	// Now we add it as a filter, and overlay the appearance so the render source is always around
+	add_filter("HOLO: Scanline", 2, alpha_mask_filter(render_source = scanline.render_target))
+	add_overlay(scanline)
+	qdel(scanline)
+
+///Reset plane and layer values to their defaults.
+/atom/proc/reset_plane_and_layer()
+	plane = initial(plane)
+	layer = initial(layer)
+
+///returns how much the object blocks an explosion. Used by subtypes.
+/atom/proc/GetExplosionBlock()
+	CRASH("Unimplemented GetExplosionBlock()")

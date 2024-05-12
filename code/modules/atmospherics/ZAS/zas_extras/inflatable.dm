@@ -250,7 +250,7 @@
 
 /obj/structure/inflatable/door/proc/Open()
 	isSwitchingStates = 1
-	flick("door_opening",src)
+	z_flick("door_opening",src)
 	addtimer(CALLBACK(src, PROC_REF(FinishOpen)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishOpen()
@@ -269,7 +269,7 @@
 				return
 
 	isSwitchingStates = 1
-	flick("door_closing",src)
+	z_flick("door_closing",src)
 	addtimer(CALLBACK(src, PROC_REF(FinishClose)), 1 SECONDS, TIMER_STOPPABLE)
 
 /obj/structure/inflatable/door/proc/FinishClose()
@@ -369,7 +369,7 @@
 	user.forceMove(src)
 	update_icon()
 	user.visible_message(span_notice("[user] enters \the [src]."), span_notice("You enter \the [src]."))
-	RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/remove_vis)
+	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(remove_vis))
 
 /obj/structure/inflatable/shelter/proc/remove_vis(mob/user, force)
 	vis_contents.Remove(user)
@@ -431,7 +431,6 @@
 	max_integrity = 150
 	force = 8
 	hitsound = SFX_SWING_HIT
-	throw_speed = 2
 	throw_range = 4
 	var/startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4)
 

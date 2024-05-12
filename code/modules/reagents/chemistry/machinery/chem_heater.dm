@@ -51,7 +51,7 @@
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	if(!can_interact(user) || !user.canUseTopic(src, !issilicon(user), FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH|USE_IGNORE_TK))
 		return
 	replace_beaker(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -166,7 +166,7 @@
 	data["isBeakerLoaded"] = beaker ? 1 : 0
 
 	data["currentTemp"] = beaker ? beaker.reagents.chem_temp : null
-	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, 0.01) : null
+	data["beakerCurrentVolume"] = beaker ? round(beaker.reagents.total_volume, CHEMICAL_VOLUME_ROUNDING) : null
 	data["beakerMaxVolume"] = beaker ? beaker.volume : null
 	var/upgrade_level = heater_coefficient*10
 	data["upgradeLevel"] = upgrade_level
@@ -175,7 +175,7 @@
 	for(var/r in beaker?.reagents.reagent_list)
 		var/datum/reagent/reagent = r
 		beaker_contents.len++
-		beaker_contents[length(beaker_contents)] = list("name" = reagent.name, "volume" = round(reagent.volume, 0.01))
+		beaker_contents[length(beaker_contents)] = list("name" = reagent.name, "volume" = round(reagent.volume, CHEMICAL_VOLUME_ROUNDING))
 	data["beakerContents"] = beaker_contents
 
 	var/list/active_reactions = list()

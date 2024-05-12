@@ -39,7 +39,7 @@
 	. = ..()
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
-	if(!can_interact(user) || !user.canUseTopic(src, !issilicon(user), FALSE, NO_TK))
+	if(!can_interact(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_SILICON_REACH))
 		return
 	eject_beaker()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -164,7 +164,7 @@
 	if(beaker)
 		data["has_beaker"] = TRUE
 		data["beaker"] = list(
-			"volume" = round(beaker.reagents?.total_volume, 0.01) || 0,
+			"volume" = round(beaker.reagents?.total_volume, CHEMICAL_VOLUME_ROUNDING) || 0,
 			"capacity" = beaker.volume,
 		)
 		var/datum/reagent/blood/B = locate() in beaker.reagents.reagent_list

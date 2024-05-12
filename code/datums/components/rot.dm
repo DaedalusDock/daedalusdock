@@ -43,7 +43,7 @@
 		RegisterSignal(parent, COMSIG_MOVABLE_BUMP, PROC_REF(rot_react))
 	if(isliving(parent))
 		RegisterSignal(parent, COMSIG_LIVING_REVIVE, PROC_REF(react_to_revive)) //mobs stop this when they come to life
-		RegisterSignal(parent, COMSIG_LIVING_GET_PULLED, PROC_REF(rot_react_touch))
+		RegisterSignal(parent, COMSIG_ATOM_GET_GRABBED, PROC_REF(rot_react_touch))
 	if(iscarbon(parent))
 		var/mob/living/carbon/carbon_parent = parent
 		RegisterSignal(carbon_parent.reagents, list(COMSIG_REAGENTS_ADD_REAGENT,
@@ -87,9 +87,9 @@
 
 /datum/component/rot/proc/check_reagent(datum/reagents/source, datum/reagent/modified)
 	SIGNAL_HANDLER
-	if(modified && !istype(modified, /datum/reagent/toxin/formaldehyde))
+	if(modified && !istype(modified, /datum/reagent/space_cleaner))
 		return
-	if(source.has_reagent(/datum/reagent/toxin/formaldehyde, 15))
+	if(source.has_reagent(/datum/reagent/space_cleaner, 15))
 		rest(REAGENT_BLOCKER)
 		return
 	start_up(REAGENT_BLOCKER)

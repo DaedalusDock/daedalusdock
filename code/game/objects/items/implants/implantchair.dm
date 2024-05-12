@@ -143,7 +143,7 @@
 		to_chat(user, span_warning("[src]'s door won't budge!"))
 
 
-/obj/machinery/implantchair/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/implantchair/MouseDroppedOn(mob/target, mob/user)
 	if(user.stat || !Adjacent(user) || !user.Adjacent(target) || !isliving(target) || !ISADVANCEDTOOLUSER(user))
 		return
 	if(isliving(user))

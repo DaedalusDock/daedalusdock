@@ -2,11 +2,11 @@
 	var/can_switch_eye = FALSE	//Having this default to false means that its easy to make sure this doesnt apply to any pre-existing items
 	var/current_eye = "_R"	//Added to the end of the icon_state to make this easy code-wise, L and R being the wearer's Left and Right
 
-/obj/item/clothing/glasses/CtrlClick(mob/user)
+/obj/item/clothing/glasses/CtrlClick(mob/user, list/params)
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	else
 		switcheye()
@@ -36,8 +36,8 @@
 		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your left eye."))
 	else if(current_eye == "_R")
 		to_chat(usr, span_notice("You adjust the eyepatch to wear it over your right eye."))
-	usr.update_worn_glasses()
-	usr.update_overlays()
+
+	update_slot_icon()
 
 /obj/item/clothing/glasses/proc/eyepatch_do_switch()
 	if(current_eye == "_L")

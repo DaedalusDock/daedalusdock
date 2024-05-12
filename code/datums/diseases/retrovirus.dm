@@ -34,7 +34,7 @@
 	switch(stage)
 		if(1)
 			if(DT_PROB(4, delta_time))
-				to_chat(affected_mob, span_danger("Your head hurts."))
+				affected_mob.apply_pain(5, BODY_ZONE_HEAD, "Your head aches.")
 			if(DT_PROB(4.5, delta_time))
 				to_chat(affected_mob, span_danger("You feel a tingling sensation in your chest."))
 			if(DT_PROB(4.5, delta_time))

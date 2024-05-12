@@ -89,7 +89,7 @@
 /turf/closed/mineral/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill, mob/user)
 	for(var/turf/closed/mineral/M in range(drill.chassis,1))
 		if(get_dir(drill.chassis,M)&drill.chassis.dir)
-			M.gets_drilled()
+			M.MinedAway()
 	drill.log_message("[user] drilled through [src]", LOG_MECHA)
 	drill.move_ores()
 
@@ -126,7 +126,7 @@
 	target.visible_message(span_danger("[chassis] is drilling [target] with [src]!"), \
 						span_userdanger("[chassis] is drilling you with [src]!"))
 	log_combat(user, target, "drilled", "[name]", "Combat mode: [user.combat_mode ? "On" : "Off"])(DAMTYPE: [uppertext(damtype)])")
-	if(target.stat == DEAD && target.getBruteLoss() >= HEALTH_LOSS_PER_TYPE_CAP(target))
+	if(target.stat == DEAD && target.getBruteLoss() >= target.maxHealth)
 		log_combat(user, target, "gibbed", name)
 		if(LAZYLEN(target.butcher_results) || LAZYLEN(target.guaranteed_butcher_results))
 			var/datum/component/butchering/butchering = src.GetComponent(/datum/component/butchering)
@@ -136,7 +136,7 @@
 	else
 		//drill makes a hole
 		var/obj/item/bodypart/target_part = target.get_bodypart(ran_zone(BODY_ZONE_CHEST))
-		target.apply_damage(10, BRUTE, BODY_ZONE_CHEST, target.run_armor_check(target_part, MELEE))
+		target.apply_damage(10, BRUTE, BODY_ZONE_CHEST, target.run_armor_check(target_part, BLUNT))
 
 		//blood splatters
 		var/splatter_dir = get_dir(chassis, target)
@@ -172,6 +172,10 @@
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
+
+/obj/item/mecha_parts/mecha_equipment/mining_scanner/Destroy()
+	STOP_PROCESSING(SSfastprocess, src)
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/can_attach(obj/vehicle/sealed/mecha/M, attach_right = FALSE)
 	if(..())

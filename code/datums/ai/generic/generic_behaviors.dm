@@ -43,7 +43,7 @@
 	if(get_dist(batman, big_guy) >= give_up_distance)
 		finish_action(controller, FALSE, target_key)
 
-	big_guy.start_pulling(batman)
+	big_guy.try_make_grab(batman)
 	big_guy.setDir(get_dir(big_guy, batman))
 
 	batman.visible_message(span_warning("[batman] gets a slightly too tight hug from [big_guy]!"), span_userdanger("You feel your body break as [big_guy] embraces you!"))
@@ -53,7 +53,7 @@
 		for(var/obj/item/bodypart/bodypart_to_break in carbon_batman.bodyparts)
 			if(bodypart_to_break.body_zone == BODY_ZONE_HEAD)
 				continue
-			bodypart_to_break.receive_damage(brute = 15)
+			bodypart_to_break.receive_damage(brute = 15, modifiers = NONE)
 			bodypart_to_break.break_bones()
 	else
 		batman.adjustBruteLoss(150)
@@ -73,11 +73,11 @@
 /datum/ai_behavior/use_in_hand/perform(delta_time, datum/ai_controller/controller)
 	. = ..()
 	var/mob/living/pawn = controller.pawn
-	var/obj/item/held = pawn.get_item_by_slot(pawn.get_active_hand())
+	var/obj/item/held = pawn.get_active_held_item()
 	if(!held)
 		finish_action(controller, FALSE)
 		return
-	pawn.activate_hand(pawn.get_active_hand())
+	pawn.activate_hand()
 	finish_action(controller, TRUE)
 
 /// Use the currently held item, or unarmed, on a weakref to an object in the world
@@ -169,11 +169,9 @@
 	var/obj/item/target = target_ref.resolve()
 
 	if(!(target in living_pawn.held_items))
-		if(!living_pawn.put_in_hand_check(target))
+		if(!living_pawn.put_in_hands(target))
 			finish_action(controller, FALSE, target, hunger_timer_key)
 			return
-
-		living_pawn.put_in_hands(target)
 
 	target.melee_attack_chain(living_pawn, living_pawn)
 
@@ -203,7 +201,16 @@
 		finish_action(controller, FALSE)
 
 /datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller, locate_path, search_range)
-	return locate(locate_path) in oview(search_range, controller.pawn)
+	for(var/atom/A as anything in oview(search_range, controller.pawn))
+		if(!istype(A, locate_path))
+			continue
+
+		if(isitem(A))
+			var/obj/item/I = A
+			if(I.item_flags & ABSTRACT)
+				continue
+
+		return A
 
 /**
  * Variant of find and set that fails if the living pawn doesn't hold something
@@ -229,11 +236,12 @@
 			continue
 		food_candidates += held_candidate
 
-	var/list/local_results = locate(locate_path) in oview(search_range, controller.pawn)
-	for(var/local_candidate in local_results)
-		if(!IsEdible(local_candidate))
+	for(var/obj/item/I in oview(search_range, controller.pawn))
+		if(!IsEdible(I))
 			continue
-		food_candidates += local_candidate
+
+		food_candidates += I
+
 	if(food_candidates.len)
 		return pick(food_candidates)
 
@@ -386,6 +394,11 @@
 			continue
 		if(thing.IsObscured())
 			continue
+		if(isitem(thing))
+			var/obj/item/I = thing
+			if(I.item_flags & ABSTRACT)
+				continue
+
 		possible_targets += thing
 	if(!possible_targets.len)
 		finish_action(controller, FALSE)

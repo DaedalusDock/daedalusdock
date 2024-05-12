@@ -3,7 +3,7 @@
 
 //MISC
 /datum/loadout_item/neck/headphones
-	path = /obj/item/clothing/ears/headphones
+	path = /obj/item/instrument/piano_synth/headphones
 
 /datum/loadout_item/neck/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	. = outfit.neck

@@ -12,9 +12,7 @@
 	feature_key = "wings"
 
 /obj/item/organ/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!human.wear_suit)
-		return TRUE
-	if(!(human.wear_suit.flags_inv & HIDEJUMPSUIT))
+	if(!(human.obscured_slots & HIDEJUMPSUIT))
 		return TRUE
 	if(human.wear_suit.species_exception && is_type_in_list(src, human.wear_suit.species_exception))
 		return TRUE
@@ -106,7 +104,7 @@
 
 	var/olddir = human.dir
 
-	human.stop_pulling()
+	human.release_all_grabs()
 	if(buckled_obj)
 		buckled_obj.unbuckle_mob(human)
 		step(buckled_obj, olddir)
@@ -181,7 +179,7 @@
 	return GLOB.moth_wings_list
 
 /obj/item/organ/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
+	if(!(human.obscured_slots & HIDEMUTWINGS))
 		return TRUE
 	return FALSE
 

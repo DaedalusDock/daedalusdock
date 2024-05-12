@@ -71,7 +71,7 @@
 	desc = "Contains twinned thermal pistols in a holster, ready for use in the field."
 	cost = PAYCHECK_HARD * 15
 	access_view = ACCESS_ARMORY
-	contains = list(/obj/item/storage/belt/holster/thermal)
+	contains = list(/obj/item/storage/belt/holster/shoulder/thermal)
 
 /datum/supply_pack/goody/sologamermitts
 	name = "Insulated Gloves Single-Pack"
@@ -120,12 +120,6 @@
 	desc = "A fully stocked mechanical toolbox, for when you're too lazy to just print them out."
 	cost = PAYCHECK_MEDIUM * 3
 	contains = list(/obj/item/storage/toolbox/mechanical)
-
-/datum/supply_pack/goody/valentine
-	name = "Valentine Card"
-	desc = "Make an impression on that special someone! Comes with one valentine card and a free candy heart!"
-	cost = PAYCHECK_ASSISTANT * 2
-	contains = list(/obj/item/valentine, /obj/item/food/candyheart)
 
 /datum/supply_pack/goody/beeplush
 	name = "Bee Plushie"

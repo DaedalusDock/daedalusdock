@@ -39,7 +39,6 @@
 	taste_description = "slime"
 	taste_mult = 0.9
 
-
 /datum/reagent/toxin/mutagen/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!iscarbon(exposed_mob) || !exposed_mob.has_dna() || HAS_TRAIT(exposed_mob, TRAIT_GENELESS) || HAS_TRAIT(exposed_mob, TRAIT_BADDNA))
@@ -60,8 +59,6 @@
 	if(chems.has_reagent(type, 1))
 		mytray.adjust_toxic(3) //It is still toxic, mind you, but not to the same degree.
 
-#define LIQUID_PLASMA_BP (50+T0C)
-
 /datum/reagent/toxin/plasma
 	name = "Plasma"
 	description = "Plasma in its liquid form."
@@ -74,7 +71,7 @@
 	penetrates_skin = NONE
 	burning_temperature = 4500//plasma is hot!!
 	burning_volume = 0.3//But burns fast
-
+	codex_mechanics = "Plasma will ignite at 519.15 K, take care when handling."
 
 /datum/reagent/toxin/plasma/on_new(data)
 	. = ..()
@@ -94,18 +91,20 @@
 			for(var/obj/item/bodypart/BP as anything in C.bodyparts)
 				BP.heal_bones()
 
-/// Handles plasma boiling.
+// Plasma will attempt to ignite at the ignition temperature.
 /datum/reagent/toxin/plasma/proc/on_temp_change(datum/reagents/_holder, old_temp)
 	SIGNAL_HANDLER
-	if(holder.chem_temp < LIQUID_PLASMA_BP)
+	if(holder.chem_temp < PHORON_FLASHPOINT)
 		return
-	if(!holder.my_atom)
+	if(!holder.my_atom || !(holder.flags & OPENCONTAINER))
 		return
 
 	var/turf/open/T = get_turf(holder.my_atom)
 	if(!istype(T))
 		return
-	T.assume_gas(GAS_PLASMA, volume, holder.chem_temp)
+
+	holder.my_atom.visible_message(span_danger("[holder.my_atom] emits a shriek as hot plasma fills the air."))
+	T.assume_gas(GAS_PLASMA, volume / REAGENT_GAS_EXCHANGE_FACTOR, holder.chem_temp)
 	holder.del_reagent(type)
 
 /datum/reagent/toxin/plasma/expose_turf(turf/exposed_turf, reac_volume, exposed_temperature)
@@ -113,7 +112,7 @@
 	if(!istype(exposed_turf))
 		return
 
-	if(exposed_temperature >= LIQUID_PLASMA_BP)
+	if(exposed_temperature >= PHORON_FLASHPOINT)
 		exposed_turf.assume_gas(GAS_PLASMA, reac_volume / REAGENT_GAS_EXCHANGE_FACTOR, exposed_temperature)
 
 /datum/reagent/toxin/plasma/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature, datum/reagents/source, methods, show_message, touch_protection)
@@ -560,23 +559,6 @@
 	C.adjustToxLoss(2, FALSE)
 	. = TRUE
 
-/datum/reagent/toxin/formaldehyde
-	name = "Formaldehyde"
-	description = "Formaldehyde, on its own, is a fairly weak toxin. It contains trace amounts of Histamine, very rarely making it decay into Histamine."
-	silent_toxin = TRUE
-	reagent_state = LIQUID
-	color = "#B4004B"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	toxpwr = 1
-
-
-/datum/reagent/toxin/formaldehyde/affect_blood(mob/living/carbon/C, removed)
-	if(prob(5))
-		holder.add_reagent(/datum/reagent/toxin/histamine, pick(5,15))
-		holder.remove_reagent(/datum/reagent/toxin/formaldehyde, 1.2)
-	else
-		return ..()
-
 /datum/reagent/toxin/venom
 	name = "Venom"
 	description = "An exotic poison extracted from highly toxic fauna. Causes scaling amounts of toxin damage and bruising depending and dosage. Often decays into Histamine."
@@ -622,7 +604,7 @@
 	addiction_types = list(/datum/addiction/opiods = 25)
 
 /datum/reagent/toxin/fentanyl/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
 	if(C.getToxLoss() <= 60)
 		C.adjustToxLoss(1 * removed, 0)
 	if(current_cycle >= 18)
@@ -727,9 +709,9 @@
 				C.adjustOxyLoss(rand(5,25), 0)
 				. = TRUE
 			if(3)
-				if(!C.undergoing_cardiac_arrest() && C.can_heartattack())
-					C.set_heartattack(TRUE)
-					if(C.stat <= SOFT_CRIT)
+				if(C.set_heartattack(TRUE))
+					log_health(C, "Heart stopped due to initropidil.")
+					if(C.stat < UNCONSCIOUS)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest!"))
 				else
 					C.losebreath += 10
@@ -823,7 +805,6 @@
 	color = "#F0FFF0"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	toxpwr = 0
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/lipolicide/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
@@ -1039,7 +1020,7 @@
 
 /datum/reagent/toxin/bungotoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	C.adjustOrganLoss(ORGAN_SLOT_HEART, 3 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_HEART, 3 * removed, updating_health = FALSE)
 
 	// If our mob's currently dizzy from anything else, we will also gain confusion
 	var/mob_dizziness = C.get_timed_status_effect_duration(/datum/status_effect/confusion)
@@ -1050,6 +1031,8 @@
 	if(current_cycle >= 12 && prob(8))
 		var/tox_message = pick("You feel your heart spasm in your chest.", "You feel faint.","You feel you need to catch your breath.","You feel a prickle of pain in your chest.")
 		to_chat(C, span_warning("[tox_message]"))
+
+	return TRUE
 /datum/reagent/toxin/leadacetate
 	name = "Lead Acetate"
 	description = "Used hundreds of years ago as a sweetener, before it was realized that it's incredibly poisonous."
@@ -1061,9 +1044,9 @@
 
 
 /datum/reagent/toxin/leadacetate/affect_blood(mob/living/carbon/C, removed)
-	C.adjustOrganLoss(ORGAN_SLOT_EARS, 1 * removed)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_EARS, 1 * removed, updating_health = FALSE)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed, updating_health = FALSE)
 	if(prob(1))
 		to_chat(C, span_notice("What was that? Did I hear something?"))
 		C.adjust_timed_status_effect(5 SECONDS, /datum/status_effect/confusion)
-	return ..()
+	return ..() || TRUE

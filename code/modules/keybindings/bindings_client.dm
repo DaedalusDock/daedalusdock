@@ -36,10 +36,8 @@
 		qdel(src)
 		return
 
-	//Focus Chat failsafe. Overrides movement checks to prevent WASD.
-	if(!hotkeys && length(_key) == 1 && _key != "Alt" && _key != "Ctrl" && _key != "Shift")
-		winset(src, null, "input.focus=true ; input.text=[url_encode(_key)]")
-		return
+	if(keys_held[_key])
+		return //Key is already held, prevent double-strike.
 
 	if(length(keys_held) >= HELD_KEY_BUFFER_LENGTH && !keys_held[_key])
 		keyUp(keys_held[1]) //We are going over the number of possible held keys, so let's remove the first one.
@@ -75,7 +73,8 @@
 
 	holder?.key_down(_key, src)
 	mob.focus?.key_down(_key, src)
-	mob.update_mouse_pointer()
+	if(ShiftMod)
+		mob.update_mouse_pointer()
 
 
 /client/verb/keyUp(_key as text)
@@ -90,7 +89,14 @@
 	if(!keys_held[_key])
 		return
 
+	var/update_pointer = FALSE
+	if(keys_held["Shift"])
+		update_pointer = TRUE
+
 	keys_held -= _key
+
+	if(update_pointer == TRUE)
+		mob.update_mouse_pointer()
 
 	if(!movement_locked)
 		var/movement = movement_keys[_key]
@@ -105,5 +111,5 @@
 			break
 	holder?.key_up(_key, src)
 	mob.focus?.key_up(_key, src)
-	mob.update_mouse_pointer()
+
 

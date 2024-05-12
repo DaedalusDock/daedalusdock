@@ -18,8 +18,8 @@
 	var/mob/living/carbon/human/H = user
 	add_fingerprint(H)
 	//playsoundhere
-	flick("comp_hscan1", src)
-	fire(md5(H.dna.unique_identity))
+	z_flick("comp_hscan1", src)
+	fire(H.get_fingerprints(hand = H.get_active_hand()))
 	log_message("scanned [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 

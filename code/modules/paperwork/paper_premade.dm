@@ -109,13 +109,6 @@
 	name = "paper- 'Official Bulletin'"
 	info = "<BR>CentCom Security<BR>Port Division<BR>Official Bulletin<BR><BR>Inspector,<BR>There is an emergency shuttle arriving today.<BR><BR>Approval is restricted to Nanotrasen employees only. Deny all other entrants.<BR><BR>CentCom Port Commissioner"
 
-
-/////////// Lavaland
-
-/obj/item/paper/fluff/stations/lavaland/orm_notice
-	name = "URGENT!"
-	info = "A hastily written note has been scribbled here... <br><br> Please use the ore redemption machine in the cargo office for smelting. PLEASE! <br><br>--The Research Staff"
-
 /////////// Space Ruins
 
 /obj/item/paper/fluff/spaceruins/lizardsgas/memorandum

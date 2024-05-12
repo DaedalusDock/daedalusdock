@@ -10,10 +10,6 @@
 
 /obj/machinery/bodyscanner/Initialize(mapload)
 	. = ..()
-	if(!(dir & (EAST|WEST)))
-		stack_trace("A bodyscanner was initialized with an invalid direction")
-		return INITIALIZE_HINT_QDEL
-
 	rediscover()
 
 /obj/machinery/bodyscanner/Destroy()
@@ -29,9 +25,6 @@
 		icon_state = "body_scanner_open"
 
 /obj/machinery/bodyscanner/setDir(ndir)
-	if(!(dir & (EAST|WEST)))
-		return
-
 	. = ..()
 	rediscover()
 
@@ -64,7 +57,7 @@
 	setDir(turn(dir, 180))
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/bodyscanner/MouseDrop_T(mob/living/carbon/human/target, mob/user)
+/obj/machinery/bodyscanner/MouseDroppedOn(mob/living/carbon/human/target, mob/user)
 	if(!istype(target) || !can_interact(user) || HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user, mover = target) || target.buckled || target.has_buckled_mobs())
 		return
 
@@ -88,7 +81,7 @@
 
 /obj/machinery/bodyscanner/AltClick(mob/user)
 	. = ..()
-	if(!user.canUseTopic(src, !issilicon(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	eject_occupant(user)
 
@@ -123,23 +116,20 @@
 		eject_occupant(src, TRUE)
 
 /////// The Console ////////
+DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 /obj/machinery/bodyscanner_console
 	name = "body scanner console"
 	icon = 'icons/obj/machines/bodyscanner.dmi'
 	icon_state = "bodyscanner_console_powered"
 	dir = EAST
+	mouse_drop_pointer = TRUE
 
 	var/obj/machinery/bodyscanner/linked_scanner
 	/// Data! Maybe there's something to be done with data disks here.
 	var/list/scan
 
-
 /obj/machinery/bodyscanner_console/Initialize(mapload)
 	. = ..()
-	if(!(dir & (EAST|WEST)))
-		stack_trace("A bodyscanner console was initialized with an invalid direction")
-		return INITIALIZE_HINT_QDEL
-
 	rediscover()
 
 /obj/machinery/bodyscanner_console/Destroy()
@@ -149,9 +139,6 @@
 	return ..()
 
 /obj/machinery/bodyscanner_console/setDir(ndir)
-	if(!(dir & (EAST|WEST)))
-		return
-
 	. = ..()
 	rediscover()
 
@@ -319,6 +306,61 @@
 					</td>
 				</tr>
 	"}
+	var/pulse_string
+	if(scan["pulse"] == -1)
+		pulse_string = "[span_average("ERROR - Nonstandard biology")]"
+	else if(scan["pulse"] == -2)
+		pulse_string = "N/A"
+	else if(scan["pulse"] == -3)
+		pulse_string = "[span_bad("250+bpm")]"
+	else if(scan["pulse"] == 0)
+		pulse_string = "[span_bad("[scan["pulse"]]bpm")]"
+	else if(scan["pulse"] >= 140)
+		pulse_string = "[span_bad("[scan["pulse"]]bpm")]"
+	else if(scan["pulse"] >= 120)
+		pulse_string = "[span_average("[scan["pulse"]]bpm")]"
+	else
+		pulse_string = "[scan["pulse"]]bpm"
+
+	. += {"
+				<tr>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						<strong>Pulse Rate:</strong>
+					</td>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						[pulse_string]
+					</td>
+				</tr>
+	"}
+	var/pressure_string
+	var/ratio = scan["blood_volume"]/scan["blood_volume_max"]
+	if(scan["blood_o2"] <= 70)
+		pressure_string = "([span_bad("[scan["blood_o2"]]% blood oxygenation")])"
+	else if(scan["blood_o2"] <= 85)
+		pressure_string = "([span_average("[scan["blood_o2"]]% blood oxygenation")])</td></tr>"
+	else if(scan["blood_o2"] <= 90)
+		pressure_string = "(["<span style='color:[COLOR_MEDICAL_OXYLOSS]'>[scan["blood_o2"]]% blood oxygenation</span>"])</td></tr>"
+	else
+		pressure_string = "([scan["blood_o2"]]% blood oxygenation)</td></tr>"
+
+	. += {"
+				<tr>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						<strong>Blood Pressure:</strong>
+					</td>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						[pressure_string]
+					</td>
+				</tr>
+	"}
+	if(ratio <= 0.7)
+		. += {"
+				<tr>
+					<td colspan = '2'>
+						[span_bad("Patient is in hypovolemic shock. Transfusion highly recommended.")]
+					</td>
+				</tr>
+		"}
 
 	. += {"
 				<tr>
@@ -326,7 +368,7 @@
 						<strong>Blood Volume:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[scan["blood_volume"]]u/[scan["blood_volume_max"]]u
+						[scan["blood_volume"]]u/[scan["blood_volume_max"]]u ([scan["blood_type"]])
 					</td>
 				</tr>
 	"}
@@ -338,6 +380,17 @@
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
 						[scan["temperature"]-T0C]&deg;C ([FAHRENHEIT(scan["temperature"])]&deg;F)
+					</td>
+				</tr>
+	"}
+
+	. += {"
+				<tr>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						<strong>DNA:</strong>
+					</td>
+					<td style='padding-left: 5px;padding-right: 5px'>
+						[scan["dna"]]
 					</td>
 				</tr>
 	"}
@@ -397,6 +450,25 @@
 				</tr>
 	"}
 
+	if(scan["dna_ruined"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("<strong>ERROR: patient's DNA sequence is unreadable.</strong>")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
+
+	if(scan["husked"])
+		. += {"
+					<tr>
+						<td colspan = '2' style='text-align:center'>
+							[span_bad("Husked cadaver detected: Replacement tissue required.")]
+						</td>
+					</tr>
+					<tr><td colspan='2'></td></tr>
+		"}
 	if(scan["radiation"])
 		. += {"
 					<tr>

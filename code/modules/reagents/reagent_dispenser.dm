@@ -20,7 +20,7 @@
 /obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	. = ..()
 	if(. && atom_integrity > 0)
-		if(tank_volume && (damage_flag == BULLET || damage_flag == LASER))
+		if(tank_volume && (damage_flag == PUNCTURE || damage_flag == LASER))
 			boom()
 
 /obj/structure/reagent_dispensers/attackby(obj/item/W, mob/user, params)
@@ -78,8 +78,9 @@
 		icon_state = "fuel_fools"
 
 /obj/structure/reagent_dispensers/fueltank/boom()
-	explosion(src, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
+	var/turf/explode_turf = get_turf(src)
 	qdel(src)
+	explosion(explode_turf, heavy_impact_range = 1, light_impact_range = 5, flame_range = 5)
 
 /obj/structure/reagent_dispensers/fueltank/blob_act(obj/structure/blob/B)
 	boom()
@@ -87,7 +88,7 @@
 /obj/structure/reagent_dispensers/fueltank/ex_act()
 	boom()
 
-/obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/zap_act(power, zap_flags)
@@ -130,6 +131,8 @@
 	tank_volume = 5000
 
 /obj/structure/reagent_dispensers/fueltank/large/boom()
+	if(QDELETED(src))
+		return
 	explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 7, flame_range = 12)
 	qdel(src)
 

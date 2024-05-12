@@ -120,15 +120,6 @@
 	T.visible_message(span_danger("The slime extract begins to vibrate adorably!"))
 	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 1, "Friendly Gold Slime", FRIENDLY_SPAWN, "neutral"), 50)
 
-/datum/chemical_reaction/slime/slimemobspawn/spider
-	required_reagents = list(/datum/reagent/spider_extract = 1)
-
-
-/datum/chemical_reaction/slime/slimemobspawn/spider/summon_mobs(datum/reagents/holder, turf/T)
-	T.visible_message(span_danger("The slime extract begins to vibrate crikey-ingly!"))
-	addtimer(CALLBACK(src, PROC_REF(chemical_mob_spawn), holder, 3, "Traitor Spider Slime", /mob/living/simple_animal/hostile/giant_spider/midwife, "neutral", FALSE), 50)
-
-
 //Silver
 /datum/chemical_reaction/slime/slimebork
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
@@ -190,7 +181,7 @@
 	required_other = TRUE
 
 /datum/chemical_reaction/slime/slimefoam/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	holder.create_foam(/datum/effect_system/foam_spread,80, span_danger("[src] spews out foam!"))
+	holder.create_foam(/datum/effect_system/fluid_spread/foam, 80, span_danger("[src] spews out foam!"))
 
 //Dark Blue
 /datum/chemical_reaction/slime/slimefreeze
@@ -423,17 +414,6 @@
 	new /obj/item/slimepotion/slime/renaming(holder.my_atom.drop_location())
 	..()
 
-
-//Adamantine
-/datum/chemical_reaction/slime/adamantine
-	required_reagents = list(/datum/reagent/toxin/plasma = 1)
-	required_container = /obj/item/slime_extract/adamantine
-	required_other = TRUE
-
-/datum/chemical_reaction/slime/adamantine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/stack/sheet/mineral/adamantine(get_turf(holder.my_atom))
-	..()
-
 //Bluespace
 /datum/chemical_reaction/slime/slimefloor2
 	required_reagents = list(/datum/reagent/blood = 1)
@@ -453,15 +433,6 @@
 /datum/chemical_reaction/slime/slimecrystal/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/obj/item/stack/ore/bluespace_crystal/BC = new (get_turf(holder.my_atom))
 	BC.visible_message(span_notice("The [BC.name] appears out of thin air!"))
-	..()
-
-/datum/chemical_reaction/slime/slimeradio
-	required_reagents = list(/datum/reagent/water = 1)
-	required_container = /obj/item/slime_extract/bluespace
-	required_other = TRUE
-
-/datum/chemical_reaction/slime/slimeradio/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/slimepotion/slime/slimeradio(get_turf(holder.my_atom))
 	..()
 
 //Cerulean
@@ -588,13 +559,4 @@
 
 /datum/chemical_reaction/slime/slime_transfer/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	new /obj/item/slimepotion/transference(get_turf(holder.my_atom))
-	..()
-
-/datum/chemical_reaction/slime/flight_potion
-	required_reagents = list(/datum/reagent/water/holywater = 5, /datum/reagent/uranium = 5)
-	required_other = TRUE
-	required_container = /obj/item/slime_extract/rainbow
-
-/datum/chemical_reaction/slime/flight_potion/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	new /obj/item/reagent_containers/glass/bottle/potion/flight(get_turf(holder.my_atom))
 	..()

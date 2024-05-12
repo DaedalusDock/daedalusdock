@@ -22,14 +22,24 @@
 	|| ((M:zmm_flags & ZMM_LOOKBESIDE) && ZM_INTERNAL_SCAN_LOOKBESIDE(M, z_flags, Z_MIMIC_BELOW))) \
 )
 
-/// This macro currently doesn't work for an unknown reason, probably a byond bug(?)
-#define FOR_MIMIC_OF(ORIGIN,MVAR) MVAR = ORIGIN.bound_overlay; while (MVAR) if(!MVAR.destruction_timer) break;
-/// See above
+/// Performs an animate() call on the given object and it's mimics.
 #define z_animate(thing, args...) \
 	do { \
 		animate(thing, ##args); \
-		var/atom/movable/openspace/mimic/__mimic; \
-		FOR_MIMIC_OF(thing, __mimic){ \
+		var/atom/movable/openspace/mimic/__mimic = thing.bound_overlay; \
+		while(!QDELETED(__mimic) && !__mimic.destruction_timer) { \
 			animate(__mimic, ##args); \
+			__mimic = __mimic.bound_overlay; \
+		} \
+	} while(FALSE)
+
+/// Performs a flick() call on the given object and it's mimics.
+#define z_flick(Icon, Object) \
+	do { \
+		flick(Icon, Object); \
+		var/atom/movable/openspace/mimic/__mimic = Object.bound_overlay; \
+		while(!QDELETED(__mimic) && !__mimic.destruction_timer) { \
+			flick(Icon, __mimic); \
+			__mimic = __mimic.bound_overlay; \
 		} \
 	} while(FALSE)

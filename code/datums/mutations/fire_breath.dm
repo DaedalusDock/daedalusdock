@@ -49,7 +49,7 @@
 		return
 
 	var/mob/living/carbon/our_lizard = cast_on
-	if(!our_lizard.is_mouth_covered())
+	if(!our_lizard.has_mouth() || !our_lizard.is_mouth_covered())
 		return
 
 	our_lizard.adjust_fire_stacks(cone_levels)

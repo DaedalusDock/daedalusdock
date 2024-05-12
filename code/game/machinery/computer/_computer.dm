@@ -1,3 +1,4 @@
+DEFINE_INTERACTABLE(/obj/machinery/computer)
 /obj/machinery/computer
 	name = "computer"
 	icon = 'icons/obj/computer.dmi'
@@ -5,7 +6,7 @@
 	density = TRUE
 	max_integrity = 200
 	integrity_failure = 0.5
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
 	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_inner_range = 0.1
@@ -126,7 +127,7 @@
 	. = ..()
 	if(!can_interact(user))
 		return
-	if(!user.canUseTopic(src, !issilicon(user)) || !is_operational)
+	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH) || !is_operational)
 		return
 
 /obj/machinery/computer/ui_interact(mob/user, datum/tgui/ui)

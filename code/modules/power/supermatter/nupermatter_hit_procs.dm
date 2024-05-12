@@ -18,7 +18,7 @@
 	if(!istype(projectile.firer, /obj/machinery/power/emitter))
 		investigate_log("has been hit by [projectile] fired by [key_name(projectile.firer)]", INVESTIGATE_ENGINE)
 
-	if(projectile.armor_flag != BULLET || kiss_power) //This is a beam.
+	if(projectile.armor_flag != PUNCTURE || kiss_power) //This is a beam.
 		power += ((projectile.damage * SUPERMATTER_BULLET_ENERGY + kiss_power) * charging_factor) / power_factor
 
 		if(!has_been_powered)
@@ -121,7 +121,7 @@
 		dust_mob(user, cause = "hand")
 		return
 
-	if(!user.is_mouth_covered())
+	if(user.has_mouth() && !user.is_mouth_covered())
 		if(user.combat_mode)
 			dust_mob(user,
 				span_danger("As [user] tries to take a bite out of [src] everything goes silent before [user.p_their()] body starts to glow and burst into flames before flashing to ash."),
@@ -236,24 +236,23 @@
 		default_unfasten_wrench(user, tool)
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/power/supermatter/BumpedBy(atom/movable/hit_object)
-	if(isliving(hit_object))
-		hit_object.visible_message(
-			span_danger("[hit_object] slams into [src] inducing a resonance... [hit_object.p_their()] body starts to glow and burst into flames before flashing into dust!"),
-			span_userdanger("You slam into [src] as your ears are filled with unearthly ringing. Your last thought is \"Oh, fuck.\""),
-			span_hear("You hear an unearthly noise as a wave of heat washes over you.")
-		)
-	else if(isobj(hit_object) && !iseffect(hit_object))
-		hit_object.visible_message(
-			span_danger("[hit_object] smacks into [src] and rapidly flashes to ash."),
-			null,
-			span_hear("You hear a loud crack as you are washed with a wave of heat.")
-		)
-	else
+/obj/machinery/power/supermatter/BumpedBy(atom/AM as mob|obj)
+	if(istype(AM, /obj/effect))
 		return
+	if(istype(AM, /mob/living))
+		AM.visible_message(
+			span_warning("[AM] slams into [src], inducing a resonance. For a brief instant, [AM.p_their()] body glows brilliantly, then flashes into ash."),
+			span_userdanger("You slam into [src], and your mind fills with unearthly shrieking. Your vision floods with light as your body instantly dissolves into dust."),
+			span_warning("You hear an unearthly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat.")
+		)
+	else if(!exploded) //To prevent spam, detonating supermatter does not indicate non-mobs being destroyed
+		AM.visible_message(
+			span_warning("[AM] smacks into [src] and rapidly flashes to ash."),
+			span_warning("You hear a loud crack as you are washed with a wave of heat.")
+		)
 
 	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
-	Consume(hit_object)
+	Consume(AM)
 
 /obj/machinery/power/supermatter/Bump(atom/bumped_atom)
 	. = ..()
@@ -330,25 +329,27 @@
 				message_admins("[src] has consumed [consumed_object], [suspicion] [ADMIN_JMP(src)].")
 			investigate_log("has consumed [consumed_object] - [suspicion].", INVESTIGATE_ENGINE)
 		qdel(consumed_object)
+
 	if(!iseffect(consumed_object) && isitem(consumed_object))
 		var/obj/item/consumed_item = consumed_object
 		object_size = consumed_item.w_class
 		power += 5 * object_size
 
-	//Some poor sod got eaten, go ahead and irradiate people nearby.
-	radiation_pulse(src, max_range = 6, threshold = 1.2 / object_size, chance = 10 * object_size)
-	for(var/mob/living/near_mob in range(10))
-		investigate_log("has irradiated [key_name(near_mob)] after consuming [consumed_object].", INVESTIGATE_ENGINE)
-		if (HAS_TRAIT(near_mob, TRAIT_RADIMMUNE) || issilicon(near_mob))
-			continue
-		if(ishuman(near_mob) && SSradiation.wearing_rad_protected_clothing(near_mob))
-			continue
-		if(near_mob in view())
-			near_mob.show_message(
-				span_danger("As \the [src] slowly stops resonating, you find your skin covered in new radiation burns."), MSG_VISUAL,
-				span_danger("The unearthly ringing subsides and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
-		else
-			near_mob.show_message(span_hear("An unearthly ringing fills your ears, and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
+	if(!exploded)
+		//Some poor sod got eaten, go ahead and irradiate people nearby.
+		radiation_pulse(src, max_range = 6, threshold = 1.2 / object_size, chance = 10 * object_size)
+		for(var/mob/living/near_mob in range(10))
+			investigate_log("has irradiated [key_name(near_mob)] after consuming [consumed_object].", INVESTIGATE_ENGINE)
+			if (HAS_TRAIT(near_mob, TRAIT_RADIMMUNE) || issilicon(near_mob))
+				continue
+			if(ishuman(near_mob) && SSradiation.wearing_rad_protected_clothing(near_mob))
+				continue
+			if(near_mob in view())
+				near_mob.show_message(
+					span_danger("As \the [src] slowly stops resonating, you find your skin covered in new radiation burns."), MSG_VISUAL,
+					span_danger("The unearthly ringing subsides and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
+			else
+				near_mob.show_message(span_hear("An unearthly ringing fills your ears, and you find your skin covered in new radiation burns."), MSG_AUDIBLE)
 
 //Do not blow up our internal radio
 /obj/machinery/power/supermatter/contents_explosion(severity, target)

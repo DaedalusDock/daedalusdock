@@ -75,7 +75,7 @@
 
 /datum/reagent/iron/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	C.blood_volume = min(C.blood_volume + (2 * removed), BLOOD_VOLUME_MAX_LETHAL)
+	C.adjustBloodVolume(2 * removed)
 
 /datum/reagent/lithium
 	name = "Lithium"
@@ -107,7 +107,8 @@
 	if(prob(5))
 		spawn(-1)
 			C.emote(pick("twitch", "drool", "moan"))
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.1 * removed)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.1 * removed, updating_health = FALSE)
+	return TRUE
 
 /datum/reagent/phosphorus
 	name = "Phosphorus"
@@ -143,13 +144,12 @@
 	var/meltdose = 20 // How much is needed to melt
 	var/max_damage = 40
 	value = DISPENSER_REAGENT_VALUE
-	show_in_codex = TRUE
 
 /datum/reagent/toxin/acid/affect_blood(mob/living/carbon/C, removed)
 	C.adjustFireLoss(removed * acidpwr, FALSE)
 	return TRUE
 
-/datum/reagent/toxin/acid/affect_touch(mob/living/carbon/C, removed) // This is the most interesting
+/datum/reagent/toxin/acid/affect_touch(mob/living/carbon/C, removed)
 	C.acid_act(acidpwr, removed, affect_clothing = FALSE)
 
 /datum/reagent/toxin/acid/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
@@ -168,7 +168,7 @@
 			// Body is handled by affect_touch()
 			exposed_mob.acid_act(acidpwr, reac_volume, affect_body = FALSE)
 		spawn(-1)
-			exposed_mob.emote("scream")
+			exposed_mob.emote("agony")
 
 /datum/reagent/toxin/acid/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()

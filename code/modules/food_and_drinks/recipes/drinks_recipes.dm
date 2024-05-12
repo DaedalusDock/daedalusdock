@@ -589,7 +589,7 @@
 
 /datum/chemical_reaction/drink/planet_cracker
 	results = list(/datum/reagent/consumable/ethanol/planet_cracker = 20)
-	required_reagents = list(/datum/reagent/consumable/ethanol/champagne = 10, /datum/reagent/consumable/ethanol/lizardwine = 10, /datum/reagent/consumable/eggyolk = 2, /datum/reagent/gold = 5)
+	required_reagents = list(/datum/reagent/consumable/ethanol/champagne = 10, /datum/reagent/consumable/eggyolk = 2, /datum/reagent/gold = 5)
 	mix_message = "The liquid's color starts shifting as the nanogold is alternately corroded and redeposited."
 
 /datum/chemical_reaction/drink/red_queen

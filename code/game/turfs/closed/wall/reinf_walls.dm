@@ -7,7 +7,7 @@
 	hardness = 10
 	reinf_material = /datum/material/iron
 	plating_material = /datum/material/alloy/plasteel
-	explosion_block = 2
+	explosion_block = 6
 	rad_insulation = RAD_HEAVY_INSULATION
 
 // DMEd Specific Simplified wall icons

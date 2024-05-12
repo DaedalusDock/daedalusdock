@@ -33,47 +33,30 @@ Slimecrossing Weapons
 	switch(damtype)
 		if(BRUTE)
 			hitsound = 'sound/weapons/bladeslice.ogg'
+			wielded_hitsound = 'sound/weapons/bladeslice.ogg'
 			attack_verb_continuous = string_list(list("slashes", "slices", "cuts"))
 			attack_verb_simple = string_list(list("slash", "slice", "cut"))
 		if(BURN)
 			hitsound = 'sound/weapons/sear.ogg'
+			wielded_hitsound = 'sound/weapons/sear.ogg'
 			attack_verb_continuous = string_list(list("burns", "singes", "heats"))
 			attack_verb_simple = string_list(list("burn", "singe", "heat"))
 		if(TOX)
 			hitsound = 'sound/weapons/pierce.ogg'
+			wielded_hitsound = 'sound/weapons/pierce.ogg'
 			attack_verb_continuous = string_list(list("poisons", "doses", "toxifies"))
 			attack_verb_simple = string_list(list("poison", "dose", "toxify"))
 		if(OXY)
 			hitsound = 'sound/effects/space_wind.ogg'
+			wielded_hitsound = 'sound/effects/space_wind.ogg'
 			attack_verb_continuous = string_list(list("suffocates", "winds", "vacuums"))
 			attack_verb_simple = string_list(list("suffocate", "wind", "vacuum"))
 		if(CLONE)
 			hitsound = 'sound/items/geiger/ext1.ogg'
+			wielded_hitsound = 'sound/items/geiger/ext1.ogg'
 			attack_verb_continuous = string_list(list("irradiates", "mutates", "maligns"))
 			attack_verb_simple = string_list(list("irradiate", "mutate", "malign"))
 	return ..()
-
-//Adamantine shield - Chilling Adamantine
-/obj/item/shield/adamantineshield
-	name = "adamantine shield"
-	desc = "A gigantic shield made of solid adamantium."
-	icon = 'icons/obj/slimecrossing.dmi'
-	icon_state = "adamshield"
-	inhand_icon_state = "adamshield"
-	w_class = WEIGHT_CLASS_HUGE
-	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
-	slot_flags = ITEM_SLOT_BACK
-	block_chance = 75
-	force = 0
-	throw_range = 1 //How far do you think you're gonna throw a solid crystalline shield...?
-	throw_speed = 2
-	attack_verb_continuous = list("bashes", "pounds", "slams")
-	attack_verb_simple = list("bash", "pound", "slam")
-	item_flags = SLOWS_WHILE_IN_HAND
-
-/obj/item/shield/adamantineshield/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE, force_wielded=15)
 
 //Bloodchiller - Chilling Green
 /obj/item/gun/magic/bloodchill

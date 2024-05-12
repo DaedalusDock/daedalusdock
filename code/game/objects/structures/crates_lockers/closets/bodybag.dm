@@ -37,7 +37,7 @@
 		var/t = tgui_input_text(user, "What would you like the label to be?", name, max_length = 53)
 		if(user.get_active_held_item() != interact_tool)
 			return
-		if(!user.canUseTopic(src, BE_CLOSE))
+		if(!user.canUseTopic(src, USE_CLOSE))
 			return
 		if(t)
 			name = "[initial(name)] - [t]"
@@ -76,12 +76,23 @@
 		perform_fold(usr)
 		qdel(src)
 
-		/**
-		  * Checks to see if we can fold. Return TRUE to actually perform the fold and delete.
-			*
-		  * Arguments:
-		  * * the_folder - over_object of MouseDrop aka usr
-		  */
+/obj/structure/closet/body_bag/take_contents(mapload)
+	. = ..()
+	if(locate(/mob) in contents)
+		drag_slowdown = PULL_PRONE_SLOWDOWN
+	else
+		drag_slowdown = initial(drag_slowdown)
+
+/obj/structure/closet/body_bag/dump_contents()
+	. = ..()
+	drag_slowdown = initial(drag_slowdown)
+
+/**
+	* Checks to see if we can fold. Return TRUE to actually perform the fold and delete.
+	*
+	* Arguments:
+	* * the_folder - over_object of MouseDrop aka usr
+*/
 /obj/structure/closet/body_bag/proc/attempt_fold(mob/living/carbon/human/the_folder)
 	. = FALSE
 	if(!istype(the_folder))
@@ -273,7 +284,7 @@
 	open()
 
 /obj/structure/closet/body_bag/environmental/prisoner/attack_hand_secondary(mob/user, modifiers)
-	if(!user.canUseTopic(src, BE_CLOSE) || !isturf(loc))
+	if(!user.canUseTopic(src, USE_CLOSE) || !isturf(loc))
 		return
 	togglelock(user)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -357,3 +368,18 @@
 	if(sinched)
 		for(var/mob/living/target in contents)
 			to_chat(target, span_warning("You hear a faint hiss, and a white mist fills your vision..."))
+
+/obj/structure/closet/body_bag/stasis
+	name = "stasis bag"
+	desc = "A highly advanced and highly expensive device for suspending living creatures during medical transport."
+	icon_state = "ntenvirobag"
+
+/obj/structure/closet/body_bag/stasis/take_contents(mapload)
+	. = ..()
+	for(var/mob/living/L in contents)
+		L.apply_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_BODYBAG_EFFECT)
+
+/obj/structure/closet/body_bag/stasis/dump_contents()
+	for(var/mob/living/L in contents)
+		L.remove_status_effect(/datum/status_effect/grouped/hard_stasis, STASIS_BODYBAG_EFFECT)
+	return ..()

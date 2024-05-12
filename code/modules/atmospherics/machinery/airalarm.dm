@@ -74,6 +74,7 @@
 
 
 
+DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 /obj/machinery/airalarm
 	name = "air alarm"
 	desc = "A machine that monitors atmosphere levels. Goes off if the area is dangerous."
@@ -85,7 +86,7 @@
 	req_access = list(ACCESS_ATMOSPHERICS)
 	max_integrity = 250
 	integrity_failure = 0.33
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	resistance_flags = FIRE_PROOF
 	zmm_flags = ZMM_MANGLE_PLANES
 
@@ -150,6 +151,7 @@
 
 /obj/machinery/airalarm/Initialize(mapload, ndir, nbuild)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	wires = new /datum/wires/airalarm(src)
 	if(ndir)
 		setDir(ndir)
@@ -179,6 +181,7 @@
 	set_area(get_area(src))
 
 /obj/machinery/airalarm/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	set_area(null)
 	SSpackets.remove_object(src, frequency)
 	SSairmachines.stop_processing_machine(src)
@@ -211,8 +214,6 @@
 			. += span_notice("It is missing air alarm electronics.")
 		if(AIRALARM_BUILD_NO_WIRES)
 			. += span_notice("It is missing wiring.")
-		if(AIRALARM_BUILD_COMPLETE)
-			. += span_notice("Right-click to [locked ? "unlock" : "lock"] the interface.")
 
 /obj/machinery/airalarm/ui_status(mob/user)
 	if(user.has_unlimited_silicon_privilege && aidisabled)
@@ -673,7 +674,7 @@
 	. += mutable_appearance(icon, state)
 	. += emissive_appearance(icon, state, alpha = src.alpha)
 
-/obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume)
+/obj/machinery/airalarm/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	. = ..()
 	if(!danger_level)
 		check_air_dangerlevel(loc.unsafe_return_air())
@@ -863,6 +864,7 @@
 			else if(panel_open && is_wire_tool(W))
 				wires.interact(user)
 				return
+
 		if(AIRALARM_BUILD_NO_WIRES)
 			if(istype(W, /obj/item/stack/cable_coil))
 				var/obj/item/stack/cable_coil/cable = W
@@ -919,15 +921,6 @@
 			update_appearance()
 			return TRUE
 	return FALSE
-
-/obj/machinery/airalarm/attack_hand_secondary(mob/user, list/modifiers)
-	. = ..()
-	if(!can_interact(user))
-		return
-	if(!user.canUseTopic(src, !issilicon(user)) || !isturf(loc))
-		return
-	togglelock(user)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/machinery/airalarm/proc/togglelock(mob/living/user)
 	if(machine_stat & (NOPOWER|BROKEN))

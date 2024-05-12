@@ -31,27 +31,14 @@
 	SHOULD_CALL_PARENT(FALSE)
 	return below.examine(user)
 
-/**
- * Prepares a moving movable to be precipitated if Move() is successful.
- * This is done in Enter() and not Entered() because there's no easy way to tell
- * if the latter was called by Move() or forceMove() while the former is only called by Move().
- */
-/turf/open/openspace/Enter(atom/movable/movable, atom/oldloc)
-	. = ..()
-	if(.)
-		//higher priority than CURRENTLY_Z_FALLING so the movable doesn't fall on Entered()
-		movable.set_currently_z_moving(CURRENTLY_Z_FALLING_FROM_MOVE)
-
 ///Makes movables fall when forceMove()'d to this turf.
 /turf/open/openspace/Entered(atom/movable/movable)
 	. = ..()
-	if(movable.set_currently_z_moving(CURRENTLY_Z_FALLING))
-		movable.zFall(falling_from_move = TRUE)
-
-/turf/open/openspace/proc/zfall_if_on_turf(atom/movable/movable)
-	if(QDELETED(movable) || movable.loc != src)
-		return
 	movable.zFall()
+
+/turf/open/openspace/hitby(atom/movable/hitting_atom, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
+	. = ..()
+	hitting_atom.zFall()
 
 /turf/open/openspace/can_have_cabling()
 	if(locate(/obj/structure/lattice/catwalk, src))
@@ -122,42 +109,7 @@
 /turf/open/openspace/rust_heretic_act()
 	return FALSE
 
-/turf/open/openspace/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/turf/open/openspace/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(caller && !caller.can_z_move(DOWN, src, null , ZMOVE_FALL_FLAGS)) //If we can't fall here (flying/lattice), it's fine to path through
 		return TRUE
 	return FALSE
-
-/turf/open/openspace/icemoon
-	name = "ice chasm"
-	baseturfs = /turf/open/openspace/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
-	simulated = FALSE
-
-	var/replacement_turf = /turf/open/misc/asteroid/snow/icemoon
-	/// Replaces itself with replacement_turf if the turf below this one is in a no ruins allowed area (usually ruins themselves)
-	var/protect_ruin = TRUE
-	/// If true mineral turfs below this openspace turf will be mined automatically
-	var/drill_below = TRUE
-
-/turf/open/openspace/icemoon/Initialize(mapload)
-	. = ..()
-	var/turf/T = GetBelow(src)
-	//I wonder if I should error here
-	if(!T)
-		return
-	if(T.turf_flags & NO_RUINS && protect_ruin)
-		ChangeTurf(replacement_turf, null, CHANGETURF_IGNORE_AIR)
-		return
-	if(!ismineralturf(T) || !drill_below)
-		return
-	var/turf/closed/mineral/M = T
-	M.mineralAmt = 0
-	M.gets_drilled()
-	baseturfs = /turf/open/openspace/icemoon //This is to ensure that IF random turf generation produces a openturf, there won't be other turfs assigned other than openspace.
-
-/turf/open/openspace/icemoon/keep_below
-	drill_below = FALSE
-
-/turf/open/openspace/icemoon/ruins
-	protect_ruin = FALSE
-	drill_below = FALSE

@@ -6,7 +6,6 @@
 	inhand_icon_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	var/obj/item/implantcase/case = null
@@ -34,7 +33,7 @@
 
 /obj/item/implantpad/AltClick(mob/user)
 	..()
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		return
 	if(!case)
 		to_chat(user, span_warning("There's no implant to remove from [src]."))
@@ -60,7 +59,7 @@
 		return ..()
 
 /obj/item/implantpad/ui_interact(mob/user)
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 		user.unset_machine(src)
 		user << browse(null, "window=implantpad")
 		return

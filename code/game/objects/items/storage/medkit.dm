@@ -14,7 +14,6 @@
 	icon_state = "medkit"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	throw_speed = 3
 	throw_range = 7
 	var/empty = FALSE
 	var/damagetype_healed //defines damage type of the medkit. General ones stay null. Used for medibot healing bonuses
@@ -88,7 +87,7 @@
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/sensor_device,
 		/obj/item/radio,
-		/obj/item/clothing/gloves/,
+		/obj/item/clothing/gloves,
 		/obj/item/lazarus_injector,
 		/obj/item/bikehorn/rubberducky,
 		/obj/item/clothing/mask/surgical,
@@ -127,7 +126,7 @@
 	var/static/items_inside = list(
 		/obj/item/healthanalyzer = 1,
 		/obj/item/stack/gauze/twelve = 1,
-		/obj/item/stack/medical/bruise_pack = 2,
+		/obj/item/stack/medical/bruise_pack = 3,
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/scalpel = 1,
@@ -369,7 +368,7 @@
 	desc = "Contains pills used to reduce radiation damage."
 
 /obj/item/storage/pill_bottle/potassiodide/PopulateContents()
-	for(var/i in 1 to 3)
+	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/potassiodide(src)
 
 /obj/item/storage/pill_bottle/bicaridine
@@ -377,7 +376,7 @@
 	desc = "Contains pills used to treat brute damage."
 
 /obj/item/storage/pill_bottle/bicaridine/PopulateContents()
-	for(var/i in 1 to 4)
+	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/bicaridine(src)
 
 /obj/item/storage/pill_bottle/meralyne
@@ -385,15 +384,15 @@
 	desc = "Contains pills used to treat brute damage."
 
 /obj/item/storage/pill_bottle/meralyne/PopulateContents()
-	for(var/i in 1 to 4)
+	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/meralyne(src)
 
 /obj/item/storage/pill_bottle/dermaline
 	name = "bottle of dermaline pills"
 	desc = "Used to treat second and third degree burns."
 
-/obj/item/storage/pill_bottle/meralyne/PopulateContents()
-	for(var/i in 1 to 4)
+/obj/item/storage/pill_bottle/dermaline/PopulateContents()
+	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/dermaline(src)
 
 /obj/item/storage/pill_bottle/iron
@@ -401,7 +400,7 @@
 	desc = "Contains pills used to reduce blood loss slowly.The tag in the bottle states 'Only take one each five minutes'."
 
 /obj/item/storage/pill_bottle/iron/PopulateContents()
-	for(var/i in 1 to 4)
+	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/iron(src)
 
 /obj/item/storage/pill_bottle/alkysine
@@ -527,7 +526,6 @@
 	base_icon_state = "organbox"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	throw_speed = 3
 	throw_range = 7
 	custom_premium_price = PAYCHECK_MEDIUM * 4
 	/// var to prevent it freezing the same things over and over

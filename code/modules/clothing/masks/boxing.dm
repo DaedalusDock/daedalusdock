@@ -20,7 +20,7 @@
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	visor_flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	w_class = WEIGHT_CLASS_SMALL
-	armor = list(MELEE = 10, BULLET = 5, LASER = 5,ENERGY = 5, BOMB = 0, BIO = 0, FIRE = 100, ACID = 40)
+	armor = list(BLUNT = 10, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 5, BOMB = 0, BIO = 0, FIRE = 100, ACID = 40)
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/mask/infiltrator/equipped(mob/living/carbon/human/user, slot)
@@ -30,7 +30,7 @@
 	to_chat(user, "You roll the balaclava over your face, and a data display appears before your eyes.")
 	ADD_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, MASK_TRAIT)
 	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_DIAGNOSTIC_BASIC]
-	H.add_hud_to(user)
+	H.show_to(user)
 	ADD_TRAIT(src, TRAIT_HIDES_VOICE, REF(src))
 
 /obj/item/clothing/mask/infiltrator/dropped(mob/living/carbon/human/user)
@@ -38,7 +38,7 @@
 	REMOVE_TRAIT(src, TRAIT_HIDES_VOICE, REF(src))
 	REMOVE_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, MASK_TRAIT)
 	var/datum/atom_hud/H = GLOB.huds[DATA_HUD_DIAGNOSTIC_BASIC]
-	H.remove_hud_from(user)
+	H.hide_from(user)
 	return ..()
 
 /obj/item/clothing/mask/luchador

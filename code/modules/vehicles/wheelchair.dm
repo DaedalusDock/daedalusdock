@@ -5,7 +5,7 @@
 	icon_state = "wheelchair"
 	layer = OBJ_LAYER
 	max_integrity = 100
-	armor = list(MELEE = 10, BULLET = 10, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 30) //Wheelchairs aren't super tough yo
+	armor = list(BLUNT = 10, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 30) //Wheelchairs aren't super tough yo
 	density = FALSE //Thought I couldn't fix this one easily, phew
 	/// Run speed delay is multiplied with this for vehicle move delay.
 	var/delay_multiplier = 6.7
@@ -67,7 +67,7 @@
 	icon_state = "gold_wheelchair"
 	overlay_icon = "gold_wheelchair_overlay"
 	max_integrity = 200
-	armor = list(MELEE = 20, BULLET = 20, LASER = 20, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 40)
+	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 20, BIO = 0, FIRE = 30, ACID = 40)
 	custom_materials = list(/datum/material/gold = 10000)
 	foldabletype = /obj/item/wheelchair/gold
 
@@ -101,7 +101,7 @@
 	. = ..()
 	if(over_object != usr || !Adjacent(usr) || !foldabletype)
 		return FALSE
-	if(!ishuman(usr) || !usr.canUseTopic(src, BE_CLOSE))
+	if(!ishuman(usr) || !usr.canUseTopic(src, USE_CLOSE))
 		return FALSE
 	if(has_buckled_mobs())
 		return FALSE

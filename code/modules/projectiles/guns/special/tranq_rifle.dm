@@ -8,7 +8,6 @@
 	inhand_icon_state = "hunting_rifle"
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = null
-	throw_speed = 3
 	throw_range = 7
 	force = 6
 	custom_materials = list(/datum/material/iron=2000)
@@ -32,16 +31,18 @@
 	return list()
 
 /obj/item/gun/ballistic/rifle/tranqrifle/rack(mob/user)
-	if(!bolt_locked)
+	if(!bolt.is_locked)
 		if(!magazine && chambered)
 			to_chat(user, span_warning("The bolt won't budge!"))
 			return
+
 		if(magazine && chambered && !magazine.give_round(chambered))
 			to_chat(user, span_warning("The bolt won't budge!"))
 			return
+
 		to_chat(user, span_notice("You open the bolt of \the [src]."))
 		playsound(src, rack_sound, rack_sound_volume, rack_sound_vary)
 		chambered = null
-		bolt_locked = TRUE
+		bolt.is_locked = TRUE
 		return
 	drop_bolt(user)

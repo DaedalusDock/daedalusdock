@@ -16,7 +16,6 @@ SUBSYSTEM_DEF(persistence)
 	var/list/saved_messages = list()
 	var/list/saved_modes = list(1,2,3)
 	var/list/saved_maps = list()
-	var/list/blocked_maps = list()
 	var/list/saved_trophies = list()
 	var/list/picture_logging_information = list()
 	var/list/obj/structure/sign/picture_frame/photo_frames
@@ -212,18 +211,6 @@ SUBSYSTEM_DEF(persistence)
 	if(!json)
 		return
 	saved_maps = json["data"]
-
-	//Convert the mapping data to a shared blocking list, saves us doing this in several places later.
-	for(var/map in config.maplist)
-		var/datum/map_config/VM = config.maplist[map]
-		var/run = 0
-		if(VM.map_name == SSmapping.config.map_name)
-			run++
-		for(var/name in SSpersistence.saved_maps)
-			if(VM.map_name == name)
-				run++
-		if(run >= 2) //If run twice in the last KEEP_ROUNDS_MAP + 1 (including current) rounds, disable map for voting and rotation.
-			blocked_maps += VM.map_name
 
 /datum/controller/subsystem/persistence/proc/SetUpTrophies(list/trophy_items)
 	for(var/A in GLOB.trophy_cases)

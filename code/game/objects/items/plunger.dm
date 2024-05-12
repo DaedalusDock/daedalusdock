@@ -13,7 +13,7 @@
 	///whether we do heavy duty stuff like geysers
 	var/reinforced = TRUE
 
-/obj/item/plunger/attack_atom(obj/O, mob/living/user, params)
+/obj/item/plunger/attack_obj(obj/O, mob/living/user, params)
 	if(!O.plunger_act(src, user, reinforced))
 		return ..()
 

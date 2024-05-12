@@ -64,24 +64,21 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	C.adjust_nutrition(nutriment_factor * removed)
 
 	APPLY_CHEM_EFFECT(C, CE_ALCOHOL, 1)
-	var/effective_dose = volume * (1 + volume/60) //drinking a LOT will make you go down faster
+	var/effective_dose = boozepwr * (1 + volume/60) //drinking a LOT will make you go down faster
 
-	if(effective_dose >= boozepwr / 20) // Early warning
-		C.set_timed_status_effect(2 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
+	if(effective_dose >= 50)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
-	if(effective_dose >= boozepwr / 13) // Slurring
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
+	if(effective_dose >= 75)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
-	if(effective_dose >= boozepwr / 6.5) // Confusion - walking in random directions
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
+	if(effective_dose >= 100)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
-	if(effective_dose >= boozepwr / 3.25) // Blurry vision
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
+	if(effective_dose >= 125)
+		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 900/boozepwr)
 
-	if(effective_dose >= boozepwr / 1.75) // Drowsyness - periodically falling asleep
-		APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 150/boozepwr)
-
-	if(effective_dose >= boozepwr) // Toxic dose
+	if(effective_dose >= 150)
 		APPLY_CHEM_EFFECT(C, CE_ALCOHOL_TOXIC, toxicity)
 
 	if(druggy)
@@ -355,16 +352,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		else
 			return list("synthetic wine"=1)
 	return ..()
-
-/datum/reagent/consumable/ethanol/lizardwine
-	name = "Unathi Wine"
-	description = "An alcoholic beverage from Space China, made by infusing unathi tails in ethanol."
-	color = "#7E4043" // rgb: 126, 64, 67
-	boozepwr = 45
-	quality = DRINK_FANTASTIC
-	taste_description = "scaley sweetness"
-
-	glass_price = DRINK_PRICE_STOCK
 
 /datum/reagent/consumable/ethanol/grappa
 	name = "Grappa"
@@ -1051,7 +1038,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/sbiten/affect_ingest(mob/living/carbon/C, removed)
-	C.adjust_bodytemperature(10  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, BODYTEMP_HEAT_DAMAGE_LIMIT) //310.15 is the normal bodytemp.
+	C.adjust_bodytemperature(10  * TEMPERATURE_DAMAGE_COEFFICIENT * removed, 0, C.dna.species.heat_level_1) //310.15 is the normal bodytemp.
 	return ..()
 
 /datum/reagent/consumable/ethanol/red_mead
@@ -1420,7 +1407,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 /datum/reagent/consumable/ethanol/neurotoxin/affect_ingest(mob/living/carbon/C, removed)
 	C.set_timed_status_effect(100 SECONDS * removed, /datum/status_effect/drugginess)
 	C.adjust_timed_status_effect(4 SECONDS * removed, /datum/status_effect/dizziness)
-	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1 * removed, 150)
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5 * removed, 150, updating_health = FALSE)
 	if(prob(20))
 		C.stamina.adjust(-10)
 		C.drop_all_held_items()
@@ -1431,10 +1418,10 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			ADD_TRAIT(C, paralyzed_limb, type)
 			C.stamina.adjust(-10)
 		if(current_cycle > 30)
-			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed)
+			C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2 * removed, updating_health = FALSE)
 			if(current_cycle > 50 && prob(15))
-				if(!C.undergoing_cardiac_arrest() && C.can_heartattack())
-					C.set_heartattack(TRUE)
+				if(C.set_heartattack(TRUE))
+					log_health(C, "Heart stopped due to ethanol (neurotoxin) consumption.")
 					if(C.stat == CONSCIOUS)
 						C.visible_message(span_userdanger("[C] clutches at [C.p_their()] chest as if [C.p_their()] heart stopped!"))
 	. = TRUE
@@ -2252,7 +2239,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	taste_description = "fiery, with an aftertaste of burnt flesh"
 	glass_icon_state = "mauna_loa"
 	glass_name = "Mauna Loa"
-	glass_desc = "Lavaland in a drink... mug... volcano... thing."
+	glass_desc = "Lava in a drink... mug... volcano... thing."
 
 	ingest_met = 1
 
@@ -2342,7 +2329,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/kortara
 	name = "Kortara"
-	description = "A sweet, milky nut-based drink enjoyed on Tizira. Frequently mixed with fruit juices and cocoa for extra refreshment."
+	description = "A sweet, milky nut-based drink enjoyed on Jitarai. Frequently mixed with fruit juices and cocoa for extra refreshment."
 	boozepwr = 25
 	color = "#EEC39A"
 	quality = DRINK_GOOD
@@ -2374,14 +2361,14 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	C.apply_status_effect(/datum/status_effect/throat_soothed)
 	return ..()
 /datum/reagent/consumable/ethanol/white_tiziran
-	name = "White Tiziran"
+	name = "White Vodtara"
 	description = "A mix of vodka and kortara. The Lizard imbibes."
 	boozepwr = 65
 	color = "#A68340"
 	quality = DRINK_GOOD
 	taste_description = "strikes and gutters"
 	glass_icon_state = "white_tiziran"
-	glass_name = "White Tiziran"
+	glass_name = "White Vodtara"
 	glass_desc = "I had a rough night and I hate the fucking humans, man."
 
 
@@ -2410,7 +2397,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	taste_description = "regret"
 	glass_icon_state = "protein_blend"
 	glass_name = "Protein Blend"
-	glass_desc = "Vile, even by unathi standards."
+	glass_desc = "Vile, even by Jinan standards."
 	nutriment_factor = 3 * REAGENTS_METABOLISM
 
 
@@ -2431,7 +2418,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/mushi_kombucha
 	name = "Mushi Kombucha"
-	description = "A popular summer beverage on Tizira, made from sweetened mushroom tea."
+	description = "A popular Sol-summer beverage made from sweetened mushroom tea."
 	boozepwr = 10
 	color = "#C46400"
 	quality = DRINK_VERYGOOD
@@ -2443,7 +2430,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 /datum/reagent/consumable/ethanol/triumphal_arch
 	name = "Triumphal Arch"
-	description = "A drink celebrating the Unathi Empire and its military victories. It's popular at bars on Unification Day."
+	description = "A drink celebrating the Jinan Unified Government. It's popular at bars on Unification Day."
 	boozepwr = 60
 	color = "#FFD700"
 	quality = DRINK_FANTASTIC

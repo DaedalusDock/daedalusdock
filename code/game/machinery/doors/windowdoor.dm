@@ -9,7 +9,7 @@
 	var/base_state = "left"
 	max_integrity = 150 //If you change this, consider changing ../door/window/brigdoor/ max_integrity at the bottom of this .dm file
 	integrity_failure = 0
-	armor = list(MELEE = 20, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
+	armor = list(BLUNT = 20, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 70, ACID = 100)
 	visible = FALSE
 	flags_1 = ON_BORDER_1
 	opacity = FALSE
@@ -18,7 +18,6 @@
 	interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_REQUIRES_SILICON | INTERACT_MACHINE_OPEN
 	set_dir_on_move = FALSE
 	auto_dir_align = FALSE
-	loc_procs = EXIT
 
 	var/obj/item/electronics/airlock/electronics = null
 	var/reinf = 0
@@ -47,6 +46,12 @@
 
 	src.unres_sides = unres_sides
 	update_appearance(UPDATE_ICON)
+
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_EXIT = PROC_REF(on_exit),
+	)
+
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 	zas_update_loc()
 	become_atmos_sensitive()
@@ -165,11 +170,11 @@
 		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
-	return !density || (dir != to_dir) || (check_access(ID) && hasPower() && !no_id)
+/obj/machinery/door/window/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
+	return !density || (dir != to_dir) || (check_access_list(access) && hasPower() && !no_id)
 
-/obj/machinery/door/window/Exit(atom/movable/leaving, direction)
-	. = ..()
+/obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
+	SIGNAL_HANDLER
 	if(leaving.movement_type & PHASING)
 		return
 
@@ -181,7 +186,7 @@
 
 	if(direction == dir && density)
 		leaving.Bump(src)
-		return FALSE
+		return COMPONENT_ATOM_BLOCK_EXIT
 
 /obj/machinery/door/window/open(forced=FALSE)
 	if (operating) //doors can still open when emag-disabled
@@ -199,6 +204,7 @@
 	icon_state ="[base_state]open"
 	sleep(10)
 	set_density(FALSE)
+	update_appearance(UPDATE_ICON_STATE)
 	update_freelook_sight()
 
 	if(operating == 1) //emag again
@@ -220,6 +226,7 @@
 	icon_state = base_state
 
 	set_density(TRUE)
+	update_appearance(UPDATE_ICON_STATE)
 	update_freelook_sight()
 	sleep(10)
 
@@ -255,7 +262,7 @@
 	if((exposed_temperature > T0C + (reinf ? 1600 : 800)))
 		take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
-/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume)
+/obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
@@ -279,7 +286,7 @@
 	if(!operating && density && !(obj_flags & EMAGGED))
 		obj_flags |= EMAGGED
 		operating = TRUE
-		flick("[base_state]spark", src)
+		z_flick("[base_state]spark", src)
 		playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		sleep(6)
 		operating = FALSE
@@ -293,7 +300,7 @@
 	if(density || operating)
 		to_chat(user, span_warning("You need to open the door to access the maintenance panel!"))
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	tool.play_tool_sound(src)
 	panel_open = !panel_open
 	to_chat(user, span_notice("You [panel_open ? "open" : "close"] the maintenance panel."))
@@ -305,7 +312,7 @@
 		return
 	if(!panel_open || density || operating)
 		return
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	user.visible_message(span_notice("[user] removes the electronics from the [name]."), \
 	span_notice("You start to remove electronics from the [name]..."))
 	if(!tool.use_tool(src, user, 40, volume=50))
@@ -352,7 +359,7 @@
 /obj/machinery/door/window/interact(mob/user) //for sillycones
 	try_to_activate_door(user)
 
-/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/window/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	if (..())
 		autoclose = FALSE
 
@@ -373,12 +380,11 @@
 /obj/machinery/door/window/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("[base_state]opening", src)
+			z_flick("[base_state]opening", src)
 		if("closing")
-			flick("[base_state]closing", src)
+			z_flick("[base_state]closing", src)
 		if("deny")
-			flick("[base_state]deny", src)
-
+			z_flick("[base_state]deny", src)
 
 /obj/machinery/door/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)

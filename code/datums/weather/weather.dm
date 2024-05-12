@@ -1,7 +1,7 @@
 /**
  * Causes weather to occur on a z level in certain area types
  *
- * The effects of weather occur across an entire z-level. For instance, lavaland has periodic ash storms that scorch most unprotected creatures.
+ * The effects of weather occur across an entire z-level.
  * Weather always occurs on different z levels at different times, regardless of weather type.
  * Can have custom durations, targets, and can automatically protect indoor areas.
  *
@@ -91,7 +91,7 @@
  * Calculates duration and hit areas, and makes a callback for the actual weather to start
  *
  */
-/datum/weather/proc/telegraph()
+/datum/weather/proc/telegraph(get_to_the_good_part)
 	if(stage == STARTUP_STAGE)
 		return
 	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_TELEGRAPH(type))
@@ -110,16 +110,19 @@
 	weather_duration = rand(weather_duration_lower, weather_duration_upper)
 	SSweather.processing |= src
 	update_areas()
-	for(var/z_level in impacted_z_levels)
-		for(var/mob/player as anything in SSmobs.clients_by_zlevel[z_level])
-			var/turf/mob_turf = get_turf(player)
-			if(!mob_turf)
-				continue
-			if(telegraph_message)
-				to_chat(player, telegraph_message)
-			if(telegraph_sound)
-				SEND_SOUND(player, sound(telegraph_sound))
-	addtimer(CALLBACK(src, PROC_REF(start)), telegraph_duration)
+	if(!get_to_the_good_part)
+		for(var/z_level in impacted_z_levels)
+			for(var/mob/player as anything in SSmobs.clients_by_zlevel[z_level])
+				var/turf/mob_turf = get_turf(player)
+				if(!mob_turf)
+					continue
+				if(telegraph_message)
+					to_chat(player, telegraph_message)
+				if(telegraph_sound)
+					SEND_SOUND(player, sound(telegraph_sound))
+		addtimer(CALLBACK(src, PROC_REF(start)), telegraph_duration)
+	else
+		start()
 
 /**
  * Starts the actual weather and effects from it
@@ -240,7 +243,7 @@
 			if(END_STAGE)
 				N.color = null
 				N.icon_state = ""
-				N.icon = 'icons/area/areas_misc.dmi'
+				N.icon = null
 				N.layer = initial(N.layer)
 				N.plane = initial(N.plane)
 				N.set_opacity(FALSE)

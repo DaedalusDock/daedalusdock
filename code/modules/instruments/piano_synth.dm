@@ -21,7 +21,7 @@
 	righthand_file = 'icons/mob/inhands/clothing_righthand.dmi'
 	icon_state = "headphones"
 	inhand_icon_state = "headphones"
-	slot_flags = ITEM_SLOT_EARS | ITEM_SLOT_HEAD
+	slot_flags = ITEM_SLOT_EARS | ITEM_SLOT_HEAD | ITEM_SLOT_NECK
 	force = 0
 	w_class = WEIGHT_CLASS_SMALL
 	custom_price = PAYCHECK_ASSISTANT * 2.5

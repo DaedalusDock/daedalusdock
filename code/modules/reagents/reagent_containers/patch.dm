@@ -13,7 +13,7 @@
 
 /obj/item/reagent_containers/pill/patch/attack(mob/living/L, mob/user)
 	if(ishuman(L))
-		var/obj/item/bodypart/affecting = L.get_bodypart(check_zone(user.zone_selected))
+		var/obj/item/bodypart/affecting = L.get_bodypart(deprecise_zone(user.zone_selected))
 		if(!affecting)
 			to_chat(user, span_warning("The limb is missing!"))
 			return

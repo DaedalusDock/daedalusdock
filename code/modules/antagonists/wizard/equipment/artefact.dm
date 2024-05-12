@@ -52,6 +52,10 @@
 	src.spawn_fast = spawn_fast
 	START_PROCESSING(SSobj, src)
 
+/obj/effect/rend/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
 /obj/effect/rend/process()
 	if(!spawn_fast)
 		if(locate(/mob) in loc)
@@ -161,7 +165,6 @@
 	desc = "An incandescent orb of otherworldly energy, merely holding it gives you vision and hearing beyond mortal means, and staring into it lets you see the entire universe."
 	icon = 'icons/obj/guns/projectiles.dmi'
 	icon_state ="bluespace"
-	throw_speed = 3
 	throw_range = 7
 	throwforce = 15
 	damtype = BURN
@@ -224,7 +227,7 @@
 	if(!istype(M))
 		return ..()
 
-	if(!istype(user) || !user.canUseTopic(M, BE_CLOSE))
+	if(!istype(user) || !user.canUseTopic(M, USE_CLOSE))
 		return
 
 	if(M.stat != DEAD)
@@ -287,13 +290,6 @@
 	H.put_in_hands(new /obj/item/shield/riot/roman(H), TRUE)
 	H.put_in_hands(new /obj/item/claymore(H), TRUE)
 	H.equip_to_slot_or_del(new /obj/item/spear(H), ITEM_SLOT_BACK)
-
-//Provides a decent heal, need to pump every 6 seconds
-/obj/item/organ/heart/cursed/wizard
-	pump_delay = 60
-	heal_brute = 25
-	heal_burn = 25
-	heal_oxy = 25
 
 //Warp Whistle: Provides uncontrolled long distance teleportation.
 /obj/item/warpwhistle

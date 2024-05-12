@@ -46,11 +46,15 @@
 	brother2.set_species(/datum/species/moth)
 
 	var/icon/brother1_icon = render_preview_outfit(/datum/outfit/job/quartermaster, brother1)
-	brother1_icon.Blend(icon('icons/effects/blood.dmi', "maskblood"), ICON_OVERLAY)
+	var/icon/blood_overlay = icon('icons/effects/blood.dmi', "maskblood")
+	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
+	brother1_icon.Blend(blood_overlay, ICON_OVERLAY)
 	brother1_icon.Shift(WEST, 8)
 
 	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/scientist/consistent, brother2)
-	brother2_icon.Blend(icon('icons/effects/blood.dmi', "uniformblood"), ICON_OVERLAY)
+	blood_overlay = icon('icons/effects/blood.dmi', "uniformblood")
+	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
+	brother2_icon.Blend(blood_overlay, ICON_OVERLAY)
 	brother2_icon.Shift(EAST, 8)
 
 	var/icon/final_icon = brother1_icon
@@ -171,21 +175,13 @@
 
 /datum/team/brother_team/proc/forge_brother_objectives()
 	objectives = list()
-	var/is_hijacker = prob(10)
-	for(var/i = 1 to max(1, CONFIG_GET(number/brother_objectives_amount) + (members.len > 2) - is_hijacker))
+	for(var/i = 1 to max(1, CONFIG_GET(number/brother_objectives_amount) + (members.len > 2)))
 		forge_single_objective()
-	if(is_hijacker)
-		if(!locate(/datum/objective/hijack) in objectives)
-			add_objective(new/datum/objective/hijack)
-	else if(!locate(/datum/objective/escape) in objectives)
-		add_objective(new/datum/objective/escape)
 
 /datum/team/brother_team/proc/forge_single_objective()
 	if(prob(50))
 		if(LAZYLEN(active_ais()) && prob(100/GLOB.joined_player_list.len))
 			add_objective(new/datum/objective/destroy, TRUE)
-		else if(prob(30))
-			add_objective(new/datum/objective/maroon, TRUE)
 		else
 			add_objective(new/datum/objective/assassinate, TRUE)
 	else

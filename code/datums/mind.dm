@@ -50,12 +50,15 @@
 	var/datum/martial_art/martial_art
 	var/static/default_martial_art = new/datum/martial_art
 	var/miming = FALSE // Mime's vow of silence
+
 	var/list/antag_datums
-	var/antag_hud_icon_state = null //this mind's ANTAG_HUD should have this icon_state
-	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null //this mind's antag HUD
+	///this mind's antag HUD
+	var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud = null
+
 	var/holy_role = NONE //is this person a chaplain or admin role allowed to use bibles, Any rank besides 'NONE' allows for this.
 
-	var/mob/living/enslaved_to //If this mind's master is another mob (i.e. adamantine golems)
+	///If this mind's master is another mob (i.e. adamantine golems)
+	var/mob/living/enslaved_to
 	var/datum/language_holder/language_holder
 	var/unconvertable = FALSE
 	var/late_joiner = FALSE
@@ -130,6 +133,7 @@
 	set_current(null)
 
 /datum/mind/proc/get_language_holder()
+	RETURN_TYPE(/datum/language_holder)
 	if(!language_holder)
 		language_holder = new (src)
 	return language_holder
@@ -153,24 +157,40 @@
 	var/mob/living/old_current = current
 	if(current)
 		current.transfer_observers_to(new_character) //transfer anyone observing the old character to the new one
+
 	set_current(new_character) //associate ourself with our new body
 	QDEL_NULL(antag_hud)
+
 	new_character.mind = src //and associate our new body with ourself
-	antag_hud = new_character.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/antagonist_hud, "combo_hud", src)
+
+	antag_hud = new_character.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/antagonist_hud, "combo_hud", current, src)
+
 	for(var/a in antag_datums) //Makes sure all antag datums effects are applied in the new body
 		var/datum/antagonist/A = a
 		A.on_body_transfer(old_current, current)
+
 	if(iscarbon(new_character))
 		var/mob/living/carbon/C = new_character
 		C.last_mind = src
+
 	transfer_martial_arts(new_character)
+
+	// If the new mob is immune to addictions, cure them all.
+	if(HAS_TRAIT(new_character, TRAIT_NO_ADDICTION))
+		for(var/addiction_type in subtypesof(/datum/addiction))
+			remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS)
+
 	RegisterSignal(new_character, COMSIG_LIVING_DEATH, PROC_REF(set_death_time))
+
 	if(active || force_key_move)
 		new_character.key = key //now transfer the key to link the client to our new body
+
 	if(new_character.client)
 		LAZYCLEARLIST(new_character.client.recent_examines)
 		new_character.client.init_verbs() // re-initialize character specific verbs
+
 	current.update_atom_languages()
+
 	SEND_SIGNAL(src, COMSIG_MIND_TRANSFERRED, old_current)
 	SEND_SIGNAL(current, COMSIG_MOB_MIND_TRANSFERRED_INTO)
 
@@ -715,7 +735,7 @@
 					log_admin("[key_name(usr)] gave [current] an uplink.")
 
 	else if (href_list["obj_announce"])
-		announce_objectives()
+		announce_objectives(TRUE)
 
 	//Something in here might have changed your mob
 	if(self_antagging && (!usr || !usr.client) && current.client)
@@ -729,12 +749,26 @@
 		all_objectives |= A.objectives
 	return all_objectives
 
-/datum/mind/proc/announce_objectives()
+/// Prints the objectives to the mind's owner. If loudly is true, instead open a window.
+/datum/mind/proc/announce_objectives(loudly)
 	var/obj_count = 1
-	to_chat(current, span_notice("Your current objectives:"))
-	for(var/datum/objective/objective as anything in get_all_objectives())
-		to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
-		obj_count++
+	if(!loudly)
+		to_chat(current, span_notice("Your current objectives:"))
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
+			obj_count++
+	else
+		var/list/content = list("<div>")
+		content +="<span style='text-align: center;color: red'><h1>Your objectives may have been changed!</h1></span><br><br>"
+		for(var/datum/objective/objective as anything in get_all_objectives())
+			content += "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]<br><br>"
+			obj_count++
+
+		content += "</div>"
+		var/datum/browser/popup = new(current, "Objectives", "Objectives", 700, 300)
+		popup.set_window_options("can_close=1;can_minimize=10;can_maximize=0;can_resize=0;titlebar=1;")
+		popup.set_content(jointext(content, ""))
+		popup.open(current)
 
 /datum/mind/proc/find_syndicate_uplink(check_unlocked)
 	var/list/L = current.get_all_contents()
@@ -835,6 +869,8 @@
 
 ///Adds addiction points to the specified addiction
 /datum/mind/proc/add_addiction_points(type, amount)
+	if(current && HAS_TRAIT(current, TRAIT_NO_ADDICTION))
+		return
 	LAZYSET(addiction_points, type, min(LAZYACCESS(addiction_points, type) + amount, MAX_ADDICTION_POINTS))
 	var/datum/addiction/affected_addiction = SSaddiction.all_addictions[type]
 	return affected_addiction.on_gain_addiction_points(src)

@@ -68,7 +68,7 @@
 
 /turf/open/lava/process(delta_time)
 	if(!burn_stuff(null, delta_time))
-		STOP_PROCESSING(SSobj, src)
+		return PROCESS_KILL
 
 /turf/open/lava/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)
@@ -230,11 +230,6 @@
 	smoothing_groups = SMOOTH_GROUP_TURF_OPEN + SMOOTH_GROUP_FLOOR_LAVA
 	canSmoothWith = SMOOTH_GROUP_FLOOR_LAVA
 	underfloor_accessibility = 2 //This avoids strangeness when routing pipes / wires along catwalks over lava
-
-/turf/open/lava/smooth/lava_land_surface
-	initial_gas = LAVALAND_DEFAULT_ATMOS
-
-	baseturfs = /turf/open/lava/smooth/lava_land_surface
 
 /turf/open/lava/smooth/airless
 	initial_gas = AIRLESS_ATMOS

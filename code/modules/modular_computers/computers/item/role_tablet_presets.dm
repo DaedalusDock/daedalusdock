@@ -53,7 +53,7 @@
 	default_disk = /obj/item/computer_hardware/hard_drive/role/hop
 
 /obj/item/modular_computer/tablet/pda/heads/hos
-	name = "head of security PDA"
+	name = "security marshal PDA"
 	default_disk = /obj/item/computer_hardware/hard_drive/role/hos
 	greyscale_config = /datum/greyscale_config/tablet/head
 	greyscale_colors = "#EA3232#0000CC"
@@ -89,7 +89,7 @@
 	RegisterSignal(src, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(tab_no_detonate))
 
 /obj/item/modular_computer/tablet/pda/cargo
-	name = "cargo technician PDA"
+	name = "deckhand PDA"
 	default_disk = /obj/item/computer_hardware/hard_drive/role/quartermaster
 	greyscale_colors = "#D6B328#6506CA"
 
@@ -195,23 +195,15 @@
 	if(hdd)
 		for(var/datum/computer_file/program/messenger/msg in hdd.stored_files)
 			msg.mime_mode = TRUE
-			msg.allow_emojis = TRUE
+
 
 /obj/item/modular_computer/tablet/pda/curator
-	name = "curator PDA"
+	name = "archivist PDA"
 	default_disk = /obj/item/computer_hardware/hard_drive/role/curator
 	greyscale_config = null
 	greyscale_colors = null
 	icon_state = "pda-library"
 	insert_type = /obj/item/pen/fountain
-
-/obj/item/modular_computer/tablet/pda/curator/Initialize(mapload)
-	. = ..()
-	var/obj/item/computer_hardware/hard_drive/hdd = all_components[MC_HDD]
-
-	if(hdd)
-		for(var/datum/computer_file/program/messenger/msg in hdd.stored_files)
-			msg.allow_emojis = TRUE
 
 /obj/item/modular_computer/tablet/pda/syndicate
 	name = "military PDA"

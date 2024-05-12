@@ -76,8 +76,8 @@
 		return COMPONENT_INCOMPATIBLE
 
 	var/atom/movable/movable_parent = parent
-	if(movable_parent.light_system != MOVABLE_LIGHT && movable_parent.light_system != MOVABLE_LIGHT_DIRECTIONAL)
-		stack_trace("[type] added to [parent], with [movable_parent.light_system] value for the light_system var. Use [MOVABLE_LIGHT] or [MOVABLE_LIGHT_DIRECTIONAL] instead.")
+	if(movable_parent.light_system != OVERLAY_LIGHT && movable_parent.light_system != OVERLAY_LIGHT_DIRECTIONAL)
+		stack_trace("[type] added to [parent], with [movable_parent.light_system] value for the light_system var. Use [OVERLAY_LIGHT] or [OVERLAY_LIGHT_DIRECTIONAL] instead.")
 		return COMPONENT_INCOMPATIBLE
 
 	. = ..()
@@ -420,11 +420,13 @@
 /datum/component/overlay_lighting/proc/turn_on()
 	if(overlay_lighting_flags & LIGHTING_ON)
 		return
+
+	overlay_lighting_flags |= LIGHTING_ON
 	if(current_holder)
+		add_dynamic_lumi()
 		if(directional)
 			cast_directional_light()
-		add_dynamic_lumi()
-	overlay_lighting_flags |= LIGHTING_ON
+
 	if(current_holder && current_holder != parent && current_holder != parent_attached_to)
 		RegisterSignal(current_holder, COMSIG_MOVABLE_MOVED, PROC_REF(on_holder_moved))
 	get_new_turfs()

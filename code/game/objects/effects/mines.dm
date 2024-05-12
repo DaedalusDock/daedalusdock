@@ -5,8 +5,6 @@
 	anchored = TRUE
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "uglymine"
-	loc_procs = CROSSED
-
 	/// We manually check to see if we've been triggered in case multiple atoms cross us in the time between the mine being triggered and it actually deleting, to avoid a race condition with multiple detonations
 	var/triggered = FALSE
 	/// Can be set to FALSE if we want a short 'coming online' delay, then set to TRUE. Can still be set off by damage
@@ -20,6 +18,10 @@
 		armed = FALSE
 		icon_state = "uglymine-inactive"
 		addtimer(CALLBACK(src, PROC_REF(now_armed)), arm_delay)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/mine/examine(mob/user)
 	. = ..()
@@ -37,14 +39,18 @@
 	playsound(src, 'sound/machines/nuke/angry_beep.ogg', 40, FALSE, -2)
 	visible_message(span_danger("\The [src] beeps softly, indicating it is now active."), vision_distance = COMBAT_MESSAGE_RANGE)
 
-/obj/effect/mine/Crossed(atom/movable/crossed_by, oldloc)
+/obj/effect/mine/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
+		return
+
 	if(triggered || !isturf(loc) || !armed)
 		return
 
-	if(crossed_by.movement_type & FLYING)
+	if(AM.movement_type & FLYING)
 		return
 
-	triggermine(crossed_by)
+	triggermine(AM)
 
 /obj/effect/mine/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir)
 	. = ..()
@@ -203,6 +209,6 @@
 	playsound(loc, 'sound/machines/chime.ogg', 30, FALSE, -3)
 	var/obj/effect/mine/new_mine = new mine_type(get_turf(src))
 	visible_message(span_danger("\The [src] releases a puff of smoke, revealing \a [new_mine]!"))
-	var/obj/effect/particle_effect/smoke/poof = new (get_turf(src))
+	var/obj/effect/particle_effect/fluid/smoke/poof = new (get_turf(src))
 	poof.lifetime = 3
 	qdel(src)

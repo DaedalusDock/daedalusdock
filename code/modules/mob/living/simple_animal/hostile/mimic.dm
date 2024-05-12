@@ -19,7 +19,7 @@
 	harm_intent_damage = 5
 	melee_damage_lower = 8
 	melee_damage_upper = 12
-	attack_sound = 'sound/weapons/punch1.ogg'
+	attack_sound = SFX_PUNCH
 	emote_taunt = list("growls")
 	speak_emote = list("creaks")
 	taunt_chance = 30
@@ -383,7 +383,7 @@ GLOBAL_LIST_INIT(mimic_blacklist, list(/obj/structure/table, /obj/structure/cabl
 			for(var/mob/living/M in contents)
 				if(++mobs_stored >= mob_storage_capacity)
 					return FALSE
-		L.stop_pulling()
+		L.release_all_grabs()
 
 	else if(istype(AM, /obj/structure/closet))
 		return FALSE

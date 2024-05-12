@@ -2,6 +2,7 @@
 #define MODE_BUILD 0
 #define MAX_QUEUE_LEN 5
 
+DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production
 	name = "technology fabricator"
 	desc = "Makes researched and prototype items with materials and energy."
@@ -243,7 +244,7 @@
 	if(!(D in internal_disk.read(DATA_IDX_DESIGNS)))
 		CRASH("Tried to print a design we don't have! Potential exploit?")
 
-	playsound(src, 'goon/sounds/button.ogg')
+	playsound(src, 'goon/sounds/button.ogg', 100)
 	update_appearance(UPDATE_OVERLAYS)
 	add_to_queue(D, amount, D.dangerous_construction)
 	return TRUE
@@ -353,9 +354,9 @@
 
 		temp_material += " | "
 		if (enough_mats < 1)
-			temp_material += "<span class='bad'>[cached_mats[material]/coeff] [SSmaterials.CallMaterialName(material)]</span>"
+			temp_material += "<span class='bad'>[cached_mats[material]/coeff] [SSmaterials.GetMaterialName(material)]</span>"
 		else
-			temp_material += " [cached_mats[material]/coeff] [SSmaterials.CallMaterialName(material)]"
+			temp_material += " [cached_mats[material]/coeff] [SSmaterials.GetMaterialName(material)]"
 
 	var/list/cached_reagents = D.reagents_list
 	for(var/reagent in cached_reagents)
@@ -364,9 +365,9 @@
 
 		temp_material += " | "
 		if (enough_chems < 1)
-			temp_material += "<span class='bad'>[cached_reagents[reagent]/coeff] [SSmaterials.CallMaterialName(reagent)]</span>"
+			temp_material += "<span class='bad'>[cached_reagents[reagent]/coeff] [SSmaterials.GetMaterialName(reagent)]</span>"
 		else
-			temp_material += " [cached_reagents[reagent]/coeff] [SSmaterials.CallMaterialName(reagent)]"
+			temp_material += " [cached_reagents[reagent]/coeff] [SSmaterials.GetMaterialName(reagent)]"
 
 	if (max_production >= 1)
 		entry_text += "<A href='?src=[REF(src)];build=[D.id];amount=1'>[D.name]</A>[RDSCREEN_NOBREAK]"

@@ -1,4 +1,5 @@
 /turf/open/floor/iron
+	desc = "A cold metallic floor."
 	icon_state = "floor"
 	broken_blend = BLEND_MULTIPLY
 	burned_blend = BLEND_DEFAULT
@@ -10,12 +11,6 @@
 
 /turf/open/floor/iron/setup_burnt_states()
 	return list("burned0", "burned1")
-
-
-/turf/open/floor/iron/examine(mob/user)
-	. = ..()
-	. += span_notice("There's a <b>small crack</b> on the edge of it.")
-
 
 /turf/open/floor/iron/rust_heretic_act()
 	if(prob(70))
@@ -37,10 +32,6 @@
 
 /turf/open/floor/iron/telecomms
 	initial_gas = TCOMMS_ATMOS
-	temperature = 80
-
-/turf/open/floor/iron/icemoon
-	initial_gas = ICEMOON_DEFAULT_ATMOS
 	temperature = 80
 
 /turf/open/floor/iron/textured

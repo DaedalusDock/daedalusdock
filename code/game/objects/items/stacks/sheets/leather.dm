@@ -88,9 +88,9 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	. += GLOB.monkey_recipes
 
 /obj/item/stack/sheet/animalhide/lizard
-	name = "unathi skin"
+	name = "jinan skin"
 	desc = "Sssssss..."
-	singular_name = "unathi skin piece"
+	singular_name = "jinan skin piece"
 	icon_state = "sheet-lizard"
 	inhand_icon_state = "sheet-lizard"
 	merge_type = /obj/item/stack/sheet/animalhide/lizard
@@ -191,7 +191,6 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 	new/datum/stack_recipe("leather jacket", /obj/item/clothing/suit/jacket/leather, 7), \
 	new/datum/stack_recipe("leather shoes", /obj/item/clothing/shoes/laceup, 2), \
 	new/datum/stack_recipe("leather overcoat", /obj/item/clothing/suit/jacket/leather/overcoat, 10), \
-	new/datum/stack_recipe("saddle", /obj/item/saddle, 5), \
 	new/datum/stack_recipe("sheriff vest", /obj/item/clothing/accessory/vest_sheriff, 4), \
 	new/datum/stack_recipe_list("cowboy hats", list( \
 		new/datum/stack_recipe("sheriff hat", /obj/item/clothing/head/cowboy_hat_brown, 2), \

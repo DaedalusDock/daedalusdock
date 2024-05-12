@@ -124,6 +124,8 @@
 	burn_product = GAS_STEAM
 	symbol_html = "H<sub>2</sub>"
 	symbol = "H2"
+	purchaseable = TRUE //Used as engine coolant.
+	base_value = 0.5
 
 /datum/xgm_gas/hydrogen/deuterium
 	id = GAS_DEUTERIUM

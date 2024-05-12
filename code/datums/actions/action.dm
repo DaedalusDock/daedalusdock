@@ -163,7 +163,7 @@
 			if (feedback)
 				to_chat(owner, span_warning("You cannot use [name] while lying down!"))
 			return FALSE
-	if((check_flags & AB_CHECK_CONSCIOUS) && owner.stat > SOFT_CRIT)
+	if((check_flags & AB_CHECK_CONSCIOUS) && owner.stat != CONSCIOUS)
 		if (feedback)
 			to_chat(owner, span_warning("You cannot use [name] while unconscious!"))
 		return FALSE
@@ -311,7 +311,7 @@
 	var/atom/movable/screen/movable/action_button/button = create_button()
 	SetId(button, viewer)
 
-	button.our_hud = our_hud
+	button.hud = our_hud
 	viewers[our_hud] = button
 	if(viewer.client)
 		viewer.client.screen += button

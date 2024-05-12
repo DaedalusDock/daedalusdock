@@ -60,7 +60,7 @@
 #define CHEMICAL_QUANTISATION_LEVEL 0.0001
 ///The smallest amount of volume allowed - prevents tiny numbers
 #define CHEMICAL_VOLUME_MINIMUM 0.001
-///Round to this, to prevent extreme decimal magic and to keep reagent volumes in line with perceived values.
+//Sanity check limit to clamp chems to sane amounts and prevent rounding errors during transfer.
 #define CHEMICAL_VOLUME_ROUNDING 0.01
 ///Default pH for reagents datum
 #define CHEMICAL_NORMAL_PH 7.000
@@ -89,8 +89,6 @@
 #define REAGENT_CLEANS (1<<7)
 ///Uses a fixed metabolization rate that isn't reliant on mob size
 #define REAGENT_IGNORE_MOB_SIZE (1<<8)
-///Scannable
-#define REAGENT_SCANNABLE (1<<8)
 //Chemical reaction flags, for determining reaction specialties
 ///Used to create instant reactions
 #define REACTION_INSTANT (1<<1)
@@ -139,3 +137,8 @@
 #define GRENADE_READY 3
 
 #define DISPENSER_REAGENT_VALUE 0.2
+
+// Chem cartridge defines
+#define CARTRIDGE_VOLUME_LARGE  500
+#define CARTRIDGE_VOLUME_MEDIUM 250
+#define CARTRIDGE_VOLUME_SMALL  100

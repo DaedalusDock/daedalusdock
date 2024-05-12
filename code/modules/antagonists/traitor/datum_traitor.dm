@@ -9,7 +9,7 @@
 	suicide_cry = "FOR THE SYNDICATE!!"
 	preview_outfit = /datum/outfit/traitor
 	var/give_objectives = TRUE
-	var/should_give_codewords = TRUE
+	var/should_give_codewords = FALSE
 	///give this traitor an uplink?
 	var/give_uplink = TRUE
 	///if TRUE, this traitor will always get hijacking as their final objective
@@ -26,11 +26,6 @@
 
 	/// The uplink handler that this traitor belongs to.
 	var/datum/uplink_handler/uplink_handler
-
-	// PARIAH EDIT START
-	///the final objective the traitor has to accomplish, be it escaping, hijacking, or just martyrdom.
-	var/datum/objective/ending_objective
-	// PARIAH EDIT END
 
 	var/uplink_sale_count = 3
 
@@ -76,7 +71,6 @@
 
 	if(give_objectives)
 		forge_traitor_objectives()
-		forge_ending_objective() //PARIAH EDIT
 	pick_employer()
 
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
@@ -141,91 +135,8 @@
 	return ..()
 
 /datum/antagonist/traitor/proc/pick_employer(faction)
-	var/list/possible_employers = list()
-	possible_employers.Add(GLOB.syndicate_employers, GLOB.nanotrasen_employers)
-
-	if(istype(ending_objective, /datum/objective/hijack))
-		possible_employers -= GLOB.normal_employers
-	else //escape or martyrdom
-		possible_employers -= GLOB.hijack_employers
-
-	switch(faction)
-		if(FACTION_SYNDICATE)
-			possible_employers -= GLOB.nanotrasen_employers
-		if(FACTION_NANOTRASEN)
-			possible_employers -= GLOB.syndicate_employers
-	employer = pick(possible_employers)
+	employer = pick(GLOB.normal_employers)
 	traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
-
-//PARIAH EDIT REMOVAL
-/*
-/datum/objective/traitor_progression
-	name = "traitor progression"
-	explanation_text = "Become a living legend by getting a total of %REPUTATION% reputation points"
-
-	var/possible_range = list(40 MINUTES, 90 MINUTES)
-	var/required_total_progression_points
-
-/datum/objective/traitor_progression/New(text)
-	. = ..()
-	required_total_progression_points = round(rand(possible_range[1], possible_range[2]) / 60)
-	explanation_text = replacetext(explanation_text, "%REPUTATION%", required_total_progression_points)
-
-/datum/objective/traitor_progression/check_completion()
-	if(!owner)
-		return FALSE
-	var/datum/antagonist/traitor/traitor = owner.has_antag_datum(/datum/antagonist/traitor)
-	if(!traitor)
-		return FALSE
-	if(!traitor.uplink_handler)
-		return FALSE
-	if(traitor.uplink_handler.progression_points < required_total_progression_points)
-		return FALSE
-	return TRUE
-
-/datum/objective/traitor_objectives
-	name = "traitor objective"
-	explanation_text = "Complete objectives colletively worth more than %REPUTATION% reputation points"
-
-	var/possible_range = list(20 MINUTES, 30 MINUTES)
-	var/required_progression_in_objectives
-
-/datum/objective/traitor_objectives/New(text)
-	. = ..()
-	required_progression_in_objectives = round(rand(possible_range[1], possible_range[2]) / 60)
-	explanation_text = replacetext(explanation_text, "%REPUTATION%", required_progression_in_objectives)
-
-/datum/objective/traitor_objectives/check_completion()
-	if(!owner)
-		return FALSE
-	var/datum/antagonist/traitor/traitor = owner.has_antag_datum(/datum/antagonist/traitor)
-	if(!traitor)
-		return FALSE
-	if(!traitor.uplink_handler)
-		return FALSE
-	var/total_points = 0
-	for(var/datum/traitor_objective/objective as anything in traitor.uplink_handler.completed_objectives)
-		if(objective.objective_state != OBJECTIVE_STATE_COMPLETED)
-			continue
-		total_points += objective.progression_reward
-	if(total_points < required_progression_in_objectives)
-		return FALSE
-	return TRUE
-
-/// Generates a complete set of traitor objectives up to the traitor objective limit, including non-generic objectives such as martyr and hijack.
-/datum/antagonist/traitor/proc/forge_traitor_objectives()
-	objectives.Cut()
-
-	var/datum/objective/traitor_progression/final_objective = new /datum/objective/traitor_progression()
-	final_objective.owner = owner
-	objectives += final_objective
-
-	var/datum/objective/traitor_objectives/objective_completion = new /datum/objective/traitor_objectives()
-	objective_completion.owner = owner
-	objectives += objective_completion
-
-	*/
-	//PARIAH EDIT END
 
 /datum/antagonist/traitor/apply_innate_effects(mob/living/mob_override)
 	. = ..()

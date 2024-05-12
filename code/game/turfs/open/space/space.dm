@@ -11,6 +11,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	z_eventually_space = TRUE
 	temperature = TCMB
 	simulated = FALSE
+	explosion_block = 0.5
 
 	var/destination_z
 	var/destination_x
@@ -123,7 +124,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	if(!arrived || src != arrived.loc)
 		return
 
-	if(destination_z && destination_x && destination_y && !arrived.pulledby && !arrived.currently_z_moving)
+	if(destination_z && destination_x && destination_y && !LAZYLEN(arrived.grabbed_by) && !arrived.currently_z_moving)
 		var/tx = destination_x
 		var/ty = destination_y
 		var/turf/DT = locate(tx, ty, destination_z)
@@ -144,13 +145,13 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 		if(SEND_SIGNAL(arrived, COMSIG_MOVABLE_LATERAL_Z_MOVE) & COMPONENT_BLOCK_MOVEMENT)
 			return
-		arrived.zMove(null, DT, ZMOVE_ALLOW_BUCKLED)
 
-		var/atom/movable/current_pull = arrived.pulling
-		while (current_pull)
-			var/turf/target_turf = get_step(current_pull.pulledby.loc, REVERSE_DIR(current_pull.pulledby.dir)) || current_pull.pulledby.loc
-			current_pull.zMove(null, target_turf, ZMOVE_ALLOW_BUCKLED)
-			current_pull = current_pull.pulling
+		arrived.forceMoveWithGroup(DT, ZMOVING_LATERAL)
+		if(isliving(arrived))
+			var/mob/living/L = arrived
+			for(var/obj/item/hand_item/grab/G as anything in L.recursively_get_conga_line())
+				var/turf/pulled_dest = get_step(G.assailant.loc, REVERSE_DIR(G.assailant.dir)) || G.assailant.loc
+				G.affecting.forceMoveWithGroup(pulled_dest, ZMOVING_LATERAL)
 
 
 /turf/open/space/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)

@@ -12,15 +12,17 @@
 #define PREFERENCE_PRIORITY_BODY_TYPE 5
 /// Augments come after species and bodytype.
 #define PREFERENCE_PRIORITY_AUGMENTS 6
+/// Applies branding to prosthetics
+#define PREFERENCE_PRIORITY_BRANDED_PROSTHETICS 7
 /// The priority hair is applied. We apply human hair first, and moth hair after, only if they are a moth. Sorry.
-#define PREFERENCE_PRIORITY_HUMAN_HAIR 7
+#define PREFERENCE_PRIORITY_HUMAN_HAIR 8
 /// The priority non-human hair is applied (used to apply moth hair after normal hair)
-#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 8
+#define PREFERENCE_PRIORITY_NONHUMAN_HAIR 9
 /// The priority at which names are decided, needed for proper randomization.
-#define PREFERENCE_PRIORITY_NAMES 9
+#define PREFERENCE_PRIORITY_NAMES 10
 /// Preferences that aren't names, but change the name changes set by PREFERENCE_PRIORITY_NAMES.
-#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 10
-#define PREFERENCE_PRIORITY_APPEARANCE_MODS 11
+#define PREFERENCE_PRIORITY_NAME_MODIFICATIONS 11
+#define PREFERENCE_PRIORITY_APPEARANCE_MODS 12
 
 /// The maximum preference priority, keep this updated, but don't use it for `priority`.
 #define MAX_PREFERENCE_PRIORITY PREFERENCE_PRIORITY_APPEARANCE_MODS

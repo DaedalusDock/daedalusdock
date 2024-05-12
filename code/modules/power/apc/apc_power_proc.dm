@@ -37,8 +37,9 @@
 /obj/machinery/power/apc/proc/toggle_breaker(mob/user)
 	if(!is_operational || failure_timer)
 		return
+
 	operating = !operating
-	add_hiddenprint(user)
+	add_fingerprint(user)
 	log_game("[key_name(user)] turned [operating ? "on" : "off"] the [src] in [AREACOORD(src)]")
 	update()
 	update_appearance()

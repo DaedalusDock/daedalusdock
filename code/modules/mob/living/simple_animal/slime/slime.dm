@@ -100,7 +100,6 @@
 	else
 		var/datum/action/innate/slime/evolve/E = new
 		E.Grant(src)
-	create_reagents(100)
 	set_colour(new_colour)
 	. = ..()
 	set_nutrition(700)
@@ -117,16 +116,6 @@
 	clear_friends()
 	return ..()
 
-/mob/living/simple_animal/slime/create_reagents(max_vol, flags)
-	. = ..()
-	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_DEL_REAGENT), PROC_REF(on_reagent_change))
-	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, PROC_REF(on_reagents_del))
-
-/// Handles removing signal hooks incase someone is crazy enough to reset the reagents datum.
-/mob/living/simple_animal/slime/proc/on_reagents_del(datum/reagents/reagents)
-	SIGNAL_HANDLER
-	UnregisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_PARENT_QDELETING))
-	return NONE
 
 /mob/living/simple_animal/slime/proc/set_colour(new_colour)
 	colour = new_colour
@@ -139,8 +128,7 @@
 /mob/living/simple_animal/slime/update_name()
 	if(slime_name_regex.Find(name))
 		number = rand(1, 1000)
-		name = "[colour] [is_adult ? "adult" : "baby"] slime ([number])"
-		real_name = name
+		set_real_name("[colour] [is_adult ? "adult" : "baby"] slime ([number])", update_name = FALSE)
 	return ..()
 
 /mob/living/simple_animal/slime/proc/random_colour()
@@ -158,22 +146,6 @@
 		icon_state = icon_dead
 	..()
 
-/**
- * Snowflake handling of reagent movespeed modifiers
- *
- * Should be moved to the reagents at some point in the future. As it is I'm in a hurry.
- */
-/mob/living/simple_animal/slime/proc/on_reagent_change(datum/reagents/holder, ...)
-	SIGNAL_HANDLER
-	remove_movespeed_modifier(/datum/movespeed_modifier/slime_reagentmod)
-	var/amount = 0
-	if(reagents.has_reagent(/datum/reagent/medicine/morphine)) // morphine slows slimes down
-		amount = 2
-	if(reagents.has_reagent(/datum/reagent/consumable/frostoil)) // Frostoil also makes them move VEEERRYYYYY slow
-		amount = 5
-	if(amount)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_reagentmod, multiplicative_slowdown = amount)
-	return NONE
 
 /mob/living/simple_animal/slime/updatehealth()
 	. = ..()
@@ -184,7 +156,7 @@
 			mod += (health_deficiency / 25)
 		if(health <= 0)
 			mod += 2
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_healthmod, multiplicative_slowdown = mod)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_healthmod, slowdown = mod)
 
 /mob/living/simple_animal/slime/adjust_bodytemperature()
 	. = ..()
@@ -194,7 +166,7 @@
 	else if(bodytemperature < 283.222)
 		mod = ((283.222 - bodytemperature) / 10) * 1.75
 	if(mod)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, multiplicative_slowdown = mod)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, slowdown = mod)
 
 /mob/living/simple_animal/slime/ObjBump(obj/O)
 	if(!client && powerlevel > 0)
@@ -234,7 +206,7 @@
 			. += "You can evolve!"
 
 	switch(stat)
-		if(HARD_CRIT, UNCONSCIOUS)
+		if(UNCONSCIOUS)
 			. += "You are knocked out by high levels of BZ!"
 		else
 			. += "Power Level: [powerlevel]"
@@ -267,10 +239,10 @@
 			Feedon(Food)
 	return ..()
 
-/mob/living/simple_animal/slime/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/slime/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	return
 
-/mob/living/simple_animal/slime/start_pulling(atom/movable/AM, state, force = move_force, supress_message = FALSE)
+/mob/living/simple_animal/slime/try_make_grab(atom/movable/target, grab_type)
 	return
 
 /mob/living/simple_animal/slime/attack_ui(slot, params)
@@ -430,7 +402,7 @@
 	if (stat == DEAD)
 		. += span_deadsay("It is limp and unresponsive.")
 	else
-		if (stat == UNCONSCIOUS || stat == HARD_CRIT) // Slime stasis
+		if (stat == UNCONSCIOUS) // Slime stasis
 			. += span_deadsay("It appears to be alive but unresponsive.")
 		if (getBruteLoss())
 			. += "<span class='warning'>"

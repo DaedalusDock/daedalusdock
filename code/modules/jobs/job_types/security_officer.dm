@@ -3,12 +3,12 @@
 	description = "Protect company assets, follow the Standard Operating \
 		Procedure, eat donuts."
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
-	department_head = list(JOB_HEAD_OF_SECURITY)
+	department_head = list(JOB_SECURITY_MARSHAL)
 	faction = FACTION_STATION
 	total_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
 	spawn_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
-	supervisors = "the head of security, and the head of your assigned department (if applicable)"
-	selection_color = "#601c1c"
+	supervisors = "the security marshal, and the head of your assigned department (if applicable)"
+	selection_color = "#602f1c"
 	minimal_player_age = 7
 	exp_requirements = 300
 	exp_required_type = EXP_TYPE_CREW
@@ -71,7 +71,9 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	if(ishuman(spawning))
 		var/department = setup_department(spawning, spawning.client)
 		if(department)
-			announce_latejoin(spawning, department, GLOB.security_officer_distribution)
+			var/obj/machinery/announcement_system/announcement_system = pick(GLOB.announcement_systems)
+			if(announcement_system)
+				announcement_system.announce_secoff_latejoin(spawning, department, GLOB.security_officer_distribution)
 
 
 /// Returns the department this mob was assigned to, if any.
@@ -121,7 +123,7 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 
 	// If there's a departmental sec trim to apply to the card, overwrite.
 	if(dep_trim)
-		var/obj/item/card/id/worn_id = spawning.get_idcard(hand_first = FALSE)
+		var/obj/item/card/id/worn_id = spawning.get_idcard(hand_first = FALSE, bypass_wallet = TRUE)
 		SSid_access.apply_trim_to_card(worn_id, dep_trim)
 		spawning.sec_hud_set_ID()
 
@@ -148,43 +150,6 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 	return department
 
 
-/datum/job/security_officer/proc/announce_latejoin(
-	mob/officer,
-	department,
-	distribution,
-)
-	var/obj/machinery/announcement_system/announcement_system = pick(GLOB.announcement_systems)
-	if (isnull(announcement_system))
-		return
-
-	announcement_system.announce_officer(officer, department)
-
-	var/list/targets = list()
-
-	var/list/partners = list()
-	for (var/officer_ref in distribution)
-		var/mob/partner = locate(officer_ref)
-		if (!istype(partner) || distribution[officer_ref] != department)
-			continue
-		partners += partner.real_name
-
-	if (partners.len)
-		for (var/obj/item/modular_computer/pda as anything in GLOB.TabletMessengers)
-			if (pda.saved_identification in partners)
-				targets += pda
-
-	if (!targets.len)
-		return
-
-	var/datum/signal/subspace/messaging/tablet_msg/signal = new(announcement_system, list(
-		"name" = "Security Department Update",
-		"job" = "Automated Announcement System",
-		"message" = "Officer [officer.real_name] has been assigned to your department, [department].",
-		"targets" = targets,
-		"automated" = TRUE,
-	))
-
-	signal.send_to_receivers()
 
 /datum/job/security_officer/proc/get_my_department(mob/character, preferred_department)
 	var/department = GLOB.security_officer_distribution[REF(character)]
@@ -205,10 +170,10 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 
 	id_trim = /datum/id_trim/job/security_officer
 	uniform = /obj/item/clothing/under/rank/security/officer
-	suit = /obj/item/clothing/suit/armor/vest/alt
+	suit = /obj/item/clothing/suit/armor/vest/sec
 	suit_store = /obj/item/gun/energy/disabler
 	backpack_contents = list(
-		/obj/item/evidencebag = 1,
+		/obj/item/storage/evidencebag = 1,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/security
 	ears = /obj/item/radio/headset/headset_sec/alt

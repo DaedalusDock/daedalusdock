@@ -7,7 +7,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	sentience_type = SENTIENCE_HUMANOID
 	speak_chance = 0
-	stat_attack = HARD_CRIT //braains
+	stat_attack = UNCONSCIOUS //braains
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5

@@ -6,6 +6,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	new /obj/effect/temp_visual/dust_animation(loc, dna.species.dust_anim)
 
 /mob/living/carbon/human/spawn_gibs(with_bodyparts)
+	if(isipc(src))
+		new /obj/effect/gibspawner/robot(drop_location(), src)
+		return
 	if(with_bodyparts)
 		new /obj/effect/gibspawner/human(drop_location(), src, get_static_viruses())
 	else
@@ -20,6 +23,9 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 /mob/living/carbon/human/death(gibbed)
 	if(stat == DEAD)
 		return
+
+	log_health(src, "Died. BRUTE: [getBruteLoss()] | BURN: [getFireLoss()] | TOX: [getFireLoss()] | OXY:[getOxyLoss()] | BLOOD: [blood_volume] | BLOOD OXY: [get_blood_oxygenation()]% | PAIN:[getPain()]")
+
 	stop_sound_channel(CHANNEL_HEARTBEAT)
 	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
 	if(H)
@@ -49,10 +55,10 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 /mob/living/carbon/proc/Drain()
 	become_husk(CHANGELING_DRAIN)
 	ADD_TRAIT(src, TRAIT_BADDNA, CHANGELING_DRAIN)
-	blood_volume = 0
+	setBloodVolume(0)
 	return TRUE
 
 /mob/living/carbon/proc/makeUncloneable()
 	ADD_TRAIT(src, TRAIT_BADDNA, MADE_UNCLONEABLE)
-	blood_volume = 0
+	setBloodVolume(0)
 	return TRUE

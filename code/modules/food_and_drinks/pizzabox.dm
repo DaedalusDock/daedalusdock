@@ -151,7 +151,7 @@
 				return
 			else
 				bomb_timer = tgui_input_number(user, "Set the bomb timer", "Pizza Bomb", bomb_timer, bomb_timer_max, bomb_timer_min)
-				if(!bomb_timer || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+				if(!bomb_timer || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 					return
 				bomb_defused = FALSE
 				log_bomber(user, "has trapped a", src, "with [bomb] set to [bomb_timer] seconds")
@@ -220,7 +220,7 @@
 				return
 			var/obj/item/pizzabox/box = boxes.len ? boxes[boxes.len] : src
 			box.boxtag += tgui_input_text(user, "Write on [box]'s tag:", box, max_length = 30)
-			if(!user.canUseTopic(src, BE_CLOSE))
+			if(!user.canUseTopic(src, USE_CLOSE))
 				return
 			to_chat(user, span_notice("You write with [I] on [src]."))
 			boxtag_set = TRUE
@@ -362,16 +362,11 @@
 
 	//list our ckey and assign it a favourite pizza
 	if(!pizza_preferences[nommer.ckey])
-		if(nommer.has_quirk(/datum/quirk/pineapple_liker))
-			pizza_preferences[nommer.ckey] = /obj/item/food/pizza/pineapple
-		else if(nommer.has_quirk(/datum/quirk/pineapple_hater))
-			var/list/pineapple_pizza_liker = pizza_types.Copy()
-			pineapple_pizza_liker -= /obj/item/food/pizza/pineapple
-			pizza_preferences[nommer.ckey] = pick_weight(pineapple_pizza_liker)
-		else if(nommer.mind?.assigned_role.title == /datum/job/botanist)
+		if(istype(nommer.mind?.assigned_role, /datum/job/botanist))
 			pizza_preferences[nommer.ckey] = /obj/item/food/pizza/dank
 		else
 			pizza_preferences[nommer.ckey] = pick_weight(pizza_types)
+
 	if(pizza)
 		//if the pizza isn't our favourite, delete it
 		if(pizza.type != pizza_preferences[nommer.ckey])

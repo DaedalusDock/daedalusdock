@@ -122,16 +122,13 @@ GLOBAL_LIST_EMPTY(bar_areas)
 //away missions
 GLOBAL_LIST_EMPTY(vr_spawnpoints)
 
-	//used by jump-to-area etc. Updated by area/updateName()
+// Just a list of all the area objects in the game
+/// Note, areas can have duplicate types
+GLOBAL_LIST_EMPTY(areas)
+/// Used by jump-to-area etc. Updated by area/updateName()
+/// If this is null, it needs to be recalculated. Use get_sorted_areas() as a getter please
 GLOBAL_LIST_EMPTY(sortedAreas)
 /// An association from typepath to area instance. Only includes areas with `unique` set.
 GLOBAL_LIST_EMPTY_TYPED(areas_by_type, /area)
 
 GLOBAL_LIST_EMPTY(all_abstract_markers)
-
-/// Global list of megafauna spawns on cave gen
-GLOBAL_LIST_INIT(megafauna_spawn_list, list(
-	/mob/living/simple_animal/hostile/megafauna/bubblegum = 6,
-	/mob/living/simple_animal/hostile/megafauna/colossus = 2,
-	/mob/living/simple_animal/hostile/megafauna/dragon = 4,
-))

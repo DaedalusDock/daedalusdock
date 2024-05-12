@@ -5,50 +5,20 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	icon = 'icons/turf/floors.dmi'
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
 	luminosity = 1
-
-	/// Turf bitflags, see code/__DEFINES/flags.dm
-	var/turf_flags = NONE
-
-	/// If there's a tile over a basic floor that can be ripped out
-	var/overfloor_placed = FALSE
-	/// How accessible underfloor pieces such as wires, pipes, etc are on this turf. Can be HIDDEN, VISIBLE, or INTERACTABLE.
-	var/underfloor_accessibility = UNDERFLOOR_HIDDEN
+	explosion_block = 1
 
 	// baseturfs can be either a list or a single turf type.
 	// In class definition like here it should always be a single type.
 	// A list will be created in initialization that figures out the baseturf's baseturf etc.
 	// In the case of a list it is sorted from bottom layer to top.
 	// This shouldn't be modified directly, use the helper procs.
-	var/list/baseturfs = /turf/baseturf_bottom
-
-	///Used for fire, if a melting temperature was reached, it will be destroyed
-	var/to_be_destroyed = 0
-	///The max temperature of the fire which it was subjected to
-	var/max_fire_temperature_sustained = 0
-
-	var/blocks_air = AIR_ALLOWED
-
-	var/list/image/blueprint_data //for the station blueprints, images of objects eg: pipes
-
-	var/list/explosion_throw_details
-
-	var/requires_activation //add to air processing after initialize?
-	var/changing_turf = FALSE
-
-	var/bullet_bounce_sound = 'sound/weapons/gun/general/mag_bullet_remove.ogg' //sound played when a shell casing is ejected ontop of the turf.
-	var/bullet_sizzle = FALSE //used by ammo_casing/bounce_away() to determine if the shell casing should make a sizzle sound when it's ejected over the turf
-							//IE if the turf is supposed to be water, set TRUE.
-
-	var/tiled_dirt = FALSE // use smooth tiled dirt decal
+	var/tmp/list/baseturfs = /turf/baseturf_bottom
+	/// Is this turf in the process of running ChangeTurf()?
+	var/tmp/changing_turf = FALSE
 
 	///Lumcount added by sources other than lighting datum objects, such as the overlay lighting component.
-	var/dynamic_lumcount = 0
-
-	///Bool, whether this turf will always be illuminated no matter what area it is in
-	var/always_lit = FALSE
-
+	var/tmp/dynamic_lumcount = 0
 	var/tmp/lighting_corners_initialised = FALSE
-
 	///Our lighting object.
 	var/tmp/datum/lighting_object/lighting_object
 	///Lighting Corner datums.
@@ -57,12 +27,49 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/tmp/datum/lighting_corner/lighting_corner_SW
 	var/tmp/datum/lighting_corner/lighting_corner_NW
 
+	/// If there's a tile over a basic floor that can be ripped out
+	var/tmp/overfloor_placed = FALSE
+
+	/// The max temperature of the fire which it was subjected to
+	var/tmp/max_fire_temperature_sustained = 0
+
+	/// For the station blueprints, images of objects eg: pipes
+	var/tmp/list/image/blueprint_data
+	/// Contains the throw range for explosions. You won't need this, stop looking at it.
+	var/tmp/explosion_throw_details
+
+	///Lazylist of movable atoms providing opacity sources.
+	var/tmp/list/atom/movable/opacity_sources
+
+	//* END TMP VARS *//
+
+
+	/// Turf bitflags, see code/__DEFINES/flags.dm
+	var/turf_flags = NONE
+
+	/// How accessible underfloor pieces such as wires, pipes, etc are on this turf. Can be HIDDEN, VISIBLE, or INTERACTABLE.
+	var/underfloor_accessibility = UNDERFLOOR_HIDDEN
+
+	///Used for fire, if a melting temperature was reached, it will be destroyed
+	var/to_be_destroyed = 0
+
+	/// Determines how air interacts with this turf.
+	var/blocks_air = AIR_ALLOWED
+
+	var/bullet_bounce_sound = 'sound/weapons/gun/general/mag_bullet_remove.ogg' //sound played when a shell casing is ejected ontop of the turf.
+	var/bullet_sizzle = FALSE //used by ammo_casing/bounce_away() to determine if the shell casing should make a sizzle sound when it's ejected over the turf
+							//IE if the turf is supposed to be water, set TRUE.
+
+	var/tiled_dirt = FALSE // use smooth tiled dirt decal
+
+	///Bool, whether this turf will always be illuminated no matter what area it is in
+	var/always_lit = FALSE
+
+	/// Set to TRUE for pseudo 3/4ths walls, otherwise, leave alone.
 	var/lighting_uses_jen = FALSE
 
 	///Which directions does this turf block the vision of, taking into account both the turf's opacity and the movable opacity_sources.
 	var/directional_opacity = NONE
-	///Lazylist of movable atoms providing opacity sources.
-	var/list/atom/movable/opacity_sources
 
 	///the holodeck can load onto this turf if TRUE
 	var/holodeck_compatible = FALSE
@@ -201,11 +208,27 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/clear_signal_refs()
 	return
 
-/turf/attack_hand(mob/user, list/modifiers)
+/turf/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
-	user.Move_Pulled(src)
+	if(!isliving(user))
+		return
+	user.move_grabbed_atoms_towards(src)
+
+/turf/attack_grab(mob/living/user, atom/movable/victim, obj/item/hand_item/grab/grab, list/params)
+	. = ..()
+	if(.)
+		return
+	if(!isliving(user))
+		return
+	if(user == victim)
+		return
+	if(grab.current_grab.same_tile)
+		return
+
+	grab.move_victim_towards(src)
+
 
 /**
  * Check whether the specified turf is blocked by something dense inside it with respect to a specific atom.
@@ -260,7 +283,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			else if(O.obj_flags & BLOCK_Z_OUT_DOWN)
 				return FALSE
 
-		return direction == UP //can't go below
+		return direction & UP //can't go below
 	else
 		if(density) //No fuck off
 			return FALSE
@@ -276,8 +299,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 ///Called each time the target falls down a z level possibly making their trajectory come to a halt. see __DEFINES/movement.dm.
 /turf/proc/zImpact(atom/movable/falling, levels = 1, turf/prev_turf)
-	var/flags = NONE
-	var/list/falling_movables = falling.get_z_move_affected()
+	var/flags = FALL_RETAIN_PULL
+	var/list/falling_movables = falling.get_move_group()
 	var/list/falling_mob_names
 
 	for(var/atom/movable/falling_mob as anything in falling_movables)
@@ -303,53 +326,47 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(!(flags & FALL_INTERCEPTED) && falling.zFall(levels + 1))
 		return FALSE
 
-	for(var/atom/movable/falling_mob as anything in falling_movables)
+	for(var/atom/movable/falling_movable as anything in falling_movables)
+		var/mob/living/L = falling_movable
+		if(!isliving(L))
+			L = null
 		if(!(flags & FALL_RETAIN_PULL))
-			falling_mob.stop_pulling()
+			L?.release_all_grabs()
 
 		if(!(flags & FALL_INTERCEPTED))
-			falling_mob.onZImpact(src, levels)
+			falling_movable.onZImpact(src, levels)
 
 			#ifndef ZMIMIC_MULTIZ_SPEECH //Multiz speech handles this otherwise
 			if(!(flags & FALL_NO_MESSAGE))
 				prev_turf.audible_message(span_hear("You hear something slam into the deck below."))
 			#endif
 
-		if(falling_mob.pulledby && (falling_mob.z != falling_mob.pulledby.z || get_dist(falling_mob, falling_mob.pulledby) > 1))
-			falling_mob.pulledby.stop_pulling()
+		if(L)
+			if(LAZYLEN(L.grabbed_by))
+				for(var/obj/item/hand_item/grab/G in L.grabbed_by)
+					if(L.z != G.assailant.z || get_dist(L, G.assailant) > 1)
+						qdel(G)
 	return TRUE
 
-/turf/proc/handleRCL(obj/item/rcl/C, mob/user)
-	if(C.loaded)
-		for(var/obj/structure/pipe_cleaner/LC in src)
-			if(!LC.d1 || !LC.d2)
-				LC.handlecable(C, user)
-				return
-		C.loaded.place_turf(src, user)
-		if(C.wiring_gui_menu)
-			C.wiringGuiUpdate(user)
-		C.is_empty(user)
-
 /turf/attackby(obj/item/C, mob/user, params)
-	if(..())
+	if(..() || C.attack_turf(src, user, params))
 		return TRUE
+
 	if(can_lay_cable() && istype(C, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = C
 		coil.place_turf(src, user)
 		return TRUE
-	else if(can_have_cabling() && istype(C, /obj/item/stack/pipe_cleaner_coil))
-		var/obj/item/stack/pipe_cleaner_coil/coil = C
-		for(var/obj/structure/pipe_cleaner/LC in src)
-			if(!LC.d1 || !LC.d2)
-				LC.attackby(C, user)
-				return
-		coil.place_turf(src, user)
-		return TRUE
-
-	else if(istype(C, /obj/item/rcl))
-		handleRCL(C, user)
 
 	return FALSE
+
+/turf/attackby_secondary(obj/item/weapon, mob/user, params)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	if(weapon.sharpness && try_graffiti(user, weapon))
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 
 //There's a lot of QDELETED() calls here if someone can figure out how to optimize this but not runtime when something gets deleted by a Bump/CanPass/Cross call, lemme know or go ahead and fix this mess - kevinz000
 /// Test if a movable can enter this turf. Send no_side_effects = TRUE to prevent bumping.
@@ -375,7 +392,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 						return FALSE
 					continue
 				else
-					if(!firstbump || ((thing.layer > firstbump.layer || (thing.flags_1 & ON_BORDER_1|BUMP_PRIORITY_1)) && !(firstbump.flags_1 & ON_BORDER_1)))
+					if(!firstbump || ((thing.layer < firstbump.layer || (thing.flags_1 & ON_BORDER_1|BUMP_PRIORITY_1)) && !(firstbump.flags_1 & ON_BORDER_1)))
 						firstbump = thing
 
 	if(QDELETED(mover)) //Mover deleted from Cross/CanPass/Bump, do not proceed.
@@ -391,7 +408,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	return TRUE
 
 /turf/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
 
 	if(arrived.flags_2 & ATMOS_SENSITIVE_2)
 		LAZYDISTINCTADD(atmos_sensitive_contents, arrived)
@@ -399,14 +415,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			if(isnull(zone.atmos_sensitive_contents))
 				SSzas.zones_with_sensitive_contents += zone
 			LAZYDISTINCTADD(zone.atmos_sensitive_contents, arrived)
+	// Spatial grid tracking needs to happen before the signal is sent
+	. = ..()
 
 	if (!arrived.bound_overlay && !(arrived.zmm_flags & ZMM_IGNORE) && arrived.invisibility != INVISIBILITY_ABSTRACT && TURF_IS_MIMICKING(above))
 		above.update_mimic()
 
 
 /turf/Exited(atom/movable/gone, direction)
-	. = ..()
-
 	if(gone.flags_2 & ATMOS_SENSITIVE_2)
 		if(!isnull(atmos_sensitive_contents))
 			LAZYREMOVE(atmos_sensitive_contents, gone)
@@ -414,6 +430,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			LAZYREMOVE(zone.atmos_sensitive_contents, gone)
 			if(isnull(zone.atmos_sensitive_contents))
 				SSzas.zones_with_sensitive_contents -= zone
+
+	// Spatial grid tracking needs to happen before the signal is sent
+	. = ..()
 
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
 /turf/proc/assemble_baseturfs(turf/fake_baseturf_type)
@@ -526,20 +545,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/is_shielded()
 	return
-
-/turf/contents_explosion(severity, target)
-	for(var/thing in contents)
-		var/atom/movable/movable_thing = thing
-		if(QDELETED(movable_thing))
-			continue
-		switch(severity)
-			if(EXPLODE_DEVASTATE)
-				SSexplosions.high_mov_atom += movable_thing
-			if(EXPLODE_HEAVY)
-				SSexplosions.med_mov_atom += movable_thing
-			if(EXPLODE_LIGHT)
-				SSexplosions.low_mov_atom += movable_thing
-
 
 /turf/narsie_act(force, ignore_mobs, probability = 20)
 	. = (prob(probability) || force)
@@ -709,3 +714,66 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/TakeTemperature(temp)
 	temperature += temp
+
+/turf/proc/is_below_sound_pressure()
+	var/datum/gas_mixture/GM = unsafe_return_air()
+	if(isnull(GM) || GM.returnPressure() < SOUND_MINIMUM_PRESSURE)
+		return TRUE
+
+/// Call to move a turf from its current area to a new one
+/turf/proc/change_area(area/old_area, area/new_area)
+	//dont waste our time
+	if(old_area == new_area)
+		return
+
+	//move the turf
+	old_area.turfs_to_uncontain += src
+	new_area.contents += src
+	new_area.contained_turfs += src
+
+	//changes to make after turf has moved
+	on_change_area(old_area, new_area)
+
+/// Allows for reactions to an area change without inherently requiring change_area() be called (I hate maploading)
+/turf/proc/on_change_area(area/old_area, area/new_area)
+	transfer_area_lighting(old_area, new_area)
+
+//A check to see if graffiti should happen
+/turf/proc/try_graffiti(mob/vandal, obj/item/tool)
+
+	if(!tool.sharpness)
+		return FALSE
+
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
+		return FALSE
+
+	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, INNATE_TRAIT))
+		to_chat(vandal, span_warning("[src] cannot be engraved!"))
+		return FALSE
+
+	if(HAS_TRAIT_FROM(src, TRAIT_NOT_ENGRAVABLE, TRAIT_GENERIC))
+		to_chat(vandal, span_warning("[src] already has an engraving."))
+		return FALSE
+
+	var/message = stripped_input(vandal, "Enter a message to engrave.", "Engraving", null ,64, TRUE)
+	if(!message)
+		return FALSE
+	if(is_ic_filtered_for_pdas(message))
+		REPORT_CHAT_FILTER_TO_USER(vandal, message)
+
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
+		return TRUE
+
+	vandal.visible_message(span_warning("\The [vandal] begins carving something into \the [src]."))
+
+	if(!do_after(vandal, src, max(2 SECONDS, length(message)), DO_PUBLIC, display = tool))
+		return TRUE
+
+	if(!vandal.canUseTopic(src, USE_CLOSE) || !vandal.is_holding(tool))
+		return TRUE
+	vandal.visible_message(span_obviousnotice("[vandal] carves some graffiti into [src]."))
+	log_graffiti(message, vandal)
+	AddComponent(/datum/component/engraved, message, TRUE)
+
+
+	return TRUE

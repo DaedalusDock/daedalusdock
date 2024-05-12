@@ -4,7 +4,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!usr.canUseTopic(src, TRUE, FALSE, FALSE, TRUE, FALSE))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
 		return
 
 	flip(usr, get_cardinal_dir(usr, src))
@@ -15,7 +15,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!usr.canUseTopic(src, TRUE, FALSE, FALSE, TRUE, FALSE))
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
 		return
 
 	unflip(usr)
@@ -48,10 +48,10 @@
 		else
 			AM.throw_at(pick(targets), 1, 1)
 
+	flipped = TRUE
 	setDir(direction)
 
 	flags_1 |= ON_BORDER_1
-	flipped = TRUE
 	for(var/D in list(turn(direction, 90), turn(direction, -90)))
 		var/obj/structure/table/neighbor = locate() in get_step(src, D)
 		if(!neighbor)
@@ -75,10 +75,10 @@
 	verbs += /obj/structure/table/verb/verbflip
 	verbs -= /obj/structure/table/proc/verbunflip
 
-	setDir(0)
-
 	flipped = 0
 	flags_1 &= ~ON_BORDER_1
+	setDir(0)
+
 	for(var/D in list(turn(dir, 90), turn(dir, -90)))
 		var/obj/structure/table/neighbor = locate() in get_step(src.loc,D)
 		if(neighbor && neighbor.flipped == 1 && neighbor.dir == src.dir && neighbor.buildstack == buildstack)

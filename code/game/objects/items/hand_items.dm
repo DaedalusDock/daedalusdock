@@ -3,6 +3,8 @@
 	force = 0
 	throwforce = 0
 	item_flags = DROPDEL | ABSTRACT | HAND_ITEM
+	mouse_drag_pointer = FALSE
+	mouse_drop_pointer = FALSE
 
 /obj/item/hand_item/Initialize(mapload)
 	. = ..()
@@ -84,8 +86,6 @@
 	to_chat(sucker, span_danger("<b>[owner] sees the fear in your eyes as you try to look away from [owner.p_their()] [src.name]!</b>"))
 
 	owner.face_atom(sucker)
-	if(owner.client)
-		owner.client.give_award(/datum/award/achievement/misc/gottem, owner) // then everybody clapped
 
 	playsound(get_turf(owner), 'sound/effects/hit_punch.ogg', 50, TRUE, -1)
 	owner.do_attack_animation(sucker)
@@ -123,7 +123,8 @@
 		to_chat(user, span_warning("You can't bring yourself to noogie [target]! You don't want to risk harming anyone..."))
 		return
 
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target || user.grab_state < GRAB_AGGRESSIVE || HAS_TRAIT(user, TRAIT_EXHAUSTED))
+	var/obj/item/hand_item/grab/G = user.is_grabbing(target)
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || !G || !(G.current_grab.damage_stage >= GRAB_AGGRESSIVE)|| HAS_TRAIT(user, TRAIT_EXHAUSTED))
 		return FALSE
 
 	// [user] gives [target] a [prefix_desc] noogie[affix_desc]!
@@ -153,7 +154,7 @@
 
 /// The actual meat and bones of the noogie'ing
 /obj/item/hand_item/noogie/proc/noogie_loop(mob/living/carbon/human/user, mob/living/carbon/target, iteration)
-	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || user.pulling != target)
+	if(!(target?.get_bodypart(BODY_ZONE_HEAD)) || !user.is_grabbing(target))
 		return FALSE
 
 	if(HAS_TRAIT(user, TRAIT_EXHAUSTED))
@@ -255,7 +256,7 @@
 	playsound(slapped, 'sound/weapons/slap.ogg', slap_volume, TRUE, -1)
 	return
 
-/obj/item/hand_item/slapper/attack_atom(obj/O, mob/living/user, params)
+/obj/item/hand_item/slapper/attack_obj(obj/O, mob/living/user, params)
 	if(!istype(O, /obj/structure/table))
 		return ..()
 
@@ -468,7 +469,7 @@
 	damage_type = BRUTE
 	damage = 0
 	nodamage = TRUE // love can't actually hurt you
-	armour_penetration = 100 // but if it could, it would cut through even the thickest plate
+	armor_penetration = 100 // but if it could, it would cut through even the thickest plate
 
 /obj/projectile/kiss/fire(angle, atom/direct_target)
 	if(firer)
@@ -501,7 +502,7 @@
 
 /obj/projectile/kiss/proc/try_fluster(mob/living/living_target)
 	// people with the social anxiety quirk can get flustered when hit by a kiss
-	if(!HAS_TRAIT(living_target, TRAIT_ANXIOUS) || (living_target.stat > SOFT_CRIT) || living_target.is_blind())
+	if(!HAS_TRAIT(living_target, TRAIT_ANXIOUS) || (living_target.stat != CONSCIOUS) || living_target.is_blind())
 		return
 	if(HAS_TRAIT(living_target, TRAIT_FEARLESS) || prob(50)) // 50% chance for it to apply, also immune while on meds
 		return
@@ -528,7 +529,7 @@
 	living_target.visible_message("<b>[living_target]</b> [other_msg]", span_userdanger("Whoa! [self_msg]"))
 
 /obj/projectile/kiss/on_hit(atom/target, blocked, pierce_hit)
-	def_zone = BODY_ZONE_HEAD // let's keep it PG, people
+	aimed_def_zone = BODY_ZONE_HEAD // let's keep it PG, people
 	. = ..()
 	if(isliving(target))
 		try_fluster(target)

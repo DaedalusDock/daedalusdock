@@ -16,11 +16,11 @@
 	. = ..()
 	if(istype(gone, /mob/living/simple_animal/hostile/construct/harvester)) //harvesters can go through cult walls, dragging something with
 		var/mob/living/simple_animal/hostile/construct/harvester/H = gone
-		var/atom/movable/stored_pulling = H.pulling
+		var/atom/movable/stored_pulling = H.get_active_grab()
 		if(stored_pulling)
 			stored_pulling.setDir(direction)
 			stored_pulling.forceMove(src)
-			H.start_pulling(stored_pulling, supress_message = TRUE)
+			H.try_make_grab(stored_pulling)
 
 /turf/closed/wall/mineral/cult/artificer
 	name = "runed stone wall"
@@ -97,6 +97,7 @@
 	name = "reinforced rock"
 	desc = "It has metal struts that need to be welded away before it can be mined."
 	icon = 'icons/turf/walls/legacy/reinforced_rock.dmi'
+	stripe_icon = null
 	icon_state = "porous_rock-0"
 	base_icon_state = "porous_rock"
 	turf_flags = NO_RUST

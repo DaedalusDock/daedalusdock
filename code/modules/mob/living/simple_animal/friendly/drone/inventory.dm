@@ -6,7 +6,7 @@
 //Drone hands
 
 
-/mob/living/simple_animal/drone/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+/mob/living/simple_animal/drone/tryUnequipItem(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	if(..())
 		update_held_items()
 		if(I == head)
@@ -61,8 +61,8 @@
 		held_items[index] = null
 	update_held_items()
 
-	if(I.pulledby)
-		I.pulledby.stop_pulling()
+	if(LAZYLEN(I.grabbed_by))
+		I.free_from_all_grabs()
 
 	I.screen_loc = null // will get moved if inventory is visible
 	I.forceMove(src)

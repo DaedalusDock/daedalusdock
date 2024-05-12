@@ -58,7 +58,6 @@
 	burning_volume = 0.05 //but has a lot of hydrocarbons
 
 	addiction_types = null
-	show_in_codex = TRUE
 
 /datum/reagent/stable_plasma
 	name = "Stable Plasma"
@@ -124,6 +123,8 @@
 
 	for(var/mob/living/simple_animal/slime/exposed_slime in exposed_turf)
 		exposed_slime.adjustToxLoss(rand(5,10))
+
+	exposed_turf.AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_ODOR, "bleach", 3, 5 MINUTES)
 
 /datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
 	. = ..()
@@ -319,7 +320,6 @@
 	reagent_state = LIQUID
 	color = "#E7EA91"
 	taste_description = "acid"
-	show_in_codex = TRUE
 
 /datum/reagent/acetone
 	name = "Acetone"
@@ -329,7 +329,6 @@
 	color = "#808080"
 	metabolization_rate = 0.04
 	value = DISPENSER_REAGENT_VALUE
-	show_in_codex = TRUE
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
 	C.adjustToxLoss(removed * 3, FALSE)

@@ -30,7 +30,6 @@
 		/obj/item/organ/heart/gland/chem = 5,
 		/obj/item/organ/heart/gland/mindshock = 5,
 		/obj/item/organ/heart/gland/transform = 5,
-		/obj/item/organ/heart/gland/spiderman = 5,
 		/obj/item/organ/heart/gland/slime = 4,
 		/obj/item/organ/heart/gland/trauma = 4,
 		/obj/item/organ/heart/gland/electric = 3,
@@ -147,3 +146,48 @@
 		/obj/item/storage/box/masks,
 		/obj/item/storage/box/syringes,
 	)
+
+/obj/effect/spawner/random/medical/chem_cartridge
+	name = "random chem cartridge"
+	spawn_loot_count = 1
+
+//this is just here for subtypes
+/obj/effect/spawner/random/medical/chem_cartridge/proc/get_chem_list()
+	return GLOB.cartridge_list_chems
+
+/obj/effect/spawner/random/medical/chem_cartridge/spawn_loot(lootcount_override)
+	var/list/spawn_cartridges = get_chem_list()
+	var/loot_spawned = 0
+	for(var/i in 1 to spawn_loot_count)
+		var/datum/reagent/chem_type = pick(spawn_cartridges)
+		var/obj/item/reagent_containers/chem_cartridge/chem_cartridge = spawn_cartridges[chem_type]
+		chem_cartridge = new chem_cartridge(loc)
+		chem_cartridge.reagents.add_reagent(chem_type, chem_cartridge.volume)
+		chem_cartridge.setLabel(initial(chem_type.name))
+		loot_spawned += 1
+
+/obj/effect/spawner/random/medical/chem_cartridge/three
+	name = "3x random chem cartridge"
+	spawn_loot_count = 3
+
+/obj/effect/spawner/random/medical/chem_cartridge/booze
+	name = "random booze cartridge"
+	spawn_loot_count = 1
+
+/obj/effect/spawner/random/medical/chem_cartridge/booze/get_chem_list()
+	return GLOB.cartridge_list_booze
+
+/obj/effect/spawner/random/medical/chem_cartridge/booze/three
+	name = "3x random booze cartridge"
+	spawn_loot_count = 3
+
+/obj/effect/spawner/random/medical/chem_cartridge/drink
+	name = "random drink cartridge"
+	spawn_loot_count = 1
+
+/obj/effect/spawner/random/medical/chem_cartridge/drink/get_chem_list()
+	return GLOB.cartridge_list_drinks
+
+/obj/effect/spawner/random/medical/chem_cartridge/drink/three
+	name = "3x random drink cartridge"
+	spawn_loot_count = 3

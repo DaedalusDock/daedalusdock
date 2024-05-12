@@ -28,13 +28,14 @@
 	lose_text = "<span class='notice'>You suddenly remember how languages work.</span>"
 
 /datum/brain_trauma/severe/aphasia/on_gain()
-	owner.add_blocked_language(subtypesof(/datum/language/) - /datum/language/aphasia, LANGUAGE_APHASIA)
+	owner.add_blocked_language(subtypesof(/datum/language) - /datum/language/aphasia, LANGUAGE_APHASIA)
 	owner.grant_language(/datum/language/aphasia, TRUE, TRUE, LANGUAGE_APHASIA)
 	..()
 
 /datum/brain_trauma/severe/aphasia/on_lose()
-	owner.remove_blocked_language(subtypesof(/datum/language/), LANGUAGE_APHASIA)
-	owner.remove_language(/datum/language/aphasia, TRUE, TRUE, LANGUAGE_APHASIA)
+	if(!QDELETED(owner)) // This can create language holders on qdeleting mobs. This is bad.
+		owner.remove_blocked_language(subtypesof(/datum/language/), LANGUAGE_APHASIA)
+		owner.remove_language(/datum/language/aphasia, TRUE, TRUE, LANGUAGE_APHASIA)
 	..()
 
 /datum/brain_trauma/severe/blindness
@@ -210,8 +211,9 @@
 			if(high_stress)
 				if(prob(15) && ishuman(owner))
 					var/mob/living/carbon/human/H = owner
-					H.set_heartattack(TRUE)
-					to_chat(H, span_userdanger("You feel a stabbing pain in your heart!"))
+					if(H.set_heartattack(TRUE))
+						log_health(H, "Heart stopped due to monophobia quirk.")
+						to_chat(H, span_userdanger("You feel a stabbing pain in your heart!"))
 				else
 					to_chat(owner, span_userdanger("You feel your heart lurching in your chest..."))
 					owner.adjustOxyLoss(8)
@@ -288,9 +290,11 @@
 	owner.remove_status_effect(/datum/status_effect/trance)
 
 /datum/brain_trauma/severe/hypnotic_trigger/handle_hearing(datum/source, list/hearing_args)
-	if(!owner.can_hear())
-		return
 	if(owner == hearing_args[HEARING_SPEAKER])
+		return
+
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(istype(L, /datum/language/visual) || !L?.can_receive_language(owner) || !owner.has_language(L))
 		return
 
 	var/regex/reg = new("(\\b[REGEX_QUOTE(trigger_phrase)]\\b)","ig")

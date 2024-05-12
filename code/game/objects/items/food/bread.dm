@@ -257,6 +257,9 @@
 	foodtypes = GRAIN
 	venue_value = FOOD_PRICE_CHEAP
 
+	block_chance = 10
+	block_sound = 'sound/weapons/block/parry.ogg'
+
 /obj/item/food/garlicbread
 	name = "garlic bread"
 	desc = "Alas, it is limited."

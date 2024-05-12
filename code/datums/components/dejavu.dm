@@ -57,7 +57,7 @@
 
 	else if(isanimal(parent))
 		var/mob/living/simple_animal/M = parent
-		brute_loss = M.bruteloss
+		brute_loss = M.getBruteLoss()
 		rewind_type = PROC_REF(rewind_animal)
 
 	else if(isobj(parent))
@@ -107,7 +107,7 @@
 
 /datum/component/dejavu/proc/rewind_animal()
 	var/mob/living/simple_animal/master = parent
-	master.bruteloss = brute_loss
+	UNLINT(master.bruteloss = brute_loss) //Why is there no setter for this? Whatever.
 	master.updatehealth()
 	rewind_living()
 

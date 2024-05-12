@@ -5,7 +5,7 @@
  */
 /client/verb/drop_item()
 	set hidden = TRUE
-	if(!iscyborg(mob) && mob.stat <= SOFT_CRIT)
+	if(!iscyborg(mob) && mob.stat != CONSCIOUS)
 		mob.dropItemToGround(mob.get_active_held_item())
 	return
 
@@ -104,7 +104,7 @@
 	if(isAI(mob))
 		return AIMove(new_loc,direct,mob)
 
-	if(Process_Grab()) //are we restrained by someone's grip?
+	if(!check_can_move()) //are we restrained by someone's grip?
 		return
 
 	if(mob.buckled) //if we're buckled to something, tell it we moved.
@@ -124,7 +124,7 @@
 		return FALSE
 
 	//We are now going to move
-	var/add_delay = mob.cached_multiplicative_slowdown
+	var/add_delay = mob.movement_delay
 	var/new_glide_size = DELAY_TO_GLIDE_SIZE(add_delay * ( (NSCOMPONENT(direct) && EWCOMPONENT(direct)) ? 2 : 1 ) )
 	mob.set_glide_size(new_glide_size) // set it now in case of pulled objects
 	//If the move was recent, count using old_move_delay
@@ -162,27 +162,23 @@
 		// as a result of player input and not because they were pulled or any other magic.
 		SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_MOVED)
 
-	var/atom/movable/P = mob.pulling
-	if(P && !ismob(P) && P.density && !HAS_TRAIT(P, TRAIT_KEEP_DIRECTION_WHILE_PULLING))
-		mob.setDir(turn(mob.dir, 180))
-
 /**
- * Checks to see if you're being grabbed and if so attempts to break it
+ * Checks to see if an external factor is preventing movement, mainly grabbing.
  *
  * Called by client/Move()
  */
-/client/proc/Process_Grab()
-	if(!mob.pulledby)
-		return FALSE
-	if(mob.pulledby == mob.pulling && mob.pulledby.grab_state == GRAB_PASSIVE) //Don't autoresist passive grabs if we're grabbing them too.
-		return FALSE
+/client/proc/check_can_move()
+	if(!length(mob.grabbed_by))
+		return TRUE
+
 	if(HAS_TRAIT(mob, TRAIT_INCAPACITATED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
-		return TRUE
-	else if(HAS_TRAIT(mob, TRAIT_RESTRAINED))
+		return FALSE
+
+	else if(HAS_TRAIT(mob, TRAIT_ARMS_RESTRAINED))
 		COOLDOWN_START(src, move_delay, 1 SECONDS)
 		to_chat(src, span_warning("You're restrained! You can't move!"))
-		return TRUE
+		return FALSE
 	return mob.resist_grab(TRUE)
 
 
@@ -348,8 +344,16 @@
 				continue
 		if(rebound.anchored)
 			return rebound
-		if(pulling == rebound)
-			continue
+		if(isliving(rebound))
+			var/mob/living/L = rebound
+			var/_continue = FALSE
+			if(LAZYLEN(L.grabbed_by))
+				for(var/obj/item/hand_item/grab/G in L.grabbed_by)
+					if(G.assailant == src)
+						_continue = TRUE
+						break
+			if(_continue)
+				continue
 		return rebound
 
 /mob/has_gravity()
@@ -539,7 +543,10 @@
 		var/atom/loc_atom = loc
 		return loc_atom.relaymove(src, UP)
 
-	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
+	//Human's up() override has its own feedback
+	var/flags = ishuman(src) ? ZMOVE_FLIGHT_FLAGS : ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK
+	. = zstep(src, UP, flags)
+	if(.)
 		to_chat(src, span_notice("You move upwards."))
 
 ///Moves a mob down a z level
@@ -551,8 +558,9 @@
 		var/atom/loc_atom = loc
 		return loc_atom.relaymove(src, DOWN)
 
-	if(zMove(DOWN, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
+	if(zstep(src, DOWN, ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move down."))
+
 	return FALSE
 
 /mob/abstract_move(atom/destination)

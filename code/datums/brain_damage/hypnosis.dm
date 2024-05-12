@@ -66,4 +66,7 @@
 				new /datum/hallucination/chat(owner, TRUE, FALSE, span_hypnophrase("[hypnotic_phrase]"))
 
 /datum/brain_trauma/hypnosis/handle_hearing(datum/source, list/hearing_args)
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(istype(L, /datum/language/visual) || !L?.can_receive_language(owner))
+		return
 	hearing_args[HEARING_RAW_MESSAGE] = target_phrase.Replace(hearing_args[HEARING_RAW_MESSAGE], span_hypnophrase("$1"))

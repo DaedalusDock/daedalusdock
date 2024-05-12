@@ -5,7 +5,7 @@
 	button_icon_state = "regenerate"
 	chemical_cost = 10
 	dna_cost = 0
-	req_stat = HARD_CRIT
+	req_stat = UNCONSCIOUS
 
 /datum/action/changeling/regenerate/sting_action(mob/living/user)
 	..()
@@ -22,14 +22,11 @@
 				loud, crunchy sound and giving you great pain!</span>",
 				"<span class='hear'>You hear organic matter ripping \
 				and tearing!</span>")
-			C.emote("scream")
+			C.emote("agony")
 			C.regenerate_limbs()
-		if(!user.getorganslot(ORGAN_SLOT_BRAIN))
-			var/obj/item/organ/brain/B
-			if(C.has_dna() && C.dna.species.mutantbrain)
-				B = new C.dna.species.mutantbrain()
-			else
-				B = new()
+		if(!user.getorganslot(ORGAN_SLOT_BRAIN) && user.needs_organ(ORGAN_SLOT_BRAIN))
+			var/obj/item/organ/brain/B = C.dna.species.organs[ORGAN_SLOT_BRAIN]
+			B = new B()
 			B.organ_flags &= ~ORGAN_VITAL
 			B.decoy_override = TRUE
 			B.Insert(C)

@@ -482,10 +482,6 @@
 	pixel_x = -2;
 	pixel_y = 4
 	},
-/obj/item/stack/spacecash/c50{
-	pixel_x = 2;
-	pixel_y = 7
-	},
 /obj/machinery/vending/wallmed/directional/west,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
@@ -938,7 +934,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/machinery/chem_dispenser/drinks/beer/fullupgrade,
+/obj/machinery/chem_dispenser/drinks/beer,
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "AA" = (
@@ -1183,7 +1179,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/machinery/chem_dispenser/drinks/fullupgrade,
+/obj/machinery/chem_dispenser/drinks,
 /obj/structure/sign/poster/official/cohiba_robusto_ad{
 	pixel_y = 32
 	},

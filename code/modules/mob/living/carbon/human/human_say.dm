@@ -1,16 +1,9 @@
 /mob/living/carbon/human/say_mod(input, list/message_mods = list())
 	verb_say = dna.species.say_mod
-	// Any subtype of slurring in our status effects make us "slur"
-	if(locate(/datum/status_effect/speech/slurring) in status_effects)
-		if (HAS_TRAIT(src, TRAIT_SIGN_LANG))
-			return "loosely signs"
-		else
-			return "slurs"
-
 	return ..()
 
 /mob/living/carbon/human/GetVoice()
-	if(wear_mask && !wear_mask.up)
+	if(istype(wear_mask) && !wear_mask.up)
 		if(HAS_TRAIT(wear_mask, TRAIT_REPLACES_VOICE))
 			if(wear_id)
 				var/obj/item/card/id/idcard = wear_id.GetID()
@@ -47,7 +40,7 @@
 	return
 
 /mob/living/carbon/human/binarycheck()
-	if(stat >= SOFT_CRIT || !ears)
+	if(stat != CONSCIOUS || !ears)
 		return FALSE
 	var/obj/item/radio/headset/dongle = ears
 	if(!istype(dongle))

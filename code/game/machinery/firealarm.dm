@@ -10,6 +10,7 @@
 	result_path = /obj/machinery/firealarm
 	pixel_shift = 26
 
+DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 /obj/machinery/firealarm
 	name = "fire alarm"
 	desc = "<i>\"Pull this in case of emergency\"</i>. Thus, keep pulling it forever."
@@ -17,7 +18,7 @@
 	icon_state = "fire0"
 	max_integrity = 250
 	integrity_failure = 0.4
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.05
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.02
 	power_channel = AREA_USAGE_ENVIRON
@@ -58,6 +59,7 @@
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(building)
 		buildstage = 0
 		panel_open = TRUE
@@ -84,6 +86,7 @@
 
 /obj/machinery/firealarm/Destroy()
 	set_area(null)
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/firealarm/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
@@ -266,7 +269,7 @@
 	return attack_hand_secondary(user)
 
 /obj/machinery/firealarm/attackby(obj/item/tool, mob/living/user, params)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 
 	if(tool.tool_behaviour == TOOL_SCREWDRIVER && buildstage == 2)
 		tool.play_tool_sound(src)
@@ -405,7 +408,7 @@
 /obj/machinery/firealarm/examine(mob/user)
 	. = ..()
 	if((alert_type))
-		. += "The local area hazard light is flashing."
+		. += span_alert("The local area hazard light is flashing.")
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)

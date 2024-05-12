@@ -14,7 +14,7 @@
 		/obj/item/gun/ballistic/automatic/pistol/deagle/gold = 2,
 		/obj/item/gun/ballistic/automatic/pistol/deagle/camo = 2,
 		/obj/item/gun/ballistic/automatic/pistol/m1911 = 2,
-		/obj/item/gun/ballistic/automatic/proto/unrestricted = 2,
+		/obj/item/gun/ballistic/automatic/proto = 2,
 		/obj/item/gun/ballistic/shotgun/automatic/combat = 2,
 		/obj/item/gun/ballistic/automatic/gyropistol = 1,
 		/obj/item/gun/ballistic/shotgun = 2,
@@ -33,7 +33,7 @@
 		/obj/item/bedsheet/patriot = 5,
 		/obj/item/food/burger/superbite = 3
 	) //U S A
-	armor = list(MELEE = 100, BULLET = 100, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	armor = list(BLUNT = 100, PUNCTURE = 100, SLASH = 0, LASER = 100, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 	default_price = PAYCHECK_HARD * 2.5
 	extra_price = PAYCHECK_COMMAND * 2.5

@@ -379,9 +379,7 @@
 /obj/item/melee/baseball_bat{
 	pixel_x = -5
 	},
-/obj/item/crowbar/large{
-	pixel_x = 6
-	},
+/obj/item/crowbar,
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
 "bp" = (

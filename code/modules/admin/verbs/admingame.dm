@@ -44,6 +44,7 @@
 		if(M.client.byond_version)
 			full_version = "[M.client.byond_version].[M.client.byond_build ? M.client.byond_build : "xxx"]"
 		body += "<br>\[<b>Byond version:</b> [full_version]\]<br>"
+		body += "<br><b>Input Mode:</b> [M.client.hotkeys ? "Using Hotkeys" : "Using Classic Input"]<br>"
 
 
 	body += "<br><br>\[ "
@@ -214,7 +215,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		record_found = find_record("id", id, GLOB.data_core.locked)
 
 	if(record_found)//If they have a record we can determine a few things.
-		new_character.real_name = record_found.fields["name"]
+		new_character.set_real_name(record_found.fields["name"])
 		new_character.gender = record_found.fields["gender"]
 		new_character.age = record_found.fields["age"]
 		new_character.hardset_dna(record_found.fields["identity"], record_found.fields["enzymes"], null, record_found.fields["name"], record_found.fields["blood_type"], new record_found.fields["species"], record_found.fields["features"])
@@ -385,10 +386,10 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED))
 		var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
-		atom_hud.add_hud_to(mob)
+		atom_hud.show_to(mob)
 
 	for (var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud in GLOB.active_alternate_appearances)
-		antag_hud.add_hud_to(mob)
+		antag_hud.show_to(mob)
 
 	mob.lighting_alpha = mob.default_lighting_alpha()
 	mob.update_sight()
@@ -401,10 +402,10 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	for (var/hudtype in list(DATA_HUD_SECURITY_ADVANCED, DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED))
 		var/datum/atom_hud/atom_hud = GLOB.huds[hudtype]
-		atom_hud.remove_hud_from(mob)
+		atom_hud.hide_from(mob)
 
 	for (var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antag_hud in GLOB.active_alternate_appearances)
-		antag_hud.remove_hud_from(mob)
+		antag_hud.hide_from(mob)
 
 	mob.lighting_alpha = mob.default_lighting_alpha()
 	mob.update_sight()
@@ -457,6 +458,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	dat += "<br/><b>SET ALL MEASURES: <a href='?_src_=holder;[HrefToken()];change_lag_switch=ALL_ON'>ON</a> | <a href='?_src_=holder;[HrefToken()];change_lag_switch=ALL_OFF'>OFF</a></b><br/>"
 	dat += "<br/>Disable ghosts zoom and t-ray verbs (except staff): <a href='?_src_=holder;[HrefToken()];change_lag_switch=[DISABLE_GHOST_ZOOM_TRAY]'><b>[SSlag_switch.measures[DISABLE_GHOST_ZOOM_TRAY] ? "On" : "Off"]</b></a><br/>"
 	dat += "Disable late joining: <a href='?_src_=holder;[HrefToken()];change_lag_switch=[DISABLE_NON_OBSJOBS]'><b>[SSlag_switch.measures[DISABLE_NON_OBSJOBS] ? "On" : "Off"]</b></a><br/>"
+	dat += "Disable VV Icon Preview Generation: <a href='?_src_=holder;[HrefToken()];change_lag_switch=[DISABLE_VV_ICON_PREVIEW]'><b>[SSlag_switch.measures[DISABLE_VV_ICON_PREVIEW] ? "On" : "Off"]</b></a><br/>"
 	dat += "<br/>============! MAD GHOSTS ZONE !============<br/>"
 	dat += "Disable deadmob keyLoop (except staff, informs dchat): <a href='?_src_=holder;[HrefToken()];change_lag_switch=[DISABLE_DEAD_KEYLOOP]'><b>[SSlag_switch.measures[DISABLE_DEAD_KEYLOOP] ? "On" : "Off"]</b></a><br/>"
 	dat += "==========================================<br/>"

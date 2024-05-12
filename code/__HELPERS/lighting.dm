@@ -11,3 +11,19 @@
 	var/mutable_appearance/appearance = mutable_appearance(icon, icon_state, layer, EMISSIVE_PLANE, alpha, appearance_flags | EMISSIVE_APPEARANCE_FLAGS)
 	appearance.color = GLOB.em_block_color
 	return appearance
+
+// This is a semi hot proc, so we micro it. saves maybe 150ms
+// sorry :)
+/proc/fast_emissive_blocker(atom/make_blocker)
+	// Note: alpha doesn't "do" anything, since it's overriden by the color set shortly after
+	// Consider removing it someday?
+	var/mutable_appearance/blocker = new()
+	blocker.icon = make_blocker.icon
+	blocker.icon_state = make_blocker.icon_state
+	// blocker.layer = FLOAT_LAYER // Implied, FLOAT_LAYER is default for appearances
+	blocker.appearance_flags |= make_blocker.appearance_flags | EMISSIVE_APPEARANCE_FLAGS
+	blocker.dir = make_blocker.dir
+	blocker.color = GLOB.em_block_color
+	blocker.plane = EMISSIVE_PLANE
+
+	return blocker

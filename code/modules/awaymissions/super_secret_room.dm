@@ -28,8 +28,8 @@
 			SpeakPeace(list("Welcome to the error handling room.","Something's goofed up bad to send you here.","You should probably tell an admin what you were doing, or make a bug report."))
 			for(var/obj/structure/signpost/salvation/S in orange(7))
 				S.invisibility = 0
-				var/datum/effect_system/smoke_spread/smoke = new
-				smoke.set_up(1, S.loc)
+				var/datum/effect_system/fluid_spread/smoke/smoke = new
+				smoke.set_up(1, location = S.loc)
 				smoke.start()
 				break
 		if(1)
@@ -123,17 +123,23 @@
 	icon_state = "rupee"
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/glass = 500)
-	loc_procs = CROSSED
 
 /obj/item/rupee/Initialize(mapload)
 	. = ..()
 	var/newcolor = pick(10;COLOR_GREEN, 5;COLOR_BLUE, 3;COLOR_RED, 1;COLOR_PURPLE)
 	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/item/rupee/Crossed(atom/movable/crossed_by, oldloc)
-	if(!ismob(crossed_by))
+/obj/item/rupee/proc/on_entered(datum/source, atom/movable/AM)
+	SIGNAL_HANDLER
+	if(AM == src)
 		return
-	INVOKE_ASYNC(src, PROC_REF(put_in_crossers_hands), crossed_by)
+	if(!ismob(AM))
+		return
+	INVOKE_ASYNC(src, PROC_REF(put_in_crossers_hands), AM)
 
 /obj/item/rupee/proc/put_in_crossers_hands(mob/crosser)
 	if(crosser.put_in_hands(src))

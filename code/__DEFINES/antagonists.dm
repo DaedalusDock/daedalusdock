@@ -122,53 +122,19 @@
 ///File to the malf flavor
 #define MALFUNCTION_FLAVOR_FILE "antagonist_flavor/malfunction_flavor.json"
 
-///File to the thief flavor
-#define THIEF_FLAVOR_FILE "antagonist_flavor/thief_flavor.json"
-
 /// JSON string file for all of our heretic influence flavors
 #define HERETIC_INFLUENCE_FILE "antagonist_flavor/heretic_influences.json"
 
-///employers that are from the syndicate
-GLOBAL_LIST_INIT(syndicate_employers, list(
-	"Animal Rights Consortium",
-	"Bee Liberation Front",
-	"Cybersun Industries",
-	"Donk Corporation",
-	"Gorlex Marauders",
-	"MI13",
-	"Tiger Cooperative Fanatic",
-	"Waffle Corporation Terrorist",
-	"Waffle Corporation",
-))
-///employers that are from nanotrasen
-GLOBAL_LIST_INIT(nanotrasen_employers, list(
-	"Champions of Evil",
-	"Corporate Climber",
-	"Gone Postal",
-	"Internal Affairs Agent",
-	"Legal Trouble",
-))
-
 ///employers who hire agents to do the hijack
 GLOBAL_LIST_INIT(hijack_employers, list(
-	"Animal Rights Consortium",
-	"Bee Liberation Front",
+	"Legal Trouble",
 	"Gone Postal",
-	"Tiger Cooperative Fanatic",
-	"Waffle Corporation Terrorist",
 ))
 
-///employers who hire agents to do a task and escape... or martyrdom. whatever
+///employers who hire agents to do a task and escape...
 GLOBAL_LIST_INIT(normal_employers, list(
-	"Champions of Evil",
-	"Corporate Climber",
-	"Cybersun Industries",
-	"Donk Corporation",
-	"Gorlex Marauders",
-	"Internal Affairs Agent",
 	"Legal Trouble",
-	"MI13",
-	"Waffle Corporation",
+	"Gone Postal",
 ))
 
 ///employers for malfunctioning ais. they do not have sides, unlike traitors.

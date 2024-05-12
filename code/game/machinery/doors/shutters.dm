@@ -5,8 +5,8 @@
 	icon = 'icons/obj/doors/shutters.dmi'
 	layer = SHUTTER_LAYER
 	closingLayer = SHUTTER_LAYER_CLOSED
-	damage_deflection = 20
-	armor = list(MELEE = 20, BULLET = 20, LASER = 20, ENERGY = 75, BOMB = 25, BIO = 100, FIRE = 100, ACID = 70)
+	damage_deflection = 5
+	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 75, BOMB = 25, BIO = 100, FIRE = 100, ACID = 70)
 	max_integrity = 100
 	recipe_type = /datum/crafting_recipe/shutters
 
@@ -18,10 +18,10 @@
 /obj/machinery/door/poddoor/shutters/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			z_flick("opening", src)
 			playsound(src, 'sound/machines/doors/shutters_open.ogg', 100, TRUE)
 		if("closing")
-			flick("closing", src)
+			z_flick("closing", src)
 			playsound(src, 'sound/machines/doors/shutters_close.ogg', 100, TRUE)
 
 /obj/machinery/door/poddoor/shutters/indestructible

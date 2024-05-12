@@ -22,6 +22,8 @@
 #define NETCLASS_P2P_PHONE "PNET_VCSTATION"
 #define NETCLASS_APC "PNET_AREAPOWER"
 #define NETCLASS_TERMINAL "PNET_STERM"
+#define NETCLASS_GRPS_CARD "NET_GPRS"
+#define NETCLASS_MESSAGE_SERVER "NET_MSGSRV"
 
 // Packet fields
 // not honestly thrilled with having these be defines but kapu wants it that way
@@ -42,6 +44,8 @@
 // Standard Commands
 #define NET_COMMAND_PING_REPLY "ping_reply"
 
+// PDA Text Message
+#define NETCMD_PDAMESSAGE "pda_message"
 
 // Dataterminal connection/disconnect return values
 
@@ -54,6 +58,9 @@
 /// Connection rejected, Not sharing a turf (???)
 #define NETJACK_CONNECT_NOTSAMETURF 2
 
+/// Data Terminal not found.
+#define NETJACK_CONNECT_NOT_FOUND 3
+
 // receive_signal return codes
 
 /// Packet fully handled by parent
@@ -61,3 +68,19 @@
 /// Packet needs additional handling
 #define RECEIVE_SIGNAL_CONTINUE FALSE
 
+// -----
+// Inviolability flags
+
+/// Packet contains volatile data where storing it may cause GC issues.
+/// This means references to atoms, non-trivial datums like virtualspeakers, etc.
+#define MAGIC_DATA_MUST_DISCARD (1<<0)
+
+/// Packet contains data that players should never be able to see *DIRECTLY*.
+/// Re-Interpretation is allowed, This is specifically for arbitrary packet capture applications where raw fields are accessible.
+/// For example, voice signal packets, or stuff that wouldn't make sense to be parsable as raw text.
+#define MAGIC_DATA_MUST_OBFUSCATE (1<<1)
+
+/// All protection flags at once.
+#define MAGIC_DATA_INVIOLABLE ALL
+
+#define PACKET_STRING_FILE "packetnet.json"

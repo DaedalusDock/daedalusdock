@@ -3,7 +3,7 @@
 	desc = "Didn't make sense not to live for fun, your brain gets smart but your head gets dumb."
 	icon = 'icons/mob/human_parts.dmi'
 	icon_state = "default_human_head"
-	max_damage = 200
+	max_damage = 75
 	body_zone = BODY_ZONE_HEAD
 	body_part = HEAD
 	plaintext_zone = "head"
@@ -25,20 +25,24 @@
 	unarmed_stun_threshold = 4
 	bodypart_trait_source = HEAD_TRAIT
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD
+	bodypart_flags = (BP_HAS_BLOOD | BP_HAS_BONES | BP_HAS_ARTERY | BP_CAN_BE_DISLOCATED)
 
 	amputation_point = "neck"
 	encased = "skull"
 	artery_name = "carotid artery"
 	cavity_name = "cranial"
+	joint_name = "jaw"
 
-	minimum_break_damage = 30
+	minimum_break_damage = 60 //It's really high because of how crippling the effect is.
 
 	var/mob/living/brain/brainmob //The current occupant.
 	var/obj/item/organ/brain/brain //The brain organ
 	var/obj/item/organ/eyes/eyes
 	var/obj/item/organ/ears/ears
 	var/obj/item/organ/tongue/tongue
+
+	///See [mob/living/proc/has_mouth()]
+	var/can_ingest_reagents = TRUE
 
 	var/eyes_icon_file = 'icons/mob/human_face.dmi'
 	///Render sclera for this species?
@@ -149,12 +153,6 @@
 		if(!tongue)
 			. += span_info("[real_name]'s tongue has been removed.")
 
-
-/obj/item/bodypart/head/can_dismember(obj/item/item)
-	if(owner.stat < HARD_CRIT)
-		return FALSE
-	return ..()
-
 /obj/item/bodypart/head/drop_contents(mob/user, violent_removal)
 	var/turf/head_turf = get_turf(src)
 	for(var/obj/item/head_item in src.contents)
@@ -165,7 +163,7 @@
 				user.visible_message(span_warning("[user] saws [src] open and pulls out a brain!"), span_notice("You saw [src] open and pull out a brain."))
 			if(violent_removal && prob(rand(80, 100))) //ghetto surgery can damage the brain.
 				to_chat(user, span_warning("[brain] was damaged in the process!"))
-				old_brain.setOrganDamage(brain.maxHealth)
+				old_brain.setOrganDamage(old_brain.maxHealth)
 			old_brain.forceMove(head_turf)
 			update_icon_dropped()
 		else
@@ -178,6 +176,16 @@
 	tongue = null
 
 	return ..()
+
+/obj/item/bodypart/head/apply_bone_break(mob/living/carbon/C)
+	. = ..()
+	//add_bodypart_trait(TRAIT_BLURRY_VISION)
+	C.apply_status_effect(/datum/status_effect/concussion)
+
+/obj/item/bodypart/head/apply_bone_heal(mob/living/carbon/C)
+	. = ..()
+	//remove_bodypart_trait(TRAIT_BLURRY_VISION)
+	C.remove_status_effect(/datum/status_effect/concussion)
 
 /obj/item/bodypart/head/update_limb(dropping_limb, is_creating)
 	. = ..()
@@ -299,6 +307,12 @@
 	return gradient_overlay
 
 /obj/item/bodypart/head/talk_into(mob/holder, message, channel, spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = holder?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	var/mob/headholder = holder
 	if(istype(headholder))
 		headholder.log_talk(message, LOG_SAY, tag = "beheaded talk")

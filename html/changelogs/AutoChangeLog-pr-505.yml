@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - qol: Click-Drag can now be used to move items around inventories, including swapping
-      which hand an item is holding.

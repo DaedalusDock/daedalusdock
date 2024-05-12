@@ -208,7 +208,7 @@
 	incompatible_modules = list(/obj/item/mod/module/flashlight)
 	cooldown_time = 0.5 SECONDS
 	overlay_state_inactive = "module_light"
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_color = COLOR_WHITE
 	light_outer_range = 3
 	light_power = 1
@@ -466,10 +466,13 @@
 	incompatible_modules = list(/obj/item/mod/module/hat_stabilizer)
 	/*Intentionally left inheriting 0 complexity and removable = TRUE;
 	even though it comes inbuilt into the Magnate/Corporate MODS and spawns in maints, I like the idea of stealing them*/
-	/// Currently "stored" hat. No armor or function will be inherited, ONLY the icon.
+	/// Currently "stored" hat. No armor or function will be inherited, only the icon and cover flags.
 	var/obj/item/clothing/head/attached_hat
 	/// Whitelist of attachable hats, read note in Initialize() below this line
 	var/static/list/attachable_hats_list
+	/// Original cover flags for the MOD helmet, before a hat is placed
+	var/former_flags
+	var/former_visor_flags
 
 /obj/item/mod/module/hat_stabilizer/Initialize()
 	. = ..()
@@ -523,6 +526,7 @@
 	SIGNAL_HANDLER
 	if(!istype(hitting_item, /obj/item/clothing/head))
 		return
+	var/obj/item/clothing/hat = hitting_item
 	if(!mod.active)
 		balloon_alert(user, "suit must be active!")
 		return
@@ -532,8 +536,15 @@
 	if(attached_hat)
 		balloon_alert(user, "hat already attached!")
 		return
+	if(hat.clothing_flags & STACKABLE_HELMET_EXEMPT)
+		balloon_alert(user, "invalid hat!")
+		return
 	if(mod.wearer.transferItemToLoc(hitting_item, src, force = FALSE, silent = TRUE))
-		attached_hat = hitting_item
+		attached_hat = hat
+		former_flags = mod.helmet.flags_cover
+		former_visor_flags = mod.helmet.visor_flags_cover
+		mod.helmet.flags_cover |= attached_hat.flags_cover
+		mod.helmet.visor_flags_cover |= attached_hat.visor_flags_cover
 		balloon_alert(user, "hat attached, right-click to remove")
 		mod.wearer.update_worn_back()
 
@@ -553,21 +564,6 @@
 	else
 		balloon_alert_to_viewers("the hat falls to the floor!")
 	attached_hat = null
+	mod.helmet.flags_cover = former_flags
+	mod.helmet.visor_flags_cover = former_visor_flags
 	mod.wearer.update_worn_back()
-
-///Sign Language Translator - allows people to sign over comms using the modsuit's gloves.
-/obj/item/mod/module/signlang_radio
-	name = "MOD glove translator module"
-	desc = "A module that adds motion sensors into the suit's gloves, \
-		which works in tandem with a short-range subspace transmitter, \
-		letting the audibly impaired use sign language over comms."
-	icon_state = "signlang_radio"
-	complexity = 1
-	idle_power_cost = DEFAULT_CHARGE_DRAIN * 0.3
-	incompatible_modules = list(/obj/item/mod/module/signlang_radio)
-
-/obj/item/mod/module/signlang_radio/on_suit_activation()
-	ADD_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, MOD_TRAIT)
-
-/obj/item/mod/module/signlang_radio/on_suit_deactivation(deleting = FALSE)
-	REMOVE_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, MOD_TRAIT)

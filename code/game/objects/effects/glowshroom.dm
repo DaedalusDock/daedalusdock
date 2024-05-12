@@ -133,8 +133,6 @@ GLOBAL_VAR_INIT(glowshrooms, 0)
 
 	Decay(rand(idle_decay_min, idle_decay_max) * delta_time)
 
-
-
 /obj/structure/glowshroom/proc/Spread()
 	var/turf/ownturf = get_turf(src)
 	var/list/turf/shares = get_adjacent_open_turfs(ownturf)

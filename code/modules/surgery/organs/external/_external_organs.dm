@@ -26,7 +26,10 @@
 
 ///Update our features after something changed our appearance
 /obj/item/organ/proc/mutate_feature(features, mob/living/carbon/human/human)
-	if(!dna_block || !get_global_feature_list())
+	if(!dna_block)
+		return
+
+	if(!get_global_feature_list())
 		CRASH("External organ has no dna block/feature_list implimented!")
 
 	var/list/feature_list = get_global_feature_list()
@@ -56,7 +59,7 @@
 
 		if(ORGAN_COLOR_INHERIT_ALL)
 			mutcolors = ownerlimb.mutcolors.Copy()
-			draw_color = mutcolors["[mutcolor_used]_1"]
+			draw_color = mutcolors["[mutcolor_used]_[mutcolor_index]"]
 
 	color = draw_color
 	return TRUE
@@ -83,7 +86,7 @@
 	dna_block = DNA_HORNS_BLOCK
 
 /obj/item/organ/horns/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 
@@ -108,7 +111,7 @@
 	dna_block = DNA_FRILLS_BLOCK
 
 /obj/item/organ/frills/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEEARS))
+	if(!(human.obscured_slots & HIDEEARS))
 		return TRUE
 	return FALSE
 
@@ -199,7 +202,7 @@
 	color_source = ORGAN_COLOR_OVERRIDE
 
 /obj/item/organ/pod_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 
@@ -229,7 +232,7 @@
 	color_source = ORGAN_COLOR_HAIR
 
 /obj/item/organ/teshari_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	return TRUE
 
@@ -254,7 +257,7 @@
 	dna_block = DNA_TESHARI_EARS_BLOCK
 
 /obj/item/organ/teshari_ears/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(human.head && (human.head.flags_inv & HIDEHAIR) || human.wear_mask && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(human.obscured_slots & HIDEHAIR)
 		return FALSE
 	return TRUE
 
@@ -298,7 +301,7 @@
 /obj/item/organ/teshari_body_feathers/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!human)
 		return TRUE
-	if(human.wear_suit && (human.wear_suit.flags_inv & HIDEJUMPSUIT))
+	if(human.obscured_slots & HIDEJUMPSUIT)
 		return FALSE
 	return TRUE
 

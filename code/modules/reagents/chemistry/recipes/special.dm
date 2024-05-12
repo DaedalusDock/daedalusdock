@@ -156,7 +156,7 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 
 /datum/chemical_reaction/randomized/proc/HasConflicts()
 	for(var/x in required_reagents)
-		for(var/datum/chemical_reaction/R in GLOB.chemical_reactions_list_reactant_index[x])
+		for(var/datum/chemical_reaction/R in SSreagents.chemical_reactions_list_reactant_index[x])
 			if(chem_recipes_do_conflict(R,src))
 				return TRUE
 	return FALSE
@@ -253,13 +253,13 @@ GLOBAL_LIST_INIT(medicine_reagents, build_medicine_reagents())
 		return
 	var/list/dat = list("<ul>")
 	for(var/rid in recipe.required_reagents)
-		var/datum/reagent/R = GLOB.chemical_reagents_list[rid]
+		var/datum/reagent/R = SSreagents.chemical_reagents_list[rid]
 		dat += "<li>[recipe.required_reagents[rid]]u of [R.name]</li>"
 	dat += "</ul>"
 	if(recipe.required_catalysts.len)
 		dat += "With following present: <ul>"
 		for(var/rid in recipe.required_catalysts)
-			var/datum/reagent/R = GLOB.chemical_reagents_list[rid]
+			var/datum/reagent/R = SSreagents.chemical_reagents_list[rid]
 			dat += "<li>[recipe.required_catalysts[rid]]u of [R.name]</li>"
 		dat += "</ul>"
 	dat += "</ul>Mix slowly<ul>"

@@ -176,6 +176,9 @@ LOG_SHUTTLE
 ## log tool interactions [/atom/proc/tool_act]
 LOG_TOOLS
 
+##log graffiti from engraving
+LOG_GRAFFITI
+
 ## Log all timers on timer auto reset
 # LOG_TIMERS_ON_BUCKET_RESET
 

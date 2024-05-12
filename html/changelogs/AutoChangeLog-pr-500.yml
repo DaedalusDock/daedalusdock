@@ -1,8 +1,0 @@
-author: Kapu1178, Goonstation Spriters
-delete-after: true
-changes:
-  - balance: Agent ID now costs 1 TC
-  - balance: The chameleon mask now shows your voice as Unknown if you are not wearing
-      an ID.
-  - rscadd: The Voice Changer, can be inserted into most masks to obscure your voice
-      like a chameleon mask.

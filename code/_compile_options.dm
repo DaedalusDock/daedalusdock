@@ -72,6 +72,11 @@
 ///Be warned, this increases timer creation cost by 5x
 // #define TIMER_DEBUG
 
+// Displays static object lighting updates
+// Also enables some debug vars on sslighting that can be used to modify
+// How extensively we prune lighting corners to update
+// #define VISUALIZE_LIGHT_UPDATES
+
 ///If this is uncommented, force our verb processing into just the 2% of a tick
 ///We normally reserve for it
 ///NEVER run this on live, it's for simulating highpop only
@@ -86,7 +91,20 @@
 ///~~Requires VERB_STRESS_TEST to be defined~~
 // #define FORCE_VERB_OVERTIME
 
+///Uncomment this to enable a set of debugging verbs for client macros
+///This ability is given to all clients, and I'm not going to bother vetting how safe this is.
+///This will generate a compile warning.
+//#define MACRO_TEST
 
+///Uncomment this to wire the ruin budgets to zero. This prevents them spawning.
+///Useful for measuring performance of specific systems with more reliability.
+//#define DISABLE_RUINS
+
+/// Uncomment this to assert INSTANCES_OF() is running on valid lists.
+//#define DEBUG_ATLAS
+
+/// Uncomment this to enable debugging tools for map making.
+//#define DEBUG_MAPS
 
 /////////////////////// REFERENCE TRACKING
 
@@ -114,7 +132,6 @@
 // #define UNIT_TESTS //If this is uncommented, we do a single run though of the game setup and tear down process with unit tests in between
 
 
-
 /////////////////////// AUTO WIKI
 
 ///If this is uncommented, Autowiki will generate edits and shut down the server.
@@ -132,9 +149,6 @@
 #define MULTIZAS
 
 /////////////////////// ZMIMIC
-
-///Enables Multi-Z lighting
-#define ZMIMIC_LIGHT_BLEED
 
 ///Enables multi-z speech
 #define ZMIMIC_MULTIZ_SPEECH
@@ -161,6 +175,10 @@
 
 
 /////////////////////// ~[Additional code for the above flags]~ ///////////////////////
+
+#ifdef DISABLE_RUINS
+#warn DISABLE_RUINS Enabled: Ruin generation forcefully disabled.
+#endif
 
 #ifdef TESTING
 #warn compiling in TESTING mode. testing() debug messages will be visible.

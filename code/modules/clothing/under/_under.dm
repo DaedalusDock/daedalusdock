@@ -7,7 +7,7 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	permeability_coefficient = 0.9
 	slot_flags = ITEM_SLOT_ICLOTHING
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0, WOUND = 5)
+	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	equip_sound = 'sound/items/equip/jumpsuit_equip.ogg'
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
@@ -41,12 +41,16 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-	if(HAS_BLOOD_DNA(src))
+
+	var/list/dna = return_blood_DNA()
+	if(length(dna))
 		if(istype(wearer))
 			var/obj/item/bodypart/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
 			if(!chest?.icon_bloodycover)
 				return
-			. += image(chest.icon_bloodycover, "uniformblood")
+			var/image/bloody_overlay = image(chest.icon_bloodycover, "uniformblood")
+			bloody_overlay.color = get_blood_dna_color(dna)
+			. += bloody_overlay
 		else
 			. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 	if(accessory_overlay)
@@ -72,9 +76,6 @@
 
 /obj/item/clothing/under/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_undersuit()
 	if(damaged_state == CLOTHING_SHREDDED && has_sensor > NO_SENSORS)
 		has_sensor = BROKEN_SENSORS
 	else if(damaged_state == CLOTHING_PRISTINE && has_sensor == BROKEN_SENSORS)
@@ -118,7 +119,6 @@
 	if(attached_accessory && slot != ITEM_SLOT_HANDS && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		attached_accessory.on_uniform_equip(src, user)
-		H.fan_hud_set_fandom()
 		if(attached_accessory.above_suit)
 			H.update_worn_oversuit()
 
@@ -132,7 +132,6 @@
 		attached_accessory.on_uniform_dropped(src, user)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
-			H.fan_hud_set_fandom()
 			if(attached_accessory.above_suit)
 				H.update_worn_oversuit()
 	..()
@@ -182,9 +181,7 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
-	holder.fan_hud_set_fandom()
+	holder.update_slots_for_item(src)
 
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
 	. = FALSE
@@ -209,10 +206,7 @@
 		return
 
 	var/mob/living/carbon/human/holder = loc
-	holder.update_worn_undersuit()
-	holder.update_worn_oversuit()
-	holder.fan_hud_set_fandom()
-
+	holder.update_slots_for_item(src)
 
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
@@ -283,7 +277,7 @@
 	if(.)
 		return
 
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
+	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
 	if(attached_accessory)
 		remove_accessory(user)
@@ -306,10 +300,10 @@
 		to_chat(usr, span_notice("You adjust the suit to wear it more casually."))
 	else
 		to_chat(usr, span_notice("You adjust the suit back to normal."))
+
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		H.update_worn_undersuit()
-		H.update_body()
+		H.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 /obj/item/clothing/under/proc/toggle_jumpsuit_adjust()
 	if(adjusted == DIGITIGRADE_STYLE)

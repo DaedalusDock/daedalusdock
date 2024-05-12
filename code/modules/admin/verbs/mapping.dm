@@ -298,18 +298,10 @@ GLOBAL_VAR_INIT(say_disabled, FALSE)
 	D.setDir(SOUTH)
 
 	var/list/completed = list()
-	var/failures = 0
 
 	// Handle AI and borg specially
-	try
-		compiled_icon.Insert(icon('icons/mob/ai.dmi', "ai", SOUTH, 1), "AI")
-	catch
-		failures++
-
-	try
-		compiled_icon.Insert(icon('icons/mob/robots.dmi', "robot", SOUTH, 1), "Cyborg")
-	catch
-		failures++
+	compiled_icon.Insert(icon('icons/mob/ai.dmi', "ai", SOUTH, 1), "AI")
+	compiled_icon.Insert(icon('icons/mob/robots.dmi', "robot", SOUTH, 1), "Cyborg")
 
 	for(var/job in subtypesof(/datum/job))
 		var/datum/job/JB = new job
@@ -321,20 +313,15 @@ GLOBAL_VAR_INIT(say_disabled, FALSE)
 				D.wipe_inventory()
 				randomize_human(D)
 				D.dress_up_as_job(JB, TRUE)
-
-				var/success = TRUE
-				try
-					var/icon/I = getFlatIcon(D, no_anim = TRUE)
-					fcopy(I, "icons/mob/job_icons_temp/[JB.title].dmi")
-				catch
-					success = FALSE
-					failures++
-
-				if(success)
-					completed += JB.title
+				var/icon/I = getFlatIcon(D, no_anim = TRUE)
+				fcopy(I, "icons/mob/job_icons_temp/[JB.title].dmi")
+				completed += JB.title
 
 	qdel(D)
+
+	// Byond bug. Need to put it back into the icon cache, since all the stuff above pushes it out.
 	compiled_icon = icon(compiled_icon)
+
 	for(var/title in completed)
 		var/icon/I = icon("icons/mob/job_icons_temp/[title].dmi")
 		compiled_icon.Insert(I, title)
@@ -353,15 +340,12 @@ GLOBAL_VAR_INIT(say_disabled, FALSE)
 	var/list/new_states = icon_states("icons/mob/autogen_landmarks.dmi")
 	var/list/removed_states = old_states - new_states
 	var/list/added_states = new_states - old_states
-	if(length(new_states) || length(old_states))
+	if(length(added_states) || length(removed_states))
 		to_chat(world, span_danger("Icon states have been added and/or removed. Ensure this is correct."))
 		for(var/state in removed_states)
 			to_chat(world, span_obviousnotice("REMOVED: [state]."))
 		for(var/state in added_states)
 			to_chat(world, span_obviousnotice("ADDED: [state]."))
-
-	if(failures)
-		to_chat(world, span_danger("There were [failures] generation failures, try running again."))
 
 	to_chat(world, "All done :)")
 

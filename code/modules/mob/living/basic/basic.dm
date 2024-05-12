@@ -84,7 +84,7 @@
 		gender = pick(MALE,FEMALE)
 
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 
 	if(!loc)
 		stack_trace("Basic mob being instantiated in nullspace")
@@ -131,7 +131,7 @@
 /mob/living/basic/proc/update_basic_mob_varspeed()
 	if(speed == 0)
 		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, multiplicative_slowdown = speed)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, slowdown = speed)
 	SEND_SIGNAL(src, POST_BASIC_MOB_UPDATE_VARSPEED)
 
 /mob/living/basic/relaymove(mob/living/user, direction)

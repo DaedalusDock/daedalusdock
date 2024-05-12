@@ -57,8 +57,7 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	autoplace_max_time += world.time
 	GLOB.overminds += src
 	var/new_name = "[initial(name)] ([rand(1, 999)])"
-	name = new_name
-	real_name = new_name
+	set_real_name(new_name)
 	last_attack = world.time
 	var/datum/blobstrain/BS = pick(GLOB.valid_blobstrains)
 	set_strain(BS)
@@ -196,7 +195,7 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 			main_objective.completed = TRUE
 	to_chat(world, "<B>[real_name] consumed the station in an unstoppable tide!</B>")
 	SSticker.news_report = BLOB_WIN
-	SSticker.force_ending = 1
+	SSticker.end_round()
 
 /mob/camera/blob/Destroy()
 	QDEL_NULL(blobstrain)

@@ -1,4 +1,4 @@
-///called on /living when attempting to pick up an item, from base of /mob/living/put_in_hand_check(): (obj/item/I)
+///called on /living when attempting to pick up an item, from base of /mob/living/can_put_in_hand(): (obj/item/I)
 #define COMSIG_LIVING_TRY_PUT_IN_HAND "living_try_put_in_hand"
 	/// Can't pick up
 	#define COMPONENT_LIVING_CANT_PUT_IN_HAND (1<<0)
@@ -75,7 +75,7 @@
 #define COMSIG_LIVING_POST_FULLY_HEAL "living_post_fully_heal"
 /// from start of /mob/living/handle_breathing(): (delta_time, times_fired)
 #define COMSIG_LIVING_HANDLE_BREATHING "living_handle_breathing"
-///from /obj/item/hand_item/slapper/attack_atom(): (source=mob/living/slammer, obj/structure/table/slammed_table)
+///from /obj/item/hand_item/slapper/attack_obj(): (source=mob/living/slammer, obj/structure/table/slammed_table)
 #define COMSIG_LIVING_SLAM_TABLE "living_slam_table"
 ///from /obj/item/hand_item/slapper/attack(): (source=mob/living/slapper, mob/living/slapped)
 #define COMSIG_LIVING_SLAP_MOB "living_slap_mob"
@@ -102,3 +102,6 @@
 
 ///From mob/living/proc/set_combat_mode(): (mob/living/user, new_mode)
 #define COMSIG_LIVING_TOGGLE_COMBAT_MODE "living_toggle_combat_mode"
+
+/// from base of [/mob/living/changeNext_Move()] (next_move)
+#define COMSIG_LIVING_CHANGENEXT_MOVE "living_changenext_move"

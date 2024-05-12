@@ -84,6 +84,7 @@
 
 /obj/machinery/syndicatebomb/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	wires = new /datum/wires/syndicatebomb(src)
 	if(payload)
 		payload = new payload(src)
@@ -92,6 +93,7 @@
 	end_processing()
 
 /obj/machinery/syndicatebomb/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	QDEL_NULL(wires)
 	QDEL_NULL(countdown)
 	end_processing()
@@ -553,7 +555,7 @@
 
 /obj/item/syndicatedetonator/attack_self(mob/user)
 	if(timer < world.time)
-		for(var/obj/machinery/syndicatebomb/B in GLOB.machines)
+		for(var/obj/machinery/syndicatebomb/B as anything in INSTANCES_OF(/obj/machinery/syndicatebomb))
 			if(B.active)
 				B.detonation_timer = world.time + BUTTON_DELAY
 				detonated++

@@ -16,4 +16,10 @@
 /// This cycle, a round event was hijacked when the next midround event is too soon.
 #define HIJACKED_TOO_SOON "HIJACKED_TOO_SOON"
 
-#define IS_DYNAMIC_GAME_MODE (istype(SSticker.mode, /datum/game_mode/dynamic))
+#define GAMEMODE_WAS_DYNAMIC (istype(SSticker.mode, /datum/game_mode/dynamic))
+
+#define GAMEMODE_WAS_MALF_AI (istype(SSticker.mode, /datum/game_mode/malf) || (GAMEMODE_WAS_DYNAMIC && locate(/datum/dynamic_ruleset/roundstart/malf_ai) in SSticker.mode:executed_rules))
+
+#define GAMEMODE_WAS_REVS (istype(SSticker.mode, /datum/game_mode/revolution) || (GAMEMODE_WAS_DYNAMIC && ((locate(/datum/dynamic_ruleset/roundstart/revs) in SSticker.mode:executed_rules) || locate(/datum/dynamic_ruleset/latejoin/provocateur) in SSticker.mode:executed_rules)))
+
+#define GAMEMODE_WAS_NUCLEAR_EMERGENCY (istype(SSticker.mode, /datum/game_mode/nuclear_emergency) || (GAMEMODE_WAS_DYNAMIC && ((locate(/datum/dynamic_ruleset/roundstart/nuclear) in SSticker.mode:executed_rules) || (locate(/datum/dynamic_ruleset/midround/from_ghosts/nuclear) in SSticker.mode:executed_rules))))

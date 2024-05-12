@@ -251,10 +251,10 @@
 
 /obj/item/mecha_parts/mecha_equipment/rcd/Initialize(mapload)
 	. = ..()
-	GLOB.rcd_list += src
+	SET_TRACKING(TRACKING_KEY_RCD)
 
 /obj/item/mecha_parts/mecha_equipment/rcd/Destroy()
-	GLOB.rcd_list -= src
+	UNSET_TRACKING(TRACKING_KEY_RCD)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/get_snowflake_data()

@@ -309,7 +309,7 @@
 			balloon_alert(user, "still recharging!")
 			return
 		COOLDOWN_START(src, resin_cooldown, 10 SECONDS)
-		R.remove_any(100)
+		R.remove_all(100)
 		var/obj/effect/resin_container/resin = new (get_turf(src))
 		log_game("[key_name(user)] used Resin Launcher at [AREACOORD(user)].")
 		playsound(src,'sound/items/syringeproj.ogg',40,TRUE)
@@ -324,12 +324,12 @@
 			balloon_alert(user, "too far!")
 			return
 		for(var/S in target)
-			if(istype(S, /obj/effect/particle_effect/foam/metal/resin) || istype(S, /obj/structure/foamedmetal/resin))
+			if(istype(S, /obj/effect/particle_effect/fluid/foam/metal/resin) || istype(S, /obj/structure/foamedmetal/resin))
 				balloon_alert(user, "already has resin!")
 				return
 		if(metal_synthesis_cooldown < 5)
-			var/obj/effect/particle_effect/foam/metal/resin/F = new (get_turf(target))
-			F.amount = 0
+			var/obj/effect/particle_effect/fluid/foam/metal/resin/foam = new (get_turf(target))
+			foam.group.target_size = 0
 			metal_synthesis_cooldown++
 			addtimer(CALLBACK(src, PROC_REF(reduce_metal_synth_cooldown)), 10 SECONDS)
 		else
@@ -363,8 +363,9 @@
 	anchored = TRUE
 
 /obj/effect/resin_container/proc/Smoke()
-	var/obj/effect/particle_effect/foam/metal/resin/S = new /obj/effect/particle_effect/foam/metal/resin(get_turf(loc))
-	S.amount = 4
+	var/datum/effect_system/fluid_spread/foam/metal/resin/foaming = new
+	foaming.set_up(4, holder = src, location = loc)
+	foaming.start()
 	playsound(src,'sound/effects/bamf.ogg',100,TRUE)
 	qdel(src)
 

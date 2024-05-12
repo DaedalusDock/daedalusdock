@@ -240,12 +240,11 @@
 	src.stamina_swing(STAMINA_DISARM_COST)
 
 	do_attack_animation(target, ATTACK_EFFECT_DISARM)
-	animate_interact(target, INTERACT_DISARM)
 	playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 
 	if (ishuman(target))
 		var/mob/living/carbon/human/human_target = target
-		human_target.w_uniform?.add_fingerprint(src)
+		human_target.add_fingerprint_on_clothing_or_self(src, BODY_ZONE_CHEST)
 
 	SEND_SIGNAL(target, COMSIG_HUMAN_DISARM_HIT, src, zone_selected)
 
@@ -351,8 +350,9 @@
 		return
 	//Propagation through pulling, fireman carry
 	if(!(flags & SHOCK_ILLUSION))
-		if(undergoing_cardiac_arrest())
-			set_heartattack(FALSE)
+		if(undergoing_cardiac_arrest() && resuscitate())
+			log_health(src, "Heart restarted due to elecrocution.")
+
 		var/list/shocking_queue = list()
 		shocking_queue += get_all_grabbed_movables()
 		shocking_queue -= source
@@ -574,12 +574,15 @@
 		if(hit_clothes)
 			hit_clothes.take_damage(damage_amount, damage_type, damage_flag, 0)
 
-/mob/living/carbon/can_hear()
+/mob/living/carbon/can_hear(ignore_stat)
 	. = FALSE
-	if(HAS_TRAIT(src, TRAIT_NOEARS) && !HAS_TRAIT(src, TRAIT_DEAF))
+	var/has_deaf_trait = ignore_stat ? HAS_TRAIT_NOT_FROM(src, TRAIT_DEAF, STAT_TRAIT) : HAS_TRAIT(src, TRAIT_DEAF)
+
+	if(HAS_TRAIT(src, TRAIT_NOEARS) && !has_deaf_trait)
 		return TRUE
+
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
-	if(ears && !HAS_TRAIT(src, TRAIT_DEAF))
+	if(ears && !has_deaf_trait)
 		. = TRUE
 
 /mob/living/carbon/proc/get_interaction_efficiency(zone)

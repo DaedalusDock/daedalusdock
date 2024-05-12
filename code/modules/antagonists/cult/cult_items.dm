@@ -3,7 +3,6 @@
 	desc = "An old, dusty tome with frayed edges and a sinister-looking cover."
 	icon = 'icons/obj/cult/items_and_weapons.dmi'
 	icon_state ="tome"
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 
@@ -44,7 +43,7 @@ Striking a noncultist, however, will tear their flesh."}
 
 	return FALSE
 
-/obj/item/melee/cultblade/dagger/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, attack_type, do_message = TRUE, do_sound = TRUE)
+/obj/item/melee/cultblade/dagger/block_feedback(mob/living/carbon/human/wielder, attack_text, attack_type, do_message = TRUE, do_sound = TRUE)
 	if(do_message)
 		wielder.visible_message(span_danger("[wielder] parries [attack_text] with [src]!"))
 		return ..(do_message = FALSE)
@@ -133,7 +132,7 @@ Striking a noncultist, however, will tear their flesh."}
 	throw_speed = 1
 	throw_range = 3
 	sharpness = SHARP_EDGED
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 4
 	light_color = COLOR_RED
 	attack_verb_continuous = list("cleaves", "slashes", "tears", "lacerates", "hacks", "rips", "dices", "carves")
@@ -584,9 +583,6 @@ Striking a noncultist, however, will tear their flesh."}
 		if(totalcurses >= MAX_SHUTTLE_CURSES && (world.time < first_curse_time + SHUTTLE_CURSE_OMFG_TIMESPAN))
 			var/omfg_message = pick_list(CULT_SHUTTLE_CURSE, "omfg_announce") || "LEAVE US ALONE!"
 			addtimer(CALLBACK(GLOBAL_PROC,PROC_REF(priority_announce),omfg_message,"Daedalus Industries Shuttle Dispatch","FUCK OFF",'sound/misc/notice1.ogg'), rand(2 SECONDS, 6 SECONDS))
-			for(var/mob/iter_player as anything in GLOB.player_list)
-				if(IS_CULTIST(iter_player))
-					iter_player.client?.give_award(/datum/award/achievement/misc/cult_shuttle_omfg, iter_player)
 
 		qdel(src)
 
@@ -712,7 +708,7 @@ Striking a noncultist, however, will tear their flesh."}
 	force = 17
 	force_wielded = 24
 	throwforce = 40
-	throw_speed = 2
+	throw_speed = 1.5
 	armor_penetration = 30
 	block_chance = 30
 
@@ -1003,7 +999,7 @@ Striking a noncultist, however, will tear their flesh."}
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "at_shield2"
 	layer = FLY_LAYER
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 2
 	duration = 8
 	var/target
@@ -1058,19 +1054,19 @@ Striking a noncultist, however, will tear their flesh."}
 				var/mob/living/simple_animal/hostile/illusion/M = new(owner.loc)
 				M.faction = list("cult")
 				M.Copy_Parent(owner, 70, 10, 5)
-				M.move_to_delay = owner.cached_multiplicative_slowdown
+				M.move_to_delay = owner.movement_delay
 			else
 				var/mob/living/simple_animal/hostile/illusion/escape/E = new(owner.loc)
 				E.Copy_Parent(owner, 70, 10)
 				E.GiveTarget(owner)
-				E.Goto(owner, owner.cached_multiplicative_slowdown, E.minimum_distance)
+				E.Goto(owner, owner.movement_delay, E.minimum_distance)
 	else
 		if(prob(50))
 			var/mob/living/simple_animal/hostile/illusion/H = new(owner.loc)
 			H.Copy_Parent(owner, 100, 20, 5)
 			H.faction = list("cult")
 			H.GiveTarget(owner)
-			H.move_to_delay = owner.cached_multiplicative_slowdown
+			H.move_to_delay = owner.movement_delay
 			to_chat(owner, span_danger("<b>[src] betrays you!</b>"))
 		return FALSE
 

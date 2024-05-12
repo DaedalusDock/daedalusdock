@@ -209,7 +209,7 @@
 	if(user)
 		to_chat(user, span_notice("You short out [src]'s reagent synthesis circuits."))
 	audible_message(span_danger("[src] buzzes oddly!"))
-	flick("medibot_spark", src)
+	z_flick("medibot_spark", src)
 	playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	if(user)
 		oldpatient = user
@@ -376,10 +376,10 @@
 		return
 
 	if(patient && path.len == 0 && (get_dist(src,patient) > 1))
-		path = get_path_to(src, patient, max_distance=30, id=access_card)
+		path = get_path_to(src, patient, max_distance=30, access = access_card?.GetAccess())
 		mode = BOT_MOVING
 		if(!path.len) //try to get closer if you can't reach the patient directly
-			path = get_path_to(src, patient, max_distance=30, mintargetdist=1, id=access_card)
+			path = get_path_to(src, patient, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
 			if(!path.len) //Do not chase a patient we cannot reach.
 				soft_reset()
 

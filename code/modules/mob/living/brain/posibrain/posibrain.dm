@@ -253,8 +253,7 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		return
 
 	brainmob = new(src) //We dont use create_brainmob() because thats for ghost spawns
-	brainmob.name = L.real_name
-	brainmob.real_name = L.real_name
+	brainmob.set_real_name(L.real_name)
 	brainmob.timeofhostdeath = L.timeofdeath
 	brainmob.suiciding = suicided
 	if(L.has_dna())
@@ -348,8 +347,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		new_name = pick(GLOB.posibrain_names)
 	else
 		new_name = pick(possible_names)
-	brainmob.name = "[new_name]-[rand(100, 999)]"
-	brainmob.real_name = brainmob.name
+
+	brainmob.set_real_name("[new_name]-[rand(100, 999)]")
 	brainmob.forceMove(src)
 	brainmob.container = src
 	brainmob.grant_language(/datum/language/machine, TRUE, TRUE, LANGUAGE_MMI)

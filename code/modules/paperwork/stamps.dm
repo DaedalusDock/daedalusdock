@@ -6,7 +6,7 @@
 	inhand_icon_state = "stamp"
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
-	throw_speed = 3
+	throw_speed = 0.6
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=60)
 	//pressure_resistance = 2
@@ -38,7 +38,7 @@
 	dye_color = DYE_HOP
 
 /obj/item/stamp/hos
-	name = "head of security's rubber stamp"
+	name = "security marshal's rubber stamp"
 	icon_state = "stamp-hos"
 	dye_color = DYE_HOS
 

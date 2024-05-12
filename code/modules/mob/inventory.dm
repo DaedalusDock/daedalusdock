@@ -143,27 +143,52 @@
 
 
 //Returns if a certain item can be equipped to a certain slot.
-// Currently invalid for two-handed items - call obj/item/mob_can_equip() instead.
 /mob/proc/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
 	return FALSE
 
-/mob/proc/can_put_in_hand(I, hand_index)
-	if(hand_index > held_items.len)
-		return FALSE
-	if(!put_in_hand_check(I))
-		return FALSE
-	if(!has_hand_for_held_index(hand_index))
-		return FALSE
-	return !held_items[hand_index]
+/mob/proc/can_put_in_hand(obj/item/I, hand_index)
+	return FALSE
+
+/// A helper for picking up an item.
+/mob/proc/pickup_item(obj/item/I, hand_index = active_hand_index, ignore_anim = FALSE)
+	if(QDELETED(I))
+		return
+
+	if(!can_put_in_hand(I, hand_index))
+		return
+
+	//If the item is in a storage item, take it out
+	var/was_in_storage = !!I.loc.atom_storage?.attempt_remove(I, src, silent = TRUE)
+	if(QDELETED(src)) //moving it out of the storage destroyed it.
+		return
+
+	if(I.throwing)
+		I.throwing.finalize(FALSE)
+
+	if(I.loc == src)
+		if(!I.allow_attack_hand_drop(src) || !temporarilyRemoveItemFromInventory(I))
+			return
+
+	I.pickup(src)
+	. = put_in_hand(I, hand_index, ignore_anim = ignore_anim || was_in_storage)
+
+	if(!.)
+		stack_trace("Somehow, someway, pickup_item failed put_in_hand().")
+		dropItemToGround(I, silent = TRUE)
 
 /mob/proc/put_in_hand(obj/item/I, hand_index, forced = FALSE, ignore_anim = TRUE)
-	if(hand_index == null || (!forced && !can_put_in_hand(I, hand_index)))
+	if(hand_index == null)
+		return FALSE
+
+	if(!forced && !can_put_in_hand(I, hand_index))
 		return FALSE
 
 	if(isturf(I.loc) && !ignore_anim)
 		I.do_pickup_animation(src)
+
 	if(get_item_for_held_index(hand_index))
 		dropItemToGround(get_item_for_held_index(hand_index), force = TRUE)
+
 	I.forceMove(src)
 	held_items[hand_index] = I
 	I.plane = ABOVE_HUD_PLANE
@@ -191,14 +216,30 @@
 /mob/proc/put_in_r_hand(obj/item/I)
 	return put_in_hand(I, get_empty_held_index_for_side(RIGHT_HANDS))
 
-/mob/proc/put_in_hand_check(obj/item/I)
-	return FALSE //nonliving mobs don't have hands
+/mob/living/can_put_in_hand(obj/item/I, hand_index)
+	if(!istype(I))
+		return FALSE
 
-/mob/living/put_in_hand_check(obj/item/I)
-	if(istype(I) && ((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)) \
-		&& !(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND))
-		return TRUE
-	return FALSE
+	if(hand_index > held_items.len)
+		return FALSE
+
+	if(!((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)))
+		return FALSE
+
+	if(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND)
+		return FALSE
+
+	if(!has_hand_for_held_index(hand_index))
+		return FALSE
+
+	return !held_items[hand_index]
+
+/mob/living/carbon/human/can_put_in_hand(obj/item/I, hand_index)
+	. = ..()
+	if(!.)
+		return
+
+	return dna.species.can_equip(I, ITEM_SLOT_HANDS, TRUE, src)
 
 //Puts the item into our active hand if possible. returns TRUE on success.
 /mob/proc/put_in_active_hand(obj/item/I, forced = FALSE, ignore_animation = TRUE)
@@ -266,7 +307,7 @@
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
 		return FALSE
 	I.remove_item_from_storage(src)
-	if(!put_in_hand(I, hand_index, ignore_anim = TRUE))
+	if(!pickup_item(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
 	return TRUE
@@ -309,26 +350,34 @@
  * * Will pass FALSE if the item can not be dropped due to TRAIT_NODROP via tryUnequipItem()
  * If the item can be dropped, it will be forceMove()'d to the ground and the turf's Entered() will be called.
 */
-/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE)
+/mob/proc/dropItemToGround(obj/item/I, force = FALSE, silent = FALSE, invdrop = TRUE, animate = TRUE)
 	. = tryUnequipItem(I, force, drop_location(), FALSE, invdrop = invdrop, silent = silent)
 	if(!. || !I) //ensure the item exists and that it was dropped properly.
 		return
+
 	if(!(I.item_flags & NO_PIXEL_RANDOM_DROP))
 		I.pixel_x = I.base_pixel_x + rand(-6, 6)
 		I.pixel_y = I.base_pixel_y + rand(-6, 6)
-	I.do_drop_animation(src)
+
+	if(animate)
+		I.do_drop_animation(src)
 
 //for when the item will be immediately placed in a loc other than the ground. Supports shifting the item's x and y from click modifiers.
-/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, list/user_click_modifiers)
+/mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE, silent = TRUE, list/user_click_modifiers, animate = TRUE)
 	. = tryUnequipItem(I, force, newloc, FALSE, silent = silent)
-	if(. && user_click_modifiers)
+	if(!.)
+		return
+
+	if(user_click_modifiers)
 		//Center the icon where the user clicked.
 		if(!LAZYACCESS(user_click_modifiers, ICON_X) || !LAZYACCESS(user_click_modifiers, ICON_Y))
 			return
 		//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the location)
 		I.pixel_x = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
 		I.pixel_y = clamp(text2num(LAZYACCESS(user_click_modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
-	I.do_drop_animation(src)
+
+	if(animate)
+		I.do_drop_animation(src)
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
@@ -357,18 +406,23 @@
 	if(hand_index)
 		held_items[hand_index] = null
 		update_held_items()
+
 	if(I)
 		if(client)
 			client.screen -= I
+
 		I.layer = initial(I.layer)
 		I.plane = initial(I.plane)
 		I.appearance_flags &= ~NO_CLIENT_COLOR
+
 		if(!no_move && !(I.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
 			if (isnull(newloc))
 				I.moveToNullspace()
 			else
 				I.forceMove(newloc)
+
 		I.dropped(src, silent)
+
 	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	SEND_SIGNAL(src, COMSIG_MOB_UNEQUIPPED_ITEM, I, force, newloc, no_move, invdrop, silent)
 	return TRUE
@@ -429,14 +483,21 @@
 		dropItemToGround(I)
 	drop_all_held_items()
 
-///Returns a bitfield of covered item slots.
-/mob/living/carbon/proc/check_obscured_slots(transparent_protection)
-	var/obscured = NONE
-	var/hidden_slots = NONE
+/// Compiles all flags_inv vars of worn items.
+/mob/living/carbon/proc/update_obscurity()
+	PROTECTED_PROC(TRUE)
 
-	for(var/obj/item/I in get_all_worn_items()) //This contains nulls
-		hidden_slots |= I.flags_inv
-		if(transparent_protection)
+	obscured_slots = NONE
+	for(var/obj/item/I in get_all_worn_items())
+		obscured_slots |= I.flags_inv
+
+///Returns a bitfield of covered item slots.
+/mob/living/carbon/proc/check_obscured_slots(transparent_protection, input_slots)
+	var/obscured = NONE
+	var/hidden_slots = !isnull(input_slots) ? input_slots : src.obscured_slots
+
+	if(transparent_protection)
+		for(var/obj/item/I in get_all_worn_items())
 			hidden_slots |= I.transparent_protection
 
 	if(hidden_slots & HIDENECK)

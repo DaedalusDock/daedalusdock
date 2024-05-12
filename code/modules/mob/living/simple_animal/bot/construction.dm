@@ -4,7 +4,6 @@
 	icon = 'icons/mob/aibots.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 3
-	throw_speed = 2
 	throw_range = 5
 	var/created_name
 	var/build_step = ASSEMBLY_FIRST_STEP

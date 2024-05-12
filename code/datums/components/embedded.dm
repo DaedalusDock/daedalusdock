@@ -255,15 +255,15 @@
 
 			if(!IS_ORGANIC_LIMB(limb))
 				limb_owner.visible_message(
-					span_danger("The damage to \the [limb_owner]'s [limb.plaintext_zone] worsens."),\
-					span_danger("The damage to your [limb.plaintext_zone] worsens."),\
-					span_danger("You hear the screech of abused metal.")
+					span_warning("The damage to \the [limb_owner]'s [limb.plaintext_zone] worsens."),\
+					span_warning("The damage to your [limb.plaintext_zone] worsens."),\
+					span_hear("You hear the screech of abused metal.")
 				)
 			else
 				limb_owner.visible_message(
-					span_danger("The wound on \the [limb_owner]'s [limb.plaintext_zone] widens with a nasty ripping noise."),\
-					span_danger("The wound on your [limb.plaintext_zone] widens with a nasty ripping noise."),\
-					span_danger("You hear a nasty ripping noise, as if flesh is being torn apart.")
+					span_warning("The wound on \the [limb_owner]'s [limb.plaintext_zone] widens with a nasty ripping noise."),\
+					span_warning("The wound on your [limb.plaintext_zone] widens with a nasty ripping noise."),\
+					span_hear("You hear a nasty ripping noise, as if flesh is being torn apart.")
 				)
 
 	if(user == limb_owner)

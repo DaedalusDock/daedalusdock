@@ -28,6 +28,8 @@
 		adj += effect.nextmove_adjust()
 	next_move = world.time + ((num + adj)*mod)
 
+	SEND_SIGNAL(src, COMSIG_LIVING_CHANGENEXT_MOVE, next_move)
+
 /**
  * Before anything else, defer these calls to a per-mobtype handler.  This allows us to
  * remove istype() spaghetti code, but requires the addition of other handler procs to simplify it.
@@ -351,9 +353,12 @@
 
 /atom/proc/ShiftClick(mob/user)
 	var/flags = SEND_SIGNAL(user, COMSIG_CLICK_SHIFT, src)
-	if(user.client && (user.client.eye == user || user.client.eye == user.loc || flags & COMPONENT_ALLOW_EXAMINATE))
-		user.examinate(src)
-	return
+	if(!user.client)
+		return
+	if(!((user.client.eye == user) || (user.client.eye == user.loc) || isobserver(user)) && !(flags & COMPONENT_ALLOW_EXAMINATE))
+		return
+
+	user.examinate(src)
 
 /**
  * Ctrl click
@@ -404,7 +409,6 @@
 
 	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art, params))
 		human_user.changeNext_move(CLICK_CD_MELEE)
-		human_user.animate_interact(src, INTERACT_GRAB)
 		return TRUE
 
 	return ..()
@@ -527,6 +531,10 @@
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 	screen_loc = "CENTER"
 
+/atom/movable/screen/click_catcher/can_usr_use(mob/user)
+	return TRUE // Owned by a client, not a mob. It's all safe anyways.
+
+
 #define MAX_SAFE_BYOND_ICON_SCALE_TILES (MAX_SAFE_BYOND_ICON_SCALE_PX / world.icon_size)
 #define MAX_SAFE_BYOND_ICON_SCALE_PX (33 * 32) //Not using world.icon_size on purpose.
 
@@ -546,6 +554,10 @@
 	transform = M
 
 /atom/movable/screen/click_catcher/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, MIDDLE_CLICK) && iscarbon(usr))
 		var/mob/living/carbon/C = usr

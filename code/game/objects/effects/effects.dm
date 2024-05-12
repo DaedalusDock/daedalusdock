@@ -23,7 +23,7 @@
 /obj/effect/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	return
 
-/obj/effect/fire_act(exposed_temperature, exposed_volume)
+/obj/effect/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	return
 
 /obj/effect/acid_act()

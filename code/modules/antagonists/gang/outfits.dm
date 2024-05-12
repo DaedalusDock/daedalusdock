@@ -2,7 +2,7 @@
 	if(visualsOnly)
 		return
 
-	var/obj/item/card/id/W = H.wear_id
+	var/obj/item/card/id/W = H.wear_id.GetID(TRUE)
 	W.registered_name = H.real_name
 	W.update_label()
 	W.update_icon()
@@ -66,7 +66,7 @@
 	name = "Families: Space FBI Officer"
 	suit = /obj/item/clothing/suit/armor/laserproof
 	head = /obj/item/clothing/head/helmet/riot
-	belt = /obj/item/gun/ballistic/automatic/proto/unrestricted
+	belt = /obj/item/gun/ballistic/automatic/proto
 	gloves = /obj/item/clothing/gloves/combat
 	backpack_contents = list(/obj/item/storage/box/handcuffs = 1,
 	/obj/item/storage/box/teargas = 1,

@@ -29,12 +29,11 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 		return FALSE
 
 	var/obj/item/hand_item/grab/G = user.is_grabbing(src)
-	if (G && G.current_grab.damage_stage != GRAB_AGGRESSIVE)
+	if(!G)
 		return TRUE
 
-	if (ishuman(user))
-		var/mob/living/carbon/human/human_user = user
-		return !human_user.can_be_firemanned(src)
+	if ((G.current_grab.damage_stage == GRAB_AGGRESSIVE) && !combat_mode) // Do not conflict with fireman carrying
+		return FALSE
 
 /datum/strippable_item/mob_item_slot/eyes
 	key = STRIPPABLE_ITEM_EYES
@@ -69,9 +68,9 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	if (!ismob(source))
 		return
 
-	var/mob/mob_source = source
-	mob_source.update_worn_undersuit()
-	mob_source.update_body()
+	if(iscarbon(source))
+		var/mob/living/carbon/carbon_source = source
+		carbon_source.update_slots_for_item(source)
 
 /datum/strippable_item/mob_item_slot/suit
 	key = STRIPPABLE_ITEM_SUIT

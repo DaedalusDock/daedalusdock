@@ -171,17 +171,16 @@
 	if(!I || !user)
 		return MOB_ATTACKEDBY_FAIL
 
-	var/target_area = parse_zone(deprecise_zone(user.zone_selected)) //our intended target
+	var/target_zone = deprecise_zone(user.zone_selected) //our intended target
 
-	var/obj/item/bodypart/affecting = get_bodypart(deprecise_zone(user.zone_selected))
+	var/obj/item/bodypart/affecting = get_bodypart(target_zone)
 	if (!affecting || affecting.is_stump)
 		to_chat(user, span_danger("They are missing that limb!"))
 		return MOB_ATTACKEDBY_FAIL
 
-	if(user == src)
-		affecting = get_bodypart(target_area) //stabbing yourself always hits the right target
-	else
-		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_area]
+	// If we aren't being hit by ourself, roll for accuracy.
+	if(user != src)
+		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
 		var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
 		var/hit_zone
 		switch(roll)
@@ -192,14 +191,14 @@
 			if(FAILURE)
 				hit_zone = get_random_valid_zone()
 			else
-				hit_zone = target_area
+				hit_zone = target_zone
 
 		affecting = get_bodypart(hit_zone)
 
 	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
 
 	SSblackbox.record_feedback("nested tally", "item_used_for_combat", 1, list("[I.force]", "[I.type]"))
-	SSblackbox.record_feedback("tally", "zone_targeted", 1, target_area)
+	SSblackbox.record_feedback("tally", "zone_targeted", 1, parse_zone(target_zone))
 
 	// the attacked_by code varies among species
 	return dna.species.spec_attacked_by(I, user, affecting, src)
@@ -418,7 +417,7 @@
 		return FALSE
 
 	. = ..()
-	if (!severity || QDELETED(src))
+	if (!. || !severity || QDELETED(src))
 		return
 	var/brute_loss = 0
 	var/burn_loss = 0
@@ -431,22 +430,16 @@
 	switch (severity)
 		if (EXPLODE_DEVASTATE)
 			if(bomb_armor < EXPLODE_GIB_THRESHOLD) //gibs the mob if their bomb armor is lower than EXPLODE_GIB_THRESHOLD
-				for(var/thing in contents)
-					switch(severity)
-						if(EXPLODE_DEVASTATE)
-							SSexplosions.high_mov_atom += thing
-						if(EXPLODE_HEAVY)
-							SSexplosions.med_mov_atom += thing
-						if(EXPLODE_LIGHT)
-							SSexplosions.low_mov_atom += thing
+				contents_explosion(EXPLODE_DEVASTATE)
 				gib()
 				return
+
 			else
-				brute_loss = 500
+				brute_loss = 400
 				var/atom/throw_target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
 				throw_at(throw_target, 200, 4)
 				damage_clothes(400 - bomb_armor, BRUTE, BOMB)
-				Unconscious(20) //short amount of time for follow up attacks against elusive enemies like wizards
+				Unconscious(15 SECONDS) //short amount of time for follow up attacks against elusive enemies like wizards
 
 		if (EXPLODE_HEAVY)
 			brute_loss = 60
@@ -454,19 +447,27 @@
 			if(bomb_armor)
 				brute_loss = 30*(2 - round(bomb_armor*0.01, 0.05))
 				burn_loss = brute_loss //damage gets reduced from 120 to up to 60 combined brute+burn
+
 			damage_clothes(200 - bomb_armor, BRUTE, BOMB)
+
 			if (ears && !HAS_TRAIT_FROM(src, TRAIT_DEAF, CLOTHING_TRAIT))
-				ears.adjustEarDamage(30, 120)
-			Unconscious(20) //short amount of time for follow up attacks against elusive enemies like wizards
+				ears.adjustEarDamage(rand(15, 30), 120)
+
+			if(prob(70))
+				Unconscious(10 SECONDS) //short amount of time for follow up attacks against elusive enemies like wizards
 			Knockdown(200 - (bomb_armor * 1.6)) //between ~4 and ~20 seconds of knockdown depending on bomb armor
 
 		if(EXPLODE_LIGHT)
 			brute_loss = 30
+
 			if(bomb_armor)
 				brute_loss = 15*(2 - round(bomb_armor*0.01, 0.05))
+
 			damage_clothes(max(50 - bomb_armor, 0), BRUTE, BOMB)
+
 			if (ears && !HAS_TRAIT_FROM(src, TRAIT_DEAF, CLOTHING_TRAIT))
-				ears.adjustEarDamage(15,60)
+				ears.adjustEarDamage(rand(10, 20), 60)
+
 			Knockdown(160 - (bomb_armor * 1.6)) //100 bomb armor will prevent knockdown altogether
 
 	take_overall_damage(brute_loss,burn_loss, sharpness = SHARP_EDGED|SHARP_POINTY)
@@ -488,15 +489,15 @@
 			if(EXPLODE_DEVASTATE)
 				max_limb_loss = 4
 				probability = 50
-		for(var/X in bodyparts)
-			var/obj/item/bodypart/BP = X
+
+		for(var/obj/item/bodypart/BP as anything in bodyparts)
 			if(prob(probability) && !prob(getarmor(BP, BOMB)) && BP.body_zone != BODY_ZONE_HEAD && BP.body_zone != BODY_ZONE_CHEST)
-				BP.receive_damage(INFINITY) //Capped by proc
-				BP.dismember()
+				BP.receive_damage(BP.max_damage)
+				if(BP.owner)
+					BP.dismember()
 				max_limb_loss--
 				if(!max_limb_loss)
 					break
-
 
 /mob/living/carbon/human/blob_act(obj/structure/blob/B)
 	if(stat == DEAD)

@@ -138,13 +138,12 @@
 	volume = 20
 	list_reagents = list(/datum/reagent/consumable/salt = 20)
 	fill_icon_thresholds = null
+	drop_sound = 'sound/items/handling/drinkglass_drop.ogg'
 
 /obj/item/reagent_containers/food/condiment/saltshaker/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] begins to swap forms with the salt shaker! It looks like [user.p_theyre()] trying to commit suicide!"))
 	var/newname = "[name]"
-	name = "[user.name]"
-	user.name = newname
-	user.real_name = newname
+	user.set_real_name(newname)
 	desc = "Salt. From dead crew, presumably."
 	return (TOXLOSS)
 
@@ -172,6 +171,7 @@
 	volume = 20
 	list_reagents = list(/datum/reagent/consumable/blackpepper = 20)
 	fill_icon_thresholds = null
+	drop_sound = 'sound/items/handling/drinkglass_drop.ogg'
 
 /obj/item/reagent_containers/food/condiment/milk
 	name = "space milk"

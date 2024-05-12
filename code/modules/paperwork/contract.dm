@@ -3,7 +3,6 @@
 /obj/item/paper/employment_contract
 	icon_state = "paper_words"
 	throw_range = 3
-	throw_speed = 3
 	item_flags = NOBLUDGEON
 	var/employee_name = ""
 

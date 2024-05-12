@@ -58,8 +58,11 @@
 /obj/machinery/door/puzzle/ex_act(severity, target)
 	return FALSE
 
-/obj/machinery/door/puzzle/try_to_activate_door(mob/user, access_bypass = FALSE)
-	add_fingerprint(user)
+/obj/machinery/door/puzzle/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
+	if(attackedby)
+		attackedby.leave_evidence(user, src)
+	else
+		add_fingerprint(user)
 	if(operating)
 		return
 

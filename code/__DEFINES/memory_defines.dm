@@ -108,7 +108,7 @@
 *
  * ideally these eventually get moved off this system... though engraving your bank account is so HILARIOUSLY dumb so maybe leave that one
  */
-///your memorized code
+///your memorized bank account
 #define MEMORY_ACCOUNT "account"
 ///your memorized drug
 #define MEMORY_QUIRK_DRUG "quirk_drug"
@@ -147,6 +147,7 @@
 #define DETAIL_HIGHFIVE_TYPE "HIGHFIVE_TYPE"
 #define DETAIL_BOMB_TYPE "BOMB_TYPE"
 #define DETAIL_ACCOUNT_ID "ACCOUNT_ID"
+#define DETAIL_ACCOUNT_PIN "ACCOUNT_PIN"
 #define DETAIL_KISSER "KISSER"
 #define DETAIL_FOOD "FOOD"
 #define DETAIL_DRINK "DRINK"

@@ -11,9 +11,11 @@
 
 	force = 3
 	force_wielded = 34
+
 	throwforce = 5
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 5
+
 	block_chance = 75
 	block_sound = 'sound/weapons/block/block_energy.ogg'
 	sharpness = SHARP_EDGED
@@ -24,7 +26,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	hitsound = SFX_SWING_HIT
 
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 6 //TWICE AS BRIGHT AS A REGULAR ESWORD
 	light_color = LIGHT_COLOR_ELECTRIC_GREEN
 	light_on = FALSE

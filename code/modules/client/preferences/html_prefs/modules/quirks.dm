@@ -1,7 +1,7 @@
 /datum/preference_group/quirks
 	var/list/quirk_prefs = list(
 		"Nearsighted" = /datum/preference/choiced/glasses,
-		"Heterochromia" = /datum/preference/color/heterochromatic,
+		"Heterochromia Iridum" = /datum/preference/color/heterochromatic,
 		"Phobia" = /datum/preference/choiced/phobia
 	)
 
@@ -15,7 +15,7 @@
 	. += {"
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
-			<b>Quirks</b>
+			<b>Traits</b>
 			<span class='tooltiptext'>Getting a little quirky.</span>
 		</legend>
 	<table style='width:100%'>

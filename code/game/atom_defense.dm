@@ -11,9 +11,11 @@
 		play_attack_sound(damage_amount, damage_type, damage_flag)
 	if(resistance_flags & INDESTRUCTIBLE)
 		return
+
 	damage_amount = run_atom_armor(damage_amount, damage_type, damage_flag, attack_dir, armor_penetration)
 	if(damage_amount < DAMAGE_PRECISION)
 		return
+
 	if(SEND_SIGNAL(src, COMSIG_ATOM_TAKE_DAMAGE, damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armor_penetration) & COMPONENT_NO_TAKE_DAMAGE)
 		return
 
@@ -73,7 +75,7 @@
 	if(!uses_integrity)
 		CRASH("/atom/proc/run_atom_armor was called on [src] without being implemented as a type that uses integrity!")
 
-	if(damage_flag == BLUNT && damage_amount < damage_deflection)
+	if(damage_flag == BLUNT && (damage_amount < damage_deflection))
 		return 0
 
 	switch(damage_type)
@@ -81,11 +83,14 @@
 		if(BURN)
 		else
 			return 0
+
 	var/armor_protection = 0
 	if(damage_flag)
 		armor_protection = returnArmor().getRating(damage_flag)
+
 	if(armor_protection) //Only apply weak-against-armor/hollowpoint effects if there actually IS armor.
 		armor_protection = clamp(armor_protection - armor_penetration, min(armor_protection, 0), 100)
+
 	return round(damage_amount * (100 - armor_protection)*0.01, DAMAGE_PRECISION)
 
 ///the sound played when the atom is damaged.

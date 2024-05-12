@@ -10,7 +10,7 @@
 	icon_state = "door_open"
 	opacity = FALSE
 	density = FALSE
-	max_integrity = 300
+	max_integrity = 50
 	resistance_flags = FIRE_PROOF
 	heat_proof = TRUE
 	glass = FALSE
@@ -69,11 +69,13 @@
 	. = ..()
 	if(!density)
 		. += span_notice("It is open, but could be <b>pried</b> closed.")
+
 	else if(!welded)
 		. += span_notice("It is closed, but could be <b>pried</b> open.")
 		. += span_notice("Hold the firelock temporarily open by prying it with <i>left-click</i> and standing next to it.")
 		. += span_notice("Prying by <i>right-clicking</i> the firelock will open it permanently.")
 		. += span_notice("Deconstruction would require it to be <b>welded</b> shut.")
+
 	else if(boltslocked)
 		. += span_notice("It is <i>welded</i> shut. The floor bolts have been locked by <b>screws</b>.")
 	else
@@ -212,7 +214,7 @@
 		return TRUE
 
 /obj/machinery/door/firedoor/wrench_act(mob/living/user, obj/item/tool)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 	if(operating || !welded)
 		return FALSE
 
@@ -239,7 +241,7 @@
 	boltslocked = !boltslocked
 	return TOOL_ACT_TOOLTYPE_SUCCESS
 
-/obj/machinery/door/firedoor/try_to_activate_door(mob/user, access_bypass = FALSE)
+/obj/machinery/door/firedoor/try_to_activate_door(mob/user, access_bypass = FALSE, obj/item/attackedby)
 	return
 
 /obj/machinery/door/firedoor/try_to_weld(obj/item/weldingtool/W, mob/user)
@@ -263,7 +265,7 @@
 			span_notice("You press your crowbar between the door and begin to pry it open..."),
 			span_hear("You hear a metal clang, followed by metallic groans.")
 		)
-		if(!do_after(user, src, 3 SECONDS))
+		if(!do_after(user, src, 3 SECONDS, DO_PUBLIC))
 			return
 		user.visible_message(
 			span_danger("[user] forces [src] open with a crowbar!"),
@@ -302,9 +304,9 @@
 /obj/machinery/door/firedoor/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("[base_icon_state]_opening", src)
+			z_flick("[base_icon_state]_opening", src)
 		if("closing")
-			flick("[base_icon_state]_closing", src)
+			z_flick("[base_icon_state]_closing", src)
 
 /obj/machinery/door/firedoor/update_icon_state()
 	. = ..()
@@ -332,12 +334,16 @@
 /obj/machinery/door/firedoor/open()
 	if(welded)
 		return
-	return ..()
+	. = ..()
+	if(.)
+		playsound(loc, 'sound/machines/doors/blastdoor_open.ogg', 60, TRUE)
 
 /obj/machinery/door/firedoor/close()
 	if(HAS_TRAIT(loc, TRAIT_FIREDOOR_STOP))
 		return
-	return ..()
+	. = ..()
+	if(.)
+		playsound(loc, 'sound/machines/doors/blastdoor_close.ogg', 60, TRUE)
 
 
 /obj/machinery/door/firedoor/deconstruct(disassembled = TRUE)
@@ -405,7 +411,7 @@
 	if(!(border_dir == dir)) //Make sure looking at appropriate border
 		return TRUE
 
-/obj/machinery/door/firedoor/border_only/CanAStarPass(obj/item/card/id/ID, to_dir, no_id = FALSE)
+/obj/machinery/door/firedoor/border_only/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	return !density || (dir != to_dir)
 
 /obj/machinery/door/firedoor/border_only/proc/on_exit(datum/source, atom/movable/leaving, direction)

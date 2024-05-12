@@ -15,35 +15,35 @@ GLOBAL_LIST_EMPTY(cached_holster_typecaches)
 	var/list/holstered_items
 
 /// Checks if an item is in our holster list and we have room for it in there.
-/datum/storage/holster/proc/can_holster_item(obj/item/to_insert, atom/resolve_location)
+/datum/storage/holster/proc/can_holster_item(obj/item/to_insert)
 	if(LAZYLEN(holstered_items) < holster_slots)
 		if(is_type_in_typecache(to_insert, holsterable))
 			return TRUE
 
 	return FALSE
 
-/datum/storage/holster/check_weight_class(obj/item/to_insert, atom/resolve_location)
-	if(can_holster_item(to_insert, resolve_location))
+/datum/storage/holster/check_weight_class(obj/item/to_insert)
+	if(can_holster_item(to_insert, real_location))
 		return TRUE
 
 	return ..()
 
-/datum/storage/holster/check_slots_full(obj/item/to_insert, atom/resolve_location)
-	if(can_holster_item(to_insert, resolve_location))
+/datum/storage/holster/check_slots_full(obj/item/to_insert)
+	if(can_holster_item(to_insert, real_location))
 		return TRUE
 
 	return ..()
 
-/datum/storage/holster/check_typecache_for_item(obj/item/to_insert, atom/resolve_location)
-	if(can_holster_item(to_insert, resolve_location))
+/datum/storage/holster/check_typecache_for_item(obj/item/to_insert)
+	if(can_holster_item(to_insert, real_location))
 		return TRUE
 
 	return ..()
 
-/datum/storage/holster/check_total_weight(obj/item/to_insert, atom/resolve_location)
+/datum/storage/holster/check_total_weight(obj/item/to_insert)
 	var/total_weight = to_insert.w_class
 
-	for(var/obj/item/thing in resolve_location)
+	for(var/obj/item/thing in real_location)
 		if(thing in holstered_items)
 			continue
 		total_weight += thing.w_class
@@ -53,12 +53,12 @@ GLOBAL_LIST_EMPTY(cached_holster_typecaches)
 
 	return TRUE
 
-/datum/storage/holster/contents_for_display(atom/resolve_location)
-	var/list/contents = resolve_location.contents - holstered_items
+/datum/storage/holster/contents_for_display()
+	var/list/contents = real_location.contents - holstered_items
 	contents.Insert(1, holstered_items)
 	return contents
 
-/datum/storage/holster/get_quickdraw_item(atom/resolve_location)
+/datum/storage/holster/get_quickdraw_item()
 	return (locate(/obj/item) in holstered_items) || ..()
 
 /datum/storage/holster/handle_enter(datum/source, obj/item/arrived)

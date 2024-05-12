@@ -181,6 +181,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 // What happens when you upgrade from one grab state to the next.
 /datum/grab/proc/upgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
+	SHOULD_CALL_PARENT(TRUE)
+
+	G.remove_competing_grabs()
 	update_stage_effects(G, old_grab)
 
 // Conditions to see if upgrading is possible
@@ -199,6 +202,11 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	if(upgrab.damage_stage >= GRAB_AGGRESSIVE && HAS_TRAIT(G.assailant, TRAIT_PACIFISM))
 		to_chat(G.assailant, span_warning("You don't want to risk hurting [src]!"))
 		return FALSE
+
+	for(var/obj/item/hand_item/grab/other_grab in L.grabbed_by - G)
+		if(other_grab.assailant.move_force > G.assailant.move_force)
+			to_chat(G.assailant, span_warning("[G.assailant]'s grip is too strong."))
+			return FALSE
 	return TRUE
 
 // What happens when you downgrade from one grab state to the next.
@@ -254,12 +262,14 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /// Apply effects that should only be applied when a grab type is first used on a mob.
 /datum/grab/proc/apply_unique_grab_effects(obj/item/hand_item/grab/G)
 	SHOULD_CALL_PARENT(TRUE)
-	if(G.loc != G.assailant.loc && same_tile)
-		G.affecting.move_from_pull(G.assailant, get_turf(G.assailant))
+	if(same_tile && ismob(G.affecting))
+		G.affecting.add_passmob(REF(G))
 
 /// Remove effects added by apply_unique_grab_effects()
 /datum/grab/proc/remove_unique_grab_effects(obj/item/hand_item/grab/G)
 	SHOULD_CALL_PARENT(TRUE)
+	if(same_tile && ismob(G.affecting))
+		G.affecting.remove_passmob(REF(G))
 
 /// Handles special targeting like eyes and mouth being covered.
 /// CLEAR OUT ANY EFFECTS USING remove_bodyzone_effects()
@@ -415,3 +425,20 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	else if(help_action)
 		context[SCREENTIP_CONTEXT_LMB] = capitalize(help_action)
+
+/datum/grab/proc/get_grab_offsets(obj/item/hand_item/grab/G, grab_direction, pixel_x_pointer, pixel_y_pointer)
+	if(!grab_direction || !G.current_grab.shift)
+		return
+
+	if(grab_direction & WEST)
+		*pixel_x_pointer = min(*pixel_x_pointer + shift, G.affecting.base_pixel_x + shift)
+
+	else if(grab_direction & EAST)
+		*pixel_x_pointer = max(*pixel_x_pointer - shift, G.affecting.base_pixel_x - shift)
+
+	if(grab_direction & NORTH)
+		*pixel_y_pointer = max(*pixel_y_pointer - shift, G.affecting.base_pixel_y - shift)
+
+	else if(grab_direction & SOUTH)
+		*pixel_y_pointer = min(*pixel_y_pointer + shift, G.affecting.base_pixel_y + shift)
+

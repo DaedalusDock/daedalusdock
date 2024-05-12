@@ -277,7 +277,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 	</b></span>")
 	if(ishuman(convertee))
 		var/mob/living/carbon/human/H = convertee
-		H.uncuff()
+		H.remove_legcuffs()
+		H.remove_handcuffs()
 		H.remove_status_effect(/datum/status_effect/speech/slurring/cult)
 		H.remove_status_effect(/datum/status_effect/speech/stutter)
 
@@ -536,13 +537,6 @@ structure_check() searches for nearby cultist structures required for the invoca
 
 	//BEGIN THE SUMMONING
 	used = TRUE
-	var/datum/team/cult/cult_team = user_antag.cult_team
-	if (cult_team.narsie_summoned)
-		for (var/datum/mind/cultist_mind in cult_team.members)
-			var/mob/living/cultist_mob = cultist_mind.current
-			cultist_mob.client?.give_award(/datum/award/achievement/misc/narsupreme, cultist_mob)
-
-	cult_team.narsie_summoned = TRUE
 	..()
 	sound_to_playing_players('sound/effects/dimensional_rend.ogg')
 	var/turf/rune_turf = get_turf(src)
@@ -846,7 +840,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 			return list()
 		var/mob/dead/observer/ghost_to_spawn = pick(ghosts_on_rune)
 		var/mob/living/carbon/human/cult_ghost/new_human = new(T)
-		new_human.real_name = ghost_to_spawn.real_name
+
+		new_human.set_real_name(ghost_to_spawn.real_name)
 		new_human.alpha = 150 //Makes them translucent
 		new_human.equipOutfit(/datum/outfit/ghost_cultist) //give them armor
 		new_human.apply_status_effect(/datum/status_effect/cultghost) //ghosts can't summon more ghosts
@@ -966,7 +961,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 			continue
 		if(ishuman(M))
 			if(!IS_CULTIST(M))
-				AH.remove_hud_from(M)
+				AH.hide_from(M)
 				addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(hudFix), M), duration)
 			var/image/A = image('icons/mob/cult.dmi',M,"cultist", ABOVE_MOB_LAYER)
 			A.override = 1
@@ -991,37 +986,35 @@ structure_check() searches for nearby cultist structures required for the invoca
 			to_chat(M, span_cultlarge("An Apocalypse Rune was invoked in the [place.name], it is no longer available as a summoning site!"))
 			SEND_SOUND(M, 'sound/effects/pope_entry.ogg')
 	image_handler(images, duration)
+
 	if(intensity>=285) // Based on the prior formula, this means the cult makes up <15% of current players
 		var/outcome = rand(1,100)
 		switch(outcome)
-			if(1 to 10)
+			if(1 to 12)
 				var/datum/round_event_control/disease_outbreak/D = new()
 				var/datum/round_event_control/animal_infestation/vermin/M = new()
 				D.runEvent()
 				M.runEvent()
-			if(11 to 20)
+			if(13 to 25)
 				var/datum/round_event_control/radiation_storm/RS = new()
 				RS.runEvent()
-			if(21 to 30)
+			if(26 to 37)
 				var/datum/round_event_control/brand_intelligence/BI = new()
 				BI.runEvent()
-			if(31 to 40)
+			if(38 to 50)
 				var/datum/round_event_control/immovable_rod/R = new()
 				R.runEvent()
 				R.runEvent()
 				R.runEvent()
-			if(41 to 50)
+			if(51 to 62)
 				var/datum/round_event_control/meteor_wave/MW = new()
 				MW.runEvent()
-			if(51 to 70)
-				var/datum/round_event_control/spider_infestation/SI = new()
-				SI.runEvent()
-			if(71 to 80)
+			if(63 to 75)
 				var/datum/round_event_control/spacevine/SV = new()
 				var/datum/round_event_control/grey_tide/GT = new()
 				SV.runEvent()
 				GT.runEvent()
-			if(81 to 100)
+			if(75 to 100)
 				var/datum/round_event_control/portal_storm_narsie/N = new()
 				N.runEvent()
 	qdel(src)
@@ -1050,4 +1043,4 @@ structure_check() searches for nearby cultist structures required for the invoca
 	var/obj/O = target.get_item_by_slot(ITEM_SLOT_EYES)
 	if(istype(O, /obj/item/clothing/glasses/hud/security))
 		var/datum/atom_hud/AH = GLOB.huds[DATA_HUD_SECURITY_ADVANCED]
-		AH.add_hud_to(target)
+		AH.show_to(target)

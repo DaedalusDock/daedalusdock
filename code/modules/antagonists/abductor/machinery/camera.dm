@@ -13,7 +13,12 @@
 	icon_keyboard = null
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
+/obj/machinery/computer/camera_advanced/abductor/Initialize(mapload)
+	. = ..()
+	SET_TRACKING(__TYPE__)
+
 /obj/machinery/computer/camera_advanced/abductor/Destroy()
+	UNSET_TRACKING(__TYPE__)
 	if(console)
 		console.camera = null
 		console = null

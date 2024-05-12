@@ -16,7 +16,7 @@
 			Be warned, that spirits are often capricious or just little assholes. To use, simply speak your question aloud, then begin shaking."
 	item = /obj/item/toy/eightball/haunted
 	cost = 2
-	restricted_roles = list(JOB_CURATOR)
+	restricted_roles = list(JOB_ARCHIVIST)
 	limited_stock = 1 //please don't spam deadchat
 
 /datum/uplink_item/role_restricted/bureaucratic_error_remote
@@ -53,31 +53,13 @@
 
 // Low progression cost
 
-/datum/uplink_item/role_restricted/clownpin
-	name = "Ultra Hilarious Firing Pin"
-	desc = "A firing pin that, when inserted into a gun, makes that gun only usable by clowns and clumsy people and makes that gun honk whenever anyone tries to fire it."
-	progression_minimum = 5 MINUTES
-	cost = 4
-	item = /obj/item/firing_pin/clown/ultra
-	restricted_roles = list(JOB_CLOWN)
-	illegal_tech = FALSE
-
-/datum/uplink_item/role_restricted/clownsuperpin
-	name = "Super Ultra Hilarious Firing Pin"
-	desc = "Like the ultra hilarious firing pin, except the gun you insert this pin into explodes when someone who isn't clumsy or a clown tries to fire it."
-	progression_minimum = 5 MINUTES
-	cost = 7
-	item = /obj/item/firing_pin/clown/ultra/selfdestruct
-	restricted_roles = list(JOB_CLOWN)
-	illegal_tech = FALSE
-
 /datum/uplink_item/role_restricted/syndimmi
 	name = "Syndicate Brand MMI"
 	desc = "An MMI modified to give cyborgs laws to serve the Syndicate without having their interface damaged by Cryptographic Sequencers, this will not unlock their hidden modules."
 	progression_minimum = 10 MINUTES
 	item = /obj/item/mmi/syndie
 	cost = 2
-	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_MEDICAL_DOCTOR, JOB_CHIEF_MEDICAL_OFFICER)
+	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_MEDICAL_DOCTOR, JOB_MEDICAL_DIRECTOR)
 	surplus = 0
 
 /datum/uplink_item/role_restricted/explosive_hot_potato
@@ -190,7 +172,7 @@
 	progression_minimum = 30 MINUTES
 	item = /obj/item/gun/chem
 	cost = 12
-	restricted_roles = list(JOB_CHEMIST, JOB_CHIEF_MEDICAL_OFFICER, JOB_BOTANIST)
+	restricted_roles = list(JOB_CHEMIST, JOB_MEDICAL_DIRECTOR, JOB_BOTANIST)
 
 /datum/uplink_item/role_restricted/pie_cannon
 	name = "Banana Cream Pie Cannon"

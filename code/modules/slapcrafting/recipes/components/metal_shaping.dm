@@ -40,7 +40,7 @@
 	result_type = /obj/item/pipe/quaternary
 
 /datum/slapcraft_recipe/pipe_from_metal/create_item(item_path, obj/item/slapcraft_assembly/assembly)
-	var/obj/item/pipe/crafted_pipe = new item_path(assembly.drop_location()) //say thanks to smart pipes for this
+	var/obj/item/pipe/crafted_pipe = ..()//say thanks to smart pipes for this
 	crafted_pipe.pipe_type = /obj/machinery/atmospherics/pipe/smart
 	crafted_pipe.pipe_color = COLOR_VERY_LIGHT_GRAY
 	crafted_pipe.p_init_dir = ALL_CARDINALS

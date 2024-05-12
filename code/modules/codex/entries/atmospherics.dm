@@ -8,6 +8,10 @@
 	To join three or more pipe segments, you can use a pipe manifold."
 	disambiguator = "atmospherics"
 
+	controls_text = {"
+	Right Click - Adjust the layer of the pipe.
+	"}
+
 /datum/codex_entry/atmos_pipe/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text)
 
 /datum/codex_entry/atmos_valve
@@ -92,4 +96,9 @@
 		additional output data; Moles and volume shows the moles per gas in the mixture and the total moles and volume; Gas
 		traits and data describes the traits per gas, how it interacts with the world, and some of its property constants.
 	"}
+	controls_text = {"
+	Alt Click - Activate barometer.
+	Right Click - Open gas reference.
+	"}
+
 	disambiguator = "equipment"

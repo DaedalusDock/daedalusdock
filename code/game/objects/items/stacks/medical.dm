@@ -7,7 +7,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	full_w_class = WEIGHT_CLASS_TINY
 
-	throw_speed = 3
 	throw_range = 7
 	stamina_damage = 0
 	stamina_cost = 0
@@ -21,6 +20,8 @@
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
 
+	/// A sound to play on use
+	var/use_sound
 	/// How long it takes to apply it to yourself
 	var/self_delay = 5 SECONDS
 	/// How long it takes to apply it to someone else
@@ -44,17 +45,21 @@
 /obj/item/stack/medical/proc/try_heal(mob/living/patient, mob/user, silent = FALSE)
 	if(!patient.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		return
+
 	if(patient == user)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [user.p_them()]self..."), span_notice("You begin applying [src] on yourself..."))
 		if(!do_after(user, patient, self_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
-
 			return
+
 	else if(other_delay)
 		if(!silent)
 			user.visible_message(span_notice("[user] starts to apply [src] on [patient]."), span_notice("You begin applying [src] on [patient]..."))
 		if(!do_after(user, patient, other_delay, DO_PUBLIC, extra_checks=CALLBACK(patient, TYPE_PROC_REF(/mob/living, try_inject), user, null, INJECT_TRY_SHOW_ERROR_MESSAGE), display = src))
 			return
+
+	if(use_sound)
+		playsound(loc, use_sound, 50)
 
 	if(heal(patient, user))
 		log_combat(user, patient, "healed", src.name)
@@ -67,19 +72,24 @@
 	if(patient.stat == DEAD)
 		to_chat(user, span_warning("[patient] is dead! You can not help [patient.p_them()]."))
 		return
+
 	if(isanimal(patient) && heal_brute) // only brute can heal
 		var/mob/living/simple_animal/critter = patient
 		if (!critter.healable)
 			to_chat(user, span_warning("You cannot use [src] on [patient]!"))
 			return FALSE
+
 		else if (critter.health == critter.maxHealth)
 			to_chat(user, span_notice("[patient] is at full health."))
 			return FALSE
+
 		user.visible_message("<span class='infoplain'><span class='green'>[user] applies [src] on [patient].</span></span>", "<span class='infoplain'><span class='green'>You apply [src] on [patient].</span></span>")
 		patient.heal_bodypart_damage((heal_brute * 0.5))
 		return TRUE
+
 	if(iscarbon(patient))
 		return heal_carbon(patient, user, heal_brute, heal_burn)
+
 	to_chat(user, span_warning("You can't heal [patient] with [src]!"))
 
 /// The healing effects on a carbon patient. Since we have extra details for dealing with bodyparts, we get our own fancy proc. Still returns TRUE on success and FALSE on fail
@@ -209,12 +219,14 @@
 	repeating = TRUE
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
+	use_sound = 'sound/effects/sneedle.ogg'
 
 /obj/item/stack/medical/suture/heal_carbon(mob/living/carbon/C, mob/user, brute, burn)
 	var/obj/item/bodypart/affecting = C.get_bodypart(deprecise_zone(user.zone_selected), TRUE)
 	if(!affecting) //Missing limb?
 		to_chat(user, span_warning("[C] doesn't have \a [parse_zone(user.zone_selected)]!"))
 		return FALSE
+
 	if(!IS_ORGANIC_LIMB(affecting)) //Limb must be organic to be healed - RR
 		to_chat(user, span_warning("[src] won't work on a robotic limb!"))
 		return FALSE

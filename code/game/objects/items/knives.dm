@@ -13,7 +13,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 10
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 6
 	custom_materials = list(/datum/material/iron=12000)
 	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
@@ -170,7 +170,7 @@
 		else if (istype(shard, /obj/item/shard/plastitanium))
 			force = 10
 			throwforce = 15
-			throw_speed = 4
+			throw_speed = 1.5
 			throw_range = 8
 			icon_state = "plastitaniumshiv"
 			inhand_icon_state = "plastitaniumshiv"

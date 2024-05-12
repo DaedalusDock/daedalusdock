@@ -71,3 +71,42 @@
 	hemostat.melee_attack_chain(user, patient)
 
 	TEST_ASSERT(BP.get_damage() <= BP.max_damage * 0.25, "Chest did not heal to less than [BP.max_damage/2], healed to [BP.get_damage()]")
+
+/datum/unit_test/test_retraction/Run()
+	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
+	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
+	var/obj/structure/table/table = allocate(/obj/structure/table/optable)
+	var/obj/item/scalpel/scalpel = allocate(__IMPLIED_TYPE__)
+	var/obj/item/retractor/retractor = allocate(__IMPLIED_TYPE__)
+	var/obj/item/circular_saw/saw = allocate(__IMPLIED_TYPE__)
+
+	table.forceMove(get_turf(patient)) //Not really needed but it silences the linter and gives insurance
+	patient.set_lying_down()
+
+	for(var/zone in list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
+		var/obj/item/bodypart/BP = patient.get_bodypart(zone)
+
+		user.zone_selected = zone
+		user.desired_surgery = /datum/surgery_step/generic_organic/incise
+		user.put_in_active_hand(scalpel)
+		scalpel.melee_attack_chain(user, patient)
+
+		TEST_ASSERT(BP.how_open() == SURGERY_OPEN, "[parse_zone(zone)] was not incised.")
+
+		user.desired_surgery = /datum/surgery_step/generic_organic/retract_skin
+		user.drop_all_held_items()
+		user.put_in_active_hand(retractor)
+		retractor.melee_attack_chain(user, patient)
+
+		TEST_ASSERT(BP.how_open() == SURGERY_RETRACTED, "[parse_zone(zone)]'s incision was not widened (Openness: [BP.how_open()]).")
+
+		if(BP.encased)
+			user.desired_surgery = /datum/surgery_step/open_encased
+			user.drop_all_held_items()
+			user.put_in_active_hand(saw)
+			saw.melee_attack_chain(user, patient)
+
+			TEST_ASSERT(BP.how_open() == SURGERY_DEENCASED, "[parse_zone(zone)] was not de-encased (Openness: [BP.how_open()]).")
+
+		user.drop_all_held_items()
+		patient.fully_heal()

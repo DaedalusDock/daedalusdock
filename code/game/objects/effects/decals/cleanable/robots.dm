@@ -7,11 +7,15 @@
 	icon_state = "gib1"
 	layer = LOW_OBJ_LAYER
 	random_icon_states = list("gib1", "gib2", "gib3", "gib4", "gib5", "gib6", "gib7")
-	blood_state = BLOOD_STATE_OIL
-	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	mergeable_decal = FALSE
 	beauty = -50
 	clean_type = CLEAN_TYPE_BLOOD
+
+	blood_color = rgb(22, 22, 22)
+	bloodiness = BLOOD_AMOUNT_PER_DECAL
+
+	decal_reagent = /datum/reagent/fuel/oil
+	reagent_amount = BLOOD_AMOUNT_PER_DECAL
 
 /obj/effect/decal/cleanable/robot_debris/Initialize(mapload)
 	. = ..()
@@ -75,16 +79,18 @@
 	icon = 'icons/mob/robots.dmi'
 	icon_state = "floor1"
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
-	blood_state = BLOOD_STATE_OIL
-	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	beauty = -100
+
+	blood_color = rgb(22, 22, 22)
+	bloodiness = BLOOD_AMOUNT_PER_DECAL
+
 	clean_type = CLEAN_TYPE_BLOOD
 	decal_reagent = /datum/reagent/fuel/oil
 	reagent_amount = 10
 
 /obj/effect/decal/cleanable/oil/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
-	AddComponent(/datum/component/smell, SCENT_HAZE, "industrial lubricant", 3)
+	AddComponent(/datum/component/smell, INTENSITY_NORMAL, SCENT_HAZE, "industrial lubricant", 3)
 
 /obj/effect/decal/cleanable/oil/attackby(obj/item/I, mob/living/user)
 	var/attacked_by_hot_thing = I.get_temperature()
@@ -96,12 +102,12 @@
 	return ..()
 
 
-/obj/effect/decal/cleanable/oil/fire_act(exposed_temperature, exposed_volume)
+/obj/effect/decal/cleanable/oil/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(exposed_temperature < 480)
 		return
 	if(isturf(loc))
 		var/turf/T = loc
-		if(!T.fire)
+		if(!T.active_hotspot)
 			visible_message(span_danger("[src] catches fire!"))
 			T.create_fire()
 

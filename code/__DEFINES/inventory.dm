@@ -1,7 +1,7 @@
 /*ALL DEFINES RELATED TO INVENTORY OBJECTS, MANAGEMENT, ETC, GO HERE*/
 
 //ITEM INVENTORY WEIGHT, FOR w_class
-/// Usually items smaller then a human hand, (e.g. playing cards, lighter, scalpel, coins/holochips)
+/// Usually items smaller then a human hand, (e.g. playing cards, lighter, scalpel, coins)
 #define WEIGHT_CLASS_TINY 1
 /// Pockets can hold small and tiny items, (e.g. flashlight, multitool, grenades, GPS device)
 #define WEIGHT_CLASS_SMALL 2
@@ -87,6 +87,9 @@
 ///hides mutant/moth wings, does not apply to functional wings
 #define HIDEMUTWINGS (1<<13)
 
+/// Every flag that hides a bodypart or organ.
+#define BODYPART_HIDE_FLAGS (HIDESNOUT | HIDEMUTWINGS | HIDEHAIR | HIDEFACIALHAIR | HIDEEYES | HIDEJUMPSUIT)
+
 //bitflags for clothing coverage - also used for limbs
 #define CHEST (1<<0)
 #define HEAD (1<<1)
@@ -167,7 +170,6 @@
 GLOBAL_LIST_INIT(detective_vest_allowed, typecacheof(list(
 	/obj/item/ammo_box,
 	/obj/item/ammo_casing,
-	/obj/item/detective_scanner,
 	/obj/item/flashlight,
 	/obj/item/gun/ballistic,
 	/obj/item/gun/energy,

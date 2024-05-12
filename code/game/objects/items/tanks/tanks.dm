@@ -17,7 +17,7 @@
 	slot_flags = ITEM_SLOT_BACK
 	worn_icon = 'icons/mob/clothing/back.dmi' //since these can also get thrown into suit storage slots. if something goes on the belt, set this to null.
 	hitsound = 'sound/weapons/smash.ogg'
-
+	w_class = WEIGHT_CLASS_BULKY
 
 	force = 5
 	throwforce = 10
@@ -165,7 +165,7 @@
 	return SHAME
 
 /obj/item/tank/attackby(obj/item/W, mob/user, params)
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 	if(istype(W, /obj/item/assembly_holder))
 		bomb_assemble(W, user)
 		return TRUE

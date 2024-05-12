@@ -115,6 +115,7 @@ GLOBAL_LIST_INIT(limb_overlays_cache, list())
 	current_icon = new_icon
 	if(draw_color && (body_zone != BODY_ZONE_L_LEG && body_zone != BODY_ZONE_R_LEG))
 		current_icon.Blend(draw_color, ICON_MULTIPLY)
+
 	if(aux_layer)
 		var/icon/new_aux_icon = icon(chosen_icon, chosen_aux_state)
 		current_aux_icon = new_aux_icon
@@ -284,14 +285,15 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 		if(draw_color)
 			new_leg_icon_lower.Blend(draw_color, ICON_MULTIPLY)
 
+		for(var/datum/appearance_modifier/mod as anything in appearance_mods)
+			mod.BlendOnto(new_leg_icon)
+			mod.BlendOnto(new_leg_icon_lower)
+
 		GLOB.masked_leg_icons_cache[icon_cache_key] = list(new_leg_icon, new_leg_icon_lower)
 
 	new_leg_icon = GLOB.masked_leg_icons_cache[icon_cache_key][1]
 	new_leg_icon_lower = GLOB.masked_leg_icons_cache[icon_cache_key][2]
 
-	for(var/datum/appearance_modifier/mod as anything in appearance_mods)
-		mod.BlendOnto(new_leg_icon)
-		mod.BlendOnto(new_leg_icon_lower)
 
 	//this could break layering in oddjob cases, but i'm sure it will work fine most of the time... right?
 	var/mutable_appearance/new_leg_appearance = new(limb_overlay)

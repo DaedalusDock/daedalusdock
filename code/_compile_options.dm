@@ -72,6 +72,11 @@
 ///Be warned, this increases timer creation cost by 5x
 // #define TIMER_DEBUG
 
+// Displays static object lighting updates
+// Also enables some debug vars on sslighting that can be used to modify
+// How extensively we prune lighting corners to update
+// #define VISUALIZE_LIGHT_UPDATES
+
 ///If this is uncommented, force our verb processing into just the 2% of a tick
 ///We normally reserve for it
 ///NEVER run this on live, it's for simulating highpop only
@@ -94,6 +99,12 @@
 ///Uncomment this to wire the ruin budgets to zero. This prevents them spawning.
 ///Useful for measuring performance of specific systems with more reliability.
 //#define DISABLE_RUINS
+
+/// Uncomment this to assert INSTANCES_OF() is running on valid lists.
+//#define DEBUG_ATLAS
+
+/// Uncomment this to enable debugging tools for map making.
+//#define DEBUG_MAPS
 
 /////////////////////// REFERENCE TRACKING
 
@@ -138,9 +149,6 @@
 #define MULTIZAS
 
 /////////////////////// ZMIMIC
-
-///Enables Multi-Z lighting
-#define ZMIMIC_LIGHT_BLEED
 
 ///Enables multi-z speech
 #define ZMIMIC_MULTIZ_SPEECH

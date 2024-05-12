@@ -105,7 +105,7 @@
 		mytape = null
 		update_appearance()
 
-/obj/item/taperecorder/fire_act(exposed_temperature, exposed_volume)
+/obj/item/taperecorder/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	mytape.unspool() //Fires unspool the tape, which makes sense if you don't think about it
 	..()
 
@@ -148,7 +148,7 @@
 	return ..()
 
 
-/obj/item/taperecorder/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), atom/sound_loc)
+/obj/item/taperecorder/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, list/message_mods = list(), atom/sound_loc, message_range)
 	. = ..()
 	if(mytape && recording)
 		mytape.timestamp += mytape.used_capacity
@@ -346,7 +346,7 @@
 	var/list/icons_available = list()
 	var/radial_icon_file = 'icons/hud/radial_tape.dmi'
 
-/obj/item/tape/fire_act(exposed_temperature, exposed_volume)
+/obj/item/tape/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	unspool()
 	..()
 

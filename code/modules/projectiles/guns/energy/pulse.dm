@@ -28,9 +28,6 @@
 
 	notify_ghosts("Someone won a pulse rifle as a prize!", source = src, action = NOTIFY_ORBIT, header = "Pulse rifle prize")
 
-/obj/item/gun/energy/pulse/loyalpin
-	pin = /obj/item/firing_pin/implant/mindshield
-
 /obj/item/gun/energy/pulse/carbine
 	name = "pulse carbine"
 	desc = "A compact variant of the pulse rifle with less firepower but easier storage."
@@ -51,9 +48,6 @@
 /obj/item/gun/energy/pulse/carbine/lethal
 	ammo_type = list(/obj/item/ammo_casing/energy/laser, /obj/item/ammo_casing/energy/laser/pulse, /obj/item/ammo_casing/energy/electrode)
 
-/obj/item/gun/energy/pulse/carbine/loyalpin
-	pin = /obj/item/firing_pin/implant/mindshield
-
 /obj/item/gun/energy/pulse/destroyer
 	name = "pulse destroyer"
 	desc = "A heavy-duty energy rifle built for pure destruction."
@@ -73,9 +67,6 @@
 	worn_icon_state = "gun"
 	inhand_icon_state = "gun"
 	cell_type = /obj/item/stock_parts/cell/pulse/pistol
-
-/obj/item/gun/energy/pulse/pistol/loyalpin
-	pin = /obj/item/firing_pin/implant/mindshield
 
 /obj/item/gun/energy/pulse/pistol/m1911
 	name = "\improper M1911-P"

@@ -18,3 +18,8 @@
 #define COMSIG_ALARM_TRIGGERED "comsig_alarm_triggered"
 ///Send when an alarm source is cleared (alarm_type, area/source_area)
 #define COMSIG_ALARM_CLEARED "comsig_alarm_clear"
+
+
+// Spook level signals
+///from base of area/proc/adjust_spook_level(): (area, old_spook_level)
+#define AREA_SPOOK_LEVEL_CHANGED "comsig_area_spook_level_changed"

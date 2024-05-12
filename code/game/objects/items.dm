@@ -14,6 +14,31 @@ DEFINE_INTERACTABLE(/obj/item)
 	///the icon to indicate this object is being dragged
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
+	max_integrity = 200
+	obj_flags = NONE
+	pass_flags = PASSTABLE
+
+	///How large is the object, used for stuff like whether it can fit in backpacks or not
+	w_class = WEIGHT_CLASS_SMALL
+
+	///Items can by default thrown up to 10 tiles by TK users
+	tk_throw_range = 10
+
+	/// This var exists as a weird proxy "owner" ref
+	/// It's used in a few places. Stop using it, and optimially replace all uses please
+	var/tmp/obj/item/master = null
+
+	///list of /datum/action's that this item has.
+	var/tmp/list/actions
+	///list of paths of action datums to give to the item on New().
+	var/list/actions_types
+
+	///A weakref to the mob who threw the item
+	var/tmp/datum/weakref/thrownby = null
+
+	///Reference to the datum that determines whether dogs can wear the item: Needs to be in /obj/item because corgis can wear a lot of non-clothing items
+	var/tmp/datum/dog_fashion/dog_fashion = null
+
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 		IF YOU ADD MORE ICON CRAP TO THIS
 		ENSURE YOU ALSO ADD THE NEW VARS TO CHAMELEON ITEM_ACTION'S update_item() PROC (/datum/action/item_action/chameleon/change/proc/update_item())
@@ -45,6 +70,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	///The config type to use for greyscaled belt overlays. Both this and greyscale_colors must be assigned to work.
 	var/greyscale_config_belt
 
+	/// A url-encoded string that is the center pixel of an icon (or close enough). Use get_icon_center().
+	var/icon_center = "x=16&y=16"
+
 	/* !!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!
 		IF YOU ADD MORE ICON CRAP TO THIS
 		ENSURE YOU ALSO ADD THE NEW VARS TO CHAMELEON ITEM_ACTION'S update_item() PROC (/datum/action/item_action/chameleon/change/proc/update_item())
@@ -63,9 +91,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	/// Worn overlay will be shifted by this along y axis
 	var/worn_y_offset = 0
 
-	max_integrity = 200
-
-	obj_flags = NONE
 	///Item flags for the item
 	var/item_flags = NONE
 
@@ -80,24 +105,19 @@ DEFINE_INTERACTABLE(/obj/item)
 	///Sound used when equipping the item into a valid slot
 	var/equip_sound
 	///Sound used when picking the item up (into your hands)
-	var/pickup_sound
+	var/pickup_sound = 'sound/items/handling/generic_pickup.ogg'
 	///Sound used when dropping the item, or when its thrown.
-	var/drop_sound
-	///Sound used when successfully blocking an attack.
+	var/drop_sound = 'sound/items/handling/book_drop.ogg'
+	///Sound used when successfully blocking an attack. Can be a list!
 	var/block_sound
+	///Sound used when used as a weapon, but the attacked missed. Can be a list!
+	var/miss_sound
 
 	///Whether or not we use stealthy audio levels for this item's attack sounds
 	var/stealthy_audio = FALSE
 
-	///How large is the object, used for stuff like whether it can fit in backpacks or not
-	w_class = WEIGHT_CLASS_NORMAL
 	///This is used to determine on which slots an item can fit.
 	var/slot_flags = 0
-	pass_flags = PASSTABLE
-	//pressure_resistance = 4
-	/// This var exists as a weird proxy "owner" ref
-	/// It's used in a few places. Stop using it, and optimially replace all uses please
-	var/obj/item/master = null
 
 	///Price of an item in a vending machine, overriding the base vending machine price. Define in terms of paycheck defines as opposed to raw numbers.
 	var/custom_price
@@ -114,11 +134,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/max_heat_protection_temperature
 	///Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by cold_protection flags
 	var/min_cold_protection_temperature
-
-	///list of /datum/action's that this item has.
-	var/list/actions
-	///list of paths of action datums to give to the item on New().
-	var/list/actions_types
 
 	//Since any item can now be a piece of clothing, this has to be put here so all items share it.
 	///This flag is used to determine when items in someone's inventory cover others. IE helmets making it so you can't see glasses, etc.
@@ -162,11 +177,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	///A blacklist of bodytypes that aren't allowed to equip this item
 	var/restricted_bodytypes = NONE
 
-	///A weakref to the mob who threw the item
-	var/datum/weakref/thrownby = null //I cannot verbally describe how much I hate this var
-	///Items can by default thrown up to 10 tiles by TK users
-	tk_throw_range = 10
-
 	///Does it embed and if yes, what kind of embed
 	var/list/embedding
 
@@ -187,14 +197,11 @@ DEFINE_INTERACTABLE(/obj/item)
 	///The list of slots by priority. equip_to_appropriate_slot() uses this list. Doesn't matter if a mob type doesn't have a slot. For default list, see [/mob/proc/equip_to_appropriate_slot]
 	var/list/slot_equipment_priority = null
 
-	///Reference to the datum that determines whether dogs can wear the item: Needs to be in /obj/item because corgis can wear a lot of non-clothing items
-	var/datum/dog_fashion/dog_fashion = null
-
 	//Tooltip vars
 	///string form of an item's force. Edit this var only to set a custom force string
 	var/force_string
-	var/last_force_string_check = 0
-	var/tip_timer
+	var/tmp/last_force_string_check = 0
+	var/tmp/tip_timer
 
 	///Determines who can shoot this
 	var/trigger_guard = TRIGGER_GUARD_NONE
@@ -237,12 +244,12 @@ DEFINE_INTERACTABLE(/obj/item)
 	/*Wielding*/
 	/*‾‾‾‾‾‾‾‾*/
 	/// Is the item being held in two hands?
-	var/wielded = FALSE
+	var/tmp/wielded = FALSE
 
 	/// The force of the item when wielded. If null, will be force * 1.5.
 	var/force_wielded = null
 	/// A var to hold the old, unwielded force value.
-	VAR_PRIVATE/force_unwielded = null
+	VAR_PRIVATE/tmp/force_unwielded = null
 	/// The icon_state to use when wielded, if any.
 	var/icon_state_wielded = null
 	/// The sound to play on wield.
@@ -314,9 +321,69 @@ DEFINE_INTERACTABLE(/obj/item)
 		return TRUE
 
 /obj/item/update_icon_state()
-	. = ..()
 	if(wielded && icon_state_wielded)
 		icon_state = icon_state_wielded
+	return ..()
+
+/obj/item/add_blood_DNA(list/dna)
+	. = ..()
+	update_slot_icon()
+
+/obj/item/get_mechanics_info()
+	. = ..()
+	var/pronoun = gender == PLURAL ? "They" : "It"
+	var/pronoun_is = gender == PLURAL ? "They are" : "It is"
+
+	. += "- [pronoun_is] a [weight_class_to_text(w_class)] object."
+
+	if(atom_storage)
+		. += "- [pronoun] can store items."
+		if(!length(atom_storage.can_hold))
+			. += "- [pronoun] can store [atom_storage.max_slots] item\s that are [weight_class_to_text(atom_storage.max_specific_storage)] or smaller."
+
+	var/static/list/string_part_flags = list(
+		"head" = HEAD,
+		"torso" = CHEST,
+		"legs" = LEGS,
+		"feet" = FEET,
+		"arms" = ARMS,
+		"hands" = HANDS
+	)
+
+	// Strings which corraspond to slot flags, useful for outputting what slot something is.
+	var/static/list/string_slot_flags = list(
+		"back" = ITEM_SLOT_BACK,
+		"face" = ITEM_SLOT_MASK,
+		"waist" = ITEM_SLOT_BELT,
+		"ID slot" = ITEM_SLOT_ID,
+		"ears" = ITEM_SLOT_EARS,
+		"eyes" = ITEM_SLOT_EYES,
+		"hands" = ITEM_SLOT_GLOVES,
+		"head" = ITEM_SLOT_HEAD,
+		"feet" = ITEM_SLOT_FEET,
+		"over body" = ITEM_SLOT_OCLOTHING,
+		"body" = ITEM_SLOT_ICLOTHING,
+		"neck" = ITEM_SLOT_NECK,
+	)
+
+	var/list/covers = list()
+	var/list/slots = list()
+	for(var/name in string_part_flags)
+		if(body_parts_covered & string_part_flags[name])
+			covers += name
+
+	for(var/name in string_slot_flags)
+		if(slot_flags & string_slot_flags[name])
+			slots += name
+
+	if(length(covers))
+		. += "- [pronoun] cover[p_s()] the [english_list(covers)]."
+
+	if(length(slots))
+		. += "- [pronoun] can be worn on your [english_list(slots)]."
+
+	if(siemens_coefficient == 0)
+		. += "- [gender == PLURAL ? "They do not" : "It does not"] conduct electricity."
 
 /// Called when an action associated with our item is deleted
 /obj/item/proc/on_action_deleted(datum/source)
@@ -426,11 +493,6 @@ DEFINE_INTERACTABLE(/obj/item)
 	abstract_move(null)
 	forceMove(T)
 
-/obj/item/examine(mob/user) //This might be spammy. Remove?
-	. = ..()
-
-	. += "[gender == PLURAL ? "They are" : "It is"] a [weight_class_to_text(w_class)] object."
-
 /obj/item/interact(mob/user)
 	add_fingerprint(user)
 	ui_interact(user)
@@ -499,6 +561,14 @@ DEFINE_INTERACTABLE(/obj/item)
 		log_admin("[key_name(usr)] has added [picked_affix_name] fantasy affix to [before_name]")
 		message_admins(span_notice("[key_name(usr)] has added [picked_affix_name] fantasy affix to [before_name]"))
 
+/obj/item/vv_edit_var(vname, vval)
+	. = ..()
+	if(vname == NAMEOF(src, flags_inv) && iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		var/slot = C.get_slot_by_item(src)
+		if(slot)
+			C.update_slots_for_item(src, slot, TRUE)
+
 /obj/item/attack_hand(mob/user, list/modifiers)
 	. = ..()
 	if(.)
@@ -529,35 +599,19 @@ DEFINE_INTERACTABLE(/obj/item)
 			affecting?.receive_damage( 0, 5 ) // 5 burn damage
 			return
 
-	if(!(interaction_flags_item & INTERACT_ITEM_ATTACK_HAND_PICKUP)) //See if we're supposed to auto pickup.
+	if(!(interaction_flags_item & INTERACT_ITEM_ATTACK_HAND_PICKUP))
 		return
 
 	//Heavy gravity makes picking up things very slow.
 	var/grav = user.has_gravity()
 	if(grav > STANDARD_GRAVITY)
-		var/grav_power = min(3,grav - STANDARD_GRAVITY)
-		to_chat(user,span_notice("You start picking up [src]..."))
-		if(!do_after(user,src,30*grav_power))
+		var/grav_power = min(3, grav - STANDARD_GRAVITY)
+		to_chat(user, span_notice("You start picking up [src]..."))
+		if(!do_after(user, src, 30*grav_power))
 			return
 
-
-	//If the item is in a storage item, take it out
-	var/was_in_storage = loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE)
-	if(QDELETED(src)) //moving it out of the storage to the floor destroyed it.
-		return
-
-	if(throwing)
-		throwing.finalize(FALSE)
-	if(loc == user)
-		if(!allow_attack_hand_drop(user) || !user.temporarilyRemoveItemFromInventory(src))
-			return
-
-	. = FALSE
-	pickup(user)
-	add_fingerprint(user)
-	if(!user.put_in_active_hand(src, FALSE, was_in_storage))
-		user.dropItemToGround(src)
-		return TRUE
+	// Return FALSE if the item is picked up.
+	return !user.pickup_item(src)
 
 /obj/item/proc/allow_attack_hand_drop(mob/user)
 	return TRUE
@@ -615,7 +669,7 @@ DEFINE_INTERACTABLE(/obj/item)
 			R.hud_used.update_robot_modules_display()
 
 /obj/item/attackby(obj/item/item, mob/living/user, params)
-	if(user.try_slapcraft(src, item))
+	if(user?.try_slapcraft(src, item))
 		return TRUE
 	return ..()
 
@@ -672,11 +726,20 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Plays the block sound effect
 /obj/item/proc/play_block_sound(mob/living/carbon/human/wielder, attack_type)
 	var/block_sound = src.block_sound
+
 	if(islist(block_sound))
 		block_sound = pick(block_sound)
+	else if(isnull(block_sound))
+		block_sound = pick('sound/weapons/block/block1.ogg', 'sound/weapons/block/block2.ogg', 'sound/weapons/block/block3.ogg')
 	playsound(wielder, block_sound, 70, TRUE)
 
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language, list/message_mods)
+	if(isnull(language))
+		language = M?.get_selected_language()
+
+	if(istype(language, /datum/language/visual))
+		return
+
 	return ITALICS | REDUCE_RANGE
 
 /// Called when a mob drops an item.
@@ -818,6 +881,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	// Change appearance
 	name = "[name] (Wielded)"
 	update_appearance()
+	user.update_held_items()
 	return TRUE
 
 /obj/item/proc/unwield(mob/living/user, show_message = TRUE, dropping = FALSE)
@@ -843,13 +907,13 @@ DEFINE_INTERACTABLE(/obj/item)
 		if(!dropping)
 			var/slot = user.get_slot_by_item(src)
 			if(slot == ITEM_SLOT_HANDS)
-				user.update_worn_back()
+				user.update_held_items()
 			else if(slot)
 				user.update_clothing(slot)
 
-			// if the item requires two handed, drop the item on unwield
-			if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
-				user.dropItemToGround(src, force=TRUE)
+		// if the item requires two handed, drop the item on unwield
+		if(HAS_TRAIT(src, TRAIT_NEEDS_TWO_HANDS))
+			user.dropItemToGround(src, force=TRUE)
 
 		// Show message if requested
 		if(show_message)
@@ -875,7 +939,8 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
 	if(!M)
 		return FALSE
-
+	if((item_flags & HAND_ITEM) && slot != ITEM_SLOT_HANDS)
+		return FALSE
 	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self)
 
 /obj/item/verb/verb_pickup()
@@ -927,8 +992,7 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/on_exit_storage(datum/storage/master_storage)
 	. = ..()
-	var/atom/location = master_storage.real_location?.resolve()
-	do_drop_animation(location)
+	do_drop_animation(master_storage.parent)
 
 /obj/item/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(hit_atom && !QDELETED(hit_atom))
@@ -989,31 +1053,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(!ismob(loc))
 		return
 	var/mob/owner = loc
-	var/flags = slot_flags
-	if(flags & ITEM_SLOT_OCLOTHING)
-		owner.update_worn_oversuit()
-	if(flags & ITEM_SLOT_ICLOTHING)
-		owner.update_worn_undersuit()
-	if(flags & ITEM_SLOT_GLOVES)
-		owner.update_worn_gloves()
-	if(flags & ITEM_SLOT_EYES)
-		owner.update_worn_glasses()
-	if(flags & ITEM_SLOT_EARS)
-		owner.update_inv_ears()
-	if(flags & ITEM_SLOT_MASK)
-		owner.update_worn_mask()
-	if(flags & ITEM_SLOT_HEAD)
-		owner.update_worn_head()
-	if(flags & ITEM_SLOT_FEET)
-		owner.update_worn_shoes()
-	if(flags & ITEM_SLOT_ID)
-		owner.update_worn_id()
-	if(flags & ITEM_SLOT_BELT)
-		owner.update_worn_belt()
-	if(flags & ITEM_SLOT_BACK)
-		owner.update_worn_back()
-	if(flags & ITEM_SLOT_NECK)
-		owner.update_worn_neck()
+	owner.update_clothing(slot_flags | ITEM_SLOT_HANDS)
 
 ///Returns the temperature of src. If you want to know if an item is hot use this proc.
 /obj/item/proc/get_temperature()
@@ -1027,13 +1067,14 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/proc/open_flame(flame_heat=700)
 	var/turf/location = loc
-	if(ismob(location))
-		var/mob/M = location
+	if(isliving(location))
+		var/mob/living/M = location
 		var/success = FALSE
-		if(src == M.get_item_by_slot(ITEM_SLOT_MASK))
+		if(M.body_position == LYING_DOWN && (src == M.get_item_by_slot(ITEM_SLOT_MASK) || M.is_holding(src)))
 			success = TRUE
 		if(success)
 			location = get_turf(M)
+
 	if(isturf(location))
 		location.hotspot_expose(flame_heat, 5)
 
@@ -1181,7 +1222,13 @@ DEFINE_INTERACTABLE(/obj/item)
 
 /obj/item/MouseEntered(location, control, params)
 	. = ..()
-	if(((get(src, /mob) == usr) || loc?.atom_storage || (src.item_flags & IN_STORAGE)) && !QDELETED(src))
+	var/mob/in_contents_of = get(src, /mob)
+	var/in_our_inventory = (in_contents_of == usr)
+	if(!in_our_inventory && isobserver(usr))
+		var/mob/dead/observer/O = usr
+		in_our_inventory = (O.observetarget == in_contents_of)
+
+	if((in_our_inventory || loc?.atom_storage || (src.item_flags & IN_STORAGE)) && !QDELETED(src))
 		var/mob/living/L = usr
 		if(usr.client.prefs.read_preference(/datum/preference/toggle/enable_tooltips))
 			var/timedelay = usr.client.prefs.read_preference(/datum/preference/numeric/tooltip_delay) / 100
@@ -1349,12 +1396,16 @@ DEFINE_INTERACTABLE(/obj/item)
 
 ///Called by the carbon throw_item() proc. Returns null if the item negates the throw, or a reference to the thing to suffer the throw else.
 /obj/item/proc/on_thrown(mob/living/carbon/user, atom/target)
-	if((item_flags & ABSTRACT) || HAS_TRAIT(src, TRAIT_NODROP))
+	if((item_flags & ABSTRACT))
 		return
-	user.dropItemToGround(src, silent = TRUE)
+
+	if(!user.dropItemToGround(src, silent = TRUE, animate = FALSE))
+		return
+
 	if(throwforce && HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_notice("You set [src] down gently on the ground."))
 		return
+
 	return src
 
 /**
@@ -1625,7 +1676,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	transform = animation_matrix
 
 	SEND_SIGNAL(src, COMSIG_ATOM_TEMPORARY_ANIMATION_START, 3)
-	// This is instant on byond's end, but to our clients this looks like a quick drop
+
 	animate(src, alpha = old_alpha, pixel_x = old_x, pixel_y = old_y, transform = old_transform, time = 3, easing = CUBIC_EASING)
 
 /atom/movable/proc/do_item_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item)
@@ -1717,6 +1768,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		var/obj/O = highest
 		if(!O.uses_integrity)
 			return
+
 		O.take_damage((w_class * 5) * levels)
 
 	if(ismob(highest))
@@ -1749,3 +1801,26 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(wielded)
 		. = wielded_hitsound
 	. ||= hitsound
+
+/// Leave evidence of a user on a target
+/obj/item/proc/leave_evidence(mob/user, atom/target)
+	if(!(item_flags & NO_EVIDENCE_ON_ATTACK))
+		target.add_fingerprint(user)
+	else
+		target.log_touch(user)
+
+/// Returns the sound the item makes when used as a weapon, but missing.
+/obj/item/proc/get_misssound()
+	. = src.miss_sound
+	if(islist(.))
+		. = pick(miss_sound)
+	else if(isnull(.))
+		. = pick('sound/weapons/swing/swing_01.ogg', 'sound/weapons/swing/swing_02.ogg', 'sound/weapons/swing/swing_03.ogg')
+	return .
+
+/// Returns [obj/item/var/icon_center] as a list.
+/obj/item/proc/get_icon_center()
+	var/list/center = params2list(icon_center)
+	center["x"] = text2num(center["x"])
+	center["y"] = text2num(center["y"])
+	return center

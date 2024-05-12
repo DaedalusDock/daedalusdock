@@ -233,6 +233,10 @@
 #define COMSIG_ITEM_SPLIT_PROFIT "item_split_profits"
 ///called when getting the item's exact ratio for cargo's profit, without selling the item.
 #define COMSIG_ITEM_SPLIT_PROFIT_DRY "item_split_profits_dry"
+///from base of /atom/movable/proc/on_enter_storage(): (datum/storage/storage)
+#define COMSIG_ITEM_STORED "item_stored"
+///from base of /atom/movable/proc/on_exit_storage(): (datum/storage/storage)
+#define COMSIG_ITEM_UNSTORED "item_unstored"
 
 // /obj/item/clothing signals
 
@@ -285,10 +289,10 @@
 
 ///called from base of /obj/item/radio/proc/set_frequency(): (list/args)
 #define COMSIG_RADIO_NEW_FREQUENCY "radio_new_frequency"
-///called during SSpacketnets/proc/ImmediateSubspaceVocalSend(): (message, freq_num)
+#define COMSIG_RADIO_NEW_MESSAGE "radio_new_message"
+///called during SSpacketnets/proc/ImmediateSubspaceVocalSend(): (speaker, message, freq_num, data)
 #define COMSIG_RADIO_RECEIVE "radio_receive"
 // /obj/item/pen signals
-
 ///called after rotation in /obj/item/pen/attack_self(): (rotation, mob/living/carbon/user)
 #define COMSIG_PEN_ROTATED "pen_rotated"
 
@@ -386,7 +390,7 @@
 #define COMSIG_ITEM_ATTACK_SELF "item_attack_self"
 //from base of obj/item/attack_self_secondary(): (/mob)
 #define COMSIG_ITEM_ATTACK_SELF_SECONDARY "item_attack_self_secondary"
-///from base of obj/item/attack_atom(): (/obj, /mob)
+///from base of obj/item/attack_obj(): (/obj, /mob)
 #define COMSIG_ITEM_ATTACK_OBJ "item_attack_obj"
 ///from base of obj/item/pre_attack(): (atom/target, mob/user, params)
 #define COMSIG_ITEM_PRE_ATTACK "item_pre_attack"

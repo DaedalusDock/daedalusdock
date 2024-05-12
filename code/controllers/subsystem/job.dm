@@ -48,8 +48,8 @@ SUBSYSTEM_DEF(job)
 		JOB_HEAD_OF_PERSONNEL = 2,
 		JOB_RESEARCH_DIRECTOR = 3,
 		JOB_CHIEF_ENGINEER = 4,
-		JOB_CHIEF_MEDICAL_OFFICER = 5,
-		JOB_HEAD_OF_SECURITY = 6,
+		JOB_MEDICAL_DIRECTOR = 5,
+		JOB_SECURITY_MARSHAL = 6,
 		JOB_QUARTERMASTER = 7,
 	)
 
@@ -361,7 +361,7 @@ SUBSYSTEM_DEF(job)
  *  fills var "assigned_role" for all ready players.
  *  This proc must not have any side effect besides of modifying "assigned_role".
  **/
-/datum/controller/subsystem/job/proc/DivideOccupations()
+/datum/controller/subsystem/job/proc/DivideOccupations(list/required_jobs)
 	//Setup new player list and get the jobs list
 	JobDebug("Running DO")
 
@@ -376,6 +376,9 @@ SUBSYSTEM_DEF(job)
 	initial_players_to_assign = unassigned.len
 
 	JobDebug("DO, Len: [unassigned.len]")
+
+	if(unassigned.len == 0)
+		return validate_required_jobs(required_jobs)
 
 	//Scale number of open security officer slots to population
 	setup_officer_positions()
@@ -488,7 +491,7 @@ SUBSYSTEM_DEF(job)
 	JobDebug("All divide occupations tasks completed.")
 	JobDebug("---------------------------------------------------")
 
-	return TRUE
+	return validate_required_jobs(required_jobs)
 
 //We couldn't find a job from prefs for this guy.
 /datum/controller/subsystem/job/proc/HandleUnassigned(mob/dead/new_player/player)
@@ -548,11 +551,6 @@ SUBSYSTEM_DEF(job)
 		job.on_join_message(player_client, chosen_title)
 
 	if(player_client)
-		// We agreed it's safe to remove this, but commented out instead of fully removed incase we want to reverse that decision.
-		/*if(job.req_admin_notify)
-			to_chat(player_client, "<span class='infoplain'><b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b></span>")
-		*/
-
 		var/related_policy = get_policy(job.title)
 		if(related_policy)
 			to_chat(player_client, related_policy)
@@ -562,7 +560,10 @@ SUBSYSTEM_DEF(job)
 
 	if(ishuman(equipping))
 		var/mob/living/carbon/human/wageslave = equipping
-		wageslave.mind.add_memory(MEMORY_ACCOUNT, list(DETAIL_ACCOUNT_ID = wageslave.account_id), story_value = STORY_VALUE_SHIT, memory_flags = MEMORY_FLAG_NOLOCATION)
+		var/datum/bank_account/bank = SSeconomy.bank_accounts_by_id["[wageslave.account_id]"]
+
+		wageslave.mind.add_memory(MEMORY_ACCOUNT, list(DETAIL_ACCOUNT_ID = wageslave.account_id, DETAIL_ACCOUNT_PIN = bank.account_pin), story_value = STORY_VALUE_SHIT, memory_flags = MEMORY_FLAG_NOLOCATION)
+		to_chat(player_client, span_obviousnotice("Your bank account pin is: <b>[bank.account_pin]</b>"))
 
 		setup_alt_job_items(wageslave, job, player_client) //PARIAH EDIT ADDITION
 
@@ -846,8 +847,8 @@ SUBSYSTEM_DEF(job)
 	// Force-give their ID card bridge access.
 	var/obj/item/id_slot = new_captain.get_item_by_slot(ITEM_SLOT_ID)
 	if(id_slot)
-		var/obj/item/card/id/id_card = id_slot.GetID()
-		if(!(ACCESS_HEADS in id_card.access))
+		var/obj/item/card/id/id_card = id_slot.GetID() || locate() in id_slot
+		if(id_card && !(ACCESS_HEADS in id_card.access))
 			id_card.add_wildcards(list(ACCESS_HEADS), mode=FORCE_ADD_ALL)
 
 	assigned_captain = TRUE
@@ -913,3 +914,21 @@ SUBSYSTEM_DEF(job)
 		return JOB_UNAVAILABLE_GENERIC
 
 	return JOB_AVAILABLE
+
+/datum/controller/subsystem/job/proc/validate_required_jobs(list/required_jobs)
+	if(!length(required_jobs))
+		return TRUE
+	for(var/required_group in required_jobs)
+		var/group_ok = TRUE
+		for(var/rank in required_group)
+			var/datum/job/J = GetJob(rank)
+			if(!J)
+				SSticker.mode.setup_error = "Invalid job [rank] in gamemode required jobs."
+				return FALSE
+			if(J.current_positions < required_group[rank])
+				group_ok = FALSE
+				break
+		if(group_ok)
+			return TRUE
+	SSticker.mode.setup_error = "Required jobs not present."
+	return FALSE

@@ -100,7 +100,7 @@
 
 
 /obj/singularity_act()
-	SSexplosions.high_mov_atom += src
+	EX_ACT(src, EXPLODE_DEVASTATE)
 	if(src && !QDELETED(src))
 		qdel(src)
 	return 2
@@ -126,7 +126,7 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 //// FIRE
 
 ///Called when the obj is exposed to fire.
-/obj/fire_act(exposed_temperature, exposed_volume)
+/obj/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(isturf(loc))
 		var/turf/T = loc
 		if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(src, TRAIT_T_RAY_VISIBLE))
@@ -186,7 +186,3 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 		burn()
 	else
 		deconstruct(FALSE)
-
-///returns how much the object blocks an explosion. Used by subtypes.
-/obj/proc/GetExplosionBlock()
-	CRASH("Unimplemented GetExplosionBlock()")

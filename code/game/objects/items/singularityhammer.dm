@@ -25,7 +25,7 @@
 
 /obj/item/singularityhammer/Initialize(mapload)
 	. = ..()
-	icon_state_wielded = "base_icon_state[1]"
+	icon_state_wielded = "[base_icon_state][1]"
 	AddElement(/datum/element/kneejerk)
 
 /obj/item/singularityhammer/update_icon_state()
@@ -88,7 +88,7 @@
 
 /obj/item/mjollnir/Initialize(mapload)
 	. = ..()
-	icon_state_wielded = "base_icon_state[1]"
+	icon_state_wielded = "[base_icon_state][1]"
 
 /obj/item/mjollnir/update_icon_state()
 	icon_state = "[base_icon_state]0"

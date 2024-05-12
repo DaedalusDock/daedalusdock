@@ -12,30 +12,21 @@
 	. = ..()
 	set_holdable(/obj/item/food/monkeycube)
 
-	var/obj/item/slimecross/reproductive/parentSlimeExtract = parent?.resolve()
-	if(!parentSlimeExtract)
-		return
-
-	if(!istype(parentSlimeExtract, /obj/item/slimecross/reproductive))
-		stack_trace("storage subtype extract_inventory incompatible with [parentSlimeExtract]")
+	if(!istype(parent, /obj/item/slimecross/reproductive))
+		stack_trace("storage subtype extract_inventory incompatible with [parent.type]")
 		qdel(src)
 
 /datum/storage/extract_inventory/proc/processCubes(mob/user)
-	var/obj/item/slimecross/reproductive/parentSlimeExtract = parent?.resolve()
-	if(!parentSlimeExtract)
-		return
+	message_admins(parent.contents.len)
 
-	message_admins(parentSlimeExtract.contents.len)
-	if(parentSlimeExtract.contents.len >= max_slots)
-		QDEL_LIST(parentSlimeExtract.contents)
+	if(parent.contents.len >= max_slots)
+		QDEL_LIST(parent.contents)
 		createExtracts(user)
 
 /datum/storage/extract_inventory/proc/createExtracts(mob/user)
-	var/obj/item/slimecross/reproductive/parentSlimeExtract = parent?.resolve()
-	if(!parentSlimeExtract)
-		return
-
+	var/obj/item/slimecross/reproductive/parentSlimeExtract = parent
 	var/cores = rand(1,4)
+
 	playsound(parentSlimeExtract, 'sound/effects/splat.ogg', 40, TRUE)
 	parentSlimeExtract.last_produce = world.time
 	to_chat(user, span_notice("[parentSlimeExtract] briefly swells to a massive size, and expels [cores] extract[cores > 1 ? "s":""]!"))

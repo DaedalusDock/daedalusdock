@@ -15,7 +15,12 @@
 #define subtypesof(typepath) ( typesof(typepath) - typepath )
 
 /// Until a condition is true, sleep
-#define UNTIL(X) while(!(X)) stoplag()
+#define UNTIL(X) while(!(X)) sleep(world.tick_lag)
 
 /// Clears all nulls in a list, returning the amount removed.
 #define list_clear_nulls(L) ((L):RemoveAll(null))
+
+// Refs contain a type id within their string that can be used to identify byond types.
+// Custom types that we define don't get a unique id, but this is useful for identifying
+// types that don't normally have a way to run istype() on them.
+#define TYPEID(thing) copytext(REF(thing), 4, 6)

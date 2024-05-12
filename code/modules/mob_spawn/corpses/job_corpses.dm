@@ -23,7 +23,7 @@
 
 /obj/effect/mob_spawn/corpse/human/engineer
 	name = "Engineer"
-	outfit = /datum/outfit/job/engineer/gloved
+	outfit = /datum/outfit/job/engineer
 	icon_state = "corpseengineer"
 
 /obj/effect/mob_spawn/corpse/human/engineer/mod
@@ -70,7 +70,3 @@
 /obj/effect/mob_spawn/corpse/human/assistant/spanishflu_infection/special(mob/living/spawned_mob)
 	. = ..()
 	spawned_mob.ForceContractDisease(new /datum/disease/fluspanish)
-
-/obj/effect/mob_spawn/corpse/human/bartender
-	name = "Bartender"
-	outfit = /datum/outfit/spacebartender

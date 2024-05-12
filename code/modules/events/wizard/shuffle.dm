@@ -31,8 +31,8 @@
 		moblocs.len -= 1
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		var/datum/effect_system/smoke_spread/smoke = new
-		smoke.set_up(0, H.loc)
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(0, location = H.loc)
 		smoke.start()
 
 //---//
@@ -61,12 +61,12 @@
 	for(var/mob/living/carbon/human/H in mobs)
 		if(!mobnames)
 			break
-		H.real_name = mobnames[mobnames.len]
+		H.set_real_name(mobnames[mobnames.len])
 		mobnames.len -= 1
 
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		var/datum/effect_system/smoke_spread/smoke = new
-		smoke.set_up(0, H.loc)
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(0, location = H.loc)
 		smoke.start()
 
 //---//
@@ -102,6 +102,6 @@
 	qdel(swapper)
 
 	for(var/mob/living/carbon/human/alive_human in GLOB.alive_mob_list)
-		var/datum/effect_system/smoke_spread/smoke = new()
-		smoke.set_up(0, alive_human.loc)
+		var/datum/effect_system/fluid_spread/smoke/smoke = new()
+		smoke.set_up(0, location = alive_human.loc)
 		smoke.start()

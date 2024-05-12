@@ -210,16 +210,6 @@
 
 	return TRUE
 
-/**
- * Check if the target we're casting on is a valid target.
- * For self-casted spells, the target being checked (cast_on) is the caster.
- * For click_to_activate spells, the target being checked is the clicked atom.
- *
- * Return TRUE if cast_on is valid, FALSE otherwise
- */
-/datum/action/cooldown/spell/proc/is_valid_target(atom/cast_on)
-	return TRUE
-
 // The actual cast chain occurs here, in Activate().
 // You should generally not be overriding or extending Activate() for spells.
 // Defer to any of the cast chain procs instead.
@@ -309,9 +299,9 @@
 	if(sparks_amt)
 		do_sparks(sparks_amt, FALSE, get_turf(owner))
 
-	if(ispath(smoke_type, /datum/effect_system/smoke_spread))
-		var/datum/effect_system/smoke_spread/smoke = new smoke_type()
-		smoke.set_up(smoke_amt, get_turf(owner))
+	if(ispath(smoke_type, /datum/effect_system/fluid_spread/smoke))
+		var/datum/effect_system/fluid_spread/smoke/smoke = new smoke_type()
+		smoke.set_up(smoke_amt, holder = owner, location = get_turf(owner))
 		smoke.start()
 
 /// Provides feedback after a spell cast occurs, in the form of a cast sound and/or invocation

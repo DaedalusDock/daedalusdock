@@ -253,13 +253,13 @@
 		return
 
 	if(reac_volume >= 1)
-		var/obj/effect/particle_effect/foam/firefighting/foam = (locate(/obj/effect/particle_effect/foam) in exposed_turf)
+		var/obj/effect/particle_effect/fluid/foam/firefighting/foam = (locate(/obj/effect/particle_effect/fluid/foam) in exposed_turf)
 		if(!foam)
 			foam = new(exposed_turf)
 		else if(istype(foam))
 			foam.lifetime = initial(foam.lifetime) //reduce object churn a little bit when using smoke by keeping existing foam alive a bit longer
 
-	var/obj/effect/hotspot/hotspot = exposed_turf.fire
+	var/obj/effect/hotspot/hotspot = exposed_turf.active_hotspot
 	var/datum/gas_mixture/environment = exposed_turf.return_air()
 	if(hotspot && !isspaceturf(exposed_turf) && environment)
 		if(environment.temperature > T20C)

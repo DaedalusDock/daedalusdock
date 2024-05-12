@@ -35,7 +35,7 @@
 	else
 		return ..()
 
-/obj/item/candle/fire_act(exposed_temperature, exposed_volume)
+/obj/item/candle/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if(!lit)
 		light() //honk
 	return ..()

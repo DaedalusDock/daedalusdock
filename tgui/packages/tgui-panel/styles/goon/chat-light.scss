@@ -949,7 +949,7 @@ h1.alert, h2.alert {
   border: 1px solid #111a27;
   margin: 2px 8px;
   padding: 8px 12px;
-  max-width: 550px;
+  width: 34.375em;
 }
 
 .examine_block hr {
@@ -961,8 +961,12 @@ h1.alert, h2.alert {
 
 .subtle {
   color: #000099;
-  font-size: 75%;
+  font-size: 85%;
   font-style: italic;
+}
+
+.obviousnotice {
+  color: #000099;
 }
 
 .sayverb {

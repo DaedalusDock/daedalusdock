@@ -29,7 +29,7 @@
 	for(var/obj/machinery/light/L in range(4, user))
 		L.on = TRUE
 		L.break_light_tube()
-		stoplag()
+		CHECK_TICK
 	return TRUE
 
 /datum/action/changeling/dissonant_shriek
@@ -45,6 +45,6 @@
 	for(var/obj/machinery/light/L in range(5, usr))
 		L.on = TRUE
 		L.break_light_tube()
-		stoplag()
+		CHECK_TICK
 
 	return TRUE

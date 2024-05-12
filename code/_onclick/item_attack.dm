@@ -10,7 +10,8 @@
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, params)
 	var/is_right_clicking = LAZYACCESS(params2list(params), RIGHT_CLICK)
 
-	if(tool_behaviour && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
+	var/mob/living/L = user
+	if(tool_behaviour && (!istype(L) || !L.combat_mode) && (target.tool_act(user, src, tool_behaviour, is_right_clicking) & TOOL_ACT_MELEE_CHAIN_BLOCKING))
 		return TRUE
 
 	var/pre_attack_result
@@ -146,7 +147,7 @@
 	return SECONDARY_ATTACK_CALL_NORMAL
 
 /obj/attackby(obj/item/attacking_item, mob/user, params)
-	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_atom(src, user, params))
+	return ..() || ((obj_flags & CAN_BE_HIT) && attacking_item.attack_obj(src, user, params))
 
 /mob/living/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(..())
@@ -196,9 +197,6 @@
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 
-	if(force && M == user && user.client)
-		user.client.give_award(/datum/award/achievement/misc/selfouch, user)
-
 	user.stamina_swing(src.stamina_cost)
 
 	user.do_attack_animation(M)
@@ -209,10 +207,11 @@
 		if(MOB_ATTACKEDBY_SUCCESS)
 			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
 		if(MOB_ATTACKEDBY_MISS)
-			playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
 
 	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
 	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")
+
 	add_fingerprint(user)
 
 	/// If we missed or the attack failed, interrupt attack chain.
@@ -230,15 +229,19 @@
 
 	return SECONDARY_ATTACK_CALL_NORMAL
 
-/// The equivalent of the standard version of [/obj/item/proc/attack] but for non mob targets.
-/obj/item/proc/attack_atom(atom/attacked_atom, mob/living/user, params)
-	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ, attacked_atom, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
+/// The equivalent of the standard version of [/obj/item/proc/attack] but for /obj targets.
+/obj/item/proc/attack_obj(obj/attacked_obj, mob/living/user, params)
+	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ, attacked_obj, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return
 	if(item_flags & NOBLUDGEON)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
-	user.do_attack_animation(attacked_atom)
-	attacked_atom.attacked_by(src, user)
+	user.do_attack_animation(attacked_obj)
+	attacked_obj.attacked_by(src, user)
+
+/// The equivalent of the standard version of [/obj/item/proc/attack] but for /turf targets.
+/obj/item/proc/attack_turf(turf/attacked_turf, mob/living/user, params)
+	return
 
 /// Called from [/obj/item/proc/attack_atom] and [/obj/item/proc/attack] if the attack succeeds
 /atom/proc/attacked_by(obj/item/attacking_item, mob/living/user)
@@ -251,9 +254,13 @@
 	var/damage = take_damage(attacking_item.force, attacking_item.damtype, BLUNT, 1)
 
 	//only witnesses close by and the victim see a hit message.
-	user.visible_message(span_danger("[user] hits [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), \
-		span_danger("You hit [src] with [attacking_item][damage ? "." : ", without leaving a mark!"]"), null, COMBAT_MESSAGE_RANGE)
-	log_combat(user, src, "attacked", attacking_item)
+	user.visible_message(
+		span_danger("[user] hits [src] with [attacking_item][damage ? "." : ", without leaving a mark."]"),
+		null,
+		COMBAT_MESSAGE_RANGE
+	)
+
+	log_combat(user, src, "attacked ([damage] damage)", attacking_item)
 
 /area/attacked_by(obj/item/attacking_item, mob/living/user)
 	CRASH("areas are NOT supposed to have attacked_by() called on them!")

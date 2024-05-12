@@ -130,7 +130,7 @@
 		H = new daddy.type(get_turf(src))
 		H.appearance = daddy.appearance
 
-	H.real_name = daddy.real_name
+	H.set_real_name(daddy.real_name)
 	daddy.dust(TRUE)
 	qdel(src)
 

@@ -132,6 +132,10 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 	if(CONFIG_GET(flag/log_tools))
 		WRITE_LOG(GLOB.world_tool_log, "TOOL: [text]")
 
+/proc/log_graffiti(text, mob/initiator)
+	if(CONFIG_GET(flag/log_graffiti))
+		WRITE_LOG(GLOB.world_graffiti_log, "GRAFFITI: [initiator] wrote down [text]")
+
 /**
  * Writes to a special log file if the log_suspicious_login config flag is set,
  * which is intended to contain all logins that failed under suspicious circumstances.

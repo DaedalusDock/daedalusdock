@@ -64,6 +64,10 @@
 	if(!isliving(user) || !user.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK|USE_DEXTERITY))
 		return
 
+	if(!user.get_empty_held_index())
+		to_chat(user, span_warning("You need an empty hand to draw from the pile."))
+		return FALSE
+
 	var/list/handradial = list()
 	for(var/obj/item/toy/singlecard/card in cards)
 		handradial[card] = image(icon = src.icon, icon_state = card.icon_state)
@@ -73,14 +77,13 @@
 		return FALSE
 
 	var/obj/item/toy/singlecard/selected_card = draw(user, choice)
-	selected_card.pickup(user)
-	user.put_in_hands(selected_card)
+	if(!user.pickup_item(selected_card, user.get_empty_held_index()))
+		selected_card.forceMove(user.drop_location())
 
 	if(cards.len == 1)
 		user.temporarilyRemoveItemFromInventory(src, TRUE)
 		var/obj/item/toy/singlecard/last_card = draw(user)
-		last_card.pickup(user)
-		user.put_in_hands(last_card)
+		user.pickup_item(last_card)
 		qdel(src) // cardhand is empty now so delete it
 
 /obj/item/toy/cards/cardhand/proc/check_menu(mob/living/user)

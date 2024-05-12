@@ -71,8 +71,10 @@
 	return ..()
 
 ///Returns a list of every item slot contents on the user.
-/mob/living/carbon/human/get_all_worn_items()
-	. = return_worn_clothing() + return_extra_wearables() + return_pocket_slots() + return_cuff_slots()
+/mob/living/carbon/human/get_all_worn_items(include_pockets = TRUE)
+	. = return_extra_wearables() + return_worn_clothing() + return_cuff_slots()
+	if(include_pockets)
+		. += return_pocket_slots()
 
 ///Bruteforce check for any type or subtype of an item.
 /mob/living/carbon/human/proc/is_wearing_item_of_type(type2check)
@@ -138,7 +140,7 @@
 			if(belt)
 				return
 			belt = I
-			update_worn_belt()
+			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_ID)
 			if(wear_id)
@@ -146,20 +148,22 @@
 
 			wear_id = I
 			sec_hud_set_ID()
-			update_worn_id()
+			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_EARS)
 			if(ears)
 				return
 
 			ears = I
-			update_inv_ears()
+			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_EYES)
 			if(glasses)
 				return
 
 			glasses = I
+			update_slots_for_item(I, slot)
+
 			var/obj/item/clothing/glasses/G = I
 			if(G.glass_colour_type)
 				update_glasses_color(G, 1)
@@ -172,44 +176,40 @@
 
 			if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view || !isnull(G.lighting_alpha))
 				update_sight()
-			update_worn_glasses()
 
 		if(ITEM_SLOT_GLOVES)
 			if(gloves)
 				return
 
 			gloves = I
-			update_worn_gloves()
+			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_FEET)
 			if(shoes)
 				return
 
 			shoes = I
-			update_worn_shoes()
+			update_slots_for_item(I, slot)
 
 		if(ITEM_SLOT_OCLOTHING)
 			if(wear_suit)
 				return
 
 			wear_suit = I
-			if(I.flags_inv & HIDEJUMPSUIT)
-				update_worn_undersuit()
+			update_slots_for_item(I, slot)
 
 			if(wear_suit.breakouttime) //when equipping a straightjacket
-				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+				ADD_TRAIT(src, TRAIT_ARMS_RESTRAINED, SUIT_TRAIT)
 				release_all_grabs() //can't pull if restrained
 				update_mob_action_buttons() //certain action buttons will no longer be usable
-
-			update_worn_oversuit()
 
 		if(ITEM_SLOT_ICLOTHING)
 			if(w_uniform)
 				return
 
 			w_uniform = I
+			update_slots_for_item(I, slot)
 			update_suit_sensors()
-			update_worn_undersuit()
 
 		if(ITEM_SLOT_LPOCKET)
 			l_store = I
@@ -259,15 +259,13 @@
 			dropItemToGround(s_store, TRUE) //It makes no sense for your suit storage to stay on you if you drop your suit.
 
 		if(wear_suit.breakouttime) //when unequipping a straightjacket
-			REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+			REMOVE_TRAIT(src, TRAIT_ARMS_RESTRAINED, SUIT_TRAIT)
 			drop_all_held_items() //suit is restraining
 			update_mob_action_buttons() //certain action buttons may be usable again.
 
 		wear_suit = null
 		if(!QDELETED(src)) //no need to update we're getting deleted anyway
-			if(I.flags_inv & HIDEJUMPSUIT)
-				update_worn_undersuit()
-			update_worn_oversuit()
+			update_slots_for_item(I, ITEM_SLOT_OCLOTHING)
 
 	else if(I == w_uniform)
 		if(invdrop)
@@ -284,12 +282,12 @@
 		update_suit_sensors()
 
 		if(!QDELETED(src))
-			update_worn_undersuit()
+			update_slots_for_item(I, ITEM_SLOT_ICLOTHING)
 
 	else if(I == gloves)
 		gloves = null
 		if(!QDELETED(src))
-			update_worn_gloves()
+			update_slots_for_item(I, ITEM_SLOT_GLOVES)
 
 	else if(I == glasses)
 		glasses = null
@@ -308,23 +306,25 @@
 			update_sight()
 
 		if(!QDELETED(src))
-			update_worn_glasses()
+			update_slots_for_item(I, ITEM_SLOT_EYES)
 
 	else if(I == ears)
 		ears = null
 		if(!QDELETED(src))
-			update_inv_ears()
+			update_slots_for_item(I, ITEM_SLOT_EARS)
 
 	else if(I == belt)
 		belt = null
 		if(!QDELETED(src))
-			update_worn_belt()
+			update_slots_for_item(I, ITEM_SLOT_BELT)
+			update_name()
 
 	else if(I == wear_id)
 		wear_id = null
 		sec_hud_set_ID()
 		if(!QDELETED(src))
-			update_worn_id()
+			update_slots_for_item(I, ITEM_SLOT_ID)
+			update_name()
 
 	else if(I == r_store)
 		r_store = null
@@ -384,26 +384,12 @@
 	return toggle_internals(tank, TRUE)
 
 /mob/living/carbon/human/wear_mask_update(obj/item/I, toggle_off = 1)
-	if((I.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || (initial(I.flags_inv) & (HIDEHAIR|HIDEFACIALHAIR)))
-		update_body_parts()
 	if(invalid_internals())
 		cutoff_internals()
 	if(I.flags_inv & HIDEEYES)
 		update_worn_glasses()
 	sec_hud_set_security_status()
-	..()
-
-/mob/living/carbon/human/head_update(obj/item/I, forced)
-	if((I.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || forced)
-		update_body_parts()
-	// Close internal air tank if helmet was the only breathing apparatus.
-	if (invalid_internals())
-		cutoff_internals()
-	if(I.flags_inv & HIDEEYES || forced)
-		update_worn_glasses()
-	if(I.flags_inv & HIDEEARS || forced)
-		update_body()
-	sec_hud_set_security_status()
+	update_name()
 	..()
 
 /mob/living/carbon/human/proc/equipOutfit(outfit, visualsOnly = FALSE)
@@ -433,15 +419,18 @@
 /mob/living/carbon/human/proc/smart_equip_targeted(slot_type = ITEM_SLOT_BELT, slot_item_name = "belt")
 	if(incapacitated())
 		return
+
 	var/obj/item/thing = get_active_held_item()
 	var/obj/item/equipped_item = get_item_by_slot(slot_type)
 	if(!equipped_item) // We also let you equip an item like this
 		if(!thing)
 			to_chat(src, span_warning("You have no [slot_item_name] to take something out of!"))
 			return
+
 		if(equip_to_slot_if_possible(thing, slot_type))
 			update_held_items()
 		return
+
 	var/datum/storage/storage = equipped_item.atom_storage
 	if(!storage)
 		if(!thing)
@@ -449,17 +438,21 @@
 		else
 			to_chat(src, span_warning("You can't fit [thing] into your [equipped_item.name]!"))
 		return
+
 	if(thing) // put thing in storage item
 		if(!equipped_item.atom_storage?.attempt_insert(thing, src))
 			to_chat(src, span_warning("You can't fit [thing] into your [equipped_item.name]!"))
 		return
-	var/atom/real_location = storage.real_location?.resolve()
+
+	var/atom/real_location = storage.get_real_location()
 	if(!real_location.contents.len) // nothing to take out
 		to_chat(src, span_warning("There's nothing in your [equipped_item.name] to take out!"))
 		return
+
 	var/obj/item/stored = real_location.contents[real_location.contents.len]
 	if(!stored || stored.on_found(src))
 		return
+
 	stored.attack_hand(src) // take out thing from item in storage slot
 	return
 

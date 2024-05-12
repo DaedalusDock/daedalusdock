@@ -21,7 +21,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	item_flags = NOBLUDGEON
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 7
 	grind_results = list(/datum/reagent/lye = 10)
 	var/cleanspeed = 3.5 SECONDS //slower than mop
@@ -100,7 +99,7 @@
 /obj/item/soap/suicide_act(mob/user)
 	user.say(";FFFFFFFFFFFFFFFFUUUUUUUDGE!!", forced="soap suicide")
 	user.visible_message(span_suicide("[user] lifts [src] to [user.p_their()] mouth and gnaws on it furiously, producing a thick froth! [user.p_they(TRUE)]'ll never get that BB gun now!"))
-	new /obj/effect/particle_effect/foam(loc)
+	new /obj/effect/particle_effect/fluid/foam(loc)
 	return (TOXLOSS)
 
 /**
@@ -206,7 +205,6 @@
 	hitsound = null //To prevent tap.ogg playing, as the item lacks of force
 	w_class = WEIGHT_CLASS_TINY
 	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
-	throw_speed = 3
 	throw_range = 7
 	attack_verb_continuous = list("HONKS")
 	attack_verb_simple = list("HONK")

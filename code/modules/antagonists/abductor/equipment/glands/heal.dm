@@ -67,7 +67,7 @@
 		replace_blood()
 		return
 	if(owner.blood_volume < BLOOD_VOLUME_OKAY)
-		owner.blood_volume = BLOOD_VOLUME_NORMAL
+		owner.setBloodVolume(BLOOD_VOLUME_NORMAL)
 		to_chat(owner, span_warning("You feel your blood pulsing within you."))
 		return
 
@@ -199,12 +199,15 @@
 	owner.Stun(15)
 	owner.adjustToxLoss(-15, TRUE, TRUE)
 
-	owner.blood_volume = min(BLOOD_VOLUME_NORMAL, owner.blood_volume + 20)
+	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
+		owner.adjustBloodVolume(min(BLOOD_VOLUME_NORMAL - owner.blood_volume), 20)
+
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		keep_going = TRUE
 
 	if(owner.getToxLoss())
 		keep_going = TRUE
+
 	for(var/datum/reagent/toxin/R in owner.reagents.reagent_list)
 		owner.reagents.remove_reagent(R.type, 4)
 		if(owner.reagents.has_reagent(R.type))

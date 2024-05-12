@@ -171,7 +171,7 @@
 	if(gender == PLURAL)
 		gender = pick(MALE,FEMALE)
 	if(!real_name)
-		real_name = name
+		set_real_name(name)
 	if(!loc)
 		stack_trace("Simple animal being instantiated in nullspace")
 	update_simplemob_varspeed()
@@ -432,7 +432,7 @@
 /mob/living/simple_animal/proc/update_simplemob_varspeed()
 	if(speed == 0)
 		remove_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed)
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, multiplicative_slowdown = speed)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, slowdown = speed)
 
 /mob/living/simple_animal/get_status_tab_items()
 	. = ..()

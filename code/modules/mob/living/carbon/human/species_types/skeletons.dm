@@ -34,7 +34,6 @@
 	//They can technically be in an ERT
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | ERT_SPAWN
 	species_cookie = /obj/item/reagent_containers/food/condiment/milk
-	species_language_holder = /datum/language_holder/skeleton
 
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/skeleton,

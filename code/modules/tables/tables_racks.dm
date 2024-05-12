@@ -31,6 +31,9 @@
 	flags_1 = BUMP_PRIORITY_1
 	mouse_drop_pointer = TRUE
 
+	/// A url-encoded list defining the bounds that objects can be placed on. Just a visual enhancement
+	var/placable_bounds = "x1=6&y1=11&x2=27&y2=27"
+
 	var/frame = /obj/structure/table_frame
 	var/framestack = /obj/item/stack/rods
 	var/buildstack = /obj/item/stack/sheet/iron
@@ -51,7 +54,7 @@
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(table_carbon),
 		COMSIG_ATOM_ENTERED = PROC_REF(on_crossed),
 		COMSIG_ATOM_EXIT = PROC_REF(check_exit),
-		COMSIG_ATOM_EXITTED = PROC_REF(on_uncrossed),
+		COMSIG_ATOM_EXITED = PROC_REF(on_uncrossed),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -122,7 +125,7 @@
 		flip(L, get_cardinal_dir(src, over))
 		return
 
-/obj/structure/table/MouseDrop_T(atom/dropping, mob/living/user)
+/obj/structure/table/MouseDroppedOn(atom/dropping, mob/living/user, list/params)
 	. = ..()
 	if(ishuman(dropping))
 		if(dropping != user)
@@ -135,6 +138,7 @@
 			return FALSE
 		if(!H.Enter(get_turf(src), TRUE))
 			return
+
 		H.apply_damage(5, BRUTE, BODY_ZONE_HEAD)
 		H.apply_pain(80, BODY_ZONE_HEAD, "Your head screams with pain!")
 		H.Paralyze(1 SECOND)
@@ -145,6 +149,35 @@
 			span_hear("You hear a metallic clang.")
 
 		)
+		return
+
+	if(isitem(dropping))
+		if(!LAZYACCESS(params, ICON_X) || !LAZYACCESS(params, ICON_Y))
+			return
+
+		var/obj/item/I = dropping
+		if(!user.can_equip(I, ITEM_SLOT_HANDS, TRUE, TRUE))
+			return
+
+		if(!(I.loc == loc))
+			return
+
+		var/list/center = I.get_icon_center()
+		var/half_icon_width = world.icon_size / 2
+
+		var/x_offset = center["x"] - half_icon_width
+		var/y_offset = center["y"] - half_icon_width
+
+		var/x_diff = (text2num(params[ICON_X]) - half_icon_width)
+		var/y_diff = (text2num(params[ICON_Y]) - half_icon_width)
+
+		var/list/bounds = get_placable_bounds()
+		var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
+		var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+
+		for(var/atom/movable/AM as anything in I.get_associated_mimics() + I)
+			animate(AM, pixel_x = new_x + x_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
+			animate(pixel_y = new_y + y_offset, time = 0.5 SECONDS, flags = ANIMATION_PARALLEL)
 		return
 
 /obj/structure/table/CanAllowThrough(atom/movable/mover, border_dir)
@@ -167,7 +200,7 @@
 	if(flipped == TRUE && !(border_dir & dir))
 		return TRUE
 
-/obj/structure/table/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/table/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	. = !density
 	if(caller)
 		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
@@ -219,7 +252,7 @@
 		if(!HAS_TRAIT(crossed_by, TRAIT_TABLE_RISEN))
 			ADD_TRAIT(crossed_by, TRAIT_TABLE_RISEN, TRAIT_GENERIC)
 
-/obj/structure/table/proc/on_uncrossed(atom/movable/gone, direction)
+/obj/structure/table/proc/on_uncrossed(datum/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
 	if(!isliving(gone))
 		return
@@ -270,7 +303,7 @@
 		user.release_grabs(pushed_mob)
 
 	else if(target.pass_flags & PASSTABLE)
-		user.move_grabbed_atoms_towards(src)
+		grab.move_victim_towards(src)
 		if (target.loc == loc)
 			user.visible_message(span_notice("[user] places [target] onto [src]."),
 				span_notice("You place [target] onto [src]."))
@@ -401,9 +434,22 @@
 			//Center the icon where the user clicked.
 			if(!LAZYACCESS(modifiers, ICON_X) || !LAZYACCESS(modifiers, ICON_Y))
 				return
-			//Clamp it so that the icon never moves more than 16 pixels in either direction (thus leaving the table turf)
-			I.pixel_x = clamp(text2num(LAZYACCESS(modifiers, ICON_X)) - 16, -(world.icon_size/2), world.icon_size/2)
-			I.pixel_y = clamp(text2num(LAZYACCESS(modifiers, ICON_Y)) - 16, -(world.icon_size/2), world.icon_size/2)
+
+			var/list/center = I.get_icon_center()
+			var/half_icon_width = world.icon_size / 2
+
+			var/x_offset = center["x"] - half_icon_width
+			var/y_offset = center["y"] - half_icon_width
+
+			var/x_diff = (text2num(modifiers[ICON_X]) - half_icon_width)
+			var/y_diff = (text2num(modifiers[ICON_Y]) - half_icon_width)
+
+			var/list/bounds = get_placable_bounds()
+			var/new_x = clamp(pixel_x + x_diff, bounds["x1"] - half_icon_width, bounds["x2"] - half_icon_width)
+			var/new_y = clamp(pixel_y + y_diff, bounds["y1"] - half_icon_width, bounds["y2"] - half_icon_width)
+
+			I.pixel_x = new_x + x_offset
+			I.pixel_y = new_y + y_offset
 			AfterPutItemOnTable(I, user)
 			return TRUE
 
@@ -473,6 +519,13 @@
 	target.throw_at(src, 1, 1, null, FALSE) //1 speed throws with no spin are basically just forcemoves with a hard collision check
 	log_combat(src, target, "shoved", "onto [src] (table)")
 	return COMSIG_CARBON_SHOVE_HANDLED
+
+/// Returns a list of placable bounds, see placable_bounds
+/obj/structure/table/proc/get_placable_bounds()
+	var/list/bounds = params2list(placable_bounds)
+	for(var/key in bounds)
+		bounds[key] = text2num(bounds[key])
+	return bounds
 
 /obj/structure/table/greyscale
 	icon = 'icons/obj/smooth_structures/table_greyscale.dmi'
@@ -833,7 +886,7 @@
 		connected_monitor = null
 	return ..()
 
-/obj/structure/table/optable/MouseDrop_T(atom/dropping, mob/living/user)
+/obj/structure/table/optable/MouseDroppedOn(atom/dropping, mob/living/user)
 	if(!iscarbon(dropping))
 		return ..()
 
@@ -842,7 +895,7 @@
 	else
 		return ..()
 
-/obj/structure/table/optable/on_uncrossed(atom/movable/gone, direction)
+/obj/structure/table/optable/on_uncrossed(datum/source, atom/movable/gone, direction)
 	. = ..()
 	if(gone == patient)
 		set_patient(null)
@@ -916,7 +969,7 @@
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
 		return TRUE
 
-/obj/structure/rack/MouseDrop_T(obj/O, mob/user)
+/obj/structure/rack/MouseDroppedOn(obj/O, mob/user)
 	. = ..()
 	if ((!( istype(O, /obj/item) ) || user.get_active_held_item() != O))
 		return

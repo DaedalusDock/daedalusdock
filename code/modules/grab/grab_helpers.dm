@@ -41,9 +41,11 @@
 
 /// Frees src from all grabs.
 /atom/movable/proc/free_from_all_grabs()
-	grabbed_by?.len = 0
-	grabbed_by = null
+	if(!LAZYLEN(grabbed_by))
+		return
 
+	for(var/obj/item/hand_item/grab/G in grabbed_by)
+		qdel(G)
 
 /// Gets every grabber of this atom, and every grabber of those grabbers, repeat
 /atom/movable/proc/recursively_get_all_grabbers()

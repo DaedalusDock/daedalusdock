@@ -100,6 +100,7 @@
 /datum/component/acid/proc/process_obj(obj/target, delta_time)
 	if(target.resistance_flags & ACID_PROOF)
 		return
+
 	target.take_damage(min(1 + round(sqrt(acid_power * acid_volume)*0.3), OBJ_ACID_DAMAGE_MAX) * delta_time, BURN, ACID, 0)
 
 /// Handles processing on a [/mob/living].
@@ -143,7 +144,7 @@
 /datum/component/acid/proc/on_update_overlays(atom/parent_atom, list/overlays)
 	SIGNAL_HANDLER
 
-	overlays += mutable_appearance('icons/effects/acid.dmi', parent_atom.custom_acid_overlay || ACID_OVERLAY_DEFAULT)
+	overlays += mutable_appearance('icons/effects/acid.dmi', ACID_OVERLAY_DEFAULT)
 
 /// Alerts any examiners to the acid on the parent atom.
 /datum/component/acid/proc/on_examine(atom/A, mob/user, list/examine_list)

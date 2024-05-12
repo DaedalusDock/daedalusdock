@@ -8,6 +8,7 @@
 	icon_state = "bullet"
 	density = FALSE
 	anchored = TRUE
+	animate_movement = NO_STEPS //Use SLIDE_STEPS in conjunction with legacy
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	movement_type = FLYING
 	generic_canpass = FALSE
@@ -96,7 +97,6 @@
 	var/original_angle = 0 //Angle at firing
 	var/nondirectional_sprite = FALSE //Set TRUE to prevent projectiles from having their sprites rotated based on firing angle
 	var/spread = 0 //amount (in degrees) of projectile spread
-	animate_movement = NO_STEPS //Use SLIDE_STEPS in conjunction with legacy
 	/// how many times we've ricochet'd so far (instance variable, not a stat)
 	var/ricochets = 0
 	/// how many times we can ricochet max
@@ -315,7 +315,11 @@
 			if(isalien(L))
 				new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(target_loca, splatter_dir)
 			else
-				new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_loca, splatter_dir)
+				var/splatter_color
+				if(iscarbon(L))
+					var/mob/living/carbon/C = L
+					splatter_color = C.dna.blood_type.color
+				new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_loca, splatter_dir, splatter_color)
 			if(prob(33))
 				L.add_splatter_floor(target_loca)
 		else if(impact_effect_type && !hitscan)
@@ -662,9 +666,11 @@
 	. = ..()
 	if(!fired)
 		return
+
 	if(temporary_unstoppable_movement)
 		temporary_unstoppable_movement = FALSE
 		movement_type &= ~PHASING
+
 	scan_moved_turf() //mostly used for making sure we can hit a non-dense object the user directly clicked on, and for penetrating projectiles that don't bump
 
 /**
@@ -724,9 +730,11 @@
 	if(!loc || !fired || !trajectory)
 		fired = FALSE
 		return PROCESS_KILL
+
 	if(paused || !isturf(loc))
 		last_projectile_move += world.time - last_process //Compensates for pausing, so it doesn't become a hitscan projectile when unpaused from charged up ticks.
 		return
+
 	var/elapsed_time_deciseconds = (world.time - last_projectile_move) + time_offset
 	time_offset = 0
 	var/required_moves = speed > 0? FLOOR(elapsed_time_deciseconds / speed, 1) : MOVES_HITSCAN //Would be better if a 0 speed made hitscan but everyone hates those so I can't make it a universal system :<
@@ -746,45 +754,59 @@
 	LAZYINITLIST(impacted)
 	if(fired_from)
 		SEND_SIGNAL(fired_from, COMSIG_PROJECTILE_BEFORE_FIRE, src, original)
+
 	//If no angle needs to resolve it from xo/yo!
 	if(shrapnel_type && LAZYLEN(embedding))
 		AddElement(/datum/element/embed, projectile_payload = shrapnel_type)
+
 	if(!log_override && firer && original)
 		log_combat(firer, original, "fired at", src, "from [get_area_name(src, TRUE)]")
 			//note: mecha projectile logging is handled in /obj/item/mecha_parts/mecha_equipment/weapon/action(). try to keep these messages roughly the sameish just for consistency's sake.
+
 	if(direct_target && (get_dist(direct_target, get_turf(src)) <= 1)) // point blank shots
 		process_hit(get_turf(direct_target), direct_target)
 		if(QDELETED(src))
 			return
+
 	if(isnum(angle))
 		set_angle(angle)
+
 	if(spread)
 		set_angle(Angle + ((rand() - 0.5) * spread))
+
 	var/turf/starting = get_turf(src)
 	if(isnull(Angle)) //Try to resolve through offsets if there's no angle set.
 		if(isnull(xo) || isnull(yo))
 			stack_trace("WARNING: Projectile [type] deleted due to being unable to resolve a target after angle was null!")
 			qdel(src)
 			return
+
 		var/turf/target = locate(clamp(starting + xo, 1, world.maxx), clamp(starting + yo, 1, world.maxy), starting.z)
 		set_angle(get_angle(src, target))
+
 	original_angle = Angle
+
 	if(!nondirectional_sprite)
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+
 	trajectory_ignore_forcemove = TRUE
 	forceMove(starting)
 	trajectory_ignore_forcemove = FALSE
 	trajectory = new(starting.x, starting.y, starting.z, pixel_x, pixel_y, Angle, SSprojectiles.global_pixel_speed)
+
 	last_projectile_move = world.time
 	fired = TRUE
 	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = Angle)
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_FIRE)
+
 	if(hitscan)
 		process_hitscan()
+
 	if(!(datum_flags & DF_ISPROCESSING))
 		START_PROCESSING(SSprojectiles, src)
+
 	pixel_move(pixel_speed_multiplier, FALSE) //move it now!
 
 /obj/projectile/proc/set_angle(new_angle) //wrapper for overrides.
@@ -793,8 +815,11 @@
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+		UPDATE_OO_IF_PRESENT
+
 	if(trajectory)
 		trajectory.set_angle(new_angle)
+
 	if(fired && hitscan && isloc(loc) && (loc != last_angle_set_hitscan_store))
 		last_angle_set_hitscan_store = loc
 		var/datum/point/point_cache = new (src)
@@ -809,6 +834,8 @@
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+		UPDATE_OO_IF_PRESENT
+
 	if(trajectory)
 		trajectory.set_angle(new_angle)
 
@@ -885,22 +912,28 @@
 /obj/projectile/proc/pixel_move(trajectory_multiplier, hitscanning = FALSE)
 	if(!loc || !trajectory)
 		return
+
 	last_projectile_move = world.time
+
 	if(!nondirectional_sprite && !hitscanning)
 		var/matrix/matrix = new
 		matrix.Turn(Angle)
 		transform = matrix
+
 	if(homing)
 		process_homing()
+
 	var/forcemoved = FALSE
 	for(var/i in 1 to SSprojectiles.global_iterations_per_move)
 		if(QDELETED(src))
 			return
+
 		trajectory.increment(trajectory_multiplier)
 		var/turf/T = trajectory.return_turf()
 		if(!istype(T))
 			qdel(src)
 			return
+
 		if(T.z != loc.z)
 			var/old = loc
 			before_z_change(loc, T)
@@ -908,25 +941,31 @@
 			forceMove(T)
 			trajectory_ignore_forcemove = FALSE
 			after_z_change(old, loc)
+
 			if(!hitscanning)
 				pixel_x = trajectory.return_px()
 				pixel_y = trajectory.return_py()
 			forcemoved = TRUE
 			hitscan_last = loc
+
 		else if(T != loc)
 			step_towards(src, T)
 			hitscan_last = loc
+
 	if(QDELETED(src)) //deleted on last move
 		return
+
 	if(!hitscanning && !forcemoved)
 		pixel_x = trajectory.return_px() - trajectory.mpx * trajectory_multiplier * SSprojectiles.global_iterations_per_move
 		pixel_y = trajectory.return_py() - trajectory.mpy * trajectory_multiplier * SSprojectiles.global_iterations_per_move
-		animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+		z_animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+
 	Range()
 
 /obj/projectile/proc/process_homing() //may need speeding up in the future performance wise.
 	if(!homing_target)
 		return FALSE
+
 	var/datum/point/PT = RETURN_PRECISE_POINT(homing_target)
 	PT.x += clamp(homing_offset_x, 1, world.maxx)
 	PT.y += clamp(homing_offset_y, 1, world.maxy)
@@ -1047,8 +1086,10 @@
 /obj/projectile/Destroy()
 	if(hitscan)
 		finalize_hitscan_and_generate_tracers()
+
 	STOP_PROCESSING(SSprojectiles, src)
 	cleanup_beam_segments()
+
 	if(trajectory)
 		QDEL_NULL(trajectory)
 	return ..()
@@ -1067,10 +1108,12 @@
 /obj/projectile/proc/generate_hitscan_tracers(cleanup = TRUE, duration = 3, impacting = TRUE)
 	if(!length(beam_segments))
 		return
+
 	if(tracer_type)
 		var/tempref = REF(src)
 		for(var/datum/point/p in beam_segments)
 			generate_tracer_between_points(p, beam_segments[p], tracer_type, color, duration, hitscan_light_range, hitscan_light_color_override, hitscan_light_intensity, tempref)
+
 	if(muzzle_type && duration > 0)
 		var/datum/point/p = beam_segments[1]
 		var/atom/movable/thing = new muzzle_type
@@ -1080,7 +1123,9 @@
 		thing.transform = matrix
 		thing.color = color
 		thing.set_light(l_inner_range = muzzle_flash_range, l_outer_range = muzzle_flash_range, l_power = muzzle_flash_intensity, l_color = muzzle_flash_color_override || color)
+		thing.update_above()
 		QDEL_IN(thing, duration)
+
 	if(impacting && impact_type && duration > 0)
 		var/datum/point/p = beam_segments[beam_segments[beam_segments.len]]
 		var/atom/movable/thing = new impact_type
@@ -1090,7 +1135,9 @@
 		thing.transform = matrix
 		thing.color = color
 		thing.set_light(l_inner_range = impact_light_range, l_outer_range = impact_light_range, l_power = impact_light_intensity, l_color = impact_light_color_override || color)
+		thing.update_above()
 		QDEL_IN(thing, duration)
+
 	if(cleanup)
 		cleanup_beam_segments()
 

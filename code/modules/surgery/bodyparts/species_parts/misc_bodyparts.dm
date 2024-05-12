@@ -33,40 +33,40 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~BP_HAS_BLOOD
+	bodypart_flags = parent_type::bodypart_flags & ~BP_HAS_BLOOD
 
 /obj/item/bodypart/chest/abductor
 	limb_id = SPECIES_ABDUCTOR
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~BP_HAS_BLOOD
+	bodypart_flags = parent_type::bodypart_flags & ~BP_HAS_BLOOD
 
 /obj/item/bodypart/arm/left/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~BP_HAS_BLOOD
+	bodypart_flags = parent_type::bodypart_flags & ~BP_HAS_BLOOD
 
 /obj/item/bodypart/arm/right/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~BP_HAS_BLOOD
+	bodypart_flags = parent_type::bodypart_flags & ~BP_HAS_BLOOD
 
 /obj/item/bodypart/leg/left/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~BP_HAS_BLOOD
+	bodypart_flags = parent_type::bodypart_flags & ~BP_HAS_BLOOD
 
 /obj/item/bodypart/leg/right/abductor
 	limb_id = SPECIES_ABDUCTOR
 	should_draw_greyscale = FALSE
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~BP_HAS_BLOOD
+	bodypart_flags = parent_type::bodypart_flags & ~BP_HAS_BLOOD
 
 ///JELLY
 /obj/item/bodypart/head/jelly
@@ -74,65 +74,65 @@
 	is_dimorphic = TRUE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/chest/jelly
 	limb_id = SPECIES_JELLYPERSON
 	is_dimorphic = TRUE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/left/jelly
 	limb_id = SPECIES_JELLYPERSON
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/right/jelly
 	limb_id = SPECIES_JELLYPERSON
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/left/jelly
 	limb_id = SPECIES_JELLYPERSON
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/right/jelly
 	limb_id = SPECIES_JELLYPERSON
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 ///SLIME
 /obj/item/bodypart/head/slime
 	limb_id = SPECIES_SLIMEPERSON
 	is_dimorphic = FALSE
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/chest/slime
 	limb_id = SPECIES_SLIMEPERSON
 	is_dimorphic = TRUE
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/left/slime
 	limb_id = SPECIES_SLIMEPERSON
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/arm/right/slime
 	limb_id = SPECIES_SLIMEPERSON
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/left/slime
 	limb_id = SPECIES_SLIMEPERSON
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 /obj/item/bodypart/leg/right/slime
 	limb_id = SPECIES_SLIMEPERSON
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD|BP_HAS_BONES|BP_HAS_TENDON|BP_HAS_ARTERY)
 
 ///LUMINESCENT
 /obj/item/bodypart/head/luminescent
@@ -278,7 +278,7 @@
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_HEAD & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/chest/skeleton
 	limb_id = SPECIES_SKELETON
@@ -286,35 +286,35 @@
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_CHEST & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/arm/left/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/arm/right/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_ARMS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/leg/left/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 /obj/item/bodypart/leg/right/skeleton
 	limb_id = SPECIES_SKELETON
 	should_draw_greyscale = FALSE
 	icon_dmg_overlay = null
 
-	bodypart_flags = STOCK_BP_FLAGS_LEGS & ~(BP_HAS_BLOOD)
+	bodypart_flags = parent_type::bodypart_flags & ~(BP_HAS_BLOOD)
 
 ///MUSHROOM
 /obj/item/bodypart/head/mushroom

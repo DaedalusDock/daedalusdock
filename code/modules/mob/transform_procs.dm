@@ -26,7 +26,8 @@
 	invisibility = 0
 	set_species(/datum/species/monkey)
 	SEND_SIGNAL(src, COMSIG_HUMAN_MONKEYIZE)
-	uncuff()
+	remove_handcuffs()
+	remove_legcuffs()
 	return src
 
 //////////////////////////           Humanize               //////////////////////////////
@@ -137,8 +138,7 @@
 		if(R.mmi.brain)
 			R.mmi.brain.name = "[real_name]'s brain"
 		if(R.mmi.brainmob)
-			R.mmi.brainmob.real_name = real_name //the name of the brain inside the cyborg is the robotized human's name.
-			R.mmi.brainmob.name = real_name
+			R.mmi.brainmob.set_real_name(real_name) //the name of the brain inside the cyborg is the robotized human's name.
 
 	R.job = JOB_CYBORG
 	R.notify_ai(AI_NOTIFICATION_NEW_BORG)

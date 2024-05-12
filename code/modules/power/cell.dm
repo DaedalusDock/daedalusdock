@@ -17,7 +17,6 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	force = 5
 	throwforce = 5
-	throw_speed = 2
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	///Current charge in cell units
@@ -202,7 +201,7 @@
 
 
 /obj/item/stock_parts/cell/blob_act(obj/structure/blob/B)
-	SSexplosions.high_mov_atom += src
+	EX_ACT(src, EXPLODE_DEVASTATE)
 
 /obj/item/stock_parts/cell/proc/get_electrocute_damage()
 	if(charge >= 1000)

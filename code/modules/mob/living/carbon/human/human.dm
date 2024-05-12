@@ -22,7 +22,7 @@
 	RegisterSignal(src, COMSIG_COMPONENT_CLEAN_FACE_ACT, PROC_REF(clean_face))
 	AddComponent(/datum/component/personal_crafting)
 	AddElement(/datum/element/footstep, FOOTSTEP_MOB_HUMAN, 1, -6, TRUE)
-	AddComponent(/datum/component/bloodysoles/feet)
+	AddComponent(/datum/component/bloodysoles/feet, BLOOD_PRINT_HUMAN)
 	AddElement(/datum/element/ridable, /datum/component/riding/creature/human)
 	AddElement(/datum/element/strippable, GLOB.strippable_human_items, TYPE_PROC_REF(/mob/living/carbon/human, should_strip))
 	var/static/list/loc_connections = list(
@@ -64,8 +64,6 @@
 	sec_hud_set_ID()
 	sec_hud_set_implants()
 	sec_hud_set_security_status()
-	//...fan gear
-	fan_hud_set_fandom()
 	//...and display them.
 	add_to_all_human_data_huds()
 
@@ -514,13 +512,8 @@
 	cpr_image.plane = ABOVE_HUD_PLANE
 	add_overlay(cpr_image)
 
-	var/panicking = FALSE
-	do
-		if (!do_after(src, target, panicking ? CPR_PANIC_SPEED : (3 SECONDS), DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
-			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			break
-
-		if (target.health > target.crit_threshold)
+	while (TRUE)
+		if (!do_after(src, target, 3 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
 			break
 
 		visible_message(
@@ -531,26 +524,20 @@
 		log_combat(src, target, "CPRed")
 
 		if(target.breathe(TRUE) == BREATH_OKAY)
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs. It feels good."))
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 8))
+			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs."))
+			target.adjustOxyLoss(-8)
 
-		if (target.health <= target.crit_threshold)
-			if (!panicking)
-				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
-			panicking = TRUE
-		else
-			panicking = FALSE
-
-	while (panicking)
 
 	cut_overlay(cpr_image)
 
 #undef CPR_PANIC_SPEED
 
 /mob/living/carbon/human/proc/can_perform_cpr(mob/living/carbon/target, silent = TRUE)
-	if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-		if(!silent)
-			to_chat(src, span_warning("[target.name] is dead!"))
+	if(target.body_position != LYING_DOWN)
+		return FALSE
+
+	if(!target.getorganslot(ORGAN_SLOT_LUNGS))
+		to_chat(src, span_warning("[target.p_they()] [target.p_dont()] have lungs."))
 		return FALSE
 
 	return TRUE
@@ -767,7 +754,15 @@
 		else
 			hud_used.healthdoll.icon_state = "healthdoll_DEAD"
 
+/mob/living/carbon/human/revive(full_heal, admin_revive, excess_healing)
+	. = ..()
+	if(!.)
+		return
+
+	log_health(src, "Brought back to life.")
+
 /mob/living/carbon/human/fully_heal(admin_revive = FALSE)
+	log_health(src, "Received an adminheal.")
 	dna?.species.spec_fully_heal(src)
 	if(admin_revive)
 		regenerate_limbs()
@@ -841,7 +836,7 @@
 		for(var/type in subtypesof(/datum/quirk))
 			var/datum/quirk/quirk_type = type
 
-			if(initial(quirk_type.abstract_parent_type) == type)
+			if(isabstract(quirk_type))
 				continue
 
 			var/qname = initial(quirk_type.name)
@@ -869,6 +864,9 @@
 
 /mob/living/carbon/human/mouse_buckle_handling(mob/living/M, mob/living/user)
 	var/obj/item/hand_item/grab/G = is_grabbing(M)
+	if(combat_mode)
+		return FALSE
+
 	if(!G || G.current_grab.damage_stage != GRAB_AGGRESSIVE || stat != CONSCIOUS)
 		return FALSE
 
@@ -945,17 +943,6 @@
 /mob/living/carbon/human/updatehealth()
 	. = ..()
 	dna?.species.spec_updatehealth(src)
-	if(HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
-		return
-	var/health_deficiency = maxHealth - health
-	if(health_deficiency >= 40)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 25)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
-	else
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
 
 /mob/living/carbon/human/pre_stamina_change(diff as num, forced)
 	if(diff < 0) //Taking damage, not healing
@@ -1168,3 +1155,145 @@
 		return FALSE
 
 	return ClimbUp(climbable)
+
+/mob/living/carbon/human/drag_damage(turf/new_loc, turf/old_loc, direction)
+	if(prob(getBruteLoss() * 0.6))
+		makeBloodTrail(new_loc, old_loc, direction, TRUE)
+
+	adjustBloodVolume(-1)
+	if(!prob(10))
+		return
+
+	var/list/wounds = get_wounds()
+	shuffle_inplace(wounds)
+
+	var/datum/wound/cut/C = locate() in wounds
+	var/datum/wound/puncture/P = locate() in wounds
+
+	if(C && P)
+		if(prob(50))
+			C = null
+		else
+			P = null
+
+	var/datum/wound/W = C || P
+	if(!W)
+		return
+
+	W.open_wound(5)
+
+	if(!IS_ORGANIC_LIMB(W.parent))
+		visible_message(
+			span_warning("The damage to [src]'s [W.parent.plaintext_zone] worsens."),
+			span_warning("The damage to your [W.parent.plaintext_zone] worsens."),
+			span_hear("You hear the screech of abused metal."),
+			COMBAT_MESSAGE_RANGE,
+		)
+	else
+		visible_message(
+			span_warning("The [W.desc] on [src]'s [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_warning("The [W.desc] on your [W.parent.plaintext_zone] widens with a nasty ripping noise."),
+			span_hear("You hear a nasty ripping noise, as if flesh is being torn apart."),
+			COMBAT_MESSAGE_RANGE,
+		)
+
+
+/mob/living/carbon/human/getTrail(being_dragged)
+	if(get_bleed_rate() < (being_dragged ? 1.5 : 2.5))
+		return "bleedtrail_light_[rand(1,4)]"
+	else
+		return "bleedtrail_heavy"
+
+/mob/living/carbon/human/leavesBloodTrail()
+	if(!is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLEED))
+		return FALSE
+
+	return ..()
+
+/mob/living/carbon/human/get_blood_print()
+	var/obj/item/bodypart/leg/L = get_bodypart(BODY_ZONE_R_LEG) || get_bodypart(BODY_ZONE_L_LEG)
+	return L?.blood_print
+
+/mob/living/carbon/human/proc/get_fingerprints(ignore_gloves, hand)
+	if(!ignore_gloves && (gloves || (check_obscured_slots() & ITEM_SLOT_GLOVES)))
+		return
+
+	var/obj/item/bodypart/arm/arm
+	if(hand)
+		if(isbodypart(hand))
+			arm = hand
+		arm ||= get_bodypart(hand)
+	else
+		arm = get_bodypart(BODY_ZONE_R_ARM) || get_bodypart(BODY_ZONE_L_ARM)
+
+	return arm?.fingerprints
+
+/// Takes a user and body_zone, if the body_zone is covered by clothing, add a fingerprint to it. Otherwise, add one to us.
+/mob/living/carbon/human/proc/add_fingerprint_on_clothing_or_self(mob/user, body_zone)
+	var/obj/item/I = get_item_covering_zone(body_zone)
+	if(I)
+		I.add_fingerprint(user)
+		log_touch(user)
+	else
+		add_fingerprint(user)
+
+/// Takes a user and body_zone, if the body_zone is covered by clothing, add trace dna to it. Otherwise, add one to us.
+/mob/living/carbon/human/proc/add_trace_DNA_on_clothing_or_self(mob/living/carbon/human/user, body_zone)
+	if(!istype(user))
+		return
+
+	var/obj/item/I = get_item_covering_zone(body_zone)
+	if(I)
+		I.add_trace_DNA(user.get_trace_dna())
+	else
+		add_trace_DNA(user.get_trace_dna())
+/mob/living/carbon/human/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
+	. = ..()
+	var/head_exposure = 1
+	var/chest_exposure = 1
+	var/groin_exposure = 1
+	var/legs_exposure = 1
+	var/arms_exposure = 1
+
+	//Get heat transfer coefficients for clothing.
+
+	for(var/obj/item/C in get_all_worn_items(FALSE))
+		if(C.max_heat_protection_temperature >= exposed_temperature)
+			if(C.heat_protection & HEAD)
+				head_exposure = 0
+			if(C.heat_protection & CHEST)
+				chest_exposure = 0
+			if(C.heat_protection & GROIN)
+				groin_exposure = 0
+			if( C.heat_protection & LEGS)
+				legs_exposure = 0
+			if(C.heat_protection & ARMS)
+				arms_exposure = 0
+		else
+			if((C.body_parts_covered | C.heat_protection) & HEAD)
+				head_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & CHEST)
+				chest_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & GROIN)
+				groin_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & LEGS)
+				legs_exposure = 0.5
+			if((C.body_parts_covered | C.heat_protection) & ARMS)
+				arms_exposure = 0.5
+
+	//minimize this for low-pressure environments
+	var/temp_multiplier = 2 * clamp(0, exposed_temperature / PHORON_MINIMUM_BURN_TEMPERATURE, 1)
+
+	//Always check these damage procs first if fire damage isn't working. They're probably what's wrong.
+	if(head_exposure)
+		apply_damage(0.9 * temp_multiplier * head_exposure, BURN, BODY_ZONE_HEAD)
+	if(chest_exposure || groin_exposure)
+		apply_damage(2.5 * temp_multiplier * chest_exposure, BURN, BODY_ZONE_CHEST)
+		apply_damage(2.0 * temp_multiplier * groin_exposure, BURN, BODY_ZONE_CHEST)
+	if(arms_exposure)
+		apply_damage(0.4 * temp_multiplier * arms_exposure, BURN, BODY_ZONE_L_ARM)
+		apply_damage(0.4 * temp_multiplier * arms_exposure, BURN, BODY_ZONE_R_ARM)
+	if(legs_exposure)
+		apply_damage(0.6 * temp_multiplier * legs_exposure, BURN, BODY_ZONE_L_LEG)
+		apply_damage(0.6 * temp_multiplier * legs_exposure, BURN, BODY_ZONE_R_LEG)
+

@@ -367,7 +367,7 @@
 			var/list/datum/mind/promotable = list()
 			var/list/datum/mind/nonhuman_promotable = list()
 			for(var/datum/mind/khrushchev in non_heads)
-				if(khrushchev.current && !khrushchev.current.incapacitated() && !HAS_TRAIT(khrushchev.current, TRAIT_RESTRAINED) && khrushchev.current.client)
+				if(khrushchev.current && !khrushchev.current.incapacitated() && !HAS_TRAIT(khrushchev.current, TRAIT_ARMS_RESTRAINED) && khrushchev.current.client)
 					var/list/client_antags = khrushchev.current.client.prefs.read_preference(/datum/preference/blob/antagonists)
 					if((client_antags[ROLE_REV_HEAD]) || (client_antags[ROLE_PROVOCATEUR]))
 						if(ishuman(khrushchev.current))
@@ -405,90 +405,11 @@
 
 /// Updates the state of the world depending on if revs won or loss.
 /// Returns who won, at which case this method should no longer be called.
-/// If revs_win_injection_amount is passed, then that amount of threat will be added if the revs win.
-/datum/team/revolution/proc/process_victory(revs_win_injection_amount)
+/datum/team/revolution/proc/check_completion()
 	if (check_rev_victory())
-		. = REVOLUTION_VICTORY
+		return REVOLUTION_VICTORY
 	else if (check_heads_victory())
-		. = STATION_VICTORY
-	else
-		return
-
-	SSshuttle.clearHostileEnvironment(src)
-	save_members()
-
-	var/charter_given = FALSE
-
-	// Remove everyone as a revolutionary
-	for (var/_rev_mind in members)
-		var/datum/mind/rev_mind = _rev_mind
-		if (rev_mind.has_antag_datum(/datum/antagonist/rev))
-			var/datum/antagonist/rev/rev_antag = rev_mind.has_antag_datum(/datum/antagonist/rev)
-			rev_antag.remove_revolutionary(FALSE, . == STATION_VICTORY ? DECONVERTER_STATION_WIN : DECONVERTER_REVS_WIN)
-			if(!(rev_mind in ex_headrevs))
-				LAZYADD(rev_mind.special_statuses, "<span class='bad'>Former revolutionary</span>")
-			else
-				LAZYADD(rev_mind.special_statuses, "<span class='bad'>Former head revolutionary</span>")
-				add_memory_in_range(rev_mind.current, 7, MEMORY_WON_REVOLUTION, list(DETAIL_PROTAGONIST = rev_mind.current, DETAIL_STATION_NAME = station_name()), story_value = STORY_VALUE_LEGENDARY, memory_flags = MEMORY_FLAG_NOSTATIONNAME|MEMORY_CHECK_BLIND_AND_DEAF, protagonist_memory_flags = MEMORY_FLAG_NOSTATIONNAME)
-
-	if (. == STATION_VICTORY)
-		// If the revolution was quelled, make rev heads unable to be revived through pods
-		for (var/datum/mind/rev_head as anything in ex_headrevs)
-			if(!isnull(rev_head.current))
-				ADD_TRAIT(rev_head.current, TRAIT_DEFIB_BLACKLISTED, REF(src))
-				rev_head.current.med_hud_set_status()
-
-		priority_announce("It appears the mutiny has been quelled. Please return yourself and your incapacitated colleagues to work. \
-		We have remotely blacklisted the head revolutionaries in your medical records to prevent accidental revival.", sound_type = ANNOUNCER_CENTCOM)
-	else
-		for(var/datum/mind/headrev_mind as anything in ex_headrevs)
-			if(charter_given)
-				break
-			if(!headrev_mind.current || headrev_mind.current.stat != CONSCIOUS)
-				continue
-			charter_given = TRUE
-			podspawn(list(
-				"target" = get_turf(headrev_mind.current),
-				"style" = STYLE_SYNDICATE,
-				"spawn" = /obj/item/station_charter/revolution,
-			))
-			to_chat(headrev_mind.current, span_hear("You hear something crackle in your ears for a moment before a voice speaks. \
-				\"Please stand by for a message from your benefactor. Message as follows, provocateur. \
-				<b>You have been chosen out of your fellow provocateurs to rename the station. Choose wisely.</b> Message ends.\""))
-		for (var/mob/living/player as anything in GLOB.player_list)
-			var/datum/mind/player_mind = player.mind
-
-			if (isnull(player_mind))
-				continue
-
-			if (!(player_mind.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_COMMAND)))
-				continue
-
-			if (player_mind in ex_revs + ex_headrevs)
-				continue
-
-			player_mind.add_antag_datum(/datum/antagonist/enemy_of_the_revolution)
-
-			if (!istype(player))
-				continue
-
-			if(player_mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
-				ADD_TRAIT(player, TRAIT_DEFIB_BLACKLISTED, REF(src))
-				player.med_hud_set_status()
-
-		for(var/datum/job/job as anything in SSjob.joinable_occupations)
-			if(!(job.departments_bitflags & (DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_COMMAND)))
-				continue
-			job.allow_bureaucratic_error = FALSE
-			job.total_positions = 0
-
-		if (revs_win_injection_amount && IS_DYNAMIC_GAME_MODE)
-			var/datum/game_mode/dynamic/dynamic = SSticker.mode
-			dynamic.create_threat(revs_win_injection_amount, list(dynamic.threat_log, dynamic.roundend_threat_log), "[worldtime2text()]: Revolution victory")
-
-		priority_announce("A recent assessment of your station has marked your station as a severe risk area for high ranking Daedalus officials. \
-		For the safety of our staff, we have blacklisted your station for new employment of security and command. \
-		[pick(world.file2list("strings/anti_union_propaganda.txt"))]", "Daedalus Industries Transmission", sound_type = ANNOUNCER_CENTCOM)
+		return STATION_VICTORY
 
 /// Mutates the ticker to report that the revs have won
 /datum/team/revolution/proc/round_result(finished)

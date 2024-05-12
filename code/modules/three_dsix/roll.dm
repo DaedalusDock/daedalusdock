@@ -1,3 +1,14 @@
+/**
+ * Perform a stat roll, returning one of: CRIT_SUCCESS, SUCCESS, CRIT_FAILURE, FAILURE
+ *
+ *
+ * args:
+ * * requirement (int) The baseline value required to roll a Success.
+ * * stat (string) The stat, if applicable, to take into account.
+ * * skill (string) The skill, if applicable, to take into account.
+ * * modifier (int) A modifier applied to the value after roll. Higher means the roll is more difficult.
+ * * crit_fail_modifier (int) A value added to requirement, which dictates the crit fail threshold.
+ */
 /mob/living/proc/stat_roll(requirement = 10, stat, skill, modifier, crit_fail_modifier = 10)
 	var/stat_mod = stat ? (gurps_stats.get_stat(stat) - 10) : 0
 	var/skill_mod = skill ? -(gurps_stats.get_skill(skill)) : 0

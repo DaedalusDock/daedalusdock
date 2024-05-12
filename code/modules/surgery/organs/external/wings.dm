@@ -12,9 +12,7 @@
 	feature_key = "wings"
 
 /obj/item/organ/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!human.wear_suit)
-		return TRUE
-	if(!(human.wear_suit.flags_inv & HIDEJUMPSUIT))
+	if(!(human.obscured_slots & HIDEJUMPSUIT))
 		return TRUE
 	if(human.wear_suit.species_exception && is_type_in_list(src, human.wear_suit.species_exception))
 		return TRUE
@@ -181,7 +179,7 @@
 	return GLOB.moth_wings_list
 
 /obj/item/organ/wings/moth/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
+	if(!(human.obscured_slots & HIDEMUTWINGS))
 		return TRUE
 	return FALSE
 

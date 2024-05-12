@@ -78,8 +78,8 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 		return
 	return attack_hand(user)
 
-/obj/structure/bodycontainer/attackby(obj/P, mob/user, params)
-	add_fingerprint(user)
+/obj/structure/bodycontainer/attackby(obj/item/P, mob/user, params)
+	P.leave_evidence(user, src)
 	if(istype(P, /obj/item/pen))
 		if(!user.is_literate())
 			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
@@ -160,8 +160,13 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 
 /obj/structure/bodycontainer/morgue/Initialize(mapload)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	connected = new/obj/structure/tray/m_tray(src)
 	connected.connected = src
+
+/obj/structure/bodycontainer/morgue/Destroy()
+	UNSET_TRACKING(__TYPE__)
+	return ..()
 
 /obj/structure/bodycontainer/morgue/examine(mob/user)
 	. = ..()
@@ -348,9 +353,9 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	if(carried_mob == user) //Piggyback user.
 		return
 	user.unbuckle_mob(carried_mob)
-	MouseDrop_T(carried_mob, user)
+	MouseDroppedOn(carried_mob, user)
 
-/obj/structure/tray/MouseDrop_T(atom/movable/O as mob|obj, mob/user)
+/obj/structure/tray/MouseDroppedOn(atom/movable/O as mob|obj, mob/user)
 	if(!ismovable(O) || O.anchored || !Adjacent(user) || !user.Adjacent(O) || O.loc == user)
 		return
 	if(!ismob(O))

@@ -28,11 +28,14 @@
 				return
 			if(!reagents || !reagents.total_volume)
 				return // The drink might be empty after the delay, such as by spam-feeding
+
 			M.visible_message(span_danger("[user] feeds [M] something from [src]."), \
 						span_userdanger("[user] feeds you something from [src]."))
 			log_combat(user, M, "fed", reagents.get_reagent_log_string())
 		else
 			to_chat(user, span_notice("You swallow a gulp of [src]."))
+
+		add_trace_DNA(M.get_trace_dna())
 		SEND_SIGNAL(src, COMSIG_GLASS_DRANK, M, user)
 		addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), M, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
 		playsound(M.loc,'sound/items/drink.ogg', rand(10,50), TRUE)

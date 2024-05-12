@@ -10,6 +10,8 @@
 	stamina_cost = 0
 	stamina_critical_chance = 0
 
+	/// An alternative name to be used for fibers, forensics stuffs
+	var/fiber_name = ""
 	var/damaged_clothes = CLOTHING_PRISTINE //similar to machine's BROKEN stat and structure's broken var
 
 	///What level of bright light protection item has.
@@ -29,6 +31,7 @@
 	var/toggle_cooldown = null
 	var/cooldown = 0
 
+	/// Flags for clothing
 	var/clothing_flags = NONE
 
 	var/can_be_bloody = TRUE
@@ -155,6 +158,68 @@
 
 	return ..()
 
+/obj/item/clothing/get_mechanics_info()
+	. = ..()
+	var/pronoun = gender == PLURAL ? "They" : "It"
+	var/pronoun_s = p_s()
+
+	var/static/list/armor_to_descriptive_term = list(
+		BLUNT = "blunt force",
+		SLASH = "cutting",
+		PUNCTURE = "puncturing",
+		LASER = "lasers",
+		ENERGY = "energy",
+		BOMB = "explosions",
+		BIO = "biohazards",
+	)
+
+	var/list/armor_info = list()
+	for(var/armor_type in armor_to_descriptive_term)
+		var/armor_value = returnArmor().getRating(armor_type)
+		if(!armor_value)
+			continue
+
+		switch(armor_value)
+			if(1 to 20)
+				. += "[FOURSPACES]- [pronoun] barely protect[pronoun_s] against [armor_to_descriptive_term[armor_type]]."
+			if(21 to 30)
+				. += "[FOURSPACES]- [pronoun] provide[pronoun_s] a very small defense against [armor_to_descriptive_term[armor_type]]."
+			if(31 to 40)
+				. += "[FOURSPACES]- [pronoun] offers a small amount of protection against [armor_to_descriptive_term[armor_type]]."
+			if(41 to 50)
+				. += "[FOURSPACES]- [pronoun] offers a moderate defense against [armor_to_descriptive_term[armor_type]]."
+			if(51 to 60)
+				. += "[FOURSPACES]- [pronoun] provide[pronoun_s] a strong defense against [armor_to_descriptive_term[armor_type]]."
+			if(61 to 70)
+				. += "[FOURSPACES]- [pronoun] is very strong against [armor_to_descriptive_term[armor_type]]."
+			if(71 to 80)
+				. += "[FOURSPACES]- [gender == PLURAL ? "These provide" : "It provides"] a very robust defense against [armor_to_descriptive_term[armor_type]]."
+			if(81 to 100)
+				. += "[FOURSPACES]- Wearing [gender == PLURAL ? "these" : "it"] would make you nigh-invulerable against [armor_to_descriptive_term[armor_type]]."
+
+	if(length(armor_info))
+		(.):Insert(1, "Armor Information")
+		(.):Insert(2, jointext(armor_info, ""))
+
+	if(clothing_flags & STOPSPRESSUREDAMAGE)
+		. += "- Wearing [gender == PLURAL ? "these" : "it"] will protect you from the vacuum of space."
+
+	if(clothing_flags & THICKMATERIAL)
+		. += "- The material is exceptionally thick."
+
+	if(!isnull(min_cold_protection_temperature) && min_cold_protection_temperature >= SPACE_SUIT_MIN_TEMP_PROTECT)
+		. += "- [pronoun] provide[pronoun_s] very good protection against very cold temperatures."
+
+	switch (max_heat_protection_temperature)
+		if (400 to 1000)
+			. += "- [pronoun] offer[pronoun_s] the wearer limited protection from fire."
+		if (1001 to 1600)
+			. += "- [pronoun] offer[pronoun_s] the wearer some protection from fire."
+		if (1601 to 35000)
+			. += "- [pronoun] offer[pronoun_s] the wearer robust protection from fire."
+
+
+
 /// Set the clothing's integrity back to 100%, remove all damage to bodyparts, and generally fix it up
 /obj/item/clothing/proc/repair(mob/user, params)
 	update_clothes_damaged_state(CLOTHING_PRISTINE)
@@ -279,14 +344,6 @@
 		. += span_warning("<b>[p_theyre(TRUE)] completely shredded and require[p_s()] mending before [p_they()] can be worn again!</b>")
 		return
 
-	switch (max_heat_protection_temperature)
-		if (400 to 1000)
-			. += "[src] offers the wearer limited protection from fire."
-		if (1001 to 1600)
-			. += "[src] offers the wearer some protection from fire."
-		if (1601 to 35000)
-			. += "[src] offers the wearer robust protection from fire."
-
 	for(var/zone in damage_by_parts)
 		var/pct_damage_part = damage_by_parts[zone] / limb_integrity * 100
 		var/zone_name = parse_zone(zone)
@@ -297,27 +354,6 @@
 				. += span_warning("The [zone_name] is heavily shredded!")
 			if(30 to 59)
 				. += span_danger("The [zone_name] is partially shredded.")
-
-	if(atom_storage)
-		var/list/how_cool_are_your_threads = list("<span class='notice'>")
-		if(atom_storage.attack_hand_interact)
-			how_cool_are_your_threads += "[src]'s storage opens when clicked.\n"
-		else
-			how_cool_are_your_threads += "[src]'s storage opens when dragged to yourself.\n"
-		if (atom_storage.can_hold?.len) // If pocket type can hold anything, vs only specific items
-			how_cool_are_your_threads += "[src] can store [atom_storage.max_slots] <a href='?src=[REF(src)];show_valid_pocket_items=1'>item\s</a>.\n"
-		else
-			how_cool_are_your_threads += "[src] can store [atom_storage.max_slots] item\s that are [weight_class_to_text(atom_storage.max_specific_storage)] or smaller.\n"
-		if(atom_storage.quickdraw)
-			how_cool_are_your_threads += "You can quickly remove an item from [src] using Right-Click.\n"
-		if(atom_storage.silent)
-			how_cool_are_your_threads += "Adding or removing items from [src] makes no noise.\n"
-		how_cool_are_your_threads += "</span>"
-		. += how_cool_are_your_threads.Join()
-
-	returnArmor() //Ensure armor exists
-	if(armor.bio || armor.bomb || armor.puncture || armor.energy || armor.laser || armor.blunt || armor.slash || armor.fire || armor.acid || (flags_cover & (HEADCOVERSMOUTH|PEPPERPROOF)))
-		. += span_notice("It has a <a href='?src=[REF(src)];list_armor=1'>tag</a> listing its protection classes.")
 
 /**
  * Inserts a trait (or multiple traits) into the clothing traits list
@@ -353,50 +389,6 @@
 		for(var/new_trait in trait_or_traits)
 			REMOVE_CLOTHING_TRAIT(wearer, new_trait)
 
-/obj/item/clothing/Topic(href, href_list)
-	. = ..()
-
-	if(href_list["list_armor"])
-		returnArmor() //Ensure armor exists
-		var/list/readout = list("<span class='notice'><u><b>PROTECTION CLASSES</u></b>")
-		if(armor.bio || armor.bomb || armor.puncture || armor.energy || armor.laser || armor.blunt || armor.slash)
-			readout += "\n<b>ARMOR (I-X)</b>"
-			if(armor.bio)
-				readout += "\nTOXIN [armor_to_protection_class(armor.bio)]"
-			if(armor.bomb)
-				readout += "\nEXPLOSIVE [armor_to_protection_class(armor.bomb)]"
-			if(armor.energy)
-				readout += "\nENERGY [armor_to_protection_class(armor.energy)]"
-			if(armor.laser)
-				readout += "\nLASER [armor_to_protection_class(armor.laser)]"
-			if(armor.blunt)
-				readout += "\nBLUNT [armor_to_protection_class(armor.blunt)]"
-			if(armor.puncture)
-				readout += "\nPUNCTURE [armor_to_protection_class(armor.puncture)]"
-			if(armor.slash)
-				readout += "\nSLASH [armor_to_protection_class(armor.slash)]"
-
-		if(armor.fire || armor.acid)
-			readout += "\n<b>DURABILITY (I-X)</b>"
-			if(armor.fire)
-				readout += "\nFIRE [armor_to_protection_class(armor.fire)]"
-			if(armor.acid)
-				readout += "\nACID [armor_to_protection_class(armor.acid)]"
-
-		if(flags_cover & HEADCOVERSMOUTH || flags_cover & PEPPERPROOF)
-			var/list/things_blocked = list()
-			if(flags_cover & HEADCOVERSMOUTH)
-				things_blocked += span_tooltip("Because this item is worn on the head and is covering the mouth, it will block facehugger proboscides, killing facehuggers.", "facehuggers")
-			if(flags_cover & PEPPERPROOF)
-				things_blocked += "pepperspray"
-			if(length(things_blocked))
-				readout += "\n<b>COVERAGE</b>"
-				readout += "\nIt will block [english_list(things_blocked)]."
-
-		readout += "</span>"
-
-		to_chat(usr, "[readout.Join()]")
-
 /**
  * Rounds armor_value down to the nearest 10, divides it by 10 and then converts it to Roman numerals.
  *
@@ -423,6 +415,7 @@
 //This mostly exists so subtypes can call appriopriate update icon calls on the wearer.
 /obj/item/clothing/proc/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	damaged_clothes = damaged_state
+	update_slot_icon()
 
 /obj/item/clothing/update_overlays()
 	. = ..()
@@ -508,7 +501,7 @@ BLIND     // can't see anything
 
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
-		C.head_update(src, forced = 1)
+		C.update_slots_for_item(src, force_obscurity_update = TRUE)
 	update_action_buttons()
 	return TRUE
 
@@ -524,6 +517,10 @@ BLIND     // can't see anything
 	if(visor_vars_to_toggle & VISOR_TINT)
 		tint ^= initial(tint)
 
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src, force_obscurity_update = TRUE)
+
 /obj/item/clothing/head/helmet/space/plasmaman/visor_toggling() //handles all the actual toggling of flags
 	up = !up
 	SEND_SIGNAL(src, COMSIG_CLOTHING_VISOR_TOGGLE, up)
@@ -534,6 +531,10 @@ BLIND     // can't see anything
 		flash_protect ^= initial(flash_protect)
 	if(visor_vars_to_toggle & VISOR_TINT)
 		tint ^= initial(tint)
+
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src, force_obscurity_update = TRUE)
 
 /obj/item/clothing/proc/can_use(mob/user)
 	if(user && ismob(user))

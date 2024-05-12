@@ -8,6 +8,8 @@
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_SOFT_CRITICAL_CONDITION), PROC_REF(on_softcrit_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_SOFT_CRITICAL_CONDITION), PROC_REF(on_softcrit_loss))
 
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_NO_ADDICTION), PROC_REF(on_noaddiction_trait_gain))
+
 /**
  * On gain of TRAIT_NOBREATH
  *
@@ -42,7 +44,19 @@
 
 	reagents.end_metabolization(keep_liverless = TRUE)
 
+/**
+ * On gain of TRAIT_NO_ADDICTION
+ *
+ * This will remove all addictions.
+ */
+/mob/living/carbon/proc/on_noaddiction_trait_gain(datum/source)
+	SIGNAL_HANDLER
+	for(var/addiction_type in subtypesof(/datum/addiction))
+		mind?.remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS)
+
 /mob/living/carbon/proc/on_softcrit_gain(datum/source)
+	SIGNAL_HANDLER
+
 	ADD_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
 	stamina.maximum -= 100
 	stamina.regen_rate -= 5
@@ -51,6 +65,8 @@
 	add_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
 
 /mob/living/carbon/proc/on_softcrit_loss(datum/source)
+	SIGNAL_HANDLER
+
 	REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
 	stamina.maximum += 100
 	stamina.regen_rate += 5

@@ -29,7 +29,7 @@
 	species_cookie = /obj/item/food/meat/slab
 	meat = /obj/item/food/meat/slab/human/mutant/lizard
 	skinned_type = /obj/item/stack/sheet/animalhide/lizard
-	exotic_bloodtype = "L"
+
 	disliked_food = GRAIN | DAIRY | CLOTH
 	liked_food = GROSS | MEAT | SEAFOOD | NUTS
 	inert_mutation = /datum/mutation/human/firebreath
@@ -173,3 +173,6 @@
 	))
 
 	return to_add
+
+/datum/species/lizard/get_random_blood_type()
+	return GET_BLOOD_REF(/datum/blood/lizard)

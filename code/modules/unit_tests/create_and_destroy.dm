@@ -29,6 +29,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 		/obj/item/bodypart,
 		//Merge conflict marker. It doesn't runtime, but it's not a real object either
 		/obj/merge_conflict_marker,
+		// Haha, no
+		/obj/item/hand_item/grab,
 	)
 	//Say it with me now, type template
 	ignore += typesof(/obj/effect/mapping_helpers)
@@ -94,6 +96,8 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/obj/structure/industrial_lift)
 	//throws garbage to the log if it spawns without neighbors. It's a mapping helper anyways.
 	ignore += typesof(/obj/structure/cable/smart_cable)
+			// Throws a warning due to passing a zero-duration argument after mapload
+	ignore += typesof(/obj/effect/abstract/smell_holder)
 
 	var/list/cached_contents = spawn_at.contents.Copy()
 	var/original_turf_type = spawn_at.type

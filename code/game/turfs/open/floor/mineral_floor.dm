@@ -226,7 +226,6 @@
 //URANIUM
 
 /turf/open/floor/mineral/uranium
-	article = "a"
 	name = "uranium floor"
 	icon_state = "uranium"
 	floor_tile = /obj/item/stack/tile/mineral/uranium

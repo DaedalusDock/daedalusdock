@@ -336,6 +336,10 @@ SUBSYSTEM_DEF(zcopy)
 			if (!object.bound_overlay)	// Generate a new overlay if the atom doesn't already have one.
 				object.bound_overlay = new(T)
 				object.bound_overlay.associated_atom = object
+
+				if(length(object.hud_list))
+					object.bound_overlay.copy_huds(object)
+
 				#ifdef ZMIMIC_MULTIZ_SPEECH
 				//This typecheck permits 1 Z-level of hearing
 				if(!istype(object, /atom/movable/openspace/mimic) && HAS_TRAIT(object, TRAIT_HEARING_SENSITIVE))
@@ -613,10 +617,10 @@ SUBSYSTEM_DEF(zcopy)
 
 GLOBAL_REAL_VAR(zmimic_fixed_planes) = list(
 	"0" = "World plane (Non-Z)",
-	"-6" = "Game plane (Non-Z)",
-	"-7" = "Floor plane (Non-Z)",
-	"-11" = "Gravity pulse plane (Non-Z)",
-	"-12" = "Heat plane (Non-Z)"
+	STRINGIFY(GAME_PLANE) = "Game plane (Non-Z)",
+	STRINGIFY(FLOOR_PLANE) = "Floor plane (Non-Z)",
+	STRINGIFY(GRAVITY_PULSE_PLANE) = "Gravity pulse plane (Non-Z)",
+	STRINGIFY(HEAT_PLANE) = "Heat plane (Non-Z)"
 )
 
 /client/proc/analyze_openturf(turf/T)

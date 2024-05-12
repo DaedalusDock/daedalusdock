@@ -102,6 +102,7 @@
 /datum/slapcraft_step/item/flashlight
 	desc = "Attach a flashlight."
 	item_types = list(/obj/item/flashlight)
+	blacklist_item_types = list(/obj/item/flashlight/lamp, /obj/item/flashlight/lantern)
 	finish_msg = "%USER% attaches a flashlight to the %TARGET%."
 	finish_msg_self = "You attach a flashlight to the %TARGET%."
 

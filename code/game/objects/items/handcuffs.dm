@@ -35,7 +35,6 @@
 	slot_flags = ITEM_SLOT_BELT
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
-	throw_speed = 3
 	throw_range = 5
 	custom_materials = list(/datum/material/iron=500)
 	breakouttime = 1 MINUTES
@@ -66,10 +65,11 @@
 			playsound(loc, cuffsound, 30, TRUE, -2)
 			log_combat(user, C, "attempted to handcuff")
 			if(do_after(user, C, 30, timed_action_flags = IGNORE_SLOWDOWNS|DO_PUBLIC, display = src) && C.canBeHandcuffed())
-				if(iscyborg(user))
-					apply_cuffs(C, user, TRUE)
-				else
-					apply_cuffs(C, user)
+				if(!apply_cuffs(C, user, iscyborg(user)))
+					to_chat(user, span_warning("You fail to handcuff [C]!"))
+					log_combat(user, C, "failed to handcuff")
+					return
+
 				C.visible_message(span_notice("[user] handcuffs [C]."), \
 									span_userdanger("[user] handcuffs you."))
 				SSblackbox.record_feedback("tally", "handcuffs", 1, type)
@@ -79,7 +79,7 @@
 				to_chat(user, span_warning("You fail to handcuff [C]!"))
 				log_combat(user, C, "failed to handcuff")
 		else
-			to_chat(user, span_warning("[C] doesn't have two hands..."))
+			to_chat(user, span_warning("You cannot handcuff [C]."))
 
 /**
  * This handles handcuffing people
@@ -94,7 +94,7 @@
 	if(target.handcuffed)
 		return
 
-	if(!user.temporarilyRemoveItemFromInventory(src) && !dispense)
+	if(!dispense && !user.temporarilyRemoveItemFromInventory(src))
 		return
 
 	var/obj/item/restraints/handcuffs/cuffs = src
@@ -103,11 +103,16 @@
 	else if(dispense)
 		cuffs = new type()
 
-	target.equip_to_slot(cuffs, ITEM_SLOT_HANDCUFFED)
+	if(!target.equip_to_slot_if_possible(cuffs, ITEM_SLOT_HANDCUFFED, cuffs != src, TRUE, null, TRUE))
+		if(!QDELETED(cuffs))
+			if(!user.put_in_hands(cuffs))
+				forceMove(user.drop_location())
+		return FALSE
 
 	if(trashtype && !dispense)
 		qdel(src)
-	return
+
+	return TRUE
 
 /**
  * # Alien handcuffs

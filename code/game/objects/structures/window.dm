@@ -128,6 +128,10 @@
 
 	return TRUE
 
+/obj/structure/window/proc/knock_on(mob/user)
+	user?.animate_interact(src, INTERACT_GENERIC)
+	playsound(src, knock_sound, 100, TRUE)
+
 /obj/structure/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER
 
@@ -150,8 +154,8 @@
 /obj/structure/window/attack_tk(mob/user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message(span_notice("Something knocks on [src]."))
-	add_fingerprint(user)
-	playsound(src, knock_sound, 50, TRUE)
+	log_touch(user)
+	knock_on()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 
@@ -171,7 +175,7 @@
 	if(!user.combat_mode)
 		user.visible_message(span_notice("[user] knocks on [src]."), \
 			span_notice("You knock on [src]."))
-		playsound(src, knock_sound, 50, TRUE)
+		knock_on(user)
 	else
 		user.visible_message(span_warning("[user] bashes [src]!"), \
 			span_warning("You bash [src]!"))
@@ -266,7 +270,8 @@
 	if(!can_be_reached(user))
 		return TRUE //skip the afterattack
 
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
+
 	return ..()
 
 /obj/structure/window/AltClick(mob/user)
@@ -416,14 +421,14 @@
 
 	. += mutable_appearance('icons/obj/structures.dmi', "damage[ratio]", -(layer+0.1), appearance_flags = RESET_COLOR)
 
-/obj/structure/window/fire_act(exposed_temperature, exposed_volume)
+/obj/structure/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	if (exposed_temperature > melting_point)
 		take_damage(round(exposed_volume / 100), BURN, 0, 0)
 
 /obj/structure/window/get_dumping_location()
 	return null
 
-/obj/structure/window/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/window/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(!density)
 		return TRUE
 	if(fulltile || (dir == to_dir))
@@ -450,6 +455,7 @@
 	var/obj/item/bodypart/BP = affecting_mob.get_bodypart(def_zone)
 	if(!BP)
 		return
+
 	var/blocked = affecting_mob.run_armor_check(def_zone, BLUNT)
 	if(grab.current_grab.damage_stage < GRAB_NECK)
 		affecting_mob.visible_message(span_danger("<b>[user]</b> bashes <b>[affecting_mob]</b>'s [BP.plaintext_zone] against \the [src]!"))
@@ -481,8 +487,7 @@
 		take_damage(20)
 		qdel(grab)
 
-	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src)
-	splatter.transfer_mob_blood_dna(victim)
+	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src, null, affecting_mob.get_blood_dna_list())
 	vis_contents += splatter
 	bloodied = TRUE
 	return TRUE
@@ -573,7 +578,7 @@
 	heat_resistance = 50000
 	armor = list(BLUNT = 80, PUNCTURE = 20, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 60, BIO = 100, FIRE = 99, ACID = 100)
 	max_integrity = 500
-	damage_deflection = 21
+	damage_deflection = 18
 	explosion_block = 2
 	glass_type = /obj/item/stack/sheet/plasmarglass
 	melting_point = 25000

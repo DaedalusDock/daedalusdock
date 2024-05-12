@@ -41,7 +41,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	else
 		open_flame(heat)
 
-/obj/item/match/fire_act(exposed_temperature, exposed_volume)
+/obj/item/match/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	matchignite()
 
 /obj/item/match/proc/matchignite()
@@ -157,6 +157,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/dragtime = 10 SECONDS
 	/// The cooldown that prevents just huffing the entire cigarette at once.
 	COOLDOWN_DECLARE(drag_cooldown)
+	/// The cooldown that staggers smoke effects.
+	COOLDOWN_DECLARE(smoke_cooldown)
 	/// The type of cigarette butt spawned when this burns out.
 	var/type_butt = /obj/item/cigbutt
 	/// The capacity for chems this cigarette has.
@@ -184,6 +186,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
+
+/obj/item/clothing/mask/cigarette/equipped(mob/M, slot)
+	. = ..()
+	if(slot != ITEM_SLOT_MASK)
+		return
+
+	add_trace_DNA(M.get_trace_dna())
 
 /obj/item/clothing/mask/cigarette/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is huffing [src] as quickly as [user.p_they()] can! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer."))
@@ -242,23 +251,27 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		update_icon()
 		return
 
+	playsound(loc, 'sound/effects/cig_light.ogg', 100)
 	attack_verb_continuous = string_list(list("burns", "singes"))
 	attack_verb_simple = string_list(list("burn", "singe"))
 	hitsound = 'sound/items/welder.ogg'
 	damtype = BURN
 	force = 4
+
 	if(reagents.get_reagent_amount(/datum/reagent/toxin/plasma)) // the plasma explodes when exposed to fire
 		var/datum/effect_system/reagents_explosion/e = new()
 		e.set_up(round(reagents.get_reagent_amount(/datum/reagent/toxin/plasma) / 2.5, 1), get_turf(src), 0, 0)
 		e.start(src)
 		qdel(src)
 		return
+
 	if(reagents.get_reagent_amount(/datum/reagent/fuel)) // the fuel explodes, too, but much less violently
 		var/datum/effect_system/reagents_explosion/e = new()
 		e.set_up(round(reagents.get_reagent_amount(/datum/reagent/fuel) / 5, 1), get_turf(src), 0, 0)
 		e.start(src)
 		qdel(src)
 		return
+
 	// allowing reagents to react after being lit
 	reagents.flags &= ~(NO_REACT)
 	reagents.handle_reactions()
@@ -268,15 +281,19 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		T.visible_message(flavor_text)
 	START_PROCESSING(SSobj, src)
 
-	//can't think of any other way to update the overlays :<
-	if(ismob(loc))
-		var/mob/M = loc
-		M.update_worn_mask()
-		M.update_held_items()
+	if(iscarbon(loc))
+		var/mob/living/carbon/C = loc
+		C.update_slots_for_item(src)
+
+	AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_PLUME, "nicotine", 5)
+	COOLDOWN_START(src, smoke_cooldown, 20 SECONDS)
+	new /obj/effect/temp_visual/cig_smoke(drop_location())
 
 /obj/item/clothing/mask/cigarette/extinguish()
 	if(!lit)
 		return
+
+	playsound(loc, 'sound/effects/cig_snuff.ogg', 100)
 	attack_verb_continuous = null
 	attack_verb_simple = null
 	hitsound = null
@@ -293,22 +310,30 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		M.update_worn_mask()
 		M.update_held_items()
 
+	qdel(GetComponent(/datum/component/smell))
+
 /// Handles processing the reagents in the cigarette.
-/obj/item/clothing/mask/cigarette/proc/handle_reagents()
+/obj/item/clothing/mask/cigarette/proc/use_reagents(mob/living/carbon/user, drag)
 	if(!reagents.total_volume)
 		return
+
 	reagents.expose_temperature(heat, 0.05)
+
 	if(!reagents.total_volume) //may have reacted and gone to 0 after expose_temperature
 		return
+
 	var/to_smoke = smoke_all ? (reagents.total_volume * (dragtime / smoketime)) : REAGENTS_METABOLISM
-	var/mob/living/carbon/smoker = loc
-	if(!istype(smoker) || src != smoker.wear_mask)
-		reagents.remove_any(to_smoke)
+	if(!istype(user) || ((src != user.wear_mask) && !drag))
+		reagents.remove_all(to_smoke)
 		return
 
-	reagents.expose(smoker, INJECT, min(to_smoke / reagents.total_volume, 1))
-	if(!reagents.trans_to(smoker, to_smoke, methods = INJECT))
-		reagents.remove_any(to_smoke)
+	reagents.expose(user, INJECT, min(to_smoke / reagents.total_volume, 1))
+	if(!reagents.trans_to(user, to_smoke, methods = INJECT))
+		reagents.remove_all(to_smoke)
+
+	if(drag || COOLDOWN_FINISHED(src, smoke_cooldown))
+		new /obj/effect/temp_visual/cig_smoke(drop_location())
+		COOLDOWN_START(src, smoke_cooldown, 20 SECONDS)
 
 /obj/item/clothing/mask/cigarette/process(delta_time)
 	var/mob/living/user = isliving(loc) ? loc : null
@@ -325,9 +350,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 
 	open_flame(heat)
+
 	if((reagents?.total_volume) && COOLDOWN_FINISHED(src, drag_cooldown))
 		COOLDOWN_START(src, drag_cooldown, dragtime)
-		handle_reagents()
+		use_reagents(user)
 
 /obj/item/clothing/mask/cigarette/attack_self(mob/user)
 	if(lit)
@@ -341,27 +367,45 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		new /obj/effect/decal/cleanable/ash(location)
 	else if(user)
 		to_chat(user, span_notice("Your [name] goes out."))
-	new type_butt(location)
+
+	playsound(loc, 'sound/effects/cig_snuff.ogg', 100)
+
+	var/obj/item/cigbutt/butt = new type_butt(location)
+	transfer_evidence_to(butt)
 	qdel(src)
 
 /obj/item/clothing/mask/cigarette/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!istype(M))
 		return ..()
+
 	if(M.on_fire && !lit)
 		light(span_notice("[user] lights [src] with [M]'s burning body. What a cold-blooded badass."))
 		return
+
+	if(user.combat_mode)
+		return ..()
+
+	if(lit && user == M)
+		if(!user.has_mouth())
+			return TRUE
+		if(user.is_mouth_covered())
+			to_chat(user, span_warning("Your mouth is covered."))
+			return TRUE
+		user.visible_message(span_notice("[user] takes a drag of their [name]."))
+		playsound(user, 'sound/effects/inhale.ogg', 50, 0, -1)
+		use_reagents(user, TRUE)
+		return TRUE
+
 	var/obj/item/clothing/mask/cigarette/cig = help_light_cig(M)
-	if(!lit || !cig || user.combat_mode)
+	if(!lit || !cig)
 		return ..()
 
 	if(cig.lit)
 		to_chat(user, span_warning("The [cig.name] is already lit!"))
-	if(M == user)
-		cig.attackby(src, user)
-	else
-		cig.light(span_notice("[user] holds the [name] out for [M], and lights [M.p_their()] [cig.name]."))
 
-/obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume)
+	cig.light(span_notice("[user] holds the [name] out for [M], and lights [M.p_their()] [cig.name]."))
+
+/obj/item/clothing/mask/cigarette/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	light()
 
 /obj/item/clothing/mask/cigarette/get_temperature()
@@ -672,7 +716,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	resistance_flags = FIRE_PROOF
 	grind_results = list(/datum/reagent/iron = 1, /datum/reagent/fuel = 5, /datum/reagent/fuel/oil = 5)
 	custom_price = PAYCHECK_ASSISTANT * 1.1
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_outer_range = 2
 	light_power = 0.6
 	light_color = LIGHT_COLOR_FIRE
@@ -739,12 +783,15 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		attack_verb_continuous = string_list(list("burns", "singes"))
 		attack_verb_simple = string_list(list("burn", "singe"))
 		START_PROCESSING(SSobj, src)
+		playsound(loc, 'sound/items/lighter1.ogg', 100)
 	else
 		hitsound = SFX_SWING_HIT
 		force = 0
 		attack_verb_continuous = null //human_defense.dm takes care of it
 		attack_verb_simple = null
 		STOP_PROCESSING(SSobj, src)
+		playsound(loc, 'sound/items/lighter2.ogg', 100)
+
 	set_light_on(lit)
 	update_appearance()
 
@@ -1010,6 +1057,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		to_chat(user, span_warning("You need to close the cap first!"))
 		return
 
+	add_trace_DNA(user.get_trace_dna())
+
 	to_chat(user, span_notice("You start puffing on the vape."))
 	reagents.flags &= ~(NO_REACT)
 	START_PROCESSING(SSobj, src)
@@ -1026,7 +1075,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	var/mob/living/carbon/vaper = loc
 	if(!iscarbon(vaper) || src != vaper.wear_mask)
-		reagents.remove_any(REAGENTS_METABOLISM)
+		reagents.remove_all(REAGENTS_METABOLISM)
 		return
 
 	if(reagents.get_reagent_amount(/datum/reagent/fuel))
@@ -1041,7 +1090,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		qdel(src)
 
 	if(!reagents.trans_to(vaper, REAGENTS_METABOLISM, methods = INJECT)) //Going right into the bloodstream
-		reagents.remove_any(REAGENTS_METABOLISM)
+		reagents.remove_all(REAGENTS_METABOLISM)
 
 /obj/item/clothing/mask/vape/process(delta_time)
 	var/mob/living/M = loc
@@ -1062,8 +1111,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	//Time to start puffing those fat vapes, yo.
 	COOLDOWN_START(src, drag_cooldown, dragtime)
 	if(obj_flags & EMAGGED)
-		var/datum/effect_system/smoke_spread/chem/smoke_machine/s = new
-		s.set_up(reagents, 4, 24, loc)
+		var/datum/effect_system/fluid_spread/smoke/chem/smoke_machine/s = new
+		s.set_up(4, location = loc, carry = reagents, efficiency = 24)
 		s.start()
 		if(prob(5)) //small chance for the vape to break and deal damage if it's emagged
 			playsound(get_turf(src), 'sound/effects/pop_expl.ogg', 50, FALSE)
@@ -1076,8 +1125,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			qdel(src)
 			return
 	else if(super)
-		var/datum/effect_system/smoke_spread/chem/smoke_machine/s = new
-		s.set_up(reagents, 1, 24, loc)
+		var/datum/effect_system/fluid_spread/smoke/chem/smoke_machine/s = new
+		s.set_up(1, location = loc, carry = reagents, efficiency = 24)
 		s.start()
 
 	handle_reagents()

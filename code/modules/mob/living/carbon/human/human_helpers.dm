@@ -2,6 +2,8 @@
 /mob/living/carbon/human/canBeHandcuffed()
 	if(num_hands < 2)
 		return FALSE
+	if(handcuffed)
+		return FALSE
 	return TRUE
 
 
@@ -37,22 +39,27 @@
 	var/id_name = get_id_name("")
 	if(name_override)
 		return name_override
+
 	if(face_name)
 		if(id_name && (id_name != face_name))
 			return "[face_name] (as [id_name])"
 		return face_name
+
 	if(id_name)
 		return id_name
+
 	return "Unknown"
 
 //Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when Fluacided or when updating a human's name variable
 /mob/living/carbon/human/proc/get_face_name(if_no_face="Unknown")
-	if( wear_mask && (wear_mask.flags_inv&HIDEFACE) ) //Wearing a mask which hides our face, use id-name if possible
+	if(wear_mask && (wear_mask.flags_inv & HIDEFACE) ) //Wearing a mask which hides our face, use id-name if possible
 		return if_no_face
-	if( head && (head.flags_inv&HIDEFACE) )
+
+	if(head && (head.flags_inv & HIDEFACE) )
 		return if_no_face //Likewise for hats
+
 	var/obj/item/bodypart/O = get_bodypart(BODY_ZONE_HEAD)
-	if( !O || (HAS_TRAIT(src, TRAIT_DISFIGURED)) || (O.brutestate+O.burnstate)>2 || cloneloss>50 || !real_name || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN)) //disfigured. use id-name if possible
+	if(!O || (HAS_TRAIT(src, TRAIT_DISFIGURED)) || !real_name || HAS_TRAIT(src, TRAIT_INVISIBLE_MAN)) //disfigured. use id-name if possible
 		return if_no_face
 	return real_name
 
@@ -74,14 +81,14 @@
 		. = if_no_id //to prevent null-names making the mob unclickable
 	return
 
-/mob/living/carbon/human/get_idcard(hand_first = TRUE)
+/mob/living/carbon/human/get_idcard(hand_first = TRUE, bypass_wallet)
 	RETURN_TYPE(/obj/item/card/id)
 
 	. = ..()
 	if(. && hand_first)
 		return
 	//Check inventory slots
-	return (wear_id?.GetID() || belt?.GetID())
+	return (wear_id?.GetID(bypass_wallet) || belt?.GetID(bypass_wallet))
 
 /mob/living/carbon/human/can_track(mob/living/user)
 	if(istype(head, /obj/item/clothing/head))
@@ -93,11 +100,6 @@
 
 /mob/living/carbon/human/can_use_guns(obj/item/G)
 	. = ..()
-	if(G.trigger_guard == TRIGGER_GUARD_NORMAL)
-		if(check_chunky_fingers())
-			balloon_alert(src, "fingers are too big!")
-			return FALSE
-
 	if(HAS_TRAIT(src, TRAIT_NOGUNS))
 		to_chat(src, span_warning("You can't bring yourself to use a ranged weapon!"))
 		return FALSE
@@ -110,18 +112,6 @@
 /mob/living/carbon/human/get_policy_keywords()
 	. = ..()
 	. += "[dna.species.type]"
-
-///Returns death message for mob examine text
-/mob/living/carbon/human/proc/generate_death_examine_text()
-	var/mob/dead/observer/ghost = get_ghost(TRUE, TRUE)
-	var/t_He = p_they(TRUE)
-	var/t_his = p_their()
-	var/t_is = p_are()
-	//This checks to see if the body is revivable
-	if(key || !getorgan(/obj/item/organ/brain) || ghost?.can_reenter_corpse)
-		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life...")
-	else
-		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life and [t_his] soul has departed...")
 
 ///copies over clothing preferences like underwear to another human
 /mob/living/carbon/human/proc/copy_clothing_prefs(mob/living/carbon/human/destination)
@@ -145,14 +135,12 @@
 		if (preference.is_randomizable())
 			preference.apply_to_human(src, preference.create_random_value(preferences))
 
-/mob/living/carbon/human/can_smell(intensity)
+/mob/living/carbon/human/can_smell()
 	var/turf/T = get_turf(src)
 	if(!T)
 		return FALSE
-	if(stat != CONSCIOUS || failed_last_breath || wear_mask || (head && (head?.permeability_coefficient < 1)) || !T.unsafe_return_air()?.total_moles)
-		return FALSE
 
-	if(!(intensity > last_smell_intensity) && !COOLDOWN_FINISHED(src, smell_time))
+	if(stat || failed_last_breath || (wear_mask && wear_mask.body_parts_covered) || (head && (head?.permeability_coefficient < 1)) || !T.unsafe_return_air()?.total_moles)
 		return FALSE
 
 	return TRUE

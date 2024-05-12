@@ -17,11 +17,11 @@
 	var/current_time = world.timeofday
 
 	// Depower the supermatter, as it would quickly blow up once we remove all gases from the pipes.
-	for(var/obj/machinery/power/supermatter/S in GLOB.machines)
+	for(var/obj/machinery/power/supermatter/S as anything in INSTANCES_OF(/obj/machinery/power/supermatter))
 		S.power = 0
 		S.damage = 0
 
-	to_chat(usr, "\[1/5\] - Supermatter depowered.")
+	to_chat(usr, "\[1/6\] - Supermatter depowered.")
 
 	// Remove all gases from all pipenets
 	for(var/datum/pipeline/PN as anything in SSairmachines.networks)
@@ -29,13 +29,16 @@
 			G.gas = list()
 			G.total_moles = 0
 
-	to_chat(usr, "\[2/5\] - All pipenets purged of gas.")
+	to_chat(usr, "\[2/6\] - All pipenets purged of gas.")
 
 	// Delete all zones.
 	for(var/zone/Z in world)
 		Z.invalidate()
 
-	to_chat(usr, "\[3/5\] - All ZAS Zones removed.")
+	to_chat(usr, "\[3/6\] - All ZAS Zones removed.")
+
+	QDEL_LIST(SSzas.active_hotspots)
+	to_chat(usr, "\[4/6\] - Deleted all hotspots.")
 
 	for(var/turf/T in world)
 		if(!T.simulated)
@@ -45,10 +48,10 @@
 			qdel(effect)
 		T.zone = null
 
-	to_chat(usr, "\[4/5\] - All turfs reset to roundstart values.")
+	to_chat(usr, "\[5/6\] - All turfs reset to roundstart values.")
 
 	SSzas.Reboot()
 
-	to_chat(usr, "\[5/5\] - ZAS Rebooted")
+	to_chat(usr, "\[6/6\] - ZAS Rebooted")
 	to_chat(world, "<span class = 'danger'>Atmosphere restart completed in <b>[(world.timeofday - current_time)/10]</b> seconds.</span>")
 	return TRUE

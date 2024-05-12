@@ -115,11 +115,3 @@
 	name = "CentCom intern envirogloves"
 	icon_state = "internplasma"
 	inhand_icon_state = "internplasma"
-
-/obj/item/clothing/gloves/color/plasmaman/radio
-	name = "translation envirogloves"
-	desc = "Allows the less vocally-capable plasmamen to use sign language over comms."
-	icon_state = "radio_gplasma"
-	inhand_icon_state = "radio_gplasma"
-	worn_icon_state = "radio_g"
-	clothing_traits = list(TRAIT_CAN_SIGN_ON_COMMS)

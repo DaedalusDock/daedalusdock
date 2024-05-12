@@ -59,7 +59,7 @@
 				basemob.maxHealth = basemob.maxHealth = mainsettings["maxhealth"]["value"]
 
 		if (mainsettings["name"]["value"])
-			basemob.name = basemob.real_name = html_decode(mainsettings["name"]["value"])
+			basemob.set_real_name(html_decode(mainsettings["name"]["value"]))
 
 		if (mainsettings["ckey"]["value"] != "none")
 			basemob.ckey = mainsettings["ckey"]["value"]

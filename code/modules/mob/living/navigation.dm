@@ -63,7 +63,7 @@
 		stack_trace("Navigate target ([navigate_target]) is not an atom, somehow.")
 		return
 
-	var/list/path = get_path_to(src, navigate_target, MAX_NAVIGATE_RANGE, mintargetdist = 1, id = get_idcard(), skip_first = FALSE)
+	var/list/path = get_path_to(src, navigate_target, MAX_NAVIGATE_RANGE, mintargetdist = 1, access = get_idcard()?.GetAccess(), skip_first = FALSE)
 	if(!length(path))
 		balloon_alert(src, "no valid path with current access!")
 		return
@@ -121,7 +121,7 @@
 		return
 
 	var/target
-	for(var/obj/structure/ladder/lad in GLOB.ladders)
+	for(var/obj/structure/ladder/lad as anything in INSTANCES_OF(/obj/structure/ladder))
 		if(lad.z != z)
 			continue
 		if(direction == UP && !lad.up)
@@ -135,7 +135,7 @@
 			continue
 		target = lad
 
-	for(var/obj/structure/stairs/stairs_bro in GLOB.stairs)
+	for(var/obj/structure/stairs/stairs_bro as anything in INSTANCES_OF(/obj/structure/stairs))
 		if(direction == UP && stairs_bro.z != z) //if we're going up, we need to find stairs on our z level
 			continue
 		if(direction == DOWN && stairs_bro.z != z - 1) //if we're going down, we need to find stairs on the z level beneath us

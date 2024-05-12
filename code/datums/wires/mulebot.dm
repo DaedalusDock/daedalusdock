@@ -48,7 +48,7 @@
 			holder.visible_message(span_notice("[icon2html(mule, viewers(holder))] The charge light flickers."))
 		if(WIRE_AVOIDANCE)
 			holder.visible_message(span_notice("[icon2html(mule, viewers(holder))] The external warning lights flash briefly."))
-			flick("[mule.base_icon]1", mule)
+			z_flick("[mule.base_icon]1", mule)
 		if(WIRE_LOADCHECK)
 			holder.visible_message(span_notice("[icon2html(mule, viewers(holder))] The load platform clunks."))
 		if(WIRE_MOTOR1, WIRE_MOTOR2)

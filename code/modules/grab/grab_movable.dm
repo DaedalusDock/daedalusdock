@@ -40,29 +40,7 @@
 /// Move grabbed atoms towards a destination
 /mob/living/proc/move_grabbed_atoms_towards(atom/destination)
 	for(var/obj/item/hand_item/grab/G in active_grabs)
-		var/atom/movable/pulling = G.affecting
-		if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
-			qdel(G)
-			continue
-
-		if(isliving(pulling))
-			var/mob/living/pulling_mob = pulling
-			if(pulling_mob.buckled && pulling_mob.buckled.buckle_prevents_pull) //if they're buckled to something that disallows pulling, prevent it
-				qdel(G)
-				continue
-
-		if(destination == loc && pulling.density)
-			continue
-
-		var/move_dir = get_dir(pulling.loc, destination)
-		if(!Process_Spacemove(move_dir))
-			continue
-
-		// At this point the move was successful
-		pulling.Move(get_step(pulling.loc, move_dir), move_dir, glide_size)
-
-		pulling.update_offsets()
-
+		G.move_victim_towards(destination)
 
 /atom/movable/proc/update_offsets()
 	var/last_pixel_x = pixel_x
@@ -74,24 +52,19 @@
 	var/list/grabbed_by = list()
 
 	grabbed_by += src.grabbed_by
+
+	if(length(buckled_mobs))
+		for(var/mob/M as anything in buckled_mobs)
+			M.update_offsets()
+
 	if(isliving(src))
 		var/mob/living/L = src
 		if(L.buckled)
 			grabbed_by += L.buckled.grabbed_by
 
-	if(isturf(loc))
-		if(length(grabbed_by))
-			for(var/obj/item/hand_item/grab/G in grabbed_by)
-				var/grab_dir = get_dir(G.assailant, src)
-				if(grab_dir && G.current_grab.shift != 0)
-					if(grab_dir & WEST)
-						new_pixel_x = min(new_pixel_x+G.current_grab.shift, base_pixel_x+G.current_grab.shift)
-					else if(grab_dir & EAST)
-						new_pixel_x = max(new_pixel_x-G.current_grab.shift, base_pixel_x-G.current_grab.shift)
-					if(grab_dir & NORTH)
-						new_pixel_y = max(new_pixel_y-G.current_grab.shift, base_pixel_y-G.current_grab.shift)
-					else if(grab_dir & SOUTH)
-						new_pixel_y = min(new_pixel_y+G.current_grab.shift, base_pixel_y+G.current_grab.shift)
+	if(isturf(loc) && length(grabbed_by))
+		for(var/obj/item/hand_item/grab/G in grabbed_by)
+			G.current_grab.get_grab_offsets(G, get_dir(G.assailant, G.affecting), &new_pixel_x, &new_pixel_y)
 
 	if(last_pixel_x != new_pixel_x || last_pixel_y != new_pixel_y)
 		animate(src, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 3, 1, (LINEAR_EASING|EASE_IN))

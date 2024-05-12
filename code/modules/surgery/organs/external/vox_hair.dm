@@ -18,7 +18,7 @@
 	//draw_color = "#997C28"
 
 /obj/item/organ/vox_hair/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+	if(!(human.obscured_slots & HIDEHAIR))
 		return TRUE
 	return FALSE
 

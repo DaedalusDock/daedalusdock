@@ -76,3 +76,56 @@
 2024-01-13:
   Kapu1178:
   - bugfix: Default wield hotkey no longer conflicts with other default hotkeys.
+2024-01-23:
+  MisterGrimm:
+  - balance: Getting flushed into the disposal network damages mobs once more
+2024-01-24:
+  Kapu1178:
+  - rscadd: Ballistics now emit a long-lasting scent of gunpowder when fired.
+  - rscadd: Energy weapons now emit a short-lasting scent of ozone when fired.
+  - qol: You won't see multiple smell messages in a single smell tick.
+  - code_imp: Cleaned up smell code.
+  Time-Green, IndieanaJones:
+  - qol: Adds the seethrough component, allowing people to see behind large objects,
+      and behind their own mob if they are large
+2024-01-27:
+  Kapu1178:
+  - bugfix: When you are knocked out from pain, you will stay knocked out until you
+      recover enough.
+  - qol: When you are entering shock, you will hear your heartbeat.
+  - qol: Reduced time gap between pain messages.
+  - qol: Pain message time gap will scale inversely proportional to the amount of
+      pain you're in.
+  - qol: Added more effects to earlier shock stages.
+  - qol: Added a chat message for gasping caused by lung damage.
+  - balance: Increased damage required to damage organs from external wounds.
+  - balance: Reduced heart damage taken from irregular heartbeats.
+2024-01-28:
+  Kapu1178:
+  - qol: Unloading a firearm is now ALWAYS done with Alt Click or Right Click.
+  - qol: 'Use-in-Hand with ballistics is now reserved for: gun flipping, bolt dropping,
+      and racking.'
+  - rscadd: Energy swords now emit sparks when active.
+  - rscadd: Examining a gun no longer tells you it's ammo count unless the magazine
+      is internal. You must instead remove the magazine and examine it. Examining
+      magazines no longer gives numerical ammo counts.
+  - balance: Loading a magazine from another magazine takes a small amount of time
+      to complete.
+  - balance: Removed most firing pins from the game. Guns who have had their pin type
+      removed have had it replaced with the standard firing pin.
+  - balance: Removed hotswapping magazines. Use your hands.
+  - balance: Makarov TC cost from 7 to 10
+  - balance: Makarov Magazine cost from 1 to 2 TC
+  - balance: Makarov Special Magazines from 3 to 6 TC
+  - balance: Revolver from 13 to 12 TC
+  - balance: Revolver Speedloader from 4 to 6 TC
+  - balance: Energy sword size increased to Normal (cannot be pocketed)
+  - balance: Energy sword cost from 8 to 12 TC
+  - balance: Removed double energy sword from the uplink
+  - balance: C4 charge from 1 to 4 TC
+  - balance: C4 bag from 8 to 14 TC
+  - balance: C4 bag C4 count from 10 to 4
+  - balance: X4 bag from 4 to 14 TC
+  - balance: Detomatix from 6 to 10 TC
+  - balance: Syndicate bomb from 11 to 16 TC
+  - bugfix: Guns playing the incorrect sounds for ejecting magazines.

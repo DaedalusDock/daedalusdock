@@ -7,7 +7,8 @@
 	max_integrity = 500
 	armor = list(BLUNT = 30, PUNCTURE = 50, SLASH = 100, LASER = 50, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
 	var/tamperproof = 0
-	damage_deflection = 25
+
+	damage_deflection = 18
 
 /obj/structure/closet/crate/secure/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
 	if(prob(tamperproof) && damage_amount >= DAMAGE_PRECISION)

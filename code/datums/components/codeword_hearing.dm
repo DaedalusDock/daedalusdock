@@ -37,6 +37,14 @@
 /datum/component/codeword_hearing/proc/handle_hearing(datum/source, list/hearing_args)
 	SIGNAL_HANDLER
 
+	var/mob/living/mob_owner = parent
+	if(!istype(mob_owner))
+		return
+
+	var/datum/language/L = hearing_args[HEARING_LANGUAGE]
+	if(!L?.can_receive_language(mob_owner) || !mob_owner.has_language(L))
+		return
+
 	var/message = hearing_args[HEARING_RAW_MESSAGE]
 	message = replace_regex.Replace(message, "<span class='[span_class]'>$1</span>")
 	hearing_args[HEARING_RAW_MESSAGE] = message

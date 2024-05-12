@@ -71,6 +71,7 @@
 	ears = /obj/item/radio/headset/headset_eng
 	head = /obj/item/clothing/head/hardhat
 	shoes = /obj/item/clothing/shoes/workboots
+	gloves = /obj/item/clothing/gloves/color/yellow
 	l_pocket = /obj/item/modular_computer/tablet/pda/engineering
 	r_pocket = /obj/item/t_scanner
 
@@ -90,11 +91,6 @@
 	head = /obj/item/clothing/head/helmet/space/plasmaman/engineering
 	mask = /obj/item/clothing/mask/breath
 	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
-/datum/outfit/job/engineer/gloved
-	name = "Station Engineer (Gloves)"
-
-	gloves = /obj/item/clothing/gloves/color/yellow
 
 /datum/outfit/job/engineer/mod
 	name = "Station Engineer (MODsuit)"

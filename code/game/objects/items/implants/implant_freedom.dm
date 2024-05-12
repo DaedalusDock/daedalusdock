@@ -12,7 +12,8 @@
 	to_chat(imp_in, span_hear("You feel a faint click."))
 	if(iscarbon(imp_in))
 		var/mob/living/carbon/C_imp_in = imp_in
-		C_imp_in.uncuff()
+		C_imp_in.remove_handcuffs()
+		C_imp_in.remove_legcuffs()
 	if(!uses)
 		qdel(src)
 

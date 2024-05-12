@@ -164,7 +164,7 @@
 	if(beaker)
 		data["has_beaker"] = TRUE
 		data["beaker"] = list(
-			"volume" = round(beaker.reagents?.total_volume, 0.01) || 0,
+			"volume" = round(beaker.reagents?.total_volume, CHEMICAL_VOLUME_ROUNDING) || 0,
 			"capacity" = beaker.volume,
 		)
 		var/datum/reagent/blood/B = locate() in beaker.reagents.reagent_list

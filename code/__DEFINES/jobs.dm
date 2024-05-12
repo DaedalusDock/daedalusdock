@@ -33,17 +33,17 @@
 //Command
 #define JOB_CAPTAIN "Captain"
 #define JOB_HEAD_OF_PERSONNEL "Head of Personnel"
-#define JOB_HEAD_OF_SECURITY "Head of Security"
+#define JOB_SECURITY_MARSHAL "Security Marshal"
 #define JOB_RESEARCH_DIRECTOR "Research Director"
 #define JOB_CHIEF_ENGINEER "Chief Engineer"
-#define JOB_CHIEF_MEDICAL_OFFICER "Medical Director"
+#define JOB_MEDICAL_DIRECTOR "Medical Director"
 //Silicon
 #define JOB_AI "AI"
 #define JOB_CYBORG "Cyborg"
 #define JOB_PERSONAL_AI "Personal AI"
 //Security
-#define JOB_WARDEN "Warden"
-#define JOB_DETECTIVE "Detective"
+#define JOB_WARDEN "Brig Lieutenant"
+#define JOB_DETECTIVE "Private Investigator"
 #define JOB_SECURITY_OFFICER "Security Officer"
 #define JOB_SECURITY_OFFICER_MEDICAL "Security Officer (Medical)"
 #define JOB_SECURITY_OFFICER_ENGINEERING "Security Officer (Engineering)"
@@ -53,7 +53,7 @@
 #define JOB_STATION_ENGINEER "Station Engineer"
 #define JOB_ATMOSPHERIC_TECHNICIAN "Atmospheric Technician"
 //Medical
-#define JOB_MEDICAL_DOCTOR "Medical Doctor"
+#define JOB_MEDICAL_DOCTOR "General Practitioner"
 #define JOB_PARAMEDIC "Paramedic"
 #define JOB_CHEMIST "Chemist"
 #define JOB_VIROLOGIST "Virologist"
@@ -63,7 +63,7 @@
 #define JOB_GENETICIST "Geneticist"
 //Supply
 #define JOB_QUARTERMASTER "Quartermaster"
-#define JOB_CARGO_TECHNICIAN "Cargo Technician"
+#define JOB_DECKHAND "Deckhand"
 #define JOB_PROSPECTOR "Prospector"
 //Service
 #define JOB_BARTENDER "Bartender"
@@ -72,7 +72,7 @@
 #define JOB_JANITOR "Janitor"
 #define JOB_CLOWN "Clown"
 #define JOB_MIME "Mime"
-#define JOB_CURATOR "Curator"
+#define JOB_ARCHIVIST "Archivist"
 #define JOB_LAWYER "Lawyer"
 #define JOB_CHAPLAIN "Chaplain"
 #define JOB_PSYCHOLOGIST "Psychologist"

@@ -124,10 +124,10 @@
 /obj/machinery/door/poddoor/do_animate(animation)
 	switch(animation)
 		if("opening")
-			flick("opening", src)
+			z_flick("opening", src)
 			playsound(src, 'sound/machines/doors/blastdoor_open.ogg', 60, TRUE)
 		if("closing")
-			flick("closing", src)
+			z_flick("closing", src)
 			playsound(src, 'sound/machines/doors/blastdoor_close.ogg', 60, TRUE)
 
 /obj/machinery/door/poddoor/update_icon_state()

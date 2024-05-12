@@ -13,7 +13,6 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	force = 6
 	throwforce = 15
-	throw_speed = 3
 	throw_range = 7
 	max_amount = 60
 	novariants = TRUE

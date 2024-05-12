@@ -138,11 +138,11 @@
 
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			SSexplosions.high_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_DEVASTATE)
 		if(EXPLODE_HEAVY)
-			SSexplosions.med_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_HEAVY)
 		if(EXPLODE_LIGHT)
-			SSexplosions.low_mov_atom += beaker
+			EX_ACT(beaker, EXPLODE_LIGHT)
 
 /obj/machinery/chem_dispenser/handle_atom_del(atom/A)
 	..()
@@ -171,12 +171,12 @@
 	var/beakerCurrentVolume = 0
 	if(beaker && beaker.reagents && beaker.reagents.reagent_list.len)
 		for(var/datum/reagent/R in beaker.reagents.reagent_list)
-			beakerContents.Add(list(list("name" = R.name, "volume" = round(R.volume, 0.01)))) // list in a list because Byond merges the first list...
+			beakerContents.Add(list(list("name" = R.name, "volume" = round(R.volume, CHEMICAL_VOLUME_ROUNDING)))) // list in a list because Byond merges the first list...
 			beakerCurrentVolume += R.volume
 	data["beakerContents"] = beakerContents
 
 	if (beaker)
-		data["beakerCurrentVolume"] = round(beakerCurrentVolume, 0.01)
+		data["beakerCurrentVolume"] = round(beakerCurrentVolume, CHEMICAL_VOLUME_ROUNDING)
 		data["beakerMaxVolume"] = beaker.volume
 		data["beakerTransferAmounts"] = beaker.possible_transfer_amounts
 	else

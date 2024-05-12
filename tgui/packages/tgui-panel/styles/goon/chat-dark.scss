@@ -285,7 +285,7 @@ em {
 .ooc {
   color: #cca300;
   font-weight: bold;
-  text-shadow: 0 0 2px #db7900;
+  text-shadow: 0 0 0.15em #db7900;
 }
 
 .looc {
@@ -418,6 +418,7 @@ em {
 
 .bolddanger {
   color: #dd3535;
+  text-shadow: 0 0 0.3em #FF0000;
   font-weight: bold;
 }
 
@@ -470,8 +471,18 @@ em {
   color: #9ab0ff;
 }
 
+.subtle {
+  color: #8A72C5;
+  font-style: italic;
+  font-size: 85%;
+}
+
 .notice {
   color: #D47D5A;
+}
+
+.obviousnotice {
+  color: #8A72C5;
 }
 
 .tinynotice {
@@ -944,7 +955,7 @@ em {
   border: 1px solid rgba(55, 55, 55, 0.33);
   margin: 7px 4px;
   padding: 8px 12px;
-  max-width: 550px;
+  width: 34.375em;
 }
 
 .examine_block hr {
@@ -952,12 +963,6 @@ em {
   background: #222;
   height: 1px;
   margin: 8px 16px 8px 16px;
-}
-
-.subtle {
-  color: #8A72C5;
-  font-style: italic;
-  font-size: 85%;
 }
 
 .talk {

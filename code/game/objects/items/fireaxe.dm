@@ -9,7 +9,7 @@
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
 
-	force = 5
+	force = 10
 	force_wielded = 25
 	throwforce = 15
 
@@ -25,7 +25,7 @@
 
 /obj/item/fireaxe/Initialize(mapload)
 	. = ..()
-	icon_state_wielded = "base_icon_state[1]"
+	icon_state_wielded = "[base_icon_state][1]"
 	AddComponent(/datum/component/butchering, 100, 80, 0 , hitsound) //axes are not known for being precision butchering tools
 
 /obj/item/fireaxe/update_icon_state()

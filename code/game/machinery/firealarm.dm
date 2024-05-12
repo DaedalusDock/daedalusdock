@@ -59,6 +59,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 
 /obj/machinery/firealarm/Initialize(mapload, dir, building)
 	. = ..()
+	SET_TRACKING(__TYPE__)
 	if(building)
 		buildstage = 0
 		panel_open = TRUE
@@ -85,6 +86,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 
 /obj/machinery/firealarm/Destroy()
 	set_area(null)
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/machinery/firealarm/Moved(atom/OldLoc, Dir, list/old_locs, momentum_change = TRUE)
@@ -267,7 +269,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 	return attack_hand_secondary(user)
 
 /obj/machinery/firealarm/attackby(obj/item/tool, mob/living/user, params)
-	add_fingerprint(user)
+	tool.leave_evidence(user, src)
 
 	if(tool.tool_behaviour == TOOL_SCREWDRIVER && buildstage == 2)
 		tool.play_tool_sound(src)
@@ -406,7 +408,7 @@ DEFINE_INTERACTABLE(/obj/machinery/firealarm)
 /obj/machinery/firealarm/examine(mob/user)
 	. = ..()
 	if((alert_type))
-		. += "The local area hazard light is flashing."
+		. += span_alert("The local area hazard light is flashing.")
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)

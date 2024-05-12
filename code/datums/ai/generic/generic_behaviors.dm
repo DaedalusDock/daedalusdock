@@ -169,11 +169,9 @@
 	var/obj/item/target = target_ref.resolve()
 
 	if(!(target in living_pawn.held_items))
-		if(!living_pawn.put_in_hand_check(target))
+		if(!living_pawn.put_in_hands(target))
 			finish_action(controller, FALSE, target, hunger_timer_key)
 			return
-
-		living_pawn.put_in_hands(target)
 
 	target.melee_attack_chain(living_pawn, living_pawn)
 
@@ -203,7 +201,16 @@
 		finish_action(controller, FALSE)
 
 /datum/ai_behavior/find_and_set/proc/search_tactic(datum/ai_controller/controller, locate_path, search_range)
-	return locate(locate_path) in oview(search_range, controller.pawn)
+	for(var/atom/A as anything in oview(search_range, controller.pawn))
+		if(!istype(A, locate_path))
+			continue
+
+		if(isitem(A))
+			var/obj/item/I = A
+			if(I.item_flags & ABSTRACT)
+				continue
+
+		return A
 
 /**
  * Variant of find and set that fails if the living pawn doesn't hold something
@@ -229,11 +236,12 @@
 			continue
 		food_candidates += held_candidate
 
-	var/list/local_results = locate(locate_path) in oview(search_range, controller.pawn)
-	for(var/local_candidate in local_results)
-		if(!IsEdible(local_candidate))
+	for(var/obj/item/I in oview(search_range, controller.pawn))
+		if(!IsEdible(I))
 			continue
-		food_candidates += local_candidate
+
+		food_candidates += I
+
 	if(food_candidates.len)
 		return pick(food_candidates)
 

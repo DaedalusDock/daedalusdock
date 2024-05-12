@@ -27,8 +27,8 @@
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED), PROC_REF(on_incapacitated_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_INCAPACITATED), PROC_REF(on_incapacitated_trait_loss))
 
-	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_RESTRAINED), PROC_REF(on_restrained_trait_gain))
-	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_RESTRAINED), PROC_REF(on_restrained_trait_loss))
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_ARMS_RESTRAINED), PROC_REF(on_restrained_trait_gain))
+	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_ARMS_RESTRAINED), PROC_REF(on_restrained_trait_loss))
 
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_EXPERIENCING_AIRFLOW), PROC_REF(on_airflow_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_EXPERIENCING_AIRFLOW), PROC_REF(on_airflow_trait_loss))
@@ -41,6 +41,8 @@
 
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_SKITTISH), PROC_REF(on_skittish_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_SKITTISH), PROC_REF(on_skittish_trait_loss))
+
+	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_BLURRY_VISION), SIGNAL_REMOVETRAIT(TRAIT_BLURRY_VISION)), PROC_REF(blurry_vision_change))
 
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_NEGATES_GRAVITY), SIGNAL_REMOVETRAIT(TRAIT_NEGATES_GRAVITY)), PROC_REF(on_negate_gravity))
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_IGNORING_GRAVITY), SIGNAL_REMOVETRAIT(TRAIT_IGNORING_GRAVITY)), PROC_REF(on_ignore_gravity))
@@ -177,15 +179,15 @@
 	update_appearance()
 
 
-/// Called when [TRAIT_RESTRAINED] is added to the mob.
+/// Called when [TRAIT_ARMS_RESTRAINED] is added to the mob.
 /mob/living/proc/on_restrained_trait_gain(datum/source)
 	SIGNAL_HANDLER
-	ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, TRAIT_RESTRAINED)
+	ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, TRAIT_ARMS_RESTRAINED)
 
-/// Called when [TRAIT_RESTRAINED] is removed from the mob.
+/// Called when [TRAIT_ARMS_RESTRAINED] is removed from the mob.
 /mob/living/proc/on_restrained_trait_loss(datum/source)
 	SIGNAL_HANDLER
-	REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, TRAIT_RESTRAINED)
+	REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, TRAIT_ARMS_RESTRAINED)
 
 ///From [element/movetype_handler/on_movement_type_trait_gain()]
 /mob/living/proc/on_movement_type_flag_enabled(datum/source, flag, old_movement_type)
@@ -256,3 +258,7 @@
 	if(remove_movespeed_modifier(/datum/movespeed_modifier/living_exhaustion))
 		to_chat(src, span_notice("You catch your breath."))
 
+/// Called when [TRAIT_BLURRY_EYES] is added or removed
+/mob/living/proc/blurry_vision_change(datum/source)
+	SIGNAL_HANDLER
+	update_eye_blur()

@@ -11,7 +11,7 @@
 	max_integrity = 200
 	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 10, ENERGY = 100, BOMB = 0, BIO = 100, FIRE = 90, ACID = 30)
 	layer = DISPOSAL_PIPE_LAYER // slightly lower than wires and other pipes
-	damage_deflection = 10
+	damage_deflection = 5
 	var/dpdir = NONE // bitmask of pipe directions
 	var/initialize_dirs = NONE // bitflags of pipe directions added on init, see \code\_DEFINES\pipe_construction.dm
 	var/flip_type // If set, the pipe is flippable and becomes this type when flipped
@@ -82,6 +82,10 @@
 	var/obj/structure/disposalholder/H2 = locate() in P
 	if(H2 && !H2.active)
 		H.merge(H2)
+
+	for(var/mob/living/L in H)
+		var/armor = L.run_armor_check(attack_flag = BLUNT, silent = TRUE)
+		L.apply_damage(3, BRUTE, blocked = armor, spread_damage = TRUE)
 
 	H.forceMove(P)
 	return P

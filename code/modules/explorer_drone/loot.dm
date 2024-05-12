@@ -69,7 +69,7 @@ GLOBAL_LIST_INIT(adventure_loot_generator_index,generate_generator_index())
 /// Valuables
 /datum/adventure_loot_generator/simple/cash
 	id = "cash"
-	loot_list = list(/obj/item/storage/bag/money,/obj/item/antique,/obj/item/stack/spacecash/c1000,/obj/item/holochip/thousand)
+	loot_list = list(/obj/item/storage/bag/money,/obj/item/antique,/obj/item/stack/spacecash/c1000,)
 
 /// Drugs
 /datum/adventure_loot_generator/simple/drugs

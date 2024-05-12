@@ -16,5 +16,7 @@
 #define DISABLE_PARALLAX 7
 /// Disables footsteps, TRAIT_BYPASS_MEASURES exempted
 #define DISABLE_FOOTSTEPS 8
+/// Disable icon VV render preview. Unlikely to be of use in 90% of circumstances, unless GFI starts shitting bricks again.
+#define DISABLE_VV_ICON_PREVIEW 9
 
-#define MEASURES_AMOUNT 8 // The total number of switches defined above
+#define MEASURES_AMOUNT 9 // The total number of switches defined above

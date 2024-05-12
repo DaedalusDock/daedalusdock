@@ -15,7 +15,7 @@
 	custom_materials = list(/datum/material/iron=500)
 	resistance_flags = FIRE_PROOF
 	trigger_guard = TRIGGER_GUARD_NORMAL
-	light_system = MOVABLE_LIGHT
+	light_system = OVERLAY_LIGHT
 	light_on = FALSE
 	var/status = FALSE
 	var/lit = FALSE //on or off
@@ -218,10 +218,19 @@
 	//Transfer 5% of current tank air contents to turf
 	var/datum/gas_mixture/ptank_mix = ptank.return_air()
 	var/datum/gas_mixture/air_transfer = ptank_mix.removeRatio(release_amount)
-	//air_transfer.toxins = air_transfer.toxins * 5 // This is me not comprehending the air system. I realize this is retarded and I could probably make it work without fucking it up like this, but there you have it. -- TLE
-	var/obj/effect/decal/cleanable/oil/l_fuel = new(target,air_transfer.getByFlag(XGM_GAS_FUEL),get_dir(loc,target))
-	l_fuel.reagent_amount = release_amount
-	air_transfer.removeByFlag(XGM_GAS_FUEL, 0)
+
+	// Find or make the ignitable decal
+	var/obj/effect/decal/cleanable/oil/l_fuel = locate() in target
+	if(!l_fuel)
+		l_fuel = new(target)
+		l_fuel.reagents.clear_reagents()
+
+	// Add the reagents to the fuel
+	l_fuel.reagents.add_reagent(/datum/reagent/fuel/oil, LIQUIDFUEL_AMOUNT_TO_MOL(release_amount))
+
+	// Remove the actual fuel, we don't want to dump plasma into the air
+	air_transfer.removeByFlag(XGM_GAS_FUEL, INFINITY)
+	//Transfer the removed air to the turf
 	target.assume_air(air_transfer)
 	//Burn it based on transfered gas
 	target.hotspot_expose((ptank.air_contents.temperature*2) + 380,500) // -- More of my "how do I shot fire?" dickery. -- TLE

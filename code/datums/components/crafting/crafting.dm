@@ -6,7 +6,7 @@
 	SIGNAL_HANDLER
 
 	var/datum/hud/H = user.hud_used
-	var/atom/movable/screen/craft/C = new()
+	var/atom/movable/screen/craft/C = new(null, H)
 	C.icon = H.ui_style
 	H.static_inventory += C
 	CL.screen += C
@@ -290,7 +290,6 @@
 						if(RG.volume > amt)
 							RG.volume -= amt
 							data = RG.data
-							RC.reagents.conditional_update(RC)
 							RG = locate(RG.type) in Deletion
 							RG.volume = amt
 							RG.data += data
@@ -299,7 +298,6 @@
 							surroundings -= RC
 							amt -= RG.volume
 							RC.reagents.reagent_list -= RG
-							RC.reagents.conditional_update(RC)
 							RGNT = locate(RG.type) in Deletion
 							RGNT.volume += RG.volume
 							RGNT.data += RG.data

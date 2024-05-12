@@ -42,7 +42,8 @@
 		if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "harm")))
 			G.action_used()
 			affecting.visible_message(span_danger("\The [assailant] pins \the [affecting] to the ground!"))
-			affecting.Knockdown(1 SECOND) // This can only be performed with an aggressive grab, which ensures that once someone is knocked down, they stay down/
+			affecting.Paralyze(1 SECOND) // This can only be performed with an aggressive grab, which ensures that once someone is knocked down, they stay down.
+			affecting.move_from_pull(G.assailant, get_turf(G.assailant))
 			return TRUE
 
 		affecting.visible_message(span_warning("\The [assailant] fails to pin \the [affecting] to the ground."))
@@ -115,7 +116,7 @@
 	return FALSE
 
 /datum/grab/normal/resolve_openhand_attack(obj/item/hand_item/grab/G)
-	if(!G.assailant.combat_mode)
+	if(!G.assailant.combat_mode || G.assailant == G.affecting)
 		return FALSE
 	if(G.target_zone == BODY_ZONE_HEAD)
 		if(G.assailant.zone_selected == BODY_ZONE_PRECISE_EYES)

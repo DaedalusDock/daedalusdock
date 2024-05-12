@@ -106,7 +106,7 @@ GLOBAL_VAR(restart_counter)
 #ifdef UNIT_TESTS
 	cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(RunUnitTests))
 #else
-	cb = VARSET_CALLBACK(SSticker, force_ending, TRUE)
+	cb = CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, end_round))
 #endif
 	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), cb, 10 SECONDS))
 
@@ -136,6 +136,7 @@ GLOBAL_VAR(restart_counter)
 	GLOB.world_game_log = "[GLOB.log_directory]/game.log"
 	GLOB.world_silicon_log = "[GLOB.log_directory]/silicon.log"
 	GLOB.world_tool_log = "[GLOB.log_directory]/tools.log"
+	GLOB.world_graffiti_log = "[GLOB.log_directory]/graffiti.log"
 	GLOB.world_suspicious_login_log = "[GLOB.log_directory]/suspicious_logins.log"
 	GLOB.world_mecha_log = "[GLOB.log_directory]/mecha.log"
 	GLOB.world_virus_log = "[GLOB.log_directory]/virus.log"
@@ -162,7 +163,7 @@ GLOBAL_VAR(restart_counter)
 
 	GLOB.demo_log = "[GLOB.log_directory]/demo.log"
 
-	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
+	//Config Error Log must be set later to ensure that we move the files over.
 
 #ifdef UNIT_TESTS
 	GLOB.test_log = "[GLOB.log_directory]/tests.log"
@@ -189,10 +190,14 @@ GLOBAL_VAR(restart_counter)
 
 	var/latest_changelog = file("[global.config.directory]/../html/changelogs/archive/" + time2text(world.timeofday, "YYYY-MM") + ".yml")
 	GLOB.changelog_hash = fexists(latest_changelog) ? md5(latest_changelog) : 0 //for telling if the changelog has changed recently
+
+	// Okay, we have a properly constructed log directory and we're all clean and safe. Sort the config error log properly.
 	if(fexists(GLOB.config_error_log))
 		fcopy(GLOB.config_error_log, "[GLOB.log_directory]/config_error.log")
 		fdel(GLOB.config_error_log)
 
+	// NOW we can change the write directory handle over.
+	GLOB.config_error_log = "[GLOB.log_directory]/config_error.log"
 
 	if(GLOB.round_id)
 		log_game("Round ID: [GLOB.round_id]")
@@ -307,8 +312,8 @@ GLOBAL_VAR(restart_counter)
 
 	log_world("World rebooted at [time_stamp()]")
 
-	TgsReboot()
-	shutdown_logging() // Past this point, no logging procs can be used, at risk of data loss.
+	shutdown_logging() // Past this point, no logging procs can be used besides log_world() at risk of data loss.
+	TgsReboot() // TGS can decide to kill us right here, so it's important to do it last
 	..()
 
 /world/proc/update_status()

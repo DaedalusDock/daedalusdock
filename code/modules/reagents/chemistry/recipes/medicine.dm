@@ -44,6 +44,7 @@
 	results = list(/datum/reagent/medicine/dexalin = 1)
 	required_reagents = list(/datum/reagent/acetone = 2, /datum/reagent/toxin/plasma = 0.1)
 	inhibitors = list(/datum/reagent/water = 1) // Messes with cryox
+	thermic_constant = 20 // Harder to ignite plasma
 
 /datum/chemical_reaction/tricordrazine
 	results =  list(/datum/reagent/medicine/tricordrazine = 5)

@@ -38,6 +38,7 @@
 
 
 	stump.name = "stump of \a [name]"
+	stump.plaintext_zone = "stump of \a [plaintext_zone]"
 	stump.artery_name = "mangled [artery_name]"
 	return stump
 

@@ -37,7 +37,6 @@
 	to_chat(user, span_notice("You set [src]'s frequency to [format_frequency(frequency)]."))
 	return TRUE
 
-/obj/item/mcobject/messaging/radioscanner/proc/incoming_message(datum/source, atom/movable/speaker, message, freq_num)
+/obj/item/mcobject/messaging/radioscanner/proc/incoming_message(datum/source, atom/movable/speaker, message, freq_num, list/data)
 	SIGNAL_HANDLER
-
 	fire("name=[speaker.GetVoice()]&message=[message]") //mimic list2params

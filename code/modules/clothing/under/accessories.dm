@@ -44,7 +44,7 @@
 	return TRUE
 
 /obj/item/clothing/accessory/proc/detach(obj/item/clothing/under/U, user)
-	if(U.atom_storage && U.atom_storage.real_location?.resolve() == src)
+	if(U.atom_storage && (U.atom_storage.get_real_location() == src))
 		QDEL_NULL(U.atom_storage)
 
 	U.setArmor(U.returnArmor().detachArmor(src.returnArmor()))
@@ -176,7 +176,7 @@
 	icon_state = "cargo"
 
 /obj/item/clothing/accessory/medal/ribbon/cargo
-	name = "\"cargo tech of the shift\" award"
+	name = "\"deckhand of the shift\" award"
 	desc = "An award bestowed only upon those cargotechs who have exhibited devotion to their duty in keeping with the highest traditions of Cargonia."
 
 /obj/item/clothing/accessory/medal/silver

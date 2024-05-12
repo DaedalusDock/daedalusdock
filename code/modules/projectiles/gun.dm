@@ -1,5 +1,21 @@
 #define FIRING_PIN_REMOVAL_DELAY 50
 
+/particles/firing_smoke
+	icon = 'icons/particles/96x96.dmi'
+	icon_state = "smoke"
+	width = 500
+	height = 500
+	count = 5
+	spawning = 15
+	lifespan = 0.5 SECONDS
+	fade = 2.4 SECONDS
+	grow = 0.12
+	drift = generator(GEN_CIRCLE, 8, 8)
+	scale = 0.1
+	spin = generator(GEN_NUM, -20, 20)
+	velocity = list(50, 0)
+	friction = generator(GEN_NUM, 0.3, 0.6)
+
 /obj/item/gun
 	name = "gun"
 	desc = "It's a gun. It's pretty terrible, though."
@@ -17,7 +33,6 @@
 
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 5
 	force = 5
 
@@ -45,9 +60,13 @@
 	var/suppressed_sound = 'sound/weapons/gun/general/heavy_shot_suppressed.ogg'
 	var/suppressed_volume = 60
 
+	/* Misc flavor */
+	/// Should smoke particles be created when fired?
+	var/smoking_gun = FALSE
+
 	/* Suppression */
 	/// whether or not a message is displayed when fired
-	var/suppressed = null
+	var/obj/item/suppressed = null
 	var/can_suppress = FALSE
 	var/can_unsuppress = TRUE
 
@@ -55,6 +74,8 @@
 
 	/// Screenshake applied to the firer
 	var/recoil = 0 // boom boom shake the room
+	/// How much recoil there is when fired with one hand
+	var/unwielded_recoil = 0
 	/// How many shots to fire per fire sequence
 	var/burst_size = 1
 	/// The cooldown (DS) before the gun can be fired again after firing
@@ -111,12 +132,12 @@
 /obj/item/gun/Initialize(mapload)
 	. = ..()
 	if(pin)
-		pin = new pin(src)
+		pin = new pin(src, src)
 
 	add_seclight_point()
 
 /obj/item/gun/Destroy()
-	if(isobj(pin)) //Can still be the initial path, then we skip
+	if(!ispath(pin)) //Can still be the initial path, then we skip
 		QDEL_NULL(pin)
 
 	QDEL_NULL(bayonet)
@@ -153,6 +174,7 @@
 
 	suppressed = null
 	update_appearance()
+	verbs -= /obj/item/gun/proc/user_remove_suppressor
 
 /obj/item/gun/examine(mob/user)
 	. = ..()
@@ -254,7 +276,7 @@
 			return ..()
 	return
 
-/obj/item/gun/attack_atom(obj/O, mob/living/user, params)
+/obj/item/gun/attack_obj(obj/O, mob/living/user, params)
 	if(user.combat_mode)
 		if(bayonet)
 			O.attackby(bayonet, user)
@@ -440,9 +462,25 @@
 	if(!fired && chambered?.loaded_projectile)
 		chambered.loaded_projectile.damage /= 5
 
-/obj/item/gun/proc/unlock() //used in summon guns and as a convience for admins
+/obj/item/gun/proc/unlock()
 	if(pin)
 		qdel(pin)
-	pin = new /obj/item/firing_pin
+	pin = new /obj/item/firing_pin(src, src)
+
+/obj/item/gun/proc/user_remove_suppressor()
+	set name = "Remove Suppressor"
+	set category = "Object"
+	set src in oview(1)
+
+	if(!isliving(usr))
+		return
+
+	if(!usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY|USE_NEED_HANDS))
+		return
+
+	to_chat(usr, span_notice("You unscrew [suppressed] from [src]."))
+	if(!usr.put_in_hands(suppressed))
+		suppressed.forceMove(drop_location())
+	clear_suppressor()
 
 #undef FIRING_PIN_REMOVAL_DELAY

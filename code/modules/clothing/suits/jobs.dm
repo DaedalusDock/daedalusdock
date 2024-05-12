@@ -58,13 +58,12 @@
 
 //Detective
 /obj/item/clothing/suit/det_suit
-	name = "trenchcoat"
-	desc = "A 18th-century multi-purpose trenchcoat. Someone who wears this means serious business."
+	name = "rumpled raincoat"
+	desc = "An old tan raincoat that's been poorly taken care of. You've still got one last question..."
 	icon_state = "detective"
 	inhand_icon_state = "det_suit"
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	armor = list(BLUNT = 25, PUNCTURE = 10, SLASH = 0, LASER = 25, ENERGY = 35, BOMB = 0, BIO = 0, FIRE = 0, ACID = 45)
 	cold_protection = CHEST|GROIN|LEGS|ARMS
 	heat_protection = CHEST|GROIN|LEGS|ARMS
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -73,16 +72,16 @@
 	. = ..()
 	allowed = GLOB.detective_vest_allowed
 
-/obj/item/clothing/suit/det_suit/dark
-	name = "noir trenchcoat"
-	desc = "A hard-boiled private investigator's dark trenchcoat."
+/obj/item/clothing/suit/det_suit/noir
+	name = "grey trenchcoat"
+	desc = "A large grey trenchcoat for a hard-boiled investigator."
 	icon_state = "noirdet"
 	inhand_icon_state = "greydet"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
-/obj/item/clothing/suit/det_suit/noir
-	name = "noir suit coat"
-	desc = "A dapper private investigator's dark suit coat."
+/obj/item/clothing/suit/det_suit/dark
+	name = "sleek suit coat"
+	desc = "A dapper dark suit coat."
 	icon_state = "detsuit"
 	inhand_icon_state = "detsuit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
@@ -171,7 +170,7 @@
 	body_parts_covered = CHEST|ARMS
 
 /obj/item/clothing/suit/security/hos
-	name = "head of security's jacket"
+	name = "security marshal's jacket"
 	desc = "This piece of clothing was specifically designed for asserting superior authority."
 	icon_state = "hosbluejacket"
 	inhand_icon_state = "hosbluejacket"

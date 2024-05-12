@@ -16,7 +16,7 @@
 	dna_block = DNA_SNOUT_BLOCK
 
 /obj/item/organ/snout/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(!(human.wear_mask?.flags_inv & HIDESNOUT) && !(human.head?.flags_inv & HIDESNOUT))
+	if(!(human.obscured_slots & HIDESNOUT))
 		return TRUE
 	return FALSE
 

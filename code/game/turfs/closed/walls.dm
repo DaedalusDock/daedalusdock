@@ -20,7 +20,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	icon_state = "wall-0"
 	base_icon_state = "wall"
 
-	explosion_block = 1
+	explosion_block = 3
 	blocks_air = AIR_BLOCKED
 	baseturfs = /turf/open/floor/plating
 
@@ -134,10 +134,11 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 			overlays.len = 0
 			var/list/new_overlays = list()
 
-			var/image/smoothed_stripe = image(stripe_icon, icon_state)
-			smoothed_stripe.appearance_flags = RESET_COLOR
-			smoothed_stripe.color = stripe_color
-			new_overlays += smoothed_stripe
+			if(stripe_icon)
+				var/image/smoothed_stripe = image(stripe_icon, icon_state)
+				smoothed_stripe.appearance_flags = RESET_COLOR
+				smoothed_stripe.color = stripe_color
+				new_overlays += smoothed_stripe
 
 			if(neighbor_stripe)
 				var/image/neighb_stripe_overlay = image('icons/turf/walls/neighbor_stripe.dmi', "stripe-[neighbor_stripe]")
@@ -230,9 +231,11 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	if(reinf_mat_ref)
 		icon = plating_mat_ref.reinforced_wall_icon
 		material_color = plating_mat_ref.wall_color
+		explosion_block = initial(explosion_block) + 2
 	else
 		icon = plating_mat_ref.wall_icon
 		material_color = plating_mat_ref.wall_color
+		explosion_block = initial(explosion_block)
 
 	stripe_icon = plating_mat_ref.wall_stripe_icon
 
@@ -379,7 +382,6 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	user.changeNext_move(CLICK_CD_MELEE)
 	to_chat(user, span_notice("You push the wall but nothing happens!"))
 	playsound(src, 'sound/weapons/genhit.ogg', 25, TRUE)
-	add_fingerprint(user)
 
 /turf/closed/wall/attackby(obj/item/W, mob/user, params)
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -391,7 +393,7 @@ GLOBAL_REAL_VAR(wall_overlays_cache) = list()
 	if(!isturf(user.loc))
 		return //can't do this stuff whilst inside objects and such
 
-	add_fingerprint(user)
+	W.leave_evidence(user, src)
 
 	var/turf/T = user.loc //get user's location for delay checks
 

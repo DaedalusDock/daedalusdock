@@ -5,7 +5,7 @@
 
 /datum/codex_entry/tool/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text)
 	. = ..()
-	GLOB.tool_codex_entries += name
+	GLOB.tool_codex_entries += src
 
 /datum/codex_entry/tool/crowbar
 	name = "Crowbar"
@@ -44,3 +44,8 @@
 	mechanics_text = "&nbsp;&nbsp;&nbsp;&nbsp;The welder is used for repairing damaged windows and walls; alongside welding shut doors, firelocks and vents. \
 	Not just being a repair-tool, it is a potent melee weapon if it’s lit. Just don’t forget fuel."
 
+/datum/codex_entry/tool/screwdriver
+	name = "Screwdriver"
+	associated_paths = list(/obj/item/screwdriver)
+	use_typesof = TRUE
+	mechanics_text = "&nbsp;&nbsp;&nbsp;&nbsp;A screwdriver is a versitile tool, though it will most often be used to remove panels or unsecure objects from others."

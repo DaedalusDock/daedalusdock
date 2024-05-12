@@ -333,11 +333,11 @@
 	light_ex_range = max(light_ex_range - decrement, 0)
 
 	if (heavy_ex_range)
-		SSexplosions.highturf += location
+		EX_ACT(location, EXPLODE_DEVASTATE)
 	else if(medium_ex_range)
-		SSexplosions.medturf += location
+		EX_ACT(location, EXPLODE_HEAVY)
 	else if(light_ex_range)
-		SSexplosions.lowturf += location
+		EX_ACT(location, EXPLODE_LIGHT)
 	else
 		qdel(src)
 		return

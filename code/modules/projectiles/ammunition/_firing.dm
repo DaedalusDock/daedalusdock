@@ -8,11 +8,13 @@
 				spread = round((rand() - 0.5) * distro)
 			else //Smart spread
 				spread = round(1 - 0.5) * distro
+
 		if(!throw_proj(target, targloc, user, params, spread, fired_from))
 			return FALSE
 	else
 		if(isnull(loaded_projectile))
 			return FALSE
+
 		AddComponent(/datum/component/pellet_cloud, projectile_type, pellets)
 		SEND_SIGNAL(src, COMSIG_PELLET_CLOUD_INIT, target, user, fired_from, randomspread, spread, zone_override, params, distro)
 
@@ -28,7 +30,10 @@
 		if(!firer.newtonian_move(get_dir(target, fired_from), instant = TRUE))
 			var/throwtarget = get_step(fired_from, get_dir(target, fired_from))
 			firer.safe_throw_at(throwtarget, 1, 2)
+
 	update_appearance()
+	if(leaves_residue)
+		leave_residue(user, get_dist(user, target) <= 1 ? target : null, fired_from)
 	return TRUE
 
 /obj/item/ammo_casing/proc/tk_firing(mob/living/user, atom/fired_from)
@@ -85,3 +90,19 @@
 	var/dx = abs(target.x - current.x)
 	var/dy = abs(target.y - current.y)
 	return locate(target.x + round(gaussian(0, distro) * (dy+2)/8, 1), target.y + round(gaussian(0, distro) * (dx+2)/8, 1), target.z)
+
+/// Leave forensic evidence on everything
+/obj/item/ammo_casing/proc/leave_residue(mob/living/carbon/user, mob/living/target, obj/item/gun/fired_from)
+	var/residue = caliber
+	if(!residue)
+		return
+
+	add_gunshot_residue(residue)
+	target?.add_gunshot_residue(residue)
+	fired_from?.add_gunshot_residue(residue)
+
+	if(istype(user))
+		user.add_gunshot_residue(residue)
+
+	if(prob(30))
+		drop_location().add_gunshot_residue(residue)

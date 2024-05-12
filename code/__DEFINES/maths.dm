@@ -1,7 +1,9 @@
 // Remove these once we have Byond implementation.
-#define ISNAN(a) (!(a==a))
-#define ISINF(a) (!ISNAN(a) && ISNAN(a-a))
-#define IS_INF_OR_NAN(a) (ISNAN(a-a))
+// ------------------------------------
+#define IS_FINITE(a) (isnum(a) && !isinf(a))
+
+#define IS_INF_OR_NAN(a) (isnan(a) || isinf(a))
+
 // Aight dont remove the rest
 
 // Credits to Nickr5 for the useful procs I've taken from his library resource.
@@ -45,6 +47,9 @@
 
 // Similar to clamp but the bottom rolls around to the top and vice versa. min is inclusive, max is exclusive
 #define WRAP(val, min, max) clamp(( min == max ? min : (val) - (round(((val) - (min))/((max) - (min))) * ((max) - (min))) ),min,max)
+
+/// Increments a value and wraps it if it exceeds some value. Can be used to circularly iterate through a list through `idx = WRAP_UP(idx, length_of_list)`.
+#define WRAP_UP(val, max) (((val) % (max)) + 1)
 
 // Real modulus that handles decimals
 #define MODULUS(x, y) ( (x) - FLOOR(x, y))
@@ -228,6 +233,10 @@
 // )
 
 #define GET_TRUE_DIST(a, b) (a == null || b == null) ? -1 : max(abs(a.x -b.x), abs(a.y-b.y), abs(a.z-b.z))
+
+
+/// The number of cells in a taxicab circle (rasterized diamond) of radius X.
+#define DIAMOND_AREA(X) (1 + 2*(X)*((X)+1))
 
 // A neat little helper to convert the value X, that's between imin and imax, into a value
 // that's proportionally scaled and in range of omin and omax.

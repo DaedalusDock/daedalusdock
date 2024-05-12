@@ -228,7 +228,7 @@
 	if(!isturf(user.loc))
 		return //can't do this stuff whilst inside objects and such
 
-	add_fingerprint(user)
+	tool_used.leave_evidence(user, src)
 
 	if(deconstruct_steps(tool_used, user))
 		return

@@ -53,7 +53,7 @@ Consuming extracts:
 	force = 0
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
-	throw_speed = 3
+	throw_speed = 1.5
 	throw_range = 6
 
 /obj/item/slime_cookie/proc/do_effect(mob/living/M, mob/user)

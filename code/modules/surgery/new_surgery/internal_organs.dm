@@ -334,7 +334,7 @@
 	name = "Brain revival"
 	desc = "Utilizes the incredible power of Alkysine to restore the spark of life."
 	allowed_tools = list(
-		/obj/item/reagent_containers/glass/beaker = 100,
+		/obj/item/reagent_containers/glass = 100,
 	)
 	min_duration = 100
 	max_duration = 150
@@ -354,7 +354,8 @@
 
 /datum/surgery_step/internal/brain_revival/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = FALSE
-	var/obj/item/reagent_containers/glass/beaker/S = tool
+
+	var/obj/item/reagent_containers/glass/S = tool
 	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
 		to_chat(user, span_warning("\The [S] doesn't contain enough alkysine!"))
 		return
@@ -373,7 +374,7 @@
 
 /datum/surgery_step/internal/brain_revival/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/reagent_containers/glass/beaker/S = tool
-	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 10))
+	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 5))
 		return
 
 	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
@@ -381,7 +382,7 @@
 	if(!head || !brain)
 		return
 
-	S.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 10)
+	S.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 5)
 	brain.setOrganDamage(0)
 	..()
 
@@ -390,6 +391,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/treat_necrosis
 	name = "Treat necrosis"
+	desc = "Utilizes the restorative power of even the slightest amount of Peridaxon to restore functionality to an organ."
 	allowed_tools = list(
 		/obj/item/reagent_containers/dropper = 100,
 		/obj/item/reagent_containers/glass/bottle = 75,

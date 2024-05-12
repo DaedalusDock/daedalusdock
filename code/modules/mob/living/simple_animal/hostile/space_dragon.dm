@@ -89,8 +89,6 @@
 	var/rifts_charged = 0
 	/// Whether or not Space Dragon has completed their objective, and thus triggered the ending sequence.
 	var/objective_complete = FALSE
-	/// The ability to make your sprite smaller
-	var/datum/action/small_sprite/space_dragon/small_sprite
 	/// The color of the space dragon.
 	var/chosen_color
 	/// Minimum devastation damage dealt coefficient based on max health
@@ -104,9 +102,7 @@
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_HEALS_FROM_CARP_RIFTS, INNATE_TRAIT)
-	small_sprite = new
-	small_sprite.Grant(src)
-	RegisterSignal(small_sprite, COMSIG_ACTION_TRIGGER, PROC_REF(add_dragon_overlay))
+	AddComponent(/datum/component/seethrough_mob)
 
 /mob/living/simple_animal/hostile/space_dragon/Login()
 	. = ..()
@@ -204,12 +200,10 @@
 		destroy_rifts()
 	..()
 	add_dragon_overlay()
-	UnregisterSignal(small_sprite, COMSIG_ACTION_TRIGGER)
 
 /mob/living/simple_animal/hostile/space_dragon/revive(full_heal, admin_revive)
 	. = ..()
 	add_dragon_overlay()
-	RegisterSignal(small_sprite, COMSIG_ACTION_TRIGGER, PROC_REF(add_dragon_overlay))
 
 /mob/living/simple_animal/hostile/space_dragon/wabbajack_act(mob/living/new_mob)
 	empty_contents()
@@ -242,11 +236,12 @@
 		to_chat(src, span_warning("Not a valid color, please try again."))
 		color_selection()
 		return
-	var/temp_hsv = RGBtoHSV(chosen_color)
-	if(ReadHSV(temp_hsv)[3] < DARKNESS_THRESHOLD)
+	var/list/temp_hsv = rgb2hsv(chosen_color)
+	if(temp_hsv[3] < DARKNESS_THRESHOLD)
 		to_chat(src, span_danger("Invalid color. Your color is not bright enough."))
 		color_selection()
 		return
+
 	add_atom_colour(chosen_color, FIXED_COLOUR_PRIORITY)
 	add_dragon_overlay()
 
@@ -257,8 +252,6 @@
  */
 /mob/living/simple_animal/hostile/space_dragon/proc/add_dragon_overlay()
 	cut_overlays()
-	if(!small_sprite.small)
-		return
 	if(stat == DEAD)
 		var/mutable_appearance/overlay = mutable_appearance(icon, "overlay_dead")
 		overlay.appearance_flags = RESET_COLOR
@@ -720,7 +713,7 @@
 	if(!is_listed)
 		ckey_list += user.ckey
 	newcarp.key = user.key
-	newcarp.set_name()
+	newcarp.give_unique_name()
 	var/datum/antagonist/space_dragon/S = dragon?.mind?.has_antag_datum(/datum/antagonist/space_dragon)
 	if(S)
 		S.carp += newcarp.mind

@@ -1,22 +1,27 @@
 /obj/item/crowbar
-	name = "pocket crowbar"
-	desc = "A small crowbar. This handy tool is useful for lots of things, such as prying floor tiles or opening unpowered doors."
+	name = "crowbar"
+	desc = "A steel crowbar for gaining entry into places you should not be."
 	icon = 'icons/obj/tools.dmi'
-	icon_state = "crowbar"
+	icon_state = "crowbar_large"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
+	inhand_icon_state = "crowbar"
+	worn_icon_state = "crowbar"
+
 	usesound = 'sound/items/crowbar.ogg'
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 
 	force = 14
 	throwforce = 7
+	throw_range = 5
+
 	stamina_damage = 35
 	stamina_cost = 12
 	stamina_critical_chance = 10
 
-	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=50)
+	w_class = WEIGHT_CLASS_NORMAL
+	custom_materials = list(/datum/material/iron=70)
 	drop_sound = 'sound/items/handling/crowbar_drop.ogg'
 	pickup_sound = 'sound/items/handling/crowbar_pickup.ogg'
 
@@ -31,6 +36,9 @@
 	user.visible_message(span_suicide("[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1)
 	return (BRUTELOSS)
+
+/obj/item/crowbar/get_misssound()
+	return pick('sound/weapons/swing/swing_crowbar.ogg', 'sound/weapons/swing/swing_crowbar2.ogg', 'sound/weapons/swing/swing_crowbar3.ogg')
 
 /obj/item/crowbar/red
 	icon_state = "crowbar_red"
@@ -52,32 +60,30 @@
 	toolspeed = 0.1
 
 
-/obj/item/crowbar/large
-	name = "crowbar"
-	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
-	force = 12
-	w_class = WEIGHT_CLASS_NORMAL
-	throw_speed = 3
-	throw_range = 3
-	custom_materials = list(/datum/material/iron=70)
-	icon_state = "crowbar_large"
-	inhand_icon_state = "crowbar"
-	worn_icon_state = "crowbar"
-	toolspeed = 0.7
+/obj/item/crowbar/pocket
+	name = "compact crowbar"
+	desc = "A small steel crowbar."
+	force = 10
+	w_class = WEIGHT_CLASS_SMALL
+	throw_range = 7
+	custom_materials = list(/datum/material/iron=50)
+	icon_state = "crowbar"
+	toolspeed = 1.7
 
-/obj/item/crowbar/large/heavy //from space ruin
+/obj/item/crowbar/heavy //from space ruin
 	name = "heavy crowbar"
-	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big. It feels oddly heavy.."
+	desc = "It feels oddly heavy.."
 	force = 20
+	throw_range = 3
 	icon_state = "crowbar_powergame"
 
-/obj/item/crowbar/large/old
+/obj/item/crowbar/old
 	name = "old crowbar"
-	desc = "It's an old crowbar. Much larger than the pocket sized ones, carrying a lot more heft. They don't make 'em like they used to."
+	desc = "It's an old crowbar. They don't make 'em like they used to."
 	throwforce = 10
-	throw_speed = 2
+	throw_speed = 1.5
 
-/obj/item/crowbar/large/old/Initialize()
+/obj/item/crowbar/old/Initialize()
 	. = ..()
 	if(prob(50))
 		icon_state = "crowbar_powergame"

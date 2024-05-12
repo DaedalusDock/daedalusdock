@@ -8,23 +8,27 @@
 	righthand_file = 'icons/mob/inhands/equipment/toolbox_righthand.dmi'
 	flags_1 = CONDUCT_1
 
-	force = 20
+	force = 18
 	throwforce = 10
-	throw_speed = 2
+	throw_speed = 1.5
 	throw_range = 7
 	stamina_damage = 47
 	stamina_cost = 20
 	stamina_critical_chance = 10
-	combat_click_delay = CLICK_CD_MELEE * 2
+	combat_click_delay = CLICK_CD_MELEE * 2.5
+
+	block_chance = 10
 
 	w_class = WEIGHT_CLASS_BULKY
 	custom_materials = list(/datum/material/iron = 500)
 	attack_verb_continuous = list("robusts")
 	attack_verb_simple = list("robust")
 	hitsound = 'sound/weapons/smash.ogg'
+	block_sound = SFX_BLOCK_BIG_METAL
 	drop_sound = 'sound/items/handling/toolbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/toolbox_pickup.ogg'
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR
+
 	var/latches = "single_latch"
 	var/has_latches = TRUE
 

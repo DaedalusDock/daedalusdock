@@ -10,7 +10,7 @@
 	resistance_flags = FIRE_PROOF
 	zmm_flags = ZMM_MANGLE_PLANES
 
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_outer_range = 4
 	light_power = 0.2
 	light_on = FALSE

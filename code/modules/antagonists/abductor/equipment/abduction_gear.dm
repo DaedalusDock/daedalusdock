@@ -55,7 +55,7 @@
 			icon_state = "vest_stealth"
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		H.update_worn_oversuit()
+		H.update_slots_for_item(src)
 	update_action_buttons()
 
 /obj/item/clothing/suit/armor/abductor/vest/item_action_slot_check(slot, mob/user)
@@ -128,7 +128,7 @@
 
 /obj/item/clothing/suit/armor/abductor/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in INSTANCES_OF(/obj/machinery/abductor/console))
 		if(C.vest == src)
 			C.vest = null
 			break
@@ -569,9 +569,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			C.visible_message(span_danger("[user] begins restraining [C] with [src]!"), \
 									span_userdanger("[user] begins shaping an energy field around your hands!"))
 			if(do_after(user, C, time_to_cuff) && C.canBeHandcuffed())
-				if(!C.handcuffed)
-					C.set_handcuffed(new /obj/item/restraints/handcuffs/energy/used(C))
-					C.update_handcuffed()
+				if(C.equip_to_slot_if_possible(new /obj/item/restraints/handcuffs/energy/used(C), ITEM_SLOT_HANDCUFFED, TRUE, TRUE, null, TRUE))
 					to_chat(user, span_notice("You restrain [C]."))
 					log_combat(user, C, "handcuffed")
 			else

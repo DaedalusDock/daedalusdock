@@ -246,13 +246,6 @@
 /obj/item/paper/crumpled,
 /turf/open/floor/iron/airless,
 /area/ruin/tcommsat_oldaisat)
-"aX" = (
-/obj/item/food/meat/slab/synthmeat{
-	name = "Cuban Pete-Meat"
-	},
-/obj/item/stack/spacecash/c200,
-/turf/open/floor/engine,
-/area/ruin/tcommsat_oldaisat)
 "aY" = (
 /obj/structure/chair{
 	dir = 4
@@ -2910,7 +2903,7 @@ ag
 ao
 aE
 aE
-aX
+aE
 ag
 ag
 ag

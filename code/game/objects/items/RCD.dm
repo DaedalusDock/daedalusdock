@@ -19,7 +19,6 @@ RLD
 	item_flags = NOBLUDGEON
 	force = 0
 	throwforce = 10
-	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron=100000)
@@ -688,11 +687,11 @@ GLOBAL_VAR_INIT(icon_holographic_window, init_holographic_window())
 	airlock_electronics = new(src)
 	airlock_electronics.name = "Access Control"
 	airlock_electronics.holder = src
-	GLOB.rcd_list += src
+	SET_TRACKING(TRACKING_KEY_RCD)
 
 /obj/item/construction/rcd/Destroy()
 	QDEL_NULL(airlock_electronics)
-	GLOB.rcd_list -= src
+	UNSET_TRACKING(TRACKING_KEY_RCD)
 	. = ..()
 
 /obj/item/construction/rcd/attack_self(mob/user)

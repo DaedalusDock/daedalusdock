@@ -8,6 +8,9 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	plane = ABOVE_HUD_PLANE
 	var/datum/radial_menu/parent
 
+/atom/movable/screen/radial/can_usr_use(mob/user)
+	return usr.client == parent.current_user
+
 /atom/movable/screen/radial/proc/set_parent(new_value)
 	if(parent)
 		UnregisterSignal(parent, COMSIG_PARENT_QDELETING)
@@ -49,11 +52,14 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		closeToolTip(usr)
 
 /atom/movable/screen/radial/slice/Click(location, control, params)
-	if(usr.client == parent.current_user)
-		if(next_page)
-			parent.next_page()
-		else
-			parent.element_chosen(choice, usr, params)
+	. = ..()
+	if(.)
+		return FALSE
+
+	if(next_page)
+		parent.next_page()
+	else
+		parent.element_chosen(choice, usr, params)
 
 /atom/movable/screen/radial/center
 	name = "Close Menu"
@@ -68,8 +74,11 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	icon_state = "radial_center"
 
 /atom/movable/screen/radial/center/Click(location, control, params)
-	if(usr.client == parent.current_user)
-		parent.finished = TRUE
+	. = ..()
+	if(.)
+		return FALSE
+
+	parent.finished = TRUE
 
 /datum/radial_menu
 	/// List of choice IDs

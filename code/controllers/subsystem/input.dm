@@ -5,7 +5,6 @@ VERB_MANAGER_SUBSYSTEM_DEF(input)
 	flags = SS_TICKER
 	priority = FIRE_PRIORITY_INPUT
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
-
 	use_default_stats = FALSE
 
 	/// Standard macroset *ALL* players get

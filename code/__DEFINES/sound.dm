@@ -7,6 +7,13 @@
 #define CHANNEL_AMBIENCE 1019
 #define CHANNEL_BUZZ 1018
 #define CHANNEL_TRAITOR 1017
+#define CHANNEL_BREATHING 1016
+
+//THIS SHOULD ALWAYS BE THE LOWEST ONE!
+//KEEP IT UPDATED
+#define CHANNEL_HIGHEST_AVAILABLE 1015
+
+#define MAX_INSTRUMENT_CHANNELS (128 * 6)
 
 ///Default range of a sound.
 #define SOUND_RANGE 17
@@ -19,13 +26,6 @@
 #define SOUND_DEFAULT_FALLOFF_DISTANCE 1 //For a normal sound this would be 1 tile of no falloff
 ///The default exponent of sound falloff
 #define SOUND_FALLOFF_EXPONENT 6
-
-//THIS SHOULD ALWAYS BE THE LOWEST ONE!
-//KEEP IT UPDATED
-
-#define CHANNEL_HIGHEST_AVAILABLE 1015
-
-#define MAX_INSTRUMENT_CHANNELS (128 * 6)
 
 //#define SOUND_MINIMUM_PRESSURE 10
 
@@ -172,8 +172,9 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_ROCK_TAP "rock_tap"
 #define SFX_BREAK_BONE "break_bone"
 #define SFX_PAINT "paint"
+#define SFX_BLOCK_BIG_METAL "big_metal_block"
 
 
-#define LOOPING_SOUND_NORMAL 1
-#define LOOPING_SOUND_LOCAL 2
-#define LOOPING_SOUND_DIRECT 3
+#define LOOPING_SOUND_DIRECT 1
+#define LOOPING_SOUND_NORMAL 2
+#define LOOPING_SOUND_LOCAL 3

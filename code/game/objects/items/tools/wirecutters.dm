@@ -14,7 +14,6 @@
 	slot_flags = ITEM_SLOT_BELT
 
 	force = 6
-	throw_speed = 3
 	throw_range = 7
 	stamina_damage = 15
 	stamina_cost = 10

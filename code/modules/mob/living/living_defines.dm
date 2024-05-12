@@ -3,7 +3,10 @@ DEFINE_INTERACTABLE(/mob/living)
 	see_invisible = SEE_INVISIBLE_LIVING
 	sight = 0
 	see_in_dark = 2
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD)
+	hud_possible = list(
+		HEALTH_HUD = 'icons/mob/huds/hud.dmi',
+		STATUS_HUD = 'icons/mob/huds/hud.dmi',
+	)
 	//pressure_resistance = 10
 
 	hud_type = /datum/hud/living
@@ -189,7 +192,7 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/voice_type
 
 	COOLDOWN_DECLARE(smell_time)
-	var/last_smell_intensity = 0
+	var/datum/weakref/next_smell
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null

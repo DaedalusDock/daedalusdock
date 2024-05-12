@@ -13,8 +13,7 @@
 
 /obj/effect/mob_spawn/corpse/ai/special(mob/living/silicon/ai/spawned/dead_ai)
 	. = ..()
-	dead_ai.name = src.name
-	dead_ai.real_name = src.name
+	dead_ai.set_real_name(src.name)
 
 ///dead slimes, with a var for whatever color you want.
 /obj/effect/mob_spawn/corpse/slime

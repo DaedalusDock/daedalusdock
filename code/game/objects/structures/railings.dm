@@ -36,7 +36,7 @@
 
 /obj/structure/railing/attackby(obj/item/I, mob/living/user, params)
 	..()
-	add_fingerprint(user)
+	I.leave_evidence(user, src)
 
 	if(I.tool_behaviour == TOOL_WELDER && !user.combat_mode)
 		if(atom_integrity < max_integrity)
@@ -85,7 +85,7 @@
 		return . || mover.throwing || mover.movement_type & (FLYING | FLOATING)
 	return TRUE
 
-/obj/structure/railing/CanAStarPass(obj/item/card/id/ID, to_dir, atom/movable/caller, no_id = FALSE)
+/obj/structure/railing/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
 	if(!(to_dir & dir))
 		return TRUE
 	return ..()
@@ -124,7 +124,7 @@
 		return ..()
 
 	if(!Adjacent(L))
-		user.move_grabbed_atoms_towards(get_turf(src))
+		grab.move_victim_towards(get_turf(src))
 		return ..()
 
 	if(user.combat_mode)

@@ -1344,6 +1344,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 /client/verb/cycle_title_music()
 	set name = ".cycle_title_music"
 	set instant = TRUE
+	set hidden = TRUE
 
 	var/datum/media/song = next_in_line
 	if(!song)

@@ -12,7 +12,7 @@
 	slot_flags = ITEM_SLOT_BACK
 
 	force = 5
-	force_wielded = type::force * 4
+	force_wielded = 20
 	throwforce = 15
 	throw_range = 1
 
@@ -80,7 +80,7 @@
 	slot_flags = ITEM_SLOT_BACK
 
 	force = 5
-	force_wielded = type::force * 5
+	force_wielded = 25
 	throwforce = 30
 	throw_range = 7
 

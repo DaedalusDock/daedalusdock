@@ -67,11 +67,6 @@
 	l_hand = /obj/item/camera
 	suit = /obj/item/clothing/suit/apron/surgical
 
-/datum/outfit/obsessed/post_equip(mob/living/carbon/human/H)
-	for(var/obj/item/carried_item in H.get_equipped_items(TRUE))
-		carried_item.add_mob_blood(H)//Oh yes, there will be blood...
-	H.regenerate_icons()
-
 /datum/antagonist/obsessed/proc/forge_objectives(datum/mind/obsessionmind)
 	var/list/objectives_left = list("spendtime", "polaroid", "hug")
 	var/datum/objective/assassinate/obsessed/kill = new

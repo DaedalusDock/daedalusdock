@@ -53,7 +53,7 @@
 		if(href_list["link_to_discord"])
 			var/_link = CONFIG_GET(string/panic_bunker_discord_link)
 			if(_link)
-				src << link("https://discord.daedalus13.net/")
+				src << link(_link)
 			return TRUE
 
 		return TRUE
@@ -593,9 +593,6 @@
  * giving them the interview form and forcing it to appear.
  */
 /mob/dead/new_player/proc/register_for_interview()
-	// First we detain them by removing all the verbs they have on client
-	client.set_restricted()
-
 	// Then we create the interview form and show it to the client
 	var/datum/interview/I = GLOB.interviews.interview_for_client(client)
 	if (I)

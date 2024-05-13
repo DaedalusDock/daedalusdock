@@ -339,59 +339,12 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		player_details.byond_version = full_version
 		GLOB.player_details[ckey] = player_details
 
-	if(CONFIG_GET(flag/panic_bunker) && CONFIG_GET(flag/panic_bunker_discord_require))
-		if(!SSdbcore.Connect())
-			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
-
-			if(!CONFIG_GET(flag/sql_enabled))
-				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
-
-			log_world(msg)
-			message_admins(msg)
-		else
-			if(!discord_is_link_valid(ckey))
-				if(connecting_admin)
-					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
-					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
-					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
-
-				else
-					var/kick = SSlag_switch?.measures[KICK_GUESTS]
-					log_access("Failed Login: [key] - No valid Discord account link registered. [kick ? "" : "They have been permitted to connect as a guest."]")
-					if(kick)
-						restricted_mode = TRUE // Don't bother removing their verbs, theyre about to be booted anyway and verb altering is expensive.
-						var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
-						var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
-						//These need to be immediate because we're disposing of the client the second we're done with this.
-						usr << browse(
-							{"
-								<center>
-								<span style='color:red'>Your One-Time-Password is:<br> [discord_otp]</span>
-								<br><br>
-								To link your Discord account, head to the Discord Server and make an entry ticket if you have not already. Then, paste the following into any channel:
-								<hr/>
-								</center>
-								<code>
-									[discord_prefix]verify [discord_otp]
-								</code>
-								<hr/>
-								discord.daedalus13.net (We are unable to embed this link for security reasons.)
-								<br>
-							"},
-							"window=discordauth;can_close=0;can_resize=0;can_minimize=0",
-						)
-						to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
-						to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
-						to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server (discord.daedalus13.net) and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
-						qdel(src)
-					else
-						set_restricted()
-						add_verb(src, /client/verb/ooc, bypass_restricted = TRUE)
+	if(CONFIG_GET(flag/panic_bunker) && check_panic_bunker(connecting_admin))
+		qdel(src)
+		return
 
 
 	. = ..() //calls mob.Login()
-
-	if(restricted_mode)
 
 	if (length(GLOB.stickybanadminexemptions))
 		GLOB.stickybanadminexemptions -= ckey
@@ -404,6 +357,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			add_system_note("Spoofed-Byond-Version", "Detected as using a spoofed byond version.")
 			log_suspicious_login("Failed Login: [key] - Spoofed byond version")
 			qdel(src)
+			return
 
 		if (num2text(byond_build) in GLOB.blacklisted_builds)
 			log_access("Failed login: [key] - blacklisted byond version")
@@ -653,6 +607,73 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	Master.UpdateTickRate()
 	..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
 	return QDEL_HINT_HARDDEL_NOW
+
+/// Checks panic bunker status and applies restricted_mode if necessary. Returns TRUE if the client should be kicked.
+/client/proc/check_panic_bunker(is_admin)
+	if(ckey in GLOB.interviews.approved_ckeys)
+		return FALSE
+
+	// Check if user should be added to interview queue
+	if (CONFIG_GET(flag/panic_bunker_interview))
+		if(is_admin)
+			return FALSE
+
+		var/required_living_minutes = CONFIG_GET(number/panic_bunker_living)
+		var/living_minutes = get_exp_living(TRUE)
+		if (required_living_minutes >= living_minutes)
+			restricted_mode = TRUE
+			return FALSE
+
+	// Discord linkage
+	if(CONFIG_GET(flag/panic_bunker_discord_require))
+		if(!SSdbcore.Connect())
+			var/msg = "Database connection failure. Key [key] not checked for Discord account requirement."
+
+			if(!CONFIG_GET(flag/sql_enabled))
+				msg += "\nDB IS NOT ENABLED - THIS IS NOT A BUG\nDiscord account links cannot be checked without a database!"
+
+			log_world(msg)
+			message_admins(msg)
+			return FALSE
+		else
+			if(!discord_is_link_valid())
+				if(is_admin)
+					log_admin("The admin [key] has been allowed to bypass the Discord account link requirement")
+					message_admins(span_adminnotice("The admin [key] has been allowed to bypass the Discord account link requirement"))
+					to_chat(src, "As an admin, you have been allowed to bypass the Discord account link requirement")
+					return FALSE
+				else
+					var/kick = SSlag_switch?.measures[KICK_GUESTS]
+					log_access("Failed Login: [key] - No valid Discord account link registered. [kick ? "" : "They have been permitted to connect as a guest."]")
+					if(kick)
+						restricted_mode = TRUE // Don't bother removing their verbs, theyre about to be booted anyway and verb altering is expensive.
+						var/discord_otp = discord_get_or_generate_one_time_token_for_ckey(ckey)
+						var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
+						//These need to be immediate because we're disposing of the client the second we're done with this.
+						usr << browse(
+							{"
+								<center>
+								<span style='color:red'>Your One-Time-Password is:<br> [discord_otp]</span>
+								<br><br>
+								To link your Discord account, head to the Discord Server and make an entry ticket if you have not already. Then, paste the following into any channel:
+								<hr/>
+								</center>
+								<code>
+									[discord_prefix]verify [discord_otp]
+								</code>
+								<hr/>
+								discord.daedalus13.net (We are unable to embed this link for security reasons.)
+								<br>
+							"},
+							"window=discordauth;can_close=0;can_resize=0;can_minimize=0",
+						)
+						to_chat_immediate(src, span_boldnotice("Your One-Time-Password is: [discord_otp]"))
+						to_chat_immediate(src, span_userdanger("DO NOT SHARE THIS OTP WITH ANYONE"))
+						to_chat_immediate(src, span_notice("To link your Discord account, head to the Discord Server (discord.daedalus13.net) and paste the following message:<hr/><code>[discord_prefix]verify [discord_otp]</code><hr/>\n"))
+						return TRUE
+					else
+						restricted_mode = TRUE
+						return FALSE
 
 /client/proc/set_client_age_from_db(connectiontopic)
 	if (is_guest_key(src.key))
@@ -1338,13 +1359,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	to_chat(mob, examine_block("<span class='notice'>[jointext(hints, "<br>")]</span>"))
 
-/// Sets a client to restricted status, this cannot be undone, they must reconnect.
-/client/proc/set_restricted()
-	if(restricted_mode)
-		return
-
-	restricted_mode = TRUE
-
+/// Strip verbs from a client and it's mob.
+/client/proc/strip_verbs()
 	for (var/v in verbs)
 		var/procpath/verb_path = v
 		remove_verb(src, verb_path)

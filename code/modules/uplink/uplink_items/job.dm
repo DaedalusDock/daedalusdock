@@ -70,7 +70,7 @@
 	item = /obj/item/hot_potato/syndicate
 	cost = 4
 	surplus = 0
-	restricted_roles = list(JOB_COOK, JOB_BOTANIST, JOB_CLOWN, JOB_MIME)
+	restricted_roles = list(JOB_COOK, JOB_BOTANIST, JOB_CLOWN)
 
 /datum/uplink_item/role_restricted/ez_clean_bundle
 	name = "EZ Clean Grenade Bundle"
@@ -134,16 +134,6 @@
 	cost = 14
 	item = /obj/item/storage/box/hug/reverse_revolver
 	restricted_roles = list(JOB_CLOWN)
-
-/datum/uplink_item/role_restricted/mimery
-	name = "Guide to Advanced Mimery Series"
-	desc = "The classical two part series on how to further hone your mime skills. Upon studying the series, the user should be able to make 3x1 invisible walls, and shoot bullets out of their fingers. \
-			Obviously only works for Mimes."
-	progression_minimum = 30 MINUTES
-	cost = 12
-	item = /obj/item/storage/box/syndie_kit/mimery
-	restricted_roles = list(JOB_MIME)
-	surplus = 0
 
 /datum/uplink_item/role_restricted/laser_arm
 	name = "Laser Arm Implant"

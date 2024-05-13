@@ -90,22 +90,12 @@
 /datum/preference/name/clown
 	savefile_key = "clown_name"
 
-	explanation = "Clown Name"
+	explanation = "Entertainer Name"
 	group = "fun"
 	relevant_job = /datum/job/clown
 
 /datum/preference/name/clown/create_default_value()
 	return pick(GLOB.clown_names)
-
-/datum/preference/name/mime
-	savefile_key = "mime_name"
-
-	explanation = "Mime Name"
-	group = "fun"
-	relevant_job = /datum/job/mime
-
-/datum/preference/name/mime/create_default_value()
-	return pick(GLOB.mime_names)
 
 /datum/preference/name/cyborg
 	savefile_key = "cyborg_name"

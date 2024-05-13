@@ -82,10 +82,6 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	name = JOB_CLOWN
 	icon_state = JOB_CLOWN
 
-/obj/effect/landmark/start/mime
-	name = JOB_MIME
-	icon_state = JOB_MIME
-
 /obj/effect/landmark/start/quartermaster
 	name = JOB_QUARTERMASTER
 	icon_state = JOB_QUARTERMASTER

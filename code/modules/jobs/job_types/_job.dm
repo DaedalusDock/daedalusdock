@@ -34,7 +34,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/janitor,
 	/datum/job/lawyer,
 	/datum/job/clown,
-	/datum/job/mime,
 	/datum/job/assistant,
 	/datum/job/ai,
 	/datum/job/cyborg
@@ -110,7 +109,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/exp_granted_type = ""
 
 	var/paycheck = PAYCHECK_MINIMAL
-	var/paycheck_department = ACCOUNT_STATION_MASTER
+	var/paycheck_department = null
 
 	var/list/mind_traits // Traits added to the mind of the mob assigned this job
 

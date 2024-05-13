@@ -6,3 +6,4 @@
 /obj/effect/mob_spawn/corpse/human/geneticist : @DELETE
 /obj/item/disk/holodisk/snowdin/ripjacob : @DELETE
 /obj/effect/mob_spawn/corpse/human/scientist : @DELETE
+/obj/effect/landmark/start/mime : @DELETE

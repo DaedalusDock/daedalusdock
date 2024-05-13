@@ -4694,7 +4694,6 @@
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/starboard)
 "bEH" = (
-/obj/effect/landmark/start/mime,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
@@ -50350,7 +50349,6 @@
 /area/station/commons/locker)
 "sFz" = (
 /obj/structure/chair/wood/wings,
-/obj/effect/landmark/start/mime,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/carpet,

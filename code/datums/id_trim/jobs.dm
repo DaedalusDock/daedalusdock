@@ -342,14 +342,14 @@
 	job = /datum/job/doctor
 
 /datum/id_trim/job/mime
-	assignment = "Mime"
+	assignment = JOB_CLOWN
 	trim_state = "trim_mime"
 	sechud_icon_state = SECHUD_MIME
 	extra_access = list()
 	minimal_access = list(ACCESS_THEATRE, ACCESS_SERVICE)
 	config_job = "mime"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
-	job = /datum/job/mime
+	job = /datum/job/clown
 
 /datum/id_trim/job/paramedic
 	assignment = "Paramedic"

@@ -2,8 +2,8 @@
 	title = JOB_CLOWN
 	description = "Entertain the crew, make bad jokes, go on a holy quest to find bananium, HONK!"
 	faction = FACTION_STATION
-	total_positions = 1
-	spawn_positions = 1
+	total_positions = 2
+	spawn_positions = 2
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(

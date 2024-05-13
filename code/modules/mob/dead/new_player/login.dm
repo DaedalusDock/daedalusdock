@@ -14,8 +14,16 @@
 		mind.active = TRUE
 		mind.set_current(src)
 
+	var/boot_this_guy
+	if(CONFIG_GET(flag/panic_bunker) && client.check_panic_bunker())
+		boot_this_guy = TRUE
+
 	. = ..()
 	if(!. || !client)
+		return FALSE
+
+	if(boot_this_guy)
+		qdel(client)
 		return FALSE
 
 	var/motd = global.config.motd

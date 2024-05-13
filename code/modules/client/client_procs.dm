@@ -339,11 +339,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		player_details.byond_version = full_version
 		GLOB.player_details[ckey] = player_details
 
-	if(CONFIG_GET(flag/panic_bunker) && check_panic_bunker(connecting_admin))
-		qdel(src)
-		return
-
-
 	. = ..() //calls mob.Login()
 
 	if (length(GLOB.stickybanadminexemptions))
@@ -609,9 +604,11 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	return QDEL_HINT_HARDDEL_NOW
 
 /// Checks panic bunker status and applies restricted_mode if necessary. Returns TRUE if the client should be kicked.
-/client/proc/check_panic_bunker(is_admin)
+/client/proc/check_panic_bunker()
 	if(ckey in GLOB.interviews.approved_ckeys)
 		return FALSE
+
+	var/is_admin = !!holder
 
 	// Check if user should be added to interview queue
 	if (CONFIG_GET(flag/panic_bunker_interview))

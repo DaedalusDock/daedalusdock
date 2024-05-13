@@ -585,14 +585,13 @@ GLOBAL_LIST_INIT(job_display_order, list(
 /// Called by SSjob when a player joins the round as this job.
 /datum/job/proc/on_join_message(client/C, job_title_pref)
 	var/job_header = "<u><span style='font-size: 200%'>You are the <span style='color:[selection_color]'>[job_title_pref]</span></span></u>."
-	var/job_info = span_info("\
-		<br><br>\
-		[description]\
-		<br><br>\
-		As the <span style='color:[selection_color]'>[job_title_pref == title ? job_title_pref : "[job_title_pref] ([title])"]</span> \
-		you answer directly to [supervisors]. Special circumstances may change this.\
-		<br><br>\
-		[radio_help_message]\
-	")
 
-	to_chat(C, examine_block("[job_header][job_info]"))
+	var/job_info = list("<br><br>[description]")
+
+	if(supervisors)
+		job_info += "<br><br>As the <span style='color:[selection_color]'>[job_title_pref == title ? job_title_pref : "[job_title_pref] ([title])"]</span> \
+		you answer directly to [supervisors]. Special circumstances may change this."
+
+	job_info += "<br><br>[radio_help_message]"
+
+	to_chat(C, examine_block("[job_header][jointext(job_info, "")]"))

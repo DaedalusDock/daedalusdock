@@ -5,11 +5,10 @@ Assistant
 */
 /datum/job/assistant
 	title = JOB_ASSISTANT
-	description = "Get your space legs, assist people, ask the HoP to give you a job."
+	description = "The everyman, an essential component to station life."
 	faction = FACTION_STATION
 	total_positions = 5
 	spawn_positions = 5
-	supervisors = "absolutely everyone"
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(

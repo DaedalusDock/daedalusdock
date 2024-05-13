@@ -5,7 +5,6 @@
 	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 1
-	supervisors = "the head of personnel"
 	exp_granted_type = EXP_TYPE_CREW
 	var/cooks = 0 //Counts cooks amount
 	/// List of areas that are counted as the kitchen for the purposes of CQC. Defaults to just the kitchen. Mapping configs can and should override this.
@@ -36,9 +35,6 @@
 			SPECIES_PLASMAMAN = /datum/outfit/job/cook/chef/plasmaman,
 		),
 	)
-
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_CULINARY_METABOLISM)
 

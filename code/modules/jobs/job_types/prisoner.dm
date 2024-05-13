@@ -5,7 +5,6 @@
 	faction = FACTION_STATION
 	total_positions = 0
 	spawn_positions = 2
-	supervisors = "the security team"
 	selection_color = "#bd630a"
 	exp_granted_type = EXP_TYPE_CREW
 	paycheck = PAYCHECK_ZERO //This doesnt actually do anything since prisoners have no department

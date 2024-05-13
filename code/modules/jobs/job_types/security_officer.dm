@@ -7,7 +7,7 @@
 	faction = FACTION_STATION
 	total_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
 	spawn_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
-	supervisors = "the security marshal, and the head of your assigned department (if applicable)"
+	supervisors = "the security marshal"
 	selection_color = "#602f1c"
 	minimal_player_age = 7
 	exp_requirements = 300
@@ -26,7 +26,7 @@
 	)
 
 	paycheck = PAYCHECK_HARD
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_SEC
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)

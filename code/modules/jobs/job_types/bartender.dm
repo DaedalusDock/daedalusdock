@@ -5,7 +5,6 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
@@ -20,8 +19,6 @@
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
 	departments_list = list(
 		/datum/job_department/service,
 	)

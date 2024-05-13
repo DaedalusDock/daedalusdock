@@ -6,7 +6,7 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "The government."
+	supervisors = "the government."
 	selection_color = "#2f2f7f"
 	req_admin_notify = 1
 	minimal_player_age = 14

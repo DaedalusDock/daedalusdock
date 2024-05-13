@@ -21,9 +21,6 @@
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
-
 	departments_list = list(
 		/datum/job_department/service,
 		)

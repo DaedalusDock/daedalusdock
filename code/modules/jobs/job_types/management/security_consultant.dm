@@ -53,9 +53,10 @@
 
 	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/head_of_personnel
-	uniform = /obj/item/clothing/under/suit/black
+	uniform = /obj/item/clothing/under/suit/burgundy
 	suit = /obj/item/clothing/suit/armor/vest/ballistic
 	belt = /obj/item/modular_computer/tablet/pda
+	gloves = /obj/item/clothing/gloves/color/black
 	ears = /obj/item/radio/headset/heads/captain
 	glasses = /obj/item/clothing/glasses/sunglasses
 	shoes = /obj/item/clothing/shoes/laceup

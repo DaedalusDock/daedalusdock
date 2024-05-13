@@ -277,13 +277,30 @@
 
 /obj/structure/cable/proc/get_cable_connections(powernetless_only = FALSE)
 	. = list()
-	var/turf/T = get_turf(src)
+	var/static/list/diagonal_masking_pair = list(NORTH|SOUTH, EAST|WEST)
+	var/turf/T
 	for(var/cable_dir in GLOB.cable_dirs)
 		if(!(linked_dirs & cable_dir))
 			continue
 		var/inverse_cable_dir = GLOB.cable_dirs_to_inverse["[cable_dir]"]
 		var/real_dir = GLOB.cable_dirs_to_real_dirs["[cable_dir]"]
-		var/turf/step_turf = get_step(T, real_dir)
+		// Is it diagonal? Yes? Detour into this special shitty hack.
+		// This is 1:1 copied from baycode, With comments.
+		// Am I being passive aggressive? I think this qualifies as more than that.
+		if(ISDIAGONALDIR(real_dir))
+			for(var/component_pair in diagonal_masking_pair)
+				T = get_step(src, real_dir & component_pair)
+				if(T)
+					// Determine the direction value we need to see.
+					// (real_dir XOR component_pair) will functionally flip the relevant component's parity.
+					// Eg. SOUTHWEST (2,8) XOR (1,2) = NORTHWEST (1,8)
+					// And then we pass this perfectly unusable value into the Obfuscatomat.
+					var/diag_req_dir = GLOB.real_dirs_to_cable_dirs["[real_dir ^ component_pair]"]
+					for(var/obj/structure/cable/diag_cable in T)
+						if(diag_cable.linked_dirs & diag_req_dir)
+							. += diag_cable
+
+		var/turf/step_turf = get_step(src, real_dir)
 		for(var/obj/structure/cable/cable_structure in step_turf)
 			// if cable structure doesn't have a direction inverse to our cable direction, ignore it
 			if(!(cable_structure.linked_dirs & inverse_cable_dir))

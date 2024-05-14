@@ -53,8 +53,7 @@
 	if (!lighting_object)
 		return FALSE
 
-	return !(luminosity || dynamic_lumcount)
-
+	return !(loc:area_has_base_lighting || luminosity || dynamic_lumcount)
 
 ///Proc to add movable sources of opacity on the turf and let it handle lighting code.
 /turf/proc/add_opacity_source(atom/movable/new_source)

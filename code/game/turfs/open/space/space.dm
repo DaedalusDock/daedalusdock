@@ -58,7 +58,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 	initialized = TRUE
 
-	if(!loc:area_has_base_lighting) //Only provide your own lighting if the area doesn't for you
+	if(!loc.luminosity) //Only provide your own lighting if the area doesn't for you
 		// Intentionally not add_overlay for performance reasons.
 		// add_overlay does a bunch of generic stuff, like creating a new list for overlays,
 		// queueing compile, cloning appearance, etc etc etc that is not necessary here.

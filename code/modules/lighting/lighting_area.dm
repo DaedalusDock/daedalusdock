@@ -42,7 +42,9 @@
 	if(!area_has_base_lighting)
 		add_base_lighting()
 		return
+
 	remove_base_lighting()
+
 	if(base_lighting_alpha && base_lighting_color)
 		add_base_lighting()
 
@@ -50,6 +52,7 @@
 	cut_overlays()
 	QDEL_NULL(lighting_effect)
 	area_has_base_lighting = FALSE
+	luminosity = 0
 
 /area/proc/add_base_lighting()
 	lighting_effect = mutable_appearance('icons/effects/alphacolors.dmi', "white")
@@ -59,7 +62,5 @@
 	lighting_effect.alpha = base_lighting_alpha
 	lighting_effect.color = base_lighting_color
 	lighting_effect.appearance_flags = RESET_TRANSFORM | RESET_ALPHA | RESET_COLOR
-	add_overlay(lighting_effect)
-	for(var/turf/T as anything in get_contained_turfs())
-		T.luminosity = 1
 	area_has_base_lighting = TRUE
+	luminosity = 1

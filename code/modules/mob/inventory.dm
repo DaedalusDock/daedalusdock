@@ -307,7 +307,7 @@
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
 		return FALSE
 	I.remove_item_from_storage(src)
-	if(!put_in_hand(I, hand_index, ignore_anim = TRUE))
+	if(!pickup_item(I, hand_index, ignore_anim = TRUE))
 		qdel(I)
 		CRASH("Assertion failure: putItemFromInventoryInHandIfPossible") //should never be possible
 	return TRUE

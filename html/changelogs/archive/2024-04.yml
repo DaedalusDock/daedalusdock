@@ -22,3 +22,14 @@
   - rscadd: Multi-Z now supports things such as med huds and antag huds
   - rscadd: Alot of animations now play across Z levels
   - bugfix: Progress bars show up again.
+2024-04-23:
+  Kapu1178, PowerfulBacon:
+  - bugfix: Papercode featureset
+  - rscadd: Paper now has a help tab.
+  Lohikar, LemonInTheDark, TemporalOroboros, Kapu1178:
+  - refactor: Rewrote explosions
+  - refactor: Smoke and Foam now use a light fluid sim to spread.
+2024-04-29:
+  ToasterBan:
+  - rscadd: Added bay-style engraving, a wall or floor can be engraved with any sharp
+      object

@@ -15,7 +15,7 @@
 #define subtypesof(typepath) ( typesof(typepath) - typepath )
 
 /// Until a condition is true, sleep
-#define UNTIL(X) while(!(X)) stoplag()
+#define UNTIL(X) while(!(X)) sleep(world.tick_lag)
 
 /// Clears all nulls in a list, returning the amount removed.
 #define list_clear_nulls(L) ((L):RemoveAll(null))

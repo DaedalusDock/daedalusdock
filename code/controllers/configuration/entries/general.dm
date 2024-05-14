@@ -97,6 +97,9 @@
 /// log usage of tools
 /datum/config_entry/flag/log_tools
 
+/// log graffiti
+/datum/config_entry/flag/log_graffiti
+
 /// log game events
 /datum/config_entry/flag/log_game
 

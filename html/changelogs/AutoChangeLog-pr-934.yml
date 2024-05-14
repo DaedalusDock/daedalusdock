@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fix massive amount of runtimes thrown from mouse dragging out of the mouse
+      pane.
+  - bugfix: Fixed "safe" gibbing attempting to remove bodyparts and organs.

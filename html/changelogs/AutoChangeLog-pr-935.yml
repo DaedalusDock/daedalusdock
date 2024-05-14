@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: Cables now consider all neighbors that share diagonal-edge nodes, instead
+      of just one inline tile.

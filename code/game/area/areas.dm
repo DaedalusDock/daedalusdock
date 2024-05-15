@@ -167,22 +167,24 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if((area_flags & AREA_USES_STARLIGHT) && CONFIG_GET(flag/starlight))
 		base_lighting_alpha = 0
 		base_lighting_color = null
-		static_lighting = TRUE
+		area_lighting = AREA_LIGHTING_DYNAMIC
 
-	if(requires_power)
-		luminosity = 0
-	else
+	if(!requires_power)
 		power_light = TRUE
 		power_equip = TRUE
 		power_environ = TRUE
 
-		if(static_lighting)
+	switch(area_lighting)
+		if(AREA_LIGHTING_DYNAMIC)
 			luminosity = 0
 
-	. = ..()
+		if(AREA_LIGHTING_STATIC)
+			if(isnull(base_lighting_color) || base_lighting_alpha == 0)
+				stack_trace("Area of type [type] is set to be statically lit, but has invalid base lighting data. This has been automatically replaced with fullbright.")
+				base_lighting_color = COLOR_WHITE
+				base_lighting_alpha = 255
 
-	if(!static_lighting)
-		blend_mode = BLEND_MULTIPLY
+	. = ..()
 
 	reg_in_areas_in_z()
 	update_base_lighting()

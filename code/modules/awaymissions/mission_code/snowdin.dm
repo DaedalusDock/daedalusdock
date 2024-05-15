@@ -4,8 +4,7 @@
 	name = "Snowdin"
 	icon_state = "awaycontent1"
 	requires_power = FALSE
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/awaymission/snowdin/outside
 	name = "Snowdin Tundra Plains"
@@ -15,8 +14,7 @@
 	name = "Snowdin Outpost"
 	icon_state = "awaycontent2"
 	requires_power = TRUE
-	static_lighting = TRUE
-	base_lighting_alpha = 0
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/awaymission/snowdin/post/medbay
 	name = "Snowdin Outpost - Medbay"
@@ -98,14 +96,12 @@
 /area/awaymission/snowdin/igloo
 	name = "Snowdin Igloos"
 	icon_state = "awaycontent14"
-	static_lighting = TRUE
-	base_lighting_alpha = 0
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/awaymission/snowdin/cave
 	name = "Snowdin Caves"
 	icon_state = "awaycontent15"
-	static_lighting = TRUE
-	base_lighting_alpha = 0
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/awaymission/snowdin/cave/cavern
 	name = "Snowdin Depths"
@@ -119,21 +115,18 @@
 /area/awaymission/snowdin/base
 	name = "Snowdin Main Base"
 	icon_state = "awaycontent16"
-	static_lighting = TRUE
-	base_lighting_alpha = 0
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	requires_power = TRUE
 
 /area/awaymission/snowdin/dungeon1
 	name = "Snowdin Depths"
 	icon_state = "awaycontent17"
-	static_lighting = TRUE
-	base_lighting_alpha = 0
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/awaymission/snowdin/sekret
 	name = "Snowdin Operations"
 	icon_state = "awaycontent18"
-	static_lighting = TRUE
-	base_lighting_alpha = 0
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	requires_power = TRUE
 
 /area/shuttle/snowdin/elevator1

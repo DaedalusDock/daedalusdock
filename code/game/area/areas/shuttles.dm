@@ -5,7 +5,7 @@
 /area/shuttle
 	name = "Shuttle"
 	requires_power = FALSE
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	has_gravity = STANDARD_GRAVITY
 	always_unpowered = FALSE
 	// Loading the same shuttle map at a different time will produce distinct area instances.
@@ -68,13 +68,12 @@
 
 /area/shuttle/hunter
 	name = "Hunter Shuttle"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/shuttle/hunter/russian
 	name = "Russian Cargo Hauler"
 	requires_power = TRUE
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 ////////////////////////////White Ship////////////////////////////
 
@@ -108,9 +107,7 @@
 /area/shuttle/transit
 	name = "Hyperspace"
 	desc = "Weeeeee"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
-
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/shuttle/arrival
 	name = "Arrival Shuttle"
@@ -174,8 +171,7 @@
 	name = "Medieval Reality Simulation Dome"
 	icon_state = "shuttlectf"
 	area_flags = NOTELEPORT
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/shuttle/escape/arena
 	name = "The Arena"

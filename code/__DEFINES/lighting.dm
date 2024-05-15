@@ -10,6 +10,14 @@
 /// Is our overlay light source attached to another movable (its loc), meaning that the lighting component should go one level deeper.
 #define LIGHT_ATTACHED (1<<0)
 
+// Area lighting
+/// Area is permanently black, cannot be lit ever. This shouldn't really be used, but is technically supported.
+#define AREA_LIGHTING_NONE 0
+/// Area is lit by lighting_object and lighting_sources
+#define AREA_LIGHTING_DYNAMIC 1
+/// Area is lit by the area's base_lighting values.
+#define AREA_LIGHTING_STATIC 2
+
 //Bay lighting engine shit, not in /code/modules/lighting because BYOND is being shit about it
 /// frequency, in 1/10ths of a second, of the lighting process
 #define LIGHTING_INTERVAL       5

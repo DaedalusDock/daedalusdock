@@ -845,8 +845,6 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_SPACE
-	base_lighting_alpha = null
-	base_lighting_color = null
 
 /area/station/solars/fore
 	name = "\improper Fore Solar Array"
@@ -1318,9 +1316,7 @@
 	requires_power = TRUE
 	always_unpowered = TRUE
 
-	static_lighting = FALSE
-	base_lighting_alpha = 255
-	base_lighting_color = "#FFFFFF"
+	area_lighting = AREA_LIGHTING_STATIC
 
 	power_light = FALSE
 	power_equip = FALSE

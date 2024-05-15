@@ -1,6 +1,6 @@
-import { classes } from 'common/react';
 import { useBackend } from '../backend';
 import { Box, Button, Icon, LabeledList, NoticeBox, Section, Stack, Table } from '../components';
+import { DmIcon } from '../components/DMIcon';
 import { Window } from '../layouts';
 
 type VendingData = {
@@ -23,6 +23,8 @@ type ProductRecord = {
   price: number;
   max_amount: number;
   ref: string;
+  icon: string;
+  icon_state: string;
 };
 
 type CoinRecord = {
@@ -32,6 +34,8 @@ type CoinRecord = {
   max_amount: number;
   ref: string;
   premium: boolean;
+  icon: string;
+  icon_state: string;
 };
 
 type HiddenRecord = {
@@ -41,6 +45,8 @@ type HiddenRecord = {
   max_amount: number;
   ref: string;
   premium: boolean;
+  icon: string;
+  icon_state: string;
 };
 
 type UserData = {
@@ -232,8 +238,9 @@ const ProductImage = (props) => {
       }}
     />
   ) : (
-    <span
-      className={classes(['vending32x32', product.path])}
+    <DmIcon
+      icon={product.icon}
+      icon_state={product.icon_state}
       style={{
         'vertical-align': 'middle',
         'horizontal-align': 'middle',

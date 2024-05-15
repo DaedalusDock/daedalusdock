@@ -350,8 +350,8 @@
 			gas_key = "VACUUM_ATMOS"
 		else
 			var/list/initial_gas_copy = initial_gas.Copy()
-			initial_gas["temperature"] = temperature
-			json_encode(initial_gas)
+			initial_gas_copy["temperature"] = temperature
+			gas_key = json_encode(initial_gas)
 
 		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
 		if(GM)

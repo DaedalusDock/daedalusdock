@@ -6,7 +6,7 @@
 
 /// Display a DM icon in a a browser.
 /proc/icon_element(icon, state, dir, moving, frame, css)
-	return "<img src='\ref[icon]?state=[state][dir ? "&dir=[dir]" : ""][moving ? "&moving=1"][frame ? "&frame=[frame]"]' [css]>
+	return "<img src='\ref[icon]?state=[state][dir ? "&dir=[dir]" : ""][moving ? "&moving=1"][frame ? "&frame=[frame]"]' [css]>"
 
 #define onclick_callback(trg, arguments) "\"(function(){window.location = 'byond://?src=[ref(trg)];[arguments]'})();\""
 

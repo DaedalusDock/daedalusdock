@@ -345,7 +345,14 @@
 			return air
 
 		// Grab an existing mixture from the cache
-		var/gas_key = isnull(initial_gas) ? "VACUUM_ATMOS" : json_encode(initial_gas + temperature)
+		var/gas_key
+		if(isnull(initial_gas))
+			gas_key = "VACUUM_ATMOS"
+		else
+			var/list/initial_gas_copy = initial_gas.Copy()
+			initial_gas["temperature"] = temperature
+			json_encode(initial_gas)
+
 		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
 		if(GM)
 			air = GM

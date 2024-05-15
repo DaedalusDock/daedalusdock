@@ -335,17 +335,17 @@
 /turf/proc/make_air()
 	if(simulated)
 		air = new/datum/gas_mixture
-		air.temperature = temperature
 		if(initial_gas)
 			air.gas = initial_gas.Copy()
+			air.temperature = temperature
 		AIR_UPDATE_VALUES(air)
 
 	else
-		if(!isnull(air))
+		if(air)
 			return air
 
 		// Grab an existing mixture from the cache
-		var/gas_key = json_encode(initial_gas + temperature)
+		var/gas_key = isnull(initial_gas) ? "VACUUM_ATMOS" : json_encode(initial_gas + temperature)
 		var/datum/gas_mixture/GM = SSzas.unsimulated_gas_cache[gas_key]
 		if(GM)
 			air = GM

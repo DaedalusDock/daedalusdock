@@ -2,3 +2,11 @@
   Kapu1178:
   - bugfix: Special items like the representation of grabbing can no longer be put
       into your pocket.
+2024-05-15:
+  Kapu1178:
+  - bugfix: Fix massive amount of runtimes thrown from mouse dragging out of the mouse
+      pane.
+  - bugfix: Fixed "safe" gibbing attempting to remove bodyparts and organs.
+  francinum:
+  - bugfix: Cables now consider all neighbors that share diagonal-edge nodes, instead
+      of just one inline tile.

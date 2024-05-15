@@ -14,7 +14,7 @@
 /// Sprites generated for the antagonists panel
 /datum/asset/spritesheet/antagonists
 	name = "antagonists"
-	_abstract = /datum/asset/spritesheet/antagonists //This ensures it doesn't load unless it's requested.
+	abstract_type = /datum/asset/spritesheet/antagonists //This ensures it doesn't load unless it's requested.
 
 	/// Mapping of spritesheet keys -> icons
 	var/list/antag_icons = list()

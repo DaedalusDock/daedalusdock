@@ -1,4 +1,4 @@
-import { Component, VNode } from 'inferno';
+import { Component } from 'inferno';
 
 import { BoxProps, computeBoxProps } from './Box';
 
@@ -34,7 +34,7 @@ export class Image extends Component<Props> {
     super(props);
   }
 
-  render(): VNode {
+  render() {
     const {
       fixBlur = true,
       fixErrors = false,

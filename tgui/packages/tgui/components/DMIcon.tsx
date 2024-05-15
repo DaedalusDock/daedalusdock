@@ -1,4 +1,4 @@
-import { Component, InfernoNode, VNode } from 'inferno';
+import { Component, InfernoNode } from 'inferno';
 
 import { logger } from '../logging';
 import { resolveAsset } from '../assets';
@@ -41,12 +41,10 @@ type State = {
 let refMap: Record<string, string> | undefined;
 
 export class DmIcon extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      iconRef: '',
-    };
-  }
+  state = {
+    iconRef: '',
+  };
+
 
   componentDidMount() {
     this.fetchRefMap();
@@ -72,7 +70,7 @@ export class DmIcon extends Component<Props, State> {
     }
   }
 
-  render(): VNode {
+  render() {
     const {
       className,
       direction = Direction.SOUTH,
@@ -85,7 +83,7 @@ export class DmIcon extends Component<Props, State> {
     } = this.props;
 
     const { iconRef } = this.state;
-    if (!iconRef) return fallback as VNode;
+    if (!iconRef) return fallback;
 
     const query = `${iconRef}?state=${icon_state}&dir=${direction}&movement=${movement}&frame=${frame}`;
 

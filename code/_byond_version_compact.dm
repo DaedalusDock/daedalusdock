@@ -22,5 +22,11 @@
 
 // Timebomb warnings.
 #if MIN_COMPILER_VERSION > 515
-	#error LEGACY - Baked Trident-Vendor Image Interpolation Attributes. remove -ms* from stuff like security and medical consoles.
+	#error TIMEBOMB: Cleanup required. See Byond Version Compatibility File.
 #endif
+
+/*
+ * BYOND 515 Legacy Leftovers for cleanup:
+ * Baked Trident Vendor-Specific Cruft. Remove -ms* from stuff like security and medical consoles, and photos.
+ * Remove client version check for ByondStorage in /client/New()
+ */

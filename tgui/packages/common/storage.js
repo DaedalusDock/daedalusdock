@@ -6,9 +6,11 @@
  * @license MIT
  */
 
+
 export const IMPL_MEMORY = 0;
 export const IMPL_LOCAL_STORAGE = 1;
 export const IMPL_INDEXED_DB = 2;
+export const IMPL_HUB_STORAGE = 3;
 
 const INDEXED_DB_VERSION = 2;
 const INDEXED_DB_NAME = 'tgui-daedalus';
@@ -33,10 +35,41 @@ const testLocalStorage = testGeneric(() => (
   window.localStorage && window.localStorage.getItem
 ));
 
+const testHubStorage = testGeneric(
+  () => window.hubStorage && window.hubStorage.getItem
+);
+
+// TODO: Remove with 516
+// prettier-ignore
 const testIndexedDb = testGeneric(() => (
   (window.indexedDB || window.msIndexedDB)
   && (window.IDBTransaction || window.msIDBTransaction)
 ));
+
+class HubStorageBackend {
+  constructor() {
+    this.impl = IMPL_HUB_STORAGE;
+  }
+
+  get(key) {
+    const value = window.hubStorage.getItem('daedalus-' + key);
+    if (typeof value === 'string') {
+      return JSON.parse(value);
+    }
+  }
+
+  set(key, value) {
+    window.hubStorage.setItem('daedalus-' + key, JSON.stringify(value));
+  }
+
+  remove(key) {
+    window.hubStorage.removeItem('daedalus-' + key);
+  }
+
+  clear() {
+    window.hubStorage.clear();
+  }
+}
 
 class MemoryBackend {
   constructor() {
@@ -156,18 +189,21 @@ class IndexedDbBackend {
 class StorageProxy {
   constructor() {
     this.backendPromise = (async () => {
-      if (testIndexedDb()) {
-        try {
-          const backend = new IndexedDbBackend();
-          await backend.dbPromise;
-          return backend;
+      if (Byond.TRIDENT) {
+        // fuckin IE users, TODO: Remove with 516
+        if (testIndexedDb()) {
+          try {
+            const backend = new IndexedDbBackend();
+            await backend.dbPromise;
+            return backend;
+          } catch {}
         }
-        catch {}
+        if (testLocalStorage()) {
+          return new LocalStorageBackend();
+        }
+      } else if (testHubStorage()) {
+        return new HubStorageBackend();
       }
-      if (testLocalStorage()) {
-        return new LocalStorageBackend();
-      }
-      return new MemoryBackend();
     })();
   }
 

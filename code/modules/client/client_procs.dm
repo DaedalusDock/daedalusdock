@@ -224,6 +224,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	///////////
 
 /client/New(TopicData)
+	//TODO: Remove with 516. Associated with timebomb in byond_compact.dm
+	if(byond_version >= 516) // Enable 516 compat browser storage mechanisms. Along with Find.
+		winset(src, "", "browser-options=find,byondstorage")
+
 	var/tdata = TopicData //save this for later use
 	TopicData = null //Prevent calls to client.Topic from connect
 

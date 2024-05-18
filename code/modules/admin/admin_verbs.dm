@@ -177,6 +177,7 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/run_empty_query,
 	/client/proc/toggle_medal_disable,
 	/client/proc/view_runtimes,
+	/client/proc/allow_browser_inspect,
 	/client/proc/pump_random_event,
 	/client/proc/cmd_display_init_log,
 	/client/proc/cmd_display_overlay_log,

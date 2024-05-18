@@ -520,6 +520,7 @@ export class IntegratedCircuit extends Component {
                 "border-radius": "0px 32px 0px 0px",
                 "background-color": "rgba(0, 0, 0, 0.3)",
                 "-ms-user-select": "none",
+                "user-select": "none",
               }}
               unselectable="on"
             >
@@ -553,6 +554,7 @@ export class IntegratedCircuit extends Component {
               style={{
                 "background-color": "rgba(0, 0, 0, 0.3)",
                 "-ms-user-select": "none",
+                "user-select": "none",
               }}
               unselectable="on"
             >

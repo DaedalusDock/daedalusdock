@@ -19,3 +19,8 @@
 #define TYPE_PROC_REF(TYPE, X) (nameof(##TYPE.proc/##X))
 /// Call by name proc reference, checks if the proc is existing global proc
 #define GLOBAL_PROC_REF(X) (/proc/##X)
+
+// Timebomb warnings.
+#if MIN_COMPILER_VERSION > 515
+	#error LEGACY - Baked Trident-Vendor Image Interpolation Attributes. remove -ms* from stuff like security and medical consoles.
+#endif

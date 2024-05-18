@@ -19,7 +19,7 @@ export const NtosPortraitPrinter = (props, context) => {
   const current_portrait_asset_name = got_paintings
     && "paintings" + "_" + paintings[listIndex]["md5"];
   const current_portrait_ratio = got_paintings
-    && paintings[listIndex]["ratio"]; 
+    && paintings[listIndex]["ratio"];
   return (
     <NtosWindow
       title="Art Galaxy"
@@ -66,6 +66,7 @@ export const NtosPortraitPrinter = (props, context) => {
                         style={{
                           'vertical-align': 'middle',
                           '-ms-interpolation-mode': 'nearest-neighbor',
+                          'image-rendering': 'pixelated',
                         }} />
                     </Stack.Item>
                     <Stack.Item className="Section__titleText">

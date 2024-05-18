@@ -207,13 +207,13 @@ const PreviewDisplay = (props, context) => {
             data.sprites?.finished
               ? (
                 <Table.Cell>
-                  <Box as="img" src={data.sprites.finished} m={0} width="75%" mx="10%" style={{ "-ms-interpolation-mode": "nearest-neighbor" }} />
+                  <Box as="img" src={data.sprites.finished} m={0} width="75%" mx="10%" style={{ "-ms-interpolation-mode": "nearest-neighbor", "image-rendering": "pixelated" }} />
                 </Table.Cell>
               )
               : (
                 <Table.Cell>
                   <Box grow>
-                    <Icon name="image" ml="25%" size={5} style={{ "-ms-interpolation-mode": "nearest-neighbor" }} />
+                    <Icon name="image" ml="25%" size={5} style={{ "-ms-interpolation-mode": "nearest-neighbor", "image-rendering": "pixelated" }} />
                   </Box>
                 </Table.Cell>
               )
@@ -269,7 +269,7 @@ const SingleSprite = (props) => {
       as="img"
       src={source}
       width="100%"
-      style={{ "-ms-interpolation-mode": "nearest-neighbor" }}
+      style={{ "-ms-interpolation-mode": "nearest-neighbor", "image-rendering": "pixelated" }}
     />
   );
 };

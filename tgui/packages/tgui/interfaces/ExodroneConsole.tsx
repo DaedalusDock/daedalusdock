@@ -771,7 +771,8 @@ const EventScreen = (props: {
                 height="125px"
                 width="250px"
                 style={{
-                  '-ms-interpolation-mode': 'nearest-neighbor',
+                  '-ms-interpolation-mode': 'nearest-neighbor', // TODO: Remove in 516
+                  'image-rendering': 'pixelated',
                 }} />
             </Stack.Item>
             <Stack.Item >
@@ -841,7 +842,8 @@ export const AdventureScreen = (props: {
             height="100px"
             width="200px"
             style={{
-              '-ms-interpolation-mode': 'nearest-neighbor',
+              '-ms-interpolation-mode': 'nearest-neighbor', // TODO: Remove in 516
+              'image-rendering': 'pixelated',
             }} />
           <Stack vertical>
             <Stack.Divider />

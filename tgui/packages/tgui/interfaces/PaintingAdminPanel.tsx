@@ -47,6 +47,7 @@ export const PaintingAdminPanel = (props, context) => {
               style={{
                 'vertical-align': 'middle',
                 '-ms-interpolation-mode': 'nearest-neighbor',
+                'image-rendering': 'pixelated',
               }} />
             <LabeledList>
               <LabeledList.Item label="md5" content={chosenPainting.md5} />
@@ -112,6 +113,7 @@ export const PaintingAdminPanel = (props, context) => {
                   style={{
                     'vertical-align': 'middle',
                     '-ms-interpolation-mode': 'nearest-neighbor',
+                    'image-rendering': 'pixelated',
                   }} />
                 </Table.Cell>
                 <Table.Cell>

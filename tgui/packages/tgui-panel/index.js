@@ -78,7 +78,7 @@ const setupApp = () => {
   Byond.winset('output', {
     'is-visible': false,
   });
-  Byond.winset('browseroutput', {
+  Byond.winset('chat_panel', {
     'is-visible': true,
     'is-disabled': false,
     'pos': '0x0',
@@ -87,7 +87,7 @@ const setupApp = () => {
 
   // Resize the panel to match the non-browser output
   Byond.winget('output').then(output => {
-    Byond.winset('browseroutput', {
+    Byond.winset('chat_panel', {
       'size': output.size,
     });
   });

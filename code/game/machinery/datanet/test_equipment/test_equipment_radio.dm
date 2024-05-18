@@ -17,10 +17,10 @@
 	. = ..()
 	var/datum/browser/popup = new(usr, "dte_radio", "Radio Test Equipment", 400, 600)
 	var/dat = {"
-		<A href='?src=[REF(src)];set_freq=1'>[format_frequency(current_frequency)]</a>
-		<A href='?src=[REF(src)];set_range=1'>Range:[format_range(send_range)]</a>
-		<A href='?src=[REF(src)];set_packet=1'>Set Packet Data</a>
-		<A href='?src=[REF(src)];send_packet=1'>Send Packet</a><br>
+		<A href='byond://?src=[REF(src)];set_freq=1'>[format_frequency(current_frequency)]</a>
+		<A href='byond://?src=[REF(src)];set_range=1'>Range:[format_range(send_range)]</a>
+		<A href='byond://?src=[REF(src)];set_packet=1'>Set Packet Data</a>
+		<A href='byond://?src=[REF(src)];send_packet=1'>Send Packet</a><br>
 		<hr>
 		<code>[json_encode(current_data)]</code>
 	"}

@@ -285,13 +285,13 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	var/list/l = list()
 	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Ananke [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b></legend>[RDSCREEN_NOBREAK]"
 	if (materials.mat_container)
-		l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
+		l += "<A href='byond://?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
 	else
 		l += "<font color='red'>No material storage connected, please contact the quartermaster.</font>"
-	l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_CHEMICALS]'><B>Chemical volume:</B> [reagents.total_volume] / [reagents.maximum_volume]</A>"
-	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MODIFY_MEMORY]'>Manage Data</a>"
-	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MAIN]'>Main Screen</a><br>"
-	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_QUEUE]'>View Queue</a></fieldset>[RDSCREEN_NOBREAK]"
+	l += "<A href='byond://?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_CHEMICALS]'><B>Chemical volume:</B> [reagents.total_volume] / [reagents.maximum_volume]</A>"
+	l += "<a href='byond://?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MODIFY_MEMORY]'>Manage Data</a>"
+	l += "<a href='byond://?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MAIN]'>Main Screen</a><br>"
+	l += "<a href='byond://?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_QUEUE]'>View Queue</a></fieldset>[RDSCREEN_NOBREAK]"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_materials()
@@ -305,9 +305,9 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 		var/amount = materials.mat_container.materials[mat_id]
 		var/ref = REF(M)
 		l += "* [amount] of [M.name]: "
-		if(amount >= MINERAL_MATERIAL_AMOUNT) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=1'>Eject</A> [RDSCREEN_NOBREAK]"
-		if(amount >= MINERAL_MATERIAL_AMOUNT*5) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=5'>5x</A> [RDSCREEN_NOBREAK]"
-		if(amount >= MINERAL_MATERIAL_AMOUNT) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=50'>All</A>[RDSCREEN_NOBREAK]"
+		if(amount >= MINERAL_MATERIAL_AMOUNT) l += "<A href='byond://?src=[REF(src)];ejectsheet=[ref];eject_amt=1'>Eject</A> [RDSCREEN_NOBREAK]"
+		if(amount >= MINERAL_MATERIAL_AMOUNT*5) l += "<A href='byond://?src=[REF(src)];ejectsheet=[ref];eject_amt=5'>5x</A> [RDSCREEN_NOBREAK]"
+		if(amount >= MINERAL_MATERIAL_AMOUNT) l += "<A href='byond://?src=[REF(src)];ejectsheet=[ref];eject_amt=50'>All</A>[RDSCREEN_NOBREAK]"
 		l += ""
 	l += "</fieldset>[RDSCREEN_NOBREAK]"
 	return l
@@ -315,10 +315,10 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production/proc/ui_screen_chemicals()
 	var/list/l = list()
 	l += "<legend>Chemical Storage</legend>"
-	l +="<A href='?src=[REF(src)];disposeall=1'>Disposal All Chemicals in Storage</A>"
+	l +="<A href='byond://?src=[REF(src)];disposeall=1'>Disposal All Chemicals in Storage</A>"
 	for(var/datum/reagent/R in reagents.reagent_list)
 		l += "[R.name]: [R.volume]"
-		l += "<A href='?src=[REF(src)];dispose=[R.type]'>Purge</A>"
+		l += "<A href='byond://?src=[REF(src)];dispose=[R.type]'>Purge</A>"
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_search()
@@ -370,11 +370,11 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 			temp_material += " [cached_reagents[reagent]/coeff] [SSmaterials.GetMaterialName(reagent)]"
 
 	if (max_production >= 1)
-		entry_text += "<A href='?src=[REF(src)];build=[D.id];amount=1'>[D.name]</A>[RDSCREEN_NOBREAK]"
+		entry_text += "<A href='byond://?src=[REF(src)];build=[D.id];amount=1'>[D.name]</A>[RDSCREEN_NOBREAK]"
 		if(max_production >= 5)
-			entry_text += "<A href='?src=[REF(src)];build=[D.id];amount=5'>x5</A>[RDSCREEN_NOBREAK]"
+			entry_text += "<A href='byond://?src=[REF(src)];build=[D.id];amount=5'>x5</A>[RDSCREEN_NOBREAK]"
 		if(max_production >= 10)
-			entry_text += "<A href='?src=[REF(src)];build=[D.id];amount=10'>x10</A>[RDSCREEN_NOBREAK]"
+			entry_text += "<A href='byond://?src=[REF(src)];build=[D.id];amount=10'>x10</A>[RDSCREEN_NOBREAK]"
 		entry_text += "[temp_material][RDSCREEN_NOBREAK]"
 	else
 		entry_text += "<span class='linkOff'>[D.name]</span>[temp_material][RDSCREEN_NOBREAK]"
@@ -491,7 +491,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 			l += "</tr><tr>"
 			line_length = 1
 
-		l += "<td><A href='?src=[REF(src)];category=[C];switch_screen=[menu_num]'>[C]</A></td>"
+		l += "<td><A href='byond://?src=[REF(src)];category=[C];switch_screen=[menu_num]'>[C]</A></td>"
 		line_length++
 
 	l += "</tr></table></div>"
@@ -500,14 +500,14 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production/proc/ui_screen_modify_memory()
 	var/list/l = list()
 	var/list/designs = sortTim(selected_disk.read(DATA_IDX_DESIGNS), GLOBAL_PROC_REF(cmp_design_name))
-	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
+	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><A href='byond://?src=[REF(src)];toggle_disk=1'>Selected Disk: [selected_disk == internal_disk ? "Internal" : "Foreign"]</A></legend>[RDSCREEN_NOBREAK]"
 	if(selected_disk)
 		l += "<table>[RDSCREEN_NOBREAK]"
 		for(var/datum/design/D as anything in designs)
 			l += "<tr><td>[D.name]<td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_move'>MOVE</A></td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_copy'>COPY</A></td>[RDSCREEN_NOBREAK]"
-			l += "<td><A href='?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_del'>DELETE</A></td></tr>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='byond://?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_move'>MOVE</A></td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='byond://?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_copy'>COPY</A></td>[RDSCREEN_NOBREAK]"
+			l += "<td><A href='byond://?src=[REF(src)];mem_trg=[REF(D)];mem_act=mem_del'>DELETE</A></td></tr>[RDSCREEN_NOBREAK]"
 		l += "</table>[RDSCREEN_NOBREAK]"
 
 	else
@@ -533,7 +533,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 			D = queue_packet[1]
 			l += "<tr><td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>[D.name]</td>[RDSCREEN_NOBREAK]"
 			l += "<td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'>[queue_packet[2]]</td>[RDSCREEN_NOBREAK]"
-			l += "<td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'><A href='?src=[REF(src)];dequeue=[i]'>CANCEL</A></td></tr>[RDSCREEN_NOBREAK]"
+			l += "<td style='text-align:center;border:1px solid rgba(255, 183, 0, 0.5)'><A href='byond://?src=[REF(src)];dequeue=[i]'>CANCEL</A></td></tr>[RDSCREEN_NOBREAK]"
 		l +="</table>[RDSCREEN_NOBREAK]"
 	else
 		l += "<h2>Nothing queued!</h2>[RDSCREEN_NOBREAK]"

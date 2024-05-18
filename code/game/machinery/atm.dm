@@ -238,18 +238,18 @@
 	var/datum/browser/popup = new(user, "atm-pinpad", "Enter Pin", 300, 280)
 	var/dat = "<TT><B>[src]</B><BR>\n\n"
 	dat += {"
-<HR>\n>[entered_pin]<BR>\n<A href='?src=[REF(src)];type=1'>1</A>
--<A href='?src=[REF(src)];type=2'>2</A>
--<A href='?src=[REF(src)];type=3'>3</A><BR>\n
-<A href='?src=[REF(src)];type=4'>4</A>
--<A href='?src=[REF(src)];type=5'>5</A>
--<A href='?src=[REF(src)];type=6'>6</A><BR>\n
-<A href='?src=[REF(src)];type=7'>7</A>
--<A href='?src=[REF(src)];type=8'>8</A>
--<A href='?src=[REF(src)];type=9'>9</A><BR>\n
-<A href='?src=[REF(src)];type=C'>C</A>
--<A href='?src=[REF(src)];type=0'>0</A>
--<A href='?src=[REF(src)];type=E'>E</A><BR>\n</TT>"}
+<HR>\n>[entered_pin]<BR>\n<A href='byond://?src=[REF(src)];type=1'>1</A>
+-<A href='byond://?src=[REF(src)];type=2'>2</A>
+-<A href='byond://?src=[REF(src)];type=3'>3</A><BR>\n
+<A href='byond://?src=[REF(src)];type=4'>4</A>
+-<A href='byond://?src=[REF(src)];type=5'>5</A>
+-<A href='byond://?src=[REF(src)];type=6'>6</A><BR>\n
+<A href='byond://?src=[REF(src)];type=7'>7</A>
+-<A href='byond://?src=[REF(src)];type=8'>8</A>
+-<A href='byond://?src=[REF(src)];type=9'>9</A><BR>\n
+<A href='byond://?src=[REF(src)];type=C'>C</A>
+-<A href='byond://?src=[REF(src)];type=0'>0</A>
+-<A href='byond://?src=[REF(src)];type=E'>E</A><BR>\n</TT>"}
 
 	popup.set_content(dat)
 	popup.open()

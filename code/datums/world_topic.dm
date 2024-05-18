@@ -112,7 +112,7 @@
 		span_adminnotice( \
 			"<b color='orange'>CROSS-SECTOR MESSAGE (INCOMING):</b> [input["sender_ckey"]] (from [input["source"]]) is about to send \
 			the following message (will autoapprove in [DisplayTimeText(CROSS_SECTOR_CANCEL_TIME)]): \
-			<b><a href='?src=[REF(src)];reject_cross_comms_message=[timer_id]'>REJECT</a></b><br> \
+			<b><a href='byond://?src=[REF(src)];reject_cross_comms_message=[timer_id]'>REJECT</a></b><br> \
 			[html_encode(input["message"])]" \
 		)
 	)

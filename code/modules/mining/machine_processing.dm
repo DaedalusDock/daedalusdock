@@ -181,9 +181,9 @@
 	//On or off
 	dat += "Machine is currently "
 	if (on)
-		dat += "<A href='?src=[REF(CONSOLE)];set_on=off'>On</A><br> "
+		dat += "<A href='byond://?src=[REF(CONSOLE)];set_on=off'>On</A><br> "
 	else
-		dat += "<A href='?src=[REF(CONSOLE)];set_on=on'>Off</A><br> "
+		dat += "<A href='byond://?src=[REF(CONSOLE)];set_on=on'>Off</A><br> "
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	for(var/datum/material/M in materials.materials)
 		var/amount = materials.materials[M]
@@ -191,7 +191,7 @@
 		if (selected_material == M)
 			dat += " <i>Smelting</i>"
 		else
-			dat += " <A href='?src=[REF(CONSOLE)];material=[REF(M)]'><b>Not Smelting</b></A> "
+			dat += " <A href='byond://?src=[REF(CONSOLE)];material=[REF(M)]'><b>Not Smelting</b></A> "
 		dat += "<br>"
 
 	dat += "<br><br>"
@@ -202,7 +202,7 @@
 		if (selected_alloy == D.id)
 			dat += " <i>Smelting</i>"
 		else
-			dat += " <A href='?src=[REF(CONSOLE)];alloy=[D.id]'><b>Not Smelting</b></A> "
+			dat += " <A href='byond://?src=[REF(CONSOLE)];alloy=[D.id]'><b>Not Smelting</b></A> "
 		dat += "<br>"
 
 	dat += "<br><br>"

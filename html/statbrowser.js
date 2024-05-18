@@ -710,10 +710,10 @@ function draw_verbs(cat) {
 function set_theme(which) {
 	if (which == "light") {
 		document.body.className = "";
-		set_style_sheet("browserOutput_white");
+		set_style_sheet('chat_panel_white');
 	} else if (which == "dark") {
 		document.body.className = "dark";
-		set_style_sheet("browserOutput");
+		set_style_sheet('chat_panel');
 	}
 }
 

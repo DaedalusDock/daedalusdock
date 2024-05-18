@@ -17,7 +17,7 @@ window.initialize(
 )
 ```
 
-Here, `custom_popup` is a unique id for the BYOND skin element that this window uses, and it can be anything you want. If you want to reference a specific element from `interface/skin.dmf`, you can use that id instead, and UI will initialize inside of that element. This is how for example chat initializes itself, by using a `browseroutput` id, which is also specified in `interface/skin.dmf`.
+Here, `custom_popup` is a unique id for the BYOND skin element that this window uses, and it can be anything you want. If you want to reference a specific element from `interface/skin.dmf`, you can use that id instead, and UI will initialize inside of that element. This is how for example chat initializes itself, by using a `chat_panel` id, which is also specified in `interface/skin.dmf`.
 
 In case you want to re-initialize it with different content, you can do that as well by calling `initialize` again with different arguments.
 

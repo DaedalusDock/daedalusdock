@@ -104,7 +104,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 		l += "<legend class='computerLegend'><b>No disk inserted!</b></legend>[RDSCREEN_NOBREAK]"
 	else
 		l += "<legend class='computerLegend'><table><tr><td>[icon2html(inserted_disk, usr)]</td><td><b>Data Disk</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
-		l += "<A href='?src=[REF(src)];eject_disk=1'>Eject</A>[RDSCREEN_NOBREAK]"
+		l += "<A href='byond://?src=[REF(src)];eject_disk=1'>Eject</A>[RDSCREEN_NOBREAK]"
 	l += "</fieldset>[RDSCREEN_NOBREAK]"
 
 	l += ui_deconstruct()
@@ -128,12 +128,12 @@ Note: Must be placed within 3 tiles of the R&D Console
 			if(!inserted_disk)
 				destroy_link = "<span class='linkOff'>[analyze_ok ? "Analyze" : "Destroy"]</span>"
 			else
-				destroy_link = "<A href='?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>[analyze_ok ? "Analyze" : "Destroy"]</A>"
+				destroy_link = "<A href='byond://?src=[REF(src)];deconstruct=[RESEARCH_MATERIAL_DESTROY_ID]'>[analyze_ok ? "Analyze" : "Destroy"]</A>"
 		else
 			destroy_link = "<span class='linkOff'>Destroy</span>"
 
 		l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><table><tr><td>[icon2html(loaded_item, usr)]</td><td><b>[loaded_item.name]</b></td></tr></table></legend>[RDSCREEN_NOBREAK]"
-		l += "<A href='?src=[REF(src)];eject_item=1'>Eject</A>"
+		l += "<A href='byond://?src=[REF(src)];eject_item=1'>Eject</A>"
 		l += "[destroy_link]"
 		if(analyze_ok)
 			l += "This item can be blueprinted![RDSCREEN_NOBREAK]"

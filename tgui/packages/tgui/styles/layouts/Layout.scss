@@ -10,7 +10,7 @@ $scrollbar-color-multiplier: 1 !default;
 
 .Layout,
 .Layout * {
-  // Fancy scrollbar
+  // Remove with 516, IE legacy code
   scrollbar-base-color: color.scale(
     base.$color-bg,
     $lightness: -25% * $scrollbar-color-multiplier);
@@ -31,8 +31,30 @@ $scrollbar-color-multiplier: 1 !default;
     $lightness: 50% * $scrollbar-color-multiplier);
   scrollbar-shadow-color: color.scale(
     base.$color-bg,
-    $lightness: 10% * $scrollbar-color-multiplier);
-}
+    $lightness: 10% * $scrollbar-color-multiplier  );
+    //IE Legacy End
+
+    // Fancy scrollbar
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: color.scale(
+        base.$color-bg,
+        $lightness: -25% * $scrollbar-color-multiplier
+      );
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: color.scale(
+        base.$color-bg,
+        $lightness: 10% * $scrollbar-color-multiplier
+      );
+    }
+  }
+
+
 
 .Layout__content {
   position: absolute;

@@ -70,7 +70,7 @@
 			codex_data += "<tr><td colspan = 2><hr></td></tr>"
 			codex_data += "<tr><td colspan = 2>[last_first_letter]</td></tr>"
 			codex_data += "<tr><td colspan = 2><hr></td></tr>"
-		codex_data += "<tr><td>[thing]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[SScodex.index_file[thing]];show_to=\ref[mob]'>View</a></td></tr>"
+		codex_data += "<tr><td>[thing]</td><td><a href='byond://?src=\ref[SScodex];show_examined_info=\ref[SScodex.index_file[thing]];show_to=\ref[mob]'>View</a></td></tr>"
 	codex_data += "</table>"
 	popup.set_content(codex_data.Join())
 	popup.open()

@@ -85,16 +85,16 @@
 /datum/antagonist/traitor/proc/traitor_objective_to_html(datum/traitor_objective/to_display)
 	var/string = "[to_display.name]"
 	if(to_display.objective_state == OBJECTIVE_STATE_ACTIVE || to_display.objective_state == OBJECTIVE_STATE_INACTIVE)
-		string += " <a href='?src=[REF(owner)];edit_obj_tc=[REF(to_display)]'>[to_display.telecrystal_reward] TC</a>"
-		string += " <a href='?src=[REF(owner)];edit_obj_pr=[REF(to_display)]'>[to_display.progression_reward] PR</a>"
+		string += " <a href='byond://?src=[REF(owner)];edit_obj_tc=[REF(to_display)]'>[to_display.telecrystal_reward] TC</a>"
+		string += " <a href='byond://?src=[REF(owner)];edit_obj_pr=[REF(to_display)]'>[to_display.progression_reward] PR</a>"
 	else
 		string += ", [to_display.telecrystal_reward] TC"
 		string += ", [to_display.progression_reward] PR"
 	if(to_display.objective_state == OBJECTIVE_STATE_ACTIVE)
-		string += " <a href='?src=[REF(owner)];fail_objective=[REF(to_display)]'>Fail this objective</a>"
-		string += " <a href='?src=[REF(owner)];succeed_objective=[REF(to_display)]'>Succeed this objective</a>"
+		string += " <a href='byond://?src=[REF(owner)];fail_objective=[REF(to_display)]'>Fail this objective</a>"
+		string += " <a href='byond://?src=[REF(owner)];succeed_objective=[REF(to_display)]'>Succeed this objective</a>"
 	if(to_display.objective_state == OBJECTIVE_STATE_INACTIVE)
-		string += " <a href='?src=[REF(owner)];fail_objective=[REF(to_display)]'>Dispose of this objective</a>"
+		string += " <a href='byond://?src=[REF(owner)];fail_objective=[REF(to_display)]'>Dispose of this objective</a>"
 
 	if(to_display.skipped)
 		string += " - <b>Skipped</b>"
@@ -127,7 +127,7 @@
 		result += "[traitor_objective_to_html(objective)]<br>"
 	if(!length(uplink_handler.potential_objectives))
 		result += "EMPTY<br>"
-	result += "<a href='?src=[REF(owner)];common=give_objective'>Force add objective</a><br>"
+	result += "<a href='byond://?src=[REF(owner)];common=give_objective'>Force add objective</a><br>"
 	return result
 
 /datum/antagonist/traitor/on_removal()

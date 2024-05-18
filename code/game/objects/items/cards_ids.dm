@@ -392,7 +392,7 @@
 		wildcard_access_list |= new_access
 
 /obj/item/card/id/attack_self(mob/user)
-	user.visible_message("<b>[user]</b> holds up [src]. <a href='?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>", null, vision_distance = 1)
+	user.visible_message("<b>[user]</b> holds up [src]. <a href='byond://?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>", null, vision_distance = 1)
 	show(user)
 	add_fingerprint(user)
 
@@ -457,7 +457,7 @@
 
 /obj/item/card/id/examine(mob/user)
 	. = ..()
-	. += "<a href='?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>"
+	. += "<a href='byond://?src=\ref[src];look_at_id=1'>\[Look at ID\]</a>"
 	if(registered_account)
 		. += span_notice("The account linked to the ID belongs to '[registered_account.account_holder]' and reports a balance of [registered_account.account_balance] cr.")
 

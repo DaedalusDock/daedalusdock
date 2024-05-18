@@ -396,13 +396,13 @@
 		if(show_netids)
 			dat += "<th><span class='statusDisplay' style='font-family: monospace;'>[far_id]</span></th>"
 		if(safe_to_call)
-			dat += "<th><a href='?src=[REF(src)];call=[url_encode(far_id)]'>Call</a></th>" //This should no longer technically *need* to be url encoded, but we're doing this just to be safe.
+			dat += "<th><a href='byond://?src=[REF(src)];call=[url_encode(far_id)]'>Call</a></th>" //This should no longer technically *need* to be url encoded, but we're doing this just to be safe.
 		else
 			dat += "<th><a class='linkOff'>Call</a></th>"
 		dat += "</tr>"
 	dat += "</table>"
 	dat += "<hr>"
-	dat += "<a href='?src=[REF(src)];scan=1'>Scan</a></center>"
+	dat += "<a href='byond://?src=[REF(src)];scan=1'>Scan</a></center>"
 
 	var/datum/browser/popup = new(user, "phonepad", "Phone", 500, 600)
 	popup.set_content(dat.Join())

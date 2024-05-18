@@ -1,8 +1,8 @@
 /proc/button_element(trg, text, action, class, style)
-	return "<a href='?src=\ref[trg];[action]' onClick='event.stopPropagation();' [class ? "class='[class]'" : ""] style='cursor:pointer;[style]'>[text]</a>"
+	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' [class ? "class='[class]'" : ""] style='cursor:pointer;[style]'>[text]</a>"
 
 /proc/color_button_element(trg, color, action)
-	return "<a href='?src=\ref[trg];[action]' onClick='event.stopPropagation();' class='box' style='background-color: [color];cursor: pointer'></a>"
+	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' class='box' style='background-color: [color];cursor: pointer'></a>"
 
 #define onclick_callback(trg, arguments) "\"(function(){window.location = 'byond://?src=[ref(trg)];[arguments]'})();\""
 

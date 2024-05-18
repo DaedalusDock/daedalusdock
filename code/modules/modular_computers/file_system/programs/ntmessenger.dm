@@ -188,7 +188,7 @@
 		var/hrefstart
 		var/hrefend
 		if (isAI(L))
-			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
+			hrefstart = "<a href='byond://?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
 			hrefend = "</a>"
 
 		if(signal_data[PACKET_SOURCE_ADDRESS] == null)

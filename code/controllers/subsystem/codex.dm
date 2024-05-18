@@ -55,7 +55,7 @@ SUBSYSTEM_DEF(codex)
 		var/datum/codex_entry/linked_entry = get_entry_by_string(key)
 		var/replacement = linkRegex.group[4]
 		if(linked_entry)
-			replacement = "<a href='?src=\ref[SScodex];show_examined_info=\ref[linked_entry];show_to=\ref[viewer]'>[replacement]</a>"
+			replacement = "<a href='byond://?src=\ref[SScodex];show_examined_info=\ref[linked_entry];show_to=\ref[viewer]'>[replacement]</a>"
 		string = replacetextEx(string, linkRegex.match, replacement)
 	return string
 
@@ -104,7 +104,7 @@ SUBSYSTEM_DEF(codex)
 
 	for(var/i = 1 to min(entries.len, CODEX_ENTRY_LIMIT))
 		var/datum/codex_entry/entry = entries[i]
-		codex_data += "<tr><td>[entry.name]</td><td><a href='?src=\ref[SScodex];show_examined_info=\ref[entry];show_to=\ref[presenting_to]'>View</a></td></tr>"
+		codex_data += "<tr><td>[entry.name]</td><td><a href='byond://?src=\ref[SScodex];show_examined_info=\ref[entry];show_to=\ref[presenting_to]'>View</a></td></tr>"
 	codex_data += "</table>"
 
 	var/datum/browser/popup = new(presenting_to, "codex-search", "Codex Search") //"codex-search"

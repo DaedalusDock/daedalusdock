@@ -363,7 +363,10 @@
 		air = GM
 		if(!isnull(initial_gas))
 			GM.gas = initial_gas.Copy()
-		GM.temperature = temperature
+			GM.temperature = temperature
+		else
+			GM.temperature = TCMB
+
 		AIR_UPDATE_VALUES(GM)
 		SSzas.unsimulated_gas_cache[gas_key] = air
 

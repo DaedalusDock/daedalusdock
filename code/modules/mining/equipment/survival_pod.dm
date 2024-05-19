@@ -2,7 +2,7 @@
 /area/misc/survivalpod
 	name = "\improper Emergency Shelter"
 	icon_state = "away"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED

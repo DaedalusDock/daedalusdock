@@ -29,9 +29,8 @@
 /area/centcom/mafia
 	name = "Mafia Minigame"
 	icon_state = "mafia"
-	static_lighting = FALSE
+	area_lighting = AREA_LIGHTING_STATIC
 
-	base_lighting_alpha = 255
 	requires_power = FALSE
 	has_gravity = STANDARD_GRAVITY
 	flags_1 = NONE

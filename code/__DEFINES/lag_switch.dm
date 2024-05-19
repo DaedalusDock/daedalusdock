@@ -18,5 +18,7 @@
 #define DISABLE_FOOTSTEPS 8
 /// Disable icon VV render preview. Unlikely to be of use in 90% of circumstances, unless GFI starts shitting bricks again.
 #define DISABLE_VV_ICON_PREVIEW 9
+/// Kick and prevent connections from unverified users
+#define KICK_GUESTS 10
 
-#define MEASURES_AMOUNT 9 // The total number of switches defined above
+#define MEASURES_AMOUNT 10 // The total number of switches defined above

@@ -42,7 +42,17 @@
 		return
 
 	if(client.restricted_mode)
-		return FALSE
+		if(href_list["verify"])
+			show_otp_menu()
+			return TRUE
+
+		if(href_list["link_to_discord"])
+			var/_link = CONFIG_GET(string/panic_bunker_discord_link)
+			if(_link)
+				src << link(_link)
+			return TRUE
+
+		return TRUE
 
 	if(href_list["show_preferences"])
 		var/datum/preferences/preferences = client.prefs
@@ -132,6 +142,7 @@
  */
 /mob/dead/new_player/proc/new_player_panel()
 	if (client?.restricted_mode)
+		restricted_client_panel()
 		return
 
 	var/list/output = list()
@@ -181,9 +192,53 @@
 	popup.set_content(output.Join())
 	popup.open(FALSE)
 
+/mob/dead/new_player/proc/restricted_client_panel()
+	var/content = {"
+		<div style='width:100%;height: 100%'>
+			<fieldset class='computerPane'>
+				<div class='computerLegend' style='margin: auto;height: 70%'>
+				Welcome to Daedalus Dock's Test Server<br><br>
+				We require discord verification in order to play, as a measure to protect us against griefing.
+				</div>
+			</fieldset>
+			<div style = 'text-align: center'>[button_element(src, "Verify", "verify=1")]</div>
+		</div>
+	"}
+
+	var/datum/browser/popup = new(src, "playersetup", "<center><div>Welcome, New Player!</div></center>", 660, 270)
+	popup.set_window_options("can_close=0;focus=false;can_resize=0")
+	popup.set_content(content)
+	popup.open(FALSE)
+
+/mob/dead/new_player/proc/show_otp_menu()
+	if(!client)
+		return
+
+	var/discord_otp = client.discord_get_or_generate_one_time_token_for_ckey(ckey)
+	var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
+	var/browse_body = {"
+		<center>
+		<span style='color:red'>Your One-Time-Password is:<br> [discord_otp]</span>
+		<br><br>
+		To link your Discord account, head to the Discord Server and make an entry ticket if you have not already. Then, paste the following into any channel:
+		<hr/>
+		</center>
+		<code>
+			[discord_prefix]verify [discord_otp]
+		</code>
+		<hr/>
+		<center>[button_element(src, "Discord", "link_to_discord=1")]
+		<br>
+	"}
+
+	var/datum/browser/popup = new(src, "discordauth", "<center><div>Verification</div></center>", 660, 270)
+	popup.set_window_options("can_close=0;focus=true;can_resize=0")
+	popup.set_content(browse_body)
+	popup.open()
+
 //When you cop out of the round (NB: this HAS A SLEEP FOR PLAYER INPUT IN IT)
 /mob/dead/new_player/proc/make_me_an_observer(skip_check)
-	if(QDELETED(src) || !src.client)
+	if(QDELETED(src) || !src.client || src.client.restricted_mode)
 		ready = PLAYER_NOT_READY
 		return FALSE
 
@@ -549,24 +604,14 @@
  * giving them the interview form and forcing it to appear.
  */
 /mob/dead/new_player/proc/register_for_interview()
-	// First we detain them by removing all the verbs they have on client
-	for (var/v in client.verbs)
-		var/procpath/verb_path = v
-		remove_verb(client, verb_path)
-
-	// Then remove those on their mob as well
-	for (var/v in verbs)
-		var/procpath/verb_path = v
-		remove_verb(src, verb_path)
-
 	// Then we create the interview form and show it to the client
 	var/datum/interview/I = GLOB.interviews.interview_for_client(client)
 	if (I)
 		I.ui_interact(src)
 
 	// Add verb for re-opening the interview panel, fixing chat and re-init the verbs for the stat panel
-	add_verb(src, /mob/dead/new_player/proc/open_interview)
-	add_verb(client, /client/verb/fix_tgui_panel)
+	add_verb(src, /mob/dead/new_player/proc/open_interview, bypass_restricted = TRUE)
+	add_verb(client, /client/verb/fix_tgui_panel, bypass_restricted = TRUE)
 
 //Small verb that allows +DEBUG admins to bypass the observer prep lock
 /mob/dead/new_player/verb/immediate_observe()

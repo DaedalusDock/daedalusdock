@@ -373,7 +373,8 @@
 
 /// Creates our forensics datum
 /atom/proc/create_forensics()
-	ASSERT(isnull(forensics))
+	if(QDELING(src))
+		return
 	forensics = new(src)
 
 /atom/proc/handle_ricochet(obj/projectile/ricocheting_projectile)

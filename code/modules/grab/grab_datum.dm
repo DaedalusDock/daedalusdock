@@ -76,6 +76,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 /// Called by the grab item's setup() proc. May return FALSE to interrupt, otherwise the grab has succeeded.
 /datum/grab/proc/setup(obj/item/hand_item/grab)
 	SHOULD_CALL_PARENT(TRUE)
+	is_set_up = TRUE
 	return TRUE
 
 // This is for the strings defined as datum variables. It takes them and swaps out keywords for relevent ones from the grab
@@ -111,8 +112,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!G)
 		return
+
 	let_go_effect(G)
-	G.current_grab = null
+
 	if(!QDELETED(G))
 		qdel(G)
 

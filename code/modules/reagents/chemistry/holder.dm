@@ -122,7 +122,7 @@
 			SEND_SIGNAL(src, COMSIG_REAGENTS_ADD_REAGENT, iter_reagent, amount, reagtemp, data, no_react)
 			if(!no_react && !is_reacting) //To reduce the amount of calculations for a reaction the reaction list is only updated on a reagents addition.
 				handle_reactions()
-			return TRUE
+			return amount
 
 	//otherwise make a new one
 	var/datum/reagent/new_reagent = new reagent(data)
@@ -1020,7 +1020,7 @@
 			continue
 		remove_reagent(_reagent, (multiplier * cached_required_reagents[_reagent]), safety = 1)
 
-	for(var/product in selected_reaction.results)
+	for(var/product in cached_results)
 		multiplier = max(multiplier, 1) //this shouldn't happen ...
 		var/yield = (cached_results[product]*multiplier)
 		SSblackbox.record_feedback("tally", "chemical_reaction", yield, product)

@@ -10,3 +10,9 @@
   francinum:
   - bugfix: Cables now consider all neighbors that share diagonal-edge nodes, instead
       of just one inline tile.
+2024-05-20:
+  Kapu1178:
+  - code_imp: Optimized the process of loading space turfs.
+  - rscadd: Unverified accounts are no longer instantly kicked, and now sit on the
+      main menu.
+  - tweak: Improved the S O U L menu.

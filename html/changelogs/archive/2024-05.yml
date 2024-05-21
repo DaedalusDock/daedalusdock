@@ -16,3 +16,7 @@
   - rscadd: Unverified accounts are no longer instantly kicked, and now sit on the
       main menu.
   - tweak: Improved the S O U L menu.
+2024-05-21:
+  Kapu1178:
+  - bugfix: With a specific amount of reagents, a reaction could fail to occur and
+      repeat infinitely.

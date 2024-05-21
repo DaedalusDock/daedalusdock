@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: With a specific amount of reagents, a reaction could fail to occur and
-      repeat infinitely.

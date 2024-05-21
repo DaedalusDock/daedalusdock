@@ -20859,6 +20859,13 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
+"hKL" = (
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
+/obj/structure/cable/yellow{
+	icon_state = "2"
+	},
+/turf/open/floor/plating,
+/area/space/nearstation)
 "hKO" = (
 /obj/machinery/atmospherics/pipe/smart/manifold/scrubbers/visible{
 	dir = 4
@@ -35293,12 +35300,6 @@
 	},
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/supermatter/room)
-"mWd" = (
-/obj/structure/railing{
-	dir = 4
-	},
-/turf/open/space/basic,
-/area/space)
 "mWn" = (
 /obj/structure/chair{
 	dir = 1
@@ -37439,10 +37440,6 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "space-bridge access"
 	},
-/obj/machinery/button/door/directional/north{
-	name = "Shuttle Bay Space Bridge Control";
-	id = "supplybridge"
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
@@ -37452,6 +37449,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "4"
 	},
+/obj/effect/mapping_helpers/airlock/locked,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "nLV" = (
@@ -43110,6 +43108,7 @@
 /obj/effect/turf_decal/tile/bar/anticorner/contrasted{
 	dir = 4
 	},
+/obj/item/storage/pill_bottle/ryetalyn,
 /turf/open/floor/iron/white,
 /area/station/medical/pharmacy)
 "pPO" = (
@@ -47651,9 +47650,6 @@
 /obj/structure/girder,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
-"rEQ" = (
-/turf/open/space/basic,
-/area/station/security/holding_cell)
 "rFd" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
@@ -81181,8 +81177,8 @@ aaa
 aaa
 aaa
 aaa
-mWd
-aaa
+aJw
+lAu
 aaa
 lMJ
 lMJ
@@ -81949,7 +81945,7 @@ uRx
 uRx
 aaa
 aaa
-aaa
+lAu
 gnJ
 gnJ
 qSW
@@ -82206,7 +82202,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+lAu
 gnJ
 aih
 bQc
@@ -82463,7 +82459,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+lAu
 gnJ
 aii
 mKf
@@ -82720,7 +82716,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+lAu
 gnJ
 pBU
 ajf
@@ -85553,10 +85549,10 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-aaa
+lAu
+lAu
+lAu
+lAu
 aaa
 aaa
 aaa
@@ -85567,7 +85563,7 @@ lmF
 vVM
 nYl
 ksk
-aaa
+lAu
 auC
 auC
 qAt
@@ -85814,7 +85810,7 @@ dgI
 nLV
 nhY
 byd
-aaa
+lAu
 aaa
 aaa
 aaa
@@ -86072,7 +86068,7 @@ loc
 bJU
 flf
 byd
-aaa
+lAu
 aaa
 aaa
 ksk
@@ -86318,9 +86314,9 @@ lMJ
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
+lAu
+lAu
+lAu
 dgI
 fTs
 tUu
@@ -86329,7 +86325,7 @@ tNg
 uTb
 xhH
 hro
-aaa
+lAu
 aaa
 aaa
 ksk
@@ -86338,7 +86334,7 @@ fDG
 fDG
 lHZ
 hvO
-iQa
+hKL
 jiI
 lpt
 oTt
@@ -86586,7 +86582,7 @@ nUd
 tIy
 pDd
 reY
-aaa
+lAu
 aaa
 aaa
 ksk
@@ -86595,7 +86591,7 @@ mCi
 ixT
 dOo
 ksk
-aaa
+lAu
 lIj
 fIC
 dJO
@@ -87357,11 +87353,11 @@ pDy
 guw
 aoJ
 cTW
-aaa
-aaa
-aaa
-aaa
-aaa
+lAu
+lAu
+lAu
+lAu
+lAu
 aaa
 aaa
 aaa
@@ -88134,7 +88130,7 @@ fEr
 bRC
 ibg
 gIH
-aaa
+lAu
 lMJ
 aaa
 bsP
@@ -88391,7 +88387,7 @@ ctu
 bAu
 vxV
 gIH
-aaa
+lAu
 lMJ
 aaa
 bsP
@@ -88905,7 +88901,7 @@ nJz
 mVx
 fpu
 vSo
-aaa
+lAu
 kOr
 aDC
 lYI
@@ -89162,13 +89158,13 @@ wjy
 mVx
 qiz
 vSo
-aaa
+lAu
 kOr
 aDC
 aDC
 eeS
 pEk
-aaa
+lAu
 aaa
 kVb
 kVb
@@ -89176,7 +89172,7 @@ vGM
 gde
 kVb
 kVb
-aaa
+lAu
 iez
 kSq
 sry
@@ -89419,7 +89415,7 @@ wjy
 mVx
 qJy
 fHQ
-aaa
+lAu
 kOr
 aDC
 aDC
@@ -91232,7 +91228,7 @@ vGM
 tFH
 kVb
 kVb
-aaa
+lAu
 iez
 msw
 iBG
@@ -91450,7 +91446,7 @@ lZT
 pJg
 mlW
 xwi
-aaa
+lAu
 lMJ
 mCI
 mCI
@@ -91481,15 +91477,15 @@ dyO
 iub
 guN
 pEk
-aaa
-aaa
-aaf
-aaa
-aaa
-aaa
+lAu
 aaa
 aaf
 aaa
+aaa
+aaa
+aaa
+aaf
+lAu
 vus
 kUK
 kCh
@@ -91706,9 +91702,9 @@ aaa
 lZT
 fhR
 ePk
+lAu
 aaa
-aaa
-wBI
+mCI
 mCI
 mCI
 mCI
@@ -91963,7 +91959,7 @@ aaa
 lZT
 qNA
 ePk
-aaa
+lAu
 aaa
 mCI
 mCI
@@ -92220,7 +92216,7 @@ aaa
 lZT
 fhR
 ePk
-aaa
+lAu
 aaa
 mCI
 mCI
@@ -92295,7 +92291,7 @@ ssX
 uJj
 iRv
 nNz
-rpa
+cqX
 qft
 qft
 qft
@@ -92477,7 +92473,7 @@ aaa
 lZT
 fhR
 ePk
-aaa
+lAu
 aaa
 mCI
 mCI
@@ -92734,7 +92730,7 @@ aaa
 lZT
 fhR
 ePk
-aaa
+lAu
 aaa
 mCI
 mCI
@@ -93506,7 +93502,7 @@ vpo
 hOy
 iTA
 kby
-aaa
+lAu
 aaa
 lMJ
 ovJ
@@ -93763,7 +93759,7 @@ ioM
 oiu
 iTA
 fgy
-aaa
+lAu
 aaa
 aaa
 aaa
@@ -94020,7 +94016,7 @@ fiQ
 wcy
 iTA
 pIp
-aaa
+lAu
 aaa
 aaa
 aaa
@@ -94790,11 +94786,11 @@ aaa
 lZT
 fhR
 ePk
+lAu
 aaa
 aaa
 aaa
 aaa
-rEQ
 kAy
 icF
 qKQ
@@ -95047,7 +95043,7 @@ aaa
 lZT
 fhR
 ePk
-aaa
+lAu
 aaa
 aaa
 aaa
@@ -95304,7 +95300,7 @@ aaa
 lZT
 qNA
 ePk
-aaa
+lAu
 aaa
 aaa
 aaa
@@ -95561,7 +95557,7 @@ aav
 lZT
 fhR
 ePk
-aaa
+lAu
 aaa
 aaa
 aaa
@@ -95819,12 +95815,12 @@ lZT
 fhR
 mlW
 kqW
-aaa
-aaa
-aaa
-aaa
+lAu
+lAu
+lAu
+lAu
 lMJ
-aaa
+lAu
 bod
 bod
 pVd
@@ -96169,7 +96165,7 @@ eWT
 eWT
 eWT
 jRC
-isJ
+bgc
 rJU
 rJU
 dmf
@@ -98244,7 +98240,7 @@ rah
 rah
 isJ
 aaa
-aaa
+lMJ
 aaa
 lAu
 aaa
@@ -108425,7 +108421,7 @@ aox
 lMJ
 aaa
 aaa
-lAu
+aaa
 lAu
 wjD
 rRY
@@ -110228,7 +110224,7 @@ aox
 aox
 aox
 aaa
-aaa
+lAu
 nVR
 qgX
 dnS

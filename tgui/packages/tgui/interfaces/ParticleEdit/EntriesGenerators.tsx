@@ -1,7 +1,21 @@
 /* eslint-disable react/jsx-no-undef */
 import { useBackend, useLocalState } from '../../backend';
-import { Button, LabeledList, NumberInput, ColorBox, Input, Stack } from '../../components';
-import { EntryGeneratorNumbersListProps, FloatGeneratorColorProps, FloatGeneratorProps, ParticleUIData, P_DATA_GENERATOR, RandToNumber } from './data';
+import {
+  Button,
+  LabeledList,
+  NumberInput,
+  ColorBox,
+  Input,
+  Stack,
+} from '../../components';
+import {
+  EntryGeneratorNumbersListProps,
+  FloatGeneratorColorProps,
+  FloatGeneratorProps,
+  ParticleUIData,
+  P_DATA_GENERATOR,
+  RandToNumber,
+} from './data';
 import { isStringArray } from './helpers';
 import { GeneratorListEntry } from './Generators';
 
@@ -30,7 +44,8 @@ export const FloatGenerator = (props: FloatGeneratorProps, context) => {
                 new_value: !Array.isArray(float)
                   ? ['num', 0, 1, RandToNumber['UNIFORM_RAND']]
                   : 0,
-              })}
+              })
+            }
           />
         </Stack.Item>
         {!Array.isArray(float) ? (
@@ -42,7 +57,8 @@ export const FloatGenerator = (props: FloatGeneratorProps, context) => {
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })}
+                })
+              }
             />
           </Stack.Item>
         ) : (
@@ -55,7 +71,7 @@ export const FloatGenerator = (props: FloatGeneratorProps, context) => {
 
 export const FloatGeneratorColor = (
   props: FloatGeneratorColorProps,
-  context
+  context,
 ) => {
   const { act, data } = useBackend<ParticleUIData>(context);
   const [desc, setdesc] = useLocalState(context, 'desc', '');
@@ -81,7 +97,8 @@ export const FloatGeneratorColor = (
                 new_value: !Array.isArray(float)
                   ? ['num', 0, 1, RandToNumber['UNIFORM_RAND']]
                   : '#FFFFFF',
-              })}
+              })
+            }
           />
         </Stack.Item>
         {typeof float === 'string' ? (
@@ -98,7 +115,8 @@ export const FloatGeneratorColor = (
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })}
+                })
+              }
             />
           </Stack.Item>
         ) : (
@@ -111,7 +129,7 @@ export const FloatGeneratorColor = (
 
 export const EntryGeneratorNumbersList = (
   props: EntryGeneratorNumbersListProps,
-  context
+  context,
 ) => {
   const { act, data } = useBackend<ParticleUIData>(context);
   const [desc, setdesc] = useLocalState(context, 'desc', '');
@@ -136,13 +154,14 @@ export const EntryGeneratorNumbersList = (
                 var_mod: !isStringArray(input) ? P_DATA_GENERATOR : null,
                 new_value: !isStringArray(input)
                   ? [
-                    'sphere',
-                    [0, 0, 0],
-                    [1, 1, 1],
-                    RandToNumber['UNIFORM_RAND'],
-                  ]
+                      'sphere',
+                      [0, 0, 0],
+                      [1, 1, 1],
+                      RandToNumber['UNIFORM_RAND'],
+                    ]
                   : [1, 1, 1],
-              })}
+              })
+            }
           />
         </Stack.Item>
         <Stack.Item>
@@ -154,7 +173,8 @@ export const EntryGeneratorNumbersList = (
               act('edit', {
                 var: var_name,
                 new_value: Array.isArray(input) ? 1 : [1, 1, 1],
-              })}
+              })
+            }
           />
         </Stack.Item>
 
@@ -167,7 +187,8 @@ export const EntryGeneratorNumbersList = (
                 act('edit', {
                   var: var_name,
                   new_value: value,
-                })}
+                })
+              }
             />
           </Stack.Item>
         ) : isStringArray(input) ? (
@@ -185,7 +206,8 @@ export const EntryGeneratorNumbersList = (
                 act('edit', {
                   var: var_name,
                   new_value: [value, input![1], input![2]],
-                })}
+                })
+              }
             />
             <NumberInput
               animated
@@ -194,7 +216,8 @@ export const EntryGeneratorNumbersList = (
                 act('edit', {
                   var: var_name,
                   new_value: [input![0], value, input![2]],
-                })}
+                })
+              }
             />
             {allow_z ? (
               <NumberInput
@@ -204,7 +227,8 @@ export const EntryGeneratorNumbersList = (
                   act('edit', {
                     var: var_name,
                     new_value: [input![0], input![1], value],
-                  })}
+                  })
+                }
               />
             ) : null}
           </Stack.Item>

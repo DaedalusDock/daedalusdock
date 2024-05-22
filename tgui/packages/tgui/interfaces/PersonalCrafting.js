@@ -1,5 +1,13 @@
 import { useBackend, useLocalState } from '../backend';
-import { Button, Dimmer, Icon, LabeledList, Section, Stack, Tabs } from '../components';
+import {
+  Button,
+  Dimmer,
+  Icon,
+  LabeledList,
+  Section,
+  Stack,
+  Tabs,
+} from '../components';
 import { Window } from '../layouts';
 
 export const PersonalCrafting = (props, context) => {
@@ -68,7 +76,8 @@ export const PersonalCrafting = (props, context) => {
                         category: category.category,
                         subcategory: category.subcategory,
                       });
-                    }}>
+                    }}
+                  >
                     {category.name}
                   </Tabs.Tab>
                 ))}
@@ -92,7 +101,8 @@ export const PersonalCrafting = (props, context) => {
                     onClick={() => act('toggle_recipes')}
                   />
                 </>
-              }>
+              }
+            >
               <Section fill scrollable>
                 {busy ? (
                   <Dimmer fontSize="32px">
@@ -138,9 +148,11 @@ const CraftingList = (props, context) => {
               onClick={() =>
                 act('make', {
                   recipe: craftable.ref,
-                })}
+                })
+              }
             />
-          }>
+          }
+        >
           {craftable.req_text}
         </LabeledList.Item>
       );
@@ -159,9 +171,11 @@ const CraftingList = (props, context) => {
             onClick={() =>
               act('make', {
                 recipe: craftable.ref,
-              })}
+              })
+            }
           />
-        }>
+        }
+      >
         <LabeledList>
           {!!craftable.req_text && (
             <LabeledList.Item label="Required">

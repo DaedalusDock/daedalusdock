@@ -1,6 +1,16 @@
 import { multiline } from 'common/string';
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Dimmer, Divider, Icon, NoticeBox, ProgressBar, Section, Stack } from '../components';
+import {
+  Box,
+  Button,
+  Dimmer,
+  Divider,
+  Icon,
+  NoticeBox,
+  ProgressBar,
+  Section,
+  Stack,
+} from '../components';
 import { Window } from '../layouts';
 
 const TAB2NAME = [
@@ -79,7 +89,8 @@ const EnscribedName = (props, context) => {
         fontSize="50px"
         color="bad"
         textAlign="center"
-        fontFamily="Ink Free">
+        fontFamily="Ink Free"
+      >
         {owner}
       </Box>
       <Divider />
@@ -235,7 +246,8 @@ const SingleLoadout = (props, context) => {
           onClick={() =>
             act('purchase_loadout', {
               id: loadoutId,
-            })}
+            })
+          }
         />
         <Divider />
         <Box color={loadoutColor}>Added by {author}.</Box>
@@ -409,7 +421,8 @@ export const Spellbook = (props, context) => {
                         {tabIndex}
                       </Box>
                     </>
-                  }>
+                  }
+                >
                   {!!TAB2NAME[tabIndex - 1].locked && <LockedPage />}
                   <Stack vertical>
                     {TAB2NAME[tabIndex - 1].blurb !== null && (
@@ -434,11 +447,12 @@ export const Spellbook = (props, context) => {
                                 buttons={
                                   <>
                                     <Box
-                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}>
+                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}
+                                    >
                                       {entry.cost} Points
                                     </Box>
-                                    {(entry.cat === 'Rituals'
-                                      && ((!!entry.times && (
+                                    {(entry.cat === 'Rituals' &&
+                                      ((!!entry.times && (
                                         <Box ml={-104} mt={-2.2}>
                                           Cast {entry.times} Times.
                                         </Box>
@@ -446,16 +460,16 @@ export const Spellbook = (props, context) => {
                                         <Box ml={-110} mt={-2.2}>
                                           Not Casted Yet.
                                         </Box>
-                                      )))
-                                      || (entry.cooldown && (
+                                      ))) ||
+                                      (entry.cooldown && (
                                         <Box ml={-115} mt={-2.2}>
                                           {entry.cooldown}s Cooldown
                                         </Box>
                                       )) || (
-                                      <Box ml={-120} mt={-2.2}>
-                                        No Cooldown!
-                                      </Box>
-                                    )}
+                                        <Box ml={-120} mt={-2.2}>
+                                          No Cooldown!
+                                        </Box>
+                                      )}
                                     {entry.buyword === 'Learn' && (
                                       <Box mr={-9.5} mt={-3}>
                                         <Button
@@ -475,7 +489,8 @@ export const Spellbook = (props, context) => {
                                       </Box>
                                     )}
                                   </>
-                                }>
+                                }
+                              >
                                 <Stack>
                                   <Stack.Item grow>{entry.desc}</Stack.Item>
                                   <Stack.Item>
@@ -495,7 +510,8 @@ export const Spellbook = (props, context) => {
                                       onClick={() =>
                                         act('purchase', {
                                           spellref: entry.ref,
-                                        })}
+                                        })
+                                      }
                                     />
                                     <br />
                                     {(!entry.refundable && (
@@ -509,7 +525,8 @@ export const Spellbook = (props, context) => {
                                         onClick={() =>
                                           act('refund', {
                                             spellref: entry.ref,
-                                          })}
+                                          })
+                                        }
                                       />
                                     )}
                                   </Stack.Item>
@@ -544,7 +561,8 @@ export const Spellbook = (props, context) => {
                         {tabIndex + 1}
                       </Box>
                     </>
-                  }>
+                  }
+                >
                   {!!TAB2NAME[tabIndex].locked && <LockedPage />}
                   <Stack vertical>
                     {TAB2NAME[tabIndex].blurb !== null && (
@@ -569,11 +587,12 @@ export const Spellbook = (props, context) => {
                                 buttons={
                                   <>
                                     <Box
-                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}>
+                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}
+                                    >
                                       {entry.cost} Points
                                     </Box>
-                                    {(entry.cat === 'Rituals'
-                                      && ((!!entry.times && (
+                                    {(entry.cat === 'Rituals' &&
+                                      ((!!entry.times && (
                                         <Box ml={-118} mt={-2.2}>
                                           Cast {entry.times} Time(s).
                                         </Box>
@@ -581,16 +600,16 @@ export const Spellbook = (props, context) => {
                                         <Box ml={-118} mt={-2.2}>
                                           Not Casted Yet.
                                         </Box>
-                                      )))
-                                      || (entry.cooldown && (
+                                      ))) ||
+                                      (entry.cooldown && (
                                         <Box ml={-115} mt={-2.2}>
                                           {entry.cooldown}s Cooldown
                                         </Box>
                                       )) || (
-                                      <Box ml={-120} mt={-2.2}>
-                                        No Cooldown!
-                                      </Box>
-                                    )}
+                                        <Box ml={-120} mt={-2.2}>
+                                          No Cooldown!
+                                        </Box>
+                                      )}
                                     {entry.buyword === 'Learn' && (
                                       <Box mr={-9.5} mt={-3}>
                                         <Button
@@ -610,7 +629,8 @@ export const Spellbook = (props, context) => {
                                       </Box>
                                     )}
                                   </>
-                                }>
+                                }
+                              >
                                 <Stack>
                                   <Stack.Item grow>{entry.desc}</Stack.Item>
                                   <Stack.Item>
@@ -630,7 +650,8 @@ export const Spellbook = (props, context) => {
                                       onClick={() =>
                                         act('purchase', {
                                           spellref: entry.ref,
-                                        })}
+                                        })
+                                      }
                                     />
                                     <br />
                                     {(!entry.refundable && (
@@ -644,7 +665,8 @@ export const Spellbook = (props, context) => {
                                         onClick={() =>
                                           act('refund', {
                                             spellref: entry.ref,
-                                          })}
+                                          })
+                                        }
                                       />
                                     )}
                                   </Stack.Item>

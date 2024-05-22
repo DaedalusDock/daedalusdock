@@ -62,8 +62,7 @@ export const backendReducer = (state = initialState, action) => {
         const value = payload.shared[key];
         if (value === '') {
           shared[key] = undefined;
-        }
-        else {
+        } else {
           shared[key] = JSON.parse(value);
         }
       }
@@ -115,11 +114,11 @@ export const backendReducer = (state = initialState, action) => {
   return state;
 };
 
-export const backendMiddleware = store => {
+export const backendMiddleware = (store) => {
   let fancyState;
   let suspendInterval;
 
-  return next => action => {
+  return (next) => (action) => {
     const { suspended } = selectBackend(store.getState());
     const { type, payload } = action;
 
@@ -196,8 +195,10 @@ export const backendMiddleware = store => {
         });
         perf.mark('resume/finish');
         if (process.env.NODE_ENV !== 'production') {
-          logger.log('visible in',
-            perf.measure('render/finish', 'resume/finish'));
+          logger.log(
+            'visible in',
+            perf.measure('render/finish', 'resume/finish'),
+          );
         }
       });
     }
@@ -212,9 +213,8 @@ export const backendMiddleware = store => {
  */
 export const sendAct = (action: string, payload: object = {}) => {
   // Validate that payload is an object
-  const isObject = typeof payload === 'object'
-    && payload !== null
-    && !Array.isArray(payload);
+  const isObject =
+    typeof payload === 'object' && payload !== null && !Array.isArray(payload);
   if (!isObject) {
     logger.error(`Payload for act() must be an object, got this:`, payload);
     return;
@@ -224,38 +224,37 @@ export const sendAct = (action: string, payload: object = {}) => {
 
 type BackendState<TData> = {
   config: {
-    title: string,
-    status: number,
-    interface: string,
-    refreshing: boolean,
+    title: string;
+    status: number;
+    interface: string;
+    refreshing: boolean;
     window: {
-      key: string,
-      size: [number, number],
-      fancy: boolean,
-      locked: boolean,
-    },
+      key: string;
+      size: [number, number];
+      fancy: boolean;
+      locked: boolean;
+    };
     client: {
-      ckey: string,
-      address: string,
-      computer_id: string,
-    },
+      ckey: string;
+      address: string;
+      computer_id: string;
+    };
     user: {
-      name: string,
-      observer: number,
-    },
-  },
-  data: TData,
-  shared: Record<string, any>,
-  suspending: boolean,
-  suspended: boolean,
-}
+      name: string;
+      observer: number;
+    };
+  };
+  data: TData;
+  shared: Record<string, any>;
+  suspending: boolean;
+  suspended: boolean;
+};
 
 /**
  * Selects a backend-related slice of Redux state
  */
-export const selectBackend = <TData>(state: any): BackendState<TData> => (
-  state.backend || {}
-);
+export const selectBackend = <TData>(state: any): BackendState<TData> =>
+  state.backend || {};
 
 /**
  * A React hook (sort of) for getting tgui state and related functions.
@@ -300,20 +299,19 @@ export const useLocalState = <T>(
   const { store } = context;
   const state = selectBackend(store.getState());
   const sharedStates = state.shared ?? {};
-  const sharedState = (key in sharedStates)
-    ? sharedStates[key]
-    : initialState;
+  const sharedState = key in sharedStates ? sharedStates[key] : initialState;
   return [
     sharedState,
-    nextState => {
-      store.dispatch(backendSetSharedState({
-        key,
-        nextState: (
-          typeof nextState === 'function'
-            ? nextState(sharedState)
-            : nextState
-        ),
-      }));
+    (nextState) => {
+      store.dispatch(
+        backendSetSharedState({
+          key,
+          nextState:
+            typeof nextState === 'function'
+              ? nextState(sharedState)
+              : nextState,
+        }),
+      );
     },
   ];
 };
@@ -340,20 +338,19 @@ export const useSharedState = <T>(
   const { store } = context;
   const state = selectBackend(store.getState());
   const sharedStates = state.shared ?? {};
-  const sharedState = (key in sharedStates)
-    ? sharedStates[key]
-    : initialState;
+  const sharedState = key in sharedStates ? sharedStates[key] : initialState;
   return [
     sharedState,
-    nextState => {
+    (nextState) => {
       Byond.sendMessage({
         type: 'setSharedState',
         key,
-        value: JSON.stringify(
-          typeof nextState === 'function'
-            ? nextState(sharedState)
-            : nextState
-        ) || '',
+        value:
+          JSON.stringify(
+            typeof nextState === 'function'
+              ? nextState(sharedState)
+              : nextState,
+          ) || '',
       });
     },
   ];

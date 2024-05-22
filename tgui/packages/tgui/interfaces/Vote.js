@@ -1,5 +1,14 @@
 import { useBackend } from '../backend';
-import { Box, Icon, Stack, Button, Section, NoticeBox, LabeledList, Collapsible } from '../components';
+import {
+  Box,
+  Icon,
+  Stack,
+  Button,
+  Section,
+  NoticeBox,
+  LabeledList,
+  Collapsible,
+} from '../components';
 import { Window } from '../layouts';
 
 export const Vote = (props, context) => {
@@ -11,7 +20,8 @@ export const Vote = (props, context) => {
    */
   let windowTitle = 'Vote';
   if (mode) {
-    windowTitle += ': ' + (question || mode).replace(/^\w/, (c) => c.toUpperCase());
+    windowTitle +=
+      ': ' + (question || mode).replace(/^\w/, (c) => c.toUpperCase());
   }
 
   return (
@@ -36,12 +46,7 @@ export const Vote = (props, context) => {
  */
 const VoteOptions = (props, context) => {
   const { act, data } = useBackend(context);
-  const {
-    allow_vote_restart,
-    allow_vote_map,
-    lower_admin,
-    upper_admin,
-  } = data;
+  const { allow_vote_restart, allow_vote_map, lower_admin, upper_admin } = data;
 
   return (
     <Stack.Item>
@@ -56,7 +61,8 @@ const VoteOptions = (props, context) => {
                     color="red"
                     checked={!!allow_vote_map}
                     disabled={!upper_admin}
-                    onClick={() => act('toggle_map')}>
+                    onClick={() => act('toggle_map')}
+                  >
                     {allow_vote_map ? 'Enabled' : 'Disabled'}
                   </Button.Checkbox>
                 )}
@@ -71,13 +77,15 @@ const VoteOptions = (props, context) => {
                     color="red"
                     checked={!!allow_vote_restart}
                     disabled={!upper_admin}
-                    onClick={() => act('toggle_restart')}>
+                    onClick={() => act('toggle_restart')}
+                  >
                     {allow_vote_restart ? 'Enabled' : 'Disabled'}
                   </Button.Checkbox>
                 )}
                 <Button
                   disabled={!allow_vote_restart}
-                  onClick={() => act('restart')}>
+                  onClick={() => act('restart')}
+                >
                   Restart
                 </Button>
               </Stack.Item>
@@ -106,7 +114,9 @@ const VotersList = (props, context) => {
 
   return (
     <Stack.Item>
-      <Collapsible title={`View Voters${voting.length ? `: ${voting.length}` : ""}`}>
+      <Collapsible
+        title={`View Voters${voting.length ? `: ${voting.length}` : ''}`}
+      >
         <Section height={8} fill scrollable>
           {voting.map((voter) => {
             return <Box key={voter}>{voter}</Box>;
@@ -140,10 +150,12 @@ const ChoicesPanel = (props, context) => {
                       disabled={i === selected_choice - 1}
                       onClick={() => {
                         act('vote', { index: i + 1 });
-                      }}>
+                      }}
+                    >
                       Vote
                     </Button>
-                  }>
+                  }
+                >
                   {i === selected_choice - 1 && (
                     <Icon
                       alignSelf="right"
@@ -183,7 +195,8 @@ const TimePanel = (props, context) => {
             <Button
               color="red"
               disabled={!lower_admin}
-              onClick={() => act('cancel')}>
+              onClick={() => act('cancel')}
+            >
               Cancel Vote
             </Button>
           )}

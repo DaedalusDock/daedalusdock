@@ -1,9 +1,17 @@
 import { useBackend } from '../backend';
-import { Button, LabeledList, Section, Box, Modal, ProgressBar, NumberInput } from '../components';
+import {
+  Button,
+  LabeledList,
+  Section,
+  Box,
+  Modal,
+  ProgressBar,
+  NumberInput,
+} from '../components';
 import { Window } from '../layouts';
 
-export const TurbineComputer = (props, context) => {
-  const { act, data } = useBackend(context);
+export const TurbineComputer = (props) => {
+  const { act, data } = useBackend();
   const parts_not_connected = !data.parts_linked && (
     <Modal>
       <Box
@@ -11,7 +19,9 @@ export const TurbineComputer = (props, context) => {
         width="200px"
         textAlign="center"
         minHeight="39px">
-        {"Parts not connected, use a multitool on the core rotor before trying again"}
+        {
+          'Parts not connected, use a multitool on the core rotor before trying again'
+        }
       </Box>
     </Modal>
   );
@@ -22,25 +32,26 @@ export const TurbineComputer = (props, context) => {
         width="200px"
         textAlign="center"
         minHeight="39px">
-        {"Some parts have open maintenance hatchet, please close them before starting"}
+        {
+          'Some parts have open maintenance hatchet, please close them before starting'
+        }
       </Box>
     </Modal>
   );
   return (
-    <Window
-      width={310}
-      height={240}>
+    <Window width={310} height={240}>
       <Window.Content>
         <Section
           title="Status"
-          buttons={(
+          buttons={
             <Button
               icon={data.active ? 'power-off' : 'times'}
               content={data.active ? 'Online' : 'Offline'}
               selected={data.active}
               disabled={!data.can_turn_off || !data.parts_linked}
-              onClick={() => act('toggle_power')} />
-          )}>
+              onClick={() => act('toggle_power')}
+            />
+          }>
           {parts_not_connected}
           {parts_not_ready}
           <LabeledList>
@@ -51,9 +62,12 @@ export const TurbineComputer = (props, context) => {
                 unit="%"
                 minValue={1}
                 maxValue={100}
-                onDrag={(e, value) => act('regulate', {
-                  regulate: (value * 0.01),
-                })} />
+                onDrag={(e, value) =>
+                  act('regulate', {
+                    regulate: value * 0.01,
+                  })
+                }
+              />
             </LabeledList.Item>
             <LabeledList.Item label="Turbine Integrity">
               <ProgressBar
@@ -65,7 +79,7 @@ export const TurbineComputer = (props, context) => {
                   average: [40, 59],
                   bad: [0, 39],
                 }}>
-                {data.integrity + " %"}
+                {data.integrity + ' %'}
               </ProgressBar>
             </LabeledList.Item>
             <LabeledList.Item label="Turbine Speed">

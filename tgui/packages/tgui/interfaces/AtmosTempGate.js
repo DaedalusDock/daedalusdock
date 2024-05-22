@@ -2,12 +2,10 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, NumberInput, Section } from '../components';
 import { Window } from '../layouts';
 
-export const AtmosTempGate = (props, context) => {
-  const { act, data } = useBackend(context);
+export const AtmosTempGate = (props) => {
+  const { act, data } = useBackend();
   return (
-    <Window
-      width={335}
-      height={115}>
+    <Window width={335} height={115}>
       <Window.Content>
         <Section>
           <LabeledList>
@@ -16,7 +14,8 @@ export const AtmosTempGate = (props, context) => {
                 icon={data.on ? 'power-off' : 'times'}
                 content={data.on ? 'On' : 'Off'}
                 selected={data.on}
-                onClick={() => act('power')} />
+                onClick={() => act('power')}
+              />
             </LabeledList.Item>
             <LabeledList.Item label="Heat settings">
               <NumberInput
@@ -27,17 +26,23 @@ export const AtmosTempGate = (props, context) => {
                 minValue={data.min_temperature}
                 maxValue={data.max_temperature}
                 step={1}
-                onChange={(e, value) => act('temperature', {
-                  temperature: value,
-                })} />
+                onChange={(e, value) =>
+                  act('temperature', {
+                    temperature: value,
+                  })
+                }
+              />
               <Button
                 ml={1}
                 icon="plus"
                 content="Max"
                 disabled={data.temperature === data.max_temperature}
-                onClick={() => act('temperature', {
-                  temperature: 'max',
-                })} />
+                onClick={() =>
+                  act('temperature', {
+                    temperature: 'max',
+                  })
+                }
+              />
             </LabeledList.Item>
           </LabeledList>
         </Section>

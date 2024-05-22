@@ -30,8 +30,8 @@ type DecalPainterData = {
   current_custom_color: string;
 };
 
-export const DecalPainter = (props, context) => {
-  const { act, data } = useBackend<DecalPainterData>(context);
+export const DecalPainter = (props) => {
+  const { act, data } = useBackend<DecalPainterData>();
 
   const custom_color_selected = !data.color_list.some(
     (color) => color.color === data.current_color
@@ -53,7 +53,8 @@ export const DecalPainter = (props, context) => {
                 onClick={() =>
                   act('select color', {
                     color: color.color,
-                  })}>
+                  })
+                }>
                 <ColorBox color={color.color} mr={0.5} />
                 {color.name}
               </Button>
@@ -94,9 +95,9 @@ export const DecalPainter = (props, context) => {
                   align="fill"
                   justify="fill">
                   {data.dir_list.map((dir) => {
-                    const selected
-                      = decal.decal === data.current_decal
-                      && dir.dir === data.current_dir;
+                    const selected =
+                      decal.decal === data.current_decal &&
+                      dir.dir === data.current_dir;
 
                     return (
                       <IconButton
@@ -127,8 +128,8 @@ type IconButtonParams = {
   selected: boolean;
 };
 
-const IconButton = (props: IconButtonParams, context) => {
-  const { act, data } = useBackend<DecalPainterData>(context);
+const IconButton = (props: IconButtonParams) => {
+  const { act, data } = useBackend<DecalPainterData>();
 
   const generateIconKey = (decal: string, dir: number, color: string) =>
     `${data.icon_prefix} ${decal}_${dir}_${color.replace('#', '')}`;
@@ -146,7 +147,8 @@ const IconButton = (props: IconButtonParams, context) => {
         act('select decal', {
           decal: props.decal,
           dir: props.dir,
-        })}>
+        })
+      }>
       <div className={icon} style={{ display: 'block' }} />
     </Button>
   );

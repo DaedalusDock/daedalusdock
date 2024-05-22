@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, NoticeBox, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
-export const CryopodConsole = (props, context) => {
-  const { data } = useBackend(context);
+export const CryopodConsole = (props) => {
+  const { data } = useBackend();
   const { account_name } = data;
 
   const welcomeTitle = `Hello, ${account_name || '[REDACTED]'}!`;
@@ -30,15 +30,13 @@ export const CryopodConsole = (props, context) => {
   );
 };
 
-const CrewList = (props, context) => {
-  const { data } = useBackend(context);
+const CrewList = (props) => {
+  const { data } = useBackend();
   const { frozen_crew } = data;
 
   return (
-    frozen_crew.length && (
-      <Section
-        fill
-        scrollable>
+    (frozen_crew.length && (
+      <Section fill scrollable>
         <LabeledList>
           {frozen_crew.map((person) => (
             <LabeledList.Item key={person} label={person.name}>
@@ -47,22 +45,18 @@ const CrewList = (props, context) => {
           ))}
         </LabeledList>
       </Section>
-    ) || (
-      <NoticeBox>No stored crew!</NoticeBox>
-    )
+    )) || <NoticeBox>No stored crew!</NoticeBox>
   );
 };
 
-const ItemList = (props, context) => {
-  const { act, data } = useBackend(context);
+const ItemList = (props) => {
+  const { act, data } = useBackend();
   const { item_ref_list, item_ref_name, item_retrieval_allowed } = data;
   if (!item_retrieval_allowed) {
-    return (
-      <NoticeBox>You are not authorized for item management.</NoticeBox>
-    );
+    return <NoticeBox>You are not authorized for item management.</NoticeBox>;
   }
   return (
-    item_ref_list.length && (
+    (item_ref_list.length && (
       <Section fill scrollable>
         <LabeledList>
           {item_ref_list.map((item) => (
@@ -71,13 +65,12 @@ const ItemList = (props, context) => {
                 icon="exclamation-circle"
                 content="Retrieve"
                 color="bad"
-                onClick={() => act('item_get', { item_get: item })} />
+                onClick={() => act('item_get', { item_get: item })}
+              />
             </LabeledList.Item>
           ))}
         </LabeledList>
       </Section>
-    ) || (
-      <NoticeBox>No stored items!</NoticeBox>
-    )
+    )) || <NoticeBox>No stored items!</NoticeBox>
   );
 };

@@ -1,6 +1,13 @@
 import { Loader } from './common/Loader';
 import { useBackend, useLocalState } from '../backend';
-import { KEY_ENTER, KEY_ESCAPE, KEY_LEFT, KEY_RIGHT, KEY_SPACE, KEY_TAB } from '../../common/keycodes';
+import {
+  KEY_ENTER,
+  KEY_ESCAPE,
+  KEY_LEFT,
+  KEY_RIGHT,
+  KEY_SPACE,
+  KEY_TAB,
+} from '../../common/keycodes';
 import { Autofocus, Box, Button, Flex, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
@@ -17,8 +24,8 @@ type AlertModalData = {
 const KEY_DECREMENT = -1;
 const KEY_INCREMENT = 1;
 
-export const AlertModal = (_, context) => {
-  const { act, data } = useBackend<AlertModalData>(context);
+export const AlertModal = (_) => {
+  const { act, data } = useBackend<AlertModalData>();
   const {
     autofocus,
     buttons = [],
@@ -27,12 +34,12 @@ export const AlertModal = (_, context) => {
     timeout,
     title,
   } = data;
-  const [selected, setSelected] = useLocalState<number>(context, 'selected', 0);
+  const [selected, setSelected] = useLocalState<number>('selected', 0);
   // Dynamically sets window dimensions
-  const windowHeight
-    = 115
-    + (message.length > 30 ? Math.ceil(message.length / 4) : 0)
-    + (message.length && large_buttons ? 5 : 0);
+  const windowHeight =
+    115 +
+    (message.length > 30 ? Math.ceil(message.length / 4) : 0) +
+    (message.length && large_buttons ? 5 : 0);
   const windowWidth = 325 + (buttons.length > 2 ? 55 : 0);
   const onKey = (direction: number) => {
     if (selected === 0 && direction === KEY_DECREMENT) {
@@ -89,8 +96,8 @@ export const AlertModal = (_, context) => {
  * Technically this handles more than 2 buttons, but you
  * should just be using a list input in that case.
  */
-const ButtonDisplay = (props, context) => {
-  const { data } = useBackend<AlertModalData>(context);
+const ButtonDisplay = (props) => {
+  const { data } = useBackend<AlertModalData>();
   const { buttons = [], large_buttons, swapped_buttons } = data;
   const { selected } = props;
 
@@ -127,8 +134,8 @@ const ButtonDisplay = (props, context) => {
 /**
  * Displays a button with variable sizing.
  */
-const AlertButton = (props, context) => {
-  const { act, data } = useBackend<AlertModalData>(context);
+const AlertButton = (props) => {
+  const { act, data } = useBackend<AlertModalData>();
   const { large_buttons } = data;
   const { button, selected } = props;
   const buttonWidth = button.length > 7 ? button.length : 7;

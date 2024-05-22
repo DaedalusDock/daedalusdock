@@ -2,7 +2,14 @@ import { sortBy } from 'common/collections';
 import { flow } from 'common/fp';
 import { toFixed } from 'common/math';
 import { useBackend } from '../backend';
-import { Button, LabeledList, ProgressBar, Section, Stack, Table } from '../components';
+import {
+  Button,
+  LabeledList,
+  ProgressBar,
+  Section,
+  Stack,
+  Table,
+} from '../components';
 import { getGasColor, getGasLabel } from '../constants';
 import { Window } from '../layouts';
 
@@ -18,8 +25,8 @@ export const SupermatterMonitor = () => {
   );
 };
 
-export const SupermatterMonitorContent = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SupermatterMonitorContent = (props) => {
+  const { act, data } = useBackend();
   const {
     active,
     singlecrystal,
@@ -43,13 +50,15 @@ export const SupermatterMonitorContent = (props, context) => {
   return (
     <Section
       title={SM_uid + '. ' + SM_area_name}
-      buttons={!singlecrystal && (
-        <Button
-          icon="arrow-left"
-          content="Back"
-          onClick={() => act('PRG_clear')}
-        />
-      )}>
+      buttons={
+        !singlecrystal && (
+          <Button
+            icon="arrow-left"
+            content="Back"
+            onClick={() => act('PRG_clear')}
+          />
+        )
+      }>
       <Stack>
         <Stack.Item width="270px">
           <Section title="Metrics">
@@ -145,8 +154,8 @@ export const SupermatterMonitorContent = (props, context) => {
   );
 };
 
-const SupermatterList = (props, context) => {
-  const { act, data } = useBackend(context);
+const SupermatterList = (props) => {
+  const { act, data } = useBackend();
   const { supermatters = [] } = data;
   return (
     <Section
@@ -181,7 +190,8 @@ const SupermatterList = (props, context) => {
                 onClick={() =>
                   act('PRG_set', {
                     target: sm.uid,
-                  })}
+                  })
+                }
               />
             </Table.Cell>
           </Table.Row>

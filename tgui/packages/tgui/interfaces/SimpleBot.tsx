@@ -1,6 +1,15 @@
 import { multiline } from '../../common/string';
 import { useBackend } from '../backend';
-import { Button, Icon, LabeledControls, NoticeBox, Section, Slider, Stack, Tooltip } from '../components';
+import {
+  Button,
+  Icon,
+  LabeledControls,
+  NoticeBox,
+  Section,
+  Slider,
+  Stack,
+  Tooltip,
+} from '../components';
 import { Window } from '../layouts';
 
 type SimpleBotContext = {
@@ -29,10 +38,10 @@ type Controls = {
   [Control: string]: [Value: number];
 };
 
-export const SimpleBot = (_, context) => {
-  const { data } = useBackend<SimpleBotContext>(context);
+export const SimpleBot = (_) => {
+  const { data } = useBackend<SimpleBotContext>();
   const { can_hack, locked } = data;
-  const access = (!locked || can_hack);
+  const access = !locked || can_hack;
 
   return (
     <Window width={450} height={300}>
@@ -40,9 +49,7 @@ export const SimpleBot = (_, context) => {
         <Stack fill vertical>
           <Stack.Item>
             <Section title="Settings" buttons={<TabDisplay />}>
-              {!access
-                ? (<NoticeBox>Locked!</NoticeBox>)
-                : (<SettingsDisplay />)}
+              {!access ? <NoticeBox>Locked!</NoticeBox> : <SettingsDisplay />}
             </Section>
           </Stack.Item>
           {access && (
@@ -59,8 +66,8 @@ export const SimpleBot = (_, context) => {
 };
 
 /** Creates a lock button at the top of the controls */
-const TabDisplay = (_, context) => {
-  const { act, data } = useBackend<SimpleBotContext>(context);
+const TabDisplay = (_) => {
+  const { act, data } = useBackend<SimpleBotContext>();
   const { can_hack, has_access, locked, pai } = data;
   const { allow_pai } = pai;
 
@@ -82,8 +89,8 @@ const TabDisplay = (_, context) => {
 };
 
 /** If user is a bad silicon, they can press this button to hack the bot */
-const HackButton = (_, context) => {
-  const { act, data } = useBackend<SimpleBotContext>(context);
+const HackButton = (_) => {
+  const { act, data } = useBackend<SimpleBotContext>();
   const { can_hack, emagged } = data;
 
   return (
@@ -104,8 +111,8 @@ const HackButton = (_, context) => {
 };
 
 /** Creates a button indicating PAI status and offers the eject action */
-const PaiButton = (_, context) => {
-  const { act, data } = useBackend<SimpleBotContext>(context);
+const PaiButton = (_) => {
+  const { act, data } = useBackend<SimpleBotContext>();
   const { card_inserted } = data.pai;
 
   if (!card_inserted) {
@@ -131,8 +138,8 @@ const PaiButton = (_, context) => {
 };
 
 /** Displays the bot's standard settings: Power, patrol, etc. */
-const SettingsDisplay = (_, context) => {
-  const { act, data } = useBackend<SimpleBotContext>(context);
+const SettingsDisplay = (_) => {
+  const { act, data } = useBackend<SimpleBotContext>();
   const { settings } = data;
   const { airplane_mode, patrol_station, power, maintenance_lock } = settings;
 
@@ -196,8 +203,8 @@ const SettingsDisplay = (_, context) => {
 /** Iterates over custom controls.
  * Calls the helper to identify which button to use.
  */
-const ControlsDisplay = (_, context) => {
-  const { data } = useBackend<SimpleBotContext>(context);
+const ControlsDisplay = (_) => {
+  const { data } = useBackend<SimpleBotContext>();
   const { custom_controls } = data;
 
   return (
@@ -210,7 +217,8 @@ const ControlsDisplay = (_, context) => {
             label={control[0]
               .replace('_', ' ')
               .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-                letter.toUpperCase())}>
+                letter.toUpperCase()
+              )}>
             <ControlHelper control={control} />
           </LabeledControls.Item>
         );
@@ -222,8 +230,8 @@ const ControlsDisplay = (_, context) => {
 /** Helper function which identifies which button to create.
  * Might need some fine tuning if you are using more advanced controls.
  */
-const ControlHelper = (props, context) => {
-  const { act } = useBackend<SimpleBotContext>(context);
+const ControlHelper = (props) => {
+  const { act } = useBackend<SimpleBotContext>();
   const { control } = props;
   if (control[0] === 'sync_tech') {
     /** Control is for sync - this is medbot specific */
@@ -249,8 +257,8 @@ const ControlHelper = (props, context) => {
 };
 
 /** Small button to sync medbots with research. */
-const MedbotSync = (_, context) => {
-  const { act } = useBackend<SimpleBotContext>(context);
+const MedbotSync = (_) => {
+  const { act } = useBackend<SimpleBotContext>();
 
   return (
     <Tooltip
@@ -267,8 +275,8 @@ const MedbotSync = (_, context) => {
 };
 
 /** Slider button for medbot healing thresholds */
-const MedbotThreshold = (props, context) => {
-  const { act } = useBackend<SimpleBotContext>(context);
+const MedbotThreshold = (props) => {
+  const { act } = useBackend<SimpleBotContext>();
   const { control } = props;
 
   return (
@@ -291,8 +299,8 @@ const MedbotThreshold = (props, context) => {
 };
 
 /** Tile stacks for floorbots - shows number and eject button */
-const FloorbotTiles = (props, context) => {
-  const { act } = useBackend<SimpleBotContext>(context);
+const FloorbotTiles = (props) => {
+  const { act } = useBackend<SimpleBotContext>();
   const { control } = props;
 
   return (
@@ -307,8 +315,8 @@ const FloorbotTiles = (props, context) => {
 };
 
 /** Direction indicator for floorbot when line mode is chosen. */
-const FloorbotLine = (props, context) => {
-  const { act } = useBackend<SimpleBotContext>(context);
+const FloorbotLine = (props) => {
+  const { act } = useBackend<SimpleBotContext>();
   const { control } = props;
 
   return (

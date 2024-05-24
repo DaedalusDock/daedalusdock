@@ -194,7 +194,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	return ChangeTurf(baseturfs, baseturfs, flags) // The bottom baseturf will never go away
 
 /// Places the given turf on the bottom of the turf stack.
-/turf/proc/PlaceOnBottom(list/new_baseturfs, turf/fake_turf_type)
+/turf/proc/PlaceOnBottom(turf/bottom_turf)
 	baseturfs = baseturfs_string_list(
 		list(initial(bottom_turf.baseturfs), bottom_turf) + baseturfs,
 		src

@@ -45,17 +45,15 @@
 		if(!baseturf_cache.len)
 			thing.assemble_baseturfs(baseturf)
 		else
-			if(!length(thing.baseturfs) || thing.baseturfs[1] == tile)
+			if(!length(thing.baseturfs) || thing.baseturfs[1] != baseturf)
 				thing.PlaceOnBottom(baseturf)
 
 	else if(baseturf_to_replace[thing.baseturfs])
 		thing.assemble_baseturfs(baseturf)
 
 	else
-		if(!length(thing.baseturfs) || thing.baseturfs[1] == tile)
+		if(!length(thing.baseturfs) || thing.baseturfs[1] != baseturf)
 			thing.PlaceOnBottom(baseturf)
-
-
 
 /obj/effect/baseturf_helper/space
 	name = "space baseturf editor"

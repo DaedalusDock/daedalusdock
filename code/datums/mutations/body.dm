@@ -48,8 +48,7 @@
 	if(new_mob && ismob(new_mob))
 		owner = new_mob
 	. = owner
-	on_losing(owner)
-
+	remove_from_owner()
 
 //Cough gives you a chronic cough that causes you to drop items.
 /datum/mutation/human/cough

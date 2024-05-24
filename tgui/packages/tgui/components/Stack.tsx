@@ -14,7 +14,7 @@ type StackProps = FlexProps & {
 };
 
 export const Stack = (props: StackProps) => {
-  const { className, vertical, fill, ...rest } = props;
+  const { className, vertical, fill, zebra, ...rest } = props;
   return (
     <div
       className={classes([
@@ -23,6 +23,7 @@ export const Stack = (props: StackProps) => {
         vertical
           ? 'Stack--vertical'
           : 'Stack--horizontal',
+        zebra && 'Stack--zebra',
         className,
         computeFlexClassName(props),
       ])}

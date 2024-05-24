@@ -1,0 +1,4 @@
+author: vinylspiders
+delete-after: true
+changes:
+  - bugfix: A rare bug that caused mutation effects to linger in weird ways.

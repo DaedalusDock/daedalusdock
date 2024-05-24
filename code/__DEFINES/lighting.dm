@@ -57,12 +57,17 @@
 /// Uses a dedicated render_target object to copy the entire appearance in real time to the blocking layer. For things that can change in appearance a lot from the base state, like humans.
 #define EMISSIVE_BLOCK_UNIQUE 2
 
+#define _EMISSIVE_COLOR(val) list(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, val,val,val,0)
+
 /// The color matrix applied to all emissive overlays. Should be solely dependent on alpha and not have RGB overlap with [EM_BLOCK_COLOR].
-#define EMISSIVE_COLOR list(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, 1,1,1,0)
+#define EMISSIVE_COLOR _EMISSIVE_COLOR(1)
 /// A globaly cached version of [EMISSIVE_COLOR] for quick access.
 GLOBAL_LIST_INIT(emissive_color, EMISSIVE_COLOR)
+
+#define _EM_BLOCK_COLOR(val) list(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,val, 0,0,0,0)
 /// The color matrix applied to all emissive blockers. Should be solely dependent on alpha and not have RGB overlap with [EMISSIVE_COLOR].
-#define EM_BLOCK_COLOR list(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, 0,0,0,0)
+#define EM_BLOCK_COLOR _EM_BLOCK_COLOR(1)
+
 /// A globaly cached version of [EM_BLOCK_COLOR] for quick access.
 GLOBAL_LIST_INIT(em_block_color, EM_BLOCK_COLOR)
 /// A set of appearance flags applied to all emissive and emissive blocker overlays.

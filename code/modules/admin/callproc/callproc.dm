@@ -276,7 +276,7 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		if(named_arg)
 			named_args[named_arg] = value["value"]
 		else
-			. += value["value"]
+			. += list(value["value"]) // Preserve lists, don't unroll
 	if(LAZYLEN(named_args))
 		. += named_args
 

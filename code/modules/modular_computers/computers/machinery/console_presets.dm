@@ -52,11 +52,11 @@
 	hard_drive.store_file(new/datum/computer_file/program/aidiag())
 	hard_drive.store_file(new/datum/computer_file/program/robocontrol())
 
-// ===== COMMAND CONSOLE =====
+// ===== COMPANY CONSOLE =====
 /obj/machinery/modular_computer/console/preset/command
 	console_department = "Command"
-	name = "command console"
-	desc = "A stationary computer. This one comes preloaded with command programs."
+	name = "company console"
+	desc = "A stationary computer. This one comes preloaded with company programs."
 	_has_second_id_slot = TRUE
 	_has_printer = TRUE
 

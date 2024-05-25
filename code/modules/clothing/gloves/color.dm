@@ -9,8 +9,8 @@
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
 	resistance_flags = NONE
-	custom_price = PAYCHECK_MEDIUM * 10
-	custom_premium_price = PAYCHECK_COMMAND * 6
+	custom_price = PAYCHECK_ASSISTANT * 11.5
+	custom_premium_price = PAYCHECK_ASSISTANT * 13.75
 	cut_type = /obj/item/clothing/gloves/cut
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -265,7 +265,7 @@
 	desc = "These look pretty fancy."
 	icon_state = "white"
 	inhand_icon_state = "wgloves"
-	custom_price = PAYCHECK_MINIMAL
+	custom_price = PAYCHECK_ASSISTANT * 2.5
 
 /obj/item/clothing/gloves/kim
 	name = "aerostatic gloves"

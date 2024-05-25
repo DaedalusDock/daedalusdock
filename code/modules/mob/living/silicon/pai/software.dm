@@ -85,7 +85,7 @@
 				to_chat(src, span_warning("You are not being carried by anyone!"))
 				return FALSE
 		if("crew_manifest")
-			ai_roster()
+			show_crew_manifest(src)
 		if("door_jack")
 			if(params["jack"] == "jack")
 				if(hacking_cable?.machine)
@@ -136,9 +136,9 @@
 				return FALSE
 			refresh_spam = TRUE
 			if(params["list"] == "medical")
-				medical_records = GLOB.data_core.get_general_records()
+				medical_records = SSdatacore.get_general_records()
 			if(params["list"] == "security")
-				security_records = GLOB.data_core.get_security_records()
+				security_records = SSdatacore.get_security_records()
 			ui.send_full_update()
 			addtimer(CALLBACK(src, PROC_REF(refresh_again)), 3 SECONDS)
 		if("remote_signaler")

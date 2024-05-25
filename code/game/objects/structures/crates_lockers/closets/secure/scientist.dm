@@ -10,7 +10,6 @@
 	new /obj/item/clothing/head/bio_hood/scientist(src)
 	new /obj/item/storage/bag/garment/research_director(src)
 	new /obj/item/computer_hardware/hard_drive/role/rd(src)
-	new /obj/item/radio/headset/heads/rd(src)
 	new /obj/item/megaphone/command(src)
 	new /obj/item/storage/lockbox/medal/sci(src)
 	new /obj/item/clothing/suit/armor/reactive/teleport(src)

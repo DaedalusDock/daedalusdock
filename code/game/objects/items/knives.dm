@@ -87,7 +87,7 @@
 	attack_verb_continuous = list("cleaves", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("cleave", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_price = PAYCHECK_EASY * 5
+	custom_price = PAYCHECK_ASSISTANT * 5
 
 /obj/item/knife/hunting
 	name = "hunting knife"

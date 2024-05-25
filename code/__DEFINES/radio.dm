@@ -2,18 +2,18 @@
 
 //say based modes like binary are in living/say.dm
 
-#define RADIO_CHANNEL_COMMON "Common"
+#define RADIO_CHANNEL_COMMON "Local"
 #define RADIO_KEY_COMMON ";"
 
-#define RADIO_CHANNEL_SECURITY "Security"
+#define RADIO_CHANNEL_SECURITY "Mars"
 #define RADIO_KEY_SECURITY "s"
 #define RADIO_TOKEN_SECURITY ":s"
 
-#define RADIO_CHANNEL_ENGINEERING "Engineering"
+#define RADIO_CHANNEL_ENGINEERING "Daedalus"
 #define RADIO_KEY_ENGINEERING "e"
 #define RADIO_TOKEN_ENGINEERING ":e"
 
-#define RADIO_CHANNEL_COMMAND "Command"
+#define RADIO_CHANNEL_COMMAND "Management"
 #define RADIO_KEY_COMMAND "c"
 #define RADIO_TOKEN_COMMAND ":c"
 
@@ -21,11 +21,11 @@
 #define RADIO_KEY_SCIENCE "n"
 #define RADIO_TOKEN_SCIENCE ":n"
 
-#define RADIO_CHANNEL_MEDICAL "Medical"
+#define RADIO_CHANNEL_MEDICAL "Aether"
 #define RADIO_KEY_MEDICAL "m"
 #define RADIO_TOKEN_MEDICAL ":m"
 
-#define RADIO_CHANNEL_SUPPLY "Supply"
+#define RADIO_CHANNEL_SUPPLY "Hermes"
 #define RADIO_KEY_SUPPLY "u"
 #define RADIO_TOKEN_SUPPLY ":u"
 

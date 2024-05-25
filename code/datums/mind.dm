@@ -751,8 +751,13 @@
 
 /// Prints the objectives to the mind's owner. If loudly is true, instead open a window.
 /datum/mind/proc/announce_objectives(loudly)
+	set waitfor = FALSE
 	var/obj_count = 1
 	if(!loudly)
+		var/list/objectives = get_all_objectives()
+		if(!length(objectives))
+			return
+
 		to_chat(current, span_notice("Your current objectives:"))
 		for(var/datum/objective/objective as anything in get_all_objectives())
 			to_chat(current, "<B>[objective.objective_name] #[obj_count]</B>: [objective.explanation_text]")
@@ -815,14 +820,6 @@
 	set_assigned_role(SSjob.GetJobType(/datum/job/space_wizard))
 	special_role = ROLE_WIZARD
 	add_antag_datum(/datum/antagonist/wizard)
-
-
-/datum/mind/proc/make_rev()
-	var/datum/antagonist/rev/head/head = new()
-	head.give_flash = TRUE
-	head.give_hud = TRUE
-	add_antag_datum(head)
-	special_role = ROLE_REV_HEAD
 
 /datum/mind/proc/transfer_martial_arts(mob/living/new_character)
 	if(!ishuman(new_character))

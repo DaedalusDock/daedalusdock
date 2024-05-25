@@ -3,12 +3,10 @@
 	description = "Coordinate engineering, ensure equipment doesn't get stolen, \
 		make sure the Supermatter doesn't blow up, maintain telecommunications."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
-	department_head = list(JOB_CAPTAIN)
-	head_announce = list("Engineering")
+	head_announce = list(RADIO_CHANNEL_ENGINEERING)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the captain"
 	selection_color = "#7f6e2c"
 	req_admin_notify = 1
 	minimal_player_age = 7
@@ -30,15 +28,13 @@
 
 	departments_list = list(
 		/datum/job_department/engineering,
-		/datum/job_department/command,
-		)
+		/datum/job_department/company_leader,
+	)
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM, TRAIT_ROYAL_METABOLISM)
-
-	bounty_types = CIV_JOB_ENG
 
 	family_heirlooms = list(/obj/item/clothing/head/hardhat/white, /obj/item/screwdriver, /obj/item/wrench, /obj/item/weldingtool, /obj/item/crowbar, /obj/item/wirecutters)
 
@@ -51,7 +47,7 @@
 		/obj/effect/spawner/random/engineering/tool_advanced = 3
 	)
 	rpg_title = "Head Crystallomancer"
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 	voice_of_god_power = 1.4 //Command staff has authority
 

@@ -110,8 +110,8 @@
 /atom/movable/screen/pai/crew_manifest/Click()
 	if(!..())
 		return
-	var/mob/living/silicon/pai/pAI = usr
-	pAI.ai_roster()
+
+	show_crew_manifest(usr)
 
 /atom/movable/screen/pai/state_laws
 	name = "State Laws"

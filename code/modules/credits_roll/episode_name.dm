@@ -244,7 +244,7 @@
 			theme = "syndie"
 		if(H.stat == CONSCIOUS && H.mind && H.mind.assigned_role.title)
 			switch(H.mind.assigned_role.title)
-				if("Chef")
+				if(JOB_COOK)
 					var/chance = 250
 					if(H.is_wearing_item_of_type(/obj/item/clothing/head/chefhat))
 						chance += 500
@@ -255,17 +255,18 @@
 					episode_names += new /datum/episode_name/rare("HAIL TO THE CHEF", "The Chef was the only survivor in the shuttle.", chance)
 					if(p_hotspot.len > 200) // List of turfs on fire length
 						episode_names += new /datum/episode_name/rare("IF YOU CAN'T STAND THE HEAT...", "The Chef was the only survivor in the shuttle and [p_hotspot.len] turfs were on fire.", min(chance, p_hotspot.len/2))
-				if("Clown")
-					var/chance = 250
-					if(H.is_wearing_item_of_type(/obj/item/clothing/mask/gas/clown_hat))
-						chance += 500
-					if(H.is_wearing_item_of_type(list(/obj/item/clothing/shoes/clown_shoes, /obj/item/clothing/shoes/clown_shoes/jester)))
-						chance += 500
-					if(H.is_wearing_item_of_type(list(/obj/item/clothing/under/rank/civilian/clown, /obj/item/clothing/under/rank/civilian/clown/jester)))
-						chance += 250
-					episode_names += new /datum/episode_name/rare("[pick("COME HELL OR HIGH HONKER", "THE LAST LAUGH")]", "The Clown was the only survivor in the shuttle.", chance)
-					theme = "clown"
-				if("Detective")
+				if(JOB_CLOWN)
+					if(!H.mind.miming)
+						var/chance = 250
+						if(H.is_wearing_item_of_type(/obj/item/clothing/mask/gas/clown_hat))
+							chance += 500
+						if(H.is_wearing_item_of_type(list(/obj/item/clothing/shoes/clown_shoes, /obj/item/clothing/shoes/clown_shoes/jester)))
+							chance += 500
+						if(H.is_wearing_item_of_type(list(/obj/item/clothing/under/rank/civilian/clown, /obj/item/clothing/under/rank/civilian/clown/jester)))
+							chance += 250
+						episode_names += new /datum/episode_name/rare("[pick("COME HELL OR HIGH HONKER", "THE LAST LAUGH")]", "The Clown was the only survivor in the shuttle.", chance)
+						theme = "clown"
+				if(JOB_DETECTIVE)
 					var/chance = 250
 					if(H.is_wearing_item_of_type(/obj/item/storage/belt/holster/shoulder))
 						chance += 1000
@@ -285,21 +286,21 @@
 					if(H.is_wearing_item_of_type(/obj/item/clothing/suit/space/nasavoid/old))
 						chance += 250
 					episode_names += new /datum/episode_name/rare("[pick("YOU KNOW THE DRILL", "CAN YOU DIG IT?", "JOURNEY TO THE CENTER OF THE ASTEROI", "CAVE STORY", "QUARRY ON")]", "The Miner was the only survivor in the shuttle.", chance)
-				if("Librarian")
+				if(JOB_ARCHIVIST)
 					var/chance = 750
 					if(H.is_wearing_item_of_type(/obj/item/book))
 						chance += 1000
 					/*if(H.is_wearing_item_of_type(/obj/item/clothing/under/suit_jacket/red))
 						chance += 500*/
 					episode_names += new /datum/episode_name/rare("COOKING THE BOOKS", "The Librarian was the only survivor in the shuttle.", chance)
-				if("Chemist")
+				if(JOB_CHEMIST)
 					var/chance = 1000
 					if(H.is_wearing_item_of_type(/obj/item/clothing/suit/toggle/labcoat/chemist))
 						chance += 500
 					if(H.is_wearing_item_of_type(/obj/item/clothing/under/rank/medical/chemist))
 						chance += 250
 					episode_names += new /datum/episode_name/rare("A BITTER PILL TO SWALLOW", "The Chemist was the only survivor in the shuttle.", chance)
-				if("Chaplain") //We don't check for uniform here because the chaplain's thing kind of is to improvise their garment gimmick
+				if(JOB_CHAPLAIN) //We don't check for uniform here because the chaplain's thing kind of is to improvise their garment gimmick
 					episode_names += new /datum/episode_name/rare("BLESS THIS MESS", "The Chaplain was the only survivor in the shuttle.", 1250)
 
 			if(H.is_wearing_item_of_type(/obj/item/clothing/mask/luchador) && H.is_wearing_item_of_type(/obj/item/clothing/gloves/boxing))

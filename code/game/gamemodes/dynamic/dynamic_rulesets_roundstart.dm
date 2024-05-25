@@ -93,7 +93,7 @@
 		new_malf.mind.special_role = ROLE_MALF
 		GLOB.pre_setup_antags += new_malf.mind
 		// We need an AI for the malf roundstart ruleset to execute. This means that players who get selected as malf AI get priority, because antag selection comes before role selection.
-		LAZYADDASSOC(SSjob.dynamic_forced_occupations, new_malf, "AI")
+		LAZYADDASSOC(SSjob.dynamic_forced_occupations, new_malf, JOB_AI)
 	return TRUE
 
 //////////////////////////////////////////
@@ -492,7 +492,6 @@
 		JOB_HEAD_OF_PERSONNEL,
 		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
-		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -531,7 +530,6 @@
 		if(check_eligible(M))
 			var/datum/antagonist/rev/head/new_head = new antag_datum()
 			new_head.give_flash = TRUE
-			new_head.give_hud = TRUE
 			new_head.remove_clumsy = TRUE
 			M.add_antag_datum(new_head,revolution)
 		else
@@ -591,7 +589,6 @@
 		JOB_CYBORG,
 		JOB_DETECTIVE,
 		JOB_SECURITY_MARSHAL,
-		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -712,27 +709,3 @@
 	var/ramp_up_final = clamp(round(meteorminutes/rampupdelta), 1, 10)
 
 	spawn_meteors(ramp_up_final, wavetype)
-
-/// Ruleset for Nations
-/datum/dynamic_ruleset/roundstart/nations
-	name = "Nations"
-	required_candidates = 0
-	weight = 0 //admin only (and for good reason)
-	cost = 0
-	flags = LONE_RULESET | ONLY_RULESET
-
-/datum/dynamic_ruleset/roundstart/nations/execute()
-	. = ..()
-	//notably assistant is not in this list to prevent the round turning into BARBARISM instantly, and silicon is in this list for UN
-	var/list/department_types = list(
-		/datum/job_department/silicon, //united nations
-		/datum/job_department/cargo,
-		/datum/job_department/engineering,
-		/datum/job_department/medical,
-		/datum/job_department/science,
-		/datum/job_department/security,
-		/datum/job_department/service,
-	)
-
-	for(var/department_type in department_types)
-		create_separatist_nation(department_type, announcement = FALSE, dangerous = FALSE, message_admins = FALSE)

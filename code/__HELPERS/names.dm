@@ -151,13 +151,16 @@ GLOBAL_VAR(command_name)
 	return name
 
 
-//Traitors and traitor silicons will get these. Revs will not.
+//Traitors and traitor silicons will get these.
 GLOBAL_VAR(syndicate_code_phrase) //Code phrase for traitors.
 GLOBAL_VAR(syndicate_code_response) //Code response for traitors.
 
 //Cached regex search - for checking if codewords are used.
 GLOBAL_DATUM(syndicate_code_phrase_regex, /regex)
 GLOBAL_DATUM(syndicate_code_response_regex, /regex)
+
+GLOBAL_VAR(revolution_code_phrase) //Code phrase for traitors.
+GLOBAL_DATUM(revolution_code_phrase_regex, /regex)
 
 	/*
 	Should be expanded.
@@ -197,8 +200,8 @@ GLOBAL_DATUM(syndicate_code_response_regex, /regex)
 	var/locations = strings(LOCATIONS_FILE, "locations")
 
 	var/list/names = list()
-	for(var/datum/data/record/t in GLOB.data_core.general)//Picks from crew manifest.
-		names += t.fields["name"]
+	for(var/datum/data/record/t in SSdatacore.get_records(DATACORE_RECORDS_STATION)) //Picks from crew manifest.
+		names += t.fields[DATACORE_NAME]
 
 	var/maxwords = words//Extra var to check for duplicates.
 

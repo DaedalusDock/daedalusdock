@@ -65,6 +65,17 @@
 /**
  * public
  *
+ * Forces an update on static data. Should be done manually whenever something
+ * happens to change static data. Applies to all UIs tied to this object.
+ *
+ */
+/datum/proc/update_static_data_for_all()
+	for(var/datum/tgui/ui as anything in SStgui.open_uis_by_src[REF(src)])
+		ui.send_full_update()
+
+/**
+ * public
+ *
  * Called on a UI when the UI receieves a href.
  * Think of this as Topic().
  *

@@ -33,7 +33,6 @@
 			to_chat(src, span_danger("We will not be able to make ends meet without our cargo, so we must do as he says and capture them."))
 
 	to_chat(owner, span_boldannounce("You are not an antagonist in that you may kill whomever you please, but you can do anything to ensure the capture of the fugitives, even if that means going through the station."))
-	owner.announce_objectives()
 
 /datum/antagonist/fugitive_hunter/create_team(datum/team/fugitive_hunters/new_team)
 	if(!new_team)

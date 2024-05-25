@@ -27,6 +27,7 @@
 			"balance" = current_bank_account.account_balance,
 			"modifier" = current_bank_account.payday_modifier,
 		))
+
 	data["PlayerAccounts"] = player_accounts
 	data["AuditLog"] = audit_list
 	data["Crashing"] = HAS_TRAIT(SSeconomy, TRAIT_MARKET_CRASHING)

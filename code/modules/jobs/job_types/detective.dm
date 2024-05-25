@@ -6,7 +6,6 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "nobody"
-	selection_color = "#22201e"
 	minimal_player_age = 7
 	exp_requirements = 300
 	exp_required_type = EXP_TYPE_CREW
@@ -28,10 +27,9 @@
 
 	departments_list = list(
 		/datum/job_department/service,
-		)
+	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 

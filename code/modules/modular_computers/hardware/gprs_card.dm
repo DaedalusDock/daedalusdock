@@ -19,6 +19,7 @@
 	/// TGUI display format, list(list("target_addr"="addr","name"="name","job"="job"),...)
 	var/list/known_pdas
 	var/radio_state = GPRS_DISABLED
+
 /obj/item/computer_hardware/network_card/packetnet/Initialize(mapload)
 	. = ..()
 	packet_queue = list()

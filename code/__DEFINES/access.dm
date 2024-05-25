@@ -27,7 +27,7 @@
 #define ACCESS_TELEPORTER 17
 #define ACCESS_EVA 18
 /// Bridge, EVA storage windoors, gateway shutters, AI integrity restorer, comms console
-#define ACCESS_HEADS 19
+#define ACCESS_MANAGEMENT 19
 #define ACCESS_CAPTAIN 20
 #define ACCESS_ALL_PERSONAL_LOCKERS 21
 #define ACCESS_CHAPEL_OFFICE 22
@@ -172,7 +172,7 @@
 /// Bitflag for Private Command ID card accesses. See PRIVATE_COMMAND_ACCESS.
 #define ACCESS_FLAG_PRV_COMMAND (1 << 2)
 /// Displayed name for Captain ID card accesses.
-#define ACCESS_FLAG_CAPTAIN_NAME "Captain"
+#define ACCESS_FLAG_CAPTAIN_NAME "Superintendent"
 /// Bitflag for Captain ID card accesses. See CAPTAIN_ACCESS.
 #define ACCESS_FLAG_CAPTAIN (1 << 3)
 /// Displayed name for Centcom ID card accesses.
@@ -294,7 +294,7 @@
 	ACCESS_RC_ANNOUNCE, \
 	ACCESS_VAULT, \
 	ACCESS_TECH_STORAGE, \
-	ACCESS_HEADS, \
+	ACCESS_MANAGEMENT, \
 	ACCESS_TELEPORTER, \
 	ACCESS_ARMORY, \
 	ACCESS_AI_UPLOAD, \
@@ -455,7 +455,7 @@
 #define REGION_COMMAND "Command"
 /// Used to seed the accesses_by_region list in SSid_access. A list of all command regional accesses that are overseen by the Captain.
 #define REGION_ACCESS_COMMAND list( \
-	ACCESS_HEADS, \
+	ACCESS_MANAGEMENT, \
 	ACCESS_RC_ANNOUNCE, \
 	ACCESS_KEYCARD_AUTH, \
 	ACCESS_CHANGE_IDS, \

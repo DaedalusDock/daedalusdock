@@ -8,7 +8,6 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the captain"
 	selection_color = "#8e3d29"
 	req_admin_notify = 1
 	minimal_player_age = 14
@@ -30,20 +29,18 @@
 
 	departments_list = list(
 		/datum/job_department/security,
-		/datum/job_department/command,
-		)
+		/datum/job_department/company_leader,
+	)
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_STATION_MASTER
-
-	bounty_types = CIV_JOB_SEC
+	paycheck_department = ACCOUNT_SEC
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
 	rpg_title = "Guard Leader"
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 	voice_of_god_power = 1.4 //Command staff has authority
 

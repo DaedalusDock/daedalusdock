@@ -3,7 +3,6 @@
 		/datum/preference/name/religion,
 		/datum/preference/name/deity,
 		/datum/preference/name/bible,
-		/datum/preference/choiced/security_department,
 		/datum/preference/choiced/uplink_location,
 		/datum/preference/choiced/loadout_override_preference
 	)

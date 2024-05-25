@@ -5,7 +5,7 @@
 	faction = FACTION_STATION
 	total_positions = 3
 	spawn_positions = 3
-	supervisors = "the quartermaster and the head of personnel"
+	supervisors = "the quartermaster"
 	selection_color = "#15381b"
 	exp_granted_type = EXP_TYPE_CREW
 
@@ -21,9 +21,8 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_CAR
 
-	bounty_types = CIV_JOB_MINE
 	departments_list = list(
 		/datum/job_department/cargo,
 		)

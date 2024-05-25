@@ -20,7 +20,6 @@
 	progression_maximum = 30 MINUTES
 
 	var/list/applicable_heads = list(
-		JOB_RESEARCH_DIRECTOR = /area/station/command/heads_quarters/rd,
 		JOB_MEDICAL_DIRECTOR = /area/station/command/heads_quarters/cmo,
 		JOB_CHIEF_ENGINEER = /area/station/command/heads_quarters/ce,
 		JOB_HEAD_OF_PERSONNEL = /area/station/command/heads_quarters/hop,

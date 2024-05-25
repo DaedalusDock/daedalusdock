@@ -54,7 +54,8 @@ GLOBAL_REAL(xgm_gas_data, /datum/xgm_gas_data) = new
 	var/hidden_from_codex
 	var/symbol_html = "X"
 	var/symbol = "X"
-	var/base_value = 1
+	/// The value of this gas per mol.
+	var/base_value = 0.02
 	var/purchaseable = FALSE
 
 /datum/xgm_gas_data/New()

@@ -287,7 +287,10 @@
 		var/break_counter = 0
 		output += "<div class='row'>"
 
-		for(var/datum/job_department/department as anything in SSjob.joinable_departments)
+		for(var/datum/job_department/department as anything in SSjob.departments)
+			if(department.is_not_real_department)
+				continue
+
 			var/label_class = department.label_class
 			var/department_name = department.department_name
 			output += "<div class='column'><label class='rolegroup [label_class]'>[tgui_fancy ? "<input type='checkbox' name='[label_class]' class='hidden' onClick='header_click_all_checkboxes(this)'>" : ""] \

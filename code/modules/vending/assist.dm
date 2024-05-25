@@ -31,8 +31,7 @@
 
 	refill_canister = /obj/item/vending_refill/assist
 	product_ads = "Only the finest!;Have some tools.;The most robust equipment.;The finest gear in space!"
-	default_price = PAYCHECK_ASSISTANT * 0.7 //Default of 35.
-	extra_price = PAYCHECK_EASY
+	default_price = PAYCHECK_ASSISTANT * 0.7
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "parts-light-mask"
 

@@ -273,7 +273,6 @@ GLOBAL_LIST_EMPTY(wizard_spellbook_purchases_by_key)
 /datum/antagonist/wizard/apprentice/imposter/greet()
 	. = ..()
 	to_chat(owner, "<B>Trick and confuse the crew to misdirect malice from your handsome original!</B>")
-	owner.announce_objectives()
 
 /datum/antagonist/wizard/apprentice/imposter/equip_wizard()
 	var/mob/living/carbon/human/master_mob = master.current

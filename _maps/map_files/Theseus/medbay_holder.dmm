@@ -765,12 +765,10 @@
 "cK" = (
 /obj/structure/chair/office,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/landmark/start/hangover,
 /turf/open/floor/wood,
 /area/station/service/library)
 "cL" = (
 /obj/structure/chair/office,
-/obj/effect/landmark/start/hangover,
 /turf/open/floor/wood,
 /area/station/service/library)
 "cO" = (

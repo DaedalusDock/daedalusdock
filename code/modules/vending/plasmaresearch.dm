@@ -15,6 +15,6 @@
 	contraband = list(/obj/item/assembly/health = 3)
 	default_price = PAYCHECK_ASSISTANT
 	extra_price = PAYCHECK_ASSISTANT
-	payment_department = ACCOUNT_SCI
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_ORDNANCE

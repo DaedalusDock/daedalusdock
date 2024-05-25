@@ -20,7 +20,7 @@
 	name = "hypospray mk.II"
 	icon_state = "hypo2"
 	icon = 'modular_pariah/modules/hyposprays/icons/hyposprays.dmi'
-	desc = "A new development from DeForest Medical, this hypospray takes 60-unit vials as the drug supply for easy swapping."
+	desc = "An experimental high-capacity refillable auto injector."
 	w_class = WEIGHT_CLASS_TINY
 	var/list/allowed_containers = list(/obj/item/reagent_containers/glass/vial/small)
 	/// Is the hypospray only able to use small vials. Relates to the loaded overlays
@@ -46,10 +46,9 @@
 	var/penetrates = null
 
 /obj/item/hypospray/mkii/cmo
-	name = "hypospray mk.II deluxe"
+	name = "hypospray mk.II"
 	allowed_containers = list(/obj/item/reagent_containers/glass/vial/small, /obj/item/reagent_containers/glass/vial/large)
 	icon_state = "cmo2"
-	desc = "The deluxe hypospray can take larger 120-unit vials. It also acts faster and can deliver more reagents per spray."
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	start_vial = /obj/item/reagent_containers/glass/vial/large/deluxe
 	small_only = FALSE
@@ -64,6 +63,7 @@
 	if(!spawnwithvial)
 		update_appearance()
 		return
+
 	if(start_vial)
 		vial = new start_vial
 		update_appearance()

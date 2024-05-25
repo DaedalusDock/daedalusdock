@@ -35,7 +35,7 @@
 
 /obj/effect/mapping_helpers/airlock/access/any/command/general/get_access()
 	var/list/access_list = ..()
-	access_list += ACCESS_HEADS
+	access_list += ACCESS_MANAGEMENT
 	return access_list
 
 /obj/effect/mapping_helpers/airlock/access/any/command/ai_upload/get_access()
@@ -481,7 +481,7 @@
 
 /obj/effect/mapping_helpers/airlock/access/all/command/general/get_access()
 	var/list/access_list = ..()
-	access_list += ACCESS_HEADS
+	access_list += ACCESS_MANAGEMENT
 	return access_list
 
 /obj/effect/mapping_helpers/airlock/access/all/command/ai_upload/get_access()

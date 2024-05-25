@@ -4,7 +4,7 @@
 	category = PROGRAM_CATEGORY_CREW
 	program_icon_state = "id"
 	extended_desc = "Program for programming employee ID cards to access parts of the station."
-	transfer_access = list(ACCESS_HEADS)
+	transfer_access = list(ACCESS_MANAGEMENT)
 	requires_ntnet = 0
 	size = 8
 	tgui_id = "NtosCard"
@@ -148,7 +148,7 @@
 			if(!computer || !card_slot2)
 				return TRUE
 			if(target_id_card)
-				GLOB.data_core.manifest_modify(target_id_card.registered_name, target_id_card.assignment, target_id_card.get_trim_assignment())
+				SSdatacore.manifest_modify(target_id_card.registered_name, target_id_card.assignment, target_id_card.get_trim_assignment())
 				return card_slot2.try_eject(user)
 			else
 				var/obj/item/I = user.get_active_held_item()

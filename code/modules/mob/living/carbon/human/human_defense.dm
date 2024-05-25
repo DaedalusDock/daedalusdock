@@ -705,11 +705,12 @@
 ///Overrides the point value that the mob is worth
 /mob/living/carbon/human/singularity_act()
 	. = 20
-	switch(mind?.assigned_role.type)
-		if(/datum/job/chief_engineer, /datum/job/station_engineer)
+	switch(mind?.assigned_role.title)
+		if(JOB_CHIEF_ENGINEER, JOB_STATION_ENGINEER)
 			. = 100
-		if(/datum/job/clown)
-			. = rand(-1000, 1000)
+		if(JOB_CLOWN)
+			if(!mind.miming)
+				. = rand(-1000, 1000)
 	..() //Called afterwards because getting the mind after getting gibbed is sketchy
 
 /mob/living/carbon/human/help_shake_act(mob/living/carbon/helper)

@@ -25,7 +25,7 @@
 	var/mode = SCANNER_VERBOSE
 	var/scanmode = SCANMODE_HEALTH
 	var/advanced = FALSE
-	custom_price = PAYCHECK_HARD
+	custom_price = PAYCHECK_ASSISTANT * 3
 
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()

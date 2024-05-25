@@ -244,8 +244,9 @@
 		var/datum/job/job = SSjob.GetJob(quitter.job)
 		if(!job || !(job.job_flags & JOB_REOPEN_ON_ROUNDSTART_LOSS))
 			continue
-		if(!include_command && job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(!include_command && (job.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			continue
+
 		job.current_positions = max(job.current_positions - 1, 0)
 		reopened_jobs += quitter.job
 

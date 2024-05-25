@@ -476,12 +476,16 @@
 		items -= list(l_store, r_store, s_store)
 	return items
 
+/// Drop all items to the floor.
 /mob/living/proc/unequip_everything()
-	var/list/items = list()
-	items |= get_equipped_items(TRUE)
-	for(var/I in items)
+	for(var/I in get_equipped_items(TRUE))
 		dropItemToGround(I)
 	drop_all_held_items()
+
+/// Delete all held/equipped items.
+/mob/living/proc/wipe_inventory()
+	for(var/I in get_equipped_items(TRUE) | held_items)
+		qdel(I)
 
 /// Compiles all flags_inv vars of worn items.
 /mob/living/carbon/proc/update_obscurity()

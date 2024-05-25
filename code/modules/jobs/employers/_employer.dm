@@ -2,6 +2,10 @@
 	var/name = ""
 	var/short_name = ""
 
+/datum/employer/government
+	name = "The Government"
+	short_name = "Government"
+
 /datum/employer/daedalus
 	name = "Daedalus Industries"
 	short_name = "Daedalus"

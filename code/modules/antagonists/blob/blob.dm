@@ -20,7 +20,6 @@
 
 /datum/antagonist/blob/greet()
 	. = ..()
-	owner.announce_objectives()
 	if(!isovermind(owner.current))
 		to_chat(owner.current, span_notice("Use the pop ability to place your blob core! It is recommended you do this away from anyone else, as you'll be taking on the entire crew!"))
 

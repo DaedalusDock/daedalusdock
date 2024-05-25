@@ -28,20 +28,18 @@
  */
 
 //No department
-#define JOB_ASSISTANT "Assistant"
+#define JOB_ASSISTANT "Civilian"
 #define JOB_PRISONER "Prisoner"
 //Command
-#define JOB_CAPTAIN "Captain"
-#define JOB_HEAD_OF_PERSONNEL "Head of Personnel"
-#define JOB_SECURITY_MARSHAL "Security Marshal"
-#define JOB_RESEARCH_DIRECTOR "Research Director"
-#define JOB_CHIEF_ENGINEER "Chief Engineer"
-#define JOB_MEDICAL_DIRECTOR "Medical Director"
+#define JOB_CAPTAIN "Superintendent"
+#define JOB_HEAD_OF_PERSONNEL "Delegate"
+#define JOB_SECURITY_CONSULTANT "Security Consultant"
 //Silicon
 #define JOB_AI "AI"
 #define JOB_CYBORG "Cyborg"
 #define JOB_PERSONAL_AI "Personal AI"
 //Security
+#define JOB_SECURITY_MARSHAL "Security Marshal"
 #define JOB_WARDEN "Brig Lieutenant"
 #define JOB_DETECTIVE "Private Investigator"
 #define JOB_SECURITY_OFFICER "Security Officer"
@@ -50,17 +48,15 @@
 #define JOB_SECURITY_OFFICER_SCIENCE "Security Officer (Science)"
 #define JOB_SECURITY_OFFICER_SUPPLY "Security Officer (Cargo)"
 //Engineering
+#define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_STATION_ENGINEER "Station Engineer"
 #define JOB_ATMOSPHERIC_TECHNICIAN "Atmospheric Technician"
 //Medical
+#define JOB_MEDICAL_DIRECTOR "Medical Director"
 #define JOB_MEDICAL_DOCTOR "General Practitioner"
 #define JOB_PARAMEDIC "Paramedic"
 #define JOB_CHEMIST "Chemist"
 #define JOB_VIROLOGIST "Virologist"
-//Science
-#define JOB_SCIENTIST "Scientist"
-#define JOB_ROBOTICIST "Roboticist"
-#define JOB_GENETICIST "Geneticist"
 //Supply
 #define JOB_QUARTERMASTER "Quartermaster"
 #define JOB_DECKHAND "Deckhand"
@@ -71,7 +67,6 @@
 #define JOB_COOK "Cook"
 #define JOB_JANITOR "Janitor"
 #define JOB_CLOWN "Clown"
-#define JOB_MIME "Mime"
 #define JOB_ARCHIVIST "Archivist"
 #define JOB_LAWYER "Lawyer"
 #define JOB_CHAPLAIN "Chaplain"
@@ -102,25 +97,27 @@
 #define DEPARTMENT_UNASSIGNED "No department assigned"
 
 #define DEPARTMENT_BITFLAG_SECURITY (1<<0)
-#define DEPARTMENT_SECURITY "Security"
-#define DEPARTMENT_BITFLAG_COMMAND (1<<1)
-#define DEPARTMENT_COMMAND "Command"
+#define DEPARTMENT_SECURITY "Mars Private Security"
+#define DEPARTMENT_BITFLAG_MANAGEMENT (1<<1)
+#define DEPARTMENT_MANAGEMENT "Management"
 #define DEPARTMENT_BITFLAG_SERVICE (1<<2)
-#define DEPARTMENT_SERVICE "Service"
+#define DEPARTMENT_SERVICE "Independant"
 #define DEPARTMENT_BITFLAG_CARGO (1<<3)
-#define DEPARTMENT_CARGO "Cargo"
+#define DEPARTMENT_CARGO "Hermes Galactic Freight"
 #define DEPARTMENT_BITFLAG_ENGINEERING (1<<4)
-#define DEPARTMENT_ENGINEERING "Engineering"
+#define DEPARTMENT_ENGINEERING "Daedalus Industries"
 #define DEPARTMENT_BITFLAG_SCIENCE (1<<5)
 #define DEPARTMENT_SCIENCE "Science"
 #define DEPARTMENT_BITFLAG_MEDICAL (1<<6)
-#define DEPARTMENT_MEDICAL "Medical"
+#define DEPARTMENT_MEDICAL "Aether Pharmaceuticals"
 #define DEPARTMENT_BITFLAG_SILICON (1<<7)
 #define DEPARTMENT_SILICON "Silicon"
 #define DEPARTMENT_BITFLAG_ASSISTANT (1<<8)
-#define DEPARTMENT_ASSISTANT "Assistant"
+#define DEPARTMENT_ASSISTANT "Civilian"
 #define DEPARTMENT_BITFLAG_CAPTAIN (1<<9)
 #define DEPARTMENT_CAPTAIN "Captain"
+#define DEPARTMENT_BITFLAG_COMPANY_LEADER (1<<10)
+#define DEPARTMENT_COMPANY_LEADER "Company Leader"
 
 /* Job datum job_flags */
 /// Whether the mob is announced on arrival.
@@ -133,15 +130,12 @@
 #define JOB_CREW_MEMBER (1<<3)
 /// Whether this job can be joined through the new_player menu.
 #define JOB_NEW_PLAYER_JOINABLE (1<<4)
-/// Whether this job appears in bold in the job menu.
-#define JOB_BOLD_SELECT_TEXT (1<<5)
 /// Reopens this position if we lose the player at roundstart.
-#define JOB_REOPEN_ON_ROUNDSTART_LOSS (1<<6)
+#define JOB_REOPEN_ON_ROUNDSTART_LOSS (1<<5)
 /// If the player with this job can have quirks assigned to him or not. Relevant for new player joinable jobs and roundstart antags.
-#define JOB_ASSIGN_QUIRKS (1<<7)
+#define JOB_ASSIGN_QUIRKS (1<<6)
 /// Whether this job can be an intern.
-#define JOB_CAN_BE_INTERN (1<<8)
-
+#define JOB_CAN_BE_INTERN (1<<7)
 
 #define FACTION_NONE "None"
 #define FACTION_STATION "Station"

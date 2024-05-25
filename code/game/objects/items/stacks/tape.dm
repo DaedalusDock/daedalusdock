@@ -167,6 +167,6 @@
 	prefix = "surgical"
 	conferred_embed = list("embed_chance" = 30, "pain_mult" = 0, "jostle_pain_mult" = 0, "ignore_throwspeed_threshold" = TRUE)
 	splint_slowdown = 3
-	custom_price = PAYCHECK_MEDIUM
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 	merge_type = /obj/item/stack/sticky_tape/surgical
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical

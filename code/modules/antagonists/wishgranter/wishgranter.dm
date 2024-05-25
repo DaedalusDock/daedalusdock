@@ -19,7 +19,6 @@
 /datum/antagonist/wishgranter/greet()
 	. = ..()
 	to_chat(owner, "<B>Your inhibitions are swept away, the bonds of loyalty broken, you are free to murder as you please!</B>")
-	owner.announce_objectives()
 
 /datum/antagonist/wishgranter/proc/give_powers()
 	var/mob/living/carbon/human/H = owner.current

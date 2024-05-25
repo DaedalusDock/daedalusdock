@@ -112,13 +112,14 @@
 				difficulty += bit_count(our_jobdisk & (DISK_MED | DISK_SEC | DISK_POWER | DISK_MANIFEST))
 				if(our_jobdisk.disk_flags & DISK_MANIFEST)
 					difficulty++ //if cartridge has manifest access it has extra snowflake difficulty
-			if(!(SEND_SIGNAL(computer, COMSIG_TABLET_CHECK_DETONATE) & COMPONENT_TABLET_NO_DETONATE || prob(difficulty * 15)))
+			if(!((SEND_SIGNAL(computer, COMSIG_TABLET_CHECK_DETONATE) & COMPONENT_TABLET_NO_DETONATE) || prob(difficulty * 15)))
 				rigged = TRUE //Cool, we're allowed to blow up. Really glad this whole check wasn't for nothing.
 				var/trait_timer_key = signal_data[PACKET_SOURCE_ADDRESS]
 				ADD_TRAIT(computer, TRAIT_PDA_CAN_EXPLODE, trait_timer_key)
 				ADD_TRAIT(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key)
 				addtimer(TRAIT_CALLBACK_REMOVE(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key), 10 SECONDS)
 			//Intentional fallthrough.
+
 	if(signal_command == NETCMD_PDAMESSAGE)
 		log_message(
 			signal_data["name"] || "#UNK",
@@ -128,25 +129,29 @@
 			signal_data["automated"] || FALSE,
 			signal_data[PACKET_SOURCE_ADDRESS] || null
 			)
-		if(computer.hardware_flag == PROGRAM_TABLET) //We need to render the extraneous bullshit to chat.
-			show_in_chat(signal_data, rigged)
+
 		if(ringer_status)
 			computer.ring(ringtone)
 
+		if(computer.hardware_flag == PROGRAM_TABLET) //We need to render the extraneous bullshit to chat.
+			show_in_chat(signal_data, rigged)
 		return
 
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.clownvirus_magic_packet)
 		computer.honkamnt = rand(15, 25)
 		return
+
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.mimevirus_magic_packet)
 		ringer_status = FALSE
 		ringtone = ""
 		return
+
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.framevirus_magic_packet)
 		if(computer.hardware_flag != PROGRAM_TABLET)
 			return //If it's not a PDA, too bad!
 		if(!(signal.has_magic_data & MAGIC_DATA_MUST_OBFUSCATE))
 			return //Must be obfuscated, due to the ability to create uplinkss.
+
 		var/datum/component/uplink/hidden_uplink = computer.GetComponent(/datum/component/uplink)
 		if(!hidden_uplink)
 			var/datum/mind/target_mind
@@ -187,6 +192,7 @@
 		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PACKET_SOURCE_ADDRESS]]'>Reply</a>)"
 		var/hrefstart
 		var/hrefend
+		var/job_string = signal_data["job"] ? " ([signal_data["job"]])" : ""
 		if (isAI(L))
 			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
 			hrefend = "</a>"
@@ -202,7 +208,7 @@
 		inbound_message = emoji_parse(inbound_message)
 
 		if(ringer_status)
-			to_chat(L, "<span class='infoplain'>[icon2html(src)] <b>PDA message from [hrefstart][signal_data["name"]] ([signal_data["job"]])[hrefend], </b>[inbound_message] [reply]</span>")
+			to_chat(L, "<span class='infoplain'>[icon2html(src)] <b>PDA message from [hrefstart][signal_data["name"]][job_string][hrefend], </b>[inbound_message] [reply]</span>")
 
 /datum/computer_file/program/messenger/Topic(href, href_list)
 	..()

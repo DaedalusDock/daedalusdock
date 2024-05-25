@@ -42,7 +42,7 @@
 	symbol_html = "O<sub>2</sub>"
 	symbol = "O2"
 	purchaseable = TRUE
-	base_value = 0.2
+	base_value = 0.04
 
 /datum/xgm_gas/nitrogen
 	id = GAS_NITROGEN
@@ -53,7 +53,7 @@
 	symbol_html = "N<sub>2</sub>"
 	symbol = "N2"
 	purchaseable = TRUE
-	base_value = 0.1
+	base_value = 0.02
 
 /datum/xgm_gas/carbon_dioxide
 	id = GAS_CO2
@@ -64,7 +64,7 @@
 	symbol_html = "CO<sub>2</sub>"
 	symbol = "CO2"
 	purchaseable = TRUE
-	base_value = 0.2
+	base_value = 0.04
 
 /datum/xgm_gas/sleeping_agent
 	id = GAS_N2O
@@ -77,7 +77,7 @@
 	//breathed_product = /datum/reagent/nitrous_oxide
 	symbol_html = "N<sub>2</sub>O"
 	symbol = "N2O"
-	base_value = 3
+	base_value = 0.1
 
 /datum/xgm_gas/vapor
 	id = GAS_STEAM
@@ -112,7 +112,7 @@
 	burn_product = GAS_CO2
 	symbol_html = "Ph"
 	symbol = "Ph"
-	base_value = 2
+	base_value = 1
 
 //SM & R-UST GASES
 /datum/xgm_gas/hydrogen
@@ -125,7 +125,7 @@
 	symbol_html = "H<sub>2</sub>"
 	symbol = "H2"
 	purchaseable = TRUE //Used as engine coolant.
-	base_value = 0.5
+	base_value = 0.075
 
 /datum/xgm_gas/hydrogen/deuterium
 	id = GAS_DEUTERIUM
@@ -162,7 +162,7 @@
 	symbol_html = "Ar"
 	symbol = "Ar"
 	purchaseable = TRUE
-	base_value = 0.2
+	base_value = 0.035
 
 // If narcosis is ever simulated, krypton has a narcotic potency seven times greater than regular airmix.
 /datum/xgm_gas/krypton
@@ -174,7 +174,7 @@
 	symbol_html = "Kr"
 	symbol = "Kr"
 	purchaseable = TRUE
-	base_value = 0.2
+	base_value = 0.035
 
 /datum/xgm_gas/neon
 	id = GAS_NEON
@@ -185,7 +185,7 @@
 	symbol_html = "Ne"
 	symbol = "Ne"
 	purchaseable = TRUE
-	base_value = 0.2
+	base_value = 0.035
 
 /datum/xgm_gas/xenon
 	id = GAS_XENON
@@ -197,7 +197,7 @@
 	symbol_html = "Xe"
 	symbol = "Xe"
 	purchaseable = TRUE
-	base_value = 5
+	base_value = 0.1
 
 /datum/xgm_gas/boron
 	id = GAS_BORON
@@ -243,7 +243,7 @@
 	symbol_html = "Cl"
 	symbol = "Cl"
 	purchaseable = TRUE
-	base_value = 7
+	base_value = 0.1
 
 /datum/xgm_gas/radon
 	id = GAS_RADON
@@ -254,7 +254,7 @@
 	symbol_html = "Rn"
 	symbol = "Rn"
 	purchaseable = FALSE
-	base_value = 0.3
+	base_value = 0.115
 
 //MISC COMPOUNDS
 /datum/xgm_gas/methyl_bromide

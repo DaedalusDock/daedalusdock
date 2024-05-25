@@ -364,9 +364,6 @@
 /datum/preset_holoimage/engineer/atmos/mod
 	outfit_type = /datum/outfit/job/atmos/mod
 
-/datum/preset_holoimage/researcher
-	outfit_type = /datum/outfit/job/scientist
-
 /datum/preset_holoimage/captain
 	outfit_type = /datum/outfit/job/captain
 

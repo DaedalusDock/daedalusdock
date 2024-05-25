@@ -305,39 +305,6 @@
 	is a good step towards not getting stuck walking through knee-deep snow."}
 
 //holo disk recording//--
-
-/obj/item/disk/holodisk/snowdin/weregettingpaidright
-	name = "Conversation #AOP#23"
-	preset_image_type = /datum/preset_holoimage/researcher
-	preset_record_text = {"
-	NAME Jacob Ullman
-	DELAY 10
-	SAY Have you gotten anything interesting on the scanners yet? The deep-drilling from the plasma is making it difficult to get anything that isn't useless noise.
-	DELAY 45
-	NAME Elizabeth Queef
-	DELAY 10
-	SAY Nah. I've been feeding the AI the results for the past 2 weeks to sift through the garbage and haven't seen anything out of the usual, at least whatever Nanotrasen is looking for.
-	DELAY 45
-	NAME Jacob Ullman
-	DELAY 10
-	SAY Figured as much. Dunno what Nanotrasen expects to find out here past the plasma. At least we're getting paid to fuck around for a couple months while the AI does the hard work.
-	DELAY 45
-	NAME Elizabeth Queef
-	DELAY 10
-	SAY . . .
-	DELAY 10
-	SAY ..We're getting paid?
-	DELAY 20
-	NAME Jacob Ullman
-	DELAY 10
-	SAY ..We are getting paid, aren't we..?
-	DELAY 15
-	PRESET /datum/preset_holoimage/captain
-	NAME Caleb Reed
-	DELAY 10
-	SAY Paid in experience! That's the Nanotrasen Motto!
-	DELAY 30;"}
-
 /obj/item/disk/holodisk/snowdin/welcometodie
 	name = "Conversation #AOP#1"
 	preset_image_type = /datum/preset_holoimage/corgi
@@ -383,49 +350,6 @@
 	DELAY 15
 	Say I don't have to be told twice! Let's get the fuck out of here.
 	DELAY 20;"}
-
-/obj/item/disk/holodisk/snowdin/ripjacob
-	name = "Conversation #AOP#62"
-	preset_image_type = /datum/preset_holoimage/researcher
-	preset_record_text = {"
-	NAME Jacob Ullman
-	DELAY 10
-	SAY Get the elevator called. We got no idea how many of those fuckers are down here and I'd rather get off this planet as soon as possible.
-	DELAY 45
-	NAME Elizabeth Queef
-	DELAY 10
-	SAY You don't need to tell me twice, I just need to swipe access and then..
-	DELAY 15
-	SOUND sound/effects/glassbr1.ogg
-	DELAY 10
-	SOUND sound/effects/glassbr2.ogg
-	DELAY 15
-	NAME Jacob Ullman
-	DELAY 10
-	SAY What the FUCK was that?
-	DELAY 20
-	SAY OH FUCK THERE'S MORE OF THEM. CALL FASTER JESUS CHRIST.
-	DELAY 20
-	NAME Elizabeth Queef
-	DELAY 10
-	SAY DON'T FUCKING RUSH ME ALRIGHT IT'S BEING CALLED.
-	DELAY 15
-	SOUND sound/effects/huuu.ogg
-	DELAY 5
-	SOUND sound/effects/huuu.ogg
-	DELAY 15
-	SOUND sound/effects/woodhit.ogg
-	DELAY 2
-	SOUND sound/effects/bodyfall3.ogg
-	DELAY 5
-	SOUND sound/effects/meow1.ogg
-	DELAY 15
-	NAME Jacob Ullman
-	DELAY 15
-	SAY OH FUCK IT'S GOT ME JESUS CHRIIIiiii-
-	NAME Elizabeth Queef
-	SAY AAAAAAAAAAAAAAAA FUCK THAT
-	DELAY 15;"}
 
 //special items//--
 

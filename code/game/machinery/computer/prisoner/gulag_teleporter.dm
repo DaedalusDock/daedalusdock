@@ -37,12 +37,11 @@
 		prisoner_list["name"] = prisoner.real_name
 		if(contained_id)
 			can_teleport = TRUE
-		if(!isnull(GLOB.data_core.general))
-			for(var/r in GLOB.data_core.security)
-				var/datum/data/record/R = r
-				if(R.fields["name"] == prisoner_list["name"])
-					temporary_record = R
-					prisoner_list["crimstat"] = temporary_record.fields["criminal"]
+
+		var/datum/data/record/security/R = SSdatacore.get_record_by_name(prisoner_list["name"], DATACORE_RECORDS_SECURITY)
+		if(R)
+			temporary_record = R
+			prisoner_list["crimstat"] = temporary_record.fields[DATACORE_CRIMINAL_STATUS]
 
 	data["prisoner"] = prisoner_list
 

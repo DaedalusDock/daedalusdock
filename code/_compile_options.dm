@@ -106,6 +106,9 @@
 /// Uncomment this to enable debugging tools for map making.
 //#define DEBUG_MAPS
 
+/// Set this value to FALSE to test job requirements working.
+#define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
+
 /////////////////////// REFERENCE TRACKING
 
 ///Used to find the sources of harddels, quite laggy, don't be surpised if it freezes your client for a good while
@@ -200,6 +203,7 @@
 #define GC_FAILURE_HARD_LOOKUP
 //Test at full capacity, the extra cost doesn't matter
 #define TIMER_DEBUG
+#define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
 #endif
 
 #ifdef TGS

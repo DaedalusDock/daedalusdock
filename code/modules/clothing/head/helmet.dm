@@ -203,7 +203,7 @@
 	desc = "A british looking helmet."
 	icon_state = "constable"
 	inhand_icon_state = "constable"
-	custom_price = PAYCHECK_HARD * 1.5
+	custom_price = PAYCHECK_ASSISTANT * 4.25
 	worn_y_offset = 4
 
 /obj/item/clothing/head/helmet/swat/nanotrasen

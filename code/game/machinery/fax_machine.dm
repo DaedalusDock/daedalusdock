@@ -54,7 +54,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	icon_state = "fax"
 	idle_power_usage = 10
 	active_power_usage = 100
-	req_one_access = list(ACCESS_HEADS, ACCESS_LAWYER)
 	circuit = /obj/item/circuitboard/machine/fax_machine
 	/// Whether this machine can send faxes
 	var/sending_enabled = TRUE

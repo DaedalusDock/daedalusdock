@@ -18,16 +18,17 @@ SUBSYSTEM_DEF(communications)
 	else
 		return FALSE
 
-/datum/controller/subsystem/communications/proc/make_announcement(mob/living/user, is_silicon, input, syndicate, list/players)
+/datum/controller/subsystem/communications/proc/make_announcement(mob/living/user, is_silicon, input, syndicate, list/players, sender_name = JOB_CAPTAIN)
 	if(!can_announce(user, is_silicon))
 		return FALSE
+
 	if(is_silicon)
 		minor_announce(html_decode(input),"Station Announcement by [user.name] (AI)", players = players)
 		COOLDOWN_START(src, silicon_message_cooldown, COMMUNICATION_COOLDOWN_AI)
 	else
 		priority_announce(
 			html_decode(user.treat_message(input)),
-			"Station Announcement by Captain",
+			"Station Announcement by [sender_name]",
 			sound_type = 'sound/misc/announce.ogg',
 			send_to_newscaster = !syndicate,
 			do_not_modify = TRUE,

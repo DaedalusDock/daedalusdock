@@ -193,14 +193,17 @@
 			continue
 		//removes heads of staff from being targets from non heads of staff assassinations, and vice versa
 		if(heads_of_staff)
-			if(!(possible_target.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND))
+			if(!(possible_target.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 				continue
 		else
-			if((possible_target.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND))
+			if((possible_target.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 				continue
+
 		possible_targets += possible_target
+
 	for(var/datum/traitor_objective/assassinate/objective as anything in possible_duplicates)
 		possible_targets -= objective.kill_target
+
 	if(try_target_late_joiners)
 		var/list/all_possible_targets = possible_targets.Copy()
 		for(var/datum/mind/possible_target as anything in all_possible_targets)

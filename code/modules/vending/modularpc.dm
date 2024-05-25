@@ -27,7 +27,7 @@
 	refill_canister = /obj/item/vending_refill/modularpc
 	default_price = PAYCHECK_MEDIUM
 	extra_price = PAYCHECK_HARD
-	payment_department = ACCOUNT_SCI
+	payment_department = ACCOUNT_STATION_MASTER
 
 	discount_access = ACCESS_ROBOTICS
 

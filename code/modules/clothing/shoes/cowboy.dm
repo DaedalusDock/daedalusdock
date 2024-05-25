@@ -3,7 +3,7 @@
 	desc = "A small sticker lets you know they've been inspected for snakes, It is unclear how long ago the inspection took place..."
 	icon_state = "cowboy_brown"
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 0, ACID = 0) //these are quite tall
-	custom_price = PAYCHECK_MEDIUM
+	custom_price = PAYCHECK_ASSISTANT * 1.3
 	var/max_occupants = 4
 	can_be_tied = FALSE
 

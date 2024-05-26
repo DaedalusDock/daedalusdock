@@ -26,11 +26,11 @@ SUBSYSTEM_DEF(codex)
 /datum/controller/subsystem/codex/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION("", "---")
-	VV_DROPDOWN_OPTION(VV_HK_REGENRATE_CODEX, "Regenerate Search Database")
+	VV_DROPDOWN_OPTION(VV_HK_REGENERATE_CODEX, "Regenerate Search Database")
 
 /datum/controller/subsystem/codex/vv_do_topic(href_list)
 	. = ..()
-	if(href_list[VV_HK_REGENRATE_CODEX])
+	if(href_list[VV_HK_REGENERATE_CODEX])
 		if(tgui_alert(usr, "Are you sure you want to regenerate the search index? This will almost certainly cause lag.", "Regenerate Index", list("Yes", "No")) == "Yes")
 			prepare_search_database(TRUE)
 

@@ -143,7 +143,7 @@
 
 // misc
 #define VV_HK_SPACEVINE_PURGE "spacevine_purge"
-#define VV_HK_REGENRATE_CODEX "purge_codex_db"
+#define VV_HK_REGENERATE_CODEX "purge_codex_db"
 
 // paintings
 #define VV_HK_REMOVE_PAINTING "remove_painting"

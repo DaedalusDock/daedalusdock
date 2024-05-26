@@ -248,6 +248,7 @@ SUBSYSTEM_DEF(codex)
 /datum/controller/subsystem/codex/proc/prepare_search_database(drop_existing = FALSE)
 	if(GLOB.is_debug_server && !FORCE_CODEX_DATABASE)
 		to_chat(world, span_debug("Codex: Debug server detected. DB operation disabled."))
+		log_world("Codex: Codex DB generation Skipped")
 		return
 	if(drop_existing)
 		to_chat(world, span_debug("Codex: Deleting old index..."))

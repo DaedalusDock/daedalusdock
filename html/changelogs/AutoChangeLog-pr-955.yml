@@ -1,4 +1,0 @@
-author: GPeckman
-delete-after: true
-changes:
-  - bugfix: Fixed a bug that could cause fire overlays to stick forever.

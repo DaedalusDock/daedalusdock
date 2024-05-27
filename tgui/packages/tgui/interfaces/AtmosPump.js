@@ -85,7 +85,8 @@ export const AtmosPump = (props) => {
                 <ProgressBar
                   value={data.last_draw}
                   maxValue={data.max_power}
-                  color="yellow">
+                  color="yellow"
+                >
                   {formatSiUnit(data.last_draw, 0, 'W')}
                 </ProgressBar>
               </LabeledList.Item>

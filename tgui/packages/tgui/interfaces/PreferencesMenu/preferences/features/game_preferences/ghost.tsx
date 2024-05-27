@@ -26,7 +26,7 @@ export const ghost_orbit: FeatureChoiced = {
   `,
   component: (
     props: FeatureValueProps<string, string, FeatureChoicedServerData>,
-    context
+    context,
   ) => {
     const { data } = useBackend<PreferencesMenuData>();
 

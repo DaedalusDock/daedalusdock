@@ -74,7 +74,8 @@ export const NtosCardContent = (props) => {
               }
               tooltipPosition="left"
             />
-          }>
+          }
+        >
           <TemplateDropdown templates={templates} />
         </Section>
       )}
@@ -124,7 +125,8 @@ const IDCardTabs = (props) => {
         altSelection
         selected={'login' === selectedTab}
         color={'login' === selectedTab ? 'green' : 'default'}
-        onClick={() => setSelectedTab('login')}>
+        onClick={() => setSelectedTab('login')}
+      >
         Login ID
       </Tabs.Tab>
       <Tabs.Tab
@@ -132,7 +134,8 @@ const IDCardTabs = (props) => {
         altSelection
         selected={'modify' === selectedTab}
         color={'modify' === selectedTab ? 'green' : 'default'}
-        onClick={() => setSelectedTab('modify')}>
+        onClick={() => setSelectedTab('modify')}
+      >
         Target ID
       </Tabs.Tab>
     </Tabs>
@@ -163,7 +166,8 @@ export const IDCardLogin = (props) => {
             }}
           />
         </>
-      }>
+      }
+    >
       <Stack wrap="wrap">
         <Stack.Item width="100%">
           <Button

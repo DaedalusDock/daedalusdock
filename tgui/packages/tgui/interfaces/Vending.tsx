@@ -160,7 +160,8 @@ const ProductDisplay = (_) => {
             {(user && user.cash) || 0} cr <Icon name="coins" color="gold" />
           </Box>
         )
-      }>
+      }
+    >
       <Table>
         {inventory.map((product) => (
           <VendingRow
@@ -274,7 +275,8 @@ const ProductStock = (props) => {
         (remaining <= 0 && 'bad') ||
         (!custom && remaining <= product.max_amount / 2 && 'average') ||
         'good'
-      }>
+      }
+    >
       {remaining} left
     </Box>
   );
@@ -298,9 +300,10 @@ const ProductButton = (props) => {
       disabled={disabled}
       onClick={() =>
         act('dispense', {
-          'item': product.name,
+          item: product.name,
         })
-      }>
+      }
+    >
       {customPrice}
     </Button>
   ) : (
@@ -309,9 +312,10 @@ const ProductButton = (props) => {
       disabled={disabled}
       onClick={() =>
         act('vend', {
-          'ref': product.ref,
+          ref: product.ref,
         })
-      }>
+      }
+    >
       {standardPrice}
     </Button>
   );

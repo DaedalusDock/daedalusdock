@@ -73,7 +73,7 @@ const setupApp = () => {
       ['./components', './debug', './layouts', './routes'],
       () => {
         renderApp();
-      }
+      },
     );
   }
 };

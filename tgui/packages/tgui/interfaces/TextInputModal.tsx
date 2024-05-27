@@ -52,7 +52,8 @@ export const TextInputModal = (_) => {
           if (keyCode === KEY_ESCAPE) {
             act('cancel');
           }
-        }}>
+        }}
+      >
         <Section fill>
           <Stack fill vertical>
             <Stack.Item>

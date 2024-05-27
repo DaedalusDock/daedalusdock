@@ -131,7 +131,8 @@ const ChoicedSelection = (props: {
           CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_MULTIPLIER
         }px`,
         width: `${CLOTHING_SELECTION_CELL_SIZE * CLOTHING_SELECTION_WIDTH}px`,
-      }}>
+      }}
+    >
       <Stack vertical fill>
         <Stack.Item>
           <Stack fill>
@@ -154,7 +155,8 @@ const ChoicedSelection = (props: {
                   'font-weight': 'bold',
                   'font-size': '14px',
                   'text-align': 'center',
-                }}>
+                }}
+              >
                 Select {props.name.toLowerCase()}
               </Box>
             </Stack.Item>
@@ -177,7 +179,8 @@ const ChoicedSelection = (props: {
                     basis={`${CLOTHING_SELECTION_CELL_SIZE}px`}
                     style={{
                       padding: '5px',
-                    }}>
+                    }}
+                  >
                     <Button
                       onClick={() => {
                         props.onSelect(name);
@@ -188,7 +191,8 @@ const ChoicedSelection = (props: {
                       style={{
                         height: `${CLOTHING_SELECTION_CELL_SIZE}px`,
                         width: `${CLOTHING_SELECTION_CELL_SIZE}px`,
-                      }}>
+                      }}
+                    >
                       <Box
                         className={classes([
                           'preferences32x32',
@@ -214,7 +218,7 @@ const GenderButton = (props: {
 }) => {
   const [genderMenuOpen, setGenderMenuOpen] = useLocalState(
     'genderMenuOpen',
-    false
+    false,
   );
 
   return (
@@ -244,7 +248,8 @@ const GenderButton = (props: {
             })}
           </Stack>
         )
-      }>
+      }
+    >
       <Button
         onClick={() => {
           setGenderMenuOpen(!genderMenuOpen);
@@ -310,7 +315,8 @@ const MainFeature = (props: {
             />
           </TrackOutsideClicks>
         )
-      }>
+      }
+    >
       <Button
         onClick={() => {
           if (isOpen) {
@@ -325,7 +331,8 @@ const MainFeature = (props: {
         }}
         position="relative"
         tooltip={catalog.name}
-        tooltipPosition="right">
+        tooltipPosition="right"
+      >
         <Box
           className={classes([
             'preferences32x32',
@@ -391,7 +398,8 @@ const PreferenceList = (props: {
         padding: '4px',
       }}
       overflowX="hidden"
-      overflowY="scroll">
+      overflowY="scroll"
+    >
       <LabeledList>
         {sortPreferences(Object.entries(props.preferences)).map(
           ([featureId, value]) => {
@@ -414,7 +422,8 @@ const PreferenceList = (props: {
                     as="span"
                     style={{
                       'border-bottom': '2px dotted rgba(255, 255, 255, 0.8)',
-                    }}>
+                    }}
+                  >
                     {name}:
                   </Box>
                 </Tooltip>
@@ -425,7 +434,8 @@ const PreferenceList = (props: {
               <LabeledList.Item
                 key={featureId}
                 label={name}
-                verticalAlign="middle">
+                verticalAlign="middle"
+              >
                 <Stack fill>
                   {randomSetting && (
                     <Stack.Item>
@@ -447,7 +457,7 @@ const PreferenceList = (props: {
                 </Stack>
               </LabeledList.Item>
             );
-          }
+          },
         )}
       </LabeledList>
     </Stack.Item>
@@ -461,7 +471,7 @@ export const MainPage = (props: { openSpecies: () => void }) => {
   >('currentClothingMenu', null);
   const [multiNameInputOpen, setMultiNameInputOpen] = useLocalState(
     'multiNameInputOpen',
-    false
+    false,
   );
   const [randomToggleEnabled] = useRandomToggleState();
 
@@ -486,7 +496,7 @@ export const MainPage = (props: { openSpecies: () => void }) => {
               return (
                 currentSpeciesData.enabled_features.indexOf(featureName) !== -1
               );
-            }
+            },
           ),
         ];
 
@@ -495,7 +505,7 @@ export const MainPage = (props: { openSpecies: () => void }) => {
             RandomSetting.Disabled || randomToggleEnabled;
 
         const getRandomization = (
-          preferences: Record<string, unknown>
+          preferences: Record<string, unknown>,
         ): Record<string, RandomSetting> => {
           if (!serverData) {
             return {};
@@ -518,12 +528,12 @@ export const MainPage = (props: { openSpecies: () => void }) => {
                 data.character_preferences.randomization[preferenceKey] ||
                   RandomSetting.Disabled,
               ];
-            })
+            }),
           );
         };
 
         const randomizationOfMainFeatures = getRandomization(
-          Object.fromEntries(mainFeatures)
+          Object.fromEntries(mainFeatures),
         );
 
         const nonContextualPreferences = {
@@ -606,7 +616,7 @@ export const MainPage = (props: { openSpecies: () => void }) => {
                       name={data.character_preferences.names[data.name_to_use]}
                       handleUpdateName={createSetPreference(
                         act,
-                        data.name_to_use
+                        data.name_to_use,
                       )}
                       openMultiNameInput={() => {
                         setMultiNameInputOpen(true);
@@ -644,7 +654,7 @@ export const MainPage = (props: { openSpecies: () => void }) => {
                             }
                             setRandomization={createSetRandomization(
                               act,
-                              clothingKey
+                              clothingKey,
                             )}
                           />
                         </Stack.Item>

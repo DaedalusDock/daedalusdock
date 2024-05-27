@@ -61,7 +61,8 @@ const VoteOptions = (props) => {
                     color="red"
                     checked={!!allow_vote_map}
                     disabled={!upper_admin}
-                    onClick={() => act('toggle_map')}>
+                    onClick={() => act('toggle_map')}
+                  >
                     {allow_vote_map ? 'Enabled' : 'Disabled'}
                   </Button.Checkbox>
                 )}
@@ -76,13 +77,15 @@ const VoteOptions = (props) => {
                     color="red"
                     checked={!!allow_vote_restart}
                     disabled={!upper_admin}
-                    onClick={() => act('toggle_restart')}>
+                    onClick={() => act('toggle_restart')}
+                  >
                     {allow_vote_restart ? 'Enabled' : 'Disabled'}
                   </Button.Checkbox>
                 )}
                 <Button
                   disabled={!allow_vote_restart}
-                  onClick={() => act('restart')}>
+                  onClick={() => act('restart')}
+                >
                   Restart
                 </Button>
               </Stack.Item>
@@ -112,7 +115,8 @@ const VotersList = (props) => {
   return (
     <Stack.Item>
       <Collapsible
-        title={`View Voters${voting.length ? `: ${voting.length}` : ''}`}>
+        title={`View Voters${voting.length ? `: ${voting.length}` : ''}`}
+      >
         <Section height={8} fill scrollable>
           {voting.map((voter) => {
             return <Box key={voter}>{voter}</Box>;
@@ -146,10 +150,12 @@ const ChoicesPanel = (props) => {
                       disabled={i === selected_choice - 1}
                       onClick={() => {
                         act('vote', { index: i + 1 });
-                      }}>
+                      }}
+                    >
                       Vote
                     </Button>
-                  }>
+                  }
+                >
                   {i === selected_choice - 1 && (
                     <Icon
                       alignSelf="right"
@@ -189,7 +195,8 @@ const TimePanel = (props) => {
             <Button
               color="red"
               disabled={!lower_admin}
-              onClick={() => act('cancel')}>
+              onClick={() => act('cancel')}
+            >
               Cancel Vote
             </Button>
           )}

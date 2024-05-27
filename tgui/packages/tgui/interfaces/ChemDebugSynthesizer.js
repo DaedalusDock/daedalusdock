@@ -57,7 +57,8 @@ export const ChemDebugSynthesizer = (props) => {
                 onClick={() => act('makecup')}
               />
             )
-          }>
+          }
+        >
           {isBeakerLoaded ? (
             <>
               <Box>

@@ -33,7 +33,8 @@ const CargoExpressContent = (props) => {
             <AnimatedNumber value={Math.round(data.points)} />
             {' credits'}
           </Box>
-        }>
+        }
+      >
         <LabeledList>
           <LabeledList.Item label="Landing Location">
             <Button
@@ -44,7 +45,8 @@ const CargoExpressContent = (props) => {
             <Button
               selected={data.usingBeacon}
               disabled={!data.hasBeacon}
-              onClick={() => act('LZBeacon')}>
+              onClick={() => act('LZBeacon')}
+            >
               {data.beaconzone} ({data.beaconName})
             </Button>
             <Button

@@ -45,7 +45,8 @@ export const BlackMarketUplink = (props) => {
                 act('set_market', {
                   market: market.id,
                 })
-              }>
+              }
+            >
               {market.name}
             </Tabs.Tab>
           ))}
@@ -62,7 +63,8 @@ export const BlackMarketUplink = (props) => {
                     act('set_category', {
                       category: category,
                     })
-                  }>
+                  }
+                >
                   {category}
                 </Tabs.Tab>
               ))}

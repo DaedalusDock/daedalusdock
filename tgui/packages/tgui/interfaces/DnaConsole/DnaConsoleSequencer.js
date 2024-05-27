@@ -69,7 +69,8 @@ const GeneCycler = (props) => {
           pulseAction: PREV_GENE,
           alias: alias,
         });
-      }}>
+      }}
+    >
       {gene}
     </Button>
   );
@@ -138,7 +139,7 @@ const GenomeSequencer = (props) => {
           width="8px"
           height="2px"
           backgroundColor="label"
-        />
+        />,
       );
     }
 
@@ -161,7 +162,7 @@ export const DnaConsoleSequencer = (props) => {
   const { isJokerReady, isMonkey, jokerSeconds, subjectStatus } = data;
   const { sequencerMutation, jokerActive } = data.view;
   const mutation = mutations.find(
-    (mutation) => mutation.Alias === sequencerMutation
+    (mutation) => mutation.Alias === sequencerMutation,
   );
   return (
     <>
@@ -170,7 +171,8 @@ export const DnaConsoleSequencer = (props) => {
           <Section
             title="Sequences"
             height="214px"
-            overflowY={mutations.length > 8 && 'scroll'}>
+            overflowY={mutations.length > 8 && 'scroll'}
+          >
             {mutations.map((mutation) => (
               <GenomeImage
                 key={mutation.Alias}
@@ -243,7 +245,8 @@ export const DnaConsoleSequencer = (props) => {
                   }
                 />
               )
-            }>
+            }
+          >
             <GenomeSequencer mutation={mutation} />
           </Section>
         )}

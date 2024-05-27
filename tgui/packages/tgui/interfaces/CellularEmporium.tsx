@@ -51,7 +51,8 @@ export const CellularEmporium = (props) => {
                 />
               </Stack.Item>
             </Stack>
-          }>
+          }
+        >
           <AbilityList />
         </Section>
       </Window.Content>
@@ -95,7 +96,8 @@ const AbilityList = (props) => {
                   />
                 </Stack.Item>
               </Stack>
-            }>
+            }
+          >
             {ability.desc}
             <Box color="good">{ability.helptext}</Box>
           </LabeledList.Item>

@@ -120,7 +120,8 @@ const TerminalDisplay = (props) => {
         )
       }
       fill
-      title="Terminal">
+      title="Terminal"
+    >
       <Stack fill vertical>
         <Stack.Item align="center">
           <Icon color="good" name={shop_logo} size="5" />
@@ -198,13 +199,15 @@ const SetupDisplay = (props) => {
           onClick={() => {
             act('done');
             onClick();
-          }}>
+          }}
+        >
           Done
         </Button>
       }
       fill
       scrollable
-      title="Settings">
+      title="Settings"
+    >
       <Stack fill vertical>
         <Stack.Item>
           <Box bold color="label">

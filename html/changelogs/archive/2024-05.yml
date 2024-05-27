@@ -20,3 +20,8 @@
   Kapu1178:
   - bugfix: With a specific amount of reagents, a reaction could fail to occur and
       repeat infinitely.
+2024-05-25:
+  GPeckman:
+  - bugfix: Fixed a bug that could cause fire overlays to stick forever.
+  vinylspiders:
+  - bugfix: A rare bug that caused mutation effects to linger in weird ways.

@@ -226,7 +226,8 @@ export const StatusPane = (props) => {
         <Box bold mr={1}>
           {data.contract_rep} Rep
         </Box>
-      }>
+      }
+    >
       <Grid>
         <Grid.Column size={0.85}>
           <LabeledList>
@@ -238,7 +239,8 @@ export const StatusPane = (props) => {
                   disabled={data.redeemable_tc <= 0}
                   onClick={() => act('PRG_redeem_TC')}
                 />
-              }>
+              }
+            >
               {data.redeemable_tc}
             </LabeledList.Item>
             <LabeledList.Item label="TC Earned">
@@ -291,7 +293,8 @@ const ContractsTab = (props) => {
             disabled={!data.ongoing_contract || data.extraction_enroute}
             onClick={() => act('PRG_call_extraction')}
           />
-        }>
+        }
+      >
         {contracts.map((contract) => {
           if (
             data.ongoing_contract &&
@@ -328,7 +331,8 @@ const ContractsTab = (props) => {
                     }
                   />
                 </>
-              }>
+              }
+            >
               <Grid>
                 <Grid.Column>{contract.message}</Grid.Column>
                 <Grid.Column size={0.5}>
@@ -345,7 +349,8 @@ const ContractsTab = (props) => {
       <Section
         title="Dropoff Locator"
         textAlign="center"
-        opacity={data.ongoing_contract ? 100 : 0}>
+        opacity={data.ongoing_contract ? 100 : 0}
+      >
         <Box bold>{data.dropoff_direction}</Box>
       </Section>
     </>
@@ -386,7 +391,8 @@ const HubTab = (props) => {
                   }
                 />
               </>
-            }>
+            }
+          >
             <Table>
               <Table.Row>
                 <Table.Cell>

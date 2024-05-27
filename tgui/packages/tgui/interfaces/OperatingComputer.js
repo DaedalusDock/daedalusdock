@@ -75,7 +75,8 @@ const PatientStateView = (props) => {
                 value={patient.health}
                 minValue={patient.minHealth}
                 maxValue={patient.maxHealth}
-                color={patient.health >= 0 ? 'good' : 'average'}>
+                color={patient.health >= 0 ? 'good' : 'average'}
+              >
                 <AnimatedNumber value={patient.health} />
               </ProgressBar>
             </LabeledList.Item>
@@ -83,7 +84,8 @@ const PatientStateView = (props) => {
               <LabeledList.Item key={type.type} label={type.label}>
                 <ProgressBar
                   value={patient[type.type] / patient.maxHealth}
-                  color="bad">
+                  color="bad"
+                >
                   <AnimatedNumber value={patient[type.type]} />
                 </ProgressBar>
               </LabeledList.Item>

@@ -32,11 +32,16 @@ export const NtosNetDownloader = (props) => {
   } = data;
   const all_categories = ['All'].concat(categories);
   const downloadpercentage = toFixed(
-    scale(downloadcompletion, 0, downloadsize) * 100
+    scale(downloadcompletion, 0, downloadsize) * 100,
+  );
+  const [selectedCategory, setSelectedCategory] = useLocalState(
+    context,
+    'category',
+    all_categories[0],
   );
   const [selectedCategory, setSelectedCategory] = useLocalState(
     'category',
-    all_categories[0]
+    all_categories[0],
   );
   const items = flow([
     // This filters the list to only contain programs with category
@@ -49,7 +54,7 @@ export const NtosNetDownloader = (props) => {
     // This sorts all programs in the lists by name and compatibility
     sortBy(
       (program) => -program.compatible,
-      (program) => program.filedesc
+      (program) => program.filedesc,
     ),
   ])(programs);
   const disk_free_space = downloading
@@ -88,11 +93,13 @@ export const NtosNetDownloader = (props) => {
                     tooltip={`${downloadname}.prg downloaded`}
                   />
                 ))
-              }>
+              }
+            >
               <ProgressBar
                 value={downloading ? disk_used + downloadcompletion : disk_used}
                 minValue={0}
-                maxValue={disk_size}>
+                maxValue={disk_size}
+              >
                 <Box textAlign="left">
                   {`${disk_free_space} GQ free of ${disk_size} GQ`}
                 </Box>
@@ -107,7 +114,8 @@ export const NtosNetDownloader = (props) => {
                 <Tabs.Tab
                   key={category}
                   selected={category === selectedCategory}
-                  onClick={() => setSelectedCategory(category)}>
+                  onClick={() => setSelectedCategory(category)}
+                >
                   {category}
                 </Tabs.Tab>
               ))}
@@ -148,7 +156,8 @@ const Program = (props) => {
           width="48px"
           textAlign="right"
           color="label"
-          nowrap>
+          nowrap
+        >
           {program.size} GQ
         </Stack.Item>
         <Stack.Item shrink={0} width="134px" textAlign="right">
@@ -187,17 +196,17 @@ const Program = (props) => {
                   program.installed
                     ? 'good'
                     : !program.compatible
-                    ? 'bad'
-                    : 'grey'
+                      ? 'bad'
+                      : 'grey'
                 }
                 content={
                   program.installed
                     ? 'Installed'
                     : !program.compatible
-                    ? 'Incompatible'
-                    : !program.access
-                    ? 'No Access'
-                    : 'No Space'
+                      ? 'Incompatible'
+                      : !program.access
+                        ? 'No Access'
+                        : 'No Space'
                 }
               />
             )}

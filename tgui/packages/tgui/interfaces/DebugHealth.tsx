@@ -29,7 +29,8 @@ export const DebugHealth = (props) => {
                 <Tabs.Tab
                   key={key}
                   selected={currentTab === key}
-                  onClick={() => setCurrentTab(key)}>
+                  onClick={() => setCurrentTab(key)}
+                >
                   {toTitleCase(key)}
                 </Tabs.Tab>
               ))}
@@ -140,7 +141,8 @@ const TooltipButton = (props) => {
             ))}
           </LabeledList>
         </>
-      }>
+      }
+    >
       <Button color="bad">{name}</Button>
     </Tooltip>
   );

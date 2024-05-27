@@ -95,7 +95,7 @@ const AdventureList = (props) => {
   const { data, act } = useBackend<AdventureBrowserData>();
   const [openAdventure, setOpenAdventure] = useLocalState<string | null>(
     'openAdventure',
-    null
+    null,
   );
 
   return (
@@ -139,7 +139,8 @@ const DebugPlayer = (props) => {
   return (
     <Section
       title="Playtest"
-      buttons={<Button onClick={() => act('end_play')}>End Playtest</Button>}>
+      buttons={<Button onClick={() => act('end_play')}>End Playtest</Button>}
+    >
       {data.delay_time > 0 ? (
         <Box>
           DELAY {formatTime(data.delay_time)} / {data.delay_message}

@@ -44,7 +44,8 @@ const ApcLoggedIn = (props) => {
           onClick={() => {
             setTabIndex(1);
             act('check-apcs');
-          }}>
+          }}
+        >
           APC Control Panel
         </Tabs.Tab>
         <Tabs.Tab
@@ -52,7 +53,8 @@ const ApcLoggedIn = (props) => {
           onClick={() => {
             setTabIndex(2);
             act('check-logs');
-          }}>
+          }}
+        >
           Log View Panel
         </Tabs.Tab>
       </Tabs>
@@ -146,7 +148,7 @@ const ApcControlScene = (props) => {
     sortByField === 'draw' &&
       sortBy(
         (apc) => -powerRank(apc.load),
-        (apc) => -parseFloat(apc.load)
+        (apc) => -parseFloat(apc.load),
       ),
   ])(data.apcs);
   return (
@@ -187,7 +189,8 @@ const ApcControlScene = (props) => {
                 act('access-apc', {
                   ref: apc.ref,
                 })
-              }>
+              }
+            >
               {apc.name}
             </Button>
           </td>

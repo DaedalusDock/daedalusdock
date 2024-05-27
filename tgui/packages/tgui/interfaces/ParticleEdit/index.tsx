@@ -77,7 +77,8 @@ export const ParticleEdit = (props) => {
                   tooltip={'Delete and close UI'}
                 />
               </>
-            }>
+            }
+          >
             <EntryFloat name={'Width'} var_name={'width'} float={width} />
             <EntryFloat name={'Height'} var_name={'height'} float={height} />
             <EntryFloat name={'Count'} var_name={'count'} float={count} />

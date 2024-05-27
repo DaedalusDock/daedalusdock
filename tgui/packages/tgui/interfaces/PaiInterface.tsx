@@ -94,8 +94,7 @@ const SOFTWARE_DESC = {
   'security HUD': 'Allows you to view security records using an overlay HUD.',
   'loudness booster':
     'Synthesizes instruments, plays sounds and imported songs.',
-  'newscaster':
-    'A tool that allows you to broadcast news to other crew members.',
+  newscaster: 'A tool that allows you to broadcast news to other crew members.',
   'door jack': 'A tool that allows you to open doors.',
   'encryption keys':
     'A tool that allows you to decrypt and speak on other radio frequencies.',
@@ -104,15 +103,15 @@ const SOFTWARE_DESC = {
 };
 
 const ICON_MAP = {
-  'angry': 'angry',
-  'cat': 'cat',
+  angry: 'angry',
+  cat: 'cat',
   'extremely-happy': 'grin-beam',
-  'laugh': 'grin-squint',
-  'happy': 'smile',
-  'off': 'power-off',
-  'sad': 'frown',
-  'sunglasses': 'sun',
-  'what': 'question',
+  laugh: 'grin-squint',
+  happy: 'smile',
+  off: 'power-off',
+  sad: 'frown',
+  sunglasses: 'sun',
+  what: 'question',
 };
 
 export const PaiInterface = (_) => {
@@ -149,25 +148,29 @@ const TabDisplay = (props) => {
       <Tabs.Tab
         icon="list"
         onClick={() => onTabClick(Tab.System)}
-        selected={tab === Tab.System}>
+        selected={tab === Tab.System}
+      >
         System
       </Tabs.Tab>
       <Tabs.Tab
         icon="list"
         onClick={() => onTabClick(Tab.Directive)}
-        selected={tab === Tab.Directive}>
+        selected={tab === Tab.Directive}
+      >
         Directives
       </Tabs.Tab>
       <Tabs.Tab
         icon="list"
         onClick={() => onTabClick(Tab.Installed)}
-        selected={tab === Tab.Installed}>
+        selected={tab === Tab.Installed}
+      >
         Installed
       </Tabs.Tab>
       <Tabs.Tab
         icon="list"
         onClick={() => onTabClick(Tab.Available)}
-        selected={tab === Tab.Available}>
+        selected={tab === Tab.Available}
+      >
         Download
       </Tabs.Tab>
     </Tabs>
@@ -245,20 +248,23 @@ const SystemInfo = (_) => {
             disabled={!master.dna}
             icon="dna"
             onClick={() => act('check_dna')}
-            tooltip="Verifies your master's DNA. Must be carried in hand.">
+            tooltip="Verifies your master's DNA. Must be carried in hand."
+          >
             Verify
           </Button>
           <Button
             icon={ICON_MAP[image] || 'meh-blank'}
             onClick={() => act('change_image')}
-            tooltip="Change your display image.">
+            tooltip="Change your display image."
+          >
             Display
           </Button>
         </>
       }
       fill
       scrollable
-      title="System Info">
+      title="System Info"
+    >
       <LabeledList>
         <LabeledList.Item label="Master">
           {master.name || 'None.'}
@@ -343,7 +349,7 @@ const InstalledSoftware = (props) => {
           return (
             <Button key={software} onClick={() => onInstallClick(software)}>
               {software.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-                letter.toUpperCase()
+                letter.toUpperCase(),
               )}
             </Button>
           );
@@ -371,9 +377,10 @@ const InstalledInfo = (props) => {
           !software
             ? 'Select a Program'
             : software.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-                letter.toUpperCase()
+                letter.toUpperCase(),
               )
-        }>
+        }
+      >
         {software && (
           <Stack fill vertical>
             <Stack.Item>{SOFTWARE_DESC[software] || ''}</Stack.Item>
@@ -403,7 +410,8 @@ const RecordsDisplay = (props) => {
             <Button
               disabled={refresh_spam}
               onClick={() => act('refresh', { list: record_type })}
-              tooltip="Refresh">
+              tooltip="Refresh"
+            >
               <Icon mr={-0.7} name="sync" spin={refresh_spam} />
             </Button>
           </Stack.Item>
@@ -413,7 +421,8 @@ const RecordsDisplay = (props) => {
         </Stack>
       }
       fill
-      scrollable>
+      scrollable
+    >
       <Table>
         {convertedRecords?.map((record) => {
           return <RecordRow key={record.ref} record={record} />;
@@ -471,19 +480,22 @@ const SoftwareButtons = (props) => {
           <Button
             icon="power-off"
             onClick={() => act('pda', { pda: 'power' })}
-            selected={pda.power}>
+            selected={pda.power}
+          >
             Power
           </Button>
           <Button
             icon="volume-mute"
             onClick={() => act('pda', { pda: 'silent' })}
-            selected={pda.silent}>
+            selected={pda.silent}
+          >
             Silent
           </Button>
           <Button
             disabled={!pda.power}
             icon="envelope"
-            onClick={() => act('pda', { pda: 'message' })}>
+            onClick={() => act('pda', { pda: 'message' })}
+          >
             Message
           </Button>
         </>
@@ -494,20 +506,23 @@ const SoftwareButtons = (props) => {
           <Button
             disabled={door_jack}
             icon="plug"
-            onClick={() => act('door_jack', { jack: 'cable' })}>
+            onClick={() => act('door_jack', { jack: 'cable' })}
+          >
             Extend Cable
           </Button>
           <Button
             color="bad"
             disabled={!door_jack}
             icon="door-open"
-            onClick={() => act('door_jack', { jack: 'jack' })}>
+            onClick={() => act('door_jack', { jack: 'jack' })}
+          >
             Hack Door
           </Button>
           <Button
             disabled={!door_jack}
             icon="unlink"
-            onClick={() => act('door_jack', { jack: 'cancel' })}>
+            onClick={() => act('door_jack', { jack: 'cancel' })}
+          >
             Cancel
           </Button>
         </>
@@ -517,17 +532,20 @@ const SoftwareButtons = (props) => {
         <>
           <Button
             icon="search"
-            onClick={() => act('host_scan', { scan: 'scan' })}>
+            onClick={() => act('host_scan', { scan: 'scan' })}
+          >
             Host Scan
           </Button>
           <Button
             icon="cog"
-            onClick={() => act('host_scan', { scan: 'wounds' })}>
+            onClick={() => act('host_scan', { scan: 'wounds' })}
+          >
             Toggle Wounds
           </Button>
           <Button
             icon="cog"
-            onClick={() => act('host_scan', { scan: 'limbs' })}>
+            onClick={() => act('host_scan', { scan: 'limbs' })}
+          >
             Toggle Limbs
           </Button>
         </>
@@ -538,7 +556,8 @@ const SoftwareButtons = (props) => {
         <Button
           icon="download"
           onClick={() => act(software.toLowerCase().replace(/ /g, '_'))}
-          disabled={!!languages}>
+          disabled={!!languages}
+        >
           {!languages ? 'Install' : 'Installed'}
         </Button>
       );
@@ -547,7 +566,8 @@ const SoftwareButtons = (props) => {
         <Button
           icon="power-off"
           onClick={() => act(software.toLowerCase().replace(/ /g, '_'))}
-          tooltip="Attempts to toggle the module's power.">
+          tooltip="Attempts to toggle the module's power."
+        >
           Toggle
         </Button>
       );
@@ -560,7 +580,8 @@ const AvailableDisplay = () => {
       buttons={<AvailableMemory />}
       fill
       scrollable
-      title="Available Software">
+      title="Available Software"
+    >
       <AvailableSoftware />
     </Section>
   );
@@ -643,7 +664,8 @@ const AvailableRow = (props) => {
           mb={0.5}
           disabled={ram < software.value || purchased}
           onClick={() => act('buy', { selection: software.name })}
-          tooltip={SOFTWARE_DESC[software.name] || ''}>
+          tooltip={SOFTWARE_DESC[software.name] || ''}
+        >
           <Icon ml={1} mr={-2} name="download" />
         </Button>
       </Table.Cell>

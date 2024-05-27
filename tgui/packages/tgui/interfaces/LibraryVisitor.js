@@ -125,7 +125,8 @@ const SearchAndDisplay = (props) => {
             textAlign="right"
             onClick={() => act('search')}
             color={params_changed ? 'good' : ''}
-            icon="book">
+            icon="book"
+          >
             Search
           </Button>
           <Button
@@ -133,7 +134,8 @@ const SearchAndDisplay = (props) => {
             textAlign="right"
             onClick={() => act('clear_data')}
             color="bad"
-            icon="fire">
+            icon="fire"
+          >
             Reset Search
           </Button>
         </Stack.Item>

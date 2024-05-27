@@ -93,7 +93,8 @@ export const Interview = (props) => {
                 </span>
               )}
             </span>
-          }>
+          }
+        >
           {!read_only && (
             <p>
               Please answer the following questions, and press submit when you

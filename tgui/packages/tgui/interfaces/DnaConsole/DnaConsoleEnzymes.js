@@ -50,7 +50,8 @@ const GeneticMakeupBufferInfo = (props) => {
                 index,
                 type: 'ue',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -74,7 +75,8 @@ const GeneticMakeupBufferInfo = (props) => {
                 index,
                 type: 'ui',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -98,7 +100,8 @@ const GeneticMakeupBufferInfo = (props) => {
                 index,
                 type: 'uf',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -122,7 +125,8 @@ const GeneticMakeupBufferInfo = (props) => {
                 index,
                 type: 'mixed',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -195,7 +199,8 @@ const GeneticMakeupBuffers = (props) => {
               }
             />
           </>
-        }>
+        }
+      >
         <GeneticMakeupBufferInfo index={i} makeup={makeup} />
       </Collapsible>
     );

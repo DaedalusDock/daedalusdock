@@ -58,7 +58,8 @@ export const SupermatterMonitorContent = (props) => {
             onClick={() => act('PRG_clear')}
           />
         )
-      }>
+      }
+    >
       <Stack>
         <Stack.Item width="270px">
           <Section title="Metrics">
@@ -82,7 +83,8 @@ export const SupermatterMonitorContent = (props) => {
                     good: [-Infinity, 150],
                     average: [150, 300],
                     bad: [300, Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_power) + ' MeV/cm3'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -96,7 +98,8 @@ export const SupermatterMonitorContent = (props) => {
                     good: [logScale(500), logScale(2000)],
                     average: [logScale(2000), logScale(4000)],
                     bad: [logScale(4000), Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_ambienttemp) + ' K'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -112,7 +115,8 @@ export const SupermatterMonitorContent = (props) => {
                       logScale(SM_bad_moles_amount),
                     ],
                     bad: [logScale(SM_bad_moles_amount), Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_moles) + ' moles'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -125,7 +129,8 @@ export const SupermatterMonitorContent = (props) => {
                     good: [-Infinity, logScale(5000)],
                     average: [logScale(5000), logScale(10000)],
                     bad: [logScale(10000), +Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_ambientpressure) + ' kPa'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -141,7 +146,8 @@ export const SupermatterMonitorContent = (props) => {
                     color={getGasColor(gas.name)}
                     value={gas.amount}
                     minValue={0}
-                    maxValue={gasMaxAmount}>
+                    maxValue={gasMaxAmount}
+                  >
                     {toFixed(gas.amount, 2) + '%'}
                   </ProgressBar>
                 </LabeledList.Item>
@@ -166,7 +172,8 @@ const SupermatterList = (props) => {
           content="Refresh"
           onClick={() => act('PRG_refresh')}
         />
-      }>
+      }
+    >
       <Table>
         {supermatters.map((sm) => (
           <Table.Row key={sm.uid}>

@@ -55,7 +55,8 @@ const ServerScreen = (props) => {
               icon="home"
               onClick={() => act('return_home')}
             />
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Network">{network}</LabeledList.Item>
             <LabeledList.Item label="Server">{server.name}</LabeledList.Item>
@@ -113,7 +114,8 @@ const MainScreen = (props) => {
               disabled={servers.length === 0}
               onClick={() => act('clear_buffer')}
             />
-          }>
+          }
+        >
           <Table>
             <Table.Row header>
               <Table.Cell>Address</Table.Cell>

@@ -60,7 +60,8 @@ export const ChemRecipeDebug = (props) => {
                 onClick={() => act('all')}
               />
             </>
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Reactions">
               <Button icon="plus" onClick={() => act('setTargetList')} />
@@ -162,7 +163,8 @@ export const ChemRecipeDebug = (props) => {
         <Section title="Recipe edit">
           <LabeledList>
             <LabeledList.Item
-              label={editRecipeName ? editRecipeName : 'lookup'}>
+              label={editRecipeName ? editRecipeName : 'lookup'}
+            >
               <Button
                 icon={'flask'}
                 color="purple"
@@ -237,23 +239,24 @@ export const ChemRecipeDebug = (props) => {
                       content={'test'}
                       format={(value) => null}
                       ranges={{
-                        'red': [-0.22, 1.5],
-                        'orange': [1.5, 3],
-                        'yellow': [3, 4.5],
-                        'olive': [4.5, 5],
-                        'good': [5, 6],
-                        'green': [6, 8.5],
-                        'teal': [8.5, 9.5],
-                        'blue': [9.5, 11],
-                        'purple': [11, 12.5],
-                        'violet': [12.5, 14],
+                        red: [-0.22, 1.5],
+                        orange: [1.5, 3],
+                        yellow: [3, 4.5],
+                        olive: [4.5, 5],
+                        good: [5, 6],
+                        green: [6, 8.5],
+                        teal: [8.5, 9.5],
+                        blue: [9.5, 11],
+                        purple: [11, 12.5],
+                        violet: [12.5, 14],
                       }}
                     />
                   )}
                 </AnimatedNumber>
               </Flex.Item>
             </Flex>
-          }>
+          }
+        >
           {(activeReactions.length === 0 && (
             <Box color="label">No active reactions.</Box>
           )) || (
@@ -288,10 +291,10 @@ export const ChemRecipeDebug = (props) => {
                             format={(value) => null}
                             ml={5}
                             ranges={{
-                              'red': [0, reaction.minPure],
-                              'orange': [reaction.minPure, reaction.inverse],
-                              'yellow': [reaction.inverse, 0.8],
-                              'green': [0.8, 1],
+                              red: [0, reaction.minPure],
+                              orange: [reaction.minPure, reaction.inverse],
+                              yellow: [reaction.inverse, 0.8],
+                              green: [0.8, 1],
                             }}
                           />
                         )}
@@ -305,7 +308,8 @@ export const ChemRecipeDebug = (props) => {
                         textAlign={'center'}
                         icon={reaction.overheat && 'thermometer-full'}
                         width={7}
-                        color={reaction.overheat ? 'red' : 'label'}>
+                        color={reaction.overheat ? 'red' : 'label'}
+                      >
                         {reaction.targetVol}u
                       </ProgressBar>
                     </Table.Cell>
@@ -317,7 +321,8 @@ export const ChemRecipeDebug = (props) => {
         </Section>
         <Section
           title="Chamber"
-          buttons={<Box>{isActive ? 'Reacting' : 'Waiting'}</Box>}>
+          buttons={<Box>{isActive ? 'Reacting' : 'Waiting'}</Box>}
+        >
           {(chamberContents.length && (
             <BeakerContents beakerLoaded beakerContents={chamberContents} />
           )) || <Box>Nothing</Box>}

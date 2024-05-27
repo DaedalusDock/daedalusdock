@@ -41,7 +41,8 @@ export const CargoHoldTerminal = (props) => {
                 onClick={() => act(sending ? 'stop' : 'send')}
               />
             </>
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Status" color={pad ? 'good' : 'bad'}>
               {pad ? 'Online' : 'Not Found'}

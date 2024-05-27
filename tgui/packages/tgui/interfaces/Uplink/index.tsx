@@ -92,7 +92,7 @@ export class Uplink extends Component<{}, UplinkState> {
   async populateServerData() {
     if (!fetchServerData) {
       fetchServerData = fetchRetry(resolveAsset('uplink.json')).then(
-        (response) => response.json()
+        (response) => response.json(),
       );
     }
     const { data } = useBackend<UplinkData>();
@@ -141,7 +141,7 @@ export class Uplink extends Component<{}, UplinkState> {
     });
 
     uplinkData.categories = uplinkData.categories.filter((value) =>
-      availableCategories.includes(value)
+      availableCategories.includes(value),
     );
 
     this.setState({
@@ -226,7 +226,7 @@ export class Uplink extends Component<{}, UplinkState> {
     // Clamp it down between 0 and 2
     progressionPercentage = Math.min(
       Math.max(progressionPercentage / progression_scaling_deviance, -1),
-      1
+      1,
     );
     // Round it and convert it into a percentage
     progressionPercentage = Math.round(progressionPercentage * 1000) / 10;
@@ -263,7 +263,7 @@ export class Uplink extends Component<{}, UplinkState> {
                                   Reputation passively increases by{' '}
                                   <Box color="green" as="span">
                                     {calculateProgression(
-                                      current_progression_scaling
+                                      current_progression_scaling,
                                     )}
                                   </Box>
                                   &nbsp;every minute
@@ -283,7 +283,8 @@ export class Uplink extends Component<{}, UplinkState> {
                                           : 'green'
                                       }
                                       ml={1}
-                                      mr={1}>
+                                      mr={1}
+                                    >
                                       {progressionPercentage}%
                                     </Box>
                                     {progressionPercentage < 0
@@ -297,7 +298,8 @@ export class Uplink extends Component<{}, UplinkState> {
                             </Box>
                           )) ||
                           'Your current level of reputation. You are a respected elite and do not need to improve your reputation.'
-                        }>
+                        }
+                      >
                         {/* If we have no progression,
                       just give them a generic title */}
                         {has_progression
@@ -320,13 +322,15 @@ export class Uplink extends Component<{}, UplinkState> {
                       {!!has_objectives && (
                         <Tabs.Tab
                           selected={currentTab === 0}
-                          onClick={() => this.setState({ currentTab: 0 })}>
+                          onClick={() => this.setState({ currentTab: 0 })}
+                        >
                           Objectives
                         </Tabs.Tab>
                       )}
                       <Tabs.Tab
                         selected={currentTab === 1 || !has_objectives}
-                        onClick={() => this.setState({ currentTab: 1 })}>
+                        onClick={() => this.setState({ currentTab: 1 })}
+                      >
                         Market
                       </Tabs.Tab>
                     </Tabs>

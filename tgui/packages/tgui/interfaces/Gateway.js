@@ -62,7 +62,8 @@ const GatewayContent = (props) => {
                 act('activate', {
                   destination: dest.ref,
                 })
-              }>
+              }
+            >
               Activate
             </Button>
           )) || (

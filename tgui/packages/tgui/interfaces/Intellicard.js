@@ -35,7 +35,8 @@ export const Intellicard = (props) => {
                 onClick={() => act('wipe')}
               />
             )
-          }>
+          }
+        >
           {!!name && (
             <LabeledList>
               <LabeledList.Item label="Status" color={offline ? 'bad' : 'good'}>

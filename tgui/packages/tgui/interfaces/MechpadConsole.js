@@ -35,7 +35,8 @@ export const MechpadControl = (props) => {
           color="bad"
           onClick={() => act('remove')}
         />
-      }>
+      }
+    >
       {(!connected_mechpad && (
         <Box color="bad" textAlign="center">
           No Pad Connected.

@@ -25,7 +25,7 @@ export const BluespaceVendor = (props) => {
   ])(data.bluespace_network_gases || []);
   const gasMax = Math.max(
     1,
-    ...bluespace_network_gases.map((gas) => gas.amount)
+    ...bluespace_network_gases.map((gas) => gas.amount),
   );
   return (
     <Window title="Bluespace Vendor" width={500} height={600}>
@@ -53,7 +53,8 @@ export const BluespaceVendor = (props) => {
                     onClick={() => act('tank_expel')}
                   />
                 </>
-              }>
+              }
+            >
               <Stack>
                 <Stack.Item>
                   <NumberInput
@@ -101,7 +102,8 @@ export const BluespaceVendor = (props) => {
                   and finally press start on the gas of your choice!
                 `}
                 />
-              }>
+              }
+            >
               <LabeledList>
                 {bluespace_network_gases.map((gas) => (
                   <>
@@ -117,7 +119,8 @@ export const BluespaceVendor = (props) => {
                           color={getGasColor(gas.name)}
                           value={gas.amount}
                           minValue={0}
-                          maxValue={gasMax}>
+                          maxValue={gasMax}
+                        >
                           {toFixed(gas.amount, 2) + ' moles'}
                         </ProgressBar>
                       </Stack.Item>

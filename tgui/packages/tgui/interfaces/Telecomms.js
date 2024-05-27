@@ -93,20 +93,21 @@ export const Telecomms = (props) => {
                     <Table.Cell>Change Frequency:</Table.Cell>
                     <Table.Cell>
                       {RADIO_CHANNELS.find(
-                        (channel) => channel.freq === changefrequency
+                        (channel) => channel.freq === changefrequency,
                       ) && (
                         <Box
                           inline
                           color={
                             RADIO_CHANNELS.find(
-                              (channel) => channel.freq === changefrequency
+                              (channel) => channel.freq === changefrequency,
                             ).color
                           }
-                          ml={2}>
+                          ml={2}
+                        >
                           [
                           {
                             RADIO_CHANNELS.find(
-                              (channel) => channel.freq === changefrequency
+                              (channel) => channel.freq === changefrequency,
                             ).name
                           }
                           ]
@@ -173,20 +174,21 @@ export const Telecomms = (props) => {
                     <Table.Cell bold>{entry / 10} kHz</Table.Cell>
                     <Table.Cell>
                       {RADIO_CHANNELS.find(
-                        (channel) => channel.freq === entry
+                        (channel) => channel.freq === entry,
                       ) && (
                         <Box
                           inline
                           color={
                             RADIO_CHANNELS.find(
-                              (channel) => channel.freq === entry
+                              (channel) => channel.freq === entry,
                             ).color
                           }
-                          ml={2}>
+                          ml={2}
+                        >
                           [
                           {
                             RADIO_CHANNELS.find(
-                              (channel) => channel.freq === entry
+                              (channel) => channel.freq === entry,
                             ).name
                           }{' '}
                           ]
@@ -208,20 +210,21 @@ export const Telecomms = (props) => {
                     <Table.Cell>Add Frequency</Table.Cell>
                     <Table.Cell>
                       {RADIO_CHANNELS.find(
-                        (channel) => channel.freq === frequency
+                        (channel) => channel.freq === frequency,
                       ) && (
                         <Box
                           inline
                           color={
                             RADIO_CHANNELS.find(
-                              (channel) => channel.freq === frequency
+                              (channel) => channel.freq === frequency,
                             ).color
                           }
-                          ml={2}>
+                          ml={2}
+                        >
                           [
                           {
                             RADIO_CHANNELS.find(
-                              (channel) => channel.freq === frequency
+                              (channel) => channel.freq === frequency,
                             ).name
                           }
                           ]

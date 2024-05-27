@@ -27,7 +27,8 @@ export const BankMachine = (props) => {
                   selected={siphoning}
                   onClick={() => act(siphoning ? 'halt' : 'siphon')}
                 />
-              }>
+              }
+            >
               <AnimatedNumber
                 value={current_balance}
                 format={(value) => formatMoney(value)}

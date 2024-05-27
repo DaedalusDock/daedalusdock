@@ -18,7 +18,8 @@ export const TurbineComputer = (props) => {
         style={{ margin: 'auto' }}
         width="200px"
         textAlign="center"
-        minHeight="39px">
+        minHeight="39px"
+      >
         {
           'Parts not connected, use a multitool on the core rotor before trying again'
         }
@@ -31,7 +32,8 @@ export const TurbineComputer = (props) => {
         style={{ margin: 'auto' }}
         width="200px"
         textAlign="center"
-        minHeight="39px">
+        minHeight="39px"
+      >
         {
           'Some parts have open maintenance hatchet, please close them before starting'
         }
@@ -51,7 +53,8 @@ export const TurbineComputer = (props) => {
               disabled={!data.can_turn_off || !data.parts_linked}
               onClick={() => act('toggle_power')}
             />
-          }>
+          }
+        >
           {parts_not_connected}
           {parts_not_ready}
           <LabeledList>
@@ -78,7 +81,8 @@ export const TurbineComputer = (props) => {
                   good: [60, 100],
                   average: [40, 59],
                   bad: [0, 39],
-                }}>
+                }}
+              >
                 {data.integrity + ' %'}
               </ProgressBar>
             </LabeledList.Item>

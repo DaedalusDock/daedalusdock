@@ -29,7 +29,7 @@ const EMAG_SHUTTLE_NOTICE =
 
 const sortShuttles = sortBy(
   (shuttle) => !shuttle.emagOnly,
-  (shuttle) => shuttle.creditCost
+  (shuttle) => shuttle.creditCost,
 );
 
 const AlertButton = (props) => {
@@ -177,7 +177,8 @@ const PageBuyingShuttle = (props) => {
               style={{
                 display: 'inline-block',
                 width: '70%',
-              }}>
+              }}
+            >
               {shuttle.name}
             </span>
           }
@@ -196,12 +197,13 @@ const PageBuyingShuttle = (props) => {
                 data.budget < shuttle.creditCost
                   ? `You need ${shuttle.creditCost - data.budget} more credits.`
                   : shuttle.emagOnly
-                  ? EMAG_SHUTTLE_NOTICE
-                  : undefined
+                    ? EMAG_SHUTTLE_NOTICE
+                    : undefined
               }
               tooltipPosition="left"
             />
-          }>
+          }
+        >
           <Box>{shuttle.description}</Box>
           {shuttle.prerequisites ? (
             <b>Prerequisites: {shuttle.prerequisites}</b>
@@ -341,19 +343,19 @@ const PageMain = (props) => {
 
   const [callingShuttle, setCallingShuttle] = useLocalState(
     'calling_shuttle',
-    false
+    false,
   );
   const [messagingAssociates, setMessagingAssociates] = useLocalState(
     'messaging_associates',
-    false
+    false,
   );
   const [messagingSector, setMessagingSector] = useLocalState(
     'messaing_sector',
-    null
+    null,
   );
   const [requestingNukeCodes, setRequestingNukeCodes] = useLocalState(
     'requesting_nuke_codes',
-    false
+    false,
   );
 
   const [
@@ -660,7 +662,7 @@ const PageMessages = (props) => {
         content="Back"
         onClick={() => act('setState', { state: STATE_MAIN })}
       />
-    </Section>
+    </Section>,
   );
 
   const messageElements = [];
@@ -710,11 +712,12 @@ const PageMessages = (props) => {
               })
             }
           />
-        }>
+        }
+      >
         <Box dangerouslySetInnerHTML={textHtml} />
 
         {answers}
-      </Section>
+      </Section>,
     );
   }
 

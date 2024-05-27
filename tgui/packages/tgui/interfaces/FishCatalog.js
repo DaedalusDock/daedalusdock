@@ -10,7 +10,7 @@ export const FishCatalog = (props) => {
   const { act, data } = useBackend();
   const { fish_info, sponsored_by } = data;
   const fish_by_name = flow([sortBy((fish) => fish.name)])(
-    data.fish_info || []
+    data.fish_info || [],
   );
   const [currentFish, setCurrentFish] = useLocalState('currentFish', null);
   return (
@@ -27,7 +27,8 @@ export const FishCatalog = (props) => {
                   selected={f === currentFish}
                   onClick={() => {
                     setCurrentFish(f);
-                  }}>
+                  }}
+                >
                   {f.name}
                 </Button>
               ))}
@@ -41,7 +42,8 @@ export const FishCatalog = (props) => {
                 currentFish
                   ? capitalize(currentFish.name)
                   : sponsored_by + ' Fish Index'
-              }>
+              }
+            >
               {currentFish && (
                 <LabeledList>
                   <LabeledList.Item label="Description">

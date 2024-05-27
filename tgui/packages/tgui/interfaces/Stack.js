@@ -50,7 +50,8 @@ export const Stack = (props) => {
                 mx={1}
               />
             </>
-          }>
+          }
+        >
           {(items.length === 0 && <NoticeBox>No recipes found.</NoticeBox>) || (
             <RecipeList recipes={items} />
           )}
@@ -98,7 +99,7 @@ const Multipliers = (props) => {
 
   const maxM = Math.min(
     maxMultiplier,
-    Math.floor(recipe.max_res_amount / recipe.res_amount)
+    Math.floor(recipe.max_res_amount / recipe.res_amount),
   );
 
   const multipliers = [5, 10, 25];
@@ -116,7 +117,7 @@ const Multipliers = (props) => {
               multiplier: multiplier,
             })
           }
-        />
+        />,
       );
     }
   }
@@ -131,7 +132,7 @@ const Multipliers = (props) => {
             multiplier: maxM,
           })
         }
-      />
+      />,
     );
   }
 

@@ -150,7 +150,8 @@ export const LaunchpadControl = (props) => {
           color="bad"
           onClick={() => act('remove')}
         />
-      }>
+      }
+    >
       <Grid>
         <Grid.Column>
           <Section title="Controls" level={2}>

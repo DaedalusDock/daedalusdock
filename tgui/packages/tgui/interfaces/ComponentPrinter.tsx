@@ -33,7 +33,7 @@ type ComponentPrinterData = {
 
 const canProduce = (
   designMaterials: Design['materials'],
-  storedMaterials: Material[]
+  storedMaterials: Material[],
 ) => {
   for (const material of storedMaterials) {
     const amountNeeded = designMaterials[material.name];
@@ -72,7 +72,7 @@ export const ComponentPrinter = (props) => {
 
   const [currentCategory, setCurrentCategory] = useLocalState(
     'category',
-    CATEGORY_ALL
+    CATEGORY_ALL,
   );
   const [searchText, setSearchText] = useLocalState('searchText', '');
 
@@ -108,7 +108,7 @@ export const ComponentPrinter = (props) => {
                             return categories;
                           }
                         },
-                        [CATEGORY_ALL]
+                        [CATEGORY_ALL],
                       )
                       .sort()
                       .map((category) => {
@@ -117,7 +117,8 @@ export const ComponentPrinter = (props) => {
                             key={category}
                             onClick={() => setCurrentCategory(category)}
                             selected={category === currentCategory}
-                            fluid>
+                            fluid
+                          >
                             {category}
                           </Tabs.Tab>
                         );
@@ -143,7 +144,7 @@ export const ComponentPrinter = (props) => {
                       .filter(
                         ([_, design]) =>
                           currentCategory === CATEGORY_ALL ||
-                          design.categories.indexOf(currentCategory) !== -1
+                          design.categories.indexOf(currentCategory) !== -1,
                       )
                       .filter(searchFor(searchText))
                       .map(([designId, design]) => {
@@ -161,13 +162,15 @@ export const ComponentPrinter = (props) => {
                                   disabled={
                                     !canProduce(
                                       design.materials,
-                                      data.materials
+                                      data.materials,
                                     )
                                   }
-                                  px={1.5}>
+                                  px={1.5}
+                                >
                                   Print
                                 </Button>
-                              }>
+                              }
+                            >
                               <Box inline width="100%">
                                 {design.description}
                               </Box>

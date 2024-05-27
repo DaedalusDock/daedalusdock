@@ -47,7 +47,8 @@ export const DisplayName = (props) => {
                     component_id: componentId,
                     port_id: portIndex,
                   })
-                }>
+                }
+              >
                 <Box color="white">{port.name}</Box>
               </Button>
             )) ||
@@ -57,7 +58,8 @@ export const DisplayName = (props) => {
           <Box
             fontSize={0.75}
             opacity={0.25}
-            textAlign={isOutput ? 'right' : 'left'}>
+            textAlign={isOutput ? 'right' : 'left'}
+          >
             {displayType || 'unknown'}
           </Box>
         </Flex.Item>

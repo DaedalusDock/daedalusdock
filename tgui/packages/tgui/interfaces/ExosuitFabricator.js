@@ -56,7 +56,7 @@ const partBuildColor = (cost, tally, material) => {
 };
 
 const partCondFormat = (materials, tally, part) => {
-  let format = { 'textColor': COLOR_NONE };
+  let format = { textColor: COLOR_NONE };
 
   Object.keys(part.cost).forEach((mat) => {
     format[mat] = partBuildColor(part.cost[mat], tally[mat], materials[mat]);
@@ -84,7 +84,7 @@ const queueCondFormat = (materials, queue) => {
       matFormat[mat] = partBuildColor(
         part.cost[mat],
         materialTally[mat],
-        materials[mat]
+        materials[mat],
       );
 
       if (matFormat[mat].color !== COLOR_NONE) {
@@ -107,7 +107,7 @@ const searchFilter = (search, allparts) => {
   }
   const resultFilter = createSearch(
     search,
-    (part) => (part.name || '') + (part.desc || '') + (part.searchMeta || '')
+    (part) => (part.name || '') + (part.desc || '') + (part.searchMeta || ''),
   );
   let searchResults = [];
   Object.keys(allparts).forEach((category) => {
@@ -125,11 +125,11 @@ export const ExosuitFabricator = (props) => {
   const materialAsObj = materialArrayToObj(data.materials || []);
   const { materialTally, missingMatTally, textColors } = queueCondFormat(
     materialAsObj,
-    queue
+    queue,
   );
   const [displayMatCost, setDisplayMatCost] = useSharedState(
     'display_mats',
-    false
+    false,
   );
   return (
     <Window title="Exosuit Fabricator" width={1100} height={640}>
@@ -154,7 +154,8 @@ export const ExosuitFabricator = (props) => {
                 <Section fill title="Settings">
                   <Button.Checkbox
                     onClick={() => setDisplayMatCost(!displayMatCost)}
-                    checked={displayMatCost}>
+                    checked={displayMatCost}
+                  >
                     Display Material Costs
                   </Button.Checkbox>
                 </Section>
@@ -172,7 +173,8 @@ export const ExosuitFabricator = (props) => {
                       content="R&D Sync"
                       onClick={() => act('sync_rnd')}
                     />
-                  }>
+                  }
+                >
                   <PartSets />
                 </Section>
               </Stack.Item>
@@ -203,7 +205,7 @@ const PartSets = (props) => {
   const buildableParts = data.buildableParts || {};
   const [selectedPartTab, setSelectedPartTab] = useSharedState(
     'part_tab',
-    partSets.length ? buildableParts[0] : ''
+    partSets.length ? buildableParts[0] : '',
   );
   return partSets
     .filter((set) => buildableParts[set])
@@ -213,7 +215,8 @@ const PartSets = (props) => {
         fluid
         color="transparent"
         selected={set === selectedPartTab}
-        onClick={() => setSelectedPartTab(set)}>
+        onClick={() => setSelectedPartTab(set)}
+      >
         {set}
       </Button>
     ));
@@ -238,7 +241,7 @@ const PartLists = (props) => {
 
   const [selectedPartTab, setSelectedPartTab] = useSharedState(
     'part_tab',
-    getFirstValidPartSet(partSets)
+    getFirstValidPartSet(partSets),
   );
 
   const [searchText, setSearchText] = useSharedState('search_text', '');
@@ -255,7 +258,7 @@ const PartLists = (props) => {
   let partsList;
   // Build list of sub-categories if not using a search filter.
   if (!searchText) {
-    partsList = { 'Parts': [] };
+    partsList = { Parts: [] };
     buildableParts[selectedPartTab].forEach((part) => {
       part['format'] = partCondFormat(materials, queueMaterials, part);
       if (!part.subCategory) {
@@ -340,7 +343,8 @@ const PartCategory = (props) => {
             })
           }
         />
-      }>
+      }
+    >
       {!parts.length && placeholder}
       {parts.map((part) => (
         <Fragment key={part.name}>
@@ -379,7 +383,8 @@ const PartCategory = (props) => {
                 <Stack.Item
                   key={material}
                   width="50px"
-                  color={COLOR_KEYS[part.format[material].color]}>
+                  color={COLOR_KEYS[part.format[material].color]}
+                >
                   <MaterialAmount
                     formatting={MaterialFormatting.Money}
                     style={{
@@ -435,7 +440,8 @@ const Queue = (props) => {
                 />
               )}
             </>
-          }>
+          }
+        >
           <Stack fill vertical>
             <Stack.Item>
               <BeingBuilt />

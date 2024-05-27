@@ -50,7 +50,8 @@ export const AiRestorerContent = (props) => {
             <Box inline bold color={isDead ? 'bad' : 'good'}>
               {isDead ? 'Nonfunctional' : 'Functional'}
             </Box>
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Integrity">
               <ProgressBar

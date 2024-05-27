@@ -46,7 +46,8 @@ export const BountyBoardContent = (props) => {
             content="Reset Account"
             onClick={() => act('clear')}
           />
-        }>
+        }
+      >
         <UserDetails />
       </Section>
       <Flex mb={1}>
@@ -102,7 +103,8 @@ export const BountyBoardContent = (props) => {
                             textAlign="center"
                             style={{
                               border: `2px solid ${color}`,
-                            }}>
+                            }}
+                          >
                             {applicant.name}
                           </Flex.Item>
                           <Flex.Item align="end">
@@ -120,7 +122,7 @@ export const BountyBoardContent = (props) => {
                             />
                           </Flex.Item>
                         </Flex>
-                      )
+                      ),
                   )}
                 </Section>
               </Section>

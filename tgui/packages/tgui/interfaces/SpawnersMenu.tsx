@@ -51,7 +51,8 @@ export const SpawnersMenu = (props) => {
                       />
                     </Stack.Item>
                   </Stack>
-                }>
+                }
+              >
                 <LabeledList>
                   <LabeledList.Item label="Origin">
                     {spawner.you_are_text || 'Unknown'}

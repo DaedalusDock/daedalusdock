@@ -41,7 +41,8 @@ export const NtosNetMonitor = (props) => {
               selected={ntnetstatus}
               onClick={() => act('toggleWireless')}
             />
-          }>
+          }
+        >
           {ntnetrelays ? (
             <LabeledList>
               <LabeledList.Item label="Active NTNet Relays">
@@ -156,7 +157,8 @@ export const NtosNetMonitor = (props) => {
                 content="Clear Logs"
                 onClick={() => act('purgelogs')}
               />
-            }>
+            }
+          >
             {ntnetlogs.map((log) => (
               <Box key={log.entry} className="candystripe">
                 {log.entry}

@@ -40,7 +40,8 @@ export const SpaceHeater = (props) => {
                 onClick={() => act('power')}
               />
             </>
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Cell" color={!data.hasPowercell && 'bad'}>
               {(data.hasPowercell && (
@@ -50,7 +51,8 @@ export const SpaceHeater = (props) => {
                     good: [0.6, Infinity],
                     average: [0.3, 0.6],
                     bad: [-Infinity, 0.3],
-                  }}>
+                  }}
+                >
                   {data.powerLevel + '%'}
                 </ProgressBar>
               )) ||
@@ -67,9 +69,10 @@ export const SpaceHeater = (props) => {
                   Math.abs(data.targetTemp - data.currentTemp) > 50
                     ? 'bad'
                     : Math.abs(data.targetTemp - data.currentTemp) > 20
-                    ? 'average'
-                    : 'good'
-                }>
+                      ? 'average'
+                      : 'good'
+                }
+              >
                 {data.currentTemp}°C
               </Box>
             </LabeledList.Item>

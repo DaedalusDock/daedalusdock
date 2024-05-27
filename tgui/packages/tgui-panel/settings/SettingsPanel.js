@@ -44,9 +44,10 @@ export const SettingsPanel = (props) => {
                   dispatch(
                     changeSettingsTab({
                       tabId: tab.id,
-                    })
+                    }),
                   )
-                }>
+                }
+              >
                 {tab.name}
               </Tabs.Tab>
             ))}
@@ -85,7 +86,7 @@ export const SettingsGeneral = (props) => {
               dispatch(
                 updateSettings({
                   theme: value,
-                })
+                }),
               )
             }
           />
@@ -101,7 +102,7 @@ export const SettingsGeneral = (props) => {
                     dispatch(
                       updateSettings({
                         fontFamily: value,
-                      })
+                      }),
                     )
                   }
                 />
@@ -112,7 +113,7 @@ export const SettingsGeneral = (props) => {
                     dispatch(
                       updateSettings({
                         fontFamily: value,
-                      })
+                      }),
                     )
                   }
                 />
@@ -145,7 +146,7 @@ export const SettingsGeneral = (props) => {
               dispatch(
                 updateSettings({
                   fontSize: value,
-                })
+                }),
               )
             }
           />
@@ -163,7 +164,7 @@ export const SettingsGeneral = (props) => {
               dispatch(
                 updateSettings({
                   lineHeight: value,
-                })
+                }),
               )
             }
           />
@@ -184,7 +185,7 @@ export const SettingsGeneral = (props) => {
                 dispatch(
                   updateSettings({
                     highlightColor: value,
-                  })
+                  }),
                 )
               }
             />
@@ -197,7 +198,7 @@ export const SettingsGeneral = (props) => {
             dispatch(
               updateSettings({
                 highlightText: value,
-              })
+              }),
             )
           }
         />
@@ -209,9 +210,10 @@ export const SettingsGeneral = (props) => {
             dispatch(
               updateSettings({
                 matchWord: !matchWord,
-              })
+              }),
             )
-          }>
+          }
+        >
           Match word
         </Button.Checkbox>
         <Button.Checkbox
@@ -220,9 +222,10 @@ export const SettingsGeneral = (props) => {
             dispatch(
               updateSettings({
                 matchCase: !matchCase,
-              })
+              }),
             )
-          }>
+          }
+        >
           Match case
         </Button.Checkbox>
       </Box>

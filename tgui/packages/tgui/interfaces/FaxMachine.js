@@ -30,12 +30,12 @@ export const FaxMachine = (props) => {
 
   const [selectedPaperTab, setSelectedPaper] = useLocalState(
     'ref',
-    received_paperwork[0]?.ref
+    received_paperwork[0]?.ref,
   );
 
   const [destination, setDestination] = useLocalState(
     'dest',
-    default_destination
+    default_destination,
   );
 
   const selectedPaper = received_paperwork.find((paper) => {
@@ -60,7 +60,8 @@ export const FaxMachine = (props) => {
                 onClick={() => act('un_emag_machine')}
               />
             )
-          }>
+          }
+        >
           Hello, {display_name}!{' '}
           {emagged
             ? 'ERR- ERRoR. ERROR.'
@@ -74,7 +75,8 @@ export const FaxMachine = (props) => {
                   width="50%"
                   icon="copy"
                   selected={tab === 1}
-                  onClick={() => setTab(1)}>
+                  onClick={() => setTab(1)}
+                >
                   <b>Send A Fax</b>
                 </Tabs.Tab>
                 <Tabs.Tab
@@ -84,7 +86,8 @@ export const FaxMachine = (props) => {
                   onClick={() => {
                     setTab(2);
                     act('read_last_received');
-                  }}>
+                  }}
+                >
                   <Stack grow width="100%">
                     <Stack.Item grow textAlign="left">
                       <b>Received Faxes</b>
@@ -106,7 +109,8 @@ export const FaxMachine = (props) => {
                       style={{
                         color: emagged ? 'lightgreen' : 'lightblue',
                         fontWeight: 'bold',
-                      }}>
+                      }}
+                    >
                       Message to Send:
                     </span>
                     <BlockQuote mt={1}>{stored_paper.contents}</BlockQuote>
@@ -200,7 +204,8 @@ export const FaxMachine = (props) => {
               }
               onClick={() => act('toggle_recieving')}
             />
-          }>
+          }
+        >
           <Stack vertical grow>
             <Stack.Item height={2}>
               {received_paperwork.length > 0 ? (
@@ -211,7 +216,8 @@ export const FaxMachine = (props) => {
                       key={paper}
                       textAlign="center"
                       selected={paper.ref === selectedPaperTab}
-                      onClick={() => setSelectedPaper(paper.ref)}>
+                      onClick={() => setSelectedPaper(paper.ref)}
+                    >
                       Paper {paper.num}
                     </Tabs.Tab>
                   ))}

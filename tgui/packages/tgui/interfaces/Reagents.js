@@ -51,7 +51,8 @@ export const Reagents = (props) => {
                         }
                       />
                     </>
-                  }>
+                  }
+                >
                   <RecipeLookup
                     recipe={reagent_mode_recipe}
                     bookmarkedReactions={bookmarkedReactions}
@@ -82,7 +83,8 @@ export const Reagents = (props) => {
                         }
                       />
                     </>
-                  }>
+                  }
+                >
                   <ReagentLookup reagent={reagent_mode_reagent} />
                 </Section>
               </Stack.Item>
@@ -105,7 +107,7 @@ const RecipeLibrary = (props) => {
 
   const [reagentFilter, setReagentFilter] = useLocalState(
     'reagentFilter',
-    true
+    true,
   );
   const [bookmarkMode, setBookmarkMode] = useLocalState('bookmarkMode', false);
 
@@ -114,7 +116,7 @@ const RecipeLibrary = (props) => {
       return true;
     }
     let matches = reaction.reactants.filter((reactant) =>
-      currentReagents.includes(reactant.id)
+      currentReagents.includes(reactant.id),
     ).length;
     return matches === currentReagents.length;
   };
@@ -186,7 +188,8 @@ const RecipeLibrary = (props) => {
             onClick={() => setPage(Math.min(page + 1, pageIndexMax))}
           />
         </>
-      }>
+      }
+    >
       <Table>
         <Table.Row>
           <Table.Cell bold color="label">

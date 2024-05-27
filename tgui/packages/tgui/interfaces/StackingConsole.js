@@ -49,7 +49,8 @@ export const StackingConsoleContent = (props) => {
                       })
                     }
                   />
-                }>
+                }
+              >
                 {sheet.amount || 'Unknown'}
               </LabeledList.Item>
             ))}

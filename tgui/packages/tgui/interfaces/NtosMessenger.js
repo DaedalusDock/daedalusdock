@@ -175,7 +175,8 @@ export const NtosMessenger = (props) => {
                       job: messenger.job,
                       target_addr: messenger.target_addr,
                     })
-                  }>
+                  }
+                >
                   {messenger.name} ({messenger.job})
                 </Button>
               ))}

@@ -162,7 +162,8 @@ export class ObjectiveMenu extends Component<
                           <Box
                             color="label"
                             className="UplinkObjective__EmptyObjective"
-                            onMouseUp={this.handleObjectiveAdded}>
+                            onMouseUp={this.handleObjectiveAdded}
+                          >
                             <Stack textAlign="center" fill align="center">
                               <Stack.Item textAlign="center" width="100%">
                                 Empty Objective, drop objectives here to take
@@ -182,11 +183,11 @@ export class ObjectiveMenu extends Component<
                           handleObjectiveAction,
                           handleObjectiveCompleted,
                           handleObjectiveAbort,
-                          true
+                          true,
                         )}
                       </Stack.Item>
                     );
-                  }
+                  },
                 )}
               </Stack>
             </Section>
@@ -196,7 +197,8 @@ export class ObjectiveMenu extends Component<
               title="Potential Objectives"
               textAlign="center"
               fill
-              scrollable>
+              scrollable
+            >
               <Flex wrap="wrap" justify="space-evenly">
                 {potentialObjectives.map((objective) => {
                   return (
@@ -208,7 +210,8 @@ export class ObjectiveMenu extends Component<
                       mx="0.5%"
                       onMouseDown={(event) => {
                         this.handleObjectiveClick(event, objective);
-                      }}>
+                      }}
+                    >
                       {(objective.id !== draggingObjective?.id &&
                         ObjectiveFunction(
                           objective,
@@ -216,11 +219,11 @@ export class ObjectiveMenu extends Component<
                           undefined,
                           undefined,
                           undefined,
-                          true
+                          true,
                         )) || (
                         <Box
                           style={{
-                            'border': '2px dashed black',
+                            border: '2px dashed black',
                           }}
                           width="100%"
                           height="100%"
@@ -248,12 +251,14 @@ export class ObjectiveMenu extends Component<
                       }
                       mb={1}
                       mx="0.5%"
-                      minHeight="100px">
+                      minHeight="100px"
+                    >
                       <Stack
                         align="center"
                         height="100%"
                         width="100%"
-                        textAlign="center">
+                        textAlign="center"
+                      >
                         <Stack.Item width="100%">
                           <Button
                             content="Request More Objectives"
@@ -277,7 +282,8 @@ export class ObjectiveMenu extends Component<
             top={`${objectiveY}px`}
             style={{
               'pointer-events': 'none',
-            }}>
+            }}
+          >
             {ObjectiveFunction(draggingObjective, false)}
           </Box>
         )}
@@ -292,7 +298,7 @@ const ObjectiveFunction = (
   handleObjectiveAction?: (objective: Objective, action: string) => void,
   handleCompletion?: (objective: Objective) => void,
   handleAbort?: (objective: Objective) => void,
-  grow: boolean = false
+  grow: boolean = false,
 ) => {
   const reputation = getReputation(objective.progression_minimum);
   return (
@@ -413,7 +419,8 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
             reputation.gradient,
           ])}
           width="100%"
-          height="100%">
+          height="100%"
+        >
           <Stack>
             <Stack.Item grow={1}>
               {name}{' '}
@@ -456,7 +463,7 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
               <Stack align="center" justify="center">
                 <Box
                   style={{
-                    'border': '2px solid rgba(0, 0, 0, 0.5)',
+                    border: '2px solid rgba(0, 0, 0, 0.5)',
                     'border-left': 'none',
                     'border-right': 'none',
                     'border-bottom': objectiveFinished ? 'none' : undefined,
@@ -464,7 +471,8 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                   className={reputation.gradient}
                   py={0.5}
                   width="100%"
-                  textAlign="center">
+                  textAlign="center"
+                >
                   {telecrystalReward} TC,
                   <Box ml={1} as="span">
                     {calculateProgression(progressionReward)} Reputation
@@ -483,7 +491,8 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                                     : 'orange'
                                   : 'green'
                               }
-                              as="span">
+                              as="span"
+                            >
                               {Math.abs(progressionDiff)}%
                             </Box>
                             {progressionDiff > 0 ? 'less' : 'more'} reputation
@@ -491,7 +500,8 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                             is {progressionDiff > 0 ? 'ahead ' : 'behind '}
                             where it normally should be at.
                           </Box>
-                        }>
+                        }
+                      >
                         <Box
                           ml={1}
                           color={
@@ -501,7 +511,8 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                                 : 'orange'
                               : 'green'
                           }
-                          as="span">
+                          as="span"
+                        >
                           ({progressionDiff > 0 ? '-' : '+'}
                           {Math.abs(progressionDiff)}%)
                         </Box>
@@ -516,14 +527,15 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                   className={reputation.gradient}
                   style={{
                     'border-radius': '0',
-                    'border': '2px solid rgba(0, 0, 0, 0.5)',
+                    border: '2px solid rgba(0, 0, 0, 0.5)',
                     'border-left': 'none',
                     'border-right': 'none',
                   }}
                   position="relative"
                   width="100%"
                   textAlign="center"
-                  bold>
+                  bold
+                >
                   <Box
                     width="100%"
                     height="100%"
@@ -540,9 +552,10 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                     onClick={handleCompletion}
                     color={objectiveFailed ? 'bad' : 'good'}
                     style={{
-                      'border': '1px solid rgba(0, 0, 0, 0.65)',
+                      border: '1px solid rgba(0, 0, 0, 0.65)',
                     }}
-                    my={1}>
+                    my={1}
+                  >
                     TURN IN
                   </Button>
                 </Box>

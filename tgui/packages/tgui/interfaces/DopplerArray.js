@@ -27,7 +27,7 @@ const DopplerArrayContent = (props) => {
   const { records = [], disk, storage } = data;
   const [activeRecordName, setActiveRecordName] = useSharedState(
     'activeRecordrecord',
-    records[0]?.name
+    records[0]?.name,
   );
   const activeRecord = records.find((record) => {
     return record.name === activeRecordName;
@@ -54,7 +54,8 @@ const DopplerArrayContent = (props) => {
                 icon="file"
                 key={record.name}
                 selected={record.name === activeRecordName}
-                onClick={() => setActiveRecordName(record.name)}>
+                onClick={() => setActiveRecordName(record.name)}
+              >
                 {record.name}
               </Tabs.Tab>
             ))}
@@ -72,7 +73,7 @@ const DopplerArrayContent = (props) => {
                     color="bad"
                     onClick={() =>
                       act('delete_record', {
-                        'ref': activeRecord.ref,
+                        ref: activeRecord.ref,
                       })
                     }
                   />
@@ -84,12 +85,13 @@ const DopplerArrayContent = (props) => {
                     tooltipPosition="bottom"
                     onClick={() =>
                       act('print_record', {
-                        'ref': activeRecord.ref,
+                        ref: activeRecord.ref,
                       })
                     }
                   />
                 </>
-              }>
+              }
+            >
               <LabeledList>
                 <LabeledList.Item label="Timestamp">
                   {activeRecord.timestamp}

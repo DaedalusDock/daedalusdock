@@ -32,7 +32,8 @@ export const ChemDispenser = (props) => {
               tooltipPosition="bottom-start"
               onClick={() => act('reaction_lookup')}
             />
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Cartridges">
               <ProgressBar value={data.cartAmount} maxValue={data.maxCarts}>
@@ -55,7 +56,8 @@ export const ChemDispenser = (props) => {
                 })
               }
             />
-          ))}>
+          ))}
+        >
           <Box mr={-1}>
             {data.chemicals.map((chemical) => (
               <Button
@@ -97,7 +99,8 @@ export const ChemDispenser = (props) => {
               content={amount}
               onClick={() => act('remove', { amount })}
             />
-          ))}>
+          ))}
+        >
           <LabeledList>
             <LabeledList.Item
               label="Beaker"
@@ -110,7 +113,8 @@ export const ChemDispenser = (props) => {
                     onClick={() => act('eject')}
                   />
                 )
-              }>
+              }
+            >
               {data.isBeakerLoaded ? data.beakerName : 'No Beaker'}
             </LabeledList.Item>
             <LabeledList.Item label="Contents">

@@ -38,7 +38,8 @@ export const NtosSkillTracker = (props) => {
                           value={skill.progress_percent}
                           ranges={{
                             good: [0.75, 1.0],
-                          }}>
+                          }}
+                        >
                           <AnimatedNumber
                             value={Math.round(skill.progress_percent * 100)}
                           />
@@ -54,7 +55,8 @@ export const NtosSkillTracker = (props) => {
                           value={skill.overall_percent}
                           ranges={{
                             good: [0.75, 1.0],
-                          }}>
+                          }}
+                        >
                           <AnimatedNumber
                             value={Math.round(skill.overall_percent * 100)}
                           />
@@ -73,7 +75,8 @@ export const NtosSkillTracker = (props) => {
                           style={{ margin: '8px' }}
                           onClick={() =>
                             act('PRG_reward', { skill: skill.name })
-                          }>
+                          }
+                        >
                           Contact the Professional {skill.title} Association
                         </Button>
                       </Table.Cell>

@@ -76,7 +76,8 @@ export const PersonalCrafting = (props) => {
                         category: category.category,
                         subcategory: category.subcategory,
                       });
-                    }}>
+                    }}
+                  >
                     {category.name}
                   </Tabs.Tab>
                 ))}
@@ -100,7 +101,8 @@ export const PersonalCrafting = (props) => {
                     onClick={() => act('toggle_recipes')}
                   />
                 </>
-              }>
+              }
+            >
               <Section fill scrollable>
                 {busy ? (
                   <Dimmer fontSize="32px">
@@ -149,7 +151,8 @@ const CraftingList = (props) => {
                 })
               }
             />
-          }>
+          }
+        >
           {craftable.req_text}
         </LabeledList.Item>
       );
@@ -171,7 +174,8 @@ const CraftingList = (props) => {
               })
             }
           />
-        }>
+        }
+      >
         <LabeledList>
           {!!craftable.req_text && (
             <LabeledList.Item label="Required">

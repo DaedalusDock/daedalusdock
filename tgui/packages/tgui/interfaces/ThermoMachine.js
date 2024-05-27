@@ -41,7 +41,8 @@ export const ThermoMachine = (props) => {
               selected={data.on}
               onClick={() => act('power')}
             />
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Target Temperature">
               <NumberInput

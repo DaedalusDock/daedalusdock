@@ -16,7 +16,7 @@ import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 const sortJobs = (entries: [string, Job][], head?: string) =>
   sortBy<[string, Job]>(
     ([key, _]) => (key === head ? -1 : 1),
-    ([key, _]) => key
+    ([key, _]) => key,
   )(entries);
 
 const PRIORITY_BUTTON_SIZE = '18px';
@@ -54,7 +54,7 @@ type CreateSetPriority = (priority: JobPriority | null) => () => void;
 const createSetPriorityCache: Record<string, CreateSetPriority> = {};
 
 const createCreateSetPriorityFromName = (
-  jobName: string
+  jobName: string,
 ): CreateSetPriority => {
   if (createSetPriorityCache[jobName] !== undefined) {
     return createSetPriorityCache[jobName];
@@ -116,10 +116,11 @@ const PriorityButtons = (props: {
       inline // PARIAH EDIT
       style={{
         'align-items': 'center',
-        'height': '100%',
-        'textAlign': 'end', // PARIAH EDIT
-        'padding': '0.3em', // PARIAH EDIT
-      }}>
+        height: '100%',
+        textAlign: 'end', // PARIAH EDIT
+        padding: '0.3em', // PARIAH EDIT
+      }}
+    >
       {isOverflow ? (
         <>
           <PriorityButton
@@ -239,7 +240,8 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
       style={{
         // PARIAH EDIT
         'margin-top': 0,
-      }}>
+      }}
+    >
       <Stack align="center" /* PARIAH EDIT */>
         <Tooltip
           content={job.description}
@@ -250,7 +252,8 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
             width="50%"
             style={{
               'padding-left': '0.3em',
-            }}>
+            }}
+          >
             {' '}
             {
               // PARIAH EDIT
@@ -304,7 +307,7 @@ const Department: SFC<{ department: string }> = (props) => {
 
         const jobsForDepartment = sortJobs(
           Object.entries(jobs).filter(([_, job]) => job.department === name),
-          department.head
+          department.head,
         );
 
         logger.log(className);

@@ -16,7 +16,7 @@ import { PreferencesMenuData } from './data';
 const requireAntag = require.context(
   './antagonists/antagonists',
   false,
-  /.ts$/
+  /.ts$/,
 );
 
 const antagsByCategory = new Map<Category, Antagonist[]>();
@@ -38,7 +38,7 @@ for (const antagKey of requireAntag.keys()) {
 
   antagsByCategory.set(
     antag.category,
-    binaryInsertAntag(antagsByCategory.get(antag.category) || [], antag)
+    binaryInsertAntag(antagsByCategory.get(antag.category) || [], antag),
   );
 }
 
@@ -48,7 +48,7 @@ const AntagSelection = (props: { antagonists: Antagonist[]; name: string }) => {
 
   const [predictedState, setPredictedState] = useLocalState(
     'AntagSelection_predictedState',
-    new Set(data.selected_antags)
+    new Set(data.selected_antags),
   );
 
   const enableAntags = (antags: string[]) => {
@@ -96,7 +96,8 @@ const AntagSelection = (props: { antagonists: Antagonist[]; name: string }) => {
             Disable All
           </Button>
         </>
-      }>
+      }
+    >
       <Flex className={className} align="flex-end" wrap>
         {props.antagonists.map((antagonist) => {
           const isBanned =
@@ -113,11 +114,12 @@ const AntagSelection = (props: { antagonists: Antagonist[]; name: string }) => {
                   isBanned || daysLeft > 0
                     ? 'banned'
                     : predictedState.has(antagonist.key)
-                    ? 'on'
-                    : 'off'
+                      ? 'on'
+                      : 'off'
                 }`,
               ])}
-              key={antagonist.key}>
+              key={antagonist.key}
+            >
               <Stack align="center" vertical>
                 <Stack.Item
                   style={{
@@ -125,7 +127,8 @@ const AntagSelection = (props: { antagonists: Antagonist[]; name: string }) => {
                     'margin-top': 'auto',
                     'max-width': '100px',
                     'text-align': 'center',
-                  }}>
+                  }}
+                >
                   {antagonist.name}
                 </Stack.Item>
 
@@ -146,7 +149,8 @@ const AntagSelection = (props: { antagonists: Antagonist[]; name: string }) => {
                             );
                           })
                     }
-                    position="bottom">
+                    position="bottom"
+                  >
                     <Box
                       className={'antagonist-icon-parent'}
                       onClick={() => {
@@ -159,7 +163,8 @@ const AntagSelection = (props: { antagonists: Antagonist[]; name: string }) => {
                         } else {
                           enableAntags([antagonist.key]);
                         }
-                      }}>
+                      }}
+                    >
                       <Box
                         className={classes([
                           'antagonists96x96',

@@ -28,10 +28,10 @@ export const Autolathe = (props) => {
   } = data;
   const [current_category, setCategory] = useLocalState(
     'current_category',
-    'None'
+    'None',
   );
   const filteredmaterials = materials.filter(
-    (material) => material.mineral_amount > 0
+    (material) => material.mineral_amount > 0,
   );
   return (
     <Window title="Autolathe" width={600} height={600}>
@@ -44,10 +44,11 @@ export const Autolathe = (props) => {
                 minValue={0}
                 maxValue={materialsmax}
                 ranges={{
-                  'good': [materialsmax * 0.85, materialsmax],
-                  'average': [materialsmax * 0.25, materialsmax * 0.85],
-                  'bad': [0, materialsmax * 0.25],
-                }}>
+                  good: [materialsmax * 0.85, materialsmax],
+                  average: [materialsmax * 0.25, materialsmax * 0.85],
+                  bad: [0, materialsmax * 0.25],
+                }}
+              >
                 {materialtotal + '/' + materialsmax + ' cm³'}
               </ProgressBar>
             </LabeledList.Item>
@@ -58,7 +59,8 @@ export const Autolathe = (props) => {
                     {filteredmaterials.map((filteredmaterial) => (
                       <LabeledList.Item
                         key={filteredmaterial.id}
-                        label={capitalize(filteredmaterial.name)}>
+                        label={capitalize(filteredmaterial.name)}
+                      >
                         <ProgressBar
                           style={{
                             transform: 'scaleX(-1) scaleY(1)',
@@ -66,7 +68,8 @@ export const Autolathe = (props) => {
                           value={materialsmax - filteredmaterial.mineral_amount}
                           maxValue={materialsmax}
                           color="black"
-                          backgroundColor={filteredmaterial.matcolour}>
+                          backgroundColor={filteredmaterial.matcolour}
+                        >
                           <div style={{ transform: 'scaleX(-1)' }}>
                             {filteredmaterial.mineral_amount + ' cm³'}
                           </div>
@@ -123,7 +126,8 @@ export const Autolathe = (props) => {
                   setCategory('None');
                 }}
               />
-            }>
+            }
+          >
             {active === 1 && (
               <Dimmer fontSize="32px">
                 <Icon name="cog" spin />

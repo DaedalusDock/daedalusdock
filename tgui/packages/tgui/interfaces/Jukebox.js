@@ -28,7 +28,8 @@ export const Jukebox = (props) => {
               selected={active}
               onClick={() => act('toggle')}
             />
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Track Selected">
               <Dropdown

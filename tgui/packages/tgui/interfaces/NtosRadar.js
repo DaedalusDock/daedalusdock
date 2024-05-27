@@ -47,7 +47,8 @@ export const NtosRadarContent = (props) => {
                     act('selecttarget', {
                       ref: object.ref,
                     });
-                  }}>
+                  }}
+                >
                   {object.name}
                 </div>
               ))}
@@ -60,12 +61,13 @@ export const NtosRadarContent = (props) => {
             'url("' + resolveAsset('ntosradarbackground.png') + '")',
           'background-position': 'center',
           'background-repeat': 'no-repeat',
-          'top': '20px',
+          top: '20px',
         }}
         position="relative"
         m={1.5}
         width={45}
-        height={45}>
+        height={45}
+      >
         {Object.keys(target).length === 0
           ? !!selected && (
               <NoticeBox
@@ -74,7 +76,8 @@ export const NtosRadarContent = (props) => {
                 left={1.35}
                 width={42}
                 fontSize="30px"
-                textAlign="center">
+                textAlign="center"
+              >
                 {sig_err}
               </NoticeBox>
             )
@@ -86,7 +89,7 @@ export const NtosRadarContent = (props) => {
                 top="20px"
                 left="243px"
                 style={{
-                  'transform': `rotate(${target.rot}deg)`,
+                  transform: `rotate(${target.rot}deg)`,
                 }}
               />
             )) || (

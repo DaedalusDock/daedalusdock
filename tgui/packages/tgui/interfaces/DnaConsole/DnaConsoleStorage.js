@@ -55,11 +55,12 @@ const DnaConsoleAdvancedInjectors = (props) => {
                 }
               />
             </>
-          }>
+          }
+        >
           <StorageMutations
             mutations={injector.mutations}
             customMode={`advinj${advInjectors.findIndex(
-              (e) => injector.name === e.name
+              (e) => injector.name === e.name,
             )}`}
           />
         </Collapsible>
@@ -236,7 +237,7 @@ const StorageMutations = (props) => {
 
   let mutationRef = data.view[`storage${mode}MutationRef`];
   let mutation = mutations.find(
-    (mutation) => mutation.ByondRef === mutationRef
+    (mutation) => mutation.ByondRef === mutationRef,
   );
 
   // If no mutation is selected but there are stored mutations, pick the first
@@ -251,7 +252,8 @@ const StorageMutations = (props) => {
       <Flex.Item width="140px">
         <Section
           title={`${capitalize(data.view.storageMode)} Storage`}
-          level={2}>
+          level={2}
+        >
           {mutations.map((mutation) => (
             <Button
               key={mutation.ByondRef}

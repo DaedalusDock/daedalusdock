@@ -33,7 +33,8 @@ const DnaConsoleCommands = (props) => {
             Injector on cooldown ({injectorSeconds}s)
           </Box>
         )
-      }>
+      }
+    >
       <LabeledList>
         <LabeledList.Item label="Mode">
           <Button

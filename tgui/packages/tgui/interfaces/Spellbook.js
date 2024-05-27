@@ -89,7 +89,8 @@ const EnscribedName = (props) => {
         fontSize="50px"
         color="bad"
         textAlign="center"
-        fontFamily="Ink Free">
+        fontFamily="Ink Free"
+      >
         {owner}
       </Box>
       <Divider />
@@ -420,7 +421,8 @@ export const Spellbook = (props) => {
                         {tabIndex}
                       </Box>
                     </>
-                  }>
+                  }
+                >
                   {!!TAB2NAME[tabIndex - 1].locked && <LockedPage />}
                   <Stack vertical>
                     {TAB2NAME[tabIndex - 1].blurb !== null && (
@@ -445,7 +447,8 @@ export const Spellbook = (props) => {
                                 buttons={
                                   <>
                                     <Box
-                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}>
+                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}
+                                    >
                                       {entry.cost} Points
                                     </Box>
                                     {(entry.cat === 'Rituals' &&
@@ -486,7 +489,8 @@ export const Spellbook = (props) => {
                                       </Box>
                                     )}
                                   </>
-                                }>
+                                }
+                              >
                                 <Stack>
                                   <Stack.Item grow>{entry.desc}</Stack.Item>
                                   <Stack.Item>
@@ -557,7 +561,8 @@ export const Spellbook = (props) => {
                         {tabIndex + 1}
                       </Box>
                     </>
-                  }>
+                  }
+                >
                   {!!TAB2NAME[tabIndex].locked && <LockedPage />}
                   <Stack vertical>
                     {TAB2NAME[tabIndex].blurb !== null && (
@@ -582,7 +587,8 @@ export const Spellbook = (props) => {
                                 buttons={
                                   <>
                                     <Box
-                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}>
+                                      mr={entry.buyword === 'Learn' ? 6.5 : 2}
+                                    >
                                       {entry.cost} Points
                                     </Box>
                                     {(entry.cat === 'Rituals' &&
@@ -623,7 +629,8 @@ export const Spellbook = (props) => {
                                       </Box>
                                     )}
                                   </>
-                                }>
+                                }
+                              >
                                 <Stack>
                                   <Stack.Item grow>{entry.desc}</Stack.Item>
                                   <Stack.Item>

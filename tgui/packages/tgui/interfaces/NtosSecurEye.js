@@ -13,7 +13,7 @@ export const NtosSecurEye = (props) => {
   const cameras = selectCameras(data.cameras);
   const [prevCameraName, nextCameraName] = prevNextCamera(
     cameras,
-    activeCamera
+    activeCamera,
   );
   return (
     <NtosWindow width={800} height={600} theme={PC_device_theme}>

@@ -23,7 +23,8 @@ export const Clipboard = (props) => {
                 label="Pen"
                 buttons={
                   <Button icon="eject" onClick={() => act('remove_pen')} />
-                }>
+                }
+              >
                 {pen}
               </LabeledList.Item>
             </LabeledList>
@@ -42,7 +43,8 @@ export const Clipboard = (props) => {
           <Flex
             color="black"
             backgroundColor="white"
-            style={{ padding: '2px 2px 0 2px' }}>
+            style={{ padding: '2px 2px 0 2px' }}
+          >
             <Flex.Item align="center" grow={1}>
               <Box align="center">{top_paper}</Box>
             </Flex.Item>
@@ -75,7 +77,8 @@ export const Clipboard = (props) => {
             color="black"
             backgroundColor="white"
             style={{ padding: '2px 2px 0 2px' }}
-            mb={0.5}>
+            mb={0.5}
+          >
             <Flex.Item>
               <Button
                 icon="chevron-up"

@@ -105,7 +105,8 @@ const BallisticStats = (props: { weapon: MechWeapon }) => {
                     ref: ref,
                     gear_action: 'reload',
                   })
-                }>
+                }
+              >
                 Reload
               </Button>
             </LabeledList.Item>

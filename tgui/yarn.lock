@@ -3678,6 +3678,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-config-prettier@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "eslint-config-prettier@npm:9.1.0"
+  peerDependencies:
+    eslint: ">=7.0.0"
+  bin:
+    eslint-config-prettier: bin/cli.js
+  checksum: 9229b768c879f500ee54ca05925f31b0c0bafff3d9f5521f98ff05127356de78c81deb9365c86a5ec4efa990cb72b74df8612ae15965b14136044c73e1f6a907
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-radar@npm:^0.2.1":
   version: 0.2.1
   resolution: "eslint-plugin-radar@npm:0.2.1"
@@ -6853,6 +6864,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier@npm:^3.2.5":
+  version: 3.2.5
+  resolution: "prettier@npm:3.2.5"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 2ee4e1417572372afb7a13bb446b34f20f1bf1747db77cf6ccaf57a9be005f2f15c40f903d41a6b79eec3f57fff14d32a20fb6dee1f126da48908926fe43c311
+  languageName: node
+  linkType: hard
+
 "pretty-format@npm:^27.0.0, pretty-format@npm:^27.0.6":
   version: 27.0.6
   resolution: "pretty-format@npm:27.0.6"
@@ -8182,6 +8202,7 @@ resolve@^2.0.0-next.3:
     common: "workspace:*"
     css-loader: ^5.2.7
     eslint: ^7.32.0
+    eslint-config-prettier: ^9.1.0
     eslint-plugin-radar: ^0.2.1
     eslint-plugin-react: ^7.24.0
     eslint-plugin-unused-imports: ^1.1.4
@@ -8191,6 +8212,7 @@ resolve@^2.0.0-next.3:
     jest-circus: ^27.0.6
     jsdom: ^16.7.0
     mini-css-extract-plugin: ^1.6.2
+    prettier: ^3.2.5
     sass: ^1.37.5
     sass-loader: ^11.1.1
     style-loader: ^2.0.0

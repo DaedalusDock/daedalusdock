@@ -80,7 +80,8 @@ const GasList = (props) => {
             <HoverHelp content={rateHelp} />
             Injection control:
           </>
-        }>
+        }
+      >
         <Button
           disabled={data.start_power === 0 || data.start_cooling === 0}
           icon={data[input_switch] ? 'power-off' : 'times'}
@@ -110,12 +111,14 @@ const GasList = (props) => {
                 {labelPrefix}
                 {getGasLabel(gas.id)}:
               </>
-            }>
+            }
+          >
             <ProgressBar
               color={getGasColor(gas.id)}
               value={gas.amount}
               minValue={0}
-              maxValue={minimumScale}>
+              maxValue={minimumScale}
+            >
               {toFixed(gas.amount, 2) + ' moles'}
             </ProgressBar>
           </LabeledList.Item>
@@ -131,7 +134,7 @@ export const HypertorusGases = (props) => {
   const { fusion_gases, moderator_gases } = data;
 
   const selected_fuel = (data.selectable_fuel || []).filter(
-    (d) => d.id === data.selected
+    (d) => d.id === data.selected,
   )[0];
 
   return (

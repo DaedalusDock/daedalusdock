@@ -100,7 +100,7 @@ const createFields = (txt, font, fontsize, color, counter) => {
       font,
       fontsize,
       color,
-      createIDHeader(counter++)
+      createIDHeader(counter++),
     );
   });
   return {
@@ -221,10 +221,10 @@ const pauseEvent = (e) => {
 const Stamp = (props) => {
   const { image, opacity } = props;
   const stamp_transform = {
-    'left': image.x + 'px',
-    'top': image.y + 'px',
-    'transform': 'rotate(' + image.rotate + 'deg)',
-    'opacity': opacity || 1.0,
+    left: image.x + 'px',
+    top: image.y + 'px',
+    transform: 'rotate(' + image.rotate + 'deg)',
+    opacity: opacity || 1.0,
   };
   return (
     <div
@@ -257,7 +257,8 @@ const PaperSheetView = (props) => {
       position="relative"
       backgroundColor={backgroundColor}
       width="100%"
-      height="100%">
+      height="100%"
+    >
       <Box
         className="Paper__Page"
         fillPositionedParent
@@ -337,7 +338,7 @@ class PaperSheetStamper extends Component {
 
       const radians = Math.atan2(
         e.pageX - currentWidth,
-        e.pageY - currentHeight
+        e.pageY - currentHeight,
       );
 
       const rotate = rotating
@@ -390,7 +391,7 @@ const createPreview = (
   color,
   font,
   user_name,
-  is_crayon = false
+  is_crayon = false,
 ) => {
   const out = { text: text };
   // check if we are adding to paper, if not
@@ -409,7 +410,7 @@ const createPreview = (
       font,
       12,
       color,
-      field_counter
+      field_counter,
     );
     // Fourth, parse the text using markup
     const formatted_text = run_marked_default(fielded_text.text);
@@ -420,7 +421,7 @@ const createPreview = (
       font,
       color,
       is_crayon,
-      false
+      false,
     );
     out.text += fonted_text;
     out.field_counter = fielded_text.counter;
@@ -434,7 +435,7 @@ const createPreview = (
       font,
       color,
       user_name,
-      is_crayon
+      is_crayon,
     );
     out.text = final_processing.text;
     out.form_fields = final_processing.fields;
@@ -468,7 +469,7 @@ class PaperSheetEdit extends Component {
       data.pen_color,
       data.pen_font,
       data.edit_usr,
-      data.is_crayon
+      data.is_crayon,
     );
   }
   onInputHandler(e, value) {
@@ -482,7 +483,7 @@ class PaperSheetEdit extends Component {
         } else {
           value = value.substr(
             0,
-            value.length - (combined_length - MAX_PAPER_LENGTH)
+            value.length - (combined_length - MAX_PAPER_LENGTH),
           );
         }
         // we check again to save an update
@@ -527,7 +528,8 @@ class PaperSheetEdit extends Component {
                 this.state.previewSelected === 'Edit' ? 'grey' : 'white'
               }
               selected={this.state.previewSelected === 'Edit'}
-              onClick={() => this.setState({ previewSelected: 'Edit' })}>
+              onClick={() => this.setState({ previewSelected: 'Edit' })}
+            >
               Edit
             </Tabs.Tab>
             <Tabs.Tab
@@ -543,12 +545,13 @@ class PaperSheetEdit extends Component {
                     previewSelected: 'Preview',
                     textarea_text: this.state.textarea_text,
                     combined_text: this.createPreviewFromData(
-                      this.state.textarea_text
+                      this.state.textarea_text,
                     ).text,
                   };
                   return new_state;
                 })
-              }>
+              }
+            >
               Preview
             </Tabs.Tab>
             <Tabs.Tab
@@ -558,8 +561,8 @@ class PaperSheetEdit extends Component {
                 this.state.previewSelected === 'confirm'
                   ? 'red'
                   : this.state.previewSelected === 'save'
-                  ? 'grey'
-                  : 'white'
+                    ? 'grey'
+                    : 'white'
               }
               selected={
                 this.state.previewSelected === 'confirm' ||
@@ -574,7 +577,7 @@ class PaperSheetEdit extends Component {
                       previewSelected: 'confirm',
                       textarea_text: this.state.textarea_text,
                       combined_text: this.createPreviewFromData(
-                        this.state.textarea_text
+                        this.state.textarea_text,
                       ).text,
                     };
                     return new_state;
@@ -582,7 +585,8 @@ class PaperSheetEdit extends Component {
                 } else {
                   this.setState({ previewSelected: 'confirm' });
                 }
-              }}>
+              }}
+            >
               {this.state.previewSelected === 'confirm' ? 'Confirm' : 'Save'}
             </Tabs.Tab>
             <Tabs.Tab
@@ -595,7 +599,8 @@ class PaperSheetEdit extends Component {
               }}
               onmouseout={() => {
                 this.setState({ showingHelpTip: false });
-              }}>
+              }}
+            >
               Help
             </Tabs.Tab>
           </Tabs>
@@ -659,7 +664,7 @@ export const PaperSheet = (props) => {
         values.field_counter,
         used_color,
         used_font,
-        used_sign
+        used_sign,
       );
       values.text = processing.text;
       values.field_counter = processing.field_counter;
@@ -700,7 +705,8 @@ export const PaperSheet = (props) => {
       title={name}
       theme="paper"
       width={sizeX || 400}
-      height={sizeY || 500}>
+      height={sizeY || 500}
+    >
       <Window.Content backgroundColor={paper_color} scrollable>
         <Box id="page" fitted fillPositionedParent>
           {decide_mode(edit_mode)}
@@ -726,7 +732,8 @@ const HelpToolip = () => {
       width="300px"
       height="370px"
       backgroundColor="#E8E4C9" // offset from paper color
-      textAlign="center">
+      textAlign="center"
+    >
       <h3>Papercode Syntax</h3>
       <Table>
         <Table.Row>

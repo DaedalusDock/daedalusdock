@@ -55,7 +55,7 @@ export const applyMiddleware = (...middlewares) => {
 
       let dispatch = () => {
         throw new Error(
-          'Dispatching while constructing your middleware is not allowed.'
+          'Dispatching while constructing your middleware is not allowed.',
         );
       };
 

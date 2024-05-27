@@ -178,7 +178,8 @@ export const RecipeLookup = (props) => {
           position="relative"
           style={{
             'background-color': 'black',
-          }}>
+          }}
+        >
           <Chart.Line
             fillPositionedParent
             data={recipe.thermodynamics}
@@ -205,10 +206,12 @@ export const RecipeLookup = (props) => {
               recipe.isColdRecipe
                 ? 'The temperature at which it is underheated, causing negative effects on the reaction.'
                 : 'The minimum temperature needed for this reaction to start. Heating it up past this point will increase the reaction rate.'
-            }>
+            }
+          >
             <Flex.Item
               position="relative"
-              textColor={recipe.isColdRecipe && 'red'}>
+              textColor={recipe.isColdRecipe && 'red'}
+            >
               {recipe.isColdRecipe
                 ? recipe.explodeTemp + 'K'
                 : recipe.tempMin + 'K'}
@@ -221,10 +224,12 @@ export const RecipeLookup = (props) => {
                 recipe.isColdRecipe
                   ? 'The minimum temperature needed for this reaction to start. Heating it up past this point will increase the reaction rate.'
                   : 'The temperature at which it is overheated, causing negative effects on the reaction.'
-              }>
+              }
+            >
               <Flex.Item
                 position="relative"
-                textColor={!recipe.isColdRecipe && 'red'}>
+                textColor={!recipe.isColdRecipe && 'red'}
+              >
                 {recipe.isColdRecipe
                   ? recipe.tempMin + 'K'
                   : recipe.explodeTemp + 'K'}

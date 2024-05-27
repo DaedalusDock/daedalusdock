@@ -36,14 +36,16 @@ export const NtosRoboControl = (props) => {
               icon="robot"
               lineHeight="23px"
               selected={tab_main === 1}
-              onClick={() => setTab_main(1)}>
+              onClick={() => setTab_main(1)}
+            >
               Bots
             </Tabs.Tab>
             <Tabs.Tab
               icon="hammer"
               lineHeight="23px"
               selected={tab_main === 2}
-              onClick={() => setTab_main(2)}>
+              onClick={() => setTab_main(2)}
+            >
               Drones
             </Tabs.Tab>
           </Tabs>
@@ -140,7 +142,8 @@ export const RobotInfo = (props) => {
             />
           </>
         )
-      }>
+      }
+    >
       <Stack>
         <Stack.Item grow={1} basis={0}>
           <LabeledList>
@@ -299,7 +302,8 @@ export const DroneInfo = (props) => {
       title={drone.name}
       style={{
         border: `4px solid ${color}`,
-      }}>
+      }}
+    >
       <Stack>
         <Stack.Item grow={1} basis={0}>
           <LabeledList>

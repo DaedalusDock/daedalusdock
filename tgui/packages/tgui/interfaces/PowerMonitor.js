@@ -55,7 +55,7 @@ export const PowerMonitorContent = (props) => {
     sortByField === 'draw' &&
       sortBy(
         (area) => -powerRank(area.load),
-        (area) => -parseFloat(area.load)
+        (area) => -parseFloat(area.load),
       ),
   ])(data.areas);
   return (
@@ -69,7 +69,8 @@ export const PowerMonitorContent = (props) => {
                   value={supply}
                   minValue={0}
                   maxValue={maxValue}
-                  color="teal">
+                  color="teal"
+                >
                   {toFixed(supply / 1000) + ' kW'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -78,7 +79,8 @@ export const PowerMonitorContent = (props) => {
                   value={demand}
                   minValue={0}
                   maxValue={maxValue}
-                  color="pink">
+                  color="pink"
+                >
                   {toFixed(demand / 1000) + ' kW'}
                 </ProgressBar>
               </LabeledList.Item>

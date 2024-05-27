@@ -111,7 +111,7 @@ export const MutationInfo = (props) => {
     );
   }
   const savedToConsole = mutationStorage.find((x) =>
-    isSameMutation(x, mutation)
+    isSameMutation(x, mutation),
   );
   const savedToDisk = diskMutations.find((x) => isSameMutation(x, mutation));
   const combinedMutations = flow([

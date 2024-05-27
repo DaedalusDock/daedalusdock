@@ -71,7 +71,8 @@ const IntroductionSection = (props) => {
     <Section
       fill
       title="Intro"
-      scrollable={!!objectives && objectives.length > 4}>
+      scrollable={!!objectives && objectives.length > 4}
+    >
       <Stack vertical fill>
         <Stack.Item fontSize="25px">
           You are the Changeling from the
@@ -140,7 +141,7 @@ const MemoriesSection = (props) => {
   const { memories, stolen_antag_info } = data;
   const [selectedMemory, setSelectedMemory] = useSharedState(
     'memory',
-    (!!memories && memories[0]) || null
+    (!!memories && memories[0]) || null,
   );
   const memoryMap = {};
   for (const index in memories) {
@@ -162,7 +163,8 @@ const MemoriesSection = (props) => {
             help you impersonate your target!
           `}
         />
-      }>
+      }
+    >
       {(!memories && (
         <Box>
           {!stolen_antag_info && (
@@ -197,7 +199,8 @@ const VictimPatternsSection = (props) => {
     <Section
       fill
       scrollable={!!stolen_antag_info}
-      title="Additional Stolen Information">
+      title="Additional Stolen Information"
+    >
       {!!stolen_antag_info && stolen_antag_info}
     </Section>
   );
@@ -209,8 +212,9 @@ export const AntagInfoChangeling = (props) => {
     <Window width={620} height={580}>
       <Window.Content
         style={{
-          'backgroundImage': 'none',
-        }}>
+          backgroundImage: 'none',
+        }}
+      >
         <Stack vertical fill>
           <Stack.Item maxHeight={13.2}>
             <IntroductionSection />

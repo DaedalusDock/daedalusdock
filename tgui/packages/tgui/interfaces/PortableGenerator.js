@@ -26,7 +26,8 @@ export const PortableGenerator = (props) => {
               <Button
                 icon={data.active ? 'power-off' : 'times'}
                 onClick={() => act('toggle_power')}
-                disabled={!data.ready_to_boot}>
+                disabled={!data.ready_to_boot}
+              >
                 {data.active ? 'On' : 'Off'}
               </Button>
             </LabeledList.Item>
@@ -39,7 +40,8 @@ export const PortableGenerator = (props) => {
                   ml={1}
                   icon="eject"
                   disabled={data.active}
-                  onClick={() => act('eject')}>
+                  onClick={() => act('eject')}
+                >
                   Eject
                 </Button>
               )}

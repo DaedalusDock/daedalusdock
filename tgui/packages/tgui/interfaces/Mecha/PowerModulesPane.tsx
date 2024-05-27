@@ -18,7 +18,8 @@ export const PowerModulesPane = (props) => {
               : ': ' +
                 toFixed(module.snowflake.fuel * mineral_material_amount, 0.1) +
                 ' cm³')
-          }>
+          }
+        >
           <Button
             content={(module.activated ? 'En' : 'Dis') + 'abled'}
             selected={module.activated}

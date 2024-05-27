@@ -23,12 +23,14 @@ export const NtnetRelay = (props) => {
               content={enabled ? 'ENABLED' : 'DISABLED'}
               onClick={() => act('toggle')}
             />
-          }>
+          }
+        >
           {!dos_crashed ? (
             <ProgressBar
               value={dos_overload}
               minValue={0}
-              maxValue={dos_capacity}>
+              maxValue={dos_capacity}
+            >
               <AnimatedNumber value={dos_overload} /> GQ
               {' / '}
               {dos_capacity} GQ

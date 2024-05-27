@@ -178,7 +178,8 @@ export const HypertorusWasteRemove = (props) => {
               />
               Waste remove:
             </>
-          }>
+          }
+        >
           <Button
             icon={data.waste_remove ? 'power-off' : 'times'}
             content={data.waste_remove ? 'On' : 'Off'}
@@ -192,7 +193,8 @@ export const HypertorusWasteRemove = (props) => {
               <HelpDummy />
               Moderator filtering rate:
             </>
-          }>
+          }
+        >
           <NumberInput
             animated
             value={parseFloat(data.mod_filtering_rate)}
@@ -212,7 +214,8 @@ export const HypertorusWasteRemove = (props) => {
               <HelpDummy />
               Filter from moderator mix:
             </>
-          }>
+          }
+        >
           {filterTypes.map((filter) => (
             <Button
               key={filter.gas_id}

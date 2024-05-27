@@ -81,7 +81,8 @@ const OrbitedButton = (props) => {
           ref: thing.ref,
           auto_observe: autoObserve,
         })
-      }>
+      }
+    >
       {thing.name}
       {thing.orbiters && (
         <Box inline ml={1}>

@@ -44,7 +44,8 @@ export const ChemHeater = (props) => {
                 onClick={() => act('power')}
               />
             </Flex>
-          }>
+          }
+        >
           <Table>
             <Table.Row>
               <Table.Cell bold collapsing color="label">
@@ -137,10 +138,10 @@ export const ChemHeater = (props) => {
                               format={(value) => null}
                               ml={5}
                               ranges={{
-                                'red': [0, reaction.minPure],
-                                'orange': [reaction.minPure, reaction.inverse],
-                                'yellow': [reaction.inverse, 0.8],
-                                'green': [0.8, 1],
+                                red: [0, reaction.minPure],
+                                orange: [reaction.minPure, reaction.inverse],
+                                yellow: [reaction.inverse, 0.8],
+                                green: [0.8, 1],
                               }}
                             />
                           )}
@@ -156,7 +157,8 @@ export const ChemHeater = (props) => {
                           textAlign={'center'}
                           icon={reaction.overheat && 'thermometer-full'}
                           width={7}
-                          color={reaction.overheat ? 'red' : 'label'}>
+                          color={reaction.overheat ? 'red' : 'label'}
+                        >
                           {reaction.targetVol}u
                         </ProgressBar>
                       )) || (
@@ -187,7 +189,8 @@ export const ChemHeater = (props) => {
                 />
               </>
             )
-          }>
+          }
+        >
           <BeakerContents
             beakerLoaded={isBeakerLoaded}
             beakerContents={beakerContents}

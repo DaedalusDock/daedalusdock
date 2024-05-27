@@ -92,7 +92,8 @@ export const AirlockController = (props) => {
                 />
               </>
             ))
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Current Status">
               {currentStatus[0]}

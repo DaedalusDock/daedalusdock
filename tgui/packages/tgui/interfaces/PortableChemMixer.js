@@ -41,7 +41,8 @@ export const PortableChemMixer = (props) => {
                 })
               }
             />
-          ))}>
+          ))}
+        >
           <Box>
             {chemicals.map((chemical) => (
               <Button
@@ -70,7 +71,8 @@ export const PortableChemMixer = (props) => {
               content={amount}
               onClick={() => act('remove', { amount })}
             />
-          ))}>
+          ))}
+        >
           <LabeledList>
             <LabeledList.Item
               label="Beaker"
@@ -83,7 +85,8 @@ export const PortableChemMixer = (props) => {
                     onClick={() => act('eject')}
                   />
                 )
-              }>
+              }
+            >
               {(recording && 'Virtual beaker') ||
                 (data.isBeakerLoaded && (
                   <>

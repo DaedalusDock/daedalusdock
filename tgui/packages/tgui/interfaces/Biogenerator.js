@@ -44,7 +44,7 @@ export const BiogeneratorContent = (props) => {
   const [searchText, setSearchText] = useLocalState('searchText', '');
   const [selectedCategory, setSelectedCategory] = useLocalState(
     'category',
-    categories[0]?.name
+    categories[0]?.name,
   );
   const testSearch = createSearch(searchText, (item) => {
     return item.name;
@@ -84,7 +84,8 @@ export const BiogeneratorContent = (props) => {
             onClick={() => act('activate')}
           />
         </>
-      }>
+      }
+    >
       <Flex>
         {searchText.length === 0 && (
           <Flex.Item>
@@ -93,7 +94,8 @@ export const BiogeneratorContent = (props) => {
                 <Tabs.Tab
                   key={category.name}
                   selected={category.name === selectedCategory}
-                  onClick={() => setSelectedCategory(category.name)}>
+                  onClick={() => setSelectedCategory(category.name)}
+                >
                   {category.name} ({category.items?.length || 0})
                 </Tabs.Tab>
               ))}

@@ -35,7 +35,8 @@ export const Vent = (props) => {
             })
           }
         />
-      }>
+      }
+    >
       <LabeledList>
         <LabeledList.Item label="Mode">
           <Button
@@ -156,7 +157,8 @@ export const Scrubber = (props) => {
             })
           }
         />
-      }>
+      }
+    >
       <LabeledList>
         <LabeledList.Item label="Mode">
           <Button

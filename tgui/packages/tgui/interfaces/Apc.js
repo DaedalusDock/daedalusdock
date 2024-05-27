@@ -100,7 +100,8 @@ const ApcContent = (props) => {
             color={data.mainLights ? 'green' : 'red'}
             onClick={() => act('main_lights')}
           />
-        }>
+        }
+      >
         <LabeledList>
           <LabeledList.Item
             label="Main Breaker"
@@ -113,7 +114,8 @@ const ApcContent = (props) => {
                 disabled={locked}
                 onClick={() => act('breaker')}
               />
-            }>
+            }
+          >
             [ {externalPowerStatus.externalPowerText} ]
           </LabeledList.Item>
           <LabeledList.Item label="Power Cell">
@@ -129,7 +131,8 @@ const ApcContent = (props) => {
                 disabled={locked}
                 onClick={() => act('charge')}
               />
-            }>
+            }
+          >
             [ {chargingStatus.chargingText} ]
           </LabeledList.Item>
         </LabeledList>
@@ -147,7 +150,8 @@ const ApcContent = (props) => {
                     <Box
                       inline
                       mx={2}
-                      color={channel.status >= 2 ? 'good' : 'bad'}>
+                      color={channel.status >= 2 ? 'good' : 'bad'}
+                    >
                       {channel.status >= 2 ? 'On' : 'Off'}
                     </Box>
                     <Button
@@ -175,7 +179,8 @@ const ApcContent = (props) => {
                       onClick={() => act('channel', topicParams.off)}
                     />
                   </>
-                }>
+                }
+              >
                 {channel.powerLoad}
               </LabeledList.Item>
             );
@@ -205,7 +210,8 @@ const ApcContent = (props) => {
               />
             </>
           )
-        }>
+        }
+      >
         <LabeledList>
           <LabeledList.Item
             label="Cover Lock"

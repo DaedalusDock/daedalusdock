@@ -17,7 +17,8 @@ export const AntagInfoGangmember = (props) => {
       <Window.Content
         style={{
           'background-image': 'none',
-        }}>
+        }}
+      >
         <Section fill>
           <Stack vertical>
             <Stack.Item textColor="red" fontSize="20px">

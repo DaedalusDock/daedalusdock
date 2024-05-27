@@ -45,7 +45,7 @@ export const AtmosControlConsole = (props) => {
               onSelected={(value) =>
                 setChamberId(
                   chambers.find((chamber) => chamber.name === value)?.id ||
-                    chambers[0].id
+                    chambers[0].id,
                 )
               }
             />
@@ -61,7 +61,8 @@ export const AtmosControlConsole = (props) => {
                 onClick={() => act('reconnect')}
               />
             )
-          }>
+          }
+        >
           {!!selectedChamber && !!selectedChamber.gasmix ? (
             <GasmixParser gasmix={selectedChamber.gasmix} />
           ) : (

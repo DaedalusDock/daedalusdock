@@ -61,21 +61,24 @@ const PaiDownload = (_) => {
             <Button
               icon="info"
               onClick={onClick}
-              tooltip="Toggles between IC and OOC information.">
+              tooltip="Toggles between IC and OOC information."
+            >
               {tabInChar ? 'IC' : 'OOC'}
             </Button>
           )}
           <Button
             icon="bell"
             onClick={() => act('request')}
-            tooltip="Request candidates.">
+            tooltip="Request candidates."
+          >
             Request
           </Button>
         </>
       }
       fill
       scrollable
-      title="pAI Candidates">
+      title="pAI Candidates"
+    >
       {!candidates.length ? (
         <NoticeBox>None found!</NoticeBox>
       ) : (
@@ -109,24 +112,27 @@ const CandidateDisplay = (props) => {
   return (
     <Box
       style={{
-        'background': '#111111',
-        'border': '1px solid #4972a1',
+        background: '#111111',
+        border: '1px solid #4972a1',
         'border-radius': '5px',
-        'padding': '1rem',
-      }}>
+        padding: '1rem',
+      }}
+    >
       <Section
         buttons={
           <Button
             icon="download"
             onClick={() => act('download', { key })}
-            tooltip="Accepts this pAI candidate.">
+            tooltip="Accepts this pAI candidate."
+          >
             Download
           </Button>
         }
         fill
         height={12}
         scrollable
-        title={'Candidate ' + index}>
+        title={'Candidate ' + index}
+      >
         <Box color="green" fontSize="16px">
           Name: {name || 'Randomized Name'}
         </Box>
@@ -160,7 +166,8 @@ const PaiOptions = (_) => {
           <Button
             icon={can_holo ? 'toggle-on' : 'toggle-off'}
             onClick={() => act('toggle_holo')}
-            selected={can_holo}>
+            selected={can_holo}
+          >
             Toggle
           </Button>
         </LabeledList.Item>
@@ -168,7 +175,8 @@ const PaiOptions = (_) => {
           <Button
             icon={transmit ? 'toggle-on' : 'toggle-off'}
             onClick={() => act('toggle_radio', { option: 'transmit' })}
-            selected={transmit}>
+            selected={transmit}
+          >
             Toggle
           </Button>
         </LabeledList.Item>
@@ -176,7 +184,8 @@ const PaiOptions = (_) => {
           <Button
             icon={receive ? 'toggle-on' : 'toggle-off'}
             onClick={() => act('toggle_radio', { option: 'receive' })}
-            selected={receive}>
+            selected={receive}
+          >
             Toggle
           </Button>
         </LabeledList.Item>

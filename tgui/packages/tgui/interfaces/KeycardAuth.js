@@ -5,9 +5,7 @@ import { Window } from '../layouts';
 export const KeycardAuth = (props, context) => {
   const { act, data } = useBackend(context);
   return (
-    <Window
-      width={375}
-      height={58+(data.optmap.length*22)}>
+    <Window width={375} height={58 + data.optmap.length * 22}>
       <Window.Content>
         <Section>
           <Box>
@@ -26,7 +24,8 @@ export const KeycardAuth = (props, context) => {
                     lineHeight="60px"
                     fluid
                     onClick={() => act('auth_swipe')}
-                    content="Authorize" />
+                    content="Authorize"
+                  />
                 )}
                 {data.auth_required === 0 && (
                   <>
@@ -44,15 +43,18 @@ export const KeycardAuth = (props, context) => {
                       icon="meteor"
                       fluid
                       onClick={() => act('bsa_unlock')}
-                      content="Bluespace Artillery Unlock" /> */}{/* frag2*/}
-                    {data.optmap.map(optbundle => {
+                      content="Bluespace Artillery Unlock" /> */}
+                    {/* frag2*/}
+                    {data.optmap.map((optbundle) => {
                       return (
                         <Button
                           fluid
                           key={optbundle.trigger_key}
                           icon={optbundle.icon}
                           content={optbundle.displaymsg}
-                          onClick={() => act('trigger', { path: optbundle.trigger_key })}
+                          onClick={() =>
+                            act('trigger', { path: optbundle.trigger_key })
+                          }
                           disabled={!optbundle.is_valid}
                         />
                       );

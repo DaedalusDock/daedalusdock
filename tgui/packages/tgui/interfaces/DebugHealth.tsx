@@ -1,6 +1,15 @@
 import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
-import { Button, Collapsible, LabeledList, NoticeBox, Section, Stack, Tabs, Tooltip } from '../components';
+import {
+  Button,
+  Collapsible,
+  LabeledList,
+  NoticeBox,
+  Section,
+  Stack,
+  Tabs,
+  Tooltip,
+} from '../components';
 import { toTitleCase } from 'common/string';
 import { TableCell, TableRow } from '../components/Table';
 
@@ -11,7 +20,7 @@ export const DebugHealth = (props, context) => {
   const [currentTab, setCurrentTab] = useLocalState(
     context,
     'currentTab',
-    tabs[0]
+    tabs[0],
   );
 
   return (
@@ -24,7 +33,8 @@ export const DebugHealth = (props, context) => {
                 <Tabs.Tab
                   key={key}
                   selected={currentTab === key}
-                  onClick={() => setCurrentTab(key)}>
+                  onClick={() => setCurrentTab(key)}
+                >
                   {toTitleCase(key)}
                 </Tabs.Tab>
               ))}
@@ -135,7 +145,8 @@ const TooltipButton = (props, context) => {
             ))}
           </LabeledList>
         </>
-      }>
+      }
+    >
       <Button color="bad">{name}</Button>
     </Tooltip>
   );

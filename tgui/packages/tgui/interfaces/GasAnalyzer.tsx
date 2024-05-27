@@ -11,9 +11,7 @@ export const GasAnalyzerContent = (props, context) => {
     <>
       {gasmixes.map((gasmix) => (
         <Section title={gasmix.name} key={gasmix.reference}>
-          <GasmixParser
-            gasmix={gasmix}
-          />
+          <GasmixParser gasmix={gasmix} />
         </Section>
       ))}
     </>

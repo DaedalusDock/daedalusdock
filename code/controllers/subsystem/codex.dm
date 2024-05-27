@@ -151,7 +151,7 @@ SUBSYSTEM_DEF(codex)
 	if(!searching || !initialized)
 		return list()
 	if(!codex_index) //No codex DB loaded. Use the fallback search.
-		return __text_search_no_db(searching)
+		return text_search_no_db(searching)
 
 
 	var/search_string = "%[searching]%"
@@ -200,8 +200,8 @@ SUBSYSTEM_DEF(codex)
 /// Does not use the DB. Used when database loading is skipped.
 /// Argument has already been sanitized.
 /// Safety checks have already been done. Cache has already been checked.
-/datum/controller/subsystem/codex/proc/__text_search_no_db(searching)
-
+/datum/controller/subsystem/codex/proc/text_search_no_db(searching)
+	PRIVATE_PROC(TRUE)
 
 	var/list/results = list()
 	var/list/priority_results = list()
@@ -297,35 +297,36 @@ SUBSYSTEM_DEF(codex)
 	//We explicitly store the DB in the root directory, so that TGS builds wipe it.
 	codex_index = new(CODEX_SEARCH_INDEX_FILE)
 
-	//Create the initial schema
-	var/database/query/init_cursor = new({"
-/* Holds the revision the index was compiled for. If it's different then live, we need to regenerate the index.*/
+	/// Holds the revision the index was compiled for. If it's different then live, we need to regenerate the index.
+	var/static/create_info_schema = {"
 	CREATE TABLE "_info" (
 		"revision"	TEXT
-	);
-	"})
+	);"}
+
+	//Create the initial schema
+	var/database/query/init_cursor = new(create_info_schema)
 
 	if(!init_cursor.Execute(codex_index))
 		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
 		return
 
-
-	init_cursor.Add({"
-/* Holds all codex entries to enable accelerated text search.*/
+	// Holds all codex entries to enable accelerated text search.
+	var/static/create_codex_schema = {"
 	CREATE TABLE "codex_entries" (
 		"name"	TEXT NOT NULL,
 		"lore_text"	TEXT,
 		"mechanics_text"	TEXT,
 		"antag_text"	TEXT,
 		PRIMARY KEY("name")
-		);
-	"})
+	);"}
+
+	init_cursor.Add(create_codex_schema)
 	if(!init_cursor.Execute(codex_index))
 		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
 		return
 
 	var/revid = GLOB.revdata.commit
-	if(!revid) //zip download, you're on your own pissboy, The index will always be considered valid.
+	if(!revid) //zip download, you're on your own pissboy, The serial will always be considered valid.
 		revid = CODEX_SERIAL_ALWAYS_VALID
 
 	//Insert the revision header.
@@ -349,12 +350,15 @@ SUBSYSTEM_DEF(codex)
 			entry.mechanics_text,
 			entry.antag_text
 		)
+
 		if(!cursor.Execute(codex_index))
 			to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
 			return
+
 		record_id++
 		if((!(record_id % 100)) || (record_id == total_entries))
 			to_chat(world, span_debug("\tCodex: [record_id]/[total_entries]..."))
+
 		CHECK_TICK //We'd deadlock the server otherwise.
 
 #undef CODEX_SEARCH_INDEX_FILE

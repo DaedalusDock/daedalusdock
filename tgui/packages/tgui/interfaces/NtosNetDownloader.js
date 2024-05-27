@@ -39,10 +39,6 @@ export const NtosNetDownloader = (props) => {
     'category',
     all_categories[0],
   );
-  const [selectedCategory, setSelectedCategory] = useLocalState(
-    'category',
-    all_categories[0],
-  );
   const items = flow([
     // This filters the list to only contain programs with category
     selectedCategory !== all_categories[0] &&

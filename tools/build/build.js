@@ -65,6 +65,7 @@ export const DmTarget = new Juke.Target({
   ],
   inputs: [
     "_maps/map_files/generic/**",
+    "maps/**/*.dm",
     "code/**",
     "goon/**",
     "html/**",
@@ -100,7 +101,7 @@ export const DmTestTarget = new Juke.Target({
       "-trusted",
       "-verbose",
       "-params",
-      "log-directory=ci",
+      "log-directory=ci"
     );
     Juke.rm("*.test.*");
     try {
@@ -134,7 +135,7 @@ export const AutowikiTarget = new Juke.Target({
       "-trusted",
       "-verbose",
       "-params",
-      "log-directory=ci",
+      "log-directory=ci"
     );
     Juke.rm("*.test.*");
     if (!fs.existsSync("data/autowiki_edits.txt")) {

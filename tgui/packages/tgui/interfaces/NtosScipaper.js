@@ -18,7 +18,7 @@ import {
 import { TableCell, TableRow } from '../components/Table';
 import { NtosWindow } from '../layouts';
 
-export const NtosScipaper = (props, context) => {
+export const NtosScipaper = (props) => {
   return (
     <NtosWindow width={650} height={500}>
       <NtosWindow.Content scrollable>
@@ -28,8 +28,8 @@ export const NtosScipaper = (props, context) => {
   );
 };
 
-const PaperPublishing = (props, context) => {
-  const { act, data } = useBackend(context);
+const PaperPublishing = (props) => {
+  const { act, data } = useBackend();
   const {
     title,
     author,
@@ -58,7 +58,8 @@ const PaperPublishing = (props, context) => {
               onChange={(e, value) =>
                 act('rewrite', {
                   title: value,
-                })}
+                })
+              }
             />
           </LabeledList.Item>
           <LabeledList.Item label="Principal Author">
@@ -68,7 +69,8 @@ const PaperPublishing = (props, context) => {
               onChange={(e, value) =>
                 act('rewrite', {
                   author: value,
-                })}
+                })
+              }
             />
             <Button selected={etAlia} onClick={() => act('et_alia')}>
               {'Multiple Authors'}
@@ -81,7 +83,8 @@ const PaperPublishing = (props, context) => {
               onChange={(e, value) =>
                 act('rewrite', {
                   abstract: value,
-                })}
+                })
+              }
             />
           </LabeledList.Item>
           <LabeledList.Item label="Selected File">
@@ -94,13 +97,15 @@ const PaperPublishing = (props, context) => {
                   onSelected={(ordfile_name) =>
                     act('select_file', {
                       selected_uid: fileList[ordfile_name],
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
               <Stack.Item align="center">
                 <Tooltip
                   position="left"
-                  content="The selected file containing experimental data for our paper. Must be present in the HDD to be accesible. Transfer files with the File Manager program.">
+                  content="The selected file containing experimental data for our paper. Must be present in the HDD to be accesible. Transfer files with the File Manager program."
+                >
                   <Icon size={1.15} name="info-circle" />
                 </Tooltip>
               </Stack.Item>
@@ -116,13 +121,15 @@ const PaperPublishing = (props, context) => {
                   onSelected={(experiment_name) =>
                     act('select_experiment', {
                       selected_expath: expList[experiment_name],
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
               <Stack.Item align="center">
                 <Tooltip
                   position="left"
-                  content="The topic we want to publish our paper on. Different topics unlock different technologies and possible partners.">
+                  content="The topic we want to publish our paper on. Different topics unlock different technologies and possible partners."
+                >
                   <Icon size={1.15} name="info-circle" />
                 </Tooltip>
               </Stack.Item>
@@ -138,13 +145,15 @@ const PaperPublishing = (props, context) => {
                   onSelected={(new_tier) =>
                     act('select_tier', {
                       selected_tier: Number(new_tier),
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
               <Stack.Item align="center">
                 <Tooltip
                   position="left"
-                  content="The tier we want to publish on. Higher tiers can confer better rewards but means our data will be judged more harshly.">
+                  content="The tier we want to publish on. Higher tiers can confer better rewards but means our data will be judged more harshly."
+                >
                   <Icon size={1.15} name="info-circle" />
                 </Tooltip>
               </Stack.Item>
@@ -160,13 +169,15 @@ const PaperPublishing = (props, context) => {
                   onSelected={(new_partner) =>
                     act('select_partner', {
                       selected_partner: allowedPartners[new_partner],
-                    })}
+                    })
+                  }
                 />
               </Stack.Item>
               <Stack.Item align="center">
                 <Tooltip
                   position="left"
-                  content="Which organization to partner with. We can obtain research boosts in techs related to the partner's interests.">
+                  content="Which organization to partner with. We can obtain research boosts in techs related to the partner's interests."
+                >
                   <Icon size={1.15} name="info-circle" />
                 </Tooltip>
               </Stack.Item>
@@ -179,7 +190,8 @@ const PaperPublishing = (props, context) => {
           <Stack.Item grow>
             <Tooltip
               position="top"
-              content="How much will our relation improve with the particular partner. Cooperation will be used to unlock boosts.">
+              content="How much will our relation improve with the particular partner. Cooperation will be used to unlock boosts."
+            >
               <Icon size={1.15} name="info-circle" />
             </Tooltip>
             {' Cooperation: '}
@@ -188,7 +200,8 @@ const PaperPublishing = (props, context) => {
           <Stack.Item grow>
             <Tooltip
               position="top"
-              content="How much grant will we be endowed with upon the publication of this paper.">
+              content="How much grant will we be endowed with upon the publication of this paper."
+            >
               <Icon size={1.15} name="info-circle" />
             </Tooltip>
             {' Funding: '}
@@ -208,8 +221,8 @@ const PaperPublishing = (props, context) => {
   );
 };
 
-const PaperBrowser = (props, context) => {
-  const { act, data } = useBackend(context);
+const PaperBrowser = (props) => {
+  const { act, data } = useBackend();
   const { publishedPapers, coopIndex, fundingIndex } = data;
   if (publishedPapers.length === 0) {
     return <NoticeBox> No Published Papers! </NoticeBox>;
@@ -217,7 +230,8 @@ const PaperBrowser = (props, context) => {
     return publishedPapers.map((paper) => (
       <Collapsible
         key={String(paper['experimentName'] + paper['tier'])}
-        title={paper['title']}>
+        title={paper['title']}
+      >
         <Section>
           <LabeledList>
             <LabeledList.Item label="Topic">
@@ -248,8 +262,8 @@ const PaperBrowser = (props, context) => {
     ));
   }
 };
-const ExperimentBrowser = (props, context) => {
-  const { act, data } = useBackend(context);
+const ExperimentBrowser = (props) => {
+  const { act, data } = useBackend();
   const { experimentInformation = [] } = data;
   return experimentInformation.map((experiment) => (
     <Section title={experiment.name} key={experiment.name}>
@@ -260,8 +274,12 @@ const ExperimentBrowser = (props, context) => {
           <LabeledList.Item
             key={tier}
             label={
-              'Optimal '+ experiment.prefix + ' Amount - Tier ' + String(Number(tier) + 1)
-            }>
+              'Optimal ' +
+              experiment.prefix +
+              ' Amount - Tier ' +
+              String(Number(tier) + 1)
+            }
+          >
             {experiment.target[tier] + ' ' + experiment.suffix}
           </LabeledList.Item>
         ))}
@@ -270,8 +288,8 @@ const ExperimentBrowser = (props, context) => {
   ));
 };
 
-const PartnersBrowser = (props, context) => {
-  const { act, data } = useBackend(context);
+const PartnersBrowser = (props) => {
+  const { act, data } = useBackend();
   const {
     partnersInformation,
     coopIndex,
@@ -324,7 +342,8 @@ const PartnersBrowser = (props, context) => {
                         act('purchase_boost', {
                           purchased_boost: node.id,
                           boost_seller: partner.path,
-                        })}
+                        })
+                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -337,8 +356,8 @@ const PartnersBrowser = (props, context) => {
   ));
 };
 
-export const NtosScipaperContent = (props, context) => {
-  const { act, data } = useBackend(context);
+export const NtosScipaperContent = (props) => {
+  const { act, data } = useBackend();
   const { currentTab } = data;
   return (
     <>
@@ -348,7 +367,9 @@ export const NtosScipaperContent = (props, context) => {
           onClick={() =>
             act('change_tab', {
               new_tab: 1,
-            })}>
+            })
+          }
+        >
           {'Publish Papers'}
         </Tabs.Tab>
         <Tabs.Tab
@@ -356,7 +377,9 @@ export const NtosScipaperContent = (props, context) => {
           onClick={() =>
             act('change_tab', {
               new_tab: 2,
-            })}>
+            })
+          }
+        >
           {'View Previous Publications'}
         </Tabs.Tab>
         <Tabs.Tab
@@ -364,7 +387,9 @@ export const NtosScipaperContent = (props, context) => {
           onClick={() =>
             act('change_tab', {
               new_tab: 3,
-            })}>
+            })
+          }
+        >
           {'View Available Experiments'}
         </Tabs.Tab>
         <Tabs.Tab
@@ -372,7 +397,9 @@ export const NtosScipaperContent = (props, context) => {
           onClick={() =>
             act('change_tab', {
               new_tab: 4,
-            })}>
+            })
+          }
+        >
           {'View Scientific Partners'}
         </Tabs.Tab>
       </Tabs>

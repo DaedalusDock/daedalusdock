@@ -199,6 +199,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PUSHIMMUNE "push_immunity"
 #define TRAIT_SHOCKIMMUNE "shock_immunity"
 #define TRAIT_TESLA_SHOCKIMMUNE "tesla_shock_immunity"
+// Is this atom being actively shocked? Used to prevent repeated shocks.
+#define TRAIT_BEING_SHOCKED "shocked"
 /// You cannot ENTER cardiac arrest.
 #define TRAIT_STABLEHEART "stable_heart"
 /// Prevents you from leaving your corpse
@@ -731,6 +733,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define INNATE_TRAIT "innate"
 #define CRIT_HEALTH_TRAIT "crit_health"
 #define OXYLOSS_TRAIT "oxyloss"
+// Trait sorce for "was recently shocked by something"
+#define WAS_SHOCKED "was_shocked"
 #define TURF_TRAIT "turf"
 /// trait associated to being buckled
 #define BUCKLED_TRAIT "buckled"

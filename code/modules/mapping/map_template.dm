@@ -97,7 +97,7 @@
 		if(unlit.always_lit)
 			continue
 		var/area/loc_area = unlit.loc
-		if(!loc_area.static_lighting)
+		if(loc_area.area_lighting != AREA_LIGHTING_DYNAMIC)
 			continue
 		unlit.lighting_build_overlay()
 

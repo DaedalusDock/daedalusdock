@@ -351,7 +351,7 @@ GLOBAL_VAR_INIT(hhMysteryRoomNumber, rand(1, 999999))
 	requires_power = FALSE
 	has_gravity = TRUE
 	area_flags = NOTELEPORT | HIDDEN_AREA
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 	ambientsounds = list('sound/ambience/servicebell.ogg')
 	var/roomnumber = 0
 	var/obj/item/hilbertshotel/parentSphere

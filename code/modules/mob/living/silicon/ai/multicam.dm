@@ -91,9 +91,8 @@
 /area/centcom/ai_multicam_room
 	name = "ai_multicam_room"
 	icon_state = "ai_camera_room"
-	static_lighting = FALSE
+	area_lighting = AREA_LIGHTING_STATIC
 
-	base_lighting_alpha = 255
 	area_flags = NOTELEPORT | HIDDEN_AREA | UNIQUE_AREA
 	ambientsounds = null
 	flags_1 = NONE

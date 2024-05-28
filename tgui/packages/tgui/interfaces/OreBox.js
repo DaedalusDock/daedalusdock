@@ -3,35 +3,26 @@ import { Box, Button, Section, Table } from '../components';
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
-export const OreBox = (props, context) => {
-  const { act, data } = useBackend(context);
+export const OreBox = (props) => {
+  const { act, data } = useBackend();
   const { materials } = data;
   return (
-    <Window
-      width={335}
-      height={415}>
+    <Window width={335} height={415}>
       <Window.Content scrollable>
         <Section
           title="Ores"
-          buttons={(
-            <Button
-              content="Empty"
-              onClick={() => act('removeall')} />
-          )}>
+          buttons={<Button content="Empty" onClick={() => act('removeall')} />}
+        >
           <Table>
             <Table.Row header>
-              <Table.Cell>
-                Ore
-              </Table.Cell>
+              <Table.Cell>Ore</Table.Cell>
               <Table.Cell collapsing textAlign="right">
                 Amount
               </Table.Cell>
             </Table.Row>
-            {materials.map(material => (
+            {materials.map((material) => (
               <Table.Row key={material.type}>
-                <Table.Cell>
-                  {toTitleCase(material.name)}
-                </Table.Cell>
+                <Table.Cell>{toTitleCase(material.name)}</Table.Cell>
                 <Table.Cell collapsing textAlign="right">
                   <Box color="label" inline>
                     {material.amount}

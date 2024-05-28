@@ -1,9 +1,16 @@
 import { useBackend } from '../backend';
-import { AnimatedNumber, Box, Button, LabeledList, ProgressBar, Section } from '../components';
+import {
+  AnimatedNumber,
+  Box,
+  Button,
+  LabeledList,
+  ProgressBar,
+  Section,
+} from '../components';
 import { Window } from '../layouts';
 
-export const ChemDispenser = (props, context) => {
-  const { act, data } = useBackend(context);
+export const ChemDispenser = (props) => {
+  const { act, data } = useBackend();
   const { recipeReagents = [] } = data;
   const beakerTransferAmounts = data.beakerTransferAmounts || [];
   const beakerContents = data.beakerContents || [];
@@ -25,7 +32,8 @@ export const ChemDispenser = (props, context) => {
               tooltipPosition="bottom-start"
               onClick={() => act('reaction_lookup')}
             />
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Cartridges">
               <ProgressBar value={data.cartAmount} maxValue={data.maxCarts}>
@@ -45,9 +53,11 @@ export const ChemDispenser = (props, context) => {
               onClick={() =>
                 act('amount', {
                   target: amount,
-                })}
+                })
+              }
             />
-          ))}>
+          ))}
+        >
           <Box mr={-1}>
             {data.chemicals.map((chemical) => (
               <Button
@@ -74,7 +84,8 @@ export const ChemDispenser = (props, context) => {
                 onClick={() =>
                   act('dispense', {
                     reagent: chemical.id,
-                  })}
+                  })
+                }
               />
             ))}
           </Box>
@@ -88,7 +99,8 @@ export const ChemDispenser = (props, context) => {
               content={amount}
               onClick={() => act('remove', { amount })}
             />
-          ))}>
+          ))}
+        >
           <LabeledList>
             <LabeledList.Item
               label="Beaker"
@@ -99,14 +111,16 @@ export const ChemDispenser = (props, context) => {
                     content="Eject"
                     disabled={!data.isBeakerLoaded}
                     onClick={() => act('eject')}
-                  />)
-              }>
-              {data.isBeakerLoaded ? (data.beakerName) : ('No Beaker')}
+                  />
+                )
+              }
+            >
+              {data.isBeakerLoaded ? data.beakerName : 'No Beaker'}
             </LabeledList.Item>
             <LabeledList.Item label="Contents">
               <Box color="label">
-                {(!data.isBeakerLoaded && 'N/A')
-                  || (beakerContents.length === 0 && 'Nothing')}
+                {(!data.isBeakerLoaded && 'N/A') ||
+                  (beakerContents.length === 0 && 'Nothing')}
               </Box>
               {beakerContents.map((chemical) => (
                 <Box key={chemical.name} color="label">

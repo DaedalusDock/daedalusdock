@@ -4,13 +4,12 @@
 	name = "Cabin"
 	icon_state = "away2"
 	requires_power = TRUE
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/awaymission/cabin/snowforest
 	name = "Snow Forest"
 	icon_state = "away"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/awaymission/cabin/snowforest/sovietsurface
 	name = "Snow Forest"
@@ -21,8 +20,7 @@
 	name = "Lumbermill"
 	icon_state = "away3"
 	requires_power = FALSE
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 
 /area/awaymission/cabin/caves/sovietcave
 	name = "Soviet Bunker"
@@ -31,7 +29,7 @@
 /area/awaymission/cabin/caves
 	name = "North Snowdin Caves"
 	icon_state = "awaycontent15"
-	static_lighting = TRUE
+	area_lighting = AREA_LIGHTING_DYNAMIC
 
 /area/awaymission/cabin/caves/mountain
 	name = "North Snowdin Mountains"

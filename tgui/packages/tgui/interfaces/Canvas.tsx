@@ -207,8 +207,8 @@ type CanvasData = {
   show_plaque: boolean;
 };
 
-export const Canvas = (props, context) => {
-  const { act, data } = useBackend<CanvasData>(context);
+export const Canvas = (props) => {
+  const { act, data } = useBackend<CanvasData>();
   const [width, height] = getImageSize(data.grid);
   const scaled_width = width * data.px_per_unit;
   const scaled_height = height * data.px_per_unit;

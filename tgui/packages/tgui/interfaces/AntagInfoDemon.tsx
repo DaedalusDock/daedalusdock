@@ -26,8 +26,8 @@ type Info = {
   objectives: Objective[];
 };
 
-export const AntagInfoDemon = (props, context) => {
-  const { data } = useBackend<Info>(context);
+export const AntagInfoDemon = (props) => {
+  const { data } = useBackend<Info>();
   const { fluff, objectives, explain_attack } = data;
   return (
     <Window width={620} height={356} theme="syndicate">
@@ -89,8 +89,8 @@ export const AntagInfoDemon = (props, context) => {
   );
 };
 
-const ObjectivePrintout = (props, context) => {
-  const { data } = useBackend<Info>(context);
+const ObjectivePrintout = (props) => {
+  const { data } = useBackend<Info>();
   const { objectives } = data;
   return (
     <Stack vertical>
@@ -109,7 +109,7 @@ const ObjectivePrintout = (props, context) => {
   );
 };
 
-const DemonRunes = (props, context) => {
+const DemonRunes = (props) => {
   return (
     <Section height="102%" mt="-6px" fill>
       {/*

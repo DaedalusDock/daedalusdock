@@ -120,7 +120,7 @@ export class IntegratedCircuit extends Component {
   // mouse up called whilst over a port. This means we can check if selectedPort
   // exists and do perform some actions if it does.
   handlePortUp(portIndex, componentId, port, isOutput, event) {
-    const { act, data: uiData } = useBackend(this.context);
+    const { act, data: uiData } = useBackend();
     const { selectedPort } = this.state;
     if (!selectedPort) {
       return;
@@ -171,7 +171,7 @@ export class IntegratedCircuit extends Component {
   }
 
   handlePortDrag(event) {
-    const { data } = useBackend(this.context);
+    const { data } = useBackend();
     const { screen_x, screen_y } = data;
     this.setState((state) => ({
       mouseX: event.clientX - (state.backgroundX || screen_x),
@@ -197,7 +197,7 @@ export class IntegratedCircuit extends Component {
   }
 
   handlePortRightClick(portIndex, componentId, port, isOutput, event) {
-    const { act } = useBackend(this.context);
+    const { act } = useBackend();
 
     event.preventDefault();
     act('remove_connection', {
@@ -231,7 +231,7 @@ export class IntegratedCircuit extends Component {
   }
 
   handleMouseDown(event) {
-    const { act, data } = useBackend(this.context);
+    const { act, data } = useBackend();
     const { examined_name } = data;
     if (examined_name) {
       act('remove_examined_component');
@@ -243,7 +243,7 @@ export class IntegratedCircuit extends Component {
   }
 
   handleMouseUp(event) {
-    const { act } = useBackend(this.context);
+    const { act } = useBackend();
     const { backgroundX, backgroundY } = this.state;
     if (backgroundX && backgroundY) {
       act('move_screen', {
@@ -271,7 +271,7 @@ export class IntegratedCircuit extends Component {
   }
 
   handleVarDropped(event) {
-    const { data, act } = useBackend(this.context);
+    const { data, act } = useBackend();
     const {
       draggingVariable,
       variableIsSetter,
@@ -308,7 +308,7 @@ export class IntegratedCircuit extends Component {
   }
 
   handleComponentDropped(event) {
-    const { data, act } = useBackend(this.context);
+    const { data, act } = useBackend();
     const { draggingComponent, backgroundX, backgroundY, zoom } = this.state;
     const { screen_x, screen_y } = data;
 
@@ -333,7 +333,7 @@ export class IntegratedCircuit extends Component {
   }
 
   render() {
-    const { act, data } = useBackend(this.context);
+    const { act, data } = useBackend();
     const {
       components,
       display_name,

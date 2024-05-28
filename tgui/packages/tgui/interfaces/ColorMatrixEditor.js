@@ -10,8 +10,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const ColorMatrixEditor = (props, context) => {
-  const { act, data } = useBackend(context);
+export const ColorMatrixEditor = (props) => {
+  const { act, data } = useBackend();
   const { mapRef, currentColor } = data;
   const [
     [rr, rg, rb, ra],

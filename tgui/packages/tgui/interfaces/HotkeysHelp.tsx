@@ -88,8 +88,8 @@ const KeyBinding = (props: KeyBindingBoxProps) => (
   <>{processColorModifiers(props.keycode)}</>
 );
 
-export const HotkeysHelp = (_, context) => {
-  const { data } = useBackend<HotkeysHelpData>(context);
+export const HotkeysHelp = (_) => {
+  const { data } = useBackend<HotkeysHelpData>();
 
   return (
     <Window title="Hotkeys Help" width={500} height={800}>

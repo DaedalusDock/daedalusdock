@@ -19,9 +19,9 @@ import {
 import { isStringArray } from './helpers';
 import { GeneratorListEntry } from './Generators';
 
-export const FloatGenerator = (props: FloatGeneratorProps, context) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+export const FloatGenerator = (props: FloatGeneratorProps) => {
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, float } = props;
   return (
     <LabeledList.Item label={name}>
@@ -73,8 +73,8 @@ export const FloatGeneratorColor = (
   props: FloatGeneratorColorProps,
   context,
 ) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, float } = props;
   return (
     <LabeledList.Item label={name}>
@@ -131,8 +131,8 @@ export const EntryGeneratorNumbersList = (
   props: EntryGeneratorNumbersListProps,
   context,
 ) => {
-  const { act, data } = useBackend<ParticleUIData>(context);
-  const [desc, setdesc] = useLocalState(context, 'desc', '');
+  const { act, data } = useBackend<ParticleUIData>();
+  const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, allow_z, input } = props;
   return (
     <LabeledList.Item label={name}>

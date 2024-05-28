@@ -3,8 +3,8 @@ import { useBackend } from '../backend';
 import { Button, Grid, NumberInput, Section } from '../components';
 import { Window } from '../layouts';
 
-export const Signaler = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Signaler = (props) => {
+  const { act, data } = useBackend();
   return (
     <Window width={280} height={132}>
       <Window.Content>
@@ -14,8 +14,8 @@ export const Signaler = (props, context) => {
   );
 };
 
-export const SignalerContent = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SignalerContent = (props) => {
+  const { act, data } = useBackend();
   const { code, frequency, minFrequency, maxFrequency } = data;
   const color = 'rgba(13, 13, 213, 0.7)';
   const backColor = 'rgba(0, 0, 69, 0.5)';

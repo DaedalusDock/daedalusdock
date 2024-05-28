@@ -15,8 +15,8 @@ import {
 import { Window } from '../layouts';
 import { BeakerContents } from './common/BeakerContents';
 
-export const ChemRecipeDebug = (props, context) => {
-  const { act, data } = useBackend(context);
+export const ChemRecipeDebug = (props) => {
+  const { act, data } = useBackend();
   const {
     targetTemp,
     isActive,

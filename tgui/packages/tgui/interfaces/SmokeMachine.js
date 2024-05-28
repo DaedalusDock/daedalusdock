@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const SmokeMachine = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SmokeMachine = (props) => {
+  const { act, data } = useBackend();
   const {
     TankContents,
     isTankLoaded,

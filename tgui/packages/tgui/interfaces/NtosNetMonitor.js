@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { NtosWindow } from '../layouts';
 
-export const NtosNetMonitor = (props, context) => {
-  const { act, data } = useBackend(context);
+export const NtosNetMonitor = (props) => {
+  const { act, data } = useBackend();
   const {
     ntnetrelays,
     ntnetstatus,

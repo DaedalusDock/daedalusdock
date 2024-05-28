@@ -17,8 +17,8 @@ import { Window } from '../layouts';
 
 const mappedTopMargin = '2%';
 
-export const BluespaceSender = (props, context) => {
-  const { act, data } = useBackend(context);
+export const BluespaceSender = (props) => {
+  const { act, data } = useBackend();
   const { on, gas_transfer_rate, price_multiplier } = data;
   const bluespace_network_gases = flow([
     filter((gas) => gas.amount >= 0.01),

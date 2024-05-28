@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, ProgressBar, Section } from '../components';
 import { Window } from '../layouts';
 
-export const Electrolyzer = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Electrolyzer = (props) => {
+  const { act, data } = useBackend();
   return (
     <Window width={400} height={305}>
       <Window.Content>

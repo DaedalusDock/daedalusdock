@@ -11,8 +11,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const Vote = (props, context) => {
-  const { data } = useBackend(context);
+export const Vote = (props) => {
+  const { data } = useBackend();
   const { mode, question, lower_admin } = data;
 
   /**
@@ -44,8 +44,8 @@ export const Vote = (props, context) => {
  * The create vote options menu. Only upper admins can disable voting.
  * @returns A section visible to everyone with vote options.
  */
-const VoteOptions = (props, context) => {
-  const { act, data } = useBackend(context);
+const VoteOptions = (props) => {
+  const { act, data } = useBackend();
   const { allow_vote_restart, allow_vote_map, lower_admin, upper_admin } = data;
 
   return (
@@ -108,8 +108,8 @@ const VoteOptions = (props, context) => {
  * View Voters by ckey. Admin only.
  * @returns A collapsible list of voters
  */
-const VotersList = (props, context) => {
-  const { data } = useBackend(context);
+const VotersList = (props) => {
+  const { data } = useBackend();
   const { voting } = data;
 
   return (
@@ -131,8 +131,8 @@ const VotersList = (props, context) => {
  * The choices panel which displays all options in the list.
  * @returns A section visible to all users.
  */
-const ChoicesPanel = (props, context) => {
-  const { act, data } = useBackend(context);
+const ChoicesPanel = (props) => {
+  const { act, data } = useBackend();
   const { choices, selected_choice } = data;
 
   return (
@@ -182,8 +182,8 @@ const ChoicesPanel = (props, context) => {
  * Countdown timer at the bottom. Includes a cancel vote option for admins.
  * @returns A section visible to everyone.
  */
-const TimePanel = (props, context) => {
-  const { act, data } = useBackend(context);
+const TimePanel = (props) => {
+  const { act, data } = useBackend();
   const { lower_admin, time_remaining } = data;
 
   return (

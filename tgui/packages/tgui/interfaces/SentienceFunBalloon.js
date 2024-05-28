@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const SentienceFunBalloon = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SentienceFunBalloon = (props) => {
+  const { act, data } = useBackend();
   const { group_name, range } = data;
   return (
     <Window title={'Sentience Fun Balloon'} width={400} height={175}>

@@ -18,7 +18,7 @@ import { HelpDummy, HoverHelp } from './helpers';
  * for generalizing and refactoring.
  */
 
-const ComboKnob = (props, context) => {
+const ComboKnob = (props) => {
   const {
     color = false,
     defaultValue,
@@ -33,7 +33,7 @@ const ComboKnob = (props, context) => {
     ...rest
   } = props;
 
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
 
   const iconProps = {};
   if (flipIcon) {
@@ -97,8 +97,8 @@ const ComboKnob = (props, context) => {
   );
 };
 
-export const HypertorusSecondaryControls = (props, context) => {
-  const { act, data } = useBackend(context);
+export const HypertorusSecondaryControls = (props) => {
+  const { act, data } = useBackend();
   return (
     <Section title="Reactor Control">
       <LabeledControls justify="space-around" wrap>
@@ -161,8 +161,8 @@ export const HypertorusSecondaryControls = (props, context) => {
   );
 };
 
-export const HypertorusWasteRemove = (props, context) => {
-  const { act, data } = useBackend(context);
+export const HypertorusWasteRemove = (props) => {
+  const { act, data } = useBackend();
   const filterTypes = data.filter_types || [];
   return (
     <Section title="Output Control">

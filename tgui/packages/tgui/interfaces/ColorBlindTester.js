@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, NoticeBox, Section } from '../components';
 import { Window } from '../layouts';
 
-export const ColorBlindTester = (props, context) => {
-  const { act, data } = useBackend(context);
+export const ColorBlindTester = (props) => {
+  const { act, data } = useBackend();
   const { details } = data;
   return (
     <Window title="Color Blindness Testing" width={600} height={515}>
@@ -43,8 +43,8 @@ export const ColorBlindTester = (props, context) => {
   );
 };
 
-const ColorBlindCategory = (props, context) => {
-  const { act, data } = useBackend(context);
+const ColorBlindCategory = (props) => {
+  const { act, data } = useBackend();
   const { category } = props;
   const { details, selected } = data;
   if (category !== selected) {

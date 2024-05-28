@@ -13,7 +13,7 @@ import {
 import { NtosWindow } from '../layouts';
 import { AccessList } from './common/AccessList';
 
-export const NtosCard = (props, context) => {
+export const NtosCard = (props) => {
   return (
     <NtosWindow width={500} height={670}>
       <NtosWindow.Content scrollable>
@@ -23,8 +23,8 @@ export const NtosCard = (props, context) => {
   );
 };
 
-export const NtosCardContent = (props, context) => {
-  const { act, data } = useBackend(context);
+export const NtosCardContent = (props) => {
+  const { act, data } = useBackend();
   const {
     authenticatedUser,
     regions = [],
@@ -48,7 +48,7 @@ export const NtosCardContent = (props, context) => {
     );
   }
 
-  const [selectedTab] = useSharedState(context, 'selectedTab', 'login');
+  const [selectedTab] = useSharedState('selectedTab', 'login');
 
   return (
     <>
@@ -115,12 +115,8 @@ export const NtosCardContent = (props, context) => {
   );
 };
 
-const IDCardTabs = (props, context) => {
-  const [selectedTab, setSelectedTab] = useSharedState(
-    context,
-    'selectedTab',
-    'login',
-  );
+const IDCardTabs = (props) => {
+  const [selectedTab, setSelectedTab] = useSharedState('selectedTab', 'login');
 
   return (
     <Tabs vertical fill>
@@ -146,8 +142,8 @@ const IDCardTabs = (props, context) => {
   );
 };
 
-export const IDCardLogin = (props, context) => {
-  const { act, data } = useBackend(context);
+export const IDCardLogin = (props) => {
+  const { act, data } = useBackend();
   const { authenticatedUser, has_id, have_printer, authIDName } = data;
 
   return (
@@ -190,8 +186,8 @@ export const IDCardLogin = (props, context) => {
   );
 };
 
-const IDCardTarget = (props, context) => {
-  const { act, data } = useBackend(context);
+const IDCardTarget = (props) => {
+  const { act, data } = useBackend();
   const { authenticatedUser, id_rank, id_owner, has_id, id_name, id_age } =
     data;
 
@@ -254,8 +250,8 @@ const IDCardTarget = (props, context) => {
   );
 };
 
-const TemplateDropdown = (props, context) => {
-  const { act } = useBackend(context);
+const TemplateDropdown = (props) => {
+  const { act } = useBackend();
   const { templates } = props;
 
   const templateKeys = Object.keys(templates);

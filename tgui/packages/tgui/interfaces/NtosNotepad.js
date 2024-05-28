@@ -2,8 +2,8 @@ import { NtosWindow } from '../layouts';
 import { useBackend } from '../backend';
 import { Stack, Input, Section } from '../components';
 
-export const NtosNotepad = (props, context) => {
-  const { act, data } = useBackend(context);
+export const NtosNotepad = (props) => {
+  const { act, data } = useBackend();
   const { note } = data;
   return (
     <NtosWindow width={600} height={800}>

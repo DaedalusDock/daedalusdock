@@ -133,11 +133,10 @@ const StatDisplay: StatelessComponent<{}> = (props) => {
   );
 };
 
-export const QuirksPage = (props, context) => {
-  const { act, data } = useBackend<PreferencesMenuData>(context);
+export const QuirksPage = (props) => {
+  const { act, data } = useBackend<PreferencesMenuData>();
 
   const [selectedQuirks, setSelectedQuirks] = useLocalState(
-    context,
     `selectedQuirks_${data.active_slot}`,
     data.selected_quirks,
   );

@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const Bepis = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Bepis = (props) => {
+  const { act, data } = useBackend();
   const { amount } = data;
   return (
     <Window width={500} height={480}>

@@ -49,8 +49,8 @@ const ensure_gases = (gas_array, gasids) => {
   }
 };
 
-const GasList = (props, context) => {
-  const { act, data } = useBackend(context);
+const GasList = (props) => {
+  const { act, data } = useBackend();
   const {
     input_max,
     input_min,
@@ -128,8 +128,8 @@ const GasList = (props, context) => {
   );
 };
 
-export const HypertorusGases = (props, context) => {
-  const { data } = useBackend(context);
+export const HypertorusGases = (props) => {
+  const { data } = useBackend();
 
   const { fusion_gases, moderator_gases } = data;
 

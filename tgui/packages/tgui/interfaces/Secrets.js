@@ -42,8 +42,8 @@ const lineHeightNormal = 2.79;
 const buttonWidthNormal = 12.9;
 const lineHeightDebug = 6.09;
 
-const DebuggingTab = (props, context) => {
-  const { act } = useBackend(context);
+const DebuggingTab = (props) => {
+  const { act } = useBackend();
   return (
     <Stack fill vertical>
       <Stack.Item>
@@ -80,8 +80,8 @@ const DebuggingTab = (props, context) => {
   );
 };
 
-const HelpfulTab = (props, context) => {
-  const { act } = useBackend(context);
+const HelpfulTab = (props) => {
+  const { act } = useBackend();
   return (
     <Stack fill vertical>
       <Stack.Item>
@@ -274,8 +274,8 @@ const HelpfulTab = (props, context) => {
   );
 };
 
-const FunTab = (props, context) => {
-  const { act } = useBackend(context);
+const FunTab = (props) => {
+  const { act } = useBackend();
   return (
     <Stack fill vertical>
       <Stack.Item>
@@ -468,8 +468,8 @@ const FunTab = (props, context) => {
   );
 };
 
-const FunForYouTab = (props, context) => {
-  const { act } = useBackend(context);
+const FunForYouTab = (props) => {
+  const { act } = useBackend();
   return (
     <Stack fill vertical>
       <Stack.Item>
@@ -598,10 +598,10 @@ const FunForYouTab = (props, context) => {
   );
 };
 
-export const Secrets = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Secrets = (props) => {
+  const { act, data } = useBackend();
   const { is_debugger, is_funmin } = data;
-  const [tabIndex, setTabIndex] = useLocalState(context, 'tab-index', 2);
+  const [tabIndex, setTabIndex] = useLocalState('tab-index', 2);
   const TabComponent = TAB2NAME[tabIndex - 1].component();
   return (
     <Window title="Secrets Panel" width={500} height={488} theme="admin">

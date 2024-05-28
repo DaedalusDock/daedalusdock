@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const ChemPress = (props, context) => {
-  const { act, data } = useBackend(context);
+export const ChemPress = (props) => {
+  const { act, data } = useBackend();
   const {
     current_volume,
     product_name,

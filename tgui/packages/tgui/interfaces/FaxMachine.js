@@ -11,8 +11,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const FaxMachine = (props, context) => {
-  const { act, data } = useBackend(context);
+export const FaxMachine = (props) => {
+  const { act, data } = useBackend();
   const {
     display_name,
     destination_options = [],
@@ -26,16 +26,14 @@ export const FaxMachine = (props, context) => {
     unread_message,
   } = data;
 
-  const [tab, setTab] = useSharedState(context, 'tab', 1);
+  const [tab, setTab] = useSharedState('tab', 1);
 
   const [selectedPaperTab, setSelectedPaper] = useLocalState(
-    context,
     'ref',
     received_paperwork[0]?.ref,
   );
 
   const [destination, setDestination] = useLocalState(
-    context,
     'dest',
     default_destination,
   );

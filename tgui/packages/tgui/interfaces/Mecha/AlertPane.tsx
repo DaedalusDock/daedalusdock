@@ -6,8 +6,8 @@ import {
   InternalDamageToNormalDesc,
 } from './data';
 
-export const AlertPane = (props, context) => {
-  const { act, data } = useBackend<OperatorData>(context);
+export const AlertPane = (props) => {
+  const { act, data } = useBackend<OperatorData>();
   const { internal_damage, internal_damage_keys } = data;
   return (
     <Stack fill vertical>

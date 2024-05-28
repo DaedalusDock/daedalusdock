@@ -3,8 +3,8 @@ import { Window } from '../layouts';
 import { LabeledList, Button } from '../components';
 import { AccessConfig } from './common/AccessConfig';
 
-export const CircuitAccessChecker = (props, context) => {
-  const { act, data } = useBackend(context);
+export const CircuitAccessChecker = (props) => {
+  const { act, data } = useBackend();
   const { oneAccess } = data;
   const regions = data.regions || [];
   const accesses = data.accesses || [];

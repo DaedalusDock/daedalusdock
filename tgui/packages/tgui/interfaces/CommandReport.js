@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const CommandReport = (props, context) => {
-  const { act, data } = useBackend(context);
+export const CommandReport = (props) => {
+  const { act, data } = useBackend();
   const {
     command_name,
     custom_name,

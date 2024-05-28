@@ -6,7 +6,7 @@
 
 import { toFixed } from 'common/math';
 import { useLocalState } from 'tgui/backend';
-import { useDispatch, useSelector } from 'common/redux';
+import { useDispatch, useSelector } from 'tgui/backend';
 import {
   Box,
   Button,
@@ -28,9 +28,9 @@ import { changeSettingsTab, updateSettings } from './actions';
 import { FONTS, SETTINGS_TABS, THEMES } from './constants';
 import { selectActiveTab, selectSettings } from './selectors';
 
-export const SettingsPanel = (props, context) => {
-  const activeTab = useSelector(context, selectActiveTab);
-  const dispatch = useDispatch(context);
+export const SettingsPanel = (props) => {
+  const activeTab = useSelector(selectActiveTab);
+  const dispatch = useDispatch();
   return (
     <Stack fill>
       <Stack.Item>
@@ -62,7 +62,7 @@ export const SettingsPanel = (props, context) => {
   );
 };
 
-export const SettingsGeneral = (props, context) => {
+export const SettingsGeneral = (props) => {
   const {
     theme,
     fontFamily,
@@ -72,8 +72,8 @@ export const SettingsGeneral = (props, context) => {
     highlightColor,
     matchWord,
     matchCase,
-  } = useSelector(context, selectSettings);
-  const dispatch = useDispatch(context);
+  } = useSelector(selectSettings);
+  const dispatch = useDispatch();
   const [freeFont, setFreeFont] = useLocalState(context, 'freeFont', false);
   return (
     <Section>

@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const AtmosMixer = (props, context) => {
-  const { act, data } = useBackend(context);
+export const AtmosMixer = (props) => {
+  const { act, data } = useBackend();
   return (
     <Window width={370} height={179}>
       <Window.Content>

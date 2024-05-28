@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, LabeledList, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
-export const Teg = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Teg = (props) => {
+  const { act, data } = useBackend();
   const {
     has_hot_circ,
     has_cold_circ,

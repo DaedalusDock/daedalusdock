@@ -10,8 +10,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const TurbineComputer = (props, context) => {
-  const { act, data } = useBackend(context);
+export const TurbineComputer = (props) => {
+  const { act, data } = useBackend();
   const parts_not_connected = !data.parts_linked && (
     <Modal>
       <Box

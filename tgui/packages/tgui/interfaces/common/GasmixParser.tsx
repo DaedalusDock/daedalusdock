@@ -18,7 +18,7 @@ type GasmixParserProps = {
   pressureOnClick?: () => void;
 };
 
-export const GasmixParser = (props: GasmixParserProps, context) => {
+export const GasmixParser = (props: GasmixParserProps) => {
   const {
     gasmix,
     gasesOnClick,

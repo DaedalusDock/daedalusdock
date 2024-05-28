@@ -8,8 +8,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const Intellicard = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Intellicard = (props) => {
+  const { act, data } = useBackend();
   const {
     name,
     isDead,

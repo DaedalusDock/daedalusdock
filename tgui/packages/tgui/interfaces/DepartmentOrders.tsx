@@ -52,8 +52,8 @@ const CooldownEstimate = (props) => {
   );
 };
 
-export const DepartmentOrders = (props, context) => {
-  const { data } = useBackend<Info>(context);
+export const DepartmentOrders = (props) => {
+  const { data } = useBackend<Info>();
   const { time_left } = data;
   return (
     <Window title="Department Orders" width={620} height={580}>
@@ -83,8 +83,8 @@ export const DepartmentOrders = (props, context) => {
   );
 };
 
-const CooldownDimmer = (props, context) => {
-  const { act, data } = useBackend<Info>(context);
+const CooldownDimmer = (props) => {
+  const { act, data } = useBackend<Info>();
   const { can_override, time_left } = data;
   return (
     <Dimmer>
@@ -117,14 +117,10 @@ const CooldownDimmer = (props, context) => {
   );
 };
 
-const DepartmentCatalog = (props, context) => {
-  const { act, data } = useBackend<Info>(context);
+const DepartmentCatalog = (props) => {
+  const { act, data } = useBackend<Info>();
   const { supplies } = data;
-  const [tabCategory, setTabCategory] = useLocalState(
-    context,
-    'tabName',
-    supplies[0],
-  );
+  const [tabCategory, setTabCategory] = useLocalState('tabName', supplies[0]);
   return (
     <Stack vertical fill>
       <Stack.Item>

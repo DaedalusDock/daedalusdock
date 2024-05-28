@@ -46,8 +46,8 @@ type Info = {
   objectives: Objective[];
 };
 
-const ObjectivePrintout = (props, context) => {
-  const { data } = useBackend<Info>(context);
+const ObjectivePrintout = (props) => {
+  const { data } = useBackend<Info>();
   const { objectives } = data;
   return (
     <Stack vertical>
@@ -64,8 +64,8 @@ const ObjectivePrintout = (props, context) => {
   );
 };
 
-const IntroductionSection = (props, context) => {
-  const { act, data } = useBackend<Info>(context);
+const IntroductionSection = (props) => {
+  const { act, data } = useBackend<Info>();
   const { hive_name, objectives } = data;
   return (
     <Section
@@ -86,8 +86,8 @@ const IntroductionSection = (props, context) => {
   );
 };
 
-const AbilitiesSection = (props, context) => {
-  const { data } = useBackend<Info>(context);
+const AbilitiesSection = (props) => {
+  const { data } = useBackend<Info>();
   return (
     <Section fill title="Abilities">
       <Stack fill>
@@ -136,11 +136,10 @@ const AbilitiesSection = (props, context) => {
   );
 };
 
-const MemoriesSection = (props, context) => {
-  const { act, data } = useBackend<Info>(context);
+const MemoriesSection = (props) => {
+  const { act, data } = useBackend<Info>();
   const { memories, stolen_antag_info } = data;
   const [selectedMemory, setSelectedMemory] = useSharedState(
-    context,
     'memory',
     (!!memories && memories[0]) || null,
   );
@@ -193,8 +192,8 @@ const MemoriesSection = (props, context) => {
   );
 };
 
-const VictimPatternsSection = (props, context) => {
-  const { data } = useBackend<Info>(context);
+const VictimPatternsSection = (props) => {
+  const { data } = useBackend<Info>();
   const { stolen_antag_info } = data;
   return (
     <Section
@@ -207,8 +206,8 @@ const VictimPatternsSection = (props, context) => {
   );
 };
 
-export const AntagInfoChangeling = (props, context) => {
-  const { data } = useBackend<Info>(context);
+export const AntagInfoChangeling = (props) => {
+  const { data } = useBackend<Info>();
   return (
     <Window width={620} height={580}>
       <Window.Content

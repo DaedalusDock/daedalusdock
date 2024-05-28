@@ -13,8 +13,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const MafiaPanel = (props, context) => {
-  const { act, data } = useBackend(context);
+export const MafiaPanel = (props) => {
+  const { act, data } = useBackend();
   const { actions, phase, roleinfo, role_theme, admin_controls } = data;
   return (
     <Window title="Mafia" theme={role_theme} width={650} height={580}>
@@ -84,8 +84,8 @@ export const MafiaPanel = (props, context) => {
   );
 };
 
-const MafiaLobby = (props, context) => {
-  const { act, data } = useBackend(context);
+const MafiaLobby = (props) => {
+  const { act, data } = useBackend();
   const { lobbydata, phase, timeleft } = data;
   const readyGhosts = lobbydata
     ? lobbydata.filter((player) => player.status === 'Ready')
@@ -144,8 +144,8 @@ const MafiaLobby = (props, context) => {
   );
 };
 
-const MafiaRole = (props, context) => {
-  const { act, data } = useBackend(context);
+const MafiaRole = (props) => {
+  const { act, data } = useBackend();
   const { phase, roleinfo, timeleft } = data;
   return (
     <Section
@@ -191,8 +191,8 @@ const MafiaRole = (props, context) => {
   );
 };
 
-const MafiaListOfRoles = (props, context) => {
-  const { act, data } = useBackend(context);
+const MafiaListOfRoles = (props) => {
+  const { act, data } = useBackend();
   const { all_roles } = data;
   return (
     <Section
@@ -252,8 +252,8 @@ const MafiaListOfRoles = (props, context) => {
   );
 };
 
-const MafiaJudgement = (props, context) => {
-  const { act, data } = useBackend(context);
+const MafiaJudgement = (props) => {
+  const { act, data } = useBackend();
   const { judgement_phase } = data;
   return (
     <Section
@@ -309,8 +309,8 @@ const MafiaJudgement = (props, context) => {
   );
 };
 
-const MafiaPlayers = (props, context) => {
-  const { act, data } = useBackend(context);
+const MafiaPlayers = (props) => {
+  const { act, data } = useBackend();
   const { players } = data;
   return (
     <Section fill scrollable title="Players">
@@ -354,8 +354,8 @@ const MafiaPlayers = (props, context) => {
   );
 };
 
-const MafiaAdmin = (props, context) => {
-  const { act, data } = useBackend(context);
+const MafiaAdmin = (props) => {
+  const { act, data } = useBackend();
   return (
     <Collapsible title="ADMIN CONTROLS" color="red">
       <Section>

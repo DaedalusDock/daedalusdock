@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, Section, Flex, Stack, Divider } from '../components';
 import { Window } from '../layouts';
 
-export const CTFPanel = (props, context) => {
-  const { act, data } = useBackend(context);
+export const CTFPanel = (props) => {
+  const { act, data } = useBackend();
   const teams = data.teams || [];
   const enabled = data.enabled || [];
   return (

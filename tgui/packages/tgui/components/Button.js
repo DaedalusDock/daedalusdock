@@ -39,15 +39,7 @@ export const Button = (props) => {
     ...rest
   } = props;
   const hasContent = !!(content || children);
-  // A warning about the lowercase onclick
-  if (onclick) {
-    logger.warn(
-      `Lowercase 'onclick' is not supported on Button and lowercase` +
-        ` prop names are discouraged in general. Please use a camelCase` +
-        `'onClick' instead and read: ` +
-        `https://infernojs.org/docs/guides/event-handling`,
-    );
-  }
+
   rest.onClick = (e) => {
     if (!disabled && onClick) {
       onClick(e);

@@ -45,11 +45,10 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
 
   getDOMNode() {
     // HACK: We don't want to create a wrapper, as it could break the layout
-    // of consumers, so we do the inferno equivalent of `findDOMNode(this)`.
+    // of consumers, so we use findDOMNode.
     // My attempt to avoid this was a render prop that passed in
     // callbacks to onmouseenter and onmouseleave, but this was unwiedly
     // to consumers, specifically buttons.
-    // This code is copied from `findDOMNode` in inferno-extras.
     // Because this component is written in TypeScript, we will know
     // immediately if this internal variable is removed.
     //

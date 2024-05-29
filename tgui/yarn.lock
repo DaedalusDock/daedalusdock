@@ -641,17 +641,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-jsx@npm:^7":
-  version: 7.12.13
-  resolution: "@babel/plugin-syntax-jsx@npm:7.12.13"
-  dependencies:
-    "@babel/helper-plugin-utils": ^7.12.13
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 30697ad4607a9339b06c2648c2d128ce6865c3d2d14049b422c5ca060d6532978bb1008e086df402d365fda04fbafe9bd4ad9f62d78ef2e7a7063459b59645c0
-  languageName: node
-  linkType: hard
-
 "@babel/plugin-syntax-logical-assignment-operators@npm:^7.10.4, @babel/plugin-syntax-logical-assignment-operators@npm:^7.8.3":
   version: 7.10.4
   resolution: "@babel/plugin-syntax-logical-assignment-operators@npm:7.10.4"
@@ -1299,7 +1288,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7, @babel/types@npm:^7.0.0, @babel/types@npm:^7.14.5, @babel/types@npm:^7.14.8, @babel/types@npm:^7.15.0, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.14.5, @babel/types@npm:^7.14.8, @babel/types@npm:^7.15.0, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
   version: 7.15.0
   resolution: "@babel/types@npm:7.15.0"
   dependencies:
@@ -2555,19 +2544,6 @@ __metadata:
   dependencies:
     object.assign: ^4.1.0
   checksum: c9d24415bcc608d0db7d4c8540d8002ac2f94e2573d2eadced137a29d9eab7e25d2cbb4bc6b9db65cf6ee7430f7dd011d19c911a9a778f0533b4a05ce8292c9b
-  languageName: node
-  linkType: hard
-
-"babel-plugin-inferno@npm:^6.3.0":
-  version: 6.3.0
-  resolution: "babel-plugin-inferno@npm:6.3.0"
-  dependencies:
-    "@babel/plugin-syntax-jsx": ^7
-    "@babel/types": ^7
-  peerDependencies:
-    "@babel/core": ^7
-    inferno: ">=7"
-  checksum: 74b20f53083160a1edb96256881a14c347a1eee4942baa6d0143e8b9e10eecf55fb4ee8f3ff05a45041950df4cb2103820a647f5da2e7cd1766b4c4d13412751
   languageName: node
   linkType: hard
 
@@ -4799,31 +4775,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inferno-shared@npm:7.4.8":
-  version: 7.4.8
-  resolution: "inferno-shared@npm:7.4.8"
-  checksum: d9a3204ce75ee2133d2efb5f4f247d82c087631f900ab088a0c87a0259d4cd4719ace583e1dd88b4bc32cacac975995ee3cc16f6603a620f7cd061e2f7d3d650
-  languageName: node
-  linkType: hard
-
-"inferno-vnode-flags@npm:7.4.8":
-  version: 7.4.8
-  resolution: "inferno-vnode-flags@npm:7.4.8"
-  checksum: 72f26ebb361482a3312a30c89606c1eee85d7c7a790b2614d0d8567291d6cd7079b7536285b749dbfd5ead77e1546a2f4a676692e3fb08eb90eef009cbabbce0
-  languageName: node
-  linkType: hard
-
-"inferno@npm:^7.4.8":
-  version: 7.4.8
-  resolution: "inferno@npm:7.4.8"
-  dependencies:
-    inferno-shared: 7.4.8
-    inferno-vnode-flags: 7.4.8
-    opencollective-postinstall: ^2.0.3
-  checksum: fa814fcb5f7e865ec29ceee00e6e6d7688cd0dcc9db57ab9619d62de08076ee823ee81c4e47ff3fa6632e896817bda1b45ac8a30b60357197ffcc9a1ef9e0ac0
-  languageName: node
-  linkType: hard
-
 "inflight@npm:^1.0.4":
   version: 1.0.6
   resolution: "inflight@npm:1.0.6"
@@ -6562,15 +6513,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"opencollective-postinstall@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "opencollective-postinstall@npm:2.0.3"
-  bin:
-    opencollective-postinstall: index.js
-  checksum: 0a68c5cef135e46d11e665d5077398285d1ce5311c948e8327b435791c409744d4a6bb9c55bd6507fb5f2ef34b0ad920565adcdaf974cbdae701aead6f32b396
-  languageName: node
-  linkType: hard
-
 "opener@npm:^1.5.2":
   version: 1.5.2
   resolution: "opener@npm:1.5.2"
@@ -8259,7 +8201,6 @@ resolve@^2.0.0-next.3:
     "@typescript-eslint/parser": ^4.29.1
     babel-jest: ^27.0.6
     babel-loader: ^8.2.2
-    babel-plugin-inferno: ^6.3.0
     babel-plugin-transform-remove-console: ^6.9.4
     common: "workspace:*"
     css-loader: ^5.2.7
@@ -8269,7 +8210,6 @@ resolve@^2.0.0-next.3:
     eslint-plugin-react: ^7.24.0
     eslint-plugin-unused-imports: ^1.1.4
     file-loader: ^6.2.0
-    inferno: ^7.4.8
     jest: ^27.0.6
     jest-circus: ^27.0.6
     jsdom: ^16.7.0

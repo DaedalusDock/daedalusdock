@@ -59,10 +59,6 @@
     //As of BYOND 515 the path doesn't seem to include tmp dir anymore if you're trying to open tgui in external browser and looking why it doesn't work
     //&& location.pathname.indexOf('/tmp') === 0
 
-  // Version constants
-  Byond.IS_BYOND = isByond;
-  Byond.IS_LTE_IE11 = Byond.TRIDENT !== null && Byond.TRIDENT <= 7;
-
   // Strict mode flag
   Byond.strictMode = Boolean(Number(parseMetaTag('tgui:strictMode')));
 

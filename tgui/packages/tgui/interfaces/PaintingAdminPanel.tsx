@@ -47,7 +47,7 @@ export const PaintingAdminPanel = (props) => {
               height="96px"
               width="96px"
               style={{
-                'vertical-align': 'middle',
+                verticalAlign: 'middle',
                 '-ms-interpolation-mode': 'nearest-neighbor',
               }}
             />
@@ -161,7 +161,7 @@ export const PaintingAdminPanel = (props) => {
                     height="36px"
                     width="36px"
                     style={{
-                      'vertical-align': 'middle',
+                      verticalAlign: 'middle',
                       '-ms-interpolation-mode': 'nearest-neighbor',
                     }}
                   />

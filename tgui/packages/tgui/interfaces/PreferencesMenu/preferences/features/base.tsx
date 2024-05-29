@@ -70,7 +70,7 @@ export const FeatureColorInput = (props: FeatureValueProps<string>) => {
                 ? props.value
                 : `#${props.value}`,
               border: '2px solid white',
-              'box-sizing': 'content-box',
+              boxSizing: 'content-box',
               height: '11px',
               width: '11px',
               ...(props.shrink
@@ -389,7 +389,7 @@ export const FeatureTriColorInput = (props: FeatureValueProps<string[]>) => {
                     ? props.value[index]
                     : `#${props.value[index]}`,
                   border: '2px solid white',
-                  'box-sizing': 'content-box',
+                  boxSizing: 'content-box',
                   height: '11px',
                   width: '11px',
                   ...(props.shrink

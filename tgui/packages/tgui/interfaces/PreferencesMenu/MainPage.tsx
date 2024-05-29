@@ -151,10 +151,10 @@ const ChoicedSelection = (props: {
             <Stack.Item grow>
               <Box
                 style={{
-                  'border-bottom': '1px solid #888',
-                  'font-weight': 'bold',
-                  'font-size': '14px',
-                  'text-align': 'center',
+                  borderBottom: '1px solid #888',
+                  fontWeight: 'bold',
+                  fontSize: '14px',
+                  textAlign: 'center',
                 }}
               >
                 Select {props.name.toLowerCase()}
@@ -421,7 +421,7 @@ const PreferenceList = (props: {
                   <Box
                     as="span"
                     style={{
-                      'border-bottom': '2px dotted rgba(255, 255, 255, 0.8)',
+                      borderBottom: '2px dotted rgba(255, 255, 255, 0.8)',
                     }}
                   >
                     {name}:

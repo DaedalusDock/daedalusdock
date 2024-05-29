@@ -38,8 +38,8 @@ export const ProgressBar = (props) => {
   } else {
     // Otherwise, set styles directly.
     outerProps.style =
-      (outerProps.style || '') + `border-color: ${effectiveColor};`;
-    fillStyles['background-color'] = effectiveColor;
+      (outerProps.style || '') + `borderClor: ${effectiveColor};`;
+    fillStyles['backgroundColor'] = effectiveColor;
   }
 
   return (

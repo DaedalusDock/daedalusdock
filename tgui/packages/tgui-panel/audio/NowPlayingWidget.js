@@ -26,9 +26,9 @@ export const NowPlayingWidget = (props) => {
             mx={0.5}
             grow={1}
             style={{
-              'white-space': 'nowrap',
+              whiteSpace: 'nowrap',
               overflow: 'hidden',
-              'text-overflow': 'ellipsis',
+              textOverflow: 'ellipsis',
             }}
           >
             {title || 'Unknown Track'}

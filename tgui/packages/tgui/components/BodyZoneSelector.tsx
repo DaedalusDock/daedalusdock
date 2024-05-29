@@ -128,7 +128,7 @@ export class BodyZoneSelector extends Component<
             src={resolveAsset(`body_zones.${selectedZone}.png`)}
             style={{
               '-ms-interpolation-mode': 'nearest-neighbor',
-              'pointer-events': 'none',
+              pointerEvents: 'none',
               position: 'absolute',
               width: `${32 * scale}px`,
               height: `${32 * scale}px`,
@@ -143,7 +143,7 @@ export class BodyZoneSelector extends Component<
             style={{
               '-ms-interpolation-mode': 'nearest-neighbor',
               opacity: 0.5,
-              'pointer-events': 'none',
+              pointerEvents: 'none',
               position: 'absolute',
               width: `${32 * scale}px`,
               height: `${32 * scale}px`,

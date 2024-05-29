@@ -132,36 +132,36 @@ const styleMapperByPropName = {
   // Direct mapping
   position: mapRawPropTo('position'),
   overflow: mapRawPropTo('overflow'),
-  overflowX: mapRawPropTo('overflow-x'),
-  overflowY: mapRawPropTo('overflow-y'),
+  overflowX: mapRawPropTo('overflowX'),
+  overflowY: mapRawPropTo('overflowY'),
   top: mapUnitPropTo('top', unit),
   bottom: mapUnitPropTo('bottom', unit),
   left: mapUnitPropTo('left', unit),
   right: mapUnitPropTo('right', unit),
   width: mapUnitPropTo('width', unit),
-  minWidth: mapUnitPropTo('min-width', unit),
-  maxWidth: mapUnitPropTo('max-width', unit),
+  minWidth: mapUnitPropTo('minWidth', unit),
+  maxWidth: mapUnitPropTo('maxWidth', unit),
   height: mapUnitPropTo('height', unit),
-  minHeight: mapUnitPropTo('min-height', unit),
-  maxHeight: mapUnitPropTo('max-height', unit),
-  fontSize: mapUnitPropTo('font-size', unit),
-  fontFamily: mapRawPropTo('font-family'),
+  minHeight: mapUnitPropTo('minHeight', unit),
+  maxHeight: mapUnitPropTo('maxHeight', unit),
+  fontSize: mapUnitPropTo('fontSize', unit),
+  fontFamily: mapRawPropTo('fontFamily'),
   lineHeight: (style, value) => {
     if (typeof value === 'number') {
-      style['line-height'] = value;
+      style['lineHeight'] = value;
     } else if (typeof value === 'string') {
-      style['line-height'] = unit(value);
+      style['lineHeight'] = unit(value);
     }
   },
   opacity: mapRawPropTo('opacity'),
-  textAlign: mapRawPropTo('text-align'),
-  verticalAlign: mapRawPropTo('vertical-align'),
+  textAlign: mapRawPropTo('textAlign'),
+  verticalAlign: mapRawPropTo('verticalAlign'),
   // Boolean props
   inline: mapBooleanPropTo('display', 'inline-block'),
-  bold: mapBooleanPropTo('font-weight', 'bold'),
-  italic: mapBooleanPropTo('font-style', 'italic'),
-  nowrap: mapBooleanPropTo('white-space', 'nowrap'),
-  preserveWhitespace: mapBooleanPropTo('white-space', 'pre-wrap'),
+  bold: mapBooleanPropTo('fontWeight', 'bold'),
+  italic: mapBooleanPropTo('fontStyle', 'italic'),
+  nowrap: mapBooleanPropTo('whiteSpace', 'nowrap'),
+  preserveWhitespace: mapBooleanPropTo('whiteSpace', 'pre-wrap'),
   // Margins
   m: mapDirectionalUnitPropTo('margin', halfUnit, [
     'top',
@@ -171,10 +171,10 @@ const styleMapperByPropName = {
   ]),
   mx: mapDirectionalUnitPropTo('margin', halfUnit, ['left', 'right']),
   my: mapDirectionalUnitPropTo('margin', halfUnit, ['top', 'bottom']),
-  mt: mapUnitPropTo('margin-top', halfUnit),
-  mb: mapUnitPropTo('margin-bottom', halfUnit),
-  ml: mapUnitPropTo('margin-left', halfUnit),
-  mr: mapUnitPropTo('margin-right', halfUnit),
+  mt: mapUnitPropTo('marginTop', halfUnit),
+  mb: mapUnitPropTo('marginBottom', halfUnit),
+  ml: mapUnitPropTo('marginLeft', halfUnit),
+  mr: mapUnitPropTo('marginRight', halfUnit),
   // Margins
   p: mapDirectionalUnitPropTo('padding', halfUnit, [
     'top',
@@ -184,14 +184,14 @@ const styleMapperByPropName = {
   ]),
   px: mapDirectionalUnitPropTo('padding', halfUnit, ['left', 'right']),
   py: mapDirectionalUnitPropTo('padding', halfUnit, ['top', 'bottom']),
-  pt: mapUnitPropTo('padding-top', halfUnit),
-  pb: mapUnitPropTo('padding-bottom', halfUnit),
-  pl: mapUnitPropTo('padding-left', halfUnit),
-  pr: mapUnitPropTo('padding-right', halfUnit),
+  pt: mapUnitPropTo('paddingTop', halfUnit),
+  pb: mapUnitPropTo('paddingBottom', halfUnit),
+  pl: mapUnitPropTo('paddingLeft', halfUnit),
+  pr: mapUnitPropTo('paddingRight', halfUnit),
   // Color props
   color: mapColorPropTo('color'),
   textColor: mapColorPropTo('color'),
-  backgroundColor: mapColorPropTo('background-color'),
+  backgroundColor: mapColorPropTo('backgroundColor'),
   // Utility props
   fillPositionedParent: (style, value) => {
     if (value) {

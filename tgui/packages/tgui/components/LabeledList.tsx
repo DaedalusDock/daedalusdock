@@ -86,8 +86,8 @@ const LabeledListDivider = (props: LabeledListDividerProps) => {
       <td
         colSpan={3}
         style={{
-          'padding-top': padding,
-          'padding-bottom': padding,
+          paddingTop: padding,
+          paddingBottom: padding,
         }}
       >
         <Divider />

@@ -18,7 +18,7 @@ export const Icon = (props) => {
     if (!rest.style) {
       rest.style = {};
     }
-    rest.style['font-size'] = size * 100 + '%';
+    rest.style['fontSize'] = size * 100 + '%';
   }
   if (typeof rotation === 'number') {
     if (!rest.style) {

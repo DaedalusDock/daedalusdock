@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "tgui",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "dependencies": {
     "@popperjs/core": "^2.9.3",
     "@types/react": "^18.3.3",

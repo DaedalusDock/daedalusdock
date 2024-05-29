@@ -1,5 +1,5 @@
 import { classes } from 'common/react';
-import { InfernoNode } from 'inferno';
+import { ReactNode } from 'react';
 import { sendAct, useBackend, useLocalState } from '../../backend';
 import {
   Autofocus,
@@ -414,7 +414,7 @@ const PreferenceList = (props: {
               );
             }
 
-            let name: InfernoNode = feature.name;
+            let name: ReactNode = feature.name;
             if (feature.description) {
               name = (
                 <Tooltip content={feature.description} position="bottom-start">

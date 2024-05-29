@@ -1,5 +1,5 @@
 import { Section, Button, Dropdown, Stack, Box, Input } from '../../components';
-import { Component } from 'inferno';
+import { Component } from 'react';
 import { shallowDiffers } from 'common/react';
 import { fetchRetry } from '../../http';
 import { resolveAsset } from '../../assets';

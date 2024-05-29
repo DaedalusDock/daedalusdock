@@ -5,8 +5,8 @@
  */
 
 import { KEY_ENTER, KEY_ESCAPE, KEY_SPACE } from 'common/keycodes';
-import { classes, pureComponentHooks } from 'common/react';
-import { Component, createRef } from 'inferno';
+import { classes } from 'common/react';
+import { Component, createRef } from 'react';
 import { createLogger } from '../logging';
 import { Box, computeBoxClassName, computeBoxProps } from './Box';
 import { Icon } from './Icon';
@@ -134,8 +134,6 @@ export const Button = (props) => {
 
   return buttonContent;
 };
-
-Button.defaultHooks = pureComponentHooks;
 
 export const ButtonCheckbox = (props) => {
   const { checked, ...rest } = props;

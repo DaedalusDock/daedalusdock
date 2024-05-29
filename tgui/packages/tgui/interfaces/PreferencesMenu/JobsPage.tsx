@@ -1,6 +1,6 @@
 import { sortBy } from 'common/collections';
 import { classes } from 'common/react';
-import { InfernoNode, SFC } from 'inferno';
+import { FC, ReactNode } from 'react';
 import { useBackend } from '../../backend';
 import { Box, Button, Dropdown, Stack, Tooltip } from '../../components';
 import { logger } from '../../logging';
@@ -196,7 +196,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
     : name;
   // PARIAH EDIT END
 
-  let rightSide: InfernoNode;
+  let rightSide: ReactNode;
 
   if (experienceNeeded) {
     const { experience_type, required_playtime } = experienceNeeded;
@@ -282,7 +282,9 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
   );
 };
 
-const Department: SFC<{ department: string }> = (props) => {
+const Department: FC<{ department: string; children?: ReactNode }> = (
+  props,
+) => {
   const { children, department: name } = props;
   const className = `PreferencesMenu__Jobs__departments--${name}`;
   logger.log(name + ': ' + className);

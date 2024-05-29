@@ -1,7 +1,7 @@
 import { useBackend } from '../../backend';
 import { Window } from '../../layouts';
 import { GenericUplink, Item } from './GenericUplink';
-import { Component } from 'inferno';
+import { Component } from 'react';
 import { fetchRetry } from '../../http';
 import { resolveAsset } from '../../assets';
 import { BooleanLike } from 'common/react';

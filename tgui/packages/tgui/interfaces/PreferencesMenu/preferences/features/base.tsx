@@ -1,7 +1,6 @@
 import { sortBy, sortStrings } from 'common/collections';
 import { BooleanLike, classes } from 'common/react';
-import { ComponentType, createComponentVNode, InfernoNode } from 'inferno';
-import { VNodeFlags } from 'inferno-vnode-flags';
+import { ComponentType, createElement, ReactNode } from 'react';
 import { sendAct, useBackend, useLocalState } from '../../../../backend';
 import {
   Box,
@@ -15,7 +14,7 @@ import {
 import { createSetPreference, PreferencesMenuData } from '../../data';
 import { ServerPreferencesFetcher } from '../../ServerPreferencesFetcher';
 
-export const sortChoices = sortBy<[string, InfernoNode]>(([name]) => name);
+export const sortChoices = sortBy<[string, ReactNode]>(([name]) => name);
 
 export type Feature<
   TReceiving,
@@ -118,7 +117,7 @@ export const CheckboxInputInverse = (
 
 export const createDropdownInput = <T extends string | number = string>(
   // Map of value to display texts
-  choices: Record<T, InfernoNode>,
+  choices: Record<T, ReactNode>,
   dropdownProps?: Record<T, unknown>,
 ): FeatureValue<T> => {
   return (props: FeatureValueProps<T>) => {
@@ -156,7 +155,7 @@ const capitalizeFirstLetter = (text: string) =>
 export const StandardizedDropdown = (props: {
   choices: string[];
   disabled?: boolean;
-  displayNames: Record<string, InfernoNode>;
+  displayNames: Record<string, ReactNode>;
   onSetValue: (newValue: string) => void;
   value: string;
 }) => {
@@ -242,7 +241,7 @@ export const FeatureIconnedDropdownInput = (
 
   const displayNames = Object.fromEntries(
     Object.entries(textNames).map(([choice, textName]) => {
-      let element: InfernoNode = textName;
+      let element: ReactNode = textName;
 
       if (icons && icons[choice]) {
         const icon = icons[choice];
@@ -329,19 +328,15 @@ export const FeatureValueInput = (props: {
   return (
     <ServerPreferencesFetcher
       render={(serverData) => {
-        return createComponentVNode(
-          VNodeFlags.ComponentUnknown,
-          feature.component,
-          {
-            act: props.act,
-            featureId: props.featureId,
-            serverData: serverData && serverData[props.featureId],
-            shrink: props.shrink,
+        return createElement(feature.component, {
+          act: props.act,
+          featureId: props.featureId,
+          serverData: serverData?.[props.featureId] as any,
+          shrink: props.shrink,
 
-            handleSetValue: changeValue,
-            value: predictedValue,
-          },
-        );
+          handleSetValue: changeValue,
+          value: predictedValue,
+        });
       }}
     />
   );

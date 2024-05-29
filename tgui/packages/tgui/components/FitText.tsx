@@ -1,4 +1,4 @@
-import { Component, createRef, RefObject } from 'inferno';
+import { Component, createRef, RefObject } from 'react';
 
 const DEFAULT_ACCEPTABLE_DIFFERENCE = 5;
 

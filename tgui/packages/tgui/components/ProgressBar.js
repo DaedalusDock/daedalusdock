@@ -54,5 +54,3 @@ export const ProgressBar = (props) => {
     </div>
   );
 };
-
-ProgressBar.defaultHooks = pureComponentHooks;

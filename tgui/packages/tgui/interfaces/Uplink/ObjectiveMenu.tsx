@@ -1,5 +1,5 @@
 import { BooleanLike, classes } from 'common/react';
-import { Component } from 'inferno';
+import { Component } from 'react';
 import {
   Section,
   Stack,

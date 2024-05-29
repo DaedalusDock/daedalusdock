@@ -196,8 +196,6 @@ export const AreaCharge = (props) => {
   );
 };
 
-AreaCharge.defaultHooks = pureComponentHooks;
-
 const AreaStatusColorBox = (props) => {
   const { status } = props;
   const power = Boolean(status & 2);
@@ -211,5 +209,3 @@ const AreaStatusColorBox = (props) => {
     />
   );
 };
-
-AreaStatusColorBox.defaultHooks = pureComponentHooks;

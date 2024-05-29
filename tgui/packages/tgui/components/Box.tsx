@@ -4,16 +4,15 @@
  * @license MIT
  */
 
-import { BooleanLike, classes, pureComponentHooks } from 'common/react';
-import { createVNode, InfernoNode, SFC } from 'inferno';
-import { ChildFlags, VNodeFlags } from 'inferno-vnode-flags';
+import { BooleanLike, classes } from 'common/react';
+import { createElement, HTMLAttributes, ReactNode } from 'react';
 import { CSS_COLORS } from '../constants';
 
 export interface BoxProps {
   [key: string]: any;
   as?: string;
   className?: string | BooleanLike;
-  children?: InfernoNode;
+  children?: ReactNode;
   position?: string | BooleanLike;
   overflow?: string | BooleanLike;
   overflowX?: string | BooleanLike;
@@ -208,13 +207,13 @@ export const computeBoxProps = (props: BoxProps) => {
   const computedProps: HTMLAttributes<any> = {};
   const computedStyles = {};
   // Compute props
-  for (let propName of Object.keys(props)) {
+  for (let propName in props) {
     if (propName === 'style') {
       continue;
     }
     // IE8: onclick workaround
     if (Byond.IS_LTE_IE8 && propName === 'onClick') {
-      computedProps.onclick = props[propName];
+      computedProps.onClick = props[propName];
       continue;
     }
     const propValue = props[propName];
@@ -225,21 +224,11 @@ export const computeBoxProps = (props: BoxProps) => {
       computedProps[propName] = propValue;
     }
   }
-  // Concatenate styles
-  let style = '';
-  for (let attrName of Object.keys(computedStyles)) {
-    const attrValue = computedStyles[attrName];
-    style += attrName + ':' + attrValue + ';';
-  }
+
   if (props.style) {
-    for (let attrName of Object.keys(props.style)) {
-      const attrValue = props.style[attrName];
-      style += attrName + ':' + attrValue + ';';
-    }
+    computedProps.style = { ...computedProps.style, ...props.style };
   }
-  if (style.length > 0) {
-    computedProps.style = style;
-  }
+
   return computedProps;
 };
 
@@ -252,27 +241,26 @@ export const computeBoxClassName = (props: BoxProps) => {
   ]);
 };
 
-export const Box: SFC<BoxProps> = (props: BoxProps) => {
+export const Box = (props: BoxProps) => {
   const { as = 'div', className, children, ...rest } = props;
-  // Render props
-  if (typeof children === 'function') {
-    return children(computeBoxProps(props));
-  }
-  const computedClassName =
-    typeof className === 'string'
-      ? className + ' ' + computeBoxClassName(rest)
-      : computeBoxClassName(rest);
+
+  // Compute class name and styles
+  const computedClassName = className
+    ? `${className} ${computeBoxClassName(rest)}`
+    : computeBoxClassName(rest);
   const computedProps = computeBoxProps(rest);
-  // Render a wrapper element
-  return createVNode(
-    VNodeFlags.HtmlElement,
-    as,
-    computedClassName,
+
+  if (as === 'img') {
+    computedProps.style!['-ms-interpolation-mode'] = 'nearest-neighbor';
+  }
+
+  // Render the component
+  return createElement(
+    typeof as === 'string' ? as : 'div',
+    {
+      ...computedProps,
+      className: computedClassName,
+    },
     children,
-    ChildFlags.UnknownChildren,
-    computedProps,
-    undefined,
   );
 };
-
-Box.defaultHooks = pureComponentHooks;

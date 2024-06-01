@@ -15,8 +15,7 @@ export const SETTINGS_TABS = [
   },
 ];
 
-
-export const FONTS_DISABLED = "System Default";
+export const FONTS_DISABLED = 'System Default';
 
 export const FONTS = [
   'Times New Roman', // By placing this at index zero, it is the default for our server

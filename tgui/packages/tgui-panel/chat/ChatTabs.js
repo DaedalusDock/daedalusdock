@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { useDispatch, useSelector } from 'common/redux';
+import { useDispatch, useSelector } from 'tgui/backend';
 import { Box, Tabs, Flex, Button } from 'tgui/components';
 import { changeChatPage, addChatPage } from './actions';
 import { selectChatPages, selectCurrentChatPage } from './selectors';
@@ -15,33 +15,41 @@ const UnreadCountWidget = ({ value }) => (
     style={{
       'font-size': '0.7em',
       'border-radius': '0.25em',
-      'width': '1.7em',
+      width: '1.7em',
       'line-height': '1.55em',
       'background-color': 'crimson',
-      'color': '#fff',
-    }}>
+      color: '#fff',
+    }}
+  >
     {Math.min(value, 99)}
   </Box>
 );
 
-export const ChatTabs = (props, context) => {
-  const pages = useSelector(context, selectChatPages);
-  const currentPage = useSelector(context, selectCurrentChatPage);
-  const dispatch = useDispatch(context);
+export const ChatTabs = (props) => {
+  const pages = useSelector(selectChatPages);
+  const currentPage = useSelector(selectCurrentChatPage);
+  const dispatch = useDispatch();
   return (
     <Flex align="center">
       <Flex.Item>
         <Tabs textAlign="center">
-          {pages.map(page => (
+          {pages.map((page) => (
             <Tabs.Tab
               key={page.id}
               selected={page === currentPage}
-              rightSlot={page.unreadCount > 0 && (
-                <UnreadCountWidget value={page.unreadCount} />
-              )}
-              onClick={() => dispatch(changeChatPage({
-                pageId: page.id,
-              }))}>
+              rightSlot={
+                page.unreadCount > 0 && (
+                  <UnreadCountWidget value={page.unreadCount} />
+                )
+              }
+              onClick={() =>
+                dispatch(
+                  changeChatPage({
+                    pageId: page.id,
+                  }),
+                )
+              }
+            >
               {page.name}
             </Tabs.Tab>
           ))}
@@ -54,7 +62,8 @@ export const ChatTabs = (props, context) => {
           onClick={() => {
             dispatch(addChatPage());
             dispatch(openChatSettings());
-          }} />
+          }}
+        />
       </Flex.Item>
     </Flex>
   );

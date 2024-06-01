@@ -1,14 +1,18 @@
 import { useBackend } from '../backend';
 import { formatSiUnit } from '../format';
-import { Button, LabeledList, NumberInput, Section, ProgressBar } from '../components';
+import {
+  Button,
+  LabeledList,
+  NumberInput,
+  Section,
+  ProgressBar,
+} from '../components';
 import { Window } from '../layouts';
 
-export const AtmosMixer = (props, context) => {
-  const { act, data } = useBackend(context);
+export const AtmosMixer = (props) => {
+  const { act, data } = useBackend();
   return (
-    <Window
-      width={370}
-      height={179}>
+    <Window width={370} height={179}>
       <Window.Content>
         <Section>
           <LabeledList>
@@ -17,7 +21,8 @@ export const AtmosMixer = (props, context) => {
                 icon={data.on ? 'power-off' : 'times'}
                 content={data.on ? 'On' : 'Off'}
                 selected={data.on}
-                onClick={() => act('power')} />
+                onClick={() => act('power')}
+              />
             </LabeledList.Item>
             <LabeledList.Item label="Output Pressure">
               <NumberInput
@@ -28,17 +33,23 @@ export const AtmosMixer = (props, context) => {
                 minValue={0}
                 maxValue={data.max_pressure}
                 step={10}
-                onChange={(e, value) => act('pressure', {
-                  pressure: value,
-                })} />
+                onChange={(e, value) =>
+                  act('pressure', {
+                    pressure: value,
+                  })
+                }
+              />
               <Button
                 ml={1}
                 icon="plus"
                 content="Max"
                 disabled={data.set_pressure === data.max_pressure}
-                onClick={() => act('pressure', {
-                  pressure: 'max',
-                })} />
+                onClick={() =>
+                  act('pressure', {
+                    pressure: 'max',
+                  })
+                }
+              />
             </LabeledList.Item>
             <LabeledList.Item label="Main Node" labelColor="green">
               <NumberInput
@@ -49,9 +60,12 @@ export const AtmosMixer = (props, context) => {
                 minValue={0}
                 maxValue={100}
                 stepPixelSize={2}
-                onDrag={(e, value) => act('node1', {
-                  concentration: value,
-                })} />
+                onDrag={(e, value) =>
+                  act('node1', {
+                    concentration: value,
+                  })
+                }
+              />
             </LabeledList.Item>
             <LabeledList.Item label="Side Node" labelColor="blue">
               <NumberInput
@@ -62,9 +76,12 @@ export const AtmosMixer = (props, context) => {
                 minValue={0}
                 maxValue={100}
                 stepPixelSize={2}
-                onDrag={(e, value) => act('node2', {
-                  concentration: value,
-                })} />
+                onDrag={(e, value) =>
+                  act('node2', {
+                    concentration: value,
+                  })
+                }
+              />
             </LabeledList.Item>
             <LabeledList.Item label="Power Usage">
               <ProgressBar

@@ -45,8 +45,7 @@
 /area/misc/cordon
 	name = "CORDON"
 	icon_state = "cordon"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 	area_flags = UNIQUE_AREA|NOTELEPORT|HIDDEN_AREA|NO_ALERTS
 	requires_power = FALSE
 

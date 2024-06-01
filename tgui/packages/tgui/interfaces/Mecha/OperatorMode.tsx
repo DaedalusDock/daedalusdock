@@ -9,13 +9,9 @@ import { UtilityModulesPane } from './UtilityModulesPane';
 import { PowerModulesPane } from './PowerModulesPane';
 import { ArmPane } from './ArmPane';
 
-export const OperatorMode = (props, context) => {
-  const { act, data } = useBackend<OperatorData>(context);
-  const {
-    left_arm_weapon,
-    right_arm_weapon,
-    mech_view,
-  } = data;
+export const OperatorMode = (props) => {
+  const { act, data } = useBackend<OperatorData>();
+  const { left_arm_weapon, right_arm_weapon, mech_view } = data;
   return (
     <Stack fill>
       <Stack.Item grow>
@@ -45,7 +41,7 @@ export const OperatorMode = (props, context) => {
               params={{
                 id: mech_view,
                 zoom: 5,
-                type: "map",
+                type: 'map',
               }}
             />
           </Stack.Item>

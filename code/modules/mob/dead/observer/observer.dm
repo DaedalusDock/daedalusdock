@@ -817,7 +817,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!SSpoints_of_interest.is_valid_poi(chosen_target))
 		return
 
-	do_observe(chosen_target)
+	if(!client || client.restricted_mode)
+		ManualFollow(chosen_target)
+	else
+		do_observe(chosen_target)
 
 /mob/dead/observer/proc/do_observe(mob/mob_eye)
 	//Istype so we filter out points of interest that are not mobs

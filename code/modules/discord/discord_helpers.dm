@@ -45,13 +45,9 @@
 
 /**
  * Checks if the the given ckey has a valid discord link
- *
- * Arguments:
- * * ckey The ckey as a string
- *
  * Returns: TRUE if valid, FALSE if invalid or missing
  */
-/client/proc/discord_is_link_valid(ckey)
+/client/proc/discord_is_link_valid()
 	var/datum/discord_link_record/link = find_discord_link_by_ckey(ckey, timebound = FALSE) //We need their persistent link.
 	if(link)
 		return link.valid

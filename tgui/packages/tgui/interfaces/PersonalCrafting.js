@@ -1,9 +1,17 @@
 import { useBackend, useLocalState } from '../backend';
-import { Button, Dimmer, Icon, LabeledList, Section, Stack, Tabs } from '../components';
+import {
+  Button,
+  Dimmer,
+  Icon,
+  LabeledList,
+  Section,
+  Stack,
+  Tabs,
+} from '../components';
 import { Window } from '../layouts';
 
-export const PersonalCrafting = (props, context) => {
-  const { act, data } = useBackend(context);
+export const PersonalCrafting = (props) => {
+  const { act, data } = useBackend();
   const { busy, display_craftable_only, display_compact } = data;
   const crafting_recipes = data.crafting_recipes || {};
   // Sort everything into flat categories
@@ -48,7 +56,7 @@ export const PersonalCrafting = (props, context) => {
     }
   }
   // Sort out the tab state
-  const [tab, setTab] = useLocalState(context, 'tab', categories[0]?.name);
+  const [tab, setTab] = useLocalState('tab', categories[0]?.name);
   const shownRecipes = recipes.filter((recipe) => recipe.category === tab);
   return (
     <Window title="Crafting Menu" width={700} height={700}>
@@ -68,7 +76,8 @@ export const PersonalCrafting = (props, context) => {
                         category: category.category,
                         subcategory: category.subcategory,
                       });
-                    }}>
+                    }}
+                  >
                     {category.name}
                   </Tabs.Tab>
                 ))}
@@ -92,7 +101,8 @@ export const PersonalCrafting = (props, context) => {
                     onClick={() => act('toggle_recipes')}
                   />
                 </>
-              }>
+              }
+            >
               <Section fill scrollable>
                 {busy ? (
                   <Dimmer fontSize="32px">
@@ -111,9 +121,9 @@ export const PersonalCrafting = (props, context) => {
   );
 };
 
-const CraftingList = (props, context) => {
+const CraftingList = (props) => {
   const { craftables = [] } = props;
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { craftability = {}, display_compact, display_craftable_only } = data;
   return craftables.map((craftable) => {
     if (display_craftable_only && !craftability[craftable.ref]) {
@@ -138,9 +148,11 @@ const CraftingList = (props, context) => {
               onClick={() =>
                 act('make', {
                   recipe: craftable.ref,
-                })}
+                })
+              }
             />
-          }>
+          }
+        >
           {craftable.req_text}
         </LabeledList.Item>
       );
@@ -159,9 +171,11 @@ const CraftingList = (props, context) => {
             onClick={() =>
               act('make', {
                 recipe: craftable.ref,
-              })}
+              })
+            }
           />
-        }>
+        }
+      >
         <LabeledList>
           {!!craftable.req_text && (
             <LabeledList.Item label="Required">

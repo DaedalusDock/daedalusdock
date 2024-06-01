@@ -53,9 +53,10 @@
 			return
 		if(LAZYACCESS(modifiers, ALT_CLICK))
 			var/turf/T = get_turf(object)
-			if(get_area(T) != storedarea)
+			var/area/old_area = get_area(T)
+			if(old_area != storedarea)
 				log_admin("Build Mode: [key_name(c)] added [AREACOORD(T)] to [storedarea]")
-				storedarea.contents.Add(T)
+				T.change_area(old_area, storedarea)
 			return
 		return ..()
 	else if(LAZYACCESS(modifiers, RIGHT_CLICK))
@@ -71,6 +72,6 @@
 		if(choice != "Yes")
 			return
 		for(var/turf/T in block(get_turf(cornerA),get_turf(cornerB)))
-			storedarea.contents.Add(T)
+			T.change_area(T.loc, storedarea)
 		log_admin("Build Mode: [key_name(c)] set the area of the region from [AREACOORD(cornerA)] through [AREACOORD(cornerB)] to [storedarea].")
 

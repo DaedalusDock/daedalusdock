@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, Dimmer, Icon, Section, Stack } from '../components';
 import { NtosWindow } from '../layouts';
 
-const NoIDDimmer = (props, context) => {
-  const { act, data } = useBackend(context);
+const NoIDDimmer = (props) => {
+  const { act, data } = useBackend();
   const { owner } = data;
   return (
     <Stack>
@@ -13,11 +13,7 @@ const NoIDDimmer = (props, context) => {
             <Stack.Item>
               <Stack ml={-2}>
                 <Stack.Item>
-                  <Icon
-                    color="red"
-                    name="address-card"
-                    size={10}
-                  />
+                  <Icon color="red" name="address-card" size={10} />
                 </Stack.Item>
               </Stack>
             </Stack.Item>
@@ -31,8 +27,8 @@ const NoIDDimmer = (props, context) => {
   );
 };
 
-export const NtosMessenger = (props, context) => {
-  const { act, data } = useBackend(context);
+export const NtosMessenger = (props) => {
+  const { act, data } = useBackend();
   const {
     owner,
     messages = [],
@@ -63,38 +59,33 @@ export const NtosMessenger = (props, context) => {
                 onClick={() => act('PDA_clearMessages')}
               />
             </Section>
-            {messages.map(message => (
+            {messages.map((message) => (
               <Stack vertical key={message} mt={1}>
                 <Section fill textAlign="left">
                   <Box italic opacity={0.5}>
-                    {message.outgoing ? (
-                      "(OUTGOING)"
-                    ) : (
-                      "(INCOMING)"
-                    )}
+                    {message.outgoing ? '(OUTGOING)' : '(INCOMING)'}
                   </Box>
                   {/* Automated or outgoing, don't give a reply link, as
-                    * the reply address may not actually be valid.
-                    */}
+                   * the reply address may not actually be valid.
+                   */}
                   {message.outgoing || message.automated ? (
-                    <Box bold>
-                      {message.name + " (" + message.job + ")"}
-                    </Box>
+                    <Box bold>{message.name + ' (' + message.job + ')'}</Box>
                   ) : (
-                    <Button transparent
-                      content={message.name + " (" + message.job + ")"}
-                      onClick={() => act('PDA_sendMessage', {
-                        name: message.name,
-                        job: message.job,
-                        target_addr: message.target_addr,
-                      })}
+                    <Button
+                      transparent
+                      content={message.name + ' (' + message.job + ')'}
+                      onClick={() =>
+                        act('PDA_sendMessage', {
+                          name: message.name,
+                          job: message.job,
+                          target_addr: message.target_addr,
+                        })
+                      }
                     />
                   )}
                 </Section>
                 <Section mt={-1}>
-                  <Box italic>
-                    {message.contents}
-                  </Box>
+                  <Box italic>{message.contents}</Box>
                 </Section>
               </Stack>
             ))}
@@ -127,7 +118,11 @@ export const NtosMessenger = (props, context) => {
               />
               <Button
                 icon="address-card"
-                content={sending_and_receiving ? "Send / Receive: On" : "Send / Receive: Off"}
+                content={
+                  sending_and_receiving
+                    ? 'Send / Receive: On'
+                    : 'Send / Receive: Off'
+                }
                 onClick={() => act('PDA_sAndR')}
               />
               <Button
@@ -142,7 +137,7 @@ export const NtosMessenger = (props, context) => {
               />
               <Button
                 icon="sort"
-                content={`Sort by: ${sortByJob ? "Job" : "Name"}`}
+                content={`Sort by: ${sortByJob ? 'Job' : 'Name'}`}
                 onClick={() => act('PDA_changeSortStyle')}
               />
               <Button
@@ -154,7 +149,7 @@ export const NtosMessenger = (props, context) => {
                 <Button
                   icon="bug"
                   color="bad"
-                  content={`Attach Virus: ${sending_virus ? "Yes" : "No"}`}
+                  content={`Attach Virus: ${sending_virus ? 'Yes' : 'No'}`}
                   onClick={() => act('PDA_toggleVirus')}
                 />
               )}
@@ -170,15 +165,18 @@ export const NtosMessenger = (props, context) => {
         <Stack vertical mt={1}>
           <Section fill>
             <Stack vertical>
-              {messengers.map(messenger => (
+              {messengers.map((messenger) => (
                 <Button
                   key={messenger.target_addr}
                   fluid
-                  onClick={() => act('PDA_sendMessage', {
-                    name: messenger.name,
-                    job: messenger.job,
-                    target_addr: messenger.target_addr,
-                  })}>
+                  onClick={() =>
+                    act('PDA_sendMessage', {
+                      name: messenger.name,
+                      job: messenger.job,
+                      target_addr: messenger.target_addr,
+                    })
+                  }
+                >
                   {messenger.name} ({messenger.job})
                 </Button>
               ))}
@@ -193,9 +191,7 @@ export const NtosMessenger = (props, context) => {
             )}
           </Section>
         </Stack>
-        {(!owner && !isSilicon) && (
-          <NoIDDimmer />
-        )}
+        {!owner && !isSilicon && <NoIDDimmer />}
       </NtosWindow.Content>
     </NtosWindow>
   );

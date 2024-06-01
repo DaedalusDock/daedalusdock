@@ -44,15 +44,12 @@ type Gas = {
   reactions: { [key: string]: string } | [];
 };
 
-const GasSearchBar = (
-  props: {
-    title: InfernoNode;
-    onChange: (inputValue: string) => void;
-    activeInput: boolean;
-    setActiveInput: (toggle: boolean) => void;
-  },
-  context
-) => {
+const GasSearchBar = (props: {
+  title: InfernoNode;
+  onChange: (inputValue: string) => void;
+  activeInput: boolean;
+  setActiveInput: (toggle: boolean) => void;
+}) => {
   const { title, onChange, activeInput, setActiveInput } = props;
   return (
     <Flex align="center">
@@ -76,23 +73,17 @@ const GasSearchBar = (
   );
 };
 
-const GasHandbook = (props, context) => {
-  const { act, data } = useBackend<{ gasInfo: Gas[] }>(context);
+const GasHandbook = (props) => {
+  const { act, data } = useBackend<{ gasInfo: Gas[] }>();
   const { gasInfo } = data;
-  const [activeGasId, setActiveGasId] = useLocalState(
-    context,
-    'activeGasId',
-    ''
-  );
+  const [activeGasId, setActiveGasId] = useLocalState('activeGasId', '');
   const [activeReactionId, setActiveReactionId] = useLocalState(
-    context,
     'activeReactionId',
-    ''
+    '',
   );
   const [gasActiveInput, setGasActiveInput] = useLocalState(
-    context,
     'gasActiveInput',
-    false
+    false,
   );
   const relevantGas = gasInfo.find((gas) => gas.id === activeGasId);
   return (
@@ -103,12 +94,15 @@ const GasHandbook = (props, context) => {
           onChange={(keyword) =>
             setActiveGasId(
               gasInfo.find((gas) =>
-                gas.name.toLowerCase().startsWith(keyword.toLowerCase())
-              )?.id || '')}
+                gas.name.toLowerCase().startsWith(keyword.toLowerCase()),
+              )?.id || '',
+            )
+          }
           activeInput={gasActiveInput}
           setActiveInput={setGasActiveInput}
         />
-      }>
+      }
+    >
       {relevantGas && (
         <>
           <Box mb="0.5em">{relevantGas.description}</Box>
@@ -124,7 +118,7 @@ const GasHandbook = (props, context) => {
                   content={reaction_name}
                 />
               </Box>
-            )
+            ),
           )}
         </>
       )}
@@ -132,26 +126,20 @@ const GasHandbook = (props, context) => {
   );
 };
 
-const ReactionHandbook = (props, context) => {
-  const { act, data } = useBackend<{ reactionInfo: Reaction[] }>(context);
+const ReactionHandbook = (props) => {
+  const { act, data } = useBackend<{ reactionInfo: Reaction[] }>();
   const { reactionInfo } = data;
-  const [activeGasId, setActiveGasId] = useLocalState(
-    context,
-    'activeGasId',
-    ''
-  );
+  const [activeGasId, setActiveGasId] = useLocalState('activeGasId', '');
   const [activeReactionId, setActiveReactionId] = useLocalState(
-    context,
     'activeReactionId',
-    ''
+    '',
   );
   const [reactionActiveInput, setReactionActiveInput] = useLocalState(
-    context,
     'reactionActiveInput',
-    false
+    false,
   );
   const relevantReaction = reactionInfo?.find(
-    (reaction) => reaction.id === activeReactionId
+    (reaction) => reaction.id === activeReactionId,
   );
   return (
     <Section
@@ -165,12 +153,15 @@ const ReactionHandbook = (props, context) => {
           onChange={(keyword) =>
             setActiveReactionId(
               reactionInfo.find((reaction) =>
-                reaction.name.toLowerCase().startsWith(keyword.toLowerCase())
-              )?.id || '')}
+                reaction.name.toLowerCase().startsWith(keyword.toLowerCase()),
+              )?.id || '',
+            )
+          }
           activeInput={reactionActiveInput}
           setActiveInput={setReactionActiveInput}
         />
-      }>
+      }
+    >
       {relevantReaction && (
         <>
           <Box mb="0.5em">{relevantReaction.description}</Box>
@@ -190,13 +181,17 @@ const ReactionHandbook = (props, context) => {
                       <Flex>
                         <Flex.Item
                           style={{ 'border-bottom': 'dotted 2px' }}
-                          shrink>
+                          shrink
+                        >
                           {factor.factor_name + ':'}
                         </Flex.Item>
                       </Flex>
                     </Tooltip>
-                  ) : (factor.factor_name)
-                }>
+                  ) : (
+                    factor.factor_name
+                  )
+                }
+              >
                 {factor.desc}
               </LabeledList.Item>
             ))}
@@ -207,16 +202,11 @@ const ReactionHandbook = (props, context) => {
   );
 };
 
-export const atmosHandbookHooks = (context) => {
-  const [activeGasId, setActiveGasId] = useLocalState(
-    context,
-    'activeGasId',
-    ''
-  );
+export const atmosHandbookHooks = () => {
+  const [activeGasId, setActiveGasId] = useLocalState('activeGasId', '');
   const [activeReactionId, setActiveReactionId] = useLocalState(
-    context,
     'activeReactionId',
-    ''
+    '',
   );
   return [setActiveGasId, setActiveReactionId];
 };

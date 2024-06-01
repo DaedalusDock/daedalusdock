@@ -53,8 +53,7 @@
 	if (!lighting_object)
 		return FALSE
 
-	return !(luminosity || dynamic_lumcount)
-
+	return !(loc:luminosity || luminosity || dynamic_lumcount)
 
 ///Proc to add movable sources of opacity on the turf and let it handle lighting code.
 /turf/proc/add_opacity_source(atom/movable/new_source)
@@ -94,8 +93,8 @@
 ///Transfer the lighting of one area to another
 /turf/proc/transfer_area_lighting(area/old_area, area/new_area)
 	if(SSlighting.initialized)
-		if (new_area.static_lighting != old_area.static_lighting)
-			if (new_area.static_lighting)
+		if (new_area.area_lighting != old_area.area_lighting)
+			if (new_area.area_lighting == AREA_LIGHTING_DYNAMIC)
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()

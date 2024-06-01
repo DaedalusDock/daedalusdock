@@ -1,0 +1,4 @@
+author: SyncIt21
+delete-after: true
+changes:
+  - bugfix: Pyrosium now reacts on creation.

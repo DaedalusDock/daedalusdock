@@ -12,8 +12,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const Jukebox = (props) => {
-  const { act, data } = useBackend();
+export const Jukebox = (props, context) => {
+  const { act, data } = useBackend(context);
   const { active, track_selected, track_length, track_author, volume } = data;
   const songs = flow([sortBy((song) => song.name)])(data.songs || []);
   return (

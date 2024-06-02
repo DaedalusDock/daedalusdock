@@ -17,8 +17,12 @@ const MECHA_MAINT_PANELS = {
   },
 };
 
-export const MaintMode = (props) => {
-  const [screen, setPanel] = useLocalState('screen', MECHA_MAINT_PANELS.main);
+export const MaintMode = (props, context) => {
+  const [screen, setPanel] = useLocalState(
+    context,
+    'screen',
+    MECHA_MAINT_PANELS.main,
+  );
   const Component = screen.component();
   return (
     <Stack fill vertical>
@@ -43,9 +47,13 @@ export const MaintMode = (props) => {
   );
 };
 
-const MainPanel = (props) => {
-  const { act, data } = useBackend<MaintData>();
-  const [screen, setPanel] = useLocalState('screen', MECHA_MAINT_PANELS.main);
+const MainPanel = (props, context) => {
+  const { act, data } = useBackend<MaintData>(context);
+  const [screen, setPanel] = useLocalState(
+    context,
+    'screen',
+    MECHA_MAINT_PANELS.main,
+  );
   const { mecha_flags, mechflag_keys } = data;
   return (
     <Stack fill vertical>
@@ -70,9 +78,13 @@ const MainPanel = (props) => {
   );
 };
 
-const MaintEnabled = (props) => {
-  const { act, data } = useBackend<MaintData>();
-  const [screen, setPanel] = useLocalState('screen', MECHA_MAINT_PANELS.main);
+const MaintEnabled = (props, context) => {
+  const { act, data } = useBackend<MaintData>(context);
+  const [screen, setPanel] = useLocalState(
+    context,
+    'screen',
+    MECHA_MAINT_PANELS.main,
+  );
   return (
     <>
       <Stack.Item>
@@ -115,8 +127,8 @@ const MaintEnabled = (props) => {
   );
 };
 
-const StockPartsPanel = (props) => {
-  const { act, data } = useBackend<MaintData>();
+const StockPartsPanel = (props, context) => {
+  const { act, data } = useBackend<MaintData>(context);
   const { cell, scanning, capacitor } = data;
   return (
     <Stack fill vertical>
@@ -172,8 +184,8 @@ const StockPartsPanel = (props) => {
   );
 };
 
-const AccessPanel = (props) => {
-  const { act, data } = useBackend<MaintData>();
+const AccessPanel = (props, context) => {
+  const { act, data } = useBackend<MaintData>(context);
   const { idcard_access, operation_req_access } = data;
   return (
     <Stack fill vertical>

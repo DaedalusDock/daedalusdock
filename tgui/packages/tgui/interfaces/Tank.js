@@ -17,8 +17,8 @@ const formatPressure = (value) => {
   return formatSiUnit(value * 1000, 1, 'Pa');
 };
 
-export const Tank = (props) => {
-  const { act, data } = useBackend();
+export const Tank = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     defaultReleasePressure,
     minReleasePressure,

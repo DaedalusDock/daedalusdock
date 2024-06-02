@@ -9,7 +9,7 @@ const noticestyle = {
   color: 'lightblue',
 };
 
-export const AntagInfoNightmare = (props) => {
+export const AntagInfoNightmare = (props, context) => {
   return (
     <Window width={620} height={340}>
       <Window.Content backgroundColor="#0d0d0d">

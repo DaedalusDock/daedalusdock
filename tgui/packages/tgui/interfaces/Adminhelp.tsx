@@ -10,8 +10,8 @@ type AdminhelpData = {
   urgentAhelpPromptMessage: string;
 };
 
-export const Adminhelp = (props) => {
-  const { act, data } = useBackend<AdminhelpData>();
+export const Adminhelp = (props, context) => {
+  const { act, data } = useBackend<AdminhelpData>(context);
   const {
     adminCount,
     urgentAhelpEnabled,
@@ -19,14 +19,20 @@ export const Adminhelp = (props) => {
     urgentAhelpPromptMessage,
   } = data;
   const [requestForAdmin, setRequestForAdmin] = useLocalState(
+    context,
     'request_for_admin',
     false,
   );
   const [currentlyInputting, setCurrentlyInputting] = useLocalState(
+    context,
     'confirm_request',
     false,
   );
-  const [ahelpMessage, setAhelpMessage] = useLocalState('ahelp_message', '');
+  const [ahelpMessage, setAhelpMessage] = useLocalState(
+    context,
+    'ahelp_message',
+    '',
+  );
 
   const confirmationText = 'alert admins';
   return (

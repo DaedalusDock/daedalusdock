@@ -98,8 +98,8 @@ type ThresholdDisplayProps = {
   thresholds: Threshold[];
 };
 
-export const Pandemic = (_) => {
-  const { data } = useBackend<PandemicContext>();
+export const Pandemic = (_, context) => {
+  const { data } = useBackend<PandemicContext>(context);
   const { has_beaker, has_blood } = data;
 
   return (
@@ -121,8 +121,8 @@ export const Pandemic = (_) => {
 };
 
 /** Displays loaded container info, if it exists */
-const BeakerDisplay = (_) => {
-  const { act, data } = useBackend<PandemicContext>();
+const BeakerDisplay = (_, context) => {
+  const { act, data } = useBackend<PandemicContext>(context);
   const { has_beaker, beaker, has_blood } = data;
   const cant_empty = !has_beaker || !beaker?.volume;
   let content;
@@ -178,8 +178,8 @@ const BeakerDisplay = (_) => {
 };
 
 /** Displays info about the blood type, beaker capacity - volume */
-const BeakerInfoDisplay = (_) => {
-  const { data } = useBackend<PandemicContext>();
+const BeakerInfoDisplay = (_, context) => {
+  const { data } = useBackend<PandemicContext>(context);
   const { beaker, blood } = data;
   if (!beaker || !blood) {
     return <NoticeBox>No beaker loaded</NoticeBox>;
@@ -219,8 +219,8 @@ const BeakerInfoDisplay = (_) => {
 };
 
 /** If antibodies are present, returns buttons to create vaccines */
-const AntibodyInfoDisplay = (_) => {
-  const { act, data } = useBackend<PandemicContext>();
+const AntibodyInfoDisplay = (_, context) => {
+  const { act, data } = useBackend<PandemicContext>(context);
   const { is_ready, resistances = [] } = data;
   if (!resistances) {
     return <NoticeBox>Nothing detected</NoticeBox>;
@@ -254,9 +254,9 @@ const AntibodyInfoDisplay = (_) => {
 };
 
 /** Displays info for the loaded blood, if any */
-const SpecimenDisplay = (_) => {
-  const { act, data } = useBackend<PandemicContext>();
-  const [tab, setTab] = useLocalState('tab', 0);
+const SpecimenDisplay = (_, context) => {
+  const { act, data } = useBackend<PandemicContext>(context);
+  const [tab, setTab] = useLocalState(context, 'tab', 0);
   const { is_ready, viruses = [] } = data;
   const virus = viruses[tab];
   const setTabHandler = (index: number) => {
@@ -308,8 +308,8 @@ const SpecimenDisplay = (_) => {
 /** Virus Tab display - changes the tab for virus info
  * Whenever the tab changes, the virus info is updated
  */
-const VirusTabs = (props: TabsProps) => {
-  const { data } = useBackend<PandemicContext>();
+const VirusTabs = (props: TabsProps, context) => {
+  const { data } = useBackend<PandemicContext>(context);
   const { tab, tabHandler } = props;
   const { viruses = [] } = data;
 
@@ -354,8 +354,8 @@ const VirusDisplay = (props: VirusDisplayProps) => {
 };
 
 /** Displays the description, name and other info for the virus. */
-const VirusTextInfo = (props: VirusInfoProps) => {
-  const { act } = useBackend<PandemicContext>();
+const VirusTextInfo = (props: VirusInfoProps, context) => {
+  const { act } = useBackend<PandemicContext>(context);
   const { virus } = props;
 
   return (

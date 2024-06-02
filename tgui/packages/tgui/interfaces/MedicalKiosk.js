@@ -13,9 +13,9 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const MedicalKiosk = (props) => {
-  const { act, data } = useBackend();
-  const [scanIndex] = useSharedState('scanIndex');
+export const MedicalKiosk = (props, context) => {
+  const { act, data } = useBackend(context);
+  const [scanIndex] = useSharedState(context, 'scanIndex');
   const { active_status_1, active_status_2, active_status_3, active_status_4 } =
     data;
   return (
@@ -73,10 +73,10 @@ export const MedicalKiosk = (props) => {
   );
 };
 
-const MedicalKioskScanButton = (props) => {
+const MedicalKioskScanButton = (props, context) => {
   const { index, name, description, icon } = props;
-  const { act, data } = useBackend();
-  const [scanIndex, setScanIndex] = useSharedState('scanIndex');
+  const { act, data } = useBackend(context);
+  const [scanIndex, setScanIndex] = useSharedState(context, 'scanIndex');
   const paid = data[`active_status_${index}`];
   return (
     <Stack align="baseline">
@@ -106,8 +106,8 @@ const MedicalKioskScanButton = (props) => {
   );
 };
 
-const MedicalKioskInstructions = (props) => {
-  const { act, data } = useBackend();
+const MedicalKioskInstructions = (props, context) => {
+  const { act, data } = useBackend(context);
   const { kiosk_cost, patient_name } = data;
   return (
     <Section minHeight="100%">
@@ -135,8 +135,8 @@ const MedicalKioskInstructions = (props) => {
   );
 };
 
-const MedicalKioskScanResults1 = (props) => {
-  const { data } = useBackend();
+const MedicalKioskScanResults1 = (props, context) => {
+  const { data } = useBackend(context);
   const {
     patient_health,
     brute_health,
@@ -178,8 +178,8 @@ const MedicalKioskScanResults1 = (props) => {
   );
 };
 
-const MedicalKioskScanResults2 = (props) => {
-  const { data } = useBackend();
+const MedicalKioskScanResults2 = (props, context) => {
+  const { data } = useBackend(context);
   const {
     patient_status,
     patient_illness,
@@ -218,8 +218,8 @@ const MedicalKioskScanResults2 = (props) => {
   );
 };
 
-const MedicalKioskScanResults3 = (props) => {
-  const { data } = useBackend();
+const MedicalKioskScanResults3 = (props, context) => {
+  const { data } = useBackend(context);
   const { clone_health, brain_damage, brain_health, trauma_status } = data;
   return (
     <Section title="Patient Neurological and Radiological Health">
@@ -246,8 +246,8 @@ const MedicalKioskScanResults3 = (props) => {
   );
 };
 
-const MedicalKioskScanResults4 = (props) => {
-  const { data } = useBackend();
+const MedicalKioskScanResults4 = (props, context) => {
+  const { data } = useBackend(context);
   const {
     chemical_list = [],
     overdose_list = [],

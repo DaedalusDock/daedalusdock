@@ -13,8 +13,9 @@ export const meta = {
   render: () => <Story />,
 };
 
-const Story = (props) => {
+const Story = (props, context) => {
   const [code, setCode] = useLocalState(
+    context,
     'byondUiEvalCode',
     `Byond.winset('${Byond.windowId}', {\n  'is-visible': true,\n})`,
   );

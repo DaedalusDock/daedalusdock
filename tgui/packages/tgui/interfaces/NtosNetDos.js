@@ -2,7 +2,7 @@ import { useBackend } from '../backend';
 import { Box, Button, LabeledList, NoticeBox, Section } from '../components';
 import { NtosWindow } from '../layouts';
 
-export const NtosNetDos = (props) => {
+export const NtosNetDos = (props, context) => {
   return (
     <NtosWindow width={400} height={250} theme="syndicate">
       <NtosWindow.Content>
@@ -12,8 +12,8 @@ export const NtosNetDos = (props) => {
   );
 };
 
-export const NtosNetDosContent = (props) => {
-  const { act, data } = useBackend();
+export const NtosNetDosContent = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const { relays = [], focus, target, speed, overload, capacity, error } = data;
 

@@ -28,7 +28,7 @@ export const ghost_orbit: FeatureChoiced = {
     props: FeatureValueProps<string, string, FeatureChoicedServerData>,
     context,
   ) => {
-    const { data } = useBackend<PreferencesMenuData>();
+    const { data } = useBackend<PreferencesMenuData>(context);
 
     return (
       <FeatureDropdownInput {...props} disabled={!data.content_unlocked} />

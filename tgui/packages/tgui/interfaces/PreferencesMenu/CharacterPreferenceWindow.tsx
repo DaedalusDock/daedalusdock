@@ -44,10 +44,14 @@ const CharacterProfiles = (props: {
   );
 };
 
-export const CharacterPreferenceWindow = (props) => {
-  const { act, data } = useBackend<PreferencesMenuData>();
+export const CharacterPreferenceWindow = (props, context) => {
+  const { act, data } = useBackend<PreferencesMenuData>(context);
 
-  const [currentPage, setCurrentPage] = useLocalState('currentPage', Page.Main);
+  const [currentPage, setCurrentPage] = useLocalState(
+    context,
+    'currentPage',
+    Page.Main,
+  );
 
   let pageContents;
 

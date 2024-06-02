@@ -15,8 +15,8 @@ import {
 import { Window } from '../layouts';
 import { BeakerContents } from './common/BeakerContents';
 
-export const ChemHeater = (props) => {
-  const { act, data } = useBackend();
+export const ChemHeater = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     targetTemp,
     isActive,

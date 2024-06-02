@@ -18,19 +18,21 @@ type GenericUplinkProps = {
   handleBuy: (item: Item) => void;
 };
 
-export const GenericUplink = (props: GenericUplinkProps) => {
+export const GenericUplink = (props: GenericUplinkProps, context) => {
   const {
     currency = 'cr',
     categories,
 
     handleBuy,
   } = props;
-  const [searchText, setSearchText] = useLocalState('searchText', '');
+  const [searchText, setSearchText] = useLocalState(context, 'searchText', '');
   const [selectedCategory, setSelectedCategory] = useLocalState(
+    context,
     'category',
     categories[0],
   );
   const [compactMode, setCompactMode] = useSharedState(
+    context,
     'compactModeUplink',
     false,
   );

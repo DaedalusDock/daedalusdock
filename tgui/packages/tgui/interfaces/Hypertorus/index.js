@@ -7,8 +7,8 @@ import { HypertorusParameters } from './Parameters';
 import { HypertorusRecipes } from './Recipes';
 import { HypertorusTemperatures } from './Temperatures';
 
-const HypertorusMainControls = (props) => {
-  const { act, data } = useBackend();
+const HypertorusMainControls = (props, context) => {
+  const { act, data } = useBackend(context);
 
   return (
     <Section title="Startup">
@@ -81,7 +81,7 @@ const HypertorusLayout = () => {
   );
 };
 
-export const Hypertorus = (props) => {
+export const Hypertorus = (props, context) => {
   // The HFR has a ridiculous amount of knobs and information.
   // Ideally we'd display a large window for it all...
   const idealWidth = 850,

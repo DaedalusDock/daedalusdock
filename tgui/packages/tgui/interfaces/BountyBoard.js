@@ -14,7 +14,7 @@ import {
 import { formatMoney } from '../format';
 import { Window } from '../layouts';
 
-export const BountyBoard = (props) => {
+export const BountyBoard = (props, context) => {
   return (
     <Window width={550} height={600}>
       <Window.Content scrollable>
@@ -24,8 +24,8 @@ export const BountyBoard = (props) => {
   );
 };
 
-export const BountyBoardContent = (props) => {
-  const { act, data } = useBackend();
+export const BountyBoardContent = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     accountName,
     requests = [],

@@ -71,8 +71,8 @@ export const CrewConsole = () => {
   );
 };
 
-const CrewTable = (props) => {
-  const { act, data } = useBackend();
+const CrewTable = (props, context) => {
+  const { act, data } = useBackend(context);
   const sensors = sortBy((s) => s.ijob)(data.sensors ?? []);
   return (
     <Table>
@@ -100,8 +100,8 @@ const CrewTable = (props) => {
   );
 };
 
-const CrewTableEntry = (props) => {
-  const { act, data } = useBackend();
+const CrewTableEntry = (props, context) => {
+  const { act, data } = useBackend(context);
   const { link_allowed } = data;
   const { sensor_data } = props;
   const { name, assignment, ijob, life_status, area, can_track } = sensor_data;

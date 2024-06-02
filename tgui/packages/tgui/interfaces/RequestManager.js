@@ -10,16 +10,17 @@ import { Button, Input, Section, Table } from '../components';
 import { Popper } from '../components/Popper';
 import { Window } from '../layouts';
 
-export const RequestManager = (props) => {
-  const { act, data } = useBackend();
+export const RequestManager = (props, context) => {
+  const { act, data } = useBackend(context);
   const { requests } = data;
   const [filteredTypes, _] = useLocalState(
+    context,
     'filteredTypes',
     Object.fromEntries(
       Object.entries(displayTypeMap).map(([type, _]) => [type, true]),
     ),
   );
-  const [searchText, setSearchText] = useLocalState('searchText');
+  const [searchText, setSearchText] = useLocalState(context, 'searchText');
 
   // Handle filtering
   let displayedRequests = requests.filter(
@@ -96,8 +97,8 @@ const RequestType = (props) => {
   );
 };
 
-const RequestControls = (props) => {
-  const { act, _ } = useBackend();
+const RequestControls = (props, context) => {
+  const { act, _ } = useBackend(context);
   const { request } = props;
 
   return (
@@ -121,12 +122,14 @@ const RequestControls = (props) => {
   );
 };
 
-const FilterPanel = (_) => {
+const FilterPanel = (_, context) => {
   const [filterVisible, setFilterVisible] = useLocalState(
+    context,
     'filterVisible',
     false,
   );
   const [filteredTypes, setFilteredTypes] = useLocalState(
+    context,
     'filteredTypes',
     Object.fromEntries(
       Object.entries(displayTypeMap).map(([type, _]) => [type, true]),

@@ -15,8 +15,8 @@ import {
 import { Window } from '../layouts';
 import { capitalize } from 'common/string';
 
-export const Autolathe = (props) => {
-  const { act, data } = useBackend();
+export const Autolathe = (props, context) => {
+  const { act, data } = useBackend(context);
   // Extract `health` and `color` variables from the `data` object.
   const {
     materialtotal,
@@ -27,6 +27,7 @@ export const Autolathe = (props) => {
     active,
   } = data;
   const [current_category, setCategory] = useLocalState(
+    context,
     'current_category',
     'None',
   );

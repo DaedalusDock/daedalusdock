@@ -12,8 +12,8 @@ import { toInputValue } from './Input';
 import { KEY_ESCAPE } from 'common/keycodes';
 
 export class TextArea extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.textareaRef = createRef();
     this.fillerRef = createRef();
     this.state = {

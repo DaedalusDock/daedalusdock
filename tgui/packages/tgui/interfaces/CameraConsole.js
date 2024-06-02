@@ -37,8 +37,8 @@ export const selectCameras = (cameras, searchText = '') => {
   ])(cameras);
 };
 
-export const CameraConsole = (props) => {
-  const { act, data } = useBackend();
+export const CameraConsole = (props, context) => {
+  const { act, data } = useBackend(context);
   const { mapRef, activeCamera } = data;
   const cameras = selectCameras(data.cameras);
   const [prevCameraName, nextCameraName] = prevNextCamera(
@@ -89,9 +89,9 @@ export const CameraConsole = (props) => {
   );
 };
 
-export const CameraConsoleContent = (props) => {
-  const { act, data } = useBackend();
-  const [searchText, setSearchText] = useLocalState('searchText', '');
+export const CameraConsoleContent = (props, context) => {
+  const { act, data } = useBackend(context);
+  const [searchText, setSearchText] = useLocalState(context, 'searchText', '');
   const { activeCamera } = data;
   const cameras = selectCameras(data.cameras, searchText);
   return (

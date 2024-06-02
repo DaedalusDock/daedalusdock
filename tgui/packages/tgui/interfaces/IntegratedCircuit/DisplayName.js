@@ -4,7 +4,7 @@ import {
   DATATYPE_DISPLAY_HANDLERS,
 } from './FundamentalTypes';
 
-export const DisplayName = (props) => {
+export const DisplayName = (props, context) => {
   const { port, isOutput, componentId, portIndex, act, ...rest } = props;
 
   const InputComponent = FUNDAMENTAL_DATA_TYPES[port.type || 'unknown'];

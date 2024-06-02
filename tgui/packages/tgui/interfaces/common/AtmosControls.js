@@ -3,9 +3,9 @@ import { useBackend } from '../../backend';
 import { Button, LabeledList, NumberInput, Section } from '../../components';
 import { getGasLabel } from '../../constants';
 
-export const Vent = (props) => {
+export const Vent = (props, context) => {
   const { vent } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
   const {
     id_tag,
     long_name,
@@ -136,9 +136,9 @@ export const Vent = (props) => {
   );
 };
 
-export const Scrubber = (props) => {
+export const Scrubber = (props, context) => {
   const { scrubber } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
   const { long_name, power, scrubbing, id_tag, quicksucc, filter_types } =
     scrubber;
   return (

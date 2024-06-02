@@ -21,8 +21,8 @@ const damageTypes = [
   },
 ];
 
-export const Sleeper = (props) => {
-  const { act, data } = useBackend();
+export const Sleeper = (props, context) => {
+  const { act, data } = useBackend(context);
   const { open, occupant = {}, occupied } = data;
   const preSortChems = data.chems || [];
   const chems = preSortChems.sort((a, b) => {

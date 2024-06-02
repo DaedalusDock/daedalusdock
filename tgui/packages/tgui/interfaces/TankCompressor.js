@@ -16,8 +16,8 @@ import {
 import { Window } from '../layouts';
 import { GasmixParser } from './common/GasmixParser';
 
-export const TankCompressor = (props) => {
-  const { act, data } = useBackend();
+export const TankCompressor = (props, context) => {
+  const { act, data } = useBackend(context);
   return (
     <Window title="Tank Compressor" width={650} height={550}>
       <Window.Content>
@@ -27,10 +27,10 @@ export const TankCompressor = (props) => {
   );
 };
 
-const TankCompressorContent = (props) => {
-  const { act, data } = useBackend();
+const TankCompressorContent = (props, context) => {
+  const { act, data } = useBackend(context);
   const { disk, storage } = data;
-  const [currentTab, changeTab] = useSharedState('compressorTab', 1);
+  const [currentTab, changeTab] = useSharedState(context, 'compressorTab', 1);
   return (
     <Stack vertical fill>
       {currentTab === 1 && <TankCompressorControls />}
@@ -67,9 +67,9 @@ const TankCompressorContent = (props) => {
   );
 };
 
-const AlertBoxes = (props) => {
+const AlertBoxes = (props, context) => {
   const { text_content, icon_name, icon_break, color, active } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   return (
     <Box
       bold
@@ -88,8 +88,8 @@ const AlertBoxes = (props) => {
   );
 };
 
-const TankCompressorControls = (props) => {
-  const { act, data } = useBackend();
+const TankCompressorControls = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     tankPresent,
     leaking,
@@ -257,10 +257,11 @@ const TankCompressorControls = (props) => {
   );
 };
 
-const TankCompressorRecords = (props) => {
-  const { act, data } = useBackend();
+const TankCompressorRecords = (props, context) => {
+  const { act, data } = useBackend(context);
   const { records = [], disk } = data;
   const [activeRecordRef, setActiveRecordRef] = useSharedState(
+    context,
     'recordRef',
     records[0]?.ref,
   );

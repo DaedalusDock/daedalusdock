@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { NtosWindow } from '../layouts';
 
-export const NtosSkillTracker = (props) => {
-  const { act, data } = useBackend();
+export const NtosSkillTracker = (props, context) => {
+  const { act, data } = useBackend(context);
   const { skills = {} } = data;
   return (
     <NtosWindow width={500} height={600}>

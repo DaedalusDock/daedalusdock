@@ -2,9 +2,9 @@ import { useBackend, useSharedState } from '../backend';
 import { Button, LabeledList, NoticeBox, Section, Tabs } from '../components';
 import { Window } from '../layouts';
 
-export const Microscope = (props) => {
-  const { act, data } = useBackend();
-  const [tab, setTab] = useSharedState('tab', 1);
+export const Microscope = (props, context) => {
+  const { act, data } = useBackend(context);
+  const [tab, setTab] = useSharedState(context, 'tab', 1);
   const { has_dish, cell_lines = [], viruses = [] } = data;
   return (
     <Window>
@@ -46,9 +46,9 @@ export const Microscope = (props) => {
   );
 };
 
-const Organisms = (props) => {
+const Organisms = (props, context) => {
   const { cell_lines } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   if (!cell_lines.length) {
     return <NoticeBox>No micro-organisms found</NoticeBox>;
   }
@@ -77,9 +77,9 @@ const Organisms = (props) => {
   });
 };
 
-const Viruses = (props) => {
+const Viruses = (props, context) => {
   const { viruses } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
   if (!viruses.length) {
     return <NoticeBox>No viruses found</NoticeBox>;
   }

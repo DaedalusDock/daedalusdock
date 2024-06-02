@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, Dimmer, Icon, Section, Stack } from '../components';
 import { NtosWindow } from '../layouts';
 
-const NoIDDimmer = (props) => {
-  const { act, data } = useBackend();
+const NoIDDimmer = (props, context) => {
+  const { act, data } = useBackend(context);
   const { owner } = data;
   return (
     <Stack>
@@ -27,8 +27,8 @@ const NoIDDimmer = (props) => {
   );
 };
 
-export const NtosMessenger = (props) => {
-  const { act, data } = useBackend();
+export const NtosMessenger = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     owner,
     messages = [],

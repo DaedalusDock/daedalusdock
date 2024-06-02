@@ -13,7 +13,7 @@ import {
   SUBJECT_TRANSFORMING,
 } from './constants';
 
-const GenomeImage = (props) => {
+const GenomeImage = (props, context) => {
   const { url, selected, onClick } = props;
   let outline;
   if (selected) {
@@ -34,8 +34,8 @@ const GenomeImage = (props) => {
   );
 };
 
-const GeneCycler = (props) => {
-  const { act } = useBackend();
+const GeneCycler = (props, context) => {
+  const { act } = useBackend(context);
   const { alias, gene, index, disabled, ...rest } = props;
   const color = (disabled && GENE_COLORS['X']) || GENE_COLORS[gene];
   return (
@@ -76,7 +76,7 @@ const GeneCycler = (props) => {
   );
 };
 
-const GenomeSequencer = (props) => {
+const GenomeSequencer = (props, context) => {
   const { mutation } = props;
   if (!mutation) {
     return <Box color="average">No genome selected for sequencing.</Box>;
@@ -156,8 +156,8 @@ const GenomeSequencer = (props) => {
   );
 };
 
-export const DnaConsoleSequencer = (props) => {
-  const { data, act } = useBackend();
+export const DnaConsoleSequencer = (props, context) => {
+  const { data, act } = useBackend(context);
   const mutations = data.storage?.occupant ?? [];
   const { isJokerReady, isMonkey, jokerSeconds, subjectStatus } = data;
   const { sequencerMutation, jokerActive } = data.view;

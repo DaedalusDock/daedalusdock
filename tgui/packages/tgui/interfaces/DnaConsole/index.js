@@ -20,8 +20,8 @@ import {
   STORAGE_MODE_CONSOLE,
 } from './constants';
 
-const DnaConsoleCommands = (props) => {
-  const { data, act } = useBackend();
+const DnaConsoleCommands = (props, context) => {
+  const { data, act } = useBackend(context);
   const { hasDisk, isInjectorReady, injectorSeconds } = data;
   const { consoleMode } = data.view;
   return (
@@ -94,8 +94,8 @@ const DnaConsoleCommands = (props) => {
   );
 };
 
-export const DnaConsole = (props) => {
-  const { data, act } = useBackend();
+export const DnaConsole = (props, context) => {
+  const { data, act } = useBackend(context);
   const { isPulsing, timeToPulse, subjectUNI, subjectUF } = data;
   const { consoleMode } = data.view;
   return (

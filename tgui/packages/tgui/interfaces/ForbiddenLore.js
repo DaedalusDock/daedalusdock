@@ -4,8 +4,8 @@ import { useBackend } from '../backend';
 import { Box, Button, Section } from '../components';
 import { Window } from '../layouts';
 
-export const ForbiddenLore = (props) => {
-  const { act, data } = useBackend();
+export const ForbiddenLore = (props, context) => {
+  const { act, data } = useBackend(context);
   const { charges } = data;
   const to_know = flow([
     sortBy(

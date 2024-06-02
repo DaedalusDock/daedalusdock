@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, Flex, Section } from '../components';
 import { Window } from '../layouts';
 
-export const FilingCabinet = (props) => {
-  const { act, data } = useBackend();
+export const FilingCabinet = (props, context) => {
+  const { act, data } = useBackend(context);
   const { cabinet_name, contents, contents_ref } = data;
   return (
     <Window title={cabinet_name || 'Filing Cabinet'} width={350} height={300}>

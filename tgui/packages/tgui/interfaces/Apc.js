@@ -10,7 +10,7 @@ import {
 import { Window } from '../layouts';
 import { InterfaceLockNoticeBox } from './common/InterfaceLockNoticeBox';
 
-export const Apc = (props) => {
+export const Apc = (props, context) => {
   return (
     <Window width={450} height={432}>
       <Window.Content>
@@ -61,8 +61,8 @@ const malfMap = {
   },
 };
 
-const ApcContent = (props) => {
-  const { act, data } = useBackend();
+const ApcContent = (props, context) => {
+  const { act, data } = useBackend(context);
   const locked = data.locked && !data.siliconUser;
   const externalPowerStatus =
     powerStatusMap[data.externalPower] || powerStatusMap[0];

@@ -10,12 +10,16 @@ import { useBackend } from '../backend';
 import { useLocalState } from '../backend';
 import { Window } from '../layouts';
 
-export const AccountingConsole = (props) => {
-  const { act, data } = useBackend();
+export const AccountingConsole = (props, context) => {
+  const { act, data } = useBackend(context);
   const { PlayerAccounts, AuditLog } = data;
   const USER_SCREEN = 1;
   const AUDIT_SCREEN = 2;
-  const [screenmode, setScreenmode] = useLocalState('tab_main', USER_SCREEN);
+  const [screenmode, setScreenmode] = useLocalState(
+    context,
+    'tab_main',
+    USER_SCREEN,
+  );
   return (
     <Window width={300} height={360}>
       <Window.Content scrollable>
@@ -69,9 +73,9 @@ export const AccountingConsole = (props) => {
 };
 
 /** The modal menu that contains the prompts to making new channels. */
-const MarketCrashing = (props) => {
-  const { act, data } = useBackend();
-  const [lockedmode, setLockedmode] = useLocalState('lockedmode', 1);
+const MarketCrashing = (props, context) => {
+  const { act, data } = useBackend(context);
+  const [lockedmode, setLockedmode] = useLocalState(context, 'lockedmode', 1);
   const { Crashing } = data;
   if (!Crashing) {
     return null;

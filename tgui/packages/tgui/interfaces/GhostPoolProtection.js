@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Button, Flex, NoticeBox, Section } from '../components';
 import { Window } from '../layouts';
 
-export const GhostPoolProtection = (props) => {
-  const { act, data } = useBackend();
+export const GhostPoolProtection = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     events_or_midrounds,
     spawners,

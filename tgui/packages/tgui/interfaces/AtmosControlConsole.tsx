@@ -19,16 +19,20 @@ type Chamber = {
   output_info?: { active: boolean; amount: number };
 };
 
-export const AtmosControlConsole = (props) => {
+export const AtmosControlConsole = (props, context) => {
   const { act, data } = useBackend<{
     chambers: Chamber[];
     maxInput: number;
     maxOutput: number;
     reconnecting: boolean;
     control: boolean;
-  }>();
+  }>(context);
   const chambers = data.chambers || [];
-  const [chamberId, setChamberId] = useLocalState('chamberId', chambers[0]?.id);
+  const [chamberId, setChamberId] = useLocalState(
+    context,
+    'chamberId',
+    chambers[0]?.id,
+  );
   const selectedChamber =
     chambers.length === 1
       ? chambers[0]

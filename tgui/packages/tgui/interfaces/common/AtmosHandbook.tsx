@@ -44,12 +44,15 @@ type Gas = {
   reactions: { [key: string]: string } | [];
 };
 
-const GasSearchBar = (props: {
-  title: InfernoNode;
-  onChange: (inputValue: string) => void;
-  activeInput: boolean;
-  setActiveInput: (toggle: boolean) => void;
-}) => {
+const GasSearchBar = (
+  props: {
+    title: InfernoNode;
+    onChange: (inputValue: string) => void;
+    activeInput: boolean;
+    setActiveInput: (toggle: boolean) => void;
+  },
+  context,
+) => {
   const { title, onChange, activeInput, setActiveInput } = props;
   return (
     <Flex align="center">
@@ -73,15 +76,21 @@ const GasSearchBar = (props: {
   );
 };
 
-const GasHandbook = (props) => {
-  const { act, data } = useBackend<{ gasInfo: Gas[] }>();
+const GasHandbook = (props, context) => {
+  const { act, data } = useBackend<{ gasInfo: Gas[] }>(context);
   const { gasInfo } = data;
-  const [activeGasId, setActiveGasId] = useLocalState('activeGasId', '');
+  const [activeGasId, setActiveGasId] = useLocalState(
+    context,
+    'activeGasId',
+    '',
+  );
   const [activeReactionId, setActiveReactionId] = useLocalState(
+    context,
     'activeReactionId',
     '',
   );
   const [gasActiveInput, setGasActiveInput] = useLocalState(
+    context,
     'gasActiveInput',
     false,
   );
@@ -126,15 +135,21 @@ const GasHandbook = (props) => {
   );
 };
 
-const ReactionHandbook = (props) => {
-  const { act, data } = useBackend<{ reactionInfo: Reaction[] }>();
+const ReactionHandbook = (props, context) => {
+  const { act, data } = useBackend<{ reactionInfo: Reaction[] }>(context);
   const { reactionInfo } = data;
-  const [activeGasId, setActiveGasId] = useLocalState('activeGasId', '');
+  const [activeGasId, setActiveGasId] = useLocalState(
+    context,
+    'activeGasId',
+    '',
+  );
   const [activeReactionId, setActiveReactionId] = useLocalState(
+    context,
     'activeReactionId',
     '',
   );
   const [reactionActiveInput, setReactionActiveInput] = useLocalState(
+    context,
     'reactionActiveInput',
     false,
   );
@@ -202,9 +217,14 @@ const ReactionHandbook = (props) => {
   );
 };
 
-export const atmosHandbookHooks = () => {
-  const [activeGasId, setActiveGasId] = useLocalState('activeGasId', '');
+export const atmosHandbookHooks = (context) => {
+  const [activeGasId, setActiveGasId] = useLocalState(
+    context,
+    'activeGasId',
+    '',
+  );
   const [activeReactionId, setActiveReactionId] = useLocalState(
+    context,
     'activeReactionId',
     '',
   );

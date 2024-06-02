@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, NoticeBox, Section } from '../components';
 import { Window } from '../layouts';
 
-export const StackingConsole = (props) => {
-  const { act, data } = useBackend();
+export const StackingConsole = (props, context) => {
+  const { act, data } = useBackend(context);
   const { machine } = data;
   return (
     <Window width={320} height={340}>
@@ -18,8 +18,8 @@ export const StackingConsole = (props) => {
   );
 };
 
-export const StackingConsoleContent = (props) => {
-  const { act, data } = useBackend();
+export const StackingConsoleContent = (props, context) => {
+  const { act, data } = useBackend(context);
   const { stacking_amount, contents = [] } = data;
   return (
     <>

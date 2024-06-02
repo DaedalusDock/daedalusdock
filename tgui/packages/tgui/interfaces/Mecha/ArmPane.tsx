@@ -9,8 +9,8 @@ import {
 } from '../../components';
 import { MechWeapon, OperatorData } from './data';
 
-export const ArmPane = (props: { weapon: MechWeapon }) => {
-  const { act, data } = useBackend<OperatorData>();
+export const ArmPane = (props: { weapon: MechWeapon }, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { name, desc, integrity, energy_per_use } = props.weapon;
   const { power_level } = data;
   return (
@@ -72,8 +72,8 @@ export const ArmPane = (props: { weapon: MechWeapon }) => {
   );
 };
 
-const BallisticStats = (props: { weapon: MechWeapon }) => {
-  const { act, data } = useBackend<OperatorData>();
+const BallisticStats = (props: { weapon: MechWeapon }, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const {
     isballisticweapon,
     disabledreload,
@@ -123,7 +123,7 @@ const MECHA_SNOWFLAKE_ID_SYRINGE = 'syringe_snowflake';
 const MECHA_SNOWFLAKE_ID_MODE = 'mode_snowflake';
 
 // Handles all the snowflake buttons and whatever
-const Snowflake = (props: { weapon: MechWeapon }) => {
+const Snowflake = (props: { weapon: MechWeapon }, context) => {
   const { snowflake } = props.weapon;
   switch (snowflake['snowflake_id']) {
     case MECHA_SNOWFLAKE_ID_SLEEPER:
@@ -137,8 +137,8 @@ const Snowflake = (props: { weapon: MechWeapon }) => {
   }
 };
 
-const SnowflakeSleeper = (props: { weapon: MechWeapon }) => {
-  const { act, data } = useBackend<OperatorData>();
+const SnowflakeSleeper = (props: { weapon: MechWeapon }, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { patient } = props.weapon.snowflake;
   if (!patient) {
     return null;
@@ -187,8 +187,8 @@ const SnowflakeSleeper = (props: { weapon: MechWeapon }) => {
   }
 };
 
-const SnowflakeSyringe = (props: { weapon: MechWeapon }) => {
-  const { act, data } = useBackend<OperatorData>();
+const SnowflakeSyringe = (props: { weapon: MechWeapon }, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { mode, syringe, max_syringe, reagents, total_reagents } =
     props.weapon.snowflake;
   return (
@@ -227,7 +227,7 @@ const SnowflakeSyringe = (props: { weapon: MechWeapon }) => {
   );
 };
 
-const SnowflakeExtinguisher = (props: { weapon: MechWeapon }) => {
+const SnowflakeExtinguisher = (props: { weapon: MechWeapon }, context) => {
   const { reagents, total_reagents } = props.weapon.snowflake;
   return (
     <Section label={'Reagent status:'}>
@@ -240,8 +240,8 @@ const SnowflakeExtinguisher = (props: { weapon: MechWeapon }) => {
   );
 };
 
-const SnowflakeMode = (props: { weapon: MechWeapon }) => {
-  const { act, data } = useBackend<OperatorData>();
+const SnowflakeMode = (props: { weapon: MechWeapon }, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { mode, name } = props.weapon.snowflake;
   return (
     <Section label={name}>

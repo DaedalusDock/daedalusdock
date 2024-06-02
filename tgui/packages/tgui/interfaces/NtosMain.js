@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Button, ColorBox, Section, Table } from '../components';
 import { NtosWindow } from '../layouts';
 
-export const NtosMain = (props) => {
-  const { act, data } = useBackend();
+export const NtosMain = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     device_theme,
     show_imprint,

@@ -5,9 +5,10 @@
  */
 
 import { classes } from 'common/react';
+import { useDispatch } from 'common/redux';
 import { decodeHtmlEntities, toTitleCase } from 'common/string';
 import { Component } from 'inferno';
-import { backendSuspendStart, globalStore, useBackend } from '../backend';
+import { backendSuspendStart, useBackend } from '../backend';
 import { Icon } from '../components';
 import { UI_DISABLED, UI_INTERACTIVE, UI_UPDATE } from '../constants';
 import { useDebug } from '../debug';
@@ -27,7 +28,7 @@ const DEFAULT_SIZE = [400, 600];
 
 export class Window extends Component {
   componentDidMount() {
-    const { suspended } = useBackend();
+    const { suspended } = useBackend(this.context);
     const { canClose = true } = this.props;
     if (suspended) {
       return;
@@ -49,7 +50,7 @@ export class Window extends Component {
   }
 
   updateGeometry() {
-    const { config } = useBackend();
+    const { config } = useBackend(this.context);
     const options = {
       size: DEFAULT_SIZE,
       ...config.window,
@@ -65,9 +66,9 @@ export class Window extends Component {
 
   render() {
     const { canClose = true, theme, title, children, buttons } = this.props;
-    const { config, suspended } = useBackend();
-    const { debugLayout } = useDebug();
-    const { dispatch } = globalStore;
+    const { config, suspended } = useBackend(this.context);
+    const { debugLayout } = useDebug(this.context);
+    const dispatch = useDispatch(this.context);
     const fancy = config.window?.fancy;
     // Determine when to show dimmer
     const showDimmer =
@@ -146,7 +147,7 @@ const statusToColor = (status) => {
   }
 };
 
-const TitleBar = (props) => {
+const TitleBar = (props, context) => {
   const {
     className,
     title,
@@ -157,7 +158,7 @@ const TitleBar = (props) => {
     onClose,
     children,
   } = props;
-  const { dispatch } = globalStore;
+  const dispatch = useDispatch(context);
   return (
     <div className={classes(['TitleBar', className])}>
       {(status === undefined && (

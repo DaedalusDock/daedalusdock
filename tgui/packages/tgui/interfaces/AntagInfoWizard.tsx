@@ -44,7 +44,7 @@ type Info = {
   objectives: Objective[];
 };
 
-export const AntagInfoWizard = (props) => {
+export const AntagInfoWizard = (props, context) => {
   return (
     <Window width={620} height={580} theme="wizard">
       <Window.Content>
@@ -132,8 +132,8 @@ export const AntagInfoWizard = (props) => {
   );
 };
 
-const ObjectivePrintout = (props) => {
-  const { data } = useBackend<Info>();
+const ObjectivePrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { objectives } = data;
   return (
     <Stack vertical>

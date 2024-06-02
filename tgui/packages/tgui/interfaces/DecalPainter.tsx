@@ -30,8 +30,8 @@ type DecalPainterData = {
   current_custom_color: string;
 };
 
-export const DecalPainter = (props) => {
-  const { act, data } = useBackend<DecalPainterData>();
+export const DecalPainter = (props, context) => {
+  const { act, data } = useBackend<DecalPainterData>(context);
 
   const custom_color_selected = !data.color_list.some(
     (color) => color.color === data.current_color,
@@ -131,8 +131,8 @@ type IconButtonParams = {
   selected: boolean;
 };
 
-const IconButton = (props: IconButtonParams) => {
-  const { act, data } = useBackend<DecalPainterData>();
+const IconButton = (props: IconButtonParams, context) => {
+  const { act, data } = useBackend<DecalPainterData>(context);
 
   const generateIconKey = (decal: string, dir: number, color: string) =>
     `${data.icon_prefix} ${decal}_${dir}_${color.replace('#', '')}`;

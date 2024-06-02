@@ -1,6 +1,6 @@
 import { LabeledList, Section } from '../../components';
 
-export const GeneticMakeupInfo = (props) => {
+export const GeneticMakeupInfo = (props, context) => {
   const { makeup } = props;
 
   return (

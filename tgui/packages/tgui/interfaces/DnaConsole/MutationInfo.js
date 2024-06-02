@@ -19,9 +19,9 @@ const isSameMutation = (a, b) => {
   return a.Alias === b.Alias && a.AppliedChromo === b.AppliedChromo;
 };
 
-const ChromosomeInfo = (props) => {
+const ChromosomeInfo = (props, context) => {
   const { mutation, disabled } = props;
-  const { data, act } = useBackend();
+  const { data, act } = useBackend(context);
   if (mutation.CanChromo === CHROMOSOME_NEVER) {
     return <Box color="label">No compatible chromosomes</Box>;
   }
@@ -61,9 +61,9 @@ const ChromosomeInfo = (props) => {
   return null;
 };
 
-const MutationCombiner = (props) => {
+const MutationCombiner = (props, context) => {
   const { mutations = [], source } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
 
   const brefFromName = (name) => {
     return mutations.find((mutation) => mutation.Name === name)?.ByondRef;
@@ -86,9 +86,9 @@ const MutationCombiner = (props) => {
   );
 };
 
-export const MutationInfo = (props) => {
+export const MutationInfo = (props, context) => {
   const { mutation } = props;
-  const { data, act } = useBackend();
+  const { data, act } = useBackend(context);
   const {
     diskCapacity,
     diskReadOnly,

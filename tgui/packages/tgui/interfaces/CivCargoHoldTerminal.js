@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const CivCargoHoldTerminal = (props) => {
-  const { act, data } = useBackend();
+export const CivCargoHoldTerminal = (props, context) => {
+  const { act, data } = useBackend(context);
   const { pad, sending, status_report, id_inserted, id_bounty_info, picking } =
     data;
   const in_text = 'Welcome valued employee.';
@@ -73,8 +73,8 @@ export const CivCargoHoldTerminal = (props) => {
   );
 };
 
-const BountyTextBox = (props) => {
-  const { data } = useBackend();
+const BountyTextBox = (props, context) => {
+  const { data } = useBackend(context);
   const { id_bounty_info, id_bounty_value, id_bounty_num } = data;
   const na_text = 'N/A, please add a new bounty.';
   return (
@@ -94,8 +94,8 @@ const BountyTextBox = (props) => {
   );
 };
 
-const BountyPickBox = (props) => {
-  const { act, data } = useBackend();
+const BountyPickBox = (props, context) => {
+  const { act, data } = useBackend(context);
   const { id_bounty_names, id_bounty_values } = data;
   return (
     <Section title="Please Select a Bounty:" textAlign="center">

@@ -12,8 +12,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-const LaunchpadButtonPad = (props) => {
-  const { act } = useBackend();
+const LaunchpadButtonPad = (props, context) => {
+  const { act } = useBackend(context);
   return (
     <Grid width="1px">
       <Grid.Column>
@@ -125,9 +125,9 @@ const LaunchpadButtonPad = (props) => {
   );
 };
 
-export const LaunchpadControl = (props) => {
+export const LaunchpadControl = (props, context) => {
   const { topLevel } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   const { x, y, pad_name, range } = data;
   return (
     <Section
@@ -229,8 +229,8 @@ export const LaunchpadControl = (props) => {
   );
 };
 
-export const LaunchpadConsole = (props) => {
-  const { act, data } = useBackend();
+export const LaunchpadConsole = (props, context) => {
+  const { act, data } = useBackend(context);
   const { launchpads = [], selected_id } = data;
   return (
     <Window width={475} height={260}>

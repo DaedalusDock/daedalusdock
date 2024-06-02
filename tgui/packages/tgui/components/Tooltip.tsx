@@ -97,28 +97,33 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
       return;
     }
 
-    render(<span>{this.props.content}</span>, renderedTooltip, () => {
-      let singletonPopper = Tooltip.singletonPopper;
-      if (singletonPopper === undefined) {
-        singletonPopper = createPopper(
-          Tooltip.virtualElement,
-          renderedTooltip!,
-          {
+    render(
+      <span>{this.props.content}</span>,
+      renderedTooltip,
+      () => {
+        let singletonPopper = Tooltip.singletonPopper;
+        if (singletonPopper === undefined) {
+          singletonPopper = createPopper(
+            Tooltip.virtualElement,
+            renderedTooltip!,
+            {
+              ...DEFAULT_OPTIONS,
+              placement: this.props.position || 'auto',
+            },
+          );
+
+          Tooltip.singletonPopper = singletonPopper;
+        } else {
+          singletonPopper.setOptions({
             ...DEFAULT_OPTIONS,
             placement: this.props.position || 'auto',
-          },
-        );
+          });
 
-        Tooltip.singletonPopper = singletonPopper;
-      } else {
-        singletonPopper.setOptions({
-          ...DEFAULT_OPTIONS,
-          placement: this.props.position || 'auto',
-        });
-
-        singletonPopper.update();
-      }
-    });
+          singletonPopper.update();
+        }
+      },
+      this.context,
+    );
   }
 
   componentDidUpdate() {

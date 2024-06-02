@@ -119,8 +119,8 @@ const searchFilter = (search, allparts) => {
   return searchResults;
 };
 
-export const ExosuitFabricator = (props) => {
-  const { act, data } = useBackend();
+export const ExosuitFabricator = (props, context) => {
+  const { act, data } = useBackend(context);
   const queue = data.queue || [];
   const materialAsObj = materialArrayToObj(data.materials || []);
   const { materialTally, missingMatTally, textColors } = queueCondFormat(
@@ -128,6 +128,7 @@ export const ExosuitFabricator = (props) => {
     queue,
   );
   const [displayMatCost, setDisplayMatCost] = useSharedState(
+    context,
     'display_mats',
     false,
   );
@@ -199,11 +200,12 @@ export const ExosuitFabricator = (props) => {
   );
 };
 
-const PartSets = (props) => {
-  const { data } = useBackend();
+const PartSets = (props, context) => {
+  const { data } = useBackend(context);
   const partSets = data.partSets || [];
   const buildableParts = data.buildableParts || {};
   const [selectedPartTab, setSelectedPartTab] = useSharedState(
+    context,
     'part_tab',
     partSets.length ? buildableParts[0] : '',
   );
@@ -222,8 +224,8 @@ const PartSets = (props) => {
     ));
 };
 
-const PartLists = (props) => {
-  const { data } = useBackend();
+const PartLists = (props, context) => {
+  const { data } = useBackend(context);
 
   const getFirstValidPartSet = (sets) => {
     for (let set of sets) {
@@ -240,11 +242,16 @@ const PartLists = (props) => {
   const { queueMaterials, materials } = props;
 
   const [selectedPartTab, setSelectedPartTab] = useSharedState(
+    context,
     'part_tab',
     getFirstValidPartSet(partSets),
   );
 
-  const [searchText, setSearchText] = useSharedState('search_text', '');
+  const [searchText, setSearchText] = useSharedState(
+    context,
+    'search_text',
+    '',
+  );
 
   if (!selectedPartTab || !buildableParts[selectedPartTab]) {
     const validSet = getFirstValidPartSet(partSets);
@@ -319,11 +326,11 @@ const PartLists = (props) => {
   );
 };
 
-const PartCategory = (props) => {
-  const { act, data } = useBackend();
+const PartCategory = (props, context) => {
+  const { act, data } = useBackend(context);
   const { buildingPart } = data;
   const { parts, name, forceShow, placeholder } = props;
-  const [displayMatCost] = useSharedState('display_mats', false);
+  const [displayMatCost] = useSharedState(context, 'display_mats', false);
   if (!forceShow && parts.length === 0) {
     return null;
   }
@@ -403,8 +410,8 @@ const PartCategory = (props) => {
   );
 };
 
-const Queue = (props) => {
-  const { act, data } = useBackend();
+const Queue = (props, context) => {
+  const { act, data } = useBackend(context);
   const { isProcessingQueue } = data;
   const queue = data.queue || [];
   const { queueMaterials, missingMaterials, textColors } = props;
@@ -466,7 +473,7 @@ const Queue = (props) => {
   );
 };
 
-const QueueMaterials = (props) => {
+const QueueMaterials = (props, context) => {
   const { queueMaterials, missingMaterials } = props;
   return (
     <Stack wrap>
@@ -486,8 +493,8 @@ const QueueMaterials = (props) => {
   );
 };
 
-const QueueList = (props) => {
-  const { act, data } = useBackend();
+const QueueList = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const { textColors } = props;
 
@@ -513,8 +520,8 @@ const QueueList = (props) => {
   ));
 };
 
-const BeingBuilt = (props) => {
-  const { data } = useBackend();
+const BeingBuilt = (props, context) => {
+  const { data } = useBackend(context);
   const { buildingPart, storedPart } = data;
 
   if (storedPart) {

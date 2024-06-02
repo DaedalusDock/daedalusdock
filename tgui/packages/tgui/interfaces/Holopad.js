@@ -11,8 +11,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const Holopad = (props) => {
-  const { act, data } = useBackend();
+export const Holopad = (props, context) => {
+  const { act, data } = useBackend(context);
   const { calling } = data;
   return (
     <Window width={440} height={245}>
@@ -42,8 +42,8 @@ export const Holopad = (props) => {
   );
 };
 
-const HolopadContent = (props) => {
-  const { act, data } = useBackend();
+const HolopadContent = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     on_network,
     on_cooldown,

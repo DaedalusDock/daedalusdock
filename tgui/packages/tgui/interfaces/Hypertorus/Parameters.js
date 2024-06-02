@@ -13,8 +13,8 @@ import { formatSiUnit } from '../../format';
  * relevant levels.
  */
 
-export const HypertorusParameters = (props) => {
-  const { data } = useBackend();
+export const HypertorusParameters = (props, context) => {
+  const { data } = useBackend(context);
 
   const { heat_output, heat_output_min, heat_output_max } = data;
 

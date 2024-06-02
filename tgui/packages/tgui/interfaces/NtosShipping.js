@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, LabeledList, Section } from '../components';
 import { NtosWindow } from '../layouts';
 
-export const NtosShipping = (props) => {
-  const { act, data } = useBackend();
+export const NtosShipping = (props, context) => {
+  const { act, data } = useBackend(context);
   return (
     <NtosWindow width={450} height={350}>
       <NtosWindow.Content scrollable>

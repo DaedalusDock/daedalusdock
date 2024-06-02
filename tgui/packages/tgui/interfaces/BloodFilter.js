@@ -3,10 +3,10 @@ import { Stack } from '../components';
 import { Window } from '../layouts';
 import { ChemFilterPane } from './ChemFilter';
 
-export const BloodFilter = (props) => {
-  const { act, data } = useBackend();
+export const BloodFilter = (props, context) => {
+  const { act, data } = useBackend(context);
   const { whitelist = [] } = data;
-  const [chemName, setChemName] = useLocalState('chemName', '');
+  const [chemName, setChemName] = useLocalState(context, 'chemName', '');
   return (
     <Window width={500} height={300}>
       <Window.Content scrollable>

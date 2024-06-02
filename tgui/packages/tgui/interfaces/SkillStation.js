@@ -13,8 +13,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const InsertedSkillchip = (props) => {
-  const { act, data } = useBackend();
+export const InsertedSkillchip = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const {
     skillchip_ready,
@@ -91,8 +91,8 @@ export const InsertedSkillchip = (props) => {
   );
 };
 
-export const ImplantedSkillchips = (props) => {
-  const { act, data } = useBackend();
+export const ImplantedSkillchips = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const { slots_used, slots_max, complexity_used, complexity_max, working } =
     data;
@@ -222,7 +222,7 @@ export const ImplantedSkillchips = (props) => {
   );
 };
 
-export const TimeFormat = (props) => {
+export const TimeFormat = (props, context) => {
   const { value } = props;
 
   const seconds = toFixed(Math.floor((value / 10) % 60)).padStart(2, '0');
@@ -238,8 +238,8 @@ export const TimeFormat = (props) => {
   return formattedValue;
 };
 
-export const SkillStation = (props) => {
-  const { data } = useBackend();
+export const SkillStation = (props, context) => {
+  const { data } = useBackend(context);
   const { working, timeleft, error } = data;
   return (
     <Window title="Skillsoft Station" width={500} height={500}>

@@ -18,8 +18,8 @@ type Info = {
   policy: string;
 };
 
-export const AntagInfoThief = (props) => {
-  const { data } = useBackend<Info>();
+export const AntagInfoThief = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { intro, goal, hideout, policy } = data;
   return (
     <Window width={620} height={340}>
@@ -61,8 +61,8 @@ export const AntagInfoThief = (props) => {
   );
 };
 
-const ObjectivePrintout = (props) => {
-  const { data } = useBackend<Info>();
+const ObjectivePrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { objectives } = data;
   return (
     <Stack vertical>

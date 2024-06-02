@@ -3,8 +3,8 @@ import { NtosWindow } from '../layouts';
 import { Section, Box, Dropdown } from '../components';
 import { sanitizeText } from '../sanitize';
 
-export const NtosPhysScanner = (props) => {
-  const { act, data } = useBackend();
+export const NtosPhysScanner = (props, context) => {
+  const { act, data } = useBackend(context);
   const { set_mode, last_record, available_modes = [] } = data;
   const textHtml = {
     __html: sanitizeText(last_record),

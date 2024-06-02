@@ -28,9 +28,9 @@ const damageTypes = [
   },
 ];
 
-export const OperatingComputer = (props) => {
-  const { act } = useBackend();
-  const [tab, setTab] = useSharedState('tab', 1);
+export const OperatingComputer = (props, context) => {
+  const { act } = useBackend(context);
+  const [tab, setTab] = useSharedState(context, 'tab', 1);
 
   return (
     <Window width={350} height={470}>
@@ -53,8 +53,8 @@ export const OperatingComputer = (props) => {
   );
 };
 
-const PatientStateView = (props) => {
-  const { act, data } = useBackend();
+const PatientStateView = (props, context) => {
+  const { act, data } = useBackend(context);
   const { table, procedures = [], patient = {} } = data;
   if (!table) {
     return <NoticeBox>No Table Detected</NoticeBox>;
@@ -127,8 +127,8 @@ const PatientStateView = (props) => {
   );
 };
 
-const SurgeryProceduresView = (props) => {
-  const { act, data } = useBackend();
+const SurgeryProceduresView = (props, context) => {
+  const { act, data } = useBackend(context);
   const { surgeries = [] } = data;
   return (
     <Section title="Advanced Surgery Procedures">

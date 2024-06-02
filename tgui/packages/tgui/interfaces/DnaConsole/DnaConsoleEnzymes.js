@@ -14,9 +14,9 @@ import {
 import { GeneticMakeupInfo } from './GeneticMakeupInfo';
 import { PULSE_DURATION_MAX, PULSE_STRENGTH_MAX } from './constants';
 
-const GeneticMakeupBufferInfo = (props) => {
+const GeneticMakeupBufferInfo = (props, context) => {
   const { index, makeup } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   const { isViableSubject, hasDisk, diskReadOnly, isInjectorReady } = data;
   // Type of the action for applying makeup
   const ACTION_MAKEUP_APPLY = isViableSubject ? 'makeup_apply' : 'makeup_delay';
@@ -148,8 +148,8 @@ const GeneticMakeupBufferInfo = (props) => {
   );
 };
 
-const GeneticMakeupBuffers = (props) => {
-  const { data, act } = useBackend();
+const GeneticMakeupBuffers = (props, context) => {
+  const { data, act } = useBackend(context);
   const {
     diskHasMakeup,
     geneticMakeupCooldown,
@@ -221,8 +221,8 @@ const GeneticMakeupBuffers = (props) => {
   );
 };
 
-const PulseEmitterProbs = (props) => {
-  const { data } = useBackend();
+const PulseEmitterProbs = (props, context) => {
+  const { data } = useBackend(context);
   const { stdDevAcc, stdDevStr } = data;
   return (
     <Section title="Probabilities" minHeight="100%">
@@ -241,8 +241,8 @@ const PulseEmitterProbs = (props) => {
   );
 };
 
-const PulseBoard = (props) => {
-  const { act } = useBackend();
+const PulseBoard = (props, context) => {
+  const { act } = useBackend(context);
   const { subjectBlock = [], type, name } = props;
   // Build blocks of buttons of unique enzymes
   const blocks = [];
@@ -284,8 +284,8 @@ const PulseBoard = (props) => {
   );
 };
 
-const PulseSettings = (props) => {
-  const { data, act } = useBackend();
+const PulseSettings = (props, context) => {
+  const { data, act } = useBackend(context);
   const { pulseStrength, pulseDuration } = data;
   return (
     <Section title="Emitter Configuration" minHeight="100%">
@@ -325,8 +325,8 @@ const PulseSettings = (props) => {
   );
 };
 
-export const DnaConsoleEnzymes = (props) => {
-  const { data, act } = useBackend();
+export const DnaConsoleEnzymes = (props, context) => {
+  const { data, act } = useBackend(context);
   const { isScannerConnected } = data;
   const { subjectBlock, type, name } = props;
   if (!isScannerConnected) {

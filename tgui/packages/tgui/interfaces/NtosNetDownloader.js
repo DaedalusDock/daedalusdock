@@ -15,8 +15,8 @@ import { flow } from 'common/fp';
 import { filter, sortBy } from 'common/collections';
 import { NtosWindow } from '../layouts';
 
-export const NtosNetDownloader = (props) => {
-  const { act, data } = useBackend();
+export const NtosNetDownloader = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     PC_device_theme,
     disk_size,
@@ -128,9 +128,9 @@ export const NtosNetDownloader = (props) => {
   );
 };
 
-const Program = (props) => {
+const Program = (props, context) => {
   const { program } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   const {
     PC_device_theme,
     disk_size,

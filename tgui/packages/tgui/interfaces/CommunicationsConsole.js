@@ -32,8 +32,8 @@ const sortShuttles = sortBy(
   (shuttle) => shuttle.creditCost,
 );
 
-const AlertButton = (props) => {
-  const { act, data } = useBackend();
+const AlertButton = (props, context) => {
+  const { act, data } = useBackend(context);
   const { alertLevelTick, canSetAlertLevel } = data;
   const { alertLevel, setShowAlertLevelConfirm } = props;
 
@@ -61,11 +61,11 @@ const AlertButton = (props) => {
   );
 };
 
-const MessageModal = (props) => {
-  const { data } = useBackend();
+const MessageModal = (props, context) => {
+  const { data } = useBackend(context);
   const { maxMessageLength } = data;
 
-  const [input, setInput] = useLocalState(props.label, '');
+  const [input, setInput] = useLocalState(context, props.label, '');
 
   const longEnough =
     props.minLength === undefined || input.length >= props.minLength;
@@ -153,8 +153,8 @@ const NoConnectionModal = () => {
   );
 };
 
-const PageBuyingShuttle = (props) => {
-  const { act, data } = useBackend();
+const PageBuyingShuttle = (props, context) => {
+  const { act, data } = useBackend(context);
 
   return (
     <Box>
@@ -214,12 +214,12 @@ const PageBuyingShuttle = (props) => {
   );
 };
 
-const PageChangingStatus = (props) => {
-  const { act, data } = useBackend();
+const PageChangingStatus = (props, context) => {
+  const { act, data } = useBackend(context);
   const { maxStatusLineLength } = data;
 
-  const [lineOne, setLineOne] = useLocalState('lineOne', data.lineOne);
-  const [lineTwo, setLineTwo] = useLocalState('lineTwo', data.lineTwo);
+  const [lineOne, setLineOne] = useLocalState(context, 'lineOne', data.lineOne);
+  const [lineTwo, setLineTwo] = useLocalState(context, 'lineTwo', data.lineTwo);
 
   return (
     <Box>
@@ -314,8 +314,8 @@ const PageChangingStatus = (props) => {
   );
 };
 
-const PageMain = (props) => {
-  const { act, data } = useBackend();
+const PageMain = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     alertLevel,
     alertLevelTick,
@@ -342,18 +342,22 @@ const PageMain = (props) => {
   } = data;
 
   const [callingShuttle, setCallingShuttle] = useLocalState(
+    context,
     'calling_shuttle',
     false,
   );
   const [messagingAssociates, setMessagingAssociates] = useLocalState(
+    context,
     'messaging_associates',
     false,
   );
   const [messagingSector, setMessagingSector] = useLocalState(
+    context,
     'messaing_sector',
     null,
   );
   const [requestingNukeCodes, setRequestingNukeCodes] = useLocalState(
+    context,
     'requesting_nuke_codes',
     false,
   );
@@ -361,7 +365,7 @@ const PageMain = (props) => {
   const [
     [showAlertLevelConfirm, confirmingAlertLevelTick],
     setShowAlertLevelConfirm,
-  ] = useLocalState('showConfirmPrompt', [null, null]);
+  ] = useLocalState(context, 'showConfirmPrompt', [null, null]);
 
   return (
     <Box>
@@ -455,9 +459,7 @@ const PageMain = (props) => {
           {!!canToggleEmergencyAccess && (
             <Button.Confirm
               icon="id-card-o"
-              content={`${
-                emergencyAccess ? 'Disable' : 'Enable'
-              } Emergency Maintenance Access`}
+              content={`${emergencyAccess ? 'Disable' : 'Enable'} Emergency Maintenance Access`}
               color={emergencyAccess ? 'bad' : undefined}
               onClick={() => act('toggleEmergencyAccess')}
             />
@@ -520,9 +522,7 @@ const PageMain = (props) => {
 
       {!!canMessageAssociates && messagingAssociates && (
         <MessageModal
-          label={`Message to transmit to ${
-            emagged ? '[ABNORMAL ROUTING COORDINATES]' : 'CentCom'
-          } via quantum entanglement`}
+          label={`Message to transmit to ${emagged ? '[ABNORMAL ROUTING COORDINATES]' : 'CentCom'} via quantum entanglement`}
           notice="Please be aware that this process is very expensive, and abuse will lead to...termination. Transmission does not guarantee a response."
           icon="bullhorn"
           buttonText="Send"
@@ -649,8 +649,8 @@ const PageMain = (props) => {
   );
 };
 
-const PageMessages = (props) => {
-  const { act, data } = useBackend();
+const PageMessages = (props, context) => {
+  const { act, data } = useBackend(context);
   const messages = data.messages || [];
 
   const children = [];
@@ -726,8 +726,8 @@ const PageMessages = (props) => {
   return children;
 };
 
-export const CommunicationsConsole = (props) => {
-  const { act, data } = useBackend();
+export const CommunicationsConsole = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     authenticated,
     authorizeName,

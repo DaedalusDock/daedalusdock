@@ -22,8 +22,8 @@ import {
   STORAGE_MODE_DISK,
 } from './constants';
 
-const DnaConsoleAdvancedInjectors = (props) => {
-  const { act, data } = useBackend();
+const DnaConsoleAdvancedInjectors = (props, context) => {
+  const { act, data } = useBackend(context);
   const { maxAdvInjectors, isInjectorReady } = data;
   const advInjectors = data.storage.injector ?? [];
   return (
@@ -81,8 +81,8 @@ const DnaConsoleAdvancedInjectors = (props) => {
   );
 };
 
-const StorageButtons = (props) => {
-  const { data, act } = useBackend();
+const StorageButtons = (props, context) => {
+  const { data, act } = useBackend(context);
   const { hasDisk } = data;
   const { storageMode, storageConsSubMode, storageDiskSubMode } = data.view;
   return (
@@ -168,8 +168,8 @@ const StorageButtons = (props) => {
   );
 };
 
-const StorageChromosomes = (props) => {
-  const { data, act } = useBackend();
+const StorageChromosomes = (props, context) => {
+  const { data, act } = useBackend(context);
   const chromos = data.chromoStorage ?? [];
   const uniqueChromos = uniqBy((chromo) => chromo.Name)(chromos);
   const chromoName = data.view.storageChromoName;
@@ -229,9 +229,9 @@ const StorageChromosomes = (props) => {
   );
 };
 
-const StorageMutations = (props) => {
+const StorageMutations = (props, context) => {
   const { customMode = '' } = props;
-  const { data, act } = useBackend();
+  const { data, act } = useBackend(context);
   const mutations = props.mutations || [];
   const mode = data.view.storageMode + customMode;
 
@@ -283,8 +283,8 @@ const StorageMutations = (props) => {
   );
 };
 
-export const DnaConsoleStorage = (props) => {
-  const { data, act } = useBackend();
+export const DnaConsoleStorage = (props, context) => {
+  const { data, act } = useBackend(context);
   const { storageMode, storageConsSubMode, storageDiskSubMode } = data.view;
   const { diskMakeupBuffer, diskHasMakeup } = data;
   const mutations = data.storage[storageMode];

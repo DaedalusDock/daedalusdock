@@ -23,10 +23,10 @@ const TAB2NAME = [
   },
 ];
 
-const ShoppingTab = (props) => {
-  const { data, act } = useBackend();
+const ShoppingTab = (props, context) => {
+  const { data, act } = useBackend(context);
   const { order_datums } = data;
-  const [shopIndex, setShopIndex] = useLocalState('shop-index', 1);
+  const [shopIndex, setShopIndex] = useLocalState(context, 'shop-index', 1);
   const mapped_food = order_datums.filter(
     (food) => food && food.cat === shopIndex,
   );
@@ -103,8 +103,8 @@ const ShoppingTab = (props) => {
   );
 };
 
-const CheckoutTab = (props) => {
-  const { data, act } = useBackend();
+const CheckoutTab = (props, context) => {
+  const { data, act } = useBackend(context);
   const { order_datums, total_cost } = data;
   const checkout_list = order_datums.filter((food) => food && food.amt);
   return (
@@ -199,8 +199,8 @@ const CheckoutTab = (props) => {
   );
 };
 
-const OrderSent = (props) => {
-  const { act, data } = useBackend();
+const OrderSent = (props, context) => {
+  const { act, data } = useBackend(context);
   return (
     <Dimmer>
       <Stack vertical>
@@ -215,10 +215,10 @@ const OrderSent = (props) => {
   );
 };
 
-export const ProduceConsole = (props) => {
-  const { act, data } = useBackend();
+export const ProduceConsole = (props, context) => {
+  const { act, data } = useBackend(context);
   const { off_cooldown } = data;
-  const [tabIndex, setTabIndex] = useLocalState('tab-index', 1);
+  const [tabIndex, setTabIndex] = useLocalState(context, 'tab-index', 1);
   const TabComponent = TAB2NAME[tabIndex - 1].component();
   return (
     <Window title="Produce Orders" width={500} height={400}>

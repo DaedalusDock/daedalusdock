@@ -18,8 +18,8 @@ type Info = {
   brothers: string;
 };
 
-export const AntagInfoBrother = (props) => {
-  const { data } = useBackend<Info>();
+export const AntagInfoBrother = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { antag_name, brothers } = data;
   return (
     <Window width={620} height={250}>
@@ -39,8 +39,8 @@ export const AntagInfoBrother = (props) => {
   );
 };
 
-const ObjectivePrintout = (props) => {
-  const { data } = useBackend<Info>();
+const ObjectivePrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { objectives } = data;
   return (
     <Stack vertical>

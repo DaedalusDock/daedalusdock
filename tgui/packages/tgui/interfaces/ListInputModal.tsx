@@ -21,8 +21,8 @@ type ListInputData = {
   title: string;
 };
 
-export const ListInputModal = (_) => {
-  const { act, data } = useBackend<ListInputData>();
+export const ListInputModal = (_, context) => {
+  const { act, data } = useBackend<ListInputData>(context);
   const {
     items = [],
     message = '',
@@ -32,14 +32,17 @@ export const ListInputModal = (_) => {
     title,
   } = data;
   const [selected, setSelected] = useLocalState<number>(
+    context,
     'selected',
     items.indexOf(init_value),
   );
   const [searchBarVisible, setSearchBarVisible] = useLocalState<boolean>(
+    context,
     'searchBarVisible',
     items.length > 9,
   );
   const [searchQuery, setSearchQuery] = useLocalState<string>(
+    context,
     'searchQuery',
     '',
   );
@@ -189,8 +192,8 @@ export const ListInputModal = (_) => {
  * Displays the list of selectable items.
  * If a search query is provided, filters the items.
  */
-const ListDisplay = (props) => {
-  const { act } = useBackend<ListInputData>();
+const ListDisplay = (props, context) => {
+  const { act } = useBackend<ListInputData>(context);
   const { filteredItems, onClick, onFocusSearch, searchBarVisible, selected } =
     props;
 
@@ -233,8 +236,8 @@ const ListDisplay = (props) => {
  * Renders a search bar input.
  * Closing the bar defaults input to an empty string.
  */
-const SearchBar = (props) => {
-  const { act } = useBackend<ListInputData>();
+const SearchBar = (props, context) => {
+  const { act } = useBackend<ListInputData>(context);
   const { filteredItems, onSearch, searchQuery, selected } = props;
 
   return (

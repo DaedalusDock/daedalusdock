@@ -31,8 +31,8 @@ type ScanData = {
   site_data: SiteData;
 };
 
-const ScanFailedModal = (_) => {
-  const { act } = useBackend();
+const ScanFailedModal = (_, context) => {
+  const { act } = useBackend(context);
   return (
     <Modal>
       <Stack fill vertical>
@@ -47,8 +47,8 @@ const ScanFailedModal = (_) => {
   );
 };
 
-const ScanSelectionSection = (_) => {
-  const { act, data } = useBackend<ScanData>();
+const ScanSelectionSection = (_, context) => {
+  const { act, data } = useBackend<ScanData>(context);
   const {
     scan_power,
     point_scan_eta,
@@ -146,8 +146,8 @@ type ScanInProgressData = {
   scan_description: string;
 };
 
-const ScanInProgressModal = (_) => {
-  const { act, data } = useBackend<ScanInProgressData>();
+const ScanInProgressModal = (_, context) => {
+  const { act, data } = useBackend<ScanInProgressData>(context);
   const { scan_time, scan_power, scan_description } = data;
 
   return (
@@ -187,8 +187,8 @@ type ExoscannerConsoleData = {
   scan_conditions: Array<string>;
 };
 
-export const ExoscannerConsole = (_) => {
-  const { act, data } = useBackend<ExoscannerConsoleData>();
+export const ExoscannerConsole = (_, context) => {
+  const { act, data } = useBackend<ExoscannerConsoleData>(context);
   const {
     scan_in_progress,
     scan_power,

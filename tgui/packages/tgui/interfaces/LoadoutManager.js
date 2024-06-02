@@ -2,11 +2,12 @@ import { useBackend, useSharedState } from '../backend';
 import { Box, Button, Section, Stack, Dropdown } from '../components';
 import { Window } from '../layouts';
 
-export const LoadoutManager = (props) => {
-  const { act, data } = useBackend();
+export const LoadoutManager = (props, context) => {
+  const { act, data } = useBackend(context);
   const { selected_loadout, loadout_tabs } = data;
 
   const [selectedTabName, setSelectedTab] = useSharedState(
+    context,
     'tabs',
     loadout_tabs[0]?.name,
   );

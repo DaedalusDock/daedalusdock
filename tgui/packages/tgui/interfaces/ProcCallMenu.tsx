@@ -24,8 +24,8 @@ type ProcCallMenuData = {
   resolve_weakref: BooleanLike;
 };
 
-export const ProcCallMenu = (props) => {
-  const { act, data } = useBackend<ProcCallMenuData>();
+export const ProcCallMenu = (props, context) => {
+  const { act, data } = useBackend<ProcCallMenuData>(context);
   const {
     input_ports,
     possible_types,
@@ -118,7 +118,7 @@ export const ProcCallMenu = (props) => {
   );
 };
 
-const PortEntry = (props) => {
+const PortEntry = (props, context) => {
   const {
     onRemove,
     onEnter,

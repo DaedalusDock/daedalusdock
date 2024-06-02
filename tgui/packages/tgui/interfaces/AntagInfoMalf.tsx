@@ -39,8 +39,8 @@ type Info = {
   categories: any[];
 };
 
-const ObjectivePrintout = (props) => {
-  const { data } = useBackend<Info>();
+const ObjectivePrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { objectives } = data;
   return (
     <Stack vertical>
@@ -57,8 +57,8 @@ const ObjectivePrintout = (props) => {
   );
 };
 
-const IntroductionSection = (props) => {
-  const { act, data } = useBackend<Info>();
+const IntroductionSection = (props, context) => {
+  const { act, data } = useBackend<Info>(context);
   const { intro } = data;
   return (
     <Section fill title="Intro" scrollable>
@@ -72,8 +72,8 @@ const IntroductionSection = (props) => {
   );
 };
 
-const FlavorSection = (props) => {
-  const { data } = useBackend<Info>();
+const FlavorSection = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { allies, goal } = data;
   return (
     <Section
@@ -129,8 +129,8 @@ const FlavorSection = (props) => {
   );
 };
 
-const CodewordsSection = (props) => {
-  const { data } = useBackend<Info>();
+const CodewordsSection = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { has_codewords, phrases, responses } = data;
   return (
     <Section title="Codewords" mb={!has_codewords && -1}>
@@ -175,10 +175,14 @@ const CodewordsSection = (props) => {
   );
 };
 
-export const AntagInfoMalf = (props) => {
-  const { act, data } = useBackend<Info>();
+export const AntagInfoMalf = (props, context) => {
+  const { act, data } = useBackend<Info>(context);
   const { processingTime, categories } = data;
-  const [antagInfoTab, setAntagInfoTab] = useLocalState('antagInfoTab', 0);
+  const [antagInfoTab, setAntagInfoTab] = useLocalState(
+    context,
+    'antagInfoTab',
+    0,
+  );
   const categoriesList: string[] = [];
   const items: Item[] = [];
   for (let i = 0; i < categories.length; i++) {

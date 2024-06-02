@@ -15,8 +15,8 @@ import {
   SUBJECT_UNCONSCIOUS,
 } from './constants';
 
-const DnaScannerButtons = (props) => {
-  const { data, act } = useBackend();
+const DnaScannerButtons = (props, context) => {
+  const { data, act } = useBackend(context);
   const {
     hasDelayedAction,
     isPulsing,
@@ -72,7 +72,7 @@ const DnaScannerButtons = (props) => {
 /**
  * Displays subject status based on the value of the status prop.
  */
-const SubjectStatus = (props) => {
+const SubjectStatus = (props, context) => {
   const { status } = props;
   if (status === SUBJECT_CONCIOUS) {
     return (
@@ -112,8 +112,8 @@ const SubjectStatus = (props) => {
   return <Box inline>Unknown</Box>;
 };
 
-const DnaScannerContent = (props) => {
-  const { data, act } = useBackend();
+const DnaScannerContent = (props, context) => {
+  const { data, act } = useBackend(context);
   const {
     subjectName,
     isScannerConnected,
@@ -169,7 +169,7 @@ const DnaScannerContent = (props) => {
   );
 };
 
-export const DnaScanner = (props) => {
+export const DnaScanner = (props, context) => {
   return (
     <Section title="DNA Scanner" buttons={<DnaScannerButtons />}>
       <DnaScannerContent />

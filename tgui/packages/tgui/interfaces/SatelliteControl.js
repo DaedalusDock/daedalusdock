@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Box, Button, LabeledList, ProgressBar, Section } from '../components';
 import { Window } from '../layouts';
 
-export const SatelliteControl = (props) => {
-  const { act, data } = useBackend();
+export const SatelliteControl = (props, context) => {
+  const { act, data } = useBackend(context);
   const satellites = data.satellites || [];
   return (
     <Window width={400} height={305}>

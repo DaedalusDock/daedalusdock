@@ -11,7 +11,7 @@ setInterval(() => {
   });
 }, 5000);
 
-export const ReconnectButton = (props) => {
+export const ReconnectButton = (props, context) => {
   return (
     url && (
       <>

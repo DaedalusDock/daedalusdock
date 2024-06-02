@@ -68,7 +68,7 @@ class SurgeryInitiatorInner extends Component<
   }
 
   render() {
-    const { act } = useBackend<SurgeryInitiatorData>();
+    const { act } = useBackend<SurgeryInitiatorData>(this.context);
     const { selected_zone, surgeries, target_name } = this.props;
 
     return (
@@ -157,8 +157,8 @@ class SurgeryInitiatorInner extends Component<
   }
 }
 
-export const SurgeryInitiator = (props) => {
-  const { data } = useBackend<SurgeryInitiatorData>();
+export const SurgeryInitiator = (props, context) => {
+  const { data } = useBackend<SurgeryInitiatorData>(context);
 
   return (
     <SurgeryInitiatorInner

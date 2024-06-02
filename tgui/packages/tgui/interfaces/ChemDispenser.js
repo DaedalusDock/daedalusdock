@@ -9,8 +9,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const ChemDispenser = (props) => {
-  const { act, data } = useBackend();
+export const ChemDispenser = (props, context) => {
+  const { act, data } = useBackend(context);
   const { recipeReagents = [] } = data;
   const beakerTransferAmounts = data.beakerTransferAmounts || [];
   const beakerContents = data.beakerContents || [];

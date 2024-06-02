@@ -114,8 +114,8 @@ const ICON_MAP = {
   what: 'question',
 };
 
-export const PaiInterface = (_) => {
-  const [tab, setTab] = useLocalState('tab', 1);
+export const PaiInterface = (_, context) => {
+  const [tab, setTab] = useLocalState(context, 'tab', 1);
   const setTabHandler = (tab: number) => {
     setTab(tab);
   };
@@ -191,8 +191,8 @@ const SystemDisplay = () => {
 };
 
 /** Renders some ASCII art. Changes to red on emag. */
-const SystemWallpaper = (_) => {
-  const { data } = useBackend<PaiInterfaceData>();
+const SystemWallpaper = (_, context) => {
+  const { data } = useBackend<PaiInterfaceData>(context);
   const { emagged } = data;
 
   const owner = !emagged ? 'NANOTRASEN' : ' SYNDICATE';
@@ -236,8 +236,8 @@ const SystemWallpaper = (_) => {
 /** Displays master info.
  * You can check their DNA and change your image here.
  */
-const SystemInfo = (_) => {
-  const { act, data } = useBackend<PaiInterfaceData>();
+const SystemInfo = (_, context) => {
+  const { act, data } = useBackend<PaiInterfaceData>(context);
   const { image, master } = data;
 
   return (
@@ -276,8 +276,8 @@ const SystemInfo = (_) => {
 };
 
 /** Shows the hardcoded PAI info along with any supplied orders. */
-const DirectiveDisplay = (_) => {
-  const { data } = useBackend<PaiInterfaceData>();
+const DirectiveDisplay = (_, context) => {
+  const { data } = useBackend<PaiInterfaceData>(context);
   const { directives, master } = data;
 
   return (
@@ -316,8 +316,12 @@ const DirectiveDisplay = (_) => {
  * another section that displays the selected installed
  * software info.
  */
-const InstalledDisplay = (_) => {
-  const [installSelected, setInstallSelected] = useLocalState('software', '');
+const InstalledDisplay = (_, context) => {
+  const [installSelected, setInstallSelected] = useLocalState(
+    context,
+    'software',
+    '',
+  );
   const onInstallHandler = (software: string) => {
     setInstallSelected(software);
   };
@@ -335,8 +339,8 @@ const InstalledDisplay = (_) => {
 };
 
 /** Iterates over installed software to render buttons. */
-const InstalledSoftware = (props) => {
-  const { data } = useBackend<PaiInterfaceData>();
+const InstalledSoftware = (props, context) => {
+  const { data } = useBackend<PaiInterfaceData>(context);
   const { installed = [] } = data;
   const { onInstallClick } = props;
 
@@ -395,8 +399,8 @@ const InstalledInfo = (props) => {
 };
 
 /** Todo: Remove this entirely when records get a TGUI interface themselves */
-const RecordsDisplay = (props) => {
-  const { act, data } = useBackend<PaiInterfaceData>();
+const RecordsDisplay = (props, context) => {
+  const { act, data } = useBackend<PaiInterfaceData>(context);
   const { record_type } = props;
   const { records = [], refresh_spam } = data;
   const convertedRecords: CrewRecord[] = records[record_type];
@@ -468,8 +472,8 @@ const RecordRow = (props) => {
 /** Once a software is selected, generates custom buttons or a default
  * power toggle.
  */
-const SoftwareButtons = (props) => {
-  const { act, data } = useBackend<PaiInterfaceData>();
+const SoftwareButtons = (props, context) => {
+  const { act, data } = useBackend<PaiInterfaceData>(context);
   const { door_jack, languages, pda } = data;
   const { software } = props;
 
@@ -588,8 +592,8 @@ const AvailableDisplay = () => {
 };
 
 /** Displays the remaining RAM left as a progressbar. */
-const AvailableMemory = (_) => {
-  const { data } = useBackend<PaiInterfaceData>();
+const AvailableMemory = (_, context) => {
+  const { data } = useBackend<PaiInterfaceData>(context);
   const { ram } = data;
 
   return (
@@ -618,8 +622,8 @@ const AvailableMemory = (_) => {
 /** A list of available software.
  *  creates table rows for each, like a vendor.
  */
-const AvailableSoftware = (_) => {
-  const { data } = useBackend<PaiInterfaceData>();
+const AvailableSoftware = (_, context) => {
+  const { data } = useBackend<PaiInterfaceData>(context);
   const { available } = data;
   const convertedList: Available[] = Object.entries(available).map((key) => {
     return { name: key[0], value: key[1] };
@@ -635,8 +639,8 @@ const AvailableSoftware = (_) => {
 };
 
 /** A row for an individual software listing. */
-const AvailableRow = (props) => {
-  const { act, data } = useBackend<PaiInterfaceData>();
+const AvailableRow = (props, context) => {
+  const { act, data } = useBackend<PaiInterfaceData>(context);
   const { ram } = data;
   const { installed } = data;
   const { software } = props;

@@ -17,8 +17,8 @@ type Info = {
   objectives: Objective[];
 };
 
-export const AntagInfoGeneric = (props) => {
-  const { data } = useBackend<Info>();
+export const AntagInfoGeneric = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { antag_name } = data;
   return (
     <Window width={620} height={250}>
@@ -38,8 +38,8 @@ export const AntagInfoGeneric = (props) => {
   );
 };
 
-const ObjectivePrintout = (props) => {
-  const { data } = useBackend<Info>();
+const ObjectivePrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { objectives } = data;
   return (
     <Stack vertical>

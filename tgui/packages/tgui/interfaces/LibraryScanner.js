@@ -2,7 +2,7 @@ import { useBackend } from '../backend';
 import { Button, Stack, NoticeBox, Section } from '../components';
 import { Window } from '../layouts';
 
-export const LibraryScanner = (props) => {
+export const LibraryScanner = (props, context) => {
   return (
     <Window title="Library Scanner" width={350} height={150}>
       <BookScanning />
@@ -10,8 +10,8 @@ export const LibraryScanner = (props) => {
   );
 };
 
-const BookScanning = (props) => {
-  const { act, data } = useBackend();
+const BookScanning = (props, context) => {
+  const { act, data } = useBackend(context);
   const { has_book, has_cache, book } = data;
   if (!has_book && !has_cache) {
     return <NoticeBox>Insert a book to scan</NoticeBox>;

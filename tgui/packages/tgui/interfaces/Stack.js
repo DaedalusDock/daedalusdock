@@ -12,12 +12,12 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const Stack = (props) => {
-  const { act, data } = useBackend();
+export const Stack = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const { amount, recipes = [] } = data;
 
-  const [searchText, setSearchText] = useLocalState('searchText', '');
+  const [searchText, setSearchText] = useLocalState(context, 'searchText', '');
 
   const testSearch = createSearch(searchText, (item) => {
     return item;
@@ -61,8 +61,8 @@ export const Stack = (props) => {
   );
 };
 
-const RecipeList = (props) => {
-  const { act, data } = useBackend();
+const RecipeList = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const { recipes } = props;
 
@@ -92,8 +92,8 @@ const buildMultiplier = (recipe, amount) => {
   return Math.floor(amount / recipe.req_amount);
 };
 
-const Multipliers = (props) => {
-  const { act, data } = useBackend();
+const Multipliers = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const { recipe, maxMultiplier } = props;
 
@@ -139,8 +139,8 @@ const Multipliers = (props) => {
   return finalResult;
 };
 
-const Recipe = (props) => {
-  const { act, data } = useBackend();
+const Recipe = (props, context) => {
+  const { act, data } = useBackend(context);
 
   const { amount } = data;
 

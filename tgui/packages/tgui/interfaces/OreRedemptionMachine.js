@@ -10,8 +10,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const OreRedemptionMachine = (props) => {
-  const { act, data } = useBackend();
+export const OreRedemptionMachine = (props, context) => {
+  const { act, data } = useBackend(context);
   const { unclaimedPoints, materials, alloys, diskDesigns, hasDisk } = data;
   return (
     <Window title="Ore Redemption Machine" width={440} height={550}>
@@ -111,10 +111,14 @@ export const OreRedemptionMachine = (props) => {
   );
 };
 
-const MaterialRow = (props) => {
+const MaterialRow = (props, context) => {
   const { material, onRelease } = props;
 
-  const [amount, setAmount] = useLocalState('amount' + material.name, 1);
+  const [amount, setAmount] = useLocalState(
+    context,
+    'amount' + material.name,
+    1,
+  );
 
   const amountAvailable = Math.floor(material.amount);
   return (

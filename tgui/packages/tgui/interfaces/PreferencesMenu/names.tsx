@@ -24,15 +24,18 @@ const binaryInsertName = binaryInsertWith<NameWithKey>(({ key }) => key);
 
 const sortNameWithKeyEntries = sortBy<[string, NameWithKey[]]>(([key]) => key);
 
-export const MultiNameInput = (props: {
-  handleClose: () => void;
-  handleRandomizeName: (nameType: string) => void;
-  handleUpdateName: (nameType: string, value: string) => void;
-  names: Record<string, string>;
-}) => {
+export const MultiNameInput = (
+  props: {
+    handleClose: () => void;
+    handleRandomizeName: (nameType: string) => void;
+    handleUpdateName: (nameType: string, value: string) => void;
+    names: Record<string, string>;
+  },
+  context,
+) => {
   const [currentlyEditingName, setCurrentlyEditingName] = useLocalState<
     string | null
-  >('currentlyEditingName', null);
+  >(context, 'currentlyEditingName', null);
 
   return (
     <ServerPreferencesFetcher
@@ -152,14 +155,17 @@ export const MultiNameInput = (props: {
   );
 };
 
-export const NameInput = (props: {
-  handleUpdateName: (name: string) => void;
-  name: string;
-  openMultiNameInput: () => void;
-}) => {
+export const NameInput = (
+  props: {
+    handleUpdateName: (name: string) => void;
+    name: string;
+    openMultiNameInput: () => void;
+  },
+  context,
+) => {
   const [lastNameBeforeEdit, setLastNameBeforeEdit] = useLocalState<
     string | null
-  >('lastNameBeforeEdit', null);
+  >(context, 'lastNameBeforeEdit', null);
   const editing = lastNameBeforeEdit === props.name;
 
   const updateName = (e, value) => {

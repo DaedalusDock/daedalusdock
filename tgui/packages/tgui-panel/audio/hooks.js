@@ -4,12 +4,12 @@
  * @license MIT
  */
 
-import { useDispatch, useSelector } from 'tgui/backend';
+import { useSelector, useDispatch } from 'common/redux';
 import { selectAudio } from './selectors';
 
-export const useAudio = () => {
-  const state = useSelector(selectAudio);
-  const dispatch = useDispatch();
+export const useAudio = (context) => {
+  const state = useSelector(context, selectAudio);
+  const dispatch = useDispatch(context);
   return {
     ...state,
     toggle: () => dispatch({ type: 'audio/toggle' }),

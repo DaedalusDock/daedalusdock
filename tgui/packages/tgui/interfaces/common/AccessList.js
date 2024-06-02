@@ -2,7 +2,7 @@ import { sortBy } from 'common/collections';
 import { useSharedState } from '../../backend';
 import { Button, Flex, Section, Tabs } from '../../components';
 
-export const AccessList = (props) => {
+export const AccessList = (props, context) => {
   const {
     accesses = [],
     wildcardSlots = {},
@@ -17,6 +17,7 @@ export const AccessList = (props) => {
   } = props;
 
   const [wildcardTab, setWildcardTab] = useSharedState(
+    context,
     'wildcardSelected',
     showBasic ? 'None' : Object.keys(wildcardSlots)[0],
   );
@@ -129,10 +130,11 @@ export const AccessList = (props) => {
   );
 };
 
-export const FormatWildcards = (props) => {
+export const FormatWildcards = (props, context) => {
   const { wildcardSlots = {}, showBasic, basicUsed = 0, basicMax = 0 } = props;
 
   const [wildcardTab, setWildcardTab] = useSharedState(
+    context,
     'wildcardSelected',
     showBasic ? 'None' : Object.keys(wildcardSlots)[0],
   );
@@ -184,10 +186,11 @@ export const FormatWildcards = (props) => {
   );
 };
 
-const RegionTabList = (props) => {
+const RegionTabList = (props, context) => {
   const { accesses = [] } = props;
 
   const [selectedAccessName, setSelectedAccessName] = useSharedState(
+    context,
     'accessName',
     accesses[0]?.name,
   );
@@ -216,7 +219,7 @@ const RegionTabList = (props) => {
   );
 };
 
-const RegionAccessList = (props) => {
+const RegionAccessList = (props, context) => {
   const {
     accesses = [],
     selectedList = [],
@@ -229,6 +232,7 @@ const RegionAccessList = (props) => {
   } = props;
 
   const [wildcardTab, setWildcardTab] = useSharedState(
+    context,
     'wildcardSelected',
     showBasic ? 'None' : Object.keys(wildcardSlots)[0],
   );
@@ -242,7 +246,11 @@ const RegionAccessList = (props) => {
     selWildcard = wildcardTab;
   }
 
-  const [selectedAccessName] = useSharedState('accessName', accesses[0]?.name);
+  const [selectedAccessName] = useSharedState(
+    context,
+    'accessName',
+    accesses[0]?.name,
+  );
 
   const selectedAccess = accesses.find(
     (access) => access.name === selectedAccessName,

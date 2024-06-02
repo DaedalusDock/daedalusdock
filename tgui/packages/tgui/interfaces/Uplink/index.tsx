@@ -95,7 +95,7 @@ export class Uplink extends Component<{}, UplinkState> {
         (response) => response.json(),
       );
     }
-    const { data } = useBackend<UplinkData>();
+    const { data } = useBackend<UplinkData>(this.context);
 
     const uplinkFlag = data.uplink_flag;
     const uplinkRole = data.assigned_role;
@@ -151,7 +151,7 @@ export class Uplink extends Component<{}, UplinkState> {
   }
 
   render() {
-    const { data, act } = useBackend<UplinkData>();
+    const { data, act } = useBackend<UplinkData>(this.context);
     const {
       telecrystals,
       progression_points,

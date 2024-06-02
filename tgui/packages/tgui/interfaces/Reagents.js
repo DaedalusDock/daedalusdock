@@ -8,11 +8,11 @@ const bookmarkedReactions = new Set();
 
 const matchBitflag = (a, b) => a & b && (a | b) === b;
 
-export const Reagents = (props) => {
-  const { act, data } = useBackend();
+export const Reagents = (props, context) => {
+  const { act, data } = useBackend(context);
   const { beakerSync, reagent_mode_recipe, reagent_mode_reagent } = data;
 
-  const [page, setPage] = useLocalState('page', 1);
+  const [page, setPage] = useLocalState(context, 'page', 1);
 
   return (
     <Window width={720} height={850}>
@@ -96,9 +96,9 @@ export const Reagents = (props) => {
   );
 };
 
-const RecipeLibrary = (props) => {
-  const { act, data } = useBackend();
-  const [page, setPage] = useLocalState('page', 1);
+const RecipeLibrary = (props, context) => {
+  const { act, data } = useBackend(context);
+  const [page, setPage] = useLocalState(context, 'page', 1);
   const {
     currentReagents = [],
     master_reaction_list = [],
@@ -106,10 +106,15 @@ const RecipeLibrary = (props) => {
   } = data;
 
   const [reagentFilter, setReagentFilter] = useLocalState(
+    context,
     'reagentFilter',
     true,
   );
-  const [bookmarkMode, setBookmarkMode] = useLocalState('bookmarkMode', false);
+  const [bookmarkMode, setBookmarkMode] = useLocalState(
+    context,
+    'bookmarkMode',
+    false,
+  );
 
   const matchReagents = (reaction) => {
     if (!reagentFilter || currentReagents === null) {

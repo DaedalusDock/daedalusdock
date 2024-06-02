@@ -5,15 +5,15 @@
  */
 
 import { toFixed } from 'common/math';
-import { useDispatch, useSelector } from 'tgui/backend';
+import { useDispatch, useSelector } from 'common/redux';
 import { Button, Flex, Knob } from 'tgui/components';
 import { useSettings } from '../settings';
 import { selectAudio } from './selectors';
 
-export const NowPlayingWidget = (props) => {
-  const audio = useSelector(selectAudio);
-  const dispatch = useDispatch();
-  const settings = useSettings();
+export const NowPlayingWidget = (props, context) => {
+  const audio = useSelector(context, selectAudio);
+  const dispatch = useDispatch(context);
+  const settings = useSettings(context);
   const title = audio.meta?.title;
   return (
     <Flex align="center">

@@ -9,9 +9,9 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const RoboticsControlConsole = (props) => {
-  const { act, data } = useBackend();
-  const [tab, setTab] = useSharedState('tab', 1);
+export const RoboticsControlConsole = (props, context) => {
+  const { act, data } = useBackend(context);
+  const [tab, setTab] = useSharedState(context, 'tab', 1);
   const { can_hack, can_detonate, cyborgs = [], drones = [] } = data;
   return (
     <Window width={500} height={460}>
@@ -47,9 +47,9 @@ export const RoboticsControlConsole = (props) => {
   );
 };
 
-const Cyborgs = (props) => {
+const Cyborgs = (props, context) => {
   const { cyborgs, can_hack, can_detonate } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   if (!cyborgs.length) {
     return (
       <NoticeBox>No cyborg units detected within access parameters</NoticeBox>
@@ -140,9 +140,9 @@ const Cyborgs = (props) => {
   });
 };
 
-const Drones = (props) => {
+const Drones = (props, context) => {
   const { drones } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
 
   if (!drones.length) {
     return (

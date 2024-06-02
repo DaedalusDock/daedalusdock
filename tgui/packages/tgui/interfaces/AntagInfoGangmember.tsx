@@ -9,8 +9,8 @@ type Info = {
   gang_clothes: string[];
 };
 
-export const AntagInfoGangmember = (props) => {
-  const { data } = useBackend<Info>();
+export const AntagInfoGangmember = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { gang_name, antag_name } = data;
   return (
     <Window width={620} height={500}>
@@ -51,8 +51,8 @@ export const AntagInfoGangmember = (props) => {
   );
 };
 
-const GangClothesPrintout = (props) => {
-  const { data } = useBackend<Info>();
+const GangClothesPrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { gang_name, gang_clothes } = data;
   return (
     <Stack vertical>
@@ -100,8 +100,8 @@ const GangPhonePrintout = () => {
   );
 };
 
-const GangObjectivePrintout = (props) => {
-  const { data } = useBackend<Info>();
+const GangObjectivePrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { gang_objective } = data;
   return (
     <Stack vertical>

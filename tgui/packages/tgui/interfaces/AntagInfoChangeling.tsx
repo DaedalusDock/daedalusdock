@@ -46,8 +46,8 @@ type Info = {
   objectives: Objective[];
 };
 
-const ObjectivePrintout = (props) => {
-  const { data } = useBackend<Info>();
+const ObjectivePrintout = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { objectives } = data;
   return (
     <Stack vertical>
@@ -64,8 +64,8 @@ const ObjectivePrintout = (props) => {
   );
 };
 
-const IntroductionSection = (props) => {
-  const { act, data } = useBackend<Info>();
+const IntroductionSection = (props, context) => {
+  const { act, data } = useBackend<Info>(context);
   const { hive_name, objectives } = data;
   return (
     <Section
@@ -86,8 +86,8 @@ const IntroductionSection = (props) => {
   );
 };
 
-const AbilitiesSection = (props) => {
-  const { data } = useBackend<Info>();
+const AbilitiesSection = (props, context) => {
+  const { data } = useBackend<Info>(context);
   return (
     <Section fill title="Abilities">
       <Stack fill>
@@ -136,10 +136,11 @@ const AbilitiesSection = (props) => {
   );
 };
 
-const MemoriesSection = (props) => {
-  const { act, data } = useBackend<Info>();
+const MemoriesSection = (props, context) => {
+  const { act, data } = useBackend<Info>(context);
   const { memories, stolen_antag_info } = data;
   const [selectedMemory, setSelectedMemory] = useSharedState(
+    context,
     'memory',
     (!!memories && memories[0]) || null,
   );
@@ -192,8 +193,8 @@ const MemoriesSection = (props) => {
   );
 };
 
-const VictimPatternsSection = (props) => {
-  const { data } = useBackend<Info>();
+const VictimPatternsSection = (props, context) => {
+  const { data } = useBackend<Info>(context);
   const { stolen_antag_info } = data;
   return (
     <Section
@@ -206,8 +207,8 @@ const VictimPatternsSection = (props) => {
   );
 };
 
-export const AntagInfoChangeling = (props) => {
-  const { data } = useBackend<Info>();
+export const AntagInfoChangeling = (props, context) => {
+  const { data } = useBackend<Info>(context);
   return (
     <Window width={620} height={580}>
       <Window.Content

@@ -20,12 +20,6 @@ import { resumeRenderer, suspendRenderer } from './renderer';
 
 const logger = createLogger('backend');
 
-export let globalStore;
-
-export const setGlobalStore = (store) => {
-  globalStore = store;
-};
-
 export const backendUpdate = createAction('backend/update');
 export const backendSetSharedState = createAction('backend/setSharedState');
 export const backendSuspendStart = createAction('backend/suspendStart');
@@ -270,9 +264,9 @@ export const selectBackend = <TData>(state: any): BackendState<TData> =>
  *
  * You can make
  */
-export const useBackend = <TData>() => {
-  const state: BackendState<TData> = globalStore?.getState()?.backend;
-
+export const useBackend = <TData>(context: any) => {
+  const { store } = context;
+  const state = selectBackend<TData>(store.getState());
   return {
     ...state,
     act: sendAct,
@@ -298,16 +292,18 @@ type StateWithSetter<T> = [T, (nextState: T) => void];
  * @param initialState Initializes your global variable with this value.
  */
 export const useLocalState = <T>(
+  context: any,
   key: string,
   initialState: T,
 ): StateWithSetter<T> => {
-  const state = globalStore?.getState()?.backend;
-  const sharedStates = state?.shared ?? {};
+  const { store } = context;
+  const state = selectBackend(store.getState());
+  const sharedStates = state.shared ?? {};
   const sharedState = key in sharedStates ? sharedStates[key] : initialState;
   return [
     sharedState,
     (nextState) => {
-      globalStore.dispatch(
+      store.dispatch(
         backendSetSharedState({
           key,
           nextState:
@@ -335,11 +331,13 @@ export const useLocalState = <T>(
  * @param initialState Initializes your global variable with this value.
  */
 export const useSharedState = <T>(
+  context: any,
   key: string,
   initialState: T,
 ): StateWithSetter<T> => {
-  const state = globalStore?.getState()?.backend;
-  const sharedStates = state?.shared ?? {};
+  const { store } = context;
+  const state = selectBackend(store.getState());
+  const sharedStates = state.shared ?? {};
   const sharedState = key in sharedStates ? sharedStates[key] : initialState;
   return [
     sharedState,
@@ -356,15 +354,4 @@ export const useSharedState = <T>(
       });
     },
   ];
-};
-
-// Implementation specific
-// --------------------------------------------------------
-
-export const useDispatch = () => {
-  return globalStore?.dispatch;
-};
-
-export const useSelector = (selector) => {
-  return selector(globalStore?.getState());
 };

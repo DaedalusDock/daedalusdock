@@ -12,8 +12,8 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-const PacketInfo = (props) => {
-  const { act, data } = useBackend();
+const PacketInfo = (props, context) => {
+  const { act, data } = useBackend(context);
   const { packet } = props;
   return (
     <Stack.Item>
@@ -41,8 +41,8 @@ const PacketInfo = (props) => {
   );
 };
 
-const ServerScreen = (props) => {
-  const { act, data } = useBackend();
+const ServerScreen = (props, context) => {
+  const { act, data } = useBackend(context);
   const { network, server } = data;
   return (
     <Stack fill vertical>
@@ -81,10 +81,14 @@ const ServerScreen = (props) => {
   );
 };
 
-const MainScreen = (props) => {
-  const { act, data } = useBackend();
+const MainScreen = (props, context) => {
+  const { act, data } = useBackend(context);
   const { servers, network } = data;
-  const [networkId, setNetworkId] = useLocalState('networkId', network);
+  const [networkId, setNetworkId] = useLocalState(
+    context,
+    'networkId',
+    network,
+  );
 
   return (
     <Stack fill vertical>
@@ -141,8 +145,8 @@ const MainScreen = (props) => {
   );
 };
 
-export const ServerMonitor = (props) => {
-  const { act, data } = useBackend();
+export const ServerMonitor = (props, context) => {
+  const { act, data } = useBackend(context);
   const { screen, error } = data;
   return (
     <Window width={575} height={400}>

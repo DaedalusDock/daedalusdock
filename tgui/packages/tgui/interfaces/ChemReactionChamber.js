@@ -13,11 +13,16 @@ import {
 import { Window } from '../layouts';
 import { round, toFixed } from 'common/math';
 
-export const ChemReactionChamber = (props) => {
-  const { act, data } = useBackend();
+export const ChemReactionChamber = (props, context) => {
+  const { act, data } = useBackend(context);
 
-  const [reagentName, setReagentName] = useLocalState('reagentName', '');
+  const [reagentName, setReagentName] = useLocalState(
+    context,
+    'reagentName',
+    '',
+  );
   const [reagentQuantity, setReagentQuantity] = useLocalState(
+    context,
     'reagentQuantity',
     1,
   );

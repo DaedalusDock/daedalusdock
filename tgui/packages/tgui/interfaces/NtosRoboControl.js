@@ -15,9 +15,9 @@ const getMuleByRef = (mules, ref) => {
   return mules?.find((mule) => mule.mule_ref === ref);
 };
 
-export const NtosRoboControl = (props) => {
-  const { act, data } = useBackend();
-  const [tab_main, setTab_main] = useSharedState('tab_main', 1);
+export const NtosRoboControl = (props, context) => {
+  const { act, data } = useBackend(context);
+  const [tab_main, setTab_main] = useSharedState(context, 'tab_main', 1);
   const { bots, drones, id_owner, has_id, droneaccess, dronepingtypes } = data;
   return (
     <NtosWindow width={550} height={550}>
@@ -94,9 +94,9 @@ export const NtosRoboControl = (props) => {
   );
 };
 
-export const RobotInfo = (props) => {
+export const RobotInfo = (props, context) => {
   const { robot } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   const mules = data.mules || [];
   // Get a mule object
   const mule = !!robot.mule_check && getMuleByRef(mules, robot.bot_ref);
@@ -292,9 +292,9 @@ export const RobotInfo = (props) => {
   );
 };
 
-export const DroneInfo = (props) => {
+export const DroneInfo = (props, context) => {
   const { drone } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   const color = 'rgba(74, 59, 140, 1)';
 
   return (

@@ -4,8 +4,8 @@ import { useBackend } from '../backend';
 import { Box, Button, Flex, Section, Table } from '../components';
 import { Window } from '../layouts';
 
-export const AtmosControlPanel = (props) => {
-  const { act, data } = useBackend();
+export const AtmosControlPanel = (props, context) => {
+  const { act, data } = useBackend(context);
   const groups = flow([
     map((group, i) => ({
       ...group,

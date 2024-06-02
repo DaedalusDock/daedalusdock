@@ -18,9 +18,9 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-const ConfigureNumberEntry = (props) => {
+const ConfigureNumberEntry = (props, context) => {
   const { name, value, module_ref } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
   return (
     <NumberInput
       value={value}
@@ -39,9 +39,9 @@ const ConfigureNumberEntry = (props) => {
   );
 };
 
-const ConfigureBoolEntry = (props) => {
+const ConfigureBoolEntry = (props, context) => {
   const { name, value, module_ref } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
   return (
     <Button.Checkbox
       checked={value}
@@ -56,9 +56,9 @@ const ConfigureBoolEntry = (props) => {
   );
 };
 
-const ConfigureColorEntry = (props) => {
+const ConfigureColorEntry = (props, context) => {
   const { name, value, module_ref } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
   return (
     <>
       <Button
@@ -75,9 +75,9 @@ const ConfigureColorEntry = (props) => {
   );
 };
 
-const ConfigureListEntry = (props) => {
+const ConfigureListEntry = (props, context) => {
   const { name, value, values, module_ref } = props;
-  const { act } = useBackend();
+  const { act } = useBackend(context);
   return (
     <Dropdown
       displayText={value}
@@ -93,7 +93,7 @@ const ConfigureListEntry = (props) => {
   );
 };
 
-const ConfigureDataEntry = (props) => {
+const ConfigureDataEntry = (props, context) => {
   const { name, display_name, type, value, values, module_ref } = props;
   const configureEntryTypes = {
     number: <ConfigureNumberEntry {...props} />,
@@ -108,7 +108,7 @@ const ConfigureDataEntry = (props) => {
   );
 };
 
-const RadCounter = (props) => {
+const RadCounter = (props, context) => {
   const { active, userradiated, usertoxins, usermaxtoxins, threatlevel } =
     props;
   return (
@@ -148,7 +148,7 @@ const RadCounter = (props) => {
   );
 };
 
-const HealthAnalyzer = (props) => {
+const HealthAnalyzer = (props, context) => {
   const {
     active,
     userhealth,
@@ -248,8 +248,8 @@ const LockedInterface = () => (
   </Section>
 );
 
-const LockedModule = (props) => {
-  const { act, data } = useBackend();
+const LockedModule = (props, context) => {
+  const { act, data } = useBackend(context);
   return (
     <Dimmer>
       <Stack>
@@ -261,7 +261,7 @@ const LockedModule = (props) => {
   );
 };
 
-const ConfigureScreen = (props) => {
+const ConfigureScreen = (props, context) => {
   const { configuration_data, module_ref } = props;
   const configuration_keys = Object.keys(configuration_data);
   return (
@@ -310,8 +310,8 @@ const displayText = (param) => {
   }
 };
 
-const ParametersSection = (props) => {
-  const { act, data } = useBackend();
+const ParametersSection = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     active,
     malfunctioning,
@@ -390,8 +390,8 @@ const ParametersSection = (props) => {
   );
 };
 
-const HardwareSection = (props) => {
-  const { act, data } = useBackend();
+const HardwareSection = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     active,
     control,
@@ -443,8 +443,8 @@ const HardwareSection = (props) => {
   );
 };
 
-const InfoSection = (props) => {
-  const { act, data } = useBackend();
+const InfoSection = (props, context) => {
+  const { act, data } = useBackend(context);
   const { active, modules } = data;
   const info_modules = modules.filter((module) => !!module.id);
 
@@ -466,10 +466,11 @@ const InfoSection = (props) => {
   );
 };
 
-const ModuleSection = (props) => {
-  const { act, data } = useBackend();
+const ModuleSection = (props, context) => {
+  const { act, data } = useBackend(context);
   const { complexity_max, modules } = data;
   const [configureState, setConfigureState] = useLocalState(
+    context,
     'module_configuration',
     null,
   );
@@ -600,8 +601,8 @@ const ModuleSection = (props) => {
   );
 };
 
-export const MODsuit = (props) => {
-  const { act, data } = useBackend();
+export const MODsuit = (props, context) => {
+  const { act, data } = useBackend(context);
   const { ui_theme, interface_break } = data;
   return (
     <Window

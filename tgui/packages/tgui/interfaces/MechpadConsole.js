@@ -10,9 +10,9 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const MechpadControl = (props) => {
+export const MechpadControl = (props, context) => {
   const { topLevel } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   const { pad_name, connected_mechpad } = data;
   return (
     <Section
@@ -54,8 +54,8 @@ export const MechpadControl = (props) => {
   );
 };
 
-export const MechpadConsole = (props) => {
-  const { act, data } = useBackend();
+export const MechpadConsole = (props, context) => {
+  const { act, data } = useBackend(context);
   const { mechpads = [], selected_id } = data;
   return (
     <Window width={475} height={130}>

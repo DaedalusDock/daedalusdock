@@ -13,11 +13,15 @@ import {
 import { toTitleCase } from 'common/string';
 import { TableCell, TableRow } from '../components/Table';
 
-export const DebugHealth = (props) => {
-  const { data } = useBackend<Record<string, any>>();
+export const DebugHealth = (props, context) => {
+  const { data } = useBackend<Record<string, any>>(context);
 
   const tabs = Object.keys(data);
-  const [currentTab, setCurrentTab] = useLocalState('currentTab', tabs[0]);
+  const [currentTab, setCurrentTab] = useLocalState(
+    context,
+    'currentTab',
+    tabs[0],
+  );
 
   return (
     <Window width={400} height={500}>
@@ -51,7 +55,7 @@ export const DebugHealth = (props) => {
   );
 };
 
-const InfoSection = (props: { data: Record<string, any> }) => {
+const InfoSection = (props: { data: Record<string, any> }, context) => {
   const { data } = props;
 
   return (
@@ -69,7 +73,7 @@ const InfoSection = (props: { data: Record<string, any> }) => {
   );
 };
 
-const ExpandableSection = (props: { data: Record<string, any> }) => {
+const ExpandableSection = (props: { data: Record<string, any> }, context) => {
   const { data } = props;
 
   return (
@@ -126,7 +130,7 @@ const ObjectDisplay = (props: { items: Record<string, any> }) => {
   );
 };
 
-const TooltipButton = (props) => {
+const TooltipButton = (props, context) => {
   const { item } = props;
   const name = item.name || item.Name || item.NAME || 'Unknown';
 
@@ -148,7 +152,7 @@ const TooltipButton = (props) => {
   );
 };
 
-const ListItem = (props: { entry: [string, any] }) => {
+const ListItem = (props: { entry: [string, any] }, context) => {
   const {
     entry: [label, value],
   } = props;

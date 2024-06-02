@@ -51,7 +51,7 @@ export class CircuitSignalHandler extends Component<
   }
 
   render() {
-    const { act, data } = useBackend<CircuitSignalHandlerData>();
+    const { act, data } = useBackend<CircuitSignalHandlerData>(this.context);
     const { responseList, parameterList, signal_id, global } = this
       .state as CircuitSignalHandlerState;
     const { global_port_types } = data;
@@ -199,7 +199,7 @@ type EntryProps = {
   options?: string[];
 };
 
-const Entry = (props: EntryProps) => {
+const Entry = (props: EntryProps, context) => {
   const {
     onRemove,
     onEnter,

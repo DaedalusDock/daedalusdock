@@ -248,8 +248,8 @@ type StripMenuData = {
   name: string;
 };
 
-export const StripMenu = (props) => {
-  const { act, data } = useBackend<StripMenuData>();
+export const StripMenu = (props, context) => {
+  const { act, data } = useBackend<StripMenuData>(context);
 
   const gridSpots = new Map<GridSpotKey, string>();
   for (const key of Object.keys(data.items)) {

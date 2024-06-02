@@ -55,8 +55,8 @@ export const AntagInfoBrainwashed = () => {
   );
 };
 
-const ObjectivePrintout = (_) => {
-  const { data } = useBackend<Info>();
+const ObjectivePrintout = (_, context) => {
+  const { data } = useBackend<Info>(context);
   const { objectives } = data;
   return (
     <Stack fill vertical>

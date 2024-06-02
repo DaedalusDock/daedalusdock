@@ -9,9 +9,9 @@ import {
   Tooltip,
 } from '../../components';
 
-export const RecipeLookup = (props) => {
+export const RecipeLookup = (props, context) => {
   const { recipe, bookmarkedReactions } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend(context);
   if (!recipe) {
     return <Box>No reaction selected!</Box>;
   }

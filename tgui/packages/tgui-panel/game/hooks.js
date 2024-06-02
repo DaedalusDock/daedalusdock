@@ -4,9 +4,9 @@
  * @license MIT
  */
 
-import { useSelector } from 'tgui/backend';
+import { useSelector } from 'common/redux';
 import { selectGame } from './selectors';
 
-export const useGame = () => {
-  return useSelector(selectGame);
+export const useGame = (context) => {
+  return useSelector(context, selectGame);
 };

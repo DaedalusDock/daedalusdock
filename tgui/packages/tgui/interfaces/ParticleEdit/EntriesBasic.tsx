@@ -25,9 +25,9 @@ import {
 } from './data';
 import { editKeyOf, editWeightOf, setGradientSpace } from './helpers';
 
-export const EntryFloat = (props: EntryFloatProps) => {
-  const { act, data } = useBackend<ParticleUIData>();
-  const [desc, setdesc] = useLocalState('desc', '');
+export const EntryFloat = (props: EntryFloatProps, context) => {
+  const { act, data } = useBackend<ParticleUIData>(context);
+  const [desc, setdesc] = useLocalState(context, 'desc', '');
   const { name, var_name, float } = props;
   return (
     <LabeledList.Item label={name}>
@@ -51,9 +51,9 @@ export const EntryFloat = (props: EntryFloatProps) => {
   );
 };
 
-export const EntryCoord = (props: EntryCoordProps) => {
-  const { act, data } = useBackend<ParticleUIData>();
-  const [desc, setdesc] = useLocalState('desc', '');
+export const EntryCoord = (props: EntryCoordProps, context) => {
+  const { act, data } = useBackend<ParticleUIData>(context);
+  const [desc, setdesc] = useLocalState(context, 'desc', '');
   const { name, var_name, coord } = props;
   return (
     <LabeledList.Item label={name}>
@@ -96,9 +96,9 @@ export const EntryCoord = (props: EntryCoordProps) => {
   );
 };
 
-export const EntryGradient = (props: EntryGradientProps) => {
-  const { act, data } = useBackend<ParticleUIData>();
-  const [desc, setdesc] = useLocalState('desc', '');
+export const EntryGradient = (props: EntryGradientProps, context) => {
+  const { act, data } = useBackend<ParticleUIData>(context);
+  const [desc, setdesc] = useLocalState(context, 'desc', '');
   const { name, var_name, gradient } = props;
   const isLooping = gradient?.find((x) => x === 'loop');
   const space_type = gradient?.includes('space')
@@ -197,9 +197,9 @@ export const EntryGradient = (props: EntryGradientProps) => {
   );
 };
 
-export const EntryTransform = (props: EntryTransformProps) => {
-  const { act, data } = useBackend<ParticleUIData>();
-  const [desc, setdesc] = useLocalState('desc', '');
+export const EntryTransform = (props: EntryTransformProps, context) => {
+  const { act, data } = useBackend<ParticleUIData>(context);
+  const [desc, setdesc] = useLocalState(context, 'desc', '');
   const len = props.transform?.length ? props.transform.length : 0;
   const selected =
     len < 7
@@ -250,9 +250,9 @@ export const EntryTransform = (props: EntryTransformProps) => {
   );
 };
 
-export const EntryIcon = (props: EntryIconStateProps) => {
-  const { act, data } = useBackend<ParticleUIData>();
-  const [desc, setdesc] = useLocalState('desc', '');
+export const EntryIcon = (props: EntryIconStateProps, context) => {
+  const { act, data } = useBackend<ParticleUIData>(context);
+  const [desc, setdesc] = useLocalState(context, 'desc', '');
   const { name, var_name, icon_state } = props;
   return (
     <LabeledList.Item label={name}>
@@ -322,9 +322,9 @@ export const EntryIcon = (props: EntryIconStateProps) => {
   );
 };
 
-export const EntryIconState = (props: EntryIconStateProps) => {
-  const { act, data } = useBackend<ParticleUIData>();
-  const [desc, setdesc] = useLocalState('desc', '');
+export const EntryIconState = (props: EntryIconStateProps, context) => {
+  const { act, data } = useBackend<ParticleUIData>(context);
+  const [desc, setdesc] = useLocalState(context, 'desc', '');
   const { name, var_name, icon_state } = props;
   const newValue =
     typeof icon_state === 'string'

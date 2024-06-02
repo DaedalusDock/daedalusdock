@@ -6,8 +6,8 @@ import { Box, Button, Dimmer, Flex, Icon, Table, Tabs } from '../components';
 import { Window } from '../layouts';
 import { AreaCharge, powerRank } from './PowerMonitor';
 
-export const ApcControl = (props) => {
-  const { data } = useBackend();
+export const ApcControl = (props, context) => {
+  const { data } = useBackend(context);
   return (
     <Window title="APC Controller" width={550} height={500}>
       {data.authenticated === 1 && <ApcLoggedIn />}
@@ -16,8 +16,8 @@ export const ApcControl = (props) => {
   );
 };
 
-const ApcLoggedOut = (props) => {
-  const { act, data } = useBackend();
+const ApcLoggedOut = (props, context) => {
+  const { act, data } = useBackend(context);
   const { emagged } = data;
   const text = emagged === 1 ? 'Open' : 'Log In';
   return (
@@ -32,10 +32,10 @@ const ApcLoggedOut = (props) => {
   );
 };
 
-const ApcLoggedIn = (props) => {
-  const { act, data } = useBackend();
+const ApcLoggedIn = (props, context) => {
+  const { act, data } = useBackend(context);
   const { restoring } = data;
-  const [tabIndex, setTabIndex] = useLocalState('tab-index', 1);
+  const [tabIndex, setTabIndex] = useLocalState(context, 'tab-index', 1);
   return (
     <>
       <Tabs>
@@ -85,10 +85,14 @@ const ApcLoggedIn = (props) => {
   );
 };
 
-const ControlPanel = (props) => {
-  const { act, data } = useBackend();
+const ControlPanel = (props, context) => {
+  const { act, data } = useBackend(context);
   const { emagged, logging } = data;
-  const [sortByField, setSortByField] = useLocalState('sortByField', null);
+  const [sortByField, setSortByField] = useLocalState(
+    context,
+    'sortByField',
+    null,
+  );
   return (
     <Flex>
       <Flex.Item>
@@ -132,10 +136,10 @@ const ControlPanel = (props) => {
   );
 };
 
-const ApcControlScene = (props) => {
-  const { data, act } = useBackend();
+const ApcControlScene = (props, context) => {
+  const { data, act } = useBackend(context);
 
-  const [sortByField] = useLocalState('sortByField', null);
+  const [sortByField] = useLocalState(context, 'sortByField', null);
 
   const apcs = flow([
     map((apc, i) => ({
@@ -228,8 +232,8 @@ const ApcControlScene = (props) => {
   );
 };
 
-const LogPanel = (props) => {
-  const { data } = useBackend();
+const LogPanel = (props, context) => {
+  const { data } = useBackend(context);
 
   const logs = flow([
     map((line, i) => ({

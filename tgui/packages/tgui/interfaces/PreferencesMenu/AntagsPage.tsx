@@ -42,11 +42,18 @@ for (const antagKey of requireAntag.keys()) {
   );
 }
 
-const AntagSelection = (props: { antagonists: Antagonist[]; name: string }) => {
-  const { act, data } = useBackend<PreferencesMenuData>();
+const AntagSelection = (
+  props: {
+    antagonists: Antagonist[];
+    name: string;
+  },
+  context,
+) => {
+  const { act, data } = useBackend<PreferencesMenuData>(context);
   const className = 'PreferencesMenu__Antags__antagSelection';
 
   const [predictedState, setPredictedState] = useLocalState(
+    context,
     'AntagSelection_predictedState',
     new Set(data.selected_antags),
   );

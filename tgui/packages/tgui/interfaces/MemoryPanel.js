@@ -10,8 +10,8 @@ const STORY_VALUE_OKAY = 3;
 const STORY_VALUE_AMAZING = 4;
 // STORY_VALUE_LEGENDARY = 5; (not actually used)
 
-const MemoryQuality = (props) => {
-  const { act } = useBackend();
+const MemoryQuality = (props, context) => {
+  const { act } = useBackend(context);
   const { quality } = props;
 
   if (quality === STORY_VALUE_SHIT) {
@@ -103,8 +103,8 @@ const MemoryQuality = (props) => {
   );
 };
 
-export const MemoryPanel = (props) => {
-  const { act, data } = useBackend();
+export const MemoryPanel = (props, context) => {
+  const { act, data } = useBackend(context);
   const memories = data.memories || [];
   return (
     <Window title="Memory Panel" width={400} height={500}>

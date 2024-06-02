@@ -4,8 +4,8 @@ import type { Gasmix } from './common/GasmixParser';
 import { Window } from '../layouts';
 import { Section } from '../components';
 
-export const GasAnalyzerContent = (props) => {
-  const { act, data } = useBackend<{ gasmixes: Gasmix[] }>();
+export const GasAnalyzerContent = (props, context) => {
+  const { act, data } = useBackend<{ gasmixes: Gasmix[] }>(context);
   const { gasmixes } = data;
   return (
     <>
@@ -18,7 +18,7 @@ export const GasAnalyzerContent = (props) => {
   );
 };
 
-export const GasAnalyzer = (props) => {
+export const GasAnalyzer = (props, context) => {
   return (
     <Window width={500} height={450}>
       <Window.Content scrollable>

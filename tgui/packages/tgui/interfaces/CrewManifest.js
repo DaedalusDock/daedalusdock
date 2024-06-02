@@ -13,10 +13,10 @@ const commandJobs = [
 
 // PARIAH EDIT
 // Any instance of crewMember.trim was originally crewMember.rank
-export const CrewManifest = (props) => {
+export const CrewManifest = (props, context) => {
   const {
     data: { manifest, positions },
-  } = useBackend();
+  } = useBackend(context);
 
   return (
     <Window title="Crew Manifest" width={350} height={500}>

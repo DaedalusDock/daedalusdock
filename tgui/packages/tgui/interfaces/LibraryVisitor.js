@@ -14,7 +14,7 @@ import {
 import { Window } from '../layouts';
 import { PageSelect } from './LibraryConsole';
 
-export const LibraryVisitor = (props) => {
+export const LibraryVisitor = (props, context) => {
   return (
     <Window title="Library Lookup Console" width={702} height={421}>
       <BookListing />
@@ -22,8 +22,8 @@ export const LibraryVisitor = (props) => {
   );
 };
 
-const BookListing = (props) => {
-  const { act, data } = useBackend();
+const BookListing = (props, context) => {
+  const { act, data } = useBackend(context);
   const { can_connect, can_db_request, our_page, page_count } = data;
   if (!can_connect) {
     return (
@@ -59,8 +59,8 @@ const BookListing = (props) => {
   );
 };
 
-const SearchAndDisplay = (props) => {
-  const { act, data } = useBackend();
+const SearchAndDisplay = (props, context) => {
+  const { act, data } = useBackend(context);
   const {
     can_db_request,
     categories = [],

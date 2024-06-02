@@ -11,8 +11,8 @@ import {
 } from '../components';
 import { NtosWindow } from '../layouts';
 
-export const NtosArcade = (props) => {
-  const { act, data } = useBackend();
+export const NtosArcade = (props, context) => {
+  const { act, data } = useBackend(context);
   return (
     <NtosWindow width={450} height={350}>
       <NtosWindow.Content>

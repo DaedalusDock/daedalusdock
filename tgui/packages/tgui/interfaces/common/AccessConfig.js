@@ -2,7 +2,7 @@ import { sortBy } from 'common/collections';
 import { Section, Button, Flex, Tabs, Grid } from '../../components';
 import { useLocalState } from '../../backend';
 
-export const AccessConfig = (props) => {
+export const AccessConfig = (props, context) => {
   const {
     accesses = [],
     selectedList = [],
@@ -13,6 +13,7 @@ export const AccessConfig = (props) => {
     denyDep,
   } = props;
   const [selectedAccessName, setSelectedAccessName] = useLocalState(
+    context,
     'accessName',
     accesses[0]?.name,
   );

@@ -54,11 +54,15 @@ const BrokenTramDimmer = () => {
   );
 };
 
-export const TramControl = (props) => {
-  const { act, data } = useBackend();
+export const TramControl = (props, context) => {
+  const { act, data } = useBackend(context);
   const { broken, moving, destinations, tram_location } = data;
 
-  const [transitIndex, setTransitIndex] = useLocalState('transit-index', 1);
+  const [transitIndex, setTransitIndex] = useLocalState(
+    context,
+    'transit-index',
+    1,
+  );
   const MovingTramDimmer = () => {
     return (
       <Dimmer>

@@ -3,8 +3,8 @@ import { Button, LabeledList } from '../../components';
 import { OperatorData } from './data';
 import { toFixed } from 'common/math';
 
-export const PowerModulesPane = (props) => {
-  const { act, data } = useBackend<OperatorData>();
+export const PowerModulesPane = (props, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { mech_equipment, mineral_material_amount } = data;
   return (
     <LabeledList>

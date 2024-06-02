@@ -8,10 +8,13 @@ import {
   SmartPipeBlockSection,
 } from './RapidPipeDispenser';
 
-const PipeTypeSection = (props) => {
-  const { act, data } = useBackend();
+const PipeTypeSection = (props, context) => {
+  const { act, data } = useBackend(context);
   const { categories = [] } = data;
-  const [categoryName, setCategoryName] = useLocalState('categoryName');
+  const [categoryName, setCategoryName] = useLocalState(
+    context,
+    'categoryName',
+  );
   const shownCategory =
     categories.find((category) => category.cat_name === categoryName) ||
     categories[0];
@@ -50,8 +53,8 @@ const PipeTypeSection = (props) => {
   );
 };
 
-export const PipeDispenser = (props) => {
-  const { act, data } = useBackend();
+export const PipeDispenser = (props, context) => {
+  const { act, data } = useBackend(context);
   const { category: rootCategoryIndex } = data;
   return (
     <Window width={450} height={575}>

@@ -10,8 +10,8 @@ import {
 import { KelvinZeroCelcius, OperatorData } from './data';
 import { toFixed } from 'common/math';
 
-export const MechStatPane = (props) => {
-  const { act, data } = useBackend<OperatorData>();
+export const MechStatPane = (props, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const {
     name,
     integrity,
@@ -127,8 +127,8 @@ const GetTempFormat = (temp) => {
   );
 };
 
-const EnviromentalAir = (props) => {
-  const { act, data } = useBackend<OperatorData>();
+const EnviromentalAir = (props, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { airtank_pressure, airtank_temp } = data;
   if (airtank_temp === null) {
     return <Box>No air tank detected</Box>;
@@ -146,8 +146,8 @@ const EnviromentalAir = (props) => {
   }
 };
 
-const DNABody = (props) => {
-  const { act, data } = useBackend<OperatorData>();
+const DNABody = (props, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { dna_lock } = data;
   if (dna_lock === null) {
     return (
@@ -182,8 +182,8 @@ const DNABody = (props) => {
   }
 };
 
-const PowerBar = (props) => {
-  const { act, data } = useBackend<OperatorData>();
+const PowerBar = (props, context) => {
+  const { act, data } = useBackend<OperatorData>(context);
   const { power_level, power_max } = data;
   if (power_max === null) {
     return <Box content={'No Power cell installed!'} />;

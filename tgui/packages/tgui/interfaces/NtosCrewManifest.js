@@ -10,8 +10,8 @@ import { NtosWindow } from '../layouts';
 // Original: entry.rank
 // {entry.rank === entry.trim ? entry.rank : <>{entry.rank} ({entry.trim})</>}
 
-export const NtosCrewManifest = (props) => {
-  const { act, data } = useBackend();
+export const NtosCrewManifest = (props, context) => {
+  const { act, data } = useBackend(context);
   const { have_printer, manifest = {} } = data;
   return (
     <NtosWindow width={500} height={480}>

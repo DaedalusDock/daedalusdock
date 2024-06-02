@@ -100,8 +100,8 @@ const locationInfo = [
   },
 ];
 
-const AdventureStatus = (props) => {
-  const { data, act } = useBackend();
+const AdventureStatus = (props, context) => {
+  const { data, act } = useBackend(context);
   const {
     lings_suspected,
     eventname,
@@ -211,8 +211,8 @@ const AdventureStatus = (props) => {
   );
 };
 
-const ORION_STATUS_START = (props) => {
-  const { data, act } = useBackend();
+const ORION_STATUS_START = (props, context) => {
+  const { data, act } = useBackend(context);
   const { gamename } = data;
   return (
     <Section fill>
@@ -246,8 +246,8 @@ const ORION_STATUS_START = (props) => {
   );
 };
 
-const ORION_STATUS_INSTRUCTIONS = (props) => {
-  const { act } = useBackend();
+const ORION_STATUS_INSTRUCTIONS = (props, context) => {
+  const { act } = useBackend(context);
   const fake_settlers = ['John', 'William', 'Alice', 'Tom'];
   return (
     <>
@@ -370,8 +370,8 @@ const ORION_STATUS_INSTRUCTIONS = (props) => {
   );
 };
 
-const ORION_STATUS_NORMAL = (props) => {
-  const { data, act } = useBackend();
+const ORION_STATUS_NORMAL = (props, context) => {
+  const { data, act } = useBackend(context);
   const {
     settlers,
     settlermoods,
@@ -433,8 +433,8 @@ const ORION_STATUS_NORMAL = (props) => {
   );
 };
 
-const ORION_STATUS_GAMEOVER = (props) => {
-  const { data, act } = useBackend();
+const ORION_STATUS_GAMEOVER = (props, context) => {
+  const { data, act } = useBackend(context);
   const { reason } = data;
   return (
     <Section fill>
@@ -463,8 +463,8 @@ const ORION_STATUS_GAMEOVER = (props) => {
 
 const marketButtonSpacing = 0.8;
 
-const ORION_STATUS_MARKET = (props) => {
-  const { data, act } = useBackend();
+const ORION_STATUS_MARKET = (props, context) => {
+  const { data, act } = useBackend(context);
   const { turns, spaceport_raided } = data;
   return (
     <Stack vertical fill>
@@ -641,8 +641,8 @@ const ORION_STATUS_MARKET = (props) => {
   );
 };
 
-export const OrionGame = (props) => {
-  const { act, data } = useBackend();
+export const OrionGame = (props, context) => {
+  const { act, data } = useBackend(context);
   const { gamestatus, gamename, eventname } = data;
   const GameStatusComponent = STATUS2COMPONENT[gamestatus].component();
   const MarketRaid = STATUS2COMPONENT[2].component();

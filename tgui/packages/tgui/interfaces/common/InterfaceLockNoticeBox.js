@@ -15,8 +15,8 @@ import { Button, Flex, NoticeBox } from '../../components';
  * All props can be redefined if you want custom behavior, but
  * it's preferred to stick to defaults.
  */
-export const InterfaceLockNoticeBox = (props, context) => {
-  const { act, data } = useBackend(context);
+export const InterfaceLockNoticeBox = (props) => {
+  const { act, data } = useBackend();
   const {
     siliconUser = data.siliconUser,
     locked = data.locked,
@@ -28,9 +28,7 @@ export const InterfaceLockNoticeBox = (props, context) => {
     return (
       <NoticeBox color="grey">
         <Flex align="center">
-          <Flex.Item>
-            Interface lock status:
-          </Flex.Item>
+          <Flex.Item>Interface lock status:</Flex.Item>
           <Flex.Item grow={1} />
           <Flex.Item>
             <Button
@@ -42,7 +40,8 @@ export const InterfaceLockNoticeBox = (props, context) => {
                 if (onLockStatusChange) {
                   onLockStatusChange(!locked);
                 }
-              }} />
+              }}
+            />
           </Flex.Item>
         </Flex>
       </NoticeBox>
@@ -51,8 +50,7 @@ export const InterfaceLockNoticeBox = (props, context) => {
   // For everyone else
   return (
     <NoticeBox>
-      Swipe {accessText}{' '}
-      to {locked ? 'unlock' : 'lock'} this interface.
+      Swipe {accessText} to {locked ? 'unlock' : 'lock'} this interface.
     </NoticeBox>
   );
 };

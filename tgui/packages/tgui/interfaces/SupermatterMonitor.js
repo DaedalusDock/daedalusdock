@@ -2,7 +2,14 @@ import { sortBy } from 'common/collections';
 import { flow } from 'common/fp';
 import { toFixed } from 'common/math';
 import { useBackend } from '../backend';
-import { Button, LabeledList, ProgressBar, Section, Stack, Table } from '../components';
+import {
+  Button,
+  LabeledList,
+  ProgressBar,
+  Section,
+  Stack,
+  Table,
+} from '../components';
 import { getGasColor, getGasLabel } from '../constants';
 import { Window } from '../layouts';
 
@@ -18,8 +25,8 @@ export const SupermatterMonitor = () => {
   );
 };
 
-export const SupermatterMonitorContent = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SupermatterMonitorContent = (props) => {
+  const { act, data } = useBackend();
   const {
     active,
     singlecrystal,
@@ -43,13 +50,16 @@ export const SupermatterMonitorContent = (props, context) => {
   return (
     <Section
       title={SM_uid + '. ' + SM_area_name}
-      buttons={!singlecrystal && (
-        <Button
-          icon="arrow-left"
-          content="Back"
-          onClick={() => act('PRG_clear')}
-        />
-      )}>
+      buttons={
+        !singlecrystal && (
+          <Button
+            icon="arrow-left"
+            content="Back"
+            onClick={() => act('PRG_clear')}
+          />
+        )
+      }
+    >
       <Stack>
         <Stack.Item width="270px">
           <Section title="Metrics">
@@ -73,7 +83,8 @@ export const SupermatterMonitorContent = (props, context) => {
                     good: [-Infinity, 150],
                     average: [150, 300],
                     bad: [300, Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_power) + ' MeV/cm3'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -87,7 +98,8 @@ export const SupermatterMonitorContent = (props, context) => {
                     good: [logScale(500), logScale(2000)],
                     average: [logScale(2000), logScale(4000)],
                     bad: [logScale(4000), Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_ambienttemp) + ' K'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -103,7 +115,8 @@ export const SupermatterMonitorContent = (props, context) => {
                       logScale(SM_bad_moles_amount),
                     ],
                     bad: [logScale(SM_bad_moles_amount), Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_moles) + ' moles'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -116,7 +129,8 @@ export const SupermatterMonitorContent = (props, context) => {
                     good: [-Infinity, logScale(5000)],
                     average: [logScale(5000), logScale(10000)],
                     bad: [logScale(10000), +Infinity],
-                  }}>
+                  }}
+                >
                   {toFixed(SM_ambientpressure) + ' kPa'}
                 </ProgressBar>
               </LabeledList.Item>
@@ -132,7 +146,8 @@ export const SupermatterMonitorContent = (props, context) => {
                     color={getGasColor(gas.name)}
                     value={gas.amount}
                     minValue={0}
-                    maxValue={gasMaxAmount}>
+                    maxValue={gasMaxAmount}
+                  >
                     {toFixed(gas.amount, 2) + '%'}
                   </ProgressBar>
                 </LabeledList.Item>
@@ -145,8 +160,8 @@ export const SupermatterMonitorContent = (props, context) => {
   );
 };
 
-const SupermatterList = (props, context) => {
-  const { act, data } = useBackend(context);
+const SupermatterList = (props) => {
+  const { act, data } = useBackend();
   const { supermatters = [] } = data;
   return (
     <Section
@@ -157,7 +172,8 @@ const SupermatterList = (props, context) => {
           content="Refresh"
           onClick={() => act('PRG_refresh')}
         />
-      }>
+      }
+    >
       <Table>
         {supermatters.map((sm) => (
           <Table.Row key={sm.uid}>
@@ -181,7 +197,8 @@ const SupermatterList = (props, context) => {
                 onClick={() =>
                   act('PRG_set', {
                     target: sm.uid,
-                  })}
+                  })
+                }
               />
             </Table.Cell>
           </Table.Row>

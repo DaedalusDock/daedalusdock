@@ -14,8 +14,8 @@ type spawner = {
   important_text?: string;
 };
 
-export const SpawnersMenu = (props, context) => {
-  const { act, data } = useBackend<SpawnersMenuContext>(context);
+export const SpawnersMenu = (props) => {
+  const { act, data } = useBackend<SpawnersMenuContext>();
   const spawners = data.spawners || [];
   return (
     <Window title="Spawners Menu" width={700} height={525}>
@@ -38,18 +38,21 @@ export const SpawnersMenu = (props, context) => {
                         onClick={() =>
                           act('jump', {
                             name: spawner.name,
-                          })}
+                          })
+                        }
                       />
                       <Button
                         content="Spawn"
                         onClick={() =>
                           act('spawn', {
                             name: spawner.name,
-                          })}
+                          })
+                        }
                       />
                     </Stack.Item>
                   </Stack>
-                }>
+                }
+              >
                 <LabeledList>
                   <LabeledList.Item label="Origin">
                     {spawner.you_are_text || 'Unknown'}

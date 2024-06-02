@@ -1,14 +1,18 @@
 import { useBackend } from '../backend';
 import { formatSiUnit } from '../format';
-import { Button, LabeledList, NumberInput, Section, ProgressBar } from '../components';
+import {
+  Button,
+  LabeledList,
+  NumberInput,
+  Section,
+  ProgressBar,
+} from '../components';
 import { Window } from '../layouts';
 
-export const AtmosPump = (props, context) => {
-  const { act, data } = useBackend(context);
+export const AtmosPump = (props) => {
+  const { act, data } = useBackend();
   return (
-    <Window
-      width={335}
-      height={129}>
+    <Window width={335} height={129}>
       <Window.Content>
         <Section>
           <LabeledList>
@@ -17,7 +21,8 @@ export const AtmosPump = (props, context) => {
                 icon={data.on ? 'power-off' : 'times'}
                 content={data.on ? 'On' : 'Off'}
                 selected={data.on}
-                onClick={() => act('power')} />
+                onClick={() => act('power')}
+              />
             </LabeledList.Item>
             {data.max_rate ? (
               <LabeledList.Item label="Transfer Rate">
@@ -28,17 +33,23 @@ export const AtmosPump = (props, context) => {
                   unit="L/s"
                   minValue={0}
                   maxValue={data.max_rate}
-                  onChange={(e, value) => act('rate', {
-                    rate: value,
-                  })} />
+                  onChange={(e, value) =>
+                    act('rate', {
+                      rate: value,
+                    })
+                  }
+                />
                 <Button
                   ml={1}
                   icon="plus"
                   content="Max"
                   disabled={data.rate === data.max_rate}
-                  onClick={() => act('rate', {
-                    rate: 'max',
-                  })} />
+                  onClick={() =>
+                    act('rate', {
+                      rate: 'max',
+                    })
+                  }
+                />
               </LabeledList.Item>
             ) : (
               <LabeledList.Item label="Output Pressure">
@@ -50,17 +61,23 @@ export const AtmosPump = (props, context) => {
                   minValue={0}
                   maxValue={data.max_pressure}
                   step={10}
-                  onChange={(e, value) => act('pressure', {
-                    pressure: value,
-                  })} />
+                  onChange={(e, value) =>
+                    act('pressure', {
+                      pressure: value,
+                    })
+                  }
+                />
                 <Button
                   ml={1}
                   icon="plus"
                   content="Max"
                   disabled={data.pressure === data.max_pressure}
-                  onClick={() => act('pressure', {
-                    pressure: 'max',
-                  })} />
+                  onClick={() =>
+                    act('pressure', {
+                      pressure: 'max',
+                    })
+                  }
+                />
               </LabeledList.Item>
             )}
             {data.max_power ? (
@@ -73,25 +90,23 @@ export const AtmosPump = (props, context) => {
                   {formatSiUnit(data.last_draw, 0, 'W')}
                 </ProgressBar>
               </LabeledList.Item>
-            ) : (
-              null
-            )}
+            ) : null}
             {data.regulate_mode ? (
               <LabeledList.Item label="Pressure Regulator">
                 <Button
                   icon="sign-in-alt"
                   content="Input"
                   selected={data.regulate_mode === 1}
-                  onClick={() => act('regulate')} />
+                  onClick={() => act('regulate')}
+                />
                 <Button
                   icon="sign-out-alt"
                   content="Output"
                   selected={data.regulate_mode === 2}
-                  onClick={() => act('regulate')} />
+                  onClick={() => act('regulate')}
+                />
               </LabeledList.Item>
-            ) : (
-              null
-            )}
+            ) : null}
           </LabeledList>
         </Section>
       </Window.Content>

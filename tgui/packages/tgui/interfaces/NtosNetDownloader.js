@@ -35,7 +35,6 @@ export const NtosNetDownloader = (props) => {
     scale(downloadcompletion, 0, downloadsize) * 100,
   );
   const [selectedCategory, setSelectedCategory] = useLocalState(
-    context,
     'category',
     all_categories[0],
   );

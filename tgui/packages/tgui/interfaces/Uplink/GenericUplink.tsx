@@ -112,7 +112,7 @@ export type ItemListProps = {
   handleBuy: (item: Item) => void;
 };
 
-const ItemList = (props: ItemListProps, context: any) => {
+const ItemList = (props: ItemListProps) => {
   const { compactMode, items, handleBuy } = props;
   return (
     <Stack vertical>

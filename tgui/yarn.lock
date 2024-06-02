@@ -8132,6 +8132,7 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "tgui-bench@workspace:packages/tgui-bench"
   dependencies:
+    "@types/node": ^14.17.9
     common: "workspace:*"
     fastify: ^3.20.2
     fastify-static: ^4.2.3

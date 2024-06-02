@@ -9,6 +9,7 @@
 		"**/.yarn": true,
 		"**/.pnp.*": true
 	},
+	"prettier.prettierPath": "./tgui/.yarn/sdks/prettier/index.cjs",
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},

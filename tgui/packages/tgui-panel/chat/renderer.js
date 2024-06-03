@@ -16,7 +16,6 @@ import {
   MAX_PERSISTED_MESSAGES,
   MAX_VISIBLE_MESSAGES,
   MESSAGE_PRUNE_INTERVAL,
-  MESSAGE_TYPES,
   MESSAGE_TYPE_COMBAT,
   MESSAGE_TYPE_INTERNAL,
   MESSAGE_TYPE_LOCALCHAT,
@@ -401,15 +400,7 @@ class ChatRenderer {
       message.node = node;
       // Query all possible selectors to find out the message type
       if (!message.type) {
-        // IE8: Does not support querySelector on elements that
-        // are not yet in the document.
-        const typeDef =
-          !Byond.IS_LTE_IE8 &&
-          MESSAGE_TYPES.find(
-            (typeDef) =>
-              typeDef.selector && node.querySelector(typeDef.selector),
-          );
-        message.type = typeDef?.type || MESSAGE_TYPE_UNKNOWN;
+        message.type = MESSAGE_TYPE_UNKNOWN;
       }
       updateMessageBadge(message);
       if (!countByType[message.type]) {
@@ -507,10 +498,6 @@ class ChatRenderer {
   }
 
   saveToDisk() {
-    // Allow only on IE11
-    if (Byond.IS_LTE_IE10) {
-      return;
-    }
     // Compile currently loaded stylesheets as CSS text
     let cssText = '';
     const styleSheets = document.styleSheets;

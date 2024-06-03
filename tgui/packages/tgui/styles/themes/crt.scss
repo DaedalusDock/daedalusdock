@@ -121,7 +121,7 @@ $dark-fg: darken(base.$color-fg, 30);
   .Layout__content::after {
     content: ' ';
     display: block;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
@@ -134,7 +134,7 @@ $dark-fg: darken(base.$color-fg, 30);
   .Layout__content::before {
     content: ' ';
     display: block;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
@@ -185,13 +185,13 @@ $dark-fg: darken(base.$color-fg, 30);
 
   .Button--disabled {
     background-color: none;
-    color: base.$color-fg;
+    color: base.$color-bg;
     cursor: auto;
     &:hover,
     &:focus,
     &:visited,
     &:target {
-      color: base.$color-fg;
+      color: base.$color-bg;
     }
   }
 

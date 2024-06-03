@@ -133,12 +133,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	QUEUE_SMOOTH(src)
 
-	// visibilityChanged() will never hit any path with side effects during mapload
-	if (!mapload)
-		visibilityChanged()
-		if(length(contents))
-			for(var/atom/movable/AM as anything in src)
-				Entered(AM, null)
+	if (!mapload && length(contents))
+		for(var/atom/movable/AM as anything in src)
+			Entered(AM, null)
 
 	var/area/our_area = loc
 	if(!our_area.luminosity && always_lit) //Only provide your own lighting if the area doesn't for you
@@ -180,8 +177,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			qdel(A)
 		return
 
-	visibilityChanged()
-	QDEL_LIST(blueprint_data)
+	if(blueprint_data)
+		QDEL_LIST(blueprint_data)
 	initialized = FALSE
 
 	///ZAS THINGS

@@ -74,7 +74,7 @@ export const SettingsGeneral = (props) => {
     matchCase,
   } = useSelector(selectSettings);
   const dispatch = useDispatch();
-  const [freeFont, setFreeFont] = useLocalState(context, 'freeFont', false);
+  const [freeFont, setFreeFont] = useLocalState('freeFont', false);
   return (
     <Section>
       <LabeledList>

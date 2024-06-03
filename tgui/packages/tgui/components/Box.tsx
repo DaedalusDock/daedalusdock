@@ -64,15 +64,12 @@ export interface BoxProps {
 export const unit = (value: unknown): string | undefined => {
   if (typeof value === 'string') {
     // Transparently convert pixels into rem units
-    if (value.endsWith('px') && !Byond.IS_LTE_IE8) {
+    if (value.endsWith('px')) {
       return parseFloat(value) / 12 + 'rem';
     }
     return value;
   }
   if (typeof value === 'number') {
-    if (Byond.IS_LTE_IE8) {
-      return value * 12 + 'px';
-    }
     return value + 'rem';
   }
 };
@@ -209,11 +206,6 @@ export const computeBoxProps = (props: BoxProps) => {
   // Compute props
   for (let propName in props) {
     if (propName === 'style') {
-      continue;
-    }
-    // IE8: onclick workaround
-    if (Byond.IS_LTE_IE8 && propName === 'onClick') {
-      computedProps.onClick = props[propName];
       continue;
     }
     const propValue = props[propName];

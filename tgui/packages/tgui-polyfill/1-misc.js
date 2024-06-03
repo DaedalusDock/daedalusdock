@@ -1,22 +1,38 @@
+/**
+ * @file
+ * @copyright 2020 Aleksej Komarov
+ * @license MIT
+ */
+
+/* eslint-disable */
 (function () {
+  'use strict';
+
+  // Inferno needs Int32Array, and it is not covered by core-js.
   if (!window.Int32Array) {
     window.Int32Array = Array;
   }
+
+  // ie11 polyfills
   !(function () {
+    // append
     function t() {
-      let e = Array.prototype.slice.call(arguments),
+      var e = Array.prototype.slice.call(arguments),
         n = document.createDocumentFragment();
-      e.forEach((e) => {
-        let t = e instanceof Node;
+      e.forEach(function (e) {
+        var t = e instanceof Node;
         n.appendChild(t ? e : document.createTextNode(String(e)));
       }),
         this.appendChild(n);
     }
+    // remove
     function n() {
       this.parentNode && this.parentNode.removeChild(this);
     }
+
+    // add to prototype
     [Element.prototype, Document.prototype, DocumentFragment.prototype].forEach(
-      (e) => {
+      function (e) {
         e.hasOwnProperty('append') ||
           Object.defineProperty(e, 'append', {
             configurable: !0,

@@ -3,6 +3,7 @@
   "name": "tgui-bench",
   "version": "5.0.0",
   "dependencies": {
+    "@types/node": "^14.17.9",
     "common": "workspace:*",
     "fastify": "^3.20.2",
     "fastify-static": "^4.2.3",

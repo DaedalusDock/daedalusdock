@@ -1,18 +1,24 @@
 @use 'sass:color';
 @use 'sass:math';
 @use 'sass:meta';
+@use '../base.scss';
 
 $font-family: monospace;
 $background-radial-opacity: 0.2 !default;
-
-@use '../base.scss';
+$dark-fg: darken(base.$color-fg, 30);
 
 @use '../colors.scss' with (
   $primary: base.$color-fg,
-  $label: base.$color-fg
+  $label: base.$color-fg,
+  $good: base.$color-fg,
+  $bad: base.$color-fg,
+  $average: base.$color-fg
 );
 
 %theme-crt {
+  // Atomic classes
+  @include meta.load-css('../atomic/color.scss');
+
   @include meta.load-css(
     '../components/Divider.scss',
     $with: ('color': base.$color-fg)
@@ -59,7 +65,11 @@ $background-radial-opacity: 0.2 !default;
 
   @include meta.load-css(
     '../components/ProgressBar.scss',
-    $with: ('color-default-fill': base.$color-fg)
+    $with: (
+      'color-default-fill': base.$color-fg,
+      'background-color': $dark-fg,
+      'bg-map': colors.$bg-map
+    )
   );
 
   @include meta.load-css(
@@ -82,10 +92,7 @@ $background-radial-opacity: 0.2 !default;
   );
   @include meta.load-css(
     '../components/Button.scss',
-    $with: (
-      'color-default': base.$color-fg,
-      'color-disabled': darken(base.$color-fg, 30)
-    )
+    $with: ('color-default': base.$color-fg, 'color-disabled': $dark-fg)
   );
 
   @include meta.load-css(
@@ -216,6 +223,10 @@ $background-radial-opacity: 0.2 !default;
     }
   }
 
+  .ProgressBar__content {
+    color: white;
+  }
+
   hr {
     color: base.$color-fg;
     border: 1px solid base.$color-fg;
@@ -248,6 +259,21 @@ $background-radial-opacity: 0.2 !default;
     }
   }
 
+  .LabeledList {
+    border: 1px solid base.$color-fg;
+  }
+
+  .LabeledList__row {
+    height: 2em;
+  }
+
+  .LabeledList__cell {
+    border: 1px solid base.$color-fg;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    height: 1.5em;
+  }
+
   .Table {
     border: 1px solid base.$color-fg;
   }
@@ -261,6 +287,7 @@ $background-radial-opacity: 0.2 !default;
     margin-top: 1px;
     margin-bottom: 1px;
     justify-content: center;
+    height: 1.5em;
   }
 }
 

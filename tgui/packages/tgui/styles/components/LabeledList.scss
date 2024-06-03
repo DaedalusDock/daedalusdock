@@ -5,6 +5,7 @@
 
 @use '../base.scss';
 
+$height: 0px !default;
 .LabeledList {
   display: table;
   // IE8: Does not support calc
@@ -20,6 +21,7 @@
 
 .LabeledList__row {
   display: table-row;
+  height: $height;
 }
 
 .LabeledList__row:last-child .LabeledList__cell {

@@ -12,7 +12,7 @@ import { InterfaceLockNoticeBox } from './common/InterfaceLockNoticeBox';
 
 export const Apc = (props) => {
   return (
-    <Window width={450} height={432}>
+    <Window width={450} height={500}>
       <Window.Content>
         <ApcContent />
       </Window.Content>
@@ -219,6 +219,9 @@ const ApcContent = (props) => {
               <Button
                 icon={data.coverLocked ? 'lock' : 'unlock'}
                 content={data.coverLocked ? 'Engaged' : 'Disengaged'}
+                width={8.5}
+                textAlign="left"
+                selected={data.coverLocked}
                 disabled={locked}
                 onClick={() => act('cover')}
               />
@@ -230,7 +233,7 @@ const ApcContent = (props) => {
               <Button
                 icon={data.emergencyLights ? 'lightbulb' : 'lightbulb-o'}
                 content={data.emergencyLights ? 'Enabled' : 'Disabled'}
-                width={6.6}
+                width={8.5}
                 textAlign="left"
                 selected={data.emergencyLights}
                 disabled={locked}
@@ -244,9 +247,10 @@ const ApcContent = (props) => {
               <Button
                 icon={data.nightshiftLights ? 'lightbulb' : 'lightbulb-o'}
                 content={data.nightshiftLights ? 'Enabled' : 'Disabled'}
-                width={6.6}
+                width={8.5}
                 textAlign="left"
                 selected={data.nightshiftLights}
+                disabled={locked}
                 onClick={() => act('toggle_nightshift')}
               />
             }

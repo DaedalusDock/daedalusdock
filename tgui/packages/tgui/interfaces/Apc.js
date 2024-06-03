@@ -97,7 +97,7 @@ const ApcContent = (props) => {
           <Button
             icon={data.mainLights ? 'lightbulb' : 'lightbulb-o'}
             content="Main Lights"
-            color={data.mainLights ? 'green' : 'red'}
+            selected={!!data.mainLights}
             onClick={() => act('main_lights')}
           />
         }

@@ -165,7 +165,6 @@ $background-radial-opacity: 0.2 !default;
     border: 1px solid base.$color-fg;
     cursor: pointer;
     &:hover,
-    &:focus,
     &:visited,
     &:target {
       background-color: base.$color-fg;

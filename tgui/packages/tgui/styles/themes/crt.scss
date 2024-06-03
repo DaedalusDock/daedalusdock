@@ -154,7 +154,7 @@ $background-radial-opacity: 0.2 !default;
   }
 
   span {
-    /*color: base.$color-fg;*/
+    color: base.$color-fg;
     font-family: $font-family;
     font-weight: bold;
   }
@@ -194,6 +194,10 @@ $background-radial-opacity: 0.2 !default;
         color: base.$color-bg;
       }
     }
+    .Dropdown__selected-text,
+    .Dropdown__arrow-button {
+      color: base.$color-bg;
+    }
   }
 
   .Dropdown__control.Button--disabled {
@@ -205,6 +209,10 @@ $background-radial-opacity: 0.2 !default;
       .Dropdown__arrow-button {
         color: base.$color-fg;
       }
+    }
+    .Dropdown__selected-text,
+    .Dropdown__arrow-button {
+      color: base.$color-fg;
     }
   }
 

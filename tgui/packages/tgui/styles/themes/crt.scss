@@ -92,7 +92,11 @@ $dark-fg: darken(base.$color-fg, 30);
   );
   @include meta.load-css(
     '../components/Button.scss',
-    $with: ('color-default': base.$color-fg, 'color-disabled': $dark-fg)
+    $with: (
+      'color-default': base.$color-fg,
+      'color-selected': $dark-fg,
+      'color-disabled': rbga(base.$color-fg, 0)
+    )
   );
 
   @include meta.load-css(
@@ -214,12 +218,12 @@ $dark-fg: darken(base.$color-fg, 30);
     &:target {
       .Dropdown__selected-text,
       .Dropdown__arrow-button {
-        color: base.$color-fg;
+        color: base.$color-bg;
       }
     }
     .Dropdown__selected-text,
     .Dropdown__arrow-button {
-      color: base.$color-fg;
+      color: base.$color-bg;
     }
   }
 

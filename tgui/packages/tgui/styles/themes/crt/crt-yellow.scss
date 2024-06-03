@@ -5,7 +5,12 @@ $dark: #111100;
 
 @use '../../base.scss' with (
   $color-bg: $dark,
-  $color-fg: $light
+  $color-fg: $light,
+  $font-family: (
+    monospace,
+    Verdana,
+    sans-serif,
+  )
 );
 
 @use '../crt.scss';

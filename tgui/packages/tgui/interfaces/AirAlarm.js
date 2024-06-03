@@ -19,7 +19,7 @@ export const AirAlarm = (props) => {
   const { act, data } = useBackend();
   const locked = data.locked && !data.siliconUser;
   return (
-    <Window width={440} height={650}>
+    <Window width={440} height={652}>
       <Window.Content scrollable>
         <InterfaceLockNoticeBox />
         <ThermostatControl />
@@ -126,7 +126,7 @@ const ThermostatControl = (props) => {
                   fluid
                   position="absolute"
                   top="16px"
-                  right="-20px"
+                  right="-28px"
                   color="transparent"
                   icon="undo"
                   onClick={() =>

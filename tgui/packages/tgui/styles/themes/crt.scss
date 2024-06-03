@@ -3,7 +3,6 @@
 @use 'sass:meta';
 @use '../base.scss';
 
-$font-family: monospace;
 $background-radial-opacity: 0.2 !default;
 $dark-fg: darken(base.$color-fg, 30);
 
@@ -39,8 +38,7 @@ $dark-fg: darken(base.$color-fg, 30);
     $with: (
       'text-color': base.$color-fg,
       'background-color': base.$color-bg,
-      'border-color': base.$color-fg,
-      'font-family': $font-family
+      'border-color': base.$color-fg
     )
   );
 
@@ -95,7 +93,8 @@ $dark-fg: darken(base.$color-fg, 30);
     $with: (
       'color-default': base.$color-fg,
       'color-selected': $dark-fg,
-      'color-disabled': rbga(base.$color-fg, 0)
+      'color-disabled': rbga(base.$color-fg, 0),
+      'color-transparent-text': base.$color-fg
     )
   );
 
@@ -109,6 +108,8 @@ $dark-fg: darken(base.$color-fg, 30);
       'tab-color-hovered': rgba(base.$color-fg, 0.3)
     )
   );
+
+  @include meta.load-css('../components/LabeledList.scss');
 
   .Layout__content {
     background-image: none;
@@ -166,12 +167,12 @@ $dark-fg: darken(base.$color-fg, 30);
 
   span {
     color: base.$color-fg;
-    font-family: $font-family;
+    font-family: base.$font-family;
     font-weight: bold;
   }
 
   .Button {
-    font-family: $font-family;
+    font-family: base.$font-family;
     font-weight: bold;
     border: 1px solid base.$color-fg;
     cursor: pointer;
@@ -193,6 +194,10 @@ $dark-fg: darken(base.$color-fg, 30);
     &:target {
       color: base.$color-bg;
     }
+  }
+
+  .Button--color--transparent {
+    background-color: $dark-fg;
   }
 
   .Dropdown__control {
@@ -229,6 +234,7 @@ $dark-fg: darken(base.$color-fg, 30);
 
   .ProgressBar__content {
     color: white;
+    font-weight: bold;
   }
 
   hr {
@@ -237,7 +243,7 @@ $dark-fg: darken(base.$color-fg, 30);
   }
 
   .Tab__text {
-    font-family: $font-family;
+    font-family: base.$font-family;
   }
 
   .Tabs--horizontal {
@@ -268,14 +274,13 @@ $dark-fg: darken(base.$color-fg, 30);
   }
 
   .LabeledList__row {
-    height: 2em;
+    height: 2.2em;
   }
 
   .LabeledList__cell {
     border: 1px solid base.$color-fg;
     margin-top: 1px;
     margin-bottom: 1px;
-    height: 1.5em;
   }
 
   .Table {

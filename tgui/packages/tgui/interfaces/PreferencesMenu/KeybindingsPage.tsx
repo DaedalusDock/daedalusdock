@@ -172,12 +172,6 @@ const KeybindingName = (props: { keybinding: Keybinding }) => {
   );
 };
 
-KeybindingName.defaultHooks = {
-  onComponentShouldUpdate: (lastProps, nextProps) => {
-    return lastProps.keybinding !== nextProps.keybinding;
-  },
-};
-
 const ResetToDefaultButton = (props: { keybindingId: string }) => {
   const { act } = useBackend<PreferencesMenuData>();
 
@@ -208,8 +202,8 @@ export class KeybindingsPage extends Component<{}, KeybindingsPageState> {
     rebindingHotkey: undefined,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);

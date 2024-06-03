@@ -8446,9 +8446,12 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "tgui-panel@workspace:packages/tgui-panel"
   dependencies:
+    "@types/react": ^18.3.3
+    "@types/react-dom": ^18.3.0
     common: "workspace:*"
     dompurify: ^2.3.1
     react: ^18.3.1
+    react-dom: ^18.3.1
     tgui: "workspace:*"
     tgui-dev-server: "workspace:*"
     tgui-polyfill: "workspace:*"

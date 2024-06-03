@@ -1,5 +1,5 @@
 import { perf } from 'common/perf';
-import { render } from 'react';
+import { ReactNode } from 'react';
 import { createLogger } from './logging';
 
 const logger = createLogger('renderer');
@@ -19,7 +19,7 @@ export const suspendRenderer = () => {
 };
 
 type CreateRenderer = <T extends unknown[] = [unknown]>(
-  getVNode?: (...args: T) => any,
+  getVNode?: (...args: T) => ReactNode,
 ) => (...args: T) => void;
 
 export const createRenderer: CreateRenderer =
@@ -31,9 +31,9 @@ export const createRenderer: CreateRenderer =
       reactRoot = document.getElementById('react-root');
     }
     if (getVNode) {
-      render(getVNode(...args), reactRoot);
+      reactRoot.render(getVNode(...args));
     } else {
-      render(args[0] as any, reactRoot);
+      reactRoot.render(args[0] as any);
     }
     perf.mark('render/finish');
     if (suspended) {

@@ -84,6 +84,7 @@ const createStackAugmentor = (store) => (stack, error) => {
 
 /**
  * Store provider for Inferno apps.
+ * This can be removed when Inferno is removed
  */
 export class StoreProvider extends Component {
   getChildContext() {

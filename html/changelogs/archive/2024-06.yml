@@ -1,3 +1,6 @@
 2024-06-02:
   SyncIt21:
   - bugfix: Pyrosium now reacts on creation.
+2024-06-03:
+  jlsnow301:
+  - bugfix: Chat settings should no longer bluescreen

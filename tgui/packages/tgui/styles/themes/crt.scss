@@ -1,10 +1,22 @@
 @use 'sass:color';
 @use 'sass:math';
 @use 'sass:meta';
-@use '../base.scss';
 
 $background-radial-opacity: 0.2 !default;
-$dark-fg: darken(base.$color-fg, 30);
+$color-bg: #ffffff !default;
+$color-fg: #333333 !default;
+
+$dark-fg: darken($color-fg, 30);
+
+@use '../base.scss' with (
+  $color-bg: $color-bg,
+  $color-fg: $color-fg,
+  $font-family: (
+    monospace,
+    Verdana,
+    sans-serif,
+  )
+);
 
 @use '../colors.scss' with (
   $primary: base.$color-fg,

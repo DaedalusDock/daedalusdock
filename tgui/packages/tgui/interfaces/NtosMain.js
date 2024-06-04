@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Button, ColorBox, Section, Table } from '../components';
+import { Button, ColorBox, LabeledList, Section, Table } from '../components';
 import { NtosWindow } from '../layouts';
 
 export const NtosMain = (props) => {
@@ -33,7 +33,7 @@ export const NtosMain = (props) => {
         {!!has_light && (
           <Section>
             <Button
-              width="144px"
+              width="168px"
               icon="lightbulb"
               selected={light_on}
               onClick={() => act('PC_toggle_light')}
@@ -70,14 +70,16 @@ export const NtosMain = (props) => {
               </>
             }
           >
-            <Table>
-              <Table.Row>
-                ID Name: {login.IDName} ({proposed_login.IDName})
-              </Table.Row>
-              <Table.Row>
-                Assignment: {login.IDJob} ({proposed_login.IDJob})
-              </Table.Row>
-            </Table>
+            <LabeledList>
+              <LabeledList.Item label="Identification">
+                {login.IDName}{' '}
+                {proposed_login.IDName && '(' + proposed_login.IDName + ')'}
+              </LabeledList.Item>
+              <LabeledList.Item label="Assignment">
+                {login.IDJob}{' '}
+                {proposed_login.IDJob && '(' + proposed_login.IDJob + ')'}
+              </LabeledList.Item>
+            </LabeledList>
           </Section>
         )}
         {!!removable_media.length && (
@@ -139,7 +141,7 @@ export const NtosMain = (props) => {
           <Table>
             {programs.map((program) => (
               <Table.Row key={program.name}>
-                <Table.Cell>
+                <Table.Cell fluid>
                   <Button
                     fluid
                     color={program.alert ? 'yellow' : 'transparent'}
@@ -153,27 +155,26 @@ export const NtosMain = (props) => {
                     }
                   />
                 </Table.Cell>
-                <Table.Cell collapsing width="18px">
-                  {!!program.running && (
-                    <Button
-                      color="transparent"
-                      icon="times"
-                      tooltip="Close program"
-                      tooltipPosition="left"
-                      onClick={() =>
-                        act('PC_killprogram', {
-                          name: program.name,
-                        })
-                      }
-                    />
-                  )}
-                </Table.Cell>
-                <Table.Cell collapsing width="18px">
+                <Table.Cell collapsing fluid width="18px">
                   <Button
-                    color={program.autorun ? 'yellow' : null}
+                    color="transparent"
+                    icon="times"
+                    tooltip="Close program"
+                    tooltipPosition="left"
+                    disabled={!!program.running}
+                    onClick={() =>
+                      act('PC_killprogram', {
+                        name: program.name,
+                      })
+                    }
+                  />
+                </Table.Cell>
+                <Table.Cell collapsing fluid width="16px">
+                  <Button
                     content="A"
                     tooltip="Set Autorun"
                     tooltipPosition="left"
+                    selected={!!program.autorun}
                     onClick={() =>
                       act('PC_setautorun', {
                         name: program.name,

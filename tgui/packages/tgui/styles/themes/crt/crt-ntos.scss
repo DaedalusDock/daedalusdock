@@ -1,5 +1,11 @@
 @use 'sass:meta';
-@use '../crt.scss';
+$light: #ffbf00;
+$dark: #111100;
+
+@use '../crt.scss' with (
+  $color-bg: $dark,
+  $color-fg: $light
+);
 
 .theme-crtntos {
   @extend %theme-crt;

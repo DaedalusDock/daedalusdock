@@ -18,6 +18,8 @@ export const Button = (props) => {
   const {
     className,
     fluid,
+    verticalFluid,
+    buttonList,
     icon,
     iconRotation,
     iconSpin,
@@ -59,6 +61,8 @@ export const Button = (props) => {
       className={classes([
         'Button',
         fluid && 'Button--fluid',
+        verticalFluid && 'Button--verticalFluid',
+        buttonList && 'Button--buttonList',
         disabled && 'Button--disabled',
         selected && 'Button--selected',
         hasContent && 'Button--hasContent',

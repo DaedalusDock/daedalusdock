@@ -108,6 +108,8 @@ const ApcContent = (props) => {
             color={externalPowerStatus.color}
             buttons={
               <Button
+                fluid
+                verticalFluid
                 icon={data.isOperating ? 'power-off' : 'times'}
                 content={data.isOperating ? 'On' : 'Off'}
                 selected={data.isOperating && !locked}
@@ -126,6 +128,7 @@ const ApcContent = (props) => {
             color={chargingStatus.color}
             buttons={
               <Button
+                verticalFluid
                 icon={data.chargeMode ? 'sync' : 'times'}
                 content={data.chargeMode ? 'Auto' : 'Off'}
                 disabled={locked}
@@ -155,6 +158,8 @@ const ApcContent = (props) => {
                       {channel.status >= 2 ? 'On' : 'Off'}
                     </Box>
                     <Button
+                      verticalFluid
+                      buttonList
                       icon="sync"
                       content="Auto"
                       selected={
@@ -165,6 +170,8 @@ const ApcContent = (props) => {
                       onClick={() => act('channel', topicParams.auto)}
                     />
                     <Button
+                      verticalFluid
+                      buttonList
                       icon="power-off"
                       content="On"
                       selected={!locked && channel.status === 2}
@@ -172,6 +179,8 @@ const ApcContent = (props) => {
                       onClick={() => act('channel', topicParams.on)}
                     />
                     <Button
+                      verticalFluid
+                      buttonList
                       icon="times"
                       content="Off"
                       selected={!locked && channel.status === 0}
@@ -217,6 +226,7 @@ const ApcContent = (props) => {
             label="Cover Lock"
             buttons={
               <Button
+                verticalFluid
                 icon={data.coverLocked ? 'lock' : 'unlock'}
                 content={data.coverLocked ? 'Engaged' : 'Disengaged'}
                 width={8.5}
@@ -231,6 +241,7 @@ const ApcContent = (props) => {
             label="Emergency Lighting"
             buttons={
               <Button
+                verticalFluid
                 icon={data.emergencyLights ? 'lightbulb' : 'lightbulb-o'}
                 content={data.emergencyLights ? 'Enabled' : 'Disabled'}
                 width={8.5}
@@ -245,6 +256,7 @@ const ApcContent = (props) => {
             label="Night Shift Lighting"
             buttons={
               <Button
+                verticalFluid
                 icon={data.nightshiftLights ? 'lightbulb' : 'lightbulb-o'}
                 content={data.nightshiftLights ? 'Enabled' : 'Disabled'}
                 width={8.5}

@@ -74,7 +74,8 @@ export const getRoutedComponent = (store) => {
   const name = config?.interface;
   const interfacePathBuilders = [
     (name) => `./${name}.tsx`,
-    (name) => `./${name}.js`,
+    (name) => `./${name}.jsx`,
+    (name) => `./${name}/index.jsx`,
     (name) => `./${name}/index.tsx`,
     (name) => `./${name}/index.js`,
   ];

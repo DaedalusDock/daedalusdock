@@ -45,13 +45,13 @@ module.exports = (env = {}, argv) => {
       publicPath: '/',
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.js', '.jsx'],
       alias: {},
     },
     module: {
       rules: [
         {
-          test: /\.(js|cjs|ts|tsx)$/,
+          test: /\.([tj]s(x)?|cjs)$/,
           use: [
             {
               loader: require.resolve('babel-loader'),

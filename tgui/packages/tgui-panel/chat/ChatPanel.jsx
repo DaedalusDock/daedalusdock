@@ -58,7 +58,6 @@ export class ChatPanel extends Component {
     const { scrollTracking } = this.state;
     return (
       <>
-        TEST
         <div className="Chat" ref={this.ref} />
         {!scrollTracking && (
           <Button

@@ -166,7 +166,6 @@ class ChatRenderer {
     else {
       this.rootNode = node;
     }
-    logger.log(this.rootNode);
     // Find scrollable parent
     this.scrollNode = findNearestScrollableParent(this.rootNode);
     this.scrollNode.addEventListener('scroll', this.handleScroll);
@@ -375,7 +374,6 @@ class ChatRenderer {
             </Element>,
             childNode,
           );
-          /* eslint-enable react/no-danger */
         }
 
         // Highlight text

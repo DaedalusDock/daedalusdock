@@ -27,8 +27,8 @@ const getClampedNumber = (value, minValue, maxValue) => {
 };
 
 export class RestrictedInput extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.inputRef = createRef();
     this.state = {
       editing: false,

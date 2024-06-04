@@ -24,7 +24,7 @@ import {
 } from './constants';
 import { canPageAcceptType, createMessage, isSameMessage } from './model';
 import { highlightNode, linkifyNode } from './replaceInTextNode';
-import { Tooltip } from '../../tgui/components';
+import { Tooltip } from 'tgui/components';
 import { createRoot } from 'react-dom/client';
 
 const logger = createLogger('chatRenderer');
@@ -166,6 +166,7 @@ class ChatRenderer {
     else {
       this.rootNode = node;
     }
+    logger.log(this.rootNode);
     // Find scrollable parent
     this.scrollNode = findNearestScrollableParent(this.rootNode);
     this.scrollNode.addEventListener('scroll', this.handleScroll);

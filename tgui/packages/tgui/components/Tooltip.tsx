@@ -1,5 +1,6 @@
 import { createPopper, Placement, VirtualElement } from '@popperjs/core';
 import { ReactNode, Component } from 'react';
+// eslint-disable-next-line react/no-deprecated
 import { findDOMNode, render } from 'react-dom';
 
 type TooltipProps = {
@@ -21,13 +22,16 @@ const DEFAULT_OPTIONS = {
   ],
 };
 
-const NULL_RECT = {
+const NULL_RECT: DOMRect = {
   width: 0,
   height: 0,
   top: 0,
   right: 0,
   bottom: 0,
   left: 0,
+  x: 0,
+  y: 0,
+  toJSON: () => null,
 };
 
 export class Tooltip extends Component<TooltipProps, TooltipState> {

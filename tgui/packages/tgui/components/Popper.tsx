@@ -7,10 +7,11 @@ import {
   PropsWithChildren,
   ReactElement,
 } from 'react';
+// eslint-disable-next-line react/no-deprecated
 import { findDOMNode, render } from 'react-dom';
 
 type PopperProps = {
-  popperContent: ReactElement<any, string | JSXElementConstructor<any>>;
+  popperContent: ReactElement<any, string | JSXElementConstructor<any>> | false;
   options?: ArgumentsOf<typeof createPopper>[2];
   additionalStyles?: CSSProperties;
 } & PropsWithChildren;

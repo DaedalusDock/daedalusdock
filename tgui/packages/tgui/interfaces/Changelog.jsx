@@ -41,8 +41,8 @@ const icons = {
 };
 
 export class Changelog extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       data: 'Loading changelog data...',
       selectedDate: '',

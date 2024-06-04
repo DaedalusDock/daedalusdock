@@ -5,8 +5,8 @@ import { ABSOLUTE_Y_OFFSET, noop } from './constants';
 import { Port } from './Port';
 
 export class ObjectComponent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isDragging: false,
       dragPos: null,

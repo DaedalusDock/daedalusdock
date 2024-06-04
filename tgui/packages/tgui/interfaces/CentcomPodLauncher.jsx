@@ -768,8 +768,8 @@ const ReverseMenu = (props) => {
 };
 
 class PresetsPage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       presets: [],
     };

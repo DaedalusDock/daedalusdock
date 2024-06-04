@@ -10,8 +10,8 @@ import { Button } from 'tgui/components';
 import { chatRenderer } from './renderer';
 
 export class ChatPanel extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.ref = createRef();
     this.state = {
       scrollTracking: true,
@@ -58,6 +58,7 @@ export class ChatPanel extends Component {
     const { scrollTracking } = this.state;
     return (
       <>
+        TEST
         <div className="Chat" ref={this.ref} />
         {!scrollTracking && (
           <Button

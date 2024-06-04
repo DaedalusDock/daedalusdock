@@ -13,8 +13,8 @@ export const toInputValue = (value) =>
   typeof value !== 'number' && typeof value !== 'string' ? '' : String(value);
 
 export class Input extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.inputRef = createRef();
     this.state = {
       editing: false,

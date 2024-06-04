@@ -48,6 +48,7 @@ export const PaintingAdminPanel = (props) => {
               width="96px"
               style={{
                 verticalAlign: 'middle',
+                // @ts-ignore
                 '-ms-interpolation-mode': 'nearest-neighbor',
               }}
             />
@@ -162,6 +163,7 @@ export const PaintingAdminPanel = (props) => {
                     width="36px"
                     style={{
                       verticalAlign: 'middle',
+                      // @ts-ignore
                       '-ms-interpolation-mode': 'nearest-neighbor',
                     }}
                   />

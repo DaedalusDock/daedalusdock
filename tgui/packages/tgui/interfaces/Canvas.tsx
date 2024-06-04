@@ -170,10 +170,10 @@ class PaintCanvas extends Component<PaintCanvasProps> {
         width={width}
         height={height}
         {...rest}
-        onMouseDown={this.handleStartDrawing}
-        onMouseMove={this.handleDrawing}
-        onMouseUp={this.handleEndDrawing}
-        onMouseOut={this.handleEndDrawing}
+        onMouseDown={this.handleStartDrawing as any}
+        onMouseMove={this.handleDrawing as any}
+        onMouseUp={this.handleEndDrawing as any}
+        onMouseOut={this.handleEndDrawing as any}
       >
         Canvas failed to render.
       </canvas>

@@ -76,8 +76,8 @@ type ItemExtraData = {
 let fetchServerData: Promise<ServerData> | undefined;
 
 export class Uplink extends Component<{}, UplinkState> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       allItems: [],
       allCategories: [],

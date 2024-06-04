@@ -10,8 +10,8 @@ const ZOOM_MAX_VAL = 1.5;
 const ZOOM_INCREMENT = 0.1;
 
 export class InfinitePlane extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       mouseDown: false,

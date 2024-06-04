@@ -743,6 +743,8 @@ const EventScreen = (props: { drone: DroneData; event: FullEventData }) => {
                 height="125px"
                 width="250px"
                 style={{
+                  // TODO: Replace this with the Image component
+                  // @ts-ignore
                   '-ms-interpolation-mode': 'nearest-neighbor',
                 }}
               />
@@ -815,6 +817,7 @@ export const AdventureScreen = (props: {
             height="100px"
             width="200px"
             style={{
+              // @ts-ignore
               '-ms-interpolation-mode': 'nearest-neighbor',
             }}
           />

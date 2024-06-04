@@ -49,6 +49,7 @@ class LineChart extends Component {
     };
     this.handleResize = () => {
       const element = this.ref.current;
+      if (!element) return;
       this.setState({
         viewBox: [element.offsetWidth, element.offsetHeight],
       });

@@ -11,8 +11,8 @@ import { Component } from 'react';
 import { shallowDiffers } from 'common/react';
 
 export class VariableMenu extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       variable_name: '',
       variable_type: 'any',

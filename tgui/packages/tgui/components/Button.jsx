@@ -139,8 +139,8 @@ export const ButtonCheckbox = (props) => {
 Button.Checkbox = ButtonCheckbox;
 
 export class ButtonConfirm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       clickedOnce: false,
     };
@@ -190,8 +190,8 @@ export class ButtonConfirm extends Component {
 Button.Confirm = ButtonConfirm;
 
 export class ButtonInput extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.inputRef = createRef();
     this.state = {
       inInput: false,

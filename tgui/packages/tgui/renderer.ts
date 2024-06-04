@@ -1,10 +1,11 @@
 import { perf } from 'common/perf';
 import { ReactNode } from 'react';
 import { createLogger } from './logging';
+import { createRoot, Root } from 'react-dom/client';
 
 const logger = createLogger('renderer');
 
-let reactRoot: any;
+let reactRoot: Root;
 let initialRender: string | boolean = true;
 let suspended = false;
 
@@ -28,7 +29,8 @@ export const createRenderer: CreateRenderer =
     perf.mark('render/start');
     // Start rendering
     if (!reactRoot) {
-      reactRoot = document.getElementById('react-root');
+      const element = document.getElementById('react-root');
+      reactRoot = createRoot(element!);
     }
     if (getVNode) {
       reactRoot.render(getVNode(...args));

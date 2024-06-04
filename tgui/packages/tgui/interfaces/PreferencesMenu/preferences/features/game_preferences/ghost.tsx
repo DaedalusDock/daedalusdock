@@ -20,7 +20,7 @@ export const ghost_hud: FeatureToggle = {
 export const ghost_orbit: FeatureChoiced = {
   name: 'Ghost orbit',
   category: 'GHOST',
-  description: multiline`
+  description: `
     The shape in which your ghost will orbit.
     Requires BYOND membership.
   `,

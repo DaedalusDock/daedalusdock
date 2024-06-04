@@ -1,4 +1,3 @@
-import { multiline } from 'common/string';
 import { useBackend, useSharedState } from '../backend';
 import { Box, Button, Dimmer, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
@@ -157,7 +156,7 @@ const MemoriesSection = (props) => {
         <Button
           icon="info"
           tooltipPosition="left"
-          tooltip={multiline`
+          tooltip={`
             Absorbing targets allows
             you to collect their memories. They should
             help you impersonate your target!

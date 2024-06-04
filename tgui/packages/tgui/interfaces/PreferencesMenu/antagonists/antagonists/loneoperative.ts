@@ -6,7 +6,7 @@ const LoneOperative: Antagonist = {
   key: 'loneoperative',
   name: 'Lone Operative',
   description: [
-    multiline`
+    `
       A solo nuclear operative that has a higher chance of spawning the longer
       the nuclear authentication disk stays in one place.
     `,

@@ -1,5 +1,4 @@
 import { classes } from 'common/react';
-import { multiline } from 'common/string';
 import { useBackend } from '../backend';
 import {
   Box,
@@ -103,7 +102,7 @@ const MafiaLobby = (props) => {
           <Button
             icon="clipboard-check"
             tooltipPosition="bottom-start"
-            tooltip={multiline`
+            tooltip={`
               Signs you up for the next game. If there
               is an ongoing one, you will be signed up
               for the next.
@@ -114,7 +113,7 @@ const MafiaLobby = (props) => {
           <Button
             icon="eye"
             tooltipPosition="bottom-start"
-            tooltip={multiline`
+            tooltip={`
               Spectates games until you turn it off.
               Automatically enabled when you die in game,
               because I assumed you would want to see the
@@ -206,7 +205,7 @@ const MafiaListOfRoles = (props) => {
             color="transparent"
             icon="address-book"
             tooltipPosition="bottom-start"
-            tooltip={multiline`
+            tooltip={`
               The top section is the roles in the game. You can
               press the question mark to get a quick blurb
               about the role itself.`}
@@ -215,7 +214,7 @@ const MafiaListOfRoles = (props) => {
             color="transparent"
             icon="edit"
             tooltipPosition="bottom-start"
-            tooltip={multiline`
+            tooltip={`
               The bottom section are your notes. on some roles this
               will just be an empty box, but on others it records the
               actions of your abilities (so for example, your
@@ -263,7 +262,7 @@ const MafiaJudgement = (props) => {
           color="transparent"
           icon="info"
           tooltipPosition="left"
-          tooltip={multiline`
+          tooltip={`
             When someone is on trial, you are in charge of their fate.
             Innocent winning means the person on trial can live to see
             another day... and in losing they do not. You can go back

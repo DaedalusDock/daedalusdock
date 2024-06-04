@@ -3,7 +3,7 @@ import { useBackend } from '../backend';
 import { Button, Input, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
-const TOOLTIP_TEXT = multiline`
+const TOOLTIP_TEXT = `
   %PERSON will be replaced with their name.
   %RANK with their job.
 `;

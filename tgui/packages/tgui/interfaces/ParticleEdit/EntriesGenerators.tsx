@@ -69,10 +69,7 @@ export const FloatGenerator = (props: FloatGeneratorProps) => {
   );
 };
 
-export const FloatGeneratorColor = (
-  props: FloatGeneratorColorProps,
-  context,
-) => {
+export const FloatGeneratorColor = (props: FloatGeneratorColorProps) => {
   const { act, data } = useBackend<ParticleUIData>();
   const [desc, setdesc] = useLocalState('desc', '');
   const { name, var_name, float } = props;
@@ -129,7 +126,6 @@ export const FloatGeneratorColor = (
 
 export const EntryGeneratorNumbersList = (
   props: EntryGeneratorNumbersListProps,
-  context,
 ) => {
   const { act, data } = useBackend<ParticleUIData>();
   const [desc, setdesc] = useLocalState('desc', '');

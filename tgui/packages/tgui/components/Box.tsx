@@ -5,63 +5,56 @@
  */
 
 import { BooleanLike, classes } from 'common/react';
-import { createElement, ReactNode } from 'react';
-import { CSS_COLORS } from '../constants';
+import {
+  createElement,
+  KeyboardEventHandler,
+  MouseEventHandler,
+  ReactNode,
+  UIEventHandler,
+} from 'react';
 
-export interface BoxProps {
-  [key: string]: any;
-  as?: string;
-  className?: string | BooleanLike;
-  children?: ReactNode;
-  position?: string | BooleanLike;
-  overflow?: string | BooleanLike;
-  overflowX?: string | BooleanLike;
-  overflowY?: string | BooleanLike;
-  top?: string | BooleanLike;
-  bottom?: string | BooleanLike;
-  left?: string | BooleanLike;
-  right?: string | BooleanLike;
-  width?: string | BooleanLike;
-  minWidth?: string | BooleanLike;
-  maxWidth?: string | BooleanLike;
-  height?: string | BooleanLike;
-  minHeight?: string | BooleanLike;
-  maxHeight?: string | BooleanLike;
-  fontSize?: string | BooleanLike;
-  fontFamily?: string;
-  lineHeight?: string | BooleanLike;
-  opacity?: number;
-  textAlign?: string | BooleanLike;
-  verticalAlign?: string | BooleanLike;
-  inline?: BooleanLike;
-  bold?: BooleanLike;
-  italic?: BooleanLike;
-  nowrap?: BooleanLike;
-  preserveWhitespace?: BooleanLike;
-  m?: string | BooleanLike;
-  mx?: string | BooleanLike;
-  my?: string | BooleanLike;
-  mt?: string | BooleanLike;
-  mb?: string | BooleanLike;
-  ml?: string | BooleanLike;
-  mr?: string | BooleanLike;
-  p?: string | BooleanLike;
-  px?: string | BooleanLike;
-  py?: string | BooleanLike;
-  pt?: string | BooleanLike;
-  pb?: string | BooleanLike;
-  pl?: string | BooleanLike;
-  pr?: string | BooleanLike;
-  color?: string | BooleanLike;
-  textColor?: string | BooleanLike;
-  backgroundColor?: string | BooleanLike;
-  fillPositionedParent?: boolean;
-}
+import { CSS_COLORS } from '../constants';
+import { logger } from '../logging';
+
+type BooleanProps = Partial<Record<keyof typeof booleanStyleMap, boolean>>;
+type StringProps = Partial<
+  Record<keyof typeof stringStyleMap, string | BooleanLike>
+>;
+
+export type EventHandlers = Partial<{
+  onClick: MouseEventHandler<HTMLDivElement>;
+  onContextMenu: MouseEventHandler<HTMLDivElement>;
+  onDoubleClick: MouseEventHandler<HTMLDivElement>;
+  onKeyDown: KeyboardEventHandler<HTMLDivElement>;
+  onKeyUp: KeyboardEventHandler<HTMLDivElement>;
+  onMouseDown: MouseEventHandler<HTMLDivElement>;
+  onMouseMove: MouseEventHandler<HTMLDivElement>;
+  onMouseOver: MouseEventHandler<HTMLDivElement>;
+  onMouseUp: MouseEventHandler<HTMLDivElement>;
+  onScroll: UIEventHandler<HTMLDivElement>;
+}>;
+
+export type BoxProps = Partial<{
+  as: string;
+  children: ReactNode;
+  className: string | BooleanLike;
+  style: Partial<CSSStyleDeclaration>;
+}> &
+  BooleanProps &
+  StringProps &
+  EventHandlers;
+
+// Don't you dare put this elsewhere
+type DangerDoNotUse = {
+  dangerouslySetInnerHTML?: {
+    __html: any;
+  };
+};
 
 /**
  * Coverts our rem-like spacing unit into a CSS unit.
  */
-export const unit = (value: unknown): string | undefined => {
+export const unit = (value: unknown) => {
   if (typeof value === 'string') {
     // Transparently convert pixels into rem units
     if (value.endsWith('px')) {
@@ -77,7 +70,7 @@ export const unit = (value: unknown): string | undefined => {
 /**
  * Same as `unit`, but half the size for integers numbers.
  */
-export const halfUnit = (value: unknown): string | undefined => {
+export const halfUnit = (value: unknown) => {
   if (typeof value === 'string') {
     return unit(value);
   }
@@ -89,7 +82,7 @@ export const halfUnit = (value: unknown): string | undefined => {
 const isColorCode = (str: unknown) => !isColorClass(str);
 
 const isColorClass = (str: unknown): boolean => {
-  return typeof str === 'string' && CSS_COLORS.includes(str);
+  return typeof str === 'string' && CSS_COLORS.includes(str as any);
 };
 
 const mapRawPropTo = (attrName) => (style, value) => {
@@ -242,7 +235,7 @@ export const computeBoxClassName = (props: BoxProps) => {
   ]);
 };
 
-export const Box = (props: BoxProps) => {
+export const Box = (props: BoxProps & DangerDoNotUse) => {
   const { as = 'div', className, children, ...rest } = props;
 
   // Compute class name and styles
@@ -252,7 +245,9 @@ export const Box = (props: BoxProps) => {
   const computedProps = computeBoxProps(rest);
 
   if (as === 'img') {
-    computedProps.style!['-ms-interpolation-mode'] = 'nearest-neighbor';
+    logger.error(
+      'Box component cannot be used as an image. Use Image component instead.',
+    );
   }
 
   // Render the component

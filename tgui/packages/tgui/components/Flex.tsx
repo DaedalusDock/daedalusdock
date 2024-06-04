@@ -48,7 +48,7 @@ export const Flex = (props) => {
 };
 
 export type FlexItemProps = BoxProps & {
-  grow?: number;
+  grow?: number | true;
   order?: number;
   shrink?: number;
   basis?: string | BooleanLike;

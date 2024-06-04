@@ -1,0 +1,5 @@
+author: jlsnow301, Kapu1178
+delete-after: true
+changes:
+  - code_imp: Added DMIcon component for TGUI, a clean way to embed RSC icons.
+  - tweak: Vending machines now use DMIcon, which will be less accurate but much faster.

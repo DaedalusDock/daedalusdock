@@ -1,6 +1,5 @@
 import { Component, createRef } from 'react';
-import { resolveAsset } from '../assets';
-import { Box } from './Box';
+import { DmIcon } from './DMIcon';
 
 export enum BodyZone {
   Head = 'head',
@@ -88,9 +87,9 @@ export class BodyZoneSelector extends Component<
           position: 'relative',
         }}
       >
-        <Box
-          as="img"
-          src={resolveAsset('body_zones.base.png')}
+        <DmIcon
+          icon="icons/hud/screen_midnight.dmi"
+          icon_state="zone_sel"
           onClick={() => {
             const onClick = this.props.onClick;
             if (onClick && this.state.hoverZone) {
@@ -115,7 +114,6 @@ export class BodyZoneSelector extends Component<
             });
           }}
           style={{
-            '-ms-interpolation-mode': 'nearest-neighbor',
             position: 'absolute',
             width: `${32 * scale}px`,
             height: `${32 * scale}px`,
@@ -123,11 +121,10 @@ export class BodyZoneSelector extends Component<
         />
 
         {selectedZone && (
-          <Box
-            as="img"
-            src={resolveAsset(`body_zones.${selectedZone}.png`)}
+          <DmIcon
+            icon="icons/hud/screen_gen.dmi"
+            icon_state={selectedZone}
             style={{
-              '-ms-interpolation-mode': 'nearest-neighbor',
               pointerEvents: 'none',
               position: 'absolute',
               width: `${32 * scale}px`,
@@ -137,12 +134,11 @@ export class BodyZoneSelector extends Component<
         )}
 
         {hoverZone && hoverZone !== selectedZone && (
-          <Box
-            as="img"
-            src={resolveAsset(`body_zones.${hoverZone}.png`)}
+          <DmIcon
+            icon="icons/hud/screen_gen.dmi"
+            icon_state={hoverZone}
             style={{
-              '-ms-interpolation-mode': 'nearest-neighbor',
-              opacity: 0.5,
+              opacity: '0.5',
               pointerEvents: 'none',
               position: 'absolute',
               width: `${32 * scale}px`,

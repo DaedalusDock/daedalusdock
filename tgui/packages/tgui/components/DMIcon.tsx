@@ -45,7 +45,6 @@ export class DmIcon extends Component<Props, State> {
     iconRef: '',
   };
 
-
   componentDidMount() {
     this.fetchRefMap();
   }

@@ -1,4 +1,10 @@
-import { Component, createRef, RefObject } from 'react';
+import {
+  Component,
+  createRef,
+  HTMLAttributes,
+  ReactNode,
+  RefObject,
+} from 'react';
 
 const DEFAULT_ACCEPTABLE_DIFFERENCE = 5;
 
@@ -8,6 +14,7 @@ export class FitText extends Component<
     maxWidth: number;
     maxFontSize: number;
     native?: HTMLAttributes<HTMLDivElement>;
+    children: ReactNode;
   },
   {
     fontSize: number;
@@ -18,8 +25,8 @@ export class FitText extends Component<
     fontSize: 0,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.resize = this.resize.bind(this);
 

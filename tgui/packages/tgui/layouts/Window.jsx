@@ -26,6 +26,10 @@ const logger = createLogger('Window');
 const DEFAULT_SIZE = [400, 600];
 
 export class Window extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
     const { suspended } = useBackend();
     const { canClose = true } = this.props;

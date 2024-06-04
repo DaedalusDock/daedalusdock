@@ -5,7 +5,7 @@
  */
 
 import { BooleanLike, classes } from 'common/react';
-import { createElement, HTMLAttributes, ReactNode } from 'react';
+import { createElement, ReactNode } from 'react';
 import { CSS_COLORS } from '../constants';
 
 export interface BoxProps {
@@ -124,24 +124,30 @@ const mapColorPropTo = (attrName) => (style, value) => {
   }
 };
 
-const styleMapperByPropName = {
-  // Direct mapping
-  position: mapRawPropTo('position'),
+// String / number props
+const stringStyleMap = {
+  align: mapRawPropTo('textAlign'),
+  bottom: mapUnitPropTo('bottom', unit),
+  fontFamily: mapRawPropTo('fontFamily'),
+  fontSize: mapUnitPropTo('fontSize', unit),
+  fontWeight: mapRawPropTo('fontWeight'),
+  height: mapUnitPropTo('height', unit),
+  left: mapUnitPropTo('left', unit),
+  maxHeight: mapUnitPropTo('maxHeight', unit),
+  maxWidth: mapUnitPropTo('maxWidth', unit),
+  minHeight: mapUnitPropTo('minHeight', unit),
+  minWidth: mapUnitPropTo('minWidth', unit),
+  opacity: mapRawPropTo('opacity'),
   overflow: mapRawPropTo('overflow'),
   overflowX: mapRawPropTo('overflowX'),
   overflowY: mapRawPropTo('overflowY'),
-  top: mapUnitPropTo('top', unit),
-  bottom: mapUnitPropTo('bottom', unit),
-  left: mapUnitPropTo('left', unit),
+  position: mapRawPropTo('position'),
   right: mapUnitPropTo('right', unit),
+  textAlign: mapRawPropTo('textAlign'),
+  top: mapUnitPropTo('top', unit),
+  verticalAlign: mapRawPropTo('verticalAlign'),
   width: mapUnitPropTo('width', unit),
-  minWidth: mapUnitPropTo('minWidth', unit),
-  maxWidth: mapUnitPropTo('maxWidth', unit),
-  height: mapUnitPropTo('height', unit),
-  minHeight: mapUnitPropTo('minHeight', unit),
-  maxHeight: mapUnitPropTo('maxHeight', unit),
-  fontSize: mapUnitPropTo('fontSize', unit),
-  fontFamily: mapRawPropTo('fontFamily'),
+
   lineHeight: (style, value) => {
     if (typeof value === 'number') {
       style['lineHeight'] = value;
@@ -149,46 +155,41 @@ const styleMapperByPropName = {
       style['lineHeight'] = unit(value);
     }
   },
-  opacity: mapRawPropTo('opacity'),
-  textAlign: mapRawPropTo('textAlign'),
-  verticalAlign: mapRawPropTo('verticalAlign'),
-  // Boolean props
-  inline: mapBooleanPropTo('display', 'inline-block'),
-  bold: mapBooleanPropTo('fontWeight', 'bold'),
-  italic: mapBooleanPropTo('fontStyle', 'italic'),
-  nowrap: mapBooleanPropTo('whiteSpace', 'nowrap'),
-  preserveWhitespace: mapBooleanPropTo('whiteSpace', 'pre-wrap'),
-  // Margins
+  // Margin
   m: mapDirectionalUnitPropTo('margin', halfUnit, [
-    'top',
-    'bottom',
-    'left',
-    'right',
+    'Top',
+    'Bottom',
+    'Left',
+    'Right',
   ]),
-  mx: mapDirectionalUnitPropTo('margin', halfUnit, ['left', 'right']),
-  my: mapDirectionalUnitPropTo('margin', halfUnit, ['top', 'bottom']),
-  mt: mapUnitPropTo('marginTop', halfUnit),
   mb: mapUnitPropTo('marginBottom', halfUnit),
   ml: mapUnitPropTo('marginLeft', halfUnit),
   mr: mapUnitPropTo('marginRight', halfUnit),
-  // Margins
+  mt: mapUnitPropTo('marginTop', halfUnit),
+  mx: mapDirectionalUnitPropTo('margin', halfUnit, ['Left', 'Right']),
+  my: mapDirectionalUnitPropTo('margin', halfUnit, ['Top', 'Bottom']),
+  // Padding
   p: mapDirectionalUnitPropTo('padding', halfUnit, [
-    'top',
-    'bottom',
-    'left',
-    'right',
+    'Top',
+    'Bottom',
+    'Left',
+    'Right',
   ]),
-  px: mapDirectionalUnitPropTo('padding', halfUnit, ['left', 'right']),
-  py: mapDirectionalUnitPropTo('padding', halfUnit, ['top', 'bottom']),
-  pt: mapUnitPropTo('paddingTop', halfUnit),
   pb: mapUnitPropTo('paddingBottom', halfUnit),
   pl: mapUnitPropTo('paddingLeft', halfUnit),
   pr: mapUnitPropTo('paddingRight', halfUnit),
+  pt: mapUnitPropTo('paddingTop', halfUnit),
+  px: mapDirectionalUnitPropTo('padding', halfUnit, ['Left', 'Right']),
+  py: mapDirectionalUnitPropTo('padding', halfUnit, ['Top', 'Bottom']),
   // Color props
   color: mapColorPropTo('color'),
   textColor: mapColorPropTo('color'),
   backgroundColor: mapColorPropTo('backgroundColor'),
-  // Utility props
+} as const;
+
+// Boolean props
+const booleanStyleMap = {
+  bold: mapBooleanPropTo('fontWeight', 'bold'),
   fillPositionedParent: (style, value) => {
     if (value) {
       style['position'] = 'absolute';
@@ -198,18 +199,27 @@ const styleMapperByPropName = {
       style['right'] = 0;
     }
   },
-};
+  inline: mapBooleanPropTo('display', 'inline-block'),
+  italic: mapBooleanPropTo('fontStyle', 'italic'),
+  nowrap: mapBooleanPropTo('whiteSpace', 'nowrap'),
+  preserveWhitespace: mapBooleanPropTo('whiteSpace', 'pre-wrap'),
+} as const;
 
-export const computeBoxProps = (props: BoxProps) => {
-  const computedProps: HTMLAttributes<any> = {};
-  const computedStyles = {};
+export const computeBoxProps = (props) => {
+  const computedProps: Record<string, any> = {};
+  const computedStyles: Record<string, string | number> = {};
+
   // Compute props
-  for (let propName in props) {
+  for (let propName of Object.keys(props)) {
     if (propName === 'style') {
       continue;
     }
+
     const propValue = props[propName];
-    const mapPropToStyle = styleMapperByPropName[propName];
+
+    const mapPropToStyle =
+      stringStyleMap[propName] || booleanStyleMap[propName];
+
     if (mapPropToStyle) {
       mapPropToStyle(computedStyles, propValue);
     } else {
@@ -217,9 +227,8 @@ export const computeBoxProps = (props: BoxProps) => {
     }
   }
 
-  if (props.style) {
-    computedProps.style = { ...computedProps.style, ...props.style };
-  }
+  // Merge computed styles and any directly provided styles
+  computedProps.style = { ...computedStyles, ...props.style };
 
   return computedProps;
 };

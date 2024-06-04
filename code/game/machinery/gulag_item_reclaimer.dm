@@ -23,7 +23,7 @@
 	req_access = list()
 	obj_flags |= EMAGGED
 
-/obj/machinery/gulag_item_reclaimer/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/gulag_item_reclaimer/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GulagItemReclaimer", name)

@@ -13,7 +13,7 @@
 	//Fuck off and don't decorate debug text
 	return input
 
-/obj/machinery/test_equipment/radio/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/test_equipment/radio/ui_interact(mob/user, datum/tgui/bare/ui)
 	. = ..()
 	var/datum/browser/popup = new(usr, "dte_radio", "Radio Test Equipment", 400, 600)
 	var/dat = {"

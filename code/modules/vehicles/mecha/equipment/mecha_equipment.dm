@@ -49,7 +49,7 @@
 	to_chat(user, span_warning("You are unable to attach [src] to [M]!"))
 	return FALSE
 
-/obj/item/mecha_parts/mecha_equipment/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/obj/item/mecha_parts/mecha_equipment/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	switch(action)
 		if("detach")

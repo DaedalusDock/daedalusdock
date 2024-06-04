@@ -332,7 +332,7 @@
 
 	return ..()
 
-/datum/strip_menu/ui_interact(mob/user, datum/tgui/ui)
+/datum/strip_menu/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "StripMenu")
@@ -389,7 +389,7 @@
 
 	return data
 
-/datum/strip_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/strip_menu/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if (.)
 		return

@@ -193,7 +193,7 @@
 /obj/machinery/doppler_array/AltClick(mob/user)
 	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
-/obj/machinery/doppler_array/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/doppler_array/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "DopplerArray", name)

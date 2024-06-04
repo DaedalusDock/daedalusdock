@@ -8,7 +8,7 @@
 /datum/particle_editor/ui_state(mob/user)
 	return GLOB.admin_state
 
-/datum/particle_editor/ui_interact(mob/user, datum/tgui/ui)
+/datum/particle_editor/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ParticleEdit")
@@ -105,7 +105,7 @@
 	data["particle_data"] = target.particles.return_ui_representation(user)
 	return data
 
-/datum/particle_editor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/particle_editor/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

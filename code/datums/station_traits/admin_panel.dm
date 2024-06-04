@@ -42,7 +42,7 @@
 
 	return data
 
-/datum/station_traits_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/station_traits_panel/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if (.)
 		return
@@ -126,7 +126,7 @@
 /datum/station_traits_panel/ui_status(mob/user, datum/ui_state/state)
 	return check_rights_for(user.client, R_FUN) ? UI_INTERACTIVE : UI_CLOSE
 
-/datum/station_traits_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/station_traits_panel/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "StationTraitsPanel")

@@ -260,7 +260,7 @@
 	return BRUTELOSS
 
 /** Standard TGUI actions */
-/obj/item/dest_tagger/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/dest_tagger/ui_interact(mob/user, datum/tgui/managed/ui)
 	add_fingerprint(user)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

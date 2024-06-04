@@ -122,7 +122,7 @@
 	if(on && beaker)
 		beaker.reagents.adjust_thermal_energy((target_temperature - beaker.reagents.chem_temp) * heater_coefficient * SPECIFIC_HEAT_DEFAULT * beaker.reagents.total_volume * (rand(8,11) * 0.1))//Give it a little wiggle room since we're actively reacting
 
-/obj/machinery/chem_heater/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/chem_heater/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemHeater", name)
@@ -131,7 +131,7 @@
 
 /obj/machinery/chem_heater/ui_close(mob/user)
 	for(var/ui_client in ui_client_list)
-		var/datum/tgui/ui = ui_client
+		var/datum/tgui/managed/ui = ui_client
 		if(ui.user == user)
 			remove_ui_client_list(ui)
 	return ..()

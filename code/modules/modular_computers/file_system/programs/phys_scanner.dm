@@ -52,7 +52,7 @@
 				carbon.visible_message(span_notice("[user] analyzes [A]'s vitals."))
 				last_record = healthscan(user, carbon, 1, chat = FALSE)
 
-/datum/computer_file/program/phys_scanner/ui_act(action, list/params, datum/tgui/ui)
+/datum/computer_file/program/phys_scanner/ui_act(action, list/params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

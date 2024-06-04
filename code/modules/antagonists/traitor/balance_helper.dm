@@ -64,7 +64,7 @@
 	SStraitor.generate_objectives = TRUE
 	return return_data
 
-/datum/traitor_objective_debug/ui_interact(mob/user, datum/tgui/ui)
+/datum/traitor_objective_debug/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TraitorObjectiveDebug")
@@ -98,7 +98,7 @@
 /datum/traitor_objective_debug/ui_state(mob/user)
 	return GLOB.admin_state
 
-/datum/traitor_objective_debug/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/traitor_objective_debug/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

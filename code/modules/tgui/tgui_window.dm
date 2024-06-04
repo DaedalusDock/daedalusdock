@@ -20,6 +20,7 @@
 	// Vars passed to initialize proc (and saved for later)
 	var/initial_strict_mode
 	var/initial_fancy
+	var/initial_extended_api
 	var/initial_assets
 	var/initial_inline_html
 	var/initial_inline_js
@@ -61,13 +62,15 @@
 		assets = list(),
 		inline_html = "",
 		inline_js = "",
-		inline_css = "")
+		inline_css = "",
+		extended_api = FALSE)
 	log_tgui(client,
 		context = "[id]/initialize",
 		window = src)
 	if(!client)
 		return
 	src.initial_fancy = fancy
+	src.initial_extended_api = extended_api
 	src.initial_assets = assets
 	src.initial_inline_html = inline_html
 	src.initial_inline_js = inline_js
@@ -85,6 +88,7 @@
 	var/html = SStgui.basehtml
 	html = replacetextEx(html, "\[tgui:windowId]", id)
 	html = replacetextEx(html, "\[tgui:strictMode]", strict_mode)
+	html = replacetextEx(html, "\[tgui:extendedBasic]", extended_api)
 	// Inject assets
 	var/inline_assets_str = ""
 	for(var/datum/asset/asset in assets)
@@ -131,7 +135,8 @@
 		assets = initial_assets,
 		inline_html = initial_inline_html,
 		inline_js = initial_inline_js,
-		inline_css = initial_inline_css)
+		inline_css = initial_inline_css,
+		extended_api = initial_extended_api)
 
 /**
  * public

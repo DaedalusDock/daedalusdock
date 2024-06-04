@@ -121,7 +121,7 @@
 		get_asset_datum(/datum/asset/spritesheet/supplypods),
 	)
 
-/datum/centcom_podlauncher/ui_interact(mob/user, datum/tgui/ui)
+/datum/centcom_podlauncher/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		// Open UI

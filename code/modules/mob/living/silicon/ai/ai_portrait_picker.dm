@@ -23,7 +23,7 @@
 		var/mob/user_mob = user
 		holder = user_mob.client //if its a mob, assign the mob's client to holder
 
-/datum/portrait_picker/ui_interact(mob/user, datum/tgui/ui)
+/datum/portrait_picker/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortraitPicker")

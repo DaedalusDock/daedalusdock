@@ -89,7 +89,7 @@
 	. = ..()
 	circuit.configure_machine(src)
 
-/obj/machinery/computer/cargo/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/cargo/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -161,7 +161,7 @@
 		))
 	return data
 
-/obj/machinery/computer/cargo/ui_act(action, params, datum/tgui/ui)
+/obj/machinery/computer/cargo/ui_act(action, params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

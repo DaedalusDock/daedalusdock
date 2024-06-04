@@ -1581,7 +1581,7 @@
 /datum/memory_panel/ui_close()
 	qdel(src)
 
-/datum/memory_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/memory_panel/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "MemoryPanel")

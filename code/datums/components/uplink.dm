@@ -146,7 +146,7 @@
 /datum/component/uplink/ui_state(mob/user)
 	return GLOB.inventory_state
 
-/datum/component/uplink/ui_interact(mob/user, datum/tgui/ui)
+/datum/component/uplink/ui_interact(mob/user, datum/tgui/managed/ui)
 	active = TRUE
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -230,7 +230,7 @@
 		get_asset_datum(/datum/asset/json/uplink)
 	)
 
-/datum/component/uplink/ui_act(action, params, datum/tgui/ui, datum/ui_state/state)
+/datum/component/uplink/ui_act(action, params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

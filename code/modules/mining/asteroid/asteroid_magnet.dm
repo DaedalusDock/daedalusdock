@@ -94,7 +94,7 @@
 		summon_sequence(selected_template)
 		return
 
-/obj/machinery/asteroid_magnet/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/asteroid_magnet/ui_interact(mob/user, datum/tgui/managed/ui)
 	var/content = list()
 
 	content += {"

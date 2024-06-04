@@ -140,7 +140,7 @@
 		return GLOB.notcontained_state
 	return GLOB.default_state
 
-/obj/machinery/sleeper/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/sleeper/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Sleeper", name)

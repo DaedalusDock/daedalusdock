@@ -258,7 +258,7 @@ GLOBAL_REAL_VAR(default_apc_armor) = list(BLUNT = 20, PUNCTURE = 20, SLASH = 0, 
 		visible_message(span_warning("The APC cover is knocked down!"))
 		update_appearance()
 
-/obj/machinery/power/apc/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/power/apc/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Apc", name)

@@ -564,7 +564,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 /obj/machinery/portable_atmospherics/canister/ui_state(mob/user)
 	return GLOB.physical_state
 
-/obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Canister", name)

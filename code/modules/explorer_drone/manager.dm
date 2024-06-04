@@ -3,7 +3,7 @@
 	var/datum/adventure/temp_adventure
 	var/feedback_message
 
-/datum/adventure_browser/ui_interact(mob/user, datum/tgui/ui)
+/datum/adventure_browser/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -19,7 +19,7 @@
 	feedback_message = "Adventure ended with result : [result]"
 	QDEL_NULL(temp_adventure)
 
-/datum/adventure_browser/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/adventure_browser/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

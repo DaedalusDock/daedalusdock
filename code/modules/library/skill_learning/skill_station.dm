@@ -26,7 +26,7 @@
 /obj/machinery/skill_station/ui_state(mob/user)
 	return GLOB.contained_state
 
-/obj/machinery/skill_station/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/skill_station/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SkillStation", name)

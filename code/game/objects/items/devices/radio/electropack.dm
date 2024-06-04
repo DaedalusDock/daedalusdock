@@ -89,7 +89,7 @@
 /obj/item/electropack/ui_state(mob/user)
 	return GLOB.hands_state
 
-/obj/item/electropack/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/electropack/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Electropack", name)

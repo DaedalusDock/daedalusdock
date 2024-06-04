@@ -25,7 +25,7 @@
 	custom_materials = list(/datum/material/iron=400)
 	var/tracking_range = 20
 
-/obj/item/locator/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/locator/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "BluespaceLocator", name)

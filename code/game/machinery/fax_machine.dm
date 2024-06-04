@@ -110,7 +110,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 			continue
 		LAZYADD(received_paperwork, generate_paperwork(src))
 
-/obj/machinery/fax_machine/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/fax_machine/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

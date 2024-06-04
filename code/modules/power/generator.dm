@@ -137,7 +137,7 @@
 
 
 //TGUI interaction
-/obj/machinery/power/generator/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/power/generator/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Teg")

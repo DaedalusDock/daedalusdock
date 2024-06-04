@@ -91,7 +91,7 @@
 				SSairmachines.start_processing_machine(src)
 		update_appearance()
 
-/obj/machinery/portable_atmospherics/scrubber/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/portable_atmospherics/scrubber/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortableScrubber", name)

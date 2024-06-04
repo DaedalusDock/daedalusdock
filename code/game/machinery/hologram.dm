@@ -247,7 +247,7 @@ Possible to do for anyone motivated enough:
 		return UI_CLOSE
 	return ..()
 
-/obj/machinery/holopad/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/holopad/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Holopad", name)

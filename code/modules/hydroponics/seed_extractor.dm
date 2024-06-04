@@ -199,7 +199,7 @@
 /obj/machinery/seed_extractor/ui_state(mob/user)
 	return GLOB.notcontained_state
 
-/obj/machinery/seed_extractor/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/seed_extractor/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SeedExtractor", name)

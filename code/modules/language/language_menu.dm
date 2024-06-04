@@ -11,7 +11,7 @@
 /datum/language_menu/ui_state(mob/user)
 	return GLOB.language_menu_state
 
-/datum/language_menu/ui_interact(mob/user, datum/tgui/ui)
+/datum/language_menu/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "LanguageMenu")

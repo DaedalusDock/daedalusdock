@@ -48,7 +48,7 @@
 	AddComponent(/datum/component/payment, 5, SSeconomy.department_accounts_by_id[ACCOUNT_STATION_MASTER], PAYMENT_CLINICAL)
 	toner_cartridge = new(src)
 
-/obj/machinery/photocopier/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/photocopier/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Photocopier")

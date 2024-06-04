@@ -304,7 +304,7 @@
 /obj/machinery/disposal/bin/ui_state(mob/user)
 	return GLOB.notcontained_state
 
-/obj/machinery/disposal/bin/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/disposal/bin/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(machine_stat & BROKEN)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)

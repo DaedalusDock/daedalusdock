@@ -36,7 +36,7 @@
 /obj/machinery/computer/tram_controls/ui_state(mob/user)
 	return GLOB.not_incapacitated_state
 
-/obj/machinery/computer/tram_controls/ui_status(mob/user,/datum/tgui/ui)
+/obj/machinery/computer/tram_controls/ui_status(mob/user,/datum/tgui/managed/ui)
 	var/datum/lift_master/tram/tram = tram_ref?.resolve()
 
 	if(tram?.travelling)
@@ -45,7 +45,7 @@
 		return UI_CLOSE
 	return ..()
 
-/obj/machinery/computer/tram_controls/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/tram_controls/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

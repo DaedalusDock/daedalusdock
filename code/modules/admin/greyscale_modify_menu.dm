@@ -73,7 +73,7 @@
 /datum/greyscale_modify_menu/ui_close()
 	qdel(src)
 
-/datum/greyscale_modify_menu/ui_interact(mob/user, datum/tgui/ui)
+/datum/greyscale_modify_menu/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "GreyscaleModifyMenu")

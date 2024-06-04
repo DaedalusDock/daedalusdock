@@ -47,7 +47,7 @@
 	else
 		return ..()
 
-/obj/machinery/telecomms/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/telecomms/ui_interact(mob/user, datum/tgui/managed/ui)
 	operator = user
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

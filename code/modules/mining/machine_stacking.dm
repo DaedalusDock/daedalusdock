@@ -32,7 +32,7 @@
 	to_chat(user, span_notice("You store linkage information in [I]'s buffer."))
 	return TRUE
 
-/obj/machinery/mineral/stacking_unit_console/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/mineral/stacking_unit_console/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "StackingConsole", name)

@@ -34,7 +34,7 @@
 		if(categories?.len)
 			viewing_category = categories[1]
 
-/obj/item/market_uplink/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/market_uplink/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(!viewing_category)
 		update_viewing_category()
 

@@ -223,7 +223,7 @@ DEFINE_INTERACTABLE(/obj/machinery/airalarm)
 	return UI_CLOSE
 
 
-/obj/machinery/airalarm/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/airalarm/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AirAlarm", name)

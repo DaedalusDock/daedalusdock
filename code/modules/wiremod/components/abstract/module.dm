@@ -317,7 +317,7 @@
 /obj/item/circuit_component/module/ui_perform_action(mob/user, action)
 	interact(user)
 
-/obj/item/circuit_component/module/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/circuit_component/module/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CircuitModule", name)

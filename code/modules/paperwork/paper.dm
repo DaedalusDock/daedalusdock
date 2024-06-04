@@ -279,7 +279,7 @@
 		get_asset_datum(/datum/asset/spritesheet/simple/paper),
 	)
 
-/obj/item/paper/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/paper/ui_interact(mob/user, datum/tgui/managed/ui)
 	// Update the UI
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -394,7 +394,7 @@
 		to_chat(usr, pick("You try to stamp but you miss!", "There is no where else you can stamp!"))
 		return FALSE
 
-/obj/item/paper/ui_act(action, params, datum/tgui/ui)
+/obj/item/paper/ui_act(action, params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

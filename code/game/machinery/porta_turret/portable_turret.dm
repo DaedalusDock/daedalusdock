@@ -207,7 +207,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	remove_control()
 	return ..()
 
-/obj/machinery/porta_turret/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/porta_turret/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "PortableTurret", name)
@@ -953,7 +953,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	else
 		to_chat(user, span_warning("There seems to be a firewall preventing you from accessing this device!"))
 
-/obj/machinery/turretid/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/turretid/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "TurretControl", name)

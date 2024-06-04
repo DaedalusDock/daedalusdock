@@ -412,7 +412,7 @@
 		return
 	. += mutable_appearance(icon, icon_screen)
 
-/obj/machinery/power/solar_control/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/power/solar_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SolarControl", name)

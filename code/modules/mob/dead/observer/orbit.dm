@@ -5,13 +5,13 @@ GLOBAL_DATUM_INIT(orbit_menu, /datum/orbit_menu, new)
 /datum/orbit_menu/ui_state(mob/user)
 	return GLOB.observer_state
 
-/datum/orbit_menu/ui_interact(mob/user, datum/tgui/ui)
+/datum/orbit_menu/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "Orbit")
 		ui.open()
 
-/datum/orbit_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/orbit_menu/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 
 	if(.)

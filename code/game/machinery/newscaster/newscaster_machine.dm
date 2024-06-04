@@ -103,7 +103,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/newscaster, 30)
 			. += "crack3"
 			. += emissive_blocker(icon, "crack3", alpha = src.alpha)
 
-/obj/machinery/newscaster/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/newscaster/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

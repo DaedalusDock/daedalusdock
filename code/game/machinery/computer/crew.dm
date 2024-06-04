@@ -158,7 +158,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		JOB_ASSISTANT = 999,
 	)
 
-/datum/crewmonitor/ui_interact(mob/user, datum/tgui/ui)
+/datum/crewmonitor/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "CrewConsole")

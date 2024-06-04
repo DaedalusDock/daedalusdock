@@ -42,7 +42,7 @@
 	circuit = /obj/item/circuitboard/computer/sat_control
 	var/notice
 
-/obj/machinery/computer/sat_control/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/sat_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

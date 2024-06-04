@@ -60,7 +60,7 @@
 /datum/command_report_menu/ui_close()
 	qdel(src)
 
-/datum/command_report_menu/ui_interact(mob/user, datum/tgui/ui)
+/datum/command_report_menu/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CommandReport")
@@ -83,7 +83,7 @@
 
 	return data
 
-/datum/command_report_menu/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/command_report_menu/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

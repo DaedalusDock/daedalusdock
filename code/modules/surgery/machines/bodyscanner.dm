@@ -232,7 +232,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 		display.push_content(jointext(get_content(scan), null))
 		return TRUE
 
-/obj/machinery/bodyscanner_console/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/bodyscanner_console/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 
 	var/datum/browser/popup = new(user, "bodyscanner", "Body Scanner", 600, 800)

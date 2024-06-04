@@ -107,7 +107,7 @@
 	var/obj/machinery/mechpad/pad = mechpads[number]
 	return pad
 
-/obj/machinery/computer/mechpad/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/mechpad/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

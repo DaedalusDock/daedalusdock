@@ -289,7 +289,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	. = ..()
 	try_to_linkup()
 
-/obj/machinery/computer/gateway_control/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/gateway_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

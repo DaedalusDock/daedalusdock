@@ -80,7 +80,7 @@
 		if(demand.len > record_size)
 			demand.Cut(1, 2)
 
-/obj/machinery/computer/monitor/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/monitor/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

@@ -403,7 +403,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		return GLOB.hands_state
 	return GLOB.physical_obscured_state
 
-/obj/item/integrated_circuit/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/integrated_circuit/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "IntegratedCircuit", name)
@@ -412,7 +412,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 #define WITHIN_RANGE(id, table) (id >= 1 && id <= length(table))
 
-/obj/item/integrated_circuit/ui_act(action, list/params, datum/tgui/ui)
+/obj/item/integrated_circuit/ui_act(action, list/params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

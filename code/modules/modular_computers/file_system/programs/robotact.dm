@@ -152,6 +152,6 @@
 	if(!istype(computer, /obj/item/modular_computer/tablet/integrated))
 		return
 	var/obj/item/modular_computer/tablet/integrated/tablet = computer
-	var/datum/tgui/active_ui = SStgui.get_open_ui(tablet.borgo, src)
+	var/datum/tgui/managed/active_ui = SStgui.get_open_ui(tablet.borgo, src)
 	if(active_ui)
 		active_ui.send_full_update()

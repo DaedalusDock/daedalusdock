@@ -22,7 +22,7 @@
 /datum/robot_control/ui_state(mob/user)
 	return GLOB.always_state
 
-/datum/robot_control/ui_interact(mob/user, datum/tgui/ui)
+/datum/robot_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "RemoteRobotControl")

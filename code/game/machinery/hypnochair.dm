@@ -33,7 +33,7 @@
 /obj/machinery/hypnochair/ui_state(mob/user)
 	return GLOB.notcontained_state
 
-/obj/machinery/hypnochair/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/hypnochair/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "HypnoChair", name)

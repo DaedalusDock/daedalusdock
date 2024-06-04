@@ -46,7 +46,7 @@
 		)
 	)
 
-/obj/machinery/limbgrower/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/limbgrower/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

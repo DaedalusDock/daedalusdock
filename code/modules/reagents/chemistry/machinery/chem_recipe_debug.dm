@@ -343,7 +343,7 @@ rate_up_lim = [edit_recipe.rate_up_lim]"}
 			text2file(export, "[GLOB.log_directory]/chem_parse.txt")
 
 
-/obj/machinery/chem_recipe_debug/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/chem_recipe_debug/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ChemRecipeDebug", name)

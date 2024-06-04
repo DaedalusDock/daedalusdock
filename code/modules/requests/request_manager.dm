@@ -102,7 +102,7 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 	requests_by_id.len++
 	requests_by_id[request.id] = request
 
-/datum/request_manager/ui_interact(mob/user, datum/tgui/ui = null)
+/datum/request_manager/ui_interact(mob/user, datum/tgui/managed/ui = null)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "RequestManager")
@@ -111,7 +111,7 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 /datum/request_manager/ui_state(mob/user)
 	return GLOB.admin_state
 
-/datum/request_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/request_manager/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	if (..())
 		return
 

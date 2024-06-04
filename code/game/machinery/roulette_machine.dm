@@ -60,7 +60,7 @@
 	prize_theft(0.05)
 	. = ..()
 
-/obj/machinery/roulette/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/roulette/ui_interact(mob/user, datum/tgui/managed/ui)
 	if(machine_stat & MAINT)
 		return
 	ui = SStgui.try_update_ui(user, src, ui)

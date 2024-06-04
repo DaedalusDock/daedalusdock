@@ -130,7 +130,7 @@
 	while (!entry && !closed && !QDELETED(src))
 		stoplag(1)
 
-/datum/tgui_input_number/ui_interact(mob/user, datum/tgui/ui)
+/datum/tgui_input_number/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "NumberInputModal")

@@ -50,7 +50,7 @@
 
 	return null
 
-/datum/computer_file/program/skill_tracker/ui_act(action, params, datum/tgui/ui)
+/datum/computer_file/program/skill_tracker/ui_act(action, params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

@@ -233,7 +233,7 @@
 			visible_message(span_danger("Something shorts out inside [src]!"))
 			wires.cut_random()
 
-/mob/living/simple_animal/bot/mulebot/ui_interact(mob/user, datum/tgui/ui)
+/mob/living/simple_animal/bot/mulebot/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Mule", name)

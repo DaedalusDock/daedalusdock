@@ -255,7 +255,7 @@ GLOBAL_VAR_INIT(bsa_unlock, FALSE)
 /obj/machinery/computer/bsa_control/ui_state(mob/user)
 	return GLOB.physical_state
 
-/obj/machinery/computer/bsa_control/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/bsa_control/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

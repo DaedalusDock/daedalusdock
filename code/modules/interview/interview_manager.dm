@@ -174,7 +174,7 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 		open_interviews -= to_close.owner_ckey
 		closed_interviews += to_close
 
-/datum/interview_manager/ui_interact(mob/user, datum/tgui/ui = null)
+/datum/interview_manager/ui_interact(mob/user, datum/tgui/managed/ui = null)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		ui = new(user, src, "InterviewManager")
@@ -183,7 +183,7 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 /datum/interview_manager/ui_state(mob/user)
 	return GLOB.admin_state
 
-/datum/interview_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/interview_manager/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	if (..())
 		return
 	switch(action)

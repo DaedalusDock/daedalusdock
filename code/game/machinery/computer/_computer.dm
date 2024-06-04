@@ -130,7 +130,7 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH) || !is_operational)
 		return
 
-/obj/machinery/computer/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/ui_interact(mob/user, datum/tgui/managed/ui)
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 	update_use_power(ACTIVE_POWER_USE)

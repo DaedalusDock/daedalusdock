@@ -134,7 +134,7 @@ GLOBAL_LIST_INIT(typecache_holodeck_linked_floorcheck_ok, typecacheof(list(/turf
 		else
 			LAZYADD(program_cache, list(info_this))
 
-/obj/machinery/computer/holodeck/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/holodeck/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

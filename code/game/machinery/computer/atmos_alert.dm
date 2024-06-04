@@ -19,7 +19,7 @@
 	SSpackets.remove_object(src, receive_frequency)
 	return ..()
 
-/obj/machinery/computer/atmos_alert/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/atmos_alert/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

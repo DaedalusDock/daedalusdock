@@ -46,7 +46,7 @@
 /obj/machinery/computer/emergency_shuttle/ui_state(mob/user)
 	return GLOB.human_adjacent_state
 
-/obj/machinery/computer/emergency_shuttle/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/emergency_shuttle/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -75,7 +75,7 @@
 	data["emagged"] = obj_flags & EMAGGED ? 1 : 0
 	return data
 
-/obj/machinery/computer/emergency_shuttle/ui_act(action, params, datum/tgui/ui)
+/obj/machinery/computer/emergency_shuttle/ui_act(action, params, datum/tgui/managed/ui)
 	. = ..()
 	if(.)
 		return

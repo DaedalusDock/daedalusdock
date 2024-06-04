@@ -56,7 +56,7 @@
  * required user the mob currently interacting with the ui
  * optional ui ui to be updated
  */
-/datum/proc/update_static_data(mob/user, datum/tgui/ui)
+/datum/proc/update_static_data(mob/user, datum/tgui/managed/ui)
 	if(!ui)
 		ui = SStgui.get_open_ui(user, src)
 	if(ui)
@@ -73,7 +73,7 @@
  *
  * return bool If the user's input has been handled and the UI should update.
  */
-/datum/proc/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/proc/ui_act(action, list/params, datum/tgui/managed/ui, datum/ui_state/state)
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_UI_ACT, usr, action)
 	// If UI is not interactive or usr calling Topic is not the UI user, bail.

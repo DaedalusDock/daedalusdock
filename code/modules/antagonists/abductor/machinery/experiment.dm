@@ -67,7 +67,7 @@
 /obj/machinery/abductor/experiment/ui_state(mob/user)
 	return GLOB.physical_state
 
-/obj/machinery/abductor/experiment/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/abductor/experiment/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ProbingConsole", name)

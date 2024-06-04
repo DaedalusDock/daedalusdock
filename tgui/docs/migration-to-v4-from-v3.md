@@ -34,7 +34,7 @@ extract those things into `ui_state` procs like so:
 Then reduce `ui_interact` until you finish with something like this:
 
 ```dm
-.../ui_interact(mob/user, datum/tgui/ui)
+.../ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "FooBar", "Foo Bar UI", 600, 400)

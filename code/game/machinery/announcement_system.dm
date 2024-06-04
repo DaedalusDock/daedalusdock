@@ -109,7 +109,7 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		for(var/channel in channels)
 			radio.talk_into(src, message, channel)
 
-/obj/machinery/announcement_system/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/announcement_system/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "AutomatedAnnouncement")

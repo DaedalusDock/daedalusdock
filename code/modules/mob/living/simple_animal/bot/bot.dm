@@ -342,7 +342,7 @@
 	else
 		to_chat(user, span_warning("[src]'s interface is not responding!"))
 
-/mob/living/simple_animal/bot/ui_interact(mob/user, datum/tgui/ui)
+/mob/living/simple_animal/bot/ui_interact(mob/user, datum/tgui/managed/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "SimpleBot", name)

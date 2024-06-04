@@ -60,7 +60,7 @@
 		radio.talk_into(src, message, radio_channel)
 		next_warning = world.time + minimum_time_between_warnings
 
-/obj/machinery/computer/bank_machine/ui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/bank_machine/ui_interact(mob/user, datum/tgui/managed/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)

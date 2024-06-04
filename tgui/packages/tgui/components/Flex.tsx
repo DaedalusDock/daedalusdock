@@ -13,6 +13,7 @@ export type FlexProps = BoxProps & {
   align?: string | BooleanLike;
   justify?: string | BooleanLike;
   inline?: BooleanLike;
+  scrollable?: BooleanLike;
 };
 
 export const computeFlexClassName = (props: FlexProps) => {
@@ -50,7 +51,7 @@ export const Flex = (props) => {
 export type FlexItemProps = BoxProps & {
   grow?: number | true;
   order?: number;
-  shrink?: number;
+  shrink?: number | true;
   basis?: string | BooleanLike;
   align?: string | BooleanLike;
 };

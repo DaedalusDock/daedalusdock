@@ -239,7 +239,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
       className={className}
       style={{
         // PARIAH EDIT
-        marginTop: 0,
+        marginTop: '0',
       }}
     >
       <Stack align="center" /* PARIAH EDIT */>

@@ -302,7 +302,7 @@ const DirectiveDisplay = (_) => {
                 Serve your master.
               </LabeledList.Item>
               <LabeledList.Item label="Supplemental">
-                <Box wrap>{directives}</Box>
+                <Box>{directives}</Box>
               </LabeledList.Item>
             </LabeledList>
           )}

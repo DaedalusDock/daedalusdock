@@ -17,6 +17,7 @@ import { formatTime } from '../format';
 import { capitalize } from 'common/string';
 import nt_logo from '../assets/bg-nanotrasen.svg';
 import { Fragment } from 'react';
+import { Image } from '../components/Image';
 
 type ExplorationEventData = {
   name: string;
@@ -738,15 +739,10 @@ const EventScreen = (props: { drone: DroneData; event: FullEventData }) => {
         <Stack.Item>
           <Stack fill>
             <Stack.Item>
-              <img
+              <Image
                 src={resolveAsset(event.image)}
                 height="125px"
                 width="250px"
-                style={{
-                  // TODO: Replace this with the Image component
-                  // @ts-ignore
-                  '-ms-interpolation-mode': 'nearest-neighbor',
-                }}
               />
             </Stack.Item>
             <Stack.Item>
@@ -812,15 +808,7 @@ export const AdventureScreen = (props: {
         </Stack.Item>
         <Stack.Divider />
         <Stack.Item>
-          <img
-            src={imgSource}
-            height="100px"
-            width="200px"
-            style={{
-              // @ts-ignore
-              '-ms-interpolation-mode': 'nearest-neighbor',
-            }}
-          />
+          <Image src={imgSource} height="100px" width="200px" />
           <Stack vertical>
             <Stack.Divider />
             <Stack.Item grow />
@@ -883,7 +871,7 @@ const ExodroneConsoleContent = (props) => {
   return (
     <Stack fill vertical>
       <Stack.Item grow>
-        <Stack vertical fill grow={2}>
+        <Stack vertical fill>
           <Stack.Item grow>
             <Stack fill>
               <Stack.Item>

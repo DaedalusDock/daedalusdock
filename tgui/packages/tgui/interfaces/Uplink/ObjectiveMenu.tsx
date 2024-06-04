@@ -162,7 +162,7 @@ export class ObjectiveMenu extends Component<
                           <Box
                             color="label"
                             className="UplinkObjective__EmptyObjective"
-                            onMouseUp={this.handleObjectiveAdded}
+                            onMouseUp={this.handleObjectiveAdded as any}
                           >
                             <Stack textAlign="center" fill align="center">
                               <Stack.Item textAlign="center" width="100%">

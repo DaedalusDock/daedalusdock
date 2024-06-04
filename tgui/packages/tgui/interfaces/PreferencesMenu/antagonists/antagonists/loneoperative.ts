@@ -1,5 +1,4 @@
 import { Antagonist, Category } from '../base';
-import { multiline } from 'common/string';
 import { OPERATIVE_MECHANICAL_DESCRIPTION } from './operative';
 
 const LoneOperative: Antagonist = {

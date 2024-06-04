@@ -1,4 +1,3 @@
-import { multiline } from 'common/string';
 import {
   FeatureColorInput,
   Feature,

@@ -151,7 +151,7 @@ export const PaintingAdminPanel = (props) => {
             </Table.Row>
             {paintings.map((painting) => (
               <Table.Row key={painting.ref} className="candystripe">
-                <Table.Cell style={{ 'word-break': 'break-all' }}>
+                <Table.Cell style={{ wordBreak: 'break-all' }}>
                   {decodeHtmlEntities(painting.title)}
                 </Table.Cell>
                 <Table.Cell>{painting.creator_ckey}</Table.Cell>

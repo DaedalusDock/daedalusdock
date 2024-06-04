@@ -103,8 +103,8 @@ $dark-fg: darken($color-fg, 30);
   @include meta.load-css(
     '../components/Button.scss',
     $with: (
-      'color-default': base.$color-fg,
-      'color-selected': $dark-fg,
+      'color-default': $dark-fg,
+      'color-selected': base.$color-fg,
       'color-disabled': rbga(base.$color-fg, 0),
       'color-transparent-text': base.$color-fg
     )
@@ -113,8 +113,7 @@ $dark-fg: darken($color-fg, 30);
   @include meta.load-css(
     '../components/Tabs.scss',
     $with: (
-      'tab-color': base.$color-bg,
-      'tab-color-selected': base.$color-fg,
+      'tab-color': $dark-fg,
       'text-color': base.$color-fg,
       'text-color-selected': base.$color-bg,
       'tab-color-hovered': rgba(base.$color-fg, 0.3)
@@ -191,7 +190,7 @@ $dark-fg: darken($color-fg, 30);
     &:hover,
     &:visited,
     &:target {
-      background-color: base.$color-fg;
+      background-color: rgba(base.$color-fg, 0.5);
       color: base.$color-bg;
     }
   }
@@ -261,15 +260,36 @@ $dark-fg: darken($color-fg, 30);
   .Tabs--horizontal {
     .Tab {
       border: 2px solid base.$color-fg;
-      border-bottom: 6px solid base.$color-fg;
+      border-bottom: 3px solid base.$color-fg;
       text-align: center;
-      background-color: rgba(0, 0, 0, 0);
+      background-color: $dark-fg;
       font-weight: bold;
     }
 
     .Tab--selected {
+      border: 2px solid $dark-fg;
+      border-bottom: 3px solid base.$color-fg;
+      background-color: base.$color-fg;
+      .Tab__left,
+      .Tab__text {
+        color: base.$color-bg;
+      }
+      &:hover {
+        outline: none;
+      }
+    }
+  }
+
+  .Tabs--vertical {
+    .Tab {
       border: 2px solid base.$color-fg;
-      border-bottom: none;
+      text-align: center;
+      background-color: $dark-fg;
+      font-weight: bold;
+    }
+
+    .Tab--selected {
+      border: 2px solid $dark-fg;
       background-color: base.$color-fg;
       .Tab__left,
       .Tab__text {

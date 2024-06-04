@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { BooleanLike, classes, pureComponentHooks } from 'common/react';
+import { BooleanLike, classes } from 'common/react';
 import { BoxProps, computeBoxClassName, computeBoxProps, unit } from './Box';
 
 export type FlexProps = BoxProps & {
@@ -13,6 +13,7 @@ export type FlexProps = BoxProps & {
   align?: string | BooleanLike;
   justify?: string | BooleanLike;
   inline?: BooleanLike;
+  scrollable?: BooleanLike;
 };
 
 export const computeFlexClassName = (props: FlexProps) => {
@@ -28,10 +29,10 @@ export const computeFlexProps = (props: FlexProps) => {
   return computeBoxProps({
     style: {
       ...rest.style,
-      'flex-direction': direction,
-      'flex-wrap': wrap === true ? 'wrap' : wrap,
-      'align-items': align,
-      'justify-content': justify,
+      flexDirection: direction,
+      flexWrap: wrap === true ? 'wrap' : wrap,
+      alignItems: align,
+      justifyContent: justify,
     },
     ...rest,
   });
@@ -47,12 +48,10 @@ export const Flex = (props) => {
   );
 };
 
-Flex.defaultHooks = pureComponentHooks;
-
 export type FlexItemProps = BoxProps & {
-  grow?: number;
+  grow?: number | true;
   order?: number;
-  shrink?: number;
+  shrink?: number | true;
   basis?: string | BooleanLike;
   align?: string | BooleanLike;
 };
@@ -75,11 +74,11 @@ export const computeFlexItemProps = (props: FlexItemProps) => {
   return computeBoxProps({
     style: {
       ...style,
-      'flex-grow': grow !== undefined && Number(grow),
-      'flex-shrink': shrink !== undefined && Number(shrink),
-      'flex-basis': unit(computedBasis),
+      flexGrow: grow !== undefined && Number(grow),
+      flexShrink: shrink !== undefined && Number(shrink),
+      flexBasis: unit(computedBasis),
       order: order,
-      'align-self': align,
+      alignSelf: align,
     },
     ...rest,
   });
@@ -94,7 +93,5 @@ const FlexItem = (props) => {
     />
   );
 };
-
-FlexItem.defaultHooks = pureComponentHooks;
 
 Flex.Item = FlexItem;

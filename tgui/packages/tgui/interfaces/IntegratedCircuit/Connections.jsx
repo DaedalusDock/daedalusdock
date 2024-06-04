@@ -17,8 +17,8 @@ export const Connections = (props) => {
       height="100%"
       style={{
         position: 'absolute',
-        'pointer-events': 'none',
-        'z-index': -1,
+        pointerEvents: 'none',
+        zIndex: -1,
       }}
     >
       {connections.map((val, index) => {

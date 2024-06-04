@@ -1,10 +1,11 @@
 import { perf } from 'common/perf';
-import { render } from 'inferno';
+import { ReactNode } from 'react';
 import { createLogger } from './logging';
+import { createRoot, Root } from 'react-dom/client';
 
 const logger = createLogger('renderer');
 
-let reactRoot: any;
+let reactRoot: Root;
 let initialRender: string | boolean = true;
 let suspended = false;
 
@@ -19,7 +20,7 @@ export const suspendRenderer = () => {
 };
 
 type CreateRenderer = <T extends unknown[] = [unknown]>(
-  getVNode?: (...args: T) => any,
+  getVNode?: (...args: T) => ReactNode,
 ) => (...args: T) => void;
 
 export const createRenderer: CreateRenderer =
@@ -28,12 +29,13 @@ export const createRenderer: CreateRenderer =
     perf.mark('render/start');
     // Start rendering
     if (!reactRoot) {
-      reactRoot = document.getElementById('react-root');
+      const element = document.getElementById('react-root');
+      reactRoot = createRoot(element!);
     }
     if (getVNode) {
-      render(getVNode(...args), reactRoot);
+      reactRoot.render(getVNode(...args));
     } else {
-      render(args[0] as any, reactRoot);
+      reactRoot.render(args[0] as any);
     }
     perf.mark('render/finish');
     if (suspended) {

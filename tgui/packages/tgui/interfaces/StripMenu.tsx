@@ -3,6 +3,7 @@ import { BooleanLike } from 'common/react';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, Button, Icon, Stack } from '../components';
+import { Image } from '../components/Image';
 import { Window } from '../layouts';
 
 const ROWS = 5;
@@ -27,8 +28,8 @@ const CornerText = (props: {
       style={{
         position: 'relative',
         left: align === 'left' ? '2px' : '-2px',
-        'text-align': align,
-        'text-shadow': '1px 1px 1px #555',
+        textAlign: align,
+        textShadow: '1px 1px 1px #555',
       }}
     >
       {children}
@@ -295,14 +296,12 @@ export const StripMenu = (props) => {
                     }
 
                     content = (
-                      <Box
-                        as="img"
+                      <Image
                         src={`data:image/jpeg;base64,${item.icon}`}
                         height="100%"
                         width="100%"
                         style={{
-                          '-ms-interpolation-mode': 'nearest-neighbor',
-                          'vertical-align': 'middle',
+                          verticalAlign: 'middle',
                         }}
                       />
                     );
@@ -320,7 +319,7 @@ export const StripMenu = (props) => {
                         ml={0}
                         mt={1.3}
                         style={{
-                          'text-align': 'center',
+                          textAlign: 'center',
                           height: '100%',
                           width: '100%',
                         }}
@@ -364,8 +363,7 @@ export const StripMenu = (props) => {
                           }}
                         >
                           {slot.image && (
-                            <Box
-                              as="img"
+                            <Image
                               className="centered-image"
                               src={resolveAsset(slot.image)}
                               opacity={0.7}
@@ -390,7 +388,7 @@ export const StripMenu = (props) => {
                               position: 'absolute',
                               bottom: 0,
                               right: 0,
-                              'z-index': 2,
+                              zIndex: '2',
                             }}
                           >
                             <Icon name={alternateAction.icon} />

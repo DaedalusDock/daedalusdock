@@ -25,6 +25,7 @@ export const Panel = (props) => {
       return <KitchenSink panel />;
     }
   }
+
   return (
     <Pane theme={settings.theme}>
       <Stack fill vertical>

@@ -114,7 +114,7 @@ const CandidateDisplay = (props) => {
       style={{
         background: '#111111',
         border: '1px solid #4972a1',
-        'border-radius': '5px',
+        borderRadius: '5px',
         padding: '1rem',
       }}
     >

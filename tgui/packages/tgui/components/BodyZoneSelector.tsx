@@ -1,4 +1,4 @@
-import { Component, createRef } from 'inferno';
+import { Component, createRef } from 'react';
 import { DmIcon } from './DMIcon';
 
 export enum BodyZone {
@@ -114,7 +114,6 @@ export class BodyZoneSelector extends Component<
             });
           }}
           style={{
-            '-ms-interpolation-mode': 'nearest-neighbor',
             position: 'absolute',
             width: `${32 * scale}px`,
             height: `${32 * scale}px`,
@@ -126,8 +125,7 @@ export class BodyZoneSelector extends Component<
             icon="icons/hud/screen_gen.dmi"
             icon_state={selectedZone}
             style={{
-              '-ms-interpolation-mode': 'nearest-neighbor',
-              'pointer-events': 'none',
+              pointerEvents: 'none',
               position: 'absolute',
               width: `${32 * scale}px`,
               height: `${32 * scale}px`,
@@ -140,9 +138,8 @@ export class BodyZoneSelector extends Component<
             icon="icons/hud/screen_gen.dmi"
             icon_state={hoverZone}
             style={{
-              '-ms-interpolation-mode': 'nearest-neighbor',
-              opacity: 0.5,
-              'pointer-events': 'none',
+              opacity: '0.5',
+              pointerEvents: 'none',
               position: 'absolute',
               width: `${32 * scale}px`,
               height: `${32 * scale}px`,

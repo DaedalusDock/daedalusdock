@@ -167,12 +167,10 @@ const TerminalDisplay = (props) => {
           )}
         </Stack.Item>
         <Stack.Item>
-          {/* @ts-ignore */}
           <marquee scrollamount="2">
             <Box color="darkgray" fontSize="8px">
               {COPYRIGHT_SCROLLER}
             </Box>
-            {/* @ts-ignore */}
           </marquee>
         </Stack.Item>
       </Stack>

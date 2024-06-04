@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-import { classes, pureComponentHooks } from 'common/react';
+import { classes } from 'common/react';
 import { computeBoxClassName, computeBoxProps } from './Box';
 
 const FA_OUTLINE_REGEX = /-o$/;
@@ -18,7 +18,7 @@ export const Icon = (props) => {
     if (!rest.style) {
       rest.style = {};
     }
-    rest.style['font-size'] = size * 100 + '%';
+    rest.style['fontSize'] = size * 100 + '%';
   }
   if (typeof rotation === 'number') {
     if (!rest.style) {
@@ -52,8 +52,6 @@ export const Icon = (props) => {
     />
   );
 };
-
-Icon.defaultHooks = pureComponentHooks;
 
 export const IconStack = (props) => {
   const { className, children, ...rest } = props;

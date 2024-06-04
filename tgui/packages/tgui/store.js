@@ -6,7 +6,6 @@
 
 import { flow } from 'common/fp';
 import { applyMiddleware, combineReducers, createStore } from 'common/redux';
-import { Component } from 'inferno';
 import { assetMiddleware } from './assets';
 import { backendMiddleware, backendReducer } from './backend';
 import { debugMiddleware, debugReducer, relayMiddleware } from './debug';
@@ -81,18 +80,3 @@ const createStackAugmentor = (store) => (stack, error) => {
     });
   return augmentedStack;
 };
-
-/**
- * Store provider for Inferno apps.
- * This can be removed when Inferno is removed
- */
-export class StoreProvider extends Component {
-  getChildContext() {
-    const { store } = this.props;
-    return { store };
-  }
-
-  render() {
-    return this.props.children;
-  }
-}

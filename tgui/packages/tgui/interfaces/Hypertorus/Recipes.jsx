@@ -109,8 +109,6 @@ const MemoRow = (props) => {
   );
 };
 
-MemoRow.defaultHooks = activeChange;
-
 const GasCellItem = (props) => {
   const { gasid, ...rest } = props;
   return (
@@ -226,5 +224,3 @@ export const HypertorusRecipes = (props) => {
     </Box>
   );
 };
-
-HypertorusRecipes.defaultHooks = recipeChange;

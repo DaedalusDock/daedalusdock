@@ -1,5 +1,4 @@
 import { createSearch } from 'common/string';
-import { multiline } from 'common/string';
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
 import {
@@ -163,7 +162,7 @@ export const Orbit = (props) => {
               <Button
                 inline
                 color="transparent"
-                tooltip={multiline`Toggle Auto-Observe. When active, you'll
+                tooltip={`Toggle Auto-Observe. When active, you'll
                 see the UI / full inventory of whoever you're orbiting. Neat!`}
                 tooltipPosition="bottom-start"
                 selected={autoObserve}

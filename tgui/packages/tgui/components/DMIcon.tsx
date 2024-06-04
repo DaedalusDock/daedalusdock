@@ -1,4 +1,4 @@
-import { Component, InfernoNode } from 'inferno';
+import { Component, ReactNode } from 'react';
 
 import { logger } from '../logging';
 import { resolveAsset } from '../assets';
@@ -26,7 +26,7 @@ type Props = {
   /** Facing direction. See direction enum. Default is South */
   direction: Direction;
   /** Fallback icon. */
-  fallback: InfernoNode;
+  fallback: ReactNode;
   /** Frame number. Default is 1 */
   frame: number;
   /** Movement state. Default is false */
@@ -44,6 +44,10 @@ export class DmIcon extends Component<Props, State> {
   state = {
     iconRef: '',
   };
+
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount() {
     this.fetchRefMap();

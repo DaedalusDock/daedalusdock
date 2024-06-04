@@ -12,28 +12,27 @@ setInterval(() => {
 }, 5000);
 
 export const ReconnectButton = (props) => {
+  if (!url) return null;
   return (
-    url && (
-      <>
-        <Button
-          color="white"
-          onClick={() => {
-            Byond.command('.reconnect');
-          }}
-        >
-          Reconnect
-        </Button>
+    <>
+      <Button
+        color="white"
+        onClick={() => {
+          Byond.command('.reconnect');
+        }}
+      >
+        Reconnect
+      </Button>
 
-        <Button
-          color="white"
-          onClick={() => {
-            location.href = `byond://${url}`;
-            Byond.command('.quit');
-          }}
-        >
-          Relaunch game
-        </Button>
-      </>
-    )
+      <Button
+        color="white"
+        onClick={() => {
+          location.href = `byond://${url}`;
+          Byond.command('.quit');
+        }}
+      >
+        Relaunch game
+      </Button>
+    </>
   );
 };

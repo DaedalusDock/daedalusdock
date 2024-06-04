@@ -239,8 +239,7 @@ const ProductImage = (props) => {
     <img
       src={`data:image/jpeg;base64,${product.img}`}
       style={{
-        'vertical-align': 'middle',
-        'horizontal-align': 'middle',
+        verticalAlign: 'middle',
       }}
     />
   ) : (
@@ -248,8 +247,7 @@ const ProductImage = (props) => {
       icon={product.icon}
       icon_state={product.icon_state}
       style={{
-        'vertical-align': 'middle',
-        'horizontal-align': 'middle',
+        verticalAlign: 'middle',
       }}
     />
   );

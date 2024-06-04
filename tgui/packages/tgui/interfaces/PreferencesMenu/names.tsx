@@ -182,7 +182,7 @@ export const NameInput = (props: {
           <Icon
             style={{
               color: 'rgba(255, 255, 255, 0.5)',
-              'font-size': '17px',
+              fontSize: '17px',
             }}
             name="edit"
           />
@@ -207,7 +207,7 @@ export const NameInput = (props: {
 
           <Box
             style={{
-              'border-bottom': '2px dotted rgba(255, 255, 255, 0.8)',
+              borderBottom: '2px dotted rgba(255, 255, 255, 0.8)',
               right: '50%',
               transform: 'translateX(50%)',
               position: 'absolute',
@@ -248,7 +248,7 @@ export const NameInput = (props: {
                     style={{
                       position: 'relative',
                       left: '1px',
-                      'min-width': '0px',
+                      minWidth: '0px',
                     }}
                   />
                 </Button>

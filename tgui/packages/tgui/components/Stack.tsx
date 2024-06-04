@@ -5,7 +5,7 @@
  */
 
 import { classes } from 'common/react';
-import { RefObject } from 'inferno';
+import { RefObject } from 'react';
 import {
   computeFlexClassName,
   computeFlexItemClassName,
@@ -18,6 +18,7 @@ import {
 type StackProps = FlexProps & {
   vertical?: boolean;
   fill?: boolean;
+  zebra?: boolean;
 };
 
 export const Stack = (props: StackProps) => {
@@ -40,7 +41,7 @@ export const Stack = (props: StackProps) => {
   );
 };
 
-type StackItemProps = FlexProps & {
+type StackItemProps = FlexItemProps & {
   innerRef?: RefObject<HTMLDivElement>;
 };
 

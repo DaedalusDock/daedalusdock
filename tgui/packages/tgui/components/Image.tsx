@@ -1,4 +1,4 @@
-import { Component } from 'inferno';
+import { Component } from 'react';
 
 import { BoxProps, computeBoxProps } from './Box';
 
@@ -52,7 +52,7 @@ export class Image extends Component<Props> {
 
     return (
       <img
-        onerror={(event) => {
+        onError={(event) => {
           if (fixErrors && this.attempts < maxAttempts) {
             const imgElement = event.currentTarget;
 

@@ -1,5 +1,4 @@
 import { classes } from 'common/react';
-import { multiline } from 'common/string';
 import { useBackend, useLocalState } from '../backend';
 import {
   Box,
@@ -255,7 +254,7 @@ export const SmartPipeBlockSection = (props) => {
                 color="transparent"
                 icon="info"
                 tooltipPosition="right"
-                tooltip={multiline`
+                tooltip={`
                 This is a panel for blocking certain connection
                 directions for the smart pipes.
                 The button in the center resets to

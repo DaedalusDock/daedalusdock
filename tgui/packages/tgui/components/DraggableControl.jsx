@@ -5,8 +5,7 @@
  */
 
 import { clamp } from 'common/math';
-import { pureComponentHooks } from 'common/react';
-import { Component, createRef } from 'inferno';
+import { Component, createRef } from 'react';
 import { AnimatedNumber } from './AnimatedNumber';
 
 const DEFAULT_UPDATE_RATE = 400;
@@ -189,8 +188,8 @@ export class DraggableControl extends Component {
         style={{
           display: !editing ? 'none' : undefined,
           height: height,
-          'line-height': lineHeight,
-          'font-size': fontSize,
+          lineHeight: lineHeight,
+          fontSize: fontSize,
         }}
         onBlur={(e) => {
           if (!editing) {
@@ -269,7 +268,6 @@ export class DraggableControl extends Component {
   }
 }
 
-DraggableControl.defaultHooks = pureComponentHooks;
 DraggableControl.defaultProps = {
   minValue: -Infinity,
   maxValue: +Infinity,

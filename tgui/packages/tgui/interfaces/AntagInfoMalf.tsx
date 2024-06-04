@@ -1,5 +1,4 @@
 import { useBackend, useLocalState } from '../backend';
-import { multiline } from 'common/string';
 import { GenericUplink, Item } from './Uplink/GenericUplink';
 import { BlockQuote, Button, Section, Stack, Tabs } from '../components';
 import { BooleanLike } from 'common/react';
@@ -84,7 +83,7 @@ const FlavorSection = (props) => {
           mr={-0.8}
           mt={-0.5}
           icon="hammer"
-          tooltip={multiline`
+          tooltip={`
             This is a gameplay suggestion for bored ais.
             You don't have to follow it, unless you want some
             ideas for how to spend the round.`}
@@ -97,7 +96,7 @@ const FlavorSection = (props) => {
       <Stack vertical fill>
         <Stack.Item grow>
           <Stack fill vertical>
-            <Stack.Item style={{ 'background-color': 'black' }}>
+            <Stack.Item style={{ backgroundColor: 'black' }}>
               <span style={goalstyle}>
                 System Integrity Report:
                 <br />
@@ -105,7 +104,7 @@ const FlavorSection = (props) => {
               &gt;{goal}
             </Stack.Item>
             <Stack.Divider />
-            <Stack.Item grow style={{ 'background-color': 'black' }}>
+            <Stack.Item grow style={{ backgroundColor: 'black' }}>
               <span style={allystyle}>
                 Morality Core Report:
                 <br />
@@ -113,7 +112,7 @@ const FlavorSection = (props) => {
               &gt;{allies}
             </Stack.Item>
             <Stack.Divider />
-            <Stack.Item style={{ 'background-color': 'black' }}>
+            <Stack.Item style={{ backgroundColor: 'black' }}>
               <span style={badstyle}>
                 Overall Sentience Coherence Grade: FAILING.
                 <br />
@@ -202,7 +201,7 @@ export const AntagInfoMalf = (props) => {
       height={530}
       theme={(antagInfoTab === 0 && 'hackerman') || 'malfunction'}
     >
-      <Window.Content style={{ 'font-family': 'Consolas, monospace' }}>
+      <Window.Content style={{ fontFamily: 'Consolas, monospace' }}>
         <Stack vertical fill>
           <Stack.Item>
             <Tabs fluid>

@@ -1,5 +1,5 @@
 import { BooleanLike, classes } from 'common/react';
-import { Component } from 'inferno';
+import { Component } from 'react';
 import {
   Section,
   Stack,
@@ -64,8 +64,8 @@ export class ObjectiveMenu extends Component<
   ObjectiveMenuProps,
   ObjectiveMenuState
 > {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       draggingObjective: null,
       objectiveX: 0,
@@ -162,7 +162,7 @@ export class ObjectiveMenu extends Component<
                           <Box
                             color="label"
                             className="UplinkObjective__EmptyObjective"
-                            onMouseUp={this.handleObjectiveAdded}
+                            onMouseUp={this.handleObjectiveAdded as any}
                           >
                             <Stack textAlign="center" fill align="center">
                               <Stack.Item textAlign="center" width="100%">
@@ -242,17 +242,7 @@ export class ObjectiveMenu extends Component<
                   </Dimmer>
                 )) ||
                   (potentialObjectives.length < maximumPotentialObjectives && (
-                    <Flex.Item
-                      basis="100%"
-                      style={
-                        {
-                          // "background-color": "rgba(0, 0, 0, 0.5)",
-                        }
-                      }
-                      mb={1}
-                      mx="0.5%"
-                      minHeight="100px"
-                    >
+                    <Flex.Item basis="100%" mb={1} mx="0.5%" minHeight="100px">
                       <Stack
                         align="center"
                         height="100%"
@@ -281,7 +271,7 @@ export class ObjectiveMenu extends Component<
             left={`${objectiveX - 180}px`}
             top={`${objectiveY}px`}
             style={{
-              'pointer-events': 'none',
+              pointerEvents: 'none',
             }}
           >
             {ObjectiveFunction(draggingObjective, false)}
@@ -464,9 +454,9 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                 <Box
                   style={{
                     border: '2px solid rgba(0, 0, 0, 0.5)',
-                    'border-left': 'none',
-                    'border-right': 'none',
-                    'border-bottom': objectiveFinished ? 'none' : undefined,
+                    borderLeft: 'none',
+                    borderRight: 'none',
+                    borderBottom: objectiveFinished ? 'none' : undefined,
                   }}
                   className={reputation.gradient}
                   py={0.5}
@@ -526,10 +516,10 @@ const ObjectiveElement = (props: ObjectiveElementProps) => {
                   inline
                   className={reputation.gradient}
                   style={{
-                    'border-radius': '0',
+                    borderRadius: '0',
                     border: '2px solid rgba(0, 0, 0, 0.5)',
-                    'border-left': 'none',
-                    'border-right': 'none',
+                    borderLeft: 'none',
+                    borderRight: 'none',
                   }}
                   position="relative"
                   width="100%"

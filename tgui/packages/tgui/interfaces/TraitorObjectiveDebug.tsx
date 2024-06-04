@@ -149,7 +149,7 @@ export const TraitorObjectiveDebug = (props) => {
           backgroundColor="green"
           height="5px"
           style={{
-            'z-index': 5,
+            zIndex: '5',
           }}
         />
         <Box
@@ -157,7 +157,7 @@ export const TraitorObjectiveDebug = (props) => {
           top={0}
           left={1}
           style={{
-            'z-index': 5,
+            zIndex: '5',
           }}
         >
           {/* Time in minutes of this threshold */}
@@ -259,7 +259,6 @@ export const TraitorObjectiveDebug = (props) => {
         <Box
           position="absolute"
           width="100%"
-          fill
           backgroundColor="black"
           left={0}
           top="100px"
@@ -376,8 +375,8 @@ const ObjectiveBox = (props: ObjectiveBoxProps) => {
       <Stack vertical width="100%">
         <Stack.Item
           style={{
-            'text-overflow': 'ellipsis',
-            'white-space': 'nowrap',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
             overflow: 'hidden',
           }}
         >
@@ -405,7 +404,7 @@ const ObjectiveBox = (props: ObjectiveBoxProps) => {
               (objective.progression_reward[1] / sizeLimit) * window.innerWidth
             }px`}
             style={{
-              'white-space': 'nowrap',
+              whiteSpace: 'nowrap',
             }}
           >
             {objective.progression_reward[0] / 600}
@@ -420,7 +419,7 @@ const ObjectiveBox = (props: ObjectiveBoxProps) => {
             backgroundColor="red"
             width={`${objective.telecrystal_reward[1] * 10}px`}
             style={{
-              'white-space': 'nowrap',
+              whiteSpace: 'nowrap',
             }}
           >
             {objective.telecrystal_reward[0]}

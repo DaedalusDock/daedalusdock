@@ -16,7 +16,7 @@ export const AntagInfoGangmember = (props) => {
     <Window width={620} height={500}>
       <Window.Content
         style={{
-          'background-image': 'none',
+          backgroundImage: 'none',
         }}
       >
         <Section fill>

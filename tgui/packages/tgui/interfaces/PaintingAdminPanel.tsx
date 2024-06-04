@@ -2,6 +2,7 @@ import { decodeHtmlEntities } from 'common/string';
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
 import { Box, Button, LabeledList, Section, Table } from '../components';
+import { Image } from '../components/Image';
 import { Window } from '../layouts';
 
 type PaintingAdminPanelData = {
@@ -42,19 +43,18 @@ export const PaintingAdminPanel = (props) => {
               <Button onClick={() => setChosenPaintingRef(null)}>Close</Button>
             }
           >
-            <img
+            <Image
               src={resolveAsset(`paintings_${chosenPainting.md5}`)}
               height="96px"
               width="96px"
               style={{
-                'vertical-align': 'middle',
-                '-ms-interpolation-mode': 'nearest-neighbor',
+                verticalAlign: 'middle',
               }}
             />
             <LabeledList>
               <LabeledList.Item label="md5" content={chosenPainting.md5} />
               <LabeledList.Item label="title">
-                <Box inline style={{ 'word-break': 'break-all' }}>
+                <Box inline style={{ wordBreak: 'break-all' }}>
                   {decodeHtmlEntities(chosenPainting.title)}
                 </Box>
                 <Button
@@ -151,18 +151,17 @@ export const PaintingAdminPanel = (props) => {
             </Table.Row>
             {paintings.map((painting) => (
               <Table.Row key={painting.ref} className="candystripe">
-                <Table.Cell style={{ 'word-break': 'break-all' }}>
+                <Table.Cell style={{ wordBreak: 'break-all' }}>
                   {decodeHtmlEntities(painting.title)}
                 </Table.Cell>
                 <Table.Cell>{painting.creator_ckey}</Table.Cell>
                 <Table.Cell>
-                  <img
+                  <Image
                     src={resolveAsset(`paintings_${painting.md5}`)}
                     height="36px"
                     width="36px"
                     style={{
-                      'vertical-align': 'middle',
-                      '-ms-interpolation-mode': 'nearest-neighbor',
+                      verticalAlign: 'middle',
                     }}
                   />
                 </Table.Cell>

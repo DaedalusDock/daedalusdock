@@ -13,7 +13,7 @@ import { Layout } from './Layout';
 export const Pane = (props) => {
   const { theme, children, className, ...rest } = props;
   const { suspended } = useBackend();
-  const { debugLayout } = useDebug();
+  const { debugLayout = false } = useDebug();
   return (
     <Layout className={classes(['Window', className])} theme={theme} {...rest}>
       <Box fillPositionedParent className={debugLayout && 'debug-layout'}>
@@ -30,7 +30,9 @@ const PaneContent = (props) => {
       className={classes(['Window__content', className])}
       {...rest}
     >
-      {(fitted && children) || (
+      {fitted ? (
+        children
+      ) : (
         <div className="Window__contentPadding">{children}</div>
       )}
     </Layout.Content>

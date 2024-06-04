@@ -39,7 +39,7 @@
 
 /datum/data/mining_equipment
 	var/equipment_name = "generic"
-	var/equipment_path = null
+	var/atom/movable/equipment_path = null
 	var/cost = 0
 
 /datum/data/mining_equipment/New(name, path, cost)
@@ -60,10 +60,10 @@
 	icon_state = "[initial(icon_state)][powered() ? null : "-off"]"
 	return ..()
 
-/obj/machinery/mineral/equipment_vendor/ui_assets(mob/user)
-	return list(
-		get_asset_datum(/datum/asset/spritesheet/vending),
-	)
+// /obj/machinery/mineral/equipment_vendor/ui_assets(mob/user)
+// 	return list(
+// 		get_asset_datum(/datum/asset/spritesheet/vending),
+// 	)
 
 /obj/machinery/mineral/equipment_vendor/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -79,7 +79,9 @@
 			path = replacetext(replacetext("[prize.equipment_path]", "/obj/item/", ""), "/", "-"),
 			name = prize.equipment_name,
 			price = prize.cost,
-			ref = REF(prize)
+			ref = REF(prize),
+			icon = initial(prize.equipment_path.icon),
+			icon_state = initial(prize.equipment_path.icon_state)
 		)
 		.["product_records"] += list(product_data)
 

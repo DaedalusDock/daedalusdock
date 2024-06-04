@@ -1,6 +1,6 @@
 import { sortBy } from 'common/collections';
 import { classes } from 'common/react';
-import { InfernoNode, SFC } from 'inferno';
+import { FC, ReactNode } from 'react';
 import { useBackend } from '../../backend';
 import { Box, Button, Dropdown, Stack, Tooltip } from '../../components';
 import { logger } from '../../logging';
@@ -115,7 +115,7 @@ const PriorityButtons = (props: {
     <Box
       inline // PARIAH EDIT
       style={{
-        'align-items': 'center',
+        alignItems: 'center',
         height: '100%',
         textAlign: 'end', // PARIAH EDIT
         padding: '0.3em', // PARIAH EDIT
@@ -196,7 +196,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
     : name;
   // PARIAH EDIT END
 
-  let rightSide: InfernoNode;
+  let rightSide: ReactNode;
 
   if (experienceNeeded) {
     const { experience_type, required_playtime } = experienceNeeded;
@@ -239,7 +239,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
       className={className}
       style={{
         // PARIAH EDIT
-        'margin-top': 0,
+        marginTop: '0',
       }}
     >
       <Stack align="center" /* PARIAH EDIT */>
@@ -251,7 +251,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
             className="job-name"
             width="50%"
             style={{
-              'padding-left': '0.3em',
+              paddingLeft: '0.3em',
             }}
           >
             {' '}
@@ -282,7 +282,9 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
   );
 };
 
-const Department: SFC<{ department: string }> = (props) => {
+const Department: FC<{ department: string; children?: ReactNode }> = (
+  props,
+) => {
   const { children, department: name } = props;
   const className = `PreferencesMenu__Jobs__departments--${name}`;
   logger.log(name + ': ' + className);
@@ -343,7 +345,7 @@ const Department: SFC<{ department: string }> = (props) => {
 // But in order for everything to align, I also need to add the 0.2em padding.
 // But also, we can't be aligned with names that break into multiple lines!
 const Gap = (props: { amount: number }) => {
-  // 0.2em comes from the padding-bottom in the department listing
+  // 0.2em comes from the paddingBottom in the department listing
   return <Box height={`calc(${props.amount}px + 0.2em)`} />;
 };
 

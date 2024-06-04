@@ -1,4 +1,3 @@
-import { StatelessComponent } from 'inferno';
 import { Box, Icon, Stack, Tooltip } from '../../components';
 import { PreferencesMenuData, Quirk } from './data';
 import { useBackend, useLocalState } from '../../backend';
@@ -33,8 +32,6 @@ const QuirkList = (props: {
           <Box
             className={className}
             key={quirkKey}
-            role="button"
-            tabIndex="1"
             onClick={() => {
               props.onClick(quirkKey, quirk);
             }}
@@ -43,9 +40,9 @@ const QuirkList = (props: {
               <Stack.Item
                 align="center"
                 style={{
-                  'min-width': '15%',
-                  'max-width': '15%',
-                  'text-align': 'center',
+                  minWidth: '15%',
+                  maxWidth: '15%',
+                  textAlign: 'center',
                 }}
               >
                 <Icon color="#333" fontSize={3} name={quirk.icon} />
@@ -53,33 +50,32 @@ const QuirkList = (props: {
 
               <Stack.Item
                 align="stretch"
+                ml={0}
                 style={{
-                  'border-right': '1px solid black',
-                  'margin-left': 0,
+                  borderRight: '1px solid black',
                 }}
               />
 
               <Stack.Item
                 grow
+                ml={0}
                 style={{
-                  'margin-left': 0,
-
                   // Fixes an IE bug for text overflowing in Flex boxes
-                  'min-width': '0%',
+                  minWidth: '0%',
                 }}
               >
                 <Stack vertical fill>
                   <Stack.Item
                     className={`${className}--${getValueClass(quirk.value)}`}
                     style={{
-                      'border-bottom': '1px solid black',
+                      borderBottom: '1px solid black',
                       padding: '2px',
                     }}
                   >
                     <Stack
                       fill
                       style={{
-                        'font-size': '1.2em',
+                        fontSize: '1.2em',
                       }}
                     >
                       <Stack.Item grow basis="content">
@@ -95,8 +91,8 @@ const QuirkList = (props: {
                   <Stack.Item
                     grow
                     basis="content"
+                    mt={0}
                     style={{
-                      'margin-top': 0,
                       padding: '3px',
                     }}
                   >
@@ -109,7 +105,11 @@ const QuirkList = (props: {
         );
 
         if (quirk.failTooltip) {
-          return <Tooltip content={quirk.failTooltip}>{child}</Tooltip>;
+          return (
+            <Tooltip key={quirkKey} content={quirk.failTooltip}>
+              {child}
+            </Tooltip>
+          );
         } else {
           return child;
         }
@@ -118,7 +118,7 @@ const QuirkList = (props: {
   );
 };
 
-const StatDisplay: StatelessComponent<{}> = (props) => {
+const StatDisplay = (props) => {
   return (
     <Box
       backgroundColor="#eee"

@@ -1,12 +1,13 @@
-import { Component, createRef } from 'inferno';
+import { Component, createRef } from 'react';
 
 export class TrackOutsideClicks extends Component<{
   onOutsideClick: () => void;
+  children: React.ReactNode;
 }> {
   ref = createRef<HTMLDivElement>();
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
 

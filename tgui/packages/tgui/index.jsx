@@ -29,7 +29,7 @@ import { setupHotReloading } from 'tgui-dev-server/link/client.cjs';
 import { setupHotKeys } from './hotkeys';
 import { captureExternalLinks } from './links';
 import { createRenderer } from './renderer';
-import { configureStore, StoreProvider } from './store';
+import { configureStore } from './store';
 import { setupGlobalEvents } from './events';
 import { setGlobalStore } from './backend';
 
@@ -43,11 +43,7 @@ const renderApp = createRenderer(() => {
 
   const { getRoutedComponent } = require('./routes');
   const Component = getRoutedComponent(store);
-  return (
-    <StoreProvider store={store}>
-      <Component />
-    </StoreProvider>
-  );
+  return <Component />;
 });
 
 const setupApp = () => {

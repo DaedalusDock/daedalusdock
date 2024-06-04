@@ -6,7 +6,7 @@
 
 import { classes } from 'common/react';
 import { decodeHtmlEntities, toTitleCase } from 'common/string';
-import { Component } from 'inferno';
+import { Component } from 'react';
 import { backendSuspendStart, globalStore, useBackend } from '../backend';
 import { Icon } from '../components';
 import { UI_DISABLED, UI_INTERACTIVE, UI_UPDATE } from '../constants';
@@ -26,6 +26,10 @@ const logger = createLogger('Window');
 const DEFAULT_SIZE = [400, 600];
 
 export class Window extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
     const { suspended } = useBackend();
     const { canClose = true } = this.props;
@@ -101,15 +105,15 @@ export class Window extends Component {
           <>
             <div
               className="Window__resizeHandle__e"
-              onMousedown={resizeStartHandler(1, 0)}
+              onMouseDown={resizeStartHandler(1, 0)}
             />
             <div
               className="Window__resizeHandle__s"
-              onMousedown={resizeStartHandler(0, 1)}
+              onMouseDown={resizeStartHandler(0, 1)}
             />
             <div
               className="Window__resizeHandle__se"
-              onMousedown={resizeStartHandler(1, 1)}
+              onMouseDown={resizeStartHandler(1, 1)}
             />
           </>
         )}
@@ -171,7 +175,7 @@ const TitleBar = (props) => {
       )}
       <div
         className="TitleBar__dragZone"
-        onMousedown={(e) => fancy && onDragStart(e)}
+        onMouseDown={(e) => fancy && onDragStart(e)}
       />
       <div className="TitleBar__title">
         {(typeof title === 'string' &&

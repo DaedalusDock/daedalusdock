@@ -6,7 +6,6 @@
 
 import { classes } from 'common/react';
 import { computeBoxClassName, computeBoxProps } from '../components/Box';
-import { addScrollableNode, removeScrollableNode } from '../events';
 
 export const Layout = (props) => {
   const { className, theme = 'crtyellow', children, ...rest } = props;
@@ -37,11 +36,6 @@ const LayoutContent = (props) => {
       {children}
     </div>
   );
-};
-
-LayoutContent.defaultHooks = {
-  onComponentDidMount: (node) => addScrollableNode(node),
-  onComponentWillUnmount: (node) => removeScrollableNode(node),
 };
 
 Layout.Content = LayoutContent;

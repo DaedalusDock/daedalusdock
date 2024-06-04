@@ -57,10 +57,10 @@ export const NtosRadarContent = (props) => {
       </Flex.Item>
       <Flex.Item
         style={{
-          'background-image':
+          backgroundImage:
             'url("' + resolveAsset('ntosradarbackground.png') + '")',
-          'background-position': 'center',
-          'background-repeat': 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           top: '20px',
         }}
         position="relative"

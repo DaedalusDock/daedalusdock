@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	return loaded_asset.ensure_ready()
 
 /datum/asset
-	var/_abstract = /datum/asset
+	abstract_type = /datum/asset
 	var/cached_serialized_url_mappings
 	var/cached_serialized_url_mappings_transport_type
 
@@ -65,7 +65,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 /// If you don't need anything complicated.
 /datum/asset/simple
-	_abstract = /datum/asset/simple
+	abstract_type = /datum/asset/simple
 	/// list of assets for this datum in the form of:
 	/// asset_filename = asset_file. At runtime the asset_file will be
 	/// converted into a asset_cache datum.
@@ -98,7 +98,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 // For registering or sending multiple others at once
 /datum/asset/group
-	_abstract = /datum/asset/group
+	abstract_type = /datum/asset/group
 	var/list/children
 
 /datum/asset/group/register()
@@ -126,7 +126,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 #define SPRSZ_STRIPPED 3
 
 /datum/asset/spritesheet
-	_abstract = /datum/asset/spritesheet
+	abstract_type = /datum/asset/spritesheet
 	var/name
 	/// List of arguments to pass into queuedInsert
 	/// Exists so we can queue icon insertion, mostly for stuff like preferences
@@ -425,7 +425,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 
 /datum/asset/changelog_item
-	_abstract = /datum/asset/changelog_item
+	abstract_type = /datum/asset/changelog_item
 	var/item_filename
 
 /datum/asset/changelog_item/New(date)
@@ -443,7 +443,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	. = list("[item_filename]" = SSassets.transport.get_asset_url(item_filename))
 
 /datum/asset/spritesheet/simple
-	_abstract = /datum/asset/spritesheet/simple
+	abstract_type = /datum/asset/spritesheet/simple
 	var/list/assets
 
 /datum/asset/spritesheet/simple/create_spritesheets()
@@ -452,7 +452,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 //Generates assets based on iconstates of a single icon
 /datum/asset/simple/icon_states
-	_abstract = /datum/asset/simple/icon_states
+	abstract_type = /datum/asset/simple/icon_states
 	var/icon
 	var/list/directions = list(SOUTH)
 	var/frame = 1
@@ -476,7 +476,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 			SSassets.transport.register_asset(asset_name, asset)
 
 /datum/asset/simple/icon_states/multiple_icons
-	_abstract = /datum/asset/simple/icon_states/multiple_icons
+	abstract_type = /datum/asset/simple/icon_states/multiple_icons
 	var/list/icons
 
 /datum/asset/simple/icon_states/multiple_icons/register()
@@ -489,7 +489,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 /// For example `blah.css` with asset `blah.png` will get loaded as `namespaces/a3d..14f/f12..d3c.css` and `namespaces/a3d..14f/blah.png`. allowing the css file to load `blah.png` by a relative url rather then compute the generated url with get_url_mappings().
 /// The namespace folder's name will change if any of the assets change. (excluding parent assets)
 /datum/asset/simple/namespaced
-	_abstract = /datum/asset/simple/namespaced
+	abstract_type = /datum/asset/simple/namespaced
 	/// parents - list of the parent asset or assets (in name = file assoicated format) for this namespace.
 	/// parent assets must be referenced by their generated url, but if an update changes a parent asset, it won't change the namespace's identity.
 	var/list/parents = list()
@@ -534,7 +534,7 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 /// A subtype to generate a JSON file from a list
 /datum/asset/json
-	_abstract = /datum/asset/json
+	abstract_type = /datum/asset/json
 	/// The filename, will be suffixed with ".json"
 	var/name
 

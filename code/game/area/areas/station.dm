@@ -409,7 +409,7 @@
 /area/station/command/heads_quarters/hos
 	name = "\improper Security Marshal's Office"
 	icon_state = "hos_office"
-		holomap_color = HOLOMAP_AREACOLOR_SECURITY
+	holomap_color = HOLOMAP_AREACOLOR_SECURITY
 
 /area/station/command/heads_quarters/rd
 	name = "\improper Research Director's Office"

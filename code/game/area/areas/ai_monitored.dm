@@ -15,6 +15,7 @@
 	name = "\improper AI Satellite Exterior"
 	icon_state = "ai"
 	airlock_wires = /datum/wires/airlock/ai
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/station/ai_monitored/command/storage/satellite
 	name = "\improper AI Satellite Maint"

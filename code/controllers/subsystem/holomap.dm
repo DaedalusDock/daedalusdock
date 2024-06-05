@@ -2,6 +2,7 @@ SUBSYSTEM_DEF(holomap)
 	name = "Holomap"
 	flags = SS_NO_FIRE
 	init_order = INIT_ORDER_HOLOMAP
+
 	var/list/holomaps_by_z
 
 /datum/controller/subsystem/holomap/Initialize(start_timeofday)
@@ -43,6 +44,7 @@ SUBSYSTEM_DEF(holomap)
 				// Draw pixel according to the area
 				canvas.DrawBox(A.holomap_color, T.x, T.y)
 
-		var/file_name = SANITIZE_FILENAME("holomap_[SSmapping.config.map_name]_z[z_value]")
-		holomaps_by_z[z_value] = SSassets.transport.register_asset(file_name, canvas)
-		fcopy(canvas, "icons/holomap[z_value].png")
+		var/file_name = "holomap_z[z_value].png"
+		holomaps_by_z[z_value] = file_name
+		SSassets.transport.register_asset(file_name, canvas)
+		fcopy(canvas, "icons/[file_name]")

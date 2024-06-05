@@ -4,6 +4,7 @@
 /area/station/ai_monitored
 
 /area/station/ai_monitored/turret_protected
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 // AI
 /area/station/ai_monitored
@@ -52,6 +53,7 @@
 	name = "\improper AI Satellite"
 	icon_state = "ai"
 	sound_environment = SOUND_ENVIRONMENT_ROOM
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/station/ai_monitored/turret_protected/aisat/atmos
 	name = "\improper AI Satellite Atmos"
@@ -89,6 +91,9 @@
 // Station specific ai monitored rooms, move here for consistenancy
 
 //Command - AI Monitored
+/area/station/ai_monitored/command
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
+
 /area/station/ai_monitored/command/storage/eva
 	name = "EVA Storage"
 	icon_state = "eva"
@@ -103,6 +108,9 @@
 	airlock_wires = /datum/wires/airlock/command
 
 //Security - AI Monitored
+/area/station/ai_monitored/security
+	holomap_color = HOLOMAP_AREACOLOR_SECURITY
+
 /area/station/ai_monitored/security/armory
 	name = "\improper Armory"
 	icon_state = "armory"

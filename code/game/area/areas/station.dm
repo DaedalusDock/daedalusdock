@@ -16,6 +16,7 @@
 	forced_ambience = TRUE
 	ambient_buzz = 'sound/ambience/source_corridor2.ogg'
 	ambient_buzz_vol = 30
+	holomap_color = HOLOMAP_AREACOLOR_MAINTENANCE
 
 //Maintenance - Departmental
 
@@ -220,6 +221,7 @@
 /area/station/maintenance/space_hut
 	name = "\improper Space Hut"
 	icon_state = "spacehut"
+	holomap_color = null
 
 /area/station/maintenance/space_hut/cabin
 	name = "Abandoned Cabin"
@@ -258,6 +260,7 @@
 
 /area/station/hallway
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 /area/station/hallway/primary
 	name = "\improper Primary Hallway"
@@ -356,6 +359,7 @@
 	ambientsounds = list('sound/ambience/signal.ogg')
 	airlock_wires = /datum/wires/airlock/command
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/station/command/bridge
 	name = "\improper Bridge"
@@ -427,6 +431,7 @@
 	icon_state = "commons"
 	sound_environment = SOUND_AREA_STANDARD_STATION
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/commons/dorms
 	name = "\improper Dormitories"
@@ -547,6 +552,7 @@
 
 /area/station/service
 	airlock_wires = /datum/wires/airlock/service
+	holomap_color = HOLOMAP_AREACOLOR_GENERIC_ROOM
 
 /area/station/service/cafeteria
 	name = "\improper Cafeteria"
@@ -710,6 +716,7 @@
 	ambience_index = AMBIENCE_ENGI
 	airlock_wires = /datum/wires/airlock/engineering
 	sound_environment = SOUND_AREA_LARGE_ENCLOSED
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/engineering/engine_smes
 	name = "\improper Engineering SMES"
@@ -826,6 +833,7 @@
 	icon_state = "construction"
 	ambience_index = AMBIENCE_ENGI
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/construction/mining/aux_base
 	name = "Auxiliary Base Construction"
@@ -835,6 +843,7 @@
 /area/station/construction/storage_wing
 	name = "\improper Storage Wing"
 	icon_state = "storage_wing"
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 //Solars
 
@@ -932,6 +941,7 @@
 	sound_environment = SOUND_AREA_STANDARD_STATION
 	min_ambience_cooldown = 90 SECONDS
 	max_ambience_cooldown = 180 SECONDS
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 	spook_level = SPOOK_AMT_CORPSE * -2 // We can expect like two dudes to be dead in here at all times.
 
@@ -1073,6 +1083,7 @@
 	ambience_index = AMBIENCE_DANGER
 	airlock_wires = /datum/wires/airlock/security
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_SECURITY
 
 /area/station/security/office
 	name = "\improper Security Office"
@@ -1187,6 +1198,7 @@
 	name = "\improper Private Investigator's Office"
 	icon_state = "detective"
 	ambientsounds = list('sound/ambience/ambidet1.ogg','sound/ambience/ambidet2.ogg')
+	holomap_color = HOLOMAP_AREACOLOR_HALLWAYS
 
 /area/station/security/detectives_office/private_investigators_office
 	icon_state = "investigate_office"
@@ -1259,6 +1271,7 @@
 	icon_state = "quart"
 	airlock_wires = /datum/wires/airlock/service
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/station/cargo/sorting
 	name = "\improper Delivery Office"
@@ -1315,6 +1328,7 @@
 	icon_state = "mining"
 	requires_power = TRUE
 	always_unpowered = TRUE
+	holomap_color = null
 
 	area_lighting = AREA_LIGHTING_STATIC
 
@@ -1334,6 +1348,7 @@
 	icon_state = "science"
 	airlock_wires = /datum/wires/airlock/science
 	sound_environment = SOUND_AREA_STANDARD_STATION
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/station/science/lobby
 	name = "\improper Science Lobby"
@@ -1371,6 +1386,7 @@
 	name = "\improper Ordnance Test Area"
 	icon_state = "ord_test"
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
+	holomap_color = null
 
 /area/station/science/mixing
 	name = "\improper Ordnance Mixing Lab"
@@ -1433,6 +1449,7 @@
 // Telecommunications Satellite
 
 /area/station/tcommsat
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 	ambientsounds = list('sound/ambience/ambisin2.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/signal.ogg', 'sound/ambience/ambigen10.ogg', 'sound/ambience/ambitech.ogg',\
 											'sound/ambience/ambitech2.ogg', 'sound/ambience/ambitech3.ogg', 'sound/ambience/ambimystery.ogg')
 	airlock_wires = /datum/wires/airlock/engineering

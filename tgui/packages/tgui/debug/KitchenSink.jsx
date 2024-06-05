@@ -8,7 +8,7 @@ import { useLocalState } from '../backend';
 import { Flex, Section, Tabs } from '../components';
 import { Pane, Window } from '../layouts';
 
-const r = require.context('../stories', false, /\.stories\.js$/);
+const r = require.context('../stories', false, /\.stories\.jsx$/);
 
 /**
  * @returns {{
@@ -27,6 +27,7 @@ export const KitchenSink = (props) => {
   const stories = getStories();
   const story = stories[pageIndex];
   const Layout = panel ? Pane : Window;
+
   return (
     <Layout title="Kitchen Sink" width={600} height={500} theme={theme}>
       <Flex height="100%">

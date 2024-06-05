@@ -4,3 +4,7 @@
 2024-06-03:
   jlsnow301:
   - bugfix: Chat settings should no longer bluescreen
+2024-06-05:
+  jlsnow301, Kapu1178:
+  - code_imp: Added DMIcon component for TGUI, a clean way to embed RSC icons.
+  - tweak: Vending machines now use DMIcon, which will be less accurate but much faster.

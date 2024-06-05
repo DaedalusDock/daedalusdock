@@ -395,10 +395,12 @@
 /area/station/command/heads_quarters/ce
 	name = "\improper Chief Engineer's Office"
 	icon_state = "ce_office"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/command/heads_quarters/cmo
 	name = "\improper Medical Director's Office"
 	icon_state = "cmo_office"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/station/command/heads_quarters/hop
 	name = "\improper Head of Personnel's Office"
@@ -407,10 +409,12 @@
 /area/station/command/heads_quarters/hos
 	name = "\improper Security Marshal's Office"
 	icon_state = "hos_office"
+		holomap_color = HOLOMAP_AREACOLOR_SECURITY
 
 /area/station/command/heads_quarters/rd
 	name = "\improper Research Director's Office"
 	icon_state = "rd_office"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 //Command - Teleporters
 
@@ -1231,18 +1235,22 @@
 /area/station/security/checkpoint/supply
 	name = "Security Post - Cargo Bay"
 	icon_state = "checkpoint_supp"
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/station/security/checkpoint/engineering
 	name = "Security Post - Engineering"
 	icon_state = "checkpoint_engi"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/station/security/checkpoint/medical
 	name = "Security Post - Medbay"
 	icon_state = "checkpoint_med"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/station/security/checkpoint/science
 	name = "Security Post - Science"
 	icon_state = "checkpoint_sci"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/station/security/checkpoint/science/research
 	name = "Security Post - Research Division"

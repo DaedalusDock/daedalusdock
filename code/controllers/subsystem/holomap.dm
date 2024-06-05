@@ -22,20 +22,20 @@ SUBSYSTEM_DEF(holomap)
 
 			var/obj/structure/window/W
 			if(iswallturf(T) || locate(/obj/structure/low_wall, T) || ((W = locate(/obj/structure/window, T)) && W.fulltile))
-				if(istype(A, /area/station/maintenance))
-					var/is_edge_turf = FALSE
-					for(var/dir in GLOB.cardinals)
-						var/turf/other = get_step(T, dir)
-						var/area/other_area = other.loc
+				//if(istype(A, /area/station/maintenance))
+				var/is_edge_turf = FALSE
+				for(var/dir in GLOB.cardinals)
+					var/turf/other = get_step(T, dir)
+					var/area/other_area = other.loc
 
-						// This check is for "Is the turf bordering a non-station turf OR a non-maintenance turf?"
-						if(!istype(other_area, /area/station) || (other_area.holomap_color != A.holomap_color))
-							is_edge_turf = TRUE
-							break
+					// This check is for "Is the ara bordering a non-station turf OR a different area color?"
+					if(!istype(other_area, /area/station) || (other_area.holomap_color != A.holomap_color))
+						is_edge_turf = TRUE
+						break
 
-					if(!is_edge_turf)
-						canvas.DrawBox(A.holomap_color, T.x, T.y)
-						continue
+				if(!is_edge_turf)
+					canvas.DrawBox(A.holomap_color, T.x, T.y)
+					continue
 
 				canvas.DrawBox(HOLOMAP_COLOR_WALL, T.x, T.y)
 

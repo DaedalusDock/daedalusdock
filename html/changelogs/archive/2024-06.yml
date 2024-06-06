@@ -8,3 +8,6 @@
   jlsnow301, Kapu1178:
   - code_imp: Added DMIcon component for TGUI, a clean way to embed RSC icons.
   - tweak: Vending machines now use DMIcon, which will be less accurate but much faster.
+2024-06-06:
+  jlsnow301:
+  - bugfix: Fixed a bluescreen in tgui kitchensink (dev tool)

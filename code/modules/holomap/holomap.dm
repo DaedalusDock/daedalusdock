@@ -56,7 +56,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/holomap, 32)
 			floor_image.pixel_x = 32
 	. += floor_image
 
-	if(!bogus && is_operational && SSholomap.initialized)
+	if(!bogus && is_operational && SSholomap.initialized && (initial_z <= length(SSholomap.minimaps)))
 		. += SSholomap.minimaps[initial_z]["[dir]"]
 		. += emissive_appearance(SSholomap.minimap_icons[initial_z]["[dir]"])
 
@@ -87,12 +87,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/holomap, 32)
 /obj/machinery/holomap/proc/setup_holomap(datum/source)
 	SIGNAL_HANDLER
 
-	if(isnull(SSholomap.holomaps_by_z[initial_z]))
+	var/icon/I = SSholomap.get_holomap(initial_z)
+	if(isnull(I))
 		bogus = TRUE
 		holomap = new /datum/holomap_holder/invalid(src, null)
 
 	else
-		holomap = new(src, SSholomap.holomaps_by_z[initial_z])
+		holomap = new(src, I)
 
 	update_appearance(UPDATE_OVERLAYS)
 

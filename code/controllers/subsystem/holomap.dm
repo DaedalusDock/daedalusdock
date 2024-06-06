@@ -106,3 +106,10 @@ SUBSYSTEM_DEF(holomap)
 	west.Turn(270)
 	minimap_icons[z]["[WEST]"] = WEST
 	minimaps[z]["[WEST]"] = image(west)
+
+/// Get a holomap icon for a given z level
+/datum/controller/subsystem/holomap/proc/get_holomap(z)
+	if(z < 1 || z > length(holomaps_by_z))
+		return null
+
+	return minimap_icons[z]

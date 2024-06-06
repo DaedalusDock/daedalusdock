@@ -4,7 +4,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/holomap, 32)
 	name = "station map"
 	desc = "A monitor containing a map of the station."
 	icon = 'icons/obj/machines/station_map.dmi'
-	icon_state = "station_map_active"
+	icon_state = "station_map"
 
 	var/datum/holomap_holder/station/holomap
 

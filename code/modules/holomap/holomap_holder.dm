@@ -22,6 +22,7 @@
 
 /datum/holomap_holder/Destroy(force, ...)
 	remove_all_viewers()
+	parent = null
 	return ..()
 
 /// Remove all viewers

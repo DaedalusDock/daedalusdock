@@ -94,6 +94,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/holomap, 32)
 	else
 		holomap = new(src, SSholomap.holomaps_by_z[initial_z])
 
+	update_appearance(UPDATE_OVERLAYS)
+
 	RegisterSignal(holomap, COMSIG_HOLOMAP_VIEWER_REMOVED, PROC_REF(holomap_viewer_gone))
 	RegisterSignal(holomap, COMSIG_HOLOMAP_VIEWER_GAINED, PROC_REF(holomap_viewer_gain))
 

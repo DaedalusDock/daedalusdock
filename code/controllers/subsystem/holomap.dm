@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(holomap)
 	var/icon/text = icon('icons/hud/holomap/holomap_64x64.dmi', "notfound")
 
 	invalid_holomap_icon.Blend(backdrop, ICON_UNDERLAY)
-	invalid_holomap_icon.Blend(text, ICON_OVERLAY, 480/2 - 64,  480/2 - 64)
+	invalid_holomap_icon.Blend(text, ICON_OVERLAY, 480/2,  480/2)
 
 	generate_holomaps()
 

@@ -16,7 +16,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/holomap, 32)
 /obj/machinery/holomap/Initialize(mapload)
 	. = ..()
 	initial_z = z
-	setDir(dir)
 
 	if(SSholomap.initialized)
 		setup_holomap()
@@ -57,7 +56,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/holomap, 32)
 			floor_image.pixel_x = 32
 	. += floor_image
 
-	if(!bogus && is_operational)
+	if(!bogus && is_operational && SSholomap.initialized)
 		. += SSholomap.minimaps[initial_z]["[dir]"]
 		. += emissive_appearance(SSholomap.minimap_icons[initial_z]["[dir]"])
 

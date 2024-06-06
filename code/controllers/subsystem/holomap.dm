@@ -74,11 +74,7 @@ SUBSYSTEM_DEF(holomap)
 
 		var/icon/backdrop = icon('icons/hud/holomap/holomap_480x480.dmi', "stationmap")
 		canvas.Blend(backdrop, ICON_UNDERLAY)
-
-		var/file_name = "holomap_z[z_value].png"
 		holomaps_by_z[z_value] = canvas
-
-		fcopy(canvas, "icons/[file_name]")
 
 /// Generate minimaps from a full map.
 /datum/controller/subsystem/holomap/proc/generate_minimaps(icon/canvas, z)

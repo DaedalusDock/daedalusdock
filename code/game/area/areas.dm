@@ -24,6 +24,8 @@
 
 	var/area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
 
+	var/holomap_color = null
+
 	///A var for whether the area allows for detecting fires/etc. Disabled or enabled at a fire alarm.
 	var/fire_detect = TRUE
 	///A list of all fire locks in this area and on the border of this area.

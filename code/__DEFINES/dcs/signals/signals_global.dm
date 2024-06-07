@@ -79,3 +79,5 @@
 
 ///Global signal sent when someone is marked as wanted.
 #define COMSIG_GLOB_WANTED_CRIMINAL "!wanted_crew"
+///Global signal sent when SSholomaps initializes
+#define COMSIG_GLOB_HOLOMAPS_READY "!holomaps_ready"

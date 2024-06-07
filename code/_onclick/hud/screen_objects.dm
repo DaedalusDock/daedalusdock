@@ -1014,3 +1014,12 @@
 	if(iteration == src.iteration)
 		progbar.end_progress()
 
+
+/atom/movable/screen/holomap
+	icon = ""
+	plane = FULLSCREEN_PLANE
+	layer = FLOAT_LAYER
+	// Holomaps are 480x480.
+	// We offset them by half the size on each axis to center them.
+	// We need to account for this object being 32x32, so we subtract 32 from the initial 480 before dividing
+	screen_loc = "CENTER:-224,CENTER:-224"

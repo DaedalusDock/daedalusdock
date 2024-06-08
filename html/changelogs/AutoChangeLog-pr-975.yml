@@ -1,0 +1,8 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: The "skipped X seconds of silence" message no longer states 10x the duration
+      skipped.
+  - rscadd: Scaled the amount of time it takes to skip silence in tapes slightly.
+  - bugfix: Holomaps are actually visible.
+  - bugfix: West and South facing holomaps are emissive.

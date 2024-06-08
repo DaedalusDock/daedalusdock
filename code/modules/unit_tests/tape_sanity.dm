@@ -1,5 +1,5 @@
 /datum/unit_test/tape_sanity/Run()
-	for(var/obj/item/tape/tape as anything in subtypesof(/obj/item/type))
+	for(var/obj/item/tape/tape as anything in subtypesof(/obj/item/tape))
 		tape = allocate(tape)
 
 		if(length(tape.storedinfo) != length(tape.timestamp))

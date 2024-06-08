@@ -11,3 +11,11 @@
 2024-06-06:
   jlsnow301:
   - bugfix: Fixed a bluescreen in tgui kitchensink (dev tool)
+2024-06-08:
+  /vg/station coders, Kapu1178:
+  - rscadd: Replaced all of the decorative "station map" objects with functioning
+      map viewing monitors that display a miniature version of the map.
+  Kapu1178:
+  - bugfix: Fixed space being 180 kelvin instead of 2.7 kelvin.
+  jlsnow301:
+  - bugfix: Fixed scrollbars on NTOS windows

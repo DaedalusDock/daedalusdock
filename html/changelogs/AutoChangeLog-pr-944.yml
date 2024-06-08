@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Fixed space being 180 kelvin instead of 2.7 kelvin.

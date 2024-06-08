@@ -1,5 +1,0 @@
-author: /vg/station coders, Kapu1178
-delete-after: true
-changes:
-  - rscadd: Replaced all of the decorative "station map" objects with functioning
-      map viewing monitors that display a miniature version of the map.

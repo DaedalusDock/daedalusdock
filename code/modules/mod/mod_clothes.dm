@@ -3,12 +3,14 @@
 	desc = "A helmet for a MODsuit."
 	icon = 'icons/obj/clothing/modsuit/mod_clothing.dmi'
 	icon_state = "helmet"
+	base_icon_state = "helmet"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	body_parts_covered = HEAD
 	heat_protection = HEAD
 	cold_protection = HEAD
 	obj_flags = IMMUTABLE_SLOW
+	supports_variations_flags = NONE
 	var/alternate_layer = NECK_LAYER
 
 /obj/item/clothing/suit/mod
@@ -16,6 +18,7 @@
 	desc = "A chestplate for a MODsuit."
 	icon = 'icons/obj/clothing/modsuit/mod_clothing.dmi'
 	icon_state = "chestplate"
+	base_icon_state = "chestplate"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	blood_overlay_type = "armor"
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
@@ -23,12 +26,17 @@
 	heat_protection = CHEST|GROIN
 	cold_protection = CHEST|GROIN
 	obj_flags = IMMUTABLE_SLOW
+	allowed = list(
+		/obj/item/tank/internals,
+		/obj/item/flashlight,
+	)
 
 /obj/item/clothing/gloves/mod
 	name = "MOD gauntlets"
 	desc = "A pair of gauntlets for a MODsuit."
 	icon = 'icons/obj/clothing/modsuit/mod_clothing.dmi'
 	icon_state = "gauntlets"
+	base_icon_state = "gauntlets"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	body_parts_covered = HANDS|ARMS
@@ -41,6 +49,7 @@
 	desc = "A pair of boots for a MODsuit."
 	icon = 'icons/obj/clothing/modsuit/mod_clothing.dmi'
 	icon_state = "boots"
+	base_icon_state = "boots"
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	body_parts_covered = FEET|LEGS

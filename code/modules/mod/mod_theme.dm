@@ -128,7 +128,7 @@
 /datum/mod_theme/New()
 	var/list/skin_parts = list()
 	for(var/variant in variants)
-		if(!ispath(path))
+		if(!ispath(variant))
 			continue
 		skin_parts += list(assoc_to_keys(variants[variant]))
 

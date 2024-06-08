@@ -99,12 +99,12 @@ SUBSYSTEM_DEF(holomap)
 
 	var/icon/south = icon(mini)
 	south.Turn(180)
-	minimap_icons[z]["[SOUTH]"] = SOUTH
+	minimap_icons[z]["[SOUTH]"] = south
 	minimaps[z]["[SOUTH]"] = image(south)
 
 	var/icon/west = icon(mini)
 	west.Turn(270)
-	minimap_icons[z]["[WEST]"] = WEST
+	minimap_icons[z]["[WEST]"] = west
 	minimaps[z]["[WEST]"] = image(west)
 
 /// Get a holomap icon for a given z level
@@ -112,4 +112,4 @@ SUBSYSTEM_DEF(holomap)
 	if(z < 1 || z > length(holomaps_by_z))
 		return null
 
-	return minimap_icons[z]
+	return holomaps_by_z[z]

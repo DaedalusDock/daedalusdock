@@ -129,7 +129,7 @@
 	var/list/skin_parts = list()
 	for(var/variant in variants)
 		if(!ispath(path))
-				continue
+			continue
 		skin_parts += list(assoc_to_keys(variants[variant]))
 
 	for(var/skin in skin_parts)

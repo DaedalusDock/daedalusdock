@@ -101,7 +101,7 @@ export const DmTestTarget = new Juke.Target({
       "-trusted",
       "-verbose",
       "-params",
-      "log-directory=ci"
+      "log-directory=ci",
     );
     Juke.rm("*.test.*");
     try {
@@ -135,7 +135,7 @@ export const AutowikiTarget = new Juke.Target({
       "-trusted",
       "-verbose",
       "-params",
-      "log-directory=ci"
+      "log-directory=ci",
     );
     Juke.rm("*.test.*");
     if (!fs.existsSync("data/autowiki_edits.txt")) {
@@ -177,7 +177,7 @@ export const TguiTarget = new Juke.Target({
     "tgui/.yarn/install-target",
     "tgui/webpack.config.js",
     "tgui/**/package.json",
-    "tgui/packages/**/*.+(js|cjs|ts|tsx|scss)",
+    "tgui/packages/**/*.+(js|jsx|cjs|ts|tsx|scss)",
   ],
   outputs: [
     "tgui/public/tgui.bundle.css",

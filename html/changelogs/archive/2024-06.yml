@@ -19,3 +19,10 @@
   - bugfix: Fixed space being 180 kelvin instead of 2.7 kelvin.
   jlsnow301:
   - bugfix: Fixed scrollbars on NTOS windows
+2024-06-09:
+  Kapu1178:
+  - bugfix: The "skipped X seconds of silence" message no longer states 10x the duration
+      skipped.
+  - rscadd: Scaled the amount of time it takes to skip silence in tapes slightly.
+  - bugfix: Holomaps are actually visible.
+  - bugfix: West and South facing holomaps are emissive.

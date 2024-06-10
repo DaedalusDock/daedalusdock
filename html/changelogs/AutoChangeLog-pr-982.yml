@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Clicking your inactive hand slot while holding an item in your active
+      hand slot no longer outputs "You are unable to equip that!"

@@ -391,7 +391,7 @@ There are several things that need to be remembered:
 		if((dna.species.bodytype & BODYTYPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			var/obj/item/bodypart/leg/leg = src.get_bodypart(BODY_ZONE_L_LEG)
 			if(leg.limb_id == leg.digitigrade_id)//Snowflakey and bad. But it makes it look consistent.
-				icon_file = shoes.worn_icon_digitigrade || DIGITIGRADE_SHOES_FILE //PARIAH EDIT
+				icon_file = shoes.worn_icon_digitigrade || DIGITIGRADE_SHOES_FILE
 
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
@@ -566,7 +566,7 @@ There are several things that need to be remembered:
 		//More currently unused digitigrade handling
 		if(dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			if(worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION)
-				icon_file = wear_suit.worn_icon_digitigrade || DIGITIGRADE_SUIT_FILE //PARIAH EDIT
+				icon_file = wear_suit.worn_icon_digitigrade || DIGITIGRADE_SUIT_FILE
 
 		//PARIAH EDIT END
 		if(dna.species.bodytype & BODYTYPE_TESHARI)

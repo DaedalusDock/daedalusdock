@@ -3,31 +3,31 @@ import { Button, ColorBox, Flex, Section } from '../components';
 import { Window } from '../layouts';
 
 type DecalInfo = {
-  name: string;
   decal: string;
+  name: string;
 };
 
 type ColorInfo = {
-  name: string;
   color: string;
+  name: string;
 };
 
 type DirInfo = {
-  name: string;
   dir: number;
+  name: string;
 };
 
 type DecalPainterData = {
-  icon_prefix: string;
-  decal_list: DecalInfo[];
   color_list: ColorInfo[];
+  current_color: string;
+  current_custom_color: string;
+  current_decal: string;
+  current_dir: number;
+  decal_list: DecalInfo[];
   dir_list: DirInfo[];
+  icon_prefix: string;
   nondirectional_decals: string[];
   supports_custom_color: number;
-  current_decal: string;
-  current_color: string;
-  current_dir: number;
-  current_custom_color: string;
 };
 
 export const DecalPainter = (props) => {
@@ -124,9 +124,9 @@ export const DecalPainter = (props) => {
 };
 
 type IconButtonParams = {
+  color: string;
   decal: string;
   dir: number;
-  color: string;
   label: string;
   selected: boolean;
 };

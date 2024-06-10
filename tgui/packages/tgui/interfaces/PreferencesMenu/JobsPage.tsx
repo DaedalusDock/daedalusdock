@@ -1,6 +1,7 @@
 import { sortBy } from 'common/collections';
 import { classes } from 'common/react';
 import { FC, ReactNode } from 'react';
+
 import { useBackend } from '../../backend';
 import { Box, Button, Dropdown, Stack, Tooltip } from '../../components';
 import { logger } from '../../logging';
@@ -22,10 +23,10 @@ const sortJobs = (entries: [string, Job][], head?: string) =>
 const PRIORITY_BUTTON_SIZE = '18px';
 
 const PriorityButton = (props: {
-  name: string;
   color: string;
-  modifier?: string;
   enabled: boolean;
+  modifier?: string;
+  name: string;
   onClick: () => void;
 }) => {
   const className = `PreferencesMenu__Jobs__departments__priority`;
@@ -282,7 +283,7 @@ const JobRow = (props: { className?: string; job: Job; name: string }) => {
   );
 };
 
-const Department: FC<{ department: string; children?: ReactNode }> = (
+const Department: FC<{ children?: ReactNode; department: string }> = (
   props,
 ) => {
   const { children, department: name } = props;

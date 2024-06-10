@@ -1,15 +1,16 @@
 import { BooleanLike, classes } from 'common/react';
 import { Component } from 'react';
+
 import {
-  Section,
-  Stack,
   Box,
   Button,
-  Flex,
-  Tooltip,
-  NoticeBox,
   Dimmer,
+  Flex,
   Icon,
+  NoticeBox,
+  Section,
+  Stack,
+  Tooltip,
 } from '../../components';
 import {
   calculateProgression,
@@ -19,37 +20,37 @@ import {
 import { ObjectiveState } from './constants';
 
 export type Objective = {
+  description: string;
+  final_objective: BooleanLike;
   id: number;
   name: string;
-  description: string;
-  progression_minimum: number;
-  progression_reward: number;
-  telecrystal_reward: number;
-  telecrystal_penalty: number;
-  ui_buttons?: ObjectiveUiButton[];
   objective_state: ObjectiveState;
   original_progression: number;
-  final_objective: BooleanLike;
+  progression_minimum: number;
+  progression_reward: number;
+  telecrystal_penalty: number;
+  telecrystal_reward: number;
+  ui_buttons?: ObjectiveUiButton[];
 };
 
 export type ObjectiveUiButton = {
+  action: string;
+  icon: string;
   name: string;
   tooltip: string;
-  icon: string;
-  action: string;
 };
 
 type ObjectiveMenuProps = {
   activeObjectives: Objective[];
-  potentialObjectives: Objective[];
-  maximumActiveObjectives: number;
-  maximumPotentialObjectives: number;
-
-  handleStartObjective: (objective: Objective) => void;
+  handleObjectiveAbort: (objective: Objective) => void;
   handleObjectiveAction: (objective: Objective, action: string) => void;
   handleObjectiveCompleted: (objective: Objective) => void;
-  handleObjectiveAbort: (objective: Objective) => void;
+
   handleRequestObjectives: () => void;
+  handleStartObjective: (objective: Objective) => void;
+  maximumActiveObjectives: number;
+  maximumPotentialObjectives: number;
+  potentialObjectives: Objective[];
 };
 
 type ObjectiveMenuState = {
@@ -342,21 +343,21 @@ const ObjectiveFunction = (
 };
 
 type ObjectiveElementProps = {
-  name: string;
-  reputation: Rank;
+  canAbort: BooleanLike;
   description: string;
-  telecrystalReward: number;
-  progressionReward: number;
-  uiButtons?: JSX.Element;
+  finalObjective: BooleanLike;
+  grow: boolean;
+  handleAbort: (event: MouseEvent) => void;
+  handleCompletion: (event: MouseEvent) => void;
+  name: string;
   objectiveState: ObjectiveState;
   originalProgression: number;
+  progressionReward: number;
+  reputation: Rank;
   telecrystalPenalty: number;
-  grow: boolean;
-  finalObjective: BooleanLike;
-  canAbort: BooleanLike;
 
-  handleCompletion: (event: MouseEvent) => void;
-  handleAbort: (event: MouseEvent) => void;
+  telecrystalReward: number;
+  uiButtons?: JSX.Element;
 };
 
 const ObjectiveElement = (props: ObjectiveElementProps) => {

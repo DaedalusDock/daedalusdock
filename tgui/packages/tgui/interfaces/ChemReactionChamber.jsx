@@ -1,3 +1,5 @@
+import { round, toFixed } from 'common/math';
+
 import { useBackend, useLocalState } from '../backend';
 import {
   AnimatedNumber,
@@ -6,12 +8,11 @@ import {
   Input,
   LabeledList,
   NumberInput,
-  Section,
   RoundGauge,
+  Section,
   Stack,
 } from '../components';
 import { Window } from '../layouts';
-import { round, toFixed } from 'common/math';
 
 export const ChemReactionChamber = (props) => {
   const { act, data } = useBackend();

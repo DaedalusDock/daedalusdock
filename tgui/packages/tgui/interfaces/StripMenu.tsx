@@ -1,5 +1,6 @@
 import { range } from 'common/collections';
 import { BooleanLike } from 'common/react';
+
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, Button, Icon, Stack } from '../components';
@@ -77,10 +78,10 @@ const ALTERNATE_ACTIONS: Record<string, AlternateAction> = {
 const SLOTS: Record<
   string,
   {
+    additionalComponent?: JSX.Element;
     displayName: string;
     gridSpot: GridSpotKey;
     image?: string;
-    additionalComponent?: JSX.Element;
   }
 > = {
   eyes: {
@@ -234,9 +235,9 @@ type StripMenuItem =
   | Interactable
   | ((
       | {
+          alternate?: string;
           icon: string;
           name: string;
-          alternate?: string;
         }
       | {
           obscured: ObscuringLevel;

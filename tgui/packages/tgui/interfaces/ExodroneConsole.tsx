@@ -1,3 +1,8 @@
+import { capitalize } from 'common/string';
+import { Fragment } from 'react';
+
+import { resolveAsset } from '../assets';
+import nt_logo from '../assets/bg-nanotrasen.svg';
 import { useBackend, useLocalState } from '../backend';
 import {
   BlockQuote,
@@ -11,13 +16,9 @@ import {
   Section,
   Stack,
 } from '../components';
-import { Window } from '../layouts';
-import { resolveAsset } from '../assets';
-import { formatTime } from '../format';
-import { capitalize } from 'common/string';
-import nt_logo from '../assets/bg-nanotrasen.svg';
-import { Fragment } from 'react';
 import { Image } from '../components/Image';
+import { formatTime } from '../format';
+import { Window } from '../layouts';
 
 type ExplorationEventData = {
   name: string;
@@ -25,13 +26,13 @@ type ExplorationEventData = {
 };
 
 type FullEventData = {
-  image: string;
-  description: string;
   action_enabled: boolean;
   action_text: string;
-  skippable: boolean;
+  description: string;
   ignore_text: string;
+  image: string;
   ref: string;
+  skippable: boolean;
 };
 
 type ChoiceData = {
@@ -40,48 +41,48 @@ type ChoiceData = {
 };
 
 type AdventureData = {
+  choices: Array<ChoiceData>;
   description: string;
   image: string;
   raw_image: string;
-  choices: Array<ChoiceData>;
 };
 
 type SiteData = {
-  name: string;
-  ref: string;
-  description: string;
-  coordinates: string;
-  distance: number;
   band_info: Record<string, number>;
-  revealed: boolean;
-  point_scan_complete: boolean;
+  coordinates: string;
   deep_scan_complete: boolean;
+  description: string;
+  distance: number;
   events: Array<ExplorationEventData>;
+  name: string;
+  point_scan_complete: boolean;
+  ref: string;
+  revealed: boolean;
 };
 
 enum DroneStatusEnum {
-  Idle = 'idle',
-  Travel = 'travel',
-  Exploration = 'exploration',
   Adventure = 'adventure',
   Busy = 'busy',
+  Exploration = 'exploration',
+  Idle = 'idle',
+  Travel = 'travel',
 }
 
 enum CargoType {
-  Tool = 'tool',
   Cargo = 'cargo',
   Empty = 'empty',
+  Tool = 'tool',
 }
 
 type CargoData = {
-  type: CargoType;
   name: string;
+  type: CargoType;
 };
 
 type DroneBasicData = {
-  name: string;
-  description: string;
   controlled: boolean;
+  description: string;
+  name: string;
   ref: string;
 };
 
@@ -94,34 +95,34 @@ type DroneAdventure = AdventureDataProvider & {
 };
 
 type DroneData = {
-  drone_name: string;
-  drone_integrity: number;
-  drone_max_integrity: number;
-  drone_travel_coefficent: number;
-  drone_log: Array<string>;
-  configurable: boolean;
-  cargo: Array<CargoData>;
   can_travel: boolean;
+  cargo: Array<CargoData>;
+  configurable: boolean;
+  drone_integrity: number;
+  drone_log: Array<string>;
+  drone_max_integrity: number;
+  drone_name: string;
+  drone_travel_coefficent: number;
   travel_error: string;
 };
 
 type DroneBusy = {
   drone_status: DroneStatusEnum.Busy;
-  wait_time_left: number;
   wait_message: string;
+  wait_time_left: number;
 };
 
 type DroneExploration = {
   drone_status: DroneStatusEnum.Exploration;
-  sites: Array<SiteData>;
-  site: SiteData;
   event?: FullEventData;
+  site: SiteData;
+  sites: Array<SiteData>;
 };
 
 type DroneIdle = {
   drone_status: DroneStatusEnum.Idle;
-  sites: Array<SiteData>;
   site: null;
+  sites: Array<SiteData>;
 };
 
 type DroneTravel = {
@@ -138,11 +139,11 @@ type ActiveDrone =
   | DroneTravel;
 
 type ExodroneConsoleData = {
-  signal_lost: boolean;
+  all_bands: Record<string, string>;
 
   // ui_static_data
   all_tools: Record<string, ToolData>;
-  all_bands: Record<string, string>;
+  signal_lost: boolean;
 } & (
   | (({
       drone: true;

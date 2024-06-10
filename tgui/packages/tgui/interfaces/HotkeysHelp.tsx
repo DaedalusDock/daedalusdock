@@ -3,13 +3,13 @@ import { Box, Section, Table, Tooltip } from '../components';
 import { Window } from '../layouts';
 
 type BindingInfo = {
-  name: string;
   desc: string;
+  name: string;
 };
 
 type HotkeyInfo = {
-  key: string;
   bindings: BindingInfo[];
+  key: string;
 };
 
 type HotkeysHelpData = {
@@ -21,8 +21,8 @@ type KeyBindingBoxProps = {
 };
 
 type ModkeyProps = {
-  text: string;
   color: string;
+  text: string;
 };
 
 const shiftRegex = /(.*)(Shift)(.*)/;

@@ -1,3 +1,5 @@
+import { useBackend } from '../backend';
+import { useLocalState } from '../backend';
 import {
   BlockQuote,
   Collapsible,
@@ -6,8 +8,6 @@ import {
   Section,
   Tabs,
 } from '../components';
-import { useBackend } from '../backend';
-import { useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 export const AccountingConsole = (props) => {

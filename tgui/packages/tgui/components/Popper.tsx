@@ -11,9 +11,9 @@ import {
 import { findDOMNode, render } from 'react-dom';
 
 type PopperProps = {
-  popperContent: ReactElement<any, string | JSXElementConstructor<any>> | false;
-  options?: ArgumentsOf<typeof createPopper>[2];
   additionalStyles?: CSSProperties;
+  options?: ArgumentsOf<typeof createPopper>[2];
+  popperContent: ReactElement<any, string | JSXElementConstructor<any>> | false;
 } & PropsWithChildren;
 
 export class Popper extends Component<PopperProps> {

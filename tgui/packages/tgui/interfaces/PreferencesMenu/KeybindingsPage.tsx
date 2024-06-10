@@ -1,4 +1,8 @@
+import { range, sortBy } from 'common/collections';
 import { Component } from 'react';
+
+import { resolveAsset } from '../../assets';
+import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -7,17 +11,14 @@ import {
   Tooltip,
   TrackOutsideClicks,
 } from '../../components';
-import { resolveAsset } from '../../assets';
-import { PreferencesMenuData } from './data';
-import { useBackend } from '../../backend';
-import { range, sortBy } from 'common/collections';
 import { KeyEvent } from '../../events';
-import { TabbedMenu } from './TabbedMenu';
 import { fetchRetry } from '../../http';
+import { PreferencesMenuData } from './data';
+import { TabbedMenu } from './TabbedMenu';
 
 type Keybinding = {
-  name: string;
   description?: string;
+  name: string;
 };
 
 type Keybindings = Record<string, Record<string, Keybinding>>;
@@ -25,14 +26,14 @@ type Keybindings = Record<string, Record<string, Keybinding>>;
 type KeybindingsPageState = {
   keybindings?: Keybindings;
   lastKeyboardEvent?: KeyboardEvent;
-  selectedKeybindings?: PreferencesMenuData['keybindings'];
-
   /**
    * The current hotkey that the user is rebinding.
    *
    * First element is the hotkey name, the second is the slot.
    */
   rebindingHotkey?: [string, number];
+
+  selectedKeybindings?: PreferencesMenuData['keybindings'];
 };
 
 const isStandardKey = (event: KeyboardEvent): boolean => {

@@ -1,10 +1,11 @@
-import { Section, Button, Dropdown, Stack, Box, Input } from '../../components';
-import { Component } from 'react';
 import { shallowDiffers } from 'common/react';
-import { fetchRetry } from '../../http';
+import { Component } from 'react';
+
 import { resolveAsset } from '../../assets';
-import { Port } from './Port';
+import { Box, Button, Dropdown, Input, Section, Stack } from '../../components';
+import { fetchRetry } from '../../http';
 import { DEFAULT_COMPONENT_MENU_LIMIT, noop } from './constants';
+import { Port } from './Port';
 
 // Cache response so it's only sent once
 let fetchServerData;

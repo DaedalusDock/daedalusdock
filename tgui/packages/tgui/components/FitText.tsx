@@ -11,10 +11,10 @@ const DEFAULT_ACCEPTABLE_DIFFERENCE = 5;
 export class FitText extends Component<
   {
     acceptableDifference?: number;
-    maxWidth: number;
-    maxFontSize: number;
-    native?: HTMLAttributes<HTMLDivElement>;
     children: ReactNode;
+    maxFontSize: number;
+    maxWidth: number;
+    native?: HTMLAttributes<HTMLDivElement>;
   },
   {
     fontSize: number;

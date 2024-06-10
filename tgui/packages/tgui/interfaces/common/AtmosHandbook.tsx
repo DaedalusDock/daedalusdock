@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { useBackend, useLocalState } from '../../backend';
 import {
   Box,
@@ -21,34 +22,34 @@ import {
  */
 
 type Factor = {
+  desc: string;
   factor_id?: string;
-  factor_type: 'gas' | 'misc';
   factor_name: string;
 
-  desc: string;
+  factor_type: 'gas' | 'misc';
   tooltip?: string;
 };
 
 type Reaction = {
-  id: string;
-  name: string;
   description: string;
   factors: Factor[];
+  id: string;
+  name: string;
 };
 
 type Gas = {
+  description: string;
   id: string;
   name: string;
-  description: string;
-  specific_heat: number;
   reactions: { [key: string]: string } | [];
+  specific_heat: number;
 };
 
 const GasSearchBar = (props: {
-  title: ReactNode;
-  onChange: (inputValue: string) => void;
   activeInput: boolean;
+  onChange: (inputValue: string) => void;
   setActiveInput: (toggle: boolean) => void;
+  title: ReactNode;
 }) => {
   const { title, onChange, activeInput, setActiveInput } = props;
   return (

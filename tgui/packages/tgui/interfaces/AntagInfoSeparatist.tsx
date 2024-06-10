@@ -4,14 +4,14 @@ import { Window } from '../layouts';
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
+  name: string;
 };
 
 type Info = {
-  objectives: Objective[];
   nation: string;
   nationColor: string;
+  objectives: Objective[];
 };
 
 export const AntagInfoSeparatist = (props) => {

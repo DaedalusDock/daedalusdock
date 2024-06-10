@@ -1,0 +1,4 @@
+author: jlsnow301
+delete-after: true
+changes:
+  - bugfix: Ampcheck UI should work again

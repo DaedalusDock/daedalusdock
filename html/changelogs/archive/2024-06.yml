@@ -26,3 +26,7 @@
   - rscadd: Scaled the amount of time it takes to skip silence in tapes slightly.
   - bugfix: Holomaps are actually visible.
   - bugfix: West and South facing holomaps are emissive.
+2024-06-10:
+  Kapu1178:
+  - rscadd: Added Honkertron, a russian developer, to the list of the deceased devs
+      in the credits.

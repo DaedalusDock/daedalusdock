@@ -274,11 +274,13 @@
 
 
 /atom/movable/screen/inventory/hand/Click(location, control, params)
+	SHOULD_CALL_PARENT(FALSE)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
-	. = ..()
 	if(!can_usr_use(usr))
-		return FALSE
+		return TRUE
+
+	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
 	var/mob/user = hud?.mymob
 	if(world.time <= user.next_move)

@@ -87,7 +87,7 @@ export const PowerMonitorContent = (props) => {
           </Section>
         </Flex.Item>
         <Flex.Item mx={0.5} grow={1}>
-          <Section position="relative" height="100%" fill>
+          <Section position="relative" fill>
             <Chart.Line
               fillPositionedParent
               data={supplyData}

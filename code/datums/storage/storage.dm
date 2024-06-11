@@ -411,6 +411,13 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
 	return TRUE
 
+/**
+ * Check to see if items can be added/removed.
+ *
+ * @param mob/living/user an optional user
+ * @param force will bypass most checks
+ * @param silent will surpress feedback messages
+ */
 /datum/storage/proc/can_manipulate_contents(mob/living/user, force, silent)
 	if(force)
 		return TRUE

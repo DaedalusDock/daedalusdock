@@ -327,6 +327,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(user && !user.canUnequipItem(to_insert))
 		return FALSE
 
+	if(!can_manipulate_contents(user, force, messages))
+		return FALSE
+
 	if(locked && !force)
 		return FALSE
 
@@ -406,6 +409,21 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	item_insertion_feedback(user, to_insert, override)
 	real_location.update_appearance()
 	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
+	return TRUE
+
+/datum/storage/proc/can_manipulate_contents(mob/living/user, force, silent)
+	if(force)
+		return TRUE
+	if(locked)
+		return FALSE
+
+	if(isitem(parent))
+		var/obj/item/item_loc = parent
+		if(item_loc.item_flags & IN_STORAGE)
+			if(!silent && user)
+				to_chat(user, span_warning("You cannot manipulate an object inside of [parent] while it is within another object."))
+			return FALSE
+
 	return TRUE
 
 /// Checks if the item is allowed into storage based on it's weight class
@@ -511,12 +529,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  */
 /datum/storage/proc/attempt_remove(obj/item/thing, atom/newLoc, silent = FALSE, mob/living/user)
 	SHOULD_NOT_SLEEP(TRUE)
-	if(isitem(parent))
-		var/obj/item/item_loc = parent
-		if(item_loc.item_flags & IN_STORAGE)
-			if(!silent && user)
-				to_chat(user, span_warning("You cannot remove an object from [parent] while it is within another object."))
-			return FALSE
+
+	if(!can_manipulate_contents(user, silent = silent))
+		return FALSE
 
 	if(istype(thing) && ismob(parent.loc))
 		var/mob/mobparent = parent.loc

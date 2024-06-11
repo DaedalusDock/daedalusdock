@@ -1146,17 +1146,13 @@
 /turf/open/floor/plating,
 /area/station/maintenance/solars/starboard/fore)
 "aqG" = (
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/holomap/directional/north,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "aqH" = (
@@ -2848,6 +2844,9 @@
 /obj/structure/cable/yellow{
 	icon_state = "10"
 	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
 /turf/open/floor/iron,
 /area/station/security/checkpoint/customs)
 "aTQ" = (
@@ -2868,23 +2867,14 @@
 /obj/item/stack/package_wrap{
 	pixel_y = 5
 	},
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 8
 	},
+/obj/machinery/holomap/directional/north,
 /turf/open/floor/iron,
 /area/station/construction/storage_wing)
 "aUk" = (
 /obj/effect/turf_decal/delivery,
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
 /turf/open/floor/iron,
 /area/station/construction/storage_wing)
 "aUm" = (
@@ -4412,11 +4402,6 @@
 /area/station/command/heads_quarters/rd)
 "boG" = (
 /obj/structure/closet/emcloset,
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
@@ -6493,12 +6478,22 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "bUx" = (
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
-/obj/structure/disposalpipe/segment,
 /obj/structure/cable/yellow{
 	icon_state = "12"
+	},
+/obj/structure/disposalpipe/segment{
+	dir = 10
+	},
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
 	},
 /turf/open/floor/iron,
 /area/station/security/checkpoint/customs)
@@ -7854,6 +7849,7 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
+/obj/machinery/holomap/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "cuC" = (
@@ -9318,13 +9314,8 @@
 /turf/open/floor/iron,
 /area/station/maintenance/port/aft)
 "cPa" = (
-/obj/structure/chair{
-	dir = 8
-	},
-/obj/structure/sign/warning/electricshock{
-	pixel_x = 32
-	},
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
+/obj/machinery/holomap/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
 "cPc" = (
@@ -15622,11 +15613,6 @@
 /area/station/security/checkpoint/science)
 "eMs" = (
 /obj/effect/spawner/random/entertainment/arcade,
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security in red at the top, you see engineering in yellow, science in purple, escape in checkered red-and-white, medbay in green, arrivals in checkered red-and-blue, and then cargo in brown.";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
@@ -18253,11 +18239,6 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "fJX" = (
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = -32
-	},
 /obj/item/kirbyplants{
 	icon_state = "plant-03"
 	},
@@ -18605,14 +18586,10 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "fQX" = (
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
+/obj/machinery/holomap/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/aft)
 "fRn" = (
@@ -23751,14 +23728,6 @@
 /obj/structure/rack,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
-"hCN" = (
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
-/turf/open/floor/wood,
-/area/station/command/heads_quarters/captain/private)
 "hCP" = (
 /obj/effect/spawner/structure/window/reinforced/tinted/prepainted/daedalus,
 /turf/open/floor/plating,
@@ -25855,6 +25824,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
+"inf" = (
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/machinery/holomap/directional/north,
+/turf/open/floor/iron,
+/area/station/security/checkpoint/customs)
 "ink" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -27830,6 +27806,13 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
+"iQY" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/machinery/light/directional/south,
+/turf/open/floor/iron,
+/area/station/security/checkpoint/customs)
 "iRn" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
@@ -28287,11 +28270,6 @@
 /area/station/hallway/secondary/entry)
 "iXV" = (
 /obj/structure/chair,
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 1
 	},
@@ -28748,14 +28726,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/engineering/supermatter/room)
-"jgU" = (
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
-/turf/open/floor/wood,
-/area/station/command/heads_quarters/captain/private)
 "jhb" = (
 /obj/machinery/status_display/evac/directional/north,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -29974,11 +29944,6 @@
 	},
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
-	},
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = -32
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
@@ -33847,25 +33812,6 @@
 /obj/item/retractor,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/starboard)
-"kUi" = (
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/disposalpipe/segment{
-	dir = 10
-	},
-/obj/effect/turf_decal/stripes/corner{
-	dir = 1
-	},
-/turf/open/floor/iron,
-/area/station/security/checkpoint/customs)
 "kUw" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 8
@@ -38050,11 +37996,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = -32
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -38737,10 +38678,6 @@
 /area/station/medical/virology)
 "mts" = (
 /obj/structure/closet/emcloset,
-/obj/structure/sign/map/left{
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/hallway/primary/starboard)
@@ -38945,16 +38882,6 @@
 "mwS" = (
 /turf/open/space/basic,
 /area/station/cargo/mining/asteroid_magnet)
-"mwW" = (
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/station/security/checkpoint/customs)
 "mwX" = (
 /obj/machinery/disposal/bin,
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted{
@@ -40546,11 +40473,6 @@
 /turf/open/floor/iron,
 /area/station/medical/surgery/prep)
 "mTs" = (
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/machinery/firealarm/directional/west,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/modular_computer/console/preset/engineering,
@@ -41031,6 +40953,16 @@
 /obj/structure/displaycase/trophy,
 /turf/open/floor/wood,
 /area/station/service/library)
+"nbN" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/obj/machinery/holomap/directional/west,
+/turf/open/floor/iron,
+/area/station/commons/dorms)
 "nbR" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -42654,12 +42586,12 @@
 /turf/open/floor/catwalk_floor/iron_dark,
 /area/station/maintenance/starboard/fore)
 "nCB" = (
-/obj/machinery/door/airlock/maintenance{
-	req_one_access_txt = "12;48;50;1"
-	},
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable/yellow{
 	icon_state = "3"
+	},
+/obj/machinery/door/airlock/maintenance{
+	req_one_access_txt = "12;48;50;1"
 	},
 /turf/open/floor/plating,
 /area/station/security/checkpoint/customs)
@@ -46892,11 +46824,6 @@
 /turf/open/floor/iron,
 /area/station/security/prison/workout)
 "oWr" = (
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security in red at the top, you see engineering in yellow, science in purple, escape in checkered red-and-white, medbay in green, arrivals in checkered red-and-blue, and then cargo in brown.";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
 /obj/structure/closet/firecloset,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
@@ -47521,17 +47448,6 @@
 	},
 /turf/open/floor/wood,
 /area/station/service/library)
-"pfP" = (
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/central/aft)
 "pgn" = (
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
@@ -49105,14 +49021,10 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/port)
 "pIg" = (
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
+/obj/machinery/holomap/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/fore)
 "pIj" = (
@@ -49399,6 +49311,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/holomap/directional/north,
 /turf/open/floor/iron,
 /area/station/security/checkpoint/customs)
 "pMA" = (
@@ -50671,11 +50584,6 @@
 /area/space/nearstation)
 "qhr" = (
 /obj/machinery/light/directional/north,
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
@@ -52397,11 +52305,6 @@
 /turf/open/floor/iron,
 /area/station/security/checkpoint/customs)
 "qLm" = (
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/computer/atmos_alert,
 /turf/open/floor/iron/dark,
@@ -57351,11 +57254,6 @@
 	pixel_y = 4
 	},
 /obj/machinery/airalarm/directional/east,
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security in red at the top, you see engineering in yellow, science in purple, escape in checkered red-and-white, medbay in green, arrivals in checkered red-and-blue, and then cargo in brown.";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/red/anticorner/contrasted{
 	dir = 4
 	},
@@ -58587,11 +58485,6 @@
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "sLd" = (
-/obj/structure/sign/map/left{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-left-MS";
-	pixel_y = -32
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
@@ -58600,6 +58493,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/holomap/directional/south,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "sLo" = (
@@ -60486,6 +60380,14 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
+"tts" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/yellow/opposingcorners,
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron/white,
+/area/station/hallway/secondary/entry)
 "ttu" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
@@ -70022,11 +69924,6 @@
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
 "wHp" = (
-/obj/structure/sign/map/right{
-	desc = "A framed picture of the station. Clockwise from security at the top (red), you see engineering (yellow), science (purple), escape (red and white), medbay (green), arrivals (blue and white), and finally cargo (brown).";
-	icon_state = "map-right-MS";
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
@@ -74092,6 +73989,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit)
+"xZj" = (
+/obj/machinery/light/directional/west,
+/turf/open/floor/wood,
+/area/station/security/checkpoint/customs)
 "xZo" = (
 /obj/effect/spawner/random/structure/grille,
 /turf/open/floor/plating,
@@ -88575,7 +88476,7 @@ uQv
 wkL
 bEt
 uBg
-bEt
+tts
 bEt
 bEt
 bEt
@@ -88838,7 +88739,7 @@ qbG
 sJO
 dSI
 ska
-eYw
+iQY
 eEw
 auF
 bsq
@@ -89084,7 +88985,7 @@ tEV
 rbg
 igh
 kXW
-mWl
+xZj
 mWl
 ylj
 igh
@@ -90379,7 +90280,7 @@ kfQ
 qiT
 qbG
 sJO
-ska
+inf
 aaV
 seg
 seg
@@ -91141,7 +91042,7 @@ pbr
 vIc
 pII
 tEV
-kUi
+sJO
 bUx
 tnr
 dZP
@@ -91398,7 +91299,7 @@ tEV
 ehD
 tEV
 tEV
-mwW
+sJO
 aTN
 wkK
 qKT
@@ -104526,7 +104427,7 @@ ezP
 cty
 erh
 qGj
-pfP
+itP
 fVC
 nNz
 fLi
@@ -105021,7 +104922,7 @@ emj
 tvz
 rRh
 tvz
-jgU
+hIU
 erA
 aMY
 epd
@@ -105278,7 +105179,7 @@ mcQ
 tvz
 mjV
 tvz
-hCN
+hIU
 eOi
 adF
 pzh
@@ -109878,7 +109779,7 @@ sTJ
 blu
 pkB
 lac
-jUx
+nbN
 cep
 reN
 uUi

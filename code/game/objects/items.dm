@@ -320,6 +320,26 @@ DEFINE_INTERACTABLE(/obj/item)
 			id.show(usr)
 		return TRUE
 
+	if(href_list["examine"])
+		var/atom_to_view_check = src
+		if(ismob(loc))
+			atom_to_view_check = loc
+
+		if(!atom_to_view_check && isidcard(src) && istype(loc, /obj/item/storage/wallet))
+			var/obj/item/storage/wallet/W = loc
+			if(W.is_open)
+				atom_to_view_check = W
+				if(ismob(W.loc))
+					atom_to_view_check = W.loc
+
+		var/list/user_view = view(usr)
+		if(!(atom_to_view_check in user_view))
+			to_chat(usr, span_warning("I can no longer see that item."))
+			return TRUE
+
+		usr.run_examinate(src, TRUE)
+		return TRUE
+
 /obj/item/update_icon_state()
 	if(wielded && icon_state_wielded)
 		icon_state = icon_state_wielded
@@ -939,7 +959,8 @@ DEFINE_INTERACTABLE(/obj/item)
 /obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
 	if(!M)
 		return FALSE
-
+	if((item_flags & HAND_ITEM) && slot != ITEM_SLOT_HANDS)
+		return FALSE
 	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self)
 
 /obj/item/verb/verb_pickup()

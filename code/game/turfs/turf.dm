@@ -4,7 +4,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf
 	icon = 'icons/turf/floors.dmi'
 	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
-	luminosity = 1
 	explosion_block = 1
 
 	// baseturfs can be either a list or a single turf type.
@@ -134,15 +133,12 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	QUEUE_SMOOTH(src)
 
-	// visibilityChanged() will never hit any path with side effects during mapload
-	if (!mapload)
-		visibilityChanged()
-		if(length(contents))
-			for(var/atom/movable/AM as anything in src)
-				Entered(AM, null)
+	if (!mapload && length(contents))
+		for(var/atom/movable/AM as anything in src)
+			Entered(AM, null)
 
 	var/area/our_area = loc
-	if(!our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+	if(!our_area.luminosity && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
 
 	if (z_flags & Z_MIMIC_BELOW)
@@ -181,8 +177,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			qdel(A)
 		return
 
-	visibilityChanged()
-	QDEL_LIST(blueprint_data)
+	if(blueprint_data)
+		QDEL_LIST(blueprint_data)
 	initialized = FALSE
 
 	///ZAS THINGS

@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: You can no longer observe yourself.
+  - bugfix: Observing no longer causes ambience runtimes.

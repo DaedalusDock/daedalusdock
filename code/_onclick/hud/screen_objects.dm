@@ -236,7 +236,7 @@
 	var/image/item_overlay = image(holding)
 	item_overlay.alpha = 92
 
-	if(!user.can_equip(holding, slot_id, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
+	if(!holding.mob_can_equip(user, null, slot_id, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
 		item_overlay.color = "#FF0000"
 	else
 		item_overlay.color = "#00ff00"
@@ -274,11 +274,13 @@
 
 
 /atom/movable/screen/inventory/hand/Click(location, control, params)
+	SHOULD_CALL_PARENT(FALSE)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
-	. = ..()
 	if(!can_usr_use(usr))
-		return FALSE
+		return TRUE
+
+	SEND_SIGNAL(src, COMSIG_CLICK, location, control, params, usr)
 
 	var/mob/user = hud?.mymob
 	if(world.time <= user.next_move)
@@ -1014,3 +1016,12 @@
 	if(iteration == src.iteration)
 		progbar.end_progress()
 
+
+/atom/movable/screen/holomap
+	icon = ""
+	plane = FULLSCREEN_PLANE
+	layer = FLOAT_LAYER
+	// Holomaps are 480x480.
+	// We offset them by half the size on each axis to center them.
+	// We need to account for this object being 32x32, so we subtract 32 from the initial 480 before dividing
+	screen_loc = "CENTER:-224,CENTER:-224"

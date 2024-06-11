@@ -1,0 +1,27 @@
+2024-05-08:
+  Kapu1178:
+  - bugfix: Special items like the representation of grabbing can no longer be put
+      into your pocket.
+2024-05-15:
+  Kapu1178:
+  - bugfix: Fix massive amount of runtimes thrown from mouse dragging out of the mouse
+      pane.
+  - bugfix: Fixed "safe" gibbing attempting to remove bodyparts and organs.
+  francinum:
+  - bugfix: Cables now consider all neighbors that share diagonal-edge nodes, instead
+      of just one inline tile.
+2024-05-20:
+  Kapu1178:
+  - code_imp: Optimized the process of loading space turfs.
+  - rscadd: Unverified accounts are no longer instantly kicked, and now sit on the
+      main menu.
+  - tweak: Improved the S O U L menu.
+2024-05-21:
+  Kapu1178:
+  - bugfix: With a specific amount of reagents, a reaction could fail to occur and
+      repeat infinitely.
+2024-05-25:
+  GPeckman:
+  - bugfix: Fixed a bug that could cause fire overlays to stick forever.
+  vinylspiders:
+  - bugfix: A rare bug that caused mutation effects to linger in weird ways.

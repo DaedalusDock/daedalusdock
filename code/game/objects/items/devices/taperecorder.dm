@@ -247,8 +247,8 @@
 			playsleepseconds = mytape.timestamp[i + 1] - mytape.timestamp[i]
 		if(playsleepseconds > 14 SECONDS)
 			sleep(1 SECONDS)
-			say("Skipping [playsleepseconds] seconds of silence.")
-			playsleepseconds = 1 SECONDS
+			say("Skipping [playsleepseconds / 10] seconds of silence.")
+			playsleepseconds = clamp(playsleepseconds / 10, 1 SECONDS, 3 SECONDS)
 		i++
 
 	stop()
@@ -440,3 +440,44 @@
 
 /obj/item/tape/dyed
 	icon_state = "greyscale"
+
+/obj/item/tape/rats
+	storedinfo = list(
+		"\[00:01\] This place is a mess, how do people live here?",
+		"\[00:04\] It's like this station hasn't been serviced in decades.",
+		"\[00:07\] Atleast the people here are kind, except for Ann. The wench. |+I CAN HEAR YOU IN THERE!+|",
+		"\[00:08\] +PISS OFF, ANN!+",
+		"\[00:42\] |I'll finish this tomorrow.|",
+		"\[00:50\] How are there |rats| on a space station this far out? This has to be some kind of scientific wonder.",
+		"\[01:00\] |Tom? Would you mind helping me with something in the botanical lab?|",
+		"\[01:05\] Yeah, yeah.",
+		"\[01:10\] Mary, the station's botanist, is a loon. She \"took care\" of a rat with a |monkey wrench|, who does that?!",
+		"\[01:19\] The squeaking outside my room is driving me mad. I may ask Mary for some help with this.",
+		"\[01:29\] *Airlock opening*",
+		"\[01:33\] Mary? What ar-",
+		"\[01:35\] *|CLANG!|*",
+		"\[01:37\] *|CLANG!|*",
+		"\[01:39\] *|CLANG!|*",
+		"\[01:47\] *Feminine panting*",
+		"\[01:59\] Mary Ann.",
+	)
+
+	timestamp = list(
+		1 SECONDS,
+		4 SECONDS,
+		7 SECONDS,
+		8 SECONDS,
+		42 SECONDS,
+		50 SECONDS,
+		1 MINUTES,
+		1 MINUTES + 5 SECONDS,
+		1 MINUTES + 10 SECONDS,
+		1 MINUTES + 19 SECONDS,
+		1 MINUTES + 29 SECONDS,
+		1 MINUTES + 33 SECONDS,
+		1 MINUTES + 35 SECONDS,
+		1 MINUTES + 37 SECONDS,
+		1 MINUTES + 39 SECONDS,
+		1 MINUTES + 47 SECONDS,
+		1 MINUTES + 59 SECONDS,
+	)

@@ -87,6 +87,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	var/atom/movable/screen/pain/pain
 
+	var/atom/movable/screen/holomap/holomap_container
 	var/atom/movable/screen/progbar_container/use_timer
 	// subtypes can override this to force a specific UI style
 	var/ui_style
@@ -123,6 +124,8 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 		plane_master_controllers[controller_instance.name] = controller_instance
 
 	owner.overlay_fullscreen("see_through_darkness", /atom/movable/screen/fullscreen/see_through_darkness)
+
+	holomap_container = new(null, src)
 
 	RegisterSignal(mymob, COMSIG_VIEWDATA_UPDATE, PROC_REF(on_viewdata_update))
 
@@ -175,6 +178,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	QDEL_NULL(screentip_text)
 	QDEL_NULL(pain)
 	QDEL_NULL(use_timer)
+	QDEL_NULL(holomap_container)
 
 	return ..()
 
@@ -263,6 +267,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	if(pain)
 		screenmob.client.screen += pain
+
+	if(holomap_container)
+		screenmob.client.screen += holomap_container
 
 	hud_version = display_hud_version
 	update_gunpoint(screenmob)

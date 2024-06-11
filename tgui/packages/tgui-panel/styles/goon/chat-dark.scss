@@ -86,13 +86,13 @@ a.popt {
   color: #333;
 }
 
-.popup input[type=text]:hover,
-.popup input[type=text]:active,
-.popup input[type=text]:focus {
+.popup input[type='text']:hover,
+.popup input[type='text']:active,
+.popup input[type='text']:focus {
   border-color: green;
 }
 
-.popup input[type=submit] {
+.popup input[type='submit'] {
   padding: 5px 10px;
   background: #999;
   color: #ddd;
@@ -101,9 +101,9 @@ a.popt {
   font-weight: bold;
 }
 
-.popup input[type=submit]:hover,
-.popup input[type=submit]:focus,
-.popup input[type=submit]:active {
+.popup input[type='submit']:hover,
+.popup input[type='submit']:focus,
+.popup input[type='submit']:active {
   background: #aaa;
   cursor: pointer;
 }
@@ -128,7 +128,7 @@ a.popt {
   text-align: center;
 }
 
-.highlightPopup input[type=text] {
+.highlightPopup input[type='text'] {
   display: block;
   width: 215px;
   text-align: left;
@@ -136,17 +136,14 @@ a.popt {
 }
 
 .highlightPopup input.highlightColor {
-  background-color: #FFFF00;
+  background-color: #ffff00;
 }
 
 .highlightPopup input.highlightTermSubmit {
   margin-top: 5px;
 }
 
-
-
 /* ADMIN CONTEXT MENU */
-
 
 .contextMenu {
   background-color: #ddd;
@@ -166,10 +163,7 @@ a.popt {
   background-color: #ccc;
 }
 
-
-
 /* ADMIN FILTER MESSAGES MENU */
-
 
 .filterMessages {
   padding: 5px;
@@ -193,24 +187,16 @@ a.popt {
   margin-top: -2px;
 }
 
-
-
-
 /*****************************************
 *
 * OUTPUT ACTUALLY RELATED TO MESSAGES
 *
 ******************************************/
 
-
-
-
-
 /* MOTD */
 
-
 .motd {
-  color: #CAC5A5;
+  color: #cac5a5;
   font-family: Verdana, sans-serif;
   white-space: normal;
 }
@@ -221,7 +207,7 @@ a.popt {
 .motd h4,
 .motd h5,
 .motd h6 {
-  color: #CAC5A5;
+  color: #cac5a5;
   text-decoration: underline;
 }
 
@@ -230,13 +216,10 @@ a.popt {
 .motd a:visited,
 .motd a:active,
 .motd a:hover {
-  color: #CAC5A5;
+  color: #cac5a5;
 }
 
-
-
 /* ADD HERE FOR BOLD */
-
 
 .bold,
 .name,
@@ -250,30 +233,31 @@ a.popt {
   font-weight: bold;
 }
 
-
-
 /* ADD HERE FOR ITALIC */
 
-
-.italic, .italics {
+.italic,
+.italics {
   font-style: italic;
 }
 
-
-
 /* OUTPUT COLORS */
-
 
 .highlight {
   background: yellow;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: #CAC5A5;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #cac5a5;
   font-family: Georgia, Verdana, sans-serif;
 }
 
-h1.alert, h2.alert {
+h1.alert,
+h2.alert {
   color: #dfdfcf;
 }
 
@@ -316,7 +300,11 @@ em {
   font-weight: bold;
 }
 
-.say, .emote, .infoplain, .oocplain, .warningplain {
+.say,
+.emote,
+.infoplain,
+.oocplain,
+.warningplain {
 }
 
 .deadsay {
@@ -331,7 +319,8 @@ em {
   color: #00ff00;
 }
 
-.binarysay a:active, .binarysay a:visited {
+.binarysay a:active,
+.binarysay a:visited {
   color: #88ff88;
 }
 
@@ -351,7 +340,7 @@ em {
 }
 
 .secradio {
-  color: #B71C1C;
+  color: #b71c1c;
 }
 
 .medradio {
@@ -407,7 +396,7 @@ em {
 }
 
 .alert {
-  color: #FF6D6D;
+  color: #ff6d6d;
 }
 
 .userdanger {
@@ -418,38 +407,38 @@ em {
 
 .bolddanger {
   color: #dd3535;
-  text-shadow: 0 0 0.3em #FF0000;
+  text-shadow: 0 0 0.3em #ff0000;
   font-weight: bold;
 }
 
 .danger {
   color: #dd3535;
-  text-shadow: 0 0 0.3em #FF0000;
+  text-shadow: 0 0 0.3em #ff0000;
 }
 
 .warning {
-  color: #FF6D6D;
+  color: #ff6d6d;
   font-style: italic;
 }
 
 .alertwarning {
-  color: #FF6D6D;
+  color: #ff6d6d;
   font-weight: bold;
 }
 
 .boldwarning {
-  color: #FF6D6D;
+  color: #ff6d6d;
   font-style: italic;
   font-weight: bold;
 }
 
 .announce {
-  color: #FF6D6D;
+  color: #ff6d6d;
   font-weight: bold;
 }
 
 .boldannounce {
-  color: #FF6D6D;
+  color: #ff6d6d;
   font-weight: bold;
 }
 
@@ -472,17 +461,17 @@ em {
 }
 
 .subtle {
-  color: #8A72C5;
+  color: #8a72c5;
   font-style: italic;
   font-size: 85%;
 }
 
 .notice {
-  color: #D47D5A;
+  color: #d47d5a;
 }
 
 .obviousnotice {
-  color: #8A72C5;
+  color: #8a72c5;
 }
 
 .tinynotice {
@@ -527,7 +516,7 @@ em {
 }
 
 .unconscious {
-  color: #CAC5A5;
+  color: #cac5a5;
   font-weight: bold;
 }
 
@@ -545,7 +534,7 @@ em {
 }
 
 .red {
-  color: #FF0000;
+  color: #ff0000;
 }
 
 .blue {
@@ -601,7 +590,7 @@ em {
 }
 
 .colossus {
-  color: #7F282A;
+  color: #7f282a;
   font-size: 310%;
 }
 
@@ -685,7 +674,7 @@ em {
 }
 
 .alertsyndie {
-  color: #FF0000;
+  color: #ff0000;
   font-size: 185%;
   font-weight: bold;
 }
@@ -701,20 +690,20 @@ em {
 }
 
 .sans {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
 }
 
 .papyrus {
-  font-family: "Papyrus", cursive, sans-serif;
+  font-family: 'Papyrus', cursive, sans-serif;
 }
 
 .robot {
-  font-family: "Courier New", cursive, sans-serif;
+  font-family: 'Courier New', cursive, sans-serif;
 }
 
 .tape_recorder {
-  color: #FF0000;
-  font-family: "Courier New", cursive, sans-serif;
+  color: #ff0000;
+  font-family: 'Courier New', cursive, sans-serif;
 }
 
 .command_headset {
@@ -751,18 +740,18 @@ em {
 .clown {
   color: #ff70c1;
   font-size: 160%;
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
   font-weight: bold;
 }
 
 .singing {
-  font-family: "Trebuchet MS", cursive, sans-serif;
+  font-family: 'Trebuchet MS', cursive, sans-serif;
   font-style: italic;
 }
 
 .his_grace {
-  color: #15D512;
-  font-family: "Courier New", cursive, sans-serif;
+  color: #15d512;
+  font-family: 'Courier New', cursive, sans-serif;
   font-style: italic;
 }
 
@@ -875,7 +864,7 @@ em {
 }
 
 .slime {
-  color: #00CED1;
+  color: #00ced1;
 }
 
 .drone {
@@ -887,11 +876,11 @@ em {
 }
 
 .swarmer {
-  color: #2C75FF;
+  color: #2c75ff;
 }
 
 .resonate {
-  color: #298F85;
+  color: #298f85;
 }
 
 .monkeyhive {
@@ -903,7 +892,8 @@ em {
   font-size: 80%;
 }
 
-.connectionClosed, .fatalError {
+.connectionClosed,
+.fatalError {
   background: red;
   color: white;
   padding: 5px;
@@ -917,13 +907,10 @@ em {
   color: #92b4ff;
 }
 
-
-
 /* HELPER CLASSES */
 
-
 .text-normal {
-  color: #CAC5A5;
+  color: #cac5a5;
   font-weight: normal;
   font-style: normal;
 }
@@ -970,12 +957,12 @@ em {
 }
 
 .sayverb {
-  color : #bbbbad;
+  color: #bbbbad;
   font-style: italic;
 }
 
 .emote {
-  color : #bbbbad;
+  color: #bbbbad;
 }
 
 .debug {
@@ -991,8 +978,7 @@ em {
   display: flex;
   flex-direction: column;
   font-size: 110%;
-  border-image:
-  repeating-linear-gradient(
+  border-image: repeating-linear-gradient(
     -45deg,
     #520000,
     #520000 10px,

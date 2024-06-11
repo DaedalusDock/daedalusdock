@@ -52,7 +52,7 @@
 		qdel(query_insert_link_record)
 		message_admins("WARNING! FAILED TO ASSIGN A OTP FOR USER [ckey_for], CALL A CODER!")
 		stack_trace("WARNING! FAILED TO ASSIGN A OTP FOR USER [ckey_for], CALL A CODER!")
-		return "INVALID_PASSWORD_CALL_A_CODER"
+		return "FAILED TO GENERATE ONE-TIME-PASSWORD. PLEASE NOTIFY @francinum"
 
 	//Cleanup
 	qdel(query_insert_link_record)

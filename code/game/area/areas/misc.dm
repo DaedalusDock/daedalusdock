@@ -5,9 +5,7 @@
 	requires_power = TRUE
 	always_unpowered = TRUE
 
-	static_lighting = FALSE
-	base_lighting_alpha = 255
-	base_lighting_color = "#FFFFFF"
+	area_lighting = AREA_LIGHTING_STATIC
 
 	power_light = FALSE
 	power_equip = FALSE
@@ -26,16 +24,15 @@
 	name = "start area"
 	icon_state = "start"
 	requires_power = FALSE
-	static_lighting = FALSE
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC
 	has_gravity = STANDARD_GRAVITY
 
 /area/misc/testroom
-	requires_power = FALSE
-	has_gravity = STANDARD_GRAVITY
 	name = "Test Room"
 	icon_state = "test_room"
+
+	requires_power = FALSE
+	has_gravity = STANDARD_GRAVITY
 	// FUCK YOU NEVER CHANGE MY LIGHTING -kapu1178, 2023
-	static_lighting = FALSE //The unit test area should always be luminosity = 1
-	base_lighting_alpha = 255
+	area_lighting = AREA_LIGHTING_STATIC //The unit test area should always be luminosity = 1
 	luminosity = 1

@@ -5,8 +5,9 @@
  * Arguments:
  * * target - Who the verb is being added to, client or mob typepath
  * * verb - typepath to a verb, or a list of verbs, supports lists of lists
+ * * bypass_restricted - Whether or not to bypass client.restricted_mode
  */
-/proc/add_verb(client/target, verb_or_list_to_add)
+/proc/add_verb(client/target, verb_or_list_to_add, bypass_restricted = FALSE)
 	if(!target)
 		CRASH("add_verb called without a target")
 	if(IsAdminAdvancedProcCall())
@@ -18,6 +19,10 @@
 		target = mob_target.client
 	else if(!istype(target, /client))
 		CRASH("add_verb called on a non-mob and non-client")
+
+	if(target?.restricted_mode && !bypass_restricted)
+		return
+
 	var/list/verbs_list = list()
 	if(!islist(verb_or_list_to_add))
 		verbs_list += verb_or_list_to_add

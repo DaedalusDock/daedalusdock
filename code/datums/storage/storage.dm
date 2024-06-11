@@ -327,7 +327,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(user && !user.canUnequipItem(to_insert))
 		return FALSE
 
-	if(!can_manipulate_contents(user, force, messages))
+	if(!can_manipulate_contents(user, force, !messages))
 		return FALSE
 
 	if(locked && !force)

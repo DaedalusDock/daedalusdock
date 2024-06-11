@@ -1,3 +1,5 @@
+#define EXAMINE_LINK(item) button_element(item, "\[?\]", "examine=1")
+
 /mob/living/carbon/human/examine(mob/user)
 //this is very slightly better than it was because you can use it more places. still can't do \his[src] though.
 	var/t_He = p_they(TRUE)
@@ -50,30 +52,30 @@
 		if(istype(w_uniform, /obj/item/clothing/under))
 			var/obj/item/clothing/under/U = w_uniform
 			if(U.attached_accessory)
-				accessory_msg += " with [icon2html(U.attached_accessory, user)] \a [U.attached_accessory]"
+				accessory_msg += " with [icon2html(U.attached_accessory, user)] \a [U.attached_accessory] [EXAMINE_LINK(U.attached_accessory)]"
 
-		. += "[t_He] [t_is] wearing [w_uniform.get_examine_string(user)][accessory_msg]."
+		. += "[t_He] [t_is] wearing [w_uniform.get_examine_string(user)] [EXAMINE_LINK(w_uniform)] [accessory_msg]."
 	//head
 	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head."
+		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] [EXAMINE_LINK(head)] on [t_his] head."
 	//suit/armor
 	if(wear_suit && !(wear_suit.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_suit.get_examine_string(user)]."
+		. += "[t_He] [t_is] wearing [wear_suit.get_examine_string(user)] [EXAMINE_LINK(wear_suit)]."
 		//suit/armor storage
 		if(s_store && !(obscured & ITEM_SLOT_SUITSTORE) && !(s_store.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_is] carrying [s_store.get_examine_string(user)] on [t_his] [wear_suit.name]."
+			. += "[t_He] [t_is] carrying [s_store.get_examine_string(user)] [EXAMINE_LINK(s_store)] on [t_his] [wear_suit.name]."
 	//back
 	if(back && !(back.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [back.get_examine_string(user)] on [t_his] back."
+		. += "[t_He] [t_has] [back.get_examine_string(user)] [EXAMINE_LINK(back)] on [t_his] back."
 
 	//Hands
 	for(var/obj/item/I in held_items)
 		if(!(I.item_flags & ABSTRACT) && !(I.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_is] holding [I.get_examine_string(user)] in [t_his] [I.wielded ? "hands" : get_held_index_name(get_held_index_of_item(I))]."
+			. += "[t_He] [t_is] holding [I.get_examine_string(user)] [EXAMINE_LINK(I)] in [t_his] [I.wielded ? "hands" : get_held_index_name(get_held_index_of_item(I))]."
 
 	//gloves
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && !(gloves.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
+		. += "[t_He] [t_has] [gloves.get_examine_string(user)] [EXAMINE_LINK(gloves)] on [t_his] hands."
 
 	else if(length(forensics?.blood_DNA))
 		if(num_hands)
@@ -86,27 +88,27 @@
 		else if(istype(handcuffed, /obj/item/restraints/handcuffs/tape))
 			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] bound by tape!")
 		else
-			. += span_warning("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed]!")
+			. += span_warning("[t_He] [t_is] handcuffed with [icon2html(handcuffed, user)] [handcuffed] [EXAMINE_LINK(handcuffed)] !")
 
 	//belt
 	if(belt && !(belt.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [belt.get_examine_string(user)] about [t_his] waist."
+		. += "[t_He] [t_has] [belt.get_examine_string(user)] [EXAMINE_LINK(belt)] about [t_his] waist."
 
 	//shoes
 	if(shoes && !(obscured & ITEM_SLOT_FEET)  && !(shoes.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [shoes.get_examine_string(user)] on [t_his] feet."
+		. += "[t_He] [t_is] wearing [shoes.get_examine_string(user)] [EXAMINE_LINK(shoes)] on [t_his] feet."
 
 	//mask
 	if(wear_mask && !(obscured & ITEM_SLOT_MASK)  && !(wear_mask.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [wear_mask.get_examine_string(user)] on [t_his] face."
+		. += "[t_He] [t_has] [wear_mask.get_examine_string(user)] [EXAMINE_LINK(wear_mask)] on [t_his] face."
 
 	if(wear_neck && !(obscured & ITEM_SLOT_NECK)  && !(wear_neck.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] around [t_his] neck."
+		. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] [EXAMINE_LINK(wear_neck)] around [t_his] neck."
 
 	//eyes
 	if(!(obscured & ITEM_SLOT_EYES) )
 		if(glasses  && !(glasses.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_has] [glasses.get_examine_string(user)] covering [t_his] eyes."
+			. += "[t_He] [t_has] [glasses.get_examine_string(user)] [EXAMINE_LINK(glasses)] covering [t_his] eyes."
 		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
 			. += "<span class='warning'><B>[t_His] eyes are glowing with an unnatural red aura!</B></span>"
 		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
@@ -114,12 +116,12 @@
 
 	//ears
 	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] ears."
+		. += "[t_He] [t_has] [ears.get_examine_string(user)] [EXAMINE_LINK(ears)] on [t_his] ears."
 
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
 		var/id_topic = wear_id.GetID() ? " <a href='?src=\ref[wear_id];look_at_id=1'>\[Look at ID\]</a>" : ""
-		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)].[id_topic]"
+		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)] [EXAMINE_LINK(wear_id)]. [id_topic]"
 
 	//Status effects
 	var/list/status_examines = get_status_effect_examinations()

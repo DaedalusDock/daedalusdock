@@ -30,3 +30,9 @@
   Kapu1178:
   - rscadd: Added Honkertron, a russian developer, to the list of the deceased devs
       in the credits.
+2024-06-11:
+  Kapu1178:
+  - bugfix: Clicking your inactive hand slot while holding an item in your active
+      hand slot no longer outputs "You are unable to equip that!"
+  jlsnow301:
+  - bugfix: Ampcheck UI should work again

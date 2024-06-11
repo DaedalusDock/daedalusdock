@@ -269,6 +269,11 @@
 	resistance_flags = FREEZE_PROOF
 	custom_price = PAYCHECK_ASSISTANT * 1.2
 
+/obj/item/reagent_containers/food/drinks/mug/beagle
+	name = "beagle mug"
+	desc = "A heavy mug. A beagle mug. Careful not to break it!"
+	icon_state = "beaglemug"
+
 
 /obj/item/reagent_containers/food/drinks/dry_ramen
 	name = "cup ramen"

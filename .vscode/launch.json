@@ -21,6 +21,6 @@
 			"name": "OpenDream",
 			"preLaunchTask": "OpenDream: compile ${command:CurrentDME}",
 			"json_path": "${workspaceFolder}/${command:CurrentJson}"
-		},
+		}
 	]
 }

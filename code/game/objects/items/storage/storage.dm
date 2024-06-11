@@ -2,6 +2,7 @@
 	name = "storage"
 	icon = 'icons/obj/storage.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
+	var/tmp/storage_type = /datum/storage
 	var/rummage_if_nodrop = TRUE
 	/// Should we preload the contents of this type?
 	/// BE CAREFUL, THERE'S SOME REALLY NASTY SHIT IN THIS TYPEPATH
@@ -11,7 +12,7 @@
 /obj/item/storage/Initialize(mapload)
 	. = ..()
 
-	create_storage()
+	create_storage(type = storage_type)
 
 	PopulateContents()
 

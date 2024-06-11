@@ -64,8 +64,13 @@
 
 	/// If TRUE, chat messages for inserting/removing items will not be shown.
 	var/silent = FALSE
-	/// play a rustling sound when interacting with the bag
-	var/rustle_sound = TRUE
+
+	/// Sound played when first opened.
+	var/open_sound = SFX_RUSTLE
+	/// Sound played when closed.
+	var/close_sound = null
+	/// Sound played when interacting with contents.
+	var/rustle_sound = SFX_RUSTLE
 
 	/// alt click takes an item out instead of opening up storage
 	var/quickdraw = FALSE
@@ -310,6 +315,18 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(QDELETED(to_insert) || !isitem(to_insert))
 		return FALSE
 
+	if(to_insert.item_flags & ABSTRACT)
+		return FALSE
+
+	if(parent.flags_1 & HOLOGRAM_1)
+		if(!(to_insert.flags_1 & HOLOGRAM_1))
+			return FALSE
+	else if(to_insert.flags_1 & HOLOGRAM_1)
+		return FALSE
+
+	if(user && !user.canUnequipItem(to_insert))
+		return FALSE
+
 	if(locked && !force)
 		return FALSE
 
@@ -380,6 +397,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(!can_insert(to_insert, user, force = force))
 		return FALSE
+
+	// This ensures the item doesn't play its dropped sound. Also just cleaner than relying on the item doMove() override.
+	user?.temporarilyRemoveItemFromInventory(to_insert, TRUE)
 
 	to_insert.item_flags |= IN_STORAGE
 	to_insert.forceMove(real_location)
@@ -473,7 +493,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	if(rustle_sound)
-		playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+		playsound(parent, rustle_sound, 50, TRUE, -5)
 
 	to_chat(user, span_notice("You put [thing] [insert_preposition]to [parent]."))
 
@@ -487,8 +507,16 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param obj/item/thing the object we're removing
  * @param atom/newLoc where we're placing the item
  * @param silent if TRUE, we won't play any exit sounds
+ * @param user the mob performing the action
  */
-/datum/storage/proc/attempt_remove(obj/item/thing, atom/newLoc, silent = FALSE)
+/datum/storage/proc/attempt_remove(obj/item/thing, atom/newLoc, silent = FALSE, mob/living/user)
+	SHOULD_NOT_SLEEP(TRUE)
+	if(isitem(parent))
+		var/obj/item/item_loc = parent
+		if(item_loc.item_flags & IN_STORAGE)
+			if(!silent && user)
+				to_chat(user, span_warning("You cannot remove an object from [parent] while it is within another object."))
+			return FALSE
 
 	if(istype(thing) && ismob(parent.loc))
 		var/mob/mobparent = parent.loc
@@ -499,7 +527,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		thing.forceMove(newLoc)
 
 		if(rustle_sound && !silent)
-			playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+			playsound(parent, rustle_sound, 50, TRUE, -5)
 	else
 		thing.moveToNullspace()
 
@@ -699,7 +727,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		to_chat(user, span_notice("You dump the contents of [parent] into [dest_object]."))
 
 		if(rustle_sound)
-			playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+			playsound(parent, rustle_sound, 50, TRUE, -5)
 
 		for(var/obj/item/to_dump in real_location)
 			dest_object.atom_storage.attempt_insert(to_dump, user)
@@ -898,8 +926,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		if(animated)
 			animate_parent()
 
-		if(rustle_sound)
-			playsound(parent, SFX_RUSTLE, 50, TRUE, -5)
+		if(open_sound)
+			playsound(parent, open_sound, 50, TRUE, -5)
 
 		return TRUE
 
@@ -1008,6 +1036,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	toshow.client.screen -= boxes
 	toshow.client.screen -= closer
 	toshow.client.screen -= real_location.contents
+
+	if(!length(is_using) && close_sound)
+		playsound(parent, close_sound, 50, TRUE, -5)
 
 /datum/storage/proc/action_trigger(datum/signal_source, datum/action/source)
 	SIGNAL_HANDLER

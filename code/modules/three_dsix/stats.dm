@@ -1,11 +1,11 @@
 /datum/gurps_stats
 	var/mob/living/owner
 
-	// Higher is better with stats. 10 is the baseline.
-	VAR_PRIVATE/strength = 10
-	VAR_PRIVATE/dexterity = 10
-	VAR_PRIVATE/intelligence = 10
-	VAR_PRIVATE/endurance = 10
+	// Higher is better with stats. 11 is the baseline.
+	VAR_PRIVATE/strength = STATS_BASELINE_VALUE
+	VAR_PRIVATE/dexterity = STATS_BASELINE_VALUE
+	VAR_PRIVATE/intelligence = STATS_BASELINE_VALUE
+	VAR_PRIVATE/endurance = STATS_BASELINE_VALUE
 
 	/// A lazylist
 	VAR_PRIVATE/list/modifiers = list(

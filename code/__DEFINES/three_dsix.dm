@@ -14,3 +14,6 @@
 
 // Skill sources
 #define SKILL_SOURCE_COMBAT_MODE "_combat_mode"
+
+/// The baseline value for a stat.
+#define STATS_BASELINE_VALUE 11

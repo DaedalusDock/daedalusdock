@@ -1049,7 +1049,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Set damage and find hit bodypart using weighted rng
 	var/target_zone = deprecise_zone(user.zone_selected)
 	var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
-	var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (target.gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
+	var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(10, STRENGTH, SKILL_MELEE_COMBAT, (-target.gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), -7) : SUCCESS
 	// If we succeeded, hit the target area.
 	var/attacking_zone = (roll >= SUCCESS) ? target_zone : target.get_random_valid_zone()
 	var/obj/item/bodypart/affecting

@@ -250,7 +250,7 @@
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
 
-	var/roll = stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, target.gurps_stats.get_skill(SKILL_MELEE_COMBAT))
+	var/roll = stat_roll(10, STRENGTH, SKILL_MELEE_COMBAT, -target.gurps_stats.get_skill(SKILL_MELEE_COMBAT))
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)

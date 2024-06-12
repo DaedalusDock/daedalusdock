@@ -6,30 +6,112 @@
  * * requirement (int) The baseline value required to roll a Success.
  * * stat (string) The stat, if applicable, to take into account.
  * * skill (string) The skill, if applicable, to take into account.
- * * modifier (int) A modifier applied to the value after roll. Higher means the roll is more difficult.
- * * crit_fail_modifier (int) A value added to requirement, which dictates the crit fail threshold.
+ * * modifier (int) A modifier applied to the value after roll. Lower means the roll is more difficult.
+ * * crit_fail_modifier (int) A value subtracted from the requirement, which dictates the crit fail threshold.
  */
-/mob/living/proc/stat_roll(requirement = 10, stat, skill, modifier, crit_fail_modifier = 10)
-	var/stat_mod = stat ? (gurps_stats.get_stat(stat) - 10) : 0
-	var/skill_mod = skill ? -(gurps_stats.get_skill(skill)) : 0
+/mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, stat, skill, modifier = 0, crit_fail_modifier = -10)
+	var/stat_mod = stat ? (gurps_stats.get_stat(stat) - STATS_BASELINE_VALUE) : 0
+	var/skill_mod = skill ? gurps_stats.get_skill(skill) : 0
 
-	requirement += stat_mod
+	requirement -= stat_mod
 
 	return gurps_roll(requirement, (skill_mod + modifier), crit_fail_modifier)
 
-/proc/gurps_roll(requirement = 10, modifier, crit_fail_modifier = 10)
+// Handy probabilities for you!
+// 3 - 100.00
+// 4 - 99.54
+// 5 - 98.15
+// 6 - 95.37
+// 7 - 90.74
+// 8 - 83.80
+// 9 - 74.07
+// 10 - 62.50
+// 11 - 50.00
+// 12 - 37.50
+// 13 - 25.93
+// 14 - 16.20
+// 15 - 9.26
+// 16 - 4.63
+// 17 - 1.85
+// 18 - 0.46
+/proc/gurps_roll(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10)
 	var/dice = roll("3d6") + modifier
-	var/crit_success = max((requirement - 10), 5)
-	var/crit_fail = min((requirement + crit_fail_modifier), 17)
+	var/crit_fail = max((requirement + crit_fail_modifier), 4)
+	var/crit_success = min((requirement + 7), 16)
 
-	// to_chat(world, span_adminnotice("<br>ROLL: [dice]<br>SKILL: [skill_mod] | MOD: [modifier]<br>LOWEST POSSIBLE: [3 + skill_mod + modifier]<br>HIGHEST POSSIBLE:[18 + skill_mod + modifier]<br>CRIT SUCCESS: [crit_success]<br>SUCCESS: [requirement]<br>FAIL: [requirement+1]<br>CRIT FAIL:[crit_fail]<br>~~~~~~~~~~~~~~~"))
+	// var/out = {"
+	// ROLL: [dice]
+	// SUCCESS PROB: %[round(dice_probability(3, 6, requirement - modifier), 0.01)]
+	// MOD: [modifier]
+	// LOWEST POSSIBLE: [3 + modifier]
+	// HIGHEST POSSIBLE:[18 + modifier]
+	// CRIT SUCCESS: [crit_success]
+	// SUCCESS: [requirement]
+	// FAIL: [requirement-1]
+	// CRIT FAIL:[crit_fail]
+	// ~~~~~~~~~~~~~~~"}
+	// to_chat(world, span_adminnotice(out))
 
-	if(dice <= requirement)
-		if(dice <= crit_success)
+	if(dice >= requirement)
+		if(dice >= crit_success)
 			return CRIT_SUCCESS
 		return SUCCESS
 
 	else
-		if(dice >= crit_fail)
+		if(dice <= crit_fail)
 			return CRIT_FAILURE
 		return FAILURE
+
+/// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
+/proc/dice_probability(num, sides, desired)
+	var/static/list/outcomes_cache = new /list(0, 0)
+	var/static/list/desired_cache = list()
+
+	. = desired_cache["[num][sides][desired]"]
+	if(!isnull(.))
+		return .
+
+	if(desired < num)
+		. = desired_cache["[num][sides][desired]"] = 0
+		return
+
+	if(desired > num * sides)
+		. = desired_cache["[num][sides][desired]"] = 100
+		return
+
+	if(num > length(outcomes_cache))
+		outcomes_cache.len = num
+
+	if(sides > length(outcomes_cache[num]))
+		if(islist(outcomes_cache[num]))
+			outcomes_cache[num]:len = sides
+		else
+			outcomes_cache[num] = new /list(sides)
+
+	var/list/outcomes = outcomes_cache[num][sides]
+	if(isnull(outcomes))
+		outcomes = outcomes_cache[num][sides] = dice_outcome_map(num, sides)
+
+	var/favorable_outcomes = 0
+	for(var/i in desired to num*sides)
+		favorable_outcomes += outcomes[i]
+
+	. = desired_cache["[num][sides][desired]"] = (favorable_outcomes / (sides ** num)) * 100
+
+/// Certified LummoxJR code, this returns an array which is a map of outcomes to roll [index] value.
+/proc/dice_outcome_map(n, sides)
+	var/i,j,k
+	var/list/outcomes = new(sides)
+	var/list/next
+	// 1st die
+	for(i in 1 to sides)
+		outcomes[i] = 1
+	for(k in 2 to n)
+		next = new(k*sides)
+		for(i in 1 to k-1)
+			next[i] = 0
+		for(i in 1 to sides)
+			for(j in k-1 to length(outcomes))
+				next[i+j] += outcomes[j]
+		outcomes = next
+	return outcomes

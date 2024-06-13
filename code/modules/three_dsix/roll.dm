@@ -5,17 +5,20 @@
  * args:
  * * requirement (int) The baseline value required to roll a Success.
  * * stat (string) The stat, if applicable, to take into account.
- * * skill (string) The skill, if applicable, to take into account.
  * * modifier (int) A modifier applied to the value after roll. Lower means the roll is more difficult.
  * * crit_fail_modifier (int) A value subtracted from the requirement, which dictates the crit fail threshold.
  */
-/mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, stat, skill, modifier = 0, crit_fail_modifier = -10)
-	var/stat_mod = stat ? (gurps_stats.get_stat(stat) - STATS_BASELINE_VALUE) : 0
-	var/skill_mod = skill ? gurps_stats.get_skill(skill) : 0
+/mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender)
+	var/skill_mod = skill_path ? gurps_stats.get_skill_modifier(skill_path) : 0
+	var/stat_mod = skill_path ? gurps_stats.get_stat_modifier(initial(skill_path.parent_stat_type)) : 0
+
+	if(defender && skill_path)
+		skill_mod -= defender.gurps_stats?.get_skill_modifier(skill_path) || 0
+		stat_mod += defender.gurps_stats?.get_stat_modifier(initial(skill_path.parent_stat_type)) || 0
 
 	requirement -= stat_mod
 
-	return gurps_roll(requirement, (skill_mod + modifier), crit_fail_modifier)
+	return roll_3d6(requirement, (skill_mod + modifier), crit_fail_modifier)
 
 // Handy probabilities for you!
 // 3 - 100.00
@@ -34,23 +37,26 @@
 // 16 - 4.63
 // 17 - 1.85
 // 18 - 0.46
-/proc/gurps_roll(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10)
+/proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10)
 	var/dice = roll("3d6") + modifier
 	var/crit_fail = max((requirement + crit_fail_modifier), 4)
-	var/crit_success = min((requirement + 7), 16)
+	var/crit_success = min((requirement + 7), 17)
 
-	// var/out = {"
-	// ROLL: [dice]
-	// SUCCESS PROB: %[round(dice_probability(3, 6, requirement - modifier), 0.01)]
-	// MOD: [modifier]
-	// LOWEST POSSIBLE: [3 + modifier]
-	// HIGHEST POSSIBLE:[18 + modifier]
-	// CRIT SUCCESS: [crit_success]
-	// SUCCESS: [requirement]
-	// FAIL: [requirement-1]
-	// CRIT FAIL:[crit_fail]
-	// ~~~~~~~~~~~~~~~"}
-	// to_chat(world, span_adminnotice(out))
+	// if(dice >= requirement)
+	// 	var/list/out = list(
+	// 		"ROLL: [dice]",
+	// 		"SUCCESS PROB: %[round(dice_probability(3, 6, requirement - modifier), 0.01)]",
+	// 		"CRIT SP: %[round(dice_probability(3, 6, crit_success), 0.01)]",
+	// 		"MOD: [modifier]",
+	// 		"LOWEST POSSIBLE: [3 + modifier]",
+	// 		"HIGHEST POSSIBLE:[18 + modifier]",
+	// 		"CRIT SUCCESS: [crit_success]",
+	// 		"SUCCESS: [requirement]",
+	// 		"FAIL: [requirement-1]",
+	// 		"CRIT FAIL:[crit_fail]",
+	// 		"~~~~~~~~~~~~~~~"
+	// 	)
+	// 	to_chat(world, span_adminnotice(jointext(out, "")))
 
 	if(dice >= requirement)
 		if(dice >= crit_success)

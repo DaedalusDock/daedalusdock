@@ -185,7 +185,7 @@
 		if(HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
 			roll = SUCCESS
 		else
-			roll = user.stat_roll(10, STRENGTH, SKILL_MELEE_COMBAT, (-gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), -7)
+			roll = user.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7)
 
 		var/hit_zone
 		switch(roll)

@@ -221,7 +221,8 @@
 		rods_amount = 1
 		rods_broken = FALSE
 		var/obj/R = new rods_type(drop_location(), rods_broken)
-		transfer_fingerprints_to(R)
+		if(!QDELING(R))
+			transfer_fingerprints_to(R)
 		smoothing_flags = NONE
 		update_appearance()
 

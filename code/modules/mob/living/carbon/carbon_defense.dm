@@ -250,7 +250,7 @@
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
 
-	var/roll = stat_roll(10, /datum/rpg_skill/skirmish)
+	var/roll = stat_roll(10, /datum/rpg_skill/skirmish).outcome
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)

@@ -1,5 +1,5 @@
 /**
- * Perform a stat roll, returning one of: CRIT_SUCCESS, SUCCESS, CRIT_FAILURE, FAILURE
+ * Perform a stat roll, returning a roll result datum.
  *
  *
  * args:
@@ -9,6 +9,8 @@
  * * crit_fail_modifier (int) A value subtracted from the requirement, which dictates the crit fail threshold.
  */
 /mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender, probability_out)
+	RETURN_TYPE(/datum/roll_result)
+
 	var/skill_mod = skill_path ? stats.get_skill_modifier(skill_path) : 0
 	var/stat_mod = skill_path ? stats.get_stat_modifier(initial(skill_path.parent_stat_type)) : 0
 
@@ -18,7 +20,7 @@
 
 	requirement -= stat_mod
 
-	return roll_3d6(requirement, (skill_mod + modifier), crit_fail_modifier, probability_out = probability_out)
+	return roll_3d6(requirement, (skill_mod + modifier), crit_fail_modifier)
 
 // Handy probabilities for you!
 // 3 - 100.00
@@ -37,7 +39,9 @@
 // 16 - 4.63
 // 17 - 1.85
 // 18 - 0.46
-/proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10, probability_out)
+/proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10)
+	RETURN_TYPE(/datum/roll_result)
+
 	var/dice = roll("3d6") + modifier
 	var/crit_fail = max((requirement + crit_fail_modifier), 4)
 	var/crit_success = min((requirement + 7), 17)
@@ -58,21 +62,31 @@
 	// 	)
 	// 	to_chat(world, span_adminnotice(jointext(out, "")))
 
-	if(probability_out)
-		if(!ispointer(probability_out))
-			stack_trace("Bad pointer received.")
-		else
-			*probability_out = round(dice_probability(3, 6, requirement - modifier), 0.01)
+	var/datum/roll_result/result = new()
+	result.success_prob = dice_probability(3, 6, requirement - modifier)
+	result.crit_success_prob = dice_probability(3, 6, crit_success)
 
 	if(dice >= requirement)
 		if(dice >= crit_success)
-			return CRIT_SUCCESS
-		return SUCCESS
+			result.outcome = CRIT_SUCCESS
+		else
+			result.outcome = SUCCESS
 
 	else
 		if(dice <= crit_fail)
-			return CRIT_FAILURE
-		return FAILURE
+			result.outcome = CRIT_FAILURE
+		else
+			result.outcome = FAILURE
+
+	return result
+
+/datum/roll_result
+	/// Outcome of the roll, failure, success, etc.
+	var/outcome
+	/// The % chance to have rolled a success (0-100)
+	var/success_prob
+	/// The % chance to have rolled a critical success (0-100)
+	var/crit_success_prob
 
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)

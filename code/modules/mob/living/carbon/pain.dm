@@ -183,7 +183,7 @@
 	if(pain >= max(SHOCK_MIN_PAIN_TO_BEGIN, shock_stage * 0.8))
 		// A chance to fight through the pain.
 		if((shock_stage >= SHOCK_TIER_3) && stat == CONSCIOUS && !heart_attack_gaming && stats.cooldown_finished("shrug_off_pain"))
-			switch(stat_roll(12, /datum/rpg_skill/willpower))
+			switch(stat_roll(12, /datum/rpg_skill/willpower).outcome)
 				if(CRIT_SUCCESS)
 					to_chat(src, span_statsgood("WILLPOWER: Pain is temporary, I will not die on this day! (Shock reduced)"))
 					shock_stage = max(shock_stage - 15, 0)

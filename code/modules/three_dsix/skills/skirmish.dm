@@ -10,15 +10,7 @@
 		. += 1
 	if(user.incapacitated())
 		. -= 10 //lol fucked
-	if(user.has_status_effect(/datum/status_effect/confusion))
-		. -= -1
-	if(user.IsKnockdown())
-		. -= -2
 	if(user.eye_blurry)
-		. -= -1
-	if(user.is_blind())
-		. -= -4
-	if(HAS_TRAIT(user, TRAIT_CLUMSY))
 		. -= -1
 
 	if(!iscarbon(user))
@@ -33,3 +25,7 @@
 		. -= 2
 	else if(carbon_user.shock_stage > 10)
 		. -= 1
+
+	var/obj/item/organ/brain/brain = carbon_user.getorganslot(ORGAN_SLOT_BRAIN)
+	if(brain && (brain.damage >= (brain.maxHealth * brain.low_threshold)))
+		. -= 3

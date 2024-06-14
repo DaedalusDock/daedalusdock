@@ -22,7 +22,7 @@ DEFINE_INTERACTABLE(/mob/living)
 	var/health = MAX_LIVING_HEALTH
 
 	/// The container for stats and skills
-	var/datum/gurps_stats/gurps_stats
+	var/datum/stats/stats
 	///The holder for stamina handling
 	var/datum/stamina_container/stamina
 

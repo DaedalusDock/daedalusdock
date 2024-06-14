@@ -9,12 +9,12 @@
  * * crit_fail_modifier (int) A value subtracted from the requirement, which dictates the crit fail threshold.
  */
 /mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender)
-	var/skill_mod = skill_path ? gurps_stats.get_skill_modifier(skill_path) : 0
-	var/stat_mod = skill_path ? gurps_stats.get_stat_modifier(initial(skill_path.parent_stat_type)) : 0
+	var/skill_mod = skill_path ? stats.get_skill_modifier(skill_path) : 0
+	var/stat_mod = skill_path ? stats.get_stat_modifier(initial(skill_path.parent_stat_type)) : 0
 
 	if(defender && skill_path)
-		skill_mod -= defender.gurps_stats?.get_skill_modifier(skill_path) || 0
-		stat_mod += defender.gurps_stats?.get_stat_modifier(initial(skill_path.parent_stat_type)) || 0
+		skill_mod -= defender.stats?.get_skill_modifier(skill_path) || 0
+		stat_mod += defender.stats?.get_stat_modifier(initial(skill_path.parent_stat_type)) || 0
 
 	requirement -= stat_mod
 

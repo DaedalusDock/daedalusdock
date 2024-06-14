@@ -20,7 +20,7 @@
 
 	requirement -= stat_mod
 
-	return roll_3d6(requirement, (skill_mod + modifier), crit_fail_modifier)
+	return roll_3d6(requirement, (skill_mod + modifier), crit_fail_modifier, skill_type_used = skill_path)
 
 // Handy probabilities for you!
 // 3 - 100.00
@@ -39,7 +39,7 @@
 // 16 - 4.63
 // 17 - 1.85
 // 18 - 0.46
-/proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10)
+/proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10, datum/rpg_skill/skill_type_used)
 	RETURN_TYPE(/datum/roll_result)
 
 	var/dice = roll("3d6") + modifier
@@ -63,8 +63,11 @@
 	// 	to_chat(world, span_adminnotice(jointext(out, "")))
 
 	var/datum/roll_result/result = new()
-	result.success_prob = dice_probability(3, 6, requirement - modifier)
-	result.crit_success_prob = dice_probability(3, 6, crit_success)
+	result.success_prob = round(dice_probability(3, 6, requirement - modifier), 0.01)
+	result.crit_success_prob = round(dice_probability(3, 6, crit_success), 0.01)
+	result.roll = dice
+	result.requirement = requirement
+	result.skill_type_used = skill_type_used
 
 	if(dice >= requirement)
 		if(dice >= crit_success)
@@ -87,6 +90,33 @@
 	var/success_prob
 	/// The % chance to have rolled a critical success (0-100)
 	var/crit_success_prob
+	/// The numerical value rolled.
+	var/roll
+	/// The value required to pass the roll.
+	var/requirement
+
+	/// Typepath of the skill used. Optional.
+	var/datum/rpg_skill/skill_type_used
+
+/datum/roll_result/proc/create_tooltip(body)
+	if(!skill_type_used)
+		if(outcome >= SUCCESS)
+			body = span_statsgood(body)
+		else
+			body = span_statsbad(body)
+		return body
+
+	var/prefix
+	if(outcome >= SUCCESS)
+		prefix = span_statsgood("[uppertext(initial(skill_type_used.name))] (%[success_prob]):")
+		body = span_statsgood(body)
+	else
+		prefix = span_statsbad("[uppertext(initial(skill_type_used.name))] (%[success_prob]):")
+		body = span_statsbad(body)
+
+	var/span = (outcome >= SUCCESS) ? "good" : "bad"
+	var/tooltip_html = "Result:<span class='[span]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
+	. = "<span data-component=\"Tooltip\" data-innerHTML=\"[tooltip_html]\" class=\"tooltip\">[prefix]</span> [body]"
 
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)

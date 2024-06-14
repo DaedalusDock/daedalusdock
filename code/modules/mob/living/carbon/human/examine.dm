@@ -378,14 +378,14 @@
 			if(SUCCESS, CRIT_SUCCESS)
 				spawn(0)
 					if(possible_invisible_damage && living_user.stats.cooldown_finished("found_invisible_damage_[REF(src)]"))
-						to_chat(living_user, span_statsgood("ASCLEPIUS INSTINCT (%[result.success_prob]): Something is not right, this person is not well. You can feel it in your very core."))
+						to_chat(living_user, result.create_tooltip("Something is not right, this person is not well. You can feel it in your very core."))
 						living_user.stats.set_cooldown("found_invisible_damage_[REF(src)]", INFINITY) // Never again
 
 					else if(length(fucked_reasons))
-						to_chat(living_user, span_statsgood("ASCLEPIUS INSTINCT (%[result.success_prob]): [t_He] does not look long for this world. [pick_weight(fucked_reasons)]"))
+						to_chat(living_user, result.create_tooltip("[t_He] does not look long for this world. [pick_weight(fucked_reasons)]"))
 
 					else
-						to_chat(living_user, span_statsgood("ASCLEPIUS INSTINCT (%[result.success_prob]): [t_He] appears to be in great health, a testament to the endurance of humanity in these trying times."))
+						to_chat(living_user, result.create_tooltip("[t_He] appears to be in great health, a testament to the endurance of humanity in these trying times."))
 
 		living_user.stats.set_cooldown("examine_medical_flavortext_[REF(src)]", 20 MINUTES)
 

@@ -183,16 +183,18 @@
 	if(pain >= max(SHOCK_MIN_PAIN_TO_BEGIN, shock_stage * 0.8))
 		// A chance to fight through the pain.
 		if((shock_stage >= SHOCK_TIER_3) && stat == CONSCIOUS && !heart_attack_gaming && stats.cooldown_finished("shrug_off_pain"))
-			switch(stat_roll(12, /datum/rpg_skill/willpower).outcome)
+			var/datum/roll_result/result = stat_roll(12, /datum/rpg_skill/willpower)
+			switch(result.outcome)
 				if(CRIT_SUCCESS)
-					to_chat(src, span_statsgood("WILLPOWER: Pain is temporary, I will not die on this day! (Shock reduced)"))
+
+					to_chat(src, result.create_tooltip("Pain is temporary, I will not die on this day! (Shock reduced)"))
 					shock_stage = max(shock_stage - 15, 0)
 					stats.set_cooldown("shrug_off_pain", 60 SECONDS)
 					return
 
 				if(SUCCESS)
 					shock_stage = max(shock_stage - 5, 0)
-					to_chat(src, span_statsgood("WILLPOWER: Not here, not now. (Pain shrugged off)"))
+					to_chat(src, result.create_tooltip("Not here, not now. (Pain shrugged off)"))
 					stats.set_cooldown("shrug_off_pain", 30 SECONDS)
 					return
 
@@ -202,7 +204,7 @@
 
 				if(CRIT_FAILURE)
 					shock_stage = min(shock_stage + 1, SHOCK_MAXIMUM)
-					to_chat(src, span_statsbad("WILLPOWER: I'm going to die here. (Shock increased)"))
+					to_chat(src, result.create_tooltip("I'm going to die here. (Shock increased)"))
 					stats.set_cooldown("shrug_off_pain", 30 SECONDS)
 					// Do not return
 

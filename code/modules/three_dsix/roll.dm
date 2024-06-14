@@ -106,17 +106,45 @@
 			body = span_statsbad(body)
 		return body
 
+	var/prob_string
+	switch(success_prob)
+		if(0 to 12)
+			prob_string = "Impossible"
+		if(13 to 24)
+			prob_string = "Legendary"
+		if(25 to 36)
+			prob_string = "Formidable"
+		if(37 to 48)
+			prob_string = "Challenging"
+		if(49 to 60)
+			prob_string = "Hard"
+		if(61 to 72)
+			prob_string = "Medium"
+		if(73 to 84)
+			prob_string = "Easy"
+		if(85 to 100)
+			prob_string = "Trivial"
+
+	var/finished_prob_string = "<span style='color: #bbbbad;font-style: italic'>\[[prob_string]: [outcome >= SUCCESS ? "Success" : "Failure"]\]</span>"
 	var/prefix
 	if(outcome >= SUCCESS)
-		prefix = span_statsgood("[uppertext(initial(skill_type_used.name))] (%[success_prob]):")
+		prefix = "<span style='font-style: italic;color: #03fca1'>[uppertext(initial(skill_type_used.name))]</span>"
 		body = span_statsgood(body)
 	else
-		prefix = span_statsbad("[uppertext(initial(skill_type_used.name))] (%[success_prob]):")
+		prefix = "<span style='font-style: italic;color: #fc4b32'>[uppertext(initial(skill_type_used.name))]</span>"
 		body = span_statsbad(body)
 
-	var/span = (outcome >= SUCCESS) ? "statsGood" : "statsBad"
-	var/tooltip_html = "<span>Result: <span class='[span]' style='font-style: normal' ><b>[roll]</b></span> | Check: <b>[requirement]</b>"
-	. = "<span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[prefix]</span> [body]"
+	var/color = (outcome >= SUCCESS) ? "#03fca1" : "#fc4b32"
+	var/tooltip_html = "<span>Result: <span style='font-weight: bold;color: [color]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
+	var/seperator = "<span style='color: #bbbbad;font-style: italic'>: </span>"
+
+	return "[prefix] <span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
+
+/mob/living/verb/testroll()
+	name = "testroll"
+
+	var/datum/roll_result/result = stat_roll(11, /datum/rpg_skill/skirmish)
+	to_chat(usr, result.create_tooltip("This message is a test, and not indicative of the final product."))
 
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)

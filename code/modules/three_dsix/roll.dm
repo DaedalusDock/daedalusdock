@@ -8,7 +8,7 @@
  * * modifier (int) A modifier applied to the value after roll. Lower means the roll is more difficult.
  * * crit_fail_modifier (int) A value subtracted from the requirement, which dictates the crit fail threshold.
  */
-/mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender, probability_out)
+/mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender)
 	RETURN_TYPE(/datum/roll_result)
 
 	var/skill_mod = skill_path ? stats.get_skill_modifier(skill_path) : 0
@@ -114,9 +114,9 @@
 		prefix = span_statsbad("[uppertext(initial(skill_type_used.name))] (%[success_prob]):")
 		body = span_statsbad(body)
 
-	var/span = (outcome >= SUCCESS) ? "good" : "bad"
-	var/tooltip_html = "Result:<span class='[span]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
-	. = "<span data-component=\"Tooltip\" data-innerHTML=\"[tooltip_html]\" class=\"tooltip\">[prefix]</span> [body]"
+	var/span = (outcome >= SUCCESS) ? "statsGood" : "statsBad"
+	var/tooltip_html = "<span>Result: <span class='[span]' style='font-style: normal' ><b>[roll]</b></span> | Check: <b>[requirement]</b>"
+	. = "<span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[prefix]</span> [body]"
 
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)

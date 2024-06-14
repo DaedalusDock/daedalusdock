@@ -8,7 +8,7 @@
  * * modifier (int) A modifier applied to the value after roll. Lower means the roll is more difficult.
  * * crit_fail_modifier (int) A value subtracted from the requirement, which dictates the crit fail threshold.
  */
-/mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender)
+/mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender, probability_out)
 	var/skill_mod = skill_path ? stats.get_skill_modifier(skill_path) : 0
 	var/stat_mod = skill_path ? stats.get_stat_modifier(initial(skill_path.parent_stat_type)) : 0
 
@@ -18,7 +18,7 @@
 
 	requirement -= stat_mod
 
-	return roll_3d6(requirement, (skill_mod + modifier), crit_fail_modifier)
+	return roll_3d6(requirement, (skill_mod + modifier), crit_fail_modifier, probability_out = probability_out)
 
 // Handy probabilities for you!
 // 3 - 100.00
@@ -37,7 +37,7 @@
 // 16 - 4.63
 // 17 - 1.85
 // 18 - 0.46
-/proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10)
+/proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10, probability_out)
 	var/dice = roll("3d6") + modifier
 	var/crit_fail = max((requirement + crit_fail_modifier), 4)
 	var/crit_success = min((requirement + 7), 17)
@@ -57,6 +57,12 @@
 	// 		"~~~~~~~~~~~~~~~"
 	// 	)
 	// 	to_chat(world, span_adminnotice(jointext(out, "")))
+
+	if(probability_out)
+		if(!ispointer(probability_out))
+			stack_trace("Bad pointer received.")
+		else
+			*probability_out = round(dice_probability(3, 6, requirement - modifier), 0.01)
 
 	if(dice >= requirement)
 		if(dice >= crit_success)

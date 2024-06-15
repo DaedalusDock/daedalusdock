@@ -1190,6 +1190,8 @@
 #include "code\datums\status_effects\debuffs\jitteriness.dm"
 #include "code\datums\status_effects\debuffs\speech_debuffs.dm"
 #include "code\datums\status_effects\debuffs\strandling.dm"
+#include "code\datums\status_effects\skill_modifiers\negative.dm"
+#include "code\datums\status_effects\skill_modifiers\rpg_modifiers.dm"
 #include "code\datums\storage\storage.dm"
 #include "code\datums\storage\subtypes\bag_of_holding.dm"
 #include "code\datums\storage\subtypes\cards.dm"

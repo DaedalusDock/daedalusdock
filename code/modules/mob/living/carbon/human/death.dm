@@ -46,6 +46,16 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 	to_chat(src, span_warning("You have died. Barring complete bodyloss, you can in most cases be revived by other players. If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab."))
 
+	for(var/mob/living/L in viewers(src, world.view) - src)
+		if(L.is_blind() || L.stat != CONSCIOUS || !L.client)
+			continue
+
+		var/datum/roll_result/result = L.stat_roll(7, /datum/rpg_skill/willpower)
+		switch(result.outcome)
+			if(FAILURE, CRIT_FAILURE)
+				if(L.apply_status_effect(/datum/status_effect/skill_mod/witness_death))
+					to_chat(L, result.create_tooltip("For but a moment, there is nothing. Nothing but the gnawing realisation of what you have just witnessed."))
+
 /mob/living/carbon/human/proc/makeSkeleton()
 	ADD_TRAIT(src, TRAIT_DISFIGURED, TRAIT_GENERIC)
 	set_species(/datum/species/skeleton)

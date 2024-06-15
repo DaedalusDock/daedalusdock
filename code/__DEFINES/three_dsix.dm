@@ -13,6 +13,9 @@
 #define SKILL_SOURCE_BLINDNESS "Blind"
 /// Clumsy
 #define SKILL_SOURCE_CLUMSY "Clumsy"
-
+/// Overcome witnessing a death
+#define SKILL_SOURCE_DEATH_RESOLVE "Overcome witnessing a death"
+/// Witness a death
+#define SKILL_SOURCE_WITNESS_DEATH "Witnessed a death"
 /// The baseline value for a stat.
 #define STATS_BASELINE_VALUE 11

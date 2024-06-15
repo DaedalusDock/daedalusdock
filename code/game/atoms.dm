@@ -766,7 +766,7 @@
 
 	if(isliving(user) && !ismovable(loc) && !ismob(src))
 		var/mob/living/living_user = user
-		if(living_user.stats.cooldown_finished("examine_forensic_evidence_present_[REF(src)]") && !return_blood_dna() && (return_fibers() || return_fingerprints() || return_trace_DNA() || return_gunshot_residue()))
+		if(living_user.stats.cooldown_finished("examine_forensic_evidence_present_[REF(src)]") && !return_blood_DNA() && (return_fibers() || return_fingerprints() || return_trace_DNA() || return_gunshot_residue()))
 			var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/forensics)
 			switch(result.outcome)
 				if(CRIT_SUCCESS, SUCCESS)

@@ -125,7 +125,18 @@
 		if(85 to 100)
 			prob_string = "Trivial"
 
-	var/finished_prob_string = "<span style='color: #bbbbad;font-style: italic'>\[[prob_string]: [outcome >= SUCCESS ? "Success" : "Failure"]\]</span>"
+	var/success = ""
+	switch(outcome)
+		if(CRIT_SUCCESS)
+			success = "Critical Success"
+		if(SUCCESS)
+			success = "Success"
+		if(FAILURE)
+			success = "Failure"
+		if(CRIT_FAILURE)
+			success = "Critical Failure"
+
+	var/finished_prob_string = "<span style='color: #bbbbad;font-style: italic'>\[[prob_string]: [success]\]</span>"
 	var/prefix
 	if(outcome >= SUCCESS)
 		prefix = "<span style='font-style: italic;color: #03fca1'>[uppertext(initial(skill_type_used.name))]</span>"

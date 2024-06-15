@@ -4410,6 +4410,7 @@
 #include "code\modules\three_dsix\stats.dm"
 #include "code\modules\three_dsix\skills\_skill.dm"
 #include "code\modules\three_dsix\skills\anatomia.dm"
+#include "code\modules\three_dsix\skills\coordination.dm"
 #include "code\modules\three_dsix\skills\forensics.dm"
 #include "code\modules\three_dsix\skills\skirmish.dm"
 #include "code\modules\three_dsix\skills\willpower.dm"

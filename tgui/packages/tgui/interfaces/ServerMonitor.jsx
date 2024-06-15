@@ -1,14 +1,14 @@
 import { useBackend, useLocalState } from '../backend';
 import {
+  Button,
+  Divider,
+  Flex,
+  Input,
+  LabeledList,
+  NoticeBox,
   Section,
   Stack,
-  Input,
-  Button,
   Table,
-  LabeledList,
-  Flex,
-  Divider,
-  NoticeBox,
 } from '../components';
 import { Window } from '../layouts';
 

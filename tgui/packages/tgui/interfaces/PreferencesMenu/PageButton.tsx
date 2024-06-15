@@ -1,14 +1,15 @@
 import { ReactNode } from 'react';
+
 import { Button } from '../../components';
 
 export const PageButton = <P extends unknown>(props: {
+  children?: ReactNode;
   currentPage: P;
-  page: P;
   otherActivePages?: P[];
 
-  setPage: (page: P) => void;
+  page: P;
 
-  children?: ReactNode;
+  setPage: (page: P) => void;
 }) => {
   const pageIsActive =
     props.currentPage === props.page ||

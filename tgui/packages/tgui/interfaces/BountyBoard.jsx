@@ -1,5 +1,4 @@
 import { useBackend } from '../backend';
-import { UserDetails } from './Vending';
 import {
   BlockQuote,
   Box,
@@ -13,6 +12,7 @@ import {
 } from '../components';
 import { formatMoney } from '../format';
 import { Window } from '../layouts';
+import { UserDetails } from './Vending';
 
 export const BountyBoard = (props) => {
   return (
@@ -94,7 +94,7 @@ export const BountyBoardContent = (props) => {
                   {applicants?.map(
                     (applicant) =>
                       applicant.request_id === request.acc_number && (
-                        <Flex>
+                        <Flex key={applicant.name}>
                           <Flex.Item
                             grow={1}
                             p={0.5}

@@ -1,21 +1,22 @@
-import { LabeledList, Box, Button } from '../../components';
+import { Box, Button, LabeledList } from '../../components';
 
 export type Gasmix = {
+  gases: [string, string, number][];
   name?: string;
-  gases: [string, string, number][]; // ID, name, and amount.
-  temperature: number;
-  volume: number;
   pressure: number;
-  total_moles: number;
   reference: string;
+  // ID, name, and amount.
+  temperature: number;
+  total_moles: number;
+  volume: number;
 };
 
 type GasmixParserProps = {
-  gasmix: Gasmix;
   gasesOnClick?: (gas_id: string) => void;
+  gasmix: Gasmix;
+  pressureOnClick?: () => void;
   temperatureOnClick?: () => void;
   volumeOnClick?: () => void;
-  pressureOnClick?: () => void;
 };
 
 export const GasmixParser = (props: GasmixParserProps) => {

@@ -1,4 +1,5 @@
 import { classes } from 'common/react';
+
 import { useBackend } from '../../backend';
 import {
   BlockQuote,
@@ -68,10 +69,10 @@ const notIn = function <T>(set: Set<T>) {
 };
 
 const FoodList = (props: {
+  className: string;
   food: Food[];
   icon: string;
   name: string;
-  className: string;
 }) => {
   if (props.food.length === 0) {
     return null;

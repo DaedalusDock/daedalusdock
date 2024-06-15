@@ -9,13 +9,14 @@
  * @license MIT
  */
 
-import { classes } from 'common/react';
-import { Component } from 'react';
-import { marked } from 'marked';
-import { useBackend } from '../backend';
-import { Box, Flex, Tabs, TextArea, Table } from '../components';
-import { Window } from '../layouts';
 import { clamp } from 'common/math';
+import { classes } from 'common/react';
+import { marked } from 'marked';
+import { Component } from 'react';
+
+import { useBackend } from '../backend';
+import { Box, Flex, Table, Tabs, TextArea } from '../components';
+import { Window } from '../layouts';
 import { sanitizeText } from '../sanitize';
 const MAX_PAPER_LENGTH = 5000; // Question, should we send this with ui_data?
 

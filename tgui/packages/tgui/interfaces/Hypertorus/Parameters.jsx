@@ -1,4 +1,5 @@
 import { toFixed } from 'common/math';
+
 import { useBackend } from '../../backend';
 import { Flex, LabeledControls, RoundGauge, Section } from '../../components';
 import { formatSiUnit } from '../../format';

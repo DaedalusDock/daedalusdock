@@ -1,8 +1,8 @@
 import { Component, createRef } from 'react';
 
 export class TrackOutsideClicks extends Component<{
-  onOutsideClick: () => void;
   children: React.ReactNode;
+  onOutsideClick: () => void;
 }> {
   ref = createRef<HTMLDivElement>();
 

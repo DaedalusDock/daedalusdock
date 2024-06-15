@@ -4,30 +4,30 @@ import {
   Box,
   Button,
   Icon,
-  Modal,
-  Section,
   LabeledList,
+  Modal,
   NoticeBox,
+  Section,
   Stack,
 } from '../components';
-import { Window } from '../layouts';
 import { formatTime } from '../format';
+import { Window } from '../layouts';
 
 type SiteData = {
-  name: string;
-  ref: string;
+  band_info: Record<string, string>;
   description: string;
   distance: number;
-  band_info: Record<string, string>;
+  name: string;
+  ref: string;
   revealed: boolean;
 };
 
 type ScanData = {
-  scan_power: number;
-  point_scan_eta: number;
+  deep_scan_complete: boolean;
   deep_scan_eta: number;
   point_scan_complete: boolean;
-  deep_scan_complete: boolean;
+  point_scan_eta: number;
+  scan_power: number;
   site_data: SiteData;
 };
 
@@ -141,9 +141,9 @@ const ScanSelectionSection = (_) => {
 };
 
 type ScanInProgressData = {
-  scan_time: number;
-  scan_power: number;
   scan_description: string;
+  scan_power: number;
+  scan_time: number;
 };
 
 const ScanInProgressModal = (_) => {
@@ -178,13 +178,13 @@ const ScanInProgressModal = (_) => {
 };
 
 type ExoscannerConsoleData = {
+  failed: boolean;
+  possible_sites: Array<SiteData>;
+  scan_conditions: Array<string>;
   scan_in_progress: boolean;
   scan_power: number;
-  possible_sites: Array<SiteData>;
-  wide_scan_eta: number;
   selected_site: string;
-  failed: boolean;
-  scan_conditions: Array<string>;
+  wide_scan_eta: number;
 };
 
 export const ExoscannerConsole = (_) => {

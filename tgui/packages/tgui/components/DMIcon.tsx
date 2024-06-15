@@ -1,8 +1,8 @@
 import { Component, ReactNode } from 'react';
 
-import { logger } from '../logging';
 import { resolveAsset } from '../assets';
 import { fetchRetry } from '../http';
+import { logger } from '../logging';
 import { BoxProps } from './Box';
 import { Image } from './Image';
 

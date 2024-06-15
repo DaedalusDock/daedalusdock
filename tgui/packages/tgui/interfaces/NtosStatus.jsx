@@ -1,6 +1,6 @@
 import { useBackend } from '../backend';
+import { Button, Input, Section } from '../components';
 import { NtosWindow } from '../layouts';
-import { Input, Section, Button } from '../components';
 
 export const NtosStatus = (props) => {
   const { act, data } = useBackend();

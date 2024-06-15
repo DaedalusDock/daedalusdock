@@ -13,12 +13,12 @@ import { Window } from '../layouts';
 
 type SimpleBotContext = {
   can_hack: number;
-  locked: number;
+  custom_controls: Controls;
   emagged: number;
   has_access: number;
+  locked: number;
   pai: Pai;
   settings: Settings;
-  custom_controls: Controls;
 };
 
 type Pai = {
@@ -27,10 +27,10 @@ type Pai = {
 };
 
 type Settings = {
-  power: number;
   airplane_mode: number;
   maintenance_lock: number;
   patrol_station: number;
+  power: number;
 };
 
 type Controls = {

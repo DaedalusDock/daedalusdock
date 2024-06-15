@@ -29,8 +29,8 @@ type Pai = {
   laws: string;
   master: string;
   name: string;
-  transmit: BooleanLike;
   receive: BooleanLike;
+  transmit: BooleanLike;
 };
 
 export const PaiCard = (_) => {

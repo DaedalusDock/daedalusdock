@@ -1,71 +1,72 @@
-import { useBackend } from '../../backend';
-import { Window } from '../../layouts';
-import { GenericUplink, Item } from './GenericUplink';
-import { Component } from 'react';
-import { fetchRetry } from '../../http';
-import { resolveAsset } from '../../assets';
 import { BooleanLike } from 'common/react';
-import { Box, Tabs, Button, Stack, Section, Tooltip } from '../../components';
-import { Objective, ObjectiveMenu } from './ObjectiveMenu';
+import { Component } from 'react';
+
+import { resolveAsset } from '../../assets';
+import { useBackend } from '../../backend';
+import { Box, Button, Section, Stack, Tabs, Tooltip } from '../../components';
+import { fetchRetry } from '../../http';
+import { Window } from '../../layouts';
 import {
   calculateProgression,
   calculateReputationLevel,
   reputationDefault,
   reputationLevelsTooltip,
 } from './calculateReputationLevel';
+import { GenericUplink, Item } from './GenericUplink';
+import { Objective, ObjectiveMenu } from './ObjectiveMenu';
 
 type UplinkItem = {
-  id: string;
-  name: string;
-  cost: number;
-  desc: string;
   category: string;
-  purchasable_from: number;
-  restricted: BooleanLike;
+  cost: number;
+  cost_override_string: string;
+  desc: string;
+  id: string;
   limited_stock: number;
+  name: string;
+  progression_minimum: number;
+  purchasable_from: number;
+  ref?: string;
+  restricted: BooleanLike;
   restricted_roles: string;
   restricted_species: string;
-  progression_minimum: number;
-  cost_override_string: string;
-  ref?: string;
 };
 
 type UplinkData = {
-  telecrystals: number;
-  progression_points: number;
-  lockable: BooleanLike;
-  current_expected_progression: number;
-  progression_scaling_deviance: number;
-  current_progression_scaling: number;
-  uplink_flag: number;
+  active_objectives: Objective[];
   assigned_role: string;
   assigned_species: string;
+  current_expected_progression: number;
+  current_progression_scaling: number;
+  current_stock: {
+    [key: string]: number;
+  };
   debug: BooleanLike;
   extra_purchasable: UplinkItem[];
   extra_purchasable_stock: {
     [key: string]: number;
   };
-  current_stock: {
-    [key: string]: number;
-  };
-
   has_objectives: BooleanLike;
   has_progression: BooleanLike;
-  potential_objectives: Objective[];
-  active_objectives: Objective[];
+  lockable: BooleanLike;
   maximum_active_objectives: number;
+
   maximum_potential_objectives: number;
+  potential_objectives: Objective[];
+  progression_points: number;
+  progression_scaling_deviance: number;
+  telecrystals: number;
+  uplink_flag: number;
 };
 
 type UplinkState = {
-  allItems: UplinkItem[];
   allCategories: string[];
+  allItems: UplinkItem[];
   currentTab: number;
 };
 
 type ServerData = {
-  items: UplinkItem[];
   categories: string[];
+  items: UplinkItem[];
 };
 
 type ItemExtraData = {

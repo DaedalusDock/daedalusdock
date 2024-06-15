@@ -1,25 +1,26 @@
 import { Color } from 'common/color';
 import { decodeHtmlEntities } from 'common/string';
 import { Component, createRef, RefObject } from 'react';
+
 import { useBackend } from '../backend';
 import { Box, Button, Flex } from '../components';
 import { Window } from '../layouts';
 
 type PaintCanvasProps = Partial<{
+  drawing_color: string | null;
+  editable: boolean;
+  height: number;
+  imageHeight: number;
+  imageWidth: number;
   onCanvasModifiedHandler: (data: PointData[]) => void;
   value: string[][];
   width: number;
-  height: number;
-  imageWidth: number;
-  imageHeight: number;
-  editable: boolean;
-  drawing_color: string | null;
 }>;
 
 type PointData = {
+  color: Color;
   x: number;
   y: number;
-  color: Color;
 };
 
 const fromDM = (data: string[][]) => {
@@ -193,17 +194,17 @@ type PaletteColor = {
 };
 
 type CanvasData = {
-  grid: string[][];
-  px_per_unit: number;
-  finalized: boolean;
-  name: string;
+  author: string | null;
+  date: string | null;
   editable: boolean;
+  finalized: boolean;
+  grid: string[][];
+  medium: string | null;
+  name: string;
   paint_tool_color: string | null;
   paint_tool_palette: PaletteColor[] | null;
-  author: string | null;
-  medium: string | null;
   patron: string | null;
-  date: string | null;
+  px_per_unit: number;
   show_plaque: boolean;
 };
 

@@ -1,14 +1,15 @@
+import { toFixed } from 'common/math';
+
 import { useBackend } from '../backend';
 import {
+  Box,
   Button,
   LabeledList,
+  NumberInput,
   ProgressBar,
   Section,
-  NumberInput,
-  Box,
 } from '../components';
 import { getGasColor, getGasLabel } from '../constants';
-import { toFixed } from 'common/math';
 import { Window } from '../layouts';
 
 const logScale = (value) => Math.log2(16 + Math.max(0, value)) - 4;

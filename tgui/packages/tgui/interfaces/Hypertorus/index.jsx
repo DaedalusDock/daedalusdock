@@ -1,6 +1,7 @@
 import { useBackend } from 'tgui/backend';
 import { Button, Collapsible, Flex, Section, Stack } from 'tgui/components';
 import { Window } from 'tgui/layouts';
+
 import { HypertorusSecondaryControls, HypertorusWasteRemove } from './Controls';
 import { HypertorusGases } from './Gases';
 import { HypertorusParameters } from './Parameters';

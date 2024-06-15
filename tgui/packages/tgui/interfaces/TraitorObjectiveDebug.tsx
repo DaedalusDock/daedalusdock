@@ -4,17 +4,17 @@ import { Window } from '../layouts';
 import { getReputation } from './Uplink/calculateReputationLevel';
 
 type Objective = {
-  name: string;
   description: string;
-  progression_minimum: number;
-  progression_maximum: number;
-  global_progression_limit_coeff: number;
   global_progression_influence_intensity: number;
+  global_progression_limit_coeff: number;
+  name: string;
+  progression_maximum: number;
+  progression_minimum: number;
   progression_reward: [number, number];
-  telecrystal_reward: [number, number];
   telecrystal_penalty: number;
-  weight: number;
+  telecrystal_reward: [number, number];
   type: string;
+  weight: number;
 };
 
 type ObjectiveList = {

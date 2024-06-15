@@ -105,6 +105,7 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     }
 
     let real_content;
+    /* eslint-disable react/no-danger */
     if (this.props.innerhtml) {
       real_content = (
         <span dangerouslySetInnerHTML={{ __html: this.props.innerhtml }} />

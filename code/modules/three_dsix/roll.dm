@@ -135,7 +135,7 @@
 		body = span_statsbad(body)
 
 	var/color = (outcome >= SUCCESS) ? "#03fca1" : "#fc4b32"
-	var/tooltip_html = "<span>Result: <span style='font-weight: bold;color: [color]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
+	var/tooltip_html = "[success_prob]% | Result: <span style='font-weight: bold;color: [color]'><b>[roll]</b></span> | Check: <b>[requirement]</b>"
 	var/seperator = "<span style='color: #bbbbad;font-style: italic'>: </span>"
 
 	return "[prefix] <span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"

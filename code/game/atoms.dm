@@ -764,6 +764,18 @@
 			else
 				. += span_alert("It looks empty.")
 
+	if(isliving(user) && !ismovable(loc) && !ismob(src))
+		var/mob/living/living_user = user
+		if(living_user.stats.cooldown_finished("examine_forensic_evidence_present_[REF(src)]") && !return_blood_dna() && (return_fibers() || return_fingerprints() || return_trace_DNA() || return_gunshot_residue()))
+			var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/forensics)
+			switch(result.outcome)
+				if(CRIT_SUCCESS, SUCCESS)
+					spawn(0)
+						var/text = isitem(src) ? "someone has held this item in the past" : "someone has been here before"
+						to_chat(living_user, result.create_tooltip("Perhaps it is a stray particle of dust, or a smudge on the surface. Whatever it is, you are certain [text]."))
+
+			living_user.stats.set_cooldown("examine_forensic_evidence_present_[REF(src)]", INFINITY)
+
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
 /**

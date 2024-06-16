@@ -89,6 +89,14 @@
 			],
 			"group": "build",
 			"label": "tgui: sonar"
+		},
+		{
+			"type": "opendream",
+			"problemMatcher": [
+				"$openDreamCompiler"
+			],
+			"group": "build",
+			"label": "OpenDream: compile daedalus.dme"
 		}
 	]
 }

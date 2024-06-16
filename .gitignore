@@ -208,6 +208,9 @@ libprof.so
 # Screenshot tests
 /artifacts
 
+# Running OpenDream locally
+daedalus.json
+
 # Codex Database
 codex.db
 codex.db-shm

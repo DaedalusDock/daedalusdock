@@ -1,7 +1,7 @@
 /mob/living/Initialize(mapload)
 	. = ..()
 	stamina = new(src)
-	gurps_stats = new(src)
+	stats = new(src)
 
 	register_init_signals()
 	if(unique_name)
@@ -27,7 +27,7 @@
 /mob/living/Destroy()
 	QDEL_NULL(z_eye)
 	QDEL_NULL(stamina)
-	QDEL_NULL(gurps_stats)
+	QDEL_NULL(stats)
 
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
@@ -1795,6 +1795,14 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			if(R)
 				R.end_metabolization(src)
 
+/mob/living/do_set_blindness(blindness_level)
+	. = ..()
+	switch(blindness_level)
+		if(BLIND_SLEEPING, BLIND_PHYSICAL)
+			stats?.set_skill_modifier(-4, /datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+		else
+			stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
 	if(new_buckled == buckled)
@@ -1939,13 +1947,13 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		set_lying_angle(pick(90, 270))
 		set_body_position(LYING_DOWN)
 		on_fall()
-
+		stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being floored. Called when the condition ends.
 /mob/living/proc/on_floored_end()
 	if(!resting)
 		get_up()
-
+		stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being handsblocked. Called when the condition starts.
 /mob/living/proc/on_handsblocked_start()

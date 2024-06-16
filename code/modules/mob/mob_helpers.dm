@@ -49,12 +49,12 @@ GLOBAL_LIST_INIT(bodyzone_miss_chance, list(
 ))
 
 GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
-	BODY_ZONE_HEAD = 3,
+	BODY_ZONE_HEAD = -3,
 	BODY_ZONE_CHEST = 0,
-	BODY_ZONE_R_ARM = 1,
-	BODY_ZONE_L_ARM = 1,
-	BODY_ZONE_R_LEG = 1,
-	BODY_ZONE_L_LEG = 1
+	BODY_ZONE_R_ARM = -1,
+	BODY_ZONE_L_ARM = -1,
+	BODY_ZONE_R_LEG = -1,
+	BODY_ZONE_L_LEG = -1
 ))
 
 /**

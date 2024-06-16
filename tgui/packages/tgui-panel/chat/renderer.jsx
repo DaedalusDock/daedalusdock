@@ -44,6 +44,7 @@ export const TGUI_CHAT_COMPONENTS = {
 export const TGUI_CHAT_ATTRIBUTES_TO_PROPS = {
   position: 'position',
   content: 'content',
+  innerhtml: 'innerhtml',
 };
 
 const findNearestScrollableParent = (startingNode) => {

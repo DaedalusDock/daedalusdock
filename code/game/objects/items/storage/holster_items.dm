@@ -1,6 +1,7 @@
 /obj/item/storage/belt/holster
 	alternate_worn_layer = UNDER_SUIT_LAYER
 	w_class = WEIGHT_CLASS_BULKY
+	storage_type = /datum/storage/holster
 
 /obj/item/storage/belt/holster/equipped(mob/user, slot, initial)
 	. = ..()
@@ -10,22 +11,6 @@
 /obj/item/storage/belt/holster/dropped(mob/user, silent)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_GUNFLIP, CLOTHING_TRAIT)
-
-/obj/item/storage/belt/holster/create_storage(
-		max_slots,
-		max_specific_storage,
-		max_total_storage,
-		numerical_stacking,
-		allow_quick_gather,
-		allow_quick_empty,
-		collection_mode,
-		attack_hand_interact,
-		list/canhold,
-		list/canthold,
-		type = /datum/storage/holster
-	)
-
-	return ..()
 
 /// Detective's shoulder holster.
 /obj/item/storage/belt/holster/shoulder

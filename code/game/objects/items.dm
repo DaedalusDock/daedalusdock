@@ -651,7 +651,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		return
 
 	//If the item is in a storage item, take it out
-	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE)
+	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE, user = src)
 	if(QDELETED(src)) //moving it out of the storage to the floor destroyed it.
 		return
 

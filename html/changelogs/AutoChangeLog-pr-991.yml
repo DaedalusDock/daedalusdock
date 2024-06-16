@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Dead and Unconscious mobs won't broadcast their examine.

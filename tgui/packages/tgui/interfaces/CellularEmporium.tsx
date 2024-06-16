@@ -1,12 +1,12 @@
 import { useBackend } from '../backend';
 import {
-  Button,
-  Section,
-  Icon,
-  Stack,
-  LabeledList,
   Box,
+  Button,
+  Icon,
+  LabeledList,
   NoticeBox,
+  Section,
+  Stack,
 } from '../components';
 import { Window } from '../layouts';
 
@@ -17,13 +17,13 @@ type CellularEmporiumContext = {
 };
 
 type Ability = {
-  name: string;
+  can_purchase: boolean;
   desc: string;
-  path: string;
   dna_cost: number;
   helptext: string;
+  name: string;
   owned: boolean;
-  can_purchase: boolean;
+  path: string;
 };
 
 export const CellularEmporium = (props) => {

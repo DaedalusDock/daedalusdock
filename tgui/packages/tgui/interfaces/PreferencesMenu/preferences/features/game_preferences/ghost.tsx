@@ -1,3 +1,5 @@
+import { useBackend } from '../../../../../backend';
+import { PreferencesMenuData } from '../../../data';
 import {
   CheckboxInput,
   FeatureChoiced,
@@ -6,8 +8,6 @@ import {
   FeatureToggle,
   FeatureValueProps,
 } from '../base';
-import { useBackend } from '../../../../../backend';
-import { PreferencesMenuData } from '../../../data';
 
 export const ghost_hud: FeatureToggle = {
   name: 'Ghost HUD',

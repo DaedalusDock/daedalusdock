@@ -23,7 +23,7 @@ type HoloPayData = {
   name: string;
   owner: string;
   shop_logo: string;
-  user: { name: string; balance: number };
+  user: { balance: number; name: string };
 };
 
 const COPYRIGHT_SCROLLER = `Nanotrasen (c) 2525-2562. All sales final.

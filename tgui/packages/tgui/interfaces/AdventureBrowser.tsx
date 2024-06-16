@@ -1,39 +1,39 @@
 import { useBackend, useLocalState } from '../backend';
 import {
+  Box,
   Button,
   LabeledList,
-  Section,
-  Box,
   NoticeBox,
+  Section,
   Table,
 } from '../components';
+import { formatTime } from '../format';
 import { Window } from '../layouts';
 import { AdventureDataProvider, AdventureScreen } from './ExodroneConsole';
-import { formatTime } from '../format';
 
 type Adventure = {
-  ref: string;
-  name: string;
-  id: string;
   approved: boolean;
+  id: string;
+  json_status: string;
+  name: string;
+  ref: string;
+  timestamp: string;
   uploader: string;
   version: number;
-  timestamp: string;
-  json_status: string;
 };
 
 type AdventureBrowserData = AdventureDataProvider & {
+  adventure_data: any;
   adventures: Array<Adventure>;
+  delay_message: string;
+  delay_time: number;
   feedback_message: string;
   play_mode: boolean;
-  adventure_data: any;
-  delay_time: number;
-  delay_message: string;
 };
 
 const AdventureEntry = (props) => {
   const { data, act } = useBackend<AdventureBrowserData>();
-  const { entry_ref, close }: { entry_ref: string; close: () => void } = props;
+  const { entry_ref, close }: { close: () => void; entry_ref: string } = props;
   const entry = data.adventures.find((x) => x.ref === entry_ref);
 
   if (!entry) {

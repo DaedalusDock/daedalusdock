@@ -1,9 +1,10 @@
 import { BooleanLike } from 'common/react';
-import { Box, Button, NumberInput, Flex } from '../../components';
 import { classes } from 'common/react';
-import { formatMoney, formatSiUnit } from '../../format';
+
 import { useSharedState } from '../../backend';
+import { Box, Button, Flex, NumberInput } from '../../components';
 import { BoxProps } from '../../components/Box';
+import { formatMoney, formatSiUnit } from '../../format';
 
 export const MATERIAL_KEYS = {
   iron: 'sheet-metal_3',
@@ -20,11 +21,11 @@ export const MATERIAL_KEYS = {
 } as const;
 
 export type Material = {
+  amount: number;
   name: keyof typeof MATERIAL_KEYS;
   ref: string;
-  amount: number;
-  sheets: number;
   removable: BooleanLike;
+  sheets: number;
 };
 
 interface MaterialIconProps extends BoxProps {
@@ -115,10 +116,10 @@ export enum MaterialFormatting {
 }
 
 export const MaterialAmount = (props: {
-  name: keyof typeof MATERIAL_KEYS;
   amount: number;
-  formatting?: MaterialFormatting;
   color?: string;
+  formatting?: MaterialFormatting;
+  name: keyof typeof MATERIAL_KEYS;
   style?: Record<string, string>;
 }) => {
   const { name, amount, color, style } = props;

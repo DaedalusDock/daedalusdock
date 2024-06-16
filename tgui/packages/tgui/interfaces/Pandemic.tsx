@@ -26,8 +26,8 @@ type PandemicContext = {
 };
 
 type Beaker = {
-  volume: number;
   capacity: number;
+  volume: number;
 };
 
 type Blood = {
@@ -41,19 +41,19 @@ type Resistance = {
 };
 
 type Virus = {
-  name: string;
-  can_rename: BooleanLike;
-  is_adv: BooleanLike;
-  symptoms?: Symptom[];
-  resistance: number;
-  stealth: number;
-  stage_speed: number;
-  transmission: number;
-  index: number;
   agent: string;
-  description: string;
-  spread: string;
+  can_rename: BooleanLike;
   cure: string;
+  description: string;
+  index: number;
+  is_adv: BooleanLike;
+  name: string;
+  resistance: number;
+  spread: string;
+  stage_speed: number;
+  stealth: number;
+  symptoms?: Symptom[];
+  transmission: number;
 };
 
 type VirusDisplayProps = {
@@ -70,15 +70,15 @@ type TabsProps = {
 };
 
 type Symptom = {
-  name: string;
   desc: string;
-  stealth: number;
+  level: number;
+  name: string;
+  neutered: BooleanLike;
   resistance: number;
   stage_speed: number;
-  transmission: number;
-  level: number;
-  neutered: BooleanLike;
+  stealth: number;
   threshold_desc: Threshold[];
+  transmission: number;
 };
 
 type SymptomDisplayProps = {
@@ -90,8 +90,8 @@ type SymptomInfoProps = {
 };
 
 type Threshold = {
-  label: string;
   descr: string;
+  label: string;
 };
 
 type ThresholdDisplayProps = {

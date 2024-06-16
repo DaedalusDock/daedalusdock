@@ -1,9 +1,9 @@
 import {
-  FeatureColorInput,
-  FeatureTriColorInput,
   Feature,
   FeatureChoiced,
+  FeatureColorInput,
   FeatureDropdownInput,
+  FeatureTriColorInput,
 } from './base';
 
 export const feature_mutant_colors: Feature<string[]> = {

@@ -1,13 +1,13 @@
+import { resolveAsset } from '../../assets';
 import { useLocalState } from '../../backend';
 import {
   Box,
   Button,
   LabeledList,
-  Section,
   Modal,
+  Section,
   Stack,
 } from '../../components';
-import { resolveAsset } from '../../assets';
 import { Image } from '../../components/Image';
 
 export const ShowDesc = (props) => {

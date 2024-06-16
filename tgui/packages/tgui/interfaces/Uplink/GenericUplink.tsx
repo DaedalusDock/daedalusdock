@@ -1,21 +1,22 @@
 import { BooleanLike } from 'common/react';
+
 import { useLocalState, useSharedState } from '../../backend';
 import {
   Box,
   Button,
   Input,
-  Section,
-  Tabs,
   NoticeBox,
+  Section,
   Stack,
+  Tabs,
 } from '../../components';
 
 type GenericUplinkProps = {
-  currency?: string | JSX.Element;
   categories: string[];
-  items: Item[];
-
+  currency?: string | JSX.Element;
   handleBuy: (item: Item) => void;
+
+  items: Item[];
 };
 
 export const GenericUplink = (props: GenericUplinkProps) => {
@@ -96,20 +97,20 @@ export const GenericUplink = (props: GenericUplinkProps) => {
 };
 
 export type Item<ItemData = {}> = {
-  id: string | number;
-  name: string;
   category: string;
   cost: JSX.Element | string;
   desc: JSX.Element | string;
   disabled: BooleanLike;
   extraData?: ItemData;
+  id: string | number;
+  name: string;
 };
 
 export type ItemListProps = {
   compactMode: BooleanLike;
-  items: Item[];
-
   handleBuy: (item: Item) => void;
+
+  items: Item[];
 };
 
 const ItemList = (props: ItemListProps) => {

@@ -1,8 +1,9 @@
-import { useBackend, useLocalState } from '../backend';
-import { GenericUplink, Item } from './Uplink/GenericUplink';
-import { BlockQuote, Button, Section, Stack, Tabs } from '../components';
 import { BooleanLike } from 'common/react';
+
+import { useBackend, useLocalState } from '../backend';
+import { BlockQuote, Button, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
+import { GenericUplink, Item } from './Uplink/GenericUplink';
 
 const allystyle = {
   fontWeight: 'bold',
@@ -21,21 +22,21 @@ const goalstyle = {
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
+  name: string;
 };
 
 type Info = {
+  allies: string;
+  categories: any[];
+  goal: string;
   has_codewords: BooleanLike;
+  intro: string;
+  objectives: Objective[];
   phrases: string;
+  processingTime: string;
   responses: string;
   theme: string;
-  allies: string;
-  goal: string;
-  intro: string;
-  processingTime: string;
-  objectives: Objective[];
-  categories: any[];
 };
 
 const ObjectivePrintout = (props) => {

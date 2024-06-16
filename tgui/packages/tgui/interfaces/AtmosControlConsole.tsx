@@ -2,9 +2,9 @@ import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
+  Dropdown,
   LabeledList,
   NumberInput,
-  Dropdown,
   Section,
   Stack,
 } from '../components';
@@ -12,20 +12,20 @@ import { Window } from '../layouts';
 import { Gasmix, GasmixParser } from './common/GasmixParser';
 
 type Chamber = {
-  id: string;
-  name: string;
   gasmix?: Gasmix;
+  id: string;
   input_info?: { active: boolean; amount: number };
+  name: string;
   output_info?: { active: boolean; amount: number };
 };
 
 export const AtmosControlConsole = (props) => {
   const { act, data } = useBackend<{
     chambers: Chamber[];
+    control: boolean;
     maxInput: number;
     maxOutput: number;
     reconnecting: boolean;
-    control: boolean;
   }>();
   const chambers = data.chambers || [];
   const [chamberId, setChamberId] = useLocalState('chamberId', chambers[0]?.id);

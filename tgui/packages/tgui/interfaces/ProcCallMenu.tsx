@@ -1,26 +1,27 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend } from '../backend';
 import {
-  Stack,
-  Section,
-  Input,
   Button,
   Dropdown,
+  Input,
   NoticeBox,
+  Section,
+  Stack,
 } from '../components';
 import { Window } from '../layouts';
 
 type Port = {
-  name: string;
   color: string;
   datatype: string;
+  name: string;
 };
 
 type ProcCallMenuData = {
-  input_ports: Port[];
-  possible_types: string[];
   expected_output: string;
   expected_output_color: string;
+  input_ports: Port[];
+  possible_types: string[];
   resolve_weakref: BooleanLike;
 };
 

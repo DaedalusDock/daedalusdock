@@ -1,20 +1,21 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend } from '../backend';
 import { Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
+  name: string;
 };
 
 type Info = {
-  objectives: Objective[];
   goal: string;
-  intro: string;
-  honor: BooleanLike;
   hideout: string;
+  honor: BooleanLike;
+  intro: string;
+  objectives: Objective[];
   policy: string;
 };
 

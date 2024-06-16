@@ -1,5 +1,5 @@
 import { createPopper, Placement, VirtualElement } from '@popperjs/core';
-import { ReactNode, Component } from 'react';
+import { Component, ReactNode } from 'react';
 // eslint-disable-next-line react/no-deprecated
 import { findDOMNode, render } from 'react-dom';
 

@@ -1,34 +1,35 @@
+import { filterMap, sortBy } from 'common/collections';
 import { classes } from 'common/react';
 import { ReactNode } from 'react';
+
 import { sendAct, useBackend, useLocalState } from '../../backend';
 import {
   Autofocus,
   Box,
   Button,
+  Dropdown,
   Flex,
   LabeledList,
   Popper,
   Stack,
-  TrackOutsideClicks,
-  Dropdown,
   Tooltip,
+  TrackOutsideClicks,
 } from '../../components';
+import { CharacterPreview } from './CharacterPreview';
 import {
   createSetPreference,
   PreferencesMenuData,
   RandomSetting,
 } from './data';
-import { CharacterPreview } from './CharacterPreview';
-import { RandomizationButton } from './RandomizationButton';
-import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 import { MultiNameInput, NameInput } from './names';
-import { Gender, GENDERS } from './preferences/gender';
 import features from './preferences/features';
 import {
   FeatureChoicedServerData,
   FeatureValueInput,
 } from './preferences/features/base';
-import { filterMap, sortBy } from 'common/collections';
+import { Gender, GENDERS } from './preferences/gender';
+import { RandomizationButton } from './RandomizationButton';
+import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 import { useRandomToggleState } from './useRandomToggleState';
 
 const CLOTHING_CELL_SIZE = 48;
@@ -39,11 +40,11 @@ const CLOTHING_SELECTION_WIDTH = 5.4;
 const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 
 const CharacterControls = (props: {
-  handleRotate: () => void;
-  handleOpenSpecies: () => void;
-  handleLoadout: () => void;
-  handleAppearanceMods: () => void;
   gender: Gender;
+  handleAppearanceMods: () => void;
+  handleLoadout: () => void;
+  handleOpenSpecies: () => void;
+  handleRotate: () => void;
   setGender: (gender: Gender) => void;
   showGender: boolean;
 }) => {
@@ -105,13 +106,13 @@ const CharacterControls = (props: {
 };
 
 const ChoicedSelection = (props: {
-  name: string;
   catalog: FeatureChoicedServerData;
+  name: string;
+  onClose: () => void;
+  onSelect: (value: string) => void;
   selected: string;
   supplementalFeature?: string;
   supplementalValue?: unknown;
-  onClose: () => void;
-  onSelect: (value: string) => void;
 }) => {
   const { act } = useBackend<PreferencesMenuData>();
 
@@ -213,8 +214,8 @@ const ChoicedSelection = (props: {
 };
 
 const GenderButton = (props: {
-  handleSetGender: (gender: Gender) => void;
   gender: Gender;
+  handleSetGender: (gender: Gender) => void;
 }) => {
   const [genderMenuOpen, setGenderMenuOpen] = useLocalState(
     'genderMenuOpen',
@@ -269,10 +270,10 @@ const MainFeature = (props: {
     supplemental_feature?: string;
   };
   currentValue: string;
-  isOpen: boolean;
   handleClose: () => void;
   handleOpen: () => void;
   handleSelect: (newClothing: string) => void;
+  isOpen: boolean;
   randomization?: RandomSetting;
   setRandomization: (newSetting: RandomSetting) => void;
 }) => {

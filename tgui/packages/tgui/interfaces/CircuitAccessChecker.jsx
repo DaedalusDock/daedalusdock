@@ -1,6 +1,6 @@
 import { useBackend } from '../backend';
+import { Button, LabeledList } from '../components';
 import { Window } from '../layouts';
-import { LabeledList, Button } from '../components';
 import { AccessConfig } from './common/AccessConfig';
 
 export const CircuitAccessChecker = (props) => {

@@ -1,7 +1,8 @@
-import { useBackend, useLocalState } from '../backend';
-import { Section, Stack, Box, Tabs, Button, BlockQuote } from '../components';
-import { Window } from '../layouts';
 import { BooleanLike } from 'common/react';
+
+import { useBackend, useLocalState } from '../backend';
+import { BlockQuote, Box, Button, Section, Stack, Tabs } from '../components';
+import { Window } from '../layouts';
 
 const hereticRed = {
   color: '#e03c3c',
@@ -28,14 +29,14 @@ const hereticYellow = {
 };
 
 type Knowledge = {
-  path: string;
-  name: string;
-  desc: string;
-  gainFlavor: string;
-  cost: number;
-  disabled: boolean;
-  hereticPath: string;
   color: string;
+  cost: number;
+  desc: string;
+  disabled: boolean;
+  gainFlavor: string;
+  hereticPath: string;
+  name: string;
+  path: string;
 };
 
 type KnowledgeInfo = {
@@ -45,15 +46,15 @@ type KnowledgeInfo = {
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
+  name: string;
 };
 
 type Info = {
-  charges: number;
-  total_sacrifices: number;
   ascended: BooleanLike;
+  charges: number;
   objectives: Objective[];
+  total_sacrifices: number;
 };
 
 const IntroductionSection = () => {

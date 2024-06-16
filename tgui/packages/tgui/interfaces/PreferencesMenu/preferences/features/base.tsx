@@ -1,15 +1,16 @@
 import { sortBy, sortStrings } from 'common/collections';
 import { BooleanLike, classes } from 'common/react';
 import { ComponentType, createElement, ReactNode } from 'react';
+
 import { sendAct, useBackend, useLocalState } from '../../../../backend';
 import {
   Box,
   Button,
   Dropdown,
+  Input,
   NumberInput,
   Stack,
   TextArea,
-  Input,
 } from '../../../../components';
 import { createSetPreference, PreferencesMenuData } from '../../data';
 import { ServerPreferencesFetcher } from '../../ServerPreferencesFetcher';
@@ -21,10 +22,10 @@ export type Feature<
   TSending = TReceiving,
   TServerData = undefined,
 > = {
-  name: string;
-  component: FeatureValue<TReceiving, TSending, TServerData>;
   category?: string;
+  component: FeatureValue<TReceiving, TSending, TServerData>;
   description?: string;
+  name: string;
 };
 
 /**
@@ -276,8 +277,8 @@ export const FeatureIconnedDropdownInput = (
 };
 
 export type FeatureNumericData = {
-  minimum: number;
   maximum: number;
+  minimum: number;
   step: number;
 };
 
@@ -304,12 +305,12 @@ export const FeatureNumberInput = (
 };
 
 export const FeatureValueInput = (props: {
+  act: typeof sendAct;
   feature: Feature<unknown>;
   featureId: string;
   shrink?: boolean;
-  value: unknown;
 
-  act: typeof sendAct;
+  value: unknown;
 }) => {
   const { data } = useBackend<PreferencesMenuData>();
 

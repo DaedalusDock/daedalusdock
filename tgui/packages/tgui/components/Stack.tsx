@@ -6,6 +6,7 @@
 
 import { classes } from 'common/react';
 import { RefObject } from 'react';
+
 import {
   computeFlexClassName,
   computeFlexItemClassName,
@@ -16,8 +17,8 @@ import {
 } from './Flex';
 
 type StackProps = FlexProps & {
-  vertical?: boolean;
   fill?: boolean;
+  vertical?: boolean;
   zebra?: boolean;
 };
 

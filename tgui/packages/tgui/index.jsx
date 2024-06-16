@@ -25,12 +25,13 @@ import './styles/themes/admin.scss';
 
 import { perf } from 'common/perf';
 import { setupHotReloading } from 'tgui-dev-server/link/client.cjs';
+
+import { setGlobalStore } from './backend';
+import { setupGlobalEvents } from './events';
 import { setupHotKeys } from './hotkeys';
 import { captureExternalLinks } from './links';
 import { createRenderer } from './renderer';
 import { configureStore } from './store';
-import { setupGlobalEvents } from './events';
-import { setGlobalStore } from './backend';
 
 perf.mark('inception', window.performance?.timing?.navigationStart);
 perf.mark('init');

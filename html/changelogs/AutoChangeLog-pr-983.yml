@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscdel: Internals tanks no longer automatically get set to the optimal value.

@@ -6,20 +6,21 @@
 
 import { canRender, classes } from 'common/react';
 import { Component, createRef, ReactNode, RefObject } from 'react';
+
 import { addScrollableNode, removeScrollableNode } from '../events';
 import { BoxProps, computeBoxClassName, computeBoxProps } from './Box';
 
 interface SectionProps extends BoxProps {
-  className?: string;
-  title?: ReactNode;
   buttons?: ReactNode;
+  className?: string;
   fill?: boolean;
   fitted?: boolean;
-  scrollable?: boolean;
   /** @deprecated This property no longer works, please remove it. */
   level?: boolean;
   /** @deprecated Please use `scrollable` property */
   overflowY?: any;
+  scrollable?: boolean;
+  title?: ReactNode;
 }
 
 export class Section extends Component<SectionProps> {

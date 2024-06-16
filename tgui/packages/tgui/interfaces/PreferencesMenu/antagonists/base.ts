@@ -19,12 +19,12 @@
  */
 
 export type Antagonist = {
+  category: Category;
+
+  description: string[];
   // the antag_flag, made lowercase, and with non-alphanumerics removed.
   key: string;
-
   name: string;
-  description: string[];
-  category: Category;
   priority?: number;
 };
 

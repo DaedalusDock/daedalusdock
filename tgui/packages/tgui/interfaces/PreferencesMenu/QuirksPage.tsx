@@ -1,6 +1,6 @@
+import { useBackend, useLocalState } from '../../backend';
 import { Box, Icon, Stack, Tooltip } from '../../components';
 import { PreferencesMenuData, Quirk } from './data';
-import { useBackend, useLocalState } from '../../backend';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 const getValueClass = (value: number): string => {
@@ -14,13 +14,13 @@ const getValueClass = (value: number): string => {
 };
 
 const QuirkList = (props: {
+  onClick: (quirkName: string, quirk: Quirk) => void;
   quirks: [
     string,
     Quirk & {
       failTooltip?: string;
     },
   ][];
-  onClick: (quirkName: string, quirk: Quirk) => void;
 }) => {
   return (
     // Stack is not used here for a variety of IE flex bugs

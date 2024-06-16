@@ -1,4 +1,5 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend, useLocalState } from '../backend';
 import { BlockQuote, Button, Dropdown, Section, Stack } from '../components';
 import { Window } from '../layouts';
@@ -30,14 +31,14 @@ const stakesblurb = [
 ];
 
 type Info = {
-  set_weapon: number;
-  set_area: string;
-  set_stakes: number;
-  left_sign: string;
-  right_sign: string;
   in_area: BooleanLike;
+  left_sign: string;
   no_chaplains: BooleanLike;
   possible_areas: Array<string>;
+  right_sign: string;
+  set_area: string;
+  set_stakes: number;
+  set_weapon: number;
 };
 
 export const SparringContract = (props) => {

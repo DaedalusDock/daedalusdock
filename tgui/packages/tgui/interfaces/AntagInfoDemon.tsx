@@ -1,6 +1,7 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend } from '../backend';
 import { Box, Section, Stack } from '../components';
-import { BooleanLike } from 'common/react';
 import { Window } from '../layouts';
 
 const jauntstyle = {
@@ -12,17 +13,17 @@ const injurestyle = {
 };
 
 type Objective = {
-  count: number;
-  name: string;
-  explanation: string;
   complete: BooleanLike;
-  was_uncompleted: BooleanLike;
+  count: number;
+  explanation: string;
+  name: string;
   reward: number;
+  was_uncompleted: BooleanLike;
 };
 
 type Info = {
-  fluff: string;
   explain_attack: BooleanLike;
+  fluff: string;
   objectives: Objective[];
 };
 

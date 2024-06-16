@@ -1,6 +1,7 @@
 import { uniqBy } from 'common/collections';
 import { createSearch } from 'common/string';
 import { Fragment } from 'react';
+
 import { useBackend, useSharedState } from '../backend';
 import {
   Box,
@@ -11,13 +12,13 @@ import {
   Section,
   Stack,
 } from '../components';
-import {
-  Materials,
-  MaterialAmount,
-  MaterialFormatting,
-} from './common/Materials';
 import { formatMoney } from '../format';
 import { Window } from '../layouts';
+import {
+  MaterialAmount,
+  MaterialFormatting,
+  Materials,
+} from './common/Materials';
 
 const COLOR_NONE = 0;
 const COLOR_AVERAGE = 1;

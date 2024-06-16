@@ -1,4 +1,5 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend, useLocalState } from '../backend';
 import {
   Box,
@@ -17,11 +18,11 @@ import { Window } from '../layouts';
 const COST_UPPER_BOUND = 3000;
 
 type Pack = {
-  name: string;
   cost: number;
-  id: string;
   desc: string;
   goody: string;
+  id: string;
+  name: string;
 };
 
 type Category = {
@@ -31,8 +32,8 @@ type Category = {
 
 type Info = {
   can_override: BooleanLike;
-  time_left: number;
   supplies: Category[];
+  time_left: number;
 };
 
 const CooldownEstimate = (props) => {

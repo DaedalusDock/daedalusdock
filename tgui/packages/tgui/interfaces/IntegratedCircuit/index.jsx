@@ -1,18 +1,19 @@
-import { useBackend } from '../../backend';
-import { Input, InfinitePlane, Stack, Box, Button } from '../../components';
 import { Component } from 'react';
-import { Window } from '../../layouts';
+
 import { resolveAsset } from '../../assets';
+import { useBackend } from '../../backend';
+import { Box, Button, InfinitePlane, Input, Stack } from '../../components';
+import { Window } from '../../layouts';
 import { CircuitInfo } from './CircuitInfo';
+import { ComponentMenu } from './ComponentMenu';
+import { Connections } from './Connections';
 import {
   ABSOLUTE_Y_OFFSET,
   MOUSE_BUTTON_LEFT,
   TIME_UNTIL_PORT_RELEASE_WORKS,
 } from './constants';
-import { Connections } from './Connections';
 import { ObjectComponent } from './ObjectComponent';
 import { VariableMenu } from './VariableMenu';
-import { ComponentMenu } from './ComponentMenu';
 
 export class IntegratedCircuit extends Component {
   constructor(props) {

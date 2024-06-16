@@ -1,20 +1,20 @@
 import { useBackend, useLocalState } from '../backend';
 import {
+  AnimatedNumber,
+  Box,
   Button,
+  Collapsible,
   ColorBox,
+  Dimmer,
+  Dropdown,
+  Flex,
+  Icon,
   LabeledList,
+  NumberInput,
   ProgressBar,
   Section,
-  Collapsible,
-  Box,
-  Icon,
   Stack,
   Table,
-  Dimmer,
-  NumberInput,
-  Flex,
-  AnimatedNumber,
-  Dropdown,
 } from '../components';
 import { Window } from '../layouts';
 

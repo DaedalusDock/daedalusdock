@@ -4,9 +4,9 @@ import { Window } from '../layouts';
 
 type Info = {
   antag_name: string;
+  gang_clothes: string[];
   gang_name: string;
   gang_objective: string;
-  gang_clothes: string[];
 };
 
 export const AntagInfoGangmember = (props) => {

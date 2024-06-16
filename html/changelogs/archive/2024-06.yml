@@ -36,3 +36,11 @@
       hand slot no longer outputs "You are unable to equip that!"
   jlsnow301:
   - bugfix: Ampcheck UI should work again
+2024-06-12:
+  Kapu1178:
+  - bugfix: You can no longer observe yourself.
+  - bugfix: Observing no longer causes ambience runtimes.
+  - rscdel: Internals tanks no longer automatically get set to the optimal value.
+  - rscadd: You can now examine the items worn or held by someone.
+  Ryan180602:
+  - imageadd: beagle mug

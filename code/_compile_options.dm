@@ -106,6 +106,9 @@
 /// Uncomment this to enable debugging tools for map making.
 //#define DEBUG_MAPS
 
+/// Force codex SQLite generation and loading despite being a debug server.
+//#define FORCE_CODEX_DATABASE 1
+
 /////////////////////// REFERENCE TRACKING
 
 ///Used to find the sources of harddels, quite laggy, don't be surpised if it freezes your client for a good while
@@ -190,6 +193,10 @@
 
 #ifdef CITESTING
 #define TESTING
+#endif
+
+#ifndef FORCE_CODEX_DATABASE
+#define FORCE_CODEX_DATABASE 0
 #endif
 
 #ifdef UNIT_TESTS

@@ -2,8 +2,8 @@ import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
-  LabeledList,
   Icon,
+  LabeledList,
   NoticeBox,
   ProgressBar,
   Section,
@@ -35,8 +35,8 @@ type Available = {
 };
 
 type Master = {
-  name: string;
   dna: string;
+  name: string;
 };
 
 type PDA = {

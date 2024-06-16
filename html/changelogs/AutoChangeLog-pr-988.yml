@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Brain damage correctly updates health. It is unlikely this actually caused
+      any bugs, but better safe than sorry.

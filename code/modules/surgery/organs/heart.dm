@@ -170,7 +170,7 @@
 		pulse = clamp(PULSE_NORM + pulse_mod, PULSE_SLOW, PULSE_THREADY)
 
 	// If fibrillation, then it can be PULSE_THREADY
-	var/fibrillation = blood_oxygenation <= BLOOD_CIRC_SURVIVE || (prob(30) && SHOCK_AMT_FOR_FIBRILLATION > 120)
+	var/fibrillation = blood_oxygenation <= BLOOD_CIRC_SURVIVE || (prob(30) && owner.shock_stage > SHOCK_AMT_FOR_FIBRILLATION)
 
 	if(pulse && fibrillation) //I SAID MOAR OXYGEN
 		pulse = PULSE_THREADY

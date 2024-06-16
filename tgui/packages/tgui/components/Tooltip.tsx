@@ -6,8 +6,8 @@ import { findDOMNode, render } from 'react-dom';
 type TooltipProps = {
   children?: ReactNode;
   content?: ReactNode;
-  position?: Placement;
   innerhtml?: ReactNode;
+  position?: Placement;
 };
 
 type TooltipState = {

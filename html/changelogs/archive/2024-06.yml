@@ -44,3 +44,25 @@
   - rscadd: You can now examine the items worn or held by someone.
   Ryan180602:
   - imageadd: beagle mug
+2024-06-17:
+  Baystation12 Coders:
+  - soundadd: Lockers have a new open/close sound.
+  - soundadd: Backpacks have a new open sound.
+  - soundadd: Medkits have a new open sound.
+  - soundadd: Cigarette cartons have a new open sound.
+  - bugfix: Inserting an item into a storage container no longer plays its drop-to-floor
+      sound.
+  - balance: You can no longer manipulate items within a storage container that is
+      inside another storage container.
+  Kapu1178:
+  - bugfix: Brain damage correctly updates health. It is unlikely this actually caused
+      any bugs, but better safe than sorry.
+  - bugfix: Dead and Unconscious mobs won't broadcast their examine.
+  - bugfix: Mobs now enter cardiac arrest when in the maximum shock stage.
+  francinum:
+  - code_imp: OpenDream is now used in linting. You do not care. Know that we are
+      one step closer to luxury gay space communism.
+  - refactor: Codex entry searching has been outsourced to a local database. This
+      results in outright comical efficiency and speed gains.
+  - code_imp: This is disabled by default on development servers, as it introduces
+      extra initialization time. An override compile flag is available.

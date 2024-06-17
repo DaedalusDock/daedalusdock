@@ -45,9 +45,14 @@
 	var/turf/T = loc
 	T.update_underfloor_accessibility()
 
+	AddElement(/datum/element/footstep_override, footstep = FOOTSTEP_CATWALK)
+
 	var/static/list/loc_connections = list(
 		COMSIG_TURF_CHANGE = PROC_REF(pre_turf_change)
 	)
+
+	AddElement(/datum/element/connect_loc, loc_connections)
+
 	update_appearance(UPDATE_ICON_STATE)
 
 /obj/structure/overfloor_catwalk/proc/pre_turf_change(datum/source, path, new_baseturfs, flags, post_change_callbacks)

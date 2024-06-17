@@ -144,4 +144,4 @@
 	name = "titanium plated catwalk floor cover"
 	icon_state = "titanium"
 	base_icon_state = "titanium"
-	tile_type = /obj/item/stack/overfloor_catwalk/iron_smooth
+	tile_type = /obj/item/stack/overfloor_catwalk/titanium

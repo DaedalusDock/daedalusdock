@@ -18,6 +18,7 @@
 	material_flags = MATERIAL_EFFECTS
 
 	mats_per_unit = list(/datum/material/iron=100)
+	merge_type = /obj/item/stack/overfloor_catwalk
 
 	var/catwalk_type = /obj/structure/overfloor_catwalk
 
@@ -51,28 +52,33 @@
 	name = "iron catwalk floor covers"
 	singular_name = "iron catwalk floor cover"
 	icon_state = "iron_catwalk"
+		/obj/item/stack/overfloor_catwalk/iron
 	catwalk_type = /obj/structure/overfloor_catwalk/iron
 
 /obj/item/stack/overfloor_catwalk/iron_white
 	name = "white catwalk floor covers"
 	singular_name = "white catwalk floor cover"
 	icon_state = "whiteiron_catwalk"
+	/obj/item/stack/overfloor_catwalk/iron_white
 	catwalk_type = /obj/structure/overfloor_catwalk/iron_white
 
 /obj/item/stack/overfloor_catwalk/iron_dark
 	name = "dark catwalk floor covers"
 	singular_name = "dark catwalk floor cover"
 	icon_state = "darkiron_catwalk"
+		/obj/item/stack/overfloor_catwalk/iron_dark
 	catwalk_type = /obj/structure/overfloor_catwalk/iron_dark
 
 /obj/item/stack/overfloor_catwalk/flat_white
 	name = "flat white catwalk floor covers"
 	singular_name = "flat white catwalk floor cover"
 	icon_state = "flatwhite_catwalk"
+	merge_type = /obj/item/stack/overfloor_catwalk/flat_white
 	catwalk_type = /obj/structure/overfloor_catwalk/flat_white
 
-/obj/item/stack/overfloor_catwalk/iron_smooth
+/obj/item/stack/overfloor_catwalk/titanium
 	name = "titanium catwalk floor covers"
 	singular_name = "titanium catwalk floor cover"
 	icon_state = "titanium_catwalk"
+	merge_type = /obj/item/stack/overfloor_catwalk/titanium
 	catwalk_type = /obj/structure/overfloor_catwalk/iron_smooth

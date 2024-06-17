@@ -53,7 +53,7 @@
 
 	AddElement(/datum/element/connect_loc, loc_connections)
 
-	update_appearance(UPDATE_ICON_STATE)
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/overfloor_catwalk/proc/pre_turf_change(datum/source, path, new_baseturfs, flags, post_change_callbacks)
 	SIGNAL_HANDLER
@@ -67,9 +67,12 @@
 	. += span_notice("The mesh comes out with a few simple <b>screws</b>.")
 	. += span_notice("The frame can be popped out with some <b>leverage</b>.")
 
-/obj/structure/overfloor_catwalk/update_icon_state()
-	icon_state = covered ? "[base_icon_state]_lattice" : base_icon_state
-	return ..()
+/obj/structure/overfloor_catwalk/update_overlays()
+	. = ..()
+	if(!covered)
+		return
+
+	. += image(icon, null, "lattice", CATWALK_LATTICE_LAYER)
 
 /obj/structure/overfloor_catwalk/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
 	. = ..()
@@ -83,28 +86,28 @@
 
 /obj/structure/overfloor_catwalk/deconstruct(disassembled = TRUE)
 	if(disassembled && loc)
-		new tile_type(loc.drop_location())
+		new tile_type(drop_location())
 	qdel(src)
 
 /obj/structure/overfloor_catwalk/screwdriver_act(mob/living/user, obj/item/tool)
 	. = ..()
 	covered = !covered
 	if(!covered)
-		layer = TURF_LAYER
-		plane = FLOOR_PLANE
 		obj_flags &= ~(BLOCK_Z_OUT_DOWN | BLOCK_Z_IN_UP | BLOCK_Z_FALL)
+		mouse_opacity = MOUSE_OPACITY_ICON
 	else
-		layer = CATWALK_LAYER
-		plane = GAME_PLANE
 		obj_flags |= (BLOCK_Z_OUT_DOWN | BLOCK_Z_IN_UP | BLOCK_Z_FALL)
+		mouse_opacity = MOUSE_OPACITY_OPAQUE
 
 	tool.play_tool_sound(src)
-	update_appearance(UPDATE_ICON_STATE)
+	update_appearance(UPDATE_OVERLAYS)
+	return TRUE
 
 /obj/structure/overfloor_catwalk/crowbar_act(mob/living/user, obj/item/tool)
 	. = ..()
 	if(tool.use_tool(src, user, volume=80))
 		deconstruct(TRUE)
+		return TRUE
 
 /obj/structure/overfloor_catwalk/singularity_pull(S, current_size)
 	if(current_size >= STAGE_FOUR)

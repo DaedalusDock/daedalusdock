@@ -52,21 +52,21 @@
 	name = "iron catwalk floor covers"
 	singular_name = "iron catwalk floor cover"
 	icon_state = "iron_catwalk"
-		/obj/item/stack/overfloor_catwalk/iron
+	merge_type = /obj/item/stack/overfloor_catwalk/iron
 	catwalk_type = /obj/structure/overfloor_catwalk/iron
 
 /obj/item/stack/overfloor_catwalk/iron_white
 	name = "white catwalk floor covers"
 	singular_name = "white catwalk floor cover"
 	icon_state = "whiteiron_catwalk"
-	/obj/item/stack/overfloor_catwalk/iron_white
+	merge_type = /obj/item/stack/overfloor_catwalk/iron_white
 	catwalk_type = /obj/structure/overfloor_catwalk/iron_white
 
 /obj/item/stack/overfloor_catwalk/iron_dark
 	name = "dark catwalk floor covers"
 	singular_name = "dark catwalk floor cover"
 	icon_state = "darkiron_catwalk"
-		/obj/item/stack/overfloor_catwalk/iron_dark
+	merge_type = /obj/item/stack/overfloor_catwalk/iron_dark
 	catwalk_type = /obj/structure/overfloor_catwalk/iron_dark
 
 /obj/item/stack/overfloor_catwalk/flat_white

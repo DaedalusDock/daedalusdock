@@ -2033,7 +2033,7 @@
 
 		return (positive_grav + negative_grav)
 
-
+	var/area/turf_area = gravity_turf.loc
 	return !gravity_turf.force_no_gravity && (turf_area.has_gravity || SSmapping.gravity_by_zlevel[gravity_turf.z])
 
 /**

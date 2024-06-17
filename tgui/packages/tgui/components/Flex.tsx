@@ -5,15 +5,16 @@
  */
 
 import { BooleanLike, classes } from 'common/react';
+
 import { BoxProps, computeBoxClassName, computeBoxProps, unit } from './Box';
 
 export type FlexProps = BoxProps & {
-  direction?: string | BooleanLike;
-  wrap?: string | BooleanLike;
   align?: string | BooleanLike;
-  justify?: string | BooleanLike;
+  direction?: string | BooleanLike;
   inline?: BooleanLike;
+  justify?: string | BooleanLike;
   scrollable?: BooleanLike;
+  wrap?: string | BooleanLike;
 };
 
 export const computeFlexClassName = (props: FlexProps) => {
@@ -49,11 +50,11 @@ export const Flex = (props) => {
 };
 
 export type FlexItemProps = BoxProps & {
+  align?: string | BooleanLike;
+  basis?: string | BooleanLike;
   grow?: number | true;
   order?: number;
   shrink?: number | true;
-  basis?: string | BooleanLike;
-  align?: string | BooleanLike;
 };
 
 export const computeFlexItemClassName = (props: FlexItemProps) => {

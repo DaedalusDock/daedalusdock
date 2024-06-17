@@ -1,5 +1,6 @@
 import { toFixed } from 'common/math';
 import { Fragment } from 'react';
+
 import { useBackend, useLocalState } from '../backend';
 import {
   Box,

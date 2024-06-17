@@ -67,12 +67,16 @@
 	complexity = 1
 	idle_power_cost = DEFAULT_CHARGE_DRAIN * 0.2
 	incompatible_modules = list(/obj/item/mod/module/waddle)
+	required_slots = list(ITEM_SLOT_FEET)
 
 /obj/item/mod/module/waddle/on_suit_activation()
-	mod.boots.AddComponent(/datum/component/squeak, list('sound/effects/clownstep1.ogg'=1,'sound/effects/clownstep2.ogg'=1), 50, falloff_exponent = 20) //die off quick please
+	var/obj/item/shoes = mod.get_part_from_slot(ITEM_SLOT_FEET)
+	if(shoes)
+		shoes.AddComponent(/datum/component/squeak, list('sound/effects/clownstep1.ogg'=1,'sound/effects/clownstep2.ogg'=1), 50, falloff_exponent = 20) //die off quick please
 	ADD_WADDLE(mod.wearer, WADDLE_SOURCE_MODSUIT)
 
 /obj/item/mod/module/waddle/on_suit_deactivation(deleting = FALSE)
-	if(!deleting)
-		qdel(mod.boots.GetComponent(/datum/component/squeak))
+	var/obj/item/shoes = mod.get_part_from_slot(ITEM_SLOT_FEET)
+	if(shoes && !deleting)
+		qdel(shoes.GetComponent(/datum/component/squeak))
 	REMOVE_WADDLE(mod.wearer, WADDLE_SOURCE_MODSUIT)

@@ -1,11 +1,12 @@
 import { createPopper, Placement, VirtualElement } from '@popperjs/core';
-import { ReactNode, Component } from 'react';
+import { Component, ReactNode } from 'react';
 // eslint-disable-next-line react/no-deprecated
 import { findDOMNode, render } from 'react-dom';
 
 type TooltipProps = {
   children?: ReactNode;
-  content: ReactNode;
+  content?: ReactNode;
+  innerhtml?: ReactNode;
   position?: Placement;
 };
 
@@ -103,7 +104,16 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
       return;
     }
 
-    render(<span>{this.props.content}</span>, renderedTooltip, () => {
+    let real_content;
+    /* eslint-disable react/no-danger */
+    if (this.props.innerhtml) {
+      real_content = (
+        <span dangerouslySetInnerHTML={{ __html: this.props.innerhtml }} />
+      );
+    } else {
+      real_content = <span>{this.props.content}</span>;
+    }
+    render(real_content, renderedTooltip, () => {
       let singletonPopper = Tooltip.singletonPopper;
       if (singletonPopper === undefined) {
         singletonPopper = createPopper(

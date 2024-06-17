@@ -1,5 +1,6 @@
+import { toTitleCase } from 'common/string';
+
 import { useBackend, useLocalState } from '../backend';
-import { Window } from '../layouts';
 import {
   Button,
   Collapsible,
@@ -10,8 +11,8 @@ import {
   Tabs,
   Tooltip,
 } from '../components';
-import { toTitleCase } from 'common/string';
 import { TableCell, TableRow } from '../components/Table';
+import { Window } from '../layouts';
 
 export const DebugHealth = (props) => {
   const { data } = useBackend<Record<string, any>>();
@@ -83,7 +84,7 @@ const ExpandableSection = (props: { data: Record<string, any> }) => {
   );
 };
 
-const ArrayDisplay = (props: { label: string; items: any[] }) => {
+const ArrayDisplay = (props: { items: any[]; label: string }) => {
   const { label, items = [] } = props;
 
   return (

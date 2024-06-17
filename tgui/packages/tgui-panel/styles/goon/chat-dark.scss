@@ -992,3 +992,17 @@ em {
   border-image-repeat: repeat repeat;
   border-style: solid;
 }
+
+// If you change this, change the code in roll.dm
+.statsGood {
+  color: #03fca1;
+  text-shadow: 0 0 0.1em #dd3535;
+  font-style: italic;
+}
+
+// If you change this, change the code in roll.dm
+.statsBad {
+  color: #fc4b32;
+  text-shadow: 0 0 0.1em #8a8888;
+  font-style: italic;
+}

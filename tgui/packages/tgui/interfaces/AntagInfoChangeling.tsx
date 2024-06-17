@@ -29,8 +29,8 @@ const storestyle = {
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
+  name: string;
 };
 
 type Memory = {
@@ -40,9 +40,9 @@ type Memory = {
 
 type Info = {
   hive_name: string;
-  stolen_antag_info: string;
   memories: Memory[];
   objectives: Objective[];
+  stolen_antag_info: string;
 };
 
 const ObjectivePrintout = (props) => {

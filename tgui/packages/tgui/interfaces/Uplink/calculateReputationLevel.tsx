@@ -12,9 +12,9 @@ const ultraGoodGradient = 'reputation-super-good';
 const bestGradient = 'reputation-best';
 
 export type Rank = {
+  gradient: string;
   minutesLessThan: number;
   title: string;
-  gradient: string;
 };
 
 export const ranks: Rank[] = [

@@ -4,7 +4,9 @@ GLOBAL_LIST_EMPTY(cached_holster_typecaches)
 /datum/storage/holster
 	insert_preposition = "in"
 	quickdraw = TRUE
-	rustle_sound = FALSE
+	rustle_sound = null
+	open_sound = null
+	close_sound = null
 	silent = TRUE
 
 	/// A typecache of items that can be inserted into here in the reserved slots

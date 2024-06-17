@@ -6,6 +6,7 @@
 
 import { BooleanLike, classes } from 'common/react';
 import { ReactNode } from 'react';
+
 import { Box, unit } from './Box';
 import { Divider } from './Divider';
 
@@ -19,15 +20,15 @@ export const LabeledList = (props: LabeledListProps) => {
 };
 
 type LabeledListItemProps = {
-  className?: string | BooleanLike;
-  label?: string | ReactNode | BooleanLike;
-  labelColor?: string | BooleanLike;
-  color?: string | BooleanLike;
-  textAlign?: string | BooleanLike;
   buttons?: ReactNode;
+  children?: ReactNode;
+  className?: string | BooleanLike;
+  color?: string | BooleanLike;
   /** @deprecated */
   content?: any;
-  children?: ReactNode;
+  label?: string | ReactNode | BooleanLike;
+  labelColor?: string | BooleanLike;
+  textAlign?: string | BooleanLike;
   verticalAlign?: string;
 };
 

@@ -10,6 +10,9 @@
 	/// The grab datum currently being used
 	var/datum/grab/current_grab
 
+	/// Set true after grab setup. Used for debugging.
+	var/is_valid = FALSE
+
 	/// Cooldown for actions
 	COOLDOWN_DECLARE(action_cd)
 	/// Cooldown for upgrade times
@@ -43,6 +46,8 @@
 
 	if(!current_grab.setup(src))
 		return INITIALIZE_HINT_QDEL
+
+	is_valid = TRUE
 
 	/// Apply any needed updates to the assailant
 	LAZYADD(affecting.grabbed_by, src) // This is how we handle affecting being deleted.
@@ -103,15 +108,24 @@
 		LAZYREMOVE(affecting.grabbed_by, src)
 		affecting.update_offsets()
 
+	else if(is_valid)
+		stack_trace("Grab (\ref[src]) qdeleted while not having a victim.")
+
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
+
+	else if(is_valid && !current_grab)
+		stack_trace("Grab (\ref[src]) qdeleted while not having a grab datum.")
 
 	if(assailant)
 		LAZYREMOVE(assailant.active_grabs, src)
 		assailant.after_grab_release(affecting)
+	else
+		stack_trace("Grab (\ref[src]) qdeleted while not having an assailant.")
 
 	affecting = null
 	assailant = null
+	current_grab = null
 	return ..()
 
 /obj/item/hand_item/grab/examine(mob/user)

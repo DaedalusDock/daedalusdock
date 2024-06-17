@@ -13,68 +13,68 @@ import { DmIcon } from '../components/DMIcon';
 import { Window } from '../layouts';
 
 type VendingData = {
-  onstation: boolean;
-  department: string;
-  jobDiscount: number;
-  product_records: ProductRecord[];
-  coin_records: CoinRecord[];
-  hidden_records: HiddenRecord[];
-  user: UserData;
-  stock: StockItem[];
-  extended_inventory: boolean;
   access: boolean;
+  coin_records: CoinRecord[];
+  department: string;
+  extended_inventory: boolean;
+  hidden_records: HiddenRecord[];
+  jobDiscount: number;
+  onstation: boolean;
+  product_records: ProductRecord[];
+  stock: StockItem[];
+  user: UserData;
   vending_machine_input: CustomInput[];
 };
 
 type ProductRecord = {
-  path: string;
-  name: string;
-  price: number;
-  max_amount: number;
-  ref: string;
   icon: string;
   icon_state: string;
+  max_amount: number;
+  name: string;
+  path: string;
+  price: number;
+  ref: string;
 };
 
 type CoinRecord = {
-  path: string;
-  name: string;
-  price: number;
-  max_amount: number;
-  ref: string;
-  premium: boolean;
   icon: string;
   icon_state: string;
+  max_amount: number;
+  name: string;
+  path: string;
+  premium: boolean;
+  price: number;
+  ref: string;
 };
 
 type HiddenRecord = {
-  path: string;
-  name: string;
-  price: number;
-  max_amount: number;
-  ref: string;
-  premium: boolean;
   icon: string;
   icon_state: string;
+  max_amount: number;
+  name: string;
+  path: string;
+  premium: boolean;
+  price: number;
+  ref: string;
 };
 
 type UserData = {
-  name: string;
   cash: number;
-  job: string;
   department: string;
+  job: string;
+  name: string;
 };
 
 type StockItem = {
-  name: string;
   amount: number;
   colorable: boolean;
+  name: string;
 };
 
 type CustomInput = {
+  img: string;
   name: string;
   price: number;
-  img: string;
 };
 
 export const Vending = (_) => {

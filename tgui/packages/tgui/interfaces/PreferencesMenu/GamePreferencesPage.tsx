@@ -1,5 +1,6 @@
 import { binaryInsertWith, sortBy } from 'common/collections';
 import { ReactNode } from 'react';
+
 import { useBackend } from '../../backend';
 import { Box, Flex, Tooltip } from '../../components';
 import { PreferencesMenuData } from './data';
@@ -8,8 +9,8 @@ import { FeatureValueInput } from './preferences/features/base';
 import { TabbedMenu } from './TabbedMenu';
 
 type PreferenceChild = {
-  name: string;
   children: ReactNode;
+  name: string;
 };
 
 const binaryInsertPreference = binaryInsertWith<PreferenceChild>(

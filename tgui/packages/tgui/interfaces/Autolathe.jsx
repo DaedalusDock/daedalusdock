@@ -1,19 +1,20 @@
+import { capitalize } from 'common/string';
+
 import { useBackend, useLocalState } from '../backend';
 import {
-  Button,
-  LabeledList,
-  Section,
-  ProgressBar,
-  Flex,
   Box,
-  Table,
+  Button,
   Collapsible,
-  Input,
   Dimmer,
+  Flex,
   Icon,
+  Input,
+  LabeledList,
+  ProgressBar,
+  Section,
+  Table,
 } from '../components';
 import { Window } from '../layouts';
-import { capitalize } from 'common/string';
 
 export const Autolathe = (props) => {
   const { act, data } = useBackend();

@@ -1,6 +1,7 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend } from '../backend';
 import { BlockQuote, Button, Dimmer, Section, Stack } from '../components';
-import { BooleanLike } from 'common/react';
 import { Window } from '../layouts';
 
 const allystyle = {
@@ -20,24 +21,24 @@ const goalstyle = {
 
 type Objective = {
   count: number;
-  name: string;
   explanation: string;
+  name: string;
 };
 
 type Info = {
+  allies: string;
+  code: string;
+  failsafe_code: string;
+  goal: string;
   has_codewords: BooleanLike;
+  has_uplink: BooleanLike;
+  intro: string;
+  objectives: Objective[];
   phrases: string;
   responses: string;
   theme: string;
-  allies: string;
-  goal: string;
-  intro: string;
-  code: string;
-  failsafe_code: string;
-  has_uplink: BooleanLike;
   uplink_intro: string;
   uplink_unlock_info: string;
-  objectives: Objective[];
 };
 
 const ObjectivePrintout = (props) => {

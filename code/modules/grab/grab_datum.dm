@@ -111,8 +111,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!G)
 		return
+
 	let_go_effect(G)
-	G.current_grab = null
+
 	if(!QDELETED(G))
 		qdel(G)
 

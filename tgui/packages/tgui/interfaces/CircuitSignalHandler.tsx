@@ -1,23 +1,24 @@
 import { Component } from 'react';
+
 import { useBackend } from '../backend';
-import { Box, Stack, Section, Input, Button, Dropdown } from '../components';
+import { Box, Button, Dropdown, Input, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 type Response = {
-  name: string;
   bitflag: number;
+  name: string;
 };
 
 type Parameter = {
-  name: string;
   datatype: string;
+  name: string;
 };
 
 type CircuitSignalHandlerState = {
-  signal_id: string;
-  responseList: Response[];
-  parameterList: Parameter[];
   global: Boolean;
+  parameterList: Parameter[];
+  responseList: Response[];
+  signal_id: string;
 };
 
 type CircuitSignalHandlerData = {
@@ -191,11 +192,11 @@ export class CircuitSignalHandler extends Component<
 }
 
 type EntryProps = {
-  onRemove: (e: MouseEvent) => any;
-  onEnter: (e: MouseEvent, value: string) => any;
-  onSetOption?: (type: string) => any;
-  name: string;
   current_option: string;
+  name: string;
+  onEnter: (e: MouseEvent, value: string) => any;
+  onRemove: (e: MouseEvent) => any;
+  onSetOption?: (type: string) => any;
   options?: string[];
 };
 

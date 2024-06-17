@@ -104,9 +104,9 @@
 	combat_mode = new_mode
 
 	if(combat_mode)
-		gurps_stats.add_skill(4, SKILL_MELEE_COMBAT, SKILL_SOURCE_COMBAT_MODE)
+		stats?.set_skill_modifier(4, /datum/rpg_skill/skirmish, SKILL_SOURCE_COMBAT_MODE)
 	else
-		gurps_stats.remove_skill(SKILL_MELEE_COMBAT, SKILL_SOURCE_COMBAT_MODE)
+		stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_COMBAT_MODE)
 
 	if(hud_used?.action_intent)
 		hud_used.action_intent.update_appearance()

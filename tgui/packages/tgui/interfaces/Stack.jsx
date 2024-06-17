@@ -1,13 +1,14 @@
-import { createSearch } from 'common/string';
 import { sortBy } from 'common/collections';
+import { createSearch } from 'common/string';
+
 import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
+  Collapsible,
   Input,
   NoticeBox,
   Section,
-  Collapsible,
   Table,
 } from '../components';
 import { Window } from '../layouts';
@@ -72,14 +73,14 @@ const RecipeList = (props) => {
     const recipe = recipes[title];
     if (recipe.ref === undefined) {
       return (
-        <Collapsible ml={1} color="label" title={title}>
+        <Collapsible ml={1} color="label" title={title} key={title}>
           <Box ml={1}>
             <RecipeList recipes={recipe} />
           </Box>
         </Collapsible>
       );
     } else {
-      return <Recipe title={title} recipe={recipe} />;
+      return <Recipe title={title} recipe={recipe} key={title} />;
     }
   });
 };

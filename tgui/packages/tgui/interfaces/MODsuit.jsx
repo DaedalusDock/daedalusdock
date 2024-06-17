@@ -1,22 +1,45 @@
 import { useBackend, useLocalState } from '../backend';
 import {
+  AnimatedNumber,
+  Box,
   Button,
+  Collapsible,
   ColorBox,
+  Dimmer,
+  Dropdown,
+  Flex,
+  Icon,
   LabeledList,
+  NumberInput,
   ProgressBar,
   Section,
-  Collapsible,
-  Box,
-  Icon,
   Stack,
   Table,
-  Dimmer,
-  NumberInput,
-  Flex,
-  AnimatedNumber,
-  Dropdown,
 } from '../components';
 import { Window } from '../layouts';
+
+const capitalize = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+const ModParts = (props) => {
+  const { act, data } = useBackend();
+  const { parts } = data;
+  return (
+    <>
+      {parts.map((part) => {
+        return (
+          <LabeledList.Item
+            key={capitalize(part.slot)}
+            label={capitalize(part.slot) + ' Slot'}
+          >
+            {part.name}
+          </LabeledList.Item>
+        );
+      })}
+    </>
+  );
+};
 
 const ConfigureNumberEntry = (props) => {
   const { name, value, module_ref } = props;
@@ -392,29 +415,12 @@ const ParametersSection = (props) => {
 
 const HardwareSection = (props) => {
   const { act, data } = useBackend();
-  const {
-    active,
-    control,
-    helmet,
-    chestplate,
-    gauntlets,
-    boots,
-    core,
-    charge,
-  } = data;
+  const { active, control, parts, core, charge } = data;
   return (
     <Section title="Hardware">
       <Collapsible title="Parts">
         <LabeledList>
-          <LabeledList.Item label="Control Unit">{control}</LabeledList.Item>
-          <LabeledList.Item label="Helmet">{helmet || 'None'}</LabeledList.Item>
-          <LabeledList.Item label="Chestplate">
-            {chestplate || 'None'}
-          </LabeledList.Item>
-          <LabeledList.Item label="Gauntlets">
-            {gauntlets || 'None'}
-          </LabeledList.Item>
-          <LabeledList.Item label="Boots">{boots || 'None'}</LabeledList.Item>
+          <ModParts />
         </LabeledList>
       </Collapsible>
       <Collapsible title="Core">

@@ -13,6 +13,7 @@
 
 import { perf } from 'common/perf';
 import { createAction } from 'common/redux';
+
 import { setupDrag } from './drag';
 import { focusMap } from './focus';
 import { createLogger } from './logging';
@@ -230,30 +231,30 @@ export const sendAct = (action: string, payload: object = {}) => {
 
 type BackendState<TData> = {
   config: {
-    title: string;
-    status: number;
-    interface: string;
-    refreshing: boolean;
-    window: {
-      key: string;
-      size: [number, number];
-      fancy: boolean;
-      locked: boolean;
-    };
     client: {
-      ckey: string;
       address: string;
+      ckey: string;
       computer_id: string;
     };
+    interface: string;
+    refreshing: boolean;
+    status: number;
+    title: string;
     user: {
       name: string;
       observer: number;
     };
+    window: {
+      fancy: boolean;
+      key: string;
+      locked: boolean;
+      size: [number, number];
+    };
   };
   data: TData;
   shared: Record<string, any>;
-  suspending: boolean;
   suspended: boolean;
+  suspending: boolean;
 };
 
 /**

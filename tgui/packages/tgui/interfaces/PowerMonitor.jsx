@@ -1,6 +1,7 @@
 import { map, sortBy } from 'common/collections';
 import { flow } from 'common/fp';
 import { toFixed } from 'common/math';
+
 import { useBackend, useLocalState } from '../backend';
 import {
   Box,
@@ -35,7 +36,7 @@ export const PowerMonitor = () => {
 
 export const PowerMonitorContent = (props) => {
   const { data } = useBackend();
-  const { history } = data;
+  const { history = { supply: [], demand: [] } } = data;
   const [sortByField, setSortByField] = useLocalState('sortByField', null);
   const supply = history.supply[history.supply.length - 1] || 0;
   const demand = history.demand[history.demand.length - 1] || 0;
@@ -87,7 +88,7 @@ export const PowerMonitorContent = (props) => {
           </Section>
         </Flex.Item>
         <Flex.Item mx={0.5} grow={1}>
-          <Section position="relative" height="100%">
+          <Section position="relative" fill>
             <Chart.Line
               fillPositionedParent
               data={supplyData}

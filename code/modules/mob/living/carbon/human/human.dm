@@ -516,9 +516,25 @@
 		if (!do_after(src, target, 3 SECONDS, DO_PUBLIC, extra_checks = CALLBACK(src, PROC_REF(can_perform_cpr), target)))
 			break
 
+		var/datum/roll_result/result = stat_roll(6, /datum/rpg_skill/skirmish)
+		switch(result.outcome)
+			if(CRIT_SUCCESS)
+				if(target.stat != DEAD && target.undergoing_cardiac_arrest() && target.resuscitate())
+					to_chat(src, result.create_tooltip("You feel the pulse of life return to [target.name] beneath your palms."))
+
+			if(SUCCESS)
+				var/obj/item/organ/heart/heart = target.getorganslot(ORGAN_SLOT_HEART)
+				if(heart)
+					// Not gonna lie chief I dont know what this math does, I just used bay's SKILL_EXPERIENCED valie
+					heart.external_pump = list(world.time, 0.8  + rand(-0.1,0.1))
+
+			if(CRIT_FAILURE, FAILURE)
+				var/obj/item/bodypart/chest/chest = target.get_bodypart(BODY_ZONE_CHEST)
+				if(chest.break_bones(TRUE))
+					to_chat(src, result.create_tooltip("Your strength betrays you as you shatter [target.name]'s [chest.encased]."))
+
 		visible_message(
 			span_notice("[src] pushes down on [target.name]'s chest!"),
-			span_notice("You perform CPR on [target.name].")
 		)
 
 		log_combat(src, target, "CPRed")

@@ -1,21 +1,22 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend } from '../backend';
 import { Section, Stack } from '../components';
-import { BooleanLike } from 'common/react';
 import { Window } from '../layouts';
 
 type Objective = {
-  count: number;
-  name: string;
-  explanation: string;
   complete: BooleanLike;
-  was_uncompleted: BooleanLike;
+  count: number;
+  explanation: string;
+  name: string;
   reward: number;
+  was_uncompleted: BooleanLike;
 };
 
 type Info = {
   antag_name: string;
-  objectives: Objective[];
   brothers: string;
+  objectives: Objective[];
 };
 
 export const AntagInfoBrother = (props) => {

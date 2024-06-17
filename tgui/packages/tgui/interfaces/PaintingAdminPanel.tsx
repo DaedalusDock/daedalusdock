@@ -1,4 +1,5 @@
 import { decodeHtmlEntities } from 'common/string';
+
 import { resolveAsset } from '../assets';
 import { useBackend, useLocalState } from '../backend';
 import { Box, Button, LabeledList, Section, Table } from '../components';
@@ -10,20 +11,20 @@ type PaintingAdminPanelData = {
 };
 
 type PaintingData = {
-  md5: string;
-  title: string;
-  creator_ckey: string;
-  creator_name: string | null;
   creation_date: Date | null;
   creation_round_id: number | null;
+  creator_ckey: string;
+  creator_name: string | null;
+  credit_value: number;
+  height: number;
+  md5: string;
+  medium: string | null;
   patron_ckey: string | null;
   patron_name: string | null;
-  credit_value: number;
-  width: number;
-  height: number;
   ref: string;
   tags: string[] | null;
-  medium: string | null;
+  title: string;
+  width: number;
 };
 
 export const PaintingAdminPanel = (props) => {

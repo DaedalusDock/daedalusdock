@@ -1,13 +1,13 @@
 import { useBackend } from '../backend';
-import { formatSiUnit } from '../format';
 import {
   Button,
   LabeledList,
   NumberInput,
-  Section,
   ProgressBar,
+  Section,
 } from '../components';
 import { getGasLabel } from '../constants';
+import { formatSiUnit } from '../format';
 import { Window } from '../layouts';
 
 export const AtmosFilter = (props) => {

@@ -6,7 +6,10 @@
 
 import { EventEmitter } from 'common/events';
 import { classes } from 'common/react';
+import { createRoot } from 'react-dom/client';
+import { Tooltip } from 'tgui/components';
 import { createLogger } from 'tgui/logging';
+
 import {
   COMBINE_MAX_MESSAGES,
   COMBINE_MAX_TIME_WINDOW,
@@ -16,16 +19,14 @@ import {
   MAX_PERSISTED_MESSAGES,
   MAX_VISIBLE_MESSAGES,
   MESSAGE_PRUNE_INTERVAL,
-  MESSAGE_TYPES,
   MESSAGE_TYPE_COMBAT,
   MESSAGE_TYPE_INTERNAL,
   MESSAGE_TYPE_LOCALCHAT,
   MESSAGE_TYPE_UNKNOWN,
+  MESSAGE_TYPES,
 } from './constants';
 import { canPageAcceptType, createMessage, isSameMessage } from './model';
 import { highlightNode, linkifyNode } from './replaceInTextNode';
-import { Tooltip } from 'tgui/components';
-import { createRoot } from 'react-dom/client';
 
 const logger = createLogger('chatRenderer');
 
@@ -43,6 +44,7 @@ export const TGUI_CHAT_COMPONENTS = {
 export const TGUI_CHAT_ATTRIBUTES_TO_PROPS = {
   position: 'position',
   content: 'content',
+  innerhtml: 'innerhtml',
 };
 
 const findNearestScrollableParent = (startingNode) => {

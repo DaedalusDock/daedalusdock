@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import { THEME_LIGHT, THEME_DARK } from './settings/constants';
+import { THEME_DARK, THEME_LIGHT } from './settings/constants';
 
 const COLOR_DARK_BG = '#222020';
 const COLOR_DARK_BG_DARKER = '#171717';

@@ -7,11 +7,11 @@ type SpawnersMenuContext = {
 };
 
 type spawner = {
-  name: string;
   amount_left: number;
-  you_are_text?: string;
   flavor_text?: string;
   important_text?: string;
+  name: string;
+  you_are_text?: string;
 };
 
 export const SpawnersMenu = (props) => {

@@ -3,14 +3,14 @@ import {
   Box,
   Button,
   ColorBox,
+  Divider,
   Flex,
-  Stack,
   Icon,
   Input,
   LabeledList,
   Section,
+  Stack,
   Table,
-  Divider,
 } from '../components';
 import { Image } from '../components/Image';
 import { Window } from '../layouts';
@@ -21,39 +21,39 @@ type ColorEntry = {
 };
 
 type SpriteData = {
-  icon_states: string[];
   finished: string;
+  icon_states: string[];
   steps: SpriteEntry[];
   time_spent: Number;
 };
 
 type SpriteEntry = {
+  config_name: string;
   layer: string;
   result: string;
-  config_name: string;
 };
 
 type GreyscaleMenuData = {
-  greyscale_config: string;
   colors: ColorEntry[];
-  sprites: SpriteData;
   generate_full_preview: boolean;
-  unlocked: boolean;
-  monitoring_files: boolean;
-  sprites_dir: string;
+  greyscale_config: string;
   icon_state: string;
+  monitoring_files: boolean;
   refreshing: boolean;
+  sprites: SpriteData;
+  sprites_dir: string;
+  unlocked: boolean;
 };
 
 enum Direction {
+  East = 'east',
   North = 'north',
   NorthEast = 'northeast',
-  East = 'east',
-  SouthEast = 'southeast',
+  NorthWest = 'northwest',
   South = 'south',
+  SouthEast = 'southeast',
   SouthWest = 'southwest',
   West = 'west',
-  NorthWest = 'northwest',
 }
 
 const DirectionAbbreviation: Record<Direction, string> = {

@@ -420,19 +420,19 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	for(var/atom/movable/recipient as anything in arrived.important_recursive_contents[RECURSIVE_CONTENTS_AREA_SENSITIVE])
 		SEND_SIGNAL(recipient, COMSIG_ENTER_AREA, src)
 
-	if(!isliving(arrived))
+	if(!ismob(arrived))
 		return
 
-	var/mob/living/L = arrived
-	if(!L.ckey)
+	var/mob/M = arrived
+	if(!M.ckey)
 		return
 
 	if(old_area)
-		L.UnregisterSignal(old_area, COMSIG_AREA_POWER_CHANGE)
-	L.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, TYPE_PROC_REF(/mob, refresh_looping_ambience), TRUE)
+		M.UnregisterSignal(old_area, COMSIG_AREA_POWER_CHANGE)
+	M.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, TYPE_PROC_REF(/mob, refresh_looping_ambience), TRUE)
 
-	if(L.playing_ambience != ambient_buzz)
-		L.refresh_looping_ambience()
+	if(M.playing_ambience != ambient_buzz)
+		M.refresh_looping_ambience()
 
 ///Tries to play looping ambience to the mobs.
 /mob/proc/refresh_looping_ambience()

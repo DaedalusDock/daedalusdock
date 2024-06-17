@@ -142,6 +142,6 @@
 
 /obj/structure/overfloor_catwalk/titanium
 	name = "titanium plated catwalk floor cover"
-	icon_state = "titanium"
-	base_icon_state = "titanium"
+	icon_state = "smoothiron"
+	base_icon_state = "smoothiron"
 	tile_type = /obj/item/stack/overfloor_catwalk/titanium

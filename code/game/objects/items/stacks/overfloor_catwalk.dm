@@ -81,4 +81,11 @@
 	singular_name = "titanium catwalk floor cover"
 	icon_state = "titanium_catwalk"
 	merge_type = /obj/item/stack/overfloor_catwalk/titanium
+	catwalk_type = /obj/structure/overfloor_catwalk/titanium
+
+/obj/item/stack/overfloor_catwalk/iron_smooth
+	name = "iron catwalk floor covers"
+	singular_name = "titanium catwalk floor cover"
+	icon_state = "smoothiron_catwalk"
+	merge_type = /obj/item/stack/overfloor_catwalk/iron_smooth
 	catwalk_type = /obj/structure/overfloor_catwalk/iron_smooth

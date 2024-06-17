@@ -14,6 +14,7 @@
 	base_icon_state = "maint"
 	layer = CATWALK_LAYER
 	plane = GAME_PLANE
+	mouse_opacity = MOUSE_OPACITY_OPAQUE
 
 	smoothing_groups = NONE
 	smoothing_flags = NONE
@@ -54,7 +55,7 @@
 	if(ispath(path, /turf/open/floor/plating))
 		return
 
-	post_change_callbacks += CALLBACK(src, PROC_REF(deconstruct))
+	post_change_callbacks += CALLBACK(src, PROC_REF(deconstruct), FALSE)
 
 /obj/structure/overfloor_catwalk/examine(mob/user)
 	. = ..()

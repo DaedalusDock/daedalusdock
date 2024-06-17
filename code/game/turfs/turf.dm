@@ -711,6 +711,15 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/TakeTemperature(temp)
 	temperature += temp
 
+/// Sets underfloor accessibility
+/turf/proc/update_underfloor_accessibility()
+	underfloor_accessibility = initial(underfloor_accessibility)
+	if(underfloor_accessibility == UNDERFLOOR_HIDDEN)
+		return
+
+	if(locate(/obj/structure/overfloor_catwalk) in src)
+		underfloor_accessibility = UNDERFLOOR_INTERACTABLE
+
 /turf/proc/is_below_sound_pressure()
 	var/datum/gas_mixture/GM = unsafe_return_air()
 	if(isnull(GM) || GM.returnPressure() < SOUND_MINIMUM_PRESSURE)

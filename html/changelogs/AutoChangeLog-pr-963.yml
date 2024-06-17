@@ -1,7 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - refactor: Codex entry searching has been outsourced to a local database. This
-      results in outright comical efficiency and speed gains.
-  - code_imp: This is disabled by default on development servers, as it introduces
-      extra initialization time. An override compile flag is available.

@@ -3075,7 +3075,8 @@
 	pixel_y = 25
 	},
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/sbc_starfury)
 "ji" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -3148,7 +3149,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/smart_cable/color/red,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/sbc_starfury)
 "jB" = (
 /obj/machinery/power/terminal{
@@ -3156,7 +3158,8 @@
 	},
 /obj/machinery/firealarm/directional/south,
 /obj/structure/cable/smart_cable/color_connector/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/sbc_starfury)
 "jD" = (
 /obj/machinery/portable_atmospherics/scrubber,
@@ -4144,7 +4147,8 @@
 /obj/structure/extinguisher_cabinet/directional/south,
 /obj/structure/cable/smart_cable/color/red,
 /obj/machinery/light/directional/south,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/sbc_starfury)
 "qm" = (
 /obj/effect/turf_decal/box/corners,
@@ -5536,7 +5540,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/smart_cable/color_connector/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/shuttle/sbc_starfury)
 "Xz" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{

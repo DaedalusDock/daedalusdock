@@ -13,7 +13,7 @@
 /datum/codex_entry/floor/catwalk
 	name = "Catwalk"
 	use_typesof = TRUE
-	associated_paths = list(/turf/open/floor/catwalk_floor)
+	associated_paths = list(/obj/structure/overfloor_catwalk)
 
 	controls_text = {"
 	<span codexlink='Crowbar'>Crowbar</span> - Pry up the floor.

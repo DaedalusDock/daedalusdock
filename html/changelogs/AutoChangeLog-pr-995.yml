@@ -1,0 +1,5 @@
+author: Kapu1178, Ghommie, Vinylspiders, Mothblocks
+delete-after: true
+changes:
+  - qol: Catwalk floors now display the turf under them. Because they aren't turfs
+      anymore.

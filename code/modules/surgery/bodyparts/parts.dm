@@ -294,7 +294,8 @@
 	var/digitigrade_id
 	/// Used solely by digitigrade limbs to remember what their old limb ID was.
 	var/old_limb_id
-
+	/// Used by the footstep element.
+	var/barefoot_step_type = FOOTSTEP_MOB_BAREFOOT
 
 /obj/item/bodypart/leg/left
 	name = "left leg"

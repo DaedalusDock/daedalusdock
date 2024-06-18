@@ -76,17 +76,15 @@
 		var/mob/living/carbon/carbon_source = source
 		if(!carbon_source.get_bodypart(BODY_ZONE_L_LEG) && !carbon_source.get_bodypart(BODY_ZONE_R_LEG))
 			return
-		if(carbon_source.m_intent == MOVE_INTENT_WALK)
-			return// stealth
 
 	steps_for_living[source] += 1
 	var/steps = steps_for_living[source]
 
-	if(steps >= 6)
+	if(steps >= 8)
 		steps_for_living[source] = 0
 		steps = 0
 
-	if(steps % 2)
+	if(floor(steps) % 2)
 		return
 
 	if(steps != 0 && !source.has_gravity()) // don't need to step as often when you hop around
@@ -109,7 +107,7 @@
 /datum/element/footstep/proc/play_simplestep(mob/living/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
 	SIGNAL_HANDLER
 
-	if (forced || SHOULD_DISABLE_FOOTSTEPS(source))
+	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || source.moving_diagonally == SECOND_DIAG_STEP)
 		return
 
 	var/list/prepared_steps = prepare_step(source)
@@ -137,13 +135,13 @@
 /datum/element/footstep/proc/play_humanstep(mob/living/carbon/human/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
 	SIGNAL_HANDLER
 
-	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || !momentum_change)
+	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || !momentum_change || source.moving_diagonally == SECOND_DIAG_STEP)
 		return
 
 	var/volume_multiplier = 1
 	var/range_adjustment = 0
 
-	if(HAS_TRAIT(source, TRAIT_LIGHT_STEP))
+	if((source.m_intent == MOVE_INTENT_WALK) || HAS_TRAIT(source, TRAIT_LIGHT_STEP))
 		volume_multiplier = 0.6
 		range_adjustment = -2
 
@@ -183,15 +181,31 @@
 				vary = sound_vary
 			)
 		else
-			var/barefoot_type = prepared_steps[FOOTSTEP_MOB_BAREFOOT]
-			var/bare_footstep_sounds = GLOB.barefootstep
-			if(!isnull(barefoot_type) && bare_footstep_sounds[barefoot_type])
+			var/obj/item/bodypart/leg/right_leg = source.get_bodypart(BODY_ZONE_R_LEG)
+			var/obj/item/bodypart/leg/left_leg = source.get_bodypart(BODY_ZONE_L_LEG)
+			var/barefoot_type = right_leg?.barefoot_step_type
+			if(!barefoot_type || left_leg && prob(50))
+				barefoot_type = left_leg.barefoot_step_type
+
+			var/list/turf_sound_type = prepared_steps[barefoot_type]
+			var/list/sound_pool
+			switch(barefoot_type)
+				if(FOOTSTEP_MOB_CLAW)
+					sound_pool = GLOB.clawfootstep
+				if(FOOTSTEP_MOB_BAREFOOT)
+					sound_pool = GLOB.barefootstep
+				if(FOOTSTEP_MOB_HEAVY)
+					sound_pool = GLOB.heavyfootstep
+				if(FOOTSTEP_MOB_SHOE)
+					sound_pool = GLOB.footstep
+
+			if(!isnull(sound_pool) && !isnull(barefoot_type) && sound_pool[turf_sound_type])
 				heard_clients = playsound(
 					source.loc,
-					pick(bare_footstep_sounds[barefoot_type][1]),
-					bare_footstep_sounds[barefoot_type][2] * volume * volume_multiplier,
+					pick(sound_pool[turf_sound_type][1]),
+					sound_pool[turf_sound_type][2] * volume * volume_multiplier,
 					TRUE,
-					bare_footstep_sounds[barefoot_type][3] + e_range + range_adjustment,
+					sound_pool[turf_sound_type][3] + e_range + range_adjustment,
 					falloff_distance = 1,
 					vary = sound_vary
 				)
@@ -203,7 +217,7 @@
 /datum/element/footstep/proc/play_simplestep_machine(atom/movable/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
 	SIGNAL_HANDLER
 
-	if (forced || SHOULD_DISABLE_FOOTSTEPS(source))
+	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || source.moving_diagonally == SECOND_DIAG_STEP)
 		return
 
 	var/turf/open/source_loc = get_turf(source)

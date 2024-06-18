@@ -4344,7 +4344,8 @@
 "ox" = (
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "oy" = (
 /obj/structure/table/glass,
@@ -4572,7 +4573,8 @@
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/light/small/maintenance/directional/east,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "po" = (
 /obj/structure/window/reinforced{
@@ -4845,7 +4847,8 @@
 	sortType = 10
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "pW" = (
 /obj/machinery/chem_heater,
@@ -5006,7 +5009,8 @@
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "qu" = (
 /obj/item/radio/intercom/directional/west,
@@ -5808,7 +5812,8 @@
 "sY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "sZ" = (
 /turf/closed/wall/prepainted/daedalus,
@@ -7005,7 +7010,8 @@
 /area/station/hallway/primary/aft)
 "xq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "xr" = (
 /obj/machinery/door/airlock/maintenance{
@@ -10674,7 +10680,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "Jx" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
@@ -10717,7 +10724,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/light/small/maintenance/directional/south,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "JF" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -10743,12 +10751,14 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "JJ" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "JK" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
@@ -10884,7 +10894,8 @@
 /obj/structure/disposalpipe/junction/flip{
 	dir = 8
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Kd" = (
 /obj/structure/sign/map/left{
@@ -10906,7 +10917,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 6
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Kf" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -10914,7 +10926,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Kh" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -10944,11 +10957,13 @@
 	dir = 9
 	},
 /obj/effect/landmark/pestspawn,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Kl" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "Km" = (
 /obj/machinery/door/firedoor,
@@ -11005,7 +11020,8 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Ku" = (
 /obj/machinery/door/airlock/maintenance{
@@ -11056,7 +11072,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "KO" = (
 /obj/structure/table/glass,
@@ -11081,7 +11098,8 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "KV" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11113,7 +11131,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Le" = (
 /obj/structure/lattice/catwalk,
@@ -11155,7 +11174,8 @@
 /obj/effect/spawner/random/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/sign/poster/contraband/random/directional/east,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Ll" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11192,7 +11212,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Lr" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11327,7 +11348,8 @@
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/pestspawn,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "LU" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -11429,7 +11451,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Mq" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11437,7 +11460,8 @@
 	dir = 10
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Ms" = (
 /obj/structure/disposalpipe/segment{
@@ -11447,7 +11471,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Mu" = (
 /obj/effect/turf_decal/tile/neutral{
@@ -11503,7 +11528,8 @@
 /obj/effect/spawner/random/trash/garbage{
 	spawn_scatter_radius = 1
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "MB" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
@@ -11562,7 +11588,8 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "MP" = (
 /obj/machinery/door/firedoor,
@@ -11594,7 +11621,8 @@
 /obj/structure/disposalpipe/junction{
 	dir = 8
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "MX" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -11680,7 +11708,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "Nn" = (
 /obj/effect/turf_decal/stripes/line{
@@ -11688,7 +11717,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "No" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11779,7 +11809,8 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "NI" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11794,11 +11825,13 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "NN" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "NP" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11830,14 +11863,16 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Ob" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/spawner/random/trash/garbage{
 	spawn_scatter_radius = 1
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Oi" = (
 /obj/effect/turf_decal/trimline/blue/filled/line,
@@ -11890,7 +11925,8 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/sign/poster/contraband/random/directional/west,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Oq" = (
 /obj/effect/turf_decal/trimline/blue/filled/warning{
@@ -11924,7 +11960,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/light/small/maintenance/directional/south,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Ow" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -11967,7 +12004,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "OE" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12040,7 +12078,8 @@
 /obj/effect/spawner/random/maintenance,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "OS" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12049,7 +12088,8 @@
 	dir = 1;
 	sortType = 9
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "OU" = (
 /obj/effect/turf_decal/tile/blue/fourcorners,
@@ -12074,7 +12114,8 @@
 /obj/effect/spawner/random/trash/garbage{
 	spawn_scatter_radius = 1
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "OY" = (
 /obj/machinery/door/airlock/maintenance{
@@ -12124,7 +12165,8 @@
 /obj/effect/spawner/random/maintenance,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Ph" = (
 /obj/machinery/door/firedoor,
@@ -12157,7 +12199,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Pr" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12169,7 +12212,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "Pw" = (
 /obj/effect/turf_decal/bot,
@@ -12271,7 +12315,8 @@
 	},
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "PR" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12308,7 +12353,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Qb" = (
 /obj/structure/chair,
@@ -12340,7 +12386,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Qh" = (
 /obj/structure/disposalpipe/segment{
@@ -12459,7 +12506,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "QH" = (
 /obj/machinery/light/small/directional/north,
@@ -12513,13 +12561,15 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "QO" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "QP" = (
 /obj/machinery/door/airlock/maintenance{
@@ -12558,7 +12608,8 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "QV" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12588,7 +12639,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Ra" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -12667,7 +12719,8 @@
 	dir = 6
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "RA" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12676,7 +12729,8 @@
 	},
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "RB" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12742,7 +12796,8 @@
 	dir = 8
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "RT" = (
 /obj/machinery/power/apc/auto_name/directional/north,
@@ -12774,37 +12829,43 @@
 /obj/effect/spawner/random/trash/garbage{
 	spawn_scatter_radius = 1
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Sc" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/sign/poster/contraband/random/directional/north,
 /obj/effect/landmark/pestspawn,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Se" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Sf" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Sl" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Sm" = (
 /obj/effect/spawner/random/maintenance,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Sn" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -12926,7 +12987,8 @@
 	dir = 5
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "SN" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13039,7 +13101,8 @@
 "To" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/landmark/pestspawn,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "Tp" = (
 /obj/effect/decal/cleanable/dirt,
@@ -13076,7 +13139,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/landmark/pestspawn,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "Tw" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13144,7 +13208,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 10
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "TH" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
@@ -13166,7 +13231,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "TN" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13179,7 +13245,8 @@
 /obj/structure/disposalpipe/junction{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "TQ" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13215,7 +13282,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Ub" = (
 /obj/effect/turf_decal/plaque{
@@ -13230,7 +13298,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Ud" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13276,7 +13345,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Uk" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13335,7 +13405,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/turf_decal/stripes/line,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "UI" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13347,7 +13418,8 @@
 /obj/effect/spawner/random/trash/garbage{
 	spawn_scatter_radius = 1
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "UK" = (
 /obj/machinery/camera/directional/south{
@@ -13382,7 +13454,8 @@
 /obj/structure/disposalpipe/junction{
 	dir = 1
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "UN" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13399,7 +13472,8 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "UQ" = (
 /obj/structure/disposalpipe/sorting/mail/flip{
@@ -13409,7 +13483,8 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "US" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13434,7 +13509,8 @@
 "UV" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "UW" = (
 /obj/effect/turf_decal/stripes/line{
@@ -13467,7 +13543,8 @@
 /obj/effect/spawner/random/maintenance,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Vb" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13673,7 +13750,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/pestspawn,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "VV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -13713,7 +13791,8 @@
 /obj/effect/landmark/event_spawn,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Wd" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -13845,7 +13924,8 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "WJ" = (
 /obj/machinery/holopad,
@@ -13917,7 +13997,8 @@
 /obj/effect/spawner/random/maintenance,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "WX" = (
 /obj/effect/turf_decal/stripes/line{
@@ -13988,7 +14069,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Xj" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14038,7 +14120,8 @@
 "Xo" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Xq" = (
 /obj/effect/turf_decal/trimline/blue/filled/line,
@@ -14065,7 +14148,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "Xu" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14076,7 +14160,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Xy" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14084,7 +14169,8 @@
 	pixel_y = -32
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "Xz" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14110,7 +14196,8 @@
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "XD" = (
 /obj/machinery/camera/autoname/directional/north,
@@ -14126,7 +14213,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/light/small/maintenance/directional/south,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "XJ" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14211,7 +14299,8 @@
 	dir = 9
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "XY" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14246,7 +14335,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "Yd" = (
 /obj/structure/table/wood,
@@ -14281,7 +14371,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "Ym" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14343,7 +14434,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/department/medical/central)
 "Yv" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14377,7 +14469,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "YA" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -14388,7 +14481,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "YB" = (
 /obj/structure/disposalpipe/segment{
@@ -14396,7 +14490,8 @@
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "YC" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14531,7 +14626,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "Zq" = (
 /obj/machinery/door/airlock/maintenance{
@@ -14603,7 +14699,8 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/sign/poster/contraband/random/directional/north,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "ZB" = (
 /obj/machinery/door/airlock/maintenance{
@@ -14621,7 +14718,8 @@
 	dir = 6
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "ZE" = (
 /obj/structure/cable/smart_cable/color/yellow,
@@ -14630,7 +14728,8 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "ZG" = (
 /obj/structure/disposalpipe/segment{
@@ -14705,7 +14804,8 @@
 "ZQ" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/port)
 "ZR" = (
 /obj/effect/turf_decal/trimline/blue/filled/end,
@@ -14724,7 +14824,8 @@
 /obj/effect/landmark/event_spawn,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/catwalk_floor/iron_dark,
+/obj/structure/overfloor_catwalk/iron_dark,
+/turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
 "ZU" = (
 /obj/structure/cable/smart_cable/color/yellow,

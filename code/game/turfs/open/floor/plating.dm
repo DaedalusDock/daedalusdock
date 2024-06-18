@@ -85,6 +85,21 @@
 				balloon_alert(user, "too damaged, use a welding tool!")
 			else
 				balloon_alert(user, "too damaged, use a welding or plating repair tool!")
+
+	else if(istype(C, /obj/item/stack/overfloor_catwalk))
+		if(!broken && !burnt)
+			for(var/obj/O in src)
+				for(var/M in O.buckled_mobs)
+					to_chat(user, span_warning("Someone is buckled to \the [O]! Unbuckle [M] to move \him out of the way."))
+					return
+			var/obj/item/stack/overfloor_catwalk/tile = C
+			tile.place_tile(src, user)
+		else
+			if(!iscyborg(user))
+				balloon_alert(user, "too damaged, use a welding tool!")
+			else
+				balloon_alert(user, "too damaged, use a welding or plating repair tool!")
+
 	else if(istype(C, /obj/item/cautery/prt)) //plating repair tool
 		if((broken || burnt) && C.use_tool(src, user, 0, volume=80))
 			to_chat(user, span_danger("You fix some dents on the broken plating."))

@@ -93,6 +93,7 @@ const ApcContent = (props) => {
       <InterfaceLockNoticeBox />
       <Section
         title="Power Status"
+        crtFitted
         buttons={
           <Button
             icon={data.mainLights ? 'lightbulb' : 'lightbulb-o'}
@@ -140,7 +141,7 @@ const ApcContent = (props) => {
           </LabeledList.Item>
         </LabeledList>
       </Section>
-      <Section title="Power Channels">
+      <Section title="Power Channels" crtFitted>
         <LabeledList>
           {channelArray.map((channel) => {
             const { topicParams } = channel;
@@ -201,6 +202,7 @@ const ApcContent = (props) => {
       </Section>
       <Section
         title="Misc"
+        crtFitted
         buttons={
           !!data.siliconUser && (
             <>

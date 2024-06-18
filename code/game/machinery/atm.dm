@@ -136,13 +136,17 @@
 
 /obj/machinery/atm/Topic(href, href_list)
 	. = ..()
+	var/mob/user = usr
 	if(. || reject_topic)
 		return
 
 	if(href_list["eject_id"])
 		if(isnull(inserted_card))
 			return TRUE
-		inserted_card.forceMove(drop_location())
+		if(in_range(src, user))
+			user.put_in_hands(inserted_card)
+		else
+			inserted_card.forceMove(drop_location())
 		inserted_card = null
 		playsound(loc, 'sound/machines/cardreader_desert.ogg', 50)
 		updateUsrDialog()

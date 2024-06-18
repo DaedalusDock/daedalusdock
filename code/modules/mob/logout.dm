@@ -4,6 +4,7 @@
 	SStgui.on_logout(src)
 	unset_machine()
 	remove_from_player_list()
+	consider_ambience_update(null) // Unset ambience vars so it plays again on login
 	..()
 
 	if(loc)

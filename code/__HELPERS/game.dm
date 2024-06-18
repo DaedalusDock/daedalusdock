@@ -316,7 +316,7 @@
 
 ///Recursively checks if an item is inside a given type, even through layers of storage. Returns the atom if it finds it.
 /proc/recursive_loc_check(atom/movable/target, type)
-var/atom/atom_to_find = null
+	var/atom/atom_to_find = null
 
 	if(ispath(type))
 		atom_to_find = target

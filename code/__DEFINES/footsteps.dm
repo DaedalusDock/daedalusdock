@@ -55,18 +55,18 @@ GLOBAL_LIST_INIT(footstep, list(
 		'sound/effects/footstep/wood1.ogg',
 		'sound/effects/footstep/wood2.ogg',
 		'sound/effects/footstep/wood3.ogg',
-		'sound/effects/footstep/wood4.ogg'), 100, 0),
+		'sound/effects/footstep/wood4.ogg'), 80, 0),
 	FOOTSTEP_FLOOR = list(list(
 		'sound/effects/footstep/floor1.ogg',
 		'sound/effects/footstep/floor2.ogg',
 		'sound/effects/footstep/floor3.ogg',
 		'sound/effects/footstep/floor4.ogg',
-		'goon/sounds/footstep/floor5.ogg'), 75, -1),
+		'goon/sounds/footstep/floor5.ogg'), 50, -1),
 	FOOTSTEP_PLATING = list(list(
 		'sound/effects/footstep/plating1.ogg',
 		'sound/effects/footstep/plating2.ogg',
 		'sound/effects/footstep/plating3.ogg',
-		'sound/effects/footstep/plating4.ogg'), 100, 1),
+		'sound/effects/footstep/plating4.ogg'), 70, 1),
 	FOOTSTEP_CARPET = list(list(
 		'sound/effects/footstep/carpet1.ogg',
 		'sound/effects/footstep/carpet2.ogg',
@@ -105,12 +105,12 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		'sound/effects/footstep/woodbarefoot1.ogg',
 		'sound/effects/footstep/woodbarefoot2.ogg',
 		'sound/effects/footstep/woodbarefoot3.ogg',
-		'sound/effects/footstep/woodbarefoot4.ogg'), 80, -1),
+		'sound/effects/footstep/woodbarefoot4.ogg'), 20, -1),
 	FOOTSTEP_HARD_BAREFOOT = list(list(
 		'sound/effects/footstep/hardbarefoot1.ogg',
 		'sound/effects/footstep/hardbarefoot2.ogg',
 		'sound/effects/footstep/hardbarefoot3.ogg',
-		'sound/effects/footstep/hardbarefoot4.ogg'), 80, -1),
+		'sound/effects/footstep/hardbarefoot4.ogg'), 20, -1),
 	FOOTSTEP_CARPET_BAREFOOT = list(list(
 		'sound/effects/footstep/carpetbarefoot1.ogg',
 		'sound/effects/footstep/carpetbarefoot2.ogg',
@@ -142,7 +142,7 @@ GLOBAL_LIST_INIT(barefootstep, list(
 		'sound/effects/footstep/catwalk1.ogg',
 		'sound/effects/footstep/catwalk2.ogg',
 		'sound/effects/footstep/catwalk3.ogg',
-		'sound/effects/footstep/catwalk4.ogg'), 60, 1),
+		'sound/effects/footstep/catwalk4.ogg'), 30, 1),
 ))
 
 //claw footsteps lists

@@ -136,7 +136,6 @@
 
 /obj/machinery/atm/Topic(href, href_list)
 	. = ..()
-	var/mob/user = usr
 	if(. || reject_topic)
 		return
 

@@ -66,3 +66,7 @@
       results in outright comical efficiency and speed gains.
   - code_imp: This is disabled by default on development servers, as it introduces
       extra initialization time. An override compile flag is available.
+2024-06-18:
+  Kapu1178, Ghommie, Vinylspiders, Mothblocks:
+  - qol: Catwalk floors now display the turf under them. Because they aren't turfs
+      anymore.

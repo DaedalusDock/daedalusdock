@@ -1,0 +1,4 @@
+author: BarteG44
+delete-after: true
+changes:
+  - qol: Makes the ATM put IDs directly into your hand when you eject them.

@@ -334,7 +334,7 @@
 					/obj/item/camera,
 					/obj/item/taperecorder,
 					/obj/item/toy/crayon/white,
-					/obj/item/clothing/head/fedora/det_hat
+					/obj/item/clothing/head/fedora/det_hat,
 					/obj/item/storage/briefcase/crimekit)
 	crate_name = "forensics crate"
 

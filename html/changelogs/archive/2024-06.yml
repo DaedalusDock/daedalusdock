@@ -70,3 +70,6 @@
   Kapu1178, Ghommie, Vinylspiders, Mothblocks:
   - qol: Catwalk floors now display the turf under them. Because they aren't turfs
       anymore.
+2024-06-19:
+  BarteG44:
+  - qol: Makes the ATM put IDs directly into your hand when you eject them.

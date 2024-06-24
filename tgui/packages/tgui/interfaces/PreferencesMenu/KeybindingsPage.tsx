@@ -1,4 +1,5 @@
 import { range, sortBy } from 'common/collections';
+import { isEscape, KEY } from 'common/keys';
 import { Component } from 'react';
 
 import { resolveAsset } from '../../assets';
@@ -36,14 +37,14 @@ type KeybindingsPageState = {
   selectedKeybindings?: PreferencesMenuData['keybindings'];
 };
 
-const isStandardKey = (event: KeyboardEvent): boolean => {
+function isStandardKey(event: KeyboardEvent): boolean {
   return (
-    event.key !== 'Alt' &&
-    event.key !== 'Control' &&
-    event.key !== 'Shift' &&
-    event.key !== 'Esc'
+    event.key !== KEY.Alt &&
+    event.key !== KEY.Control &&
+    event.key !== KEY.Shift &&
+    !isEscape(event.key)
   );
-};
+}
 
 const KEY_CODE_TO_BYOND: Record<string, string> = {
   DEL: 'Delete',
@@ -134,7 +135,10 @@ class KeybindingButton extends Component<{
         fluid
         textAlign="center"
         captureKeys={typingHotkey === undefined}
-        onClick={onClick}
+        onClick={(event) => {
+          event.stopPropagation();
+          onClick?.();
+        }}
         selected={typingHotkey !== undefined}
       >
         {typingHotkey || currentHotkey || 'Unbound'}
@@ -284,7 +288,7 @@ export class KeybindingsPage extends Component<{}, KeybindingsPageState> {
     if (isStandardKey(event)) {
       this.setRebindingHotkey(formatKeyboardEvent(event));
       return;
-    } else if (event.key === 'Esc') {
+    } else if (isEscape(event.key)) {
       this.setRebindingHotkey(undefined);
       return;
     }

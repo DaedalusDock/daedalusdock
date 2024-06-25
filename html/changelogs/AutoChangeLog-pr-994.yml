@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - qol: Added "Mutadone" as a search term for Ryetalyn.
+  - rscdel: Removed Spatial Instability mutation.
+  - bugfix: Fixed cases where weather effects wouldn't go away until you walked into
+      them.

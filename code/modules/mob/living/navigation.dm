@@ -131,7 +131,7 @@
 		if(!target)
 			target = lad
 			continue
-		if(get_dist_euclidian(lad, src) > get_dist_euclidian(target, src))
+		if(get_dist_euclidean(lad, src) > get_dist_euclidean(target, src))
 			continue
 		target = lad
 
@@ -143,7 +143,7 @@
 		if(!target)
 			target = stairs_bro.z == z ? stairs_bro : GetAbove(stairs_bro) //if the stairs aren't on our z level, get the turf above them (on our zlevel) to path to instead
 			continue
-		if(get_dist_euclidian(stairs_bro, src) > get_dist_euclidian(target, src))
+		if(get_dist_euclidean(stairs_bro, src) > get_dist_euclidean(target, src))
 			continue
 		target = stairs_bro.z == z ? stairs_bro : GetAbove(stairs_bro)
 

@@ -2033,18 +2033,19 @@
 			return 0
 
 	var/list/forced_gravity = list()
-	if(SEND_SIGNAL(src, COMSIG_ATOM_HAS_GRAVITY, gravity_turf, forced_gravity))
-		if(!length(forced_gravity))
-			SEND_SIGNAL(gravity_turf, COMSIG_TURF_HAS_GRAVITY, src, forced_gravity)
+	SEND_SIGNAL(src, COMSIG_ATOM_HAS_GRAVITY, gravity_turf, forced_gravity)
+	SEND_SIGNAL(gravity_turf, COMSIG_TURF_HAS_GRAVITY, src, forced_gravity)
+	if(length(forced_gravity))
+		var/positive_grav = max(forced_gravity)
+		var/negative_grav = min(min(forced_gravity), 0) //negative grav needs to be below or equal to 0
 
-		var/max_grav = 0
-		for(var/i in forced_gravity)//our gravity is the strongest return forced gravity we get
-			max_grav = max(max_grav, i)
-		//cut so we can reuse the list, this is ok since forced gravity movers are exceedingly rare compared to all other movement
-		return max_grav
+		//our gravity is sum of the most massive positive and negative numbers returned by the signal
+		//so that adding two forced_gravity elements with an effect size of 1 each doesnt add to 2 gravity
+		//but negative force gravity effects can cancel out positive ones
+
+		return (positive_grav + negative_grav)
 
 	var/area/turf_area = gravity_turf.loc
-
 	return !gravity_turf.force_no_gravity && (turf_area.has_gravity || SSmapping.gravity_by_zlevel[gravity_turf.z])
 
 /**

@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: Species with clawed feet play the claw footstep sounds when barefoot.
+  - rscadd: Walking now produces footstep sounds, but quieter.
+  - tweak: Adjusted the sound environment parameters of most of the station.

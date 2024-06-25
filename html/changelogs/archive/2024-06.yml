@@ -73,3 +73,6 @@
 2024-06-19:
   BarteG44:
   - qol: Makes the ATM put IDs directly into your hand when you eject them.
+2024-06-25:
+  jlsnow301:
+  - bugfix: Fixed the keybindings UI. You should be able to reassign properly now.

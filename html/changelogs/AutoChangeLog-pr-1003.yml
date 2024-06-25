@@ -1,4 +1,0 @@
-author: jlsnow301
-delete-after: true
-changes:
-  - bugfix: Fixed the keybindings UI. You should be able to reassign properly now.

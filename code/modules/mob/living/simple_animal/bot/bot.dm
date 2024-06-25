@@ -611,7 +611,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	bot_reset() //Reset a bot before setting it to call mode.
 
 	var/list/access = SSid_access.accesses_by_region[REGION_ALL_STATION]
-	set_path(get_path_to(src, waypoint, max_distance=200, access = access.Copy()))
+	set_path(jps_path_to(src, waypoint, max_distance=200, access = access.Copy()))
 	calling_ai = caller //Link the AI to the bot!
 	ai_waypoint = waypoint
 
@@ -826,7 +826,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 // given an optional turf to avoid
 /mob/living/simple_animal/bot/proc/calc_path(turf/avoid)
 	check_bot_access()
-	set_path(get_path_to(src, patrol_target, max_distance=120, access = access_card?.GetAccess(), exclude=avoid))
+	set_path(jps_path_to(src, patrol_target, max_distance=120, access = access_card?.GetAccess(), exclude=avoid))
 
 /mob/living/simple_animal/bot/proc/calc_summon_path(turf/avoid)
 	check_bot_access()

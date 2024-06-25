@@ -1345,6 +1345,8 @@
 	power_environ = FALSE
 	area_flags = NO_ALERTS
 	outdoors = TRUE
+
+	ambient_buzz = null
 	ambience_index = AMBIENCE_SPACE
 	flags_1 = CAN_BE_DIRTY_1
 	sound_environment = SOUND_AREA_SPACE

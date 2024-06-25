@@ -45,7 +45,7 @@
 	var/turf/T = loc
 	T.update_underfloor_accessibility()
 
-	AddElement(/datum/element/footstep_override, footstep = FOOTSTEP_CATWALK)
+	AddElement(/datum/element/footstep_override, clawfootstep = FOOTSTEP_CATWALK, heavyfootstep = FOOTSTEP_CATWALK, footstep = FOOTSTEP_CATWALK)
 
 	var/static/list/loc_connections = list(
 		COMSIG_TURF_CHANGE = PROC_REF(pre_turf_change)

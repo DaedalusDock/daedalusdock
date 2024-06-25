@@ -62,6 +62,7 @@
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
+	barefoot_step_type = FOOTSTEP_MOB_CLAW
 
 /obj/item/bodypart/leg/left/teshari
 	icon_greyscale = 'icons/mob/species/teshari/bodyparts.dmi'
@@ -72,6 +73,7 @@
 	limb_id = SPECIES_TESHARI
 	should_draw_greyscale = TRUE
 	bodytype = BODYTYPE_TESHARI | BODYTYPE_ORGANIC
+	barefoot_step_type = FOOTSTEP_MOB_CLAW
 
 ///////////////////////////////////////////////////////////
 /obj/item/bodypart/head/robot/surplus/teshari

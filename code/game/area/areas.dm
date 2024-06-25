@@ -422,7 +422,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 	if(ismob(arrived))
 		var/mob/M = arrived
-		M.consider_ambience_update(src)
+		M.update_ambience_area(src)
 
 /**
  * Called when an atom exits an area

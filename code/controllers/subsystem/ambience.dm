@@ -92,8 +92,8 @@ SUBSYSTEM_DEF(ambience)
 		return ..(M, pick(minecraft_cave_noises))
 	return ..()
 
-/// See if the mob needs it's ambience updated, update relevant data, and refresh ambience if necessary.
-/mob/proc/consider_ambience_update(area/new_area)
+/// Set the mob's tracked ambience area, and unset the old one.
+/mob/proc/update_ambience_area(area/new_area)
 	var/old_tracked_area = ambience_tracked_area
 	if(old_tracked_area)
 		UnregisterSignal(old_tracked_area, COMSIG_AREA_POWER_CHANGE)
@@ -107,8 +107,7 @@ SUBSYSTEM_DEF(ambience)
 		ambience_tracked_area = new_area
 		RegisterSignal(ambience_tracked_area, COMSIG_AREA_POWER_CHANGE, PROC_REF(refresh_looping_ambience), TRUE)
 
-	if(playing_ambience != ambience_tracked_area?.ambient_buzz)
-		refresh_looping_ambience()
+	refresh_looping_ambience()
 
 ///Tries to play looping ambience to the mobs.
 /mob/proc/refresh_looping_ambience()
@@ -118,7 +117,7 @@ SUBSYSTEM_DEF(ambience)
 
 	var/area/my_area = get_area(src)
 
-	if(!(client.prefs.toggles & SOUND_SHIP_AMBIENCE) || !my_area.ambient_buzz)
+	if(!(client.prefs.toggles & SOUND_SHIP_AMBIENCE) || !my_area?.ambient_buzz)
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
 		playing_ambience = null
 		return
@@ -130,5 +129,8 @@ SUBSYSTEM_DEF(ambience)
 		return
 
 	else
+		if(playing_ambience == ambience_tracked_area?.ambient_buzz)
+			return
+
 		playing_ambience = my_area.ambient_buzz
 		SEND_SOUND(src, sound(my_area.ambient_buzz, repeat = 1, wait = 0, volume = my_area.ambient_buzz_vol, channel = CHANNEL_BUZZ))

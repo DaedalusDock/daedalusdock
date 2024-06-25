@@ -91,7 +91,7 @@
 
 	update_client_colour()
 	update_mouse_pointer()
-	consider_ambience_update(get_area(src))
+	update_ambience_area(get_area(src))
 
 	if(client)
 		if(client.view_size)

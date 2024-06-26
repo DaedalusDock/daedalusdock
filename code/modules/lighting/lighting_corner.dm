@@ -147,8 +147,9 @@
 	if(!SSlighting.allow_duped_corners && old_r == cache_r && old_g == cache_g && old_b == cache_b)
 		return
 #else
-	if(old_r == cache_r && old_g == cache_g && old_b == cache_b)
-		return
+	// For some reason, preventing duped corners breaks bloom, so it's disabled.
+	// if(old_r == cache_r && old_g == cache_g && old_b == cache_b)
+	// 	return
 #endif
 
 	var/datum/lighting_object/lighting_object = master_NE?.lighting_object

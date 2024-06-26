@@ -48,6 +48,7 @@
 	return ..()
 
 /datum/lighting_object/proc/update()
+	var/turf/affected_turf = src.affected_turf
 #ifdef VISUALIZE_LIGHT_UPDATES
 	affected_turf.add_atom_colour(COLOR_BLUE_LIGHT, ADMIN_COLOUR_PRIORITY)
 	animate(affected_turf, 10, color = null)
@@ -63,8 +64,6 @@
 	// Including with these comments.
 
 	var/static/datum/lighting_corner/dummy/dummy_lighting_corner = new
-
-	var/turf/affected_turf = src.affected_turf
 
 	var/datum/lighting_corner/red_corner = affected_turf.lighting_corner_SW || dummy_lighting_corner
 	var/datum/lighting_corner/green_corner = affected_turf.lighting_corner_SE || dummy_lighting_corner

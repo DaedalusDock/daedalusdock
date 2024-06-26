@@ -61,12 +61,10 @@
 	var/mintargetdist = 0
 	/// If we should delete the first step in the path or not. Used often because it is just the starting tile
 	var/skip_first = FALSE
-	/// Ensures diagonal moves won't use invalid midstep turfs by splitting them into two orthogonal moves if necessary
-	var/diagonal_safety = TRUE
+	/// Defines how we handle diagonal moves. See __DEFINES/path.dm
+	var/diagonal_handling = DIAGONAL_REMOVE_CLUNKY
 
-	var/time_spent_pathfinding
-
-/datum/pathfind/jps/New(atom/movable/caller, atom/goal, access, max_distance, mintargetdist, simulated_only, avoid, skip_first, diagonal_safety, datum/callback/on_finish)
+/datum/pathfind/jps/New(atom/movable/caller, atom/goal, access, max_distance, mintargetdist, simulated_only, avoid, skip_first, diagonal_handling, datum/callback/on_finish)
 	src.caller = caller
 	src.pass_info = new(caller, access)
 	end = get_turf(goal)
@@ -77,7 +75,7 @@
 	src.simulated_only = simulated_only
 	src.avoid = avoid
 	src.skip_first = skip_first
-	src.diagonal_safety = diagonal_safety
+	src.diagonal_handling = diagonal_handling
 	src.on_finish = on_finish
 
 /datum/pathfind/jps/Destroy(force, ...)
@@ -137,10 +135,8 @@
 
 		// Stable, we'll just be back later
 		if(TICK_CHECK)
-			time_spent_pathfinding += TICK_USAGE_TO_MS(tick)
 			return TRUE
 
-	time_spent_pathfinding += TICK_USAGE_TO_MS(tick)
 	return TRUE
 
 /**
@@ -154,31 +150,17 @@
 	var/list/path = src.path || list()
 	reverse_range(path)
 
-	if(diagonal_safety)
-		path = diagonal_movement_safety()
+	switch(diagonal_handling)
+		if(DIAGONAL_REMOVE_CLUNKY)
+			path = remove_clunky_diagonals(path, pass_info, simulated_only, avoid)
+		if(DIAGONAL_REMOVE_ALL)
+			path = remove_diagonals(path, pass_info, simulated_only, avoid)
 
 	if(length(path) > 0 && skip_first)
 		path.Cut(1,2)
 
 	hand_back(path)
-	to_chat(world, span_debug("JPS took [time_spent_pathfinding / 1000] seconds to find a path [length(path)] tiles long. ([time_spent_pathfinding / length(path)]ms per tile)"))
 	return ..()
-
-	// //we're done! reverse the path to get it from start to finish
-	// if(path)
-	// 	for(var/i = 1 to round(0.5 * length(path)))
-	// 		path.Swap(i, length(path) - i + 1)
-	// sources = null
-	// QDEL_NULL(open)
-
-	// if(diagonal_safety)
-	// 	path = diagonal_movement_safety()
-	// if(length(path) > 0 && skip_first)
-	// 	path.Cut(1,2)
-	// on_finish.Invoke(path)
-	// on_finish = null
-	// to_chat(world, span_debug("JPS took [time_spent_pathfinding / 1000] seconds to find a path [length(path)] tiles long. ([time_spent_pathfinding / length(path)]ms per tile)"))
-	// qdel(src)
 
 /// Called when we've hit the goal with the node that represents the last tile, then sets the path var to that path so it can be returned by [datum/pathfind/proc/search]
 /datum/pathfind/jps/proc/unwind_path(datum/jps_node/unwind_node)
@@ -193,36 +175,60 @@
 			path.Add(iter_turf)
 		unwind_node = unwind_node.previous_node
 
-/datum/pathfind/jps/proc/diagonal_movement_safety()
+/**
+ * Processes a path (list of turfs), removes any diagonal moves that would lead to a weird bump
+ *
+ * path - The path to process down
+ * pass_info - Holds all the info about what this path attempt can go through
+ * simulated_only - If we are not allowed to pass space turfs
+ * avoid - A turf to be avoided
+ */
+/proc/remove_clunky_diagonals(list/path, datum/can_pass_info/pass_info, simulated_only, turf/avoid)
 	if(length(path) < 2)
-		return
+		return path
 	var/list/modified_path = list()
-	var/datum/can_pass_info/pass_info = src.pass_info
 
 	for(var/i in 1 to length(path) - 1)
 		var/turf/current_turf = path[i]
+		modified_path += current_turf
 		var/turf/next_turf = path[i+1]
 		var/movement_dir = get_dir(current_turf, next_turf)
-
 		if(!(movement_dir & (movement_dir - 1))) //cardinal movement, no need to verify
-			modified_path += current_turf
 			continue
+		//If the first diagonal movement step is invalid (north/south), replace with a sidestep first, with an implied vertical step in next_turf
+		var/vertical_only = movement_dir & (NORTH|SOUTH)
+		if(!CAN_STEP(current_turf,get_step(current_turf, vertical_only), simulated_only, pass_info, avoid))
+			modified_path += get_step(current_turf, movement_dir & ~vertical_only)
+	modified_path += path[length(path)]
 
-		//If default diagonal movement step is invalid, replace with alternative two steps
-		if(movement_dir & NORTH)
-			if(!CAN_STEP(current_turf,get_step(current_turf, NORTH), simulated_only, pass_info, avoid))
-				modified_path += current_turf
-				modified_path += get_step(current_turf, movement_dir & ~NORTH)
-			else
-				modified_path += current_turf
+	return modified_path
 
-		else
-			if(!CAN_STEP(current_turf, get_step(current_turf, SOUTH), simulated_only, pass_info, avoid))
-				modified_path += current_turf
-				modified_path += get_step(current_turf, movement_dir & ~SOUTH)
-			else
-				modified_path += current_turf
+/**
+ * Processes a path (list of turfs), removes any diagonal moves
+ *
+ * path - The path to process down
+ * pass_info - Holds all the info about what this path attempt can go through
+ * simulated_only - If we are not allowed to pass space turfs
+ * avoid - A turf to be avoided
+ */
+/proc/remove_diagonals(list/path, datum/can_pass_info/pass_info, simulated_only, turf/avoid)
+	if(length(path) < 2)
+		return path
+	var/list/modified_path = list()
 
+	for(var/i in 1 to length(path) - 1)
+		var/turf/current_turf = path[i]
+		modified_path += current_turf
+		var/turf/next_turf = path[i+1]
+		var/movement_dir = get_dir(current_turf, next_turf)
+		if(!(movement_dir & (movement_dir - 1))) //cardinal movement, no need to verify
+			continue
+		var/vertical_only = movement_dir & (NORTH|SOUTH)
+		// If we can't go directly north/south, we will first go to the side,
+		if(!CAN_STEP(current_turf,get_step(current_turf, vertical_only), simulated_only, pass_info, avoid))
+			modified_path += get_step(current_turf, movement_dir & ~vertical_only)
+		else // Otherwise, we'll first go north/south, then to the side
+			modified_path += get_step(current_turf, vertical_only)
 	modified_path += path[length(path)]
 
 	return modified_path

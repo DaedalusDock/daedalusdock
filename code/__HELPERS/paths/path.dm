@@ -18,13 +18,13 @@
  * * simulated_only: Whether we consider turfs without atmos simulation (AKA do we want to ignore space)
  * * exclude: If we want to avoid a specific turf, like if we're a mulebot who already got blocked by some turf
  * * skip_first: Whether or not to delete the first item in the path. This would be done because the first item is the starting tile, which can break movement for some creatures.
- * * diagonal_safety: ensures diagonal moves won't use invalid midstep turfs by splitting them into two orthogonal moves if necessary
+ * * diagonal_handling: defines how we handle diagonal moves. see __DEFINES/path.dm
  */
-/proc/jps_path_to(atom/movable/caller, atom/end, max_distance = 30, mintargetdist, list/access, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_safety=TRUE)
+/proc/jps_path_to(atom/movable/caller, atom/end, max_distance = 30, mintargetdist, list/access, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
 	var/list/path = list()
 	// We're guarenteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
 	var/datum/callback/await = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), path)
-	if(!SSpathfinder.pathfind(caller, end, max_distance, mintargetdist, access, simulated_only, exclude, skip_first, diagonal_safety, await))
+	if(!SSpathfinder.pathfind(caller, end, max_distance, mintargetdist, access, simulated_only, exclude, skip_first, diagonal_handling, await))
 		return list()
 
 	UNTIL(length(path))
@@ -196,7 +196,7 @@
 		if(!ignore_grabs && LAZYLEN(living_construct.active_grabs))
 			grab_infos = list()
 			for(var/atom/movable/grabbed_by in living_construct.recursively_get_all_grabbed_movables())
-				grab_infos += new(grabbed_by, access, no_id, call_depth + 1, ignore_grabs = TRUE)
+				grab_infos += new /datum/can_pass_info(grabbed_by, access, no_id, call_depth + 1, ignore_grabs = TRUE)
 
 	if(iscameramob(construct_from))
 		src.camera_type = construct_from.type

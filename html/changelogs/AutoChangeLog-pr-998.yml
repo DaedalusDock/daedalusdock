@@ -1,0 +1,5 @@
+author: Kapu1178, SyncIt21
+delete-after: true
+changes:
+  - balance: Hydroponics trays now hold water significantly longer.
+  - qol: Many actions are safer from specific edge cases. You won't notice a difference.

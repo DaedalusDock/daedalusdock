@@ -295,7 +295,7 @@
 
 //Water//////////////////////////////////////////////////////////////////
 			// Drink random amount of water
-			adjust_waterlevel(-rand(1,6) / rating)
+			adjust_waterlevel(-0.4 / rating)
 
 			// If the plant is dry, it loses health pretty fast, unless mushroom
 			if(waterlevel <= 10 && !myseed.get_gene(/datum/plant_gene/trait/plant_type/fungal_metabolism))
@@ -815,13 +815,17 @@
 				var/water_amt = reagent_source.reagents.get_reagent_amount(/datum/reagent/water) * split / reagent_source.reagents.total_volume
 				H.adjust_waterlevel(round(water_amt))
 				reagent_source.reagents.remove_reagent(/datum/reagent/water, water_amt)
+
 			reagent_source.reagents.trans_to(H.reagents, split, transfered_by = user)
 			lastuser = WEAKREF(user)
+
 			if(IS_EDIBLE(reagent_source) || istype(reagent_source, /obj/item/reagent_containers/pill))
 				qdel(reagent_source)
 				H.update_appearance()
 				return 1
+
 			H.update_appearance()
+
 		if(reagent_source) // If the source wasn't composted and destroyed
 			reagent_source.update_appearance()
 		return 1

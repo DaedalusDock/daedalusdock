@@ -1,3 +1,4 @@
+import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
 import { CargoContent } from './Cargo';
 

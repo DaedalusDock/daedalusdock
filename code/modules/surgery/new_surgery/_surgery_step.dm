@@ -135,33 +135,34 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if (can_infect)
 		spread_germs(user, affected)
 
-	if(affected && IS_ORGANIC_LIMB(affected) && !istype(tool, /obj/item/reagent_containers))
-		tool.transfer_mob_blood_dna(target)
+	if(affected)
+		if(IS_ORGANIC_LIMB(affected) && !istype(tool, /obj/item/reagent_containers))
+			tool.transfer_mob_blood_dna(target)
 
-	var/mob/living/carbon/human/human_user
-	// Bloody items
-	if(affected && ishuman(user))
-		human_user = user
+		var/mob/living/carbon/human/human_user
+		// Bloody items
+		if(ishuman(user))
+			human_user = user
 
-		if(prob(60) && (affected.bodypart_flags & BP_HAS_BLOOD))
-			if(surgery_flags & SURGERY_BLOODY_BODY)
-				human_user.add_blood_DNA_to_items(target.get_blood_dna_list(), ITEM_SLOT_GLOVES|ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
+			if(prob(60) && (affected.bodypart_flags & BP_HAS_BLOOD))
+				if(surgery_flags & SURGERY_BLOODY_BODY)
+					human_user.add_blood_DNA_to_items(target.get_blood_dna_list(), ITEM_SLOT_GLOVES|ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
 
-			else if(surgery_flags & SURGERY_BLOODY_GLOVES)
-				human_user.add_blood_DNA_to_items(target.get_blood_dna_list(), ITEM_SLOT_GLOVES)
+				else if(surgery_flags & SURGERY_BLOODY_GLOVES)
+					human_user.add_blood_DNA_to_items(target.get_blood_dna_list(), ITEM_SLOT_GLOVES)
 
-	// Transmit diseases if no gloves.
-	if(IS_ORGANIC_LIMB(affected) && !human_user?.gloves)
-		for(var/datum/disease/D as anything in user.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				target.ContactContractDisease(D)
+		// Transmit diseases if no gloves.
+		if(IS_ORGANIC_LIMB(affected) && !human_user?.gloves)
+			for(var/datum/disease/D as anything in user.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					target.ContactContractDisease(D)
 
-		for(var/datum/disease/D as anything in target.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				user.ContactContractDisease(D)
+			for(var/datum/disease/D as anything in target.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					user.ContactContractDisease(D)
 
-	if(affected && pain_given && !(affected.bodypart_flags & BP_NO_PAIN) && target.stat == CONSCIOUS)
-		target.apply_pain(pain_given, affected.body_zone, ignore_cd = TRUE)
+		if(pain_given && !(affected.bodypart_flags & BP_NO_PAIN) && target.stat == CONSCIOUS)
+			target.apply_pain(pain_given, affected.body_zone, ignore_cd = TRUE)
 
 	if (target.stat == UNCONSCIOUS && prob(20))
 		to_chat(target, span_boldnotice("... [pick("bright light", "faraway pain", "something moving in you", "soft beeping")] ..."))

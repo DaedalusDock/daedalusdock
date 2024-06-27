@@ -135,12 +135,12 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if (can_infect)
 		spread_germs(user, affected)
 
-	if(IS_ORGANIC_LIMB(affected) && !istype(tool, /obj/item/reagent_containers))
+	if(affected && IS_ORGANIC_LIMB(affected) && !istype(tool, /obj/item/reagent_containers))
 		tool.transfer_mob_blood_dna(target)
 
 	var/mob/living/carbon/human/human_user
 	// Bloody items
-	if(ishuman(user))
+	if(affected && ishuman(user))
 		human_user = user
 
 		if(prob(60) && (affected.bodypart_flags & BP_HAS_BLOOD))
@@ -160,7 +160,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 				user.ContactContractDisease(D)
 
-	if(pain_given && !(affected.bodypart_flags & BP_NO_PAIN) && target.stat == CONSCIOUS)
+	if(affected && pain_given && !(affected.bodypart_flags & BP_NO_PAIN) && target.stat == CONSCIOUS)
 		target.apply_pain(pain_given, affected.body_zone, ignore_cd = TRUE)
 
 	if (target.stat == UNCONSCIOUS && prob(20))

@@ -1,6 +1,5 @@
-import { sortBy } from 'common/collections';
-import { flow } from 'common/fp';
 import { toFixed } from 'common/math';
+import { BooleanLike } from 'common/react';
 
 import { useBackend } from '../backend';
 import {
@@ -14,9 +13,37 @@ import {
 import { getGasColor, getGasLabel } from '../constants';
 import { Window } from '../layouts';
 
-const logScale = (value) => Math.log2(16 + Math.max(0, value)) - 4;
+type Data = {
+  SM_ambientpressure: number;
+  SM_ambienttemp: number;
+  SM_area_name: string;
+  SM_bad_moles_amount: number;
+  SM_integrity: number;
+  SM_moles: number;
+  SM_power: number;
+  SM_uid: number;
+  active: BooleanLike;
+  gases: Gas[];
+  singlecrystal: BooleanLike;
+  supermatters: Supermatter[];
+};
 
-export const SupermatterMonitor = () => {
+type Gas = {
+  amount: number;
+  name: string;
+};
+
+type Supermatter = {
+  area_name: string;
+  integrity: number;
+  uid: number;
+};
+
+function logScale(value) {
+  return Math.log2(16 + Math.max(0, value)) - 4;
+}
+
+export function SupermatterMonitor() {
   return (
     <Window width={600} height={350} theme="ntos" title="Supermatter Monitor">
       <Window.Content scrollable>
@@ -24,10 +51,10 @@ export const SupermatterMonitor = () => {
       </Window.Content>
     </Window>
   );
-};
+}
 
-export const SupermatterMonitorContent = (props) => {
-  const { act, data } = useBackend();
+export function SupermatterMonitorContent(props) {
+  const { act, data } = useBackend<Data>();
   const {
     active,
     singlecrystal,
@@ -40,14 +67,17 @@ export const SupermatterMonitorContent = (props) => {
     SM_moles,
     SM_bad_moles_amount,
   } = data;
+
   if (!active) {
     return <SupermatterList />;
   }
-  const gases = flow([
-    (gases) => gases.filter((gas) => gas.amount >= 0.01),
-    sortBy((gas) => -gas.amount),
-  ])(data.gases || []);
+
+  const gases = data.gases
+    .filter((gas) => gas.amount >= 0.01)
+    .sort((a, b) => -a.amount + b.amount);
+
   const gasMaxAmount = Math.max(1, ...gases.map((gas) => gas.amount));
+
   return (
     <Section
       title={SM_uid + '. ' + SM_area_name}
@@ -138,7 +168,7 @@ export const SupermatterMonitorContent = (props) => {
             </LabeledList>
           </Section>
         </Stack.Item>
-        <Stack.Item grow={1} basis={0}>
+        <Stack.Item grow basis={0}>
           <Section title="Gases">
             <LabeledList>
               {gases.map((gas) => (
@@ -159,11 +189,12 @@ export const SupermatterMonitorContent = (props) => {
       </Stack>
     </Section>
   );
-};
+}
 
-const SupermatterList = (props) => {
-  const { act, data } = useBackend();
+function SupermatterList(props) {
+  const { act, data } = useBackend<Data>();
   const { supermatters = [] } = data;
+
   return (
     <Section
       title="Detected Supermatters"
@@ -207,4 +238,4 @@ const SupermatterList = (props) => {
       </Table>
     </Section>
   );
-};
+}

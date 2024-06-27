@@ -15,6 +15,7 @@ import {
   Table,
 } from '../components';
 import { Window } from '../layouts';
+import { LoadingScreen } from './common/LoadingScreen';
 
 type Data = {
   areas: Area[];
@@ -93,7 +94,7 @@ export function PowerMonitorContent(props) {
   const maxValue = Math.max(PEAK_DRAW, ...history.supply, ...history.demand);
 
   if (supplyData.length === 0 || demandData.length === 0) {
-    return <>No data</>;
+    return <LoadingScreen />;
   }
 
   const areas = data.areas

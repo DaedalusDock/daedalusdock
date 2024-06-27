@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import { useBackend, useLocalState } from '../../backend';
 import { Button, LabeledList, Section } from '../../components';
 import { Window } from '../../layouts';

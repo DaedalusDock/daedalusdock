@@ -87,3 +87,9 @@
   - rscdel: Removed Spatial Instability mutation.
   - bugfix: Fixed cases where weather effects wouldn't go away until you walked into
       them.
+2024-06-27:
+  Kapu1178:
+  - bugfix: Bloom renders properly
+  Kapu1178, SyncIt21:
+  - balance: Hydroponics trays now hold water significantly longer.
+  - qol: Many actions are safer from specific edge cases. You won't notice a difference.

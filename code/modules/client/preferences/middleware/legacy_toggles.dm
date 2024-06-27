@@ -118,6 +118,8 @@
 			else
 				user.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 
+		if(legacy_flag == SOUND_SHIP_AMBIENCE)
+			user.refresh_looping_ambience()
 		return TRUE
 
 	var/legacy_chat_flag = legacy_chat_toggles[preference]

@@ -1034,51 +1034,54 @@
 /mob/living/can_hold_items(obj/item/I)
 	return usable_hands && ..()
 
-/mob/living/canUseTopic(atom/movable/target, flags)
+/mob/living/canUseTopic(atom/target, flags)
+	if(stat != CONSCIOUS)
+		to_chat(src, span_warning("You cannot do that while unconscious."))
+		return FALSE
 
 	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
 	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
 	// Also if it is not set, the mob could be incapcitated, knocked out, unconscious, asleep, EMP'd, etc.
 	if(!(mobility_flags & MOBILITY_UI) && !(flags & USE_RESTING))
-		to_chat(src, span_warning("You can't do that right now!"))
+		to_chat(src, span_warning("You cannot do that right now."))
 		return FALSE
 
 	// NEED_HANDS is already checked by MOBILITY_UI for humans so this is for silicons
 	if((flags & USE_NEED_HANDS) && !can_hold_items(isitem(target) ? target : null)) //almost redundant if it weren't for mobs,
-		to_chat(src, span_warning("You don't have the physical ability to do this!"))
+		to_chat(src, span_warning("You are not physically capable of doing that."))
 		return FALSE
 
-	if((flags & USE_CLOSE) && !Adjacent(target) && (target.loc != src))
+	if((flags & USE_CLOSE) && !CanReach(target) && (recursive_loc_check(src, target)))
 		if(issilicon(src) && !ispAI(src))
 			if(!(flags & USE_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
-				to_chat(src, span_warning("You are too far away!"))
+				to_chat(src, span_warning("You are too far away."))
 				return FALSE
 
 		else if(flags & USE_IGNORE_TK)
-			to_chat(src, span_warning("You are too far away!"))
+			to_chat(src, span_warning("You are too far away."))
 			return FALSE
 
 		else
 			var/datum/dna/D = has_dna()
 			if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, target))
-				to_chat(src, span_warning("You are too far away!"))
+				to_chat(src, span_warning("You are too far away."))
 				return FALSE
 
 	if((flags & USE_DEXTERITY) && !ISADVANCEDTOOLUSER(src))
-		to_chat(src, span_warning("You don't have the dexterity to do this!"))
+		to_chat(src, span_warning("You do not have the dexterity required to do that."))
 		return FALSE
 
 	if((flags & USE_LITERACY) && !is_literate())
-		to_chat(src, span_warning("You can't comprehend any of this!"))
+		to_chat(src, span_warning("You cannot comprehend this."))
 		return FALSE
 	return TRUE
 
 /mob/living/proc/can_use_guns(obj/item/G)//actually used for more than guns!
 	if(G.trigger_guard == TRIGGER_GUARD_NONE)
-		to_chat(src, span_warning("You are unable to fire this!"))
+		to_chat(src, span_warning("You are unable to fire that."))
 		return FALSE
 	if(G.trigger_guard != TRIGGER_GUARD_ALLOW_ALL && (!ISADVANCEDTOOLUSER(src) && !HAS_TRAIT(src, TRAIT_GUN_NATURAL)))
-		to_chat(src, span_warning("You try to fire [G], but can't use the trigger!"))
+		to_chat(src, span_warning("You attempt to fire [G], but cannot pull the trigger."))
 		return FALSE
 	return TRUE
 

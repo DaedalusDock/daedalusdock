@@ -251,13 +251,23 @@
 	return atoms
 
 ///Returns the distance between two atoms
-/proc/get_dist_euclidian(atom/first_location as turf|mob|obj, atom/second_location as turf|mob|obj)
+/proc/get_dist_euclidean(atom/first_location as turf|mob|obj, atom/second_location as turf|mob|obj)
+	if(!first_location.z || !second_location.z)
+		return INFINITY
+
 	var/dx = first_location.x - second_location.x
 	var/dy = first_location.y - second_location.y
 
 	var/dist = sqrt(dx ** 2 + dy ** 2)
 
 	return dist
+
+/// Returns the manhattan distance between two atoms. Returns INFINITY if either are not on a turf, for BYOND get_dist() parity.
+/proc/get_dist_manhattan(atom/A, atom/B)
+	if(!A.z || !B.z)
+		return INFINITY
+
+	return abs(A.x - B.x) + abs(A.y - B.y) + abs(A.z - B.z)
 
 ///Returns a list of turfs around a center based on RANGE_TURFS()
 /proc/circle_range_turfs(center = usr, radius = 3)

@@ -296,23 +296,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		close_and_lock_door(door)
 
 /**
- * Update the icon state of the area
- *
- * Im not sure what the heck this does, somethign to do with weather being able to set icon
- * states on areas?? where the heck would that even display?
- */
-/area/update_icon_state()
-	var/weather_icon
-	for(var/V in SSweather.processing)
-		var/datum/weather/W = V
-		if(W.stage != END_STAGE && (src in W.impacted_areas))
-			W.update_areas()
-			weather_icon = TRUE
-	if(!weather_icon)
-		icon_state = null
-	return ..()
-
-/**
  * Update the icon of the area (overridden to always be null for space
  */
 /area/space/update_icon_state()
@@ -420,43 +403,9 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	for(var/atom/movable/recipient as anything in arrived.important_recursive_contents[RECURSIVE_CONTENTS_AREA_SENSITIVE])
 		SEND_SIGNAL(recipient, COMSIG_ENTER_AREA, src)
 
-	if(!isliving(arrived))
-		return
-
-	var/mob/living/L = arrived
-	if(!L.ckey)
-		return
-
-	if(old_area)
-		L.UnregisterSignal(old_area, COMSIG_AREA_POWER_CHANGE)
-	L.RegisterSignal(src, COMSIG_AREA_POWER_CHANGE, TYPE_PROC_REF(/mob, refresh_looping_ambience), TRUE)
-
-	if(L.playing_ambience != ambient_buzz)
-		L.refresh_looping_ambience()
-
-///Tries to play looping ambience to the mobs.
-/mob/proc/refresh_looping_ambience()
-	SIGNAL_HANDLER
-	if(!client)
-		return
-
-	var/area/my_area = get_area(src)
-
-	if(!(client?.prefs.toggles & SOUND_SHIP_AMBIENCE) || !my_area.ambient_buzz)
-		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
-		playing_ambience = null
-		return
-
-	//Station ambience is dependant on a functioning and charged APC.
-	if(!is_mining_level(my_area.z) && ((!my_area.apc || !my_area.apc.operating || !my_area.apc.cell?.charge && my_area.requires_power)))
-		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
-		playing_ambience = null
-		return
-
-	else
-		playing_ambience = my_area.ambient_buzz
-		SEND_SOUND(src, sound(my_area.ambient_buzz, repeat = 1, wait = 0, volume = my_area.ambient_buzz_vol, channel = CHANNEL_BUZZ))
-
+	if(ismob(arrived))
+		var/mob/M = arrived
+		M.update_ambience_area(src)
 
 /**
  * Called when an atom exits an area

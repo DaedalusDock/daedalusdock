@@ -73,3 +73,23 @@
 2024-06-19:
   BarteG44:
   - qol: Makes the ATM put IDs directly into your hand when you eject them.
+2024-06-25:
+  jlsnow301:
+  - bugfix: Fixed the keybindings UI. You should be able to reassign properly now.
+2024-06-26:
+  BarteG44:
+  - rscadd: Adds the crime scene kit to the forensics crate.
+  Kapu1178:
+  - rscadd: Species with clawed feet play the claw footstep sounds when barefoot.
+  - rscadd: Walking now produces footstep sounds, but quieter.
+  - tweak: Adjusted the sound environment parameters of most of the station.
+  - qol: Added "Mutadone" as a search term for Ryetalyn.
+  - rscdel: Removed Spatial Instability mutation.
+  - bugfix: Fixed cases where weather effects wouldn't go away until you walked into
+      them.
+2024-06-27:
+  Kapu1178:
+  - bugfix: Bloom renders properly
+  Kapu1178, SyncIt21:
+  - balance: Hydroponics trays now hold water significantly longer.
+  - qol: Many actions are safer from specific edge cases. You won't notice a difference.

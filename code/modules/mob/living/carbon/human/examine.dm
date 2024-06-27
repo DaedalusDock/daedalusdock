@@ -297,11 +297,11 @@
 				if(HAS_TRAIT(src, TRAIT_SOFT_CRITICAL_CONDITION))
 					msg += "[t_He] [t_is] barely conscious.\n"
 
-	if(getorgan(/obj/item/organ/brain))
-		if(ai_controller?.ai_status == AI_STATUS_ON)
-			msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
-		else if(!key)
-			msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
+		if(getorgan(/obj/item/organ/brain))
+			if(ai_controller?.ai_status == AI_STATUS_ON)
+				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
+			else if(!key)
+				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
 
 	if (length(msg))
 		. += span_warning("[msg.Join("")]")

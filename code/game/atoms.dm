@@ -2033,18 +2033,19 @@
 			return 0
 
 	var/list/forced_gravity = list()
-	if(SEND_SIGNAL(src, COMSIG_ATOM_HAS_GRAVITY, gravity_turf, forced_gravity))
-		if(!length(forced_gravity))
-			SEND_SIGNAL(gravity_turf, COMSIG_TURF_HAS_GRAVITY, src, forced_gravity)
+	SEND_SIGNAL(src, COMSIG_ATOM_HAS_GRAVITY, gravity_turf, forced_gravity)
+	SEND_SIGNAL(gravity_turf, COMSIG_TURF_HAS_GRAVITY, src, forced_gravity)
+	if(length(forced_gravity))
+		var/positive_grav = max(forced_gravity)
+		var/negative_grav = min(min(forced_gravity), 0) //negative grav needs to be below or equal to 0
 
-		var/max_grav = 0
-		for(var/i in forced_gravity)//our gravity is the strongest return forced gravity we get
-			max_grav = max(max_grav, i)
-		//cut so we can reuse the list, this is ok since forced gravity movers are exceedingly rare compared to all other movement
-		return max_grav
+		//our gravity is sum of the most massive positive and negative numbers returned by the signal
+		//so that adding two forced_gravity elements with an effect size of 1 each doesnt add to 2 gravity
+		//but negative force gravity effects can cancel out positive ones
+
+		return (positive_grav + negative_grav)
 
 	var/area/turf_area = gravity_turf.loc
-
 	return !gravity_turf.force_no_gravity && (turf_area.has_gravity || SSmapping.gravity_by_zlevel[gravity_turf.z])
 
 /**
@@ -2278,16 +2279,14 @@
  * For turfs this will only be used if pathing_pass_method is TURF_PATHING_PASS_PROC
  *
  * Arguments:
- * * access- A list representing what access we have (and thus if we can open things like airlocks or windows to pass through them).
- * * to_dir- What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
- * * caller- The movable we're checking pass flags for, if we're making any such checks
- * * no_id: When true, doors with public access will count as impassible
+ * * to_dir - What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
+ * * pass_info - Datum that stores info about the thing that's trying to pass us
  *
  * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	if(caller && (caller.pass_flags & pass_flags_self))
+/atom/proc/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(pass_info && (pass_info.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density
 

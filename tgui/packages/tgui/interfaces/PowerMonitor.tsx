@@ -12,6 +12,7 @@ import {
   LabeledList,
   ProgressBar,
   Section,
+  Stack,
   Table,
 } from '../components';
 import { Window } from '../layouts';
@@ -66,7 +67,7 @@ function nameSort(a: Area, b: Area) {
 export function PowerMonitor() {
   return (
     <Window width={550} height={700}>
-      <Window.Content scrollable>
+      <Window.Content>
         <PowerMonitorContent />
       </Window.Content>
     </Window>
@@ -78,8 +79,6 @@ const PEAK_DRAW = 500000;
 export function PowerMonitorContent(props) {
   const { data } = useBackend<Data>();
   const { history } = data;
-
-  const [sortByField, setSortByField] = useState('');
 
   if (!history) {
     return <>Loading...</>;
@@ -96,6 +95,70 @@ export function PowerMonitorContent(props) {
   if (supplyData.length === 0 || demandData.length === 0) {
     return <LoadingScreen />;
   }
+
+  return (
+    <Stack fill vertical>
+      <Stack.Item>
+        <Flex mx={-0.5}>
+          <Flex.Item mx={0.5} width="200px">
+            <Section>
+              <LabeledList>
+                <LabeledList.Item label="Supply">
+                  <ProgressBar
+                    value={supply}
+                    minValue={0}
+                    maxValue={maxValue}
+                    color="teal"
+                  >
+                    {toFixed(supply / 1000) + ' kW'}
+                  </ProgressBar>
+                </LabeledList.Item>
+                <LabeledList.Item label="Draw">
+                  <ProgressBar
+                    value={demand}
+                    minValue={0}
+                    maxValue={maxValue}
+                    color="pink"
+                  >
+                    {toFixed(demand / 1000) + ' kW'}
+                  </ProgressBar>
+                </LabeledList.Item>
+              </LabeledList>
+            </Section>
+          </Flex.Item>
+          <Flex.Item mx={0.5} grow>
+            <Section position="relative" fill>
+              <Chart.Line
+                fillPositionedParent
+                data={supplyData}
+                rangeX={[0, supplyData.length - 1]}
+                rangeY={[0, maxValue]}
+                strokeColor="rgba(0, 181, 173, 1)"
+                fillColor="rgba(0, 181, 173, 0.25)"
+              />
+              <Chart.Line
+                fillPositionedParent
+                data={demandData}
+                rangeX={[0, demandData.length - 1]}
+                rangeY={[0, maxValue]}
+                strokeColor="rgba(224, 57, 151, 1)"
+                fillColor="rgba(224, 57, 151, 0.25)"
+              />
+            </Section>
+          </Flex.Item>
+        </Flex>
+      </Stack.Item>
+      <Stack.Item grow>
+        <StationAreas />
+      </Stack.Item>
+    </Stack>
+  );
+}
+
+function StationAreas(props) {
+  const { data } = useBackend<Data>();
+
+  const [sortByField, setSortByField] = useState('');
 
   const areas = data.areas
     .map((area, i) => ({
@@ -117,57 +180,9 @@ export function PowerMonitorContent(props) {
     });
 
   return (
-    <>
-      <Flex mx={-0.5} mb={1}>
-        <Flex.Item mx={0.5} width="200px">
-          <Section>
-            <LabeledList>
-              <LabeledList.Item label="Supply">
-                <ProgressBar
-                  value={supply}
-                  minValue={0}
-                  maxValue={maxValue}
-                  color="teal"
-                >
-                  {toFixed(supply / 1000) + ' kW'}
-                </ProgressBar>
-              </LabeledList.Item>
-              <LabeledList.Item label="Draw">
-                <ProgressBar
-                  value={demand}
-                  minValue={0}
-                  maxValue={maxValue}
-                  color="pink"
-                >
-                  {toFixed(demand / 1000) + ' kW'}
-                </ProgressBar>
-              </LabeledList.Item>
-            </LabeledList>
-          </Section>
-        </Flex.Item>
-        <Flex.Item mx={0.5} grow={1}>
-          <Section position="relative" fill>
-            <Chart.Line
-              fillPositionedParent
-              data={supplyData}
-              rangeX={[0, supplyData.length - 1]}
-              rangeY={[0, maxValue]}
-              strokeColor="rgba(0, 181, 173, 1)"
-              fillColor="rgba(0, 181, 173, 0.25)"
-            />
-            <Chart.Line
-              fillPositionedParent
-              data={demandData}
-              rangeX={[0, demandData.length - 1]}
-              rangeY={[0, maxValue]}
-              strokeColor="rgba(224, 57, 151, 1)"
-              fillColor="rgba(224, 57, 151, 0.25)"
-            />
-          </Section>
-        </Flex.Item>
-      </Flex>
-      <Section>
-        <Box mb={1}>
+    <Stack fill vertical>
+      <Section height={3}>
+        <Box>
           <Box inline mr={2} color="label">
             Sort by:
           </Box>
@@ -189,44 +204,49 @@ export function PowerMonitorContent(props) {
             onClick={() => setSortByField(sortByField !== 'draw' ? 'draw' : '')}
           />
         </Box>
-        <Table>
-          <Table.Row header>
-            <Table.Cell>Area</Table.Cell>
-            <Table.Cell collapsing>Charge</Table.Cell>
-            <Table.Cell textAlign="right">Draw</Table.Cell>
-            <Table.Cell collapsing title="Equipment">
-              Eqp
-            </Table.Cell>
-            <Table.Cell collapsing title="Lighting">
-              Lgt
-            </Table.Cell>
-            <Table.Cell collapsing title="Environment">
-              Env
-            </Table.Cell>
-          </Table.Row>
-          {areas.map((area) => (
-            <tr key={area.id} className="Table__row candystripe">
-              <td>{area.name}</td>
-              <td className="Table__cell text-right text-nowrap">
-                <AreaCharge charging={area.charging} charge={area.charge} />
-              </td>
-              <td className="Table__cell text-right text-nowrap">
-                {area.load}
-              </td>
-              <td className="Table__cell text-center text-nowrap">
-                <AreaStatusColorBox status={area.eqp} />
-              </td>
-              <td className="Table__cell text-center text-nowrap">
-                <AreaStatusColorBox status={area.lgt} />
-              </td>
-              <td className="Table__cell text-center text-nowrap">
-                <AreaStatusColorBox status={area.env} />
-              </td>
-            </tr>
-          ))}
-        </Table>
       </Section>
-    </>
+
+      <Stack.Item grow mt={-1}>
+        <Section fill scrollable>
+          <Table>
+            <Table.Row header>
+              <Table.Cell>Area</Table.Cell>
+              <Table.Cell collapsing>Charge</Table.Cell>
+              <Table.Cell textAlign="right">Draw</Table.Cell>
+              <Table.Cell collapsing title="Equipment">
+                Eqp
+              </Table.Cell>
+              <Table.Cell collapsing title="Lighting">
+                Lgt
+              </Table.Cell>
+              <Table.Cell collapsing title="Environment">
+                Env
+              </Table.Cell>
+            </Table.Row>
+            {areas.map((area) => (
+              <tr key={area.id} className="Table__row candystripe">
+                <td>{area.name}</td>
+                <td className="Table__cell text-right text-nowrap">
+                  <AreaCharge charging={area.charging} charge={area.charge} />
+                </td>
+                <td className="Table__cell text-right text-nowrap">
+                  {area.load}
+                </td>
+                <td className="Table__cell text-center text-nowrap">
+                  <AreaStatusColorBox status={area.eqp} />
+                </td>
+                <td className="Table__cell text-center text-nowrap">
+                  <AreaStatusColorBox status={area.lgt} />
+                </td>
+                <td className="Table__cell text-center text-nowrap">
+                  <AreaStatusColorBox status={area.env} />
+                </td>
+              </tr>
+            ))}
+          </Table>
+        </Section>
+      </Stack.Item>
+    </Stack>
   );
 }
 

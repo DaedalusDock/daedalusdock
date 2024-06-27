@@ -326,7 +326,7 @@
 		cover_field |= _zone
 
 	for(var/obj/item/inv_item in get_all_worn_items())
-		if(zone & inv_item.body_parts_covered)
+		if(cover_field & inv_item.body_parts_covered)
 			return inv_item
 
 /// Update any visuals relating to an item when it's equipped, unequipped, or it's flags_inv changes.

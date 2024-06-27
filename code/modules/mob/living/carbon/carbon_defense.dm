@@ -385,16 +385,27 @@
 /mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return
 
+/// Place blood onto us if the toucher has blood on their hands or clothing. messy_slots deteremines what slots to bloody.
 /mob/living/carbon/human/share_blood_on_touch(mob/living/carbon/human/who_touched_us, messy_slots = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 	if(!istype(who_touched_us) || !messy_slots)
 		return
 
+	// Find out what is touching us so we can put blood onto them
+	var/obj/item/clothing/covering_torso = get_item_covering_zone(BODY_ZONE_CHEST)
+	if(covering_torso)
+		who_touched_us.add_blood_DNA_to_items(covering_torso.return_blood_DNA(), ITEM_SLOT_GLOVES)
+	else
+		who_touched_us.add_blood_DNA_to_items(return_blood_DNA(), ITEM_SLOT_GLOVES)
+
+	// Take blood from their hands/gloves
+	var/given_blood = FALSE
 	for(var/obj/item/thing as anything in who_touched_us.get_equipped_items())
 		if((thing.body_parts_covered & HANDS) && prob(thing.blood_DNA_length() * 25))
 			add_blood_DNA_to_items(thing.return_blood_DNA(), messy_slots)
-			return
+			given_blood = TRUE
+			break
 
-	if(prob(who_touched_us.blood_in_hands * who_touched_us.blood_DNA_length() * 10))
+	if(!given_blood && prob(who_touched_us.blood_in_hands * who_touched_us.blood_DNA_length() * 10))
 		add_blood_DNA_to_items(who_touched_us.return_blood_DNA(), messy_slots)
 		who_touched_us.blood_in_hands -= 1
 		who_touched_us.update_worn_gloves()

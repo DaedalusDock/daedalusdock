@@ -90,6 +90,8 @@
 	/// Update appearance
 	update_appearance(UPDATE_ICON_STATE)
 
+	// Leave forensics
+	leave_forensic_traces()
 	/// Setup signals
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(BP)
@@ -243,19 +245,42 @@
 	COOLDOWN_START(src, action_cd, current_grab.action_cooldown)
 	leave_forensic_traces()
 
+/// Leave forensic traces on both the assailant and victim. You really don't want to read this proc and it's type fuckery.
 /obj/item/hand_item/grab/proc/leave_forensic_traces()
 	if (!affecting)
 		return
 
 	var/mob/living/carbon/human/human_victim = get_affecting_mob()
-	if(istype(human_victim))
-		human_victim.share_blood_on_touch(assailant, body_zone2cover_flags(target_zone))
-		var/obj/item/clothing/C = human_victim.get_item_covering_zone(target_zone)
-		if(istype(C))
-			C.add_fingerprint(assailant)
+	var/mob/living/carbon/human/human_assailant = assailant
+	var/list/assailant_blood_dna
+
+	if(ishuman(assailant))
+		if(human_assailant.gloves)
+			assailant_blood_dna = human_assailant.gloves.return_blood_DNA()
+		else
+			assailant_blood_dna = human_assailant.return_blood_DNA()
+
+		//Add blood to the assailant
+		if(ishuman(human_victim))
+			var/obj/item/clothing/item_covering_grabbed_zone = human_victim.get_item_covering_zone(target_zone)
+			if(item_covering_grabbed_zone)
+				human_assailant.add_blood_DNA_to_items(item_covering_grabbed_zone.return_blood_DNA(), ITEM_SLOT_GLOVES)
+			else
+				human_assailant.add_blood_DNA_to_items(human_victim.return_blood_DNA(), ITEM_SLOT_GLOVES)
+
+	if(ishuman(human_victim))
+		// Add blood to the victim
+		var/obj/item/clothing/item_covering_grabbed_zone = human_victim.get_item_covering_zone(target_zone)
+
+		if(istype(item_covering_grabbed_zone))
+			item_covering_grabbed_zone.add_fingerprint(assailant)
+			item_covering_grabbed_zone.add_blood_DNA(assailant_blood_dna)
 			return
 
-	affecting.add_fingerprint(assailant) //If no clothing; add fingerprint to mob proper.
+	// If no clothing; add fingerprint to mob proper.
+	affecting.add_fingerprint(assailant)
+	// Add blood to the victim's body
+	affecting.add_blood_DNA(assailant_blood_dna)
 
 /obj/item/hand_item/grab/proc/upgrade(bypass_cooldown, silent)
 	if(!COOLDOWN_FINISHED(src, upgrade_cd) && !bypass_cooldown)

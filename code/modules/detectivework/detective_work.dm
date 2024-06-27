@@ -42,19 +42,19 @@
 
 /// Adds the fibers of M to our fiber list.
 /atom/proc/add_fibers(mob/living/carbon/human/M)
-	if(istype(M))
+	if(istype(M) && !isturf(src))
 		var/old = 0
 		if(M.gloves && istype(M.gloves, /obj/item/clothing))
 			var/obj/item/clothing/gloves/G = M.gloves
-			old = length(G.return_blood_DNA())
+			old = length(return_blood_DNA())
 
 			if(G.transfer_blood > 1) //bloodied gloves transfer blood to touched objects
-				if(add_blood_DNA(G.return_blood_DNA()) && length(G.return_blood_DNA()) > old) //only reduces the bloodiness of our gloves if the item wasn't already bloody
+				if(add_blood_DNA(G.return_blood_DNA()) && length(return_blood_DNA()) > old) //only reduces the bloodiness of our gloves if the item wasn't already bloody
 					G.transfer_blood--
 
 		else if(M.blood_in_hands > 1)
 			old = length(M.return_blood_DNA())
-			if(add_blood_DNA(M.return_blood_DNA()) && length(M.return_blood_DNA()) > old)
+			if(add_blood_DNA(M.return_blood_DNA()) && length(return_blood_DNA()) > old)
 				M.blood_in_hands--
 
 	if(isnull(forensics))

@@ -4,10 +4,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal
 	can_infect = 1
-	blood_level = 1
-	pain_given =40
+	pain_given = 40
 	delicate = 1
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT | SURGERY_BLOODY_GLOVES
 	abstract_type = /datum/surgery_step/internal
 
 //////////////////////////////////////////////////////////////////
@@ -112,7 +111,7 @@
 	)
 	min_duration = 90
 	max_duration = 110
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/internal/detach_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -277,7 +276,7 @@
 	)
 	min_duration = 100
 	max_duration = 120
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/internal/attach_organ/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -338,7 +337,7 @@
 	)
 	min_duration = 100
 	max_duration = 150
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/internal/brain_revival/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/BP = ..()
@@ -392,6 +391,9 @@
 /datum/surgery_step/internal/treat_necrosis
 	name = "Treat necrosis"
 	desc = "Utilizes the restorative power of even the slightest amount of Peridaxon to restore functionality to an organ."
+
+	surgery_flags = parent_type::surgery_flags & ~SURGERY_BLOODY_GLOVES
+
 	allowed_tools = list(
 		/obj/item/reagent_containers/dropper = 100,
 		/obj/item/reagent_containers/glass/bottle = 75,
@@ -401,7 +403,6 @@
 	)
 
 	can_infect = FALSE
-	blood_level = 0
 
 	min_duration = 5 SECONDS
 	max_duration = 6 SECONDS

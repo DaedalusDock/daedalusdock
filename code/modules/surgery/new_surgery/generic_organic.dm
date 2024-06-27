@@ -1,7 +1,7 @@
 /datum/surgery_step/generic_organic
 	can_infect = 1
 	pain_given =10
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP
 	abstract_type = /datum/surgery_step/generic_organic
 
 /datum/surgery_step/generic_organic/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -107,7 +107,7 @@
 	)
 	min_duration = 3 SECONDS
 	max_duration = 5 SECONDS
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION
 	strict_access_requirement = FALSE
 	preop_sound = 'sound/surgery/hemostat1.ogg'
 
@@ -143,7 +143,7 @@
 	)
 	min_duration = 3 SECONDS
 	max_duration = 5 SECONDS
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_INCISION | SURGERY_BLOODY_GLOVES
 	strict_access_requirement = TRUE
 	preop_sound = 'sound/surgery/retractor1.ogg'
 	success_sound = 'sound/surgery/retractor2.ogg'
@@ -189,7 +189,7 @@
 	)
 	min_duration = 4 SECONDS
 	max_duration = 6 SECONDS
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC
+	surgery_flags = SURGERY_NO_ROBOTIC
 	preop_sound = 'sound/surgery/cautery1.ogg'
 	success_sound = 'sound/surgery/cautery2.ogg'
 
@@ -263,7 +263,7 @@
 	)
 	min_duration = 11 SECONDS
 	max_duration = 16 SECONDS
-	surgery_candidate_flags = NONE
+	surgery_flags = NONE
 	pain_given = PAIN_AMT_AGONIZING + 30
 
 	preop_sound = list(

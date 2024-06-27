@@ -15,12 +15,11 @@
 		/obj/item/stack/sticky_tape = 50
 	)
 	can_infect = 1
-	blood_level = 1
 	min_duration = 5 SECONDS
 	max_duration = 8 SECONDS
 	pain_given =40
 	delicate = 1
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED | SURGERY_BLOODY_GLOVES
 
 /datum/surgery_step/fix_tendon/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -56,13 +55,12 @@
 		/obj/item/stack/sticky_tape = 50
 	)
 	can_infect = 1
-	blood_level = 1
 	min_duration = 5 SECONDS
 	max_duration = 8 SECONDS
 	pain_given =40
 	delicate = 1
 	strict_access_requirement = FALSE
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED | SURGERY_BLOODY_BODY
 
 /datum/surgery_step/fix_vein/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()

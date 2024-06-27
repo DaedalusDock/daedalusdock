@@ -6,7 +6,7 @@
 	)
 	min_duration = 1 SECOND
 	max_duration = 3 SECONDS
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/insert_pill/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = ..()

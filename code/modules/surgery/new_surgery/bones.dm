@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////
 
 /datum/surgery_step/bone
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_RETRACTED
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NEEDS_RETRACTED
 	abstract_type = /datum/surgery_step/bone
 	strict_access_requirement = FALSE
 
@@ -63,13 +63,16 @@
 /datum/surgery_step/bone/finish
 	name = "Repair bone"
 	desc = "Mends a broken bone."
+
+	surgery_flags = parent_type::surgery_flags | SURGERY_BLOODY_GLOVES
+
 	allowed_tools = list(
 		/obj/item/stack/medical/bone_gel = 100,
 		/obj/item/stack/sticky_tape/surgical = 100,
 		/obj/item/stack/sticky_tape = 75
 	)
+
 	can_infect = 1
-	blood_level = 1
 	min_duration = 2 SECONDS
 	max_duration = 3 SECONDS
 	pain_given =20

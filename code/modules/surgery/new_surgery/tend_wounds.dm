@@ -1,7 +1,7 @@
 /datum/surgery_step/tend_wounds
 	name = "Repair greivous physical trauma (organic)"
 	desc = "Repairs extreme damage from cuts, bruises, and punctures."
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC
+	surgery_flags = SURGERY_NO_ROBOTIC
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 100
 	)
@@ -57,7 +57,7 @@
 /datum/surgery_step/tend_wounds/robotic
 	name = "Repair greivous physical trauma (robotic)"
 	desc = "Repairs extreme damage from dents or punctures"
-	surgery_candidate_flags = SURGERY_NO_FLESH
+	surgery_flags = SURGERY_NO_FLESH
 	allowed_tools = list(
 		TOOL_WELDER = 95
 	)
@@ -75,4 +75,4 @@
 /datum/surgery_step/tend_wounds/robotic/burn
 	name = "Repair third degree burns (robotic)"
 	desc = "Repairs extreme damage from burns."
-	surgery_candidate_flags = SURGERY_NO_FLESH
+	surgery_flags = SURGERY_NO_FLESH

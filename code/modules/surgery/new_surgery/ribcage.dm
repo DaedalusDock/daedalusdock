@@ -15,12 +15,11 @@
 		/obj/item/hatchet = 75
 	)
 	can_infect = 1
-	blood_level = 1
 	min_duration = 5 SECONDS
 	max_duration = 7 SECONDS
 	pain_given = PAIN_AMT_AGONIZING
 	delicate = 1
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED | SURGERY_BLOODY_GLOVES
 	strict_access_requirement = TRUE
 
 	preop_sound = list(

@@ -126,26 +126,52 @@
 		return TRUE //we bloodied the floor
 
 /mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
-	if(wear_suit)
-		wear_suit.add_blood_DNA(blood_dna)
-		update_worn_oversuit()
+	return add_blood_DNA_to_items(blood_dna)
 
-	else if(w_uniform)
-		w_uniform.add_blood_DNA(blood_dna)
-		update_worn_undersuit()
+/// Adds blood DNA to certain slots the mob is wearing
+/mob/living/carbon/human/proc/add_blood_DNA_to_items(
+	list/blood_DNA_to_add,
+	target_flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_GLOVES|ITEM_SLOT_HEAD|ITEM_SLOT_MASK,
+)
+	if(QDELING(src))
+		return FALSE
 
-	if(gloves)
-		var/obj/item/clothing/gloves/G = gloves
-		G.add_blood_DNA(blood_dna)
+	if(!length(blood_DNA_to_add))
+		return FALSE
 
-	else if(length(blood_dna))
+	// Don't messy up our jumpsuit if we're got a coat
+	if((obscured_slots & HIDEJUMPSUIT) || ((target_flags & ITEM_SLOT_OCLOTHING) && (wear_suit?.body_parts_covered & CHEST)))
+		target_flags &= ~ITEM_SLOT_ICLOTHING
+
+	var/dirty_hands = !!(target_flags & (ITEM_SLOT_GLOVES|ITEM_SLOT_HANDS))
+	var/dirty_feet = !!(target_flags & ITEM_SLOT_FEET)
+	var/slots_to_bloody = target_flags & ~check_obscured_slots()
+	var/list/all_worn = get_equipped_items()
+
+	for(var/obj/item/thing as anything in all_worn)
+		if(thing.slot_flags & slots_to_bloody)
+			thing.add_blood_DNA(blood_DNA_to_add)
+
+		if(thing.body_parts_covered & HANDS)
+			dirty_hands = FALSE
+
+		if(thing.body_parts_covered & FEET)
+			dirty_feet = FALSE
+
+	if(slots_to_bloody & ITEM_SLOT_HANDS)
+		for(var/obj/item/thing in held_items)
+			thing.add_blood_DNA(blood_DNA_to_add)
+
+	if(dirty_hands || dirty_feet || !length(all_worn))
 		if(isnull(forensics))
 			create_forensics()
-		forensics.add_blood_DNA(blood_dna)
+		forensics.add_blood_DNA(blood_DNA_to_add)
 
-	update_worn_gloves() //handles bloody hands overlays and updating
+		if(dirty_hands)
+			blood_in_hands = max(blood_in_hands, rand(2, 4))
+
+	update_clothing(slots_to_bloody)
 	return TRUE
-
 /*
  * Transfer all forensic evidence from [src] to [transfer_to].
  */

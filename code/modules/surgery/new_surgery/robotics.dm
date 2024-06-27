@@ -1,6 +1,6 @@
 /datum/surgery_step/robotics
 	can_infect = 0
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP
+	surgery_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP
 	abstract_type = /datum/surgery_step/robotics
 
 /datum/surgery_step/robotics/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -11,13 +11,13 @@
 /datum/surgery_step/internal/remove_organ/robotic
 	name = "Remove robotic component"
 	can_infect = 0
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/internal/replace_organ/robotic
 	name = "Replace robotic component"
 	can_infect = 0
 	robotic_surgery = TRUE
-	surgery_candidate_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_FLESH | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 //////////////////////////////////////////////////////////////////
 //	 unscrew robotic limb hatch surgery step
@@ -205,7 +205,7 @@
 	)
 	min_duration = 4 SECONDS
 	max_duration = 6 SECONDS
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/fix_organ_robotic/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = ..()
@@ -265,7 +265,7 @@
 	)
 	min_duration = 9 SECONDS
 	max_duration = 11 SECONDS
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/detach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -308,7 +308,7 @@
 	)
 	min_duration = 10 SECONDS
 	max_duration = 12 SECONDS
-	surgery_candidate_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
+	surgery_flags = SURGERY_NO_STUMP | SURGERY_NO_FLESH | SURGERY_NEEDS_DEENCASEMENT
 
 /datum/surgery_step/robotics/attach_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/list/removable_organs = list()

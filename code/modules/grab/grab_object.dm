@@ -69,14 +69,15 @@
 
 	/// Spread diseases
 	if(isliving(affecting))
-		var/mob/living/affecting_mob = affecting
-		for(var/datum/disease/D as anything in assailant.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				affecting_mob.ContactContractDisease(D)
+		if(!ishuman(assailant) || !assailant:gloves)
+			var/mob/living/affecting_mob = affecting
+			for(var/datum/disease/D as anything in assailant.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					affecting_mob.ContactContractDisease(D)
 
-		for(var/datum/disease/D as anything in affecting_mob.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				assailant.ContactContractDisease(D)
+			for(var/datum/disease/D as anything in affecting_mob.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					assailant.ContactContractDisease(D)
 
 	/// Setup the effects applied by grab
 	current_grab.update_stage_effects(src, null)
@@ -194,10 +195,11 @@
 	name = "[initial(name)] ([BP.plaintext_zone])"
 	to_chat(assailant, span_notice("You are now holding \the [affecting] by \the [BP.plaintext_zone]."))
 
-	if(!isbodypart(get_targeted_bodypart()))
-		current_grab.let_go(src)
+	if(!isbodypart(BP))
+		qdel(src)
 		return
 
+	leave_forensic_traces()
 	current_grab.on_target_change(src, old_zone, target_zone)
 
 /obj/item/hand_item/grab/proc/on_limb_loss(mob/victim, obj/item/bodypart/lost)
@@ -208,11 +210,13 @@
 		return
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(!istype(BP))
-		current_grab.let_go(src)
+		qdel(src)
 		return // Sanity check in case the lost organ was improperly removed elsewhere in the code.
+
 	if(lost != BP)
 		return
-	current_grab.let_go(src)
+
+	qdel(src)
 
 /// Intercepts attack_hand() calls on our target.
 /obj/item/hand_item/grab/proc/intercept_attack_hand(atom/movable/source, user, list/modifiers)
@@ -242,9 +246,11 @@
 /obj/item/hand_item/grab/proc/leave_forensic_traces()
 	if (!affecting)
 		return
-	var/mob/living/carbon/carbo = get_affecting_mob()
-	if(istype(carbo))
-		var/obj/item/clothing/C = carbo.get_item_covering_zone(target_zone)
+
+	var/mob/living/carbon/human/human_victim = get_affecting_mob()
+	if(istype(human_victim))
+		human_victim.share_blood_on_touch(assailant, body_zone2cover_flags(target_zone))
+		var/obj/item/clothing/C = human_victim.get_item_covering_zone(target_zone)
 		if(istype(C))
 			C.add_fingerprint(assailant)
 			return

@@ -377,8 +377,11 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 			return
 
 		// It's a surprise tool that'll help us later
+		#ifndef UNIT_TESTS
 		var/datum/roll_result/result = user.stat_roll(6, /datum/rpg_skill/handicraft, roll_modifier)
-
+		#else
+		var/datum/roll_result/result = GLOB.success_roll
+		#endif
 		var/duration = rand(step.min_duration, step.max_duration)
 
 		if(do_after(user, target, duration, DO_PUBLIC, extra_checks = sanity_check_callback, display = src))

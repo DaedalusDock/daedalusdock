@@ -254,10 +254,14 @@
 	if((mover.pass_flags & PASSGRILLE) || istype(mover, /obj/projectile))
 		return prob(girderpasschance)
 
-/obj/structure/girder/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	. = !density
-	if(istype(caller))
-		. = . || (caller.pass_flags & PASSGRILLE)
+/obj/structure/girder/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(!density)
+		return TRUE
+
+	if(pass_info.pass_flags & PASSGRILLE)
+		return TRUE
+
+	return FALSE
 
 /obj/structure/girder/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1))

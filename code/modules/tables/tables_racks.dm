@@ -202,10 +202,14 @@
 	if(flipped == TRUE && !(border_dir & dir))
 		return TRUE
 
-/obj/structure/table/CanAStarPass(list/access, to_dir, atom/movable/caller, no_id = FALSE)
-	. = !density
-	if(caller)
-		. = . || (caller.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir))
+/obj/structure/table/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+	if(!density)
+		return TRUE
+
+	if((pass_info.pass_flags & PASSTABLE) || (flipped == TRUE && (dir != to_dir)))
+		return TRUE
+
+	return FALSE
 
 /obj/structure/table/proc/check_exit(datum/source, atom/movable/leaving, direction)
 	SIGNAL_HANDLER

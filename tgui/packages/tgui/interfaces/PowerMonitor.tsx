@@ -1,8 +1,7 @@
-import { map, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
 import { toFixed } from 'common/math';
+import { useState } from 'react';
 
-import { useBackend, useLocalState } from '../backend';
+import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -17,14 +16,53 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-const PEAK_DRAW = 500000;
-
-export const powerRank = (str) => {
-  const unit = String(str.split(' ')[1]).toLowerCase();
-  return ['w', 'kw', 'mw', 'gw'].indexOf(unit);
+type Data = {
+  areas: Area[];
+  history: PowerHistory;
 };
 
-export const PowerMonitor = () => {
+type Area = {
+  charge: number;
+  charging: number;
+  env: number;
+  eqp: number;
+  lgt: number;
+  load: string;
+  name: string;
+};
+
+type PowerHistory = {
+  demand: number[];
+  supply: number[];
+};
+
+export function powerRank(str) {
+  const unit = String(str.split(' ')[1]).toLowerCase();
+  return ['w', 'kw', 'mw', 'gw'].indexOf(unit);
+}
+
+// Oh no not another sorting algorithm
+function powerSort(a: Area, b: Area) {
+  const sortedByRank = powerRank(a.load) - powerRank(b.load);
+  const sortedByLoad = parseFloat(a.load) - parseFloat(b.load);
+
+  if (sortedByRank !== 0) {
+    return sortedByRank;
+  }
+  return sortedByLoad;
+}
+
+function nameSort(a: Area, b: Area) {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+}
+
+export function PowerMonitor() {
   return (
     <Window width={550} height={700}>
       <Window.Content scrollable>
@@ -32,32 +70,51 @@ export const PowerMonitor = () => {
       </Window.Content>
     </Window>
   );
-};
+}
 
-export const PowerMonitorContent = (props) => {
-  const { data } = useBackend();
-  const { history = { supply: [], demand: [] } } = data;
-  const [sortByField, setSortByField] = useLocalState('sortByField', null);
+const PEAK_DRAW = 500000;
+
+export function PowerMonitorContent(props) {
+  const { data } = useBackend<Data>();
+  const { history } = data;
+
+  const [sortByField, setSortByField] = useState('');
+
+  if (!history) {
+    return <>Loading...</>;
+  }
+
   const supply = history.supply[history.supply.length - 1] || 0;
   const demand = history.demand[history.demand.length - 1] || 0;
+
   const supplyData = history.supply.map((value, i) => [i, value]);
   const demandData = history.demand.map((value, i) => [i, value]);
+
   const maxValue = Math.max(PEAK_DRAW, ...history.supply, ...history.demand);
-  // Process area data
-  const areas = flow([
-    map((area, i) => ({
+
+  if (supplyData.length === 0 || demandData.length === 0) {
+    return <>No data</>;
+  }
+
+  const areas = data.areas
+    .map((area, i) => ({
       ...area,
       // Generate a unique id
       id: area.name + i,
-    })),
-    sortByField === 'name' && sortBy((area) => area.name),
-    sortByField === 'charge' && sortBy((area) => -area.charge),
-    sortByField === 'draw' &&
-      sortBy(
-        (area) => -powerRank(area.load),
-        (area) => -parseFloat(area.load),
-      ),
-  ])(data.areas);
+    }))
+    .sort((a, b) => {
+      if (sortByField === 'name') {
+        return nameSort(a, b);
+      }
+      if (sortByField === 'charge') {
+        return a.charge - b.charge;
+      }
+      if (sortByField === 'draw') {
+        return powerSort(a, b);
+      }
+      return 0;
+    });
+
   return (
     <>
       <Flex mx={-0.5} mb={1}>
@@ -116,17 +173,19 @@ export const PowerMonitorContent = (props) => {
           <Button.Checkbox
             checked={sortByField === 'name'}
             content="Name"
-            onClick={() => setSortByField(sortByField !== 'name' && 'name')}
+            onClick={() => setSortByField(sortByField !== 'name' ? 'name' : '')}
           />
           <Button.Checkbox
             checked={sortByField === 'charge'}
             content="Charge"
-            onClick={() => setSortByField(sortByField !== 'charge' && 'charge')}
+            onClick={() =>
+              setSortByField(sortByField !== 'charge' ? 'charge' : '')
+            }
           />
           <Button.Checkbox
             checked={sortByField === 'draw'}
             content="Draw"
-            onClick={() => setSortByField(sortByField !== 'draw' && 'draw')}
+            onClick={() => setSortByField(sortByField !== 'draw' ? 'draw' : '')}
           />
         </Box>
         <Table>
@@ -144,7 +203,7 @@ export const PowerMonitorContent = (props) => {
               Env
             </Table.Cell>
           </Table.Row>
-          {areas.map((area, i) => (
+          {areas.map((area) => (
             <tr key={area.id} className="Table__row candystripe">
               <td>{area.name}</td>
               <td className="Table__cell text-right text-nowrap">
@@ -168,25 +227,35 @@ export const PowerMonitorContent = (props) => {
       </Section>
     </>
   );
+}
+
+type AreaChargeProps = {
+  charge: number;
+  charging: number;
 };
 
-export const AreaCharge = (props) => {
+const NOT_CHARGING = 0;
+const CHARGING = 1;
+const CHARGED = 2;
+
+export function AreaCharge(props: AreaChargeProps) {
   const { charging, charge } = props;
+
   return (
     <>
       <Icon
         width="18px"
         textAlign="center"
         name={
-          (charging === 0 &&
+          (charging === NOT_CHARGING &&
             (charge > 50 ? 'battery-half' : 'battery-quarter')) ||
-          (charging === 1 && 'bolt') ||
-          (charging === 2 && 'battery-full')
+          (charging === CHARGING && 'bolt') ||
+          (charging === CHARGED && 'battery-full')
         }
         color={
-          (charging === 0 && (charge > 50 ? 'yellow' : 'red')) ||
-          (charging === 1 && 'yellow') ||
-          (charging === 2 && 'green')
+          (charging === NOT_CHARGING && (charge > 50 ? 'yellow' : 'red')) ||
+          (charging === CHARGING && 'yellow') ||
+          (charging === CHARGED && 'green')
         }
       />
       <Box inline width="36px" textAlign="right">
@@ -194,13 +263,19 @@ export const AreaCharge = (props) => {
       </Box>
     </>
   );
+}
+
+type AreaStatusColorBoxProps = {
+  status: number;
 };
 
-const AreaStatusColorBox = (props) => {
+function AreaStatusColorBox(props: AreaStatusColorBoxProps) {
   const { status } = props;
+
   const power = Boolean(status & 2);
   const mode = Boolean(status & 1);
   const tooltipText = (power ? 'On' : 'Off') + ` [${mode ? 'auto' : 'manual'}]`;
+
   return (
     <ColorBox
       color={power ? 'good' : 'bad'}
@@ -208,4 +283,4 @@ const AreaStatusColorBox = (props) => {
       title={tooltipText}
     />
   );
-};
+}

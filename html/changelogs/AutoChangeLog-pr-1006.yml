@@ -1,5 +1,0 @@
-author: jlsnow301
-delete-after: true
-changes:
-  - bugfix: The power monitor UI has been changed slightly to give a better UX. You
-      can scroll without losing your place, there's a loading screen, etc.

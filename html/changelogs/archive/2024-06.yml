@@ -93,3 +93,10 @@
   Kapu1178, SyncIt21:
   - balance: Hydroponics trays now hold water significantly longer.
   - qol: Many actions are safer from specific edge cases. You won't notice a difference.
+2024-06-28:
+  LemonInTheDark, Kapu1178:
+  - refactor: Refactored pathfinding code to be cleaner.
+  - tweak: Bots will no longer take diagonal paths, which looked weird.
+  jlsnow301:
+  - bugfix: The power monitor UI has been changed slightly to give a better UX. You
+      can scroll without losing your place, there's a loading screen, etc.

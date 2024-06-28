@@ -1,5 +1,0 @@
-author: LemonInTheDark, Kapu1178
-delete-after: true
-changes:
-  - refactor: Refactored pathfinding code to be cleaner.
-  - tweak: Bots will no longer take diagonal paths, which looked weird.

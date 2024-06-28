@@ -187,9 +187,13 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 /// The chance for success vs failure
 /datum/surgery_step/proc/success_modifier(mob/living/user, mob/living/carbon/human/target, obj/item/tool, target_zone)
+	SHOULD_CALL_PARENT(TRUE)
 	var/potency = tool_potency(tool)
 	if(potency == 0)
 		return 0
+
+	if(surgery_flags & SURGERY_CANNOT_FAIL)
+		return 100
 
 	var/modifier = 0
 	if(prob(100 - potency))

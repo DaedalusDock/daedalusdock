@@ -11,6 +11,8 @@
 #define SURGERY_BLOODY_GLOVES (1<<6)
 /// Surgery step bloodies gloves + suit when necessary.
 #define SURGERY_BLOODY_BODY (1<<7)
+/// Surgery does not use RNG.
+#define SURGERY_CANNOT_FAIL (1<<8)
 
 /// Only one of this type of implant may be in a target
 #define IMPLANT_HIGHLANDER (1<<0)

@@ -37,13 +37,13 @@
 
 /datum/surgery_step/tend_wounds/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts to mend [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("[user] starts to mend [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/tend_wounds/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	..()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] successfully mends [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("[user] successfully mends [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	if(damage_type == BRUTE)
 		affected.heal_damage(15)
 	else

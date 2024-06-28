@@ -53,7 +53,7 @@
 					G.transfer_blood--
 
 		else if(M.blood_in_hands > 1)
-			old = length(M.return_blood_DNA())
+			old = length(return_blood_DNA())
 			if(add_blood_DNA(M.return_blood_DNA()) && length(return_blood_DNA()) > old)
 				M.blood_in_hands--
 

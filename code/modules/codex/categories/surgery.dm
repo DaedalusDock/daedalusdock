@@ -61,9 +61,11 @@
 	for(var/datum/surgery_step/step as anything in GLOB.surgeries_list)
 		var/list/info = list("<ul>")
 
-		var/obj/path_or_tool = step.allowed_tools[1]
-		info += "<li>Best performed with \a [istext(path_or_tool) ? "[path_or_tool]" : "[initial(path_or_tool.name)]"].</li>"
-		if(!step.surgery_flags)
+		var/obj/path_or_tool = step.allowed_tools?[1]
+		if(path_or_tool)
+			info += "<li>Best performed with \a [istext(path_or_tool) ? "[path_or_tool]" : "[initial(path_or_tool.name)]"].</li>"
+
+		if(!(step.surgery_flags & ~(SURGERY_CANNOT_FAIL | SURGERY_BLOODY_BODY | SURGERY_BLOODY_GLOVES)))
 			info += "<li>This operation has no requirements."
 		else
 			if(step.surgery_flags & SURGERY_NO_FLESH)

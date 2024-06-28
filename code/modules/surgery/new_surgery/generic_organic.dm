@@ -28,13 +28,13 @@
 
 /datum/surgery_step/generic_organic/laser_incise/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts the bloodless incision on [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] starts the bloodless incision on [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	return ..()
 
 /datum/surgery_step/generic_organic/laser_incise/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] has made a bloodless incision on [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] has made a bloodless incision on [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.create_wound(WOUND_CUT, affected.minimum_break_damage/2, TRUE)
 	affected.clamp_wounds()
 	//spread_germs_to_organ(affected, user)
@@ -42,7 +42,7 @@
 
 /datum/surgery_step/generic_organic/laser_incise/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [affected.plaintext_zone] with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [affected.plaintext_zone] with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(15, 5, sharpness = SHARP_EDGED|SHARP_POINTY)
 	..()
 
@@ -78,19 +78,19 @@
 
 /datum/surgery_step/generic_organic/incise/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts [access_string] on [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] starts [access_string] on [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/generic_organic/incise/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] has made [access_string] on [target]'s [affected.plaintext_zone] with  [tool]."))
+	user.visible_message(span_notice("[user] has made [access_string] on [target]'s [affected.plaintext_zone] with  [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.create_wound(WOUND_CUT, affected.minimum_break_damage/2, TRUE)
 	playsound(target.loc, 'sound/weapons/bladeslice.ogg', 15, 1)
 	..()
 
 /datum/surgery_step/generic_organic/incise/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, [fail_string] \the [target]'s [affected.plaintext_zone] in the wrong place with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, [fail_string] \the [target]'s [affected.plaintext_zone] in the wrong place with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(10, sharpness = SHARP_EDGED|SHARP_POINTY)
 	..()
 
@@ -118,12 +118,12 @@
 
 /datum/surgery_step/generic_organic/clamp_bleeders/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts clamping bleeders in [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] starts clamping bleeders in [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/generic_organic/clamp_bleeders/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] clamps bleeders in [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] clamps bleeders in [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.clamp_wounds()
 	//spread_germs_to_organ(affected, user)
 	..()
@@ -160,18 +160,18 @@
 
 /datum/surgery_step/generic_organic/retract_skin/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts to pry open the incision on [target]'s [affected.plaintext_zone] with \the [tool]."))
+	user.visible_message(span_notice("[user] starts to pry open the incision on [target]'s [affected.plaintext_zone] with \the [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/generic_organic/retract_skin/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] keeps the incision open on [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] keeps the incision open on [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.open_incision()
 	..()
 
 /datum/surgery_step/generic_organic/retract_skin/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, tearing the edges of the incision on [target]'s [affected.plaintext_zone] with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, tearing the edges of the incision on [target]'s [affected.plaintext_zone] with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(12, sharpness = SHARP_EDGED|SHARP_POINTY)
 	..()
 
@@ -222,13 +222,13 @@
 /datum/surgery_step/generic_organic/cauterize/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	var/datum/wound/W = affected.get_incision()
-	user.visible_message(span_notice("[user] begins to [cauterize_term][W ? " \a [W.desc] on" : ""] \the [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] begins to [cauterize_term][W ? " \a [W.desc] on" : ""] \the [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/generic_organic/cauterize/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	var/datum/wound/W = affected.get_incision()
-	user.visible_message(span_notice("[user] [post_cauterize_term][W ? " \a [W.desc] on" : ""] \the [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] [post_cauterize_term][W ? " \a [W.desc] on" : ""] \the [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	if(istype(W))
 		W.close_wound()
@@ -242,7 +242,7 @@
 
 /datum/surgery_step/generic_organic/cauterize/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [affected.plaintext_zone] with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, damaging [target]'s [affected.plaintext_zone] with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(0, 3)
 	..()
 
@@ -281,18 +281,18 @@
 
 /datum/surgery_step/generic_organic/amputate/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)
-	user.visible_message(span_notice("[user] begins to amputate [target]'s [affected.plaintext_zone] with [tool]."))
+	user.visible_message(span_notice("[user] begins to amputate [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/generic_organic/amputate/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)
-	user.visible_message(span_notice("[user] amputates [target]'s [affected.name] at the [affected.amputation_point] with [tool]."))
+	user.visible_message(span_notice("[user] amputates [target]'s [affected.name] at the [affected.amputation_point] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.dismember(DROPLIMB_EDGE, clean = TRUE)
 	..()
 
 /datum/surgery_step/generic_organic/amputate/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone, TRUE)
-	user.visible_message(span_warning("[user]'s hand slips, sawing through the bone in [target]'s [affected.plaintext_zone] with [tool]!"))
+	user.visible_message(span_warning("[user]'s hand slips, sawing through the bone in [target]'s [affected.plaintext_zone] with [tool]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 	affected.receive_damage(30, sharpness = SHARP_EDGED|SHARP_POINTY)
 	affected.break_bones()
 	..()

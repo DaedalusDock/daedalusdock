@@ -43,7 +43,6 @@
 /// Adds the fibers of M to our fiber list.
 /atom/proc/add_fibers(mob/living/carbon/human/M)
 	if(istype(M))
-		var/old = 0
 		if(M.gloves && istype(M.gloves, /obj/item/clothing))
 			var/obj/item/clothing/gloves/G = M.gloves
 

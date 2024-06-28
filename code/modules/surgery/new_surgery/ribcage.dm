@@ -19,7 +19,7 @@
 	max_duration = 7 SECONDS
 	pain_given = PAIN_AMT_AGONIZING
 	delicate = 1
-	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED | SURGERY_BLOODY_GLOVES
+	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_RETRACTED | SURGERY_BLOODY_BODY
 	strict_access_requirement = TRUE
 
 	preop_sound = list(

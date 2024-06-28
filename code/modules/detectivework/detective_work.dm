@@ -42,20 +42,16 @@
 
 /// Adds the fibers of M to our fiber list.
 /atom/proc/add_fibers(mob/living/carbon/human/M)
-	if(istype(M) && !isopenturf(src))
+	if(istype(M))
 		var/old = 0
 		if(M.gloves && istype(M.gloves, /obj/item/clothing))
 			var/obj/item/clothing/gloves/G = M.gloves
-			old = length(return_blood_DNA())
 
-			if(G.transfer_blood > 1) //bloodied gloves transfer blood to touched objects
-				if(add_blood_DNA(G.return_blood_DNA()) && length(return_blood_DNA()) > old) //only reduces the bloodiness of our gloves if the item wasn't already bloody
-					G.transfer_blood--
+			if(G.transfer_blood > 1 && add_blood_DNA(G.return_blood_DNA())) //bloodied gloves transfer blood to touched objects
+				G.transfer_blood--
 
-		else if(M.blood_in_hands > 1)
-			old = length(return_blood_DNA())
-			if(add_blood_DNA(M.return_blood_DNA()) && length(return_blood_DNA()) > old)
-				M.blood_in_hands--
+		else if(M.blood_in_hands > 1 && add_blood_DNA(M.return_blood_DNA()))
+			M.blood_in_hands--
 
 	if(isnull(forensics))
 		create_forensics()
@@ -99,6 +95,7 @@
 
 	forensics.add_trace_DNA(dna)
 
+/// Returns TRUE if new blood dna was added.
 /atom/proc/add_blood_DNA(list/dna) //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
 
@@ -109,8 +106,7 @@
 	if(isnull(forensics))
 		create_forensics()
 
-	forensics.add_blood_DNA(dna)
-	return TRUE
+	return forensics.add_blood_DNA(dna)
 
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
 	. = ..()
@@ -122,8 +118,7 @@
 		B = new /obj/effect/decal/cleanable/blood/splatter(src, diseases)
 
 	if(!QDELETED(B))
-		B.add_blood_DNA(blood_dna) //give blood info to the blood decal.
-		return TRUE //we bloodied the floor
+		return B.add_blood_DNA(blood_dna) //give blood info to the blood decal.
 
 /mob/living/carbon/human/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
 	return add_blood_DNA_to_items(blood_dna)

@@ -23,6 +23,7 @@
 
 	phantom_wire = image('icons/obj/power_cond/cable.dmi')
 	phantom_wire.appearance_flags = APPEARANCE_UI
+	phantom_wire.plane = GAME_PLANE
 	phantom_wire.layer = FLY_LAYER
 	phantom_wire.color = parent.color
 	phantom_wire.alpha = 128

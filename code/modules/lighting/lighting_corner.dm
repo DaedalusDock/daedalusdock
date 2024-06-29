@@ -114,9 +114,9 @@
 	if (largest_color_luminosity > 1)
 		. = 1 / largest_color_luminosity
 
-	var/old_r = cache_r
-	var/old_g = cache_g
-	var/old_b = cache_b
+	// var/old_r = cache_r
+	// var/old_g = cache_g
+	// var/old_b = cache_b
 
 	var/old_add_r = add_r
 	var/old_add_g = add_g

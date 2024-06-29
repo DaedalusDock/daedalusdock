@@ -93,6 +93,9 @@
 /datum/cable_click_manager/proc/on_catcher_click(atom/source, location, control, params)
 	SIGNAL_HANDLER
 
+	if(user.incapacitated())
+		return
+
 	params = params2list(params)
 	if(!length(params))
 		return

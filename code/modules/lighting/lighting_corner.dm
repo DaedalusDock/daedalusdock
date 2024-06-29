@@ -125,9 +125,9 @@
 	if (largest_color_luminosity > 1)
 		. = 1 / largest_color_luminosity
 
-	var/old_r = cache_r
-	var/old_g = cache_g
-	var/old_b = cache_b
+	// var/old_r = cache_r
+	// var/old_g = cache_g
+	// var/old_b = cache_b
 
 	#if LIGHTING_SOFT_THRESHOLD != 0
 	else if (largest_color_luminosity < LIGHTING_SOFT_THRESHOLD)

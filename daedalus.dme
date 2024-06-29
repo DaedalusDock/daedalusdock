@@ -635,6 +635,7 @@
 #include "code\datums\beam.dm"
 #include "code\datums\blood_types.dm"
 #include "code\datums\browser.dm"
+#include "code\datums\cable_click_manager.dm"
 #include "code\datums\callback.dm"
 #include "code\datums\cartesian_plane.dm"
 #include "code\datums\chatmessage.dm"

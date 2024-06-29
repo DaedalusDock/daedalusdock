@@ -257,7 +257,6 @@ Turf and target are separate in case you want to teleport some distance from a t
 	LAZYSET(modifiers, ICON_Y, "[(click_turf_py - click_turf.pixel_y) + ((click_turf_y - click_turf.y) * world.icon_size)]")
 	return click_turf
 
-///Almost identical to the params_to_turf(), but unused (remove?)
 /proc/screen_loc_to_turf(text, turf/origin, client/C)
 	if(!text)
 		return null
@@ -271,6 +270,9 @@ Turf and target are separate in case you want to teleport some distance from a t
 	tX = clamp(origin.x + round(actual_view[1] / 2) - tX, 1, world.maxx)
 	tY = clamp(origin.y + round(actual_view[2] / 2) - tY, 1, world.maxy)
 	return locate(tX, tY, tZ)
+
+/proc/turf_to_screen_loc(turf/origin, client/C)
+
 
 ///similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)
 /proc/spiral_range_turfs(dist = 0, center = usr, orange = FALSE, list/outlist = list(), tick_checked)

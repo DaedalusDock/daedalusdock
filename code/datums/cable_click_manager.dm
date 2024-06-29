@@ -23,7 +23,6 @@
 
 	phantom_wire = image('icons/obj/power_cond/cable.dmi')
 	phantom_wire.appearance_flags = APPEARANCE_UI
-	phantom_wire.plane = ABOVE_LIGHTING_PLANE
 	phantom_wire.color = parent.color
 	phantom_wire.alpha = 128
 	phantom_wire.filters += outline_filter(1, COLOR_RED)

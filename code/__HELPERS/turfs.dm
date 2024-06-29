@@ -271,9 +271,6 @@ Turf and target are separate in case you want to teleport some distance from a t
 	tY = clamp(origin.y + round(actual_view[2] / 2) - tY, 1, world.maxy)
 	return locate(tX, tY, tZ)
 
-/proc/turf_to_screen_loc(turf/origin, client/C)
-
-
 ///similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)
 /proc/spiral_range_turfs(dist = 0, center = usr, orange = FALSE, list/outlist = list(), tick_checked)
 	outlist.Cut()

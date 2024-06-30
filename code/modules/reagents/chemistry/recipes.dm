@@ -359,7 +359,7 @@
 	var/turf/target = locate(holder_turf.x + equilibrium.data["[id]_x"], holder_turf.y + equilibrium.data["[id]_y"], holder_turf.z)
 	//new /obj/effect/hotspot(target)
 	target.create_fire(1, 10)
-	debug_world("X: [equilibrium.data["[id]_x"]], Y: [equilibrium.data["[id]_x"]]")
+	message_debug(DBG_TRACE, "ChemReact/FireVortex", "X: [equilibrium.data["[id]_x"]], Y: [equilibrium.data["[id]_x"]]", NONE)
 
 /*
  * Creates a square of fire in a fire_range radius,

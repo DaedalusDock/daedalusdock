@@ -293,7 +293,7 @@ Used by the AI doomsday and the self-destruct nuke.
 	z_list = SSmapping.z_list
 	multiz_levels = SSmapping.multiz_levels
 
-#define INIT_ANNOUNCE(X) to_chat(world, span_debug("[X]")); log_world(X)
+#define INIT_ANNOUNCE(X) to_chat(world, span_debug_legacy("[X]")); log_world(X)
 /datum/controller/subsystem/mapping/proc/LoadGroup(list/errorList, name, path, files, list/traits, list/default_traits, silent = FALSE)
 	. = list()
 	var/start_time = REALTIMEOFDAY
@@ -318,7 +318,7 @@ Used by the AI doomsday and the self-destruct nuke.
 		for (var/i in 1 to total_z)
 			traits += list(default_traits)
 	else if (total_z != traits.len)  // mismatch
-		INIT_ANNOUNCE("WARNING: [traits.len] trait sets specified for [total_z] z-levels in [path]!")
+		message_debug(DBG_WARN, "SSMapping/LoadGroup", "[traits.len] trait sets specified for [total_z] z-levels in [path]!", DBG_ALWAYS | DBG_LOG_WORLD)
 		if (total_z < traits.len)  // ignore extra traits
 			traits.Cut(total_z + 1)
 		while (total_z > traits.len)  // fall back to defaults on extra levels

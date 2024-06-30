@@ -7,7 +7,7 @@
 #define STICKYBAN_MAX_ADMIN_MATCHES 1
 
 /world/IsBanned(key, address, computer_id, type, real_bans_only=FALSE)
-	debug_world_log("isbanned(): '[args.Join("', '")]'")
+	message_debug(DBG_TRACE, "World/IsBanned", "[args.Join("', '")]", NONE)
 	if (!key || (!real_bans_only && (!address || !computer_id)))
 		if(real_bans_only)
 			return FALSE

@@ -129,8 +129,4 @@
 		SSipintel.throttle = world.timeofday + (10 * 120 * SSipintel.errors)
 	else
 		error += " Attempting retry on [ip]."
-	log_ipintel(error)
-
-/proc/log_ipintel(text)
-	log_game("IPINTEL: [text]")
-	debug_admins("IPINTEL: [text]")
+	message_debug(DBG_ERROR, "IPIntel", error)

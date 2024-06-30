@@ -965,9 +965,52 @@ em {
   color: #bbbbad;
 }
 
-.debug {
+.debugLegacy {
   color: #5ce43d;
   font-weight: bold;
+}
+
+.debug {
+  color: #5ce43d;
+	background-color: black;
+  font-weight: bold;
+	font-family: monospace;
+	border: 1px groove grey;
+	width: 80ch;
+	padding: 1px 4px 1px 4px;
+	margin: 0 2px 0 0;
+}
+
+.debugTrace{
+  border-color: grey;
+}
+.debugTrace::before {
+  content: "TRACE |";
+  color:grey;
+}
+
+.debugInfo {
+	border-color: cyan;
+}
+.debugInfo::before {
+  content: "INFO |";
+  color:cyan;
+}
+
+.debugWarn {
+	border-color: orange;
+}
+.debugWarn::before {
+  content: "WARN |";
+  color:orange;
+}
+
+.debugError {
+	border-color: red;
+}
+.debugError::before {
+  content: "ERROR |";
+  color:red;
 }
 
 .adminpmbox {

@@ -85,6 +85,13 @@
 		if(!is_dry)
 			color = blood_color
 
+/obj/effect/decal/cleanable/blood/attack_hand(mob/living/user, list/modifiers)
+	. = ..()
+	if(ishuman(user) && blood_DNA_length())
+		var/mob/living/carbon/human/H = user
+		H.add_blood_DNA_to_items(return_blood_DNA(), ITEM_SLOT_GLOVES)
+		H.visible_message(span_notice("[user.name] runs [H.p_their()] fingers through [src]."))
+
 /obj/effect/decal/cleanable/blood/proc/get_timer()
 	drytime = world.time + dry_duration
 

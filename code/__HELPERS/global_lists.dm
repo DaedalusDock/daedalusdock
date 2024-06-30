@@ -69,8 +69,6 @@
 		if(!isabstract(path))
 			path = new path()
 			GLOB.surgeries_list += path
-			if(!length(path.allowed_tools))
-				stack_trace("Surgery type [path.type] has no allowed_items list.")
 
 	sort_list(GLOB.surgeries_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 

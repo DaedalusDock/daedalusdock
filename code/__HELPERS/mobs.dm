@@ -20,8 +20,8 @@
 	return GET_BLOOD_REF(path)
 
 /proc/get_blood_dna_color(list/blood_dna)
-	var/datum/blood/blood_type = blood_dna[blood_dna[length(blood_dna)]]
-	return blood_type.color
+	var/datum/blood/blood_type = blood_dna?[blood_dna[length(blood_dna)]]
+	return blood_type?.color
 
 /proc/random_eye_color()
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))

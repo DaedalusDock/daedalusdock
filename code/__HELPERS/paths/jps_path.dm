@@ -120,7 +120,6 @@
 	if(QDELETED(caller))
 		return FALSE
 
-	var/tick = TICK_USAGE
 	while(!open.is_empty() && !path)
 		var/datum/jps_node/current_processed_node = open.pop() //get the lower f_value turf in the open list
 		if(max_distance && (current_processed_node.number_tiles > max_distance))//if too many steps, don't process that path

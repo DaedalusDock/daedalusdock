@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;can_pass_info - Daedalus Dock</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Daedalus Dock</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/can_pass_info.html#var">Var Details</a></header>
+<main>
+<h1>can_pass_info <aside>/<a href="datum.html">datum</a>/<a href="datum/can_pass_info.html">can_pass_info</a></aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L115">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 115"/></a></h1>
+
+<p>Holds all information about what an atom can move through
+Passed into CanAStarPass to provide context for a pathing attempt</p>
+<p>Also used to check if using a cached path_map is safe
+There are some vars here that are unused. They exist to cover cases where caller_ref is used
+They're the properties of caller_ref used in those cases.
+It's kinda annoying, but there's some proc chains we can't convert to this datum</p><table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/access">access</a></th><td>What access we have, airlocks, windoors, etc</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/anchored">anchored</a></th><td>Are we anchored</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/buckled_info">buckled_info</a></th><td>If our mob is buckled to something, what's it like</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/caller_ref">caller_ref</a></th><td>Weakref to the caller used to generate this info
+Should not use this almost ever, it's for context and to allow for proc chains that
+Require a movable</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/camera_type">camera_type</a></th><td>Cameras have a lot of BS can_z_move overrides
+Let's avoid this</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/can_ventcrawl">can_ventcrawl</a></th><td>Can we ventcrawl?</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/grab_infos">grab_infos</a></th><td>Pass information for the object we are pulling, if any</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/has_gravity">has_gravity</a></th><td>Do we have gravity</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/incapacitated">incapacitated</a></th><td>Is our mob incapacitated</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/incorporeal_move">incorporeal_move</a></th><td>Is our mob incorporeal</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/is_bot">is_bot</a></th><td>Are we a bot?</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/is_living">is_living</a></th><td>Are we a living mob?</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/is_observer">is_observer</a></th><td>Are we a ghost? (they have effectively unique pathfinding)</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/mob_size">mob_size</a></th><td>What is the size of our mob</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/movement_type">movement_type</a></th><td>What sort of movement do we have. Mirrors /atom/movable/movement_type</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/no_id">no_id</a></th><td>If we have no id, public airlocks are walls</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/pass_flags">pass_flags</a></th><td>What we can pass through. Mirrors /atom/movable/pass_flags</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/rider_info">rider_info</a></th><td>If our mob has a rider, what does it look like</td></tr>
+            <tr><th><a href="datum/can_pass_info.html#var/thrown">thrown</a></th><td>Are we being thrown?</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/access"><aside class="declaration">var </aside>access
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L122">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 122"/></a></h3>
+        <p>What access we have, airlocks, windoors, etc</p><h3 id="var/anchored"><aside class="declaration">var </aside>anchored
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L128">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 128"/></a></h3>
+        <p>Are we anchored</p><h3 id="var/buckled_info"><aside class="declaration">var </aside>buckled_info
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/can_pass_info.html">can_pass_info</a></aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L147">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 147"/></a></h3>
+        <p>If our mob is buckled to something, what's it like</p><h3 id="var/caller_ref"><aside class="declaration">var </aside>caller_ref
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/weakref.html">weakref</a></aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L161">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 161"/></a></h3>
+        <p>Weakref to the caller used to generate this info
+Should not use this almost ever, it's for context and to allow for proc chains that
+Require a movable</p><h3 id="var/camera_type"><aside class="declaration">var </aside>camera_type
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L156">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 156"/></a></h3>
+        <p>Cameras have a lot of BS can_z_move overrides
+Let's avoid this</p><h3 id="var/can_ventcrawl"><aside class="declaration">var </aside>can_ventcrawl
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L137">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 137"/></a></h3>
+        <p>Can we ventcrawl?</p><h3 id="var/grab_infos"><aside class="declaration">var </aside>grab_infos
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L152">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 152"/></a></h3>
+        <p>Pass information for the object we are pulling, if any</p><h3 id="var/has_gravity"><aside class="declaration">var </aside>has_gravity
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L150">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 150"/></a></h3>
+        <p>Do we have gravity</p><h3 id="var/incapacitated"><aside class="declaration">var </aside>incapacitated
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L141">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 141"/></a></h3>
+        <p>Is our mob incapacitated</p><h3 id="var/incorporeal_move"><aside class="declaration">var </aside>incorporeal_move
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L143">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 143"/></a></h3>
+        <p>Is our mob incorporeal</p><h3 id="var/is_bot"><aside class="declaration">var </aside>is_bot
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L135">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 135"/></a></h3>
+        <p>Are we a bot?</p><h3 id="var/is_living"><aside class="declaration">var </aside>is_living
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L133">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 133"/></a></h3>
+        <p>Are we a living mob?</p><h3 id="var/is_observer"><aside class="declaration">var </aside>is_observer
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L131">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 131"/></a></h3>
+        <p>Are we a ghost? (they have effectively unique pathfinding)</p><h3 id="var/mob_size"><aside class="declaration">var </aside>mob_size
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L139">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 139"/></a></h3>
+        <p>What is the size of our mob</p><h3 id="var/movement_type"><aside class="declaration">var </aside>movement_type
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L124">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 124"/></a></h3>
+        <p>What sort of movement do we have. Mirrors /atom/movable/movement_type</p><h3 id="var/no_id"><aside class="declaration">var </aside>no_id
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L117">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 117"/></a></h3>
+        <p>If we have no id, public airlocks are walls</p><h3 id="var/pass_flags"><aside class="declaration">var </aside>pass_flags
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L120">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 120"/></a></h3>
+        <p>What we can pass through. Mirrors /atom/movable/pass_flags</p><h3 id="var/rider_info"><aside class="declaration">var </aside>rider_info
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/can_pass_info.html">can_pass_info</a></aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L145">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 145"/></a></h3>
+        <p>If our mob has a rider, what does it look like</p><h3 id="var/thrown"><aside class="declaration">var </aside>thrown
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__HELPERS/paths/path.dm#L126">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__HELPERS&#x2F;paths&#x2F;path.dm 126"/></a></h3>
+        <p>Are we being thrown?</p></main>
+<footer>
+    daedalus.dme
+    <a href="https://github.com/DaedalusDock/daedalusdock/tree/333fe470385d84ed08078e04355ef32b5eb4af76">333fe47</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.8.0</a></footer>
+</body>
+</html>

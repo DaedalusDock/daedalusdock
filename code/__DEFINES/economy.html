@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;__DEFINES&#x2F;economy.dm - Daedalus Dock</title>
+</head>
+<body>
+<header>
+    <a href="index.html">Daedalus Dock</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="code/__DEFINES/economy.html#define">Define Details</a></header>
+<main>
+<h1>code/__DEFINES/economy.dm 
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="code/__DEFINES/economy.html#define/STARTING_PAYCHECKS">STARTING_PAYCHECKS</a></th><td>Number of paychecks jobs start with at the creation of a new bank account for a player (So at shift-start or game join, but not a blank new account.)</td></tr>
+        <tr><th><a href="code/__DEFINES/economy.html#define/MAX_MAIL_PER_MINUTE">MAX_MAIL_PER_MINUTE</a></th><td>How much mail the Economy SS will create per minute, regardless of firing time.</td></tr>
+        <tr><th><a href="code/__DEFINES/economy.html#define/FULL_CRATE_LETTER_ODDS">FULL_CRATE_LETTER_ODDS</a></th><td>Probability of using letters of envelope sprites on all letters.</td></tr>
+        <tr><th><a href="code/__DEFINES/economy.html#define/ECON_STATION_PAYOUT">ECON_STATION_PAYOUT</a></th><td>The amount of money taken from station master and distributed to all departments every 5 minutes.</td></tr>
+        <tr><th><a href="code/__DEFINES/economy.html#define/ECON_STATION_PAYOUT_MAX">ECON_STATION_PAYOUT_MAX</a></th><td>The amount of money in a department account where station master will stop filling it up.</td></tr>
+        <tr><th><a href="code/__DEFINES/economy.html#define/ECON_STATION_PAYOUT_REQUIREMENT">ECON_STATION_PAYOUT_REQUIREMENT</a></th><td>The minimum amount of money in the station master account required for a departmental payout</td></tr>
+        <tr><th><a href="code/__DEFINES/economy.html#define/ACCOUNT_CIV">ACCOUNT_CIV</a></th><td>NOT USED FOR ECONOMY</td></tr>
+        <tr><th><a href="code/__DEFINES/economy.html#define/ECON_NUM_DEPARTMENT_ACCOUNTS">ECON_NUM_DEPARTMENT_ACCOUNTS</a></th><td>The number of departmental accounts for the economy. DOES NOT INCLUDE STATION MASTER.</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/ACCOUNT_CIV"><aside class="declaration">#define </aside>ACCOUNT_CIV
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L31">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 31"/></a>
+    </h3>
+    <p>NOT USED FOR ECONOMY</p><h3 id="define/ECON_NUM_DEPARTMENT_ACCOUNTS"><aside class="declaration">#define </aside>ECON_NUM_DEPARTMENT_ACCOUNTS
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L48">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 48"/></a>
+    </h3>
+    <p>The number of departmental accounts for the economy. DOES NOT INCLUDE STATION MASTER.</p><h3 id="define/ECON_STATION_PAYOUT"><aside class="declaration">#define </aside>ECON_STATION_PAYOUT
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L20">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 20"/></a>
+    </h3>
+    <p>The amount of money taken from station master and distributed to all departments every 5 minutes.</p><h3 id="define/ECON_STATION_PAYOUT_MAX"><aside class="declaration">#define </aside>ECON_STATION_PAYOUT_MAX
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L22">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 22"/></a>
+    </h3>
+    <p>The amount of money in a department account where station master will stop filling it up.</p><h3 id="define/ECON_STATION_PAYOUT_REQUIREMENT"><aside class="declaration">#define </aside>ECON_STATION_PAYOUT_REQUIREMENT
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L25">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 25"/></a>
+    </h3>
+    <p>The minimum amount of money in the station master account required for a departmental payout</p><h3 id="define/FULL_CRATE_LETTER_ODDS"><aside class="declaration">#define </aside>FULL_CRATE_LETTER_ODDS
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L6">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 6"/></a>
+    </h3>
+    <p>Probability of using letters of envelope sprites on all letters.</p><h3 id="define/MAX_MAIL_PER_MINUTE"><aside class="declaration">#define </aside>MAX_MAIL_PER_MINUTE
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L4">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 4"/></a>
+    </h3>
+    <p>How much mail the Economy SS will create per minute, regardless of firing time.</p><h3 id="define/STARTING_PAYCHECKS"><aside class="declaration">#define </aside>STARTING_PAYCHECKS
+            <a href="https://github.com/DaedalusDock/daedalusdock/blob/333fe470385d84ed08078e04355ef32b5eb4af76/code/__DEFINES/economy.dm#L2">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;economy.dm 2"/></a>
+    </h3>
+    <p>Number of paychecks jobs start with at the creation of a new bank account for a player (So at shift-start or game join, but not a blank new account.)</p></main>
+<footer>
+    daedalus.dme
+    <a href="https://github.com/DaedalusDock/daedalusdock/tree/333fe470385d84ed08078e04355ef32b5eb4af76">333fe47</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.8.0</a></footer>
+</body>
+</html>

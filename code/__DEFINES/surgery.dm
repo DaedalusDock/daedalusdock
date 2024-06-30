@@ -7,6 +7,12 @@
 #define SURGERY_NEEDS_RETRACTED (1<<4)
 /// Bodypart needs a broken bone AND retracted incision or large cut
 #define SURGERY_NEEDS_DEENCASEMENT (1<<5)
+/// Surgery step bloodies gloves when necessary.
+#define SURGERY_BLOODY_GLOVES (1<<6)
+/// Surgery step bloodies gloves + suit when necessary.
+#define SURGERY_BLOODY_BODY (1<<7)
+/// Surgery does not use RNG.
+#define SURGERY_CANNOT_FAIL (1<<8)
 
 /// Only one of this type of implant may be in a target
 #define IMPLANT_HIGHLANDER (1<<0)
@@ -14,3 +20,4 @@
 #define IMPLANT_KNOWN (1<<1)
 /// Hides the implant from the body scanner completely
 #define IMPLANT_HIDDEN (1<<2)
+

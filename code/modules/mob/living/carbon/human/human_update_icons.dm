@@ -185,6 +185,7 @@ There are several things that need to be remembered:
 	cut_overlay(bloody_overlay)
 	if(!gloves && blood_in_hands && (num_hands > 0))
 		bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
+		bloody_overlay.color = get_blood_dna_color(return_blood_DNA()) || COLOR_HUMAN_BLOOD
 		if(num_hands < 2)
 			if(has_left_hand(FALSE))
 				bloody_overlay.icon_state = "bloodyhands_left"

@@ -10,8 +10,11 @@
 		. += 1
 	if(user.incapacitated())
 		. -= 10 //lol fucked
-	if(user.eye_blurry)
-		. -= -1
+
+	if(user.is_blind())
+		. -= -4
+	else if(user.eye_blurry)
+		. -= 1
 
 	if(!iscarbon(user))
 		return

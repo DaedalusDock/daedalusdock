@@ -98,7 +98,7 @@
 
 /mob/living/carbon/proc/pain_message(message, amount, ignore_cd)
 	set waitfor = FALSE
-	if(!amount || (stat != CONSCIOUS))
+	if(!amount || (stat != CONSCIOUS) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		return FALSE
 
 	. = COOLDOWN_FINISHED(src, pain_cd)

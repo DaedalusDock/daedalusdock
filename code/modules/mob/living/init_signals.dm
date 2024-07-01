@@ -47,6 +47,9 @@
 
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_BLURRY_VISION), SIGNAL_REMOVETRAIT(TRAIT_BLURRY_VISION)), PROC_REF(blurry_vision_change))
 
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_DEAF), PROC_REF(on_hearing_loss))
+	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_DEAF), PROC_REF(on_hearing_regain))
+
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_NEGATES_GRAVITY), SIGNAL_REMOVETRAIT(TRAIT_NEGATES_GRAVITY)), PROC_REF(on_negate_gravity))
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_IGNORING_GRAVITY), SIGNAL_REMOVETRAIT(TRAIT_IGNORING_GRAVITY)), PROC_REF(on_ignore_gravity))
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_FORCED_GRAVITY), SIGNAL_REMOVETRAIT(TRAIT_FORCED_GRAVITY)), PROC_REF(on_force_gravity))
@@ -275,3 +278,13 @@
 /mob/living/proc/blurry_vision_change(datum/source)
 	SIGNAL_HANDLER
 	update_eye_blur()
+
+///Called when [TRAIT_DEAF] is added to the mob.
+/mob/living/proc/on_hearing_loss()
+	SIGNAL_HANDLER
+	refresh_looping_ambience()
+
+///Called when [TRAIT_DEAF] is added to the mob.
+/mob/living/proc/on_hearing_regain()
+	SIGNAL_HANDLER
+	refresh_looping_ambience()

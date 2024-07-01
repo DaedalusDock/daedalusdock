@@ -310,10 +310,17 @@ GLOBAL_VAR(restart_counter)
 			shutdown_logging() // See comment below.
 			TgsEndProcess()
 
-	log_world("World rebooted at [time_stamp()]")
+	log_world("Attempting world reboot at [time_stamp()].")
 
+	log_world("Awaiting rust_g shutdown.")
 	shutdown_logging() // Past this point, no logging procs can be used besides log_world() at risk of data loss.
+	log_world("rust_g shutdown successful.")
+
+	log_world("Awaiting TGS reboot")
 	TgsReboot() // TGS can decide to kill us right here, so it's important to do it last
+	log_world("TGS reboot successful.")
+
+	log_world("World rebooted at [time_stamp()].")
 	..()
 
 /world/proc/update_status()

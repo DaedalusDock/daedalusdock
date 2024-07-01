@@ -1,6 +1,5 @@
-author: Kapu1178
-delete-after: true
-changes:
+2024-07-01:
+  Kapu1178:
   - rscadd: Added an Advanced mode to cable coil, enabling the BEST cable placing
       experience in the known universe. Right Click the floor while holding cable
       coil to toggle.

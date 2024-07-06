@@ -55,4 +55,3 @@ export const NtosCrewManifest = (props) => {
     </NtosWindow>
   );
 };
-

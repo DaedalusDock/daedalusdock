@@ -150,6 +150,8 @@
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 
+	storage_type = /datum/storage/latched_box
+
 /obj/item/storage/secure/briefcase/PopulateContents()
 	new /obj/item/paper(src)
 	new /obj/item/pen(src)

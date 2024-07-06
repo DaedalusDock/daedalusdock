@@ -23,7 +23,7 @@
 /datum/data/vending_product
 	name = "generic"
 	///Typepath of the product that is created when this record "sells"
-	var/product_path = null
+	var/atom/movable/product_path = null
 	///How many of this product we currently have
 	var/amount = 0
 	///How many we can store at maximum
@@ -754,10 +754,10 @@ GLOBAL_LIST_EMPTY(vending_products)
 	if (!Adjacent(user, src))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
-/obj/machinery/vending/ui_assets(mob/user)
-	return list(
-		get_asset_datum(/datum/asset/spritesheet/vending),
-	)
+// /obj/machinery/vending/ui_assets(mob/user)
+// 	return list(
+// 		get_asset_datum(/datum/asset/spritesheet/vending),
+// 	)
 
 /obj/machinery/vending/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -777,7 +777,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			name = R.name,
 			price = R.custom_price || default_price,
 			max_amount = R.max_amount,
-			ref = REF(R)
+			ref = REF(R),
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["product_records"] += list(data)
 	.["coin_records"] = list()
@@ -788,7 +790,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			price = R.custom_premium_price || extra_price,
 			max_amount = R.max_amount,
 			ref = REF(R),
-			premium = TRUE
+			premium = TRUE,
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["coin_records"] += list(data)
 	.["hidden_records"] = list()
@@ -799,7 +803,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 			price = R.custom_premium_price || extra_price,
 			max_amount = R.max_amount,
 			ref = REF(R),
-			premium = TRUE
+			premium = TRUE,
+			icon = initial(R.product_path.icon),
+			icon_state = initial(R.product_path.icon_state)
 		)
 		.["hidden_records"] += list(data)
 

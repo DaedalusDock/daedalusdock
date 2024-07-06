@@ -111,8 +111,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!G)
 		return
+
 	let_go_effect(G)
-	G.current_grab = null
+
 	if(!QDELETED(G))
 		qdel(G)
 
@@ -387,7 +388,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		return FALSE
 
 	if (assailant.incapacitated(IGNORE_GRAB))
-		let_go(G)
+		qdel(G)
 		stack_trace("Someone resisted a grab while the assailant was incapacitated. This shouldn't ever happen.")
 		return TRUE
 
@@ -399,7 +400,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 			return FALSE
 		else
 			affecting.visible_message(span_danger("[affecting] has broken free of [assailant]'s grip!"), vision_distance = COMBAT_MESSAGE_RANGE)
-			let_go(G)
+			qdel(G)
 			return TRUE
 
 /datum/grab/proc/size_difference(mob/living/A, mob/living/B)

@@ -42,6 +42,9 @@
 	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_SKITTISH), PROC_REF(on_skittish_trait_gain))
 	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_SKITTISH), PROC_REF(on_skittish_trait_loss))
 
+	RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_CLUMSY), PROC_REF(on_clumsy_trait_gain))
+	RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_CLUMSY), PROC_REF(on_clumsy_trait_loss))
+
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_BLURRY_VISION), SIGNAL_REMOVETRAIT(TRAIT_BLURRY_VISION)), PROC_REF(blurry_vision_change))
 
 	RegisterSignal(src, list(SIGNAL_ADDTRAIT(TRAIT_NEGATES_GRAVITY), SIGNAL_REMOVETRAIT(TRAIT_NEGATES_GRAVITY)), PROC_REF(on_negate_gravity))
@@ -209,6 +212,16 @@
 /mob/living/proc/on_skittish_trait_loss(datum/source)
 	SIGNAL_HANDLER
 	RemoveElement(/datum/element/skittish)
+
+/// Called when [TRAIT_CLUMSY] is added to the mob.
+/mob/living/proc/on_clumsy_trait_gain(datum/source)
+	SIGNAL_HANDLER
+	stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_CLUMSY)
+
+/// Called when [TRAIT_CLUMSY] is removed from the mob.
+/mob/living/proc/on_clumsy_trait_loss(datum/source)
+	SIGNAL_HANDLER
+	stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_CLUMSY)
 
 /// Called when [TRAIT_EXPERIENCING_AIRFLOW] is added to the mob.
 /mob/living/proc/on_airflow_trait_gain(datum/source)

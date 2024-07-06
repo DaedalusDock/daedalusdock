@@ -248,9 +248,9 @@
 		if(!length(path))
 			if(!isturf(target))
 				var/turf/TL = get_turf(target)
-				path = get_path_to(src, TL, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
+				path = jps_path_to(src, TL, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 			else
-				path = get_path_to(src, target, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
+				path = jps_path_to(src, target, max_distance=30, access = access_card?.GetAccess(), simulated_only = FALSE)
 
 			if(!bot_move(target))
 				add_to_ignore(target)
@@ -368,9 +368,7 @@
 				F.broken = FALSE
 				F.burnt = FALSE
 				F.icon_state = initial(F.icon_state)
-			else if(istype(is_this_maints, /area/station/maintenance))	//place catwalk if it's plating and we're in maints
-				F.PlaceOnTop(/turf/open/floor/catwalk_floor, flags = CHANGETURF_INHERIT_AIR)
-			else	//place normal tile if it's plating anywhere else
+			else if(!istype(is_this_maints, /area/station/maintenance)) // Don't plate maintenance
 				F = F.make_plating(TRUE) || F
 				F.PlaceOnTop(/turf/open/floor/iron, flags = CHANGETURF_INHERIT_AIR)
 

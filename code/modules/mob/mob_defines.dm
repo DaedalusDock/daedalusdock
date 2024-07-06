@@ -228,3 +228,5 @@
 
 	/// Keeps track of what ambience we are playing. Yeah i know it sucks.
 	var/playing_ambience
+	/// A ref of the area we're taking our ambient loop from.
+	var/area/ambience_tracked_area

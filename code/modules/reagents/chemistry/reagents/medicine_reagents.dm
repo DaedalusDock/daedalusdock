@@ -668,7 +668,7 @@
 
 /datum/reagent/medicine/ryetalyn
 	name = "Ryetalyn"
-	description = "Ryetalyn can cure all genetic abnomalities via a catalytic process."
+	description = "Ryetalyn can cure all genetic mutations and abnormalities via a catalytic process. Known by the brand name \"Mutadone\"."
 	taste_description = "acid"
 	reagent_state = SOLID
 	color = "#004000"

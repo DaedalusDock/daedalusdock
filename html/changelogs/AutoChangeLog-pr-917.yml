@@ -1,6 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - rscadd: Unverified accounts are no longer instantly kicked, and now sit on the
-      main menu.
-  - tweak: Improved the S O U L menu.

@@ -18,9 +18,6 @@
 	AddComponent(/datum/component/gps/item, "MOD0", state = GLOB.deep_inventory_state, overlay_state = FALSE)
 
 /obj/item/mod/module/gps/on_use()
-	. = ..()
-	if(!.)
-		return
 	attack_self(mod.wearer)
 
 ///Hydraulic Clamp - Lets you pick up and drop crates.
@@ -37,6 +34,7 @@
 	cooldown_time = 0.5 SECONDS
 	overlay_state_inactive = "module_clamp"
 	overlay_state_active = "module_clamp_on"
+	required_slots = list(ITEM_SLOT_GLOVES, ITEM_SLOT_BACK)
 	/// Time it takes to load a crate.
 	var/load_time = 3 SECONDS
 	/// The max amount of crates you can carry.
@@ -111,6 +109,7 @@
 	load_time = 1 SECONDS
 	max_crates = 5
 	use_mod_colors = TRUE
+	required_slots = list(ITEM_SLOT_BACK)
 
 ///Drill - Lets you dig through rock and basalt.
 /obj/item/mod/module/drill
@@ -126,15 +125,9 @@
 	overlay_state_active = "module_drill"
 
 /obj/item/mod/module/drill/on_activation()
-	. = ..()
-	if(!.)
-		return
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_BUMP, PROC_REF(bump_mine))
 
 /obj/item/mod/module/drill/on_deactivation(display_message = TRUE, deleting = FALSE)
-	. = ..()
-	if(!.)
-		return
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_BUMP)
 
 /obj/item/mod/module/drill/on_select_use(atom/target)
@@ -173,6 +166,7 @@
 	complexity = 1
 	use_power_cost = DEFAULT_CHARGE_DRAIN * 0.2
 	incompatible_modules = list(/obj/item/mod/module/orebag)
+	required_slots = list(ITEM_SLOT_BACK)
 	cooldown_time = 0.5 SECONDS
 	/// The ores stored in the bag.
 	var/list/ores = list()
@@ -202,9 +196,6 @@
 	ores += ore
 
 /obj/item/mod/module/orebag/on_use()
-	. = ..()
-	if(!.)
-		return
 	for(var/obj/item/ore as anything in ores)
 		ore.forceMove(drop_location())
 		ores -= ore
@@ -218,6 +209,7 @@
 	removable = FALSE
 	use_power_cost = DEFAULT_CHARGE_DRAIN*10
 	incompatible_modules = list(/obj/item/mod/module/hydraulic)
+	required_slots = list(ITEM_SLOT_BACK)
 	cooldown_time = 4 SECONDS
 	overlay_state_inactive = "module_hydraulic"
 	overlay_state_active = "module_hydraulic_active"
@@ -307,6 +299,7 @@
 	removable = FALSE
 	use_power_cost = DEFAULT_CHARGE_DRAIN*3
 	incompatible_modules = list(/obj/item/mod/module/magnet)
+	required_slots = list(ITEM_SLOT_BACK)
 	cooldown_time = 1.5 SECONDS
 	overlay_state_active = "module_magnet"
 	use_mod_colors = TRUE
@@ -334,9 +327,6 @@
 		callback = CALLBACK(src, PROC_REF(check_locker), locker))
 
 /obj/item/mod/module/magnet/on_deactivation(display_message = TRUE, deleting = FALSE)
-	. = ..()
-	if(!.)
-		return
 	for(var/obj/item/hand_item/grab/G in mod.wearer.active_grabs)
 		if(istype(G.affecting, /obj/structure/closet))
 			qdel(G)

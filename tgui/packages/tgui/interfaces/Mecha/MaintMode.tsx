@@ -1,6 +1,6 @@
-import { MaintData } from './data';
 import { useBackend, useLocalState } from '../../backend';
-import { Stack, Button, Box } from '../../components';
+import { Box, Button, Stack } from '../../components';
+import { MaintData } from './data';
 
 const MECHA_MAINT_PANELS = {
   main: {
@@ -17,21 +17,24 @@ const MECHA_MAINT_PANELS = {
   },
 };
 
-export const MaintMode = (props, context) => {
-  const [screen, setPanel] = useLocalState(context, 'screen', MECHA_MAINT_PANELS.main);
+export const MaintMode = (props) => {
+  const [screen, setPanel] = useLocalState('screen', MECHA_MAINT_PANELS.main);
   const Component = screen.component();
   return (
     <Stack fill vertical>
       <Stack.Item>
-        {screen.returnfluff ? <Button
-          fluid
-          bold
-          content={screen.returnfluff}
-          textAlign="center"
-          fontSize="200%"
-          lineHeight={1.25}
-          className="Mecha__Button"
-          onClick={() => setPanel(MECHA_MAINT_PANELS.main)} /> : null}
+        {screen.returnfluff ? (
+          <Button
+            fluid
+            bold
+            content={screen.returnfluff}
+            textAlign="center"
+            fontSize="200%"
+            lineHeight={1.25}
+            className="Mecha__Button"
+            onClick={() => setPanel(MECHA_MAINT_PANELS.main)}
+          />
+        ) : null}
       </Stack.Item>
       <Stack.Item>
         <Component />
@@ -40,148 +43,151 @@ export const MaintMode = (props, context) => {
   );
 };
 
-const MainPanel = (props, context) => {
-  const { act, data } = useBackend<MaintData>(context);
-  const [screen, setPanel] = useLocalState(context, 'screen', MECHA_MAINT_PANELS.main);
-  const {
-    mecha_flags,
-    mechflag_keys,
-  } = data;
+const MainPanel = (props) => {
+  const { act, data } = useBackend<MaintData>();
+  const [screen, setPanel] = useLocalState('screen', MECHA_MAINT_PANELS.main);
+  const { mecha_flags, mechflag_keys } = data;
   return (
     <Stack fill vertical>
-      {(mecha_flags & mechflag_keys["ADDING_MAINT_ACCESS_POSSIBLE"]) ? <MaintEnabled /> : null}
+      {mecha_flags & mechflag_keys['ADDING_MAINT_ACCESS_POSSIBLE'] ? (
+        <MaintEnabled />
+      ) : null}
       <Stack.Item>
-        {(mecha_flags & mechflag_keys["ADDING_ACCESS_POSSIBLE"]) ? <Button
-          fluid
-          bold
-          content={"Open Access Panel"}
-          textAlign="center"
-          fontSize="200%"
-          lineHeight={1.25}
-          className="Mecha__Button"
-          onClick={() => setPanel(MECHA_MAINT_PANELS.access)} /> : null}
+        {mecha_flags & mechflag_keys['ADDING_ACCESS_POSSIBLE'] ? (
+          <Button
+            fluid
+            bold
+            content={'Open Access Panel'}
+            textAlign="center"
+            fontSize="200%"
+            lineHeight={1.25}
+            className="Mecha__Button"
+            onClick={() => setPanel(MECHA_MAINT_PANELS.access)}
+          />
+        ) : null}
       </Stack.Item>
     </Stack>
   );
 };
 
-const MaintEnabled = (props, context) => {
-  const { act, data } = useBackend<MaintData>(context);
-  const [screen, setPanel] = useLocalState(context, 'screen', MECHA_MAINT_PANELS.main);
+const MaintEnabled = (props) => {
+  const { act, data } = useBackend<MaintData>();
+  const [screen, setPanel] = useLocalState('screen', MECHA_MAINT_PANELS.main);
   return (
     <>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Disable Maintenance"}
+          content={'Disable Maintenance'}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__ButtonDanger"
-          onClick={() => act('stopmaint')} />
+          onClick={() => act('stopmaint')}
+        />
       </Stack.Item>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Manage Stock Parts"}
+          content={'Manage Stock Parts'}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__Button"
-          onClick={() => setPanel(MECHA_MAINT_PANELS.stockparts)} />
+          onClick={() => setPanel(MECHA_MAINT_PANELS.stockparts)}
+        />
       </Stack.Item>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Set cabin pressure"}
+          content={'Set cabin pressure'}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__Button"
-          onClick={() => act('set_pressure')} />
+          onClick={() => act('set_pressure')}
+        />
       </Stack.Item>
     </>
   );
 };
 
-const StockPartsPanel = (props, context) => {
-  const { act, data } = useBackend<MaintData>(context);
-  const {
-    cell,
-    scanning,
-    capacitor,
-  } = data;
+const StockPartsPanel = (props) => {
+  const { act, data } = useBackend<MaintData>();
+  const { cell, scanning, capacitor } = data;
   return (
     <Stack fill vertical>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Toggle part replacement"}
+          content={'Toggle part replacement'}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__ButtonDanger"
-          onClick={() => act('togglemaint')} />
+          onClick={() => act('togglemaint')}
+        />
       </Stack.Item>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Eject cell - " + cell}
+          content={'Eject cell - ' + cell}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__Button"
-          onClick={() => act('drop_cell')} />
+          onClick={() => act('drop_cell')}
+        />
       </Stack.Item>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Eject scanning - " + scanning}
+          content={'Eject scanning - ' + scanning}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__Button"
-          onClick={() => act('drop_scanning')} />
+          onClick={() => act('drop_scanning')}
+        />
       </Stack.Item>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Eject capacitor - " + capacitor}
+          content={'Eject capacitor - ' + capacitor}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__Button"
-          onClick={() => act('drop_capacitor')} />
+          onClick={() => act('drop_capacitor')}
+        />
       </Stack.Item>
     </Stack>
   );
 };
 
-const AccessPanel = (props, context) => {
-  const { act, data } = useBackend<MaintData>(context);
-  const {
-    idcard_access,
-    operation_req_access,
-  } = data;
+const AccessPanel = (props) => {
+  const { act, data } = useBackend<MaintData>();
+  const { idcard_access, operation_req_access } = data;
   return (
     <Stack fill vertical>
       <Stack.Item>
         <Button
           fluid
           bold
-          content={"Lock permissions panel"}
+          content={'Lock permissions panel'}
           textAlign="center"
           fontSize="200%"
           lineHeight={1.25}
           className="Mecha__ButtonDanger"
-          onClick={() => act('lock_req_edit')} />
+          onClick={() => act('lock_req_edit')}
+        />
       </Stack.Item>
       <Stack.Item>
         <Stack fill>
@@ -194,7 +200,8 @@ const AccessPanel = (props, context) => {
               fontSize="200%"
               lineHeight={1.25}
               className="Mecha__Button"
-              onClick={() => act('del_req_access', { removed_access: "all" })} />
+              onClick={() => act('del_req_access', { removed_access: 'all' })}
+            />
           </Stack.Item>
           <Stack.Item grow={1}>
             <Button
@@ -205,7 +212,8 @@ const AccessPanel = (props, context) => {
               fontSize="200%"
               lineHeight={1.25}
               className="Mecha__Button"
-              onClick={() => act('add_req_access', { added_access: "all" })} />
+              onClick={() => act('add_req_access', { added_access: 'all' })}
+            />
           </Stack.Item>
         </Stack>
       </Stack.Item>
@@ -213,10 +221,7 @@ const AccessPanel = (props, context) => {
         <Stack.Item key={code.name}>
           <Stack fill>
             <Stack.Item grow={1}>
-              <Box
-                className="Mecha__displayBoxRed">
-                {code.name}
-              </Box>
+              <Box className="Mecha__displayBoxRed">{code.name}</Box>
             </Stack.Item>
             <Stack.Item>
               <Button
@@ -227,18 +232,19 @@ const AccessPanel = (props, context) => {
                 fontSize="200%"
                 lineHeight={1.25}
                 className="Mecha__ButtonDanger"
-                onClick={() => act('del_req_access', { removed_access: code.number })} />
+                onClick={() =>
+                  act('del_req_access', { removed_access: code.number })
+                }
+              />
             </Stack.Item>
           </Stack>
-        </Stack.Item>))}
+        </Stack.Item>
+      ))}
       {idcard_access.map((code, i) => (
         <Stack.Item key={code.name}>
           <Stack fill>
             <Stack.Item grow={1}>
-              <Box
-                className="Mecha__displayBox">
-                {code.name}
-              </Box>
+              <Box className="Mecha__displayBox">{code.name}</Box>
             </Stack.Item>
             <Stack.Item>
               <Button
@@ -249,10 +255,14 @@ const AccessPanel = (props, context) => {
                 fontSize="200%"
                 lineHeight={1.25}
                 className="Mecha__Button"
-                onClick={() => act('add_req_access', { added_access: code.number })} />
+                onClick={() =>
+                  act('add_req_access', { added_access: code.number })
+                }
+              />
             </Stack.Item>
           </Stack>
-        </Stack.Item>))}
+        </Stack.Item>
+      ))}
     </Stack>
   );
 };

@@ -304,6 +304,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	abstract_move(destination) // move like the wind
 	return TRUE
 
+/mob/dead/observer/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+	var/area/new_area = get_area(src)
+	update_ambience_area(new_area)
+
 /mob/dead/observer/verb/reenter_corpse()
 	set category = "Ghost"
 	set name = "Re-enter Corpse"
@@ -411,7 +416,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 // This is the ghost's follow verb with an argument
 /mob/dead/observer/proc/ManualFollow(atom/movable/target)
-	if (!istype(target) || !target.z || (is_secret_level(target.z) && !client?.holder))
+	if (!istype(target) || !target.z || target == src || (is_secret_level(target.z) && !client?.holder))
 		return
 
 	var/icon/I = icon(target.icon,target.icon_state,target.dir)
@@ -781,6 +786,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		UnregisterSignal(target, COMSIG_MOB_UPDATE_SIGHT)
 		LAZYREMOVE(target.observers, src)
 
+	client?.update_ambience_pref()
+
 /mob/dead/observer/verb/observe()
 	set name = "Observe"
 	set category = "Ghost"
@@ -802,6 +809,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (!isobserver(usr))
 		return
 
+	if(target == usr)
+		return
+
 	var/mob/chosen_target = possible_destinations[target]
 
 	// During the break between opening the input menu and selecting our target, has this become an invalid option?
@@ -815,7 +825,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/dead/observer/proc/do_observe(mob/mob_eye)
 	//Istype so we filter out points of interest that are not mobs
-	if(!client || !istype(mob_eye))
+	if(!client || !istype(mob_eye) || mob_eye == src)
 		return
 
 	if(isnewplayer(mob_eye))
@@ -838,6 +848,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	RegisterSignal(mob_eye, COMSIG_MOB_UPDATE_SIGHT, PROC_REF(on_observing_sight_changed))
 
+	SSambience.remove_ambience_client(client)
 	moveToNullspace()
 
 /mob/dead/observer/proc/on_observing_sight_changed(datum/source)

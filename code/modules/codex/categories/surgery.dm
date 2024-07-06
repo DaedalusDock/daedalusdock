@@ -61,23 +61,25 @@
 	for(var/datum/surgery_step/step as anything in GLOB.surgeries_list)
 		var/list/info = list("<ul>")
 
-		var/obj/path_or_tool = step.allowed_tools[1]
-		info += "<li>Best performed with \a [istext(path_or_tool) ? "[path_or_tool]" : "[initial(path_or_tool.name)]"].</li>"
-		if(!step.surgery_candidate_flags)
+		var/obj/path_or_tool = step.allowed_tools?[1]
+		if(path_or_tool)
+			info += "<li>Best performed with \a [istext(path_or_tool) ? "[path_or_tool]" : "[initial(path_or_tool.name)]"].</li>"
+
+		if(!(step.surgery_flags & ~(SURGERY_CANNOT_FAIL | SURGERY_BLOODY_BODY | SURGERY_BLOODY_GLOVES)))
 			info += "<li>This operation has no requirements."
 		else
-			if(step.surgery_candidate_flags & SURGERY_NO_FLESH)
+			if(step.surgery_flags & SURGERY_NO_FLESH)
 				info += "<li>This operation cannot be performed on organic limbs."
-			else if(step.surgery_candidate_flags & SURGERY_NO_ROBOTIC)
+			else if(step.surgery_flags & SURGERY_NO_ROBOTIC)
 				info += "<li>This operation cannot be performed on robotic limbs."
 
-			if(step.surgery_candidate_flags & SURGERY_NO_STUMP)
+			if(step.surgery_flags & SURGERY_NO_STUMP)
 				info += "<li>This operation cannot be performed on stumps."
-			if(step.surgery_candidate_flags & SURGERY_NEEDS_INCISION)
+			if(step.surgery_flags & SURGERY_NEEDS_INCISION)
 				info += "<li>This operation requires <b>[step.strict_access_requirement ? "exactly" : "atleast"]</b> an [CODEX_LINK("incision", "make incision")] or small cut.</li>"
-			else if(step.surgery_candidate_flags & (SURGERY_NEEDS_RETRACTED|SURGERY_NEEDS_DEENCASEMENT))
+			else if(step.surgery_flags & (SURGERY_NEEDS_RETRACTED|SURGERY_NEEDS_DEENCASEMENT))
 				info += "<li>This operation requires <b>[step.strict_access_requirement ? "exactly" : "atleast"]</b> a [CODEX_LINK("widened incision", "widen incision")] or large cut.</li>"
-			else if(step.surgery_candidate_flags & SURGERY_NEEDS_DEENCASEMENT)
+			else if(step.surgery_flags & SURGERY_NEEDS_DEENCASEMENT)
 				info += "<li>This operation requires the encasing bones to be [CODEX_LINK("broken", "saw through bone")].</li>"
 
 		info += "</ul>"

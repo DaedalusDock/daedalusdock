@@ -250,7 +250,7 @@
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
 
-	var/roll = stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, target.gurps_stats.get_skill(SKILL_MELEE_COMBAT))
+	var/roll = stat_roll(10, /datum/rpg_skill/skirmish).outcome
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)
@@ -382,6 +382,34 @@
 	if(should_stun)
 		Paralyze(60)
 
+/mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
+	return
+
+/// Place blood onto us if the toucher has blood on their hands or clothing. messy_slots deteremines what slots to bloody.
+/mob/living/carbon/human/share_blood_on_touch(mob/living/carbon/human/who_touched_us, messy_slots = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+	if(!istype(who_touched_us) || !messy_slots)
+		return
+
+	// Find out what is touching us so we can put blood onto them
+	var/obj/item/clothing/covering_torso = get_item_covering_zone(BODY_ZONE_CHEST)
+	if(covering_torso)
+		who_touched_us.add_blood_DNA_to_items(covering_torso.return_blood_DNA(), ITEM_SLOT_GLOVES)
+	else
+		who_touched_us.add_blood_DNA_to_items(return_blood_DNA(), ITEM_SLOT_GLOVES)
+
+	// Take blood from their hands/gloves
+	var/given_blood = FALSE
+	for(var/obj/item/thing as anything in who_touched_us.get_equipped_items())
+		if((thing.body_parts_covered & HANDS) && prob(thing.blood_DNA_length() * 25))
+			add_blood_DNA_to_items(thing.return_blood_DNA(), messy_slots)
+			given_blood = TRUE
+			break
+
+	if(!given_blood && prob(who_touched_us.blood_in_hands * who_touched_us.blood_DNA_length() * 10))
+		add_blood_DNA_to_items(who_touched_us.return_blood_DNA(), messy_slots)
+		who_touched_us.blood_in_hands -= 1
+		who_touched_us.update_worn_gloves()
+
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/helper)
 	if(on_fire)
 		to_chat(helper, span_warning("You can't put [p_them()] out with just your bare hands!"))
@@ -402,6 +430,8 @@
 						null, span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE, list(helper, src))
 		to_chat(helper, span_notice("You shake [src] trying to pick [p_them()] up!"))
 		to_chat(src, span_notice("[helper] shakes you to get you up!"))
+		share_blood_on_touch(helper, ITEM_SLOT_OCLOTHING | ITEM_SLOT_ICLOTHING)
+
 	else if(deprecise_zone(helper.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD)) //Headpats!
 		helper.visible_message(span_notice("[helper] gives [src] a pat on the head to make [p_them()] feel better!"), \
 					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
@@ -410,6 +440,7 @@
 
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH))
 			to_chat(helper, span_warning("[src] looks visibly upset as you pat [p_them()] on the head."))
+		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 
 	else if ((helper.zone_selected == BODY_ZONE_PRECISE_GROIN) && !isnull(src.getorgan(/obj/item/organ/tail)))
 		helper.visible_message(span_notice("[helper] pulls on [src]'s tail!"), \

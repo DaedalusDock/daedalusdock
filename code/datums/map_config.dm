@@ -25,6 +25,9 @@
 
 	var/minetype = "lavaland"
 
+	/// X,Y values for the holomap offset. The holomap draws to a 480x480 image, so by default the offset is 480 / 4.
+	var/holomap_offsets = list(120, 120)
+
 	var/allow_custom_shuttles = TRUE
 	var/shuttles = list(
 		"cargo" = "cargo_box",
@@ -193,8 +196,20 @@
 				continue
 			library_areas += path
 
+	if("holomap_offset" in json)
+		if(!islist(json["holomap_offset"]) || length(json["holomap_offset"] != 2))
+			log_world("map_config \"holomap_offset\" field is invalid!")
+			return
+		temp = json["holomap_offset"]
+		if(!isnum(temp[1]) || !isnum(temp[2]))
+			log_world("map_config \"holomap_offset\" contains non-numbers!")
+			return
+
+		holomap_offsets = temp
+
 	defaulted = FALSE
 	return TRUE
+
 #undef CHECK_EXISTS
 
 /datum/map_config/proc/GetFullMapPaths()

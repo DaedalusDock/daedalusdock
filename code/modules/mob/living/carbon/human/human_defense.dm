@@ -181,7 +181,12 @@
 	// If we aren't being hit by ourself, roll for accuracy.
 	if(user != src)
 		var/bodyzone_modifier = GLOB.bodyzone_gurps_mods[target_zone]
-		var/roll = !HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) ? user.stat_roll(11, STRENGTH, SKILL_MELEE_COMBAT, (gurps_stats.get_skill(SKILL_MELEE_COMBAT) + bodyzone_modifier), 7) : SUCCESS
+		var/roll
+		if(HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER))
+			roll = SUCCESS
+		else
+			roll = user.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7).outcome
+
 		var/hit_zone
 		switch(roll)
 			if(CRIT_FAILURE)

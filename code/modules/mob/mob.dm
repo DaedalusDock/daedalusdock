@@ -623,6 +623,11 @@
 		else
 			to_chat(M, cannot_see_str)
 
+/mob/living/broadcast_examine(atom/examined)
+	if(stat != CONSCIOUS)
+		return
+	return ..()
+
 /mob/dead/broadcast_examine(atom/examined)
 	return //Observers arent real the government is lying to you
 

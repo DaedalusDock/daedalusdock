@@ -158,7 +158,10 @@
 		return
 
 	//If the item is in a storage item, take it out
-	var/was_in_storage = !!I.loc.atom_storage?.attempt_remove(I, src, silent = TRUE)
+	var/was_in_storage = I.item_flags & IN_STORAGE
+	if(was_in_storage && !I.loc.atom_storage?.attempt_remove(I, src, user = src))
+		return
+
 	if(QDELETED(src)) //moving it out of the storage destroyed it.
 		return
 

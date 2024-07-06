@@ -5,34 +5,31 @@
  */
 
 import { storage } from 'common/storage';
+
 import { setClientTheme } from '../themes';
 import { loadSettings, updateSettings } from './actions';
+import { DEFAULT_THEME, FONTS_DISABLED } from './constants';
 import { selectSettings } from './selectors';
-import { FONTS_DISABLED, DEFAULT_THEME } from './constants';
 
-const setGlobalFontSize = fontSize => {
-  document.documentElement.style
-    .setProperty('font-size', fontSize + 'px');
-  document.body.style
-    .setProperty('font-size', fontSize + 'px');
+const setGlobalFontSize = (fontSize) => {
+  document.documentElement.style.setProperty('font-size', fontSize + 'px');
+  document.body.style.setProperty('font-size', fontSize + 'px');
 };
 
-const setGlobalFontFamily = fontFamily => {
+const setGlobalFontFamily = (fontFamily) => {
   if (fontFamily === FONTS_DISABLED) fontFamily = null;
 
-  document.documentElement.style
-    .setProperty('font-family', fontFamily);
-  document.body.style
-    .setProperty('font-family', fontFamily);
+  document.documentElement.style.setProperty('font-family', fontFamily);
+  document.body.style.setProperty('font-family', fontFamily);
 };
 
-export const settingsMiddleware = store => {
+export const settingsMiddleware = (store) => {
   let initialized = false;
-  return next => action => {
+  return (next) => (action) => {
     const { type, payload } = action;
     if (!initialized) {
       initialized = true;
-      storage.get('panel-settings').then(settings => {
+      storage.get('panel-settings').then((settings) => {
         store.dispatch(loadSettings(settings));
       });
     }

@@ -1,7 +1,7 @@
 /mob/living/Initialize(mapload)
 	. = ..()
 	stamina = new(src)
-	gurps_stats = new(src)
+	stats = new(src)
 
 	register_init_signals()
 	if(unique_name)
@@ -27,7 +27,7 @@
 /mob/living/Destroy()
 	QDEL_NULL(z_eye)
 	QDEL_NULL(stamina)
-	QDEL_NULL(gurps_stats)
+	QDEL_NULL(stats)
 
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
@@ -1034,51 +1034,54 @@
 /mob/living/can_hold_items(obj/item/I)
 	return usable_hands && ..()
 
-/mob/living/canUseTopic(atom/movable/target, flags)
+/mob/living/canUseTopic(atom/target, flags)
+	if(stat != CONSCIOUS)
+		to_chat(src, span_warning("You cannot do that while unconscious."))
+		return FALSE
 
 	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
 	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
 	// Also if it is not set, the mob could be incapcitated, knocked out, unconscious, asleep, EMP'd, etc.
 	if(!(mobility_flags & MOBILITY_UI) && !(flags & USE_RESTING))
-		to_chat(src, span_warning("You can't do that right now!"))
+		to_chat(src, span_warning("You cannot do that right now."))
 		return FALSE
 
 	// NEED_HANDS is already checked by MOBILITY_UI for humans so this is for silicons
 	if((flags & USE_NEED_HANDS) && !can_hold_items(isitem(target) ? target : null)) //almost redundant if it weren't for mobs,
-		to_chat(src, span_warning("You don't have the physical ability to do this!"))
+		to_chat(src, span_warning("You are not physically capable of doing that."))
 		return FALSE
 
-	if((flags & USE_CLOSE) && !Adjacent(target) && (target.loc != src))
+	if((flags & USE_CLOSE) && !CanReach(target) && (recursive_loc_check(src, target)))
 		if(issilicon(src) && !ispAI(src))
 			if(!(flags & USE_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
-				to_chat(src, span_warning("You are too far away!"))
+				to_chat(src, span_warning("You are too far away."))
 				return FALSE
 
 		else if(flags & USE_IGNORE_TK)
-			to_chat(src, span_warning("You are too far away!"))
+			to_chat(src, span_warning("You are too far away."))
 			return FALSE
 
 		else
 			var/datum/dna/D = has_dna()
 			if(!D || !D.check_mutation(/datum/mutation/human/telekinesis) || !tkMaxRangeCheck(src, target))
-				to_chat(src, span_warning("You are too far away!"))
+				to_chat(src, span_warning("You are too far away."))
 				return FALSE
 
 	if((flags & USE_DEXTERITY) && !ISADVANCEDTOOLUSER(src))
-		to_chat(src, span_warning("You don't have the dexterity to do this!"))
+		to_chat(src, span_warning("You do not have the dexterity required to do that."))
 		return FALSE
 
 	if((flags & USE_LITERACY) && !is_literate())
-		to_chat(src, span_warning("You can't comprehend any of this!"))
+		to_chat(src, span_warning("You cannot comprehend this."))
 		return FALSE
 	return TRUE
 
 /mob/living/proc/can_use_guns(obj/item/G)//actually used for more than guns!
 	if(G.trigger_guard == TRIGGER_GUARD_NONE)
-		to_chat(src, span_warning("You are unable to fire this!"))
+		to_chat(src, span_warning("You are unable to fire that."))
 		return FALSE
 	if(G.trigger_guard != TRIGGER_GUARD_ALLOW_ALL && (!ISADVANCEDTOOLUSER(src) && !HAS_TRAIT(src, TRAIT_GUN_NATURAL)))
-		to_chat(src, span_warning("You try to fire [G], but can't use the trigger!"))
+		to_chat(src, span_warning("You attempt to fire [G], but cannot pull the trigger."))
 		return FALSE
 	return TRUE
 
@@ -1283,9 +1286,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	return fire_status.ignite()
 
 /mob/living/proc/update_fire()
-	var/datum/status_effect/fire_handler/fire_handler = has_status_effect(/datum/status_effect/fire_handler)
-	if(fire_handler)
-		fire_handler.update_overlay()
+	var/datum/status_effect/fire_handler/fire_stacks/fire_stacks = has_status_effect(/datum/status_effect/fire_handler/fire_stacks)
+	if(fire_stacks)
+		fire_stacks.update_overlay()
 
 /**
  * Extinguish all fire on the mob
@@ -1795,6 +1798,14 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			if(R)
 				R.end_metabolization(src)
 
+/mob/living/do_set_blindness(blindness_level)
+	. = ..()
+	switch(blindness_level)
+		if(BLIND_SLEEPING, BLIND_PHYSICAL)
+			stats?.set_skill_modifier(-4, /datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+		else
+			stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
 	if(new_buckled == buckled)
@@ -1939,13 +1950,13 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		set_lying_angle(pick(90, 270))
 		set_body_position(LYING_DOWN)
 		on_fall()
-
+		stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being floored. Called when the condition ends.
 /mob/living/proc/on_floored_end()
 	if(!resting)
 		get_up()
-
+		stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being handsblocked. Called when the condition starts.
 /mob/living/proc/on_handsblocked_start()

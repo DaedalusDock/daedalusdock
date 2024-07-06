@@ -185,6 +185,7 @@ There are several things that need to be remembered:
 	cut_overlay(bloody_overlay)
 	if(!gloves && blood_in_hands && (num_hands > 0))
 		bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
+		bloody_overlay.color = get_blood_dna_color(return_blood_DNA()) || COLOR_HUMAN_BLOOD
 		if(num_hands < 2)
 			if(has_left_hand(FALSE))
 				bloody_overlay.icon_state = "bloodyhands_left"
@@ -391,7 +392,7 @@ There are several things that need to be remembered:
 		if((dna.species.bodytype & BODYTYPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			var/obj/item/bodypart/leg/leg = src.get_bodypart(BODY_ZONE_L_LEG)
 			if(leg.limb_id == leg.digitigrade_id)//Snowflakey and bad. But it makes it look consistent.
-				icon_file = shoes.worn_icon_digitigrade || DIGITIGRADE_SHOES_FILE //PARIAH EDIT
+				icon_file = shoes.worn_icon_digitigrade || DIGITIGRADE_SHOES_FILE
 
 		if(dna.species.bodytype & BODYTYPE_TESHARI)
 			if(worn_item.supports_variations_flags & CLOTHING_TESHARI_VARIATION)
@@ -566,7 +567,7 @@ There are several things that need to be remembered:
 		//More currently unused digitigrade handling
 		if(dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			if(worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION)
-				icon_file = wear_suit.worn_icon_digitigrade || DIGITIGRADE_SUIT_FILE //PARIAH EDIT
+				icon_file = wear_suit.worn_icon_digitigrade || DIGITIGRADE_SUIT_FILE
 
 		//PARIAH EDIT END
 		if(dna.species.bodytype & BODYTYPE_TESHARI)

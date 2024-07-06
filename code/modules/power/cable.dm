@@ -478,6 +478,9 @@
 	usesound = 'sound/items/deconstruct.ogg'
 	cost = 1
 	source = /datum/robot_energy_storage/wire
+
+	/// Handles the click foo.
+	var/datum/cable_click_manager/click_manager
 	/// Previous position stored for purposes of cable laying
 	var/turf/previous_position = null
 	/// Whether we are in a cable laying mode
@@ -491,8 +494,14 @@
 	pixel_y = base_pixel_y + rand(-2, 2)
 	update_appearance()
 
+/obj/item/stack/cable_coil/Destroy(force)
+	QDEL_NULL(click_manager)
+	set_cable_layer_mode(FALSE)
+	return ..()
+
 /obj/item/stack/cable_coil/examine(mob/user)
 	. = ..()
+	. += "<b>Right Click</b> on the floor to enable Advanced Placement."
 	. += "<b>Ctrl+Click</b> to change the layer you are placing on."
 
 /obj/item/stack/cable_coil/update_name()
@@ -507,9 +516,18 @@
 	. = ..()
 	icon_state = "[base_icon_state][amount < 3 ? amount : ""]"
 
-/obj/item/stack/cable_coil/Destroy(force)
+
+/obj/item/stack/cable_coil/equipped(mob/user, slot)
 	. = ..()
-	set_cable_layer_mode(FALSE)
+	if(slot == ITEM_SLOT_HANDS)
+		if(isnull(click_manager))
+			click_manager = new(src)
+
+		click_manager.set_user(user)
+
+/obj/item/stack/cable_coil/dropped()
+	. = ..()
+	click_manager?.set_user(null)
 
 /obj/item/stack/cable_coil/use(used, transfer, check)
 	. = ..()

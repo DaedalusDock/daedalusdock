@@ -240,7 +240,7 @@
 	//Calculate DeltaT (Deviation of T from optimal)
 	if(!reaction.is_cold_recipe)
 		if (cached_temp < reaction.optimal_temp && cached_temp >= reaction.required_temp)
-			delta_t = (((cached_temp - reaction.required_temp)**reaction.temp_exponent_factor)/((reaction.optimal_temp - reaction.required_temp)**reaction.temp_exponent_factor))
+			delta_t = ((cached_temp - reaction.required_temp) / (reaction.optimal_temp - reaction.required_temp)) ** reaction.temp_exponent_factor
 		else if (cached_temp >= reaction.optimal_temp)
 			delta_t = 1
 		else //too hot
@@ -249,7 +249,7 @@
 			return
 	else
 		if (cached_temp > reaction.optimal_temp && cached_temp <= reaction.required_temp)
-			delta_t = (((reaction.required_temp - cached_temp)**reaction.temp_exponent_factor)/((reaction.required_temp - reaction.optimal_temp)**reaction.temp_exponent_factor))
+			delta_t = ((reaction.required_temp - cached_temp) / (reaction.required_temp - reaction.optimal_temp)) ** reaction.temp_exponent_factor
 		else if (cached_temp <= reaction.optimal_temp)
 			delta_t = 1
 		else //Too cold
@@ -266,7 +266,7 @@
 	delta_t *= speed_mod
 
 	//Now we calculate how much to add - this is normalised to the rate up limiter
-	var/delta_chem_factor = (reaction.rate_up_lim*delta_t)*delta_time//add/remove factor
+	var/delta_chem_factor = reaction.rate_up_lim * delta_t *delta_time //add/remove factor
 	var/total_step_added = 0
 	//keep limited
 	if(delta_chem_factor > step_target_vol)
@@ -278,16 +278,21 @@
 		return
 
 	//Calculate how much product to make and how much reactant to remove factors..
-	for(var/reagent in reaction.required_reagents)
-		holder.remove_reagent(reagent, (delta_chem_factor * reaction.required_reagents[reagent]), safety = TRUE)
+	var/required_amount
+	for(var/datum/reagent/requirement as anything in reaction.required_reagents)
+		required_amount = reaction.required_reagents[requirement]
+		if(!holder.remove_reagent(requirement, delta_chem_factor * required_amount))
+			to_delete = TRUE
+			return
 
 	var/step_add
-	for(var/product in reaction.results)
-		//create the products
-		step_add = delta_chem_factor * reaction.results[product]
-		//Default handiling
-		holder.add_reagent(product, step_add, null, cached_temp)
+	for(var/datum/reagent/product as anything in reaction.results)
+		step_add = holder.add_reagent(product, delta_chem_factor * reaction.results[product])
+		if(!step_add)
+			to_delete = TRUE
+			return
 
+		//record amounts created
 		reacted_vol += step_add
 		total_step_added += step_add
 
@@ -315,11 +320,14 @@
 	if(!(check_fail_states(total_step_added)))
 		to_delete = TRUE
 
-	//end reactions faster so plumbing is faster
-	if((step_add >= step_target_vol) && (length(holder.reaction_list == 1)))//length is so that plumbing is faster - but it doesn't disable competitive reactions. Basically, competitive reactions will likely reach their step target at the start, so this will disable that. We want to avoid that. But equally, we do want to full stop a holder from reacting asap so plumbing isn't waiting an tick to resolve.
+	//If the volume of reagents created(total_step_added) >= volume of reagents still to be created(step_target_vol) then end
+	//i.e. we have created all the reagents needed for this reaction
+	//This is only accurate when a single reaction is present and we don't have multiple reactions where
+	//reaction B consumes the products formed from reaction A(which can happen in add_reagent() as it also triggers handle_reactions() which can consume the reagent just added)
+	//because total_step_added will be higher than the actual volume that was created leading to the reaction ending early
+	//and yielding less products than intended
+	if(total_step_added >= step_target_vol && length(holder.reaction_list) == 1)
 		to_delete = TRUE
-
-	holder.update_total()//do NOT recalculate reactions
 
 ///Panic stop a reaction - cleanup should be handled by the next timestep
 /datum/equilibrium/proc/force_clear_reactive_agents()

@@ -320,6 +320,26 @@ DEFINE_INTERACTABLE(/obj/item)
 			id.show(usr)
 		return TRUE
 
+	if(href_list["examine"])
+		var/atom_to_view_check = src
+		if(ismob(loc))
+			atom_to_view_check = loc
+
+		if(!atom_to_view_check && isidcard(src) && istype(loc, /obj/item/storage/wallet))
+			var/obj/item/storage/wallet/W = loc
+			if(W.is_open)
+				atom_to_view_check = W
+				if(ismob(W.loc))
+					atom_to_view_check = W.loc
+
+		var/list/user_view = view(usr)
+		if(!(atom_to_view_check in user_view))
+			to_chat(usr, span_warning("I can no longer see that item."))
+			return TRUE
+
+		usr.run_examinate(src, TRUE)
+		return TRUE
+
 /obj/item/update_icon_state()
 	if(wielded && icon_state_wielded)
 		icon_state = icon_state_wielded
@@ -631,7 +651,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		return
 
 	//If the item is in a storage item, take it out
-	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE)
+	loc.atom_storage?.attempt_remove(src, user.loc, silent = TRUE, user = src)
 	if(QDELETED(src)) //moving it out of the storage to the floor destroyed it.
 		return
 
@@ -1292,6 +1312,14 @@ DEFINE_INTERACTABLE(/obj/item)
 
 	delay *= toolspeed * skill_modifier
 
+	if(delay && iscarbon(user) && user.stats.cooldown_finished("use_tool")) // Fuck borgs!!!
+		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/handicraft)
+		switch(result.outcome)
+			if(CRIT_SUCCESS)
+				to_chat(user, result.create_tooltip("A swift execution. A job well done. (Tool usage time reduced)"))
+				delay = delay * 0.25
+
+		user.stats.set_cooldown("use_tool", max(delay, 5 SECONDS))
 
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)

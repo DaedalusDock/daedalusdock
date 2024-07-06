@@ -21,16 +21,17 @@
 	parent = null
 	return ..()
 
+/// Adds blood dna. Returns TRUE if the blood dna list expanded.
 /datum/forensics/proc/add_blood_DNA(list/dna)
 	if(!length(dna))
 		return
-
+	var/old_len = length(blood_DNA)
 	LAZYINITLIST(blood_DNA)
 	for(var/dna_hash in dna)
 		blood_DNA[dna_hash] = dna[dna_hash]
 
 	check_blood()
-	return TRUE
+	return old_len < length(blood_DNA)
 
 /datum/forensics/proc/add_trace_DNA(list/dna)
 	if(!length(dna))

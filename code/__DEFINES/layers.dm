@@ -60,7 +60,9 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 #define GAS_PUMP_LAYER 2.49
 #define BOT_PATH_LAYER 2.491
 #define LOW_OBJ_LAYER 2.5
-///catwalk overlay of /turf/open/floor/plating/catwalk_floor
+/// The lattice of /obj/structure/overfloor_catwalk
+#define CATWALK_LATTICE_LAYER 2.505
+/// The rim of /obj/structure/overfloor_catwalk
 #define CATWALK_LAYER 2.51
 #define LOW_SIGIL_LAYER 2.52
 #define SIGIL_LAYER 2.53

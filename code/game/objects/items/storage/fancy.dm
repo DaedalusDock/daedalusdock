@@ -189,6 +189,8 @@
 	spawn_count = 6
 	age_restricted = TRUE
 	contents_tag = "cigarette"
+	storage_type = /datum/storage/cigarette_box
+
 	///for cigarette overlay
 	var/candy = FALSE
 	/// Does this cigarette packet come with a coupon attached?

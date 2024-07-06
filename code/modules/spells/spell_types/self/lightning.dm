@@ -117,7 +117,7 @@
 	for(var/mob/living/carbon/to_check in view(shock_radius, center))
 		if(to_check == center || to_check == owner)
 			continue
-		if(!length(get_path_to(center, to_check, max_distance = shock_radius, simulated_only = FALSE)))
+		if(!length(jps_path_to(center, to_check, max_distance = shock_radius, simulated_only = FALSE)))
 			continue
 
 		possibles += to_check

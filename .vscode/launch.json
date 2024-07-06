@@ -15,6 +15,12 @@
 			"preLaunchTask": "Build All",
 			"dmb": "${workspaceFolder}/${command:CurrentDMB}",
 			"dreamDaemon": true
+		},{
+			"type": "opendream",
+			"request": "launch",
+			"name": "OpenDream",
+			"preLaunchTask": "OpenDream: compile ${command:CurrentDME}",
+			"json_path": "${workspaceFolder}/${command:CurrentJson}"
 		}
 	]
 }

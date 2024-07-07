@@ -1,0 +1,4 @@
+author: ToasterBan
+delete-after: true
+changes:
+  - bugfix: You can now place down catwalks again

@@ -3,3 +3,8 @@
   - rscadd: Added an Advanced mode to cable coil, enabling the BEST cable placing
       experience in the known universe. Right Click the floor while holding cable
       coil to toggle.
+2024-07-08:
+  Kapu1178:
+  - bugfix: Splitting a stack no longer causes the new stack to have no materials.
+  ToasterBan:
+  - bugfix: You can now place down catwalks again

@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Splitting a stack no longer causes the new stack to have no materials.

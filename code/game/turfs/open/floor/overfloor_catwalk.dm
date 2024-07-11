@@ -16,9 +16,9 @@
 	plane = GAME_PLANE
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 
-	smoothing_groups = NONE
+	smoothing_groups = null
 	smoothing_flags = NONE
-	canSmoothWith = NONE
+	canSmoothWith = null
 
 	anchored = TRUE
 	obj_flags = CAN_BE_HIT | BLOCK_Z_OUT_DOWN | BLOCK_Z_IN_UP | BLOCK_Z_FALL

@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - balance: Haloperidol's residual sleeping effect has been capped at 3 minutes.
+  - balance: Haloperidol is 20% as effective to sleeping targets.

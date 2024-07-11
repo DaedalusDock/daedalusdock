@@ -9,9 +9,10 @@
 /**
  * Adds passed value to the drowsyness of a mob
  */
-/mob/proc/adjust_drowsyness(amount)
+/mob/proc/adjust_drowsyness(amount, up_to = INFINITY)
+	if(amount + drowsyness > up_to)
+		amount = max(up_to - drowsyness, 0)
 	drowsyness = max(drowsyness + amount, 0)
-
 
 ///Blind a mobs eyes by amount
 /mob/proc/blind_eyes(amount)

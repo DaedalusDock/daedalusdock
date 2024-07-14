@@ -406,7 +406,7 @@ SUBSYSTEM_DEF(job)
 
 	//Get the players who are ready
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
-		if(player.ready == PLAYER_READY_TO_PLAY && player.check_preferences() && player.mind && is_unassigned_job(player.mind.assigned_role))
+		if(player.ready == PLAYER_READY_TO_PLAY && player.check_preferences() && player.mind && is_unassigned_job(player.mind.assigned_role) && (!player.client?.restricted_mode))
 			unassigned += player
 
 	initial_players_to_assign = unassigned.len

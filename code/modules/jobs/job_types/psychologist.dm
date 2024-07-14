@@ -12,7 +12,7 @@
 
 	employers = list(
 		/datum/employer/aether,
-		/datum/employer/contractor
+		/datum/employer/none
 	)
 
 	outfits = list(

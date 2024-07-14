@@ -13,12 +13,9 @@ Assistant
 
 	employers = list(
 		/datum/employer/daedalus,
-		/datum/employer/ananke,
 		/datum/employer/aether,
-		/datum/employer/priapus,
 		/datum/employer/mars_exec,
 		/datum/employer/hermes,
-		/datum/employer/contractor,
 		/datum/employer/none
 	)
 

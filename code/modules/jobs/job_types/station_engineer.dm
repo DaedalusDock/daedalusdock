@@ -14,7 +14,6 @@
 
 	employers = list(
 		/datum/employer/daedalus,
-		/datum/employer/contractor
 	)
 
 	outfits = list(

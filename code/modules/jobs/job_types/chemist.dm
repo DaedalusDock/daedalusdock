@@ -13,8 +13,6 @@
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
-		/datum/employer/ananke,
 		/datum/employer/aether
 	)
 

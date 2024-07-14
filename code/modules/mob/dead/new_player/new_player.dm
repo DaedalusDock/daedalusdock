@@ -574,6 +574,20 @@
 	var/client/mob_client = GET_CLIENT(src)
 	if(!mob_client)
 		return FALSE //Not sure how this would get run without the mob having a client, but let's just be safe.
+
+	var/list/job_priority = client.prefs.read_preference(/datum/preference/blob/job_priority)
+	var/datum/employer/employer_path = client.prefs.read_preference(/datum/preference/choiced/employer)
+
+	var/write_pref = FALSE
+	for(var/job_name in job_priority)
+		var/datum/job/J = SSjob.GetJob(job_name)
+		if(!(employer_path in J.employers))
+			job_priority -= job_name
+
+	if(write_pref)
+		to_chat(src, span_danger("One or more jobs did not fit your current employer and have been removed in your selection."))
+		client.prefs.write_preference(/datum/preference/blob/job_priority, job_priority)
+
 	if(mob_client.prefs.read_preference(/datum/preference/choiced/jobless_role) != RETURNTOLOBBY)
 		return TRUE
 
@@ -586,7 +600,7 @@
 			has_antags = TRUE
 			num_antags++
 
-	if(client.prefs.read_preference(/datum/preference/blob/job_priority):len == 0)
+	if(job_priority.len == 0)
 		if(!ineligible_for_roles)
 			to_chat(src, span_danger("You have no jobs enabled, along with return to lobby if job is unavailable. This makes you ineligible for any round start role, please update your job preferences."))
 		ineligible_for_roles = TRUE

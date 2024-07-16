@@ -608,6 +608,7 @@ SUBSYSTEM_DEF(job)
 
 	if(player_client)
 		job.on_join_message(player_client, chosen_title)
+		job.on_join_popup(player_client, chosen_title)
 
 	if(player_client)
 		var/related_policy = get_policy(job.title)

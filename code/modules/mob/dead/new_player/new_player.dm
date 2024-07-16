@@ -292,6 +292,7 @@
 		var/datum/job/J = SSjob.GetJob(job_name)
 		if(!(employer_path in J.employers))
 			job_priority -= job_name
+			write_pref = TRUE
 
 	if(write_pref)
 		to_chat(src, span_danger("One or more jobs did not fit your current employer and have been removed in your selection."))

@@ -196,8 +196,8 @@
 /datum/new_player_panel/proc/npp_main(last_cmd)
 	var/list/output = list()
 
-	var/poll = !is_guest_key(parent.client.key) && playerpolls()
-	if(poll)
+	var/poll = playerpolls()
+	if(!is_guest_key(parent.client.key) && poll)
 		poll = "<div>>[LINKIFY_CONSOLE_OPTION(poll, "showpoll=1")]</div>"
 
 	output += {"

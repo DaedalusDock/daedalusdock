@@ -26,8 +26,9 @@
 	if(input in get_choices_serialized())
 		return GLOB.employers_by_name[input]
 
-	var/datum/preference/P = GLOB.preference_entries[/datum/preference/blob/job_priority]
-	preferences.update_preference(P, P.create_default_value())
+	return create_default_value()
+
+/datum/preference/choiced/employer/create_default_value()
 	return /datum/employer/none
 
 /datum/preference/choiced/employer/button_act(mob/user, datum/preferences/prefs, list/params)

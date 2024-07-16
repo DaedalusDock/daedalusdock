@@ -594,3 +594,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	job_info += "<br><br>[radio_help_message]"
 
 	to_chat(C, examine_block("[job_header][jointext(job_info, "")]"))
+
+/// Called by SSjob when a player joins the round as this job.
+/datum/job/proc/on_join_popup(client/C, job_title_pref)
+	return

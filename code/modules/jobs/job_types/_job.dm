@@ -2,7 +2,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	// Management
 	/datum/job/captain,
 	/datum/job/head_of_personnel,
-	/datum/job/security_consultant,
 	///datum/job/bureaucrat,
 	// Security
 	/datum/job/head_of_security,

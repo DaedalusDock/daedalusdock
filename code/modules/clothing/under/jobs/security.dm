@@ -83,7 +83,7 @@
 
 /obj/item/clothing/under/rank/security/warden/grey
 	name = "grey security suit"
-	desc = "A formal relic of years past before Mars Executive Outcomes decided it was cheaper to dye the suits red instead of washing out the blood."
+	desc = "A uniform older than the colonization of Mars."
 	icon_state = "warden"
 	inhand_icon_state = "gy_suit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION

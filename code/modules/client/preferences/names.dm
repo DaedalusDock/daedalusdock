@@ -37,8 +37,8 @@
 
 	if(istype(user, /mob/dead/new_player))
 		var/mob/dead/new_player/player = user
-		player.new_player_panel()
-
+		if(player.npp.active_tab == "game")
+			player.npp.change_tab("game") // Reload name
 	return .
 
 /datum/preference/name/get_button(datum/preferences/prefs)

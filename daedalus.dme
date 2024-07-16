@@ -3362,6 +3362,7 @@
 #include "code\modules\mob\dead\new_player\login.dm"
 #include "code\modules\mob\dead\new_player\logout.dm"
 #include "code\modules\mob\dead\new_player\new_player.dm"
+#include "code\modules\mob\dead\new_player\new_player_panel.dm"
 #include "code\modules\mob\dead\new_player\poll.dm"
 #include "code\modules\mob\dead\new_player\preferences_setup.dm"
 #include "code\modules\mob\dead\new_player\sprite_accessories\_sprite_accessories.dm"

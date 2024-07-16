@@ -378,7 +378,7 @@ SUBSYSTEM_DEF(ticker)
 					player.create_character(spawn_loc)
 			else //PLAYER_NOT_READY
 				//Reload their player panel so they see latejoin instead of ready.
-				player.new_player_panel()
+				player.npp.update()
 
 		CHECK_TICK
 
@@ -490,7 +490,7 @@ SUBSYSTEM_DEF(ticker)
 		for (var/mob/dead/new_player/NP in queued_players)
 			to_chat(NP, span_userdanger("The alive players limit has been released!<br><a href='?src=[REF(NP)];late_join=override'>[html_encode(">>Join Game<<")]</a>"))
 			SEND_SOUND(NP, sound('sound/misc/notice1.ogg'))
-			NP.LateChoices()
+			NP.npp.LateChoices()
 		queued_players.len = 0
 		queue_delay = 0
 		return
@@ -505,7 +505,7 @@ SUBSYSTEM_DEF(ticker)
 				if(next_in_line?.client)
 					to_chat(next_in_line, span_userdanger("A slot has opened! You have approximately 20 seconds to join. <a href='?src=[REF(next_in_line)];late_join=override'>\>\>Join Game\<\<</a>"))
 					SEND_SOUND(next_in_line, sound('sound/misc/notice1.ogg'))
-					next_in_line.LateChoices()
+					next_in_line.npp.LateChoices()
 					return
 				queued_players -= next_in_line //Client disconnected, remove he
 			queue_delay = 0 //No vacancy: restart timer

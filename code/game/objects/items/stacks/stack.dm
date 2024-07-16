@@ -594,7 +594,7 @@
 	if(!use(amount, TRUE, FALSE))
 		return null
 
-	var/obj/item/stack/F = new type(spawn_loc, amount, FALSE, mats_per_unit, absorption_capacity)
+	var/obj/item/stack/F = new type(spawn_loc, amount, FALSE, mats_per_unit, null, absorption_capacity)
 	. = F
 	transfer_evidence_to(F)
 	loc.atom_storage?.refresh_views()

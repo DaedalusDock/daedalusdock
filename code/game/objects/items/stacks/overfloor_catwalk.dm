@@ -43,6 +43,7 @@
 		return
 
 	playsound(target_floor, 'sound/weapons/genhit.ogg', 50, TRUE)
+	new catwalk_type (target_floor)
 	return target_floor // Most executions should end here.
 
 /obj/item/stack/overfloor_catwalk/sixty

@@ -89,6 +89,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	var/atom/movable/screen/holomap/holomap_container
 	var/atom/movable/screen/progbar_container/use_timer
+	var/atom/movable/screen/vis_holder/vis_holder
 	// subtypes can override this to force a specific UI style
 	var/ui_style
 
@@ -126,6 +127,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	owner.overlay_fullscreen("see_through_darkness", /atom/movable/screen/fullscreen/see_through_darkness)
 
 	holomap_container = new(null, src)
+	vis_holder = new(null, src)
 
 	RegisterSignal(mymob, COMSIG_VIEWDATA_UPDATE, PROC_REF(on_viewdata_update))
 
@@ -159,6 +161,7 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 	QDEL_LIST(hotkeybuttons)
 	throw_icon = null
 	QDEL_LIST(infodisplay)
+	QDEL_NULL(vis_holder)
 
 	healths = null
 	stamina = null
@@ -270,6 +273,9 @@ GLOBAL_LIST_INIT(available_ui_styles, list(
 
 	if(holomap_container)
 		screenmob.client.screen += holomap_container
+
+	if(vis_holder)
+		screenmob.client.screen += vis_holder
 
 	hud_version = display_hud_version
 	update_gunpoint(screenmob)

@@ -403,9 +403,6 @@
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0, z_movement_flags)
-	if(QDELING(src))
-		CRASH("Illegal Move()! on [type]")
-
 	if(!loc || !newloc)
 		return FALSE
 

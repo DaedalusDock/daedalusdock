@@ -132,7 +132,7 @@
 	for(var/atom/movable/movable_input as anything in processor_contents)
 		var/datum/food_processor_process/recipe = PROCESSOR_SELECT_RECIPE(movable_input)
 		if (!recipe)
-			log_admin("DEBUG: [movable_input] in processor doesn't have a suitable recipe. How did it get in there? Please report it immediately!!!")
+			message_debug(DBG_ERROR, "FoodProcessor/interact", "[movable_input] in processor doesn't have a suitable recipe. Make a bug report.", DBG_ALWAYS | DBG_LOG_WORLD)
 			continue
 		total_time += recipe.time
 	var/offset = prob(50) ? -2 : 2
@@ -141,7 +141,7 @@
 	for(var/atom/movable/O in processor_contents)
 		var/datum/food_processor_process/P = PROCESSOR_SELECT_RECIPE(O)
 		if (!P)
-			log_admin("DEBUG: [O] in processor doesn't have a suitable recipe. How do you put it in?")
+			message_debug(DBG_ERROR, "FoodProcessor/interact", "[O] in processor doesn't have a suitable recipe. Make a bug report.", DBG_ALWAYS | DBG_LOG_WORLD)
 			continue
 		process_food(P, O)
 	pixel_x = base_pixel_x //return to its spot after shaking

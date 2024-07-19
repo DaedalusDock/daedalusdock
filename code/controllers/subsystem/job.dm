@@ -119,7 +119,7 @@ SUBSYSTEM_DEF(job)
 		if(!job.config_check())
 			continue
 		if(!job.map_check()) //Even though we initialize before mapping, this is fine because the config is loaded at new
-			testing("Removed [job.type] due to map config")
+			message_debug(DBG_INFO, "SSJob/SetupOccupations", "Removed [job.type] due to map config.")
 			continue
 		new_all_occupations += job
 		name_occupations[job.title] = job

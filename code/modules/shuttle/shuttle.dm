@@ -543,7 +543,7 @@
 //call the shuttle to destination S
 /obj/docking_port/mobile/proc/request(obj/docking_port/stationary/S)
 	if(!check_dock(S))
-		testing("check_dock failed on request for [src]")
+		message_debug(DBG_TRACE, "DockingPort/request", "check_dock failed on request for [src]")
 		return
 
 	if(mode == SHUTTLE_IGNITING && destination == S)

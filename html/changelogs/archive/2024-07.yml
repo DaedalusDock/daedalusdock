@@ -13,3 +13,6 @@
   - balance: Haloperidol's residual sleeping effect has been capped at 3 minutes.
   - balance: Haloperidol is 20% as effective to sleeping targets.
   - bugfix: Catwalks are now anchored.
+2024-07-20:
+  Kapu1178:
+  - bugfix: Field of View is ACTUALLY black.

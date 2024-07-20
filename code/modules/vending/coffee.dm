@@ -14,7 +14,7 @@
 		/obj/item/reagent_containers/food/drinks/ice = 12
 	)
 	refill_canister = /obj/item/vending_refill/coffee
-	default_price = PAYCHECK_PRISONER
+	default_price = PAYCHECK_ASSISTANT
 	extra_price = PAYCHECK_ASSISTANT
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "coffee-light-mask"

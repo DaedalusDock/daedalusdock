@@ -55,7 +55,6 @@
 /datum/antagonist/cult/greet()
 	. = ..()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/bloodcult.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)//subject to change
-	owner.announce_objectives()
 
 /datum/antagonist/cult/on_gain()
 	. = ..()

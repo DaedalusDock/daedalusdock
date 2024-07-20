@@ -185,7 +185,7 @@
 	throwforce = 0
 	slot_flags = ITEM_SLOT_BELT
 	spawn_type = /obj/item/clothing/mask/cigarette/space_cigarette
-	custom_price = PAYCHECK_MEDIUM
+	custom_price = PAYCHECK_ASSISTANT
 	spawn_count = 6
 	age_restricted = TRUE
 	contents_tag = "cigarette"
@@ -351,7 +351,7 @@
 	contents_tag = "rolling paper"
 	spawn_type = /obj/item/rollingpaper
 	spawn_count = 10
-	custom_price = PAYCHECK_PRISONER
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 
 /obj/item/storage/fancy/rollingpapers/Initialize()
 	. = ..()

@@ -33,10 +33,10 @@
 			else
 				M.dna.add_mutation(HM, MUT_EXTRA)
 		if(fields)
-			if(fields["name"] && fields["UE"] && fields["blood_type"])
-				M.set_real_name(fields["name"])
+			if(fields[DATACORE_NAME] && fields["UE"] && fields[DATACORE_BLOOD_TYPE])
+				M.set_real_name(fields[DATACORE_NAME])
 				M.dna.unique_enzymes = fields["UE"]
-				M.dna.blood_type = fields["blood_type"]
+				M.dna.blood_type = fields[DATACORE_BLOOD_TYPE]
 
 			if(fields["UI"]) //UI+UE
 				M.dna.unique_identity = merge_text(M.dna.unique_identity, fields["UI"])
@@ -484,16 +484,16 @@
 			else
 				M.dna.add_mutation(mutation, MUT_OTHER, endtime)
 		if(fields)
-			if(fields["name"] && fields["UE"] && fields["blood_type"])
+			if(fields[DATACORE_NAME] && fields["UE"] && fields[DATACORE_BLOOD_TYPE])
 				if(!M.dna.previous["name"])
 					M.dna.previous["name"] = M.real_name
 				if(!M.dna.previous["UE"])
 					M.dna.previous["UE"] = M.dna.unique_enzymes
 				if(!M.dna.previous["blood_type"])
 					M.dna.previous["blood_type"] = M.dna.blood_type
-				M.set_real_name( fields["name"])
+				M.set_real_name( fields[DATACORE_NAME])
 				M.dna.unique_enzymes = fields["UE"]
-				M.dna.blood_type = fields["blood_type"]
+				M.dna.blood_type = fields[DATACORE_BLOOD_TYPE]
 				M.dna.temporary_mutations[UE_CHANGED] = endtime
 			if(fields["UI"]) //UI+UE
 				if(!M.dna.previous["UI"])

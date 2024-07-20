@@ -396,3 +396,9 @@
 			else
 				//Set false, kill:tm:
 				STOP_PROCESSING(SSobj, dick)
+
+/// Require captain to start the round
+/datum/config_entry/flag/require_captain
+
+/// Require every department to have atleast one staff member to start the round
+/datum/config_entry/flag/require_departments_staffed

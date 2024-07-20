@@ -142,9 +142,9 @@ DEFINE_INTERACTABLE(/obj/machinery/vending)
 	///Bills we accept?
 	var/obj/item/stack/spacecash/bill
 	///Default price of items if not overridden
-	var/default_price = 25
-	///Default price of premium items if not overridden
-	var/extra_price = 50
+	var/default_price = PAYCHECK_ASSISTANT * 0.4
+	/// Default price ADDED to the default price of premium items if they don't have one set.
+	var/extra_price = PAYCHECK_ASSISTANT * 1.5
 	///Whether our age check is currently functional
 	var/age_restrictions = TRUE
 	/**
@@ -975,6 +975,7 @@ GLOBAL_LIST_EMPTY(vending_products)
 			SSblackbox.record_feedback("amount", "vending_spent", price_to_use)
 			SSeconomy.track_purchase(account, price_to_use, name)
 			log_econ("[price_to_use] credits were inserted into [src] by [account.account_holder] to buy [R].")
+
 	if(last_shopper != REF(usr) || purchase_message_cooldown < world.time)
 		say("Thank you for shopping with [src]!")
 		purchase_message_cooldown = world.time + 5 SECONDS

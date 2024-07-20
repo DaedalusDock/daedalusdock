@@ -91,7 +91,6 @@
 		JOB_HEAD_OF_PERSONNEL,
 		JOB_SECURITY_MARSHAL,
 		JOB_PRISONER,
-		JOB_RESEARCH_DIRECTOR,
 		JOB_SECURITY_OFFICER,
 		JOB_WARDEN,
 	)
@@ -125,8 +124,9 @@
 		return FALSE
 	var/head_check = 0
 	for(var/mob/player in GLOB.alive_player_list)
-		if (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if (player.mind.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			head_check++
+
 	return (head_check >= required_heads_of_staff)
 
 /datum/dynamic_ruleset/latejoin/provocateur/execute()
@@ -137,7 +137,6 @@
 		revolution = new()
 		var/datum/antagonist/rev/head/new_head = new()
 		new_head.give_flash = TRUE
-		new_head.give_hud = TRUE
 		new_head.remove_clumsy = TRUE
 		new_head = M.mind.add_antag_datum(new_head, revolution)
 		revolution.update_objectives()

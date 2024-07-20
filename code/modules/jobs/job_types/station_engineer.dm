@@ -14,7 +14,6 @@
 
 	employers = list(
 		/datum/employer/daedalus,
-		/datum/employer/contractor
 	)
 
 	outfits = list(
@@ -40,11 +39,10 @@
 	)
 
 	paycheck = PAYCHECK_MEDIUM
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
 
-	bounty_types = CIV_JOB_ENG
 	departments_list = list(
 		/datum/job_department/engineering,
 		)

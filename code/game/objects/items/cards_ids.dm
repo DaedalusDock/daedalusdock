@@ -507,15 +507,15 @@
 	label = "[name_string], [assignment_string]"
 
 /obj/item/card/id/proc/set_data_by_record(datum/data/record/R, set_access, visual)
-	registered_name = R.fields["name"]
-	registered_age = R.fields["age"] || "UNSET"
-	dna_hash = R.fields["identity"] || "UNSET"
-	fingerprint = R.fields["fingerprint"] || "UNSET"
-	blood_type = R.fields["blood_type"] || "UNSET"
-	assignment = R.fields["trim"] || "UNSET"
+	registered_name = R.fields[DATACORE_NAME]
+	registered_age = R.fields[DATACORE_AGE] || "UNSET"
+	dna_hash = R.fields[DATACORE_DNA_IDENTITY] || "UNSET"
+	fingerprint = R.fields[DATACORE_FINGERPRINT] || "UNSET"
+	blood_type = R.fields[DATACORE_BLOOD_TYPE] || "UNSET"
+	assignment = R.fields[DATACORE_TRIM] || "UNSET"
 	for(var/datum/id_trim/trim as anything in SSid_access.trim_singletons_by_path)
 		trim = SSid_access.trim_singletons_by_path[trim]
-		if(trim.assignment == R.fields["trim"])
+		if(trim.assignment == R.fields[DATACORE_TRIM])
 			if(visual)
 				SSid_access.apply_trim_to_chameleon_card(src, trim.type)
 			else
@@ -523,9 +523,9 @@
 	update_label()
 	update_icon()
 
-/obj/item/card/id/proc/datacore_ready(datum/source, datum/datacore/datacore)
+/obj/item/card/id/proc/datacore_ready(datum/source)
 	SIGNAL_HANDLER
-	set_icon(find_record("name", registered_name, GLOB.data_core.locked))
+	set_icon(SSdatacore.get_record_by_name(registered_name, DATACORE_RECORDS_LOCKED))
 	UnregisterSignal(src, COMSIG_GLOB_DATACORE_READY)
 
 /// Sets the UI icon of the ID to their datacore entry, or their current appearance if no record is found.
@@ -795,15 +795,15 @@
 	wildcard_slots = WILDCARD_LIMIT_GOLD
 
 /obj/item/card/id/advanced/gold/captains_spare
-	name = "captain's spare ID"
+	name = "superintendent's spare ID"
 	desc = "The spare ID of the High Lord himself."
-	registered_name = "Captain"
+	registered_name = JOB_CAPTAIN
 	trim = /datum/id_trim/job/captain
 	registered_age = null
 
 /obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
-	if(registered_name == "Captain")
-		name = "[initial(name)][(!assignment || assignment == "Captain") ? "" : " ([assignment])"]"
+	if(registered_name == JOB_CAPTAIN)
+		name = "[initial(name)][(!assignment || assignment == JOB_CAPTAIN) ? "" : " ([assignment])"]"
 		update_appearance(UPDATE_ICON)
 	else
 		..()
@@ -1335,12 +1335,12 @@
 
 			if("Impersonate Crew")
 				var/list/options = list()
-				for(var/datum/data/record/R as anything in GLOB.data_core.general)
-					options += R.fields["name"]
+				for(var/datum/data/record/R as anything in SSdatacore.get_records(DATACORE_RECORDS_STATION))
+					options += R.fields[DATACORE_NAME]
 				var/choice = tgui_input_list(user, "Select a crew member", "Impersonate Crew", options)
 				if(!choice)
 					return
-				var/datum/data/record/R = find_record("name", choice, GLOB.data_core.locked)
+				var/datum/data/record/R = SSdatacore.get_record_by_name(choice, DATACORE_RECORDS_LOCKED)
 				set_data_by_record(R, visual = TRUE)
 				set_icon(R)
 				return

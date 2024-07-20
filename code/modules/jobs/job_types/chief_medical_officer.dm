@@ -2,13 +2,11 @@
 	title = JOB_MEDICAL_DIRECTOR
 	description = "Coordinate doctors and other medbay employees, ensure they \
 		know how to save lives, check for injuries on the crew monitor."
-	department_head = list(JOB_CAPTAIN)
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	head_announce = list(RADIO_CHANNEL_MEDICAL)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the captain"
 	selection_color = "#026865"
 	req_admin_notify = 1
 	minimal_player_age = 7
@@ -30,15 +28,13 @@
 
 	departments_list = list(
 		/datum/job_department/medical,
-		/datum/job_department/command,
-		)
+		/datum/job_department/company_leader,
+	)
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_MED
 
 	liver_traits = list(TRAIT_MEDICAL_METABOLISM, TRAIT_ROYAL_METABOLISM)
-
-	bounty_types = CIV_JOB_MED
 
 	mail_goodies = list(
 		/obj/effect/spawner/random/medical/organs = 10,
@@ -48,7 +44,7 @@
 	)
 	family_heirlooms = list(/obj/item/storage/medkit/ancient/heirloom)
 	rpg_title = "High Cleric"
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 	voice_of_god_power = 1.4 //Command staff has authority
 

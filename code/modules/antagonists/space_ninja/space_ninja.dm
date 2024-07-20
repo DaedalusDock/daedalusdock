@@ -102,7 +102,6 @@
 	SEND_SOUND(owner.current, sound('sound/effects/ninja_greeting.ogg'))
 	to_chat(owner.current, "I am an elite mercenary of the mighty Spider Clan!")
 	to_chat(owner.current, "Surprise is my weapon. Shadows are my armor. Without them, I am nothing. (//initialize your suit by right clicking on it, to use abilities like stealth)!")
-	owner.announce_objectives()
 
 /datum/antagonist/ninja/on_gain()
 	if(give_objectives)

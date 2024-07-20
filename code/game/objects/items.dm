@@ -1222,7 +1222,7 @@ DEFINE_INTERACTABLE(/obj/item)
 		if(35 to INFINITY)
 			return "This will take the wind out of your sails."
 
-/obj/item/proc/tooltipContent(list/url_mappings)
+/obj/item/proc/tooltipContent()
 	RETURN_TYPE(/list)
 	. = list()
 	. += desc
@@ -1230,14 +1230,14 @@ DEFINE_INTERACTABLE(/obj/item)
 		return
 	. += "<hr>"
 	if(item_flags & FORCE_STRING_OVERRIDE)
-		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force_string]<br>"
+		. += "<img src='attack.png'>Lethality: [force_string]<br>"
 	else
-		. += "<img src='[url_mappings["attack.png"]]'>Lethality: [force2text()], type: [damagetype2text()]<br>"
-	. += "<img src='[url_mappings["stamina.png"]]'>Stamina: [staminadamage2text()]<br>"
-	. += "<img src='[url_mappings["stamcost.png"]]'>Stamina Cost: [staminacost2text()]<br>"
+		. += "<img src='attack.png'>Lethality: [force2text()], type: [damagetype2text()]<br>"
+	. += "<img src='stamina.png'>Stamina: [staminadamage2text()]<br>"
+	. += "<img src='stamcost.png'>Stamina Cost: [staminacost2text()]<br>"
 
 /obj/item/proc/openTip(location, control, params, user)
-	var/content = jointext(tooltipContent(get_asset_datum(/datum/asset/simple/namespaced/common).get_url_mappings()), "")
+	var/content = jointext(tooltipContent(), "")
 	openToolTip(user,src,params,title = name,content = content,theme = "")
 
 /obj/item/MouseEntered(location, control, params)

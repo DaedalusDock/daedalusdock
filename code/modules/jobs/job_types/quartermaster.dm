@@ -2,11 +2,9 @@
 	title = JOB_QUARTERMASTER
 	description = "Manage your Deckhands and Prospectors, assist with \
 		economical purchasing."
-	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
 	selection_color = "#15381b"
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
@@ -24,31 +22,33 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM //ORIGINAL
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck = PAYCHECK_COMMAND
+	paycheck_department = ACCOUNT_CAR
 
-	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM)
+	liver_traits = list(TRAIT_ROYAL_METABOLISM)
 
-	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,
-		)
+		/datum/job_department/company_leader,
+	)
+
 	family_heirlooms = list(/obj/item/stamp, /obj/item/stamp/denied)
 	mail_goodies = list(
 		/obj/item/circuitboard/machine/emitter = 3
 	)
 	rpg_title = "Steward"
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 
 /datum/outfit/job/quartermaster
 	name = "Quartermaster"
 	jobtype = /datum/job/quartermaster
 
+	id = /obj/item/card/id/advanced/silver
 	id_trim = /datum/id_trim/job/quartermaster
 	uniform = /obj/item/clothing/under/rank/cargo/qm
 	belt = /obj/item/modular_computer/tablet/pda/quartermaster
-	ears = /obj/item/radio/headset/headset_cargo
+	ears = /obj/item/radio/headset/heads/qm
 	glasses = /obj/item/clothing/glasses/sunglasses
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	l_hand = /obj/item/clipboard

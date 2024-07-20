@@ -54,11 +54,8 @@
 	AddElement(/datum/element/item_scaling, 0.75, 1)
 	if(isnull(department_colors))
 		department_colors = list(
-			ACCOUNT_CIV = COLOR_WHITE,
 			ACCOUNT_ENG = COLOR_PALE_ORANGE,
-			ACCOUNT_SCI = COLOR_PALE_PURPLE_GRAY,
 			ACCOUNT_MED = COLOR_PALE_BLUE_GRAY,
-			ACCOUNT_SRV = COLOR_PALE_GREEN_GRAY,
 			ACCOUNT_CAR = COLOR_BEIGE,
 			ACCOUNT_SEC = COLOR_PALE_RED_GRAY,
 		)

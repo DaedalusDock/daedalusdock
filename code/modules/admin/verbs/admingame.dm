@@ -208,17 +208,17 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	var/datum/data/record/record_found //Referenced to later to either randomize or not randomize the character.
 	if(G_found.mind && !G_found.mind.active) //mind isn't currently in use by someone/something
-		/*Try and locate a record for the person being respawned through GLOB.data_core.
+		/*Try and locate a record for the person being respawned through SSdatacore.
 		This isn't an exact science but it does the trick more often than not.*/
 		var/id = md5("[G_found.real_name][G_found.mind.assigned_role.title]")
 
-		record_found = find_record("id", id, GLOB.data_core.locked)
+		record_found = SSdatacore.find_record("id", id, DATACORE_RECORDS_LOCKED)
 
 	if(record_found)//If they have a record we can determine a few things.
-		new_character.set_real_name(record_found.fields["name"])
-		new_character.gender = record_found.fields["gender"]
-		new_character.age = record_found.fields["age"]
-		new_character.hardset_dna(record_found.fields["identity"], record_found.fields["enzymes"], null, record_found.fields["name"], record_found.fields["blood_type"], new record_found.fields["species"], record_found.fields["features"])
+		new_character.set_real_name(record_found.fields[DATACORE_NAME])
+		new_character.gender = record_found.fields[DATACORE_GENDER]
+		new_character.age = record_found.fields[DATACORE_AGE]
+		new_character.hardset_dna(record_found.fields[DATACORE_DNA_IDENTITY], record_found.fields["enzymes"], null, record_found.fields[DATACORE_NAME], record_found.fields[DATACORE_BLOOD_TYPE], new record_found.fields[DATACORE_SPECIES], record_found.fields[DATACORE_DNA_FEATURES])
 	else
 		new_character.randomize_human_appearance()
 		new_character.dna.update_dna_identity()
@@ -282,7 +282,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!record_found && (new_character.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
 		//Power to the user!
 		if(tgui_alert(new_character,"Warning: No data core entry detected. Would you like to announce the arrival of this character by adding them to various databases, such as medical records?",,list("No","Yes"))=="Yes")
-			GLOB.data_core.manifest_inject(new_character)
+			SSdatacore.manifest_inject(new_character)
 
 		if(tgui_alert(new_character,"Would you like an active AI to announce this character?",,list("No","Yes"))=="Yes")
 			announce_arrival(new_character, new_character.mind.assigned_role.title)

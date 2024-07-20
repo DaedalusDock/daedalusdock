@@ -21,7 +21,6 @@
 /datum/antagonist/disease/greet()
 	. = ..()
 	to_chat(owner.current, span_notice("Infect members of the crew to gain adaptation points, and spread your infection further."))
-	owner.announce_objectives()
 
 /datum/antagonist/disease/apply_innate_effects(mob/living/mob_override)
 	if(!istype(owner.current, /mob/camera/disease))

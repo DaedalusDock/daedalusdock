@@ -1,10 +1,12 @@
 GLOBAL_LIST_INIT(job_display_order, list(
+	// Management
 	/datum/job/captain,
 	/datum/job/head_of_personnel,
+	///datum/job/bureaucrat,
+	// Security
 	/datum/job/head_of_security,
 	/datum/job/warden,
 	/datum/job/security_officer,
-	/datum/job/detective,
 	/datum/job/prisoner,
 	// Engineeering
 	/datum/job/chief_engineer,
@@ -17,16 +19,12 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/chemist,
 	/datum/job/virologist,
 	/datum/job/psychologist,
-	// Science
-	/datum/job/research_director,
-	/datum/job/scientist,
-	/datum/job/roboticist,
-	/datum/job/geneticist,
 	// Supply
 	/datum/job/quartermaster,
 	/datum/job/cargo_technician,
 	/datum/job/shaft_miner,
 	// Other
+	/datum/job/detective,
 	/datum/job/bartender,
 	/datum/job/botanist,
 	/datum/job/cook,
@@ -35,7 +33,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/datum/job/janitor,
 	/datum/job/lawyer,
 	/datum/job/clown,
-	/datum/job/mime,
 	/datum/job/assistant,
 	/datum/job/ai,
 	/datum/job/cyborg
@@ -111,14 +108,12 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	var/exp_granted_type = ""
 
 	var/paycheck = PAYCHECK_MINIMAL
-	var/paycheck_department = ACCOUNT_STATION_MASTER
+	var/paycheck_department = null
 
 	var/list/mind_traits // Traits added to the mind of the mob assigned this job
 
 	///Lazylist of traits added to the liver of the mob assigned this job (used for the classic "cops heal from donuts" reaction, among others)
 	var/list/liver_traits = null
-
-	var/bounty_types = CIV_JOB_BASIC
 
 	/// Goodies that can be received via the mail system.
 	// this is a weighted list.
@@ -149,7 +144,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	/// List of family heirlooms this job can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
 
-	/// All values = (JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN)
+	/// All values = (JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN)
 	var/job_flags = NONE
 
 	/// Multiplier for general usage of the voice of god.
@@ -233,7 +228,6 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(head_announce)
 		announce_head(joining_mob, head_announce)
 
-
 //Used for a special check of whether to allow a client to latejoin as this job.
 /datum/job/proc/special_check_latejoin(client/latejoin)
 	return TRUE
@@ -243,17 +237,17 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	return
 
 /mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref)
-	var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
+	var/datum/bank_account/bank_account = new(real_name, equipping)
 	account_id = bank_account.account_id
 	bank_account.replaceable = FALSE
 
 	dress_up_as_job(equipping, FALSE, used_pref, TRUE)
 	var/obj/item/storage/wallet/W = wear_id
 	if(istype(W))
-		var/monero = round(equipping.paycheck * dna.species.payday_modifier * STARTING_PAYCHECKS, 10)
+		var/monero = round(equipping.paycheck, 10)
 		SSeconomy.spawn_cash_for_amount(monero, W)
 	else
-		bank_account.payday(STARTING_PAYCHECKS, TRUE)
+		bank_account.payday()
 
 /mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
@@ -281,9 +275,11 @@ GLOBAL_LIST_INIT(job_display_order, list(
 
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
-	if(H && GLOB.announcement_systems.len)
-		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
+	if(!H)
+		return
+
+	//timer because these should come after the captain announcement
+	SSshuttle.arrivals?.OnDock(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
@@ -317,7 +313,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	name = "Standard Gear"
 
 	var/jobtype = null
-
+	/// If this job uses the Jumpskirt/Jumpsuit pref
+	var/allow_jumpskirt = TRUE
 	uniform = /obj/item/clothing/under/color/grey
 	id = /obj/item/card/id/advanced
 	ears = /obj/item/radio/headset
@@ -353,15 +350,9 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			else
 				back = backpack //Department backpack
 
-	//converts the uniform string into the path we'll wear, whether it's the skirt or regular variant
-	var/holder
-	if(H.jumpsuit_style == PREF_SKIRT)
-		holder = "[uniform]/skirt"
-		if(!text2path(holder))
-			holder = "[uniform]"
-	else
-		holder = "[uniform]"
-	uniform = text2path(holder)
+	/// Handles jumpskirt pref
+	if(allow_jumpskirt && H.jumpsuit_style == PREF_SKIRT)
+		uniform = text2path("[uniform]/skirt") || uniform
 
 	var/client/client = GLOB.directory[ckey(H.mind?.key)]
 
@@ -396,7 +387,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 			B.bank_cards += card
 
 		H.sec_hud_set_ID()
-		if(!GLOB.data_core.finished_setup)
+		if(!SSdatacore.finished_setup)
 			card.RegisterSignal(SSdcs, COMSIG_GLOB_DATACORE_READY, TYPE_PROC_REF(/obj/item/card/id, datacore_ready))
 		else
 			spawn(5 SECONDS) //Race condition? I hardly knew her!
@@ -445,15 +436,8 @@ GLOBAL_LIST_INIT(job_display_order, list(
 /// Returns either an atom the mob should spawn in, or null, if we have no special overrides.
 /datum/job/proc/get_roundstart_spawn_point()
 	if(random_spawns_possible)
-		if(HAS_TRAIT(SSstation, STATION_TRAIT_HANGOVER))
-			var/obj/effect/landmark/start/hangover_spawn_point
-			for(var/obj/effect/landmark/start/hangover/hangover_landmark in GLOB.start_landmarks_list)
-				hangover_spawn_point = hangover_landmark
-				if(hangover_landmark.used) //so we can revert to spawning them on top of eachother if something goes wrong
-					continue
-				hangover_landmark.used = TRUE
-				break
-			return hangover_spawn_point || get_latejoin_spawn_point()
+		return get_latejoin_spawn_point()
+
 	if(length(GLOB.jobspawn_overrides[title]))
 		return pick(GLOB.jobspawn_overrides[title])
 
@@ -508,7 +492,7 @@ GLOBAL_LIST_INIT(job_display_order, list(
 	if(!player_client)
 		return // Disconnected while checking for the appearance ban.
 
-	var/require_human = CONFIG_GET(flag/enforce_human_authority) && (job.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+	var/require_human = FALSE
 
 	src.job = job.title
 
@@ -600,14 +584,17 @@ GLOBAL_LIST_INIT(job_display_order, list(
 /// Called by SSjob when a player joins the round as this job.
 /datum/job/proc/on_join_message(client/C, job_title_pref)
 	var/job_header = "<u><span style='font-size: 200%'>You are the <span style='color:[selection_color]'>[job_title_pref]</span></span></u>."
-	var/job_info = span_info("\
-		<br><br>\
-		[description]\
-		<br><br>\
-		As the <span style='color:[selection_color]'>[job_title_pref == title ? job_title_pref : "[job_title_pref] ([title])"]</span> \
-		you answer directly to [supervisors]. Special circumstances may change this.\
-		<br><br>\
-		[radio_help_message]\
-	")
 
-	to_chat(C, examine_block("[job_header][job_info]"))
+	var/job_info = list("<br><br>[description]")
+
+	if(supervisors)
+		job_info += "<br><br>As the <span style='color:[selection_color]'>[job_title_pref == title ? job_title_pref : "[job_title_pref] ([title])"]</span> \
+		you answer directly to [supervisors]. Special circumstances may change this."
+
+	job_info += "<br><br>[radio_help_message]"
+
+	to_chat(C, examine_block("[job_header][jointext(job_info, "")]"))
+
+/// Called by SSjob when a player joins the round as this job.
+/datum/job/proc/on_join_popup(client/C, job_title_pref)
+	return

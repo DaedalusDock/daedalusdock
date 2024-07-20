@@ -462,7 +462,7 @@
 /obj/item/flashlight/glowstick
 	name = "glowstick"
 	desc = "A military-grade glowstick."
-	custom_price = PAYCHECK_PRISONER
+	custom_price = PAYCHECK_ASSISTANT * 0.6
 	w_class = WEIGHT_CLASS_SMALL
 	light_outer_range = 4
 	light_system = OVERLAY_LIGHT

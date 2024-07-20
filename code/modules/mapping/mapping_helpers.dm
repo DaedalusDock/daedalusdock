@@ -853,6 +853,26 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	floor.burn_tile()
 	qdel(src)
 
+
+/obj/effect/mapping_helpers/lightsout
+	name = "lights-out helper"
+	icon_state = "lightsout"
+
+/obj/effect/mapping_helpers/lightsout/Initialize(mapload)
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/effect/mapping_helpers/lightsout/LateInitialize()
+	var/obj/machinery/power/apc/gaypc = locate() in loc
+	if(!gaypc)
+		CRASH("Lights-Out Helper missing APC at [COORD(src)]")
+	gaypc.lighting = gaypc.setsubsystem(1) //fuck you oldcode
+	gaypc.update()
+	qdel(src)
+
+// -----------
+// Smart Cable
+// -----------
 /obj/structure/cable/smart_cable
 	icon_state = "mapping_helper"
 	color = "yellow"

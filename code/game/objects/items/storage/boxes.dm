@@ -712,7 +712,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	drop_sound = 'sound/items/handling/matchbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/matchbox_pickup.ogg'
-	custom_price = PAYCHECK_ASSISTANT * 0.4
+	custom_price = PAYCHECK_ASSISTANT * 0.3
 	base_icon_state = "matchbox"
 	illustration = null
 
@@ -1201,7 +1201,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	illustration = null
 	foldable = null
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/storage/box/gum/Initialize()
 	. = ..()

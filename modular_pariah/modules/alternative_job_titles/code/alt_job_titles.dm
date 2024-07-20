@@ -10,18 +10,11 @@
 	var/list/alt_titles = null
 
 // Heads
-
-/datum/job/research_director
-	alt_titles = list(JOB_RESEARCH_DIRECTOR)
-
 /datum/job/chief_engineer
 	alt_titles = list(JOB_CHIEF_ENGINEER)
 
 /datum/job/chief_medical_officer
 	alt_titles = list(JOB_MEDICAL_DIRECTOR)
-
-/datum/job/head_of_personnel
-	alt_titles = list(JOB_HEAD_OF_PERSONNEL)
 
 /datum/job/head_of_security
 	alt_titles = list(JOB_SECURITY_MARSHAL)
@@ -56,17 +49,6 @@
 
 /datum/job/psychologist
 	alt_titles = list(JOB_PSYCHOLOGIST)
-
-// Science
-
-/datum/job/roboticist
-	alt_titles = list(JOB_ROBOTICIST)
-
-/datum/job/scientist
-	alt_titles = list(JOB_SCIENTIST,  "Xenobiologist", "Ordnance Technician")
-
-/datum/job/geneticist
-	alt_titles = list(JOB_GENETICIST)
 
 // Engineering
 
@@ -108,8 +90,3 @@
 
 /datum/job/lawyer
 	alt_titles = list(JOB_LAWYER, "Human Resources Agent", "Defence Attorney", "Public Defender", "Prosecutor")
-
-// Misc
-
-/datum/job/assistant
-	alt_titles = list(JOB_ASSISTANT, "Off-Duty Crew")

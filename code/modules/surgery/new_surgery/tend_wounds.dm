@@ -1,7 +1,7 @@
 /datum/surgery_step/tend_wounds
 	name = "Repair greivous physical trauma (organic)"
 	desc = "Repairs extreme damage from cuts, bruises, and punctures."
-	surgery_candidate_flags = SURGERY_NO_ROBOTIC
+	surgery_flags = SURGERY_NO_ROBOTIC
 	allowed_tools = list(
 		TOOL_HEMOSTAT = 100
 	)
@@ -37,13 +37,13 @@
 
 /datum/surgery_step/tend_wounds/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] starts to mend [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("[user] starts to mend [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	..()
 
 /datum/surgery_step/tend_wounds/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	..()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] successfully mends [target]'s [affected.plaintext_zone]."))
+	user.visible_message(span_notice("[user] successfully mends [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	if(damage_type == BRUTE)
 		affected.heal_damage(15)
 	else
@@ -57,7 +57,7 @@
 /datum/surgery_step/tend_wounds/robotic
 	name = "Repair greivous physical trauma (robotic)"
 	desc = "Repairs extreme damage from dents or punctures"
-	surgery_candidate_flags = SURGERY_NO_FLESH
+	surgery_flags = SURGERY_NO_FLESH
 	allowed_tools = list(
 		TOOL_WELDER = 95
 	)
@@ -75,4 +75,4 @@
 /datum/surgery_step/tend_wounds/robotic/burn
 	name = "Repair third degree burns (robotic)"
 	desc = "Repairs extreme damage from burns."
-	surgery_candidate_flags = SURGERY_NO_FLESH
+	surgery_flags = SURGERY_NO_FLESH

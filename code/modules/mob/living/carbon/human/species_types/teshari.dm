@@ -23,7 +23,6 @@
 	liked_food = MEAT
 	disliked_food = GRAIN | GROSS
 
-	payday_modifier = 0.75
 	heatmod = 1.5
 	coldmod = 0.67
 	brutemod = 1.5

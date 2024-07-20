@@ -48,7 +48,6 @@
 	if(owner.current)
 		var/mob/living/owner_mob = owner.current
 		owner_mob.log_message("is no longer brainwashed with the objectives: [english_list(objectives)].", LOG_ATTACK)
-	owner.announce_objectives()
 	return ..()
 
 /datum/antagonist/brainwashed/on_mindshield(mob/implanter)

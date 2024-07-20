@@ -159,6 +159,8 @@ SUBSYSTEM_DEF(shuttle)
 
 		supply_packs[pack.id] = pack
 
+	sortTim(supply_packs, GLOBAL_PROC_REF(cmp_name_asc), associative = TRUE)
+
 	setup_shuttles(stationary_docking_ports)
 	has_purchase_shuttle_access = init_has_purchase_shuttle_access()
 

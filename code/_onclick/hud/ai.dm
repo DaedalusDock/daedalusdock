@@ -80,8 +80,7 @@
 /atom/movable/screen/ai/crew_manifest/Click()
 	if(..())
 		return
-	var/mob/living/silicon/ai/AI = usr
-	AI.ai_roster()
+	show_crew_manifest(usr)
 
 /atom/movable/screen/ai/alerts
 	name = "Show Alerts"

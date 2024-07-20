@@ -88,7 +88,6 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	. = ..()
 	to_chat(owner.current, span_notice("With the help of your teammate, kidnap and experiment on station crew members!"))
 	to_chat(owner.current, span_notice("[greet_text]"))
-	owner.announce_objectives()
 
 /datum/antagonist/abductor/proc/finalize_abductor()
 	//Equip

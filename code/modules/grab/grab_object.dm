@@ -69,14 +69,15 @@
 
 	/// Spread diseases
 	if(isliving(affecting))
-		var/mob/living/affecting_mob = affecting
-		for(var/datum/disease/D as anything in assailant.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				affecting_mob.ContactContractDisease(D)
+		if(!ishuman(assailant) || !assailant:gloves)
+			var/mob/living/affecting_mob = affecting
+			for(var/datum/disease/D as anything in assailant.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					affecting_mob.ContactContractDisease(D)
 
-		for(var/datum/disease/D as anything in affecting_mob.diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				assailant.ContactContractDisease(D)
+			for(var/datum/disease/D as anything in affecting_mob.diseases)
+				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					assailant.ContactContractDisease(D)
 
 	/// Setup the effects applied by grab
 	current_grab.update_stage_effects(src, null)
@@ -89,6 +90,8 @@
 	/// Update appearance
 	update_appearance(UPDATE_ICON_STATE)
 
+	// Leave forensics
+	leave_forensic_traces()
 	/// Setup signals
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(BP)
@@ -194,10 +197,11 @@
 	name = "[initial(name)] ([BP.plaintext_zone])"
 	to_chat(assailant, span_notice("You are now holding \the [affecting] by \the [BP.plaintext_zone]."))
 
-	if(!isbodypart(get_targeted_bodypart()))
-		current_grab.let_go(src)
+	if(!isbodypart(BP))
+		qdel(src)
 		return
 
+	leave_forensic_traces()
 	current_grab.on_target_change(src, old_zone, target_zone)
 
 /obj/item/hand_item/grab/proc/on_limb_loss(mob/victim, obj/item/bodypart/lost)
@@ -208,11 +212,13 @@
 		return
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(!istype(BP))
-		current_grab.let_go(src)
+		qdel(src)
 		return // Sanity check in case the lost organ was improperly removed elsewhere in the code.
+
 	if(lost != BP)
 		return
-	current_grab.let_go(src)
+
+	qdel(src)
 
 /// Intercepts attack_hand() calls on our target.
 /obj/item/hand_item/grab/proc/intercept_attack_hand(atom/movable/source, user, list/modifiers)
@@ -239,17 +245,42 @@
 	COOLDOWN_START(src, action_cd, current_grab.action_cooldown)
 	leave_forensic_traces()
 
+/// Leave forensic traces on both the assailant and victim. You really don't want to read this proc and it's type fuckery.
 /obj/item/hand_item/grab/proc/leave_forensic_traces()
 	if (!affecting)
 		return
-	var/mob/living/carbon/carbo = get_affecting_mob()
-	if(istype(carbo))
-		var/obj/item/clothing/C = carbo.get_item_covering_zone(target_zone)
-		if(istype(C))
-			C.add_fingerprint(assailant)
+
+	var/mob/living/carbon/human/human_victim = get_affecting_mob()
+	var/mob/living/carbon/human/human_assailant = assailant
+	var/list/assailant_blood_dna
+
+	if(ishuman(assailant))
+		if(human_assailant.gloves)
+			assailant_blood_dna = human_assailant.gloves.return_blood_DNA()
+		else
+			assailant_blood_dna = human_assailant.return_blood_DNA()
+
+		//Add blood to the assailant
+		if(ishuman(human_victim))
+			var/obj/item/clothing/item_covering_grabbed_zone = human_victim.get_item_covering_zone(target_zone)
+			if(item_covering_grabbed_zone)
+				human_assailant.add_blood_DNA_to_items(item_covering_grabbed_zone.return_blood_DNA(), ITEM_SLOT_GLOVES)
+			else
+				human_assailant.add_blood_DNA_to_items(human_victim.return_blood_DNA(), ITEM_SLOT_GLOVES)
+
+	if(ishuman(human_victim))
+		// Add blood to the victim
+		var/obj/item/clothing/item_covering_grabbed_zone = human_victim.get_item_covering_zone(target_zone)
+
+		if(istype(item_covering_grabbed_zone))
+			item_covering_grabbed_zone.add_fingerprint(assailant)
+			item_covering_grabbed_zone.add_blood_DNA(assailant_blood_dna)
 			return
 
-	affecting.add_fingerprint(assailant) //If no clothing; add fingerprint to mob proper.
+	// If no clothing; add fingerprint to mob proper.
+	affecting.add_fingerprint(assailant)
+	// Add blood to the victim's body
+	affecting.add_blood_DNA(assailant_blood_dna)
 
 /obj/item/hand_item/grab/proc/upgrade(bypass_cooldown, silent)
 	if(!COOLDOWN_FINISHED(src, upgrade_cd) && !bypass_cooldown)

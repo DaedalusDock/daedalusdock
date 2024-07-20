@@ -247,6 +247,28 @@ GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,
 		if(ITEM_SLOT_LEGCUFFED)
 			return pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 
+/proc/body_zone2item_slots(zone)
+	switch(zone)
+		if(BODY_ZONE_HEAD)
+			return ITEM_SLOT_HEAD|ITEM_SLOT_MASK
+
+		if(BODY_ZONE_PRECISE_EYES)
+			return ITEM_SLOT_EYES
+
+		if(BODY_ZONE_CHEST)
+			return ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING
+
+		if(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM)
+			return ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_GLOVES
+
+		if(BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_PRECISE_L_HAND)
+			return ITEM_SLOT_GLOVES
+
+		if(BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
+			return ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING|ITEM_SLOT_FEET
+
+		if(BODY_ZONE_PRECISE_R_FOOT, BODY_ZONE_PRECISE_L_FOOT)
+			return ITEM_SLOT_FEET
 //adapted from http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 /proc/heat2colour(temp)
 	return rgb(heat2colour_r(temp), heat2colour_g(temp), heat2colour_b(temp))

@@ -1,0 +1,15 @@
+2024-07-01:
+  Kapu1178:
+  - rscadd: Added an Advanced mode to cable coil, enabling the BEST cable placing
+      experience in the known universe. Right Click the floor while holding cable
+      coil to toggle.
+2024-07-08:
+  Kapu1178:
+  - bugfix: Splitting a stack no longer causes the new stack to have no materials.
+  ToasterBan:
+  - bugfix: You can now place down catwalks again
+2024-07-12:
+  Kapu1178:
+  - balance: Haloperidol's residual sleeping effect has been capped at 3 minutes.
+  - balance: Haloperidol is 20% as effective to sleeping targets.
+  - bugfix: Catwalks are now anchored.

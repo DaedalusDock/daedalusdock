@@ -30,8 +30,8 @@
 	)
 
 	refill_canister = /obj/item/vending_refill/cigarette
-	default_price = PAYCHECK_ASSISTANT
-	extra_price = PAYCHECK_HARD
+	default_price = PAYCHECK_ASSISTANT * 0.9
+	extra_price = PAYCHECK_ASSISTANT * 2.75
 	payment_department = ACCOUNT_STATION_MASTER
 	light_mask = "cigs-light-mask"
 

@@ -130,7 +130,7 @@
 	job = /datum/job/botanist
 
 /datum/id_trim/job/captain
-	assignment = "Captain"
+	assignment = JOB_CAPTAIN
 	intern_alt_name = "Captain-in-Training"
 	trim_state = "trim_captain"
 	sechud_icon_state = SECHUD_CAPTAIN
@@ -185,7 +185,7 @@
 	extra_access = list(ACCESS_TELEPORTER)
 	extra_wildcard_access = list()
 	minimal_access = list(ACCESS_ATMOSPHERICS, ACCESS_AUX_BASE, ACCESS_CE, ACCESS_CONSTRUCTION, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_EVA,
-					ACCESS_EXTERNAL_AIRLOCKS, ACCESS_HEADS, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE,
+					ACCESS_EXTERNAL_AIRLOCKS, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE,
 					ACCESS_MINERAL_STOREROOM, ACCESS_MINISAT, ACCESS_RC_ANNOUNCE, ACCESS_BRIG_ENTRANCE, ACCESS_TCOMSAT, ACCESS_TECH_STORAGE)
 	minimal_wildcard_access = list(ACCESS_CE)
 	config_job = "chief_engineer"
@@ -199,7 +199,7 @@
 	sechud_icon_state = SECHUD_CHIEF_MEDICAL_OFFICER
 	extra_access = list(ACCESS_TELEPORTER)
 	extra_wildcard_access = list()
-	minimal_access = list(ACCESS_CHEMISTRY, ACCESS_EVA, ACCESS_HEADS, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MEDICAL,
+	minimal_access = list(ACCESS_CHEMISTRY, ACCESS_EVA, ACCESS_KEYCARD_AUTH, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MEDICAL,
 					ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY, ACCESS_PSYCHOLOGY, ACCESS_RC_ANNOUNCE,
 					ACCESS_BRIG_ENTRANCE, ACCESS_SURGERY, ACCESS_VIROLOGY)
 	minimal_wildcard_access = list(ACCESS_CMO)
@@ -267,29 +267,19 @@
 	if(CONFIG_GET(flag/security_has_maint_access))
 		access |= list(ACCESS_MAINT_TUNNELS)
 
-/datum/id_trim/job/geneticist
-	assignment = "Geneticist"
-	trim_state = "trim_geneticist"
-	sechud_icon_state = SECHUD_GENETICIST
-	extra_access = list(ACCESS_ROBOTICS, ACCESS_TECH_STORAGE, ACCESS_XENOBIOLOGY)
-	minimal_access = list(ACCESS_GENETICS, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_RESEARCH, ACCESS_RND)
-	config_job = "geneticist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
-	job = /datum/job/geneticist
-
 /datum/id_trim/job/head_of_personnel
-	assignment = "Head of Personnel"
-	intern_alt_name = "Head of Personnel-in-Training"
+	assignment = JOB_HEAD_OF_PERSONNEL
+	intern_alt_name = JOB_HEAD_OF_PERSONNEL + "-in-Training"
 	trim_state = "trim_headofpersonnel"
 	sechud_icon_state = SECHUD_HEAD_OF_PERSONNEL
 	extra_access = list()
 	extra_wildcard_access = list()
 	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_AUX_BASE, ACCESS_BAR, ACCESS_BRIG, ACCESS_CHAPEL_OFFICE,
 					ACCESS_CHANGE_IDS, ACCESS_CONSTRUCTION, ACCESS_COURT, ACCESS_CREMATORIUM, ACCESS_ENGINE, ACCESS_EVA, ACCESS_GATEWAY,
-					ACCESS_HEADS, ACCESS_HYDROPONICS, ACCESS_JANITOR, ACCESS_KEYCARD_AUTH, ACCESS_KITCHEN, ACCESS_LAWYER, ACCESS_LIBRARY,
+					ACCESS_HYDROPONICS, ACCESS_JANITOR, ACCESS_KEYCARD_AUTH, ACCESS_KITCHEN, ACCESS_LAWYER, ACCESS_LIBRARY,
 					ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE, ACCESS_MECH_MEDICAL, ACCESS_MECH_SCIENCE, ACCESS_MECH_SECURITY, ACCESS_MEDICAL,
 					ACCESS_MORGUE, ACCESS_PSYCHOLOGY, ACCESS_RC_ANNOUNCE, ACCESS_RESEARCH, ACCESS_BRIG_ENTRANCE, ACCESS_TELEPORTER,
-					ACCESS_THEATRE, ACCESS_VAULT, ACCESS_WEAPONS)
+					ACCESS_THEATRE, ACCESS_VAULT, ACCESS_WEAPONS, ACCESS_MANAGEMENT)
 	minimal_wildcard_access = list(ACCESS_HOP)
 	config_job = "head_of_personnel"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
@@ -303,9 +293,9 @@
 	extra_access = list(ACCESS_TELEPORTER)
 	extra_wildcard_access = list()
 	minimal_access = list(ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_ARMORY, ACCESS_AUX_BASE, ACCESS_BRIG, ACCESS_CONSTRUCTION, ACCESS_COURT,
-					ACCESS_ENGINE, ACCESS_EVA, ACCESS_FORENSICS, ACCESS_GATEWAY, ACCESS_HEADS, ACCESS_KEYCARD_AUTH,
+					ACCESS_ENGINE, ACCESS_EVA, ACCESS_FORENSICS, ACCESS_GATEWAY, ACCESS_KEYCARD_AUTH,
 					ACCESS_MAINT_TUNNELS, ACCESS_MECH_SECURITY, ACCESS_MEDICAL, ACCESS_MORGUE, ACCESS_RC_ANNOUNCE,
-					ACCESS_RESEARCH, ACCESS_SECURITY, ACCESS_BRIG_ENTRANCE, ACCESS_WEAPONS)
+					ACCESS_RESEARCH, ACCESS_SECURITY, ACCESS_BRIG_ENTRANCE, ACCESS_WEAPONS, ACCESS_MANAGEMENT)
 	minimal_wildcard_access = list(ACCESS_HOS)
 	config_job = "head_of_security"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
@@ -352,14 +342,14 @@
 	job = /datum/job/doctor
 
 /datum/id_trim/job/mime
-	assignment = "Mime"
+	assignment = JOB_CLOWN
 	trim_state = "trim_mime"
 	sechud_icon_state = SECHUD_MIME
 	extra_access = list()
 	minimal_access = list(ACCESS_THEATRE, ACCESS_SERVICE)
 	config_job = "mime"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
-	job = /datum/job/mime
+	job = /datum/job/clown
 
 /datum/id_trim/job/paramedic
 	assignment = "Paramedic"
@@ -423,7 +413,7 @@
 	trim_state = "trim_quartermaster"
 	sechud_icon_state = SECHUD_QUARTERMASTER
 	extra_access = list()
-	minimal_access = list(ACCESS_AUX_BASE, ACCESS_BRIG_ENTRANCE, ACCESS_CARGO, ACCESS_HEADS, ACCESS_KEYCARD_AUTH, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINING_STATION,
+	minimal_access = list(ACCESS_AUX_BASE, ACCESS_BRIG_ENTRANCE, ACCESS_CARGO, ACCESS_KEYCARD_AUTH, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MECH_MINING, ACCESS_MINING_STATION,
 					ACCESS_MINERAL_STOREROOM, ACCESS_MINING, ACCESS_QM, ACCESS_RC_ANNOUNCE, ACCESS_VAULT)
 	config_job = "quartermaster"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
@@ -436,7 +426,7 @@
 	sechud_icon_state = SECHUD_RESEARCH_DIRECTOR
 	extra_access = list()
 	extra_wildcard_access = list()
-	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_AUX_BASE, ACCESS_EVA, ACCESS_GATEWAY, ACCESS_GENETICS, ACCESS_HEADS, ACCESS_KEYCARD_AUTH,
+	minimal_access = list(ACCESS_AI_UPLOAD, ACCESS_AUX_BASE, ACCESS_EVA, ACCESS_GATEWAY, ACCESS_GENETICS, ACCESS_KEYCARD_AUTH,
 					ACCESS_NETWORK, ACCESS_MAINT_TUNNELS, ACCESS_MECH_ENGINE, ACCESS_MECH_MINING, ACCESS_MECH_SECURITY, ACCESS_MECH_SCIENCE,
 					ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MINING, ACCESS_MINING_STATION, ACCESS_MINISAT, ACCESS_MORGUE,
 					ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_RC_ANNOUNCE, ACCESS_RESEARCH, ACCESS_RND, ACCESS_ROBOTICS,
@@ -445,28 +435,6 @@
 	config_job = "research_director"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CHANGE_IDS)
 	job = /datum/job/research_director
-
-/datum/id_trim/job/roboticist
-	assignment = "Roboticist"
-	trim_state = "trim_roboticist"
-	sechud_icon_state = SECHUD_ROBOTICIST
-	extra_access = list(ACCESS_GENETICS, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_XENOBIOLOGY)
-	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_RESEARCH, ACCESS_RND,
-					ACCESS_ROBOTICS, ACCESS_TECH_STORAGE)
-	config_job = "roboticist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
-	job = /datum/job/roboticist
-
-/datum/id_trim/job/scientist
-	assignment = "Scientist"
-	trim_state = "trim_scientist"
-	sechud_icon_state = SECHUD_SCIENTIST
-	extra_access = list(ACCESS_GENETICS, ACCESS_ROBOTICS)
-	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE,
-					ACCESS_RESEARCH, ACCESS_RND, ACCESS_XENOBIOLOGY)
-	config_job = "scientist"
-	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
-	job = /datum/job/scientist
 
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
 /datum/id_trim/job/security_officer

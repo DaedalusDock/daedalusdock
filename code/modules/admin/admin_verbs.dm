@@ -958,7 +958,7 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 		// Finally, ensure the minds are tracked and in the manifest.
 		SSticker.minds += character.mind
 		if(ishuman(character))
-			GLOB.data_core.manifest_inject(character)
+			SSdatacore.manifest_inject(character)
 
 		number_made++
 		CHECK_TICK

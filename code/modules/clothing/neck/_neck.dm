@@ -37,7 +37,7 @@
 	fallback_colors = list(list(16, 20))
 	fallback_icon_state = "tie"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 1.4
 
 /obj/item/clothing/neck/tie/blue
 	name = "blue tie"
@@ -114,7 +114,7 @@
 	desc = "A stylish scarf. The perfect winter accessory for those with a keen fashion sense, and those who just can't handle a cold breeze on their necks."
 	w_class = WEIGHT_CLASS_TINY
 	dog_fashion = /datum/dog_fashion/head
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 1.6
 
 /obj/item/clothing/neck/scarf/black
 	name = "black scarf"

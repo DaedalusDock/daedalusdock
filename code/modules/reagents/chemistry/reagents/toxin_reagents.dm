@@ -418,8 +418,7 @@
 	reagent_state = SOLID
 	color = "#000067" // rgb: 0, 0, 103
 	toxpwr = 0
-	metabolization_rate = 1.5 * REAGENTS_METABOLISM
-
+	metabolization_rate = 0.3
 
 /datum/reagent/toxin/chloralhydrate/affect_blood(mob/living/carbon/C, removed)
 	. = ..()

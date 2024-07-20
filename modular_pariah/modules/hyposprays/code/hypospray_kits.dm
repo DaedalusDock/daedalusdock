@@ -10,9 +10,6 @@
 
 	var/empty = FALSE
 	var/current_case = "firstaid"
-	var/static/list/case_designs
-	var/static/list/cmo_case_designs
-	var/cmo_case = FALSE
 
 //Code to give hypospray kits selectable paterns.
 /obj/item/storage/hypospraykit/examine(mob/living/user)
@@ -21,10 +18,8 @@
 
 /obj/item/storage/hypospraykit/Initialize()
 	. = ..()
-	if(!length(case_designs))
-		populate_case_designs()
 	create_storage(
-		12,
+		5,
 		canhold = typecacheof(
 			list(
 				/obj/item/hypospray/mkii,
@@ -32,46 +27,29 @@
 			)
 		)
 	)
-	update_icon_state()
-	update_icon()
+	update_appearance()
 
+/obj/item/storage/hypospraykit/update_icon_state()
+	icon_state = "[current_case]-mini"
+	return ..()
 
-/obj/item/storage/hypospraykit/Destroy()
-	for(var/obj/item in contents)
-		if(QDELING(loc))
-			if(item.resistance_flags & INDESTRUCTIBLE) // Because we're not supposed to delete stuff that are indestructible, but I'm too lazy to do something more complex upstream now. Later, maybe.
-				item.forceMove(get_turf(src))
-	. = ..()
-
-
-/obj/item/storage/hypospraykit/proc/populate_case_designs()
-	case_designs = list(
+/obj/item/storage/hypospraykit/proc/case_menu(mob/user)
+	var/casetype = list(
 		"firstaid" = image(icon = src.icon, icon_state = "firstaid-mini"),
 		"brute" = image(icon = src.icon, icon_state = "brute-mini"),
 		"burn" = image(icon = src.icon, icon_state = "burn-mini"),
 		"toxin" = image(icon = src.icon, icon_state = "toxin-mini"),
 		"rad" = image(icon = src.icon, icon_state = "rad-mini"),
 		"purple" = image(icon = src.icon, icon_state = "purple-mini"),
-		"oxy" = image(icon = src.icon, icon_state = "oxy-mini"))
-	cmo_case_designs = list(
-		"tactical" = image(icon= src.icon, icon_state = "tactical-mini"))
-	cmo_case_designs += case_designs
+		"oxy" = image(icon = src.icon, icon_state = "oxy-mini")
+	)
 
-/obj/item/storage/hypospraykit/update_icon_state()
-	. = ..()
-	icon_state = "[current_case]-mini"
-
-/obj/item/storage/hypospraykit/proc/case_menu(mob/user)
-	if(.)
-		return
-	var/casetype = cmo_case_designs
-	if(!src.cmo_case)
-		casetype = case_designs
 	var/choice = show_radial_menu(user, src , casetype, custom_check = CALLBACK(src, PROC_REF(check_menu), user), radius = 42, require_near = TRUE)
 	if(!choice)
 		return FALSE
+
 	current_case = choice
-	update_icon()
+	update_appearance()
 
 /obj/item/storage/hypospraykit/proc/check_menu(mob/user)
 	if(!istype(user))
@@ -102,7 +80,6 @@
 	desc = "A kit containing a deluxe hypospray and vials."
 	icon_state = "tactical-mini"
 	current_case = "tactical"
-	cmo_case = TRUE
 
 /obj/item/storage/hypospraykit/cmo/PopulateContents()
 	if(empty)
@@ -125,3 +102,15 @@
 /obj/item/storage/box/hypospray/PopulateContents()
 	for(var/i in 1 to 4)
 		new /obj/item/storage/hypospraykit/empty(src)
+
+/obj/item/storage/hypospraykit/experimental
+	name = "experimental hypospray kit"
+	desc = "A kit containing an experimental hypospray and pre-loaded vials."
+	icon_state = "tactical-mini"
+
+/obj/item/storage/hypospraykit/PopulateContents()
+	new /obj/item/hypospray/mkii/cmo(src)
+	new /obj/item/reagent_containers/glass/vial/large/dylovene(src)
+	new /obj/item/reagent_containers/glass/vial/large/salglu(src)
+	new /obj/item/reagent_containers/glass/vial/large/tricordrazine(src)
+	new /obj/item/reagent_containers/glass/vial/large/meralyne(src)

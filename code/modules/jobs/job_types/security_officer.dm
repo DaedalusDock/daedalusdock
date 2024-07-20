@@ -7,7 +7,7 @@
 	faction = FACTION_STATION
 	total_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
 	spawn_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
-	supervisors = "the security marshal, and the head of your assigned department (if applicable)"
+	supervisors = "the security marshal"
 	selection_color = "#602f1c"
 	minimal_player_age = 7
 	exp_requirements = 300
@@ -26,12 +26,11 @@
 	)
 
 	paycheck = PAYCHECK_HARD
-	paycheck_department = ACCOUNT_STATION_MASTER
+	paycheck_department = ACCOUNT_SEC
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
 
-	bounty_types = CIV_JOB_SEC
 	departments_list = list(
 		/datum/job_department/security,
 		)
@@ -47,122 +46,6 @@
 	)
 	rpg_title = "Guard"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
-
-
-GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, SEC_DEPT_SCIENCE, SEC_DEPT_SUPPLY))
-
-/**
- * The department distribution of the security officers.
- *
- * Keys are refs of the security officer mobs. This is to preserve the list's structure even if the
- * mob gets deleted. This is also safe, as mobs are guaranteed to have a unique ref, as per /mob/GenerateTag().
- */
-GLOBAL_LIST_EMPTY(security_officer_distribution)
-
-
-/datum/job/security_officer/after_roundstart_spawn(mob/living/spawning, client/player_client)
-	. = ..()
-	if(ishuman(spawning))
-		setup_department(spawning, player_client)
-
-
-/datum/job/security_officer/after_latejoin_spawn(mob/living/spawning)
-	. = ..()
-	if(ishuman(spawning))
-		var/department = setup_department(spawning, spawning.client)
-		if(department)
-			var/obj/machinery/announcement_system/announcement_system = pick(GLOB.announcement_systems)
-			if(announcement_system)
-				announcement_system.announce_secoff_latejoin(spawning, department, GLOB.security_officer_distribution)
-
-
-/// Returns the department this mob was assigned to, if any.
-/datum/job/security_officer/proc/setup_department(mob/living/carbon/human/spawning, client/player_client)
-	var/department = player_client?.prefs?.read_preference(/datum/preference/choiced/security_department)
-	if (!isnull(department))
-		department = get_my_department(spawning, department)
-
-		// This should theoretically still run if a player isn't in the distributions, but isn't a late join.
-		GLOB.security_officer_distribution[REF(spawning)] = department
-
-	var/ears = null
-	var/accessory = null
-	var/list/dep_trim = null
-	var/destination = null
-
-	switch(department)
-		if(SEC_DEPT_SUPPLY)
-			ears = /obj/item/radio/headset/headset_sec/alt/department/supply
-			dep_trim = /datum/id_trim/job/security_officer/supply
-			destination = /area/station/security/checkpoint/supply
-			accessory = /obj/item/clothing/accessory/armband/cargo
-		if(SEC_DEPT_ENGINEERING)
-			ears = /obj/item/radio/headset/headset_sec/alt/department/engi
-			dep_trim = /datum/id_trim/job/security_officer/engineering
-			destination = /area/station/security/checkpoint/engineering
-			accessory = /obj/item/clothing/accessory/armband/engine
-		if(SEC_DEPT_MEDICAL)
-			ears = /obj/item/radio/headset/headset_sec/alt/department/med
-			dep_trim = /datum/id_trim/job/security_officer/medical
-			destination = /area/station/security/checkpoint/medical
-			accessory = /obj/item/clothing/accessory/armband/medblue
-		if(SEC_DEPT_SCIENCE)
-			ears = /obj/item/radio/headset/headset_sec/alt/department/sci
-			dep_trim = /datum/id_trim/job/security_officer/science
-			destination = /area/station/security/checkpoint/science
-			accessory = /obj/item/clothing/accessory/armband/science
-
-	if(accessory)
-		var/obj/item/clothing/under/worn_under = spawning.w_uniform
-		worn_under.attach_accessory(new accessory)
-
-	if(ears)
-		if(spawning.ears)
-			qdel(spawning.ears)
-		spawning.equip_to_slot_or_del(new ears(spawning),ITEM_SLOT_EARS)
-
-	// If there's a departmental sec trim to apply to the card, overwrite.
-	if(dep_trim)
-		var/obj/item/card/id/worn_id = spawning.get_idcard(hand_first = FALSE, bypass_wallet = TRUE)
-		SSid_access.apply_trim_to_card(worn_id, dep_trim)
-		spawning.sec_hud_set_ID()
-
-	var/spawn_point = pick(LAZYACCESS(GLOB.department_security_spawns, department))
-
-	if(!CONFIG_GET(flag/sec_start_brig) && (destination || spawn_point))
-		if(spawn_point)
-			spawning.Move(get_turf(spawn_point))
-		else
-			var/list/possible_turfs = get_area_turfs(destination)
-			while (length(possible_turfs))
-				var/random_index = rand(1, length(possible_turfs))
-				var/turf/target = possible_turfs[random_index]
-				if (spawning.Move(target))
-					break
-				possible_turfs.Cut(random_index, random_index + 1)
-
-	if(player_client)
-		if(department)
-			to_chat(player_client, "<b>You have been assigned to [department]!</b>")
-		else
-			to_chat(player_client, "<b>You have not been assigned to any department. Patrol the halls and help where needed.</b>")
-
-	return department
-
-
-
-/datum/job/security_officer/proc/get_my_department(mob/character, preferred_department)
-	var/department = GLOB.security_officer_distribution[REF(character)]
-
-	// This passes when they are a round start security officer.
-	if (department)
-		return department
-
-	return get_new_officer_distribution_from_late_join(
-		preferred_department,
-		shuffle(GLOB.available_depts),
-		GLOB.security_officer_distribution,
-	)
 
 /datum/outfit/job/security
 	name = "Security Officer"
@@ -236,7 +119,6 @@ GLOBAL_LIST_EMPTY(security_officer_distribution)
 
 /obj/item/radio/headset/headset_sec/alt/department/sci
 	keyslot = new /obj/item/encryptionkey/headset_sec
-	keyslot2 = new /obj/item/encryptionkey/headset_sci
 
 /// Returns the distribution of splitting the given security officers into departments.
 /// Return value is an assoc list of candidate => SEC_DEPT_*.

@@ -4,37 +4,39 @@
 #define HEAD_UPDATE_PERIOD 300
 
 /datum/antagonist/rev
-	name = "\improper Revolutionary"
-	roundend_category = "revolutionaries" // if by some miracle revolutionaries without revolution happen
+	name = "\improper Mutineer"
+	roundend_category = "mutineers" // if by some miracle revolutionaries without revolution happen
 	antagpanel_category = "Revolution"
 	job_rank = ROLE_REV
 	antag_hud_name = "rev"
-	suicide_cry = "VIVA LA REVOLUTION!!"
 	var/datum/team/revolution/rev_team
 	///when this antagonist is being de-antagged, this is why
 	var/deconversion_reason
 
-	/// What message should the player receive when they are being demoted, and the revolution has won?
-	var/victory_message = "The revolution has overpowered the command staff! Viva la revolution! Execute any head of staff and security should you find them alive."
+	var/victory_message
 
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
 	. = ..()
 	if(.)
-		if(new_owner.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT|DEPARTMENT_BITFLAG_SECURITY))
 			return FALSE
+
 		if(new_owner.unconvertable)
 			return FALSE
+
 		if(new_owner.current && HAS_TRAIT(new_owner.current, TRAIT_MINDSHIELD))
 			return FALSE
 
 /datum/antagonist/rev/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/M = mob_override || owner.current
 	handle_clown_mutation(M, mob_override ? null : "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself.")
-	add_team_hud(M, /datum/antagonist/rev)
+
+	M.AddComponent(/datum/component/codeword_hearing, GLOB.syndicate_code_phrase_regex, "blue", src)
 
 /datum/antagonist/rev/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/M = mob_override || owner.current
 	handle_clown_mutation(M, removing = FALSE)
+	qdel(M.GetComponent(/datum/component/codeword_hearing))
 
 /datum/antagonist/rev/on_mindshield(mob/implanter)
 	remove_revolutionary(FALSE, implanter)
@@ -53,10 +55,10 @@
 	remove_objectives()
 	. = ..()
 
-/datum/antagonist/rev/greet()
+/datum/antagonist/rev/build_greeting()
 	. = ..()
-	to_chat(owner, span_userdanger("Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them kill the heads to win the revolution!"))
-	owner.announce_objectives()
+	. += "Help your cause. Do not harm your fellow freedom fighters. You can identify them using memorized <span class='blue'>code words</span>. Help them destroy the government to win the revolution!"
+	. += "Your companions have devised this list of words to identify eachother: <span class='blue'>[jointext(GLOB.revolution_code_phrase, ", ")]</span>"
 
 /datum/antagonist/rev/create_team(datum/team/revolution/new_team)
 	if(!new_team)
@@ -108,7 +110,6 @@
 
 /datum/antagonist/rev/head/admin_add(datum/mind/new_owner,mob/admin)
 	give_flash = TRUE
-	give_hud = TRUE
 	remove_clumsy = TRUE
 	new_owner.add_antag_datum(src)
 	message_admins("[key_name_admin(admin)] has head-rev'ed [key_name_admin(new_owner)].")
@@ -134,14 +135,11 @@
 /datum/antagonist/rev/head/proc/admin_give_flash(mob/admin)
 	//This is probably overkill but making these impact state annoys me
 	var/old_give_flash = give_flash
-	var/old_give_hud = give_hud
 	var/old_remove_clumsy = remove_clumsy
 	give_flash = TRUE
-	give_hud = FALSE
 	remove_clumsy = FALSE
 	equip_rev()
 	give_flash = old_give_flash
-	give_hud = old_give_hud
 	remove_clumsy = old_remove_clumsy
 
 /datum/antagonist/rev/head/proc/admin_repair_flash(mob/admin)
@@ -159,7 +157,7 @@
 	demote()
 
 /datum/antagonist/rev/head
-	name = "\improper Head Revolutionary"
+	name = "\improper Head Mutineer"
 	antag_hud_name = "rev_head"
 	job_rank = ROLE_REV_HEAD
 
@@ -167,18 +165,9 @@
 
 	var/remove_clumsy = FALSE
 	var/give_flash = FALSE
-	var/give_hud = TRUE
 
 /datum/antagonist/rev/head/pre_mindshield(mob/implanter, mob/living/mob_override)
 	return COMPONENT_MINDSHIELD_RESISTED
-
-/datum/antagonist/rev/head/on_removal()
-	if(give_hud)
-		var/mob/living/carbon/C = owner.current
-		var/obj/item/organ/cyberimp/eyes/hud/security/syndicate/S = C.getorganslot(ORGAN_SLOT_HUD)
-		if(S)
-			S.Remove(C)
-	return ..()
 
 /datum/antagonist/rev/head/antag_listing_name()
 	return ..() + "(Leader)"
@@ -305,6 +294,7 @@
 		. = ..()
 		if(re_antag)
 			old_owner.add_antag_datum(/datum/antagonist/enemy_of_the_state) //needs to be post ..() so old antag status is cleaned up
+
 /datum/antagonist/rev/head/equip_rev()
 	var/mob/living/carbon/C = owner.current
 	if(!ishuman(C))
@@ -319,14 +309,9 @@
 		)
 		var/where = C.equip_in_one_of_slots(T, slots)
 		if (!where)
-			to_chat(C, "The Syndicate were unfortunately unable to get you a flash.")
+			to_chat(C, "Your benefactors were unfortunately unable to get you a flash.")
 		else
 			to_chat(C, "The flash in your [where] will help you to persuade the crew to join your cause.")
-
-	if(give_hud)
-		var/obj/item/organ/cyberimp/eyes/hud/security/syndicate/S = new()
-		S.Insert(C)
-		to_chat(C, "Your eyes have been implanted with a cybernetic security HUD which will help you keep track of who is mindshield-implanted, and therefore unable to be recruited.")
 
 /datum/team/revolution
 	name = "Revolution"
@@ -335,15 +320,17 @@
 	var/list/ex_revs = list()
 
 /datum/team/revolution/proc/update_objectives(initial = FALSE)
-	var/untracked_heads = SSjob.get_all_heads()
+	var/untracked_heads = SSjob.get_all_management()
 	for(var/datum/objective/mutiny/O in objectives)
 		untracked_heads -= O.target
+
 	for(var/datum/mind/M in untracked_heads)
 		var/datum/objective/mutiny/new_target = new()
 		new_target.team = src
 		new_target.target = M
 		new_target.update_explanation_text()
 		objectives += new_target
+
 	for(var/datum/mind/M in members)
 		var/datum/antagonist/rev/R = M.has_antag_datum(/datum/antagonist/rev)
 		R.objectives |= objectives
@@ -359,13 +346,14 @@
 /datum/team/revolution/proc/update_heads()
 	if(SSticker.HasRoundStarted())
 		var/list/datum/mind/head_revolutionaries = head_revolutionaries()
-		var/list/datum/mind/heads = SSjob.get_all_heads()
+		var/list/datum/mind/heads = SSjob.get_all_management()
 		var/list/sec = SSjob.get_all_sec()
 
 		if(head_revolutionaries.len < max_headrevs && head_revolutionaries.len < round(heads.len - ((8 - sec.len) / 3)))
 			var/list/datum/mind/non_heads = members - head_revolutionaries
 			var/list/datum/mind/promotable = list()
 			var/list/datum/mind/nonhuman_promotable = list()
+
 			for(var/datum/mind/khrushchev in non_heads)
 				if(khrushchev.current && !khrushchev.current.incapacitated() && !HAS_TRAIT(khrushchev.current, TRAIT_ARMS_RESTRAINED) && khrushchev.current.client)
 					var/list/client_antags = khrushchev.current.client.prefs.read_preference(/datum/preference/blob/antagonists)
@@ -374,8 +362,10 @@
 							promotable += khrushchev
 						else
 							nonhuman_promotable += khrushchev
+
 			if(!promotable.len && nonhuman_promotable.len) //if only nonhuman revolutionaries remain, promote one of them to the leadership.
 				promotable = nonhuman_promotable
+
 			if(promotable.len)
 				var/datum/mind/new_leader = pick(promotable)
 				var/datum/antagonist/rev/rev = new_leader.has_antag_datum(/datum/antagonist/rev)
@@ -394,8 +384,8 @@
 			return FALSE
 	return TRUE
 
-/// Checks if heads have won
-/datum/team/revolution/proc/check_heads_victory()
+/// Checks if the government has won
+/datum/team/revolution/proc/check_management_victory()
 	for(var/datum/mind/rev_mind in head_revolutionaries())
 		var/turf/rev_turf = get_turf(rev_mind.current)
 		if(!considered_afk(rev_mind) && considered_alive(rev_mind) && is_station_level(rev_turf.z))
@@ -408,7 +398,7 @@
 /datum/team/revolution/proc/check_completion()
 	if (check_rev_victory())
 		return REVOLUTION_VICTORY
-	else if (check_heads_victory())
+	else if (check_management_victory())
 		return STATION_VICTORY
 
 /// Mutates the ticker to report that the revs have won
@@ -496,9 +486,9 @@
 	parts += antag_listing_footer()
 	common_part = parts.Join()
 
-	var/heads_report = "<b>Heads of Staff</b><br>"
+	var/heads_report = "<b>Management</b><br>"
 	heads_report += "<table cellspacing=5>"
-	for(var/datum/mind/N in SSjob.get_living_heads())
+	for(var/datum/mind/N in SSjob.get_living_heads(TRUE))
 		var/mob/M = N.current
 		if(M)
 			heads_report += "<tr><td><a href='?_src_=holder;[HrefToken()];adminplayeropts=[REF(M)]'>[M.real_name]</a>[M.client ? "" : " <i>(No Client)</i>"][M.stat == DEAD ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"

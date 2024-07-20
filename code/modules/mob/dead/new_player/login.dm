@@ -55,10 +55,10 @@
 			register_for_interview()
 		else
 			add_verb(client, /client/verb/ooc, bypass_restricted = TRUE)
-			restricted_client_panel()
+			npp.restricted_client_panel()
 		return
 
-	new_player_panel()
+	npp.open()
 
 	if(SSticker.current_state < GAME_STATE_SETTING_UP)
 		var/tl = SSticker.GetTimeLeft()

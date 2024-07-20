@@ -19,7 +19,7 @@
 	info_list += "[span_info("SpiderOS Status: [s_initialized ? "Initialized" : "Disabled"]")]\n"
 	info_list += "[span_info("Current Time: [stationtime2text()]")]\n"
 	//Ninja status
-	info_list += "[span_info("Fingerprints: [md5(ninja.dna.unique_identity)]")]\n"
+	info_list += "[span_info("Fingerprints: [ninja.get_fingerprints(TRUE)]")]\n"
 	info_list += "[span_info("Unique Identity: [ninja.dna.unique_enzymes]")]\n"
 	info_list += "[span_info("Overall Status: [ninja.stat > 1 ? "dead" : "[ninja.health]% healthy"]")]\n"
 	info_list += "[span_info("Nutrition Status: [ninja.nutrition]")]\n"

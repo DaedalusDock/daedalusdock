@@ -93,3 +93,25 @@
   Kapu1178, SyncIt21:
   - balance: Hydroponics trays now hold water significantly longer.
   - qol: Many actions are safer from specific edge cases. You won't notice a difference.
+2024-06-28:
+  LemonInTheDark, Kapu1178:
+  - refactor: Refactored pathfinding code to be cleaner.
+  - tweak: Bots will no longer take diagonal paths, which looked weird.
+  jlsnow301:
+  - bugfix: The power monitor UI has been changed slightly to give a better UX. You
+      can scroll without losing your place, there's a loading screen, etc.
+2024-06-30:
+  Kapu1178, MrMelbert:
+  - bugfix: You can no longer infinitely spread blood to turfs.
+  - bugfix: Bloody hands are blood colored and not white.
+  - bugfix: Surgery bloodies only the gloves of the surgeon.
+  - bugfix: Wearing gloves correctly prevents disease spread during surgery.
+  - bugfix: Grabs should now properly release... more often.
+  - qol: Surgery attempts will now fail the moment they become impossible, not after
+      the do_after().
+  - qol: More surgeries provide more detailed feedback when a surgery is not a valid
+      option.
+  - rscadd: Improved the logic for getting clothes bloody.
+  - rscadd: Grabs now spread blood.
+  jlsnow301:
+  - bugfix: Fixed the pandemic UI bluescreening on beaker insert

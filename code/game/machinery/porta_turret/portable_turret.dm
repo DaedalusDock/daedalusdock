@@ -11,7 +11,7 @@
 #define TURRET_FLAG_SHOOT_ANOMALOUS (1<<4)  // Checks if it can shoot at unidentified lifeforms (ie xenos)
 #define TURRET_FLAG_SHOOT_UNSHIELDED (1<<5) // Checks if it can shoot people that aren't mindshielded and who arent heads
 #define TURRET_FLAG_SHOOT_BORGS (1<<6) // checks if it can shoot cyborgs
-#define TURRET_FLAG_SHOOT_HEADS (1<<7) // checks if it can shoot at heads of staff
+#define TURRET_FLAG_SHOOT_MANAGEMENT (1<<7) // checks if it can shoot at management
 
 DEFINE_BITFIELD(turret_flags, list(
 	"TURRET_FLAG_SHOOT_ALL_REACT" = TURRET_FLAG_SHOOT_ALL_REACT,
@@ -21,7 +21,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	"TURRET_FLAG_SHOOT_ANOMALOUS" = TURRET_FLAG_SHOOT_ANOMALOUS,
 	"TURRET_FLAG_SHOOT_UNSHIELDED" = TURRET_FLAG_SHOOT_UNSHIELDED,
 	"TURRET_FLAG_SHOOT_BORGS" = TURRET_FLAG_SHOOT_BORGS,
-	"TURRET_FLAG_SHOOT_HEADS" = TURRET_FLAG_SHOOT_HEADS,
+	"TURRET_FLAG_SHOOT_MANAGEMENT" = TURRET_FLAG_SHOOT_MANAGEMENT,
 ))
 
 /obj/machinery/porta_turret
@@ -223,7 +223,7 @@ DEFINE_BITFIELD(turret_flags, list(
 		"neutralize_unidentified" = turret_flags & TURRET_FLAG_SHOOT_ANOMALOUS,
 		"neutralize_nonmindshielded" = turret_flags & TURRET_FLAG_SHOOT_UNSHIELDED,
 		"neutralize_cyborgs" = turret_flags & TURRET_FLAG_SHOOT_BORGS,
-		"neutralize_heads" = turret_flags & TURRET_FLAG_SHOOT_HEADS,
+		"neutralize_heads" = turret_flags & TURRET_FLAG_SHOOT_MANAGEMENT,
 		"manual_control" = manual_control,
 		"silicon_user" = FALSE,
 		"allow_manual_control" = FALSE,
@@ -268,7 +268,7 @@ DEFINE_BITFIELD(turret_flags, list(
 			turret_flags ^= TURRET_FLAG_SHOOT_BORGS
 			return TRUE
 		if("shootheads")
-			turret_flags ^= TURRET_FLAG_SHOOT_HEADS
+			turret_flags ^= TURRET_FLAG_SHOOT_MANAGEMENT
 			return TRUE
 		if("manual")
 			if(!issilicon(usr))
@@ -541,9 +541,9 @@ DEFINE_BITFIELD(turret_flags, list(
 			return 10
 
 	// If we aren't shooting heads then return a threatcount of 0
-	if (!(turret_flags & TURRET_FLAG_SHOOT_HEADS))
+	if (!(turret_flags & TURRET_FLAG_SHOOT_MANAGEMENT))
 		var/datum/job/apparent_job = SSjob.GetJob(perp.get_assignment())
-		if(apparent_job?.departments_bitflags & DEPARTMENT_BITFLAG_COMMAND)
+		if(apparent_job?.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT)
 			return 0
 
 	if(turret_flags & TURRET_FLAG_AUTH_WEAPONS) //check for weapon authorization
@@ -559,8 +559,8 @@ DEFINE_BITFIELD(turret_flags, list(
 
 	if(turret_flags & TURRET_FLAG_SHOOT_CRIMINALS) //if the turret can check the records, check if they are set to *Arrest* on records
 		var/perpname = perp.get_face_name(perp.get_id_name())
-		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
-		if(!R || (R.fields["criminal"] == CRIMINAL_WANTED))
+		var/datum/data/record/security/R = SSdatacore.get_record_by_name(perpname, DATACORE_RECORDS_SECURITY)
+		if(!R || (R.fields[DATACORE_CRIMINAL_STATUS] == CRIMINAL_WANTED))
 			threatcount += 4
 
 	if((turret_flags & TURRET_FLAG_SHOOT_UNSHIELDED) && (!HAS_TRAIT(perp, TRAIT_MINDSHIELD)))
@@ -782,7 +782,7 @@ DEFINE_BITFIELD(turret_flags, list(
 
 /obj/machinery/porta_turret/ai
 	faction = list("silicon")
-	turret_flags = TURRET_FLAG_SHOOT_CRIMINALS | TURRET_FLAG_SHOOT_ANOMALOUS | TURRET_FLAG_SHOOT_HEADS
+	turret_flags = TURRET_FLAG_SHOOT_CRIMINALS | TURRET_FLAG_SHOOT_ANOMALOUS | TURRET_FLAG_SHOOT_MANAGEMENT
 
 /obj/machinery/porta_turret/ai/Initialize(mapload)
 	. = ..()

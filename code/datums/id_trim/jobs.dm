@@ -335,7 +335,7 @@
 	assignment = JOB_MEDICAL_DOCTOR
 	trim_state = "trim_medicaldoctor"
 	sechud_icon_state = SECHUD_MEDICAL_DOCTOR
-	extra_access = list(ACCESS_CHEMISTRY, ACCESS_VIROLOGY)
+	extra_access = list(ACCESS_CHEMISTRY, ACCESS_VIROLOGY, ACCESS_ROBOTICS)
 	minimal_access = list(ACCESS_MECH_MEDICAL, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_PHARMACY, ACCESS_SURGERY)
 	config_job = "medical_doctor"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_CMO, ACCESS_CHANGE_IDS)

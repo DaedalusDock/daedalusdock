@@ -54573,7 +54573,7 @@
 "uml" = (
 /obj/structure/chair,
 /obj/effect/landmark/start/assistant,
-/turf/closed/wall/prepainted/daedalus,
+/turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
 "umr" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{

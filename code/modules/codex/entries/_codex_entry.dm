@@ -7,6 +7,8 @@
 	var/list/associated_paths
 	//If TRUE, associated_paths will be passed into typesof first.
 	var/use_typesof = FALSE
+	//If TRUE, this is a dynamically created codex record, and will be stored in a different table.
+	var/dynamic
 	///IC information about the entry
 	var/lore_text
 	///OOC information about the entry.
@@ -22,7 +24,7 @@
 	//Codex entries support abstract_type.
 	//Since the basetype is used for dynamically generated entries, it is not abstract.
 
-/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator, _dynamic)
 
 	SScodex.all_entries += src
 
@@ -89,6 +91,10 @@
 			SScodex.entries_by_string[clean_string] = list(existing_entry, src)
 		else
 			SScodex.entries_by_string[clean_string] = src
+
+	if(_dynamic)
+		dynamic = TRUE
+		SScodex.cache_dynamic_record(src)
 
 	..()
 

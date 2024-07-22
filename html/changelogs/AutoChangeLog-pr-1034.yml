@@ -1,0 +1,6 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: You no longer receive temperature flavortext while dead.
+  - bugfix: The Medical Director now has Robotics access
+  - bugfix: General Practitioners now have Robotics access during skeleton crew.

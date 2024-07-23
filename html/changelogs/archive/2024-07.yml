@@ -16,3 +16,10 @@
 2024-07-20:
   Kapu1178:
   - bugfix: Field of View is ACTUALLY black.
+2024-07-23:
+  Kapu1178:
+  - bugfix: You no longer receive temperature flavortext while dead.
+  - bugfix: The Medical Director now has Robotics access
+  - bugfix: General Practitioners now have Robotics access during skeleton crew.
+  - balance: Jetpacks no longer provide a massive movespeed boost.
+  - bugfix: Deaf players can no longer hear ambience.

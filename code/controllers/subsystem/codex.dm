@@ -438,14 +438,14 @@ SUBSYSTEM_DEF(codex)
 	// Insert the new search record.
 	cursor.Add(
 		"INSERT INTO dynamic_codex_entries (name, lore_text, mechanics_text, antag_text) VALUES (?,?,?,?)",
-		entry.name,
-		entry.lore_text,
-		entry.mechanics_text,
-		entry.antag_text
+		dyn_record.name,
+		dyn_record.lore_text,
+		dyn_record.mechanics_text,
+		dyn_record.antag_text
 	)
 	if(!cursor.Execute(codex_index))
 		message_admins("A dynamic codex entry failed to register. The codex search index may be unsafe, and has been disabled.")
-		CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
+		stack_trace("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 		index_disabled = TRUE
 		search_cache.Cut()
 		return

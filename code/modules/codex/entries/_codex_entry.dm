@@ -24,9 +24,14 @@
 	//Codex entries support abstract_type.
 	//Since the basetype is used for dynamically generated entries, it is not abstract.
 
-/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator, _dynamic)
+/datum/codex_entry/New(_display_name, list/_associated_paths, list/_associated_strings, _lore_text, _mechanics_text, _antag_text, _controls_text, _disambiguator, _dynamic = FALSE)
 
 	SScodex.all_entries += src
+
+	#ifdef UNIT_TESTS
+	if(SScodex.initialized) //If the codex subsystem is initialized, the entry is almost certainly dynamic and we can just force the datum to be marked as such.
+		stack_trace("Codex entry generated post-SSCodex init, but is not marked as dynamic in constructor.")
+	#endif
 
 	if(_display_name)
 		name = _display_name

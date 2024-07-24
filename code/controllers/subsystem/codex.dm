@@ -42,10 +42,10 @@ SUBSYSTEM_DEF(codex)
 	if(href_list[VV_HK_REGENERATE_CODEX])
 		var/regen_message
 		if(index_disabled)
-			regen_message = "The codex index is marked as failed, Regenerating will attempt to re-enable it. Are you sure?"
+			regen_message = "The codex index is marked as failed or disabled, Regenerating will attempt to re-enable it. Are you sure?"
 		else
 			regen_message = "Are you sure you want to regenerate the search index? This will almost certainly cause lag."
-		if(tgui_alert(usr, , "Regenerate Index", list("Yes", "No")) == "Yes")
+		if(tgui_alert(usr, regen_message, "Regenerate Index", list("Yes", "No")) == "Yes")
 			index_disabled = FALSE
 			prepare_search_database(TRUE)
 
@@ -266,16 +266,23 @@ SUBSYSTEM_DEF(codex)
 		to_chat(world, span_debug("Codex: Debug server detected. DB operation disabled. See _compile_options.dm."))
 		log_world("Codex: Codex DB generation Skipped")
 		return
+	if(FORCE_CODEX_DATABASE)
+		to_chat(world, span_debug("Codex: Debug server detected. Override flag set, Dropping and regenerating index."))
+		log_world("Codex: Codex DB generation forced by compile flag.")
+		drop_existing = TRUE
 	if(index_disabled)
-		message_admins("Cod")
+		message_admins("Codex DB Indexing has been disabled, This doesn't seem right. Bailing.")
+		CRASH("Attempted to prepare search database, but codex index was disabled.")
 	if(drop_existing)
 		to_chat(world, span_debug("Codex: Deleting old index..."))
 		//Check if we've already opened one this round, if so, get rid of it.
 		if(codex_index)
+			log_world("Codex: Deleting old index file.")
 			del(codex_index)
 		fdel(CODEX_SEARCH_INDEX_FILE)
 	else
 		to_chat(world, span_debug("Codex: Preparing Search Database"))
+		log_world("Codex: Preparing Search Database")
 
 	index_generating = TRUE
 	if(!rustg_file_exists(CODEX_SEARCH_INDEX_FILE))
@@ -291,9 +298,9 @@ SUBSYSTEM_DEF(codex)
 
 	var/database/query/cursor = new("SELECT * FROM _info")
 	if(!cursor.Execute(codex_index))
-		to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
 		index_disabled = TRUE
-		return
+		to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
+		CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
 	cursor.NextRow()
 	var/list/revline = cursor.GetRowData()
@@ -302,6 +309,8 @@ SUBSYSTEM_DEF(codex)
 		if(db_serial == CODEX_SERIAL_FALLBACK)
 			to_chat(world, span_debug("Codex: Fallback Database Serial detected. Data may be inaccurate or out of date."))
 		else
+			if(drop_existing)
+				CRASH("Codex DB generation issue. Freshly generated index serial is bad. Is: [db_serial] | Expected: [GLOB.revdata.commit]")
 			to_chat(world, span_debug("Codex: Database out of date, Rebuilding..."))
 			prepare_search_database(TRUE) //recursiveness funny,,
 			return
@@ -312,7 +321,7 @@ SUBSYSTEM_DEF(codex)
 		cursor.Add("DELETE FROM dynamic_codex_entries") // Without a where, this is functionally TRUNCATE
 		if(!cursor.Execute(codex_index))
 			to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
-			return
+			CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
 
 	index_generating = FALSE //The database is now in a safe stuff for us to begin processing dynamic entries.
@@ -349,7 +358,7 @@ SUBSYSTEM_DEF(codex)
 
 	if(!init_cursor.Execute(codex_index))
 		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
-		return
+		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
 	to_chat(world, span_debug("Codex: Writing Schema (2/3): Baked Index"))
 	// Holds all codex entries to enable accelerated text search.
@@ -365,7 +374,7 @@ SUBSYSTEM_DEF(codex)
 	init_cursor.Add(create_codex_schema)
 	if(!init_cursor.Execute(codex_index))
 		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
-		return
+		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
 	to_chat(world, span_debug("Codex: Writing Schema (3/3): Dynamic Index"))
 	// Holds all dynamic codex entries to enable accelerated text search.
@@ -381,7 +390,7 @@ SUBSYSTEM_DEF(codex)
 	init_cursor.Add(create_dynamic_codex_schema)
 	if(!init_cursor.Execute(codex_index))
 		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
-		return
+		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
 
 
@@ -394,7 +403,7 @@ SUBSYSTEM_DEF(codex)
 	init_cursor.Add("INSERT INTO _info (revision) VALUES (?)", revid)
 	if(!init_cursor.Execute(codex_index))
 		to_chat(world, span_debug("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]"))
-		return
+		CRASH("Codex: ABORTING! Database error: [init_cursor.Error()] | [init_cursor.ErrorMsg()]")
 
 /datum/controller/subsystem/codex/proc/build_db_index()
 	to_chat(world, span_debug("Codex: Building search index."))
@@ -414,7 +423,7 @@ SUBSYSTEM_DEF(codex)
 
 		if(!cursor.Execute(codex_index))
 			to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
-			return
+			CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
 		record_id++
 		if((!(record_id % 100)) || (record_id == total_entries))
@@ -424,7 +433,7 @@ SUBSYSTEM_DEF(codex)
 
 /// Insert a newly created dynamic record into the dynamic record table, so that it's searchable.
 /// Otherwise, just marks the fallback search cache as dirty and calls it done.
-/datum/controller/subsystem/codex/proc/cache_dynamic_record(/datum/codex_entry/dyn_record)
+/datum/controller/subsystem/codex/proc/cache_dynamic_record(datum/codex_entry/dyn_record)
 	if(!initialized) //If we haven't initialized, but we're creating a dynamic record, something has gone wrong.
 		to_chat(world, span_warning("\tCodex: Attempted to create dynamic record before SSCodex init!"))
 		CRASH("Attempted to create dynamic record before SSCodex init | Entry Name: [dyn_record.name]")
@@ -445,10 +454,9 @@ SUBSYSTEM_DEF(codex)
 	)
 	if(!cursor.Execute(codex_index))
 		message_admins("A dynamic codex entry failed to register. The codex search index may be unsafe, and has been disabled.")
-		stack_trace("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 		index_disabled = TRUE
 		search_cache.Cut()
-		return
+		CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
 
 	//Finally, clear the search cache.

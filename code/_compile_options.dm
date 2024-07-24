@@ -106,7 +106,7 @@
 /// Uncomment this to enable debugging tools for map making.
 //#define DEBUG_MAPS
 
-/// Force codex SQLite generation and loading despite being a debug server.
+/// Force codex SQLite generation and loading despite being a debug server. Also forces the codex to always regenerate on world start.
 //#define FORCE_CODEX_DATABASE 1
 
 /////////////////////// REFERENCE TRACKING

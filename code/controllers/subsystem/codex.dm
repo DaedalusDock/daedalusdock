@@ -266,10 +266,11 @@ SUBSYSTEM_DEF(codex)
 		to_chat(world, span_debug("Codex: Debug server detected. DB operation disabled. See _compile_options.dm."))
 		log_world("Codex: Codex DB generation Skipped")
 		return
-	if(FORCE_CODEX_DATABASE)
-		to_chat(world, span_debug("Codex: Debug server detected. Override flag set, Dropping and regenerating index."))
-		log_world("Codex: Codex DB generation forced by compile flag.")
-		drop_existing = TRUE
+	#ifdef FORCE_CODEX_DATABASE
+	to_chat(world, span_debug("Codex: Debug server detected. Override flag set, Dropping and regenerating index."))
+	log_world("Codex: Codex DB generation forced by compile flag.")
+	drop_existing = TRUE
+	#endif
 	if(index_disabled)
 		message_admins("Codex DB Indexing has been disabled, This doesn't seem right. Bailing.")
 		CRASH("Attempted to prepare search database, but codex index was disabled.")

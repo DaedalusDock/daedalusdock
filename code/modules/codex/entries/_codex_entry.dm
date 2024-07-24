@@ -44,6 +44,8 @@
 		controls_text = _controls_text
 	if(_disambiguator)
 		disambiguator = _disambiguator
+	if(_dynamic)
+		dynamic = _dynamic
 
 
 	if(use_typesof && length(associated_paths))

@@ -19,11 +19,18 @@ SUBSYSTEM_DEF(codex)
 	var/list/search_cache = list()
 	/// All categories.
 	var/list/codex_categories = list()
+	/// All dynamic codex entries, Unkeyed.
+	var/list/datum/codex_entry/dynamic_entries = list()
+	/// Queued dynamic codex entries, Unkeyed.
+	var/list/datum/codex_entry/unregistered_dynamic_entries = list()
 
 	/// Codex Database Connection
 	VAR_PRIVATE/database/codex_index
 	/// Search Index breaker var, Automatically set if the DB index ever throws an error.
 	VAR_PRIVATE/index_disabled = FALSE
+	/// If the index is being built and a dynamic entry tries to register, queue it.
+	VAR_PRIVATE/index_generating = TRUE
+
 
 /datum/controller/subsystem/codex/vv_get_dropdown()
 	. = ..()
@@ -158,7 +165,7 @@ SUBSYSTEM_DEF(codex)
 		return .
 	if(!searching || !initialized)
 		return list()
-	if(!codex_index) //No codex DB loaded. Use the fallback search.
+	if(!codex_index || index_generating) //No codex DB loaded. Use the fallback search.
 		return text_search_no_db(searching)
 
 
@@ -255,6 +262,7 @@ SUBSYSTEM_DEF(codex)
 /// Prepare the search database.
 /datum/controller/subsystem/codex/proc/prepare_search_database(drop_existing = FALSE)
 	if(GLOB.is_debug_server && !FORCE_CODEX_DATABASE)
+		index_disabled = TRUE
 		to_chat(world, span_debug("Codex: Debug server detected. DB operation disabled. See _compile_options.dm."))
 		log_world("Codex: Codex DB generation Skipped")
 		return
@@ -269,6 +277,7 @@ SUBSYSTEM_DEF(codex)
 	else
 		to_chat(world, span_debug("Codex: Preparing Search Database"))
 
+	index_generating = TRUE
 	if(!rustg_file_exists(CODEX_SEARCH_INDEX_FILE))
 		if(!drop_existing)
 			to_chat(world, span_debug("Codex: Database missing, building..."))
@@ -304,6 +313,17 @@ SUBSYSTEM_DEF(codex)
 		if(!cursor.Execute(codex_index))
 			to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
 			return
+
+
+	index_generating = FALSE //The database is now in a safe stuff for us to begin processing dynamic entries.
+	var/dynqueue_len = length(index_generating)
+	if(unregistered_dynamic_entries) //Do we have any waiting entries?
+		to_chat(world, span_debug("Codex: Indexing [dynqueue_len] dynamic entries"))
+		for(var/datum/codex_entry/dyn_record in unregistered_dynamic_entries)
+			cache_dynamic_record(dyn_record)
+			CHECK_TICK
+		unregistered_dynamic_entries.Cut()
+		to_chat(world, span_debug("\tCodex: Done."))
 
 	if(drop_existing)
 		to_chat(world, span_debug("Codex: Collation complete.\nCodex: Index ready."))
@@ -408,11 +428,12 @@ SUBSYSTEM_DEF(codex)
 	if(!initialized) //If we haven't initialized, but we're creating a dynamic record, something has gone wrong.
 		to_chat(world, span_warning("\tCodex: Attempted to create dynamic record before SSCodex init!"))
 		CRASH("Attempted to create dynamic record before SSCodex init | Entry Name: [dyn_record.name]")
-	var/static/update_lock = FALSE
 	if(!codex_index || index_disabled) // Initialized but no index, or we tripped the breaker. Clear the legacy search cache and return.
 		search_cache.Cut()
 		return
-
+	if(index_generating) //Queue and return unless we're processing new entries.
+		unregistered_dynamic_entries += dyn_record
+		return
 	var/database/query/cursor = new
 	// Insert the new search record.
 	cursor.Add(

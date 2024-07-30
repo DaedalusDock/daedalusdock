@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: O Positive and O Negative blood types are no longer named "AB+" and "AB-"
+      respectively.

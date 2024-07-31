@@ -23,3 +23,7 @@
   - bugfix: General Practitioners now have Robotics access during skeleton crew.
   - balance: Jetpacks no longer provide a massive movespeed boost.
   - bugfix: Deaf players can no longer hear ambience.
+2024-07-31:
+  Kapu1178:
+  - bugfix: O Positive and O Negative blood types are no longer named "AB+" and "AB-"
+      respectively.

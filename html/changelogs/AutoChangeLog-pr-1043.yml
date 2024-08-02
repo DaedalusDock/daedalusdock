@@ -1,0 +1,5 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: Fixed an issue with some UI buttons where they would not trigger onClick
+      actions due to a byond bug.

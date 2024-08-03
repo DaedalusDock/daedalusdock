@@ -484,7 +484,7 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 /// Called when a living mob that spawned here, joining the round, receives the player client.
 /area/proc/on_joining_game(mob/living/boarder)
 	SHOULD_CALL_PARENT(TRUE)
-	if(prob(100) && boarder.client && ishuman(boarder))
+	if(prob(5) && boarder.client && ishuman(boarder))
 		LAZYADDASSOC(ckeys_that_have_been_here, boarder.ckey, TRUE)
 		spawn(0)
 			display_flavor(boarder)

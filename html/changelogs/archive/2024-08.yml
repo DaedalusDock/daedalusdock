@@ -1,3 +1,9 @@
 2024-08-01:
   francinum:
   - bugfix: Removed the random wall in Dorms/Recreation
+2024-08-03:
+  Kapu1178:
+  - bugfix: Fixed an issue with some UI buttons where they would not trigger onClick
+      actions due to a byond bug.
+  SmArtkar:
+  - bugfix: Fixed an issue with moveloops.

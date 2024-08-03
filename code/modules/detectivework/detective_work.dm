@@ -230,7 +230,7 @@
 	if(!(length(fingerprints) || length(trace_dna) || length(residue)))
 		return
 
-	var/datum/roll_result/result = stat_roll(15, /datum/rpg_skill/forensics)
+	var/datum/roll_result/result = stat_roll(16, /datum/rpg_skill/forensics)
 
 	switch(result.outcome)
 		if(FAILURE, CRIT_FAILURE)
@@ -238,7 +238,7 @@
 			return
 
 	stats.examined_object_weakrefs[WEAKREF(examined)] = TRUE
-	stats.set_cooldown("examine_forensic_analysis", 5 MINUTES)
+	stats.set_cooldown("examine_forensic_analysis", 15 MINUTES)
 
 	// Spawn 0 so this displays *after* the examine block.
 	spawn(0)

@@ -57,3 +57,15 @@
 
 /datum/loadout_item/shoes/yellowsinger
 	path = /obj/item/clothing/shoes/singery
+
+/datum/loadout_item/shoes/swag
+	path = /obj/item/clothing/shoes/swagshoes
+	cost = 4
+
+/datum/loadout_item/shoes/wheelys
+	path = /obj/item/clothing/shoes/wheelys
+	cost = 4
+
+/datum/loadout_item/shoes/rollerskates
+	path = /obj/item/clothing/shoes/wheelys/rollerskates
+	cost = 3

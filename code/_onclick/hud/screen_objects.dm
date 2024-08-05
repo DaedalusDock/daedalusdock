@@ -1025,3 +1025,7 @@
 	// We offset them by half the size on each axis to center them.
 	// We need to account for this object being 32x32, so we subtract 32 from the initial 480 before dividing
 	screen_loc = "CENTER:-224,CENTER:-224"
+
+/atom/movable/screen/vis_holder
+	icon = ""
+	invisibility = INVISIBILITY_MAXIMUM

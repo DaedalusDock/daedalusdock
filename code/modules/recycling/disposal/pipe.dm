@@ -91,7 +91,7 @@
 
 		var/message = pick("CLUNK!", "CLONK!", "CLANK!", "BANG!")
 		audible_message(span_hear("[icon2html(src, hearers(src) | mobs)] [message]"))
-		playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
+		playsound(src, 'sound/effects/clang.ogg', 50, FALSE, FALSE)
 
 		for(var/mob/living/L as anything in mobs)
 			var/armor = L.run_armor_check(attack_flag = BLUNT, silent = TRUE)

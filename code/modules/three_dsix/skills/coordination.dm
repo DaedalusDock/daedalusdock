@@ -1,6 +1,6 @@
 /datum/rpg_skill/handicraft
 	name = "Handicraft"
-	desc = "Control and manipulate, with style"
+	desc = "Control and manipulate, with style."
 
 	parent_stat_type = /datum/rpg_stat/motorics
 

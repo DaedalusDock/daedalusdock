@@ -843,9 +843,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	var/datum/roll_result/result = user.stat_roll(9, /datum/rpg_skill/handicraft)
 	switch(result.outcome)
-		if(FAILURE)
-			var/hitzone = user.held_index_to_dir(user.active_hand_index) == "r" ? BODY_ZONE_PRECISE_R_HAND : BODY_ZONE_PRECISE_L_HAND
-			user.apply_damage(5, BURN, hitzone)
+		if(FAILURE, CRIT_FAILURE)
+			user.apply_damage(5, BURN, user.get_active_hand())
 			to_chat(user, result.create_tooltip("You burn yourself while lighting the lighter!"))
 		if(SUCCESS)
 			to_chat(user, result.create_tooltip("After a few attempts, you manage to light [src]."))

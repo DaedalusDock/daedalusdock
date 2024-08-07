@@ -88,6 +88,9 @@
 	C.AdjustParalyzed(-10 * removed)
 	C.AdjustImmobilized(-10 * removed)
 	. = TRUE
+
+/datum/reagent/drug/nicotine/on_mob_metabolize(mob/living/carbon/C, class)
+	. = ..()
 	C.stats?.set_skill_modifier(1, /datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE)
 
 /datum/reagent/drug/nicotine/on_mob_end_metabolize(mob/living/carbon/C, class)

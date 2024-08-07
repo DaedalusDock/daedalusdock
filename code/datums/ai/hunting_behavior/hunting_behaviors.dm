@@ -47,7 +47,7 @@
 	. = ..()
 
 	if(!controller.blackboard[hunting_target_key]) //Target is gone for some reason. forget about this task!
-		controller[hunting_target_key] = null
+		controller.blackboard[hunting_target_key] = null //Used to be a direct var index, I think this was just wrong before????
 		finish_action(controller, FALSE, hunting_target_key)
 		return
 

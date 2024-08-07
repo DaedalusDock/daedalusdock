@@ -139,6 +139,7 @@
 				if(failed_last_breath)
 					. += span_alert("[t_He] isn't breathing.")
 			else
+				appears_dead = TRUE
 				. += span_danger("The spark of life has left [t_him].")
 				if(suiciding)
 					. += span_warning("[t_He] appear[t_s] to have committed suicide.")

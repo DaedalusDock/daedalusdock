@@ -7,6 +7,7 @@
 
 	if(!gibbed)
 		INVOKE_ASYNC(src, PROC_REF(emote), "deathgasp")
+
 	reagents.end_metabolization(src)
 
 	add_memory_in_range(src, 7, MEMORY_DEATH, list(DETAIL_PROTAGONIST = src), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_CHECK_BLIND_AND_DEAF)

@@ -10,3 +10,9 @@
 2024-08-06:
   Kapu1178:
   - qol: Improved ID rendering
+2024-08-08:
+  Kapu1178:
+  - bugfix: You can tell if someone is dead if you are within 1 tile of them.
+  - balance: The Haloperidol rounds in the safari rifle have been swapped for Ryetalyn
+      rounds.
+  - tweak: Labcoats no longer hold syringe guns.

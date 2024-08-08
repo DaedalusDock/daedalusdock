@@ -1,4 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: You can tell if someone is dead if you are within 1 tile of them.

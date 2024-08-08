@@ -81,7 +81,7 @@
 /datum/component/thermite/proc/thermite_melt(mob/user)
 	var/turf/master = parent
 	master.cut_overlay(overlay)
-	playsound(master, 'sound/items/welder.ogg', 100, TRUE)
+	playsound(master, 'sound/items/welder.ogg', 100, TRUE, ignore_walls = TRUE)
 	fakefire = new(master)
 	burn_timer = addtimer(CALLBACK(src, PROC_REF(burn_parent), user), min(amount * 0.35 SECONDS, 20 SECONDS), TIMER_STOPPABLE)
 	UnregisterFromParent()

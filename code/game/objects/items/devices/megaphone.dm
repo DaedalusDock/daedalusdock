@@ -38,7 +38,7 @@
 		if(spamcheck > world.time)
 			to_chat(user, span_warning("\The [src] needs to recharge!"))
 		else
-			playsound(loc, megaphone_sound, 100, FALSE, TRUE)
+			playsound(loc, megaphone_sound, 100, FALSE, TRUE, ignore_walls = TRUE)
 			spamcheck = world.time + 50
 			speech_args[SPEECH_SPANS] |= voicespan
 

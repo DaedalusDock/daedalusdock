@@ -910,10 +910,10 @@
 
 	if(!istype(apc) || QDELETED(apc) || apc.machine_stat & BROKEN)
 		to_chat(src, span_danger("Hack aborted. The designated APC no longer exists on the power network."))
-		playsound(get_turf(src), 'sound/machines/buzz-two.ogg', 50, TRUE, ignore_walls = FALSE)
+		playsound(get_turf(src), 'sound/machines/buzz-two.ogg', 50, TRUE)
 	else if(apc.aidisabled)
 		to_chat(src, span_danger("Hack aborted. [apc] is no longer responding to our systems."))
-		playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 50, TRUE, ignore_walls = FALSE)
+		playsound(get_turf(src), 'sound/machines/buzz-sigh.ogg', 50, TRUE)
 	else
 		malf_picker.processing_time += 10
 
@@ -922,7 +922,7 @@
 		apc.locked = TRUE
 		apc.coverlocked = TRUE
 
-		playsound(get_turf(src), 'sound/machines/ding.ogg', 50, TRUE, ignore_walls = FALSE)
+		playsound(get_turf(src), 'sound/machines/ding.ogg', 50, TRUE)
 		to_chat(src, "Hack complete. [apc] is now under your exclusive control.")
 		apc.update_appearance()
 

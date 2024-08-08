@@ -42,7 +42,7 @@
 			return FALSE
 
 		var/obj/spot1 = new phaseout(get_turf(user), user.dir)
-		playsound(target_turf, dash_sound, 25, TRUE)
+		playsound(target_turf, dash_sound, 25, TRUE, ignore_walls = TRUE)
 		var/obj/spot2 = new phasein(get_turf(user), user.dir)
 		spot1.Beam(spot2,beam_effect,time=2 SECONDS)
 		current_charges--
@@ -55,7 +55,7 @@
 /datum/action/innate/dash/proc/charge()
 	current_charges = clamp(current_charges + 1, 0, max_charges)
 	if(recharge_sound)
-		playsound(dashing_item, recharge_sound, 50, TRUE)
+		playsound(dashing_item, recharge_sound, 50, TRUE, ignore_walls = TRUE)
 
 	if(!owner)
 		return

@@ -29,7 +29,7 @@
 
 /obj/item/wrench/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1)
+	playsound(loc, 'sound/weapons/genhit.ogg', 50, TRUE, -1, ignore_walls = TRUE)
 	return (BRUTELOSS)
 
 /obj/item/wrench/abductor
@@ -121,5 +121,5 @@
 		toolspeed = initial(toolspeed)
 
 	balloon_alert(user, "[name] [active ? "active, woe!":"restrained"]")
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 5, TRUE)
+	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 5, TRUE, ignore_walls = TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE

@@ -245,7 +245,7 @@
 	if(locked)
 		return
 	set_bolt(TRUE)
-	playsound(src,boltDown,30,FALSE,3)
+	playsound(src,boltDown,30,FALSE,3, ignore_walls = TRUE)
 	audible_message(span_hear("You hear a click from the bottom of the door."), null,  1)
 	update_appearance()
 
@@ -263,7 +263,7 @@
 	if(!locked)
 		return
 	set_bolt(FALSE)
-	playsound(src,boltUp,30,FALSE,3)
+	playsound(src,boltUp,30,FALSE,3, ignore_walls = TRUE)
 	audible_message(span_hear("You hear a click from the bottom of the door."), null,  1)
 	update_appearance()
 
@@ -533,9 +533,9 @@
 			if(!machine_stat)
 				update_icon(ALL, AIRLOCK_DENY)
 				if(prob(1) && prob(10)) //1000.
-					playsound(src, 'sound/machines/access_denied_hl.ogg', 50, FALSE, 3)
+					playsound(src, 'sound/machines/access_denied_hl.ogg', 50, FALSE, 3, ignore_walls = TRUE)
 				else
-					playsound(src,doorDeni,50,FALSE,3)
+					playsound(src,doorDeni,50,FALSE,3, ignore_walls = TRUE)
 				addtimer(CALLBACK(src, TYPE_PROC_REF(/atom, update_icon), ALL, AIRLOCK_CLOSED), AIRLOCK_DENY_ANIMATION_TIME)
 
 /obj/machinery/door/airlock/examine(mob/user)
@@ -721,7 +721,7 @@
 	if(ishuman(user) && prob(40) && density)
 		var/mob/living/carbon/human/H = user
 		if((HAS_TRAIT(H, TRAIT_DUMB)) && Adjacent(user))
-			playsound(src, 'sound/effects/bang.ogg', 25, TRUE)
+			playsound(src, 'sound/effects/bang.ogg', 25, TRUE, ignore_walls = TRUE)
 			if(!istype(H.head, /obj/item/clothing/head/helmet))
 				H.visible_message(
 					span_danger("[user] headbutts the airlock."), \
@@ -948,7 +948,7 @@
 			return
 
 		user.visible_message(span_notice("[user] begins sealing [src]."), span_notice("You begin sealing [src]."))
-		playsound(src, 'sound/items/jaws_pry.ogg', 30, TRUE)
+		playsound(src, 'sound/items/jaws_pry.ogg', 30, TRUE, ignore_walls = TRUE)
 		if(!do_after(user, src, airlockseal.seal_time))
 			return
 
@@ -964,7 +964,7 @@
 			to_chat(user, span_warning("For some reason, you can't attach [airlockseal]!"))
 			return
 
-		playsound(src, forcedClosed, 30, TRUE)
+		playsound(src, forcedClosed, 30, TRUE, ignore_walls = TRUE)
 		user.visible_message(span_notice("[user] finishes sealing [src]."), span_notice("You finish sealing [src]."))
 		seal = airlockseal
 		modify_max_integrity(max_integrity * AIRLOCK_SEAL_MULTIPLIER)
@@ -1039,12 +1039,12 @@
 		to_chat(user, span_warning("You don't have the dexterity to remove the seal!"))
 		return TRUE
 	user.visible_message(span_notice("[user] begins removing the seal from [src]."), span_notice("You begin removing [src]'s pneumatic seal."))
-	playsound(src, forcedOpen, 30, TRUE)
+	playsound(src, forcedOpen, 30, TRUE, ignore_walls = TRUE)
 	if(!do_after(user, src, airlockseal.unseal_time))
 		return TRUE
 	if(!seal)
 		return TRUE
-	playsound(src, 'sound/items/jaws_pry.ogg', 30, TRUE)
+	playsound(src, 'sound/items/jaws_pry.ogg', 30, TRUE, ignore_walls = TRUE)
 	airlockseal.forceMove(get_turf(user))
 	user.visible_message(span_notice("[user] finishes removing the seal from [src]."), span_notice("You finish removing [src]'s pneumatic seal."))
 	seal = null
@@ -1104,7 +1104,7 @@
 
 			if(!prying_so_hard)
 				var/time_to_open = 50
-				playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE) //is it aliens or just the CE being a dick?
+				playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE, ignore_walls = TRUE) //is it aliens or just the CE being a dick?
 				prying_so_hard = TRUE
 				if(do_after(user, src, time_to_open))
 					if(check_electrified && shock(user,100))
@@ -1137,10 +1137,10 @@
 		if(obj_flags & EMAGGED)
 			return FALSE
 		use_power(50)
-		playsound(src, doorOpen, 45, TRUE)
+		playsound(src, doorOpen, 45, TRUE, ignore_walls = TRUE)
 	else
 		//playsound(src, 'sound/machines/airlockforced.ogg', 30, TRUE) - Original
-		playsound(src, forcedOpen, 45, TRUE) //PARIAH STATION EDIT - aesthetics/airlock module
+		playsound(src, forcedOpen, 45, TRUE, ignore_walls = TRUE) //PARIAH STATION EDIT - aesthetics/airlock module
 
 	if(autoclose)
 		autoclose_in(normalspeed ? 8 SECONDS : 1.5 SECONDS)
@@ -1205,10 +1205,10 @@
 		if(obj_flags & EMAGGED)
 			return
 		use_power(50)
-		playsound(src, doorClose, 30, TRUE)
+		playsound(src, doorClose, 30, TRUE, ignore_walls = TRUE)
 
 	else
-		playsound(src, forcedClosed, 60, TRUE)
+		playsound(src, forcedClosed, 60, TRUE, ignore_walls = TRUE)
 
 	var/obj/structure/window/killthis = (locate(/obj/structure/window) in get_turf(src))
 	if(killthis)
@@ -1319,7 +1319,7 @@
 	var/time_to_open = 5 //half a second
 	if(hasPower())
 		time_to_open = 5 SECONDS //Powered airlocks take longer to open, and are loud.
-		playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE)
+		playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE, ignore_walls = TRUE)
 
 
 	if(do_after(user, src, time_to_open))

@@ -96,7 +96,7 @@
 		return
 	T = get_step(T, SOUTHWEST) //align center of image with turf
 	flick_overlay_static(storm, T, 15)
-	playsound(T, 'sound/magic/lightningbolt.ogg', rand(80, 100), TRUE)
+	playsound(T, 'sound/magic/lightningbolt.ogg', rand(80, 100), TRUE, ignore_walls = TRUE)
 
 /datum/round_event/portal_storm/proc/spawn_hostile()
 	if(!hostile_types || !hostile_types.len)

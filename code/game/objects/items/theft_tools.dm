@@ -188,7 +188,7 @@
 	else
 		to_chat(user, span_notice("As it touches \the [src], both \the [src] and \the [W] burst into dust!"))
 		radiation_pulse(user, max_range = 2, threshold = RAD_EXTREME_INSULATION, chance = 40)
-		playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
+		playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 		qdel(W)
 		qdel(src)
 
@@ -211,7 +211,7 @@
 		span_hear("Everything suddenly goes silent."))
 	victim.dust()
 	radiation_pulse(src, max_range = 2, threshold = RAD_EXTREME_INSULATION, chance = 40)
-	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	qdel(src)
 
 /obj/item/nuke_core/supermatter_sliver/pickup(mob/living/user)
@@ -222,7 +222,7 @@
 			span_userdanger("You reach for [src] with your hands. That was dumb."),\
 			span_hear("Everything suddenly goes silent."))
 	radiation_pulse(user, max_range = 2, threshold = RAD_EXTREME_INSULATION, chance = 40)
-	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	user.dust()
 
 /obj/item/nuke_core_container/supermatter
@@ -333,6 +333,6 @@
 			span_hear("Everything suddenly goes silent."))
 		user.dust()
 	radiation_pulse(src, max_range = 2, threshold = RAD_EXTREME_INSULATION, chance = 40)
-	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	QDEL_NULL(sliver)
 	update_appearance()

@@ -273,9 +273,9 @@
 	if (explosion_sum != 0) //If the explosion list isn't all zeroes, call an explosion
 		explosion(turf_underneath, B[1], B[2], B[3], flame_range = B[4], silent = effectQuiet, ignorecap = istype(src, /obj/structure/closet/supplypod/centcompod), explosion_cause = src) //less advanced equipment than bluespace pod, so larger explosion when landing
 	else if (!effectQuiet && !(pod_flags & FIRST_SOUNDS)) //If our explosion list IS all zeroes, we still make a nice explosion sound (unless the effectQuiet var is true)
-		playsound(src, SFX_EXPLOSION, landingSound ? soundVolume * 0.25 : soundVolume, TRUE)
+		playsound(src, SFX_EXPLOSION, landingSound ? soundVolume * 0.25 : soundVolume, TRUE, ignore_walls = TRUE)
 	if (landingSound)
-		playsound(turf_underneath, landingSound, soundVolume, FALSE, FALSE)
+		playsound(turf_underneath, landingSound, soundVolume, FALSE, FALSE, ignore_walls = TRUE)
 	if (effectMissile) //If we are acting like a missile, then right after we land and finish fucking shit up w explosions, we should delete
 		opened = TRUE //We set opened to TRUE to avoid spending time trying to open (due to being deleted) during the Destroy() proc
 		qdel(src)
@@ -322,7 +322,7 @@
 
 /obj/structure/closet/supplypod/proc/startExitSequence(atom/movable/holder)
 	if (leavingSound)
-		playsound(get_turf(holder), leavingSound, soundVolume, FALSE, FALSE)
+		playsound(get_turf(holder), leavingSound, soundVolume, FALSE, FALSE, ignore_walls = TRUE)
 	if (reversing) //If we're reversing, we call the close proc. This sends the pod back up to centcom
 		close(holder)
 	else if (bluespace) //If we're a bluespace pod, then delete ourselves (along with our holder, if a separate holder exists)
@@ -337,7 +337,7 @@
 	if (!holder)
 		return
 	take_contents(holder)
-	playsound(holder, close_sound, soundVolume*0.75, TRUE, -3)
+	playsound(holder, close_sound, soundVolume*0.75, TRUE, -3, ignore_walls = TRUE)
 	holder.setClosed()
 	addtimer(CALLBACK(src, PROC_REF(preReturn), holder), delays[POD_LEAVING] * 0.2) //Start to leave a bit after closing for cinematic effect
 

@@ -224,7 +224,7 @@
 	notransform = FALSE
 	remove_passmob(REF(src))
 	hopping = FALSE
-	playsound(src.loc, 'sound/effects/meteorimpact.ogg', 100, TRUE)
+	playsound(src.loc, 'sound/effects/meteorimpact.ogg', 100, TRUE, ignore_walls = TRUE)
 	if(target && AIStatus == AI_ON && projectile_ready && !ckey)
 		face_atom(target)
 		addtimer(CALLBACK(src, PROC_REF(OpenFire), target), 5)
@@ -244,7 +244,7 @@
 	hopping = FALSE
 	set_density(TRUE)
 	notransform = FALSE
-	playsound(src, 'sound/effects/meteorimpact.ogg', 200, TRUE)
+	playsound(src, 'sound/effects/meteorimpact.ogg', 200, TRUE, ignore_walls = TRUE)
 	for(var/mob/living/L in orange(1, src))
 		L.adjustBruteLoss(35)
 		if(!QDELETED(L)) // Some mobs are deleted on death

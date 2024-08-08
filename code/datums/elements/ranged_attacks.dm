@@ -34,12 +34,12 @@
 
 	if(casingtype)
 		var/obj/item/ammo_casing/casing = new casingtype(startloc)
-		playsound(firer, projectilesound, 100, TRUE)
+		playsound(firer, projectilesound, 100, TRUE, ignore_walls = TRUE)
 		casing.fire_casing(target, firer, null, null, null, ran_zone(), 0,  firer)
 
 	else if(projectiletype)
 		var/obj/projectile/P = new projectiletype(startloc)
-		playsound(firer, projectilesound, 100, TRUE)
+		playsound(firer, projectilesound, 100, TRUE, ignore_walls = TRUE)
 		P.starting = startloc
 		P.firer = firer
 		P.fired_from = firer

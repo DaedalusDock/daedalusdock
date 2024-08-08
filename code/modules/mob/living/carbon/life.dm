@@ -357,7 +357,7 @@
 	if(touching)
 		. += touching.metabolize(src, can_overdose = FALSE, updatehealth = FALSE)
 
-	if(stat != DEAD)
+	if(stat != DEAD && !HAS_TRAIT(src, TRAIT_NOMETABOLISM))
 		var/obj/item/organ/stomach/S = organs_by_slot[ORGAN_SLOT_STOMACH]
 		if(S?.reagents && !(S.organ_flags & ORGAN_DEAD))
 			. += S.reagents.metabolize(src, can_overdose = TRUE, updatehealth = FALSE)
@@ -592,8 +592,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		return
-
-	reagents.end_metabolization(src) //Stops trait-based effects on reagents, to prevent permanent buffs
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
 		return

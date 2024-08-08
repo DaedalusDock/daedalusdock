@@ -78,3 +78,6 @@
 /datum/loadout_item/head/cone
 	path = /obj/item/clothing/head/cone
 	cost = 2
+
+/datum/loadout_item/head/delinquent
+	path = /obj/item/clothing/head/delinquent

@@ -32,6 +32,10 @@
 /datum/loadout_item/uniform/kilt
 	path = /obj/item/clothing/under/costume/kilt
 
+/datum/loadout_item/uniform/swag
+	path = /obj/item/clothing/under/costume/swagoutfit
+	cost = 4
+
 //SUITS
 /datum/loadout_item/uniform/suit
 	subcategory = LOADOUT_SUBCATEGORY_UNIFORM_SUITS

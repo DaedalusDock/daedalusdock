@@ -86,3 +86,7 @@
 /datum/loadout_item/backpack/fountainpen
 	path = /obj/item/pen/fountain
 	cost = 2
+
+/datum/loadout_item/backpack/skateboard
+	path = /obj/item/melee/skateboard
+	cost = 2

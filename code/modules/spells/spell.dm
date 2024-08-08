@@ -312,7 +312,7 @@
 	if(invocation_type != INVOCATION_NONE)
 		invocation()
 	if(sound)
-		playsound(get_turf(owner), sound, 50, TRUE)
+		playsound(get_turf(owner), sound, 50, TRUE, ignore_walls = TRUE)
 
 /// The invocation that accompanies the spell, called from spell_feedback() before cast().
 /datum/action/cooldown/spell/proc/invocation()

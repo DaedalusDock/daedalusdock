@@ -205,9 +205,9 @@
 		if(MOB_ATTACKEDBY_NO_DAMAGE)
 			playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
 		if(MOB_ATTACKEDBY_SUCCESS)
-			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0)
+			playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, falloff_distance = 0, ignore_walls = !stealthy_audio)
 		if(MOB_ATTACKEDBY_MISS)
-			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1)
+			playsound(loc, get_misssound(), get_clamped_volume(), TRUE, extrarange = stealthy_audio ? SILENCED_SOUND_EXTRARANGE : -1, ignore_walls = !stealthy_audio)
 
 	var/missed = (attack_return == MOB_ATTACKEDBY_MISS || attack_return == MOB_ATTACKEDBY_FAIL)
 	log_combat(user, M, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)]) (MISSED: [missed ? "YES" : "NO"])")

@@ -55,7 +55,7 @@
 /obj/machinery/power/supermatter/blob_act(obj/structure/blob/blob)
 	if(!blob || isspaceturf(loc)) //does nothing in space
 		return
-	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	damage += blob.get_integrity() * 0.5 //take damage equal to 50% of remaining blob health before it tried to eat us
 	if(blob.get_integrity() > 100)
 		blob.visible_message(span_danger("\The [blob] strikes at \the [src] and flinches away!"),
@@ -166,7 +166,7 @@
 	nom.visible_message(vis_msg, mob_msg, span_hear("You hear an unearthly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat."))
 	investigate_log("has been attacked ([cause]) by [key_name(nom)]", INVESTIGATE_ENGINE)
 	add_memory_in_range(src, 7, MEMORY_SUPERMATTER_DUSTED, list(DETAIL_PROTAGONIST = nom, DETAIL_WHAT_BY = src), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_CHECK_BLIND_AND_DEAF)
-	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	Consume(nom)
 
 /obj/machinery/power/supermatter/attackby(obj/item/item, mob/living/user, params)
@@ -185,13 +185,13 @@
 			dust_arm.dismember()
 			user.visible_message(span_danger("The [item] flashes out of existence on contact with \the [src], resonating with a horrible sound..."),\
 				span_danger("Oops! The [item] flashes out of existence on contact with \the [src], taking your arm with it! That was clumsy of you!"))
-			playsound(src, 'sound/effects/supermatter.ogg', 150, TRUE)
+			playsound(src, 'sound/effects/supermatter.ogg', 150, TRUE, ignore_walls = TRUE)
 			Consume(dust_arm)
 			qdel(item)
 			return
 		if(cig.lit || user.combat_mode)
 			user.visible_message(span_danger("A hideous sound echoes as [item] is ashed out on contact with \the [src]. That didn't seem like a good idea..."))
-			playsound(src, 'sound/effects/supermatter.ogg', 150, TRUE)
+			playsound(src, 'sound/effects/supermatter.ogg', 150, TRUE, ignore_walls = TRUE)
 			Consume(item)
 			radiation_pulse(src, max_range = 3, threshold = 0.1, chance = 50)
 			return ..()
@@ -199,7 +199,7 @@
 			cig.light()
 			user.visible_message(span_danger("As [user] lights \their [item] on \the [src], silence fills the room..."),\
 				span_danger("Time seems to slow to a crawl as you touch \the [src] with \the [item].</span>\n<span class='notice'>\The [item] flashes alight with an eerie energy as you nonchalantly lift your hand away from \the [src]. Damn."))
-			playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
+			playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 			radiation_pulse(src, max_range = 1, threshold = 0, chance = 100)
 			return
 	if(istype(item, /obj/item/scalpel/supermatter))
@@ -221,7 +221,7 @@
 			span_hear("Everything suddenly goes silent."))
 		investigate_log("has been attacked ([item]) by [key_name(user)]", INVESTIGATE_ENGINE)
 		Consume(item)
-		playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
+		playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 
 		radiation_pulse(src, max_range = 3, threshold = 0.1, chance = 50)
 
@@ -251,7 +251,7 @@
 			span_warning("You hear a loud crack as you are washed with a wave of heat.")
 		)
 
-	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	Consume(AM)
 
 /obj/machinery/power/supermatter/Bump(atom/bumped_atom)
@@ -268,7 +268,7 @@
 			null,
 			span_hear("You hear a loud crack as you are washed with a wave of heat.")
 		)
-		playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
+		playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 
 		var/suspicion = null
 		if (fingerprintslast)
@@ -294,7 +294,7 @@
 	else
 		return
 
-	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/supermatter.ogg', 50, TRUE, ignore_walls = TRUE)
 	Consume(bumped_atom)
 
 /obj/machinery/power/supermatter/intercept_zImpact(list/falling_movables, levels)

@@ -647,7 +647,7 @@
 	player_mind.add_antag_datum(/datum/antagonist/nightmare)
 	S.set_species(/datum/species/shadow/nightmare)
 
-	playsound(S, 'sound/magic/ethereal_exit.ogg', 50, TRUE, -1)
+	playsound(S, 'sound/magic/ethereal_exit.ogg', 50, TRUE, -1, ignore_walls = TRUE)
 	message_admins("[ADMIN_LOOKUPFLW(S)] has been made into a Nightmare by the midround ruleset.")
 	log_game("DYNAMIC: [key_name(S)] was spawned as a Nightmare by the midround ruleset.")
 	return S
@@ -695,7 +695,7 @@
 	player_mind.special_role = ROLE_SPACE_DRAGON
 	player_mind.add_antag_datum(/datum/antagonist/space_dragon)
 
-	playsound(S, 'sound/magic/ethereal_exit.ogg', 50, TRUE, -1)
+	playsound(S, 'sound/magic/ethereal_exit.ogg', 50, TRUE, -1, ignore_walls = TRUE)
 	message_admins("[ADMIN_LOOKUPFLW(S)] has been made into a Space Dragon by the midround ruleset.")
 	log_game("DYNAMIC: [key_name(S)] was spawned as a Space Dragon by the midround ruleset.")
 	priority_announce("A large organic energy flux has been recorded near of [station_name()], please stand-by.")

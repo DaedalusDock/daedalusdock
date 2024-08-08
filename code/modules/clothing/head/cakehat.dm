@@ -67,11 +67,11 @@
 	supports_variations_flags = NONE
 
 /obj/item/clothing/head/hardhat/cakehat/energycake/turn_on(mob/living/user)
-	playsound(user, 'sound/weapons/saberon.ogg', 5, TRUE)
+	playsound(user, 'sound/weapons/saberon.ogg', 5, TRUE, ignore_walls = TRUE)
 	to_chat(user, span_warning("You turn on \the [src]."))
 	..()
 
 /obj/item/clothing/head/hardhat/cakehat/energycake/turn_off(mob/living/user)
-	playsound(user, 'sound/weapons/saberoff.ogg', 5, TRUE)
+	playsound(user, 'sound/weapons/saberoff.ogg', 5, TRUE, ignore_walls = TRUE)
 	to_chat(user, span_warning("You turn off \the [src]."))
 	..()

@@ -16,7 +16,7 @@
 	var/turf/loccheck = get_turf(parent)
 	to_chat(user, span_danger("The Bluespace interfaces of the two devices catastrophically malfunction!"))
 	qdel(to_insert)
-	playsound(loccheck,'sound/effects/supermatter.ogg', 200, TRUE)
+	playsound(loccheck,'sound/effects/supermatter.ogg', 200, TRUE, ignore_walls = TRUE)
 
 	message_admins("[ADMIN_LOOKUPFLW(user)] detonated a bag of holding at [ADMIN_VERBOSEJMP(loccheck)].")
 	log_game("[key_name(user)] detonated a bag of holding at [loc_name(loccheck)].")

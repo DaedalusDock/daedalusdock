@@ -396,7 +396,7 @@
 		icon_state = "[icon_state]_[saber_color]"
 
 	balloon_alert(user, "[active ? "flicked out":"pushed in"] [src]")
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 20, TRUE)
+	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 20, TRUE, ignore_walls = TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 // Copied from /obj/item/melee/energy/sword/attackby

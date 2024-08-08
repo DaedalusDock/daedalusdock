@@ -405,7 +405,7 @@
 	user.visible_message(span_danger("[user] is putting the live paddles on [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(req_defib)
 		defib.deductcharge(revivecost)
-	playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
+	playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1, ignore_walls = TRUE)
 	return (OXYLOSS)
 
 /obj/item/shockpaddles/update_icon_state()
@@ -515,7 +515,7 @@
 	M.Knockdown(75)
 	M.set_timed_status_effect(100 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	M.apply_status_effect(/datum/status_effect/convulsing)
-	playsound(src,  'sound/machines/defib_zap.ogg', 50, TRUE, -1)
+	playsound(src,  'sound/machines/defib_zap.ogg', 50, TRUE, -1, ignore_walls = TRUE)
 	if(HAS_TRAIT(M,MOB_ORGANIC))
 		M.emote("gasp")
 	log_combat(user, M, "zapped", src)
@@ -547,8 +547,8 @@
 				do_cancel()
 				return
 			user.visible_message(span_boldannounce("<i>[user] shocks [H] with \the [src]!"), span_warning("You shock [H] with \the [src]!"))
-			playsound(src, 'sound/machines/defib_zap.ogg', 100, TRUE, -1)
-			playsound(src, 'sound/weapons/egloves.ogg', 100, TRUE, -1)
+			playsound(src, 'sound/machines/defib_zap.ogg', 100, TRUE, -1, ignore_walls = TRUE)
+			playsound(src, 'sound/weapons/egloves.ogg', 100, TRUE, -1, ignore_walls = TRUE)
 			H.emote("scream")
 			shock_pulling(45, H)
 			if(H.set_heartattack(TRUE))
@@ -606,7 +606,7 @@
 	// At this point a shock has occured.
 	H.visible_message(span_warning("[H]'s body convulses a bit."))
 	playsound(src, SFX_BODYFALL, 50, TRUE)
-	playsound(src, 'sound/machines/defib_zap.ogg', 75, TRUE, -1)
+	playsound(src, 'sound/machines/defib_zap.ogg', 75, TRUE, -1, ignore_walls = TRUE)
 	shock_pulling(30, H)
 	H.apply_damage(5, BURN, BODY_ZONE_CHEST)
 	do_success() //Deduct charge

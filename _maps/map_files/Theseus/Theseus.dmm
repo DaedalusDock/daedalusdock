@@ -18208,6 +18208,7 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 4
 	},
+/obj/machinery/airalarm/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "gIr" = (
@@ -21314,15 +21315,15 @@
 /turf/open/floor/plating,
 /area/station/cargo/miningoffice)
 "iay" = (
-/obj/machinery/door/airlock/maintenance{
-	req_one_access_txt = "12;5;33;69"
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
+	},
+/obj/machinery/door/airlock/maintenance{
+	req_one_access_txt = "5;33;69"
 	},
 /turf/open/floor/plating,
 /area/station/medical/medbay/aft)
@@ -60531,7 +60532,7 @@
 /turf/open/floor/plating,
 /area/station/engineering/main)
 "wzw" = (
-/obj/machinery/atmospherics/components/unary/portables_connector/visible{
+/obj/machinery/atmospherics/components/unary/portables_connector/visible/layer4{
 	dir = 1
 	},
 /turf/open/floor/plating,
@@ -62431,6 +62432,13 @@
 	},
 /turf/open/floor/carpet,
 /area/station/service/chapel)
+"xkD" = (
+/obj/machinery/door/airlock/maintenance{
+	name = "Storage Room";
+	req_access_txt = "12"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/lesser)
 "xkE" = (
 /obj/effect/landmark/event_spawn,
 /obj/structure/chair/pew/left,
@@ -97494,7 +97502,7 @@ vWr
 gse
 jXC
 rJU
-aZD
+xkD
 isJ
 xMk
 xMk
@@ -97758,7 +97766,7 @@ isJ
 isJ
 rah
 isJ
-aZD
+xkD
 isJ
 isJ
 aaa

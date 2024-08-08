@@ -142,9 +142,13 @@
 /obj/structure/disposalholder/relaymove(mob/living/user, direction)
 	if(user.incapacitated())
 		return
-	for(var/mob/M in range(5, get_turf(src)))
-		M.show_message("<FONT size=[max(0, 5 - get_dist(src, M))]>CLONG, clong!</FONT>", MSG_AUDIBLE)
+
+	var/message = pick("CLUNK!", "CLONK!", "CLANK!", "BANG!")
+	audible_message(span_hear("[icon2html(src, hearers(src) | user)] [message]"))
 	playsound(src.loc, 'sound/effects/clang.ogg', 50, FALSE, FALSE)
+
+	var/armor = user.run_armor_check(attack_flag = BLUNT, silent = TRUE)
+	user.apply_damage(2, BRUTE, blocked = armor, spread_damage = TRUE)
 
 // called to vent all gas in holder to a location
 /obj/structure/disposalholder/proc/vent_gas(turf/T)

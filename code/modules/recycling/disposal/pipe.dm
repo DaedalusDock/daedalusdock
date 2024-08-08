@@ -83,9 +83,19 @@
 	if(H2 && !H2.active)
 		H.merge(H2)
 
-	for(var/mob/living/L in H)
-		var/armor = L.run_armor_check(attack_flag = BLUNT, silent = TRUE)
-		L.apply_damage(3, BRUTE, blocked = armor, spread_damage = TRUE)
+	if(prob(5) && (locate(/mob/living) in H))
+		var/list/mobs = list()
+
+		for(var/mob/living/L in H)
+			mobs += L
+
+		var/message = pick("CLUNK!", "CLONK!", "CLANK!", "BANG!")
+		audible_message(span_hear("[icon2html(src, hearers(src) | mobs)] [message]"))
+		playsound(src, 'sound/effects/clang.ogg', 50, FALSE, FALSE)
+
+		for(var/mob/living/L as anything in mobs)
+			var/armor = L.run_armor_check(attack_flag = BLUNT, silent = TRUE)
+			L.apply_damage(5, BRUTE, blocked = armor, spread_damage = TRUE)
 
 	H.forceMove(P)
 	return P

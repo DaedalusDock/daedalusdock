@@ -301,9 +301,6 @@
 
 // handle machine interaction
 
-/obj/machinery/disposal/bin/ui_state(mob/user)
-	return GLOB.notcontained_state
-
 /obj/machinery/disposal/bin/ui_interact(mob/user, datum/tgui/ui)
 	if(machine_stat & BROKEN)
 		return

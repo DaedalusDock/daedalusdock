@@ -45,6 +45,7 @@
 			full_version = "[M.client.byond_version].[M.client.byond_build ? M.client.byond_build : "xxx"]"
 		body += "<br>\[<b>Byond version:</b> [full_version]\]<br>"
 		body += "<br><b>Input Mode:</b> [M.client.hotkeys ? "Using Hotkeys" : "Using Classic Input"]<br>"
+		body += "<br><b>Linked Discord ID:</b> [M.client.linked_discord_account ? M.client.linked_discord_account : "NONE"]<br>"
 
 
 	body += "<br><br>\[ "

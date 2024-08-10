@@ -111,6 +111,9 @@
 	var/account_join_date = null
 	///Age of byond account in days
 	var/account_age = -1
+	///Linked Discord account ID. Null is valid if the bunker is disabled.
+	var/linked_discord_account = null
+
 
 	preload_rsc = PRELOAD_RSC
 

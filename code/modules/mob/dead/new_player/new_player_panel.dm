@@ -23,17 +23,19 @@
 	if(!parent.client)
 		return
 
+
+	if(href_list["verify"])
+		show_otp_menu()
+		return TRUE
+
+	if(href_list["link_to_discord"])
+		var/_link = CONFIG_GET(string/panic_bunker_discord_link)
+		if(_link)
+			parent << link(_link)
+		return TRUE
+
+	//Restricted clients can't do anything else.
 	if(parent.client.restricted_mode)
-		if(href_list["verify"])
-			show_otp_menu()
-			return TRUE
-
-		if(href_list["link_to_discord"])
-			var/_link = CONFIG_GET(string/panic_bunker_discord_link)
-			if(_link)
-				parent << link(_link)
-			return TRUE
-
 		return TRUE
 
 	if(href_list["npp_options"])
@@ -218,6 +220,9 @@
 				<div>
 					>[LINKIFY_CONSOLE_OPTION("lore_primer.txt", "view_primer=1")]
 				</div>
+				<div>
+					>[LINKIFY_CONSOLE_OPTION("discord_link.lnk", "verify=1")]
+				</div>
 				[poll]
 				<br>
 				<div>
@@ -330,6 +335,10 @@
 	if(!parent.client)
 		return
 
+	if(parent.client.linked_discord_account)
+		alert(parent.client, "Your discord account is already linked.\nIf you believe this is in error, please contact staff.\nLinked ID: [parent.client.linked_discord_account]", "Already Linked")
+		return
+
 	var/discord_otp = parent.client.discord_get_or_generate_one_time_token_for_ckey(parent.ckey)
 	var/discord_prefix = CONFIG_GET(string/discordbotcommandprefix)
 	var/browse_body = {"
@@ -348,7 +357,8 @@
 	"}
 
 	var/datum/browser/popup = new(parent, "discordauth", "<center><div>Verification</div></center>", 660, 270)
-	popup.set_window_options("can_close=0;focus=true;can_resize=0")
+	//If we aren't in restricted mode, let them close the window.
+	popup.set_window_options("can_close=[!parent.client.restricted_mode];focus=true;can_resize=0")
 	popup.set_content(browse_body)
 	popup.open()
 

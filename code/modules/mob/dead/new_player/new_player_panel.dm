@@ -335,8 +335,16 @@
 	if(!parent.client)
 		return
 
-	if(parent.client.linked_discord_account)
-		alert(parent.client, "Your discord account is already linked.\nIf you believe this is in error, please contact staff.\nLinked ID: [parent.client.linked_discord_account]", "Already Linked")
+	if(!CONFIG_GET(flag/sql_enabled))
+		alert(parent.client, "No database to link to, bud. Scream at the host.", "Writing to Nowhere.")
+		return
+
+	if(isnull(parent.client.linked_discord_account))
+		alert(parent.client, "You haven't fully loaded, please wait...", "Please Wait")
+		return
+
+	if(parent.client.linked_discord_account?.valid)
+		alert(parent.client, "Your discord account is already linked.\nIf you believe this is in error, please contact staff.\nLinked ID: [parent.client.linked_discord_account.discord_id]", "Already Linked")
 		return
 
 	var/discord_otp = parent.client.discord_get_or_generate_one_time_token_for_ckey(parent.ckey)

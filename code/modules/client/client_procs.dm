@@ -534,7 +534,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	clear_credits()
 
 	//Open to moving this: Pull the player's discord link if one exists:
-	linked_discord_account = discord_lookup_id(ckey)
+	discord_read_linked_id()
 
 	view_size = new(src, getScreenSize(prefs.read_preference(/datum/preference/toggle/widescreen)))
 	view_size.resetFormat()

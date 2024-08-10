@@ -52,3 +52,27 @@
 	if(link)
 		return link.valid
 	return FALSE
+
+/**
+ * Checks if the the given ckey has a valid discord link. This also updates the client's linked account var.
+ * Returns: TRUE if valid, FALSE if invalid or missing.
+ */
+/client/proc/discord_read_linked_id()
+	var/datum/discord_link_record/link = find_discord_link_by_ckey(ckey, timebound = FALSE) //We need their persistent link.
+	if(!link)
+
+		//No link history *at all?*, let's quietly create a blank one for them and check again.
+		discord_generate_one_time_token(ckey)
+		link = find_discord_link_by_ckey(ckey, timebound = FALSE)
+
+		if(!link)
+			//Fuck it, I give up. Set return value and stack.
+			. = FALSE
+			CRASH("Could not coerce a valid discord link record for [ckey].")
+
+	linked_discord_account = link
+
+	if(link.valid && link.discord_id)
+		return TRUE
+
+	return FALSE

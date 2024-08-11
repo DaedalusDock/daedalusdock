@@ -1,6 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Connector port in botany maint storage closet is now on the right layer
-  - bugfix: Central Medbay now has an air alarm
-  - bugfix: You can no longer sneak into medbay with maint access via robotics maintenance.

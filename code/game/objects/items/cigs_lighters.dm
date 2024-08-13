@@ -846,7 +846,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		if(FAILURE, CRIT_FAILURE)
 			user.apply_damage(5, BURN, user.get_active_hand())
 			to_chat(user, result.create_tooltip("You burn yourself while lighting the lighter!"))
-		if(SUCCESS)
+		if(SUCCESS, CRIT_SUCCESS)
 			to_chat(user, result.create_tooltip("After a few attempts, you manage to light [src]."))
 	user.visible_message(span_notice("After a few attempts, [user] manages to light [src]."))
 

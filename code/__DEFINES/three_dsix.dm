@@ -17,5 +17,13 @@
 #define SKILL_SOURCE_DEATH_RESOLVE "Overcome witnessing a death"
 /// Witness a death
 #define SKILL_SOURCE_WITNESS_DEATH "Witnessed a death"
+/// Have nicotine in your blood
+#define SKILL_SOURCE_NICOTINE "Nicotine"
+/// Have a nicotine withdrawl
+#define SKILL_SOURCE_NICOTINE_WITHDRAWL "Nicottine withdrawl"
+/// Opiod Withdrawl
+#define SKILL_SOURCE_OPIOD_WITHDRAWL "Opiod withdrawl"
+/// Alchohol withdrawl
+#define SKILL_SOURCE_ALCHOHOL_WITHDRAWL "Alchohol withdrawl"
 /// The baseline value for a stat.
 #define STATS_BASELINE_VALUE 11

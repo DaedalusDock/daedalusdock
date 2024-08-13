@@ -1,0 +1,8 @@
+author: ToasterBan
+delete-after: true
+changes:
+  - rscadd: Skill debuffs to drug withdrawals
+  - rscadd: Handicraft skill boost due to nicotine (Daedalus Dock does not promote
+      nicotine usage but it does not deny how cool and radical it is)
+  - tweak: using a cheap lighter is now a handicraft check rather than pure RNG
+  - tweak: the description of the handicraft skill has been changed

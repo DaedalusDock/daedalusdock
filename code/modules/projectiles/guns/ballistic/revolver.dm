@@ -46,13 +46,13 @@
 	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
 	var/play_click = sqrt(magazine?.max_ammo) > get_ammo(TRUE, FALSE)
 	if(suppressed)
-		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
+		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = suppressed_sound, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 		if(play_click)
-			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', suppressed_volume, vary_fire_sound, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0, frequency = click_frequency_to_use)
+			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, ignore_walls = 'sound/weapons/gun/general/ballistic_click.ogg', extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0, frequency = click_frequency_to_use)
 	else
-		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound, ignore_walls = TRUE)
+		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound, falloff_exponent = 1.5, ignore_walls = fire_sound, falloff_distance = 7)
 		if(play_click)
-			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, frequency = click_frequency_to_use)
+			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, ignore_walls = 'sound/weapons/gun/general/ballistic_click.ogg', frequency = click_frequency_to_use)
 
 /obj/item/gun/ballistic/revolver/verb/spin()
 	set name = "Spin Chamber"

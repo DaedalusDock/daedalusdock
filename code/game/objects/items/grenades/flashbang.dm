@@ -16,7 +16,7 @@
 	if(!flashbang_turf)
 		return
 	do_sparks(rand(5, 9), FALSE, src)
-	playsound(flashbang_turf, 'sound/weapons/flashbang.ogg', 100, TRUE, 8, 0.9, ignore_walls = TRUE)
+	playsound(flashbang_turf, 'sound/weapons/flashbang.ogg', 100, TRUE, 8, 0.9, ignore_walls = 'sound/weapons/flashbang.ogg')
 	new /obj/effect/dummy/lighting_obj (flashbang_turf, flashbang_range + 2, 4, COLOR_WHITE, 2)
 	for(var/mob/living/living_mob in get_hearers_in_view(flashbang_range, flashbang_turf))
 		bang(get_turf(living_mob), living_mob)

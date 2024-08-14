@@ -415,11 +415,11 @@
 	face_atom(targeted_atom)
 	if(casingtype)
 		var/obj/item/ammo_casing/casing = new casingtype(startloc)
-		playsound(src, projectilesound, 100, TRUE, ignore_walls = TRUE)
+		playsound(src, projectilesound, 100, TRUE, ignore_walls = projectilesound)
 		casing.fire_casing(targeted_atom, src, null, null, null, ran_zone(), 0,  src)
 	else if(projectiletype)
 		var/obj/projectile/P = new projectiletype(startloc)
-		playsound(src, projectilesound, 100, TRUE, ignore_walls = TRUE)
+		playsound(src, projectilesound, 100, TRUE, ignore_walls = projectilesound)
 		P.starting = startloc
 		P.firer = src
 		P.fired_from = src

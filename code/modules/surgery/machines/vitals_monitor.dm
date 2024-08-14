@@ -99,7 +99,7 @@ DEFINE_INTERACTABLE(/obj/machinery/vitals_monitor)
 				. += image(icon, icon_state = "pulse_flatline")
 				. += image(icon, icon_state = "pulse_warning")
 				if (beep)
-					playsound(src, 'sound/machines/flatline.ogg', 20)
+					playsound(src, 'sound/machines/flatline.ogg', 10)
 				if (read_alerts)
 					alerts[PULSE_ALERT] = "Cardiac flatline detected!"
 

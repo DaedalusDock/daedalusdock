@@ -50,9 +50,9 @@
 		frequency_to_use = sin((90/max_shots) * shots_left)
 
 	if(suppressed)
-		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0, frequency = frequency_to_use)
+		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, extrarange = SILENCED_SOUND_EXTRARANGE, ignore_walls = suppressed_sound, falloff_distance = 0, frequency = frequency_to_use)
 	else
-		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound, frequency = frequency_to_use, ignore_walls = TRUE)
+		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound, frequency = frequency_to_use, falloff_exponent = 1.5, ignore_walls = fire_sound, falloff_distance = 7)
 
 /obj/item/gun/energy/emp_act(severity)
 	. = ..()
@@ -256,7 +256,7 @@
 		sleep(2.5 SECONDS)
 		if(user.is_holding(src))
 			user.visible_message(span_suicide("[user] melts [user.p_their()] face off with [src]!"))
-			playsound(loc, fire_sound, 50, TRUE, -1, ignore_walls = TRUE)
+			playsound(loc, fire_sound, 50, TRUE, -1, ignore_walls = fire_sound)
 			var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 			cell.use(shot.e_cost)
 			update_appearance()
@@ -293,20 +293,20 @@
 		. = ""
 	else if(loaded_projectile.nodamage || !loaded_projectile.damage || loaded_projectile.damage_type == STAMINA)
 		user.visible_message(span_danger("[user] tries to light [A.loc == user ? "[user.p_their()] [A.name]" : A] with [src], but it doesn't do anything. Dumbass."))
-		playsound(user, E.fire_sound, 50, TRUE)
-		playsound(user, loaded_projectile.hitsound, 50, TRUE, ignore_walls = TRUE)
+		play_fire_sound()
+		playsound(user, loaded_projectile.hitsound, 50, TRUE, ignore_walls = loaded_projectile.hitsound)
 		cell.use(E.e_cost)
 		. = ""
 	else if(loaded_projectile.damage_type != BURN)
 		user.visible_message(span_danger("[user] tries to light [A.loc == user ? "[user.p_their()] [A.name]" : A] with [src], but only succeeds in utterly destroying it. Dumbass."))
-		playsound(user, E.fire_sound, 50, TRUE)
-		playsound(user, loaded_projectile.hitsound, 50, TRUE, ignore_walls = TRUE)
+		play_fire_sound()
+		playsound(user, loaded_projectile.hitsound, 50, TRUE, ignore_walls = loaded_projectile.hitsound)
 		cell.use(E.e_cost)
 		qdel(A)
 		. = ""
 	else
-		playsound(user, E.fire_sound, 50, TRUE)
-		playsound(user, loaded_projectile.hitsound, 50, TRUE, ignore_walls = TRUE)
+		play_fire_sound()
+		playsound(user, loaded_projectile.hitsound, 50, TRUE, ignore_walls = loaded_projectile.hitsound)
 		cell.use(E.e_cost)
 		. = span_danger("[user] casually lights [A.loc == user ? "[user.p_their()] [A.name]" : A] with [src]. Damn.")
 

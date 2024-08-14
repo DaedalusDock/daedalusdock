@@ -110,7 +110,7 @@
 	var/power = (powernet.avail) * 0.2 * input_power_multiplier  //Always always always use more then you output for the love of god
 	power = min(surplus(), power) //Take the smaller of the two
 	add_load(power)
-	playsound(src.loc, 'sound/magic/lightningshock.ogg', zap_sound_volume, TRUE, zap_sound_range, ignore_walls = TRUE)
+	playsound(src.loc, 'sound/magic/lightningshock.ogg', zap_sound_volume, TRUE, zap_sound_range, ignore_walls = 'sound/magic/lightningshock.ogg')
 	tesla_zap(src, 10, power, zap_flags)
 	zap_buckle_check(power)
 

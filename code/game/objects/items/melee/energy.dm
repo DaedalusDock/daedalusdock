@@ -87,8 +87,12 @@
 		var/mob/living/carbon/carbon_user = user
 		if(carbon_user.wear_mask)
 			in_mouth = ", barely missing [carbon_user.p_their()] nose"
+
+
 	. = span_warning("[user] swings [user.p_their()] [name][in_mouth]. [user.p_they(TRUE)] light[user.p_s()] [user.p_their()] [atom.name] in the process.")
-	playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, -1, ignore_walls = TRUE)
+
+	var/sound_played = get_hitsound()
+	playsound(loc, get_hitsound(), get_clamped_volume(), TRUE, -1, ignore_walls = sound_played)
 	add_fingerprint(user)
 
 /*
@@ -120,7 +124,8 @@
 		heat = initial(heat)
 		STOP_PROCESSING(SSobj, src)
 
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, TRUE, ignore_walls = TRUE)
+	var/sound_played = active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg'
+	playsound(user ? user : src, sound_played, 35, TRUE, ignore_walls = sound_played)
 	set_light_on(active)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 

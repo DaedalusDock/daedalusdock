@@ -302,7 +302,7 @@
 			var/volume = clamp(vol_by_damage() + 20, 0, 100)
 			if(suppressed)
 				volume = 5
-			playsound(loc, hitsound_wall, volume, TRUE, -1)
+			playsound(loc, hitsound_wall, volume, TRUE, -1, ignore_walls = hitsound_wall)
 		return BULLET_ACT_HIT
 
 	var/mob/living/L = target

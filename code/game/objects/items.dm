@@ -1027,11 +1027,11 @@ DEFINE_INTERACTABLE(/obj/item)
 			var/volume = get_volume_by_throwforce_and_or_w_class()
 			if (throwforce > 0)
 				if (mob_throw_hit_sound)
-					playsound(hit_atom, mob_throw_hit_sound, volume, TRUE, -1, ignore_walls = TRUE)
+					playsound(hit_atom, mob_throw_hit_sound, volume, TRUE, -1, ignore_walls = mob_throw_hit_sound)
 				else if(hitsound)
-					playsound(hit_atom, hitsound, volume, TRUE, -1, ignore_walls = TRUE)
+					playsound(hit_atom, hitsound, volume, TRUE, -1, ignore_walls = hitsound)
 				else
-					playsound(hit_atom, 'sound/weapons/genhit.ogg',volume, TRUE, -1, ignore_walls = TRUE)
+					playsound(hit_atom, 'sound/weapons/genhit.ogg',volume, TRUE, -1, ignore_walls = 'sound/weapons/genhit.ogg')
 			else
 				playsound(hit_atom, 'sound/weapons/throwtap.ogg', 1, volume, -1)
 

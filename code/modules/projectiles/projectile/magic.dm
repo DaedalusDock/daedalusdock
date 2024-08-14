@@ -557,7 +557,7 @@
 /obj/projectile/magic/spell/juggernaut/on_hit(atom/target, blocked)
 	. = ..()
 	var/turf/target_turf = get_turf(src)
-	playsound(target_turf, 'sound/weapons/resonator_blast.ogg', 100, FALSE, ignore_walls = TRUE)
+	playsound(target_turf, 'sound/weapons/resonator_blast.ogg', 100, FALSE, ignore_walls = 'sound/weapons/resonator_blast.ogg')
 	new /obj/effect/temp_visual/cult/sac(target_turf)
 	for(var/obj/adjacent_object in range(1, src))
 		if(!adjacent_object.density)

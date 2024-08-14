@@ -1080,7 +1080,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/armor_block = target.run_armor_check(affecting, BLUNT)
 
-	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
+	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1, ignore_walls = attacking_bodypart.unarmed_attack_sound)
 
 	user.visible_message(
 		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b> in the [affecting.plaintext_zone]!"),

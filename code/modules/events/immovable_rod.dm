@@ -206,7 +206,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 /obj/effect/immovablerod/Bump(atom/clong)
 	if(prob(10))
-		playsound(src, collision_sound, 50, TRUE, ignore_walls = TRUE)
+		playsound(src, collision_sound, 50, TRUE, ignore_walls = collision_sound)
 		audible_message(span_hear("CLANG!"))
 
 	if(special_target && clong == special_target)
@@ -277,7 +277,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	if(!(HAS_TRAIT(user, TRAIT_ROD_SUPLEX) || (user.mind && HAS_TRAIT(user.mind, TRAIT_ROD_SUPLEX))))
 		return
 
-	playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE, ignore_walls = TRUE)
+	playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE, ignore_walls = 'sound/effects/meteorimpact.ogg')
 	for(var/mob/living/nearby_mob in urange(8, src))
 		if(nearby_mob.stat != CONSCIOUS)
 			continue

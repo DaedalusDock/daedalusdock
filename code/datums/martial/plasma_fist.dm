@@ -48,7 +48,7 @@
 	D.visible_message(span_danger("[A] hits [D] with Plasma Punch!"), \
 					span_userdanger("You're hit with a Plasma Punch by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
 	to_chat(A, span_danger("You hit [D] with Plasma Punch!"))
-	playsound(D.loc, SFX_PUNCH, 50, TRUE, -1)
+	playsound(D.loc, SFX_PUNCH, 50, TRUE, -1, ignore_walls = SFX_PUNCH)
 	var/atom/throw_target = get_edge_target_turf(D, get_dir(D, get_step_away(D, A)))
 	D.throw_at(throw_target, 200, 4,A)
 	A.say("HYAH!", forced="plasma fist")
@@ -59,7 +59,7 @@
 	var/hasclient = D.client ? TRUE : FALSE
 
 	A.do_attack_animation(D, ATTACK_EFFECT_PUNCH)
-	playsound(D.loc, SFX_PUNCH, 50, TRUE, -1)
+	playsound(D.loc, SFX_PUNCH, 50, TRUE, -1, ignore_walls = SFX_PUNCH)
 	A.say("PLASMA FIST!", forced="plasma fist")
 	D.visible_message(span_danger("[A] hits [D] with THE PLASMA FIST TECHNIQUE!"), \
 					span_userdanger("You're suddenly hit with THE PLASMA FIST TECHNIQUE by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
@@ -110,7 +110,7 @@
 	user.apply_damage(rand(50,70), BRUTE)
 
 	addtimer(CALLBACK(src,PROC_REF(Apotheosis_end), user), 6 SECONDS)
-	playsound(boomspot, SFX_PUNCH, 50, TRUE, -1)
+	playsound(boomspot, SFX_PUNCH, 50, TRUE, -1, ignore_walls = SFX_PUNCH)
 	explosion(user, devastation_range = plasma_power, heavy_impact_range = plasma_power*2, light_impact_range = plasma_power*4, ignorecap = TRUE, explosion_cause = src)
 	plasma_power = 1 //just in case there is any clever way to cause it to happen again
 

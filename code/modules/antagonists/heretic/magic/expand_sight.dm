@@ -16,7 +16,8 @@
 /datum/action/innate/expand_sight/Activate()
 	active = TRUE
 	owner.client?.view_size.setTo(boost_to)
-	playsound(owner, pick('sound/hallucinations/i_see_you1.ogg', 'sound/hallucinations/i_see_you2.ogg'), 50, TRUE, ignore_walls = TRUE)
+	var/sound_played = pick('sound/hallucinations/i_see_you1.ogg', 'sound/hallucinations/i_see_you2.ogg')
+	playsound(owner, sound_played, 50, TRUE, ignore_walls = sound_played)
 	COOLDOWN_START(src, last_toggle, 8 SECONDS)
 
 /datum/action/innate/expand_sight/Deactivate()

@@ -251,10 +251,10 @@
 	if(cell)
 		if(cell.charge >= paddles.revivecost)
 			visible_message(span_notice("[src] beeps: Unit ready."))
-			playsound(src, 'sound/machines/defib_ready.ogg', 50, FALSE)
+			playsound(src, 'sound/machines/defib_ready.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_ready.ogg')
 		else
 			visible_message(span_notice("[src] beeps: Charge depleted."))
-			playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
+			playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_failed.ogg')
 	paddles.cooldown = FALSE
 	paddles.update_appearance()
 	update_power()
@@ -386,7 +386,7 @@
 	sleep(time)
 	var/turf/T = get_turf(src)
 	T.audible_message(span_notice("[src] beeps: Unit is recharged."))
-	playsound(src, 'sound/machines/defib_ready.ogg', 50, FALSE)
+	playsound(src, 'sound/machines/defib_ready.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_ready.ogg')
 	cooldown = FALSE
 	update_appearance()
 
@@ -405,7 +405,7 @@
 	user.visible_message(span_danger("[user] is putting the live paddles on [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(req_defib)
 		defib.deductcharge(revivecost)
-	playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1, ignore_walls = TRUE)
+	playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1, ignore_walls = 'sound/machines/defib_zap.ogg')
 	return (OXYLOSS)
 
 /obj/item/shockpaddles/update_icon_state()
@@ -437,7 +437,7 @@
 	defib?.update_power()
 	if(req_defib && !defib.powered)
 		user.visible_message(span_warning("[defib] beeps: Not enough charge!"))
-		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
+		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_failed.ogg')
 		return
 	if(!wielded)
 		if(iscyborg(user))
@@ -484,6 +484,10 @@
 	if(busy)
 		busy = FALSE
 
+	spawn(1.2 SECONDS)
+		if(!QDELETED(src))
+			playsound(src, 'sound/machines/defib_success.ogg', 50, FALSE, -1, ignore_walls = 'sound/machines/defib_success.ogg')
+
 	update_appearance()
 	if(req_defib)
 		defib.deductcharge(revivecost)
@@ -515,7 +519,7 @@
 	M.Knockdown(75)
 	M.set_timed_status_effect(100 SECONDS, /datum/status_effect/jitter, only_if_higher = TRUE)
 	M.apply_status_effect(/datum/status_effect/convulsing)
-	playsound(src,  'sound/machines/defib_zap.ogg', 50, TRUE, -1, ignore_walls = TRUE)
+	playsound(src,  'sound/machines/defib_zap.ogg', 50, TRUE, -1, ignore_walls = 'sound/machines/defib_zap.ogg')
 	if(HAS_TRAIT(M,MOB_ORGANIC))
 		M.emote("gasp")
 	log_combat(user, M, "zapped", src)
@@ -532,7 +536,7 @@
 		user.visible_message(span_notice("[user] places [src] on [H]'s chest."),
 			span_warning("You place [src] on [H]'s chest and begin to charge them."))
 		var/turf/T = get_turf(defib)
-		playsound(src, 'sound/machines/defib_charge.ogg', 50, FALSE)
+		playsound(src, 'sound/machines/defib_charge.ogg', 75, FALSE, ignore_walls = 'sound/machines/defib_charge.ogg')
 		if(req_defib)
 			T.audible_message(span_warning("\The [defib] lets out an urgent beep and lets out a steadily rising hum..."))
 		else
@@ -543,12 +547,12 @@
 				return
 			if(H && H.stat == DEAD)
 				to_chat(user, span_warning("[H] is dead."))
-				playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
+				playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_failed.ogg')
 				do_cancel()
 				return
 			user.visible_message(span_boldannounce("<i>[user] shocks [H] with \the [src]!"), span_warning("You shock [H] with \the [src]!"))
-			playsound(src, 'sound/machines/defib_zap.ogg', 100, TRUE, -1, ignore_walls = TRUE)
-			playsound(src, 'sound/weapons/egloves.ogg', 100, TRUE, -1, ignore_walls = TRUE)
+			playsound(src, 'sound/machines/defib_zap.ogg', 100, TRUE, -1, ignore_walls = 'sound/machines/defib_zap.ogg')
+			playsound(src, 'sound/weapons/egloves.ogg', 100, TRUE, -1, ignore_walls = 'sound/weapons/egloves.ogg')
 			H.emote("scream")
 			shock_pulling(45, H)
 			if(H.set_heartattack(TRUE))
@@ -574,14 +578,14 @@
 		return
 
 	user.visible_message(span_notice("[user] places [src] on [H]'s chest."), span_warning("You place [src] on [H]'s chest."))
-	playsound(src, 'sound/machines/defib_charge.ogg', 75, FALSE)
+	playsound(src, 'sound/machines/defib_charge.ogg', 75, FALSE, ignore_walls = 'sound/machines/defib_charge.ogg')
 
 	// Check to see if the patient's chest is covered or we don't care.
 	if((!combat && !req_defib) || (req_defib && !defib.combat))
 		for(var/obj/item/clothing/C in H.get_equipped_items())
 			if((C.body_parts_covered & CHEST) && (C.clothing_flags & THICKMATERIAL)) //check to see if something is obscuring their chest.
 				user.audible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Patient's chest is obscured. Operation aborted."))
-				playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
+				playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_failed.ogg')
 				do_cancel()
 				return
 
@@ -599,14 +603,14 @@
 	// Do they even have a heart?
 	if (!heart)
 		user.audible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Resuscitation failed - Patient's heart is missing. Operation aborted."))
-		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
+		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_failed.ogg')
 		do_cancel()
 		return
 
 	// At this point a shock has occured.
 	H.visible_message(span_warning("[H]'s body convulses a bit."))
 	playsound(src, SFX_BODYFALL, 50, TRUE)
-	playsound(src, 'sound/machines/defib_zap.ogg', 75, TRUE, -1, ignore_walls = TRUE)
+	playsound(src, 'sound/machines/defib_zap.ogg', 75, TRUE, -1, ignore_walls = 'sound/machines/defib_zap.ogg')
 	shock_pulling(30, H)
 	H.apply_damage(5, BURN, BODY_ZONE_CHEST)
 	do_success() //Deduct charge
@@ -616,7 +620,7 @@
 	if(H.stat == DEAD)
 		shock_pulling(30, H)
 		user.audible_message(span_warning("[req_defib ? "[defib]" : "[src]"] pings: Resuscitation failed - Severe neurological decay makes recovery of patient impossible. Further attempts futile."))
-		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
+		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE, ignore_walls = 'sound/machines/defib_failed.ogg')
 		return
 
 	user.audible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Resuscitation successful."))

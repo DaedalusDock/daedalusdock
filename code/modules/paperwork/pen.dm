@@ -292,7 +292,8 @@
 
 	updateEmbedding()
 	balloon_alert(user, "[hidden_name] [active ? "active":"concealed"]")
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 5, TRUE, ignore_walls = TRUE)
+	var/sound_played = active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg'
+	playsound(user ? user : src, sound_played, 5, TRUE, ignore_walls = sound_played)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
 ///syndicate prototype for smuggling missions

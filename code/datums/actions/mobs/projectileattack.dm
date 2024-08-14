@@ -139,7 +139,7 @@
 		if(counter < 1)
 			counter = 16
 		shoot_projectile(firer, target, counter * 22.5, firer, null, null)
-		playsound(get_turf(firer), projectile_sound, 20, TRUE, ignore_walls = TRUE)
+		playsound(get_turf(firer), projectile_sound, 20, TRUE, ignore_walls = projectile_sound)
 		SLEEP_CHECK_DEATH(0.1 SECONDS, firer)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/random_aoe
@@ -153,7 +153,7 @@
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/random_aoe/attack_sequence(mob/living/firer, atom/target)
 	var/turf/U = get_turf(firer)
-	playsound(U, projectile_sound, 300, TRUE, 5, ignore_walls = TRUE)
+	playsound(U, projectile_sound, 300, TRUE, 5, ignore_walls = projectile_sound)
 	for(var/i in 1 to 32)
 		shoot_projectile(firer, target, rand(0, 360), firer, null, null)
 
@@ -176,7 +176,7 @@
 	fire_shotgun(firer, target, shot_angles)
 
 /datum/action/cooldown/mob_cooldown/projectile_attack/shotgun_blast/proc/fire_shotgun(mob/living/firer, atom/target, list/chosen_angles)
-	playsound(firer, projectile_sound, 200, TRUE, 2, ignore_walls = TRUE)
+	playsound(firer, projectile_sound, 200, TRUE, 2, ignore_walls = projectile_sound)
 	for(var/spread in chosen_angles)
 		shoot_projectile(firer, target, null, firer, spread, null)
 
@@ -217,7 +217,7 @@
 /datum/action/cooldown/mob_cooldown/projectile_attack/dir_shots/proc/fire_in_directions(mob/living/firer, atom/target, list/dirs)
 	if(!islist(dirs))
 		dirs = GLOB.alldirs.Copy()
-	playsound(firer, projectile_sound, 200, TRUE, 2, ignore_walls = TRUE)
+	playsound(firer, projectile_sound, 200, TRUE, 2, ignore_walls = projectile_sound)
 	for(var/d in dirs)
 		var/turf/E = get_step(firer, d)
 		shoot_projectile(firer, E, null, firer, null, null)

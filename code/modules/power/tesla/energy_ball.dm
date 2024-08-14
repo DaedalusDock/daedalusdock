@@ -126,7 +126,7 @@
 		energy_to_lower = energy_to_raise - 20
 		energy_to_raise = energy_to_raise * 1.25
 
-		playsound(src.loc, 'sound/magic/lightning_chargeup.ogg', 100, TRUE, extrarange = 30, ignore_walls = TRUE)
+		playsound(src.loc, 'sound/magic/lightning_chargeup.ogg', 100, TRUE, extrarange = 30, ignore_walls = 'sound/magic/lightning_chargeup.ogg')
 		addtimer(CALLBACK(src, PROC_REF(new_mini_ball)), 100)
 	else if(energy < energy_to_lower && orbiting_balls.len)
 		energy_to_raise = energy_to_raise / 1.25

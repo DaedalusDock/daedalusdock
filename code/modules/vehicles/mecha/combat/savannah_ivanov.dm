@@ -95,7 +95,7 @@
 	switch(skyfall_charge_level)
 		if(1)
 			chassis.visible_message(span_warning("[chassis] clicks and whirrs for a moment, with a low hum emerging from the legs."))
-			playsound(chassis, 'sound/items/rped.ogg', 50, TRUE, ignore_walls = TRUE)
+			playsound(chassis, 'sound/items/rped.ogg', 50, TRUE, ignore_walls = 'sound/items/rped.ogg')
 		if(2)
 			chassis.visible_message(span_warning("[chassis] begins to shake, the sounds of electricity growing louder."))
 			chassis.Shake(5, 5, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
@@ -106,12 +106,12 @@
 			chassis.update_appearance(UPDATE_ICON_STATE)
 		if(4)
 			chassis.visible_message(span_warning("[chassis] sparks and shutters as it finalizes preparation."))
-			playsound(chassis, 'sound/mecha/skyfall_power_up.ogg', 50, TRUE, ignore_walls = TRUE)
+			playsound(chassis, 'sound/mecha/skyfall_power_up.ogg', 50, TRUE, ignore_walls = 'sound/mecha/skyfall_power_up.ogg')
 			chassis.Shake(10, 10, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
 			chassis.spark_system.start()
 		if(SKYFALL_CHARGELEVEL_LAUNCH)
 			chassis.visible_message(span_danger("[chassis] leaps into the air!"))
-			playsound(chassis, 'sound/weapons/gun/general/rocket_launch.ogg', 50, TRUE, ignore_walls = TRUE)
+			playsound(chassis, 'sound/weapons/gun/general/rocket_launch.ogg', 50, TRUE, ignore_walls = 'sound/weapons/gun/general/rocket_launch.ogg')
 	if(skyfall_charge_level != SKYFALL_CHARGELEVEL_LAUNCH)
 		skyfall_charge_loop()
 		return
@@ -156,7 +156,7 @@
  */
 /datum/action/vehicle/sealed/mecha/skyfall/proc/land()
 	chassis.visible_message(span_danger("[chassis] lands from above!"))
-	playsound(chassis, 'sound/effects/explosion1.ogg', 50, 1, ignore_walls = TRUE)
+	playsound(chassis, SFX_EXPLOSION, 50, 1, ignore_walls = TRUE)
 	chassis.resistance_flags &= ~INDESTRUCTIBLE
 	chassis.mecha_flags &= ~(QUIET_STEPS|QUIET_TURNS|CANNOT_INTERACT)
 	chassis.phasing = initial(chassis.phasing)

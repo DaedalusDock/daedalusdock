@@ -25,7 +25,7 @@
 
 /// Called after rack(), before update_appearance()
 /datum/gun_bolt/proc/post_rack(mob/user)
-	playsound(parent, parent.rack_sound, parent.rack_sound_volume, parent.rack_sound_vary)
+	playsound(parent, parent.rack_sound, parent.rack_sound_volume, parent.rack_sound_vary, ignore_walls = parent.rack_sound)
 
 /// Called when ammo was successfully loaded into the weapon.
 /datum/gun_bolt/proc/loaded_ammo()

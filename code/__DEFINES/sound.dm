@@ -27,7 +27,7 @@
 ///The default exponent of sound falloff
 #define SOUND_FALLOFF_EXPONENT 6
 /// When a sound is from a non-visible source, add this many turfs to the distance between the source and the hearer
-#define SOUND_OCCLUSION_DISTANCE_MODIFIER 4
+#define SOUND_OCCLUSION_DISTANCE_MODIFIER 3
 
 //#define SOUND_MINIMUM_PRESSURE 10
 

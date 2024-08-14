@@ -25,3 +25,10 @@
   - bugfix: Connector port in botany maint storage closet is now on the right layer
   - bugfix: Central Medbay now has an air alarm
   - bugfix: You can no longer sneak into medbay with maint access via robotics maintenance.
+2024-08-14:
+  ToasterBan:
+  - rscadd: Skill debuffs to drug withdrawals
+  - rscadd: Handicraft skill boost due to nicotine (Daedalus Dock does not promote
+      nicotine usage but it does not deny how cool and radical it is)
+  - tweak: using a cheap lighter is now a handicraft check rather than pure RNG
+  - tweak: the description of the handicraft skill has been changed

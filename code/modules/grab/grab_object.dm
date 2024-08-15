@@ -92,6 +92,7 @@
 
 	// Leave forensics
 	leave_forensic_traces()
+
 	/// Setup signals
 	var/obj/item/bodypart/BP = get_targeted_bodypart()
 	if(BP)
@@ -116,7 +117,7 @@
 
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
-
+		if(assailant)
 	else if(is_valid && !current_grab)
 		stack_trace("Grab (\ref[src]) qdeleted while not having a grab datum.")
 
@@ -125,6 +126,11 @@
 		assailant.after_grab_release(affecting)
 	else
 		stack_trace("Grab (\ref[src]) qdeleted while not having an assailant.")
+
+	//DEBUG CODE
+	if(HAS_TRAIT_FROM(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src)))
+		stack_trace("Somehow all other safeties failed and [affecting] still is marked as grabbed from a qdeling grab, removing!")
+		REMOVE_TRAIT(affecting, TRAIT_AGGRESSIVE_GRAB, ref(src))
 
 	affecting = null
 	assailant = null

@@ -235,21 +235,23 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/old_damage_stage = old_grab?.damage_stage || GRAB_PASSIVE
 	var/new_stage = dropping_grab ? GRAB_PASSIVE : damage_stage
 
+	var/trait_source = ref(G)
+
 	switch(new_stage) // Current state.
 		if(GRAB_PASSIVE)
-			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
-			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
+			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, trait_source)
+			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, trait_source)
 			if(old_damage_stage >= GRAB_AGGRESSIVE)
-				REMOVE_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
+				REMOVE_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, trait_source)
+				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, trait_source)
 
 		if(GRAB_AGGRESSIVE)
 			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
+				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, trait_source)
 			else // Grab got upgraded from a passive one.
-				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
+				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, trait_source)
+				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, trait_source)
+				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, trait_source)
 
 		if(GRAB_NECK, GRAB_KILL)
 			if(old_damage_stage < GRAB_AGGRESSIVE)
@@ -259,6 +261,10 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
 				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
 
+	//DEBUG CODE
+	if((new_stage < GRAB_AGGRESSIVE) && AS_TRAIT_FROM_ONLY(affecting, TRAIT_AGGRESSIVE_GRAB, trait_source))
+		stack_trace("AAAAAA a grab victim somehow still has trait_aggressive_grab when they shouldnt, removing it!")
+		REMOVE_TRAIT(affecting, TRAIT_AGGRESSIVE_GRAB, trait_source)
 
 /// Apply effects that should only be applied when a grab type is first used on a mob.
 /datum/grab/proc/apply_unique_grab_effects(obj/item/hand_item/grab/G)

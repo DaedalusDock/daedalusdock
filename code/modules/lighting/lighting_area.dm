@@ -81,6 +81,7 @@ GLOBAL_REAL_VAR(mutable_appearance/fullbright_overlay) = create_fullbright_overl
 	lighting_effect.alpha = base_lighting_alpha
 	lighting_effect.color = base_lighting_color
 	lighting_effect.appearance_flags = RESET_TRANSFORM | RESET_ALPHA | RESET_COLOR
+	add_overlay(lighting_effect)
 
 	area_has_base_lighting = TRUE
 	luminosity = 1

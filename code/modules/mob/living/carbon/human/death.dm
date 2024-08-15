@@ -34,7 +34,6 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B && !(B.organ_flags & ORGAN_DEAD))
-		stack_trace("Human died without a dead brain.")
 		B.set_organ_dead(TRUE)
 
 	. = ..()

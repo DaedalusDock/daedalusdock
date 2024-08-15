@@ -226,7 +226,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 	remove_bodyzone_effects(G, G.target_zone)
 	if(G.is_grab_unique(src))
-		remove_unique_grab_effects(G)
+		remove_unique_grab_effects(G.affecting)
 
 	update_stage_effects(G, src, TRUE)
 
@@ -267,16 +267,16 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		REMOVE_TRAIT(affecting, TRAIT_AGGRESSIVE_GRAB, trait_source)
 
 /// Apply effects that should only be applied when a grab type is first used on a mob.
-/datum/grab/proc/apply_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/proc/apply_unique_grab_effects(atom/movable/affecting)
 	SHOULD_CALL_PARENT(TRUE)
-	if(same_tile && ismob(G.affecting))
-		G.affecting.add_passmob(REF(G))
+	if(same_tile && ismob(affecting))
+		affecting.add_passmob(ref(src))
 
 /// Remove effects added by apply_unique_grab_effects()
-/datum/grab/proc/remove_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/proc/remove_unique_grab_effects(atom/movable/affecting)
 	SHOULD_CALL_PARENT(TRUE)
-	if(same_tile && ismob(G.affecting))
-		G.affecting.remove_passmob(REF(G))
+	if(same_tile && ismob(affecting))
+		affecting.remove_passmob(ref(src))
 
 /// Handles special targeting like eyes and mouth being covered.
 /// CLEAR OUT ANY EFFECTS USING remove_bodyzone_effects()

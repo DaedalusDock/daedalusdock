@@ -15,16 +15,13 @@
 	icon_state = "kill1"
 	break_chance_table = list(5, 20, 40, 80, 100)
 
-/datum/grab/normal/kill/apply_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/kill/apply_unique_grab_effects(atom/movable/affecting)
 	. = ..()
-	if(!isliving(G.affecting))
-		return
+	ADD_TRAIT(affecting, TRAIT_KILL_GRAB, KILL_GRAB)
 
-	ADD_TRAIT(G.affecting, TRAIT_KILL_GRAB, REF(G))
-
-/datum/grab/normal/kill/remove_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/kill/remove_unique_grab_effects(atom/movable/affecting)
 	. = ..()
-	REMOVE_TRAIT(G.affecting, TRAIT_KILL_GRAB, REF(G))
+	REMOVE_TRAIT(affecting, TRAIT_KILL_GRAB, KILL_GRAB)
 
 /datum/grab/normal/kill/enter_as_up(obj/item/hand_item/grab/G, silent)
 	. = ..()

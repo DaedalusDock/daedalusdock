@@ -17,17 +17,17 @@
 	icon_state = "kill"
 	break_chance_table = list(3, 18, 45, 100)
 
-/datum/grab/normal/neck/apply_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/neck/apply_unique_grab_effects(atom/movable/affecting)
 	. = ..()
-	if(!isliving(G.affecting))
+	if(!isliving(affecting))
 		return
 
-	var/mob/living/L = G.affecting
+	var/mob/living/L = affecting
 	ADD_TRAIT(L, TRAIT_FLOORED, NECK_GRAB)
 
-/datum/grab/normal/neck/remove_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/neck/remove_unique_grab_effects(atom/movable/affecting)
 	. = ..()
-	REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, NECK_GRAB)
+	REMOVE_TRAIT(affecting, TRAIT_FLOORED, NECK_GRAB)
 
 /datum/grab/normal/neck/enter_as_up(obj/item/hand_item/grab/G, silent)
 	. = ..()

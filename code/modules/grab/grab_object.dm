@@ -302,7 +302,7 @@
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.remove_unique_grab_effects(src)
+		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = upgrab
 
@@ -317,7 +317,7 @@
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.apply_unique_grab_effects(src)
+		current_grab.apply_unique_grab_effects(affecting)
 
 	adjust_position()
 	update_appearance()
@@ -328,7 +328,7 @@
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.remove_unique_grab_effects(src)
+		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = downgrab
 
@@ -336,7 +336,7 @@
 		return
 
 	if(is_grab_unique(current_grab))
-		current_grab.apply_unique_grab_effects(src)
+		current_grab.apply_unique_grab_effects(affecting)
 
 	current_grab.enter_as_down(src, silent)
 	adjust_position()

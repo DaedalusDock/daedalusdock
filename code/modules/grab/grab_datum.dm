@@ -236,35 +236,36 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	var/new_stage = dropping_grab ? GRAB_PASSIVE : damage_stage
 
 	var/trait_source = ref(G)
+	var/atom/movable/affected_movable = G.affecting
 
 	switch(new_stage) // Current state.
 		if(GRAB_PASSIVE)
-			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, trait_source)
-			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, trait_source)
+			REMOVE_TRAIT(affected_movable, TRAIT_IMMOBILIZED, trait_source)
+			REMOVE_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, trait_source)
 			if(old_damage_stage >= GRAB_AGGRESSIVE)
-				REMOVE_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, trait_source)
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, trait_source)
+				REMOVE_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
+				REMOVE_TRAIT(affected_movable, TRAIT_FLOORED, trait_source)
 
 		if(GRAB_AGGRESSIVE)
 			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, trait_source)
+				REMOVE_TRAIT(affected_movable, TRAIT_FLOORED, trait_source)
 			else // Grab got upgraded from a passive one.
-				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, trait_source)
-				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, trait_source)
-				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, trait_source)
+				ADD_TRAIT(affected_movable, TRAIT_IMMOBILIZED, trait_source)
+				ADD_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, trait_source)
+				ADD_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
 
 		if(GRAB_NECK, GRAB_KILL)
 			if(old_damage_stage < GRAB_AGGRESSIVE)
-				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, REF(G))
 			if(old_damage_stage <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_FLOORED, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_IMMOBILIZED, REF(G))
 
 	//DEBUG CODE
-	if((new_stage < GRAB_AGGRESSIVE) && AS_TRAIT_FROM_ONLY(affecting, TRAIT_AGGRESSIVE_GRAB, trait_source))
+	if((new_stage < GRAB_AGGRESSIVE) && HAS_TRAIT_FROM_ONLY(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source))
 		stack_trace("AAAAAA a grab victim somehow still has trait_aggressive_grab when they shouldnt, removing it!")
-		REMOVE_TRAIT(affecting, TRAIT_AGGRESSIVE_GRAB, trait_source)
+		REMOVE_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
 
 /// Apply effects that should only be applied when a grab type is first used on a mob.
 /datum/grab/proc/apply_unique_grab_effects(atom/movable/affecting)

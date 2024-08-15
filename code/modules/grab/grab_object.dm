@@ -140,6 +140,9 @@
 
 /obj/item/hand_item/grab/update_icon_state()
 	. = ..()
+	if(QDELING(src))
+		return
+
 	icon = current_grab.icon
 	if(current_grab.icon_state)
 		icon_state = current_grab.icon_state

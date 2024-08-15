@@ -185,7 +185,6 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	SHOULD_CALL_PARENT(TRUE)
 
 	G.remove_competing_grabs()
-	update_stage_effects(G, old_grab)
 
 // Conditions to see if upgrading is possible
 /datum/grab/proc/can_upgrade(obj/item/hand_item/grab/G)
@@ -212,7 +211,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 
 // What happens when you downgrade from one grab state to the next.
 /datum/grab/proc/downgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
-	update_stage_effects(G, old_grab)
+	return
 
 // Conditions to see if downgrading is possible
 /datum/grab/proc/can_downgrade(obj/item/hand_item/grab/G)

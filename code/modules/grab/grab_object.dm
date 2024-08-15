@@ -298,13 +298,15 @@
 		return
 
 	var/datum/grab/upgrab = current_grab.upgrade(src)
-	if(!upgrab)
+	var/datum/grab/oldgrab = current_grab
+	if(!upgrab || QDELETED(src))
 		return
 
 	if(is_grab_unique(current_grab))
 		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = upgrab
+	current_grab.update_stage_effects(src, oldgrab)
 
 	COOLDOWN_START(src, upgrade_cd, current_grab.upgrade_cooldown)
 
@@ -324,6 +326,7 @@
 
 /obj/item/hand_item/grab/proc/downgrade(silent)
 	var/datum/grab/downgrab = current_grab.downgrade(src)
+	var/datum/grab/oldgrab = current_grab
 	if(!downgrab)
 		return
 
@@ -331,6 +334,7 @@
 		current_grab.remove_unique_grab_effects(affecting)
 
 	current_grab = downgrab
+	current_grab.update_stage_effects(src, oldgrab)
 
 	if(!current_grab.enter_as_down(src))
 		return

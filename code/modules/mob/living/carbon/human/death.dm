@@ -9,6 +9,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	if(isipc(src))
 		new /obj/effect/gibspawner/robot(drop_location(), src)
 		return
+
 	if(with_bodyparts)
 		new /obj/effect/gibspawner/human(drop_location(), src, get_static_viruses())
 	else
@@ -30,6 +31,11 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	var/obj/item/organ/heart/H = getorganslot(ORGAN_SLOT_HEART)
 	if(H)
 		H.beat = BEAT_NONE
+
+	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
+	if(B && !(B.organ_flags & ORGAN_DEAD))
+		stack_trace("Human died without a dead brain.")
+		B.set_organ_dead(TRUE)
 
 	. = ..()
 

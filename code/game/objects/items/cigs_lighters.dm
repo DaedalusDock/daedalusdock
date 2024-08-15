@@ -801,6 +801,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/lighter/attack_self(mob/living/user)
 	if(!user.is_holding(src))
 		return ..()
+
+	user.changeNext_move(CLICK_CD_RAPID)
+
 	if(lit)
 		set_lit(FALSE)
 		if(fancy)
@@ -816,6 +819,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 
 	set_lit(TRUE)
+
 	if(fancy)
 		user.visible_message(
 			span_notice("Without even breaking stride, [user] flips open and lights [src] in one smooth movement."),

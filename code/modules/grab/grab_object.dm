@@ -117,7 +117,7 @@
 
 	if(affecting && assailant && current_grab)
 		current_grab.let_go(src)
-		if(assailant)
+
 	else if(is_valid && !current_grab)
 		stack_trace("Grab (\ref[src]) qdeleted while not having a grab datum.")
 

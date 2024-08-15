@@ -16,7 +16,7 @@
 
 	break_chance_table = list(5, 20, 40, 80, 100)
 
-/datum/grab/normal/aggressive/apply_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/normal/aggressive/apply_unique_grab_effects(atom/movable/affecting)
 	. = ..()
 	if(!isliving(affecting))
 		return

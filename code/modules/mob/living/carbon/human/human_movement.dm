@@ -36,7 +36,7 @@
 		return
 
 	var/area/my_area = loc:loc
-	if(my_area.ckeys_that_have_been_here[ckey])
+	if(LAZYACCESS(my_area.ckeys_that_have_been_here, ckey))
 		return
 
 	LAZYADDASSOC(my_area.ckeys_that_have_been_here, ckey, TRUE)

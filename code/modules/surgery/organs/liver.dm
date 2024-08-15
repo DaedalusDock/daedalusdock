@@ -75,7 +75,7 @@
 
 	if(!istype(liver_owner))
 		return
-	if(organ_flags & ORGAN_DEAD || HAS_TRAIT(liver_owner, TRAIT_NOMETABOLISM))//can't process reagents with a failing liver
+	if(organ_flags & ORGAN_DEAD)
 		return
 
 	if (germ_level > INFECTION_LEVEL_ONE)

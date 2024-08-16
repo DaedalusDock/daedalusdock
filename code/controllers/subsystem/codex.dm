@@ -95,9 +95,7 @@ SUBSYSTEM_DEF(codex)
 
 	var/database/query/cursor = new //Prep the cursor so we don't churn it.
 
-	while(unregistered_dynamic_entries)
-		var/datum/codex_entry/dyn_record = unregistered_dynamic_entries[unregistered_dynamic_entries.len]
-
+	for(var/datum/codex_entry/dyn_record in unregistered_dynamic_entries)
 		// Insert the new search record.
 		cursor.Add(
 			"INSERT INTO dynamic_codex_entries (name, lore_text, mechanics_text, antag_text) VALUES (?,?,?,?)",
@@ -110,7 +108,10 @@ SUBSYSTEM_DEF(codex)
 			message_admins("A dynamic codex entry failed to register. The codex search index may be unsafe, and has been disabled.")
 			index_disabled = TRUE
 			search_cache.Cut()
-			CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
+			stack_trace("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
+			can_fire = FALSE
+			pause() // A sleep it will never wake up from.
+			return
 
 		//Add the new entry to the tracking list
 		dynamic_entries += dyn_record

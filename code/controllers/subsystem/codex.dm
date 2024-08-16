@@ -105,6 +105,8 @@ SUBSYSTEM_DEF(codex)
 	var/database/query/cursor = new //Prep the cursor so we don't churn it.
 
 	for(var/datum/codex_entry/dyn_record in unregistered_dynamic_entries)
+		// Take it out immediately
+		unregistered_dynamic_entries -= dyn_record
 		// Insert the new search record.
 		cursor.Add(
 			"INSERT INTO dynamic_codex_entries (name, lore_text, mechanics_text, antag_text) VALUES (?,?,?,?)",
@@ -124,7 +126,6 @@ SUBSYSTEM_DEF(codex)
 
 		//Add the new entry to the tracking list
 		dynamic_entries += dyn_record
-		unregistered_dynamic_entries -= dyn_record
 		//Log it into the index file.
 		index_file[dyn_record.name] = dyn_record
 		if(MC_TICK_CHECK)

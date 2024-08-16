@@ -10,12 +10,13 @@
 		/datum/employer/none
 	)
 
-	alt_titles = list("Mime")
+	alt_titles = list(JOB_CLOWN, "Mime")
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/clown,
 			SPECIES_PLASMAMAN = /datum/outfit/job/clown/plasmaman,
 		),
+
 		"Mime" = list(
 			SPECIES_HUMAN = /datum/outfit/job/mime,
 			SPECIES_PLASMAMAN = /datum/outfit/job/mime/plasmaman,

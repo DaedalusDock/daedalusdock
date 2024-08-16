@@ -89,7 +89,15 @@ SUBSYSTEM_DEF(codex)
 
 	// Prepare the search database.
 	prepare_search_database()
+	if(!codex_index)
+		can_fire = FALSE
 	. = ..()
+
+/datum/controller/subsystem/codex/stat_entry(msg)
+	if(!codex_index && initialized)
+		return "DISABLED" //Skip the upstream info if we're disabled. We should also be can_fire=0 by that point as well.
+	msg = "{A:[length(all_entries)]|DQ:[length(unregistered_dynamic_entries)]|DR:[length(dynamic_entries)]}"
+	return ..()
 
 /datum/controller/subsystem/codex/fire(resumed)
 
@@ -116,7 +124,8 @@ SUBSYSTEM_DEF(codex)
 		//Add the new entry to the tracking list
 		dynamic_entries += dyn_record
 		unregistered_dynamic_entries -= dyn_record
-
+		//Log it into the index file.
+		index_file[dyn_record.name] = dyn_record
 		if(MC_TICK_CHECK)
 			return
 
@@ -232,8 +241,8 @@ SUBSYSTEM_DEF(codex)
 	cursor.Add(
 		{"SELECT name FROM codex_entries
 		WHERE lore_text LIKE ?
-		AND mechanics_text LIKE ?
-		AND antag_text LIKE ?
+		OR mechanics_text LIKE ?
+		OR antag_text LIKE ?
 		ORDER BY name asc
 		LIMIT [CODEX_ENTRY_LIMIT]"},
 		search_string,
@@ -272,8 +281,8 @@ SUBSYSTEM_DEF(codex)
 	cursor.Add(
 		{"SELECT name FROM dynamic_codex_entries
 		WHERE lore_text LIKE ?
-		AND mechanics_text LIKE ?
-		AND antag_text LIKE ?
+		OR mechanics_text LIKE ?
+		OR antag_text LIKE ?
 		ORDER BY name asc
 		LIMIT [CODEX_ENTRY_LIMIT]"},
 		search_string,
@@ -381,6 +390,7 @@ SUBSYSTEM_DEF(codex)
 	var/database/query/cursor = new("SELECT * FROM _info")
 	if(!cursor.Execute(codex_index))
 		index_disabled = TRUE
+		can_fire = FALSE
 		to_chat(world, span_debug("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]"))
 		CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
 
@@ -407,7 +417,7 @@ SUBSYSTEM_DEF(codex)
 
 
 	index_generating = FALSE //The database is now in a safe stuff for us to begin processing dynamic entries.
-	var/dynqueue_len = length(index_generating)
+
 
 	if(drop_existing)
 		to_chat(world, span_debug("Codex: Collation complete.\nCodex: Index ready."))
@@ -508,8 +518,9 @@ SUBSYSTEM_DEF(codex)
 
 /// Queue a new dynamic record for insertion to the dynamic search index.
 /datum/controller/subsystem/codex/proc/cache_dynamic_record(datum/codex_entry/dyn_record)
-	if(!codex_index || index_disabled) // Initialized but no index, or we tripped the breaker. Clear the legacy search cache and return.
-		search_cache.Cut()
+	if(!codex_index || index_disabled) // Initialized but no index, or we tripped the breaker.
+		index_file[dyn_record.name] = dyn_record //Insert it into the legacy index
+		search_cache.Cut() //And flush the search cache
 		return
 	unregistered_dynamic_entries += dyn_record
 	return

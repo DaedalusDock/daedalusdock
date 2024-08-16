@@ -168,6 +168,7 @@ SUBSYSTEM_DEF(codex)
 	if(!codex_index || index_generating) //No codex DB loaded. Use the fallback search.
 		return text_search_no_db(searching)
 
+	// -- Static Start
 
 	var/search_string = "%[searching]%"
 	// Search by name to build the priority entries first
@@ -207,6 +208,47 @@ SUBSYSTEM_DEF(codex)
 		var/row = cursor.GetRowData()
 		fulltext_results += index_file[row["name"]]
 		CHECK_TICK
+
+	// -- Static End
+	// -- Dynamic Start
+
+	// Search by name to build the priority entries first
+	cursor.Add(
+		{"SELECT name FROM dynamic_codex_entries
+		WHERE name LIKE ?
+		ORDER BY name asc
+		LIMIT [CODEX_ENTRY_LIMIT]"},
+		search_string
+		)
+	// Execute the query, returning us a list of types we can retrieve from the list indexes.
+	cursor.Execute(codex_index)
+
+	// God this sucks.
+	while(cursor.NextRow())
+		var/row = cursor.GetRowData()
+		priority_results += index_file[row["name"]]
+		CHECK_TICK
+
+	// Now the awful slow ones.
+	cursor.Add(
+		{"SELECT name FROM dynamic_codex_entries
+		WHERE lore_text LIKE ?
+		AND mechanics_text LIKE ?
+		AND antag_text LIKE ?
+		ORDER BY name asc
+		LIMIT [CODEX_ENTRY_LIMIT]"},
+		search_string,
+		search_string,
+		search_string
+		)
+	// Execute the query, returning us a list of types we can retrieve from the list indexes.
+	cursor.Execute(codex_index)
+	while(cursor.NextRow())
+		var/row = cursor.GetRowData()
+		fulltext_results += index_file[row["name"]]
+		CHECK_TICK
+
+	// -- Dynamic End
 
 	priority_results += fulltext_results
 	. = search_cache[searching] = priority_results

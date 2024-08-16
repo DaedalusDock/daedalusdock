@@ -91,7 +91,7 @@ SUBSYSTEM_DEF(codex)
 	prepare_search_database()
 	. = ..()
 
-/datum/controller/subsystem/codex/proc/fire(resumed)
+/datum/controller/subsystem/codex/fire(resumed)
 
 	var/database/query/cursor = new //Prep the cursor so we don't churn it.
 
@@ -408,13 +408,6 @@ SUBSYSTEM_DEF(codex)
 
 	index_generating = FALSE //The database is now in a safe stuff for us to begin processing dynamic entries.
 	var/dynqueue_len = length(index_generating)
-	if(unregistered_dynamic_entries) //Do we have any waiting entries?
-		to_chat(world, span_debug("Codex: Indexing [dynqueue_len] dynamic entries"))
-		for(var/datum/codex_entry/dyn_record in unregistered_dynamic_entries)
-			register_dynamic_record(dyn_record)
-			CHECK_TICK
-		unregistered_dynamic_entries.Cut()
-		to_chat(world, span_debug("\tCodex: Done."))
 
 	if(drop_existing)
 		to_chat(world, span_debug("Codex: Collation complete.\nCodex: Index ready."))

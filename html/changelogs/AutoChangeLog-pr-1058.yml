@@ -1,8 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - balance: Disposals damage has been HEAVVVVVVVVVVVVVIIILLLLLLLLYYYYYY reduced.
-  - qol: Mobs in disposals will now cause loud banging to occur as they travel down
-      and get hurt.
-  - qol: You can now use the disposals UI from within the bin.
-  - tweak: Adjusted the text styling of Hearing.

@@ -1,7 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: A stomach that dies now properly removes drug effects from drugs present
-      inside.
-  - bugfix: IPCs don't process reagents.
-  - bugfix: Not having a liver no longer somewhat breaks your bloodstream.

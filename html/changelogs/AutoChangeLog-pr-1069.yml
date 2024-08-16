@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - bugfix: Fixes various minor map issues
-  - balance: The Atmospheric SMES unit starts with input and output on.

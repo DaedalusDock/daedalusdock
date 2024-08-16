@@ -1,7 +1,8 @@
 SUBSYSTEM_DEF(codex)
 	name = "Codex"
-	flags = SS_NO_FIRE
+	flags = SS_HIBERNATE | SS_BACKGROUND
 	init_order = INIT_ORDER_CODEX
+	wait = 1
 
 	var/regex/linkRegex
 	var/regex/trailingLinebreakRegexStart
@@ -51,6 +52,11 @@ SUBSYSTEM_DEF(codex)
 
 
 /datum/controller/subsystem/codex/Initialize()
+
+	hibernate_checks = list(
+		NAMEOF(src, unregistered_dynamic_entries)
+	)
+
 	// Codex link syntax is such:
 	// <l>keyword</l> when keyword is mentioned verbatim,
 	// <span codexlink='keyword'>whatever</span> when shit gets tricky
@@ -84,6 +90,38 @@ SUBSYSTEM_DEF(codex)
 	// Prepare the search database.
 	prepare_search_database()
 	. = ..()
+
+/datum/controller/subsystem/codex/proc/fire(resumed)
+
+	var/database/query/cursor = new //Prep the cursor so we don't churn it.
+
+	while(unregistered_dynamic_entries)
+		var/datum/codex_entry/dyn_record = unregistered_dynamic_entries[unregistered_dynamic_entries.len]
+
+		// Insert the new search record.
+		cursor.Add(
+			"INSERT INTO dynamic_codex_entries (name, lore_text, mechanics_text, antag_text) VALUES (?,?,?,?)",
+			dyn_record.name,
+			dyn_record.lore_text,
+			dyn_record.mechanics_text,
+			dyn_record.antag_text
+		)
+		if(!cursor.Execute(codex_index))
+			message_admins("A dynamic codex entry failed to register. The codex search index may be unsafe, and has been disabled.")
+			index_disabled = TRUE
+			search_cache.Cut()
+			CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
+
+		//Add the new entry to the tracking list
+		dynamic_entries += dyn_record
+		unregistered_dynamic_entries -= dyn_record
+
+		if(MC_TICK_CHECK)
+			return
+
+	//Finally, clear the search cache.
+	search_cache.Cut()
+
 
 /datum/controller/subsystem/codex/proc/parse_links(string, viewer)
 	while(linkRegex.Find(string))
@@ -372,7 +410,7 @@ SUBSYSTEM_DEF(codex)
 	if(unregistered_dynamic_entries) //Do we have any waiting entries?
 		to_chat(world, span_debug("Codex: Indexing [dynqueue_len] dynamic entries"))
 		for(var/datum/codex_entry/dyn_record in unregistered_dynamic_entries)
-			cache_dynamic_record(dyn_record)
+			register_dynamic_record(dyn_record)
 			CHECK_TICK
 		unregistered_dynamic_entries.Cut()
 		to_chat(world, span_debug("\tCodex: Done."))
@@ -474,36 +512,13 @@ SUBSYSTEM_DEF(codex)
 
 		CHECK_TICK //We'd deadlock the server otherwise.
 
-/// Insert a newly created dynamic record into the dynamic record table, so that it's searchable.
-/// Otherwise, just marks the fallback search cache as dirty and calls it done.
+/// Queue a new dynamic record for insertion to the dynamic search index.
 /datum/controller/subsystem/codex/proc/cache_dynamic_record(datum/codex_entry/dyn_record)
-	if(!initialized) //If we haven't initialized, but we're creating a dynamic record, something has gone wrong.
-		to_chat(world, span_warning("\tCodex: Attempted to create dynamic record before SSCodex init!"))
-		CRASH("Attempted to create dynamic record before SSCodex init | Entry Name: [dyn_record.name]")
 	if(!codex_index || index_disabled) // Initialized but no index, or we tripped the breaker. Clear the legacy search cache and return.
 		search_cache.Cut()
 		return
-	if(index_generating) //Queue and return unless we're processing new entries.
-		unregistered_dynamic_entries += dyn_record
-		return
-	var/database/query/cursor = new
-	// Insert the new search record.
-	cursor.Add(
-		"INSERT INTO dynamic_codex_entries (name, lore_text, mechanics_text, antag_text) VALUES (?,?,?,?)",
-		dyn_record.name,
-		dyn_record.lore_text,
-		dyn_record.mechanics_text,
-		dyn_record.antag_text
-	)
-	if(!cursor.Execute(codex_index))
-		message_admins("A dynamic codex entry failed to register. The codex search index may be unsafe, and has been disabled.")
-		index_disabled = TRUE
-		search_cache.Cut()
-		CRASH("Codex: ABORTING! Database error: [cursor.Error()] | [cursor.ErrorMsg()]")
-
-
-	//Finally, clear the search cache.
-	search_cache.Cut()
+	unregistered_dynamic_entries += dyn_record
+	return
 
 #undef CODEX_SEARCH_INDEX_FILE
 #undef CODEX_ENTRY_LIMIT

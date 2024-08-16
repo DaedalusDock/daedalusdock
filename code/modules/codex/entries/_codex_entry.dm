@@ -28,10 +28,13 @@
 
 	SScodex.all_entries += src
 
-	#ifdef UNIT_TESTS
-	if(SScodex.initialized) //If the codex subsystem is initialized, the entry is almost certainly dynamic and we can just force the datum to be marked as such.
-		stack_trace("Codex entry generated post-SSCodex init, but is not marked as dynamic in constructor.")
-	#endif
+	if(SScodex.initialized && !_dynamic)
+		_dynamic = TRUE //Override post-init codex entries to be dynamic
+		stack_trace("Forced post-SSCodex init codex-entry record to be dynamic. This shouldn't need to happen. Check this call stack!")
+
+	if(!SScodex.initialized && _dynamic) //If we haven't initialized, but we're creating a dynamic record, something has gone wrong.
+		to_chat(world, span_warning("\tCodex: Attempted to create dynamic record before SSCodex init!"))
+		CRASH("Attempted to create dynamic record before SSCodex init | Entry Name: [_display_name]")
 
 	if(_display_name)
 		name = _display_name

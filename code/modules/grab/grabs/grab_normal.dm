@@ -125,7 +125,7 @@
 		else
 			if(headbutt(G))
 				if(drop_headbutt)
-					let_go()
+					qdel(G)
 				return TRUE
 	return FALSE
 

@@ -106,6 +106,9 @@
 /// Uncomment this to enable debugging tools for map making.
 //#define DEBUG_MAPS
 
+/// Set this value to FALSE to test job requirements working.
+#define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
+
 /// Force codex SQLite generation and loading despite being a debug server. Also forces the codex to always regenerate on world start.
 //#define FORCE_CODEX_DATABASE 1
 
@@ -207,6 +210,7 @@
 #define GC_FAILURE_HARD_LOOKUP
 //Test at full capacity, the extra cost doesn't matter
 #define TIMER_DEBUG
+#define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
 #endif
 
 #ifdef TGS

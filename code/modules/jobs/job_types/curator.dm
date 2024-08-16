@@ -10,8 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
-		/datum/employer/contractor,
-		/datum/employer/priapus
+		/datum/employer/none,
 	)
 
 	outfits = list(
@@ -20,9 +19,6 @@
 			SPECIES_PLASMAMAN = /datum/outfit/job/curator/plasmaman,
 		),
 	)
-
-	paycheck = PAYCHECK_EASY
-	paycheck_department = ACCOUNT_STATION_MASTER
 
 	departments_list = list(
 		/datum/job_department/service,

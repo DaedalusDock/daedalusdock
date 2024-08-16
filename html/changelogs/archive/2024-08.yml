@@ -1,0 +1,51 @@
+2024-08-01:
+  francinum:
+  - bugfix: Removed the random wall in Dorms/Recreation
+2024-08-03:
+  Kapu1178:
+  - bugfix: Fixed an issue with some UI buttons where they would not trigger onClick
+      actions due to a byond bug.
+  SmArtkar:
+  - bugfix: Fixed an issue with moveloops.
+2024-08-06:
+  Kapu1178:
+  - qol: Improved ID rendering
+2024-08-08:
+  Kapu1178:
+  - bugfix: You can tell if someone is dead if you are within 1 tile of them.
+  - balance: The Haloperidol rounds in the safari rifle have been swapped for Ryetalyn
+      rounds.
+  - tweak: Labcoats no longer hold syringe guns.
+2024-08-10:
+  ToasterBan:
+  - rscadd: the swag set, rollerblades, skateboards, wheelys and delinquent hat to
+      the loadout shop
+2024-08-11:
+  francinum:
+  - bugfix: Connector port in botany maint storage closet is now on the right layer
+  - bugfix: Central Medbay now has an air alarm
+  - bugfix: You can no longer sneak into medbay with maint access via robotics maintenance.
+2024-08-14:
+  ToasterBan:
+  - rscadd: Skill debuffs to drug withdrawals
+  - rscadd: Handicraft skill boost due to nicotine (Daedalus Dock does not promote
+      nicotine usage but it does not deny how cool and radical it is)
+  - tweak: using a cheap lighter is now a handicraft check rather than pure RNG
+  - tweak: the description of the handicraft skill has been changed
+2024-08-16:
+  Kapu1178:
+  - balance: Disposals damage has been HEAVVVVVVVVVVVVVIIILLLLLLLLYYYYYY reduced.
+  - qol: Mobs in disposals will now cause loud banging to occur as they travel down
+      and get hurt.
+  - qol: You can now use the disposals UI from within the bin.
+  - tweak: Adjusted the text styling of Hearing.
+  - bugfix: A stomach that dies now properly removes drug effects from drugs present
+      inside.
+  - bugfix: IPCs don't process reagents.
+  - bugfix: Not having a liver no longer somewhat breaks your bloodstream.
+  ShadowLarkens:
+  - bugfix: Fixed action buttons relative to EAST,SOUTH, or CENTER being improperly
+      moved during view_audit_buttons()
+  francinum:
+  - bugfix: Fixes various minor map issues
+  - balance: The Atmospheric SMES unit starts with input and output on.

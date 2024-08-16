@@ -28,6 +28,7 @@
 		embedded.forceMove(user.drop_location())
 
 	user.visible_message(
-		span_notice("[user] pulls [embedded] from [target]'s [affected.plaintext_zone].")
+		span_notice("[user] pulls [embedded] from [target]'s [affected.plaintext_zone]."),
+		vision_distance = COMBAT_MESSAGE_RANGE
 	)
 	..()

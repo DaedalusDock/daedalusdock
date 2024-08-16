@@ -6,7 +6,7 @@
 	///How many credits are currently held in the bank account.
 	var/account_balance = 0
 	///If there are things effecting how much income a player will get, it's reflected here 1 is standard for humans.
-	var/payday_modifier
+	var/payday_modifier = 1
 	///The job datum of the account owner.
 	var/datum/job/account_job
 	///List of the physical ID card objects that are associated with this bank_account
@@ -25,10 +25,9 @@
 	///Is there a CRAB 17 on the station draining funds? Prevents manual fund transfer. pink levels are rising
 	var/being_dumped = FALSE
 
-/datum/bank_account/New(newname, job, modifier = 1, player_account = TRUE)
+/datum/bank_account/New(newname, job, player_account = TRUE)
 	account_holder = newname
 	account_job = job
-	payday_modifier = modifier
 	add_to_accounts = player_account
 	setup_unique_account_id()
 
@@ -119,22 +118,21 @@
 
 /**
  * This proc handles passive income gain for players, using their job's paycheck value.
- * Funds are taken from the station master account to hand out to players. This can result in payment brown-outs if the station is poor.
+ * Funds are taken from the given bank account unless null. This can result in payment brown-outs if the company is poor.
  */
-/datum/bank_account/proc/payday(amt_of_paychecks = 1, free = FALSE)
+/datum/bank_account/proc/payday(amt_of_paychecks = 1, datum/bank_account/drain_from = null)
 	if(!account_job)
 		return
 
 	var/money_to_transfer = round(account_job.paycheck * payday_modifier * amt_of_paychecks)
 
-	if(free)
+	if(isnull(drain_from))
 		adjust_money(money_to_transfer)
 		SSblackbox.record_feedback("amount", "free_income", money_to_transfer)
-		log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from income.")
+		log_econ("[money_to_transfer] credits were given to [src.account_holder]'s account from [drain_from.account_holder].")
 		return TRUE
 	else
-		var/datum/bank_account/D = SSeconomy.station_master
-		if(D && transfer_money(D, money_to_transfer))
+		if(transfer_money(drain_from, money_to_transfer))
 			return TRUE
 	return FALSE
 

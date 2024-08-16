@@ -294,8 +294,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	var/mob/dead/new_player/body = parent?.mob
 	if(istype(body))
 		spawn(-1)
-			body.new_player_panel()
-
+			body.npp.open()
 
 	return TRUE
 

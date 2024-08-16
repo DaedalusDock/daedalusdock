@@ -51,7 +51,7 @@
 	brother1_icon.Blend(blood_overlay, ICON_OVERLAY)
 	brother1_icon.Shift(WEST, 8)
 
-	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/scientist/consistent, brother2)
+	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/doctor, brother2)
 	blood_overlay = icon('icons/effects/blood.dmi', "uniformblood")
 	blood_overlay.Blend(COLOR_HUMAN_BLOOD, ICON_MULTIPLY)
 	brother2_icon.Blend(blood_overlay, ICON_OVERLAY)
@@ -77,18 +77,24 @@
 			brother_text += ", "
 	return brother_text
 
-/datum/antagonist/brother/proc/give_meeting_area()
-	if(!owner.current || !team || !team.meeting_area)
+/datum/antagonist/brother/apply_innate_effects(mob/living/mob_override)
+	. = ..()
+	var/mob/living/M = mob_override || owner.current
+	if(!M.mind?.current || !team || !team.meeting_area)
 		return
-	to_chat(owner.current, "<span class='infoplain'><B>Your designated meeting area:</B> [team.meeting_area]</span>")
+
 	antag_memory += "<b>Meeting Area</b>: [team.meeting_area]<br>"
 
-/datum/antagonist/brother/greet()
+/datum/antagonist/brother/build_greeting()
+	. = ..()
+	if(!team || !team.meeting_area)
+		return
+
+	. += "<B>Your designated meeting area is:</B> [team.meeting_area]"
+
+/datum/antagonist/brother/greeting_header()
 	var/brother_text = get_brother_names()
-	to_chat(owner.current, span_alertsyndie("You are the [owner.special_role] of [brother_text]."))
-	to_chat(owner.current, "The Syndicate only accepts those that have proven themselves. Prove yourself and prove your [team.member_name]s by completing your objectives together!")
-	owner.announce_objectives()
-	give_meeting_area()
+	return "<u><span style='font-size: 200%'>You are the [owner.special_role] of [brother_text].</span></u>"
 
 /datum/antagonist/brother/proc/finalize_brother()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)

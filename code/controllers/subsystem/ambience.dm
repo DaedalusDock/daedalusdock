@@ -27,6 +27,9 @@ SUBSYSTEM_DEF(ambience)
 			client_old_areas -= client_iterator
 			continue
 
+		if(!client_mob.can_hear())
+			continue
+
 		//Check to see if the client-mob is in a valid area
 		var/area/current_area = get_area(client_mob)
 		if(!current_area) //Something's gone horribly wrong
@@ -99,13 +102,12 @@ SUBSYSTEM_DEF(ambience)
 		UnregisterSignal(old_tracked_area, COMSIG_AREA_POWER_CHANGE)
 		ambience_tracked_area = null
 
-	if(!client)
-		playing_ambience = null
-		return
-
 	if(new_area)
 		ambience_tracked_area = new_area
 		RegisterSignal(ambience_tracked_area, COMSIG_AREA_POWER_CHANGE, PROC_REF(refresh_looping_ambience), TRUE)
+
+	if(!client)
+		return
 
 	refresh_looping_ambience()
 
@@ -115,22 +117,22 @@ SUBSYSTEM_DEF(ambience)
 	if(!client)
 		return
 
-	var/area/my_area = get_area(src)
+	var/sound_file = ambience_tracked_area?.ambient_buzz
 
-	if(!(client.prefs.toggles & SOUND_SHIP_AMBIENCE) || !my_area?.ambient_buzz)
+	if(!(client.prefs.toggles & SOUND_SHIP_AMBIENCE) || !sound_file || !can_hear())
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
-		playing_ambience = null
+		client.playing_ambience = null
 		return
 
 	//Station ambience is dependant on a functioning and charged APC.
-	if(!is_mining_level(my_area.z) && ((!my_area.apc || !my_area.apc.operating || !my_area.apc.cell?.charge && my_area.requires_power)))
+	if(!is_mining_level(ambience_tracked_area.z) && ((!ambience_tracked_area.apc || !ambience_tracked_area.apc.operating || !ambience_tracked_area.apc.cell?.charge && ambience_tracked_area.requires_power)))
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
-		playing_ambience = null
+		client.playing_ambience = null
 		return
 
 	else
-		if(playing_ambience == ambience_tracked_area?.ambient_buzz)
+		if(client.playing_ambience == sound_file)
 			return
 
-		playing_ambience = my_area.ambient_buzz
-		SEND_SOUND(src, sound(my_area.ambient_buzz, repeat = 1, wait = 0, volume = my_area.ambient_buzz_vol, channel = CHANNEL_BUZZ))
+		client.playing_ambience = sound_file
+		SEND_SOUND(src, sound(sound_file, repeat = 1, wait = 0, volume = ambience_tracked_area.ambient_buzz_vol, channel = CHANNEL_BUZZ))

@@ -1,3 +1,4 @@
+GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 /**
  * Perform a stat roll, returning a roll result datum.
  *
@@ -150,6 +151,13 @@
 	var/seperator = "<span style='color: #bbbbad;font-style: italic'>: </span>"
 
 	return "[prefix] <span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
+
+/datum/roll_result/success
+	outcome = SUCCESS
+	success_prob = 100
+	crit_success_prob = 0
+	roll = 18
+	requirement = 3
 
 /mob/living/verb/testroll()
 	name = "testroll"

@@ -257,12 +257,12 @@ Security HUDs! Basic mode shows only the job.
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
 	var/perpname = get_face_name(get_id_name(""))
-	if(perpname && GLOB.data_core)
-		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
+	if(perpname && SSdatacore)
+		var/datum/data/record/security/R = SSdatacore.get_record_by_name(name, DATACORE_RECORDS_SECURITY)
 		if(R)
 			var/new_state
 			var/has_criminal_entry = TRUE
-			switch(R.fields["criminal"])
+			switch(R.fields[DATACORE_CRIMINAL_STATUS])
 				if(CRIMINAL_WANTED)
 					new_state = "hudwanted"
 				if(CRIMINAL_INCARCERATED)

@@ -712,7 +712,11 @@
 	if(C.get_timed_status_effect_duration(/datum/status_effect/jitter) >= 6 SECONDS)
 		C.adjust_timed_status_effect(-6 SECONDS * removed, /datum/status_effect/jitter)
 
-	C.adjust_drowsyness(16 * removed)
+	if(C.stat == CONSCIOUS)
+		C.adjust_drowsyness(16 * removed, up_to = 180)
+	else
+		C.adjust_drowsyness((16 * removed) / 5, up_to = 180)
+
 	C.adjust_timed_status_effect(-3 * removed, /datum/status_effect/drugginess)
 
 	if (C.hallucination >= 5)

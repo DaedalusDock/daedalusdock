@@ -97,10 +97,10 @@ GLOBAL_LIST_EMPTY(blood_datums)
 	name = "AB+"
 
 /datum/blood/human/omin
-	name = "AB-"
+	name = "O-"
 
 /datum/blood/human/opos
-	name = "AB+"
+	name = "O+"
 
 /datum/blood/xenomorph
 	name = "??"

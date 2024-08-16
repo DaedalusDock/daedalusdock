@@ -12,11 +12,12 @@ import { InterfaceLockNoticeBox } from './common/InterfaceLockNoticeBox';
 
 export const CargoExpress = (props) => {
   const { act, data } = useBackend();
+  const { locked } = data;
   return (
     <Window width={600} height={700}>
       <Window.Content scrollable>
-        <InterfaceLockNoticeBox accessText="a QM-level ID card" />
-        {!data.locked && <CargoExpressContent />}
+        <InterfaceLockNoticeBox />
+        {!locked && <CargoExpressContent />}
       </Window.Content>
     </Window>
   );
@@ -24,14 +25,15 @@ export const CargoExpress = (props) => {
 
 const CargoExpressContent = (props) => {
   const { act, data } = useBackend();
+  const { uiCurrency = '' } = data;
   return (
     <>
       <Section
-        title="Cargo Express"
+        title={data.uiTitle}
         buttons={
           <Box inline bold>
             <AnimatedNumber value={Math.round(data.points)} />
-            {' credits'}
+            {uiCurrency}
           </Box>
         }
       >

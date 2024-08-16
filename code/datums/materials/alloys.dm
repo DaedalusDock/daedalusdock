@@ -33,7 +33,7 @@
 	desc = "The heavy duty result of infusing iron with plasma."
 	color = "#706374"
 	greyscale_colors = "#706374"
-	value_per_unit = 0.135
+	value_per_unit = ((/datum/material/iron::value_per_unit * 0.5) + (/datum/material/plasma::value_per_unit * 0.5)) * 1.1
 	strength_modifier = 1.25
 	integrity_modifier = 1.5 // Heavy duty.
 	armor_modifiers = list(BLUNT = 1.4, PUNCTURE = 1.4, SLASH = 0, LASER = 1.1, ENERGY = 1.1, BOMB = 1.5, BIO = 1, FIRE = 1.1, ACID = 1)
@@ -72,7 +72,7 @@
 	desc = "The extremely heat resistant result of infusing titanium with plasma."
 	color = "#3a313a"
 	greyscale_colors = "#3a313a"
-	value_per_unit = 0.225
+	value_per_unit = ((/datum/material/titanium::value_per_unit * 0.5) + (/datum/material/plasma::value_per_unit * 0.5)) * 1.2
 	strength_modifier = 0.9 // It's a lightweight alloy.
 	integrity_modifier = 1.3
 	armor_modifiers = list(BLUNT = 1.1, PUNCTURE = 1.1, SLASH = 0, LASER = 1.4, ENERGY = 1.4, BOMB = 1.1, BIO = 1.2, FIRE = 1.5, ACID = 1)
@@ -100,7 +100,7 @@
 	armor_modifiers = list(BLUNT = 0.8, PUNCTURE = 0.8, SLASH = 0, LASER = 1.2, ENERGY = 1.2, BOMB = 0.3, BIO = 1.2, FIRE = 2, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/plasmaglass
 	shard_type = /obj/item/shard/plasma
-	value_per_unit = 0.075
+	value_per_unit = ((/datum/material/glass::value_per_unit * 1) + (/datum/material/plasma::value_per_unit * 0.5)) * 1.1
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/glass=1, /datum/material/plasma=0.5)
 	wall_type = null
@@ -118,7 +118,7 @@
 	armor_modifiers = list(BLUNT = 1.2, PUNCTURE = 1.2, SLASH = 0, LASER = 0.8, ENERGY = 0.8, BOMB = 0.5, BIO = 1.2, FIRE = 0.8, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/titaniumglass
 	shard_type = /obj/item/shard/titanium
-	value_per_unit = 0.04
+	value_per_unit = ((/datum/material/glass::value_per_unit * 1) + (/datum/material/titanium::value_per_unit * 0.5)) * 1.04
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/glass=1, /datum/material/titanium=0.5)
 	wall_type = null
@@ -137,7 +137,7 @@
 	armor_modifiers = list(BLUNT = 1.2, PUNCTURE = 1.2, SLASH = 0, LASER = 1.2, ENERGY = 1.2, BOMB = 0.5, BIO = 1.2, FIRE = 2, ACID = 2)
 	sheet_type = /obj/item/stack/sheet/plastitaniumglass
 	shard_type = /obj/item/shard/plastitanium
-	value_per_unit = 0.125
+	value_per_unit = (/datum/material/glass::value_per_unit * 1) + (/datum/material/alloy/plastitanium::value_per_unit * 0.5) * 1.2
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/glass=1, /datum/material/alloy/plastitanium=0.5)
 
@@ -156,7 +156,7 @@
 	integrity_modifier = 1.5
 	armor_modifiers = list(BLUNT = 1.4, PUNCTURE = 1.4, SLASH = 0, LASER = 1.2, ENERGY = 1.2, BOMB = 1.5, BIO = 1.2, FIRE = 1.2, ACID = 1.2)
 	sheet_type = /obj/item/stack/sheet/mineral/abductor
-	value_per_unit = 0.4
+	value_per_unit = 1
 	categories = list(MAT_CATEGORY_RIGID=TRUE, MAT_CATEGORY_BASE_RECIPES=TRUE, MAT_CATEGORY_ITEM_MATERIAL=TRUE)
 	composition = list(/datum/material/iron=2, /datum/material/plasma=2)
 	reinforced_wall_icon = 'icons/turf/walls/solid_wall_reinforced.dmi'

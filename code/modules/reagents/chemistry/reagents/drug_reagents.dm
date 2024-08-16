@@ -89,6 +89,16 @@
 	C.AdjustImmobilized(-10 * removed)
 	. = TRUE
 
+/datum/reagent/drug/nicotine/on_mob_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.stats?.set_skill_modifier(1, /datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE)
+
+/datum/reagent/drug/nicotine/on_mob_end_metabolize(mob/living/carbon/C, class)
+	if(class != CHEM_BLOOD)
+		return
+	C.stats?.remove_skill_modifier(/datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE)
+
 /datum/reagent/drug/nicotine/overdose_process(mob/living/carbon/C)
 	. = ..()
 	APPLY_CHEM_EFFECT(C, CE_PULSE, 2)

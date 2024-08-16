@@ -1,8 +1,8 @@
 /proc/button_element(trg, text, action, class, style)
-	return "<a href='?src=\ref[trg];[action]' onClick='event.stopPropagation();' [class ? "class='[class]'" : ""] style='cursor:pointer;[style]'>[text]</a>"
+	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' [class ? "class='[class]'" : ""] style='cursor:pointer;[style]'>[text]</a>"
 
 /proc/color_button_element(trg, color, action)
-	return "<a href='?src=\ref[trg];[action]' onClick='event.stopPropagation();' class='box' style='background-color: [color];cursor: pointer'></a>"
+	return "<a href='byond://?src=\ref[trg];[action]' onClick='event.stopPropagation();' class='box' style='background-color: [color];cursor: pointer'></a>"
 
 /// Display a DM icon in a a browser.
 /proc/icon_element(icon, state, dir, moving, frame, style)
@@ -28,3 +28,8 @@
 			});
 			</script>
 	"}
+
+/// Chat tag image embed, see chat_tags.dm
+#define CHAT_TAG(img) "<img class='chat_tag' src='[img]'>"
+/// Radio tag image embed, see chat_tags.dm
+#define RADIO_TAG(img)"<img class='radio_tag' src='[img]'>"

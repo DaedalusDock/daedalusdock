@@ -133,6 +133,8 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			src << link(href_list["link"])
 	if (hsrc)
 		var/datum/real_src = hsrc
+		if(istext(real_src))
+			real_src = locate(real_src)
 		if(QDELETED(real_src))
 			return
 

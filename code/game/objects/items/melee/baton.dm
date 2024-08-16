@@ -266,7 +266,7 @@
 	desc = "A strange box containing wood working tools and an instruction paper to turn stun batons into something else."
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "uk"
-	custom_price = PAYCHECK_HARD * 4.5
+	custom_price = PAYCHECK_ASSISTANT * 7
 
 /obj/item/melee/baton/telescopic
 	name = "telescopic baton"

@@ -1,7 +1,8 @@
 SUBSYSTEM_DEF(codex)
 	name = "Codex"
-	flags = SS_HIBERNATE | SS_BACKGROUND
+	flags = SS_HIBERNATE | SS_BACKGROUND | SS_TICKER
 	init_order = INIT_ORDER_CODEX
+	priority = FIRE_PRIORITY_CODEX
 	wait = 1
 
 	var/regex/linkRegex

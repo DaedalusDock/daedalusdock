@@ -5813,9 +5813,7 @@
 /area/station/maintenance/starboard/fore)
 "bYj" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/coco{
-	pixel_x = 8
-	},
+/obj/item/reagent_containers/glass/mug/coco,
 /turf/open/floor/wood,
 /area/station/security/checkpoint/customs)
 "bYt" = (
@@ -10403,10 +10401,7 @@
 /obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 8
 	},
-/obj/item/reagent_containers/food/drinks/britcup{
-	pixel_x = -6;
-	pixel_y = 8
-	},
+/obj/item/reagent_containers/glass/mug/brit,
 /turf/open/floor/iron/norn,
 /area/station/medical/break_room)
 "dLF" = (
@@ -55611,10 +55606,7 @@
 	pixel_y = -1
 	},
 /obj/item/radio/intercom/directional/north,
-/obj/item/reagent_containers/food/drinks/mug{
-	pixel_x = -4;
-	pixel_y = 4
-	},
+/obj/item/reagent_containers/glass/mug,
 /turf/open/floor/wood,
 /area/station/command/corporate_showroom)
 "uHx" = (

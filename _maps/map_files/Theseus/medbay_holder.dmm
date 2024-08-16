@@ -304,10 +304,7 @@
 	pixel_y = -1
 	},
 /obj/item/radio/intercom/directional/north,
-/obj/item/reagent_containers/food/drinks/mug{
-	pixel_x = -4;
-	pixel_y = 4
-	},
+/obj/item/reagent_containers/glass/mug,
 /turf/open/floor/wood,
 /area/station/command/corporate_showroom)
 "bh" = (

@@ -49,3 +49,6 @@
   francinum:
   - bugfix: Fixes various minor map issues
   - balance: The Atmospheric SMES unit starts with input and output on.
+2024-08-17:
+  Spyroshark:
+  - bugfix: You can now properly set your job title back to Clown.

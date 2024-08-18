@@ -10,7 +10,6 @@
 		/obj/item/reagent_containers/pill/bicaridine = 7,
 		/obj/item/reagent_containers/pill/kelotane = 7,
 		/obj/item/reagent_containers/pill/dylovene = 2,
-		/obj/item/healthanalyzer/wound = 2,
 		/obj/item/stack/medical/bone_gel/twelve = 2
 	)
 	contraband = list(

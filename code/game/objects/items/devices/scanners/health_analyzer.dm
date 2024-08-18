@@ -373,43 +373,6 @@
 
 	to_chat(user, jointext(data, "<br>"), type = MESSAGE_TYPE_INFO)
 
-/obj/item/healthanalyzer/wound
-	name = "first aid analyzer"
-	icon_state = "adv_spectrometer"
-	desc = "A prototype MeLo-Tech medical scanner used to diagnose injuries and recommend treatment for serious wounds, but offers no further insight into the patient's health. You hope the final version is less annoying to read!"
-	var/next_encouragement
-	var/greedy
-
-/obj/item/healthanalyzer/wound/attack_self(mob/user)
-	if(next_encouragement < world.time)
-		playsound(src, 'sound/machines/ping.ogg', 50, FALSE)
-		var/list/encouragements = list("briefly displays a happy face, gazing emptily at you", "briefly displays a spinning cartoon heart", "displays an encouraging message about eating healthy and exercising", \
-				"reminds you that everyone is doing their best", "displays a message wishing you well", "displays a sincere thank-you for your interest in first-aid", "formally absolves you of all your sins")
-		to_chat(user, span_notice("\The [src] makes a happy ping and [pick(encouragements)]!"))
-		next_encouragement = world.time + 10 SECONDS
-		greedy = FALSE
-	else if(!greedy)
-		to_chat(user, span_warning("\The [src] displays an eerily high-definition frowny face, chastizing you for asking it for too much encouragement."))
-		greedy = TRUE
-	else
-		playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
-		if(isliving(user))
-			var/mob/living/L = user
-			to_chat(L, span_warning("\The [src] makes a disappointed buzz and pricks your finger for being greedy. Ow!"))
-			L.adjustBruteLoss(4)
-			L.dropItemToGround(src)
-
-/obj/item/healthanalyzer/wound/attack(mob/living/carbon/patient, mob/living/carbon/human/user)
-	add_fingerprint(user)
-	user.visible_message(span_notice("[user] scans [patient] for serious injuries."), span_notice("You scan [patient] for serious injuries."))
-
-	if(!istype(patient))
-		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
-		to_chat(user, span_notice("\The [src] makes a sad buzz and briefly displays a frowny face, indicating it can't scan [patient]."))
-		return
-
-	woundscan(user, patient, src)
-
 #undef SCANMODE_HEALTH
 #undef SCANMODE_CHEM
 #undef SCANMODE_SURGERY

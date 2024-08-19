@@ -170,23 +170,20 @@
 	tick_interval = initial(tick_interval)
 
 /datum/status_effect/incapacitating/sleeping/tick()
-	if(owner.maxHealth)
-		var/health_ratio = owner.health / owner.maxHealth
-		var/healing = -0.2
+	var/healing = -0.2
+	if(isturf(owner.loc))
 		if((locate(/obj/structure/bed) in owner.loc))
 			healing -= 0.3
 		else if((locate(/obj/structure/table) in owner.loc))
 			healing -= 0.1
-		for(var/obj/item/bedsheet/bedsheet in range(owner.loc,0))
-			if(bedsheet.loc != owner.loc) //bedsheets in your backpack/neck don't give you comfort
-				continue
+
+		if((locate(/obj/structure/table) in owner.loc))
 			healing -= 0.1
-			break //Only count the first bedsheet
-		if(health_ratio > 0.8)
-			owner.adjustBruteLoss(healing)
-			owner.adjustFireLoss(healing)
-			owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
-		owner.stamina.adjust(-healing)
+
+	if(owner.getToxLoss() >= 20)
+		owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
+
+	owner.stamina.adjust(-healing)
 
 	// Drunkenness gets reduced by 0.3% per tick (6% per 2 seconds)
 	owner.set_drunk_effect(owner.get_drunk_amount() * 0.997)

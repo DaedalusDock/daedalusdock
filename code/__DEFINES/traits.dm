@@ -522,6 +522,11 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_VOIDSTORM_IMMUNE "voidstorm_immune"
 #define TRAIT_WEATHER_IMMUNE "weather_immune" //Immune to ALL weather effects.
 
+/// Mob is dreaming
+#define TRAIT_DREAMING "currently_dreaming"
+/// Mob cannot dream
+#define TRAIT_CANNOT_DREAM "unable_to_dream"
+
 //non-mob traits
 /// Used for limb-based paralysis, where replacing the limb will fix it.
 #define TRAIT_PARALYSIS "paralysis"

@@ -35,6 +35,8 @@
 	var/silent = 0
 	///How many dream images we have left to send
 	var/dreaming = 0
+	///The cooldown for dreams.
+	COOLDOWN_DECLARE(dream_cooldown)
 
 	///Whether or not the mob is handcuffed
 	var/obj/item/handcuffed = null

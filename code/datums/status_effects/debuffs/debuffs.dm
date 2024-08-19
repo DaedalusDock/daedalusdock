@@ -190,7 +190,7 @@
 
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.handle_dreams()
+		carbon_owner.try_dream()
 
 	if(prob(2) && owner.health > owner.crit_threshold)
 		owner.emote("snore")

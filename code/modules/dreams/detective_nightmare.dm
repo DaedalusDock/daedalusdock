@@ -6,18 +6,27 @@
 /datum/dream/detective_nightmare/WrapMessage(mob/living/carbon/dreamer, message)
 	return message
 
+/datum/dream/detective_nightmare/proc/get_dream_name(mob/living/carbon/dreamer)
+	if(prob(1))
+		return "Harry"
+
+	var/list/name_split = splittext(dreamer.mind.name, " ")
+	return name_split[1]
+
 /datum/dream/detective_nightmare/limbic_system
 	abstract_type = /datum/dream/detective_nightmare/limbic_system
 
-	dream_flags = parent_type::dream_flags | DREAM_ONCE_PER_ROUND
+	dream_flags = parent_type::dream_flags | DREAM_ONCE_PER_ROUND | DREAM_CUT_SHORT_IS_COMPLETE
 	weight = 350
+
+	dream_cooldown = 25 SECONDS
 
 	/// The fragments are deterministic, just need to replacetext the name.
 	var/list/fragments
 
 /datum/dream/detective_nightmare/limbic_system/GenerateDream(mob/living/carbon/dreamer)
 	. = list()
-	var/name = prob(1) ? "Harry" : (dreamer.mind.name)
+	var/name = get_dream_name(dreamer)
 
 	for(var/fragment in fragments)
 		.["<i>[span_statsbad(replacetext(fragment, "%NAME%", name))]</i>"] = fragments[fragment]
@@ -47,12 +56,54 @@
 	)
 
 /datum/dream/detective_nightmare/wake_up_harry
-	dream_flags = parent_type::dream_flags | DREAM_ONCE_PER_ROUND
+	dream_flags = parent_type::dream_flags | DREAM_ONCE_PER_ROUND | DREAM_CUT_SHORT_IS_COMPLETE
 	weight = 50
 
 /datum/dream/detective_nightmare/wake_up_harry/GenerateDream(mob/living/carbon/dreamer)
 	return list(
-		"<i>[span_statsgood("Harrier? Harrier?!")]</i>" = rand(1 SECOND, 3 SECONDS),
-		"<i>[span_statsgood("Damn it Harry wake up!")]</i>" = rand(1 SECOND, 3 SECONDS),
-		"<i>[span_statsgood("Harry I am <b>not</b> going to be the one to explain to the station how their prized Harrier DuBois overdosed on Pyrholion, <b>again</b>")].</i>",
+		"<i>[span_statsgood("... Harrier? Harrier?! ...")]</i>" = rand(1 SECOND, 3 SECONDS),
+		"<i>[span_statsgood("... Damn it Harry wake up! ...")]</i>" = rand(1 SECOND, 3 SECONDS),
+		"<i>[span_statsgood("... Harry I am <b>not</b> going to be the one to explain to the station how their prized Harrier DuBois overdosed on Pyrholion, <b>again</b>. ...")]</i>",
 	)
+
+/datum/dream/detective_nightmare/random
+	weight = 2000
+
+/datum/dream/detective_nightmare/random/WrapMessage(mob/living/carbon/dreamer, message)
+	return span_statsbad("<i>... [message] ...</i>")
+
+/datum/dream/detective_nightmare/random/GenerateDream(mob/living/carbon/dreamer)
+	. = list()
+
+	var/name = get_dream_name(dreamer)
+
+	var/list/options = list(
+		"Wake up!",
+		"Help me!",
+		"I couldn't, I'm sorry.",
+		"Useless.",
+		"Tick tock tick tock tick tock tick tock",
+		"I couldn't save them.",
+		"*You hear a loud metallic banging.*",
+		"Get up, %NAME%.",
+		"Get up.",
+		"Get out! I SAID GET OUT!",
+		"*You hear the sound of water dripping onto ceramic.*",
+		"%NAME%? This is the police, we know you're in there, we just want to talk. %NAME%!",
+		"*You hear a distant gunshot, unmistakably a .44 magnum.*",
+		"*You hear the heart wrenching screech of a terrified woman.*",
+		"Don't go... please...",
+		"Pleasepleasepleasepleaseplease.",
+		"Please [dreamer.gender == MALE ? "sir" : "ma'am"] I have nowhere else to turn.",
+		"You're a failure.",
+		"Give up, %NAME%.",
+		"Give up.",
+		"Get out of my office.",
+	)
+
+	for(var/i in 1 to rand(1, 3))
+		if(prob(33))
+			.["[name]!"] = 2 SECONDS
+
+		.[replacetext(pick_n_take(options), "%NAME%", name)] = 3 SECONDS
+

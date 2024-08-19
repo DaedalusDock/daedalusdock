@@ -29,7 +29,7 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
 	var/dream_flags = DREAM_GENERIC
 
 	/// The relative chance this dream will be randomly selected
-	var/weight = 0
+	var/weight = 1000
 
 	/// Causes the mob to sleep long enough for the dream to finish if begun
 	var/sleep_until_finished = FALSE
@@ -61,7 +61,7 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
 	REMOVE_TRAIT(dreamer.mind, TRAIT_DREAMING, DREAMING_SOURCE)
 	COOLDOWN_START(dreamer.mind, dream_cooldown, dream_cooldown)
 
-	if(!cut_short)
+	if(!cut_short || (dream_flags & DREAM_CUT_SHORT_IS_COMPLETE))
 		LAZYOR(dreamer.mind.finished_dream_types, type)
 
 /**

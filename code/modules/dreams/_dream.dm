@@ -1,9 +1,8 @@
 //-------------------------
 // DREAM DATUMS
 
-#define DREAMING_SOURCE "dreaming"
-
 GLOBAL_LIST_EMPTY(generic_dreams_weighted)
+GLOBAL_LIST_EMPTY(detective_dreams_weighted)
 GLOBAL_LIST_EMPTY(all_dreams_weighted)
 
 /proc/init_dreams()
@@ -14,10 +13,11 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
 		var/datum/dream/dream = new dream_type
 		GLOB.all_dreams_weighted[dream] = initial(dream_type.weight)
 
-		if(!initial(dream_type.is_generic))
-			continue
+		if(initial(dream_type.dream_flags) & DREAM_GENERIC)
+			GLOB.generic_dreams_weighted[dream] = initial(dream_type.weight)
 
-		GLOB.generic_dreams_weighted[dream] = initial(dream_type.weight)
+		if(istype(dream, /datum/dream/detective_nightmare))
+			GLOB.detective_dreams_weighted[dream] = initial(dream_type.weight)
 
 /**
  * Contains all the behavior needed to play a kind of dream.
@@ -25,20 +25,21 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
  */
 /datum/dream
 	abstract_type = /datum/dream
+
+	var/dream_flags = DREAM_GENERIC
+
 	/// The relative chance this dream will be randomly selected
 	var/weight = 0
 
 	/// Causes the mob to sleep long enough for the dream to finish if begun
 	var/sleep_until_finished = FALSE
 
-	/// If this dream can be rolled by anyone
-	var/is_generic = TRUE
-
 	var/dream_cooldown = 10 SECONDS
 
 /**
  * Called when beginning a new dream for the dreamer.
  * Gives back a list of dream events. Events can be text or callbacks that return text.
+ * The associated value is the delay FOLLOWING the message at that index, in deciseconds.
  */
 /datum/dream/proc/GenerateDream(mob/living/carbon/dreamer)
 	RETURN_TYPE(/list)
@@ -49,16 +50,19 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
  */
 /datum/dream/proc/OnDreamStart(mob/living/carbon/dreamer)
 	SHOULD_CALL_PARENT(TRUE)
-	ADD_TRAIT(dreamer, TRAIT_DREAMING, DREAMING_SOURCE)
+	ADD_TRAIT(dreamer.mind, TRAIT_DREAMING, DREAMING_SOURCE)
 
 /**
  * Called when the dream ends or is interrupted.
  */
-/datum/dream/proc/OnDreamEnd(mob/living/carbon/dreamer)
+/datum/dream/proc/OnDreamEnd(mob/living/carbon/dreamer, cut_short = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	REMOVE_TRAIT(dreamer, TRAIT_DREAMING, DREAMING_SOURCE)
-	COOLDOWN_START(dreamer, dream_cooldown, dream_cooldown)
+	REMOVE_TRAIT(dreamer.mind, TRAIT_DREAMING, DREAMING_SOURCE)
+	COOLDOWN_START(dreamer.mind, dream_cooldown, dream_cooldown)
+
+	if(!cut_short)
+		LAZYOR(dreamer.mind.finished_dream_types, type)
 
 /**
  * Called by dream_sequence to wrap a message in any effects.
@@ -66,28 +70,32 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
 /datum/dream/proc/WrapMessage(mob/living/carbon/dreamer, message)
 	return span_notice("<i>... [message] ...</i>")
 
-/**
- * Called by dream_sequence to get the delay value between each fragment.
- */
-/datum/dream/proc/GetFragmentDelay(mob/living/carbon/dreamer)
-	return rand(1 SECOND, 3 SECONDS)
-
 /datum/dream/proc/BeginDreaming(mob/living/carbon/dreamer)
 	set waitfor = FALSE
 
 	var/list/fragments = GenerateDream(dreamer)
 	OnDreamStart(dreamer)
-	DreamLoop(dreamer, fragments)
+	DreamLoop(dreamer, dreamer.mind, fragments)
 
 /**
- * The core dream loop, powered by callbacks.
+ * Displays the passed list of dream fragments to a sleeping carbon.
+ *
+ * Displays the first string of the passed dream fragments, then either ends the dream sequence
+ * or performs a callback on itself depending on if there are any remaining dream fragments to display.
+ *
+ * Arguments:
+ * * dreamer - The mob we're looping on.
+ * * dreamer_mind - The mind that is dreaming.
+ * * dream_fragments - A list of strings, in the order they will be displayed.
  */
-/datum/dream/proc/DreamLoop(mob/living/carbon/dreamer, list/dream_fragments)
-	if(dreamer.stat != UNCONSCIOUS || QDELETED(dreamer))
-		OnDreamEnd(dreamer)
+
+/datum/dream/proc/DreamLoop(mob/living/carbon/dreamer, datum/mind/dreamer_mind, list/dream_fragments)
+	if(dreamer.stat != UNCONSCIOUS || QDELETED(dreamer) || (dreamer.mind != dreamer_mind))
+		OnDreamEnd(dreamer, TRUE)
 		return
 
 	var/next_message = dream_fragments[1]
+	var/next_wait = dream_fragments[next_message]
 	dream_fragments.Cut(1,2)
 
 	if(istype(next_message, /datum/callback))
@@ -101,11 +109,7 @@ GLOBAL_LIST_EMPTY(all_dreams_weighted)
 		OnDreamEnd(dreamer)
 		return
 
-	var/next_wait = GetFragmentDelay(dreamer)
 	if(sleep_until_finished)
-		dreamer.AdjustSleeping(next_wait)
+		dreamer.Sleeping(next_wait + 1 SECOND)
 
-	addtimer(CALLBACK(src, PROC_REF(DreamLoop), dreamer, dream_fragments), next_wait)
-
-
-#undef DREAMING_SOURCE
+	addtimer(CALLBACK(src, PROC_REF(DreamLoop), dreamer, dreamer_mind,dream_fragments), next_wait)

@@ -38,6 +38,8 @@
 	. += fragment
 
 	if(prob(25))
+		for(var/dream_fragment in .)
+			.[dream_fragment] = rand(1 SECOND, 3 SECONDS)
 		return
 
 	//Object
@@ -50,3 +52,6 @@
 	if(findtext(fragment, "%A% "))
 		fragment = "\a [replacetext(fragment, "%A% ", "")]"
 	. += fragment
+
+	for(var/dream_fragment in .)
+		.[dream_fragment] = rand(1 SECOND, 3 SECONDS)

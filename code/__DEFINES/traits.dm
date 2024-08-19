@@ -873,6 +873,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define EMP_TRAIT "emp"
 /// Given by the operating table
 #define OPTABLE_TRAIT "optable"
+/// Given by dreaming
+#define DREAMING_SOURCE "dreaming"
 
 /**
 * Trait granted by [/mob/living/carbon/Initialize] and

@@ -63,7 +63,7 @@
 	return list(
 		"<i>[span_statsgood("... Harrier? Harrier?! ...")]</i>" = rand(1 SECOND, 3 SECONDS),
 		"<i>[span_statsgood("... Damn it Harry wake up! ...")]</i>" = rand(1 SECOND, 3 SECONDS),
-		"<i>[span_statsgood("... Harry I am <b>not</b> going to be the one to explain to the station how their prized Harrier DuBois overdosed on Pyrholion, <b>again</b>. ...")]</i>",
+		"<i>[span_statsgood("... Harry I am <b>not</b> going to be the one to explain to the station how their prized Harrier DuBois overdosed on Pyrholidon, <b>again</b>. ...")]</i>",
 	)
 
 /datum/dream/detective_nightmare/random
